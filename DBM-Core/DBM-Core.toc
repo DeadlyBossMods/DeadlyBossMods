@@ -1,0 +1,12 @@
+## Interface: 30100
+## Title: |cff0055FFDeadly Boss Mods Core|r
+## Title-zhCN: |cff0055FFDeadly Boss Mod|r API
+## Notes: Application Programming Interface for DBM
+## SavedVariables: DBM_
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: Tandanu and Nitram
+## URL: http://www.deadlybossmods.com
+localization.en.lua
+lib-DBT.lua
+DBM-Core.lua
