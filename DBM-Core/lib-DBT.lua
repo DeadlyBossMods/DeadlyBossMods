@@ -61,7 +61,7 @@ function DBT:New()
 	return setmetatable(
 		{
 			Options = setmetatable({}, {
-				__index = function(k)
+				__index = function(t, k)
 					if options[k] then
 						return options[k].default
 					else
