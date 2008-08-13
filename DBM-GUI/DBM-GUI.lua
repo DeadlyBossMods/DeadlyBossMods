@@ -69,6 +69,6 @@ end
 -- END - Basic GUI Items
 
 mainpanel = DBM_GUI:CreateNewPanel("Deadly Boss Mods", false)
-mainpanel:CreateArea(DBM_GUI_Language.General, 180, 200)
+--mainpanel.frame:CreateArea(DBM_GUI_Language.General, 180, 200)
 
 
