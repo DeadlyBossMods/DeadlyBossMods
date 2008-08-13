@@ -8,6 +8,8 @@ DBM_GUI_Language.Disable = "disable"
 
 
 DBM_GUI = {}
+DBM_GUI.panels = {}
+DBM_GUI.areas = {}
 
 function DBM_GUI:CreateNewPanel(FrameName, ParentFrame, OkButton, CancelButton, DefaultButton) 
 	local panel = CreateFrame('Frame')
@@ -17,7 +19,7 @@ function DBM_GUI:CreateNewPanel(FrameName, ParentFrame, OkButton, CancelButton, 
 	elseif ParentFrame == false then
 		-- do nothing, this is the first declaration
 	else
-		DBM_GUI_Language.MainFrame
+		panel.parent = DBM_GUI_Language.MainFrame
 	end
 	if type(OkButton) == "function" then
 		panel.okay = OkButton
@@ -44,7 +46,10 @@ function PanelPrototype:CreateArea(name, width, height)
 	getglobal(panel:GetName() .. 'Title'):SetText(name)
 	panel:SetWidth(width)
 	panel:SetHeight(height)
-	return panel
+
+	table.insert(self.areas, {frame = panel})
+	local obj = self.areas[#self.areas]
+	return setmetatable(obj, {__index = panelPrototype})
 end
 function PanelPrototype:CreateCheckButton(name)
 	local button = CreateFrame('CheckButton', parent:GetName() .. name, self, 'OptionsCheckButtonTemplate')
@@ -64,9 +69,6 @@ end
 -- END - Basic GUI Items
 
 mainpanel = DBM_GUI:CreateNewPanel("Deadly Boss Mods", false)
-local mainpanel:CreatePanelArea(DBM_GUI_Language.General, 180, 200)
-
-
-
+mainpanel:CreateArea(DBM_GUI_Language.General, 180, 200)
 
 
