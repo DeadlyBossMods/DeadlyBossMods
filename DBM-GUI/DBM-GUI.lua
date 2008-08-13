@@ -1,71 +1,72 @@
 
 
-
-local DBM_GUI = CreateFrame('Frame', 'DBM_Options_GUI', UIParent)
-
-function DBM_GUI:Load()
-    self.name = 'Deadly Boss Mods'
-
-    local display = self:AddDisplayPanel()
-    display:SetPoint('TOPLEFT', 10, -24)
-    
-    InterfaceOptions_AddCategory(self)
+local DBM_GUI_Language = {}
+DBM_GUI_Language.MainFrame = "Deadly Boss Mods"
+DBM_GUI_Language.General = "General Options"
+DBM_GUI_Language.Enable = "enable"
+DBM_GUI_Language.Disable = "disable"
 
 
-    local panel = CreateFrame("Frame", "DBM_Options_GUI_AggroAlert");
-    panel.name = "Aggro Alert";
-    panel.parent = "Deadly Boss Mods"; 
-    InterfaceOptions_AddCategory(panel)
+DBM_GUI = {}
 
-    local panel2 = CreateFrame("Frame", "DBM_Options_GUI_BossOptions");
-    panel2.name = "Boss Options";
-    panel2.parent = "Aggro Alert"; 
-    InterfaceOptions_AddCategory(panel2)
+function DBM_GUI:CreateNewPanel(FrameName, ParentFrame, OkButton, CancelButton, DefaultButton) 
+	local panel = CreateFrame('Frame')
+	panel.name = FrameName
+	if ParentFrame then 
+		panel.parent = ParentFrame 
+	elseif ParentFrame == false then
+		-- do nothing, this is the first declaration
+	else
+		DBM_GUI_Language.MainFrame
+	end
+	if type(OkButton) == "function" then
+		panel.okay = OkButton
+	end
+	if type(CancelButton) == "function" then
+		panel.cancel = OkButton
+	end
+	if type(DefaultButton) == "function" then
+		panel.default = OkButton
+	end
+	InterfaceOptions_AddCategory(panel)
 
-
-
+	table.insert(self.panels, {frame = panel})
+	local obj = self.panels[#self.panels]
+	return setmetatable(obj, {__index = panelPrototype})
 end
-
-function DBM_GUI:AddDisplayPanel()
-    local panel = self:CreatePanel("General Options")
-    panel:SetWidth(180); 
-    panel:SetHeight(200)
-
-    --show models
-    local TestMe = self:CreateCheckButton("CheckMe", panel)
-    TestMe:SetScript('OnShow', function(self) self:SetChecked(true) end)
-    TestMe:SetScript('OnClick', function(self) DEFAULT_CHAT_FRAME:AddMessage("TEST") end)
-    TestMe:SetPoint('TOPLEFT', 10, -8)
-
-   return panel
-end
-
 
 -- BEGIN - Basic GUI Items
-function DBM_GUI:CreatePanel(name)
+local PanelPrototype = {}
+function PanelPrototype:CreateArea(name, width, height)
 	local panel = CreateFrame('Frame', self:GetName() .. name, self, 'OptionFrameBoxTemplate')
 	panel:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	panel:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	getglobal(panel:GetName() .. 'Title'):SetText(name)
+	panel:SetWidth(width)
+	panel:SetHeight(height)
 	return panel
 end
-function DBM_GUI:CreateCheckButton(name, parent)
-	local button = CreateFrame('CheckButton', parent:GetName() .. name, parent, 'OptionsCheckButtonTemplate')
+function PanelPrototype:CreateCheckButton(name)
+	local button = CreateFrame('CheckButton', parent:GetName() .. name, self, 'OptionsCheckButtonTemplate')
 	getglobal(button:GetName() .. 'Text'):SetText(name)
 	return button
 end
-function DBM_GUI:CreateDropdown(name, parent)
-	local frame = CreateFrame('Frame', parent:GetName() .. name, parent, 'UIDropDownMenuTemplate')
+function PanelPrototype:CreateDropdown(name)
+	local frame = CreateFrame('Frame', parent:GetName() .. name, self, 'UIDropDownMenuTemplate')
 	local text = frame:CreateFontString(nil, 'BACKGROUND')
 	text:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 21, 0)
 	text:SetFontObject('GameFontNormalSmall')
 	text:SetText(name)
 	return frame
 end
+
+
 -- END - Basic GUI Items
 
+mainpanel = DBM_GUI:CreateNewPanel("Deadly Boss Mods", false)
+local mainpanel:CreatePanelArea(DBM_GUI_Language.General, 180, 200)
 
-DBM_GUI:Load()
+
 
 
 
