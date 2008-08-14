@@ -6,10 +6,9 @@ DBM_GUI_Language.General = "General Options"
 DBM_GUI_Language.Enable = "enable"
 DBM_GUI_Language.Disable = "disable"
 
-local framecount = 0
 local PanelPrototype = {}
 DBM_GUI = {}
-DBM_GUI.panels = {}
+setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 function DBM_GUI:CreateNewPanel(FrameName, OkButton, CancelButton, DefaultButton) 
 	local panel = CreateFrame('Frame', "DBM_GUI_Option_"..self:GetNewID())
@@ -29,33 +28,37 @@ function DBM_GUI:CreateNewPanel(FrameName, OkButton, CancelButton, DefaultButton
 		panel.default = DefaultButton
 	end
 	InterfaceOptions_AddCategory(panel)
-
-	table.insert(self.panels, {frame = panel, parent = self, framename = "DBM_GUI_Option_"..framecount})
+	
+	self.panels = self.panels or {}
+	table.insert(self.panels, {frame = panel, parent = self, framename = "DBM_GUI_Option_"..self:GetCurrentID()})
 	local obj = self.panels[#self.panels]
 	return setmetatable(obj, {__index = PanelPrototype})
 end
-function DBM_GUI:GetNewID() 
-	framecount = framecount + 1
-	return framecount
-end
-function DBM_GUI:GetCurrentID()
-	return framecount
+
+do
+	local framecount = 0
+	function DBM_GUI:GetNewID() 
+		framecount = framecount + 1
+		return framecount
+	end
+	function DBM_GUI:GetCurrentID()
+		return framecount
+	end
 end
 
 -- BEGIN - Basic GUI Items
-PanelPrototype.panels = {}
-PanelPrototype.areas = {}
-PanelPrototype.CreateNewPanel 	= DBM_GUI.CreateNewPanel
-PanelPrototype.GetNewID 	= DBM_GUI.GetNewID
+
 function PanelPrototype:CreateArea(name, width, height)
-	local panel = CreateFrame('Frame', "DBM_GUI_Option_"..self:GetNewID(), self.parent.frame, 'OptionFrameBoxTemplate')
+	local panel = CreateFrame('Frame', "DBM_GUI_Option_"..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
 	panel:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	panel:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	getglobal(panel:GetName() .. 'Title'):SetText(name)
 	panel:SetWidth(width)
 	panel:SetHeight(height)
-
-	table.insert(self.areas, {frame = panel, parent = self, framename = "DBM_GUI_Option_"..framecount})
+	panel:Show()
+	
+	self.areas = self.areas or {}
+	table.insert(self.areas, {frame = panel, parent = self, framename = "DBM_GUI_Option_"..self:GetCurrentID()})
 	local obj = self.areas[#self.areas]
 	return setmetatable(obj, {__index = panelPrototype})
 end
