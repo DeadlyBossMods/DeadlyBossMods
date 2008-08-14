@@ -30,7 +30,7 @@ function DBM_GUI:CreateNewPanel(FrameName, OkButton, CancelButton, DefaultButton
 	end
 	InterfaceOptions_AddCategory(panel)
 
-	table.insert(self.panels, {frame = panel, parent = self, name = "DBM_GUI_Option_"..framecount})
+	table.insert(self.panels, {frame = panel, parent = self, framename = "DBM_GUI_Option_"..framecount})
 	local obj = self.panels[#self.panels]
 	return setmetatable(obj, {__index = PanelPrototype})
 end
@@ -48,31 +48,30 @@ PanelPrototype.areas = {}
 PanelPrototype.CreateNewPanel 	= DBM_GUI.CreateNewPanel
 PanelPrototype.GetNewID 	= DBM_GUI.GetNewID
 function PanelPrototype:CreateArea(name, width, height)
-	local panel = CreateFrame('Frame', "DBM_GUI_Option_"..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
+	local panel = CreateFrame('Frame', "DBM_GUI_Option_"..self:GetNewID(), self.parent.frame, 'OptionFrameBoxTemplate')
 	panel:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	panel:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	getglobal(panel:GetName() .. 'Title'):SetText(name)
 	panel:SetWidth(width)
 	panel:SetHeight(height)
 
-	table.insert(self.areas, {frame = panel, parent = self, name = "DBM_GUI_Option_"..framecount})
+	table.insert(self.areas, {frame = panel, parent = self, framename = "DBM_GUI_Option_"..framecount})
 	local obj = self.areas[#self.areas]
 	return setmetatable(obj, {__index = panelPrototype})
 end
 function PanelPrototype:CreateCheckButton(name)
-	local button = CreateFrame('CheckButton', "DBM_GUI_Option_"..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
+	local button = CreateFrame('CheckButton', "DBM_GUI_Option_"..self:GetNewID(), self.parent.frame, 'OptionsCheckButtonTemplate')
 	getglobal(button:GetName() .. 'Text'):SetText(name)
 	return button
 end
 function PanelPrototype:CreateDropdown(name)
-	local frame = CreateFrame('Frame', "DBM_GUI_Option_"..self:GetNewID(), self.frame, 'UIDropDownMenuTemplate')
+	local frame = CreateFrame('Frame', "DBM_GUI_Option_"..self:GetNewID(), self.parent.frame, 'UIDropDownMenuTemplate')
 	local text = frame:CreateFontString(nil, 'BACKGROUND')
 	text:SetPoint('BOTTOMLEFT', frame, 'TOPLEFT', 21, 0)
 	text:SetFontObject('GameFontNormalSmall')
 	text:SetText(name)
 	return frame
 end
-
 -- END - Basic GUI Items
 
 mainpanel = DBM_GUI:CreateNewPanel("Deadly Boss Mods", false)
