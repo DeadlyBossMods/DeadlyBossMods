@@ -197,6 +197,14 @@ function bossModPrototype:NewAnnounce(text, color)
 	table.insert(self.announces, obj)
 	return obj
 end
+function bossModPrototype:EnableMod()
+	self.enabled = true
+end
+
+function bossModPrototype:DisableMod()
+	self.enabled = false
+end
+
 
 function DBM:NewMod(name)
 	return setmetatable(
@@ -208,3 +216,6 @@ function DBM:NewMod(name)
 		}
 	)
 end
+
+
+
