@@ -1,0 +1,12 @@
+## Interface: 30000
+## Title: |cff0055FFDeadly Boss Mods|r Testing...
+## Notes: Test...
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Name: Test mods :)
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-LoadZone: Elwynn Forest
+localization.en.lua
+TestBoss.lua
