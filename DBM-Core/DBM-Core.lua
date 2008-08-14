@@ -4,6 +4,10 @@
 
 DBM = {}
 
+DBM.DefaultOptions = {
+	
+}
+
 local DBT = DBT:New()
 
 local mainFrame = CreateFrame("Frame")
