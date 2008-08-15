@@ -8,7 +8,7 @@ DBM_GUI_Language.Disable = "disable"
 
 
 
-local FrameTitle = "DBM_GUI_Option_"	-- all GUI Frames get automatical a name FrameTitle..ID
+local FrameTitle = "DBM_GUI_Option_"	-- all GUI Frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
 DBM_GUI = {}
