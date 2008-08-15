@@ -13,7 +13,9 @@ local DBT = DBT:New()
 local mainFrame = CreateFrame("Frame")
 
 local registeredEvents = {
-	["COMBAT_LOG_EVENT_UNFILTERED"] = {DBM}
+	["COMBAT_LOG_EVENT_UNFILTERED"] = {DBM},
+	["ZONE_CHANGED_NEW_AREA"] = {DBM},
+	["ADDON_LOADED"] = {DBM}
 }
 for i in pairs(registeredEvents) do
 	mainFrame:RegisterEvent(i)
@@ -35,6 +37,55 @@ mainFrame:SetScript("OnEvent", onEvent)
 mainFrame:SetScript("OnUpdate", onUpdate)
 
 DBM.modName = "Deadly Boss Mods"
+
+function DBM:ADDON_LOADED(modname)
+	if modname == "DBM-Core" then
+		self.Mods = {}
+		for i = 1, GetNumAddOns() do
+			if GetAddOnMetadata(i, "X-DBM-Mod") then
+				table.insert(self.Mods, {
+					sort		= GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge,
+					category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "WotLK",
+					name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
+					zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
+					modId		= i,
+				})
+			end
+		end
+		table.sort(self.Mods, function(v1, v2) return v1.sort > v2.sort end)
+	end
+end
+
+function DBM:ZONE_CHANGED_NEW_AREA()
+	for i, v in ipairs(self.Mods) do
+		if v.zone == GetRealZoneText() and not IsAddOnLoaded(v.modId) then
+			self:LoadMod(v)
+		end
+	end
+end
+
+function DBM:LoadMod(mod)
+	local _, _, _, enabled = GetAddOnInfo(mod.modId)
+	if not enabled then
+		EnableAddOn(mod.modId)
+	end
+
+	local loaded, reason = LoadAddOn(mod.modId)
+	if not loaded then
+		self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
+	else
+		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
+		self:InitializeMods()
+	end
+end
+
+function DBM:InitializeMods()
+	for i, v in ipairs(self.mods) do
+		if not v.initialized then
+			v.initialized = true
+		end
+	end
+end
 
 do
 	local args = {}
@@ -176,11 +227,14 @@ local warningColors = {
 
 
 local announcePrototype = {}
-function announcePrototype:Show(color)
-	RaidNotice_AddMessage(RaidWarningFrame, self.text, (color and (warningColors[color] or 1)) or self.color)
+function announcePrototype:Show(...)
+	if not self.option or self.mod.Options[self.option] then
+		RaidNotice_AddMessage(RaidWarningFrame, self.text:format(...), self.color)
+	end
 end
 
 local bossModPrototype = {}
+
 function bossModPrototype:RegisterEvents(...)
 	for i = 1, select("#", ...) do
 		local ev = select(i, ...)
@@ -188,37 +242,71 @@ function bossModPrototype:RegisterEvents(...)
 		table.insert(registeredEvents[ev], self)
 	end
 end
-function bossModPrototype:NewAnnounce(text, color)
+
+function bossModPrototype:NewAnnounce(text, color, optionName, optionDefault)
 	local obj = setmetatable(
 		{
 			text = text or "",
 			color = warningColors[color or 1] or 1,
+			option = optionName,
+			mod = self
 		},
 		{
 			__index = announcePrototype
 		}
 	)
-	table.insert(self.announces, obj)
+	
+	if optionName then
+		self:AddBoolOption(optionName, optionDefault)
+	end
+	
+	table.insert(self.Announces, obj)
 	return obj
 end
+
+function bossModPrototype:AddBoolOption(name, default)
+	self.Options[name] = (default == nil) or default
+	table.insert(self.BoolOptions, name)
+end
+
+function bossModPrototype:GetLocalizedStrings()
+	return function(str)
+		return self.Localization.MiscStrings[str] or str
+	end
+end
+
 function bossModPrototype:EnableMod()
-	self.enabled = true
+	self.Options.Enabled = true
 end
 
 function bossModPrototype:DisableMod()
-	self.enabled = false
+	self.Options.Enabled = false
 end
 
 
 function DBM:NewMod(name)
-	return setmetatable(
+	local obj = setmetatable(
 		{
-			announces = {}
+			Options = {
+				Enabled = true,
+			},
+			announces = {},
+			boolOptions = {},
+			localization = {
+				name = name,
+				warnings = {},
+				options = {},
+				bars = {},
+				miscStrings = {}
+			}
 		},
 		{
 			__index = bossModPrototype
 		}
 	)
+	self.mods = self.mods or {}
+	table.insert(self.mods, obj)
+	return obj
 end
 
 

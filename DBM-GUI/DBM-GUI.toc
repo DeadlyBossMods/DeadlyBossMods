@@ -6,6 +6,6 @@
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
 ## URL: http://www.deadlybossmods.com
-DBM-GUI.lua
 DBM-GUI-Templates.xml
+DBM-GUI.lua
 
