@@ -79,7 +79,7 @@ function PanelPrototype:CreateDropdown(name)
 end
 function PanelPrototype:CreateEditBox(text)
 	local textbox = CreateFrame('EditBox', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_FrameEditBoxTemplate')
-	getglobal(FrameTitle..self:GetNewID().."Text"):SetText(text)
+	getglobal(FrameTitle..self:GetCurrentID().."Text"):SetText(text)
 
 	return textbox
 end
@@ -131,6 +131,7 @@ do
 	DBM_GUI_Aggro = DBM_GUI_Frame:CreateNewPanel("Aggro Alert")
 
 end
+
 
 
 
