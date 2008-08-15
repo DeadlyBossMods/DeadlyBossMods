@@ -1,9 +1,11 @@
-## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r Options
+## Interface: 30100
+## Title: |cff0055FFDeadly Boss Mods |r Options GUI
+## Title-zhCN: |cff0055FFDeadly Boss Mod|r Options GUI
 ## Notes: Options GUI for DeadlyBossMods
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
 ## URL: http://www.deadlybossmods.com
 DBM-GUI.lua
+DBM-GUI-Templates.xml
 
