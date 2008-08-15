@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 
-	<EditBox name="DBM_GUI_FrameEditBoxTemplate" historyLines="0" enableMouse="true" autoFocus="false" virtual="true">
+	<EditBox name="DBM_GUI_FrameEditBoxTemplate" autoFocus="false" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture name="$parentLeft" file="Interface\ChatFrame\UI-ChatInputBorder-Left">
@@ -49,17 +49,19 @@
 				</Texture>
 			</Layer>
 			<Layer level="ARTWORK">
-				<FontString name="$parentText" inherits="GameFontNormalSmall" text="">
-					<Anchors><Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT"><Offset>
-						<AbsDimension x="5" y="10"/>
-					</Offset></Anchor></Anchors>
+				<FontString name="$parentText" inherits="GameFontNormalSmall" text="xx">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+							<Offset>
+								<AbsDimension x="-4" y="13"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
 				</FontString>
 			</Layer>
 		</Layers>
 		<FontString inherits="ChatFontNormal"></FontString>
 	</EditBox>
-
-
 
 </Ui>
 
