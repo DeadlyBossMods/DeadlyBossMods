@@ -8,7 +8,7 @@ mod:RegisterEvents(
 )
 
 function mod:SPELL_AURA_APPLIED(args)
-	48040
+--	48040
 end
 
 function mod:SPELL_AURA_REMOVED(args)

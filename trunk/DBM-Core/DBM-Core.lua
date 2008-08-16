@@ -1,14 +1,47 @@
----------------
---  DBM Core --
----------------
+-- *********************************************************
+-- **               Deadly Boss Mods - Core               **
+-- **            http://www.deadlybossmods.com            **
+-- *********************************************************
+--
+-- This addon is written and copyrighted by:
+--    * Paul Emmerich (Tandanu @ EU-Aegwynn)
+--    * Martin Verges (Nitram @ EU-Azshara)
+-- 
+-- The localizations are written by:
+--    * deDE: Tandanu/Nitram
+--    * (add your names here!)
+--
+-- 
+-- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+--
+--  You are free:
+--    * to Share — to copy, distribute, display, and perform the work
+--    * to Remix — to make derivative works
+--  Under the following conditions:
+--    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
+--    * Noncommercial. You may not use this work for commercial purposes.
+--    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
+
+
 
 DBM = {}
 
+DBM_SavedOptions = {}
+
 DBM.DefaultOptions = {
-	
+	WarningColors = {
+		{r = 0.41, g = 0.80, b = 0.94},
+		{r = 0.95, g = 0.95, b = 0.00},
+		{r = 1.00, g = 0.50, b = 0.00},
+		{r = 1.00, g = 0.10, b = 0.10},
+	},
+	TestOption = "hallo",
+	TestBool = true,
 }
 
 local DBT = DBT:New()
+
+local scheduleData = {}
 
 local mainFrame = CreateFrame("Frame")
 
@@ -29,8 +62,56 @@ local function onEvent(self, event, ...)
 	end
 end
 
-local function onUpdate(self, elapsed)
+
+local schedule, onUpdate
+do
+	local scheduleTables = {}
+	setmetatable(scheduleTables, {__mode = "kv"})
+
+	function onUpdate(self, elapsed)
+		self = DBM
+		local time = GetTime()
+		for i, v in ipairs(self.Mods) do
+			if type(v.OnUpdate) == "function" then
+				v:OnUpdate(elapsed)
+			end
+		end
+		for i = #scheduleData, 1, -1 do
+			local v = scheduleData[i]
+			if time >= v.time then
+				local ok, msg = pcall(v.func, unpack(v.args))
+				if not ok then
+					error(("Error while executing scheduled function (scheduled by %s): %s"):format(tostring(msg), (v.mod and v.mod.localization.name) or "unknown"))
+				end
+				table.remove(scheduleData, i)
+				scheduleTables[v] = v -- to re-use the table
+			end
+		end
+	end
 	
+	local function getScheduleTable()
+		local v = next(scheduleTables, nil)
+		if v then
+			scheduleTables[v] = nil
+			v.mod = nil
+			for i = #v.args, 0, -1 do
+				v.args[i] = nil
+			end
+		else
+			v = {args = {}}
+		end
+		return v
+	end
+	function schedule(t, f, mod, ...)
+		local v = getScheduleTable()
+		v.mod = mod
+		v.time = GetTime() + t
+		v.func = f
+		for i = 1, select("#", ...) do
+			v.args[#v.args + 1] = select(i, ...)
+		end
+		table.insert(scheduleData, v)
+	end
 end
 
 mainFrame:SetScript("OnEvent", onEvent)
@@ -38,51 +119,47 @@ mainFrame:SetScript("OnUpdate", onUpdate)
 
 DBM.modName = "Deadly Boss Mods"
 
-function DBM:ADDON_LOADED(modname)
-	if modname == "DBM-Core" then
-		self.Mods = {}
-		for i = 1, GetNumAddOns() do
-			if GetAddOnMetadata(i, "X-DBM-Mod") then
-				table.insert(self.Mods, {
-					sort		= GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge,
-					category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "WotLK",
-					name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-					zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
-					modId		= i,
-				})
+do
+	local addDefaults
+	function addDefaults(t1, t2)
+		for i, v in pairs(t2) do
+			if not t1[i] then
+				t1[i] = v
+			elseif type(v) == "table" then
+				addDefaults(v, t2[i])
 			end
 		end
-		table.sort(self.Mods, function(v1, v2) return v1.sort > v2.sort end)
+	end
+	function DBM:ADDON_LOADED(modname)
+		if modname == "DBM-Core" then
+			DBM.Options = DBM_SavedOptions
+			addDefaults(DBM.Options, DBM.DefaultOptions)
+			
+			self.Mods = {}
+			for i = 1, GetNumAddOns() do
+				if GetAddOnMetadata(i, "X-DBM-Mod") then
+					table.insert(self.Mods, {
+						sort		= GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge,
+						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "WotLK",
+						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
+						zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
+						modId		= i,
+					})
+				end
+			end
+			table.sort(self.Mods, function(v1, v2) return v1.sort > v2.sort end)
+			
+			self.initialized = true
+			self:ZONE_CHANGED_NEW_AREA()
+		end
 	end
 end
 
 function DBM:ZONE_CHANGED_NEW_AREA()
+	if not self.initialized then return end -- do not load mods before DBM itself is initialized
 	for i, v in ipairs(self.Mods) do
 		if v.zone == GetRealZoneText() and not IsAddOnLoaded(v.modId) then
 			self:LoadMod(v)
-		end
-	end
-end
-
-function DBM:LoadMod(mod)
-	local _, _, _, enabled = GetAddOnInfo(mod.modId)
-	if not enabled then
-		EnableAddOn(mod.modId)
-	end
-
-	local loaded, reason = LoadAddOn(mod.modId)
-	if not loaded then
-		self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
-	else
-		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
-		self:InitializeMods()
-	end
-end
-
-function DBM:InitializeMods()
-	for i, v in ipairs(self.mods) do
-		if not v.initialized then
-			v.initialized = true
 		end
 	end
 end
@@ -214,17 +291,36 @@ do
 end
 
 function DBM:AddMsg(text, prefix)
-	prefix = prefix or self.modName
+	prefix = prefix or (self.localization and self.localization.name) or "Deadly Boss Mods"
 	DEFAULT_CHAT_FRAME:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(prefix), tostring(text)), 0.41, 0.8, 0.94)
 end
 
-local warningColors = {
-	{r = 0.41, g = 0.80, b = 0.94},
-	{r = 0.95, g = 0.95, b = 0.00},
-	{r = 1.00, g = 0.50, b = 0.00},
-	{r = 1.00, g = 0.10, b = 0.10},
-}
+function DBM:LoadMod(mod)
+	local _, _, _, enabled = GetAddOnInfo(mod.modId)
+	if not enabled then
+		EnableAddOn(mod.modId)
+	end
 
+	local loaded, reason = LoadAddOn(mod.modId)
+	if not loaded then
+		self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
+	else
+		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
+		self:InitializeMods()
+	end
+end
+
+function DBM:InitializeMods()
+	for i, v in ipairs(self.mods) do
+		if not v.initialized then
+			v.initialized = true
+		end
+	end
+end
+
+function DBM:Schedule(t, f, ...)
+	return schedule(t, f, nil, ...)
+end
 
 local announcePrototype = {}
 function announcePrototype:Show(...)
@@ -247,7 +343,7 @@ function bossModPrototype:NewAnnounce(text, color, optionName, optionDefault)
 	local obj = setmetatable(
 		{
 			text = text or "",
-			color = warningColors[color or 1] or 1,
+			color = DBM.Options.WarningColors[color or 1] or 1,
 			option = optionName,
 			mod = self
 		},
