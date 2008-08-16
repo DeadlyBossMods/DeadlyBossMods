@@ -1,42 +1,30 @@
+-- **********************************************************
+-- **                Deadly Boss Mods - GUI                **
+-- **             http://www.deadlybossmods.com            **
+-- **********************************************************
 --
--- ***********************************************************
--- This Software and all parts of it is fully written by 
---
--- 	Nitram @ EU-Azshara & Tandanu @ EU-Aegwin
---
--- Its not allowed to remove, modify this Author Information.
--- ***********************************************************
+-- This addon is written and copyrighted by:
+--    * Martin Verges (Nitram @ EU-Azshara)
+--    * Paul Emmerich (Tandanu @ EU-Aegwynn)
 -- 
--- The Deadly Boss Mods are formerly known as La Vendetta BossMods, 
--- written by the Authors with all the Informations we got while 
--- playing by La Vendetta (RIP).
+-- The localizations are written by:
+--    * deDE: Nitram/Tandanu
+--    * (add your names here!)
+--
 -- 
--- Translations are written by some very helpfull guys, thanks to you.
--- The Translators Information can be found in the Localisation file.
+-- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
 --
--- This DBM 4 Release is written for WOTLK (Lich King)
--- 
--- ***********************************************************
--- Copyright Informations:
---
---   DBM is free of use without any warrenty. You can use it
---   on each WoW Client you like, but it's not allowed to 
---   copy&paste code from our Software. So please ask for 
---   permisson if you want to use parts of this software for
---   your own developments. 
---   If you wan't to add DBM 4 for download, feel free to add 
---   the Files on your website but please include a link to 
---   www.deadlybossmods.com and leave the Authors information.
---
--- ***********************************************************
--- Version History:
---
---   v4.00:  First Release for WOTLK Beta
---
---
+--  You are free:
+--    * to Share — to copy, distribute, display, and perform the work
+--    * to Remix — to make derivative works
+--  Under the following conditions:
+--    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
+--    * Noncommercial. You may not use this work for commercial purposes.
+--    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
 
-local FrameTitle = "DBM_GUI_Option_"	-- all GUI Frames get automatical a name FrameTitle..ID
+
+local FrameTitle = "DBM_GUI_Option_"	-- all GUI Frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
 DBM_GUI = {}
