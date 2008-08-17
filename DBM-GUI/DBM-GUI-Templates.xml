@@ -159,7 +159,7 @@
 						DBM_GUI_OptionsFrameTab2TabSpacer1:Hide();
 						DBM_GUI_OptionsFrameTab2TabSpacer2:Hide();
 					</OnClick>
-				</Scripts><!--
+				</Scripts>
 				<Layers>
 					<Layer level="BACKGROUND">
 						<Texture name="$parentTabSpacer" file="Interface\OptionsFrame\UI-OptionsFrame-Spacer" hidden="false">	
@@ -176,7 +176,7 @@
 							</Anchors>
 						</Texture>
 					</Layer>
-				</Layers>-->
+				</Layers>
 			</Button>
 			<Button name="$parentTab2" inherits="OptionsFrameTabButtonTemplate" text="Optionen" id="2" hidden="false">
 				<Anchors>
