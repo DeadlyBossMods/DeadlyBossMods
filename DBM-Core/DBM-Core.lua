@@ -37,12 +37,12 @@ DBM.DefaultOptions = {
 	},
 	TestOption = "hallo",
 	TestBool = true,
+	Enabled = true,
 }
 
 local DBT = DBT:New()
 
 local scheduleData = {}
-local enabled = true
 
 local mainFrame = CreateFrame("Frame")
 
@@ -324,15 +324,15 @@ function DBM:Schedule(t, f, ...)
 end
 
 function DBM:Disable()
-	enabled = false
+	self.Options.Enabled = false
 end
 
 function DBM:Enable()
-	enabled = true
+	self.Options.Enabled = true
 end
 
 function DBM:IsEnabled()
-	return enabled
+	return self.Options.Enabled
 end
 
 local announcePrototype = {}
