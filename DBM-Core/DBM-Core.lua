@@ -42,14 +42,16 @@ DBM.DefaultOptions = {
 
 local DBT = DBT:New()
 
-local scheduleData = {}
+local updateFunctions = {}
 
 local mainFrame = CreateFrame("Frame")
 
 local registeredEvents = {
 	["COMBAT_LOG_EVENT_UNFILTERED"] = {DBM},
 	["ZONE_CHANGED_NEW_AREA"] = {DBM},
-	["ADDON_LOADED"] = {DBM}
+	["ADDON_LOADED"] = {DBM},
+	["RAID_ROSTER_UPDATE"] = {DBM},
+	["PARTY_MEMBERS_CHANGED"] = {DBM},
 }
 for i in pairs(registeredEvents) do
 	mainFrame:RegisterEvent(i)
@@ -64,28 +66,30 @@ local function onEvent(self, event, ...)
 end
 
 
-local schedule, onUpdate
+local schedule, unschedule, onUpdate
 do
 	local scheduleTables = {}
 	setmetatable(scheduleTables, {__mode = "kv"})
+	local scheduleData = {}
 
 	function onUpdate(self, elapsed)
 		self = DBM
 		local time = GetTime()
-		for i, v in ipairs(self.Mods) do
-			if type(v.OnUpdate) == "function" then
-				v:OnUpdate(elapsed)
+		for i, v in pairs(updateFunctions) do
+			if i.Options.Enabled then
+				i.elapsed = (i.elapsed or 0) + elapsed
+				if i.elapsed >= (i.updateInterval or 0) then
+					v(i, i.elapsed)
+					i.elapsed = 0
+				end
 			end
 		end
 		for i = #scheduleData, 1, -1 do
 			local v = scheduleData[i]
 			if time >= v.time then
-				local ok, msg = pcall(v.func, unpack(v.args))
-				if not ok then
-					error(("Error while executing scheduled function (scheduled by %s): %s"):format(tostring(msg), (v.mod and v.mod.localization.name) or "unknown"))
-				end
 				table.remove(scheduleData, i)
-				scheduleTables[v] = v -- to re-use the table
+				scheduleTables[v] = v
+				v.func(unpack(v.args))
 			end
 		end
 	end
@@ -113,16 +117,132 @@ do
 		end
 		table.insert(scheduleData, v)
 	end
+	function unschedule(f, mod, ...)
+		for k = #scheduleData, 1, -1 do
+			local v = scheduleData[k]
+			if v.func == f and ((not mod) or v.mod == mod) then
+				local match = true
+				for i = 1, select("#", ...) do
+					if select(i, ...) ~= v.args[i] then
+						match = false
+					end
+				end
+				if match then
+					table.remove(scheduleData, k)
+					scheduleTables[v] = v
+				end
+			end
+		end	
+	end
 end
 
 mainFrame:SetScript("OnEvent", onEvent)
 mainFrame:SetScript("OnUpdate", onUpdate)
 
-DBM.modName = "Deadly Boss Mods"
 
 do
-	local addDefaults
-	function addDefaults(t1, t2)
+	local raid = {}
+	local inRaid = false
+	local playerRank = 0
+	function DBM:RAID_ROSTER_UPDATE()
+--		self:AddMsg("RAID_ROSTER_UPDATE", "Debug")
+		if GetNumRaidMembers() >= 1 then
+			if not inRaid then
+				inRaid = true
+--				sync("blah") --NYI
+			end
+			for i = 1, GetNumRaidMembers() do
+				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
+				if name then
+					raid[name] = raid[name] or {}
+					raid[name].name = name
+					raid[name].rank = rank
+					raid[name].subgroup = subgroup
+					raid[name].class = fileName
+					raid[name].id = "raid"..i
+					raid[name].updated = true
+				end
+			end
+			for i, v in pairs(raid) do
+				if not v.updated then
+					raid[i] = nil
+				else
+					v.updated = nil
+				end
+			end
+		else
+			inRaid = false
+		end
+	end
+	
+	function DBM:PARTY_MEMBERS_CHANGED()
+--		self:AddMsg("PARTY_MEMBERS_CHANGED", "Debug")
+		if GetNumRaidMembers() > 0 then return end 
+		if GetNumPartyMembers() >= 1 then
+			if not inRaid then
+				inRaid = true
+				--sync("blah") -- nyi
+			end
+			for i = 0, GetNumPartyMembers() do
+				local id
+				if (i == 0) then
+					id = "player"
+				else
+					id = "party"..i
+				end
+				local name, rank, _, fileName = UnitName(id), UnitIsPartyLeader(id), UnitClass(id)
+				if name then
+					raid[name] = raid[name] or {}
+					raid[name].name = name
+					if rank then
+						raid[name].rank = 2
+					else
+						raid[name].rank = 0
+					end
+					raid[name].class = fileName
+					raid[name].id = id
+					raid[name].updated = true
+				end
+				for i, v in pairs(raid) do
+					if not v.updated then
+						raid[i] = nil
+					else
+						v.updated = nil
+					end
+				end
+			end
+		else
+			inRaid = false
+		end
+	end
+	
+	function DBM:IsInRaid()
+		return inRaid
+	end
+	
+	function DBM:GetRaidRank(name)
+		name = name or UnitName("player")
+		return (raid[name] and raid[name].rank) or 0
+	end
+	
+	function DBM:GetRaidSubgroup(name)
+		name = name or UnitName("player")
+		return (raid[name] and raid[name].subgroup) or 0
+	end
+	
+	function DBM:GetRaidClass(name)
+		name = name or UnitName("player")
+		return (raid[name] and raid[name].class)
+	end
+	
+	function DBM:GetRaidUnitId(name)
+		name = name or UnitName("player")
+		return (raid[name] and raid[name].id) or ""
+	end
+end
+
+do
+	local function addDefaults(t1, t2)
 		for i, v in pairs(t2) do
 			if not t1[i] then
 				t1[i] = v
@@ -152,6 +272,8 @@ do
 			
 			self.initialized = true
 			self:ZONE_CHANGED_NEW_AREA()
+			self:RAID_ROSTER_UPDATE()
+			self:PARTY_MEMBERS_CHANGED()
 		end
 	end
 end
@@ -320,7 +442,7 @@ function DBM:InitializeMods()
 end
 
 function DBM:Schedule(t, f, ...)
-	return schedule(t, f, nil, ...)
+	schedule(t, f, nil, ...)
 end
 
 function DBM:Disable()
@@ -336,10 +458,30 @@ function DBM:IsEnabled()
 end
 
 local announcePrototype = {}
+
 function announcePrototype:Show(...)
 	if not self.option or self.mod.Options[self.option] then
-		RaidNotice_AddMessage(RaidWarningFrame, self.text:format(...), self.color)
+		local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
+		local text = ("%s%s|r"):format(colorCode, self.text:format(...))
+		text = text:gsub(">%S+<", function(cap)
+			cap = cap:sub(2, -2)
+			if DBM:GetRaidClass(cap) then
+				local color = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)]
+				cap = ("|r|cff%.2x%.2x%.2x%s|r%s"):format(color.r * 255, color.g * 255, color.b * 255, cap, colorCode)
+			end
+			return cap
+		end)
+		RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work
 	end
+end
+
+
+function announcePrototype:Schedule(t, ...)
+	schedule(t, self.Show, self.mod, self, ...)
+end
+
+function announcePrototype:Cancel(...)
+	unschedule(self.Show, self.mod, self, ...)
 end
 
 local bossModPrototype = {}
@@ -352,36 +494,47 @@ function bossModPrototype:RegisterEvents(...)
 	end
 end
 
-function bossModPrototype:NewAnnounce(text, color, optionName, optionDefault)
-	local obj = setmetatable(
-		{
-			text = text or "",
-			color = DBM.Options.WarningColors[color or 1] or 1,
-			option = optionName,
-			mod = self
-		},
-		{
-			__index = announcePrototype
-		}
-	)
-	
-	if optionName then
-		self:AddBoolOption(optionName, optionDefault)
+bossModPrototype.AddMsg = DBM.AddMsg
+
+function bossModPrototype:RegisterOnUpdateHandler(func, interval)
+	if type(func) ~= "function" then return end
+	self.elapsed = 0
+	self.updateInterval = interval or 0
+	updateFunctions[self] = func
+end
+
+do
+	local mt = {__index = announcePrototype}
+	function bossModPrototype:NewAnnounce(text, color, optionName, optionDefault)
+		local obj = setmetatable(
+			{
+				text = self.localization.warnings[text] or text or "",
+				color = DBM.Options.WarningColors[color or 1] or 1,
+				option = optionName,
+				mod = self,
+				boolOptions = {},
+				announces = {}
+			},
+			mt
+		)
+		
+		if optionName then
+			self:AddBoolOption(optionName, optionDefault)
+		end
+		
+		table.insert(self.announces, obj)
+		return obj
 	end
-	
-	table.insert(self.Announces, obj)
-	return obj
 end
 
 function bossModPrototype:AddBoolOption(name, default)
 	self.Options[name] = (default == nil) or default
-	table.insert(self.BoolOptions, name)
+	table.insert(self.boolOptions, name)
 end
 
+
 function bossModPrototype:GetLocalizedStrings()
-	return function(str)
-		return self.Localization.MiscStrings[str] or str
-	end
+	return self.localization.miscStrings
 end
 
 function bossModPrototype:EnableMod()
@@ -392,31 +545,70 @@ function bossModPrototype:DisableMod()
 	self.Options.Enabled = false
 end
 
+function bossModPrototype:Schedule(t, f, ...)
+	schedule(t, f, self.mod, ...)
+end
 
-function DBM:NewMod(name)
-	local obj = setmetatable(
-		{
-			Options = {
-				Enabled = true,
+function bossModPrototype:ScheduleMethod(t, method, ...)
+	if not self[method] then
+		error(("Method %s does not exist"):format(tostring(method)), 1)
+	end
+	self:Schedule(t, self[method], self, ...)
+end
+
+bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
+
+do
+	local mt = {__index = bossModPrototype}
+	function DBM:NewMod(name)
+		local obj = setmetatable(
+			{
+				Options = {
+					Enabled = true,
+				},
+				announces = {},
+				boolOptions = {},
+				localization = self:GetModLocalization(name)
 			},
-			announces = {},
-			boolOptions = {},
-			localization = {
+			mt
+		)
+		self.mods = self.mods or {}
+		table.insert(self.mods, obj)
+		self.modsByName = self.modsByName or {}
+		self.modsByName[name] = obj
+		return obj
+	end
+end
+
+function DBM:GetModByName(name)
+	return self.modsByName and self.modsByName[name]
+end
+
+do
+	local modLocalizations = {}
+	local modLocalizationPrototype = {}
+	
+	function modLocalizationPrototype:SetWarningLocalizations(t)
+		self.warnings = t
+	end
+
+	do
+		local mt = {__index = modLocalizationPrototype}
+		function DBM:CreateModLocalization(name)
+			local obj = {
 				name = name,
 				warnings = {},
 				options = {},
 				bars = {},
 				miscStrings = {}
 			}
-		},
-		{
-			__index = bossModPrototype
-		}
-	)
-	self.mods = self.mods or {}
-	table.insert(self.mods, obj)
-	return obj
+			setmetatable(obj, mt)
+			modLocalizations[name] = obj
+			return obj
+		end
+	end
+	
+	function DBM:GetModLocalization(name)
+		return modLocalizations[name] or self:CreateModLocalization(name)
+	end
 end
-
-
-
