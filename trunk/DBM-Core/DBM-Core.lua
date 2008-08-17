@@ -86,7 +86,7 @@ do
 		end
 		for i = #scheduleData, 1, -1 do
 			local v = scheduleData[i]
-			if time >= v.time then
+			if v and time >= v.time then
 				table.remove(scheduleData, i)
 				scheduleTables[v] = v
 				v.func(unpack(v.args))
@@ -129,7 +129,6 @@ do
 				end
 				if match then
 					table.remove(scheduleData, k)
-					scheduleTables[v] = v
 				end
 			end
 		end	
@@ -203,12 +202,12 @@ do
 					raid[name].id = id
 					raid[name].updated = true
 				end
-				for i, v in pairs(raid) do
-					if not v.updated then
-						raid[i] = nil
-					else
-						v.updated = nil
-					end
+			end
+			for i, v in pairs(raid) do
+				if not v.updated then
+					raid[i] = nil
+				else
+					v.updated = nil
 				end
 			end
 		else
