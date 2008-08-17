@@ -42,6 +42,7 @@ DBM.DefaultOptions = {
 local DBT = DBT:New()
 
 local scheduleData = {}
+local enabled = true
 
 local mainFrame = CreateFrame("Frame")
 
@@ -320,6 +321,18 @@ end
 
 function DBM:Schedule(t, f, ...)
 	return schedule(t, f, nil, ...)
+end
+
+function DBM:Disable()
+	enabled = false
+end
+
+function DBM:Enable()
+	enabled = true
+end
+
+function DBM:IsEnabled()
+	return enabled
 end
 
 local announcePrototype = {}
