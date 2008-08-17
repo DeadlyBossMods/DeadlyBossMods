@@ -471,6 +471,7 @@ function announcePrototype:Show(...)
 			return cap
 		end)
 		RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work
+		self.mod:AddMsg(text)
 	end
 end
 
