@@ -248,10 +248,10 @@
 				</Anchors>
 				<Scripts>
 					<OnShow>
-						DBM_GUI_OptionsFrame:ShowCategory(1)
+						self:GetParent():ShowCategory(1)
 					</OnShow>
 					<OnClick>
-						DBM_GUI_OptionsFrame:ShowCategory(1)
+						self:GetParent():ShowCategory(1)
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -265,7 +265,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						DBM_GUI_OptionsFrame:ShowCategory(2)
+						self:GetParent():ShowCategory(2)
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -273,25 +273,37 @@
 		<Scripts>
 			<OnLoad>
 				self:SetFrameLevel(self:GetFrameLevel() + 4)
-				function DBM_GUI_OptionsFrame:ShowCategory(tab)
+				function self:ShowCategory(tab)
 					if tab == 1 then
-						getglobal(self:GetName().."Tab2LeftDisabled"):Show()
-						getglobal(self:GetName().."Tab2RightDisabled"):Show()
-						getglobal(self:GetName().."Tab2MiddleDisabled"):Show()
 						getglobal(self:GetName().."Tab1Left"):Hide()
 						getglobal(self:GetName().."Tab1Right"):Hide()
 						getglobal(self:GetName().."Tab1Middle"):Hide()
-					else 
-						getglobal(self:GetName().."Tab1LeftDisabled"):Hide()
-						getglobal(self:GetName().."Tab1RightDisabled"):Hide()
-						getglobal(self:GetName().."Tab1MiddleDisabled"):Hide()
 						getglobal(self:GetName().."Tab2Left"):Show()
 						getglobal(self:GetName().."Tab2Right"):Show()
 						getglobal(self:GetName().."Tab2Middle"):Show()
+
+						getglobal(self:GetName().."Tab1LeftDisabled"):Show()
+						getglobal(self:GetName().."Tab1RightDisabled"):Show()
+						getglobal(self:GetName().."Tab1MiddleDisabled"):Show()
+						getglobal(self:GetName().."Tab2LeftDisabled"):Hide()
+						getglobal(self:GetName().."Tab2RightDisabled"):Hide()
+						getglobal(self:GetName().."Tab2MiddleDisabled"):Hide()
+					else 
+						getglobal(self:GetName().."Tab1Left"):Show()
+						getglobal(self:GetName().."Tab1Right"):Show()
+						getglobal(self:GetName().."Tab1Middle"):Show()
+						getglobal(self:GetName().."Tab2Left"):Hide()
+						getglobal(self:GetName().."Tab2Right"):Hide()
+						getglobal(self:GetName().."Tab2Middle"):Hide()
+
+						getglobal(self:GetName().."Tab1LeftDisabled"):Hide()
+						getglobal(self:GetName().."Tab1RightDisabled"):Hide()
+						getglobal(self:GetName().."Tab1MiddleDisabled"):Hide()
+						getglobal(self:GetName().."Tab2LeftDisabled"):Show()
+						getglobal(self:GetName().."Tab2RightDisabled"):Show()
+						getglobal(self:GetName().."Tab2MiddleDisabled"):Show()
 					end
 				end
-			</OnLoad>
-			<OnLoad>
 				self:SetMovable(true)
 				self:SetUserPlaced(true)
 				self:RegisterForDrag("LeftButton")
