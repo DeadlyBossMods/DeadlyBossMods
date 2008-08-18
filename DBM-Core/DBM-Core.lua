@@ -86,10 +86,14 @@ do
 		end
 		for i = #scheduleData, 1, -1 do
 			local v = scheduleData[i]
-			if v and time >= v.time then
+			if time >= v.time and not v.dead then
 				table.remove(scheduleData, i)
 				scheduleTables[v] = v
 				v.func(unpack(v.args))
+			elseif v.dead then
+				v.dead = nil
+				table.remove(scheduleData, i)
+				scheduleTables[v] = v
 			end
 		end
 	end
@@ -128,7 +132,7 @@ do
 					end
 				end
 				if match then
-					table.remove(scheduleData, k)
+					v.dead = true
 				end
 			end
 		end	
@@ -144,7 +148,6 @@ do
 	local inRaid = false
 	local playerRank = 0
 	function DBM:RAID_ROSTER_UPDATE()
---		self:AddMsg("RAID_ROSTER_UPDATE", "Debug")
 		if GetNumRaidMembers() >= 1 then
 			if not inRaid then
 				inRaid = true
@@ -175,7 +178,6 @@ do
 	end
 	
 	function DBM:PARTY_MEMBERS_CHANGED()
---		self:AddMsg("PARTY_MEMBERS_CHANGED", "Debug")
 		if GetNumRaidMembers() > 0 then return end 
 		if GetNumPartyMembers() >= 1 then
 			if not inRaid then
@@ -231,12 +233,12 @@ do
 	
 	function DBM:GetRaidClass(name)
 		name = name or UnitName("player")
-		return (raid[name] and raid[name].class)
+		return (raid[name] and raid[name].class) or "UNKNOWN"
 	end
 	
 	function DBM:GetRaidUnitId(name)
 		name = name or UnitName("player")
-		return (raid[name] and raid[name].id) or ""
+		return (raid[name] and raid[name].id) or "none"
 	end
 end
 
@@ -465,7 +467,7 @@ function announcePrototype:Show(...)
 		text = text:gsub(">%S+<", function(cap)
 			cap = cap:sub(2, -2)
 			if DBM:GetRaidClass(cap) then
-				local color = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)]
+				local color = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or self.color
 				cap = ("|r|cff%.2x%.2x%.2x%s|r%s"):format(color.r * 255, color.g * 255, color.b * 255, cap, colorCode)
 			end
 			return cap
@@ -549,14 +551,46 @@ function bossModPrototype:Schedule(t, f, ...)
 	schedule(t, f, self.mod, ...)
 end
 
+function bossModPrototype:Unschedule(f, ...)
+	unschedule(f, ...)
+end
+
 function bossModPrototype:ScheduleMethod(t, method, ...)
 	if not self[method] then
 		error(("Method %s does not exist"):format(tostring(method)), 1)
 	end
 	self:Schedule(t, self[method], self, ...)
 end
-
 bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
+
+function bossModPrototype:UnscheduleMethod(method, ...)
+	if not self[method] then
+		error(("Method %s does not exist"):format(tostring(method)), 1)
+	end
+	self:Unschedule(self[method], self, ...)
+end
+bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
+
+function bossModPrototype:GetIcon(target)
+	return GetRaidTargetIndex(DBM:GetRaidUnitId(target))
+end
+
+function bossModPrototype:RemoveIcon(target, timer)
+	self:SetIcon(target, 0, timer)
+end
+
+function bossModPrototype:SetIcon(target, icon, timer)
+	if DBM:GetRaidRank() == 0 then return end
+	local oldIcon = self:GetIcon(target) or 0
+	SetRaidTarget(DBM:GetRaidUnitId(target))
+	self:UnscheduleMethod("SetIcon", target)
+	if timer then
+		self:ScheduleMethod(timer, "RemoveIcon", target)
+		if oldIcon then
+			self:ScheduleMethod(timer + 1, "SetIcon", target, oldIcon)
+		end
+	end
+end
 
 do
 	local mt = {__index = bossModPrototype}
