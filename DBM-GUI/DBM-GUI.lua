@@ -35,7 +35,12 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 local L = DBM_GUI_Translations
 
 
-function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, OkButton, CancelButton, DefaultButton) 
+-- This Function Creates a new entry to the Menu
+--
+--  arg1 = Text for the UI Button
+--  arg2 = nil or ("option" or 2)  ... nil wil place as a BossMod, otherwise as a Option Tab
+--
+function DBM_GUI:CreateNewPanel(FrameName, FrameTyp) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID())
 	panel.name = FrameName
 	if self == DBM_GUI then
@@ -43,18 +48,9 @@ function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, OkButton, CancelButton, Def
 	else
 		panel.parent = self.frame.name
 	end
-	if type(OkButton) == "function" then
-		panel.okay = OkButton
-	end
-	if type(CancelButton) == "function" then
-		panel.cancel = CancelButton 
-	end
-	if type(DefaultButton) == "function" then
-		panel.default = DefaultButton
-	end
 	--InterfaceOptions_AddCategory(panel)
 	
-	if FrameTyp == "option" then
+	if FrameTyp == "option" or FrameTyp == 2 then
 		DBM_GUI_CreateOption(panel)
 	else
 		DBM_GUI_CreateBossMod(panel)
@@ -87,7 +83,14 @@ do
 	end
 end
 
--- BEGIN - Basic GUI Items
+-- Function in the Prototype for a new SubArea, its a Area to group elements 
+-- in a panel. Usefull for better usability.
+--
+--  arg1 = titel of this area
+--  arg2 = width ot the area
+--  arg3 = hight of the area
+--  arg4 = autoplaced, true means that he put it on TopLeft corner
+--
 function PanelPrototype:CreateArea(name, width, height, autoplace)
 	local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
@@ -106,6 +109,13 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 	local obj = self.areas[#self.areas]
 	return setmetatable(obj, {__index = PanelPrototype})
 end
+
+-- Function in the Prototype to create a CheckButton
+-- This Button can placed automatical but only under the last one
+--
+--  arg1 = text right to the CheckBox
+--  arg2 = autoplaced (true or nil/false)
+--
 function PanelPrototype:CreateCheckButton(name, autoplace)
 	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
 	getglobal(button:GetName() .. 'Text'):SetText(name)
@@ -123,7 +133,15 @@ function PanelPrototype:CreateCheckButton(name, autoplace)
 	self:SetLastObj(button)
 	return button
 end
-function PanelPrototype:CreateDropdown(name)
+
+-- Function in the Prototype to create a Dropdown Menu
+-- This element likes the HTML <select ....> type
+-- 
+--  arg1 = Initial Text
+--  arg2 = table with entrys
+--  arg3 = function called on valuechanged (arg1 will be the new value)
+--
+function PanelPrototype:CreateDropdown(name, elemets, callfunc)
 	local dropdown = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'UIDropDownMenuTemplate')
 	local text = frame:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
 	text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
@@ -133,6 +151,15 @@ function PanelPrototype:CreateDropdown(name)
 	self:SetLastObj(dropdown)
 	return dropdown
 end
+
+-- Function in the Prototype to create a EditBox
+-- This Element likes the HTML <input type="text" ...>
+--
+--  arg1 = Title text, placed ontop of the EditBox
+--  arg2 = Text placed within the EditBox
+--  arg3 = width
+--  arg4 = height
+--
 function PanelPrototype:CreateEditBox(text, value, width, height)
 	local textbox = CreateFrame('EditBox', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_FrameEditBoxTemplate')
 	getglobal(FrameTitle..self:GetCurrentID().."Text"):SetText(text)
@@ -142,6 +169,15 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	self:SetLastObj(textbox)
 	return textbox
 end
+
+-- Function in the Prototype to create an Slider
+-- usefull for easy numeric value change
+--
+--  arg1 = text ontop of the slider, centered
+--  arg2 = lowest value
+--  arg3 = hightest value
+--  arg4 = stepping
+--
 function PanelPrototype:CreateSlider(text, low, high, step)
 	local slider = CreateFrame('Slider', FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
 	slider:SetMinMaxValues(low, high)
@@ -151,6 +187,15 @@ function PanelPrototype:CreateSlider(text, low, high, step)
 	self:SetLastObj(slider)
 	return slider
 end
+
+-- Function in the Prototype to create a Button
+-- like the HTML <input type="button"...>
+--
+--  arg1 = text on the button "OK", "Cancel",...
+--  arg2 = widht
+--  arg3 = height
+--  arg4 = function to call when clicked
+--
 function PanelPrototype:CreateButton(title, width, height, onclick)
 	local button = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'UIPanelButtonTemplate')
 	button:SetText(title)
@@ -163,19 +208,22 @@ function PanelPrototype:CreateButton(title, width, height, onclick)
 	self:SetLastObj(button)
 	return button
 end
--- END - Basic GUI Items
 
 
 do
 	local BossMods = {}
 	local Options = {}
 
+	-- This function is for Internal use.
+	-- It places a new BossMod Tab in the GUI List
 	function DBM_GUI_CreateBossMod(frame)
 		if ( type(frame) == "table" and frame.name ) then
 			table.insert(BossMods, frame)
 		end
 	end
 
+	-- This function is for Internal use.
+	-- It places a new Option Tab in the GUI List
 	function DBM_GUI_CreateOption(frame)
 		if ( type(frame) == "table" and frame.name ) then
 			table.insert(Options, frame)
@@ -183,6 +231,9 @@ do
 	end
 
 	local displayedElements = {}
+
+	-- This function is for Internal use.
+	-- Function to Update the Left Scrollframe Buttons with the menu entrys
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
 		local offset = FauxScrollFrame_GetOffset(getglobal(listframe:GetName().."List"));
 		local buttons = listframe.buttons;
@@ -238,6 +289,8 @@ do
 		end
 	end
 
+	-- This function is for Internal use.
+	-- Used to Show a Button from the List
 	function DBM_GUI_OptionsFrame:DisplayButton(button, element)
 		button:Show();
 		button.element = element;
@@ -255,22 +308,30 @@ do
 
 		button.text:SetText(element.name);
 	end
+
+	-- This function is for Internal use.
+	-- Used to Hide a Button from the List
 	function DBM_GUI_OptionsFrame:HideButton(button)
 		button:SetWidth(165)
 		button:Hide()
 	end
 
-
+	-- This function is for Internal use.
+	-- Called when a new Selection is done
 	function DBM_GUI_OptionsFrame:ClearSelection(listFrame, buttons)
 		for _, button in ipairs(buttons) do button:UnlockHighlight(); end
 		listFrame.selection = nil;
 	end
 	
+	-- This function is for Internal use.
+	-- Called when a Button is Selected
 	function DBM_GUI_OptionsFrame:SelectButton(listFrame, button)
 		button:LockHighlight()
 		listFrame.selection = button.element;
 	end
 
+	-- This function is for Internal use.
+	-- Required to Create a list of Buttons in the Scrollframe
 	function DBM_GUI_OptionsFrame:CreateButtons(frame)
 		local name = frame:GetName()
 	
@@ -295,6 +356,8 @@ do
 		frame.buttons = buttons
 	end
 
+	-- This function is for Internal use.
+	-- Called when someone click on a Button
 	function DBM_GUI_OptionsFrame:OnButtonClick(button)
 		local parent = button:GetParent();
 		local buttons = parent.buttons;
@@ -306,8 +369,9 @@ do
 		DBM_GUI_OptionsFrame:DisplayFrame(button.element);
 	end
 
+	-- This function is for Internal use.
+	-- places the selected tab on the containerframe
 	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
-		-- shows a Frame content Page
 		if ( DBM_GUI_OptionsFramePanelContainer.displayedFrame ) then
 			DBM_GUI_OptionsFramePanelContainer.displayedFrame:Hide();
 		end
@@ -325,6 +389,28 @@ end
 
 
 do
+	-- *****************************************************************
+	-- 
+	--  begin creating the Option Frames, this is mainly hardcoded
+	--  because this allows me to place all the options as I want.
+	--
+	--  This API can be used to Add own Tabs to our Menu
+	--
+	--  To create a new Tab please use the Global Variable
+	--
+	--    yourframe = DBM_GUI_Frame:CreateNewPanel("title", "option")
+	--  
+	--  You can use the widgets delivered to this Frame by calling the
+	--  methods like
+	--
+	--    yourframe:CreateCheckButton("my first checkbox", true)
+	--
+	--  if you use the second argument as true, the checkboxes will be
+	--  placed automatical. Each box is placed a line under the last.
+	--
+	-- *****************************************************************
+
+
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
 
 	local generaloptions = DBM_GUI_Frame:CreateArea(L.General, 180, 180, true)
@@ -332,7 +418,6 @@ do
 	local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 	enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
 	enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable(); else DBM:Enable(); end enabledbm:SetChecked(DBM:IsEnabled()) end)
-
 
 	local test1 = generaloptions:CreateCheckButton("Enable Test1", true)
 	local test2 = generaloptions:CreateCheckButton("Enable Test2", true)
@@ -361,11 +446,13 @@ do
 	secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
 	okbttn:SetPoint('TOPLEFT', secbox, "TOPRIGHT", 7, 6)
 	-- END Pizza Timer
+	-- END MAINPAGE
+	
+	
+	
+	
 
-
---	DBM_GUI_Frame:CreateSlider
-
-	DBM_GUI_Aggro = DBM_GUI_Frame:CreateNewPanel("Bar Setup", "option")
+--	DBM_GUI_Aggro = DBM_GUI_Frame:CreateNewPanel("Bar Setup", "option")
 
 
 	DBM_GUI_Cat_Wotlk = DBM_GUI:CreateNewPanel(L.TabCategory_WOTLK, false)
