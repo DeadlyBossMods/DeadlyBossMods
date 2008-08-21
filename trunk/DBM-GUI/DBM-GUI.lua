@@ -35,7 +35,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 local L = DBM_GUI_Translations
 
 
-function DBM_GUI:CreateNewPanel(FrameName, OkButton, CancelButton, DefaultButton) 
+function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, OkButton, CancelButton, DefaultButton) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID())
 	panel.name = FrameName
 	if self == DBM_GUI then
@@ -52,8 +52,14 @@ function DBM_GUI:CreateNewPanel(FrameName, OkButton, CancelButton, DefaultButton
 	if type(DefaultButton) == "function" then
 		panel.default = DefaultButton
 	end
-	InterfaceOptions_AddCategory(panel)
+	--InterfaceOptions_AddCategory(panel)
 	
+	if FrameTyp == "option" then
+		DBM_GUI_CreateOption(panel)
+	else
+		DBM_GUI_CreateBossMod(panel)
+	end
+
 	self:SetLastObj(nil)
 	self.panels = self.panels or {}
 	table.insert(self.panels, {frame = panel, parent = self, framename = FrameTitle..self:GetCurrentID()})
@@ -160,9 +166,166 @@ end
 -- END - Basic GUI Items
 
 
+do
+	local BossMods = {}
+	local Options = {}
+
+	function DBM_GUI_CreateBossMod(frame)
+		if ( type(frame) == "table" and frame.name ) then
+			table.insert(BossMods, frame)
+		end
+	end
+
+	function DBM_GUI_CreateOption(frame)
+		if ( type(frame) == "table" and frame.name ) then
+			table.insert(Options, frame)
+		end
+	end
+
+	local displayedElements = {}
+	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
+		local offset = FauxScrollFrame_GetOffset(getglobal(listframe:GetName().."List"));
+		local buttons = listframe.buttons;
+		local TABLE
+
+		if not buttons then return false; end
+
+		if listframe:GetParent().tab == 2 then
+			TABLE = Options
+		else 
+			TABLE = BossMods
+		end
+		local element;
+		
+		for i, element in ipairs(displayedElements) do
+			displayedElements[i] = nil;
+		end
+
+		for i, element in ipairs(TABLE) do
+			--DEFAULT_CHAT_FRAME:AddMessage(element.name)
+			table.insert(displayedElements, element);
+		end
+
+
+		local numAddOnCategories = #displayedElements;
+		local numButtons = #buttons;
+
+		if ( numAddOnCategories > numButtons and ( not listframe:IsShown() ) ) then
+			InterfaceOptionsList_DisplayScrollBar(listframe);
+		elseif ( numAddOnCategories <= numButtons and ( listframe:IsShown() ) ) then
+			InterfaceOptionsList_HideScrollBar(listframe);
+		end
+		
+		FauxScrollFrame_Update(getglobal(listframe:GetName().."List"), numAddOnCategories, numButtons, buttons[1]:GetHeight());	
+
+
+		local selection = DBM_GUI_OptionsFrameBossMods.selection;
+		if ( selection ) then
+			DBM_GUI_OptionsFrame:ClearSelection(listframe, listframe.buttons);
+		end
+
+		for i = 1, #buttons do
+			element = displayedElements[i + offset]
+			if ( not element ) then
+				DBM_GUI_OptionsFrame:HideButton(buttons[i]);
+			else
+				DBM_GUI_OptionsFrame:DisplayButton(buttons[i], element);
+				
+				if ( selection ) and ( selection == element ) and ( not listframe.selection ) then
+					DBM_GUI_OptionsFrame:SelectButton(listframe, buttons[i]);
+				end
+			end
+		end
+	end
+
+	function DBM_GUI_OptionsFrame:DisplayButton(button, element)
+		button:Show();
+		button.element = element;
+		
+		if (element.parent) then
+			button:SetNormalFontObject(GameFontHighlightSmall);
+			button:SetHighlightFontObject(GameFontHighlightSmall);
+			button.text:SetPoint("LEFT", 16, 2);
+		else
+			button:SetNormalFontObject(GameFontNormal);
+			button:SetHighlightFontObject(GameFontHighlight);
+			button.text:SetPoint("LEFT", 8, 2);
+		end
+		button:SetWidth(165)
+
+		button.text:SetText(element.name);
+	end
+	function DBM_GUI_OptionsFrame:HideButton(button)
+		button:SetWidth(165)
+		button:Hide()
+	end
+
+
+	function DBM_GUI_OptionsFrame:ClearSelection(listFrame, buttons)
+		for _, button in ipairs(buttons) do button:UnlockHighlight(); end
+		listFrame.selection = nil;
+	end
+	
+	function DBM_GUI_OptionsFrame:SelectButton(listFrame, button)
+		button:LockHighlight()
+		listFrame.selection = button.element;
+	end
+
+	function DBM_GUI_OptionsFrame:CreateButtons(frame)
+		local name = frame:GetName()
+	
+		frame.scrollBar = getglobal(name.."ListScrollBar")
+		frame:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
+		getglobal(name.."Bottom"):SetVertexColor(0.66, 0.66, 0.66)
+	
+		local buttons = {}
+		local button = CreateFrame("BUTTON", name.."Button1", frame, "DBM_GUI_FrameButtonTemplate")
+		button:SetPoint("TOPLEFT", frame, 0, -8)
+		button:SetWidth(165)
+		frame.buttonHeight = button:GetHeight()
+		table.insert(buttons, button)
+	
+		local maxButtons = (frame:GetHeight() - 8) / frame.buttonHeight
+		for i = 2, maxButtons do
+			button = CreateFrame("BUTTON", name.."Button"..i, frame, "DBM_GUI_FrameButtonTemplate")
+			button:SetPoint("TOPLEFT", buttons[#buttons], "BOTTOMLEFT")
+			button:SetWidth(165)
+			table.insert(buttons, button)
+		end
+		frame.buttons = buttons
+	end
+
+	function DBM_GUI_OptionsFrame:OnButtonClick(button)
+		local parent = button:GetParent();
+		local buttons = parent.buttons;
+	
+		DBM_GUI_OptionsFrame:ClearSelection(DBM_GUI_OptionsFrameBossMods, DBM_GUI_OptionsFrameBossMods.buttons);
+		DBM_GUI_OptionsFrame:ClearSelection(DBM_GUI_OptionsFrameDBMOptions, DBM_GUI_OptionsFrameDBMOptions.buttons);
+		DBM_GUI_OptionsFrame:SelectButton(parent, button);
+
+		DBM_GUI_OptionsFrame:DisplayFrame(button.element);
+	end
+
+	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
+		-- shows a Frame content Page
+		if ( DBM_GUI_OptionsFramePanelContainer.displayedFrame ) then
+			DBM_GUI_OptionsFramePanelContainer.displayedFrame:Hide();
+		end
+		
+		DBM_GUI_OptionsFramePanelContainer.displayedFrame = frame;
+		
+		frame:SetParent(DBM_GUI_OptionsFramePanelContainer);
+		frame:ClearAllPoints();
+		frame:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT");
+		frame:SetPoint("BOTTOMRIGHT", DBM_GUI_OptionsFramePanelContainer, "BOTTOMRIGHT");
+		frame:Show();
+	end
+
+end
+
 
 do
-	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, false)
+	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
 
 	local generaloptions = DBM_GUI_Frame:CreateArea(L.General, 180, 180, true)
 
@@ -202,7 +365,7 @@ do
 
 --	DBM_GUI_Frame:CreateSlider
 
-	DBM_GUI_Aggro = DBM_GUI_Frame:CreateNewPanel("Bar Setup")
+	DBM_GUI_Aggro = DBM_GUI_Frame:CreateNewPanel("Bar Setup", "option")
 
 
 	DBM_GUI_Cat_Wotlk = DBM_GUI:CreateNewPanel(L.TabCategory_WOTLK, false)
@@ -226,7 +389,6 @@ do
 		local aq20 = DBM_GUI_Cat_Classic:CreateNewPanel("AQ20")
 		local bwl = DBM_GUI_Cat_Classic:CreateNewPanel("Black Wing Lair")
 		local mc = DBM_GUI_Cat_Classic:CreateNewPanel("Molten Core")
-
 
 end
 
