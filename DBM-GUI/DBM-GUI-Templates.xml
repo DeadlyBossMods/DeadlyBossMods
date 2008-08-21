@@ -139,7 +139,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parentCancel" inherits="UIPanelButtonTemplate" text="CANCEL">
+			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="OKAY">
 				<Size>
 					<AbsDimension x="96" y="22"/>
 				</Size>
@@ -149,19 +149,6 @@
 							<AbsDimension x="-16" y="16"/>
 						</Offset>
 					</Anchor>
-				</Anchors>
-				<Scripts>
-					<OnClick>
-						self:GetParent():Hide()
-					</OnClick>
-				</Scripts>
-			</Button>
-			<Button name="$parentOkay" inherits="UIPanelButtonTemplate" text="OKAY">
-				<Size>
-					<AbsDimension x="96" y="22"/>
-				</Size>
-				<Anchors>
-					<Anchor point="BOTTOMRIGHT" relativeTo="$parentCancel" relativePoint="BOTTOMLEFT"/>
 				</Anchors>
 				<Scripts>
 					<OnClick>
@@ -182,8 +169,11 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						self.labelText = "BOSSE";
+						self.selection = nil
 					</OnLoad>
+					<OnShow>
+						DBM_GUI_OptionsFrame:UpdateMenuFrame(self)
+					</OnShow>
 				</Scripts>
 			</Frame>
 			<Frame name="$parentDBMOptions" inherits="InterfaceOptionsListTemplate" hidden="true">
@@ -199,8 +189,11 @@
 				</Anchors>
 				<Scripts>
 					<OnLoad>
-						self.labelText = "XXX"
+						self.selection = nil
 					</OnLoad>
+					<OnShow>
+						DBM_GUI_OptionsFrame:UpdateMenuFrame(self)
+					</OnShow>
 				</Scripts>
 			</Frame>
 			<Frame name="$parentPanelContainer">
@@ -234,7 +227,7 @@
 				</Backdrop>
 				<Scripts>
 					<OnLoad>
-						self:SetBackdropBorderColor(.6, .6, .6, 1);
+						self:SetBackdropBorderColor(0.6, 0.6, 0.6, 1);
 					</OnLoad>
 				</Scripts>
 			</Frame>
@@ -248,10 +241,10 @@
 				</Anchors>
 				<Scripts>
 					<OnShow>
-						self:GetParent():ShowCategory(1)
+						self:GetParent():ShowTab(1)
 					</OnShow>
 					<OnClick>
-						self:GetParent():ShowCategory(1)
+						self:GetParent():ShowTab(1)
 					</OnClick>
 				</Scripts>
 			</Button>
@@ -265,15 +258,17 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						self:GetParent():ShowCategory(2)
+						self:GetParent():ShowTab(2)
 					</OnClick>
 				</Scripts>
 			</Button>
 		</Frames>
 		<Scripts>
 			<OnLoad>
+				self.firstshow = true
 				self:SetFrameLevel(self:GetFrameLevel() + 4)
-				function self:ShowCategory(tab)
+				function self:ShowTab(tab)
+					self.tab = tab
 					if tab == 1 then
 						getglobal(self:GetName().."Tab1Left"):Hide()
 						getglobal(self:GetName().."Tab1Right"):Hide()
@@ -288,6 +283,10 @@
 						getglobal(self:GetName().."Tab2LeftDisabled"):Hide()
 						getglobal(self:GetName().."Tab2RightDisabled"):Hide()
 						getglobal(self:GetName().."Tab2MiddleDisabled"):Hide()
+
+						getglobal(self:GetName().."BossMods"):Show()
+						getglobal(self:GetName().."DBMOptions"):Hide()
+
 					else 
 						getglobal(self:GetName().."Tab1Left"):Show()
 						getglobal(self:GetName().."Tab1Right"):Show()
@@ -302,12 +301,23 @@
 						getglobal(self:GetName().."Tab2LeftDisabled"):Show()
 						getglobal(self:GetName().."Tab2RightDisabled"):Show()
 						getglobal(self:GetName().."Tab2MiddleDisabled"):Show()
+
+						getglobal(self:GetName().."BossMods"):Hide()
+						getglobal(self:GetName().."DBMOptions"):Show()
 					end
 				end
 				self:SetMovable(true)
 				self:SetUserPlaced(true)
 				self:RegisterForDrag("LeftButton")
 			</OnLoad>
+			<OnShow>
+				if self.firstshow then
+					self.firstshow = false
+					self:CreateButtons( getglobal(self:GetName().."BossMods") )
+					self:CreateButtons( getglobal(self:GetName().."DBMOptions") )
+					self:UpdateMenuFrame( getglobal(self:GetName().."BossMods") )
+				end
+			</OnShow>
 			<OnDragStart>
 				self:StartMoving()
 			</OnDragStart>
@@ -317,6 +327,48 @@
 		</Scripts>
 	</Frame>
 
+
+	<Button name="DBM_GUI_FrameButtonTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="155" y="18"/>
+		</Size>
+		<Scripts>
+			<OnLoad>
+				self.text = getglobal(self:GetName() .. "Text");
+				self.highlight = self:GetHighlightTexture();
+				self.highlight:SetVertexColor(0.196, 0.388, 0.8);
+				self:RegisterForClicks("LeftButtonUp");
+			</OnLoad>
+			<OnClick>
+				DBM_GUI_OptionsFrame:OnButtonClick(self);
+			</OnClick>
+		</Scripts>
+		<ButtonText name="$parentText" justifyH="LEFT">
+			<Anchors>
+				<Anchor point="RIGHT" relativeTo="$parentToggle" relativePoint="LEFT">
+					<Offset>
+						<AbsDimension x="-2" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+		<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD">
+			<Anchors>
+				<Anchor point="TOPLEFT">	
+					<Offset>
+						<AbsDimension x="0" y="1"/>
+					</Offset>
+				</Anchor>
+				<Anchor point="BOTTOMRIGHT">	
+					<Offset>
+						<AbsDimension x="0" y="1"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</HighlightTexture>
+	</Button>
 
 	<EditBox name="DBM_GUI_FrameEditBoxTemplate" autoFocus="false" virtual="true">
 		<Layers>
