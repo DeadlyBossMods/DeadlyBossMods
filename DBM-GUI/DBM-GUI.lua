@@ -209,6 +209,26 @@ function PanelPrototype:CreateButton(title, width, height, onclick)
 	return button
 end
 
+-- Function in the Prototype to create a Textblock
+-- Can be used to create Information Text or something like this
+--
+--  arg1 = text to write
+--  arg2 = width to set
+function PanelPrototype:CreateText(text, width)
+	local textblock = self.frame:CreateFontString(FrameTitle..self:GetNewID(), "ARTWORK", "GameFontNormal")
+	textblock:SetText(text)
+	if width then
+		textblock:SetWidth( width or 100 )
+	else
+		textblock:SetWidth( self:GetParent():GetWidth() )
+	end
+
+	self:SetLastObj(textblock)
+	return textblock
+end
+
+
+
 
 do
 	local BossMods = {}
@@ -456,6 +476,10 @@ do
 
 
 	DBM_GUI_Cat_Wotlk = DBM_GUI:CreateNewPanel(L.TabCategory_WOTLK, false)
+
+		local loltext DBM_GUI_Cat_Wotlk:CreateText("rofl das geht ja echt")	
+		loltext:SetPoint('TOPLEFT', DBM_GUI_Cat_Wotlk.frame, "TOPLEFT", 10, -10)
+
 		local nexxus = DBM_GUI_Cat_Wotlk:CreateNewPanel("The Nexxus")
 		local utgarde = DBM_GUI_Cat_Wotlk:CreateNewPanel("Utgarde Keep")
 		local anerub = DBM_GUI_Cat_Wotlk:CreateNewPanel("Azjol Nerub")
