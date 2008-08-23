@@ -474,7 +474,7 @@ do
 
 --	DBM_GUI_Aggro = DBM_GUI_Frame:CreateNewPanel("Bar Setup", "option")
 
-
+--[[
 	DBM_GUI_Cat_Wotlk = DBM_GUI:CreateNewPanel(L.TabCategory_WOTLK, false)
 
 		local loltext = DBM_GUI_Cat_Wotlk:CreateText("rofl das geht ja echt")	
@@ -500,7 +500,21 @@ do
 		local aq20 = DBM_GUI_Cat_Classic:CreateNewPanel("AQ20")
 		local bwl = DBM_GUI_Cat_Classic:CreateNewPanel("Black Wing Lair")
 		local mc = DBM_GUI_Cat_Classic:CreateNewPanel("Molten Core")
+--]]
+
+	-- Now we want to create a List of categorys
+	-- this list is dynamical created by the installed AddOns
+	local DBM_GUI_Categorys = {}
+	for _,v in ipairs(DBM.Mods) do
+		if not DBM_GUI_Categorys[v.category] then
+			local panel = DBM_GUI:CreateNewPanel(getglobal("L.TabCategory_"..string.upper(v.category)) or L.TabCategory_Other, false)
+			DBM_GUI_Categorys[v.category] = panel
+		end
+	end
+	
+	for _,v in ipairs(DBM.Mods) do
+		DBM_GUI_Categorys[v.category]:CreateNewPanel(v.name or "Error: X-DBM-Mod-Name")
+	end
 
 end
-
 

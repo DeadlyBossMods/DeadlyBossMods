@@ -7,8 +7,7 @@ L.TabCategory_Options 	= "DBM Options"
 L.TabCategory_WOTLK 	= "DBM Lich King"
 L.TabCategory_BC 	= "DBM Burning Crusade"
 L.TabCategory_Classic 	= "DBM Classic Bosses"
-
-
+L.TabCategory_Other     = "DBM OtherMods"
 
 L.MainFrame = "Deadly Boss Mods"
 L.General = "General Options"
