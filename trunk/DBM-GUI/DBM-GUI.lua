@@ -220,7 +220,7 @@ function PanelPrototype:CreateText(text, width)
 	if width then
 		textblock:SetWidth( width or 100 )
 	else
-		textblock:SetWidth( self:GetParent():GetWidth() )
+		textblock:SetWidth( self.frame:GetWidth() )
 	end
 
 	self:SetLastObj(textblock)
@@ -477,7 +477,7 @@ do
 
 	DBM_GUI_Cat_Wotlk = DBM_GUI:CreateNewPanel(L.TabCategory_WOTLK, false)
 
-		local loltext DBM_GUI_Cat_Wotlk:CreateText("rofl das geht ja echt")	
+		local loltext = DBM_GUI_Cat_Wotlk:CreateText("rofl das geht ja echt")	
 		loltext:SetPoint('TOPLEFT', DBM_GUI_Cat_Wotlk.frame, "TOPLEFT", 10, -10)
 
 		local nexxus = DBM_GUI_Cat_Wotlk:CreateNewPanel("The Nexxus")
