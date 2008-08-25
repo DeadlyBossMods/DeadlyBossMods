@@ -42,6 +42,7 @@ DBM.DefaultOptions = {
 
 local DBT = DBT:New()
 DBM.Bars = DBT
+DBM.Mods = {}
 
 local updateFunctions = {}
 
@@ -265,7 +266,7 @@ do
 						sort		= GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge,
 						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-						zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
+						zone		= GetAddOnMetadata(i, "X-DBM-Mod-Zone"),
 						modId		= GetAddOnInfo(i),
 					})
 				end
@@ -432,6 +433,9 @@ function DBM:LoadMod(mod)
 	else
 		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		self:InitializeMods()
+		if DBM_GUI.UpdateModList then
+			DBM_GUI:UpdateModList()
+		end
 	end
 end
 
@@ -608,7 +612,6 @@ do
 			},
 			mt
 		)
-		self.Mods = self.Mods or {}
 		table.insert(self.Mods, obj)
 		self.modsByName = self.modsByName or {}
 		self.modsByName[name] = obj
