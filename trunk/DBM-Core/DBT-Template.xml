@@ -54,41 +54,12 @@
 						</Texture>
 					</Layer>
 				</Layers>
-				<Frames>
-					<Button name="$parentBorder">
-						<Size>
-							<AbsDimension x="198" y="32"/>
-						</Size>
-						<Anchors>
-							<Anchor point="LEFT">
-								<Offset>
-									<AbsDimension x="-5" y="0"/>
-								</Offset>
-							</Anchor>
-						</Anchors>
-						<NormalTexture name="$parentTextureNormal" file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorder"/>
-						<Scripts>
-							<OnMouseDown>
-								if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
-									DBMKalFrameDrag:StartMoving()
-								end
-							</OnMouseDown>
-							<OnMouseUp>
-								DBMKalFrameDrag:StopMovingOrSizing()
-								if arg1 == "RightButton" then
-									UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
-									ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
-								end
-							</OnMouseUp>
-						</Scripts>
-					</Button>
-				</Frames>
 				<BarTexture name="$parentTextureBar" file="Interface\PaperDollInfoFrame\UI-Character-Skills-Bar"/>
 				<BarColor r="1.0" g="0.7" b="0.0"/>
 				<Scripts>
 					<OnLoad>
-						this:SetMinMaxValues(0, 100)
-						this:SetValue(100)
+						this:SetMinMaxValues(0, 1)
+						this:SetValue(1)
 					</OnLoad>
 				</Scripts>
 			</StatusBar>
