@@ -32,14 +32,6 @@ L.PizzaTimer_Secs = "Sec"
 
 
 
-
-
-
-
-
-
-
-
-
+L.TabInfoText_WOTLK = "Wrath of the Lich King BossMods\nunder this category you can find all the supportet instances started\nby Utgarde, Nexxus up to the WOTLK Raidinstances.\nIf you have any wishes, feel free to contact our Development Team.\nBest Regards and a lot of Fun\nYour Deadly BossMod Team "
 
 

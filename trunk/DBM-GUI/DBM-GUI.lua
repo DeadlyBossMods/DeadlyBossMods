@@ -45,9 +45,14 @@ function DBM_GUI:CreateNewPanel(FrameName, FrameTyp)
 	panel.name = FrameName
 	if self == DBM_GUI then
 		-- no panel.parent is need
+	elseif self.parent == DBM_GUI then
+		panel.parentparent = self.parent.frame.name
+		panel.parent = self.frame.name
 	else
 		panel.parent = self.frame.name
 	end
+
+
 	--InterfaceOptions_AddCategory(panel)
 	
 	if FrameTyp == "option" or FrameTyp == 2 then
@@ -214,13 +219,17 @@ end
 --
 --  arg1 = text to write
 --  arg2 = width to set
-function PanelPrototype:CreateText(text, width)
+function PanelPrototype:CreateText(text, width, autoplaced)
 	local textblock = self.frame:CreateFontString(FrameTitle..self:GetNewID(), "ARTWORK", "GameFontNormal")
 	textblock:SetText(text)
 	if width then
 		textblock:SetWidth( width or 100 )
 	else
 		textblock:SetWidth( self.frame:GetWidth() )
+	end
+
+	if autoplaced then
+		textblock:SetPoint('TOPLEFT',self.frame, "TOPLEFT", 10, -10);
 	end
 
 	self:SetLastObj(textblock)
@@ -316,9 +325,13 @@ do
 		button.element = element;
 		
 		if (element.parent) then
-			button:SetNormalFontObject(GameFontHighlightSmall);
+			button:SetNormalFontObject(GameFontNormal);
 			button:SetHighlightFontObject(GameFontHighlightSmall);
 			button.text:SetPoint("LEFT", 16, 2);
+		elseif (element.parentsparent) then
+			button:SetNormalFontObject(GameFontHighlightSmall);
+			button:SetHighlightFontObject(GameFontHighlightSmall);
+			button.text:SetPoint("LEFT", 24, 2);
 		else
 			button:SetNormalFontObject(GameFontNormal);
 			button:SetHighlightFontObject(GameFontHighlight);
@@ -468,39 +481,6 @@ do
 	-- END Pizza Timer
 	-- END MAINPAGE
 	
-	
-	
-	
-
---	DBM_GUI_Aggro = DBM_GUI_Frame:CreateNewPanel("Bar Setup", "option")
-
---[[
-	DBM_GUI_Cat_Wotlk = DBM_GUI:CreateNewPanel(L.TabCategory_WOTLK, false)
-
-		local loltext = DBM_GUI_Cat_Wotlk:CreateText("rofl das geht ja echt")	
-		loltext:SetPoint('TOPLEFT', DBM_GUI_Cat_Wotlk.frame, "TOPLEFT", 10, -10)
-
-		local nexxus = DBM_GUI_Cat_Wotlk:CreateNewPanel("The Nexxus")
-		local utgarde = DBM_GUI_Cat_Wotlk:CreateNewPanel("Utgarde Keep")
-		local anerub = DBM_GUI_Cat_Wotlk:CreateNewPanel("Azjol Nerub")
-		local draktharon = DBM_GUI_Cat_Wotlk:CreateNewPanel("Drak'Tharon")
-
-	DBM_GUI_Cat_BC = DBM_GUI:CreateNewPanel(L.TabCategory_BC, false)
-		local sunwell = DBM_GUI_Cat_BC:CreateNewPanel("Sunwell")
-		local bt = DBM_GUI_Cat_BC:CreateNewPanel("Black Temple")
-		local mh = DBM_GUI_Cat_BC:CreateNewPanel("Mount Hyjal")
-		local ssc = DBM_GUI_Cat_BC:CreateNewPanel("Serpentine Cavern")
-		local tk = DBM_GUI_Cat_BC:CreateNewPanel("Tempest Keep")
-		local kara = DBM_GUI_Cat_BC:CreateNewPanel("Karazhan")
-
-
-	DBM_GUI_Cat_Classic = DBM_GUI:CreateNewPanel(L.TabCategory_Classic, false)
-		local naxx = DBM_GUI_Cat_Classic:CreateNewPanel("Naxxramas")
-		local aq40 = DBM_GUI_Cat_Classic:CreateNewPanel("AQ40")
-		local aq20 = DBM_GUI_Cat_Classic:CreateNewPanel("AQ20")
-		local bwl = DBM_GUI_Cat_Classic:CreateNewPanel("Black Wing Lair")
-		local mc = DBM_GUI_Cat_Classic:CreateNewPanel("Molten Core")
---]]
 
 	-- Now we want to create a List of categorys
 	-- this list is dynamical created by the installed AddOns
@@ -509,6 +489,8 @@ do
 		if not DBM_GUI_Categorys[v.category] then
 			local panel = DBM_GUI:CreateNewPanel(getglobal("L.TabCategory_"..string.upper(v.category)) or L.TabCategory_Other, false)
 			DBM_GUI_Categorys[v.category] = panel
+			local ptext = panel:CreateText(L.TabInfoText_WOTLK)
+			ptext:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 10, -10)
 		end
 	end
 	
