@@ -595,7 +595,7 @@ end
 
 do
 	local mt = {__index = bossModPrototype}
-	function DBM:NewMod(name, mod, ...)
+	function DBM:NewMod(name, modId, ...)
 		local obj = setmetatable(
 			{
 				Options = {
@@ -603,7 +603,7 @@ do
 				},
 				announces = {},
 				boolOptions = {},
-				mod = mod,
+				modId = modId,
 				localization = self:GetModLocalization(name)
 			},
 			mt
