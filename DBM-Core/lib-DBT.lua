@@ -83,7 +83,7 @@ do
 			},
 			mt
 		)
-		obj.mainAnchor:SetPoint("TOP", 0, 300)
+		obj.mainAnchor:SetPoint("CENTER", 0, 0)
 		obj.mainAnchor:SetClampedToScreen(true)
 		obj.mainAnchor:SetMovable(true)
 		obj.mainAnchor:Show()
@@ -95,20 +95,20 @@ local fCounter = 1
 local barPrototype = {}
 local unusedBars = {}
 
-local function createBarFrame()
-	local frame
-	if unusedBars[#unusedBars] then
-		frame = unusedBars[#unusedBars]
-		unusedBars[#unusedBars] = nil
-	else
-		frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, nil, "DBTBarTemplate")
-		fCounter = fCounter + 1
-	end
-	return frame
-end
-
 do
+	local function createBarFrame()
+		local frame
+		if unusedBars[#unusedBars] then
+			frame = unusedBars[#unusedBars]
+			unusedBars[#unusedBars] = nil
+		else
+			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, nil, "DBTBarTemplate")
+			fCounter = fCounter + 1
+		end
+		return frame
+	end	
 	local mt = {__index = barPrototype}
+	
 	function dbt:CreateBar(timer, id)
 		local newBar = setmetatable(
 			{
@@ -118,6 +118,7 @@ do
 					frame = createBarFrame(),
 					id = id,
 					timer = timer,
+					totalTime = timer,
 					owner = self
 				}
 			}, 
@@ -138,9 +139,9 @@ end
 
 function dbt:ApplyStyle(bar)
 	local frame = bar.data.frame
-	frame:SetParent(self.mainAnchor)
+--	frame:SetParent(self.mainAnchor)
 	frame:ClearAllPoints()
-	frame:SetPoint("TOP", 100, 100)
+	frame:SetPoint("TOP", 0, 0)
 	frame:Show()
 end
 
@@ -150,7 +151,7 @@ function barPrototype:Update(elapsed)
 	if self.data.timer <= 0 then
 		self:Cancel()
 	else
-		bar:SetValue(self.data.timer)
+		bar:SetValue(self.data.timer/self.data.totalTime)
 --		spark:ClearAllPoints()
 --		spark:SetPoint("CENTER", bar, "LEFT", ((bar:GetValue() / 60) * bar:GetWidth()), 0)
 --		spark:Show()
