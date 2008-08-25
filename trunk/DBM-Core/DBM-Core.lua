@@ -258,19 +258,19 @@ do
 			DBM.Options = DBM_SavedOptions
 			addDefaults(DBM.Options, DBM.DefaultOptions)
 			
-			self.Mods = {}
+			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
 				if GetAddOnMetadata(i, "X-DBM-Mod") then
-					table.insert(self.Mods, {
+					table.insert(self.AddOns, {
 						sort		= GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge,
 						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
 						zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
-						modId		= i,
+						modId		= GetAddOnInfo(i),
 					})
 				end
 			end
-			table.sort(self.Mods, function(v1, v2) return v1.sort > v2.sort end)
+			table.sort(self.AddOns, function(v1, v2) return v1.sort > v2.sort end)
 			
 			self.initialized = true
 			self:ZONE_CHANGED_NEW_AREA()
@@ -282,7 +282,7 @@ end
 
 function DBM:ZONE_CHANGED_NEW_AREA()
 	if not self.initialized then return end -- do not load mods before DBM itself is initialized
-	for i, v in ipairs(self.Mods) do
+	for i, v in ipairs(self.AddOns) do
 		if v.zone == GetRealZoneText() and not IsAddOnLoaded(v.modId) then
 			self:LoadMod(v)
 		end
@@ -436,7 +436,7 @@ function DBM:LoadMod(mod)
 end
 
 function DBM:InitializeMods()
-	for i, v in ipairs(self.mods) do
+	for i, v in ipairs(self.Mods) do
 		if not v.initialized then
 			v.initialized = true
 		end
@@ -608,8 +608,8 @@ do
 			},
 			mt
 		)
-		self.mods = self.mods or {}
-		table.insert(self.mods, obj)
+		self.Mods = self.Mods or {}
+		table.insert(self.Mods, obj)
 		self.modsByName = self.modsByName or {}
 		self.modsByName[name] = obj
 		return obj
