@@ -427,9 +427,9 @@ do
 	--  begin creating the Option Frames, this is mainly hardcoded
 	--  because this allows me to place all the options as I want.
 	--
-	--  This API can be used to Add own Tabs to our Menu
+	--  This API can be used to add your own tabs to our menu
 	--
-	--  To create a new Tab please use the Global Variable
+	--  To create a new tab please use this function:
 	--
 	--    yourframe = DBM_GUI_Frame:CreateNewPanel("title", "option")
 	--  
@@ -439,7 +439,7 @@ do
 	--    yourframe:CreateCheckButton("my first checkbox", true)
 	--
 	--  if you use the second argument as true, the checkboxes will be
-	--  placed automatical. Each box is placed a line under the last.
+	--  placed automatically. Each box is placed a line under the last.
 	--
 	-- *****************************************************************
 

@@ -41,6 +41,7 @@ DBM.DefaultOptions = {
 }
 
 local DBT = DBT:New()
+DBM.Bars = DBT
 
 local updateFunctions = {}
 
@@ -262,7 +263,7 @@ do
 				if GetAddOnMetadata(i, "X-DBM-Mod") then
 					table.insert(self.Mods, {
 						sort		= GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge,
-						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "WotLK",
+						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
 						zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
 						modId		= i,

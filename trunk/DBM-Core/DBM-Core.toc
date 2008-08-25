@@ -7,5 +7,6 @@
 ## Author: Tandanu and Nitram
 ## URL: http://www.deadlybossmods.com
 localization.en.lua
+DBT-Template.xml
 lib-DBT.lua
 DBM-Core.lua
