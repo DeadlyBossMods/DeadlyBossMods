@@ -83,6 +83,8 @@ do
 			},
 			mt
 		)
+		obj.mainAnchor:SetHeight(1)
+		obj.mainAnchor:SetWidth(1)
 		obj.mainAnchor:SetPoint("CENTER", 0, 0)
 		obj.mainAnchor:SetClampedToScreen(true)
 		obj.mainAnchor:SetMovable(true)
@@ -139,7 +141,7 @@ end
 
 function dbt:ApplyStyle(bar)
 	local frame = bar.data.frame
---	frame:SetParent(self.mainAnchor)
+	frame:SetParent(self.mainAnchor)
 	frame:ClearAllPoints()
 	frame:SetPoint("TOP", 0, 0)
 	frame:Show()
