@@ -12,7 +12,8 @@ DBT.Version = version
 
 local dbt = {}
 
-function dbt:TestOnChange()
+function dbt:TestOnChange(new, old)
+	DBM:AddMsg(("Testchange: %d --> %d"):format(old, new))
 end
 
 local options = {
@@ -51,27 +52,111 @@ function dbt:SetOption(option, value)
 			error(("Error while setting option %s to %s: %s"):format(tostring(option), tostring(value), tostring(errMsg)), 1)
 		end
 	end
-	self.Options[option] = value
+	local oldValue = self.options[option]
+	self.options[option] = value
 	if options[option].onChange then
-		options[option].onChange(self)
+		options[option].onChange(self, value, oldValue)
 	end
 end
 
-function DBT:New()
-	return setmetatable(
-		{
-			Options = setmetatable({}, {
-				__index = function(t, k)
-					if options[k] then
-						return options[k].default
-					else
-						return nil
-					end
-				end
-			}),
-		},
-		{
-			__index = dbt
-		}
-	)
+do
+	local mt = {__index = dbt}
+	local optionMT = {
+		__index = function(t, k)
+			if options[k] then
+				return options[k].default
+			else
+				return nil
+			end
+		end
+	}
+	function DBT:New()
+		local obj = setmetatable(
+			{
+				options = setmetatable({}, optionMT),
+				mainAnchor = CreateFrame("Frame"),
+				secAnchor = CreateFrame("Frame"),
+				mainFirstBar = nil,
+				mainLastBar = nil,
+				secFirstBar = nil,
+				secLastBar = nil,
+			},
+			mt
+		)
+		obj.mainAnchor:SetPoint("TOP", 0, 300)
+		obj.mainAnchor:SetClampedToScreen(true)
+		obj.mainAnchor:SetMovable(true)
+		obj.mainAnchor:Show()
+		return obj
+	end
+end
+
+local fCounter = 1
+local barPrototype = {}
+local unusedBars = {}
+
+local function createBarFrame()
+	local frame
+	if unusedBars[#unusedBars] then
+		frame = unusedBars[#unusedBars]
+		unusedBars[#unusedBars] = nil
+	else
+		frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, nil, "DBTBarTemplate")
+		fCounter = fCounter + 1
+	end
+	return frame
+end
+
+do
+	local mt = {__index = barPrototype}
+	function dbt:CreateBar(timer, id)
+		local newBar = setmetatable(
+			{
+				prev = self.mainLastBar,
+				next = nil,
+				data = {
+					frame = createBarFrame(),
+					id = id,
+					timer = timer,
+					owner = self
+				}
+			}, 
+			mt
+		)
+		if self.mainLastBar then
+			self.mainLastBar.next = newBar
+		end
+		self.mainLastBar = newBar
+		self.mainFirstBar = self.mainFirstBar or newBar	
+		
+		newBar.data.frame.obj = newBar
+		self:ApplyStyle(newBar)
+		newBar:Update(0)
+		return newBar
+	end
+end
+
+function dbt:ApplyStyle(bar)
+	local frame = bar.data.frame
+	frame:SetParent(self.mainAnchor)
+	frame:ClearAllPoints()
+	frame:SetPoint("TOP", 100, 100)
+	frame:Show()
+end
+
+function barPrototype:Update(elapsed)
+	local bar = getglobal(self.data.frame:GetName().."Bar")
+	self.data.timer = self.data.timer - elapsed
+	if self.data.timer <= 0 then
+		self:Cancel()
+	else
+		bar:SetValue(self.data.timer)
+--		spark:ClearAllPoints()
+--		spark:SetPoint("CENTER", bar, "LEFT", ((bar:GetValue() / 60) * bar:GetWidth()), 0)
+--		spark:Show()
+	end
+end
+
+function barPrototype:Cancel()
+	DBM:AddMsg("Cancel")
 end
