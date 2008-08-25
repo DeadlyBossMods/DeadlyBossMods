@@ -1,4 +1,4 @@
-local mod = DBM:NewMod("The Test Mod")
+local mod = DBM:NewMod("The Test Mod", "DBM-TestMod", GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
 
 local L = mod:GetLocalizedStrings()
 
