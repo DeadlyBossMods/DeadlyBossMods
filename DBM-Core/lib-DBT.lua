@@ -1,47 +1,27 @@
 ------------------------
 -- Deadly Bar Timers ---
 ------------------------
-local version = 0.1
-
-if DBT and DBT.Version >= version then
-	return
-end
 
 DBT = {}
 DBT.Version = version
 
-local dbt = {}
-
-function dbt:TestOnChange(new, old)
-	DBM:AddMsg(("Testchange: %d --> %d"):format(old, new))
-end
-
 local options = {
-	TestOptionString = {
-		type = "string",
-		default = "foo"
-	},
-	
-	TestOptionNumber = {
+	BarXOffset = {
 		type = "number",
-		default = 5,
-		onChange = dbt.TestOnChange
+		default = 0,
+	},	
+	BarYOffset = {
+		type = "number",
+		default = 3,
 	},
-
-	TestOptionCheckFunc = {
-		checkFunc = function(obj, option, value)
-			ChatFrame1:AddMessage(("%s %s %s"):format(tostring(obj), tostring(option), tostring(value)))
-			if value == "testReject" then
-				return false, "test error message"
-			else
-				return true
-			end
-		end,
-		default = "foo"
-	}	
+	ExpandUpwards = {
+		type = "bool",
+		default = false,
+		onChange = DBT.ChangeOrientation
+	}
 }
 
-function dbt:SetOption(option, value)
+function DBT:SetOption(option, value)
 	if not options[option] then
 		error(("Invalid option: %s"):format(tostring(option)), 1)
 	elseif options[option].type and type(value) ~= options[option].type then
@@ -59,8 +39,12 @@ function dbt:SetOption(option, value)
 	end
 end
 
+function DBT:GetOption(option)
+	return self.options[option]
+end
+
 do
-	local mt = {__index = dbt}
+	local mt = {__index = DBT}
 	local optionMT = {
 		__index = function(t, k)
 			if options[k] then
@@ -96,6 +80,8 @@ end
 local fCounter = 1
 local barPrototype = {}
 local unusedBars = {}
+local unusedBarObjects = {}
+setmetatable(unusedBarObjects, {__mode = "kv"})
 
 do
 	local function createBarFrame()
@@ -111,101 +97,143 @@ do
 	end	
 	local mt = {__index = barPrototype}
 	
-	function dbt:CreateBar(timer, id)
-		local newBar = setmetatable(
-			{
-				prev = self.mainLastBar,
-				next = nil,
-				data = {
-					frame = createBarFrame(),
-					id = id,
-					timer = timer,
-					totalTime = timer,
-					owner = self
-				}
-			}, 
-			mt
-		)
-		if self.mainLastBar then
-			self.mainLastBar.next = newBar
+	function DBT:CreateBar(timer, id, icon)
+		local newBar = self:GetBar(id)
+		if newBar then
+			newBar:SetTimer(timer)
+			newBar:SetElapsed(0)
+		else
+			newBar = next(unusedBarObjects, nil)
+			if newBar then
+				unusedBarObjects[newBar] = nil
+			else
+				newBar = setmetatable({}, mt)
+			end
+			newBar.prev = self.mainLastBar
+			newBar.next = nil
+			newBar.frame = createBarFrame()
+			newBar.id = id
+			newBar.timer = timer
+			newBar.totalTime = timer
+			newBar.owner = self
+			if self.mainLastBar then
+				self.mainLastBar.next = newBar
+			end
+			self.mainLastBar = newBar
+			self.mainFirstBar = self.mainFirstBar or newBar		
+			newBar.frame.obj = newBar
+			newBar:ApplyStyle()
+			newBar:SetPosition()
+			newBar:Update(0)
 		end
-		self.mainLastBar = newBar
-		self.mainFirstBar = self.mainFirstBar or newBar	
-		
-		newBar.data.frame.obj = newBar
-		self:ApplyStyle(newBar)
-		newBar:Update(0)
 		return newBar
 	end
 end
 
-function dbt:ApplyStyle(bar)
-	local frame = bar.data.frame
-	frame:SetParent(self.mainAnchor)
-	frame:ClearAllPoints()
-	frame:SetPoint("TOP", 0, 0)
-	frame:Show()
+do
+	local function iterator(self, frame)
+		return not frame and self.mainFirstBar or frame and frame.next
+	end
+	
+	local function reverseIterator(self, frame)
+		return not frame and self.mainLastBar or frame and frame.prev
+	end
+
+	function DBT:GetBarIterator(reverse)
+		return (reverse and reverseIterator) or iterator, self, nil
+	end
+end
+
+function DBT:GetBar(id)
+	for bar in self:GetBarIterator() do
+		if id == bar.id then
+			return bar
+		end
+	end
+end
+
+function DBT:CancelBar(id)
+	for bar in self:GetBarIterator() do
+		if id == bar.id then
+			bar:Cancel()
+			return true
+		end
+	end
+	return false
+end
+
+function DBT:UpdateOrientation()
+	for bar in self:GetBarIterator() do
+		bar:SetPosition()
+	end
+end
+
+function barPrototype:ApplyStyle()
+	self.frame:Show()
+end
+
+function barPrototype:SetTimer(timer)
+	self.totalTime = timer
+	self:Update(0)
+end
+
+function barPrototype:SetElapsed(elapsed)
+	self.timer = self.totalTime - elapsed
+	self:Update(0)
 end
 
 function barPrototype:Update(elapsed)
-	local bar = getglobal(self.data.frame:GetName().."Bar")
-	self.data.timer = self.data.timer - elapsed
-	if self.data.timer <= 0 then
+	local bar = getglobal(self.frame:GetName().."Bar")
+	self.timer = self.timer - elapsed
+	if self.timer <= 0 then
 		self:Cancel()
 	else
-		bar:SetValue(self.data.timer/self.data.totalTime)
+		bar:SetValue(self.timer/self.totalTime)
 --		spark:ClearAllPoints()
 --		spark:SetPoint("CENTER", bar, "LEFT", ((bar:GetValue() / 60) * bar:GetWidth()), 0)
 --		spark:Show()
 	end
 end
 
-
-do
-	local function iterator()
-		
+function barPrototype:Cancel()
+	table.insert(unusedBars, self.frame)
+	self.frame:Hide()
+	self.frame.obj = nil
+	if self == self.owner.mainFirstBar then
+		if self.next then
+			self.next.prev = nil
+			self.owner.mainFirstBar = self.next
+		else
+			self.owner.mainFirstBar = nil
+			self.owner.mainLastBar = nil
+		end
+	elseif self == self.owner.mainLastBar then
+		if self.prev then
+			self.prev.next = nil
+			self.owner.mainLastBar = self.prev
+		else
+			self.owner.mainLastBar = nil
+			self.owner.mainFirstBar = nil
+		end
+	else
+		self.prev.next = self.next
+		self.next.prev = self.prev
 	end
-	function barPrototype:GetBarIterator()
-		return iterator, nil
+	if self.next then
+		self.next:SetPosition()
 	end
+	unusedBarObjects[self] = self
 end
 
-function barPrototype:Cancel()
-	if self.mainFirstBar then
-		local bar = self.mainFirstBar
-		for bar in self:GetBarIterator() do
-			if entry.data.name == name then
-				table.insert(frames, entry.data.frame)
-				entry.data.frame:Hide()
-				entry.data = nil
-				if entry == firstEntry then
-					local nextEntry = entry:GetNext()
-					if nextEntry then
-						nextEntry.prev = nil
-						firstEntry = nextEntry
-					else
-						firstEntry = nil
-						lastEntry = nil
-					end
-				elseif entry == lastEntry then
-					local prevEntry = entry:GetPrev()
-					if prevEntry then
-						prevEntry.next = nil
-						lastEntry = prevEntry
-					else
-						firstEntry = nil
-						lastEntry = nil
-					end
-				else
-					entry:GetPrev().next = entry:GetNext()
-					entry:GetNext().prev = entry:GetPrev()
-				end
-				if entry:GetNext() then
-					entry:GetNext():SetPosition()
-				end
-				break
-			end
-			entry = entry:GetNext()
+function barPrototype:SetPosition()
+	self.frame:ClearAllPoints()
+	if self == self.owner.mainFirstBar then
+		self.frame:SetPoint("CENTER", self.owner.mainAnchor, "CENTER", 0, 0)
+	else
+		if self.owner.options.ExpandUpwards then
+			self.frame:SetPoint("BOTTOM", self.prev.frame, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		else
+			self.frame:SetPoint("TOP", self.prev.frame, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
 		end
 	end
 end
