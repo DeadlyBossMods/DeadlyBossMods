@@ -303,7 +303,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			return
 		end
 	end
-	if DBM_GUI_OptionsFrame:IsShown() then DBM_GUI_OptionsFrame:Hide() else DBM_GUI_OptionsFrame:Show() end
+	DBM_GUI:ShowHide()
 end
 
 do

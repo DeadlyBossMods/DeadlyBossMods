@@ -2,7 +2,7 @@
 ..\FrameXML\UI.xsd">
 	<Frame name="DBTBarTemplate" enableMouse="true" virtual="true" frameStrata="MEDIUM" topLevel="true">
 		<Size>
-			<AbsDimension x="200" y="20"/>
+			<AbsDimension x="180" y="18"/>
 		</Size>
 		<Frames>
 			<StatusBar name="$parentBar">
@@ -32,7 +32,7 @@
 								</Anchor>
 							</Anchors>
 						</FontString>
-						<FontString name="$parentCooldown" inherits="GameFontHighlightSmall" text="">
+						<FontString name="$parentTimer" inherits="GameFontHighlightSmall" text="">
 							<Anchors>
 								<Anchor point="RIGHT" relativePoint="RIGHT">
 									<Offset>
