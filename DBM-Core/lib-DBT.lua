@@ -1,9 +1,22 @@
 ------------------------
 -- Deadly Bar Timers ---
 ------------------------
+-- This addon is written and copyrighted by:
+--    * Paul Emmerich (Tandanu @ EU-Aegwynn)
+--    * Martin Verges (Nitram @ EU-Azshara)
+-- 
+-- 
+-- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+--
+--  You are free:
+--    * to Share — to copy, distribute, display, and perform the work
+--    * to Remix — to make derivative works
+--  Under the following conditions:
+--    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
+--    * Noncommercial. You may not use this work for commercial purposes.
+--    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
 DBT = {}
-DBT.Version = version
 
 local options = {
 	BarXOffset = {
@@ -12,24 +25,31 @@ local options = {
 	},	
 	BarYOffset = {
 		type = "number",
-		default = 3,
+		default = 1,
 	},
 	ExpandUpwards = {
-		type = "bool",
+		type = "boolean",
 		default = false,
-		onChange = DBT.ChangeOrientation
 	}
 }
 
+local function stringFromTimer(t)
+	if t <= 60 then
+		return ("%.1f"):format(t)
+	else
+		return ("%d:%d"):format(t/60, math.fmod(t, 60))
+	end
+end
+
 function DBT:SetOption(option, value)
 	if not options[option] then
-		error(("Invalid option: %s"):format(tostring(option)), 1)
+		error(("Invalid option: %s"):format(tostring(option)), 2)
 	elseif options[option].type and type(value) ~= options[option].type then
-		error(("The option %s requires a %s value. (tried to assign a %s value)"):format(tostring(option), tostring(options[option].type), tostring(type(value))), 1)
+		error(("The option %s requires a %s value. (tried to assign a %s value)"):format(tostring(option), tostring(options[option].type), tostring(type(value))), 2)
 	elseif options[option].checkFunc then
 		local ok, errMsg = options[option].checkFunc(self, option, value)
 		if not ok then
-			error(("Error while setting option %s to %s: %s"):format(tostring(option), tostring(value), tostring(errMsg)), 1)
+			error(("Error while setting option %s to %s: %s"):format(tostring(option), tostring(value), tostring(errMsg)), 2)
 		end
 	end
 	local oldValue = self.options[option]
@@ -58,8 +78,8 @@ do
 		local obj = setmetatable(
 			{
 				options = setmetatable({}, optionMT),
-				mainAnchor = CreateFrame("Frame"),
-				secAnchor = CreateFrame("Frame"),
+				mainAnchor = CreateFrame("Frame", nil, UIParent),
+				secAnchor = CreateFrame("Frame", nil, UIParent),
 				mainFirstBar = nil,
 				mainLastBar = nil,
 				secFirstBar = nil,
@@ -84,13 +104,13 @@ local unusedBarObjects = {}
 setmetatable(unusedBarObjects, {__mode = "kv"})
 
 do
-	local function createBarFrame()
+	local function createBarFrame(self)
 		local frame
 		if unusedBars[#unusedBars] then
 			frame = unusedBars[#unusedBars]
 			unusedBars[#unusedBars] = nil
 		else
-			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, nil, "DBTBarTemplate")
+			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
 			fCounter = fCounter + 1
 		end
 		return frame
@@ -111,7 +131,7 @@ do
 			end
 			newBar.prev = self.mainLastBar
 			newBar.next = nil
-			newBar.frame = createBarFrame()
+			newBar.frame = createBarFrame(self)
 			newBar.id = id
 			newBar.timer = timer
 			newBar.totalTime = timer
@@ -124,6 +144,7 @@ do
 			newBar.frame.obj = newBar
 			newBar:ApplyStyle()
 			newBar:SetPosition()
+			newBar:SetText(id)
 			newBar:Update(0)
 		end
 		return newBar
@@ -167,6 +188,7 @@ function DBT:UpdateOrientation()
 		bar:SetPosition()
 	end
 end
+options.ExpandUpwards.onChange = DBT.UpdateOrientation
 
 function barPrototype:ApplyStyle()
 	self.frame:Show()
@@ -184,15 +206,21 @@ end
 
 function barPrototype:Update(elapsed)
 	local bar = getglobal(self.frame:GetName().."Bar")
+	local spark = getglobal(self.frame:GetName().."BarSpark")
+	local timer = getglobal(self.frame:GetName().."BarTimer")
 	self.timer = self.timer - elapsed
 	if self.timer <= 0 then
 		self:Cancel()
 	else
 		bar:SetValue(self.timer/self.totalTime)
---		spark:ClearAllPoints()
---		spark:SetPoint("CENTER", bar, "LEFT", ((bar:GetValue() / 60) * bar:GetWidth()), 0)
---		spark:Show()
+		spark:ClearAllPoints()
+		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), 0)
+		timer:SetText(stringFromTimer(self.timer))
 	end
+end
+
+function barPrototype:SetText(text)
+	getglobal(self.frame:GetName().."BarName"):SetText(text)
 end
 
 function barPrototype:Cancel()
