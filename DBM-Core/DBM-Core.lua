@@ -290,6 +290,22 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 	end
 end
 
+SLASH_DEADLYBOSSMODS1 = "/dbm"
+SlashCmdList["DEADLYBOSSMODS"] = function(msg)
+	if not IsAddOnLoaded("DBM-GUI") then
+		local _, _, _, enabled = GetAddOnInfo("DBM-GUI")
+		if not enabled then
+			EnableAddOn("DBM-GUI")
+		end
+		local loaded, reason = LoadAddOn("DBM-GUI")
+		if not loaded then
+			self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
+			return
+		end
+	end
+	if DBM_GUI_OptionsFrame:IsShown() then DBM_GUI_OptionsFrame:Hide() else DBM_GUI_OptionsFrame:Show() end
+end
+
 do
 	local args = {}
 	local function clearArgs()

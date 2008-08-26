@@ -160,6 +160,52 @@ function barPrototype:Update(elapsed)
 	end
 end
 
+
+do
+	local function iterator()
+		
+	end
+	function barPrototype:GetBarIterator()
+		return iterator, nil
+	end
+end
+
 function barPrototype:Cancel()
-	DBM:AddMsg("Cancel")
+	if self.mainFirstBar then
+		local bar = self.mainFirstBar
+		for bar in self:GetBarIterator() do
+			if entry.data.name == name then
+				table.insert(frames, entry.data.frame)
+				entry.data.frame:Hide()
+				entry.data = nil
+				if entry == firstEntry then
+					local nextEntry = entry:GetNext()
+					if nextEntry then
+						nextEntry.prev = nil
+						firstEntry = nextEntry
+					else
+						firstEntry = nil
+						lastEntry = nil
+					end
+				elseif entry == lastEntry then
+					local prevEntry = entry:GetPrev()
+					if prevEntry then
+						prevEntry.next = nil
+						lastEntry = prevEntry
+					else
+						firstEntry = nil
+						lastEntry = nil
+					end
+				else
+					entry:GetPrev().next = entry:GetNext()
+					entry:GetNext().prev = entry:GetPrev()
+				end
+				if entry:GetNext() then
+					entry:GetNext():SetPosition()
+				end
+				break
+			end
+			entry = entry:GetNext()
+		end
+	end
 end
