@@ -35,6 +35,30 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 local L = DBM_GUI_Translations
 
 
+
+function DBM_GUI:ShowHide(forceshow)
+	if forceshow == true then
+		self:UpdateModList()
+		DBM_GUI_OptionsFrame:Show()
+
+	elseif forceshow == false then
+		DBM_GUI_OptionsFrame:Hide()
+
+	else 
+		if DBM_GUI_OptionsFrame:IsShown() then 
+			DBM_GUI_OptionsFrame:Hide() 
+		else 
+			self:UpdateModList()
+			DBM_GUI_OptionsFrame:Show() 
+		end
+	end
+end
+
+function DBM_GUI:ReShow()
+	DBM_GUI_OptionsFrame:Hide()
+	DBM_GUI_OptionsFrame:Show()
+end
+
 -- This Function Creates a new entry to the Menu
 --
 --  arg1 = Text for the UI Button
@@ -46,14 +70,10 @@ function DBM_GUI:CreateNewPanel(FrameName, FrameTyp)
 	if self == DBM_GUI then
 		-- no panel.parent is need
 	elseif self.parent == DBM_GUI then
-		panel.parentparent = self.parent.frame.name
 		panel.parent = self.frame.name
 	else
-		panel.parent = self.frame.name
+		panel.parentparent = self.frame.name
 	end
-
-
-	--InterfaceOptions_AddCategory(panel)
 	
 	if FrameTyp == "option" or FrameTyp == 2 then
 		DBM_GUI_CreateOption(panel)
@@ -324,14 +344,15 @@ do
 		button:Show();
 		button.element = element;
 		
-		if (element.parent) then
-			button:SetNormalFontObject(GameFontNormal);
-			button:SetHighlightFontObject(GameFontHighlightSmall);
-			button.text:SetPoint("LEFT", 16, 2);
-		elseif (element.parentsparent) then
+		if element.parentparent then
 			button:SetNormalFontObject(GameFontHighlightSmall);
 			button:SetHighlightFontObject(GameFontHighlightSmall);
 			button.text:SetPoint("LEFT", 24, 2);
+
+		elseif element.parent then
+			button:SetNormalFontObject(GameFontNormalSmall);
+			button:SetHighlightFontObject(GameFontNormalSmall);
+			button.text:SetPoint("LEFT", 16, 2);
 		else
 			button:SetNormalFontObject(GameFontNormal);
 			button:SetHighlightFontObject(GameFontHighlight);
@@ -421,15 +442,15 @@ do
 end
 
 
-do
+function DBM_GUI_CreateMenu()
 	-- *****************************************************************
 	-- 
 	--  begin creating the Option Frames, this is mainly hardcoded
 	--  because this allows me to place all the options as I want.
 	--
-	--  This API can be used to add your own tabs to our menu
+	--  This API can be used to Add own Tabs to our Menu
 	--
-	--  To create a new tab please use this function:
+	--  To create a new Tab please use the Global Variable
 	--
 	--    yourframe = DBM_GUI_Frame:CreateNewPanel("title", "option")
 	--  
@@ -439,7 +460,7 @@ do
 	--    yourframe:CreateCheckButton("my first checkbox", true)
 	--
 	--  if you use the second argument as true, the checkboxes will be
-	--  placed automatically. Each box is placed a line under the last.
+	--  placed automatical. Each box is placed a line under the last.
 	--
 	-- *****************************************************************
 
@@ -480,23 +501,42 @@ do
 	okbttn:SetPoint('TOPLEFT', secbox, "TOPRIGHT", 7, 6)
 	-- END Pizza Timer
 	-- END MAINPAGE
-	
+end	
 
-	-- Now we want to create a List of categorys
-	-- this list is dynamical created by the installed AddOns
-	local DBM_GUI_Categorys = {}
-	for _,v in ipairs(DBM.Mods) do
-		if not DBM_GUI_Categorys[v.category] then
-			local panel = DBM_GUI:CreateNewPanel(getglobal("L.TabCategory_"..string.upper(v.category)) or L.TabCategory_Other, false)
-			DBM_GUI_Categorys[v.category] = panel
-			local ptext = panel:CreateText(L.TabInfoText_WOTLK)
-			ptext:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 10, -10)
+do
+	local DBM_GUI_Categories = {}
+	function DBM_GUI:UpdateModList()
+		-- Now we want to create a List of categorys
+		-- this list is dynamical created by the installed AddOns
+		for _,v in ipairs(DBM.AddOns) do
+			if not DBM_GUI_Categories[v.category] then
+				DBM_GUI_Categories[v.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..string.upper(v.category)] or L.TabCategory_Other, false)
+	
+				if L["TabCategory_"..string.upper(v.category)] then
+					local ptext = DBM_GUI_Categories[v.category]:CreateText(L["TabCategory_"..string.upper(v.category)])
+					ptext:SetPoint('TOPLEFT', DBM_GUI_Categories[v.category].frame, "TOPLEFT", 10, -10)
+				end
+			end
+		end
+		
+		for _,v in ipairs(DBM.AddOns) do
+			if not DBM_GUI_Categories[v.category][v.modId] then
+				DBM_GUI_Categories[v.category][v.modId] = DBM_GUI_Categories[v.category]:CreateNewPanel(v.name or "Error: X-DBM-Mod-Name")
+
+				local button = DBM_GUI_Categories[v.category][v.modId]:CreateButton("Load AddOn", 200, 30)
+				button:SetScript("OnClick", function(self) if DBM:LoadMod(v) then self:Hide(); DBM_GUI_OptionsFrame:UpdateMenuFrame(DBM_GUI_OptionsFrameBossMods) end  end)
+				button:SetPoint('CENTER', 0, -20)
+				
+			end
+	
+			for _, v2 in ipairs(DBM.Mods) do
+				if v2.modId == v.modId then
+					if not DBM_GUI_Categories[v.category][v.modId][v2.localization.name] then
+						DBM_GUI_Categories[v.category][v.modId][v2.localization.name] = DBM_GUI_Categories[v.category][v.modId]:CreateNewPanel(v2.localization.name or "Error: DBM.Mods")
+					end
+				end
+			end
 		end
 	end
-	
-	for _,v in ipairs(DBM.Mods) do
-		DBM_GUI_Categorys[v.category]:CreateNewPanel(v.name or "Error: X-DBM-Mod-Name")
-	end
-
 end
 
