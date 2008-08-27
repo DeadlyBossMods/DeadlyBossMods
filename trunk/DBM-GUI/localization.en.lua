@@ -20,19 +20,24 @@ L.Disable = "disable"
 
 
 
-L.RaidWarnColors = "Colors of the Raidwarning"
+L.RaidWarnColors = "Raid Warning Colors"
 L.RaidWarn_Color = "Color"
 
-L.PizzaTimer_Headline = 'Create a "Pizza" Timer'
-L.PizzaTimer_Title = 'Name (like "pizza is done")'
+L.PizzaTimer_Headline = 'Create a "Pizza Timer"'
+L.PizzaTimer_Title = 'Name (e.g. "Pizza!")'
 L.PizzaTimer_Hours = "Hours"
 L.PizzaTimer_Mins = "Min"
 L.PizzaTimer_Secs = "Sec"
 
 
-L.BossModLoaded = "Please choose a BossMod out of the left handed List"
-L.BossModLoad_now = "This BossMod is currently not loaded. You can click the Button the load the Addon Manualy. Otherwise jump into the Instance or Zone and the BossMod will be loaded automatical."
+L.BossModLoaded = "Please choose a Boss Mod from the list to the left"
+L.BossModLoad_now = "This Boss Mod is not loaded, it will be loaded when you enter the instance. You can also click the button to load the mod manually."
 
-L.TabInfoText_WOTLK = "Wrath of the Lich King BossMods\nunder this category you can find all the supportet instances started\nby Utgarde, Nexxus up to the WOTLK Raidinstances.\nIf you have any wishes, feel free to contact our Development Team.\nBest Regards and a lot of Fun\nYour Deadly BossMod Team "
+L.TabInfoText_WOTLK = [[Wrath of the Lich King Boss Mods
+in this category you can find all supported instances starting
+with Utgarde and ending with all WotLK raid instances.
+If you have any wishes (...?)
+Best Regards and a lot of fun
+Your Deadly Boss Mods Team]]
 
 
