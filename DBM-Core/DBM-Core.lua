@@ -446,12 +446,14 @@ function DBM:LoadMod(mod)
 	local loaded, reason = LoadAddOn(mod.modId)
 	if not loaded then
 		self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
+		return false
 	else
 		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		self:InitializeMods()
 		if DBM_GUI.UpdateModList then
 			DBM_GUI:UpdateModList()
 		end
+		return true
 	end
 end
 
@@ -528,15 +530,39 @@ end
 
 do
 	local mt = {__index = announcePrototype}
-	function bossModPrototype:NewAnnounce(text, color, optionName, optionDefault)
+	function bossModPrototype:NewAnnounce(text, color, optionDefault, optionName)
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text] or text or "",
 				color = DBM.Options.WarningColors[color or 1] or 1,
-				option = optionName,
+				option = optionName or text,
 				mod = self,
-				boolOptions = {},
-				announces = {}
+			},
+			mt
+		)
+		
+		if optionName then
+			self:AddBoolOption(optionName or text, optionDefault)
+		end
+		
+		table.insert(self.announces, obj)
+		return obj
+	end
+end
+
+do
+	local mt = {__index = announcePrototype}
+	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
+		local obj = setmetatable(
+			{
+				text = self.localization.timers[name] or name,
+				id = name,
+				icon = icon,
+				r = r,
+				g = g,
+				b = b,
+				option = optionName or name,
+				mod = self,
 			},
 			mt
 		)
