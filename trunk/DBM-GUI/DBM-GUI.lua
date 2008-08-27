@@ -54,10 +54,6 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
-function DBM_GUI:ReShow()
-	DBM_GUI_OptionsFrame:Hide()
-	DBM_GUI_OptionsFrame:Show()
-end
 
 -- This Function Creates a new entry to the Menu
 --
@@ -212,6 +208,58 @@ function PanelPrototype:CreateSlider(text, low, high, step)
 	self:SetLastObj(slider)
 	return slider
 end
+
+-- Function in the Prototype to create an ColorPicker
+-- usefull for easy color change
+--
+--  arg1 = width of the colorcircle (128 default)
+--  arg2 = true if you want an alpha selector
+--  arg3 = width of the alpha selector (32 default)
+
+function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
+	--- Color select texture with wheel and value
+	local colorselect = CreateFrame("ColorSelect", FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
+	colorselect:SetParent(cp)
+	colorselect:SetWidth((dimension or 128)+37)
+	colorselect:SetHeight(dimension or 128)
+	colorselect:Show()
+	
+	local colorwheel = colorselect:CreateTexture()
+	colorwheel:SetWidth(dimension or 128)
+	colorwheel:SetHeight(dimension or 128)
+	colorwheel:SetPoint("TOPLEFT", cs, "TOPLEFT", 5, 0)
+	colorwheel:Show()
+	colorselect:SetColorWheelTexture(colorwheel)
+	
+	local colorwheelthumbtexture = colorselect:CreateTexture()
+	colorwheelthumbtexture:SetTexture("Interface\\Buttons\\UI-ColorPicker-Buttons")
+	colorwheelthumbtexture:SetWidth(10)
+	colorwheelthumbtexture:SetHeight(10)
+	colorwheelthumbtexture:SetTexCoord(0,0.15625, 0, 0.625)
+	colorwheelthumbtexture:Show()
+	colorselect:SetColorWheelThumbTexture(colorwheelthumbtexture)
+	
+	if withalpha then
+		local colorvalue = colorselect:CreateTexture()
+		colorvalue:SetWidth(alphawidth or 32)
+		colorvalue:SetHeight(dimension or 128)
+		colorvalue:SetPoint("LEFT", colorwheel, "RIGHT", 10, -7)
+		colorvalue:Show()
+		colorselect:SetColorValueTexture(colorvalue)
+		
+		local colorvaluethumbtexture = colorselect:CreateTexture()
+		colorvaluethumbtexture:SetTexture("Interface\\Buttons\\UI-ColorPicker-Buttons")
+		colorvaluethumbtexture:SetWidth(48)
+		colorvaluethumbtexture:SetHeight(14)
+		colorvaluethumbtexture:SetTexCoord(0.25, 1,0, 0.875)
+		colorvaluethumbtexture:Show()
+		colorselect:SetColorValueThumbTexture(colorvaluethumbtexture)
+	end
+	
+	self:SetLastObj(colorselect)
+	return colorselect
+end
+
 
 -- Function in the Prototype to create a Button
 -- like the HTML <input type="button"...>
@@ -480,8 +528,21 @@ function DBM_GUI_CreateMenu()
 	local raidwarncolors = DBM_GUI_Frame:CreateArea(L.RaidWarnColors, 365, 118)
 	raidwarncolors.frame:SetPoint('TOPLEFT', 10, -213)
 
+	local color1 = raidwarncolors:CreateColorSelect(64)
+	color1:SetPoint('TOPLEFT', 20, -20)
+
+	local color2 = raidwarncolors:CreateColorSelect(64)
+	color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
+
+	local color3 = raidwarncolors:CreateColorSelect(64)
+	color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 20, 0)
+
+	local color4 = raidwarncolors:CreateColorSelect(64)
+	color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 20, 0)
+
+
 	local slider1 = raidwarncolors:CreateSlider("test", 1, 10, 1)
-	slider1:SetPoint('TOPLEFT', 20, -20)
+	slider1:SetPoint('TOPLEFT', color1, "TOPLEFT", 20, -20)
 
 
 	-- Pizza Timer (create your own timer menue)
@@ -524,7 +585,17 @@ do
 				DBM_GUI_Categories[v.category][v.modId] = DBM_GUI_Categories[v.category]:CreateNewPanel(v.name or "Error: X-DBM-Mod-Name")
 
 				local button = DBM_GUI_Categories[v.category][v.modId]:CreateButton("Load AddOn", 200, 30)
-				button:SetScript("OnClick", function(self) if DBM:LoadMod(v) then self:Hide(); DBM_GUI_OptionsFrame:UpdateMenuFrame(DBM_GUI_OptionsFrameBossMods) end  end)
+				button:SetScript("OnClick", function(self) 
+					if DBM:LoadMod(v) then 
+						self:Hide(); 
+						DBM_GUI_OptionsFrameBossMods:Hide()
+						DBM_GUI_OptionsFrameBossMods:Show()
+
+						local ptext = DBM_GUI_Categories[v.category][v.modId]:CreateText(L.BossModLoaded)
+						ptext:SetPoint('TOPLEFT', DBM_GUI_Categories[v.category][v.modId].frame, "TOPLEFT", 10, -10)
+
+					end  
+				end)
 				button:SetPoint('CENTER', 0, -20)
 				
 			end
