@@ -433,7 +433,7 @@ do
 end
 
 function DBM:AddMsg(text, prefix)
-	prefix = prefix or (self.localization and self.localization.name) or "Deadly Boss Mods"
+	prefix = prefix or (self.localization and self.localization.general.name) or "Deadly Boss Mods"
 	DEFAULT_CHAT_FRAME:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(prefix), tostring(text)), 0.41, 0.8, 0.94)
 end
 
@@ -481,6 +481,7 @@ function DBM:IsEnabled()
 	return self.Options.Enabled
 end
 
+
 local announcePrototype = {}
 
 function announcePrototype:Show(...)
@@ -509,6 +510,53 @@ function announcePrototype:Cancel(...)
 	unschedule(self.Show, self.mod, self, ...)
 end
 
+
+local timerPrototype = {}
+
+do
+	local function removeEntry(t, v)
+		for i = #t, 1, -1 do
+			if t[i] == v then
+				table.remove(t, i)
+			end
+		end
+	end
+	
+	function timerPrototype:Start(...)
+		if not self.option or self.mod.Options[self.option] then
+			local id = self.id..(("%s"):rep(select("#", ...))):format(...)
+			local name = self.text:format(...)
+			local bar = DBM.Bars:CreateBar(self.timer, id, self.icon)
+			bar:SetText(name)
+			table.insert(self.startedTimers, id)
+			self.mod:Schedule(self.timer, removeEntry, self.startedTimers, id)
+		end
+	end
+end
+	
+function timerPrototype:Stop(...)
+	if select("#", ...) == 0 then
+		for i = #self.startedTimers, 1, -1 do
+			DBM.Bars:CancelBar(self.startedTimers[i])
+			self.startedTimers[i] = nil
+		end
+	else
+		local id = self.id..(("%s"):rep(select("#", ...))):format(...)
+		for i = #self.startedTimers, 1, -1 do
+			if self.startedTimers[i] == id then
+				DBM.Bars:CancelBar(id)
+				table.remove(self.startedTimers, i)
+			end
+		end
+	end
+end
+
+function timerPrototype:GetTime(...)
+	return 0 -- TODO
+end
+
+
+
 local bossModPrototype = {}
 
 function bossModPrototype:RegisterEvents(...)
@@ -534,51 +582,56 @@ do
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text] or text or "",
-				color = DBM.Options.WarningColors[color or 1] or 1,
+				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				option = optionName or text,
 				mod = self,
 			},
 			mt
 		)
-		
-		if optionName then
-			self:AddBoolOption(optionName or text, optionDefault)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(optionName or text, optionDefault) -- TODO: add category
 		end
-		
 		table.insert(self.announces, obj)
 		return obj
 	end
 end
 
 do
-	local mt = {__index = announcePrototype}
+	local mt = {__index = timerPrototype}
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name] or name,
+				timer = timer,
 				id = name,
 				icon = icon,
 				r = r,
 				g = g,
 				b = b,
 				option = optionName or name,
+				startedTimers = {},
 				mod = self,
 			},
 			mt
 		)
-		
-		if optionName then
-			self:AddBoolOption(optionName, optionDefault)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(optionName or name, optionDefault) -- TODO: add category
 		end
-		
-		table.insert(self.announces, obj)
+		table.insert(self.timers, obj)
 		return obj
 	end
 end
 
-function bossModPrototype:AddBoolOption(name, default)
+function bossModPrototype:AddBoolOption(name, default) -- TODO: category support
 	self.Options[name] = (default == nil) or default
 	table.insert(self.boolOptions, name)
+end
+
+function bossModPrototype:SetOptionCategory(name, cat) -- TODO
 end
 
 
@@ -648,6 +701,7 @@ do
 					Enabled = true,
 				},
 				announces = {},
+				timers = {},
 				boolOptions = {},
 				modId = modId,
 				localization = self:GetModLocalization(name)
@@ -669,18 +723,44 @@ do
 	local modLocalizations = {}
 	local modLocalizationPrototype = {}
 	
-	function modLocalizationPrototype:SetWarningLocalizations(t)
-		self.warnings = t
+	function modLocalizationPrototype:SetGeneralLocalization(t)
+		for i, v in pairs(t) do
+			self.general[i] = v
+		end
+	end
+	
+	function modLocalizationPrototype:SetWarningLocalization(t)
+		for i, v in pairs(t) do
+			self.warnings[i] = v
+		end
+	end
+	
+	function modLocalizationPrototype:SetTimerLocalization(t)
+		for i, v in pairs(t) do
+			self.timers[i] = v
+		end
+	end
+	
+	function modLocalizationPrototype:SetOptionLocalization(t)
+		for i, v in pairs(t) do
+			self.options[i] = v
+		end
+	end
+	
+	function modLocalizationPrototype:SetMiscLocalization(t)
+		for i, v in pairs(t) do
+			self.miscStrings[i] = v
+		end
 	end
 
 	do
 		local mt = {__index = modLocalizationPrototype}
 		function DBM:CreateModLocalization(name)
 			local obj = {
-				name = name,
+				general = {},
 				warnings = {},
 				options = {},
-				bars = {},
+				timers = {},
 				miscStrings = {}
 			}
 			setmetatable(obj, mt)
