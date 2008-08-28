@@ -37,6 +37,8 @@ local L = DBM_GUI_Translations
 
 
 function DBM_GUI:ShowHide(forceshow)
+	if not DBM_GUI_Frame then DBM_GUI:CreateOptionsMenu() end
+
 	if forceshow == true then
 		self:UpdateModList()
 		DBM_GUI_OptionsFrame:Show()
@@ -218,19 +220,25 @@ end
 
 function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 	--- Color select texture with wheel and value
-	local colorselect = CreateFrame("ColorSelect", FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
-	colorselect:SetParent(cp)
-	colorselect:SetWidth((dimension or 128)+37)
+	local colorselect = CreateFrame("ColorSelect", FrameTitle..self:GetNewID(), self.frame)
+	colorselect:SetParent(self.frame)
+	if withalpha then
+		colorselect:SetWidth((dimension or 128)+37)
+	else
+		colorselect:SetWidth((dimension or 128))
+	end
 	colorselect:SetHeight(dimension or 128)
 	colorselect:Show()
 	
+	-- create a color wheel
 	local colorwheel = colorselect:CreateTexture()
 	colorwheel:SetWidth(dimension or 128)
 	colorwheel:SetHeight(dimension or 128)
-	colorwheel:SetPoint("TOPLEFT", cs, "TOPLEFT", 5, 0)
+	colorwheel:SetPoint("TOPLEFT", colorselect, "TOPLEFT", 5, 0)
 	colorwheel:Show()
 	colorselect:SetColorWheelTexture(colorwheel)
 	
+	-- create the colorpicker
 	local colorwheelthumbtexture = colorselect:CreateTexture()
 	colorwheelthumbtexture:SetTexture("Interface\\Buttons\\UI-ColorPicker-Buttons")
 	colorwheelthumbtexture:SetWidth(10)
@@ -240,18 +248,20 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 	colorselect:SetColorWheelThumbTexture(colorwheelthumbtexture)
 	
 	if withalpha then
+		-- create the alpha bar
 		local colorvalue = colorselect:CreateTexture()
 		colorvalue:SetWidth(alphawidth or 32)
 		colorvalue:SetHeight(dimension or 128)
-		colorvalue:SetPoint("LEFT", colorwheel, "RIGHT", 10, -7)
+		colorvalue:SetPoint("LEFT", colorwheel, "RIGHT", 10, -3)
 		colorvalue:Show()
 		colorselect:SetColorValueTexture(colorvalue)
-		
+	
+		-- create the alpha arrows
 		local colorvaluethumbtexture = colorselect:CreateTexture()
 		colorvaluethumbtexture:SetTexture("Interface\\Buttons\\UI-ColorPicker-Buttons")
-		colorvaluethumbtexture:SetWidth(48)
-		colorvaluethumbtexture:SetHeight(14)
-		colorvaluethumbtexture:SetTexCoord(0.25, 1,0, 0.875)
+		colorvaluethumbtexture:SetWidth( (alphawidth/32  or 1) * 48)
+		colorvaluethumbtexture:SetHeight( (alphawidth/32 or 1) * 14)
+		colorvaluethumbtexture:SetTexCoord(0.25, 1, 0.875, 0)
 		colorvaluethumbtexture:Show()
 		colorselect:SetColorValueThumbTexture(colorvaluethumbtexture)
 	end
@@ -308,6 +318,8 @@ end
 
 
 do
+	-- the functions in this block are only used to 
+	-- create/update/manage the Fauxscrollframe for Boss/Options Selection
 	local BossMods = {}
 	local Options = {}
 
@@ -490,7 +502,7 @@ do
 end
 
 
-function DBM_GUI_CreateMenu()
+function DBM_GUI:CreateOptionsMenu()
 	-- *****************************************************************
 	-- 
 	--  begin creating the Option Frames, this is mainly hardcoded
@@ -529,20 +541,48 @@ function DBM_GUI_CreateMenu()
 	raidwarncolors.frame:SetPoint('TOPLEFT', 10, -213)
 
 	local color1 = raidwarncolors:CreateColorSelect(64)
-	color1:SetPoint('TOPLEFT', 20, -20)
-
 	local color2 = raidwarncolors:CreateColorSelect(64)
-	color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
-
 	local color3 = raidwarncolors:CreateColorSelect(64)
-	color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 20, 0)
-
 	local color4 = raidwarncolors:CreateColorSelect(64)
+	local color1text = raidwarncolors:CreateText("color 1", 64); 	color1.textid = color1text; color1.myid = 1
+	local color2text = raidwarncolors:CreateText("color 2", 64); 	color2.textid = color2text; color1.myid = 2
+	local color3text = raidwarncolors:CreateText("color 3", 64); 	color3.textid = color3text; color1.myid = 3
+	local color4text = raidwarncolors:CreateText("color 4", 64); 	color4.textid = color4text; color1.myid = 4
+
+	color1:SetPoint('TOPLEFT', 20, -20)
+	color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
+	color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 20, 0)
 	color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 20, 0)
 
+	color1:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
+	color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
+	color3:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
+	color4:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
 
-	local slider1 = raidwarncolors:CreateSlider("test", 1, 10, 1)
-	slider1:SetPoint('TOPLEFT', color1, "TOPLEFT", 20, -20)
+	function UpdateColor(self)
+		local r, g, b = self:GetColorRGB()
+		self.textid:SetTextColor(r, g, b)
+		--DBM.Options.WarningColors[self.myid].r = r
+		--DBM.Options.WarningColors[self.myid].g = g
+		--DBM.Options.WarningColors[self.myid].b = b 
+		DEFAULT_CHAT_FRAME:AddMessage("Set Colors")
+	end
+
+	color1:SetScript("OnColorSelect", UpdateColor)
+	color2:SetScript("OnColorSelect", UpdateColor)
+	color3:SetScript("OnColorSelect", UpdateColor)
+	color4:SetScript("OnColorSelect", UpdateColor)
+
+	-- Text Position
+	color1text:SetPoint('TOPLEFT', color1, "BOTTOMLEFT", 3, -10)
+	color2text:SetPoint('TOPLEFT', color2, "BOTTOMLEFT", 3, -10)
+	color3text:SetPoint('TOPLEFT', color3, "BOTTOMLEFT", 3, -10)
+	color4text:SetPoint('TOPLEFT', color4, "BOTTOMLEFT", 3, -10)
+
+	color1text:SetJustifyH("CENTER")
+	color2text:SetJustifyH("CENTER")
+	color3text:SetJustifyH("CENTER")
+	color4text:SetJustifyH("CENTER")
 
 
 	-- Pizza Timer (create your own timer menue)
