@@ -545,27 +545,21 @@ function DBM_GUI:CreateOptionsMenu()
 	local color3 = raidwarncolors:CreateColorSelect(64)
 	local color4 = raidwarncolors:CreateColorSelect(64)
 	local color1text = raidwarncolors:CreateText("color 1", 64); 	color1.textid = color1text; color1.myid = 1
-	local color2text = raidwarncolors:CreateText("color 2", 64); 	color2.textid = color2text; color1.myid = 2
-	local color3text = raidwarncolors:CreateText("color 3", 64); 	color3.textid = color3text; color1.myid = 3
-	local color4text = raidwarncolors:CreateText("color 4", 64); 	color4.textid = color4text; color1.myid = 4
+	local color2text = raidwarncolors:CreateText("color 2", 64); 	color2.textid = color2text; color2.myid = 2
+	local color3text = raidwarncolors:CreateText("color 3", 64); 	color3.textid = color3text; color3.myid = 3
+	local color4text = raidwarncolors:CreateText("color 4", 64); 	color4.textid = color4text; color4.myid = 4
 
 	color1:SetPoint('TOPLEFT', 20, -20)
 	color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
 	color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 20, 0)
 	color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 20, 0)
 
-	color1:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
-	color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
-	color3:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
-	color4:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
-
-	function UpdateColor(self)
+	local function UpdateColor(self)
 		local r, g, b = self:GetColorRGB()
 		self.textid:SetTextColor(r, g, b)
-		--DBM.Options.WarningColors[self.myid].r = r
-		--DBM.Options.WarningColors[self.myid].g = g
-		--DBM.Options.WarningColors[self.myid].b = b 
-		DEFAULT_CHAT_FRAME:AddMessage("Set Colors")
+		DBM.Options.WarningColors[self.myid].r = r
+		DBM.Options.WarningColors[self.myid].g = g
+		DBM.Options.WarningColors[self.myid].b = b 
 	end
 
 	color1:SetScript("OnColorSelect", UpdateColor)
@@ -573,6 +567,11 @@ function DBM_GUI:CreateOptionsMenu()
 	color3:SetScript("OnColorSelect", UpdateColor)
 	color4:SetScript("OnColorSelect", UpdateColor)
 
+	color1:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
+	color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
+	color3:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
+	color4:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
+	
 	-- Text Position
 	color1text:SetPoint('TOPLEFT', color1, "BOTTOMLEFT", 3, -10)
 	color2text:SetPoint('TOPLEFT', color2, "BOTTOMLEFT", 3, -10)
@@ -642,8 +641,8 @@ do
 	
 			for _, v2 in ipairs(DBM.Mods) do
 				if v2.modId == v.modId then
-					if not DBM_GUI_Categories[v.category][v.modId][v2.localization.name] then
-						DBM_GUI_Categories[v.category][v.modId][v2.localization.name] = DBM_GUI_Categories[v.category][v.modId]:CreateNewPanel(v2.localization.name or "Error: DBM.Mods")
+					if not DBM_GUI_Categories[v.category][v.modId][v2.localization.general.name] then
+						DBM_GUI_Categories[v.category][v.modId][v2.localization.general.name] = DBM_GUI_Categories[v.category][v.modId]:CreateNewPanel(v2.localization.general.name or "Error: DBM.Mods")
 					end
 				end
 			end
