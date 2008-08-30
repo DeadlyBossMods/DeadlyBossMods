@@ -1,6 +1,8 @@
-local mod = DBM:NewMod("The Test Mod", "DBM-TestMod", GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
+local mod = DBM:NewMod("The Test Mod", "DBM-TestMod")
 
 local L = mod:GetLocalizedStrings()
+
+mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -13,6 +15,14 @@ local testWarning3 = mod:NewAnnounce("shield_expire2", 2, nil, "testoption")
 local testWarning4 = mod:NewAnnounce("shield_removed", 3)
 
 local testTimer1 = mod:NewTimer(30, "shield_timer")
+
+local enrageTest = mod:NewEnrageTimer(600)
+
+mod:RegisterCombat
+
+function mod:OnCombatStart(delay)
+	enrageTest:Start()
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48065 then -- Power Word: Shield (Rank 13)

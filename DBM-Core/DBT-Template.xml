@@ -2,7 +2,7 @@
 ..\FrameXML\UI.xsd">
 	<Frame name="DBTBarTemplate" enableMouse="true" virtual="true" frameStrata="MEDIUM" topLevel="true">
 		<Size>
-			<AbsDimension x="180" y="18"/>
+			<AbsDimension x="195" y="20"/>
 		</Size>
 		<Frames>
 			<StatusBar name="$parentBar">
@@ -23,24 +23,6 @@
 						</Texture>
 					</Layer>
 					<Layer level="OVERLAY">
-						<FontString name="$parentName" inherits="GameFontHighlightSmall" text="">
-							<Anchors>
-								<Anchor point="LEFT" relativePoint="LEFT">
-									<Offset>
-										<AbsDimension x="1" y="1"/>
-									</Offset>
-								</Anchor>
-							</Anchors>
-						</FontString>
-						<FontString name="$parentTimer" inherits="GameFontHighlightSmall" text="">
-							<Anchors>
-								<Anchor point="RIGHT" relativePoint="RIGHT">
-									<Offset>
-										<AbsDimension x="-1" y="1"/>
-									</Offset>
-								</Anchor>
-							</Anchors>
-						</FontString>
 						<Texture name="$parentSpark" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
 							<Size>
 								<AbsDimension x="32" y="32"/>
@@ -60,10 +42,33 @@
 					<OnLoad>
 						this:SetMinMaxValues(0, 1)
 						this:SetValue(1)
+						this:SetFrameLevel(this:GetFrameLevel() - 1)
 					</OnLoad>
 				</Scripts>
 			</StatusBar>
 		</Frames>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString name="$parentName" inherits="GameFontHighlightSmall" text="">
+					<Anchors>
+						<Anchor point="LEFT" relativePoint="LEFT">
+							<Offset>
+								<AbsDimension x="1" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentTimer" inherits="GameFontHighlightSmall" text="">
+					<Anchors>
+						<Anchor point="RIGHT" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="-1" y="1"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
 		<Scripts>
 			<OnUpdate>
 				self.obj:Update(arg1)

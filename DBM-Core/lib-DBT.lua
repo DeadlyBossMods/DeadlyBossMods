@@ -30,6 +30,10 @@ local options = {
 	ExpandUpwards = {
 		type = "boolean",
 		default = false,
+	},
+	Flash = {
+		type = "boolean",
+		default = true,
 	}
 }
 
@@ -142,11 +146,12 @@ do
 			self.mainLastBar = newBar
 			self.mainFirstBar = self.mainFirstBar or newBar		
 			newBar.frame.obj = newBar
-			newBar:ApplyStyle()
 			newBar:SetPosition()
-			newBar:SetText(id)
-			newBar:Update(0)
 		end
+		newBar.flashing = false
+		newBar:ApplyStyle()
+		newBar:SetText(id)
+		newBar:Update(0)
 		return newBar
 	end
 end
@@ -191,7 +196,9 @@ end
 options.ExpandUpwards.onChange = DBT.UpdateOrientation
 
 function barPrototype:ApplyStyle()
+	local bar = getglobal(self.frame:GetName().."Bar")
 	self.frame:Show()
+	bar:SetAlpha(1)
 end
 
 function barPrototype:SetTimer(timer)
@@ -207,20 +214,36 @@ end
 function barPrototype:Update(elapsed)
 	local bar = getglobal(self.frame:GetName().."Bar")
 	local spark = getglobal(self.frame:GetName().."BarSpark")
-	local timer = getglobal(self.frame:GetName().."BarTimer")
+	local timer = getglobal(self.frame:GetName().."Timer")
 	self.timer = self.timer - elapsed
 	if self.timer <= 0 then
 		self:Cancel()
+		return
 	else
-		bar:SetValue(self.timer/self.totalTime)
+		bar:SetValue(1 - self.timer/self.totalTime)
 		spark:ClearAllPoints()
 		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), 0)
 		timer:SetText(stringFromTimer(self.timer))
+	end	
+	if self.timer <= 7.75 and not self.flashing and self.owner.options.Flash then
+		self.flashing = true
+		self.ftimer = 0
+	end
+	if self.flashing then
+		local ftime = self.ftimer % 1.25
+		if ftime >= 0.5 then
+			bar:SetAlpha(1)
+		elseif ftime >= 0.25 then
+			bar:SetAlpha(1 - (0.5 - ftime) / 0.25)
+		else
+			bar:SetAlpha(1 - (ftime / 0.25))
+		end
+		self.ftimer = self.ftimer + elapsed
 	end
 end
 
 function barPrototype:SetText(text)
-	getglobal(self.frame:GetName().."BarName"):SetText(text)
+	getglobal(self.frame:GetName().."Name"):SetText(text)
 end
 
 function barPrototype:Cancel()
@@ -254,14 +277,11 @@ function barPrototype:Cancel()
 end
 
 function barPrototype:SetPosition()
+	local anchor = (self.prev and self.prev.frame) or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
-	if self == self.owner.mainFirstBar then
-		self.frame:SetPoint("CENTER", self.owner.mainAnchor, "CENTER", 0, 0)
+	if self.owner.options.ExpandUpwards then
+		self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 	else
-		if self.owner.options.ExpandUpwards then
-			self.frame:SetPoint("BOTTOM", self.prev.frame, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
-		else
-			self.frame:SetPoint("TOP", self.prev.frame, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
-		end
+		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
 	end
 end
