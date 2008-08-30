@@ -33,15 +33,12 @@ L:SetMiscLocalization({
 
 
 
---[[
+
 local L
 
 L = DBM:GetModLocalization("The Test Mod")
 
 L:SetWarningLocalization({
 	shield_applied	= "Schild auf %s",
-	shield_expire	= "Schild wurde vor 3 Sek gecastet",
-	shield_expire2	= ">%s< hat %s vor 6 Sek gecastet",
 	shield_removed	= "Schild entfernt",
 })
-]]--

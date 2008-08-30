@@ -35,6 +35,11 @@ DBM.DefaultOptions = {
 		{r = 1.00, g = 0.50, b = 0.00},
 		{r = 1.00, g = 0.10, b = 0.10},
 	},
+	WarningPosition = {
+		Point = "TOP",
+		X = 0,
+		Y = -192,
+	},
 	TestOption = "hallo",
 	TestBool = true,
 	Enabled = true,
@@ -45,7 +50,7 @@ DBM.Bars = DBT
 DBM.Mods = {}
 
 local updateFunctions = {}
-
+local modSyncSpam = {}
 local mainFrame = CreateFrame("Frame")
 
 local registeredEvents = {
@@ -54,31 +59,42 @@ local registeredEvents = {
 	["ADDON_LOADED"] = {DBM},
 	["RAID_ROSTER_UPDATE"] = {DBM},
 	["PARTY_MEMBERS_CHANGED"] = {DBM},
+	["CHAT_MSG_ADDON"] = {DBM}
 }
 for i in pairs(registeredEvents) do
 	mainFrame:RegisterEvent(i)
 end
 
+local function checkEntry(t, val)
+	for i, v in ipairs(t) do
+		if v == val then
+			return true
+		end
+	end
+	return nil
+end
+
 local function onEvent(self, event, ...)
 	for i, v in ipairs(registeredEvents[event]) do
-		if type(v[event]) == "function" then
+		if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText())) then
 			v[event](v, ...)
 		end
 	end
 end
-
 
 local schedule, unschedule, onUpdate
 do
 	local scheduleTables = {}
 	setmetatable(scheduleTables, {__mode = "kv"})
 	local scheduleData = {}
+	
+
 
 	function onUpdate(self, elapsed)
 		self = DBM
 		local time = GetTime()
 		for i, v in pairs(updateFunctions) do
-			if i.Options.Enabled then
+			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText())) then
 				i.elapsed = (i.elapsed or 0) + elapsed
 				if i.elapsed >= (i.updateInterval or 0) then
 					v(i, i.elapsed)
@@ -98,6 +114,12 @@ do
 				scheduleTables[v] = v
 			end
 		end
+		do
+			local k, v = next(modSyncSpam, nil)
+			if v and (time - v > 2.5) then
+				modSyncSpam[k] = nil
+			end
+		end		
 	end
 	
 	local function getScheduleTable()
@@ -254,6 +276,7 @@ do
 			end
 		end
 	end
+	
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" then
 			DBM.Options = DBM_SavedOptions
@@ -273,6 +296,8 @@ do
 			end
 			table.sort(self.AddOns, function(v1, v2) return v1.sort > v2.sort end)
 			
+			RaidWarningFrame:SetPoint(self.Options.WarningPosition.Point, UIParent, self.Options.WarningPosition.Point, self.Options.WarningPosition.X, self.Options.WarningPosition.Y)
+			
 			self.initialized = true
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
@@ -286,6 +311,20 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 	for i, v in ipairs(self.AddOns) do
 		if v.zone == GetRealZoneText() and not IsAddOnLoaded(v.modId) then
 			self:LoadMod(v)
+		end
+	end
+end
+
+function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
+	local time = GetTime()
+	if prefix == "DBMv4-Boss" and msg and channel ~= "WHISPER" and channel ~= "GUILD" then
+		if not modSyncSpam[msg] or (time - modSyncSpam[msg] > 2.5) then
+			modSyncSpam[msg] = time
+			local mod, event, arg = msg:split("\t")
+			mod = self:GetModByName(mod or "")
+			if mod and event and arg then
+				mod:ReceiveSync(event, arg, sender)
+			end
 		end
 	end
 end
@@ -555,6 +594,9 @@ function timerPrototype:GetTime(...)
 	return 0 -- TODO
 end
 
+function timerPrototype:SetTimer(timer)
+	self.timer = timer
+end
 
 
 local bossModPrototype = {}
@@ -564,6 +606,7 @@ function bossModPrototype:RegisterEvents(...)
 		local ev = select(i, ...)
 		registeredEvents[ev] = registeredEvents[ev] or {}
 		table.insert(registeredEvents[ev], self)
+		mainFrame:RegisterEvent(ev)
 	end
 end
 
@@ -591,7 +634,7 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddBoolOption(optionName or text, optionDefault) -- TODO: add category
+			self:AddOption(optionName or text, optionDefault) -- TODO: add category
 		end
 		table.insert(self.announces, obj)
 		return obj
@@ -619,21 +662,95 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddBoolOption(optionName or name, optionDefault) -- TODO: add category
+			self:AddOption(optionName or name, optionDefault) -- TODO: add category
 		end
 		table.insert(self.timers, obj)
 		return obj
 	end
 end
 
-function bossModPrototype:AddBoolOption(name, default) -- TODO: category support
+function bossModPrototype:AddOption(name, default)
 	self.Options[name] = (default == nil) or default
-	table.insert(self.boolOptions, name)
 end
 
 function bossModPrototype:SetOptionCategory(name, cat) -- TODO
 end
 
+function bossModPrototype:SetZone(...)
+	self.zone = {...}
+end
+
+function bossModPrototype:IsInCombat()
+	return self.inCombat
+end
+
+function bossModPrototype:RegisterCombat(type)
+	-- TODO
+end
+
+do
+	local enragePrototype = {}
+	function enragePrototype:Start(timer)
+		timer = timer or self.timer or 600
+		self.bar:SetTimer(timer)
+		self.bar:Start()
+		if timer > 600 then self.warning1:Schedule(timer - 600, 10, DBM_CORE_MIN) end
+		if timer > 300 then self.warning1:Schedule(timer - 300, 5, DBM_CORE_MIN) end
+		if timer > 60 then self.warning2:Schedule(timer - 60, 1, DBM_CORE_MIN) end
+		if timer > 30 then self.warning2:Schedule(timer - 30, 30, DBM_CORE_SEC) end
+		if timer > 10 then self.warning2:Schedule(timer - 10, 10, DBM_CORE_SEC) end
+	end
+	function enragePrototype:Schedule(t)
+		self.owner:Schedule(t, self.Start, self)
+	end
+	function enragePrototype:Cancel()
+		self.owner:Unschedule(self.Start, self)
+		self.warning1:Cancel()
+		self.warning2:Cancel()
+		self.bar:Stop()
+	end
+	local mt = {__index = enragePrototype}
+	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
+		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, false)
+		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, false)
+		local bar = self:NewTimer(timer or 600, barText or DBM_CORE_GENERIC_TIMER_ENRAGE, barIcon or 28131, nil, false)
+		local obj = setmetatable(
+			{
+				warning1 = warning1,
+				warning2 = warning2,
+				bar = bar,
+				timer = timer,
+				owner = self
+			},
+			mt
+		)
+		return obj
+	end
+end
+
+function bossModPrototype:SendSync(event, arg)
+	event = event or ""
+	arg = arg or ""
+	local str = ("%s\t%s\t%s"):format(self.id, event, arg)
+	local time = GetTime()
+	if not modSyncSpam[str] or (time - modSyncSpam[str]) > 2.5 then
+		modSyncSpam[str] = time
+		self:ReceiveSync(event, arg, UnitName("player"))
+		if select(2, IsInInstance()) == "pvp" then
+			SendAddonMessage("DBMv4-Boss", str, "BATTLEGROUND")
+		elseif GetNumRaidMembers() > 0 then
+			SendAddonMessage("DBMv4-Boss", str, "RAID")
+		else
+			SendAddonMessage("DBMv4-Boss", str, "PARTY")
+		end		
+	end
+end
+
+function bossModPrototype:ReceiveSync(event, arg, sender)
+	if self.OnSync then
+		self:OnSync(event, arg, sender)
+	end
+end
 
 function bossModPrototype:GetLocalizedStrings()
 	return self.localization.miscStrings
@@ -700,9 +817,9 @@ do
 				Options = {
 					Enabled = true,
 				},
+				id = name,
 				announces = {},
 				timers = {},
-				boolOptions = {},
 				modId = modId,
 				localization = self:GetModLocalization(name)
 			},
