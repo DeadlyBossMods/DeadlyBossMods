@@ -20,7 +20,7 @@ local testTimer1 = mod:NewTimer(30, "shield_timer")
 
 local enrageTest = mod:NewEnrageTimer(600)
 
-mod:RegisterCombat
+--mod:RegisterCombat
 
 function mod:OnCombatStart(delay)
 	enrageTest:Start()

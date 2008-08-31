@@ -634,7 +634,7 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddOption(optionName or text, optionDefault) -- TODO: add category
+			self:AddOption(optionName or text, optionDefault, "announce")
 		end
 		table.insert(self.announces, obj)
 		return obj
@@ -662,15 +662,18 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddOption(optionName or name, optionDefault) -- TODO: add category
+			self:AddOption(optionName or name, optionDefault, "timer")
 		end
 		table.insert(self.timers, obj)
 		return obj
 	end
 end
 
-function bossModPrototype:AddOption(name, default)
+function bossModPrototype:AddOption(name, default, cat)
+	cat = cat or "misc"
 	self.Options[name] = (default == nil) or default
+	self.optionCategories[cat] = self.optionCategories[cat] or {}
+	table.insert(self.optionCategories[cat], name)
 end
 
 function bossModPrototype:SetOptionCategory(name, cat) -- TODO
@@ -820,6 +823,8 @@ do
 			{
 				Options = {
 					Enabled = true,
+				},
+				optionCategories = {
 				},
 				id = name,
 				announces = {},
