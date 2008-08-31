@@ -135,6 +135,7 @@ do
 		newBar.owner = self
 		newBar.frame.obj = newBar
 		newBar:ApplyStyle()
+		newBar:SetScript("OnUpdate", nil)
 		return newBar
 	end
 	
