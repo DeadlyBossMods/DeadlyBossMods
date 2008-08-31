@@ -14,6 +14,11 @@ L.General = "General Options"
 L.EnableDBM = "Enable DBM"
 
 
+L.PosX = 'Position X'
+L.PosY = 'Position Y'
+
+L.InfoRaidWarning = [[You can specify the position and colors of the Raidwarning frame. 
+In this Frame the Messages like "Player X is afflicted by Y" appears]]
 
 L.Enable = "enable"
 L.Disable = "disable"
