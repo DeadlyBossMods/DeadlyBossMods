@@ -4,6 +4,8 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
 
+mod:SetCreatureID(448)
+
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
