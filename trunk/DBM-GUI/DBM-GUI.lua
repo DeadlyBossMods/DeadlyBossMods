@@ -635,7 +635,14 @@ function DBM_GUI:CreateOptionsMenu()
 		local BarSetup = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
 		local dummybar = DBT:CreateDummyBar()
-		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, 50)
+		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, -50)
+		dummybar.frame:SetFrameStrata("TOOLTIP")
+
+		local iconleft = BarSetup:CreateCheckButton("Icon left")
+		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
+
+		local iconright = BarSetup:CreateCheckButton("icon right")
+		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
 	end
 
 end	
