@@ -537,7 +537,7 @@ function DBM_GUI:CreateOptionsMenu()
 
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
 
-	do
+	do -- we sepearte the tabs for performance/memory improofments
 		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, 365, 140, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
@@ -555,10 +555,10 @@ function DBM_GUI:CreateOptionsMenu()
 		local color2 = raidwarncolors:CreateColorSelect(64)
 		local color3 = raidwarncolors:CreateColorSelect(64)
 		local color4 = raidwarncolors:CreateColorSelect(64)
-		local color1text = raidwarncolors:CreateText("color 1", 64); 	color1.textid = color1text; color1.myid = 1
-		local color2text = raidwarncolors:CreateText("color 2", 64); 	color2.textid = color2text; color2.myid = 2
-		local color3text = raidwarncolors:CreateText("color 3", 64); 	color3.textid = color3text; color3.myid = 3
-		local color4text = raidwarncolors:CreateText("color 4", 64); 	color4.textid = color4text; color4.myid = 4
+		local color1text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color1.textid = color1text; color1.myid = 1
+		local color2text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color2.textid = color2text; color2.myid = 2
+		local color3text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color3.textid = color3text; color3.myid = 3
+		local color4text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color4.textid = color4text; color4.myid = 4
 	
 		color1:SetPoint('TOPLEFT', 20, -20)
 		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
@@ -601,7 +601,7 @@ function DBM_GUI:CreateOptionsMenu()
 		infotext:SetFontObject(GameFontNormalSmall);
 	
 	
-		local movemebutton = raidwarncolors:CreateButton("Move Frame", 100, 16)
+		local movemebutton = raidwarncolors:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', raidwarncolors.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall);
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall);
@@ -614,7 +614,7 @@ function DBM_GUI:CreateOptionsMenu()
 		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
 		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
 		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
-		local okbttn  = pizzaarea:CreateButton("OK", 53, 30);
+		local okbttn  = pizzaarea:CreateButton(L.Button_OK, 53, 30);
 	
 		textbox:SetPoint('TOPLEFT', 20, -20)
 		hourbox:SetPoint('TOPLEFT', textbox, "TOPRIGHT", 20, 0)
@@ -625,14 +625,18 @@ function DBM_GUI:CreateOptionsMenu()
 		-- END MAINPAGE
 	end
 	do
-		local TestMenu = DBM_GUI_Frame:CreateNewPanel("TESTMENU", "option")
-
+		local TestMenu = DBM_GUI_Frame:CreateNewPanel("Model Test", "option")
 		local bossmodelzone = TestMenu:CreateArea("ModelFrame", 140, 240, true)
-
+		
 		GUI_model = bossmodelzone:CreateCreatureModelFrame()
 		GUI_model:SetPoint('TOPLEFT', 20, -20)
-
 	end	
+	do
+		local BarSetup = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
+		
+		local dummybar = DBT:CreateDummyBar()
+		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, 50)
+	end
 
 end	
 

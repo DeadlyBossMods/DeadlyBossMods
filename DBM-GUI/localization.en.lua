@@ -3,30 +3,38 @@ if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 
 local L = DBM_GUI_Translations
 
+L.MainFrame = "Deadly Boss Mods"
+
 L.TabCategory_Options 	= "DBM Options"
 L.TabCategory_WOTLK 	= "DBM Lich King"
 L.TabCategory_BC 	= "DBM Burning Crusade"
 L.TabCategory_Classic 	= "DBM Classic Bosses"
 L.TabCategory_Other     = "DBM OtherMods"
 
-L.MainFrame = "Deadly Boss Mods"
-L.General = "General Options"
-L.EnableDBM = "Enable DBM"
-
+L.BossModLoaded = "Please choose a Boss Mod from the list to the left"
+L.BossModLoad_now = "This Boss Mod is not loaded, it will be loaded when you enter the instance. You can also click the button to load the mod manually."
 
 L.PosX = 'Position X'
 L.PosY = 'Position Y'
 
-L.InfoRaidWarning = [[You can specify the position and colors of the Raidwarning frame. 
-In this Frame the Messages like "Player X is afflicted by Y" appears]]
+L.MoveMe = 'move me'
+L.Button_OK = 'OK'
+L.Button_Cancel = 'Cancel'
 
 L.Enable = "enable"
 L.Disable = "disable"
 
-
+-- Tab: General Options
+L.General = "General Options"
+L.EnableDBM = "Enable DBM"
 
 L.RaidWarnColors = "Raid Warning Colors"
-L.RaidWarn_Color = "Color"
+L.RaidWarnColor_1 = "Color 1"
+L.RaidWarnColor_2 = "Color 2"
+L.RaidWarnColor_3 = "Color 3"
+L.RaidWarnColor_4 = "Color 4"
+L.InfoRaidWarning = [[You can specify the position and colors of the Raidwarning frame. 
+In this Frame the Messages like "Player X is afflicted by Y" appears]]
 
 L.PizzaTimer_Headline = 'Create a "Pizza Timer"'
 L.PizzaTimer_Title = 'Name (e.g. "Pizza!")'
@@ -35,8 +43,11 @@ L.PizzaTimer_Mins = "Min"
 L.PizzaTimer_Secs = "Sec"
 
 
-L.BossModLoaded = "Please choose a Boss Mod from the list to the left"
-L.BossModLoad_now = "This Boss Mod is not loaded, it will be loaded when you enter the instance. You can also click the button to load the mod manually."
+-- Tab: Barsetup
+L.BarSetup = "Bar Style"
+
+
+
 
 L.TabInfoText_WOTLK = [[Wrath of the Lich King Boss Mods
 in this category you can find all supported instances starting
