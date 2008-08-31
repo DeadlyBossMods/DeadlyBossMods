@@ -131,6 +131,7 @@ do
 		newBar.frame = createBarFrame(self)
 		newBar.id = "dummy"
 		newBar.timer = 100
+		newBar.totalTime = 100
 		newBar.owner = self
 		newBar.frame.obj = newBar
 		newBar:ApplyStyle()
