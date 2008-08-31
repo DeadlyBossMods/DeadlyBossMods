@@ -688,6 +688,10 @@ function bossModPrototype:RegisterCombat(type)
 	-- TODO
 end
 
+function bossModPrototype:SetCreatureID(id)
+	self.creatureId = id
+end
+
 do
 	local enragePrototype = {}
 	function enragePrototype:Start(timer)

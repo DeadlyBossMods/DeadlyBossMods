@@ -120,6 +120,22 @@ do
 		return frame
 	end	
 	local mt = {__index = barPrototype}
+	function DBT:CreateDummyBar()
+		local newBar
+		newBar = next(unusedBarObjects, nil)
+		if newBar then
+			unusedBarObjects[newBar] = nil
+		else
+			newBar = setmetatable({}, mt)
+		end
+		newBar.frame = createBarFrame(self)
+		newBar.id = "dummy"
+		newBar.timer = 100
+		newBar.owner = self
+		newBar.frame.obj = newBar
+		newBar:ApplyStyle()
+		return newBar
+	end
 	
 	function DBT:CreateBar(timer, id, icon)
 		local newBar = self:GetBar(id)
