@@ -6,6 +6,8 @@ mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
 
 mod:SetCreatureID(448)
 
+mod:RegisterCombat("combat")
+
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
@@ -20,14 +22,13 @@ local testTimer1 = mod:NewTimer(30, "shield_timer")
 
 local enrageTest = mod:NewEnrageTimer(600)
 
---mod:RegisterCombat
-
 function mod:OnCombatStart(delay)
+	self:AddMsg(delay)
 	enrageTest:Start()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 48065 then -- Power Word: Shield (Rank 13)
+	if args.spellId == 48066 then -- Power Word: Shield (Rank 14)
 		testWarning1:Show(args.destName)
 		testWarning2:Schedule(3)
 		testWarning3:Schedule(6, args.sourceName, args.spellName)
@@ -38,7 +39,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 48065 then
+	if args.spellId == 48066 then -- Power Word: Shield (Rank 14)
 		testWarning4:Show()
 		self:ScheduleMethod(1, "TestCancel")
 		testTimer1:Stop(args.destName)
