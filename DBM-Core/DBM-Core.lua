@@ -49,6 +49,8 @@ local DBT = DBT:New()
 DBM.Bars = DBT
 DBM.Mods = {}
 
+local inCombat = false
+local combatInfo = {}
 local updateFunctions = {}
 local modSyncSpam = {}
 local mainFrame = CreateFrame("Frame")
@@ -59,7 +61,8 @@ local registeredEvents = {
 	["ADDON_LOADED"] = {DBM},
 	["RAID_ROSTER_UPDATE"] = {DBM},
 	["PARTY_MEMBERS_CHANGED"] = {DBM},
-	["CHAT_MSG_ADDON"] = {DBM}
+	["CHAT_MSG_ADDON"] = {DBM},
+	["PLAYER_REGEN_DISABLED"] = {DBM},
 }
 for i in pairs(registeredEvents) do
 	mainFrame:RegisterEvent(i)
@@ -289,7 +292,7 @@ do
 						sort		= GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge,
 						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-						zone		= GetAddOnMetadata(i, "X-DBM-Mod-Zone"),
+						zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
 						modId		= GetAddOnInfo(i),
 					})
 				end
@@ -320,7 +323,7 @@ function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 	if prefix == "DBMv4-Boss" and msg and channel ~= "WHISPER" and channel ~= "GUILD" then
 		if not modSyncSpam[msg] or (time - modSyncSpam[msg] > 2.5) then
 			modSyncSpam[msg] = time
-			local mod, event, arg = msg:split("\t")
+			local mod, event, arg = strsplit("\t", msg)
 			mod = self:GetModByName(mod or "")
 			if mod and event and arg then
 				mod:ReceiveSync(event, arg, sender)
@@ -328,6 +331,53 @@ function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		end
 	end
 end
+
+
+do
+	local targetList = {}
+	local function buildTargetList()
+		local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+			local id = (i == 0 and "target") or uId..i.."target"
+			local guid = UnitGUID(id)
+			if guid and bit.band(guid:sub(0, 5), 0x00F) == 3 then
+				local cId = tonumber(guid:sub(9, 12), 16)
+				targetList[cId] = id
+			end
+		end
+	end
+	local function clearTargetList()
+		for i in pairs(targetList) do
+			targetList[i] = nil
+		end
+		targetList.reset = 1
+		targetList.reset = nil
+	end
+	local function scanForCombat(combatInfo)
+		buildTargetList()
+		if targetList[combatInfo.mob] and UnitAffectingCombat(targetList[combatInfo.mob]) then
+			DBM:StartCombat(combatInfo.mod, 3)
+		end
+		clearTargetList()
+	end
+	function DBM:PLAYER_REGEN_DISABLED()
+		if not inCombat and combatInfo[GetRealZoneText()] then
+			buildTargetList()
+			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
+				if v.type == "combat" then
+					local uId = targetList[v.mob]
+					if uId and UnitAffectingCombat(uId) then
+						self:StartCombat(v.mod, 0)
+					elseif uId then
+						self:Schedule(3, scanForCombat, v)
+					end
+				end
+			end
+			clearTargetList()
+		end
+	end
+end
+
 
 SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
@@ -343,6 +393,52 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 	end
 	DBM_GUI:ShowHide()
+end
+
+
+
+do
+	local checkWipe
+	function checkWipe(confirm)
+		if inCombat then
+			local wipe = true
+			local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+			for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+				local id = (i == 0 and "player") or uId..i
+				if UnitAffectingCombat(id) then
+					wipe = false
+					break
+				end
+			end
+			if not wipe then
+				DBM:Schedule(3, checkWipe)
+			elseif confirm then
+				DBM:EndCombat(true)
+			else
+				DBM:Schedule(5, checkWipe, true)
+			end
+		end
+	end
+	function DBM:StartCombat(mod, delay, synced)
+		inCombat = mod
+		if mod.OnCombatStart then mod:OnCombatStart(delay or 0) end
+		self:AddMsg(DBM_COMBAT_STARTED:format(mod.combatInfo.name))
+		mod.combatInfo.pull = GetTime() - (delay or 0)
+		self:Schedule(mod.combatInfo.minCombatTime or 3, checkWipe)
+	end
+end
+
+function DBM:EndCombat(wipe)
+	if inCombat then
+		local mod = inCombat
+		inCombat = false
+		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
+		if wipe then
+			self:AddMsg(DBM_COMBAT_ENDED:format(GetTime() - mod.combatInfo.pull))
+		else
+			self:AddMsg(DBM_BOSS_DOWN:format(mod.combatInfo.name, GetTime() - mod.combatInfo.pull))
+		end
+	end
 end
 
 do
@@ -489,7 +585,7 @@ function DBM:LoadMod(mod)
 	else
 		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		self:InitializeMods()
-		if DBM_GUI.UpdateModList then
+		if DBM_GUI and DBM_GUI.UpdateModList then
 			DBM_GUI:UpdateModList()
 		end
 		return true
@@ -687,8 +783,20 @@ function bossModPrototype:IsInCombat()
 	return self.inCombat
 end
 
-function bossModPrototype:RegisterCombat(type)
-	-- TODO
+function bossModPrototype:RegisterCombat(type, mob, name, killMob, minCombatTime)
+	local info = {
+		type = type,
+		mob = mob or self.creatureId,
+		name = name or self.localization.general.name or self.id,
+		killMob = killMob,
+		minCombatTime = minCombatTime,
+		mod = self
+	}
+	self.combatInfo = info
+	for i, v in ipairs(self.zone) do
+		combatInfo[v] = combatInfo[v] or {}
+		table.insert(combatInfo[v], info)
+	end
 end
 
 function bossModPrototype:SetCreatureID(id)
