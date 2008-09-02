@@ -65,18 +65,11 @@ end
 function DBM_GUI:CreateNewPanel(FrameName, FrameTyp) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID())
 	panel.name = FrameName
-	if self == DBM_GUI then
-		-- no panel.parent is need
-	elseif self.parent == DBM_GUI then
-		panel.parent = self.frame.name
-	else
-		panel.parentparent = self.frame.name
-	end
 	
 	if FrameTyp == "option" or FrameTyp == 2 then
-		DBM_GUI_CreateOption(panel)
+		DBM_GUI_Options:CreateCategory(panel, self and self.frame and self.frame.name)
 	else
-		DBM_GUI_CreateBossMod(panel)
+		DBM_GUI_Bosses:CreateCategory(panel, self and self.frame and self.frame.name)
 	end
 
 	self:SetLastObj(nil)
@@ -336,63 +329,75 @@ end
 
 local ListFrameButtonsPrototype = {}
 -- Prototyp for ListFrame Options Buttons
-ListFrameButtonsPrototype.Buttons = {}
 
 function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 	if not type(frame) == "table" or not frame.name then
+		DBM:AddMsg("Failed to CreateCategory - frame is not a table value or without frame.name")
 		return false;
 	end
-	frame.parent = self:GetParent(parent) or nil
-	frame.showsub = frame.showsub or false
+	frame.showsub = frame.showsub or true --false
+	if parent then
+		frame.depth = self:GetDepth(parent)
+	else 
+		frame.depth = 1
+	end
 
-	table.insert(ListFrameButtonsPrototype.Buttons, {
+	table.insert(self.Buttons, {
 		frame = frame,
-		parent = parent or nil
+		parent = parent
 	})
 end
 
-function ListFrameButtonsPrototype:GetParent(parent)
+function ListFrameButtonsPrototype:GetDepth(framename, depth)
+	depth = depth or 1
 	for k,v in ipairs(self.Buttons) do
-		if v.parent == parent then
-			return ListFrameButtonsPrototype.Buttons[k]
-		end
-	end
-	return nil
-end
-
-function ListFrameButtonsPrototype:GetVisibleTabs()
-	local table = {}
-	for k,v in ipairs(self.Buttons) do
-		if v.parent == nil then 
-			table.insert(table, v)
-		elseif v.showsub then
-			for k2,v2 in ipairs(self:GetVisibleSubTabs(v.parent)) do
-				table.insert(table, v2)
+		if v.frame.name == framename then
+			if v.parent == nil then		
+				return depth+1
+			else				
+				depth = depth + self:GetDepth(v.parent, depth)
 			end
 		end
 	end
-	return table
+	return depth
+end
+
+function ListFrameButtonsPrototype:GetVisibleTabs()
+	local mytable = {}
+	for k,v in ipairs(self.Buttons) do
+		if v.parent == nil then 
+			table.insert(mytable, v)
+
+			if v.frame.showsub then
+				for k2,v2 in ipairs(self:GetVisibleSubTabs(v.frame.name)) do
+					table.insert(mytable, v2)
+				end
+			end
+		end
+	end
+	return mytable
 end
 
 function ListFrameButtonsPrototype:GetVisibleSubTabs(parent)
 	local subtable = {}
 	for k,v in ipairs(self.Buttons) do
 		if v.parent == parent then
-			table.insert(table, v)
-			if v.showsub then
-				for k2,v2 in ipairs(self:GetVisibleSubTabs(v.parent)) do
-					table.insert(table, v2)
+			table.insert(subtable, v)
+			if v.frame.showsub then
+				for k2,v2 in ipairs(self:GetVisibleSubTabs(v.frame.name)) do
+					table.insert(subtable, v2)
 				end
 			end
 		end
 	end
-	return table
+	return subtable
 end
+
 	
 do
 	local mt = {__index = ListFrameButtonsPrototype}
 	function CreateNewFauxScrollFrameList()
-		return setmetatable({}, mt)
+		return setmetatable({ Buttons={} }, mt)
 	end
 end
 
@@ -405,40 +410,22 @@ DBM_GUI_Options = CreateNewFauxScrollFrameList()
 do
 	-- the functions in this block are only used to 
 	-- create/update/manage the Fauxscrollframe for Boss/Options Selection
-	local BossMods = {}
-	local Options = {}
-
-	-- This function is for Internal use.
-	-- It places a new BossMod Tab in the GUI List
- 	function DBM_GUI_CreateBossMod(frame)
-		if ( type(frame) == "table" and frame.name ) then
-			table.insert(BossMods, frame)
-		end
-	end
-
-	-- This function is for Internal use.
-	-- It places a new Option Tab in the GUI List
-	function DBM_GUI_CreateOption(frame)
-		if ( type(frame) == "table" and frame.name ) then
-			table.insert(Options, frame)
-		end
-	end
 
 	local displayedElements = {}
 
 	-- This function is for Internal use.
 	-- Function to Update the Left Scrollframe Buttons with the menu entrys
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
-		local offset = FauxScrollFrame_GetOffset(getglobal(listframe:GetName().."List"));
+		local offset = getglobal(listframe:GetName().."List").offset;
 		local buttons = listframe.buttons;
-		local TABLE
+		local TABLE 
 
 		if not buttons then return false; end
 
 		if listframe:GetParent().tab == 2 then
-			TABLE = Options
+			TABLE = DBM_GUI_Options:GetVisibleTabs()
 		else 
-			TABLE = BossMods
+			TABLE = DBM_GUI_Bosses:GetVisibleTabs()
 		end
 		local element;
 		
@@ -447,8 +434,8 @@ do
 		end
 
 		for i, element in ipairs(TABLE) do
-			--DEFAULT_CHAT_FRAME:AddMessage(element.name)
-			table.insert(displayedElements, element);
+			--DBM:AddMsg("TABLE: "..element.frame.name)
+			table.insert(displayedElements, element.frame);
 		end
 
 
@@ -491,19 +478,18 @@ do
 		button:Show();
 		button.element = element;
 		
-		if element.parentparent then
+		button.text:SetPoint("LEFT", 8 * element.depth, 2);
+
+		if element.depth > 2 then
 			button:SetNormalFontObject(GameFontHighlightSmall);
 			button:SetHighlightFontObject(GameFontHighlightSmall);
-			button.text:SetPoint("LEFT", 24, 2);
 
-		elseif element.parent then
+		elseif element.depth > 1  then
 			button:SetNormalFontObject(GameFontNormalSmall);
 			button:SetHighlightFontObject(GameFontNormalSmall);
-			button.text:SetPoint("LEFT", 16, 2);
 		else
 			button:SetNormalFontObject(GameFontNormal);
-			button:SetHighlightFontObject(GameFontHighlight);
-			button.text:SetPoint("LEFT", 8, 2);
+			button:SetHighlightFontObject(GameFontNormal);
 		end
 		button:SetWidth(165)
 
@@ -729,15 +715,17 @@ function DBM_GUI:CreateOptionsMenu()
 
 end	
 
+	
 do
+
 	local DBM_GUI_Categories = {}
 	function DBM_GUI:UpdateModList()
 		-- Now we want to create a List of categorys
 		-- this list is dynamical created by the installed AddOns
 		for _,v in ipairs(DBM.AddOns) do
 			if not DBM_GUI_Categories[v.category] then
-				DBM_GUI_Categories[v.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..string.upper(v.category)] or L.TabCategory_Other, false)
-	
+				DBM_GUI_Categories[v.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..string.upper(v.category)] or L.TabCategory_Other)
+
 				if L["TabCategory_"..string.upper(v.category)] then
 					local ptext = DBM_GUI_Categories[v.category]:CreateText(L["TabCategory_"..string.upper(v.category)])
 					ptext:SetPoint('TOPLEFT', DBM_GUI_Categories[v.category].frame, "TOPLEFT", 10, -10)
@@ -773,6 +761,7 @@ do
 				end
 			end
 		end
+
 	end
 end
 
