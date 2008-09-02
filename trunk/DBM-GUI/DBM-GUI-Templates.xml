@@ -95,6 +95,171 @@
 		</HighlightTexture>
 	</Button>
 
+	<Frame name="DBM_GUI_OptionsFrameListTemplate" virtual="true">
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentTopLeft" file="Interface\Tooltips\UI-Tooltip-Border">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT"/>
+					</Anchors>
+					<TexCoords left="0.5" right="0.625" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentBottomLeft" file="Interface\Tooltips\UI-Tooltip-Border">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT"/>
+					</Anchors>
+					<TexCoords left="0.75" right="0.875" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentBottomRight" file="Interface\Tooltips\UI-Tooltip-Border">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.875" right="1" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentTopRight" file="Interface\Tooltips\UI-Tooltip-Border">
+					<Size>
+						<AbsDimension x="16" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.625" right="0.75" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentLeft" file="Interface\Tooltips\UI-Tooltip-Border">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomLeft" relativePoint="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0" right="0.125" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentRight" file="Interface\Tooltips\UI-Tooltip-Border">
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopRight" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="TOPRIGHT"/>
+					</Anchors>
+					<TexCoords left="0.125" right="0.25" top="0" bottom="1"/>
+				</Texture>
+				<Texture name="$parentBottom" file="Interface\OptionsFrame\UI-OptionsFrame-Spacer">
+					<Size>
+						<AbsDimension x="0" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentBottomLeft" relativePoint="BOTTOMRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="-2"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentBottomRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTop" file="Interface\OptionsFrame\UI-OptionsFrame-Spacer">
+					<Size>
+						<AbsDimension x="0" y="16"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="TOPRIGHT">
+							<Offset>
+								<AbsDimension x="0" y="7"/>
+							</Offset>
+						</Anchor>
+						<Anchor point="TOPRIGHT" relativeTo="$parentTopRight" relativePoint="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<ScrollFrame name="$parentList" hidden="true">
+				<Size>
+					<AbsDimension x="24" y="0"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="-3"/>
+						</Offset>
+					</Anchor>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-3" y="3"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+					<EdgeSize>
+						<AbsValue val="12"/>
+					</EdgeSize>
+					<TileSize>
+						<AbsValue val="16"/>
+					</TileSize>
+					<BackgroundInsets>
+						<AbsInset left="0" right="0" top="5" bottom="5"/>
+					</BackgroundInsets>
+				</Backdrop>				
+				<Scripts>
+					<OnLoad>
+						self:SetBackdropBorderColor(.6, .6, .6, .6);
+						getglobal(self:GetName().."ScrollBarScrollDownButton"):Disable();
+						getglobal(self:GetName().."ScrollBarScrollUpButton"):Disable();
+
+						local scrollbar = getglobal(self:GetName().."ScrollBar");
+						scrollbar:SetMinMaxValues(0, 0);
+						scrollbar:SetValue(0);
+						self.offset = 0	
+					</OnLoad>
+					<OnVerticalScroll>
+						local scrollbar = getglobal(self:GetName().."ScrollBar");
+						scrollbar:SetValue(offset);
+						self.offset = floor((offset / INTERFACEOPTIONSLIST_BUTTONHEIGHT) + 0.5);
+						DBM_GUI_OptionsFrame:UpdateMenuFrame(self:GetParent())						
+					</OnVerticalScroll>
+				</Scripts>
+				<Frames>
+					<Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate">
+						<Anchors>
+							<Anchor point="TOPRIGHT">
+								<Offset>
+									<AbsDimension x="0" y="-20"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="BOTTOMLEFT">
+								<Offset>
+									<AbsDimension x="0" y="19"/>
+								</Offset>
+							</Anchor>	
+						</Anchors>
+						<Scripts>
+							<OnValueChanged>
+								self:GetParent():SetVerticalScroll(value);
+							</OnValueChanged>
+						</Scripts>
+					</Slider>
+					<Frame name="$parentScrollChildFrame" hidden="true"/>
+				</Frames>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnMouseWheel>
+				local scrollBar = getglobal(self:GetName() .. "ListScrollBar");
+				if ( arg1 > 0 ) then
+					scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2));
+				else
+					scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2));
+				end
+				DBM_GUI_OptionsFrame:UpdateMenuFrame(self)	
+			</OnMouseWheel>
+		</Scripts>
+	</Frame>
+
+
 	<Frame name="DBM_GUI_OptionsFrame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="HIGH" movable="true">
 		<Size>
 			<AbsDimension x="620" y="500"/>
@@ -156,7 +321,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Frame name="$parentBossMods" inherits="InterfaceOptionsListTemplate">
+			<Frame name="$parentBossMods" inherits="DBM_GUI_OptionsFrameListTemplate">
 				<Size>
 					<AbsDimension x="175" y="409"/>
 				</Size>
@@ -176,7 +341,7 @@
 					</OnShow>
 				</Scripts>
 			</Frame>
-			<Frame name="$parentDBMOptions" inherits="InterfaceOptionsListTemplate" hidden="true">
+			<Frame name="$parentDBMOptions" inherits="DBM_GUI_OptionsFrameListTemplate" hidden="true">
 				<Size>
 					<AbsDimension x="175" y="409"/>
 				</Size>
