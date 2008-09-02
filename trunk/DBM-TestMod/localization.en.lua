@@ -3,7 +3,7 @@ local L
 L = DBM:GetModLocalization("The Test Mod")
 
 L:SetGeneralLocalization({
-	name = "Localized name [Test]"
+	name = "Hogger"
 })
 
 L:SetWarningLocalization({

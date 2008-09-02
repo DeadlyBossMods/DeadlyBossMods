@@ -43,12 +43,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		testWarning4:Show()
 		self:ScheduleMethod(1, "TestCancel")
 		testTimer1:Stop(args.destName)
+	elseif args.spellId == 48168 then
+		self:SendSync("TestSync", args.destName)
 	end
 end
 
 function mod:TestCancel()
 	testWarning2:Cancel()
 	testWarning3:Cancel()
+end
+
+function mod:OnSync(event, arg)
+	self:AddMsg(arg, event)
 end
 
 function mod:OnUpdate(elapsed)
