@@ -60,7 +60,7 @@ end
 -- This Function Creates a new entry to the Menu
 --
 --  arg1 = Text for the UI Button
---  arg2 = nil or ("option" or 2)  ... nil wil place as a BossMod, otherwise as a Option Tab
+--  arg2 = nil or ("option" or 2)  ... nil will place as a BossMod, otherwise as a Option Tab
 --
 function DBM_GUI:CreateNewPanel(FrameName, FrameTyp) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID())
@@ -139,9 +139,14 @@ end
 --  arg1 = text right to the CheckBox
 --  arg2 = autoplaced (true or nil/false)
 --
-function PanelPrototype:CreateCheckButton(name, autoplace)
+function PanelPrototype:CreateCheckButton(name, autoplace, textleft)
 	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
 	getglobal(button:GetName() .. 'Text'):SetText(name)
+
+	if textleft then
+		getglobal(button:GetName() .. 'Text'):ClearAllPoints()
+		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 3, 0)
+	end
 
 	if autoplace then
 		if self:GetLastObj() then
@@ -327,6 +332,76 @@ end
 
 
 
+
+
+local ListFrameButtonsPrototype = {}
+-- Prototyp for ListFrame Options Buttons
+ListFrameButtonsPrototype.Buttons = {}
+
+function ListFrameButtonsPrototype:CreateCategory(frame, parent)
+	if not type(frame) == "table" or not frame.name then
+		return false;
+	end
+	frame.parent = self:GetParent(parent) or nil
+	frame.showsub = frame.showsub or false
+
+	table.insert(ListFrameButtonsPrototype.Buttons, {
+		frame = frame,
+		parent = parent or nil
+	})
+end
+
+function ListFrameButtonsPrototype:GetParent(parent)
+	for k,v in ipairs(self.Buttons) do
+		if v.parent == parent then
+			return ListFrameButtonsPrototype.Buttons[k]
+		end
+	end
+	return nil
+end
+
+function ListFrameButtonsPrototype:GetVisibleTabs()
+	local table = {}
+	for k,v in ipairs(self.Buttons) do
+		if v.parent == nil then 
+			table.insert(table, v)
+		elseif v.showsub then
+			for k2,v2 in ipairs(self:GetVisibleSubTabs(v.parent)) do
+				table.insert(table, v2)
+			end
+		end
+	end
+	return table
+end
+
+function ListFrameButtonsPrototype:GetVisibleSubTabs(parent)
+	local subtable = {}
+	for k,v in ipairs(self.Buttons) do
+		if v.parent == parent then
+			table.insert(table, v)
+			if v.showsub then
+				for k2,v2 in ipairs(self:GetVisibleSubTabs(v.parent)) do
+					table.insert(table, v2)
+				end
+			end
+		end
+	end
+	return table
+end
+	
+do
+	local mt = {__index = ListFrameButtonsPrototype}
+	function CreateNewFauxScrollFrameList()
+		return setmetatable({}, mt)
+	end
+end
+
+DBM_GUI_Bosses = CreateNewFauxScrollFrameList()
+DBM_GUI_Options = CreateNewFauxScrollFrameList()
+
+
+
+
 do
 	-- the functions in this block are only used to 
 	-- create/update/manage the Fauxscrollframe for Boss/Options Selection
@@ -335,7 +410,7 @@ do
 
 	-- This function is for Internal use.
 	-- It places a new BossMod Tab in the GUI List
-	function DBM_GUI_CreateBossMod(frame)
+ 	function DBM_GUI_CreateBossMod(frame)
 		if ( type(frame) == "table" and frame.name ) then
 			table.insert(BossMods, frame)
 		end
@@ -394,6 +469,8 @@ do
 			DBM_GUI_OptionsFrame:ClearSelection(listframe, listframe.buttons);
 		end
 
+
+		--todo this sucks!
 		for i = 1, #buttons do
 			element = displayedElements[i + offset]
 			if ( not element ) then
@@ -634,15 +711,20 @@ function DBM_GUI:CreateOptionsMenu()
 	do
 		local BarSetup = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
-		local dummybar = DBT:CreateDummyBar()
+		local dummybar = DBM.Bars:CreateDummyBar()
 		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, -50)
 		dummybar.frame:SetFrameStrata("TOOLTIP")
+		dummybar.frame:SetParent(BarSetup.frame)
+		dummybar:SetTimer(100)
+		dummybar:SetElapsed(20)
 
 		local iconleft = BarSetup:CreateCheckButton("Icon left")
+		local iconright = BarSetup:CreateCheckButton("Icon right", false, true)
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
-
-		local iconright = BarSetup:CreateCheckButton("icon right")
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
+
+		
+
 	end
 
 end	
