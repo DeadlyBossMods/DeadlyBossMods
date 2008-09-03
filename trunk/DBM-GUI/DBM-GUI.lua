@@ -829,13 +829,53 @@ do
 
 						mobstyle = mod.panel:CreateCreatureModelFrame(375, 400, mod.creatureId)
 						mobstyle:SetPoint("BOTTOMRIGHT", mod.panel.frame, "BOTTOMRIGHT", -5, 5)
-						mobstyle:SetScript("OnShow", function(self) self:SetFrameStrata("BACKGROUND"); end)
+						mobstyle:SetUnit("player")
+						mobstyle:SetModelScale(0.5)
 
-						function mobstyle:Onyxia()
-							self:SetCreature(10184)
-							self:SetCamera(0)
-						end
+						mobstyle.playanimations = { {animation = 4, time = 2000}, 				-- hogger moves
+									    {animation = 0, time = 500, endfacing = 90 }, 		-- hogger rotate
+									    {animation = 1, time = 2000},  				-- hogger dies
+						} 
+						mobstyle.animationtime = 0 
+						mobstyle.animation = 0
+						mobstyle.animationpos = 0
+						mobstyle.rotation = 0
 
+						mobstyle:SetScript("OnUpdate", function(self, e)
+							if self.animationpos == 0 then
+								self.animationpos = 1
+								self.animation = self.playanimations[1].animation
+								self.animationtime = 0
+							end
+							if self.animationtime > self.playanimations[self.animationpos].time then
+								self.animationpos = self.animationpos + 1
+								if self.animationpos > #self.playanimations then
+									self.animationpos = 1 
+									self:SetFacing(0)
+									--self.playanimations[self.animationpos].animation = self.playanimations[self.animationpos].animation + 1
+								end
+								self.rotation = self:GetFacing()
+								self.animation = self.playanimations[self.animationpos].animation
+								self.animationtime = 0
+								DBM:AddMsg( "Starting Animation #"..self.animationpos.." with Animation #"..self.animation )
+								self:SetSequence(self.animation)
+							end
+
+							self.animationtime = self.animationtime + e * 1000  
+							if self.animation > 0 then
+								self:SetSequenceTime(self.animation,  self.animationtime) 
+							end
+						
+							if self.playanimations[self.animationpos].endfacing then -- not self.playanimations[self.animationpos].endfacing == self:GetFacing() 
+								self.rotation = self.rotation + (e * 2 * math.pi * -- Rotations per second
+											((self.playanimations[self.animationpos].endfacing/360)
+											/ (self.playanimations[self.animationpos].time/1000))
+											)
+
+								self:SetRotation( self.rotation )							
+							end
+
+						end)
 					end
 				end
 			end	
