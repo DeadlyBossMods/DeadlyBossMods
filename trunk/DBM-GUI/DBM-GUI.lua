@@ -65,6 +65,8 @@ end
 function DBM_GUI:CreateNewPanel(FrameName, FrameTyp) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID())
 	panel.name = FrameName
+	panel:SetAllPoints(DBM_GUI_OptionsFramePanelContainer)
+	panel:Hide()
 	
 	if FrameTyp == "option" or FrameTyp == 2 then
 		DBM_GUI_Options:CreateCategory(panel, self and self.frame and self.frame.name)
@@ -143,8 +145,7 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 	self:SetLastObj(nil)
 	self.areas = self.areas or {}
 	table.insert(self.areas, {frame = area, parent = self, framename = FrameTitle..self:GetCurrentID()})
-	local obj = self.areas[#self.areas]
-	return setmetatable(obj, {__index = PanelPrototype})
+	return setmetatable(self.areas[#self.areas], {__index = PanelPrototype})
 end
 
 -- Function in the Prototype to create a CheckButton
@@ -344,8 +345,64 @@ function PanelPrototype:CreateCreatureModelFrame(width, hight, creatureid)
 	return ModelFrame	
 end
 
+do 
+	local function getFrameWidth(frame, x)
+		x = x or 0
+		local kids = { frame:GetChildren() }
+		for _, child in pairs(kids) do
+			x = getFrameWidth(child, x)
+		end
+		local regions = { frame:GetRegions() }
+		for _, region in next, regions do
+			if region:GetObjectType() == "FontString" then
+				x = x + region:GetStringWidth()
+			end
+		end
+		return x
+	end
 
+	function PanelPrototype:AutoSetDimension()
+		local width = self.frame:GetWidth()
+		local height = self.frame:GetHeight()
+	
+		local need_width = 0 
+		local need_height = 0
+		local x
+	
+		DBM:AddMsg("AutoSetDimension from Framesize "..width.." x "..height.." pixel")
+	
+		local kids = { self.frame:GetChildren() }
+		for _, child in pairs(kids) do
+			x = getFrameWidth(child)
 
+			if child:GetWidth() + x > need_width then
+				need_width = child:GetWidth() + x + 20
+			end
+			need_height = need_height + child:GetHeight()
+		end
+		if #kids == 1 then
+			need_height = need_height + 20
+		end
+	
+		DBM:AddMsg("              ===> to Framesize "..need_width.." x "..need_height.." pixel")
+	
+	
+		self.frame:SetWidth(need_width)
+		self.frame:SetHeight(need_height)
+	end
+end
+
+function PanelPrototype:AutoPlaceArea()
+	local maxwidth = self.frame:GetWidth()
+	local maxheight = self.frame:GetWidth()
+
+	DBM:AddMsg("Max X: "..maxwidth.." Max Y: "..maxheight.." Frame: "..self.frame:GetName())
+
+	for _, area in next, self.areas do
+		DBM:AddMsg(area.frame:GetWidth())
+	end
+
+end
 
 
 local ListFrameButtonsPrototype = {}
@@ -584,26 +641,26 @@ do
 		local parent = button:GetParent();
 		local buttons = parent.buttons;
 	
-		DBM_GUI_OptionsFrame:ClearSelection(DBM_GUI_OptionsFrameBossMods, DBM_GUI_OptionsFrameBossMods.buttons);
-		DBM_GUI_OptionsFrame:ClearSelection(DBM_GUI_OptionsFrameDBMOptions, DBM_GUI_OptionsFrameDBMOptions.buttons);
-		DBM_GUI_OptionsFrame:SelectButton(parent, button);
+		self:ClearSelection(getglobal(self:GetName().."BossMods"),   getglobal(self:GetName().."BossMods").buttons);
+		self:ClearSelection(getglobal(self:GetName().."DBMOptions"), getglobal(self:GetName().."DBMOptions").buttons);
+		self:SelectButton(parent, button);
 
-		DBM_GUI_OptionsFrame:DisplayFrame(button.element);
+		self:DisplayFrame(button.element);
 	end
 
 	-- This function is for Internal use.
 	-- places the selected tab on the containerframe
 	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
-		if ( DBM_GUI_OptionsFramePanelContainer.displayedFrame ) then
-			DBM_GUI_OptionsFramePanelContainer.displayedFrame:Hide();
+		if ( getglobal(self:GetName().."PanelContainer").displayedFrame ) then
+			getglobal(self:GetName().."PanelContainer").displayedFrame:Hide();
 		end
 		
-		DBM_GUI_OptionsFramePanelContainer.displayedFrame = frame;
+		getglobal(self:GetName().."PanelContainer").displayedFrame = frame;
 		
-		frame:SetParent(DBM_GUI_OptionsFramePanelContainer);
+		frame:SetParent(getglobal(self:GetName().."PanelContainer"));
 		frame:ClearAllPoints();
-		frame:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT");
-		frame:SetPoint("BOTTOMRIGHT", DBM_GUI_OptionsFramePanelContainer, "BOTTOMRIGHT");
+		frame:SetPoint("TOPLEFT", getglobal(self:GetName().."PanelContainer"), "TOPLEFT");
+		frame:SetPoint("BOTTOMRIGHT", getglobal(self:GetName().."PanelContainer"), "BOTTOMRIGHT");
 		frame:Show();
 	end
 
@@ -803,6 +860,10 @@ do
 
 
 	function DBM_GUI:CreateBossModTab(mod)
+		if not mod.panel then
+			DBM:AddMsg("Failed to create ModPanel "..mod.localization.general.name)
+			return false
+		end
 		DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
 		local panel = mod.panel
 
@@ -828,10 +889,10 @@ do
 									self:SetChecked(mod.Options[v]) 
 								    end)
 				end
-
-				--catpanel:Checksize()  -- FIXME
 			end
+			catpanel:AutoSetDimension()
 		end
+		panel:AutoPlaceArea()
 	end
 
 end

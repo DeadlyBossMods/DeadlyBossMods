@@ -491,8 +491,7 @@
 			</OnDragStop>
 		</Scripts>
 	</Frame>
-
-
+	
 	<Button name="DBM_GUI_FrameButtonTemplate" virtual="true">
 		<Size>
 			<AbsDimension x="155" y="18"/>
