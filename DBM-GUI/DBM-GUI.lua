@@ -335,7 +335,7 @@ function PanelPrototype:CreateText(text, width, autoplaced)
 end
 
 
-function PanelPrototype:CreateCreatureModelFrame(width, hight, creatureid)
+function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	local ModelFrame = CreateFrame('PlayerModel', FrameTitle..self:GetNewID(), self.frame)
 	ModelFrame:SetWidth(width or 100)
 	ModelFrame:SetHeight(height or 200)
@@ -362,46 +362,20 @@ do
 	end
 
 	function PanelPrototype:AutoSetDimension()
-		local width = self.frame:GetWidth()
 		local height = self.frame:GetHeight()
 	
-		local need_width = 0 
 		local need_height = 0
-		local x
-	
-		DBM:AddMsg("AutoSetDimension from Framesize "..width.." x "..height.." pixel")
 	
 		local kids = { self.frame:GetChildren() }
 		for _, child in pairs(kids) do
-			x = getFrameWidth(child)
-
-			if child:GetWidth() + x > need_width then
-				need_width = child:GetWidth() + x + 20
-			end
 			need_height = need_height + child:GetHeight()
 		end
 		if #kids == 1 then
 			need_height = need_height + 20
 		end
 	
-		DBM:AddMsg("              ===> to Framesize "..need_width.." x "..need_height.." pixel")
-	
-	
-		self.frame:SetWidth(need_width)
 		self.frame:SetHeight(need_height)
 	end
-end
-
-function PanelPrototype:AutoPlaceArea()
-	local maxwidth = self.frame:GetWidth()
-	local maxheight = self.frame:GetWidth()
-
-	DBM:AddMsg("Max X: "..maxwidth.." Max Y: "..maxheight.." Frame: "..self.frame:GetName())
-
-	for _, area in next, self.areas do
-		DBM:AddMsg(area.frame:GetWidth())
-	end
-
 end
 
 
@@ -852,6 +826,16 @@ do
 					if not mod.panel then
 						mod.panel = addon.panel:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
 						DBM_GUI:CreateBossModTab(mod)
+
+						mobstyle = mod.panel:CreateCreatureModelFrame(375, 400, mod.creatureId)
+						mobstyle:SetPoint("BOTTOMRIGHT", mod.panel.frame, "BOTTOMRIGHT", -5, 5)
+						mobstyle:SetScript("OnShow", function(self) self:SetFrameStrata("BACKGROUND"); end)
+
+						function mobstyle:Onyxia()
+							self:SetCreature(10184)
+							self:SetCamera(0)
+						end
+
 					end
 				end
 			end	
@@ -869,7 +853,7 @@ do
 
 		for catname, category in pairs(mod.optionCategories) do
 
-			local catpanel = panel:CreateArea(catname, 365, 140, true)
+			local catpanel = panel:CreateArea(mod.localization.cats[catname], 365, 140, true)
 			for _,v in ipairs(category) do
 
 				if type(mod.Options[v]) == "boolean" then
@@ -892,7 +876,6 @@ do
 			end
 			catpanel:AutoSetDimension()
 		end
-		panel:AutoPlaceArea()
 	end
 
 end
