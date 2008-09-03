@@ -127,7 +127,9 @@ do
 		"RAID_ROSTER_UPDATE",
 		"PARTY_MEMBERS_CHANGED",
 		"CHAT_MSG_ADDON",
-		"PLAYER_REGEN_DISABLED"
+		"PLAYER_REGEN_DISABLED",
+		"UNIT_DIED",
+		"UNIT_DESTROYED"
 	)
 
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
@@ -477,6 +479,7 @@ do
 		for i, v in ipairs(DBM.Mods) do
 			if not v.initialized then
 				v.initialized = true
+				if DBM_GUI then DBM_GUI:CreateBossModTab(v) end
 				-- TODO: load stuff
 			end
 		end
@@ -535,7 +538,7 @@ function DBM:LoadMod(mod)
 	else
 		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		loadModOptions()
-		if DBM_GUI and DBM_GUI.UpdateModList then
+		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
 		return true
@@ -671,9 +674,19 @@ function DBM:EndCombat(wipe)
 	end
 end
 
-function DBM:UNIT_DIED(event, args) -- TODO
+function DBM:UNIT_DIED(event, args) -- TODO: add support for multi-mob bosses
+	if #inCombat > 0 and bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
+		local cId = tonumber(args.destGUID:sub(9, 12), 16)
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			local killId = v.killMob or v.mob
+			if killId == cId then
+				self:EndCombat()
+			end
+		end
+	end
 end
-
+DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 
 --------------------------
 --  Enable/Disable DBM  --
@@ -683,7 +696,7 @@ function DBM:Disable()
 end
 
 function DBM:Enable()
-	self.Options.Enabled = true -- TODO
+	self.Options.Enabled = true
 end
 
 function DBM:IsEnabled()
