@@ -20,6 +20,7 @@ L.PosY = 'Position Y'
 L.MoveMe = 'move me'
 L.Button_OK = 'OK'
 L.Button_Cancel = 'Cancel'
+L.Button_LoadMod = 'Load AddOn'
 
 L.Enable = "enable"
 L.Disable = "disable"

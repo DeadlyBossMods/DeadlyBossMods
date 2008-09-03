@@ -79,6 +79,22 @@ function DBM_GUI:CreateNewPanel(FrameName, FrameTyp)
 	return setmetatable(obj, {__index = PanelPrototype})
 end
 
+do 
+	local FrameNames = {}
+	function DBM_GUI:AddFrame(FrameName)
+		table.insert(FrameNames, FrameName)
+	end
+	function DBM_GUI:IsPresent(FrameName)
+		for k,v in ipairs(FrameNames) do
+			if v == FrameName then
+				return true
+			end
+		end
+		return false
+	end
+end
+
+
 do
 	local framecount = 0
 	function DBM_GUI:GetNewID() 
@@ -116,7 +132,12 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 	area:SetHeight(height)
 	
 	if autoplace then
-		area:SetPoint('TOPLEFT', self.frame, 10, -20)
+		local kids = { self.frame:GetChildren() };
+		if #kids == 1 then
+			area:SetPoint('TOPLEFT', self.frame, 10, -20)
+		else
+			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -17)
+		end
 	end
 
 	self:SetLastObj(nil)
@@ -333,8 +354,13 @@ local ListFrameButtonsPrototype = {}
 function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 	if not type(frame) == "table" or not frame.name then
 		DBM:AddMsg("Failed to CreateCategory - frame is not a table value or without frame.name")
-		return false;
+		return false
+	elseif self:IsPresent(frame.name) then
+		DBM:AddMsg("Frame ("..frame.name..") is already known")
+		return false
 	end
+
+
 	frame.showsub = frame.showsub or true --false
 	if parent then
 		frame.depth = self:GetDepth(parent)
@@ -346,6 +372,15 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 		frame = frame,
 		parent = parent
 	})
+end
+
+function ListFrameButtonsPrototype:IsPresent(framename)
+	for k,v in ipairs(self.Buttons) do
+		if v.frame.name == framename then
+			return true
+		end
+	end
+	return false
 end
 
 function ListFrameButtonsPrototype:GetDepth(framename, depth)
@@ -718,50 +753,86 @@ end
 	
 do
 
-	local DBM_GUI_Categories = {}
-	function DBM_GUI:UpdateModList()
-		-- Now we want to create a List of categorys
-		-- this list is dynamical created by the installed AddOns
-		for _,v in ipairs(DBM.AddOns) do
-			if not DBM_GUI_Categories[v.category] then
-				DBM_GUI_Categories[v.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..string.upper(v.category)] or L.TabCategory_Other)
+	local function LoadAddOn_Button(self) 
+		if DBM:LoadMod(self.modid) then 
+			self:Hide()
+			DBM_GUI_OptionsFrameBossMods:Hide()
+			DBM_GUI_OptionsFrameBossMods:Show()
 
-				if L["TabCategory_"..string.upper(v.category)] then
-					local ptext = DBM_GUI_Categories[v.category]:CreateText(L["TabCategory_"..string.upper(v.category)])
-					ptext:SetPoint('TOPLEFT', DBM_GUI_Categories[v.category].frame, "TOPLEFT", 10, -10)
+			local ptext = self.modid.panel:CreateText(L.BossModLoaded)
+			ptext:SetPoint('TOPLEFT', self.modid.panel.frame, "TOPLEFT", 10, -10)
+		end
+	end
+
+	local Categories = {}
+	function DBM_GUI:UpdateModList()
+		for k,addon in ipairs(DBM.AddOns) do
+			if not Categories[addon.category] then
+				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..string.upper(addon.category)] or L.TabCategory_Other)
+	
+				if L["TabCategory_"..string.upper(addon.category)] then
+					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..string.upper(addon.category)])
+					ptext:SetPoint('TOPLEFT', Categories[addon.category].frame, "TOPLEFT", 10, -10)
 				end
 			end
-		end
-		
-		for _,v in ipairs(DBM.AddOns) do
-			if not DBM_GUI_Categories[v.category][v.modId] then
-				DBM_GUI_Categories[v.category][v.modId] = DBM_GUI_Categories[v.category]:CreateNewPanel(v.name or "Error: X-DBM-Mod-Name")
+			
+			if not addon.panel then
+				addon.panel = Categories[addon.category]:CreateNewPanel(addon.name or "Error: X-DBM-Mod-Name")
 
-				local button = DBM_GUI_Categories[v.category][v.modId]:CreateButton("Load AddOn", 200, 30)
-				button:SetScript("OnClick", function(self) 
-					if DBM:LoadMod(v) then 
-						self:Hide(); 
-						DBM_GUI_OptionsFrameBossMods:Hide()
-						DBM_GUI_OptionsFrameBossMods:Show()
-
-						local ptext = DBM_GUI_Categories[v.category][v.modId]:CreateText(L.BossModLoaded)
-						ptext:SetPoint('TOPLEFT', DBM_GUI_Categories[v.category][v.modId].frame, "TOPLEFT", 10, -10)
-
-					end  
-				end)
-				button:SetPoint('CENTER', 0, -20)
-				
+				if not IsAddOnLoaded(addon.modId) then
+					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
+					button.modid = addon
+					button:SetScript("OnClick", LoadAddOn_Button)
+					button:SetPoint('CENTER', 0, -20)
+				else
+					local ptext = addon.panel:CreateText(L.BossModLoaded)
+					ptext:SetPoint('TOPLEFT', addon.panel.frame, "TOPLEFT", 10, -10)
+				end
 			end
-	
-			for _, v2 in ipairs(DBM.Mods) do
-				if v2.modId == v.modId then
-					if not DBM_GUI_Categories[v.category][v.modId][v2.localization.general.name] then
-						DBM_GUI_Categories[v.category][v.modId][v2.localization.general.name] = DBM_GUI_Categories[v.category][v.modId]:CreateNewPanel(v2.localization.general.name or "Error: DBM.Mods")
+
+			for _, mod in ipairs(DBM.Mods) do
+				if mod.modId == addon.modId then
+					if not mod.panel then
+						mod.panel = addon.panel:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
+						DBM_GUI:CreateBossModTab(mod)
 					end
 				end
+			end	
+		end
+	end
+
+
+	function DBM_GUI:CreateBossModTab(mod)
+		DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
+		local panel = mod.panel
+
+		for catname, category in pairs(mod.optionCategories) do
+
+			local catpanel = panel:CreateArea(catname, 365, 140, true)
+			for _,v in ipairs(category) do
+
+				if type(mod.Options[v]) == "boolean" then
+
+					local button = catpanel:CreateCheckButton(mod.localization.options[v], true)
+
+					button:SetScript("OnShow",  function(self) 
+									self:SetChecked(mod.Options[v]) 
+								    end)
+
+					button:SetScript("OnClick", function(self) 
+									if mod.Options[v] then 
+										mod.Options[v] = false 
+									else 
+										mod.Options[v] = true
+									end 
+									self:SetChecked(mod.Options[v]) 
+								    end)
+				end
+
+				--catpanel:Checksize()  -- FIXME
 			end
 		end
-
 	end
+
 end
 
