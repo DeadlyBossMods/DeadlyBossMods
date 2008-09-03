@@ -706,9 +706,9 @@ end
 local bossModPrototype = {}
 
 
--------------------
---  Constructor  --
--------------------
+----------------------------
+--  Boss Mod Constructor  --
+----------------------------
 do
 	local modsById = {}
 	local mt = {__index = bossModPrototype}
@@ -804,7 +804,7 @@ do
 	function bossModPrototype:NewAnnounce(text, color, optionDefault, optionName)
 		local obj = setmetatable(
 			{
-				text = self.localization.warnings[text] or text or "",
+				text = self.localization.warnings[text],
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				option = optionName or text,
 				mod = self,
@@ -814,7 +814,7 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddOption(optionName or text, optionDefault, "announce")
+			self:AddBoolOption(optionName or text, optionDefault, "announce")
 		end
 		table.insert(self.announces, obj)
 		return obj
@@ -868,7 +868,7 @@ do
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
 		local obj = setmetatable(
 			{
-				text = self.localization.timers[name] or name,
+				text = self.localization.timers[name],
 				timer = timer,
 				id = name,
 				icon = icon,
@@ -884,12 +884,13 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddOption(optionName or name, optionDefault, "timer")
+			self:AddBoolOption(optionName or name, optionDefault, "timer")
 		end
 		table.insert(self.timers, obj)
 		return obj
 	end
 end
+
 
 ---------------------
 --  Enrage Object  --
@@ -938,10 +939,11 @@ do
 	end
 end
 
+
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddOption(name, default, cat)
+function bossModPrototype:AddBoolOption(name, default, cat)
 	cat = cat or "misc"
 	self.Options[name] = (default == nil) or default
 	self.optionCategories[cat] = self.optionCategories[cat] or {}
@@ -1060,6 +1062,15 @@ end
 do
 	local modLocalizations = {}
 	local modLocalizationPrototype = {}
+	local mt = {__index = modLocalizationPrototype}
+	local defaultCatLocalization = {
+		timer		= DBM_CORE_OPTION_CATEGORY_TIMERS,
+		announce	= DBM_CORE_OPTION_CATEGORY_WARNINGS,
+		misc		= DBM_CORE_OPTION_CATEGORY_MISC
+	}
+	local catMT = {__index = defaultCatLocalization}
+	local returnKeyMT = {__index = function(t, k) return k end}
+	setmetatable(defaultCatLocalization, returnKeyMT)
 	
 	function modLocalizationPrototype:SetGeneralLocalization(t)
 		for i, v in pairs(t) do
@@ -1085,26 +1096,30 @@ do
 		end
 	end
 	
+	function modLocalizationPrototype:SetOptionCatLocalization(t)
+		for i, v in pairs(t) do
+			self.cats[i] = v
+		end
+	end
+	
 	function modLocalizationPrototype:SetMiscLocalization(t)
 		for i, v in pairs(t) do
 			self.miscStrings[i] = v
 		end
 	end
 
-	do
-		local mt = {__index = modLocalizationPrototype}
-		function DBM:CreateModLocalization(name)
-			local obj = {
-				general = {},
-				warnings = {},
-				options = {},
-				timers = {},
-				miscStrings = {}
-			}
-			setmetatable(obj, mt)
-			modLocalizations[name] = obj
-			return obj
-		end
+	function DBM:CreateModLocalization(name)
+		local obj = {
+			general = setmetatable({}, returnKeyMT),
+			warnings = setmetatable({}, returnKeyMT),
+			options = setmetatable({}, returnKeyMT),
+			timers = setmetatable({}, returnKeyMT),
+			miscStrings = setmetatable({}, returnKeyMT),
+			cats = setmetatable({}, catMT),
+		}
+		setmetatable(obj, mt)
+		modLocalizations[name] = obj
+		return obj
 	end
 	
 	function DBM:GetModLocalization(name)
