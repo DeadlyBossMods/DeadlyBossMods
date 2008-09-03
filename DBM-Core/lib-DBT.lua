@@ -41,7 +41,7 @@ local function stringFromTimer(t)
 	if t <= 60 then
 		return ("%.1f"):format(t)
 	else
-		return ("%d:%d"):format(t/60, math.fmod(t, 60))
+		return ("%d:%0.2d"):format(t/60, math.fmod(t, 60))
 	end
 end
 
