@@ -479,7 +479,7 @@ do
 		for i, v in ipairs(DBM.Mods) do
 			if not v.initialized then
 				v.initialized = true
-				if DBM_GUI then DBM_GUI:CreateBossModTab(v) end
+				-- if DBM_GUI then DBM_GUI:CreateBossModTab(v) end -- VERY STRANGE BEHAVIOR
 				-- TODO: load stuff
 			end
 		end
