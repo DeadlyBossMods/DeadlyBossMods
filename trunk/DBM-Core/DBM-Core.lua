@@ -674,9 +674,11 @@ function DBM:EndCombat(wipe)
 	end
 end
 
-function DBM:UNIT_DIED(event, args) -- TODO: add support for multi-mob bosses
+function DBM:UNIT_DIED(args) -- TODO: add support for multi-mob bosses
 	if #inCombat > 0 and bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
+		DBM:AddMsg(args.destGUID)
 		local cId = tonumber(args.destGUID:sub(9, 12), 16)
+		DBM:AddMsg(cId)
 		for i = #inCombat, 1, -1 do
 			local v = inCombat[i]
 			local killId = v.killMob or v.mob
