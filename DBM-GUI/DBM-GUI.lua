@@ -829,41 +829,75 @@ do
 
 						mobstyle = mod.panel:CreateCreatureModelFrame(375, 400, mod.creatureId)
 						mobstyle:SetPoint("BOTTOMRIGHT", mod.panel.frame, "BOTTOMRIGHT", -5, 5)
-						mobstyle:SetUnit("player")
-						mobstyle:SetModelScale(0.5)
+						mobstyle:SetModelScale(0.25)
 
-						mobstyle.playanimations = { {animation = 4, time = 2000}, 				-- hogger moves
-									    {animation = 0, time = 500, endfacing = 90 }, 		-- hogger rotate
-									    {animation = 1, time = 2000},  				-- hogger dies
+						mobstyle.playanimations = { {set_y = 0.30, set_x = 1, setfacing = -90, setalpha = 1},
+									    -- {time = 10000},  -- just wait 10 seconds
+									    {animation = 4, time = 1500, move_x = -0.7},
+									    {setfacing = 0},
+									    --{animation = 0, time = 2000, randomanimation = {45,46,47}},
+									    {animation = 0, time = 10000,},
+									    --{animation = 0, time = 10, endfacing = -90 },
+									    {setfacing = -90},
+									    {animation = 4, time = 3000, move_x = -1.5},
+									    {setfacing = 0},
+									    {animation = 0, time = 10000,},
+									    {animation = 1, time = 2000},
+									    {animation = 6, time = 2000, toalpha = 0},
 						} 
 						mobstyle.animationtime = 0 
-						mobstyle.animation = 0
 						mobstyle.animationpos = 0
 						mobstyle.rotation = 0
+						mobstyle.pos_x = 0
+						mobstyle.pos_y = 0
+						mobstyle.pos_z = 0
+						mobstyle.alpha = 1
 
 						mobstyle:SetScript("OnUpdate", function(self, e)
-							if self.animationpos == 0 then
-								self.animationpos = 1
-								self.animation = self.playanimations[1].animation
-								self.animationtime = 0
-							end
-							if self.animationtime > self.playanimations[self.animationpos].time then
+							self.animationtime = self.animationtime + e * 1000  
+							if self.animationpos == 0 or self.animationtime >= (self.playanimations[self.animationpos].time or 0) then
 								self.animationpos = self.animationpos + 1
+								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].setfacing then
+									self:SetFacing(self.playanimations[self.animationpos].setfacing*math.pi/180)
+								end
+								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].setalpha then
+									self:SetAlpha(self.playanimations[self.animationpos].setalpha)
+								end
+								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].set_y then
+									self.pos_y = self.playanimations[self.animationpos].set_y
+									self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
+								end
+								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].set_x then
+									self.pos_x = self.playanimations[self.animationpos].set_x
+									self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
+								end
+								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].set_z then
+									self.pos_z = self.playanimations[self.animationpos].set_z
+									self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
+								end
+
 								if self.animationpos > #self.playanimations then
-									self.animationpos = 1 
+									self.animationpos = 0 
 									self:SetFacing(0)
-									--self.playanimations[self.animationpos].animation = self.playanimations[self.animationpos].animation + 1
+									self:SetPosition(0,0,0)
+									self.pos_x = 0
+									self.pos_y = 0
+									self.pos_z = 0
+									self.alpha = 1
+									self:SetAlpha(0)
+									return 
 								end
 								self.rotation = self:GetFacing()
-								self.animation = self.playanimations[self.animationpos].animation
+								if self.playanimations[self.animationpos].randomanimation then
+									self.playanimations[self.animationpos].animation = self.playanimations[self.animationpos].randomanimation[math.random(1, #self.playanimations[self.animationpos].randomanimation)]
+								end
 								self.animationtime = 0
-								DBM:AddMsg( "Starting Animation #"..self.animationpos.." with Animation #"..self.animation )
-								self:SetSequence(self.animation)
+								self.playanimations[self.animationpos].animation = self.playanimations[self.animationpos].animation or 0
+								self:SetSequence(self.playanimations[self.animationpos].animation)
 							end
 
-							self.animationtime = self.animationtime + e * 1000  
-							if self.animation > 0 then
-								self:SetSequenceTime(self.animation,  self.animationtime) 
+							if self.playanimations[self.animationpos].animation > 0 then
+								self:SetSequenceTime(self.playanimations[self.animationpos].animation,  self.animationtime) 
 							end
 						
 							if self.playanimations[self.animationpos].endfacing then -- not self.playanimations[self.animationpos].endfacing == self:GetFacing() 
@@ -873,6 +907,22 @@ do
 											)
 
 								self:SetRotation( self.rotation )							
+							end
+							if self.playanimations[self.animationpos].move_x then
+								self.pos_x = self.pos_x + (self.playanimations[self.animationpos].move_x / (self.playanimations[self.animationpos].time/1000) ) * e
+								self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
+							end
+							if self.playanimations[self.animationpos].move_y then
+								self.pos_y = self.pos_y + (self.playanimations[self.animationpos].move_y / (self.playanimations[self.animationpos].time/1000) ) * e
+								self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
+							end
+							if self.playanimations[self.animationpos].move_z then
+								self.pos_z = self.pos_z + (self.playanimations[self.animationpos].move_z / (self.playanimations[self.animationpos].time/1000) ) * e
+								self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
+							end
+							if self.playanimations[self.animationpos].toalpha then
+								self.alpha = self.alpha - ((1 - self.playanimations[self.animationpos].toalpha) / (self.playanimations[self.animationpos].time/1000) ) * e
+								self:SetAlpha(self.alpha)
 							end
 
 						end)
