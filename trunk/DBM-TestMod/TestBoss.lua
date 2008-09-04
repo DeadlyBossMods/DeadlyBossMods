@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("The Test Mod", "DBM-TestMod")
 local L = mod:GetLocalizedStrings()
 
-mod:SetModelScale(0.75)
+mod:SetModelScale(0.25)
 mod:SetModelOffset(0, 0, 0)
 mod:SetModelWalkSequence(4)
 mod:SetModelIdleSquences(16, 18, 2, 1)
