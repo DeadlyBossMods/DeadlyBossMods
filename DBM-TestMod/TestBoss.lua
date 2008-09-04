@@ -1,13 +1,14 @@
 local mod = DBM:NewMod("The Test Mod", "DBM-TestMod")
-
 local L = mod:GetLocalizedStrings()
 
+mod:SetModelScale(0.75)
+mod:SetModelOffset(0, 0, 0)
+mod:SetModelWalkSequence(4)
+mod:SetModelIdleSquences(16, 18, 2, 1)
+
 mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
-
 mod:SetCreatureID(448)
-
-mod:RegisterCombat("combat")
-
+mod:RegisterCombat("combat", nil, 478, 448)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
@@ -21,6 +22,10 @@ local testWarning4 = mod:NewAnnounce("shield_removed", 3)
 local testTimer1 = mod:NewTimer(30, "shield_timer")
 
 local enrageTest = mod:NewEnrageTimer(600)
+
+mod:AddBoolOption("test1")
+mod:SetOptionCategory("shield_applied", "lol!")
+
 
 function mod:OnCombatStart(delay)
 	self:AddMsg(delay)

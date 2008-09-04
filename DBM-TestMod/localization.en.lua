@@ -22,6 +22,7 @@ L:SetOptionLocalization({
 	shield_expire	= "shield_expire (localized)",
 	testoption		= "testoption (localized)",
 	shield_removed	= "shield_removed (localized)",
+	shield_timer	= "test (localized)"
 })
 
 L:SetMiscLocalization({
