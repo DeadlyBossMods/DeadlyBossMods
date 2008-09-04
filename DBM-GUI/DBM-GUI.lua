@@ -371,7 +371,11 @@ do
 			need_height = need_height + child:GetHeight()
 		end
 		if #kids == 1 then
-			need_height = need_height + 20
+			need_height = need_height + 18
+		elseif #kids == 2 then
+			need_height = need_height + 10
+		else
+			need_height = need_height + 3
 		end
 	
 		self.frame:SetHeight(need_height)
@@ -724,8 +728,8 @@ function DBM_GUI:CreateOptionsMenu()
 		color4text:SetJustifyH("CENTER")
 	
 	
-		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 330, false)
-		infotext:SetPoint('TOPLEFT', 15, -120)
+		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 340, false)
+		infotext:SetPoint('TOPLEFT', 10, -120)
 		infotext:SetJustifyH("LEFT")
 		infotext:SetFontObject(GameFontNormalSmall);
 	
@@ -754,18 +758,10 @@ function DBM_GUI:CreateOptionsMenu()
 		-- END MAINPAGE
 	end
 	do
-		local TestMenu = DBM_GUI_Frame:CreateNewPanel("Model Test", "option")
-		local bossmodelzone = TestMenu:CreateArea("ModelFrame", 140, 240, true)
-		
-		GUI_model = bossmodelzone:CreateCreatureModelFrame()
-		GUI_model:SetPoint('TOPLEFT', 20, -20)
-	end	
-	do
 		local BarSetup = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
 		local dummybar = DBM.Bars:CreateDummyBar()
 		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, -50)
-		dummybar.frame:SetFrameStrata("TOOLTIP")
 		dummybar.frame:SetParent(BarSetup.frame)
 		dummybar:SetTimer(100)
 		dummybar:SetElapsed(20)
@@ -829,100 +825,137 @@ do
 
 						mobstyle = mod.panel:CreateCreatureModelFrame(375, 400, mod.creatureId)
 						mobstyle:SetPoint("BOTTOMRIGHT", mod.panel.frame, "BOTTOMRIGHT", -5, 5)
-						mobstyle:SetModelScale(0.25)
+						mobstyle:SetModelScale(mod.modelScale or 0.25)
 
-						mobstyle.playanimations = { {set_y = 0.30, set_x = 1, setfacing = -90, setalpha = 1},
-									    -- {time = 10000},  -- just wait 10 seconds
-									    {animation = 4, time = 1500, move_x = -0.7},
-									    {setfacing = 0},
-									    --{animation = 0, time = 2000, randomanimation = {45,46,47}},
-									    {animation = 0, time = 10000,},
-									    --{animation = 0, time = 10, endfacing = -90 },
-									    {setfacing = -90},
-									    {animation = 4, time = 3000, move_x = -1.5},
-									    {setfacing = 0},
-									    {animation = 0, time = 10000,},
-									    {animation = 1, time = 2000},
-									    {animation = 6, time = 2000, toalpha = 0},
+						mobstyle.playlist = { 	-- start animation outside of our fov    
+									{set_y = 0.30, set_x = 1, setfacing = -90, setalpha = 1},
+									-- wait outside fov befor begining
+									{mintime = 1000, maxtime = 7000},	-- randomtime to wait
+									-- {time = 10000},  			-- just wait 10 seconds
+
+									-- move in the fov and to waypoint #1
+									{animation = 4, time = 1500, move_x = -0.7},
+									--{animation = 0, time = 10, endfacing = -90 }, -- rotate in an animation
+
+									-- stay on waypoint #1 
+									{setfacing = 0},
+									{animation = 0, time = 10000},
+									--{animation = 0, time = 2000, randomanimation = {45,46,47}},	-- play a random emote
+
+									-- move to next waypoint
+									{setfacing = -90},
+									{animation = 4, time = 3000, move_x = -1.5},
+
+									-- stay on waypoint #2
+									{setfacing = 0},
+									{animation = 0, time = 10000,},
+									 
+									-- move to the horizont
+									{setfacing = 180},
+									{animation = 4, time = 10000, move_z = 1, move_x = 0.375, toscale=0.05},
+
+									-- die and despawn
+									{animation = 1, time = 2000},
+									{animation = 6, time = 2000, toalpha = 0},
+
+									-- we want so sleep a little while on animation end
+									{mintime = 1000, maxtime = 3000},
 						} 
-						mobstyle.animationtime = 0 
-						mobstyle.animationpos = 0
+						mobstyle.atime = 0 
+						mobstyle.apos = 0
 						mobstyle.rotation = 0
+						mobstyle.modelOffsetX = mod.modelOffsetX or 0
+						mobstyle.modelOffsetY = mod.modelOffsetY or 0
+						mobstyle.modelOffsetZ = mod.modelOffsetZ or 0
+						mobstyle.modelscale = mod.modelScale or 0.25
 						mobstyle.pos_x = 0
 						mobstyle.pos_y = 0
 						mobstyle.pos_z = 0
 						mobstyle.alpha = 1
+						mobstyle.scale = mobstyle.modelscale 
 
 						mobstyle:SetScript("OnUpdate", function(self, e)
-							self.animationtime = self.animationtime + e * 1000  
-							if self.animationpos == 0 or self.animationtime >= (self.playanimations[self.animationpos].time or 0) then
-								self.animationpos = self.animationpos + 1
-								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].setfacing then
-									self:SetFacing(self.playanimations[self.animationpos].setfacing*math.pi/180)
+							self.atime = self.atime + e * 1000  
+							if self.apos == 0 or self.atime >= (self.playlist[self.apos].time or 0) then
+								self.apos = self.apos + 1
+								if self.apos <= #self.playlist and self.playlist[self.apos].setfacing then
+									self:SetFacing(self.playlist[self.apos].setfacing*math.pi/180)
 								end
-								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].setalpha then
-									self:SetAlpha(self.playanimations[self.animationpos].setalpha)
+								if self.apos <= #self.playlist and self.playlist[self.apos].setalpha then
+									self:SetAlpha(self.playlist[self.apos].setalpha)
 								end
-								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].set_y then
-									self.pos_y = self.playanimations[self.animationpos].set_y
+								if self.apos <= #self.playlist and self.playlist[self.apos].set_y then
+									self.pos_y = self.playlist[self.apos].set_y
 									self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 								end
-								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].set_x then
-									self.pos_x = self.playanimations[self.animationpos].set_x
+								if self.apos <= #self.playlist and self.playlist[self.apos].set_x then
+									self.pos_x = self.playlist[self.apos].set_x
 									self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 								end
-								if self.animationpos <= #self.playanimations and self.playanimations[self.animationpos].set_z then
-									self.pos_z = self.playanimations[self.animationpos].set_z
+								if self.apos <= #self.playlist and self.playlist[self.apos].set_z then
+									self.pos_z = self.playlist[self.apos].set_z
 									self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 								end
 
-								if self.animationpos > #self.playanimations then
-									self.animationpos = 0 
-									self:SetFacing(0)
-									self:SetPosition(0,0,0)
-									self.pos_x = 0
-									self.pos_y = 0
-									self.pos_z = 0
+								if self.apos > #self.playlist then
+									self.apos = 0 
+									self.pos_x = self.modelOffsetX
+									self.pos_y = self.modelOffsetY
+									self.pos_z = self.modelOffsetZ
 									self.alpha = 1
+									self.scale = self.modelscale
+									self:SetFacing(0)
+									self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 									self:SetAlpha(0)
+									self:SetModelScale(self.scale)
 									return 
 								end
 								self.rotation = self:GetFacing()
-								if self.playanimations[self.animationpos].randomanimation then
-									self.playanimations[self.animationpos].animation = self.playanimations[self.animationpos].randomanimation[math.random(1, #self.playanimations[self.animationpos].randomanimation)]
+								if self.playlist[self.apos].randomanimation then
+									self.playlist[self.apos].animation = self.playlist[self.apos].randomanimation[math.random(1, #self.playlist[self.apos].randomanimation)]
 								end
-								self.animationtime = 0
-								self.playanimations[self.animationpos].animation = self.playanimations[self.animationpos].animation or 0
-								self:SetSequence(self.playanimations[self.animationpos].animation)
+								if self.playlist[self.apos].mintime and self.playlist[self.apos].maxtime then
+									self.playlist[self.apos].time = math.random(self.playlist[self.apos].mintime, self.playlist[self.apos].maxtime)
+								end
+
+
+								self.atime = 0
+								self.playlist[self.apos].animation = self.playlist[self.apos].animation or 0
+								self:SetSequence(self.playlist[self.apos].animation)
 							end
 
-							if self.playanimations[self.animationpos].animation > 0 then
-								self:SetSequenceTime(self.playanimations[self.animationpos].animation,  self.animationtime) 
+							if self.playlist[self.apos].animation > 0 then
+								self:SetSequenceTime(self.playlist[self.apos].animation,  self.atime) 
 							end
 						
-							if self.playanimations[self.animationpos].endfacing then -- not self.playanimations[self.animationpos].endfacing == self:GetFacing() 
+							if self.playlist[self.apos].endfacing then -- not self.playlist[self.apos].endfacing == self:GetFacing() 
 								self.rotation = self.rotation + (e * 2 * math.pi * -- Rotations per second
-											((self.playanimations[self.animationpos].endfacing/360)
-											/ (self.playanimations[self.animationpos].time/1000))
+											((self.playlist[self.apos].endfacing/360)
+											/ (self.playlist[self.apos].time/1000))
 											)
 
 								self:SetRotation( self.rotation )							
 							end
-							if self.playanimations[self.animationpos].move_x then
-								self.pos_x = self.pos_x + (self.playanimations[self.animationpos].move_x / (self.playanimations[self.animationpos].time/1000) ) * e
+							if self.playlist[self.apos].move_x then
+								self.pos_x = self.pos_x + (self.playlist[self.apos].move_x / (self.playlist[self.apos].time/1000) ) * e
 								self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 							end
-							if self.playanimations[self.animationpos].move_y then
-								self.pos_y = self.pos_y + (self.playanimations[self.animationpos].move_y / (self.playanimations[self.animationpos].time/1000) ) * e
+							if self.playlist[self.apos].move_y then
+								self.pos_y = self.pos_y + (self.playlist[self.apos].move_y / (self.playlist[self.apos].time/1000) ) * e
 								self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 							end
-							if self.playanimations[self.animationpos].move_z then
-								self.pos_z = self.pos_z + (self.playanimations[self.animationpos].move_z / (self.playanimations[self.animationpos].time/1000) ) * e
+							if self.playlist[self.apos].move_z then
+								self.pos_z = self.pos_z + (self.playlist[self.apos].move_z / (self.playlist[self.apos].time/1000) ) * e
 								self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 							end
-							if self.playanimations[self.animationpos].toalpha then
-								self.alpha = self.alpha - ((1 - self.playanimations[self.animationpos].toalpha) / (self.playanimations[self.animationpos].time/1000) ) * e
+							if self.playlist[self.apos].toalpha then
+								self.alpha = self.alpha - ((1 - self.playlist[self.apos].toalpha) / (self.playlist[self.apos].time/1000) ) * e
 								self:SetAlpha(self.alpha)
+							end
+							if self.playlist[self.apos].toscale then
+								self.scale = self.scale - ((self.modelscale - self.playlist[self.apos].toscale) / (self.playlist[self.apos].time/1000) ) * e
+								if self.scale < 0 then self.scale = 0.01 end
+								self:SetModelScale(self.scale)
 							end
 
 						end)
@@ -940,10 +973,12 @@ do
 		end
 		DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
 		local panel = mod.panel
+		local category
 
-		for catname, category in pairs(mod.optionCategories) do
+		for _, catident in pairs(mod.categorySort) do
+			category = mod.optionCategories[catident]
 
-			local catpanel = panel:CreateArea(mod.localization.cats[catname], 365, 140, true)
+			local catpanel = panel:CreateArea(mod.localization.cats[catident], 365, 140, true)
 			for _,v in ipairs(category) do
 
 				if type(mod.Options[v]) == "boolean" then
