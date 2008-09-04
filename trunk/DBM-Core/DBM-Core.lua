@@ -29,6 +29,7 @@
 DBM = {}
 
 DBM_SavedOptions = {}
+DBM_SavedModOptions = {}
 
 DBM.DefaultOptions = {
 	WarningColors = {
@@ -73,11 +74,14 @@ local function checkEntry(t, val)
 end
 
 local function removeEntry(t, val)
+	local existed = false
 	for i = #t, 1, -1 do
 		if t[i] == val then
 			table.remove(t, i)
+			existed = true
 		end
 	end
+	return existed
 end
 
 local function sendSync(prefix, msg)
@@ -87,6 +91,16 @@ local function sendSync(prefix, msg)
 		SendAddonMessage(prefix, msg, "RAID")
 	else
 		SendAddonMessage(prefix, msg, "PARTY")
+	end
+end
+
+local function strFromTime(time)
+	if time < 60 then
+		return DBM_TIMER_FORMAT_SECS:format(time)
+	elseif time % 60 == 0 then
+		return DBM_TIMER_FORMAT_MINS:format(time/60)
+	else
+		return DBM_TIMER_FORMAT:format(time/60, time % 60)
 	end
 end
 
@@ -478,9 +492,12 @@ do
 	function loadModOptions()
 		for i, v in ipairs(DBM.Mods) do
 			if not v.initialized then
+				DBM_SavedModOptions[v.id] = DBM_SavedModOptions[v.id] or v.Options
+				for option, optionValue in pairs(v.Options) do
+					DBM_SavedModOptions[v.id][option] = DBM_SavedModOptions[v.id][option] or optionValue
+				end
+				DBM_SavedModOptions[v.id] = v.Options
 				v.initialized = true
-				-- if DBM_GUI then DBM_GUI:CreateBossModTab(v) end -- VERY STRANGE BEHAVIOR
-				-- TODO: load stuff
 			end
 		end
 	end
@@ -559,13 +576,16 @@ function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 			if mod and event and arg then
 				mod:ReceiveSync(event, arg, sender)
 			end
-		elseif prefix == "DBMv4-Combat" then
+		elseif prefix == "DBMv4-Pull" then
 			local delay, mod = strsplit("\t", msg)
 			delay = tonumber(delay or 0) or 0
 			mod = self:GetModByName(mod or "")
 			if mod and delay then
 				self:StartCombat(mod, delay, true)
 			end
+		elseif prefix == "DBMv4-Kill" then
+			local cId = tonumber(msg)
+			if cId then self:OnMobKill(cId, true) end
 		end
 	end
 end
@@ -640,7 +660,9 @@ do
 			if not wipe then
 				DBM:Schedule(3, checkWipe)
 			elseif confirm then
-				DBM:EndCombat(true)
+				for i = #inCombat, 1, -1 do
+					DBM:EndCombat(inCombat[i], true)
+				end
 			else
 				DBM:Schedule(5, checkWipe, true)
 			end
@@ -654,38 +676,50 @@ do
 			mod.inCombat = true
 			if mod.OnCombatStart then mod:OnCombatStart(delay or 0) end
 			mod.combatInfo.pull = GetTime() - (delay or 0)
-			self:Schedule(mod.combatInfo.minCombatTime or 3, checkWipe)
+			self:Schedule(mod.minCombatTime or 3, checkWipe)
 			if not synced then
-				sendSync("DBMv4-Combat", (delay or 0).."\t"..mod.id)
+				sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
 			end
 		end
 	end
 end
 
-function DBM:EndCombat(wipe)
-	if #inCombat > 0 then
-		for i = #inCombat, 1, -1 do
-			local v = inCombat[i]
-			if v.OnCombatEnd then v:OnCombatEnd(wipe) end
-			v.inCombat = false
-			self:AddMsg(((wipe and DBM_COMBAT_ENDED) or DBM_BOSS_DOWN):format(v.combatInfo.name, GetTime() - v.combatInfo.pull))
-			inCombat[i] = nil
+function DBM:EndCombat(mod, wipe)
+	if removeEntry(inCombat, mod) then
+		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
+		mod.inCombat = false
+		if mod.combatInfo.killMobs then
+			for i, v in pairs(mod.combatInfo.killMobs) do
+				mod.combatInfo.killMobs[i] = true
+			end
+		end
+		self:AddMsg(((wipe and DBM_COMBAT_ENDED) or DBM_BOSS_DOWN):format(mod.combatInfo.name, strFromTime(GetTime() - mod.combatInfo.pull)))
+	end
+end
+
+function DBM:OnMobKill(cId, synced)
+	for i = #inCombat, 1, -1 do
+		local v = inCombat[i]
+		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
+			if not synced then sendSync("DBMv4-Kill", cId) end
+			v.combatInfo.killMobs[cId] = false
+			local allMobsDown = true
+			for i, v in pairs(v.combatInfo.killMobs) do
+				if v then allMobsDown = false break end
+			end
+			if allMobsDown then
+				self:EndCombat(v)
+			end
+		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs then
+			if not synced then sendSync("DBMv4-Kill", cId) end
+			self:EndCombat(v)
 		end
 	end
 end
 
-function DBM:UNIT_DIED(args) -- TODO: add support for multi-mob bosses
-	if #inCombat > 0 and bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
-		DBM:AddMsg(args.destGUID)
-		local cId = tonumber(args.destGUID:sub(9, 12), 16)
-		DBM:AddMsg(cId)
-		for i = #inCombat, 1, -1 do
-			local v = inCombat[i]
-			local killId = v.killMob or v.mob
-			if killId == cId then
-				self:EndCombat()
-			end
-		end
+function DBM:UNIT_DIED(args)
+	if bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
+		self:OnMobKill(tonumber(args.destGUID:sub(9, 12), 16))
 	end
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
@@ -735,6 +769,7 @@ do
 				},
 				optionCategories = {
 				},
+				categorySort = {},
 				id = name,
 				announces = {},
 				timers = {},
@@ -757,7 +792,7 @@ end
 -----------------------
 --  General Methods  --
 -----------------------
-bossModPrototype.RegisterEvents = DBM.RegisterEvents	
+bossModPrototype.RegisterEvents = DBM.RegisterEvents
 bossModPrototype.AddMsg = DBM.AddMsg
 
 function bossModPrototype:SetZone(...)
@@ -937,9 +972,9 @@ do
 	end	
 	
 	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
-		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, false)
-		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, false)
-		local bar = self:NewTimer(timer or 600, barText or DBM_CORE_GENERIC_TIMER_ENRAGE, barIcon or 28131, nil, false)
+		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, "enrage")
+		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, "enrage")
+		local bar = self:NewTimer(timer or 600, barText or DBM_CORE_GENERIC_TIMER_ENRAGE, barIcon or 28131, nil, "enrage")
 		local obj = setmetatable(
 			{
 				warning1 = warning1,
@@ -961,26 +996,36 @@ end
 function bossModPrototype:AddBoolOption(name, default, cat)
 	cat = cat or "misc"
 	self.Options[name] = (default == nil) or default
-	self.optionCategories[cat] = self.optionCategories[cat] or {}
-	table.insert(self.optionCategories[cat], name)
+	self:SetOptionCategory(name, cat)
 end
 
 function bossModPrototype:SetOptionCategory(name, cat)
+	for _, options in pairs(self.optionCategories)do
+		removeEntry(options, name)
+	end
+	if not self.optionCategories[cat] then
+		self.optionCategories[cat] = {}
+		table.insert(self.categorySort, cat)
+	end
+	table.insert(self.optionCategories[cat], name)
 end
 
 
 --------------
 --  Combat  --
 --------------
-function bossModPrototype:RegisterCombat(type, mob, name, killMob, minCombatTime)
+function bossModPrototype:RegisterCombat(type, mob, ...)
 	local info = {
 		type = type,
 		mob = mob or self.creatureId,
-		name = name or self.localization.general.name or self.id,
-		killMob = killMob,
+		name = self.localization.general.name or self.id,
+		killMobs = select("#", ...) > 0 and {},
 		minCombatTime = minCombatTime,
 		mod = self
 	}
+	for i = 1, select("#", ...) do
+		info.killMobs[select(i, ...)] = true
+	end
 	self.combatInfo = info
 	for i, v in ipairs(self.zones) do
 		combatInfo[v] = combatInfo[v] or {}
@@ -990,6 +1035,10 @@ end
 
 function bossModPrototype:IsInCombat()
 	return self.inCombat
+end
+
+function bossModPrototype:SetMinCombatTime(t)
+	self.minCombatTime = t
 end
 
 
@@ -1066,6 +1115,27 @@ function bossModPrototype:RemoveIcon(target, timer)
 	self:SetIcon(target, 0, timer)
 end
 
+-----------------------
+--  Model Functions  --
+-----------------------
+function bossModPrototype:SetModelScale(scale)
+	self.modelScale = scale
+end
+
+function bossModPrototype:SetModelOffset(x, y, z)
+	self.modelOffsetX = x
+	self.modelOffsetY = y
+	self.modelOffsetZ = z
+end
+
+function bossModPrototype:SetModelWalkSequence(id)
+	self.walkSequence = id
+end
+
+function bossModPrototype:SetModelIdleSquences(...)
+	self.idleSequences = {...}
+end
+
 
 --------------------
 --  Localization  --
@@ -1078,14 +1148,24 @@ do
 	local modLocalizations = {}
 	local modLocalizationPrototype = {}
 	local mt = {__index = modLocalizationPrototype}
+	local returnKey = {__index = function(t, k) return k end}
 	local defaultCatLocalization = {
-		timer		= DBM_CORE_OPTION_CATEGORY_TIMERS,
-		announce	= DBM_CORE_OPTION_CATEGORY_WARNINGS,
-		misc		= DBM_CORE_OPTION_CATEGORY_MISC
+		__index = setmetatable({
+			timer		= DBM_CORE_OPTION_CATEGORY_TIMERS,
+			announce	= DBM_CORE_OPTION_CATEGORY_WARNINGS,
+			misc		= DBM_CORE_OPTION_CATEGORY_MISC
+		}, returnKey)
 	}
-	local catMT = {__index = defaultCatLocalization}
-	local returnKeyMT = {__index = function(t, k) return k end}
-	setmetatable(defaultCatLocalization, returnKeyMT)
+	local defaultTimerLocalization = {
+		__index = setmetatable({
+			enrage = DBM_CORE_OPTION_TIMER_ENRAGE
+		}, returnKey)
+	}
+	local defaultAnnounceLocalization = {
+		__index = setmetatable({
+			enrage = DBM_CORE_OPTION_BAR_ENRAGE
+		}, returnKey)
+	}
 	
 	function modLocalizationPrototype:SetGeneralLocalization(t)
 		for i, v in pairs(t) do
@@ -1125,12 +1205,12 @@ do
 
 	function DBM:CreateModLocalization(name)
 		local obj = {
-			general = setmetatable({}, returnKeyMT),
-			warnings = setmetatable({}, returnKeyMT),
-			options = setmetatable({}, returnKeyMT),
-			timers = setmetatable({}, returnKeyMT),
-			miscStrings = setmetatable({}, returnKeyMT),
-			cats = setmetatable({}, catMT),
+			general = setmetatable({}, returnKey),
+			warnings = setmetatable({}, defaultAnnounceLocalization),
+			options = setmetatable({}, returnKey),
+			timers = setmetatable({}, defaultTimerLocalization),
+			miscStrings = setmetatable({}, returnKey),
+			cats = setmetatable({}, defaultCatLocalization),
 		}
 		setmetatable(obj, mt)
 		modLocalizations[name] = obj
@@ -1141,6 +1221,7 @@ do
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
 end
+
 
 -------------------------------------------------
 --  DEBUG STUFF//REMOVE FROM RELEASE VERSIONS  --
@@ -1153,15 +1234,19 @@ local function serialize(v)
     end
 end
 
-function print_t(t, d)
+function print_t(t, d, cache)
     d = d or 1
+	cache = cache or {}
+	cache[t] = true
     if d == 1 then
         DBM:AddMsg("{")
     end
     for i, v in pairs(t) do
-        if type(v) == "table" then
+        if type(v) == "table" and cache[v] then
+			DBM:AddMsg(("%s[%s] = %s,"):format((" "):rep(d * 3), serialize(i), serialize(v)))
+		elseif type(v) == "table" then
             DBM:AddMsg(("%s[%s] = {"):format((" "):rep(d * 3), serialize(i)))
-            print_t(v, d+1)
+            print_t(v, d+1, cache)
             DBM:AddMsg(("%s}"):format((" "):rep(d * 3)))
         else
             DBM:AddMsg(("%s[%s] = %s,"):format((" "):rep(d * 3), serialize(i), serialize(v)))
