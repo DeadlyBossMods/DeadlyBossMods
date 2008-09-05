@@ -27,9 +27,9 @@
 --  Globals/Default Options  --
 -------------------------------
 DBM = {
-	revision = ("$Revision$"):sub(12, -3),
-	version = "4.00",
-	displayVersion = "4.01"
+	Revision = ("$Revision$"):sub(12, -3),
+	Version = "4.00",
+	DisplayVersion = "4.01"
 }
 
 DBM_SavedOptions = {}
@@ -49,6 +49,7 @@ DBM.DefaultOptions = {
 		Y = -192,
 	},
 	StatusEnabled = true,
+	AutoRespond = true,
 	Enabled = true,
 	ShowWarningsInChat = true,
 	ShowFakedRaidWarnings = true,
@@ -65,10 +66,13 @@ DBM.Mods = {}
 local inCombat = {}
 local combatInfo = {}
 local updateFunctions = {}
+local raid = {}
 local modSyncSpam = {}
+local autoRespondSpam = {}
 local chatPrefix = "<Deadly Boss Mods> "
 local chatPrefixShort = "<DBM> "
 local mainFrame = CreateFrame("Frame")
+local showedUpdateReminder = false
 local schedule
 local unschedule
 local loadOptions
@@ -310,6 +314,11 @@ do
 		if v and (time - v > 2.5) then
 			modSyncSpam[k] = nil
 		end
+		for k, v in pairs(autoRespondSpam) do
+			if v and (time - v > 60) then
+				autoRespondSpam[k] = nil
+			end
+		end
 	end)
 
 	function schedule(t, f, mod, ...)
@@ -326,7 +335,7 @@ do
 	function unschedule(f, mod, ...)
 		for k = #scheduleData, 1, -1 do
 			local v = scheduleData[k]
-			if v.func == f and ((not mod) or v.mod == mod) then
+			if (not f or v.func == f) and ((not mod) or v.mod == mod) then
 				local match = true
 				for i = 1, select("#", ...) do
 					if select(i, ...) ~= v.args[i] then
@@ -351,25 +360,55 @@ end
 ----------------------
 SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
-	if not IsAddOnLoaded("DBM-GUI") then
-		local _, _, _, enabled = GetAddOnInfo("DBM-GUI")
-		if not enabled then
-			EnableAddOn("DBM-GUI")
+	if msg == "ver" or msg == "version" then
+		DBM:ShowVersions()
+	else
+		if not IsAddOnLoaded("DBM-GUI") then
+			local _, _, _, enabled = GetAddOnInfo("DBM-GUI")
+			if not enabled then
+				EnableAddOn("DBM-GUI")
+			end
+			local loaded, reason = LoadAddOn("DBM-GUI")
+			if not loaded then
+				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
+				return
+			end
 		end
-		local loaded, reason = LoadAddOn("DBM-GUI")
-		if not loaded then
-			self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
-			return
+		DBM_GUI:ShowHide()
+	end
+end
+
+do
+	local sortMe = {}
+	local function sort(v1, v2)
+		return (v1.revision or 0) > (v2.revision or 0)
+	end
+	function DBM:ShowVersions()
+		for i, v in pairs(raid) do
+			table.insert(sortMe, v)
+		end
+		table.sort(sortMe, sort)
+		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
+		for i, v in ipairs(sortMe) do
+			self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
+		end
+		for i = #sortMe, 1, -1 do
+			if not v.revision then
+				table.remove(sortMe, i)
+			end
+		end
+		self:AddMsg(DBM_CORE_VERSIONCHECK_FOOTER:format(#sortMe))
+		for i = #sortMe, 1, -1 do
+			sortMe[i] = nil
 		end
 	end
-	DBM_GUI:ShowHide()
 end
+
 
 ---------------------------
 --  Raid/Party Handling  --
 ---------------------------
 do
-	local raid = {}
 	local inRaid = false
 	local playerRank = 0
 	
@@ -534,7 +573,11 @@ function DBM:ADDON_LOADED(modname)
 			"PLAYER_REGEN_DISABLED",
 			"UNIT_DIED",
 			"UNIT_DESTROYED",
-			"CHAT_MSG_WHISPER"
+			"CHAT_MSG_WHISPER",
+			"CHAT_MSG_MONSTER_YELL",
+			"CHAT_MSG_MONSTER_EMOTE",
+			"CHAT_MSG_MONSTER_SAY",
+			"CHAT_MSG_RAID_BOSS_EMOTE"
 		)
 		self:ZONE_CHANGED_NEW_AREA()
 		self:RAID_ROSTER_UPDATE()
@@ -606,8 +649,27 @@ do
 	
 	syncHandlers["DBMv4-Ver"] = function(msg, channel, sender)
 		if msg == "Hi!" then
-			sendSync("DBMv4-Ver", "") -- TODO
+			sendSync("DBMv4-Ver", ("%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion))
 		else
+			local revision, version, displayVersion = strsplit("\t", msg)
+			revision, version = tonumber(revision or ""), tonumber(version or "")
+			if revision and version and displayVersion and raid[sender] then
+				raid[sender].revision = revision
+				raid[sender].version = version
+				raid[sender].displayVersion = displayVersion
+				if version >= tonumber(DBM.Version) and not showedUpdateReminder then
+					local found = false
+					for i, v in pairs(raid) do
+						if v.version == version and v ~= raid[sender] then
+							found = true
+							break
+						end
+					end
+					if found then
+						DBM:ShowUpdateReminder(displayVersion, revision)
+					end
+				end
+			end
 		end
 	end
 	
@@ -620,9 +682,36 @@ do
 end
 
 
-------------------------
---  Combat Detection  --
-------------------------
+-----------------------
+--  Update Reminder  --
+-----------------------
+function DBM:ShowUpdateReminder(newVersion, newRevision)
+	showedUpdateReminder = true
+	local frame = CreateFrame("Frame", nil, UIParent)
+	frame:SetFrameStrata("DIALOG")
+	frame:SetWidth(430)
+	frame:SetHeight(90)
+	frame:SetPoint("TOP", 0, -230)
+	frame:SetBackdrop({ 
+		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", 
+		edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32, 
+		insets = {left = 11, right = 12, top = 12, bottom = 11},
+	})
+	local fontstring = frame:CreateFontstring(nil, "ARTWORK", "GameFontNormal")
+	fontstring:SetWidth(410)
+	fontstring:SetHeight(0)
+	fontstring:SetPoint("TOP", 0, -16)
+	local button = CreateFrame("Button", nil, frame)
+	button:SetHeight(22)
+	button:SetWidth(80)
+	button:SetPoint("BOTTOM", -175, 12)
+	-- TODO: button erstellen
+end
+
+
+----------------------
+--  Pull Detection  --
+----------------------
 do
 	local targetList = {}
 	local function buildTargetList()
@@ -674,6 +763,38 @@ do
 end
 
 do
+	local function onMonsterMessage(type, msg)
+		if combatInfo[GetRealZoneText()] then
+			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
+				if v.type == type and checkEntry(v.msgs, msg) then
+					DBM:StartCombat(v.mod, 0)
+				end
+			end
+		end
+	end
+	
+	function DBM:CHAT_MSG_MONSTER_YELL(msg)
+		onMonsterMessage("yell", msg)
+	end
+	
+	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
+		onMonsterMessage("emote", msg)
+	end
+
+	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+		onMonsterMessage("emote", msg)
+	end
+	
+	function DBM:CHAT_MSG_MONSTER_SAY(msg)
+		onMonsterMessage("say", msg)
+	end
+end
+
+
+---------------------------
+--  Kill/Wipe Detection  --
+---------------------------
+do
 	local checkWipe
 	function checkWipe(confirm)
 		if #inCombat > 0 then
@@ -718,6 +839,10 @@ end
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
+		for i, v in ipairs(mod.timers) do
+			v:Stop()
+		end
+		mod:Unschedule()
 		mod.inCombat = false
 		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
@@ -803,7 +928,13 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[i]
-			SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name, mod:GetHP(), getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
+			SendChatMessage(chatPrefix..DBM_CORE_STATUS_WHISPER:format(mod.combatInfo.name, mod:GetHP(), getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
+		elseif #inCombat > 0 and self.Options.AutoRespond then
+			if not autoRespondSpam[sender] then
+				SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name, mod:GetHP(), getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
+				self:AddMsg(DBM_CORE_AUTO_RESPONDED)
+			end
+			autoRespondSpam[sender] = GetTime()
 		end
 	end
 end
@@ -828,7 +959,8 @@ end
 --  Enable/Disable DBM  --
 --------------------------
 function DBM:Disable()
-	self.Options.Enabled = false -- TODO
+	unschedule()
+	self.Options.Enabled = false
 end
 
 function DBM:Enable()
@@ -913,6 +1045,10 @@ function bossModPrototype:EnableMod()
 end
 
 function bossModPrototype:DisableMod()
+	for i, v in ipairs(self.timers) do
+		v:Stop()
+	end
+	self:Unschedule()
 	self.Options.Enabled = false
 end
 
@@ -1203,6 +1339,33 @@ function bossModPrototype:AddBoolOption(name, default, cat)
 	self:SetOptionCategory(name, cat)
 end
 
+function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat)
+	cat = cat or "misc"
+	self.Options[name] = default or 0
+	self:SetOptionCategory(name, cat)
+	self.sliders = self.sliders or {}
+	self.sliders[name] = {
+		minValue = minValue,
+		maxValue = maxValue,
+		valueStep = valueStep,
+	}
+end
+
+function bossModPrototype:AddButton(name, onClick, cat)
+	cat = cat or misc
+	self:SetOptionCategory(name, cat)
+	self.buttons = self.buttons or {}
+	self.buttons[name] = onClick
+end
+
+function bossModPrototype:AddDropdownOption(name, options, default, cat)
+	cat = cat or "misc"
+	self.Options[name] = default
+	self:SetOptionCategory(name, cat)
+	self.dropdowns = self.dropdowns or {}
+	self.dropdowns[name] = options
+end
+
 function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories)do
 		removeEntry(options, name)
@@ -1218,17 +1381,20 @@ end
 --------------
 --  Combat  --
 --------------
-function bossModPrototype:RegisterCombat(type, mob, ...)
+function bossModPrototype:RegisterCombat(type, ...)
 	local info = {
 		type = type,
-		mob = mob or self.creatureId,
+		mob = (type == "combat" and select(1, ...)) or self.creatureId,
 		name = self.localization.general.name or self.id,
-		killMobs = select("#", ...) > 0 and {},
-		minCombatTime = minCombatTime,
+		msgs = (type ~= "combat") and {...},
 		mod = self
 	}
 	for i = 1, select("#", ...) do
-		info.killMobs[select(i, ...)] = true
+		local v = select(i, ...)
+		if type(v) == "number" then
+			info.killMobs = info.killMobs or {}
+			info.killMobs[select(i, ...)] = true
+		end
 	end
 	self.combatInfo = info
 	for i, v in ipairs(self.zones) do
@@ -1296,12 +1462,12 @@ function bossModPrototype:Schedule(t, f, ...)
 end
 
 function bossModPrototype:Unschedule(f, ...)
-	unschedule(f, ...)
+	unschedule(f, self, ...)
 end
 
 function bossModPrototype:ScheduleMethod(t, method, ...)
 	if not self[method] then
-		error(("Method %s does not exist"):format(tostring(method)), 1)
+		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
 	self:Schedule(t, self[method], self, ...)
 end
@@ -1309,7 +1475,7 @@ bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
 
 function bossModPrototype:UnscheduleMethod(method, ...)
 	if not self[method] then
-		error(("Method %s does not exist"):format(tostring(method)), 1)
+		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
 	self:Unschedule(self[method], self, ...)
 end
@@ -1360,6 +1526,10 @@ end
 
 function bossModPrototype:SetModelIdleSquences(...)
 	self.idleSequences = {...}
+end
+
+function bossModPrototype:SetPortraitMode(mode)
+	self.portrait = mode
 end
 
 

@@ -25,4 +25,10 @@ DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Announces"
 DBM_CORE_OPTION_CATEGORY_MISC		= "Miscellaneous"
 
+DBM_CORE_AUTO_RESPONDED				= "Auto-responded."
+DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d people alive"
 DBM_CORE_AUTO_RESPOND_WHISPER		= "%s is busy fighting against %s (%s, %d/%d people alive)"
+
+DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
+DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
+DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d players with Deadly Boss Mods"
