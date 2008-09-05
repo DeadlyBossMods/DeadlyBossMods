@@ -47,7 +47,9 @@ DBM.DefaultOptions = {
 	StatusEnabled = true,
 	Enabled = true,
 	ShowWarningsInChat = true,
-	ShowFakedRaidWarnings = true
+	ShowFakedRaidWarnings = true,
+	WarningIconLeft = true,
+	WarningIconRight = true,
 }
 
 DBM.Bars = DBT:New()
@@ -908,13 +910,20 @@ end
 --  Announce Object  --
 -----------------------
 do
+	local textureCode = " |T%s:24:24:1|t "
+	local textureExp = " |T(%S+):24:24:1|t "
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
 
 	function announcePrototype:Show(...)
 		if not self.option or self.mod.Options[self.option] then
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
-			local text = ("%s%s|r"):format(colorCode, self.text:format(...))
+			local text = ("%s%s%s|r%s"):format(
+				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
+				colorCode,
+				self.text:format(...),
+				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
+			)
 			text = text:gsub(">%S+<", function(cap)
 				cap = cap:sub(2, -2)
 				if DBM:GetRaidClass(cap) then
@@ -924,15 +933,18 @@ do
 				return cap
 			end)
 			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work
-			if DBM.Options.ShowWarningsInChat and DBM.Options.ShowFakedRaidWarnings then
-				for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
-					local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
-					if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
-						frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 24) -- these are the default args for raid warning messages
+			if DBM.Options.ShowWarningsInChat then
+				text = text:gsub(textureExp, "") -- textures @ chat frame can distort the font
+				if DBM.Options.ShowFakedRaidWarnings then
+					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
+						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
+						if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
+							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 24) -- these are the default args for raid warning messages
+						end
 					end
+				else
+					self.mod:AddMsg(text, nil)
 				end
-			elseif DBM.Options.ShowWarningsInChat then
-				self.mod:AddMsg(text, nil)
 			end
 		end
 	end
@@ -945,13 +957,14 @@ do
 		unschedule(self.Show, self.mod, self, ...)
 	end
 	
-	function bossModPrototype:NewAnnounce(text, color, optionDefault, optionName)
+	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName)
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				option = optionName or text,
 				mod = self,
+				icon = (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
 			},
 			mt
 		)
@@ -962,6 +975,77 @@ do
 		end
 		table.insert(self.announces, obj)
 		return obj
+	end
+end
+
+
+------------------------------
+--  Special Warning Object  --
+------------------------------
+do
+	local frame = CreateFrame("Frame", nil, UIParent)
+	local font = frame:CreateFontString(nil, "OVERLAY", "ZoneTextFont")
+	frame:SetWidth(1)
+	frame:SetHeight(1)
+	frame:SetPoint("CENTER", 0, 75)
+	frame:Hide()
+	font:SetWidth(1024)
+	font:SetHeight(0)
+	font:SetPoint("CENTER", 0, 0)
+	font:SetTextColor(0, 0, 1)
+	local specialWarningPrototype = {}
+	local mt = {__index = specialWarningPrototype}
+	
+	frame:SetScript("OnUpdate", function(self, elapsed)
+		self.timer = self.timer - elapsed
+		if self.timer >= 3 and self.timer <= 4 then
+			LowHealthFrame:SetAlpha(self.timer - 3)
+		elseif self.timer <= 2 then
+			frame:SetAlpha(self.timer/2)
+		elseif self.timer <= 0 then
+			frame:Hide()
+		end
+	end)
+	
+	function specialWarningPrototype:Show(...)
+		font:SetText(self.text:format(...))
+		LowHealthFrame:Show()
+		LowHealthFrame:SetAlpha(1)
+		frame:Show()
+		frame:SetAlpha(1)
+		frame.timer = 5
+	end
+	
+	function specialWarningPrototype:Schedule(t, ...)
+		schedule(t, self.Show, self.mod, self, ...)
+	end
+	
+	function specialWarningPrototype:Cancel(t, ...)
+		schedule(self.Show, self.mod, self, ...)
+	end
+	
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName)
+		local obj = setmetatable(
+			{
+				text = self.localization.warnings[text],
+				option = optionName or text,
+				mod = self
+			},
+			mt
+		)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(optionName or text, optionDefault, "announce")
+		end
+		return obj
+	end
+	
+	function DBM:ShowSpecialWarning(text)
+		font:SetText(text)
+		frame:Show()
+		frame:SetAlpha(1)
+		frame.timer = 5
 	end
 end
 
