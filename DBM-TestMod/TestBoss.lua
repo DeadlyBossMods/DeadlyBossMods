@@ -8,7 +8,7 @@ mod:SetModelIdleSquences(16, 18, 2, 1)
 
 mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
 mod:SetCreatureID(448)
-mod:RegisterCombat("combat", nil, 478, 448)
+mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
@@ -24,6 +24,10 @@ local testTimer1 = mod:NewTimer(30, "shield_timer")
 local enrageTest = mod:NewEnrageTimer(600)
 
 mod:AddBoolOption("test1")
+mod:AddBoolOption("test2")
+mod:AddBoolOption("test3")
+mod:AddBoolOption("test4")
+mod:AddBoolOption("test5")
 mod:SetOptionCategory("shield_applied", "lol!")
 
 
