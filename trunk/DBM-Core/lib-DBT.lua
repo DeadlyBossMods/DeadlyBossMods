@@ -16,9 +16,34 @@
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
+
+---------------
+--  Globals  --
+---------------
 DBT = {}
 
-local options = {
+
+--------------
+--  Locals  --
+--------------
+local fCounter = 1
+local barPrototype = {}
+local unusedBars = {}
+local unusedBarObjects = setmetatable({}, {__mode = "kv"})
+local options
+local function stringFromTimer(t)
+	if t <= 60 then
+		return ("%.1f"):format(t)
+	else
+		return ("%d:%0.2d"):format(t/60, math.fmod(t, 60))
+	end
+end
+
+
+-----------------------
+--  Default Options  --
+-----------------------
+options = {
 	BarXOffset = {
 		type = "number",
 		default = 0,
@@ -37,36 +62,10 @@ local options = {
 	}
 }
 
-local function stringFromTimer(t)
-	if t <= 60 then
-		return ("%.1f"):format(t)
-	else
-		return ("%d:%0.2d"):format(t/60, math.fmod(t, 60))
-	end
-end
 
-function DBT:SetOption(option, value)
-	if not options[option] then
-		error(("Invalid option: %s"):format(tostring(option)), 2)
-	elseif options[option].type and type(value) ~= options[option].type then
-		error(("The option %s requires a %s value. (tried to assign a %s value)"):format(tostring(option), tostring(options[option].type), tostring(type(value))), 2)
-	elseif options[option].checkFunc then
-		local ok, errMsg = options[option].checkFunc(self, option, value)
-		if not ok then
-			error(("Error while setting option %s to %s: %s"):format(tostring(option), tostring(value), tostring(errMsg)), 2)
-		end
-	end
-	local oldValue = self.options[option]
-	self.options[option] = value
-	if options[option].onChange then
-		options[option].onChange(self, value, oldValue)
-	end
-end
-
-function DBT:GetOption(option)
-	return self.options[option]
-end
-
+-----------------------
+--  DBT Constructor  --
+-----------------------
 do
 	local mt = {__index = DBT}
 	local optionMT = {
@@ -101,12 +100,36 @@ do
 	end
 end
 
-local fCounter = 1
-local barPrototype = {}
-local unusedBars = {}
-local unusedBarObjects = {}
-setmetatable(unusedBarObjects, {__mode = "kv"})
 
+---------------
+--  Options  --
+---------------
+function DBT:SetOption(option, value)
+	if not options[option] then
+		error(("Invalid option: %s"):format(tostring(option)), 2)
+	elseif options[option].type and type(value) ~= options[option].type then
+		error(("The option %s requires a %s value. (tried to assign a %s value)"):format(tostring(option), tostring(options[option].type), tostring(type(value))), 2)
+	elseif options[option].checkFunc then
+		local ok, errMsg = options[option].checkFunc(self, option, value)
+		if not ok then
+			error(("Error while setting option %s to %s: %s"):format(tostring(option), tostring(value), tostring(errMsg)), 2)
+		end
+	end
+	local oldValue = self.options[option]
+	self.options[option] = value
+	if options[option].onChange then
+		options[option].onChange(self, value, oldValue)
+	end
+end
+
+function DBT:GetOption(option)
+	return self.options[option]
+end
+
+
+-----------------------
+--  Bar Constructor  --
+-----------------------
 do
 	local function createBarFrame(self)
 		local frame
@@ -120,6 +143,7 @@ do
 		return frame
 	end	
 	local mt = {__index = barPrototype}
+	
 	function DBT:CreateDummyBar()
 		local newBar
 		newBar = next(unusedBarObjects, nil)
@@ -174,6 +198,10 @@ do
 	end
 end
 
+
+-----------------------------
+--  General Bar Functions  --
+-----------------------------
 do
 	local function iterator(self, frame)
 		return not frame and self.mainFirstBar or frame and frame.next
@@ -206,19 +234,10 @@ function DBT:CancelBar(id)
 	return false
 end
 
-function DBT:UpdateOrientation()
-	for bar in self:GetBarIterator() do
-		bar:SetPosition()
-	end
-end
-options.ExpandUpwards.onChange = DBT.UpdateOrientation
 
-function barPrototype:ApplyStyle()
-	local bar = getglobal(self.frame:GetName().."Bar")
-	self.frame:Show()
-	bar:SetAlpha(1)
-end
-
+---------------------------
+--  General Bar Methods  --
+---------------------------
 function barPrototype:SetTimer(timer)
 	self.totalTime = timer
 	self:Update(0)
@@ -229,6 +248,14 @@ function barPrototype:SetElapsed(elapsed)
 	self:Update(0)
 end
 
+function barPrototype:SetText(text)
+	getglobal(self.frame:GetName().."Name"):SetText(text)
+end
+
+
+------------------
+--  Bar Update  --
+------------------
 function barPrototype:Update(elapsed)
 	local bar = getglobal(self.frame:GetName().."Bar")
 	local spark = getglobal(self.frame:GetName().."BarSpark")
@@ -260,10 +287,10 @@ function barPrototype:Update(elapsed)
 	end
 end
 
-function barPrototype:SetText(text)
-	getglobal(self.frame:GetName().."Name"):SetText(text)
-end
 
+------------------
+--  Bar Cancel  --
+------------------
 function barPrototype:Cancel()
 	table.insert(unusedBars, self.frame)
 	self.frame:Hide()
@@ -293,6 +320,23 @@ function barPrototype:Cancel()
 	end
 	unusedBarObjects[self] = self
 end
+
+
+-----------------
+--  Bar Style  --
+-----------------
+function barPrototype:ApplyStyle()
+	local bar = getglobal(self.frame:GetName().."Bar")
+	self.frame:Show()
+	bar:SetAlpha(1)
+end
+
+function DBT:UpdateOrientation()
+	for bar in self:GetBarIterator() do
+		bar:SetPosition()
+	end
+end
+options.ExpandUpwards.onChange = DBT.UpdateOrientation
 
 function barPrototype:SetPosition()
 	local anchor = (self.prev and self.prev.frame) or self.owner.mainAnchor
