@@ -2,13 +2,15 @@ DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' boss mods!"
 DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
 
-DBM_COMBAT_STARTED					= "%s engaged. Good luck and have fun! :)";
-DBM_BOSS_DOWN						= "%s down after %s!"
-DBM_COMBAT_ENDED					= "Combat against %s ended after %s."
+DBM_CORE_COMBAT_STARTED				= "%s engaged. Good luck and have fun! :)";
+DBM_CORE_BOSS_DOWN					= "%s down after %s!"
+DBM_CORE_BOSS_DOWN_LONG				= "%s down after %s! Your last kill took %s and your fastest kill %s."
+DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s down after %s! This is a new record! (old record was %s)"
+DBM_CORE_COMBAT_ENDED				= "Combat against %s ended after %s."
 
-DBM_TIMER_FORMAT_SECS				= "%d |4second:seconds;"
-DBM_TIMER_FORMAT_MINS				= "%d |4minute:minutes;"
-DBM_TIMER_FORMAT					= "%d |4minute:minutes; and %d |4second:seconds; "
+DBM_CORE_TIMER_FORMAT_SECS			= "%d |4second:seconds;"
+DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
+DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; and %d |4second:seconds;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_SEC						= "sec"
@@ -23,3 +25,4 @@ DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "Announces"
 DBM_CORE_OPTION_CATEGORY_MISC		= "Miscellaneous"
 
+DBM_CORE_AUTO_RESPOND_WHISPER		= "%s is busy fighting against %s (%s, %d/%d people alive)"

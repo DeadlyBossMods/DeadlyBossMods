@@ -30,6 +30,7 @@ DBM = {}
 
 DBM_SavedOptions = {}
 DBM_SavedModOptions = {}
+DBM_Stats = {}
 
 DBM.DefaultOptions = {
 	WarningColors = {
@@ -43,9 +44,10 @@ DBM.DefaultOptions = {
 		X = 0,
 		Y = -192,
 	},
-	TestOption = "hallo",
-	TestBool = true,
+	StatusEnabled = true,
 	Enabled = true,
+	ShowWarningsInChat = true,
+	ShowFakedRaidWarnings = true
 }
 
 DBM.Bars = DBT:New()
@@ -58,6 +60,8 @@ local inCombat = {}
 local combatInfo = {}
 local updateFunctions = {}
 local modSyncSpam = {}
+local chatPrefix = "<Deadly Boss Mods> "
+local chatPrefixShort = "<DBM> "
 local mainFrame = CreateFrame("Frame")
 local schedule
 local unschedule
@@ -96,11 +100,11 @@ end
 
 local function strFromTime(time)
 	if time < 60 then
-		return DBM_TIMER_FORMAT_SECS:format(time)
+		return DBM_CORE_TIMER_FORMAT_SECS:format(time)
 	elseif time % 60 == 0 then
-		return DBM_TIMER_FORMAT_MINS:format(time/60)
+		return DBM_CORE_TIMER_FORMAT_MINS:format(time/60)
 	else
-		return DBM_TIMER_FORMAT:format(time/60, time % 60)
+		return DBM_CORE_TIMER_FORMAT:format(time/60, time % 60)
 	end
 end
 
@@ -143,7 +147,8 @@ do
 		"CHAT_MSG_ADDON",
 		"PLAYER_REGEN_DISABLED",
 		"UNIT_DIED",
-		"UNIT_DESTROYED"
+		"UNIT_DESTROYED",
+		"CHAT_MSG_WHISPER"
 	)
 
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
@@ -494,9 +499,11 @@ do
 			if not v.initialized then
 				DBM_SavedModOptions[v.id] = DBM_SavedModOptions[v.id] or v.Options
 				for option, optionValue in pairs(v.Options) do
-					DBM_SavedModOptions[v.id][option] = DBM_SavedModOptions[v.id][option] or optionValue
+					if DBM_SavedModOptions[v.id][option] == nil then
+						DBM_SavedModOptions[v.id][option] = optionValue
+					end
 				end
-				DBM_SavedModOptions[v.id] = v.Options
+				v.Options = DBM_SavedModOptions[v.id]
 				v.initialized = true
 			end
 		end
@@ -672,8 +679,10 @@ do
 	function DBM:StartCombat(mod, delay, synced)
 		if not checkEntry(inCombat, mod) then
 			table.insert(inCombat, mod)
-			self:AddMsg(DBM_COMBAT_STARTED:format(mod.combatInfo.name))
+			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
+			mod.stats.pulls = mod.stats.pulls + 1
 			mod.inCombat = true
+			mod.blockSyncs = nil
 			if mod.OnCombatStart then mod:OnCombatStart(delay or 0) end
 			mod.combatInfo.pull = GetTime() - (delay or 0)
 			self:Schedule(mod.minCombatTime or 3, checkWipe)
@@ -688,12 +697,33 @@ function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		mod.inCombat = false
+		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
 			for i, v in pairs(mod.combatInfo.killMobs) do
 				mod.combatInfo.killMobs[i] = true
 			end
 		end
-		self:AddMsg(((wipe and DBM_COMBAT_ENDED) or DBM_BOSS_DOWN):format(mod.combatInfo.name, strFromTime(GetTime() - mod.combatInfo.pull)))
+		if wipe then
+			local thisTime = GetTime() - mod.combatInfo.pull
+			if thisTime < 25 then
+				mod.stats.pulls = mod.stats.pulls - 1
+			end
+			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
+		else
+			local thisTime = GetTime() - mod.combatInfo.pull
+			local lastTime = mod.stats.lastTime
+			local bestTime = mod.stats.bestTime
+			mod.stats.kills = mod.stats.kills + 1
+			mod.stats.lastTime = thisTime
+			mod.stats.bestTime = math.min(bestTime or math.huge, thisTime)
+			if not lastTime then
+				self:AddMsg(DBM_CORE_BOSS_DOWN:format(mod.combatInfo.name, strFromTime(thisTime)))
+			elseif thisTime < (bestTime or math.huge) then
+				self:AddMsg(DBM_CORE_BOSS_DOWN_NEW_RECORD:format(mod.combatInfo.name, strFromTime(thisTime), strFromTime(bestTime)))
+			else
+				self:AddMsg(DBM_CORE_BOSS_DOWN_LONG:format(mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime)))
+			end
+		end
 	end
 end
 
@@ -724,6 +754,54 @@ function DBM:UNIT_DIED(args)
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 
+
+------------------------------------
+--  Auto-respond/Status whispers  --
+------------------------------------
+do
+	local function getNumAlivePlayers()
+		local alive = 0
+		if GetNumRaidMembers() > 0 then
+			for i = 1, GetNumRaidMembers() do
+				alive = alive + ((UnitIsDeadOrGhost("raid"..i) and 0) or 1)
+			end
+		else
+			alive = (UnitIsDeadOrGhost("raid"..i) and 0) or 1
+			for i = 1, GetNumPartyMembers() do
+				alive = alive + (UnitIsDeadOrGhost("party"..i) and 0) or 1
+			end
+		end
+		return alive
+	end
+	
+	function DBM:CHAT_MSG_WHISPER(msg, sender)
+		if msg == "status" and #inCombat > 0 and self.Options.StatusEnabled then
+			local mod
+			for i, v in ipairs(inCombat) do
+				mod = not v.isCustomMod and v
+			end
+			mod = mod or inCombat[i]
+			SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name, mod:GetHP(), getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
+		end
+	end
+end
+
+
+-------------------
+--  Chat Filter  --
+-------------------
+do
+	local function filterOutgoing(msg)
+		return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort
+	end
+	local function filterIncoming(msg)
+		return msg == "status" and #inCombat > 0
+	end
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
+end
+
+
 --------------------------
 --  Enable/Disable DBM  --
 --------------------------
@@ -743,9 +821,9 @@ end
 -----------------------
 --  Misc. Functions  --
 -----------------------
-function DBM:AddMsg(text, prefix, color)
+function DBM:AddMsg(text, prefix)
 	prefix = prefix or (self.localization and self.localization.general.name) or "Deadly Boss Mods"
-	DEFAULT_CHAT_FRAME:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(prefix), tostring(text)), (color and color.r) or 0.41, (color and color.g) or 0.8, (color and color.b) or 0.94)
+	DEFAULT_CHAT_FRAME:AddMessage(("|cffff7d0a<|r|cffffd200%s|r|cffff7d0a>|r %s"):format(tostring(prefix), tostring(text)), 0.41, 0.8, 0.94)
 end
 
 
@@ -762,6 +840,7 @@ do
 	local modsById = {}
 	local mt = {__index = bossModPrototype}
 	function DBM:NewMod(name, modId, ...)
+		if modsById[name] then error("Mod names are used as IDs and must therefore be unique.") end
 		local obj = setmetatable(
 			{
 				Options = {
@@ -774,10 +853,12 @@ do
 				announces = {},
 				timers = {},
 				modId = modId,
+				stats = DBM_Stats[name] or {kills = 0, pulls = 0},
 				localization = self:GetModLocalization(name)
 			},
 			mt
 		)
+		DBM_Stats[name] = obj.stats
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
 		return obj
@@ -818,6 +899,10 @@ function bossModPrototype:RegisterOnUpdateHandler(func, interval)
 	updateFunctions[self] = func
 end
 
+function bossModPrototype:SendWhisper(msg, target)
+	SendChatMessage(chatPrefixShort..msg, "WHISPER", nil, target)
+end
+
 
 -----------------------
 --  Announce Object  --
@@ -839,7 +924,16 @@ do
 				return cap
 			end)
 			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work
-			self.mod:AddMsg(text, nil, self.color)
+			if DBM.Options.ShowWarningsInChat and DBM.Options.ShowFakedRaidWarnings then
+				for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
+					local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
+					if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
+						frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 24) -- these are the default args for raid warning messages
+					end
+				end
+			elseif DBM.Options.ShowWarningsInChat then
+				self.mod:AddMsg(text, nil)
+			end
 		end
 	end
 
@@ -972,9 +1066,9 @@ do
 	end	
 	
 	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
-		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, "enrage")
-		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, "enrage")
-		local bar = self:NewTimer(timer or 600, barText or DBM_CORE_GENERIC_TIMER_ENRAGE, barIcon or 28131, nil, "enrage")
+		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, "warning_enrage")
+		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, "warning_enrage")
+		local bar = self:NewTimer(timer or 600, barText or DBM_CORE_GENERIC_TIMER_ENRAGE, barIcon or 28131, nil, "timer_enrage")
 		local obj = setmetatable(
 			{
 				warning1 = warning1,
@@ -1041,6 +1135,22 @@ function bossModPrototype:SetMinCombatTime(t)
 	self.minCombatTime = t
 end
 
+function bossModPrototype:GetBossHPString(cId)
+	local idType = (GetNumRaidMembers() == 0 and "party") or "raid"
+	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+		local unitId = ((i == 0) and "target") or idType..i.."target"
+		local guid = UnitGUID(unitId)
+		if guid and tonumber(guid:sub(9, 12), 16) == cId then
+			return math.floor(UnitHealth(unitId)/UnitHealthMax(unitId) * 100).."%"
+		end
+	end
+	return DBM_CORE_UNKNOWN
+end
+
+function bossModPrototype:GetHP()
+	return self:GetBossHPString((self.combatInfo and self.combatInfo.mob) or self.creatureId)
+end
+
 
 -----------------------
 --  Synchronization  --
@@ -1052,16 +1162,17 @@ function bossModPrototype:SendSync(event, arg)
 	local time = GetTime()
 	if not modSyncSpam[str] or (time - modSyncSpam[str]) > 2.5 then
 		modSyncSpam[str] = time
-		self:ReceiveSync(event, arg, UnitName("player"))
+		self:ReceiveSync(event, arg)
 		sendSync("DBMv4-Mod", str)
 	end
 end
 
 function bossModPrototype:ReceiveSync(event, arg, sender)
-	if self.OnSync then
+	if self.OnSync and (not sender or (not mod.blockSyncs --[[and TODO: Revision check!]])) then
 		self:OnSync(event, arg, sender)
 	end
 end
+
 
 -----------------
 --  Scheduler  --
@@ -1115,6 +1226,7 @@ function bossModPrototype:RemoveIcon(target, timer)
 	self:SetIcon(target, 0, timer)
 end
 
+
 -----------------------
 --  Model Functions  --
 -----------------------
@@ -1158,12 +1270,12 @@ do
 	}
 	local defaultTimerLocalization = {
 		__index = setmetatable({
-			enrage = DBM_CORE_OPTION_TIMER_ENRAGE
+			timer_enrage = DBM_CORE_OPTION_TIMER_ENRAGE
 		}, returnKey)
 	}
 	local defaultAnnounceLocalization = {
 		__index = setmetatable({
-			enrage = DBM_CORE_OPTION_BAR_ENRAGE
+			warning_enrage = DBM_CORE_OPTION_BAR_ENRAGE
 		}, returnKey)
 	}
 	
