@@ -1,0 +1,15 @@
+## Interface: 30100
+## Title: |cff0055FFDeadly Boss Mods|r Raidlead Toolset
+## Title-zhCN: |cff0055FFDeadly Boss Mod|r RaidLead Toolset
+## Notes: RaidLead Toolset for DeadlyBossMods (BidBot, StandByBot, AFK Bot,...)
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: Nitram and Tandanu
+## URL: http://www.deadlybossmods.com
+
+DBM-RaidLeadTools.lua
+
+DBM-BidBot/localization.en.lua
+DBM-BidBot/localization.de.lua
+DBM-BidBot/bidbot.lua
+
