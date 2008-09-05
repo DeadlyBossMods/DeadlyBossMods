@@ -26,7 +26,11 @@
 -------------------------------
 --  Globals/Default Options  --
 -------------------------------
-DBM = {}
+DBM = {
+	revision = ("$Revision$"):sub(12, -3),
+	version = "4.00",
+	displayVersion = "4.01"
+}
 
 DBM_SavedOptions = {}
 DBM_SavedModOptions = {}
@@ -140,18 +144,7 @@ do
 		end
 	end
 
-	DBM:RegisterEvents(
-		"COMBAT_LOG_EVENT_UNFILTERED",
-		"ZONE_CHANGED_NEW_AREA",
-		"ADDON_LOADED", 
-		"RAID_ROSTER_UPDATE",
-		"PARTY_MEMBERS_CHANGED",
-		"CHAT_MSG_ADDON",
-		"PLAYER_REGEN_DISABLED",
-		"UNIT_DIED",
-		"UNIT_DESTROYED",
-		"CHAT_MSG_WHISPER"
-	)
+	DBM:RegisterEvents("ADDON_LOADED")
 
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		if not registeredEvents[event] then return end
@@ -532,7 +525,17 @@ function DBM:ADDON_LOADED(modname)
 			end
 		end
 		table.sort(self.AddOns, function(v1, v2) return v1.sort > v2.sort end)
-		self.initialized = true
+		self:RegisterEvents(
+			"COMBAT_LOG_EVENT_UNFILTERED",
+			"ZONE_CHANGED_NEW_AREA",
+			"RAID_ROSTER_UPDATE",
+			"PARTY_MEMBERS_CHANGED",
+			"CHAT_MSG_ADDON",
+			"PLAYER_REGEN_DISABLED",
+			"UNIT_DIED",
+			"UNIT_DESTROYED",
+			"CHAT_MSG_WHISPER"
+		)
 		self:ZONE_CHANGED_NEW_AREA()
 		self:RAID_ROSTER_UPDATE()
 		self:PARTY_MEMBERS_CHANGED()
@@ -543,7 +546,6 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
-	if not self.initialized then return end
 	for i, v in ipairs(self.AddOns) do
 		if v.zone == GetRealZoneText() and not IsAddOnLoaded(v.modId) then
 			self:LoadMod(v)
@@ -575,26 +577,44 @@ end
 -----------------------------
 --  Handle Incoming Syncs  --
 -----------------------------
-function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
-	if msg and channel ~= "WHISPER" and channel ~= "GUILD" then
-		local time = GetTime()
-		if prefix == "DBMv4-Mod" and (not modSyncSpam[msg] or (time - modSyncSpam[msg] > 2.5)) then
+do
+	local syncHandlers = {}
+	syncHandlers["DBMv4-Mod"] = function(msg, channel, sender)
+		if not modSyncSpam[msg] or (GetTime() - modSyncSpam[msg] > 2.5) then
 			modSyncSpam[msg] = time
-			local mod, event, arg = strsplit("\t", msg)
+			local mod, revision, event, arg = strsplit("\t", msg)
 			mod = self:GetModByName(mod or "")
-			if mod and event and arg then
-				mod:ReceiveSync(event, arg, sender)
+			if mod and event and arg and revision then
+				mod:ReceiveSync(event, arg, sender, revision)
 			end
-		elseif prefix == "DBMv4-Pull" then
-			local delay, mod = strsplit("\t", msg)
-			delay = tonumber(delay or 0) or 0
-			mod = self:GetModByName(mod or "")
-			if mod and delay then
-				self:StartCombat(mod, delay, true)
-			end
-		elseif prefix == "DBMv4-Kill" then
-			local cId = tonumber(msg)
-			if cId then self:OnMobKill(cId, true) end
+		end
+	end
+	
+	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
+		local delay, mod = strsplit("\t", msg)
+		delay = tonumber(delay or 0) or 0
+		mod = self:GetModByName(mod or "")
+		if mod and delay then
+			self:StartCombat(mod, delay, true)
+		end
+	end
+	
+	syncHandlers["DBMv4-Kill"] = function(msg, channel, sender)
+		local cId = tonumber(msg)
+		if cId then self:OnMobKill(cId, true) end
+	end
+	
+	syncHandlers["DBMv4-Ver"] = function(msg, channel, sender)
+		if msg == "Hi!" then
+			sendSync("DBMv4-Ver", "") -- TODO
+		else
+		end
+	end
+	
+	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
+		if msg and channel ~= "WHISPER" and channel ~= "GUILD" then
+			local handler = syncHandlers[prefix]
+			if handler then handler(msg, channel, sender) end
 		end
 	end
 end
@@ -841,13 +861,14 @@ local bossModPrototype = {}
 do
 	local modsById = {}
 	local mt = {__index = bossModPrototype}
-	function DBM:NewMod(name, modId, ...)
+	function DBM:NewMod(name, modId, modSubTab)
 		if modsById[name] then error("Mod names are used as IDs and must therefore be unique.") end
 		local obj = setmetatable(
 			{
 				Options = {
 					Enabled = true,
 				},
+				subTab = modSubTab,
 				optionCategories = {
 				},
 				categorySort = {},
@@ -856,6 +877,7 @@ do
 				timers = {},
 				modId = modId,
 				stats = DBM_Stats[name] or {kills = 0, pulls = 0},
+				revision = 0,
 				localization = self:GetModLocalization(name)
 			},
 			mt
@@ -899,6 +921,10 @@ function bossModPrototype:RegisterOnUpdateHandler(func, interval)
 	self.elapsed = 0
 	self.updateInterval = interval or 0
 	updateFunctions[self] = func
+end
+
+function bossModPrototype:SetRevision(revision)
+	self.revision = revision
 end
 
 function bossModPrototype:SendWhisper(msg, target)
@@ -1242,19 +1268,23 @@ end
 function bossModPrototype:SendSync(event, arg)
 	event = event or ""
 	arg = arg or ""
-	local str = ("%s\t%s\t%s"):format(self.id, event, arg)
+	local str = ("%s\t%s\t%s\t%s"):format(self.id, self.revision, event, arg)
 	local time = GetTime()
 	if not modSyncSpam[str] or (time - modSyncSpam[str]) > 2.5 then
 		modSyncSpam[str] = time
-		self:ReceiveSync(event, arg)
+		self:ReceiveSync(event, arg, nil, self.revision)
 		sendSync("DBMv4-Mod", str)
 	end
 end
 
-function bossModPrototype:ReceiveSync(event, arg, sender)
-	if self.OnSync and (not sender or (not mod.blockSyncs --[[and TODO: Revision check!]])) then
+function bossModPrototype:ReceiveSync(event, arg, sender, revision)
+	if self.OnSync and (not sender or (not mod.blockSyncs or revision >= self.blockSyncs)) then
 		self:OnSync(event, arg, sender)
 	end
+end
+
+function bossModPrototype:SetMinSyncRevision(revision)
+	self.blockSyncs = revision
 end
 
 
