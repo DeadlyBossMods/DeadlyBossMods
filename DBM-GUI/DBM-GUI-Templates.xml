@@ -390,6 +390,62 @@
 						<AbsInset left="5" right="5" top="5" bottom="5"/>
 					</BackgroundInsets>
 				</Backdrop>
+				<Frames>
+					<ScrollFrame name="$parentFOV">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+								<Offset>
+									<AbsDimension x="5" y="-5"/>
+								</Offset>
+							</Anchor>
+							<Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+								<Offset>
+									<AbsDimension x="-20" y="5"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<Frames>		
+							<Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate">
+								<Anchors>
+									<Anchor point="TOPRIGHT">
+										<Offset>
+											<AbsDimension x="15" y="-15"/>
+										</Offset>
+									</Anchor>
+									<Anchor point="BOTTOMRIGHT">
+										<Offset>
+											<AbsDimension x="15" y="15"/>
+										</Offset>
+									</Anchor>	
+								</Anchors>
+								<Scripts>
+									<OnLoad>
+										self:SetMinMaxValues(0, 400);
+										self:SetValue(0);
+										self.offset = 0	
+									</OnLoad>
+									<OnVerticalScroll>
+										self:SetValue(offset);
+										self.offset = floor((offset / 15) + 0.5);
+									</OnVerticalScroll>
+									<OnValueChanged>
+										self:GetParent():SetVerticalScroll(value);
+									</OnValueChanged>
+								</Scripts>
+							</Slider>
+						</Frames>
+						<Scripts>
+							<OnMouseWheel>
+								local scrollBar = getglobal(self:GetName() .. "ScrollBar");
+								if ( arg1 > 0 ) then
+									scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2));
+								else
+									scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2));
+								end
+							</OnMouseWheel>
+						</Scripts>
+					</ScrollFrame>
+				</Frames>
 				<Scripts>
 					<OnLoad>
 						self:SetBackdropBorderColor(0.6, 0.6, 0.6, 1);
