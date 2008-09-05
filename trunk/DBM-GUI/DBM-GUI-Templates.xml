@@ -507,6 +507,33 @@
 				DBM_GUI_OptionsFrame:OnButtonClick(self);
 			</OnClick>
 		</Scripts>
+
+		<Frames>
+			<Button name="$parentToggle" inherits="InterfaceOptionsToggleButtonTemplate">
+				<Size>
+					<AbsDimension x="14" y="14"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+						<Offset>
+							<AbsDimension x="5" y="-1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnLoad>
+						self:GetParent().toggle = self;
+						self:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+					</OnLoad>
+					<OnClick>
+						DBM_GUI_OptionsFrame:ToggleSubCategories(self);
+					</OnClick>
+				</Scripts>
+				<NormalTexture name="$parentNormalTexture" file="Interface\Buttons\UI-MinusButton-UP"/>
+				<PushedTexture name="$parentPushedTexture" file="Interface\Buttons\UI-MinusButton-DOWN"/>
+				<HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
+			</Button>
+		</Frames>
 		<ButtonText name="$parentText" justifyH="LEFT">
 			<Anchors>
 				<Anchor point="RIGHT" relativeTo="$parentToggle" relativePoint="LEFT">

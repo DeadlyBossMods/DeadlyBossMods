@@ -62,12 +62,13 @@ end
 --  arg1 = Text for the UI Button
 --  arg2 = nil or ("option" or 2)  ... nil will place as a BossMod, otherwise as a Option Tab
 --
-function DBM_GUI:CreateNewPanel(FrameName, FrameTyp) 
+function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID())
 	panel.name = FrameName
+	panel.showsub = showsub
 	panel:SetAllPoints(DBM_GUI_OptionsFramePanelContainer)
 	panel:Hide()
-	
+
 	if FrameTyp == "option" or FrameTyp == 2 then
 		DBM_GUI_Options:CreateCategory(panel, self and self.frame and self.frame.name)
 	else
@@ -395,13 +396,14 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 		return false
 	end
 
-
-	frame.showsub = frame.showsub or true --false
+	frame.showsub = (frame.showsub == nil) or false
 	if parent then
 		frame.depth = self:GetDepth(parent)
 	else 
 		frame.depth = 1
 	end
+
+	self:SetParentHasChilds(parent)
 
 	table.insert(self.Buttons, {
 		frame = frame,
@@ -431,6 +433,16 @@ function ListFrameButtonsPrototype:GetDepth(framename, depth)
 	end
 	return depth
 end
+
+function ListFrameButtonsPrototype:SetParentHasChilds(parent)
+	if not parent then return end
+	for k,v in ipairs(self.Buttons) do
+		if v.frame.name == parent then		
+			v.frame.haschilds = true
+		end
+	end
+end
+
 
 function ListFrameButtonsPrototype:GetVisibleTabs()
 	local mytable = {}
@@ -548,7 +560,7 @@ do
 		button:Show();
 		button.element = element;
 		
-		button.text:SetPoint("LEFT", 8 * element.depth, 2);
+		button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2);
 
 		if element.depth > 2 then
 			button:SetNormalFontObject(GameFontHighlightSmall);
@@ -562,6 +574,19 @@ do
 			button:SetHighlightFontObject(GameFontNormal);
 		end
 		button:SetWidth(165)
+
+		if element.haschilds then
+			if not element.showsub then
+				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-UP");
+				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-PlusButton-DOWN");
+			else
+				button.toggle:SetNormalTexture("Interface\\Buttons\\UI-MinusButton-UP");
+				button.toggle:SetPushedTexture("Interface\\Buttons\\UI-MinusButton-DOWN");		
+			end
+			button.toggle:Show();
+		else
+			button.toggle:Hide();
+		end
 
 		button.text:SetText(element.name);
 	end
@@ -624,6 +649,16 @@ do
 		self:SelectButton(parent, button);
 
 		self:DisplayFrame(button.element);
+	end
+
+	function DBM_GUI_OptionsFrame:ToggleSubCategories(button)
+		local parent = button:GetParent();
+		if parent.element.showsub then
+			parent.element.showsub = false
+		else
+			parent.element.showsub = true
+		end
+		self:UpdateMenuFrame(parent:GetParent())
 	end
 
 	-- This function is for Internal use.
@@ -804,7 +839,7 @@ do
 			end
 			
 			if not addon.panel then
-				addon.panel = Categories[addon.category]:CreateNewPanel(addon.name or "Error: X-DBM-Mod-Name")
+				addon.panel = Categories[addon.category]:CreateNewPanel(addon.name or "Error: X-DBM-Mod-Name", nil, false)
 
 				if not IsAddOnLoaded(addon.modId) then
 					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
