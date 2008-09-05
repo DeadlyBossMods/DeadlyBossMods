@@ -63,10 +63,14 @@ end
 --  arg2 = nil or ("option" or 2)  ... nil will place as a BossMod, otherwise as a Option Tab
 --
 function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
-	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID())
+	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFrame)
+	panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth());
+	panel:SetHeight(DBM_GUI_OptionsFramePanelContainerFOV:GetHeight()); 
+	panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
+
 	panel.name = FrameName
 	panel.showsub = showsub
-	panel:SetAllPoints(DBM_GUI_OptionsFramePanelContainer)
+	--panel:SetAllPoints(DBM_GUI_OptionsFramePanelContainer)
 	panel:Hide()
 
 	if FrameTyp == "option" or FrameTyp == 2 then
@@ -131,15 +135,15 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
-	area:SetWidth(width)
-	area:SetHeight(height)
+	area:SetWidth(width or self.frame:GetWidth()-10)
+	area:SetHeight(height or self.frame:GetHeight()-10)
 	
 	if autoplace then
 		local kids = { self.frame:GetChildren() };
 		if #kids == 1 then
-			area:SetPoint('TOPLEFT', self.frame, 10, -20)
+			area:SetPoint('TOPLEFT', self.frame, 5, -15)
 		else
-			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -17)
+			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -12)
 		end
 	end
 
@@ -670,10 +674,12 @@ do
 		
 		getglobal(self:GetName().."PanelContainer").displayedFrame = frame;
 		
-		frame:SetParent(getglobal(self:GetName().."PanelContainer"));
-		frame:ClearAllPoints();
-		frame:SetPoint("TOPLEFT", getglobal(self:GetName().."PanelContainer"), "TOPLEFT");
-		frame:SetPoint("BOTTOMRIGHT", getglobal(self:GetName().."PanelContainer"), "BOTTOMRIGHT");
+		--frame:SetParent(getglobal(self:GetName().."PanelContainer"));
+		--frame:ClearAllPoints();
+		--frame:SetPoint("TOPLEFT", getglobal(self:GetName().."PanelContainer"), "TOPLEFT");
+		--frame:SetPoint("BOTTOMRIGHT", getglobal(self:GetName().."PanelContainer"), "BOTTOMRIGHT");
+		
+		getglobal(self:GetName().."PanelContainerFOV"):SetScrollChild(frame)
 		frame:Show();
 	end
 
@@ -1013,7 +1019,7 @@ do
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
 
-			local catpanel = panel:CreateArea(mod.localization.cats[catident], 365, 140, true)
+			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true) -- 365, 140, true)
 			for _,v in ipairs(category) do
 
 				if type(mod.Options[v]) == "boolean" then
