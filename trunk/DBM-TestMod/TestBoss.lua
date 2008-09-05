@@ -14,10 +14,11 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local testWarning1 = mod:NewAnnounce("shield_applied", 1)
-local testWarning2 = mod:NewAnnounce("shield_expire", 4)
-local testWarning3 = mod:NewAnnounce("shield_expire2", 2, nil, "testoption")
-local testWarning4 = mod:NewAnnounce("shield_removed", 3)
+local testWarning1 = mod:NewAnnounce("shield_applied", 1, 48066)
+local testWarning2 = mod:NewAnnounce("shield_expire", 4, 48168)
+local testWarning3 = mod:NewAnnounce("shield_expire2", 2, 48066, nil, "testoption")
+local testWarning4 = mod:NewAnnounce("shield_removed", 3, "Interface\\ChatFrame\\UI-ChatIcon-Blizz.blp")
+local testSpecialWarning = mod:NewSpecialWarning("Special Warning Test")
 
 local testTimer1 = mod:NewTimer(30, "shield_timer")
 
@@ -45,6 +46,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		testWarning2:Schedule(3)
 		testWarning3:Schedule(6, args.sourceName, args.spellName)
 		testTimer1:Start(args.destName)
+		testSpecialWarning:Show()
+		testSpecialWarning:Schedule(10)
 	elseif args.spellId == 48168 then -- Inner Fire (Rank 9)
 		testTimer1:Stop()
 	end
