@@ -1,7 +1,7 @@
 ## Interface: 30000
 ## Title: |cff0055FFDeadly Boss Mods|r Core
 ## Notes: Deadly Boss Mods
-## SavedVariablesPerCharacter: DBM_SavedOptions, DBM_SavedModOptions
+## SavedVariablesPerCharacter: DBM_SavedOptions, DBM_SavedModOptions, DBM_Stats
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram

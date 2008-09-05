@@ -28,6 +28,9 @@ mod:AddBoolOption("test2")
 mod:AddBoolOption("test3")
 mod:AddBoolOption("test4")
 mod:AddBoolOption("test5")
+mod:AddBoolOption("test6", false, "lol!")
+mod:AddBoolOption("test7", true, "lol!")
+mod:AddBoolOption("test8", false, "lol!")
 mod:SetOptionCategory("shield_applied", "lol!")
 
 

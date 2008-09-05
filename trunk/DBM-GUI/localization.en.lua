@@ -6,13 +6,13 @@ local L = DBM_GUI_Translations
 L.MainFrame = "Deadly Boss Mods"
 
 L.TabCategory_Options 	= "DBM Options"
-L.TabCategory_WOTLK 	= "DBM Lich King"
-L.TabCategory_BC 	= "DBM Burning Crusade"
-L.TabCategory_Classic 	= "DBM Classic Bosses"
-L.TabCategory_Other     = "DBM OtherMods"
+L.TabCategory_WOTLK 	= "Wrath of the Lich King"
+L.TabCategory_BC 	= "Burning Crusade"
+L.TabCategory_Classic 	= "WoW Classic"
+L.TabCategory_Other     = "Other"
 
 L.BossModLoaded = "Please choose a Boss Mod from the list to the left"
-L.BossModLoad_now = "This Boss Mod is not loaded, it will be loaded when you enter the instance. You can also click the button to load the mod manually."
+L.BossModLoad_now = "This Boss Mod is not loaded; it will be loaded when you enter the instance. You can also click the button to load the mod manually."
 
 L.PosX = 'Position X'
 L.PosY = 'Position Y'
