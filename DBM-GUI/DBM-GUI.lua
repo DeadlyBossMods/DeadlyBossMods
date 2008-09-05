@@ -64,6 +64,7 @@ end
 --
 function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFrame)
+	panel.mytype = "panel"
 	panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth());
 	panel:SetHeight(DBM_GUI_OptionsFramePanelContainerFOV:GetHeight()); 
 	panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
@@ -132,18 +133,21 @@ end
 --
 function PanelPrototype:CreateArea(name, width, height, autoplace)
 	local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
+	area.mytype = "area"
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
+--	getglobal(FrameTitle..self:GetCurrentID()..'Title'):ClearAllPoints()	
+--	getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetPoint("BOTTOMLEFT", area, "TOPLEFT", 10, -2)
 	area:SetWidth(width or self.frame:GetWidth()-10)
 	area:SetHeight(height or self.frame:GetHeight()-10)
 	
 	if autoplace then
 		local kids = { self.frame:GetChildren() };
 		if #kids == 1 then
-			area:SetPoint('TOPLEFT', self.frame, 5, -15)
+			area:SetPoint('TOPLEFT', self.frame, 5, -17)
 		else
-			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -12)
+			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -17)
 		end
 	end
 
@@ -161,6 +165,7 @@ end
 --
 function PanelPrototype:CreateCheckButton(name, autoplace, textleft)
 	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
+	button.myheight = 25
 	getglobal(button:GetName() .. 'Text'):SetText(name)
 
 	if textleft then
@@ -305,10 +310,10 @@ end
 --  arg4 = function to call when clicked
 --
 function PanelPrototype:CreateButton(title, width, height, onclick)
-	local button = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'UIPanelButtonTemplate')
-	button:SetText(title)
+	local button = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
 	button:SetWidth(width or 100)
 	button:SetHeight(height or 20)
+	button:SetText(title)
 	if onclick then
 		button:SetScript("OnClick", onclick)
 	end
@@ -350,41 +355,39 @@ function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	return ModelFrame	
 end
 
-do 
-	local function getFrameWidth(frame, x)
-		x = x or 0
-		local kids = { frame:GetChildren() }
-		for _, child in pairs(kids) do
-			x = getFrameWidth(child, x)
+function PanelPrototype:AutoSetDimension()
+	if not self.frame.mytype == "area" then return end
+	local height = self.frame:GetHeight()
+
+	local need_height = 25
+	
+	local kids = { self.frame:GetChildren() }
+	for _, child in pairs(kids) do
+		if child.myheight and type(child.myheight) == "number" then
+			need_height = need_height + child.myheight
+		else
+			need_height = need_height + child:GetHeight() + 50
 		end
-		local regions = { frame:GetRegions() }
-		for _, region in next, regions do
-			if region:GetObjectType() == "FontString" then
-				x = x + region:GetStringWidth()
-			end
-		end
-		return x
 	end
 
-	function PanelPrototype:AutoSetDimension()
-		local height = self.frame:GetHeight()
-	
-		local need_height = 0
-	
-		local kids = { self.frame:GetChildren() }
-		for _, child in pairs(kids) do
-			need_height = need_height + child:GetHeight()
+	self.frame.myheight = need_height + 25
+	self.frame:SetHeight(need_height)
+end
+
+function PanelPrototype:SetMyOwnHeight()
+	if not self.frame.mytype == "panel" then return end
+
+	local need_height = 0
+
+	local kids = { self.frame:GetChildren() }
+	for _, child in pairs(kids) do
+		if child.mytype == "area" and child.myheight then
+			need_height = need_height + child.myheight
+		elseif child.mytype == "area" then
+			need_height = need_height + child:GetHeight() + 30
 		end
-		if #kids == 1 then
-			need_height = need_height + 18
-		elseif #kids == 2 then
-			need_height = need_height + 10
-		else
-			need_height = need_height + 3
-		end
-	
-		self.frame:SetHeight(need_height)
 	end
+	self.frame:SetHeight(need_height)
 end
 
 
@@ -668,18 +671,20 @@ do
 	-- This function is for Internal use.
 	-- places the selected tab on the containerframe
 	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
-		if ( getglobal(self:GetName().."PanelContainer").displayedFrame ) then
-			getglobal(self:GetName().."PanelContainer").displayedFrame:Hide();
+		local container = getglobal(self:GetName().."PanelContainer")
+		if ( container.displayedFrame ) then
+			container.displayedFrame:Hide();
 		end
 		
-		getglobal(self:GetName().."PanelContainer").displayedFrame = frame;
+		container.displayedFrame = frame;
 		
-		--frame:SetParent(getglobal(self:GetName().."PanelContainer"));
-		--frame:ClearAllPoints();
-		--frame:SetPoint("TOPLEFT", getglobal(self:GetName().."PanelContainer"), "TOPLEFT");
-		--frame:SetPoint("BOTTOMRIGHT", getglobal(self:GetName().."PanelContainer"), "BOTTOMRIGHT");
-		
-		getglobal(self:GetName().."PanelContainerFOV"):SetScrollChild(frame)
+		getglobal(container:GetName().."FOV"):SetScrollChild(frame)
+
+		local mymax = frame:GetHeight() - container:GetHeight()
+		if mymax <= 0 then mymax = 0 end
+
+		getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
+
 		frame:Show();
 	end
 
@@ -712,7 +717,7 @@ function DBM_GUI:CreateOptionsMenu()
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
 
 	do -- we sepearte the tabs for performance/memory improofments
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, 365, 140, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 140, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -722,8 +727,8 @@ function DBM_GUI:CreateOptionsMenu()
 		local test2 = generaloptions:CreateCheckButton("Enable Test2", true)
 	
 		-- Raidwarning Colors
-		local raidwarncolors = DBM_GUI_Frame:CreateArea(L.RaidWarnColors, 365, 155)
-		raidwarncolors.frame:SetPoint('TOPLEFT', 10, -176)
+		local raidwarncolors = DBM_GUI_Frame:CreateArea(L.RaidWarnColors, nil, 175)
+		raidwarncolors.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 	
 		local color1 = raidwarncolors:CreateColorSelect(64)
 		local color2 = raidwarncolors:CreateColorSelect(64)
@@ -735,9 +740,9 @@ function DBM_GUI:CreateOptionsMenu()
 		local color4text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color4.textid = color4text; color4.myid = 4
 	
 		color1:SetPoint('TOPLEFT', 20, -20)
-		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
-		color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 20, 0)
-		color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 20, 0)
+		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 15, 0)
+		color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 15, 0)
+		color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 15, 0)
 	
 		local function UpdateColor(self)
 			local r, g, b = self:GetColorRGB()
@@ -770,7 +775,7 @@ function DBM_GUI:CreateOptionsMenu()
 	
 	
 		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 340, false)
-		infotext:SetPoint('TOPLEFT', 10, -120)
+		infotext:SetPoint('BOTTOMLEFT', raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
 		infotext:SetJustifyH("LEFT")
 		infotext:SetFontObject(GameFontNormalSmall);
 	
@@ -781,39 +786,43 @@ function DBM_GUI:CreateOptionsMenu()
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall);
 	
 		-- Pizza Timer (create your own timer menue)
-		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, 365, 55)
-		pizzaarea.frame:SetPoint('TOPLEFT', 10, -345)
+		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
+		pizzaarea.frame:SetPoint('TOPLEFT', raidwarncolors.frame, "BOTTOMLEFT", 0, -20)
 	
-		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza is done", 140)
+		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza is done", 165)
 		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
 		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
 		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
-		local okbttn  = pizzaarea:CreateButton(L.Button_OK, 53, 30);
 	
-		textbox:SetPoint('TOPLEFT', 20, -20)
+		textbox:SetPoint('TOPLEFT', 20, -25)
 		hourbox:SetPoint('TOPLEFT', textbox, "TOPRIGHT", 20, 0)
 		minbox:SetPoint('TOPLEFT', hourbox, "TOPRIGHT", 20, 0)
 		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
-		okbttn:SetPoint('TOPLEFT', secbox, "TOPRIGHT", 7, 6)
+
+		
+		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart);
+		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
+
 		-- END Pizza Timer
 		-- END MAINPAGE
+		DBM_GUI_Frame:SetMyOwnHeight()
 	end
 	do
-		local BarSetup = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
-		
+		BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
+		BarSetup = BarSetupPanel:CreateArea("preview", nil, 150, true)
+
 		local dummybar = DBM.Bars:CreateDummyBar()
 		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, -50)
 		dummybar.frame:SetParent(BarSetup.frame)
 		dummybar:SetTimer(100)
-		dummybar:SetElapsed(20)
+		dummybar:SetElapsed(35)
 
 		local iconleft = BarSetup:CreateCheckButton("Icon left")
 		local iconright = BarSetup:CreateCheckButton("Icon right", false, true)
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
 
-		
-
+		BarSetupPanel:SetMyOwnHeight() 
 	end
 
 end	
@@ -1019,7 +1028,7 @@ do
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
 
-			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true) -- 365, 140, true)
+			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
 			for _,v in ipairs(category) do
 
 				if type(mod.Options[v]) == "boolean" then
@@ -1041,6 +1050,7 @@ do
 				end
 			end
 			catpanel:AutoSetDimension()
+			panel:SetMyOwnHeight()
 		end
 	end
 
