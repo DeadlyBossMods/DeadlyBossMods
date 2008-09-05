@@ -1,27 +1,20 @@
+if GetLocale() == "deDE" then
+	local L = DBM_BidBot_Translations
 
+	L.Prefix = "[BidBot]: "
 
-if not DBM_BidBot_Translations then DBM_BidBot_Translations = {} end
-if not DBM_BidBot_Translations["deDE"] then DBM_BidBot_Translations["deDE"] = {} end
+	L.Whisper_Queue 		= "Zur Zeit wird noch geboten. Item(s) landen in der Warteschlange."
+	L.Whisper_Bid_OK 		= "Dein Gebot von %d DKP wurde akzeptiert."
+	L.Whisper_InUse 		= "Zur Zeit wird noch auf %s geboten."
 
-local L = DBM_GUI_Translation["deDE"]
+	L.Message_StartBidding		= "Jetzt für %s bei %s bieten! Mindestgebot: %d"
+	L.Message_DoBidding		= "Verbleibende Zeit für %s: %d Sekunden."
 
-L.Prefix = "[BidBot]: "
+	L.Message_ItemGoesTo		= "%s geht für %d Punkte an %s. Gratz!"
+	L.Message_NoBidMade		= "Keiner hat auf %s geboten."
 
-L.Whisper_Queue 		= "Zur Zeit wird noch geboten. Item(s) landen in der Warteschlange."
-L.Whisper_Bid_OK 		= "Dein Gebot von %d DKP wurde akzeptiert."
-L.Whisper_InUse 		= "Zur Zeit wird noch auf %s geboten."
+	L.Message_Biddings		= "%d. %s hat %d DKP geboten."
+	L.Message_BiddingsVisible	= "%d von ingesamt %d sichtbar."
 
-L.Message_StartBidding		= "Jetzt für %s bei %s bieten! Mindestgebot: %d"
-L.Message_DoBidding		= "Verbleibende Zeit für %s: %d Sekunden."
-
-L.Message_ItemGoesTo		= "%s geht für %d Punkte an %s. Gratz!"
-L.Message_NoBidMade		= "Keiner hat auf %s geboten."
-
-L.Message_Biddings		= "%d. %s hat %d DKP geboten."
-L.Message_BiddingsVisible	= "%d von ingesamt %d sichtbar."
-
-L.Disenchant			= "Disenchant"
-
-
-
-
+	L.Disenchant			= "Disenchant"
+end

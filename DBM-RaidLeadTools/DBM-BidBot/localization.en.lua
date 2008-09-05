@@ -1,9 +1,6 @@
+DBM_BidBot_Translations = {}
 
-
-if not DBM_BidBot_Translations then DBM_BidBot_Translations = {} end
-if not DBM_BidBot_Translations["enGB"] then DBM_BidBot_Translations["enGB"] = {} end
-
-local L = DBM_GUI_Translation["enGB"]
+local L = DBM_BidBot_Translations
 
 L.Prefix = "[BidBot]: "
 
