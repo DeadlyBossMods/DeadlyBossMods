@@ -1,6 +1,25 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 
 
+	<Button name="DBM_GUI_OptionsFramePanelButtonTemplate" virtual="true">
+		<ButtonText name="$parentText">
+			<Anchors>
+				<Anchor point="CENTER">
+					<Offset>
+						<AbsDimension x="0" y="0"/>
+					</Offset>
+				</Anchor>
+			</Anchors>
+		</ButtonText>
+		<NormalFont style="GameFontNormal"/>
+		<HighlightFont style="GameFontHighlight"/>
+		<DisabledFont style="GameFontDisable"/>
+		<NormalTexture inherits="UIPanelButtonUpTexture"/>
+		<PushedTexture inherits="UIPanelButtonDownTexture"/>
+		<DisabledTexture inherits="UIPanelButtonDisabledTexture"/>
+		<HighlightTexture inherits="UIPanelButtonHighlightTexture"/>
+	</Button>
+
 	<Button name="DBM_GUI_OptionsFrameTabButtonTemplate" virtual="true">
         <Size>
             <AbsDimension x="85" y="24"/>
@@ -400,7 +419,7 @@
 							</Anchor>
 							<Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
 								<Offset>
-									<AbsDimension x="-20" y="5"/>
+									<AbsDimension x="-20" y="7"/>
 								</Offset>
 							</Anchor>
 						</Anchors>
@@ -414,19 +433,19 @@
 									</Anchor>
 									<Anchor point="BOTTOMRIGHT">
 										<Offset>
-											<AbsDimension x="15" y="15"/>
+											<AbsDimension x="15" y="13"/>
 										</Offset>
 									</Anchor>	
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										self:SetMinMaxValues(0, 400);
+										self:SetMinMaxValues(0, 200);
 										self:SetValue(0);
 										self.offset = 0	
 									</OnLoad>
 									<OnVerticalScroll>
 										self:SetValue(offset);
-										self.offset = floor((offset / 15) + 0.5);
+										self.offset = floor((offset / 10) + 0.5);
 									</OnVerticalScroll>
 									<OnValueChanged>
 										self:GetParent():SetVerticalScroll(value);
