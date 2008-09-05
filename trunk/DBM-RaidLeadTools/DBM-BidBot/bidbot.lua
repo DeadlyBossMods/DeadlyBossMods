@@ -31,10 +31,9 @@ DBM_BidBot_Settings = {
 	minGebot = 10,			-- Mindest Gebot
 	duration = 30,			-- Laufzeit einer auction
 	output = 4,			-- max. Menge der ausgegebenen Gebote
-	lang = "enGB"
 }
-local setting = DBM_BidBot_Settings
-local L = DBM_BidBot_Translations["enGB"]
+local settings = DBM_BidBot_Settings
+local L = DBM_BidBot_Translations
 DBM_BidBot = {}
 DBM_BidBot.Queue = {}
 DBM_BidBot.Frame = CreateFrame("Frame", "DBM_BidBotFrame", UIParent)
@@ -76,7 +75,7 @@ DBM_BidBot:RegisterEvents("ADDON_LOADED")
 
 
 function DBM_BidBot:OnMsgRecived(msg, name)
-	if setting.enabled and msg and string.find(string.lower(msg), "^!bid ") then
+	if settings.enabled and msg and string.find(string.lower(msg), "^!bid ") then
 		local ItemLink			
 		ItemLink = string.gsub(msg, "^!(%w+) ", "")			
 		if string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r") then
@@ -155,16 +154,16 @@ function DBM_BidBot:StartBidding()
 		self.CurrentItem = ItemLink
 		self.Bidders = {}
 
-		SendChatMessage(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), setting.minGebot), setting.chatchannel);
-		SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, setting.Duration), setting.chatchannel);
+		SendChatMessage(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), settings.minGebot), settings.chatchannel);
+		SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, settings.Duration), settings.chatchannel);
 		
-		DBM:Schedule((setting.Duration / 6) * 5, function() 
-			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(setting.Duration / 6)), setting.chatchannel)
+		DBM:Schedule((settings.Duration / 6) * 5, function() 
+			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.Duration / 6)), settings.chatchannel)
 			end)
-		DBM:Schedule(setting.Duration / 2, function() 
-			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(setting.Duration / 2)), setting.chatchannel)
+		DBM:Schedule(settings.Duration / 2, function() 
+			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.Duration / 2)), settings.chatchannel)
 			end)
-		DBM:Schedule(setting.Duration, self.AuctionEnd)
+		DBM:Schedule(settings.Duration, self.AuctionEnd)
 	end
 end
 
@@ -182,15 +181,15 @@ function DBM_BidBot:AuctionEnd()
 		table.sort(self.Bidders, function(a,b) return a.Bid > b.Bid end)
 		Itembid.points = self.Bidders[2]["Bid"] + 1
 		Itembid.member = self.Bidders[1]["Name"]
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, self.Bidders[1]["Name"]), setting.chatchannel);
+		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, self.Bidders[1]["Name"]), settings.chatchannel);
 
 	elseif (self.Bidders[1]) then
-		Itembid.points = setting.minGebot
+		Itembid.points = settings.minGebot
 		Itembid.member = self.Bidders[1]["Name"]
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, self.Bidders[1]["Name"]), setting.chatchannel);
+		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, self.Bidders[1]["Name"]), settings.chatchannel);
 	else
 		Itembid.member = L.Disenchant
-		SendChatMessage(L.Prefix..L.Message_NoBidMade:format(Itembid.item), setting.chatchannel);
+		SendChatMessage(L.Prefix..L.Message_NoBidMade:format(Itembid.item), settings.chatchannel);
 	end
 
 	local counter = 0
@@ -205,7 +204,7 @@ function DBM_BidBot:AuctionEnd()
 	   }
 
 	   if posi <= DKPCDB.BidBot.output then
-		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.name, werte.Bid), setting.chatchannel)
+		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.name, werte.Bid), settings.chatchannel)
 	   else
 		max = true
 	   end
@@ -213,14 +212,14 @@ function DBM_BidBot:AuctionEnd()
 	end
 	
 	if max then
-		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(setting.output, counter), setting.chatchannel)
+		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(settings.output, counter), settings.chatchannel)
 	end
 
 	self.CurrentItem = ""
 	self.Bidders = {}
 	if #self.Queue then
 		-- Shedule next Item
-		SendChatMessage("--- --- --- --- ---", setting.chatchannel)
+		SendChatMessage("--- --- --- --- ---", settings.chatchannel)
 		DBM:Schedule(1.5, self.StartBidding)
 	end
 end	
