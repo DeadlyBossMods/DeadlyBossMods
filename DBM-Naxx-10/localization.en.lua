@@ -9,13 +9,6 @@ L:SetGeneralLocalization({
 	name = "Anub'Rekhan"
 })
 
-L:SetMiscLocalization({
-	yell1 = "Which one shall I eat first? So difficult to choose. They all smell so delicious...", 
-	yell2 = "There is no way out.",
-	yell3 = "Just a little taste...",
-	yell4 = "Yes, run! It makes the blood pump faster!"
-})
-
 L:SetWarningLocalization({
 	SpecialLocust		= "Locust Swarm!",
 	WarningLocustSoon	= "Locust Swarm in 15 sec",
@@ -44,12 +37,6 @@ L = DBM:GetModLocalization("Faerlina 10")
 
 L:SetGeneralLocalization({
 	name = "Grand Widow Faerlina"
-})
-
-L:SetMiscLocalization({
-	yell1 = "You cannot hide from me!",
-	yell2 = "Run while you still can!",
-	yell3 = "Kneel before me, worm!",
 })
 
 
@@ -106,4 +93,24 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 
+})
+
+
+-----------------
+--  Patchwerk  --
+-----------------
+L = DBM:GetModLocalization("Loatheb 10")
+
+L:SetGeneralLocalization({
+	name = "Patchwerk"
+})
+
+L:SetOptionLocalization({
+	WarningHateful = "Announce Hateful Strikes to raid chat"
+})
+
+L:SetMiscLocalization({
+	yell1 = "Patchwerk want to play!",
+	yell2 = "Kel'thuzad make Patchwerk his avatar of war!",
+	HatefulStrike = "Hateful Strike --> >%s< [%s]"
 })

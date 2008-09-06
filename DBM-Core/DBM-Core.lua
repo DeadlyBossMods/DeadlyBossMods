@@ -28,8 +28,8 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.00",
-	DisplayVersion = "4.01"
+	Version = "0.40",
+	DisplayVersion = "4.01 (Alpha)"
 }
 
 DBM_SavedOptions = {}
@@ -395,10 +395,14 @@ do
 		table.sort(sortMe, sort)
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
-			self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
+			if v.displayVersion then
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
+			else
+				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
+			end
 		end
 		for i = #sortMe, 1, -1 do
-			if not v.revision then
+			if not sortMe[i].revision then
 				table.remove(sortMe, i)
 			end
 		end

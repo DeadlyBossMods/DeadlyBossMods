@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision: 84 $"):sub(12, -3))
 mod:SetCreatureID(15956)
 mod:SetZone(GetAddOnMetadata("DBM-Naxx-10", "X-DBM-Mod-LoadZone"))
 
---mod:RegisterCombat("yell", L.yell1, L.yell2, L.yell3, L.yell4)
 mod:RegisterCombat("combat")
 
 
