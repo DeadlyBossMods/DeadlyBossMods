@@ -677,7 +677,7 @@ do
 				raid[sender].revision = revision
 				raid[sender].version = version
 				raid[sender].displayVersion = displayVersion
-				if version >= tonumber(DBM.Version) and not showedUpdateReminder then
+				if version > tonumber(DBM.Version) and not showedUpdateReminder then
 					local found = false
 					for i, v in pairs(raid) do
 						if v.version == version and v ~= raid[sender] then
