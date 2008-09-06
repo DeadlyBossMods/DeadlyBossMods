@@ -2,7 +2,7 @@
 ## Title: |cff0055FFDeadly Boss Mods|r Options GUI
 ## Title-zhCN: |cff0055FFDeadly Boss Mod|r Options GUI
 ## Notes: Options GUI for DeadlyBossMods
-## LoadOnDemand: 0
+## LoadOnDemand: 1
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
 ## URL: http://www.deadlybossmods.com
@@ -10,3 +10,5 @@ localization.en.lua
 localization.de.lua
 DBM-GUI-Templates.xml
 DBM-GUI.lua
+DBM-GUI_BossModStudio.lua
+

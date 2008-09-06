@@ -163,7 +163,7 @@ end
 --  arg1 = text right to the CheckBox
 --  arg2 = autoplaced (true or nil/false)
 --
-function PanelPrototype:CreateCheckButton(name, autoplace, textleft)
+function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
 	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
 	button.myheight = 25
 	getglobal(button:GetName() .. 'Text'):SetText(name)
@@ -171,6 +171,11 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft)
 	if textleft then
 		getglobal(button:GetName() .. 'Text'):ClearAllPoints()
 		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 3, 0)
+	end
+
+	if variable then
+		button:SetScript("OnShow",  function() button:SetChecked(variable) end)
+		button:SetScript("OnClick", function() variable = not variable; button:SetChecked(variable) end)
 	end
 
 	if autoplace then
@@ -717,77 +722,25 @@ function DBM_GUI:CreateOptionsMenu()
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
 
 	do -- we sepearte the tabs for performance/memory improofments
+		----------------------------------------------
+		--             General Options              --
+		----------------------------------------------
 		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 140, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
 		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable(); else DBM:Enable(); end enabledbm:SetChecked(DBM:IsEnabled()) end)
 	
-		local test1 = generaloptions:CreateCheckButton("Enable Test1", true)
-		local test2 = generaloptions:CreateCheckButton("Enable Test2", true)
+		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, function() DBM.Options.StatusEnabled = not DBM.Options.StatusEnabled 
+													StatusEnabled:SetChecked(DBM.Options.StatusEnabled) end)
+		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, function() DBM.Options.AutoRespond = not DBM.Options.AutoRespond 
+													AutoRespond:SetChecked(DBM.Options.AutoRespond) end)
 	
-		-- Raidwarning Colors
-		local raidwarncolors = DBM_GUI_Frame:CreateArea(L.RaidWarnColors, nil, 175)
-		raidwarncolors.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
-	
-		local color1 = raidwarncolors:CreateColorSelect(64)
-		local color2 = raidwarncolors:CreateColorSelect(64)
-		local color3 = raidwarncolors:CreateColorSelect(64)
-		local color4 = raidwarncolors:CreateColorSelect(64)
-		local color1text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color1.textid = color1text; color1.myid = 1
-		local color2text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color2.textid = color2text; color2.myid = 2
-		local color3text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color3.textid = color3text; color3.myid = 3
-		local color4text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64); 	color4.textid = color4text; color4.myid = 4
-	
-		color1:SetPoint('TOPLEFT', 20, -20)
-		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 15, 0)
-		color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 15, 0)
-		color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 15, 0)
-	
-		local function UpdateColor(self)
-			local r, g, b = self:GetColorRGB()
-			self.textid:SetTextColor(r, g, b)
-			DBM.Options.WarningColors[self.myid].r = r
-			DBM.Options.WarningColors[self.myid].g = g
-			DBM.Options.WarningColors[self.myid].b = b 
-		end
-	
-		color1:SetScript("OnColorSelect", UpdateColor)
-		color2:SetScript("OnColorSelect", UpdateColor)
-		color3:SetScript("OnColorSelect", UpdateColor)
-		color4:SetScript("OnColorSelect", UpdateColor)
-	
-		color1:SetColorRGB(DBM.Options.WarningColors[1].r, DBM.Options.WarningColors[1].g, DBM.Options.WarningColors[1].b)
-		color2:SetColorRGB(DBM.Options.WarningColors[2].r, DBM.Options.WarningColors[2].g, DBM.Options.WarningColors[2].b)
-		color3:SetColorRGB(DBM.Options.WarningColors[3].r, DBM.Options.WarningColors[3].g, DBM.Options.WarningColors[3].b)
-		color4:SetColorRGB(DBM.Options.WarningColors[4].r, DBM.Options.WarningColors[4].g, DBM.Options.WarningColors[4].b)
-		
-		-- Text Position
-		color1text:SetPoint('TOPLEFT', color1, "BOTTOMLEFT", 3, -10)
-		color2text:SetPoint('TOPLEFT', color2, "BOTTOMLEFT", 3, -10)
-		color3text:SetPoint('TOPLEFT', color3, "BOTTOMLEFT", 3, -10)
-		color4text:SetPoint('TOPLEFT', color4, "BOTTOMLEFT", 3, -10)
-	
-		color1text:SetJustifyH("CENTER")
-		color2text:SetJustifyH("CENTER")
-		color3text:SetJustifyH("CENTER")
-		color4text:SetJustifyH("CENTER")
-	
-	
-		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 340, false)
-		infotext:SetPoint('BOTTOMLEFT', raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
-		infotext:SetJustifyH("LEFT")
-		infotext:SetFontObject(GameFontNormalSmall);
-	
-	
-		local movemebutton = raidwarncolors:CreateButton(L.MoveMe, 100, 16)
-		movemebutton:SetPoint('BOTTOMRIGHT', raidwarncolors.frame, "TOPRIGHT", 0, -1)
-		movemebutton:SetNormalFontObject(GameFontNormalSmall);
-		movemebutton:SetHighlightFontObject(GameFontNormalSmall);
-	
+
+
 		-- Pizza Timer (create your own timer menue)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
-		pizzaarea.frame:SetPoint('TOPLEFT', raidwarncolors.frame, "BOTTOMLEFT", 0, -20)
+		pizzaarea.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 	
 		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza is done", 165)
 		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
@@ -802,11 +755,71 @@ function DBM_GUI:CreateOptionsMenu()
 		
 		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart);
 		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
-
 		-- END Pizza Timer
-		-- END MAINPAGE
 		DBM_GUI_Frame:SetMyOwnHeight()
 	end
+	do
+		----------------------------------------------
+		--            Raidwarning Colors            --
+		----------------------------------------------
+		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.Tab_RaidWarning, nil, 175, true)
+
+		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, DBM.Options.ShowWarningsInChat)
+		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, DBM.Options.ShowFakedRaidWarnings)
+		local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft,  true, nil, DBM.Options.WarningIconLeft)
+		local WarningIconRight 		= raidwarnoptions:CreateCheckButton(L.WarningIconRight,  true, nil, DBM.Options.WarningIconRight)
+		raidwarnoptions:AutoSetDimension()
+
+
+		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
+	
+		local color1 = raidwarncolors:CreateColorSelect(64)
+		local color2 = raidwarncolors:CreateColorSelect(64)
+		local color3 = raidwarncolors:CreateColorSelect(64)
+		local color4 = raidwarncolors:CreateColorSelect(64)
+		local color1text = raidwarncolors:CreateText(L.RaidWarnColor_1, 64)
+		local color2text = raidwarncolors:CreateText(L.RaidWarnColor_2, 64)
+		local color3text = raidwarncolors:CreateText(L.RaidWarnColor_3, 64)
+		local color4text = raidwarncolors:CreateText(L.RaidWarnColor_4, 64)
+	
+		color1:SetPoint('TOPLEFT', 20, -20)
+		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 15, 0)
+		color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 15, 0)
+		color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 15, 0)
+	
+		local function UpdateColor(self)
+			local r, g, b = self:GetColorRGB()
+			self.textid:SetTextColor(r, g, b)
+			DBM.Options.WarningColors[self.myid].r = r
+			DBM.Options.WarningColors[self.myid].g = g
+			DBM.Options.WarningColors[self.myid].b = b 
+		end
+		local function UpdateColorFrames(color, text, id)
+			color.textid = text
+			color.myid = id
+			color:SetScript("OnColorSelect", UpdateColor)
+			color:SetColorRGB(DBM.Options.WarningColors[id].r, DBM.Options.WarningColors[id].g, DBM.Options.WarningColors[id].b)
+			text:SetPoint('TOPLEFT', color, "BOTTOMLEFT", 3, -10) 
+			text:SetJustifyH("CENTER")
+		end
+		UpdateColorFrames(color1, color1text, 1)
+		UpdateColorFrames(color2, color2text, 2)
+		UpdateColorFrames(color3, color3text, 3)
+		UpdateColorFrames(color4, color4text, 4)
+		
+		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 340, false)
+		infotext:SetPoint('BOTTOMLEFT', raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
+		infotext:SetJustifyH("LEFT")
+		infotext:SetFontObject(GameFontNormalSmall);
+	
+		local movemebutton = raidwarncolors:CreateButton(L.MoveMe, 100, 16)
+		movemebutton:SetPoint('BOTTOMRIGHT', raidwarncolors.frame, "TOPRIGHT", 0, -1)
+		movemebutton:SetNormalFontObject(GameFontNormalSmall);
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+
+	end
+
 	do
 		BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		BarSetup = BarSetupPanel:CreateArea("preview", nil, 150, true)
