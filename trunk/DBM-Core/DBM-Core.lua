@@ -897,6 +897,7 @@ end
 function DBM:OnMobKill(cId, synced)
 	for i = #inCombat, 1, -1 do
 		local v = inCombat[i]
+		if not v.combatInfo then return end
 		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
 			if not synced then sendSync("DBMv4-Kill", cId) end
 			v.combatInfo.killMobs[cId] = false
