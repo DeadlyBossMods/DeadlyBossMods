@@ -880,12 +880,29 @@ do
 				end
 			end
 
+			if addon.panel and addon.subTabs then
+				if not addon.subPanels then addon.subPanels = {} end
+
+				for k,v in pairs(addon.subTabs) do
+					if not addon.subPanels[k] then
+						addon.subPanels[k] = addon.panel:CreateNewPanel(v or "Error: X-DBM-Mod-Name", nil, false)
+					end
+				end
+			end
+
+
 			for _, mod in ipairs(DBM.Mods) do
 				if mod.modId == addon.modId then
-					if not mod.panel then
-						mod.panel = addon.panel:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
+					if not mod.panel and (not addon.subTabs or addon.subPanels[mod.subTab]) then
+						if addon.subTabs and addon.subPanels[mod.subTab] then
+							mod.panel = addon.subPanels[mod.subTab]:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
+						else
+							mod.panel = addon.panel:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
+						end
 						DBM_GUI:CreateBossModTab(mod)
 
+
+						--[[
 						mobstyle = mod.panel:CreateCreatureModelFrame(375, 400, mod.creatureId)
 						mobstyle:SetPoint("BOTTOMRIGHT", mod.panel.frame, "BOTTOMRIGHT", -5, 5)
 						mobstyle:SetModelScale(mod.modelScale or 0.25)
@@ -1022,6 +1039,7 @@ do
 							end
 
 						end)
+						--]]
 					end
 				end
 			end	
