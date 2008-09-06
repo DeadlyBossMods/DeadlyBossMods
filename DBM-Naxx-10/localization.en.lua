@@ -84,3 +84,26 @@ L:SetOptionLocalization({
 	TimerWebSpray		= "Show Web Spray timer",
 	TimerSpider			= "Show Spider timer"
 })
+
+
+---------------
+--  Loatheb  --
+---------------
+L = DBM:GetModLocalization("Loatheb 10")
+
+L:SetGeneralLocalization({
+	name = "Loatheb"
+})
+
+L:SetWarningLocalization({
+	WarningSporeNow		= "Spore spawned!",
+	WarningSporeSoon	= "Spore in 5 sec"
+})
+
+L:SetTimerLocalization({
+
+})
+
+L:SetOptionLocalization({
+
+})
