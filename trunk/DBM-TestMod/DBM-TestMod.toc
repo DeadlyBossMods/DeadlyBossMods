@@ -1,8 +1,9 @@
 ## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r Testing...
+## Title: |cff0055FFDeadly Boss Mods|r Test Mods
 ## Notes: Test...
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMTestMod_SavedVars, DBMTestMod_Stats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Elwynn Forest

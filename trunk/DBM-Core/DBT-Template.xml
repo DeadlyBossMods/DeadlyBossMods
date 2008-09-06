@@ -73,6 +73,17 @@
 			<OnUpdate>
 				self.obj:Update(arg1)
 			</OnUpdate>
+			<OnMouseDown>
+				if arg1 == "LeftButton" then
+					self.obj.owner.mainAnchor:StartMoving()
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				self.obj.owner.mainAnchor:StopMovingOrSizing()
+			</OnMouseUp>
+			<OnHide>
+				self.obj.owner.mainAnchor:StopMovingOrSizing()
+			</OnHide>
 		</Scripts>
 	</Frame>
 </Ui>	

@@ -1,0 +1,1 @@
+local mod = DBM:NewMod("Heigan 10", "DBM-Naxx-10", 2)

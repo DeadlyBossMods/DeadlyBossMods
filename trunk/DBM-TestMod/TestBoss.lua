@@ -9,8 +9,10 @@ mod:SetModelOffset(0, 0, 0)
 mod:SetModelWalkSequence(4)
 mod:SetModelIdleSquences(16, 18, 2, 1)
 
-mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"))
-mod:SetCreatureID(448)
+mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"), "Teldrassil")
+
+--mod:SetCreatureID(448)
+mod:SetCreatureID(2043)
 mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",

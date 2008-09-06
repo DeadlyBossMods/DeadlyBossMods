@@ -33,8 +33,6 @@ DBM = {
 }
 
 DBM_SavedOptions = {}
-DBM_SavedModOptions = {}
-DBM_Stats = {}
 
 DBM.DefaultOptions = {
 	WarningColors = {
@@ -46,7 +44,12 @@ DBM.DefaultOptions = {
 	WarningPosition = {
 		Point = "TOP",
 		X = 0,
-		Y = -192,
+		Y = -165,
+	},
+	MainBarPosition = {
+		Point = "TOP",
+		X = 0,
+		Y = -240,
 	},
 	StatusEnabled = true,
 	AutoRespond = true,
@@ -362,6 +365,8 @@ SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	if msg == "ver" or msg == "version" then
 		DBM:ShowVersions()
+	elseif msg == "unlock" or msg == "move" then
+		DBM.Bars:ShowMovableBar()
 	else
 		if not IsAddOnLoaded("DBM-GUI") then
 			local _, _, _, enabled = GetAddOnInfo("DBM-GUI")
@@ -526,22 +531,36 @@ do
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
 		RaidWarningFrame:SetPoint(DBM.Options.WarningPosition.Point, UIParent, DBM.Options.WarningPosition.Point, DBM.Options.WarningPosition.X, DBM.Options.WarningPosition.Y)
+		DBM.Bars.mainAnchor:SetPoint(DBM.Options.MainBarPosition.Point, UIParent, DBM.Options.MainBarPosition.Point, DBM.Options.WarningPosition.X, DBM.Options.MainBarPosition.Y)
 	end
 	
-	function loadModOptions()
+	function loadModOptions(modId)
+		local savedOptions = getglobal(modId:gsub("-", "").."_SavedVars") or {}
+		local savedStats = getglobal(modId:gsub("-", "").."_Stats") or {}
 		for i, v in ipairs(DBM.Mods) do
-			if not v.initialized then
-				DBM_SavedModOptions[v.id] = DBM_SavedModOptions[v.id] or v.Options
+			if v.modId == modId then
+				savedOptions[v.id] = savedOptions[v.id] or v.Options
 				for option, optionValue in pairs(v.Options) do
-					if DBM_SavedModOptions[v.id][option] == nil then
-						DBM_SavedModOptions[v.id][option] = optionValue
+					if savedOptions[v.id][option] == nil then
+						savedOptions[v.id][option] = optionValue
 					end
 				end
-				v.Options = DBM_SavedModOptions[v.id]
-				v.initialized = true
+				v.Options = savedOptions[v.id] or {}
+				v.stats = savedStats[v.id] or {
+					kills = 0,
+					pulls = 0
+				}
 			end
 		end
+		setglobal(modId:gsub("-", "").."_SavedVars", savedOptions)
+		setglobal(modId:gsub("-", "").."_Stats", savedStats)
 	end
+end
+
+function DBM.Bars:OnPositionChanged(point, x, y)
+	DBM.Options.MainBarPosition.Point = point
+	DBM.Options.MainBarPosition.X = x
+	DBM.Options.MainBarPosition.Y = y
 end
 
 
@@ -608,7 +627,7 @@ function DBM:LoadMod(mod)
 		return false
 	else
 		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
-		loadModOptions()
+		loadModOptions(mod.modId)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
@@ -626,7 +645,7 @@ do
 		if not modSyncSpam[msg] or (GetTime() - modSyncSpam[msg] > 2.5) then
 			modSyncSpam[msg] = time
 			local mod, revision, event, arg = strsplit("\t", msg)
-			mod = self:GetModByName(mod or "")
+			mod = DBM:GetModByName(mod or "")
 			if mod and event and arg and revision then
 				mod:ReceiveSync(event, arg, sender, revision)
 			end
@@ -636,15 +655,15 @@ do
 	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
 		local delay, mod = strsplit("\t", msg)
 		delay = tonumber(delay or 0) or 0
-		mod = self:GetModByName(mod or "")
+		mod = DBM:GetModByName(mod or "")
 		if mod and delay then
-			self:StartCombat(mod, delay, true)
+			DBM:StartCombat(mod, delay, true)
 		end
 	end
 	
 	syncHandlers["DBMv4-Kill"] = function(msg, channel, sender)
 		local cId = tonumber(msg)
-		if cId then self:OnMobKill(cId, true) end
+		if cId then DBM:OnMobKill(cId, true) end
 	end
 	
 	syncHandlers["DBMv4-Ver"] = function(msg, channel, sender)
@@ -1008,13 +1027,12 @@ do
 				announces = {},
 				timers = {},
 				modId = modId,
-				stats = DBM_Stats[name] or {kills = 0, pulls = 0},
 				revision = 0,
 				localization = self:GetModLocalization(name)
 			},
 			mt
 		)
-		DBM_Stats[name] = obj.stats
+		if obj.localization.general.name == "name" then obj.localization.general.name = name end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
 		return obj
@@ -1219,11 +1237,11 @@ do
 	local timerPrototype = {}
 	local mt = {__index = timerPrototype}
 		
-	function timerPrototype:Start(...)
+	function timerPrototype:Start(timer, ...)
 		if not self.option or self.mod.Options[self.option] then
 			local id = self.id..(("%s"):rep(select("#", ...))):format(...)
 			local name = self.text:format(...)
-			local bar = DBM.Bars:CreateBar(self.timer, id, self.icon)
+			local bar = DBM.Bars:CreateBar(timer or self.timer, id, self.icon)
 			bar:SetText(name)
 			table.insert(self.startedTimers, id)
 			self.mod:Schedule(self.timer, removeEntry, self.startedTimers, id)
@@ -1381,12 +1399,12 @@ end
 --------------
 --  Combat  --
 --------------
-function bossModPrototype:RegisterCombat(type, ...)
+function bossModPrototype:RegisterCombat(cType, ...)
 	local info = {
-		type = type,
-		mob = (type == "combat" and select(1, ...)) or self.creatureId,
+		type = cType,
+		mob = (cType == "combat" and select(1, ...)) or self.creatureId,
 		name = self.localization.general.name or self.id,
-		msgs = (type ~= "combat") and {...},
+		msgs = (cType ~= "combat") and {...},
 		mod = self
 	}
 	for i = 1, select("#", ...) do
@@ -1397,6 +1415,7 @@ function bossModPrototype:RegisterCombat(type, ...)
 		end
 	end
 	self.combatInfo = info
+	if not self.zones then return end
 	for i, v in ipairs(self.zones) do
 		combatInfo[v] = combatInfo[v] or {}
 		table.insert(combatInfo[v], info)

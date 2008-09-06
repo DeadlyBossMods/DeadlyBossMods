@@ -1,0 +1,28 @@
+## Interface: 30000
+## Title: |cff0055FFDeadly Boss Mods|r Naxxramas
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMNaxx10_SavedVars, DBMNaxx10_Stats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-SubCategories: Arachnid Quarter, Construct Quarter, Plague Quarter, Military Quarter, Frostwyrm Lair
+## X-DBM-Mod-Name: Naxxramas 10
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-LoadZone: Naxxramas
+localization.en.lua
+localization.de.lua
+ArachnidQuarter\Anub'Rekhan.lua
+ArachnidQuarter\Faerlina.lua
+ArachnidQuarter\Maexxna.lua
+ConstructQuarter\Patchwerk.lua
+ConstructQuarter\Grobbulus.lua
+ConstructQuarter\Gluth.lua
+ConstructQuarter\Thaddius.lua
+PlagueQuarter\Noth.lua
+PlagueQuarter\Heigan.lua
+PlagueQuarter\Loatheb.lua
+MilitaryQuarter\Razuvious.lua
+MilitaryQuarter\Gothik.lua
+MilitaryQuarter\Horsemen.lua
+FrostwyrmLair\Sapphiron.lua
+FrostwyrmLair\Kel'Thuzad.lua
