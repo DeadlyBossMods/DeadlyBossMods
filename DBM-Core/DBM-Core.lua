@@ -578,6 +578,7 @@ function DBM:ADDON_LOADED(modname)
 					category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 					name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
 					zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
+					subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 					modId		= GetAddOnInfo(i),
 				})
 			end

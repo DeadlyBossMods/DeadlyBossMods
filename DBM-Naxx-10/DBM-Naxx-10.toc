@@ -5,7 +5,7 @@
 ## SavedVariablesPerCharacter: DBMNaxx10_SavedVars, DBMNaxx10_Stats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
-## X-DBM-Mod-SubCategories: Arachnid Quarter, Construct Quarter, Plague Quarter, Military Quarter, Frostwyrm Lair
+## X-DBM-Mod-SubCategories: Arachnid Quarter,Construct Quarter,Plague Quarter,Military Quarter,Frostwyrm Lair
 ## X-DBM-Mod-Name: Naxxramas 10
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZone: Naxxramas
