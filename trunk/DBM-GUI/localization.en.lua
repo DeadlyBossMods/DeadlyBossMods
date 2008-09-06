@@ -28,7 +28,18 @@ L.Disable = "disable"
 -- Tab: General Options
 L.General = "General Options"
 L.EnableDBM = "Enable DBM"
+L.EnableStatus = "Enable reply to 'status' whispers"
+L.AutoRespond = "Enable auto Responder while fighting"
 
+L.PizzaTimer_Headline = 'Create a "Pizza Timer"'
+L.PizzaTimer_Title = 'Name (e.g. "Pizza!")'
+L.PizzaTimer_Hours = "Hours"
+L.PizzaTimer_Mins = "Min"
+L.PizzaTimer_Secs = "Sec"
+L.PizzaTimer_ButtonStart = "start timer"
+
+-- Tab: Raidwarning
+L.Tab_RaidWarning = "Raidwarnings"
 L.RaidWarnColors = "Raid Warning Colors"
 L.RaidWarnColor_1 = "Color 1"
 L.RaidWarnColor_2 = "Color 2"
@@ -37,12 +48,11 @@ L.RaidWarnColor_4 = "Color 4"
 L.InfoRaidWarning = [[You can specify the position and colors of the Raidwarning frame. 
 In this Frame the Messages like "Player X is afflicted by Y" appears]]
 
-L.PizzaTimer_Headline = 'Create a "Pizza Timer"'
-L.PizzaTimer_Title = 'Name (e.g. "Pizza!")'
-L.PizzaTimer_Hours = "Hours"
-L.PizzaTimer_Mins = "Min"
-L.PizzaTimer_Secs = "Sec"
-L.PizzaTimer_ButtonStart = "start timer"
+L.ShowWarningsInChat = "Show Warning Messages in the Chatframe"
+L.ShowFakedRaidWarnings = "Show Warning as RaidWarning Message"
+L.WarningIconLeft = "Show Icons on left side"
+L.WarningIconRight = "Show Icons on right side"
+
 
 -- Tab: Barsetup
 L.BarSetup = "Bar Style"
