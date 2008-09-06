@@ -44,16 +44,17 @@ local waves = {
 function mod:OnCombatStart(delay)
 	wave = 0
 	timerPhase2:Start()
-	timerWave:Start(28, wave + 1)
-	warnWaveSoon:Schedule(30, wave + 1, waves[wave + 1][1], waves[wave + 1][2], waves[wave + 1][3])
+	timerWave:Start(24, wave + 1)
+	warnWaveSoon:Schedule(21, wave + 1, waves[wave + 1][1], waves[wave + 1][2], waves[wave + 1][3])
 end
 
 function mod:NextWave()
 	wave = wave + 1
 	warnWaveNow:Show(wave, waves[wave][1], waves[wave][2], waves[wave][3])
 	if wave < 18 then
+		timerWave:Start(nil, wave + 1)
 		warnWaveSoon:Schedule(17, wave + 1, waves[wave + 1][1], waves[wave + 1][2], waves[wave + 1][3])
-		self:ScheduleMethod(20)
+		self:ScheduleMethod(20, "NextWave")
 	end
 end
 
