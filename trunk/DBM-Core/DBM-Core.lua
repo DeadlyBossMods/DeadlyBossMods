@@ -1253,6 +1253,7 @@ do
 			self.mod:Schedule(self.timer, removeEntry, self.startedTimers, id)
 		end
 	end
+	timerPrototype.Show = timerPrototype.Start
 		
 	function timerPrototype:Stop(...)
 		if select("#", ...) == 0 then

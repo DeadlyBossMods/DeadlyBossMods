@@ -114,3 +114,33 @@ L:SetMiscLocalization({
 	yell2 = "Kel'thuzad make Patchwerk his avatar of war!",
 	HatefulStrike = "Hateful Strike --> >%s< [%s]"
 })
+
+--------------
+--  Gothik  --
+--------------
+L = DBM:GetModLocalization("Gothik 10")
+
+L:SetGeneralLocalization({
+	name = "Gothik"
+})
+
+L:SetTimerLocalization({
+	TimerWave	= "Wave #%d",
+	TimerPhase2	= "Phase 2"
+})
+
+L:SetWarningLocalization({
+	WarningWaveSoon		= "Wave %d [%s  -  %s  -  %s] in 3 sec",
+	WarningWaveNow		= "Wave %d [%s  -  %s  -  %s] spawned",
+	WarningRiderDown	= "Rider down",
+	WarningKnightDown	= "Knight down",
+})
+
+L:SetMiscLocalization({
+	yell = "Foolishly you have sought your own demise.",
+	Trainee = "Trainee",
+	Knight = "Knight",
+	Rider = "Rider",
+	Nothing = "Nothing",
+})
+
