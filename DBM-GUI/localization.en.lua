@@ -1,15 +1,14 @@
-
-if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
+DBM_GUI_Translations = {}
 
 local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TabCategory_Options 	= "DBM General Options"
+L.TabCategory_Options 	= "General Options"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
-L.TabCategory_BC 	= "The Burning Crusade"
-L.TabCategory_Classic 	= "WoW Classic Bosses"
-L.TabCategory_Other     = "Other Bossmods"
+L.TabCategory_BC 		= "The Burning Crusade"
+L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
+L.TabCategory_OTHER     = "Other Boss Mods"
 
 L.BossModLoaded = "Please choose a Boss Mod from the list to the left"
 L.BossModLoad_now = "This Boss Mod is not loaded; it will be loaded when you enter the instance. You can also click the button to load the mod manually."
@@ -28,8 +27,8 @@ L.Disable = "disable"
 -- Tab: General Options
 L.General = "General Options"
 L.EnableDBM = "Enable DBM"
-L.EnableStatus = "Enable reply to 'status' whispers"
-L.AutoRespond = "Enable auto Responder while fighting"
+L.EnableStatus = "Reply to 'status' whispers"
+L.AutoRespond = "Enable auto-respond while fighting"
 
 L.PizzaTimer_Headline = 'Create a "Pizza Timer"'
 L.PizzaTimer_Title = 'Name (e.g. "Pizza!")'
@@ -39,19 +38,19 @@ L.PizzaTimer_Secs = "Sec"
 L.PizzaTimer_ButtonStart = "start timer"
 
 -- Tab: Raidwarning
-L.Tab_RaidWarning = "Raidwarnings"
+L.Tab_RaidWarning = "Raid Warnings"
 L.RaidWarnColors = "Raid Warning Colors"
 L.RaidWarnColor_1 = "Color 1"
 L.RaidWarnColor_2 = "Color 2"
 L.RaidWarnColor_3 = "Color 3"
 L.RaidWarnColor_4 = "Color 4"
-L.InfoRaidWarning = [[You can specify the position and colors of the Raidwarning frame. 
-In this Frame the Messages like "Player X is afflicted by Y" appears]]
+L.InfoRaidWarning = [[You can specify the position and colors of the raid warning frame. 
+This frame is used for messages like "Player X is afflicted by Y" messages]]
 
-L.ShowWarningsInChat = "Show Warning Messages in the Chatframe"
-L.ShowFakedRaidWarnings = "Show Warning as RaidWarning Message"
-L.WarningIconLeft = "Show Icons on left side"
-L.WarningIconRight = "Show Icons on right side"
+L.ShowWarningsInChat = "Show warnings in chatframe"
+L.ShowFakedRaidWarnings = "Show warnings as faked Raid Warning messages"
+L.WarningIconLeft = "Show icon on left side"
+L.WarningIconRight = "Show icon on right side"
 
 
 -- Tab: Barsetup

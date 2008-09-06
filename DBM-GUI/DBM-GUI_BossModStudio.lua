@@ -27,7 +27,7 @@
 
 local L = {}
 
-L.TabCategory_BossModStudio = "BossMod Studio"
+L.TabCategory_BossModStudio = "Boss Mod Studio"
 L.AreaHead_CreateBossMod = "Main Informations of this new BossMod"
 L.BossName = "Name of the BossMod - like 'Hogger'"
 L.BossID = "Creature ID"

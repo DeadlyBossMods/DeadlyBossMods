@@ -59,7 +59,11 @@ options = {
 	Flash = {
 		type = "boolean",
 		default = true,
-	}
+	},
+	Texture = {
+		type = "string",
+		default = "Interface\\AddOns\\DBM-Core\\textures\\default.tga"
+	},
 }
 
 
@@ -288,6 +292,30 @@ function barPrototype:Update(elapsed)
 end
 
 
+-------------------
+--  Movable Bar  --
+-------------------
+do
+	local function moveEnd(self)
+		for bar in self:GetBarIterator() do
+			bar.frame:SetMovable(nil)
+		end
+		self.mainAnchor:StopMovingOrSizing()
+		local point, _, _, x, y = self.mainAnchor:GetPoint(1)
+		if self.OnPositionChanged then self:OnPositionChanged(point, x, y) end
+	end
+	
+	function DBT:ShowMovableBar()
+		local bar = self:CreateBar(20, "Move1", 27082)
+		bar:SetText(DBM_CORE_MOVABLE_BAR)
+		for bar in self:GetBarIterator() do
+			bar.frame:SetMovable(true)
+		end
+		DBM:Schedule(20, moveEnd, self)
+	end
+end
+
+
 ------------------
 --  Bar Cancel  --
 ------------------
@@ -327,6 +355,7 @@ end
 -----------------
 function barPrototype:ApplyStyle()
 	local bar = getglobal(self.frame:GetName().."Bar")
+	bar:SetStatusBarTexture(self.owner.options.texture)
 	self.frame:Show()
 	bar:SetAlpha(1)
 end
