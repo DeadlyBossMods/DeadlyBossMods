@@ -32,7 +32,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	self:AddMsg(args.spellId)
 	if args.spellId == 29234 then
 		timerSpore:Start()
 		warnSporeNow:Show()

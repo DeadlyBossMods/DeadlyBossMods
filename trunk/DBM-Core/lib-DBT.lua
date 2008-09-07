@@ -142,6 +142,10 @@ do
 			unusedBars[#unusedBars] = nil
 		else
 			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
+			local icon = frame:CreateTexture("DBT_Bar_"..fCounter.."Icon", "OVERLAY")
+			icon:SetHeight(20)
+			icon:SetWidth(20)
+			icon:SetPoint("RIGHT", frame, "LEFT", 0, 0)
 			fCounter = fCounter + 1
 		end
 		return frame
@@ -197,6 +201,7 @@ do
 		newBar.flashing = false
 		newBar:ApplyStyle()
 		newBar:SetText(id)
+		newBar:SetIcon(icon)
 		newBar:Update(0)
 		return newBar
 	end
@@ -256,6 +261,10 @@ function barPrototype:SetText(text)
 	getglobal(self.frame:GetName().."Name"):SetText(text)
 end
 
+function barPrototype:SetIcon(icon)
+	getglobal(self.frame:GetName().."Icon"):SetTexture("")
+	getglobal(self.frame:GetName().."Icon"):SetTexture(icon)
+end
 
 ------------------
 --  Bar Update  --
@@ -271,7 +280,7 @@ function barPrototype:Update(elapsed)
 	else
 		bar:SetValue(1 - self.timer/self.totalTime)
 		spark:ClearAllPoints()
-		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), 0)
+		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 		timer:SetText(stringFromTimer(self.timer))
 	end	
 	if self.timer <= 7.75 and not self.flashing and self.owner.options.Flash then
@@ -306,7 +315,7 @@ do
 	end
 	
 	function DBT:ShowMovableBar()
-		local bar = self:CreateBar(20, "Move1", 27082)
+		local bar = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode")
 		bar:SetText(DBM_CORE_MOVABLE_BAR)
 		for bar in self:GetBarIterator() do
 			bar.frame:SetMovable(true)
@@ -355,7 +364,7 @@ end
 -----------------
 function barPrototype:ApplyStyle()
 	local bar = getglobal(self.frame:GetName().."Bar")
-	bar:SetStatusBarTexture(self.owner.options.texture)
+--	bar:SetStatusBarTexture(self.owner.options.texture)
 	self.frame:Show()
 	bar:SetAlpha(1)
 end
