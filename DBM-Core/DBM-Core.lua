@@ -953,10 +953,15 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[i]
-			SendChatMessage(chatPrefix..DBM_CORE_STATUS_WHISPER:format(mod.combatInfo.name, mod:GetHP(), getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
+			SendChatMessage(chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
 		elseif #inCombat > 0 and self.Options.AutoRespond then
+			local mod
+			for i, v in ipairs(inCombat) do
+				mod = not v.isCustomMod and v
+			end
+			mod = mod or inCombat[i]
 			if not autoRespondSpam[sender] then
-				SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name, mod:GetHP(), getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
+				SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
 				self:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = GetTime()
