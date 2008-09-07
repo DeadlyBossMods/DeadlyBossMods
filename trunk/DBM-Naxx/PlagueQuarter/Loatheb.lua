@@ -20,21 +20,44 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warningSporeNow	= mod:NewAnnounce("WarningSporeNow", 3, 29234)
-local warningSporeSoon	= mod:NewAnnounce("WarningSporeSoon", 3, 29234)
+local warnSporeNow	= mod:NewAnnounce("WarningSporeNow", 2, 32329)
+local warnSporeSoon	= mod:NewAnnounce("WarningSporeSoon", 1, 32329)
+local warnDoomNow	= mod:NewAnnounce("WarningDoomNow", 3, 29204)
+local warnHealSoon	= mod:NewAnnounce("WarningHealSoon", 4, 48071)
+local warnHealNow	= mod:NewAnnounce("WarningHealNow", 1, 48071, false)
 
-local timerSpore		= mod:NewTimer(36, "TimerSpore", 29234)
+
+local timerSpore		= mod:NewTimer(36, "TimerSpore", 32329)
+local timerDoom			= mod:NewTimer(180, "TimerDoom", 29204)
+local timerAura			= mod:NewTimer(17, "TimerAura", 55593)
+
+local doomCounter = 0
 
 function mod:OnCombatStart(delay)
+	doomCounter = 0
 	timerSpore:Start(36 - delay)
-	warningSporeSoon:Schedule(31 - delay)
+	warnSporeSoon:Schedule(31 - delay)
+	timerDoom:Start(120 - delay, doomCounter + 1)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 29234 then
 		timerSpore:Start()
-		warningSporeNow:Show()
-		warningSporeSoon:Schedule(31)		
+		warnSporeNow:Show()
+		warnSporeSoon:Schedule(31)		
+	elseif args.spellId == 29204 then
+		doomCounter = doomCounter + 1
+		local timer = 30
+		if doomCounter >= 7 then
+			if doomCounter % 2 == 0 then timer = 17
+			else timer = 12 end
+		end
+		warnDoomNow:Show(doomCounter)
+		timerDoom:Start(timer, doomCounter + 1)
+	elseif args.spellId == 55593 then
+		timerAura:Start()
+		warnHealSoon:Schedule(14)
+		warnHealNow:Schedule(17)
 	end
 end
 
