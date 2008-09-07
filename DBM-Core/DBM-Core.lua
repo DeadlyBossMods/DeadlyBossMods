@@ -1300,7 +1300,7 @@ do
 				text = self.localization.timers[name],
 				timer = timer,
 				id = name,
-				icon = icon,
+				icon = (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
 				r = r,
 				g = g,
 				b = b,

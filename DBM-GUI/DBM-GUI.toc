@@ -1,7 +1,7 @@
 ## Interface: 30100
 ## Title: |cff0055FFDeadly Boss Mods|r Options GUI
 ## Title-zhCN: |cff0055FFDeadly Boss Mod|r Options GUI
-## Notes: Options GUI for DeadlyBossMods
+## Notes: GUI for Deadly BossM ods
 ## LoadOnDemand: 1
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
