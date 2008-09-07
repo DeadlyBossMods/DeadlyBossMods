@@ -115,14 +115,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningTeleportNow	= "Teleported!",
+	WarningTeleportSoon	= "Teleport in %d sec",
 })
 
 L:SetTimerLocalization({
+	TimerTeleport		= "Teleport",
 })
 
----------------
---  Loatheb  --
----------------
+
+----------------
+--  Lolotheb  --
+----------------
 L = DBM:GetModLocalization("Loatheb")
 
 L:SetGeneralLocalization({
@@ -131,16 +135,18 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningSporeNow		= "Spore spawned!",
-	WarningSporeSoon	= "Spore in 5 sec"
+	WarningSporeSoon	= "Spore in 5 sec",
+	WarningDoomNow		= "Doom #%d",
+	WarningHealSoon		= "Healing possible in 3 sec",
+	WarningHealNow		= "Heal now!"
 })
-
+--Inevitable Doom
 L:SetTimerLocalization({
-
+	TimerDoom			= "Doom #%d",
+	TimerSpore			= "Next Spore",
+	TimerAura			= "Necrotic Aura"
 })
 
-L:SetOptionLocalization({
-
-})
 
 
 -----------------
