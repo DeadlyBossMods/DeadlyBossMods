@@ -20,25 +20,45 @@ local timerPhase2		= mod:NewTimer(270, "TimerPhase2", 27082)
 local timerWave			= mod:NewTimer(20, "TimerWave", 27082)
 
 local wave = 0
+--[[
+DBM.Schedule(27 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 1);
+DBM.Schedule(47 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 2); 20
+DBM.Schedule(67 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 3); 20
+DBM.Schedule(77 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 4); 10
+DBM.Schedule(87 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 5); 10
+DBM.Schedule(102 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 6); 5
+DBM.Schedule(107 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 7); 5
+DBM.Schedule(127 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 8); 20
+DBM.Schedule(137 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 9); 10
+DBM.Schedule(147 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 10); 10
+DBM.Schedule(152 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 11); 5
+DBM.Schedule(167 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 12); 15
+DBM.Schedule(177 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 13); 10
+DBM.Schedule(187 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 14); 10
+DBM.Schedule(197 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 15); 10
+DBM.Schedule(202 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 16); 5
+DBM.Schedule(207 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 17); 5
+DBM.Schedule(227 - 3, "DBM.AddOns.Gothik.OnEvent", "WaveIncWarning", 18); 20
+]]--
 local waves = {
-	{2, L.Trainee}, -- 1
-	{2, L.Trainee}, -- 2
-	{2, L.Trainee}, -- 3
-	{2, L.Trainee}, -- 4
-	{2, L.Trainee}, -- 5
-	{2, L.Trainee}, -- 6
-	{2, L.Trainee}, -- 7
-	{2, L.Trainee}, -- 8
-	{2, L.Trainee}, -- 9
-	{2, L.Trainee}, -- 10
-	{2, L.Trainee}, -- 11
-	{2, L.Trainee}, -- 12
-	{2, L.Trainee}, -- 13
-	{2, L.Trainee}, -- 14
-	{2, L.Trainee}, -- 15
-	{2, L.Trainee}, -- 16
-	{2, L.Trainee}, -- 17
-	{2, L.Trainee}, -- 18
+	{2, L.Trainee, next = 20},
+	{2, L.Trainee, next = 20},
+	{2, L.Trainee, next = 10},
+	{1, L.Knight, next = 10},
+	{1, L.Knight, next = 5},
+	{1, L.Knight, next = 5},
+	{1, L.Knight, next = 20},
+	{1, L.Knight, next = 10},
+	{1, L.Knight, next = 10},
+	{1, L.Knight, next = 5},
+	{1, L.Knight, next = 15},
+	{1, L.Knight, next = 10},
+	{1, L.Knight, next = 10},
+	{1, L.Knight, next = 10},
+	{1, L.Knight, next = 5},
+	{1, L.Knight, next = 5},
+	{1, L.Knight, next = 20},
+	{1, L.Knight},
 }
 local function getWaveString(wave)
 	local waveInfo = waves[wave]
@@ -54,18 +74,19 @@ end
 function mod:OnCombatStart(delay)
 	wave = 0
 	timerPhase2:Start()
-	timerWave:Start(24, wave + 1)
-	warnWaveSoon:Schedule(21, wave + 1, getWaveString(wave + 1))
-	self:ScheduleMethod(24, "NextWave")
+	timerWave:Start(24.5, wave + 1)
+	warnWaveSoon:Schedule(21.5, wave + 1, getWaveString(wave + 1))
+	self:ScheduleMethod(24.5, "NextWave")
 end
 
 function mod:NextWave()
 	wave = wave + 1
 	warnWaveNow:Show(wave, getWaveString(wave))
-	if wave < 18 then
+	local next = waves[wave].next
+	if next then
 		timerWave:Start(nil, wave + 1)
-		warnWaveSoon:Schedule(17, wave + 1, getWaveString(wave + 1))
-		self:ScheduleMethod(20, "NextWave")
+		warnWaveSoon:Schedule(next - 3, wave + 1, getWaveString(wave + 1))
+		self:ScheduleMethod(next, "NextWave")
 	end
 end
 
