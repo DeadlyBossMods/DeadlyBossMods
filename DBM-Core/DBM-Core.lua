@@ -4,8 +4,8 @@
 -- *********************************************************
 --
 -- This addon is written and copyrighted by:
---    * Paul Emmerich (Tandanu @ EU-Aegwynn)
---    * Martin Verges (Nitram @ EU-Azshara)
+--    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
+--    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 -- 
 -- The localizations are written by:
 --    * deDE: Tandanu/Nitram
@@ -136,7 +136,7 @@ do
 	
 	local function handleEvent(self, event, ...)
 		for i, v in ipairs(registeredEvents[event]) do
-			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText())) then
+			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText())) and (not v.Options or v.Options.Enabled) then
 				v[event](v, ...)
 			end
 		end
@@ -851,7 +851,7 @@ do
 			mod.stats.pulls = mod.stats.pulls + 1
 			mod.inCombat = true
 			mod.blockSyncs = nil
-			if mod.OnCombatStart then mod:OnCombatStart(delay or 0) end
+			if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 			mod.combatInfo.pull = GetTime() - (delay or 0)
 			self:Schedule(mod.minCombatTime or 3, checkWipe)
 			if not synced then
@@ -1070,6 +1070,14 @@ function bossModPrototype:SetCreatureID(id)
 	self.creatureId = id
 end
 
+function bossModPrototype:Toggle()
+	if self.Options.Enabled then
+		self:DisableMod()
+	else
+		self:EnableMod()
+	end
+end
+
 function bossModPrototype:EnableMod()
 	self.Options.Enabled = true
 end
@@ -1102,8 +1110,8 @@ end
 --  Announce Object  --
 -----------------------
 do
-	local textureCode = " |T%s:24:24:1|t "
-	local textureExp = " |T(%S+):24:24:1|t "
+	local textureCode = " |T%s:24:24|t "
+	local textureExp = " |T(%S+):24:24|t "
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
 

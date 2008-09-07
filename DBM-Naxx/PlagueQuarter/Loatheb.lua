@@ -7,15 +7,6 @@ mod:SetZone(GetAddOnMetadata("DBM-Naxx", "X-DBM-Mod-LoadZone"))
 
 mod:RegisterCombat("combat")
 
---[[
-9/6 21:49:24.875  SPELL_CAST_SUCCESS,0xF130003E8B005E06,"Loatheb",0xa48,0x0000000000000000,nil,0x80000000,29234,"Summon Spore",0x1
-9/6 21:50:00.671  SPELL_CAST_SUCCESS,0xF130003E8B005E06,"Loatheb",0xa48,0x0000000000000000,nil,0x80000000,29234,"Summon Spore",0x1 36
-9/6 21:50:36.781  SPELL_CAST_SUCCESS,0xF130003E8B005E06,"Loatheb",0xa48,0x0000000000000000,nil,0x80000000,29234,"Summon Spore",0x1 36
-9/6 21:51:12.218  SPELL_CAST_SUCCESS,0xF130003E8B005E06,"Loatheb",0xa48,0x0000000000000000,nil,0x80000000,29234,"Summon Spore",0x1 36
-9/6 21:51:48.296  SPELL_CAST_SUCCESS,0xF130003E8B005E06,"Loatheb",0xa48,0x0000000000000000,nil,0x80000000,29234,"Summon Spore",0x1 36
-
-]]--
-
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
@@ -27,9 +18,9 @@ local warnHealSoon	= mod:NewAnnounce("WarningHealSoon", 4, 48071)
 local warnHealNow	= mod:NewAnnounce("WarningHealNow", 1, 48071, false)
 
 
-local timerSpore		= mod:NewTimer(36, "TimerSpore", 32329)
-local timerDoom			= mod:NewTimer(180, "TimerDoom", 29204)
-local timerAura			= mod:NewTimer(17, "TimerAura", 55593)
+local timerSpore	= mod:NewTimer(36, "TimerSpore", 32329)
+local timerDoom		= mod:NewTimer(180, "TimerDoom", 29204)
+local timerAura		= mod:NewTimer(17, "TimerAura", 55593)
 
 local doomCounter = 0
 
@@ -41,6 +32,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
+	self:AddMsg(args.spellId)
 	if args.spellId == 29234 then
 		timerSpore:Start()
 		warnSporeNow:Show()
@@ -60,4 +52,5 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnHealNow:Schedule(17)
 	end
 end
+
 

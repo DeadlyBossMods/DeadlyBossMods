@@ -471,7 +471,7 @@
 					</OnLoad>
 				</Scripts>
 			</Frame>
-			<Button name="$parentTab1" inherits="DBM_GUI_OptionsFrameTabButtonTemplate" text="Bosse" id="1" hidden="false">
+			<Button name="$parentTab1" inherits="DBM_GUI_OptionsFrameTabButtonTemplate" text="Bosses" id="1" hidden="false">
 				<Anchors>
 					<Anchor point="BOTTOMLEFT" relativeTo="$parentBossMods" relativePoint="TOPLEFT">
 						<Offset>
@@ -488,7 +488,7 @@
 					</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="$parentTab2" inherits="DBM_GUI_OptionsFrameTabButtonTemplate" text="Optionen" id="2" hidden="false">
+			<Button name="$parentTab2" inherits="DBM_GUI_OptionsFrameTabButtonTemplate" text="Options" id="2" hidden="false">
 				<Anchors>
 					<Anchor point="TOPLEFT" relativeTo="$parentTab1" relativePoint="TOPRIGHT">
 						<Offset>

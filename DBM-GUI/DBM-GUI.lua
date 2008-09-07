@@ -26,7 +26,7 @@
 --
 
 
-local FrameTitle = "DBM_GUI_Option_"	-- all GUI Frames get automatical a name FrameTitle..ID
+local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
 DBM_GUI = {}
@@ -56,10 +56,10 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
--- This Function Creates a new entry to the Menu
+-- This function creates a new entry in the menu
 --
 --  arg1 = Text for the UI Button
---  arg2 = nil or ("option" or 2)  ... nil will place as a BossMod, otherwise as a Option Tab
+--  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
 --
 function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFrame)
@@ -123,13 +123,12 @@ do
 	end
 end
 
--- Function in the Prototype for a new SubArea, its a Area to group elements 
--- in a panel. Usefull for better usability.
+-- This function adds areas to group widgets
 --
 --  arg1 = titel of this area
 --  arg2 = width ot the area
 --  arg3 = hight of the area
---  arg4 = autoplaced, true means that he put it on TopLeft corner
+--  arg4 = autoplace
 --
 function PanelPrototype:CreateArea(name, width, height, autoplace)
 	local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
@@ -157,8 +156,8 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 	return setmetatable(self.areas[#self.areas], {__index = PanelPrototype})
 end
 
--- Function in the Prototype to create a CheckButton
--- This Button can placed automatical but only under the last one
+-- This function creates a check box
+-- Autoplaced buttons will be placed under the last widget
 --
 --  arg1 = text right to the CheckBox
 --  arg2 = autoplaced (true or nil/false)
@@ -172,8 +171,8 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
 		getglobal(button:GetName() .. 'Text'):ClearAllPoints()
 		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 3, 0)
 	end
-
-	if variable and not DBM.Options[variable] == nil then
+	
+	if variable and DBM.Options[variable] ~= nil then
 		button:SetScript("OnShow",  function() button:SetChecked(DBM.Options[variable]) end)
 		button:SetScript("OnClick", function() DBM.Options[variable] = not DBM.Options[variable]; button:SetChecked(DBM.Options[variable]) end)
 	end
@@ -232,8 +231,7 @@ do
 	--]]
 end
 
--- Function in the Prototype to create a EditBox
--- This Element likes the HTML <input type="text" ...>
+-- This function creates an EditBox
 --
 --  arg1 = Title text, placed ontop of the EditBox
 --  arg2 = Text placed within the EditBox
@@ -250,12 +248,11 @@ function PanelPrototype:CreateEditBox(text, value, width, height)
 	return textbox
 end
 
--- Function in the Prototype to create an Slider
--- usefull for easy numeric value change
+-- This function creates a slider for numeric values
 --
 --  arg1 = text ontop of the slider, centered
 --  arg2 = lowest value
---  arg3 = hightest value
+--  arg3 = highest value
 --  arg4 = stepping
 --
 function PanelPrototype:CreateSlider(text, low, high, step)
@@ -268,8 +265,7 @@ function PanelPrototype:CreateSlider(text, low, high, step)
 	return slider
 end
 
--- Function in the Prototype to create an ColorPicker
--- usefull for easy color change
+-- This function creates a color picker
 --
 --  arg1 = width of the colorcircle (128 default)
 --  arg2 = true if you want an alpha selector
@@ -328,8 +324,7 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 end
 
 
--- Function in the Prototype to create a Button
--- like the HTML <input type="button"...>
+-- This function creates a button
 --
 --  arg1 = text on the button "OK", "Cancel",...
 --  arg2 = widht
@@ -349,8 +344,7 @@ function PanelPrototype:CreateButton(title, width, height, onclick)
 	return button
 end
 
--- Function in the Prototype to create a Textblock
--- Can be used to create Information Text or something like this
+-- This function creates a text block for descriptions
 --
 --  arg1 = text to write
 --  arg2 = width to set
@@ -529,8 +523,8 @@ do
 
 	local displayedElements = {}
 
-	-- This function is for Internal use.
-	-- Function to Update the Left Scrollframe Buttons with the menu entrys
+	-- This function is for internal use.
+	-- Function to update the left scrollframe buttons with the menu entries
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
 		local offset = getglobal(listframe:GetName().."List").offset;
 		local buttons = listframe.buttons;
@@ -588,8 +582,8 @@ do
 		end
 	end
 
-	-- This function is for Internal use.
-	-- Used to Show a Button from the List
+	-- This function is for internal use.
+	-- Used to show a button from the list
 	function DBM_GUI_OptionsFrame:DisplayButton(button, element)
 		button:Show();
 		button.element = element;
@@ -627,29 +621,29 @@ do
 		button.text:SetText(element.name);
 	end
 
-	-- This function is for Internal use.
-	-- Used to Hide a Button from the List
+	-- This function is for internal use.
+	-- Used to hide a button from the list
 	function DBM_GUI_OptionsFrame:HideButton(button)
 		button:SetWidth(165)
 		button:Hide()
 	end
 
-	-- This function is for Internal use.
-	-- Called when a new Selection is done
+	-- This function is for internal use.
+	-- Called when a new entry is selected
 	function DBM_GUI_OptionsFrame:ClearSelection(listFrame, buttons)
 		for _, button in ipairs(buttons) do button:UnlockHighlight(); end
 		listFrame.selection = nil;
 	end
 	
 	-- This function is for Internal use.
-	-- Called when a Button is Selected
+	-- Called when a button is selected
 	function DBM_GUI_OptionsFrame:SelectButton(listFrame, button)
 		button:LockHighlight()
 		listFrame.selection = button.element;
 	end
 
 	-- This function is for Internal use.
-	-- Required to Create a list of Buttons in the Scrollframe
+	-- Required to create a list of buttons in the scrollframe
 	function DBM_GUI_OptionsFrame:CreateButtons(frame)
 		local name = frame:GetName()
 	
@@ -674,8 +668,8 @@ do
 		frame.buttons = buttons
 	end
 
-	-- This function is for Internal use.
-	-- Called when someone click on a Button
+	-- This function is for internal use.
+	-- Called when someone clicks a Button
 	function DBM_GUI_OptionsFrame:OnButtonClick(button)
 		local parent = button:GetParent();
 		local buttons = parent.buttons;
@@ -697,8 +691,8 @@ do
 		self:UpdateMenuFrame(parent:GetParent())
 	end
 
-	-- This function is for Internal use.
-	-- places the selected tab on the containerframe
+	-- This function is for internal use.
+	-- places the selected tab on the container frame
 	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 		local container = getglobal(self:GetName().."PanelContainer")
 		if ( container.displayedFrame ) then
@@ -726,26 +720,25 @@ function DBM_GUI:CreateOptionsMenu()
 	--  begin creating the Option Frames, this is mainly hardcoded
 	--  because this allows me to place all the options as I want.
 	--
-	--  This API can be used to Add own Tabs to our Menu
+	--  This API can be used to add your own tabs to our menu
 	--
-	--  To create a new Tab please use the Global Variable
+	--  To create a new tab please use the following function:
 	--
 	--    yourframe = DBM_GUI_Frame:CreateNewPanel("title", "option")
 	--  
-	--  You can use the widgets delivered to this Frame by calling the
-	--  methods like
+	--  You can use the DBM widgets by calling methods like
 	--
 	--    yourframe:CreateCheckButton("my first checkbox", true)
 	--
-	--  if you use the second argument as true, the checkboxes will be
-	--  placed automatical. Each box is placed a line under the last.
+	--  If you Set the second argument to true, the checkboxes will be
+	--  placed automatically.
 	--
 	-- *****************************************************************
 
 
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
 
-	do -- we sepearte the tabs for performance/memory improofments
+	do
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
@@ -762,7 +755,7 @@ function DBM_GUI:CreateOptionsMenu()
 	
 
 
-		-- Pizza Timer (create your own timer menue)
+		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
 		pizzaarea.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 	
@@ -789,9 +782,9 @@ function DBM_GUI:CreateOptionsMenu()
 		DBM_GUI_Frame:SetMyOwnHeight()
 	end
 	do
-		----------------------------------------------
-		--            Raidwarning Colors            --
-		----------------------------------------------
+		-----------------------------------------------
+		--            Raid Warning Colors            --
+		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
 		local raidwarnoptions = RaidWarningPanel:CreateArea(L.Tab_RaidWarning, nil, 175, true)
 
@@ -1094,7 +1087,16 @@ do
 		--DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
 		local panel = mod.panel
 		local category
+		
+		local button = panel:CreateCheckButton("Enabled", true)
+		button:SetScript("OnShow",  function(self) 
+						self:SetChecked(mod.Options.Enabled) 
+						end)
 
+		button:SetScript("OnClick", function(self) 
+						mod:Toggle()
+						end)
+		
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
 
