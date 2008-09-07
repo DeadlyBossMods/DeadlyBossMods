@@ -1,1 +1,1 @@
-local mod = DBM:NewMod("Grobbulus 10", "DBM-Naxx-10", 2)
+local mod = DBM:NewMod("Grobbulus", "DBM-Naxx", 2)
