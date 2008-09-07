@@ -845,6 +845,7 @@ do
 	
 	function DBM:StartCombat(mod, delay, synced)
 		if not checkEntry(inCombat, mod) then
+			if not mod.combatInfo then return end
 			table.insert(inCombat, mod)
 			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
 			mod.stats.pulls = mod.stats.pulls + 1
