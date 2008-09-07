@@ -130,17 +130,19 @@ L:SetTimerLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWaveSoon		= "Wave %d [%s  -  %s  -  %s] in 3 sec",
-	WarningWaveNow		= "Wave %d [%s  -  %s  -  %s] spawned",
+	WarningWaveSoon		= "Wave %d: %s in 3 sec",
+	WarningWaveNow		= "Wave %d: %s spawned",
 	WarningRiderDown	= "Rider down",
 	WarningKnightDown	= "Knight down",
 })
 
 L:SetMiscLocalization({
-	yell = "Foolishly you have sought your own demise.",
-	Trainee = "Trainee",
-	Knight = "Knight",
-	Rider = "Rider",
-	Nothing = "Nothing",
+	yell			= "Foolishly you have sought your own demise.",
+	WarningWave1	= "%d %s",
+	WarningWave2	= "%d %s and %d %s",
+	WarningWave3	= "%d %s, %d %s and %d %s",
+	Trainee			= "Trainee",
+	Knight			= "Knight",
+	Rider			= "Rider",
 })
 
