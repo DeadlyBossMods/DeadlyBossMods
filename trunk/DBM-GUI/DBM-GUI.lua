@@ -56,7 +56,6 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
-
 -- This Function Creates a new entry to the Menu
 --
 --  arg1 = Text for the UI Button
@@ -65,6 +64,7 @@ end
 function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
 	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFrame)
 	panel.mytype = "panel"
+	panel.sortID = self:GetCurrentID()
 	panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth());
 	panel:SetHeight(DBM_GUI_OptionsFramePanelContainerFOV:GetHeight()); 
 	panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
@@ -147,7 +147,7 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 		if #kids == 1 then
 			area:SetPoint('TOPLEFT', self.frame, 5, -17)
 		else
-			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -17)
+			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 2, -17)
 		end
 	end
 
@@ -173,9 +173,9 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
 		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 3, 0)
 	end
 
-	if variable then
-		button:SetScript("OnShow",  function() button:SetChecked(variable) end)
-		button:SetScript("OnClick", function() variable = not variable; button:SetChecked(variable) end)
+	if variable and not DBM.Options[variable] == nil then
+		button:SetScript("OnShow",  function() button:SetChecked(DBM.Options[variable]) end)
+		button:SetScript("OnClick", function() DBM.Options[variable] = not DBM.Options[variable]; button:SetChecked(DBM.Options[variable]) end)
 	end
 
 	if autoplace then
@@ -192,22 +192,44 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
 	return button
 end
 
--- Function in the Prototype to create a Dropdown Menu
--- This element likes the HTML <select ....> type
--- 
---  arg1 = Initial Text
---  arg2 = table with entrys
---  arg3 = function called on valuechanged (arg1 will be the new value)
---
-function PanelPrototype:CreateDropdown(name, elemets, callfunc)
-	local dropdown = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'UIDropDownMenuTemplate')
-	local text = frame:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
-	text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
-	text:SetFontObject('GameFontNormalSmall')
-	text:SetText(name)
 
-	self:SetLastObj(dropdown)
-	return dropdown
+do 
+	--[[
+	local function GetPressedButton()
+		UIDropDownMenu_SetSelectedValue(self.owner, self.value);
+		return self.value
+	end
+
+	-- Function in the Prototype to create a Dropdown Menu
+	-- This element likes the HTML <select ....> type
+	-- 
+	--  arg1 = Initial Text
+	--  arg2 = table with entrys
+	--  arg3 = function called on valuechanged (arg1 will be the new value)
+	--
+	function PanelPrototype:CreateDropdown(name, elemets,  width, callfunc)
+		local dropdown = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'UIDropDownMenuTemplate')
+	
+		UIDropDownMenu_SetWidth( (widht or 100)-20, dropdown)
+		UIDropDownMenu_Initialize(dropdown, function() end)
+--		UIDropDownMenu_Initialize(dropdown, function()
+--			local info = UIDropDownMenu_CreateInfo()
+--	 		info.text = "First Menu Item"
+--			info.value = "texture 1"
+--	--		info.owner = this:GetParent()
+--			info.func = GetPressedButton
+--			UIDropDownMenu_AddButton(info, 1);
+--		end)
+		
+		local text = frame:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
+		text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
+		text:SetFontObject('GameFontNormalSmall')
+		text:SetText(name)
+	
+		self:SetLastObj(dropdown)
+		return dropdown
+	end
+	--]]
 end
 
 -- Function in the Prototype to create a EditBox
@@ -354,7 +376,7 @@ function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	local ModelFrame = CreateFrame('PlayerModel', FrameTitle..self:GetNewID(), self.frame)
 	ModelFrame:SetWidth(width or 100)
 	ModelFrame:SetHeight(height or 200)
-	ModelFrame:SetCreature(tonumber(creatureid) or 448)	-- Hogger!!! hey kills all of you
+	ModelFrame:SetCreature(tonumber(creatureid) or 448)	-- Hogger!!! he kills all of you
 	
 	self:SetLastObj(ModelFrame)
 	return ModelFrame	
@@ -573,6 +595,8 @@ do
 		button.element = element;
 		
 		button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2);
+		button.toggle:ClearAllPoints()
+		button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1);
 
 		if element.depth > 2 then
 			button:SetNormalFontObject(GameFontHighlightSmall);
@@ -752,10 +776,16 @@ function DBM_GUI:CreateOptionsMenu()
 		minbox:SetPoint('TOPLEFT', hourbox, "TOPRIGHT", 20, 0)
 		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
 
-		
 		local okbttn  = pizzaarea:CreateButton(L.PizzaTimer_ButtonStart);
 		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
+		okbttn:SetScript("OnClick", function() 
+			local time =  (hourbox:GetNumber() * 60*60) + (minbox:GetNumber() * 60) + secbox:GetNumber()
+			if textbox:GetText() and time then
+				DBM.Bars:CreateBar(time, textbox:GetText()) 
+			end
+		end)
 		-- END Pizza Timer
+		--
 		DBM_GUI_Frame:SetMyOwnHeight()
 	end
 	do
@@ -765,10 +795,10 @@ function DBM_GUI:CreateOptionsMenu()
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
 		local raidwarnoptions = RaidWarningPanel:CreateArea(L.Tab_RaidWarning, nil, 175, true)
 
-		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, DBM.Options.ShowWarningsInChat)
-		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, DBM.Options.ShowFakedRaidWarnings)
-		local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft,  true, nil, DBM.Options.WarningIconLeft)
-		local WarningIconRight 		= raidwarnoptions:CreateCheckButton(L.WarningIconRight,  true, nil, DBM.Options.WarningIconRight)
+		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
+		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
+		local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft,  true, nil, "WarningIconLeft")
+		local WarningIconRight 		= raidwarnoptions:CreateCheckButton(L.WarningIconRight,  true, nil, "WarningIconRight")
 		raidwarnoptions:AutoSetDimension()
 
 
@@ -835,6 +865,15 @@ function DBM_GUI:CreateOptionsMenu()
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
 
+		--local TextureDropDown = BarSetup:CreateDropdown("lol")
+		--TextureDropDown:SetPoint("TOPLEFT", 40, 100)
+
+		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
+		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
+		movemebutton:SetNormalFontObject(GameFontNormalSmall);
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
+
 		BarSetupPanel:SetMyOwnHeight() 
 	end
 
@@ -880,7 +919,7 @@ do
 				end
 			end
 
-			if addon.panel and addon.subTabs then
+			if addon.panel and addon.subTabs and IsAddOnLoaded(addon.modId) then
 				if not addon.subPanels then addon.subPanels = {} end
 
 				for k,v in pairs(addon.subTabs) do
@@ -1052,7 +1091,7 @@ do
 			DBM:AddMsg("Failed to create ModPanel "..mod.localization.general.name)
 			return false
 		end
-		DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
+		--DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
 		local panel = mod.panel
 		local category
 

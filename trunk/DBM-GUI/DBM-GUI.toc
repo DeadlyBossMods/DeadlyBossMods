@@ -10,5 +10,4 @@ localization.en.lua
 localization.de.lua
 DBM-GUI-Templates.xml
 DBM-GUI.lua
-DBM-GUI_BossModStudio.lua
 
