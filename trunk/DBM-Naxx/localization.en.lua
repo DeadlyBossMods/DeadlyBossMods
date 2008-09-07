@@ -146,3 +146,20 @@ L:SetMiscLocalization({
 	Rider			= "Rider",
 })
 
+----------------
+--  Horsemen  --
+----------------
+L = DBM:GetModLocalization("Horsemen 10")
+L:SetGeneralLocalization({
+	name = "Four Horsemen"
+})
+
+L:SetTimerLocalization({
+	TimerMark = "Mark %d"
+})
+
+L:SetWarningLocalization({
+	WarningMarkSoon		= "Mark %d in 4 sec",
+	WarningMarkNow		= "Mark %d!",
+})
+

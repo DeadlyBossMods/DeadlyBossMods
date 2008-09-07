@@ -37,9 +37,9 @@ local waves = {
 	{2, L.Trainee, next = 10},
 	{1, L.Rider, next = 10},
 	{1, L.Rider, 2, L.Trainee, next = 5},
-	{1, L.Rider, 1, L.Knight, 2, L.Trainee, next = 5},
-	{1, L.Knight, next = 20},
-	{1, L.Knight},
+	{1, L.Knight, 2, L.Trainee, next = 5},
+	{1, L.Rider, 2, L.Trainee, next = 20},
+	{1, L.Rider, 1, L.Knight, 2, L.Trainee},
 }
 local function getWaveString(wave)
 	local waveInfo = waves[wave]
