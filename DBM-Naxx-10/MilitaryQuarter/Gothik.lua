@@ -21,39 +21,50 @@ local timerWave			= mod:NewTimer(20, "TimerWave", 27082)
 
 local wave = 0
 local waves = {
-	{L.Nothing, L.Trainee, L.Trainee}, -- 1
-	{L.Nothing, L.Trainee, L.Trainee}, -- 2
-	{L.Nothing, L.Trainee, L.Trainee}, -- 3
-	{L.Nothing, L.Trainee, L.Trainee}, -- 4
-	{L.Nothing, L.Trainee, L.Trainee}, -- 5
-	{L.Nothing, L.Trainee, L.Trainee}, -- 6
-	{L.Nothing, L.Trainee, L.Trainee}, -- 7
-	{L.Nothing, L.Trainee, L.Trainee}, -- 8
-	{L.Nothing, L.Trainee, L.Trainee}, -- 9
-	{L.Nothing, L.Trainee, L.Trainee}, -- 10
-	{L.Nothing, L.Trainee, L.Trainee}, -- 11
-	{L.Nothing, L.Trainee, L.Trainee}, -- 12
-	{L.Nothing, L.Trainee, L.Trainee}, -- 13
-	{L.Nothing, L.Trainee, L.Trainee}, -- 14
-	{L.Nothing, L.Trainee, L.Trainee}, -- 15
-	{L.Nothing, L.Trainee, L.Trainee}, -- 16
-	{L.Nothing, L.Trainee, L.Trainee}, -- 17
-	{L.Nothing, L.Trainee, L.Trainee}, -- 18
+	{2, L.Trainee}, -- 1
+	{2, L.Trainee}, -- 2
+	{2, L.Trainee}, -- 3
+	{2, L.Trainee}, -- 4
+	{2, L.Trainee}, -- 5
+	{2, L.Trainee}, -- 6
+	{2, L.Trainee}, -- 7
+	{2, L.Trainee}, -- 8
+	{2, L.Trainee}, -- 9
+	{2, L.Trainee}, -- 10
+	{2, L.Trainee}, -- 11
+	{2, L.Trainee}, -- 12
+	{2, L.Trainee}, -- 13
+	{2, L.Trainee}, -- 14
+	{2, L.Trainee}, -- 15
+	{2, L.Trainee}, -- 16
+	{2, L.Trainee}, -- 17
+	{2, L.Trainee}, -- 18
 }
+local function getWaveString(wave)
+	local waveInfo = waves[wave]
+	if #waveInfo == 2 then
+		return L.WarningWave1:format(unpack(waveInfo))
+	elseif #waveInfo == 4 then
+		return L.WarningWave2:format(unpack(waveInfo))
+	elseif #waveInfo == 6 then
+		return L.WarningWave3:format(unpack(waveInfo))
+	end
+end
 
 function mod:OnCombatStart(delay)
 	wave = 0
 	timerPhase2:Start()
 	timerWave:Start(24, wave + 1)
-	warnWaveSoon:Schedule(21, wave + 1, waves[wave + 1][1], waves[wave + 1][2], waves[wave + 1][3])
+	warnWaveSoon:Schedule(21, wave + 1, getWaveString(wave + 1))
+	self:ScheduleMethod(24, "NextWave")
 end
 
 function mod:NextWave()
 	wave = wave + 1
-	warnWaveNow:Show(wave, waves[wave][1], waves[wave][2], waves[wave][3])
+	warnWaveNow:Show(wave, getWaveString(wave))
 	if wave < 18 then
 		timerWave:Start(nil, wave + 1)
-		warnWaveSoon:Schedule(17, wave + 1, waves[wave + 1][1], waves[wave + 1][2], waves[wave + 1][3])
+		warnWaveSoon:Schedule(17, wave + 1, getWaveString(wave + 1))
 		self:ScheduleMethod(20, "NextWave")
 	end
 end
