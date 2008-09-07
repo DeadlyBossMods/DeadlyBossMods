@@ -3,7 +3,7 @@ local L
 -------------------
 --  Anub'Rekhan  --
 -------------------
-L = DBM:GetModLocalization("Anub'Rekhan 10")
+L = DBM:GetModLocalization("Anub'Rekhan")
 
 L:SetGeneralLocalization({
 	name = "Anub'Rekhan"
@@ -30,20 +30,31 @@ L:SetOptionLocalization({
 	TimerLocustFade 	= "Show Locust Swarm timer"
 })
 
+
 ----------------------------
 --  Grand Widow Faerlina  --
 ----------------------------
-L = DBM:GetModLocalization("Faerlina 10")
+L = DBM:GetModLocalization("Faerlina")
 
 L:SetGeneralLocalization({
 	name = "Grand Widow Faerlina"
+})
+
+L:SetWarningLocalization({
+	WarningEmbraceActive	= "Widow's Embrace active",
+	WarningEmbraceExpire	= "Widow's Embrace ends in 5 sec",
+	WarningEmbraceExpired	= "Widow's Embrace faded"
+})
+
+L:SetTimerLocalization({
+	TimerEmbrace = "Embrace active"
 })
 
 
 ---------------
 --  Maexxna  --
 ---------------
-L = DBM:GetModLocalization("Maexxna 10")
+L = DBM:GetModLocalization("Maexxna")
 
 L:SetGeneralLocalization({
 	name = "Maexxna"
@@ -73,10 +84,46 @@ L:SetOptionLocalization({
 })
 
 
+------------------------------
+--  Noth the Plaguebringer  --
+------------------------------
+L = DBM:GetModLocalization("Noth")
+
+L:SetGeneralLocalization({
+	name = "Noth the Plaguebringer"
+})
+
+L:SetWarningLocalization({
+	WarningTeleportNow	= "Teleported!",
+	WarningTeleportSoon	= "Teleport in 20 sec",
+	WarningCurse		= "Curse!"
+})
+
+L:SetTimerLocalization({
+	TimerTeleport		= "Teleport",
+	TimerTeleportBack	= "Teleport back"
+})
+
+
+--------------------------
+--  Heigan the Unclean  --
+--------------------------
+L = DBM:GetModLocalization("Heigan")
+
+L:SetGeneralLocalization({
+	name = "Heigan the Unclean"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
 ---------------
 --  Loatheb  --
 ---------------
-L = DBM:GetModLocalization("Loatheb 10")
+L = DBM:GetModLocalization("Loatheb")
 
 L:SetGeneralLocalization({
 	name = "Loatheb"
@@ -99,7 +146,7 @@ L:SetOptionLocalization({
 -----------------
 --  Patchwerk  --
 -----------------
-L = DBM:GetModLocalization("Loatheb 10")
+L = DBM:GetModLocalization("Patchwerk")
 
 L:SetGeneralLocalization({
 	name = "Patchwerk"
@@ -118,7 +165,7 @@ L:SetMiscLocalization({
 --------------
 --  Gothik  --
 --------------
-L = DBM:GetModLocalization("Gothik 10")
+L = DBM:GetModLocalization("Gothik")
 
 L:SetGeneralLocalization({
 	name = "Gothik"
@@ -149,7 +196,7 @@ L:SetMiscLocalization({
 ----------------
 --  Horsemen  --
 ----------------
-L = DBM:GetModLocalization("Horsemen 10")
+L = DBM:GetModLocalization("Horsemen")
 L:SetGeneralLocalization({
 	name = "Four Horsemen"
 })
@@ -163,3 +210,16 @@ L:SetWarningLocalization({
 	WarningMarkNow		= "Mark %d!",
 })
 
+--[[
+L = DBM:GetModLocalization("Faerlina")
+
+L:SetGeneralLocalization({
+	name = "Grand Widow Faerlina"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+]]--

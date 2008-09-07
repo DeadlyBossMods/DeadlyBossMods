@@ -1,9 +1,9 @@
-local mod = DBM:NewMod("Horsemen 10", "DBM-Naxx-10", 4)
+local mod = DBM:NewMod("Horsemen", "DBM-Naxx", 4)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(30549)
-mod:SetZone(GetAddOnMetadata("DBM-Naxx-10", "X-DBM-Mod-LoadZone"))
+mod:SetZone(GetAddOnMetadata("DBM-Naxx", "X-DBM-Mod-LoadZone"))
 
 mod:RegisterCombat("combat")
 

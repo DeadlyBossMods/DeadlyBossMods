@@ -2,11 +2,11 @@
 ## Title: |cff0055FFDeadly Boss Mods|r Naxxramas
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMNaxx10_SavedVars, DBMNaxx10_Stats
+## SavedVariablesPerCharacter: DBMNaxx_SavedVars, DBMNaxx_Stats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Arachnid Quarter,Construct Quarter,Plague Quarter,Military Quarter,Frostwyrm Lair
-## X-DBM-Mod-Name: Naxxramas 10
+## X-DBM-Mod-Name: Naxxramas
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZone: Naxxramas
 localization.en.lua
