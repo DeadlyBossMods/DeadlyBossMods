@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local warnWaveNow		= mod:NewAnnounce("WarningWaveNow", 3)
+local warnWaveNow		= mod:NewAnnounce("WarningWaveNow", 3, nil, false)
 local warnWaveSoon		= mod:NewAnnounce("WarningWaveSoon", 1)
 local warnRiderDown		= mod:NewAnnounce("WarningRiderDown", 4)
 local warnKnightDown	= mod:NewAnnounce("WarningKnightDown", 2)

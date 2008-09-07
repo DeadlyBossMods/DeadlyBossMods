@@ -35,7 +35,7 @@ L.PizzaTimer_Title = 'Name (e.g. "Pizza!")'
 L.PizzaTimer_Hours = "Hours"
 L.PizzaTimer_Mins = "Min"
 L.PizzaTimer_Secs = "Sec"
-L.PizzaTimer_ButtonStart = "start timer"
+L.PizzaTimer_ButtonStart = "Start Timer"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning = "Raid Warnings"
