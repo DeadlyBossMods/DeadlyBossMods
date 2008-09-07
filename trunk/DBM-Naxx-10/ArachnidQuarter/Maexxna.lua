@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Maexxna 10", "DBM-Naxx-10", 1)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 84 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15952)
 mod:SetZone(GetAddOnMetadata("DBM-Naxx-10", "X-DBM-Mod-LoadZone"))
 
