@@ -14,6 +14,7 @@ DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; and %d |4second:seconds;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_SEC						= "sec"
+DBM_CORE_OK							= "Okay"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Enrage in %s %s"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "Enrage"
@@ -33,5 +34,8 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM not installed"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d players with Deadly Boss Mods"
+
+DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is outdated.\n Version %s (r%d) is available for download here:"
+DBM_CORE_UPDATEREMINDER_FOOTER		= "Press Ctrl-C to copy the download link to your clipboard."
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"

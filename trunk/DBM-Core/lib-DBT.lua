@@ -64,6 +64,18 @@ options = {
 		type = "string",
 		default = "Interface\\AddOns\\DBM-Core\\textures\\default.tga"
 	},
+	ColorR = {
+		type = "number",
+		default = 1
+	},
+	ColorG = {
+		type = "number",
+		default = 0.7
+	},
+	ColorB = {
+		type = "number",
+		default = 0
+	},
 }
 
 
@@ -85,6 +97,7 @@ do
 		local obj = setmetatable(
 			{
 				options = setmetatable({}, optionMT),
+				defaultOptions = options,
 				mainAnchor = CreateFrame("Frame", nil, UIParent),
 				secAnchor = CreateFrame("Frame", nil, UIParent),
 				mainFirstBar = nil,
@@ -364,7 +377,8 @@ end
 -----------------
 function barPrototype:ApplyStyle()
 	local bar = getglobal(self.frame:GetName().."Bar")
---	bar:SetStatusBarTexture(self.owner.options.texture)
+--	bar:SetStatusBarTexture(self.owner.options.Texture)
+	bar:SetStatusBarColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
 	self.frame:Show()
 	bar:SetAlpha(1)
 end

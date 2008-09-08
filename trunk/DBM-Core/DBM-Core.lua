@@ -44,12 +44,12 @@ DBM.DefaultOptions = {
 	WarningPosition = {
 		Point = "TOP",
 		X = 0,
-		Y = -165,
+		Y = -140,
 	},
 	MainBarPosition = {
 		Point = "TOP",
 		X = 0,
-		Y = -240,
+		Y = -225,
 	},
 	StatusEnabled = true,
 	AutoRespond = true,
@@ -714,22 +714,75 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(430)
-	frame:SetHeight(90)
+	frame:SetHeight(130)
 	frame:SetPoint("TOP", 0, -230)
 	frame:SetBackdrop({ 
 		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", 
 		edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32, 
 		insets = {left = 11, right = 12, top = 12, bottom = 11},
 	})
-	local fontstring = frame:CreateFontstring(nil, "ARTWORK", "GameFontNormal")
+	local fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
 	fontstring:SetWidth(410)
 	fontstring:SetHeight(0)
 	fontstring:SetPoint("TOP", 0, -16)
+	fontstring:SetText(DBM_CORE_UPDATEREMINDER_HEADER:format(newVersion, newRevision))
+	local editBox = CreateFrame("EditBox", nil, frame)
+	do
+		local editBoxLeft = editBox:CreateTexture()
+		local editBoxRight = editBox:CreateTexture()
+		local editBoxMiddle = editBox:CreateTexture()
+		editBoxLeft:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Left")
+		editBoxLeft:SetHeight(32)
+		editBoxLeft:SetWidth(32)
+		editBoxLeft:SetPoint("LEFT", -14, 0)
+		editBoxLeft:SetTexCoord(0, 0.125, 0, 1)
+		editBoxRight:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
+		editBoxRight:SetHeight(32)
+		editBoxRight:SetWidth(32)
+		editBoxRight:SetPoint("RIGHT", 6, 0)	
+		editBoxRight:SetTexCoord(0.875, 1, 0, 1)
+		editBoxMiddle:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
+		editBoxMiddle:SetHeight(32)
+		editBoxMiddle:SetWidth(1)
+		editBoxMiddle:SetPoint("LEFT", editBoxLeft, "RIGHT")
+		editBoxMiddle:SetPoint("RIGHT", editBoxRight, "LEFT")
+		editBoxMiddle:SetTexCoord(0, 0.9375, 0, 1)
+	end
+	editBox:SetHeight(32)
+	editBox:SetWidth(250)
+	editBox:SetPoint("TOP", fontstring, "BOTTOM", 0, -4)
+	editBox:SetFontObject("GameFontHighlight")
+	editBox:SetTextInsets(0, 0, 0, 1)
+	editBox:SetFocus()
+	editBox:SetText("http://www.deadlybossmods.com")
+	editBox:HighlightText()
+	editBox:SetScript("OnHide", function(self)
+		if ChatFrameEditBox:IsVisible() then
+			ChatFrameEditBox:SetFocus()
+		end
+	end)
+	editBox:SetScript("OnTextChanged", function(self)
+		editBox:SetText("http://www.deadlybossmods.com")
+		editBox:HighlightText()
+	end)
+	local fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+	fontstring:SetWidth(410)
+	fontstring:SetHeight(0)
+	fontstring:SetPoint("TOP", editBox, "BOTTOM", 0, 0)
+	fontstring:SetText(DBM_CORE_UPDATEREMINDER_FOOTER)
 	local button = CreateFrame("Button", nil, frame)
-	button:SetHeight(22)
-	button:SetWidth(80)
-	button:SetPoint("BOTTOM", -175, 12)
-	-- TODO: button erstellen
+	button:SetHeight(24)
+	button:SetWidth(75)
+	button:SetPoint("BOTTOM", 0, 13)
+	button:SetNormalFontObject("GameFontNormal")
+	button:SetHighlightFontObject("GameFontHighlight")
+	button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
+	button:SetPushedTexture(button:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
+	button:SetHighlightTexture(button:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
+	button:SetText(DBM_CORE_OK)
+	button:SetScript("OnClick", function(self)
+		frame:Hide()
+	end)
 end
 
 
