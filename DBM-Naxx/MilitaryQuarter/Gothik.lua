@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local warnWaveNow		= mod:NewAnnounce("WarningWaveNow", 3, nil, false)
+local warnWaveNow		= mod:NewAnnounce("WarningWaveSpawned", 3, nil, false)
 local warnWaveSoon		= mod:NewAnnounce("WarningWaveSoon", 1)
 local warnRiderDown		= mod:NewAnnounce("WarningRiderDown", 4)
 local warnKnightDown	= mod:NewAnnounce("WarningKnightDown", 2)
@@ -21,7 +21,7 @@ local timerPhase2		= mod:NewTimer(270, "TimerPhase2", 27082)
 local timerWave			= mod:NewTimer(20, "TimerWave", 27082)
 
 local wave = 0
-local waves = {
+local waves = { -- todo: move this to :OnDifficultyChanged
 	{2, L.Trainee, next = 20},
 	{2, L.Trainee, next = 20},
 	{2, L.Trainee, next = 10},
@@ -29,7 +29,7 @@ local waves = {
 	{2, L.Trainee, next = 15},
 	{1, L.Knight, next = 5},
 	{2, L.Trainee, next = 20},
-	{1, L.Knight, next = 10},
+	{2, L.Trainee, 1, L.Knight, next = 10},
 	{2, L.Trainee, next = 10},
 	{1, L.Rider, next = 5},
 	{2, L.Trainee, next = 15},
@@ -39,7 +39,7 @@ local waves = {
 	{1, L.Rider, 2, L.Trainee, next = 5},
 	{1, L.Knight, 2, L.Trainee, next = 5},
 	{1, L.Rider, 2, L.Trainee, next = 20},
-	{1, L.Rider, 1, L.Knight, 2, L.Trainee},
+	{1, L.Rider, 2, L.Knight, 2, L.Trainee},
 }
 local function getWaveString(wave)
 	local waveInfo = waves[wave]

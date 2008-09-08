@@ -23,6 +23,15 @@ local timerDoom		= mod:NewTimer(180, "TimerDoom", 29204)
 local timerAura		= mod:NewTimer(17, "TimerAura", 55593)
 
 local doomCounter = 0
+local sporeTimer = 36
+
+function mod:OnDifficultyChanged(difficulty)
+	if difficulty == "heroic" then
+		sporeTimer = 18
+	else
+		sporeTimer = 36
+	end
+end
 
 function mod:OnCombatStart(delay)
 	doomCounter = 0
@@ -33,10 +42,11 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 29234 then
-		timerSpore:Start()
+		timerSpore:Start(sporeTimer)
 		warnSporeNow:Show()
-		warnSporeSoon:Schedule(31)		
-	elseif args.spellId == 29204 then
+		warnSporeSoon:Schedule(sporeTimer - 5)
+	elseif args.spellId == 29204   -- Inevitable Doom (10)
+	or args.spellId == 55052 then  -- Inevitable Doom (25)
 		doomCounter = doomCounter + 1
 		local timer = 30
 		if doomCounter >= 7 then
