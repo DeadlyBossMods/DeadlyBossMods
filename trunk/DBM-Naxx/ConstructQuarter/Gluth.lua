@@ -20,8 +20,8 @@ local enrageTimer		= mod:NewEnrageTimer(360)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(360 - delay)
-	timerDecimate:Start(130)
-	warnDecimateSoon:Schedule(115)
+	timerDecimate:Start(108)
+	warnDecimateSoon:Schedule(93)
 end
 
 local decimateSpam = 0

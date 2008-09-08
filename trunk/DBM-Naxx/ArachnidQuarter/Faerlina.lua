@@ -17,8 +17,12 @@ local warnEmbraceExpired	= mod:NewAnnounce("WarningEmbraceExpired", 3, 28732)
 
 local timerEmbrace			= mod:NewTimer(30, "TimerEmbrace", 28732)
 
+local embraceSpam = 0
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 28732 then -- Widow's Embrace
+	if (args.spellId == 28732				-- Widow's Embrace (10)
+	or args.spellId == 54097)				-- Widow's Embrace (20)
+	and (GetTime() - embraceSpam) > 5 then  -- This spell is casted twice in Naxx 25 (bug?)
+		embraceSpam = GetTime()
 		warnEmbraceExpire:Cancel()
 		warnEmbraceExpired:Cancel()
 		timerEmbrace:Start()

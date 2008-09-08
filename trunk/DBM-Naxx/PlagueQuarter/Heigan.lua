@@ -19,10 +19,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:DancePhase()
-	timerTeleport:Show(50)
-	warnTeleportSoon:Schedule(40, 10)
-	warnTeleportNow:Schedule(50)
-	self:ScheduleMethod(50, "BackInRoom")
+	timerTeleport:Show(48)
+	warnTeleportSoon:Schedule(38, 10)
+	warnTeleportNow:Schedule(48)
+	self:ScheduleMethod(48, "BackInRoom")
 end
 
 function mod:BackInRoom(delay)

@@ -159,7 +159,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Announce Hateful Strikes to raid chat"
+	WarningHateful = "Announce Hateful Strikes to raid chat (you must be promoted or raid leader to use this)"
 })
 
 L:SetMiscLocalization({
@@ -248,7 +248,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	warnShoutNow		= "Disrupting Shout!",
+	WarningShoutNow		= "Disrupting Shout!",
 	WarningShoutSoon	= "Disrupting Shout in 5 sec"
 })
 
@@ -272,7 +272,7 @@ L:SetTimerLocalization({
 
 L:SetWarningLocalization({
 	WarningWaveSoon		= "Wave %d: %s in 3 sec",
-	WarningWaveNow		= "Wave %d: %s spawned",
+	WarningWaveSpawned	= "Wave %d: %s spawned",
 	WarningRiderDown	= "Rider down",
 	WarningKnightDown	= "Knight down",
 	WarningPhase2		= "Phase 2"
