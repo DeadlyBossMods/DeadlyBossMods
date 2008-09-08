@@ -37,7 +37,8 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 29484 then -- Web Spray
+	if args.spellId == 29484 	  -- Web Spray (10)
+	or args.spellId == 54125 then -- Web Spray (25)
 		warnWebSprayNow:Show()
 		warnWebSpraySoon:Schedule(35.5)
 		timerWebSpray:Start()
