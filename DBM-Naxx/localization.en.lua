@@ -165,7 +165,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	yell1 = "Patchwerk want to play!",
 	yell2 = "Kel'thuzad make Patchwerk his avatar of war!",
-	HatefulStrike = "Hateful Strike --> >%s< [%s]"
+	HatefulStrike = "Hateful Strike --> %s [%s]"
 })
 
 --------------
@@ -216,11 +216,13 @@ L:SetWarningLocalization({
 	WarningMarkNow		= "Mark %d!",
 })
 
---[[
-L = DBM:GetModLocalization("Faerlina")
+-----------------
+--  Sapphiron  --
+-----------------
+L = DBM:GetModLocalization("Sapphiron")
 
 L:SetGeneralLocalization({
-	name = "Grand Widow Faerlina"
+	name = "Sapphiron"
 })
 
 L:SetWarningLocalization({
@@ -228,4 +230,26 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 })
-]]--
+
+------------------
+--  Kel'thuzad  --
+------------------
+
+L = DBM:GetModLocalization("Kel'Thuzad")
+
+L:SetGeneralLocalization({
+	name = "Kel'Thuzad"
+})
+
+L:SetMiscLocalization({
+	Yell = "Minions, servants, soldiers of the cold dark! Obey the call of Kel'Thuzad!"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+
+

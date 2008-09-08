@@ -20,11 +20,17 @@ local markCounter = 0
 
 function mod:OnCombatStart(delay)
 	markCounter = 0
-	timerMark:Start(30, markCounter + 1)
+	timerMark:Start(17, markCounter + 1)
+	warnMarkSoon:Schedule(13, markCounter + 1)
 end
 
+local markSpam = 0
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 28832 then
+	if (args.spellId == 28832
+	or args.spellId == 28833
+	or args.spellId == 28834
+	or args.spellId == 28835) and (GetTime() - markSpam) > 5 then
+		markSpam = GetTime()
 		markCounter = markCounter + 1
 		warnMarkNow:Show(markCounter)
 		warnMarkSoon:Schedule(8, markCounter + 1)

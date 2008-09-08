@@ -32,7 +32,7 @@ function mod:SPELL_CAST_START(args)
 		warningLocustNow:Show()
 		specialWarningLocust:Show()
 		timerLocustIn:Cancel()
-		timerLocustFade:Show()
+		timerLocustFade:Start()
 	end
 end
 
