@@ -140,7 +140,7 @@ L:SetWarningLocalization({
 	WarningHealSoon		= "Healing possible in 3 sec",
 	WarningHealNow		= "Heal now!"
 })
---Inevitable Doom
+
 L:SetTimerLocalization({
 	TimerDoom			= "Doom #%d",
 	TimerSpore			= "Next Spore",
@@ -168,6 +168,67 @@ L:SetMiscLocalization({
 	HatefulStrike = "Hateful Strike --> %s [%s]"
 })
 
+
+-----------------
+--  Grobbulus  --
+-----------------
+L = DBM:GetModLocalization("Grobbulus")
+
+L:SetGeneralLocalization({
+	name = "Grobbulus"
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetWarningLocalization({
+	WarningInjection		= "Mutating Injection: >%s<",
+	SpecialWarningInjection	= "Mutating Injection on you!"
+})
+
+
+-------------
+--  Gluth  --
+-------------
+L = DBM:GetModLocalization("Gluth")
+
+L:SetGeneralLocalization({
+	name = "Gluth"
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetWarningLocalization({
+	WarningDecimateNow	= "Decimate!",
+	WarningDecimateSoon	= "Decimate in 15 sec"
+})
+
+
+----------------
+--  Thaddius  --
+----------------
+L = DBM:GetModLocalization("Thaddius")
+
+L:SetGeneralLocalization({
+	name = "Thaddius"
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetWarningLocalization({
+	WarningShiftCasting		= "Polarity Shift in 3 sec!",
+	WarningChargeChanged	= "Charge changed to %s",
+	WarningChargeNotChanged	= "Charge didn't change"
+})
+
+L:SetTimerLocalization({
+	TimerShiftCast			= "Polarity Shift Cast",
+	TimerNextShift			= "Next Polarity Shift",
+})
+
+
 --------------
 --  Gothik  --
 --------------
@@ -194,9 +255,9 @@ L:SetMiscLocalization({
 	WarningWave1	= "%d %s",
 	WarningWave2	= "%d %s and %d %s",
 	WarningWave3	= "%d %s, %d %s and %d %s",
-	Trainee			= "Trainee",
-	Knight			= "Knight",
-	Rider			= "Rider",
+	Trainee			= "|4Trainee:Trainees;",
+	Knight			= "|4Knight:Knights;",
+	Rider			= "|4Rider:Riders;",
 })
 
 ----------------
@@ -212,8 +273,9 @@ L:SetTimerLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMarkSoon		= "Mark %d in 4 sec",
-	WarningMarkNow		= "Mark %d!",
+	WarningMarkSoon				= "Mark %d in 4 sec",
+	WarningMarkNow				= "Mark %d!",
+	SpecialWarningMarkOnPlayer	= "%s: %s"
 })
 
 -----------------
