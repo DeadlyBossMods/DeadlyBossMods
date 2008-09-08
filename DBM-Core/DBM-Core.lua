@@ -1345,6 +1345,7 @@ do
 			end
 		end
 	end
+	timerPrototype.Cancel = timerPrototype.Stop
 
 	function timerPrototype:GetTime(...)
 		return 0 -- TODO
