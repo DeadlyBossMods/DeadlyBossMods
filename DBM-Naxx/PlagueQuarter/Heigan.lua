@@ -11,6 +11,7 @@ mod:RegisterEvents()
 
 local warnTeleportSoon		= mod:NewAnnounce("WarningTeleportSoon", 2, 46573)
 local warnTeleportNow		= mod:NewAnnounce("WarningTeleportNow", 3, 46573)
+
 local timerTeleport			= mod:NewTimer(90, "TimerTeleport", 46573)
 
 function mod:OnCombatStart(delay)
