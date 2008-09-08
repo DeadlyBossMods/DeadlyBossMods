@@ -76,6 +76,10 @@ options = {
 		type = "number",
 		default = 0
 	},
+	DynamicColor = {
+		type = "boolean",
+		default = true
+	},
 }
 
 
@@ -286,7 +290,13 @@ function barPrototype:Update(elapsed)
 	local bar = getglobal(self.frame:GetName().."Bar")
 	local spark = getglobal(self.frame:GetName().."BarSpark")
 	local timer = getglobal(self.frame:GetName().."Timer")
+	local obj = self.owner
 	self.timer = self.timer - elapsed
+	if obj.options.DynamicColor then
+		local r, g, b = obj.options.ColorR + (1 - self.timer/self.totalTime) * (1 - obj.options.ColorR), self.timer/self.totalTime * obj.options.ColorG,  self.timer/self.totalTime * obj.options.ColorB
+		bar:SetStatusBarColor(r, g, b)
+		spark:SetVertexColor(r, g, b)
+	end
 	if self.timer <= 0 then
 		self:Cancel()
 		return
@@ -296,7 +306,7 @@ function barPrototype:Update(elapsed)
 		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 		timer:SetText(stringFromTimer(self.timer))
 	end	
-	if self.timer <= 7.75 and not self.flashing and self.owner.options.Flash then
+	if self.timer <= 7.75 and not self.flashing and obj.options.Flash then
 		self.flashing = true
 		self.ftimer = 0
 	end
@@ -377,8 +387,10 @@ end
 -----------------
 function barPrototype:ApplyStyle()
 	local bar = getglobal(self.frame:GetName().."Bar")
+	local spark = getglobal(self.frame:GetName().."BarSpark")
 --	bar:SetStatusBarTexture(self.owner.options.Texture)
 	bar:SetStatusBarColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
+	spark:SetVertexColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
 	self.frame:Show()
 	bar:SetAlpha(1)
 end
