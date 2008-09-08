@@ -186,6 +186,9 @@ L:SetWarningLocalization({
 	SpecialWarningInjection	= "Mutating Injection on you!"
 })
 
+L:SetTimerLocalization({
+})
+
 
 -------------
 --  Gluth  --
@@ -204,6 +207,9 @@ L:SetWarningLocalization({
 	WarningDecimateSoon	= "Decimate in 15 sec"
 })
 
+L:SetTimerLocalization({
+	TimerDecimate		= "Decimate"
+})
 
 ----------------
 --  Thaddius  --
@@ -229,6 +235,27 @@ L:SetTimerLocalization({
 })
 
 
+-----------------
+--  Razuvious  --
+-----------------
+L = DBM:GetModLocalization("Razuvious")
+
+L:SetGeneralLocalization({
+	name = "Razuvious"
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetWarningLocalization({
+	warnShoutNow		= "Disrupting Shout!",
+	WarningShoutSoon	= "Disrupting Shout in 5 sec"
+})
+
+L:SetTimerLocalization({
+	TimerShout			= "Disrupting Shout"
+})
+
 --------------
 --  Gothik  --
 --------------
@@ -248,6 +275,7 @@ L:SetWarningLocalization({
 	WarningWaveNow		= "Wave %d: %s spawned",
 	WarningRiderDown	= "Rider down",
 	WarningKnightDown	= "Knight down",
+	WarningPhase2		= "Phase 2"
 })
 
 L:SetMiscLocalization({
@@ -259,6 +287,7 @@ L:SetMiscLocalization({
 	Knight			= "|4Knight:Knights;",
 	Rider			= "|4Rider:Riders;",
 })
+
 
 ----------------
 --  Horsemen  --
@@ -278,6 +307,7 @@ L:SetWarningLocalization({
 	SpecialWarningMarkOnPlayer	= "%s: %s"
 })
 
+
 -----------------
 --  Sapphiron  --
 -----------------
@@ -287,10 +317,24 @@ L:SetGeneralLocalization({
 	name = "Sapphiron"
 })
 
+L:SetMiscLocalization({
+	EmoteBreath = "%s takes in a deep breath..."
+})
+
 L:SetWarningLocalization({
+	WarningDrainLifeNow		= "Drain Life!",
+	WarningDrainLifeSoon	= "Drain Life soon",
+	WarningAirPhaseSoon		= "Air Phase in 10 sec",
+	WarningAirPhaseNow		= "Air Phase",
+	WarningLanded			= "Sapphiron landed"
 })
 
 L:SetTimerLocalization({
+	TimerDrainLifeCD		= "Drain Life CD",
+	TimerAir				= "Air Phase",
+	TimerLanding			= "Landing in",
+	TimerIceBlast			= "Deep Breath"
+	
 })
 
 ------------------
@@ -308,9 +352,13 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningBlastTargets	= "Frost Blast: >%s<",
+	WarningPhase2		= "Phase 2",
+	WarningFissure		= "Shadow Fissure spawned"
 })
 
 L:SetTimerLocalization({
+	TimerPhase2			= "Phase 2"
 })
 
 

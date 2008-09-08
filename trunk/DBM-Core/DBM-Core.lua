@@ -378,6 +378,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
 				return
 			end
+			collectgarbage()
 		end
 		DBM_GUI:ShowHide()
 	end
@@ -636,6 +637,7 @@ function DBM:LoadMod(mod)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
+		collectgarbage()
 		return true
 	end
 end
@@ -1158,6 +1160,11 @@ function bossModPrototype:SendWhisper(msg, target)
 	SendChatMessage(chatPrefixShort..msg, "WHISPER", nil, target)
 end
 
+function bossModPrototype:GetUnitCreatureId(uId)
+	local guid = UnitGUID(uId)
+	return (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
+end
+
 
 -----------------------
 --  Announce Object  --
@@ -1551,7 +1558,7 @@ end
 --  Scheduler  --
 -----------------
 function bossModPrototype:Schedule(t, f, ...)
-	schedule(t, f, self.mod, ...)
+	schedule(t, f, self, ...)
 end
 
 function bossModPrototype:Unschedule(f, ...)
