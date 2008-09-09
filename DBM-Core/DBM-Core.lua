@@ -649,7 +649,8 @@ end
 do
 	local syncHandlers = {}
 	syncHandlers["DBMv4-Mod"] = function(msg, channel, sender)
-		if not modSyncSpam[msg] or (GetTime() - modSyncSpam[msg] > 2.5) then
+		if not modSyncSpam[msg] or ((GetTime() - modSyncSpam[msg]) > 2.5) then
+			DBM:AddMsg(msg, "received sync")
 			modSyncSpam[msg] = GetTime()
 			local mod, revision, event, arg = strsplit("\t", msg)
 			mod = DBM:GetModByName(mod or "")
@@ -1348,11 +1349,16 @@ do
 	timerPrototype.Cancel = timerPrototype.Stop
 
 	function timerPrototype:GetTime(...)
-		return 0 -- TODO
+		return 0
 	end
 
 	function timerPrototype:SetTimer(timer)
 		self.timer = timer
+	end
+	
+	function timerPrototype:Update(elapsed, totalTime, ...)
+		local id = self.id..(("%s"):rep(select("#", ...))):format(...)
+		DBM.Bars:UpdateBar(id, elapsed, totalTime)
 	end
 	
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
@@ -1545,13 +1551,13 @@ function bossModPrototype:SendSync(event, arg)
 end
 
 function bossModPrototype:ReceiveSync(event, arg, sender, revision)
-	if self.OnSync and (not sender or (not self.blockSyncs or revision >= self.blockSyncs)) then
+	if self.OnSync and not self.blockSyncs and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
 		self:OnSync(event, arg, sender)
 	end
 end
 
 function bossModPrototype:SetMinSyncRevision(revision)
-	self.blockSyncs = revision
+	self.minSyncRevision = revision
 end
 
 

@@ -9,7 +9,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"CHAT_MSG_MONSTER_EMOTE"
+	"CHAT_MSG_MONSTER_EMOTE",
+	"SPELL_CAST_SUCCESS"
 )
 
 
@@ -22,7 +23,7 @@ local warnLanded		= mod:NewAnnounce("WarningLanded", 4) -- todo: add icon
 
 local timerDrainLife	= mod:NewTimer(22, "TimerDrainLifeCD", 28542)
 local timerAirPhase		= mod:NewTimer(66, "TimerAir", "") -- todo: add wc3 crypt fiend unburrow icon
-local timerLanding		= mod:NewTimer(44, "TimerLanding", "") -- todo: add wc3 crypt fiend burrow icon
+local timerLanding		= mod:NewTimer(24, "TimerLanding", "") -- todo: add wc3 crypt fiend burrow icon
 local timerIceBlast		= mod:NewTimer(9, "TimerIceBlast", 15876)
 
 local noTargetTime = 0
@@ -35,12 +36,16 @@ function mod:OnCombatStart(delay)
 	timerAirPhase:Start(48.5 - delay)
 end
 
-local drainSpam = 0
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 28522 and args.destName == UnitName("player") and self.Options.WarningIceblock then
 		SendChatMessage(L.WarningYellIceblock, "YELL")
-	elseif args.spellId == 28542 and (GetTime() - drainSpam) > 10 then
-		drainSpam = GetTime()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 28542      -- Life Drain (10)
+	or args.spellId == 55665 then -- Life Drain (25)
 		warnDrainLifeNow:Show()
 		warnDrainLifeSoon:Schedule(18.5)
 		timerDrainLife:Start()
@@ -56,7 +61,8 @@ end
 function mod:OnSync(event)
 	if event == "DeepBreath" then
 		timerIceBlast:Show()
-		self:ScheduleMethod(9, "Landing")
+		timerLanding:Update(11)
+		self:ScheduleMethod(13, "Landing")
 	end
 end
 

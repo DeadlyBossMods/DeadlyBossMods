@@ -318,7 +318,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteBreath = "%s takes in a deep breath..."
+	EmoteBreath			= "%s takes in a deep breath...",
+	WarningYellIceblock	= "I'm an Ice Block!"
 })
 
 L:SetWarningLocalization({

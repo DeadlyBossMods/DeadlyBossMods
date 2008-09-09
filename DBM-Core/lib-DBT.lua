@@ -260,6 +260,16 @@ function DBT:CancelBar(id)
 	return false
 end
 
+function DBT:UpdateBar(id, elapsed, totalTime)
+	for bar in self:GetBarIterator() do
+		if id == bar.id then
+			bar:SetTimer(totalTime or bar.totalTime)
+			bar:SetElapsed(elapsed or self.totalTime - self.timer)
+			return true
+		end
+	end
+	return false
+end
 
 ---------------------------
 --  General Bar Methods  --
