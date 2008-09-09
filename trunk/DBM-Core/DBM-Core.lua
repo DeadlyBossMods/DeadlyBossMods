@@ -650,7 +650,7 @@ do
 	local syncHandlers = {}
 	syncHandlers["DBMv4-Mod"] = function(msg, channel, sender)
 		if not modSyncSpam[msg] or (GetTime() - modSyncSpam[msg] > 2.5) then
-			modSyncSpam[msg] = time
+			modSyncSpam[msg] = GetTime()
 			local mod, revision, event, arg = strsplit("\t", msg)
 			mod = DBM:GetModByName(mod or "")
 			if mod and event and arg and revision then
@@ -1545,7 +1545,7 @@ function bossModPrototype:SendSync(event, arg)
 end
 
 function bossModPrototype:ReceiveSync(event, arg, sender, revision)
-	if self.OnSync and (not sender or (not mod.blockSyncs or revision >= self.blockSyncs)) then
+	if self.OnSync and (not sender or (not self.blockSyncs or revision >= self.blockSyncs)) then
 		self:OnSync(event, arg, sender)
 	end
 end
