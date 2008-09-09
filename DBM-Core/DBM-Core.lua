@@ -44,12 +44,12 @@ DBM.DefaultOptions = {
 	WarningPosition = {
 		Point = "TOP",
 		X = 0,
-		Y = -140,
+		Y = -150,
 	},
 	MainBarPosition = {
 		Point = "TOP",
 		X = 0,
-		Y = -225,
+		Y = -235,
 	},
 	StatusEnabled = true,
 	AutoRespond = true,
