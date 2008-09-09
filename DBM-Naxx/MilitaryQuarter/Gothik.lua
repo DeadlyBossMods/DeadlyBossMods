@@ -20,8 +20,29 @@ local warnPhase2		= mod:NewAnnounce("WarningPhase2", 4)
 local timerPhase2		= mod:NewTimer(270, "TimerPhase2", 27082) 
 local timerWave			= mod:NewTimer(20, "TimerWave", 27082)
 
-local wave = 0
-local waves = { -- todo: move this to :OnDifficultyChanged
+local wavesNormal = {
+	{2, L.Trainee, next = 20},
+	{2, L.Trainee, next = 20},
+	{2, L.Trainee, next = 10},
+	{1, L.Knight, next = 10},
+	{2, L.Trainee, next = 15},
+	{1, L.Knight, next = 5},
+	{2, L.Trainee, next = 20},
+	{1, L.Knight, 2, L.Trainee, next = 10},
+	{1, L.Rider, next = 10},
+	{2, L.Trainee, next = 5},
+	{1, L.Knight, next = 15},
+	{2, L.Trainee, 1, L.Rider, next = 10},
+	{2, L.Knight, next = 10},
+	{2, L.Trainee, next = 10},
+	{1, L.Rider, next = 5},
+	{1, L.Knight, next = 5},
+	{2, L.Trainee, next = 20},
+	{1, L.Rider, 1, L.Knight, 1, L.Trainee, next = 15},
+	{2, L.Trainee},
+}
+
+local wavesHeroic = {
 	{2, L.Trainee, next = 20},
 	{2, L.Trainee, next = 20},
 	{2, L.Trainee, next = 10},
@@ -41,6 +62,10 @@ local waves = { -- todo: move this to :OnDifficultyChanged
 	{1, L.Rider, 2, L.Trainee, next = 20},
 	{1, L.Rider, 2, L.Knight, 2, L.Trainee},
 }
+
+local waves = wavesNormal
+local wave = 0
+
 local function getWaveString(wave)
 	local waveInfo = waves[wave]
 	if #waveInfo == 2 then
@@ -53,6 +78,11 @@ local function getWaveString(wave)
 end
 
 function mod:OnCombatStart(delay)
+	if GetCurrentDungeonDifficulty() == 2 then
+		waves = wavesHeroic
+	else
+		waves = wavesNormal
+	end
 	wave = 0
 	timerPhase2:Start()
 	warnPhase2:Schedule(270)

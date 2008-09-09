@@ -50,6 +50,13 @@ L:SetTimerLocalization({
 	TimerEmbrace = "Embrace active"
 })
 
+L:SetOptionLocalization({
+	TimerEmbrace			= "Show Embrace timer",
+	WarningEmbraceActive	= "Show Widow's Embrace warning",
+	WarningEmbraceExpire	= "Show warning when Widow's Embrace expires",
+	WarningEmbraceExpired	= "Show warning when Widow's Embrace is about to expire"
+})
+
 
 ---------------
 --  Maexxna  --
@@ -104,6 +111,14 @@ L:SetTimerLocalization({
 	TimerTeleportBack	= "Teleport back"
 })
 
+L:SetOptionLocalization({
+	WarningTeleportNow		= "Show Teleport warning",
+	WarningTeleportSoon		= "Show Teleport pre-warning",
+	WarningCurse			= "Show Curse warning",
+	TimerTeleport			= "Show Teleport timer",
+	TimerTeleportBack		= "Show Teleport back timer"
+})
+
 
 --------------------------
 --  Heigan the Unclean  --
@@ -121,6 +136,14 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerTeleport		= "Teleport",
+})
+
+L:SetOptionLocalization({
+	WarningTeleportNow		= "Show Teleport warning",
+	WarningTeleportSoon		= "Show Teleport pre-warning",
+	WarningCurse			= "Show Curse warning",
+	TimerTeleport			= "Show Teleport timer",
+	TimerTeleportBack		= "Show Teleport back timer"
 })
 
 
@@ -145,6 +168,17 @@ L:SetTimerLocalization({
 	TimerDoom			= "Doom #%d",
 	TimerSpore			= "Next Spore",
 	TimerAura			= "Necrotic Aura"
+})
+
+L:SetOptionLocalization({
+	WarningSporeNow		= "Show Spore warning",
+	WarningSporeSoon	= "Show Spore pre-warning",
+	WarningDoomNow		= "Show Doom warning",
+	WarningHealSoon		= "Show \"Heal in 3 sec\" pre-warning",
+	WarningHealNow		= "Show \"Heal now\" warning",
+	TimerDoom			= "Show Doom timer",
+	TimerSpore			= "Show Spore timer",
+	TimerAura			= "Show Necrotic Aura timer"
 })
 
 
@@ -179,6 +213,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningInjection		= "Show Mutating Injection warning",
+	SpecialWarningInjection	= "Show special warning when you are afflicted by Mutating Injection"
 })
 
 L:SetWarningLocalization({
@@ -200,6 +236,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningDecimateNow	= "Show Decimate warning",
+	WarningDecimateSoon	= "Show Decimate pre-warning",
+	TimerDecimate		= "Show Decimate timer"
 })
 
 L:SetWarningLocalization({
@@ -211,6 +250,7 @@ L:SetTimerLocalization({
 	TimerDecimate		= "Decimate"
 })
 
+
 ----------------
 --  Thaddius  --
 ----------------
@@ -220,7 +260,16 @@ L:SetGeneralLocalization({
 	name = "Thaddius"
 })
 
+L:SetMiscLocalization({
+	Yell	= "Stalagg crush you!"
+})
+
 L:SetOptionLocalization({
+	WarningShiftCasting		= "Show Polarity Shift warning",
+	WarningChargeChanged	= "Show special warning when your charge changed <NYI>",
+	WarningChargeNotChanged	= "Show special warning when your charge did not change <NYI>",
+	TimerShiftCast			= "Show Polarity Shift cast timer",
+	TimerNextShift			= "Show Polarity Shift cooldown timer"
 })
 
 L:SetWarningLocalization({
@@ -245,6 +294,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningShoutNow		= "Show Disrupting Shout warning",
+	WarningShoutSoon	= "Show Disrupting Shout pre-warning",
+	TimerShout			= "Show Disrupting Shout timer"
 })
 
 L:SetWarningLocalization({
@@ -263,6 +315,16 @@ L = DBM:GetModLocalization("Gothik")
 
 L:SetGeneralLocalization({
 	name = "Gothik"
+})
+
+L:SetOptionLocalization({
+	TimerWave			= "Show Wave timer",
+	TimerPhase2			= "Show Phase 2 timer",
+	WarningWaveSoon		= "Show Wave pre-warning",
+	WarningWaveSpawned	= "Show Wave spawned warning",
+	WarningRiderDown	= "Show warning when a Rider dies",
+	WarningKnightDown	= "Show warning when a Knight dies",
+	WarningPhase2		= "Show Phase 2 warning"
 })
 
 L:SetTimerLocalization({
@@ -293,8 +355,16 @@ L:SetMiscLocalization({
 --  Horsemen  --
 ----------------
 L = DBM:GetModLocalization("Horsemen")
+
 L:SetGeneralLocalization({
 	name = "Four Horsemen"
+})
+
+L:SetOptionLocalization({
+	TimerMark					= "Show Mark timer",
+	WarningMarkSoon				= "Show Mark pre-warning",
+	WarningMarkNow				= "Show Mark warning",
+	SpecialWarningMarkOnPlayer	= "Show special warning when you have > 4 marks on you"
 })
 
 L:SetTimerLocalization({
@@ -317,6 +387,19 @@ L:SetGeneralLocalization({
 	name = "Sapphiron"
 })
 
+L:SetOptionLocalization({
+	WarningDrainLifeNow		= "Show Drain Life warning",
+	WarningDrainLifeSoon	= "Show Drain Life pre-warning",
+	WarningAirPhaseSoon		= "Show Air Phase pre-warning",
+	WarningAirPhaseNow		= "Show Air Phase warning",
+	WarningLanded			= "Show Ground Phase warning",
+	TimerDrainLifeCD		= "Show Drain Life timer",
+	TimerAir				= "Show Air Phase timer",
+	TimerLanding			= "Show Landing in timer",
+	TimerIceBlast			= "Show Deep Breath timer",
+	WarningDeepBreath		= "Show Deep Breath special warning"
+})
+
 L:SetMiscLocalization({
 	EmoteBreath			= "%s takes in a deep breath...",
 	WarningYellIceblock	= "I'm an Ice Block!"
@@ -327,15 +410,15 @@ L:SetWarningLocalization({
 	WarningDrainLifeSoon	= "Drain Life soon",
 	WarningAirPhaseSoon		= "Air Phase in 10 sec",
 	WarningAirPhaseNow		= "Air Phase",
-	WarningLanded			= "Sapphiron landed"
+	WarningLanded			= "Sapphiron landed",
+	WarningDeepBreath		= "Deep Breath!",
 })
 
 L:SetTimerLocalization({
 	TimerDrainLifeCD		= "Drain Life CD",
 	TimerAir				= "Air Phase",
 	TimerLanding			= "Landing in",
-	TimerIceBlast			= "Deep Breath"
-	
+	TimerIceBlast			= "Deep Breath"	
 })
 
 ------------------
@@ -346,6 +429,13 @@ L = DBM:GetModLocalization("Kel'Thuzad")
 
 L:SetGeneralLocalization({
 	name = "Kel'Thuzad"
+})
+
+L:SetOptionLocalization({
+	TimerPhase2			= "Show Phase 2 timer",
+	WarningBlastTargets	= "Show Frost Blast warning",
+	WarningPhase2		= "Show Phase 2 warning",
+	WarningFissure		= "Show Shadow Fissure warning",
 })
 
 L:SetMiscLocalization({
