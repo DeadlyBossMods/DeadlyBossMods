@@ -17,7 +17,7 @@ local warnPhase2			= mod:NewAnnounce("WarningPhase2", 3)
 local warnBlastTargets		= mod:NewAnnounce("WarningBlastTargets", 2)
 local warnFissure			= mod:NewAnnounce("WarningFissure", 3)
 
-local timerPhase2			= mod:NewTimer(230, "TimerPhase2")
+local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 
 
 function mod:OnCombatStart(delay)

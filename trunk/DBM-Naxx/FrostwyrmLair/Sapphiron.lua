@@ -20,6 +20,7 @@ local warnDrainLifeSoon	= mod:NewAnnounce("WarningDrainLifeSoon", 1, 28542)
 local warnAirPhaseSoon	= mod:NewAnnounce("WarningAirPhaseSoon", 3) -- todo: add icon
 local warnAirPhaseNow	= mod:NewAnnounce("WarningAirPhaseNow", 4) -- todo: add icon
 local warnLanded		= mod:NewAnnounce("WarningLanded", 4) -- todo: add icon
+local warnDeepBreath	= mod:NewSpecialWarning("WarningDeepBreath")
 
 local timerDrainLife	= mod:NewTimer(22, "TimerDrainLifeCD", 28542)
 local timerAirPhase		= mod:NewTimer(66, "TimerAir", "") -- todo: add wc3 crypt fiend unburrow icon

@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15928)
 mod:SetZone(GetAddOnMetadata("DBM-Naxx", "X-DBM-Mod-LoadZone"))
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.Yell)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -17,8 +17,8 @@ local warnChargeChanged		= mod:NewSpecialWarning("WarningChargeChanged")
 local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", false)
 
 local enrageTimer		= mod:NewEnrageTimer(300) -- todo: phase2 trigger
-local timerNextShift	= mod:NewTimer(30, "TimerNextShift", 28089)
-local timerShiftCast	= mod:NewTimer(3, "TimerShiftCast", 28089)
+local timerNextShift	= mod:NewTimer(29, "TimerNextShift", 28089)
+local timerShiftCast	= mod:NewTimer(5, "TimerShiftCast", 28089)
 
 
 local currentCharge

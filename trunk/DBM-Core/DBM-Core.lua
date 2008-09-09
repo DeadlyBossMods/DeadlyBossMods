@@ -1660,12 +1660,17 @@ do
 	}
 	local defaultTimerLocalization = {
 		__index = setmetatable({
-			timer_enrage = DBM_CORE_OPTION_TIMER_ENRAGE
+			timer_enrage = DBM_CORE_GENERIC_TIMER_ENRAGE
 		}, returnKey)
 	}
 	local defaultAnnounceLocalization = {
 		__index = setmetatable({
-			warning_enrage = DBM_CORE_OPTION_BAR_ENRAGE
+			warning_enrage = DBM_CORE_GENERIC_WARNING_ENRAGE
+		}, returnKey)
+	}
+	local defaultOptionLocalization = {
+		__index = setmetatable({
+			timer_enrage = DBM_CORE_OPTION_TIMER_ENRAGE
 		}, returnKey)
 	}
 	
@@ -1709,7 +1714,7 @@ do
 		local obj = {
 			general = setmetatable({}, returnKey),
 			warnings = setmetatable({}, defaultAnnounceLocalization),
-			options = setmetatable({}, returnKey),
+			options = setmetatable({}, defaultOptionLocalization),
 			timers = setmetatable({}, defaultTimerLocalization),
 			miscStrings = setmetatable({}, returnKey),
 			cats = setmetatable({}, defaultCatLocalization),
