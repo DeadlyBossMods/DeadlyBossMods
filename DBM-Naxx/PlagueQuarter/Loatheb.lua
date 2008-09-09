@@ -25,18 +25,15 @@ local timerAura		= mod:NewTimer(17, "TimerAura", 55593)
 local doomCounter = 0
 local sporeTimer = 36
 
-function mod:OnDifficultyChanged(difficulty)
-	if difficulty == "heroic" then
+function mod:OnCombatStart(delay)
+	doomCounter = 0
+	if GetCurrentDungeonDifficulty() == 2 then
 		sporeTimer = 18
 	else
 		sporeTimer = 36
 	end
-end
-
-function mod:OnCombatStart(delay)
-	doomCounter = 0
-	timerSpore:Start(36 - delay)
-	warnSporeSoon:Schedule(31 - delay)
+	timerSpore:Start(sporeTimer - delay)
+	warnSporeSoon:Schedule(sporeTimer - 5 - delay)
 	timerDoom:Start(120 - delay, doomCounter + 1)
 end
 
