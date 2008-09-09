@@ -649,14 +649,10 @@ end
 do
 	local syncHandlers = {}
 	syncHandlers["DBMv4-Mod"] = function(msg, channel, sender)
-		if not modSyncSpam[msg] or ((GetTime() - modSyncSpam[msg]) > 2.5) then
-			DBM:AddMsg(msg, "received sync")
-			modSyncSpam[msg] = GetTime()
-			local mod, revision, event, arg = strsplit("\t", msg)
-			mod = DBM:GetModByName(mod or "")
-			if mod and event and arg and revision then
-				mod:ReceiveSync(event, arg, sender, revision)
-			end
+		local mod, revision, event, arg = strsplit("\t", msg)
+		mod = DBM:GetModByName(mod or "")
+		if mod and event and arg and revision then
+			mod:ReceiveSync(event, arg, sender, revision)
 		end
 	end
 	
@@ -1542,16 +1538,19 @@ function bossModPrototype:SendSync(event, arg)
 	event = event or ""
 	arg = arg or ""
 	local str = ("%s\t%s\t%s\t%s"):format(self.id, self.revision, event, arg)
+	local spamId = self.id..event..arg
 	local time = GetTime()
-	if not modSyncSpam[str] or (time - modSyncSpam[str]) > 2.5 then
-		modSyncSpam[str] = time
+	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5 then
 		self:ReceiveSync(event, arg, nil, self.revision)
 		sendSync("DBMv4-Mod", str)
 	end
 end
 
 function bossModPrototype:ReceiveSync(event, arg, sender, revision)
-	if self.OnSync and not self.blockSyncs and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+	local spamId = self.id..event..arg
+	local time = GetTime()
+	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5) and self.OnSync and not self.blockSyncs and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+		modSyncSpam[spamId] = time
 		self:OnSync(event, arg, sender)
 	end
 end

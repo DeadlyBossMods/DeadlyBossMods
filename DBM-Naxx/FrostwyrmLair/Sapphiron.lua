@@ -23,7 +23,7 @@ local warnLanded		= mod:NewAnnounce("WarningLanded", 4) -- todo: add icon
 
 local timerDrainLife	= mod:NewTimer(22, "TimerDrainLifeCD", 28542)
 local timerAirPhase		= mod:NewTimer(66, "TimerAir", "") -- todo: add wc3 crypt fiend unburrow icon
-local timerLanding		= mod:NewTimer(24, "TimerLanding", "") -- todo: add wc3 crypt fiend burrow icon
+local timerLanding		= mod:NewTimer(27, "TimerLanding", "") -- todo: add wc3 crypt fiend burrow icon
 local timerIceBlast		= mod:NewTimer(9, "TimerIceBlast", 15876)
 
 local noTargetTime = 0
@@ -61,7 +61,7 @@ end
 function mod:OnSync(event)
 	if event == "DeepBreath" then
 		timerIceBlast:Show()
-		timerLanding:Update(11)
+		timerLanding:Update(14)
 		self:ScheduleMethod(13, "Landing")
 	end
 end

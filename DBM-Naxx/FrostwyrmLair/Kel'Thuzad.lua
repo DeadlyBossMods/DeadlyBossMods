@@ -4,6 +4,7 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15990)
 mod:SetZone(GetAddOnMetadata("DBM-Naxx", "X-DBM-Mod-LoadZone"))
+mod:SetMinCombatTime(60)
 
 mod:RegisterCombat("yell", L.Yell)
 
@@ -16,7 +17,7 @@ local warnPhase2			= mod:NewAnnounce("WarningPhase2", 3)
 local warnBlastTargets		= mod:NewAnnounce("WarningBlastTargets", 2)
 local warnFissure			= mod:NewAnnounce("WarningFissure", 3)
 
-local timerPhase2			= mod:NewTimer(320, "TimerPhase2")
+local timerPhase2			= mod:NewTimer(230, "TimerPhase2")
 
 
 function mod:OnCombatStart(delay)
@@ -45,3 +46,4 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFissure:Show()
 	end
 end
+
