@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(30549)
 mod:SetZone(GetAddOnMetadata("DBM-Naxx", "X-DBM-Mod-LoadZone"))
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat", 16063, 16064, 16065, 30549)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",

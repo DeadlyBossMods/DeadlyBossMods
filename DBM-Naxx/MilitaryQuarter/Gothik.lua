@@ -38,7 +38,7 @@ local wavesNormal = {
 	{1, L.Rider, next = 5},
 	{1, L.Knight, next = 5},
 	{2, L.Trainee, next = 20},
-	{1, L.Rider, 1, L.Knight, 1, L.Trainee, next = 15},
+	{1, L.Rider, 1, L.Knight, 2, L.Trainee, next = 15},
 	{2, L.Trainee},
 }
 
@@ -86,9 +86,9 @@ function mod:OnCombatStart(delay)
 	wave = 0
 	timerPhase2:Start()
 	warnPhase2:Schedule(270)
-	timerWave:Start(24.75, wave + 1)
-	warnWaveSoon:Schedule(21.75, wave + 1, getWaveString(wave + 1))
-	self:ScheduleMethod(24.75, "NextWave")
+	timerWave:Start(25, wave + 1)
+	warnWaveSoon:Schedule(22, wave + 1, getWaveString(wave + 1))
+	self:ScheduleMethod(25, "NextWave")
 end
 
 function mod:NextWave()
