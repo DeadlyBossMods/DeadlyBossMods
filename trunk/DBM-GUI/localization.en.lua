@@ -55,7 +55,7 @@ L.WarningIconRight = "Show icon on right side"
 
 -- Tab: Barsetup
 L.BarSetup = "Bar Style"
-
+L.BarTexture = "Bar Texture"
 
 
 
