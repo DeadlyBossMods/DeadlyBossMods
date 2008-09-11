@@ -243,7 +243,7 @@ L:SetOptionLocalization({
 
 L:SetWarningLocalization({
 	WarningDecimateNow	= "Decimate!",
-	WarningDecimateSoon	= "Decimate in 15 sec"
+	WarningDecimateSoon	= "Decimate in 10 sec"
 })
 
 L:SetTimerLocalization({

@@ -52,7 +52,8 @@ function mod:BackInRoom(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 29213 then
+	if args.spellId == 29213		-- Curse of the Plaguebringer (10)
+	or args.spellId == 54835 then	-- Curse of the Plaguebringer (25)
 		warnCurse:Show()
 	end
 end
