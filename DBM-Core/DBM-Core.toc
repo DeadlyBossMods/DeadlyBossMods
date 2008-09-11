@@ -1,12 +1,12 @@
 ## Interface: 30000
 ## Title: |cff0055FFDeadly Boss Mods|r Core
 ## Notes: Deadly Boss Mods
-## SavedVariablesPerCharacter: DBM_SavedOptions
+## SavedVariablesPerCharacter: DBM_SavedOptions, DBT_SavedOptions
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
 ## X-Website: http://www.deadlybossmods.com
 localization.en.lua
 DBT-Template.xml
-lib-DBT.lua
+DBT.lua
 DBM-Core.lua
