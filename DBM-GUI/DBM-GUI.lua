@@ -192,26 +192,49 @@ end
 
 do 
 	local function GetPressedButton(self)
-		--UIDropDownMenu_SetSelectedValue(self.owner, self.value);
+		UIDropDownMenu_SetSelectedValue(self.owner, self.value);
+		if self and self.owner and self.owner.callfunc and type(self.owner.callfunc) == "function" then
+			DBM.AddMsg(self.value)
+			self.owner.callfunc(self.value)
+		end
 		return self.value
+	end
+
+	local function DropDown_Initialize(frame)
+		for _,element in next, frame.elements do
+			element.func = element.func or GetPressedButton
+			element.owner = frame
+			element.checked = false
+			--element.notCheckable = true
+			UIDropDownMenu_AddButton( element )
+		end
 	end
 
 	-- Function in the Prototype to create a Dropdown Menu
 	-- This element likes the HTML <select ....> type
 	-- 
-	--  arg1 = Initial Text
+	--  arg1 = Dropdown Title
 	--  arg2 = table with entrys
-	--  arg3 = function called on valuechanged (arg1 will be the new value)
+	--  arg3 = value of default
+	--  arg4 = width of the frame
+	--  arg5 = function called on valuechanged (arg1 will be the new value)
 	--
-	function PanelPrototype:CreateDropdown(name, elements,  width, callfunc)
+	function PanelPrototype:CreateDropdown(name, elements, selected, width, callfunc)
 		local dropdown = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'UIDropDownMenuTemplate')
 		dropdown:EnableMouse(true)
+		dropdown:SetWidth(width or 100)
+		dropdown.elements = elements
+		dropdown.width = width or 100
+		dropdown.callfunc = callfunc
 
-		elements = { {	text = "lol menu 1" }, { text = "lol menu 2" } }
+		UIDropDownMenu_Initialize(dropdown, DropDown_Initialize)
+		for k,v in next, dropdown.elements do
+			if v.value ~= nil and v.value == selected or v.text == selected then
+				UIDropDownMenu_SetSelectedID(dropdown, 1)
+			end
+		end
+		UIDropDownMenu_SetWidth(dropdown, width or 100, 3)
 
-		--EasyMenu(menuList, menuFrame, anchor, x, y, displayMode, autoHideDelay) 
-		EasyMenu(elements, dropdown)--, dropdown, 0, -5)
-		
 		local text = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
 		text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
 		text:SetFontObject('GameFontNormalSmall')
@@ -463,20 +486,23 @@ function ListFrameButtonsPrototype:SetParentHasChilds(parent)
 end
 
 
-function ListFrameButtonsPrototype:GetVisibleTabs()
+do
 	local mytable = {}
-	for k,v in ipairs(self.Buttons) do
-		if v.parent == nil then 
-			table.insert(mytable, v)
-
-			if v.frame.showsub then
-				for k2,v2 in ipairs(self:GetVisibleSubTabs(v.frame.name)) do
-					table.insert(mytable, v2)
+	function ListFrameButtonsPrototype:GetVisibleTabs()
+		for i = #mytable, 1, -1 do mytable[i] = nil end
+		for k,v in ipairs(self.Buttons) do
+			if v.parent == nil then 
+				table.insert(mytable, v)
+	
+				if v.frame.showsub then
+					for k2,v2 in ipairs(self:GetVisibleSubTabs(v.frame.name)) do
+						table.insert(mytable, v2)
+					end
 				end
 			end
 		end
+		return mytable
 	end
-	return mytable
 end
 
 function ListFrameButtonsPrototype:GetVisibleSubTabs(parent)
@@ -845,10 +871,16 @@ function DBM_GUI:CreateOptionsMenu()
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
 
-		local TextureDropDown = BarSetup:CreateDropdown()
+		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, { 
+			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
+			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
+			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga"	},
+			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
+			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}}, 
+			DBM.Bars:GetOption("Texture"), nil, function(value) DBM.Bars:SetOption("Texture", value) end
+		);
 		TextureDropDown:SetPoint("TOPLEFT", dummybar.frame, "BOTTOMLEFT", -30, -20)
-		TextureDropDown:Show()
-
+		
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall);
