@@ -136,8 +136,6 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 	getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
---	getglobal(FrameTitle..self:GetCurrentID()..'Title'):ClearAllPoints()	
---	getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetPoint("BOTTOMLEFT", area, "TOPLEFT", 10, -2)
 	area:SetWidth(width or self.frame:GetWidth()-10)
 	area:SetHeight(height or self.frame:GetHeight()-10)
 	
@@ -146,7 +144,7 @@ function PanelPrototype:CreateArea(name, width, height, autoplace)
 		if #kids == 1 then
 			area:SetPoint('TOPLEFT', self.frame, 5, -17)
 		else
-			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 2, -17)
+			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -17)
 		end
 	end
 
@@ -174,7 +172,7 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
 	
 	if variable and DBM.Options[variable] ~= nil then
 		button:SetScript("OnShow",  function() button:SetChecked(DBM.Options[variable]) end)
-		button:SetScript("OnClick", function() DBM.Options[variable] = not DBM.Options[variable]; button:SetChecked(DBM.Options[variable]) end)
+		button:SetScript("OnClick", function() DBM.Options[variable] = not DBM.Options[variable] end)
 	end
 
 	if autoplace then
@@ -193,9 +191,8 @@ end
 
 
 do 
-	--[[
-	local function GetPressedButton()
-		UIDropDownMenu_SetSelectedValue(self.owner, self.value);
+	local function GetPressedButton(self)
+		--UIDropDownMenu_SetSelectedValue(self.owner, self.value);
 		return self.value
 	end
 
@@ -206,29 +203,23 @@ do
 	--  arg2 = table with entrys
 	--  arg3 = function called on valuechanged (arg1 will be the new value)
 	--
-	function PanelPrototype:CreateDropdown(name, elemets,  width, callfunc)
+	function PanelPrototype:CreateDropdown(name, elements,  width, callfunc)
 		local dropdown = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'UIDropDownMenuTemplate')
-	
-		UIDropDownMenu_SetWidth( (widht or 100)-20, dropdown)
-		UIDropDownMenu_Initialize(dropdown, function() end)
---		UIDropDownMenu_Initialize(dropdown, function()
---			local info = UIDropDownMenu_CreateInfo()
---	 		info.text = "First Menu Item"
---			info.value = "texture 1"
---	--		info.owner = this:GetParent()
---			info.func = GetPressedButton
---			UIDropDownMenu_AddButton(info, 1);
---		end)
+		dropdown:EnableMouse(true)
+
+		elements = { {	text = "lol menu 1" }, { text = "lol menu 2" } }
+
+		--EasyMenu(menuList, menuFrame, anchor, x, y, displayMode, autoHideDelay) 
+		EasyMenu(elements, dropdown)--, dropdown, 0, -5)
 		
-		local text = frame:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
+		local text = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
 		text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
 		text:SetFontObject('GameFontNormalSmall')
 		text:SetText(name)
-	
+
 		self:SetLastObj(dropdown)
 		return dropdown
 	end
-	--]]
 end
 
 -- This function creates an EditBox
@@ -398,7 +389,7 @@ end
 function PanelPrototype:SetMyOwnHeight()
 	if not self.frame.mytype == "panel" then return end
 
-	local need_height = 0
+	local need_height = 50
 
 	local kids = { self.frame:GetChildren() }
 	for _, child in pairs(kids) do
@@ -424,7 +415,7 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 		return false
 	end
 
-	frame.showsub = (frame.showsub == nil) or false
+	frame.showsub = (frame.showsub == nil) or true -- false DEVEL
 	if parent then
 		frame.depth = self:GetDepth(parent)
 	else 
@@ -566,8 +557,6 @@ do
 			DBM_GUI_OptionsFrame:ClearSelection(listframe, listframe.buttons);
 		end
 
-
-		--todo this sucks!
 		for i = 1, #buttons do
 			element = displayedElements[i + offset]
 			if ( not element ) then
@@ -654,7 +643,6 @@ do
 		local buttons = {}
 		local button = CreateFrame("BUTTON", name.."Button1", frame, "DBM_GUI_FrameButtonTemplate")
 		button:SetPoint("TOPLEFT", frame, 0, -8)
-		button:SetWidth(165)
 		frame.buttonHeight = button:GetHeight()
 		table.insert(buttons, button)
 	
@@ -662,7 +650,6 @@ do
 		for i = 2, maxButtons do
 			button = CreateFrame("BUTTON", name.."Button"..i, frame, "DBM_GUI_FrameButtonTemplate")
 			button:SetPoint("TOPLEFT", buttons[#buttons], "BOTTOMLEFT")
-			button:SetWidth(165)
 			table.insert(buttons, button)
 		end
 		frame.buttons = buttons
@@ -858,8 +845,9 @@ function DBM_GUI:CreateOptionsMenu()
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
 
-		--local TextureDropDown = BarSetup:CreateDropdown("lol")
-		--TextureDropDown:SetPoint("TOPLEFT", 40, 100)
+		local TextureDropDown = BarSetup:CreateDropdown()
+		TextureDropDown:SetPoint("TOPLEFT", dummybar.frame, "BOTTOMLEFT", -30, -20)
+		TextureDropDown:Show()
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
