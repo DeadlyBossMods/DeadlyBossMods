@@ -21,7 +21,7 @@
 --  Globals  --
 ---------------
 DBT = {}
-
+DBT_SavedOptions = {}
 
 --------------
 --  Locals  --
@@ -60,32 +60,88 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	FadeIn = {
+		type = "boolean",
+		default = true,
+	},
+	Shine = {
+		type = "boolean",
+		default = true,
+	},
+	Break = {
+		type = "boolean",
+		default = true,
+	},
+	Icon = {
+		type = "boolean",
+		default = true,
+	},
+	IconLeft = {
+		type = "boolean",
+		default = true,
+	},
+	IconRight = {
+		type = "boolean",
+		default = false,
+	},
 	Texture = {
 		type = "string",
-		default = "Interface\\AddOns\\DBM-Core\\textures\\default.tga"
+		default = "Interface\\AddOns\\DBM-Core\\textures\\default.tga",
 	},
-	ColorR = {
+	StartColorR = {
 		type = "number",
-		default = 1
+		default = 1,
 	},
-	ColorG = {
+	StartColorG = {
 		type = "number",
-		default = 0.7
+		default = 0.7,
 	},
-	ColorB = {
+	StartColorB = {
 		type = "number",
-		default = 0
+		default = 0,
+	},
+	EndColorR = {
+		type = "number",
+		default = 1,
+	},
+	EndColorG = {
+		type = "number",
+		default = 0,
+	},
+	EndColorB = {
+		type = "number",
+		default = 0,
 	},
 	DynamicColor = {
 		type = "boolean",
-		default = true
+		default = true,
+	},
+	Width = {
+		type = "number",
+		default = 260,
+	},
+	Scale = {
+		type = "number",
+		default = 0.75,
+	},
+	HugeBarsEnabled = {
+		type = "boolean",
+		default = true,
+	},
+	HugeWidth = {
+		type = "number",
+		default = 215,
+	},
+	HugeScale = {
+		type = "number",
+		default = 1.05,
 	},
 }
 
 
------------------------
---  DBT Constructor  --
------------------------
+-------------------------------
+--  DBT Constructor/Options  --
+-------------------------------
 do
 	local mt = {__index = DBT}
 	local optionMT = {
@@ -97,11 +153,12 @@ do
 			end
 		end
 	}
+	
 	function DBT:New()
 		local obj = setmetatable(
 			{
 				options = setmetatable({}, optionMT),
-				defaultOptions = options,
+				defaultOptions = setmetatable({}, optionMT),
 				mainAnchor = CreateFrame("Frame", nil, UIParent),
 				secAnchor = CreateFrame("Frame", nil, UIParent),
 				mainFirstBar = nil,
@@ -119,12 +176,13 @@ do
 		obj.mainAnchor:Show()
 		return obj
 	end
+	
+	function DBT:LoadOptions(id)
+		DBT_SavedOptions[id] = DBT_SavedOptions[id] or {}
+		self.options = setmetatable(DBT_SavedOptions[id], optionMT)
+	end
 end
 
-
----------------
---  Options  --
----------------
 function DBT:SetOption(option, value)
 	if not options[option] then
 		error(("Invalid option: %s"):format(tostring(option)), 2)
@@ -146,6 +204,7 @@ end
 function DBT:GetOption(option)
 	return self.options[option]
 end
+
 
 
 -----------------------
@@ -303,7 +362,9 @@ function barPrototype:Update(elapsed)
 	local obj = self.owner
 	self.timer = self.timer - elapsed
 	if obj.options.DynamicColor then
-		local r, g, b = obj.options.ColorR + (1 - self.timer/self.totalTime) * (1 - obj.options.ColorR), self.timer/self.totalTime * obj.options.ColorG,  self.timer/self.totalTime * obj.options.ColorB
+		local r = obj.options.StartColorR  + (obj.options.EndColorR - obj.options.StartColorR) * (1 - self.timer/self.totalTime)
+		local g = obj.options.StartColorG  + (obj.options.EndColorG - obj.options.StartColorG) * (1 - self.timer/self.totalTime)
+		local b = obj.options.StartColorB  + (obj.options.EndColorB - obj.options.StartColorB) * (1 - self.timer/self.totalTime)
 		bar:SetStatusBarColor(r, g, b)
 		spark:SetVertexColor(r, g, b)
 	end
@@ -395,10 +456,17 @@ end
 -----------------
 --  Bar Style  --
 -----------------
+function DBT:ApplyStyle()
+	for bar in self:GetBarIterator() do
+		bar:ApplyStyle()
+	end
+end
+
 function barPrototype:ApplyStyle()
 	local bar = getglobal(self.frame:GetName().."Bar")
 	local spark = getglobal(self.frame:GetName().."BarSpark")
---	bar:SetStatusBarTexture(self.owner.options.Texture)
+	local texture = getglobal(self.frame:GetName().."BarTexture")
+	texture:SetTexture(self.owner.options.Texture)
 	bar:SetStatusBarColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
 	spark:SetVertexColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
 	self.frame:Show()

@@ -41,15 +41,15 @@ DBM.DefaultOptions = {
 		{r = 1.00, g = 0.50, b = 0.00},
 		{r = 1.00, g = 0.10, b = 0.10},
 	},
-	WarningPosition = {
+	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
-		Y = -150,
+		Y = -185,
 	},
-	MainBarPosition = {
-		Point = "TOP",
-		X = 0,
-		Y = -235,
+	MainTimerPosition = {
+		Point = "TOPRIGHT",
+		X = -223,
+		Y = -245,
 	},
 	StatusEnabled = true,
 	AutoRespond = true,
@@ -535,8 +535,8 @@ do
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
-		RaidWarningFrame:SetPoint(DBM.Options.WarningPosition.Point, UIParent, DBM.Options.WarningPosition.Point, DBM.Options.WarningPosition.X, DBM.Options.WarningPosition.Y)
-		DBM.Bars.mainAnchor:SetPoint(DBM.Options.MainBarPosition.Point, UIParent, DBM.Options.MainBarPosition.Point, DBM.Options.WarningPosition.X, DBM.Options.MainBarPosition.Y)
+		RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
+		DBM.Bars.mainAnchor:SetPoint(DBM.Options.MainTimerPosition.Point, UIParent, DBM.Options.MainTimerPosition.Point, DBM.Options.MainTimerPosition.X, DBM.Options.MainTimerPosition.Y)
 	end
 	
 	function loadModOptions(modId)
@@ -563,9 +563,9 @@ do
 end
 
 function DBM.Bars:OnPositionChanged(point, x, y)
-	DBM.Options.MainBarPosition.Point = point
-	DBM.Options.MainBarPosition.X = x
-	DBM.Options.MainBarPosition.Y = y
+	DBM.Options.MainTimerPosition.Point = point
+	DBM.Options.MainTimerPosition.X = x
+	DBM.Options.MainTimerPosition.Y = y
 end
 
 
@@ -575,6 +575,7 @@ end
 function DBM:ADDON_LOADED(modname)
 	if modname == "DBM-Core" then
 		loadOptions()
+		DBM.Bars:LoadOptions("DBM")
 		self.AddOns = {}
 		for i = 1, GetNumAddOns() do
 			if GetAddOnMetadata(i, "X-DBM-Mod") then
@@ -1774,3 +1775,4 @@ SlashCmdList["PRINT"] = function(msg)
 		DBM:AddMsg(serialize(val))
 	end
 end
+
