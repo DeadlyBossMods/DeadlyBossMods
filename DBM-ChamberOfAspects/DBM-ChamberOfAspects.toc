@@ -6,7 +6,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Chamber of Aspects
-## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-Sort: 2
 ## X-DBM-Mod-LoadZone: Obsidian Sanctum
 localization.en.lua
 localization.de.lua
