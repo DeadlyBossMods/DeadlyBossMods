@@ -471,6 +471,7 @@ function barPrototype:ApplyStyle()
 	spark:SetVertexColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
 	self.frame:Show()
 	bar:SetAlpha(1)
+	self:Update(0)
 end
 
 function DBT:UpdateOrientation()
