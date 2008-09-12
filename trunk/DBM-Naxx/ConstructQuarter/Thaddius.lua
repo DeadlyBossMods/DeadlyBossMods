@@ -3,13 +3,13 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15928)
-mod:SetZone(GetAddOnMetadata("DBM-Naxx", "X-DBM-Mod-LoadZone"))
+mod:SetZone()
 
 mod:RegisterCombat("yell", L.Yell)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"PLAYER_AURAS_CHANGED"
+	"UNIT_AURA"
 )
 
 local warnShiftCasting		= mod:NewAnnounce("WarningShiftCasting", 3, 28089)
@@ -19,6 +19,10 @@ local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", fa
 local enrageTimer		= mod:NewEnrageTimer(300) -- todo: phase2 trigger
 local timerNextShift	= mod:NewTimer(29, "TimerNextShift", 28089)
 local timerShiftCast	= mod:NewTimer(5, "TimerShiftCast", 28089)
+
+mod:AddBoolOption("ArrowsEnabled", true, "Arrows")
+mod:AddBoolOption("ArrowsRightLeft", false, "Arrows")
+mod:AddBoolOption("ArrowsInverse", false, "Arrows")
 
 
 local currentCharge
@@ -36,12 +40,12 @@ function mod:SPELL_CAST_START(args)
 end
 
 local lastShift = 0
-function mod:PLAYER_AURAS_CHANGED()
+function mod:UNIT_AURA(unit)
+	if unit ~= "player" then return end
 	local charge
 	local i = 1
 	while UnitDebuff("player", i) do
 		local _, _, icon = UnitDebuff("player", i)
-		if self:IsInCombat() then self:AddMsg(icon, "DBM-Debug") end
 		if icon == "Interface\\Icons\\Spell_ChargeNegative" then
 			charge = "negative"
 		elseif icon == "Interface\\Icons\\Spell_ChargePositive" then
