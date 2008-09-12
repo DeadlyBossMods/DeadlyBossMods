@@ -420,15 +420,6 @@ function barPrototype:Update(elapsed)
 		end
 		self.ftimer = self.ftimer + elapsed
 	end
---[[
-	self.moving = "move"
-	self.movePoint = "TOP"
-	self.moveRelPoint = "BOTTOM"
-	self.moveAnchor = newAnchor
-	self.moveOffsetX = -(newX - oldX)
-	self.moveOffsetY = -(newY - oldY)
-	self.moveElapsed = 0
-]]--self.owner.options.BarXOffset, self.owner.options.BarYOffset
 	if self.moving == "move" and self.moveElapsed <= 0.5 then
 		self.moveElapsed = self.moveElapsed + elapsed
 		local newX = self.moveOffsetX + (obj.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 0.5)

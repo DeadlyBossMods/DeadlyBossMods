@@ -523,7 +523,7 @@ end
 do
 	local function addDefaultOptions(t1, t2)
 		for i, v in pairs(t2) do
-			if not t1[i] then
+			if t1[i] == nil then
 				t1[i] = v
 			elseif type(v) == "table" then
 				addDefaultOptions(v, t2[i])
