@@ -1,12 +1,21 @@
-------------------------
--- Deadly Bar Timers ---
-------------------------
+-- ***************************************************
+-- **               Deadly Bar Timers               **
+-- **         http://www.deadlybossmods.com         **
+-- ***************************************************
+--
 -- This addon is written and copyrighted by:
---    * Paul Emmerich (Tandanu @ EU-Aegwynn)
---    * Martin Verges (Nitram @ EU-Azshara)
+--    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
+--    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 -- 
+-- The localizations are written by:
+--    * deDE: Tandanu/Nitram
+--    * enGB: Nitram/Tandanu
+--    * (add your names here!)
+--
 -- 
--- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+-- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+-- All included textures and sounds are copyrighted by their respective owners.
+--
 --
 --  You are free:
 --    * to Share — to copy, distribute, display, and perform the work
@@ -22,6 +31,7 @@
 ---------------
 DBT = {}
 DBT_SavedOptions = {}
+
 
 --------------
 --  Locals  --
@@ -136,6 +146,18 @@ options = {
 		type = "number",
 		default = 1.05,
 	},
+	MainTimerPoint = {
+		type = "string",
+		default = "TOPRIGHT",
+	},
+	MainTimerX = {
+		type = "number",
+		default = -223,
+	},
+	MainTimerY = {
+		type = "number",
+		default = -260,
+	},
 }
 
 
@@ -180,6 +202,7 @@ do
 	function DBT:LoadOptions(id)
 		DBT_SavedOptions[id] = DBT_SavedOptions[id] or {}
 		self.options = setmetatable(DBT_SavedOptions[id], optionMT)
+		self.mainAnchor:SetPoint(self.options.MainTimerPoint, UIParent, self.options.MainTimerPoint, self.options.MainTimerX, self.options.MainTimerY)
 	end
 end
 
@@ -398,22 +421,22 @@ end
 -------------------
 --  Movable Bar  --
 -------------------
+function DBT:SavePosition()
+	local point, _, _, x, y = self.mainAnchor:GetPoint(1)
+	self:SetOption("MainTimerPoint", point)
+	self:SetOption("MainTimerX", x)
+	self:SetOption("MainTimerY", y)
+end
+
 do
 	local function moveEnd(self)
-		for bar in self:GetBarIterator() do
-			bar.frame:SetMovable(nil)
-		end
-		self.mainAnchor:StopMovingOrSizing()
-		local point, _, _, x, y = self.mainAnchor:GetPoint(1)
-		if self.OnPositionChanged then self:OnPositionChanged(point, x, y) end
+		self.movable = false
 	end
 	
 	function DBT:ShowMovableBar()
 		local bar = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode")
 		bar:SetText(DBM_CORE_MOVABLE_BAR)
-		for bar in self:GetBarIterator() do
-			bar.frame:SetMovable(true)
-		end
+		self.movable = true
 		DBM:Schedule(20, moveEnd, self)
 	end
 end
