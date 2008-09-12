@@ -1,0 +1,16 @@
+## Interface: 30000
+## Title: |cff0055FFDeadly Boss Mods|r Chamber of Aspects
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_Stats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Name: Chamber of Aspects
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-LoadZone: Obsidian Sanctum
+localization.en.lua
+localization.de.lua
+Shadron.lua
+Tenebron.lua
+Vesperon.lua
+Sartharion.lua
