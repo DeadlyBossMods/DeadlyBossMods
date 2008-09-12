@@ -265,6 +265,7 @@ do
 		newBar.totalTime = 100
 		newBar.owner = self
 		newBar.frame.obj = newBar
+		newBar.moving = nil
 		newBar:ApplyStyle()
 		newBar.frame:SetScript("OnUpdate", nil)
 		return newBar
@@ -289,11 +290,12 @@ do
 			newBar.timer = timer
 			newBar.totalTime = timer
 			newBar.owner = self
+			newBar.moving = nil
 			if self.mainLastBar then
 				self.mainLastBar.next = newBar
 			end
 			self.mainLastBar = newBar
-			self.mainFirstBar = self.mainFirstBar or newBar		
+			self.mainFirstBar = self.mainFirstBar or newBar
 			newBar.frame.obj = newBar
 			newBar:SetPosition()
 		end
@@ -379,9 +381,10 @@ end
 --  Bar Update  --
 ------------------
 function barPrototype:Update(elapsed)
-	local bar = getglobal(self.frame:GetName().."Bar")
-	local spark = getglobal(self.frame:GetName().."BarSpark")
-	local timer = getglobal(self.frame:GetName().."Timer")
+	local frame = self.frame
+	local bar = getglobal(frame:GetName().."Bar")
+	local spark = getglobal(frame:GetName().."BarSpark")
+	local timer = getglobal(frame:GetName().."Timer")
 	local obj = self.owner
 	self.timer = self.timer - elapsed
 	if obj.options.DynamicColor then
@@ -399,8 +402,10 @@ function barPrototype:Update(elapsed)
 		spark:ClearAllPoints()
 		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 		timer:SetText(stringFromTimer(self.timer))
-	end	
-	if self.timer <= 7.75 and not self.flashing and obj.options.Flash then
+	end
+	if obj.options.FadeIn and (self.totalTime - self.timer) <= 0.55 then
+		bar:SetAlpha((self.totalTime - self.timer) / 0.5)
+	elseif self.timer <= 7.75 and not self.flashing and obj.options.Flash then
 		self.flashing = true
 		self.ftimer = 0
 	end
@@ -414,6 +419,25 @@ function barPrototype:Update(elapsed)
 			bar:SetAlpha(1 - (ftime / 0.25))
 		end
 		self.ftimer = self.ftimer + elapsed
+	end
+--[[
+	self.moving = "move"
+	self.movePoint = "TOP"
+	self.moveRelPoint = "BOTTOM"
+	self.moveAnchor = newAnchor
+	self.moveOffsetX = -(newX - oldX)
+	self.moveOffsetY = -(newY - oldY)
+	self.moveElapsed = 0
+]]--self.owner.options.BarXOffset, self.owner.options.BarYOffset
+	if self.moving == "move" and self.moveElapsed <= 0.5 then
+		self.moveElapsed = self.moveElapsed + elapsed
+		local newX = self.moveOffsetX + (obj.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 0.5)
+		local newY = self.moveOffsetY + (obj.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 0.5)
+		frame:ClearAllPoints()
+		frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+	elseif self.moving == "move" then
+		self.moving = nil
+		self:SetPosition()
 	end
 end
 
@@ -470,7 +494,7 @@ function barPrototype:Cancel()
 		self.next.prev = self.prev
 	end
 	if self.next then
-		self.next:SetPosition()
+		self.next:MoveToNextPosition()
 	end
 	unusedBarObjects[self] = self
 end
@@ -504,6 +528,10 @@ function DBT:UpdateOrientation()
 end
 options.ExpandUpwards.onChange = DBT.UpdateOrientation
 
+
+-----------------------
+--  Bar Positioning  --
+-----------------------
 function barPrototype:SetPosition()
 	local anchor = (self.prev and self.prev.frame) or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
@@ -512,4 +540,26 @@ function barPrototype:SetPosition()
 	else
 		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
 	end
+end
+
+function barPrototype:MoveToNextPosition()
+	local newAnchor = (self.prev and self.prev.frame) or self.owner.mainAnchor
+	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
+	local oldY = self.frame:GetTop()
+	self.frame:ClearAllPoints()
+	if self.owner.options.ExpandUpwards then
+		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+	else
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+	end
+	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
+	local newY = self.frame:GetTop()
+	self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
+	self.moving = "move"
+	self.movePoint = "TOP"
+	self.moveRelPoint = "BOTTOM"
+	self.moveAnchor = newAnchor
+	self.moveOffsetX = -(newX - oldX)
+	self.moveOffsetY = -(newY - oldY)
+	self.moveElapsed = 0
 end

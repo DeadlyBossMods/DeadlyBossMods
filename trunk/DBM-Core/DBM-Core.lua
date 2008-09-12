@@ -56,6 +56,7 @@ DBM.DefaultOptions = {
 	ShowFakedRaidWarnings = true,
 	WarningIconLeft = true,
 	WarningIconRight = true,
+	HideBossEmoteFrame = false,
 }
 
 DBM.Bars = DBT:New()
@@ -67,7 +68,7 @@ DBM.Mods = {}
 local inCombat = {}
 local combatInfo = {}
 local updateFunctions = {}
-local raid = {}
+ raid = {} -- TODO
 local modSyncSpam = {}
 local autoRespondSpam = {}
 local chatPrefix = "<Deadly Boss Mods> "
@@ -665,14 +666,15 @@ do
 	
 	syncHandlers["DBMv4-Ver"] = function(msg, channel, sender)
 		if msg == "Hi!" then
-			sendSync("DBMv4-Ver", ("%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion))
+			sendSync("DBMv4-Ver", ("%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
 		else
-			local revision, version, displayVersion = strsplit("\t", msg)
+			local revision, version, displayVersion, locale = strsplit("\t", msg)
 			revision, version = tonumber(revision or ""), tonumber(version or "")
 			if revision and version and displayVersion and raid[sender] then
 				raid[sender].revision = revision
 				raid[sender].version = version
 				raid[sender].displayVersion = displayVersion
+				raid[sender].locale = locale
 				if version > tonumber(DBM.Version) and not showedUpdateReminder then
 					local found = false
 					for i, v in pairs(raid) do
@@ -973,6 +975,28 @@ end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 
 
+----------------------
+--  Timer recovery  --
+----------------------
+function DBM:RequestTimers()
+	local bestClient = next(raid)
+	if not bestClient then return end
+	for i, v in pairs(raid) do
+		if (v.revision or 0) > (bestClient.revision or 0) then
+			bestClient = v
+		end
+	end
+	DBM:AddMsg(bestClient.name)
+	SendAddonMessage("DBMv4-RequestTimers", "", "WHISPER", bestClient.name)
+end
+
+function DBM:ReceiveCombatInfo() -- TODO
+end
+
+function DBM:ReceiveTimerInfo() -- TODO
+end
+
+
 ------------------------------------
 --  Auto-respond/Status whispers  --
 ------------------------------------
@@ -1028,6 +1052,14 @@ do
 	end
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
+end
+
+do
+	local old = RaidBossEmoteFrame_OnEvent
+	RaidBossEmoteFrame_OnEvent = function(...)
+		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then return end
+		return old(...)
+	end
 end
 
 

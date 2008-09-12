@@ -82,6 +82,9 @@
 			<OnMouseUp>
 				self.obj.owner.mainAnchor:StopMovingOrSizing()
 				self.obj.owner:SavePosition()
+				if arg1 == "RightButton" then
+					self.obj:Cancel()
+				end
 			</OnMouseUp>
 			<OnHide>
 				if self.obj then self.obj.owner.mainAnchor:StopMovingOrSizing() end
