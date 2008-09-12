@@ -191,61 +191,6 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
 	return button
 end
 
-
-do 
-	local function GetPressedButton(self)
-		UIDropDownMenu_SetSelectedValue(self.owner, self.value);
-		if self and self.owner and self.owner.callfunc and type(self.owner.callfunc) == "function" then
-			self.owner.callfunc(self.value)
-		end
-		return self.value
-	end
-
-	local function DropDown_Initialize(frame)
-		for _,element in next, frame.elements do
-			element.func = element.func or GetPressedButton
-			element.owner = frame
-			element.checked = false
-			--element.notCheckable = true
-			UIDropDownMenu_AddButton( element )
-		end
-	end
-
-	-- Function in the Prototype to create a Dropdown Menu
-	-- This element likes the HTML <select ....> type
-	-- 
-	--  arg1 = Dropdown Title
-	--  arg2 = table with entrys
-	--  arg3 = value of default
-	--  arg4 = width of the frame
-	--  arg5 = function called on valuechanged (arg1 will be the new value)
-	--
-	function PanelPrototype:CreateDropdown(name, elements, selected, width, callfunc)
-		local dropdown = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'UIDropDownMenuTemplate')
-		dropdown:EnableMouse(true)
-		dropdown:SetWidth(width or 100)
-		dropdown.elements = elements
-		dropdown.width = width or 100
-		dropdown.callfunc = callfunc
-
-		UIDropDownMenu_Initialize(dropdown, DropDown_Initialize)
-		for k,v in next, dropdown.elements do
-			if v.value ~= nil and v.value == selected or v.text == selected then
-				UIDropDownMenu_SetSelectedID(dropdown, 1)
-			end
-		end
-		UIDropDownMenu_SetWidth(dropdown, width or 100, 3)
-
-		local text = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
-		text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
-		text:SetFontObject('GameFontNormalSmall')
-		text:SetText(name)
-
-		self:SetLastObj(dropdown)
-		return dropdown
-	end
-end
-
 -- This function creates an EditBox
 --
 --  arg1 = Title text, placed ontop of the EditBox
@@ -898,7 +843,7 @@ function DBM_GUI:CreateOptionsMenu()
 		end
 
 		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, 
-			DBM.Bars:GetOption("Texture"), nil, function(value) DBM.Bars:SetOption("Texture", value) end
+			DBM.Bars:GetOption("Texture"), function(value) DBM.Bars:SetOption("Texture", value) end
 		);
 
 		TextureDropDown:SetPoint("TOPLEFT", dummybar.frame, "BOTTOMLEFT", -30, -20)
