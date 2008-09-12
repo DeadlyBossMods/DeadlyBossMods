@@ -4,8 +4,8 @@
 -- **********************************************************
 --
 -- This addon is written and copyrighted by:
---    * Martin Verges (Nitram @ EU-Azshara)
---    * Paul Emmerich (Tandanu @ EU-Aegwynn)
+--    * Martin Verges (Nitram @ EU-Azshara) (DBM-Gui)
+--    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
 -- 
 -- The localizations are written by:
 --    * deDE: Nitram/Tandanu
@@ -13,7 +13,9 @@
 --    * (add your names here!)
 --
 -- 
--- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+-- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+-- All included textures and sounds are copyrighted by their respective owners.
+--
 --
 --  You are free:
 --    * to Share — to copy, distribute, display, and perform the work
@@ -437,7 +439,7 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 		return false
 	end
 
-	frame.showsub = (frame.showsub == nil) or true -- false DEVEL
+	frame.showsub = (frame.showsub == nil)
 	if parent then
 		frame.depth = self:GetDepth(parent)
 	else 

@@ -9,10 +9,13 @@
 -- 
 -- The localizations are written by:
 --    * deDE: Tandanu/Nitram
+--    * enGB: Nitram/Tandanu
 --    * (add your names here!)
 --
 -- 
--- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+-- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
+-- All included textures and sounds are copyrighted by their respective owners.
+--
 --
 --  You are free:
 --    * to Share — to copy, distribute, display, and perform the work
@@ -1008,7 +1011,7 @@ do
 			end
 			mod = mod or inCombat[i]
 			SendChatMessage(chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
-		elseif #inCombat > 0 and self.Options.AutoRespond then
+		elseif #inCombat > 0 and self.Options.AutoRespond and self:GetRaidUnitId(sender) == "none" then
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
@@ -1319,7 +1322,7 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			local id = self.id..(("%s"):rep(select("#", ...))):format(...)
 			local name = self.text:format(...)
-			local bar = DBM.Bars:CreateBar(timer or self.timer, id, self.icon)
+			local bar = DBM.Bars:CreateBar(timer and ((timer > 0 and timer) or self.timer + timer) or self.timer, id, self.icon)
 			bar:SetText(name)
 			table.insert(self.startedTimers, id)
 			self.mod:Schedule(self.timer, removeEntry, self.startedTimers, id)
