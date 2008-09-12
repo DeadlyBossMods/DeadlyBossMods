@@ -41,9 +41,9 @@
 				<BarColor r="1.0" g="0.7" b="0.0"/>
 				<Scripts>
 					<OnLoad>
-						this:SetMinMaxValues(0, 1)
-						this:SetValue(1)
-						this:SetFrameLevel(this:GetFrameLevel() - 1)
+						self:SetMinMaxValues(0, 1)
+						self:SetValue(1)
+						self:SetFrameLevel(self:GetFrameLevel() - 1)
 					</OnLoad>
 				</Scripts>
 			</StatusBar>
@@ -75,12 +75,13 @@
 				self.obj:Update(arg1)
 			</OnUpdate>
 			<OnMouseDown>
-				if arg1 == "LeftButton" then
+				if self.obj.owner.movable and arg1 == "LeftButton" then
 					self.obj.owner.mainAnchor:StartMoving()
 				end
 			</OnMouseDown>
 			<OnMouseUp>
 				self.obj.owner.mainAnchor:StopMovingOrSizing()
+				self.obj.owner:SavePosition()
 			</OnMouseUp>
 			<OnHide>
 				if self.obj then self.obj.owner.mainAnchor:StopMovingOrSizing() end

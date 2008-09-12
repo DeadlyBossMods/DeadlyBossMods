@@ -49,11 +49,6 @@ DBM.DefaultOptions = {
 		X = 0,
 		Y = -185,
 	},
-	MainTimerPosition = {
-		Point = "TOPRIGHT",
-		X = -223,
-		Y = -245,
-	},
 	StatusEnabled = true,
 	AutoRespond = true,
 	Enabled = true,
@@ -539,7 +534,6 @@ do
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
 		RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
-		DBM.Bars.mainAnchor:SetPoint(DBM.Options.MainTimerPosition.Point, UIParent, DBM.Options.MainTimerPosition.Point, DBM.Options.MainTimerPosition.X, DBM.Options.MainTimerPosition.Y)
 	end
 	
 	function loadModOptions(modId)
@@ -554,21 +548,16 @@ do
 					end
 				end
 				v.Options = savedOptions[v.id] or {}
-				v.stats = savedStats[v.id] or {
+				savedStats[v.id] = savedStats[v.id] or {
 					kills = 0,
 					pulls = 0
 				}
+				v.stats = savedStats[v.id]
 			end
 		end
 		setglobal(modId:gsub("-", "").."_SavedVars", savedOptions)
 		setglobal(modId:gsub("-", "").."_Stats", savedStats)
 	end
-end
-
-function DBM.Bars:OnPositionChanged(point, x, y)
-	DBM.Options.MainTimerPosition.Point = point
-	DBM.Options.MainTimerPosition.X = x
-	DBM.Options.MainTimerPosition.Y = y
 end
 
 
@@ -586,7 +575,7 @@ function DBM:ADDON_LOADED(modname)
 					sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 					category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 					name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-					zone		= GetAddOnMetadata(i, "X-DBM-Mod-LoadZone"),
+					zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
 					subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 					modId		= GetAddOnInfo(i),
 				})
@@ -619,7 +608,7 @@ end
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
 	for i, v in ipairs(self.AddOns) do
-		if v.zone == GetRealZoneText() and not IsAddOnLoaded(v.modId) then
+		if checkEntry(v.zone, GetRealZoneText()) and not IsAddOnLoaded(v.modId) then
 			self:LoadMod(v)
 		end
 	end
@@ -1081,7 +1070,7 @@ do
 	local modsById = {}
 	local mt = {__index = bossModPrototype}
 	function DBM:NewMod(name, modId, modSubTab)
-		if modsById[name] then error("Mod names are used as IDs and must therefore be unique.") end
+		if modsById[name] then error("Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
 				Options = {
@@ -1100,6 +1089,12 @@ do
 			},
 			mt
 		)
+		for i, v in ipairs(self.AddOns) do
+			if v.modId == modId then
+				obj.addon = v
+				break
+			end
+		end
 		if obj.localization.general.name == "name" then obj.localization.general.name = name end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
@@ -1119,7 +1114,11 @@ bossModPrototype.RegisterEvents = DBM.RegisterEvents
 bossModPrototype.AddMsg = DBM.AddMsg
 
 function bossModPrototype:SetZone(...)
-	self.zones = {...}
+	if select("#", ...) == 0 then
+		self.zones = (self.addon and self.addon.zone) or {}
+	else
+		self.zones = {...}
+	end
 end
 
 function bossModPrototype:SetCreatureID(id)
@@ -1325,6 +1324,7 @@ do
 			local bar = DBM.Bars:CreateBar(timer and ((timer > 0 and timer) or self.timer + timer) or self.timer, id, self.icon)
 			bar:SetText(name)
 			table.insert(self.startedTimers, id)
+			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(self.timer, removeEntry, self.startedTimers, id)
 		end
 	end
