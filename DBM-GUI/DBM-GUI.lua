@@ -194,7 +194,6 @@ do
 	local function GetPressedButton(self)
 		UIDropDownMenu_SetSelectedValue(self.owner, self.value);
 		if self and self.owner and self.owner.callfunc and type(self.owner.callfunc) == "function" then
-			DBM.AddMsg(self.value)
 			self.owner.callfunc(self.value)
 		end
 		return self.value
@@ -531,6 +530,17 @@ end
 DBM_GUI_Bosses = CreateNewFauxScrollFrameList()
 DBM_GUI_Options = CreateNewFauxScrollFrameList()
 
+
+local function IsSharedMediaInstalled(returnit)
+	if LibStub and LibStub("LibSharedMedia-3.0", true) then
+		if returnit then
+			return LibStub("LibSharedMedia-3.0", true)
+		else 
+			return true
+		end
+	end
+	return false
+end
 
 
 
@@ -871,14 +881,24 @@ function DBM_GUI:CreateOptionsMenu()
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
 
-		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, { 
+		local Textures = { 
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
 			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
 			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga"	},
 			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
-			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}}, 
+			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}
+		}
+
+		if IsSharedMediaInstalled() then
+			for k,v in next, IsSharedMediaInstalled(true):HashTable("statusbar") do
+				table.insert(Textures, {text=k, value=v})
+			end
+		end
+
+		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, 
 			DBM.Bars:GetOption("Texture"), nil, function(value) DBM.Bars:SetOption("Texture", value) end
 		);
+
 		TextureDropDown:SetPoint("TOPLEFT", dummybar.frame, "BOTTOMLEFT", -30, -20)
 		
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
