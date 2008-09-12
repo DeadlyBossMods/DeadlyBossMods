@@ -441,9 +441,7 @@ do
 				table.insert(mytable, v)
 	
 				if v.frame.showsub then
-					for k2,v2 in ipairs(self:GetVisibleSubTabs(v.frame.name)) do
-						table.insert(mytable, v2)
-					end
+					self:GetVisibleSubTabs(v.frame.name, mytable)
 				end
 			end
 		end
@@ -451,21 +449,16 @@ do
 	end
 end
 
-function ListFrameButtonsPrototype:GetVisibleSubTabs(parent)
-	local subtable = {}
-	for k,v in ipairs(self.Buttons) do
+function ListFrameButtonsPrototype:GetVisibleSubTabs(parent, t)
+	for i, v in ipairs(self.Buttons) do
 		if v.parent == parent then
-			table.insert(subtable, v)
+			table.insert(t, v)
 			if v.frame.showsub then
-				for k2,v2 in ipairs(self:GetVisibleSubTabs(v.frame.name)) do
-					table.insert(subtable, v2)
-				end
+				self:GetVisibleSubTabs(v.frame.name, t)
 			end
 		end
 	end
-	return subtable
 end
-
 	
 do
 	local mt = {__index = ListFrameButtonsPrototype}
