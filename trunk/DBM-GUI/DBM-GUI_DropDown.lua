@@ -81,6 +81,7 @@ do
 	TabFrame1.text:SetText("scroll with mouse")
 	TabFrame1.text:Hide()
 
+	local BackDropTable = { bgFile = "" }
 	function TabFrame1:ShowMenu(values)
 		self:Show()
 		if self.offset > #values-MAX_BUTTONS then self.offset = #values-MAX_BUTTONS end
@@ -93,12 +94,12 @@ do
 			self.text:Hide()
 		end
 
-
 		for i=1, MAX_BUTTONS, 1 do
 			if i + self.offset <= #values then
 				self.buttons[i]:SetText(values[i+self.offset].text)
 				self.buttons[i].entry = values[i+self.offset]
-				self.buttons[i]:SetBackdrop({ bgFile= values[i+self.offset].value })
+				BackDropTable.bgFile = values[i+self.offset].value
+				self.buttons[i]:SetBackdrop(BackDropTable)
 				self.buttons[i]:Show()
 			else
 				self.buttons[i]:Hide()
@@ -108,7 +109,7 @@ do
 	function TabFrame1:HideMenu()
 		for i=1, MAX_BUTTONS, 1 do
 			self.buttons[i]:Hide()
-			self.buttons[i]:SetBackdrop({ bgFile="" })
+			self.buttons[i]:SetBackdrop(nil)
 		end
 		self:Hide()
 		self.text:Hide()
