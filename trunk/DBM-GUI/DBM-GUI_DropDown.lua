@@ -65,34 +65,53 @@ do
 	TabFrame1.buttons = {}
 	for i=1, MAX_BUTTONS, 1 do
 		TabFrame1.buttons[i] = CreateFrame("Button", TabFrame1:GetName().."Button"..i, TabFrame1, "DBM_GUI_DropDownMenuButtonTemplate")
-		TabFrame1.buttons[i]:SetScript("OnClick", ButtonDefaultFunction)	-- mass garbage
+		TabFrame1.buttons[i]:SetScript("OnClick", ButtonDefaultFunction)
 		if i == 1 then
-			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1, "TOPLEFT", 10, -10)
+			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1, "TOPLEFT", 11, -13)
 		else
 			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1.buttons[i-1], "BOTTOMLEFT", 0,0)
 		end
 	end
-	TabFrame1:SetWidth(TabFrame1.buttons[1]:GetWidth()+20)
-	TabFrame1:SetHeight(MAX_BUTTONS*TabFrame1.buttons[1]:GetHeight()+20)
+	TabFrame1:SetWidth(TabFrame1.buttons[1]:GetWidth()+22)
+	TabFrame1:SetHeight(MAX_BUTTONS*TabFrame1.buttons[1]:GetHeight()+24)
+
+	TabFrame1.text = TabFrame1:CreateFontString(TabFrame1:GetName().."Text", 'BACKGROUND')
+	TabFrame1.text:SetPoint('CENTER', TabFrame1, 'BOTTOM', 0, 0)
+	TabFrame1.text:SetFontObject('GameFontNormalSmall')
+	TabFrame1.text:SetText("scroll with mouse")
+	TabFrame1.text:Hide()
 
 	function TabFrame1:ShowMenu(values)
 		self:Show()
 		if self.offset > #values-MAX_BUTTONS then self.offset = #values-MAX_BUTTONS end
 		if self.offset < 0 then self.offset = 0 end
 
+		if #values > MAX_BUTTONS then
+			self.text:Show()
+		elseif #values < MAX_BUTTONS then
+			self:SetHeight( #values * self.buttons[1]:GetHeight() + 24 )
+			self.text:Hide()
+		end
+
+
 		for i=1, MAX_BUTTONS, 1 do
 			if i + self.offset <= #values then
 				self.buttons[i]:SetText(values[i+self.offset].text)
 				self.buttons[i].entry = values[i+self.offset]
+				self.buttons[i]:SetBackdrop({ bgFile= values[i+self.offset].value })
 				self.buttons[i]:Show()
+			else
+				self.buttons[i]:Hide()
 			end
 		end
 	end
 	function TabFrame1:HideMenu()
 		for i=1, MAX_BUTTONS, 1 do
 			self.buttons[i]:Hide()
+			self.buttons[i]:SetBackdrop({ bgFile="" })
 		end
 		self:Hide()
+		self.text:Hide()
 	end
 	function TabFrame1:Refresh()
 		self:ShowMenu(self.dropdown.values)
@@ -117,6 +136,7 @@ do
 				TabFrame1:ShowMenu(self:GetParent().values)
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
+				TabFrame1:SetParent(self:GetParent())
 			end
 		end)
 

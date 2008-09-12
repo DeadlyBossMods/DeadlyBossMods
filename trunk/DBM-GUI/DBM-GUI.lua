@@ -843,7 +843,11 @@ function DBM_GUI:CreateOptionsMenu()
 		end
 
 		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, 
-			DBM.Bars:GetOption("Texture"), function(value) DBM.Bars:SetOption("Texture", value) end
+			DBM.Bars:GetOption("Texture"), function(value) 
+				DBM.Bars:SetOption("Texture", value) 
+				DBM.Bars:ApplyStyle()
+				dummybar:ApplyStyle()
+			end
 		);
 
 		TextureDropDown:SetPoint("TOPLEFT", dummybar.frame, "BOTTOMLEFT", -30, -20)

@@ -104,6 +104,7 @@
 		<Layers>
 			<Layer level="BACKGROUND">
 				<Texture name="$parentHighlight" file="Interface\QuestFrame\UI-QuestTitleHighlight" alphaMode="ADD" setAllPoints="true" hidden="true"/>
+				<NormalTexture name="$parentNormalTexture"/>
 			</Layer>
 		</Layers>
 		<Scripts>
