@@ -83,7 +83,7 @@
 				self.obj.owner.mainAnchor:StopMovingOrSizing()
 			</OnMouseUp>
 			<OnHide>
-				self.obj.owner.mainAnchor:StopMovingOrSizing()
+				if self.obj then self.obj.owner.mainAnchor:StopMovingOrSizing() end
 			</OnHide>
 		</Scripts>
 	</Frame>

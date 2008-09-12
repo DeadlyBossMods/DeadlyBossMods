@@ -43,11 +43,14 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningEmbraceActive	= "Widow's Embrace active",
 	WarningEmbraceExpire	= "Widow's Embrace ends in 5 sec",
-	WarningEmbraceExpired	= "Widow's Embrace faded"
+	WarningEmbraceExpired	= "Widow's Embrace faded",
+	WarningEnrageSoon		= "Enrage in 5 sec",
+	WarningEnrageNow		= "Enrage!"
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace = "Embrace active"
+	TimerEmbrace	= "Embrace active",
+	TimerEnrage		= "Enrage",
 })
 
 L:SetOptionLocalization({
@@ -291,6 +294,13 @@ L = DBM:GetModLocalization("Razuvious")
 
 L:SetGeneralLocalization({
 	name = "Razuvious"
+})
+
+L:SetMiscLocalization({
+	Yell1 = "Show them no mercy!",
+	Yell2 = "The time for practice is over! Show me what you have learned!",
+	Yell3 = "Do as I taught you!",
+	Yell4 = "Sweep the leg... Do you have a problem with that?"
 })
 
 L:SetOptionLocalization({

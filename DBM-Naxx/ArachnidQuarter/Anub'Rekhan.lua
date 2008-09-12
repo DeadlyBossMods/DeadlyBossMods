@@ -19,12 +19,12 @@ local warningLocustNow		= mod:NewAnnounce("WarningLocustNow", 3, 28785)
 local warningLocustFaded	= mod:NewAnnounce("WarningLocustFaded", 1, 28785)
 
 local timerLocustIn			= mod:NewTimer(77, "TimerLocustIn", 28785)
-local timerLocustFade 		= mod:NewTimer(19, "TimerLocustFade", 28785)
+local timerLocustFade 		= mod:NewTimer(26, "TimerLocustFade", 28785)
 
 
 function mod:OnCombatStart(delay)
-	timerLocustIn:Start(90 - delay)
-	warningLocustSoon:Schedule(75 - delay)
+	timerLocustIn:Start(103.5 - delay)
+	warningLocustSoon:Schedule(88.5 - delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -37,7 +37,9 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 28785 and args.auraType == "BUFF" then -- Locust Swarm
+	if (args.spellId == 28785  -- Locust Swarm (still used in Naxx 10?)
+	or args.spellId == 54021)  -- Locust Swarm (new spell ID for Naxx 25 since build 8926)
+	and args.auraType == "BUFF" then
 		warningLocustFaded:Show()
 		timerLocustIn:Start()
 		warningLocustSoon:Schedule(62)

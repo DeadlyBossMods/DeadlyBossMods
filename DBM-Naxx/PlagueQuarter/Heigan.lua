@@ -15,20 +15,19 @@ local warnTeleportNow		= mod:NewAnnounce("WarningTeleportNow", 3, 46573)
 local timerTeleport			= mod:NewTimer(90, "TimerTeleport", 46573)
 
 function mod:OnCombatStart(delay)
-	mod:BackInRoom(delay)
+	mod:BackInRoom(90 - delay)
 end
 
 function mod:DancePhase()
-	timerTeleport:Show(48)
-	warnTeleportSoon:Schedule(38, 10)
-	warnTeleportNow:Schedule(48)
-	self:ScheduleMethod(48, "BackInRoom")
+	timerTeleport:Show(47)
+	warnTeleportSoon:Schedule(37, 10)
+	warnTeleportNow:Schedule(47)
+	self:ScheduleMethod(47, "BackInRoom", 88)
 end
 
-function mod:BackInRoom(delay)
-	delay = delay or 0
-	timerTeleport:Show(90 - delay)
-	warnTeleportSoon:Schedule(75 - delay, 15)
-	warnTeleportNow:Schedule(90 - delay)
-	self:ScheduleMethod(90 - delay, "DancePhase")
+function mod:BackInRoom(time)
+	timerTeleport:Show(time)
+	warnTeleportSoon:Schedule(time - 15, 15)
+	warnTeleportNow:Schedule(time)
+	self:ScheduleMethod(time, "DancePhase")
 end
