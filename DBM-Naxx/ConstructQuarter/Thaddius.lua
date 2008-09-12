@@ -41,9 +41,10 @@ function mod:PLAYER_AURAS_CHANGED()
 	local i = 1
 	while UnitDebuff("player", i) do
 		local _, _, icon = UnitDebuff("player", i)
+		if self:IsInCombat() then self:AddMsg(icon, "DBM-Debug") end
 		if icon == "Interface\\Icons\\Spell_ChargeNegative" then
 			charge = "negative"
-		elseif texture == "Interface\\Icons\\Spell_ChargePositive" then
+		elseif icon == "Interface\\Icons\\Spell_ChargePositive" then
 			charge = "positive"
 		end
 		i = i + 1
