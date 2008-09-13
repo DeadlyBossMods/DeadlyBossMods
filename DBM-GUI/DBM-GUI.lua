@@ -58,35 +58,68 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
--- This function creates a new entry in the menu
---
---  arg1 = Text for the UI Button
---  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
---
-function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
-	local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFrame)
-	panel.mytype = "panel"
-	panel.sortID = self:GetCurrentID()
-	panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth());
-	panel:SetHeight(DBM_GUI_OptionsFramePanelContainerFOV:GetHeight()); 
-	panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
-
-	panel.name = FrameName
-	panel.showsub = showsub
-	--panel:SetAllPoints(DBM_GUI_OptionsFramePanelContainer)
-	panel:Hide()
-
-	if FrameTyp == "option" or FrameTyp == 2 then
-		DBM_GUI_Options:CreateCategory(panel, self and self.frame and self.frame.name)
-	else
-		DBM_GUI_Bosses:CreateCategory(panel, self and self.frame and self.frame.name)
+do 
+	local prottypemetatable = {__index = PanelPrototype}
+	-- This function creates a new entry in the menu
+	--
+	--  arg1 = Text for the UI Button
+	--  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
+	--
+	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
+		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFrame)
+		panel.mytype = "panel"
+		panel.sortID = self:GetCurrentID()
+		panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth());
+		panel:SetHeight(DBM_GUI_OptionsFramePanelContainerFOV:GetHeight()); 
+		panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
+	
+		panel.name = FrameName
+		panel.showsub = showsub
+		--panel:SetAllPoints(DBM_GUI_OptionsFramePanelContainer)
+		panel:Hide()
+	
+		if FrameTyp == "option" or FrameTyp == 2 then
+			DBM_GUI_Options:CreateCategory(panel, self and self.frame and self.frame.name)
+		else
+			DBM_GUI_Bosses:CreateCategory(panel, self and self.frame and self.frame.name)
+		end
+	
+		self:SetLastObj(nil)
+		self.panels = self.panels or {}
+		table.insert(self.panels, {frame = panel, parent = self, framename = FrameTitle..self:GetCurrentID()})
+		local obj = self.panels[#self.panels]
+		return setmetatable(obj, prottypemetatable)
 	end
 
-	self:SetLastObj(nil)
-	self.panels = self.panels or {}
-	table.insert(self.panels, {frame = panel, parent = self, framename = FrameTitle..self:GetCurrentID()})
-	local obj = self.panels[#self.panels]
-	return setmetatable(obj, {__index = PanelPrototype})
+	-- This function adds areas to group widgets
+	--
+	--  arg1 = titel of this area
+	--  arg2 = width ot the area
+	--  arg3 = hight of the area
+	--  arg4 = autoplace
+	--
+	function PanelPrototype:CreateArea(name, width, height, autoplace)
+		local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
+		area.mytype = "area"
+		area:SetBackdropBorderColor(0.4, 0.4, 0.4)
+		area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
+		getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
+		area:SetWidth(width or self.frame:GetWidth()-10)
+		area:SetHeight(height or self.frame:GetHeight()-10)
+		
+		if autoplace then
+			if select('#', self.frame:GetChildren()) == 1 then
+				area:SetPoint('TOPLEFT', self.frame, 5, -17)
+			else
+				area:SetPoint('TOPLEFT', select(-2, self.frame:GetChildren()) or self.frame, "BOTTOMLEFT", 0, -17)
+			end
+		end
+	
+		self:SetLastObj(nil)
+		self.areas = self.areas or {}
+		table.insert(self.areas, {frame = area, parent = self, framename = FrameTitle..self:GetCurrentID()})
+		return setmetatable(self.areas[#self.areas], prottypemetatable)
+	end
 end
 
 do 
@@ -125,44 +158,16 @@ do
 	end
 end
 
--- This function adds areas to group widgets
---
---  arg1 = titel of this area
---  arg2 = width ot the area
---  arg3 = hight of the area
---  arg4 = autoplace
---
-function PanelPrototype:CreateArea(name, width, height, autoplace)
-	local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
-	area.mytype = "area"
-	area:SetBackdropBorderColor(0.4, 0.4, 0.4)
-	area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
-	getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
-	area:SetWidth(width or self.frame:GetWidth()-10)
-	area:SetHeight(height or self.frame:GetHeight()-10)
-	
-	if autoplace then
-		local kids = { self.frame:GetChildren() };
-		if #kids == 1 then
-			area:SetPoint('TOPLEFT', self.frame, 5, -17)
-		else
-			area:SetPoint('TOPLEFT', kids[#kids-1] or self.frame, "BOTTOMLEFT", 0, -17)
-		end
-	end
-
-	self:SetLastObj(nil)
-	self.areas = self.areas or {}
-	table.insert(self.areas, {frame = area, parent = self, framename = FrameTitle..self:GetCurrentID()})
-	return setmetatable(self.areas[#self.areas], {__index = PanelPrototype})
-end
-
 -- This function creates a check box
 -- Autoplaced buttons will be placed under the last widget
 --
 --  arg1 = text right to the CheckBox
 --  arg2 = autoplaced (true or nil/false)
+--  arg3 = text on left side
+--  arg4 = DBM.Options[arg4] 
+--  arg5 = DBM.Bars:SetOption(arg5, ...)
 --
-function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
+function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
 	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
 	button.myheight = 25
 	getglobal(button:GetName() .. 'Text'):SetText(name)
@@ -172,9 +177,14 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, variable)
 		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 3, 0)
 	end
 	
-	if variable and DBM.Options[variable] ~= nil then
-		button:SetScript("OnShow",  function() button:SetChecked(DBM.Options[variable]) end)
-		button:SetScript("OnClick", function() DBM.Options[variable] = not DBM.Options[variable] end)
+	if dbmvar and DBM.Options[dbmvar] ~= nil then
+		button:SetScript("OnShow",  function() button:SetChecked(DBM.Options[dbmvar]) end)
+		button:SetScript("OnClick", function() DBM.Options[dbmvar] = not DBM.Options[dbmvar] end)
+	end
+
+	if dbtvar then
+		button:SetScript("OnShow",  function() button:SetChecked( DBM.Bars:GetOption(dbtvar) ) end)
+		button:SetScript("OnClick", function() DBM.Bars:SetOption(dbtvar, not DBM.Bars:GetOption(dbtvar)) end)
 	end
 
 	if autoplace then
@@ -214,11 +224,13 @@ end
 --  arg2 = lowest value
 --  arg3 = highest value
 --  arg4 = stepping
+--  arg5 = framewidth
 --
-function PanelPrototype:CreateSlider(text, low, high, step)
+function PanelPrototype:CreateSlider(text, low, high, step, framewidth)
 	local slider = CreateFrame('Slider', FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
+	slider:SetWidth(famewidth or 200)
 	getglobal(FrameTitle..self:GetCurrentID()..'Text'):SetText(text)
 
 	self:SetLastObj(slider)
@@ -471,13 +483,9 @@ DBM_GUI_Bosses = CreateNewFauxScrollFrameList()
 DBM_GUI_Options = CreateNewFauxScrollFrameList()
 
 
-local function IsSharedMediaInstalled(returnit)
+local function GetSharedMedia3()
 	if LibStub and LibStub("LibSharedMedia-3.0", true) then
-		if returnit then
-			return LibStub("LibSharedMedia-3.0", true)
-		else 
-			return true
-		end
+		return LibStub("LibSharedMedia-3.0", true)
 	end
 	return false
 end
@@ -709,25 +717,22 @@ function DBM_GUI:CreateOptionsMenu()
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
-		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable(); else DBM:Enable(); end enabledbm:SetChecked(DBM:IsEnabled()) end)
+		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable(); else DBM:Enable(); end end)
 	
-		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, function() DBM.Options.StatusEnabled = not DBM.Options.StatusEnabled 
-													StatusEnabled:SetChecked(DBM.Options.StatusEnabled) end)
-		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, function() DBM.Options.AutoRespond = not DBM.Options.AutoRespond 
-													AutoRespond:SetChecked(DBM.Options.AutoRespond) end)
+		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
+		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
 	
-
 
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
 		pizzaarea.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 	
-		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza is done", 165)
+		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza is done", 175)
 		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
 		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
 		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
 	
-		textbox:SetPoint('TOPLEFT', 20, -25)
+		textbox:SetPoint('TOPLEFT', 30, -25)
 		hourbox:SetPoint('TOPLEFT', textbox, "TOPRIGHT", 20, 0)
 		minbox:SetPoint('TOPLEFT', hourbox, "TOPRIGHT", 20, 0)
 		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
@@ -736,7 +741,7 @@ function DBM_GUI:CreateOptionsMenu()
 		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
 		okbttn:SetScript("OnClick", function() 
 			local time =  (hourbox:GetNumber() * 60*60) + (minbox:GetNumber() * 60) + secbox:GetNumber()
-			if textbox:GetText() and time then
+			if textbox:GetText() and time > 0 then
 				DBM.Bars:CreateBar(time, textbox:GetText()) 
 			end
 		end)
@@ -808,7 +813,7 @@ function DBM_GUI:CreateOptionsMenu()
 
 	do
 		BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
-		BarSetup = BarSetupPanel:CreateArea("preview", nil, 150, true)
+		BarSetup = BarSetupPanel:CreateArea("Small Bar", nil, 200, true)
 
 		local dummybar = DBM.Bars:CreateDummyBar()
 		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, -50)
@@ -816,8 +821,8 @@ function DBM_GUI:CreateOptionsMenu()
 		dummybar:SetTimer(100)
 		dummybar:SetElapsed(35)
 
-		local iconleft = BarSetup:CreateCheckButton("Icon left")
-		local iconright = BarSetup:CreateCheckButton("Icon right", false, true)
+		local iconleft = BarSetup:CreateCheckButton("Icon left", nil, nil, nil, "IconLeft")
+		local iconright = BarSetup:CreateCheckButton("Icon right", nil, true, nil, "IconRight")
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
 
@@ -828,23 +833,41 @@ function DBM_GUI:CreateOptionsMenu()
 			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
 			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}
 		}
-
-		if IsSharedMediaInstalled() then
-			for k,v in next, IsSharedMediaInstalled(true):HashTable("statusbar") do
-				table.insert(Textures, {text=k, value=v})
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("statusbar") do
+				table.insert(Textures, {text=k, value=v, texture=v})
 			end
 		end
-
 		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, 
 			DBM.Bars:GetOption("Texture"), function(value) 
 				DBM.Bars:SetOption("Texture", value) 
-				DBM.Bars:ApplyStyle()
-				dummybar:ApplyStyle()
 			end
 		);
+		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 10, -90)
 
-		TextureDropDown:SetPoint("TOPLEFT", dummybar.frame, "BOTTOMLEFT", -30, -20)
-		
+		local function createDBTOnShowHandler(option)
+			return function(self)
+				self:SetValue(DBM.Bars:GetOption(option))
+			end
+		end
+		local function createDBTOnValueChangedHandler(option)
+			return function(self)
+				DBM.Bars:SetOption("Width", self:GetValue())
+			end
+		end
+
+		local BarWidthSlider = BarSetup:CreateSlider("Bar Width", 100, 400, 1)
+		BarWidthSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 190, -90)
+		BarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("Width"))
+		BarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
+
+		local BarScaleSlider = BarSetup:CreateSlider("Bar Scale", 0.4, 2.5, 0.05)
+		BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
+		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
+		BarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
+
+
+
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall);

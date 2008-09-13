@@ -61,7 +61,7 @@ do
 		end
 		getglobal(self:GetParent().dropdown:GetName().."Text"):SetText(self.entry.text)
 	end
-	
+
 	TabFrame1.buttons = {}
 	for i=1, MAX_BUTTONS, 1 do
 		TabFrame1.buttons[i] = CreateFrame("Button", TabFrame1:GetName().."Button"..i, TabFrame1, "DBM_GUI_DropDownMenuButtonTemplate")
@@ -106,6 +106,7 @@ do
 			end
 		end
 	end
+
 	function TabFrame1:HideMenu()
 		for i=1, MAX_BUTTONS, 1 do
 			self.buttons[i]:Hide()
@@ -114,6 +115,7 @@ do
 		self:Hide()
 		self.text:Hide()
 	end
+
 	function TabFrame1:Refresh()
 		self:ShowMenu(self.dropdown.values)
 	end
@@ -146,8 +148,6 @@ do
 				getglobal(dropdown:GetName().."Text"):SetText(v.text)
 			end
 		end
-
-		
 
 		local text = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
 		text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
