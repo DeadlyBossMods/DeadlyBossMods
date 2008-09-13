@@ -160,7 +160,7 @@ options = {
 	},
 	HugeTimerY = {
 		type = "number",
-		default = -260,
+		default = -100,
 	},
 	EnlargeBarsTime = {
 		type = "number",
@@ -293,16 +293,27 @@ do
 			newBar.totalTime = timer
 			newBar.owner = self
 			newBar.moving = nil
+			newBar.enlarged = nil
 			if self.mainLastBar then
 				self.mainLastBar.next = newBar
 			end
 			self.mainLastBar = newBar
 			self.mainFirstBar = self.mainFirstBar or newBar
 			newBar.frame.obj = newBar
-			newBar:SetPosition()
+		end
+		if timer <= self.options.EnlargeBarsTime then
+			newBar:RemoveFromList()
+			newBar.prev = self.secLastBar
+			newBar.next = nil
+			if self.secLastBar then
+				self.secLastBar.next = newBar
+			end
+			self.secLastBar = newBar
+			self.secFirstBar = self.secFirstBar or newBar
+			newBar.enlarged = true
 		end
 		newBar.flashing = false
---		if timer <= self.options
+		newBar:SetPosition()
 		newBar:ApplyStyle()
 		newBar:SetText(id)
 		newBar:SetIcon(icon)
@@ -565,9 +576,9 @@ function barPrototype:ApplyStyle()
 	spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
-	frame:SetWidth(self.owner.options.Width)
-	bar:SetWidth(self.owner.options.Width)
-	frame:SetScale(self.owner.options.Scale)
+	if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth) else frame:SetWidth(self.owner.options.Width) end
+	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth) else frame:SetWidth(self.owner.options.Width) end
+	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetWidth(self.owner.options.Width) end
 	self.frame:Show()
 	spark:SetAlpha(1)
 	texture:SetAlpha(1)
@@ -588,7 +599,7 @@ options.ExpandUpwards.onChange = DBT.UpdateOrientation
 --  Bar Positioning  --
 -----------------------
 function barPrototype:SetPosition()
-	local anchor = (self.prev and self.prev.frame) or self.owner.mainAnchor
+	local anchor = (self.prev and self.prev.frame) or self.enlarged and self.owner.secAnchor or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
 		self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
@@ -598,7 +609,7 @@ function barPrototype:SetPosition()
 end
 
 function barPrototype:MoveToNextPosition()
-	local newAnchor = (self.prev and self.prev.frame) or self.owner.mainAnchor
+	local newAnchor = (self.prev and self.prev.frame) or self.enlarged and self.owner.secAnchor or self.owner.mainAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
