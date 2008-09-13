@@ -982,7 +982,7 @@ function DBM:RequestTimers()
 	local bestClient = next(raid)
 	if not bestClient then return end
 	for i, v in pairs(raid) do
-		if (v.revision or 0) > (bestClient.revision or 0) then
+		if v.name ~= UnitName("player") and  (v.revision or 0) > (bestClient.revision or 0) then
 			bestClient = v
 		end
 	end
