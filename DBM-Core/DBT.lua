@@ -296,16 +296,22 @@ end
 --  Dummy Bar  --
 -----------------
 do
+	local dummyBars = 0
 	local function dummyCancel(self)
 		self:SetElapsed(0)
+		self.flashing = nil
 	end
 	function DBT:CreateDummyBar()
-		local dummy = self:CreateBar(20, "dummy", "Interface\\Icons\\Spell_Nature_WispSplode")
+		dummyBars = dummyBars + 1
+		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode")
+		dummy:SetText("Dummy")
 		dummy:Cancel()
 		self.bars[dummy] = true
 		unusedBars[#unusedBars] = nil
 		unusedBarObjects[dummy] = nil
 		dummy.frame.obj = dummy
+		dummy.frame:SetParent(UIParent)
+		dummy.frame:ClearAllPoints()
 		dummy.frame:SetScript("OnUpdate", nil)
 		dummy.Cancel = dummyCancel
 		dummy:ApplyStyle()
@@ -379,14 +385,14 @@ function barPrototype:SetElapsed(elapsed)
 end
 
 function barPrototype:SetText(text)
-	getglobal(self.frame:GetName().."Name"):SetText(text)
+	getglobal(self.frame:GetName().."BarName"):SetText(text)
 end
 
 function barPrototype:SetIcon(icon)
-	getglobal(self.frame:GetName().."Icon1"):SetTexture("")
-	getglobal(self.frame:GetName().."Icon1"):SetTexture(icon)
-	getglobal(self.frame:GetName().."Icon2"):SetTexture("")
-	getglobal(self.frame:GetName().."Icon2"):SetTexture(icon)
+	getglobal(self.frame:GetName().."BarIcon1"):SetTexture("")
+	getglobal(self.frame:GetName().."BarIcon1"):SetTexture(icon)
+	getglobal(self.frame:GetName().."BarIcon2"):SetTexture("")
+	getglobal(self.frame:GetName().."BarIcon2"):SetTexture(icon)
 end
 
 ------------------
@@ -395,8 +401,9 @@ end
 function barPrototype:Update(elapsed)
 	local frame = self.frame
 	local bar = getglobal(frame:GetName().."Bar")
+	local texture = getglobal(frame:GetName().."BarTexture")
 	local spark = getglobal(frame:GetName().."BarSpark")
-	local timer = getglobal(frame:GetName().."Timer")
+	local timer = getglobal(frame:GetName().."BarTimer")
 	local obj = self.owner
 	self.timer = self.timer - elapsed
 	if obj.options.DynamicColor then
@@ -416,7 +423,7 @@ function barPrototype:Update(elapsed)
 		timer:SetText(stringFromTimer(self.timer))
 	end
 	if obj.options.FadeIn and (self.totalTime - self.timer) <= 0.55 then
-		bar:SetAlpha((self.totalTime - self.timer) / 0.5)
+		frame:SetAlpha((self.totalTime - self.timer) / 0.5)
 	elseif self.timer <= 7.75 and not self.flashing and obj.options.Flash then
 		self.flashing = true
 		self.ftimer = 0
@@ -424,11 +431,14 @@ function barPrototype:Update(elapsed)
 	if self.flashing then
 		local ftime = self.ftimer % 1.25
 		if ftime >= 0.5 then
-			bar:SetAlpha(1)
+			texture:SetAlpha(1)
+			spark:SetAlpha(1)
 		elseif ftime >= 0.25 then
-			bar:SetAlpha(1 - (0.5 - ftime) / 0.25)
+			texture:SetAlpha(1 - (0.5 - ftime) / 0.25)
+			spark:SetAlpha(1 - (0.5 - ftime) / 0.25)
 		else
-			bar:SetAlpha(1 - (ftime / 0.25))
+			texture:SetAlpha(1 - (ftime / 0.25))
+			spark:SetAlpha(1 - (ftime / 0.25))
 		end
 		self.ftimer = self.ftimer + elapsed
 	end
@@ -518,8 +528,8 @@ function barPrototype:ApplyStyle()
 	local bar = getglobal(frame:GetName().."Bar")
 	local spark = getglobal(frame:GetName().."BarSpark")
 	local texture = getglobal(frame:GetName().."BarTexture")
-	local icon1 = getglobal(frame:GetName().."Icon1")
-	local icon2 = getglobal(frame:GetName().."Icon2")
+	local icon1 = getglobal(frame:GetName().."BarIcon1")
+	local icon2 = getglobal(frame:GetName().."BarIcon2")
 	texture:SetTexture(self.owner.options.Texture)
 	bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
 	spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
@@ -529,7 +539,10 @@ function barPrototype:ApplyStyle()
 	bar:SetWidth(self.owner.options.Width)
 	frame:SetScale(self.owner.options.Scale)
 	self.frame:Show()
+	spark:SetAlpha(1)
+	texture:SetAlpha(1)
 	bar:SetAlpha(1)
+	frame:SetAlpha(1)
 	self:Update(0)
 end
 

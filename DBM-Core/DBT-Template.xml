@@ -35,6 +35,48 @@
 								</Anchor>
 							</Anchors>
 						</Texture>
+						<FontString name="$parentName" inherits="GameFontHighlightSmall" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="LEFT">
+									<Offset>
+										<AbsDimension x="7" y="0.5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentTimer" inherits="GameFontHighlightSmall" text="">
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="-1" y="0.5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<Texture name="$parentIcon1">
+							<Size>
+								<AbsDimension x="20" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentIcon2">
+							<Size>
+								<AbsDimension x="20" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
 					</Layer>
 				</Layers>
 				<BarTexture name="$parentTexture" file="Interface\AddOns\DBM-Core\textures\default.tga"/>
@@ -43,57 +85,11 @@
 					<OnLoad>
 						self:SetMinMaxValues(0, 1)
 						self:SetValue(1)
-						self:SetFrameLevel(self:GetFrameLevel() - 1)
+--						self:SetFrameLevel(self:GetFrameLevel() - 1)
 					</OnLoad>
 				</Scripts>
 			</StatusBar>
 		</Frames>
-		<Layers>
-			<Layer level="OVERLAY">
-				<FontString name="$parentName" inherits="GameFontHighlightSmall" text="">
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="LEFT">
-							<Offset>
-								<AbsDimension x="7" y="0.5"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<FontString name="$parentTimer" inherits="GameFontHighlightSmall" text="">
-					<Anchors>
-						<Anchor point="RIGHT" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="-1" y="0.5"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</FontString>
-				<Texture name="$parentIcon1">
-					<Size>
-						<AbsDimension x="20" y="20"/>
-					</Size>
-					<Anchors>
-						<Anchor point="RIGHT" relativePoint="LEFT">
-							<Offset>
-								<AbsDimension x="0" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-				<Texture name="$parentIcon2">
-					<Size>
-						<AbsDimension x="20" y="20"/>
-					</Size>
-					<Anchors>
-						<Anchor point="LEFT" relativePoint="RIGHT">
-							<Offset>
-								<AbsDimension x="0" y="0"/>
-							</Offset>
-						</Anchor>
-					</Anchors>
-				</Texture>
-			</Layer>
-		</Layers>
 		<Scripts>
 			<OnUpdate>
 				self.obj:Update(arg1)

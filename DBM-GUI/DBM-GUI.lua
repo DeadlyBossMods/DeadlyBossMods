@@ -810,7 +810,6 @@ function DBM_GUI:CreateOptionsMenu()
 		BarSetup = BarSetupPanel:CreateArea("Small Bar", nil, 210, true)
 
 		local dummybar = DBM.Bars:CreateDummyBar()
-		dummybar.frame:ClearAllPoints()
 		dummybar.frame:SetParent(BarSetup.frame)
 		dummybar.frame:SetPoint('BOTTOM', BarSetup.frame, "TOP", 0, -55)
 		dummybar.frame:SetScript("OnUpdate", function(self, elapsed) dummybar:Update(elapsed) end)
