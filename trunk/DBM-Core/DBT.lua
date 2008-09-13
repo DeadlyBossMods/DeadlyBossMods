@@ -120,11 +120,11 @@ options = {
 	},
 	Width = {
 		type = "number",
-		default = 260,
+		default = 190,
 	},
 	Scale = {
 		type = "number",
-		default = 0.75,
+		default = 0.9,
 	},
 	HugeBarsEnabled = {
 		type = "boolean",
@@ -253,16 +253,6 @@ do
 	end	
 	local mt = {__index = barPrototype}
 	
-	function DBT:CreateDummyBar()
-		local dummy = self:CreateBar(20, "dummy", "Interface\\Icons\\Spell_Nature_WispSplode")
-		dummy:Cancel()
-		self.bars[dummy] = true
-		unusedBars[#unusedBars] = nil
-		dummy.frame:SetScript("OnUpdate", nil)
-		dummy:ApplyStyle()
-		return dummy
-	end
-	
 	function DBT:CreateBar(timer, id, icon)
 		if timer <= 0 then return end
 		local newBar = self:GetBar(id)
@@ -299,6 +289,27 @@ do
 		newBar:Update(0)
 		self.bars[newBar] = true
 		return newBar
+	end
+end
+
+-----------------
+--  Dummy Bar  --
+-----------------
+do
+	local function dummyCancel(self)
+		self:SetElapsed(0)
+	end
+	function DBT:CreateDummyBar()
+		local dummy = self:CreateBar(20, "dummy", "Interface\\Icons\\Spell_Nature_WispSplode")
+		dummy:Cancel()
+		self.bars[dummy] = true
+		unusedBars[#unusedBars] = nil
+		unusedBarObjects[dummy] = nil
+		dummy.frame.obj = dummy
+		dummy.frame:SetScript("OnUpdate", nil)
+		dummy.Cancel = dummyCancel
+		dummy:ApplyStyle()
+		return dummy
 	end
 end
 
@@ -503,16 +514,20 @@ function DBT:ApplyStyle()
 end
 
 function barPrototype:ApplyStyle()
-	local bar = getglobal(self.frame:GetName().."Bar")
-	local spark = getglobal(self.frame:GetName().."BarSpark")
-	local texture = getglobal(self.frame:GetName().."BarTexture")
-	local icon1 = getglobal(self.frame:GetName().."Icon1")
-	local icon2 = getglobal(self.frame:GetName().."Icon2")
+	local frame = self.frame
+	local bar = getglobal(frame:GetName().."Bar")
+	local spark = getglobal(frame:GetName().."BarSpark")
+	local texture = getglobal(frame:GetName().."BarTexture")
+	local icon1 = getglobal(frame:GetName().."Icon1")
+	local icon2 = getglobal(frame:GetName().."Icon2")
 	texture:SetTexture(self.owner.options.Texture)
 	bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
 	spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
+	frame:SetWidth(self.owner.options.Width)
+	bar:SetWidth(self.owner.options.Width)
+	frame:SetScale(self.owner.options.Scale)
 	self.frame:Show()
 	bar:SetAlpha(1)
 	self:Update(0)
