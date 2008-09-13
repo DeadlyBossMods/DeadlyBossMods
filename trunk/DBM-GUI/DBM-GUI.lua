@@ -66,7 +66,7 @@ do
 	--  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
 	--
 	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
-		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFrame)
+		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
 		panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth());
@@ -246,7 +246,6 @@ end
 function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 	--- Color select texture with wheel and value
 	local colorselect = CreateFrame("ColorSelect", FrameTitle..self:GetNewID(), self.frame)
-	colorselect:SetParent(self.frame)
 	if withalpha then
 		colorselect:SetWidth((dimension or 128)+37)
 	else
@@ -811,35 +810,15 @@ function DBM_GUI:CreateOptionsMenu()
 		BarSetup = BarSetupPanel:CreateArea("Small Bar", nil, 210, true)
 
 		local dummybar = DBM.Bars:CreateDummyBar()
-		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, -50)
+		dummybar.frame:ClearAllPoints()
 		dummybar.frame:SetParent(BarSetup.frame)
+		dummybar.frame:SetPoint('BOTTOM', BarSetup.frame, "TOP", 0, -55)
 		dummybar.frame:SetScript("OnUpdate", function(self, elapsed) dummybar:Update(elapsed) end)
-		dummybar:SetTimer(100)
-		dummybar:SetElapsed(35)
 
 		local iconleft = BarSetup:CreateCheckButton("Icon left", nil, nil, nil, "IconLeft")
 		local iconright = BarSetup:CreateCheckButton("Icon right", nil, true, nil, "IconRight")
 		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
 		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
-
-		local Textures = { 
-			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
-			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
-			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga"	},
-			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
-			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("statusbar") do
-				table.insert(Textures, {text=k, value=v, texture=v})
-			end
-		end
-		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, 
-			DBM.Bars:GetOption("Texture"), function(value) 
-				DBM.Bars:SetOption("Texture", value) 
-			end
-		);
-		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 10, -90)
 
 		local function createDBTOnShowHandler(option)
 			return function(self)
@@ -852,12 +831,12 @@ function DBM_GUI:CreateOptionsMenu()
 			end
 		end
 
-		local BarWidthSlider = BarSetup:CreateSlider("Bar Width", 100, 400, 1)
+		local BarWidthSlider = BarSetup:CreateSlider("Bar Width", 100, 325, 1)
 		BarWidthSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 190, -90)
 		BarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("Width"))
 		BarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
 
-		local BarScaleSlider = BarSetup:CreateSlider("Bar Scale", 0.4, 2.5, 0.05)
+		local BarScaleSlider = BarSetup:CreateSlider("Bar Scale", 0.75, 2, 0.05)
 		BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
 		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
 		BarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
@@ -887,6 +866,26 @@ function DBM_GUI:CreateOptionsMenu()
 							DBM.Bars:SetOption("EndColorG", select(2, self:GetColorRGB()))
 							DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))							
 						  end)
+
+
+		local Textures = { 
+			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
+			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
+			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga"	},
+			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
+			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("statusbar") do
+				table.insert(Textures, {text=k, value=v, texture=v})
+			end
+		end
+		local TextureDropDown = BarSetup:CreateDropdown(L.BarTexture, Textures, 
+			DBM.Bars:GetOption("Texture"), function(value) 
+				DBM.Bars:SetOption("Texture", value) 
+			end
+		);
+		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 10, -90)
 
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
