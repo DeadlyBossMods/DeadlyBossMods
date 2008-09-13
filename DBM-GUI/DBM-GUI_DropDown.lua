@@ -35,7 +35,6 @@ do
 		insets={left=11, right=12, top=12, bottom=11}
 	});
 	TabFrame1:SetFrameStrata("TOOLTIP")
-	TabFrame1:SetToplevel(true)
 	TabFrame1:EnableMouseWheel(1)
 	TabFrame1:SetScript("OnMouseWheel", function(self, arg1) 
 		if arg1 > 0 then  -- scroll up
@@ -140,7 +139,7 @@ do
 				TabFrame1:ShowMenu(self:GetParent().values)
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
-				TabFrame1:SetParent(self:GetParent())
+				TabFrame1:SetParent(self)
 			end
 		end)
 
