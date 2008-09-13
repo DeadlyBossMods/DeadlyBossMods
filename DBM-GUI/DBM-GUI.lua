@@ -253,14 +253,12 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 		colorselect:SetWidth((dimension or 128))
 	end
 	colorselect:SetHeight(dimension or 128)
-	colorselect:Show()
 	
 	-- create a color wheel
 	local colorwheel = colorselect:CreateTexture()
 	colorwheel:SetWidth(dimension or 128)
 	colorwheel:SetHeight(dimension or 128)
 	colorwheel:SetPoint("TOPLEFT", colorselect, "TOPLEFT", 5, 0)
-	colorwheel:Show()
 	colorselect:SetColorWheelTexture(colorwheel)
 	
 	-- create the colorpicker
@@ -269,7 +267,6 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 	colorwheelthumbtexture:SetWidth(10)
 	colorwheelthumbtexture:SetHeight(10)
 	colorwheelthumbtexture:SetTexCoord(0,0.15625, 0, 0.625)
-	colorwheelthumbtexture:Show()
 	colorselect:SetColorWheelThumbTexture(colorwheelthumbtexture)
 	
 	if withalpha then
@@ -278,7 +275,6 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 		colorvalue:SetWidth(alphawidth or 32)
 		colorvalue:SetHeight(dimension or 128)
 		colorvalue:SetPoint("LEFT", colorwheel, "RIGHT", 10, -3)
-		colorvalue:Show()
 		colorselect:SetColorValueTexture(colorvalue)
 	
 		-- create the alpha arrows
@@ -287,7 +283,6 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 		colorvaluethumbtexture:SetWidth( (alphawidth/32  or 1) * 48)
 		colorvaluethumbtexture:SetHeight( (alphawidth/32 or 1) * 14)
 		colorvaluethumbtexture:SetTexCoord(0.25, 1, 0.875, 0)
-		colorvaluethumbtexture:Show()
 		colorselect:SetColorValueThumbTexture(colorvaluethumbtexture)
 	end
 	
@@ -775,9 +770,9 @@ function DBM_GUI:CreateOptionsMenu()
 		local color4text = raidwarncolors:CreateText(L.RaidWarnColor_4, 64)
 	
 		color1:SetPoint('TOPLEFT', 20, -20)
-		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 15, 0)
-		color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 15, 0)
-		color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 15, 0)
+		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
+		color3:SetPoint('TOPLEFT', color2, "TOPRIGHT", 20, 0)
+		color4:SetPoint('TOPLEFT', color3, "TOPRIGHT", 20, 0)
 	
 		local function UpdateColor(self)
 			local r, g, b = self:GetColorRGB()
@@ -799,7 +794,7 @@ function DBM_GUI:CreateOptionsMenu()
 		UpdateColorFrames(color3, color3text, 3)
 		UpdateColorFrames(color4, color4text, 4)
 		
-		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 340, false)
+		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 360, false)
 		infotext:SetPoint('BOTTOMLEFT', raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
 		infotext:SetJustifyH("LEFT")
 		infotext:SetFontObject(GameFontNormalSmall);
@@ -813,11 +808,12 @@ function DBM_GUI:CreateOptionsMenu()
 
 	do
 		BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
-		BarSetup = BarSetupPanel:CreateArea("Small Bar", nil, 200, true)
+		BarSetup = BarSetupPanel:CreateArea("Small Bar", nil, 210, true)
 
 		local dummybar = DBM.Bars:CreateDummyBar()
 		dummybar.frame:SetPoint('TOP', BarSetup.frame, "TOP", 0, -50)
 		dummybar.frame:SetParent(BarSetup.frame)
+		dummybar.frame:SetScript("OnUpdate", function(self, elapsed) dummybar:Update(elapsed) end)
 		dummybar:SetTimer(100)
 		dummybar:SetElapsed(35)
 
@@ -852,7 +848,7 @@ function DBM_GUI:CreateOptionsMenu()
 		end
 		local function createDBTOnValueChangedHandler(option)
 			return function(self)
-				DBM.Bars:SetOption("Width", self:GetValue())
+				DBM.Bars:SetOption(option, self:GetValue())
 			end
 		end
 
@@ -866,6 +862,31 @@ function DBM_GUI:CreateOptionsMenu()
 		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
 		BarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
 
+		local color1 = BarSetup:CreateColorSelect(64)
+		local color2 = BarSetup:CreateColorSelect(64)
+		color1:SetPoint('TOPLEFT', BarSetup.frame, "TOPLEFT", 20, -130)
+		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
+
+		color1:SetScript("OnShow", function(self) self:SetColorRGB(
+								DBM.Bars:GetOption("StartColorR"),
+								DBM.Bars:GetOption("StartColorG"),
+								DBM.Bars:GetOption("StartColorB")) 
+							  end)
+		color2:SetScript("OnShow", function(self) self:SetColorRGB(
+								DBM.Bars:GetOption("EndColorR"),
+								DBM.Bars:GetOption("EndColorG"),
+								DBM.Bars:GetOption("EndColorB")) 
+							  end)
+		color1:SetScript("OnColorSelect", function(self)
+							DBM.Bars:SetOption("StartColorR", select(1, self:GetColorRGB()))
+							DBM.Bars:SetOption("StartColorG", select(2, self:GetColorRGB()))
+							DBM.Bars:SetOption("StartColorB", select(3, self:GetColorRGB()))							
+						  end)
+		color2:SetScript("OnColorSelect", function(self)
+							DBM.Bars:SetOption("EndColorR", select(1, self:GetColorRGB()))
+							DBM.Bars:SetOption("EndColorG", select(2, self:GetColorRGB()))
+							DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))							
+						  end)
 
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)

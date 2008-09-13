@@ -34,7 +34,8 @@ do
 		tile=1, tileSize=32, edgeSize=32, 
 		insets={left=11, right=12, top=12, bottom=11}
 	});
-	TabFrame1:SetFrameStrata("FULLSCREEN_DIALOG")
+	TabFrame1:SetFrameStrata("TOOLTIP")
+	TabFrame1:SetToplevel(true)
 	TabFrame1:EnableMouseWheel(1)
 	TabFrame1:SetScript("OnMouseWheel", function(self, arg1) 
 		if arg1 > 0 then  -- scroll up
