@@ -160,7 +160,7 @@ options = {
 	},
 	HugeTimerY = {
 		type = "number",
-		default = -100,
+		default = -120,
 	},
 	EnlargeBarsTime = {
 		type = "number",
@@ -168,7 +168,7 @@ options = {
 	},
 	EnlargeBarsPercent = {
 		type = "number",
-		default = 10,
+		default = 0.1,
 	}
 }
 
@@ -272,12 +272,15 @@ do
 	end	
 	local mt = {__index = barPrototype}
 	
-	function DBT:CreateBar(timer, id, icon)
+	function DBT:CreateBar(timer, id, icon, huge)
 		if timer <= 0 then return end
 		local newBar = self:GetBar(id)
 		if newBar then
 			newBar:SetTimer(timer)
 			newBar:SetElapsed(0)
+			newBar:ApplyStyle()
+			DBM:AddMsg(newBar.enlarged)
+			DBM:AddMsg(getglobal(newBar.frame:GetName().."Bar"):GetWidth())
 		else
 			newBar = next(unusedBarObjects, nil)
 			if newBar then
@@ -285,8 +288,6 @@ do
 			else
 				newBar = setmetatable({}, mt)
 			end
-			newBar.prev = self.mainLastBar
-			newBar.next = nil
 			newBar.frame = createBarFrame(self)
 			newBar.id = id
 			newBar.timer = timer
@@ -294,22 +295,12 @@ do
 			newBar.owner = self
 			newBar.moving = nil
 			newBar.enlarged = nil
-			if self.mainLastBar then
-				self.mainLastBar.next = newBar
-			end
-			self.mainLastBar = newBar
-			self.mainFirstBar = self.mainFirstBar or newBar
 			newBar.frame.obj = newBar
+			newBar:AddToList()
 		end
-		if timer <= self.options.EnlargeBarsTime then
+		if timer <= self.options.EnlargeBarsTime or huge then
 			newBar:RemoveFromList()
-			newBar.prev = self.secLastBar
-			newBar.next = nil
-			if self.secLastBar then
-				self.secLastBar.next = newBar
-			end
-			self.secLastBar = newBar
-			self.secFirstBar = self.secFirstBar or newBar
+			newBar:AddToList(true)
 			newBar.enlarged = true
 		end
 		newBar.flashing = false
@@ -322,6 +313,7 @@ do
 		return newBar
 	end
 end
+
 
 -----------------
 --  Dummy Bar  --
@@ -367,8 +359,6 @@ end
 --		return (reverse and reverseIterator) or iterator, self, nil
 --	end
 --end
-
-
 function DBT:GetBarIterator()
 	return pairs(self.bars)
 end
@@ -402,6 +392,7 @@ function DBT:UpdateBar(id, elapsed, totalTime)
 	return false
 end
 
+
 ---------------------------
 --  General Bar Methods  --
 ---------------------------
@@ -412,6 +403,13 @@ end
 
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
+	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) then
+		self:RemoveFromList()
+		self.enlarged = nil
+		self.moving = nil
+		self:AddToList()
+		self:SetPosition()
+	end
 	self:Update(0)
 end
 
@@ -425,6 +423,7 @@ function barPrototype:SetIcon(icon)
 	getglobal(self.frame:GetName().."BarIcon2"):SetTexture("")
 	getglobal(self.frame:GetName().."BarIcon2"):SetTexture(icon)
 end
+
 
 ------------------
 --  Bar Update  --
@@ -482,6 +481,21 @@ function barPrototype:Update(elapsed)
 	elseif self.moving == "move" then
 		self.moving = nil
 		self:SetPosition()
+	elseif self.moving == "enlarge" and self.moveElapsed <= 1 then
+		self:AnimateEnlarge(elapsed)
+	elseif self.moving == "enlarge" then
+		self.moving = nil
+		self.enlarged = true
+		self:AddToList(true)
+		self:ApplyStyle()
+		self:SetPosition()
+	end
+	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and self.id ~= "Move1" and self.id:sub(0, 5) ~= "dummy" and not self.enlarged and self.moving ~= "enlarge" then
+		self:RemoveFromList()
+		self:Enlarge()
+		if self.next then
+			self.next:MoveToNextPosition()
+		end
 	end
 end
 
@@ -506,18 +520,21 @@ do
 	end
 	
 	function DBT:ShowMovableBar()
-		local bar = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode")
-		bar:SetText(DBM_CORE_MOVABLE_BAR)
+		local bar1 = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode")
+		local bar2 = self:CreateBar(20, "Move2", "Interface\\Icons\\Spell_Nature_WispSplode", true)
+		bar1:SetText(DBM_CORE_MOVABLE_BAR)
+		bar2:SetText(DBM_CORE_MOVABLE_BAR)
 		self.movable = true
 		DBM:Schedule(20, moveEnd, self)
 	end
 end
 
 
-------------------
---  Bar Cancel  --
-------------------
+--------------------
+--  Bar Handling  --
+--------------------
 function barPrototype:RemoveFromList()
+	if self.moving == "enlarge" then return end
 	local first = self.enlarged and "secFirstBar" or "mainFirstBar"
 	local last = self.enlarged and "secLastBar" or "mainLastBar"
 	if self == self.owner[first] then
@@ -542,6 +559,22 @@ function barPrototype:RemoveFromList()
 	end
 end
 
+function barPrototype:AddToList(huge)
+	local first = huge and "secFirstBar" or "mainFirstBar"
+	local last = huge and "secLastBar" or "mainLastBar"
+	self.prev = self.owner[last]
+	self.next = nil
+	if self.owner[last] then
+		self.owner[last].next = self
+	end
+	self.owner[last] = self
+	self.owner[first] = self.owner[first] or self
+end
+
+
+------------------
+--  Bar Cancel  --
+------------------
 function barPrototype:Cancel()
 	table.insert(unusedBars, self.frame)
 	self.frame:Hide()
@@ -577,8 +610,8 @@ function barPrototype:ApplyStyle()
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
 	if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth) else frame:SetWidth(self.owner.options.Width) end
-	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth) else frame:SetWidth(self.owner.options.Width) end
-	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetWidth(self.owner.options.Width) end
+	if self.enlarged then bar:SetWidth(self.owner.options.HugeWidth) else bar:SetWidth(self.owner.options.Width) end
+	if self.enlarged then frame:SetScale(self.owner.options.HugeScale) else frame:SetScale(self.owner.options.Scale) end
 	self.frame:Show()
 	spark:SetAlpha(1)
 	texture:SetAlpha(1)
@@ -628,4 +661,39 @@ function barPrototype:MoveToNextPosition()
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
 	self.moveElapsed = 0
+end
+
+function barPrototype:Enlarge()
+	local newAnchor = self.secLastBar or self.owner.secAnchor
+	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
+	local oldY = self.frame:GetTop()
+	self.frame:ClearAllPoints()
+	if self.owner.options.ExpandUpwards then
+		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+	else
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+	end
+	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
+	local newY = self.frame:GetTop()
+	self.frame:SetPoint("TOP", newAnchor, "BOTTOM", -(newX - oldX), -(newY - oldY))
+	self.moving = "enlarge"
+	self.movePoint = "TOP"
+	self.moveRelPoint = "BOTTOM"
+	self.moveAnchor = newAnchor
+	self.moveOffsetX = -(newX - oldX)
+	self.moveOffsetY = -(newY - oldY)
+	self.moveElapsed = 0
+end
+
+function barPrototype:AnimateEnlarge(elapsed)
+	self.moveElapsed = self.moveElapsed + elapsed
+	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
+	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+	local newWidth = self.owner.options.HugeWidth + (self.owner.options.HugeWidth - self.owner.options.Width ) * (1 - self.moveElapsed / 1)
+	local newScale = self.owner.options.HugeScale + (self.owner.options.HugeScale - self.owner.options.Scale) * (1 - self.moveElapsed / 1)
+	self.frame:ClearAllPoints()
+	self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+	self.frame:SetScale(newScale)
+	self.frame:SetWidth(newWidth)
+	getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
 end

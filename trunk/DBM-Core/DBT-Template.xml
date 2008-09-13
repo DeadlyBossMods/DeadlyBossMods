@@ -85,7 +85,6 @@
 					<OnLoad>
 						self:SetMinMaxValues(0, 1)
 						self:SetValue(1)
---						self:SetFrameLevel(self:GetFrameLevel() - 1)
 					</OnLoad>
 				</Scripts>
 			</StatusBar>
@@ -96,18 +95,26 @@
 			</OnUpdate>
 			<OnMouseDown>
 				if self.obj.owner.movable and arg1 == "LeftButton" then
-					self.obj.owner.mainAnchor:StartMoving()
+					if self.obj.enlarged then
+						self.obj.owner.secAnchor:StartMoving()
+					else
+						self.obj.owner.mainAnchor:StartMoving()
+					end
 				end
 			</OnMouseDown>
 			<OnMouseUp>
 				self.obj.owner.mainAnchor:StopMovingOrSizing()
+				self.obj.owner.secAnchor:StopMovingOrSizing()
 				self.obj.owner:SavePosition()
 				if arg1 == "RightButton" then
 					self.obj:Cancel()
 				end
 			</OnMouseUp>
 			<OnHide>
-				if self.obj then self.obj.owner.mainAnchor:StopMovingOrSizing() end
+				if self.obj then
+					self.obj.owner.mainAnchor:StopMovingOrSizing()
+					self.obj.owner.secAnchor:StopMovingOrSizing()
+				end
 			</OnHide>
 		</Scripts>
 	</Frame>
