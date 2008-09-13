@@ -74,15 +74,7 @@ options = {
 		type = "boolean",
 		default = true,
 	},
-	Shine = {
-		type = "boolean",
-		default = true,
-	},
 	Break = {
-		type = "boolean",
-		default = true,
-	},
-	Icon = {
 		type = "boolean",
 		default = true,
 	},
@@ -158,6 +150,14 @@ options = {
 		type = "number",
 		default = -260,
 	},
+	EnlargeBarsTime = {
+		type = "number",
+		default = 7.5,
+	},
+	EnlargeBarsPercent = {
+		type = "number",
+		default = 10,
+	}
 }
 
 
@@ -183,6 +183,7 @@ do
 				defaultOptions = setmetatable({}, optionMT),
 				mainAnchor = CreateFrame("Frame", nil, UIParent),
 				secAnchor = CreateFrame("Frame", nil, UIParent),
+				bars = {},
 				mainFirstBar = nil,
 				mainLastBar = nil,
 				secFirstBar = nil,
@@ -222,10 +223,15 @@ function DBT:SetOption(option, value)
 	if options[option].onChange then
 		options[option].onChange(self, value, oldValue)
 	end
+	self:ApplyStyle()
 end
 
 function DBT:GetOption(option)
 	return self.options[option]
+end
+
+function DBT:GetDefaultOption(option)
+	return self.defaultOptions[option]
 end
 
 
@@ -241,10 +247,6 @@ do
 			unusedBars[#unusedBars] = nil
 		else
 			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
-			local icon = frame:CreateTexture("DBT_Bar_"..fCounter.."Icon", "OVERLAY")
-			icon:SetHeight(20)
-			icon:SetWidth(20)
-			icon:SetPoint("RIGHT", frame, "LEFT", 0, 0)
 			fCounter = fCounter + 1
 		end
 		return frame
@@ -252,26 +254,17 @@ do
 	local mt = {__index = barPrototype}
 	
 	function DBT:CreateDummyBar()
-		local newBar
-		newBar = next(unusedBarObjects, nil)
-		if newBar then
-			unusedBarObjects[newBar] = nil
-		else
-			newBar = setmetatable({}, mt)
-		end
-		newBar.frame = createBarFrame(self)
-		newBar.id = "dummy"
-		newBar.timer = 100
-		newBar.totalTime = 100
-		newBar.owner = self
-		newBar.frame.obj = newBar
-		newBar.moving = nil
-		newBar:ApplyStyle()
-		newBar.frame:SetScript("OnUpdate", nil)
-		return newBar
+		local dummy = self:CreateBar(20, "dummy", "Interface\\Icons\\Spell_Nature_WispSplode")
+		dummy:Cancel()
+		self.bars[dummy] = true
+		unusedBars[#unusedBars] = nil
+		dummy.frame:SetScript("OnUpdate", nil)
+		dummy:ApplyStyle()
+		return dummy
 	end
 	
 	function DBT:CreateBar(timer, id, icon)
+		if timer <= 0 then return end
 		local newBar = self:GetBar(id)
 		if newBar then
 			newBar:SetTimer(timer)
@@ -304,6 +297,7 @@ do
 		newBar:SetText(id)
 		newBar:SetIcon(icon)
 		newBar:Update(0)
+		self.bars[newBar] = true
 		return newBar
 	end
 end
@@ -312,18 +306,23 @@ end
 -----------------------------
 --  General Bar Functions  --
 -----------------------------
-do
-	local function iterator(self, frame)
-		return not frame and self.mainFirstBar or frame and frame.next
-	end
-	
-	local function reverseIterator(self, frame)
-		return not frame and self.mainLastBar or frame and frame.prev
-	end
+--do
+--	local function iterator(self, frame)
+--		return not frame and self.mainFirstBar or frame and frame.next
+--	end
+--	
+--	local function reverseIterator(self, frame)
+--		return not frame and self.mainLastBar or frame and frame.prev
+--	end
+--
+--	function DBT:GetBarIterator(reverse)
+--		return (reverse and reverseIterator) or iterator, self, nil
+--	end
+--end
 
-	function DBT:GetBarIterator(reverse)
-		return (reverse and reverseIterator) or iterator, self, nil
-	end
+
+function DBT:GetBarIterator()
+	return pairs(self.bars)
 end
 
 function DBT:GetBar(id)
@@ -373,8 +372,10 @@ function barPrototype:SetText(text)
 end
 
 function barPrototype:SetIcon(icon)
-	getglobal(self.frame:GetName().."Icon"):SetTexture("")
-	getglobal(self.frame:GetName().."Icon"):SetTexture(icon)
+	getglobal(self.frame:GetName().."Icon1"):SetTexture("")
+	getglobal(self.frame:GetName().."Icon1"):SetTexture(icon)
+	getglobal(self.frame:GetName().."Icon2"):SetTexture("")
+	getglobal(self.frame:GetName().."Icon2"):SetTexture(icon)
 end
 
 ------------------
@@ -487,6 +488,7 @@ function barPrototype:Cancel()
 	if self.next then
 		self.next:MoveToNextPosition()
 	end
+	self.owner.bars[self] = nil
 	unusedBarObjects[self] = self
 end
 
@@ -504,9 +506,13 @@ function barPrototype:ApplyStyle()
 	local bar = getglobal(self.frame:GetName().."Bar")
 	local spark = getglobal(self.frame:GetName().."BarSpark")
 	local texture = getglobal(self.frame:GetName().."BarTexture")
+	local icon1 = getglobal(self.frame:GetName().."Icon1")
+	local icon2 = getglobal(self.frame:GetName().."Icon2")
 	texture:SetTexture(self.owner.options.Texture)
-	bar:SetStatusBarColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
-	spark:SetVertexColor(self.owner.options.ColorR, self.owner.options.ColorG, self.owner.options.ColorB)
+	bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+	spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
+	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
 	self.frame:Show()
 	bar:SetAlpha(1)
 	self:Update(0)
