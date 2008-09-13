@@ -138,15 +138,27 @@ options = {
 		type = "number",
 		default = 1.05,
 	},
-	MainTimerPoint = {
+	TimerPoint = {
 		type = "string",
 		default = "TOPRIGHT",
 	},
-	MainTimerX = {
+	TimerX = {
 		type = "number",
 		default = -223,
 	},
-	MainTimerY = {
+	TimerY = {
+		type = "number",
+		default = -260,
+	},
+	HugeTimerPoint = {
+		type = "string",
+		default = "CENTER",
+	},
+	HugeTimerX = {
+		type = "number",
+		default = 0,
+	},
+	HugeTimerY = {
 		type = "number",
 		default = -260,
 	},
@@ -197,13 +209,20 @@ do
 		obj.mainAnchor:SetClampedToScreen(true)
 		obj.mainAnchor:SetMovable(true)
 		obj.mainAnchor:Show()
+		obj.secAnchor:SetHeight(1)
+		obj.secAnchor:SetWidth(1)
+		obj.secAnchor:SetPoint("CENTER", 0, 0)
+		obj.secAnchor:SetClampedToScreen(true)
+		obj.secAnchor:SetMovable(true)
+		obj.secAnchor:Show()
 		return obj
 	end
 	
 	function DBT:LoadOptions(id)
 		DBT_SavedOptions[id] = DBT_SavedOptions[id] or {}
 		self.options = setmetatable(DBT_SavedOptions[id], optionMT)
-		self.mainAnchor:SetPoint(self.options.MainTimerPoint, UIParent, self.options.MainTimerPoint, self.options.MainTimerX, self.options.MainTimerY)
+		self.mainAnchor:SetPoint(self.options.TimerPoint, UIParent, self.options.TimerPoint, self.options.TimerX, self.options.TimerY)
+		self.secAnchor:SetPoint(self.options.HugeTimerPoint, UIParent, self.options.HugeTimerPoint, self.options.HugeTimerX, self.options.HugeTimerY)
 	end
 end
 
@@ -283,6 +302,7 @@ do
 			newBar:SetPosition()
 		end
 		newBar.flashing = false
+--		if timer <= self.options
 		newBar:ApplyStyle()
 		newBar:SetText(id)
 		newBar:SetIcon(icon)
@@ -460,9 +480,13 @@ end
 -------------------
 function DBT:SavePosition()
 	local point, _, _, x, y = self.mainAnchor:GetPoint(1)
-	self:SetOption("MainTimerPoint", point)
-	self:SetOption("MainTimerX", x)
-	self:SetOption("MainTimerY", y)
+	self:SetOption("TimerPoint", point)
+	self:SetOption("TimerX", x)
+	self:SetOption("TimerY", y)
+	local point, _, _, x, y = self.secAnchor:GetPoint(1)
+	self:SetOption("HugeTimerPoint", point)
+	self:SetOption("HugeTimerX", x)
+	self:SetOption("HugeTimerY", y)
 end
 
 do
@@ -482,30 +506,36 @@ end
 ------------------
 --  Bar Cancel  --
 ------------------
-function barPrototype:Cancel()
-	table.insert(unusedBars, self.frame)
-	self.frame:Hide()
-	self.frame.obj = nil
-	if self == self.owner.mainFirstBar then
+function barPrototype:RemoveFromList()
+	local first = self.enlarged and "secFirstBar" or "mainFirstBar"
+	local last = self.enlarged and "secLastBar" or "mainLastBar"
+	if self == self.owner[first] then
 		if self.next then
 			self.next.prev = nil
-			self.owner.mainFirstBar = self.next
+			self.owner[first] = self.next
 		else
-			self.owner.mainFirstBar = nil
-			self.owner.mainLastBar = nil
+			self.owner[first] = nil
+			self.owner[last] = nil
 		end
-	elseif self == self.owner.mainLastBar then
+	elseif self == self.owner[last] then
 		if self.prev then
 			self.prev.next = nil
-			self.owner.mainLastBar = self.prev
+			self.owner[last] = self.prev
 		else
-			self.owner.mainLastBar = nil
-			self.owner.mainFirstBar = nil
+			self.owner[last] = nil
+			self.owner[first] = nil
 		end
 	else
 		self.prev.next = self.next
 		self.next.prev = self.prev
 	end
+end
+
+function barPrototype:Cancel()
+	table.insert(unusedBars, self.frame)
+	self.frame:Hide()
+	self.frame.obj = nil
+	self:RemoveFromList()
 	if self.next then
 		self.next:MoveToNextPosition()
 	end
