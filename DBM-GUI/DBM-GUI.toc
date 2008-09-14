@@ -11,3 +11,5 @@ DBM-GUI_DropDown.xml
 DBM-GUI_Templates.xml
 DBM-GUI.lua
 DBM-GUI_DropDown.lua
+
+DBM-GUI_BossModStudio.lua

@@ -98,8 +98,10 @@ do
 			if i + self.offset <= #values then
 				self.buttons[i]:SetText(values[i+self.offset].text)
 				self.buttons[i].entry = values[i+self.offset]
-				BackDropTable.bgFile = values[i+self.offset].value
-				self.buttons[i]:SetBackdrop(BackDropTable)
+				if values[i+self.offset].texture then
+					BackDropTable.bgFile = values[i+self.offset].texture
+					self.buttons[i]:SetBackdrop(BackDropTable)
+				end
 				self.buttons[i]:Show()
 			else
 				self.buttons[i]:Hide()
