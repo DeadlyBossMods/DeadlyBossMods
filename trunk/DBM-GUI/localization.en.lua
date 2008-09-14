@@ -36,6 +36,7 @@ L.PizzaTimer_Hours = "Hours"
 L.PizzaTimer_Mins = "Min"
 L.PizzaTimer_Secs = "Sec"
 L.PizzaTimer_ButtonStart = "Start Timer"
+L.PizzaTimer_BroadCast = "Broadcast to Raid"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning = "Raid Warnings"
@@ -47,6 +48,8 @@ L.RaidWarnColor_4 = "Color 4"
 L.InfoRaidWarning = [[You can specify the position and colors of the raid warning frame. 
 This frame is used for messages like "Player X is afflicted by Y" messages]]
 
+L.ColorResetted = "The Color Setting of this field has been resetted"
+
 L.ShowWarningsInChat = "Show warnings in chatframe"
 L.ShowFakedRaidWarnings = "Show warnings as faked Raid Warning messages"
 L.WarningIconLeft = "Show icon on left side"
@@ -57,6 +60,8 @@ L.WarningIconRight = "Show icon on right side"
 L.BarSetup = "Bar Style"
 L.BarTexture = "Bar Texture"
 
+L.Slider_BarWidth = "Bar width"
+L.Slider_BarScale = "Bar scale"
 
 
 L.TabInfoText_WOTLK = [[Wrath of the Lich King Boss Mods
