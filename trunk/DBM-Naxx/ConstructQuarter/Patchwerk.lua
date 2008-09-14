@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 mod:AddBoolOption("WarningHateful", false, "announce")
-local enrageTimer = mod:NewEnrageTimer(420)
+local enrageTimer = mod:NewEnrageTimer(300)
 
 local function announceStrike(target, damage)
 	SendChatMessage(L.HatefulStrike:format(target, damage), "RAID")
