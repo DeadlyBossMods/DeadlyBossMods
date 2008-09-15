@@ -22,8 +22,8 @@ local markCounter = 0
 
 function mod:OnCombatStart(delay)
 	markCounter = 0
-	timerMark:Start(17, markCounter + 1)
-	warnMarkSoon:Schedule(13, markCounter + 1)
+	timerMark:Start(15, markCounter + 1)
+	warnMarkSoon:Schedule(11, markCounter + 1)
 end
 
 local markSpam = 0
