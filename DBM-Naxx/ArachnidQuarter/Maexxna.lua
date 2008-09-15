@@ -33,6 +33,9 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 28622 then -- Web Wrap
 		warnWebWrap:Show(args.destName)
+		if args.destName == UnitName("player") then
+			SendChatMessage(L.YellWebWrap, "YELL")
+		end
 	end
 end
 

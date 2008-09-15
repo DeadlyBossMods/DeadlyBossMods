@@ -93,6 +93,9 @@ L:SetOptionLocalization({
 	TimerSpider			= "Show Spider timer"
 })
 
+L:SetMiscLocalization({
+	YellWebWrap			= "I'm wrapped! Help me!"
+})
 
 ------------------------------
 --  Noth the Plaguebringer  --
