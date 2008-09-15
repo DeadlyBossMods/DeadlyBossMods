@@ -396,9 +396,10 @@ end
 ---------------------------
 function DBT:ShowTestBars()
 	self:CreateBar(10, "Test 1")
-	self:CreateBar(20, "Test 2")
-	self:CreateBar(15, "Test 3")
-	self:CreateBar(23, "Test 4")
+	self:CreateBar(14, "Test 2")
+	self:CreateBar(20, "Test 3")
+	self:CreateBar(12, "Test 4")
+	self:CreateBar(21.5, "Test 5")
 end
 
 function barPrototype:SetTimer(timer)
@@ -657,7 +658,7 @@ function barPrototype:SetPosition()
 end
 
 function barPrototype:MoveToNextPosition()
-	local newAnchor = (self.prev and self.prev.frame) or self.enlarged and self.owner.secAnchor or self.owner.mainAnchor
+	local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
@@ -679,7 +680,7 @@ function barPrototype:MoveToNextPosition()
 end
 
 function barPrototype:Enlarge()
-	local newAnchor = self.secLastBar or self.owner.secAnchor
+	local newAnchor = (self.owner.secLastBar and self.owner.secLastBar.frame) or self.owner.secAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
