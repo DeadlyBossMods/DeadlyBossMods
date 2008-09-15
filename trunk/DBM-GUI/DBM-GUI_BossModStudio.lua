@@ -200,13 +200,96 @@ end
 
 L.AreaHead_TriggerCreate = "Create an Boss Event Trigger"
 L.Describe_TriggerCreate = [[Triggers can be created to handle events in bossfights. If the Boss yell some stuff or use one of his abilitys you need to catch and use them. As an example, the boss gains Shieldwall and you want to start a Bar when this occur, you simply have to choose BossBuffs or Debuffs and type in an Name for this event like "Shieldwall"]]
+
+L.Trigger_Typ = "Event that shall be triggered"
+L.Trigger_Name = "Name of this Trigger (a description)"
+L.Trigger_Typ_Spell = "Spell or Style"
+L.Trigger_Typ_Buff = "Buff or Debuff"
+L.Trigger_Typ_Yell = "Yell or Emote"
+L.Trigger_Typ_Time = "Time based"
+L.Trigger_Create_Bttn = "create trigger"
+
 do
 	BMS_Trigger = BMS_Panel:CreateNewPanel(L.TabCategory_Triggers, "option")
+
 	local BMS_CreateTrigger = BMS_Trigger:CreateArea(L.AreaHead_TriggerCreate, nil, 165, true)
 
-	--BMS_CreateTrigger
+	local TriggerName = BMS_CreateTrigger:CreateEditBox(L.Trigger_Name, "", 200)
+	TriggerName:SetPoint('TOPLEFT', 40, -60)
+	TriggerName:SetScript("OnTextChanged", function(self) CurrentBossSetup.BossName = self:GetText() end)
 
-	--Describe_TriggerCreate
+	local TriggerCreateBttn = BMS_CreateTrigger:CreateButton(L.Trigger_Create_Bttn, 160, nil)
+	TriggerCreateBttn:SetPoint('TOPLEFT', 200, -20)
+
+	-- at last because of the dropdown problem with layer level
+	local TriggerTyps = { 
+		{	text	= L.Trigger_Typ_Spell,	value = "spell" },
+		{	text	= L.Trigger_Typ_Buff,	value = "buff" },
+		{	text	= L.Trigger_Typ_Yell,	value = "yell" },
+		{	text	= L.Trigger_Typ_Time,	value = "time" },
+	}
+	local TriggerDropDown = BMS_CreateTrigger:CreateDropdown(L.Trigger_Typ, TriggerTyps, nil, function(value) DBM:AddMsg("Create Trigger: "..value) end);
+	TriggerDropDown:SetPoint("TOPLEFT", BMS_CreateTrigger.frame, "TOPLEFT", 10, -20)
+
+	local infotext = BMS_CreateTrigger:CreateText(L.Describe_TriggerCreate, 380, false)
+	infotext:SetPoint('BOTTOMLEFT', BMS_CreateTrigger.frame, "BOTTOMLEFT", 10, 10)
+	infotext:SetJustifyH("LEFT")
+	infotext:SetFontObject(GameFontNormalSmall)
+
+L.EventYellText = "Yell/Say/Emote that shall call the Event"
+L.EventAnnounce = "Announce"
+L.EventAnnounceText = "Message to announce"
+L.EventSpecialWarn = "Show Special Warning"
+L.EventSpecialWarn_OnlyMe = "only if affects me"
+L.EventStartBar = "Start a timer Bar"
+L.EventWarnEnd = "Show warning before timer ends"
+L.EventWarnMsg = "Warning Message"
+
+	local trigger_id = 0
+	local function createtriggerframe()
+		local description = TriggerName:GetText()
+		local triggertype = "yell" -- TriggerDropDown:GetText()
+		if not description or not triggertype then return end
+		trigger_id = trigger_id + 1
+
+		local TriggerArea = BMS_Trigger:CreateArea(trigger_id..". "..description, nil, 190, true)
+		TriggerArea.id = trigger_id
+		TriggerArea.description = description
+		TriggerArea.triggertype = triggertype
+
+		local EventYellText = TriggerArea:CreateEditBox(L.EventYellText, "", 230)
+		EventYellText:SetPoint("TOPLEFT", 30, -25)
+
+		local EventAnnounceText = TriggerArea:CreateEditBox(L.EventAnnounceText, "", 130)
+		EventAnnounceText:SetPoint("TOPLEFT", 130, -60)
+
+		local EventAnnounce = TriggerArea:CreateCheckButton(L.EventAnnounce)
+		EventAnnounce:SetPoint("TOPLEFT", 10, -55)
+		local EventSpecialWarning = TriggerArea:CreateCheckButton(L.EventSpecialWarn, true)
+		local EventStartTimer = TriggerArea:CreateCheckButton(L.EventStartBar, true)
+
+		local EventSpecialWarningOnlyMe = TriggerArea:CreateCheckButton(L.EventSpecialWarn_OnlyMe)
+		EventSpecialWarningOnlyMe:SetPoint("TOPLEFT", EventSpecialWarning, "TOPRIGHT", 150, 0)
+
+		local EventBarMin = TriggerArea:CreateEditBox(L.Min, "", 30)
+		EventBarMin:SetPoint('TOPLEFT', 30, -150)
+		local EventBarSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
+		EventBarSec:SetPoint('TOPLEFT', EventBarMin, "TOPRIGHT", 20, 0)
+
+		local EventWarnEnd = TriggerArea:CreateCheckButton(L.EventWarnEnd)
+		EventWarnEnd:SetPoint("TOPLEFT", EventSpecialWarningOnlyMe, "BOTTOMLEFT", 0, 5)
+
+		local EventWarnEndSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
+		EventWarnEndSec:SetPoint('TOPLEFT', 210, -150)
+
+		local EventWarnMsg = TriggerArea:CreateEditBox(L.EventWarnMsg, "", 130)
+		EventWarnMsg:SetPoint('TOPLEFT', EventWarnEndSec, "TOPRIGHT", 20, 0)
+
+
+
+	end
+	TriggerCreateBttn:SetScript("OnClick", createtriggerframe)
+
 end
 
 
