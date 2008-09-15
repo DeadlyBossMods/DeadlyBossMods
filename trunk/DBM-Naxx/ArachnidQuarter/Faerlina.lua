@@ -15,18 +15,18 @@ mod:RegisterEvents(
 local warnEmbraceActive		= mod:NewAnnounce("WarningEmbraceActive", 1, 28732)
 local warnEmbraceExpire		= mod:NewAnnounce("WarningEmbraceExpire", 2, 28732)
 local warnEmbraceExpired	= mod:NewAnnounce("WarningEmbraceExpired", 3, 28732)
-local warnEnrageSoon		= mod:NewAnnounce("WarningEnrageSoon", 3, 28131)
+--local warnEnrageSoon		= mod:NewAnnounce("WarningEnrageSoon", 3, 28131)
 local warnEnrageNow			= mod:NewAnnounce("WarningEnrageNow", 4, 28131)
 
 local timerEmbrace			= mod:NewTimer(30, "TimerEmbrace", 28732)
-local timerEnrage			= mod:NewTimer(50, "TimerEnrage", 28131)
+--local timerEnrage			= mod:NewTimer(60, "TimerEnrage", 28131)
 
 local embraceSpam = 0
 local enraged = false
 
 function mod:OnCombatStart(delay)
-	timerEnrage:Start(-delay)
-	warnEnrageSoon:Schedule(45 - delay)
+--	timerEnrage:Start(-delay)
+--	warnEnrageSoon:Schedule(60 - delay)
 	enraged = false
 end
 
@@ -37,14 +37,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		embraceSpam = GetTime()
 		warnEmbraceExpire:Cancel()
 		warnEmbraceExpired:Cancel()
-		warnEnrageSoon:Cancel()
-		timerEnrage:Stop()
+--		warnEnrageSoon:Cancel()
+--		timerEnrage:Stop()
 		if enraged then
-			timerEnrage:Start()
-			warnEnrageSoon:Schedule(45)
-		else
-			timerEnrage:Start(31)
-			warnEnrageSoon:Schedule(26)
+--			timerEnrage:Start()
+--			warnEnrageSoon:Schedule(45)
 		end
 		timerEmbrace:Start()
 		warnEmbraceActive:Show()
@@ -55,7 +52,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 54100 then			-- Frenzy
+	if args.spellId == 28798
+	or args.spellId == 54100 then			-- Frenzy
 		warnEnrageNow:Show()
 		enraged = GetTime()
 	end

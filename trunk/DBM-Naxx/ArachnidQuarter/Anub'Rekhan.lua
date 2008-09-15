@@ -27,8 +27,8 @@ function mod:OnCombatStart(delay)
 		timerLocustIn:Start(103.5 - delay)
 		warningLocustSoon:Schedule(88.5 - delay)
 	else
-		timerLocustIn:Start(90 - delay)
-		warningLocustSoon:Schedule(75- delay)
+		timerLocustIn:Start(88 - delay)
+		warningLocustSoon:Schedule(73 - delay)
 	end
 end
 
@@ -37,7 +37,11 @@ function mod:SPELL_CAST_START(args)
 		warningLocustNow:Show()
 		specialWarningLocust:Show()
 		timerLocustIn:Stop()
-		timerLocustFade:Start()
+		if GetCurrentDungeonDifficulty() == 2 then
+			timerLocustFade:Start(26)
+		else
+			timerLocustFade:Start(19)
+		end
 	end
 end
 
