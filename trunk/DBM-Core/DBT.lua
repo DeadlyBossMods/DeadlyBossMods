@@ -120,7 +120,7 @@ options = {
 	},
 	Width = {
 		type = "number",
-		default = 190,
+		default = 183,
 	},
 	Scale = {
 		type = "number",
@@ -132,7 +132,7 @@ options = {
 	},
 	HugeWidth = {
 		type = "number",
-		default = 215,
+		default = 200,
 	},
 	HugeScale = {
 		type = "number",
@@ -164,11 +164,11 @@ options = {
 	},
 	EnlargeBarsTime = {
 		type = "number",
-		default = 7.5,
+		default = 8,
 	},
 	EnlargeBarsPercent = {
 		type = "number",
-		default = 0.1,
+		default = 0.125,
 	}
 }
 
@@ -279,8 +279,6 @@ do
 			newBar:SetTimer(timer)
 			newBar:SetElapsed(0)
 			newBar:ApplyStyle()
-			DBM:AddMsg(newBar.enlarged)
-			DBM:AddMsg(getglobal(newBar.frame:GetName().."Bar"):GetWidth())
 		else
 			newBar = next(unusedBarObjects, nil)
 			if newBar then
@@ -535,8 +533,8 @@ end
 --------------------
 function barPrototype:RemoveFromList()
 	if self.moving == "enlarge" then return end
-	local first = self.enlarged and "secFirstBar" or "mainFirstBar"
-	local last = self.enlarged and "secLastBar" or "mainLastBar"
+	local first = (self.enlarged and "secFirstBar") or "mainFirstBar"
+	local last = (self.enlarged and "secLastBar") or "mainLastBar"
 	if self == self.owner[first] then
 		if self.next then
 			self.next.prev = nil
@@ -557,6 +555,8 @@ function barPrototype:RemoveFromList()
 		self.prev.next = self.next
 		self.next.prev = self.prev
 	end
+	self.prev = nil
+	self.next = nil
 end
 
 function barPrototype:AddToList(huge)
@@ -622,6 +622,11 @@ end
 
 function DBT:UpdateOrientation()
 	for bar in self:GetBarIterator() do
+		if bar.moving == "enlarge" then
+			bar.enlarged = true
+			bar:ApplyStyle()
+		end
+		bar.moving = nil
 		bar:SetPosition()
 	end
 end
@@ -632,6 +637,7 @@ options.ExpandUpwards.onChange = DBT.UpdateOrientation
 --  Bar Positioning  --
 -----------------------
 function barPrototype:SetPosition()
+	if self.moving == "enlarge" then return end
 	local anchor = (self.prev and self.prev.frame) or self.enlarged and self.owner.secAnchor or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
