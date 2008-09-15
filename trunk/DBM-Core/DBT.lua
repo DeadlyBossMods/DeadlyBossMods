@@ -394,6 +394,13 @@ end
 ---------------------------
 --  General Bar Methods  --
 ---------------------------
+function DBT:ShowTestBars()
+	self:CreateBar(10, "Test 1")
+	self:CreateBar(20, "Test 2")
+	self:CreateBar(15, "Test 3")
+	self:CreateBar(23, "Test 4")
+end
+
 function barPrototype:SetTimer(timer)
 	self.totalTime = timer
 	self:Update(0)
@@ -489,10 +496,11 @@ function barPrototype:Update(elapsed)
 		self:SetPosition()
 	end
 	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and self.id ~= "Move1" and self.id:sub(0, 5) ~= "dummy" and not self.enlarged and self.moving ~= "enlarge" then
+		local next = self.next
 		self:RemoveFromList()
 		self:Enlarge()
-		if self.next then
-			self.next:MoveToNextPosition()
+		if next then
+			next:MoveToNextPosition()
 		end
 	end
 end
@@ -576,12 +584,13 @@ end
 --  Bar Cancel  --
 ------------------
 function barPrototype:Cancel()
+	local next = self.next
 	table.insert(unusedBars, self.frame)
 	self.frame:Hide()
 	self.frame.obj = nil
 	self:RemoveFromList()
-	if self.next then
-		self.next:MoveToNextPosition()
+	if next then
+		next:MoveToNextPosition()
 	end
 	self.owner.bars[self] = nil
 	unusedBarObjects[self] = self
@@ -695,8 +704,8 @@ function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
 	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
 	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
-	local newWidth = self.owner.options.HugeWidth + (self.owner.options.HugeWidth - self.owner.options.Width ) * (1 - self.moveElapsed / 1)
-	local newScale = self.owner.options.HugeScale + (self.owner.options.HugeScale - self.owner.options.Scale) * (1 - self.moveElapsed / 1)
+	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 1)
+	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
 	self.frame:ClearAllPoints()
 	self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 	self.frame:SetScale(newScale)

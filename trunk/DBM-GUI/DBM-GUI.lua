@@ -387,10 +387,10 @@ local ListFrameButtonsPrototype = {}
 
 function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 	if not type(frame) == "table" or not frame.name then
-		DBM:AddMsg("Failed to CreateCategory - frame is not a table value or without frame.name")
+		DBM:AddMsg("Failed to create category - frame is not a table or doesn't have a name")
 		return false
 	elseif self:IsPresent(frame.name) then
-		DBM:AddMsg("Frame ("..frame.name..") is already known")
+		DBM:AddMsg("Frame ("..frame.name..") already exists")
 		return false
 	end
 
@@ -793,7 +793,7 @@ function DBM_GUI:CreateOptionsMenu()
 		end
 		local function ResetColor(id, frame)
 			return function(self)
-				DBM:AddMsg(L.ColorResetted)
+--				DBM:AddMsg(L.ColorResetted)
 				DBM.Options.WarningColors[id].r = DBM.DefaultOptions.WarningColors[id].r
 				DBM.Options.WarningColors[id].g = DBM.DefaultOptions.WarningColors[id].g
 				DBM.Options.WarningColors[id].b = DBM.DefaultOptions.WarningColors[id].b
@@ -1130,7 +1130,7 @@ do
 
 	function DBM_GUI:CreateBossModTab(mod)
 		if not mod.panel then
-			DBM:AddMsg("Failed to create ModPanel "..mod.localization.general.name)
+			DBM:AddMsg("Couldn't create boss mod panel for "..mod.localization.general.name)
 			return false
 		end
 		--DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
