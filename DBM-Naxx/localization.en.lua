@@ -272,8 +272,8 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarningShiftCasting		= "Show Polarity Shift warning",
-	WarningChargeChanged	= "Show special warning when your charge changed <NYI>",
-	WarningChargeNotChanged	= "Show special warning when your charge did not change <NYI>",
+	WarningChargeChanged	= "Show special warning when your polarity changed",
+	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
 	TimerShiftCast			= "Show Polarity Shift cast timer",
 	TimerNextShift			= "Show Polarity Shift cooldown timer",
 	ArrowsEnabled			= "Show arrows (NYI)",
@@ -282,9 +282,9 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting		= "Polarity Shift in 3 sec!",
-	WarningChargeChanged	= "Charge changed to %s",
-	WarningChargeNotChanged	= "Charge didn't change"
+	WarningShiftCasting		= "Polarity Shift in 5 sec!",
+	WarningChargeChanged	= "Polarity changed to %s",
+	WarningChargeNotChanged	= "Polarity didn't change"
 })
 
 L:SetTimerLocalization({

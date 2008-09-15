@@ -31,15 +31,17 @@ function mod:OnCombatStart()
 	currentCharge = nil
 end
 
+local lastShift = 0
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 28089 then
 		timerNextShift:Start()
 		timerShiftCast:Start()
-		warnShiftCasting:Show()		
+		warnShiftCasting:Show()
+		lastShift = GetTime()
 	end
 end
 
-local lastShift = 0
+
 function mod:UNIT_AURA(unit)
 	if unit ~= "player" then return end
 	local charge
@@ -53,13 +55,12 @@ function mod:UNIT_AURA(unit)
 		end
 		i = i + 1
 	end
-	if charge and (GetTime() - lastShift) > 26 then
+	if charge and (GetTime() - lastShift) < 8 and (GetTime() - lastShift) > 5 then
 		if charge == currentCharge then
 			warnChargeNotChanged:Show()
 		else
 			warnChargeChanged:Show(charge)
 		end
 		currentCharge = charge
-		lastShift = GetTime()
 	end
 end

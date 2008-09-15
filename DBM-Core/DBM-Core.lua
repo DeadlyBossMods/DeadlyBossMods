@@ -1300,12 +1300,14 @@ do
 	end)
 	
 	function specialWarningPrototype:Show(...)
-		font:SetText(self.text:format(...))
-		LowHealthFrame:Show()
-		LowHealthFrame:SetAlpha(1)
-		frame:Show()
-		frame:SetAlpha(1)
-		frame.timer = 5
+		if not self.option or self.mod.Options[self.option] then
+			font:SetText(self.text:format(...))
+			LowHealthFrame:Show()
+			LowHealthFrame:SetAlpha(1)
+			frame:Show()
+			frame:SetAlpha(1)
+			frame.timer = 5
+		end
 	end
 	
 	function specialWarningPrototype:Schedule(t, ...)
