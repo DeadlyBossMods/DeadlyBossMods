@@ -45,6 +45,27 @@ L.BossEnrageAnnounce = "Announce Enrage to Raid"
 L.Min = "Min"
 L.Sec = "Sec"
 
+L.AreaHead_TriggerCreate = "Create an Boss Event Trigger"
+L.Describe_TriggerCreate = [[Triggers can be created to handle events in bossfights. If the Boss yell some stuff or use one of his abilitys you need to catch and use them. As an example, the boss gains Shieldwall and you want to start a Bar when this occur, you simply have to choose BossBuffs or Debuffs and type in an Name for this event like "Shieldwall"]]
+
+L.Trigger_Typ = "Event that shall be triggered"
+L.Trigger_Name = "Name of this Trigger (a description)"
+L.Trigger_Typ_Spell = "Spell or Style"
+L.Trigger_Typ_Buff = "Buff or Debuff"
+L.Trigger_Typ_Yell = "Yell or Emote"
+L.Trigger_Typ_Time = "Time based"
+L.Trigger_Create_Bttn = "create trigger"
+
+L.EventYellText = "Yell/Say/Emote that shall call the Event"
+L.EventAnnounce = "Announce"
+L.EventAnnounceText = "Message to announce"
+L.EventSpecialWarn = "Show Special Warning"
+L.EventSpecialWarn_OnlyMe = "only if affects me"
+L.EventStartBar = "Start a timer Bar"
+L.EventWarnEnd = "Show warning before timer ends"
+L.EventWarnMsg = "Warning Message"
+L.EventSetIcon = "Set Icon on Target (on yells %t of text)"
+
 CurrentBossSetup = {
 	BossName = "",
 	BossIDs = {},
@@ -198,17 +219,6 @@ do
 end
 
 
-L.AreaHead_TriggerCreate = "Create an Boss Event Trigger"
-L.Describe_TriggerCreate = [[Triggers can be created to handle events in bossfights. If the Boss yell some stuff or use one of his abilitys you need to catch and use them. As an example, the boss gains Shieldwall and you want to start a Bar when this occur, you simply have to choose BossBuffs or Debuffs and type in an Name for this event like "Shieldwall"]]
-
-L.Trigger_Typ = "Event that shall be triggered"
-L.Trigger_Name = "Name of this Trigger (a description)"
-L.Trigger_Typ_Spell = "Spell or Style"
-L.Trigger_Typ_Buff = "Buff or Debuff"
-L.Trigger_Typ_Yell = "Yell or Emote"
-L.Trigger_Typ_Time = "Time based"
-L.Trigger_Create_Bttn = "create trigger"
-
 do
 	BMS_Trigger = BMS_Panel:CreateNewPanel(L.TabCategory_Triggers, "option")
 
@@ -228,7 +238,7 @@ do
 		{	text	= L.Trigger_Typ_Yell,	value = "yell" },
 		{	text	= L.Trigger_Typ_Time,	value = "time" },
 	}
-	local TriggerDropDown = BMS_CreateTrigger:CreateDropdown(L.Trigger_Typ, TriggerTyps, nil, function(value) DBM:AddMsg("Create Trigger: "..value) end);
+	local TriggerDropDown = BMS_CreateTrigger:CreateDropdown(L.Trigger_Typ, TriggerTyps);
 	TriggerDropDown:SetPoint("TOPLEFT", BMS_CreateTrigger.frame, "TOPLEFT", 10, -20)
 
 	local infotext = BMS_CreateTrigger:CreateText(L.Describe_TriggerCreate, 380, false)
@@ -236,56 +246,100 @@ do
 	infotext:SetJustifyH("LEFT")
 	infotext:SetFontObject(GameFontNormalSmall)
 
-L.EventYellText = "Yell/Say/Emote that shall call the Event"
-L.EventAnnounce = "Announce"
-L.EventAnnounceText = "Message to announce"
-L.EventSpecialWarn = "Show Special Warning"
-L.EventSpecialWarn_OnlyMe = "only if affects me"
-L.EventStartBar = "Start a timer Bar"
-L.EventWarnEnd = "Show warning before timer ends"
-L.EventWarnMsg = "Warning Message"
-
 	local trigger_id = 0
+
+	local function settriggeroption(id, option) 
+		return function(self)
+			if type(CurrentBossSetup.triggers[id][option]) == "string" then
+				CurrentBossSetup.triggers[id][option] = self:GetText()
+			elseif type(CurrentBossSetup.triggers[id][option]) == "boolean" then
+				CurrentBossSetup.triggers[id][option] = toboolean(self:GetChecked())
+			elseif type(CurrentBossSetup.triggers[id][option]) == "number" then
+				CurrentBossSetup.triggers[id][option] = self:GetNumber()
+			else
+				DBM:AddMsg("DEBUG: TriggerTyp ("..type(CurrentBossSetup.triggers[id][option])..") not found")
+			end
+		end
+	end
 	local function createtriggerframe()
 		local description = TriggerName:GetText()
-		local triggertype = "yell" -- TriggerDropDown:GetText()
-		if not description or not triggertype then return end
+		local triggertype = TriggerDropDown.value
+		if not description or description == "" or not triggertype or triggertype == "" then return end
 		trigger_id = trigger_id + 1
 
-		local TriggerArea = BMS_Trigger:CreateArea(trigger_id..". "..description, nil, 190, true)
+		CurrentBossSetup.triggers = CurrentBossSetup.triggers or {}
+		CurrentBossSetup.triggers[trigger_id] = {
+			typ = TriggerDropDown.value,
+			triggeryell = "",	-- type == yell (can be emote/yell/..: "boss raises his shild") 
+			triggerskill = 0,	-- type == spell (can be spell/skill/..: "boss begins to cast ID" or "player got hittet by skillID")
+			announce = false,	-- show announce (Shildwall is UP)
+			announcetext = "",
+			specialwarn = false,	-- flash screen "wtf move or die"
+			seticon = false,	-- mark target with skull
+			showbar = false,	-- show a bar when this happen again (eg. Shildwall in 30min)
+			bartime = 0,
+			barendwarn = false,	-- announce end of timer (eg. Shildwall in 5 sec)
+			barwarntime = 0,
+			barwarnmsg = ""
+		}
+
+
+		local TriggerArea = BMS_Trigger:CreateArea(trigger_id..". "..description.." ("..TriggerDropDown.text..")", nil, 215, true)
 		TriggerArea.id = trigger_id
 		TriggerArea.description = description
 		TriggerArea.triggertype = triggertype
 
 		local EventYellText = TriggerArea:CreateEditBox(L.EventYellText, "", 230)
 		EventYellText:SetPoint("TOPLEFT", 30, -25)
+		EventYellText:SetScript("OnTextChanged", settriggeroption(trigger_id, "triggeryell"))
 
 		local EventAnnounceText = TriggerArea:CreateEditBox(L.EventAnnounceText, "", 130)
 		EventAnnounceText:SetPoint("TOPLEFT", 130, -60)
+		EventAnnounceText:SetScript("OnTextChanged", settriggeroption(trigger_id, "announcetext"))
 
 		local EventAnnounce = TriggerArea:CreateCheckButton(L.EventAnnounce)
 		EventAnnounce:SetPoint("TOPLEFT", 10, -55)
+		EventAnnounce:SetScript("OnClick", settriggeroption(trigger_id, "announce"))
+
 		local EventSpecialWarning = TriggerArea:CreateCheckButton(L.EventSpecialWarn, true)
+		EventSpecialWarning:SetScript("OnClick", settriggeroption(trigger_id, "specialwarn"))
+
+		local EventSetIcon = TriggerArea:CreateCheckButton(L.EventSetIcon, true)
+		EventSetIcon:SetScript("OnClick", settriggeroption(trigger_id, "seticon"))
+
 		local EventStartTimer = TriggerArea:CreateCheckButton(L.EventStartBar, true)
+		EventStartTimer:SetScript("OnClick", settriggeroption(trigger_id, "showbar"))
 
 		local EventSpecialWarningOnlyMe = TriggerArea:CreateCheckButton(L.EventSpecialWarn_OnlyMe)
 		EventSpecialWarningOnlyMe:SetPoint("TOPLEFT", EventSpecialWarning, "TOPRIGHT", 150, 0)
+		EventSpecialWarningOnlyMe:SetScript("OnClick", settriggeroption(trigger_id, "specialwarn"))
 
 		local EventBarMin = TriggerArea:CreateEditBox(L.Min, "", 30)
-		EventBarMin:SetPoint('TOPLEFT', 30, -150)
 		local EventBarSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
+		EventBarMin:SetPoint('TOPLEFT', 30, -175)
 		EventBarSec:SetPoint('TOPLEFT', EventBarMin, "TOPRIGHT", 20, 0)
 
+		local function settime()
+			CurrentBossSetup.triggers[TriggerArea.id].bartime = EventBarMin:GetNumber()*60 + EventBarSec:GetNumber()
+			if CurrentBossSetup.triggers[TriggerArea.id].bartime < 0 then
+				CurrentBossSetup.triggers[TriggerArea.id].bartime = 0
+			end
+		end
+		EventBarMin:SetScript("OnTextChanged", settime)
+		EventBarSec:SetScript("OnTextChanged", settime)
+
 		local EventWarnEnd = TriggerArea:CreateCheckButton(L.EventWarnEnd)
-		EventWarnEnd:SetPoint("TOPLEFT", EventSpecialWarningOnlyMe, "BOTTOMLEFT", 0, 5)
+		EventWarnEnd:SetPoint("TOPLEFT", EventSpecialWarningOnlyMe, "BOTTOMLEFT", 0, -20)
 
 		local EventWarnEndSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
-		EventWarnEndSec:SetPoint('TOPLEFT', 210, -150)
+		EventWarnEndSec:SetPoint('TOPLEFT', 210, -175)
 
 		local EventWarnMsg = TriggerArea:CreateEditBox(L.EventWarnMsg, "", 130)
 		EventWarnMsg:SetPoint('TOPLEFT', EventWarnEndSec, "TOPRIGHT", 20, 0)
 
 
+		BMS_Trigger:SetMyOwnHeight()
+		DBM_GUI_OptionsFrame:DisplayFrame(BMS_Trigger.frame)
 
 	end
 	TriggerCreateBttn:SetScript("OnClick", createtriggerframe)
