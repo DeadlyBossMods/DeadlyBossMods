@@ -55,6 +55,7 @@ L.Trigger_Typ_Buff = "Buff or Debuff"
 L.Trigger_Typ_Yell = "Yell or Emote"
 L.Trigger_Typ_Time = "Time based"
 L.Trigger_Create_Bttn = "create trigger"
+L.Trigger_Delete_Bttn = "delete trigger"
 
 L.EventYellText = "Yell/Say/Emote that shall call the Event"
 L.EventAnnounce = "Announce"
@@ -65,6 +66,7 @@ L.EventStartBar = "Start a timer Bar"
 L.EventWarnEnd = "Show warning before timer ends"
 L.EventWarnMsg = "Warning Message"
 L.EventSetIcon = "Set Icon on Target (on yells %t of text)"
+
 
 CurrentBossSetup = {
 	BossName = "",
@@ -222,6 +224,8 @@ end
 do
 	BMS_Trigger = BMS_Panel:CreateNewPanel(L.TabCategory_Triggers, "option")
 
+	local DeletedTriggerFrames = {}	-- Weaktable for Trigger Frames
+
 	local BMS_CreateTrigger = BMS_Trigger:CreateArea(L.AreaHead_TriggerCreate, nil, 165, true)
 
 	local TriggerName = BMS_CreateTrigger:CreateEditBox(L.Trigger_Name, "", 200)
@@ -257,7 +261,20 @@ do
 			elseif type(CurrentBossSetup.triggers[id][option]) == "number" then
 				CurrentBossSetup.triggers[id][option] = self:GetNumber()
 			else
-				DBM:AddMsg("DEBUG: TriggerTyp ("..type(CurrentBossSetup.triggers[id][option])..") not found")
+				DBM:AddMsg("DEBUG: SetTriggerTyp ("..type(CurrentBossSetup.triggers[id][option])..") not found")
+			end
+		end
+	end
+	local function showtriggeroption(id, option) 
+		return function(self)
+			if type(CurrentBossSetup.triggers[id][option]) == "string" then
+				self:SetText(CurrentBossSetup.triggers[id][option])
+			elseif type(CurrentBossSetup.triggers[id][option]) == "boolean" then
+				self:SetChecked(CurrentBossSetup.triggers[id][option])
+			elseif type(CurrentBossSetup.triggers[id][option]) == "number" then
+				self:SetText(CurrentBossSetup.triggers[id][option])
+			else
+				DBM:AddMsg("DEBUG: ShowTriggerTyp ("..type(CurrentBossSetup.triggers[id][option])..") not found")
 			end
 		end
 	end
@@ -289,54 +306,98 @@ do
 		TriggerArea.description = description
 		TriggerArea.triggertype = triggertype
 
-		local EventYellText = TriggerArea:CreateEditBox(L.EventYellText, "", 230)
-		EventYellText:SetPoint("TOPLEFT", 30, -25)
-		EventYellText:SetScript("OnTextChanged", settriggeroption(trigger_id, "triggeryell"))
+		TriggerArea.EventYellText = TriggerArea:CreateEditBox(L.EventYellText, "", 230)
+		TriggerArea.EventYellText:SetPoint("TOPLEFT", 30, -25)
+		TriggerArea.EventYellText:SetScript("OnTextChanged", settriggeroption(trigger_id, "triggeryell"))
+		TriggerArea.EventYellText:SetScript("OnShow", showtriggeroption(trigger_id, "triggeryell"))
 
-		local EventAnnounceText = TriggerArea:CreateEditBox(L.EventAnnounceText, "", 130)
-		EventAnnounceText:SetPoint("TOPLEFT", 130, -60)
-		EventAnnounceText:SetScript("OnTextChanged", settriggeroption(trigger_id, "announcetext"))
+		TriggerArea.EventAnnounceText = TriggerArea:CreateEditBox(L.EventAnnounceText, "", 130)
+		TriggerArea.EventAnnounceText:SetPoint("TOPLEFT", 130, -60)
+		TriggerArea.EventAnnounceText:SetScript("OnTextChanged", settriggeroption(trigger_id, "announcetext"))
+		TriggerArea.EventAnnounceText:SetScript("OnShow", showtriggeroption(trigger_id, "announcetext"))
 
-		local EventAnnounce = TriggerArea:CreateCheckButton(L.EventAnnounce)
-		EventAnnounce:SetPoint("TOPLEFT", 10, -55)
-		EventAnnounce:SetScript("OnClick", settriggeroption(trigger_id, "announce"))
+		TriggerArea.EventAnnounce = TriggerArea:CreateCheckButton(L.EventAnnounce)
+		TriggerArea.EventAnnounce:SetPoint("TOPLEFT", 10, -55)
+		TriggerArea.EventAnnounce:SetScript("OnClick", settriggeroption(trigger_id, "announce"))
+		TriggerArea.EventAnnounce:SetScript("OnShow", showtriggeroption(trigger_id, "announce"))
 
-		local EventSpecialWarning = TriggerArea:CreateCheckButton(L.EventSpecialWarn, true)
-		EventSpecialWarning:SetScript("OnClick", settriggeroption(trigger_id, "specialwarn"))
+		TriggerArea.EventSpecialWarning = TriggerArea:CreateCheckButton(L.EventSpecialWarn, true)
+		TriggerArea.EventSpecialWarning:SetScript("OnClick", settriggeroption(trigger_id, "specialwarn"))
+		TriggerArea.EventSpecialWarning:SetScript("OnShow", showtriggeroption(trigger_id, "specialwarn"))
 
-		local EventSetIcon = TriggerArea:CreateCheckButton(L.EventSetIcon, true)
-		EventSetIcon:SetScript("OnClick", settriggeroption(trigger_id, "seticon"))
+		TriggerArea.EventSetIcon = TriggerArea:CreateCheckButton(L.EventSetIcon, true)
+		TriggerArea.EventSetIcon:SetScript("OnClick", settriggeroption(trigger_id, "seticon"))
+		TriggerArea.EventSetIcon:SetScript("OnShow", showtriggeroption(trigger_id, "seticon"))
 
-		local EventStartTimer = TriggerArea:CreateCheckButton(L.EventStartBar, true)
-		EventStartTimer:SetScript("OnClick", settriggeroption(trigger_id, "showbar"))
+		TriggerArea.EventStartTimer = TriggerArea:CreateCheckButton(L.EventStartBar, true)
+		TriggerArea.EventStartTimer:SetScript("OnClick", settriggeroption(trigger_id, "showbar"))
+		TriggerArea.EventStartTimer:SetScript("OnShow", showtriggeroption(trigger_id, "showbar"))
 
-		local EventSpecialWarningOnlyMe = TriggerArea:CreateCheckButton(L.EventSpecialWarn_OnlyMe)
-		EventSpecialWarningOnlyMe:SetPoint("TOPLEFT", EventSpecialWarning, "TOPRIGHT", 150, 0)
-		EventSpecialWarningOnlyMe:SetScript("OnClick", settriggeroption(trigger_id, "specialwarn"))
+		TriggerArea.EventSpecialWarningOnlyMe = TriggerArea:CreateCheckButton(L.EventSpecialWarn_OnlyMe)
+		TriggerArea.EventSpecialWarningOnlyMe:SetPoint("TOPLEFT", TriggerArea.EventSpecialWarning, "TOPRIGHT", 150, 0)
+		TriggerArea.EventSpecialWarningOnlyMe:SetScript("OnClick", settriggeroption(trigger_id, "specialwarn"))
+		TriggerArea.EventSpecialWarningOnlyMe:SetScript("OnShow", showtriggeroption(trigger_id, "specialwarn"))
 
-		local EventBarMin = TriggerArea:CreateEditBox(L.Min, "", 30)
-		local EventBarSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
-		EventBarMin:SetPoint('TOPLEFT', 30, -175)
-		EventBarSec:SetPoint('TOPLEFT', EventBarMin, "TOPRIGHT", 20, 0)
+		TriggerArea.EventBarMin = TriggerArea:CreateEditBox(L.Min, "", 30)
+		TriggerArea.EventBarSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
+		TriggerArea.EventBarMin:SetPoint('TOPLEFT', 30, -175)
+		TriggerArea.EventBarSec:SetPoint('TOPLEFT', TriggerArea.EventBarMin, "TOPRIGHT", 20, 0)
 
 		local function settime()
-			CurrentBossSetup.triggers[TriggerArea.id].bartime = EventBarMin:GetNumber()*60 + EventBarSec:GetNumber()
+			CurrentBossSetup.triggers[TriggerArea.id].bartime = TriggerArea.EventBarMin:GetNumber()*60 + TriggerArea.EventBarSec:GetNumber()
 			if CurrentBossSetup.triggers[TriggerArea.id].bartime < 0 then
 				CurrentBossSetup.triggers[TriggerArea.id].bartime = 0
 			end
 		end
-		EventBarMin:SetScript("OnTextChanged", settime)
-		EventBarSec:SetScript("OnTextChanged", settime)
+		local function showtime()
+			TriggerArea.EventBarMin:SetText( math.floor(CurrentBossSetup.triggers[TriggerArea.id].bartime/60) )
+			TriggerArea.EventBarSec:SetText( CurrentBossSetup.triggers[TriggerArea.id].bartime - TriggerArea.EventBarMin:GetNumber()*60 )
+		end
+		TriggerArea.EventBarMin:SetScript("OnTextChanged", settime)
+		TriggerArea.EventBarSec:SetScript("OnTextChanged", settime)
+		TriggerArea.EventBarMin:SetScript("OnShow", showtime)
+		TriggerArea.EventBarSec:SetScript("OnShow", showtime)
 
-		local EventWarnEnd = TriggerArea:CreateCheckButton(L.EventWarnEnd)
-		EventWarnEnd:SetPoint("TOPLEFT", EventSpecialWarningOnlyMe, "BOTTOMLEFT", 0, -20)
+		TriggerArea.EventWarnEnd = TriggerArea:CreateCheckButton(L.EventWarnEnd)
+		TriggerArea.EventWarnEnd:SetPoint("TOPLEFT", TriggerArea.EventSpecialWarningOnlyMe, "BOTTOMLEFT", 0, -20)
+		TriggerArea.EventWarnEnd:SetScript("OnClick", settriggeroption(trigger_id, "barendwarn"))
+		TriggerArea.EventWarnEnd:SetScript("OnShow", showtriggeroption(trigger_id, "barendwarn"))
 
-		local EventWarnEndSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
-		EventWarnEndSec:SetPoint('TOPLEFT', 210, -175)
+		TriggerArea.EventWarnEndSec = TriggerArea:CreateEditBox(L.Sec, "", 30)
+		TriggerArea.EventWarnEndSec:SetPoint('TOPLEFT', 210, -175)
+		TriggerArea.EventWarnEndSec:SetScript("OnTextChanged", settriggeroption(trigger_id, "barwarntime"))
+		TriggerArea.EventWarnEndSec:SetScript("OnShow", showtriggeroption(trigger_id, "barwarntime"))
 
-		local EventWarnMsg = TriggerArea:CreateEditBox(L.EventWarnMsg, "", 130)
-		EventWarnMsg:SetPoint('TOPLEFT', EventWarnEndSec, "TOPRIGHT", 20, 0)
+		TriggerArea.EventWarnMsg = TriggerArea:CreateEditBox(L.EventWarnMsg, "", 130)
+		TriggerArea.EventWarnMsg:SetPoint('TOPLEFT', TriggerArea.EventWarnEndSec, "TOPRIGHT", 20, 0)
+		TriggerArea.EventWarnMsg:SetScript("OnTextChanged", settriggeroption(trigger_id, "barwarnmsg"))
+		TriggerArea.EventWarnMsg:SetScript("OnShow", showtriggeroption(trigger_id, "barwarnmsg"))
 
+		TriggerArea.movemebutton = TriggerArea:CreateButton(L.Trigger_Delete_Bttn, 100, 16)
+		TriggerArea.movemebutton:SetPoint('BOTTOMRIGHT', TriggerArea.frame, "TOPRIGHT", 0, -1)
+		TriggerArea.movemebutton:SetNormalFontObject(GameFontNormalSmall)
+		TriggerArea.movemebutton:SetHighlightFontObject(GameFontNormalSmall)
+		TriggerArea.movemebutton:SetScript("OnClick", function(self) 
+			table.insert(DeletedTriggerFrames, TriggerArea)
+			for i=1, select("#", TriggerArea.frame:GetChildren()), 1 do
+				select(i, TriggerArea.frame:GetChildren()):Hide()
+			end
+
+			for i=1, select("#", BMS_Trigger.frame:GetChildren()), 1 do	-- select all Areas
+				if select(i, BMS_Trigger.frame:GetChildren()) == TriggerArea.frame then
+					if select("#", BMS_Trigger.frame:GetChildren()) > i then
+						select(i+1, BMS_Trigger.frame:GetChildren()):ClearAllPoints()
+						select(i+1, BMS_Trigger.frame:GetChildren()):SetPoint('TOPLEFT', select(i-1, BMS_Trigger.frame:GetChildren()), "BOTTOMLEFT", 0, -17)
+					end
+				end
+				select(i, BMS_Trigger.frame:GetChildren())
+			end
+			TriggerArea.frame:Hide()
+			TriggerArea.frame:SetParent(UIParent)
+
+			BMS_Trigger:SetMyOwnHeight()
+			DBM_GUI_OptionsFrame:DisplayFrame(BMS_Trigger.frame)
+		end)
 
 		BMS_Trigger:SetMyOwnHeight()
 		DBM_GUI_OptionsFrame:DisplayFrame(BMS_Trigger.frame)
