@@ -53,6 +53,10 @@ do
 
 	local function ButtonDefaultFunction(self)
 		self:GetParent():HideMenu()
+
+		self:GetParent().dropdown.value = self.entry.value
+		self:GetParent().dropdown.text = self.entry.text
+		
 		if self.entry.func then
 			self.entry.func(self.entry.value)
 		end
@@ -148,13 +152,17 @@ do
 		for k,v in next, dropdown.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
 				getglobal(dropdown:GetName().."Text"):SetText(v.text)
+				dropdown.value = v.value
+				dropdown.text = v.text
 			end
 		end
 
-		local text = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
-		text:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
-		text:SetFontObject('GameFontNormalSmall')
-		text:SetText(title)
+		if not (not title or title == "") then
+			dropdown.titletext = dropdown:CreateFontString(FrameTitle..self:GetCurrentID().."Text", 'BACKGROUND')
+			dropdown.titletext:SetPoint('BOTTOMLEFT', dropdown, 'TOPLEFT', 21, 0)
+			dropdown.titletext:SetFontObject('GameFontNormalSmall')
+			dropdown.titletext:SetText(title)
+		end
 
 		return dropdown
 	end
