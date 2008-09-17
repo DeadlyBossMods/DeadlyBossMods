@@ -26,167 +26,71 @@
 --
 
 DBM_BidBot_Settings = {
-	enabled = false,		-- BidBot ein/aus
-	chatchannel = "GUILD",		-- Ausgabe channel
+	enabled = true,		-- BidBot ein/aus
+	chatchannel = "SAY",		-- Ausgabe channel
 	minGebot = 10,			-- Mindest Gebot
 	duration = 30,			-- Laufzeit einer auction
 	output = 4,			-- max. Menge der ausgegebenen Gebote
 }
 local settings = DBM_BidBot_Settings
 local L = DBM_BidBot_Translations
-DBM_BidBot = {}
-DBM_BidBot.Queue = {}
-DBM_BidBot.Frame = CreateFrame("Frame", "DBM_BidBotFrame", UIParent)
-DBM_BidBot.Frame:SetScript("OnEvent", self.OnEvent)
-DBM_BidBot.Frame:Show()
-DBM_BidBot.InProgress = false
-DBM_BidBot.CurrentItem = ""
-DBM_BidBot.Bidders = {}
 
-function DBM_BidBot:OnEvent(event, ...)
-	if event == "ADDON_LOADED" then
-		self:RegisterEvents(
-			"CHAT_MSG_GUILD",
-			"CHAT_MSG_RAID",
-			"CHAT_MSG_PARTY",
-			"CHAT_MSG_OFFICER",
-			"CHAT_MSG_RAID_LEADER",
-			"CHAT_MSG_WHISPER",
-		)
+local BidBot_Queue = {}			-- items pending
+local BidBot_Biddings = {}		-- current bids
+local BidBot_InProgress = false		-- true when an auction is running
+local BidBot_CurrentItem		-- item that currently run
 
-		if DBM_BidBot_Translations[GetLocale()] then 
-			L = DBM_BidBot_Translations[GetLocale()]
-		end
-
-	elseif event:sub(0, 9) == "CHAT_MSG_" then
-		local chatmsg, from = select(1, ...)
-		self:OnMsgRecived(chatmsg, from)
-	end
-end
-
-function DBM_BidBot:RegisterEvents(...)
-	for i = 1, select("#", ...) do
-		self.Frame:RegisterEvent(select(i, ...))
-	end
-end
-
--- lets register the Events
-DBM_BidBot:RegisterEvents("ADDON_LOADED")
-
-
-function DBM_BidBot:OnMsgRecived(msg, name)
-	if settings.enabled and msg and string.find(string.lower(msg), "^!bid ") then
-		local ItemLink			
-		ItemLink = string.gsub(msg, "^!(%w+) ", "")			
-		if string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r") then
-		   for link in string.gmatch(ItemLink, "(|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r)") do
-			self:AddItem(link)
-		   end
-		   if self.InProgress then
-			SendChatMessage("<DBM>"..L.Prefix..L.Whisper_Queue, "WHISPER", nil, name)
-		   else
-			DBM:Schedule(1.5, self.StartBidding)
-		   end
-		end
-		return true
-	end
-	return false
-end
-
-function DBM_BidBot:TranslateLink(link)  -- try to translate link to englisch name
-	if not GetLocale() == "enGB" or GetLocale() == "enUS" then return link end
-
-	local ItemLink = select(2, GetItemInfo(link) )
-	return ItemLink
-end
-
-
-function DBM_BidBot:AddItem(ItemLink)
-	local newID
-	local thisID
-	_, _, _, newID = string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r")
-
-	for k, v in pairs(self.Queue) do
-		_, _, _, thisID = string.find(v, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r")
-		if newID == thisID then
+local function AddItem(ItemLink)
+	local newID = select(4, string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r"))
+	for k, v in pairs(BidBot_Queue) do
+		if newID == select(4, string.find(v, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r")) then
 			return
 		end
 	end
-
-	table.insert(self.Queue,ItemLink)
+	table.insert(BidBot_Queue, ItemLink)
 end
 
-function DBM_BidBot:GetNextItem()
-	if self.Queue[1] then
-		return table.remove(self.Quene)
+local function TranslateLink(link)  -- try to translate link to english name
+	if not GetLocale() == "enGB" and not GetLocale() == "enUS" then return link end
+	return select(2, GetItemInfo(link))
+end
+
+local function GetNextItem()
+	if BidBot_Queue[1] then
+		return table.remove(BidBot_Queue)
 	else
 		return false
 	end
 end
 
-function  DBM_BidBot:SortTable(a, b)
-	return a.Bid > b.Bid;
-end
-
-function DBM_BidBot:AddBid(Name, Gebot)
-	table.insert(self.Bidders, {
-		["Name"] = Name,
-		["Bid"] = Gebot
+local function AddBid(bidder, bid)
+	table.insert(BidBot_Biddings, {
+		["Name"] = bidder,
+		["Bid"] = bid
 	})
-	SendChatMessage(L.Prefix..L.Whisper_Bid_OK:format(Gebot), "WHISPER", nil, Name)
+	SendChatMessage(L.Prefix..L.Whisper_Bid_OK:format(bid), "WHISPER", nil, bidder)
 end
 
-
-function DBM_BidBot:StartBidding()
-	if self.InProgress then
-		self:Print(L.Prefix..L.Whisper_InUse:format(self.CurrentItem)  )
-
-	else
-		local ItemLink = self:GetNextItem()
-		if ItemLink == false then
-			return
-		end
-
-		if self:TranslateLink(ItemLink) then
-			ItemLink = self:TranslateLink(ItemLink);
-		end
-		self.InProgress = true
-		self.CurrentItem = ItemLink
-		self.Bidders = {}
-
-		SendChatMessage(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), settings.minGebot), settings.chatchannel);
-		SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, settings.Duration), settings.chatchannel);
-		
-		DBM:Schedule((settings.Duration / 6) * 5, function() 
-			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.Duration / 6)), settings.chatchannel)
-			end)
-		DBM:Schedule(settings.Duration / 2, function() 
-			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.Duration / 2)), settings.chatchannel)
-			end)
-		DBM:Schedule(settings.Duration, self.AuctionEnd)
-	end
-end
-
-function DBM_BidBot:AuctionEnd()
-	self.InProgress = false
+local function AuctionEnd()
+	BidBot_InProgress = false
 	local Itembid = {
 		time = time(), 
-		item = self.CurrentItem, 
+		item = BidBot_CurrentItem, 
 		points = 0, 
 		member = "", 
 		bids = {} 
 	}
 
-	if (self.Bidders[1] and self.Bidders[2]) then
-		table.sort(self.Bidders, function(a,b) return a.Bid > b.Bid end)
-		Itembid.points = self.Bidders[2]["Bid"] + 1
-		Itembid.member = self.Bidders[1]["Name"]
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, self.Bidders[1]["Name"]), settings.chatchannel);
+	if (BidBot_Biddings[1] and BidBot_Biddings[2]) then
+		table.sort(BidBot_Biddings, function(a,b) return a.Bid > b.Bid end)
+		Itembid.points = BidBot_Biddings[2]["Bid"] + 1
+		Itembid.member = BidBot_Biddings[1]["Name"]
+		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, BidBot_Biddings[1]["Name"]), settings.chatchannel);
 
-	elseif (self.Bidders[1]) then
+	elseif (BidBot_Biddings[1]) then
 		Itembid.points = settings.minGebot
-		Itembid.member = self.Bidders[1]["Name"]
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, self.Bidders[1]["Name"]), settings.chatchannel);
+		Itembid.member = BidBot_Biddings[1]["Name"]
+		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, BidBot_Biddings[1]["Name"]), settings.chatchannel);
 	else
 		Itembid.member = L.Disenchant
 		SendChatMessage(L.Prefix..L.Message_NoBidMade:format(Itembid.item), settings.chatchannel);
@@ -195,15 +99,15 @@ function DBM_BidBot:AuctionEnd()
 	local counter = 0
 	local max = false
 
-	for posi, werte in pairs(self.Bidders) do
+	for posi, werte in pairs(BidBot_Biddings) do
 	   counter = counter + 1
 
-	   Itembid.bids[tonumber(posi)] = {
+	   table.insert(Itembid.bids, {
 		["points"] = werte.Bid,
 		["name"] = werte.Name
-	   }
+	   })
 
-	   if posi <= DKPCDB.BidBot.output then
+	   if posi <= settings.output then
 		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.name, werte.Bid), settings.chatchannel)
 	   else
 		max = true
@@ -215,12 +119,92 @@ function DBM_BidBot:AuctionEnd()
 		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(settings.output, counter), settings.chatchannel)
 	end
 
-	self.CurrentItem = ""
-	self.Bidders = {}
-	if #self.Queue then
+	BidBot_CurrentItem = ""
+	for i=1, select("#", BidBot_Biddings) do table.remove(BidBot_Biddings) end	-- cleanup table
+	if #BidBot_Queue then
 		-- Shedule next Item
 		SendChatMessage("--- --- --- --- ---", settings.chatchannel)
-		DBM:Schedule(1.5, self.StartBidding)
+		DBM:Schedule(1.5, DBM_BidBot_StartBidding)
 	end
+end	
+
+function DBM_BidBot_StartBidding()	-- can't be local because of the Schedule on stopbidding (the local function is unknown in the AuctionEnd())
+	if BidBot_InProgress then
+		self:Print(L.Prefix..L.Whisper_InUse:format(CurrentItem)  )
+	else
+		local ItemLink = GetNextItem()
+		if ItemLink == false then
+			return
+		end
+
+		if TranslateLink(ItemLink) then
+			ItemLink = TranslateLink(ItemLink);
+		end
+		BidBot_InProgress = true
+		BidBot_CurrentItem = ItemLink
+		for i=1, select("#", BidBot_Biddings) do table.remove(BidBot_Biddings) end
+
+		SendChatMessage(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), settings.minGebot), settings.chatchannel);
+		SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, settings.duration), settings.chatchannel);
+		
+		DBM:Schedule((settings.duration / 6) * 5, function() 
+			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.duration / 6)), settings.chatchannel)
+			end)
+		DBM:Schedule(settings.duration / 2, function() 
+			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.duration / 2)), settings.chatchannel)
+			end)
+		DBM:Schedule(settings.duration, AuctionEnd)
+	end
+end
+
+do 
+	local function OnMsgRecived(msg, name)
+		if settings.enabled and msg and string.find(string.lower(msg), "^!bid ") then
+			local ItemLink			
+			ItemLink = string.gsub(msg, "^!(%w+) ", "")			
+			if string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r") then
+			   for link in string.gmatch(ItemLink, "(|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r)") do
+				AddItem(link)
+			   end
+			   if BidBot_InProgress then
+				SendChatMessage("<DBM>"..L.Prefix..L.Whisper_Queue, "WHISPER", nil, name)
+			   else
+				DBM:Schedule(1.5, DBM_BidBot_StartBidding)
+			   end
+			end
+			return true
+		end
+		return false
+	end
+	
+	local BidBot_Frame = CreateFrame("Frame", "DBM_BidBotFrame", UIParent)
+	local function RegisterEvents(...)
+		for i = 1, select("#", ...) do
+			BidBot_Frame:RegisterEvent(select(i, ...))
+		end
+	end
+	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
+		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
+			RegisterEvents(
+				"CHAT_MSG_GUILD",
+				"CHAT_MSG_RAID",
+				"CHAT_MSG_SAY",
+				"CHAT_MSG_PARTY",
+				"CHAT_MSG_OFFICER",
+				"CHAT_MSG_RAID_LEADER",
+				"CHAT_MSG_WHISPER"
+			)
+	
+			if DBM_BidBot_Translations[GetLocale()] then 
+				L = DBM_BidBot_Translations[GetLocale()]
+			end
+	
+		elseif event:sub(0, 9) == "CHAT_MSG_" then
+			OnMsgRecived(select(1, ...), select(2, ...))
+		end
+	end)
+	
+	-- lets register the Events
+	RegisterEvents("ADDON_LOADED")
 end	
 
