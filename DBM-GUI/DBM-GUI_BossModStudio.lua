@@ -285,7 +285,6 @@ do
 	end
 
 	local function ChangeFrameAppearance(self) 
-		DBM:AddMsg("Call apperance -> "..self.triggertype)
 		if self.triggertype == "yell" then
 			self.obj.EventYellText:Show()
 			self.obj.EventSpellID:Hide()
@@ -433,12 +432,12 @@ do
 		-- set positions and script to frame elements
 		TriggerArea.EventSpellID:SetPoint("TOPLEFT", 60, -20)
 		TriggerArea.EventSpellID:SetScript("OnTextChanged", function(self) 
-			settriggeroption(trigger_id, "triggerskill")(self)
+			settriggeroption(TriggerArea.id, "triggerskill")(self)
 			TriggerArea.EventSpellIcon.texture:SetTexture(select(3, GetSpellInfo(self:GetNumber())) or "Interface\\Icons\\Spell_Frost_Stun")
 			TriggerArea.EventSpellText:SetText(select(1, GetSpellInfo(self:GetNumber())))
 		end)
 		TriggerArea.EventSpellID:SetScript("OnShow", function(self)
-			showtriggeroption(trigger_id, "triggerskill")(self)
+			showtriggeroption(TriggerArea.id, "triggerskill")(self)
 			TriggerArea.EventSpellIcon.texture:SetTexture(select(3, GetSpellInfo(CurrentBossSetup.triggers[TriggerArea.id].triggerskill)) or "Interface\\Icons\\Spell_Frost_Stun")
 			TriggerArea.EventSpellText:SetText(select(1, GetSpellInfo(CurrentBossSetup.triggers[TriggerArea.id].triggerskill)))
 		end)
@@ -471,7 +470,7 @@ do
 		TriggerArea.EventSetIcon:SetScript("OnClick", settriggeroption(trigger_id, "seticon"))
 		TriggerArea.EventSetIcon:SetScript("OnShow", showtriggeroption(trigger_id, "seticon"))
 		TriggerArea.EventStartTimer:SetScript("OnClick", function(self)
-			settriggeroption(trigger_id, "showbar")(self)
+			settriggeroption(TriggerArea.id, "showbar")(self)
 			if self:GetChecked() then
 				TriggerArea.EventWarnEnd:Show()
 				TriggerArea.EventWarnEndSec:Show()
@@ -483,7 +482,7 @@ do
 			end
 		end)
 		TriggerArea.EventStartTimer:SetScript("OnShow", function(self)
-			showtriggeroption(trigger_id, "showbar")(self)
+			showtriggeroption(TriggerArea.id, "showbar")(self)
 			if self:GetChecked() then
 				TriggerArea.EventWarnEnd:Show()
 				TriggerArea.EventWarnEndSec:Show()
