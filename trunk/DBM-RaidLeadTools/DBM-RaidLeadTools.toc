@@ -6,10 +6,5 @@
 ## DefaultState: enabled
 ## Author: Nitram and Tandanu
 ## URL: http://www.deadlybossmods.com
-
 DBM-RaidLeadTools.lua
-
-DBM-BidBot/localization.en.lua
-DBM-BidBot/localization.de.lua
-DBM-BidBot/bidbot.lua
-
+load_files.xml

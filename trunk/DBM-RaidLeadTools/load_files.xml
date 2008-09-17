@@ -1,0 +1,9 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+<!-- BidBot (!bid [item]) --> 
+<Script file="DBM-BidBot\localization.en.lua"/>
+<Script file="DBM-BidBot\localization.de.lua"/>
+<Script file="DBM-BidBot\bidbot.lua"/>
+
+</Ui>
