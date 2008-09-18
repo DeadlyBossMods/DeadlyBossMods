@@ -2,7 +2,7 @@
 ## Title: |cff0055FFDeadly Boss Mods|r Chamber of Aspects
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_Stats
+## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Chamber of Aspects

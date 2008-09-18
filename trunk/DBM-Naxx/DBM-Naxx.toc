@@ -2,7 +2,7 @@
 ## Title: |cff0055FFDeadly Boss Mods|r Naxxramas
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMNaxx_SavedVars, DBMNaxx_Stats
+## SavedVariablesPerCharacter: DBMNaxx_SavedVars, DBMNaxx_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Arachnid Quarter,Construct Quarter,Plague Quarter,Military Quarter,Frostwyrm Lair
