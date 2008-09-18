@@ -40,7 +40,13 @@ local BidBot_Biddings = {}		-- current bids
 local BidBot_InProgress = false		-- true when an auction is running
 local BidBot_CurrentItem		-- item that currently run
 
-local function AddItem(ItemLink)
+-- Functions
+local AddItem
+local AddBid
+local AuctionEnd
+local StartBidding
+
+function AddItem(ItemLink)
 	local newID = select(4, string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r"))
 	for k, v in pairs(BidBot_Queue) do
 		if newID == select(4, string.find(v, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r")) then
@@ -50,20 +56,7 @@ local function AddItem(ItemLink)
 	table.insert(BidBot_Queue, ItemLink)
 end
 
-local function TranslateLink(link)  -- try to translate link to english name
-	if not GetLocale() == "enGB" and not GetLocale() == "enUS" then return link end
-	return select(2, GetItemInfo(link))
-end
-
-local function GetNextItem()
-	if BidBot_Queue[1] then
-		return table.remove(BidBot_Queue)
-	else
-		return false
-	end
-end
-
-local function AddBid(bidder, bid)
+function AddBid(bidder, bid)
 	table.insert(BidBot_Biddings, {
 		["Name"] = bidder,
 		["Bid"] = bid
@@ -71,7 +64,7 @@ local function AddBid(bidder, bid)
 	SendChatMessage(L.Prefix..L.Whisper_Bid_OK:format(bid), "WHISPER", nil, bidder)
 end
 
-local function AuctionEnd()
+function AuctionEnd()
 	BidBot_InProgress = false
 	local Itembid = {
 		time = time(), 
@@ -124,22 +117,23 @@ local function AuctionEnd()
 	if #BidBot_Queue then
 		-- Shedule next Item
 		SendChatMessage("--- --- --- --- ---", settings.chatchannel)
-		DBM:Schedule(1.5, DBM_BidBot_StartBidding)
+		DBM:Schedule(1.5, StartBidding)
 	end
 end	
 
-function DBM_BidBot_StartBidding()	-- can't be local because of the Schedule on stopbidding (the local function is unknown in the AuctionEnd())
+function StartBidding()
 	if BidBot_InProgress then
 		self:Print(L.Prefix..L.Whisper_InUse:format(CurrentItem)  )
 	else
-		local ItemLink = GetNextItem()
+		local ItemLink = false
+		if BidBot_Queue[1] then
+			ItemLink = table.remove(BidBot_Queue)
+		end
+
 		if ItemLink == false then
 			return
 		end
 
-		if TranslateLink(ItemLink) then
-			ItemLink = TranslateLink(ItemLink);
-		end
 		BidBot_InProgress = true
 		BidBot_CurrentItem = ItemLink
 		for i=1, select("#", BidBot_Biddings) do table.remove(BidBot_Biddings) end
@@ -169,7 +163,7 @@ do
 			   if BidBot_InProgress then
 				SendChatMessage("<DBM>"..L.Prefix..L.Whisper_Queue, "WHISPER", nil, name)
 			   else
-				DBM:Schedule(1.5, DBM_BidBot_StartBidding)
+				DBM:Schedule(1.5, StartBidding)
 			   end
 			end
 			return true
