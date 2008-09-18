@@ -99,7 +99,7 @@ do
 	--  arg4 = autoplace
 	--
 	function PanelPrototype:CreateArea(name, width, height, autoplace)
-		local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionFrameBoxTemplate')
+		local area = CreateFrame('Frame', FrameTitle..self:GetNewID(), self.frame, 'OptionsBoxTemplate')
 		area.mytype = "area"
 		area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 		area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
@@ -491,9 +491,28 @@ end
 
 
 do
+	local function HideScrollBar (frame)
+		local list = getglobal(frame:GetName() .. "List");
+		list:Hide();
+		local listWidth = list:GetWidth();
+		for _, button in next, frame.buttons do
+			button:SetWidth(button:GetWidth() + listWidth);
+		end
+	end
+
+	local function DisplayScrollBar (frame)
+		local list = getglobal(frame:GetName() .. "List");
+		list:Show();
+	
+		local listWidth = list:GetWidth();
+	
+		for _, button in next, frame.buttons do
+			button:SetWidth(button:GetWidth() - listWidth);
+		end
+	end
+
 	-- the functions in this block are only used to 
 	-- create/update/manage the Fauxscrollframe for Boss/Options Selection
-
 	local displayedElements = {}
 
 	-- This function is for internal use.
@@ -526,9 +545,9 @@ do
 		local numButtons = #buttons;
 
 		if ( numAddOnCategories > numButtons and ( not listframe:IsShown() ) ) then
-			InterfaceOptionsList_DisplayScrollBar(listframe);
+			DisplayScrollBar(listframe);
 		elseif ( numAddOnCategories <= numButtons and ( listframe:IsShown() ) ) then
-			InterfaceOptionsList_HideScrollBar(listframe);
+			HideScrollBar(listframe);
 		end
 		
 		FauxScrollFrame_Update(getglobal(listframe:GetName().."List"), numAddOnCategories, numButtons, buttons[1]:GetHeight());	
