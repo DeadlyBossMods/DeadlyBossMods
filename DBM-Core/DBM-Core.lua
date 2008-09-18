@@ -44,6 +44,7 @@ DBM.DefaultOptions = {
 		{r = 1.00, g = 0.50, b = 0.00},
 		{r = 1.00, g = 0.10, b = 0.10},
 	},
+	RaidWarningSound = "Sound\\interface\\RaidWarning.wav",
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
@@ -57,10 +58,12 @@ DBM.DefaultOptions = {
 	WarningIconLeft = true,
 	WarningIconRight = true,
 	HideBossEmoteFrame = false,
+	SpamBlockRaidWarning = true,
 }
 
 DBM.Bars = DBT:New()
 DBM.Mods = {}
+
 
 --------------
 --  Locals  --
@@ -68,7 +71,7 @@ DBM.Mods = {}
 local inCombat = {}
 local combatInfo = {}
 local updateFunctions = {}
- raid = {} -- TODO
+local raid = {}
 local modSyncSpam = {}
 local autoRespondSpam = {}
 local chatPrefix = "<Deadly Boss Mods> "
@@ -539,7 +542,7 @@ do
 	
 	function loadModOptions(modId)
 		local savedOptions = getglobal(modId:gsub("-", "").."_SavedVars") or {}
-		local savedStats = getglobal(modId:gsub("-", "").."_Stats") or {}
+		local savedStats = getglobal(modId:gsub("-", "").."_SavedStats") or {}
 		for i, v in ipairs(DBM.Mods) do
 			if v.modId == modId then
 				savedOptions[v.id] = savedOptions[v.id] or v.Options
@@ -551,13 +554,15 @@ do
 				v.Options = savedOptions[v.id] or {}
 				savedStats[v.id] = savedStats[v.id] or {
 					kills = 0,
-					pulls = 0
+					pulls = 0,
+					heroicKills = 0,
+					heroicPulls = 0,
 				}
 				v.stats = savedStats[v.id]
 			end
 		end
 		setglobal(modId:gsub("-", "").."_SavedVars", savedOptions)
-		setglobal(modId:gsub("-", "").."_Stats", savedStats)
+		setglobal(modId:gsub("-", "").."_SavedStats", savedStats)
 	end
 end
 
@@ -582,7 +587,7 @@ function DBM:ADDON_LOADED(modname)
 				})
 			end
 		end
-		table.sort(self.AddOns, function(v1, v2) return v1.sort > v2.sort end)
+		table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
 		self:RegisterEvents(
 			"COMBAT_LOG_EVENT_UNFILTERED",
 			"ZONE_CHANGED_NEW_AREA",
@@ -895,7 +900,11 @@ do
 			if not mod.combatInfo then return end
 			table.insert(inCombat, mod)
 			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
-			mod.stats.pulls = mod.stats.pulls + 1
+			if GetCurrentDungeonDifficulty() == 2 then
+				mod.stats.heroicPulls = mod.stats.heroicPulls + 1
+			else
+				mod.stats.pulls = mod.stats.pulls + 1
+			end
 			mod.inCombat = true
 			mod.blockSyncs = nil
 			if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
@@ -924,17 +933,27 @@ function DBM:EndCombat(mod, wipe)
 		end
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
-			if thisTime < 25 then
-				mod.stats.pulls = mod.stats.pulls - 1
+			if thisTime < 30 then
+				if GetCurrentDungeonDifficulty() == 2 then
+					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
+				else
+					mod.stats.pulls = mod.stats.pulls - 1
+				end
 			end
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = mod.stats.lastTime
-			local bestTime = mod.stats.bestTime
-			mod.stats.kills = mod.stats.kills + 1
-			mod.stats.lastTime = thisTime
-			mod.stats.bestTime = math.min(bestTime or math.huge, thisTime)
+			local lastTime = ((GetCurrentDungeonDifficulty() == 2) and mod.stats.heroicLastTime) or mod.stats.lastTime
+			local bestTime = ((GetCurrentDungeonDifficulty() == 2) and mod.stats.heroicBestTime) or mod.stats.bestTime
+			if GetCurrentDungeonDifficulty() == 2 then
+				mod.stats.heroicKills = mod.stats.heroicKills + 1
+				mod.stats.heroicLastTime = thisTime
+				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
+			else
+				mod.stats.kills = mod.stats.kills + 1
+				mod.stats.lastTime = thisTime
+				mod.stats.bestTime = math.min(bestTime or math.huge, thisTime)
+			end
 			if not lastTime then
 				self:AddMsg(DBM_CORE_BOSS_DOWN:format(mod.combatInfo.name, strFromTime(thisTime)))
 			elseif thisTime < (bestTime or math.huge) then
@@ -982,7 +1001,7 @@ function DBM:RequestTimers()
 	local bestClient = next(raid)
 	if not bestClient then return end
 	for i, v in pairs(raid) do
-		if v.name ~= UnitName("player") and  (v.revision or 0) > (bestClient.revision or 0) then
+		if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (v.revision or 0) > (bestClient.revision or 0) then
 			bestClient = v
 		end
 	end
@@ -996,6 +1015,18 @@ end
 function DBM:ReceiveTimerInfo() -- TODO
 end
 
+function DBM:SendCombatInfo(target)
+	if #inCombat < 1 then return end
+	local mod
+	for i, v in ipairs(inCombat) do
+		mod = not v.isCustomMod and v
+	end
+	mod = mod or inCombat[1]
+	
+end
+
+function DBM:SendTimerInfo(mod, target)
+end
 
 ------------------------------------
 --  Auto-respond/Status whispers  --
@@ -1022,14 +1053,14 @@ do
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
 			end
-			mod = mod or inCombat[i]
+			mod = mod or inCombat[1]
 			SendChatMessage(chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
 		elseif #inCombat > 0 and self.Options.AutoRespond and self:GetRaidUnitId(sender) == "none" then
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
 			end
-			mod = mod or inCombat[i]
+			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
 				SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers())), "WHISPER", nil, sender)
 				self:AddMsg(DBM_CORE_AUTO_RESPONDED)
@@ -1047,11 +1078,18 @@ do
 	local function filterOutgoing(msg)
 		return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort
 	end
+	
 	local function filterIncoming(msg)
 		return msg == "status" and #inCombat > 0
 	end
+	
+	local function filterRaidWarning(msg)
+		return DBM.Options.SpamBlockRaidWarning and msg:find("%*%*%* .* %*%*%*")
+	end
+	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterIncoming)
 end
 
 do
@@ -1059,6 +1097,14 @@ do
 	RaidBossEmoteFrame_OnEvent = function(...)
 		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then return end
 		return old(...)
+	end
+end
+
+do
+	local old = RaidWarningFrame_OnEvent
+	RaidWarningFrame_OnEvent = function(self, event, msg, ...)
+		if DBM.Options.SpamBlockRaidWarning and msg:find("%*%*%* .* %*%*%*") then return end
+		return old(self, event, msg, ...)
 	end
 end
 
@@ -1238,6 +1284,7 @@ do
 					self.mod:AddMsg(text, nil)
 				end
 			end
+			PlaySoundFile(DBM.Options.RaidWarningSound)
 		end
 	end
 

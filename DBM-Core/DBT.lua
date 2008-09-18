@@ -410,9 +410,13 @@ end
 function barPrototype:SetElapsed(elapsed)
 	self.timer = self.totalTime - elapsed
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) then
+		local next = self.next
 		self:RemoveFromList()
 		self.enlarged = nil
 		self.moving = nil
+		if next then
+			next:MoveToNextPosition()
+		end
 		self:AddToList()
 		self:SetPosition()
 	end
@@ -701,6 +705,10 @@ function barPrototype:Enlarge()
 	self.moveElapsed = 0
 end
 
+
+---------------------------
+--  Bar Special Effects  --
+---------------------------
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
 	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
@@ -708,8 +716,27 @@ function barPrototype:AnimateEnlarge(elapsed)
 	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 1)
 	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
 	self.frame:ClearAllPoints()
-	self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+	if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
+		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+	end
 	self.frame:SetScale(newScale)
 	self.frame:SetWidth(newWidth)
 	getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
 end
+
+do
+	local breakFrames = {}
+	function barPrototype:Break() -- coming soon
+		local frame = table.remove(breakTextures, #breakTextures) or CreateFrame("Frame", nil, self.owner.mainAnchor)
+		frame:SetParent(self.owner.mainAnchor)
+		frame.tex1 = frame.tex1 or frame:CreateTexture(nil, "OVERLAY")
+		frame.tex2 = frame.tex2 or frame:CreateTexture(nil, "OVERLAY")
+		local tex1 = frame.tex1
+		local tex2 = frame.tex2
+		tex1:SetTexture(self.owner.options.Texture)
+		tex2:SetTexture(self.owner.options.Texture)
+		tex1:SetTexCoordModifiesRect(true)
+		tex1:SetTexCoord(0, 0.5, 0, 1)
+	end
+end
+
