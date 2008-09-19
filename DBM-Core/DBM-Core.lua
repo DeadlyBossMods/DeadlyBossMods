@@ -1433,7 +1433,11 @@ do
 		end
 	end
 	timerPrototype.Show = timerPrototype.Start
-		
+	
+	function timerPrototype:Schedule(t, ...)
+		schedule(t, self.Start, self.mod, self, ...)
+	end
+	
 	function timerPrototype:Stop(...)
 		if select("#", ...) == 0 then
 			for i = #self.startedTimers, 1, -1 do
@@ -1453,7 +1457,9 @@ do
 	timerPrototype.Cancel = timerPrototype.Stop
 
 	function timerPrototype:GetTime(...)
-		return 0
+		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local bar = DBM.Bars:GetBar(id)
+		return bar and (bar.totalTime - bar.timer) or 0
 	end
 
 	function timerPrototype:SetTimer(timer)
