@@ -10,7 +10,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell1 = "My patience has reached its limit. I will be rid of you!",
-	Yell2 = "I give you one chance. Pledge fealty to me, and perhaps I will not slaughter you for your insolence."
+	YellPull		= "My patience has reached its limit. I will be rid of you!",
+	EmoteSpark		= "A Power Spark forms from a nearby rift!",
+	YellPhase2		= "I had hoped to end your lives quickly",
+	EmoteBreath		= "%s takes a deep breath.",
+	YellBreath		= "You will not succeed while I draw breath!",
 })
 
