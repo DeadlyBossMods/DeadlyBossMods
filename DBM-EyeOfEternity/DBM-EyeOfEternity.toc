@@ -1,0 +1,12 @@
+## Interface: 30000
+## Title: |cff0055FFDeadly Boss Mods|r The Eye of Eternity
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMEyeOfEternity_SavedVars, DBMEyeOfEternity_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Name: Eye of Eternity
+## X-DBM-Mod-Sort: 3
+## X-DBM-Mod-LoadZone: The Eye of Eternity
+localization.en.lua
+Malygos.lua
