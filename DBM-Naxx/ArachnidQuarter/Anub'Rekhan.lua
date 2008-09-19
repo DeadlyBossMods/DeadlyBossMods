@@ -18,7 +18,7 @@ local warningLocustSoon		= mod:NewAnnounce("WarningLocustSoon", 2, 28785)
 local warningLocustNow		= mod:NewAnnounce("WarningLocustNow", 3, 28785)
 local warningLocustFaded	= mod:NewAnnounce("WarningLocustFaded", 1, 28785)
 
-local timerLocustIn			= mod:NewTimer(77, "TimerLocustIn", 28785)
+local timerLocustIn			= mod:NewTimer(80, "TimerLocustIn", 28785)
 local timerLocustFade 		= mod:NewTimer(26, "TimerLocustFade", 28785)
 
 
@@ -27,8 +27,8 @@ function mod:OnCombatStart(delay)
 		timerLocustIn:Start(103.5 - delay)
 		warningLocustSoon:Schedule(88.5 - delay)
 	else
-		timerLocustIn:Start(88 - delay)
-		warningLocustSoon:Schedule(73 - delay)
+		timerLocustIn:Start(91 - delay)
+		warningLocustSoon:Schedule(76 - delay)
 	end
 end
 
