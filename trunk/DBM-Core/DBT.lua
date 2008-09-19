@@ -705,6 +705,8 @@ function barPrototype:Enlarge()
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
 	self.moveElapsed = 0
+	self.frame:SetScale(self.owner.options.HugeScale)
+	self.frame:SetWidth(self.owner.options.HugeWidth)
 end
 
 
@@ -717,12 +719,13 @@ function barPrototype:AnimateEnlarge(elapsed)
 	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
 	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 1)
 	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
-	self.frame:ClearAllPoints()
 	if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
+		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 	end
-	self.frame:SetScale(newScale)
-	self.frame:SetWidth(newWidth)
+--	self.frame:SetScale(newScale)
+--	self.frame:SetWidth(newWidth)
+
 	getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
 end
 
