@@ -36,7 +36,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-
+local usemodelframe = false	-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
 	if not DBM_GUI_Frame then DBM_GUI:CreateOptionsMenu() end
@@ -169,12 +169,16 @@ end
 --
 function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
 	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
-	button.myheight = 20
+	button.myheight = 25
 	getglobal(button:GetName() .. 'Text'):SetText(name)
+	getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
 
 	if textleft then
 		getglobal(button:GetName() .. 'Text'):ClearAllPoints()
 		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 3, 0)
+		getglobal(button:GetName() .. 'Text'):SetJustifyH("RIGHT")
+	else
+		getglobal(button:GetName() .. 'Text'):SetJustifyH("LEFT")
 	end
 	
 	if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -190,10 +194,10 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbt
 	if autoplace then
 		if self:GetLastObj() then
 			button:ClearAllPoints()
-			button:SetPoint('TOPLEFT', self:GetLastObj(), "BOTTOMLEFT", 0, 7)
+			button:SetPoint('TOPLEFT', self:GetLastObj(), "BOTTOMLEFT", 0, 2)
 		else
 			button:ClearAllPoints()
-			button:SetPoint('TOPLEFT', 10, -10)
+			button:SetPoint('TOPLEFT', 10, -12)
 		end
 	end
 
@@ -695,10 +699,12 @@ do
 		if mymax <= 0 then mymax = 0 end
 
 		getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
-		
-		for _, mod in ipairs(DBM.Mods) do
-			if mod.panel.frame == frame then
-				UpdateAnimationFrame(mod)
+	
+		if usemodelframe then
+			for _, mod in ipairs(DBM.Mods) do
+				if mod.panel.frame == frame then
+					UpdateAnimationFrame(mod)
+				end
 			end
 		end
 
@@ -710,9 +716,11 @@ end
 function UpdateAnimationFrame(mod)
 	--DBM_BossPreview:Hide()
 	DBM_BossPreview:SetCreature(mod.creatureId or 0)
-	DBM_BossPreview:SetModelScale(mod.modelScale or 0.25)
-	DBM_BossPreview:SetCamera(2)
+	DBM_BossPreview:SetModelScale(mod.modelScale or 0.15)
+	--DBM_BossPreview:SetCamera(2)
+	--DBM_BossPreview:SetPosition(-1, 0, 0)
 
+	--[[
 	DBM_BossPreview.atime = 0 
 	DBM_BossPreview.apos = 0
 	DBM_BossPreview.rotation = 0
@@ -729,6 +737,7 @@ function UpdateAnimationFrame(mod)
 	DBM_BossPreview:SetPosition(DBM_BossPreview.pos_z, DBM_BossPreview.pos_x, DBM_BossPreview.pos_y)
 	DBM_BossPreview:SetAlpha(DBM_BossPreview.alpha)
 	--DBM_BossPreview:Show()
+	----]]
 end
 
 local function CreateAnimationFrame()
@@ -904,7 +913,7 @@ function DBM_GUI:CreateOptionsMenu()
 
 
 	DBM_GUI_Frame = DBM_GUI:CreateNewPanel(L.TabCategory_Options, "option")
-	CreateAnimationFrame()
+	if usemodelframe then CreateAnimationFrame() end
 	do
 		----------------------------------------------
 		--             General Options              --
