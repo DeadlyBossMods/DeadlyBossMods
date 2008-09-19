@@ -1740,18 +1740,17 @@ function bossModPrototype:SetModelOffset(x, y, z)
 	self.modelOffsetZ = z
 end
 
-function bossModPrototype:SetModelWalkSequence(id)
-	self.walkSequence = id
+function bossModPrototype:SetModelID(id)
+	self.modelId = id
 end
 
-function bossModPrototype:SetModelIdleSquences(...)
-	self.idleSequences = {...}
+function bossModPrototype:EnableModel()
+	self.modelEnabled = true
 end
 
-function bossModPrototype:SetPortraitMode(mode)
-	self.portrait = mode
+function bossModPrototype:DisableModel()
+	self.modelEnabled = nil
 end
-
 
 --------------------
 --  Localization  --

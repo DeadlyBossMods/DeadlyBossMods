@@ -7,6 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+mod:EnableModel()
+
 mod:RegisterEvents()
 
 local warnTeleportSoon		= mod:NewAnnounce("WarningTeleportSoon", 2, 46573)

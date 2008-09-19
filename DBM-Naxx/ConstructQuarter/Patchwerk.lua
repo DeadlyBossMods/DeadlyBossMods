@@ -7,6 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("yell", L.yell1, L.yell2)
 
+mod:EnableModel()
+
 mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"SPELL_MISSED"

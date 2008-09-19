@@ -7,6 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat", 16063, 16064, 16065, 30549)
 
+mod:EnableModel()
+
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED_DOSE"

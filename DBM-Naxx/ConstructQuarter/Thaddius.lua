@@ -7,6 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("yell", L.Yell)
 
+mod:EnableModel()
+
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"UNIT_AURA"

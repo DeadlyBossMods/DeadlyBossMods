@@ -8,6 +8,8 @@ mod:SetMinCombatTime(60)
 
 mod:RegisterCombat("yell", L.Yell)
 
+mod:EnableModel()
+
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_SUCCESS"

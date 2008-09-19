@@ -7,6 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+mod:EnableModel()
+
 mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )

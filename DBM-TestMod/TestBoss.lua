@@ -6,8 +6,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 
 mod:SetModelScale(0.25)
 mod:SetModelOffset(0, 0, 0)
-mod:SetModelWalkSequence(4)
-mod:SetModelIdleSquences(16, 18, 2, 1)
 
 mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"), "Teldrassil")
 
