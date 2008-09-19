@@ -82,6 +82,7 @@ local schedule
 local unschedule
 local loadOptions
 local loadModOptions
+local checkWipe
 
 local function checkEntry(t, val)
 	for i, v in ipairs(t) do
@@ -870,52 +871,50 @@ end
 ---------------------------
 --  Kill/Wipe Detection  --
 ---------------------------
-do
-	local checkWipe
-	function checkWipe(confirm)
-		if #inCombat > 0 then
-			local wipe = true
-			local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-			for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
-				local id = (i == 0 and "player") or uId..i
-				if UnitAffectingCombat(id) then
-					wipe = false
-					break
-				end
-			end
-			if not wipe then
-				DBM:Schedule(3, checkWipe)
-			elseif confirm then
-				for i = #inCombat, 1, -1 do
-					DBM:EndCombat(inCombat[i], true)
-				end
-			else
-				DBM:Schedule(5, checkWipe, true)
+function checkWipe(confirm)
+	if #inCombat > 0 then
+		local wipe = true
+		local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+			local id = (i == 0 and "player") or uId..i
+			if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+				wipe = false
+				break
 			end
 		end
-	end
-	
-	function DBM:StartCombat(mod, delay, synced)
-		if not checkEntry(inCombat, mod) then
-			if not mod.combatInfo then return end
-			table.insert(inCombat, mod)
-			self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
-			if GetCurrentDungeonDifficulty() == 2 then
-				mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-			else
-				mod.stats.pulls = mod.stats.pulls + 1
+		if not wipe then
+			DBM:Schedule(3, checkWipe)
+		elseif confirm then
+			for i = #inCombat, 1, -1 do
+				DBM:EndCombat(inCombat[i], true)
 			end
-			mod.inCombat = true
-			mod.blockSyncs = nil
-			if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
-			mod.combatInfo.pull = GetTime() - (delay or 0)
-			self:Schedule(mod.minCombatTime or 3, checkWipe)
-			if not synced then
-				sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
-			end
+		else
+			DBM:Schedule(5, checkWipe, true)
 		end
 	end
 end
+	
+function DBM:StartCombat(mod, delay, synced)
+	if not checkEntry(inCombat, mod) then
+		if not mod.combatInfo then return end
+		table.insert(inCombat, mod)
+		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
+		if GetCurrentDungeonDifficulty() == 2 then
+			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
+		else
+			mod.stats.pulls = mod.stats.pulls + 1
+		end
+		mod.inCombat = true
+		mod.blockSyncs = nil
+		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
+		mod.combatInfo.pull = GetTime() - (delay or 0)
+		self:Schedule(mod.minCombatTime or 3, checkWipe)
+		if not synced then
+			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
+		end
+	end
+end
+
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
@@ -997,32 +996,55 @@ DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 ----------------------
 --  Timer recovery  --
 ----------------------
-function DBM:RequestTimers()
-	local bestClient = next(raid)
-	if not bestClient then return end
-	for i, v in pairs(raid) do
-		if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (v.revision or 0) > (bestClient.revision or 0) then
-			bestClient = v
+do
+	local requestedFrom = nil
+	local requestTime = 0
+	
+	function DBM:RequestTimers()
+		local bestClient = next(raid)
+		if not bestClient then return end
+		for i, v in pairs(raid) do
+			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (v.revision or 0) > (bestClient.revision or 0) then
+				bestClient = v
+			end
+		end
+		DBM:AddMsg(bestClient.name)
+		requestedFrom = bestClient.name
+		requestTime = GetTime()
+		SendAddonMessage("DBMv4-RequestTimers", "", "WHISPER", bestClient.name)
+	end
+
+	function DBM:ReceiveCombatInfo(mod, time, sender)
+		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
+			mod = DBM:GetModByName(mod)
+			if not mod or not mod.combatInfo then return end
+			table.insert(inCombat, mod)
+			mod.inCombat = true
+			mod.blockSyncs = nil
+			mod.combatInfo.pull = GetTime() - time
+			self:Schedule(3, checkWipe)
 		end
 	end
-	DBM:AddMsg(bestClient.name)
-	SendAddonMessage("DBMv4-RequestTimers", "", "WHISPER", bestClient.name)
+
+	function DBM:ReceiveTimerInfo() -- TODO
+		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
+		end
+	end
 end
 
-function DBM:ReceiveCombatInfo() -- TODO
-end
-
-function DBM:ReceiveTimerInfo() -- TODO
-end
-
-function DBM:SendCombatInfo(target)
+function DBM:SendTimers(target)
 	if #inCombat < 1 then return end
 	local mod
 	for i, v in ipairs(inCombat) do
 		mod = not v.isCustomMod and v
 	end
 	mod = mod or inCombat[1]
-	
+	self:SendCombatInfo(mod, target)
+	self:SendTimerInfo(mod, target)
+end
+
+function DBM:SendCombatInfo(mod, target)
+	SendAddonMessage("DBMv4-CombatInfo", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
@@ -1145,8 +1167,9 @@ local bossModPrototype = {}
 --  Boss Mod Constructor  --
 ----------------------------
 do
-	local modsById = {}
+	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
+	
 	function DBM:NewMod(name, modId, modSubTab)
 		if modsById[name] then error("Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
@@ -1400,7 +1423,7 @@ do
 		
 	function timerPrototype:Start(timer, ...)
 		if not self.option or self.mod.Options[self.option] then
-			local id = self.id..(("%s"):rep(select("#", ...))):format(...)
+			local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 			local name = self.text:format(...)
 			local bar = DBM.Bars:CreateBar(timer and ((timer > 0 and timer) or self.timer + timer) or self.timer, id, self.icon)
 			bar:SetText(name)
@@ -1418,7 +1441,7 @@ do
 				self.startedTimers[i] = nil
 			end
 		else
-			local id = self.id..(("%s"):rep(select("#", ...))):format(...)
+			local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 			for i = #self.startedTimers, 1, -1 do
 				if self.startedTimers[i] == id then
 					DBM.Bars:CancelBar(id)
@@ -1438,7 +1461,7 @@ do
 	end
 	
 	function timerPrototype:Update(elapsed, totalTime, ...)
-		local id = self.id..(("%s"):rep(select("#", ...))):format(...)
+		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		DBM.Bars:UpdateBar(id, elapsed, totalTime)
 	end
 	
