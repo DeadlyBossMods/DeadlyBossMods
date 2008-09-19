@@ -199,7 +199,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Announce Hateful Strikes to raid chat (you must be promoted or raid leader to use this)"
+	WarningHateful = "Announce Hateful Strikes to raid chat\n(you must be promoted or raid leader to use this)"
 })
 
 L:SetMiscLocalization({

@@ -7,6 +7,8 @@ mod:SetZone(GetAddOnMetadata("DBM-Naxx", "X-DBM-Mod-LoadZone"))
 
 mod:RegisterCombat("combat")
 
+mod:EnableModel()
+
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )

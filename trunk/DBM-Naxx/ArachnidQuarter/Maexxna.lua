@@ -7,6 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+mod:EnableModel()
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
