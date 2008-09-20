@@ -52,6 +52,7 @@ function mod:UNIT_AURA(unit)
 		local _, _, icon = UnitDebuff("player", i)
 		if icon == "Interface\\Icons\\Spell_ChargeNegative" then
 			charge = "negative"
+--		elseif icon == "Interface\\Icons\\Spell_Holy_AshesToAshes" then
 		elseif icon == "Interface\\Icons\\Spell_ChargePositive" then
 			charge = "positive"
 		end

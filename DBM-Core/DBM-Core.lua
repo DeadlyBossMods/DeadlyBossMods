@@ -1740,6 +1740,14 @@ function bossModPrototype:SetModelOffset(x, y, z)
 	self.modelOffsetZ = z
 end
 
+function bossModPrototype:SetModelRotation(r)
+	self.modelRotation = r
+end
+
+function bossModPrototype:SetModelMoveSpeed(v)
+	self.modelMoveSpeed = v
+end
+
 function bossModPrototype:SetModelID(id)
 	self.modelId = id
 end
