@@ -192,7 +192,9 @@ do
 			if DBM_BidBot_Translations[GetLocale()] then 
 				L = DBM_BidBot_Translations[GetLocale()]
 			end
-	
+		elseif event == "CHAT_MSG_WHISPER" then
+			--OnWisper()
+
 		elseif event:sub(0, 9) == "CHAT_MSG_" then
 			OnMsgRecived(select(1, ...), select(2, ...))
 		end
