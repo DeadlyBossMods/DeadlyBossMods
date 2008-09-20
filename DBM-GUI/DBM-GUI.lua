@@ -36,16 +36,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-L.AreaTitle_BarSetup = "General Bar Options"
-L.AreaTitle_BarSetupSmall = "Small Bar Options"
-L.AreaTitle_BarSetupHuge = "Huge Bar Options"
-L.BarIconLeft = "Left Icon"
-L.BarIconRight = "Right Icon"
-L.Reset = "reset"
-L.BarOffSetX = "OffSet X"
-L.BarOffSetY = "OffSet Y"
-
-local usemodelframe = true	-- very beta
+local usemodelframe = false	-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
 	if not DBM_GUI_Frame then DBM_GUI:CreateOptionsMenu() end
@@ -1038,8 +1029,59 @@ function DBM_GUI:CreateOptionsMenu()
 		movemebutton:SetPoint('BOTTOMRIGHT', raidwarncolors.frame, "TOPRIGHT", 0, -1)
 		movemebutton:SetNormalFontObject(GameFontNormalSmall);
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		do
+			local anchorFrame
+			local function hideme()
+				anchorFrame:Hide()
+			end
+			movemebutton:SetScript("OnClick", function(self)
+				DBM:Schedule(20, hideme)
+				if not anchorFrame then
+					anchorFrame = CreateFrame("Frame", "DBM_GUI_RaidWarnAnchor", UIParent)
+					anchorFrame:SetWidth(32)
+					anchorFrame:SetHeight(32)
+					anchorFrame:EnableMouse(true)
+					anchorFrame:SetPoint("BOTTOM", RaidWarningFrame, "TOP", 0, 1)
+					anchorFrame.texture = anchorFrame:CreateTexture()
+					anchorFrame.texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
+					anchorFrame.texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
+					anchorFrame.texture:SetWidth(32)
+					anchorFrame.texture:SetHeight(32)
+					anchorFrame:SetScript("OnMouseDown", function(self) 
+						RaidWarningFrame:SetMovable(1)
+						RaidWarningFrame:StartMoving()
+						DBM:Unschedule(hideme)
+					end)
+					anchorFrame:SetScript("OnMouseUp", function(self) 
+						RaidWarningFrame:StopMovingOrSizing()
+						RaidWarningFrame:SetMovable(0)
+						local point, _, _, xOfs, yOfs = RaidWarningFrame:GetPoint()		
+						DBM.Options.RaidWarningPosition.Point = point
+						DBM.Options.RaidWarningPosition.X = xOfs
+						DBM.Options.RaidWarningPosition.Y = yOfs	
+						DBM:Schedule(15, hideme)
+					end)
+					do
+						local elapsed = 10
+						anchorFrame:SetScript("OnUpdate", function(self, e)
+							elapsed = elapsed + e
+							if elapsed > 5 then 
+								elapsed = 0 
+								RaidNotice_AddMessage(RaidWarningFrame, L.RaidWarnMessage, ChatTypeInfo["RAID_WARNING"])
+							end
+						end)
+					end
 
-	
+					anchorFrame:Show()
+				else
+					if anchorFrame:IsShown() then
+						anchorFrame:Hide()
+					else
+						anchorFrame:Show()
+					end
+				end	
+			end)
+		end
 	end
 
 	do
@@ -1164,12 +1206,12 @@ function DBM_GUI:CreateOptionsMenu()
 		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
 		BarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
 
-		local BarOffsetXSlider = BarSetup:CreateSlider(L.BarOffSetX, -50, 50, 1)
+		local BarOffsetXSlider = BarSetup:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1)
 		BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 220, -90)
 		BarOffsetXSlider:SetScript("OnShow", createDBTOnShowHandler("BarXOffset"))
 		BarOffsetXSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("BarXOffset"))
 
-		local BarOffsetYSlider = BarSetup:CreateSlider(L.BarOffSetY, -5, 25, 1)
+		local BarOffsetYSlider = BarSetup:CreateSlider(L.Slider_BarOffSetY, -5, 25, 1)
 		BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		BarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("BarYOffset"))
 		BarOffsetYSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
@@ -1196,12 +1238,12 @@ function DBM_GUI:CreateOptionsMenu()
 		HugeBarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("HugeScale"))
 		HugeBarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
 
-		local HugeBarOffsetXSlider = BarSetup:CreateSlider(L.BarOffSetX, -50, 50, 1)
+		local HugeBarOffsetXSlider = BarSetup:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1)
 		HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 220, -90)
 		HugeBarOffsetXSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarXOffset"))
 		HugeBarOffsetXSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
 
-		local HugeBarOffsetYSlider = BarSetup:CreateSlider(L.BarOffSetY, -5, 25, 1)
+		local HugeBarOffsetYSlider = BarSetup:CreateSlider(L.Slider_BarOffSetY, -5, 25, 1)
 		HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarYOffset"))
 		HugeBarOffsetYSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
