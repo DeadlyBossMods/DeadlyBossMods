@@ -371,19 +371,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif msg == "unlock" or msg == "move" then
 		DBM.Bars:ShowMovableBar()
 	else
-		if not IsAddOnLoaded("DBM-GUI") then
-			local _, _, _, enabled = GetAddOnInfo("DBM-GUI")
-			if not enabled then
-				EnableAddOn("DBM-GUI")
-			end
-			local loaded, reason = LoadAddOn("DBM-GUI")
-			if not loaded then
-				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
-				return
-			end
-			collectgarbage()
-		end
-		DBM_GUI:ShowHide()
+		DBM:LoadGUI()
 	end
 end
 
@@ -417,6 +405,32 @@ do
 	end
 end
 
+-----------------
+--  GUI Stuff  --
+-----------------
+do
+	local callOnLoad = {}
+	function DBM:LoadGUI()
+		if not IsAddOnLoaded("DBM-GUI") then
+			local _, _, _, enabled = GetAddOnInfo("DBM-GUI")
+			if not enabled then
+				EnableAddOn("DBM-GUI")
+			end
+			local loaded, reason = LoadAddOn("DBM-GUI")
+			if not loaded then
+				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
+				return
+			end
+			for i, v in ipairs(callOnLoad) do v() end
+			collectgarbage()
+		end
+		DBM_GUI:ShowHide()
+	end
+	
+	function DBM:RegisterOnGuiLoadCallback(f)
+		table.insert(callOnLoad, f)
+	end
+end
 
 ---------------------------
 --  Raid/Party Handling  --
