@@ -36,6 +36,15 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
+L.AreaTitle_BarSetup = "General Bar Options"
+L.AreaTitle_BarSetupSmall = "Small Bar Options"
+L.AreaTitle_BarSetupHuge = "Huge Bar Options"
+L.BarIconLeft = "Left Icon"
+L.BarIconRight = "Right Icon"
+L.Reset = "reset"
+L.BarOffSetX = "OffSet X"
+L.BarOffSetY = "OffSet Y"
+
 local usemodelframe = true	-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
@@ -175,7 +184,7 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbt
 
 	if textleft then
 		getglobal(button:GetName() .. 'Text'):ClearAllPoints()
-		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 3, 0)
+		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 0, 0)
 		getglobal(button:GetName() .. 'Text'):SetJustifyH("RIGHT")
 	else
 		getglobal(button:GetName() .. 'Text'):SetJustifyH("LEFT")
@@ -234,7 +243,7 @@ function PanelPrototype:CreateSlider(text, low, high, step, framewidth)
 	local slider = CreateFrame('Slider', FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
-	slider:SetWidth(famewidth or 200)
+	slider:SetWidth(famewidth or 180)
 	getglobal(FrameTitle..self:GetCurrentID()..'Text'):SetText(text)
 
 	self:SetLastObj(slider)
@@ -980,10 +989,10 @@ function DBM_GUI:CreateOptionsMenu()
 		local color2text = raidwarncolors:CreateText(L.RaidWarnColor_2, 64)
 		local color3text = raidwarncolors:CreateText(L.RaidWarnColor_3, 64)
 		local color4text = raidwarncolors:CreateText(L.RaidWarnColor_4, 64)
-		local color1reset = raidwarncolors:CreateButton("reset", 60, 10, nil, GameFontNormalSmall)
-		local color2reset = raidwarncolors:CreateButton("reset", 60, 10, nil, GameFontNormalSmall)
-		local color3reset = raidwarncolors:CreateButton("reset", 60, 10, nil, GameFontNormalSmall)
-		local color4reset = raidwarncolors:CreateButton("reset", 60, 10, nil, GameFontNormalSmall)
+		local color1reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
+		local color2reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
+		local color3reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
+		local color4reset = raidwarncolors:CreateButton(L.Reset, 60, 10, nil, GameFontNormalSmall)
 	
 		color1:SetPoint('TOPLEFT', 30, -20)
 		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 30, 0)
@@ -999,7 +1008,6 @@ function DBM_GUI:CreateOptionsMenu()
 		end
 		local function ResetColor(id, frame)
 			return function(self)
---				DBM:AddMsg(L.ColorResetted)
 				DBM.Options.WarningColors[id].r = DBM.DefaultOptions.WarningColors[id].r
 				DBM.Options.WarningColors[id].g = DBM.DefaultOptions.WarningColors[id].g
 				DBM.Options.WarningColors[id].b = DBM.DefaultOptions.WarningColors[id].b
@@ -1036,43 +1044,51 @@ function DBM_GUI:CreateOptionsMenu()
 
 	do
 		BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
-		BarSetup = BarSetupPanel:CreateArea("Small Bar", nil, 210, true)
+		
+		BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 180, true)
 
-		local dummybar = DBM.Bars:CreateDummyBar()
-		dummybar.frame:SetParent(BarSetup.frame)
-		dummybar.frame:SetPoint('BOTTOM', BarSetup.frame, "TOP", 0, -55)
-		dummybar.frame:SetScript("OnUpdate", function(self, elapsed) dummybar:Update(elapsed) end)
+		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
+		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
+		movemebutton:SetNormalFontObject(GameFontNormalSmall);
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
 
-		local iconleft = BarSetup:CreateCheckButton("Icon left", nil, nil, nil, "IconLeft")
-		local iconright = BarSetup:CreateCheckButton("Icon right", nil, true, nil, "IconRight")
-		iconleft:SetPoint('BOTTOMRIGHT', dummybar.frame, "TOPLEFT", -5, 5)
-		iconright:SetPoint('BOTTOMLEFT', dummybar.frame, "TOPRIGHT", 5, 5)
-
-		local function createDBTOnShowHandler(option)
-			return function(self)
-				self:SetValue(DBM.Bars:GetOption(option))
-			end
+		local maindummybar = DBM.Bars:CreateDummyBar()
+		maindummybar.frame:SetParent(BarSetup.frame)
+		maindummybar.frame:SetPoint('BOTTOM', BarSetup.frame, "TOP", 0, -65)
+		maindummybar.frame:SetScript("OnUpdate", function(self, elapsed) maindummybar:Update(elapsed) end)
+		do 
+			-- little hook to prevent this bar from size/scale change
+			local old = maindummybar.ApplyStyle 
+			function maindummybar:ApplyStyle(...) 
+				old(self, ...) 
+				self.frame:SetWidth(183)
+				self.frame:SetScale(0.9)
+				getglobal(self.frame:GetName().."Bar"):SetWidth(183)
+			end 
 		end
-		local function createDBTOnValueChangedHandler(option)
-			return function(self)
-				DBM.Bars:SetOption(option, self:GetValue())
-			end
-		end
 
-		local BarWidthSlider = BarSetup:CreateSlider(L.Slider_BarWidth, 100, 325, 1)
-		BarWidthSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 190, -90)
-		BarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("Width"))
-		BarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
-
-		local BarScaleSlider = BarSetup:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05)
-		BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
-		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
-		BarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
+		local iconleft = BarSetup:CreateCheckButton(L.BarIconLeft, nil, nil, nil, "IconLeft")
+		local iconright = BarSetup:CreateCheckButton(L.BarIconRight, nil, true, nil, "IconRight")
+		iconleft:SetPoint('BOTTOMRIGHT', maindummybar.frame, "TOPLEFT", -5, 5)
+		iconright:SetPoint('BOTTOMLEFT', maindummybar.frame, "TOPRIGHT", 5, 5)
 
 		local color1 = BarSetup:CreateColorSelect(64)
 		local color2 = BarSetup:CreateColorSelect(64)
-		color1:SetPoint('TOPLEFT', BarSetup.frame, "TOPLEFT", 20, -130)
+		color1:SetPoint('TOPLEFT', BarSetup.frame, "TOPLEFT", 20, -80)
 		color2:SetPoint('TOPLEFT', color1, "TOPRIGHT", 20, 0)
+
+		local color1reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		local color2reset = BarSetup:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color1reset:SetPoint('TOP', color1, "BOTTOM", 5, -10)
+		color2reset:SetPoint('TOP', color2, "BOTTOM", 5, -10)
+		color1reset:SetScript("OnClick", function(self) 
+			color1:SetColorRGB(DBM.Bars:GetDefaultOption("StartColorR"), DBM.Bars:GetDefaultOption("StartColorG"), DBM.Bars:GetDefaultOption("StartColorB"))
+		end)
+		color2reset:SetScript("OnClick", function(self) 
+			color2:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorR"), DBM.Bars:GetDefaultOption("EndColorG"), DBM.Bars:GetDefaultOption("EndColorB"))
+		end)
+
 
 		color1:SetScript("OnShow", function(self) self:SetColorRGB(
 								DBM.Bars:GetOption("StartColorR"),
@@ -1113,14 +1129,83 @@ function DBM_GUI:CreateOptionsMenu()
 				DBM.Bars:SetOption("Texture", value) 
 			end
 		);
-		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 10, -90)
+		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -80)
 
 
-		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
-		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
-		movemebutton:SetNormalFontObject(GameFontNormalSmall);
-		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
-		movemebutton:SetScript("OnClick", function() DBM.Bars:ShowMovableBar() end)
+		-- Functions for the next 2 Areas
+		local function createDBTOnShowHandler(option)
+			return function(self)
+				self:SetValue(DBM.Bars:GetOption(option))
+			end
+		end
+		local function createDBTOnValueChangedHandler(option)
+			return function(self)
+				DBM.Bars:SetOption(option, self:GetValue())
+			end
+		end
+
+		-----------------------
+		-- Small Bar Options --
+		-----------------------
+		BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 160, true)
+
+		local smalldummybar = DBM.Bars:CreateDummyBar()
+		smalldummybar.frame:SetParent(BarSetupSmall.frame)
+		smalldummybar.frame:SetPoint('BOTTOM', BarSetupSmall.frame, "TOP", 0, -35)
+		smalldummybar.frame:SetScript("OnUpdate", function(self, elapsed) smalldummybar:Update(elapsed) end)
+
+		local BarWidthSlider = BarSetup:CreateSlider(L.Slider_BarWidth, 100, 325, 1)
+		BarWidthSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 20, -90)
+		BarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("Width"))
+		BarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
+
+		local BarScaleSlider = BarSetup:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05)
+		BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
+		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
+		BarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
+
+		local BarOffsetXSlider = BarSetup:CreateSlider(L.BarOffSetX, -50, 50, 1)
+		BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 220, -90)
+		BarOffsetXSlider:SetScript("OnShow", createDBTOnShowHandler("BarXOffset"))
+		BarOffsetXSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("BarXOffset"))
+
+		local BarOffsetYSlider = BarSetup:CreateSlider(L.BarOffSetY, -5, 25, 1)
+		BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
+		BarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("BarYOffset"))
+		BarOffsetYSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
+		
+		-----------------------
+		-- Huge Bar Options --
+		-----------------------
+		BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 160, true)
+		
+		local hugedummybar = DBM.Bars:CreateDummyBar()
+		hugedummybar.frame:SetParent(BarSetupSmall.frame)
+		hugedummybar.frame:SetPoint('BOTTOM', BarSetupHuge.frame, "TOP", 0, -35)
+		hugedummybar.frame:SetScript("OnUpdate", function(self, elapsed) hugedummybar:Update(elapsed) end)
+		hugedummybar.enlarged = true                                
+		hugedummybar:ApplyStyle()     
+
+		local HugeBarWidthSlider = BarSetup:CreateSlider(L.Slider_BarWidth, 100, 325, 1)
+		HugeBarWidthSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 20, -90)
+		HugeBarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("HugeWidth"))
+		HugeBarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeWidth"))
+
+		local HugeBarScaleSlider = BarSetup:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05)
+		HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
+		HugeBarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("HugeScale"))
+		HugeBarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
+
+		local HugeBarOffsetXSlider = BarSetup:CreateSlider(L.BarOffSetX, -50, 50, 1)
+		HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 220, -90)
+		HugeBarOffsetXSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarXOffset"))
+		HugeBarOffsetXSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
+
+		local HugeBarOffsetYSlider = BarSetup:CreateSlider(L.BarOffSetY, -5, 25, 1)
+		HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
+		HugeBarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarYOffset"))
+		HugeBarOffsetYSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
+
 
 		BarSetupPanel:SetMyOwnHeight() 
 	end
