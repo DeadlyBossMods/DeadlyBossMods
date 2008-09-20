@@ -448,6 +448,7 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("DBMv4-Ver", "Hi!")
+				self:Schedule(3, DBM.RequestTimers, DBM)
 			end
 			for i = 1, GetNumRaidMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
@@ -479,6 +480,7 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("DBMv4-Ver", "Hi!")
+				self:Schedule(3, DBM.RequestTimers, DBM)
 			end
 			for i = 0, GetNumPartyMembers() do
 				local id
@@ -620,7 +622,8 @@ function DBM:ADDON_LOADED(modname)
 			"CHAT_MSG_MONSTER_YELL",
 			"CHAT_MSG_MONSTER_EMOTE",
 			"CHAT_MSG_MONSTER_SAY",
-			"CHAT_MSG_RAID_BOSS_EMOTE"
+			"CHAT_MSG_RAID_BOSS_EMOTE",
+			"PLAYER_UNGHOST"
 		)
 		self:ZONE_CHANGED_NEW_AREA()
 		self:RAID_ROSTER_UPDATE()
@@ -678,10 +681,11 @@ do
 	
 	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
 		local delay, mod = strsplit("\t", msg)
+		local lag = select(3, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
 		mod = DBM:GetModByName(mod or "")
 		if mod and delay then
-			DBM:StartCombat(mod, delay, true)
+			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
 	
@@ -1050,11 +1054,10 @@ do
 		local bestClient = next(raid)
 		if not bestClient then return end
 		for i, v in pairs(raid) do
-			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (v.revision or 0) > (bestClient.revision or 0) then
+			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > (bestClient.revision or 0) then
 				bestClient = v
 			end
 		end
-		DBM:AddMsg(bestClient.name)
 		requestedFrom = bestClient.name
 		requestTime = GetTime()
 		SendAddonMessage("DBMv4-RequestTimers", "", "WHISPER", bestClient.name)
@@ -1062,24 +1065,26 @@ do
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
+			local lag = select(3, GetNetStats()) / 1000
 			mod = DBM:GetModByName(mod)
 			if not mod or not mod.combatInfo then return end
 			table.insert(inCombat, mod)
 			mod.inCombat = true
 			mod.blockSyncs = nil
-			mod.combatInfo.pull = GetTime() - time
+			mod.combatInfo.pull = GetTime() - time + lag
 			self:Schedule(3, checkWipe)
 		end
 	end
 
 	function DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
+			local lag = select(3, GetNetStats()) / 1000
 			mod = DBM:GetModByName(mod)
 			if not mod then return end
 			for i, v in mod.timers do
 				if v.id == id then
 					v:Start(totalTime, ...)
-					v:Update(totalTime - timeLeft, totalTime, ...)
+					v:Update(totalTime - timeLeft + lag, totalTime, ...)
 				end
 			end
 		end
@@ -1108,6 +1113,18 @@ function DBM:SendTimerInfo(mod, target)
 			if timeLeft > 0 and totalTime > 0 then
 				SendAddonMessage("DBMv4-TimerInfo", ("%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
 			end
+		end
+	end
+end
+
+function DBM:PLAYER_UNGHOST()
+	local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+		local id = (i == 0 and "player") or uId..i
+		if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+			DBM:RequestTimers()
+			DBM:AddMsg(UnitName(id), "combat:")
+			break
 		end
 	end
 end

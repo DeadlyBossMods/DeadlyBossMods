@@ -334,6 +334,7 @@ do
 	local dummyBars = 0
 	local function dummyCancel(self)
 		self.timer = self.totalTime
+		self.flashing = nil
 		self:Update(0)
 		self.flashing = nil
 	end
