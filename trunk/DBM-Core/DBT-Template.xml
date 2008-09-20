@@ -108,6 +108,8 @@
 				self.obj.owner:SavePosition()
 				if arg1 == "RightButton" then
 					self.obj:Cancel()
+				elseif arg1 == "LeftButton" and IsShiftKeyDown() then
+					self.obj:Announce()
 				end
 			</OnMouseUp>
 			<OnHide>
