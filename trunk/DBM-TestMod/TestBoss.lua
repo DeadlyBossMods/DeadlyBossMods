@@ -4,13 +4,12 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 
-mod:SetModelScale(0.25)
-mod:SetModelOffset(0, 0, 0)
+mod:SetModelScale(0.5)
 
 mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"), "Teldrassil")
 
---mod:SetCreatureID(448)
-mod:SetCreatureID(2043)
+mod:SetCreatureID(448)
+--mod:SetCreatureID(2043)
 mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
