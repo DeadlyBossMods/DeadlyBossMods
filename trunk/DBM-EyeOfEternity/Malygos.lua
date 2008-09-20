@@ -5,7 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(28859)
 mod:SetZone()
 
-mod:SetModelScale(0.25)
+mod:SetModelScale(0.6)
+--mod:SetModelMoveSpeed(3.0)
 
 mod:RegisterCombat("yell", L.YellPull)
 
