@@ -40,10 +40,10 @@ L.WhisperMsg_NotLeader 		= "Sorry, can't invite you. I'm not the group Leader."
 L.WarnMsg_NoRaid		= "Please start a Raid Group before using AOE Invite"
 L.WarnMsg_NotLead		= "Sorry, you have to be Lead or Promoted to use this command"
 L.WarnMsg_InviteIncoming	= "<DBM> AOE Raidinvite incoming. Please leave your groups now."
-
+L.Button_AOE_Invite		= "AOE Guild Invite"
 
 DBM_AutoInvite_Options = {
-	active = true,
+	enabled = true,
 	keyword = 'invite',
 	guildmates = true,
 	friends = true,
@@ -60,6 +60,20 @@ local AOE_Ginvite
 local UpdateFriendList
 local IsFriend
 local DoInvite
+local slashfunction
+
+
+function slashfunction()
+	if GetNumRaidMembers() == 0 then
+		DBM:AddMsg(L.WarnMsg_NoRaid)
+	elseif not (IsRaidLeader() or IsRaidOfficer()) then
+		DBM:AddMsg(L.WarnMsg_NotLead)
+	else
+		SendChatMessage(L.WarnMsg_InviteIncoming, "GUILD")
+		GuildRoster()
+		DBM:Schedule(10, AOE_Ginvite)
+	end
+end
 
 do 
 	local function toboolean(var) 
@@ -68,22 +82,31 @@ do
 
 	local function creategui()
 		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_AutoInvite, "option")
-		local area = panel:CreateArea(L.AreaGeneral, nil, 150, true)
+		local area = panel:CreateArea(L.AreaGeneral, nil, 160, true)
 
 		local enabled = area:CreateCheckButton(L.Activate, true)
 		local guildmates = area:CreateCheckButton(L.AllowGuildMates, true)		
 		local friends = area:CreateCheckButton(L.AllowFriends, true)		
 		local other = area:CreateCheckButton(L.AllowOthers, true)		
 		local keyword = area:CreateEditBox(L.KeyWord, settings.keyword, 200)		
-		keyword:SetPoint('TOPLEFT', other, "BOTTOMLEFT", 10, -15)
+		keyword:SetPoint('TOPLEFT', other, "BOTTOMLEFT", 15, -15)
+
+		local aoeinv = area:CreateButton(L.Button_AOE_Invite, 150)
+		aoeinv:SetPoint("TOPLEFT", keyword, "TOPRIGHT", 15, 0)
+		aoeinv:SetScript("OnClick", slashfunction)
 
 		enabled:SetScript("OnClick", 		function(self) settings.enabled = toboolean(self:GetChecked()) end)
+		enabled:SetScript("OnShow", 		function(self) self:SetChecked(settings.enabled) end)
 		guildmates:SetScript("OnClick", 	function(self) settings.guildmates = toboolean(self:GetChecked()) end)
+		guildmates:SetScript("OnShow", 		function(self) self:SetChecked(settings.guildmates) end)
 		friends:SetScript("OnClick", 		function(self) settings.friends = toboolean(self:GetChecked()) end)
+		friends:SetScript("OnShow", 		function(self) self:SetChecked(settings.friends) end)
 		other:SetScript("OnClick",		function(self) settings.other = toboolean(self:GetChecked()) end)
+		other:SetScript("OnShow", 		function(self) self:SetChecked(settings.other) end)
 		keyword:SetScript("OnTextChanged", 	function(self) settings.keyword = self:GetText():lower() end)
+		keyword:SetScript("OnShow", 		function(self) self:SetText(settings.keyword) end)
 	end
-	--DBM:CallFuncOnLoad("GUI", creategui)
+	DBM:RegisterOnGuiLoadCallback(creategui)
 end
 
 do
@@ -148,7 +171,7 @@ do
 	end
 
 	local function OnMsgRecived(msg, name)
-		if settings.active and msg:lower() == settings.keyword then
+		if settings.enabled and msg:lower() == settings.keyword then
 			local doautoinvite = false
 	
 			if settings.friends and IsFriend(name) then		doautoinvite = true
@@ -187,17 +210,7 @@ end
 
 
 SLASH_DBMAUTOINVITE1 = "/inviteguild"
-SlashCmdList["DBMAUTOINVITE"] = function(msg)
-	if GetNumRaidMembers() == 0 then
-		DBM:AddMsg(L.WarnMsg_NoRaid)
-	elseif not (IsRaidLeader() or IsRaidOfficer()) then
-		DBM:AddMsg(L.WarnMsg_NotLead)
-	else
-		SendChatMessage(L.WarnMsg_InviteIncoming, "GUILD")
-		GuildRoster()
-		DBM:Schedule(10, AOE_Ginvite)
-	end
-end
+SlashCmdList["DBMAUTOINVITE"] = slashfunction 
 
 
 
