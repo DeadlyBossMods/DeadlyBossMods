@@ -136,7 +136,7 @@ options = {
 	},
 	HugeScale = {
 		type = "number",
-		default = 1.05,
+		default = 1.03,
 	},
 	TimerPoint = {
 		type = "string",
@@ -491,7 +491,7 @@ function barPrototype:Update(elapsed)
 	elseif self.moving == "move" then
 		self.moving = nil
 		self:SetPosition()
-	elseif self.moving == "enlarge" and self.moveElapsed <= 1 then
+	elseif self.moving == "enlarge" and self.moveElapsed <= 30 then
 		self:AnimateEnlarge(elapsed)
 	elseif self.moving == "enlarge" then
 		self.moving = nil
@@ -705,7 +705,6 @@ function barPrototype:Enlarge()
 	self.moveOffsetX = -(newX - oldX)
 	self.moveOffsetY = -(newY - oldY)
 	self.moveElapsed = 0
-	self.frame:SetScale(self.owner.options.HugeScale)
 end
 
 
@@ -714,15 +713,15 @@ end
 ---------------------------
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
-	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
-	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
-	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 1)
-	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
+	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 30)
+	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 30)
+	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 30)
+	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 30)
 	if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 	end
---	self.frame:SetScale(newScale)
+	self.frame:SetScale(newScale)
 	self.frame:SetWidth(newWidth)
 	getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
 end
