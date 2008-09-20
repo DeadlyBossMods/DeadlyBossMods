@@ -36,7 +36,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-local usemodelframe = false	-- very beta
+local usemodelframe = true	-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
 	if not DBM_GUI_Frame then DBM_GUI:CreateOptionsMenu() end
@@ -700,42 +700,56 @@ do
 
 		getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
 	
+		frame:Show();
 		if usemodelframe then
+			DBM_BossPreview.enabled = false
+			DBM_BossPreview:Hide()
 			for _, mod in ipairs(DBM.Mods) do
 				if mod.panel.frame == frame then
 					UpdateAnimationFrame(mod)
 				end
 			end
 		end
-
-		frame:Show();
 	end
 
 end
 
 function UpdateAnimationFrame(mod)
+	DBM_BossPreview.currentMod = mod
+
+	-- DEBUG (thanks to blizzard, costs me 2 days to find out that this BUGGED!!!!)
+	DBM_BossPreview:Show()
+	DBM_BossPreview:SetAlpha(1)
+	DBM_BossPreview:SetModelScale(1.0)
+	DBM_BossPreview:SetPosition(0, 0, 0)
+	-- END DEBUG
 	DBM_BossPreview:SetCreature(mod.modelId or mod.creatureId or 0)
-	DBM_BossPreview:SetModelScale(mod.modelScale or 0.15)
+	DBM_BossPreview:SetModelScale(mod.modelScale or 0.5)
 
 	DBM_BossPreview.atime = 0 
 	DBM_BossPreview.apos = 0
 	DBM_BossPreview.rotation = 0
-	DBM_BossPreview.modelRotation = mod.modelRotation or 0
+	DBM_BossPreview.modelRotation = mod.modelRotation or -90
 	DBM_BossPreview.modelOffsetX = mod.modelOffsetX or 0
 	DBM_BossPreview.modelOffsetY = mod.modelOffsetY or 0
 	DBM_BossPreview.modelOffsetZ = mod.modelOffsetZ or 0
-	DBM_BossPreview.modelscale = mod.modelScale or 0.15
+	DBM_BossPreview.modelscale = mod.modelScale or 0.5
 	DBM_BossPreview.modelMoveSpeed = mod.modelMoveSpeed or 1
-	DBM_BossPreview.pos_x = 0
+	DBM_BossPreview.pos_x = 1
 	DBM_BossPreview.pos_y = 0
 	DBM_BossPreview.pos_z = 0
 	DBM_BossPreview.alpha = 1
 	DBM_BossPreview.scale = 0
 	DBM_BossPreview.apos = 0
-	--DBM_BossPreview:SetPosition(DBM_BossPreview.pos_y, DBM_BossPreview.pos_x, DBM_BossPreview.pos_z)
-	--DBM_BossPreview:SetPosition(DBM_BossPreview.pos_z, DBM_BossPreview.pos_x, DBM_BossPreview.pos_y)
 	DBM_BossPreview:SetAlpha(DBM_BossPreview.alpha)
+	DBM_BossPreview:SetFacing( DBM_BossPreview.modelRotation  *math.pi/180)
+	DBM_BossPreview:SetPosition(
+		DBM_BossPreview.pos_z + DBM_BossPreview.modelOffsetZ, 
+		DBM_BossPreview.pos_x + DBM_BossPreview.modelOffsetX, 
+		DBM_BossPreview.pos_y + DBM_BossPreview.modelOffsetY)
 	DBM_BossPreview.enabled = true
+
+	DBM_BossPreview:SetSequence(4)
 end
 
 local function CreateAnimationFrame()
@@ -744,23 +758,8 @@ local function CreateAnimationFrame()
 	mobstyle:SetWidth( DBM_GUI_OptionsFramePanelContainer:GetWidth()-10 )
 	mobstyle:SetHeight( DBM_GUI_OptionsFramePanelContainer:GetHeight()-10 )
 
-	mobstyle.atime = 0 
-	mobstyle.apos = 0
-	mobstyle.rotation = 0
-	mobstyle.modelOffsetX = 0
-	mobstyle.modelOffsetY = 0
-	mobstyle.modelOffsetZ = 0
-	mobstyle.modelscale = 0.25
-	mobstyle.pos_x = 0
-	mobstyle.pos_y = 0
-	mobstyle.pos_z = 0
-	mobstyle.alpha = 1
-	mobstyle.scale = mobstyle.modelscale
-	mobstyle.modelMoveSpeed = 1
-	mobstyle.enabled = false
-	
 	mobstyle.playlist = { 	-- start animation outside of our fov    
-				{set_y = 0.30, set_x = 3, set_z = 0, setfacing = -90, setalpha = 1},
+				{set_y = 0, set_x = 1.1, set_z = 0, setfacing = -90, setalpha = 1},
 				-- wait outside fov befor begining
 				{mintime = 1000, maxtime = 7000},	-- randomtime to wait
 				-- {time = 10000},  			-- just wait 10 seconds
@@ -776,25 +775,46 @@ local function CreateAnimationFrame()
 
 				-- move to next waypoint
 				{setfacing = -90},
-				{animation = 4, time = 3000, move_x = -1.5},
+				{animation = 4, time = 5000, move_x = -2.5},
 
 				-- stay on waypoint #2
 				{setfacing = 0},
 				{animation = 0, time = 10000,},
 				 
+				--[[
 				-- move to the horizont
 				{setfacing = 180},
-				{animation = 4, time = 10000, move_z = 1, move_x = 0.375, toscale=0.05},
+				{animation = 4, time = 10000, toscale=0.005},
 
 				-- die and despawn
-				{animation = 1, time = 2000},
+				{animation = 1, time = 5000},
 				{animation = 6, time = 2000, toalpha = 0},
-
+				--]]
 				-- we want so sleep a little while on animation end
 				{mintime = 1000, maxtime = 3000},
 	} 
-	
+
 	mobstyle:SetScript("OnUpdate", function(self, e)
+		if not self.enabled then return end
+		
+		self.atime = self.atime + e*1000
+		if self.pos_x < -2.5 then
+			self.pos_x = 1
+		end
+		self.pos_x = self.pos_x - 0.005
+		self:SetSequenceTime(4,  self.atime) 
+		self:SetPosition(
+					self.pos_z + self.modelOffsetZ, 
+					self.pos_x + self.modelOffsetX, 
+					self.pos_y + self.modelOffsetY
+				)
+		--DBM:AddMsg("X = "..self.pos_x)
+
+	end)
+
+	--[[
+	mobstyle:SetScript("OnUpdate", function(self, e)
+		--if true then return end
 		if not self.enabled then return end
 		self.atime = self.atime + e * 1000  
 		if self.apos == 0 or self.atime >= (self.playlist[self.apos].time or 0) then
@@ -805,33 +825,38 @@ local function CreateAnimationFrame()
 			if self.apos <= #self.playlist and self.playlist[self.apos].setalpha then
 				self:SetAlpha(self.playlist[self.apos].setalpha)
 			end
-			if self.apos <= #self.playlist and self.playlist[self.apos].set_y then
-				self.pos_y = self.playlist[self.apos].set_y
-				--self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
-				self:SetPosition(self.pos_z+self.modelOffsetZ, self.pos_x+self.modelOffsetX, self.pos_y+self.modelOffsetY)
-			end
-			if self.apos <= #self.playlist and self.playlist[self.apos].set_x then
-				self.pos_x = self.playlist[self.apos].set_x
-				--self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
-				self:SetPosition(self.pos_z+self.modelOffsetZ, self.pos_x+self.modelOffsetX, self.pos_y+self.modelOffsetY)
-			end
-			if self.apos <= #self.playlist and self.playlist[self.apos].set_z then
-				self.pos_z = self.playlist[self.apos].set_z
-				--self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
-				self:SetPosition(self.pos_z+self.modelOffsetZ, self.pos_x+self.modelOffsetX, self.pos_y+self.modelOffsetY)
+			if self.apos <= #self.playlist and (self.playlist[self.apos].set_y or self.playlist[self.apos].set_x or self.playlist[self.apos].set_z) then
+				self.pos_y = self.playlist[self.apos].set_y or self.pos_y
+				self.pos_x = self.playlist[self.apos].set_x or self.pos_x
+				self.pos_z = self.playlist[self.apos].set_z or self.pos_z
+				self:SetPosition(
+					self.pos_z + self.modelOffsetZ, 
+					self.pos_x + self.modelOffsetX, 
+					self.pos_y + self.modelOffsetY
+				)
 			end
 			if self.apos > #self.playlist then
+
+				self:SetAlpha(1)
+				self:SetModelScale(1.0)
+				self:SetPosition(0, 0, 0)
+				self:SetCreature(self.currentMod.modelId or self.currentMod.creatureId or 0)
+
 				self.apos = 0 
-				self.pos_x = self.modelOffsetX
-				self.pos_y = self.modelOffsetY
-				self.pos_z = self.modelOffsetZ
+				self.pos_x = 0
+				self.pos_y = 0
+				self.pos_z = 0
 				self.alpha = 1
 				self.scale = self.modelscale
+
+				self:SetAlpha(self.alpha)
 				self:SetFacing(self.modelRotation)
-				--self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
-				self:SetPosition(self.pos_z+self.modelOffsetZ, self.pos_x+self.modelOffsetX, self.pos_y+self.modelOffsetY)
-				self:SetAlpha(0)
 				self:SetModelScale(self.modelscale)
+				self:SetPosition(
+					self.pos_z + self.modelOffsetZ, 
+					self.pos_x + self.modelOffsetX, 
+					self.pos_y + self.modelOffsetY
+				)
 				return 
 			end
 			self.rotation = self:GetFacing()
@@ -858,12 +883,11 @@ local function CreateAnimationFrame()
 						/ (self.playlist[self.apos].time/1000))
 						)
 
-			self:SetRotation( self.rotation )							
+			self:SetFacing( self.rotation )							
 		end
 		if self.playlist[self.apos].move_x then
 			--self.pos_x = self.pos_x + (self.playlist[self.apos].move_x / (self.playlist[self.apos].time/1000) ) * e
 			self.pos_x = self.pos_x + (((self.playlist[self.apos].move_x / (self.playlist[self.apos].time/1000) ) * e) * self.modelMoveSpeed)
-			--self:SetPosition(self.pos_y, self.pos_x, self.pos_z)
 			self:SetPosition(self.pos_z+self.modelOffsetZ, self.pos_x+self.modelOffsetX, self.pos_y+self.modelOffsetY)
 		end
 		if self.playlist[self.apos].move_y then
@@ -882,10 +906,10 @@ local function CreateAnimationFrame()
 		end
 		if self.playlist[self.apos].toscale then
 			self.scale = self.scale - ((self.modelscale - self.playlist[self.apos].toscale) / (self.playlist[self.apos].time/1000) ) * e
-			if self.scale < 0 then self.scale = 0.01 end
+			if self.scale < 0 then self.scale = 0.0001 end
 			self:SetModelScale(self.scale)
 		end
-	end)
+	end) --]]
 	return mobstyle
 end
 
