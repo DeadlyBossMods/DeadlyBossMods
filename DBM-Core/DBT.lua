@@ -40,6 +40,7 @@ local fCounter = 1
 local barPrototype = {}
 local unusedBars = {}
 local unusedBarObjects = setmetatable({}, {__mode = "kv"})
+local instances = {}
 local options
 local function stringFromTimer(t)
 	if t <= 60 then
@@ -59,6 +60,14 @@ options = {
 		default = 0,
 	},	
 	BarYOffset = {
+		type = "number",
+		default = 0,
+	},
+	HugeBarXOffset = {
+		type = "number",
+		default = 0,
+	},	
+	HugeBarYOffset = {
 		type = "number",
 		default = 0,
 	},
@@ -215,12 +224,15 @@ do
 		obj.secAnchor:SetClampedToScreen(true)
 		obj.secAnchor:SetMovable(true)
 		obj.secAnchor:Show()
+		table.insert(instances, obj)
 		return obj
 	end
 	
 	function DBT:LoadOptions(id)
 		DBT_SavedOptions[id] = DBT_SavedOptions[id] or {}
 		self.options = setmetatable(DBT_SavedOptions[id], optionMT)
+		self.mainAnchor:ClearAllPoints()
+		self.secAnchor:ClearAllPoints()
 		self.mainAnchor:SetPoint(self.options.TimerPoint, UIParent, self.options.TimerPoint, self.options.TimerX, self.options.TimerY)
 		self.secAnchor:SetPoint(self.options.HugeTimerPoint, UIParent, self.options.HugeTimerPoint, self.options.HugeTimerX, self.options.HugeTimerY)
 	end
@@ -491,7 +503,7 @@ function barPrototype:Update(elapsed)
 	elseif self.moving == "move" then
 		self.moving = nil
 		self:SetPosition()
-	elseif self.moving == "enlarge" and self.moveElapsed <= 30 then
+	elseif self.moving == "enlarge" and self.moveElapsed <= 1 then
 		self:AnimateEnlarge(elapsed)
 	elseif self.moving == "enlarge" then
 		self.moving = nil
@@ -508,6 +520,18 @@ function barPrototype:Update(elapsed)
 			next:MoveToNextPosition()
 		end
 	end
+end
+
+do
+	local frame = CreateFrame("Frame")
+	frame:SetScript("OnUpdate", function(self, elapsed)
+		if UIParent:IsShown() then return end
+		for i, v in ipairs(instances) do
+			for bar in v:GetBarIterator() do
+				bar:Update(elapsed)
+			end
+		end
+	end)
 end
 
 
@@ -647,6 +671,19 @@ end
 options.ExpandUpwards.onChange = DBT.UpdateOrientation
 
 
+--------------------
+--  Bar Announce  --
+--------------------
+function barPrototype:Announce()
+	local msg = ("%s  %02d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
+	if ChatFrameEditBox:IsShown() then
+		ChatFrameEditBox:Insert(msg)
+	else
+		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
+	end
+end
+
+
 -----------------------
 --  Bar Positioning  --
 -----------------------
@@ -713,10 +750,10 @@ end
 ---------------------------
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
-	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 30)
-	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 30)
-	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 30)
-	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 30)
+	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
+	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 1)
+	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
 	if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
