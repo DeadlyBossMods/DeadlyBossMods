@@ -360,6 +360,10 @@ function DBM:Schedule(t, f, ...)
 	schedule(t, f, nil, ...)
 end
 
+function DBM:Unschedule(f, ...)
+	unschedule(f, nil, ...)
+end
+
 
 ----------------------
 --  Slash Commands  --
@@ -662,6 +666,8 @@ end
 -----------------------------
 do
 	local syncHandlers = {}
+	local whisperSyncHandlers = {}
+	
 	syncHandlers["DBMv4-Mod"] = function(msg, channel, sender)
 		local mod, revision, event, arg = strsplit("\t", msg)
 		mod = DBM:GetModByName(mod or "")
@@ -710,10 +716,36 @@ do
 			end
 		end
 	end
+
+	whisperSyncHandlers["DBMv4-RequestTimers"] = function(msg, channel, sender)
+		DBM:SendTimers(sender)
+	end
 	
+	whisperSyncHandlers["DBMv4-CombatInfo"] = function(msg, channel, sender)
+		local mod, time = strsplit("\t", msg)
+		mod = DBM:GetModByName(mod or "")
+		time = tonumber(time or 0)
+		if mod and time then
+			DBM:ReceiveCombatInfo(sender, mod, time)
+		end
+	end
+	
+	whisperSyncHandlers["DBMv4-TimerInfo"] = function(msg, channel, sender)
+		local mod, timeLeft, totalTime, id = strsplit("\t", msg)
+		mod = DBM:GetModByName(mod or "")
+		timeLeft = tonumber(timeLeft or 0)
+		totalTime = tonumber(totalTime or 0)
+		if mod and timeLeft and timeLeft > 0 and totalTime and totalTime > 0 and id then
+			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, select(5, strsplit("\t", msg)))
+		end
+	end
+
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
 		if msg and channel ~= "WHISPER" and channel ~= "GUILD" then
 			local handler = syncHandlers[prefix]
+			if handler then handler(msg, channel, sender) end
+		elseif msg and channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none" then
+			local handler = whisperSyncHandlers[prefix]
 			if handler then handler(msg, channel, sender) end
 		end
 	end
@@ -1028,7 +1060,7 @@ do
 		SendAddonMessage("DBMv4-RequestTimers", "", "WHISPER", bestClient.name)
 	end
 
-	function DBM:ReceiveCombatInfo(mod, time, sender)
+	function DBM:ReceiveCombatInfo(sender, mod, time)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			mod = DBM:GetModByName(mod)
 			if not mod or not mod.combatInfo then return end
@@ -1040,8 +1072,16 @@ do
 		end
 	end
 
-	function DBM:ReceiveTimerInfo() -- TODO
+	function DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
+			mod = DBM:GetModByName(mod)
+			if not mod then return end
+			for i, v in mod.timers do
+				if v.id == id then
+					v:Start(totalTime, ...)
+					v:Update(totalTime - timeLeft, totalTime, ...)
+				end
+			end
 		end
 	end
 end
@@ -1062,6 +1102,14 @@ function DBM:SendCombatInfo(mod, target)
 end
 
 function DBM:SendTimerInfo(mod, target)
+	for i, v in mod.timers do
+		for _, uId in pairs(v.startedTimers) do
+			local timeLeft, totalTime = v:GetTime()
+			if timeLeft > 0 and totalTime > 0 then
+				SendAddonMessage("DBMv4-TimerInfo", ("%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
+			end
+		end
+	end
 end
 
 ------------------------------------
@@ -1314,7 +1362,7 @@ do
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
 						if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
-							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 24) -- these are the default args for raid warning messages
+							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 99)
 						end
 					end
 				else
@@ -1473,7 +1521,7 @@ do
 	function timerPrototype:GetTime(...)
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		local bar = DBM.Bars:GetBar(id)
-		return bar and (bar.totalTime - bar.timer) or 0
+		return bar and (bar.totalTime - bar.timer) or 0, (bar and bar.totalTime) or 0
 	end
 
 	function timerPrototype:SetTimer(timer)
