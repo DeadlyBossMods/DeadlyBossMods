@@ -331,7 +331,8 @@ end
 do
 	local dummyBars = 0
 	local function dummyCancel(self)
-		self:SetElapsed(0)
+		self.timer = self.totalTime
+		self:Update(0)
 		self.flashing = nil
 	end
 	function DBT:CreateDummyBar()
