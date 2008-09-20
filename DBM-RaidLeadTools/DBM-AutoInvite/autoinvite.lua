@@ -37,6 +37,10 @@ L.InviteFailed 			= "Can't invite Player ->%s<- to Group"
 L.ConvertRaid 			= "Converting group to Raid"
 L.WhisperMsg_RaidIsFull 	= "Sorry, can't invite you. Raid is full."
 L.WhisperMsg_NotLeader 		= "Sorry, can't invite you. I'm not the group Leader."
+L.WarnMsg_NoRaid		= "Please start a Raid Group before using AOE Invite"
+L.WarnMsg_NotLead		= "Sorry, you have to be Lead or Promoted to use this command"
+L.WarnMsg_InviteIncoming	= "<DBM> AOE Raidinvite incoming. Please leave your groups now."
+
 
 DBM_AutoInvite_Options = {
 	active = true,
@@ -49,11 +53,13 @@ DBM_AutoInvite_Options = {
 local settings = DBM_AutoInvite_Options
 local mainframe = CreateFrame("Frame", "DBM_AutoInvite", UIParent)
 
--- functions
+-- functions for local scope
 local UpdateGuildList
 local IsGuildMember
+local AOE_Ginvite
 local UpdateFriendList
 local IsFriend
+local DoInvite
 
 do 
 	local function toboolean(var) 
@@ -83,9 +89,11 @@ end
 do
 	local GuildMates = {}
 	function UpdateGuildList()
+		local name
 		for i=#GuildMates, 1, -1 do GuildMates[i] = nil end
 		for i=1, GetNumGuildMembers(), 1 do
-			table.insert(GuildMates, GetGuildRosterInfo(i))
+			name = GetGuildRosterInfo(i)
+			table.insert(GuildMates, name)
 		end
 	end
 	function IsGuildMember(name)
@@ -95,11 +103,16 @@ do
 			end
 		end
 		return false
+	end	
+	function AOE_Ginvite()
+		for _,v in pairs(GuildMates) do
+			DoInvite(v)
+		end
 	end
-end	
-
+end
 
 do
+	local waitinginvites = {}
 	local function IsFriend(name)
 		for i=1, GetNumFriends(), 1 do
 			if GetFriendInfo(i) == name then
@@ -109,14 +122,14 @@ do
 		return false
 	end
 
-	local function DoInvite(name)
+	function DoInvite(name)
 		pplcount = GetNumRaidMembers();
-		if pplcount == 0 then 
-			if not IsPartyLeader() then
+		if pplcount == 0 then
+			pplcount = GetNumPartyMembers() or 0
+			if pplcount > 0 and not IsPartyLeader() then
 				DBM:AddMsg( L.InviteFailed:format(name) )
 			else
-				pplcount = GetNumPartyMembers();
-				if numparty < 5 then
+				if pplcount < 5 then
 					InviteUnit(name)
 
 				elseif pplcount == 5 then
@@ -135,11 +148,14 @@ do
 	end
 
 	local function OnMsgRecived(msg, name)
-		if settings.enabled and msg and msg:lower() == setting.keyword then
+		if settings.active and msg:lower() == settings.keyword then
 			local doautoinvite = false
-			if settings.guildmates and IsGuildMember(name) then	doautoinvite = true	
-			elseif settings.friends and IsFriend(name) then		doautoinvite = true
+	
+			if settings.friends and IsFriend(name) then		doautoinvite = true
 			elseif settings.other then				doautoinvite = true
+			elseif settings.guildmates then	
+				table.insert(waitinginvites, name)
+				GuildRoster()
 			end
 			if doautoinvite then DoInvite(name) end
 		end
@@ -147,10 +163,21 @@ do
 
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
-			mainframe:RegisterEvent("CHAT_MSG_WHISPER")
+			self:RegisterEvent("CHAT_MSG_WHISPER")
+			self:RegisterEvent("GUILD_ROSTER_UPDATE")
+
 		
 		elseif event == "CHAT_MSG_WHISPER" then
 			OnMsgRecived(select(1, ...), select(2, ...))
+
+		elseif event == "GUILD_ROSTER_UPDATE" then
+			UpdateGuildList()
+			for i=#waitinginvites, 1, -1 do
+				if IsGuildMember(waitinginvites[i]) then
+					DoInvite(waitinginvites[i])
+				end
+				waitinginvites[i] = nil
+			end
 		end
 	end)
 	
@@ -159,6 +186,18 @@ do
 end
 
 
+SLASH_DBMAUTOINVITE1 = "/inviteguild"
+SlashCmdList["DBMAUTOINVITE"] = function(msg)
+	if GetNumRaidMembers() == 0 then
+		DBM:AddMsg(L.WarnMsg_NoRaid)
+	elseif not (IsRaidLeader() or IsRaidOfficer()) then
+		DBM:AddMsg(L.WarnMsg_NotLead)
+	else
+		SendChatMessage(L.WarnMsg_InviteIncoming, "GUILD")
+		GuildRoster()
+		DBM:Schedule(10, AOE_Ginvite)
+	end
+end
 
 
 
