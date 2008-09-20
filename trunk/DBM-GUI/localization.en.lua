@@ -54,14 +54,22 @@ L.ShowWarningsInChat = "Show warnings in chatframe"
 L.ShowFakedRaidWarnings = "Show warnings as faked Raid Warning messages"
 L.WarningIconLeft = "Show icon on left side"
 L.WarningIconRight = "Show icon on right side"
-
+L.RaidWarnMessage = "Thanks for using DeadlyBossMods"
 
 -- Tab: Barsetup
 L.BarSetup = "Bar Style"
 L.BarTexture = "Bar Texture"
 
+L.Slider_BarOffSetX = "OffSet X"
+L.Slider_BarOffSetY = "OffSet Y"
 L.Slider_BarWidth = "Bar width"
 L.Slider_BarScale = "Bar scale"
+L.AreaTitle_BarSetup = "General Bar Options"
+L.AreaTitle_BarSetupSmall = "Small Bar Options"
+L.AreaTitle_BarSetupHuge = "Huge Bar Options"
+L.BarIconLeft = "Left Icon"
+L.BarIconRight = "Right Icon"
+L.Reset = "reset"
 
 
 L.TabInfoText_WOTLK = [[Wrath of the Lich King Boss Mods
