@@ -707,6 +707,7 @@ do
 			for _, mod in ipairs(DBM.Mods) do
 				if mod.panel.frame == frame then
 					UpdateAnimationFrame(mod)
+--					DBM:Schedule(1, UpdateAnimationFrame, mod)
 				end
 			end
 		end
@@ -715,13 +716,15 @@ do
 end
 
 function UpdateAnimationFrame(mod)
+	DBM:AddMsg(mod.id)
 	DBM_BossPreview.currentMod = mod
 
 	-- DEBUG (thanks to blizzard, costs me 2 days to find out that this BUGGED!!!!)
 	DBM_BossPreview:Show()
 	DBM_BossPreview:SetAlpha(1)
 	DBM_BossPreview:SetModelScale(1.0)
-	DBM_BossPreview:SetPosition(0, 0, 0)
+--	DBM_BossPreview:SetPosition(0, 0, 0)
+	DBM_BossPreview:ClearModel()
 	-- END DEBUG
 	DBM_BossPreview:SetCreature(mod.modelId or mod.creatureId or 0)
 	DBM_BossPreview:SetModelScale(mod.modelScale or 0.5)
