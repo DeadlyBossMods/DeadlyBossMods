@@ -286,6 +286,7 @@ do
 	
 	function DBT:CreateBar(timer, id, icon, huge)
 		if timer <= 0 then return end
+		if (self.numBars or 0) >= 15 then return end
 		local newBar = self:GetBar(id)
 		if newBar then
 			newBar:SetTimer(timer)
@@ -320,6 +321,7 @@ do
 		newBar:SetIcon(icon)
 		newBar:Update(0)
 		self.bars[newBar] = true
+		self.numBars = (self.numBars or 0) + 1
 		return newBar
 	end
 end
@@ -624,6 +626,7 @@ function barPrototype:Cancel()
 	end
 	self.owner.bars[self] = nil
 	unusedBarObjects[self] = self
+	self.owner.numBars = (self.owner.numBars or 0) - 1
 end
 
 
