@@ -39,8 +39,6 @@ local L = DBM_GUI_Translations
 local usemodelframe = true	-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
-	if not DBM_GUI_Frame then DBM_GUI:CreateOptionsMenu() end
-
 	if forceshow == true then
 		self:UpdateModList()
 		DBM_GUI_OptionsFrame:Show()
@@ -58,14 +56,15 @@ function DBM_GUI:ShowHide(forceshow)
 	end
 end
 
-do 
+do
+	local myid = 100
 	local prottypemetatable = {__index = PanelPrototype}
 	-- This function creates a new entry in the menu
 	--
 	--  arg1 = Text for the UI Button
 	--  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
 	--
-	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub) 
+	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub, sortID) 
 		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
@@ -75,7 +74,13 @@ do
 	
 		panel.name = FrameName
 		panel.showsub = showsub
-		--panel:SetAllPoints(DBM_GUI_OptionsFramePanelContainer)
+
+		if (sortID or 0) > 0 then
+			panel.sortid = sortID
+		else
+			myid = myid + 1
+			panel.sortid = myid
+		end
 		panel:Hide()
 	
 		if FrameTyp == "option" or FrameTyp == 2 then
@@ -333,10 +338,21 @@ end
 --
 --  arg1 = text to write
 --  arg2 = width to set
-function PanelPrototype:CreateText(text, width, autoplaced)
-	local textblock = self.frame:CreateFontString(FrameTitle..self:GetNewID(), "ARTWORK", "GameFontNormal")
+function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
+	local textblock = self.frame:CreateFontString(FrameTitle..self:GetNewID(), "ARTWORK")
 	textblock.mytype = "textblock"
+	if not style then
+		textblock:SetFontObject(GameFontNormal)
+	else
+		textblock:SetFontObject(style)
+	end
 	textblock:SetText(text)
+	if justify then
+		textblock:SetJustifyH("LEFT")
+	else
+		textblock:SetJustifyH("CENTER")
+	end
+
 	if width then
 		textblock:SetWidth( width or 100 )
 	else
@@ -613,7 +629,7 @@ do
 			button:SetNormalFontObject(GameFontNormal);
 			button:SetHighlightFontObject(GameFontNormal);
 		end
-		button:SetWidth(165)
+		button:SetWidth(185)
 
 		if element.haschilds then
 			if not element.showsub then
@@ -634,7 +650,6 @@ do
 	-- This function is for internal use.
 	-- Used to hide a button from the list
 	function DBM_GUI_OptionsFrame:HideButton(button)
-		button:SetWidth(165)
 		button:Hide()
 	end
 
@@ -728,7 +743,7 @@ do
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
-						child:SetWidth( child:GetWidth() + listwidth )
+						child:SetWidth( child:GetWidth() + listwidth-2 )
 					end
 				end
 			end
@@ -943,7 +958,7 @@ local function CreateAnimationFrame()
 	return mobstyle
 end
 
-function DBM_GUI:CreateOptionsMenu()
+local function CreateOptionsMenu()
 	-- *****************************************************************
 	-- 
 	--  begin creating the Option Frames, this is mainly hardcoded
@@ -1074,10 +1089,8 @@ function DBM_GUI:CreateOptionsMenu()
 		UpdateColorFrames(color3, color3text, color3reset, 3)
 		UpdateColorFrames(color4, color4text, color4reset, 4)
 		
-		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 380, false)
+		local infotext = raidwarncolors:CreateText(L.InfoRaidWarning, 380, false, GameFontNormalSmall, "LEFT")
 		infotext:SetPoint('BOTTOMLEFT', raidwarncolors.frame, "BOTTOMLEFT", 10, 10)
-		infotext:SetJustifyH("LEFT")
-		infotext:SetFontObject(GameFontNormalSmall);
 	
 		local movemebutton = raidwarncolors:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', raidwarncolors.frame, "TOPRIGHT", 0, -1)
@@ -1306,19 +1319,56 @@ function DBM_GUI:CreateOptionsMenu()
 		BarSetupPanel:SetMyOwnHeight() 
 	end
 
-end	
+end
+DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
-	
 do
+
+	local function CreateBossModTab(self, paneltyp)
+		local ptext = self.panel:CreateText(L.BossModLoaded, nil, nil, GameFontNormal)
+		ptext:SetPoint('TOPLEFT', self.panel.frame, "TOPLEFT", 10, -10)
+
+		local bossstats = 0 
+		local area = self.panel:CreateArea("Boss Statistik", nil, 0)
+		area.frame:SetPoint("TOPLEFT", 10, -40)
+
+		if paneltyp == "addon" then
+			for _, mod in ipairs(DBM.Mods) do
+				if mod.modId == self.modId then
+					bossstats = bossstats + 1
+
+					local Boss 		= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
+					local bossstat1		= area:CreateText("Kills: "..mod.stats.kills, nil, nil, GameFontNormalSmall, "LEFT")
+					local bossstat2		= area:CreateText("Wipes: "..(mod.stats.pulls-mod.stats.kills), nil, nil, GameFontNormalSmall, "LEFT")
+					local bossstat3		= area:CreateText("Best Kill: ", nil, nil, GameFontNormalSmall, "LEFT")
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
+					bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 40, -5)
+					bossstat2:SetPoint("TOPLEFT", bossstat1, "BOTTOMLEFT", 0, -5)
+					bossstat3:SetPoint("TOPLEFT", bossstat2, "BOTTOMLEFT", 0, -5)
+			
+					local Heroic	 	= area:CreateText("(heroic mode)", nil, nil, GameFontHighlightSmall, "LEFT")
+					local Heroicstat1	= area:CreateText("Kills: "..mod.stats.heroicKills, nil, nil, GameFontNormalSmall, "LEFT")
+					local Heroicstat2	= area:CreateText("Wipes: "..(mod.stats.heroicPulls-mod.stats.heroicKills), nil, nil, GameFontNormalSmall, "LEFT")
+					local Heroicstat3	= area:CreateText("Best Kill: ", nil, nil, GameFontNormalSmall, "LEFT")
+					Heroic:SetPoint("LEFT", Boss, "LEFT", 200, 0)
+					Heroicstat1:SetPoint("LEFT", bossstat1, "LEFT", 180, 0)
+					Heroicstat2:SetPoint("LEFT", bossstat2, "LEFT", 180, 0)
+					Heroicstat3:SetPoint("LEFT", bossstat3, "LEFT", 180, 0)
+		
+					area.frame:SetHeight( area.frame:GetHeight() + 80 ) 
+					self.panel:SetMyOwnHeight()
+					DBM_GUI_OptionsFrame:DisplayFrame(self.panel.frame)
+				end
+			end
+		end
+	end
 
 	local function LoadAddOn_Button(self) 
 		if DBM:LoadMod(self.modid) then 
 			self:Hide()
+			CreateBossModTab(self.modid, "addon")		
 			DBM_GUI_OptionsFrameBossMods:Hide()
 			DBM_GUI_OptionsFrameBossMods:Show()
-
-			local ptext = self.modid.panel:CreateText(L.BossModLoaded)
-			ptext:SetPoint('TOPLEFT', self.modid.panel.frame, "TOPLEFT", 10, -10)
 		end
 	end
 
@@ -1343,8 +1393,7 @@ do
 					button:SetScript("OnClick", LoadAddOn_Button)
 					button:SetPoint('CENTER', 0, -20)
 				else
-					local ptext = addon.panel:CreateText(L.BossModLoaded)
-					ptext:SetPoint('TOPLEFT', addon.panel.frame, "TOPLEFT", 10, -10)
+					CreateBossModTab(addon, "addon")
 				end
 			end
 
