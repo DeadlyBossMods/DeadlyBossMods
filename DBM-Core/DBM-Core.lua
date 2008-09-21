@@ -431,8 +431,8 @@ do
 		DBM_GUI:ShowHide()
 	end
 	
-	function DBM:RegisterOnGuiLoadCallback(f)
-		table.insert(callOnLoad, f)
+	function DBM:RegisterOnGuiLoadCallback(f, sort)
+		table.insert(callOnLoad, sort or #callOnLoad + 1, f)
 	end
 end
 
