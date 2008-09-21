@@ -84,14 +84,14 @@ CurrentBossSetup = {
 	EnrageTime = 0,
 }
 
-BMS_Panel = DBM_GUI:CreateNewPanel(L.TabCategory_BossModStudio, "option")
-
 
 local function toboolean(var) 
 	if var then return true else return false end
 end
 
-do
+local function createbmsgui()
+	BMS_Panel = DBM_GUI:CreateNewPanel(L.TabCategory_BossModStudio, "option")
+
 	local function getIDfromTarget(textbox) 
 		return function(self)
 			local guid = UnitGUID("target")
@@ -222,10 +222,7 @@ do
 		EnableEnrageBar:SetScript("OnShow", function(self) self:SetChecked( CurrentBossSetup.EnrageBar ) end)
 		EnableEnrageBar:SetScript("OnClick", function(self) CurrentBossSetup.EnrageBar = toboolean(self:GetChecked()) end)
 	end
-end
 
-
-do
 	BMS_Trigger = BMS_Panel:CreateNewPanel(L.TabCategory_Triggers, "option")
 
 	local DeletedTriggerFrames = {}	-- Temptable for Trigger Frames
@@ -545,8 +542,7 @@ do
 
 end
 
-
-
+DBM:RegisterOnGuiLoadCallback(createbmsgui, 5)
 
 
 
