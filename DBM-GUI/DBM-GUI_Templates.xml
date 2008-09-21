@@ -730,7 +730,7 @@
 					<TexCoords left="0" right="0.9375" top="0" bottom="1.0"/>
 				</Texture>
 			</Layer>
-			<Layer level="ARTWORK">
+			<Layer level="BACKGROUND">
 				<FontString name="$parentText" inherits="GameFontNormalSmall" text="xx">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">

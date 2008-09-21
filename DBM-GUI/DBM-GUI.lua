@@ -217,22 +217,28 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbt
 	return button
 end
 
--- This function creates an EditBox
---
---  arg1 = Title text, placed ontop of the EditBox
---  arg2 = Text placed within the EditBox
---  arg3 = width
---  arg4 = height
---
-function PanelPrototype:CreateEditBox(text, value, width, height)
-	local textbox = CreateFrame('EditBox', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_FrameEditBoxTemplate')
-	textbox.mytype = "textbox"
-	getglobal(FrameTitle..self:GetCurrentID().."Text"):SetText(text)
-	textbox:SetWidth(width or 100)
-	textbox:SetHeight(height or 20)
-
-	self:SetLastObj(textbox)
-	return textbox
+do
+	local function unfocus(self)
+		self:ClearFocus() 
+	end
+	-- This function creates an EditBox
+	--
+	--  arg1 = Title text, placed ontop of the EditBox
+	--  arg2 = Text placed within the EditBox
+	--  arg3 = width
+	--  arg4 = height
+	--
+	function PanelPrototype:CreateEditBox(text, value, width, height)
+		local textbox = CreateFrame('EditBox', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_FrameEditBoxTemplate')
+		textbox.mytype = "textbox"
+		getglobal(FrameTitle..self:GetCurrentID().."Text"):SetText(text)
+		textbox:SetWidth(width or 100)
+		textbox:SetHeight(height or 20)
+		textbox:SetScript("OnEscapePressed", unfocus)
+		textbox:SetScript("OnTabPressed", unfocus)
+		self:SetLastObj(textbox)
+		return textbox
+	end
 end
 
 -- This function creates a slider for numeric values

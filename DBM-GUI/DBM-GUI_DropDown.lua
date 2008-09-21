@@ -91,9 +91,13 @@ do
 		if self.offset < 0 then self.offset = 0 end
 
 		if #values > MAX_BUTTONS then
+			self:SetHeight(MAX_BUTTONS*TabFrame1.buttons[1]:GetHeight()+24)
 			self.text:Show()
+		elseif #values == MAX_BUTTONS then
+			self:SetHeight(MAX_BUTTONS*TabFrame1.buttons[1]:GetHeight()+24)
+			self.text:Hide()
 		elseif #values < MAX_BUTTONS then
-			self:SetHeight( #values * self.buttons[1]:GetHeight() + 24 )
+			self:SetHeight( #values * self.buttons[1]:GetHeight() + 24)
 			self.text:Hide()
 		end
 
@@ -141,12 +145,12 @@ do
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
 				TabFrame1.dropdown = nil
-			else
-				TabFrame1.dropdown = self:GetParent()
-				TabFrame1:ShowMenu(self:GetParent().values)
+			else	
+				TabFrame1:SetParent(self:GetParent().creator:GetParentsLastObj())
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
-				TabFrame1:SetParent(self:GetParent().creator:GetParentsLastObj())
+				TabFrame1.dropdown = self:GetParent()
+				TabFrame1:ShowMenu(self:GetParent().values)
 			end
 		end)
 
