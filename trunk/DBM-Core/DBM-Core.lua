@@ -425,14 +425,14 @@ do
 				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
 				return
 			end
-			for i, v in ipairs(callOnLoad) do v() end
+			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage()
 		end
 		DBM_GUI:ShowHide()
 	end
 	
 	function DBM:RegisterOnGuiLoadCallback(f, sort)
-		table.insert(callOnLoad, sort or #callOnLoad + 1, f)
+		table.insert(callOnLoad, {f, sort})
 	end
 end
 
@@ -1051,13 +1051,13 @@ do
 	local requestTime = 0
 	
 	function DBM:RequestTimers()
-		local bestClient = next(raid)
-		if not bestClient then return end
+		local bestClient
 		for i, v in pairs(raid) do
-			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > (bestClient.revision or 0) then
+			if v.name ~= UnitName("player") and UnitIsConnected(v.id) and (not UnitIsGhost(v.id)) and (v.revision or 0) > ((bestClient and bestClient.revision) or 0) then
 				bestClient = v
 			end
 		end
+		if not bestClient then return end
 		requestedFrom = bestClient.name
 		requestTime = GetTime()
 		SendAddonMessage("DBMv4-RequestTimers", "", "WHISPER", bestClient.name)
