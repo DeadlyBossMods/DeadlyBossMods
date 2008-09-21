@@ -34,7 +34,6 @@ do
 		tile=1, tileSize=32, edgeSize=32, 
 		insets={left=11, right=12, top=12, bottom=11}
 	});
-	TabFrame1:SetFrameStrata("TOOLTIP")
 	TabFrame1:EnableMouseWheel(1)
 	TabFrame1:SetScript("OnMouseWheel", function(self, arg1) 
 		if arg1 > 0 then  -- scroll up
@@ -127,12 +126,14 @@ do
 	end
 
 	local FrameTitle = "DBM_GUI_DropDown"
+
 	function DBM_GUI:CreateDropdown(title, values, selected, callfunc)
 		-- Check Values
 		self:CheckValues(values)
 	
 		-- Create the Dropdown Frame
 		local dropdown = CreateFrame("Frame", FrameTitle..self:GetNewID(), self.frame, "DBM_GUI_DropDownMenuTemplate")
+		dropdown.creator = self
 		dropdown.values = values
 		dropdown.callfunc = callfunc
 		getglobal(dropdown:GetName().."Button"):SetScript("OnClick", function(self)
@@ -145,7 +146,7 @@ do
 				TabFrame1:ShowMenu(self:GetParent().values)
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
-				TabFrame1:SetParent(self)
+				TabFrame1:SetParent(self:GetParent().creator:GetParentsLastObj())
 			end
 		end)
 

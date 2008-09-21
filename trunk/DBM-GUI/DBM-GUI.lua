@@ -84,7 +84,7 @@ do
 			DBM_GUI_Bosses:CreateCategory(panel, self and self.frame and self.frame.name)
 		end
 	
-		self:SetLastObj(nil)
+		self:SetLastObj(panel)
 		self.panels = self.panels or {}
 		table.insert(self.panels, {frame = panel, parent = self, framename = FrameTitle..self:GetCurrentID()})
 		local obj = self.panels[#self.panels]
@@ -115,10 +115,24 @@ do
 			end
 		end
 	
-		self:SetLastObj(nil)
+		self:SetLastObj(area)
 		self.areas = self.areas or {}
 		table.insert(self.areas, {frame = area, parent = self, framename = FrameTitle..self:GetCurrentID()})
 		return setmetatable(self.areas[#self.areas], prottypemetatable)
+	end
+
+	function DBM_GUI:GetLastObj() 
+		return self.lastobject
+	end
+	function DBM_GUI:SetLastObj(obj)
+		self.lastobject = obj
+	end
+	function DBM_GUI:GetParentsLastObj()
+		if self.frame.mytype == "area" then
+			return self.parent:GetLastObj()
+		else
+			return self:GetLastObj()
+		end
 	end
 end
 
@@ -147,15 +161,6 @@ do
 	function DBM_GUI:GetCurrentID()
 		return framecount
 	end
-
-	local lastobject = nil
-	function DBM_GUI:GetLastObj() 
-		return lastobject
-	end
-	function DBM_GUI:SetLastObj(obj)
-		lastobject = obj
-		return lastobject
-	end
 end
 
 -- This function creates a check box
@@ -170,6 +175,7 @@ end
 function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
 	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
 	button.myheight = 25
+	button.mytype = "checkbutton"
 	getglobal(button:GetName() .. 'Text'):SetText(name)
 	getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
 
@@ -192,7 +198,8 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbt
 	end
 
 	if autoplace then
-		if self:GetLastObj() then
+		local x = self:GetLastObj()
+		if x.mytype == "checkbutton" then
 			button:ClearAllPoints()
 			button:SetPoint('TOPLEFT', self:GetLastObj(), "BOTTOMLEFT", 0, 2)
 		else
@@ -214,6 +221,7 @@ end
 --
 function PanelPrototype:CreateEditBox(text, value, width, height)
 	local textbox = CreateFrame('EditBox', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_FrameEditBoxTemplate')
+	textbox.mytype = "textbox"
 	getglobal(FrameTitle..self:GetCurrentID().."Text"):SetText(text)
 	textbox:SetWidth(width or 100)
 	textbox:SetHeight(height or 20)
@@ -232,6 +240,7 @@ end
 --
 function PanelPrototype:CreateSlider(text, low, high, step, framewidth)
 	local slider = CreateFrame('Slider', FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
+	slider.mytype = "slider"
 	slider:SetMinMaxValues(low, high)
 	slider:SetValueStep(step)
 	slider:SetWidth(famewidth or 180)
@@ -250,6 +259,7 @@ end
 function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 	--- Color select texture with wheel and value
 	local colorselect = CreateFrame("ColorSelect", FrameTitle..self:GetNewID(), self.frame)
+	colorselect.mytype = "colorselect"
 	if withalpha then
 		colorselect:SetWidth((dimension or 128)+37)
 	else
@@ -303,6 +313,7 @@ end
 --
 function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 	local button = CreateFrame('Button', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_OptionsFramePanelButtonTemplate')
+	button.mytype = "button"
 	button:SetWidth(width or 100)
 	button:SetHeight(height or 20)
 	button:SetText(title)
@@ -324,6 +335,7 @@ end
 --  arg2 = width to set
 function PanelPrototype:CreateText(text, width, autoplaced)
 	local textblock = self.frame:CreateFontString(FrameTitle..self:GetNewID(), "ARTWORK", "GameFontNormal")
+	textblock.mytype = "textblock"
 	textblock:SetText(text)
 	if width then
 		textblock:SetWidth( width or 100 )
@@ -342,6 +354,7 @@ end
 
 function PanelPrototype:CreateCreatureModelFrame(width, height, creatureid)
 	local ModelFrame = CreateFrame('PlayerModel', FrameTitle..self:GetNewID(), self.frame)
+	ModelFrame.mytype = "modelframe"
 	ModelFrame:SetWidth(width or 100)
 	ModelFrame:SetHeight(height or 200)
 	ModelFrame:SetCreature(tonumber(creatureid) or 448)	-- Hogger!!! he kills all of you
@@ -495,7 +508,7 @@ end
 
 local UpdateAnimationFrame
 do
-	local function HideScrollBar (frame)
+	local function HideScrollBar(frame)
 		local list = getglobal(frame:GetName() .. "List");
 		list:Hide();
 		local listWidth = list:GetWidth();
@@ -504,12 +517,10 @@ do
 		end
 	end
 
-	local function DisplayScrollBar (frame)
+	local function DisplayScrollBar(frame)
 		local list = getglobal(frame:GetName() .. "List");
 		list:Show();
-	
 		local listWidth = list:GetWidth();
-	
 		for _, button in next, frame.buttons do
 			button:SetWidth(button:GetWidth() - listWidth);
 		end
@@ -540,7 +551,6 @@ do
 		end
 
 		for i, element in ipairs(TABLE) do
-			--DBM:AddMsg("TABLE: "..element.frame.name)
 			table.insert(displayedElements, element.frame);
 		end
 
@@ -553,9 +563,15 @@ do
 		elseif ( numAddOnCategories <= numButtons and ( listframe:IsShown() ) ) then
 			HideScrollBar(listframe);
 		end
-		
-		FauxScrollFrame_Update(getglobal(listframe:GetName().."List"), numAddOnCategories, numButtons, buttons[1]:GetHeight());	
-
+	
+		if ( numAddOnCategories > numButtons ) then
+			getglobal(listframe:GetName().."List"):Show();
+			getglobal(listframe:GetName().."ListScrollBar"):SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
+			getglobal(listframe:GetName().."ListScrollBar"):SetValueStep( buttons[1]:GetHeight() )
+		else
+			getglobal(listframe:GetName().."ListScrollBar"):SetValue(0);
+			getglobal(listframe:GetName().."List"):Hide();
+		end
 
 		local selection = DBM_GUI_OptionsFrameBossMods.selection;
 		if ( selection ) then
@@ -693,21 +709,38 @@ do
 		
 		container.displayedFrame = frame;
 		
-		getglobal(container:GetName().."FOV"):SetScrollChild(frame)
-
 		local mymax = frame:GetHeight() - container:GetHeight()
 		if mymax <= 0 then mymax = 0 end
 
-		getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
-	
+		if mymax > 0 then
+			getglobal(container:GetName().."FOV"):Show()
+			getglobal(container:GetName().."FOV"):SetScrollChild(frame)
+			getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
+		else
+			getglobal(container:GetName().."FOV"):Hide()
+			frame:ClearAllPoints()
+			frame:SetPoint("TOPLEFT", container ,"TOPLEFT", 5, 0)
+			frame:SetPoint("BOTTOMRIGHT", container ,"BOTTOMRIGHT", 0, 0)
+
+			if not frame.isfixed then
+				frame.isfixed = true
+				local listwidth = getglobal(container:GetName().."FOVScrollBar"):GetWidth()
+				for i=1, select("#", frame:GetChildren()), 1 do
+					local child = select(i, frame:GetChildren())
+					if child.mytype == "area" then
+						child:SetWidth( child:GetWidth() + listwidth )
+					end
+				end
+			end
+		end
 		frame:Show();
+
 		if usemodelframe then
 			DBM_BossPreview.enabled = false
 			DBM_BossPreview:Hide()
 			for _, mod in ipairs(DBM.Mods) do
 				if mod.panel.frame == frame then
 					UpdateAnimationFrame(mod)
---					DBM:Schedule(1, UpdateAnimationFrame, mod)
 				end
 			end
 		end
@@ -716,16 +749,10 @@ do
 end
 
 function UpdateAnimationFrame(mod)
-	DBM:AddMsg(mod.id)
 	DBM_BossPreview.currentMod = mod
 
-	-- DEBUG (thanks to blizzard, costs me 2 days to find out that this BUGGED!!!!)
 	DBM_BossPreview:Show()
-	DBM_BossPreview:SetAlpha(1)
-	DBM_BossPreview:SetModelScale(1.0)
---	DBM_BossPreview:SetPosition(0, 0, 0)
 	DBM_BossPreview:ClearModel()
-	-- END DEBUG
 	DBM_BossPreview:SetCreature(mod.modelId or mod.creatureId or 0)
 	DBM_BossPreview:SetModelScale(mod.modelScale or 0.5)
 

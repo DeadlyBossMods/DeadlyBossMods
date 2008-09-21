@@ -114,6 +114,60 @@
 		</HighlightTexture>
 	</Button>
 
+	<Slider name="DBM_GUI_PanelScrollBarTemplate" virtual="true">
+		<Size>
+			<AbsDimension x="16" y="0"/>
+		</Size>
+		<Frames>
+			<Button name="$parentScrollUpButton" inherits="UIPanelScrollUpButtonTemplate">
+				<Anchors>
+					<Anchor point="BOTTOM" relativePoint="TOP"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						local parent = self:GetParent();
+						parent:SetValue(parent:GetValue() - (parent:GetHeight() / 2));
+						PlaySound("UChatScrollButton");
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentScrollDownButton" inherits="UIPanelScrollDownButtonTemplate">
+				<Anchors>
+					<Anchor point="TOP" relativePoint="BOTTOM"/>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						local parent = self:GetParent();
+						parent:SetValue(parent:GetValue() + (parent:GetHeight() / 2));
+						PlaySound("UChatScrollButton");
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnValueChanged>
+				self:GetParent():SetVerticalScroll(value);
+
+				if value == select(1, self:GetMinMaxValues()) then
+					getglobal(self:GetName().."ScrollUpButton"):Disable()
+				else
+					getglobal(self:GetName().."ScrollUpButton"):Enable()
+				end
+				if value == select(2, self:GetMinMaxValues()) then
+					getglobal(self:GetName().."ScrollDownButton"):Disable()
+				else
+					getglobal(self:GetName().."ScrollDownButton"):Enable()
+				end
+			</OnValueChanged>
+		</Scripts>
+		<ThumbTexture name="$parentThumbTexture" inherits="UIPanelScrollBarButton" file="Interface\Buttons\UI-ScrollBar-Knob">
+			<Size>
+				<AbsDimension x="16" y="24"/>
+			</Size>
+			<TexCoords left="0.25" right="0.75" top="0.125" bottom="0.875"/>
+		</ThumbTexture>
+	</Slider>
+	
 	<Frame name="DBM_GUI_OptionsFrameListTemplate" virtual="true">
 		<Layers>
 			<Layer level="BACKGROUND">
@@ -225,24 +279,24 @@
 				</Backdrop>				
 				<Scripts>
 					<OnLoad>
-						self:SetBackdropBorderColor(.6, .6, .6, .6);
-						getglobal(self:GetName().."ScrollBarScrollDownButton"):Disable();
-						getglobal(self:GetName().."ScrollBarScrollUpButton"):Disable();
+						self:SetBackdropBorderColor(.6, .6, .6, .6)
+						getglobal(self:GetName().."ScrollBarScrollUpButton"):Disable()
+						getglobal(self:GetName().."ScrollBarScrollDownButton"):Disable()
 
-						local scrollbar = getglobal(self:GetName().."ScrollBar");
-						scrollbar:SetMinMaxValues(0, 0);
-						scrollbar:SetValue(0);
+						local scrollbar = getglobal(self:GetName().."ScrollBar")
+						scrollbar:SetMinMaxValues(0, 0)
+						scrollbar:SetValue(0)
 						self.offset = 0	
 					</OnLoad>
 					<OnVerticalScroll>
-						local scrollbar = getglobal(self:GetName().."ScrollBar");
-						scrollbar:SetValue(offset);
-						self.offset = floor((offset / INTERFACEOPTIONSLIST_BUTTONHEIGHT) + 0.5);
+						local scrollbar = getglobal(self:GetName().."ScrollBar")
+						scrollbar:SetValue(offset)
+						self.offset = floor((offset / 18) + 0.5)
 						DBM_GUI_OptionsFrame:UpdateMenuFrame(self:GetParent())						
 					</OnVerticalScroll>
 				</Scripts>
 				<Frames>
-					<Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate">
+					<Slider name="$parentScrollBar" inherits="DBM_GUI_PanelScrollBarTemplate">
 						<Anchors>
 							<Anchor point="TOPRIGHT">
 								<Offset>
@@ -255,11 +309,6 @@
 								</Offset>
 							</Anchor>	
 						</Anchors>
-						<Scripts>
-							<OnValueChanged>
-								self:GetParent():SetVerticalScroll(value);
-							</OnValueChanged>
-						</Scripts>
 					</Slider>
 					<Frame name="$parentScrollChildFrame" hidden="true"/>
 				</Frames>
@@ -267,17 +316,16 @@
 		</Frames>
 		<Scripts>
 			<OnMouseWheel>
-				local scrollBar = getglobal(self:GetName() .. "ListScrollBar");
+				local scrollBar = getglobal(self:GetName() .. "ListScrollBar")
 				if ( arg1 > 0 ) then
-					scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2));
+					scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2))
 				else
-					scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2));
+					scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2))
 				end
 				DBM_GUI_OptionsFrame:UpdateMenuFrame(self)	
 			</OnMouseWheel>
 		</Scripts>
 	</Frame>
-
 
 	<Frame name="DBM_GUI_OptionsFrame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true">
 		<Size>
@@ -425,7 +473,7 @@
 							</Anchor>
 						</Anchors>
 						<Frames>		
-							<Slider name="$parentScrollBar" inherits="UIPanelScrollBarTemplate">
+							<Slider name="$parentScrollBar" inherits="DBM_GUI_PanelScrollBarTemplate">
 								<Anchors>
 									<Anchor point="TOPRIGHT">
 										<Offset>
@@ -440,27 +488,24 @@
 								</Anchors>
 								<Scripts>
 									<OnLoad>
-										self:SetMinMaxValues(0, 200);
-										self:SetValue(0);
+										self:SetMinMaxValues(0, 0)
+										self:SetValue(0)
 										self.offset = 0	
 									</OnLoad>
 									<OnVerticalScroll>
 										self:SetValue(offset);
-										self.offset = floor((offset / 10) + 0.5);
+										self.offset = floor((offset / 10) + 0.5)
 									</OnVerticalScroll>
-									<OnValueChanged>
-										self:GetParent():SetVerticalScroll(value);
-									</OnValueChanged>
 								</Scripts>
 							</Slider>
 						</Frames>
 						<Scripts>
 							<OnMouseWheel>
-								local scrollBar = getglobal(self:GetName() .. "ScrollBar");
+								local scrollBar = getglobal(self:GetName() .. "ScrollBar")
 								if ( arg1 > 0 ) then
-									scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2));
+									scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2))
 								else
-									scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2));
+									scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2))
 								end
 							</OnMouseWheel>
 						</Scripts>
