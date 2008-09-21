@@ -106,7 +106,7 @@ do
 		keyword:SetScript("OnTextChanged", 	function(self) settings.keyword = self:GetText():lower() end)
 		keyword:SetScript("OnShow", 		function(self) self:SetText(settings.keyword) end)
 	end
-	DBM:RegisterOnGuiLoadCallback(creategui)
+	DBM:RegisterOnGuiLoadCallback(creategui, 10)
 end
 
 do
