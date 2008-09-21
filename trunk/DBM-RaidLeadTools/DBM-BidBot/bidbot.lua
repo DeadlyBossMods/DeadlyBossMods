@@ -26,11 +26,13 @@
 --
 
 DBM_BidBot_Settings = {
-	enabled = true,		-- BidBot ein/aus
-	chatchannel = "SAY",		-- Ausgabe channel
+	enabled = true,			-- BidBot ein/aus
+	chatchannel = "GUILD",		-- Ausgabe channel
 	minGebot = 10,			-- Mindest Gebot
-	duration = 30,			-- Laufzeit einer auction
+	duration = 15,			-- Laufzeit einer auction
 	output = 4,			-- max. Menge der ausgegebenen Gebote
+	bidtyp_open = false,		-- post each Bid in the Raidchan
+	bidtyp_payall = false,		-- pay the price you bid
 }
 local settings = DBM_BidBot_Settings
 local L = DBM_BidBot_Translations
@@ -46,6 +48,54 @@ local AddBid
 local AuctionEnd
 local StartBidding
 
+do 
+	local function toboolean(var) 
+		if var then return true else return false end
+	end
+
+	local function creategui()
+		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_BidBot, "option")
+		local area = panel:CreateArea(L.AreaGeneral, nil, 250, true)
+
+		local enabled 		= area:CreateCheckButton(L.Enable, true)
+		local bidtyp_open	= area:CreateCheckButton(L.PublicBids, true)
+		local bidtyp_payall	= area:CreateCheckButton(L.PayWhatYouBid, true)
+		local chatchannel 	= area:CreateDropdown(L.ChatChannel, 
+			{{text=L.Guild,value="GUILD"},{text=L.Raid,value="RAID"},{text=L.Party,value="PARTY"}}, 
+			settings.chatchannel,
+			function(value) settings.chatchannel = value end
+		)
+		local minGebot	 	= area:CreateEditBox(L.MinBid, settings.keyword, 100)
+		local duration		= area:CreateEditBox(L.Duration, settings.keyword, 100)
+		local output 		= area:CreateEditBox(L.OutputBids, settings.keyword, 100)
+		
+		chatchannel:SetPoint("TOPLEFT", bidtyp_payall, "BOTTOMLEFT", 0, -10)
+		minGebot:SetPoint("TOPLEFT", chatchannel, "BOTTOMLEFT", 30, -15)
+		duration:SetPoint("TOPLEFT", minGebot, "BOTTOMLEFT", 0, -20)
+		output:SetPoint("TOPLEFT", duration, "BOTTOMLEFT", 0, -20)
+
+		minGebot:SetNumeric()
+		duration:SetNumeric()
+		output:SetNumeric()
+
+		enabled:SetScript("OnClick", 		function(self) settings.enabled = toboolean(self:GetChecked()) end)
+		enabled:SetScript("OnShow", 		function(self) self:SetChecked(settings.enabled) end)
+		bidtyp_open:SetScript("OnClick", 	function(self) settings.bidtyp_open = toboolean(self:GetChecked()) end)
+		bidtyp_open:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_open) end)
+		bidtyp_payall:SetScript("OnClick",	function(self) settings.bidtyp_payall = toboolean(self:GetChecked()) end)
+		bidtyp_payall:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_payall) end)
+		minGebot:SetScript("OnTextChanged", 	function(self) settings.minGebot = self:GetNumber() end)
+		minGebot:SetScript("OnShow", 		function(self) self:SetText(settings.minGebot) end)
+		duration:SetScript("OnTextChanged", 	function(self) settings.duration = self:GetNumber() end)
+		duration:SetScript("OnShow", 		function(self) self:SetText(settings.duration) end)
+		output:SetScript("OnTextChanged", 	function(self) settings.output = self:GetNumber() end)
+		output:SetScript("OnShow", 		function(self) self:SetText(settings.output) end)
+	end
+	DBM:RegisterOnGuiLoadCallback(creategui, 11)
+end
+
+
+
 function AddItem(ItemLink)
 	local newID = select(4, string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r"))
 	for k, v in pairs(BidBot_Queue) do
@@ -57,11 +107,16 @@ function AddItem(ItemLink)
 end
 
 function AddBid(bidder, bid)
+	for k,v in pairs(BidBot_Biddings) do	-- don't create double entrys
+		if v.Name == bidder then
+			BidBot_Biddings[k] = nil
+		end
+	end
 	table.insert(BidBot_Biddings, {
 		["Name"] = bidder,
 		["Bid"] = bid
 	})
-	SendChatMessage(L.Prefix..L.Whisper_Bid_OK:format(bid), "WHISPER", nil, bidder)
+	SendChatMessage("<DBM> "..L.Prefix..L.Whisper_Bid_OK:format(bid), "WHISPER", nil, bidder)
 end
 
 function AuctionEnd()
@@ -101,7 +156,7 @@ function AuctionEnd()
 	   })
 
 	   if posi <= settings.output then
-		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.name, werte.Bid), settings.chatchannel)
+		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.Name, werte.Bid), settings.chatchannel)
 	   else
 		max = true
 	   end
@@ -113,7 +168,7 @@ function AuctionEnd()
 	end
 
 	BidBot_CurrentItem = ""
-	for i=1, select("#", BidBot_Biddings) do table.remove(BidBot_Biddings) end	-- cleanup table
+	for i=select("#", BidBot_Biddings), 1, -1 do BidBot_Biddings[i] = nil end	-- cleanup table
 	if #BidBot_Queue then
 		-- Shedule next Item
 		SendChatMessage("--- --- --- --- ---", settings.chatchannel)
@@ -136,7 +191,7 @@ function StartBidding()
 
 		BidBot_InProgress = true
 		BidBot_CurrentItem = ItemLink
-		for i=1, select("#", BidBot_Biddings) do table.remove(BidBot_Biddings) end
+		for i=select("#", BidBot_Biddings), 1, -1 do BidBot_Biddings[i] = nil end
 
 		SendChatMessage(L.Prefix..L.Message_StartBidding:format(ItemLink, UnitName("player"), settings.minGebot), settings.chatchannel);
 		SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, settings.duration), settings.chatchannel);
@@ -193,7 +248,10 @@ do
 				L = DBM_BidBot_Translations[GetLocale()]
 			end
 		elseif event == "CHAT_MSG_WHISPER" then
-			--OnWisper()
+			if tostring(tonumber(arg1)) == tostring(arg1) then
+				-- here is a bid
+				AddBid(arg2, tonumber(arg1))
+			end
 
 		elseif event:sub(0, 9) == "CHAT_MSG_" then
 			OnMsgRecived(select(1, ...), select(2, ...))
