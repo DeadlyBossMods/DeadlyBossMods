@@ -7,7 +7,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Elwynn Forest
-## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-Sort: 10
 ## X-DBM-Mod-LoadZone: Elwynn Forest
 localization.en.lua
 TestBoss.lua
