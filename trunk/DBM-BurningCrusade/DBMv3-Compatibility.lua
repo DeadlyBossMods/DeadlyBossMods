@@ -229,6 +229,7 @@ end
 --  Bars  --
 ------------
 function proxy:StartStatusBarTimer(timer, name, icon, noBroadcast, repetitions, colorR, colorG, colorB, colorA)
+	DBM:AddMsg(timer, name)
 	self.timer:Start(timer, name)
 	self.timer:UpdateIcon(icon, name)
 end
