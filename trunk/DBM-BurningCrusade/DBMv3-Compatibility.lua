@@ -31,6 +31,7 @@
 ---------------
 DBMBurningCrusade_SavedModOptions = {}
 DBMBC = {}
+DBM_SBT = {}
 
 
 --------------
@@ -114,12 +115,17 @@ end
 function proxy:AddOption(id, default, name)
 	self.mod:AddBoolOption(id, default, "announce")
 	DBM:GetModLocalization(self.mod.id):SetOptionLocalization({
-		id = name
+		[id] = name
 	})
 end
 
 function proxy:AddBarOption(bar, default)
-	self.mod:AddBoolOption(id, default, "timer")
+	self.mod:AddBoolOption(bar:gsub("%(%.%*%)", "<target>"), default, "timer")
+	if DBM_SBT[bar] then
+		DBM:GetModLocalization(self.mod.id):SetOptionLocalization({
+			[bar] = DBM_SBT[bar]
+		})
+	end
 end
 
 
@@ -131,20 +137,38 @@ function proxy:IsWipe()
 	return dead >= 18
 end
 
+-------------------
+--  Range Check  --
+-------------------
+function DBM_Gui_DistanceFrame_Hide() -- TODO
+end
+
+function DBM_Gui_DistanceFrame_Show() -- TODO
+end
 
 -----------------
 --  Announces  --
 -----------------
-function proxy:Announce(msg, color, noBroadcast) -- TODO
+function proxy:Announce(msg, color, noBroadcast)
+	local warning = self["warning"..(color or 1)]
+	if not warning then return end
+	warning:Show(msg)
 end
 
-function proxy:ScheduleAnnounce(timer, ...) -- TODO
+function proxy:ScheduleAnnounce(timer, msg, color)
+	local warning = self["warning"..(color or 1)]
+	if not warning then return end
+	warning:Schedule(timer, msg)
 end
 
-function proxy:UnScheduleAnnounce(...) -- TODO
+function proxy:UnScheduleAnnounce(msg, color)
+	local warning = self["warning"..(color or 1)]
+	if not warning then return end
+	warning:Cancel(msg)
 end
 
-function proxy:AddSpecialWarning(text) -- TODO
+function proxy:AddSpecialWarning(text)
+	self.specWarning:Show(text)
 end
 
 function proxy:SendHiddenWhisper(msg, player)
@@ -204,20 +228,23 @@ end
 ------------
 --  Bars  --
 ------------
-function proxy:StartStatusBarTimer(timer, name, icon, noBroadcast, repetitions, colorR, colorG, colorB, colorA) -- TODO
-
+function proxy:StartStatusBarTimer(timer, name, icon, noBroadcast, repetitions, colorR, colorG, colorB, colorA)
+	self.timer:Start(timer, name)
+	self.timer:UpdateIcon(icon, name)
 end
 
-function proxy:UpdateStatusBarTimer(name, elapsed, timer, newName, newIcon, noBroadcast) -- TODO
-
+function proxy:UpdateStatusBarTimer(name, elapsed, timer, newName, newIcon, noBroadcast)
+	self.timer:Update(elapsed, timer, name)
+	if newIcon then self.timer:UpdateIcon(newIcon, name) end
+	if newName then self.timer:UpdateName(newName, name) end
 end
 
-function proxy:GetStatusBarTimerTimeLeft(name) -- TODO
-
+function proxy:GetStatusBarTimerTimeLeft(name)
+	self.timer:GetTime(name)
 end
 
-function proxy:EndStatusBarTimer(name, noBroadcast) -- TODO
-
+function proxy:EndStatusBarTimer(name)
+	self.timer:Stop(name)
 end
 
 -------------
@@ -265,55 +292,25 @@ do
 	local mt = {__index = proxy}
 
 	function DBM:NewBossMod(id, name, _, zone, tab)
+		local obj = setmetatable({}, mt)
 		local mod = DBM:NewMod(id, getAddOnIDByTab(tab))
 		mod:SetRevision(1)
 		mod:SetZone(zone)
+		obj.timer = mod:NewTimer(10, "%s", nil, nil, false)
+		obj.warning1 = mod:NewAnnounce("%s", 1, nil, nil, false)
+		obj.warning2 = mod:NewAnnounce("%s", 2, nil, nil, false)
+		obj.warning3 = mod:NewAnnounce("%s", 3, nil, nil, false)
+		obj.warning4 = mod:NewAnnounce("%s", 4, nil, nil, false)
+		obj.specWarning = mod:NewSpecialWarning("%s", nil, false)
 		DBM:GetModLocalization(id):SetGeneralLocalization({
 			name = name
 		})
-		local obj = setmetatable(
-			{
-				mod = mod
-			},
-			mt
-		)
+		obj.mod = mod
+		obj.Options = mod.Options
 		mod.proxy = obj
 		mod.OnSync = onSync
+		mod.OnCombatStart = onCombatStart
+		mod.OnCombatEnd = onCombatEnd
 		return obj
 	end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

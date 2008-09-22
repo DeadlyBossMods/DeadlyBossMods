@@ -425,6 +425,7 @@ do
 				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
 				return
 			end
+			table.sort(callOnLoad, function(v1, v2) return v1.sort > v2.sort end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage()
 		end
@@ -1548,6 +1549,18 @@ do
 	function timerPrototype:Update(elapsed, totalTime, ...)
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		DBM.Bars:UpdateBar(id, elapsed, totalTime)
+	end
+	
+	function timerPrototype:UpdateIcon(icon, ...)
+		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local bar = DBM.Bars:GetBar(id)
+		if bar then bar:SetIcon((type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon) end
+	end
+	
+	function timerPrototype:UpdateName(name, ...)
+		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local bar = DBM.Bars:GetBar(id)
+		if bar then bar:SetText(name) end
 	end
 	
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
