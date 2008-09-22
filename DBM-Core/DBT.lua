@@ -308,6 +308,7 @@ do
 			newBar.enlarged = nil
 			newBar.frame.obj = newBar
 			newBar:AddToList()
+			self.numBars = (self.numBars or 0) + 1
 		end
 		if timer <= self.options.EnlargeBarsTime or huge then
 			newBar:RemoveFromList()
@@ -321,7 +322,6 @@ do
 		newBar:SetIcon(icon)
 		newBar:Update(0)
 		self.bars[newBar] = true
-		self.numBars = (self.numBars or 0) + 1
 		return newBar
 	end
 end
