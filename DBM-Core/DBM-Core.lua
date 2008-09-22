@@ -1185,7 +1185,8 @@ do
 		return msg == "status" and #inCombat > 0
 	end
 	
-	local function filterRaidWarning(msg)
+	local function filterRaidWarning(msg, msg2)
+		DBM:AddMsg(msg, msg2)
 		return DBM.Options.SpamBlockRaidWarning and msg:find("%*%*%* .* %*%*%*")
 	end
 	
