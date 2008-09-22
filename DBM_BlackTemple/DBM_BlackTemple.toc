@@ -25,7 +25,7 @@
 ## X-DBM-Tab-LoadZone-zhCN: 黑暗神殿
 ## X-DBM-Tab-LoadZone-zhTW: 黑暗神廟
 ## X-DBM-Tab-LoadZone-ruRU: Черный храм
-## RequiredDeps: DBM_API
+## RequiredDeps: DBM-Core
 ## DefaultState: Enabled
 ## LoadOnDemand: 1
 localization.en.lua

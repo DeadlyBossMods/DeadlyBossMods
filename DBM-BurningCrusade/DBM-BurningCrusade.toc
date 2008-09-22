@@ -3,6 +3,7 @@
 ## Notes: Burning Crusade Boss Mods
 ## SavedVariablesPerCharacter: DBMBurningCrusade_SavedModOptions
 ## LoadOnDemand: 0
+## RequiredDeps: DBM-Core
 ## DefaultState: enabled
 ## Author: Tandanu and Nitram
 ## X-Website: http://www.deadlybossmods.com

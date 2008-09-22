@@ -1190,7 +1190,7 @@ do
 	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
-	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterIncoming)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterRaidWarning)
 end
 
 do
