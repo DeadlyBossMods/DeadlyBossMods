@@ -153,7 +153,8 @@ end
 function proxy:Announce(msg, color, noBroadcast)
 	local warning = self["warning"..(color or 1)]
 	if not warning then return end
-	msg = msg:gsub("^%s*%**%s*(.*)%s*%**%s$", "%1")
+	DBM:AddMsg(msg)
+	msg = msg:gsub("%s*%*%*%*%s*", "")
 	warning:Show(msg)
 end
 
@@ -186,13 +187,13 @@ function proxy:Schedule(timer, func, ...)
 end
 
 function proxy:ScheduleEvent(timer, ...)
-	self.mod:ScheduleMethod(timer, "OnEvent", ...)
+	self.mod:Schedule(timer, self.OnEvent, self, ...)
 end
 proxy.ScheduleSelf = proxy.ScheduleEvent
 
 
-function proxy:ScheduleMethod(...)
-	self.mod:ScheduleMethod(...)
+function proxy:ScheduleMethod(timer, method, ...)
+	self.mod:Schedule(timer, self[method], self, ...)
 end
 
 function proxy:UnSchedule(...)
@@ -200,12 +201,12 @@ function proxy:UnSchedule(...)
 end
 
 function proxy:UnScheduleEvent(...)
-	self.mod:UnscheduleMethod("OnEvent", ...)
+	self.mod:Unschedule(self.OnEvent, self, ...)
 end
 proxy.UnScheduleSelf = proxy.UnScheduleEvent
 
-function proxy:UnScheduleMethod(...)
-	self.mod:UnscheduleMethod(...)
+function proxy:UnScheduleMethod(method, ...)
+	self.mod:Unschedule(self[method], self, ...)
 end
 
 function proxy:UnScheduleAll()
@@ -231,7 +232,6 @@ end
 --  Bars  --
 ------------
 function proxy:StartStatusBarTimer(timer, name, icon, noBroadcast, repetitions, colorR, colorG, colorB, colorA)
-	DBM:AddMsg(timer, name)
 	self.timer:Start(timer, name)
 	self.timer:UpdateIcon(icon, name)
 end

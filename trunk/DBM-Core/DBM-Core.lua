@@ -1119,6 +1119,7 @@ function DBM:SendTimerInfo(mod, target)
 end
 
 function DBM:PLAYER_UNGHOST()
+	DBM:AddMsg("Unghost", "debug")
 	local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
 	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 		local id = (i == 0 and "player") or uId..i
@@ -1185,9 +1186,8 @@ do
 		return msg == "status" and #inCombat > 0
 	end
 	
-	local function filterRaidWarning(msg, msg2)
-		DBM:AddMsg(msg, msg2)
-		return DBM.Options.SpamBlockRaidWarning and msg:find("%*%*%* .* %*%*%*")
+	local function filterRaidWarning(msg)
+		return DBM.Options.SpamBlockRaidWarning and type(msg) == "string" and (not not msg:match("^%s*%*%*%*"))
 	end
 	
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
