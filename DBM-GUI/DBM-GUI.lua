@@ -68,12 +68,12 @@ do
 		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
-		panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth());
-		panel:SetHeight(DBM_GUI_OptionsFramePanelContainerFOV:GetHeight()); 
+		panel:SetWidth(DBM_GUI_OptionsFramePanelContainerFOV:GetWidth())
+		panel:SetHeight(DBM_GUI_OptionsFramePanelContainerFOV:GetHeight()) 
 		panel:SetPoint("TOPLEFT", DBM_GUI_OptionsFramePanelContainer, "TOPLEFT")
 	
 		panel.name = FrameName
-		panel.showsub = showsub
+		panel.showsub = (showsub or showsub == nil)
 
 		if (sortID or 0) > 0 then
 			panel.sortid = sortID
@@ -433,7 +433,9 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 		return false
 	end
 
-	frame.showsub = (frame.showsub == nil)
+--	frame.showsub = (frame.showsub == nil)
+--	DBM:AddMsg( FrameName.." ".. tostring(panel.showsub) ) 
+	
 	if parent then
 		frame.depth = self:GetDepth(parent)
 	else 
@@ -1417,10 +1419,10 @@ do
 	function DBM_GUI:UpdateModList()
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
-				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..string.upper(addon.category)] or L.TabCategory_Other)
+				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOTLK"))
 	
-				if L["TabCategory_"..string.upper(addon.category)] then
-					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..string.upper(addon.category)])
+				if L["TabCategory_"..addon.category:upper()] then
+					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..addon.category:upper()])
 					ptext:SetPoint('TOPLEFT', Categories[addon.category].frame, "TOPLEFT", 10, -10)
 				end
 			end
