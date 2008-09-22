@@ -1507,7 +1507,7 @@ do
 			local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 			local name = self.text:format(...)
 			local bar = DBM.Bars:CreateBar(timer and ((timer > 0 and timer) or self.timer + timer) or self.timer, id, self.icon)
-			bar:SetText(name)
+			if bar then bar:SetText(name) end
 			table.insert(self.startedTimers, id)
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(self.timer, removeEntry, self.startedTimers, id)
