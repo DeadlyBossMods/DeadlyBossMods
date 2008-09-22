@@ -1,0 +1,44 @@
+﻿## Interface: 20400
+## Title: |cff0055FFDeadly Black Temple Boss Mods|r
+## Title-zhCN: |cff0055FFDeadly|r 黑暗神殿 |cff0055FF模组|r
+## Title-zhTW: |cff0055FFDeadly Boss Mod|r 黑暗神廟
+## Author: Tandanu
+## Notes: Boss Mods for Black Temple
+## Notes-zhCN: Deadly Boss Mod 的黑暗神殿模组
+## Notes-zhTW: Deadly Boss Mod 黑暗神廟首領模組
+## X-DBM-AddOn: 1
+## X-DBM-Tab-ID: TempleTab
+## X-DBM-Tab-BCTab: 1
+## X-DBM-Tab-Sort: 4
+## X-DBM-Name: Black Temple
+## X-DBM-Name-zhCN: 黑暗神殿
+## X-DBM-Name-zhTW: 黑暗神廟
+## X-DBM-Name-ruRU: Черный храм
+## X-DBM-Tab-Text: Black Temple
+## X-DBM-Tab-Text-zhCN: 黑暗神殿
+## X-DBM-Tab-Text-zhTW: 黑暗神廟
+## X-DBM-Tab-Title: Black Temple Boss Mods
+## X-DBM-Tab-Title-zhCN: 黑暗神殿
+## X-DBM-Tab-Title-zhTW: 黑暗神廟
+## X-DBM-Tab-LoadZone: Black Temple
+## X-DBM-Tab-LoadZone-deDE: Der Schwarze Tempel
+## X-DBM-Tab-LoadZone-zhCN: 黑暗神殿
+## X-DBM-Tab-LoadZone-zhTW: 黑暗神廟
+## X-DBM-Tab-LoadZone-ruRU: Черный храм
+## RequiredDeps: DBM_API
+## DefaultState: Enabled
+## LoadOnDemand: 1
+localization.en.lua
+localization.cn.lua
+localization.de.lua
+localization.tw.lua
+localization.ru.lua
+Naj'entus.lua
+Supremus.lua
+ShadeOfAkama.lua
+TeronGorefiend.lua
+Bloodboil.lua
+EssenceOfSouls.lua
+Shahraz.lua
+IllidariCouncil.lua
+Illidan.lua
