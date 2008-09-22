@@ -4,7 +4,10 @@ Souls.Version	= "1.0"
 Souls.Author	= "Tandanu"
 Souls.MinVersionToSync = 3.00
 
-Souls:RegisterCombat("YELL", DBM_SOULS_YELL_PULL, nil, nil, DBM_SOULS_BOSS_KILL_NAME, 20)
+
+Souls:SetCreatureID(23418)
+Souls:RegisterCombat("yell", DBM_SOULS_YELL_PULL, 23420)
+
 
 Souls:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",

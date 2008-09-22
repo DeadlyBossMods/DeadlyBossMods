@@ -3,7 +3,8 @@ local Shahraz = DBM:NewBossMod("Shahraz", DBM_SHAHRAZ_NAME, DBM_SHAHRAZ_DESCRIPT
 Shahraz.Version	= "1.0"
 Shahraz.Author	= "Tandanu"
 
-Shahraz:RegisterCombat("YELL", DBM_SHAHRAZ_YELL_PULL)
+Shahraz:SetCreatureID(22947)
+Shahraz:RegisterCombat("yell", DBM_SHAHRAZ_YELL_PULL)
 
 Shahraz:AddOption("WarnBeam", false, DBM_SHAHRAZ_OPTION_BEAM)
 Shahraz:AddOption("WarnBeamSoon", false, DBM_SHAHRAZ_OPTION_BEAM_SOON)

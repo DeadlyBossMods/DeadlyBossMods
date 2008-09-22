@@ -6,7 +6,9 @@ Akama.Author		= "Tandanu"
 local channelersDown = 0
 local sorcerersDown = 0
 
-Akama:RegisterCombat("COMBAT", 5, DBM_AKAMA_MOB_DEFENDER, DBM_AKAMA_NAME, DBM_AKAMA_NAME, 120)
+Akama:SetCreatureID(23421)
+Akama:RegisterCombat("combat", 22841)
+Akama:SetMinCombatTime(60)
 
 Akama:RegisterEvents(
 	"UNIT_DIED"

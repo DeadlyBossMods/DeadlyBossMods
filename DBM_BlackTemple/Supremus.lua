@@ -7,7 +7,8 @@ Supremus.MinRevision = 828
 local lastIcon		= nil
 local phase2		= nil
 
-Supremus:RegisterCombat("COMBAT")
+Supremus:SetCreatureID(22898)
+Supremus:RegisterCombat("combat")
 
 Supremus:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",

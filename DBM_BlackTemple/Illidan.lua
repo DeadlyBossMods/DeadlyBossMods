@@ -4,7 +4,8 @@ Illidan.Version		= "1.1"
 Illidan.Author		= "Tandanu"
 Illidan.MinRevision = 764
 
-Illidan:RegisterCombat("YELL", DBM_ILLIDAN_YELL_PULL)
+Illidan:SetCreatureID(22917)
+Illidan:RegisterCombat("yell", DBM_ILLIDAN_YELL_PULL)
 
 local flameTargets = {}
 local flamesDown = 0
