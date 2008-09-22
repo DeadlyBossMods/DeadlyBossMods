@@ -3,7 +3,8 @@ local Gorefiend = DBM:NewBossMod("TeronGorefiend", DBM_GOREFIEND_NAME, DBM_GOREF
 Gorefiend.Version		= "1.0"
 Gorefiend.Author		= "Tandanu"
 
-Gorefiend:RegisterCombat("YELL", DBM_GOREFIEND_YELL_PULL)
+Gorefiend:SetCreatureID(22871)
+Gorefiend:RegisterCombat("yell", DBM_GOREFIEND_YELL_PULL)
 
 Gorefiend:RegisterEvents(
 	"SPELL_AURA_APPLIED"

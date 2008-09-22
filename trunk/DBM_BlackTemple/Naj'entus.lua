@@ -3,7 +3,8 @@ local Najentus = DBM:NewBossMod("Najentus", DBM_NAJENTUS_NAME, DBM_NAJENTUS_DESC
 Najentus.Version	= "1.0"
 Najentus.Author		= "Tandanu"
 
-Najentus:RegisterCombat("YELL", DBM_NAJENTUS_YELL_PULL)
+Najentus:SetCreatureID(22887)
+Najentus:RegisterCombat("yell", DBM_NAJENTUS_YELL_PULL)
 
 Najentus:RegisterEvents(
 	"SPELL_AURA_APPLIED",

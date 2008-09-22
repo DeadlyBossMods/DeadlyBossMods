@@ -5,7 +5,8 @@ Bloodboil.Author	= "Tandanu"
 
 local boilCounter = 0
 
-Bloodboil:RegisterCombat("YELL", DBM_BLOODBOIL_YELL_PULL)
+Bloodboil:SetCreatureID(22948)
+Bloodboil:RegisterCombat("yell", DBM_BLOODBOIL_YELL_PULL)
 
 Bloodboil:RegisterEvents(
 	"SPELL_AURA_APPLIED",

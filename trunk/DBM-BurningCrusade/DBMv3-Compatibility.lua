@@ -91,10 +91,6 @@ local proxy = {}
 -----------------------
 --  General Methods  --
 -----------------------
-
-function proxy:RegisterCombat(...) -- TODO
-end
-
 function proxy:RegisterEvents(...)
 	self.mod:RegisterEvents(...)
 	for i = 1, select("#", ...) do
@@ -121,14 +117,13 @@ function proxy:AddOption(id, default, name)
 end
 
 function proxy:AddBarOption(bar, default)
-	self.mod:AddBoolOption(bar:gsub("%(%.%*%)", "<target>"), default, "timer")
+	self.mod:AddBoolOption(bar:gsub("%(%.%*%)", DBM_BC_TARGET), default, "timer")
 	if DBM_SBT[bar] then
 		DBM:GetModLocalization(self.mod.id):SetOptionLocalization({
 			[bar] = DBM_SBT[bar]
 		})
 	end
 end
-
 
 function proxy:IsWipe()
 	local dead = 0
@@ -138,6 +133,23 @@ function proxy:IsWipe()
 	return dead >= 18
 end
 
+
+--------------
+--  Combat  --
+--------------
+function proxy:RegisterCombat(...)
+	self.mod:RegisterCombat(...)
+end
+
+function proxy:SetMinCombatTime(...)
+	self.mod:SetMinCombatTime(...)
+end
+
+function proxy:SetCreatureID(...)
+	self.mod:SetCreatureID(...)
+end
+
+
 -------------------
 --  Range Check  --
 -------------------
@@ -146,6 +158,7 @@ end
 
 function DBM_Gui_DistanceFrame_Show() -- TODO
 end
+
 
 -----------------
 --  Announces  --
