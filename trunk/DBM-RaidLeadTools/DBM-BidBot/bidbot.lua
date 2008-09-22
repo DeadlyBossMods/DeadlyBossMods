@@ -34,6 +34,9 @@ DBM_BidBot_Settings = {
 	bidtyp_open = false,		-- post each Bid in the Raidchan
 	bidtyp_payall = false,		-- pay the price you bid
 }
+
+DBM_BidBot_ItemHistory = {}		-- ItemHistory
+
 local settings = DBM_BidBot_Settings
 local L = DBM_BidBot_Translations
 
@@ -55,45 +58,67 @@ do
 
 	local function creategui()
 		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_BidBot, "option")
-		local area = panel:CreateArea(L.AreaGeneral, nil, 250, true)
+		do
+			local area = panel:CreateArea(L.AreaGeneral, nil, 260, true)
+	
+			local enabled 		= area:CreateCheckButton(L.Enable, true)
+			local bidtyp_open	= area:CreateCheckButton(L.PublicBids, true)
+			local bidtyp_payall	= area:CreateCheckButton(L.PayWhatYouBid, true)
+			local chatchannel 	= area:CreateDropdown(L.ChatChannel, 
+				{{text=L.Guild,value="GUILD"},{text=L.Raid,value="RAID"},{text=L.Party,value="PARTY"}}, 
+				settings.chatchannel,
+				function(value) settings.chatchannel = value end
+			)
+			local minGebot	 	= area:CreateEditBox(L.MinBid, settings.keyword, 100)
+			local duration		= area:CreateEditBox(L.Duration, settings.keyword, 100)
+			local output 		= area:CreateEditBox(L.OutputBids, settings.keyword, 100)
+			
+			chatchannel:SetPoint("TOPLEFT", bidtyp_payall, "BOTTOMLEFT", 0, -10)
+			minGebot:SetPoint("TOPLEFT", chatchannel, "BOTTOMLEFT", 30, -15)
+			duration:SetPoint("TOPLEFT", minGebot, "BOTTOMLEFT", 0, -20)
+			output:SetPoint("TOPLEFT", duration, "BOTTOMLEFT", 0, -20)
+	
+			minGebot:SetNumeric()
+			duration:SetNumeric()
+			output:SetNumeric()
+	
+			enabled:SetScript("OnClick", 		function(self) settings.enabled = toboolean(self:GetChecked()) end)
+			enabled:SetScript("OnShow", 		function(self) self:SetChecked(settings.enabled) end)
+			bidtyp_open:SetScript("OnClick", 	function(self) settings.bidtyp_open = toboolean(self:GetChecked()) end)
+			bidtyp_open:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_open) end)
+			bidtyp_payall:SetScript("OnClick",	function(self) settings.bidtyp_payall = toboolean(self:GetChecked()) end)
+			bidtyp_payall:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_payall) end)
+			minGebot:SetScript("OnTextChanged", 	function(self) settings.minGebot = self:GetNumber() end)
+			minGebot:SetScript("OnShow", 		function(self) self:SetText(settings.minGebot) end)
+			duration:SetScript("OnTextChanged", 	function(self) settings.duration = self:GetNumber() end)
+			duration:SetScript("OnShow", 		function(self) self:SetText(settings.duration) end)
+			output:SetScript("OnTextChanged", 	function(self) settings.output = self:GetNumber() end)
+			output:SetScript("OnShow", 		function(self) self:SetText(settings.output) end)
+		end
+		do	
+			local area = panel:CreateArea(L.AreaItemHistory, nil, 260, true)
 
-		local enabled 		= area:CreateCheckButton(L.Enable, true)
-		local bidtyp_open	= area:CreateCheckButton(L.PublicBids, true)
-		local bidtyp_payall	= area:CreateCheckButton(L.PayWhatYouBid, true)
-		local chatchannel 	= area:CreateDropdown(L.ChatChannel, 
-			{{text=L.Guild,value="GUILD"},{text=L.Raid,value="RAID"},{text=L.Party,value="PARTY"}}, 
-			settings.chatchannel,
-			function(value) settings.chatchannel = value end
-		)
-		local minGebot	 	= area:CreateEditBox(L.MinBid, settings.keyword, 100)
-		local duration		= area:CreateEditBox(L.Duration, settings.keyword, 100)
-		local output 		= area:CreateEditBox(L.OutputBids, settings.keyword, 100)
-		
-		chatchannel:SetPoint("TOPLEFT", bidtyp_payall, "BOTTOMLEFT", 0, -10)
-		minGebot:SetPoint("TOPLEFT", chatchannel, "BOTTOMLEFT", 30, -15)
-		duration:SetPoint("TOPLEFT", minGebot, "BOTTOMLEFT", 0, -20)
-		output:SetPoint("TOPLEFT", duration, "BOTTOMLEFT", 0, -20)
+			local text = area:CreateText(L.NoHistoryAvailable, area.frame:GetWidth()-40, true, GameFontNormalSmall, "LEFT")
+			area.frame:SetScript("OnShow", function(self)
+				local mytext = ""
+				for i=#DBM_BidBot_ItemHistory, 1, -1 do	-- reverse order, last is newest
+					local itembid = DBM_BidBot_ItemHistory[i]
+					mytext = mytext.."["..itembid.time.."]: "..itembid.item.." "..itembid.points.." DKP - "
+					for k,v in pairs(itembid.bids) do
+						mytext = mytext..k..". "..v.name.."("..v.points..") "
+					end
+					mytext = mytext.."\n"
+				end
+				if mytext ~= "" then
+					text:SetText(mytext)
+				end
+			end)
 
-		minGebot:SetNumeric()
-		duration:SetNumeric()
-		output:SetNumeric()
-
-		enabled:SetScript("OnClick", 		function(self) settings.enabled = toboolean(self:GetChecked()) end)
-		enabled:SetScript("OnShow", 		function(self) self:SetChecked(settings.enabled) end)
-		bidtyp_open:SetScript("OnClick", 	function(self) settings.bidtyp_open = toboolean(self:GetChecked()) end)
-		bidtyp_open:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_open) end)
-		bidtyp_payall:SetScript("OnClick",	function(self) settings.bidtyp_payall = toboolean(self:GetChecked()) end)
-		bidtyp_payall:SetScript("OnShow", 	function(self) self:SetChecked(settings.bidtyp_payall) end)
-		minGebot:SetScript("OnTextChanged", 	function(self) settings.minGebot = self:GetNumber() end)
-		minGebot:SetScript("OnShow", 		function(self) self:SetText(settings.minGebot) end)
-		duration:SetScript("OnTextChanged", 	function(self) settings.duration = self:GetNumber() end)
-		duration:SetScript("OnShow", 		function(self) self:SetText(settings.duration) end)
-		output:SetScript("OnTextChanged", 	function(self) settings.output = self:GetNumber() end)
-		output:SetScript("OnShow", 		function(self) self:SetText(settings.output) end)
+		end
+		panel:SetMyOwnHeight()
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 11)
 end
-
 
 
 function AddItem(ItemLink)
@@ -116,7 +141,11 @@ function AddBid(bidder, bid)
 		["Name"] = bidder,
 		["Bid"] = bid
 	})
-	SendChatMessage("<DBM> "..L.Prefix..L.Whisper_Bid_OK:format(bid), "WHISPER", nil, bidder)
+	if settings.bidtyp_open then
+		SendChatMessage(L.Prefix..L.Message_BidPubMessage:format(bidder, bid), settings.chatchannel)
+	else
+		SendChatMessage("<DBM> "..L.Prefix..L.Whisper_Bid_OK:format(bid), "WHISPER", nil, bidder)
+	end
 end
 
 function AuctionEnd()
@@ -125,22 +154,26 @@ function AuctionEnd()
 		time = time(), 
 		item = BidBot_CurrentItem, 
 		points = 0, 
-		member = "", 
 		bids = {} 
 	}
 
 	if (BidBot_Biddings[1] and BidBot_Biddings[2]) then
 		table.sort(BidBot_Biddings, function(a,b) return a.Bid > b.Bid end)
-		Itembid.points = BidBot_Biddings[2]["Bid"] + 1
-		Itembid.member = BidBot_Biddings[1]["Name"]
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, BidBot_Biddings[1]["Name"]), settings.chatchannel);
+		if settings.bidtyp_payall then
+			Itembid.points = BidBot_Biddings[1]["Bid"]
+		else
+			Itembid.points = BidBot_Biddings[2]["Bid"] + 1
+		end
+		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, BidBot_Biddings[1]["Name"]), settings.chatchannel)
 
 	elseif (BidBot_Biddings[1]) then
-		Itembid.points = settings.minGebot
-		Itembid.member = BidBot_Biddings[1]["Name"]
+		if settings.bidtyp_payall then
+			Itembid.points = BidBot_Biddings[1]["Bid"]
+		else
+			Itembid.points = settings.minGebot
+		end
 		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, BidBot_Biddings[1]["Name"]), settings.chatchannel);
 	else
-		Itembid.member = L.Disenchant
 		SendChatMessage(L.Prefix..L.Message_NoBidMade:format(Itembid.item), settings.chatchannel);
 	end
 
@@ -157,12 +190,12 @@ function AuctionEnd()
 
 	   if posi <= settings.output then
 		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.Name, werte.Bid), settings.chatchannel)
-	   else
+	   elseif not max then
 		max = true
 	   end
-
 	end
-	
+	table.insert(DBM_BidBot_ItemHistory, ItemBid)
+
 	if max then
 		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(settings.output, counter), settings.chatchannel)
 	end
@@ -237,9 +270,9 @@ do
 			RegisterEvents(
 				"CHAT_MSG_GUILD",
 				"CHAT_MSG_RAID",
-				"CHAT_MSG_SAY",
+				--"CHAT_MSG_SAY",
 				"CHAT_MSG_PARTY",
-				"CHAT_MSG_OFFICER",
+				--"CHAT_MSG_OFFICER",
 				"CHAT_MSG_RAID_LEADER",
 				"CHAT_MSG_WHISPER"
 			)
