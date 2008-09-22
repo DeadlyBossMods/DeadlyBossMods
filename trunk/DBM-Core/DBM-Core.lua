@@ -425,7 +425,7 @@ do
 				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
 				return
 			end
-			table.sort(callOnLoad, function(v1, v2) return v1.sort > v2.sort end)
+			table.sort(callOnLoad, function(v1, v2) return v1[2] > v2[2] end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage()
 		end
@@ -581,6 +581,7 @@ do
 					heroicPulls = 0,
 				}
 				v.stats = savedStats[v.id]
+				if v.OnInitialize then v:OnInitialize() end
 			end
 		end
 		setglobal(modId:gsub("-", "").."_SavedVars", savedOptions)

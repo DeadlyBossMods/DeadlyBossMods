@@ -286,11 +286,17 @@ local function onSync(self, ...)
 end
 
 local function onCombatStart(self, ...)
+	self.proxy.InCombat = true
 	if self.proxy.OnCombatStart then self.proxy:OnCombatStart(...) end
 end
 
 local function onCombatEnd(self, ...)
-	if self.proxy.OnCombatStart then self.proxy:OnCombatStart(...) end
+	if self.proxy.OnCombatEnd then self.proxy:OnCombatEnd(...) end
+	self.proxy.InCombat = false
+end
+
+local function onInitialize(self)
+	if self.proxy.OnUpdate then	self:RegisterOnUpdateHandler(self.proxy.OnUpdate, self.proxy.UpdateInterval or 0.2) end
 end
 
 -------------------
@@ -326,6 +332,7 @@ do
 		mod.OnSync = onSync
 		mod.OnCombatStart = onCombatStart
 		mod.OnCombatEnd = onCombatEnd
+		mod.OnInitialize = onInitialize
 		return obj
 	end
 end
