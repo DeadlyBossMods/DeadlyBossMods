@@ -153,7 +153,6 @@ end
 function proxy:Announce(msg, color, noBroadcast)
 	local warning = self["warning"..(color or 1)]
 	if not warning then return end
-	DBM:AddMsg(msg)
 	msg = msg:gsub("%s*%*%*%*%s*", "")
 	warning:Show(msg)
 end
