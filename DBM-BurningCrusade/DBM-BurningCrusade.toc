@@ -1,0 +1,10 @@
+## Interface: 30000
+## Title: |cff0055FFDeadly Boss Mods|r Burning Crusade
+## Notes: Burning Crusade Boss Mods
+## SavedVariablesPerCharacter: DBMBurningCrusade_SavedModOptions
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: Tandanu and Nitram
+## X-Website: http://www.deadlybossmods.com
+localization.en.lua
+DBMv3-Compatibility.lua
