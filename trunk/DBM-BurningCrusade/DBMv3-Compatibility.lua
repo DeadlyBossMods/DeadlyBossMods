@@ -79,6 +79,7 @@ function DBMBC:ADDON_LOADED(mod)
 		end
 	end
 	table.sort(DBM.AddOns, function(v1, v2) return v1.sort < v2.sort end)
+	DBM:ZONE_CHANGED_NEW_AREA()
 end
 
 
@@ -152,6 +153,7 @@ end
 function proxy:Announce(msg, color, noBroadcast)
 	local warning = self["warning"..(color or 1)]
 	if not warning then return end
+	msg = msg:gsub("^%s*%**%s*(.*)%s*%**%s$", "%1")
 	warning:Show(msg)
 end
 
