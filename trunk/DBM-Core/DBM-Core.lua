@@ -409,6 +409,21 @@ do
 	end
 end
 
+-------------------
+--  Pizza Timer  --
+-------------------
+function DBM:CreatePizzaTimer(time, text, broadcast)
+	text = text:sub(0, 17)
+	self.Bars:CreateBar(time, text)
+	if broadcast and self:GetRaidRank() >= 1 then
+		sendSync("DBMv4-Pizza", ("%s\t%s"):format(time, text))
+	end
+end
+
+function DBM:ShowPizzaInfo(id, sender)
+	self:AddMsg(DBM_PIZZA_SYNC_INFO:format(sender, id))
+end
+
 -----------------
 --  GUI Stuff  --
 -----------------
@@ -682,6 +697,7 @@ do
 	end
 	
 	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
+		if select(2, IsInInstance()) == "pvp" then return end
 		local delay, mod = strsplit("\t", msg)
 		local lag = select(3, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
@@ -692,6 +708,7 @@ do
 	end
 	
 	syncHandlers["DBMv4-Kill"] = function(msg, channel, sender)
+		if select(2, IsInInstance()) == "pvp" then return end
 		local cId = tonumber(msg)
 		if cId then DBM:OnMobKill(cId, true) end
 	end
@@ -720,6 +737,19 @@ do
 					end
 				end
 			end
+		end
+	end
+	
+	syncHandlers["DBMv4-Pizza"] = function(msg, channel, sender)
+		if select(2, IsInInstance()) == "pvp" then return end
+		if DBM:GetRaidRank(sender) == 0 then return end
+		if sender == UnitName("player") then return end
+		local time, text = strsplit("\t", msg)
+		time = tonumber(time or 0)
+		text = tostring(text)
+		if time and text then
+			DBM:CreatePizzaTimer(time, text)
+			DBM:ShowPizzaInfo(text, sender)
 		end
 	end
 
