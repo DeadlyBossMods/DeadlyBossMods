@@ -340,5 +340,5 @@ do
 	
 	-- lets register the Events
 	RegisterEvents("ADDON_LOADED")
-end	
+end
 
