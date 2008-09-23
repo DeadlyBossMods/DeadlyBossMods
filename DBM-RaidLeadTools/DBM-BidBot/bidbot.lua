@@ -164,7 +164,7 @@ function AuctionEnd()
 		else
 			Itembid.points = BidBot_Biddings[2]["Bid"] + 1
 		end
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, BidBot_Biddings[1]["Name"]), settings.chatchannel)
+		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, BidBot_Biddings[1]["Name"], Itembid.points), settings.chatchannel)
 
 	elseif (BidBot_Biddings[1]) then
 		if settings.bidtyp_payall then
@@ -172,7 +172,7 @@ function AuctionEnd()
 		else
 			Itembid.points = settings.minGebot
 		end
-		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, Itembid.points, BidBot_Biddings[1]["Name"]), settings.chatchannel);
+		SendChatMessage(L.Prefix..L.Message_ItemGoesTo:format(Itembid.item, BidBot_Biddings[1]["Name"], Itembid.points), settings.chatchannel);
 	else
 		SendChatMessage(L.Prefix..L.Message_NoBidMade:format(Itembid.item), settings.chatchannel);
 	end
@@ -197,7 +197,7 @@ function AuctionEnd()
 	table.insert(DBM_BidBot_ItemHistory, ItemBid)
 
 	if max then
-		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(settings.output, counter), settings.chatchannel)
+		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(counter), settings.chatchannel)
 	end
 
 	BidBot_CurrentItem = ""

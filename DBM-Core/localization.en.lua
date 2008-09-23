@@ -18,7 +18,6 @@ DBM_CORE_OK							= "Okay"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Enrage in %s %s"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "Enrage"
-
 DBM_CORE_OPTION_TIMER_ENRAGE		= "Show Enrage timer"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
@@ -38,3 +37,5 @@ DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is outdated.
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Press Ctrl-C to copy the download link to your clipboard."
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
+
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a pizza timer: '%2$s'\n[Cancel this timer]  [Ignore timers from %1$s]"
