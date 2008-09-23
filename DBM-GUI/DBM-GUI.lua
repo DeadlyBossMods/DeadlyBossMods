@@ -433,9 +433,6 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 		return false
 	end
 
---	frame.showsub = (frame.showsub == nil)
---	DBM:AddMsg( FrameName.." ".. tostring(panel.showsub) ) 
-	
 	if parent then
 		frame.depth = self:GetDepth(parent)
 	else 
@@ -766,7 +763,7 @@ do
 			DBM_BossPreview.enabled = false
 			DBM_BossPreview:Hide()
 			for _, mod in ipairs(DBM.Mods) do
-				if mod.panel.frame == frame then
+				if mod.panel and mod.panel.frame and mod.panel.frame == frame then
 					UpdateAnimationFrame(mod)
 				end
 			end
@@ -1115,6 +1112,7 @@ local function CreateOptionsMenu()
 			end
 			movemebutton:SetScript("OnClick", function(self)
 				DBM:Schedule(20, hideme)
+				DBM.Bars:CreateBar(20, L.BarWhileMove)
 				if not anchorFrame then
 					anchorFrame = CreateFrame("Frame", "DBM_GUI_RaidWarnAnchor", UIParent)
 					anchorFrame:SetWidth(32)
@@ -1130,6 +1128,7 @@ local function CreateOptionsMenu()
 						RaidWarningFrame:SetMovable(1)
 						RaidWarningFrame:StartMoving()
 						DBM:Unschedule(hideme)
+						DBM.Bars:CancelBar(L.BarWhileMove)
 					end)
 					anchorFrame:SetScript("OnMouseUp", function(self) 
 						RaidWarningFrame:StopMovingOrSizing()
@@ -1139,6 +1138,7 @@ local function CreateOptionsMenu()
 						DBM.Options.RaidWarningPosition.X = xOfs
 						DBM.Options.RaidWarningPosition.Y = yOfs	
 						DBM:Schedule(15, hideme)
+						DBM.Bars:CreateBar(15, L.BarWhileMove)
 					end)
 					do
 						local elapsed = 10
@@ -1298,31 +1298,33 @@ local function CreateOptionsMenu()
 		-----------------------
 		-- Huge Bar Options --
 		-----------------------
-		BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 160, true)
-		
+		BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 175, true)
+	
+		local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
+
 		local hugedummybar = DBM.Bars:CreateDummyBar()
 		hugedummybar.frame:SetParent(BarSetupSmall.frame)
-		hugedummybar.frame:SetPoint('BOTTOM', BarSetupHuge.frame, "TOP", 0, -35)
+		hugedummybar.frame:SetPoint('BOTTOM', BarSetupHuge.frame, "TOP", 0, -50)
 		hugedummybar.frame:SetScript("OnUpdate", function(self, elapsed) hugedummybar:Update(elapsed) end)
 		hugedummybar.enlarged = true                                
 		hugedummybar:ApplyStyle()     
 
-		local HugeBarWidthSlider = BarSetup:CreateSlider(L.Slider_BarWidth, 100, 325, 1)
-		HugeBarWidthSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 20, -90)
+		local HugeBarWidthSlider = BarSetupHuge:CreateSlider(L.Slider_BarWidth, 100, 325, 1)
+		HugeBarWidthSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 20, -105)
 		HugeBarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("HugeWidth"))
 		HugeBarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeWidth"))
 
-		local HugeBarScaleSlider = BarSetup:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05)
+		local HugeBarScaleSlider = BarSetupHuge:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05)
 		HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("HugeScale"))
 		HugeBarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
 
-		local HugeBarOffsetXSlider = BarSetup:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1)
-		HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 220, -90)
+		local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1)
+		HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 220, -105)
 		HugeBarOffsetXSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarXOffset"))
 		HugeBarOffsetXSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
 
-		local HugeBarOffsetYSlider = BarSetup:CreateSlider(L.Slider_BarOffSetY, -5, 25, 1)
+		local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -5, 25, 1)
 		HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarYOffset"))
 		HugeBarOffsetYSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
@@ -1346,70 +1348,71 @@ do
 		end
 	end
 
-	local function CreateBossModTab(self, paneltyp)
-		local ptext = self.panel:CreateText(L.BossModLoaded, nil, nil, GameFontNormal)
-		ptext:SetPoint('TOPLEFT', self.panel.frame, "TOPLEFT", 10, -10)
+	local function CreateBossModTab(addon, panel, subtab)
+		if not panel then 
+			error(panel, 2)
+		end
+
+		local ptext = panel:CreateText(L.BossModLoaded, nil, nil, GameFontNormal)
+		ptext:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 10, -10)
 
 		local bossstats = 0 
-		local area = self.panel:CreateArea("Boss Statistik", nil, 0)
+		local area = panel:CreateArea(L.BossStatistics, nil, 0)
 		area.frame:SetPoint("TOPLEFT", 10, -40)
 		area.onshowcall = {}
 
-		if paneltyp == "addon" then
-			for _, mod in ipairs(DBM.Mods) do
-				if mod.modId == self.modId then
-					bossstats = bossstats + 1
+		for _, mod in ipairs(DBM.Mods) do
+			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
+				bossstats = bossstats + 1
+				local Boss 		= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
+				local bossstat1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossstat2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossstat3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
+				bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 40, -5)
+				bossstat2:SetPoint("TOPLEFT", bossstat1, "BOTTOMLEFT", 0, -5)
+				bossstat3:SetPoint("TOPLEFT", bossstat2, "BOTTOMLEFT", 0, -5)
+	
+				local Heroic	 	= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
+				local Heroicstat1	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local Heroicstat2	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local Heroicstat3	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+				Heroic:SetPoint("LEFT", Boss, "LEFT", 220, 0)
+				Heroicstat1:SetPoint("LEFT", bossstat1, "LEFT", 180, 0)
+				Heroicstat2:SetPoint("LEFT", bossstat2, "LEFT", 180, 0)
+				Heroicstat3:SetPoint("LEFT", bossstat3, "LEFT", 180, 0)
 
-					local Boss 		= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
-					local bossstat1		= area:CreateText("Kills:", nil, nil, GameFontNormalSmall, "LEFT")
-					local bossstat2		= area:CreateText("Wipes:", nil, nil, GameFontNormalSmall, "LEFT")
-					local bossstat3		= area:CreateText("Best Kill:", nil, nil, GameFontNormalSmall, "LEFT")
-					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
-					bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 40, -5)
-					bossstat2:SetPoint("TOPLEFT", bossstat1, "BOTTOMLEFT", 0, -5)
-					bossstat3:SetPoint("TOPLEFT", bossstat2, "BOTTOMLEFT", 0, -5)
-		
-					local Heroic	 	= area:CreateText("(heroic mode)", nil, nil, GameFontHighlightSmall, "LEFT")
-					local Heroicstat1	= area:CreateText("Kills:", nil, nil, GameFontNormalSmall, "LEFT")
-					local Heroicstat2	= area:CreateText("Wipes:", nil, nil, GameFontNormalSmall, "LEFT")
-					local Heroicstat3	= area:CreateText("Best Kill:", nil, nil, GameFontNormalSmall, "LEFT")
-					Heroic:SetPoint("LEFT", Boss, "LEFT", 200, 0)
-					Heroicstat1:SetPoint("LEFT", bossstat1, "LEFT", 180, 0)
-					Heroicstat2:SetPoint("LEFT", bossstat2, "LEFT", 180, 0)
-					Heroicstat3:SetPoint("LEFT", bossstat3, "LEFT", 180, 0)
+				local bossvalue1	= area:CreateText(mod.stats.kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue2	= area:CreateText((mod.stats.pulls-mod.stats.kills), nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				bossvalue1:SetPoint("TOPLEFT", bossstat1, "TOPLEFT", 80, 0)
+				bossvalue2:SetPoint("TOPLEFT", bossstat2, "TOPLEFT", 80, 0)
+				bossvalue3:SetPoint("TOPLEFT", bossstat3, "TOPLEFT", 80, 0)
 
-					local bossvalue1	= area:CreateText(mod.stats.kills, nil, nil, GameFontNormalSmall, "LEFT")
-					local bossvalue2	= area:CreateText((mod.stats.pulls-mod.stats.kills), nil, nil, GameFontNormalSmall, "LEFT")
-					local bossvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
-					bossvalue1:SetPoint("TOPLEFT", bossstat1, "TOPLEFT", 80, 0)
-					bossvalue2:SetPoint("TOPLEFT", bossstat2, "TOPLEFT", 80, 0)
-					bossvalue3:SetPoint("TOPLEFT", bossstat3, "TOPLEFT", 80, 0)
+				local heroicvalue1	= area:CreateText(mod.stats.heroicKills, nil, nil, GameFontNormalSmall, "LEFT")
+				local heroicvalue2	= area:CreateText((mod.stats.heroicPulls-mod.stats.heroicKills), nil, nil, GameFontNormalSmall, "LEFT")
+				local heroicvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				heroicvalue1:SetPoint("TOPLEFT", Heroicstat1, "TOPLEFT", 80, 0)
+				heroicvalue2:SetPoint("TOPLEFT", Heroicstat2, "TOPLEFT", 80, 0)
+				heroicvalue3:SetPoint("TOPLEFT", Heroicstat3, "TOPLEFT", 80, 0)
 
-					local heroicvalue1	= area:CreateText(mod.stats.heroicKills, nil, nil, GameFontNormalSmall, "LEFT")
-					local heroicvalue2	= area:CreateText((mod.stats.heroicPulls-mod.stats.heroicKills), nil, nil, GameFontNormalSmall, "LEFT")
-					local heroicvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
-					heroicvalue1:SetPoint("TOPLEFT", Heroicstat1, "TOPLEFT", 80, 0)
-					heroicvalue2:SetPoint("TOPLEFT", Heroicstat2, "TOPLEFT", 80, 0)
-					heroicvalue3:SetPoint("TOPLEFT", Heroicstat3, "TOPLEFT", 80, 0)
-
-					area.frame:SetHeight( area.frame:GetHeight() + 80 ) 
-					table.insert(area.onshowcall, OnShowGetStats(mod, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3))
-				end
+				area.frame:SetHeight( area.frame:GetHeight() + 80 ) 
+				table.insert(area.onshowcall, OnShowGetStats(mod, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3))
 			end
-			area.frame:SetScript("OnShow", function(self) 
-				for _,v in pairs(area.onshowcall) do
-					v()
-				end
-			end)
-			self.panel:SetMyOwnHeight()
-			DBM_GUI_OptionsFrame:DisplayFrame(self.panel.frame)
 		end
+		area.frame:SetScript("OnShow", function(self) 
+			for _,v in pairs(area.onshowcall) do
+				v()
+			end
+		end)
+		panel:SetMyOwnHeight()
+		DBM_GUI_OptionsFrame:DisplayFrame(panel.frame)
 	end
 
 	local function LoadAddOn_Button(self) 
 		if DBM:LoadMod(self.modid) then 
 			self:Hide()
-			CreateBossModTab(self.modid, "addon")		
+			CreateBossModTab(self.modid, self.modid.panel)		
 			DBM_GUI_OptionsFrameBossMods:Hide()
 			DBM_GUI_OptionsFrameBossMods:Show()
 		end
@@ -1419,6 +1422,7 @@ do
 	function DBM_GUI:UpdateModList()
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
+				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
 				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOTLK"))
 	
 				if L["TabCategory_"..addon.category:upper()] then
@@ -1428,6 +1432,7 @@ do
 			end
 			
 			if not addon.panel then
+				-- Create a Panel for "Naxxramas" "Eye of Eternity" ...
 				addon.panel = Categories[addon.category]:CreateNewPanel(addon.name or "Error: X-DBM-Mod-Name", nil, false)
 
 				if not IsAddOnLoaded(addon.modId) then
@@ -1436,16 +1441,18 @@ do
 					button:SetScript("OnClick", LoadAddOn_Button)
 					button:SetPoint('CENTER', 0, -20)
 				else
-					CreateBossModTab(addon, "addon")
+					CreateBossModTab(addon, addon.panel)
 				end
 			end
 
 			if addon.panel and addon.subTabs and IsAddOnLoaded(addon.modId) then
+				-- Create a Panel for "Arachnid Quarter" "Plague Quarter" ...
 				if not addon.subPanels then addon.subPanels = {} end
 
 				for k,v in pairs(addon.subTabs) do
 					if not addon.subPanels[k] then
 						addon.subPanels[k] = addon.panel:CreateNewPanel(v or "Error: X-DBM-Mod-Name", nil, false)
+						CreateBossModTab(addon, addon.subPanels[k], k)
 					end
 				end
 			end
