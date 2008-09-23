@@ -36,7 +36,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-local usemodelframe = true	-- very beta
+local usemodelframe = hide	-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
 	if forceshow == true then
@@ -109,7 +109,11 @@ do
 		area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 		area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
 		getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
-		area:SetWidth(width or self.frame:GetWidth()-10)
+		if width ~= nil and width < 0 then
+			area:SetWidth( self.frame:GetWidth() -12 + width)
+		else
+			area:SetWidth(width or self.frame:GetWidth()-12)
+		end
 		area:SetHeight(height or self.frame:GetHeight()-10)
 		
 		if autoplace then
@@ -354,7 +358,7 @@ function PanelPrototype:CreateText(text, width, autoplaced, style, justify)
 	end
 	textblock:SetText(text)
 	if justify then
-		textblock:SetJustifyH("LEFT")
+		textblock:SetJustifyH(justify)
 	else
 		textblock:SetJustifyH("CENTER")
 	end
@@ -407,7 +411,7 @@ end
 function PanelPrototype:SetMyOwnHeight()
 	if not self.frame.mytype == "panel" then return end
 
-	local need_height = 50
+	local need_height = 30
 
 	local kids = { self.frame:GetChildren() }
 	for _, child in pairs(kids) do
@@ -415,6 +419,8 @@ function PanelPrototype:SetMyOwnHeight()
 			need_height = need_height + child.myheight
 		elseif child.mytype == "area" then
 			need_height = need_height + child:GetHeight() + 30
+		elseif child.myheight then
+			need_height = need_height +  child.myheight
 		end
 	end
 	self.frame:SetHeight(need_height)
@@ -1014,9 +1020,16 @@ local function CreateOptionsMenu()
 		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
 		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
 	
+		textbox:SetMaxLetters(17)
 		textbox:SetPoint('TOPLEFT', 30, -25)
+		hourbox:SetNumeric()
+		hourbox:SetMaxLetters(2)
 		hourbox:SetPoint('TOPLEFT', textbox, "TOPRIGHT", 20, 0)
+		minbox:SetNumeric()
+		minbox:SetMaxLetters(2)
 		minbox:SetPoint('TOPLEFT', hourbox, "TOPRIGHT", 20, 0)
+		secbox:SetNumeric()
+		secbox:SetMaxLetters(2)
 		secbox:SetPoint('TOPLEFT', minbox, "TOPRIGHT", 20, 0)
 
 		local BcastTimer = pizzaarea:CreateCheckButton(L.PizzaTimer_BroadCast)
@@ -1024,10 +1037,18 @@ local function CreateOptionsMenu()
 		okbttn:SetPoint('TOPLEFT', textbox, "BOTTOMLEFT", -7, -8)
 		BcastTimer:SetPoint("TOPLEFT", okbttn, "TOPRIGHT", 10, 3)
 
+		pizzaarea.frame:SetScript("OnShow", function(self)
+			if DBM:GetRaidRank() == 0 then
+				BcastTimer:Hide()
+			else
+				BcastTimer:Show()
+			end
+		end)
+
 		okbttn:SetScript("OnClick", function() 
-			local time =  (hourbox:GetNumber() * 60*60) + (minbox:GetNumber() * 60) + secbox:GetNumber()
+			local time = (hourbox:GetNumber() * 60*60) + (minbox:GetNumber() * 60) + secbox:GetNumber()
 			if textbox:GetText() and time > 0 then
-				DBM.Bars:CreateBar(time, textbox:GetText())
+				DBM:CreatePizzaTimer(time,  textbox:GetText(), BcastTimer:GetChecked())
 			end
 		end)
 
@@ -1046,7 +1067,27 @@ local function CreateOptionsMenu()
 		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
 		local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft,  true, nil, "WarningIconLeft")
 		local WarningIconRight 		= raidwarnoptions:CreateCheckButton(L.WarningIconRight,  true, nil, "WarningIconRight")
-		raidwarnoptions:AutoSetDimension()
+		--raidwarnoptions:AutoSetDimension()
+
+		local Sounds = { 
+			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 	sound=true },
+			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", sound=true }
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("sound") do
+				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+					table.insert(Sounds, {text=k, value=v, sound=true})
+				end
+			end
+		end
+		local SoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, 
+			DBM.Options.RaidWarningSound, function(value) 
+				DBM.Options.RaidWarningSound = value
+			end
+		)
+		SoundDropDown:SetPoint("TOPLEFT", WarningIconRight, "BOTTOMLEFT", 20, -10)
+
+
 
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
 	
@@ -1235,7 +1276,7 @@ local function CreateOptionsMenu()
 
 		local Textures = { 
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga", 	texture	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
-			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Ba"	},
+			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
 			{	text	= "Glaze",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\glaze.tga"	},
 			{	text	= "Otravi",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\otravi.tga"	},
 			{	text	= "Smooth",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga", 		texture	= "Interface\\AddOns\\DBM-Core\\textures\\smooth.tga"	}
@@ -1412,6 +1453,7 @@ do
 	local function LoadAddOn_Button(self) 
 		if DBM:LoadMod(self.modid) then 
 			self:Hide()
+			self.headline:Hide()
 			CreateBossModTab(self.modid, self.modid.panel)		
 			DBM_GUI_OptionsFrameBossMods:Hide()
 			DBM_GUI_OptionsFrameBossMods:Show()
@@ -1438,6 +1480,10 @@ do
 				if not IsAddOnLoaded(addon.modId) then
 					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
 					button.modid = addon
+					button.headline = addon.panel:CreateText(L.BossModLoad_now, 300)
+					button.headline:SetHeight(50)
+					button.headline:SetPoint("CENTER", button, "CENTER", 0, 80)
+
 					button:SetScript("OnClick", LoadAddOn_Button)
 					button:SetPoint('CENTER', 0, -20)
 				else
@@ -1479,18 +1525,19 @@ do
 			DBM:AddMsg("Couldn't create boss mod panel for "..mod.localization.general.name)
 			return false
 		end
-		--DBM:AddMsg("Creating Panel for Mod: "..mod.localization.general.name)
 		local panel = mod.panel
 		local category
-		
-		local button = panel:CreateCheckButton("Enabled", true)
-		button:SetScript("OnShow",  function(self) 
-						self:SetChecked(mod.Options.Enabled) 
-						end)
+	
+		local headline = panel:CreateText(mod.localization.general.name, 400, nil, GameFontGreenLarge, "RIGHT")
+		headline:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -20, -10)
 
-		button:SetScript("OnClick", function(self) 
-						mod:Toggle()
-						end)
+		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
+		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
+		button:SetScript("OnClick", function(self) mod:Toggle()	end)
+
+		local button = panel:CreateCheckButton(L.Mod_EnableAnnounce, true)
+		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Announce) end)
+		button:SetScript("OnClick", function(self) mod.Options.Announce = not not self:GetChecked() end)
 		
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
