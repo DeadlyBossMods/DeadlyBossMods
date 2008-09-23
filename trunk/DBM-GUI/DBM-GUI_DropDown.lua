@@ -55,6 +55,10 @@ do
 
 		self:GetParent().dropdown.value = self.entry.value
 		self:GetParent().dropdown.text = self.entry.text
+
+		if self.entry.sound then
+			PlaySoundFile(self.entry.value)
+		end
 		
 		if self.entry.func then
 			self.entry.func(self.entry.value)

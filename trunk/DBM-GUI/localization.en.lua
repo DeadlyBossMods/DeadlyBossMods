@@ -11,7 +11,9 @@ L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
 L.TabCategory_OTHER     = "Other Boss Mods"
 
 L.BossModLoaded 	= "Please choose a Boss Mod from the list to the left"
-L.BossModLoad_now 	= "This Boss Mod is not loaded. It will be loaded when you enter the instance. You can also click the button to load the mod manually."
+L.BossModLoad_now 	= [[This Boss Mod is not loaded. 
+It will be loaded when you enter the instance. 
+You can also click the button to load the mod manually.]]
 
 L.PosX = 'Position X'
 L.PosY = 'Position Y'
@@ -20,6 +22,8 @@ L.MoveMe 		= 'move me'
 L.Button_OK 		= 'OK'
 L.Button_Cancel 	= 'Cancel'
 L.Button_LoadMod 	= 'Load AddOn'
+L.Mod_Enabled		= "Enable BossMod"
+L.Mod_EnableAnnounce	= "Enable Raid Announce"
 L.Reset 		= "reset"
 
 L.Enable  = "enable"
@@ -62,6 +66,7 @@ L.WarningIconLeft 	= "Show icon on left side"
 L.WarningIconRight 	= "Show icon on right side"
 L.RaidWarnMessage 	= "Thanks for using DeadlyBossMods"
 L.BarWhileMove 		= "Raidwarn movable"
+L.RaidWarnSound		= "Play Sound on RaidWarning"
 
 -- Tab: Barsetup
 L.BarSetup   = "Bar Style"
