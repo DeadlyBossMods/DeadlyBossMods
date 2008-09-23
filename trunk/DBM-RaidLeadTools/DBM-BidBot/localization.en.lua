@@ -32,3 +32,6 @@ L.PublicBids			= "Post bids to Chat for public bidding"
 L.PayWhatYouBid			= "Pay Price of bid, (otherwise second bid + 1)"
 L.NoHistoryAvailable		= "No History available"
 
+
+
+
