@@ -326,7 +326,7 @@ do
 						SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", sender)				
 					end
 				elseif msg:sub(0, 5) == "ITEM:" then
-					local _, itemid, dkp, savedbids = strsplit(":",msg))
+					local _, itemid, dkp, savedbids = strsplit(":",msg)
 					local Itembid = {
 						time = time(), 
 						item = select(2, GetItemInfo(itemid)), 
