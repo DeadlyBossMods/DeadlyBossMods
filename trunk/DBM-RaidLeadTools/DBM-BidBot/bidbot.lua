@@ -103,7 +103,7 @@ do
 				local mytext = ""
 				for i=#DBM_BidBot_ItemHistory, 1, -1 do	-- reverse order, last is newest
 					local itembid = DBM_BidBot_ItemHistory[i]
-					mytext = mytext.."["..itembid.time.."]: "..itembid.item.." "..itembid.points.." DKP - "
+					mytext = mytext.."["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP \n     ---> "
 					for k,v in pairs(itembid.bids) do
 						mytext = mytext..k..". "..v.name.."("..v.points..") "
 					end
@@ -179,6 +179,7 @@ function AuctionEnd()
 
 	local counter = 0
 	local max = false
+	local msg = ""
 
 	for posi, werte in pairs(BidBot_Biddings) do
 	   counter = counter + 1
@@ -187,6 +188,7 @@ function AuctionEnd()
 		["points"] = werte.Bid,
 		["name"] = werte.Name
 	   })
+	   msg = msg..werte.Name.."("..werte.Bid..")"
 
 	   if posi <= settings.output then
 		SendChatMessage(L.Prefix..L.Message_Biddings:format(posi, werte.Name, werte.Bid), settings.chatchannel)
@@ -194,7 +196,10 @@ function AuctionEnd()
 		max = true
 	   end
 	end
-	table.insert(DBM_BidBot_ItemHistory, ItemBid)
+	table.insert(DBM_BidBot_ItemHistory, Itembid)
+
+	-- Sync History
+	SendAddonMessage("DBM_BidBot", "ITEM:"..select(2, strsplit(":", Itembid.item))..":"..Itembid.points..":("..msg..")", "RAID")
 
 	if max then
 		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(counter), settings.chatchannel)
@@ -288,7 +293,7 @@ do
 		end
 	end
 
- 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function() return (BidBot_InProgress and msg:find("^%d+$"))end)
+ 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(msg) return (BidBot_InProgress and msg:find("^%d+$")) end)
 
 	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
@@ -320,6 +325,19 @@ do
 					if channel == "RAID" then
 						SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", sender)				
 					end
+				elseif msg:sub(0, 5) == "ITEM:" then
+					local _, itemid, dkp, savedbids = strsplit(":",msg))
+					local Itembid = {
+						time = time(), 
+						item = select(2, GetItemInfo(itemid)), 
+						points = dkp, 
+						bids = {} 
+					}
+					for bidder, biddkp  in string.gmatch(savedbids, '(%a+)%((%d+)%)') do
+						table.insert(Itembid.bids, { ["points"] = biddkp, ["name"] = bidder })
+					end
+					table.insert(DBM_BidBot_ItemHistory, Itembid)
+
 				end
 			end
 		end
