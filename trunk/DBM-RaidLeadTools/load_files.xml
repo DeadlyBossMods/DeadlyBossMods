@@ -7,9 +7,9 @@
 <Script file="DBM-BidBot\bidbot.lua"/>
 
 <!-- StandbyBot (!sb) -->
-<Script file="DBM-StandbyBot\localization.en.lua"/>
-<Script file="DBM-StandbyBot\localization.de.lua"/>
-<Script file="DBM-AutoInvite\standbybot.lua"/>
+<Script file="DBM-StandByBot\localization.en.lua"/>
+<Script file="DBM-StandByBot\localization.de.lua"/>
+<Script file="DBM-StandByBot\standbybot.lua"/>
 
 <!-- Autoinvite (Raidinvite Guild) -->
 <Script file="DBM-AutoInvite\localization.en.lua"/>
