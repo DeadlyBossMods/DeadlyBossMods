@@ -240,10 +240,32 @@ function StartBidding()
 end
 
 do 
-	local function OnMsgRecived(msg, name)
-		if settings.enabled and msg and string.find(string.lower(msg), "^!bid ") then
-			local ItemLink			
-			ItemLink = string.gsub(msg, "^!(%w+) ", "")			
+	local inRaid = false
+	local bidbot_clients = {}
+	local function OnMsgRecived(msg, name, nocheck)
+		if settings.enabled and inRaid and msg and string.find(string.lower(msg), "^!bid ") then
+			if not nocheck and GetNumRaidMembers() > 0 then
+				for i=1, GetNumRaidMembers(), 1 do
+					if bidbot_clients[UnitName("raid"..i)] and UnitIsConnected("raid"..i) and UnitName("raid"..i) < UnitName("player") then
+						-- we don't need to start, the player with hightest name is used
+						return
+					end
+				end
+			end
+			local ingroup = false
+			if GetNumRaidMembers() > 0 then
+				for i=1, GetNumRaidMembers(), 1 do
+					if UnitName("raid"..i) == name then
+						ingroup = true
+					end
+				end
+			end
+			if not ingroup then
+				-- users from outside can't start a Bid round. (like spaming GuildMates ^^)
+				return
+			end
+
+			local ItemLink = string.gsub(msg, "^!(%w+) ", "")
 			if string.find(ItemLink, "|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r") then
 			   for link in string.gmatch(ItemLink, "(|c(%x+)|Hitem:(.-)|h%[(.-)%]|h|r)") do
 				AddItem(link)
@@ -265,29 +287,54 @@ do
 			BidBot_Frame:RegisterEvent(select(i, ...))
 		end
 	end
+
+ 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function() return (BidBot_InProgress and msg:find("^%d+$"))end)
+
 	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
 			RegisterEvents(
 				"CHAT_MSG_GUILD",
 				"CHAT_MSG_RAID",
-				--"CHAT_MSG_SAY",
+				"CHAT_MSG_SAY",
 				"CHAT_MSG_PARTY",
-				--"CHAT_MSG_OFFICER",
+				"CHAT_MSG_OFFICER",
 				"CHAT_MSG_RAID_LEADER",
-				"CHAT_MSG_WHISPER"
+				"CHAT_MSG_WHISPER",
+				"RAID_ROSTER_UPDATE",
+				"CHAT_MSG_ADDON"
 			)
 	
 			if DBM_BidBot_Translations[GetLocale()] then 
 				L = DBM_BidBot_Translations[GetLocale()]
 			end
 		elseif event == "CHAT_MSG_WHISPER" then
-			if tostring(tonumber(arg1)) == tostring(arg1) then
+			if BidBot_InProgress and arg1:find("^%d+$") then
 				-- here is a bid
 				AddBid(arg2, tonumber(arg1))
 			end
+		elseif event == "CHAT_MSG_ADDON" then
+			local prefix, msg, channel, sender = select(1, ...)
+			if prefix == "DBM_BidBot" then
+				if msg == "Hi!" then
+					bidbot_clients[sender] = true
+					if channel == "RAID" then
+						SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", sender)				
+					end
+				end
+			end
+		end
+			
+		if event == "RAID_ROSTER_UPDATE" or event == "ADDON_LOADED" then
+			if GetNumRaidMembers() >= 1 and not inRaid then
+				inRaid = true
+				SendAddonMessage("DBM_BidBot", "Hi!", "RAID")
+			elseif GetNumRaidMembers() == 0 and inRaid then
+				inRaid = false
+			end
+		end
 
-		elseif event:sub(0, 9) == "CHAT_MSG_" then
-			OnMsgRecived(select(1, ...), select(2, ...))
+		if event:sub(0, 9) == "CHAT_MSG_" then
+			OnMsgRecived(select(1, ...), select(2, ...), (event=="CHAT_MSG_WHISPER"))
 		end
 	end)
 	
