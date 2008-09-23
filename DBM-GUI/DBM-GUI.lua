@@ -1530,7 +1530,7 @@ do
 	
 		local headline = panel:CreateText(mod.localization.general.name, 400, nil, GameFontGreenLarge, "RIGHT")
 		headline:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -30, -20)
-		headline:SetFont("Fonts\\FRIZQT__.TTF", 18, "THICKOUTLINE, MONOCHROME")
+		headline:SetFont("Fonts\\FRIZQT__.TTF", 18, "OUTLINE")
 
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)

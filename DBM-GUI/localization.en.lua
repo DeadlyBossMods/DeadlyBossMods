@@ -22,8 +22,8 @@ L.MoveMe 		= 'move me'
 L.Button_OK 		= 'OK'
 L.Button_Cancel 	= 'Cancel'
 L.Button_LoadMod 	= 'Load AddOn'
-L.Mod_Enabled		= "Enable BossMod"
-L.Mod_EnableAnnounce	= "Enable Raid Announce"
+L.Mod_Enabled		= "Enable boss mod"
+L.Mod_EnableAnnounce	= "Announce to raid"
 L.Reset 		= "reset"
 
 L.Enable  = "enable"
