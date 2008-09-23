@@ -1382,10 +1382,10 @@ do
 		return function(self)
 			bossvalue1:SetText( mod.stats.kills )
 			bossvalue2:SetText( mod.stats.pulls-mod.stats.kills )
-			bossvalue3:SetText( "0:00:00")
+			bossvalue3:SetText( mod.stats.bestKill or "0:00:00" )
 			heroicvalue1:SetText( mod.stats.heroicKills )
 			heroicvalue2:SetText( mod.stats.heroicPulls-mod.stats.heroicKills )
-			heroicvalue3:SetText( "0:00:00" )
+			heroicvalue3:SetText( mod.stats.heroicBestKill or "0:00:00" )
 		end
 	end
 
@@ -1480,7 +1480,7 @@ do
 				if not IsAddOnLoaded(addon.modId) then
 					local button = addon.panel:CreateButton(L.Button_LoadMod, 200, 30)
 					button.modid = addon
-					button.headline = addon.panel:CreateText(L.BossModLoad_now, 300)
+					button.headline = addon.panel:CreateText(L.BossModLoad_now, 350)
 					button.headline:SetHeight(50)
 					button.headline:SetPoint("CENTER", button, "CENTER", 0, 80)
 
@@ -1529,7 +1529,8 @@ do
 		local category
 	
 		local headline = panel:CreateText(mod.localization.general.name, 400, nil, GameFontGreenLarge, "RIGHT")
-		headline:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -20, -10)
+		headline:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -30, -20)
+		headline:SetFont("Fonts\\FRIZQT__.TTF", 18, "THICKOUTLINE, MONOCHROME")
 
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
