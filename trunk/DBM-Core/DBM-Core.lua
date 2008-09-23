@@ -1200,13 +1200,13 @@ function DBM:SendTimerInfo(mod, target)
 end
 
 function DBM:PLAYER_UNGHOST()
-	DBM:AddMsg("Unghost", "debug")
+--	DBM:AddMsg("Unghost", "debug")
 	local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
 	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 		local id = (i == 0 and "player") or uId..i
 		if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 			DBM:RequestTimers()
-			DBM:AddMsg(UnitName(id), "combat:")
+--			DBM:AddMsg(UnitName(id), "combat-debug")
 			break
 		end
 	end
