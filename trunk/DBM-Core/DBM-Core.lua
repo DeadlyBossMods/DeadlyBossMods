@@ -409,20 +409,71 @@ do
 	end
 end
 
+
 -------------------
 --  Pizza Timer  --
 -------------------
-function DBM:CreatePizzaTimer(time, text, broadcast)
-	text = text:sub(0, 17)
-	self.Bars:CreateBar(time, text)
-	if broadcast and self:GetRaidRank() >= 1 then
-		sendSync("DBMv4-Pizza", ("%s\t%s"):format(time, text))
+do
+	local ignore = {}
+	function DBM:CreatePizzaTimer(time, text, broadcast, sender)
+		if sender and ignore[sender] then return end
+		text = text:sub(0, 17)
+		self.Bars:CreateBar(time, text)
+		if broadcast and self:GetRaidRank() >= 1 then
+			sendSync("DBMv4-Pizza", ("%s\t%s"):format(time, text))
+		end
+		if sender then DBM:ShowPizzaInfo(text, sender) end
+	end
+
+	function DBM:AddToPizzaIgnore(name)
+		ignore[name] = true
 	end
 end
 
 function DBM:ShowPizzaInfo(id, sender)
 	self:AddMsg(DBM_PIZZA_SYNC_INFO:format(sender, id))
 end
+
+
+
+
+------------------
+--  Hyperlinks  --
+------------------
+do
+	local ignore, cancel	
+	StaticPopupDialogs["DBM_CONFIRM_IGNORE"] = {
+		text = DBM_PIZZA_CONFIRM_IGNORE,
+		button1 = YES,
+		button2 = NO,
+		OnAccept = function(self)
+			DBM:AddToPizzaIgnore(ignore)
+			DBM.Bars:CancelBar(cancel)
+		end,
+		timeout = 0,
+		hideOnEscape = 1,
+	}
+	
+	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button)
+		local linkType, arg1, arg2, arg3 = link:match("^([^:]+):([^:]+):([^:]+):([^:]+)")
+		if linkType == "DBM" and arg1 == "cancel" then
+			DBM.Bars:CancelBar(arg2)
+		elseif linkType == "DBM" and arg1 == "ignore" then
+			cancel = arg2
+			ignore = arg3
+			StaticPopup_Show("DBM_CONFIRM_IGNORE", ignore)
+		end
+	end)
+end
+
+do
+	local old = ItemRefTooltip.SetHyperlink -- we have to hook this function since the default ChatFrame code assumes that all links except for player and channel links are valid arguments for this function
+	function ItemRefTooltip:SetHyperlink(link, ...)
+		if link:match("^DBM") then return end
+		return old(self, link, ...)
+	end
+end
+
 
 -----------------
 --  GUI Stuff  --
@@ -748,8 +799,7 @@ do
 		time = tonumber(time or 0)
 		text = tostring(text)
 		if time and text then
-			DBM:CreatePizzaTimer(time, text)
-			DBM:ShowPizzaInfo(text, sender)
+			DBM:CreatePizzaTimer(time, text, nil, sender)
 		end
 	end
 
@@ -1288,6 +1338,7 @@ do
 			{
 				Options = {
 					Enabled = true,
+					Announce = false,
 				},
 				subTab = modSubTab,
 				optionCategories = {
