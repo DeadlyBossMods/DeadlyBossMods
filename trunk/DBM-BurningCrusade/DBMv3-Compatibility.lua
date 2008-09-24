@@ -340,3 +340,7 @@ end
 function DBM:GetMod(id)
 	return DBM:GetModByName(id) and DBM:GetModByName(id).proxy
 end
+
+function DBM.SecondsToTime(t)
+	return t
+end
