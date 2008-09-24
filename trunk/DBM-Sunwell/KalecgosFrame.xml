@@ -22,20 +22,20 @@
 		</Layers>
 		<Scripts>
 			<OnMouseDown>
-				if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
+				if arg1 == "LeftButton" and not DBM:GetMod("Kal").Options.FrameLocked then
 					self:StartMoving()
 				end
 			</OnMouseDown>
 			<OnMouseUp>
 				self:StopMovingOrSizing()
-				DBM.AddOns.Kal:SaveFramePosition()
+				DBM:GetMod("Kal"):SaveFramePosition()
 				if arg1 == "RightButton" then
-					UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
+					UIDropDownMenu_Initialize(DBMKalMenu, DBM:GetMod("Kal").InitializeMenu, "MENU")
 					ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
 				end
 			</OnMouseUp>
 			<OnShow>
-				DBM.AddOns.Kal:CreateFrame()
+				DBM:GetMod("Kal"):CreateFrame()
 			</OnShow>
 		</Scripts>
 	</Frame>
@@ -122,7 +122,7 @@
 						<NormalTexture name="$parentTextureNormal" file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorder"/>
 						<Scripts>
 							<OnMouseDown>
-								if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
+								if arg1 == "LeftButton" and not DBM:GetMod("Kal").Options.FrameLocked then
 									self.moving = true
 									DBMKalFrameDrag:StartMoving()
 								end
@@ -130,15 +130,15 @@
 							<OnMouseUp>
 								self.moving = false
 								DBMKalFrameDrag:StopMovingOrSizing()
-								DBM.AddOns.Kal:SaveFramePosition()
+								DBM:GetMod("Kal"):SaveFramePosition()
 								if arg1 == "RightButton" then
-									UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
+									UIDropDownMenu_Initialize(DBMKalMenu, DBM:GetMod("Kal").InitializeMenu, "MENU")
 									ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
 								end
 							</OnMouseUp>
 							<OnHide>
 								if self.moving then
-									DBM.AddOns.Kal:SaveFramePosition()
+									DBM:GetMod("Kal"):SaveFramePosition()
 									DBMKalFrameDrag:StopMovingOrSizing()
 									self.moving = false
 								end
@@ -160,7 +160,7 @@
 		</Frames>
 		<Scripts>
 			<OnMouseDown>
-				if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
+				if arg1 == "LeftButton" and not DBM:GetMod("Kal").Options.FrameLocked then
 					self.moving = true
 					DBMKalFrameDrag:StartMoving()
 				end
@@ -169,7 +169,7 @@
 				self.moving = false
 				DBMKalFrameDrag:StopMovingOrSizing()
 				if arg1 == "RightButton" then
-					UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
+					UIDropDownMenu_Initialize(DBMKalMenu, DBM:GetMod("Kal").InitializeMenu, "MENU")
 					ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
 				end
 			</OnMouseUp>
