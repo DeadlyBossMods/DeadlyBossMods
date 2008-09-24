@@ -336,3 +336,5 @@ do
 		return obj
 	end
 end
+
+DBM.GetMod = DBM.GetModByName
