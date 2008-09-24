@@ -3,7 +3,9 @@ local Felmyst = DBM:NewBossMod("Felmyst", DBM_FELMYST_NAME, DBM_FELMYST_DESCRIPT
 Felmyst.Version		= "0.3"
 Felmyst.Author		= "Tandanu"
 
-Felmyst:RegisterCombat("COMBAT")
+
+Felmyst:SetCreatureID(25038)
+Felmyst:RegisterCombat("combat")
 
 local pull = 0
 local airPhase = false

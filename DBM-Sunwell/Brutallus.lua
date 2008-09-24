@@ -4,7 +4,10 @@ Brutallus.Version		= "1.0"
 Brutallus.Author		= "Tandanu"
 Brutallus.MinRevision	= 954
 
-Brutallus:RegisterCombat("YELL", DBM_BRUTALLUS_YELL_PULL)
+
+Brutallus:SetCreatureID(24882)
+Brutallus:RegisterCombat("yell", DBM_BRUTALLUS_YELL_PULL)
+
 
 Brutallus:RegisterEvents(
 	"SPELL_AURA_APPLIED",

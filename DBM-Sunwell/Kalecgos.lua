@@ -4,7 +4,8 @@ Kal.Version		= "1.0"
 Kal.Author		= "Tandanu"
 Kal.MinRevision = 988
 
-Kal:RegisterCombat("YELL", DBM_KAL_YELL_PULL, nil, nil, DBM_KAL_KILL_NAME)
+Kal:SetCreatureID(24850)
+Kal:RegisterCombat("yell", DBM_KAL_YELL_PULL, 24892)
 
 Kal:RegisterEvents(
 	"SPELL_CAST_START",
@@ -41,16 +42,9 @@ Kal:AddOption("FrameUpwards", false, DBM_KAL_FRAME_UPWARDS, function()
 	Kal:ChangeFrameOrientation()
 end)
 
-local healthFrame
 local dragonHP = 100
 local demonHP = 100
 
-Kal:AddOption("ShowHPFrame", true, DBM_KAL_OPTION_FRAME, function()
-	Kal.Options.ShowHPFrame = not Kal.Options.ShowHPFrame 
-	if Kal.Options.ShowHPFrame and Kal.InCombat then
-		Kal:CreateHealthFrame()
-	end
-end)
 
 Kal:AddBarOption("Arcane Buffet")
 Kal:AddBarOption("Frost Breath", false)
@@ -76,15 +70,11 @@ function Kal:OnCombatStart()
 	if self.Options.RangeCheck then
 		DBM_Gui_DistanceFrame_Show()
 	end
-	if self.Options.ShowHPFrame then
-		self:CreateHealthFrame()
-	end
 end
 
 function Kal:OnCombatEnd()
 	self:DestroyFrame()
 	DBM_Gui_DistanceFrame_Hide()
-	self:HideHealthFrame()
 end
 
 function Kal:OnEvent(event, args)
@@ -283,54 +273,9 @@ function Kal:OnSync(msg, sender)
 		if self.Options.WarnStrike then
 			self:Announce(DBM_KAL_WARN_STRIKE:format(msg), 1)
 		end
-	elseif msg:sub(0, 2) == "HP" and healthFrame then
-		msg = msg:sub(3)
---		self:AddMsg(msg, sender)
-		if msg:sub(0, 6) == "Dragon" then
-			msg = msg:sub(7)
-			local hp = tonumber(msg) or 100
-			if hp <= healthFrame.bar1:GetValue() then
-				dragonHP = hp
-				healthFrame.bar1:SetValue(hp)
-				getglobal(healthFrame.bar1:GetObject():GetName().."RightText"):SetText(tostring(hp).."%")
-				healthFrame.bar1:GetObject():SetStatusBarColor(1 - (hp/100), hp/100, 0)
-			end
-		elseif msg:sub(0, 5) == "Demon" then
-			msg = msg:sub(6)
-			local hp = tonumber(msg) or 100
-			if hp <= healthFrame.bar2:GetValue() then
-				healthFrame.bar2:SetValue(hp)
-				getglobal(healthFrame.bar2:GetObject():GetName().."RightText"):SetText(tostring(hp).."%")
-				healthFrame.bar2:GetObject():SetStatusBarColor(1 - (hp/100), hp/100, 0)
-			end
-		end
 	end
 end
 
 function Kal:GetBossHP()
 	return DBM_KAL_STATUS_MSG:format(dragonHP, demonHP)
-end
-
-function Kal:CreateHealthFrame()
-	if healthFrame then
-		healthFrame:Show()
-		healthFrame.bar1:SetValue(100)
-		getglobal(healthFrame.bar1:GetObject():GetName().."RightText"):SetText("100%")
-		healthFrame.bar1:GetObject():SetStatusBarColor(0, 1, 0)
-		healthFrame.bar2:SetValue(100)
-		getglobal(healthFrame.bar2:GetObject():GetName().."RightText"):SetText("100%")
-		healthFrame.bar2:GetObject():SetStatusBarColor(0, 1, 0)
-	else
-		healthFrame = DBMGui:CreateInfoFrame(DBM_KAL_HEALTHFRAME_TITLE)
-		healthFrame.bar1 = healthFrame:CreateStatusBar(0, 100, 100, nil, DBM_KAL_NAME, "100%")
-		healthFrame.bar1:GetObject():SetStatusBarTexture("Interface\\AddOns\\DBM_API\\Textures\\glaze")
-		healthFrame.bar2 = healthFrame:CreateStatusBar(0, 100, 100, nil, DBM_KAL_DEMON_SHORT, "100%")
-		healthFrame.bar2:GetObject():SetStatusBarTexture("Interface\\AddOns\\DBM_API\\Textures\\glaze")
-	end
-end
-
-function Kal:HideHealthFrame()
-	if healthFrame then
-		healthFrame:Hide()
-	end
 end
