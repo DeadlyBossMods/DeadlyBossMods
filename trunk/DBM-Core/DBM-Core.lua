@@ -1766,13 +1766,17 @@ end
 ---------------
 --  Options  --
 ---------------
-function bossModPrototype:AddBoolOption(name, default, cat)
+function bossModPrototype:AddBoolOption(name, default, cat, func)
 	cat = cat or "misc"
 	self.Options[name] = (default == nil) or default
 	self:SetOptionCategory(name, cat)
+	if func then
+		self.optionFuncs = self.optionFuncs or {}
+		self.optionFuncs[name] = func
+	end
 end
 
-function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat)
+function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat, func)
 	cat = cat or "misc"
 	self.Options[name] = default or 0
 	self:SetOptionCategory(name, cat)
@@ -1782,21 +1786,33 @@ function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, d
 		maxValue = maxValue,
 		valueStep = valueStep,
 	}
+	if func then
+		self.optionFuncs = self.optionFuncs or {}
+		self.optionFuncs[name] = func
+	end
 end
 
-function bossModPrototype:AddButton(name, onClick, cat)
+function bossModPrototype:AddButton(name, onClick, cat, func)
 	cat = cat or misc
 	self:SetOptionCategory(name, cat)
 	self.buttons = self.buttons or {}
 	self.buttons[name] = onClick
+	if func then
+		self.optionFuncs = self.optionFuncs or {}
+		self.optionFuncs[name] = func
+	end
 end
 
-function bossModPrototype:AddDropdownOption(name, options, default, cat)
+function bossModPrototype:AddDropdownOption(name, options, default, cat, func)
 	cat = cat or "misc"
 	self.Options[name] = default
 	self:SetOptionCategory(name, cat)
 	self.dropdowns = self.dropdowns or {}
 	self.dropdowns[name] = options
+	if func then
+		self.optionFuncs = self.optionFuncs or {}
+		self.optionFuncs[name] = func
+	end
 end
 
 function bossModPrototype:SetOptionCategory(name, cat)

@@ -34,11 +34,9 @@ Kal.Options.FrameY = -50
 
 
 Kal:AddOption("FrameClassColor", true, DBM_KAL_FRAME_COLORS, function()
-	Kal.Options.FrameClassColor = not Kal.Options.FrameClassColor
 	Kal:UpdateColors() 
 end)
 Kal:AddOption("FrameUpwards", false, DBM_KAL_FRAME_UPWARDS, function()
-	Kal.Options.FrameUpwards = not Kal.Options.FrameUpwards
 	Kal:ChangeFrameOrientation()
 end)
 
