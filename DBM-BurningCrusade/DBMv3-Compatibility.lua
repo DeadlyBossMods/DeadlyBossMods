@@ -337,4 +337,6 @@ do
 	end
 end
 
-DBM.GetMod = DBM.GetModByName
+function DBM:GetMod(id)
+	return DBM:GetModByName(id) and DBM:GetModByName(id).proxy
+end
