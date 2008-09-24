@@ -24,7 +24,7 @@ local warnBreath	= mod:NewAnnounce("WarningBreath", 4, 60071)
 
 local timerSpark	= mod:NewTimer(30, "TimerSpark", 59381)
 local timerVortex	= mod:NewTimer(11, "TimerVortex", 56105)
-local timerBreath	= mod:NewTimer(61, "TimerBreath", 60071)
+local timerBreath	= mod:NewTimer(59, "TimerBreath", 60071)
 
 
 function mod:OnCombatStart(delay)
@@ -32,11 +32,9 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.EmoteSpark then
-		warnSpark:Show()
-		timerSpark:Start()
+		self:SendSync("Spark")
 	elseif msg == L.EmoteBreath then
-		timerBreath:Schedule(1)
-		warnBreath:Schedule(1)
+		self:SendSync("Breath")
 	end
 end
 
@@ -52,9 +50,23 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:sub(0, L.YellPhase2:len()) == L.YellPhase2 then
+		self:SendSync("Phase2")
+	elseif msg == L.YellBreath then
+		self:SendSync("BreathSoon")
+	end
+end
+
+function mod:OnSync(event, arg)
+	if event == "Spark" then
+		warnSpark:Show()
+		timerSpark:Start()
+	elseif event == "Phase2" then
 		timerSpark:Stop()
 		timerBreath:Start(92)
-	elseif msg == L.YellBreath then
+	elseif event == "Breath" then
+		timerBreath:Schedule(1)
+		warnBreath:Schedule(1)
+	elseif event == "BreathSoon" then
 		warnBreathInc:Show()
 	end
 end

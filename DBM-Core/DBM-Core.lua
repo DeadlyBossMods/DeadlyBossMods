@@ -455,7 +455,7 @@ do
 	}
 	
 	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button)
-		local linkType, arg1, arg2, arg3 = link:match("^([^:]+):([^:]+):([^:]+):([^:]+)")
+		local linkType, arg1, arg2, arg3 = strsplit(":", link)
 		if linkType == "DBM" and arg1 == "cancel" then
 			DBM.Bars:CancelBar(arg2)
 		elseif linkType == "DBM" and arg1 == "ignore" then
@@ -491,7 +491,7 @@ do
 				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
 				return
 			end
-			table.sort(callOnLoad, function(v1, v2) return v1[2] > v2[2] end)
+			table.sort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage()
 		end
@@ -499,9 +499,50 @@ do
 	end
 	
 	function DBM:RegisterOnGuiLoadCallback(f, sort)
-		table.insert(callOnLoad, {f, sort})
+		table.insert(callOnLoad, {f, sort or math.huge})
 	end
 end
+
+
+----------------------
+--  Minimap Button  --
+----------------------
+do
+	local function moveButton(self)
+		local centerX, centerY = Minimap:GetCenter()
+		local x, y = GetCursorPosition()
+		x, y = x / self:GetEffectiveScale() - centerX, y / self:GetEffectiveScale() - centerY
+		centerX, centerY = math.abs(x), math.abs(y)
+		centerX, centerY = (centerX / math.sqrt(centerX^2 + centerY^2)) * 76, (centerY / sqrt(centerX^2 + centerY^2)) * 76
+		centerX = x < 0 and -centerX or centerX
+		centerY = y < 0 and -centerY or centerY
+		self:ClearAllPoints()
+		self:SetPoint("CENTER", centerX, centerY)
+	end
+	
+	local button = CreateFrame("Button", "DBMMinimapButton", Minimap)
+	button:SetHeight(32)
+	button:SetWidth(32)
+	button:SetFrameStrata("HIGH")
+	button:SetPoint("CENTER", -65.35, -38.8)
+	button:SetMovable(true)
+	button:SetUserPlaced(true)
+	button:SetNormalTexture("Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Up")
+	button:SetPushedTexture("Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Down")
+	button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
+	
+	button:SetScript("OnMouseDown", function(self, button)
+		if IsShiftKeyDown() or button == "RightButton" then self:SetScript("OnUpdate", moveButton) end
+	end)	
+	button:SetScript("OnMouseUp", function(self)
+		self:SetScript("OnUpdate", nil)
+	end)
+	button:SetScript("OnClick", function(self, button)
+		if IsShiftKeyDown() or button == "RightButton" then return end
+		DBM:LoadGUI()
+	end)
+end
+
 
 ---------------------------
 --  Raid/Party Handling  --
@@ -1189,7 +1230,7 @@ function DBM:SendCombatInfo(mod, target)
 end
 
 function DBM:SendTimerInfo(mod, target)
-	for i, v in mod.timers do
+	for i, v in ipairs(mod.timers) do
 		for _, uId in pairs(v.startedTimers) do
 			local timeLeft, totalTime = v:GetTime()
 			if timeLeft > 0 and totalTime > 0 then
@@ -1200,17 +1241,18 @@ function DBM:SendTimerInfo(mod, target)
 end
 
 function DBM:PLAYER_UNGHOST()
---	DBM:AddMsg("Unghost", "debug")
+	DBM:AddMsg("Unghost", "debug")
 	local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
 	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 		local id = (i == 0 and "player") or uId..i
 		if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
 			DBM:RequestTimers()
---			DBM:AddMsg(UnitName(id), "combat-debug")
+			DBM:AddMsg(UnitName(id), "combat-debug")
 			break
 		end
 	end
 end
+
 
 ------------------------------------
 --  Auto-respond/Status whispers  --
