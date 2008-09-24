@@ -109,8 +109,8 @@ function proxy:AddMsg(...)
 	self.mod:AddMsg(...)
 end
 
-function proxy:AddOption(id, default, name)
-	self.mod:AddBoolOption(id, default, "announce")
+function proxy:AddOption(id, default, name, func)
+	self.mod:AddBoolOption(id, default, "announce", func)
 	DBM:GetModLocalization(self.mod.id):SetOptionLocalization({
 		[id] = name
 	})
