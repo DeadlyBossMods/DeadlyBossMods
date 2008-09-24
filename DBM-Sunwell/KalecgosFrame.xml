@@ -1,0 +1,184 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame name="DBMKalFrameDrag" parent="UIParent" frameStrata="MEDIUM" hidden="true" topLevel="true" enableMouse="true" movable="true">
+		<Size>
+			<AbsDimension x="100" y="20"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" relativePoint="CENTER">
+				<Offset>
+					<AbsDimension x="150" y="-50"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<FontString name="$parentTitle" inherits="GameFontNormalSmall" text="DBM_KAL_FRAME_TITLE">
+					<Anchors>
+						<Anchor point="BOTTOM" relativePoint="BOTTOM"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnMouseDown>
+				if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
+					this:StartMoving()
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				this:StopMovingOrSizing()
+				DBM.AddOns.Kal:SaveFramePosition()
+				if arg1 == "RightButton" then
+					UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
+					ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
+				end
+			</OnMouseUp>
+			<OnShow>
+				DBM.AddOns.Kal:CreateFrame()
+			</OnShow>
+		</Scripts>
+	</Frame>
+	<Frame name="DBMKalMenu" parent="DBMKalFrameDrag" inherits="UIDropDownMenuTemplate" id="1" hidden="true">
+		<Size>
+			<AbsDimension x="10" y="10"/>
+		</Size>
+		<Anchors>
+			<Anchor point="BOTTOM" relativeto="DBMKalFrameDrag">
+				<Offset>
+					<AbsDimension x="0" y="-50"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+	
+	<Frame name="DBMKalFrameTemplate" enableMouse="true" virtual="true" frameStrata="MEDIUM" topLevel="true">
+		<Size>
+			<AbsDimension x="200" y="20"/>
+		</Size>
+		<Frames>
+			<StatusBar name="$parentBar">
+				<Size>
+					<AbsDimension x="190" y="12"/>
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentBackground">
+							<Color r="0" g="0" b="0" a="0.3"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<FontString name="$parentName" inherits="GameFontHighlightSmall" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="LEFT">
+									<Offset>
+										<AbsDimension x="1" y="1"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentCooldown" inherits="GameFontHighlightSmall" text="">
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="-1" y="1"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<Texture name="$parentSpark" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
+							<Size>
+								<AbsDimension x="32" y="32"/>
+							</Size>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="1"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Frames>
+					<Button name="$parentBorder">
+						<Size>
+							<AbsDimension x="198" y="32"/>
+						</Size>
+						<Anchors>
+							<Anchor point="LEFT">
+								<Offset>
+									<AbsDimension x="-5" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<NormalTexture name="$parentTextureNormal" file="Interface\PaperDollInfoFrame\UI-Character-Skills-BarBorder"/>
+						<Scripts>
+							<OnMouseDown>
+								if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
+									this.moving = true
+									DBMKalFrameDrag:StartMoving()
+								end
+							</OnMouseDown>
+							<OnMouseUp>
+								this.moving = false
+								DBMKalFrameDrag:StopMovingOrSizing()
+								DBM.AddOns.Kal:SaveFramePosition()
+								if arg1 == "RightButton" then
+									UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
+									ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
+								end
+							</OnMouseUp>
+							<OnHide>
+								if this.moving then
+									DBM.AddOns.Kal:SaveFramePosition()
+									DBMKalFrameDrag:StopMovingOrSizing()
+									this.moving = false
+								end
+							</OnHide>
+						</Scripts>
+					</Button>
+				</Frames>
+				<BarTexture name="$parentTextureBar" file="Interface\PaperDollInfoFrame\UI-Character-Skills-Bar"/>
+				<BarColor r="1.0" g="0.7" b="0.0"/>
+				<Scripts>
+					<OnLoad>
+						this:SetMinMaxValues(0, 60)
+					</OnLoad>
+					<OnUpdate>
+						this:GetParent().entry:Update(arg1)
+					</OnUpdate>
+				</Scripts>
+			</StatusBar>
+		</Frames>
+		<Scripts>
+			<OnMouseDown>
+				if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
+					this.moving = true
+					DBMKalFrameDrag:StartMoving()
+				end
+			</OnMouseDown>
+			<OnMouseUp>
+				this.moving = false
+				DBMKalFrameDrag:StopMovingOrSizing()
+				if arg1 == "RightButton" then
+					UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
+					ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
+				end
+			</OnMouseUp>
+			<OnHide>
+				if this.moving then
+					DBMKalFrameDrag:StopMovingOrSizing()
+					this.moving = false
+				end
+			</OnHide>
+		</Scripts>
+	</Frame>
+</Ui>	

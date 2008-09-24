@@ -1,5 +1,5 @@
 ## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r Naxxramas
+## Title: |cff0055FFDeadly Boss Mods|r |cff00CC11->|r |cff0055FFNaxxramas|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMNaxx_SavedVars, DBMNaxx_SavedStats
