@@ -352,3 +352,23 @@ function DBM.SecondsToTime(t)
 		return ("%d:%0.2d"):format(t/60, math.fmod(t, 60))
 	end
 end
+
+function DBM.GetBuff(unitID, buff)
+	local i = 1
+	while UnitBuff(unitID, i) do
+		if UnitBuff(unitID, i) == buff then
+			return i
+		end
+		i = i + 1
+	end
+end
+
+function DBM.GetDebuff(unitID, buff)
+	local i = 1
+	while UnitDebuff(unitID, i) do
+		if UnitDebuff(unitID, i) == buff then
+			return i
+		end
+		i = i + 1
+	end
+end
