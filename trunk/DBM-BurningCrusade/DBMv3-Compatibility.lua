@@ -337,10 +337,18 @@ do
 	end
 end
 
+----------------------
+--  Misc functions  --
+----------------------
+
 function DBM:GetMod(id)
 	return DBM:GetModByName(id) and DBM:GetModByName(id).proxy
 end
 
 function DBM.SecondsToTime(t)
-	return t
+	if t <= 60 then
+		return ("%.1f"):format(t)
+	else
+		return ("%d:%0.2d"):format(t/60, math.fmod(t, 60))
+	end
 end

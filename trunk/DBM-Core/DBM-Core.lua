@@ -1628,13 +1628,14 @@ do
 		
 	function timerPrototype:Start(timer, ...)
 		if not self.option or self.mod.Options[self.option] then
+			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 			local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 			local name = self.text:format(...)
-			local bar = DBM.Bars:CreateBar(timer and ((timer > 0 and timer) or self.timer + timer) or self.timer, id, self.icon)
+			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
 			if bar then bar:SetText(name) end
 			table.insert(self.startedTimers, id)
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)
-			self.mod:Schedule(self.timer, removeEntry, self.startedTimers, id)
+			self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
 		end
 	end
 	timerPrototype.Show = timerPrototype.Start
@@ -1992,6 +1993,7 @@ end
 function bossModPrototype:DisableModel()
 	self.modelEnabled = nil
 end
+
 
 --------------------
 --  Localization  --
