@@ -1080,9 +1080,9 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		mod.inCombat = true
 		mod.blockSyncs = nil
-		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		self:Schedule(mod.minCombatTime or 3, checkWipe)
+		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if not synced then
 			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
 		end
@@ -1092,7 +1092,6 @@ end
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
-		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		for i, v in ipairs(mod.timers) do
 			v:Stop()
 		end
@@ -1135,6 +1134,7 @@ function DBM:EndCombat(mod, wipe)
 				self:AddMsg(DBM_CORE_BOSS_DOWN_LONG:format(mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime)))
 			end
 		end
+		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 	end
 end
 
