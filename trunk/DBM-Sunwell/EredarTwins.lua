@@ -3,7 +3,8 @@ local Twins = DBM:NewBossMod("Twins", DBM_TWINS_NAME, DBM_TWINS_DESCRIPTION, DBM
 Twins.Version		= "1.0"
 Twins.Author		= "Tandanu"
 
-Twins:RegisterCombat("COMBAT", 5, DBM_TWINS_MOB_WL, DBM_TWINS_NAME, {DBM_TWINS_MOB_WL, DBM_TWINS_MOB_SOCR})
+Twins:SetCreatureID(25166)
+Twins:RegisterCombat("combat", 25165, 25166)
 
 Twins:AddOption("WarnShadowBlades", false, DBM_TWINS_OPTION_BLADES)
 Twins:AddOption("WarnBuff", true, DBM_TWINS_OPTION_BUFF)

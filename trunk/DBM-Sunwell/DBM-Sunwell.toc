@@ -44,5 +44,3 @@ Felmyst.lua
 EredarTwins.lua
 M'uru.lua
 Kil'jaeden.lua
-KilFrame.lua
-KilFrame.xml

@@ -4,7 +4,8 @@ Muru.Version	= "0.9"
 Muru.Author		= "Tandanu"
 Muru.MinRevision = 1011
 
-Muru:RegisterCombat("COMBAT", nil, nil, nil, DBM_MURU_ENTROPIUS)
+Muru:SetCreatureID(25741)
+Muru:RegisterCombat("combat", 25840)
 
 Muru:AddOption("VoidWarn", true, DBM_MURU_OPTION_VOID)
 Muru:AddOption("VoidSoonWarn", true, DBM_MURU_OPTION_VOID_SOON)

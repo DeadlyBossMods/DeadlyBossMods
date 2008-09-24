@@ -23,11 +23,11 @@
 		<Scripts>
 			<OnMouseDown>
 				if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
-					this:StartMoving()
+					self:StartMoving()
 				end
 			</OnMouseDown>
 			<OnMouseUp>
-				this:StopMovingOrSizing()
+				self:StopMovingOrSizing()
 				DBM.AddOns.Kal:SaveFramePosition()
 				if arg1 == "RightButton" then
 					UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
@@ -123,12 +123,12 @@
 						<Scripts>
 							<OnMouseDown>
 								if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
-									this.moving = true
+									self.moving = true
 									DBMKalFrameDrag:StartMoving()
 								end
 							</OnMouseDown>
 							<OnMouseUp>
-								this.moving = false
+								self.moving = false
 								DBMKalFrameDrag:StopMovingOrSizing()
 								DBM.AddOns.Kal:SaveFramePosition()
 								if arg1 == "RightButton" then
@@ -137,10 +137,10 @@
 								end
 							</OnMouseUp>
 							<OnHide>
-								if this.moving then
+								if self.moving then
 									DBM.AddOns.Kal:SaveFramePosition()
 									DBMKalFrameDrag:StopMovingOrSizing()
-									this.moving = false
+									self.moving = false
 								end
 							</OnHide>
 						</Scripts>
@@ -150,10 +150,10 @@
 				<BarColor r="1.0" g="0.7" b="0.0"/>
 				<Scripts>
 					<OnLoad>
-						this:SetMinMaxValues(0, 60)
+						self:SetMinMaxValues(0, 60)
 					</OnLoad>
 					<OnUpdate>
-						this:GetParent().entry:Update(arg1)
+						self:GetParent().entry:Update(arg1)
 					</OnUpdate>
 				</Scripts>
 			</StatusBar>
@@ -161,12 +161,12 @@
 		<Scripts>
 			<OnMouseDown>
 				if arg1 == "LeftButton" and not DBM.AddOns.Kal.Options.FrameLocked then
-					this.moving = true
+					self.moving = true
 					DBMKalFrameDrag:StartMoving()
 				end
 			</OnMouseDown>
 			<OnMouseUp>
-				this.moving = false
+				self.moving = false
 				DBMKalFrameDrag:StopMovingOrSizing()
 				if arg1 == "RightButton" then
 					UIDropDownMenu_Initialize(DBMKalMenu, DBM.AddOns.Kal.InitializeMenu, "MENU")
@@ -174,9 +174,9 @@
 				end
 			</OnMouseUp>
 			<OnHide>
-				if this.moving then
+				if self.moving then
 					DBMKalFrameDrag:StopMovingOrSizing()
-					this.moving = false
+					self.moving = false
 				end
 			</OnHide>
 		</Scripts>

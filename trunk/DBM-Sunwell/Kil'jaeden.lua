@@ -4,7 +4,8 @@ Kil.Version	= "0.92"
 Kil.Author	= "Tandanu"
 Kil.MinRevision = 1043
 
-Kil:RegisterCombat("YELL", DBM_KIL_YELL_PULL)
+Kil:SetCreatureID(25315)
+Kil:RegisterCombat("yell", DBM_KIL_YELL_PULL)
 
 Kil:AddOption("RangeCheck", true, DBM_KIL_OPTION_RANGE)
 Kil:AddOption("WarnShield", true, DBM_KIL_OPTION_SHIELD)
@@ -13,16 +14,6 @@ Kil:AddOption("FireTargetWarn", true, DBM_KIL_OPTION_FIRETARGET)
 Kil:AddOption("FireSay", true, DBM_KIL_OPTION_FIRESAY)
 Kil:AddOption("FireWhisper", true, DBM_KIL_OPTION_FIREWHISP)
 Kil:AddOption("FireIcon", true, DBM_KIL_OPTION_FIREICON)
-Kil:AddOption("ShowFrame", false, DBM_KIL_OPTION_SHOWFRAME)
-Kil:AddOption("FrameLocked", false, DBM_KIL_MENU_LOCK)
-Kil:AddOption("FrameClassColor", true, DBM_KIL_FRAME_COLORS, function()
-	Kil.Options.FrameClassColor = not Kil.Options.FrameClassColor
-	Kil:UpdateColors() 
-end)
-Kil:AddOption("FrameUpwards", false, DBM_KIL_FRAME_UPWARDS, function()
-	Kil.Options.FrameUpwards = not Kil.Options.FrameUpwards
-	Kil:ChangeFrameOrientation()
-end)
 Kil:AddOption("WarnReflections", false, DBM_KIL_OPTION_WARNREFL)
 Kil:AddOption("WarnDarts", true, DBM_KIL_OPTION_DARTS)
 Kil:AddOption("WarnDragonOrb", true, DBM_KIL_OPTION_DRAGONORB)
@@ -49,18 +40,12 @@ function Kil:OnCombatStart()
 	if self.Options.RangeCheck then
 		DBM_Gui_DistanceFrame_Show()
 	end
-	if self.Options.ShowFrame then
-		self:CreateFrame()
-	end
 	self:Announce(DBM_KIL_WARN_PHASE1, 3)
 end
 
 function Kil:OnCombatEnd()
 	if self.Options.RangeCheck then
 		DBM_Gui_DistanceFrame_Hide()
-	end
-	if self.Options.ShowFrame then
-		self:DestroyFrame()
 	end
 end
 
