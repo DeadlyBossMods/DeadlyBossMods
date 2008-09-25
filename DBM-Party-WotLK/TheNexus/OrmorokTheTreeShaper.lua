@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("OrmorokTheTreeShaper", "DBM-Party-WotLK", 8)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 106 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(26794)
 mod:SetZone()
 
