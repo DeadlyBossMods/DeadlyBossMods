@@ -4,15 +4,18 @@
 -- **********************************************************
 --
 -- This addon is written and copyrighted by:
---    * Martin Verges (Nitram @ EU-Azshara) (DBM-Gui)
+--    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
 -- 
 -- The localizations are written by:
+--    * enGB/enUS: Tandanu
 --    * deDE: Nitram/Tandanu
---    * enGB: Nitram/Tandanu
 --    * (add your names here!)
 --
+-- Special thanks to:
+--    * Arta (DBM-Party)
 -- 
+--
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
 -- All included textures and sounds are copyrighted by their respective owners.
 --
@@ -24,8 +27,6 @@
 --    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
---
---
 
 
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID

@@ -8,11 +8,14 @@
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 -- 
 -- The localizations are written by:
+--    * enGB/enUS: Tandanu
 --    * deDE: Tandanu/Nitram
---    * enGB: Nitram/Tandanu
 --    * (add your names here!)
 --
+-- Special thanks to:
+--    * Arta (DBM-Party)
 -- 
+--
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
 -- All included textures and sounds are copyrighted by their respective owners.
 --
@@ -32,7 +35,7 @@
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
 	Version = "0.40",
-	DisplayVersion = "4.01 (Alpha)"
+	DisplayVersion = "4.00 (Beta)"
 }
 
 DBM_SavedOptions = {}
