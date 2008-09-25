@@ -44,7 +44,7 @@ DBM.DefaultOptions = {
 		{r = 1.00, g = 0.50, b = 0.00},
 		{r = 1.00, g = 0.10, b = 0.10},
 	},
-	RaidWarningSound = "Sound\\interface\\RaidWarning.wav",
+	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.wav",
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
