@@ -132,11 +132,6 @@ end
 do
 	local registeredEvents = {}
 	local args = {}
-	local function clearArgs()
-		for i, v in pairs(args) do
-			args[i] = nil
-		end
-	end
 	
 	local function handleEvent(self, event, ...)
 		for i, v in ipairs(registeredEvents[event]) do
@@ -159,6 +154,7 @@ do
 
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		if not registeredEvents[event] then return end
+		table.wipe(args)
 		args.timestamp = timestamp
 		args.event = event
 		args.sourceGUID = sourceGUID
@@ -285,9 +281,7 @@ do
 		if v then
 			scheduleTables[v] = nil
 			v.mod = nil
-			for i = #v.args, 0, -1 do
-				v.args[i] = nil
-			end
+			table.wipe(v.args)
 		else
 			v = {args = {}}
 		end
