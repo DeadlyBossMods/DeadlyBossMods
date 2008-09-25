@@ -449,7 +449,7 @@ do
 		hideOnEscape = 1,
 	}
 	
-	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button)
+	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button, ...)
 		local linkType, arg1, arg2, arg3 = strsplit(":", link)
 		if linkType == "DBM" and arg1 == "cancel" then
 			DBM.Bars:CancelBar(arg2)
@@ -695,45 +695,65 @@ end
 --------------
 --  OnLoad  --
 --------------
-function DBM:ADDON_LOADED(modname)
-	if modname == "DBM-Core" then
-		loadOptions()
-		DBM.Bars:LoadOptions("DBM")
-		self.AddOns = {}
-		for i = 1, GetNumAddOns() do
-			if GetAddOnMetadata(i, "X-DBM-Mod") then
-				table.insert(self.AddOns, {
-					sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
-					category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
-					name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
-					zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
-					subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-					modId		= GetAddOnInfo(i),
-				})
+do
+	local function showOldVerWarning()
+		StaticPopupDialogs["DBM_OLD_VERSION"] = {
+			text = DBM_CORE_ERROR_DBMV3_LOADED,
+			button1 = DBM_CORE_OK,
+			OnAccept = function()
+				DisableAddOn("DBM_API")
+				ReloadUI()
+			end,
+			timeout = 0,
+			exclusive = 1,
+			whileDead = 1,
+		}
+		StaticPopup_Show("DBM_OLD_VERSION")
+	end
+	
+	function DBM:ADDON_LOADED(modname)
+		if modname == "DBM-Core" then
+			loadOptions()
+			DBM.Bars:LoadOptions("DBM")
+			self.AddOns = {}
+			for i = 1, GetNumAddOns() do
+				if GetAddOnMetadata(i, "X-DBM-Mod") then
+					table.insert(self.AddOns, {
+						sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
+						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
+						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
+						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
+						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
+						modId		= GetAddOnInfo(i),
+					})
+				end
 			end
+			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
+			self:RegisterEvents(
+				"COMBAT_LOG_EVENT_UNFILTERED",
+				"ZONE_CHANGED_NEW_AREA",
+				"RAID_ROSTER_UPDATE",
+				"PARTY_MEMBERS_CHANGED",
+				"CHAT_MSG_ADDON",
+				"PLAYER_REGEN_DISABLED",
+				"UNIT_DIED",
+				"UNIT_DESTROYED",
+				"CHAT_MSG_WHISPER",
+				"CHAT_MSG_MONSTER_YELL",
+				"CHAT_MSG_MONSTER_EMOTE",
+				"CHAT_MSG_MONSTER_SAY",
+				"CHAT_MSG_RAID_BOSS_EMOTE",
+				"PLAYER_UNGHOST"
+			)
+			self:ZONE_CHANGED_NEW_AREA()
+			self:RAID_ROSTER_UPDATE()
+			self:PARTY_MEMBERS_CHANGED()
+			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
+			if enabled and loadable then showOldVerWarning() end
 		end
-		table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
-		self:RegisterEvents(
-			"COMBAT_LOG_EVENT_UNFILTERED",
-			"ZONE_CHANGED_NEW_AREA",
-			"RAID_ROSTER_UPDATE",
-			"PARTY_MEMBERS_CHANGED",
-			"CHAT_MSG_ADDON",
-			"PLAYER_REGEN_DISABLED",
-			"UNIT_DIED",
-			"UNIT_DESTROYED",
-			"CHAT_MSG_WHISPER",
-			"CHAT_MSG_MONSTER_YELL",
-			"CHAT_MSG_MONSTER_EMOTE",
-			"CHAT_MSG_MONSTER_SAY",
-			"CHAT_MSG_RAID_BOSS_EMOTE",
-			"PLAYER_UNGHOST"
-		)
-		self:ZONE_CHANGED_NEW_AREA()
-		self:RAID_ROSTER_UPDATE()
-		self:PARTY_MEMBERS_CHANGED()
 	end
 end
+
 
 --------------------------------
 --  Load Boss Mods on Demand  --
