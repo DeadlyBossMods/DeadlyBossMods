@@ -1,0 +1,62 @@
+## Interface: 30000
+## Title: |cff0055FFDeadly Boss Mods|r Party
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMParty_SavedVars, DBMParty_Stats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-SubCategories: Ahn'Kahet: The Old Kingdom,Azjol-Nerub,CoT - Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold
+## X-DBM-Mod-Name: Party Boss Mods
+## X-DBM-Mod-Sort: 100
+## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold
+localization.en.lua
+AhnKahet\Taldaram.lua
+AhnKahet\Nadox.lua
+AhnKahet\JedogaShadowseeker.lua
+AhnKahet\Volazj.lua
+AzjolNerub\Krikthir.lua
+AzjolNerub\Hadronox.lua
+AzjolNerub\Anubarak.lua
+OldStratholme\Meathook.lua
+OldStratholme\SalrammTheFleshcrafter.lua
+OldStratholme\ChronoLordEpoch.lua
+OldStratholme\MalGanis.lua
+DrakTharon\Trollgore.lua
+DrakTharon\NovosTheSummoner.lua
+DrakTharon\Dred.lua
+DrakTharon\ProphetTharonja.lua
+Gundrak\Sladran.lua
+Gundrak\Moorabi.lua
+Gundrak\BloodstoneAnnihilator.lua
+Gundrak\Galdarah.lua
+HallsOfLightning\Gjarngrin.lua
+HallsOfLightning\Volkhan.lua
+HallsOfLightning\Ionar.lua
+HallsOfLightning\Kronus.lua
+HallsOfStone\MaidenOfGrief.lua
+HallsOfStone\Krystallus.lua
+HallsOfStone\SjonnirTheIronshaper.lua
+HallsOfStone\BrannBronzebeard.lua
+TheNexus\OrmorokTheTreeShaper.lua
+TheNexus\GrandMagusTelestra.lua
+TheNexus\Anomalus.lua
+TheNexus\Keristrasza.lua
+TheOculus\DrakosTheInterrogator.lua
+TheOculus\MageLordUrom.lua
+TheOculus\VarosCloudstrider.lua
+TheOculus\LeyGuardianEregos.lua
+UtgardeKeep\Keleseth.lua
+UtgardeKeep\ConstructorAndController.lua
+UtgardeKeep\IngvarThePlunderer.lua
+UtgardePinnacle\SkadiTheRuthless.lua
+UtgardePinnacle\Ymiron.lua
+UtgardePinnacle\SvalaSorrowgrave.lua
+UtgardePinnacle\GortokPalehoof.lua
+VioletHold\Cyanigosa.lua
+VioletHold\Erekem.lua
+VioletHold\Ichoron.lua
+VioletHold\Lavanthor.lua
+VioletHold\Moragg.lua
+VioletHold\Xevoss.lua
+VioletHold\Zuramat.lua
+VioletHold\PortalTimers.lua
