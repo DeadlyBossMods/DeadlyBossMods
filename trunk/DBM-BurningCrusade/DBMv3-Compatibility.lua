@@ -353,6 +353,15 @@ function DBM.SecondsToTime(t)
 	end
 end
 
+function DBM.Capitalize(s)
+	s = tostring(s)
+	if GetLocale() == "krKR" or GetLocale() == "zhCN" or GetLocale() == "zhTW"  or GetLocale() == "ruRU" then
+		return s
+	else
+		return s:sub(0, 1):upper()..s:sub(2)
+	end
+end
+
 function DBM.GetBuff(unitID, buff)
 	local i = 1
 	while UnitBuff(unitID, i) do

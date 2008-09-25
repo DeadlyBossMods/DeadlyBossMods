@@ -762,10 +762,16 @@ function barPrototype:AnimateEnlarge(elapsed)
 	if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
 		self.frame:ClearAllPoints()
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
+		self.frame:SetScale(newScale)
+		self.frame:SetWidth(newWidth)
+		getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
+	else
+		self.moving = nil
+		self.enlarged = true
+		self:AddToList(true)
+		self:ApplyStyle()
+		self:SetPosition()
 	end
-	self.frame:SetScale(newScale)
-	self.frame:SetWidth(newWidth)
-	getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
 end
 
 do
