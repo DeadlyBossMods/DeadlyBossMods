@@ -67,7 +67,7 @@ end
 function DBMBC:ADDON_LOADED(mod)
 	if mod ~= "DBM-BurningCrusade" then return end
 	for i = 1, GetNumAddOns() do
-		if GetAddOnMetadata(i, "X-DBM-AddOn") then
+		if GetAddOnMetadata(i, "X-DBM-BC-AddOn") then
 			table.insert(DBM.AddOns, {
 				sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Tab-Sort") or math.huge) or math.huge,
 				category	= "BC",
