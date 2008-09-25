@@ -489,7 +489,7 @@ end
 do
 	local mytable = {}
 	function ListFrameButtonsPrototype:GetVisibleTabs()
-		for i = #mytable, 1, -1 do mytable[i] = nil end
+		table.wipe(mytable)
 		for k,v in ipairs(self.Buttons) do
 			if v.parent == nil then 
 				table.insert(mytable, v)
