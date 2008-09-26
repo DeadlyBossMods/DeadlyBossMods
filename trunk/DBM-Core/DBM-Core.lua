@@ -87,6 +87,7 @@ local unschedule
 local loadOptions
 local loadModOptions
 local checkWipe
+local fireEvent
 
 local function checkEntry(t, val)
 	for i, v in ipairs(t) do
@@ -269,6 +270,31 @@ do
 		handleEvent(nil, event, args)
 	end
 	mainFrame:SetScript("OnEvent", handleEvent)
+end
+
+
+-----------------
+--  Callbacks  --
+-----------------
+do
+	local callbacks = {}
+	
+	function fireEvent(event, ...)
+		if not callbacks[event] then return end
+		for i, v in ipairs(callbacks[event]) do
+			local ok, err = pcall(v, ...)
+			if not ok then DBM:AddMsg(("Error while executing callback %s for event %s: %s"):format(tostring(v), tostring(event), err)) end
+		end
+	end
+	
+	function DBM:RegisterCallback(event, f)
+		if (not event) or type(f) ~= "function" then
+			error("Usage: DBM:RegisterCallback(event, callbackFunc)", 2)
+		end
+		callbacks[event] = callbacks[event] or {}
+		table.insert(callbacks[event], f)
+		return #callbacks[event]
+	end
 end
 
 
@@ -1115,6 +1141,7 @@ function DBM:StartCombat(mod, delay, synced)
 		if not synced then
 			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
 		end
+		fireEvent("pull", mod, delay, synced)
 	end
 end
 
@@ -1142,6 +1169,7 @@ function DBM:EndCombat(mod, wipe)
 				end
 			end
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
+			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
 			local lastTime = ((GetCurrentDungeonDifficulty() == 2) and mod.stats.heroicLastTime) or mod.stats.lastTime
@@ -1162,6 +1190,7 @@ function DBM:EndCombat(mod, wipe)
 			else
 				self:AddMsg(DBM_CORE_BOSS_DOWN_LONG:format(mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime)))
 			end
+			fireEvent("kill", mod)
 		end
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 	end
