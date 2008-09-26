@@ -16,4 +16,10 @@
 <Script file="DBM-AutoInvite\localization.de.lua"/>
 <Script file="DBM-AutoInvite\autoinvite.lua"/>
 
+<!-- DKP System (Count's Raidmember on Bosskills) -->
+<Script file="DBM-DkpSystem\localization.en.lua"/>
+<Script file="DBM-DkpSystem\localization.de.lua"/>
+<Script file="DBM-DkpSystem\dkpsystem.lua"/>
+
+
 </Ui>
