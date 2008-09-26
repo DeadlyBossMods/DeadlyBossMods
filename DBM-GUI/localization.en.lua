@@ -10,7 +10,7 @@ L.TabCategory_BC 	= "The Burning Crusade"
 L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
 L.TabCategory_OTHER     = "Other Boss Mods"
 
-L.BossModLoaded 	= "Please choose a Boss Mod from the list to the left"
+L.BossModLoaded 	= "%s statistics"
 L.BossModLoad_now 	= [[This Boss Mod is not loaded. 
 It will be loaded when you enter the instance. 
 You can also click the button to load the mod manually.]]

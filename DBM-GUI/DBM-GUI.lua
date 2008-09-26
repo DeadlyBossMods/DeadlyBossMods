@@ -1383,24 +1383,23 @@ do
 		return function(self)
 			bossvalue1:SetText( mod.stats.kills )
 			bossvalue2:SetText( mod.stats.pulls-mod.stats.kills )
-			bossvalue3:SetText( mod.stats.bestKill or "0:00:00" )
+			bossvalue3:SetText( mod.stats.bestKill and ("%02d:%02d"):format(math.floor(mod.stats.bestKill / 60), mod.stats.bestKill % 60) or "-" )
 			heroicvalue1:SetText( mod.stats.heroicKills )
 			heroicvalue2:SetText( mod.stats.heroicPulls-mod.stats.heroicKills )
-			heroicvalue3:SetText( mod.stats.heroicBestKill or "0:00:00" )
+			heroicvalue3:SetText( mod.stats.heroicBestKill and ("%02d:%02d"):format(math.floor(mod.stats.heroicBestKill / 60), mod.stats.heroicBestKill % 60) or "-" )
 		end
 	end
 
 	local function CreateBossModTab(addon, panel, subtab)
 		if not panel then 
-			error(panel, 2)
+			error("Panel is nil", 2)
 		end
-
-		local ptext = panel:CreateText(L.BossModLoaded, nil, nil, GameFontNormal)
+		local ptext = panel:CreateText(L.BossModLoaded:format(subtab and addon.subTabs[subtab] or addon.name), nil, nil, GameFontNormal)
 		ptext:SetPoint('TOPLEFT', panel.frame, "TOPLEFT", 10, -10)
 
 		local bossstats = 0 
-		local area = panel:CreateArea(L.BossStatistics, nil, 0)
-		area.frame:SetPoint("TOPLEFT", 10, -40)
+		local area = panel:CreateArea(nil, nil, 0)
+		area.frame:SetPoint("TOPLEFT", 10, -25)
 		area.onshowcall = {}
 
 		for _, mod in ipairs(DBM.Mods) do
