@@ -79,6 +79,7 @@ local modSyncSpam = {}
 local autoRespondSpam = {}
 local chatPrefix = "<Deadly Boss Mods> "
 local chatPrefixShort = "<DBM> "
+local ver = ("%s (r%d)"):format(DBM.DisplayVersion, DBM.Revision)
 local mainFrame = CreateFrame("Frame")
 local showedUpdateReminder = false
 local schedule
@@ -539,6 +540,17 @@ do
 		if IsShiftKeyDown() or button == "RightButton" then return end
 		DBM:LoadGUI()
 	end)
+	button:SetScript("OnEnter", function(self)
+		GameTooltip_SetDefaultAnchor(GameTooltip, self)
+		GameTooltip:SetText(DBM_CORE_MINIMAP_TOOLTIP_HEADER, 1, 1, 1)
+		GameTooltip:AddLine(ver, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(DBM_CORE_MINIMAP_TOOLTIP_FOOTER, RAID_CLASS_COLORS.MAGE.r, RAID_CLASS_COLORS.MAGE.g, RAID_CLASS_COLORS.MAGE.b, 1)
+		GameTooltip:Show()
+	end)
+	button:SetScript("OnLeave", function(self)
+		GameTooltip:Hide()
+	end)
 end
 
 
@@ -919,9 +931,9 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	fontstring:SetText(DBM_CORE_UPDATEREMINDER_HEADER:format(newVersion, newRevision))
 	local editBox = CreateFrame("EditBox", nil, frame)
 	do
-		local editBoxLeft = editBox:CreateTexture()
-		local editBoxRight = editBox:CreateTexture()
-		local editBoxMiddle = editBox:CreateTexture()
+		local editBoxLeft = editBox:CreateTexture(nil, "BACKGROUND")
+		local editBoxRight = editBox:CreateTexture(nil, "BACKGROUND")
+		local editBoxMiddle = editBox:CreateTexture(nil, "BACKGROUND")
 		editBoxLeft:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Left")
 		editBoxLeft:SetHeight(32)
 		editBoxLeft:SetWidth(32)
