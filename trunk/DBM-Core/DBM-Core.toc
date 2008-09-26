@@ -10,4 +10,5 @@ localization.en.lua
 DBT-Template.xml
 DBT.lua
 DBM-Core.lua
+DBM-RangeCheck.lua
 testCustomMod.lua

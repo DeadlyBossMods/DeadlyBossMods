@@ -45,3 +45,5 @@ DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods is running twice because you h
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click or right-click to move"
+
+DBM_CORE_RANGECHECK_HEADER			= "Range Check (%d yd)"
