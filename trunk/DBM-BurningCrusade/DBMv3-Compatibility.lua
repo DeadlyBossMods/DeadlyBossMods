@@ -153,12 +153,17 @@ end
 -------------------
 --  Range Check  --
 -------------------
-function DBM_Gui_DistanceFrame_Hide() -- TODO
+function DBM_Gui_DistanceFrame_Show()
+	DBM.RangeCheck:Show()
 end
 
-function DBM_Gui_DistanceFrame_Show() -- TODO
+function DBM_Gui_DistanceFrame_Hide()
+	DBM.RangeCheck:Hide()
 end
 
+function DBM_Gui_DistanceFrame_SetDistance(distance)
+	DBM.RangeCheck:Show(distance)
+end
 
 -----------------
 --  Announces  --

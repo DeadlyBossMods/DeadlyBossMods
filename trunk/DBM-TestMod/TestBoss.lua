@@ -6,10 +6,9 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 
 mod:SetModelScale(0.5)
 
-mod:SetZone(GetAddOnMetadata("DBM-TestMod", "X-DBM-Mod-LoadZone"), "Teldrassil")
+mod:SetZone()
 
-mod:SetCreatureID(25718)
---mod:SetCreatureID(2043)
+mod:SetCreatureID(448)
 mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",

@@ -143,15 +143,15 @@ end
 ----------------
 function onUpdate(self)
 	local color
-	local i = 0
+	local j = 0
 	self:ClearLines()
-	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range or 10))
+	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range or 10), 1, 1, 1)
 	for i = 1, GetNumRaidMembers() do
-		if self.checkFunc("raid"..i) then
-			i = i + 1
+		if (not UnitIsUnit("raid"..i, "player")) and self.checkFunc("raid"..i) then
+			j = j + 1
 			color = RAID_CLASS_COLORS[select(2, UnitClass("raid"..i))] or NORMAL_FONT_COLOR
 			self:AddLine(UnitName("raid"..i), color.r, color.g, color.b)
-			if i >= 5 then break end
+			if j >= 5 then break end
 		end
 	end
 	self:Show()
@@ -174,12 +174,14 @@ checkFuncs[28] = function(uId)
 end
 
 do
-	local bandages = {21991, 34721, 38643, 34722} -- 38640 <-- Dense Frostweave Bandage (removed from the game?)
+	local bandages = {21991, 34721, 38643, 34722}  -- you should have one of these bandages in your cache
 	
 	checkFuncs[15] = function(uId)
 		for i, v in ipairs(bandages) do
-			if IsItemInRange(v, uId) == 1 then -- you should have one of these bandages in your cache
+			if IsItemInRange(v, uId) == 1 then
 				return true
+			elseif IsItemInRange(v, uId) == 0 then
+				return false
 			end
 		end
 	end

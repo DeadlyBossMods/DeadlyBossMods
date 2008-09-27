@@ -5,7 +5,7 @@
 ## SavedVariablesPerCharacter: DBMParty_SavedVars, DBMParty_Stats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
-## X-DBM-Mod-SubCategories: Ahn'Kahet: The Old Kingdom,Azjol-Nerub,CoT - Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold
+## X-DBM-Mod-SubCategories: Ahn'Kahet,Azjol-Nerub,CoT: Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold
 ## X-DBM-Mod-Name: Party Boss Mods
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold
