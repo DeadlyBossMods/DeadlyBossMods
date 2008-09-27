@@ -58,7 +58,7 @@ do
 	end
 
 	local function creategui()
-		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_BidBot, "option")
+		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_BidBot, "option")
 		do
 			local area = panel:CreateArea(L.AreaGeneral, nil, 260, true)
 	

@@ -64,6 +64,78 @@ do
 	local function creategui()
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_DKPSystem, "option")
 		do
+			local area = panel:CreateArea(L.AreaManageRaid, nil, 150, true)
+
+			local button = area:CreateButton(L.Button_StartDKPTracking, 200, 25)
+			button:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -20)
+			button:SetScript("OnShow", function(self) 
+				if start_time > 0 then
+					self:SetText(L.Button_StopDKPTracking)
+				else 
+					self:SetText(L.Button_StartDKPTracking)
+				end
+			end)
+			button:SetScript("OnClick", function(self)
+				if start_time > 0 then
+					DBM:AddMsg(start_time)
+					RaidEnd()
+				else
+					if GetNumRaidMembers() == 0 then
+						DBM:AddMsg(L.Local_NoRaidPresent)
+					else
+						RaidStart()
+					end
+				end
+				self:GetScript("OnShow")(self)
+			end)
+
+			local neweventpoints 	= area:CreateEditBox(L.CustomPoint, "", 75)
+			local neweventdescr 	= area:CreateEditBox(L.CustomDescription, L.CustomDefault, 250)
+			neweventpoints:SetNumeric()
+			neweventpoints:SetMaxLetters(5)
+			neweventpoints:SetPoint("TOPLEFT", button, "BOTTOMLEFT", 15, -25)
+			neweventdescr:SetMaxLetters(30)
+			neweventdescr:SetPoint("TOPLEFT", neweventpoints, "TOPRIGHT", 40, 0)
+
+			local DKPto = "RAID"
+			local pltable = {{text=L.AllPlayers, value="RAID"}}
+			local dkpfor 	= area:CreateDropdown(L.ChatChannel, pltable, "RAID", function(value) DKPto = value end)
+			dkpfor:SetPoint("TOPLEFT", neweventpoints, "BOTTOMLEFT", -25, -5)
+			dkpfor:SetScript("OnShow", function(self)
+				if GetNumRaidMembers() > 0 then
+					table.wipe(pltable)
+					table.insert(pltable, {text=L.AllPlayers, value="RAID"})
+					for k,v in pairs(GetRaidList()) do
+						table.insert(pltable, {text=v, value=v})
+					end
+				end
+			end)
+
+			local button = area:CreateButton(L.Button_CreateEvent, 200, 25)
+			button:SetPoint("TOPRIGHT", neweventdescr, "BOTTOMRIGHT", 5, -5)
+			button:SetScript("OnClick", function(self)
+				if neweventpoints:GetNumber() <= 0 or neweventdescr:GetText() == "" then 
+					DBM:AddMsg(L.Local_NoInformation)
+				else
+					local event = {
+						event_type = "custom",
+						description = neweventdescr:GetText(),
+						points = neweventpoints:GetNumber(),
+						timestamp = time()
+					}
+					if DKPto == "RAID" then
+						event.members = GetRaidList()
+					else
+						event.members = DKPto
+					end
+					table.insert(setting.events, event)
+					DBM:AddMsg(L.Local_EventCreated)
+					neweventpoints:SetText("")
+					neweventdescr:SetText("")
+				end
+			end)
+		end
+		do
 			local area = panel:CreateArea(L.AreaGeneral, nil, 290, true)
 
 			local enabled = area:CreateCheckButton(L.Enable, true)
@@ -124,79 +196,6 @@ do
 			timedescr:SetScript("OnShow", function(self) self:SetText(settings.time_desc) end)
 			timedescr:SetScript("OnTextChanged", function(self) settings.time_desc = self:GetText() end)
 		end
-		do
-			local area = panel:CreateArea(L.AreaManageRaid, nil, 150, true)
-
-			local button = area:CreateButton(L.Button_StartDKPTracking, 200, 25)
-			button:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -20)
-			button:SetScript("OnShow", function(self) 
-				if start_time > 0 then
-					self:SetText(L.Button_StopDKPTracking)
-				else 
-					self:SetText(L.Button_StartDKPTracking)
-				end
-			end)
-			button:SetScript("OnClick", function(self)
-				if start_time > 0 then
-					DBM:AddMsg(start_time)
-					RaidEnd()
-				else
-					if GetNumRaidMembers() == 0 then
-						DBM:AddMsg(L.Local_NoRaidPresent)
-					else
-						RaidStart()
-					end
-				end
-				self:GetScript("OnShow")(self)
-			end)
-
-			local neweventpoints 	= area:CreateEditBox(L.CustomPoint, "", 75)
-			local neweventdescr 	= area:CreateEditBox(L.CustomDescription, L.CustomDefault, 250)
-			neweventpoints:SetNumeric()
-			neweventpoints:SetMaxLetters(5)
-			neweventpoints:SetPoint("TOPLEFT", button, "BOTTOMLEFT", 15, -25)
-			neweventdescr:SetMaxLetters(30)
-			neweventdescr:SetPoint("TOPLEFT", neweventpoints, "TOPRIGHT", 40, 0)
-
-			local DKPto = "RAID"
-			local pltable = {{text=L.AllPlayers, value="RAID"}}
-			local dkpfor 	= area:CreateDropdown(L.ChatChannel, pltable, "RAID", function(value) DKPto = value end)
-			dkpfor:SetPoint("TOPLEFT", neweventpoints, "BOTTOMLEFT", -25, -5)
-			dkpfor:SetScript("OnShow", function(self)
-				if GetNumRaidMembers() > 0 then
-					table.wipe(pltable)
-					table.insert(pltable, {text=L.Raid, value="RAID"})
-					for k,v in pairs(GetRaidList()) do
-						table.insert(pltable, {text=v, value=v})
-					end
-				end
-			end)
-
-			local button = area:CreateButton(L.Button_CreateEvent, 200, 25)
-			button:SetPoint("TOPRIGHT", neweventdescr, "BOTTOMRIGHT", 5, -5)
-			button:SetScript("OnClick", function(self)
-				if neweventpoints:GetNumber() <= 0 or neweventdescr:GetText() == "" then 
-					DBM:AddMsg(L.Local_NoInformation)
-				else
-					local event = {
-						event_type = "custom",
-						description = neweventdescr:GetText(),
-						points = neweventpoints:GetNumber(),
-						timestamp = time()
-					}
-					if DKPto == "RAID" then
-						event.members = GetRaidList()
-					else
-						event.members = DKPto
-					end
-					table.insert(setting.events, event)
-					DBM:AddMsg(L.Local_EventCreated)
-					neweventpoints:SetText("")
-					neweventdescr:SetText("")
-				end
-			end)
-			
-		end
 		panel:SetMyOwnHeight()
 	end
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
@@ -208,7 +207,7 @@ function GetRaidList()
 	local raidusers = {}
 	for i=1, GetNumRaidMembers(), 1 do
 		if UnitName("raid"..i) then
-			table.insert(raidusers, UnitName("raid"..1))
+			table.insert(raidusers, (UnitName("raid"..i)))
 		end
 	end
 

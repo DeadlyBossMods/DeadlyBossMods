@@ -39,7 +39,7 @@ local inRaid = false
 
 do 
 	local function creategui()
-		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_Standby, "option")
+		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_Standby, "option")
 		do
 			local area = panel:CreateArea(L.AreaGeneral, nil, 50, true)
 			local enabled = area:CreateCheckButton(L.Enable, true)
