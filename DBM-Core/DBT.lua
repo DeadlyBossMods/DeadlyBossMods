@@ -126,6 +126,18 @@ options = {
 		type = "number",
 		default = 0,
 	},
+	TextColorR = {
+		type = "number",
+		default = 1,
+	},
+	TextColorG = {
+		type = "number",
+		default = 1,
+	},
+	TextColorB = {
+		type = "number",
+		default = 1,
+	},
 	DynamicColor = {
 		type = "boolean",
 		default = true,
@@ -650,9 +662,13 @@ function barPrototype:ApplyStyle()
 	local texture = getglobal(frame:GetName().."BarTexture")
 	local icon1 = getglobal(frame:GetName().."BarIcon1")
 	local icon2 = getglobal(frame:GetName().."BarIcon2")
+	local name = getglobal(frame:GetName().."BarName")
+	local timer = getglobal(frame:GetName().."BarTimer")
 	texture:SetTexture(self.owner.options.Texture)
 	bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
 	spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+	name:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
+	timer:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
 	if self.owner.options.IconRight then icon2:Show() else icon2:Hide() end
 	if self.enlarged then frame:SetWidth(self.owner.options.HugeWidth) else frame:SetWidth(self.owner.options.Width) end

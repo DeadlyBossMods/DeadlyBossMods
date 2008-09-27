@@ -48,6 +48,7 @@ DBM.DefaultOptions = {
 		{r = 1.00, g = 0.10, b = 0.10},
 	},
 	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.wav",
+	SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.wav",
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
@@ -1641,6 +1642,9 @@ do
 			frame:Show()
 			frame:SetAlpha(1)
 			frame.timer = 5
+			if self.sound then
+				PlaySoundFile(DBM.Options.SpecialWarningSound)
+			end
 		end
 	end
 	
@@ -1652,12 +1656,13 @@ do
 		schedule(self.Show, self.mod, self, ...)
 	end
 	
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound)
 		local obj = setmetatable(
 			{
 				text = self.localization.warnings[text],
 				option = optionName or text,
-				mod = self
+				mod = self,
+				sound = not noSound,
 			},
 			mt
 		)
