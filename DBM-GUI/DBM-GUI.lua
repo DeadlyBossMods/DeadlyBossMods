@@ -309,8 +309,8 @@ function PanelPrototype:CreateColorSelect(dimension, withalpha, alphawidth)
 		-- create the alpha arrows
 		local colorvaluethumbtexture = colorselect:CreateTexture()
 		colorvaluethumbtexture:SetTexture("Interface\\Buttons\\UI-ColorPicker-Buttons")
-		colorvaluethumbtexture:SetWidth( (alphawidth/32  or 1) * 48)
-		colorvaluethumbtexture:SetHeight( (alphawidth/32 or 1) * 14)
+		colorvaluethumbtexture:SetWidth( alphawidth/32 * 48)
+		colorvaluethumbtexture:SetHeight( alphawidth/32 * 14)
 		colorvaluethumbtexture:SetTexCoord(0.25, 1, 0.875, 0)
 		colorselect:SetColorValueThumbTexture(colorvaluethumbtexture)
 	end
@@ -1552,17 +1552,13 @@ do
 					local button = catpanel:CreateCheckButton(mod.localization.options[v], true)
 
 					button:SetScript("OnShow",  function(self) 
-									self:SetChecked(mod.Options[v]) 
-								    end)
+						self:SetChecked(mod.Options[v]) 
+					end)
 
 					button:SetScript("OnClick", function(self) 
-									if mod.Options[v] then 
-										mod.Options[v] = false 
-									else 
-										mod.Options[v] = true
-									end 
-									self:SetChecked(mod.Options[v]) 
-								    end)
+						mod.Options[v] = not mod.Options[v]
+						if mod.optionFuncs[v] then mod.optionFuncs[v]() end
+					end)
 				end
 			end
 			catpanel:AutoSetDimension()
