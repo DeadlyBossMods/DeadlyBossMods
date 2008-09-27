@@ -42,7 +42,8 @@ DBM_DKP_System_Settings = {
 	start_event = true,		-- create a RaidStart Event
 	start_points = 10,		-- points to get for Raidstart
 	start_desc = "Raid Start",	-- name of the Event for EQDKP
-
+	
+	items = {},			-- items wating for event
 	events = {},			-- current raid events
 	history = {}			-- history of raids
 }
@@ -157,6 +158,14 @@ do
 			neweventdescr:SetMaxLetters(30)
 			neweventdescr:SetPoint("TOPLEFT", neweventpoints, "TOPRIGHT", 40, 0)
 
+			local DKPto = "RAID"
+			local pltable = {{text=L.Raid, value="RAID"}}
+			for k,v in pairs(GetRaidList()) do
+				table.insert(pltable, {text=v, value=v})
+			end
+			local dkpfor 	= area:CreateDropdown(L.ChatChannel, pltable, "RAID", function(value) DKPto = value end)
+			dkpfor:SetPoint("TOPLEFT", neweventpoints, "BOTTOMLEFT", 0, -5)
+
 			local button = area:CreateButton(L.Button_CreateEvent, 200, 25)
 			button:SetPoint("TOPLEFT", neweventdescr, "BOTTOMLEFT", -5, -5)
 			button:SetScript("OnClick", function(self)
@@ -164,11 +173,16 @@ do
 					DBM:AddMsg(L.Local_NoInformation)
 				else
 					local event = {
+						event_type = "custom",
 						description = neweventdescr:GetText(),
 						points = neweventpoints:GetNumber(),
-						timestamp = time(),
-						members = GetRaidList(),
+						timestamp = time()
 					}
+					if DKPto == "RAID" then
+						event.members = GetRaidList()
+					else
+						event.members = DKPto
+					end
 					table.insert(setting.events, event)
 					DBM:AddMsg(L.Local_EventCreated)
 					neweventpoints:SetText("")
@@ -203,6 +217,7 @@ end
 function BossKill(bossname)
 	if settings.boss_event then
 		local event = {
+			event_type = "bosskill",
 			description = settings.boss_desc:format(bossname),
 			points = settings.boss_points,
 			timestamp = time(),
@@ -216,6 +231,7 @@ function RaidStart()
 	start_time = time()
 	if settings.start_event then
 		local event = {
+			event_type = "raidstart"
 			description = settings.start_desc,
 			points = settings.start_points,
 			timestamp = time(),
@@ -248,15 +264,17 @@ do
 	mainframe:SetScript("OnUpdate", function(self, e)
 		if not settings.time_event or settings.time_to_count < 5 then return end
 		timespend = timespend + e
-		if timespend/60 > settings.time_to_count then
+		if timespend/60 >= settings.time_to_count then
 			DBM:AddMsg(L.Local_TimeReached)
 			local event = {
+				event_type = "",
 				description = settings.time_desc,
 				points = settings.time_points,
 				timestamp = time(),
 				members = GetRaidList()
 			}
 			table.insert(setting.events, event)
+			timespend = e
 		end
 	end)
 end
