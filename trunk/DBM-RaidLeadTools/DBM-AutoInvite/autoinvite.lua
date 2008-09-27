@@ -65,7 +65,7 @@ do
 	end
 
 	local function creategui()
-		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_AutoInvite, "option")
+		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_AutoInvite, "option")
 		local area = panel:CreateArea(L.AreaGeneral, nil, 160, true)
 
 		local enabled = area:CreateCheckButton(L.Activate, true)
@@ -90,7 +90,7 @@ do
 		keyword:SetScript("OnTextChanged", 	function(self) settings.keyword = self:GetText():lower() end)
 		keyword:SetScript("OnShow", 		function(self) self:SetText(settings.keyword) end)
 	end
-	DBM:RegisterOnGuiLoadCallback(creategui, 10)
+	DBM:RegisterOnGuiLoadCallback(creategui, 15)
 end
 
 do
