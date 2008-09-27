@@ -786,7 +786,7 @@ do
 				"CHAT_MSG_MONSTER_EMOTE",
 				"CHAT_MSG_MONSTER_SAY",
 				"CHAT_MSG_RAID_BOSS_EMOTE",
-				"PLAYER_UNGHOST"
+				"PLAYER_ENTERING_WORLD"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
@@ -1306,15 +1306,21 @@ function DBM:SendTimerInfo(mod, target)
 	end
 end
 
-function DBM:PLAYER_UNGHOST()
-	DBM:AddMsg("Unghost", "debug")
-	local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
-		local id = (i == 0 and "player") or uId..i
-		if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
-			DBM:RequestTimers()
-			DBM:AddMsg(UnitName(id), "combat-debug")
-			break
+do
+	local function requestTimers()
+		local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+			local id = (i == 0 and "player") or uId..i
+			if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+				DBM:RequestTimers()
+				break
+			end
+		end
+	end
+	
+	function DBM:PLAYER_ENTERING_WORLD()
+		if #inCombat == 0 then
+			DBM:Schedule(0, requestTimers)
 		end
 	end
 end
