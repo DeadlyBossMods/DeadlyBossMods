@@ -411,16 +411,10 @@ function DBT:CancelBar(id)
 end
 
 function DBT:UpdateBar(id, elapsed, totalTime)
-	print(id, elapsed, totalTime)
 	for bar in self:GetBarIterator() do
 		if id == bar.id then
-			print(id)
-			print(totalTime or bar.totalTime)
-			print(elapsed or self.totalTime - self.timer)
-			bar:SetTimer(totalTime or bar.totalTime, true)
+			bar:SetTimer(totalTime or bar.totalTime)
 			bar:SetElapsed(elapsed or self.totalTime - self.timer)
-			print(bar, bar.totalTime, bar.timer)
-			print("oO")
 			return true
 		end
 	end
@@ -439,13 +433,16 @@ function DBT:ShowTestBars()
 	self:CreateBar(21.5, "Test 5")
 end
 
-function barPrototype:SetTimer(timer, noUpdate)
+function barPrototype:SetTimer(timer)
 	self.totalTime = timer
-	if not noUpdate then self:Update(0) end
+	self:Update(0)
 end
 
 function barPrototype:SetElapsed(elapsed)
+	print(self.timer)
 	self.timer = self.totalTime - elapsed
+	print(self.timer)
+	print(self.totalTime - elapsed)
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) then
 		local next = self.next
 		self:RemoveFromList()

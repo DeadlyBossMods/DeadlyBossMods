@@ -1292,9 +1292,14 @@ end
 
 function DBM:SendTimerInfo(mod, target)
 	for i, v in ipairs(mod.timers) do
-		for _, uId in pairs(v.startedTimers) do
-			local elapsed, totalTime = v:GetTime()
-			local timeLeft = totalTime - elapsed
+		for _, uId in ipairs(v.startedTimers) do
+			local elapsed, totalTime, timeLeft
+			if select("#", string.split("\t", uId)) > 1 then
+				elapsed, totalTime = v:GetTime(select(2, string.split("\t", uId)))
+			else
+				elapsed, totalTime = v:GetTime()
+			end
+			timeLeft = totalTime - elapsed
 			if timeLeft > 0 and totalTime > 0 then
 				SendAddonMessage("DBMv4-TimerInfo", ("%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
 			end
