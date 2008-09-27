@@ -62,7 +62,7 @@ local BossKill
 
 do
 	local function creategui()
-		local panel = DBM_GUI:CreateNewPanel(L.TabCategory_DKPSystem, "option")
+		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_DKPSystem, "option")
 		do
 			local area = panel:CreateArea(L.AreaGeneral, nil, 290, true)
 
@@ -159,15 +159,21 @@ do
 			neweventdescr:SetPoint("TOPLEFT", neweventpoints, "TOPRIGHT", 40, 0)
 
 			local DKPto = "RAID"
-			local pltable = {{text=L.Raid, value="RAID"}}
-			for k,v in pairs(GetRaidList()) do
-				table.insert(pltable, {text=v, value=v})
-			end
+			local pltable = {{text=L.AllPlayers, value="RAID"}}
 			local dkpfor 	= area:CreateDropdown(L.ChatChannel, pltable, "RAID", function(value) DKPto = value end)
-			dkpfor:SetPoint("TOPLEFT", neweventpoints, "BOTTOMLEFT", 0, -5)
+			dkpfor:SetPoint("TOPLEFT", neweventpoints, "BOTTOMLEFT", -25, -5)
+			dkpfor:SetScript("OnShow", function(self)
+				if GetNumRaidMembers() > 0 then
+					table.wipe(pltable)
+					table.insert(pltable, {text=L.Raid, value="RAID"})
+					for k,v in pairs(GetRaidList()) do
+						table.insert(pltable, {text=v, value=v})
+					end
+				end
+			end)
 
 			local button = area:CreateButton(L.Button_CreateEvent, 200, 25)
-			button:SetPoint("TOPLEFT", neweventdescr, "BOTTOMLEFT", -5, -5)
+			button:SetPoint("TOPRIGHT", neweventdescr, "BOTTOMRIGHT", 5, -5)
 			button:SetScript("OnClick", function(self)
 				if neweventpoints:GetNumber() <= 0 or neweventdescr:GetText() == "" then 
 					DBM:AddMsg(L.Local_NoInformation)
@@ -231,7 +237,7 @@ function RaidStart()
 	start_time = time()
 	if settings.start_event then
 		local event = {
-			event_type = "raidstart"
+			event_type = "raidstart",
 			description = settings.start_desc,
 			points = settings.start_points,
 			timestamp = time(),
