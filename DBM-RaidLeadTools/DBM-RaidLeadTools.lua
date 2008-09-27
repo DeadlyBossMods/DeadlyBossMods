@@ -25,5 +25,9 @@
 --
 --
 
+local function createpanel()
+	DBM_RaidLeadPanel = DBM_GUI:CreateNewPanel("Raidlead Tools", "option")
+end
 
+DBM:RegisterOnGuiLoadCallback(createpanel, 10)
 

@@ -37,3 +37,5 @@ L.Local_NoInformation		= "Please specify the Points and the Name for the Event"
 L.Local_EventCreated		= "Your Event were successfully created"
 L.Local_StartRaid		= "Started a new Raid"
 
+L.AllPlayers			= "all players"
+
