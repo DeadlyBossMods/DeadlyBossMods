@@ -1262,7 +1262,6 @@ do
 	end
 
 	function DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
-		print(mod, timeLeft, totalTime, id, ...)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
 			local lag = select(3, GetNetStats()) / 1000
 			for i, v in ipairs(mod.timers) do
