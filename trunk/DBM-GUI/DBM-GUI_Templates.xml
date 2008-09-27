@@ -457,7 +457,19 @@
 						<AbsInset left="5" right="5" top="5" bottom="5"/>
 					</BackgroundInsets>
 				</Backdrop>
-				
+				<Layers>
+					<Layer level="BACKGROUND">
+						<FontString name="$parentHeaderText" inherits="GameFontHighlightSmall" text="">
+							<Anchors>
+								<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+									<Offset>
+										<AbsDimension x="10" y="1"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+					</Layer>
+				</Layers>
 				<Frames>
 					<ScrollFrame name="$parentFOV">
 						<Anchors>
