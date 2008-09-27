@@ -321,6 +321,7 @@ do
 			newBar.owner = self
 			newBar.moving = nil
 			newBar.enlarged = nil
+			newBar.fadingIn = 0
 			newBar.frame.obj = newBar
 			newBar:AddToList()
 			self.numBars = (self.numBars or 0) + 1
@@ -439,10 +440,7 @@ function barPrototype:SetTimer(timer)
 end
 
 function barPrototype:SetElapsed(elapsed)
-	print(self.timer)
 	self.timer = self.totalTime - elapsed
-	print(self.timer)
-	print(self.totalTime - elapsed)
 	if (self.enlarged or self.moving == "enlarge") and not (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) then
 		local next = self.next
 		self:RemoveFromList()
@@ -496,9 +494,14 @@ function barPrototype:Update(elapsed)
 		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 		timer:SetText(stringFromTimer(self.timer))
 	end
-	if obj.options.FadeIn and (self.totalTime - self.timer) <= 0.55 then
-		frame:SetAlpha((self.totalTime - self.timer) / 0.5)
-	elseif self.timer <= 7.75 and not self.flashing and obj.options.Flash then
+	if obj.options.FadeIn and self.fadingIn and self.fadingIn < 0.5 then
+		self.fadingIn = self.fadingIn + elapsed
+		frame:SetAlpha((self.fadingIn) / 0.5)
+	elseif self.fadingIn then
+		self.fadingIn = nil
+	end
+	
+	if self.timer <= 7.75 and not self.flashing and obj.options.Flash then
 		self.flashing = true
 		self.ftimer = 0
 	end
