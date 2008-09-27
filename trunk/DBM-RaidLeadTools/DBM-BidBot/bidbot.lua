@@ -50,6 +50,7 @@ local AddItem
 local AddBid
 local AuctionEnd
 local StartBidding
+local DoInjectToDKPSystem
 
 do 
 	local function toboolean(var) 
@@ -198,8 +199,13 @@ function AuctionEnd()
 	end
 	table.insert(DBM_BidBot_ItemHistory, Itembid)
 
+	if counter > 0 then
+		DoInjectToDKPSystem(Itembid)
+	end
+
 	-- Sync History
 	SendAddonMessage("DBM_BidBot", "ITEM:"..select(2, strsplit(":", Itembid.item))..":"..Itembid.points..":("..msg..")", "RAID")
+	SendAddonMessage("DBM_BidBot", "ITEM:"..select(2, strsplit(":", Itembid.item))..":"..Itembid.points..":("..msg..")", "GUILD")
 
 	if max then
 		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(counter), settings.chatchannel)
@@ -241,6 +247,19 @@ function StartBidding()
 			SendChatMessage(L.Prefix..L.Message_DoBidding:format(ItemLink, math.floor(settings.duration / 2)), settings.chatchannel)
 			end)
 		DBM:Schedule(settings.duration, AuctionEnd)
+	end
+end
+
+function DoInjectToDKPSystem(itemtable)
+	-- FIXME add popup dialog to fixiate Bid before saveing this
+	if DBM_DKP_System_Settings and DBM_DKP_System_Settings.enabled then
+		if not DBM_DKP_System_Settings.items then DBM_DKP_System_Settings.items = {} end
+		table.insert(DBM_DKP_System_Settings.items, {
+			item = itemtable.item,
+			points = itemtable.points,
+			time = itemtable.time,
+			player = itemtable.bids[1].name
+		})
 	end
 end
 
@@ -325,19 +344,24 @@ do
 					if channel == "RAID" then
 						SendAddonMessage("DBM_BidBot", "Hi!", "WHISPER", sender)				
 					end
-				elseif msg:sub(0, 5) == "ITEM:" then
+				elseif msg:sub(0, 5) == "ITEM:" and sender ~= UnitName("player") then
+					if DBM:GetRaidUnitId(sender) ~= "none" and not channel == "RAID" then return end
+					if DBM:GetRaidUnitId(sender) == "none" and not channel == "GUILD" then return end
 					local _, itemid, dkp, savedbids = strsplit(":",msg)
 					local Itembid = {
 						time = time(), 
 						item = select(2, GetItemInfo(itemid)), 
-						points = dkp, 
+						points = dkp,
 						bids = {} 
 					}
 					for bidder, biddkp  in string.gmatch(savedbids, '(%a+)%((%d+)%)') do
 						table.insert(Itembid.bids, { ["points"] = biddkp, ["name"] = bidder })
 					end
 					table.insert(DBM_BidBot_ItemHistory, Itembid)
-
+					
+					if Itembid.bids[1] and Itembid.bids[1].name then
+						DoInjectToDKPSystem(Itembid)
+					end
 				end
 			end
 		end
