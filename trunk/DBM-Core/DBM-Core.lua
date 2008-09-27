@@ -83,6 +83,7 @@ local chatPrefixShort = "<DBM> "
 local ver = ("%s (r%d)"):format(DBM.DisplayVersion, DBM.Revision)
 local mainFrame = CreateFrame("Frame")
 local showedUpdateReminder = false
+local combatInitialized = false
 local schedule
 local unschedule
 local loadOptions
@@ -593,7 +594,7 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("DBMv4-Ver", "Hi!")
-				self:Schedule(3, DBM.RequestTimers, DBM)
+				self:Schedule(2, DBM.RequestTimers, DBM)
 			end
 			for i = 1, GetNumRaidMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
@@ -625,7 +626,7 @@ do
 			if not inRaid then
 				inRaid = true
 				sendSync("DBMv4-Ver", "Hi!")
-				self:Schedule(3, DBM.RequestTimers, DBM)
+				self:Schedule(2, DBM.RequestTimers, DBM)
 			end
 			for i = 0, GetNumPartyMembers() do
 				local id
@@ -790,6 +791,7 @@ do
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
 			self:PARTY_MEMBERS_CHANGED()
+			DBM:Schedule(1.5, function() combatInitialized = true end)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
 		end
@@ -1052,6 +1054,7 @@ do
 	end
 	
 	function DBM:PLAYER_REGEN_DISABLED()
+		if not combatInitialized then return end
 		if combatInfo[GetRealZoneText()] then
 			buildTargetList()
 			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
@@ -1249,8 +1252,7 @@ do
 	function DBM:ReceiveCombatInfo(sender, mod, time)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
 			local lag = select(3, GetNetStats()) / 1000
-			mod = DBM:GetModByName(mod)
-			if not mod or not mod.combatInfo then return end
+			if not mod.combatInfo then return end
 			table.insert(inCombat, mod)
 			mod.inCombat = true
 			mod.blockSyncs = nil
@@ -1260,11 +1262,10 @@ do
 	end
 
 	function DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
+		print(mod, timeLeft, totalTime, id, ...)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
 			local lag = select(3, GetNetStats()) / 1000
-			mod = DBM:GetModByName(mod)
-			if not mod then return end
-			for i, v in mod.timers do
+			for i, v in ipairs(mod.timers) do
 				if v.id == id then
 					v:Start(totalTime, ...)
 					v:Update(totalTime - timeLeft + lag, totalTime, ...)
@@ -1292,7 +1293,8 @@ end
 function DBM:SendTimerInfo(mod, target)
 	for i, v in ipairs(mod.timers) do
 		for _, uId in pairs(v.startedTimers) do
-			local timeLeft, totalTime = v:GetTime()
+			local elapsed, totalTime = v:GetTime()
+			local timeLeft = totalTime - elapsed
 			if timeLeft > 0 and totalTime > 0 then
 				SendAddonMessage("DBMv4-TimerInfo", ("%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
 			end

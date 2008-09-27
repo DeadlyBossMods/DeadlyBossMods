@@ -24,6 +24,8 @@ local testSpecialWarning = mod:NewSpecialWarning("Special Warning Test")
 local testTimer1 = mod:NewTimer(30, "shield_timer")
 
 local enrageTest = mod:NewEnrageTimer(600)
+local theUltimateTestTimer = mod:NewTimer(1200, "ultimateTestTimer")
+
 
 mod:AddBoolOption("test1")
 mod:AddBoolOption("test2")
@@ -39,6 +41,10 @@ mod:SetOptionCategory("shield_applied", "lol!")
 function mod:OnCombatStart(delay)
 	self:AddMsg(delay)
 	enrageTest:Start()
+end
+
+function mod:Test(a,b,c)
+	theUltimateTestTimer:Start(nil, a, b, c)
 end
 
 function mod:SPELL_AURA_APPLIED(args)

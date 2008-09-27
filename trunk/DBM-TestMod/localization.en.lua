@@ -15,6 +15,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	shield_timer	= "Shield: %s",
+	ultimateTestTimer = "Test %s lol %s 123 %s ..."
 })
 
 L:SetOptionLocalization({
