@@ -26,8 +26,10 @@ L.Mod_Enabled		= "Enable boss mod"
 L.Mod_EnableAnnounce	= "Announce to raid"
 L.Reset 		= "reset"
 
-L.Enable  = "enable"
-L.Disable = "disable"
+L.Enable  		= "enable"
+L.Disable		= "disable"
+
+L.NoSound		= "No Sound"
 
 -- Tab: Boss Statistics
 L.BossStatistics	= "Boss Statistics"

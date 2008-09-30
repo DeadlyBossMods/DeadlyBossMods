@@ -51,6 +51,8 @@ do
 		self:Refresh()
 	end)
 	TabFrame1:Hide()
+	TabFrame1:SetParent( DBM_GUI_OptionsFrame )
+	TabFrame1:SetFrameStrata("TOOLTIP")
 
 	TabFrame1.offset = 0
 
@@ -83,7 +85,8 @@ do
 			TabFrame1.buttons[i]:SetPoint("TOPLEFT", TabFrame1.buttons[i-1], "BOTTOMLEFT", 0,0)
 		end
 	end
-	TabFrame1:SetWidth(TabFrame1.buttons[1]:GetWidth()+22)
+	local default_button_width = TabFrame1.buttons[1]:GetWidth()
+	TabFrame1:SetWidth(default_button_width+22)
 	TabFrame1:SetHeight(MAX_BUTTONS*TabFrame1.buttons[1]:GetHeight()+24)
 
 	TabFrame1.text = TabFrame1:CreateFontString(TabFrame1:GetName().."Text", 'BACKGROUND')
@@ -122,13 +125,29 @@ do
 				self.buttons[i]:Hide()
 			end
 		end
+
+		local width = self.buttons[1]:GetWidth()
+		local bwidth = 0
+		for k, button in pairs(self.buttons) do
+			bwidth = button:GetTextWidth()
+			if bwidth > width then
+				TabFrame1:SetWidth(bwidth+32)
+				width = bwidth
+			end
+		end
+		for k, button in pairs(self.buttons) do
+			button:SetWidth(width)
+		end
+
 	end
 
 	function TabFrame1:HideMenu()
 		for i=1, MAX_BUTTONS, 1 do
 			self.buttons[i]:Hide()
 			self.buttons[i]:SetBackdrop(nil)
+			self.buttons[i]:SetWidth(default_button_width)
 		end
+		self:SetWidth(default_button_width+22)
 		self:Hide()
 		self.text:Hide()
 	end
@@ -139,7 +158,7 @@ do
 
 	local FrameTitle = "DBM_GUI_DropDown"
 
-	function DBM_GUI:CreateDropdown(title, values, selected, callfunc)
+	function DBM_GUI:CreateDropdown(title, values, selected, callfunc, width)
 		-- Check Values
 		self:CheckValues(values)
 	
@@ -148,13 +167,14 @@ do
 		dropdown.creator = self
 		dropdown.values = values
 		dropdown.callfunc = callfunc
+		dropdown:SetWidth((width or 120)+30)	-- required to fix some setpoint problems
+		getglobal(dropdown:GetName().."Middle"):SetWidth(width or 120)
 		getglobal(dropdown:GetName().."Button"):SetScript("OnClick", function(self)
 			PlaySound("igMainMenuOptionCheckBoxOn")
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
 				TabFrame1.dropdown = nil
 			else	
-				TabFrame1:SetParent(self:GetParent().creator:GetParentsLastObj())
 				TabFrame1:ClearAllPoints()
 				TabFrame1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
 				TabFrame1.dropdown = self:GetParent()
