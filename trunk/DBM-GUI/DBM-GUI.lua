@@ -1113,7 +1113,7 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningSound = value
 			end
 		)
-		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "TOPRIGHT", 140, 0)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "TOPRIGHT", 40, 0)
 
 
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
