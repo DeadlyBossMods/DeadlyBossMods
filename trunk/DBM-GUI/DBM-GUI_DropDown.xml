@@ -2,7 +2,7 @@
 
 	<Frame name="DBM_GUI_DropDownMenuTemplate" virtual="true">
 		<Size>
-			<AbsDimension x="40" y="32"/>
+			<AbsDimension x="160" y="32"/>
 		</Size>
 		<Layers>
 			<Layer level="ARTWORK">
@@ -21,7 +21,7 @@
 				</Texture>
 				<Texture name="$parentMiddle" file="Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame">
 					<Size>
-						<AbsDimension x="115" y="64"/>
+						<AbsDimension x="155" y="64"/>
 					</Size>
 					<Anchors>
 						<Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>

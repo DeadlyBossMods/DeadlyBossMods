@@ -198,13 +198,13 @@ function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbt
 	end
 	
 	if dbmvar and DBM.Options[dbmvar] ~= nil then
-		button:SetScript("OnShow",  function() button:SetChecked(DBM.Options[dbmvar]) end)
-		button:SetScript("OnClick", function() DBM.Options[dbmvar] = not DBM.Options[dbmvar] end)
+		button:SetScript("OnShow",  function(self) button:SetChecked(DBM.Options[dbmvar]) end)
+		button:SetScript("OnClick", function(self) DBM.Options[dbmvar] = not DBM.Options[dbmvar] end)
 	end
 
 	if dbtvar then
-		button:SetScript("OnShow",  function() button:SetChecked( DBM.Bars:GetOption(dbtvar) ) end)
-		button:SetScript("OnClick", function() DBM.Bars:SetOption(dbtvar, not DBM.Bars:GetOption(dbtvar)) end)
+		button:SetScript("OnShow",  function(self) button:SetChecked( DBM.Bars:GetOption(dbtvar) ) end)
+		button:SetScript("OnClick", function(self) DBM.Bars:SetOption(dbtvar, not DBM.Bars:GetOption(dbtvar)) end)
 	end
 
 	if autoplace then
@@ -241,6 +241,9 @@ do
 		textbox:SetHeight(height or 20)
 		textbox:SetScript("OnEscapePressed", unfocus)
 		textbox:SetScript("OnTabPressed", unfocus)
+		if type(value) == "string" then
+			textbox:SetText(value)
+		end
 		self:SetLastObj(textbox)
 		return textbox
 	end
@@ -514,7 +517,8 @@ function ListFrameButtonsPrototype:GetVisibleSubTabs(parent, t)
 		end
 	end
 end
-	
+
+local CreateNewFauxScrollFrameList
 do
 	local mt = {__index = ListFrameButtonsPrototype}
 	function CreateNewFauxScrollFrameList()
@@ -1070,11 +1074,12 @@ local function CreateOptionsMenu()
 		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
 		local WarningIconLeft		= raidwarnoptions:CreateCheckButton(L.WarningIconLeft,  true, nil, "WarningIconLeft")
 		local WarningIconRight 		= raidwarnoptions:CreateCheckButton(L.WarningIconRight,  true, nil, "WarningIconRight")
-		--raidwarnoptions:AutoSetDimension()
 
-		local Sounds = { 
-			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 	sound=true },
-			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", sound=true }
+		-- RaidWarn Sound
+		local Sounds = {
+			{	text	= L.NoSound,	value	= "" },
+			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 		sound=true },
+			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
 		}
 		if GetSharedMedia3() then
 			for k,v in next, GetSharedMedia3():HashTable("sound") do
@@ -1083,13 +1088,32 @@ local function CreateOptionsMenu()
 				end
 			end
 		end
-		local SoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, 
+		local RaidWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, 
 			DBM.Options.RaidWarningSound, function(value) 
 				DBM.Options.RaidWarningSound = value
 			end
 		)
-		SoundDropDown:SetPoint("TOPLEFT", WarningIconRight, "BOTTOMLEFT", 20, -10)
+		RaidWarnSoundDropDown:SetPoint("TOPLEFT", WarningIconRight, "BOTTOMLEFT", 20, -10)
 
+		-- SpecialWarn Sound
+		local Sounds = {
+			{	text	= L.NoSound,		value	= "" },
+			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
+			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("sound") do
+				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+					table.insert(Sounds, {text=k, value=v, sound=true})
+				end
+			end
+		end
+		local SpecialWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, 
+			DBM.Options.SpecialWarningSound, function(value) 
+				DBM.Options.SpecialWarningSound = value
+			end
+		)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "TOPRIGHT", 140, 0)
 
 
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
