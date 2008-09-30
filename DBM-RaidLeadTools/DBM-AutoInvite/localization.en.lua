@@ -17,6 +17,14 @@ L.WarnMsg_NoRaid		= "Please start a Raid Group before using AOE Invite"
 L.WarnMsg_NotLead		= "Sorry, you have to be Lead or Promoted to use this command"
 L.WarnMsg_InviteIncoming	= "<DBM> AOE Raidinvite incoming. Please leave your groups now."
 L.Button_AOE_Invite		= "AOE Guild Invite"
+L.AOEbyGuildRank		= "Invite all players at or above this Rank"
 
+-- RaidInvite Options
+L.AreaRaidOptions		= "Raid Options"
+L.PromoteEveryone		= "Promote each new Player (not recommended)"
+L.PromoteGuildRank		= "Promote by Guildrank"
+L.PromoteByNameList		= "Autopromote the following players (split by space)"
+
+L.DontPromoteAnyRank		= "No autopromote by GuildRank"
 
 
