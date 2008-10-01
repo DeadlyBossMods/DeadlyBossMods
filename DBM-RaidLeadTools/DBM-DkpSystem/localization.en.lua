@@ -6,6 +6,8 @@ L.Local_TimeReached 		= "A new Time based RaidEvent was created"
 L.Local_NoRaidPresent		= "Please join a Raidgroup before starting DKP Tracker"
 L.Local_RaidSaved		= "Successfully closed the current Raid"
 
+L.AcceptDKPValue		= "DKP"
+
 -- GUI
 L.TabCategory_DKPSystem		= "DKP System"
 L.AreaGeneral			= "General DKP System Settings"
