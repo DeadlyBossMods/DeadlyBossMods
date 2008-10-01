@@ -37,7 +37,7 @@ DBM_DKP_System_Settings = {
 
 	boss_event = true,		-- create Event for BossKills
 	boss_points = 10, 		-- points to count for Bosskill
-	boss_desc = "%s",		-- name of the Event for BossKIlls (Killed Boss: %s)
+	boss_desc = "%s",		-- name of the Event for BossKills (Killed Boss: %s)
 
 	start_event = true,		-- create a RaidStart Event
 	start_points = 10,		-- points to get for Raidstart

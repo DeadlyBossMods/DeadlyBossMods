@@ -16,6 +16,8 @@ L.Message_BiddingsVisible	= "%d players bid on this item."
 L.Message_BidPubMessage		= "New bid: %s bids %d DKP"
 L.Disenchant			= "Disenchant"
 
+L.PopUpAcceptDKP		= "Save Bid for %s. For disenchant please type in 0 DKP."
+
 -- GUI
 L.TabCategory_BidBot	 	= "BidBot (DKP)"
 L.AreaGeneral 			= "Gerneal BidBot Options"
@@ -32,6 +34,4 @@ L.PublicBids			= "Post bids to Chat for public bidding"
 L.PayWhatYouBid			= "Pay Price of bid, (otherwise second bid + 1)"
 L.NoHistoryAvailable		= "No History available"
 L.DateFormat			= "%c"
-
-
 

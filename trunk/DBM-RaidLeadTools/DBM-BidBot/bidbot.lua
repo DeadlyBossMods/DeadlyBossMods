@@ -250,16 +250,74 @@ function StartBidding()
 	end
 end
 
-function DoInjectToDKPSystem(itemtable)
-	-- FIXME add popup dialog to fixiate Bid before saveing this
-	if DBM_DKP_System_Settings and DBM_DKP_System_Settings.enabled then
-		if not DBM_DKP_System_Settings.items then DBM_DKP_System_Settings.items = {} end
-		table.insert(DBM_DKP_System_Settings.items, {
-			item = itemtable.item,
-			points = itemtable.points,
-			time = itemtable.time,
-			player = itemtable.bids[1].name
-		})
+do
+	local hiddenedit = CreateFrame('EditBox', "DBM_DKP_PopupExtension", UIParent)
+	hiddenedit:SetWidth(40)
+	hiddenedit:SetHeight(20)
+	hiddenedit:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
+	hiddenedit:SetFontObject('GameFontHighlightSmall')
+	hiddenedit:SetNumeric()
+	hiddenedit:SetMaxLetters(5)
+	hiddenedit:Hide()
+	hiddenedit.left = hiddenedit:CreateTexture(nil, "BACKGROUND")
+	hiddenedit.left:SetPoint("LEFT", hiddenedit, "LEFT", -10, 0)
+	hiddenedit.left:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Left")
+	hiddenedit.left:SetTexCoordModifiesRect(true)
+	hiddenedit.left:SetTexCoord(0, .15, 0, 1)  
+	hiddenedit.right = hiddenedit:CreateTexture(nil, "BACKGROUND")
+	hiddenedit.right:SetPoint("RIGHT", hiddenedit, "RIGHT", 240, 0)
+	hiddenedit.right:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
+	hiddenedit.right:SetTexCoordModifiesRect(true)
+	hiddenedit.right:SetTexCoord(.95, 1, 0, 1)	-- last 10 pixel
+
+	-- /script StaticPopup_Show("DBM_DKP_ACCEPT", "item")	
+	StaticPopupDialogs["DBM_DKP_ACCEPT"] = {
+		text = "bitte Item %s bestätigen",
+		button1 = ACCEPT,
+		button2 = CANCEL,
+		hasEditBox = 1,
+		maxLetters = 32,
+		OnShow = function(self)
+			hiddenedit:SetParent(self)
+			hiddenedit:SetPoint("TOPRIGHT", self.editBox, "TOPLEFT", -10, -6)
+			hiddenedit:SetText(hiddenedit.itemtable.points)
+			hiddenedit:Show()
+			self.editBox:SetFocus()
+			self.editBox:SetText(hiddenedit.itemtable.player)
+		end,
+		OnAccept = function(self)
+			hiddenedit.itemtable.points = tonumber(hiddenedit:GetNumber())
+			hiddenedit.itemtable.player = self.editBox:GetText()
+			if hiddenedit.itemtable.points and hiddenedit.itemtable.points > 0 then
+				-- don't save item when DKP are zero
+				table.insert(DBM_DKP_System_Settings.items, hiddenedit.itemtable)
+			end
+			hiddenedit.itemtable = nil
+		end,
+		--OnCancel
+		OnHide = function(self)
+			hiddenedit:SetParent(UIParent)
+			hiddenedit:Hide()
+			hiddenedit:SetText("")
+
+			self.editBox:SetText("")
+		end,
+		timeout = 0,
+		exclusive = 1,
+		hideOnEscape = 0
+	}
+	
+	function DoInjectToDKPSystem(itemtable)
+		if DBM_DKP_System_Settings and DBM_DKP_System_Settings.enabled then
+			if not DBM_DKP_System_Settings.items then DBM_DKP_System_Settings.items = {} end
+			hiddenedit.itemtable = {
+				item = itemtable.item,
+				points = itemtable.points,
+				time = itemtable.time,
+				player = itemtable.bids[1].name
+			}
+			StaticPopup_Show("DBM_DKP_ACCEPT", itemtable.item)
+		end
 	end
 end
 
