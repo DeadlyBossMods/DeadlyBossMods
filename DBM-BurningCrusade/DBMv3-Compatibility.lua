@@ -386,3 +386,5 @@ function DBM.GetDebuff(unitID, buff)
 		i = i + 1
 	end
 end
+
+DBM.Rank = 0
