@@ -49,6 +49,23 @@ do
 		do	
 			local area = panel:CreateArea(L.AreaStandbyHistory, nil, 260, true)
 
+			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-40, 220)
+			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
+
+			history:SetScript("OnShow", function(self)
+				self:SetMaxLines(#settings.history+1)
+				for k,v in pairs(settings.history) do
+					local mytext = mytext.."["..k.."]: "
+					for name,sbtime in pairs(v) do
+						local hours = math.floor(sbtime/60/60)
+						local minutes = math.floor((sbtime-(hours*60*60))/60)
+						mytext = mytext..name.."("..string.format("%02d", hours)..":"..string.format("%02d", minutes)..") "
+					end
+					self:AddMessage(mytext)
+				end
+			end)
+
+			--[[
 			local text = area:CreateText(L.NoHistoryAvailable, area.frame:GetWidth()-40, true, GameFontNormalSmall, "LEFT")
 			area.frame:SetScript("OnShow", function(self)
 				local mytext = ""
@@ -65,6 +82,7 @@ do
 					text:SetText(mytext)
 				end
 			end)
+			--]]
 
 		end
 		panel:SetMyOwnHeight()
