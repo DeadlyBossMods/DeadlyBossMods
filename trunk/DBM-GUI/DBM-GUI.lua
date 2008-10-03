@@ -435,11 +435,17 @@ local ListFrameButtonsPrototype = {}
 -- Prototyp for ListFrame Options Buttons
 
 function ListFrameButtonsPrototype:CreateCategory(frame, parent)
-	if not type(frame) == "table" or not frame.name then
-		DBM:AddMsg("Failed to create category - frame is not a table or doesn't have a name")
+	if not type(frame) == "table" then
+		DBM:AddMsg("Failed to create category - frame is not a table")
+		DBM:AddMsg(debugstack())
+		return false
+	elseif not frame.name then
+		DBM:AddMsg("Failed to create category - frame.name is missing")
+		DBM:AddMsg(debugstack())
 		return false
 	elseif self:IsPresent(frame.name) then
 		DBM:AddMsg("Frame ("..frame.name..") already exists")
+		DBM:AddMsg(debugstack())
 		return false
 	end
 
