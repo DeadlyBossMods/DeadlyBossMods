@@ -249,6 +249,42 @@ do
 	end
 end
 
+-- This function creates a ScrollingMessageFrame (usefull for log entrys)
+--
+--  arg1 = width of the frame
+--  arg2 = height
+--  arg3 = insertmode (BOTTOM or TOP)
+--  arg4 = enable message fading (default disabled)
+--  arg5 = fontobject (font for the messages)
+--
+function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, fading, fontobject)
+	local scrollframe = CreateFrame("ScrollingMessageFrame",FrameTitle..self:GetNewID(), self.frame)
+	scrollframe:SetWidth(width or 200)
+	scrollframe:SetHeight(height or 150)
+	scrollframe:SetJustifyH("LEFT")
+	if not fading then
+		scrollframe:SetFading(false)
+	end
+	scrollframe:SetInsertMode(insertmode or "BOTTOM")
+	scrollframe:SetFontObject(fontobject or "GameFontNormal")
+	scrollframe:SetMaxLines(2000)
+	scrollframe:EnableMouse(true)
+	scrollframe:EnableMouseWheel(1)
+	
+	scrollframe:SetScript("OnHyperlinkClick", ChatFrame_OnHyperlinkShow)
+	scrollframe:SetScript("OnMouseWheel", function(self, arg)
+		if arg == 1 then
+			self:ScrollUp()
+		elseif arg == -1 then 
+			self:ScrollDown()
+		end
+	end)
+
+	self:SetLastObj(scrollframe)
+	return scrollframe
+end	
+
+
 -- This function creates a slider for numeric values
 --
 --  arg1 = text ontop of the slider, centered
