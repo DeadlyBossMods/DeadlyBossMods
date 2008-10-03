@@ -79,6 +79,7 @@ function DBMBC:ADDON_LOADED(mod)
 		end
 	end
 	table.sort(DBM.AddOns, function(v1, v2) return v1.sort < v2.sort end)
+	registerEvents("RAID_ROSTER_UPDATE")
 	DBM:ZONE_CHANGED_NEW_AREA()
 end
 
@@ -87,6 +88,7 @@ end
 --  (Faked) Boss Mod Object  --
 -------------------------------
 local proxy = {}
+
 
 -----------------------
 --  General Methods  --
@@ -388,3 +390,12 @@ function DBM.GetDebuff(unitID, buff)
 end
 
 DBM.Rank = 0
+do
+	local function updateRank()
+		DBM.Rank = DBM:GetRaidRank() or 0
+	end
+	
+	function DBM:RAID_ROSTER_UPDATE()
+		DBM:Schedule(0, updateRank)
+	end
+end

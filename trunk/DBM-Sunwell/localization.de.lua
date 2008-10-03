@@ -201,6 +201,52 @@ DBM_SBT["Next Darkness"]		= "Nächste Dunkelheit"
 DBM_SBT["Next Black Hole"]		= "Nächstes schwarzes Loch"
 
 
--- Die Entbehrlichen sind dahin - so sei es! Jetzt werde ich dort erfolgreich sein, wo Sargeras versagt hat! Ich werde diese jämmerliche Welt ausbluten lassen und meinen Platz als wahrer Meister der Brennenden Legion einnehmen! Das Ende ist gekommen! Lasst uns diese Welt dem Erdboden gleichmachen!
 
+-- Kil'jaeden
+DBM_KIL_NAME					= "Kil'jaeden"
+DBM_KIL_DESCRIPTION				= "Announces Orbs, Darkness, Shield, Reflections and Fire Bloom"
+
+DBM_KIL_OPTION_RANGE			= "Show range check"
+DBM_KIL_OPTION_SHIELD			= "Announce Shield of the Blue"
+DBM_KIL_OPTION_ORB				= "Announce Orbs"
+DBM_KIL_OPTION_FIRETARGET		= "Announce Fire Bloom targets"
+DBM_KIL_OPTION_FIRESAY			= "Send chat message when you are afflicted by Fire Bloom"
+DBM_KIL_OPTION_FIREWHISP		= "Send whisper to Fire Bloom targets"
+DBM_KIL_OPTION_FIREICON			= "Set icons on Fire Bloom targets"
+DBM_KIL_OPTION_SHOWFRAME		= "Show Fire Bloom target list"
+DBM_KIL_OPTION_WARNREFL			= "Announce Sinister Reflections"
+DBM_KIL_OPTION_DARTS			= "Announce Flame Darts"
+DBM_KIL_OPTION_DRAGONORB		= "Announce Dragon Orbs"
+
+DBM_KIL_YELL_PULL				= "Die Entbehrlichen sind dahin - so sei es! Jetzt werde ich dort erfolgreich sein, wo Sargeras versagt hat! Ich werde diese jämmerliche Welt ausbluten lassen und meinen Platz als wahrer Meister der Brennenden Legion einnehmen! Das Ende ist gekommen! Lasst uns diese Welt dem Erdboden gleichmachen!"
+DBM_KIL_YELL_PHASE2_1			= "The enemy is among you!" -- this actually announces Sinister Reflections and not phase 2
+DBM_KIL_YELL_PHASE2_2			= "Who can you trust!"
+
+DBM_KIL_WARN_PHASE1				= "Phase 2"
+DBM_KIL_WARN_PHASE2				= "Phase 3"
+DBM_KIL_WARN_PHASE3				= "Phase 4 - Meteors"
+DBM_KIL_WARN_PHASE4				= "Phase 5 - Enrage"
+DBM_KIL_WARN_SHIELD				= "Shield of the Blue"
+DBM_KIL_WARN_DARKNESS			= "Darkness"
+DBM_KIL_WARN_DARKNESS_SOON		= "Darkness soon"
+DBM_KIL_WARN_ORB				= "Orb spawned"
+DBM_KIL_WARN_ORBS				= "Orbs spawned"
+--DBM_KIL_WARN_FIRE				= "Fire Bloom incoming"
+DBM_KIL_WARN_FIRE_ON			= "Fire Bloom: >%s<"
+DBM_KIL_WARN_DARKNESS_NOW		= "Darkness of a Thousand Souls"
+DBM_KIL_WARN_REFLECTIONS		= "Sinister Reflections"
+DBM_KIL_WARN_FIRE_SAY			= "Fire Bloom on me!"
+DBM_KIL_WARN_FIRE_WHISPER		= "Fire Bloom on you!"
+DBM_KIL_WARN_DARTS_SOON			= "Flame Darts in 5 sec"
+DBM_KIL_WARN_DARTS				= "Flame Darts"
+DBM_KIL_WARN_DRAGORB_SOON		= "Dragon Orb in 5 sec"
+DBM_KIL_WARN_DRAGORB_NOW		= "Dragon Orb spawned"
+
+
+DBM_KIL_FRAME_TITLE				= "Fire Bloom"
+DBM_KIL_MENU_LOCK				= DBM_KAL_MENU_LOCK
+DBM_KIL_FRAME_COLORS			= DBM_KAL_FRAME_COLORS
+DBM_KIL_FRAME_UPWARDS			= "Expand Fire Bloom target list upwards"
+DBM_KIL_FRAME_UPWARDS2			= DBM_KAL_FRAME_UPWARDS2
+DBM_KIL_FRAME_HIDE				= DBM_KAL_FRAME_HIDE
 end
