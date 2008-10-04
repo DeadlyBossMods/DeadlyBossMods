@@ -172,25 +172,25 @@ do
 		args.destFlags = destFlags
 		-- taken from Blizzard_CombatLog.lua
 		if event == "SWING_DAMAGE" then 
-			args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(1, ...)
+			args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(1, ...)
 		elseif event == "SWING_MISSED" then 
 			args.spellName = ACTION_SWING
 			args.missType = select(1, ...)
 		elseif event:sub(1, 5) == "RANGE" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
 			if event == "RANGE_DAMAGE" then 
-				args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
+				args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
 			elseif event == "RANGE_MISSED" then 
 				args.missType = select(4, ...)
 			end
 		elseif event:sub(1, 5) == "SPELL" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
 			if event == "SPELL_DAMAGE" then
-				args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
+				args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
 			elseif event == "SPELL_MISSED" then 
-				args.missType = select(4, ...)
+				args.missType, args.amountMissed = select(4, ...)
 			elseif event == "SPELL_HEAL" then 
-				args.amount, args.critical = select(4, ...)
+				args.amount, args.overheal, args.critical = select(4, ...)
 				args.school = args.spellSchool
 			elseif event == "SPELL_ENERGIZE" then 
 				args.valueType = 2
@@ -199,7 +199,7 @@ do
 				if event == "SPELL_PERIODIC_MISSED" then
 					args.missType = select(4, ...)
 				elseif event == "SPELL_PERIODIC_DAMAGE" then
-					args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
+					args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
 				elseif event == "SPELL_PERIODIC_HEAL" then
 					args.amount, args.critical = select(4, ...)
 					args.school = args.spellSchool
@@ -262,7 +262,7 @@ do
 			args.sourceFlags = args.destFlags
 		elseif event == "ENVIRONMENTAL_DAMAGE" then
 			args.environmentalType = select(1,...)
-			args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(2, ...)
+			args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(2, ...)
 			args.spellName = getglobal("ACTION_"..event.."_"..args.environmentalType)
 			args.spellSchool = args.school
 		elseif event == "DAMAGE_SPLIT" then
@@ -1555,6 +1555,9 @@ do
 
 	function announcePrototype:Show(...)
 		if not self.option or self.mod.Options[self.option] then
+			if self.mod.Options.Announce and DBM:GetRaidRank() > 0 then
+				SendChatMessage(("*** %s ***"):format(self.text:format(...)), "RAID_WARNING")
+			end
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			local text = ("%s%s%s|r%s"):format(
 				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
