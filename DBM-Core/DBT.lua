@@ -299,7 +299,7 @@ do
 	end	
 	local mt = {__index = barPrototype}
 	
-	function DBT:CreateBar(timer, id, icon, huge)
+	function DBT:CreateBar(timer, id, icon, huge, small)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 then return end
 		local newBar = self:GetBar(id)
@@ -323,6 +323,7 @@ do
 			newBar.enlarged = nil
 			newBar.fadingIn = 0
 			newBar.frame.obj = newBar
+			newBar.small = small
 			newBar:AddToList()
 			self.numBars = (self.numBars or 0) + 1
 		end
@@ -356,7 +357,7 @@ do
 	end
 	function DBT:CreateDummyBar()
 		dummyBars = dummyBars + 1
-		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode")
+		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true)
 		dummy:SetText("Dummy")
 		dummy:Cancel()
 		self.bars[dummy] = true
@@ -537,7 +538,7 @@ function barPrototype:Update(elapsed)
 		self:ApplyStyle()
 		self:SetPosition()
 	end
-	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and self.id ~= "Move1" and self.id:sub(0, 5) ~= "dummy" and not self.enlarged and self.moving ~= "enlarge" then
+	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" then
 		local next = self.next
 		self:RemoveFromList()
 		self:Enlarge()
@@ -580,7 +581,7 @@ do
 	end
 	
 	function DBT:ShowMovableBar()
-		local bar1 = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode")
+		local bar1 = self:CreateBar(20, "Move1", "Interface\\Icons\\Spell_Nature_WispSplode", nil, true)
 		local bar2 = self:CreateBar(20, "Move2", "Interface\\Icons\\Spell_Nature_WispSplode", true)
 		bar1:SetText(DBM_CORE_MOVABLE_BAR)
 		bar2:SetText(DBM_CORE_MOVABLE_BAR)
