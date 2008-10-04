@@ -777,7 +777,8 @@ do
 	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
 		local container = getglobal(self:GetName().."PanelContainer")
 
-		if select("#", frame:GetChildren()) == 0 then
+		if not (type(frame) == "table" and type(frame[0]) == "userdata") or select("#", frame:GetChildren()) == 0 then
+			DBM:AddMsg(debugstack())
 			return
 		end
 
@@ -795,6 +796,17 @@ do
 			getglobal(container:GetName().."FOV"):Show()
 			getglobal(container:GetName().."FOV"):SetScrollChild(frame)
 			getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
+
+			if frame.isfixed then
+				frame.isfixed = nil
+				local listwidth = getglobal(container:GetName().."FOVScrollBar"):GetWidth()
+				for i=1, select("#", frame:GetChildren()), 1 do
+					local child = select(i, frame:GetChildren())
+					if child.mytype == "area" then
+						child:SetWidth( child:GetWidth() - listwidth )
+					end
+				end
+			end
 		else
 			getglobal(container:GetName().."FOV"):Hide()
 			frame:ClearAllPoints()
