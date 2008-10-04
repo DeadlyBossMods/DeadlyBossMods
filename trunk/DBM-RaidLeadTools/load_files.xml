@@ -21,5 +21,9 @@
 <Script file="DBM-DkpSystem\localization.de.lua"/>
 <Script file="DBM-DkpSystem\dkpsystem.lua"/>
 
+<!-- Spells Used (Cooldown for nearly everything) -->
+<Script file="DBM-SpellsUsed\localization.en.lua"/>
+<Script file="DBM-SpellsUsed\localization.de.lua"/>
+<Script file="DBM-SpellsUsed\spellsused.lua"/>
 
 </Ui>

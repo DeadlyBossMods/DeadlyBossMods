@@ -99,6 +99,22 @@ do
 		do	
 			local area = panel:CreateArea(L.AreaItemHistory, nil, 260, true)
 
+			local history = area:CreateScrollingMessageFrame(area.frame:GetWidth()-40, 220)
+			history:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10)
+
+			history:SetScript("OnShow", function(self)
+				if #DBM_BidBot_ItemHistory > 0 then
+					self:SetMaxLines(#DBM_BidBot_ItemHistory+1)
+					for k,itembid in pairs(DBM_BidBot_ItemHistory) do
+						local mytext = "["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP --> "
+						for k,v in pairs(itembid.bids) do
+							mytext = mytext..k..". "..v.name.."("..v.points..") "
+						end
+						self:AddMessage(mytext)
+					end
+				end
+			end)
+--[[
 			local text = area:CreateText(L.NoHistoryAvailable, area.frame:GetWidth()-40, true, GameFontNormalSmall, "LEFT")
 			area.frame:SetScript("OnShow", function(self)
 				local mytext = ""
@@ -114,7 +130,7 @@ do
 					text:SetText(mytext)
 				end
 			end)
-
+--]]
 		end
 		panel:SetMyOwnHeight()
 	end

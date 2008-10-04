@@ -6,6 +6,6 @@
 ## DefaultState: enabled
 ## Author: Nitram and Tandanu
 ## URL: http://www.deadlybossmods.com
-## SavedVariables: DBM_BidBot_ItemHistory, DBM_BidBot_Settings
+## SavedVariables: DBM_BidBot_ItemHistory, DBM_BidBot_Settings, DBM_SpellsUsed_Settings, DBM_AutoInvite_Options, DBM_DKP_System_Settings, DBM_Standby_Settings
 DBM-RaidLeadTools.lua
 load_files.xml
