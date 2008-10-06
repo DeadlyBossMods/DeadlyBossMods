@@ -14,7 +14,7 @@ DBM_TEST_CUSTOM_MOD = {
 			trigger = "test yell",
 			barTimer = 10,
 			barText = "test yell1 bar",
-			
+			--warning
 		},
 --		...
 	},
