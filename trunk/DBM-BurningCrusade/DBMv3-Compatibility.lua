@@ -139,8 +139,8 @@ end
 --------------
 --  Combat  --
 --------------
-function proxy:RegisterCombat(...)
-	self.mod:RegisterCombat(...)
+function proxy:RegisterCombat(type, ...)
+	self.mod:RegisterCombat(((type and type:lower()) or "combat"), ...)
 end
 
 function proxy:SetMinCombatTime(...)

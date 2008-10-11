@@ -91,6 +91,10 @@ local loadModOptions
 local checkWipe
 local fireEvent
 
+
+---------------------------------
+--  General (local) functions  --
+---------------------------------
 local function checkEntry(t, val)
 	for i, v in ipairs(t) do
 		if v == val then
@@ -132,6 +136,10 @@ local function strFromTime(time)
 	end
 end
 
+local function pformat(fstr, ...)
+	local ok, str = pcall(format(fstr, ...))
+	return (ok and str) or fstr
+end
 
 --------------
 --  Events  --
@@ -1556,13 +1564,13 @@ do
 	function announcePrototype:Show(...)
 		if not self.option or self.mod.Options[self.option] then
 			if self.mod.Options.Announce and DBM:GetRaidRank() > 0 then
-				SendChatMessage(("*** %s ***"):format(self.text:format(...)), "RAID_WARNING")
+				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), "RAID_WARNING")
 			end
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			local text = ("%s%s%s|r%s"):format(
 				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
 				colorCode,
-				self.text:format(...),
+				pformat(self.text, ...),
 				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 			)
 			text = text:gsub(">%S+<", function(cap)
@@ -1651,7 +1659,7 @@ do
 	
 	function specialWarningPrototype:Show(...)
 		if not self.option or self.mod.Options[self.option] then
-			font:SetText(self.text:format(...))
+			font:SetText(pformat(self.text, ...))
 			LowHealthFrame:Show()
 			LowHealthFrame:SetAlpha(1)
 			frame:Show()
@@ -1709,7 +1717,7 @@ do
 		if not self.option or self.mod.Options[self.option] then
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 			local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
-			local name = self.text:format(...)
+			local name = pformat(self.text, ...)
 			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
 			if bar then bar:SetText(name) end
 			table.insert(self.startedTimers, id)

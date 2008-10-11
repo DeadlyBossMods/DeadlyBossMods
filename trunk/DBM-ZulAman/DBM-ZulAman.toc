@@ -1,0 +1,44 @@
+﻿## Interface: 30000
+## Title: |cff0055FFDeadly Zul'Aman Boss Mods|r
+## Title-ruRU: |cff0055FFDeadly Boss Mod|r Зул'Аман
+## Title-zhCN: |cff0055FFDeadly|r 祖阿曼 |cff0055FF模组|r
+## Title-zhTW: |cff0055FFDeadly Boss Mod|r 祖阿曼
+## Notes: Boss Mods for Zul'Aman
+## Notes-ruRU: Deadly Boss Mod для Зул'Аман
+## Notes-zhCN: Deadly Boss Mod 的祖阿曼模组
+## Notes-zhTW: Deadly Boss Mod 祖阿曼首領模組
+## Author: Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMZulAman_SavedVars, DBMZulAman_SavedStats
+## X-DBM-AddOn: 1
+## X-DBM-Tab-ID: DBM_ZULAMAN_TAB
+## X-DBM-Tab-BCTab: 1
+## X-DBM-Tab-Sort: 1
+## X-DBM-Name-enGB: Zul'Aman
+## X-DBM-Name-ruRU: Зул'Аман
+## X-DBM-Name-zhCN: 祖阿曼
+## X-DBM-Name-zhTW: 祖阿曼
+## X-DBM-Tab-Text-enGB: Zul'Aman
+## X-DBM-Tab-Text-ruRU: Зул'Аман
+## X-DBM-Tab-Text-zhCN: 祖阿曼
+## X-DBM-Tab-Text-zhTW: 祖阿曼
+## X-DBM-Tab-Title-enGB: Zul'Aman Boss Mods
+## X-DBM-Tab-Title-ruRU: Зул'Аман
+## X-DBM-Tab-Title-zhCN: 祖阿曼
+## X-DBM-Tab-Title-zhTW: 祖阿曼
+## X-DBM-Tab-LoadZone-enGB: Zul'Aman
+## X-DBM-Tab-LoadZone-ruRU: Зул'Аман
+## X-DBM-Tab-LoadZone-zhCN: 祖阿曼
+## X-DBM-Tab-LoadZone-zhTW: 祖阿曼
+localization.en.lua
+localization.de.lua
+localization.cn.lua
+localization.tw.lua
+localization.ru.lua
+Nalorakk.lua
+Akil'zon.lua
+Jan'alai.lua
+Halazzi.lua
+Malacrass.lua
+Zul'jin.lua
