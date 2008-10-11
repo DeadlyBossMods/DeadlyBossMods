@@ -1,0 +1,45 @@
+﻿## Interface: 30000
+## Title: |cff0055FFDeadly Hyjal Boss Mods|r
+## Title-ruRU: |cff0055FFDeadly Хиджал Boss Mods|r
+## Title-zhCN: |cff0055FFDeadly|r 海加尔峰 |cff0055FF模组|r
+## Title-zhTW: |cff0055FFDeadly Boss Mod|r 海加爾山
+## Notes: Boss Mods for Mount Hyjal
+## Notes-ruRU: Гора Хиджал Boss Mods
+## Notes-zhCN: Deadly Boss Mod 的海加尔峰模组
+## Notes-zhTW: Deadly Boss Mod 海加爾山首領模組
+## Author: Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMHyjal_SavedVars, DBMHyjal_SavedStats
+## X-DBM-AddOn: 1
+## X-DBM-Tab-ID: HyjalTab
+## X-DBM-Tab-BCTab: 1
+## X-DBM-Tab-Sort: 4
+## X-DBM-Name: Mount Hyjal
+## X-DBM-Name-ruRU: Гора Хиждал
+## X-DBM-Name-zhCN: 海加尔峰
+## X-DBM-Name-zhTW: 海加爾山
+## X-DBM-Tab-Text: Hyjal
+## X-DBM-Tab-Text-ruRU: Хиджал
+## X-DBM-Tab-Text-zhCN: 海加尔峰
+## X-DBM-Tab-Text-zhTW: 海加爾山
+## X-DBM-Tab-Title: Mount Hyjal Boss Mods
+## X-DBM-Tab-Title-ruRU: Гора Хиджал Boss Mods
+## X-DBM-Tab-Title-zhCN: 海加尔峰
+## X-DBM-Tab-Title-zhTW: 海加爾山
+## X-DBM-Tab-LoadZone: Hyjal Summit
+## X-DBM-Tab-LoadZone-ruRU: Вершина Хиджала
+## X-DBM-Tab-LoadZone-deDE: Hyjalgipfel
+## X-DBM-Tab-LoadZone-zhCN: 海加尔峰
+## X-DBM-Tab-LoadZone-zhTW: 海加爾山
+localization.en.lua
+localization.de.lua
+localization.cn.lua
+localization.tw.lua
+localization.ru.lua
+RageWinterchill.lua
+Anetheron.lua
+Kazrogal.lua
+Azgalor.lua
+Archimonde.lua
+WaveTimers.lua
