@@ -11,7 +11,7 @@
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMZulAman_SavedVars, DBMZulAman_SavedStats
-## X-DBM-AddOn: 1
+## X-DBM-BC-AddOn: 1
 ## X-DBM-Tab-ID: DBM_ZULAMAN_TAB
 ## X-DBM-Tab-BCTab: 1
 ## X-DBM-Tab-Sort: 1
