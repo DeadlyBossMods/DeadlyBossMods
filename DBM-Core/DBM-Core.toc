@@ -11,4 +11,5 @@ DBT-Template.xml
 DBT.lua
 DBM-Core.lua
 DBM-RangeCheck.lua
+DBM-CustomMods.lua
 testCustomMod.lua
