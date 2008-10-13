@@ -1,5 +1,6 @@
 DBM_TEST_CUSTOM_MOD = {
 	name = "testMod (Hogger)",
+	revision = 15,
 	enrage = 300,
 	combatDetection = "yell",
 --	combatDetection = "combat",
