@@ -23,7 +23,8 @@ Maiden:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 );
 
-Maiden:RegisterCombat("YELL", DBM_MOV_YELL_PULL);
+Maiden:SetCreatureID(16457)
+Maiden:RegisterCombat("yell", DBM_MOV_YELL_PULL)
 
 function Maiden:OnCombatStart()
 	self:EndStatusBarTimer("Repentance");

@@ -16,7 +16,8 @@ Moroes:AddOption("GarroteWarn", true, DBM_MOROES_OPTION_4);
 
 Moroes:AddBarOption("Vanish")
 
-Moroes:RegisterCombat("YELL", DBM_MOROES_YELL_START);
+Moroes:SetCreatureID(15687)
+Moroes:RegisterCombat("yell", DBM_MOROES_YELL_START)
 
 function Moroes:OnCombatStart(delay)
 	self:StartStatusBarTimer(33, "Vanish", "Interface\\Icons\\Ability_Vanish");

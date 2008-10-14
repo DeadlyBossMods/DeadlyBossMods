@@ -9,7 +9,9 @@ Aran:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 );
 
-Aran:RegisterCombat("COMBAT");
+
+Aran:SetCreatureID(16524)
+Aran:RegisterCombat("combat")
 
 Aran:AddBarOption("Flame Wreath Cast")
 Aran:AddBarOption("Flame Wreath")

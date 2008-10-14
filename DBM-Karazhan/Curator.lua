@@ -5,7 +5,8 @@ Curator.Author			= "Tandanu";
 
 Curator:RegisterEvents("CHAT_MSG_MONSTER_YELL");
 
-Curator:RegisterCombat("YELL", DBM_CURA_YELL_PULL);
+Curator:SetCreatureID(15691)
+Curator:RegisterCombat("yell", DBM_CURA_YELL_PULL)
 
 Curator:AddBarOption("Evocation")
 Curator:AddBarOption("Next Evocation")

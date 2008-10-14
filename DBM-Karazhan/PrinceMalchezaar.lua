@@ -12,7 +12,8 @@ Prince:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 );
 
-Prince:RegisterCombat("YELL", DBM_PRINCE_YELL_PULL);
+Prince:SetCreatureID(15690)
+Prince:RegisterCombat("yell", DBM_PRINCE_YELL_PULL)
 
 Prince:AddOption("WarnNova", true, DBM_PRINCE_OPTION_1);
 Prince:AddOption("WarnEnfeeble", true, DBM_PRINCE_OPTION_2);

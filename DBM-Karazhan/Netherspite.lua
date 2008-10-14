@@ -11,7 +11,8 @@ Netherspite:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 );
 
-Netherspite:RegisterCombat("COMBAT");
+Netherspite:SetCreatureID(15689)
+Netherspite:RegisterCombat("combat")
 
 Netherspite:AddOption("PhaseWarn", true, DBM_NS_OPTION_1);
 Netherspite:AddOption("PhasePreWarn", true, DBM_NS_OPTION_2);

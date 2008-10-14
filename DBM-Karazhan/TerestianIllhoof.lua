@@ -9,7 +9,8 @@ TerestianIllhoof:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 );
 
-TerestianIllhoof:RegisterCombat("YELL", DBM_TI_YELL_PULL);
+TerestianIllhoof:SetCreatureID(15688)
+TerestianIllhoof:RegisterCombat("yell", DBM_TI_YELL_PULL)
 
 TerestianIllhoof:AddOption("WarnSoon", true, DBM_TI_OPTION_1);
 
