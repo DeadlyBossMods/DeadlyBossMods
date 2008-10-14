@@ -2,6 +2,8 @@ DBM_BC_TARGET		= "<target>"
 
 DBM_GRUULS_LAIR		= "Gruul's Lair"
 DBM_MAGS_LAIR		= "Magtheridon's Lair"
+DBM_HELLFIRE		= "Hellfire Peninsula"
+DBM_SHADOWMOON		= "Shadowmoon Valley"
 
 DBM_GENERIC_ENRAGE_WARN		= "Enrage in %s %s"
 DBM_GENERIC_PHASE_MSG		= "Phase %s"

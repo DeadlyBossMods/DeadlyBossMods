@@ -5,7 +5,8 @@ Kazzak.Author			= "Tandanu";
 Kazzak.LastPull			= 0;
 Kazzak.MinVersionToSync	= "2.70";
 
-Kazzak:RegisterCombat("COMBAT", 2);
+Kazzak:SetCreatureID(18728)
+Kazzak:RegisterCombat("combat");
 
 Kazzak:RegisterEvents(
 	"SPELL_AURA_APPLIED",
