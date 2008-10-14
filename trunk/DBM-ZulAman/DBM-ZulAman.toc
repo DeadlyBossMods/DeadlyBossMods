@@ -1,12 +1,5 @@
 ﻿## Interface: 30000
-## Title: |cff0055FFDeadly Zul'Aman Boss Mods|r
-## Title-ruRU: |cff0055FFDeadly Boss Mod|r Зул'Аман
-## Title-zhCN: |cff0055FFDeadly|r 祖阿曼 |cff0055FF模组|r
-## Title-zhTW: |cff0055FFDeadly Boss Mod|r 祖阿曼
-## Notes: Boss Mods for Zul'Aman
-## Notes-ruRU: Deadly Boss Mod для Зул'Аман
-## Notes-zhCN: Deadly Boss Mod 的祖阿曼模组
-## Notes-zhTW: Deadly Boss Mod 祖阿曼首領模組
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Zul'Aman|r
 ## Author: Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core

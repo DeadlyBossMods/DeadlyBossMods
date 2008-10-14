@@ -1,10 +1,5 @@
 ﻿## Interface: 30000
-## Title: |cff0055FFMisc. Outlands Deadly Boss Mods|r
-## Title-zhCN: |cff0055FFDeadly|r 其他-外域 |cff0055FF模组|r
-## Title-ruRU: |cff0055FFDeadly Boss Mod|r Запределье
-## Notes: Deadly Boss Mods for outdoor bosses in Outlands
-## Notes-zhCN: Deadly Boss Mod 的外域户外首领模组
-## Notes-ruRU: Deadly Boss Mod для внешних боссов Запределья
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Outlands|r
 ## Author: Tandanu and Nitram
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core

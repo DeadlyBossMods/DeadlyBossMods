@@ -1,5 +1,5 @@
-## Interface: 30100
-## Title: |cff0055FFDeadly Boss Mods|r Options GUI
+## Interface: 30000
+## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Options|r
 ## Notes: GUI for Deadly Boss Mods
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1

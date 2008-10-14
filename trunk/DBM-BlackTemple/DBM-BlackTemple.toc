@@ -1,7 +1,5 @@
 ﻿## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r |cff00CC11->|r |cff0055FFBlack Temple|r
-## Title-zhCN: |cff0055FFDeadly|r 黑暗神殿 |cff0055FF模组|r
-## Title-zhTW: |cff0055FFDeadly Boss Mod|r 黑暗神廟
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Black Temple|r
 ## Author: Tandanu
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMBlackTemple_SavedVars, DBMBlackTemple_SavedStats

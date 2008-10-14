@@ -1,12 +1,5 @@
 ﻿## Interface: 30000
-## Title: |cff0055FFDeadly Hyjal Boss Mods|r
-## Title-ruRU: |cff0055FFDeadly Хиджал Boss Mods|r
-## Title-zhCN: |cff0055FFDeadly|r 海加尔峰 |cff0055FF模组|r
-## Title-zhTW: |cff0055FFDeadly Boss Mod|r 海加爾山
-## Notes: Boss Mods for Mount Hyjal
-## Notes-ruRU: Гора Хиджал Boss Mods
-## Notes-zhCN: Deadly Boss Mod 的海加尔峰模组
-## Notes-zhTW: Deadly Boss Mod 海加爾山首領模組
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mount Hyjal|r
 ## Author: Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core

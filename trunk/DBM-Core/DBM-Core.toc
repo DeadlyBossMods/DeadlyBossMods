@@ -1,5 +1,5 @@
 ## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r Core
+## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
 ## Notes: Deadly Boss Mods
 ## SavedVariablesPerCharacter: DBM_SavedOptions, DBT_SavedOptions
 ## LoadOnDemand: 0
