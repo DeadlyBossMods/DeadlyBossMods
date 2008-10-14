@@ -9,7 +9,9 @@ RaJ:RegisterEvents(
 	"SPELL_CAST_START"
 );
 
-RaJ:RegisterCombat("COMBAT", 5, DBM_RJ_JULIANNE, DBM_RJ_NAME, {DBM_RJ_ROMULO, DBM_RJ_JULIANNE}, 20);
+RaJ:SetCreatureID(17534)
+RaJ:RegisterCombat("combat", 17534, 17533)
+RaJ:SetMinCombatTime(25)
 
 RaJ:AddOption("WarnHeal", true, DBM_RJ_OPTION_1);
 RaJ:AddOption("PosionWarn", true, DBM_RJ_OPTION_2);

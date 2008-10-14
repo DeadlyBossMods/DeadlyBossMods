@@ -8,7 +8,9 @@ Oz:RegisterEvents(
 	"SPELL_CAST_START"
 );
 
-Oz:RegisterCombat("YELL", DBM_OZ_YELL_DOROTHEE, nil, nil, DBM_OZ_CRONE_NAME, 25);
+Oz:SetCreatureID(18168)
+Oz:RegisterCombat("yell", DBM_OZ_YELL_DOROTHEE)
+Oz:SetMinCombatTime(25)
 
 Oz:AddOption("RangeCheck", true, DBM_OZ_OPTION_1);
 

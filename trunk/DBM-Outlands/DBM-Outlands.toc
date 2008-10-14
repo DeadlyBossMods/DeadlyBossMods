@@ -1,0 +1,28 @@
+﻿## Interface: 30000
+## Title: |cff0055FFMisc. Outlands Deadly Boss Mods|r
+## Title-zhCN: |cff0055FFDeadly|r 其他-外域 |cff0055FF模组|r
+## Title-ruRU: |cff0055FFDeadly Boss Mod|r Запределье
+## Notes: Deadly Boss Mods for outdoor bosses in Outlands
+## Notes-zhCN: Deadly Boss Mod 的外域户外首领模组
+## Notes-ruRU: Deadly Boss Mod для внешних боссов Запределья
+## Author: Tandanu and Nitram
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMOutlands_SavedVars, DBMOutlands_SavedStats
+## X-DBM-BC-AddOn: 1
+## X-DBM-Tab-ID: Outlands
+## X-DBM-Tab-BCTab: 1
+## X-DBM-Tab-Sort: 0
+## X-DBM-Name: Outlands
+## X-DBM-Tab-LoadZone: Gruul's Lair,Magtheridon's Lair
+localization.en.lua
+localization.de.lua
+localization.fr.lua
+localization.tw.lua
+localization.cn.lua
+localization.ru.lua
+Maulgar.lua
+Gruul.lua
+Magtheridon.lua
+Kazzak.lua
+Doomwalker.lua

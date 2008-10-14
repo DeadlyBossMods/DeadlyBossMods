@@ -6,7 +6,8 @@ Nightbane.BoneRain			= 0;
 Nightbane.LastYell			= 0;
 Nightbane.LastSmokeTarget	= nil;
 
-Nightbane:RegisterCombat("YELL", DBM_NB_YELL_PULL);
+Nightbane:SetCreatureID(17225)
+Nightbane:RegisterCombat("yell", DBM_NB_YELL_PULL)
 
 Nightbane:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",

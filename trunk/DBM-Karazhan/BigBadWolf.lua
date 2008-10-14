@@ -7,7 +7,8 @@ BBW:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 );
 
-BBW:RegisterCombat("YELL", DBM_BBW_YELL_1);
+BBW:SetCreatureID(17521)
+BBW:RegisterCombat("yell", DBM_BBW_YELL_1)
 
 BBW:AddOption("FearWarn", true, DBM_BBW_OPTION_1);
 BBW:AddOption("Whisper", true, DBM_BBW_OPTION_2);
