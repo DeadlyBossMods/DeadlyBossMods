@@ -1,5 +1,5 @@
 ## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r Party
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMParty_SavedVars, DBMParty_Stats

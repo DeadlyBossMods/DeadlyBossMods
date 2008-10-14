@@ -1,5 +1,5 @@
 ## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r The Eye of Eternity
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMEyeOfEternity_SavedVars, DBMEyeOfEternity_SavedStats

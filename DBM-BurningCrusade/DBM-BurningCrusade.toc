@@ -1,6 +1,5 @@
 ## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r Burning Crusade
-## Notes: Burning Crusade Boss Mods
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Burning Crusade|r
 ## SavedVariablesPerCharacter: DBMBurningCrusade_SavedModOptions
 ## LoadOnDemand: 0
 ## RequiredDeps: DBM-Core
