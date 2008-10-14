@@ -778,7 +778,7 @@ do
 		local container = getglobal(self:GetName().."PanelContainer")
 
 		if not (type(frame) == "table" and type(frame[0]) == "userdata") or select("#", frame:GetChildren()) == 0 then
-			DBM:AddMsg(debugstack())
+--			DBM:AddMsg(debugstack())
 			return
 		end
 
@@ -1076,7 +1076,7 @@ local function CreateOptionsMenu()
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
 		pizzaarea.frame:SetPoint('TOPLEFT', generaloptions.frame, "BOTTOMLEFT", 0, -20)
 	
-		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza is done", 175)
+		local textbox = pizzaarea:CreateEditBox(L.PizzaTimer_Title, "Pizza!", 175)
 		local hourbox = pizzaarea:CreateEditBox(L.PizzaTimer_Hours, "0", 25)
 		local minbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Mins, "15", 25)
 		local secbox  = pizzaarea:CreateEditBox(L.PizzaTimer_Secs, "0", 25)
@@ -1585,7 +1585,7 @@ do
 
 			for _, mod in ipairs(DBM.Mods) do
 				if mod.modId == addon.modId then
-					if not mod.panel and (not addon.subTabs or addon.subPanels[mod.subTab]) then
+					if not mod.panel and (not addon.subTabs or (addon.subPanels and addon.subPanels[mod.subTab])) then
 						if addon.subTabs and addon.subPanels[mod.subTab] then
 							mod.panel = addon.subPanels[mod.subTab]:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
 						else
@@ -1635,7 +1635,7 @@ do
 
 					button:SetScript("OnClick", function(self) 
 						mod.Options[v] = not mod.Options[v]
-						if mod.optionFuncs[v] then mod.optionFuncs[v]() end
+						if mod.optionFuncs and mod.optionFuncs[v] then mod.optionFuncs[v]() end
 					end)
 				end
 			end

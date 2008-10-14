@@ -7,7 +7,7 @@
 ## X-DBM-BC-AddOn: 1
 ## X-DBM-Tab-ID: HyjalTab
 ## X-DBM-Tab-BCTab: 1
-## X-DBM-Tab-Sort: 4
+## X-DBM-Tab-Sort: 3
 ## X-DBM-Name: Mount Hyjal
 ## X-DBM-Name-ruRU: Гора Хиждал
 ## X-DBM-Name-zhCN: 海加尔峰

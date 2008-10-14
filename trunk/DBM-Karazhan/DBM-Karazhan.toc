@@ -7,19 +7,19 @@
 ## X-DBM-BC-AddOn: 1
 ## X-DBM-Tab-ID: Karazhan
 ## X-DBM-Tab-BCTab: 1
-## X-DBM-Tab-Sort: 0
-## X-DBM-Name-enGB: Karazhan
+## X-DBM-Tab-Sort: 7
+## X-DBM-Name: Karazhan
 ## X-DBM-Name-zhCN: 卡拉赞
 ## X-DBM-Name-zhTW: 卡拉贊
 ## X-DBM-Name-ruRU: Каражан
-## X-DBM-Tab-Text-enGB: Karazhan
+## X-DBM-Tab-Text: Karazhan
 ## X-DBM-Tab-Text-zhCN: 卡拉赞
 ## X-DBM-Tab-Text-zhTW: 卡拉贊
 ## X-DBM-Tab-Text-ruRU: Каражан
-## X-DBM-Tab-Title-enGB: Karazhan Boss Mods
+## X-DBM-Tab-Title: Karazhan Boss Mods
 ## X-DBM-Tab-Title-zhCN: 卡拉赞
 ## X-DBM-Tab-Title-zhTW: 卡拉贊
-## X-DBM-Tab-LoadZone-enGB: Karazhan
+## X-DBM-Tab-LoadZone: Karazhan
 ## X-DBM-Tab-LoadZone-zhCN: 卡拉赞
 ## X-DBM-Tab-LoadZone-zhTW: 卡拉贊
 ## X-DBM-Tab-LoadZone-ruRU: Каражан

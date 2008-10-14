@@ -3,7 +3,7 @@ local Archimonde = DBM:NewBossMod("Archimonde", DBM_ARCHIMONDE_NAME, DBM_ARCHIMO
 Archimonde.Version	= "1.0";
 Archimonde.Author	= "Tandanu";
 
-Anetheron:SetCreatureID(17968)
+Archimonde:SetCreatureID(17968)
 Archimonde:RegisterCombat("yell", DBM_ARCHIMONDE_YELL_PULL)
 
 Archimonde:RegisterEvents(
