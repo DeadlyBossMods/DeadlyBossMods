@@ -5,7 +5,8 @@ Doomwalker.Version		= "1.0";
 Doomwalker.LastQuake	= 0;
 Doomwalker.LastCharge	= 0;
 
-Doomwalker:RegisterCombat("COMBAT");
+Doomwalker:SetCreatureID(17711)
+Doomwalker:RegisterCombat("combat");
 
 Doomwalker:AddOption("RangeCheck", true, DBM_DOOMW_OPTION_1, function() 
 		DBM:GetMod("Doomwalker").Options.RangeCheck = not DBM:GetMod("Doomwalker").Options.RangeCheck;

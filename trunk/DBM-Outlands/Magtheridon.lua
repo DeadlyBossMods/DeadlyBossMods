@@ -3,7 +3,8 @@ local Mag = DBM:NewBossMod("Magtheridon", DBM_MAG_NAME, DBM_MAG_DESCRIPTION, DBM
 Mag.Version		= "1.0";
 Mag.Author		= "Tandanu";
 
-Mag:RegisterCombat("EMOTE", DBM_MAG_EMOTE_PULL);
+Mag:SetCreatureID(17257)
+Mag:RegisterCombat("emote", DBM_MAG_EMOTE_PULL)
 
 Mag:RegisterEvents(
 	"SPELL_CAST_START",
