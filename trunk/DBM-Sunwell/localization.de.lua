@@ -201,7 +201,7 @@ DBM_SBT["Next Darkness"]		= "Nächste Dunkelheit"
 DBM_SBT["Next Black Hole"]		= "Nächstes schwarzes Loch"
 
 
-
+DBM_KIL_YELL_PULL				= "Die Entbehrlichen sind dahin - so sei es! Jetzt werde ich dort erfolgreich sein, wo Sargeras versagt hat! Ich werde diese jämmerliche Welt ausbluten lassen und meinen Platz als wahrer Meister der Brennenden Legion einnehmen! Das Ende ist gekommen! Lasst uns diese Welt dem Erdboden gleichmachen!"
 -- Kil'jaeden
 DBM_KIL_NAME					= "Kil'jaeden"
 DBM_KIL_DESCRIPTION				= "Announces Orbs, Darkness, Shield, Reflections and Fire Bloom"
