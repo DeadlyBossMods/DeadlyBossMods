@@ -226,6 +226,7 @@ do
 		return false
 	end
 
+	local UpdateRaidRights
 	do 
 		local onetimepromoted = {}	-- if the player is demoted, we don't remote him each time a roster update is send (missing player join / leave event,.. thanks blizzard...)
 		local raidmember = {}
@@ -236,7 +237,7 @@ do
 				raidmember[name] = true
 			end
 		end
-		local function UpdateRaidRights()	-- autopromote players
+		function UpdateRaidRights()	-- autopromote players
 			RaidGrp()
 			for i=1, GetNumRaidMembers(), 1 do
 				local name, rank = GetRaidRosterInfo(i)
