@@ -231,7 +231,7 @@ do
 		local onetimepromoted = {}	-- if the player is demoted, we don't remote him each time a roster update is send (missing player join / leave event,.. thanks blizzard...)
 		local raidmember = {}
 		local function RaidGrp()
-			table.wipe(currentraid)
+			table.wipe(raidmember)
 			for i=1, GetNumRaidMembers(), 1 do
 				local name = UnitName("raid"..i)
 				raidmember[name] = true
