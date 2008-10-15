@@ -49,7 +49,7 @@ local function registerEvents(...)
 	end
 end
 
-frame:SetScript("OnEvent", function(self, event, ...) DBMBC[event](DBMBC, ...) end)
+frame:SetScript("OnEvent", function(self, event, ...) if DBMBC[event] then DBMBC[event](DBMBC, ...) end end)
 
 registerEvents("ADDON_LOADED")
 
@@ -395,7 +395,7 @@ do
 		DBM.Rank = DBM:GetRaidRank() or 0
 	end
 	
-	function DBM:RAID_ROSTER_UPDATE()
+	function DBMBC:RAID_ROSTER_UPDATE()
 		DBM:Schedule(0, updateRank)
 	end
 end
