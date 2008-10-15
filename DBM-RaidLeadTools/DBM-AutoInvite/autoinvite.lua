@@ -242,7 +242,7 @@ do
 			for i=1, GetNumRaidMembers(), 1 do
 				local name, rank = GetRaidRosterInfo(i)
 				-- GuildRank Based invite
-				if not rank > 0 then
+				if type(rank) == "number" and rank == 0 then
 					if (IsGuildMember(name) and GetGuildRank(name, true) <= settings.promote_rank and not onetimepromoted[name])
 					 or settings.promote_names[name] or settings.promote_all then
 
