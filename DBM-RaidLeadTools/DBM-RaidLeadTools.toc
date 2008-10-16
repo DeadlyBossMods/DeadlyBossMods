@@ -1,8 +1,8 @@
 ## Interface: 30000
-## Title: |cff0055FFDeadly Boss Mods|r Raidlead Toolset
-## Title-zhCN: |cff0055FFDeadly Boss Mod|r RaidLead Toolset
-## Notes: Raid lead tools for Deadly Boss Mods (BidBot, StandByBot, ...)
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFRaidLead Tools|r
+## Notes: Raidlead tools for Deadly Boss Mods (BidBot, StandByBot, ...)
 ## LoadOnDemand: 0
+## RequiredDeps: DBM-Core
 ## DefaultState: enabled
 ## Author: Nitram and Tandanu
 ## URL: http://www.deadlybossmods.com
