@@ -251,7 +251,7 @@ end
 --  Bars  --
 ------------
 function proxy:StartStatusBarTimer(timer, name, icon, noBroadcast, repetitions, colorR, colorG, colorB, colorA)
-	if not self.Options[name] then return end
+	if self.Options[name] == false then return end
 	self.timer:Start(timer, name)
 	self.timer:UpdateIcon(icon, name)
 end
