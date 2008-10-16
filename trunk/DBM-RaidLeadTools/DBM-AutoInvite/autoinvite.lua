@@ -246,7 +246,7 @@ do
 					if (IsGuildMember(name) and GetGuildRank(name, true) <= settings.promote_rank and not onetimepromoted[name])
 					 or settings.promote_names[name] or settings.promote_all then
 
-						PromoteByName(name)
+						PromoteToAssistant(name)
 						onetimepromoted[name] = true
 					end
 				end
