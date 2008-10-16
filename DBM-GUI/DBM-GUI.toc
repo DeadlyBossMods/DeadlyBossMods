@@ -1,5 +1,5 @@
 ## Interface: 30000
-## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Options|r
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOptions GUI|r
 ## Notes: GUI for Deadly Boss Mods
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1
@@ -13,4 +13,3 @@ DBM-GUI_Templates.xml
 DBM-GUI.lua
 DBM-GUI_DropDown.lua
 
-DBM-GUI_BossModStudio.lua
