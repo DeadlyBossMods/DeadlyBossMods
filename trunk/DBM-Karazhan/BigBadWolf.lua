@@ -24,7 +24,7 @@ function BBW:OnEvent(event, arg1)
 			if target == UnitName("player") then
 				self:AddSpecialWarning(DBM_BBW_RUN_AWAY)
 			end
-			self:SendSync(target)		
+			self:SendSync(target)
 		elseif arg1.spellId == 30752 then
 			self:StartStatusBarTimer(24, "Fear", "Interface\\Icons\\Ability_Devour");
 			if self.Options.FearWarn then

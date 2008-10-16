@@ -137,7 +137,7 @@ local function strFromTime(time)
 end
 
 local function pformat(fstr, ...)
-	local ok, str = pcall(format(fstr, ...))
+	local ok, str = pcall(format, fstr, ...)
 	return (ok and str) or fstr
 end
 
