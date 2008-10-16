@@ -1,0 +1,11 @@
+## Interface: 30000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFBossMod Studio|r
+## Notes: BossModStudio for Deadly Boss Mods
+## RequiredDeps: DBM-Core
+## LoadOnDemand: 0
+## DefaultState: enabled
+## Author: Nitram and Tandanu
+## URL: http://www.deadlybossmods.com
+localization.en.lua
+localization.de.lua
+DBM-BossModStudio.lua
