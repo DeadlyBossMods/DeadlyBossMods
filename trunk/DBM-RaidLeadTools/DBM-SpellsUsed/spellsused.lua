@@ -90,19 +90,23 @@ L.Error_FillUp			= "Please fillup all fields before adding an additional one"
 local addDefaultOptions
 do 
 	local function creategui()
+		local createnewentry
+		local CurCount = 0
 		local panel = DBM_RaidLeadPanel:CreateNewPanel(L.TabCategory_SpellsUsed, "option")
 		local generalarea = panel:CreateArea(L.AreaGeneral, nil, 150, true)
 		local auraarea = panel:CreateArea(L.AreaAuras, nil, 20, true)
 
 		local function regenerate()
 			-- FIXME here we can reuse the frames to save some memory (if the player deletes entrys)
-			for i=1, select("#", auraarea.frame:GetChildren()) do
+			for i=select("#", auraarea.frame:GetChildren()), 1, -1 do
 				local v = select(i, auraarea.frame:GetChildren())
 				v:Hide()
-				v:SetParent(nil)
+				v:SetParent(UIParent)
 				v:ClearAllPoints()
-				auraarea.frame:SetHeight(20)
 			end
+			auraarea.frame:SetHeight(20)
+			CurCount = 0
+
 			if #settings.spells == 0 then
 				createnewentry()
 			else
@@ -112,7 +116,7 @@ do
 			end				
 		end
 
-		local createnewentry
+		
 		do
 			local area = generalarea
 			local enabled = area:CreateCheckButton(L.Enable, true)
@@ -145,7 +149,6 @@ do
 			end)
 		end
 		do
-			local CurCount = 0
 			local function onchange_spell(field)
 				return function(self)
 					settings.spells[self.guikey] = settings.spells[self.guikey] or {}
@@ -273,6 +276,7 @@ do
 
 		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and select(2, ...) == "SPELL_CAST_SUCCESS" and 
 		     ((settings.only_from_raid and DBM:IsInRaid()) or (settings.active_in_pvp and (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena")) ) then
+				DBM:AddMsg("XXXX")
 			local fromplayer = select(4, ...)
 			local spellid = select(9, ...)
 			if settings.only_from_raid and DBM:GetRaidUnitId(name) == "none" then return end	-- filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
