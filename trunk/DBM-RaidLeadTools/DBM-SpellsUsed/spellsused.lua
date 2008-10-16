@@ -276,7 +276,6 @@ do
 
 		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and select(2, ...) == "SPELL_CAST_SUCCESS" and 
 		     ((settings.only_from_raid and DBM:IsInRaid()) or (settings.active_in_pvp and (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena")) ) then
-				DBM:AddMsg("XXXX")
 			local fromplayer = select(4, ...)
 			local spellid = select(9, ...)
 			if settings.only_from_raid and DBM:GetRaidUnitId(name) == "none" then return end	-- filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
@@ -293,7 +292,6 @@ do
 				end
 			end
 			if settings.show_portal then
-				DBM:AddMsg("x")
 				for k,v in pairs(myportals) do
 					if v.spell == spellid then
 						local spellinfo, _, icon = GetSpellInfo(spellid)
