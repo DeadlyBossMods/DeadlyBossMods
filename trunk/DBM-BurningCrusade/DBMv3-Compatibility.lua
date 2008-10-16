@@ -305,6 +305,7 @@ end
 
 local function onInitialize(self)
 	if self.proxy.OnUpdate then	self:RegisterOnUpdateHandler(self.proxy.OnUpdate, self.proxy.UpdateInterval or 0.2) end
+	self.proxy.Options = self.Options
 end
 
 -------------------
