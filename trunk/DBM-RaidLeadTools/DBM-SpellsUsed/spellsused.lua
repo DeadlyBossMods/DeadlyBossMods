@@ -36,7 +36,7 @@ local default_settings = {
 		{ spell = 6346, bartext = default_bartext, cooldown = 180 },	-- Priest: Fear Ward
 		{ spell = 1161, bartext = default_bartext, cooldown = 180 },	-- Warrior: Challenging Shout (AE Taunt)
 		{ spell = 871, bartext = default_bartext, cooldown = 12 },	-- Warrior: Shieldwall Duration (for Healers to see how long SW runs)
-		{ spell = 34477, bartext = default_bartext, cooldown = 120 },	-- Hunter: Missdirect
+		{ spell = 34477, bartext = default_bartext, cooldown = 30 },	-- Hunter: Missdirect
 		{ spell = 20484, bartext = default_bartext, cooldown = 300 },	-- Druid: Rebirth
 		{ spell = 29166, bartext = default_bartext, cooldown = 360 },	-- Druid: Innervate
 		{ spell = 5209, bartext = default_bartext, cooldown = 180 }, 	-- Druid: Challenging Roar (AE Taunt)
@@ -243,7 +243,7 @@ do
 		end
 	end
 
-	local myportals
+	myportals = {}
 	local mainframe = CreateFrame("frame", "DBM_SpellTimers", UIParent)
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
@@ -289,6 +289,7 @@ do
 				end
 			end
 			if settings.show_portal then
+				DBM:AddMsg("x")
 				for k,v in pairs(myportals) do
 					if v.spell == spellid then
 						local spellinfo, _, icon = GetSpellInfo(spellid)
