@@ -819,7 +819,7 @@ do
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
-						child:SetWidth( child:GetWidth() + listwidth-2 )
+						child:SetWidth( child:GetWidth() + listwidth )
 					end
 				end
 			end
