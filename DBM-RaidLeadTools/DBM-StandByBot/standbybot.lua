@@ -26,15 +26,17 @@
 
 local mainframe = CreateFrame("frame", "DBM_StandyByBot", UIParent)
 
-DBM_Standby_Settings = {
+local default_settings = {
 	enabled = true,
 	sb_users = {},
 	sb_times = {},
 	history = {}
 }
 
+DBM_Standby_Settings = {}
+local settings = default_settings
+
 local L = DBM_StandbyBot_Translations
-local settings = DBM_Standby_Settings
 local inRaid = false
 
 do 
@@ -184,6 +186,15 @@ do
 end
 
 do
+	local function addDefaultOptions(t1, t2)
+		for i, v in pairs(t2) do
+			if t1[i] == nil then
+				t1[i] = v
+			elseif type(v) == "table" then
+				addDefaultOptions(v, t2[i])
+			end
+		end
+	end
 	local function RegisterEvents(...)
 		for i = 1, select("#", ...) do
 			mainframe:RegisterEvent(select(i, ...))
@@ -191,6 +202,10 @@ do
 	end
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
+			-- Update settings of this Addon
+			settings = DBM_DKP_System_Settings
+			addDefaultOptions(settings, default_settings)
+
 			RegisterEvents(
 				"CHAT_MSG_GUILD",
 				"CHAT_MSG_RAID",

@@ -25,7 +25,7 @@
 --
 --
 
-DBM_BidBot_Settings = {
+local default_settings = {	
 	enabled = true,			-- BidBot ein/aus
 	chatchannel = "GUILD",		-- Ausgabe channel
 	minGebot = 10,			-- Mindest Gebot
@@ -37,7 +37,9 @@ DBM_BidBot_Settings = {
 
 DBM_BidBot_ItemHistory = {}		-- ItemHistory
 
-local settings = DBM_BidBot_Settings
+DBM_BidBot_Settings = {}
+local settings = default_settings
+
 local L = DBM_BidBot_Translations
 
 local BidBot_Queue = {}			-- items pending
@@ -221,7 +223,7 @@ function AuctionEnd()
 
 	-- Sync History
 	SendAddonMessage("DBM_BidBot", "ITEM:"..select(2, strsplit(":", Itembid.item))..":"..Itembid.points..":("..msg..")", "RAID")
-	SendAddonMessage("DBM_BidBot", "ITEM:"..select(2, strsplit(":", Itembid.item))..":"..Itembid.points..":("..msg..")", "GUILD")
+	--SendAddonMessage("DBM_BidBot", "ITEM:"..select(2, strsplit(":", Itembid.item))..":"..Itembid.points..":("..msg..")", "GUILD")
 
 	if max then
 		SendChatMessage(L.Prefix..L.Message_BiddingsVisible:format(counter), settings.chatchannel)
@@ -388,8 +390,22 @@ do
 
  	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", function(msg) return (BidBot_InProgress and msg:find("^%d+$")) end)
 
+	local function addDefaultOptions(t1, t2)
+		for i, v in pairs(t2) do
+			if t1[i] == nil then
+				t1[i] = v
+			elseif type(v) == "table" then
+				addDefaultOptions(v, t2[i])
+			end
+		end
+	end
+
 	BidBot_Frame:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
+			-- Update settings of this Addon
+			settings = DBM_DKP_System_Settings
+			addDefaultOptions(settings, default_settings)
+
 			RegisterEvents(
 				"CHAT_MSG_GUILD",
 				"CHAT_MSG_RAID",
