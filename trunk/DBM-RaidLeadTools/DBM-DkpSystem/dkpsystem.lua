@@ -25,8 +25,7 @@
 --
 --
 
-
-DBM_DKP_System_Settings = {
+local default_settings = {
 	enabled = true,
 	sb_as_raid = true,		-- count Standby Players as Raid Members
 
@@ -48,7 +47,9 @@ DBM_DKP_System_Settings = {
 	history = {}			-- history of raids
 }
 
-local settings = DBM_DKP_System_Settings
+DBM_DKP_System_Settings = {}
+local settings = default_settings
+
 local L = DBM_DKP_System_Translations
 
 local timespend = 0
@@ -128,7 +129,7 @@ do
 					else
 						event.members = DKPto
 					end
-					table.insert(setting.events, event)
+					table.insert(settings.events, event)
 					DBM:AddMsg(L.Local_EventCreated)
 					neweventpoints:SetText("")
 					neweventdescr:SetText("")
@@ -265,8 +266,25 @@ function RaidEnd()
 end
 
 do
+	local function addDefaultOptions(t1, t2)
+		for i, v in pairs(t2) do
+			if t1[i] == nil then
+				t1[i] = v
+			elseif type(v) == "table" then
+				addDefaultOptions(v, t2[i])
+			end
+		end
+	end
+
 	local mainframe = CreateFrame("frame", "DBM_DKP_System", UIParent)
-	mainframe:SetScript("OnUpdate", function(self, e)
+	mainframe:SetScript("OnEvent", function(self, event, ...)
+		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
+			-- Update settings of this Addon
+			settings = DBM_DKP_System_Settings
+			addDefaultOptions(settings, default_settings)
+		end
+	end)
+	mainframe:SetScript("OnUpdate", function(self, e)	
 		if not settings.time_event or settings.time_to_count < 5 then return end
 		timespend = timespend + e
 		if timespend/60 >= settings.time_to_count then
@@ -282,6 +300,7 @@ do
 			timespend = e
 		end
 	end)
+	mainframe:RegisterEvent("ADDON_LOADED")
 end
 
 

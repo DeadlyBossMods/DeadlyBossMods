@@ -26,7 +26,7 @@
 
 local L = DBM_AutoInvite_Translations
 
-DBM_AutoInvite_Options = {
+local default_settings = {
 	enabled = true,
 	keyword = 'invite',
 	guildmates = true,
@@ -38,6 +38,11 @@ DBM_AutoInvite_Options = {
 	promote_rank = 0,
 	promote_names = {}
 }
+
+
+DBM_AutoInvite_Options = {}
+local settings = default_settings
+
 
 local settings = DBM_AutoInvite_Options
 local mainframe = CreateFrame("Frame", "DBM_AutoInvite", UIParent)
@@ -298,8 +303,22 @@ do
 		end
 	end
 
+	local function addDefaultOptions(t1, t2)
+		for i, v in pairs(t2) do
+			if t1[i] == nil then
+				t1[i] = v
+			elseif type(v) == "table" then
+				addDefaultOptions(v, t2[i])
+			end
+		end
+	end
+
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
+			-- Update settings of this Addon
+			settings = DBM_DKP_System_Settings
+			addDefaultOptions(settings, default_settings)
+
 			self:RegisterEvent("CHAT_MSG_WHISPER")
 			self:RegisterEvent("GUILD_ROSTER_UPDATE")
 			self:RegisterEvent("RAID_ROSTER_UPDATE")
