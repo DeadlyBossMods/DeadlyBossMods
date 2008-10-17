@@ -75,7 +75,7 @@ L.TabCategory_SpellsUsed 	= "Spell/Skill Cooldowns"
 L.AreaGeneral 			= "General Settings for Spell and Skill use Cooldowns"
 L.Enable 			= "Enable Cooldownbars"
 L.Show_LocalMessage 		= "Show local message on cast"
-L.Enable_inRaid			= "Show Cooldowns from RaidMembers"
+L.Enable_inRaid			= "Show Cooldowns only from RaidMembers"
 L.Enable_inBattleground		= "Show Cooldowns in Battlegrounds"
 L.Enable_Portals		= "Show Portal Durations"
 L.Reset				= "reset to defaults"
@@ -274,8 +274,10 @@ do
 				myportals = settings.portal_horde
 			end
 
-		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and select(2, ...) == "SPELL_CAST_SUCCESS" and 
-		     ((settings.only_from_raid and DBM:IsInRaid()) or (settings.active_in_pvp and (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena")) ) then
+		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and select(2, ...) == "SPELL_CAST_SUCCESS" and (
+		     (settings.only_from_raid and DBM:IsInRaid()) 
+		     or (settings.active_in_pvp and (select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "arena")) ) then
+
 			local fromplayer = select(4, ...)
 			local spellid = select(9, ...)
 			if settings.only_from_raid and DBM:GetRaidUnitId(name) == "none" then return end	-- filter if cast is from outside raidgrp (we don't want to see mass spam in Dalaran/...)
@@ -291,17 +293,24 @@ do
 					end
 				end
 			end
-			if settings.show_portal then
-				for k,v in pairs(myportals) do
-					if v.spell == spellid then
-						local spellinfo, _, icon = GetSpellInfo(spellid)
-						local bartext = v.bartext:gsub("%%spell", spellinfo)
-						bartext = bartext:gsub("%%player", fromplayer)
-						SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
-	
-						if settings.showlocal then
-							DBM:AddMsg( L.Local_CastMessage:format(bartext) )
-						end
+
+		elseif event == "COMBAT_LOG_EVENT_UNFILTERED" and settings.show_portal and select(2, ...) == "SPELL_CREATE" then
+			if not (settings.only_from_raid and DBM:IsInRaid() and DBM:GetRaidUnitId(name) ~= "none") then
+				return -- cast from outside the raid (and only from raid is wished
+			end
+
+			local fromplayer = select(4, ...)
+			local spellid = select(9, ...)
+
+			for k,v in pairs(myportals) do
+				if v.spell == spellid then
+					local spellinfo, _, icon = GetSpellInfo(spellid)
+					local bartext = v.bartext:gsub("%%spell", spellinfo)
+					bartext = bartext:gsub("%%player", fromplayer)
+					SpellBars:CreateBar(v.cooldown, bartext, icon, nil, true)
+
+					if settings.showlocal then
+						DBM:AddMsg( L.Local_CastMessage:format(bartext) )
 					end
 				end
 			end
