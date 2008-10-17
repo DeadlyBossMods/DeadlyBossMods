@@ -409,8 +409,8 @@ do
 			if DBM_BidBot_Translations[GetLocale()] then 
 				L = DBM_BidBot_Translations[GetLocale()]
 			end
-		elseif event == "CHAT_MSG_WHISPER" then
-			if BidBot_InProgress and arg1:find("^%d+$") then
+		elseif event == "CHAT_MSG_WHISPER" and BidBot_InProgress then
+			if arg1:find("^%d+$") then
 				-- here is a bid
 				AddBid(arg2, tonumber(arg1))
 			end

@@ -155,7 +155,7 @@ local function SaveTimeHistory()
 		settings.sb_times = {}
 	end
 end
-DBM:RegisterCallback("raidLeave", function(name) if name == UnitName("player") then SaveTimeHistory(name) end end)
+DBM:RegisterCallback("raidLeave", function(name) if name == UnitName("player") then SaveTimeHistory() end end)
 
 do
 	local function send_leave_whisper(name)
