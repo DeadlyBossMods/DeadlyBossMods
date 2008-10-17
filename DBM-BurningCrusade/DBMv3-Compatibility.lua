@@ -401,3 +401,34 @@ do
 		DBM:Schedule(0, updateRank)
 	end
 end
+
+
+-------------------------------
+--  Schedule function hooks  --
+-------------------------------
+
+do
+	local old = DBM.Schedule
+	function DBM:Schedule(t, f, ...)
+		if type(self) == "number" then
+			old(DBM, self, t, f, ...)
+		else
+			old(self, t, f, ...)
+		end
+	end
+end
+
+do
+	local old = DBM.Unschedule
+	function DBM:Unschedule(f, ...)
+		if type(self) == "number" then
+			old(DBM, self, f, ...)
+		else
+			old(self, f, ...)
+		end
+	end
+end
+
+function DBM.UnSchedule(...)
+	DBM:Unschedule(...)
+end
