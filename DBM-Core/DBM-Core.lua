@@ -604,9 +604,11 @@ do
 	local register_onSelfRaidLeave = {}
 
 	function DBM:Register_OnPlayerJoinRaid_Callback(func)	-- Function to call when a new player joins
+		if not inRaid then return end
 		table.insert(register_onPlayerJoin, func)
 	end
 	function DBM:Register_OnPlayerLeaveRaid_Callback(func)	-- Function to call when a player left the raid
+		if not inRaid then return end
 		table.insert(register_onPlayerLeave, func)
 	end
 	function DBM:Register_OnRaidJoinSelf_Callback(func)	-- Function to call when the player joins the raid
@@ -642,12 +644,6 @@ do
 
 	function DBM:RAID_ROSTER_UPDATE()
 		if GetNumRaidMembers() >= 1 then
-			if not inRaid then
-				inRaid = true
-				sendSync("DBMv4-Ver", "Hi!")
-				self:Schedule(2, DBM.RequestTimers, DBM)
-				call_join(false)
-			end
 			for i = 1, GetNumRaidMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
 				if not raid[name] then
@@ -662,6 +658,12 @@ do
 					raid[name].id = "raid"..i
 					raid[name].updated = true
 				end
+			end
+			if not inRaid then
+				inRaid = true
+				sendSync("DBMv4-Ver", "Hi!")
+				self:Schedule(2, DBM.RequestTimers, DBM)
+				call_join(false)
 			end
 			for i, v in pairs(raid) do
 				if not v.updated then
