@@ -155,15 +155,16 @@ local function SaveTimeHistory()
 		settings.sb_times = {}
 	end
 end
-DBM:Register_OnRaidLeaveSelf_Callback(SaveTimeHistory)
+DBM:RegisterCallback("raidLeave", function(name) if name == UnitName("player") then SaveTimeHistory(name) end end)
 
 do
 	local function send_leave_whisper(name)
 		if not amIactive() then return end
 		SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
 	end
-	DBM:Register_OnPlayerLeaveRaid_Callback(send_leave_whisper)
-	DBM:Register_OnPlayerJoinRaid_Callback(RemoveStandbyMember)
+
+	DBM:RegisterCallback("raidLeave", send_leave_whisper)
+	DBM:RegisterCallback("raidJoin", RemoveStandbyMember)
 end
 
 do
