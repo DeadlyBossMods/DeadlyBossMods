@@ -184,10 +184,10 @@ function Kil:OnSync(msg)
 --		self:AddEntry(msg, class)
 		if #fire == 5 then
 			announceFire(self)
-			DBM.UnSchedule(announceFire, self)
+			DBM:Unschedule(announceFire, self)
 		else
-			DBM.UnSchedule(announceFire, self)
-			DBM.Schedule(1, announceFire, self)
+			DBM:Unschedule(announceFire, self)
+			DBM:Schedule(1, announceFire, self)
 		end
 		if UnitName("player") == msg then
 			if self.Options.FireSay then
