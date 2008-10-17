@@ -599,13 +599,11 @@ do
 	
 	function DBM:RAID_ROSTER_UPDATE()
 		if GetNumRaidMembers() >= 1 then
-			if not inRaid then
-				inRaid = true
-				sendSync("DBMv4-Ver", "Hi!")
-				self:Schedule(2, DBM.RequestTimers, DBM)
-			end
 			for i = 1, GetNumRaidMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
+				if (not raid[name]) and inRaid then
+					fireEvent("raidJoin", name)
+				end
 				if name then
 					raid[name] = raid[name] or {}
 					raid[name].name = name
@@ -616,15 +614,23 @@ do
 					raid[name].updated = true
 				end
 			end
+			if not inRaid then
+				inRaid = true
+				sendSync("DBMv4-Ver", "Hi!")
+				self:Schedule(2, DBM.RequestTimers, DBM)
+				fireEvent("raidJoin", UnitName("player"))
+			end
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raid[i] = nil
+					fireEvent("raidLeave", i)
 				else
 					v.updated = nil
 				end
 			end
 		else
 			inRaid = false
+			fireEvent("raidLeave", UnitName("player"))
 		end
 	end
 	
