@@ -263,7 +263,6 @@ do
 	hiddenedit:SetHeight(20)
 	hiddenedit:SetScript("OnEscapePressed", function(self) self:ClearFocus() end)
 	hiddenedit:SetFontObject('GameFontHighlightSmall')
-	hiddenedit:SetNumeric()
 	hiddenedit:SetMaxLetters(5)
 	hiddenedit:Hide()
 	hiddenedit.left = hiddenedit:CreateTexture(nil, "BACKGROUND")
@@ -301,8 +300,8 @@ do
 			end
 			hiddenedit.itemtable = nil
 		end,
-		--OnCancel
 		OnHide = function(self)
+			--self:GetScript("OnAccept")(self)
 			hiddenedit:SetParent(UIParent)
 			hiddenedit:Hide()
 			hiddenedit:SetText("")
@@ -310,7 +309,7 @@ do
 			self.editBox:SetText("")
 		end,
 		timeout = 0,
-		exclusive = 1,
+		exclusive = 0,
 		hideOnEscape = 0
 	}
 	
