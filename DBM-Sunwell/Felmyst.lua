@@ -126,6 +126,7 @@ function Felmyst:OnSync(msg)
 		if self.Options.VaporWarn then
 			self:Announce(DBM_FELMYST_WARN_VAPOR:format(msg), 2)
 		end
+		self:SetIcon(msg, 25)
 	end
 end
 
