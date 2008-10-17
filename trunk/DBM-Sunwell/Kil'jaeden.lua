@@ -181,7 +181,7 @@ function Kil:OnSync(msg)
 				break
 			end
 		end
-		self:AddEntry(msg, class)
+--		self:AddEntry(msg, class)
 		if #fire == 5 then
 			announceFire(self)
 			DBM.UnSchedule(announceFire, self)
