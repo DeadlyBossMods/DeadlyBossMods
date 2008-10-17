@@ -596,16 +596,63 @@ end
 do
 	local inRaid = false
 	local playerRank = 0
-	
+
+	-- Thanks to blizzard for the missing "ON_RAID_JOIN / LEAVE and PLAYER_JOINED_RAID" events
+	local register_onPlayerJoin = {}
+	local register_onPlayerLeave = {}
+	local register_onSelfRaidJoin = {}
+	local register_onSelfRaidLeave = {}
+
+	function DBM:Register_OnPlayerJoinRaid_Callback(func)	-- Function to call when a new player joins
+		table.insert(register_onPlayerJoin, func)
+	end
+	function DBM:Register_OnPlayerLeaveRaid_Callback(func)	-- Function to call when a player left the raid
+		table.insert(register_onPlayerLeave, func)
+	end
+	function DBM:Register_OnRaidJoinSelf_Callback(func)	-- Function to call when the player joins the raid
+		table.insert(register_onSelfRaidJoin, func)
+	end
+	function DBM:Register_OnRaidLeaveSelf_Callback(func)	-- Function to call when the player left the raid
+		table.insert(register_onSelfRaidLeave, func)
+	end
+
+	local function call_leave(name)
+		if name == false then
+			for _,v in pairs(register_onSelfRaidLeave) do
+				v(name)
+			end
+		else
+			for _,v in pairs(register_onPlayerLeave) do
+				v(name)
+			end
+		end
+	end
+	local function call_join(name)
+		if name == false then
+			for _,v in pairs(register_onSelfRaidJoin) do
+				v(name)
+			end
+		else
+			for _,v in pairs(register_onPlayerJoin) do
+				v(name)
+			end
+		end
+	end
+	-- end
+
 	function DBM:RAID_ROSTER_UPDATE()
 		if GetNumRaidMembers() >= 1 then
 			if not inRaid then
 				inRaid = true
 				sendSync("DBMv4-Ver", "Hi!")
 				self:Schedule(2, DBM.RequestTimers, DBM)
+				call_join(false)
 			end
 			for i = 1, GetNumRaidMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
+				if not raid[name] then
+					call_join(name)
+				end
 				if name then
 					raid[name] = raid[name] or {}
 					raid[name].name = name
@@ -618,6 +665,7 @@ do
 			end
 			for i, v in pairs(raid) do
 				if not v.updated then
+					call_leave(raid[i].name)
 					raid[i] = nil
 				else
 					v.updated = nil
@@ -625,6 +673,7 @@ do
 			end
 		else
 			inRaid = false
+			call_leave(false)
 		end
 	end
 	
@@ -692,6 +741,7 @@ do
 		name = name or UnitName("player")
 		return (raid[name] and raid[name].id) or "none"
 	end
+
 end
 
 
