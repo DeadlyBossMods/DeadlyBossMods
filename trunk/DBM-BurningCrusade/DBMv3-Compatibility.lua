@@ -409,22 +409,22 @@ end
 
 do
 	local old = DBM.Schedule
-	function DBM:Schedule(t, f, ...)
+	function DBM:Schedule(t, ...)
 		if type(self) == "number" then
-			old(DBM, self, t, f, ...)
+			old(DBM, self, t, ...)
 		else
-			old(self, t, f, ...)
+			old(self, t, ...)
 		end
 	end
 end
 
 do
 	local old = DBM.Unschedule
-	function DBM:Unschedule(f, ...)
+	function DBM:Unschedule(...)
 		if type(self) == "function" then
-			old(DBM, self, f, ...)
+			old(DBM, self, ...)
 		else
-			old(self, f, ...)
+			old(self, ...)
 		end
 	end
 end
