@@ -106,33 +106,22 @@ do
 
 			history:SetScript("OnShow", function(self)
 				if #DBM_BidBot_ItemHistory > 0 then
-					self:SetMaxLines(#DBM_BidBot_ItemHistory+1)
+					self:SetMaxLines((#DBM_BidBot_ItemHistory*3)+1)
 					for k,itembid in pairs(DBM_BidBot_ItemHistory) do
-						local mytext = "["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP --> "
-						for k,v in pairs(itembid.bids) do
-							mytext = mytext..k..". "..v.name.."("..v.points..") "
+						if #itembid.bids > 0 then
+							self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP ")
+							for i=1, 3, 1 do
+								if itembid.bids[i] then
+									self:AddMessage("               -> "..i..". "..itembid.bids[i].name.."("..itembid.bids[i].points..")")
+								end
+							end
+							self:AddMessage("")
+						else
+							self:AddMessage("["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..L.Disenchant)
 						end
-						self:AddMessage(mytext)
 					end
 				end
 			end)
---[[
-			local text = area:CreateText(L.NoHistoryAvailable, area.frame:GetWidth()-40, true, GameFontNormalSmall, "LEFT")
-			area.frame:SetScript("OnShow", function(self)
-				local mytext = ""
-				for i=#DBM_BidBot_ItemHistory, 1, -1 do	-- reverse order, last is newest
-					local itembid = DBM_BidBot_ItemHistory[i]
-					mytext = mytext.."["..date(L.DateFormat, itembid.time).."]: "..itembid.item.." "..itembid.points.." DKP \n     ---> "
-					for k,v in pairs(itembid.bids) do
-						mytext = mytext..k..". "..v.name.."("..v.points..") "
-					end
-					mytext = mytext.."\n"
-				end
-				if mytext ~= "" then
-					text:SetText(mytext)
-				end
-			end)
---]]
 		end
 		panel:SetMyOwnHeight()
 	end
@@ -230,7 +219,7 @@ function AuctionEnd()
 	end
 
 	BidBot_CurrentItem = ""
-	for i=select("#", BidBot_Biddings), 1, -1 do BidBot_Biddings[i] = nil end	-- cleanup table
+	table.wipe(BidBot_Biddings)
 	if #BidBot_Queue then
 		-- Shedule next Item
 		SendChatMessage("--- --- --- --- ---", settings.chatchannel)

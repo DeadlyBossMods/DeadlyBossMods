@@ -30,14 +30,15 @@ local default_settings = {
 	enabled = true,
 	sb_users = {},
 	sb_times = {},
-	history = {}
+	history = {},
+	log = {}
 }
 
 DBM_Standby_Settings = {}
 local settings = default_settings
 
 local L = DBM_StandbyBot_Translations
-local inRaid = false
+local sbbot_clients = {}
 
 do 
 	local function creategui()
@@ -66,26 +67,6 @@ do
 					self:AddMessage(mytext)
 				end
 			end)
-
-			--[[
-			local text = area:CreateText(L.NoHistoryAvailable, area.frame:GetWidth()-40, true, GameFontNormalSmall, "LEFT")
-			area.frame:SetScript("OnShow", function(self)
-				local mytext = ""
-				for k,v in pairs(settings.history) do
-					mytext = mytext.."["..k.."]: "
-					for name,sbtime in pairs(v) do
-						local hours = math.floor(sbtime/60/60)
-						local minutes = math.floor((sbtime-(hours*60*60))/60)
-						mytext = mytext..name.."("..string.format("%02d", hours)..":"..string.format("%02d", minutes)..") "
-					end
-					mytext = mytext.."\n"
-				end
-				if mytext ~= "" then
-					text:SetText(mytext)
-				end
-			end)
-			--]]
-
 		end
 		panel:SetMyOwnHeight()
 	end
@@ -93,42 +74,62 @@ do
 end
 
 
--- functions
-local CheckRaidChanges
+local function amIactive()
+	for k,v in pairs(sbbot_clients) do
+		if UnitIsConnected(DBM:GetRaidUnitId(k)) and k < UnitName("player") then
+			-- we don't need to start, the player with hightest name is used
+			return false
+		end
+	end
+	return true
+end
 
-local function AddStandbyMember(name)
+local function AddStandbyMember(name, quiet)
 	if not name then return false end
+	if not amIactive() then quite = true end
+
 	if settings.sb_users[name] == nil then
 		-- a brand new member
-		DBM:AddMsg( L.Local_AddedPlayer:format(name) )
-		SendChatMessage("<DBM> "..L.AddedSBUser, "WHISPER", nil, name)
+		if not quiet then
+			DBM:AddMsg( L.Local_AddedPlayer:format(name) )
+			SendChatMessage("<DBM> "..L.AddedSBUser, "WHISPER", nil, name)
+		end
 		settings.sb_users[name] = time()
 		if settings.sb_times[name] == nil then
 			settings.sb_times[name] = 0		-- user is now firsttime SB (0 Seconds)
 		end
 	else
 		-- member allready on the list
-		SendChatMessage("<DBM> "..L.UserIsAllreadySB, "WHISPER", nil, name)
+		if not quiet then 
+			SendChatMessage("<DBM> "..L.UserIsAllreadySB, "WHISPER", nil, name)
+		end
 	end
 end
 
-local function RemoveStandbyMember(name, noerror)
+local function RemoveStandbyMember(name, quiet)
 	if not name then return false end
+	if not amIactive() then quite = true end
+
 	if settings.sb_users[name] == nil then
 		-- user issn't standby
-		if not noerror then
+		if not quiet then
 			SendChatMessage("<DBM> "..L.NotStandby, "WHISPER", nil, name)
 		end
 		return false
 	else
 		-- remove user
-		DBM:AddMsg( L.Local_RemovedPlayer:format(name) )
+		if not quiet then
+			DBM:AddMsg( L.Local_RemovedPlayer:format(name) )
+		end
 		settings.sb_times[name] = settings.sb_times[name] + (time() - settings.sb_users[name])
 		settings.sb_users[name] = nil
 
 		local hours = math.floor(settings.sb_times[name]/60/60)
 		local minutes = math.floor((settings.sb_times[name]-(hours*60*60))/60)
-		SendChatMessage("<DBM> "..L.NoLongerStandby:format(hours, minutes), "WHISPER", nil, name)
+
+		if not quiet then
+			SendChatMessage("<DBM> "..L.NoLongerStandby:format(hours, minutes), "WHISPER", nil, name)
+		end
 
 		return true
 	end
@@ -154,35 +155,15 @@ local function SaveTimeHistory()
 		settings.sb_times = {}
 	end
 end
+DBM:Register_OnRaidLeaveSelf_Callback(SaveTimeHistory)
 
 do
-	local raidgrp = {}
-	function CheckRaidChanges()
-		if GetNumRaidMembers() == 0 then return end	-- not in Raidgroup
-		-- check if someone left the raid
-		for k,v in pairs(raidgrp) do
-			local inraid = false
-			for i=1, GetNumRaidMembers(), 1 do
-				if UnitName("raid"..i) then
-					inraid = true
-				end
-			end
-			if not inraid then
-				SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, k)
-				raidgrp[k] = nil
-			end
-		end
-
-		-- check for new members
-		for i=1, GetNumRaidMembers(), 1 do
-			local name = UnitName("raid"..i)
-			if raidgrp[name] == nil then				
-				raidgrp[name] = true
-				RemoveStandbyMember(name, true)	-- remove player from SB, because he join the raid
-			end
-		end
-
+	local function send_leave_whisper(name)
+		if not amIactive() then return end
+		SendChatMessage("<DBM> "..L.LeftRaidGroup, "WHISPER", nil, name)
 	end
+	DBM:Register_OnPlayerLeaveRaid_Callback(send_leave_whisper)
+	DBM:Register_OnPlayerJoinRaid_Callback(RemoveStandbyMember)
 end
 
 do
@@ -200,6 +181,7 @@ do
 			mainframe:RegisterEvent(select(i, ...))
 		end
 	end
+
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
 			-- Update settings of this Addon
@@ -213,32 +195,46 @@ do
 				"CHAT_MSG_OFFICER",
 				"CHAT_MSG_RAID_LEADER",
 				"CHAT_MSG_WHISPER",
-				"CHAT_MSG_ADDON",
-				"RAID_ROSTER_UPDATE"
+				"CHAT_MSG_ADDON"
 			)
 	
-		elseif event == "CHAT_MSG_WHISPER" then
+		elseif settings.enabled and event == "CHAT_MSG_WHISPER" and DBM:IsInRaid() then
 			local msg, author = select(1, ...)
-			if settings.enabled and inRaid and msg == "!sb" then
-				AddStandbyMember(author)
-			elseif settings.enabled and inRaid and msg == "!sb off" then
+			if msg == "!sb" then
+				if DBM:GetRaidUnitId(author) == "none" then
+					AddStandbyMember(author)
+				else
+					SendChatMessage("<DBM> "..L.InRaidGroup, "WHISPER", nil, author)
+				end
+			elseif msg == "!sb off" then
 				RemoveStandbyMember(author)
 			end
-		end
-			
-		if event == "RAID_ROSTER_UPDATE" or event == "ADDON_LOADED" then
-			if GetNumRaidMembers() >= 1 and not inRaid then
-				inRaid = true
-			elseif GetNumRaidMembers() == 0 and inRaid then
-				inRaid = false
-				SaveTimeHistory()
-			end
-			if inRaid then
-				CheckRaidChanges()
-			end
-		end
 
-		if event:sub(0, 9) == "CHAT_MSG_" and event ~= "CHAT_MSG_WHISPER" then
+		elseif settings.enabled and event == "CHAT_MSG_ADDON" then
+			local prefix, msg, channel, sender = select(1, ...)
+			if prefix ~= "DBM_SbBot" then return end
+
+			if msg == "Hi!" then
+				sbbot_clients[sender] = true
+				if channel == "RAID" then
+					SendAddonMessage("DBM_SbBot", "Hi!", "WHISPER", sender)				
+				end
+
+			elseif msg:find("^!sb add") then
+				local name = strtrim(msg:sub(8))
+				name = name:sub(0,1):upper()..name:sub(2):lower()
+				AddStandbyMember(name, true)
+
+			elseif msg:find("^!sb del") then
+				local name = strtrim(msg:sub(8))
+				name = name:sub(0,1):upper()..name:sub(2):lower()
+				RemoveStandbyMember(name, true)
+			end
+		end
+		
+		if settings.enabled and event:sub(0, 9) == "CHAT_MSG_" and event ~= "CHAT_MSG_WHISPER" and event ~= "CHAT_MSG_ADDON" then
+			if not amIactive() then return end
+
 			local msg, author = select(1, ...)
 			if msg == "!sb" then
 				local output = ""
@@ -248,6 +244,7 @@ do
 				output = output:sub(2)
 				if output == "" then output = "none" end
 				SendChatMessage("<DBM> "..L.PostStandybyList.." "..output, "WHISPER", nil, author)
+
 			elseif msg == "!sb time" then
 				if #settings.sb_times then
 					SendChatMessage(L.Current_StandbyTime:format(date(L.DateTimeFormat)), "GUILD")
