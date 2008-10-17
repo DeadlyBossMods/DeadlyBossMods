@@ -185,7 +185,7 @@ do
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
 			-- Update settings of this Addon
-			settings = DBM_DKP_System_Settings
+			settings = DBM_Standby_Settings
 			addDefaultOptions(settings, default_settings)
 
 			RegisterEvents(

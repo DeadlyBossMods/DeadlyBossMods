@@ -59,7 +59,9 @@ local start_time = 0
 local RaidStart
 local RaidEnd
 local GetRaidList
-local BossKill
+local CreateEvent
+local AddItemForEvent
+local addDefaultOptions
 
 do
 	local function creategui()
@@ -129,7 +131,7 @@ do
 					else
 						event.members = DKPto
 					end
-					table.insert(settings.events, event)
+					CreateEvent(event)
 					DBM:AddMsg(L.Local_EventCreated)
 					neweventpoints:SetText("")
 					neweventdescr:SetText("")
@@ -208,6 +210,79 @@ do
 	DBM:RegisterOnGuiLoadCallback(creategui, 13)
 end
 
+-- EXPORT (event based) for EQDKP - RaidTracker Addon  (thanks to my old guild Intensity@Azshara for this litte syntax info)
+function CreateExportString(raid_id, event_id)
+	local raid = settings.history[raid_id or #settings.history]
+	local event = raid.events[event_id or #raid.events]
+	if not raid or not event then return "failed" end
+	local text
+	local players = ""
+	local raid_start = date("%c", raid.time_start)
+	local raid_end = date("%c", raid.time_end)
+
+	-- Creating RaidEvent 
+	text = "<RaidInfo><key>"..raid_start.."</key><start>"..raid_start.."</start><end>"..raid_end.."</end><zone>"..(event.zone or "").."</zone><PlayerInfos>"
+
+	-- Adding Players to this Event
+	for i,name in ipairs(event.members) do
+		text = text.."<key"..i.."><name>"..name.."</name></key"..i..">"
+		players = players.."<key"..i.."><player>"..name.."</player><time>"..raid_start.."</time></key"..i..">"
+	end
+	text = text.."</PlayerInfos>"
+
+	-- Adding BossKill
+	text = text.."<BossKills><key1><name>"..event.description.."</name><time>"..date("%c", event.timestamp).."</time><attendees/></key1></BossKills>"
+
+	-- Adding the CTRaid Stuff for their Player Leave/Join Events
+	text = text.."<note><![CDATA["..(event.zone or "").." - "..(event.bossname or "").." - "..(event.points or "").."]]></note>"
+	text = text.."<Join>"..players.."</Join><Leave>"..players.."</Leave>"
+
+	-- Adding loot to the textblock
+	text = text.."<Loot>"
+	for k, item in pairs(event.loot or {}) do
+		local ItemName = GetItemInfo(item.item)
+		local ItemID = select(2, strsplit(":", item.item))
+		local color = string.sub(item.item:match("^|(%x+)|"), 2)
+
+		text = text.."<key"..k.."><ItemName>"..(ItemName or "?").."</ItemName><ItemID>"..ItemID.."</ItemID>"
+		text = text.."<Icon></Icon><Class></Class><SubClass></SubClass><Color>"..color.."</Color><Count>1</Count>"
+		text = text.."<Player>"..item.player.."</Player><Costs>"..item.points.."</Costs><Time>"..date("%c", event.timestamp).."</Time>"
+		text = text.."<Zone></Zone><Boss>"..item.from.."</Boss>"--<Note></Note>"
+		--text = text.."<Note><![CDATA[ - Zone: "..event.description.. " "..event.points.." DKP]]></Note>"
+		--text = text.."<Note>"..event.description.."</Note>"
+		text = text.."</key"..k..">"
+	end
+
+	text = text.."</Loot></RaidInfo>"
+	return text, raid, event
+end	
+
+do
+	local content
+	local raid
+	local event
+
+	StaticPopupDialogs["DBM_EXPORT_DKP_STRING"] = {
+		text = "DKP String - %s",
+		button1 = ACCEPT,
+		button2 = CANCEL,
+		hasEditBox = 1,
+		OnShow = function(self)
+			self.editBox:SetText(content)
+			self.editBox:SetFocus()
+			self.editBox:HighlightText()
+		end,
+		timeout = 0,
+		exclusive = 0,
+		hideOnEscape = 1
+	}
+
+	function ShowExportString(raid_id, event_id) 
+		content, raid, event = CreateExportString(raid_id, event_id)
+		StaticPopup_Show("DBM_EXPORT_DKP_STRING", "raid")
+	end
+end
+
 
 function GetRaidList()
 	if GetNumRaidMembers() == 0 then return false end
@@ -226,30 +301,58 @@ function GetRaidList()
 	return raidusers
 end
 
-function BossKill(bossname)
+function CreateEvent(event)
+	if type(settings.events) ~= "table" then settings.events = {} end
+	if #settings.events == 0 then
+		if type(settings.items) == "table" and #settings.items > 0 then
+			-- first event, adding pending loots (like epic drops before the first boss)
+			event.items = {}
+			addDefaultOptions(event.items, settings.items)
+			table.wipe(settings.items)
+		end
+	else
+		if type(settings.items) == "table" and #settings.items > 0 then
+			local mevent = settings.events[#settings.events]
+			if not mevent.items or type(mevent.items) ~= "table" then mevent.items = {} end
+			for k,v in pairs(settings.items) do
+				table.insert(mevent.items, v)
+			end
+			table.wipe(settings.items)
+		end
+	end
+	table.insert(settings.events, event)
+end
+
+function AddItemForEvent(item)
+end
+
+function DBM_DKP_BossKill(bossmod)
+	local bossname = bossmod.localization.general.name
 	if settings.boss_event then
-		local event = {
+		CreateEvent({
 			event_type = "bosskill",
+			zone = GetRealZoneText(),
 			description = settings.boss_desc:format(bossname),
 			points = settings.boss_points,
 			timestamp = time(),
 			members = GetRaidList()
-		}
-		table.insert(settings.events, event)
+		})		
 	end
 end
+DBM:RegisterCallback("kill", DBM_DKP_BossKill)
+
 
 function RaidStart()
 	start_time = time()
 	if settings.start_event then
-		local event = {
+		CreateEvent({
 			event_type = "raidstart",
+			zone = GetRealZoneText(),
 			description = settings.start_desc,
 			points = settings.start_points,
 			timestamp = time(),
 			members = GetRaidList(),
-		}
-		table.insert(settings.events, event)
+		})
 	end
 	DBM:AddMsg(L.Local_StartRaid)
 end
@@ -271,17 +374,17 @@ function RaidEnd()
 	DBM:AddMsg(L.Local_RaidSaved)
 end
 
-do
-	local function addDefaultOptions(t1, t2)
-		for i, v in pairs(t2) do
-			if t1[i] == nil then
-				t1[i] = v
-			elseif type(v) == "table" then
-				addDefaultOptions(v, t2[i])
-			end
+function addDefaultOptions(t1, t2)
+	for i, v in pairs(t2) do
+		if t1[i] == nil then
+			t1[i] = v
+		elseif type(v) == "table" then
+			addDefaultOptions(v, t2[i])
 		end
 	end
+end
 
+do
 	local mainframe = CreateFrame("frame", "DBM_DKP_System", UIParent)
 	mainframe:SetScript("OnEvent", function(self, event, ...)
 		if event == "ADDON_LOADED" and select(1, ...) == "DBM-RaidLeadTools" then
@@ -295,14 +398,14 @@ do
 		timespend = timespend + e
 		if timespend/60 >= settings.time_to_count then
 			DBM:AddMsg(L.Local_TimeReached)
-			local event = {
+			CreateEvent({
 				event_type = "",
+				zone = GetRealZoneText(),
 				description = settings.time_desc,
 				points = settings.time_points,
 				timestamp = time(),
 				members = GetRaidList()
-			}
-			table.insert(setting.events, event)
+			})
 			timespend = e
 		end
 	end)
