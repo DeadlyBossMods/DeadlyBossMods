@@ -169,6 +169,7 @@ function Council:OnSync(msg)
 		if self.Options.WarnDP then
 			self:Announce(DBM_COUNCIL_WARN_POISON:format(msg), 2)
 		end
+		self:SetIcon(msg, 8)
 	elseif msg:sub(0, 2) == "DW" then
 		msg = msg:sub(3)
 		if self.Options.WarnDW then
