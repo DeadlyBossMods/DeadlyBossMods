@@ -421,7 +421,7 @@ end
 do
 	local old = DBM.Unschedule
 	function DBM:Unschedule(f, ...)
-		if type(self) == "number" then
+		if type(self) == "function" then
 			old(DBM, self, f, ...)
 		else
 			old(self, f, ...)
