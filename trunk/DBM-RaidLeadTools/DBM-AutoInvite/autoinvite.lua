@@ -213,10 +213,15 @@ do
 	end
 	function AOE_Ginvite()
 		for _,v in pairs(GuildMates) do
+			DoInvite(v)
+		end
+		--[[
+		for _,v in pairs(GuildMates) do
 			if not settings.lastaoerank or GuildRank[v] == settings.lastaoerank then
 				DoInvite(v)
 			end
 		end
+		--]]
 	end
 end
 
