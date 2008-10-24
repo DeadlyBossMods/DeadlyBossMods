@@ -44,6 +44,9 @@ L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
 L.AutoRespond 		= "Enable auto-respond while fighting"
 
+L.Button_RangeFrame	= "Show/Hide Rangeframe"
+L.Button_TestBars	= "Start TestBars"
+
 L.PizzaTimer_Headline 	= 'Create a "Pizza Timer"'
 L.PizzaTimer_Title	= 'Name (e.g. "Pizza!")'
 L.PizzaTimer_Hours 	= "Hours"
@@ -69,6 +72,7 @@ L.WarningIconRight 	= "Show icon on right side"
 L.RaidWarnMessage 	= "Thanks for using DeadlyBossMods"
 L.BarWhileMove 		= "Raidwarn movable"
 L.RaidWarnSound		= "Play Sound on RaidWarning"
+L.SpecialWarnSound	= "Play Sound on SpecialWarning"
 
 -- Tab: Barsetup
 L.BarSetup   = "Bar Style"

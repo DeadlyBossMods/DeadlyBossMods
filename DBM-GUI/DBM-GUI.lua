@@ -31,6 +31,8 @@
 
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
+local revision =("$Revision$"):sub(12, -3) 
+
 local PanelPrototype = {}
 DBM_GUI = {}
 setmetatable(PanelPrototype, {__index = DBM_GUI})
@@ -378,6 +380,9 @@ function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 	if FontObject then
 		button:SetNormalFontObject(FontObject);
 		button:SetHighlightFontObject(FontObject);		
+	end
+	if getglobal(button:GetName().."Text"):GetStringWidth() > button:GetWidth() then
+		button:SetWidth( getglobal(button:GetName().."Text"):GetStringWidth() + 15 )
 	end
 
 	self:SetLastObj(button)
@@ -1071,6 +1076,19 @@ local function CreateOptionsMenu()
 		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
 		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
 	
+		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
+		bmrange:SetPoint('TOPLEFT', AutoRespond, "BOTTOMLEFT", 0, -10)
+		bmrange:SetScript("OnClick", function(self) 
+			if DBM.RangeCheck:IsShown() then
+				DBM.RangeCheck:Hide()
+			else
+				DBM.RangeCheck:Show()
+			end
+		end)
+
+		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars)
+		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 20, 0)
+		bmtestmode:SetScript("OnClick", function(self) DBM.Bars:ShowTestBars()	end)
 
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
@@ -1162,7 +1180,7 @@ local function CreateOptionsMenu()
 				end
 			end
 		end
-		local SpecialWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.RaidWarnSound, Sounds, 
+		local SpecialWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.SpecialWarnSound, Sounds, 
 			DBM.Options.SpecialWarningSound, function(value) 
 				DBM.Options.SpecialWarningSound = value
 			end
@@ -1454,6 +1472,9 @@ local function CreateOptionsMenu()
 
 		BarSetupPanel:SetMyOwnHeight() 
 	end
+
+	-- Set Revision
+	DBM_GUI_OptionsFrameRevision:SetText("Version: "..DBM.DisplayVersion.." - Core: r"..DBM.Revision.." - Gui: r"..revision)
 end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 

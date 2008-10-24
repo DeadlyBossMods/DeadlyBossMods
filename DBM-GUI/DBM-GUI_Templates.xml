@@ -368,6 +368,15 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parentRevision" inherits="GameFontHighlightSmall" text="">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="20" y="20"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 			</Layer>
 		</Layers>
 		<Frames>
