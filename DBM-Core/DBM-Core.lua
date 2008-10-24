@@ -405,10 +405,16 @@ end
 ----------------------
 SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
-	if msg == "ver" or msg == "version" then
+	local cmd = msg:lower()
+	if cmd == "ver" or cmd == "version" then
 		DBM:ShowVersions()
-	elseif msg == "unlock" or msg == "move" then
+	elseif cmd == "unlock" or cmd == "move" then
 		DBM.Bars:ShowMovableBar()
+	elseif cmd == "help" then
+		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
+	elseif cmd:sub(0, 5) == "timer" then
+		local time, text = msg:match("^timer (%d+) (.+)")
+	elseif cmd:sub(0, 15) == "broadcast timer" then
 	else
 		DBM:LoadGUI()
 	end
@@ -867,7 +873,7 @@ do
 		local lag = select(3, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
 		mod = DBM:GetModByName(mod or "")
-		if mod and delay then
+		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText())) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
@@ -2177,50 +2183,3 @@ do
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
 end
-
-
--------------------------------------------------
---  DEBUG STUFF//REMOVE FROM RELEASE VERSIONS  --
--------------------------------------------------
-local function serialize(v)
-    if type(v) == "string" then
-        return ("%q"):format(v)
-    else
-        return tostring(v)
-    end
-end
-
-function print_t(t, d, cache)
-    d = d or 1
-	cache = cache or {}
-	cache[t] = true
-    if d == 1 then
-        DBM:AddMsg("{")
-    end
-    for i, v in pairs(t) do
-        if type(v) == "table" and cache[v] then
-			DBM:AddMsg(("%s[%s] = %s,"):format((" "):rep(d * 3), serialize(i), serialize(v)))
-		elseif type(v) == "table" then
-            DBM:AddMsg(("%s[%s] = {"):format((" "):rep(d * 3), serialize(i)))
-            print_t(v, d+1, cache)
-            DBM:AddMsg(("%s}"):format((" "):rep(d * 3)))
-        else
-            DBM:AddMsg(("%s[%s] = %s,"):format((" "):rep(d * 3), serialize(i), serialize(v)))
-        end
-    end
-    if d == 1 then
-        DBM:AddMsg("}")
-    end
-end
-
-
-SLASH_PRINT1 = "/print"
-SlashCmdList["PRINT"] = function(msg)
-	local val = loadstring("return "..msg)()
-	if type(val) == "table" then
-		print_t(val)
-	else
-		DBM:AddMsg(serialize(val))
-	end
-end
-
