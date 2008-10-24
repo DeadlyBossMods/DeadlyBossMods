@@ -204,3 +204,7 @@ end
 function rangeCheck:Hide()
 	if frame then frame:Hide() end
 end
+
+function rangeCheck:IsShown()
+	return frame and frame:IsShown()
+end
