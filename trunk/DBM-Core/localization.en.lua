@@ -50,3 +50,12 @@ DBM_CORE_RANGECHECK_HEADER			= "Range Check (%d yd)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Set range"
 DBM_CORE_RANGECHECK_HIDE			= "Hide"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
+
+DBM_CORE_SLASHCMD_HELP				= {
+	"Available Slash Commands:",
+	"/dbm version: performans a raid-wide version check (alias: ver)",
+	"/dbm unlock: shows a movable status bar timer (alias: move)",
+	"/dbm timer <x> <text>: Starts a <x> second Pizza Timer with the name <text>",
+	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second Pizza Timer with the name <text> to the raid (required promoted or leader)",
+	"/dbm help: shows this help",
+}
