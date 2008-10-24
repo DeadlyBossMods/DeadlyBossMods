@@ -730,6 +730,7 @@ function barPrototype:SetPosition()
 end
 
 function barPrototype:MoveToNextPosition()
+	if self.moving == "enlarge" then return end
 	local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()

@@ -202,5 +202,5 @@ function rangeCheck:Show(range)
 end
 
 function rangeCheck:Hide()
-	frame:Hide()
+	if frame then frame:Hide() end
 end
