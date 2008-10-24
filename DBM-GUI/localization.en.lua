@@ -39,7 +39,7 @@ L.Statistic_BestKill	= "Best kill:"
 L.Statistic_Heroic	= "heroic"
 
 -- Tab: General Options
-L.General 		= "General Options"
+L.General 		= "General DBM Options"
 L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
 L.AutoRespond 		= "Enable auto-respond while fighting"

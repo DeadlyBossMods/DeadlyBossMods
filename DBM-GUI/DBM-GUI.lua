@@ -29,9 +29,9 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
 
-local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
 local revision =("$Revision$"):sub(12, -3) 
+local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
 local PanelPrototype = {}
 DBM_GUI = {}
@@ -39,7 +39,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-local usemodelframe = hide	-- very beta
+local usemodelframe = false	-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
 	if forceshow == true then
