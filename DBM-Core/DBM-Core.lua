@@ -63,6 +63,7 @@ DBM.DefaultOptions = {
 	WarningIconRight = true,
 	HideBossEmoteFrame = false,
 	SpamBlockRaidWarning = true,
+	BMS = {}
 }
 
 DBM.Bars = DBT:New()
