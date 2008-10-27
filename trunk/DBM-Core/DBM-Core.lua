@@ -1997,7 +1997,7 @@ end
 function bossModPrototype:ReceiveSync(event, arg, sender, revision)
 	local spamId = self.id..event..arg
 	local time = GetTime()
-	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5) and self.OnSync and not self.blockSyncs and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
+	if (not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5) and self.OnSync and (not (self.blockSyncs and sender)) and (not sender or (not self.minSyncRevision or revision >= self.minSyncRevision)) then
 		modSyncSpam[spamId] = time
 		self:OnSync(event, arg, sender)
 	end
