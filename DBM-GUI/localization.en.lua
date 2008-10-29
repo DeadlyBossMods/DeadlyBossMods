@@ -42,6 +42,7 @@ L.Statistic_Heroic	= "heroic"
 L.General 		= "General DBM Options"
 L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
+L.EnableSpamBlock	= "Filter <DBM> BossWhispers"
 L.AutoRespond 		= "Enable auto-respond while fighting"
 
 L.Button_RangeFrame	= "Show/Hide Rangeframe"
