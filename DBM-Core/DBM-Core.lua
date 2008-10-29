@@ -63,7 +63,11 @@ DBM.DefaultOptions = {
 	WarningIconRight = true,
 	HideBossEmoteFrame = false,
 	SpamBlockRaidWarning = true,
+<<<<<<< .mine
+	SpamBlockBossWhispers = false,
+=======
 	BMS = {}
+>>>>>>> .r334
 }
 
 DBM.Bars = DBT:New()
@@ -1399,7 +1403,11 @@ do
 	end
 	
 	local function filterIncoming(msg)
-		return msg == "status" and #inCombat > 0
+		if DBM.Options.SpamBlockBossWhispers then
+			return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort 
+		else
+			return msg == "status" and #inCombat > 0
+		end
 	end
 	
 	local function filterRaidWarning(msg)
