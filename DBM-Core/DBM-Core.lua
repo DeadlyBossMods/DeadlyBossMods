@@ -65,6 +65,9 @@ DBM.DefaultOptions = {
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
+	RangeFramePoint = "CENTER",
+	RangeFrameX = 50,
+	RangeFrameY = -50,
 	BMS = {}
 }
 
