@@ -105,7 +105,7 @@ function createFrame()
 	local frame = CreateFrame("GameTooltip", "DBMRangeCheck", UIParent, "GameTooltipTemplate")
 	dropdownFrame = CreateFrame("Frame", "DBMRangeCheckDropdown", frame, "UIDropDownMenuTemplate")
 	frame:SetFrameStrata("DIALOG")
-	frame:SetPoint("CENTER", 100, -40)
+	frame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
 	frame:SetHeight(64)
 	frame:SetWidth(64)
 	frame:EnableMouse(true)
@@ -141,9 +141,6 @@ function createFrame()
 	return frame
 end
 
-function rangeCheck:LoadPosition()
-	frame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
-end
 
 ----------------
 --  OnUpdate  --
