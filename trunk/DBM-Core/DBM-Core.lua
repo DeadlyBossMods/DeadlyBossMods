@@ -58,7 +58,7 @@ DBM.DefaultOptions = {
 	AutoRespond = true,
 	Enabled = true,
 	ShowWarningsInChat = true,
-	ShowFakedRaidWarnings = true,
+	ShowFakedRaidWarnings = false,
 	WarningIconLeft = true,
 	WarningIconRight = true,
 	HideBossEmoteFrame = false,
@@ -415,8 +415,32 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd == "help" then
 		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
 	elseif cmd:sub(0, 5) == "timer" then
-		local time, text = msg:match("^timer (%d+) (.+)")
+		local time, text = msg:match("^%w+ (%d+) (.+)")
+		if not (time and text) then
+			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+			return
+		end
+		local min, sec = string.split(":", time)
+		min = tonumber(min or "") or 0
+		sec = tonumber(sec or "")
+		if min and not sec then sec = min end
+		time = min*60 + sec
+		DBM:CreatePizzaTimer(time, text)
 	elseif cmd:sub(0, 15) == "broadcast timer" then
+		local time, text = msg:match("^%w+ (%d+) (.+)")
+		if DBM:GetRaidRank() == 0 then
+			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+		end
+		if not (time and text) then
+			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
+			return
+		end
+		local min, sec = string.split(":", time)
+		min = tonumber(min or "") or 0
+		sec = tonumber(sec or "")
+		if min and not sec then sec = min end
+		time = min*60 + sec
+		DBM:CreatePizzaTimer(time, text, true)
 	else
 		DBM:LoadGUI()
 	end
@@ -1401,7 +1425,7 @@ do
 	
 	local function filterIncoming(msg)
 		if DBM.Options.SpamBlockBossWhispers then
-			return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort 
+			return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort or (msg == "status" and #inCombat > 0)
 		else
 			return msg == "status" and #inCombat > 0
 		end
