@@ -1067,7 +1067,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 150, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 170, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1076,9 +1076,17 @@ local function CreateOptionsMenu()
 		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
 		local SpamBlockEnable = generaloptions:CreateCheckButton(L.EnableSpamBlock, true, nil, "SpamBlockBossWhispers")
 		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
+		local MiniMapIcon   = generaloptions:CreateCheckButton(L.EnableMiniMapIcon,  true)
+		MiniMapIcon:SetScript("OnClick", function(self)
+			DBM:ToggleMinimapButton()
+			self:SetChecked( DBM.Options.ShowMinimapButton )
+		end)
+		MiniMapIcon:SetScript("OnShow", function(self)
+			self:SetChecked( DBM.Options.ShowMinimapButton )
+		end)
 	
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', AutoRespond, "BOTTOMLEFT", 0, -5)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -5)
 		bmrange:SetScript("OnClick", function(self) 
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
