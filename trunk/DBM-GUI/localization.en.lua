@@ -44,6 +44,7 @@ L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
 L.EnableSpamBlock	= "Filter <DBM> BossWhispers"
 L.AutoRespond 		= "Enable auto-respond while fighting"
+L.EnableMiniMapIcon	= "Enable MiniMap Icon"
 
 L.Button_RangeFrame	= "Show/Hide Rangeframe"
 L.Button_TestBars	= "Start TestBars"
