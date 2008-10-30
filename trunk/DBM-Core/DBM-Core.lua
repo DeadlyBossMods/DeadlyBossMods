@@ -64,6 +64,7 @@ DBM.DefaultOptions = {
 	HideBossEmoteFrame = false,
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
+	ShowMinimapButton = true,
 	BMS = {}
 }
 
@@ -590,7 +591,7 @@ do
 	local button = CreateFrame("Button", "DBMMinimapButton", Minimap)
 	button:SetHeight(32)
 	button:SetWidth(32)
-	button:SetFrameStrata("HIGH")
+	button:SetFrameStrata("MEDIUM")
 	button:SetPoint("CENTER", -65.35, -38.8)
 	button:SetMovable(true)
 	button:SetUserPlaced(true)
@@ -619,6 +620,15 @@ do
 	button:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
+	
+	function DBM:ToggleMinimapButton()
+		self.Options.ShowMinimapButton = not self.Options.ShowMinimapButton
+		if self.Options.ShowMinimapButton then
+			button:Show()
+		else
+			button:Hide()
+		end
+	end
 end
 
 
