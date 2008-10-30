@@ -383,7 +383,7 @@ end
 --	end
 --	
 --	local function reverseIterator(self, frame)
---		return not frame and self.mainLastBar or frame and frame.prev
+--		return (not frame and self.mainLastBar) or frame and frame.prev
 --	end
 --
 --	function DBT:GetBarIterator(reverse)

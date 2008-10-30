@@ -120,6 +120,10 @@ function createFrame()
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
 		ValidateFramePosition(self)
+		local x, y, point = self:GetPoint(1)
+		DBM.Options.RangeFrameX = x
+		DBM.Options.RangeFrameY = y
+		DBM.Options.RangeFramePoint = point
 	end)
 	frame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
@@ -137,6 +141,9 @@ function createFrame()
 	return frame
 end
 
+function rangeCheck:LoadPosition()
+	frame:SetPoint(DBM.Options.RangeFramePoint, UIParent, DBM.Options.RangeFramePoint, DBM.Options.RangeFrameX, DBM.Options.RangeFrameY)
+end
 
 ----------------
 --  OnUpdate  --
