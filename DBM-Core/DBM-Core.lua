@@ -1435,7 +1435,7 @@ do
 	
 	local function filterIncoming(msg)
 		if DBM.Options.SpamBlockBossWhispers then
-			return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort or (msg == "status" and #inCombat > 0)
+			return #inCombat > 0 and ((msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort) or msg == "status")
 		else
 			return msg == "status" and #inCombat > 0
 		end
