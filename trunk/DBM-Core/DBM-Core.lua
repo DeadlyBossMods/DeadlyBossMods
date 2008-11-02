@@ -155,6 +155,7 @@ do
 	local args = {}
 	
 	local function handleEvent(self, event, ...)
+		if DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
 			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText())) and (not v.Options or v.Options.Enabled) then
 				v[event](v, ...)
@@ -299,7 +300,7 @@ do
 		if not callbacks[event] then return end
 		for i, v in ipairs(callbacks[event]) do
 			local ok, err = pcall(v, ...)
-			if not ok then DBM:AddMsg(("Error while executing callback %s for event %s: %s"):format(tostring(v), tostring(event), err)) end
+			if not ok then geterrorhandler()(("Error while executing callback %s for event %s: %s"):format(tostring(v), tostring(event), err)) end
 		end
 	end
 	
@@ -1438,7 +1439,7 @@ do
 	
 	local function filterIncoming(msg)
 		if DBM.Options.SpamBlockBossWhispers then
-			return #inCombat > 0 and (msg == "status" or msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len() == chatPrefixShort))
+			return #inCombat > 0 and (msg == "status" or msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort)
 		else
 			return msg == "status" and #inCombat > 0
 		end
