@@ -6,7 +6,7 @@
 -- This addon is written and copyrighted by:
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
--- 
+--
 -- The localizations are written by:
 --    * enGB/enUS: Tandanu
 --    * deDE: Tandanu/Nitram
@@ -15,7 +15,7 @@
 -- Special thanks to:
 --    * Arta (DBM-Party)
 --
--- 
+--
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
 -- All included textures and sounds are copyrighted by their respective owners.
 --
@@ -151,7 +151,7 @@ function onUpdate(self)
 	self:ClearLines()
 	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range or 10), 1, 1, 1)
 	for i = 1, GetNumRaidMembers() do
-		if (not UnitIsUnit("raid"..i, "player")) and self.checkFunc("raid"..i) then
+		if (not UnitIsUnit("raid"..i, "player")) and (not UnitIsDeadOrGhost("raid"..i)) and self.checkFunc("raid"..i) then
 			j = j + 1
 			color = RAID_CLASS_COLORS[select(2, UnitClass("raid"..i))] or NORMAL_FONT_COLOR
 			self:AddLine(UnitName("raid"..i), color.r, color.g, color.b)
@@ -179,7 +179,7 @@ end
 
 do
 	local bandages = {21991, 34721, 38643, 34722}  -- you should have one of these bandages in your cache
-	
+
 	checkFuncs[15] = function(uId)
 		for i, v in ipairs(bandages) do
 			if IsItemInRange(v, uId) == 1 then
