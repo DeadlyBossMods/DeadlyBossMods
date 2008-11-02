@@ -120,7 +120,7 @@ function createFrame()
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
 		ValidateFramePosition(self)
-		local x, y, point = self:GetPoint(1)
+		local point, _, _, x, y = self:GetPoint(1)
 		DBM.Options.RangeFrameX = x
 		DBM.Options.RangeFrameY = y
 		DBM.Options.RangeFramePoint = point
