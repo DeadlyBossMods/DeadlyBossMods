@@ -1,8 +1,5 @@
-local EyeOfTheStorm = DBM:NewBossMod("EyeOfTheStorm", DBM_EOTS_NAME, DBM_EOTS_DESCRIPTION, DBM_OTHER, "BC Battlegrounds", 4);
+local EyeOfTheStorm = DBM:NewMod("EyeOfTheStorm", DBM_EOTS_NAME, DBM_EOTS_DESCRIPTION, DBM_OTHER, "BC Battlegrounds", 4);
 
-EyeOfTheStorm.Version		= "1.0";
-EyeOfTheStorm.Author		= "Tandanu";
-EyeOfTheStorm.MinRevision	= 862;
 
 EyeOfTheStorm:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
@@ -36,29 +33,9 @@ EyeOfTheStorm.LastTick = {
 		Time	= 0,
 		Bases	= 0,
 	},
-};
+}
 
-EyeOfTheStorm.DropdownMenu = { --I don't use :AddOption() here, because I want to use the battleground boss mod's options table
-	{
-		variable = "DBM.AddOns.Battlegrounds.Options.ShowInviteTimer", 
-		text = DBM_BGMOD_LANG.SHOW_INV_TIMER, 
-		func = function() DBM.AddOns.Battlegrounds.Options.ShowInviteTimer = not DBM.AddOns.Battlegrounds.Options.ShowInviteTimer; end, 
-	},
-	
-	{
-		variable = "DBM.AddOns.Battlegrounds.Options.ColorByClass", 
-		text = DBM_BGMOD_LANG.COLOR_BY_CLASS, 
-		func = function() DBM.AddOns.Battlegrounds.Options.ColorByClass = not DBM.AddOns.Battlegrounds.Options.ColorByClass; end, 
-	},
-	
-	{
-		variable = "DBM.AddOns.Battlegrounds.Options.AutoSpirit", 
-		text = DBM_BGMOD_OPTION_AUTOSPIRIT, 
-		func = function() DBM.AddOns.Battlegrounds.Options.AutoSpirit = not DBM.AddOns.Battlegrounds.Options.AutoSpirit end, 
-	},
-};
-
-EyeOfTheStorm:AddOption("ShowPointFrame", true, DBM_BGMOD_LANG.AB_INFOFRAME_INFO, function()
+EyeOfTheStorm:AddBoolOption("ShowPointFrame", true, DBM_BGMOD_LANG.AB_INFOFRAME_INFO, function()
 	DBM:GetMod("EyeOfTheStorm").Options.ShowPointFrame = not DBM:GetMod("EyeOfTheStorm").Options.ShowPointFrame;
 	if DBM:GetMod("EyeOfTheStorm").Options.ShowPointFrame and GetRealZoneText() == DBM_EYEOFTHESTORM then
 		DBM:GetMod("EyeOfTheStorm"):ShowEstimatedPoints();
