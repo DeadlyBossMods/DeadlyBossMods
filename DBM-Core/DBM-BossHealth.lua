@@ -15,6 +15,7 @@ local getBarId
 local updateBar
 local anchor
 local header
+local dropdownFrame
 
 do
 	local id = 0
@@ -24,32 +25,41 @@ do
 	end
 end
 
+------------
+--  Menu  --
+------------
+local menu = {
+	[1] = {
+		text = DBM_CORE_BOSSHEALTH_HIDE_FRAME,
+		func = function() bossHealth:Hide() end
+	}
+}
+
+
 -----------------------
 --  Script Handlers  --
 -----------------------
---[[
-							<OnMouseDown>
-								if arg1 == "LeftButton" and not DBM:GetMod("Kal").Options.FrameLocked then
-									self.moving = true
-									DBMKalFrameDrag:StartMoving()
-								end
-							</OnMouseDown>
-							<OnMouseUp>
-								self.moving = false
-								DBMKalFrameDrag:StopMovingOrSizing()
-								DBM:GetMod("Kal"):SaveFramePosition()
-								if arg1 == "RightButton" then
-									UIDropDownMenu_Initialize(DBMKalMenu, DBM:GetMod("Kal").InitializeMenu, "MENU")
-									ToggleDropDownMenu(1, nil, DBMKalMenu, "DBMKalMenu", 30, 50)
-								end
-							</OnMouseUp>
-							<OnHide>
-								if self.moving then
-									DBM:GetMod("Kal"):SaveFramePosition()
-									DBMKalFrameDrag:StopMovingOrSizing()
-									self.moving = false
-								end
-							</OnHide>]]
+local function onMouseDown(self, button)
+	if button == "LeftButton" then
+		anchor.moving = true
+		anchor:StartMoving()
+	end
+end
+
+local function onMouseUp(self, button)
+	anchor.moving = nil
+	anchor:StopMovingOrSizing()
+	local point, _, _, x, y = anchor:GetPoint(1)
+	DBM.Options.HPFramePoint = point
+	DBM.Options.HPFrameX = x
+	DBM.Options.HPFrameY = y
+	if button == "RightButton" then
+		EasyMenu(menu, dropdownFrame, "cursor", nil, nil, "MENU")
+	end
+end
+
+local onHide = onMouseUp
+
 
 
 -----------------------
@@ -59,15 +69,25 @@ local function createFrame(self)
 	anchor = CreateFrame("Frame", nil, UIParent)
 	anchor:SetWidth(60)
 	anchor:SetHeight(10)
+	anchor:SetMovable(1)
+	anchor:EnableMouse(1)
 	anchor:SetPoint(DBM.Options.HPFramePoint, UIParent, DBM.Options.HPFramePoint, DBM.Options.HPFrameX, DBM.Options.HPFrameY)
 	header = anchor:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall")
 	header:SetPoint("BOTTOM", anchor, "BOTTOM")
 	anchor:SetScript("OnUpdate", updateFrame)
+	anchor:SetScript("OnMouseDown", onMouseDown)
+	anchor:SetScript("OnMouseUp", onMouseUp)
+	anchor:SetScript("OnHide", onHide)
+	dropdownFrame = CreateFrame("Frame", "DBMBossHealthDropdown", anchor, "UIDropDownMenuTemplate")
 end
 
 local function createBar(self, cId, name)
 	local bar = table.remove(barCache, #barCache) or CreateFrame("Frame", "DBM_BossHealth_Bar_"..getBarId(), anchor, "DBMBossHealthBarTemplate")
 	local bartext = _G[bar:GetName().."BarName"]
+	local barborder = _G[bar:GetName().."BarBorder"]
+	barborder:SetScript("OnMouseDown", onMouseDown)
+	barborder:SetScript("OnMouseUp", onMouseUp)
+	barborder:SetScript("OnHide", onHide)
 	bar.id = cId
 	bar:SetPoint("TOP", bars[#bars] or anchor, "BOTTOM", 0, 0)
 	bartext:SetText(name)
