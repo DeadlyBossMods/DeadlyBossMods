@@ -47,7 +47,7 @@ Arathi:AddBoolOption("ShowAbFrame", true, "general", function()
 	end
 end)
 
-Arathi:AddOption("ShowAbBasesToWin", false, "general", function()
+Arathi:AddBoolOption("ShowAbBasesToWin", false, "general", function()
 	if Arathi.Options.ShowAbFrame and GetRealZoneText() == DBM_ARATHI then
 		Arathi:ShowBasesToWin()
 		Arathi:UpdateTimer()
@@ -297,7 +297,7 @@ function Arathi:CHAT_MSG_BG_SYSTEM_ALLIANCE(arg1)
 	for index, value in ipairs(DBM_BGMOD_LANG.AB_TARGETS) do
 		if string.find(arg1, value) then
 			if string.find(arg1, DBM_BGMOD_LANG.AB_HASASSAULTED) or string.find(arg1, DBM_BGMOD_LANG.AB_CLAIMSTHE) then
-				self:SendSync("CA"..index)
+				self:SendSync("CA", index)
 			elseif string.find(arg1, DBM_BGMOD_LANG.AB_HASDEFENDEDTHE) or string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
 --				if string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
 --					if DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE and DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE[index] then
@@ -310,7 +310,7 @@ function Arathi:CHAT_MSG_BG_SYSTEM_ALLIANCE(arg1)
 --					self:AddSpecialWarning("", true);
 --					DBM.Options.FlashColor = oldFlashColor;
 --				end
-				self:SendSync("DT"..index)
+				self:SendSync("DT", index)
 			end
 		end
 	end
@@ -320,7 +320,7 @@ function Arathi:CHAT_MSG_BG_SYSTEM_HORDE(arg1)
 	for index, value in ipairs(DBM_BGMOD_LANG.AB_TARGETS) do
 		if string.find(arg1, value) then
 			if string.find(arg1, DBM_BGMOD_LANG.AB_HASASSAULTED) or string.find(arg1, DBM_BGMOD_LANG.AB_CLAIMSTHE) then
-				self:SendSync("CH"..index)
+				self:SendSync("CH", index)
 			elseif string.find(arg1, DBM_BGMOD_LANG.AB_HASDEFENDEDTHE) or string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
 --				if string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
 --					if DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE and DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE[index] then
@@ -333,7 +333,7 @@ function Arathi:CHAT_MSG_BG_SYSTEM_HORDE(arg1)
 --					self:AddSpecialWarning("", true)
 --					DBM.Options.FlashColor = oldFlashColor
 --				end
-				self:SendSync("DT"..index)
+				self:SendSync("DT", index)
 			end
 		end
 	end
