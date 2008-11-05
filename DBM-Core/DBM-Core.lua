@@ -68,6 +68,9 @@ DBM.DefaultOptions = {
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,
+	HPFramePoint = "CENTER",
+	HPFrameX = -50,
+	HPFrameY = 50,
 	BMS = {}
 }
 

@@ -12,4 +12,5 @@ DBT.lua
 DBM-Core.lua
 DBM-RangeCheck.lua
 DBM-CustomMods.lua
-testCustomMod.lua
+DBM-BossHealth.lua
+DBM-BossHealth.xml

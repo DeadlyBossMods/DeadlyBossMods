@@ -14,6 +14,7 @@ DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; and %d |4second:seconds;"
 
 DBM_CORE_MIN						= "min"
 DBM_CORE_SEC						= "sec"
+DBM_CORE_DEAD						= "dead"
 DBM_CORE_OK							= "Okay"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Enrage in %s %s"
