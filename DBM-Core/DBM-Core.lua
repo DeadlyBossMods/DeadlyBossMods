@@ -529,10 +529,10 @@ do
 	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button, ...)
 		local linkType, arg1, arg2, arg3 = strsplit(":", link)
 		if linkType == "DBM" and arg1 == "cancel" then
-			DBM.Bars:CancelBar(arg2)
+			DBM.Bars:CancelBar(link:match("DBM:cancel:(.+):nil$"))
 		elseif linkType == "DBM" and arg1 == "ignore" then
-			cancel = arg2
-			ignore = arg3
+			cancel = link:match("DBM:cancel:(.+):^[%s:]+$")
+			ignore = link:match(":(.-)$")
 			StaticPopup_Show("DBM_CONFIRM_IGNORE", ignore)
 		end
 	end)
@@ -1830,6 +1830,14 @@ do
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then bar:SetText(name) end
+	end
+	
+	function timerPrototype:SetColor(c, ...)
+		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local bar = DBM.Bars:GetBar(id)
+		if bar then
+			bar:SetColor(c)
+		end
 	end
 	
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)

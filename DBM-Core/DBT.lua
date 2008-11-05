@@ -299,7 +299,7 @@ do
 	end	
 	local mt = {__index = barPrototype}
 	
-	function DBT:CreateBar(timer, id, icon, huge, small)
+	function DBT:CreateBar(timer, id, icon, huge, small, color)
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 then return end
 		local newBar = self:GetBar(id)
@@ -332,6 +332,7 @@ do
 			newBar:AddToList(true)
 			newBar.enlarged = true
 		end
+		newBar.color = color
 		newBar.flashing = false
 		newBar:SetPosition()
 		newBar:ApplyStyle()
@@ -467,6 +468,11 @@ function barPrototype:SetIcon(icon)
 	getglobal(self.frame:GetName().."BarIcon2"):SetTexture(icon)
 end
 
+function barPrototype:SetColor(color)
+	self.color = color
+	getglobal(self.frame:GetName().."Bar"):SetStatusBarColor(color.r, color.g, color.b)
+	getglobal(self.frame:GetName().."BarSpark"):SetVertexColor(color.r, color.g, color.b)
+end
 
 ------------------
 --  Bar Update  --
@@ -479,7 +485,7 @@ function barPrototype:Update(elapsed)
 	local timer = getglobal(frame:GetName().."BarTimer")
 	local obj = self.owner
 	self.timer = self.timer - elapsed
-	if obj.options.DynamicColor then
+	if obj.options.DynamicColor and not self.color then
 		local r = obj.options.StartColorR  + (obj.options.EndColorR - obj.options.StartColorR) * (1 - self.timer/self.totalTime)
 		local g = obj.options.StartColorG  + (obj.options.EndColorG - obj.options.StartColorG) * (1 - self.timer/self.totalTime)
 		local b = obj.options.StartColorB  + (obj.options.EndColorB - obj.options.StartColorB) * (1 - self.timer/self.totalTime)
@@ -672,8 +678,13 @@ function barPrototype:ApplyStyle()
 	local name = getglobal(frame:GetName().."BarName")
 	local timer = getglobal(frame:GetName().."BarTimer")
 	texture:SetTexture(self.owner.options.Texture)
-	bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
-	spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+	if self.color then
+		bar:SetStatusBarColor(self.color.r, self.color.g, self.color.b)
+		spark:SetVertexColor(self.color.r, self.color.g, self.color.b)
+	else
+		bar:SetStatusBarColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+		spark:SetVertexColor(self.owner.options.StartColorR, self.owner.options.StartColorG, self.owner.options.StartColorB)
+	end
 	name:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
 	timer:SetTextColor(self.owner.options.TextColorR, self.owner.options.TextColorG, self.owner.options.TextColorB)
 	if self.owner.options.IconLeft then icon1:Show() else icon1:Hide() end
