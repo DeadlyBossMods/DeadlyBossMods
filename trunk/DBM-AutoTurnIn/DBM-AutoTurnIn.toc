@@ -1,4 +1,4 @@
-## Interface: 30100
+## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFAutoTurnIn for Quests|r
 ## Notes: Automatical returns quests when speaking to an NPC
 ## LoadOnDemand: 0
