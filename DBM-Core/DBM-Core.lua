@@ -6,7 +6,7 @@
 -- This addon is written and copyrighted by:
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
--- 
+--
 -- The localizations are written by:
 --    * enGB/enUS: Tandanu
 --    * deDE: Tandanu/Nitram
@@ -14,7 +14,7 @@
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
--- 
+--
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
 -- All included textures and sounds are copyrighted by their respective owners.
@@ -153,7 +153,7 @@ end
 do
 	local registeredEvents = {}
 	local args = {}
-	
+
 	local function handleEvent(self, event, ...)
 		if DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
@@ -162,7 +162,7 @@ do
 			end
 		end
 	end
-	
+
 	function DBM:RegisterEvents(...)
 		for i = 1, select("#", ...) do
 			local ev = select(i, ...)
@@ -186,28 +186,28 @@ do
 		args.destName = destName
 		args.destFlags = destFlags
 		-- taken from Blizzard_CombatLog.lua
-		if event == "SWING_DAMAGE" then 
+		if event == "SWING_DAMAGE" then
 			args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(1, ...)
-		elseif event == "SWING_MISSED" then 
+		elseif event == "SWING_MISSED" then
 			args.spellName = ACTION_SWING
 			args.missType = select(1, ...)
 		elseif event:sub(1, 5) == "RANGE" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
-			if event == "RANGE_DAMAGE" then 
+			if event == "RANGE_DAMAGE" then
 				args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
-			elseif event == "RANGE_MISSED" then 
+			elseif event == "RANGE_MISSED" then
 				args.missType = select(4, ...)
 			end
 		elseif event:sub(1, 5) == "SPELL" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
 			if event == "SPELL_DAMAGE" then
 				args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
-			elseif event == "SPELL_MISSED" then 
+			elseif event == "SPELL_MISSED" then
 				args.missType, args.amountMissed = select(4, ...)
-			elseif event == "SPELL_HEAL" then 
+			elseif event == "SPELL_HEAL" then
 				args.amount, args.overheal, args.critical = select(4, ...)
 				args.school = args.spellSchool
-			elseif event == "SPELL_ENERGIZE" then 
+			elseif event == "SPELL_ENERGIZE" then
 				args.valueType = 2
 				args.amount, args.powerType = select(4, ...)
 			elseif event:sub(1, 14) == "SPELL_PERIODIC" then
@@ -224,9 +224,9 @@ do
 				elseif event == "SPELL_PERIODIC_LEECH" then
 					args.amount, args.powerType, args.extraAmount = select(4, ...)
 					args.valueType = 2
-				elseif event == "SPELL_PERIODIC_ENERGIZE" then 
+				elseif event == "SPELL_PERIODIC_ENERGIZE" then
 					args.amount, args.powerType = select(4, ...)
-					args.valueType = 2			
+					args.valueType = 2
 				end
 			elseif event == "SPELL_DRAIN" then
 				args.amount, args.powerType, args.extraAmount = select(4, ...)
@@ -256,13 +256,13 @@ do
 				args.sourceName = args.destName
 				args.sourceGUID = args.destGUID
 				args.sourceFlags = args.destFlags
-			elseif event == "SPELL_CAST_FAILED" then 
+			elseif event == "SPELL_CAST_FAILED" then
 				args.missType = select(4, ...)
 			end
 		elseif event == "DAMAGE_SHIELD" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
 			args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
-		elseif event == "DAMAGE_SHIELD_MISSED" then 
+		elseif event == "DAMAGE_SHIELD_MISSED" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
 			args.missType = select(4, ...)
 		elseif event == "ENCHANT_APPLIED" then
@@ -295,15 +295,15 @@ end
 -----------------
 do
 	local callbacks = {}
-	
+
 	function fireEvent(event, ...)
 		if not callbacks[event] then return end
 		for i, v in ipairs(callbacks[event]) do
 			local ok, err = pcall(v, ...)
-			if not ok then geterrorhandler()(("Error while executing callback %s for event %s: %s"):format(tostring(v), tostring(event), err)) end
+			if not ok then DBM:AddMsg(("Error while executing callback %s for event %s: %s"):format(tostring(v), tostring(event), err)) end
 		end
 	end
-	
+
 	function DBM:RegisterCallback(event, f)
 		if (not event) or type(f) ~= "function" then
 			error("Usage: DBM:RegisterCallback(event, callbackFunc)", 2)
@@ -334,7 +334,7 @@ do
 		end
 		return v
 	end
-	
+
 	mainFrame:SetScript("OnUpdate", function(self, elapsed)
 		local time = GetTime()
 		for i, v in pairs(updateFunctions) do
@@ -379,7 +379,7 @@ do
 		end
 		table.insert(scheduleData, v)
 	end
-	
+
 	function unschedule(f, mod, ...)
 		for k = #scheduleData, 1, -1 do
 			local v = scheduleData[k]
@@ -394,7 +394,7 @@ do
 					v.dead = true
 				end
 			end
-		end	
+		end
 	end
 end
 
@@ -513,7 +513,7 @@ end
 --  Hyperlinks  --
 ------------------
 do
-	local ignore, cancel	
+	local ignore, cancel
 	StaticPopupDialogs["DBM_CONFIRM_IGNORE"] = {
 		text = DBM_PIZZA_CONFIRM_IGNORE,
 		button1 = YES,
@@ -525,7 +525,7 @@ do
 		timeout = 0,
 		hideOnEscape = 1,
 	}
-	
+
 	DEFAULT_CHAT_FRAME:HookScript("OnHyperlinkClick", function(self, link, string, button, ...)
 		local linkType, arg1, arg2, arg3 = strsplit(":", link)
 		if linkType == "DBM" and arg1 == "cancel" then
@@ -569,7 +569,7 @@ do
 		end
 		DBM_GUI:ShowHide()
 	end
-	
+
 	function DBM:RegisterOnGuiLoadCallback(f, sort)
 		table.insert(callOnLoad, {f, sort or math.huge})
 	end
@@ -591,7 +591,7 @@ do
 		self:ClearAllPoints()
 		self:SetPoint("CENTER", centerX, centerY)
 	end
-	
+
 	local button = CreateFrame("Button", "DBMMinimapButton", Minimap)
 	button:SetHeight(32)
 	button:SetWidth(32)
@@ -602,10 +602,10 @@ do
 	button:SetNormalTexture("Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Up")
 	button:SetPushedTexture("Interface\\AddOns\\DBM-Core\\textures\\Minimap-Button-Down")
 	button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
-	
+
 	button:SetScript("OnMouseDown", function(self, button)
 		if IsShiftKeyDown() or button == "RightButton" then self:SetScript("OnUpdate", moveButton) end
-	end)	
+	end)
 	button:SetScript("OnMouseUp", function(self)
 		self:SetScript("OnUpdate", nil)
 	end)
@@ -624,7 +624,7 @@ do
 	button:SetScript("OnLeave", function(self)
 		GameTooltip:Hide()
 	end)
-	
+
 	function DBM:ToggleMinimapButton()
 		self.Options.ShowMinimapButton = not self.Options.ShowMinimapButton
 		if self.Options.ShowMinimapButton then
@@ -642,7 +642,7 @@ end
 do
 	local inRaid = false
 	local playerRank = 0
-	
+
 	function DBM:RAID_ROSTER_UPDATE()
 		if GetNumRaidMembers() >= 1 then
 			for i = 1, GetNumRaidMembers() do
@@ -679,9 +679,9 @@ do
 			fireEvent("raidLeave", UnitName("player"))
 		end
 	end
-	
+
 	function DBM:PARTY_MEMBERS_CHANGED()
-		if GetNumRaidMembers() > 0 then return end 
+		if GetNumRaidMembers() > 0 then return end
 		if GetNumPartyMembers() >= 1 then
 			if not inRaid then
 				inRaid = true
@@ -720,26 +720,26 @@ do
 			inRaid = false
 		end
 	end
-	
+
 	function DBM:IsInRaid()
 		return inRaid
 	end
-	
+
 	function DBM:GetRaidRank(name)
 		name = name or UnitName("player")
 		return (raid[name] and raid[name].rank) or 0
 	end
-	
+
 	function DBM:GetRaidSubgroup(name)
 		name = name or UnitName("player")
 		return (raid[name] and raid[name].subgroup) or 0
 	end
-	
+
 	function DBM:GetRaidClass(name)
 		name = name or UnitName("player")
 		return (raid[name] and raid[name].class) or "UNKNOWN"
 	end
-	
+
 	function DBM:GetRaidUnitId(name)
 		name = name or UnitName("player")
 		return (raid[name] and raid[name].id) or "none"
@@ -760,13 +760,13 @@ do
 			end
 		end
 	end
-	
+
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
 		RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
 	end
-	
+
 	function loadModOptions(modId)
 		local savedOptions = getglobal(modId:gsub("-", "").."_SavedVars") or {}
 		local savedStats = getglobal(modId:gsub("-", "").."_SavedStats") or {}
@@ -813,7 +813,7 @@ do
 		}
 		StaticPopup_Show("DBM_OLD_VERSION")
 	end
-	
+
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" then
 			loadOptions()
@@ -891,6 +891,29 @@ function DBM:LoadMod(mod)
 	end
 end
 
+do
+	if select(4, GetAddOnInfo("DBM-Battlegrounds")) and select(5, GetAddOnInfo("DBM-Battlegrounds")) then
+		local checkBG
+		function checkBG()
+			if not DBM:GetModByName("Alterac") and MAX_BATTLEFIELD_QUEUES then
+				for i = 1, MAX_BATTLEFIELD_QUEUES do
+					if GetBattlefieldStatus(i) == "confirm" then
+						for i, v in ipairs(DBM.AddOns) do
+							if v.modId == "DBM-Battlegrounds" then
+								DBM:LoadMod(v)
+								return
+							end
+						end
+					end
+				end
+				DBM:Schedule(1, checkBG)
+			end
+		end
+		DBM:Schedule(1, checkBG)
+	end
+end
+
+
 
 -----------------------------
 --  Handle Incoming Syncs  --
@@ -898,7 +921,7 @@ end
 do
 	local syncHandlers = {}
 	local whisperSyncHandlers = {}
-	
+
 	syncHandlers["DBMv4-Mod"] = function(msg, channel, sender)
 		local mod, revision, event, arg = strsplit("\t", msg)
 		mod = DBM:GetModByName(mod or "")
@@ -906,7 +929,7 @@ do
 			mod:ReceiveSync(event, arg, sender, revision)
 		end
 	end
-	
+
 	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
 		if select(2, IsInInstance()) == "pvp" then return end
 		local delay, mod = strsplit("\t", msg)
@@ -917,13 +940,13 @@ do
 			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
-	
+
 	syncHandlers["DBMv4-Kill"] = function(msg, channel, sender)
 		if select(2, IsInInstance()) == "pvp" then return end
 		local cId = tonumber(msg)
 		if cId then DBM:OnMobKill(cId, true) end
 	end
-	
+
 	syncHandlers["DBMv4-Ver"] = function(msg, channel, sender)
 		if msg == "Hi!" then
 			sendSync("DBMv4-Ver", ("%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
@@ -950,7 +973,7 @@ do
 			end
 		end
 	end
-	
+
 	syncHandlers["DBMv4-Pizza"] = function(msg, channel, sender)
 		if select(2, IsInInstance()) == "pvp" then return end
 		if DBM:GetRaidRank(sender) == 0 then return end
@@ -966,7 +989,7 @@ do
 	whisperSyncHandlers["DBMv4-RequestTimers"] = function(msg, channel, sender)
 		DBM:SendTimers(sender)
 	end
-	
+
 	whisperSyncHandlers["DBMv4-CombatInfo"] = function(msg, channel, sender)
 		local mod, time = strsplit("\t", msg)
 		mod = DBM:GetModByName(mod or "")
@@ -975,7 +998,7 @@ do
 			DBM:ReceiveCombatInfo(sender, mod, time)
 		end
 	end
-	
+
 	whisperSyncHandlers["DBMv4-TimerInfo"] = function(msg, channel, sender)
 		local mod, timeLeft, totalTime, id = strsplit("\t", msg)
 		mod = DBM:GetModByName(mod or "")
@@ -1008,9 +1031,9 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	frame:SetWidth(430)
 	frame:SetHeight(130)
 	frame:SetPoint("TOP", 0, -230)
-	frame:SetBackdrop({ 
-		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background", 
-		edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32, 
+	frame:SetBackdrop({
+		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+		edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border", tile = true, tileSize = 32, edgeSize = 32,
 		insets = {left = 11, right = 12, top = 12, bottom = 11},
 	})
 	local fontstring = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -1031,7 +1054,7 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 		editBoxRight:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
 		editBoxRight:SetHeight(32)
 		editBoxRight:SetWidth(32)
-		editBoxRight:SetPoint("RIGHT", 6, 0)	
+		editBoxRight:SetPoint("RIGHT", 6, 0)
 		editBoxRight:SetTexCoord(0.875, 1, 0, 1)
 		editBoxMiddle:SetTexture("Interface\\ChatFrame\\UI-ChatInputBorder-Right")
 		editBoxMiddle:SetHeight(32)
@@ -1094,7 +1117,7 @@ do
 			end
 		end
 	end
-	
+
 	local function clearTargetList()
 		for i in pairs(targetList) do
 			targetList[i] = nil
@@ -1102,7 +1125,7 @@ do
 		targetList.reset = 1
 		targetList.reset = nil
 	end
-	
+
 	local function scanForCombat(combatInfo)
 		if not checkEntry(inCombat, combatInfo.mod) then
 			buildTargetList()
@@ -1112,7 +1135,7 @@ do
 			clearTargetList()
 		end
 	end
-	
+
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
 		if combatInfo[GetRealZoneText()] then
@@ -1142,11 +1165,11 @@ do
 			end
 		end
 	end
-	
+
 	function DBM:CHAT_MSG_MONSTER_YELL(msg)
 		onMonsterMessage("yell", msg)
 	end
-	
+
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
 		onMonsterMessage("emote", msg)
 	end
@@ -1154,7 +1177,7 @@ do
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		onMonsterMessage("emote", msg)
 	end
-	
+
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
 		onMonsterMessage("say", msg)
 	end
@@ -1186,7 +1209,7 @@ function checkWipe(confirm)
 		end
 	end
 end
-	
+
 function DBM:StartCombat(mod, delay, synced)
 	if not checkEntry(inCombat, mod) then
 		if not mod.combatInfo then return end
@@ -1295,7 +1318,7 @@ DBM.UNIT_DESTROYED = DBM.UNIT_DIED
 do
 	local requestedFrom = nil
 	local requestTime = 0
-	
+
 	function DBM:RequestTimers()
 		local bestClient
 		for i, v in pairs(raid) do
@@ -1377,7 +1400,7 @@ do
 			end
 		end
 	end
-	
+
 	function DBM:PLAYER_ENTERING_WORLD()
 		if #inCombat == 0 then
 			DBM:Schedule(0, requestTimers)
@@ -1404,7 +1427,7 @@ do
 		end
 		return alive
 	end
-	
+
 	function DBM:CHAT_MSG_WHISPER(msg, sender)
 		if msg == "status" and #inCombat > 0 and self.Options.StatusEnabled then
 			local mod
@@ -1436,7 +1459,7 @@ do
 	local function filterOutgoing(msg)
 		return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort
 	end
-	
+
 	local function filterIncoming(msg)
 		if DBM.Options.SpamBlockBossWhispers then
 			return #inCombat > 0 and (msg == "status" or msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort)
@@ -1444,11 +1467,11 @@ do
 			return msg == "status" and #inCombat > 0
 		end
 	end
-	
+
 	local function filterRaidWarning(msg)
 		return DBM.Options.SpamBlockRaidWarning and type(msg) == "string" and (not not msg:match("^%s*%*%*%*"))
 	end
-	
+
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterRaidWarning)
@@ -1509,7 +1532,7 @@ local bossModPrototype = {}
 do
 	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
-	
+
 	function DBM:NewMod(name, modId, modSubTab)
 		if modsById[name] then error("Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
@@ -1542,7 +1565,7 @@ do
 		modsById[name] = obj
 		return obj
 	end
-	
+
 	function DBM:GetModByName(name)
 		return modsById[name]
 	end
@@ -1662,7 +1685,7 @@ do
 	function announcePrototype:Cancel(...)
 		unschedule(self.Show, self.mod, self, ...)
 	end
-	
+
 	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName)
 		local obj = setmetatable(
 			{
@@ -1701,7 +1724,7 @@ do
 	font:SetTextColor(0, 0, 1)
 	local specialWarningPrototype = {}
 	local mt = {__index = specialWarningPrototype}
-	
+
 	frame:SetScript("OnUpdate", function(self, elapsed)
 		self.timer = self.timer - elapsed
 		if self.timer >= 3 and self.timer <= 4 then
@@ -1712,7 +1735,7 @@ do
 			frame:Hide()
 		end
 	end)
-	
+
 	function specialWarningPrototype:Show(...)
 		if not self.option or self.mod.Options[self.option] then
 			font:SetText(pformat(self.text, ...))
@@ -1726,15 +1749,15 @@ do
 			end
 		end
 	end
-	
+
 	function specialWarningPrototype:Schedule(t, ...)
 		schedule(t, self.Show, self.mod, self, ...)
 	end
-	
+
 	function specialWarningPrototype:Cancel(t, ...)
 		schedule(self.Show, self.mod, self, ...)
 	end
-	
+
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound)
 		local obj = setmetatable(
 			{
@@ -1752,7 +1775,7 @@ do
 		end
 		return obj
 	end
-	
+
 	function DBM:ShowSpecialWarning(text)
 		font:SetText(text)
 		frame:Show()
@@ -1768,7 +1791,7 @@ end
 do
 	local timerPrototype = {}
 	local mt = {__index = timerPrototype}
-		
+
 	function timerPrototype:Start(timer, ...)
 		if not self.option or self.mod.Options[self.option] then
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
@@ -1782,11 +1805,11 @@ do
 		end
 	end
 	timerPrototype.Show = timerPrototype.Start
-	
+
 	function timerPrototype:Schedule(t, ...)
 		schedule(t, self.Start, self.mod, self, ...)
 	end
-	
+
 	function timerPrototype:Stop(...)
 		if select("#", ...) == 0 then
 			for i = #self.startedTimers, 1, -1 do
@@ -1814,24 +1837,24 @@ do
 	function timerPrototype:SetTimer(timer)
 		self.timer = timer
 	end
-	
+
 	function timerPrototype:Update(elapsed, totalTime, ...)
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		DBM.Bars:UpdateBar(id, elapsed, totalTime)
 	end
-	
+
 	function timerPrototype:UpdateIcon(icon, ...)
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then bar:SetIcon((type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon) end
 	end
-	
+
 	function timerPrototype:UpdateName(name, ...)
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then bar:SetText(name) end
 	end
-	
+
 	function timerPrototype:SetColor(c, ...)
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		local bar = DBM.Bars:GetBar(id)
@@ -1873,7 +1896,7 @@ end
 do
 	local enragePrototype = {}
 	local mt = {__index = enragePrototype}
-	
+
 	function enragePrototype:Start(timer)
 		timer = timer or self.timer or 600
 		self.bar:SetTimer(timer)
@@ -1884,18 +1907,18 @@ do
 		if timer > 30 then self.warning2:Schedule(timer - 30, 30, DBM_CORE_SEC) end
 		if timer > 10 then self.warning2:Schedule(timer - 10, 10, DBM_CORE_SEC) end
 	end
-	
+
 	function enragePrototype:Schedule(t)
 		self.owner:Schedule(t, self.Start, self)
 	end
-	
+
 	function enragePrototype:Cancel()
 		self.owner:Unschedule(self.Start, self)
 		self.warning1:Cancel()
 		self.warning2:Cancel()
 		self.bar:Stop()
-	end	
-	
+	end
+
 	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
 		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, "warning_enrage")
 		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, "warning_enrage")
@@ -2180,37 +2203,37 @@ do
 			timer_enrage = DBM_CORE_OPTION_TIMER_ENRAGE
 		}, returnKey)
 	}
-	
+
 	function modLocalizationPrototype:SetGeneralLocalization(t)
 		for i, v in pairs(t) do
 			self.general[i] = v
 		end
 	end
-	
+
 	function modLocalizationPrototype:SetWarningLocalization(t)
 		for i, v in pairs(t) do
 			self.warnings[i] = v
 		end
 	end
-	
+
 	function modLocalizationPrototype:SetTimerLocalization(t)
 		for i, v in pairs(t) do
 			self.timers[i] = v
 		end
 	end
-	
+
 	function modLocalizationPrototype:SetOptionLocalization(t)
 		for i, v in pairs(t) do
 			self.options[i] = v
 		end
 	end
-	
+
 	function modLocalizationPrototype:SetOptionCatLocalization(t)
 		for i, v in pairs(t) do
 			self.cats[i] = v
 		end
 	end
-	
+
 	function modLocalizationPrototype:SetMiscLocalization(t)
 		for i, v in pairs(t) do
 			self.miscStrings[i] = v
@@ -2230,7 +2253,7 @@ do
 		modLocalizations[name] = obj
 		return obj
 	end
-	
+
 	function DBM:GetModLocalization(name)
 		return modLocalizations[name] or self:CreateModLocalization(name)
 	end
