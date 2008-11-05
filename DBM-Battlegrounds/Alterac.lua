@@ -4,13 +4,9 @@ Alterac:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"GOSSIP_SHOW",
-	"QUEST_PROGRESS",
-	"QUEST_COMPLETE"
+	"CHAT_MSG_BG_SYSTEM_NEUTRAL"
 )
 
-Alterac:AddBoolOption("AutoTurnIn", true, "general")
 --Alterac:AddBoolOption("Flash", false, "general") -- need blue flash effect
 
 local allyColor = {
@@ -30,90 +26,6 @@ local towerTimer = Alterac:NewTimer(243, "TimerTower")
 local gyTimer = Alterac:NewTimer(243, "TimerGY")
 
 
-function Alterac:GetNumItems(id)
-	local counter = 0
-	for bag = 0,  4 do
-		for slot = 1,  GetContainerNumSlots(bag) do
-			local itemLink = GetContainerItemLink(bag, slot)
-			local _, _, itemID = string.find(itemLink or "", "(%d+)") -- first number is the item's ID
-			if tonumber(itemID) == tonumber(id) then
-				local _, itemCount = GetContainerItemInfo(bag, slot)
-				counter = counter + (itemCount or 1)
-			end
-		end
-	end
-	return counter
-end
-
-function Alterac:GOSSIP_SHOW(arg1)
-	if GetRealZoneText() == DBM_ALTERAC and self.Options.AutoTurnIn then
-		local target = UnitName("target")
-		if target == DBM_BGMOD_LANG.AV_NPC.SMITHREGZAR or target == DBM_BGMOD_LANG.AV_NPC.MURGOTDEEPFORGE then -- todo: use npc creature and unit id
-			local Upgrade = GetGossipOptions()
-			if string.find(string.lower(Upgrade or ""), DBM_BGMOD_LANG.UPGRADETROOPS) then
-				SelectGossipOption(1)
-			elseif self:GetNumItems(17422) >= 20 then -- Armor Scraps
-				SelectGossipAvailableQuest(1)
-			end
-		elseif target == DBM_BGMOD_LANG.AV_NPC.PRIMALISTTHURLOGA then
-			local numItems = self:GetNumItems(17306) -- Stormpike Soldier's Blood
-			if numItems >= 5 then
-				SelectGossipAvailableQuest(2)
-			elseif numItems > 0 then
-				SelectGossipAvailableQuest(1)
-			end
-		elseif target == DBM_BGMOD_LANG.AV_NPC.ARCHDRUIDRENFERAL then
-			local numItems = self:GetNumItems(17423) -- Storm Crystal
-			if numItems >= 5 then
-				SelectGossipAvailableQuest(2)
-			elseif numItems > 0 then
-				SelectGossipAvailableQuest(1)
-			end
-		elseif target == DBM_BGMOD_LANG.AV_NPC.STORMPIKERAMRIDERCOMMANDER then
-			if self:GetNumItems(17643) > 0 then -- Frostwolf Hide
-				SelectGossipAvailableQuest(1)
-			end
-		elseif target == DBM_BGMOD_LANG.AV_NPC.FROSTWOLFWOLFRIDERCOMMANDER then
-			if self:GetNumItems(17642) > 0 then -- Alterac Ram Hide
-				SelectGossipAvailableQuest(1)
-			end
-		end
-	end
-end
-
-function Alterac:QUEST_PROGRESS(arg1)
-	if GetRealZoneText() == DBM_ALTERAC and self.Options.AutoTurnIn then
-		local target = UnitName("target")
-		if target == DBM_BGMOD_LANG.AV_NPC.WINGCOMMANDERJEZTOR and self:GetNumItems(17327) == 0 then -- Stormpike Lieutenant's Flesh
-			return
-		elseif target == DBM_BGMOD_LANG.AV_NPC.WINGCOMMANDERGUSE and self:GetNumItems(17326) == 0 then -- Stormpike Soldier's Flesh
-			return
-		elseif target == DBM_BGMOD_LANG.AV_NPC.WINGCOMMANDERMULVERICK and self:GetNumItems(17328) == 0 then -- Stormpike Commander's Flesh
-			return
-		elseif target == DBM_BGMOD_LANG.AV_NPC.WINGCOMMANDERVIPORE and self:GetNumItems(17503) == 0 then -- Frostwolf Lieutenant's Medal
-			return
-		elseif target == DBM_BGMOD_LANG.AV_NPC.WINDCOMMANDERSLIDORE and self:GetNumItems(17502) == 0 then -- Frostwolf Soldier's Medal
-			return
-		elseif target == DBM_BGMOD_LANG.AV_NPC.WINGCOMMANDERICHMAN and self:GetNumItems(17504) == 0 then -- Frostwolf Commander's Medal
-			return
-		else			
-			CompleteQuest()
-		end
-	end
-end
-		
-function Alterac:QUEST_COMPLETE(arg1)
-	if GetRealZoneText() == DBM_ALTERAC and self.Options.AutoTurnIn then
-		local target = UnitName("target")
-		for index, value in pairs(DBM_BGMOD_LANG.AV_NPC) do
-			if (target == value) then
-				GetQuestReward(0)
-			end
-		end
-	end
-end
-	
-	
 function Alterac:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	if arg1 == DBM_BGMOD_LANG.AV_START60SEC then
 		self:SendSync("Start60")
