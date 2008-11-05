@@ -235,7 +235,7 @@ function Alterac:OnSync(msg, args)
 			towerTimer:Stop(t)
 			towerTimer:Start(243, t)
 			towerTimer:UpdateIcon("Interface\\AddOns\\DBM-Battlegrounds\\Textures\\GuardTower", t)
-			towerTimer:SetColor(allyColor, t)
+			towerTimer:SetColor(hordeColor, t)
 		end
 	elseif msg == "DEF" then
 		msg = args or 0
