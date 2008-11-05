@@ -88,38 +88,38 @@ Battlegrounds.ClassColors = {
 
 
 hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players in the score frame
-	if not DBM:GetMod("Battlegrounds").Options.ColorByClass then
-		return;
+	if not Battlegrounds.Options.ColorByClass then
+		return
 	end
 	
-	local isArena = IsActiveBattlefieldArena();
+	local isArena = IsActiveBattlefieldArena()
 	local i = 1;
 	for i = 1, MAX_WORLDSTATE_SCORE_BUTTONS do
-		local index = (FauxScrollFrame_GetOffset(WorldStateScoreScrollFrame) or 0) + i;
+		local index = (FauxScrollFrame_GetOffset(WorldStateScoreScrollFrame) or 0) + i
 		
 		local name, _, _, _, _, faction, _, _, class = GetBattlefieldScore(index);
 		if (name ~= UnitName("player")) and class and Battlegrounds.ClassColors[class] and getglobal("WorldStateScoreButton"..i.."NameText") then
-			getglobal("WorldStateScoreButton"..i.."NameText"):SetTextColor(Battlegrounds.ClassColors[class].r, Battlegrounds.ClassColors[class].g, Battlegrounds.ClassColors[class].b);
-			local playerName = getglobal("WorldStateScoreButton"..i.."NameText"):GetText();
+			getglobal("WorldStateScoreButton"..i.."NameText"):SetTextColor(Battlegrounds.ClassColors[class].r, Battlegrounds.ClassColors[class].g, Battlegrounds.ClassColors[class].b)
+			local playerName = getglobal("WorldStateScoreButton"..i.."NameText"):GetText()
 			if playerName then
-				local _, _, playerName, playerServer = string.find(playerName, "([^%-]+)%-(.+)");
+				local _, _, playerName, playerServer = string.find(playerName, "([^%-]+)%-(.+)")
 				if playerServer and playerName then
 					if faction == 0 then
 						if isArena then --green team
-							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cff19ff19"..playerServer.."|r");
+							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cff19ff19"..playerServer.."|r")
 						else --horde
-							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cffff1919"..playerServer.."|r");
+							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cffff1919"..playerServer.."|r")
 						end
 					else
 						if isArena then --golden team
-							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cffffd100"..playerServer.."|r");
+							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cffffd100"..playerServer.."|r")
 						else --alliance
-							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cff00adf0"..playerServer.."|r");
+							getglobal("WorldStateScoreButton"..i.."NameText"):SetText(playerName.."|cffffffff-|r|cff00adf0"..playerServer.."|r")
 						end
 					end
 				end
 			end
 		end
-		i = i + 1;
+		i = i + 1
 	end
-end);
+end)
