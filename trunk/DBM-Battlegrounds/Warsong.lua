@@ -1,17 +1,13 @@
 ﻿-- 8/1/2007: Set name color of flag carrier to his class color by Diablohu.
 -- 31/7/2007 2.1: The function that targeting the flag carrier finally completed by Diablohu. Special thanks to Са°ЧТВ.
 
-local Warsong = DBM:NewBossMod("Warsong", DBM_WARSONG, DBM_BGMOD_LANG["WS_DESCRIPTION"], DBM_OTHER, "Battlegrounds", 5);
+local Warsong = DBM:NewMod("Warsong", DBM_WARSONG, DBM_BGMOD_LANG["WS_DESCRIPTION"], DBM_OTHER, "Battlegrounds", 5);
 
-Warsong.Version = "2.1";
-Warsong.Author = "LeoLeal, Nitram, Tandanu";
-Warsong.ExtraGUITab	= "BC Battlegrounds";
-Warsong.MinRevision = 862;
 
 Warsong.FlagCarrier = {
-		[1] = nil,
-		[2] = nil
-	}
+	[1] = nil,
+	[2] = nil
+}
 
 Warsong:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
@@ -24,25 +20,6 @@ Warsong:RegisterEvents(
 	"UPDATE_BATTLEFIELD_SCORE"
 );
 
-Warsong.DropdownMenu = { --I don't use :AddOption() here, because I want to use the battleground boss mod's options table
-	{
-		variable = "DBM.AddOns.Battlegrounds.Options.ShowInviteTimer", 
-		text = DBM_BGMOD_LANG.SHOW_INV_TIMER, 
-		func = function() DBM.AddOns.Battlegrounds.Options.ShowInviteTimer = not DBM.AddOns.Battlegrounds.Options.ShowInviteTimer; end, 
-	},
-	
-	{
-		variable = "DBM.AddOns.Battlegrounds.Options.ColorByClass", 
-		text = DBM_BGMOD_LANG.COLOR_BY_CLASS, 
-		func = function() DBM.AddOns.Battlegrounds.Options.ColorByClass = not DBM.AddOns.Battlegrounds.Options.ColorByClass; end, 
-	},
-	
-	{
-		variable = "DBM.AddOns.Battlegrounds.Options.AutoSpirit", 
-		text = DBM_BGMOD_OPTION_AUTOSPIRIT, 
-		func = function() DBM.AddOns.Battlegrounds.Options.AutoSpirit = not DBM.AddOns.Battlegrounds.Options.AutoSpirit end, 
-	},
-};
 
 Warsong:AddOption("ShowFlagCarrier", true, DBM_BGMOD_LANG.WSG_INFOFRAME_INFO, function()
 	DBM:GetMod("Warsong").Options.ShowFlagCarrier = not DBM:GetMod("Warsong").Options.ShowFlagCarrier;
