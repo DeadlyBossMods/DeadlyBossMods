@@ -10,9 +10,6 @@ Alterac:RegisterEvents(
 	"QUEST_COMPLETE"
 )
 
-Alterac:AddBoolOption("ShowInviteTimer", true, "general")
-Alterac:AddBoolOption("ColorByClass", true, "general")
-Alterac:AddBoolOption("AutoSpirit", false, "general")
 Alterac:AddBoolOption("AutoTurnIn", true, "general")
 --Alterac:AddBoolOption("Flash", false, "general") -- need blue flash effect
 
@@ -28,9 +25,9 @@ local hordeColor = {
 	b = 0,
 }
 
-local startTimer = mod:NewTimer(62, "TimerStart")
-local towerTimer = mod:NewTimer(243, "TimerTower")
-local gyTimer = mod:NewTimer(243, "TimerGY")
+local startTimer = Alterac:NewTimer(62, "TimerStart")
+local towerTimer = Alterac:NewTimer(243, "TimerTower")
+local gyTimer = Alterac:NewTimer(243, "TimerGY")
 
 
 function Alterac:GetNumItems(id)
