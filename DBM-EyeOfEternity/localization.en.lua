@@ -1,7 +1,7 @@
 local L
 
 ---------------
---  Shadron  --
+--  Malygos  --
 ---------------
 L = DBM:GetModLocalization("Malygos")
 
