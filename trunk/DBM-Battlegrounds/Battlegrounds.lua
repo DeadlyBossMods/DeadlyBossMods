@@ -4,15 +4,11 @@
 --
 -- thanks to LeoLeal and DiabloHu
 
-local Battlegrounds = DBM:NewBossMod("Battlegrounds", "Battlegrounds", DBM_NO_GUI_TAB, DBM_OTHER, DBM_NO_GUI_TAB, 0);
+local Battlegrounds = DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
 
-Battlegrounds.Version			= "2.0";
-Battlegrounds.Author			= "Tandanu";
-Battlegrounds.MinVersionToSync	= 2.31;
-
-Battlegrounds.Options.ColorByClass		= true; --I don't use :AddOption() here, because we don't have a GUI for this part of the BG mod, the other BG mods will access this options
-Battlegrounds.Options.ShowInviteTimer	= true;
-Battlegrounds.Options.AutoSpirit		= false;
+--Battlegrounds.Options.ColorByClass		= true; --I don't use :AddOption() here, because we don't have a GUI for this part of the BG mod, the other BG mods will access this options
+--Battlegrounds.Options.ShowInviteTimer	= true;
+--Battlegrounds.Options.AutoSpirit		= false;
 
 Battlegrounds:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
@@ -77,7 +73,7 @@ function Battlegrounds:OnUpdate() --invite timer
 		end
 	end
 end
-
+--[[
 Battlegrounds.ClassColors = {
 	[DBM_HUNTER] = { r = 0.67, g = 0.83, b = 0.45 },
 	[DBM_WARLOCK] = { r = 0.58, g = 0.51, b = 0.79 },
@@ -88,7 +84,7 @@ Battlegrounds.ClassColors = {
 	[DBM_DRUID] = { r = 1.0, g = 0.49, b = 0.04 },
 	[DBM_SHAMAN] = { r = 0.14, g = 0.35, b = 1.0 },
 	[DBM_WARRIOR] = { r = 0.78, g = 0.61, b = 0.43 }
-};
+};]]--
 
 
 hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players in the score frame
