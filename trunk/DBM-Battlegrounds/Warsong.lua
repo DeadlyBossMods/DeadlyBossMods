@@ -21,7 +21,7 @@ Warsong:RegisterEvents(
 );
 
 
-Warsong:AddOption("ShowFlagCarrier", true, DBM_BGMOD_LANG.WSG_INFOFRAME_INFO, function()
+Warsong:AddBoolOption("ShowFlagCarrier", true, DBM_BGMOD_LANG.WSG_INFOFRAME_INFO, function()
 	DBM:GetMod("Warsong").Options.ShowFlagCarrier = not DBM:GetMod("Warsong").Options.ShowFlagCarrier;
 	if DBM:GetMod("Warsong").Options.ShowFlagCarrier and GetRealZoneText() == DBM_WARSONG then
 		DBM:GetMod("Warsong"):HideFlagCarrier();
@@ -30,7 +30,7 @@ Warsong:AddOption("ShowFlagCarrier", true, DBM_BGMOD_LANG.WSG_INFOFRAME_INFO, fu
 	end	
 end);
 
-Warsong:AddOption("ShowFlagCarrierErrorNote", false, DBM_BGMOD_LANG.WSG_INFOFRAME_ERRORINFO, function()
+Warsong:AddBoolOption("ShowFlagCarrierErrorNote", false, DBM_BGMOD_LANG.WSG_INFOFRAME_ERRORINFO, function()
 	DBM:GetMod("Warsong").Options.ShowFlagCarrierErrorNote = not DBM:GetMod("Warsong").Options.ShowFlagCarrierErrorNote;
 end);
 
