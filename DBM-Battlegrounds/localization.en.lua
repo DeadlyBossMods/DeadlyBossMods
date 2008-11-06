@@ -209,6 +209,7 @@ L:SetTimerLocalization({
 L = DBM:GetModLocalization("Alterac")
 
 L:SetTimerLocalization({
+	TimerStart = "Game starts in ...", 
 	TimerTower = "%s",
 	TimerGY = "%s",
 })
