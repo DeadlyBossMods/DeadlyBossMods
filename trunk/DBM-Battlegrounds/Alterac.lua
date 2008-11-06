@@ -3,6 +3,8 @@
 local Alterac = DBM:NewMod("Alterac", "DBM-Battlegrounds")
 local L = Alterac:GetLocalizedStrings()
 
+Alterac:RemoveOption("HealthFrame")
+
 Alterac:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA", 	-- Required for BG start
 	"CHAT_MSG_MONSTER_YELL",
