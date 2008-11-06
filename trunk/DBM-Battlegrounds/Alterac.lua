@@ -106,7 +106,7 @@ function Alterac:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
 	end
-	schedule_check()
+	schedule_check(self)
 end
 
 local function check_for_updates()
@@ -155,8 +155,8 @@ local function check_for_updates()
 	end
 end
 
-function schedule_check()
-	DBM:Schedule(1, check_for_updates)
+function schedule_check(self)
+	self:Schedule(1, check_for_updates)
 end
 
 
