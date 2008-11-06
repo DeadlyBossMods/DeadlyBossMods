@@ -115,7 +115,7 @@ function updateBar(bar, percent)
 			break
 		end
 	end
-	if not bossAlive then
+	if not bossAlive and #bars > 0 then
 		bossHealth:Hide()
 	end
 end
