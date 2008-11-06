@@ -17,10 +17,10 @@ Battlegrounds:RegisterEvents(
 );
 
 function Battlegrounds:OnEvent()
-	if event == "ZONE_CHANGED_NEW_AREA"	or event == "PLAYER_ENTERING_WORLD" then --end timers when leaving the BG and request versions from other DBM clients
-		if GetRealZoneText() == DBM_ALTERAC or
-		GetRealZoneText() == DBM_ARATHI or
-		GetRealZoneText() == DBM_WARSONG or
+	if event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD" then --end timers when leaving the BG and request versions from other DBM clients
+		if GetRealZoneText() == DBM_BGMOD_LANG["AV_ZONE"] or
+		GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] or
+		GetRealZoneText() == DBM_BGMOD_LANG["WSG_ZONE"] or
 		GetRealZoneText() == DBM_EYEOFTHESTORM then
 			DBM.AddSyncMessage("HI!", true); -- needed because DBM would not request a new version if you are already in a raid group
 			if not DBM.FunctionIsScheduled(DBM.RequestBars) then				
@@ -44,9 +44,9 @@ function Battlegrounds:OnEvent()
 		if DBM:GetMod("Warsong") then DBM:GetMod("Warsong"):UnScheduleSelf(); end
 		if DBM:GetMod("EyeOfTheStorm") then DBM:GetMod("EyeOfTheStorm"):UnScheduleSelf(); end
 	elseif event == "PLAYER_DEAD" then
-		if (GetRealZoneText() == DBM_ALTERAC
-		or GetRealZoneText() == DBM_ARATHI
-		or GetRealZoneText() == DBM_WARSONG
+		if (GetRealZoneText() == DBM_BGMOD_LANG["AV_ZONE"]
+		or GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"]
+		or GetRealZoneText() == DBM_BGMOD_LANG["WSG_ZONE"]
 		or GetRealZoneText() == DBM_EYEOFTHESTORM)
 		and not HasSoulstone()
 		and self.Options.AutoSpirit then

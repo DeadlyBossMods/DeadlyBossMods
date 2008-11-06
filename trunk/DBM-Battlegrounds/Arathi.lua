@@ -39,7 +39,7 @@ local lastTick = {
 }
 
 Arathi:AddBoolOption("ShowAbFrame", true, "general", function()
-	if Arathi.Options.ShowAbFrame and GetRealZoneText() == DBM_ARATHI then
+	if Arathi.Options.ShowAbFrame and GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
 		Arathi:ShowEstimatedPoints()
 		Arathi:UpdateTimer()
 	else
@@ -48,7 +48,7 @@ Arathi:AddBoolOption("ShowAbFrame", true, "general", function()
 end)
 
 Arathi:AddBoolOption("ShowAbBasesToWin", false, "general", function()
-	if Arathi.Options.ShowAbFrame and GetRealZoneText() == DBM_ARATHI then
+	if Arathi.Options.ShowAbFrame and GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
 		Arathi:ShowBasesToWin()
 		Arathi:UpdateTimer()
 	else
@@ -72,7 +72,7 @@ local winTimer = Arathi:NewTimer(30, "TimerWin")
 local capTimer = Arathi:NewTimer(64, "TimerCap")
 
 function Arathi:GetScore()
-	if GetRealZoneText() == DBM_ARATHI then
+	if GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
 		local _, _, mAllyInfo	= GetWorldStateUIInfo(1)
 		local _, _, mHordeInfo	= GetWorldStateUIInfo(2)
 		if not mAllyInfo or not mHordeInfo then
@@ -155,7 +155,7 @@ function Arathi:HideBasesToWin()
 end
 
 Arathi:RegisterOnUpdateHandler(function(self, elapsed)
-	if GetRealZoneText() == DBM_ARATHI then
+	if GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
 		local mOk, AllyBases, AllyScore, HordeBases, HordeScore = self:GetScore()
 		if not mOk then
 			return
@@ -217,10 +217,10 @@ Arathi:RegisterOnUpdateHandler(function(self, elapsed)
 end, 0.5)
 
 function Arathi:ZONE_CHANGED_NEW_AREA(arg1)
-	if GetRealZoneText() == DBM_ARATHI and self.Options.ShowAbFrame then
+	if GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] and self.Options.ShowAbFrame then
 		self:ShowEstimatedPoints()
 		self:ShowBasesToWin()
-	elseif GetRealZoneText() ~= DBM_ARATHI then
+	elseif GetRealZoneText() ~= DBM_BGMOD_LANG["AB_ZONE"] then
 		self:HideEstimatedPoints()
 		self:HideBasesToWin()
 	end
@@ -245,7 +245,7 @@ function Arathi:UpdateTimer(arg1)
 	lastTick.LastAllyCount	= lastTick.Alliance.Bases;
 	lastTick.LastHordeCount = lastTick.Horde.Bases
 	
-	if winTimer:GetTime(L.Alliance) ~= 0 and winTimer:GetTime(L.Horde) ~= 0 then
+	if winTimer:GetTime(DBM_BGMOD_LANG["ALLIANCE"]) ~= 0 and winTimer:GetTime(DBM_BGMOD_LANG["HORDE"]) ~= 0 then
 		winTimer:Stop()
 	end		
 	
@@ -261,16 +261,18 @@ function Arathi:UpdateTimer(arg1)
 			self.ScoreFrame2Text:SetText("(2000)")
 		end
 		
-		if winTimer:GetTime(L.Alliance) ~= 0 then
+		if winTimer:GetTime(DBM_BGMOD_LANG["ALLIANCE"]) ~= 0 then
 			winTimer:Stop()
-			winTimer:Start(HordeTime, L.Horde)
+			winTimer:Start(HordeTime, DBM_BGMOD_LANG["HORDE"])
 			winTimer:SetColor(hordeColor)
 			winTimer:UpdateIcon() -- TODO: ICON
-		elseif winTimer:GetTime(L.Horde) ~= 0 then
-			local timeLeft, timeElapsed = winTimer:GetTime(L.Horde)
+
+		elseif winTimer:GetTime(DBM_BGMOD_LANG["HORDE"]) ~= 0 then
+			local timeLeft, timeElapsed = winTimer:GetTime(DBM_BGMOD_LANG["HORDE"])
 			winTimer:Update(0, (timeElapsed + HordeTime))
+
 		else
-			self:StartStatusBarTimer(HordeTime, "AB_WINHORDE", "Interface\\Icons\\INV_BannerPVP_01.blp", true)
+			winTimer:Start(HordeTime, DBM_BGMOD_LANG["HORDE"])
 		end
 		
 	elseif HordeTime > AllyTime then -- Alliance wins
@@ -280,15 +282,17 @@ function Arathi:UpdateTimer(arg1)
 			self.ScoreFrame1Text:SetText("(2000)")		
 		end
 		
-		if( self:GetStatusBarTimerTimeLeft("AB_WINHORDE") ) then
-			local timeLeft, timeElapsed = self:GetStatusBarTimerTimeLeft("AB_WINHORDE")
-			self:UpdateStatusBarTimer("AB_WINHORDE", nil, (timeElapsed + AllyTime), "AB_WINALLY", "Interface\\Icons\\INV_BannerPVP_02.blp", true)
-		
-		elseif( self:GetStatusBarTimerTimeLeft("AB_WINALLY") ) then
-			local timeLeft, timeElapsed = self:GetStatusBarTimerTimeLeft("AB_WINALLY")
-			self:UpdateStatusBarTimer("AB_WINALLY", nil, (timeElapsed + AllyTime), nil, nil, true)
+		if( winTimer:GetTime("AB_WINHORDE") ) then
+			winTimer:Stop()
+			winTimer:Start(AllyTime, DBM_BGMOD_LANG["ALLIANCE"])
+			winTimer:SetColor(hordeColor)
+			winTimer:UpdateIcon() -- TODO: ICON
+
+		elseif( winTimer:GetTime("AB_WINALLY") ) then
+			local timeLeft, timeElapsed = winTimer:GetTime(DBM_BGMOD_LANG["ALLIANCE"])
+			winTimer:Update(0, (timeElapsed + AllyTime))
 		else
-			self:StartStatusBarTimer(AllyTime, "AB_WINALLY", "Interface\\Icons\\INV_BannerPVP_02.blp", true)
+			winTimer:Start(HordeTime, DBM_BGMOD_LANG["ALLIANCE"])
 		end
 	end
 end
