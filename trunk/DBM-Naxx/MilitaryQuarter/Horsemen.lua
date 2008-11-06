@@ -20,6 +20,15 @@ local specWarnMarkOnPlayer	= mod:NewSpecialWarning("SpecialWarningMarkOnPlayer",
 
 local timerMark				= mod:NewTimer(12, "TimerMark", 28835)
 
+mod:AddBoolOption("HealthFrame", true)
+
+mod:SetBossHealthInfo(
+	16064, L.Korthazz,
+	30549, L.Rivendare,
+	16065, L.Blaumeux,
+	16063, L.Zeliek
+)
+
 local markCounter = 0
 
 function mod:OnCombatStart(delay)
