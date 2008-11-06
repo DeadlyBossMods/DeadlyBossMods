@@ -33,13 +33,15 @@ local gyTimer = Alterac:NewTimer(243, "TimerGY", "Interface\\Icons\\Spell_Shadow
 
 graveyards = {}
 local function is_graveyard(id)
-	return id == 15 or id == 4 or id == 13 or id == 14 
+	return id == 15 or id == 4 or id == 13 or id == 14 or id == 8 
 end
 local function gy_state(id)
 	if id == 15 then	return 1	-- if gy_state(id) > 2 then .. conflict state ...
 	elseif id == 13 then 	return 2
 	elseif id == 4 then	return 3	-- if gy_state(id) == 3 then --- alliance takes gy from horde
 	elseif id == 14 then	return 4	-- if gy_state(id) == 4 then --- horde takes gy from alliance
+	elseif id == 8 then	return 5	-- if gy_state(id) == 5 then --- untaken
+	else return 0
 	end
 end
 --[[
@@ -51,13 +53,15 @@ end
 
 towers = {}
 local function is_tower(id)
-	return id == 10 or id == 12 or id == 11 or id == 9
+	return id == 10 or id == 12 or id == 11 or id == 9 or id == 6
 end
 local function tower_state(id)
 	if id == 11 then	return 1	-- if tower_state(id) > 2 then .. conflict state ...
 	elseif id == 10 then	return 2
 	elseif id == 9 then	return 3	-- if tower_state(id) == 3 then --- alliance trys to destroy the tower
 	elseif id == 12 then	return 4	-- if tower_state(id) == 4 then --- horde trys to destroy the tower
+	elseif id == 6 then	return 5	-- if tower_state(id) == 5 then --- destroyed
+	else return 0
 	end
 end
 --[[
@@ -67,15 +71,11 @@ end
     09 Tower, assaulted by Alliance 
 --]]
 
-local check_for_updates
-
 local bgzone = false
 do
 	local function AV_Initialize()
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
-			DBM:AddMsg("Started AV Mod")
-
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
@@ -89,7 +89,6 @@ do
 
 		elseif bgzone then
 			bgzone = false
-			DBM:AddMsg("disabled AV Mod")
 		end
 	end
 	function Alterac:OnInitialize()
@@ -100,6 +99,8 @@ do
 	end
 end
 
+local schedule_check
+
 function Alterac:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	if not bgzone then return end
 	if arg1 == L.BgStart60 then
@@ -107,10 +108,10 @@ function Alterac:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
 	end
-	check_for_updates()
+	schedule_check()
 end
 
-function check_for_updates()
+local function check_for_updates()
 	if not bgzone then return end
 	for k,v in pairs(graveyards) do
 		local name, _, textureIndex = GetMapLandmarkInfo(k)
@@ -128,8 +129,6 @@ function check_for_updates()
 			elseif gy_state(textureIndex) <= 2 then
 				-- gy is now longer under conflict, remove the bars
 				gyTimer:Stop(name)
-			else
-				DBM:AddMsg("v1 = "..gy_state(v).." v2 = "..gy_state(textureIndex).." ")
 			end
 			graveyards[k] = textureIndex
 		end		 
@@ -158,7 +157,12 @@ function check_for_updates()
 	end
 end
 
-Alterac.CHAT_MSG_MONSTER_YELL = check_for_updates
-Alterac.CHAT_MSG_BG_SYSTEM_ALLIANCE = check_for_updates
-Alterac.CHAT_MSG_BG_SYSTEM_HORDE = check_for_updates
+function schedule_check()
+	DBM:Schedule(1, check_for_updates)
+end
+
+
+Alterac.CHAT_MSG_MONSTER_YELL = schedule_check
+Alterac.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
+Alterac.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
 
