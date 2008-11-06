@@ -457,7 +457,7 @@ end
 SLASH_DBMRANGE_1 = "/range"
 SLASH_DBMRANGE_2 = "/distance"
 SlashCmdList["DBMRANGE"] = function(msg)
-	DBM.RangeCheck:Show()
+	DBM.RangeCheck:Show(10)
 end
 
 do

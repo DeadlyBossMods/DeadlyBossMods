@@ -2,13 +2,13 @@ local mod = DBM:NewMod("Keristrasza", "DBM-Party-WotLK", 8)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(26731)
+mod:SetCreatureID(26723)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_CAST_SUCESS",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED"
 )
 
