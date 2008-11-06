@@ -1,3 +1,26 @@
+local L
+
+----------------------------
+--  General BG functions  --
+----------------------------
+L = DBM:GetModLocalization("Battlegrounds")
+
+L:SetGeneralLocalization({
+	name = "General BG Functions"
+})
+
+L:SetTimerLocalization({
+	TimerInvite = "%s"
+})
+
+L:SetOptionLocalization({
+	ColorByClass	= "Set name color to class color in the score frame",
+	ShowInviteTimer	= "Show battleground join timer",
+	AutoSpirit		= "Auto-release spirit"
+})
+
+
+
 DBM_BGMOD_LANG = {}
 DBM_BGMOD_LANG["NAME"] 				= "Battlegrounds";
 DBM_BGMOD_LANG["INFO"] 				= "Shows timers for Alterac Valley and Arathi Basin. "
