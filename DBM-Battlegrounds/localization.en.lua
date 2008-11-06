@@ -1,20 +1,20 @@
 DBM_BGMOD_LANG = {}
-DBM_BGMOD_LANG["NAME"] 		= "Battlegrounds";
-DBM_BGMOD_LANG["INFO"] 		= "Shows timers for Alterac Valley and Arathi Basin. "
-					.."It also shows the Warsong flag carrier and allows auto turn-in of Alterac Valley quest items.";
-DBM_BGMOD_LANG["THANKS"] 		= "Thanks for using La Vendetta Boss Mods! :)";
-DBM_BGMOD_LANG["WINS"]			= "The (%w+) wins";
-DBM_BGMOD_LANG["BEGINS"]		= "Game starts in";	-- BAR
-DBM_BGMOD_LANG["ALLIANCE"]		= "Alliance";
-DBM_BGMOD_LANG["HORDE"]		= "Horde";
-DBM_BGMOD_LANG["ALLI_TAKE_ANNOUNCE"] 	= "*** Alliance has taken the %s ***";
-DBM_BGMOD_LANG["HORDE_TAKE_ANNOUNCE"]	= "*** Horde has taken the %s ***";
+DBM_BGMOD_LANG["NAME"] 				= "Battlegrounds";
+DBM_BGMOD_LANG["INFO"] 				= "Shows timers for Alterac Valley and Arathi Basin. "
+						.."It also shows the Warsong flag carrier and allows auto turn-in of Alterac Valley quest items.";
+DBM_BGMOD_LANG["THANKS"] 			= "Thanks for using La Vendetta Boss Mods! :)";
+DBM_BGMOD_LANG["WINS"]				= "The (%w+) wins";
+DBM_BGMOD_LANG["BEGINS"]			= "Game starts in";	-- BAR
+DBM_BGMOD_LANG["ALLIANCE"]			= "Alliance";
+DBM_BGMOD_LANG["HORDE"]				= "Horde";
+DBM_BGMOD_LANG["ALLI_TAKE_ANNOUNCE"] 		= "*** Alliance has taken the %s ***";
+DBM_BGMOD_LANG["HORDE_TAKE_ANNOUNCE"]		= "*** Horde has taken the %s ***";
 
 		-- AV
-DBM_BGMOD_LANG["AV_ZONE"] 		= "Alterac Valley";
-DBM_BGMOD_LANG["AV_START60SEC"]	= "1 minute until the battle for Alterac Valley begins.";
-DBM_BGMOD_LANG["AV_START30SEC"]	= "30 seconds until the battle for Alterac Valley begins.";
-DBM_BGMOD_LANG["AV_TURNININFO"] 	= "Auto turn-in reputation items";
+DBM_BGMOD_LANG["AV_ZONE"] 			= "Alterac Valley";
+DBM_BGMOD_LANG["AV_START60SEC"]			= "1 minute until the battle for Alterac Valley begins.";
+DBM_BGMOD_LANG["AV_START30SEC"]			= "30 seconds until the battle for Alterac Valley begins.";
+DBM_BGMOD_LANG["AV_TURNININFO"] 		= "Auto turn-in reputation items";
 DBM_BGMOD_LANG["AV_NPC"] = {}
 DBM_BGMOD_LANG["AV_NPC"]["SMITHREGZAR"] 			= "Smith Regzar";			-- armor
 DBM_BGMOD_LANG["AV_NPC"]["PRIMALISTTHURLOGA"] 			= "Primalist Thurloga";			-- icelord
@@ -27,7 +27,7 @@ DBM_BGMOD_LANG["AV_NPC"]["WINGCOMMANDERVIPORE"] 		= "Wing Commander Vipore";
 DBM_BGMOD_LANG["AV_NPC"]["WINDCOMMANDERSLIDORE"]	 	= "Wing Commander Slidore";
 DBM_BGMOD_LANG["AV_NPC"]["WINGCOMMANDERICHMAN"] 		= "Wing Commander Ichman";
 DBM_BGMOD_LANG["AV_NPC"]["STORMPIKERAMRIDERCOMMANDER"]		= "Stormpike Ram Rider Commander";
-DBM_BGMOD_LANG["AV_NPC"]["FROSTWOLFWOLFRIDERCOMMANDER"]	= "Frostwolf Wolf Rider Commander";
+DBM_BGMOD_LANG["AV_NPC"]["FROSTWOLFWOLFRIDERCOMMANDER"]		= "Frostwolf Wolf Rider Commander";
 DBM_BGMOD_LANG["AV_ITEM"] = {}
 DBM_BGMOD_LANG["AV_ITEM"]["ARMORSCRAPS"] 	= "Armor Scraps";
 DBM_BGMOD_LANG["AV_ITEM"]["SOLDIERSBLOOD"] 	= "Stormpike Soldier's Blood";
