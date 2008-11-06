@@ -1,7 +1,8 @@
 ﻿-- 8/1/2007: Set name color of flag carrier to his class color by Diablohu.
 -- 31/7/2007 2.1: The function that targeting the flag carrier finally completed by Diablohu. Special thanks to Са°ЧТВ.
 
-local Warsong = DBM:NewMod("Warsong", DBM_WARSONG, DBM_BGMOD_LANG["WS_DESCRIPTION"], DBM_OTHER, "Battlegrounds", 5);
+--local Warsong = DBM:NewMod("Warsong", DBM_WARSONG, DBM_BGMOD_LANG["WS_DESCRIPTION"], DBM_OTHER, "Battlegrounds", 5);
+local Warsong = DBM:NewMod("Warsong", "DBM-Battlegrounds")
 
 
 Warsong.FlagCarrier = {
