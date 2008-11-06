@@ -454,6 +454,12 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	end
 end
 
+SLASH_DBMRANGE_1 = "/range"
+SLASH_DBMRANGE_2 = "/distance"
+SlashCmdList["DBMRANGE"] = function(msg)
+	DBM.RangeCheck:Show()
+end
+
 do
 	local sortMe = {}
 	local function sort(v1, v2)
@@ -1865,7 +1871,7 @@ do
 			bar:SetColor(c)
 		end
 	end
-	
+
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
 		local obj = setmetatable(
 			{
@@ -2206,6 +2212,11 @@ do
 			timer_enrage = DBM_CORE_OPTION_TIMER_ENRAGE
 		}, returnKey)
 	}
+	local defaultMiscLocalization = {
+		__index = function(t, k)
+			return t.misc.general[k] or t.misc.options[k] or t.misc.warnings[k] or t.misc.timers[k] or t.misc.cats[k] or k
+		end
+	}
 
 	function modLocalizationPrototype:SetGeneralLocalization(t)
 		for i, v in pairs(t) do
@@ -2249,9 +2260,10 @@ do
 			warnings = setmetatable({}, defaultAnnounceLocalization),
 			options = setmetatable({}, defaultOptionLocalization),
 			timers = setmetatable({}, defaultTimerLocalization),
-			miscStrings = setmetatable({}, returnKey),
+			miscStrings = setmetatable({}, defaultMiscLocalization),
 			cats = setmetatable({}, defaultCatLocalization),
 		}
+		obj.miscStrings.misc = obj
 		setmetatable(obj, mt)
 		modLocalizations[name] = obj
 		return obj
