@@ -185,6 +185,9 @@ DBM_BGMOD_AV_BARS = {}
 
 DBM_BGMOD_LANG.AV_OPTION_FLASH		= "Enable flash effects"
 
+
+
+
 local L
 --------------
 --  Arenas  --
@@ -200,9 +203,40 @@ L:SetTimerLocalization({
 })
 
 
+---------------
+--  Alterac  --
+---------------
 L = DBM:GetModLocalization("Alterac")
 
 L:SetTimerLocalization({
 	TimerTower = "%s",
 	TimerGY = "%s",
 })
+
+L:SetMiscLocalization({
+	BgStart60 = "1 minute until the battle for Alterac Valley begins.",
+	BgStart30 = "The Battle for Arathi Basin will begin in 30 seconds.",
+	ZoneName = "Alterac Valley",
+})
+
+L:SetOptionLocalization({
+	TimerStart  = "Show Start Timer",
+	TimerTower = "Show Tower capture Timer",
+	TimerGY = "Show Graveyard Timer",
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
