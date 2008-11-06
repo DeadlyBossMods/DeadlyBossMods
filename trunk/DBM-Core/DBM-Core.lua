@@ -642,6 +642,10 @@ do
 			button:Hide()
 		end
 	end
+
+	function DBM:HideMinimapButton()
+		button:Hide()
+	end
 end
 
 
@@ -827,6 +831,7 @@ do
 		if modname == "DBM-Core" then
 			loadOptions()
 			DBM.Bars:LoadOptions("DBM")
+			if not DBM.Options.ShowMinimapButton then DBM:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
 				if GetAddOnMetadata(i, "X-DBM-Mod") then
@@ -1848,6 +1853,7 @@ do
 	end
 
 	function timerPrototype:Update(elapsed, totalTime, ...)
+		if self:GetTime(...) == 0 then self:Start(totalTime, ...) end
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		DBM.Bars:UpdateBar(id, elapsed, totalTime)
 	end
