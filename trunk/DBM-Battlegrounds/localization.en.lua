@@ -249,15 +249,28 @@ L:SetOptionLocalization({
 	TimerGY = "Show Graveyard Timer",
 })
 
+---------------
+--  Arathi  --
+---------------
+L = DBM:GetModLocalization("Arathi")
 
+L:SetMiscLocalization({
+	BgStart60 = "The Battle for Arathi Basin will begin in 1 minute.",
+	BgStart30 = "The Battle for Arathi Basin will begin in 30 seconds.",
+	ZoneName = "Arathi Basin",
+})
 
+L:SetTimerLocalization({
+	TimerStart = "Game starts in ...", 
+	TimerWin = "%s wins in ...",
+	TimerCap = "%s",
+})
 
-
-
-
-
-
-
+L:SetOptionLocalization({
+	TimerStart  = "Show Start Timer",
+	TimerWin = "Show Win Timer",
+	TimerCap = "Show Capture Timer",
+})
 
 
 

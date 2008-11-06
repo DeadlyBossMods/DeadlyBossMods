@@ -93,12 +93,8 @@ do
 			bgzone = false
 		end
 	end
-	function Alterac:OnInitialize()
-		AV_Initialize()
-	end
-	function Alterac:ZONE_CHANGED_NEW_AREA()
-		AV_Initialize()
-	end
+	Alterac.OnInitialize = AV_Initialize
+	Alterac.ZONE_CHANGED_NEW_AREA = AV_Initialize
 end
 
 local schedule_check
@@ -144,10 +140,10 @@ local function check_for_updates()
 
 				if tower_state(textureIndex) == 3 then
 					towerTimer:SetColor(allyColor, name)
-					towerTimer:UpdateIcon(allyTowerIcon, name)
+					towerTimer:UpdateIcon(hordeTowerIcon, name)
 				else
 					towerTimer:SetColor(hordeColor, name)
-					towerTimer:UpdateIcon(hordeTowerIcon, name)
+					towerTimer:UpdateIcon(allyTowerIcon, name)
 				end
 
 			elseif tower_state(textureIndex) <= 2 then

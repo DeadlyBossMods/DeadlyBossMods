@@ -1,7 +1,7 @@
 -- 31/7/2007 2.1: added "Bases to win" frame by Diablohu
 
 local Arathi = DBM:NewMod("Arathi", "DBM-Battlegrounds")
-
+local L = Arathi:GetLocalizedStrings()
 
 Arathi:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
@@ -12,14 +12,24 @@ Arathi:RegisterEvents(
 	"CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE"
 )
 	
-
-Arathi.ResPerSec = {
+local ResPerSec = {
 	[0] = 0,
 	[1] = 10/12,
 	[2] = 10/9,
 	[3] = 10/6,
 	[4] = 10/3,
 	[5] = 30,
+}
+
+local allyColor = {
+	r = 0,
+	g = 0,
+	b = 1,
+}
+local hordeColor = {
+	r = 1,
+	g = 0,
+	b = 0,
 }
 
 local lastTick = {
@@ -38,8 +48,30 @@ local lastTick = {
 	},
 }
 
-Arathi:AddBoolOption("ShowAbFrame", true, "general", function()
-	if Arathi.Options.ShowAbFrame and GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
+local bgzone = false
+do
+	local function AB_Initialize()
+		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
+			bgzone = true
+			for i=1, GetNumMapLandmarks(), 1 do
+				local name, _, textureIndex = GetMapLandmarkInfo(i)
+				if name and textureIndex then
+					if is_graveyard(textureIndex) then
+						graveyards[i] = textureIndex
+					end
+				end
+			end
+
+		elseif bgzone then
+			bgzone = false
+		end
+	end
+	Arathi.OnInitialize = AB_Initialize
+	Arathi.ZONE_CHANGED_NEW_AREA = AB_Initialize
+end
+
+Arathi:AddBoolOption("ShowAbFrame", true, nil, function()
+	if Arathi.Options.ShowAbFrame and bgzone then
 		Arathi:ShowEstimatedPoints()
 		Arathi:UpdateTimer()
 	else
@@ -47,8 +79,8 @@ Arathi:AddBoolOption("ShowAbFrame", true, "general", function()
 	end
 end)
 
-Arathi:AddBoolOption("ShowAbBasesToWin", false, "general", function()
-	if Arathi.Options.ShowAbFrame and GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
+Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
+	if Arathi.Options.ShowAbFrame and bgzone then
 		Arathi:ShowBasesToWin()
 		Arathi:UpdateTimer()
 	else
@@ -56,23 +88,12 @@ Arathi:AddBoolOption("ShowAbBasesToWin", false, "general", function()
 	end
 end)
 
-local allyColor = {
-	r = 0,
-	g = 0,
-	b = 1,
-}
-local hordeColor = {
-	r = 1,
-	g = 0,
-	b = 0,
-}
-
 local startTimer = Arathi:NewTimer(62, "TimerStart")
 local winTimer = Arathi:NewTimer(30, "TimerWin")
 local capTimer = Arathi:NewTimer(64, "TimerCap")
 
 function Arathi:GetScore()
-	if GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
+	if bgzone then
 		local _, _, mAllyInfo	= GetWorldStateUIInfo(1)
 		local _, _, mHordeInfo	= GetWorldStateUIInfo(2)
 		if not mAllyInfo or not mHordeInfo then
@@ -155,7 +176,7 @@ function Arathi:HideBasesToWin()
 end
 
 Arathi:RegisterOnUpdateHandler(function(self, elapsed)
-	if GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] then
+	if bgzone then
 		local mOk, AllyBases, AllyScore, HordeBases, HordeScore = self:GetScore()
 		if not mOk then
 			return
@@ -190,18 +211,18 @@ Arathi:RegisterOnUpdateHandler(function(self, elapsed)
 				FriendlyBases = lastTick.Horde.Bases
 				EnemyBases = lastTick.Alliance.Bases
 			end
-			if ((2000 - FriendlyLast) / self.ResPerSec[FriendlyBases]) > ((2000 - EnemyLast) / self.ResPerSec[EnemyBases]) then
+			if ((2000 - FriendlyLast) / ResPerSec[FriendlyBases]) > ((2000 - EnemyLast) / ResPerSec[EnemyBases]) then
 				for i=1, 5 do
-					local EnemyTime = (2000 - EnemyLast) / self.ResPerSec[ 5 - i ]
-					local FriendlyTime = (2000 - FriendlyLast) / self.ResPerSec[ i ]
+					local EnemyTime = (2000 - EnemyLast) / ResPerSec[ 5 - i ]
+					local FriendlyTime = (2000 - FriendlyLast) / ResPerSec[ i ]
 					if( FriendlyTime < EnemyTime ) then
 						baseLowest = FriendlyTime
 					else
 						baseLowest = EnemyTime
 					end
 					
-					local EnemyFinal = math.floor( ( EnemyLast + math.floor( baseLowest * self.ResPerSec[ 5 - i ] + 0.5 ) ) / 10 ) * 10
-					local FriendlyFinal = math.floor( ( FriendlyLast + math.floor( baseLowest * self.ResPerSec[ i ] + 0.5 ) ) / 10 ) * 10
+					local EnemyFinal = math.floor( ( EnemyLast + math.floor( baseLowest * ResPerSec[ 5 - i ] + 0.5 ) ) / 10 ) * 10
+					local FriendlyFinal = math.floor( ( FriendlyLast + math.floor( baseLowest * ResPerSec[ i ] + 0.5 ) ) / 10 ) * 10
 					if( FriendlyFinal >= 2000 and EnemyFinal < 2000 ) then
 						self.ScoreFrameToWinText:SetText(DBM_BGMOD_LANG.AB_BASESTOWIN_TEXT..i)
 						break
@@ -217,10 +238,10 @@ Arathi:RegisterOnUpdateHandler(function(self, elapsed)
 end, 0.5)
 
 function Arathi:ZONE_CHANGED_NEW_AREA(arg1)
-	if GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] and self.Options.ShowAbFrame then
+	if bgzone and self.Options.ShowAbFrame then
 		self:ShowEstimatedPoints()
 		self:ShowBasesToWin()
-	elseif GetRealZoneText() ~= DBM_BGMOD_LANG["AB_ZONE"] then
+	elseif bgzone then
 		self:HideEstimatedPoints()
 		self:HideBasesToWin()
 	end
@@ -237,8 +258,8 @@ end
 
 	
 function Arathi:UpdateTimer(arg1)
-	local AllyTime = ((2000 - lastTick.Alliance.Score) / self.ResPerSec[lastTick.Alliance.Bases]) - (GetTime() - lastTick.Time) -- possible division through zero, but that's no problem: 1/0 = 1.#INF and these timers are capped @ 5000
-	local HordeTime = ((2000 - lastTick.Horde.Score) / self.ResPerSec[lastTick.Horde.Bases]) - (GetTime() - lastTick.Time)
+	local AllyTime = ((2000 - lastTick.Alliance.Score) / ResPerSec[lastTick.Alliance.Bases]) - (GetTime() - lastTick.Time) -- possible division through zero, but that's no problem: 1/0 = 1.#INF and these timers are capped @ 5000
+	local HordeTime = ((2000 - lastTick.Horde.Score) / ResPerSec[lastTick.Horde.Bases]) - (GetTime() - lastTick.Time)
 	if AllyTime > 5000 then		AllyTime = 5000 end
 	if HordeTime > 5000 then	HordeTime = 5000 end
 	
@@ -256,7 +277,7 @@ function Arathi:UpdateTimer(arg1)
 	
 	elseif AllyTime > HordeTime then -- Horde wins
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			local AllyPoints = math.floor(math.floor(((HordeTime * self.ResPerSec[lastTick.Alliance.Bases]) + lastTick.Alliance.Score) / 10) * 10)
+			local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[lastTick.Alliance.Bases]) + lastTick.Alliance.Score) / 10) * 10)
 			self.ScoreFrame1Text:SetText("("..AllyPoints..")")
 			self.ScoreFrame2Text:SetText("(2000)")
 		end
@@ -277,7 +298,7 @@ function Arathi:UpdateTimer(arg1)
 		
 	elseif HordeTime > AllyTime then -- Alliance wins
 		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			local HordePoints = math.floor(math.floor(((AllyTime * self.ResPerSec[lastTick.Horde.Bases]) + lastTick.Horde.Score) / 10) * 10)
+			local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[lastTick.Horde.Bases]) + lastTick.Horde.Score) / 10) * 10)
 			self.ScoreFrame2Text:SetText("("..HordePoints..")")
 			self.ScoreFrame1Text:SetText("(2000)")		
 		end
