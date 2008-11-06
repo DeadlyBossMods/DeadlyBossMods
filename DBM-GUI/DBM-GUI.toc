@@ -1,6 +1,8 @@
 ## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOptions GUI|r
+## Title-zhCN: |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF选项设置界面|r
 ## Notes: GUI for Deadly Boss Mods
+## Notes-zhCN: Deadly Boss Mods的用户界面
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1
 ## DefaultState: enabled
@@ -8,6 +10,7 @@
 ## URL: http://www.deadlybossmods.com
 localization.en.lua
 localization.de.lua
+localization.cn.lua
 DBM-GUI_DropDown.xml
 DBM-GUI_Templates.xml
 DBM-GUI.lua

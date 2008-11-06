@@ -1,6 +1,8 @@
 ## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFBossMod Studio|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF首领模块生成器|r
 ## Notes: BossModStudio for Deadly Boss Mods
+## Notes-zhCN: Deadly Boss Mods的首领模块生成器
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 0
 ## DefaultState: enabled
@@ -8,4 +10,5 @@
 ## URL: http://www.deadlybossmods.com
 localization.en.lua
 localization.de.lua
+localization.cn.lua
 DBM-BossModStudio.lua
