@@ -25,7 +25,12 @@ local timerShiftCast	= mod:NewTimer(5, "TimerShiftCast", 28089)
 mod:AddBoolOption("ArrowsEnabled", true, "Arrows")
 mod:AddBoolOption("ArrowsRightLeft", false, "Arrows")
 mod:AddBoolOption("ArrowsInverse", false, "Arrows")
+mod:AddBoolOption("HealthFrame", true, "misc")
 
+mod:SetBossHealthInfo(
+	15930, "Feugen",
+	15929, "Stalagg"
+)
 
 local currentCharge
 

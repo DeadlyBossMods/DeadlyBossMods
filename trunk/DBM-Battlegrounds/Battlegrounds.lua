@@ -1,105 +1,75 @@
--- Battleground mod v2.0
+-- Battleground mod v3.0
 -- rewrite by Tandanu
--- this file is for events that are needed for all battlegrounds and stuff like the invite timer, etc.
 --
 -- thanks to LeoLeal and DiabloHu
 
-local Battlegrounds = DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
+local mod = DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
 
---Battlegrounds.Options.ColorByClass		= true; --I don't use :AddOption() here, because we don't have a GUI for this part of the BG mod, the other BG mods will access this options
---Battlegrounds.Options.ShowInviteTimer	= true;
---Battlegrounds.Options.AutoSpirit		= false;
 
-Battlegrounds:RegisterEvents(
+mod:AddBoolOption("ColorByClass", true)
+mod:AddBoolOption("ShowInviteTimer", true)
+mod:AddBoolOption("AutoSpirit", false)
+mod:RemoveOption("HealthFrame")
+
+mod:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
 	"PLAYER_DEAD"
-);
+)
 
-function Battlegrounds:OnEvent()
-	if event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD" then --end timers when leaving the BG and request versions from other DBM clients
-		if GetRealZoneText() == DBM_BGMOD_LANG["AV_ZONE"] or
-		GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"] or
-		GetRealZoneText() == DBM_BGMOD_LANG["WSG_ZONE"] or
-		GetRealZoneText() == DBM_EYEOFTHESTORM then
-			DBM.AddSyncMessage("HI!", true); -- needed because DBM would not request a new version if you are already in a raid group
-			if not DBM.FunctionIsScheduled(DBM.RequestBars) then				
-				DBM.Schedule(5, DBM.RequestBars);
-			end
-		end
-		
-		for index, value in pairs(DBM.StatusBarData) do --end all timers when leaving/entering a BG
-			if value.bossModID == "Battlegrounds"
-			or value.bossModID == "Alterac"
-			or value.bossModID == "Arathi"
-			or value.bossModID == "Warsong"
-			or value.bossModID == "EyeOfTheStorm" then
-				self:EndStatusBarTimer(index, true);
-			end
-		end
-		
-		self:UnScheduleSelf();
-		if DBM:GetMod("Alterac") then DBM:GetMod("Alterac"):UnScheduleSelf(); end
-		if DBM:GetMod("Arathi") then DBM:GetMod("Arathi"):UnScheduleSelf();	end
-		if DBM:GetMod("Warsong") then DBM:GetMod("Warsong"):UnScheduleSelf(); end
-		if DBM:GetMod("EyeOfTheStorm") then DBM:GetMod("EyeOfTheStorm"):UnScheduleSelf(); end
-	elseif event == "PLAYER_DEAD" then
-		if (GetRealZoneText() == DBM_BGMOD_LANG["AV_ZONE"]
-		or GetRealZoneText() == DBM_BGMOD_LANG["AB_ZONE"]
-		or GetRealZoneText() == DBM_BGMOD_LANG["WSG_ZONE"]
-		or GetRealZoneText() == DBM_EYEOFTHESTORM)
-		and not HasSoulstone()
-		and self.Options.AutoSpirit then
-			RepopMe()
-		end
+local inviteTimer = mod:NewTimer(60, "TimerInvite", nil, nil, false)
+
+function mod:ZONE_CHANGED_NEW_AREA()
+	if select(2, IsInInstance()) == "pvp" then
+		SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
+		self:Schedule(3, DBM.RequestTimers, DBM)
+		inviteTimer:Stop()
+	end
+	for i, v in ipairs(DBM:GetModByName("Alterac").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("EyeOfTheStorm").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("Warsong").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("Arathi").timers) do v:Stop() end
+	DBM:GetModByName("Alterac"):Unschedule()
+	DBM:GetModByName("EyeOfTheStorm"):Unschedule()
+	DBM:GetModByName("Warsong"):Unschedule()
+	DBM:GetModByName("Arathi"):Unschedule()
+end
+mod.PLAYER_ENTERING_WORLD = mod.ZONE_CHANGED_NEW_AREA
+mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
+
+function mod:PLAYER_DEAD()
+	if select(2, IsInInstance()) == "pvp" and not HasSoulstone() and self.Options.AutoSpirit then
+		RepopMe()
 	end
 end
 
-function Battlegrounds:OnUpdate() --invite timer
+mod:RegisterOnUpdateHandler(function(self, elapsed)
 	if self.Options.ShowInviteTimer and MAX_BATTLEFIELD_QUEUES and PVP_TEAMSIZE then
 		for i = 1, MAX_BATTLEFIELD_QUEUES do
-			local status, mapName, instanceID, _, _, teamSize = GetBattlefieldStatus(i);
+			local status, mapName, instanceID, _, _, teamSize = GetBattlefieldStatus(i)
 			if (mapName and (instanceID ~= 0)) then
-				mapName = mapName.." "..instanceID;
+				mapName = mapName.." "..instanceID
 				if (teamSize ~= 0) then
-					mapName = mapName.." "..format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize));
+					mapName = mapName.." "..format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
 				end
 			end
-			if status == "confirm" then
-				if not self:GetStatusBarTimerTimeLeft(mapName) and not DBMStatusBars_GetImportantBar(mapName) then
-					self:StartStatusBarTimer(GetBattlefieldPortExpiration(i)/1000, mapName, nil, true);
-				end
+			if status == "confirm" and inviteTimer:GetTime(mapName) == 0 then
+				inviteTimer:Start(GetBattlefieldPortExpiration(i)/1000, mapName)
 			end
 		end
 	end
-end
---[[
-Battlegrounds.ClassColors = {
-	[DBM_HUNTER] = { r = 0.67, g = 0.83, b = 0.45 },
-	[DBM_WARLOCK] = { r = 0.58, g = 0.51, b = 0.79 },
-	[DBM_PRIEST] = { r = 1.0, g = 1.0, b = 1.0 },
-	[DBM_PALADIN] = { r = 0.96, g = 0.55, b = 0.73 },
-	[DBM_MAGE] = { r = 0.41, g = 0.8, b = 0.94 },
-	[DBM_ROGUE] = { r = 1.0, g = 0.96, b = 0.41 },
-	[DBM_DRUID] = { r = 1.0, g = 0.49, b = 0.04 },
-	[DBM_SHAMAN] = { r = 0.14, g = 0.35, b = 1.0 },
-	[DBM_WARRIOR] = { r = 0.78, g = 0.61, b = 0.43 }
-};]]--
-
+end, 0.5)
 
 hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players in the score frame
-	if not Battlegrounds.Options.ColorByClass then
+	if not mod.Options.ColorByClass then
 		return
 	end
-	
 	local isArena = IsActiveBattlefieldArena()
-	local i = 1;
 	for i = 1, MAX_WORLDSTATE_SCORE_BUTTONS do
 		local index = (FauxScrollFrame_GetOffset(WorldStateScoreScrollFrame) or 0) + i
-		
-		local name, _, _, _, _, faction, _, _, class = GetBattlefieldScore(index);
-		if (name ~= UnitName("player")) and class and Battlegrounds.ClassColors[class] and getglobal("WorldStateScoreButton"..i.."NameText") then
-			getglobal("WorldStateScoreButton"..i.."NameText"):SetTextColor(Battlegrounds.ClassColors[class].r, Battlegrounds.ClassColors[class].g, Battlegrounds.ClassColors[class].b)
+		local name, _, _, _, _, faction, _, _, _, class = GetBattlefieldScore(index)
+		if (name ~= UnitName("player")) and class and RAID_CLASS_COLORS[class] and getglobal("WorldStateScoreButton"..i.."NameText") then
+			getglobal("WorldStateScoreButton"..i.."NameText"):SetTextColor(RAID_CLASS_COLORS[class].r, RAID_CLASS_COLORS[class].g, RAID_CLASS_COLORS[class].b)
 			local playerName = getglobal("WorldStateScoreButton"..i.."NameText"):GetText()
 			if playerName then
 				local _, _, playerName, playerServer = string.find(playerName, "([^%-]+)%-(.+)")

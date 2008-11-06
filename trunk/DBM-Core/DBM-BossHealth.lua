@@ -107,6 +107,17 @@ function updateBar(bar, percent)
 	bartimer:SetText((percent > 0) and math.floor(percent).."%" or DBM_CORE_DEAD)
 	barbar:SetValue(percent)
 	barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
+	bar.value = percent
+	local bossAlive = false
+	for i = 1, #bars do
+		if bars[i].value > 0 then
+			bossAlive = true
+			break
+		end
+	end
+	if not bossAlive then
+		bossHealth:Hide()
+	end
 end
 
 do
@@ -115,7 +126,7 @@ do
 	local function getCIDfromGUID(guid)
 		return (not guid and 0) or (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
 	end
-	
+
 	function updateFrame(self, e)
 		t = t + e
 		if t >= 0.5 then

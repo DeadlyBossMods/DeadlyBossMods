@@ -800,6 +800,13 @@ do
 				}
 				v.stats = savedStats[v.id]
 				if v.OnInitialize then v:OnInitialize() end
+				for i, cat in ipairs(v.categorySort) do
+					if cat == "misc" then
+						table.remove(v.categorySort, i)
+						table.insert(v.categorySort, cat)
+						break
+					end
+				end
 			end
 		end
 		setglobal(modId:gsub("-", "").."_SavedVars", savedOptions)
@@ -1239,6 +1246,16 @@ function DBM:StartCombat(mod, delay, synced)
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		self:Schedule(mod.minCombatTime or 3, checkWipe)
 		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
+		if mod.Options.HealthFrame then
+			DBM.BossHealth:Show(mod.localization.general.name)
+			if mod.bossHealthInfo then
+				for i = 1, #mod.bossHealthInfo, 2 do
+					DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
+				end
+			else
+				DBM.BossHealth:AddBoss(v[1], mod.localization.general.name)
+			end
+		end
 		if not synced then
 			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
 		end
@@ -1294,6 +1311,7 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("kill", mod)
 		end
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
+		DBM.BossHealth:Hide()
 	end
 end
 
@@ -1577,6 +1595,7 @@ do
 		if obj.localization.general.name == "name" then obj.localization.general.name = name end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
+		obj:AddBoolOption("HealthFrame", false, "misc")
 		return obj
 	end
 
@@ -1644,6 +1663,13 @@ function bossModPrototype:GetUnitCreatureId(uId)
 	return (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
 end
 
+
+-------------------------
+--  Boss Health Frame  --
+-------------------------
+function bossModPrototype:SetBossHealthInfo(...)
+	self.bossHealthInfo = {...}
+end
 
 -----------------------
 --  Announce Object  --
@@ -1966,6 +1992,20 @@ function bossModPrototype:AddBoolOption(name, default, cat, func)
 	end
 end
 
+function bossModPrototype:RemoveOption(name)
+	self.Options[name] = nil
+	for i, options in pairs(self.optionCategories) do
+		removeEntry(options, name)
+		if #options == 0 then
+			self.optionCategories[i] = nil
+			removeEntry(self.categorySort, i)
+		end
+	end
+	if self.optionFuncs then
+		self.optionFuncs[name] = nil
+	end
+end
+
 function bossModPrototype:AddSliderOption(name, minValue, maxValue, valueStep, default, cat, func)
 	cat = cat or "misc"
 	self.Options[name] = default or 0
@@ -2006,7 +2046,7 @@ function bossModPrototype:AddDropdownOption(name, options, default, cat, func)
 end
 
 function bossModPrototype:SetOptionCategory(name, cat)
-	for _, options in pairs(self.optionCategories)do
+	for _, options in pairs(self.optionCategories) do
 		removeEntry(options, name)
 	end
 	if not self.optionCategories[cat] then
@@ -2215,7 +2255,8 @@ do
 	}
 	local defaultOptionLocalization = {
 		__index = setmetatable({
-			timer_enrage = DBM_CORE_OPTION_TIMER_ENRAGE
+			timer_enrage = DBM_CORE_OPTION_TIMER_ENRAGE,
+			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME
 		}, returnKey)
 	}
 	local defaultMiscLocalization = {
