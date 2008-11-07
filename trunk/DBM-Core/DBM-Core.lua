@@ -1251,7 +1251,6 @@ function DBM:StartCombat(mod, delay, synced)
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
 					DBM.BossHealth:AddBoss(mod.bossHealthInfo[i], mod.bossHealthInfo[i + 1])
-					DBM:AddMsg(mod.bossHealthInfo[i], mod.bossHealthInfo[i+1])
 				end
 			else
 				DBM.BossHealth:AddBoss(v[1], mod.localization.general.name)

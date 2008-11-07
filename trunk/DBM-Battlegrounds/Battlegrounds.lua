@@ -24,6 +24,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
 		self:Schedule(3, DBM.RequestTimers, DBM)
 		inviteTimer:Stop()
+		SetMapToCurrentZone()
 	end
 	for i, v in ipairs(DBM:GetModByName("Alterac").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("EyeOfTheStorm").timers) do v:Stop() end
