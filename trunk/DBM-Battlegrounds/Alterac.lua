@@ -167,7 +167,6 @@ Alterac.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 Alterac.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
 
 local quests
-local autostep
 do
 	local getQuestName
 	do
@@ -219,6 +218,18 @@ do
 	Alterac:Schedule(5, loadQuests) -- information should be available now....load it
 end
 
+local function isQuestAutoTurnInQuest(name)
+	for i, v in pairs(quests) do
+		if type(v[1]) == "table" then
+			for i, v in ipairs(v) do
+				if v[1] == name then return true end
+			end
+		else
+			if v[1] == name then return true end
+		end
+	end
+end
+
 local function acceptQuestByName(name)
 	for i = 1, select("#", GetGossipAvailableQuests()), 3 do
 		if select(i, GetGossipAvailableQuests()) == name then
@@ -226,7 +237,6 @@ local function acceptQuestByName(name)
 			break
 		end
 	end
-	autostep = true
 end
 
 local function checkItems(item, amount)
@@ -245,27 +255,26 @@ end
 function Alterac:GOSSIP_SHOW()
 	if not bgzone or not self.Options.AutoTurnIn then return end
 	local quest = quests[tonumber((UnitGUID("target") or ""):sub(9, 12), 16) or 0]
-	if type(quest[1]) == "table" then
+	if quest and type(quest[1]) == "table" then
 		for i, v in ipairs(quest) do
 			if checkItems(v[2], v[3] or 1) then
 				acceptQuestByName(v[1])
 				break
 			end
 		end
-	else
+	elseif quest then
 		if checkItems(quest[2], quest[3] or 1) then acceptQuestByName(quest[1]) end
 	end
 end
 
 function Alterac:QUEST_PROGRESS()
-	if bgzone and autostep then
+	if bgzone and isQuestAutoTurnInQuest(GetTitleText()) then
 		CompleteQuest()
 	end
 end
 
 function Alterac:QUEST_COMPLETE()
-	if bgzone and autostep then
+	if bgzone and isQuestAutoTurnInQuest(GetTitleText()) then
 		GetQuestReward(0)
-		autostep = false
 	end
 end
