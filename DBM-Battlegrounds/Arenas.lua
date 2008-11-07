@@ -1,5 +1,7 @@
 local Arenas = DBM:NewMod("Arenas", "DBM-Battlegrounds")
 
+Arenas:RemoveOption("HealthFrame")
+
 Arenas:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 
 local timerStart	= Arenas:NewTimer(62, "TimerStart")
