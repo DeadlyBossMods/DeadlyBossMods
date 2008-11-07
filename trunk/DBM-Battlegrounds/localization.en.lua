@@ -262,6 +262,7 @@ L:SetMiscLocalization({
 	Alliance = "Alliance",
 	Horde = "Horde",
 	WinBarText = "%s wins in ...",
+	BasesToWin = "Bases to win: %d",
 })
 
 L:SetTimerLocalization({

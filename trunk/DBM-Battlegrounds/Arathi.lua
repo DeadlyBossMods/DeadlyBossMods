@@ -102,6 +102,14 @@ do
 					end
 				end
 			end
+
+			if Arathi.Options.ShowAbFrame then
+				Arathi:ShowEstimatedPoints()
+			end
+			if Arathi.Options.ShowAbFrame then
+				Arathi:ShowBasesToWin()
+			end
+
 		elseif bgzone then
 			bgzone = false
 		end
@@ -110,11 +118,10 @@ do
 	Arathi.ZONE_CHANGED_NEW_AREA = AB_Initialize
 end
 
---[[
+
 Arathi:AddBoolOption("ShowAbFrame", true, nil, function()
 	if Arathi.Options.ShowAbFrame and bgzone then
 		Arathi:ShowEstimatedPoints()
-		Arathi:UpdateTimer()
 	else
 		Arathi:HideEstimatedPoints()
 	end
@@ -123,12 +130,11 @@ end)
 Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
 	if Arathi.Options.ShowAbFrame and bgzone then
 		Arathi:ShowBasesToWin()
-		Arathi:UpdateTimer()
 	else
 		Arathi:HideBasesToWin()
 	end
 end)
---]]
+
 
 local startTimer = Arathi:NewTimer(62, "TimerStart")
 local winTimer = Arathi:NewTimer(30, "TimerWin")
@@ -232,8 +238,18 @@ do
 		if AllyTime == HordeTime then
 			winner_is = 0 
 			winTimer:Stop()
+			if self.ScoreFrame1Text then
+				self.ScoreFrame1Text:SetText("")
+				self.ScoreFrame2Text:SetText("")
+			end
 
 		elseif AllyTime > HordeTime then -- Horde wins
+			if self.ScoreFrame1Text and self.ScoreFrame2Text then
+				local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[last_alliance_bases]) + last_alliance_score) / 10) * 10)
+				self.ScoreFrame1Text:SetText("("..AllyPoints..")")
+				self.ScoreFrame2Text:SetText("(2000)")
+			end
+
 			winner_is = 2
 			winTimer:Update(get_gametime(), get_gametime()+HordeTime)
 			winTimer:DisableEnlarge()
@@ -241,21 +257,59 @@ do
 			winTimer:SetColor(hordeColor)
 
 		elseif HordeTime > AllyTime then -- Alliance wins
+			if self.ScoreFrame1Text and self.ScoreFrame2Text then
+				local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[last_horde_bases]) + last_horde_score) / 10) * 10)
+				self.ScoreFrame2Text:SetText("("..HordePoints..")")
+				self.ScoreFrame1Text:SetText("(2000)")		
+			end
+
 			winner_is = 1
 			winTimer:Update(get_gametime(), get_gametime()+AllyTime)
 			winTimer:DisableEnlarge()
 			winTimer:UpdateName(L.WinBarText:format(L.Alliance))
 			winTimer:SetColor(allyColor)
 		end
+
+		if self.Options.ShowAbBasesToWin then
+			local FriendlyLast, EnemyLast, FriendlyBases, EnemyBases, baseLowest;
+			if( UnitFactionGroup("player") == "Alliance" ) then
+				FriendlyLast = last_alliance_score
+				EnemyLast = last_horde_score
+				FriendlyBases = last_alliance_bases
+				EnemyBases = last_horde_bases
+			else
+				FriendlyLast = last_horde_score
+				EnemyLast = last_alliance_score
+				FriendlyBases = last_horde_bases
+				EnemyBases = last_alliance_bases
+			end
+			if ((2000 - FriendlyLast) / ResPerSec[FriendlyBases]) > ((2000 - EnemyLast) / ResPerSec[EnemyBases]) then
+				for i=1, 5 do
+					local EnemyTime = (2000 - EnemyLast) / ResPerSec[ 5 - i ]
+					local FriendlyTime = (2000 - FriendlyLast) / ResPerSec[ i ]
+					if( FriendlyTime < EnemyTime ) then
+						baseLowest = FriendlyTime
+					else
+						baseLowest = EnemyTime
+					end
+					
+					local EnemyFinal = math.floor( ( EnemyLast + math.floor( baseLowest * ResPerSec[ 5 - i ] + 0.5 ) ) / 10 ) * 10
+					local FriendlyFinal = math.floor( ( FriendlyLast + math.floor( baseLowest * ResPerSec[ i ] + 0.5 ) ) / 10 ) * 10
+					if( FriendlyFinal >= 2000 and EnemyFinal < 2000 ) then
+						self.ScoreFrameToWinText:SetText(L.BasesToWin:format(i))
+						break
+					end
+				end
+			else
+				self.ScoreFrameToWinText:SetText("")
+			end
+		end
+		
 	end
 end
 
 
 
-
-
-
---[[
 
 function Arathi:ShowEstimatedPoints()
 	if AlwaysUpFrame1Text and AlwaysUpFrame2Text then
@@ -315,6 +369,10 @@ function Arathi:HideBasesToWin()
 		self.ScoreFrameToWinText:SetText("")
 	end
 end
+
+
+--[[
+
 
 Arathi:RegisterOnUpdateHandler(function(self, elapsed)
 	if bgzone then
