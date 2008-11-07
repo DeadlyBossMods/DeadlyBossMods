@@ -248,7 +248,7 @@ function Alterac:GOSSIP_SHOW()
 	if not bgzone or not self.Options.AutoTurnIn then return end
 	local quest = quests[tonumber((UnitGUID("target") or ""):sub(9, 12), 16) or 0]
 	if type(quest[1]) == "table" then
-		for i, v in ipairs(quests[1]) do
+		for i, v in ipairs(quest[1]) do
 			if checkItems(v[2], v[3] or 1) then
 				acceptQuestByName(v[1])
 				break
