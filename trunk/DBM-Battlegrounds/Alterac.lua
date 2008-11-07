@@ -223,21 +223,18 @@ local function acceptQuestByName(name)
 	for i = 1, select("#", GetGossipAvailableQuests()), 3 do
 		if select(i, GetGossipAvailableQuests()) == name then
 			SelectGossipAvailableQuest(math.ceil(i/3))
-			autostep = true
 			break
 		end
 	end
+	autostep = true
 end
 
 local function checkItems(item, amount)
 	local found = 0
-	print(item, amount)
 	for bag = 1, NUM_BAG_SLOTS do
 		for i = 1, GetContainerNumSlots(bag) do
-			print(GetContainerItemLink(bag, i))
 			if tonumber((GetContainerItemLink(bag, i) or ""):match(":(%d+):") or 0) == item then
 				found = found + select(2, GetContainerItemInfo(bag, i))
-				print(found)
 			end
 		end
 	end
