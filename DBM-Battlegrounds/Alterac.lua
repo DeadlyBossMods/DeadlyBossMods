@@ -3,6 +3,7 @@
 local Alterac = DBM:NewMod("Alterac", "DBM-Battlegrounds")
 local L = Alterac:GetLocalizedStrings()
 
+Alterac:AddBoolOption("AutoTurnIn")
 Alterac:RemoveOption("HealthFrame")
 
 Alterac:RegisterEvents(
@@ -10,7 +11,10 @@ Alterac:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL"
+	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+	"GOSSIP_SHOW",
+	"QUEST_PROGRESS",
+	"QUEST_COMPLETE"
 )
 
 local allyTowerIcon = "Interface\\AddOns\\DBM-Battlegrounds\\Textures\\GuardTower"
@@ -164,3 +168,106 @@ Alterac.CHAT_MSG_MONSTER_YELL = schedule_check
 Alterac.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 Alterac.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
 
+local quests
+local autostep
+do
+	local getQuestName
+	do
+		local tooltip = CreateFrame("GameTooltip", "DBM-Battlegrounds_Tooltip")
+		tooltip:SetOwner(UIParent, "ANCHOR_NONE")
+		tooltip:AddFontStrings(tooltip:CreateFontString("$parentText", nil, "GameTooltipText"), tooltip:CreateFontString("$parentTextRight", nil, "GameTooltipText"))
+
+		function getQuestName(id)
+			tooltip:ClearLines()
+			tooltip:SetHyperlink("quest:"..id)
+			return getglobal(tooltip:GetName().."Text"):GetText()
+		end
+	end
+	
+	local function loadQuests()
+		for i, v in pairs(quests) do
+			if type(v[1]) == "table" then
+				for i, v in ipairs(v) do
+					v[1] = getQuestName(v[1]) or v[1]
+				end
+			else
+				v[1] = getQuestName(v[1]) or v[1]
+			end
+		end
+	end
+
+	quests = {
+		[13442] = {
+			{7386, 17423, 5},
+			{6881, 17423},
+		},
+		[13236] = {
+			{7385, 17306, 5},
+			{6801, 17306},
+		},
+		[13257] = {6781, 17422, 20},
+		[13176] = {7224, 17422, 20},
+		[13577] = {7026, 17643},
+		[13179] = {6825, 17326},
+		[13438] = {6942, 17502},
+		[13180] = {6826, 17327},
+		[13181] = {6827, 17328},
+		[13439] = {6941, 17503},
+		[13437] = {6943, 17504},	
+		[13441] = {7002, 17642},	
+	}	
+	
+	loadQuests() -- requests the quest information from the server
+	Alterac:Schedule(5, loadQuests) -- information should be available now....load it
+end
+
+local function acceptQuestByName(name)
+	for i = 1, select("#", GetGossipAvailableQuests()), 3 do
+		if select(i, GetGossipAvailableQuests()) == name then
+			SelectGossipAvailableQuest(math.ceil(i/3))
+			autostep = true
+			break
+		end
+	end
+end
+
+local function checkItems(item, amount)
+	local found = 0
+	for bag = 1, NUM_BAG_SLOTS do
+		for i = 1, GetContainerNumSlots(bag) do
+			if tonumber((GetContainerItemLink(bag, i) or ""):match(":(%d+):") or 0) == item then
+				found = found + select(2, GetContainerItemInfo(bag, i))
+			end
+		end
+	end
+	return found >= amount
+end
+
+
+function Alterac:GOSSIP_SHOW()
+	if not bgzone or not self.Options.AutoTurnIn then return end
+	local quest = quests[tonumber((UnitGUID("target") or ""):sub(9, 12), 16) or 0]
+	if type(quest[1]) == "table" then
+		for i, v in ipairs(quests[1]) do
+			if checkItems(v[2], v[3] or 1) then
+				acceptQuestByName(v[1])
+				break
+			end
+		end
+	else
+		if checkItems(quest[2], quest[3] or 1) then acceptQuestByName(quest[1]) end
+	end
+end
+
+function Alterac:QUEST_PROGRESS()
+	if bgzone and autostep then
+		CompleteQuest()
+	end
+end
+
+function Alterac:QUEST_COMPLETE()
+	if bgzone and autostep then
+		GetQuestReward(0)
+		autostep = false
+	end
+end
