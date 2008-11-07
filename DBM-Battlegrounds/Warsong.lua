@@ -1,42 +1,75 @@
 ﻿-- 8/1/2007: Set name color of flag carrier to his class color by Diablohu.
 -- 31/7/2007 2.1: The function that targeting the flag carrier finally completed by Diablohu. Special thanks to Са°ЧТВ.
 
---local Warsong = DBM:NewMod("Warsong", DBM_WARSONG, DBM_BGMOD_LANG["WS_DESCRIPTION"], DBM_OTHER, "Battlegrounds", 5);
+
 local Warsong = DBM:NewMod("Warsong", "DBM-Battlegrounds")
+local L = Warsong:GetLocalizedStrings()
 
 Warsong:RemoveOption("HealthFrame")
 
-Warsong.FlagCarrier = {
+local bgzone = false
+local FlagCarrier = {
 	[1] = nil,
 	[2] = nil
 }
-
 Warsong:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
-	"PLAYER_ENTERING_WORLD",
 	"PLAYER_REGEN_ENABLED",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE",
 	"UPDATE_BATTLEFIELD_SCORE"
-);
+)
 
+local startTimer = Warsong:NewTimer(62, "TimerStart")
+local flagTimer = Warsong:NewTimer(23, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 
-Warsong:AddBoolOption("ShowFlagCarrier", true, DBM_BGMOD_LANG.WSG_INFOFRAME_INFO, function()
-	DBM:GetMod("Warsong").Options.ShowFlagCarrier = not DBM:GetMod("Warsong").Options.ShowFlagCarrier;
-	if DBM:GetMod("Warsong").Options.ShowFlagCarrier and GetRealZoneText() == DBM_WARSONG then
-		DBM:GetMod("Warsong"):HideFlagCarrier();
+Warsong:AddBoolOption("ShowFlagCarrier", true, nil, function()
+	if Warsong.Options.ShowFlagCarrier and bgzone then
+		Warsong:ShowFlagCarrier()
 	else
-		DBM:GetMod("Warsong"):HideFlagCarrier();
+		Warsong:HideFlagCarrier()
 	end	
-end);
+end)
+Warsong:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
-Warsong:AddBoolOption("ShowFlagCarrierErrorNote", false, DBM_BGMOD_LANG.WSG_INFOFRAME_ERRORINFO, function()
-	DBM:GetMod("Warsong").Options.ShowFlagCarrierErrorNote = not DBM:GetMod("Warsong").Options.ShowFlagCarrierErrorNote;
-end);
+do
+	local function WSG_Initialize()
+		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
+			bgzone = true
+			if Warsong.Options.ShowFlagCarrier then
+				Warsong:ShowFlagCarrier()
+				Warsong:CreatFlagCarrierButton();
+			end
+
+			Warsong.FlagCarrierFrame1Text:SetText("");
+			Warsong.FlagCarrierFrame2Text:SetText("");
+			FlagCarrier[1] = nil;
+			FlagCarrier[2] = nil;
+
+		elseif bgzone then
+			bgzone = false
+			if Warsong.Options.ShowFlagCarrier then
+				Warsong:HideFlagCarrier()
+			end
+		end
+	end
+	Warsong.OnInitialize = WSG_Initialize
+	Warsong.ZONE_CHANGED_NEW_AREA = WSG_Initialize
+end
+
+function Warsong:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
+	if not bgzone then return end
+	if arg1 == L.BgStart60 then
+		startTimer:Start()
+	elseif arg1 == L.BgStart30  then		
+		startTimer:Update(31, 62)
+	end
+end
+
 
 function Warsong:ShowFlagCarrier()
+	if not Warsong.Options.ShowFlagCarrier then return end
 	if AlwaysUpFrame1DynamicIconButton and AlwaysUpFrame2DynamicIconButton then
 		if not self.FlagCarrierFrame1 then
 			self.FlagCarrierFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1DynamicIconButton);
@@ -62,103 +95,96 @@ function Warsong:ShowFlagCarrier()
 end
 
 function Warsong:CreatFlagCarrierButton()
-		if not self.FlagCarrierFrame1Button then
-			self.FlagCarrierFrame1Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate");
-			self.FlagCarrierFrame1Button:SetHeight(15);
-			self.FlagCarrierFrame1Button:SetWidth(150);
-			self.FlagCarrierFrame1Button:SetPoint("LEFT", "AlwaysUpFrame1", "RIGHT", 28, 4);
-		end
-		if not self.FlagCarrierFrame2Button then
-			self.FlagCarrierFrame2Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate");
-			self.FlagCarrierFrame2Button:SetHeight(15);
-			self.FlagCarrierFrame2Button:SetWidth(150);
-			self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame2", "RIGHT", 28, 4);
-		end
-		self.FlagCarrierFrame1Button:Show();		
-		self.FlagCarrierFrame2Button:Show();
+	if not Warsong.Options.ShowFlagCarrier then return end
+	if not self.FlagCarrierFrame1Button then
+		self.FlagCarrierFrame1Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate");
+		self.FlagCarrierFrame1Button:SetHeight(15);
+		self.FlagCarrierFrame1Button:SetWidth(150);
+		self.FlagCarrierFrame1Button:SetPoint("LEFT", "AlwaysUpFrame1", "RIGHT", 28, 4);
+	end
+	if not self.FlagCarrierFrame2Button then
+		self.FlagCarrierFrame2Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate");
+		self.FlagCarrierFrame2Button:SetHeight(15);
+		self.FlagCarrierFrame2Button:SetWidth(150);
+		self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame2", "RIGHT", 28, 4);
+	end
+	self.FlagCarrierFrame1Button:Show();		
+	self.FlagCarrierFrame2Button:Show();
 end
 
 function Warsong:HideFlagCarrier()
 	if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
 		self.FlagCarrierFrame1:Hide();
 		self.FlagCarrierFrame2:Hide();
-		DBM.AddOns.Warsong.FlagCarrier[1] = nil;
-		DBM.AddOns.Warsong.FlagCarrier[2] = nil;
+		FlagCarrier[1] = nil;
+		FlagCarrier[2] = nil;
 	end
 end
 
 function Warsong:CheckFlagCarrier()
 	if not UnitAffectingCombat("player") then
-		if DBM.AddOns.Warsong.FlagCarrier[1] and self.FlagCarrierFrame1 then
+		if FlagCarrier[1] and self.FlagCarrierFrame1 then
 			self.FlagCarrierFrame1Button:SetAttribute( "type", "macro" );
-			self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/target " .. DBM.AddOns.Warsong.FlagCarrier[1] );
+			self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/target " .. FlagCarrier[1] );
 		end
-		if DBM.AddOns.Warsong.FlagCarrier[2] and self.FlagCarrierFrame2 then
+		if FlagCarrier[2] and self.FlagCarrierFrame2 then
 			self.FlagCarrierFrame2Button:SetAttribute( "type", "macro" );
-			self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/target " .. DBM.AddOns.Warsong.FlagCarrier[2] );
+			self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/target " .. FlagCarrier[2] );
 		end
 	end
 end
 
-local lastCarrier
-function Warsong:ColorFlagCarrier(carrier)
-	local found = false
-	for i = 1, GetNumBattlefieldScores() do
-		local name, _, _, _, _, faction, _, _, class = GetBattlefieldScore( i )
- 		if (name and class and DBM:GetMod("Battlegrounds").ClassColors[class]) then
-			if( string.match( name, "-" ) ) then
-				_, _, name = string.find(name, "([^%-]+)%-.+")
-			end
-			if name == carrier then
-				if faction == 0 then
-					self.FlagCarrierFrame2Text:SetTextColor(DBM:GetMod("Battlegrounds").ClassColors[class].r, DBM:GetMod("Battlegrounds").ClassColors[class].g, DBM:GetMod("Battlegrounds").ClassColors[class].b)
-				elseif faction == 1 then
-					self.FlagCarrierFrame1Text:SetTextColor(DBM:GetMod("Battlegrounds").ClassColors[class].r, DBM:GetMod("Battlegrounds").ClassColors[class].g, DBM:GetMod("Battlegrounds").ClassColors[class].b)
+do
+	local lastCarrier
+	function Warsong:ColorFlagCarrier(carrier)
+		local found = false
+		for i = 1, GetNumBattlefieldScores() do
+			local name, _, _, _, _, faction, _, _, class = GetBattlefieldScore(i)
+	 		if (name and class and DBM:GetMod("Battlegrounds").ClassColors[class]) then
+				if( string.match( name, "-" ) ) then
+					name = string.match(name, "([^%-]+)%-.+")
 				end
-				found = true
+				if name == carrier then
+					if faction == 0 then
+						self.FlagCarrierFrame2Text:SetTextColor(DBM:GetMod("Battlegrounds").ClassColors[class].r, 
+											DBM:GetMod("Battlegrounds").ClassColors[class].g, 
+											DBM:GetMod("Battlegrounds").ClassColors[class].b)
+					elseif faction == 1 then
+						self.FlagCarrierFrame1Text:SetTextColor(DBM:GetMod("Battlegrounds").ClassColors[class].r, 
+											DBM:GetMod("Battlegrounds").ClassColors[class].g, 
+											DBM:GetMod("Battlegrounds").ClassColors[class].b)
+					end
+					found = true
+				end
 			end
 		end
+		if not found then
+			RequestBattlefieldScoreData()
+			lastCarrier = carrier
+		end
 	end
-	if not found then
-		RequestBattlefieldScoreData()
-		lastCarrier = carrier
+	
+	function Warsong:UPDATE_BATTLEFIELD_SCORE()
+		if lastCarrier then
+			self:ColorFlagCarrier(lastCarrier)
+			lastCarrier = nil
+		end
 	end
 end
 
-function Warsong:OnEvent()
-	if (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD") and GetRealZoneText() == DBM_WARSONG and self.Options.ShowFlagCarrier then
-		self:ShowFlagCarrier();
-		self:CreatFlagCarrierButton();
-		self.FlagCarrierFrame1Text:SetText("");
-		self.FlagCarrierFrame2Text:SetText("");
-		DBM.AddOns.Warsong.FlagCarrier[1] = nil;
-		DBM.AddOns.Warsong.FlagCarrier[2] = nil;
-		
-	elseif event == "UPDATE_BATTLEFIELD_SCORE" and lastCarrier then
-		self:ColorFlagCarrier(lastCarrier)
-		lastCarrier = nil
-	elseif (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD") and GetRealZoneText() ~= DBM_WARSONG then
-		self:HideFlagCarrier();	
-		
-	elseif event == "PLAYER_REGEN_ENABLED" and GetRealZoneText() == DBM_WARSONG then
-		self:CheckFlagCarrier();
-		
-	elseif event == "CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE" then --speed boots
-		if arg1 and string.find(arg1, DBM_BGMOD_LANG.WSG_BOOTS_EXPR) then
-			self:StartStatusBarTimer(10, "Speed Boots", "Interface\\Icons\\Spell_Fire_BurningSpeed", true); --respawn time varies, ~3 minutes
-		end
-		
-	elseif event == "CHAT_MSG_BG_SYSTEM_NEUTRAL" then --"game starts in.." timers
-		if arg1 == DBM_BGMOD_LANG.WSG_START60SEC then
-			self:SendSync("Start60")
-		elseif arg1 == DBM_BGMOD_LANG.WSG_START30SEC then
-			self:SendSync("Start30")
-		end
-	
-	elseif (event == "CHAT_MSG_BG_SYSTEM_ALLIANCE" or event == "CHAT_MSG_BG_SYSTEM_HORDE") and self.Options.ShowFlagCarrier then
+function Warsong:PLAYER_REGEN_ENABLED()
+	if bgzone then
+		self:CheckFlagCarrier()
+	end
+end
+
+do
+	local function updateflagcarrier(self, event)
+		if not self.Options.ShowFlagCarrier then return end
+
 		if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
-			if string.find(arg1, DBM_BGMOD_LANG.WSG_FLAG_PICKUP) then
-				local _, _, sArg1, sArg2 =  string.find(arg1, DBM_BGMOD_LANG.WSG_FLAG_PICKUP);
+			if string.match(arg1, L.ExprFlagPickUp) then
+				local sArg1, sArg2 =  string.match(arg1, L.ExprFlagPickUp);
 				local mSide, mNick;
 				if( GetLocale() == "deDE") then
 					mSide = sArg2; mNick = sArg1;
@@ -166,76 +192,68 @@ function Warsong:OnEvent()
 					mSide = sArg1; mNick = sArg2;
 				end
 				
-				if mSide == DBM_BGMOD_LANG.ALLIANCE then
-					DBM.AddOns.Warsong.FlagCarrier[2] = mNick;
+				if mSide == L.Alliance then
+					FlagCarrier[2] = mNick;
 					self.FlagCarrierFrame2Text:SetText(mNick);
 					self.FlagCarrierFrame2:Show();
 					self:ColorFlagCarrier(mNick)
 					if UnitAffectingCombat("player") then
 						if self.Options.ShowFlagCarrierErrorNote then
-							DBM.AddMsg(DBM_BGMOD_LANG.WSG_INFOFRAME_ERRORTEXT)
+							DBM.AddMsg(L.InfoErrorText)
 						end
 					end
 					self.FlagCarrierFrame2Button:SetAttribute( "type", "macro" );
-					self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/target " .. mNick );
-				elseif mSide == DBM_BGMOD_LANG.HORDE then
-					DBM.AddOns.Warsong.FlagCarrier[1] = mNick;
+					self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/target " .. mNick )
+
+				elseif mSide == L.Horde then
+					FlagCarrier[1] = mNick;
 					self.FlagCarrierFrame1Text:SetText(mNick);
 					self.FlagCarrierFrame1:Show();
 					self:ColorFlagCarrier(mNick)
 					if UnitAffectingCombat("player") then
 						if self.Options.ShowFlagCarrierErrorNote then
-							DBM.AddMsg(DBM_BGMOD_LANG.WSG_INFOFRAME_ERRORTEXT)
+							DBM.AddMsg(L.InfoErrorText)
 						end
 					end
 					self.FlagCarrierFrame1Button:SetAttribute( "type", "macro" );
-					self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/target " .. mNick );
+					self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/target " .. mNick )
 				end
 				
-			elseif string.find(arg1, DBM_BGMOD_LANG.WSG_FLAG_RETURN) then
+			elseif string.match(arg1, L.ExprFlagReturn) then
 				if( GetLocale() == "ruRU") then
-					local _, _, mNick, mSide =  string.find(arg1, DBM_BGMOD_LANG.WSG_FLAG_RETURN);
+					local _, _, mNick, mSide =  string.find(arg1, L.ExprFlagReturn);
 				else
-					local _, _, mSide, mNick =  string.find(arg1, DBM_BGMOD_LANG.WSG_FLAG_RETURN);
+					local _, _, mSide, mNick =  string.find(arg1, L.ExprFlagReturn);
 				end
 				
-				if mSide == DBM_BGMOD_LANG.ALLIANCE then
-					self.FlagCarrierFrame2:Hide();
-					DBM.AddOns.Warsong.FlagCarrier[2] = nil;
-				elseif mSide == DBM_BGMOD_LANG.HORDE then
-					self.FlagCarrierFrame1:Hide();
-					DBM.AddOns.Warsong.FlagCarrier[1] = nil;
+				if mSide == L.Alliance then
+					self.FlagCarrierFrame2:Hide()
+					FlagCarrier[2] = nil
+
+				elseif mSide == L.Horde then
+					self.FlagCarrierFrame1:Hide()
+					FlagCarrier[1] = nil
 				end
-				
-			elseif string.find(arg1, DBM_BGMOD_LANG.WSG_HASCAPTURED) then
-				local oldFlashColor = DBM.Options.FlashColor;
-				
-				if event == "CHAT_MSG_BG_SYSTEM_ALLIANCE" then
-					DBM.Options.FlashColor = "blue";
-				elseif event == "CHAT_MSG_BG_SYSTEM_HORDE" then
-					DBM.Options.FlashColor = "red";
-				end
-				
-				self:AddSpecialWarning("", true);
-				DBM.Options.FlashColor = oldFlashColor;
-				self:StartStatusBarTimer(23, "Flag respawn", nil, true);
-				
-				self.FlagCarrierFrame2:Hide();
-				DBM.AddOns.Warsong.FlagCarrier[2] = nil;
-				self.FlagCarrierFrame1:Hide();
-				DBM.AddOns.Warsong.FlagCarrier[1] = nil;
+			end
+		end
+		if string.match(arg1, L.ExprFlagCaptured) then
+			flagTimer:Start()
+		
+			if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
+				self.FlagCarrierFrame1:Hide()
+				self.FlagCarrierFrame2:Hide()
+				FlagCarrier[1] = nil
+				FlagCarrier[2] = nil
 			end
 		end
 	end
-end
-
-function Warsong:OnSync(msg)
-	if msg == "Start60" then
-		self:StartStatusBarTimer(62, "Begins")
-	elseif msg == "Start30" then
-		if not self:GetStatusBarTimerTimeLeft("Begins") then
-			self:StartStatusBarTimer(62, "Begins")
-		end
-		self:UpdateStatusBarTimer("Begins", 31, 62)
+	function Warsong:CHAT_MSG_BG_SYSTEM_ALLIANCE()
+		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_ALLIANCE")
+	end
+	function Warsong:CHAT_MSG_BG_SYSTEM_HORDE()
+		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_HORDE")
 	end
 end
+
+
+
