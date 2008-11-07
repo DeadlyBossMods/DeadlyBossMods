@@ -4,6 +4,7 @@
 --local Warsong = DBM:NewMod("Warsong", DBM_WARSONG, DBM_BGMOD_LANG["WS_DESCRIPTION"], DBM_OTHER, "Battlegrounds", 5);
 local Warsong = DBM:NewMod("Warsong", "DBM-Battlegrounds")
 
+Warsong:RemoveOption("HealthFrame")
 
 Warsong.FlagCarrier = {
 	[1] = nil,
