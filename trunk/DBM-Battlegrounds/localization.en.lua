@@ -1,26 +1,5 @@
 local L
 
-----------------------------
---  General BG functions  --
-----------------------------
-L = DBM:GetModLocalization("Battlegrounds")
-
-L:SetGeneralLocalization({
-	name = "General BG Functions"
-})
-
-L:SetTimerLocalization({
-	TimerInvite = "%s"
-})
-
-L:SetOptionLocalization({
-	ColorByClass	= "Set name color to class color in the score frame",
-	ShowInviteTimer	= "Show battleground join timer",
-	AutoSpirit		= "Auto-release spirit"
-})
-
-
-
 DBM_BGMOD_LANG = {}
 DBM_BGMOD_LANG["NAME"] 				= "Battlegrounds";
 DBM_BGMOD_LANG["INFO"] 				= "Shows timers for Alterac Valley and Arathi Basin. "
@@ -215,6 +194,27 @@ DBM_BGMOD_LANG.AV_OPTION_FLASH		= "Enable flash effects"
 -- JUST THE ONLY ONE NEXT TRANSLATION (the stuff above this line is outdated and will be removed soon)
 ----------------------------------------------------------------------------------------------------------------
 local L
+
+----------------------------
+--  General BG functions  --
+----------------------------
+L = DBM:GetModLocalization("Battlegrounds")
+
+L:SetGeneralLocalization({
+	name = "General BG Functions"
+})
+
+L:SetTimerLocalization({
+	TimerInvite = "%s"
+})
+
+L:SetOptionLocalization({
+	ColorByClass	= "Set name color to class color in the score frame",
+	ShowInviteTimer	= "Show battleground join timer",
+	AutoSpirit	= "Auto-release spirit"
+})
+
+
 --------------
 --  Arenas  --
 --------------
@@ -312,6 +312,39 @@ L:SetOptionLocalization({
 	TimerWin = "Show Win Timer",
 	TimerFlag = "Show Flag Respawn",
 	ShowPointFrame = "Show Flag carrier and Estimated Points",
+})
+
+--------------------
+--  Warsong Gulch --
+--------------------
+L = DBM:GetModLocalization("Warsong")
+
+L:SetMiscLocalization({
+	BgStart60 = "The battle for Warsong Gulch begins in 1 minute.",
+	BgStart30 = "The battle for Warsong Gulch begins in 30 seconds. Prepare yourselves!",
+	ZoneName = "Warsong Gulch",
+	Alliance = "Alliance",
+	Horde = "Horde",	
+	InfoErrorText = "The flag carrier targeting function will be restored when you are out of combat.",
+	ExprFlagPickUp = "The (%w+) .lag was picked up by (.+)!",
+	ExprFlagCaptured = "(.+) captured the (%w+) flag!",
+	ExprFlagReturn = "The (%w+) .lag was returned to its base by (.+)!",
+	FlagAlliance = "Alliance Flag: ",
+	FlagHorde = "Horde Flag: ",
+	FlagBase = "Base",
+})
+
+L:SetTimerLocalization({
+	TimerStart = "Game starts in ...", 
+	TimerFlag = "Flag Respawn",
+})
+
+L:SetOptionLocalization({
+	TimerStart  = "Show Start Timer",
+	TimerWin = "Show Win Timer",
+	TimerFlag = "Show Flag Respawn",
+	ShowFlagCarrier = "Show Flag carrier",
+	ShowFlagCarrierErrorNote = "Shows flag carrier error note when in combat.",
 })
 
 
