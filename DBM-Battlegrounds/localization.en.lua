@@ -258,11 +258,14 @@ L:SetMiscLocalization({
 	BgStart60 = "The Battle for Arathi Basin will begin in 1 minute.",
 	BgStart30 = "The Battle for Arathi Basin will begin in 30 seconds.",
 	ZoneName = "Arathi Basin",
+	ScoreExpr = "(%d+)/2000",
+	Alliance = "Alliance",
+	Horde = "Horde",
+	WinBarText = "%s wins in ...",
 })
 
 L:SetTimerLocalization({
 	TimerStart = "Game starts in ...", 
-	TimerWin = "%s wins in ...",
 	TimerCap = "%s",
 })
 
