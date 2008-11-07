@@ -3,15 +3,19 @@
 local Arathi = DBM:NewMod("Arathi", "DBM-Battlegrounds")
 local L = Arathi:GetLocalizedStrings()
 
+Arathi:RemoveOption("HealthFrame")
+
 Arathi:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE"
+	"CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE",
+	"UPDATE_WORLD_STATES"
 )
 	
+local bgzone = false
 local ResPerSec = {
 	[0] = 0,
 	[1] = 10/12,
@@ -32,36 +36,72 @@ local hordeColor = {
 	b = 0,
 }
 
-local lastTick = {
-	LastAllyCount	= 0,
-	LastHordeCount	= 0,
-	Time = 0,
-	Alliance = {
-		Score	= 0,
-		Time	= 0,
-		Bases	= 0,
-	},
-	Horde = {
-		Score	= 0,
-		Time	= 0,
-		Bases	= 0,
-	},
+local objectives = {
+	Farm = 0,
+	GoldMine = 0,
+	LumberMill = 0,
+	Stables = 0,
+	Blacksmith = 0,
 }
+local function get_objective(id)
+	if id >=16 and id <=20 then return "GoldMine"
+	elseif id >= 21 and id <= 25 then return "LumberMill"
+	elseif id >= 26 and id <= 30 then return "Blacksmith"
+	elseif id >= 31 and id <= 35 then return "Farm"
+	elseif id >= 36 and id <= 40 then return "Stables"
+	else return false
+	end
+end
+local function get_basecount()
+	local alliance = 0 
+	local horde = 0
+	for k,v in pairs(objectives) do
+		if v == 18 or v == 23 or v == 28 or v == 33 or v == 38 then 
+			alliance = alliance + 1
+		elseif v == 20 or v == 25 or v == 30 or v == 35 or v == 40 then 
+			horde = horde + 1
+		end
+	end
+	return alliance, horde
+end
+local function get_score()
+	if not bgzone then return 0,0 end
+	local AllyScore		= tonumber(string.match((select(3, GetWorldStateUIInfo(1)) or ""), L.ScoreExpr)) or 0
+	local HordeScore	= tonumber(string.match((select(3, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
+	return AllyScore, HordeScore
+end
 
-local bgzone = false
+local get_gametime
+local update_gametime
+do
+	local gametime = 0
+	function update_gametime()
+		gametime = time()
+	end
+	function get_gametime()
+		local systime = GetBattlefieldInstanceRunTime()
+		if systime > 0 then
+			return systime / 1000
+		else
+			return time() - gametime
+		end
+	end
+end
+
 do
 	local function AB_Initialize()
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
+			update_gametime()
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
-					if is_graveyard(textureIndex) then
-						graveyards[i] = textureIndex
+					local typ = get_objective(textureIndex)
+					if typ then
+						objectives[typ] = textureIndex
 					end
 				end
 			end
-
 		elseif bgzone then
 			bgzone = false
 		end
@@ -70,6 +110,7 @@ do
 	Arathi.ZONE_CHANGED_NEW_AREA = AB_Initialize
 end
 
+--[[
 Arathi:AddBoolOption("ShowAbFrame", true, nil, function()
 	if Arathi.Options.ShowAbFrame and bgzone then
 		Arathi:ShowEstimatedPoints()
@@ -87,34 +128,134 @@ Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
 		Arathi:HideBasesToWin()
 	end
 end)
+--]]
 
 local startTimer = Arathi:NewTimer(62, "TimerStart")
 local winTimer = Arathi:NewTimer(30, "TimerWin")
 local capTimer = Arathi:NewTimer(64, "TimerCap")
 
-function Arathi:GetScore()
-	if bgzone then
-		local _, _, mAllyInfo	= GetWorldStateUIInfo(1)
-		local _, _, mHordeInfo	= GetWorldStateUIInfo(2)
-		if not mAllyInfo or not mHordeInfo then
-			return false
-		end
-
-		local _, _, AllyBases, AllyScore	= string.find(mAllyInfo, DBM_BGMOD_LANG.AB_SCOREEXP)
-		local _, _, HordeBases, HordeScore	= string.find(mHordeInfo, DBM_BGMOD_LANG.AB_SCOREEXP)
-		AllyBases	= tonumber(AllyBases)
-		AllyScore	= tonumber(AllyScore)
-		HordeBases	= tonumber(HordeBases)
-		HordeScore	= tonumber(HordeScore)
-		if not AllyBases or not AllyScore or not HordeBases or not HordeScore then
-			return false
-		end
-	
-		return true, AllyBases, AllyScore, HordeBases, HordeScore
-	else
-		return false
+local function obj_state(id)
+	if id == 18 or id == 23 or id == 28 or id == 33 or id == 38 then	
+		return 1 -- if obj_state(id) > 2 then .. conflict state ...	( 1 == alliance,  2 == horde )
+	elseif id == 20 or id == 25 or id == 30 or id == 35 or id == 40 then
+		return 2 
+	elseif id == 17 or id == 22 or id == 27 or id == 32 or id == 37 then
+		return 3 -- if obj_state(id) == 3 then --- alliance trys to capture from horde
+	elseif id == 19 or id == 24 or id == 29 or id == 34 or id == 39 then
+		return 4 -- if obj_state(id) == 3 then --- horde trys to capture from alliance
+	else return 0
 	end
 end
+
+do
+	local function check_for_updates()
+		if not bgzone then return end
+		for i=1, GetNumMapLandmarks(), 1 do
+			local name, _, textureIndex = GetMapLandmarkInfo(i)
+			if name and textureIndex then
+				local typ = get_objective(textureIndex)
+				if typ then
+					if obj_state(objectives[typ]) <= 2 and obj_state(textureIndex) > 2 then
+						capTimer:Start(nil, name)
+		
+						if obj_state(textureIndex) == 3 then
+							capTimer:SetColor(allyColor, name)
+						else
+							capTimer:SetColor(hordeColor, name)
+						end	
+						
+					elseif obj_state(textureIndex) <= 2 then
+						capTimer:Stop(name)
+					end
+					objectives[typ] = textureIndex
+				end
+			end		 
+		end
+	end
+
+	local function schedule_check(self)
+		self:Schedule(1, check_for_updates)
+	end
+
+	Arathi.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
+	Arathi.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
+
+	function Arathi:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
+		if not bgzone then return end
+		if arg1 == L.BgStart60 then
+			startTimer:Start()
+		elseif arg1 == L.BgStart30  then		
+			startTimer:Update(31, 62)
+		end
+		schedule_check(self)
+	end
+end
+
+do
+	local winner_is = 0		-- 0 = nobody  1 = alliance  2 = horde
+	local last_horde_score = 0 
+	local last_alliance_score = 0
+
+	function Arathi:UPDATE_WORLD_STATES()
+		if not bgzone then return end
+
+		local AllyBases, HordeBases = get_basecount()
+		local AllyScore, HordeScore = get_score()
+		local callupdate = false
+
+		if AllyScore ~= last_alliance_score then
+			last_alliance_score = AllyScore
+			if winner_is == 1 then 
+				callupdate = true
+			end
+		elseif HordeScore ~= last_horde_score then
+			last_horde_score = HordeScore
+			if winner_is == 2 then 
+				callupdate = true
+			end
+		end
+
+		if callupdate or winner_is == 0 then
+			self:UpdateWinTimer()
+		end
+	end
+	function Arathi:UpdateWinTimer()
+		local last_alliance_bases, last_horde_bases = get_basecount()
+
+		-- calculate new times
+		local AllyTime = (2000 - last_alliance_score) / ResPerSec[last_alliance_bases]
+		local HordeTime = (2000 - last_horde_score) / ResPerSec[last_horde_bases]
+
+		if AllyTime > 5000 then		AllyTime = 5000 end
+		if HordeTime > 5000 then	HordeTime = 5000 end
+
+		if AllyTime == HordeTime then
+			winner_is = 0 
+			winTimer:Stop()
+
+		elseif AllyTime > HordeTime then -- Horde wins
+			winner_is = 2
+			winTimer:Update(get_gametime(), get_gametime()+HordeTime)
+			winTimer:DisableEnlarge()
+			winTimer:UpdateName(L.WinBarText:format(L.Horde))
+			winTimer:SetColor(hordeColor)
+
+		elseif HordeTime > AllyTime then -- Alliance wins
+			winner_is = 1
+			winTimer:Update(get_gametime(), get_gametime()+AllyTime)
+			winTimer:DisableEnlarge()
+			winTimer:UpdateName(L.WinBarText:format(L.Alliance))
+			winTimer:SetColor(allyColor)
+		end
+	end
+end
+
+
+
+
+
+
+--[[
 
 function Arathi:ShowEstimatedPoints()
 	if AlwaysUpFrame1Text and AlwaysUpFrame2Text then
@@ -177,10 +318,8 @@ end
 
 Arathi:RegisterOnUpdateHandler(function(self, elapsed)
 	if bgzone then
-		local mOk, AllyBases, AllyScore, HordeBases, HordeScore = self:GetScore()
-		if not mOk then
-			return
-		end
+		local AllyBases, HordeBases = get_basecount()
+		local AllyScore, HordeScore = get_score()
 		
 		lastTick.Alliance.Score = AllyScore
 		lastTick.Alliance.Bases = AllyBases
@@ -247,15 +386,6 @@ function Arathi:ZONE_CHANGED_NEW_AREA(arg1)
 	end
 end
 Arathi.PLAYER_ENTER_WORLD = Arathi.ZONE_CHANGED_NEW_AREA
-
-function Arathi:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
-	if arg1 == DBM_BGMOD_LANG.AB_START60SEC then
-		self:SendSync("Start60")
-	elseif arg1 == DBM_BGMOD_LANG.AB_START30SEC then		
-		self:SendSync("Start30")
-	end
-end
-
 	
 function Arathi:UpdateTimer(arg1)
 	local AllyTime = ((2000 - lastTick.Alliance.Score) / ResPerSec[lastTick.Alliance.Bases]) - (GetTime() - lastTick.Time) -- possible division through zero, but that's no problem: 1/0 = 1.#INF and these timers are capped @ 5000
@@ -318,51 +448,6 @@ function Arathi:UpdateTimer(arg1)
 	end
 end
 		
-function Arathi:CHAT_MSG_BG_SYSTEM_ALLIANCE(arg1)
-	for index, value in ipairs(DBM_BGMOD_LANG.AB_TARGETS) do
-		if string.find(arg1, value) then
-			if string.find(arg1, DBM_BGMOD_LANG.AB_HASASSAULTED) or string.find(arg1, DBM_BGMOD_LANG.AB_CLAIMSTHE) then
-				self:SendSync("CA", index)
-			elseif string.find(arg1, DBM_BGMOD_LANG.AB_HASDEFENDEDTHE) or string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
---				if string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
---					if DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE and DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE[index] then
---						self:Announce(string.format(DBM_BGMOD_LANG.ALLI_TAKE_ANNOUNCE, DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE[index]));
---					else
---						self:Announce(string.format(DBM_BGMOD_LANG.ALLI_TAKE_ANNOUNCE, DBM.Capitalize(DBM_BGMOD_LANG.AB_TARGETS[index])));
---					end
---					local oldFlashColor = DBM.Options.FlashColor;
---					DBM.Options.FlashColor = "blue";
---					self:AddSpecialWarning("", true);
---					DBM.Options.FlashColor = oldFlashColor;
---				end
-				self:SendSync("DT", index)
-			end
-		end
-	end
-end
-		
-function Arathi:CHAT_MSG_BG_SYSTEM_HORDE(arg1)
-	for index, value in ipairs(DBM_BGMOD_LANG.AB_TARGETS) do
-		if string.find(arg1, value) then
-			if string.find(arg1, DBM_BGMOD_LANG.AB_HASASSAULTED) or string.find(arg1, DBM_BGMOD_LANG.AB_CLAIMSTHE) then
-				self:SendSync("CH", index)
-			elseif string.find(arg1, DBM_BGMOD_LANG.AB_HASDEFENDEDTHE) or string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
---				if string.find(arg1, DBM_BGMOD_LANG.AB_HASTAKENTHE) then
---					if DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE and DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE[index] then
---						self:Announce(string.format(DBM_BGMOD_LANG.HORDE_TAKE_ANNOUNCE, DBM_BGMOD_LANG.AB_TARGETS_ANNOUNCE[index]))
---					else
---						self:Announce(string.format(DBM_BGMOD_LANG.HORDE_TAKE_ANNOUNCE, DBM.Capitalize(DBM_BGMOD_LANG.AB_TARGETS[index])))
---					end
---					local oldFlashColor = DBM.Options.FlashColor
---					DBM.Options.FlashColor = "red"
---					self:AddSpecialWarning("", true)
---					DBM.Options.FlashColor = oldFlashColor
---				end
-				self:SendSync("DT", index)
-			end
-		end
-	end
-end
 
 function Arathi:OnSync(msg)
 	if msg == "Start60" then
@@ -394,3 +479,7 @@ function Arathi:OnSync(msg)
 		end
 	end
 end
+
+--]]
+
+
