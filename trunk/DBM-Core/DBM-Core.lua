@@ -1899,9 +1899,13 @@ do
 	function timerPrototype:SetColor(c, ...)
 		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
 		local bar = DBM.Bars:GetBar(id)
-		if bar then
-			bar:SetColor(c)
-		end
+		if bar then	bar:SetColor(c)	end
+	end
+	
+	function timerPrototype:DisableEnlarge(...)
+		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local bar = DBM.Bars:GetBar(id)
+		if bar then	bar.small = true end
 	end
 
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
