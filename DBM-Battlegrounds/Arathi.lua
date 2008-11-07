@@ -7,11 +7,9 @@ Arathi:RemoveOption("HealthFrame")
 
 Arathi:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
-	"PLAYER_ENTERING_WORLD",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE",
 	"UPDATE_WORLD_STATES"
 )
 	
@@ -103,15 +101,22 @@ do
 				end
 			end
 
-			if Arathi.Options.ShowAbFrame then
+			if Arathi.Options.ShowAbEstimatedPoints then
 				Arathi:ShowEstimatedPoints()
 			end
-			if Arathi.Options.ShowAbFrame then
+			if Arathi.Options.ShowAbBasesToWin then
 				Arathi:ShowBasesToWin()
 			end
 
 		elseif bgzone then
 			bgzone = false
+
+			if Arathi.Options.ShowAbEstimatedPoints then
+				Arathi:HideEstimatedPoints()
+			end
+			if Arathi.Options.ShowAbBasesToWin then
+				Arathi:HideBasesToWin()
+			end
 		end
 	end
 	Arathi.OnInitialize = AB_Initialize
@@ -119,8 +124,8 @@ do
 end
 
 
-Arathi:AddBoolOption("ShowAbFrame", true, nil, function()
-	if Arathi.Options.ShowAbFrame and bgzone then
+Arathi:AddBoolOption("ShowAbEstimatedPoints", true, nil, function()
+	if Arathi.Options.ShowAbEstimatedPoints and bgzone then
 		Arathi:ShowEstimatedPoints()
 	else
 		Arathi:HideEstimatedPoints()
@@ -128,7 +133,7 @@ Arathi:AddBoolOption("ShowAbFrame", true, nil, function()
 end)
 
 Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
-	if Arathi.Options.ShowAbFrame and bgzone then
+	if Arathi.Options.ShowAbBasesToWin and bgzone then
 		Arathi:ShowBasesToWin()
 	else
 		Arathi:HideBasesToWin()
@@ -369,175 +374,5 @@ function Arathi:HideBasesToWin()
 		self.ScoreFrameToWinText:SetText("")
 	end
 end
-
-
---[[
-
-
-Arathi:RegisterOnUpdateHandler(function(self, elapsed)
-	if bgzone then
-		local AllyBases, HordeBases = get_basecount()
-		local AllyScore, HordeScore = get_score()
-		
-		lastTick.Alliance.Score = AllyScore
-		lastTick.Alliance.Bases = AllyBases
-		
-		lastTick.Horde.Score = HordeScore
-		lastTick.Horde.Bases = HordeBases
-		
-		lastTick.Time = GetTime()
-		
-		if lastTick.Alliance.Score < 2000 
-		and lastTick.Horde.Score < 2000
-		and (lastTick.Alliance.Score + lastTick.Horde.Score) > 0
-		and (lastTick.Alliance.Bases + lastTick.Horde.Bases) > 0
-		and (lastTick.LastAllyCount ~= lastTick.Alliance.Bases or lastTick.LastHordeCount ~= lastTick.Horde.Bases) then
-			self:UpdateTimer()
-		end
-
-		if self.Options.ShowAbBasesToWin then
-			local FriendlyLast, EnemyLast, FriendlyBases, EnemyBases, baseLowest;
-			if( UnitFactionGroup( "player" ) == "Alliance" ) then
-				FriendlyLast = lastTick.Alliance.Score
-				EnemyLast = lastTick.Horde.Score
-				FriendlyBases = lastTick.Alliance.Bases
-				EnemyBases = lastTick.Horde.Bases
-			else
-				FriendlyLast = lastTick.Horde.Score
-				EnemyLast = lastTick.Alliance.Score
-				FriendlyBases = lastTick.Horde.Bases
-				EnemyBases = lastTick.Alliance.Bases
-			end
-			if ((2000 - FriendlyLast) / ResPerSec[FriendlyBases]) > ((2000 - EnemyLast) / ResPerSec[EnemyBases]) then
-				for i=1, 5 do
-					local EnemyTime = (2000 - EnemyLast) / ResPerSec[ 5 - i ]
-					local FriendlyTime = (2000 - FriendlyLast) / ResPerSec[ i ]
-					if( FriendlyTime < EnemyTime ) then
-						baseLowest = FriendlyTime
-					else
-						baseLowest = EnemyTime
-					end
-					
-					local EnemyFinal = math.floor( ( EnemyLast + math.floor( baseLowest * ResPerSec[ 5 - i ] + 0.5 ) ) / 10 ) * 10
-					local FriendlyFinal = math.floor( ( FriendlyLast + math.floor( baseLowest * ResPerSec[ i ] + 0.5 ) ) / 10 ) * 10
-					if( FriendlyFinal >= 2000 and EnemyFinal < 2000 ) then
-						self.ScoreFrameToWinText:SetText(DBM_BGMOD_LANG.AB_BASESTOWIN_TEXT..i)
-						break
-					end
-				end
-			else
-				self.ScoreFrameToWinText:SetText("")
-			end
-		end
-	else --not in Arathi, end timers
-		-- todo
-	end
-end, 0.5)
-
-function Arathi:ZONE_CHANGED_NEW_AREA(arg1)
-	if bgzone and self.Options.ShowAbFrame then
-		self:ShowEstimatedPoints()
-		self:ShowBasesToWin()
-	elseif bgzone then
-		self:HideEstimatedPoints()
-		self:HideBasesToWin()
-	end
-end
-Arathi.PLAYER_ENTER_WORLD = Arathi.ZONE_CHANGED_NEW_AREA
-	
-function Arathi:UpdateTimer(arg1)
-	local AllyTime = ((2000 - lastTick.Alliance.Score) / ResPerSec[lastTick.Alliance.Bases]) - (GetTime() - lastTick.Time) -- possible division through zero, but that's no problem: 1/0 = 1.#INF and these timers are capped @ 5000
-	local HordeTime = ((2000 - lastTick.Horde.Score) / ResPerSec[lastTick.Horde.Bases]) - (GetTime() - lastTick.Time)
-	if AllyTime > 5000 then		AllyTime = 5000 end
-	if HordeTime > 5000 then	HordeTime = 5000 end
-	
-	lastTick.LastAllyCount	= lastTick.Alliance.Bases;
-	lastTick.LastHordeCount = lastTick.Horde.Bases
-	
-	if winTimer:GetTime(DBM_BGMOD_LANG["ALLIANCE"]) ~= 0 and winTimer:GetTime(DBM_BGMOD_LANG["HORDE"]) ~= 0 then
-		winTimer:Stop()
-	end		
-	
-	if AllyTime == HordeTime then -- draw
-		winTimer:Stop()
-		self.ScoreFrame1Text:SetText("")
-		self.ScoreFrame2Text:SetText("")
-	
-	elseif AllyTime > HordeTime then -- Horde wins
-		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			local AllyPoints = math.floor(math.floor(((HordeTime * ResPerSec[lastTick.Alliance.Bases]) + lastTick.Alliance.Score) / 10) * 10)
-			self.ScoreFrame1Text:SetText("("..AllyPoints..")")
-			self.ScoreFrame2Text:SetText("(2000)")
-		end
-		
-		if winTimer:GetTime(DBM_BGMOD_LANG["ALLIANCE"]) ~= 0 then
-			winTimer:Stop()
-			winTimer:Start(HordeTime, DBM_BGMOD_LANG["HORDE"])
-			winTimer:SetColor(hordeColor)
-			winTimer:UpdateIcon() -- TODO: ICON
-
-		elseif winTimer:GetTime(DBM_BGMOD_LANG["HORDE"]) ~= 0 then
-			local timeLeft, timeElapsed = winTimer:GetTime(DBM_BGMOD_LANG["HORDE"])
-			winTimer:Update(0, (timeElapsed + HordeTime))
-
-		else
-			winTimer:Start(HordeTime, DBM_BGMOD_LANG["HORDE"])
-		end
-		
-	elseif HordeTime > AllyTime then -- Alliance wins
-		if self.ScoreFrame1Text and self.ScoreFrame2Text then
-			local HordePoints = math.floor(math.floor(((AllyTime * ResPerSec[lastTick.Horde.Bases]) + lastTick.Horde.Score) / 10) * 10)
-			self.ScoreFrame2Text:SetText("("..HordePoints..")")
-			self.ScoreFrame1Text:SetText("(2000)")		
-		end
-		
-		if( winTimer:GetTime("AB_WINHORDE") ) then
-			winTimer:Stop()
-			winTimer:Start(AllyTime, DBM_BGMOD_LANG["ALLIANCE"])
-			winTimer:SetColor(hordeColor)
-			winTimer:UpdateIcon() -- TODO: ICON
-
-		elseif( winTimer:GetTime("AB_WINALLY") ) then
-			local timeLeft, timeElapsed = winTimer:GetTime(DBM_BGMOD_LANG["ALLIANCE"])
-			winTimer:Update(0, (timeElapsed + AllyTime))
-		else
-			winTimer:Start(HordeTime, DBM_BGMOD_LANG["ALLIANCE"])
-		end
-	end
-end
-		
-
-function Arathi:OnSync(msg)
-	if msg == "Start60" then
-		startTimer:Start()
-	elseif msg == "Start30" then
-		if startTimer:GetTime() == 0 then
-			startTimer:Start()
-		end
-		startTimer:Update(31, 62)
-	elseif msg:sub(0, 2) == "CA" then
-		msg = msg:sub(3)
-		msg = tonumber(msg)
-		if msg and DBM_BGMOD_LANG["AB_TARGETS"][msg] then
-			self:EndStatusBarTimer(DBM.Capitalize(DBM_BGMOD_LANG["AB_TARGETS"][msg]), true)
-			self:StartStatusBarTimer(64, DBM.Capitalize(DBM_BGMOD_LANG["AB_TARGETS"][msg]), "Interface\\Icons\\INV_BannerPVP_02.blp", true, nil, 0, 0, 1)
-		end
-	elseif msg:sub(0, 2) == "CH" then
-		msg = msg:sub(3)
-		msg = tonumber(msg)
-		if msg and DBM_BGMOD_LANG["AB_TARGETS"][msg] then
-			self:EndStatusBarTimer(DBM.Capitalize(DBM_BGMOD_LANG["AB_TARGETS"][msg]), true)
-			self:StartStatusBarTimer(64, DBM.Capitalize(DBM_BGMOD_LANG["AB_TARGETS"][msg]), "Interface\\Icons\\INV_BannerPVP_01.blp", true, nil, 1, 0, 0)
-		end
-	elseif msg:sub(0, 2) == "DT" then
-		msg = msg:sub(3)
-		msg = tonumber(msg)
-		if msg and DBM_BGMOD_LANG["AB_TARGETS"][msg] then
-			self:EndStatusBarTimer(DBM.Capitalize(DBM_BGMOD_LANG["AB_TARGETS"][msg]), true)
-		end
-	end
-end
-
---]]
 
 

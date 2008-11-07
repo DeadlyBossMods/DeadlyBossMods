@@ -211,6 +211,9 @@ DBM_BGMOD_LANG.AV_OPTION_FLASH		= "Enable flash effects"
 
 
 
+----------------------------------------------------------------------------------------------------------------
+-- JUST THE ONLY ONE NEXT TRANSLATION (the stuff above this line is outdated and will be removed soon)
+----------------------------------------------------------------------------------------------------------------
 local L
 --------------
 --  Arenas  --
@@ -263,6 +266,7 @@ L:SetMiscLocalization({
 	Horde = "Horde",
 	WinBarText = "%s wins in ...",
 	BasesToWin = "Bases to win: %d",
+	Flag = "Flag"
 })
 
 L:SetTimerLocalization({
@@ -274,10 +278,41 @@ L:SetOptionLocalization({
 	TimerStart  = "Show Start Timer",
 	TimerWin = "Show Win Timer",
 	TimerCap = "Show Capture Timer",
+	ShowAbEstimatedPoints = "Show Estimated Points on Win/Lose",
+	ShowAbBasesToWin = "Show Bases required to Win"
 })
 
+-----------------------
+--  Eye of the Storm --
+-----------------------
+L = DBM:GetModLocalization("EyeOfTheStorm")
 
+L:SetMiscLocalization({
+	BgStart60 = "The battle begins in 1 minute!",
+	BgStart30 = "The battle begins in 30 seconds!",
+	ZoneName = "Eye of the Storm",
+	ScoreExpr = "(%d+)/2000",
+	Alliance = "Alliance",
+	Horde = "Horde",
+	WinBarText = "%s wins in ...",
+	FlagReset = "The flag has been reset!",
+	FlagTaken = "(.+) has taken the flag!",
+	FlagCaptured = "The .+ ha%w+ captured the flag!",
+	FlagDropped = "The flag has been dropped!",
 
+})
+
+L:SetTimerLocalization({
+	TimerStart = "Game starts in ...", 
+	TimerFlag = "Flag Respawn",
+})
+
+L:SetOptionLocalization({
+	TimerStart  = "Show Start Timer",
+	TimerWin = "Show Win Timer",
+	TimerFlag = "Show Flag Respawn",
+	ShowPointFrame = "Show Flag carrier and Estimated Points",
+})
 
 
 

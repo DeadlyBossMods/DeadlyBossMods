@@ -1,47 +1,264 @@
-local EyeOfTheStorm = DBM:NewMod("EyeOfTheStorm", DBM_EOTS_NAME, DBM_EOTS_DESCRIPTION, DBM_OTHER, "BC Battlegrounds", 4);
+
+local EyeOfTheStorm = DBM:NewMod("EyeOfTheStorm", "DBM-Battlegrounds")
+local L = EyeOfTheStorm:GetLocalizedStrings()
+
+EyeOfTheStorm:RemoveOption("HealthFrame")
 
 EyeOfTheStorm:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
-	"PLAYER_ENTERING_WORLD",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
-	"CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE"
-);
+	"UPDATE_WORLD_STATES"
+)
 
-EyeOfTheStorm.ResPerSec = {
+local bgzone = false
+local ResPerSec = {
 	[0] = 0,
 	[1] = 0.5,
 	[2] = 1,
 	[3] = 2.5,
 	[4] = 5,
-};
-
-EyeOfTheStorm.LastTick = {
-	LastAllyCount	= 0,
-	LastHordeCount	= 0,
-	Time = 0,
-	Alliance = {
-		Score	= 0,
-		Time	= 0,
-		Bases	= 0,
-	},
-	Horde = {
-		Score	= 0,
-		Time	= 0,
-		Bases	= 0,
-	},
+}
+local allyColor = {
+	r = 0,
+	g = 0,
+	b = 1,
+}
+local hordeColor = {
+	r = 1,
+	g = 0,
+	b = 0,
 }
 
-EyeOfTheStorm:AddBoolOption("ShowPointFrame", true, DBM_BGMOD_LANG.AB_INFOFRAME_INFO, function()
-	DBM:GetMod("EyeOfTheStorm").Options.ShowPointFrame = not DBM:GetMod("EyeOfTheStorm").Options.ShowPointFrame;
-	if DBM:GetMod("EyeOfTheStorm").Options.ShowPointFrame and GetRealZoneText() == DBM_EYEOFTHESTORM then
-		DBM:GetMod("EyeOfTheStorm"):ShowEstimatedPoints();
-		DBM:GetMod("EyeOfTheStorm"):OnEvent("UpdateTimer");
+EyeOfTheStorm:AddBoolOption("ShowPointFrame", true, nil, function()
+	if EyeOfTheStorm.Options.ShowPointFrame and bgzone then
+		EyeOfTheStorm:ShowEstimatedPoints()
 	else
-		DBM:GetMod("EyeOfTheStorm"):HideEstimatedPoints();
+		EyeOfTheStorm:HideEstimatedPoints()
 	end
-end);
+end)
+
+
+local startTimer = EyeOfTheStorm:NewTimer(62, "TimerStart")
+local winTimer = EyeOfTheStorm:NewTimer(30, "TimerWin")
+local flagTimer = EyeOfTheStorm:NewTimer(9, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
+
+local objectives = {
+	[1] = 6,	-- Blood Elf
+	[2] = 6,	-- Draenai
+	[3] = 6,	-- Fel Reaver
+	[4] = 6,	-- Mage
+	[5] = 45	-- Flag
+}
+local function is_flag(id)
+	return id == 45 or id == 44 or id ==43
+end
+local function is_tower(id)
+	return id == 6 or id == 10 or id == 11
+end
+local function get_basecount()
+	local alliance = 0 
+	local horde = 0
+	for k,v in pairs(objectives) do
+		if v == 11 then 
+			alliance = alliance + 1
+		elseif v == 10 then 
+			horde = horde + 1
+		end
+	end
+	return alliance, horde
+end
+local function get_score()
+	if not bgzone then return 0,0 end
+	local AllyScore		= tonumber(string.match((select(3, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
+	local HordeScore	= tonumber(string.match((select(3, GetWorldStateUIInfo(3)) or ""), L.ScoreExpr)) or 0
+	return AllyScore, HordeScore
+end
+
+
+local get_gametime
+local update_gametime
+do
+	local gametime = 0
+	function update_gametime()
+		gametime = time()
+	end
+	function get_gametime()
+		local systime = GetBattlefieldInstanceRunTime()
+		if systime > 0 then
+			return systime / 1000
+		else
+			return time() - gametime
+		end
+	end
+end
+
+do
+	local function AB_Initialize()
+		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
+			bgzone = true
+			update_gametime()
+			for i=1, GetNumMapLandmarks(), 1 do
+				local name, _, textureIndex = GetMapLandmarkInfo(i)
+				if name and textureIndex then
+					if is_tower(textureIndex) or is_flag(textureIndex) then
+						objectives[i] = textureIndex
+					end
+				end
+			end
+			if EyeOfTheStorm.Options.ShowPointFrame then
+				EyeOfTheStorm:ShowEstimatedPoints()
+			end
+
+		elseif bgzone then
+			bgzone = false
+			if EyeOfTheStorm.Options.ShowPointFrame then
+				EyeOfTheStorm:HideEstimatedPoints()
+			end
+		end
+	end
+	EyeOfTheStorm.OnInitialize = AB_Initialize
+	EyeOfTheStorm.ZONE_CHANGED_NEW_AREA = AB_Initialize
+end
+
+do
+	local function check_for_updates()
+		if not bgzone then return end
+		for i=1, GetNumMapLandmarks(), 1 do
+			local name, _, textureIndex = GetMapLandmarkInfo(i)
+			if name and textureIndex then
+				if is_tower(textureIndex) or is_flag(textureIndex) then
+					objectives[i] = textureIndex
+				end
+			end
+		end
+		EyeOfTheStorm:UPDATE_WORLD_STATES()
+	end
+	
+	local function schedule_check(self)
+		self:Schedule(1, check_for_updates)
+	end
+
+	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_ALLIANCE(arg1)
+		if EyeOfTheStorm.Options.ShowPointFrame then
+			if string.match(arg1, L.FlagTaken) then
+				local name = string.match(arg1, L.FlagTaken);
+				if name then
+					self.AllyFlag = name
+					self.HordeFlag = nil
+					self:UpdateFlagDisplay()
+				end
+	
+			elseif string.match(arg1, L.FlagDropped) then
+				self.AllyFlag = nil
+				self.HordeFlag = nil
+				self:UpdateFlagDisplay()
+	
+			elseif string.match(arg1, L.FlagCaptured) then
+				flagTimer:Start()
+				self.AllyFlag = nil
+				self.HordeFlag = nil
+				self:UpdateFlagDisplay()
+			end
+		end
+		schedule_check(self)
+	end
+
+	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_HORDE(arg1)
+		if EyeOfTheStorm.Options.ShowPointFrame then
+			if string.match(arg1, L.FlagTaken) then
+				local name = string.match(arg1, L.FlagTaken);
+				if name then
+					self.AllyFlag = nil
+					self.HordeFlag = name
+					self:UpdateFlagDisplay()
+				end
+	
+			elseif string.match(arg1, L.FlagDropped) then
+				self.AllyFlag = nil
+				self.HordeFlag = nil
+				self:UpdateFlagDisplay()
+	
+			elseif string.match(arg1, L.FlagCaptured) then
+				flagTimer:Start()
+				self.AllyFlag = nil
+				self.HordeFlag = nil
+				self:UpdateFlagDisplay()
+			end
+		end
+		schedule_check(self)
+	end
+
+	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
+		if not bgzone then return end
+
+		if arg1 == L.BgStart60 then
+			startTimer:Start()
+
+		elseif arg1 == L.BgStart30  then		
+			startTimer:Update(31, 62)
+
+		elseif string.match(arg1, L.FlagReset) then
+			EyeOfTheStorm.AllyFlag = nil
+			EyeOfTheStorm.HordeFlag = nil
+			EyeOfTheStorm:UpdateFlagDisplay()
+		end
+		schedule_check(self)
+	end	
+end
+
+
+function EyeOfTheStorm:UPDATE_WORLD_STATES()
+	if not bgzone then return end
+
+	local last_alliance_bases, last_horde_bases = get_basecount()
+	local last_alliance_score, last_horde_score = get_score()
+
+	-- calculate new times
+	local AllyTime = (2000 - last_alliance_score) / ResPerSec[last_alliance_bases]
+	local HordeTime = (2000 - last_horde_score) / ResPerSec[last_horde_bases]
+	
+	if AllyTime > 5000 then		AllyTime = 5000 end
+	if HordeTime > 5000 then	HordeTime = 5000 end
+
+	if AllyTime == HordeTime then
+		winner_is = 0 
+		winTimer:Stop()
+		if self.ScoreFrame1Text then
+			self.ScoreFrame1Text:SetText("")
+			self.ScoreFrame2Text:SetText("")
+		end
+		
+	elseif AllyTime > HordeTime then -- Horde wins
+		winner_is = 2
+		winTimer:Update(get_gametime(), get_gametime()+HordeTime)
+		winTimer:DisableEnlarge()
+		winTimer:UpdateName(L.WinBarText:format(L.Horde))
+		winTimer:SetColor(hordeColor)
+
+		if self.ScoreFrame1Text and self.ScoreFrame2Text then
+			local AllyPoints = math.floor((HordeTime * ResPerSec[last_alliance_bases]) + last_alliance_score)
+			self.ScoreFrame1Text:SetText("("..AllyPoints..")")
+			self.ScoreFrame2Text:SetText("(2000)")
+			self:UpdateFlagDisplay()
+		end
+
+	elseif HordeTime > AllyTime then -- Alliance wins
+		winner_is = 1
+		winTimer:Update(get_gametime(), get_gametime()+AllyTime)
+		winTimer:DisableEnlarge()
+		winTimer:UpdateName(L.WinBarText:format(L.Alliance))
+		winTimer:SetColor(allyColor)
+
+		if self.ScoreFrame1Text and self.ScoreFrame2Text then
+			local HordePoints = math.floor((HordeTime * ResPerSec[last_horde_bases]) + last_horde_score)
+			self.ScoreFrame1Text:SetText("(2000)")
+			self.ScoreFrame2Text:SetText("("..HordePoints..")")
+			self:UpdateFlagDisplay()
+		end		
+	end
+end
 
 function EyeOfTheStorm:UpdateFlagDisplay()
 	if self.ScoreFrame1Text and self.ScoreFrame2Text then
@@ -52,7 +269,7 @@ function EyeOfTheStorm:UpdateFlagDisplay()
 			if not oldText or oldText == "" then
 				newText = "Flag: "..self.AllyFlag;
 			else
-				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..DBM_EOTS_FLAG..": "..self.AllyFlag);
+				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.AllyFlag);
 			end
 		elseif oldText and oldText ~= "" then
 			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)");
@@ -65,37 +282,13 @@ function EyeOfTheStorm:UpdateFlagDisplay()
 			if not oldText or oldText == "" then
 				newText = "Flag: "..self.HordeFlag;
 			else
-				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..DBM_EOTS_FLAG..": "..self.HordeFlag);
+				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.HordeFlag);
 			end
 		elseif oldText and oldText ~= "" then
 			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)");
 		end
 		self.ScoreFrame2Text:SetText(newText);
 		
-	end
-end
-
-function EyeOfTheStorm:GetScore()
-	if GetRealZoneText() == DBM_EYEOFTHESTORM then
-		local _, _, mAllyInfo	= GetWorldStateUIInfo(2);
-		local _, _, mHordeInfo	= GetWorldStateUIInfo(3);
-		if not mAllyInfo or not mHordeInfo then
-			return false;
-		end
-
-		local _, _, AllyBases, AllyScore	= string.find(mAllyInfo, DBM_EOTS_POINTS);
-		local _, _, HordeBases, HordeScore	= string.find(mHordeInfo, DBM_EOTS_POINTS);
-		AllyBases	= tonumber(AllyBases);
-		AllyScore	= tonumber(AllyScore);
-		HordeBases	= tonumber(HordeBases);
-		HordeScore	= tonumber(HordeScore);
-		if not AllyBases or not AllyScore or not HordeBases or not HordeScore then
-			return false;
-		end
-	
-		return true, AllyBases, AllyScore, HordeBases, HordeScore;
-	else
-		return false;
 	end
 end
 
@@ -135,150 +328,3 @@ function EyeOfTheStorm:HideEstimatedPoints()
 	end
 end
 
-function EyeOfTheStorm:OnUpdate(elapsed)
-	if GetRealZoneText() == DBM_EYEOFTHESTORM then
-		local mOk, AllyBases, AllyScore, HordeBases, HordeScore = self:GetScore();
-		if not mOk then
-			return;
-		end
-		
-		self.LastTick.Alliance.Score = AllyScore;
-		self.LastTick.Alliance.Bases = AllyBases;
-		
-		self.LastTick.Horde.Score = HordeScore;
-		self.LastTick.Horde.Bases = HordeBases;
-		
-		self.LastTick.Time = GetTime(); --needed if the UpdateTimer event is not called by this function
-		
-
-		if self.LastTick.Alliance.Score < 2000 
-		and self.LastTick.Horde.Score < 2000
-		and (self.LastTick.Alliance.Score + self.LastTick.Horde.Score) > 0
-		and (self.LastTick.Alliance.Bases + self.LastTick.Horde.Bases) > 0
-		and (self.LastTick.LastAllyCount ~= self.LastTick.Alliance.Bases or self.LastTick.LastHordeCount ~= self.LastTick.Horde.Bases) then
-			self:OnEvent("UpdateTimer");
-		end
-	else
-		self:EndStatusBarTimer("Alliance wins in", true);
-		self:EndStatusBarTimer("Horde wins in", true);
-	end
-end
-
-function EyeOfTheStorm:OnEvent(event)
-	if (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD") and GetRealZoneText() == DBM_EYEOFTHESTORM and self.Options.ShowPointFrame then
-		self:ShowEstimatedPoints();
-		
-	elseif (event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD") and GetRealZoneText() ~= DBM_EYEOFTHESTORM then
-		self:HideEstimatedPoints();
-		
-	elseif event == "CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE" then --speed boots
-		if arg1 and string.find(arg1, DBM_BGMOD_LANG.WSG_BOOTS_EXPR) then
-			self:StartStatusBarTimer(10, "Speed Boots", "Interface\\Icons\\Spell_Fire_BurningSpeed", true); --respawn time varies, ~3 minutes
-		end
-	
-	elseif event == "CHAT_MSG_BG_SYSTEM_NEUTRAL" then --"game starts in.." timers
-		if string.find(arg1, DBM_EOTS_BEGINS_60) then
-			self:SendSync("Start60")
-		elseif arg1 == DBM_EOTS_BEGINS_30 then		
-			self:SendSync("Start30")
-		elseif string.find(arg1, DBM_EOTS_FLAG_RESET) then
-			self.AllyFlag = nil;
-			self.HordeFlag = nil;
-			self:UpdateFlagDisplay();
-		end
-	
-	elseif event == "UpdateTimer" then
-		local AllyTime = ((2000 - self.LastTick.Alliance.Score) / self.ResPerSec[self.LastTick.Alliance.Bases]) - (GetTime() - self.LastTick.Time); -- possible division through zero, but Lua does not complain about this...1/0 = 1.#INF
-		local HordeTime = ((2000 - self.LastTick.Horde.Score) / self.ResPerSec[self.LastTick.Horde.Bases]) - (GetTime() - self.LastTick.Time);
-		if AllyTime > 5000 then		AllyTime = 5000; end
-		if HordeTime > 5000 then	HordeTime = 5000; end
-		
-		self.LastTick.LastAllyCount	= self.LastTick.Alliance.Bases; 
-		self.LastTick.LastHordeCount = self.LastTick.Horde.Bases;
-		
-		if self:GetStatusBarTimerTimeLeft("Alliance wins in") and self:GetStatusBarTimerTimeLeft("Horde wins in") then -- should never happen
-			self:EndStatusBarTimer("Alliance wins in", true);
-			self:EndStatusBarTimer("Horde wins in", true);
-		end		
-		
-		if AllyTime == HordeTime then -- draw
-			self:EndStatusBarTimer("Alliance wins in", true);
-			self:EndStatusBarTimer("Horde wins in", true);
-			self.ScoreFrame1Text:SetText("");
-			self.ScoreFrame2Text:SetText("");
-			
-		elseif AllyTime > HordeTime then -- Horde wins
-			if self.ScoreFrame1Text and self.ScoreFrame2Text then
-				local AllyPoints = math.floor((HordeTime * self.ResPerSec[self.LastTick.Alliance.Bases]) + self.LastTick.Alliance.Score);
-				self.ScoreFrame1Text:SetText("("..AllyPoints..")");
-				self.ScoreFrame2Text:SetText("(2000)");
-				self:UpdateFlagDisplay();
-			end
-			
-			if self:GetStatusBarTimerTimeLeft("Alliance wins in") then
-				local timeLeft, timeElapsed = self:GetStatusBarTimerTimeLeft("Alliance wins in");
-				self:UpdateStatusBarTimer("Alliance wins in", nil, (timeElapsed + HordeTime), "Horde wins in", "Interface\\Icons\\INV_BannerPVP_01.blp", true);
-			elseif( self:GetStatusBarTimerTimeLeft("Horde wins in") ) then
-				local timeLeft, timeElapsed = self:GetStatusBarTimerTimeLeft("Horde wins in");
-				self:UpdateStatusBarTimer("Horde wins in", nil, (timeElapsed + HordeTime), nil, nil, true);
-			else
-				self:StartStatusBarTimer(HordeTime, "Horde wins in", "Interface\\Icons\\INV_BannerPVP_01.blp", true);
-			end
-			
-		elseif HordeTime > AllyTime then -- Alliance wins
-			if self.ScoreFrame1Text and self.ScoreFrame2Text then
-				local HordePoints = math.floor((AllyTime * self.ResPerSec[self.LastTick.Horde.Bases]) + self.LastTick.Horde.Score);
-				self.ScoreFrame2Text:SetText("("..HordePoints..")");
-				self.ScoreFrame1Text:SetText("(2000)");
-				self:UpdateFlagDisplay();
-			end
-			
-			if( self:GetStatusBarTimerTimeLeft("Horde wins in") ) then
-				local timeLeft, timeElapsed = self:GetStatusBarTimerTimeLeft("Horde wins in");
-				self:UpdateStatusBarTimer("Horde wins in", nil, (timeElapsed + AllyTime), "Alliance wins in", "Interface\\Icons\\INV_BannerPVP_02.blp", true);
-			
-			elseif( self:GetStatusBarTimerTimeLeft("Alliance wins in") ) then
-				local timeLeft, timeElapsed = self:GetStatusBarTimerTimeLeft("Alliance wins in");
-				self:UpdateStatusBarTimer("Alliance wins in", nil, (timeElapsed + AllyTime), nil, nil, true);
-			else
-				self:StartStatusBarTimer(AllyTime, "Alliance wins in", "Interface\\Icons\\INV_BannerPVP_02.blp", true);
-			end
-		end
-		
-	elseif event == "CHAT_MSG_BG_SYSTEM_ALLIANCE" or event == "CHAT_MSG_BG_SYSTEM_HORDE" and arg1 then
-		if string.find(arg1, DBM_EOTS_FLAG_TAKEN) then
-			local _, _, name = string.find(arg1, DBM_EOTS_FLAG_TAKEN);
-			if name and event == "CHAT_MSG_BG_SYSTEM_ALLIANCE" then
-				self.AllyFlag = name;
-				self.HordeFlag = nil;
-				self:UpdateFlagDisplay();
-			elseif name and event == "CHAT_MSG_BG_SYSTEM_HORDE" then
-				self.AllyFlag = nil;
-				self.HordeFlag = name;				
-				self:UpdateFlagDisplay();
-			end
-		elseif string.find(arg1, DBM_EOTS_FLAG_DROPPED) then
-			self.AllyFlag = nil;
-			self.HordeFlag = nil;
-			self:UpdateFlagDisplay();
-			
-		elseif string.find(arg1, DBM_EOTS_FLAG_CAPTURED) then
-			self:StartStatusBarTimer(9, "Flag respawn", "Interface\\Icons\\INV_Banner_02", true)
-			self:ScheduleSelf(3.5, "UpdateTimer"); -- it takes a few seconds until you get the credits for capturing the flag
-			self.AllyFlag = nil;
-			self.HordeFlag = nil;
-			self:UpdateFlagDisplay();
-		end
-	end
-end
-
-function EyeOfTheStorm:OnSync(msg)
-	if msg == "Start60" then
-		self:StartStatusBarTimer(62, "Begins")
-	elseif msg == "Start30" then
-		if not self:GetStatusBarTimerTimeLeft("Begins") then
-			self:StartStatusBarTimer(62, "Begins")
-		end
-		self:UpdateStatusBarTimer("Begins", 31, 62)
-	end
-end
