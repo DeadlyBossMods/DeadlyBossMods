@@ -1,6 +1,5 @@
 local EyeOfTheStorm = DBM:NewMod("EyeOfTheStorm", DBM_EOTS_NAME, DBM_EOTS_DESCRIPTION, DBM_OTHER, "BC Battlegrounds", 4);
 
-
 EyeOfTheStorm:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
@@ -9,7 +8,6 @@ EyeOfTheStorm:RegisterEvents(
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
 	"CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE"
 );
-
 
 EyeOfTheStorm.ResPerSec = {
 	[0] = 0,
