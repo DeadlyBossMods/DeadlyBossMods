@@ -1,5 +1,3 @@
-
-
 local Alterac = DBM:NewMod("Alterac", "DBM-Battlegrounds")
 local L = Alterac:GetLocalizedStrings()
 
@@ -233,10 +231,13 @@ end
 
 local function checkItems(item, amount)
 	local found = 0
+	print(item, amount)
 	for bag = 1, NUM_BAG_SLOTS do
 		for i = 1, GetContainerNumSlots(bag) do
+			print(GetContainerItemLink())
 			if tonumber((GetContainerItemLink(bag, i) or ""):match(":(%d+):") or 0) == item then
 				found = found + select(2, GetContainerItemInfo(bag, i))
+				print(found)
 			end
 		end
 	end
@@ -248,7 +249,7 @@ function Alterac:GOSSIP_SHOW()
 	if not bgzone or not self.Options.AutoTurnIn then return end
 	local quest = quests[tonumber((UnitGUID("target") or ""):sub(9, 12), 16) or 0]
 	if type(quest[1]) == "table" then
-		for i, v in ipairs(quest) do
+		for i, v in ipairs(quest[1]) do
 			if checkItems(v[2], v[3] or 1) then
 				acceptQuestByName(v[1])
 				break

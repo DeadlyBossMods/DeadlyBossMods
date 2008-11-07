@@ -37,6 +37,12 @@ L:SetOptionLocalization({
 	TimerStart = "Show start timer"
 })
 
+L:SetMiscLocalization({
+	Start60 = "One minute until the Arena battle begins!",
+	Start30 = "Thirty seconds until the Arena battle begins!",
+	Start15 = "Fifteen seconds until the Arena battle begins!"
+})
+
 ---------------
 --  Alterac  --
 ---------------
