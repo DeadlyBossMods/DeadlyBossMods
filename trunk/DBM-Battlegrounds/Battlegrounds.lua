@@ -24,7 +24,7 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
 		self:Schedule(3, DBM.RequestTimers, DBM)
 		inviteTimer:Stop()
-		SetMapToCurrentZone()
+		SetMapToCurrentZone() -- for GetMapLandmarkInfo()
 	end
 	for i, v in ipairs(DBM:GetModByName("Alterac").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("EyeOfTheStorm").timers) do v:Stop() end
@@ -91,6 +91,5 @@ hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players 
 				end
 			end
 		end
-		i = i + 1
 	end
 end)

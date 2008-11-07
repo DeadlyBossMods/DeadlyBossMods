@@ -276,7 +276,7 @@ do
 		end
 
 		if self.Options.ShowAbBasesToWin then
-			local FriendlyLast, EnemyLast, FriendlyBases, EnemyBases, baseLowest;
+			local FriendlyLast, EnemyLast, FriendlyBases, EnemyBases, baseLowest
 			if( UnitFactionGroup("player") == "Alliance" ) then
 				FriendlyLast = last_alliance_score
 				EnemyLast = last_horde_score

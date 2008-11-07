@@ -143,7 +143,7 @@ do
 	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_ALLIANCE(arg1)
 		if EyeOfTheStorm.Options.ShowPointFrame then
 			if string.match(arg1, L.FlagTaken) then
-				local name = string.match(arg1, L.FlagTaken);
+				local name = string.match(arg1, L.FlagTaken)
 				if name then
 					self.AllyFlag = name
 					self.HordeFlag = nil
@@ -168,7 +168,7 @@ do
 	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_HORDE(arg1)
 		if EyeOfTheStorm.Options.ShowPointFrame then
 			if string.match(arg1, L.FlagTaken) then
-				local name = string.match(arg1, L.FlagTaken);
+				local name = string.match(arg1, L.FlagTaken)
 				if name then
 					self.AllyFlag = nil
 					self.HordeFlag = name
@@ -263,31 +263,31 @@ end
 function EyeOfTheStorm:UpdateFlagDisplay()
 	if self.ScoreFrame1Text and self.ScoreFrame2Text then
 		
-		local newText;
-		local oldText = self.ScoreFrame1Text:GetText();
+		local newText
+		local oldText = self.ScoreFrame1Text:GetText()
 		if self.AllyFlag then
 			if not oldText or oldText == "" then
-				newText = "Flag: "..self.AllyFlag;
+				newText = "Flag: "..self.AllyFlag
 			else
-				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.AllyFlag);
+				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.AllyFlag)
 			end
 		elseif oldText and oldText ~= "" then
-			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)");
+			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)")
 		end
-		self.ScoreFrame1Text:SetText(newText);
+		self.ScoreFrame1Text:SetText(newText)
 		
-		newText = nil;
-		oldText = self.ScoreFrame2Text:GetText();
+		newText = nil
+		oldText = self.ScoreFrame2Text:GetText()
 		if self.HordeFlag then
 			if not oldText or oldText == "" then
-				newText = "Flag: "..self.HordeFlag;
+				newText = "Flag: "..self.HordeFlag
 			else
-				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.HordeFlag);
+				newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)  "..L.Flag..": "..self.HordeFlag)
 			end
 		elseif oldText and oldText ~= "" then
-			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)");
+			newText = string.gsub(oldText, "%((%d+)%).*", "%(%1%)")
 		end
-		self.ScoreFrame2Text:SetText(newText);
+		self.ScoreFrame2Text:SetText(newText)
 		
 	end
 end
@@ -295,36 +295,36 @@ end
 function EyeOfTheStorm:ShowEstimatedPoints()
 	if AlwaysUpFrame1Text and AlwaysUpFrame2Text then
 		if not self.ScoreFrame1 then
-			self.ScoreFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1);
-			self.ScoreFrame1:SetHeight(10);
-			self.ScoreFrame1:SetWidth(200);
+			self.ScoreFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1)
+			self.ScoreFrame1:SetHeight(10)
+			self.ScoreFrame1:SetWidth(200)
 			self.ScoreFrame1:SetPoint("LEFT", "AlwaysUpFrame1Text", "RIGHT", 4, 0)
-			self.ScoreFrame1Text = self.ScoreFrame1:CreateFontString(nil, nil, "GameFontNormalSmall");
-			self.ScoreFrame1Text:SetAllPoints(self.ScoreFrame1);
-			self.ScoreFrame1Text:SetJustifyH("LEFT");
+			self.ScoreFrame1Text = self.ScoreFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
+			self.ScoreFrame1Text:SetAllPoints(self.ScoreFrame1)
+			self.ScoreFrame1Text:SetJustifyH("LEFT")
 		end
 		if not self.ScoreFrame2 then
-			self.ScoreFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame2);
-			self.ScoreFrame2:SetHeight(10);
-			self.ScoreFrame2:SetWidth(200);
+			self.ScoreFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame2)
+			self.ScoreFrame2:SetHeight(10)
+			self.ScoreFrame2:SetWidth(200)
 			self.ScoreFrame2:SetPoint("LEFT", "AlwaysUpFrame2Text", "RIGHT", 4, 0)
-			self.ScoreFrame2Text= self.ScoreFrame2:CreateFontString(nil, nil, "GameFontNormalSmall");
-			self.ScoreFrame2Text:SetAllPoints(self.ScoreFrame2);
-			self.ScoreFrame2Text:SetJustifyH("LEFT");
+			self.ScoreFrame2Text= self.ScoreFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
+			self.ScoreFrame2Text:SetAllPoints(self.ScoreFrame2)
+			self.ScoreFrame2Text:SetJustifyH("LEFT")
 		end
-		self.ScoreFrame1Text:SetText("");
-		self.ScoreFrame1:Show();
-		self.ScoreFrame2Text:SetText("");
-		self.ScoreFrame2:Show();
+		self.ScoreFrame1Text:SetText("")
+		self.ScoreFrame1:Show()
+		self.ScoreFrame2Text:SetText("")
+		self.ScoreFrame2:Show()
 	end
 end
 
 function EyeOfTheStorm:HideEstimatedPoints()
 	if self.ScoreFrame1 and self.ScoreFrame2 then
-		self.ScoreFrame1:Hide();
-		self.ScoreFrame1Text:SetText("");
-		self.ScoreFrame2:Hide();
-		self.ScoreFrame2Text:SetText("");
+		self.ScoreFrame1:Hide()
+		self.ScoreFrame1Text:SetText("")
+		self.ScoreFrame2:Hide()
+		self.ScoreFrame2Text:SetText("")
 	end
 end
 
