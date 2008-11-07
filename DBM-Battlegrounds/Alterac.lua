@@ -234,7 +234,7 @@ local function checkItems(item, amount)
 	print(item, amount)
 	for bag = 1, NUM_BAG_SLOTS do
 		for i = 1, GetContainerNumSlots(bag) do
-			print(GetContainerItemLink())
+			print(GetContainerItemLink(bag, i))
 			if tonumber((GetContainerItemLink(bag, i) or ""):match(":(%d+):") or 0) == item then
 				found = found + select(2, GetContainerItemInfo(bag, i))
 				print(found)
@@ -249,7 +249,7 @@ function Alterac:GOSSIP_SHOW()
 	if not bgzone or not self.Options.AutoTurnIn then return end
 	local quest = quests[tonumber((UnitGUID("target") or ""):sub(9, 12), 16) or 0]
 	if type(quest[1]) == "table" then
-		for i, v in ipairs(quest[1]) do
+		for i, v in ipairs(quest) do
 			if checkItems(v[2], v[3] or 1) then
 				acceptQuestByName(v[1])
 				break
