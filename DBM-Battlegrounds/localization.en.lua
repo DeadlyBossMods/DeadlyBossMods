@@ -60,7 +60,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60 = "1 minute until the battle for Alterac Valley begins.",
-	BgStart30 = "The Battle for Arathi Basin will begin in 30 seconds.",
+	BgStart30 = "30 seconds until the battle for Alterac Valley begins.",
 	ZoneName = "Alterac Valley",
 })
 
