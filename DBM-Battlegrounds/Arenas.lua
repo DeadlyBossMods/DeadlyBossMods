@@ -1,3 +1,7 @@
+-- Areanas mod v3.0
+-- rewrite by Tandanu
+--
+
 local Arenas = DBM:NewMod("Arenas", "DBM-Battlegrounds")
 local L = Arenas:GetLocalizedStrings()
 
