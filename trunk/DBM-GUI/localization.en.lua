@@ -11,7 +11,7 @@ L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
 L.TabCategory_OTHER     = "Other Boss Mods"
 
 L.BossModLoaded 	= "%s statistics"
-L.BossModLoad_now 	= [[This Boss Mod is not loaded. 
+L.BossModLoad_now 	= [[This boss mod is not loaded. 
 It will be loaded when you enter the instance. 
 You can also click the button to load the mod manually.]]
 
@@ -42,12 +42,12 @@ L.Statistic_Heroic	= "heroic"
 L.General 		= "General DBM Options"
 L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
-L.EnableSpamBlock	= "Filter <DBM> BossWhispers"
+L.EnableSpamBlock	= "Filter <DBM> warning whispers"
 L.AutoRespond 		= "Enable auto-respond while fighting"
-L.EnableMiniMapIcon	= "Enable MiniMap Icon"
+L.EnableMiniMapIcon	= "Show Minimap icon"
 
-L.Button_RangeFrame	= "Show/Hide Rangeframe"
-L.Button_TestBars	= "Start TestBars"
+L.Button_RangeFrame	= "Show/Hide range-frame"
+L.Button_TestBars	= "Start test bars"
 
 L.PizzaTimer_Headline 	= 'Create a "Pizza Timer"'
 L.PizzaTimer_Title	= 'Name (e.g. "Pizza!")'
@@ -66,22 +66,22 @@ L.RaidWarnColor_3 	= "Color 3"
 L.RaidWarnColor_4 	= "Color 4"
 L.InfoRaidWarning	= [[You can specify the position and colors of the raid warning frame. 
 This frame is used for messages like "Player X is afflicted by Y" messages]]
-L.ColorResetted 	= "The Color Setting of this field has been resetted"
+L.ColorResetted 	= "The color settings of this field have been resetted"
 L.ShowWarningsInChat 	= "Show warnings in chatframe"
 L.ShowFakedRaidWarnings = "Show warnings as faked Raid Warning messages"
 L.WarningIconLeft 	= "Show icon on left side"
 L.WarningIconRight 	= "Show icon on right side"
-L.RaidWarnMessage 	= "Thanks for using DeadlyBossMods"
-L.BarWhileMove 		= "Raidwarn movable"
-L.RaidWarnSound		= "Play Sound on RaidWarning"
-L.SpecialWarnSound	= "Play Sound on SpecialWarning"
+L.RaidWarnMessage 	= "Thanks for using Deadly Boss Mods"
+L.BarWhileMove 		= "Raidwarning movable"
+L.RaidWarnSound		= "Play sound on raid-warning"
+L.SpecialWarnSound	= "Play sound on special-warning"
 
 -- Tab: Barsetup
 L.BarSetup   = "Bar Style"
 L.BarTexture = "Bar Texture"
 
-L.Slider_BarOffSetX 	= "OffSet X"
-L.Slider_BarOffSetY 	= "OffSet Y"
+L.Slider_BarOffSetX 	= "Offset X"
+L.Slider_BarOffSetY 	= "Offset Y"
 L.Slider_BarWidth 	= "Bar width"
 L.Slider_BarScale 	= "Bar scale"
 L.AreaTitle_BarSetup 	= "General Bar Options"

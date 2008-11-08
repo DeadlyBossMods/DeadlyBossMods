@@ -423,7 +423,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd == "help" then
 		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
 	elseif cmd:sub(0, 5) == "timer" then
-		local time, text = msg:match("^%w+ (%d+) (.+)")
+		local time, text = msg:match("^%w+ ([%d:]+) (.+)")
 		if not (time and text) then
 			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
@@ -431,11 +431,14 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		local min, sec = string.split(":", time)
 		min = tonumber(min or "") or 0
 		sec = tonumber(sec or "")
-		if min and not sec then sec = min end
-		time = min*60 + sec
+		if min and not sec then
+			sec = min
+			min = 0
+		end
+		time = min*  60 + sec
 		DBM:CreatePizzaTimer(time, text)
 	elseif cmd:sub(0, 15) == "broadcast timer" then
-		local time, text = msg:match("^%w+ (%d+) (.+)")
+		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)")
 		if DBM:GetRaidRank() == 0 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
@@ -446,18 +449,25 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		local min, sec = string.split(":", time)
 		min = tonumber(min or "") or 0
 		sec = tonumber(sec or "")
-		if min and not sec then sec = min end
-		time = min*60 + sec
+		if min and not sec then
+			sec = min
+			min = 0
+		end
+		time = min*  60 + sec
 		DBM:CreatePizzaTimer(time, text, true)
 	else
 		DBM:LoadGUI()
 	end
 end
 
-SLASH_DBMRANGE_1 = "/range"
-SLASH_DBMRANGE_2 = "/distance"
+SLASH_DBMRANGE1 = "/range"
+SLASH_DBMRANGE2 = "/distance"
 SlashCmdList["DBMRANGE"] = function(msg)
-	DBM.RangeCheck:Show(10)
+	if DBM.RangeCheck:IsShown() then
+		DBM.RangeCheck:Hide()
+	else
+		DBM.RangeCheck:Show(10)
+	end
 end
 
 do
