@@ -368,7 +368,16 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentRevision" inherits="GameFontHighlightSmall" text="">
+				<FontString name="$parentRevision" inherits="GameFontDisableSmall" text="">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+							<Offset>
+								<AbsDimension x="20" y="35"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentAuthors" inherits="GameFontDisableSmall" text="">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
 							<Offset>
@@ -623,6 +632,11 @@
 					self:CreateButtons( getglobal(self:GetName().."BossMods") )
 					self:CreateButtons( getglobal(self:GetName().."DBMOptions") )
 					self:UpdateMenuFrame( getglobal(self:GetName().."BossMods") )
+				end
+				if math.random(1,2) == 1 then	-- who is first? hmm lets do it random :)
+					getglobal(self:GetName().."Authors"):SetText("DBMv4 by Nitram@EU-Azshara and Tandanu@EU-Aegwynn - visit www.deadlybossmods.com")
+				else
+					getglobal(self:GetName().."Authors"):SetText("DBMv4 by Tandanu@EU-Aegwynn and Nitram@EU-Azshara - visit www.deadlybossmods.com")
 				end
 			</OnShow>
 			<OnDragStart>

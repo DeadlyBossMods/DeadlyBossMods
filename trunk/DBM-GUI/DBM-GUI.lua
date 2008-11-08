@@ -382,7 +382,7 @@ function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 		button:SetHighlightFontObject(FontObject);		
 	end
 	if getglobal(button:GetName().."Text"):GetStringWidth() > button:GetWidth() then
-		button:SetWidth( getglobal(button:GetName().."Text"):GetStringWidth() + 15 )
+		button:SetWidth( getglobal(button:GetName().."Text"):GetStringWidth() + 25 )
 	end
 
 	self:SetLastObj(button)
@@ -1482,7 +1482,7 @@ local function CreateOptionsMenu()
 		BarSetupPanel:SetMyOwnHeight() 
 	end
 
-	-- Set Revision
+	-- Set Revision // please don't translate this!
 	DBM_GUI_OptionsFrameRevision:SetText("Version: "..DBM.DisplayVersion.." - Core: r"..DBM.Revision.." - Gui: r"..revision)
 end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
@@ -1639,10 +1639,6 @@ do
 		local panel = mod.panel
 		local category
 	
-		--local headline = panel:CreateText(mod.localization.general.name, 400, nil, GameFontGreenLarge, "RIGHT")
-		--headline:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -30, -20)
-		--headline:SetFont("Fonts\\FRIZQT__.TTF", 18, "OUTLINE")
-
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
 		button:SetScript("OnClick", function(self) mod:Toggle()	end)
