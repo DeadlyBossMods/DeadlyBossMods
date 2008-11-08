@@ -1,3 +1,7 @@
+-- EyeOfTheStorm mod v3.0
+-- rewrite by Nitram and Tandanu
+--
+-- thanks DiabloHu
 
 local EyeOfTheStorm = DBM:NewMod("EyeOfTheStorm", "DBM-Battlegrounds")
 local L = EyeOfTheStorm:GetLocalizedStrings()

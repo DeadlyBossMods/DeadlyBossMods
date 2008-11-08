@@ -1,4 +1,7 @@
--- 31/7/2007 2.1: added "Bases to win" frame by Diablohu
+-- Arathi mod v3.0
+-- rewrite by Tandanu
+--
+-- thanks to DiabloH
 
 local Arathi = DBM:NewMod("Arathi", "DBM-Battlegrounds")
 local L = Arathi:GetLocalizedStrings()
