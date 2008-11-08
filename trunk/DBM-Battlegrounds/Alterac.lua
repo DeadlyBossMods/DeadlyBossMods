@@ -241,7 +241,7 @@ end
 
 local function checkItems(item, amount)
 	local found = 0
-	for bag = 1, NUM_BAG_SLOTS do
+	for bag = 0, NUM_BAG_SLOTS do
 		for i = 1, GetContainerNumSlots(bag) do
 			if tonumber((GetContainerItemLink(bag, i) or ""):match(":(%d+):") or 0) == item then
 				found = found + select(2, GetContainerItemInfo(bag, i))
