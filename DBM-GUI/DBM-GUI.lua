@@ -1626,6 +1626,8 @@ do
 				end
 			end	
 		end
+		DBM_GUI_OptionsFrame:Hide()
+		DBM_GUI_OptionsFrame:Show()
 	end
 
 

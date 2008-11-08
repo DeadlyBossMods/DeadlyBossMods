@@ -1,8 +1,9 @@
 -- Simplified Chinese by Diablohu
 -- http://wow.gamespot.com.cn
 -- Last Update: 11/06/2008
-if (GetLocale() == "zhCN") then
-DBM_GUI_Translations = {}
+
+if GetLocale() ~= "zhCN" then return end
+if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 
 local L = DBM_GUI_Translations
 
@@ -94,4 +95,5 @@ L.AreaTitle_BarSetupHuge = "大型计时条设置"
 L.BarIconLeft 		= "左侧显示图标"
 L.BarIconRight 		= "右侧显示图标"
 L.EnableHugeBar 	= "开启大型计时条（2号计时条）"
-end
+
+
