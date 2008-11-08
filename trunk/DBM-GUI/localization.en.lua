@@ -42,7 +42,7 @@ L.Statistic_Heroic	= "heroic"
 L.General 		= "General DBM Options"
 L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
-L.EnableSpamBlock	= "Filter <DBM> warning whispers"
+L.EnableSpamBlock	= "Filter <DBM> warning whispers while fighting"
 L.AutoRespond 		= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon	= "Show Minimap icon"
 
