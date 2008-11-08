@@ -9,14 +9,14 @@ L.MainFrame = "Deadly Boss Mods"
 
 L.TabCategory_Options 	= "Allgemeine Einstellungen"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
-L.TabCategory_BC 	= "The Burning Crusade"
+L.TabCategory_BC		= "The Burning Crusade"
 L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
-L.TabCategory_OTHER     = "Other Boss Mods"
+L.TabCategory_OTHER     = "Sonstige Boss Mods"
 
-L.BossModLoaded 	= "%s statistiken"
-L.BossModLoad_now 	= [[Dieser Bossmod ist nicht geladen.
+L.BossModLoaded 	= "%s Statistiken"
+L.BossModLoad_now 	= [[Dieses Boss Mod ist nicht geladen.
 Er wird automatisch geladen, wenn du die Instanz betrittst.
-Ansonsten kannst du den Knopf hier verwenden um das BossMod zu laden.]]
+Ansonsten kannst du den Button hier verwenden um das Boss Mod zu laden.]]
 
 L.PosX = 'Position X'
 L.PosY = 'Position Y'
@@ -25,8 +25,8 @@ L.MoveMe 		= 'bewegbar'
 L.Button_OK 		= 'OK'
 L.Button_Cancel 	= 'Abbruch'
 L.Button_LoadMod 	= 'Lade AddOn'
-L.Mod_Enabled		= "Aktiviere BossMod"
-L.Mod_EnableAnnounce	= "Dem Raid Anzeigen"
+L.Mod_Enabled		= "Aktiviere Boss Mod"
+L.Mod_EnableAnnounce	= "Zum Raid ansagen"
 L.Reset 		= "zurücksetzen"
 
 L.Enable  		= "aktiviere"
@@ -36,7 +36,7 @@ L.NoSound		= "Kein Sound"
 
 -- Tab: Boss Statistics
 L.BossStatistics	= "Boss Statistiken"
-L.Statistic_Kills	= "Tötungen:"
+L.Statistic_Kills	= "Kills:"
 L.Statistic_Wipes	= "Niederlagen:"
 L.Statistic_BestKill	= "Schnellster:"
 L.Statistic_Heroic	= "heroisch"
@@ -45,9 +45,9 @@ L.Statistic_Heroic	= "heroisch"
 L.General 		= "Allgemeine DBM Optionen"
 L.EnableDBM 		= "Aktiviere DBM"
 L.EnableStatus 		= "Antworte auf 'status' Flüsteranfragen"
-L.EnableSpamBlock	= "Aktiviere Filter für <DBM> Boss Flüstermitteilungen"
-L.AutoRespond 		= "Aktiviere automatische antwort wärend eines Bosskampfs"
-L.EnableMiniMapIcon	= "Aktiviere MiniMap Symbol"
+L.EnableSpamBlock	= "Aktiviere Filter für <DBM> Flüstermitteilungen"
+L.AutoRespond 		= "Aktiviere automatische Antwort während eines Bosskampfes"
+L.EnableMiniMapIcon	= "Aktiviere Minimap Symbol"
 
 L.Button_RangeFrame	= "Zeige/Verberge Abstandsfenster"
 L.Button_TestBars	= "Starte Testbalken"
@@ -67,15 +67,15 @@ L.RaidWarnColor_1 	= "Farbe 1"
 L.RaidWarnColor_2 	= "Farbe 2"
 L.RaidWarnColor_3 	= "Farbe 3"
 L.RaidWarnColor_4 	= "Farbe 4"
-L.InfoRaidWarning	= [[Hier wird die Position des Schlachtzug Warnungs Fenster sowie die Farbe festgelegt.
+L.InfoRaidWarning	= [[Hier wird die Position des Schlachtzug-Warnungs-Fenster sowie die Farbe festgelegt.
 Dieses Fenster wird für Nachrichten wie "Player X ist betroffen von Y" verwendet.]]
 L.ColorResetted 	= "Die Farbeinstellung wurde zurückgesetzt."
 L.ShowWarningsInChat 	= "Zeige Warnungen im Nachrichten-Fenster"
 L.ShowFakedRaidWarnings = "Zeige Warnungen als künstliche Schlachtzugwarnung"
-L.WarningIconLeft 	= "Zeige Symbol link an"
+L.WarningIconLeft 	= "Zeige Symbol links an"
 L.WarningIconRight 	= "Zeige Symbol rechts an"
-L.RaidWarnMessage 	= "Danke das du DeadlyBossMods verwendest"
-L.BarWhileMove 		= "Schlachtzug beweglich"
+L.RaidWarnMessage 	= "Danke, dass du Deadly Boss Mods verwendest"
+L.BarWhileMove 		= "Warnungen bewegbar"
 L.RaidWarnSound		= "Sound bei Schlachtzug-Warnung"
 L.SpecialWarnSound	= "Sound bei Spezial-Warnung"
 
@@ -92,7 +92,7 @@ L.AreaTitle_BarSetupSmall = "Kleine Bar Optionen"
 L.AreaTitle_BarSetupHuge = "Große Bar Optionen"
 L.BarIconLeft 		= "Symbol links"
 L.BarIconRight 		= "Symbol rechts"
-L.EnableHugeBar 	= "Aktiviere große Bar(Bar 2)"
+L.EnableHugeBar 	= "Aktiviere große Bar (Bar 2)"
 
 
 
