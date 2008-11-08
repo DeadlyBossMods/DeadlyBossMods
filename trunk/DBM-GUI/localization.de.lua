@@ -1,8 +1,7 @@
-
 if GetLocale() ~= "deDE" then return end
 
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
-local L = DBM_GUI_Translation
+local L = DBM_GUI_Translations
 
 
 L.MainFrame = "Deadly Boss Mods"
@@ -45,14 +44,14 @@ L.Statistic_Heroic	= "heroisch"
 L.General 		= "Allgemeine DBM Optionen"
 L.EnableDBM 		= "Aktiviere DBM"
 L.EnableStatus 		= "Antworte auf 'status' Flüsteranfragen"
-L.EnableSpamBlock	= "Aktiviere Filter für <DBM> Flüstermitteilungen"
+L.EnableSpamBlock	= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
 L.AutoRespond 		= "Aktiviere automatische Antwort während eines Bosskampfes"
 L.EnableMiniMapIcon	= "Aktiviere Minimap Symbol"
 
 L.Button_RangeFrame	= "Zeige/Verberge Abstandsfenster"
 L.Button_TestBars	= "Starte Testbalken"
 
-L.PizzaTimer_Headline 	= 'Erstelle einen "Pizza Timer"'
+L.PizzaTimer_Headline 	= 'Erstelle einen "Pizza-Timer"'
 L.PizzaTimer_Title	= 'Name (z.b. "Pizza!")'
 L.PizzaTimer_Hours 	= "Stunden"
 L.PizzaTimer_Mins 	= "Min"
