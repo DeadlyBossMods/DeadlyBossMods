@@ -75,6 +75,7 @@ do
 		mod.OnCombatStart = onCombatStart
 		mod.OnCombatEnd = onCombatEnd
 		DBM:AddMsg("Loaded mod "..tostring(customMod))
+		return mod
 	end
 	
 	function DBM:UnloadCustomMod(mod)
