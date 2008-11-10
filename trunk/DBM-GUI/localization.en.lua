@@ -80,6 +80,8 @@ L.SpecialWarnSound	= "Play sound on special-warning"
 L.BarSetup   = "Bar Style"
 L.BarTexture = "Bar Texture"
 
+L.ExpandUpwards		= "Expand bars upwards"
+
 L.Slider_BarOffSetX 	= "Offset X"
 L.Slider_BarOffSetY 	= "Offset Y"
 L.Slider_BarWidth 	= "Bar width"
