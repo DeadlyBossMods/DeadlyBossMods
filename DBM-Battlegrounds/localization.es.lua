@@ -2,7 +2,7 @@
 
 
 if (GetLocale()=="esES") then
-	DBM_BGMOD_LANG["THANKS"] 		= "Gracias pecadores por usarme";
+--[[DBM_BGMOD_LANG["THANKS"] 		= "Gracias pecadores por usarme";
 	DBM_BGMOD_LANG["WINS"]			= "¡La (%w+) gana!"; 
 	DBM_BGMOD_LANG["BEGINS"]		= "Campo de Batalla en";
 	DBM_BGMOD_LANG["ALLIANCE"]		= "Alianza";
@@ -158,5 +158,5 @@ if (GetLocale()=="esES") then
 	DBM_BGMOD_AV_BARS = {
 		[13] = "La Torre Oeste Lobo Gélido",
 		[14] = "La Torre Este Lobo Gélido",
-	}
+	}]]--
 end

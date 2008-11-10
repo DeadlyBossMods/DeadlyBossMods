@@ -6,7 +6,7 @@
 -- ------------------------------------------- --
 
 if (GetLocale() == "zhCN") then
-	DBM_BGMOD_LANG = {}
+--[[DBM_BGMOD_LANG = {}
 	DBM_BGMOD_LANG["NAME"] 				= "战场";
 	DBM_BGMOD_LANG["INFO"] 				= "显示阿拉希盆地和奥特兰克山谷的旗帜信息，"
 								.."显示战歌峡谷的旗帜携带者，并可自动上交奥特兰克山谷声望物品";
@@ -236,6 +236,6 @@ if (GetLocale() == "zhCN") then
 	DBM_BGMOD_OPTION_AUTOSPIRIT	= "自动释放灵魂"
 
 	DBM_BGMOD_AV_BARS = {}
-	DBM_BGMOD_LANG.AV_OPTION_FLASH = "启用屏幕闪光效果"
+	DBM_BGMOD_LANG.AV_OPTION_FLASH = "启用屏幕闪光效果"]]--
 
 end
