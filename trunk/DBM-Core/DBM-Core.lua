@@ -1606,9 +1606,9 @@ end
 DBM.Bars:SetAnnounceHook(function(bar)
 	local prefix
 	if bar.color and bar.color.r == 1 and bar.color.g == 0 and bar.color.b == 0 then
-		prefix = DBM_HORDE..": "
+		prefix = DBM_CORE_HORDE
 	elseif bar.color and bar.color.r == 0 and bar.color.g == 0 and bar.color.b == 1 then
-		prefix = DBM_CORE_ALLIANCE..": "
+		prefix = DBM_CORE_ALLIANCE
 	end
 	if prefix then
 		return ("%s: %s  %02d:%02d"):format(prefix, getglobal(bar.frame:GetName().."BarName"):GetText(), math.floor(bar.timer / 60), bar.timer % 60)
