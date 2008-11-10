@@ -3,7 +3,7 @@
 
 
 if (GetLocale()=="deDE") then
-	DBM_BGMOD_LANG["THANKS"] 		= "Danke das du die La Vendetta Boss Mods verwendest. Viel Spass noch beim PvP.";
+--[[DBM_BGMOD_LANG["THANKS"] 		= "Danke das du die La Vendetta Boss Mods verwendest. Viel Spass noch beim PvP.";
 	DBM_BGMOD_LANG["WINS"]			= "Die (%w+) siegt!"; 
 	DBM_BGMOD_LANG["BEGINS"]		= "Spiel startet in";
 	DBM_BGMOD_LANG["ALLIANCE"]		= "Allianz";
@@ -159,5 +159,5 @@ if (GetLocale()=="deDE") then
 	DBM_BGMOD_AV_BARS = {
 		[13] = "Westlicher Frostwolfturm",
 		[14] = "Östlicher Frostwolfturm",
-	}
+	}]]--
 end

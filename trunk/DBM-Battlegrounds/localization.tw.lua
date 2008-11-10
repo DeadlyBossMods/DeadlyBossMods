@@ -1,6 +1,6 @@
 ﻿if (GetLocale() == "zhTW") then
 --Chinese Translate by Nightkiller@日落沼澤(kc10577@巴哈;Azael)
-DBM_BGMOD_LANG = {}
+--[[DBM_BGMOD_LANG = {}
 DBM_BGMOD_LANG["NAME"] 		= "戰場";
 DBM_BGMOD_LANG["INFO"] 		= "顯示計時條為奧特蘭克山谷及阿拉希盆地旗幟佔領倒數計時. "
 					            .."顯示戰歌旗幟持有者以及在奧特蘭克山谷自動繳交物資.";
@@ -238,6 +238,6 @@ DBM_BGMOD_OPTION_AUTOSPIRIT			= "自動釋放靈魂"
 
 DBM_BGMOD_AV_BARS = {}
 
-DBM_BGMOD_LANG.AV_OPTION_FLASH		= "開啟閃光效果"
+DBM_BGMOD_LANG.AV_OPTION_FLASH		= "開啟閃光效果"]]--
 
 end

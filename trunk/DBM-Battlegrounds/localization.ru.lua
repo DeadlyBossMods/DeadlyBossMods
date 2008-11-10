@@ -1,5 +1,5 @@
 ﻿if (GetLocale()=="ruRU") then
-
+--[[
 DBM_BGMOD_LANG = {}
 DBM_BGMOD_LANG["NAME"] 		= "Поля Боя";
 DBM_BGMOD_LANG["INFO"] 		                            = "Показать таймеры для Альтеракской долины и Низины Арати. "
@@ -192,5 +192,5 @@ DBM_BGMOD_OPTION_AUTOSPIRIT			            = "Авто-выход в форму �
 
 DBM_BGMOD_AV_BARS = {}
 DBM_BGMOD_LANG.AV_OPTION_FLASH		            = "Включить визуальные эффекты"
-
+]]--
 end
