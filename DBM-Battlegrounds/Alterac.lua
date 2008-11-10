@@ -219,6 +219,7 @@ do
 	
 	loadQuests() -- requests the quest information from the server
 	Alterac:Schedule(5, loadQuests) -- information should be available now....load it
+	Alterac:Schedule(15, loadQuests) -- sometimes this requires a lot more time, just to be sure!
 end
 
 local function isQuestAutoTurnInQuest(name)
