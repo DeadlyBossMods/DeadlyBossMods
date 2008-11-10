@@ -356,6 +356,7 @@ do
 		self.flashing = nil
 		self:Update(0)
 		self.flashing = nil
+		getglobal(self.frame:GetName().."BarSpark"):SetAlpha(1)
 	end
 	function DBT:CreateDummyBar()
 		dummyBars = dummyBars + 1
@@ -505,6 +506,7 @@ function barPrototype:Update(elapsed)
 	if obj.options.FadeIn and self.fadingIn and self.fadingIn < 0.5 then
 		self.fadingIn = self.fadingIn + elapsed
 		frame:SetAlpha((self.fadingIn) / 0.5)
+		spark:SetAlpha((self.fadingIn) / 0.5)
 	elseif self.fadingIn then
 		self.fadingIn = nil
 	end
@@ -803,7 +805,12 @@ end
 function barPrototype:AnimateEnlarge(elapsed)
 	self.moveElapsed = self.moveElapsed + elapsed
 	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
-	local newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+	local newY
+	if self.owner.options.ExpandUpwards then
+		newY = self.moveOffsetY + 45 + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+	else
+		newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+	end
 	local newWidth = self.owner.options.Width + (self.owner.options.HugeWidth - self.owner.options.Width ) * (self.moveElapsed / 1)
 	local newScale = self.owner.options.Scale + (self.owner.options.HugeScale - self.owner.options.Scale) * (self.moveElapsed / 1)
 	if (self.moveOffsetY > 0 and newY > self.owner.options.BarYOffset) or (self.moveOffsetY < 0 and newY < self.owner.options.BarYOffset) then
