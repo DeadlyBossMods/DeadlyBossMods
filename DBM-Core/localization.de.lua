@@ -68,3 +68,6 @@ DBM_CORE_SLASHCMD_HELP				= {
 DBM_ERROR_NO_PERMISSION				= "Du hast nicht die benötigte Berechtigung für diesen Befehl!"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Verstecken"
+
+DBM_CORE_ALLIANCE					= "Allianz"
+DBM_CORE_HORDE						= "Horde"

@@ -282,7 +282,6 @@ function DBT:GetDefaultOption(option)
 end
 
 
-
 -----------------------
 --  Bar Constructor  --
 -----------------------
@@ -372,6 +371,7 @@ do
 		dummy.frame:SetScript("OnUpdate", nil)
 		dummy.Cancel = dummyCancel
 		dummy:ApplyStyle()
+		dummy.dummy = true
 		return dummy
 	end
 end
@@ -506,7 +506,6 @@ function barPrototype:Update(elapsed)
 	if obj.options.FadeIn and self.fadingIn and self.fadingIn < 0.5 then
 		self.fadingIn = self.fadingIn + elapsed
 		frame:SetAlpha((self.fadingIn) / 0.5)
-		spark:SetAlpha((self.fadingIn) / 0.5)
 	elseif self.fadingIn then
 		self.fadingIn = nil
 	end
@@ -713,22 +712,30 @@ end
 
 function DBT:UpdateOrientation()
 	for bar in self:GetBarIterator() do
-		if bar.moving == "enlarge" then
-			bar.enlarged = true
-			bar:ApplyStyle()
+		if not bar.dummy then
+			if bar.moving == "enlarge" then
+				bar.enlarged = true
+				bar:ApplyStyle()
+			end
+			bar.moving = nil
+			bar:SetPosition()
 		end
-		bar.moving = nil
-		bar:SetPosition()
 	end
 end
 options.ExpandUpwards.onChange = DBT.UpdateOrientation
+options.BarYOffset.onChange = DBT.UpdateOrientation
+options.BarXOffset.onChange = DBT.UpdateOrientation
 
 
 --------------------
 --  Bar Announce  --
 --------------------
 function barPrototype:Announce()
-	local msg = ("%s  %02d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
+	local msg
+	if self.owner.announceHook then
+		msg = self.owner.announceHook(self)
+	end
+	msg = msg or ("%s  %02d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
 	if ChatFrameEditBox:IsShown() then
 		ChatFrameEditBox:Insert(msg)
 	else
@@ -736,6 +743,9 @@ function barPrototype:Announce()
 	end
 end
 
+function DBT:SetAnnounceHook(f)
+	self.announceHook = f
+end
 
 -----------------------
 --  Bar Positioning  --
@@ -807,7 +817,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 	local newX = self.moveOffsetX + (self.owner.options.BarXOffset - self.moveOffsetX) * (self.moveElapsed / 1)
 	local newY
 	if self.owner.options.ExpandUpwards then
-		newY = self.moveOffsetY + 45 + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
+		newY = self.moveOffsetY + 50 + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
 	else
 		newY = self.moveOffsetY + (self.owner.options.BarYOffset - self.moveOffsetY) * (self.moveElapsed / 1)
 	end

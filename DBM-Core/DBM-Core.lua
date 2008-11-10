@@ -900,6 +900,14 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 			self:LoadMod(v)
 		end
 	end
+	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("Alterac") then
+		for i, v in ipairs(DBM.AddOns) do
+			if v.modId == "DBM-Battlegrounds" then
+				DBM:LoadMod(v)
+				break
+			end
+		end
+	end
 end
 
 function DBM:LoadMod(mod)
@@ -1594,6 +1602,18 @@ do
 		testSpecialWarning:Schedule(60, "Boom!")
 	end
 end
+
+DBM.Bars:SetAnnounceHook(function(bar)
+	local prefix
+	if bar.color and bar.color.r == 1 and bar.color.g == 0 and bar.color.b == 0 then
+		prefix = DBM_HORDE..": "
+	elseif bar.color and bar.color.r == 0 and bar.color.g == 0 and bar.color.b == 1 then
+		prefix = DBM_CORE_ALLIANCE..": "
+	end
+	if prefix then
+		return ("%s: %s  %02d:%02d"):format(prefix, getglobal(bar.frame:GetName().."BarName"):GetText(), math.floor(bar.timer / 60), bar.timer % 60)
+	end
+end)
 
 --------------------------
 --  Boss Mod Prototype  --
