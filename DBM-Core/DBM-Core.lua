@@ -8,9 +8,9 @@
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 --
 -- The localizations are written by:
---    * enGB/enUS: Tandanu               http://www.deadlybossmods.com
---    * deDE: Tandanu                    http://www.deadlybossmods.com
---    * zhCN: Diablohu                   http://wow.gamespot.com.cn
+--    * enGB/enUS: Tandanu		        http://www.deadlybossmods.com
+--    * deDE: Tandanu           		http://www.deadlybossmods.com
+--    * zhCN: Diablohu                  http://wow.gamespot.com.cn
 --    * (add your names here!)
 --
 -- Special thanks to:
@@ -424,7 +424,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	elseif cmd == "help" then
 		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
 	elseif cmd:sub(0, 5) == "timer" then
-		local time, text = msg:match("^%w+ ([%d:]+) (.+)")
+		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 		if not (time and text) then
 			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
 			return
@@ -439,7 +439,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		time = min*  60 + sec
 		DBM:CreatePizzaTimer(time, text)
 	elseif cmd:sub(0, 15) == "broadcast timer" then
-		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)")
+		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if DBM:GetRaidRank() == 0 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
