@@ -29,7 +29,7 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
 
-local L = DBM_GUI_Translations
+local L = DBM_BMS_Translations
 
 CurrentBossSetup = {
 	BossName = "",

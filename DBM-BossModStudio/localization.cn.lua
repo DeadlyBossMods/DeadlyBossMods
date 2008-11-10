@@ -1,10 +1,12 @@
 -- Simplified Chinese by Diablohu
 -- http://wow.gamespot.com.cn
 -- Last Update: 11/06/2008
-if (GetLocale() == "zhCN") then
-DBM_GUI_Translations = {}
 
-local L = DBM_GUI_Translations
+
+if GetLocale() ~= "zhCN" then return end
+if not type(DBM_BMS_Translations) == "table" then DBM_BMS_Translations = {} end
+
+local L = DBM_BMS_Translations
 
 -- BossMod studio
 L.TabCategory_BossModStudio = "首领模块生成器"
@@ -50,4 +52,5 @@ L.EventStartBar = "创建一个计时条"
 L.EventWarnEnd = "在倒计时结束前进行警报"
 L.EventWarnMsg = "警报文本"
 L.EventSetIcon = "对目标添加标记"
-end
+
+
