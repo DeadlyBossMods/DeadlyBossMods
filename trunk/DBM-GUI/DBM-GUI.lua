@@ -8,8 +8,9 @@
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
 -- 
 -- The localizations are written by:
---    * enGB/enUS: Tandanu
---    * deDE: Nitram/Tandanu
+--    * enGB/enUS: Nitram/Tandanu        http://www.deadlybossmods.com
+--    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
+--    * zhCN: Diablohu                   http://wow.gamespot.com.cn
 --    * (add your names here!)
 --
 -- Special thanks to:
