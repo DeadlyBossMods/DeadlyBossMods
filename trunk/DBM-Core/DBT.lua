@@ -8,9 +8,9 @@
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 -- 
 -- The localizations are written by:
---    * enGB/enUS: Tandanu               http://www.deadlybossmods.com
---    * deDE: Tandanu                    http://www.deadlybossmods.com
---    * zhCN: Diablohu                   http://wow.gamespot.com.cn
+--    * enGB/enUS: Tandanu			http://www.deadlybossmods.com
+--    * deDE: Tandanu				http://www.deadlybossmods.com
+--    * zhCN: Diablohu				http://wow.gamespot.com.cn
 --    * (add your names here!)
 --
 -- Special thanks to:
@@ -735,9 +735,9 @@ function barPrototype:SetPosition()
 	local anchor = (self.prev and self.prev.frame) or self.enlarged and self.owner.secAnchor or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("BOTTOM", anchor, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, 20 + self.owner.options.BarYOffset)
 	else
-		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 	end
 end
 
@@ -748,9 +748,9 @@ function barPrototype:MoveToNextPosition()
 	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, 20 + self.owner.options.BarYOffset)
 	else
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
@@ -771,9 +771,9 @@ function barPrototype:Enlarge()
 	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
-		self.frame:SetPoint("BOTTOM", newAnchor, "TOP", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, 20 + self.owner.options.BarYOffset)
 	else
-		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, self.owner.options.BarYOffset)
+		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, -self.owner.options.BarYOffset)
 	end
 	local newX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local newY = self.frame:GetTop()
