@@ -82,6 +82,8 @@ L.SpecialWarnSound	= "Sound bei Spezial-Warnung"
 L.BarSetup   		= "Bar Style"
 L.BarTexture 		= "Bar Textur"
 
+L.ExpandUpwards		= "Bars übereinander stapeln"
+
 L.Slider_BarOffSetX 	= "Abstand X"
 L.Slider_BarOffSetY 	= "Abstand Y"
 L.Slider_BarWidth 	= "Bar Breite"

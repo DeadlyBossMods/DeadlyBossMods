@@ -1403,6 +1403,10 @@ local function CreateOptionsMenu()
 		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -80)
 
 
+		local ExpandUpwards = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwards")
+		ExpandUpwards:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
+
+
 		-- Functions for the next 2 Areas
 		local function createDBTOnShowHandler(option)
 			return function(self)
