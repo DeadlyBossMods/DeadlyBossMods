@@ -556,8 +556,14 @@
 					</Anchor>
 				</Anchors>
 				<Scripts>
+					<OnLoad>
+						self.firstshow = true
+					</OnLoad>
 					<OnShow>
-						self:GetParent():ShowTab(1)
+						if self.firstshow then
+							self:GetParent():ShowTab(1)
+							self.firstshow = false
+						end
 					</OnShow>
 					<OnClick>
 						self:GetParent():ShowTab(1)
