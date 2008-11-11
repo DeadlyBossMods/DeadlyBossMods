@@ -88,24 +88,20 @@ do
 		mod.warning4 = mod:NewAnnounce("%s", 4, nil, nil, false)
 		mod.specWarning = mod:NewSpecialWarning("%s", nil, false)
 		mod.enrage = mod:NewEnrageTimer(600)
-		DBM:GetModLocalization(id):SetGeneralLocalization({
+		DBM:GetModLocalization(customMod.BossName):SetGeneralLocalization({
 			name = customMod.BossName
 		})
 		mod.OnCombatStart = onCombatStart
 		mod.OnCombatEnd = onCombatEnd
-		DBM:AddMsg("Loaded mod "..tostring(customMod))
+		DBM:AddMsg("Loaded mod "..tostring(customMod.BossName))
 		return mod
 	end
 	
 	function DBM:UnloadCustomMod(mod)
 		mod:Unschedule()
 		mod.timer:Cancel()
-		mod.warning1:Cancel()
-		mod.warning2:Cancel()
-		mod.warning3:Cancel()
-		mod.warning4:Cancel()
-		mod.specWarning:Cancel()
 		mod:UnregisterAllEvents()
+		DBM:ForceUpdate()
 		for i, v in ipairs(DBM.Mods) do
 			if v == mod then
 				table.remove(DBM.Mods, i)
@@ -114,7 +110,6 @@ do
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
-		collectgarbage()
 		DBM:AddMsg("Unloaded mod "..tostring(mod))
 	end
 end

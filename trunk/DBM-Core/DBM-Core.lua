@@ -602,7 +602,7 @@ do
 			end
 			table.sort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
-			collectgarbage()
+			collectgarbage("collect")
 		end
 		DBM_GUI:ShowHide()
 	end
@@ -943,7 +943,7 @@ function DBM:LoadMod(mod)
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
-		collectgarbage()
+		collectgarbage("collect")
 		return true
 	end
 end
@@ -1642,7 +1642,7 @@ local bossModPrototype = {}
 --  Boss Mod Constructor  --
 ----------------------------
 do
-	local modsById = setmetatable({}, {__mode = "v"})
+	modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
 	function DBM:NewMod(name, modId, modSubTab)
@@ -1689,6 +1689,7 @@ end
 --  General Methods  --
 -----------------------
 bossModPrototype.RegisterEvents = DBM.RegisterEvents
+bossModPrototype.UnregisterAllEvents = DBM.UnregisterAllEvents
 bossModPrototype.AddMsg = DBM.AddMsg
 
 function bossModPrototype:SetZone(...)
@@ -1875,7 +1876,7 @@ do
 	end
 
 	function specialWarningPrototype:Cancel(t, ...)
-		schedule(self.Show, self.mod, self, ...)
+		unschedule(self.Show, self.mod, self, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound)
