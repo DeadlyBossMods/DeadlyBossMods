@@ -6,6 +6,7 @@
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 0
 ## DefaultState: enabled
+## SavedVariables: DBM_BMS
 ## Author: Nitram and Tandanu
 ## URL: http://www.deadlybossmods.com
 localization.en.lua
