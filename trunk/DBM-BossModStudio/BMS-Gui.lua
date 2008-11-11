@@ -44,6 +44,27 @@ local default_config = {
 local gui_panels = {}
 local DeletedTriggerFrames = {}
 
+local mods_loaded = {}
+local mainframe = CreateFrame("frame", "DBM_BossModStudio", UIParent)
+mainframe:SetScript("OnEvent", function(self, event, ...)
+	if event == "ADDON_LOADED" and select(1, ...) == "DBM-SpellTimers" then
+		for k,mod in pairs(DBM_BMS) do
+			mods_loaded[mod.BossName] = DBM:LoadCustomMod(mod)
+		end
+	end
+end)
+mainframe:RegisterEvent("ADDON_LOADED")
+
+
+local function unique_bossname(name)
+	for k,mod in pairs(DBM_BMS) do
+		if mod.BossName == name then
+			return false
+		end
+	end
+	return true
+end
+
 local function copytable(t1, t2)
 	for i, v in pairs(t2) do
 		if t1[i] == nil and type(v) ~= "table" then
@@ -70,7 +91,9 @@ local function getIDfromTarget(textbox, mod)
 end
 
 local function create_BossMainPanel(mod, k)
-	DBM:LoadCustomMod(mod) 
+	if not mods_loaded[mod.BossName] then
+		mods_loaded[mod.BossName] = DBM:LoadCustomMod(mod) 
+	end
 	gui_panels[k] = BMS_Panel:CreateNewPanel(mod.BossName, "option")
 
 	local BMS_Panel = gui_panels[k]
@@ -695,8 +718,8 @@ local function createbmsgui()
 		CreateMe:SetPoint('TOPRIGHT', BMS_Create.frame, "TOPRIGHT", -10, -10)	
 		CreateMe:SetScript("OnClick", function(self)
 			local BossName = BossName:GetText()
-			if BossName and BossName:len() <= 3 then
-				DBM:AddMsg("Sorry, please specify a BossName")
+			if BossName and BossName:len() <= 3 or not unique_bossname(BossName) then
+				DBM:AddMsg("Sorry, please specify a unique BossName")
 				return false
 			end
 			
