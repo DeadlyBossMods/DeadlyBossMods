@@ -72,7 +72,6 @@ DBM.DefaultOptions = {
 	HPFramePoint = "CENTER",
 	HPFrameX = -50,
 	HPFrameY = 50,
-	BMS = {}
 }
 
 DBM.Bars = DBT:New()
@@ -1642,7 +1641,7 @@ local bossModPrototype = {}
 --  Boss Mod Constructor  --
 ----------------------------
 do
-	modsById = setmetatable({}, {__mode = "v"})
+	local modsById = setmetatable({}, {__mode = "v"})
 	local mt = {__index = bossModPrototype}
 
 	function DBM:NewMod(name, modId, modSubTab)

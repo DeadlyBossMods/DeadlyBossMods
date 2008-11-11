@@ -715,6 +715,8 @@ function DBT:UpdateOrientation()
 		if not bar.dummy then
 			if bar.moving == "enlarge" then
 				bar.enlarged = true
+				bar.moving = false
+				bar:AddToList(true)
 				bar:ApplyStyle()
 			end
 			bar.moving = nil
