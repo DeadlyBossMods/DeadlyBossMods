@@ -48,6 +48,76 @@ DBM_BMS = {
  } --]]
 }
 
+---------------
+--  Globals  --
+---------------
+DBM.CustomMods = {}
+
+
+--------------
+--  Locals  --
+--------------
+--local modList = setmetatable({}, {__mode = "kv"})
+local modList = {}
+
+
+----------------------------
+--  Custom Mod Prototype  --
+----------------------------
+do
+	local function onCombatStart(self, delay)
+		if self.customMod.enrage then
+			mod.enrage:Start(self.customMod.enrage)
+		end
+	end
+	
+	local function onCombatEnd(self, wipe)
+	end
+	
+	
+
+	function DBM:LoadCustomMod(customMod)
+		local mod = DBM:NewMod(customMod.BossName, "DBM-BossModStudio")
+		mod.customMod = customMod
+		mod.isCustomMod = true
+		mod:SetRevision(customMod.revision)
+		mod.timer = mod:NewTimer(10, "%s", nil, nil, false)
+		mod.warning1 = mod:NewAnnounce("%s", 1, nil, nil, false)
+		mod.warning2 = mod:NewAnnounce("%s", 2, nil, nil, false)
+		mod.warning3 = mod:NewAnnounce("%s", 3, nil, nil, false)
+		mod.warning4 = mod:NewAnnounce("%s", 4, nil, nil, false)
+		mod.specWarning = mod:NewSpecialWarning("%s", nil, false)
+		mod.enrage = mod:NewEnrageTimer(600)
+		DBM:GetModLocalization(id):SetGeneralLocalization({
+			name = customMod.BossName
+		})
+		mod.OnCombatStart = onCombatStart
+		mod.OnCombatEnd = onCombatEnd
+		DBM:AddMsg("Loaded mod "..tostring(customMod))
+		return mod
+	end
+	
+	function DBM:UnloadCustomMod(mod)
+		mod:Unschedule()
+		mod.timer:Cancel()
+		mod.warning1:Cancel()
+		mod.warning2:Cancel()
+		mod.warning3:Cancel()
+		mod.warning4:Cancel()
+		mod.specWarning:Cancel()
+		mod:UnregisterAllEvents()
+		for i, v in ipairs(DBM.Mods) do
+			if v == mod then
+				table.remove(DBM.Mods, i)
+			end
+		end
+		if DBM_GUI then
+			DBM_GUI:UpdateModList()
+		end
+		collectgarbage()
+		DBM:AddMsg("Unloaded mod "..tostring(mod))
+	end
+end
 
 
 

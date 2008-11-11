@@ -175,6 +175,20 @@ do
 			mainFrame:RegisterEvent(ev)
 		end
 	end
+	
+	function DBM:UnregisterAllEvents()
+		for i, v in pairs(registeredEvents) do
+			for i = #v, 1 do
+				if v[i] == self then
+					table.remove(v, i)
+				end
+			end
+			if #v == 0 then
+				registeredEvents[i] = nil
+				mainFrame:UnregisterEvent(i)
+			end
+		end
+	end
 
 	DBM:RegisterEvents("ADDON_LOADED")
 
@@ -410,6 +424,9 @@ function DBM:Unschedule(f, ...)
 	unschedule(f, nil, ...)
 end
 
+function DBM:ForceUpdate()
+	mainFrame:GetScript("OnUpdate")(mainFrame, 0)
+end
 
 ----------------------
 --  Slash Commands  --
@@ -811,7 +828,7 @@ do
 				}
 				v.stats = savedStats[v.id]
 				if v.OnInitialize then v:OnInitialize() end
-				for i, cat in ipairs(v.categorySort) do
+				for i, cat in ipairs(v.categorySort) do -- temporary hack
 					if cat == "misc" then
 						table.remove(v.categorySort, i)
 						table.insert(v.categorySort, cat)
@@ -1629,7 +1646,7 @@ do
 	local mt = {__index = bossModPrototype}
 
 	function DBM:NewMod(name, modId, modSubTab)
-		if modsById[name] then error("Mod names are used as IDs and must therefore be unique.", 2) end
+		if modsById[name] then error("DBM:NewMod(): Mod names are used as IDs and must therefore be unique.", 2) end
 		local obj = setmetatable(
 			{
 				Options = {
