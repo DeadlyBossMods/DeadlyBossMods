@@ -11,4 +11,6 @@
 localization.en.lua
 localization.de.lua
 localization.cn.lua
-DBM-BossModStudio.lua
+BMS-Core.lua
+BMS-Gui.lua
+
