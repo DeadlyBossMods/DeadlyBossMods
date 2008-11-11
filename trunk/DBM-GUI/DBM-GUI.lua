@@ -30,7 +30,6 @@
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
 
 
-
 local revision =("$Revision$"):sub(12, -3) 
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
 
@@ -315,16 +314,23 @@ end
 --  arg4 = stepping
 --  arg5 = framewidth
 --
-function PanelPrototype:CreateSlider(text, low, high, step, framewidth)
-	local slider = CreateFrame('Slider', FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
-	slider.mytype = "slider"
-	slider:SetMinMaxValues(low, high)
-	slider:SetValueStep(step)
-	slider:SetWidth(famewidth or 180)
-	getglobal(FrameTitle..self:GetCurrentID()..'Text'):SetText(text)
-
-	self:SetLastObj(slider)
-	return slider
+do
+	local function onValueChanged(font, text)
+		return function(self, value)
+			font:SetFormattedText(text, value)
+		end
+	end
+	function PanelPrototype:CreateSlider(text, low, high, step, framewidth)
+		local slider = CreateFrame('Slider', FrameTitle..self:GetNewID(), self.frame, 'OptionsSliderTemplate')
+		slider.mytype = "slider"
+		slider:SetMinMaxValues(low, high)
+		slider:SetValueStep(step)
+		slider:SetWidth(famewidth or 180)
+		getglobal(FrameTitle..self:GetCurrentID()..'Text'):SetText(text)
+		slider:SetScript("OnValueChanged", onValueChanged(getglobal(FrameTitle..self:GetCurrentID()..'Text'), text))
+		self:SetLastObj(slider)
+		return slider
+	end
 end
 
 -- This function creates a color picker
@@ -1088,14 +1094,13 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 170, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 165, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
-		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable(); else DBM:Enable(); end end)
+		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable() else DBM:Enable() end end)
 	
 		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
-		local SpamBlockEnable = generaloptions:CreateCheckButton(L.EnableSpamBlock, true, nil, "SpamBlockBossWhispers")
 		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
 		local MiniMapIcon   = generaloptions:CreateCheckButton(L.EnableMiniMapIcon,  true)
 		MiniMapIcon:SetScript("OnClick", function(self)
@@ -1170,7 +1175,7 @@ local function CreateOptionsMenu()
 		--            Raid Warning Colors            --
 		-----------------------------------------------
 		local RaidWarningPanel = DBM_GUI_Frame:CreateNewPanel(L.Tab_RaidWarning, "option")
-		local raidwarnoptions = RaidWarningPanel:CreateArea(L.Tab_RaidWarning, nil, 175, true)
+		local raidwarnoptions = RaidWarningPanel:CreateArea(L.Tab_RaidWarning, nil, 165, true)
 
 		local ShowWarningsInChat 	= raidwarnoptions:CreateCheckButton(L.ShowWarningsInChat, true, nil, "ShowWarningsInChat")
 		local ShowFakedRaidWarnings 	= raidwarnoptions:CreateCheckButton(L.ShowFakedRaidWarnings,  true, nil, "ShowFakedRaidWarnings")
@@ -1334,9 +1339,9 @@ local function CreateOptionsMenu()
 	end
 
 	do
-		BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
+		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
-		BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 180, true)
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 180, true)
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
@@ -1349,7 +1354,7 @@ local function CreateOptionsMenu()
 		maindummybar.frame:SetPoint('BOTTOM', BarSetup.frame, "TOP", 0, -65)
 		maindummybar.frame:SetScript("OnUpdate", function(self, elapsed) maindummybar:Update(elapsed) end)
 		do 
-			-- little hook to prevent this bar from size/scale change
+			-- little hook to prevent this bar from changing size/scale
 			local old = maindummybar.ApplyStyle 
 			function maindummybar:ApplyStyle(...) 
 				old(self, ...) 
@@ -1380,27 +1385,42 @@ local function CreateOptionsMenu()
 			color2:SetColorRGB(DBM.Bars:GetDefaultOption("EndColorR"), DBM.Bars:GetDefaultOption("EndColorG"), DBM.Bars:GetDefaultOption("EndColorB"))
 		end)
 
-
+		local color1text = BarSetup:CreateText(L.BarStartColor, 80)
+		local color2text = BarSetup:CreateText(L.BarEndColor, 80)
+		color1text:SetPoint("BOTTOM", color1, "TOP", 0, 4)
+		color2text:SetPoint("BOTTOM", color2, "TOP", 0, 4)
 		color1:SetScript("OnShow", function(self) self:SetColorRGB(
 								DBM.Bars:GetOption("StartColorR"),
 								DBM.Bars:GetOption("StartColorG"),
-								DBM.Bars:GetOption("StartColorB")) 
+								DBM.Bars:GetOption("StartColorB"))
+								color1text:SetTextColor(
+									DBM.Bars:GetOption("StartColorR"),
+									DBM.Bars:GetOption("StartColorG"),
+									DBM.Bars:GetOption("StartColorB")
+								)
 							  end)
 		color2:SetScript("OnShow", function(self) self:SetColorRGB(
 								DBM.Bars:GetOption("EndColorR"),
 								DBM.Bars:GetOption("EndColorG"),
-								DBM.Bars:GetOption("EndColorB")) 
+								DBM.Bars:GetOption("EndColorB"))
+								color2text:SetTextColor(
+									DBM.Bars:GetOption("EndColorR"),
+									DBM.Bars:GetOption("EndColorG"),
+									DBM.Bars:GetOption("EndColorB")
+								)
 							  end)
 		color1:SetScript("OnColorSelect", function(self)
 							DBM.Bars:SetOption("StartColorR", select(1, self:GetColorRGB()))
 							DBM.Bars:SetOption("StartColorG", select(2, self:GetColorRGB()))
-							DBM.Bars:SetOption("StartColorB", select(3, self:GetColorRGB()))							
+							DBM.Bars:SetOption("StartColorB", select(3, self:GetColorRGB()))
+							color1text:SetTextColor(self:GetColorRGB())
 						  end)
 		color2:SetScript("OnColorSelect", function(self)
 							DBM.Bars:SetOption("EndColorR", select(1, self:GetColorRGB()))
 							DBM.Bars:SetOption("EndColorG", select(2, self:GetColorRGB()))
-							DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))							
-						  end)
+							DBM.Bars:SetOption("EndColorB", select(3, self:GetColorRGB()))
+							color2text:SetTextColor(self:GetColorRGB())
+						  end)					  
 
 
 		local Textures = { 
@@ -1442,7 +1462,7 @@ local function CreateOptionsMenu()
 		-----------------------
 		-- Small Bar Options --
 		-----------------------
-		BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 160, true)
+		local BarSetupSmall = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupSmall, nil, 160, true)
 
 		local smalldummybar = DBM.Bars:CreateDummyBar()
 		smalldummybar.frame:SetParent(BarSetupSmall.frame)
@@ -1452,27 +1472,27 @@ local function CreateOptionsMenu()
 		local BarWidthSlider = BarSetup:CreateSlider(L.Slider_BarWidth, 100, 325, 1)
 		BarWidthSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 20, -90)
 		BarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("Width"))
-		BarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
+		BarWidthSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Width"))
 
 		local BarScaleSlider = BarSetup:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05)
 		BarScaleSlider:SetPoint("TOPLEFT", BarWidthSlider, "BOTTOMLEFT", 0, -10)
 		BarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("Scale"))
-		BarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
+		BarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("Scale"))
 
 		local BarOffsetXSlider = BarSetup:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1)
 		BarOffsetXSlider:SetPoint("TOPLEFT", BarSetupSmall.frame, "TOPLEFT", 220, -90)
 		BarOffsetXSlider:SetScript("OnShow", createDBTOnShowHandler("BarXOffset"))
-		BarOffsetXSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("BarXOffset"))
+		BarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarXOffset"))
 
 		local BarOffsetYSlider = BarSetup:CreateSlider(L.Slider_BarOffSetY, -5, 25, 1)
 		BarOffsetYSlider:SetPoint("TOPLEFT", BarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		BarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("BarYOffset"))
-		BarOffsetYSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
+		BarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("BarYOffset"))
 		
 		-----------------------
 		-- Huge Bar Options --
 		-----------------------
-		BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 175, true)
+		local BarSetupHuge = BarSetupPanel:CreateArea(L.AreaTitle_BarSetupHuge, nil, 175, true)
 	
 		local enablebar = BarSetupHuge:CreateCheckButton(L.EnableHugeBar, true, nil, nil, "HugeBarsEnabled")
 
@@ -1486,41 +1506,49 @@ local function CreateOptionsMenu()
 		local HugeBarWidthSlider = BarSetupHuge:CreateSlider(L.Slider_BarWidth, 100, 325, 1)
 		HugeBarWidthSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 20, -105)
 		HugeBarWidthSlider:SetScript("OnShow", createDBTOnShowHandler("HugeWidth"))
-		HugeBarWidthSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeWidth"))
+		HugeBarWidthSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeWidth"))
 
 		local HugeBarScaleSlider = BarSetupHuge:CreateSlider(L.Slider_BarScale, 0.75, 2, 0.05)
 		HugeBarScaleSlider:SetPoint("TOPLEFT", HugeBarWidthSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarScaleSlider:SetScript("OnShow", createDBTOnShowHandler("HugeScale"))
-		HugeBarScaleSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
+		HugeBarScaleSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeScale"))
 
 		local HugeBarOffsetXSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetX, -50, 50, 1)
 		HugeBarOffsetXSlider:SetPoint("TOPLEFT", BarSetupHuge.frame, "TOPLEFT", 220, -105)
 		HugeBarOffsetXSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarXOffset"))
-		HugeBarOffsetXSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
+		HugeBarOffsetXSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarXOffset"))
 
 		local HugeBarOffsetYSlider = BarSetupHuge:CreateSlider(L.Slider_BarOffSetY, -5, 25, 1)
 		HugeBarOffsetYSlider:SetPoint("TOPLEFT", HugeBarOffsetXSlider, "BOTTOMLEFT", 0, -10)
 		HugeBarOffsetYSlider:SetScript("OnShow", createDBTOnShowHandler("HugeBarYOffset"))
-		HugeBarOffsetYSlider:SetScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
+		HugeBarOffsetYSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("HugeBarYOffset"))
 
 
 		BarSetupPanel:SetMyOwnHeight() 
 	end
 
+	do
+		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
+		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 135, true)
+		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
+		spamArea:CreateCheckButton(L.SpamBlockRaidWarning, true, nil, "SpamBlockRaidWarning")
+		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
+	end
+	
 	-- Set Revision // please don't translate this!
 	DBM_GUI_OptionsFrameRevision:SetText("Version: "..DBM.DisplayVersion.." - Core: r"..DBM.Revision.." - Gui: r"..revision)
 end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
 do
-	local function OnShowGetStats(mod, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3)
+	local function OnShowGetStats(stats, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3)
 		return function(self)
-			bossvalue1:SetText( mod.stats.kills )
-			bossvalue2:SetText( mod.stats.pulls-mod.stats.kills )
-			bossvalue3:SetText( mod.stats.bestKill and ("%02d:%02d"):format(math.floor(mod.stats.bestKill / 60), mod.stats.bestKill % 60) or "-" )
-			heroicvalue1:SetText( mod.stats.heroicKills )
-			heroicvalue2:SetText( mod.stats.heroicPulls-mod.stats.heroicKills )
-			heroicvalue3:SetText( mod.stats.heroicBestKill and ("%02d:%02d"):format(math.floor(mod.stats.heroicBestKill / 60), mod.stats.heroicBestKill % 60) or "-" )
+			bossvalue1:SetText( stats.kills )
+			bossvalue2:SetText( stats.pulls - stats.kills )
+			bossvalue3:SetText( stats.bestKill and ("%02d:%02d"):format(math.floor(stats.bestKill / 60), stats.bestKill % 60) or "-" )
+			heroicvalue1:SetText( stats.heroicKills )
+			heroicvalue2:SetText( stats.heroicPulls-stats.heroicKills )
+			heroicvalue3:SetText( stats.heroicBestKill and ("%02d:%02d"):format(math.floor(stats.heroicBestKill / 60), stats.heroicBestKill % 60) or "-" )
 		end
 	end
 
@@ -1572,7 +1600,7 @@ do
 				heroicvalue3:SetPoint("TOPLEFT", Heroicstat3, "TOPLEFT", 80, 0)
 
 				area.frame:SetHeight( area.frame:GetHeight() + 80 ) 
-				table.insert(area.onshowcall, OnShowGetStats(mod, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3))
+				table.insert(area.onshowcall, OnShowGetStats(mod.stats, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3))
 			end
 		end
 		area.frame:SetScript("OnShow", function(self) 

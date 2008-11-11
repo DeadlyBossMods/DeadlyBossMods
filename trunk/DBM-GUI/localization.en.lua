@@ -42,7 +42,6 @@ L.Statistic_Heroic	= "heroic"
 L.General 		= "General DBM Options"
 L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
-L.EnableSpamBlock	= "Filter <DBM> warning whispers while fighting"
 L.AutoRespond 		= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon	= "Show Minimap icon"
 
@@ -79,13 +78,14 @@ L.SpecialWarnSound	= "Play sound on special-warning"
 -- Tab: Barsetup
 L.BarSetup   = "Bar Style"
 L.BarTexture = "Bar Texture"
-
+L.BarStartColor = "Start color"
+L.BarEndColor = "End color"
 L.ExpandUpwards		= "Expand bars upwards"
 
-L.Slider_BarOffSetX 	= "Offset X"
-L.Slider_BarOffSetY 	= "Offset Y"
-L.Slider_BarWidth 	= "Bar width"
-L.Slider_BarScale 	= "Bar scale"
+L.Slider_BarOffSetX 	= "Offset X: %d"
+L.Slider_BarOffSetY 	= "Offset Y: %d"
+L.Slider_BarWidth 	= "Bar width: %d"
+L.Slider_BarScale 	= "Bar scale: %0.2f"
 L.AreaTitle_BarSetup 	= "General Bar Options"
 L.AreaTitle_BarSetupSmall = "Small Bar Options"
 L.AreaTitle_BarSetupHuge = "Huge Bar Options"
@@ -93,5 +93,10 @@ L.BarIconLeft 		= "Left Icon"
 L.BarIconRight 		= "Right Icon"
 L.EnableHugeBar 	= "Enable Huge Bar (Bar 2)"
 
-
+-- Tab: Spam Filter
+L.Panel_SpamFilter		= "Spam Filter"
+L.Area_SpamFilter		= "General Spam Filter Options"
+L.HideBossEmoteFrame	= "Hide raid boss emote frame"
+L.SpamBlockRaidWarning	= "Filter announces from other boss mods" 
+L.SpamBlockBossWhispers	= "Filter <DBM> warning whispers while fighting"
 
