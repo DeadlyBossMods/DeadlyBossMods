@@ -44,7 +44,6 @@ L.Statistic_Heroic	= "heroisch"
 L.General 		= "Allgemeine DBM Optionen"
 L.EnableDBM 		= "Aktiviere DBM"
 L.EnableStatus 		= "Antworte auf 'status' Flüsteranfragen"
-L.EnableSpamBlock	= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
 L.AutoRespond 		= "Aktiviere automatische Antwort während eines Bosskampfes"
 L.EnableMiniMapIcon	= "Aktiviere Minimap Symbol"
 
@@ -81,8 +80,9 @@ L.SpecialWarnSound	= "Sound bei Spezial-Warnung"
 -- Tab: Barsetup
 L.BarSetup   		= "Bar Style"
 L.BarTexture 		= "Bar Textur"
-
-L.ExpandUpwards		= "Bars übereinander stapeln"
+L.BarStartColor = "Startfarbe"
+L.BarEndColor = "Endfarbe"
+L.ExpandUpwards		= "Bars nach oben aufbauen"
 
 L.Slider_BarOffSetX 	= "Abstand X: %d"
 L.Slider_BarOffSetY 	= "Abstand Y: %d"
@@ -95,5 +95,10 @@ L.BarIconLeft 		= "Symbol links"
 L.BarIconRight 		= "Symbol rechts"
 L.EnableHugeBar 	= "Aktiviere große Bar (Bar 2)"
 
-
+-- Tab: Spam Filter
+L.Panel_SpamFilter		= "Spam Filter"
+L.Area_SpamFilter		= "Allgemeine Spam Filter Einstellungen"
+L.HideBossEmoteFrame	= "Schlachtzugsboss-Emote-Fenster verstecken"
+L.SpamBlockRaidWarning	= "Ansagen von anderen Boss Mods filtern" 
+L.SpamBlockBossWhispers	= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
 
