@@ -70,6 +70,7 @@ local function getIDfromTarget(textbox, mod)
 end
 
 local function create_BossMainPanel(mod, k)
+	DBM:LoadCustomMod(mod) 
 	gui_panels[k] = BMS_Panel:CreateNewPanel(mod.BossName, "option")
 
 	local BMS_Panel = gui_panels[k]
