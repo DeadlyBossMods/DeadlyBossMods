@@ -83,7 +83,10 @@ local function create_BossMainPanel(mod, k)
 
 		local BossName = BMS_Create:CreateEditBox(L.BossName, "", 230)
 		BossName:SetPoint('TOPLEFT', 40, -25)
-		BossName:SetScript("OnTextChanged", function(self) CurrentBossSetup.BossName = self:GetText() end)
+		BossName:SetScript("OnTextChanged", function(self) 
+			CurrentBossSetup.BossName = self:GetText()
+			BMS_Panel:Rename(CurrentBossSetup.BossName)
+		end)
 		BossName:SetScript("OnShow", function(self) self:SetText(CurrentBossSetup.BossName) end)
 		
 		local CurCount = 1
@@ -249,7 +252,6 @@ local function create_BossMainPanel(mod, k)
 
 		local TriggerName = BMS_CreateTrigger:CreateEditBox(L.Trigger_Name, "", 200)
 		TriggerName:SetPoint('TOPLEFT', 40, -60)
-		TriggerName:SetScript("OnTextChanged", function(self) CurrentBossSetup.BossName = self:GetText() end)
 	
 		local TriggerCreateBttn = BMS_CreateTrigger:CreateButton(L.Trigger_Create_Bttn, 160, nil)
 		TriggerCreateBttn:SetPoint('TOPLEFT', 200, -20)
@@ -338,33 +340,39 @@ local function create_BossMainPanel(mod, k)
 				self.obj.EventHp:Show()
 			end
 		end		
-			
-		local function createtriggerframe()
+
+		local trigger_defaults = {
+			isactive = true,
+			triggeryell = "",	-- type == yell (can be emote/yell/..: "boss raises his shild") 
+			triggerskill = 0,	-- type == spell (can be spell/skill/..: "boss begins to cast ID" or "player got hittet by skillID")
+						-- type == buff (can be buff or debuff on boss or player)
+			triggertime = 0,	-- type == time (do stuff after X sec)
+			triggerhp = 0,		-- type == bosshp (do stuff when boss is on 25% or stuff like this)
+			announce = false,	-- show announce (Shildwall is UP)
+			announcetext = "",
+			specialwarn = false,	-- flash screen "wtf move or die"
+			seticon = false,	-- mark target with skull
+			showbar = false,	-- show a bar when this happen again (eg. Shildwall in 30min)
+			bartime = 0,
+			barendwarn = false,	-- announce end of timer (eg. Shildwall in 5 sec)
+			barwarntime = 0,
+			barwarnmsg = ""
+		}
+
+		local function createtriggerframe(self)
 			local description = TriggerName:GetText()
 			local triggertype = TriggerDropDown.value
-			if not description or description == "" or not triggertype or triggertype == "" then return end
+			if self and (not description or description == "" or not triggertype or triggertype == "") then return end
 		
 			-- We try to recover old ("deleted") Frames because of the missing command to delete a Frame
-			if DeletedTriggerFrames[1] ~= nil then
+			if self and DeletedTriggerFrames[1] ~= nil then
 				recover = table.remove(DeletedTriggerFrames)
 				if recover then
 					-- refreh frame settings / text / stuff		(values will be used in the onshow scripts)
-					CurrentBossSetup.triggers[recover.id].typ = TriggerDropDown.value
-					CurrentBossSetup.triggers[recover.id].isactive = true
-					CurrentBossSetup.triggers[recover.id].triggeryell = ""
-					CurrentBossSetup.triggers[recover.id].triggerskill = 0
-					CurrentBossSetup.triggers[recover.id].triggertime = 0
-					CurrentBossSetup.triggers[recover.id].triggerhp = 0
-					CurrentBossSetup.triggers[recover.id].announce = false
-					CurrentBossSetup.triggers[recover.id].announcetext = ""
-					CurrentBossSetup.triggers[recover.id].specialwarn = false
-					CurrentBossSetup.triggers[recover.id].seticon = false
-					CurrentBossSetup.triggers[recover.id].showbar = false
-					CurrentBossSetup.triggers[recover.id].bartime = 0
-					CurrentBossSetup.triggers[recover.id].barendwarn = false
-					CurrentBossSetup.triggers[recover.id].barwarntime = 0
-					CurrentBossSetup.triggers[recover.id].barwarnmsg = ""
-					getglobal(recover.frame:GetName()..'Title'):SetText(recover.id..". "..description.." ("..TriggerDropDown.text..")")
+					copytable(CurrentBossSetup.triggers[trigger_id], trigger_defaults)
+					CurrentBossSetup.triggers[recover.id].name = description
+					CurrentBossSetup.triggers[recover.id].typ = triggertype
+					getglobal(recover.frame:GetName()..'Title'):SetText(recover.id..". "..description.." ("..triggertype..")")
 		
 					for i=1, select("#", recover.frame:GetChildren()), 1 do
 						select(i, recover.frame:GetChildren()):Show()
@@ -384,31 +392,21 @@ local function create_BossMainPanel(mod, k)
 			else
 				trigger_id = trigger_id + 1
 			end
-		
-			CurrentBossSetup.triggers = CurrentBossSetup.triggers or {}
-			CurrentBossSetup.triggers[trigger_id] = {
-				typ = TriggerDropDown.value,
-				isactive = true,
-				triggeryell = "",	-- type == yell (can be emote/yell/..: "boss raises his shild") 
-				triggerskill = 0,	-- type == spell (can be spell/skill/..: "boss begins to cast ID" or "player got hittet by skillID")
-							-- type == buff (can be buff or debuff on boss or player)
-				triggertime = 0,	-- type == time (do stuff after X sec)
-				triggerhp = 0,		-- type == bosshp (do stuff when boss is on 25% or stuff like this)
-				announce = false,	-- show announce (Shildwall is UP)
-				announcetext = "",
-				specialwarn = false,	-- flash screen "wtf move or die"
-				seticon = false,	-- mark target with skull
-				showbar = false,	-- show a bar when this happen again (eg. Shildwall in 30min)
-				bartime = 0,
-				barendwarn = false,	-- announce end of timer (eg. Shildwall in 5 sec)
-				barwarntime = 0,
-				barwarnmsg = ""
-			}
-		
-			local TriggerArea = BMS_Panel:CreateArea(trigger_id..". "..description.." ("..TriggerDropDown.text..")", nil, 215, true)
+				
+			if not CurrentBossSetup.triggers[trigger_id] then
+				CurrentBossSetup.triggers[trigger_id] = {}
+				CurrentBossSetup.triggers[trigger_id].name = description
+				CurrentBossSetup.triggers[trigger_id].typ = triggertype
+			end
+			copytable(CurrentBossSetup.triggers[trigger_id], trigger_defaults)
+
+			------------------------------------------------
+			--   Create the Frames for the Trigger Area   --
+			------------------------------------------------
+			local TriggerArea = BMS_Panel:CreateArea(trigger_id..". "..CurrentBossSetup.triggers[trigger_id].name.." ("..CurrentBossSetup.triggers[trigger_id].typ..")", nil, 215, true)
 			TriggerArea.id = trigger_id
-			TriggerArea.frame.description = description
-			TriggerArea.frame.triggertype = triggertype
+			TriggerArea.frame.description = CurrentBossSetup.triggers[trigger_id].name
+			TriggerArea.frame.triggertype = CurrentBossSetup.triggers[trigger_id].typ
 			TriggerArea.frame.obj = TriggerArea
 			TriggerArea.frame:SetScript("OnShow", ChangeFrameAppearance) 
 		
@@ -430,7 +428,7 @@ local function create_BossMainPanel(mod, k)
 			TriggerArea.EventWarnEnd 		= TriggerArea:CreateCheckButton(L.EventWarnEnd)
 			TriggerArea.EventWarnEndSec 		= TriggerArea:CreateEditBox(L.Sec, "", 30)
 			TriggerArea.EventWarnMsg 		= TriggerArea:CreateEditBox(L.EventWarnMsg, "", 130)
-			TriggerArea.movemebutton 		= TriggerArea:CreateButton(L.Trigger_Delete_Bttn, 100, 16)
+			TriggerArea.beletemebutton 		= TriggerArea:CreateButton(L.Trigger_Delete_Bttn, 100, 16)
 		
 			-- some functions required within the elements
 			local function settime()
@@ -525,15 +523,34 @@ local function create_BossMainPanel(mod, k)
 			TriggerArea.EventWarnMsg:SetPoint('TOPLEFT', TriggerArea.EventWarnEndSec, "TOPRIGHT", 20, 0)
 			TriggerArea.EventWarnMsg:SetScript("OnTextChanged", settriggeroption(trigger_id, "barwarnmsg"))
 			TriggerArea.EventWarnMsg:SetScript("OnShow", showtriggeroption(trigger_id, "barwarnmsg"))
-			TriggerArea.movemebutton:SetPoint('BOTTOMRIGHT', TriggerArea.frame, "TOPRIGHT", 0, -1)
-			TriggerArea.movemebutton:SetNormalFontObject(GameFontNormalSmall)
-			TriggerArea.movemebutton:SetHighlightFontObject(GameFontNormalSmall)
-			TriggerArea.movemebutton:SetScript("OnClick", function(self) 
+			TriggerArea.beletemebutton:SetPoint('BOTTOMRIGHT', TriggerArea.frame, "TOPRIGHT", 0, -1)
+			TriggerArea.beletemebutton:SetNormalFontObject(GameFontNormalSmall)
+			TriggerArea.beletemebutton:SetHighlightFontObject(GameFontNormalSmall)
+			TriggerArea.beletemebutton:SetScript("OnClick", function(self) 
+				-- CleanUp values
+				CurrentBossSetup.triggers[TriggerArea.id].name = ""
+				CurrentBossSetup.triggers[TriggerArea.id].typ = ""
+				CurrentBossSetup.triggers[TriggerArea.id].isactive = true
+				CurrentBossSetup.triggers[TriggerArea.id].triggeryell = ""
+				CurrentBossSetup.triggers[TriggerArea.id].triggerskill = 0
+				CurrentBossSetup.triggers[TriggerArea.id].triggertime = 0
+				CurrentBossSetup.triggers[TriggerArea.id].triggerhp = 0
+				CurrentBossSetup.triggers[TriggerArea.id].announce = false
+				CurrentBossSetup.triggers[TriggerArea.id].announcetext = ""
+				CurrentBossSetup.triggers[TriggerArea.id].specialwarn = false
+				CurrentBossSetup.triggers[TriggerArea.id].seticon = false
+				CurrentBossSetup.triggers[TriggerArea.id].showbar = false
+				CurrentBossSetup.triggers[TriggerArea.id].bartime = 0
+				CurrentBossSetup.triggers[TriggerArea.id].barendwarn = false
+				CurrentBossSetup.triggers[TriggerArea.id].barwarntime = 0
+				CurrentBossSetup.triggers[TriggerArea.id].barwarnmsg = ""
+				-- disable this trigger
+				CurrentBossSetup.triggers[TriggerArea.id].isactive = false
+
 				table.insert(DeletedTriggerFrames, TriggerArea)
 				for i=1, select("#", TriggerArea.frame:GetChildren()), 1 do
 					select(i, TriggerArea.frame:GetChildren()):Hide()
 				end
-				CurrentBossSetup.triggers[TriggerArea.id].isactive = false
 		
 				for i=1, select("#", BMS_Panel.frame:GetChildren()), 1 do	-- select all Areas
 					if select(i, BMS_Panel.frame:GetChildren()) == TriggerArea.frame then
@@ -550,10 +567,24 @@ local function create_BossMainPanel(mod, k)
 				BMS_Panel:SetMyOwnHeight()
 				DBM_GUI_OptionsFrame:DisplayFrame(BMS_Panel.frame)
 			end)
+			
+			if not CurrentBossSetup.triggers[trigger_id].isactive then
+				TriggerArea.beletemebutton:GetScript("OnClick")(TriggerArea.beletemebutton)
+			end
+
 			BMS_Panel:SetMyOwnHeight()
 			DBM_GUI_OptionsFrame:DisplayFrame(BMS_Panel.frame)
 		end		
-		
+		CurrentBossSetup.triggers = CurrentBossSetup.triggers or {}
+		for k,v in ipairs(CurrentBossSetup.triggers) do
+			if not CurrentBossSetup.triggers[k].isactive then
+				table.remove(CurrentBossSetup.triggers, k)
+			end
+		end
+
+		for i=1, #CurrentBossSetup.triggers, 1 do
+			createtriggerframe(nil)
+		end
 		TriggerCreateBttn:SetScript("OnClick", createtriggerframe)
 	end
 	BMS_Panel:SetMyOwnHeight()
@@ -587,8 +618,8 @@ local function createbmsgui()
 
 		local BossName = BMS_Create:CreateEditBox(L.BossName, "", 230)
 		BossName:SetPoint('TOPLEFT', 40, -25)
-		BossName:SetScript("OnTextChanged", function(self) CurrentBossSetup.BossName = self:GetText() end)
 		BossName:SetScript("OnShow", function(self) self:SetText(CurrentBossSetup.BossName) end)
+		BossName:SetScript("OnTextChanged", function(self) CurrentBossSetup.BossName = self:GetText() end)
 		
 		local CurCount = 1
 		local BossID = BMS_Create:CreateEditBox(L.BossID, "0", 75)
