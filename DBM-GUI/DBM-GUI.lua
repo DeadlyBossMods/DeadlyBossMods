@@ -88,16 +88,35 @@ do
 		panel:Hide()
 	
 		if FrameTyp == "option" or FrameTyp == 2 then
-			DBM_GUI_Options:CreateCategory(panel, self and self.frame and self.frame.name)
+			panel.categoryid = DBM_GUI_Options:CreateCategory(panel, self and self.frame and self.frame.name)
+			panel.FrameTyp = 2
 		else
-			DBM_GUI_Bosses:CreateCategory(panel, self and self.frame and self.frame.name)
+			panel.categoryid = DBM_GUI_Bosses:CreateCategory(panel, self and self.frame and self.frame.name)
+			panel.FrameTyp = 1
 		end
 	
 		self:SetLastObj(panel)
 		self.panels = self.panels or {}
 		table.insert(self.panels, {frame = panel, parent = self, framename = FrameTitle..self:GetCurrentID()})
 		local obj = self.panels[#self.panels]
+		panel.panelid = #self.panels
 		return setmetatable(obj, prottypemetatable)
+	end
+
+	-- This function don't realy destroy a window, it just hides it
+	function PanelPrototype:Destroy()
+		if self.frame.FrameTyp == 2 then
+			table.remove(DBM_GUI_Options.Buttons, self.frame.categoryid)
+		else
+			table.remove(DBM_GUI_Bosses.Buttons, self.frame.categoryid)
+		end
+		table.remove(self.parent.panels, self.frame.panelid)
+		self.frame:Hide()
+	end
+
+	-- This function renames the Menu Entry for a Panel
+	function PanelPrototype:Rename(newname)
+		self.frame.name = newname
 	end
 
 	-- This function adds areas to group widgets
@@ -503,6 +522,7 @@ function ListFrameButtonsPrototype:CreateCategory(frame, parent)
 		frame = frame,
 		parent = parent
 	})
+	return #self.Buttons
 end
 
 function ListFrameButtonsPrototype:IsPresent(framename)
