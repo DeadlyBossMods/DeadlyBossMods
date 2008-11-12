@@ -43,7 +43,7 @@ L.General 		= "General DBM Options"
 L.EnableDBM 		= "Enable DBM"
 L.EnableStatus 		= "Reply to 'status' whispers"
 L.AutoRespond 		= "Enable auto-respond while fighting"
-L.EnableMiniMapIcon	= "Show Minimap icon"
+L.EnableMiniMapIcon	= "Show minimap button"
 
 L.Button_RangeFrame	= "Show/Hide range-frame"
 L.Button_TestBars	= "Start test bars"

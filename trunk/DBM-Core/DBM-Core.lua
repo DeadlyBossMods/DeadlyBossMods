@@ -150,6 +150,14 @@ local function pformat(fstr, ...)
 	return (ok and str) or fstr
 end
 
+local function checkLanguage()
+	local l = GetLocale()
+	if l ~= "enGB" and l ~= "enUS" and l ~= "deDE" and l ~= "zhCN" then
+		DBM:AddMsg("Your client language \"%s\" is currently unsupported in DBMv4.\nIf you want to help us translating DBM: drop us a line! (email: tandanu@deadlybossmods.com, forum: http://www.deadlybossmods.com/forum)")
+	end
+end
+
+
 --------------
 --  Events  --
 --------------
@@ -544,7 +552,6 @@ end
 
 
 
-
 ------------------
 --  Hyperlinks  --
 ------------------
@@ -567,8 +574,8 @@ do
 		if linkType == "DBM" and arg1 == "cancel" then
 			DBM.Bars:CancelBar(link:match("DBM:cancel:(.+):nil$"))
 		elseif linkType == "DBM" and arg1 == "ignore" then
-			cancel = link:match("DBM:cancel:(.+):^[%s:]+$")
-			ignore = link:match(":(.-)$")
+			cancel = link:match("DBM:ignore:(.+):[^%s:]+$")
+			ignore = link:match(":([^:]+)$")
 			StaticPopup_Show("DBM_CONFIRM_IGNORE", ignore)
 		end
 	end)
@@ -902,6 +909,7 @@ do
 			DBM:Schedule(1.5, function() combatInitialized = true end)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
+			checkLanguage()
 		end
 	end
 end
