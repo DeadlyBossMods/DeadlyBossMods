@@ -104,6 +104,7 @@ end
 
 local arrowLeft = CreateFrame("Frame", nil, UIParent)
 local arrowLeftTexture = arrowLeft:CreateTexture("BACKGROUND")
+arrowLeftTexture:SetTexture("TODO")
 arrowLeftTexture:SetPoint("CENTER", arrowLeft, "CENTER")
 arrowLeft:SetHeight(1)
 arrowLeft:SetWidth(1)
@@ -113,6 +114,7 @@ arrowLeft:SetScript("OnUpdate", arrowOnUpdate)
 
 local arrowRight = CreateFrame("Frame")
 local arrowRightTexture = arrowLeft:CreateTexture("BACKGROUND")
+arrowRightTexture:SetTexture("TODO")
 arrowRightTexture:SetPoint("CENTER", arrowRight, "CENTER")
 arrowRight:SetHeight(1)
 arrowRight:SetWidth(1)
@@ -122,6 +124,7 @@ arrowRight:SetScript("OnUpdate", arrowOnUpdate)
 
 local arrowUp = CreateFrame("Frame")
 local arrowUpTexture = arrowUp:CreateTexture("BACKGROUND")
+arrowUpTexture:SetTexture("TODO")
 arrowUpTexture:SetPoint("CENTER", arrowUp, "CENTER")
 arrowUp:SetHeight(1)
 arrowUp:SetWidth(1)
