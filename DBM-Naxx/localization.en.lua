@@ -276,9 +276,9 @@ L:SetOptionLocalization({
 	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
 	TimerShiftCast			= "Show Polarity Shift cast timer",
 	TimerNextShift			= "Show Polarity Shift cooldown timer",
-	ArrowsEnabled			= "Show arrows (NYI)",
-	ArrowsRightLeft			= "Show right/left arrows (NYI)",
-	ArrowsInverse			= "Inverse strategy (show right arrow if polarity changed) (NYI)"
+	ArrowsEnabled			= "Show arrows",
+	ArrowsRightLeft			= "Show right/left arrows",
+	ArrowsInverse			= "Inverse strategy (show right arrow if polarity changed)"
 })
 
 L:SetWarningLocalization({
