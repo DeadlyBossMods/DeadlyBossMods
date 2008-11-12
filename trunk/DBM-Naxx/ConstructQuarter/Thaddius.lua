@@ -1,3 +1,4 @@
+-- this file uses the texture Textures/arrow.tga. This image was created by Everaldo Coelho and is licensed under the GNU Lesser General Public License. See Textures/lgpl.txt.
 local mod = DBM:NewMod("Thaddius", "DBM-Naxx", 2)
 local L = mod:GetLocalizedStrings()
 
@@ -90,9 +91,9 @@ end
 
 local function arrowOnUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
-	if self.elapsed >= 5 and self.elapsed < 6 then
-		self:SetAlpha(self.elapsed - 5)
-	elseif self.elapsed >= 6 then
+	if self.elapsed >= 3.5 and self.elapsed < 4.5 then
+		self:SetAlpha(4.5 - self.elapsed)
+	elseif self.elapsed >= 4.5 then
 		self:Hide()
 	end
 end
@@ -103,8 +104,9 @@ local function arrowOnShow(self)
 end
 
 local arrowLeft = CreateFrame("Frame", nil, UIParent)
-local arrowLeftTexture = arrowLeft:CreateTexture("BACKGROUND")
-arrowLeftTexture:SetTexture("TODO")
+arrowLeft:Hide()
+local arrowLeftTexture = arrowLeft:CreateTexture(nil, "BACKGROUND")
+arrowLeftTexture:SetTexture("Interface\\AddOns\\DBM-Naxx\\ConstructQuarter\\Textures\\arrow")
 arrowLeftTexture:SetPoint("CENTER", arrowLeft, "CENTER")
 arrowLeft:SetHeight(1)
 arrowLeft:SetWidth(1)
@@ -113,22 +115,26 @@ arrowLeft:SetScript("OnShow", arrowOnShow)
 arrowLeft:SetScript("OnUpdate", arrowOnUpdate)
 
 local arrowRight = CreateFrame("Frame")
-local arrowRightTexture = arrowLeft:CreateTexture("BACKGROUND")
-arrowRightTexture:SetTexture("TODO")
+arrowRight:Hide()
+local arrowRightTexture = arrowRight:CreateTexture(nil, "BACKGROUND")
+arrowRightTexture:SetTexture("Interface\\AddOns\\DBM-Naxx\\ConstructQuarter\\Textures\\arrow")
+arrowRightTexture:SetRotation(math.pi)
 arrowRightTexture:SetPoint("CENTER", arrowRight, "CENTER")
 arrowRight:SetHeight(1)
 arrowRight:SetWidth(1)
-arrowRight:SetPoint("CENTER", UIParent, "CENTER", -150, -30)
+arrowRight:SetPoint("CENTER", UIParent, "CENTER", 150, -30)
 arrowRight:SetScript("OnShow", arrowOnShow)
 arrowRight:SetScript("OnUpdate", arrowOnUpdate)
 
 local arrowUp = CreateFrame("Frame")
-local arrowUpTexture = arrowUp:CreateTexture("BACKGROUND")
-arrowUpTexture:SetTexture("TODO")
+arrowUp:Hide()
+local arrowUpTexture = arrowUp:CreateTexture(nil, "BACKGROUND")
+arrowUpTexture:SetTexture("Interface\\AddOns\\DBM-Naxx\\ConstructQuarter\\Textures\\arrow")
+arrowUpTexture:SetRotation(math.pi * 3 / 2)
 arrowUpTexture:SetPoint("CENTER", arrowUp, "CENTER")
 arrowUp:SetHeight(1)
 arrowUp:SetWidth(1)
-arrowUp:SetPoint("CENTER", UIParent, "CENTER", -150, -30)
+arrowUp:SetPoint("CENTER", UIParent, "CENTER", 0, 40)
 arrowUp:SetScript("OnShow", arrowOnShow)
 arrowUp:SetScript("OnUpdate", arrowOnUpdate)
 
