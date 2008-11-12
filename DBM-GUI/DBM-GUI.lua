@@ -1674,7 +1674,7 @@ do
 						else
 							mod.panel = addon.panel:CreateNewPanel(mod.localization.general.name or "Error: DBM.Mods")
 						end
-						DBM_GUI:CreateBossModTab(mod)
+						DBM_GUI:CreateBossModPanel(mod)
 					end
 				end
 			end	
@@ -1684,7 +1684,7 @@ do
 	end
 
 
-	function DBM_GUI:CreateBossModTab(mod)
+	function DBM_GUI:CreateBossModPanel(mod)
 		if not mod.panel then
 			DBM:AddMsg("Couldn't create boss mod panel for "..mod.localization.general.name)
 			return false
