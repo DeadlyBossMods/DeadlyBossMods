@@ -1545,10 +1545,10 @@ do
 		return function(self)
 			bossvalue1:SetText( stats.kills )
 			bossvalue2:SetText( stats.pulls - stats.kills )
-			bossvalue3:SetText( stats.bestKill and ("%02d:%02d"):format(math.floor(stats.bestKill / 60), stats.bestKill % 60) or "-" )
+			bossvalue3:SetText( stats.bestTime and ("%02d:%02d"):format(math.floor(stats.bestTime / 60), stats.bestTime % 60) or "-" )
 			heroicvalue1:SetText( stats.heroicKills )
 			heroicvalue2:SetText( stats.heroicPulls-stats.heroicKills )
-			heroicvalue3:SetText( stats.heroicBestKill and ("%02d:%02d"):format(math.floor(stats.heroicBestKill / 60), stats.heroicBestKill % 60) or "-" )
+			heroicvalue3:SetText( stats.heroicBestTime and ("%02d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
 		end
 	end
 
