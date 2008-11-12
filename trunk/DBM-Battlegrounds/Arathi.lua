@@ -174,8 +174,11 @@ do
 		
 						if obj_state(textureIndex) == 3 then
 							capTimer:SetColor(allyColor, name)
+							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", name)
+							print"hello"
 						else
 							capTimer:SetColor(hordeColor, name)
+							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", name)
 						end	
 						
 					elseif obj_state(textureIndex) <= 2 then
@@ -263,6 +266,7 @@ do
 			winTimer:DisableEnlarge()
 			winTimer:UpdateName(L.WinBarText:format(L.Horde))
 			winTimer:SetColor(hordeColor)
+			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", name)
 
 		elseif HordeTime > AllyTime then -- Alliance wins
 			if self.ScoreFrame1Text and self.ScoreFrame2Text then
@@ -276,6 +280,7 @@ do
 			winTimer:DisableEnlarge()
 			winTimer:UpdateName(L.WinBarText:format(L.Alliance))
 			winTimer:SetColor(allyColor)
+			winTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", name)
 		end
 
 		if self.Options.ShowAbBasesToWin then
