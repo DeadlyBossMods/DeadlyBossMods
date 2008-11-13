@@ -1607,7 +1607,7 @@ do
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
 			testTimer = testMod:NewTimer(20, "%s")
 			
-			testTimer2 = testMod:NewTimer(30, "asdf %s blubb %d a %s")
+			testTimer2 = testMod:NewTimer(30, "asdf %s blubb %s")
 			
 			testSpecialWarning = testMod:NewSpecialWarning("%s")
 		end
@@ -1628,13 +1628,13 @@ do
 		testWarning1:Schedule(10, "Test bar expired!")
 		testSpecialWarning:Schedule(60, "Boom!")
 		
-		testTimer2:Start(40, "a", 2, "b")
-		testTimer2:Start(50, "a", nil, "b")
-		testTimer2:Start(40, "a", "oO", "b")
+		testTimer2:Start(40, "a", "b")
+		testTimer2:Start(50, "a", nil)
+		testTimer2:Start(40, "a", "oO")
 		
-		DBM:Schedule(10, testTimer2.Stop, testTimer2, "a", 2, "b")
-		DBM:Schedule(5, testTimer2.Update, testTimer2, 10, 20)
-		testTimer2:UpdateIcon("Interface\\Icons\\Spell_Fire_SelfDestruct", nil, "asdf", 333)
+		DBM:Schedule(10, testTimer2.Stop, testTimer2, "a", "b")
+		DBM:Schedule(5, testTimer2.Update, testTimer2, 10, 20, "a", "b")
+		testTimer2:UpdateIcon("Interface\\Icons\\Spell_Fire_SelfDestruct", "a", "oO")
 		
 	end
 end
