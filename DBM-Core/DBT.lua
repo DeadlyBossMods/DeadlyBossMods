@@ -327,7 +327,7 @@ do
 			newBar:AddToList()
 			self.numBars = (self.numBars or 0) + 1
 		end
-		if timer <= self.options.EnlargeBarsTime or huge then
+		if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then
 			newBar:RemoveFromList()
 			newBar:AddToList(true)
 			newBar.enlarged = true
@@ -551,7 +551,7 @@ function barPrototype:Update(elapsed)
 		self:ApplyStyle()
 		self:SetPosition()
 	end
-	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" then
+	if (self.timer <= self.owner.options.EnlargeBarsTime or (self.timer/self.totalTime) <= self.owner.options.EnlargeBarsPercent) and (not self.small) and not self.enlarged and self.moving ~= "enlarge" and self.owner:GetOption("HugeBarsEnabled") then
 		local next = self.next
 		self:RemoveFromList()
 		if next then
