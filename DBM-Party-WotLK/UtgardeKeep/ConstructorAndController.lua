@@ -16,7 +16,7 @@ local timerEnfeeble	= mod:NewTimer(6, "TimerEnfeeble", 43650)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 43650 then
-		warningEnfeeble:Show(args.destName)
-		timerEnfeeble:Start(args.destName)
+		warningEnfeeble:Show(tostring(args.destName))
+		timerEnfeeble:Start(tostring(args.destName))
 	end
 end

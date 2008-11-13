@@ -16,10 +16,11 @@ local warningBurrowNow		= mod:NewAnnounce("WarningBurrowNow", 3, 56504)
 local warningEmerge		= mod:NewAnnounce("WarningEmerge", 3, 56504)
 
 local timerEmerge		= mod:NewTimer(60, "Emerge", 56504)
-local warnburrow
+
+local warnburrow = false
 
 function mod:OnCombatStart()
-	warnburrow = 0
+	warnburrow = false
 end
 
 function mod:UNIT_HEALTH(arg1)
@@ -27,11 +28,11 @@ function mod:UNIT_HEALTH(arg1)
 		local h = UnitHealth(arg1)
 		if (h > 66 and h < 71) or (h > 33 and h < 38) or (h > 15 and h < 20) then
 			if not warnburrow then
-				warnburrow = 1
+				warnburrow = true
 				warningBurrowSoon:Show()
 			end
 		else
-			warnburrow = 0
+			warnburrow = false
 		end
 	end
 end
