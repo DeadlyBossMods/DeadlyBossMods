@@ -1606,6 +1606,9 @@ do
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
 			testTimer = testMod:NewTimer(20, "%s")
+			
+			testTimer2 = testMod:NewTimer(30, "asdf %s blubb %d a %s")
+			
 			testSpecialWarning = testMod:NewSpecialWarning("%s")
 		end
 		testTimer:Start(20, "Pew Pew Pew...")
@@ -1624,6 +1627,15 @@ do
 		testWarning2:Schedule(43, "Evil Spell!")
 		testWarning1:Schedule(10, "Test bar expired!")
 		testSpecialWarning:Schedule(60, "Boom!")
+		
+		testTimer2:Start(40, "a", 2, "b")
+		testTimer2:Start(50, "a", nil, "b")
+		testTimer2:Start(40, "a", "oO", "b")
+		
+		DBM:Schedule(10, testTimer2.Stop, testTimer2, "a", 2, "b")
+		DBM:Schedule(5, testTimer2.Update, testTimer2, 10, 20)
+		testTimer2:SetIcon("Interface\\Icons\\Spell_Fire_SelfDestruct", nil, "asdf", 333)
+		
 	end
 end
 
@@ -1923,7 +1935,7 @@ do
 	function timerPrototype:Start(timer, ...)
 		if not self.option or self.mod.Options[self.option] then
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
-			local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			local name = pformat(self.text, ...)
 			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
 			if bar then bar:SetText(name) end
@@ -1945,7 +1957,7 @@ do
 				self.startedTimers[i] = nil
 			end
 		else
-			local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 			for i = #self.startedTimers, 1, -1 do
 				if self.startedTimers[i] == id then
 					DBM.Bars:CancelBar(id)
@@ -1957,7 +1969,7 @@ do
 	timerPrototype.Cancel = timerPrototype.Stop
 
 	function timerPrototype:GetTime(...)
-		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		return bar and (bar.totalTime - bar.timer) or 0, (bar and bar.totalTime) or 0
 	end
@@ -1968,30 +1980,30 @@ do
 
 	function timerPrototype:Update(elapsed, totalTime, ...)
 		if self:GetTime(...) == 0 then self:Start(totalTime, ...) end
-		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		DBM.Bars:UpdateBar(id, elapsed, totalTime)
 	end
 
 	function timerPrototype:UpdateIcon(icon, ...)
-		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then bar:SetIcon((type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon) end
 	end
 
 	function timerPrototype:UpdateName(name, ...)
-		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then bar:SetText(name) end
 	end
 
 	function timerPrototype:SetColor(c, ...)
-		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then	bar:SetColor(c)	end
 	end
 	
 	function timerPrototype:DisableEnlarge(...)
-		local id = self.id..(("\t%s"):rep(select("#", ...))):format(...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
 		if bar then	bar.small = true end
 	end
