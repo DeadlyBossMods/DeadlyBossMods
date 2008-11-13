@@ -32,6 +32,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 50761 then
 		warningWoe:Show(args.destName)
 		timerWoe:Start(args.destName)
-		mod:SetIcon(args.destName, 8, 10)
+		self:SetIcon(args.destName, 8, 10)
 	end
 end

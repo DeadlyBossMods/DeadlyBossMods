@@ -22,18 +22,18 @@ local timerWoeStrike	= mod:NewTimer(10, "TimerWoeStrike", 42723)
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 42723 or args.spellId == 42669 then
 		local spellName = GetSpellInfo(args.spellId)
-		warningSmash:Show(spellName)
+		warningSmash:Show(tostring(spellName))
 		timerSmash:Start()
 	elseif args.spellId == 42708 or args.spellId == 42729 then
 		local spellName = GetSpellInfo(args.spellId)
-		warningGrowl:Show(spellName)
+		warningGrowl:Show(tostring(spellName))
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 42730 then
-		warningWoeStrike:Show(args.destName)
-		timerWoeStrike:Start(args.destName)
+		warningWoeStrike:Show(tostring(args.destName))
+		timerWoeStrike:Start(tostring(args.destName))
 		mod:SetIcon(args.destName, 8, 10)
 	end
 end
