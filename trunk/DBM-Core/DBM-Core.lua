@@ -1634,7 +1634,7 @@ do
 		
 		DBM:Schedule(10, testTimer2.Stop, testTimer2, "a", 2, "b")
 		DBM:Schedule(5, testTimer2.Update, testTimer2, 10, 20)
-		testTimer2:SetIcon("Interface\\Icons\\Spell_Fire_SelfDestruct", nil, "asdf", 333)
+		testTimer2:UpdateIcon("Interface\\Icons\\Spell_Fire_SelfDestruct", nil, "asdf", 333)
 		
 	end
 end
