@@ -1495,7 +1495,7 @@ do
 				alive = alive + ((UnitIsDeadOrGhost("raid"..i) and 0) or 1)
 			end
 		else
-			alive = (UnitIsDeadOrGhost("raid"..i) and 0) or 1
+			alive = (UnitIsDeadOrGhost("player") and 0) or 1
 			for i = 1, GetNumPartyMembers() do
 				alive = alive + (UnitIsDeadOrGhost("party"..i) and 0) or 1
 			end
