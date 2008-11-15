@@ -43,8 +43,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_EMOTE(msg)
-	if msg == L.Emote then
+function mod:CHAT_MSG_MONSTER_EMOTE(msg, sender)
+	if msg == L.Emote and sender == L.name then
 		warningPhase2Now:Show()
 	end
 end
