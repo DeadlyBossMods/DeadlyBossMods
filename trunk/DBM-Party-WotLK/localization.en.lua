@@ -1056,19 +1056,20 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "New Portal Soon",
-	WarningPortalNow	= "Portal: #%d",
+	WarningPortalNow	= "Portal #%d",
 	WarningBossNow		= "Boss incoming"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Portal: #%d" , 
+	TimerPortalIn	= "Portal #%d" , 
 })
 
 L:SetOptionLocalization({
-	WarningPortalNow	= "Show New Portal warning",
-	WarningPortalSoon	= "Show New Portal pre-warning",
-	WarningBossNow		= "Show Boss warning",
-	TimerPortalIn		= "Show \"Portal: #\" timer",
+	WarningPortalNow		= "Show New Portal warning",
+	WarningPortalSoon		= "Show New Portal pre-warning",
+	WarningBossNow			= "Show Boss warning",
+	TimerPortalIn			= "Show \"Portal: #\" timer",
+	ShowAllPortalWarnings	= "Show warnings for all waves"
 })
 
 

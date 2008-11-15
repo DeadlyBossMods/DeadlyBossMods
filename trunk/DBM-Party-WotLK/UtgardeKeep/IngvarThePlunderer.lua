@@ -33,7 +33,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 42730 then
 		warningWoeStrike:Show(tostring(args.destName))
-		timerWoeStrike:Start(tostring(args.destName))
+		timerWoeStrike:Start(nil, tostring(args.destName))
 		mod:SetIcon(args.destName, 8, 10)
 	end
 end
