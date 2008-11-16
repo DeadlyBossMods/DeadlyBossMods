@@ -28,3 +28,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTomb:Cancel()
 	end
 end
+
+
+
