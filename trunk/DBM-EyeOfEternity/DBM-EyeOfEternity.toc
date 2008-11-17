@@ -1,12 +1,16 @@
 ## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMEyeOfEternity_SavedVars, DBMEyeOfEternity_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Eye of Eternity
+## X-DBM-Mod-Name-deDE: Das Auge der Ewigkeit
 ## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZone: The Eye of Eternity
+## X-DBM-Mod-LoadZone-deDE: Das Auge der Ewigkeit
 localization.en.lua
+localization.de.lua
 Malygos.lua
