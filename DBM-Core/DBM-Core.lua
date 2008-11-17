@@ -1635,7 +1635,7 @@ DBM.Bars:SetAnnounceHook(function(bar)
 		prefix = DBM_CORE_ALLIANCE
 	end
 	if prefix then
-		return ("%s: %s  %02d:%02d"):format(prefix, getglobal(bar.frame:GetName().."BarName"):GetText(), math.floor(bar.timer / 60), bar.timer % 60)
+		return ("%s: %s  %d:%02d"):format(prefix, getglobal(bar.frame:GetName().."BarName"):GetText(), math.floor(bar.timer / 60), bar.timer % 60)
 	end
 end)
 
@@ -1964,7 +1964,13 @@ do
 		local bar = DBM.Bars:GetBar(id)
 		return bar and (bar.totalTime - bar.timer) or 0, (bar and bar.totalTime) or 0
 	end
-
+	
+	function timerPrototype:IsStarted(...)
+		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
+		local bar = DBM.Bars:GetBar(id)
+		return bar and true
+	end
+	
 	function timerPrototype:SetTimer(timer)
 		self.timer = timer
 	end
@@ -2035,9 +2041,10 @@ do
 
 	function enragePrototype:Start(timer)
 		timer = timer or self.timer or 600
+		timer = timer <= 0 and self.timer - timer or timer
 		self.bar:SetTimer(timer)
 		self.bar:Start()
-		if timer > 600 then self.warning1:Schedule(timer - 600, 10, DBM_CORE_MIN) end
+		if timer > 660 then self.warning1:Schedule(timer - 600, 10, DBM_CORE_MIN) end
 		if timer > 300 then self.warning1:Schedule(timer - 300, 5, DBM_CORE_MIN) end
 		if timer > 60 then self.warning2:Schedule(timer - 60, 1, DBM_CORE_MIN) end
 		if timer > 30 then self.warning2:Schedule(timer - 30, 30, DBM_CORE_SEC) end
@@ -2056,6 +2063,7 @@ do
 	end
 
 	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
+		timer = timer or 600
 		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, "warning_enrage")
 		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, "warning_enrage")
 		local bar = self:NewTimer(timer or 600, barText or DBM_CORE_GENERIC_TIMER_ENRAGE, barIcon or 28131, nil, "timer_enrage")
