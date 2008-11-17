@@ -19,7 +19,7 @@ local warningWoeStrike	= mod:NewAnnounce("WarningWoeStrike", 3, 42730)
 local timerSmash	= mod:NewTimer(3, "TimerSmash", 42723)	-- move away (best tactic) for HC ini
 local timerWoeStrike	= mod:NewTimer(10, "TimerWoeStrike", 42723)
 
-local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock", true, false, false)
+local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock")
 
 
 function mod:SPELL_CAST_START(args)
@@ -33,7 +33,7 @@ function mod:SPELL_CAST_START(args)
 	end
 
 	if args.spellId == 42723 then
-		specWarnSpelllock:Show(args.spellName, args.amount)
+		specWarnSpelllock:Show()
 	end
 end
 
