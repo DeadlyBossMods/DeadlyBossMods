@@ -737,7 +737,7 @@ function barPrototype:Announce()
 	if self.owner.announceHook then
 		msg = self.owner.announceHook(self)
 	end
-	msg = msg or ("%s  %02d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
+	msg = msg or ("%s  %d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
 	if ChatFrameEditBox:IsShown() then
 		ChatFrameEditBox:Insert(msg)
 	else
