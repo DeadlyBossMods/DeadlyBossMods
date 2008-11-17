@@ -66,7 +66,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningThundershock	= "Show Thundershock warning",
 	WarningPhase2Soon	= "Show Phase 2 pre-warning",
-	WarningPhase2Now	= "Show Phase 2 warning (NYI)"
+	WarningPhase2Now	= "Show Phase 2 warning"
 })
 
 L:SetMiscLocalization({
@@ -810,9 +810,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSmash		= "%s",
-	WarningGrowl		= "%s",
-	WarningWoeStrike	= "Woe Strike: %s",
+	WarningSmash			= "%s",
+	WarningGrowl			= "%s",
+	WarningWoeStrike		= "Woe Strike: %s",
+	SpecialWarningSpelllock = "Spell-lock - stop casting!"
 })
 
 L:SetTimerLocalization({
