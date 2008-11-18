@@ -18,7 +18,7 @@ local timerSleep	= mod:NewTimer(10, "TimerSleep", 52721)
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 52721 then
 		warningSleep:Show(args.destName)
-		timerSleep:Start(nil, tostring(args.destName))
+		timerSleep:Start(args.destName)
 	end
 end
 

@@ -20,7 +20,7 @@ local timerWoe		= mod:NewTimer(10, "TimerWoe", 50761)
 local timerSorrow	= mod:NewTimer(10, "TimerSorrow", 50760)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 50760 then
+	if args.spellId == 50760 or args.spellId == 59726 then
 		timerSorrow:Start()
 		warningSorrow:Show()
 	elseif args.spellId == 50752 then
@@ -31,7 +31,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 50761 then
 		warningWoe:Show(args.destName)
-		timerWoe:Start(nil, tostring(args.destName))
+		timerWoe:Start(args.destName)
 		self:SetIcon(args.destName, 8, 10)
 	end
 end
