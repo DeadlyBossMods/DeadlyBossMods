@@ -1037,12 +1037,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningVoidShift		= "%s is debuffed",
+	WarningVoidShifted		= "%s is fighting Spawns",
+	WarningShroudOfDarkness		= "!!!STOP DPS!!!",
+	SpecialWarningVoidShifted 	= "FIGHT SPAWNS",
+	SpecialShroudofDarkness 	= "STOP DPS",
 })
 
 L:SetTimerLocalization({
+	TimerVoidShift			= "%s prepare",
+	TimerVoidShifted		= "%s Spawns",
 })
 
 L:SetOptionLocalization({
+	WarningVoidShift		= "Announce Void Shift DOT",
+	WarningVoidShifted		= "Announce Void Shifted to Void Players",
+	WarningShroudOfDarkness		= "Announce Shroud of Darkness for Damagestop",
+	SpecialWarningVoidShifted	= "Special Warnung when Void Shifted",
+	SpecialShroudofDarkness		= "Special Warnung when Shroud of Darkness",
+	TimerVoidShift			= "Show Bar for VoidShift",
+	TimerVoidShifted		= "Show Bar for VoidShifted",
 })
 
 
