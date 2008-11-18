@@ -19,7 +19,7 @@ local timerTomb		= mod:NewTimer(10, "TimerTomb", 48400)
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48400 then
 		warningTomb:Show(tostring(args.destName))
-		timerTomb:Start(nil, tostring(args.destName))
+		timerTomb:Start(tostring(args.destName))
 	end
 end
 
@@ -28,6 +28,3 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerTomb:Cancel()
 	end
 end
-
-
-

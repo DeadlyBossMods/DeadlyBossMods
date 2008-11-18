@@ -7,5 +7,14 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+local warningShatter	= mod:NewAnnounce("WarningShatter", 3, 50833)
+
 mod:RegisterEvents(
+	"SPELL_CAST_SUCCESS"
 )
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 50833 then
+		warningShatter:Show()
+	end
+end

@@ -7,5 +7,14 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
+local warningPull	= mod:NewAnnounce("WarningPull", 3, 51336)
+
 mod:RegisterEvents(
+	"SPELL_CAST_START"
 )
+
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 51336 then
+		warningPull:Show()
+	end
+end

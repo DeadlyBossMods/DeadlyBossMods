@@ -26,8 +26,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 55959 then
-		warningEmbrace:Show(tostring(args.destName))
-		timerEmbrace:Start(nil, tostring(args.destName))
+		warningEmbrace:Show(args.destName)
+		timerEmbrace:Start(args.destName)
 	end
 end
 

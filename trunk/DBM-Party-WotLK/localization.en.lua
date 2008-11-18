@@ -66,7 +66,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningThundershock	= "Show Thundershock warning",
 	WarningPhase2Soon	= "Show Phase 2 pre-warning",
-	WarningPhase2Now	= "Show Phase 2 warning"
+	WarningPhase2Now	= "Show Phase 2 warning (NYI)"
 })
 
 L:SetMiscLocalization({
@@ -105,12 +105,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningCurse	= "Curse of Fatigue: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningCurse = "Show Curse of Fatigue warning"
 })
 
 
@@ -433,12 +435,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningOverload	= "Static Overload: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningOverload = "Show Static Overload warning"
 })
 
 
@@ -447,17 +451,20 @@ L:SetOptionLocalization({
 -------------
 L = DBM:GetModLocalization("Volkhan")
 
+
 L:SetGeneralLocalization({
 	name = "Volkhan"
 })
 
 L:SetWarningLocalization({
+	WarningStomp = "Shattering Stomp"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningStomp = "Show Shattering Stomp warning"
 })
 
 
@@ -471,12 +478,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningNova	= "Lightning Nova"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningNova	= "Show Lightning Nova warning"
 })
 
 
@@ -515,18 +524,19 @@ L:SetOptionLocalization({
 -- Krystallus --
 ----------------
 L = DBM:GetModLocalization("Krystallus")
-
 L:SetGeneralLocalization({
 	name = "Krystallus"
 })
 
 L:SetWarningLocalization({
+	WarningShatter	= "Shatter soon!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningShatter	= "Show Shatter prewarning"
 })
 
 
@@ -540,12 +550,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningCharge	= "Static Charge: %s",
+	WarningRing	= "Lightning Ring"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningCharge	= "Show Static Charge warning",
+	WarningRing	= "Show Lightning Ring warning"
 })
 
 
@@ -703,12 +717,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningTimeBomb = "Time Bomb",
+	WarningExplosion = "Arcane Explosion",
 })
 
 L:SetTimerLocalization({
+	TimerTimeBomb = "Time Bomb: %s",
+	TimerExplosion = "Arcane Explosion",
 })
 
 L:SetOptionLocalization({
+	WarningTimeBomb = "Show Time Bomb warning",
+	WarningExplosion = "Show Arcane Explosion warning",
+	TimerTimeBomb = "Show Time Bomb timer",
+	TimerExplosion = "Show Arcane Explosion timer",
+	SpecWarnBombYou = "Show a special warning if you are the bomb",
 })
 
 

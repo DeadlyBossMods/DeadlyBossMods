@@ -16,11 +16,8 @@ mod:RegisterEvents(
 local warningSmash	= mod:NewAnnounce("WarningSmash", 3, 42723)
 local warningGrowl	= mod:NewAnnounce("WarningGrowl", 3, 42708)
 local warningWoeStrike	= mod:NewAnnounce("WarningWoeStrike", 3, 42730)
-local timerSmash	= mod:NewTimer(3, "TimerSmash", 42723)	-- move away (best tactic) for HC ini
+local timerSmash	= mod:NewTimer(3, "TimerSmash", 42723)
 local timerWoeStrike	= mod:NewTimer(10, "TimerWoeStrike", 42723)
-
-local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock")
-
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 42723 or args.spellId == 42669 then
@@ -31,16 +28,12 @@ function mod:SPELL_CAST_START(args)
 		local spellName = GetSpellInfo(args.spellId)
 		warningGrowl:Show(tostring(spellName))
 	end
-
-	if args.spellId == 42723 then
-		specWarnSpelllock:Show()
-	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
+function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 42730 then
 		warningWoeStrike:Show(tostring(args.destName))
-		timerWoeStrike:Start(nil, tostring(args.destName))
+		timerWoeStrike:Start(tostring(args.destName))
 		mod:SetIcon(args.destName, 8, 10)
 	end
 end
@@ -50,7 +43,3 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerWoeStrike:Cancel()
 	end
 end
-
-
-
-

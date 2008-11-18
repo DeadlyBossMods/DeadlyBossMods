@@ -60,3 +60,5 @@ VioletHold\Moragg.lua
 VioletHold\Xevoss.lua
 VioletHold\Zuramat.lua
 VioletHold\PortalTimers.lua
+
+notify.lua
