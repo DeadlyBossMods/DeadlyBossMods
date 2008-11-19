@@ -1494,11 +1494,13 @@ do
 			for i = 1, GetNumRaidMembers() do
 				alive = alive + ((UnitIsDeadOrGhost("raid"..i) and 0) or 1)
 			end
-		else
+		elseif GetNumPartyMembers() > 0 then
 			alive = (UnitIsDeadOrGhost("player") and 0) or 1
 			for i = 1, GetNumPartyMembers() do
 				alive = alive + (UnitIsDeadOrGhost("party"..i) and 0) or 1
 			end
+		else
+			alive = (UnitIsDeadOrGhost("player") and 0) or 1
 		end
 		return alive
 	end
