@@ -1494,13 +1494,11 @@ do
 			for i = 1, GetNumRaidMembers() do
 				alive = alive + ((UnitIsDeadOrGhost("raid"..i) and 0) or 1)
 			end
-		elseif GetNumPartyMembers() > 0 then
-			alive = (UnitIsDeadOrGhost("player") and 0) or 1
-			for i = 1, GetNumPartyMembers() do
-				alive = alive + (UnitIsDeadOrGhost("party"..i) and 0) or 1
-			end
 		else
 			alive = (UnitIsDeadOrGhost("player") and 0) or 1
+			for i = 1, GetNumPartyMembers() do
+				alive = alive + ((UnitIsDeadOrGhost("party"..i) and 0) or 1)
+			end
 		end
 		return alive
 	end
@@ -1924,7 +1922,7 @@ do
 
 	function timerPrototype:Start(timer, ...)
 		if timer and type(timer) ~= "number" then
-			return self:Start(...)
+			return self:Start(nil, timer, ...)
 		end
 		if not self.option or self.mod.Options[self.option] then
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
