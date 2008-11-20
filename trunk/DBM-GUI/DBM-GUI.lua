@@ -1681,8 +1681,10 @@ do
 				end
 			end	
 		end
-		DBM_GUI_OptionsFrame:Hide()
-		DBM_GUI_OptionsFrame:Show()
+		if DBM_GUI_OptionsFrame:IsShown() then
+			DBM_GUI_OptionsFrame:Hide()
+			DBM_GUI_OptionsFrame:Show()
+		end
 	end
 
 
