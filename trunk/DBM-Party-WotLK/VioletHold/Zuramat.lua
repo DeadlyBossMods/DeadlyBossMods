@@ -11,13 +11,13 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningVoidShift		= mod:NewAnnounce("WarningVoidShift", 2, 59743)
-local warningVoidShifted	= mod:NewAnnounce("WarningVoidShifted", 3, 59743)
+local warningVoidShift			= mod:NewAnnounce("WarningVoidShift", 2, 59743)
+local warningVoidShifted		= mod:NewAnnounce("WarningVoidShifted", 3, 59743)
 local warningShroudOfDarkness	= mod:NewAnnounce("WarningShroudOfDarkness", 4, 59745)
-local specWarnVoidShifted	= mod:NewSpecialWarning("SpecialWarningVoidShifted", true, false, false)
-local specShroudOfDarkness	= mod:NewSpecialWarning("SpecialShroudofDarkness", true, false, false)
-local timerVoidShift		= mod:NewTimer(5, "TimerVoidShift", 59743)
-local timerVoidShifted		= mod:NewTimer(15, "TimerVoidShifted", 54343)
+local specWarnVoidShifted		= mod:NewSpecialWarning("SpecialWarningVoidShifted")
+local specShroudOfDarkness		= mod:NewSpecialWarning("SpecialShroudofDarkness")
+local timerVoidShift			= mod:NewTimer(5, "TimerVoidShift", 59743)
+local timerVoidShifted			= mod:NewTimer(15, "TimerVoidShifted", 54343)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59743 or args.spellId == 54361 then			-- Void Shift            59743 (HC)  54361 (nonHC)
