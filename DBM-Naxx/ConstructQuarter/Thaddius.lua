@@ -111,6 +111,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			timerThrow:Cancel()
 			warnThrowSoon:Cancel()
 			DBM.BossHealth:Hide()
+			enrageTimer:Start()
 		end
 	end
 end
