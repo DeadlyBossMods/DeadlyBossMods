@@ -1446,7 +1446,7 @@ local function CreateOptionsMenu()
 		ExpandUpwards:SetPoint("TOPLEFT", TextureDropDown, "BOTTOMLEFT", 0, -10)
 
 		local FillUpBars = BarSetup:CreateCheckButton(L.FillUpBars, false, nil, nil, "FillUpBars")
-		FillUpBars:SetPoint("TOP", ExpandUpwards, "BOTTOM", 0, -2)
+		FillUpBars:SetPoint("TOP", ExpandUpwards, "BOTTOM", 0, 5)
 		
 
 		-- Functions for the next 2 Areas
