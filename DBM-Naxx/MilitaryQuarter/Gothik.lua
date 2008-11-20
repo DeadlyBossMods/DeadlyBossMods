@@ -46,22 +46,23 @@ local wavesHeroic = {
 	{3, L.Trainee, next = 20},
 	{3, L.Trainee, next = 20},
 	{3, L.Trainee, next = 10},
-	{1, L.Knight, next = 10},
+	{2, L.Knight, next = 10},
 	{3, L.Trainee, next = 15},
-	{1, L.Knight, next = 5},
-	{2, L.Trainee, next = 20},
-	{2, L.Trainee, 1, L.Knight, next = 10},
-	{2, L.Trainee, next = 10},
+	{2, L.Knight, next = 5},
+	{3, L.Trainee, next = 20},
+	{3, L.Trainee, 2, L.Knight, next = 10},
+	{3, L.Trainee, next = 10},
 	{1, L.Rider, next = 5},
-	{2, L.Trainee, next = 15},
+	{3, L.Trainee, next = 15},
 	{1, L.Rider, next = 10},
 	{2, L.Knight, next = 10},
 	{1, L.Rider, next = 10},
-	{1, L.Rider, 2, L.Trainee, next = 5},
-	{1, L.Knight, 2, L.Trainee, next = 5},
-	{1, L.Rider, 2, L.Trainee, next = 20},
+	{1, L.Rider, 3, L.Trainee, next = 5},
+	{1, L.Knight, 3, L.Trainee, next = 5},
+	{1, L.Rider, 3, L.Trainee, next = 20},
 	{1, L.Rider, 2, L.Knight, 3, L.Trainee},
 }
+
 
 local waves = wavesNormal
 local wave = 0
