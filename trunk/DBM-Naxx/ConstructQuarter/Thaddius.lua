@@ -12,18 +12,22 @@ mod:EnableModel()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"UNIT_AURA"
+	"UNIT_AURA",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnShiftCasting		= mod:NewAnnounce("WarningShiftCasting", 3, 28089)
 local warnChargeChanged		= mod:NewSpecialWarning("WarningChargeChanged")
 local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", false)
+local warnThrow				= mod:NewAnnounce("WarningThrow", 2, 58678)
+local warnThrowSoon			= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
 
 local enrageTimer		= mod:NewEnrageTimer(300) -- todo: phase2 trigger
 local timerNextShift	= mod:NewTimer(29, "TimerNextShift", 28089)
 local timerShiftCast	= mod:NewTimer(5, "TimerShiftCast", 28089)
+local timerThrow		= mod:NewTimer(20.6, "TimerThrow", 58678)
 
-mod:AddBoolOption("ArrowsEnabled", true, "Arrows")
+mod:AddBoolOption("ArrowsEnabled", false, "Arrows")
 mod:AddBoolOption("ArrowsRightLeft", false, "Arrows")
 mod:AddBoolOption("ArrowsInverse", false, "Arrows")
 mod:AddBoolOption("HealthFrame", true)
@@ -34,9 +38,16 @@ mod:SetBossHealthInfo(
 )
 
 local currentCharge
+local phase2
+local down = 0
 
-function mod:OnCombatStart()
+function mod:OnCombatStart(delay)
+	phase2 = false
 	currentCharge = nil
+	down = 0
+	self:ScheduleMethod(20.6, "TankThrow")
+	timerThrow:Start(-delay)
+	warnThrowSoon:Schedule(17.6 - delay)
 end
 
 local lastShift = 0
@@ -55,15 +66,18 @@ function mod:UNIT_AURA(unit)
 	local charge
 	local i = 1
 	while UnitDebuff("player", i) do
-		local _, _, icon = UnitDebuff("player", i)
+		local _, _, icon, count = UnitDebuff("player", i)
 		if icon == "Interface\\Icons\\Spell_ChargeNegative" then
+			if count > 1 then return end
 			charge = "negative"
 		elseif icon == "Interface\\Icons\\Spell_ChargePositive" then
+			if count > 1 then return end
 			charge = "positive"
 		end
 		i = i + 1
 	end
 	if charge and (GetTime() - lastShift) < 8 and (GetTime() - lastShift) > 5 then
+		phase2 = true
 		if charge == currentCharge then
 			warnChargeNotChanged:Show()
 			if self.Options.ArrowsEnabled and self.Options.ArrowsRightLeft then
@@ -87,6 +101,28 @@ function mod:UNIT_AURA(unit)
 		end
 		currentCharge = charge
 	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Emote or msg == L.Emote2 then
+		down = down + 1
+		if down >= 2 then
+			self:UnscheduleMethod(20.6, "TankThrow")
+			timerThrow:Cancel()
+			warnThrowSoon:Cancel()
+			DBM.BossHealth:Hide()
+		end
+	end
+end
+
+function mod:TankThrow()
+	if not self:IsInCombat() or phase2 then
+		DBM.BossHealth:Hide()
+		return
+	end
+	timerThrow:Start()
+	warnThrowSoon:Schedule(17.6)
+	self:ScheduleMethod(20.6, "TankThrow")
 end
 
 local function arrowOnUpdate(self, elapsed)
