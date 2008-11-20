@@ -92,6 +92,7 @@ L.AreaTitle_BarSetupHuge = "Huge Bar Options"
 L.BarIconLeft 		= "Left Icon"
 L.BarIconRight 		= "Right Icon"
 L.EnableHugeBar 	= "Enable Huge Bar (Bar 2)"
+L.FillUpBars		= "Fill up Bars"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Spam Filter"
