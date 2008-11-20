@@ -12,7 +12,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningFlame		= "Flame Sphere",
-	WarningEmbrace		= "Embrace of the Vampyr: %s"
+	WarningEmbrace		= "Embrace of the Vampyr: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -105,7 +105,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCurse	= "Curse of Fatigue: %s"
+	WarningCurse	= "Curse of Fatigue: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -174,7 +174,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningChains		= "Constricting Chains: %s"
+	WarningChains		= "Constricting Chains: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -235,7 +235,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSleep		= "Sleep: %s"
+	WarningSleep		= "Sleep: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -435,7 +435,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningOverload	= "Static Overload: %s"
+	WarningOverload	= "Static Overload: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -501,7 +501,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWoe	= "Pillar of Woe: %s",
+	WarningWoe	= "Pillar of Woe: >%s<",
 	WarningSorrow	= "Shock of Sorrow",
 	WarningStorm	= "Storm of Grief",
 })
@@ -550,7 +550,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCharge	= "Static Charge: %s",
+	WarningCharge	= "Static Charge: >%s<",
 	WarningRing	= "Lightning Ring"
 })
 
@@ -672,7 +672,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningChains 	= "Crystal Chains: %s",
+	WarningChains 	= "Crystal Chains: >%s<",
 	WarningEnrage	= "Enrage",
 })
 
@@ -786,7 +786,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTomb	= "Frost Tomb: %s",
+	WarningTomb	= "Frost Tomb: >%s<",
 })
 
 L:SetTimerLocalization({
@@ -810,7 +810,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEnfeeble		= "Enfeeble: %s",
+	WarningEnfeeble		= "Enfeeble: >%s<",
 })
 
 L:SetTimerLocalization({
@@ -1060,26 +1060,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningVoidShift		= "%s is debuffed",
-	WarningVoidShifted		= "%s is fighting Spawns",
-	WarningShroudOfDarkness		= "!!!STOP DPS!!!",
-	SpecialWarningVoidShifted 	= "FIGHT SPAWNS",
-	SpecialShroudofDarkness 	= "STOP DPS",
+	WarningVoidShift		= "Void Shift: >%s<",
+	WarningVoidShifted		= "%s is fighting spawns",
+	WarningShroudOfDarkness		= "Shroud of Darkness - stop dps",
+	SpecialWarningVoidShifted 	= "You are Void Shifted!",
+	SpecialShroudofDarkness 	= "Darkness - Stop DPS",
 })
 
 L:SetTimerLocalization({
-	TimerVoidShift			= "%s prepare",
-	TimerVoidShifted		= "%s Spawns",
+	TimerVoidShift			= "Void Shift: %s",
+	TimerVoidShifted		= "Void Shifted: %s",
 })
 
 L:SetOptionLocalization({
-	WarningVoidShift		= "Announce Void Shift DOT",
-	WarningVoidShifted		= "Announce Void Shifted to Void Players",
-	WarningShroudOfDarkness		= "Announce Shroud of Darkness for Damagestop",
-	SpecialWarningVoidShifted	= "Special Warnung when Void Shifted",
-	SpecialShroudofDarkness		= "Special Warnung when Shroud of Darkness",
-	TimerVoidShift			= "Show Bar for VoidShift",
-	TimerVoidShifted		= "Show Bar for VoidShifted",
+	WarningVoidShift			= "Announce Void Shift dot",
+	WarningVoidShifted			= "Announce Void Shifted players",
+	WarningShroudOfDarkness		= "Announce Shroud of Darkness",
+	SpecialWarningVoidShifted	= "Special Warnung when you are Void Shifted",
+	SpecialShroudofDarkness		= "Special Warnung on Shroud of Darkness",
+	TimerVoidShift				= "Show timer for Void Shift dot",
+	TimerVoidShifted			= "Show timer for Void Shifted players",
 })
 
 
