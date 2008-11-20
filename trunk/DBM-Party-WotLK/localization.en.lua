@@ -835,7 +835,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningSmash			= "%s",
 	WarningGrowl			= "%s",
-	WarningWoeStrike		= "Woe Strike: %s",
+	WarningWoeStrike		= "Woe Strike: >%s<",
 	SpecialWarningSpelllock = "Spell-lock - stop casting!"
 })
 
@@ -845,11 +845,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSmash		= "Show (Dark) Smash warning",
+	WarningSmash		= "Show Dark Smash warning",
 	WarningGrowl		= "Show Growl warning",
 	WarningWoeStrike	= "Show Woe Stike warning",
-	TimerSmash		= "Show (Dark) Smash cast timer",
-	TimerWoeStrike		= "Show Woe Strike duration timer",
+	TimerSmash			= "Show Dark Smash cast timer",
+	TimerWoeStrike		= "Show Woe Strike timer",
 })
 
 

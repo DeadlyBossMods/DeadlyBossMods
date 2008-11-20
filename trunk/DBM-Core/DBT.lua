@@ -194,7 +194,11 @@ options = {
 	EnlargeBarsPercent = {
 		type = "number",
 		default = 0.125,
-	}
+	},
+	FillUpBars = {
+		type = "boolean",
+		default = true,
+	},
 }
 
 
@@ -498,7 +502,11 @@ function barPrototype:Update(elapsed)
 		self:Cancel()
 		return
 	else
-		bar:SetValue(1 - self.timer/self.totalTime)
+		if obj.options.FillUpBars then
+			bar:SetValue(1 - self.timer/self.totalTime)
+		else
+			bar:SetValue(self.timer/self.totalTime)
+		end
 		spark:ClearAllPoints()
 		spark:SetPoint("CENTER", bar, "LEFT", bar:GetValue() * bar:GetWidth(), -1)
 		timer:SetText(stringFromTimer(self.timer))
@@ -555,11 +563,13 @@ function barPrototype:Update(elapsed)
 		local next = self.next
 		self:RemoveFromList()
 		if next then
+			local oldX = next.frame:GetRight() - next.frame:GetWidth()/2 -- the next frame's point needs to be cleared before we enlarge the bar to prevent the frame from "jumping around"
+			local oldY = next.frame:GetTop() -- so we need to save the old point for :MoveToNextPosition() as :GetTop() and :GetRight() might return nil (sometimes? happened only once in 2 weeks of raiding...but it crashed DBT...) after :ClearAllPoints()
 			next.frame:ClearAllPoints()
 		end
 		self:Enlarge()
 		if next then
-			next:MoveToNextPosition()
+			next:MoveToNextPosition(oldX, oldY) -- ugly?
 		end
 	end
 end
@@ -763,11 +773,11 @@ function barPrototype:SetPosition()
 	end
 end
 
-function barPrototype:MoveToNextPosition()
+function barPrototype:MoveToNextPosition(oldX, oldY)
 	if self.moving == "enlarge" then return end
 	local newAnchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
-	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
-	local oldY = self.frame:GetTop()
+	local oldX = oldX or (self.frame:GetRight() - self.frame:GetWidth()/2)
+	local oldY = oldY or (self.frame:GetTop())
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
 		self.frame:SetPoint("TOP", newAnchor, "BOTTOM", self.owner.options.BarXOffset, 40 + self.owner.options.BarYOffset)
