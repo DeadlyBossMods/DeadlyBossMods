@@ -267,7 +267,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell	= "Stalagg crush you!"
+	Yell	= "Stalagg crush you!",
+	Emote	= "%s overloads!", -- ?
+	Emote2	= "Tesla Coil overloads!", -- ?
 })
 
 L:SetOptionLocalization({
@@ -276,24 +278,30 @@ L:SetOptionLocalization({
 	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
 	TimerShiftCast			= "Show Polarity Shift cast timer",
 	TimerNextShift			= "Show Polarity Shift cooldown timer",
-	ArrowsEnabled			= "Show arrows",
-	ArrowsRightLeft			= "Show right/left arrows",
-	ArrowsInverse			= "Inverse strategy (show right arrow if polarity changed)"
+	ArrowsEnabled			= "Show arrows (normal \"2 camp\" strategy)",
+	ArrowsRightLeft			= "Show right/left arrows for the \"4 camp\" strategy (show left arrow if polarity changed, right if not)",
+	ArrowsInverse			= "Inverse \"4 camp\" strategy (show right arrow if polarity changed, left if not)",
+	WarningThrow			= "Show Tank-throw warning",
+	WarningThrowSoon		= "Show Tank-throw pre-warning",
+	TimerThrow				= "Show Tank-throw timer"
 })
 
 L:SetWarningLocalization({
 	WarningShiftCasting		= "Polarity Shift in 5 sec!",
 	WarningChargeChanged	= "Polarity changed to %s",
-	WarningChargeNotChanged	= "Polarity didn't change"
+	WarningChargeNotChanged	= "Polarity didn't change",
+	WarningThrow			= "Tank-throw!",
+	WarningThrowSoon		= "Tank-throw in 3 sec"
 })
 
 L:SetTimerLocalization({
 	TimerShiftCast			= "Polarity Shift Cast",
 	TimerNextShift			= "Next Polarity Shift",
+	TimerThrow				= "Tank-throw"
 })
 
 L:SetOptionCatLocalization({
-	Arrows	= "Arrows (NYI)",
+	Arrows	= "Arrows",
 })
 
 
@@ -428,7 +436,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteBreath			= "%s takes in a deep breath...",
+	EmoteBreath			= "%s takes a deep breath.",
 	WarningYellIceblock	= "I'm an Ice Block!"
 })
 
