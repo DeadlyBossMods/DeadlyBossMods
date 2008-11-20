@@ -18,13 +18,14 @@ mod:RegisterEvents(
 local warnPhase2			= mod:NewAnnounce("WarningPhase2", 3)
 local warnBlastTargets		= mod:NewAnnounce("WarningBlastTargets", 2)
 local warnFissure			= mod:NewAnnounce("WarningFissure", 3)
+local warnMana				= mod:NewAnnounce("WarningMana", 2)
 
-local timerPhase2			= mod:NewTimer(228, "TimerPhase2")
+local timerPhase2			= mod:NewTimer(238, "TimerPhase2")
 
 
 function mod:OnCombatStart(delay)
 	timerPhase2:Start()
-	warnPhase2:Schedule(320)
+	warnPhase2:Schedule(238)
 end
 
 local frostBlastTargets = {}
@@ -33,6 +34,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		table.insert(frostBlastTargets, args.destName)
 		self:UnscheduleMethod("AnnounceBlastTargets")
 		self:ScheduleMethod(0.75, "AnnounceBlastTargets")
+	elseif args.spellId == 27819 then
+		warnMana:Show(args.destName)
+		self:SetIcon(args.destName, 8, 5.5)
 	end
 end
 
