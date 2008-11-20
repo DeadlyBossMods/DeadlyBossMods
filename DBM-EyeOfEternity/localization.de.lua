@@ -17,7 +17,8 @@ L:SetWarningLocalization({
 	WarningBreathSoon	= "Tiefer Atem bald",
 	WarningBreath		= "Tiefer Atem!",
 	WarningSurge		= "Kraftsog auf >%s<",
-	WarningVortexSoon	= "Vortex bald"
+	WarningVortexSoon	= "Vortex bald",
+	WarningSurgeYou		= "Kraftsog auf dir!"
 })
 
 L:SetTimerLocalization({
@@ -37,7 +38,8 @@ L:SetOptionLocalization({
 	TimerVortex			= "Timer für Vortex anzeigen",
 	TimerBreath			= "Timer für Tiefen Atem anzeigen",
 	TimerVortexCD		= "Timer für Vortex Cooldown anzeigen (ungenau)",
-	WarningVortexSoon	= "Vorwarnung für Vortex anzeigen (ungenau)"
+	WarningVortexSoon	= "Vorwarnung für Vortex anzeigen (ungenau)",
+	WarningSurgeYou		= "Spezial Warnung anzeigen, wenn du von Kraftsog betroffen bist"
 })
 
 L:SetMiscLocalization({ -- todo!

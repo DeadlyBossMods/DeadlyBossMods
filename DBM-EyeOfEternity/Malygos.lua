@@ -28,7 +28,9 @@ local warnVortexSoon	= mod:NewAnnounce("WarningVortexSoon", 4, 56105)
 local timerSpark	= mod:NewTimer(30, "TimerSpark", 59381)
 local timerVortex	= mod:NewTimer(11, "TimerVortex", 56105)
 local timerBreath	= mod:NewTimer(59, "TimerBreath", 60071)
-local timerVortexCD	= mod:NewTimer(62, "TimerVortexCD", 56105)
+local timerVortexCD	= mod:NewTimer(60, "TimerVortexCD", 56105)
+
+local specWarnSurge = mod:NewSpecialWarning("WarningSurgeYou")
 
 local enrageTimer	= mod:NewEnrageTimer(615)
 
@@ -57,7 +59,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 56105 then
 		timerVortexCD:Start()
-		warnVortexSoon:Schedule(57)
+		warnVortexSoon:Schedule(54)
 		warnVortex:Show()
 		timerVortex:Start()
 		if timerSpark:GetTime() < 11 and timerSpark:IsStarted() then
@@ -82,7 +84,7 @@ local function announceTargets(self)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 60936 then
+	if args.spellId == 60936 or args.spellId == 57407 then
 		local target = guids[args.destGUID or 0]
 		if target then
 			surgeTargets[#surgeTargets + 1] = target
@@ -91,6 +93,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				announceTargets()
 			else
 				self:Schedule(0.5, announceTargets, self)
+			end
+			if target == UnitName("player") then
+				specWarnSurge:Show()
 			end
 		end
 	end
@@ -102,6 +107,7 @@ function mod:OnSync(event, arg)
 		timerSpark:Start()
 	elseif event == "Phase2" then
 		timerSpark:Stop()
+		timerVortexCD:Stop()
 		timerBreath:Start(92)
 	elseif event == "Breath" then
 		timerBreath:Schedule(1)
@@ -109,6 +115,7 @@ function mod:OnSync(event, arg)
 	elseif event == "BreathSoon" then
 		warnBreathInc:Show()
 	elseif event == "Phase3" then
-		self:Schedule(5, buildGuidTable)
+		self:Schedule(6, buildGuidTable)
+		timerBreath:Stop()
 	end
 end

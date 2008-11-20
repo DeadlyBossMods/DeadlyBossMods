@@ -8,7 +8,7 @@
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Battlegrounds
 ## X-DBM-Mod-Sort: 99
-## X-DBM-Mod-LoadZone: Arathi Basin,Warsong Gulch,Alterac Valley,Eye of the Storm
+## X-DBM-Mod-LoadZone: Arathi Basin,Warsong Gulch,Alterac Valley,Eye of the Storm,Vault of Archavon
 localization.en.lua
 localization.de.lua
 localization.tw.lua
@@ -21,3 +21,4 @@ Alterac.lua
 Warsong.lua
 EyeOfTheStorm.lua
 Arenas.lua
+Archavon.lua

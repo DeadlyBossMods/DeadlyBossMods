@@ -180,3 +180,31 @@ L:SetOptionLocalization({
 
 
 
+----------------
+--  Archavon  --
+----------------
+
+L = DBM:GetModLocalization("Archavon")
+
+L:SetGeneralLocalization({
+	name = "Archavon"
+})
+
+L:SetWarningLocalization({
+	WarningShards	= "Rock Shards on >%s<",
+	WarningGrab		= "Archavon grabbed >%s<"
+})
+
+L:SetTimerLocalization({
+	TimerShards = "Rock Shards: %s"
+})
+
+L:SetMiscLocalization({
+	TankSwitch = "%%s lunges for (%S+)!"
+})
+
+L:SetOptionLocalization({
+	TimerShards = "Show Rock Shards timer",
+	WarningShards = "Show Rock Shards warning",
+	WarningGrab = "Show Tank Grab warning"
+})
