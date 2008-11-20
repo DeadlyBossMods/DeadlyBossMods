@@ -392,7 +392,7 @@ L:SetTimerLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMarkSoon				= "Mark %d in 4 sec",
+	WarningMarkSoon				= "Mark %d in 3 sec",
 	WarningMarkNow				= "Mark %d!",
 	SpecialWarningMarkOnPlayer	= "%s: %s",
 })

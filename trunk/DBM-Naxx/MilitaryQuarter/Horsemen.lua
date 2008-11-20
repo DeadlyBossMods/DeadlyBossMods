@@ -18,7 +18,7 @@ local warnMarkSoon			= mod:NewAnnounce("WarningMarkSoon", 1, 28835)
 local warnMarkNow			= mod:NewAnnounce("WarningMarkNow", 2, 28835)
 local specWarnMarkOnPlayer	= mod:NewSpecialWarning("SpecialWarningMarkOnPlayer", nil, false, true)
 
-local timerMark				= mod:NewTimer(12, "TimerMark", 28835)
+local timerMark				= mod:NewTimer(8, "TimerMark", 28835)
 
 mod:AddBoolOption("HealthFrame", true)
 
@@ -46,8 +46,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		markSpam = GetTime()
 		markCounter = markCounter + 1
 		warnMarkNow:Show(markCounter)
-		warnMarkSoon:Schedule(8, markCounter + 1)
-		timerMark:Start(nil, markCounter + 1)
+		warnMarkSoon:Schedule(5, markCounter + 1)
+		timerMark:Start(tostring(markCounter + 1))
 	end
 end
 
