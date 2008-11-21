@@ -810,16 +810,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEnfeeble		= "Enfeeble: >%s<",
+	WarningEnfeeble		= "Debilitate: %s",
 })
 
 L:SetTimerLocalization({
-	TimerEnfeeble		= "Enfeeble: %s",
+	TimerEnfeeble		= "Debilitate: %s",
 })
 
 L:SetOptionLocalization({
-	WarningEnfeeble		= "Show Enfeeble warning",
-	TimerEnfeeble		= "Show Enfeeble duration timer",
+	WarningEnfeeble		= "Show Debilitate warning",
+	TimerEnfeeble		= "Show Debilitate duration timer",
 })
 
 
