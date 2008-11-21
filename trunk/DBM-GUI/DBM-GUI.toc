@@ -1,10 +1,10 @@
-## Interface: 30000
+п»ї## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFOptions GUI|r
-## Title-zhCN: |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFСЎПоЙиЦГЅзГж|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFПараметры GUI|r
+## Title-zhCN: |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFРЎРЋРџРѕР™РёР¦Р“Р…Р·Р“Р¶|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFРџР°СЂР°РјРµС‚СЂС‹ GUI|r
 ## Notes: GUI for Deadly Boss Mods
-## Notes-zhCN: Deadly Boss ModsµДУГ»§ЅзГж
-## Notes-ruRU: Графический интерфейс пользователя DBM
+## Notes-zhCN: Deadly Boss ModsВµР”РЈР“В»В§Р…Р·Р“Р¶
+## Notes-ruRU: Р“СЂР°С„РёС‡РµСЃРєРёР№ РёРЅС‚РµСЂС„РµР№СЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ DBM
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 1
 ## DefaultState: enabled
@@ -18,4 +18,3 @@ DBM-GUI_DropDown.xml
 DBM-GUI_Templates.xml
 DBM-GUI.lua
 DBM-GUI_DropDown.lua
-
