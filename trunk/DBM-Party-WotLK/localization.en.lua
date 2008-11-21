@@ -810,7 +810,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEnfeeble		= "Debilitate: %s",
+	WarningEnfeeble		= "Debilitate: >%s<",
 })
 
 L:SetTimerLocalization({
