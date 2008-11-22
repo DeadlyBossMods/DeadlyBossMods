@@ -1,8 +1,10 @@
-## Interface: 30000
+ï»¿## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFBoss Mod Studio|r
-## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFÊ×ÁìÄ£¿éÉú³ÉÆ÷|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFĞšĞ§Ğ‘Ğ¼Ğ”ĞˆÑ—Ğ¹Ğ™ÑŠÑ–Ğ™Ğ–Ñ‡|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFBoss Mod Studio|r
 ## Notes: BossModStudio for Deadly Boss Mods
-## Notes-zhCN: Deadly Boss ModsµÄÊ×ÁìÄ£¿éÉú³ÉÆ÷
+## Notes-zhCN: Deadly Boss ModsÂµĞ”ĞšĞ§Ğ‘Ğ¼Ğ”ĞˆÑ—Ğ¹Ğ™ÑŠÑ–Ğ™Ğ–Ñ‡
+## Notes-ruRU: Ğ¡Ñ‚ÑƒĞ´Ğ¸Ñ BossModStudio Ğ´Ğ»Ñ DBM
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 0
 ## DefaultState: enabled
@@ -12,6 +14,6 @@
 localization.en.lua
 localization.de.lua
 localization.cn.lua
+localization.ru.lua
 BMS-Core.lua
 BMS-Gui.lua
-
