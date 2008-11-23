@@ -1,15 +1,19 @@
-## Interface: 30000
+﻿## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chamber of Aspects|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Обсидиановое святилище|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Chamber of Aspects
+## X-DBM-Mod-Name-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-Sort: 2
 ## X-DBM-Mod-LoadZone: The Obsidian Sanctum
+## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище
 localization.en.lua
 localization.de.lua
+localization.ru.lua
 Shadron.lua
 Tenebron.lua
 Vesperon.lua
