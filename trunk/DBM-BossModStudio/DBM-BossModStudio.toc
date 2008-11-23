@@ -15,8 +15,6 @@ localization.en.lua
 localization.de.lua
 localization.cn.lua
 localization.ru.lua
-##
 localization.fr.lua
-##
 BMS-Core.lua
 BMS-Gui.lua
