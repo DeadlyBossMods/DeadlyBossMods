@@ -3,7 +3,6 @@ if GetLocale() ~= "frFR" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 local L = DBM_GUI_Translations
 
-local L
 --------------------------------
 -- Ahn’Kahet: The Old Kingdom --
 --------------------------------
@@ -16,18 +15,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFlame		= "Flame Sphere",
-	WarningEmbrace		= "Embrace of the Vampyr: >%s<"
+	WarningFlame		= "Sphère de flamme",
+	WarningEmbrace		= "Étreinte du Vampire: >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace		= "Embrace of the Vampyr: %s"
+	TimerEmbrace		= "Étreinte du Vampire: %s"
 })
 
 L:SetOptionLocalization({
-	WarningFlame		= "Show Flame Sphere warning",
-	WarningEmbrace		= "Show Embrace of the Vampyr warning",
-	TimerEmbrace		= "Show Embrace of the Vampyr duration timer"
+	WarningFlame		= "Afficher Sphère de flamme alerte",
+	WarningEmbrace		= "Afficher Étreinte du Vampire alerte",
+	TimerEmbrace		= "Afficher Étreinte du Vampire durée timer"
 })
 
 
@@ -56,12 +55,12 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("JedogaShadowseeker")
 
 L:SetGeneralLocalization({
-	name = "Jedoga Shadowseeker"
+	name = "Jedoga Cherchelombre"
 })
 
 L:SetWarningLocalization({
 	WarningThundershock	= "Thundershock",
-	WarningPhase2Soon	= "Phase 2 soon",
+	WarningPhase2Soon	= "Phase 2 Bientot",
 	WarningPhase2Now	= "Phase 2"
 })
 
@@ -69,9 +68,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningThundershock	= "Show Thundershock warning",
-	WarningPhase2Soon	= "Show Phase 2 pre-warning",
-	WarningPhase2Now	= "Show Phase 2 warning (NYI)"
+	WarningThundershock	= "Afficher Thundershock alerte",
+	WarningPhase2Soon	= "Afficher Phase 2 pre-alerte",
+	WarningPhase2Now	= "Afficher Phase 2 alerte (NYI)"
 })
 
 L:SetMiscLocalization({
@@ -110,14 +109,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCurse	= "Curse of Fatigue: >%s<"
+	WarningCurse	= "Malédiction de fatigue: >%s<"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningCurse = "Show Curse of Fatigue warning"
+	WarningCurse = "Afficher Malédiction de fatigue alerte"
 })
 
 
@@ -150,20 +149,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBurrowSoon	= "Submerge soon",
-	WarningBurrowNow	= "Submerged",
-	WarningEmerge		= "Emerged"
+	WarningBurrowSoon	= "Submerge bientot",
+	WarningBurrowNow	= "Submerge",
+	WarningEmerge		= "Émerge"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge		= "Emerge",
+	TimerEmerge		= "Émerge",
 })
 
 L:SetOptionLocalization({
-	WarningBurrowSoon	= "Show Submerge pre-warning",
-	WarningBurrowNow	= "Show Submerge warning (NYI)",
-	WarningEmerge		= "Show Emerge warning (NYI)",
-	TimerEmerge		= "Show Emerge timer (NYI)"
+	WarningBurrowSoon	= "Afficher Submerge pre-alerte",
+	WarningBurrowNow	= "Afficher Submerge alerte (NYI)",
+	WarningEmerge		= "Afficher Émerge alerte (NYI)",
+	TimerEmerge		= "Afficher Émerge timer (NYI)"
 })
 
 
@@ -187,8 +186,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningChains		= "Show Constricting Chains warning",
-	TimerChains		= "Show Constricting Chains timer",
+	WarningChains		= "Afficher Constricting Chains alerte",
+	TimerChains		= "Afficher Constricting Chains timer",
 })
 
 
@@ -240,16 +239,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSleep		= "Sleep: >%s<"
+	WarningSleep		= "Dormir: >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerSleep		= "Sleep: %s"
+	TimerSleep		= "Dormir: %s"
 })
 
 L:SetOptionLocalization({
-	WarningSleep		= "Show Sleep warning",
-	TimerSleep		= "Show sleep duration timer"
+	WarningSleep		= "Afficher Dormir alerte",
+	TimerSleep		= "Afficher Dormir durée timer"
 })
 
 
@@ -280,7 +279,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("NovosTheSummoner")
 
 L:SetGeneralLocalization({
-	name = "Novos the Summoner"
+	name = "Novos l'Invocateur"
 })
 
 L:SetWarningLocalization({
@@ -299,7 +298,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("KingDred")
 
 L:SetGeneralLocalization({
-	name = "King Dred"
+	name = "Roi Dred"
 })
 
 L:SetWarningLocalization({
@@ -377,7 +376,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("BloodstoneAnnihilator")
 
 L:SetGeneralLocalization({
-	name = "Drakkari Colossus"
+	name = "Colosse Drakkari"
 })
 
 L:SetWarningLocalization({
@@ -447,7 +446,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningOverload = "Show Static Overload warning"
+	WarningOverload = "Afficher Static Overload alerte"
 })
 
 
@@ -469,7 +468,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningStomp = "Show Shattering Stomp warning"
+	WarningStomp = "Afficher Shattering Stomp alerte"
 })
 
 
@@ -490,7 +489,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningNova	= "Show Lightning Nova warning"
+	WarningNova	= "Afficher Lightning Nova alerte"
 })
 
 
@@ -517,11 +516,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWoe	= "Show Pillar of Woe warning",
-	WarningSorrow	= "Show Shock of Sorrow warning",
-	WarningStorm	= "Show Storm of Grief warning",
-	TimerWoe	= "Show Pillar of Woe duration timer",
-	TimerSorrow	= "Show Shock of Sorrow duration timer",
+	WarningWoe	= "Afficher Pillar of Woe alerte",
+	WarningSorrow	= "Afficher Shock of Sorrow alerte",
+	WarningStorm	= "Afficher Storm of Grief alerte",
+	TimerWoe	= "Afficher Pillar of Woe duration timer",
+	TimerSorrow	= "Afficher Shock of Sorrow duration timer",
 })
 
 
@@ -541,7 +540,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShatter	= "Show Shatter prewarning"
+	WarningShatter	= "Afficher Shatter prealerte"
 })
 
 
@@ -563,8 +562,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningCharge	= "Show Static Charge warning",
-	WarningRing	= "Show Lightning Ring warning"
+	WarningCharge	= "Afficher Static Charge alerte",
+	WarningRing	= "Afficher Lightning Ring alerte"
 })
 
 
@@ -604,8 +603,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningRiftSoon		= "Show Rift Opened pre-warning",
-	WarningRiftNow		= "Show Rift Opened warning"
+	WarningRiftSoon		= "Afficher Rift Opened pre-alerte",
+	WarningRiftNow		= "Afficher Rift Opened alerte"
 })
 
 
@@ -629,10 +628,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSpikes		= "Show Crystal Spikes warning",
-	WarningReflection	= "Show Spell Reflection warning",
-	WarningFrenzy		= "Show Frenzy warning",
-	TimerReflection		= "Show Spell Reflection duration timer",
+	WarningSpikes		= "Afficher Crystal Spikes alerte",
+	WarningReflection	= "Afficher Spell Reflection alerte",
+	WarningFrenzy		= "Afficher Frenzy alerte",
+	TimerReflection		= "Afficher Spell Reflection duration timer",
 })
 
 
@@ -655,9 +654,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show split pre-warning",
-	WarningSplitNow		= "Show split warning",
-	WarningMerge		= "Show merge warning",
+	WarningSplitSoon	= "Afficher split pre-alerte",
+	WarningSplitNow		= "Afficher split alerte",
+	WarningMerge		= "Afficher merge alerte",
 })
 
 L:SetMiscLocalization({
@@ -686,9 +685,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningChains	= "Show Crystal Chains warning",
-	WarningEnrage	= "Show Enrage warning",
-	TimerChains	= "Show Crystal Chains duration timer",
+	WarningChains	= "Afficher Crystal Chains alerte",
+	WarningEnrage	= "Afficher Enrage alerte",
+	TimerChains	= "Afficher Crystal Chains duration timer",
 })
 
 
@@ -732,11 +731,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningTimeBomb = "Show Time Bomb warning",
-	WarningExplosion = "Show Arcane Explosion warning",
-	TimerTimeBomb = "Show Time Bomb timer",
-	TimerExplosion = "Show Arcane Explosion timer",
-	SpecWarnBombYou = "Show a special warning if you are the bomb",
+	WarningTimeBomb = "Afficher Time Bomb alerte",
+	WarningExplosion = "Afficher Arcane Explosion alerte",
+	TimerTimeBomb = "Afficher Time Bomb timer",
+	TimerExplosion = "Afficher Arcane Explosion timer",
+	SpecWarnBombYou = "Afficher a special alerte if you are the bomb",
 })
 
 
@@ -799,8 +798,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningTomb	= "Show Frost Tomb warning",
-	TimerTomb	= "Show Frost Tomb duration timer",
+	WarningTomb	= "Afficher Frost Tomb alerte",
+	TimerTomb	= "Afficher Frost Tomb duration timer",
 })
 
 
@@ -823,8 +822,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningEnfeeble		= "Show Debilitate warning",
-	TimerEnfeeble		= "Show Debilitate duration timer",
+	WarningEnfeeble		= "Afficher Debilitate alerte",
+	TimerEnfeeble		= "Afficher Debilitate duration timer",
 })
 
 
@@ -850,11 +849,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSmash		= "Show Dark Smash warning",
-	WarningGrowl		= "Show Growl warning",
-	WarningWoeStrike	= "Show Woe Stike warning",
-	TimerSmash			= "Show Dark Smash cast timer",
-	TimerWoeStrike		= "Show Woe Strike timer",
+	WarningSmash		= "Afficher Dark Smash alerte",
+	WarningGrowl		= "Afficher Growl alerte",
+	WarningWoeStrike	= "Afficher Woe Stike alerte",
+	TimerSmash			= "Afficher Dark Smash cast timer",
+	TimerWoeStrike		= "Afficher Woe Strike timer",
 })
 
 
@@ -877,7 +876,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWhirlwind	= "Show Whirlwind warning"
+	WarningWhirlwind	= "Afficher Whirlwind alerte"
 })
 
 ------------
@@ -897,7 +896,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningBane	= "Show Bane warning"
+	WarningBane	= "Afficher Bane alerte"
 })
 
 
@@ -1083,8 +1082,8 @@ L:SetOptionLocalization({
 	WarningShroudOfDarkness		= "Announce Shroud of Darkness",
 	SpecialWarningVoidShifted	= "Special Warnung when you are Void Shifted",
 	SpecialShroudofDarkness		= "Special Warnung on Shroud of Darkness",
-	TimerVoidShift				= "Show timer for Void Shift dot",
-	TimerVoidShifted			= "Show timer for Void Shifted players",
+	TimerVoidShift				= "Afficher timer for Void Shift dot",
+	TimerVoidShifted			= "Afficher timer for Void Shifted players",
 })
 
 
@@ -1108,11 +1107,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPortalNow		= "Show New Portal warning",
-	WarningPortalSoon		= "Show New Portal pre-warning",
-	WarningBossNow			= "Show Boss warning",
-	TimerPortalIn			= "Show \"Portal: #\" timer",
-	ShowAllPortalWarnings	= "Show warnings for all waves"
+	WarningPortalNow		= "Afficher New Portal alerte",
+	WarningPortalSoon		= "Afficher New Portal pre-alerte",
+	WarningBossNow			= "Afficher Boss alerte",
+	TimerPortalIn			= "Afficher \"Portal: #\" timer",
+	AfficherAllPortalWarnings	= "Afficher alertes for all waves"
 })
 
 
