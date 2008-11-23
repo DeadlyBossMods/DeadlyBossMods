@@ -1,10 +1,10 @@
 if GetLocale() ~= "frFR" then return end
 
 DBM_CORE_LOAD_MOD_ERROR				= "Erreur durant le chargement du boss mods pour %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Chargé '%s' boss mods!"
-DBM_CORE_LOAD_GUI_ERROR				= "Ne peut chargé le GUI: %s"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Charger '%s' boss mods!"
+DBM_CORE_LOAD_GUI_ERROR				= "Ne peut charger le GUI: %s"
 
-DBM_CORE_COMBAT_STARTED				= "%s engagé. Bonne chance et Amusez-vous ! :)";
+DBM_CORE_COMBAT_STARTED				= "%s engager. Bonne chance et Amusez-vous ! :)";
 DBM_CORE_BOSS_DOWN					= "%s mort aprés %s!"
 DBM_CORE_BOSS_DOWN_LONG				= "%s mort aprés %s! Votre dernier kill pris %s et le kill le plus rapide pris %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s mort aprés %s! C'est un nouveau record! (ancien record étant %s)"
@@ -35,18 +35,18 @@ DBM_CORE_AUTO_RESPOND_WHISPER		= "%s est occupé à combattre contre %s (%s, %d/%d
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM non installé"
-DBM_CORE_VERSIONCHECK_FOOTER		= "Trouvé %d joueurs avec Deadly Boss Mods"
+DBM_CORE_VERSIONCHECK_FOOTER		= "Trouver %d joueurs avec Deadly Boss Mods"
 
-DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmé.\n Version %s (r%d) disponible ici:"
-DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copié le lien à votre presse-papier."
+DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\n Version %s (r%d) disponible ici:"
+DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copier le lien à votre presse-papier."
 
 DBM_CORE_MOVABLE_BAR				= "Déplace moi!"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h vous envoie un timer pizza: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
-DBM_PIZZA_CONFIRM_IGNORE			= "Voulez vous vraiment ignoré le timers pizza de %s pour cette session?"
+DBM_PIZZA_CONFIRM_IGNORE			= "Voulez vous vraiment ignorer le timers pizza de %s pour cette session?"
 DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
 
-DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods est lancé doublement car vous avez DBMv3 et DBMv4 d'installé et d'activé!\nClick \"Okay\" pour désactivé DBMv3 et rechargé votre interfarce.\nVous pouvez aussi nettoyé votre fichier AddOns en supprimant l'ancien fichier DBMv3."
+DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods est lancé doublement car vous avez DBMv3 et DBMv4 d'installé et d'activé!\nClick \"Okay\" pour désactiver DBMv3 et recharger votre interfarce.\nVous pouvez aussi nettoyer votre fichier AddOns en supprimant l'ancien fichier DBMv3."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click ou click-droit pour déplacer"
@@ -65,7 +65,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm help: Affiche l'aide",
 }
 
-DBM_ERROR_NO_PERMISSION				= "Vous n'avez pas les permissions requise pour faire ceci."
+DBM_ERROR_NO_PERMISSION				= "Vous n'avez pas les permissions requises pour faire ceci."
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Cacher"
 
