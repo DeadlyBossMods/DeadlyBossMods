@@ -1,6 +1,7 @@
 ## Interface: 30000
 ## Title:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
 ## Title-zhCN: |cffffd200Deadly Boss Mods|r |cff69ccf0ºËÐÄ´úÂë|r
+## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Core|r
 ## Notes: Deadly Boss Mods
 ## SavedVariablesPerCharacter: DBM_SavedOptions, DBT_SavedOptions
 ## LoadOnDemand: 0
@@ -10,9 +11,8 @@
 localization.en.lua
 localization.de.lua
 localization.cn.lua
-## 
+localization.ru.lua
 localization.fr.lua
-## 
 DBT-Template.xml
 DBT.lua
 DBM-Core.lua
