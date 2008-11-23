@@ -27,8 +27,8 @@ L.Mod_Enabled		= "Activé boss mod"
 L.Mod_EnableAnnounce	= "Annonce au raid"
 L.Reset 		= "reset"
 
-L.Enable  		= "activé"
-L.Disable		= "désactivé"
+L.Enable  		= "Activer"
+L.Disable		= "Désactiver"
 
 L.NoSound		= "Pas de Son"
 
