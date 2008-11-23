@@ -1,5 +1,5 @@
 DBM-Core - Done
-DBM-BossModStudio - In Progress
+DBM-BossModStudio - Done
 DBM-GUI - In Progress
 DBM-Party-WotLK - In Progress
 DBM-Battlegrounds - In Progress
