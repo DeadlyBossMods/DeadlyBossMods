@@ -10,6 +10,9 @@
 localization.en.lua
 localization.de.lua
 localization.cn.lua
+## 
+localization.fr.lua
+## 
 DBT-Template.xml
 DBT.lua
 DBM-Core.lua
