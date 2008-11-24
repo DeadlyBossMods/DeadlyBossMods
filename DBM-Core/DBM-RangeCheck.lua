@@ -10,6 +10,7 @@
 -- The localizations are written by:
 --    * enGB/enUS: Tandanu
 --    * deDE: Tandanu/Nitram
+--    * ruRU: BootWin
 --    * (add your names here!)
 --
 -- Special thanks to:
