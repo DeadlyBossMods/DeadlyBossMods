@@ -107,7 +107,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emote or msg == L.Emote2 then
 		down = down + 1
 		if down >= 2 then
-			self:UnscheduleMethod(20.6, "TankThrow")
+			self:UnscheduleMethod("TankThrow")
 			timerThrow:Cancel()
 			warnThrowSoon:Cancel()
 			DBM.BossHealth:Hide()
