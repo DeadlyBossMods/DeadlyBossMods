@@ -11,6 +11,7 @@
 --    * enGB/enUS: Tandanu			http://www.deadlybossmods.com
 --    * deDE: Tandanu				http://www.deadlybossmods.com
 --    * zhCN: Diablohu				http://wow.gamespot.com.cn
+--    * ruRU: BootWin				bootwin@gmail.com
 --    * (add your names here!)
 --
 -- Special thanks to:
