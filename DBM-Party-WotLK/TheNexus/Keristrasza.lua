@@ -18,10 +18,11 @@ local warningEnrage		= mod:NewAnnounce("WarningEnrage", 3, 8599)
 local timerChains		= mod:NewTimer(10, "TimerChains", 50997)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 50997 then
+	-- please check this! enrage shows up in other instances too, so I limited this to the boss itself (hopefull)
+	if args.spellId == 50997 and args.sourceGUID == 26723 then
 		warningChains:Show(tostring(args.destName))
 		timerChains:Start(10, tostring(args.destName))
-	elseif args.spellId == 8599 then
+	elseif args.spellId == 8599 args.sourceGUID == 26723 then
 		warningEnrage:Show()
 	end
 end
