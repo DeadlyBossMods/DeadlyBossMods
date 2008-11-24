@@ -19,12 +19,12 @@ mod:RegisterEvents(
 local warnShiftCasting		= mod:NewAnnounce("WarningShiftCasting", 3, 28089)
 local warnChargeChanged		= mod:NewSpecialWarning("WarningChargeChanged")
 local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", false)
-local warnThrow				= mod:NewAnnounce("WarningThrow", 2, 58678)
-local warnThrowSoon			= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
+local warnThrow			= mod:NewAnnounce("WarningThrow", 2, 58678)
+local warnThrowSoon		= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
 
-local enrageTimer		= mod:NewEnrageTimer(300) -- todo: phase2 trigger
-local timerNextShift	= mod:NewTimer(29, "TimerNextShift", 28089)
-local timerShiftCast	= mod:NewTimer(5, "TimerShiftCast", 28089)
+local enrageTimer		= mod:NewEnrageTimer(365) -- todo: phase2 trigger
+local timerNextShift		= mod:NewTimer(29, "TimerNextShift", 28089)
+local timerShiftCast		= mod:NewTimer(5, "TimerShiftCast", 28089)
 local timerThrow		= mod:NewTimer(20.6, "TimerThrow", 58678)
 
 mod:AddBoolOption("ArrowsEnabled", false, "Arrows")
