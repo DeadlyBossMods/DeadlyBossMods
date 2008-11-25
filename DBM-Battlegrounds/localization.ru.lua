@@ -14,9 +14,9 @@ L:SetTimerLocalization({
 	TimerInvite = "%s"
 })
 L:SetOptionLocalization({
-	ColorByClass	= "Set name color to class color in the score frame",
-	ShowInviteTimer	= "Show battleground join timer",
-	AutoSpirit	= "Auto-release spirit"
+	ColorByClass = "Показывать имена цветом класса в таблице очков",
+	ShowInviteTimer = "Показать отсчет времени до входа на ПБ",
+	AutoSpirit = "Автоматически покидать тело"
 })
 --------------
 --  Arenas  --
@@ -27,15 +27,15 @@ L:SetGeneralLocalization({
 	name = "Арены"
 })
 L:SetTimerLocalization({
-	TimerStart	= "Game starts in",
+	TimerStart = "Бой начался!",
 })
 L:SetOptionLocalization({
-	TimerStart = "Show start timer"
+	TimerStart = "Показать отсчет времени до начала боя"
 })
 L:SetMiscLocalization({
-	Start60 = "One minute until the Arena battle begins!",
-	Start30 = "Thirty seconds until the Arena battle begins!",
-	Start15 = "Fifteen seconds until the Arena battle begins!"
+	Start60 = "Битва начнется через 1 минуту!",
+	Start30 = "Битва начнется через 30 секунд!",
+	Start15 = "Битва начнется через 15 секунд!"
 })
 ---------------
 --  Alterac  --
@@ -46,20 +46,20 @@ L:SetGeneralLocalization({
 	name = "Альтеракская долина"
 })
 L:SetTimerLocalization({
-	TimerStart = "Game starts", 
+	TimerStart = "Бой начался!", 
 	TimerTower = "%s",
 	TimerGY = "%s",
 })
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту.",
-	BgStart30 = "Битва начнется через 30 секунд.",
+	BgStart60 = "Битва начнется через 1 минуту!",
+	BgStart30 = "Битва начнется через 30 секунд!",
 	ZoneName = "Альтеракская долина",
 })
 L:SetOptionLocalization({
-	TimerStart  = "Show start timer",
-	TimerTower = "Show tower capture timer",
-	TimerGY = "Show graveyard capture timer",
-	AutoTurnIn = "Auto turn-in quests"
+	TimerStart  = "Показать отсчет времени до начала боя",
+	TimerTower = "Показать отсчет времени до захвата",
+	TimerGY = "Показать отсчет времени до захвата кладбищь",
+	AutoTurnIn = "Авто-сдача заданий в Альтеракской долине"
 })
 ---------------
 --  Arathi  --
@@ -70,26 +70,26 @@ L:SetGeneralLocalization({
 	name = "Низина Арати"
 })
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту.",
-	BgStart30 = "Битва начнется через 30 секунд.",
+	BgStart60 = "Битва начнется через 1 минуту!",
+	BgStart30 = "Битва начнется через 30 секунд!",
 	ZoneName = "Низина Арати",
 	ScoreExpr = "(%d+)/2000",
-	Alliance = "Альянс",
-	Horde = "Орда",
-	WinBarText = "%s wins",
-	BasesToWin = "Bases to win: %d",
-	Flag = "Flag"
+	Alliance = "Альянса",
+	Horde = "Орды",
+	WinBarText = "Победа %s",
+	BasesToWin = "Захвачено баз: %d",
+	Flag = "Флаг"
 })
 L:SetTimerLocalization({
-	TimerStart = "Game starts", 
+	TimerStart = "Бой начался!", 
 	TimerCap = "%s",
 })
 L:SetOptionLocalization({
-	TimerStart  = "Show start timer",
-	TimerWin = "Show win timer",
-	TimerCap = "Show capture timer",
-	ShowAbEstimatedPoints = "Show estimated points on win/lose",
-	ShowAbBasesToWin = "Show bases required to win"
+	TimerStart  = "Показать отсчет времени до начала боя",
+	TimerWin = "Показать отсчет времени до победы",
+	TimerCap = "Показать отсчет времени до захвата",
+	ShowAbEstimatedPoints = "Показать предполагаемые очки оставшиеся до победы/поражения",
+	ShowAbBasesToWin = "Показать базы, которые необходимо захватить"
 })
 -----------------------
 --  Eye of the Storm --
@@ -100,28 +100,28 @@ L:SetGeneralLocalization({
 	name = "Око Бури"
 })
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту.",
-	BgStart30 = "Битва начнется через 30 секунд.",
+	BgStart60 = "Битва начнется через 1 минуту!",
+	BgStart30 = "Битва начнется через 30 секунд!",
 	ZoneName = "Око Бури",
 	ScoreExpr = "(%d+)/2000",
 	Alliance = "Альянса",
 	Horde = "Орды",
 	WinBarText = "Победа %s",
-	FlagReset = "Флаг возвращается на место.",
+	FlagReset = "Флаг возвращен на базу.",
 	FlagTaken = "(.+) захватывает флаг!",
-	FlagCaptured = ".+ ha%w+ захватывает флаг!",
-	FlagDropped = "Флаг был уронен!",
+	FlagCaptured = "(.+) захватывает флаг (%w+)!",
+	FlagDropped = "Флаг уронили!",
 
 })
 L:SetTimerLocalization({
-	TimerStart = "Game starts", 
-	TimerFlag = "Flag respawn",
+	TimerStart = "Бой начался!", 
+	TimerFlag = "Флаг восстановлен",
 })
 L:SetOptionLocalization({
-	TimerStart  = "Show start timer",
-	TimerWin = "Show win timer",
-	TimerFlag = "Show flag respawn timer",
-	ShowPointFrame = "Show flag carrier and estimated points",
+	TimerStart  = "Показать отсчет времени до начала боя",
+	TimerWin = "Показать отсчет времени до победы",
+	TimerFlag = "Показать отсчет времени до восстановления флага",
+	ShowPointFrame = "Показать флагоносца и предполагаемые очки",
 })
 --------------------
 --  Warsong Gulch --
@@ -132,13 +132,13 @@ L:SetGeneralLocalization({
 	name = "Ущелье Песни Войны"
 })
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту.",
-	BgStart30 = "Битва начнется через 30 секунд.",
+	BgStart60 = "Битва начнется через 1 минуту!",
+	BgStart30 = "Битва начнется через 30 секунд!",
 	ZoneName = "Ущелье Песни Войны",
 	Alliance = "Альянса",
-	Horde = "Орды",	
-	InfoErrorText = "The flag carrier targeting function will be restored when you are out of combat.",
-	ExprFlagPickUp = "(.+) взял флаг (%w+)",
+	Horde = "Орды",
+	InfoErrorText = "Функция выбора флагоносца, будет восстановлена после выхода из режима боя.",
+	ExprFlagPickUp = "(.+) подымает флаг (%w+)",
 	ExprFlagCaptured = "(.+) захватывает флаг (%w+)!",
 	ExprFlagReturn = "(.+) возвращает флаг (%w+) на базу!",
 	FlagAlliance = "Флаг Альянса: ",
@@ -147,15 +147,15 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Game starts", 
-	TimerFlag = "Flag respawn",
+	TimerStart = "Бой начался!", 
+	TimerFlag = "Флаг восстановлен",
 })
 L:SetOptionLocalization({
-	TimerStart  = "Show start timer",
-	TimerWin = "Show win timer",
-	TimerFlag = "Show flag respawn timer",
-	ShowFlagCarrier = "Show flag carrier",
-	ShowFlagCarrierErrorNote = "Shows flag carrier error message when in combat",
+	TimerStart  = "Показать отсчет времени до начала боя",
+	TimerWin = "Показать отсчет времени до победы",
+	TimerFlag = "Показать отсчет времени до восстановления флага",
+	ShowFlagCarrier = "Показать флагоносца",
+	ShowFlagCarrierErrorNote = "Показать сообщения об ошибках в режиме боя",
 })
 ----------------
 --  Archavon  --
@@ -167,17 +167,17 @@ L:SetGeneralLocalization({
 	name = "Склеп Аркавона"
 })
 L:SetWarningLocalization({
-	WarningShards	= "Rock Shards on >%s<",
-	WarningGrab		= "Archavon grabbed >%s<"
+	WarningShards = "Град из острых камней на >%s<",
+	WarningGrab = "Склеп Аркавона под контролем >%s<"
 })
 L:SetTimerLocalization({
-	TimerShards = "Rock Shards: %s"
+	TimerShards = "Каменные осколки: %s"
 })
 L:SetMiscLocalization({
-	TankSwitch = "%%s lunges for (%S+)!"
+	TankSwitch = "%%s нападает на (%S+)!"
 })
 L:SetOptionLocalization({
-	TimerShards = "Show Rock Shards timer",
-	WarningShards = "Show Rock Shards warning",
-	WarningGrab = "Show Tank Grab warning"
+	TimerShards = "Показать отсчет времени до града из Каменных осколков",
+	WarningShards = "Показать предупреждение для Каменных осколков",
+	WarningGrab = "Показать предупреждение для Захвата"
 })
