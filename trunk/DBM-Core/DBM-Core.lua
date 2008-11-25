@@ -1184,11 +1184,7 @@ do
 	end
 
 	local function clearTargetList()
-		for i in pairs(targetList) do
-			targetList[i] = nil
-		end
-		targetList.reset = 1
-		targetList.reset = nil
+		table.wipe(targetList)
 	end
 
 	local function scanForCombat(combatInfo)
