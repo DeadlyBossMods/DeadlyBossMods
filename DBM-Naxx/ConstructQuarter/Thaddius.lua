@@ -12,7 +12,6 @@ mod:EnableModel()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"UNIT_AURA",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
@@ -22,7 +21,7 @@ local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", fa
 local warnThrow			= mod:NewAnnounce("WarningThrow", 2, 58678)
 local warnThrowSoon		= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
 
-local enrageTimer		= mod:NewEnrageTimer(365) -- todo: phase2 trigger
+local enrageTimer		= mod:NewEnrageTimer(365)
 local timerNextShift		= mod:NewTimer(29, "TimerNextShift", 28089)
 local timerShiftCast		= mod:NewTimer(5, "TimerShiftCast", 28089)
 local timerThrow		= mod:NewTimer(20.6, "TimerThrow", 58678)
@@ -53,6 +52,7 @@ end
 local lastShift = 0
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 28089 then
+		phase2 = true
 		timerNextShift:Start()
 		timerShiftCast:Start()
 		warnShiftCasting:Show()
@@ -60,9 +60,8 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-
-function mod:UNIT_AURA(unit)
-	if unit ~= "player" then return end
+mod:RegisterOnUpdateHandler(function(self, elapsed)
+	if not phase2 or (GetTime() - lastShift) > 6 or (GetTime() - lastShift) < 5 then return end
 	local charge
 	local i = 1
 	while UnitDebuff("player", i) do
@@ -76,8 +75,8 @@ function mod:UNIT_AURA(unit)
 		end
 		i = i + 1
 	end
-	if charge and (GetTime() - lastShift) < 8 and (GetTime() - lastShift) > 5 then
-		phase2 = true
+	if charge then
+		lastShift = 0
 		if charge == currentCharge then
 			warnChargeNotChanged:Show()
 			if self.Options.ArrowsEnabled and self.Options.ArrowsRightLeft then
@@ -101,7 +100,7 @@ function mod:UNIT_AURA(unit)
 		end
 		currentCharge = charge
 	end
-end
+end, 1/3)
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emote or msg == L.Emote2 then
