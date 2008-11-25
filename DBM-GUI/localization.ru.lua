@@ -8,10 +8,10 @@ L.MainFrame = "Deadly Boss Mods"
 L.TabCategory_Options		= "Общие параметры"
 L.TabCategory_WOTLK			= "Wrath of the Lich King"
 L.TabCategory_BC			= "The Burning Crusade"
-L.TabCategory_CLASSIC		= "Классические боссы WoW"
+L.TabCategory_CLASSIC		= "Классическая игра"
 L.TabCategory_OTHER			= "Другие боссы"
 
-L.BossModLoaded				= "Статистика для %s"
+L.BossModLoaded				= "%s - статистика"
 L.BossModLoad_now			= [[База данных для этих боссов не загружена. 
 Она будет загружена сразу после входа в подземелье. 
 Можно также нажать кнопку, чтобы загрузить вручную.]]
