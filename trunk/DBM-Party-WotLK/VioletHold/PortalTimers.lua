@@ -22,6 +22,10 @@ mod:AddBoolOption("ShowAllPortalWarnings", false, "announce")
 
 local lastwave = 0
 
+function mod:OnCombatStart()
+	lastwave = 0
+end
+
 function mod:UPDATE_WORLD_STATES(args)
 	local text = select(3, GetWorldStateUIInfo(2))
 	if not text then return end

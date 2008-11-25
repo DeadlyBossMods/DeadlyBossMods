@@ -8,4 +8,24 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
+	"SPELL_SUMMON"
 )
+
+local warningCurse	= mod:NewAnnounce("WarningCurse", 3, 58845)
+local warningSteal	= mod:NewAnnounce("WarningSteal", 3, 52709)
+local warningGhoul	= mod:NewAnnounce("WarningGhoul", 3, 52451)
+
+function mod:SPELL_SUMMON(args)
+	if args.spellId == 52451 then
+		warningGhoul:Show()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 58845 then
+		warningCurse:Show(args.destName)
+	elseif args.spellId == 52709 then
+		wagningSteal:Show(args.destName)
+	end
+end

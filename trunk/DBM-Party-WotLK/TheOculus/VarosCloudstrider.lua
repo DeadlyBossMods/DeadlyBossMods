@@ -8,4 +8,13 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED"
 )
+
+local warningAmplify = mod:NewAnnounce("WarningAmplify", 3, 51054)
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 51054 or args.spellId == 59371 then
+		warningAmplify:Show(args.destName)
+	end
+end

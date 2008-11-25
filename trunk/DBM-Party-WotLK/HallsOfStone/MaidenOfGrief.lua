@@ -23,15 +23,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 50760 or args.spellId == 59726 then
 		timerSorrow:Start()
 		warningSorrow:Show()
-	elseif args.spellId == 50752 then
+	elseif args.spellId == 50752 or args.spellId == 59772 then
 		warningStorm:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 50761 then
+	if args.spellId == 50761 or args.spellId == 59727 then
 		warningWoe:Show(args.destName)
 		timerWoe:Start(args.destName)
-		self:SetIcon(args.destName, 8, 10)
 	end
 end

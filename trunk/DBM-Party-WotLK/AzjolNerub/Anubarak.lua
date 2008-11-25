@@ -8,31 +8,13 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"UNIT_HEALTH"
+	"SPELL_CAST_START"
 )
 
-local warningBurrowSoon		= mod:NewAnnounce("WarningBurrowSoon", 3, 56504)
-local warningBurrowNow		= mod:NewAnnounce("WarningBurrowNow", 3, 56504)
-local warningEmerge		= mod:NewAnnounce("WarningEmerge", 3, 56504)
+local warningPound		= mod:NewAnnounce("WarningPound", 3, 53472)
 
-local timerEmerge		= mod:NewTimer(60, "Emerge", 56504)
-
-local warnburrow = false
-
-function mod:OnCombatStart()
-	warnburrow = false
-end
-
-function mod:UNIT_HEALTH(arg1)
-	if UnitName(arg1) == L.name then
-		local h = UnitHealth(arg1)
-		if (h > 66 and h < 71) or (h > 33 and h < 38) or (h > 15 and h < 20) then
-			if not warnburrow then
-				warnburrow = true
-				warningBurrowSoon:Show()
-			end
-		else
-			warnburrow = false
-		end
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 53472 or args.spellId == 59433 then
+		warningPound:Show()
 	end
 end

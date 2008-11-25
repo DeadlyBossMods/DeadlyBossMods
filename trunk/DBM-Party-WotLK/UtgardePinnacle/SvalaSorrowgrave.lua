@@ -8,4 +8,13 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED"
 )
+
+local warningSword	= mod:NewAnnounce("WarningSword", 3, 48276)
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 48276 then
+		warningSword:Show(args.destName)
+	end
+end

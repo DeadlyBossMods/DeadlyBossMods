@@ -8,13 +8,21 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 local warningOverload	= mod:NewAnnounce("WarningOverload", 3, 52658)
+local warningSplit	= mod:NewAnnounce("WarningSplit", 3, 52770)
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_SUCCES"
 )
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 52658 or args.spellId == 59796 then
 		warningOverload:Show(args.destName)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 52770 then
+		warningSplit:Show()
 	end
 end

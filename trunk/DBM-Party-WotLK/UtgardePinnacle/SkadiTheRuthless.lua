@@ -11,10 +11,13 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningWhirlwind		= mod:NewAnnounce("WarningWhirlwind", 3, 59322)
+local warningPoison		= mod:NewAnnounce("WarningPoison", 3, 59331)
+local warningWhirlwind		= mod:NewAnnounce("WarningWhirlwind", 3, 59332)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 59322 then
+	if args.spellId == 59332 or args.spellId == 50228 then
 		warningWhirlwind:Show()
+	elseif args.spellId == 59331 or args.spellId == 50255 then
+		warningPoison:Show(args.destName)
 	end
 end
