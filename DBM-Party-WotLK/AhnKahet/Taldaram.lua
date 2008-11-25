@@ -25,14 +25,14 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 55959 then
-		warningEmbrace:Show(args.destName)
-		timerEmbrace:Start(args.destName)
+	if args.spellId == 55959 or args.spellId == 59513 then
+		warningEmbrace:Show(tostring(args.destName))
+		timerEmbrace:Start(tostring(args.destName))
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 55959 then
+	if args.spellId == 55959 or args.spellId == 59513 then
 		timerEmbrace:Cancel()
 	end
 end

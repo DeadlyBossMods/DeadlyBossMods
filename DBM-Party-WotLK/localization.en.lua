@@ -36,12 +36,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningPlague	= "Brood Plague: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningPlague	= "Show Brood Plague warning"
 })
 
 
@@ -56,8 +58,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningThundershock	= "Thundershock",
-	WarningPhase2Soon	= "Phase 2 soon",
-	WarningPhase2Now	= "Phase 2"
 })
 
 L:SetTimerLocalization({
@@ -65,12 +65,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningThundershock	= "Show Thundershock warning",
-	WarningPhase2Soon	= "Show Phase 2 pre-warning",
-	WarningPhase2Now	= "Show Phase 2 warning (NYI)"
-})
-
-L:SetMiscLocalization({
-	emote			= ""
 })
 
 
@@ -84,12 +78,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningInsanity	= "Insanity",
+	WarningShiver	= "Shiver: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningInsanity	= "Show Insanity warning",
+	WarningShiver	= "Show Shiver warning"
 })
 
 
@@ -126,12 +124,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningLeech	= "Leech Poison",
+	WarningCloud	= "Acid Cloud"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningLeech	= "Show Leech Poison warning",
+	WarningCloud	= "Show Acid Cloud warning"
 })
 
 
@@ -145,20 +147,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBurrowSoon	= "Submerge soon",
-	WarningBurrowNow	= "Submerged",
-	WarningEmerge		= "Emerged"
+	WarningPound		= "Pound",
 })
 
 L:SetTimerLocalization({
-	TimerEmerge		= "Emerge",
 })
 
 L:SetOptionLocalization({
-	WarningBurrowSoon	= "Show Submerge pre-warning",
-	WarningBurrowNow	= "Show Submerge warning (NYI)",
-	WarningEmerge		= "Show Emerge warning (NYI)",
-	TimerEmerge		= "Show Emerge timer (NYI)"
+	WarningPound		= "Show Pound warning",
 })
 
 
@@ -197,12 +193,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningCurse	= "Curse of Twisted Flesh: %s",
+	WarningSteal	= "Steal Flesh: %s",
+	WarningGhouls	= "Ghouls Summoned"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningCurse	= "Show Curse of Twisted Flesh warning",
+	WarningSteal	= "Show Steal Flesh warning",
+	WarningGhouls	= "Show Ghouls Summoned warning"
 })
 
 
@@ -216,12 +218,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningStrike	= "Wounding Strike: %s",
+	WarningTimer	= "Time %s",
+	WarningCurse	= "Curse of Exertion: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningStrike	= "Show Wounding Strike warning",
+	WarningTimer	= "Show Time Stop/Warp warning",
+	WarningCurse	= "Show Curse of Exertion warning"
 })
 
 
@@ -298,12 +306,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningFear	= "Fear",
+	WarningBite	= "Grievous Bite: %s",
+	WarningSlash	= "%s Slash"
 })
 
 L:SetTimerLocalization({
+	TimerFear	= "Fear cooldown",
+	TimerSlash	= "%s Slash: %s"
 })
 
 L:SetOptionLocalization({
+	WarningSlash	= "Show Mangling/Piercing Slash warning",
+	WarningFear	= "Show Fear warning",
+	WarningBite	= "Show Grievous Bite warning",
+	TimerFear	= "Show Fear cooldown timer",
+	TimerSlash	= "Show Mangling/Piercing Slash duration timer"
 })
 
 
@@ -317,12 +335,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningCloud	= "Poison Cloud"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningCloud	= "Show Poison Cloud warning"
 })
 
 
@@ -416,12 +436,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningWhirlwind	= "Whirlwind"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningWhirlwind	= "Show Whirlwind warning"
 })
 
 
@@ -435,14 +457,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningOverload	= "Static Overload: >%s<"
+	WarningOverload	= "Static Overload: >%s<",
+	WarningSplit	= "Disperse/Split"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningOverload = "Show Static Overload warning"
+	WarningOverload = "Show Static Overload warning",
+	WarningSplit	= "Show Disperse warning"
 })
 
 
@@ -617,6 +641,7 @@ L:SetWarningLocalization({
 	WarningSpikes		= "Crystal Spikes",
 	WarningReflection	= "Spell Reflection",
 	WarningFrenzy		= "Frenzy",
+	WarningAdd		= "Crystalline Tangler summoned"
 })
 
 L:SetTimerLocalization({
@@ -627,7 +652,8 @@ L:SetOptionLocalization({
 	WarningSpikes		= "Show Crystal Spikes warning",
 	WarningReflection	= "Show Spell Reflection warning",
 	WarningFrenzy		= "Show Frenzy warning",
-	TimerReflection		= "Show Spell Reflection duration timer",
+	WarningAdd		= "Warn when an add is summoned",
+	TimerReflection		= "Show Spell Reflection duration timer"
 })
 
 
@@ -745,12 +771,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningAmplify	= "Amplify Magic: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningAmplify	= "Show Amplify Magic warning"
 })
 
 
@@ -764,12 +792,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningShift	= "Planar Shift",
+	WarningShiftEnd	= "Planar Shift ending",
+	WarningEnrage	= "Enraged Assault"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningShift	= "Show Planar Shift warning",
+	WarningShiftEnd	= "Show \"Planar Shift ending\" warning",
+	WarningEnrage	= "Show Enraged Assault warning"
 })
 
 
@@ -810,16 +844,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEnfeeble		= "Debilitate: >%s<",
+	WarningEnfeeble		= "Enfeeble: >%s<",
+	WarningSummon		= "Skeletons summoned"
 })
 
 L:SetTimerLocalization({
-	TimerEnfeeble		= "Debilitate: %s",
+	TimerEnfeeble		= "Enfeeble: %s",
 })
 
 L:SetOptionLocalization({
-	WarningEnfeeble		= "Show Debilitate warning",
-	TimerEnfeeble		= "Show Debilitate duration timer",
+	WarningEnfeeble		= "Show Enfeeble warning",
+	WarningSummon		= "Warn when skeletons are summoned",
+	TimerEnfeeble		= "Show Enfeeble duration timer",
 })
 
 
@@ -865,14 +901,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWhirlwind	= "Whirlwind"
+	WarningWhirlwind	= "Whirlwind",
+	WarningPoison		= "Poisoned Spear: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWhirlwind	= "Show Whirlwind warning"
+	WarningWhirlwind	= "Show Whirlwind warning",
+	WarningPoison		= "Show Poisoned Spear warning"
 })
 
 ------------
@@ -906,12 +944,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningSword	= "Ritual of the Sword: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningSword	= "Show Sacrifice warning"
 })
 
 
@@ -925,12 +965,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningImpale	= "Impale: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningImpale	= "Show Impale warning"
 })
 
 
@@ -946,12 +988,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningVacuum	= "Arcane Vacuum",
+	WarningBlizzard	= "Blizzard",
+	WarningMana	= "Mana Destruction: %s"
 })
 
 L:SetTimerLocalization({
+	TimerVacuum	= "Next Arcane Vacuum"
 })
 
 L:SetOptionLocalization({
+	WarningVacuum	= "Show Arcane Vacuum warning",
+	WarningBlizzard	= "Show Blizzard warning",
+	WarningMana	= "Show Mana Destruction warning",
+	TimerVacuum	= "Show Arcane Vacuum cooldown timer"
 })
 
 
@@ -965,12 +1015,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningES	= "Earth Shield"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningES	= "Show Earth Shield warning"
 })
 
 
@@ -1022,12 +1074,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningLink	= "Optic Link: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningLink	= "Show Optic Link warning"
 })
 
 

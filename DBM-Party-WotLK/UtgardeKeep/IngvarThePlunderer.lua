@@ -26,7 +26,8 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 42723 or args.spellId == 42669 then
 		warningSmash:Show(tostring(args.spellName))
 		timerSmash:Start()
-	elseif args.spellId == 42708 or args.spellId == 42729 then
+	elseif args.spellId == 42708 or args.spellId == 42729
+	or args.spellId == 59708 or args.spellId == 59734 then
 		warningGrowl:Show(tostring(args.spellName))
 	end
 	if args.spellId == 42723 then
@@ -35,7 +36,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 42730 then
+	if args.spellId == 42730 or args.spellId == 59735 then
 		warningWoeStrike:Show(tostring(args.destName))
 		timerWoeStrike:Start(tostring(args.destName))
 		mod:SetIcon(args.destName, 8, 10)
@@ -43,7 +44,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 42730 then
+	if args.spellId == 42730 or args.spellId == 59735 then
 		timerWoeStrike:Cancel()
 	end
 end

@@ -15,7 +15,7 @@ local warningChains	= mod:NewAnnounce("WarningChains", 4, 52969)
 local timerChains	= mod:NewTimer(5, "TimerChains", 52969)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 52969 then
+	if args.spellId == 52696 or args.spellId == 58823 then
 		warningChains:Show(tostring(args.destName))
 		timerChains:Start(tostring(args.destName))
 	end
