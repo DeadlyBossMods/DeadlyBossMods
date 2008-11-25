@@ -20,12 +20,12 @@ local warnBlastTargets		= mod:NewAnnounce("WarningBlastTargets", 2)
 local warnFissure			= mod:NewAnnounce("WarningFissure", 3)
 local warnMana				= mod:NewAnnounce("WarningMana", 2)
 
-local timerPhase2			= mod:NewTimer(238, "TimerPhase2")
+local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 
 
 function mod:OnCombatStart(delay)
 	timerPhase2:Start()
-	warnPhase2:Schedule(238)
+	warnPhase2:Schedule(225)
 end
 
 local frostBlastTargets = {}
