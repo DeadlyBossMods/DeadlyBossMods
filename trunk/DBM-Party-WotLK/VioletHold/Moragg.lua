@@ -8,4 +8,13 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED"
 )
+
+local warningLink = mod:NewAnnounce("WarningLink", 3, 54396)
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 54396 then
+		warningLink:Show(args.destName)
+	end
+end

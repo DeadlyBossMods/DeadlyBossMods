@@ -8,4 +8,13 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED"
 )
+
+local warningMojo	= mod:NewAnnounce("WarningMojo", 3, 55163)
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 55163 then
+		warningMojo:Show()
+	end
+end
