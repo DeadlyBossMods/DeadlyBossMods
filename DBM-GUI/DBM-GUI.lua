@@ -39,7 +39,7 @@ setmetatable(PanelPrototype, {__index = DBM_GUI})
 
 local L = DBM_GUI_Translations
 
-local usemodelframe = false	-- very beta
+local usemodelframe = false		-- very beta
 
 function DBM_GUI:ShowHide(forceshow)
 	if forceshow == true then
