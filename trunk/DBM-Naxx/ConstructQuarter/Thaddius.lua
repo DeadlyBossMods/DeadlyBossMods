@@ -23,7 +23,7 @@ local warnThrowSoon		= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
 
 local enrageTimer		= mod:NewEnrageTimer(365)
 local timerNextShift		= mod:NewTimer(29, "TimerNextShift", 28089)
-local timerShiftCast		= mod:NewTimer(5, "TimerShiftCast", 28089)
+local timerShiftCast		= mod:NewTimer(3, "TimerShiftCast", 28089)
 local timerThrow		= mod:NewTimer(20.6, "TimerThrow", 58678)
 
 mod:AddBoolOption("ArrowsEnabled", false, "Arrows")
@@ -61,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 mod:RegisterOnUpdateHandler(function(self, elapsed)
-	if not phase2 or (GetTime() - lastShift) > 6 or (GetTime() - lastShift) < 5 then return end
+	if not phase2 or (GetTime() - lastShift) > 5 or (GetTime() - lastShift) < 3 then return end
 	local charge
 	local i = 1
 	while UnitDebuff("player", i) do
