@@ -91,6 +91,27 @@ L:SetOptionLocalization({
 })
 
 
+--------------
+-- Amanitar --
+--------------
+L = DBM:GetModLocalization("Amanitar")
+
+L:SetGeneralLocalization({
+	name = "Amanitar"
+})
+
+L:SetWarningLocalization({
+	WarningMini	= "Mini",
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	WarningMini	= "Show Mini warning",
+})
+
+
 -----------------
 -- Azjol-Nerub --
 -------------------------------
@@ -195,7 +216,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningCurse	= "Curse of Twisted Flesh: %s",
 	WarningSteal	= "Steal Flesh: %s",
-	WarningGhouls	= "Ghouls Summoned"
+	WarningGhoul	= "Ghouls Summoned"
 })
 
 L:SetTimerLocalization({
@@ -204,7 +225,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningCurse	= "Show Curse of Twisted Flesh warning",
 	WarningSteal	= "Show Steal Flesh warning",
-	WarningGhouls	= "Show Ghouls Summoned warning"
+	WarningGhoul	= "Show Ghouls Summoned warning"
 })
 
 
@@ -219,7 +240,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningStrike	= "Wounding Strike: %s",
-	WarningTimer	= "Time %s",
+	WarningTime	= "Time %s",
 	WarningCurse	= "Curse of Exertion: %s"
 })
 
@@ -228,7 +249,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningStrike	= "Show Wounding Strike warning",
-	WarningTimer	= "Show Time Stop/Warp warning",
+	WarningTime	= "Show Time Stop/Warp warning",
 	WarningCurse	= "Show Curse of Exertion warning"
 })
 
@@ -358,12 +379,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningNova	= "Poison Nova",
+	WarningBite	= "Powerful Bite: %s"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningNova	= "Show Poison Nova warning",
+	WarningBite	= "Show Powerful Bite warning"
 })
 
 
@@ -377,12 +402,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningMojo	= "Mojo Frenzy"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningMojo	= "Show Mojo Frenzy warning"
 })
 
 
@@ -412,6 +439,24 @@ L = DBM:GetModLocalization("Galdarah")
 
 L:SetGeneralLocalization({
 	name = "Gal'darah"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+-----------------------
+-- Eck the Ferocious --
+-----------------------
+L = DBM:GetModLocalization("Eck")
+
+L:SetGeneralLocalization({
+	name = "Eck the Ferocious"
 })
 
 L:SetWarningLocalization({
@@ -710,6 +755,37 @@ L:SetOptionLocalization({
 	WarningChains	= "Show Crystal Chains warning",
 	WarningEnrage	= "Show Enrage warning",
 	TimerChains	= "Show Crystal Chains duration timer",
+})
+
+
+---------------------------------
+-- Commander Kolurg/Stoutbeard --
+---------------------------------
+L = DBM:GetModLocalization("Commander")
+
+local faction = UnitFactionGroup("player")
+local commander = "Unknown"
+if faction == "Alliance" then
+	commander = "Commander Kolurg"
+elseif faction == "Horde" then
+	commander = "Commander Stoutbeard"
+end
+
+L:SetGeneralLocalization({
+	name = commander
+})
+
+L:SetWarningLocalization({
+	WarningFear 		= "Fear",
+	WarningWhirlwind	= "Whirlwind",
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	WarningFear		= "Show Fear warning",
+	WarningWhirlwind	= "Show Whirlwind warning",
 })
 
 

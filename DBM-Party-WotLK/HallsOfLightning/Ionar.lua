@@ -16,7 +16,7 @@ mod:RegisterEvents(
 )
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 52658 or args.spellId == 59796 then
+	if args.spellId == 52658 or args.spellId == 59795 then
 		warningOverload:Show(args.destName)
 	end
 end
