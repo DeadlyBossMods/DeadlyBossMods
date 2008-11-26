@@ -18,13 +18,13 @@ mod:RegisterEvents(
 local warnShiftCasting		= mod:NewAnnounce("WarningShiftCasting", 3, 28089)
 local warnChargeChanged		= mod:NewSpecialWarning("WarningChargeChanged")
 local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", false)
-local warnThrow			= mod:NewAnnounce("WarningThrow", 2, 58678)
-local warnThrowSoon		= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
+local warnThrow				= mod:NewAnnounce("WarningThrow", 2, 58678)
+local warnThrowSoon			= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
 
-local enrageTimer		= mod:NewEnrageTimer(365)
-local timerNextShift		= mod:NewTimer(29, "TimerNextShift", 28089)
+local enrageTimer			= mod:NewEnrageTimer(365)
+local timerNextShift		= mod:NewTimer(30, "TimerNextShift", 28089)
 local timerShiftCast		= mod:NewTimer(3, "TimerShiftCast", 28089)
-local timerThrow		= mod:NewTimer(20.6, "TimerThrow", 58678)
+local timerThrow			= mod:NewTimer(20.6, "TimerThrow", 58678)
 
 mod:AddBoolOption("ArrowsEnabled", false, "Arrows")
 mod:AddBoolOption("ArrowsRightLeft", false, "Arrows")
@@ -93,7 +93,7 @@ mod:RegisterOnUpdateHandler(function(self, elapsed)
 					self:ShowRightArrow()
 				elseif self.Options.ArrowsRightLeft then
 					self:ShowLeftArrow()
-				else
+				elseif currentCharge then
 					self:ShowUpArrow()
 				end
 			end
