@@ -282,7 +282,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting		= "Polarity Shift in 5 sec!",
+	WarningShiftCasting		= "Polarity Shift in 3 sec!",
 	WarningChargeChanged	= "Polarity changed to %s",
 	WarningChargeNotChanged	= "Polarity didn't change"
 })

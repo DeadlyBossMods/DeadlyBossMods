@@ -242,7 +242,7 @@ L:SetOptionLocalization({
 	TimerThrow					= "Показать отсчет времени до Броска"
 })
 L:SetWarningLocalization({
-	WarningShiftCasting			= "Сдвиг полярности через 5 секунд!",
+	WarningShiftCasting			= "Сдвиг полярности через 3 секунд!",
 	WarningChargeChanged		= "%s - полярность изменена",
 	WarningChargeNotChanged		= "Полярность не изменена",
 	WarningThrow				= "Бросок!",
