@@ -36,8 +36,8 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.02",
-	DisplayVersion = "4.02"
+	Version = "4.03",
+	DisplayVersion = "4.03"
 }
 
 DBM_SavedOptions = {}
@@ -153,7 +153,7 @@ end
 
 local function checkLanguage()
 	local l = GetLocale()
-	if l == "zhTW" or l == "koKR" then
+	if l == "koKR" then
 		DBM:AddMsg(("Your client language \"%s\" is currently unsupported in DBMv4.\nIf you want to help us translating DBM: drop us a line! (email: tandanu@deadlybossmods.com, forum: http://www.deadlybossmods.com/forum)"):format(l))
 	end
 end
@@ -534,7 +534,8 @@ do
 	local ignore = {}
 	function DBM:CreatePizzaTimer(time, text, broadcast, sender)
 		if sender and ignore[sender] then return end
-		text = text:sub(0, 17)
+		text = text:sub(0, 16)
+		text = text:gsub("%%t", UnitName("target") or "<no target>")
 		self.Bars:CreateBar(time, text)
 		if broadcast and self:GetRaidRank() >= 1 then
 			sendSync("DBMv4-Pizza", ("%s\t%s"):format(time, text))
