@@ -148,13 +148,13 @@ end
 
 local function pformat(fstr, ...)
 	local ok, str = pcall(format, fstr, ...)
-	return (ok and str) or fstr
+	return (ok and str) or fstr:gsub("%%%S+", DBM_CORE_UNKNOWN)
 end
 
 local function checkLanguage()
 	local l = GetLocale()
-	if l ~= "enGB" and l ~= "enUS" and l ~= "deDE" and l ~= "zhCN" then
-		DBM:AddMsg("Your client language \"%s\" is currently unsupported in DBMv4.\nIf you want to help us translating DBM: drop us a line! (email: tandanu@deadlybossmods.com, forum: http://www.deadlybossmods.com/forum)")
+	if l == "zhTW" or l == "koKR" then
+		DBM:AddMsg(("Your client language \"%s\" is currently unsupported in DBMv4.\nIf you want to help us translating DBM: drop us a line! (email: tandanu@deadlybossmods.com, forum: http://www.deadlybossmods.com/forum)"):format(l))
 	end
 end
 

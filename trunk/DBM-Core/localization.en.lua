@@ -69,3 +69,5 @@ DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Hide"
 
 DBM_CORE_ALLIANCE					= "Alliance"
 DBM_CORE_HORDE						= "Horde"
+
+DBM_CORE_UNKNOWN					= "unknown"
