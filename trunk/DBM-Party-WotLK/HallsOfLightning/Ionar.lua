@@ -7,7 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningOverload	= mod:NewAnnounce("WarningOverload", 3, 52658)
+local warningOverload	= mod:NewAnnounce("WarningOverload", 2, 52658)
 local warningSplit	= mod:NewAnnounce("WarningSplit", 3, 52770)
 
 mod:RegisterEvents(

@@ -13,8 +13,8 @@ mod:RegisterEvents(
 )
 
 local warningTime = mod:NewAnnounce("WarningTime", 3, 58848)
-local warningStrike = mod:NewAnnounce("WarningStrike", 3, 52771)
-local warningCurse = mod:NewAnnounce("WarningCurse", 3, 52772)
+local warningStrike = mod:NewAnnounce("WarningStrike", 4, 52771)
+local warningCurse = mod:NewAnnounce("WarningCurse", 2, 52772)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 58848 then

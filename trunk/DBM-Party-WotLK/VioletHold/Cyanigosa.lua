@@ -7,9 +7,9 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningVacuum	= mod:NewAnnounce("WarningVacuum", 3, 58694)
-local warningBlizzard	= mod:NewAnnounce("WarningBlizzard", 2, 58693)
-local warningMana	= mod:NewAnnounce("WarningMana", 3, 59374)
+local warningVacuum	= mod:NewAnnounce("WarningVacuum", 1, 58694)
+local warningBlizzard	= mod:NewAnnounce("WarningBlizzard", 3, 58693)
+local warningMana	= mod:NewAnnounce("WarningMana", 2, 59374)
 local timerVacuum	= mod:NewTimer(30, "TimerVacuum", 58694)
 
 mod:RegisterEvents(
@@ -32,6 +32,6 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59374 then
-		warningMana:Show(tostring(args.destName))
+		warningMana:Show(args.destName)
 	end
 end

@@ -36,7 +36,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPlague	= "Brood Plague: %s"
+	WarningPlague	= "Brood Plague: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -79,7 +79,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningInsanity	= "Insanity",
-	WarningShiver	= "Shiver: %s"
+	WarningShiver	= "Shiver: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -214,9 +214,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCurse	= "Curse of Twisted Flesh: %s",
-	WarningSteal	= "Steal Flesh: %s",
-	WarningGhoul	= "Ghouls Summoned"
+	WarningCurse	= "Curse of Twisted Flesh: >%s<",
+	WarningSteal	= "Steal Flesh: >%s<",
+	WarningGhoul	= "Ghouls summoned"
 })
 
 L:SetTimerLocalization({
@@ -239,9 +239,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningStrike	= "Wounding Strike: %s",
-	WarningTime	= "Time %s",
-	WarningCurse	= "Curse of Exertion: %s"
+	WarningStrike	= "Wounding Strike: >%s<",
+	WarningTime	= "Time >%s<",
+	WarningCurse	= "Curse of Exertion: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -328,7 +328,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningFear	= "Fear",
-	WarningBite	= "Grievous Bite: %s",
+	WarningBite	= "Grievous Bite: >%s<",
 	WarningSlash	= "%s Slash"
 })
 
@@ -380,7 +380,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningNova	= "Poison Nova",
-	WarningBite	= "Powerful Bite: %s"
+	WarningBite	= "Powerful Bite: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -847,7 +847,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningAmplify	= "Amplify Magic: %s"
+	WarningAmplify	= "Amplify Magic: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -978,7 +978,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningWhirlwind	= "Whirlwind",
-	WarningPoison		= "Poisoned Spear: %s"
+	WarningPoison		= "Poisoned Spear: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -1020,7 +1020,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSword	= "Ritual of the Sword: %s"
+	WarningSword	= "Ritual of the Sword: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -1041,7 +1041,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningImpale	= "Impale: %s"
+	WarningImpale	= "Impale: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -1066,7 +1066,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningVacuum	= "Arcane Vacuum",
 	WarningBlizzard	= "Blizzard",
-	WarningMana	= "Mana Destruction: %s"
+	WarningMana	= "Mana Destruction: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -1150,7 +1150,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningLink	= "Optic Link: %s"
+	WarningLink	= "Optic Link: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -1191,7 +1191,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningVoidShift		= "Void Shift: >%s<",
-	WarningVoidShifted		= "%s is fighting spawns",
+	WarningVoidShifted		= ">%s< is fighting spawns",
 	WarningShroudOfDarkness		= "Shroud of Darkness - stop dps",
 	SpecialWarningVoidShifted 	= "You are Void Shifted!",
 	SpecialShroudofDarkness 	= "Darkness - Stop DPS",

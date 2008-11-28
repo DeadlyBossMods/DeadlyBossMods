@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local warningPortalNow	= mod:NewAnnounce("WarningPortalNow", 1, 57687)
+local warningPortalNow	= mod:NewAnnounce("WarningPortalNow", 2, 57687)
 local warningPortalSoon	= mod:NewAnnounce("WarningPortalSoon", 1, 57687)
 local warningBossNow	= mod:NewAnnounce("WarningBossNow", 4, 33341)
 

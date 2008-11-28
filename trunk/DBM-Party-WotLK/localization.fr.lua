@@ -1065,7 +1065,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningVoidShift		= "Void Shift: >%s<",
-	WarningVoidShifted		= "%s is fighting spawns",
+	WarningVoidShifted		= ">%s< is fighting spawns",
 	WarningShroudOfDarkness		= "Shroud of Darkness - stop dps",
 	SpecialWarningVoidShifted 	= "You are Void Shifted!",
 	SpecialShroudofDarkness 	= "Darkness - Stop DPS",

@@ -12,14 +12,14 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
-local warningEnfeeble	= mod:NewAnnounce("WarningEnfeeble", 4, 43650)
+local warningEnfeeble	= mod:NewAnnounce("WarningEnfeeble", 2, 43650)
 local warningSummon	= mod:NewAnnounce("WarningSummon", 3, 52611)
 local timerEnfeeble	= mod:NewTimer(6, "TimerEnfeeble", 43650)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 43650 then
-		warningEnfeeble:Show(tostring(args.destName))
-		timerEnfeeble:Start(tostring(args.destName))
+		warningEnfeeble:Show(args.destName)
+		timerEnfeeble:Start(args.destName)
 	end
 end
 

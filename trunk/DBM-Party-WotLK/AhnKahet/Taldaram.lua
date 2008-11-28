@@ -13,7 +13,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningEmbrace		= mod:NewAnnounce("WarningEmbrace", 3, 55959)
+local warningEmbrace		= mod:NewAnnounce("WarningEmbrace", 2, 55959)
 local warningFlame		= mod:NewAnnounce("WarningFlame", 3, 55931)
 
 local timerEmbrace		= mod:NewTimer(20, "TimerEmbrace", 55959)

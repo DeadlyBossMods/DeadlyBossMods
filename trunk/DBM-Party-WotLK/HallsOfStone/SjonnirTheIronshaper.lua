@@ -7,7 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningCharge	= mod:NewAnnounce("WarningCharge", 3, 50834)
+local warningCharge	= mod:NewAnnounce("WarningCharge", 2, 50834)
 local warningRing	= mod:NewAnnounce("WarningRing", 3, 50840)
 
 mod:RegisterEvents(

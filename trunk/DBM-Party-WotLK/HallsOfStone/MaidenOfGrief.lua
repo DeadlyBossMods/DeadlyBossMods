@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningWoe	= mod:NewAnnounce("WarningWoe", 3, 50761)
-local warningSorrow	= mod:NewAnnounce("WarningSorrow", 3, 50760)
+local warningWoe	= mod:NewAnnounce("WarningWoe", 2, 50761)
+local warningSorrow	= mod:NewAnnounce("WarningSorrow", 1, 50760)
 local warningStorm	= mod:NewAnnounce("WarningStorm", 3, 50752)
 
 local timerWoe		= mod:NewTimer(10, "TimerWoe", 50761)

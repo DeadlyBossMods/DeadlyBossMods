@@ -8,7 +8,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 local warningCloud	= mod:NewAnnounce("WarningCloud", 3, 53400)
-local warningLeech	= mod:NewAnnounce("WarningLeech", 3, 53030)
+local warningLeech	= mod:NewAnnounce("WarningLeech", 1, 53030)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START"

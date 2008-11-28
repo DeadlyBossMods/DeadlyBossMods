@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
-local warningCurse	= mod:NewAnnounce("WarningCurse", 3, 58845)
-local warningSteal	= mod:NewAnnounce("WarningSteal", 3, 52709)
+local warningCurse	= mod:NewAnnounce("WarningCurse", 1, 58845)
+local warningSteal	= mod:NewAnnounce("WarningSteal", 2, 52709)
 local warningGhoul	= mod:NewAnnounce("WarningGhoul", 3, 52451)
 
 function mod:SPELL_SUMMON(args)

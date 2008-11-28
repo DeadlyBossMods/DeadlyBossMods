@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warningInsanity	= mod:NewAnnounce("WarningInsanity", 3, 57496)
-local warningShiver	= mod:NewAnnounce("WarningShiver", 3, 57949)
+local warningShiver	= mod:NewAnnounce("WarningShiver", 2, 57949)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 57496 then

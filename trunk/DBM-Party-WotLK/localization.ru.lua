@@ -826,7 +826,7 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	WarningVoidShift			= "Вхождение в Бездну: >%s<",
-	WarningVoidShifted			= "%s бьется с призваным караульным Бездны",
+	WarningVoidShifted			= ">%s< бьется с призваным караульным Бездны",
 	WarningShroudOfDarkness		= "Покров Тьмы - остановите урон",
 	SpecialWarningVoidShifted	= "Вы отброшены в Бездну!",
 	SpecialShroudofDarkness		= "Покров Тьмы - остановите урон",

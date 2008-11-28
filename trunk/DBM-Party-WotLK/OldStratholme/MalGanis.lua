@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningSleep	= mod:NewAnnounce("WarningSleep", 3, 52721)
+local warningSleep	= mod:NewAnnounce("WarningSleep", 2, 52721)
 local timerSleep	= mod:NewTimer(10, "TimerSleep", 52721)
 
 function mod:SPELL_AURA_APPLIED(args)
