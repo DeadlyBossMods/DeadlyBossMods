@@ -11,8 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningShift	= mod:NewAnnounce("WarningShift", 3, 51162)
-local warningShiftEnd	= mod:NewAnnounce("WarningShiftEnd", 3, 51162)
+local warningShift	= mod:NewAnnounce("WarningShift", 1, 51162)
+local warningShiftEnd	= mod:NewAnnounce("WarningShiftEnd", 1, 51162)
 local warningEnraged	= mod:NewAnnounce("WarningEnraged", 3, 51170)
 
 function mod:SPELL_AURA_APPLIED(args)

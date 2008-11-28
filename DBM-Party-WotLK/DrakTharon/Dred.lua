@@ -13,8 +13,8 @@ mod:RegisterEvents(
 )
 
 local warningSlash	= mod:NewAnnounce("WarningSlash", 3, 48873)
-local warningBite	= mod:NewAnnounce("WarningBite", 3, 48920)
-local warningFear	= mod:NewAnnounce("WarningFear", 2, 22686)
+local warningBite	= mod:NewAnnounce("WarningBite", 2, 48920)
+local warningFear	= mod:NewAnnounce("WarningFear", 1, 22686)
 
 local timerFear		= mod:NewTimer(20, "TimerFear", 22686)  -- cooldown ??
 local timerSlash	= mod:NewTimer(10, "TimerSlash", 48873)

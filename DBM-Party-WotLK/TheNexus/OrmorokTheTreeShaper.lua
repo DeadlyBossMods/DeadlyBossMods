@@ -14,10 +14,10 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
-local warningSpikes	= mod:NewAnnounce("WarningSpikes", 3, 47958)
+local warningSpikes	= mod:NewAnnounce("WarningSpikes", 2, 47958)
 local warningFrenzy	= mod:NewAnnounce("WarningFrenzy", 3, 48017)
-local warningReflection	= mod:NewAnnounce("WarningReflection", 3, 47981)
-local warningAdd	= mod:NewAnnounce("WarningAdd", 3, 61564)
+local warningReflection	= mod:NewAnnounce("WarningReflection", 4, 47981)
+local warningAdd	= mod:NewAnnounce("WarningAdd", 1, 61564)
 local timerReflection	= mod:NewTimer(15, "TimerReflection", 47981)
 
 function mod:SPELL_CAST_SUCCESS(args)

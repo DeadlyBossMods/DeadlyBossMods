@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningPoison		= mod:NewAnnounce("WarningPoison", 3, 59331)
+local warningPoison		= mod:NewAnnounce("WarningPoison", 2, 59331)
 local warningWhirlwind		= mod:NewAnnounce("WarningWhirlwind", 3, 59332)
 
 function mod:SPELL_AURA_APPLIED(args)

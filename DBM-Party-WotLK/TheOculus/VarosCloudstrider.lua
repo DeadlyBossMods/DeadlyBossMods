@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningAmplify = mod:NewAnnounce("WarningAmplify", 3, 51054)
+local warningAmplify = mod:NewAnnounce("WarningAmplify", 2, 51054)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 51054 or args.spellId == 59371 then

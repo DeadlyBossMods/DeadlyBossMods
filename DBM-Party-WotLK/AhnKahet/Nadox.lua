@@ -7,7 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningPlague	= mod:NewAnnounce("WarningPlague", 3, 56130)
+local warningPlague	= mod:NewAnnounce("WarningPlague", 2, 56130)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"

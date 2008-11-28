@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningLink = mod:NewAnnounce("WarningLink", 3, 54396)
+local warningLink = mod:NewAnnounce("WarningLink", 2, 54396)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 54396 then

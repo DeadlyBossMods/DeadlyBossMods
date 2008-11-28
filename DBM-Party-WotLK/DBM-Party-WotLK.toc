@@ -6,9 +6,12 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Ahn'Kahet,Azjol-Nerub,CoT: Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold
+## X-DBM-Mod-SubCategories-deDE: Ahn'kahet,Azjol-Nerub,HdZ: Stratholme,Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
+
 ## X-DBM-Mod-Name: Party Boss Mods
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold
+## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
 localization.en.lua
 localization.ru.lua
 localization.fr.lua

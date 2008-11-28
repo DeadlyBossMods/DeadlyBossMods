@@ -19,8 +19,8 @@ local timerChains		= mod:NewTimer(10, "TimerChains", 50997)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 50997 then
-		warningChains:Show(tostring(args.destName))
-		timerChains:Start(10, tostring(args.destName))
+		warningChains:Show(args.destName)
+		timerChains:Start(args.destName)
 	elseif args.spellId == 8599 and args.souceGUID == 26723 then
 		warningEnrage:Show()
 	end
@@ -28,6 +28,6 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 50997 then
-		timerChains:Stop(tostring(args.destName))
+		timerChains:Stop(args.destName)
 	end
 end

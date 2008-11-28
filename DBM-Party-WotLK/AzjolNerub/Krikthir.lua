@@ -7,7 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningCurse	= mod:NewAnnounce("WarningCurse", 3, 52592)
+local warningCurse	= mod:NewAnnounce("WarningCurse", 2, 52592)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
