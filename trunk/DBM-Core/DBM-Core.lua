@@ -1768,7 +1768,7 @@ do
 
 	function announcePrototype:Show(...)
 		if not self.option or self.mod.Options[self.option] then
-			if self.mod.Options.Announce and DBM:GetRaidRank() > 0 then
+			if self.mod.Options.Announce and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
 				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), "RAID_WARNING")
 			end
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
