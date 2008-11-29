@@ -12,6 +12,7 @@
 --    * deDE: Tandanu					http://www.deadlybossmods.com
 --    * zhCN: Diablohu					http://wow.gamespot.com.cn
 --    * ruRU: BootWin					bootwin@gmail.com
+--    * zhTW: Hman						herman_c1@hotmail.com
 --    * (add your names here!)
 --
 -- Special thanks to:
