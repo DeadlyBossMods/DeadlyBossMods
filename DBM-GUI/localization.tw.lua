@@ -1,0 +1,103 @@
+﻿if GetLocale() ~= "zhTW" then return end
+if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
+
+local L = DBM_GUI_Translations
+
+L.MainFrame = "Deadly Boss Mods"
+
+L.TabCategory_Options 	= "綜合設置"
+L.TabCategory_WOTLK 	= "巫妖王之怒"
+L.TabCategory_BC 	= "燃燒的遠征"
+L.TabCategory_CLASSIC 	= "經典舊世"
+L.TabCategory_OTHER     = "其它"
+
+L.BossModLoaded 	= "%s狀態"
+L.BossModLoad_now 	= [[該模組尚未啟動。
+當你進入相應副本時其會自動載入。
+你也可以點擊該按鈕手動啟動該模組。]]
+
+L.PosX = 'X座標'
+L.PosY = 'Y座標'
+
+L.MoveMe 		= '移動'
+L.Button_OK 		= '確定'
+L.Button_Cancel 	= '取消'
+L.Button_LoadMod 	= '載入模組'
+L.Mod_Enabled		= "開啟模組"
+L.Mod_EnableAnnounce	= "團隊廣播"
+L.Reset 		= "重置"
+
+L.Enable  		= "開啟"
+L.Disable		= "關閉"
+
+L.NoSound		= "靜音"
+
+-- Tab: Boss Statistics
+L.BossStatistics	= "首領狀態"
+L.Statistic_Kills	= "擊殺："
+L.Statistic_Wipes	= "失敗："
+L.Statistic_BestKill	= "最好成績："
+L.Statistic_Heroic	= "英雄模式"
+
+-- Tab: General Options
+L.General 		= "DBM綜合設置"
+L.EnableDBM 		= "啟用DBM"
+L.EnableStatus 		= "回復“status”密語"
+L.AutoRespond 		= "開啟戰鬥中自動密語回復"
+L.EnableMiniMapIcon	= "顯示小地圖圖示"
+
+L.Button_RangeFrame	= "顯示/隱藏距離監視器"
+L.Button_TestBars	= "測試計時條"
+
+L.PizzaTimer_Headline 	= '創建一個計時條'
+L.PizzaTimer_Title	= '名稱（如“泡面倒計時”）'
+L.PizzaTimer_Hours 	= "小時"
+L.PizzaTimer_Mins 	= "分鐘"
+L.PizzaTimer_Secs 	= "秒"
+L.PizzaTimer_ButtonStart = "開始計時"
+L.PizzaTimer_BroadCast	= "向團隊廣播"
+
+-- Tab: Raidwarning
+L.Tab_RaidWarning 	= "團隊警報"
+L.RaidWarnColors 	= "團隊警報顏色"
+L.RaidWarnColor_1 	= "顏色1"
+L.RaidWarnColor_2 	= "顏色2"
+L.RaidWarnColor_3 	= "顏色3"
+L.RaidWarnColor_4 	= "顏色4"
+L.InfoRaidWarning	= [[你可以對團隊警報的顏色及其位置進行設定。
+顯示例如“玩家X受到了Y效果的影響”之類的資訊。]]
+L.ColorResetted 	= "該顏色設置已重置"
+L.ShowWarningsInChat 	= "在聊天視窗中顯示警報"
+L.ShowFakedRaidWarnings = "以偽裝團隊警報資訊的方式顯示警報內容"
+L.WarningIconLeft 	= "左側顯示圖示"
+L.WarningIconRight 	= "右側顯示圖示"
+L.RaidWarnMessage 	= "感謝您使用Deadly Boss Mods"
+L.BarWhileMove 		= "團隊警報可以移動"
+L.RaidWarnSound		= "發出團隊警報時播放聲音"
+L.SpecialWarnSound	= "發出特殊警報時播放聲音"
+
+-- Tab: Barsetup
+L.BarSetup   = "計時條樣式"
+L.BarTexture = "計時條材質"
+L.BarStartColor = "開始顏色"
+L.BarEndColor = "完結顏色"
+L.ExpandUpwards		= "計時條向上展開"
+
+L.Slider_BarOffSetX 	= "X偏移"
+L.Slider_BarOffSetY 	= "Y偏移"
+L.Slider_BarWidth 	= "寬度"
+L.Slider_BarScale 	= "尺寸"
+L.AreaTitle_BarSetup 	= "計時條綜合設置"
+L.AreaTitle_BarSetupSmall = "小型計時條設置"
+L.AreaTitle_BarSetupHuge = "大型計時條設置"
+L.BarIconLeft 		= "左側圖示"
+L.BarIconRight 		= "右側圖示"
+L.EnableHugeBar 	= "開啟大型計時條（2號計時條）"
+L.FillUpBars		= "填滿計時條"
+
+-- Tab: Spam Filter
+L.Panel_SpamFilter		= "垃圾過濾"
+L.Area_SpamFilter		= "一般垃圾過濾設定"
+L.HideBossEmoteFrame	= "隱藏團隊首領表情框架"
+L.SpamBlockRaidWarning	= "過濾來自其他首領模組的警報" 
+L.SpamBlockBossWhispers	= "過濾 <DBM> 戰鬥中密語警告"

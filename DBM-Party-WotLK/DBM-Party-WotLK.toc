@@ -1,5 +1,6 @@
-## Interface: 30000
+﻿## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPartyWotLK_SavedVars, DBMPartyWotLK_Stats
@@ -7,14 +8,17 @@
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Ahn'Kahet,Azjol-Nerub,CoT: Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold
 ## X-DBM-Mod-SubCategories-deDE: Ahn'kahet,Azjol-Nerub,HdZ: Stratholme,Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
-
+## X-DBM-Mod-SubCategories-zhTW: 安卡罕特,阿茲歐-奈幽,舊斯坦索姆,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡
 ## X-DBM-Mod-Name: Party Boss Mods
+## X-DBM-Mod-Name-zhTW: 隊伍首領模組
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold
-## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte K�nigreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
+## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
+## X-DBM-Mod-LoadZone-zhTW: 安卡罕特:古王國,阿茲歐-奈幽,斯坦索姆的抉擇,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡
 localization.en.lua
 localization.ru.lua
 localization.fr.lua
+localization.tw.lua
 AhnKahet\Taldaram.lua
 AhnKahet\Nadox.lua
 AhnKahet\JedogaShadowseeker.lua
