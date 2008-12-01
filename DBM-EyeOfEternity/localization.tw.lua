@@ -43,10 +43,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPull		= "My patience has reached its limit. I will be rid of you!",
-	EmoteSpark		= "A Power Spark forms from a nearby rift!",
-	YellPhase2		= "I had hoped to end your lives quickly",
-	EmoteBreath		= "%s takes a deep breath.",
-	YellBreath		= "You will not succeed while I draw breath!",
-	YellPhase3		= "Now your benefactors make their"
+	YellPull		= "我的耐心到此為止了。我要親自消滅你們!",
+	EmoteSpark		= "一個力量火花從附近的裂縫中形成。",
+	YellPhase2		= "我原來只是想盡快結束你們的生命",
+	EmoteBreath		= "只要我的龍息尚存，你們就毫無機會!",
+	YellPhase3		= "現在你們幕後的主使終於出現"
 })
