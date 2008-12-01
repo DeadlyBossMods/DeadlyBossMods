@@ -13,9 +13,9 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecialLocust		= "蝗蟲風暴!",
-	WarningLocustSoon	= "15秒內蝗蟲風暴",
+	WarningLocustSoon	= "15秒後 蝗蟲風暴",
 	WarningLocustNow	= "蝗蟲風暴!",
-	WarningLocustFaded	= "蝗蟲風暴消失"
+	WarningLocustFaded	= "蝗蟲風暴消失了"
 })
 
 L:SetTimerLocalization({
@@ -24,12 +24,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialLocust		= "顯示蝗蟲風暴特殊警告",
-	WarningLocustSoon	= "顯示蝗蟲風暴預先警告",
+	SpecialLocust		= "為蝗蟲風暴顯示特別警告",
+	WarningLocustSoon	= "顯示蝗蟲風暴的預先警告",
 	WarningLocustNow	= "顯示蝗蟲風暴警告",
 	WarningLocustFaded	= "顯示蝗蟲風暴消失警告",
-	TimerLocustIn		= "顯示蝗蟲風暴計時", 
-	TimerLocustFade 	= "顯示蝗蟲風暴消失計時"
+	TimerLocustIn		= "顯示蝗蟲風暴計時器", 
+	TimerLocustFade 	= "顯示蝗蟲風暴消失計時器"
 })
 
 
@@ -44,25 +44,25 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningEmbraceActive	= "寡婦之擁啟動",
-	WarningEmbraceExpire	= "寡婦之擁5秒內結束",
+	WarningEmbraceExpire	= "寡婦之擁5秒後完結",
 	WarningEmbraceExpired	= "寡婦之擁消失",
-	WarningEnrageSoon		= "5秒內狂亂",
-	WarningEnrageNow		= "狂亂!"
+	WarningEnrageSoon		= "5秒後 狂怒",
+	WarningEnrageNow		= "狂怒!"
 })
 
 L:SetTimerLocalization({
 	TimerEmbrace	= "寡婦之擁啟動",
-	TimerEnrage		= "狂亂",
+	TimerEnrage		= "狂怒",
 })
 
 L:SetOptionLocalization({
-	TimerEmbrace			= "顯示寡婦之擁計時",
+	TimerEmbrace			= "顯示寡婦之擁計時器",
 	WarningEmbraceActive	= "顯示寡婦之擁警告",
-	WarningEmbraceExpire	= "顯示警告當寡婦之擁結束",
-	WarningEmbraceExpired	= "顯示警告當寡婦之擁即將結束",
-	WarningEnrageSoon		= "顯示即將狂亂警告",
-	WarningEnrageNow		= "顯示狂亂警告",
-	TimerEnrage				= "顯示狂亂計時",
+	WarningEmbraceExpire	= "當寡婦之擁完結時顯示警告",
+	WarningEmbraceExpired	= "當寡婦之擁即將完結時顯示警告"
+	WarningEnrageSoon		= "顯示即將狂怒警告",
+	WarningEnrageNow		= "顯示狂怒警告",
+	TimerEnrage				= "顯示狂怒計時",
 })
 
 
@@ -77,29 +77,29 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningWebWrap		= "撒網纏繞: >%s<",
-	WarningWebSpraySoon	= "5秒內撒網",
+	WarningWebSpraySoon	= "5秒後 撒網(暈)",
 	WarningWebSprayNow	= "撒網!",
-	WarningSpidersSoon	= "5秒內蜘蛛",
-	WarningSpidersNow	= "蜘蛛出現!"
+	WarningSpidersSoon	= "5秒後 小蜘蛛",
+	WarningSpidersNow	= "小蜘蛛出現了!"
 })
 
 L:SetTimerLocalization({
 	TimerWebSpray	= "撒網",
-	TimerSpider		= "蜘蛛"
+	TimerSpider		= "小蜘蛛"
 })
 
 L:SetOptionLocalization({
-	WarningWebWrap		= "提示撒網目標",
-	WarningWebSpraySoon	= "顯示撒網預先警告",
+	WarningWebWrap		= "提示纏繞的蜘蛛網的目標",
+	WarningWebSpraySoon	= "顯示撒網的預先警告",
 	WarningWebSprayNow	= "顯示撒網警告",
-	WarningSpidersSoon	= "顯示蜘蛛預先警告",
-	WarningSpidersNow	= "顯示蜘蛛警告",
-	TimerWebSpray		= "顯示撒網計時",
-	TimerSpider			= "顯示蜘蛛計時"
+	WarningSpidersSoon	= "顯示小蜘蛛的預先警告",
+	WarningSpidersNow	= "顯示小蜘蛛警告",
+	TimerWebSpray		= "顯示撒網計時器",
+	TimerSpider			= "顯示小蜘蛛計時器"
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "我被纏繞! 救我!"
+	YellWebWrap			= "我給纏繞住了! 救我!"
 })
 
 ------------------------------
@@ -112,22 +112,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "被傳送!",
-	WarningTeleportSoon	= "20秒內傳送",
+	WarningTeleportNow	= "閃現!",
+	WarningTeleportSoon	= "20秒後 閃現",
 	WarningCurse		= "詛咒!"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "傳送",
-	TimerTeleportBack	= "傳送回來"
+	TimerTeleport		= "閃現",
+	TimerTeleportBack	= "閃現回來"
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "顯示傳送警告",
-	WarningTeleportSoon		= "顯示傳送預先警告",
+	WarningTeleportNow		= "顯示閃現警告",
+	WarningTeleportSoon		= "顯示閃現的預先警告",
 	WarningCurse			= "顯示詛咒警告",
-	TimerTeleport			= "顯示傳送計時",
-	TimerTeleportBack		= "顯示傳送回來計時"
+	TimerTeleport			= "顯示閃現計時器",
+	TimerTeleportBack		= "顯示閃現回來計時器"
 })
 
 
@@ -141,20 +141,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "被傳送!",
-	WarningTeleportSoon	= "%d秒內傳送",
+	WarningTeleportNow	= "閃現!",
+	WarningTeleportSoon	= "%d秒後 閃現",
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "傳送",
+	TimerTeleport		= "閃現",
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "顯示傳送警告",
-	WarningTeleportSoon		= "顯示傳送預先警告",
+	WarningTeleportNow		= "顯示閃現警告",
+	WarningTeleportSoon		= "顯示閃現的預先警告",
 	WarningCurse			= "顯示詛咒警告",
-	TimerTeleport			= "顯示傳送計時",
-	TimerTeleportBack		= "顯示傳送回來計時"
+	TimerTeleport			= "顯示閃現計時器",
+	TimerTeleportBack		= "顯示閃現回來計時器"
 })
 
 
@@ -168,28 +168,28 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSporeNow		= "孢子出現!",
-	WarningSporeSoon	= "5秒內孢子",
+	WarningSporeNow		= "孢子出現了!",
+	WarningSporeSoon	= "5秒後 孢子",
 	WarningDoomNow		= "無可避免的末日 #%d",
-	WarningHealSoon		= "3秒內可能治療",
+	WarningHealSoon		= "3秒後可以治療",
 	WarningHealNow		= "現在治療!"
 })
 
 L:SetTimerLocalization({
 	TimerDoom			= "無可避免的末日 #%d",
-	TimerSpore			= "下一次孢子",
+	TimerSpore			= "下一個 孢子",
 	TimerAura			= "亡域光環"
 })
 
 L:SetOptionLocalization({
 	WarningSporeNow		= "顯示孢子警告",
-	WarningSporeSoon	= "顯示孢子預先警告",
+	WarningSporeSoon	= "顯示孢子的預先警告",
 	WarningDoomNow		= "顯示無可避免的末日警告",
-	WarningHealSoon		= "顯示\"3秒內治療\"預先警告",
-	WarningHealNow		= "顯示\"現在治療\" 警告",
-	TimerDoom			= "顯示無可避免的末日計時",
-	TimerSpore			= "顯示孢子計時",
-	TimerAura			= "顯示亡域光環計時"
+	WarningHealSoon		= "顯示\"3秒後可以治療\"的預先警告",
+	WarningHealNow		= "顯示\"現在治療\"警告",
+	TimerDoom			= "顯示無可避免的末日計時器",
+	TimerSpore			= "顯示孢子計時器",
+	TimerAura			= "顯示亡域光環計時器"
 })
 
 
@@ -204,12 +204,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "提示團隊憎恨打擊\n(你須要是隊長或有權限才能使用)"
+	WarningHateful = "通告憎恨打擊到團隊頻道\n(你需要團隊領袖或助理許可權)"
 })
 
 L:SetMiscLocalization({
-	yell1 = "縫補者要跟你玩！",
-	yell2 = "縫補者是科爾蘇加德的戰神！",
+	yell1 = "縫補者要跟你玩!",
+	yell2 = "科爾蘇加德讓縫補者成為戰爭的化身的戰神!",
 	HatefulStrike = "憎恨打擊 --> %s [%s]"
 })
 
@@ -225,12 +225,12 @@ L:SetGeneralLocalization({
 
 L:SetOptionLocalization({
 	WarningInjection		= "顯示突變注射警告",
-	SpecialWarningInjection	= "顯示特殊警告當你被突變注射折磨"
+	SpecialWarningInjection	= "當你中了突變注射時顯示特別警告"
 })
 
 L:SetWarningLocalization({
 	WarningInjection		= "突變注射: >%s<",
-	SpecialWarningInjection	= "你被突變注射!"
+	SpecialWarningInjection	= "你中了突變注射!"
 })
 
 L:SetTimerLocalization({
@@ -247,18 +247,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningDecimateNow	= "顯示屠殺警告",
-	WarningDecimateSoon	= "顯示屠殺預先警告",
-	TimerDecimate		= "顯示屠殺計時"
+	WarningDecimateNow	= "顯示殘殺警告",
+	WarningDecimateSoon	= "顯示殘殺的預先警告",
+	TimerDecimate		= "顯示殘殺計時器"
 })
 
 L:SetWarningLocalization({
-	WarningDecimateNow	= "屠殺!",
-	WarningDecimateSoon	= "10秒內屠殺"
+	WarningDecimateNow	= "殘殺!",
+	WarningDecimateSoon	= "10秒後 殘殺"
 })
 
 L:SetTimerLocalization({
-	TimerDecimate		= "屠殺"
+	TimerDecimate		= "殘殺"
 })
 
 
@@ -272,37 +272,37 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell	= "斯塔拉格要碾碎你！",
-	Emote	= "%s 超負荷！", -- ?
-	Emote2	= "泰斯拉·寇歐", -- ?
+	Yell	= "斯塔拉格要碾碎你﹗",
+	Emote	= "%s超負荷﹗", -- ?
+	Emote2	= "Tesla Coil overloads!", -- ?
 })
 
 L:SetOptionLocalization({
-	WarningShiftCasting		= "顯示兩極移形警告",
-	WarningChargeChanged	= "顯示特殊警告當你極性轉變",
-	WarningChargeNotChanged	= "顯示特殊警告當你極性沒轉變",
-	TimerShiftCast			= "顯示兩極移形施法計時",
-	TimerNextShift			= "顯示兩極移形冷卻計時",
-	ArrowsEnabled			= "顯示箭頭 (正常 \"2 營地\" 戰略)",
-	ArrowsRightLeft			= "顯示右/左箭頭代表\"4 營地\" 戰略 (如果極性轉變顯示左箭頭, 否則右)",
-	ArrowsInverse			= "倒轉\"4 營地\" 戰略 (顯示右箭頭當極性轉變, 沒有就左)",
-	WarningThrow			= "顯示坦克投擲警告",
-	WarningThrowSoon		= "顯示坦克投擲預先警告",
-	TimerThrow				= "顯示坦克投擲計時"
+	WarningShiftCasting		= "顯示極性轉換警告",
+	WarningChargeChanged	= "顯示特別警告當你的極性變了",
+	WarningChargeNotChanged	= "顯示特別警告當你的極性沒有改變",
+	TimerShiftCast			= "顯示極性轉換施放計時器",
+	TimerNextShift			= "顯示極性轉換冷卻計時器",
+	ArrowsEnabled			= "顯示箭頭 (正常 \"二邊\" 站位打法)",
+	ArrowsRightLeft			= "顯示左/右箭頭 給 \"四角\" 站位打法 (如果極性改變顯示左箭頭, 沒變顯示左箭頭)",
+	ArrowsInverse			= "倒轉的 \"四角\" 站位打法 (如果極性改變顯示左箭頭, 沒變顯示右箭頭)",
+	WarningThrow			= "顯示投擲坦克警告",
+	WarningThrowSoon		= "顯示投擲坦克的預先警告",
+	TimerThrow				= "顯投擲坦克計時器"
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting		= "5秒內兩極移形!",
-	WarningChargeChanged	= "極性轉變為 %s",
-	WarningChargeNotChanged	= "極性沒轉變",
-	WarningThrow			= "坦克投擲!",
-	WarningThrowSoon		= "3秒內坦克投擲"
+	WarningShiftCasting		= "5秒後 極性轉換!",
+	WarningChargeChanged	= "極性變為%s",
+	WarningChargeNotChanged	= "極性沒有改變",
+	WarningThrow			= "投擲坦克!",
+	WarningThrowSoon		= "3秒後 投擲坦克"
 })
 
 L:SetTimerLocalization({
-	TimerShiftCast			= "兩極移形施法",
-	TimerNextShift			= "下次兩極移形",
-	TimerThrow				= "坦克投擲"
+	TimerShiftCast			= "施放極性轉換",
+	TimerNextShift			= "下一次極性轉換",
+	TimerThrow				= "投擲坦克"
 })
 
 L:SetOptionCatLocalization({
@@ -320,21 +320,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell1 = "仁慈無用！",
-	Yell2 = "練習時間到此為止！都拿出真本事來！",
-	Yell3 = "照我教你的做！",
-	Yell4 = "絆腿……有什麼問題嗎？"
+	Yell1 = "仁慈無用﹗",
+	Yell2 = "練習時間到此為止﹗都拿出真本事來﹗",
+	Yell3 = "照我教你的做﹗",
+	Yell4 = "絆腿……有什麼問題嗎?"
 })
 
 L:SetOptionLocalization({
 	WarningShoutNow		= "顯示混亂怒吼警告",
-	WarningShoutSoon	= "顯示混亂怒吼預先警告",
-	TimerShout			= "顯示混亂怒吼計時"
+	WarningShoutSoon	= "顯示混亂怒吼的預先警告",
+	TimerShout			= "顯示混亂怒吼計時器"
 })
 
 L:SetWarningLocalization({
 	WarningShoutNow		= "混亂怒吼!",
-	WarningShoutSoon	= "3秒內混亂怒吼"
+	WarningShoutSoon	= "5秒後 混亂怒吼"
 })
 
 L:SetTimerLocalization({
@@ -351,26 +351,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWave			= "顯示波計時",
-	TimerPhase2			= "顯示第二階計時",
-	WarningWaveSoon		= "顯示下一波預先警告",
-	WarningWaveSpawned	= "顯示下一波警告",
-	WarningRiderDown	= "顯示警告當騎兵死亡",
-	WarningKnightDown	= "顯示警告當死騎死亡",
-	WarningPhase2		= "顯示第二階警告"
+	TimerWave			= "顯示波段計時",
+	TimerPhase2			= "顯示第二階段計時",
+	WarningWaveSoon		= "顯示波段的預先警告",
+	WarningWaveSpawned	= "顯示波段出現警告",
+	WarningRiderDown	= "當騎兵死亡時顯示警告",
+	WarningKnightDown	= "死亡騎士死亡時顯示警告",
+	WarningPhase2		= "顯示第二階段警告"
 })
 
 L:SetTimerLocalization({
-	TimerWave	= "第#%d波",
-	TimerPhase2	= "第二階"
+	TimerWave	= "第 #%d 波",
+	TimerPhase2	= "第2階段"
 })
 
 L:SetWarningLocalization({
-	WarningWaveSoon		= "第%d波: %s 3秒內",
-	WarningWaveSpawned	= "第%d波: %s 出現",
-	WarningRiderDown	= "騎兵死亡",
-	WarningKnightDown	= "死騎死亡",
-	WarningPhase2		= "第二階"
+	WarningWaveSoon		= "3秒後第%d波: %s",
+	WarningWaveSpawned	= "第%d波: %s 出現了",
+	WarningRiderDown	= "騎兵已死亡﹗",
+	WarningKnightDown	= "死亡騎士已死亡﹗",
+	WarningPhase2		= "第二階段"
 })
 
 L:SetMiscLocalization({
@@ -378,9 +378,9 @@ L:SetMiscLocalization({
 	WarningWave1	= "%d %s",
 	WarningWave2	= "%d %s 和 %d %s",
 	WarningWave3	= "%d %s, %d %s 和 %d %s",
-	Trainee			= "|4無情的訓練師:訓練師;",
-	Knight			= "|4無情的死騎:死騎;",
-	Rider			= "|4無情的騎兵:騎兵;",
+	Trainee			= "受訓者",
+	Knight			= "死騎",
+	Rider			= "騎兵",
 })
 
 
@@ -394,10 +394,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerMark					= "顯示印記計時",
-	WarningMarkSoon				= "顯示印記預先警告",
+	TimerMark					= "顯示印記計時器",
+	WarningMarkSoon				= "顯示印記的預先警告",
 	WarningMarkNow				= "顯示印記警告",
-	SpecialWarningMarkOnPlayer	= "顯示特殊警告當你有或多於4個印記"
+	SpecialWarningMarkOnPlayer	= "當你印記疊加大於四時顯示特別警告"
 })
 
 L:SetTimerLocalization({
@@ -405,8 +405,8 @@ L:SetTimerLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMarkSoon				= "3秒內印記 %d ",
-	WarningMarkNow				= "印記 %d!",
+	WarningMarkSoon				= "3秒後 印記 %d",
+	WarningMarkNow				= "印記 #%d",
 	SpecialWarningMarkOnPlayer	= "%s: %s",
 })
 
@@ -428,38 +428,37 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningIceblock			= "顯示寒冰屏障警告",
-	WarningDrainLifeNow		= "顯示吸取生命警告",
-	WarningDrainLifeSoon	= "顯示吸取生命預先警告",
-	WarningAirPhaseSoon		= "顯示空中階段預先警告",
+	WarningDrainLifeNow		= "顯示生命吸取警告",
+	WarningDrainLifeSoon	= "顯示生命吸取的預先警告",
+	WarningAirPhaseSoon		= "顯示空中階段的預先警告",
 	WarningAirPhaseNow		= "顯示空中階段警告",
 	WarningLanded			= "顯示地上階段警告",
-	TimerDrainLifeCD		= "顯示吸取生命計時",
-	TimerAir				= "顯示空中階段計時",
-	TimerLanding			= "顯示著陸計時",
-	TimerIceBlast			= "顯示深呼吸計時",
-	WarningDeepBreath		= "顯示深呼吸特殊警告"
+	TimerDrainLifeCD		= "顯示生命吸取計時器",
+	TimerAir				= "顯示空中階段計時器",
+	TimerLanding			= "顯示降落計時器",
+	TimerIceBlast			= "顯示深呼吸計時器",
+	WarningDeepBreath		= "顯示深呼吸特別警告"
 })
 
 L:SetMiscLocalization({
-	EmoteBreath			= "%s深深地吸了一口氣...",
-	WarningYellIceblock	= "我變成寒冰屏障了, 站到我後面去!"
+	EmoteBreath			= "%s深深地吸了一口氣",
+	WarningYellIceblock	= "我在冰箱入面!"
 })
 
 L:SetWarningLocalization({
-	WarningDrainLifeNow		= "吸取生命!",
-	WarningDrainLifeSoon	= "即將吸取生命",
-	WarningAirPhaseSoon		= "10秒內空中階段",
+	WarningDrainLifeNow		= "生命吸取!",
+	WarningDrainLifeSoon	= "生命吸取 即將發動",
+	WarningAirPhaseSoon		= "10秒後 空中階段",
 	WarningAirPhaseNow		= "空中階段",
-	WarningLanded			= "薩菲隆著陸",
-	WarningDeepBreath		= "深地吸!",
+	WarningLanded			= "薩菲隆降落了",
+	WarningDeepBreath		= "深呼吸!",
 })
 
 L:SetTimerLocalization({
-	TimerDrainLifeCD		= "吸取生命冷卻",
+	TimerDrainLifeCD		= "生命吸取冷卻",
 	TimerAir				= "空中階段",
-	TimerLanding			= "著陸",
-	TimerIceBlast			= "深地吸"	
+	TimerLanding			= "降落",
+	TimerIceBlast			= "深呼吸"	
 })
 
 ------------------
@@ -473,27 +472,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhase2			= "顯示第二階計時",
+	TimerPhase2			= "顯示第二階段計時器",
 	WarningBlastTargets	= "顯示冰霜衝擊警告",
-	WarningPhase2		= "顯示第二階警告",
+	WarningPhase2		= "顯示第二階段警告",
 	WarningFissure		= "顯示暗影裂縫警告",
 	WarningMana			= "顯示爆裂法力警告"
 })
 
 L:SetMiscLocalization({
-	Yell = "僕從們，侍衛們，隸屬於黑暗與寒冷的戰士！聽從科爾蘇加德的召換！"
+	Yell = "僕從們，侍衛們，隸屬於黑暗與寒冷的戰士﹗聽從科爾蘇加德的召換﹗"
 })
 
 L:SetWarningLocalization({
 	WarningBlastTargets	= "冰霜衝擊: >%s<",
-	WarningPhase2		= "第二階",
-	WarningFissure		= "暗影裂縫出現",
+	WarningPhase2		= "第二階段",
+	WarningFissure		= "暗影裂縫 出現了",
 	WarningMana			= "爆裂法力: >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "第二階"
+	TimerPhase2			= "第二階段"
 })
-
-
-

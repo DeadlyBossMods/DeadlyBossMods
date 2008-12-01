@@ -2,11 +2,11 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFBoss Mod Studio|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFКЧБмДЈїйЙъіЙЖч|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFBoss Mod Studio|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF首領模組製作|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF首領模組生成器|r
 ## Notes: BossModStudio for Deadly Boss Mods
 ## Notes-zhCN: Deadly Boss ModsµДКЧБмДЈїйЙъіЙЖч
 ## Notes-ruRU: Студия BossModStudio для DBM
-## Notes-zhTW: Deadly Boss Mods製作
+## Notes-zhTW: DBM首領模組生成器
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 0
 ## DefaultState: enabled
