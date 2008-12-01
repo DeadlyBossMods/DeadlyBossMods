@@ -1,6 +1,4 @@
-﻿if GetLocale() ~= "zhTW" then return end
-
-local L
+﻿local L
 
 ----------------------------
 --  General BG functions  --
@@ -8,7 +6,7 @@ local L
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "一般戰場功能"
+	name = "基本戰埸功能"
 })
 
 L:SetTimerLocalization({
@@ -17,7 +15,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass	= "在得分視窗中設置玩家名為職業顏色",
-	ShowInviteTimer	= "顯示戰場加入計時",
+	ShowInviteTimer	= "顯示戰場組隊計時",
 	AutoSpirit	= "自動釋放靈魂"
 })
 
@@ -32,17 +30,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "戰鬥始於",
+	TimerStart	= "戰鬥即將開始",
 })
 
 L:SetOptionLocalization({
-	TimerStart = "顯示開始計時"
+	TimerStart = "顯示開始計時器"
 })
 
 L:SetMiscLocalization({
 	Start60 = "競技場戰鬥在1分鐘內開始!",
 	Start30 = "競技場戰鬥在30秒內開始!",
-	Start15 = "競技場戰鬥在15秒內開始!"
+	Start15 = "競技場戰鬥在30秒內開始!"
 })
 
 ---------------
@@ -67,10 +65,10 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "顯示開始計時",
-	TimerTower = "顯示哨塔佔領計時",
-	TimerGY = "顯示墓地佔領計時",
-	AutoTurnIn = "自動繳交聲望物品"
+	TimerStart  = "顯示開始計時器",
+	TimerTower = "顯示奪取哨塔計時器",
+	TimerGY = "顯示奪取墓地計時器",
+	AutoTurnIn = "自動繳交任務物品"
 })
 
 ---------------
@@ -90,7 +88,7 @@ L:SetMiscLocalization({
 	Alliance = "聯盟",
 	Horde = "部落",
 	WinBarText = "%s 勝利",
-	BasesToWin = "勝利還需: %d",
+	BasesToWin = "勝利需要基地: %d",
 	Flag = "旗幟"
 })
 
@@ -100,11 +98,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "顯示開始計時",
-	TimerWin = "顯示勝利計時",
-	TimerCap = "顯示佔領計時",
-	ShowAbEstimatedPoints = "顯示戰鬥結束時雙方資源預計值.",
-	ShowAbBasesToWin = "顯示戰鬥勝利所需基地數目"
+	TimerStart  = "顯示開始計時器",
+	TimerWin = "顯示勝利計時器",
+	TimerCap = "顯示奪取計時器",
+	ShowAbEstimatedPoints = "顯示戰鬥結束時雙方資源預計值",
+	ShowAbBasesToWin = "顯示勝利需要的基地數量"
 })
 
 -----------------------
@@ -133,14 +131,14 @@ L:SetMiscLocalization({
 
 L:SetTimerLocalization({
 	TimerStart = "戰鬥開始", 
-	TimerFlag = "旗幟重置",
+	TimerFlag = "旗幟重生",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "顯示開始計時",
-	TimerWin = "顯示勝利計時",
-	TimerFlag = "顯示旗幟重置計時",
-	ShowPointFrame = "顯示資源奪取進度和旗幟攜帶者",
+	TimerStart  = "顯示開始計時器",
+	TimerWin = "顯示勝利計時器",
+	TimerFlag = "顯示旗幟重生計時器",
+	ShowPointFrame = "顯示旗幟攜帶者和預計勝利方",
 })
 
 --------------------
@@ -173,11 +171,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "顯示開始計時",
-	TimerWin = "顯示勝利計時",
-	TimerFlag = "顯示旗幟重置計時",
+	TimerStart  = "顯示開始計時器",
+	TimerWin = "顯示勝利計時器",
+	TimerFlag = "顯示旗幟重生計時器",
 	ShowFlagCarrier = "顯示旗幟攜帶者",
-	ShowFlagCarrierErrorNote = "當正在戰鬥時顯示旗幟錯誤提示",
+	ShowFlagCarrierErrorNote = "當正在戰鬥時顯示旗幟錯誤提示。",
 })
 
 
@@ -193,8 +191,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShards	= "Rock Shards on >%s<",
-	WarningGrab		= "Archavon grabbed >%s<"
+	WarningShards	= "岩石裂片: >%s<",
+	WarningGrab		= "亞夏梵撞擊 >%s<"
 })
 
 L:SetTimerLocalization({
@@ -202,11 +200,11 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	TankSwitch = "%%s lunges for (%S+)!"
+	TankSwitch = "%%s 撞擊 (%S+)!"
 })
 
 L:SetOptionLocalization({
-	TimerShards = "顯示岩石裂片計時",
+	TimerShards = "顯示岩石裂片計時器",
 	WarningShards = "顯示岩石裂片警告",
-	WarningGrab = "顯示坦克霸佔警告"
+	WarningGrab = "顯示坦克撞擊警告"
 })
