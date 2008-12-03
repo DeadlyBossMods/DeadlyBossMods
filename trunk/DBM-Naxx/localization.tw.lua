@@ -59,7 +59,7 @@ L:SetOptionLocalization({
 	TimerEmbrace			= "顯示寡婦之擁計時器",
 	WarningEmbraceActive	= "顯示寡婦之擁警告",
 	WarningEmbraceExpire	= "當寡婦之擁完結時顯示警告",
-	WarningEmbraceExpired	= "當寡婦之擁即將完結時顯示警告"
+	WarningEmbraceExpired	= "當寡婦之擁即將完結時顯示警告",
 	WarningEnrageSoon		= "顯示即將狂怒警告",
 	WarningEnrageNow		= "顯示狂怒警告",
 	TimerEnrage				= "顯示狂怒計時",
