@@ -8,7 +8,7 @@ DBM_CORE_COMBAT_STARTED				= "%s сейчас не может ответить. 
 DBM_CORE_BOSS_DOWN					= "%s повержен(а) спустя %s!"
 DBM_CORE_BOSS_DOWN_LONG				= "%s повержен(а) спустя %s! Последний бой длился %s, лучший бой: %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s повержен(а) спустя %s! Это новая запись! (Предшествующая запись была %s)"
-DBM_CORE_COMBAT_ENDED				= "Бой с %s закончится через %s."
+DBM_CORE_COMBAT_ENDED				= "Бой с %s закончился через %s"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4сек.:сек.;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4мин.:мин.;"
