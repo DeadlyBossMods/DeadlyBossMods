@@ -12,7 +12,8 @@ mod:EnableModel()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_AURA"
 )
 
 local warnShiftCasting		= mod:NewAnnounce("WarningShiftCasting", 3, 28089)
@@ -60,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-mod:RegisterOnUpdateHandler(function(self, elapsed)
+function mod:UNIT_AURA(elapsed)
 	if not phase2 or (GetTime() - lastShift) > 5 or (GetTime() - lastShift) < 3 then return end
 	local charge
 	local i = 1
@@ -100,7 +101,7 @@ mod:RegisterOnUpdateHandler(function(self, elapsed)
 		end
 		currentCharge = charge
 	end
-end, 1/3)
+end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emote or msg == L.Emote2 then
