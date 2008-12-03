@@ -82,7 +82,7 @@ L:SetOptionLocalization({
 	TimerSpider					= "Показать отсчет времени до призыва Паученышей Мексны"
 })
 L:SetMiscLocalization({
-	YellWebWrap					= "I'm wrapped! Help me!"
+	YellWebWrap					= "I'm wrapped! Help me!" -- correct this
 })
 ------------------------------
 --  Noth the Plaguebringer  --
