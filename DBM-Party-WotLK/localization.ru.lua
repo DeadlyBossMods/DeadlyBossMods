@@ -32,10 +32,12 @@ L:SetGeneralLocalization({
 	name = "Старейшина Надокс"
 })
 L:SetWarningLocalization({
+	WarningPlague				= "Родовой мор: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningPlague				= "Показать предупреждение для Родового мора"
 })
 -------------------------
 -- Jedoga Shadowseeker --
@@ -46,19 +48,12 @@ L:SetGeneralLocalization({
 	name = "Джедога Искательница Теней"
 })
 L:SetWarningLocalization({
-	WarningThundershock			= "Громовой удар",
-	WarningPhase2Soon			= "Скоро фаза 2",
-	WarningPhase2Now			= "Фаза 2"
+	WarningThundershock			= "Громовой удар"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
-	WarningThundershock			= "Показать предупреждение для Громового удара",
-	WarningPhase2Soon			= "Показать пред-предупреждение фазы 2",
-	WarningPhase2Now			= "Показать предупреждение для фазы 2"
-})
-L:SetMiscLocalization({
-	emote						= ""
+	WarningThundershock			= "Показать предупреждение для Громового удара"
 })
 -------------------
 -- Herald Volazj --
@@ -69,10 +64,30 @@ L:SetGeneralLocalization({
 	name = "Глашатай Волаж"
 })
 L:SetWarningLocalization({
+	WarningInsanity				= "Безумие",
+	WarningShiver				= "Трепет: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningInsanity				= "Показать предупреждение для Безумия",
+	WarningShiver				= "Показать предупреждение для Трепета"
+})
+--------------
+-- Amanitar --
+--------------
+L = DBM:GetModLocalization("Amanitar")
+
+L:SetGeneralLocalization({
+	name = "Аманитар"
+})
+L:SetWarningLocalization({
+	WarningMini					= "Мини",
+})
+L:SetTimerLocalization({
+})
+L:SetOptionLocalization({
+	WarningMini					= "Показать предупреждение для ауры Мини",
 })
 -----------------
 -- Azjol-Nerub --
@@ -101,11 +116,14 @@ L:SetGeneralLocalization({
 	name = "Хадронокс"
 })
 L:SetWarningLocalization({
+	WarningLeech				= "Яд пиявки",
+	WarningCloud				= "Едкое облако"
 })
 L:SetTimerLocalization({
 })
-
 L:SetOptionLocalization({
+	WarningLeech				= "Показать предупреждение для Яда пиявки",
+	WarningCloud				= "Показать предупреждение для Едкого облака"
 })
 ---------------
 -- Anub'arak --
@@ -116,18 +134,12 @@ L:SetGeneralLocalization({
 	name = "Ануб'арак"
 })
 L:SetWarningLocalization({
-	WarningBurrowSoon			= "Скоро Погружение",
-	WarningBurrowNow			= "Погрузился",
-	WarningEmerge				= "Появился"
+	WarningPound				= "Удар",
 })
 L:SetTimerLocalization({
-	TimerEmerge					= "Появление",
 })
 L:SetOptionLocalization({
-	WarningBurrowSoon			= "Показать пред-предупреждение Погружения",
-	WarningBurrowNow			= "Показать предупреждение для Погружения",
-	WarningEmerge				= "Показать предупреждение для Появления",
-	TimerEmerge					= "Показать отсчет времени до Появления"
+	WarningPound				= "Показать предупреждение для Удара",
 })
 --------------------------------------
 -- Caverns of Time - Old Stratholme --
@@ -158,10 +170,16 @@ L:SetGeneralLocalization({
 	name = "Салрамм Плоторез"
 })
 L:SetWarningLocalization({
+	WarningCurse				= "Проклятие искаженной плоти: >%s<",
+	WarningSteal				= "Похищение плоти: >%s<",
+	WarningGhoul				= "Призывание вурдалаков"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningCurse				= "Показать предупреждение для Проклятия искаженной плоти",
+	WarningSteal				= "Показать предупреждение для Похищения плоти",
+	WarningGhoul				= "Показать предупреждение для Призывания вурдалаков"
 })
 -----------------------
 -- Chrono-Lord Epoch --
@@ -172,10 +190,16 @@ L:SetGeneralLocalization({
 	name = "Хронолорд Эпох"
 })
 L:SetWarningLocalization({
+	WarningStrike				= "Ранящий удар: >%s<",
+	WarningTime					= "Время >%s<",
+	WarningCurse				= "Проклятье усталости: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningStrike				= "Показать предупреждение для Ранящего удара",
+	WarningTime					= "Показать предупреждение для Искажения/Остановки времени",
+	WarningCurse				= "Показать предупреждение для Проклятия усталости"
 })
 ---------------
 -- Mal'Ganis --
@@ -234,10 +258,20 @@ L:SetGeneralLocalization({
 	name = "Король Дред"
 })
 L:SetWarningLocalization({
+	WarningFear					= "Страх",
+	WarningBite					= "Болезненный укус: >%s<",
+	WarningSlash				= "%s рана"
 })
 L:SetTimerLocalization({
+	TimerFear					= "Восстановление Страха",
+	TimerSlash					= "%s рана: %s"
 })
 L:SetOptionLocalization({
+	WarningSlash				= "Показать предупреждение для Калечащей/Проникающей раны",
+	WarningFear					= "Показать предупреждение для Страха",
+	WarningBite					= "Показать предупреждение для Болезненного укуса",
+	TimerFear					= "Показать отсчет времени до Страха",
+	TimerSlash					= "Показать время действия Калечащей/Проникающей раны"
 })
 ---------------------------
 -- The Prophet Tharon'ja --
@@ -248,10 +282,12 @@ L:SetGeneralLocalization({
 	name = "Пророк Тарон'джа"
 })
 L:SetWarningLocalization({
+	WarningCloud				= "Ядовитое облако"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningCloud				= "Показать предупреждение для Ядовитого облака"
 })
 --------------
 -- Gun'Drak --
@@ -264,10 +300,14 @@ L:SetGeneralLocalization({
 	name = "Слад'ран"
 })
 L:SetWarningLocalization({
+	WarningNova					= "Ядовитая звезда",
+	WarningBite					= "Мощный укус: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningNova					= "Показать предупреждение для Ядовитой звезды",
+	WarningBite					= "Показать предупреждение для Мощного укуса"
 })
 -------------
 -- Moorabi --
@@ -278,10 +318,12 @@ L:SetGeneralLocalization({
 	name = "Мураби"
 })
 L:SetWarningLocalization({
+	WarningMojo					= "Колдовское бешенство"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningMojo					= "Показать предупреждение для Колдовского бешенства"
 })
 -----------------------
 -- Drakkari Colossus --
@@ -311,6 +353,20 @@ L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
 })
+-----------------------
+-- Eck the Ferocious --
+-----------------------
+L = DBM:GetModLocalization("Eck")
+
+L:SetGeneralLocalization({
+	name = "Эк Свирепый"
+})
+L:SetWarningLocalization({
+})
+L:SetTimerLocalization({
+})
+L:SetOptionLocalization({
+})
 ------------------------
 -- Halls of Lightning --
 ------------------------
@@ -322,10 +378,12 @@ L:SetGeneralLocalization({
 	name = "Генерал Бьярнгрин"
 })
 L:SetWarningLocalization({
+	WarningWhirlwind	= "Вихрь"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningWhirlwind	= "Показать предупреждение для Вихря"
 })
 -----------
 -- Ionar --
@@ -336,12 +394,14 @@ L:SetGeneralLocalization({
 	name = "Ионар"
 })
 L:SetWarningLocalization({
-	WarningOverload				= "Статический заряд: >%s<"
+	WarningOverload				= "Статический заряд: >%s<",
+	WarningSplit				= "Рассеяние/Разделение"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
-	WarningOverload				= "Показать предупреждение для Статического заряда"
+	WarningOverload				= "Показать предупреждение для Статического заряда",
+	WarningSplit				= "Показать предупреждение для Рассеяния"
 })
 -------------
 -- Volkhan --
@@ -361,12 +421,12 @@ L:SetOptionLocalization({
 	WarningStomp				= "Показать предупреждение для Раскатистого топота"
 })
 ------------
--- Loken -- it was specified Kronus, has changed on Loken
+-- Loken --
 ------------
-L = DBM:GetModLocalization("Kronus") -- it was specified Kronus, need Loken
+L = DBM:GetModLocalization("Kronus")
 
 L:SetGeneralLocalization({
-	name = "Локен" -- it was specified Kronus, has changed on Loken
+	name = "Локен"
 })
 L:SetWarningLocalization({
 	WarningNova					= "Вспышка молнии"
@@ -389,18 +449,18 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningWoe					= "Столп скорбей: >%s<",
 	WarningSorrow				= "Шок от горя",
-	WarningStorm				= "Буря Скорби",
+	WarningStorm				= "Буря Скорби"
 })
 L:SetTimerLocalization({
 	TimerWoe					= "Столп скорбей: %s",
-	TimerSorrow					= "Шок от горя",
+	TimerSorrow					= "Шок от горя"
 })
 L:SetOptionLocalization({
 	WarningWoe					= "Показать предупреждение для Столпа скорбей",
 	WarningSorrow				= "Показать предупреждение для Шока от горя",
 	WarningStorm				= "Показать предупреждение для Бури Скорби",
 	TimerWoe					= "Показать отсчет времени до Столпа скорбей",
-	TimerSorrow					= "Показать отсчет времени до Шока от горя",
+	TimerSorrow					= "Показать отсчет времени до Шока от горя"
 })
 ----------------
 -- Krystallus --
@@ -461,7 +521,7 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	WarningRiftSoon				= "Скоро Щит расселины",
-	WarningRiftNow				= "Невосприимчив к урону!",
+	WarningRiftNow				= "Невосприимчив к урону!"
 })
 L:SetOptionLocalization({
 	WarningRiftSoon				= "Показать пред-предупреждение Щита расселины",
@@ -479,15 +539,17 @@ L:SetWarningLocalization({
 	WarningSpikes				= "Кристальные шипы",
 	WarningReflection			= "Отражение заклинания",
 	WarningFrenzy				= "Бешенство",
+	WarningAdd					= "Призыв кристаллического ветвеплета"
 })
 L:SetTimerLocalization({
-	TimerReflection		= "Отражение заклинания",
+	TimerReflection				= "Отражение заклинания"
 })
 L:SetOptionLocalization({
 	WarningSpikes				= "Показать предупреждение для Кристальных шипов",
 	WarningReflection			= "Показать предупреждение для Отражения заклинания",
 	WarningFrenzy				= "Показать предупреждение для Бешенства",
-	TimerReflection				= "Показать отсчет времени до Отражения заклинания",
+	WarningAdd					= "Показать предупреждение, когда призван ветвеплет",
+	TimerReflection				= "Показать отсчет времени до Отражения заклинания"
 })
 --------------------------
 -- Grand Magus Telestra --
@@ -507,7 +569,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningSplitSoon			= "Показать пред-предупреждение Разделения",
 	WarningSplitNow				= "Показать предупреждение для Разделения",
-	WarningMerge				= "Показать предупреждение для Размытия",
+	WarningMerge				= "Показать предупреждение для Размытия"
 })
 L:SetMiscLocalization({
 	SplitTrigger1				= "There's plenty of me to go around.", -- correct this
@@ -524,15 +586,41 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	WarningChains				= "Хрустальные цепи: >%s<",
-	WarningEnrage				= "Исступление",
+	WarningEnrage				= "Исступление"
 })
 L:SetTimerLocalization({
-	TimerChains					= "Хрустальные цепи: %s",
+	TimerChains					= "Хрустальные цепи: %s"
 })
 L:SetOptionLocalization({
 	WarningChains				= "Показать предупреждение для Хрустальных цепей",
 	WarningEnrage				= "Показать предупреждение для Исступления",
-	TimerChains					= "Показать отсчет времени до Хрустальных цепей",
+	TimerChains					= "Показать отсчет времени до Хрустальных цепей"
+})
+---------------------------------
+-- Commander Kolurg/Stoutbeard --
+---------------------------------
+L = DBM:GetModLocalization("Commander")
+
+local faction = UnitFactionGroup("player")
+local commander = "Квестовый"
+if faction == "Альянс" then
+	commander = "Командир Колург"
+elseif faction == "Орда" then
+	commander = "Командир Пивобород"
+end
+
+L:SetGeneralLocalization({
+	name = commander
+})
+L:SetWarningLocalization({
+	WarningFear 				= "Страх",
+	WarningWhirlwind			= "Вихрь"
+})
+L:SetTimerLocalization({
+})
+L:SetOptionLocalization({
+	WarningFear					= "Показать предупреждение для Страха",
+	WarningWhirlwind			= "Показать предупреждение для Вихря"
 })
 ----------------
 -- The Oculus --
@@ -560,18 +648,18 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	WarningTimeBomb				= "Часовая бомба",
-	WarningExplosion			= "Чародейский взрыв",
+	WarningExplosion			= "Чародейский взрыв"
 })
 L:SetTimerLocalization({
 	TimerTimeBomb				= "Часовая бомба: %s",
-	TimerExplosion				= "Чародейский взрыв",
+	TimerExplosion				= "Чародейский взрыв"
 })
 L:SetOptionLocalization({
 	WarningTimeBomb				= "Показать предупреждение для Часовой бомбы",
 	WarningExplosion			= "Показать предупреждение для Чародейского взрыва",
 	TimerTimeBomb				= "Показать отсчет времени до Часовой бомбы",
 	TimerExplosion				= "Показать отсчет времени до Чародейского взрыва",
-	SpecWarnBombYou				= "Показать спец-предупреждение для Часовой бомбы",
+	SpecWarnBombYou				= "Показать спец-предупреждение для Часовой бомбы"
 })
 ------------------------
 -- Varos Cloudstrider --
@@ -582,10 +670,12 @@ L:SetGeneralLocalization({
 	name = "Варос Заоблачный Странник"
 })
 L:SetWarningLocalization({
+	WarningAmplify				= "Усиление магии: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningAmplify				= "Показать предупреждение для Усиления магии"
 })
 -------------------------
 -- Ley-Guardian Eregos --
@@ -596,10 +686,16 @@ L:SetGeneralLocalization({
 	name = "Хранитель энергии Эрегос"
 })
 L:SetWarningLocalization({
+	WarningShift				= "Сдвиг плоскости",
+	WarningShiftEnd				= "Окончание Сдвига плоскости",
+	WarningEnrage				= "Яростный натиск"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningShift				= "Показать предупреждение для Сдвига плоскости",
+	WarningShiftEnd				= "Показать предупреждение \"Окончание Сдвига плоскости\"",
+	WarningEnrage				= "Показать предупреждение для Яростного натиска"
 })
 ------------------
 -- Utgarde Keep --
@@ -632,13 +728,15 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	WarningEnfeeble				= "Изнурение: >%s<",
+	WarningSummon				= "Призыв скелетов"
 })
 L:SetTimerLocalization({
 	TimerEnfeeble				= "Изнурение: %s",
 })
 L:SetOptionLocalization({
 	WarningEnfeeble				= "Показать предупреждение для Изнурения",
-	TimerEnfeeble				= "Показать отсчет времени до Изнурения",
+	WarningSummon				= "Показать предупреждение для призывания скелетов",
+	TimerEnfeeble				= "Показать отсчет времени до Изнурения"
 })
 --------------------------
 -- Ingvar the Plunderer --
@@ -676,12 +774,14 @@ L:SetGeneralLocalization({
 	name = "Скади Безжалостный"
 })
 L:SetWarningLocalization({
-	WarningWhirlwind			= "Вихрь"
+	WarningWhirlwind			= "Вихрь",
+	WarningPoison				= "Отравленный дротик: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
-	WarningWhirlwind			= "Показать предупреждение для Вихря"
+	WarningWhirlwind			= "Показать предупреждение для Вихря",
+	WarningPoison				= "Показать предупреждение для Отравленного дротика"
 })
 ------------
 -- Ymiron --
@@ -708,10 +808,12 @@ L:SetGeneralLocalization({
 	name = "Свала Вечноскорбящая"
 })
 L:SetWarningLocalization({
+	WarningSword				= "Ритуал меча: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningSword				= "Показать предупреждение для Жертвоприношения"
 })
 ---------------------
 -- Gortok Palehoof --
@@ -722,10 +824,12 @@ L:SetGeneralLocalization({
 	name = "Горток Бледное Копыто"
 })
 L:SetWarningLocalization({
+	WarningImpale				= "Прокалывание: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningImpale				= "Показать предупреждение для Прокалывания"
 })
 ---------------------
 -- The Violet Hold --
@@ -738,11 +842,18 @@ L:SetGeneralLocalization({
 	name = "Синигоса"
 })
 L:SetWarningLocalization({
+	WarningVacuum				= "Чародейский вакуум",
+	WarningBlizzard				= "Снежная буря",
+	WarningMana					= "Захват маны: >%s<"
 })
-
 L:SetTimerLocalization({
+	TimerVacuum					= "Следующий Чародейский вакуум"
 })
 L:SetOptionLocalization({
+	WarningVacuum				= "Показать предупреждение для Чародейского вакуума",
+	WarningBlizzard				= "Показать предупреждение для Снежной бури",
+	WarningMana					= "Показать предупреждение для Захвата маны",
+	TimerVacuum					= "Показать отсчет времени до Чародейского вакуума"
 })
 ------------
 -- Erekem --
@@ -753,10 +864,12 @@ L:SetGeneralLocalization({
 	name = "Эрекем"
 })
 L:SetWarningLocalization({
+	WarningES					= "Щит Земли"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningES					= "Показать предупреждение для Щита Земли"
 })
 -------------
 -- Ichoron --
@@ -796,10 +909,12 @@ L:SetGeneralLocalization({
 	name = "Морагг"
 })
 L:SetWarningLocalization({
+	WarningLink					= "Оптическая связь: >%s<"
 })
 L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
+	WarningLink					= "Показать предупреждение для Оптической связи"
 })
 ------------
 -- Xevoss --
