@@ -1729,6 +1729,5 @@ do
 			panel:SetMyOwnHeight()
 		end
 	end
-
 end
 
