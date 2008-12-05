@@ -137,7 +137,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Heigan")
 
 L:SetGeneralLocalization({
-	name = "『骯髒者』海根"
+	name = "『不潔者』海根"
 })
 
 L:SetWarningLocalization({
@@ -152,7 +152,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow		= "顯示閃現警告",
 	WarningTeleportSoon		= "顯示閃現的預先警告",
-	WarningCurse			= "顯示詛咒警告",
 	TimerTeleport			= "顯示閃現計時器",
 	TimerTeleportBack		= "顯示閃現回來計時器"
 })
