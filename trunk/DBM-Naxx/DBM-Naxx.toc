@@ -9,7 +9,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Arachnid Quarter,Construct Quarter,Plague Quarter,Military Quarter,Frostwyrm Lair
-## X-DBM-Mod-SubCategories-deDE: Arachnidenviertel,Konstruktviertel,Seuchenviertel,MilitГ¤rviertel,FrostwyrmhГ¶hle
+## X-DBM-Mod-SubCategories-deDE: Arachnidenviertel,Konstruktviertel,Seuchenviertel,Militärviertel,Frostwyrmhöhle
 ## X-DBM-Mod-SubCategories-ruRU: Паучий квартал,Квартал Мерзости,Чумной квартал,Военный квартал,Логово ледяного змея
 ## X-DBM-Mod-SubCategories-zhTW: 蜘蛛區,傀儡區,瘟疫區,軍事區,冰霜巨龍巢穴
 ## X-DBM-Mod-Name: Naxxramas
