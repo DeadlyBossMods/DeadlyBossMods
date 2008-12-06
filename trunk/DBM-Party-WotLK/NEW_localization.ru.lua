@@ -1312,6 +1312,7 @@ L:SetWarningLocalization({
 	WarningPortalSoon	= "Скоро новый портал",
 	WarningPortalNow	= "Портал #%d",
 	WarningBossNow		= "Босс приближается"
+	WavePortal		= "Portals Opened: (%d+)/18"
 })
 
 L:SetTimerLocalization({

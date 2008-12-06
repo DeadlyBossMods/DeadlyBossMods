@@ -29,7 +29,7 @@ end
 function mod:UPDATE_WORLD_STATES(args)
 	local text = select(3, GetWorldStateUIInfo(2))
 	if not text then return end
-	local _, _, wave = string.find(text, "Portals Opened: (%d+)/18")
+	local _, _, wave = string.find(text, 'WavePortal")
 	if not wave then
 		wave = 0
 	end
