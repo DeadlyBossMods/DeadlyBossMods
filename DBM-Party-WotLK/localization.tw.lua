@@ -1231,7 +1231,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningPortalSoon	= "新傳送門即將開啟",
 	WarningPortalNow	= "傳送門 #%d",
-	WarningBossNow		= "首領即將到來"
+	WarningBossNow		= "首領即將到來",
 	WavePortal		= "傳送門開啟: (%d+)/18"
 })
 
