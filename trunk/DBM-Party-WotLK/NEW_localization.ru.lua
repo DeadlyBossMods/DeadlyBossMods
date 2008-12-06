@@ -966,7 +966,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Keleseth")
 
 L:SetGeneralLocalization({
-	name = "Принц Келесет
+	name = "Принц Келесет"
 })
 
 L:SetWarningLocalization({
@@ -1305,14 +1305,14 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("PortalTimers")
 
 L:SetGeneralLocalization({
-	name = "Таймер Портала"
+	name = "Портал Времени"
 })
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "Скоро новый портал",
 	WarningPortalNow	= "Портал #%d",
 	WarningBossNow		= "Босс приближается",
-	WavePortal		= "Portals Opened: (%d+)/18"
+	WavePortal		= "Открыто порталов: (%d+)/18"
 })
 
 L:SetTimerLocalization({
@@ -1329,5 +1329,5 @@ L:SetOptionLocalization({
 
 
 L:SetMiscLocalization({
-	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
+	yell1 = "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!", -- Аметистовая крепость
 })
