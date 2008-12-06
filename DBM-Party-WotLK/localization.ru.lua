@@ -850,13 +850,13 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("PortalTimers")
 
 L:SetGeneralLocalization({
-	name = "Таймер Портала"
+	name = "Портал Времени"
 })
 L:SetWarningLocalization({
 	WarningPortalSoon			= "Скоро новый портал",
 	WarningPortalNow			= "Портал %d",
 	WarningBossNow				= "Босс приближается",
-	WavePortal		= "Portals Opened: (%d+)/18"
+	WavePortal		= "Открыто порталов: (%d+)/18"
 })
 L:SetTimerLocalization({
 	TimerPortalIn				= "Портал %d" , 
