@@ -1,4 +1,8 @@
-﻿local L
+﻿
+if GetLocale() ~= "zhTW" then return end
+
+
+local L
 
 ----------------------------
 --  General BG functions  --
