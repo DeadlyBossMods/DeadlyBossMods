@@ -14,11 +14,13 @@ mod:RegisterEvents(
 
 local warningSleep	= mod:NewAnnounce("WarningSleep", 2, 52721)
 local timerSleep	= mod:NewTimer(10, "TimerSleep", 52721)
+local timerSleepCD	= mod:NewTimer(20, "TimerSleepCD", 52721)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 52721 or args.spellId == 58849 then
-		warningSleep:Show(args.destName)
-		timerSleep:Start(args.destName)
+		warningSleep:Show(args.spellName, args.destName)
+		timerSleep:Start(args.spellName, args.destName)
+		timerSleepcD:Start(args.spellName)
 	end
 end
 

@@ -15,6 +15,6 @@ local warningBane	= mod:NewAnnounce("WarningBane", 3, 48294)
 
 function mod:APELL_AURA_APPLIED(args)
 	if args.spellId == 48294 then
-		warningBane:Show()
+		warningBane:Show(args.spellName)
 	end
 end

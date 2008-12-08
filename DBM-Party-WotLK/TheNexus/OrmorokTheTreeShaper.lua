@@ -19,19 +19,21 @@ local warningFrenzy	= mod:NewAnnounce("WarningFrenzy", 3, 48017)
 local warningReflection	= mod:NewAnnounce("WarningReflection", 4, 47981)
 local warningAdd	= mod:NewAnnounce("WarningAdd", 1, 61564)
 local timerReflection	= mod:NewTimer(15, "TimerReflection", 47981)
+local timerReflectionCD	= mod:NewTimer(30, "TimerReflectionCD", 47981)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 47958 or args.spellId == 57082 or args.spellId == 57083 then
-		warningSpikes:Show()
+		warningSpikes:Show(args.spellName)
 	elseif args.spellId == 48017 or args.spellId == 57086 then
-		warningFrenzy:Show()
+		warningFrenzy:Show(args.spellName)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 47981 then
-		timerReflection:Start()
-		warningReflection:Show()
+		timerReflection:Start(args.spellName)
+		warningReflection:Show(args.spellName)
+		timerReflectionCD:Start(args.spellName)
 	end
 end
 
@@ -43,6 +45,6 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 61564 then
-		warningAdd:Show()
+		warningAdd:Show(args.spellName)
 	end
 end

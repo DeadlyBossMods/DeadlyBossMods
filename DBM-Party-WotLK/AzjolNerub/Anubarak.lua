@@ -15,6 +15,6 @@ local warningPound		= mod:NewAnnounce("WarningPound", 3, 53472)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 53472 or args.spellId == 59433 then
-		warningPound:Show()
+		warningPound:Show(args.spellName)
 	end
 end

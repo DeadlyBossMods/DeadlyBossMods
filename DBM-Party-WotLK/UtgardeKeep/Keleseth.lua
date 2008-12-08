@@ -13,13 +13,12 @@ mod:RegisterEvents(
 )
 
 local warningTomb	= mod:NewAnnounce("WarningTomb", 4, 48400)
-
 local timerTomb		= mod:NewTimer(10, "TimerTomb", 48400)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48400 then
-		warningTomb:Show(args.destName)
-		timerTomb:Start(args.destName)
+		warningTomb:Show(args.spellName, args.destName)
+		timerTomb:Start(args.spellName, args.destName)
 	end
 end
 

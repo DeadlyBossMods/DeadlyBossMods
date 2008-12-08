@@ -8,13 +8,13 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START"
 )
 
 local warningWhirlwind = mod:NewAnnounce("WarningWhirlwind", 3, 52027)
 
-function mod:SPELL_AURA_APPLIED(args)
+function mod:SPELL_CAST_START(args)
 	if args.spellId == 52027 or args.spellId == 52028 then
-		warningWhirlwind:Show()
+		warningWhirlwind:Show(args.spellName)
 	end
 end

@@ -15,6 +15,6 @@ local warningThundershock	= mod:NewAnnounce("WarningThundershock", 3, 56926)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 56926 or args.spellId == 60029 then
-		warningThundershock:Show()
+		warningThundershock:Show(args.spellName)
 	end
 end
