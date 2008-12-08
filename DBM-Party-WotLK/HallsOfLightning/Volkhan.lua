@@ -8,6 +8,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 local warningStomp	= mod:NewAnnounce("WarningStomp", 3, 52237)
+local timerStompCD	= mod:NewTimer(30, "TimerStompCD", 52237)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START"
@@ -15,6 +16,7 @@ mod:RegisterEvents(
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 59529 or args.spellId == 52237 then
-		warningStomp:Show()
+		warningStomp:Show(args.spellName)
+		timerStompCD:Start(args.spellName)
 	end
 end

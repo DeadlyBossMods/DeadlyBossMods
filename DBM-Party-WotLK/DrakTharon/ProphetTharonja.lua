@@ -15,6 +15,6 @@ local warningCloud = mod:NewAnnounce("WarningCloud", 3, 49548)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 49548 or args.spellId == 59969 then
-		warningCloud:Show()
+		warningCloud:Show(args.spellName)
 	end
 end

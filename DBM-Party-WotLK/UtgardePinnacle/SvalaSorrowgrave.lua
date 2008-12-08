@@ -15,6 +15,6 @@ local warningSword	= mod:NewAnnounce("WarningSword", 2, 48276)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48276 then
-		warningSword:Show(args.destName)
+		warningSword:Show(args.spellName, args.destName)
 	end
 end

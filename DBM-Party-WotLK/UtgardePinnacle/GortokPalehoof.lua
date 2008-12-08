@@ -12,9 +12,11 @@ mod:RegisterEvents(
 )
 
 local warningImpale	= mod:NewAnnounce("WarningImpale", 2, 48261)
+local timerImpale	= mod:NewTimer(9, "TimerImpale", 48261)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48261 or args.spellId == 59268 then
-		warningImpale:Show(args.destName)
+		warningImpale:Show(args.spellName, args.destName)
+		timerImpale:Start(args.spellName, args.destName)
 	end
 end

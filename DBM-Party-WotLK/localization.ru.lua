@@ -1,6 +1,19 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 
 local L
+
+local spell		= "%s"				
+local debuff		= "%s: >%s<"			
+local spellCD		= "Восстановление: %s"		-- translate
+local spellSoon		= "Скоро %s"		-- translate
+local optionWarning	= "Отображать предупреждение \"%s\""		-- translate
+local optionPreWarning	= "Отображать пред-предупреждение \"%s\""	-- translate
+local optionSpecWarning	= "Отображать спец-предупреждение \"%s\""	-- translate
+local optionTimerCD	= "Отображать время до восстановления \"%s\""	-- translate
+local optionTimerDur	= "Отображать отсчет времени до \"%s\""	-- translate
+local optionTimerCast	= "Отображать время чтения заклинания \"%s\""	-- translate
+
+
 --------------------------------
 -- Ahn’Kahet: The Old Kingdom --
 --------------------------------
@@ -11,18 +24,25 @@ L = DBM:GetModLocalization("Taldaram")
 L:SetGeneralLocalization({
 	name = "Принц Талдарам"
 })
+
 L:SetWarningLocalization({
-	WarningFlame				= "Огненная сфера",
-	WarningEmbrace				= "Объятия вампира: >%s<"
+	WarningFlame		= spell,
+	WarningEmbrace		= debuff
 })
+
 L:SetTimerLocalization({
-	TimerEmbrace				= "Объятия вампира: %s"
+	TimerEmbrace		= debuff,
+	TimerFlameCD		= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningFlame				= "Показать предупреждение для Огненной сферы",
-	WarningEmbrace				= "Показать предупреждение для Объятий вампира",
-	TimerEmbrace				= "Показать отсчет времени до Объятий вампира"
+	WarningFlame		= optionWarning:format(GetSpellInfo(55931)),
+	WarningEmbrace		= optionWarning:format(GetSpellInfo(55959)),
+	TimerEmbrace		= optionTimerDur:format(GetSpellInfo(55959)),
+	TimerFlameCD		= optionTimerCD:format(GetSpellInfo(55931))
 })
+
+
 -----------------
 -- Elder Nadox --
 -----------------
@@ -31,12 +51,23 @@ L = DBM:GetModLocalization("Nadox")
 L:SetGeneralLocalization({
 	name = "Старейшина Надокс"
 })
+
 L:SetWarningLocalization({
+	WarningPlague	= debuff
 })
+
 L:SetTimerLocalization({
+	TimerPlague	= debuff,
+	TimerPlagueCD	= spellCD
 })
+
 L:SetOptionLocalization({
+	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
+	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
+	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
 })
+
+
 -------------------------
 -- Jedoga Shadowseeker --
 -------------------------
@@ -45,21 +76,19 @@ L = DBM:GetModLocalization("JedogaShadowseeker")
 L:SetGeneralLocalization({
 	name = "Джедога Искательница Теней"
 })
+
 L:SetWarningLocalization({
-	WarningThundershock			= "Громовой удар",
-	WarningPhase2Soon			= "Скоро фаза 2",
-	WarningPhase2Now			= "Фаза 2"
+	WarningThundershock	= spell
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
-	WarningThundershock			= "Показать предупреждение для Громового удара",
-	WarningPhase2Soon			= "Показать пред-предупреждение фазы 2",
-	WarningPhase2Now			= "Показать предупреждение для фазы 2"
+	WarningThundershock	= optionWarning:format(GetSpellInfo(56926)),
 })
-L:SetMiscLocalization({
-	emote						= ""
-})
+
+
 -------------------
 -- Herald Volazj --
 -------------------
@@ -68,12 +97,42 @@ L = DBM:GetModLocalization("Volazj")
 L:SetGeneralLocalization({
 	name = "Глашатай Волаж"
 })
+
 L:SetWarningLocalization({
+	WarningInsanity	= spell
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningInsanity	= optionWarning:format(GetSpellInfo(57496))
 })
+
+
+--------------
+-- Amanitar --
+--------------
+L = DBM:GetModLocalization("Amanitar")
+
+L:SetGeneralLocalization({
+	name = "Аманитар"
+})
+
+L:SetWarningLocalization({
+	WarningMini	= spell
+})
+
+L:SetTimerLocalization({
+	TimerMiniCD	= spellCD
+})
+
+L:SetOptionLocalization({
+	WarningMini	= optionWarning:format(GetSpellInfo(57055)),
+	TimerMiniCD	= optionTimerCD:format(GetSpellInfo(57055))
+})
+
+
 -----------------
 -- Azjol-Nerub --
 -------------------------------
@@ -84,14 +143,21 @@ L = DBM:GetModLocalization("Krikthir")
 L:SetGeneralLocalization({
 	name = "Крик'тир Хранитель Врат"
 })
+
 L:SetWarningLocalization({
-	WarningCurse				= "Проклятие усталости: >%s<"
+	WarningCurse	= spell
 })
+
 L:SetTimerLocalization({
+	TimerCurse	= spell
 })
+
 L:SetOptionLocalization({
-	WarningCurse				= "Показать предупреждение для Проклятия усталости"
+	WarningCurse 	= optionWarning:format(GetSpellInfo(52592)),
+	TimerCurse	= optionTimerDur:format(GetSpellInfo(52592))
 })
+
+
 --------------
 -- Hadronox --
 --------------
@@ -100,13 +166,21 @@ L = DBM:GetModLocalization("Hadronox")
 L:SetGeneralLocalization({
 	name = "Хадронокс"
 })
+
 L:SetWarningLocalization({
+	WarningLeech	= spell,
+	WarningCloud	= spell
 })
+
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningLeech	= optionWarning:format(GetSpellInfo(53030)),
+	WarningCloud	= optionWarning:format(GetSpellInfo(53400))
 })
+
+
 ---------------
 -- Anub'arak --
 ---------------
@@ -115,20 +189,19 @@ L = DBM:GetModLocalization("Anubarak")
 L:SetGeneralLocalization({
 	name = "Ануб'арак"
 })
+
 L:SetWarningLocalization({
-	WarningBurrowSoon			= "Скоро Погружение",
-	WarningBurrowNow			= "Погрузился",
-	WarningEmerge				= "Появился"
+	WarningPound	= spell
 })
+
 L:SetTimerLocalization({
-	TimerEmerge					= "Появление",
 })
+
 L:SetOptionLocalization({
-	WarningBurrowSoon			= "Показать пред-предупреждение Погружения",
-	WarningBurrowNow			= "Показать предупреждение для Погружения",
-	WarningEmerge				= "Показать предупреждение для Появления",
-	TimerEmerge					= "Показать отсчет времени до Появления"
+	WarningPound	= optionWarning:format(GetSpellInfo(53472)),
 })
+
+
 --------------------------------------
 -- Caverns of Time - Old Stratholme --
 --------------------------------------
@@ -139,16 +212,23 @@ L = DBM:GetModLocalization("Meathook")
 L:SetGeneralLocalization({
 	name = "Мясной Крюк"
 })
+
 L:SetWarningLocalization({
-	WarningChains				= "Удушающие оковы: >%s<"
+	WarningChains	= debuff
 })
+
 L:SetTimerLocalization({
-	TimerChains					= "Удушающие оковы: %s"
+	TimerChains	= debuff,
+	TimerChainsCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningChains				= "Показать предупреждение для Удушающих оков",
-	TimerChains					= "Показать отсчет времени до Удушающих оков",
+	WarningChains	= optionWarning:format(GetSpellInfo(52696)),
+	TimerChains	= optionTimerDur:format(GetSpellInfo(52696)),
+	TimerChainsCD	= optionTimerCD:format(GetSpellInfo(52696))
 })
+
+
 ------------------------------
 -- Salramm the Fleshcrafter --
 ------------------------------
@@ -157,12 +237,27 @@ L = DBM:GetModLocalization("SalrammTheFleshcrafter")
 L:SetGeneralLocalization({
 	name = "Салрамм Плоторез"
 })
+
 L:SetWarningLocalization({
+	WarningCurse	= debuff,
+	WarningSteal	= debuff,
+	WarningGhoul	= spell
 })
+
 L:SetTimerLocalization({
+	TimerGhoulCD	= spellCD,
+	TimerCurse	= debuff
 })
+
 L:SetOptionLocalization({
+	WarningCurse	= optionWarning:format(GetSpellInfo(58845)),
+	WarningSteal	= optionWarning:format(GetSpellInfo(52709)),
+	WarningGhoul	= optionWarning:format(GetSpellInfo(52451)),
+	TimerGhoulCD	= optionTimerCD:format(GetSpellInfo(52451)),
+	TimerCurse	= optionTimerDur:format(GetSpellInfo(58845))
 })
+
+
 -----------------------
 -- Chrono-Lord Epoch --
 -----------------------
@@ -171,12 +266,25 @@ L = DBM:GetModLocalization("ChronoLordEpoch")
 L:SetGeneralLocalization({
 	name = "Хронолорд Эпох"
 })
+
 L:SetWarningLocalization({
+	WarningTime	= spell,
+	WarningCurse	= debuff
 })
+
 L:SetTimerLocalization({
+	TimerTimeCD	= spellCD,
+	TimerCurse	= debuff
 })
+
 L:SetOptionLocalization({
+	WarningTime	= optionWarning:format("Искажение/Остановка времени"),	-- requires translation
+	WarningCurse	= optionWarning:format(GetSpellInfo(52772)),
+	TimerTimeCD	= optionTimerCD:format("Искажение/Остановка времени"),	-- translate
+	TimerCurse	= optionTimerDur:format(GetSpellInfo(52772))
 })
+
+
 ---------------
 -- Mal'Ganis --
 ---------------
@@ -185,16 +293,23 @@ L = DBM:GetModLocalization("MalGanis")
 L:SetGeneralLocalization({
 	name = "Мал'Ганис"
 })
+
 L:SetWarningLocalization({
-	WarningSleep				= "Сон: >%s<"
+	WarningSleep	= debuff
 })
+
 L:SetTimerLocalization({
-	TimerSleep					= "Сон: %s"
+	TimerSleep	= debuff,
+	TimerSleepCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningSleep				= "Показать предупреждение для Сна",
-	TimerSleep					= "Показать отсчет времени до Сна"
+	WarningSleep	= optionWarning:format(GetSpellInfo(52721)),
+	TimerSleep	= optionTimerDur:format(GetSpellInfo(52721)),
+	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
 })
+
+
 ----------------------
 -- Drak'Tharon Keep --
 ----------------------
@@ -205,12 +320,17 @@ L = DBM:GetModLocalization("Trollgore")
 L:SetGeneralLocalization({
 	name = "Кровотролль"
 })
+
 L:SetWarningLocalization({
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
 })
+
+
 ------------------------
 -- Novos the Summoner --
 ------------------------
@@ -219,12 +339,17 @@ L = DBM:GetModLocalization("NovosTheSummoner")
 L:SetGeneralLocalization({
 	name = "Новос Призыватель"
 })
+
 L:SetWarningLocalization({
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
 })
+
+
 ---------------
 -- King Dred --
 ---------------
@@ -233,12 +358,29 @@ L = DBM:GetModLocalization("KingDred")
 L:SetGeneralLocalization({
 	name = "Король Дред"
 })
+
 L:SetWarningLocalization({
+	WarningFear	= spell,
+	WarningBite	= debuff,
+	WarningSlash	= spell
 })
+
 L:SetTimerLocalization({
+	TimerFear	= spellCD,
+	TimerSlash	= debuff,
+	TimerSlashCD	= spellCD
 })
+
 L:SetOptionLocalization({
+	WarningSlash	= optionWarning:format("Калечащая/Проникающая рана"), 	-- needs translation
+	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
+	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
+	TimerFear	= optionTimerCD:format(GetSpellInfo(22686)),
+	TimerSlash	= optionTimerDur:format("Калечащая/Проникающая рана"), 	-- needs translation
+	TimerSlashCD	= optionTimerCD:format("Калечащая/Проникающая рана") 	-- needs translation
 })
+
+
 ---------------------------
 -- The Prophet Tharon'ja --
 ---------------------------
@@ -247,12 +389,19 @@ L = DBM:GetModLocalization("ProphetTharonja")
 L:SetGeneralLocalization({
 	name = "Пророк Тарон'джа"
 })
+
 L:SetWarningLocalization({
+	WarningCloud	= spell
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningCloud	= optionWarning:format(GetSpellInfo(49548))
 })
+
+
 --------------
 -- Gun'Drak --
 --------------
@@ -263,12 +412,21 @@ L = DBM:GetModLocalization("Sladran")
 L:SetGeneralLocalization({
 	name = "Слад'ран"
 })
+
 L:SetWarningLocalization({
+	WarningNova	= spell
 })
+
 L:SetTimerLocalization({
+	TimerNovaCD	= spellCD
 })
+
 L:SetOptionLocalization({
+	WarningNova	= optionWarning:format(GetSpellInfo(55081)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(55081))
 })
+
+
 -------------
 -- Moorabi --
 -------------
@@ -277,26 +435,42 @@ L = DBM:GetModLocalization("Moorabi")
 L:SetGeneralLocalization({
 	name = "Мураби"
 })
+
 L:SetWarningLocalization({
+	WarningTransform	= spell
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningTransform	= optionWarning:format(GetSpellInfo(55098))
 })
+
+
 -----------------------
--- Drakkari Colossus --
+-- Drakkari Colossus --		
 -----------------------
 L = DBM:GetModLocalization("BloodstoneAnnihilator")
 
 L:SetGeneralLocalization({
 	name = "Колосс Драккари"
 })
+
 L:SetWarningLocalization({
+	warningElemental	= "Фаза элементаля",		-- translate :)
+	WarningStone		= "Фаза колосса"		-- translate :)
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningElemental	= "Отображать предупреждение фазы элементаля",	-- translate ;)
+	WarningStone		= "Отображать предупреждение фазы колосса"		-- translate :)
 })
+
+
 ---------------
 -- Gal'darah --
 ---------------
@@ -305,12 +479,35 @@ L = DBM:GetModLocalization("Galdarah")
 L:SetGeneralLocalization({
 	name = "Гал'дара"
 })
+
 L:SetWarningLocalization({
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
 })
+
+-----------------------
+-- Eck the Ferocious --
+-----------------------
+L = DBM:GetModLocalization("Eck")
+
+L:SetGeneralLocalization({
+	name = "Эк Свирепый"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+
 ------------------------
 -- Halls of Lightning --
 ------------------------
@@ -321,28 +518,44 @@ L = DBM:GetModLocalization("Gjarngrin")
 L:SetGeneralLocalization({
 	name = "Генерал Бьярнгрин"
 })
+
 L:SetWarningLocalization({
+	WarningWhirlwind	= spell
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningWhirlwind	= optionWarning:format(GetSpellInfo(52027))
 })
+
+
 -----------
 -- Ionar --
 -----------
 L = DBM:GetModLocalization("Ionar")
 
 L:SetGeneralLocalization({
-	name = "Ионар"
+	name = "Ионар
 })
+
 L:SetWarningLocalization({
-	WarningOverload				= "Статический заряд: >%s<"
+	WarningOverload	= debuff,
+	WarningSplit	= spell
 })
+
 L:SetTimerLocalization({
+	TimerOverload	= debuff
 })
+
 L:SetOptionLocalization({
-	WarningOverload				= "Показать предупреждение для Статического заряда"
+	WarningOverload = optionWarning:format(GetSpellInfo(52658)),
+	WarningSplit	= optionWarning:format(GetSpellInfo(52770)),
+	TimerOverload	= optionTimerDur:format(GetSpellInfo(52658))
 })
+
+
 -------------
 -- Volkhan --
 -------------
@@ -352,30 +565,44 @@ L = DBM:GetModLocalization("Volkhan")
 L:SetGeneralLocalization({
 	name = "Волхан"
 })
+
 L:SetWarningLocalization({
-	WarningStomp = "Раскатистый топот"
+	WarningStomp 	= spell
 })
+
 L:SetTimerLocalization({
+	TimerStompCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningStomp				= "Показать предупреждение для Раскатистого топота"
+	WarningStomp 	= optionWarning:format(GetSpellInfo(52237)),
+	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
 })
+
+
 ------------
--- Loken -- it was specified Kronus, has changed on Loken
+-- Kronus --
 ------------
-L = DBM:GetModLocalization("Kronus") -- it was specified Kronus, need Loken
+L = DBM:GetModLocalization("Kronus")
 
 L:SetGeneralLocalization({
-	name = "Локен" -- it was specified Kronus, has changed on Loken
+	name = "Локен"
 })
+
 L:SetWarningLocalization({
-	WarningNova					= "Вспышка молнии"
+	WarningNova	= spell
 })
+
 L:SetTimerLocalization({
+	TimerNovaCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningNova					= "Показать предупреждение для Вспышки молнии"
+	WarningNova	= optionWarning:format(GetSpellInfo(53960)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(53960))
 })
+
+
 --------------------
 -- Halls of Stone --
 ---------------------
@@ -386,22 +613,31 @@ L = DBM:GetModLocalization("MaidenOfGrief")
 L:SetGeneralLocalization({
 	name = "Дева Скорби"
 })
+
 L:SetWarningLocalization({
-	WarningWoe					= "Столп скорбей: >%s<",
-	WarningSorrow				= "Шок от горя",
-	WarningStorm				= "Буря Скорби",
+	WarningWoe	= debuff,
+	WarningSorrow	= spell,
+	WarningStorm	= spell
 })
+
 L:SetTimerLocalization({
-	TimerWoe					= "Столп скорбей: %s",
-	TimerSorrow					= "Шок от горя",
+	TimerWoe	= debuff,
+	TimerSorrow	= spell,
+	TimerSorrowCD	= spellCD,
+	TimerStormCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningWoe					= "Показать предупреждение для Столпа скорбей",
-	WarningSorrow				= "Показать предупреждение для Шока от горя",
-	WarningStorm				= "Показать предупреждение для Бури Скорби",
-	TimerWoe					= "Показать отсчет времени до Столпа скорбей",
-	TimerSorrow					= "Показать отсчет времени до Шока от горя",
+	WarningWoe	= optionWarning:format(GetSpellInfo(50761)),
+	WarningSorrow	= optionWarning:format(GetSpellInfo(50760)),
+	WarningStorm	= optionWarning:format(GetSpellInfo(50752)),
+	TimerWoe	= optionTimerDur:format(GetSpellInfo(50761)),
+	TimerSorrow	= optionTimerDur:format(GetSpellInfo(50760)),
+	TimerSorrowCD	= optionTimerCD:format(GetSpellInfo(50760)),
+	TimerStormCD	= optionTimerCD:format(GetSpellInfo(50752)),
 })
+
+
 ----------------
 -- Krystallus --
 ----------------
@@ -409,14 +645,21 @@ L = DBM:GetModLocalization("Krystallus")
 L:SetGeneralLocalization({
 	name = "Кристаллус"
 })
+
 L:SetWarningLocalization({
-	WarningShatter				= "Скоро Обледенение"
+	WarningShatter	= spell
 })
+
 L:SetTimerLocalization({
+	TimerShatterCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningShatter				= "Показать пред-предупреждение Обледенения"
+	WarningShatter	= optionWarning:format(GetSpellInfo(50810)),
+	TimerShatterCD	= optionTimerCD:format(GetSpellInfo(50810))
 })
+
+
 ----------------------------
 -- Sjonnir the Ironshaper --
 ----------------------------
@@ -425,30 +668,46 @@ L = DBM:GetModLocalization("SjonnirTheIronshaper")
 L:SetGeneralLocalization({
 	name = "Сьоннир Литейщик"
 })
+
 L:SetWarningLocalization({
-	WarningCharge				= "Статический заряд: >%s<",
-	WarningRing					= "Щит молний"
+	WarningCharge	= debuff,
+	WarningRing	= spell
 })
+
 L:SetTimerLocalization({
+	TimerCharge	= debuff,
+	TimerChargeCD	= spellCD,
+	TimerRingCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningCharge				= "Показать предупреждение для Статического заряда",
-	WarningRing					= "Показать предупреждение для Щита молний"
+	WarningCharge	= optionWarning:format(GetSpellInfo(50834)),
+	WarningRing	= optionWarning:format(GetSpellInfo(50840)),
+	TimerCharge	= optionTimerDur:format(GetSpellInfo(50834)),
+	TimerChargeCD	= optionTimerCD:format(GetSpellInfo(50834)),
+	TimerRingCD	= optionTimerCD:format(GetSpellInfo(50840))
 })
+
+
 ------------------------------------
 -- Brann Bronzebeard Escort Event --
 ------------------------------------
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
-	name = "Бранн Бронзобород" -- Escort Event
+	name = "Бранн Бронзобород"
 })
+
 L:SetWarningLocalization({
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
 })
+
+
 ---------------
 -- The Nexus --
 ---------------
@@ -459,14 +718,18 @@ L = DBM:GetModLocalization("Anomalus")
 L:SetGeneralLocalization({
 	name = "Аномалус"
 })
+
 L:SetWarningLocalization({
-	WarningRiftSoon				= "Скоро Щит расселины",
-	WarningRiftNow				= "Невосприимчив к урону!",
+	WarningRiftSoon		= spellSoon,
+	WarningRiftNow		= spell,
 })
+
 L:SetOptionLocalization({
-	WarningRiftSoon				= "Показать пред-предупреждение Щита расселины",
-	WarningRiftNow				= "Показать предупреждение для Щита расселины"
+	WarningRiftSoon		= optionPreWarning:format(GetSpellInfo(47743)),
+	WarningRiftNow		= optionWarning:format(GetSpellInfo(47743))
 })
+
+
 -----------------------------
 -- Ormorok the Tree-Shaper --
 -----------------------------
@@ -475,20 +738,29 @@ L = DBM:GetModLocalization("OrmorokTheTreeShaper")
 L:SetGeneralLocalization({
 	name = "Орморок Воспитатель Дерев"
 })
+
 L:SetWarningLocalization({
-	WarningSpikes				= "Кристальные шипы",
-	WarningReflection			= "Отражение заклинания",
-	WarningFrenzy				= "Бешенство",
+	WarningSpikes		= spell,
+	WarningReflection	= spell,
+	WarningFrenzy		= spell,
+	WarningAdd		= spell
 })
+
 L:SetTimerLocalization({
-	TimerReflection		= "Отражение заклинания",
+	TimerReflection		= spell,
+	TimerReflectionCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningSpikes				= "Показать предупреждение для Кристальных шипов",
-	WarningReflection			= "Показать предупреждение для Отражения заклинания",
-	WarningFrenzy				= "Показать предупреждение для Бешенства",
-	TimerReflection				= "Показать отсчет времени до Отражения заклинания",
+	WarningSpikes		= optionWarning:format(GetSpellInfo(47958)),
+	WarningReflection	= optionWarning:format(GetSpellInfo(47981)),
+	WarningFrenzy		= optionWarning:format(GetSpellInfo(48017)),
+	WarningAdd		= optionWarning:format(GetSpellInfo(61564)),
+	TimerReflection		= optionTimerDur:format(GetSpellInfo(47981)),
+	TiemrReflectionCD	= optionTimerCD:format(GetSpellInfo(47981))
 })
+
+
 --------------------------
 -- Grand Magus Telestra --
 --------------------------
@@ -497,23 +769,29 @@ L = DBM:GetModLocalization("GrandMagusTelestra")
 L:SetGeneralLocalization({
 	name = "Великая ведунья Телестра"
 })
+
 L:SetWarningLocalization({
-	WarningSplitSoon			= "Скоро Разделение",
-	WarningSplitNow				= "Разделение",
-	WarningMerge				= "Размытие"
+	WarningSplitSoon	= "Скоро Разделение",		-- translate
+	WarningSplitNow		= "Разделение",		-- translate
+	WarningMerge		= "Размытие"		-- translate
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
-	WarningSplitSoon			= "Показать пред-предупреждение Разделения",
-	WarningSplitNow				= "Показать предупреждение для Разделения",
-	WarningMerge				= "Показать предупреждение для Размытия",
+	WarningSplitSoon	= optionPreWarning:format("Разделение"),	-- translate
+	WarningSplitNow		= optionWarning:format("Разделение"),	-- translate
+	WarningMerge		= optionWarning:format("Размытие"),	-- translate
 })
+
 L:SetMiscLocalization({
-	SplitTrigger1				= "There's plenty of me to go around.", -- correct this
-	SplitTrigger2				= "I'll give you more than you can handle.", -- correct this
-	MergeTrigger				= "Now to finish the job!" -- correct this
+	SplitTrigger1 = "There's plenty of me to go around.",		-- translate
+	SplitTrigger2 = "I'll give you more than you can handle.",	-- translate
+	MergeTrigger = "Now to finish the job!"				-- translate
 })
+
+
 -----------------
 -- Keristrasza --
 -----------------
@@ -522,18 +800,65 @@ L = DBM:GetModLocalization("Keristrasza")
 L:SetGeneralLocalization({
 	name = "Керистраза"
 })
+
 L:SetWarningLocalization({
-	WarningChains				= "Хрустальные цепи: >%s<",
-	WarningEnrage				= "Исступление",
+	WarningChains 	= debuff,
+	WarningEnrage	= spell,
+	WarningNova	= spell
 })
+
 L:SetTimerLocalization({
-	TimerChains					= "Хрустальные цепи: %s",
+	TimerChains	= debuff,
+	TimerNova	= spell,
+	TimerChainsCD	= spellCD,
+	TimerNovaCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningChains				= "Показать предупреждение для Хрустальных цепей",
-	WarningEnrage				= "Показать предупреждение для Исступления",
-	TimerChains					= "Показать отсчет времени до Хрустальных цепей",
+	WarningChains	= optionWarning:format(GetSpellInfo(50997)),
+	WarningNova	= optionWarning:format(GetSpellInfo(48179)),
+	WarningEnrage	= optionWarning:format(GetSpellInfo(8599)),
+	TimerChains	= optionTimerDur:format(GetSpellInfo(50997)),
+	TimerChainsCD	= optionTimerCD:format(GetSpellInfo(50997)),
+	TimerNova	= optionTimerDur:format(GetSpellInfo(48179)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(48179))
 })
+
+
+---------------------------------
+-- Commander Kolurg/Stoutbeard --
+---------------------------------
+L = DBM:GetModLocalization("Commander")
+
+local commander = "Неизвестный"
+if UnitFactionGroup("player") == "Альянс" then
+	commander = "Командир Колург"
+elseif UnitFactionGroup("player") == "Орда" then
+	commander = "Командир Пивобород"
+end
+
+L:SetGeneralLocalization({
+	name = commander
+})
+
+L:SetWarningLocalization({
+	WarningFear 		= spell,
+	WarningWhirlwind	= spell
+})
+
+L:SetTimerLocalization({
+	TimerFearCD		= spellCD,
+	TimerWhirlwindCD	= spellCD
+})
+
+L:SetOptionLocalization({
+	WarningFear		= optionWarning:format(GetSpellInfo(19134)),
+	WarningWhirlwind	= optionWarning:format(GetSpellInfo(38619)),
+	TimerFearCD		= optionTimerCD:format(GetSpellInfo(19134)),
+	TimerWhirlwindCD	= optionTimerCD:format(GetSpellInfo(38619))
+})
+
+
 ----------------
 -- The Oculus --
 -----------------------------
@@ -544,12 +869,16 @@ L = DBM:GetModLocalization("DrakosTheInterrogator")
 L:SetGeneralLocalization({
 	name = "Дракос Дознаватель"
 })
+
 L:SetWarningLocalization({
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
 })
+
 --------------------
 -- Mage-Lord Urom --
 --------------------
@@ -558,21 +887,26 @@ L = DBM:GetModLocalization("MageLordUrom")
 L:SetGeneralLocalization({
 	name = "Маг-лорд Уром"
 })
+
 L:SetWarningLocalization({
-	WarningTimeBomb				= "Часовая бомба",
-	WarningExplosion			= "Чародейский взрыв",
+	WarningTimeBomb = debuff,
+	WarningExplosion = spell
 })
+
 L:SetTimerLocalization({
-	TimerTimeBomb				= "Часовая бомба: %s",
-	TimerExplosion				= "Чародейский взрыв",
+	TimerTimeBomb = debuff,
+	TimerExplosion = spell
 })
+
 L:SetOptionLocalization({
-	WarningTimeBomb				= "Показать предупреждение для Часовой бомбы",
-	WarningExplosion			= "Показать предупреждение для Чародейского взрыва",
-	TimerTimeBomb				= "Показать отсчет времени до Часовой бомбы",
-	TimerExplosion				= "Показать отсчет времени до Чародейского взрыва",
-	SpecWarnBombYou				= "Показать спец-предупреждение для Часовой бомбы",
+	WarningTimeBomb 	= optionWarning:format(GetSpellInfo(51121)),
+	WarningExplosion 	= optionWarning:format(GetSpellInfo(51110)),
+	TimerTimeBomb 		= optionTimerDur:format(GetSpellInfo(51121)),
+	TimerExplosion 		= optionTimerDur:format(GetSpellInfo(51110)),
+	SpecWarnBombYou 	= optionSpecWarning:format(GetSpellInfo(51121))
 })
+
+
 ------------------------
 -- Varos Cloudstrider --
 ------------------------
@@ -581,12 +915,19 @@ L = DBM:GetModLocalization("VarosCloudstrider")
 L:SetGeneralLocalization({
 	name = "Варос Заоблачный Странник"
 })
+
 L:SetWarningLocalization({
+	WarningAmplify	= debuff
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningAmplify	= optionWarning:format(GetSpellInfo(51054))
 })
+
+
 -------------------------
 -- Ley-Guardian Eregos --
 -------------------------
@@ -595,12 +936,28 @@ L = DBM:GetModLocalization("LeyGuardianEregos")
 L:SetGeneralLocalization({
 	name = "Хранитель энергии Эрегос"
 })
+
 L:SetWarningLocalization({
+	WarningShift	= spell,
+	WarningEnrage	= spell,
+	WarningShiftEnd	= "Сдвига плоскости заканчивается"		-- translate
 })
+
 L:SetTimerLocalization({
+	TimerShift	= spell,
+	TimerEnrage	= spell
 })
+
 L:SetOptionLocalization({
+	WarningShift	= optionWarning:format(GetSpellInfo(51162)),
+	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." заканчивается"), 	-- translate the word 'ending'
+	WarningEnrage	= optionWarning:format(GetSpellInfo(51170)),
+	TimerShift	= optionTimerDur:format(GetSpellInfo(51162)),
+	TimerEnrage	= optionTimerDur:format(GetSpellInfo(51170))
 })
+
+
+
 ------------------
 -- Utgarde Keep --
 ---------------------
@@ -611,16 +968,21 @@ L = DBM:GetModLocalization("Keleseth")
 L:SetGeneralLocalization({
 	name = "Принц Келесет"
 })
+
 L:SetWarningLocalization({
-	WarningTomb					= "Ледяная могила: >%s<",
+	WarningTomb	= debuff
 })
+
 L:SetTimerLocalization({
-	TimerTomb					= "Ледяная могила: %s",
+	TimerTomb	= debuff
 })
+
 L:SetOptionLocalization({
-	WarningTomb					= "Показать предупреждение для Ледяной могилы",
-	TimerTomb					= "Показать отсчет времени до Ледяной могилы",
+	WarningTomb	= optionWarning:format(GetSpellInfo(48400)),
+	TimerTomb	= optionTimerDur:format(GetSpellInfo(48400))
 })
+
+
 ------------------------------
 -- Skarvald the Constructor --
 -- & Dalronn the Controller --
@@ -630,16 +992,23 @@ L = DBM:GetModLocalization("ConstructorAndController")
 L:SetGeneralLocalization({
 	name = "Скарвальд и Далронн"
 })
+
 L:SetWarningLocalization({
-	WarningEnfeeble				= "Изнурение: >%s<",
+	WarningEnfeeble		= debuff,
+	WarningSummon		= spell
 })
+
 L:SetTimerLocalization({
-	TimerEnfeeble				= "Изнурение: %s",
+	TimerEnfeeble		= debuff
 })
+
 L:SetOptionLocalization({
-	WarningEnfeeble				= "Показать предупреждение для Изнурения",
-	TimerEnfeeble				= "Показать отсчет времени до Изнурения",
+	WarningEnfeeble		= optionWarning:format(GetSpellInfo(43650)),
+	WarningSummon		= optionWarning:format(GetSpellInfo(52611)),
+	TimerEnfeeble		= optionTimerDur:format(GetSpellInfo(43650))
 })
+
+
 --------------------------
 -- Ingvar the Plunderer --
 --------------------------
@@ -648,23 +1017,28 @@ L = DBM:GetModLocalization("IngvarThePlunderer")
 L:SetGeneralLocalization({
 	name = "Ингвар Расхититель"
 })
+
 L:SetWarningLocalization({
-	WarningSmash				= "%s",
-	WarningGrowl				= "%s",
-	WarningWoeStrike			= "Удар скорби: >%s<",
-	SpecialWarningSpelllock		= "Запрет чар - остановите чтение заклинаний!"
+	WarningSmash			= spell,
+	WarningGrowl			= spell,
+	WarningWoeStrike		= debuff,
+	SpecialWarningSpelllock 	= "Запрет чар - прекратите чтение заклинаний!"  -- translate
 })
+
 L:SetTimerLocalization({
-	TimerSmash					= "%s",
-	TimerWoeStrike				= "Удар скорби: %s"
+	TimerSmash	= spell,
+	TimerWoeStrike	= debuff
 })
+
 L:SetOptionLocalization({
-	WarningSmash				= "Показать предупреждение для Мощного удара",
-	WarningGrowl				= "Показать предупреждение для Ошеломляющего рева",
-	WarningWoeStrike			= "Показать предупреждение для Удара скорби", -- written Woe Stike, need Woe Strike
-	TimerSmash					= "Показать отсчет времени до Мощного удара",
-	TimerWoeStrike				= "Показать отсчет времени до Удара скорби",
+	WarningSmash		= optionWarning:format(GetSpellInfo(42723)),
+	WarningGrowl		= optionWarning:format(GetSpellInfo(42708)),
+	WarningWoeStrike	= optionWarning:format(GetSpellInfo(42730)),
+	TimerSmash		= optionTimerCast:format(GetSpellInfo(42723)),
+	TimerWoeStrike		= optionTimerDur:format(GetSpellInfo(42730))
 })
+
+
 ----------------------
 -- Utgarde Pinnacle --
 ------------------------
@@ -675,14 +1049,24 @@ L = DBM:GetModLocalization("SkadiTheRuthless")
 L:SetGeneralLocalization({
 	name = "Скади Безжалостный"
 })
+
 L:SetWarningLocalization({
-	WarningWhirlwind			= "Вихрь"
+	WarningWhirlwind	= spell,
+	WarningPoison		= debuff
 })
+
 L:SetTimerLocalization({
+	TimerPoison		= debuff,
+	TimerWhirlwindCD	= spellCD
 })
+
 L:SetOptionLocalization({
-	WarningWhirlwind			= "Показать предупреждение для Вихря"
+	WarningWhirlwind	= optionWarning:format(GetSpellInfo(59332)),
+	WarningPoison		= optionWarning:format(GetSpellInfo(59331)),
+	TimerPoison		= optionTimerDur:format(GetSpellInfo(59331)),
+	TimerWhirlwindCD	= optionTimerCD:format(GetSpellInfo(59332))
 })
+
 ------------
 -- Ymiron --
 ------------
@@ -691,14 +1075,19 @@ L = DBM:GetModLocalization("Ymiron")
 L:SetGeneralLocalization({
 	name = "Король Имирон"
 })
+
 L:SetWarningLocalization({
-	WarningBane					= "Погибель"
+	WarningBane	= spell
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
-	WarningBane					= "Показать предупреждение для Погибели"
+	WarningBane	= optionWarning:format(GetSpellInfo(48294))
 })
+
+
 -----------------------
 -- Svala Sorrowgrave --
 -----------------------
@@ -707,12 +1096,19 @@ L = DBM:GetModLocalization("SvalaSorrowgrave")
 L:SetGeneralLocalization({
 	name = "Свала Вечноскорбящая"
 })
+
 L:SetWarningLocalization({
+	WarningSword	= debuff
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningSword	= optionWarning:format(GetSpellInfo(48276))
 })
+
+
 ---------------------
 -- Gortok Palehoof --
 ---------------------
@@ -721,12 +1117,21 @@ L = DBM:GetModLocalization("GortokPalehoof")
 L:SetGeneralLocalization({
 	name = "Горток Бледное Копыто"
 })
+
 L:SetWarningLocalization({
+	WarningImpale	= debuff
 })
+
 L:SetTimerLocalization({
+	TimerImpale	= debuff
 })
+
 L:SetOptionLocalization({
+	WarningImpale	= optionWarning:format(GetSpellInfo(48261)),
+	TimerImpale	= optionTimerDur:format(GetSpellInfo(48261))
 })
+
+
 ---------------------
 -- The Violet Hold --
 ---------------------
@@ -737,13 +1142,27 @@ L = DBM:GetModLocalization("Cyanigosa")
 L:SetGeneralLocalization({
 	name = "Синигоса"
 })
+
 L:SetWarningLocalization({
+	WarningVacuum	= spell,
+	WarningBlizzard	= spell,
+	WarningMana	= debuff
 })
 
 L:SetTimerLocalization({
+	TimerVacuumCD	= spellCD,
+	TimerMana	= debuff
 })
+
 L:SetOptionLocalization({
+	WarningVacuum	= optionWarning:format(GetSpellInfo(58694)),
+	WarningBlizzard	= optionWarning:format(GetSpellInfo(58693)),
+	WarningMana	= optionWarning:format(GetSpellInfo(59374)),
+	TimerMana	= optionTimerDur:format(GetSpellInfo(59374)),
+	TimerVacuumCD	= optionTimerCD:format(GetSpellInfo(58694))
 })
+
+
 ------------
 -- Erekem --
 ------------
@@ -752,12 +1171,19 @@ L = DBM:GetModLocalization("Erekem")
 L:SetGeneralLocalization({
 	name = "Эрекем"
 })
+
 L:SetWarningLocalization({
+	WarningES	= spell
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
+	WarningES	= optionWarning:format(GetSpellInfo(54479))
 })
+
+
 -------------
 -- Ichoron --
 -------------
@@ -766,12 +1192,17 @@ L = DBM:GetModLocalization("Ichoron")
 L:SetGeneralLocalization({
 	name = "Гнойрон"
 })
+
 L:SetWarningLocalization({
 })
+
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
 })
+
+
 ---------------
 -- Lavanthor --
 ---------------
@@ -780,13 +1211,17 @@ L = DBM:GetModLocalization("Lavanthor")
 L:SetGeneralLocalization({
 	name = "Лавантор"
 })
+
 L:SetWarningLocalization({
 })
+
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
 })
+
+
 ------------
 -- Moragg --
 ------------
@@ -795,12 +1230,23 @@ L = DBM:GetModLocalization("Moragg")
 L:SetGeneralLocalization({
 	name = "Морагг"
 })
+
 L:SetWarningLocalization({
+	WarningLink	= debuff
 })
+
 L:SetTimerLocalization({
+	TimerLink	= debuff,
+	TimerLinkCD	= spellCD
 })
+
 L:SetOptionLocalization({
+	WarningLink	= optionWarning:format(GetSpellInfo(54396)),
+	TimerLink	= optionTimerDur:format(GetSpellInfo(54396)),
+	TimerLinkCD	= optionTimerCD:format(GetSpellInfo(54396))
 })
+
+
 ------------
 -- Xevoss --
 ------------
@@ -809,13 +1255,17 @@ L = DBM:GetModLocalization("Xevoss")
 L:SetGeneralLocalization({
 	name = "Ксевозз"
 })
+
 L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
 })
+
 L:SetOptionLocalization({
 })
+
+
 -----------------------------
 -- Zuramat the Obliterator --
 -----------------------------
@@ -824,26 +1274,31 @@ L = DBM:GetModLocalization("Zuramat")
 L:SetGeneralLocalization({
 	name = "Зурамат Уничтожитель"
 })
+
 L:SetWarningLocalization({
-	WarningVoidShift			= "Вхождение в Бездну: >%s<",
-	WarningVoidShifted			= ">%s< бьется с призваным караульным Бездны",
-	WarningShroudOfDarkness		= "Покров Тьмы - остановите урон",
-	SpecialWarningVoidShifted	= "Вы отброшены в Бездну!",
-	SpecialShroudofDarkness		= "Покров Тьмы - остановите урон",
+	WarningVoidShift		= debuff,
+	WarningVoidShifted		= debuff,
+	WarningShroudOfDarkness		= spell,
+	SpecialWarningVoidShifted 	= spell:format(GetSpellInfo(54343)),
+	SpecialShroudofDarkness 	= spell:format(GetSpellInfo(59745))
 })
+
 L:SetTimerLocalization({
-	TimerVoidShift				= "Вхождение в Бездну: %s",
-	TimerVoidShifted			= "В Бездне: %s",
+	TimerVoidShift			= debuff,
+	TimerVoidShifted		= debuff
 })
+
 L:SetOptionLocalization({
-	WarningVoidShift			= "Показать предупреждение для Вхождения в Бездну",
-	WarningVoidShifted			= "Показать предупреждение для отброса игрока в Бездну",
-	WarningShroudOfDarkness		= "Показать предупреждение для Покрова Тьмы",
-	SpecialWarningVoidShifted	= "Показать спец-предупреждение для Вхождения в Бездну",
-	SpecialShroudofDarkness		= "Показать спец-предупреждение для Покрова Тьмы",
-	TimerVoidShift				= "Показать отсчет времени до Вхождения в Бездну",
-	TimerVoidShifted			= "Показать отсчет времени игрока в Бездне",
+	WarningVoidShift			= optionWarning:format(GetSpellInfo(59743)),
+	WarningVoidShifted			= optionWarning:format(GetSpellInfo(59343)),
+	WarningShroudOfDarkness			= optionWarning:format(GetSpellInfo(59745)),
+	SpecialWarningVoidShifted		= optionSpecWarning:format(GetSpellInfo(59343)),
+	SpecialShroudofDarkness			= optionSpecWarning:format(GetSpellInfo(59745)),
+	TimerVoidShift				= optionTimerDur:format(GetSpellInfo(59743)),
+	TimerVoidShifted			= optionTimerDur:format(GetSpellInfo(59343))
 })
+
+
 -------------------
 -- Portal Timers --
 -------------------
@@ -852,22 +1307,27 @@ L = DBM:GetModLocalization("PortalTimers")
 L:SetGeneralLocalization({
 	name = "Портал Времени"
 })
+
 L:SetWarningLocalization({
-	WarningPortalSoon			= "Скоро новый портал",
-	WarningPortalNow			= "Портал %d",
-	WarningBossNow				= "Босс приближается",
+	WarningPortalSoon	= "Скоро новый портал",
+	WarningPortalNow	= "Портал #%d",
+	WarningBossNow		= "Босс приближается",
 	WavePortal		= "Открыто порталов: (%d+)/18"
 })
+
 L:SetTimerLocalization({
-	TimerPortalIn				= "Портал %d" , 
+	TimerPortalIn	= "Портал #%d" , 
 })
+
 L:SetOptionLocalization({
-	WarningPortalNow			= "Показать предупреждение для Нового Портала",
-	WarningPortalSoon			= "Показать пред-предупреждение Нового Портала",
-	WarningBossNow				= "Показать предупреждение для Босса",
-	TimerPortalIn				= "Показать отсчет времени до Портала",
-	ShowAllPortalWarnings		= "Показать предупреждение для всех волн"
+	WarningPortalNow		= optionWarning:format("Новый портал"),
+	WarningPortalSoon		= optionPreWarning:format("Новый портал"),
+	WarningBossNow			= optionWarning:format("Босс"),
+	TimerPortalIn			= "Отображать отсчет времени до \"Портал: #\"",
+	ShowAllPortalWarnings		= "Отображать предупреждение для всех волн"
 })
+
+
 L:SetMiscLocalization({
-	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!", -- correct this
+	yell1 = "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!", -- Аметистовая крепость
 })

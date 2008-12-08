@@ -15,6 +15,6 @@ local warningAmplify = mod:NewAnnounce("WarningAmplify", 2, 51054)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 51054 or args.spellId == 59371 then
-		warningAmplify:Show(args.destName)
+		warningAmplify:Show(args.spellName, args.destName)
 	end
 end

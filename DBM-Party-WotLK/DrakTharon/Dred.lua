@@ -16,24 +16,27 @@ local warningSlash	= mod:NewAnnounce("WarningSlash", 3, 48873)
 local warningBite	= mod:NewAnnounce("WarningBite", 2, 48920)
 local warningFear	= mod:NewAnnounce("WarningFear", 1, 22686)
 
-local timerFear		= mod:NewTimer(20, "TimerFear", 22686)  -- cooldown ??
+local timerFear		= mod:NewTimer(15, "TimerFear", 22686)  -- cooldown ??
 local timerSlash	= mod:NewTimer(10, "TimerSlash", 48873)
+local timerSlashCD	= mod:NewTimer(18, "TimerSlashCD", 48873)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 22686 then
-		warningFear:Show()
-		timerFear:Start()
+	if args.spellId == 22686 and args.sourceGUID == 27483 then
+		warningFear:Show(args.spellName)
+		timerFear:Start(args.spellName)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 48920 then	-- Grievous Bite
-		warningBite:Show(tostring(args.destName))
-	elseif args.spellId == 48873 then	-- Manglisg Slash
-		warningSlash:Show("Mangling")
-		timerSlash:Start(10, "Mangling", tostring(args.destName))
+	if args.spellId == 48920 then
+		warningBite:Show(args.spellName, args.destName)
+	elseif args.spellId == 48873 then
+		warningSlash:Show(args.spellName)
+		timerSlash:Start(15, args.spellName, args.destName)
+		timerSlashCD:Start(args.spellName)
 	elseif args.spellId == 48878 then
-		warningSlash:Show("Piercing")
-		timerSlash:Start(15, "Piercing", tostring(args.destName))
+		warningSlash:Show(args.spellName)
+		timerSlash:Start(10, args.spellName, args.destName)
+		timerSlashCD:Start(args.spellName)
 	end
 end
