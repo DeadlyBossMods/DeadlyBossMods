@@ -3,18 +3,18 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(29305)
-mod:SetZone()
+--mod:SetZone()
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED"
+	"SPELL_CAST_START"
 )
 
-local warningMojo	= mod:NewAnnounce("WarningMojo", 3, 55163)
+local warningTransform	= mod:NewAnnounce("WarningTransform", 3, 55098)
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 55163 then
-		warningMojo:Show()
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 55098 then
+		warningTransform:Show(args.spellName)
 	end
 end

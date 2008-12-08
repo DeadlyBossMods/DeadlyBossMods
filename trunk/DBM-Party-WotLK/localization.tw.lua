@@ -1,6 +1,19 @@
 ﻿if GetLocale() ~= "zhTW" then return end
 
 local L
+
+local spell		= "%s"				
+local debuff		= "%s: >%s<"			
+local spellCD		= "%s 冷卻"			-- translate
+local spellSoon		= "%s 即將到來"			-- translate
+local optionWarning	= "顯示\"%s\"警告"		-- translate
+local optionPreWarning	= "顯示\"%s\"的預先警告"	-- translate
+local optionSpecWarning	= "顯示\"%s\"的特別警告"	-- translate
+local optionTimerCD	= "顯示\"%s\"的冷卻計時器"	-- translate
+local optionTimerDur	= "顯示\"%s\"的存在計時器"	-- translate
+local optionTimerCast	= "顯示\"%s\"施法計時器"	-- translate
+
+
 --------------------------------
 -- Ahnahet: The Old Kingdom --
 --------------------------------
@@ -13,18 +26,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFlame		= "裂焰之球",
-	WarningEmbrace		= "吸血鬼之擁: >%s<"
+	WarningPlague	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace		= "吸血鬼之擁: %s"
+	TimerPlague	= debuff,
+	TimerPlagueCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningFlame		= "顯示裂焰之球警告",
-	WarningEmbrace		= "顯示吸血鬼之擁警告",
-	TimerEmbrace		= "顯示吸血鬼之擁期間計時"
+	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
+	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
+	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
 })
 
 
@@ -59,14 +72,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningThundershock	= "雷霆震擊",
+	WarningThundershock	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningThundershock	= "顯示雷霆震擊警告",
+	WarningThundershock	= optionWarning:format(GetSpellInfo(56926)),
 })
 
 
@@ -80,16 +93,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningInsanity	= "瘋狂",
-	WarningShiver	= "粉碎: >%s<"
+	WarningInsanity	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningInsanity	= "顯示瘋狂警告",
-	WarningShiver	= "顯示粉碎警告"
+	WarningInsanity	= optionWarning:format(GetSpellInfo(57496))
 })
 
 
@@ -103,16 +114,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMini	= "迷你化",
+	WarningMini	= spell
 })
 
 L:SetTimerLocalization({
+	TimerMiniCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningMini	= "顯示迷你化警告",
+	WarningMini	= optionWarning:format(GetSpellInfo(57055)),
+	TimerMiniCD	= optionTimerCD:format(GetSpellInfo(57055))
 })
-
 
 
 -----------------
@@ -127,14 +139,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCurse	= "疲倦詛咒: >%s<"
+	WarningCurse	= spell
 })
 
 L:SetTimerLocalization({
+	TimerCurse	= spell
 })
 
 L:SetOptionLocalization({
-	WarningCurse = "顯示疲倦詛咒警告"
+	WarningCurse 	= optionWarning:format(GetSpellInfo(52592)),
+	TimerCurse	= optionTimerDur:format(GetSpellInfo(52592))
 })
 
 
@@ -148,16 +162,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningLeech	= "吸血毒液",
-	WarningCloud	= "酸性之雲"
+	WarningLeech	= spell,
+	WarningCloud	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningLeech	= "顯示吸血毒液警告",
-	WarningCloud	= "顯示酸性之雲警告"
+	WarningLeech	= optionWarning:format(GetSpellInfo(53030)),
+	WarningCloud	= optionWarning:format(GetSpellInfo(53400))
 })
 
 
@@ -171,14 +185,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPound		= "猛擊",
+	WarningPound	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPound		= "顯示猛擊警告",
+	WarningPound	= optionWarning:format(GetSpellInfo(53472)),
 })
 
 
@@ -194,16 +208,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningChains		= "壓迫之鍊: >%s<"
+	WarningChains	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerChains		= "壓迫之鍊: %s"
+	TimerChains	= debuff,
+	TimerChainsCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningChains		= "顯示壓迫之鍊警告",
-	TimerChains		= "顯示壓迫之鍊計時",
+	WarningChains	= optionWarning:format(GetSpellInfo(52696)),
+	TimerChains	= optionTimerDur:format(GetSpellInfo(52696)),
+	TimerChainsCD	= optionTimerCD:format(GetSpellInfo(52696))
 })
 
 
@@ -217,18 +233,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCurse	= "扭曲血肉詛咒: >%s<",
-	WarningSteal	= "竊取血肉: >%s<",
-	WarningGhoul	= "召喚食屍鬼"
+	WarningCurse	= debuff,
+	WarningSteal	= debuff,
+	WarningGhoul	= spell
 })
 
 L:SetTimerLocalization({
+	TimerGhoulCD	= spellCD,
+	TimerCurse	= debuff
 })
 
 L:SetOptionLocalization({
-	WarningCurse	= "顯示扭曲血肉詛咒警告",
-	WarningSteal	= "顯示竊取血肉警告",
-	WarningGhoul	= "顯示召喚食屍鬼警告"
+	WarningCurse	= optionWarning:format(GetSpellInfo(58845)),
+	WarningSteal	= optionWarning:format(GetSpellInfo(52709)),
+	WarningGhoul	= optionWarning:format(GetSpellInfo(52451)),
+	TimerGhoulCD	= optionTimerCD:format(GetSpellInfo(52451)),
+	TimerCurse	= optionTimerDur:format(GetSpellInfo(58845))
 })
 
 
@@ -242,18 +262,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningStrike	= "致傷打擊: >%s<",
-	WarningTime	= "時間 >%s<",
-	WarningCurse	= "費力詛咒: >%s<"
+	WarningTime	= spell,
+	WarningCurse	= debuff
 })
 
 L:SetTimerLocalization({
+	TimerTimeCD	= spellCD,
+	TimerCurse	= debuff
 })
 
 L:SetOptionLocalization({
-	WarningStrike	= "顯示致傷打擊警告",
-	WarningTime	= "顯示時間 停止/扭曲警告",
-	WarningCurse	= "顯示費力詛咒警告"
+	WarningTime	= optionWarning:format("Time Stop/Warp"),	-- requires translation
+	WarningCurse	= optionWarning:format(GetSpellInfo(52772)),
+	TimerTimeCD	= optionTimerCD:format("Time Stop/Warp"),	-- translate
+	TimerCurse	= optionTimerDur:format(GetSpellInfo(52772))
 })
 
 
@@ -267,16 +289,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSleep		= "催眠術: >%s<"
+	WarningSleep	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerSleep		= "催眠術: %s"
+	TimerSleep	= debuff,
+	TimerSleepCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningSleep		= "顯示催眠術警告",
-	TimerSleep		= "顯示催眠術期間計時"
+	WarningSleep	= optionWarning:format(GetSpellInfo(52721)),
+	TimerSleep	= optionTimerDur:format(GetSpellInfo(52721)),
+	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
 })
 
 
@@ -330,22 +354,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFear	= "恐懼",
-	WarningBite	= "重創撕咬: >%s<",
-	WarningSlash	= "%s 斬"
+	WarningFear	= spell,
+	WarningBite	= debuff,
+	WarningSlash	= spell
 })
 
 L:SetTimerLocalization({
-	TimerFear	= "恐懼冷卻",
-	TimerSlash	= "%s 斬: %s"
+	TimerFear	= spellCD,
+	TimerSlash	= debuff,
+	TimerSlashCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningSlash	= "顯示碎裂斬/穿甲斬警告",
-	WarningFear	= "顯示恐懼警告",
-	WarningBite	= "顯示重創撕咬警告",
-	TimerFear	= "顯示恐懼冷卻計時",
-	TimerSlash	= "顯示碎裂斬/穿甲斬持續計時"
+	WarningSlash	= optionWarning:format("碎裂斬/穿甲斬"), 	-- needs translation
+	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
+	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
+	TimerFear	= optionTimerCD:format(GetSpellInfo(22686)),
+	TimerSlash	= optionTimerDur:format("碎裂斬/穿甲斬"), 	-- needs translation
+	TimerSlashCD	= optionTimerCD:format("碎裂斬/穿甲斬") 	-- needs translation
 })
 
 
@@ -359,14 +385,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCloud	= "毒雲"
+	WarningCloud	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningCloud	= "顯示毒雲警告"
+	WarningCloud	= optionWarning:format(GetSpellInfo(49548))
 })
 
 
@@ -382,16 +408,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningNova	= "劇毒新星",
-	WarningBite	= "強力撕咬: >%s<"
+	WarningNova	= spell
 })
 
 L:SetTimerLocalization({
+	TimerNovaCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningNova	= "顯示劇毒新星警告",
-	WarningBite	= "顯示強力撕咬警告"
+	WarningNova	= optionWarning:format(GetSpellInfo(55081)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(55081))
 })
 
 
@@ -405,14 +431,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMojo	= "魔精狂亂"
+	WarningTransform	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningMojo	= "顯示魔精狂亂警告"
+	WarningTransform	= optionWarning:format(GetSpellInfo(55098))
 })
 
 
@@ -484,14 +510,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWhirlwind	= "旋風斬"
+	WarningWhirlwind	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWhirlwind	= "顯示旋風斬警告"
+	WarningWhirlwind	= optionWarning:format(GetSpellInfo(52027))
 })
 
 
@@ -505,16 +531,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningOverload	= "靜電超載: >%s<",
-	WarningSplit	= "散化/分裂"
+	WarningOverload	= debuff,
+	WarningSplit	= spell
 })
 
 L:SetTimerLocalization({
+	TimerOverload	= debuff
 })
 
 L:SetOptionLocalization({
-	WarningOverload = "顯示靜電超載警告",
-	WarningSplit	= "顯示散化警告"
+	WarningOverload = optionWarning:format(GetSpellInfo(52658)),
+	WarningSplit	= optionWarning:format(GetSpellInfo(52770)),
+	TimerOverload	= optionTimerDur:format(GetSpellInfo(52658))
 })
 
 
@@ -529,14 +557,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningStomp = "破碎踐踏"
+	WarningStomp 	= spell
 })
 
 L:SetTimerLocalization({
+	TimerStompCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningStomp = "顯示破碎踐踏警告"
+	WarningStomp 	= optionWarning:format(GetSpellInfo(52237)),
+	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
 })
 
 
@@ -550,14 +580,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningNova	= "閃電新星"
+	WarningNova	= spell
 })
 
 L:SetTimerLocalization({
+	TimerNovaCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningNova	= "顯示閃電新星警告"
+	WarningNova	= optionWarning:format(GetSpellInfo(53960)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(53960))
 })
 
 
@@ -573,22 +605,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWoe	= "哀痛之柱: >%s<",
-	WarningSorrow	= "哀傷震擊",
-	WarningStorm	= "悲痛風暴",
+	WarningWoe	= debuff,
+	WarningSorrow	= spell,
+	WarningStorm	= spell
 })
 
 L:SetTimerLocalization({
-	TimerWoe	= "哀痛之柱: %s",
-	TimerSorrow	= "哀傷震擊",
+	TimerWoe	= debuff,
+	TimerSorrow	= spell,
+	TimerSorrowCD	= spellCD,
+	TimerStormCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningWoe	= "顯示哀痛之柱警告",
-	WarningSorrow	= "顯示哀傷震擊警告",
-	WarningStorm	= "顯示悲痛風暴警告",
-	TimerWoe	= "顯示哀痛之柱期間計時",
-	TimerSorrow	= "顯示哀傷震擊期間計時",
+	WarningWoe	= optionWarning:format(GetSpellInfo(50761)),
+	WarningSorrow	= optionWarning:format(GetSpellInfo(50760)),
+	WarningStorm	= optionWarning:format(GetSpellInfo(50752)),
+	TimerWoe	= optionTimerDur:format(GetSpellInfo(50761)),
+	TimerSorrow	= optionTimerDur:format(GetSpellInfo(50760)),
+	TimerSorrowCD	= optionTimerCD:format(GetSpellInfo(50760)),
+	TimerStormCD	= optionTimerCD:format(GetSpellInfo(50752)),
 })
 
 
@@ -601,14 +637,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShatter	= "即將粉碎!"
+	WarningShatter	= spell
 })
 
 L:SetTimerLocalization({
+	TimerShatterCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningShatter	= "顯示粉碎預先警告"
+	WarningShatter	= optionWarning:format(GetSpellInfo(50810)),
+	TimerShatterCD	= optionTimerCD:format(GetSpellInfo(50810))
 })
 
 
@@ -622,16 +660,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCharge	= "靜電能量: >%s<",
-	WarningRing	= "閃電環"
+	WarningCharge	= debuff,
+	WarningRing	= spell
 })
 
 L:SetTimerLocalization({
+	TimerCharge	= debuff,
+	TimerChargeCD	= spellCD,
+	TimerRingCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningCharge	= "顯示靜電能量警告",
-	WarningRing	= "顯示閃電環警告"
+	WarningCharge	= optionWarning:format(GetSpellInfo(50834)),
+	WarningRing	= optionWarning:format(GetSpellInfo(50840)),
+	TimerCharge	= optionTimerDur:format(GetSpellInfo(50834)),
+	TimerChargeCD	= optionTimerCD:format(GetSpellInfo(50834)),
+	TimerRingCD	= optionTimerCD:format(GetSpellInfo(50840))
 })
 
 
@@ -665,14 +709,18 @@ L:SetGeneralLocalization({
 	name = "艾諾瑪路斯"
 })
 
+L:SetGeneralLocalization({
+	name = "Anomalus"
+})
+
 L:SetWarningLocalization({
-	WarningRiftSoon	= "裂縫即將開啟",
-	WarningRiftNow	= "裂縫開啟!",
+	WarningRiftSoon		= spellSoon,
+	WarningRiftNow		= spell,
 })
 
 L:SetOptionLocalization({
-	WarningRiftSoon		= "顯示裂縫開啟預先警告",
-	WarningRiftNow		= "顯示裂縫開啟警告"
+	WarningRiftSoon		= optionPreWarning:format(GetSpellInfo(47743)),
+	WarningRiftNow		= optionWarning:format(GetSpellInfo(47743))
 })
 
 
@@ -686,22 +734,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSpikes		= "水晶尖刺",
-	WarningReflection	= "法術反射",
-	WarningFrenzy		= "狂亂",
-	WarningAdd		= "召喚結晶糾纏者"
+	WarningSpikes		= spell,
+	WarningReflection	= spell,
+	WarningFrenzy		= spell,
+	WarningAdd		= spell
 })
 
 L:SetTimerLocalization({
-	TimerReflection		= "法術反射",
+	TimerReflection		= spell,
+	TimerReflectionCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningSpikes		= "顯示水晶尖刺警告",
-	WarningReflection	= "顯示法術反射警告",
-	WarningFrenzy		= "顯示狂亂警告",
-	WarningAdd			= "顯示召喚結晶糾纏者警告",
-	TimerReflection		= "顯示法術反射期間計時",
+	WarningSpikes		= optionWarning:format(GetSpellInfo(47958)),
+	WarningReflection	= optionWarning:format(GetSpellInfo(47981)),
+	WarningFrenzy		= optionWarning:format(GetSpellInfo(48017)),
+	WarningAdd		= optionWarning:format(GetSpellInfo(61564)),
+	TimerReflection		= optionTimerDur:format(GetSpellInfo(47981)),
+	TiemrReflectionCD	= optionTimerCD:format(GetSpellInfo(47981))
 })
 
 
@@ -746,18 +796,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningChains 	= "水晶之鍊: >%s<",
-	WarningEnrage	= "狂怒",
+	WarningChains 	= debuff,
+	WarningEnrage	= spell,
+	WarningNova	= spell
 })
 
 L:SetTimerLocalization({
-	TimerChains	= "水晶之鍊: %s",
+	TimerChains	= debuff,
+	TimerNova	= spell,
+	TimerChainsCD	= spellCD,
+	TimerNovaCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningChains	= "顯示水晶之鍊警告",
-	WarningEnrage	= "顯示狂怒警告",
-	TimerChains	= "顯示水晶之鍊期間計時",
+	WarningChains	= optionWarning:format(GetSpellInfo(50997)),
+	WarningNova	= optionWarning:format(GetSpellInfo(48179)),
+	WarningEnrage	= optionWarning:format(GetSpellInfo(8599)),
+	TimerChains	= optionTimerDur:format(GetSpellInfo(50997)),
+	TimerChainsCD	= optionTimerCD:format(GetSpellInfo(50997)),
+	TimerNova	= optionTimerDur:format(GetSpellInfo(48179)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(48179))
 })
 
 
@@ -779,16 +837,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFear 		= "恐懼",
-	WarningWhirlwind	= "旋風斬",
+	WarningFear 		= spell,
+	WarningWhirlwind	= spell
 })
 
 L:SetTimerLocalization({
+	TimerFearCD		= spellCD,
+	TimerWhirlwindCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningFear		= "顯示恐懼警告",
-	WarningWhirlwind	= "顯示旋風斬警告",
+	WarningFear		= optionWarning:format(GetSpellInfo(19134)),
+	WarningWhirlwind	= optionWarning:format(GetSpellInfo(38619)),
+	TimerFearCD		= optionTimerCD:format(GetSpellInfo(19134)),
+	TimerWhirlwindCD	= optionTimerCD:format(GetSpellInfo(38619))
 })
 
 
@@ -804,14 +866,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPull	= "魔法拖曳",
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPull	= "顯示魔法拖曳警告",
 })
 
 --------------------
@@ -824,21 +884,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTimeBomb = "時間爆彈",
-	WarningExplosion = "魔爆術",
+	WarningTimeBomb = debuff,
+	WarningExplosion = spell
 })
 
 L:SetTimerLocalization({
-	TimerTimeBomb = "時間爆彈: %s",
-	TimerExplosion = "魔爆術",
+	TimerTimeBomb = debuff,
+	TimerExplosion = spell
 })
 
 L:SetOptionLocalization({
-	WarningTimeBomb = "顯示時間爆彈警告",
-	WarningExplosion = "顯示魔爆術警告",
-	TimerTimeBomb = "顯示時間爆彈計時",
-	TimerExplosion = "顯示魔爆術計時",
-	SpecWarnBombYou = "顯示特別警告，如果您是炸彈",
+	WarningTimeBomb 	= optionWarning:format(GetSpellInfo(51121)),
+	WarningExplosion 	= optionWarning:format(GetSpellInfo(51110)),
+	TimerTimeBomb 		= optionTimerDur:format(GetSpellInfo(51121)),
+	TimerExplosion 		= optionTimerDur:format(GetSpellInfo(51110)),
+	SpecWarnBombYou 	= optionSpecWarning:format(GetSpellInfo(51121))
 })
 
 
@@ -852,14 +912,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningAmplify	= "魔法增效: >%s<"
+	WarningAmplify	= debuff
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningAmplify	= "顯示魔法增效警告"
+	WarningAmplify	= optionWarning:format(GetSpellInfo(51054))
 })
 
 
@@ -873,20 +933,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShift	= "界域轉換",
-	WarningShiftEnd	= "界域轉換結束",
-	WarningEnraged	= "狂怒襲擊"
+	WarningShift	= spell,
+	WarningEnrage	= spell,
+	WarningShiftEnd	= "界域轉換結束"		-- translate
 })
 
 L:SetTimerLocalization({
+	TimerShift	= spell,
+	TimerEnrage	= spell
 })
 
 L:SetOptionLocalization({
-	WarningShift	= "顯示界域轉換警告",
-	WarningShiftEnd	= "顯示\"界域轉換結束\"警告",
-	WarningEnraged	= "顯示狂怒襲擊警告"
+	WarningShift	= optionWarning:format(GetSpellInfo(51162)),
+	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"), 	-- translate the word 'ending'
+	WarningEnrage	= optionWarning:format(GetSpellInfo(51170)),
+	TimerShift	= optionTimerDur:format(GetSpellInfo(51162)),
+	TimerEnrage	= optionTimerDur:format(GetSpellInfo(51170))
 })
-
 
 
 ------------------
@@ -901,16 +964,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTomb	= "冰霜之墓: >%s<",
+	WarningTomb	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerTomb	= "冰霜之墓: %s",
+	TimerTomb	= debuff
 })
 
 L:SetOptionLocalization({
-	WarningTomb	= "顯示冰霜之墓警告",
-	TimerTomb	= "顯示冰霜之墓期間計時",
+	WarningTomb	= optionWarning:format(GetSpellInfo(48400)),
+	TimerTomb	= optionTimerDur:format(GetSpellInfo(48400))
 })
 
 
@@ -925,18 +988,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEnfeeble		= "衰弱: >%s<",
-	WarningSummon		= "召喚骷髏"
+	WarningEnfeeble		= debuff,
+	WarningSummon		= spell
 })
 
 L:SetTimerLocalization({
-	TimerEnfeeble		= "衰弱: %s",
+	TimerEnfeeble		= debuff
 })
 
 L:SetOptionLocalization({
-	WarningEnfeeble		= "顯示衰弱警告",
-	WarningSummon		= "顯示召喚骷髏警告",
-	TimerEnfeeble		= "顯示衰弱期間計時",
+	WarningEnfeeble		= optionWarning:format(GetSpellInfo(43650)),
+	WarningSummon		= optionWarning:format(GetSpellInfo(52611)),
+	TimerEnfeeble		= optionTimerDur:format(GetSpellInfo(43650))
 })
 
 
@@ -950,24 +1013,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSmash			= "%s",
-	WarningGrowl			= "%s",
-	WarningWoeStrike		= "哀痛打擊: >%s<",
-	SpecialWarningSpelllock = "法術封鎖 - 停止施法!"
+	WarningSmash			= spell,
+	WarningGrowl			= spell,
+	WarningWoeStrike		= debuff,
+	SpecialWarningSpelllock 	= "法術封鎖 - 停止施法!"  -- translate
 })
 
 L:SetTimerLocalization({
-	TimerSmash	= "%s",
-	TimerWoeStrike	= "哀痛打擊: %s"
+	TimerSmash	= spell,
+	TimerWoeStrike	= debuff
 })
 
 L:SetOptionLocalization({
-	WarningSmash			= "顯示黑暗破擊警告",
-	WarningGrowl			= "顯示低吼警告",
-	WarningWoeStrike		= "顯示哀痛打擊警告",
-	TimerSmash				= "顯示黑暗破擊施法計時",
-	TimerWoeStrike			= "顯示哀痛打擊計時",
-	SpecialWarningSpelllock = "顯示法術封鎖",
+	WarningSmash		= optionWarning:format(GetSpellInfo(42723)),
+	WarningGrowl		= optionWarning:format(GetSpellInfo(42708)),
+	WarningWoeStrike	= optionWarning:format(GetSpellInfo(42730)),
+	TimerSmash		= optionTimerCast:format(GetSpellInfo(42723)),
+	TimerWoeStrike		= optionTimerDur:format(GetSpellInfo(42730))
 })
 
 
@@ -983,16 +1045,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWhirlwind	= "旋風斬",
-	WarningPoison		= "毒矛: >%s<"
+	WarningWhirlwind	= spell,
+	WarningPoison		= debuff
 })
 
 L:SetTimerLocalization({
+	TimerPoison		= debuff,
+	TimerWhirlwindCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningWhirlwind	= "顯示旋風斬警告",
-	WarningPoison		= "顯示毒矛警告"
+	WarningWhirlwind	= optionWarning:format(GetSpellInfo(59332)),
+	WarningPoison		= optionWarning:format(GetSpellInfo(59331)),
+	TimerPoison		= optionTimerDur:format(GetSpellInfo(59331)),
+	TimerWhirlwindCD	= optionTimerCD:format(GetSpellInfo(59332))
 })
 
 ------------
@@ -1005,14 +1071,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBane	= "災禍"
+	WarningBane	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningBane	= "顯示災禍警告"
+	WarningBane	= optionWarning:format(GetSpellInfo(48294))
 })
 
 
@@ -1026,14 +1092,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSword	= "劍之儀式: >%s<"
+	WarningSword	= debuff
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSword	= "顯示劍之儀式警告"
+	WarningSword	= optionWarning:format(GetSpellInfo(48276))
 })
 
 
@@ -1047,14 +1113,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningImpale	= "刺穿: >%s<"
+	WarningImpale	= debuff
 })
 
 L:SetTimerLocalization({
+	TimerImpale	= debuff
 })
 
 L:SetOptionLocalization({
-	WarningImpale	= "顯示刺穿警告"
+	WarningImpale	= optionWarning:format(GetSpellInfo(48261)),
+	TimerImpale	= optionTimerDur:format(GetSpellInfo(48261))
 })
 
 
@@ -1070,20 +1138,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningVacuum	= "秘法真空",
-	WarningBlizzard	= "暴風雪",
-	WarningMana	= "法力浩劫: >%s<"
+	WarningVacuum	= spell,
+	WarningBlizzard	= spell,
+	WarningMana	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerVacuum	= "下次秘法真空"
+	TimerVacuumCD	= spellCD,
+	TimerMana	= debuff
 })
 
 L:SetOptionLocalization({
-	WarningVacuum	= "顯示秘法真空警告",
-	WarningBlizzard	= "顯示暴風雪警告",
-	WarningMana	= "顯示法力浩劫警告",
-	TimerVacuum	= "顯示秘法真空冷卻計時"
+	WarningVacuum	= optionWarning:format(GetSpellInfo(58694)),
+	WarningBlizzard	= optionWarning:format(GetSpellInfo(58693)),
+	WarningMana	= optionWarning:format(GetSpellInfo(59374)),
+	TimerMana	= optionTimerDur:format(GetSpellInfo(59374)),
+	TimerVacuumCD	= optionTimerCD:format(GetSpellInfo(58694))
 })
 
 
@@ -1097,14 +1167,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningES	= "大地之盾"
+	WarningES	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningES	= "顯示大地之盾警告"
+	WarningES	= optionWarning:format(GetSpellInfo(54479))
 })
 
 
@@ -1156,14 +1226,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningLink	= "光學連結: >%s<"
+	WarningLink	= debuff
 })
 
 L:SetTimerLocalization({
+	TimerLink	= debuff,
+	TimerLinkCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningLink	= "顯示光學連結警告"
+	WarningLink	= optionWarning:format(GetSpellInfo(54396)),
+	TimerLink	= optionTimerDur:format(GetSpellInfo(54396)),
+	TimerLinkCD	= optionTimerCD:format(GetSpellInfo(54396))
 })
 
 
@@ -1196,26 +1270,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningVoidShift		= "虛空移形: >%s<",
-	WarningVoidShifted		= "%s 與虛無哨兵戰鬥",
-	WarningShroudOfDarkness		= "黑暗障蔽 - 停止 dps",
-	SpecialWarningVoidShifted 	= "你被虛空移形!",
-	SpecialShroudofDarkness 	= "黑暗 - 停止 DPS",
+	WarningVoidShift		= debuff,
+	WarningVoidShifted		= debuff,
+	WarningShroudOfDarkness		= spell,
+	SpecialWarningVoidShifted 	= spell:format(GetSpellInfo(54343)),
+	SpecialShroudofDarkness 	= spell:format(GetSpellInfo(59745))
 })
 
 L:SetTimerLocalization({
-	TimerVoidShift			= "虛空移形: %s",
-	TimerVoidShifted		= "虛空移形: %s",
+	TimerVoidShift			= debuff,
+	TimerVoidShifted		= debuff
 })
 
 L:SetOptionLocalization({
-	WarningVoidShift			= "提示虛空移形 dot",
-	WarningVoidShifted			= "提示虛空移形玩家",
-	WarningShroudOfDarkness		= "提示黑暗障蔽",
-	SpecialWarningVoidShifted	= "特別警告當你虛空移形",
-	SpecialShroudofDarkness		= "特別警告當黑暗障蔽",
-	TimerVoidShift				= "顯示虛空移形 dot 計時",
-	TimerVoidShifted			= "顯示虛空移形玩家計時",
+	WarningVoidShift			= optionWarning:format(GetSpellInfo(59743)),
+	WarningVoidShifted			= optionWarning:format(GetSpellInfo(59343)),
+	WarningShroudOfDarkness			= optionWarning:format(GetSpellInfo(59745)),
+	SpecialWarningVoidShifted		= optionSpecWarning:format(GetSpellInfo(59343)),
+	SpecialShroudofDarkness			= optionSpecWarning:format(GetSpellInfo(59745)),
+	TimerVoidShift				= optionTimerDur:format(GetSpellInfo(59743)),
+	TimerVoidShifted			= optionTimerDur:format(GetSpellInfo(59343))
 })
 
 

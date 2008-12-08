@@ -5,8 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(30658)
 mod:SetZone()
 
-
-
 mod:RegisterEvents(
 	"UPDATE_WORLD_STATES",
 	"UNIT_DIED"
@@ -29,16 +27,17 @@ end
 function mod:UPDATE_WORLD_STATES(args)
 	local text = select(3, GetWorldStateUIInfo(2))
 	if not text then return end
-	local _, _, wave = string.find(text, 'WavePortal")
+	local _, _, wave = string.find(text, "Portals Opened: (%d+)/18")
 	if not wave then
 		wave = 0
 	end
 	wave = tonumber(wave)
 	lastwave = tonumber(lastwave)
-	if wave > lastwave then
+	if wave > lastwave or wave == 1 then
 		if wave == 6 or wave == 12 or wave == 18 then
 			warningBossNow:Show()
 		elseif self.Options.ShowAllPortalWarnings then
+			timerPortalIn:Start(95, lastwave + 1)
 			warningPortalNow:Show(wave)
 		end
 		lastwave = wave
