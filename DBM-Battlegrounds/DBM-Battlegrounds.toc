@@ -21,6 +21,7 @@ localization.tw.lua
 localization.cn.lua
 localization.es.lua
 localization.ru.lua
+localization.fr.lua
 Battlegrounds.lua
 Arathi.lua
 Alterac.lua
