@@ -1310,8 +1310,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "Скоро новый портал",
-	WarningPortalNow	= "Портал #%d",
-	WarningBossNow		= "Босс приближается",
+	WarningPortalNow	= "Портал: #%d",
+	WarningBossNow		= "Босс",
 	WavePortal		= "Открыто порталов: (%d+)/18"
 })
 
