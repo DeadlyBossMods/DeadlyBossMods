@@ -1,4 +1,4 @@
--- Simplified Chinese by Diablohu
+ï»¿-- Simplified Chinese by Diablohu
 -- http://wow.gamespot.com.cn
 -- Last Update: 11/06/2008
 
@@ -9,91 +9,91 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TabCategory_Options 	= "×ÛºÏÉèÖÃ"
-L.TabCategory_WOTLK 	= "Î×ÑıÍõÖ®Å­"
-L.TabCategory_BC 	= "È¼ÉÕµÄÔ¶Õ÷"
-L.TabCategory_CLASSIC 	= "¾­µä¾ÉÊÀ"
-L.TabCategory_OTHER     = "ÆäËü"
+L.TabCategory_Options 	= "ç»¼åˆè®¾ç½®"
+L.TabCategory_WOTLK 	= "å·«å¦–ç‹ä¹‹æ€’"
+L.TabCategory_BC 	= "ç‡ƒçƒ§çš„è¿œå¾"
+L.TabCategory_CLASSIC 	= "ç»å…¸æ—§ä¸–"
+L.TabCategory_OTHER     = "å…¶å®ƒ"
 
-L.BossModLoaded 	= "%s×´Ì¬"
-L.BossModLoad_now 	= [[¸ÃÄ£¿éÉĞÎ´Æô¶¯¡£
-µ±Äã½øÈëÏàÓ¦¸±±¾Ê±Æä»á×Ô¶¯¼ÓÔØ¡£
-ÄãÒ²¿ÉÒÔµã»÷¸Ã°´Å¥ÊÖ¶¯Æô¶¯¸ÃÄ£¿é¡£]]
+L.BossModLoaded 	= "%sçŠ¶æ€"
+L.BossModLoad_now 	= [[è¯¥æ¨¡å—å°šæœªå¯åŠ¨ã€‚
+å½“ä½ è¿›å…¥ç›¸åº”å‰¯æœ¬æ—¶å…¶ä¼šè‡ªåŠ¨åŠ è½½ã€‚
+ä½ ä¹Ÿå¯ä»¥ç‚¹å‡»è¯¥æŒ‰é’®æ‰‹åŠ¨å¯åŠ¨è¯¥æ¨¡å—ã€‚]]
 
-L.PosX = 'X×ø±ê'
-L.PosY = 'Y×ø±ê'
+L.PosX = 'Xåæ ‡'
+L.PosY = 'Yåæ ‡'
 
-L.MoveMe 		= 'ÒÆ¶¯'
-L.Button_OK 		= 'È·¶¨'
-L.Button_Cancel 	= 'È¡Ïû'
-L.Button_LoadMod 	= '¼ÓÔØ²å¼ş'
-L.Mod_Enabled		= "¿ªÆôÄ£¿é"
-L.Mod_EnableAnnounce	= "ÍÅ¶Ó¹ã²¥"
-L.Reset 		= "ÖØÖÃ"
+L.MoveMe 		= 'ç§»åŠ¨'
+L.Button_OK 		= 'ç¡®å®š'
+L.Button_Cancel 	= 'å–æ¶ˆ'
+L.Button_LoadMod 	= 'åŠ è½½æ’ä»¶'
+L.Mod_Enabled		= "å¼€å¯æ¨¡å—"
+L.Mod_EnableAnnounce	= "å›¢é˜Ÿå¹¿æ’­"
+L.Reset 		= "é‡ç½®"
 
-L.Enable  		= "¿ªÆô"
-L.Disable		= "¹Ø±Õ"
+L.Enable  		= "å¼€å¯"
+L.Disable		= "å…³é—­"
 
-L.NoSound		= "¾²Òô"
+L.NoSound		= "é™éŸ³"
 
 -- Tab: Boss Statistics
-L.BossStatistics	= "Ê×Áì×´Ì¬"
-L.Statistic_Kills	= "»÷É±£º"
-L.Statistic_Wipes	= "Ê§°Ü£º"
-L.Statistic_BestKill	= "×îºÃ³É¼¨£º"
-L.Statistic_Heroic	= "Ó¢ĞÛÄ£Ê½"
+L.BossStatistics	= "é¦–é¢†çŠ¶æ€"
+L.Statistic_Kills	= "å‡»æ€ï¼š"
+L.Statistic_Wipes	= "å¤±è´¥ï¼š"
+L.Statistic_BestKill	= "æœ€å¥½æˆç»©ï¼š"
+L.Statistic_Heroic	= "è‹±é›„æ¨¡å¼"
 
 -- Tab: General Options
-L.General 		= "DBM×ÛºÏÉèÖÃ"
-L.EnableDBM 		= "ÆôÓÃDBM"
-L.EnableStatus 		= "»Ø¸´¡°status¡±ÃÜÓï"
-L.EnableSpamBlock	= "¹ıÂË<DBM>BossWhispers"
-L.AutoRespond 		= "¿ªÆôÕ½¶·ÖĞ×Ô¶¯ÃÜÓï»Ø¸´"
-L.EnableMiniMapIcon	= "ÏÔÊ¾Ğ¡µØÍ¼Í¼±ê"
+L.General 		= "DBMç»¼åˆè®¾ç½®"
+L.EnableDBM 		= "å¯ç”¨DBM"
+L.EnableStatus 		= "å›å¤â€œstatusâ€å¯†è¯­"
+L.EnableSpamBlock	= "è¿‡æ»¤<DBM>BossWhispers"
+L.AutoRespond 		= "å¼€å¯æˆ˜æ–—ä¸­è‡ªåŠ¨å¯†è¯­å›å¤"
+L.EnableMiniMapIcon	= "æ˜¾ç¤ºå°åœ°å›¾å›¾æ ‡"
 
-L.Button_RangeFrame	= "ÏÔÊ¾/Òş²Ø¾àÀë¼àÊÓÆ÷"
-L.Button_TestBars	= "²âÊÔ¼ÆÊ±Ìõ"
+L.Button_RangeFrame	= "æ˜¾ç¤º/éšè—è·ç¦»ç›‘è§†å™¨"
+L.Button_TestBars	= "æµ‹è¯•è®¡æ—¶æ¡"
 
-L.PizzaTimer_Headline 	= '´´½¨Ò»¸ö¼ÆÊ±Ìõ'
-L.PizzaTimer_Title	= 'Ãû³Æ£¨Èç¡°ÅİÃæµ¹¼ÆÊ±¡±£©'
-L.PizzaTimer_Hours 	= "Ğ¡Ê±"
-L.PizzaTimer_Mins 	= "·ÖÖÓ"
-L.PizzaTimer_Secs 	= "Ãë"
-L.PizzaTimer_ButtonStart = "¿ªÊ¼¼ÆÊ±"
-L.PizzaTimer_BroadCast	= "ÏòÍÅ¶Ó¹ã²¥"
+L.PizzaTimer_Headline 	= 'åˆ›å»ºä¸€ä¸ªè®¡æ—¶æ¡'
+L.PizzaTimer_Title	= 'åç§°ï¼ˆå¦‚â€œæ³¡é¢å€’è®¡æ—¶â€ï¼‰'
+L.PizzaTimer_Hours 	= "å°æ—¶"
+L.PizzaTimer_Mins 	= "åˆ†é’Ÿ"
+L.PizzaTimer_Secs 	= "ç§’"
+L.PizzaTimer_ButtonStart = "å¼€å§‹è®¡æ—¶"
+L.PizzaTimer_BroadCast	= "å‘å›¢é˜Ÿå¹¿æ’­"
 
 -- Tab: Raidwarning
-L.Tab_RaidWarning 	= "ÍÅ¶Ó¾¯±¨"
-L.RaidWarnColors 	= "ÍÅ¶Ó¾¯±¨ÑÕÉ«"
-L.RaidWarnColor_1 	= "ÑÕÉ«1"
-L.RaidWarnColor_2 	= "ÑÕÉ«2"
-L.RaidWarnColor_3 	= "ÑÕÉ«3"
-L.RaidWarnColor_4 	= "ÑÕÉ«4"
-L.InfoRaidWarning	= [[Äã¿ÉÒÔ¶ÔÍÅ¶Ó¾¯±¨µÄÎÄ±¾ÑÕÉ«¼°ÆäÎ»ÖÃ½øĞĞÉè¶¨¡£
-ÔÚÕâÀï»áÏÔÊ¾ÖîÈç¡°Íæ¼ÒXÊÜµ½ÁËYĞ§¹ûµÄÓ°Ïì¡±Ö®ÀàµÄĞÅÏ¢¡£]]
-L.ColorResetted 	= "¸ÃÑÕÉ«ÉèÖÃÒÑÖØÖÃ"
-L.ShowWarningsInChat 	= "ÔÚÁÄÌì´°¿ÚÖĞÏÔÊ¾¾¯±¨"
-L.ShowFakedRaidWarnings = "ÒÔÎ±×°ÍÅ¶Ó¾¯±¨ĞÅÏ¢µÄ·½Ê½ÏÔÊ¾¾¯±¨ÄÚÈİ"
-L.WarningIconLeft 	= "×ó²àÏÔÊ¾Í¼±ê"
-L.WarningIconRight 	= "ÓÒ²àÏÔÊ¾Í¼±ê"
-L.RaidWarnMessage 	= "¸ĞĞ»ÄúÊ¹ÓÃDeadly Boss Mods"
-L.BarWhileMove 		= "ÍÅ¶Ó¾¯±¨¿ÉÒÔÒÆ¶¯"
-L.RaidWarnSound		= "·¢³öÍÅ¶Ó¾¯±¨Ê±²¥·ÅÉùÒô"
-L.SpecialWarnSound	= "·¢³öÌØÊâ¾¯±¨Ê±²¥·ÅÉùÒô"
+L.Tab_RaidWarning 	= "å›¢é˜Ÿè­¦æŠ¥"
+L.RaidWarnColors 	= "å›¢é˜Ÿè­¦æŠ¥é¢œè‰²"
+L.RaidWarnColor_1 	= "é¢œè‰²1"
+L.RaidWarnColor_2 	= "é¢œè‰²2"
+L.RaidWarnColor_3 	= "é¢œè‰²3"
+L.RaidWarnColor_4 	= "é¢œè‰²4"
+L.InfoRaidWarning	= [[ä½ å¯ä»¥å¯¹å›¢é˜Ÿè­¦æŠ¥çš„æ–‡æœ¬é¢œè‰²åŠå…¶ä½ç½®è¿›è¡Œè®¾å®šã€‚
+åœ¨è¿™é‡Œä¼šæ˜¾ç¤ºè¯¸å¦‚â€œç©å®¶Xå—åˆ°äº†Yæ•ˆæœçš„å½±å“â€ä¹‹ç±»çš„ä¿¡æ¯ã€‚]]
+L.ColorResetted 	= "è¯¥é¢œè‰²è®¾ç½®å·²é‡ç½®"
+L.ShowWarningsInChat 	= "åœ¨èŠå¤©çª—å£ä¸­æ˜¾ç¤ºè­¦æŠ¥"
+L.ShowFakedRaidWarnings = "ä»¥ä¼ªè£…å›¢é˜Ÿè­¦æŠ¥ä¿¡æ¯çš„æ–¹å¼æ˜¾ç¤ºè­¦æŠ¥å†…å®¹"
+L.WarningIconLeft 	= "å·¦ä¾§æ˜¾ç¤ºå›¾æ ‡"
+L.WarningIconRight 	= "å³ä¾§æ˜¾ç¤ºå›¾æ ‡"
+L.RaidWarnMessage 	= "æ„Ÿè°¢æ‚¨ä½¿ç”¨Deadly Boss Mods"
+L.BarWhileMove 		= "å›¢é˜Ÿè­¦æŠ¥å¯ä»¥ç§»åŠ¨"
+L.RaidWarnSound		= "å‘å‡ºå›¢é˜Ÿè­¦æŠ¥æ—¶æ’­æ”¾å£°éŸ³"
+L.SpecialWarnSound	= "å‘å‡ºç‰¹æ®Šè­¦æŠ¥æ—¶æ’­æ”¾å£°éŸ³"
 
 -- Tab: Barsetup
-L.BarSetup   = "¼ÆÊ±ÌõÑùÊ½"
-L.BarTexture = "¼ÆÊ±Ìõ²ÄÖÊ"
+L.BarSetup   = "è®¡æ—¶æ¡æ ·å¼"
+L.BarTexture = "è®¡æ—¶æ¡æè´¨"
 
-L.Slider_BarOffSetX 	= "XÆ«ÒÆ"
-L.Slider_BarOffSetY 	= "YÆ«ÒÆ"
-L.Slider_BarWidth 	= "¿í¶È"
-L.Slider_BarScale 	= "³ß´ç"
-L.AreaTitle_BarSetup 	= "¼ÆÊ±Ìõ×ÛºÏÉèÖÃ"
-L.AreaTitle_BarSetupSmall = "Ğ¡ĞÍ¼ÆÊ±ÌõÉèÖÃ"
-L.AreaTitle_BarSetupHuge = "´óĞÍ¼ÆÊ±ÌõÉèÖÃ"
-L.BarIconLeft 		= "×ó²àÏÔÊ¾Í¼±ê"
-L.BarIconRight 		= "ÓÒ²àÏÔÊ¾Í¼±ê"
-L.EnableHugeBar 	= "¿ªÆô´óĞÍ¼ÆÊ±Ìõ£¨2ºÅ¼ÆÊ±Ìõ£©"
+L.Slider_BarOffSetX 	= "Xåç§»"
+L.Slider_BarOffSetY 	= "Yåç§»"
+L.Slider_BarWidth 	= "å®½åº¦"
+L.Slider_BarScale 	= "å°ºå¯¸"
+L.AreaTitle_BarSetup 	= "è®¡æ—¶æ¡ç»¼åˆè®¾ç½®"
+L.AreaTitle_BarSetupSmall = "å°å‹è®¡æ—¶æ¡è®¾ç½®"
+L.AreaTitle_BarSetupHuge = "å¤§å‹è®¡æ—¶æ¡è®¾ç½®"
+L.BarIconLeft 		= "å·¦ä¾§æ˜¾ç¤ºå›¾æ ‡"
+L.BarIconRight 		= "å³ä¾§æ˜¾ç¤ºå›¾æ ‡"
+L.EnableHugeBar 	= "å¼€å¯å¤§å‹è®¡æ—¶æ¡ï¼ˆ2å·è®¡æ—¶æ¡ï¼‰"
 
 
