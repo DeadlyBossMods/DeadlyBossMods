@@ -537,7 +537,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ionar")
 
 L:SetGeneralLocalization({
-	name = "Ионар
+	name = "Ионар"
 })
 
 L:SetWarningLocalization({
@@ -940,7 +940,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningShift	= spell,
 	WarningEnrage	= spell,
-	WarningShiftEnd	= "Сдвига плоскости заканчивается"		-- translate
+	WarningShiftEnd	= "Сдвиг плоскости заканчивается"		-- translate
 })
 
 L:SetTimerLocalization({
