@@ -3,7 +3,6 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFСтудия модулей|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF首領模組生成器|r
 ## Notes: BossModStudio for Deadly Boss Mods
-## Notes-zhCN: Deadly Boss ModsµДКЧБмДЈїйЙъіЙЖч
 ## Notes-ruRU: Студия BossModStudio для DBM
 ## Notes-zhTW: DBM首領模組生成器
 ## RequiredDeps: DBM-Core
