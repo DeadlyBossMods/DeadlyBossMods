@@ -13,7 +13,7 @@
 --    * zhCN: Diablohu					http://wow.gamespot.com.cn
 --    * ruRU: BootWin					bootwin@gmail.com
 --    * zhTW: Hman						herman_c1@hotmail.com
---    * (add your names here!)
+--    * koKR: BlueNyx					bluenyx@gmail.com
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
@@ -154,9 +154,9 @@ end
 
 local function checkLanguage()
 	local l = GetLocale()
-	if l == "koKR" then
-		DBM:AddMsg(("Your client language \"%s\" is currently unsupported in DBMv4.\nIf you want to help us translating DBM: drop us a line! (email: tandanu@deadlybossmods.com, forum: http://www.deadlybossmods.com/forum)"):format(l))
-	end
+	--if l == "koKR" then
+	--	DBM:AddMsg(("Your client language \"%s\" is currently unsupported in DBMv4.\nIf you want to help us translating DBM: drop us a line! (email: tandanu@deadlybossmods.com, forum: http://www.deadlybossmods.com/forum)"):format(l))
+	--end
 end
 
 
