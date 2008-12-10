@@ -168,7 +168,7 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	WarningShards = "Град из острых камней на >%s<",
-	WarningGrab = "Склеп Аркавона под контролем >%s<"
+	WarningGrab = "Страж бросается к >%s<"
 })
 L:SetTimerLocalization({
 	TimerShards = "Каменные осколки: %s"
