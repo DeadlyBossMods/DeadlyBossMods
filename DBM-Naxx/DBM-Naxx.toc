@@ -3,6 +3,7 @@
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Наксрамас|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0納克薩瑪斯|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0낙스라마스|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMNaxx_SavedVars, DBMNaxx_SavedStats
@@ -12,17 +13,21 @@
 ## X-DBM-Mod-SubCategories-deDE: Arachnidenviertel,Konstruktviertel,Seuchenviertel,Militärviertel,Frostwyrmhöhle
 ## X-DBM-Mod-SubCategories-ruRU: Паучий квартал,Квартал Мерзости,Чумной квартал,Военный квартал,Логово ледяного змея
 ## X-DBM-Mod-SubCategories-zhTW: 蜘蛛區,傀儡區,瘟疫區,軍事區,冰霜巨龍巢穴
+## X-DBM-Mod-SubCategories-koKR: 거미 지구,피조물 지구,역병 지구,군사 지구,서리고룡 둥지
 ## X-DBM-Mod-Name: Naxxramas
 ## X-DBM-Mod-Name-ruRU: Наксрамас
 ## X-DBM-Mod-Name-zhTW: 納克薩瑪斯
+## X-DBM-Mod-Name-koKR: 낙스라마스
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZone: Naxxramas
 ## X-DBM-Mod-LoadZone-ruRU: Наксрамас
 ## X-DBM-Mod-LoadZone-zhTW: 納克薩瑪斯
+## X-DBM-Mod-LoadZone-koKR: 낙스라마스
 localization.en.lua
 localization.de.lua
 localization.ru.lua
 localization.tw.lua
+localization.kr.lua
 ArachnidQuarter\Anub'Rekhan.lua
 ArachnidQuarter\Faerlina.lua
 ArachnidQuarter\Maexxna.lua
