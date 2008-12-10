@@ -26,18 +26,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPlague	= debuff
+	WarningFlame		= spell,
+	WarningEmbrace		= debuff
 })
 
 L:SetTimerLocalization({
-	TimerPlague	= debuff,
-	TimerPlagueCD	= spellCD
+	TimerEmbrace		= debuff,
+	TimerFlameCD		= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
-	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
-	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
+	WarningFlame		= optionWarning:format(GetSpellInfo(55931)),
+	WarningEmbrace		= optionWarning:format(GetSpellInfo(55959)),
+	TimerEmbrace		= optionTimerDur:format(GetSpellInfo(55959)),
+	TimerFlameCD		= optionTimerCD:format(GetSpellInfo(55931))
 })
 
 
@@ -51,14 +53,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPlague	= "孵育瘟疫: >%s<"
+	WarningPlague	= debuff
 })
 
 L:SetTimerLocalization({
+	TimerPlague	= debuff,
+	TimerPlagueCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningPlague	= "顯示孵育瘟疫警告"
+	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
+	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
+	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
 })
 
 
@@ -824,11 +830,10 @@ L:SetOptionLocalization({
 ---------------------------------
 L = DBM:GetModLocalization("Commander")
 
-local faction = UnitFactionGroup("player")
 local commander = "未知"
-if faction == "Alliance" then
+if UnitFactionGroup("player") == "聯盟" then
 	commander = "指揮官寇勒格"
-elseif faction == "Horde" then
+elseif UnitFactionGroup("player") == "部落" then
 	commander = "指揮官厚鬚"
 end
 
