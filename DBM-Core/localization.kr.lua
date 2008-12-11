@@ -74,4 +74,8 @@ DBM_CORE_HORDE						= "호드"
 
 DBM_CORE_UNKNOWN					= "알 수 없음"
 
+DBM_CORE_TIMER_PULL					= "풀링 중 입니다."
+DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 풀링 합니다."
+DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
+
 end
