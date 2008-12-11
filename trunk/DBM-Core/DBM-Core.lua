@@ -482,6 +482,20 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		end
 		time = min*  60 + sec
 		DBM:CreatePizzaTimer(time, text, true)
+	elseif cmd:sub(0, 4) == "pull" then
+		if DBM:GetRaidRank() == 0 then
+			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
+			return
+		end
+		local timer = tonumber(cmd:sub(5)) or 10
+		DBM:CreatePizzaTimer(timer, DBM_CORE_TIMER_PULL, true)
+		SendChatMessage(DBM_CORE_ANNOUNCE_PULL:format(timer), "RAID_WARNING")
+		if timer > 7 then DBM:Schedule(timer - 7, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(7), "RAID_WARNING") end
+		if timer > 5 then DBM:Schedule(timer - 5, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(5), "RAID_WARNING") end
+		if timer > 3 then DBM:Schedule(timer - 3, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(3), "RAID_WARNING") end
+		if timer > 2 then DBM:Schedule(timer - 2, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(2), "RAID_WARNING") end
+		if timer > 1 then DBM:Schedule(timer - 1, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(1), "RAID_WARNING") end
+		DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_PULL_NOW, "RAID_WARNING")
 	else
 		DBM:LoadGUI()
 	end

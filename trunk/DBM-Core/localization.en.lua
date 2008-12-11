@@ -71,3 +71,7 @@ DBM_CORE_ALLIANCE					= "Alliance"
 DBM_CORE_HORDE						= "Horde"
 
 DBM_CORE_UNKNOWN					= "unknown"
+
+DBM_CORE_TIMER_PULL					= "Pull in"
+DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec"
+DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
