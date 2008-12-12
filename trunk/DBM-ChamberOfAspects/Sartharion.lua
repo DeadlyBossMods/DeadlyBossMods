@@ -33,7 +33,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, sender)
-	if sender == L.name then
+	if msg:find(L.Wall) then
 		warningWallSoon:Unschedule()
 		timerWall:Stop()
 		warningWallSoon:Schedule(28)
