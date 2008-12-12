@@ -47,7 +47,6 @@ L.Statistic_Heroic	= "英雄模式"
 L.General 		= "DBM综合设置"
 L.EnableDBM 		= "启用DBM"
 L.EnableStatus 		= "回复“status”密语"
-L.EnableSpamBlock	= "过滤<DBM>BossWhispers"
 L.AutoRespond 		= "开启战斗中自动密语回复"
 L.EnableMiniMapIcon	= "显示小地图图标"
 
@@ -84,6 +83,9 @@ L.SpecialWarnSound	= "发出特殊警报时播放声音"
 -- Tab: Barsetup
 L.BarSetup   = "计时条样式"
 L.BarTexture = "计时条材质"
+L.BarStartColor = "初始颜色"
+L.BarEndColor = "结束颜色"
+L.ExpandUpwards		= "向上扩展"
 
 L.Slider_BarOffSetX 	= "X偏移"
 L.Slider_BarOffSetY 	= "Y偏移"
@@ -95,5 +97,12 @@ L.AreaTitle_BarSetupHuge = "大型计时条设置"
 L.BarIconLeft 		= "左侧显示图标"
 L.BarIconRight 		= "右侧显示图标"
 L.EnableHugeBar 	= "开启大型计时条（2号计时条）"
+L.FillUpBars		= "填充计时条"
 
+-- Tab: Spam Filter
+L.Panel_SpamFilter		= "信息过滤"
+L.Area_SpamFilter		= "常规设置"
+L.HideBossEmoteFrame	= "隐藏BOSS表情"
+L.SpamBlockRaidWarning	= "过滤其他首领预警插件警报" 
+L.SpamBlockBossWhispers	= "战斗中过滤DBM密语警报"
 

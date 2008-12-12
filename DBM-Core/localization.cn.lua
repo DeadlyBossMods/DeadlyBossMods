@@ -1,7 +1,7 @@
 ﻿-- Simplified Chinese by Diablohu
 -- http://wow.gamespot.com.cn
--- Last Update: 11/06/2008
-if (GetLocale() == "zhCN") then
+-- Last Update: 12/12/2008
+if GetLocale() ~= "zhCN" then return end
 DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "成功读取%s模块！"
 DBM_CORE_LOAD_GUI_ERROR				= "无法读取图形界面：%s"
@@ -24,6 +24,7 @@ DBM_CORE_OK							= "确定"
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "%s%s后激怒"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "激怒"
 DBM_CORE_OPTION_TIMER_ENRAGE		= "显示激怒倒计时"
+DBM_CORE_OPTION_HEALTH_FRAME		= "显示首领生命值窗口"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "计时条"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "公布"
@@ -69,4 +70,12 @@ DBM_CORE_SLASHCMD_HELP				= {
 DBM_ERROR_NO_PERMISSION				= "无权进行该操作。"
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "隐藏"
-end
+
+DBM_CORE_ALLIANCE					= "联盟"
+DBM_CORE_HORDE						= "部落"
+
+DBM_CORE_UNKNOWN					= "未知"
+
+DBM_CORE_TIMER_PULL					= "开怪倒计时"
+DBM_CORE_ANNOUNCE_PULL				= "%d 秒后开怪"
+DBM_CORE_ANNOUNCE_PULL_NOW			= "开怪！"
