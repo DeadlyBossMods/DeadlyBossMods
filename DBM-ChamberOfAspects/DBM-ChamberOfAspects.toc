@@ -13,7 +13,8 @@
 ## X-DBM-Mod-Name-zhTW: 黑曜聖所
 ## X-DBM-Mod-Name-koKR: 흑요석 성소
 ## X-DBM-Mod-Sort: 2
-## X-DBM-Mod-LoadZone: The Obsidian Sanctum
+## X-DBM-Mod-LoadZone: Das Obsidiansanktum
+## X-DBM-Mod-LoadZone-deDE: The Obsidian Sanctum
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所
 ## X-DBM-Mod-LoadZone-koKR: 흑요석 성소
