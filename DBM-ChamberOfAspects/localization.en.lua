@@ -40,9 +40,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTenebron		= "Tenebron incoming",
-	WarningShadron		= "Shadron incoming",
-	WarningVesperon		= "Vesperon incoming",
+	WarningTenebron			= "Tenebron incoming",
+	WarningShadron			= "Shadron incoming",
+	WarningVesperon			= "Vesperon incoming",
+	WarningFireWall			= "Fire Wall!",
+	WarningVesperonPortal	= "Vesperon's Portal!",
+	WarningTenebronPortal	= "Tenebron's Portal!",
+	WarningShadronPortal	= "Shadron's Portal!",
 })
 
 L:SetTimerLocalization({
@@ -54,30 +58,34 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Play sound for \"Fire Wall\"",
-	AnnounceFails		= "Post Player fails for FireWall and Void to Raid Chat",
+	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to the raid chat",
 
 	TimerWall		= "Show a Timer for \"Fire Wall\"",
-	TimerTenebron		= "Show a Timer for Tenebron",
-	TimerShadron		= "Show a Timer for Shadron",
-	TimerVesperon		= "Show a Timer for Vesperon",
+	TimerTenebron		= "Show a timer for Tenebron",
+	TimerShadron		= "Show a timer for Shadron",
+	TimerVesperon		= "Show a timer for Vesperon",
 
-	WarningFireWall		= "Show \"Fire Wall\" Special-warning",
-	WarningTenebron		= "Show Tenebron Spawn Timer",
-	WarningShadron		= "Show Shadron Spawn Timer",
-	WarningVesperon		= "Show Vesperon Spawn Timer",
+	WarningFireWall		= "Show \"Fire Wall\" special-warning",
+	WarningTenebron		= "Show Tenebron spawn timer",
+	WarningShadron		= "Show Shadron spawn timer",
+	WarningVesperon		= "Show Vesperon spawn timer",
 
-	WarningTenebronPortal	= "Show Portal Special-Warning for Tenebron Portals",
-	WarningShadronPortal	= "Show Portal Special-Warning for Shadron Portals",
-	WarningVesperonPortal	= "Show Portal Special-Warning for Vesperon Portals",
+	WarningTenebronPortal	= "Show special-warning for Tenebron's portals",
+	WarningShadronPortal	= "Show special-warning for Shadron's portals",
+	WarningVesperonPortal	= "Show special-warning for Vesperon's portals",
 })
 
 L:SetMiscLocalization({
-	Wall		= "The lava surrounding %s churns!",
-	Portal		= "%s begins to open a Twilight Portal!",
+	Wall			= "The lava surrounding %s churns!",
+	Portal			= "%s begins to open a Twilight Portal!",
 	NameTenebron	= "Tenebron",
-	NameShadron	= "Shadron",
-	NameVesperon	= "Vesperon"
-	--[[ not in use 
+	NameShadron		= "Shadron",
+	NameVesperon	= "Vesperon",
+	FireWallOn		= "Fire wall: %s",
+	VoidZoneOn		= "Void zone: %s",
+	VoidZones		= "Void zone fails (this try): %s",
+	FireWalls		= "Fire wall fails (this try): %s",
+	--[[ not in use; don't translate.
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
 	Shadron		= "Shadron! Come to me! All is at risk!",
 	Tenebron	= "Tenebron! The eggs are yours to protect as well!"
