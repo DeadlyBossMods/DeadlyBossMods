@@ -3,6 +3,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Обсидиановое святилище|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑曜聖所|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0흑요석 성소|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chambre des Aspects|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_SavedStats
@@ -12,12 +13,14 @@
 ## X-DBM-Mod-Name-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-Name-zhTW: 黑曜聖所
 ## X-DBM-Mod-Name-koKR: 흑요석 성소
+## X-DBM-Mod-Name-frFR : Chambre des aspects
 ## X-DBM-Mod-Sort: 2
-## X-DBM-Mod-LoadZone: Das Obsidiansanktum
-## X-DBM-Mod-LoadZone-deDE: The Obsidian Sanctum
+## X-DBM-Mod-LoadZone: The Obsidian Sanctum
+## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所
 ## X-DBM-Mod-LoadZone-koKR: 흑요석 성소
+## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien
 localization.en.lua
 localization.de.lua
 localization.ru.lua
