@@ -1,6 +1,6 @@
--- Simplified Chinese by Diablohu
+﻿-- Simplified Chinese by Diablohu
 -- http://wow.gamespot.com.cn
--- Last Update: 11/06/2008
+-- Last Update: 12/13/2008
 
 
 if GetLocale() ~= "zhCN" then return end
