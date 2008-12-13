@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(28860)
 mod:SetZone()
 
-mod:RegisterCombat("combat", 28860, 30449, 30452, 30451)
+mod:RegisterCombat("combat")
 
 mod:SetBossHealthInfo(
 	28860, "Sartharion",
@@ -32,19 +32,19 @@ local warnTenebron	= mod:NewAnnounce("WarningTenebron", 2, nil, false)
 local warnShadron	= mod:NewAnnounce("WarningShadron", 2, nil, false)
 local warnVesperon	= mod:NewAnnounce("WarningVesperon", 2, nil, false)
 
-local warnFireWall	= mod:NewSpecialWarning("WarningFireWall")
-local warnVesperonPortal = mod:NewSpecialWarning("WarningVesperonPortal", false)
-local warnTenebronPortal = mod:NewSpecialWarning("WarningTenebronPortal", false)
-local warnShadronPortal = mod:NewSpecialWarning("WarningShadronPortal", false)
+local warnFireWall			= mod:NewSpecialWarning("WarningFireWall")
+local warnVesperonPortal	= mod:NewSpecialWarning("WarningVesperonPortal", false)
+local warnTenebronPortal	= mod:NewSpecialWarning("WarningTenebronPortal", false)
+local warnShadronPortal		= mod:NewSpecialWarning("WarningShadronPortal", false)
 
 local timerWall         = mod:NewTimer(30, "TimerWall", 43113)  
 
-local dumbpeople = {}
 local lastvoids = {}
 local lastfire = {}
 
 function mod:OnSync(event)
 	if event == "FireWall" then
+		timerWall:Start()
 		warnFireWall:Show()
 		
 		if self.Options.PlaySoundOnFireWall then
@@ -64,16 +64,15 @@ function mod:OnSync(event)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, mob)
-	if msg == "The lava surrounding %s churns!" then
+	if not self:IsInCombat() then return end
+	if msg == L.Wall then
 		self:SendSync("FireWall")
-		timerWall:Start()
-
-	elseif msg == "%s begins to open a Twilight Portal!" then
-		if mob == "Vesperon" then
+	elseif msg == L.Portal then
+		if mob == L.NameVesperon then
 			self:SendSync("VesperonPortal")
-		elseif mob == "Tenebron" then
+		elseif mob == L.NameTenebron then
 			self:SendSync("TenebronPortal")
-		elseif mob == "Shadron" then
+		elseif mob == L.NameShadron then
 			self:SendSync("ShadronPortal")
 		end
 	end
@@ -90,49 +89,57 @@ function mod:OnCombatStart(delay)
 	warnShadron:Schedule(70)
 	warnVesperon:Schedule(115)
 
-	if self.Options.AnnounceFails then
-		table.wipe(lastvoids)
-		table.wipe(lastfire)
-	end
+	table.wipe(lastvoids)
+	table.wipe(lastfire)
 end
 
-function mod:OnCombatEnd(wipe)
-	
+
+local sortedFails = {}
+local function sortFails1(e1, e2)
+	return (lastvoids[e1] or 0) > (lastvoids[e2] or 0)
+end
+local function sortFails2(e1, e2)
+	return (lastfire[e1] or 0) > (lastfire[e2] or 0)
+end
+
+function mod:OnCombatEnd(wipe)	
 	if not self.Options.AnnounceFails then return end
 
 	local voids = ""
-	for k,v in pairs(lastvoids) do
-		voids = voids.." "..k.."("..v..")"
+	for k, v in pairs(lastvoids) do
+		table.insert(sortedFails, k)
 	end
-	SendChatMessage("Last Try - VoidZone: "..voids, "RAID")
+	table.sort(sortedFails, sortFails1)
+	for i, v in ipairs(sortedFails) do
+		voids = voids.." "..v.."("..(lastvoids[v] or "")..")"
+	end
+	SendChatMessage(L.VoidZones:format(voids), "RAID")
+	table.wipe(sortedFails)
 	
 	local fire = ""
-	for k,v in pairs(lastfire) do
-		fire = fire.." "..k.."("..v..")"
+	for k, v in pairs(lastfire) do
+		table.insert(sortedFails, k)
 	end
-	SendChatMessage("Last Try - FireWall: "..fire, "RAID")
-
-	local mostdumbppl = ""
-	for k,v in pairs(dumbpeople) do
-		mostdumbppl = mostdumbppl.." "..k.."("..v..")"
+	table.sort(sortedFails, sortFails2)
+	for i, v in ipairs(sortedFails) do
+		fire = fire.." "..v.."("..(lastfire[v] or "")..")"
 	end
-	SendChatMessage("Overall FAILED: "..mostdumbppl, "RAID")
-	
+	SendChatMessage(L.FireWalls:format(fire), "RAID")
+	table.wipe(sortedFails)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if self.Options.AnnounceFails and args.spellId == 57491 and DBM:GetRaidUnitId(args.destName) ~= "none" then
+	if not self:IsInCombat() then return end
+	if self.Options.AnnounceFails and args.spellId == 57491 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastfire[args.destName] = (lastfire[args.destName] or 0) + 1
-		dumbpeople[args.destName] = (dumbpeople[args.destName] or 0) + 1
-		SendChatMessage("FireWall: "..args.destName, "RAID")
+		SendChatMessage(L.FireWallOn:format(args.destName), "RAID")
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if self.Options.AnnounceFails and args.spellId == 59128 and DBM:GetRaidUnitId(args.destName) ~= "none" then
+	if self.Options.AnnounceFails and args.spellId == 59128 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastvoids[args.destName] = (lastvoids[args.destName] or 0) + 1
-		dumbpeople[args.destName] = (dumbpeople[args.destName] or 0) + 1
-		SendChatMessage("VoidBlast: "..args.destName, "RAID")
+		SendChatMessage(L.VoidZoneOn:format(args.destName), "RAID")
 	end	
 end
 
