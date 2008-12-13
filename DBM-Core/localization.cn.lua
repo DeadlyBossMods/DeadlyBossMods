@@ -1,6 +1,6 @@
 ﻿-- Simplified Chinese by Diablohu
 -- http://wow.gamespot.com.cn
--- Last Update: 12/12/2008
+-- Last Update: 12/13/2008
 if GetLocale() ~= "zhCN" then return end
 DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "成功读取%s模块！"
