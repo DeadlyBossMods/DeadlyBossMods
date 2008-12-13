@@ -1,5 +1,6 @@
 ﻿## Interface: 30000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0小队|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Групповые подземелья|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0파티|r
@@ -11,20 +12,24 @@
 ## X-DBM-Mod-SubCategories: Ahn'Kahet,Azjol-Nerub,CoT: Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold
 ## X-DBM-Mod-SubCategories-deDE: Ahn'kahet,Azjol-Nerub,HdZ: Stratholme,Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
 ## X-DBM-Mod-SubCategories-ruRU: Ан'кахет,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость
+## X-DBM-Mod-SubCategories-zhCN: 安卡赫特,艾卓-尼鲁布,旧斯坦索姆,达克萨隆要塞,古达克,闪电大厅,岩石大厅,魔枢,魔环,乌特加德城堡,乌特加德之巅,紫罗兰监狱
 ## X-DBM-Mod-SubCategories-zhTW: 安卡罕特,阿茲歐-奈幽,舊斯坦索姆,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡
 ## X-DBM-Mod-SubCategories-koKR: 안카헤트: 고대 왕국,아졸네룹,시간의 동굴: 옛 스트라솔룸,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보라빛 성채
 ## X-DBM-Mod-Name: Party Boss Mods
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья
+## X-DBM-Mod-Name-zhCN: 5人副本首领模组
 ## X-DBM-Mod-Name-zhTW: 隊伍首領模組
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold
 ## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
 ## X-DBM-Mod-LoadZone-ruRU: Ан'кахет: Старое Королевство,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость
+## X-DBM-Mod-LoadZone-zhCN: 安卡赫特：古代王国,艾卓-尼鲁布,净化斯坦索姆,达克萨隆要塞,古达克,闪电大厅,岩石大厅,魔枢,魔环,乌特加德城堡,乌特加德之巅,紫罗兰监狱
 ## X-DBM-Mod-LoadZone-zhTW: 安卡罕特:古王國,阿茲歐-奈幽,斯坦索姆的抉擇,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡
 ## X-DBM-Mod-LoadZone-koKR: 안카헤트: 고대 왕국,아졸네룹,옛 스트라솔룸,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보라빛 성채
 localization.en.lua
 localization.ru.lua
 localization.fr.lua
+localization.cn.lua
 localization.tw.lua
 localization.kr.lua
 AhnKahet\Taldaram.lua
