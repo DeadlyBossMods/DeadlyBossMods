@@ -40,26 +40,47 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWallSoon		= "Fire Wall soon",
-	WarningAdd		= "%s incoming"
+	WarningTenebron		= "Tenebron incoming",
+	WarningShadron		= "Shadron incoming",
+	WarningVesperon		= "Vesperon incoming",
 })
 
 L:SetTimerLocalization({
 	TimerWall	= "Fire Wall cooldown",
-	TimerAdd	= "%s"
+	TimerTenebron	= "Tenebron incoming",
+	TimerShadron	= "Shadron incoming",
+	TimerVesperon	= "Vesperon incoming"
 })
 
 L:SetOptionLocalization({
-	WarningWallSoon		= "Show \"Fire Wall\" pre-warning",
-	WarningAdd		= "Shows a warning when Vesperon\Shadron\Tenebron is incoming",
-	TimerWall		= "Show \"Fire Wall\" cooldown timer",
-	TimerAdd		= "Shows an incoming timer for Vesperon\Shadron\Tenebron"
+	PlaySoundOnFireWall	= "Play sound for \"Fire Wall\"",
+
+	TimerWall		= "Show a Timer for \"Fire Wall\"",
+	TimerTenebron		= "Show a Timer for Tenebron",
+	TimerShadron		= "Show a Timer for Shadron",
+	TimerVesperon		= "Show a Timer for Vesperon",
+
+	WarningFireWall		= "Show \"Fire Wall\" Special-warning",
+	WarningTenebron		= "Show Tenebron Spawn Timer",
+	WarningShadron		= "Show Shadron Spawn Timer",
+	WarningVesperon		= "Show Vesperon Spawn Timer",
+
+	WarningTenebronPortal	= "Show Portal Special-Warning for Tenebron Portals",
+	WarningShadronPortal	= "Show Portal Special-Warning for Shadron Portals",
+	WarningVesperonPortal	= "Show Portal Special-Warning for Vesperon Portals",
 })
 
 L:SetMiscLocalization({
-	Pull		= "It is my charge to watch over these eggs. I will see you burn before any harm comes to them!",
 	Wall		= "The lava surrounding %s churns!",
+	Portal		= "%s begins to open a Twilight Portal!",
+	NameTenebron	= "Tenebron",
+	NameShadron	= "Shadron",
+	NameVesperon	= "Vesperon"
+	--[[ not in use 
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
 	Shadron		= "Shadron! Come to me! All is at risk!",
 	Tenebron	= "Tenebron! The eggs are yours to protect as well!"
+	--]]
 })
+
+
