@@ -458,12 +458,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warningElemental	= "元素階段",		-- translate :)
+	WarningStone		= "巨像階段"		-- translate :)
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningElemental	= "顯示元素階段警告",	-- translate ;)
+	WarningStone		= "顯示巨像階段警告"		-- translate :)
 })
 
 
@@ -715,10 +719,6 @@ L:SetGeneralLocalization({
 	name = "艾諾瑪路斯"
 })
 
-L:SetGeneralLocalization({
-	name = "Anomalus"
-})
-
 L:SetWarningLocalization({
 	WarningRiftSoon		= spellSoon,
 	WarningRiftNow		= spell,
@@ -780,9 +780,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "顯示分裂預先警告",
-	WarningSplitNow		= "顯示分裂警告",
-	WarningMerge		= "顯示融合警告",
+	WarningSplitSoon	= optionPreWarning:format("分裂"),	-- translate
+	WarningSplitNow		= optionWarning:format("分裂"),	-- translate
+	WarningMerge		= optionWarning:format("融合"),	-- translate
 })
 
 L:SetMiscLocalization({
@@ -831,9 +831,9 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Commander")
 
 local commander = "未知"
-if UnitFactionGroup("player") == "聯盟" then
+if UnitFactionGroup("player") == "Alliance" then
 	commander = "指揮官寇勒格"
-elseif UnitFactionGroup("player") == "部落" then
+elseif UnitFactionGroup("player") == "Horde" then
 	commander = "指揮官厚鬚"
 end
 
