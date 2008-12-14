@@ -41,13 +41,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTenebron			= "Tenebron incoming",
-	WarningShadron			= "Shadron incoming",
-	WarningVesperon			= "Vesperon incoming",
-	WarningFireWall			= "Fire Wall!",
-	WarningVesperonPortal	= "Vesperon's Portal!",
-	WarningTenebronPortal	= "Tenebron's Portal!",
-	WarningShadronPortal	= "Shadron's Portal!",
+	WarningTenebron			= "테네브론 진입",
+	WarningShadron			= "샤드론 진입",
+	WarningVesperon			= "베스페론 진입",
+	WarningFireWall			= "용암 파도!",
+	WarningVesperonPortal	= "베스페론의 포탈!!!!",
+	WarningTenebronPortal	= "테네브론의 포탈!!!!",
+	WarningShadronPortal	= "샤드론의 포탈!!!!",
 })
 
 L:SetTimerLocalization({
@@ -77,8 +77,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Wall			= "The lava surrounding %s churns!",
-	Portal			= "%s begins to open a Twilight Portal!",
+	Wall			= "%s를 둘러싼 용암이 끓어오릅니다!",
+	Portal			= "%s 이 황혼의 차원문을 엽니다!!",
 	NameTenebron	= "테네브론",
 	NameShadron		= "샤드론",
 	NameVesperon	= "베스페론",
