@@ -26,18 +26,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPlague	= debuff
+	WarningFlame		= spell,
+	WarningEmbrace		= debuff
 })
 
 L:SetTimerLocalization({
-	TimerPlague	= debuff,
-	TimerPlagueCD	= spellCD
+	TimerEmbrace		= debuff,
+	TimerFlameCD		= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
-	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
-	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
+	WarningFlame		= optionWarning:format(GetSpellInfo(55931)),
+	WarningEmbrace		= optionWarning:format(GetSpellInfo(55959)),
+	TimerEmbrace		= optionTimerDur:format(GetSpellInfo(55959)),
+	TimerFlameCD		= optionTimerCD:format(GetSpellInfo(55931))
 })
 
 
@@ -51,14 +53,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPlague	= "孵育瘟疫: >%s<"
+	WarningPlague	= debuff
 })
 
 L:SetTimerLocalization({
+	TimerPlague	= debuff,
+	TimerPlagueCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningPlague	= "顯示孵育瘟疫警告"
+	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
+	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
+	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
 })
 
 
@@ -452,12 +458,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warningElemental	= "元素階段",		-- translate :)
+	WarningStone		= "巨像階段"		-- translate :)
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningElemental	= "顯示元素階段警告",	-- translate ;)
+	WarningStone		= "顯示巨像階段警告"		-- translate :)
 })
 
 
@@ -709,10 +719,6 @@ L:SetGeneralLocalization({
 	name = "艾諾瑪路斯"
 })
 
-L:SetGeneralLocalization({
-	name = "Anomalus"
-})
-
 L:SetWarningLocalization({
 	WarningRiftSoon		= spellSoon,
 	WarningRiftNow		= spell,
@@ -774,9 +780,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "顯示分裂預先警告",
-	WarningSplitNow		= "顯示分裂警告",
-	WarningMerge		= "顯示融合警告",
+	WarningSplitSoon	= optionPreWarning:format("分裂"),	-- translate
+	WarningSplitNow		= optionWarning:format("分裂"),	-- translate
+	WarningMerge		= optionWarning:format("融合"),	-- translate
 })
 
 L:SetMiscLocalization({
@@ -824,11 +830,10 @@ L:SetOptionLocalization({
 ---------------------------------
 L = DBM:GetModLocalization("Commander")
 
-local faction = UnitFactionGroup("player")
 local commander = "未知"
-if faction == "Alliance" then
+if UnitFactionGroup("player") == "Alliance" then
 	commander = "指揮官寇勒格"
-elseif faction == "Horde" then
+elseif UnitFactionGroup("player") == "Horde" then
 	commander = "指揮官厚鬚"
 end
 
@@ -1306,7 +1311,7 @@ L:SetWarningLocalization({
 	WarningPortalSoon	= "新傳送門即將開啟",
 	WarningPortalNow	= "傳送門 #%d",
 	WarningBossNow		= "首領即將到來",
-	WavePortal		= "傳送門開啟: (%d+)/18"
+	WavePortal		= "傳送門開啟:(%d+)/18"
 })
 
 L:SetTimerLocalization({
