@@ -64,9 +64,9 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningWebWrap				= "Опутывание паутиной: >%s<",
 	WarningWebSpraySoon			= "Летящая паутина через 5 секунд",
-	WarningWebSprayNow			= "Летящая паутина!",
+	WarningWebSprayNow			= "Мексна разбрасывает нити паутины!",
 	WarningSpidersSoon			= "Паученыши Мексны через 5 секунд",
-	WarningSpidersNow			= "Призвала Паученышей Мексны!"
+	WarningSpidersNow			= "В паутине появляются паучата!"
 })
 L:SetTimerLocalization({
 	TimerWebSpray				= "Летящая паутина",
@@ -93,7 +93,7 @@ L:SetGeneralLocalization({
 	name = "Нот Чумной"
 })
 L:SetWarningLocalization({
-	WarningTeleportNow			= "Телепортирует!",
+	WarningTeleportNow			= "Телепортируется!",
 	WarningTeleportSoon			= "Телепортация через 20 секунд",
 	WarningCurse				= "Проклятие Чумного!"
 })
@@ -169,11 +169,11 @@ L:SetGeneralLocalization({
 	name = "Лоскутик"
 })
 L:SetOptionLocalization({
-	WarningHateful				= "Показать предупреждение для Удара ненависти в рейд-чат\n(требуются права лидера или помощника)"
+	WarningHateful				= "Показать предупреждение Удара ненависти\n(требуются права лидера или помощника)"
 })
 L:SetMiscLocalization({
 	yell1 = "Лоскутик хочет поиграть!",
-	yell2 = "Кел'Тузад создает Лоскутика, его воплощение войны!", -- correct this
+	yell2 = "Кел'Тузад объявил Лоскутика воплощением войны!",
 	HatefulStrike = "Удар ненависти --> %s [%s]"
 })
 -----------------
