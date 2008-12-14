@@ -787,9 +787,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "There's plenty of me to go around.",		-- translate
-	SplitTrigger2 = "I'll give you more than you can handle.",	-- translate
-	MergeTrigger = "Now to finish the job!"				-- translate
+	SplitTrigger1 = "Говорят, любопытство наказуемо...",		-- translate
+	SplitTrigger2 = "Вы получите больше, чем заслуживаете!",	-- translate
+	MergeTrigger = "Ну а теперь, покончим с этим!"				-- translate
 })
 
 
@@ -941,7 +941,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningShift	= spell,
 	WarningEnrage	= spell,
-	WarningShiftEnd	= "Сдвига плоскости заканчивается"		-- translate
+	WarningShiftEnd	= "Сдвиг плоскости заканчивается"		-- translate
 })
 
 L:SetTimerLocalization({
