@@ -1323,7 +1323,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= "顯示新傳送門預先警告",
 	WarningBossNow			= "顯示首領警告",
 	TimerPortalIn			= "顯示 \"傳送門: #\" 計時",
-	ShowAllPortalWarnings	= "顯示所有波警告"
+	ShowAllPortalWarnings		= "顯示所有傳送門警告"
 })
 
 
