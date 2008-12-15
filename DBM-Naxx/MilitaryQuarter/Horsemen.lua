@@ -34,7 +34,7 @@ local markCounter = 0
 function mod:OnCombatStart(delay)
 	markCounter = 0
 --	timerMark:Start(15, markCounter + 1)
-	warnMarkSoon:Schedule(12, markCounter + 1)
+--	warnMarkSoon:Schedule(12, markCounter + 1)
 end
 
 local markSpam = 0
@@ -45,8 +45,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	or args.spellId == 28835) and (GetTime() - markSpam) > 5 then
 		markSpam = GetTime()
 		markCounter = markCounter + 1
-		warnMarkNow:Show(markCounter)
-		warnMarkSoon:Schedule(5, markCounter + 1)
+--		warnMarkNow:Show(markCounter)
+--		warnMarkSoon:Schedule(5, markCounter + 1)
 --		timerMark:Start(tostring(markCounter + 1))
 	end
 end
