@@ -15,7 +15,7 @@ mod:RegisterEvents(
 local warningTime 	= mod:NewAnnounce("WarningTime", 3, 58848)
 local warningCurse 	= mod:NewAnnounce("WarningCurse", 2, 52772)
 local timerCurse	= mod:NewTimer(10, "TimerCurse", 52772)
-local warningTimeCD	= mod:NewTimer(25, "TimerTimeCD", 58848)
+local timerTimeCD	= mod:NewTimer(25, "TimerTimeCD", 58848)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 58848 then
@@ -33,3 +33,5 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCurse:Start(args.spellName, args.destName)
 	end
 end
+
+
