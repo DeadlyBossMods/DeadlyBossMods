@@ -1,18 +1,17 @@
 if GetLocale() ~= "frFR" then return end
 
-if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
-local L = DBM_GUI_Translations
+local L
 
-local spell		= "%s"		
-local debuff		= "%s: >%s<"	
-local spellCD		= "%s cooldown"				-- translate
-local spellSoon		= "%s Bientot"			
-local optionWarning	= "Afficher \"%s\" alerte"
-local optionPreWarning	= "Afficher \"%s\" pre-alerte"		-- translate check
-local optionSpecWarning	= "Afficher \"%s\" special alerte"	-- translate check
-local optionTimerCD	= "Afficher \"%s\" cooldown timer"	-- translate check
-local optionTimerDur	= "Afficher \"%s\" dur�e timer"		-- translate check
-local optionTimerCast	= "Afficher \"%s\" cast timer"		-- translate check
+local spell		= "%s"				
+local debuff		= "%s: >%s<"			
+local spellCD		= "%s cooldown"			-- translate
+local spellSoon		= "%s bientôt"			-- translate
+local optionWarning	= "Activer l'annonce: \"%s\" "		-- translate
+local optionPreWarning	= "Activer la pré-annonce: \"%s\" "	-- translate
+local optionSpecWarning	= "Activer l'avertissement spécial: \"%s\" "	-- translate
+local optionTimerCD	= "Afficher le timer pour le cooldown pour: \"%s\" "	-- translate
+local optionTimerDur	= "Afficher le timer de durée pour: \"%s\" "	-- translate
+local optionTimerCast	= "Afficher le timer pour le cast de: \"%s\" "	-- translate
 
 
 --------------------------------
@@ -50,7 +49,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Nadox")
 
 L:SetGeneralLocalization({
-	name = "Elder Nadox"
+	name = "Ancien Nadox"
 })
 
 L:SetWarningLocalization({
@@ -96,7 +95,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Volazj")
 
 L:SetGeneralLocalization({
-	name = "Herald Volazj"
+	name = "Héraut Volazj"
 })
 
 L:SetWarningLocalization({
@@ -142,7 +141,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Krikthir")
 
 L:SetGeneralLocalization({
-	name = "Krik'thir the Gatewatcher"
+	name = "Krik'thir le Gardien de porte"
 })
 
 L:SetWarningLocalization({
@@ -192,14 +191,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPound		= spell
+	WarningPound	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPound		= optionWarning:format(GetSpellInfo(53472)),
+	WarningPound	= optionWarning:format(GetSpellInfo(53472)),
 })
 
 
@@ -211,22 +210,22 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Meathook")
 
 L:SetGeneralLocalization({
-	name = "Meathook"
+	name = "Grancrochet"
 })
 
 L:SetWarningLocalization({
-	WarningChains		= debuff
+	WarningChains	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerChains		= debuff,
-	TimerChainsCD		= spellCD
+	TimerChains	= debuff,
+	TimerChainsCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningChains		= optionWarning:format(GetSpellInfo(52696)),
-	TimerChains		= optionTimerDur:format(GetSpellInfo(52696)),
-	TimerChainsCD		= optionTimerCD:format(GetSpellInfo(52696))
+	WarningChains	= optionWarning:format(GetSpellInfo(52696)),
+	TimerChains	= optionTimerDur:format(GetSpellInfo(52696)),
+	TimerChainsCD	= optionTimerCD:format(GetSpellInfo(52696))
 })
 
 
@@ -236,7 +235,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("SalrammTheFleshcrafter")
 
 L:SetGeneralLocalization({
-	name = "Salramm the Fleshcrafter"
+	name = "Salramm le Façonneur de chair"
 })
 
 L:SetWarningLocalization({
@@ -265,7 +264,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("ChronoLordEpoch")
 
 L:SetGeneralLocalization({
-	name = "Chrono-Lord Epoch"
+	name = "Chronoseigneur Epoch"
 })
 
 L:SetWarningLocalization({
@@ -279,9 +278,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningTime	= optionWarning:format("Time Stop/Warp"),	-- requires translation
+	WarningTime	= optionWarning:format("Arrêt du temps/Warp"),	-- requires translation
 	WarningCurse	= optionWarning:format(GetSpellInfo(52772)),
-	TimerTimeCD	= optionTimerCD:format("Time Stop/Warp"),	-- translate :)
+	TimerTimeCD	= optionTimerCD:format("Arrêt du temps/Warp"),	-- translate
 	TimerCurse	= optionTimerDur:format(GetSpellInfo(52772))
 })
 
@@ -296,18 +295,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSleep		= debuff
+	WarningSleep	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerSleep		= debuff,
-	TimerSleepCD		= spellCD
+	TimerSleep	= debuff,
+	TimerSleepCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningSleep		= optionWarning:format(GetSpellInfo(52721)),
-	TimerSleep		= optionTimerDur:format(GetSpellInfo(52721)),
-	TimerSleepCD		= optionTimerCD:format(GetSpellInfo(52721))
+	WarningSleep	= optionWarning:format(GetSpellInfo(52721)),
+	TimerSleep	= optionTimerDur:format(GetSpellInfo(52721)),
+	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
 })
 
 
@@ -319,7 +318,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Trollgore")
 
 L:SetGeneralLocalization({
-	name = "Trollgore"
+	name = "Trollétripe"
 })
 
 L:SetWarningLocalization({
@@ -388,7 +387,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("ProphetTharonja")
 
 L:SetGeneralLocalization({
-	name = "The Prophet Tharon'ja"
+	name = "Le prophète Tharon'ja"
 })
 
 L:SetWarningLocalization({
@@ -455,20 +454,20 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("BloodstoneAnnihilator")
 
 L:SetGeneralLocalization({
-	name = "Drakkari Colossus"
+	name = "Colosse drakkari"
 })
 
 L:SetWarningLocalization({
-	warningElemental	= "Elemental Phase",		-- translate :)
-	WarningStone		= "Colossus Phase"		-- translate :)
+	warningElemental	= "Phase Elémentaire",		-- translate :)
+	WarningStone		= "Phase Colosse"		-- translate :)
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningElemental	= "Show Elemental Phase warning",	-- translate ;)
-	WarningStone		= "Show Colossus Phase warning"		-- translate :)
+	WarningElemental	= "Activer l'annonce de la phase Elémentaire",	-- translate ;)
+	WarningStone		= "Activer l'annonce de la phase Colosse"		-- translate :)
 })
 
 
@@ -496,7 +495,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Eck")
 
 L:SetGeneralLocalization({
-	name = "Eck the Ferocious"
+	name = "Eck le Féroce"
 })
 
 L:SetWarningLocalization({
@@ -517,7 +516,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Gjarngrin")
 
 L:SetGeneralLocalization({
-	name = "General Bjarngrim"
+	name = "Général Bjarngrim"
 })
 
 L:SetWarningLocalization({
@@ -587,7 +586,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Kronus")
 
 L:SetGeneralLocalization({
-	name = "Kronus"
+	name = "Loken"
 })
 
 L:SetWarningLocalization({
@@ -612,7 +611,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("MaidenOfGrief")
 
 L:SetGeneralLocalization({
-	name = "Maiden of Grief"
+	name = "Damoiselle de peine"
 })
 
 L:SetWarningLocalization({
@@ -667,7 +666,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("SjonnirTheIronshaper")
 
 L:SetGeneralLocalization({
-	name = "Sjonnir the Ironshaper"
+	name = "Sjonnir le Sculptefer"
 })
 
 L:SetWarningLocalization({
@@ -696,7 +695,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
-	name = "Escort Event"
+	name = "Tribunal des ages"
 })
 
 L:SetWarningLocalization({
@@ -721,8 +720,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningRiftSoon	= spellSoon,
-	WarningRiftNow	= spell,
+	WarningRiftSoon		= spellSoon,
+	WarningRiftNow		= spell,
 })
 
 L:SetOptionLocalization({
@@ -737,7 +736,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("OrmorokTheTreeShaper")
 
 L:SetGeneralLocalization({
-	name = "Ormorok the Tree-Shaper"
+	name = "Ormorok le Sculpte-arbre"
 })
 
 L:SetWarningLocalization({
@@ -768,28 +767,28 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("GrandMagusTelestra")
 
 L:SetGeneralLocalization({
-	name = "Grand Magus Telestra"
+	name = "Grand magus Telestra"
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Split soon",		-- translate
-	WarningSplitNow		= "Split",		-- translate
-	WarningMerge		= "Merge"		-- translate
+	WarningSplitSoon	= "Dédoublement imminent",		-- translate
+	WarningSplitNow		= "Dédoublement",		-- translate
+	WarningMerge		= "Rassemblement"		-- translate
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= optionPreWarning:format("Split"),	-- translate
-	WarningSplitNow		= optionWarning:format("Split"),	-- translate
-	WarningMerge		= optionWarning:format("Merge"),	-- translate
+	WarningSplitSoon	= optionPreWarning:format("Dédoublement"),	-- translate
+	WarningSplitNow		= optionWarning:format("Dédoublement"),	-- translate
+	WarningMerge		= optionWarning:format("Rassemblement"),	-- translate
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "There's plenty of me to go around.",		-- translate
-	SplitTrigger2 = "I'll give you more than you can handle.",	-- translate
-	MergeTrigger = "Now to finish the job!"				-- translate
+	SplitTrigger1 = "Il y en aura assez pour tout le monde.",		-- translate
+	SplitTrigger2 = "Vous allez être trop bien servis !",	                   -- translate
+	MergeTrigger = "Et maintenant finissons le travail !"				-- translate
 })
 
 
@@ -833,9 +832,9 @@ L = DBM:GetModLocalization("Commander")
 
 local commander = "Unknown"
 if UnitFactionGroup("player") == "Alliance" then
-	commander = "Commander Kolurg"
+	commander = "Commandant Kolurg"
 elseif UnitFactionGroup("player") == "Horde" then
-	commander = "Commander Stoutbeard"
+	commander = "Commandant Rudebarbe"
 end
 
 L:SetGeneralLocalization({
@@ -868,7 +867,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DrakosTheInterrogator")
 
 L:SetGeneralLocalization({
-	name = "Drakos the Interrogator"
+	name = " Drakos l'Interrogateur"
 })
 
 L:SetWarningLocalization({
@@ -886,7 +885,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("MageLordUrom")
 
 L:SetGeneralLocalization({
-	name = "Mage-Lord Urom"
+	name = "Seigneur-mage Urom"
 })
 
 L:SetWarningLocalization({
@@ -914,7 +913,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("VarosCloudstrider")
 
 L:SetGeneralLocalization({
-	name = "Varos Cloudstrider"
+	name = "Varos Arpentenuée"
 })
 
 L:SetWarningLocalization({
@@ -935,13 +934,13 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("LeyGuardianEregos")
 
 L:SetGeneralLocalization({
-	name = "Ley-Guardian Eregos"
+	name = "Gardien-tellurique Eregos"
 })
 
 L:SetWarningLocalization({
 	WarningShift	= spell,
 	WarningEnrage	= spell,
-	WarningShiftEnd	= "Planar Shift ending"		-- translate
+	WarningShiftEnd	= "Changement de plan terminé"		-- translate
 })
 
 L:SetTimerLocalization({
@@ -951,7 +950,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningShift	= optionWarning:format(GetSpellInfo(51162)),
-	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." ending"), 	-- translate the word 'ending'
+	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." terminé"), 	-- translate the word 'ending'
 	WarningEnrage	= optionWarning:format(GetSpellInfo(51170)),
 	TimerShift	= optionTimerDur:format(GetSpellInfo(51162)),
 	TimerEnrage	= optionTimerDur:format(GetSpellInfo(51170))
@@ -991,7 +990,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("ConstructorAndController")
 
 L:SetGeneralLocalization({
-	name = "Constructor & Controller"
+	name = "Constructeur & Contrôleur"
 })
 
 L:SetWarningLocalization({
@@ -1016,14 +1015,14 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("IngvarThePlunderer")
 
 L:SetGeneralLocalization({
-	name = "Ingvar the Plunderer"
+	name = "Ingvar le Pilleur"
 })
 
 L:SetWarningLocalization({
 	WarningSmash			= spell,
 	WarningGrowl			= spell,
 	WarningWoeStrike		= debuff,
-	SpecialWarningSpelllock 	= "Spell-lock - stop casting!"  -- translate
+	SpecialWarningSpelllock 	= "Renvoi des sorts !!"  -- translate
 })
 
 L:SetTimerLocalization({
@@ -1048,7 +1047,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("SkadiTheRuthless")
 
 L:SetGeneralLocalization({
-	name = "Skadi the Ruthless"
+	name = "Skadi le Brutal"
 })
 
 L:SetWarningLocalization({
@@ -1074,7 +1073,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ymiron")
 
 L:SetGeneralLocalization({
-	name = "King Ymirion"
+	name = "Roi Ymiron"
 })
 
 L:SetWarningLocalization({
@@ -1095,7 +1094,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("SvalaSorrowgrave")
 
 L:SetGeneralLocalization({
-	name = "Svala Sorrowgrave"
+	name = "Svala Tristetombe"
 })
 
 L:SetWarningLocalization({
@@ -1116,7 +1115,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("GortokPalehoof")
 
 L:SetGeneralLocalization({
-	name = "Gortok Palehoof"
+	name = "Gortok P�le-sabot"
 })
 
 L:SetWarningLocalization({
@@ -1273,7 +1272,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Zuramat")
 
 L:SetGeneralLocalization({
-	name = "Zuramat the Obliterator"
+	name = "Zuramat l'Oblitérateur"
 })
 
 L:SetWarningLocalization({
@@ -1306,29 +1305,28 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("PortalTimers")
 
 L:SetGeneralLocalization({
-	name = "Portal Timers"
+	name = "Timer des portails"
 })
 
 L:SetWarningLocalization({
-	WarningPortalSoon	= "New Portal Soon",
-	WarningPortalNow	= "Portal #%d",
-	WarningBossNow		= "Boss incoming",
-	WavePortal		= "Portals Opened: (%d+)/18"
+	WarningPortalSoon	= "Portail imminent",
+	WarningPortalNow	= "Portail #%d",
+	WarningBossNow		= "Arrivé d'un boss"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Portal #%d" , 
+	TimerPortalIn	= "Portail #%d" ,
 })
 
 L:SetOptionLocalization({
-	WarningPortalNow		= optionWarning:format("New Portal"),
-	WarningPortalSoon		= optionPreWarning:format("New Portal"),
-	WarningBossNow			= optionWarning:format("Boss Now"),
-	TimerPortalIn			= "Show \"Portal: #\" timer",
-	ShowAllPortalWarnings		= "Show warnings for all waves"
+	WarningPortalNow		= optionWarning:format("Portail"),
+	WarningPortalSoon		= optionPreWarning:format("Portail imminent"),
+	WarningBossNow			= optionWarning:format("Arrivé d'un boss"),
+	TimerPortalIn			= "Afficher le timer des portails",
+	ShowAllPortalWarnings		= "Activer les annonces pour toutes les vagues"
 })
 
 
 L:SetMiscLocalization({
-	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
+	yell1 = "Gardes, nous partons ! Ces aventuriers vont se charger de la suite ! Allez, en route !",
 })

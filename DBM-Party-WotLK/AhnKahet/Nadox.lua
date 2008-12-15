@@ -19,13 +19,12 @@ mod:RegisterEvents(
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 56130 or args.spellId == 59467 then
 		warningPlague:Show(args.spellName, args.destName)
-		timerPlagueCD:Start(args.spellName)
 		timerPlague:Start(args.spellName, args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 56130 or args.spellId == 59467 then
-		timerPlague:Stop()
+		timerPlague:Cancel()
 	end
 end
