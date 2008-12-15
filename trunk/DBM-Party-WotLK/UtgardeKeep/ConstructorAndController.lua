@@ -9,6 +9,7 @@ mod:RegisterCombat("combat", 24000, 24201)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_SUMMON"
 )
 
@@ -19,7 +20,13 @@ local timerEnfeeble	= mod:NewTimer(6, "TimerEnfeeble", 43650)
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 43650 then
 		warningEnfeeble:Show(args.spellName, args.destName)
-		timerEnfeeble:Start(tonumber(6), args.spellName, args.destName)
+		timerEnfeeble:Start(args.spellName, args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 43650 then
+		timerEnfeeble:Cancel(args.spellName, args.destName)
 	end
 end
 

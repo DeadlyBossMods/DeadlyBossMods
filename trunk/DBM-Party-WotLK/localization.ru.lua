@@ -1,7 +1,6 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 
-if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
-local L = DBM_GUI_Translations
+local L
 
 local spell		= "%s"				
 local debuff		= "%s: >%s<"			
@@ -787,9 +786,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "Говорят, любопытство наказуемо...",		-- translate
-	SplitTrigger2 = "Вы получите больше, чем заслуживаете!",	-- translate
-	MergeTrigger = "Ну а теперь, покончим с этим!"				-- translate
+	SplitTrigger1 = "There's plenty of me to go around.",		-- translate
+	SplitTrigger2 = "I'll give you more than you can handle.",	-- translate
+	MergeTrigger = "Now to finish the job!"				-- translate
 })
 
 
@@ -941,7 +940,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningShift	= spell,
 	WarningEnrage	= spell,
-	WarningShiftEnd	= "Сдвиг плоскости заканчивается"		-- translate
+	WarningShiftEnd	= "Сдвига плоскости заканчивается"		-- translate
 })
 
 L:SetTimerLocalization({
@@ -1311,8 +1310,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "Скоро новый портал",
-	WarningPortalNow	= "Портал: #%d",
-	WarningBossNow		= "Босс",
+	WarningPortalNow	= "Портал #%d",
+	WarningBossNow		= "Босс приближается",
 	WavePortal		= "Открыто порталов: (%d+)/18"
 })
 
@@ -1330,5 +1329,5 @@ L:SetOptionLocalization({
 
 
 L:SetMiscLocalization({
-	yell1 = "Эй, стражи! Уходим! Славные герои обо всем позаботятся. Замной!",
+	yell1 = "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!", -- Аметистовая крепость
 })

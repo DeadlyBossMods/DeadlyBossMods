@@ -13,8 +13,8 @@ mod:RegisterEvents(
 
 local warningShift	= mod:NewAnnounce("WarningShift", 1, 51162)
 local warningShiftEnd	= mod:NewAnnounce("WarningShiftEnd", 1, 51162)
-local warningEnrage	= mod:NewAnnounce("WarningEnrage", 3, 51170)
-local timerEnrage	= mod:NewTimer(12, "TimerEnrage", 51170)
+local warningEnraged	= mod:NewAnnounce("WarningEnraged", 3, 51170)
+local timerEnraged	= mod:NewTimer(12, "TimerEnrage", 51170)
 local timerShift	= mod:NewTimer(18, "TimerShift", 51162)
 
 
@@ -24,7 +24,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warningShiftEnd:Schedule(13)
 		timerShift:Start(args.spellName)
 	elseif args.spellId == 51170 then
-		warningEnrage:Show(args.spellName)
-		timerEnrage:Start(args.spellName)
+		warningEnraged:Show(args.spellName)
+		timerEnraged:Start(args.spellName)
 	end
 end

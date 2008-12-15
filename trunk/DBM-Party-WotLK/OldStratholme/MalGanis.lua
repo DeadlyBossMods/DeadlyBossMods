@@ -20,7 +20,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 52721 or args.spellId == 58849 then
 		warningSleep:Show(args.spellName, args.destName)
 		timerSleep:Start(args.spellName, args.destName)
-		timerSleepCD:Start(args.spellName)
+		timerSleepcD:Start(args.spellName)
 	end
 end
 
