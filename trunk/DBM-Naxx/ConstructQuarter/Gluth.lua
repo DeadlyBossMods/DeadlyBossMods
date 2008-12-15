@@ -18,10 +18,10 @@ local warnDecimateSoon	= mod:NewAnnounce("WarningDecimateSoon", 2, 54426)
 local warnDecimateNow	= mod:NewAnnounce("WarningDecimateNow", 3, 54426)
 
 local timerDecimate		= mod:NewTimer(108, "TimerDecimate", 54426)
-local enrageTimer		= mod:NewEnrageTimer(450)
+local enrageTimer		= mod:NewEnrageTimer(420)
 
 function mod:OnCombatStart(delay)
-	enrageTimer:Start(450 - delay)
+	enrageTimer:Start(420 - delay)
 	timerDecimate:Start(110 - delay)
 	warnDecimateSoon:Schedule(100 - delay)
 end
