@@ -55,14 +55,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPlague	= debuff,
-	TimerPlagueCD	= spellCD
+	TimerPlague	= debuff	
 })
 
 L:SetOptionLocalization({
 	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
-	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
-	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
+	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130))	
 })
 
 
@@ -148,16 +146,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCurse	= spell
-})
-
-L:SetTimerLocalization({
 	TimerCurseCD	= spellCD
 })
 
 L:SetOptionLocalization({
 	WarningCurse 	= optionWarning:format(GetSpellInfo(52592)),
-	TimerCurse	= optionTimerDur:format(GetSpellInfo(52592)),
 	TimerCurseCD	= optionTimerCD:format(GetSpellInfo(52592))
 })
 
@@ -330,7 +323,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWaveNow		= optionWarning:format("New Wave"),
+	WarningWaveNow		= optionWarning:format("새로운 웨이브"),
 	TimerWaveIn		= "\"다음 웨이브\" 타이머 보기 (웨이브 6만 보기)",
 })
 
@@ -338,13 +331,13 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Meathook	= "살덩이갈고리",
 	Salramm		= "살덩이창조자 살람",
-	Devouring	= "Devouring Ghoul",
-	Enraged		= "Enraged Ghoul",
-	Necro		= "Necromancer",
-	Friend		= "Crypt Friend",
-	Tomb		= "Tomb Stalker",
-	Abom		= "Patchwork Construct",
-	Acolyte		= "Acolyte",
+	Devouring	= "개걸스러운 구울",
+	Enraged		= "격노한 구울",
+	Necro		= "정예 강령술사",
+	Friend		= "어둠의 강령술사",
+	Tomb		= "무덤 거미",
+	Abom		= "위액 골렘",
+	Acolyte		= "수행 사제",
 	Wave1		= "%d %s",
 	Wave2		= "%d %s 그리고 %d %s",
 	Wave3		= "%d %s, %d %s 그리고 %d %s",
