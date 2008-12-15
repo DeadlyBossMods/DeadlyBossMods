@@ -33,5 +33,3 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCurse:Start(args.spellName, args.destName)
 	end
 end
-
-

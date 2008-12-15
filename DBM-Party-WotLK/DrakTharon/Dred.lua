@@ -16,7 +16,7 @@ local warningSlash	= mod:NewAnnounce("WarningSlash", 3, 48873)
 local warningBite	= mod:NewAnnounce("WarningBite", 2, 48920)
 local warningFear	= mod:NewAnnounce("WarningFear", 1, 22686)
 
-local timerFear		= mod:NewTimer(15, "TimerFear", 22686)  -- cooldown ??
+local timerFearCD	= mod:NewTimer(15, "TimerFearCD", 22686)  -- cooldown ??
 local timerSlash	= mod:NewTimer(10, "TimerSlash", 48873)
 local timerSlashCD	= mod:NewTimer(18, "TimerSlashCD", 48873)
 

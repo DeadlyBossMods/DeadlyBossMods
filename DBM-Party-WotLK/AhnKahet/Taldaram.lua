@@ -8,7 +8,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_SUMMON",
+	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
 )
@@ -20,7 +20,7 @@ local timerEmbrace		= mod:NewTimer(20, "TimerEmbrace", 55959)
 local timerFlameCD		= mod:NewTimer(17, "TimerFlameCD", 55959)
 
 
-function mod:SPELL_SUMMON(args)
+function mod:SPELL_CAST_START(args)
 	if args.spellId	== 55931 then
 		warningFlame:Show(args.spellName)
 		timerFlameCD:Start(args.spellName)

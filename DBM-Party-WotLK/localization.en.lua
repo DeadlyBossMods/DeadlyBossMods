@@ -55,14 +55,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPlague	= debuff,
-	TimerPlagueCD	= spellCD
+	TimerPlague	= debuff
 })
 
 L:SetOptionLocalization({
 	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
-	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
-	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
+	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130))
 })
 
 
@@ -76,7 +74,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningThundershock	= spell
+	WarningThundershock	= spell,
+	WarningCycloneStrike	= spell
 })
 
 L:SetTimerLocalization({
@@ -84,6 +83,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningThundershock	= optionWarning:format(GetSpellInfo(56926)),
+	WarningCycloneStrike	= optionWarning:format(GetSpellInfo(60030))
 })
 
 
@@ -147,12 +147,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCurse	= spell
+	TimerCurseCD	= spellCD
 })
 
 L:SetOptionLocalization({
 	WarningCurse 	= optionWarning:format(GetSpellInfo(52592)),
-	TimerCurse	= optionTimerDur:format(GetSpellInfo(52592))
+	TimerCurseCD	= optionTimerCD:format(GetSpellInfo(52592))
 })
 
 
@@ -307,6 +307,47 @@ L:SetOptionLocalization({
 	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
 })
 
+-----------------
+-- Wave Timers --
+-----------------
+L = DBM:GetModLocalization("StratWaves")
+
+L:SetGeneralLocalization({
+	name = "Stratholme Waves"
+})
+
+L:SetWarningLocalization({
+	WarningWaveNow		= "Wave %d: %s spawned",
+})
+
+L:SetTimerLocalization({
+	TimerWaveIn	= 	"Next Wave (6)", 
+})
+
+L:SetOptionLocalization({
+	WarningWaveNow		= optionWarning:format("New Wave"),
+	TimerWaveIn		= "Show \"Next Wave\" timer (wave 6 only)",
+})
+
+
+L:SetMiscLocalization({
+	Meathook	= "Meathook",
+	Salramm		= "Salramm the Fleshcrafter",
+	Devouring	= "Devouring Ghoul",
+	Enraged		= "Enraged Ghoul",
+	Necro		= "Necromancer",
+	Friend		= "Crypt Friend",
+	Tomb		= "Tomb Stalker",
+	Abom		= "Patchwork Construct",
+	Acolyte		= "Acolyte",
+	Wave1		= "%d %s",
+	Wave2		= "%d %s and %d %s",
+	Wave3		= "%d %s, %d %s and %d %s",
+	Wave4		= "%d %s, %d %s, %d %s and %d %s",
+	WaveBoss	= "%s",
+	WaveCheck	= "Scourge Wave = %d/10"
+})
+
 
 ----------------------
 -- Drak'Tharon Keep --
@@ -364,7 +405,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFear	= spellCD,
+	TimerFearCD	= spellCD,
 	TimerSlash	= debuff,
 	TimerSlashCD	= spellCD
 })
@@ -373,7 +414,7 @@ L:SetOptionLocalization({
 	WarningSlash	= optionWarning:format("Mangling/Piercing Slash"), 	-- needs translation
 	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
 	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
-	TimerFear	= optionTimerCD:format(GetSpellInfo(22686)),
+	TimerFearCD	= optionTimerCD:format(GetSpellInfo(22686)),
 	TimerSlash	= optionTimerDur:format("Mangling/Piercing Slash"), 	-- needs translation
 	TimerSlashCD	= optionTimerCD:format("Mangling/Piercing Slash") 	-- needs translation
 })
@@ -456,7 +497,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warningElemental	= "Elemental Phase",		-- translate :)
+	WarningElemental	= "Elemental Phase",		-- translate :)
 	WarningStone		= "Colossus Phase"		-- translate :)
 })
 
@@ -697,14 +738,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningPhase	= "Phase %d"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningPhase	= optionWarning:format("Phase #")
 })
 
+L:SetMiscLocalization({
+	Pull		= "Time to get some answers! Let's get this show on the road!",
+	Phase1	= "",
+	Phase2	= "",
+	Phase3	= ""
+})
 
 ---------------
 -- The Nexus --
@@ -755,7 +804,7 @@ L:SetOptionLocalization({
 	WarningFrenzy		= optionWarning:format(GetSpellInfo(48017)),
 	WarningAdd		= optionWarning:format(GetSpellInfo(61564)),
 	TimerReflection		= optionTimerDur:format(GetSpellInfo(47981)),
-	TiemrReflectionCD	= optionTimerCD:format(GetSpellInfo(47981))
+	TimerReflectionCD	= optionTimerCD:format(GetSpellInfo(47981))
 })
 
 
@@ -1309,8 +1358,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningPortalSoon	= "New Portal Soon",
 	WarningPortalNow	= "Portal #%d",
-	WarningBossNow		= "Boss incoming",
-	WavePortal		= "Portals Opened: (%d+)/18"
+	WarningBossNow		= "Boss incoming"
 })
 
 L:SetTimerLocalization({
@@ -1328,4 +1376,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
+	WavePortal		= "Portals Opened: (%d+)/18"
 })

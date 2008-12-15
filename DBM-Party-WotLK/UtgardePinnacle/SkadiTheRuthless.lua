@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
 )
 
@@ -21,6 +22,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59331 or args.spellId == 50255 then
 		warningPoison:Show(args.spellName, args.destName)
 		timerPoison:Start(args.spellName, args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 59331 or args.spellId == 50255 then
+		timerPoison:Cancel(args.spellName, args.destName)
 	end
 end
 

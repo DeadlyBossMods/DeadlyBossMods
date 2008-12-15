@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_SUMMON"
 )
 
@@ -31,5 +32,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCurse:Start(args.spellName, args.destName)
 	elseif args.spellId == 52709 then
 		wagningSteal:Show(args.spellName, args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 58845 then
+		timerCurse:Cancel()
 	end
 end

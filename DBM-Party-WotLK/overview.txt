@@ -8,7 +8,6 @@
 -- Thundershock
 - [u]Herald Volazj[/u]
 -- Insanity
--- Shiver
 - [u]Amanitar[/u]
 -- Mini
 
@@ -30,7 +29,6 @@
 -- Curse of Twisted Flesh
 - [u]Chrono-Lord Epoch[/u]
 -- Time Stop/Warp
--- Wounding Strike
 -- Curse of Exertion
 - [u]Mal'ganis[/u]
 -- Sleep
@@ -49,8 +47,12 @@
 [b]Gun'drak[/b]
 - [u]Slad'ran[/u]
 - [u]Moorabi[/u]
+-- Transformation
 - [u]Drakkari Colossus[/u]
+-- Phase change (Elemental/Colossus)
 - [u]Gal'darah[/u]
+- [u]Ech the Feracious[/u]
+-- Enrage timer
 
 [b]Halls of Lightning[/b]
 - [u]General Bjarngrim[/u]
@@ -88,6 +90,7 @@
 - [u]Keristrasza[/u]
 -- Crystal Chains
 -- Enrage
+-- Crystallize
 - [u]Commander Kolurg/Stoutbeard[/u]
 -- Fear
 -- Whirlwind
