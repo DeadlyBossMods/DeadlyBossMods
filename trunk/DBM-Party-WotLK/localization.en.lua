@@ -750,9 +750,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull		= "Time to get some answers! Let's get this show on the road!",
-	Phase1	= "",
-	Phase2	= "",
-	Phase3	= ""
+	Phase1	= "xxx anti error xxx",
+	Phase2	= "xxx anti error xxx",
+	Phase3	= "xxx anti error xxx"
 })
 
 ---------------
