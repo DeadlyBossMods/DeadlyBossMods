@@ -57,14 +57,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPlague	= debuff,
-	TimerPlagueCD	= spellCD
+	TimerPlague	= debuff
 })
 
 L:SetOptionLocalization({
 	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
-	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130)),
-	TimerPlagueCD	= optionTimerCD:format(GetSpellInfo(56130))
+	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130))
 })
 
 
@@ -149,12 +147,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerCurse	= spell
+	TimerCurseCD	= spellCD
 })
 
 L:SetOptionLocalization({
 	WarningCurse 	= optionWarning:format(GetSpellInfo(52592)),
-	TimerCurse	= optionTimerDur:format(GetSpellInfo(52592))
+	TimerCurseCD	= optionTimerCD:format(GetSpellInfo(52592))
 })
 
 
@@ -309,6 +307,47 @@ L:SetOptionLocalization({
 	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
 })
 
+-----------------
+-- Wave Timers --
+-----------------
+L = DBM:GetModLocalization("StratWaves")
+
+L:SetGeneralLocalization({
+	name = "Stratholme Waves"
+})
+
+L:SetWarningLocalization({
+	WarningWaveNow		= "Wave %d: %s spawned",
+})
+
+L:SetTimerLocalization({
+	TimerWaveIn	= 	"Next Wave (6)", 
+})
+
+L:SetOptionLocalization({
+	WarningWaveNow		= optionWarning:format("New Wave"),
+	TimerWaveIn		= "Show \"Next Wave\" timer (wave 6 only)",
+})
+
+
+L:SetMiscLocalization({
+	Meathook	= "Meathook",
+	Salramm		= "Salramm the Fleshcrafter",
+	Devouring	= "Devouring Ghoul",
+	Enraged		= "Enraged Ghoul",
+	Necro		= "Necromancer",
+	Friend		= "Crypt Friend",
+	Tomb		= "Tomb Stalker",
+	Abom		= "Patchwork Construct",
+	Acolyte		= "Acolyte",
+	Wave1		= "%d %s",
+	Wave2		= "%d %s and %d %s",
+	Wave3		= "%d %s, %d %s and %d %s",
+	Wave4		= "%d %s, %d %s, %d %s and %d %s",
+	WaveBoss	= "%s",
+	WaveCheck	= "Scourge Wave = %d/10"
+})
+
 
 ----------------------
 -- Drak'Tharon Keep --
@@ -366,7 +405,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFear	= spellCD,
+	TimerFearCD	= spellCD,
 	TimerSlash	= debuff,
 	TimerSlashCD	= spellCD
 })
@@ -375,7 +414,7 @@ L:SetOptionLocalization({
 	WarningSlash	= optionWarning:format("碎裂斬/穿甲斬"), 	-- needs translation
 	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
 	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
-	TimerFear	= optionTimerCD:format(GetSpellInfo(22686)),
+	TimerFearCD	= optionTimerCD:format(GetSpellInfo(22686)),
 	TimerSlash	= optionTimerDur:format("碎裂斬/穿甲斬"), 	-- needs translation
 	TimerSlashCD	= optionTimerCD:format("碎裂斬/穿甲斬") 	-- needs translation
 })
@@ -458,7 +497,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warningElemental	= "元素階段",		-- translate :)
+	WarningElemental	= "元素階段",		-- translate :)
 	WarningStone		= "巨像階段"		-- translate :)
 })
 
@@ -699,12 +738,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningPhase	= "階段 %d"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningPhase	= optionWarning:format("階段 #")
+})
+
+L:SetMiscLocalization({
+	Pull		= "Time to get some answers! Let's get this show on the road!",
+	Phase1	= "",
+	Phase2	= "",
+	Phase3	= ""
 })
 
 
@@ -757,7 +805,7 @@ L:SetOptionLocalization({
 	WarningFrenzy		= optionWarning:format(GetSpellInfo(48017)),
 	WarningAdd		= optionWarning:format(GetSpellInfo(61564)),
 	TimerReflection		= optionTimerDur:format(GetSpellInfo(47981)),
-	TiemrReflectionCD	= optionTimerCD:format(GetSpellInfo(47981))
+	TimerReflectionCD	= optionTimerCD:format(GetSpellInfo(47981))
 })
 
 
@@ -1311,7 +1359,7 @@ L:SetWarningLocalization({
 	WarningPortalSoon	= "新傳送門即將開啟",
 	WarningPortalNow	= "傳送門 #%d",
 	WarningBossNow		= "首領即將到來",
-	WavePortal		= "傳送門開啟:(%d+)/18"
+	WavePortal		= "傳送門開啟: (%d+)/18"
 })
 
 L:SetTimerLocalization({
@@ -1323,7 +1371,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= "顯示新傳送門預先警告",
 	WarningBossNow			= "顯示首領警告",
 	TimerPortalIn			= "顯示 \"傳送門: #\" 計時",
-	ShowAllPortalWarnings	= "顯示所有波警告"
+	ShowAllPortalWarnings		= "顯示所有傳送門警告"
 })
 
 
