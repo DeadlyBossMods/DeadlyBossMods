@@ -15,24 +15,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialLocust		= "Locust Swarm!",
-	WarningLocustSoon	= "Locust Swarm in 15 sec",
-	WarningLocustNow	= "Locust Swarm!",
-	WarningLocustFaded	= "Locust Swarm faded"
+	SpecialLocust		= "메뚜기 때 시작!!",
+	WarningLocustSoon	= "메뚜기 때 15초 전",
+	WarningLocustNow	= "메뚜기 때!!",
+	WarningLocustFaded	= "메뚜기 때가 사라졌습니다!!"
 })
 
 L:SetTimerLocalization({
-	TimerLocustIn	= "Locust Swarm", 
-	TimerLocustFade = "Locust Swarm active"
+	TimerLocustIn	= "메뚜기 때", 
+	TimerLocustFade = "메뚜기 때 시작"
 })
 
 L:SetOptionLocalization({
-	SpecialLocust		= "Show special warning for Locust Swarm",
-	WarningLocustSoon	= "Show Locust Swarm pre-warning",
-	WarningLocustNow	= "Show Locust Swarm warning",
-	WarningLocustFaded	= "Show Locust Swarm fade warning",
-	TimerLocustIn		= "Show Locust Swarm timer", 
-	TimerLocustFade 	= "Show Locust Swarm fade timer"
+	SpecialLocust		= "메뚜기 때 특수 경보 보기",
+	WarningLocustSoon	= "메뚜기 때 시전 경고 보기",
+	WarningLocustNow	= "메쭈기 때 경보 보기",
+	WarningLocustFaded	= "메뚜기 때 사라짐 경보 보기",
+	TimerLocustIn		= "메뚜기 때 타이머 보기", 
+	TimerLocustFade 	= "메뚜기 때 사라짐 타이머 보기"
 })
 
 
@@ -46,23 +46,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceActive	= "Widow's Embrace active",
-	WarningEmbraceExpire	= "Widow's Embrace ends in 5 sec",
-	WarningEmbraceExpired	= "Widow's Embrace faded",
-	WarningEnrageSoon		= "Enrage in 5 sec",
-	WarningEnrageNow		= "Enrage!"
+	WarningEmbraceActive	= "귀부인의 은총 시작",
+	WarningEmbraceExpire	= "귀부인의 은총 종료 5초 전",
+	WarningEmbraceExpired	= "귀부인의 은총 사라짐",
+	WarningEnrageSoon		= "격노 5 초전",
+	WarningEnrageNow		= "격노!"
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace	= "Embrace active",
-	TimerEnrage		= "Enrage",
+	TimerEmbrace	= "귀부인의 은총(침묵)",
+	TimerEnrage		= "격노",
 })
 
 L:SetOptionLocalization({
-	TimerEmbrace			= "Show Embrace timer",
-	WarningEmbraceActive	= "Show Widow's Embrace warning",
-	WarningEmbraceExpire	= "Show warning when Widow's Embrace expires",
-	WarningEmbraceExpired	= "Show warning when Widow's Embrace is about to expire"
+	TimerEmbrace			= "귀부인의 은총(침묵) 타이머 보기",
+	TimerEnrage				= "격노 타이머 보기",
+	WarningEmbraceActive	= "귀부인의 은총 경고 보기",
+	WarningEmbraceExpire	= "귀부인의 은총 종료 경보 보기",
+	WarningEmbraceExpired	= "귀부인의 은총 사라짐 경보 보기",
+	WarningEnrageSoon		= "격노 사전(미리) 경보 보기",
+	WarningEnrageNow		= "격노 경보 보기"		
 })
 
 
@@ -437,37 +440,37 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningDrainLifeNow		= "Show Drain Life warning",
-	WarningDrainLifeSoon	= "Show Drain Life pre-warning",
-	WarningAirPhaseSoon		= "Show Air Phase pre-warning",
-	WarningAirPhaseNow		= "Show Air Phase warning",
-	WarningLanded			= "Show Ground Phase warning",
-	TimerDrainLifeCD		= "Show Drain Life timer",
-	TimerAir				= "Show Air Phase timer",
-	TimerLanding			= "Show Landing in timer",
-	TimerIceBlast			= "Show Deep Breath timer",
-	WarningDeepBreath		= "Show Deep Breath special warning"
+	WarningDrainLifeNow		= "생명력 흡수 경고 보기",
+	WarningDrainLifeSoon	= "생명력 흡수 사전 경고 보기",
+	WarningAirPhaseSoon		= "비행 페이즈 사전 경고 보기",
+	WarningAirPhaseNow		= "비행 페이즈 경고 보기",
+	WarningLanded			= "지상 페이즈 경고 보기",
+	TimerDrainLifeCD		= "생명력 흡수 타이머 보기",
+	TimerAir				= "비행 페이즈 타이머 보기",
+	TimerLanding			= "착지 타이머 보기",
+	TimerIceBlast			= "냉기 숨결 타이머 보기",
+	WarningDeepBreath		= "냉기 숨결 특수 경고 보기"
 })
 
 L:SetMiscLocalization({
-	EmoteBreath			= "%s takes a deep breath.",
-	WarningYellIceblock	= "I'm an Ice Block!"
+	EmoteBreath			= "%s 이 숨을 깊게 들이쉽니다.",
+	WarningYellIceblock	= "저 얼음 방패! 제 뒤에 숨으세요!!"
 })
 
 L:SetWarningLocalization({
-	WarningDrainLifeNow		= "Drain Life!",
-	WarningDrainLifeSoon	= "Drain Life soon",
-	WarningAirPhaseSoon		= "Air Phase in 10 sec",
-	WarningAirPhaseNow		= "Air Phase",
-	WarningLanded			= "Sapphiron landed",
-	WarningDeepBreath		= "Deep Breath!",
+	WarningDrainLifeNow		= "생명력 흡수!",
+	WarningDrainLifeSoon	= "곧 생명력 흡수",
+	WarningAirPhaseSoon		= "비행 페이즈 10초 전",
+	WarningAirPhaseNow		= "비행 페이즈",
+	WarningLanded			= "사피론 착지",
+	WarningDeepBreath		= "냉기의 숨결!!",
 })
 
 L:SetTimerLocalization({
-	TimerDrainLifeCD		= "Drain Life CD",
-	TimerAir				= "Air Phase",
-	TimerLanding			= "Landing in",
-	TimerIceBlast			= "Deep Breath"	
+	TimerDrainLifeCD		= "생명력 흡수 쿨다운",
+	TimerAir				= "비행 페이즈",
+	TimerLanding			= "착지",
+	TimerIceBlast			= "냉기 숨결"	
 })
 
 ------------------
@@ -482,21 +485,21 @@ L:SetGeneralLocalization({
 
 L:SetOptionLocalization({
 	TimerPhase2			= "2 페이즈 타이머 보기",
-	WarningBlastTargets	= "Show Frost Blast warning",
-	WarningPhase2		= "Show Phase 2 warning",
-	WarningFissure		= "Show Shadow Fissure warning",
-	WarningMana			= "Show Detonate warning"
+	WarningBlastTargets	= "냉기 작렬 경고 보기",
+	WarningPhase2		= "2 페이즈 경고 보기",
+	WarningFissure		= "어둠의 균열 경고 보기",
+	WarningMana			= "마나 폭발 경고 보기"
 })
 
 L:SetMiscLocalization({
-	Yell = "Minions, servants, soldiers of the cold dark! Obey the call of Kel'Thuzad!"
+	Yell = "어둠의 문지기와 하수인, 그리고 병사들이여, 나 켈투자드가 부르니 명을 받들라!"
 })
 
 L:SetWarningLocalization({
-	WarningBlastTargets	= "Frost Blast: >%s<",
-	WarningPhase2		= "Phase 2",
-	WarningFissure		= "Shadow Fissure spawned",
-	WarningMana			= "Detonate Mana: >%s<"
+	WarningBlastTargets	= "냉기 작렬: >%s<",
+	WarningPhase2		= "2 페이즈",
+	WarningFissure		= "어둠의 균열 생성",
+	WarningMana			= "마나 폭발 : >%s<"
 })
 
 L:SetTimerLocalization({
