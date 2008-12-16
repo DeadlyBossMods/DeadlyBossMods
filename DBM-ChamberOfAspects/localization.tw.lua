@@ -60,7 +60,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall	= "為\"火牆\"音效",
+	PlaySoundOnFireWall	= "為\"火牆\"播放音效",
 	AnnounceFails		= "公布沒有進傳送門和撞上火牆的玩家到團隊頻道",
 
 	TimerWall		= "為\"火牆\"顯示計時器",

@@ -76,7 +76,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningThundershock	= spell
+	WarningThundershock	= spell,
+	WarningCycloneStrike	= spell
 })
 
 L:SetTimerLocalization({
@@ -84,6 +85,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningThundershock	= optionWarning:format(GetSpellInfo(56926)),
+	WarningCycloneStrike	= optionWarning:format(GetSpellInfo(60030))
 })
 
 
