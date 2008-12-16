@@ -19,7 +19,7 @@ DBM_CORE_SEC						= "초"
 DBM_CORE_DEAD						= "죽음"
 DBM_CORE_OK							= "수락"
 
-DBM_CORE_GENERIC_WARNING_ENRAGE		= "광폭화 in %s %s"
+DBM_CORE_GENERIC_WARNING_ENRAGE		= "%s %s 후에 광폭화"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "광폭화"
 DBM_CORE_OPTION_TIMER_ENRAGE		= "광폭화 타이머 보기"
 DBM_CORE_OPTION_HEALTH_FRAME		= "보스 HP 프레임 보기"
