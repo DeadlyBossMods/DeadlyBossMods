@@ -76,7 +76,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningThundershock	= spell
+	WarningThundershock	= spell,
+	WarningCycloneStrike	= spell
 })
 
 L:SetTimerLocalization({
@@ -84,6 +85,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningThundershock	= optionWarning:format(GetSpellInfo(56926)),
+	WarningCycloneStrike	= optionWarning:format(GetSpellInfo(60030))
 })
 
 
@@ -1359,7 +1361,6 @@ L:SetWarningLocalization({
 	WarningPortalSoon	= "新傳送門即將開啟",
 	WarningPortalNow	= "傳送門 #%d",
 	WarningBossNow		= "首領即將到來",
-	WavePortal		= "傳送門開啟: (%d+)/18"
 })
 
 L:SetTimerLocalization({
@@ -1377,4 +1378,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 = "監獄守衛，我們要離開了!這些冒險者會接手!動作快!",
+	WavePortal		= "傳送門開啟:(%d+)/18"
 })
