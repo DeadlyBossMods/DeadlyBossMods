@@ -9,7 +9,6 @@ mod:RegisterCombat("combat")
 
 local warningPlague	= mod:NewAnnounce("WarningPlague", 2, 56130)
 local timerPlague	= mod:NewTimer(30, "TimerPlague", 56130)
-local timerPlagueCD	= mod:NewTimer(30, "TimerPlagueCD", 56130)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
