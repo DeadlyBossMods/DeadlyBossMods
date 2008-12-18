@@ -79,30 +79,30 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWebWrap		= "Web Wrap: >%s<",
-	WarningWebSpraySoon	= "Web Spray in 5 sec",
-	WarningWebSprayNow	= "Web Spray!",
-	WarningSpidersSoon	= "Spiders in 5 sec",
-	WarningSpidersNow	= "Spiders spawned!"
+	WarningWebWrap		= "거미줄 감싸기 : >%s<",
+	WarningWebSpraySoon	= "5 초 후 거미줄 뿌리기",
+	WarningWebSprayNow	= "거미줄 뿌리기!",
+	WarningSpidersSoon	= "5 초 후 거미 소환",
+	WarningSpidersNow	= "거미 소환!!"
 })
 
 L:SetTimerLocalization({
-	TimerWebSpray	= "Web Spray",
-	TimerSpider		= "Spiders"
+	TimerWebSpray	= "거미줄 뿌리기",
+	TimerSpider		= "거미"
 })
 
 L:SetOptionLocalization({
-	WarningWebWrap		= "Announce Web Wrap targets",
-	WarningWebSpraySoon	= "Show Web Spray pre-warning",
-	WarningWebSprayNow	= "Show Web Spray warning",
-	WarningSpidersSoon	= "Show Spider pre-warning",
-	WarningSpidersNow	= "Show Spider warning",
-	TimerWebSpray		= "Show Web Spray timer",
-	TimerSpider			= "Show Spider timer"
+	WarningWebWrap		= "거미줄 감싸기 타겟 알리기",
+	WarningWebSpraySoon	= "거미줄 뿌리기 사전 경고 보기",
+	WarningWebSprayNow	= "거미줄 뿌리기 경고 보기",
+	WarningSpidersSoon	= "거미 사전 경고 보기",
+	WarningSpidersNow	= "거미 경고 보기",
+	TimerWebSpray		= "거미줄 뿌리기 타이머 보기",
+	TimerSpider			= "거미 타이머 보기"
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "I'm wrapped! Help me!"
+	YellWebWrap			= "저 거미줄에 걸렸어요!! 살려주세요!!"
 })
 
 ---------------
@@ -118,22 +118,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Teleported!",
-	WarningTeleportSoon	= "Teleport in 20 sec",
-	WarningCurse		= "Curse!"
+	WarningTeleportNow	= "순간이동!!",
+	WarningTeleportSoon	= "20초 후 순간이동",
+	WarningCurse		= "저주!"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Teleport",
-	TimerTeleportBack	= "Teleport back"
+	TimerTeleport		= "순간이동",
+	TimerTeleportBack	= "방으로 순간이동"
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "Show Teleport warning",
-	WarningTeleportSoon		= "Show Teleport pre-warning",
-	WarningCurse			= "Show Curse warning",
-	TimerTeleport			= "Show Teleport timer",
-	TimerTeleportBack		= "Show Teleport back timer"
+	WarningTeleportNow		= "순간이동 경고 보기",
+	WarningTeleportSoon		= "순간이동 사전 경고 보기",
+	WarningCurse			= "저주 경고 보기",
+	TimerTeleport			= "순간이동 타이머 보기",
+	TimerTeleportBack		= "방으로 순간이동 타이머 보기"
 })
 
 
@@ -147,20 +147,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Teleported!",
-	WarningTeleportSoon	= "Teleport in %d sec",
+	WarningTeleportNow	= "순간이동!",
+	WarningTeleportSoon	= "%d초 후 순간이동",
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Teleport",
+	TimerTeleport		= "순간이동",
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "Show Teleport warning",
-	WarningTeleportSoon		= "Show Teleport pre-warning",
-	WarningCurse			= "Show Curse warning",
-	TimerTeleport			= "Show Teleport timer",
-	TimerTeleportBack		= "Show Teleport back timer"
+	WarningTeleportNow		= "순간이동 경고 보기",
+	WarningTeleportSoon		= "순간이동 사전 경고 보기",
+	WarningCurse			= "저주 경고 보기",
+	TimerTeleport			= "순간이동 타이머 보기",
+	TimerTeleportBack		= "단상 이동 타이머 보기"
 })
 
 
@@ -174,16 +174,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSporeNow		= "Spore spawned!",
-	WarningSporeSoon	= "Spore in 5 sec",
-	WarningDoomNow		= "Doom #%d",
-	WarningHealSoon		= "Healing possible in 3 sec",
-	WarningHealNow		= "Heal now!"
+	WarningSporeNow		= "포자 생성!!",
+	WarningSporeSoon	= "5초후 포자",
+	WarningDoomNow		= "파멸 #%d",
+	WarningHealSoon		= "3초 후 힐 가능!!",
+	WarningHealNow		= "지금 힐!!!!!"
 })
 
 L:SetTimerLocalization({
-	TimerDoom			= "Doom #%d",
-	TimerSpore			= "Next Spore",
+	TimerDoom			= "파멸 #%d",
+	TimerSpore			= "다음 포자",
 	TimerAura			= "Necrotic Aura"
 })
 
@@ -216,8 +216,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yell1 = "Patchwerk want to play!",
-	yell2 = "Kel'thuzad make Patchwerk his avatar of war!",
+	yell1 = "패치워크랑 놀아줘!",
+	yell2 = "켈투자드님이 패치워크 싸움꾼으로 만들었다.",
 	HatefulStrike = "Hateful Strike --> %s [%s]"
 })
 
@@ -280,37 +280,37 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell	= "Stalagg crush you!",
-	Emote	= "%s overloads!", -- ?
-	Emote2	= "Tesla Coil overloads!", -- ?
+	Yell	= "스탈라그, 박살낸다!",
+	Emote	= "%s 광폭화!", -- ?
+	Emote2	= "테슬라 코일!!", -- ?
 })
 
 L:SetOptionLocalization({
-	WarningShiftCasting		= "Show Polarity Shift warning",
-	WarningChargeChanged	= "Show special warning when your polarity changed",
-	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
-	TimerShiftCast			= "Show Polarity Shift cast timer",
-	TimerNextShift			= "Show Polarity Shift cooldown timer",
+	WarningShiftCasting		= "극성 변환 경고 보기",
+	WarningChargeChanged	= "현재 전하가 바뀌었는지 경고 보기",
+	WarningChargeNotChanged	= "현재 전하가 바뀌지 않았는지 경고 보기",
+	TimerShiftCast			= "극성 변환 타이머 보기",
+	TimerNextShift			= "극성 변환 쿨다운 타이머 보기",
 	ArrowsEnabled			= "Show arrows (normal \"2 camp\" strategy)",
 	ArrowsRightLeft			= "Show right/left arrows for the \"4 camp\" strategy (show left arrow if polarity changed, right if not)",
 	ArrowsInverse			= "Inverse \"4 camp\" strategy (show right arrow if polarity changed, left if not)",
-	WarningThrow			= "Show Tank-throw warning",
-	WarningThrowSoon		= "Show Tank-throw pre-warning",
-	TimerThrow				= "Show Tank-throw timer"
+	WarningThrow			= "탱커 던지기 경고 보기",
+	WarningThrowSoon		= "탱커 던지기 사전 경고 보기",
+	TimerThrow				= "탱커 던지기 타이머 보기"
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting		= "Polarity Shift in 3 sec!",
-	WarningChargeChanged	= "Polarity changed to %s",
-	WarningChargeNotChanged	= "Polarity didn't change",
-	WarningThrow			= "Tank-throw!",
-	WarningThrowSoon		= "Tank-throw in 3 sec"
+	WarningShiftCasting		= "극성 변환 3초 전!!",
+	WarningChargeChanged	= "%s으로 전하가 바뀌었습니다.",
+	WarningChargeNotChanged	= "전하가 바뀌지 않았습니다.",
+	WarningThrow			= "탱커 던지기!",
+	WarningThrowSoon		= "탱커 던지기 3 초 전!!"
 })
 
 L:SetTimerLocalization({
-	TimerShiftCast			= "Polarity Shift Cast",
-	TimerNextShift			= "Next Polarity Shift",
-	TimerThrow				= "Tank-throw"
+	TimerShiftCast			= "극성 변환",
+	TimerNextShift			= "다음 극성 변환",
+	TimerThrow				= "탱커 던지기"
 })
 
 L:SetOptionCatLocalization({
@@ -343,8 +343,8 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow		= "Disrupting Shout!",
-	WarningShoutSoon	= "Disrupting Shout in 5 sec"
+	WarningShoutNow		= "도발!",
+	WarningShoutSoon	= "도발 5초 전!"
 })
 
 L:SetTimerLocalization({
@@ -377,20 +377,20 @@ L:SetTimerLocalization({
 
 L:SetWarningLocalization({
 	WarningWaveSoon		= "웨이브 %d: %s in 3초 후",
-	WarningWaveSpawned	= "Wave %d: %s spawned",
-	WarningRiderDown	= "Rider down",
-	WarningKnightDown	= "Knight down",
+	WarningWaveSpawned	= "웨이브 %d: %s 등장",
+	WarningRiderDown	= "무자비한 죽음의 기병 등장",
+	WarningKnightDown	= "무자비한 죽음의 기사 등장",
 	WarningPhase2		= "2 페이즈 시작"
 })
 
 L:SetMiscLocalization({
-	yell			= "Foolishly you have sought your own demise.",
+	yell			= "어리석은 것들, 스스로 죽음을 자초하다니!",
 	WarningWave1	= "%d %s",
 	WarningWave2	= "%d %s and %d %s",
 	WarningWave3	= "%d %s, %d %s and %d %s",
-	Trainee			= "|4Trainee:Trainees;",
-	Knight			= "|4Knight:Knights;",
-	Rider			= "|4Rider:Riders;",
+	Trainee			= "|4훈련병:훈련병;",
+	Knight			= "|4죽음의 기사:죽음의 기사;",
+	Rider			= "|4죽음의 기병:죽음의 기병;",
 })
 
 
@@ -404,9 +404,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerMark					= "Show Mark timer",
-	WarningMarkSoon				= "Show Mark pre-warning",
-	WarningMarkNow				= "Show Mark warning",
+	TimerMark					= "징표 타이머 보기",
+	WarningMarkSoon				= "징ㅍ 사전 경고 보기",
+	WarningMarkNow				= "징표 경고 보기",
 	SpecialWarningMarkOnPlayer	= "Show special warning when you have > 4 marks on you"
 })
 
@@ -415,8 +415,8 @@ L:SetTimerLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMarkSoon				= "Mark %d in 3 sec",
-	WarningMarkNow				= "Mark %d!",
+	WarningMarkSoon				= "3초 후 징표 %d",
+	WarningMarkNow				= "징표 %d!",
 	SpecialWarningMarkOnPlayer	= "%s: %s",
 })
 
