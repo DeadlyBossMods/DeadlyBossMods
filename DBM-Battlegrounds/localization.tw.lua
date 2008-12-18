@@ -204,7 +204,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	TankSwitch = "%%s 撞擊 (%S+)!"
+	TankSwitch = "%%ss撲向(%S+)!"
 })
 
 L:SetOptionLocalization({
