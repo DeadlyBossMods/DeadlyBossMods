@@ -61,7 +61,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "為\"火牆\"播放音效",
-	AnnounceFails		= "公布沒有進傳送門和撞上火牆的玩家到團隊頻道",
+	AnnounceFails		= "公布踩中虛空區域和撞上火牆的玩家到團隊頻道",
 
 	TimerWall		= "為\"火牆\"顯示計時器",
 	TimerTenebron		= "為坦納伯朗顯示計時器",
@@ -79,14 +79,14 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Wall			= "The lava surrounding %s churns!",
-	Portal			= "%s begins to open a Twilight Portal!",
+	Wall			= "圍繞著撒爾薩里安的熔岩開始劇烈地翻騰!",
+	Portal			= "%s開始開啟暮光傳送門!",
 	NameTenebron	= "坦納伯朗",
 	NameShadron		= "夏德朗",
 	NameVesperon	= "維斯佩朗",
 	FireWallOn		= "火牆: %s",
 	VoidZoneOn		= "虛空區域: %s",
-	VoidZones		= "沒有進傳送門(這一次): %s",
+	VoidZones		= "踩中虛空區域(這一次): %s",
 	FireWalls		= "撞上火牆 (這一次): %s",
 	--[[ not in use; don't translate.
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
