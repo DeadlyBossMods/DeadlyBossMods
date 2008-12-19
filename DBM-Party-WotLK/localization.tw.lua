@@ -315,20 +315,20 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("StratWaves")
 
 L:SetGeneralLocalization({
-	name = "Stratholme Waves"
+	name = "斯坦波數"
 })
 
 L:SetWarningLocalization({
-	WarningWaveNow		= "Wave %d: %s spawned",
+	WarningWaveNow		= "第%d波: %s 出現了",
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn	= 	"Next Wave (6)", 
+	TimerWaveIn	= 	"下一波(6)", 
 })
 
 L:SetOptionLocalization({
-	WarningWaveNow		= optionWarning:format("New Wave"),
-	TimerWaveIn		= "Show \"Next Wave\" timer (wave 6 only)",
+	WarningWaveNow		= optionWarning:format("新一波"),
+	TimerWaveIn		= "顯示\"下一波\"計時器 (只有第6波)",
 })
 
 
