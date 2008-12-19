@@ -44,7 +44,7 @@ L:SetWarningLocalization({
 	WarningEmbraceActive	= "Widow's Embrace active",
 	WarningEmbraceExpire	= "Widow's Embrace ends in 5 sec",
 	WarningEmbraceExpired	= "Widow's Embrace faded",
-	WarningEnrageSoon		= "Enrage in 5 sec",
+	WarningEnrageSoon		= "Enrage soon",
 	WarningEnrageNow		= "Enrage!"
 })
 

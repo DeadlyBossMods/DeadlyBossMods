@@ -26,7 +26,7 @@ local enraged = false
 
 function mod:OnCombatStart(delay)
 	timerEnrage:Start(-delay)
-	warnEnrageSoon:Schedule(60 - delay)
+	warnEnrageSoon:Schedule(55 - delay)
 	enraged = false
 end
 
