@@ -42,6 +42,19 @@ local timerWall         = mod:NewTimer(30, "TimerWall", 43113)
 local lastvoids = {}
 local lastfire = {}
 
+local function isunitdebuffed(spellID)
+	local name = GetSpellInfo(spellID)
+	if not name then return false end
+
+	for i=1, 40, 1 do
+		local debuffname = UnitDebuff("player", i, "HARMFUL")
+		if debuffname == name then
+			return true
+		end
+	end
+	return false
+end
+
 function mod:OnSync(event)
 	if event == "FireWall" then
 		timerWall:Start()
@@ -81,13 +94,18 @@ end
 mod.CHAT_MSG_MONSTER_EMOTE = mod.CHAT_MSG_RAID_BOSS_EMOTE
 
 function mod:OnCombatStart(delay)
-	timerTenebron:Start()
-	timerShadron:Start()
-	timerVesperon:Start()
-
-	warnTenebron:Schedule(25)
-	warnShadron:Schedule(70)
-	warnVesperon:Schedule(115)
+	if isunitdebuffed(61248) then	-- Power of Tenebron
+		timerTenebron:Start()
+		warnTenebron:Schedule(25)
+	end
+	if isunitdebuffed(58105) then	-- Power of Shadron
+		timerShadron:Start()
+		warnShadron:Schedule(70)
+	end
+	if isunitdebuffed(61251) then	-- Power of Vesperon
+		timerVesperon:Start()
+		warnVesperon:Schedule(115)
+	end
 
 	table.wipe(lastvoids)
 	table.wipe(lastfire)
@@ -142,5 +160,7 @@ function mod:SPELL_DAMAGE(args)
 		SendChatMessage(L.VoidZoneOn:format(args.destName), "RAID")
 	end	
 end
+
+
 
 
