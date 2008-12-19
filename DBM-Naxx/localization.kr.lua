@@ -63,9 +63,7 @@ L:SetOptionLocalization({
 	TimerEnrage				= "격노 타이머 보기",
 	WarningEmbraceActive	= "귀부인의 은총 경고 보기",
 	WarningEmbraceExpire	= "귀부인의 은총 종료 경보 보기",
-	WarningEmbraceExpired	= "귀부인의 은총 사라짐 경보 보기",
-	WarningEnrageSoon		= "격노 사전(미리) 경보 보기",
-	WarningEnrageNow		= "격노 경보 보기"		
+	WarningEmbraceExpired	= "귀부인의 은총 사라짐 경보 보기"
 })
 
 
