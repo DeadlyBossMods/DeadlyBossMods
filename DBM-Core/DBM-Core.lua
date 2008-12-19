@@ -1772,6 +1772,17 @@ function bossModPrototype:SetBossHealthInfo(...)
 	self.bossHealthInfo = {...}
 end
 
+function bossModPrototype:ClearBossHealthInfo()
+	table.wipe(self.bossHealthInfo)
+end
+
+function bossModPrototype:AddBossHealthInfo(...)
+	for i = 1, select("#", ...), 2 do
+		table.insert(self.bossHealthInfo, select(i, ...))
+		table.insert(self.bossHealthInfo, select(i + 1, ...))
+	end
+end
+
 -----------------------
 --  Announce Object  --
 -----------------------
