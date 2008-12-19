@@ -7,13 +7,6 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-mod:SetBossHealthInfo(
-	28860, "Sartharion",
-	30452, "Tenebron",
-	30451, "Shadron",
-	30449, "Vesperon"
-)
-
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
@@ -32,7 +25,7 @@ local warnTenebron	= mod:NewAnnounce("WarningTenebron", 2, nil, false)
 local warnShadron	= mod:NewAnnounce("WarningShadron", 2, nil, false)
 local warnVesperon	= mod:NewAnnounce("WarningVesperon", 2, nil, false)
 
-local warnFireWall			= mod:NewSpecialWarning("WarningFireWall")
+local warnFireWall		= mod:NewSpecialWarning("WarningFireWall")
 local warnVesperonPortal	= mod:NewSpecialWarning("WarningVesperonPortal", false)
 local warnTenebronPortal	= mod:NewSpecialWarning("WarningTenebronPortal", false)
 local warnShadronPortal		= mod:NewSpecialWarning("WarningShadronPortal", false)
@@ -93,19 +86,36 @@ end
 
 mod.CHAT_MSG_MONSTER_EMOTE = mod.CHAT_MSG_RAID_BOSS_EMOTE
 
-function mod:OnCombatStart(delay)
+function mod:CheckDrakes(delay)
+	if self.Options.HealthFrame then
+		DBM.BossHealth:Show(L.name)
+		DBM.BossHealth:AddBoss(28860, "Sartharion")
+	end
 	if isunitdebuffed(61248) then	-- Power of Tenebron
-		timerTenebron:Start()
-		warnTenebron:Schedule(25)
+		timerTenebron:Start(30 - delay)
+		warnTenebron:Schedule(25 - delay)
+		if self.Options.HealthFrame then
+			DBM.BossHealth:AddBoss(30452, "Tenebron")
+		end
 	end
 	if isunitdebuffed(58105) then	-- Power of Shadron
-		timerShadron:Start()
-		warnShadron:Schedule(70)
+		timerShadron:Start(75 - delay)
+		warnShadron:Schedule(70 - delay)
+		if self.Options.HealthFrame then
+			DBM.BossHealth:AddBoss(30451, "Shadron")
+		end
 	end
 	if isunitdebuffed(61251) then	-- Power of Vesperon
-		timerVesperon:Start()
-		warnVesperon:Schedule(115)
+		timerVesperon:Start(120 - delay)
+		warnVesperon:Schedule(115 - delay)
+		if self.Options.HealthFrame then
+			DBM.BossHealth:AddBoss(30449, "Vesperon")
+		end
 	end
+end
+
+function mod:OnCombatStart(delay)
+	self:ScheduleMethod(5, "CheckDrakes", delay)
 
 	table.wipe(lastvoids)
 	table.wipe(lastfire)
@@ -122,6 +132,7 @@ end
 
 function mod:OnCombatEnd(wipe)	
 	if not self.Options.AnnounceFails then return end
+	if DBM:GetRaidRank() < 1 then return end
 
 	local voids = ""
 	for k, v in pairs(lastvoids) do
@@ -147,15 +158,14 @@ function mod:OnCombatEnd(wipe)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if not self:IsInCombat() then return end
-	if self.Options.AnnounceFails and args.spellId == 57491 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
+	if self.Options.AnnounceFails and args.spellId == 57491 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastfire[args.destName] = (lastfire[args.destName] or 0) + 1
 		SendChatMessage(L.FireWallOn:format(args.destName), "RAID")
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if self.Options.AnnounceFails and args.spellId == 59128 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
+	if self.Options.AnnounceFails and args.spellId == 59128 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastvoids[args.destName] = (lastvoids[args.destName] or 0) + 1
 		SendChatMessage(L.VoidZoneOn:format(args.destName), "RAID")
 	end	
