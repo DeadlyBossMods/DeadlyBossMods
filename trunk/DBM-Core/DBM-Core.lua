@@ -37,8 +37,8 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.03",
-	DisplayVersion = "4.03"
+	Version = "4.04",
+	DisplayVersion = "4.04"
 }
 
 DBM_SavedOptions = {}
@@ -640,10 +640,15 @@ end
 --  Minimap Button  --
 ----------------------
 do
+	local dragMode = nil
+	
 	local function moveButton(self)
-		if IsAltKeyDown() and IsShiftKeyDown() then
+		if dragMode == "free" then
+			local centerX, centerY = Minimap:GetCenter()
+			local x, y = GetCursorPosition()
+			x, y = x / self:GetEffectiveScale() - centerX, y / self:GetEffectiveScale() - centerY
 			self:ClearAllPoints()
-			self:SetPoint("CENTER", GetCursorPosition())
+			self:SetPoint("CENTER", x, y)
 		else
 			local centerX, centerY = Minimap:GetCenter()
 			local x, y = GetCursorPosition()
@@ -669,7 +674,13 @@ do
 	button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
 
 	button:SetScript("OnMouseDown", function(self, button)
-		if IsShiftKeyDown() or button == "RightButton" then self:SetScript("OnUpdate", moveButton) end
+		if IsShiftKeyDown() and IsAltKeyDown() then
+			dragMode = "free"
+			self:SetScript("OnUpdate", moveButton)
+		elseif IsShiftKeyDown() or button == "RightButton" then
+			dragMode = nil
+			self:SetScript("OnUpdate", moveButton)
+		end
 	end)
 	button:SetScript("OnMouseUp", function(self)
 		self:SetScript("OnUpdate", nil)
@@ -1777,7 +1788,7 @@ function bossModPrototype:SetBossHealthInfo(...)
 	self.bossHealthInfo = {...}
 end
 
-function bossModPrototype:ClearBossHealthInfo()
+--[[function bossModPrototype:ClearBossHealthInfo()
 	table.wipe(self.bossHealthInfo)
 end
 
@@ -1786,7 +1797,7 @@ function bossModPrototype:AddBossHealthInfo(...)
 		table.insert(self.bossHealthInfo, (select(i, ...)))
 		table.insert(self.bossHealthInfo, (select(i + 1, ...)))
 	end
-end
+end]]--
 
 -----------------------
 --  Announce Object  --
