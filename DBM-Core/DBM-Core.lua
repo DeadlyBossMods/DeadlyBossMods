@@ -836,7 +836,7 @@ do
 			if t1[i] == nil then
 				t1[i] = v
 			elseif type(v) == "table" then
-				addDefaultOptions(v, t2[i])
+				return addDefaultOptions(v, t2[i])
 			end
 		end
 	end
@@ -844,7 +844,7 @@ do
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
-		RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
+		DBM:Schedule(5, RaidWarningFrame.SetPoint, RaidWarningFrame, DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
 	end
 
 	function loadModOptions(modId)
