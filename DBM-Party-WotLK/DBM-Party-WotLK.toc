@@ -30,6 +30,7 @@ localization.ru.lua
 localization.fr.lua
 localization.tw.lua
 localization.kr.lua
+localization.de.lua
 AhnKahet\Taldaram.lua
 AhnKahet\Nadox.lua
 AhnKahet\JedogaShadowseeker.lua
