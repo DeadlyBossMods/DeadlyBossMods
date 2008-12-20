@@ -641,15 +641,20 @@ end
 ----------------------
 do
 	local function moveButton(self)
-		local centerX, centerY = Minimap:GetCenter()
-		local x, y = GetCursorPosition()
-		x, y = x / self:GetEffectiveScale() - centerX, y / self:GetEffectiveScale() - centerY
-		centerX, centerY = math.abs(x), math.abs(y)
-		centerX, centerY = (centerX / math.sqrt(centerX^2 + centerY^2)) * 76, (centerY / sqrt(centerX^2 + centerY^2)) * 76
-		centerX = x < 0 and -centerX or centerX
-		centerY = y < 0 and -centerY or centerY
-		self:ClearAllPoints()
-		self:SetPoint("CENTER", centerX, centerY)
+		if IsAltKeyDown() and IsShiftKeyDown() then
+			self:ClearAllPoints()
+			self:SetPoint("CENTER", GetCursorPosition())
+		else
+			local centerX, centerY = Minimap:GetCenter()
+			local x, y = GetCursorPosition()
+			x, y = x / self:GetEffectiveScale() - centerX, y / self:GetEffectiveScale() - centerY
+			centerX, centerY = math.abs(x), math.abs(y)
+			centerX, centerY = (centerX / math.sqrt(centerX^2 + centerY^2)) * 76, (centerY / sqrt(centerX^2 + centerY^2)) * 76
+			centerX = x < 0 and -centerX or centerX
+			centerY = y < 0 and -centerY or centerY
+			self:ClearAllPoints()
+			self:SetPoint("CENTER", centerX, centerY)
+		end
 	end
 
 	local button = CreateFrame("Button", "DBMMinimapButton", Minimap)
