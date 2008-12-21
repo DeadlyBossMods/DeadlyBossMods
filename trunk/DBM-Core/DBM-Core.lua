@@ -311,7 +311,7 @@ do
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
 			args.amount, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
 		end
-		handleEvent(nil, event, args)
+		return handleEvent(nil, event, args)
 	end
 	mainFrame:SetScript("OnEvent", handleEvent)
 end
@@ -426,11 +426,11 @@ do
 end
 
 function DBM:Schedule(t, f, ...)
-	schedule(t, f, nil, ...)
+	return schedule(t, f, nil, ...)
 end
 
 function DBM:Unschedule(f, ...)
-	unschedule(f, nil, ...)
+	return unschedule(f, nil, ...)
 end
 
 function DBM:ForceUpdate()
@@ -621,13 +621,13 @@ do
 			local loaded, reason = LoadAddOn("DBM-GUI")
 			if not loaded then
 				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
-				return
+				return false
 			end
 			table.sort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
 			for i, v in ipairs(callOnLoad) do v[1]() end
 			collectgarbage("collect")
 		end
-		DBM_GUI:ShowHide()
+		return DBM_GUI:ShowHide()
 	end
 
 	function DBM:RegisterOnGuiLoadCallback(f, sort)
@@ -711,7 +711,7 @@ do
 	end
 
 	function DBM:HideMinimapButton()
-		button:Hide()
+		return button:Hide()
 	end
 end
 
@@ -1260,19 +1260,19 @@ do
 	end
 
 	function DBM:CHAT_MSG_MONSTER_YELL(msg)
-		onMonsterMessage("yell", msg)
+		return onMonsterMessage("yell", msg)
 	end
 
 	function DBM:CHAT_MSG_MONSTER_EMOTE(msg)
-		onMonsterMessage("emote", msg)
+		return onMonsterMessage("emote", msg)
 	end
 
 	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-		onMonsterMessage("emote", msg)
+		return onMonsterMessage("emote", msg)
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)
-		onMonsterMessage("say", msg)
+		return onMonsterMessage("say", msg)
 	end
 end
 
@@ -1473,7 +1473,7 @@ function DBM:SendTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	SendAddonMessage("DBMv4-CombatInfo", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	return SendAddonMessage("DBMv4-CombatInfo", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
@@ -1584,7 +1584,9 @@ end
 do
 	local old = RaidBossEmoteFrame_OnEvent
 	RaidBossEmoteFrame_OnEvent = function(...)
-		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then return end
+		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then
+			return
+		end
 		return old(...)
 	end
 end
@@ -1592,7 +1594,9 @@ end
 do
 	local old = RaidWarningFrame_OnEvent
 	RaidWarningFrame_OnEvent = function(self, event, msg, ...)
-		if DBM.Options.SpamBlockRaidWarning and msg:find("%*%*%* .* %*%*%*") then return end
+		if DBM.Options.SpamBlockRaidWarning and msg:find("%*%*%* .* %*%*%*") then
+			return
+		end
 		return old(self, event, msg, ...)
 	end
 end
@@ -1772,7 +1776,7 @@ function bossModPrototype:SetRevision(revision)
 end
 
 function bossModPrototype:SendWhisper(msg, target)
-	SendChatMessage(chatPrefixShort..msg, "WHISPER", nil, target)
+	return SendChatMessage(chatPrefixShort..msg, "WHISPER", nil, target)
 end
 
 function bossModPrototype:GetUnitCreatureId(uId)
@@ -1788,16 +1792,6 @@ function bossModPrototype:SetBossHealthInfo(...)
 	self.bossHealthInfo = {...}
 end
 
---[[function bossModPrototype:ClearBossHealthInfo()
-	table.wipe(self.bossHealthInfo)
-end
-
-function bossModPrototype:AddBossHealthInfo(...)
-	for i = 1, select("#", ...), 2 do
-		table.insert(self.bossHealthInfo, (select(i, ...)))
-		table.insert(self.bossHealthInfo, (select(i + 1, ...)))
-	end
-end]]--
 
 -----------------------
 --  Announce Object  --
@@ -1847,11 +1841,11 @@ do
 	end
 
 	function announcePrototype:Schedule(t, ...)
-		schedule(t, self.Show, self.mod, self, ...)
+		return schedule(t, self.Show, self.mod, self, ...)
 	end
 
 	function announcePrototype:Cancel(...)
-		unschedule(self.Show, self.mod, self, ...)
+		return unschedule(self.Show, self.mod, self, ...)
 	end
 
 	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName)
@@ -1919,11 +1913,11 @@ do
 	end
 
 	function specialWarningPrototype:Schedule(t, ...)
-		schedule(t, self.Show, self.mod, self, ...)
+		return schedule(t, self.Show, self.mod, self, ...)
 	end
 
 	function specialWarningPrototype:Cancel(t, ...)
-		unschedule(self.Show, self.mod, self, ...)
+		return unschedule(self.Show, self.mod, self, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound)
@@ -1978,7 +1972,7 @@ do
 	timerPrototype.Show = timerPrototype.Start
 
 	function timerPrototype:Schedule(t, ...)
-		schedule(t, self.Start, self.mod, self, ...)
+		return schedule(t, self.Start, self.mod, self, ...)
 	end
 
 	function timerPrototype:Stop(...)
@@ -2016,33 +2010,43 @@ do
 	end
 
 	function timerPrototype:Update(elapsed, totalTime, ...)
-		if self:GetTime(...) == 0 then self:Start(totalTime, ...) end
+		if self:GetTime(...) == 0 then
+			self:Start(totalTime, ...)
+		end
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-		DBM.Bars:UpdateBar(id, elapsed, totalTime)
+		return DBM.Bars:UpdateBar(id, elapsed, totalTime)
 	end
 
 	function timerPrototype:UpdateIcon(icon, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
-		if bar then bar:SetIcon((type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon) end
+		if bar then
+			return bar:SetIcon((type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon)
+		end
 	end
 
 	function timerPrototype:UpdateName(name, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
-		if bar then bar:SetText(name) end
+		if bar then
+			return bar:SetText(name)
+		end
 	end
 
 	function timerPrototype:SetColor(c, ...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
-		if bar then	bar:SetColor(c)	end
+		if bar then
+			return bar:SetColor(c)
+		end
 	end
 	
 	function timerPrototype:DisableEnlarge(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
 		local bar = DBM.Bars:GetBar(id)
-		if bar then	bar.small = true end
+		if bar then
+			bar.small = true
+		end
 	end
 
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
@@ -2092,7 +2096,7 @@ do
 	end
 
 	function enragePrototype:Schedule(t)
-		self.owner:Schedule(t, self.Start, self)
+		return self.owner:Schedule(t, self.Start, self)
 	end
 
 	function enragePrototype:Cancel()
@@ -2284,18 +2288,18 @@ end
 --  Scheduler  --
 -----------------
 function bossModPrototype:Schedule(t, f, ...)
-	schedule(t, f, self, ...)
+	return schedule(t, f, self, ...)
 end
 
 function bossModPrototype:Unschedule(f, ...)
-	unschedule(f, self, ...)
+	return unschedule(f, self, ...)
 end
 
 function bossModPrototype:ScheduleMethod(t, method, ...)
 	if not self[method] then
 		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
-	self:Schedule(t, self[method], self, ...)
+	return self:Schedule(t, self[method], self, ...)
 end
 bossModPrototype.ScheduleEvent = bossModPrototype.ScheduleMethod
 
@@ -2303,7 +2307,7 @@ function bossModPrototype:UnscheduleMethod(method, ...)
 	if not self[method] then
 		error(("Method %s does not exist"):format(tostring(method)), 2)
 	end
-	self:Unschedule(self[method], self, ...)
+	return self:Unschedule(self[method], self, ...)
 end
 bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 
@@ -2329,7 +2333,7 @@ function bossModPrototype:GetIcon(target)
 end
 
 function bossModPrototype:RemoveIcon(target, timer)
-	self:SetIcon(target, 0, timer)
+	return self:SetIcon(target, 0, timer)
 end
 
 
