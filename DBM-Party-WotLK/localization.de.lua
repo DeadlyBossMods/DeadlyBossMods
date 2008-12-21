@@ -372,11 +372,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSlash	= optionWarning:format("Zermalmender/Durchbohrender Hieb"), 	
+	WarningSlash	= optionWarning:format("Zermalmender/Durchbohrender Hieb"), 
 	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
 	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
 	TimerFear	        = optionTimerCD:format(GetSpellInfo(22686)),
-	TimerSlash	= optionTimerDur:format(Zermalmender/Durchbohrender Hieb"), 	
+	TimerSlash	= optionTimerDur:format("Zermalmender/Durchbohrender Hieb"), 
 	TimerSlashCD	= optionTimerCD:format("Zermalmender/Durchbohrender Hieb") 	
 })
 
