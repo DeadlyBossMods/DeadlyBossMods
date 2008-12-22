@@ -262,26 +262,38 @@ L:SetOptionCatLocalization({
 L = DBM:GetModLocalization("Razuvious")
 
 L:SetGeneralLocalization({
-	name = "Инструктор Разувиус"
+	name = "Инструктор Разувий"
 })
+
 L:SetMiscLocalization({
 	Yell1 = "Show them no mercy!", -- correct this
 	Yell2 = "Обучение окончено! Покажите мне, что вы усвоили!",
 	Yell3 = "Вспомните, чему я вас учил!",
 	Yell4 = "Выше ногу! Или у тебя с этим проблемы?",
 })
+
 L:SetOptionLocalization({
-	WarningShoutNow				= "Показать предупреждение для Разрушительного крика",
-	WarningShoutSoon			= "Показать пред-предупреждение Разрушительного крика",
-	TimerShout					= "Показать отсчет времени до Разрушительного крика"
+	WarningShoutNow		= "Объявлять Разрушительный крик",
+	WarningShoutSoon	= "Предупреждать о приближении Разрушительного крика",
+	WarningShieldWallSoon	= "Предупреждать о скором исчезновении Стены костей",
+	TimerShout			= "Показать таймер Разрушительного крика",
+	TimerTaunt			= "Показать таймер Провокации",
+	TimerShieldWall		= "Показать таймер Стены костей"
 })
+
 L:SetWarningLocalization({
-	WarningShoutNow				= "Разрушительный крик!",
-	WarningShoutSoon			= "Разрушительный крик через 5 секунд"
+	WarningShoutNow		= "Разрушительный крик!",
+	WarningShoutSoon	= "Разрушительный крик через 5 секунд",
+	WarningShieldWallSoon	= "Стена костей спадет через 5 секунд"
 })
+
 L:SetTimerLocalization({
-	TimerShout					= "Разрушительный крик"
+	TimerShout			= "Разрушительный крик",
+	TimerTaunt			= "Провокация",
+	TimerShieldWall		= "Стена костей"
 })
+
+
 --------------
 --  Gothik  --
 --------------
