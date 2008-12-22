@@ -27,6 +27,7 @@
 ## X-DBM-Mod-LoadZone-koKR: 낙스라마스
 localization.en.lua
 localization.de.lua
+localization.fr.lua
 localization.ru.lua
 localization.tw.lua
 localization.kr.lua
