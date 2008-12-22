@@ -253,7 +253,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDecimate		= "Decimate"
+	TimerDecimate		= "Decimate Cooldown"
 })
 
 
