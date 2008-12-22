@@ -58,7 +58,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Play sound for \"Fire Wall\"",
-	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to the raid chat",
+	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to the raid chat (requires announce enabled and promoted/leader status)",
 
 	TimerWall		= "Show a Timer for \"Fire Wall\"",
 	TimerTenebron		= "Show a timer for Tenebron",
