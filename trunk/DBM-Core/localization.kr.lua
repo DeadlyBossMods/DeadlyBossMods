@@ -49,7 +49,7 @@ DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods 가 실행중에 있습니다.\n당신께서 DBMv3 와 DBMv4를 동시에 설치하여 이런 상황이 발생한 것 같습니다.\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n또한, 애드온 폴더내에 존재하고 있는 DBMv3 폴더를 삭제하시길 권장합니다."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "죽이는 보스 모드"
-DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click 또는 right-click 으로 움직이세요."
+DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click 또는 right-click 으로 움직이세요.\nAlt+shift+click 으로 움직이면 자유롭게 배치할 수 있습니다."
 
 DBM_CORE_RANGECHECK_HEADER			= "거리 체크 (%d m)"
 DBM_CORE_RANGECHECK_SETRANGE		= "거리 지정"
