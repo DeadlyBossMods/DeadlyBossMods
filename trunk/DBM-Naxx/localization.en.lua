@@ -322,18 +322,24 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow		= "Show Disrupting Shout warning",
-	WarningShoutSoon	= "Show Disrupting Shout pre-warning",
-	TimerShout			= "Show Disrupting Shout timer"
+	WarningShoutNow			= "Show Disrupting Shout warning",
+	WarningShoutSoon		= "Show Disrupting Shout pre-warning",
+	TimerShout				= "Show Disrupting Shout timer",
+	WarningShieldWallSoon	= "Show Shield Wall expore warning",
+	TimerShieldWall			= "Show Shield Wall timer",
+	TimerTaunt				= "Show Taunt timer"
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow		= "Disrupting Shout!",
-	WarningShoutSoon	= "Disrupting Shout in 5 sec"
+	WarningShoutNow			= "Disrupting Shout!",
+	WarningShoutSoon		= "Disrupting Shout in 5 sec",
+	WarningShieldWallSoon	= "Shield Wall expires in 5 sec"
 })
 
 L:SetTimerLocalization({
-	TimerShout			= "Disrupting Shout"
+	TimerShout			= "Disrupting Shout",
+	TimerTaunt			= "Taunt",
+	TimerShieldWall		= "Shield Wall"
 })
 
 --------------
