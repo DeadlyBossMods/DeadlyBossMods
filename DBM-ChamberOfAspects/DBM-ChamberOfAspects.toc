@@ -26,6 +26,7 @@ localization.de.lua
 localization.ru.lua
 localization.tw.lua
 localization.kr.lua
+localization.fr.lua
 Shadron.lua
 Tenebron.lua
 Vesperon.lua

@@ -26,6 +26,7 @@
 ## X-DBM-Mod-LoadZone-zhTW: 安卡罕特:古王國,阿茲歐-奈幽,斯坦索姆的抉擇,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡
 ## X-DBM-Mod-LoadZone-koKR: 안카헤트: 고대 왕국,아졸네룹,옛 스트라솔룸,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보라빛 성채
 localization.en.lua
+localization.cn.lua
 localization.ru.lua
 localization.fr.lua
 localization.tw.lua
