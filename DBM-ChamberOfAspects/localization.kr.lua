@@ -59,7 +59,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "\"용암 파도\" 소리 켜기",
-	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to the raid chat",
+	AnnounceFails		= "용암 파도 및 어둠의 균열 피하기 실패한 공대원을 공대 채팅창에 알리기",
 
 	TimerWall			= "\"용암 파도\" 타이머 보기",
 	TimerTenebron		= "테네브론 타이머 보기",
@@ -83,9 +83,9 @@ L:SetMiscLocalization({
 	NameShadron		= "샤드론",
 	NameVesperon	= "베스페론",
 	FireWallOn		= "용암 파도 : %s",
-	VoidZoneOn		= "Void zone : %s",
-	VoidZones		= "Void zone fails (this try): %s",
-	FireWalls		= "Fire wall fails (this try): %s",
+	VoidZoneOn		= "어둠의 균열 : %s",
+	VoidZones		= "어둠의 균열 실패(현재 트라이): %s",
+	FireWalls		= "용암 파도 실패 (현재 트라이): %s",
 	--[[ not in use; don't translate.
 	Vesperon	= "베스페론, 알이 위험하다! 날 도와라!",
 	Shadron		= "샤드론! 이리 와라! 위험한 상황이다!",
