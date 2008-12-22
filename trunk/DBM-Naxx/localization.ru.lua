@@ -82,7 +82,7 @@ L:SetOptionLocalization({
 	TimerSpider					= "Показать отсчет времени до призыва Паученышей Мексны"
 })
 L:SetMiscLocalization({
-	YellWebWrap					= "I'm wrapped! Help me!" -- correct this
+	YellWebWrap			= "Я в коконе! Помогите!"
 })
 ------------------------------
 --  Noth the Plaguebringer  --
@@ -224,9 +224,9 @@ L:SetGeneralLocalization({
 	name = "Таддиус"
 })
 L:SetMiscLocalization({
-	Yell = "Сталагг раздавит тебя!", -- correct this
-	Emote = "%s overloads!", -- ?
-	Emote2 = "Tesla Coil overloads!", -- ?
+	Yell	= "Сталагг сокрушить вас!",
+	Emote	= "Катушка Теслы перезагружается!",
+	Emote2	= "Катушка Теслы теряет связь!",
 })
 L:SetOptionLocalization({
 	WarningShiftCasting			= "Показать предупреждение для Сдвига полярности",
@@ -266,9 +266,9 @@ L:SetGeneralLocalization({
 })
 L:SetMiscLocalization({
 	Yell1 = "Show them no mercy!", -- correct this
-	Yell2 = "The time for practice is over! Show me what you have learned!", -- correct this
-	Yell3 = "Do as I taught you!", -- correct this
-	Yell4 = "Sweep the leg... Do you have a problem with that?" -- correct this
+	Yell2 = "Обучение окончено! Покажите мне, что вы усвоили!",
+	Yell3 = "Вспомните, чему я вас учил!",
+	Yell4 = "Выше ногу! Или у тебя с этим проблемы?",
 })
 L:SetOptionLocalization({
 	WarningShoutNow				= "Показать предупреждение для Разрушительного крика",
@@ -311,7 +311,7 @@ L:SetWarningLocalization({
 	WarningPhase2				= "Фаза 2"
 })
 L:SetMiscLocalization({
-	yell						= "Foolishly you have sought your own demise.", -- correct this
+	yell						= "Глупо было искать свою смерть.",
 	WarningWave1				= "%d %s",
 	WarningWave2				= "%d %s и %d %s",
 	WarningWave3				= "%d %s, %d %s и %d %s",
@@ -355,36 +355,41 @@ L = DBM:GetModLocalization("Sapphiron")
 L:SetGeneralLocalization({
 	name = "Сапфирон"
 })
+
 L:SetOptionLocalization({
-	WarningDrainLifeNow			= "Показать предупреждение для Похищения жизни",
-	WarningDrainLifeSoon		= "Показать пред-предупреждение Похищения жизни",
-	WarningAirPhaseSoon			= "Показать пред-предупреждение Воздушной фазы",
-	WarningAirPhaseNow			= "Показать предупреждение для Воздушной фазы",
-	WarningLanded				= "Показать предупреждение для Наземной фазы",
-	TimerDrainLifeCD			= "Показать отсчет времени до Похищения жизни",
-	TimerAir					= "Показать отсчет времени до Воздушной фазы",
-	TimerLanding				= "Показать отсчет времени до Приземления",
-	TimerIceBlast				= "Показать отсчет времени до Ледяное дыхание",
-	WarningDeepBreath			= "Показать спец-предупреждение для Ледяное дыхание"
+	WarningDrainLifeNow		= "Объявлять Похищение жизни",
+	WarningDrainLifeSoon	= "Предупреждать о приближающемся Похищении жизни",
+	WarningAirPhaseSoon		= "Предупреждать о приближении Воздушной фазы",
+	WarningAirPhaseNow		= "Объявлять Воздушную фазу",
+	WarningLanded			= "Объявлять Наземную фазу",
+	TimerDrainLifeCD		= "Показать таймер перезарядки Похищения жизни",
+	TimerAir				= "Показать таймер Воздушной фазы",
+	TimerLanding			= "Показать таймер приземления",
+	TimerIceBlast			= "Показать таймер Ледяного дыхания",
+	WarningDeepBreath		= "Специальное объявление Ледяного Дыхания"
 })
+
 L:SetMiscLocalization({
-	EmoteBreath = "%s takes a deep breath.", -- correct this
-	WarningYellIceblock = "I'm an Ice Block!" -- correct this
+	EmoteBreath			= "%s делает глубокий вдох.",
+	WarningYellIceblock	= "Я в Ледяной глыбе!"
 })
+
 L:SetWarningLocalization({
-	WarningDrainLifeNow			= "Похищение жизни!",
-	WarningDrainLifeSoon		= "Скоро Похищение жизни",
-	WarningAirPhaseSoon			= "Воздушная фаза через 10 секунд",
-	WarningAirPhaseNow			= "Воздушная фаза",
-	WarningLanded				= "Сапфирон приземляется",
-	WarningDeepBreath			= "Ледяное дыхание!",
+	WarningDrainLifeNow		= "Похищение Жизни!",
+	WarningDrainLifeSoon	= "Скоро Похищение жизни",
+	WarningAirPhaseSoon		= "Воздушная фаза через 10 секунд",
+	WarningAirPhaseNow		= "Воздушная фаза",
+	WarningLanded			= "Сапфирон приземляется",
+	WarningDeepBreath		= "Ледяное дыхание!",
 })
+
 L:SetTimerLocalization({
-	TimerDrainLifeCD			= "Похищение жизни CD",
-	TimerAir					= "Воздушная фаза",
-	TimerLanding				= "Приземление",
-	TimerIceBlast				= "Ледяное дыхание"
+	TimerDrainLifeCD		= "Перезарядка Похищения жизни",
+	TimerAir				= "Воздушная фаза",
+	TimerLanding			= "Приземление",
+	TimerIceBlast			= "Ледяное дыхание"	
 })
+
 ------------------
 --  Kel'thuzad  --
 ------------------
@@ -394,22 +399,27 @@ L = DBM:GetModLocalization("Kel'Thuzad")
 L:SetGeneralLocalization({
 	name = "Кел'Тузад"
 })
+
 L:SetOptionLocalization({
-	TimerPhase2					= "Показать отсчет времени до Фазы 2",
-	WarningBlastTargets			= "Показать предупреждение для Ледяного взрыва",
-	WarningPhase2				= "Показать предупреждение для Фазы 2",
-	WarningFissure				= "Показать предупреждение для Расщелины тьмы",
-	WarningMana					= "Показать предупреждение для Взорыва маны"
+	TimerPhase2			= "Показать таймер второй фазы",
+	WarningBlastTargets	= "Объявлять цели Ледяного взрыва",
+	WarningPhase2		= "Объявлять наступление второй фазы",
+	WarningFissure		= "Объявлять Расщелины тьмы",
+	WarningMana			= "Объявлять Взрыв маны"
 })
+
 L:SetMiscLocalization({
-	Yell = "Minions, servants, soldiers of the cold dark! Obey the call of Kel'Thuzad!" -- correct this
+	Yell = "Соратники, слуги, солдаты холодной тьмы! Повинуйтесь зову Кел-Тузада!"
 })
+
 L:SetWarningLocalization({
-	WarningBlastTargets			= "Ледяной взрыв: >%s<",
-	WarningPhase2				= "Фаза 2",
-	WarningFissure				= "Призыв Расщелины тьмы",
-	WarningMana					= "Взорвать ману: >%s<"
+	WarningBlastTargets	= "Ледяной взрыв: >%s<",
+	WarningPhase2		= "Фаза 2",
+	WarningFissure		= "Появилась Расщелина тьмы",
+	WarningMana			= "Взрыв маны: >%s<"
 })
+
 L:SetTimerLocalization({
-	TimerPhase2					= "Фаза 2"
+	TimerPhase2			= "Фаза 2"
 })
+
