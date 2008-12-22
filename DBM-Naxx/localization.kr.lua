@@ -59,8 +59,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerEmbrace			= "귀부인의 은총(침묵) 타이머 보기",
-	TimerEnrage				= "격노 타이머 보기",
+	TimerEmbrace			= "귀부인의 은총(침묵) 타이머 보기",	
 	WarningEmbraceActive	= "귀부인의 은총 경고 보기",
 	WarningEmbraceExpire	= "귀부인의 은총 종료 경보 보기",
 	WarningEmbraceExpired	= "귀부인의 은총 사라짐 경보 보기"
@@ -186,13 +185,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSporeNow		= "Show Spore warning",
-	WarningSporeSoon	= "Show Spore pre-warning",
-	WarningDoomNow		= "Show Doom warning",
-	WarningHealSoon		= "Show \"Heal in 3 sec\" pre-warning",
-	WarningHealNow		= "Show \"Heal now\" warning",
-	TimerDoom			= "Show Doom timer",
-	TimerSpore			= "Show Spore timer",
+	WarningSporeNow		= "포자 경고 보기",
+	WarningSporeSoon	= "포자 사전 경고 보기",
+	WarningDoomNow		= "파멸 경고 보기",
+	WarningHealSoon		= "\"힐 가능 3초 전\" 사전 경고 보기",
+	WarningHealNow		= "\"지금 바로 힐\" 경보 보기",
+	TimerDoom			= "파멸 타이머 보기",
+	TimerSpore			= "포자 타이머 보기",
 	TimerAura			= "Show Necrotic Aura timer"
 })
 
@@ -230,13 +229,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningInjection		= "Show Mutating Injection warning",
-	SpecialWarningInjection	= "Show special warning when you are afflicted by Mutating Injection"
+	WarningInjection		= "돌연변이 유발 경고 보기",
+	SpecialWarningInjection	= "돌연변이 유발 대상자 경고 보기"
 })
 
 L:SetWarningLocalization({
-	WarningInjection		= "Mutating Injection: >%s<",
-	SpecialWarningInjection	= "Mutating Injection on you!"
+	WarningInjection		= "돌연변이 유발: >%s<",
+	SpecialWarningInjection	= "당신에게 돌연변이 유발이 걸렸습니다!"
 })
 
 L:SetTimerLocalization({
@@ -253,18 +252,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningDecimateNow	= "Show Decimate warning",
-	WarningDecimateSoon	= "Show Decimate pre-warning",
-	TimerDecimate		= "Show Decimate timer"
+	WarningDecimateNow	= "척살 경고 보기",
+	WarningDecimateSoon	= "척살 사전 경고 보기",
+	TimerDecimate		= "척살 타이머 보기"
 })
 
 L:SetWarningLocalization({
-	WarningDecimateNow	= "Decimate!",
-	WarningDecimateSoon	= "Decimate in 10 sec"
+	WarningDecimateNow	= "척살!",
+	WarningDecimateSoon	= "척살 10초 전!!"
 })
 
 L:SetTimerLocalization({
-	TimerDecimate		= "Decimate"
+	TimerDecimate		= "척살"
 })
 
 
@@ -289,9 +288,9 @@ L:SetOptionLocalization({
 	WarningChargeNotChanged	= "현재 전하가 바뀌지 않았는지 경고 보기",
 	TimerShiftCast			= "극성 변환 타이머 보기",
 	TimerNextShift			= "극성 변환 쿨다운 타이머 보기",
-	ArrowsEnabled			= "Show arrows (normal \"2 camp\" strategy)",
-	ArrowsRightLeft			= "Show right/left arrows for the \"4 camp\" strategy (show left arrow if polarity changed, right if not)",
-	ArrowsInverse			= "Inverse \"4 camp\" strategy (show right arrow if polarity changed, left if not)",
+	ArrowsEnabled			= "화살표 보기 (일반 \"2 지역\" 공략)",
+	ArrowsRightLeft			= "\"4 지역\" 공략을 위한 오른쪽/왼쪽 화살표 보기 (만약 극성 변환시엔 왼쪽 화살표를 보여주며, 극성이 변환되지 않았다면 보여주지 않는다.)",
+	ArrowsInverse			= "\"4 지역\" 공략을 위한 오른쪽/왼쪽 화살표를 거꾸로 보기 (만약 극성 변환시엔 오른쪽 화살표를 보여주며, 극성이 변환되지 않았다면 보여주지 않는다.",
 	WarningThrow			= "탱커 던지기 경고 보기",
 	WarningThrowSoon		= "탱커 던지기 사전 경고 보기",
 	TimerThrow				= "탱커 던지기 타이머 보기"
@@ -312,7 +311,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionCatLocalization({
-	Arrows	= "Arrows",
+	Arrows	= "화살표",
 })
 
 -----------------
@@ -335,9 +334,9 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow		= "Show Disrupting Shout warning",
-	WarningShoutSoon	= "Show Disrupting Shout pre-warning",
-	TimerShout			= "Show Disrupting Shout timer"
+	WarningShoutNow		= "도발 경보 보기",
+	WarningShoutSoon	= "도발 사전 경보 보기",
+	TimerShout			= "도발 타이머 보기"
 })
 
 L:SetWarningLocalization({
@@ -346,7 +345,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerShout			= "Disrupting Shout"
+	TimerShout			= "도발"
 })
 
 ------------------------
@@ -359,13 +358,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWave			= "Show Wave timer",
-	TimerPhase2			= "Show Phase 2 timer",
-	WarningWaveSoon		= "Show Wave pre-warning",
-	WarningWaveSpawned	= "Show Wave spawned warning",
-	WarningRiderDown	= "Show warning when a Rider dies",
-	WarningKnightDown	= "Show warning when a Knight dies",
-	WarningPhase2		= "Show Phase 2 warning"
+	TimerWave			= "웨이브 타이머 보기",
+	TimerPhase2			= "2 페이즈 타이머 보기",
+	WarningWaveSoon		= "웨이브 사전 경고 보기",
+	WarningWaveSpawned	= "웨이브 생성 경고 보기",
+	WarningRiderDown	= "죽음의 기병이 죽었을 때 경고 보기",
+	WarningKnightDown	= "죽음의 기사가 죽었을 때 경고 보기",
+	WarningPhase2		= "2 페이즈 경고 보기"
 })
 
 L:SetTimerLocalization({
@@ -374,7 +373,7 @@ L:SetTimerLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWaveSoon		= "웨이브 %d: %s in 3초 후",
+	WarningWaveSoon		= "웨이브 %d: %s 등장하기 3초 전",
 	WarningWaveSpawned	= "웨이브 %d: %s 등장",
 	WarningRiderDown	= "무자비한 죽음의 기병 등장",
 	WarningKnightDown	= "무자비한 죽음의 기사 등장",
@@ -384,9 +383,9 @@ L:SetWarningLocalization({
 L:SetMiscLocalization({
 	yell			= "어리석은 것들, 스스로 죽음을 자초하다니!",
 	WarningWave1	= "%d %s",
-	WarningWave2	= "%d %s and %d %s",
-	WarningWave3	= "%d %s, %d %s and %d %s",
-	Trainee			= "|4훈련병:훈련병;",
+	WarningWave2	= "%d %s 그리고 %d %s",
+	WarningWave3	= "%d %s, %d %s 그리고 %d %s",
+	Trainee			= "|4수련생:수련생;",
 	Knight			= "|4죽음의 기사:죽음의 기사;",
 	Rider			= "|4죽음의 기병:죽음의 기병;",
 })
@@ -405,11 +404,11 @@ L:SetOptionLocalization({
 	TimerMark					= "징표 타이머 보기",
 	WarningMarkSoon				= "징ㅍ 사전 경고 보기",
 	WarningMarkNow				= "징표 경고 보기",
-	SpecialWarningMarkOnPlayer	= "Show special warning when you have > 4 marks on you"
+	SpecialWarningMarkOnPlayer	= "자신의 징표가 4개가 됐을 때의 경고 보기"
 })
 
 L:SetTimerLocalization({
-	TimerMark = "Mark %d"
+	TimerMark = "징표 %d"
 })
 
 L:SetWarningLocalization({
