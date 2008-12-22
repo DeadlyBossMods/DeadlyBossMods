@@ -25,7 +25,7 @@ local warnTenebron	= mod:NewAnnounce("WarningTenebron", 2, nil, false)
 local warnShadron	= mod:NewAnnounce("WarningShadron", 2, nil, false)
 local warnVesperon	= mod:NewAnnounce("WarningVesperon", 2, nil, false)
 
-local warnFireWall		= mod:NewSpecialWarning("WarningFireWall")
+local warnFireWall		= mod:NewSpecialWarning("WarningFireWall", nil, nil, true)
 local warnVesperonPortal	= mod:NewSpecialWarning("WarningVesperonPortal", false)
 local warnTenebronPortal	= mod:NewSpecialWarning("WarningTenebronPortal", false)
 local warnShadronPortal		= mod:NewSpecialWarning("WarningShadronPortal", false)
@@ -54,7 +54,7 @@ function mod:OnSync(event)
 		warnFireWall:Show()
 		
 		if self.Options.PlaySoundOnFireWall then
-			PlaySoundFile("Sound\\Spells\\PVPFlagTaken.wav")
+--			PlaySoundFile("Sound\\Spells\\PVPFlagTaken.wav")
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 
@@ -132,7 +132,7 @@ end
 
 function mod:OnCombatEnd(wipe)	
 	if not self.Options.AnnounceFails then return end
-	if DBM:GetRaidRank() < 1 then return end
+	if DBM:GetRaidRank() < 1 or not self.Options.Announce then return end
 
 	local voids = ""
 	for k, v in pairs(lastvoids) do
@@ -158,14 +158,14 @@ function mod:OnCombatEnd(wipe)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if self.Options.AnnounceFails and args.spellId == 57491 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
+	if self.Options.AnnounceFails and self.Options.Announce and args.spellId == 57491 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastfire[args.destName] = (lastfire[args.destName] or 0) + 1
 		SendChatMessage(L.FireWallOn:format(args.destName), "RAID")
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if self.Options.AnnounceFails and args.spellId == 59128 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
+	if self.Options.AnnounceFails and self.Options.Announce and args.spellId == 59128 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastvoids[args.destName] = (lastvoids[args.destName] or 0) + 1
 		SendChatMessage(L.VoidZoneOn:format(args.destName), "RAID")
 	end	
