@@ -34,8 +34,8 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if (args.spellId == 28785  -- Locust Swarm (still used in Naxx 10?)
-	or args.spellId == 54021)  -- Locust Swarm (new spell ID for Naxx 25 since build 8926)
+	if args.spellId == 28785  -- Locust Swarm (still used in Naxx 10?)
+	or args.spellId == 54021 then  -- Locust Swarm (new spell ID for Naxx 25 since build 8926)
 		warningLocustNow:Show()
 		specialWarningLocust:Show()
 		timerLocustIn:Stop()
