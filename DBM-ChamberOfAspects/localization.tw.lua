@@ -61,7 +61,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "為\"火牆\"播放音效",
-	AnnounceFails		= "公布踩中虛空區域和撞上火牆的玩家到團隊頻道",
+	AnnounceFails		= "公布踩中虛空區域和撞上火牆的玩家到團隊頻道(需要開啟團隊廣播及團長/隊長權限)",
 
 	TimerWall		= "為\"火牆\"顯示計時器",
 	TimerTenebron		= "為坦納伯朗顯示計時器",
