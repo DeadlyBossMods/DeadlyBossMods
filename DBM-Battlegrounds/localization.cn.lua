@@ -128,8 +128,8 @@ L:SetMiscLocalization({
 	Horde = "部落",
 	WinBarText = "%s 获胜",
 	FlagReset = "旗帜被重新放置了。!",
-	FlagTaken = "([^%s]+)夺走了旗帜！",
-	FlagCaptured = ".+夺得了旗帜！",
+	FlagTaken = "(.+)夺走了旗帜！",
+	FlagCaptured = "(.+)夺得了旗帜！",
 	FlagDropped = "旗帜被扔掉了！",
 
 })
@@ -162,9 +162,9 @@ L:SetMiscLocalization({
 	Alliance = "联盟",
 	Horde = "部落",	
 	InfoErrorText = "携带旗帜者目标功能会在你脱离战斗后恢复.",
-	ExprFlagPickUp = "([^%s]+)的旗帜被([^%s]+)拔起了！",
-	ExprFlagCaptured = "([^%s]+)夺取([^%s]+)的旗帜！",
-	ExprFlagReturn = "([^%s]+)的旗帜被([^%s]+)还到了它的基地中！",
+	ExprFlagPickUp = "(.+)的旗帜被(.+)拔起了！",
+	ExprFlagCaptured = "(.+)夺取(.+)的旗帜！",
+	ExprFlagReturn = "(.+)的旗帜被(.+)还到了它的基地中！",
 	FlagAlliance = "联盟: ",
 	FlagHorde = "部落: ",
 	FlagBase = "基地",
