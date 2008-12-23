@@ -329,7 +329,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarningShoutNow		= "顯示混亂怒吼警告",
 	WarningShoutSoon	= "顯示混亂怒吼的預先警告",
-	TimerShout			= "顯示混亂怒吼計時器"
+	TimerShout			= "顯示混亂怒吼計時器",
 	WarningShieldWallSoon	= "顯示盾牆失效警告",
 	TimerShieldWall			= "顯示盾牆計時器",
 	TimerTaunt				= "顯示嘲諷計時器"
@@ -337,12 +337,12 @@ L:SetOptionLocalization({
 
 L:SetWarningLocalization({
 	WarningShoutNow		= "混亂怒吼!",
-	WarningShoutSoon	= "5秒後 混亂怒吼"
+	WarningShoutSoon	= "5秒後 混亂怒吼",
 	WarningShieldWallSoon	= "5秒後 盾牆失效"
 })
 
 L:SetTimerLocalization({
-	TimerShout			= "混亂怒吼"
+	TimerShout			= "混亂怒吼",
 	TimerTaunt			= "嘲諷",
 	TimerShieldWall		= "盾牆"
 })
