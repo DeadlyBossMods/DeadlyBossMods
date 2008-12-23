@@ -835,9 +835,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "There's plenty of me to go around.",		-- translate
-	SplitTrigger2 = "I'll give you more than you can handle.",	-- translate
-	MergeTrigger = "Now to finish the job!"				-- translate
+	SplitTrigger1 = "호기심이 화를 부르는 법이지..",		-- translate
+	SplitTrigger2 = "과연 나를 감당할 수 있겠느냐!",	-- translate
+	MergeTrigger = "이제 끝을 볼 때다!"				-- translate
 })
 
 
