@@ -11,6 +11,7 @@
 --    * enGB/enUS: Nitram
 --    * deDE: Nitram
 --    * zhTW: Hman						herman_c1@hotmail.com
+--	  * koKR: BlueNyx (bluenyx@gmail.com)
 --    * (add your names here!)
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
