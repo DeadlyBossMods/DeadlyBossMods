@@ -59,7 +59,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "\"용암 파도\" 소리 켜기",
-	AnnounceFails		= "용암 파도 및 어둠의 균열 피하기 실패한 공대원을 공대 채팅창에 알리기",
+	AnnounceFails		= "용암 파도 및 어둠의 균열 피하기 실패한 공대원을 공대 채팅창에 알리기(공대 경보 권한이 있을 경우)",
 
 	TimerWall			= "\"용암 파도\" 타이머 보기",
 	TimerTenebron		= "테네브론 타이머 보기",
