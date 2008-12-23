@@ -14,8 +14,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_EMOTE"
 )
 
-mod:AddBoolOption("PlaySoundOnFireWall", true, "announce")
 mod:AddBoolOption("AnnounceFails", true, "announce")
+mod:AddBoolOption("PlaySoundOnFireWall", true, "announce")
 
 local timerTenebron	= mod:NewTimer(30, "TimerTenebron")
 local timerShadron	= mod:NewTimer(80, "TimerShadron")
