@@ -1,7 +1,5 @@
 if GetLocale() ~= "koKR" then return end
-
 local L
-
 -------------------
 --  거미 지구    --
 -------------------
@@ -181,7 +179,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerDoom			= "파멸 #%d",
 	TimerSpore			= "다음 포자",
-	TimerAura			= "Necrotic Aura"
+	TimerAura			= "강령술의 오라"
 })
 
 L:SetOptionLocalization({
@@ -192,7 +190,7 @@ L:SetOptionLocalization({
 	WarningHealNow		= "\"지금 바로 힐\" 경보 보기",
 	TimerDoom			= "파멸 타이머 보기",
 	TimerSpore			= "포자 타이머 보기",
-	TimerAura			= "Show Necrotic Aura timer"
+	TimerAura			= "강령술의 오라 타이머 보기"
 })
 
 
@@ -209,13 +207,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Announce Hateful Strikes to raid chat\n(you must be promoted or raid leader to use this)"
+	WarningHateful = "증오의 일격을 공대 채팅창에 알리기\n(만약 당신이 공대장의 권한이 있거나, 승급을 받은 유저라면 이 기능을 사용할 수 있습니다.)"
 })
 
 L:SetMiscLocalization({
 	yell1 = "패치워크랑 놀아줘!",
 	yell2 = "켈투자드님이 패치워크 싸움꾼으로 만들었다.",
-	HatefulStrike = "Hateful Strike --> %s [%s]"
+	HatefulStrike = "증오의 일격 --> %s [%s]"
 })
 
 
@@ -263,7 +261,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDecimate		= "척살"
+	TimerDecimate		= "다음 척살"
 })
 
 
@@ -334,18 +332,24 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow		= "도발 경보 보기",
-	WarningShoutSoon	= "도발 사전 경보 보기",
-	TimerShout			= "도발 타이머 보기"
+	WarningShoutNow		= "분열의 외침 경고 보기",
+	WarningShoutSoon	= "분열의 외침 사전 경고 보기",
+	TimerShout			= "분열의 외침 타이머 타이머 보기",
+	WarningShieldWallSoon	= "뼈 보호막 종료 경고 보기",
+	TimerShieldWall			= "뼈 보호막 타이머 보기",
+	TimerTaunt				= "도발 타이머 보기"	
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow		= "도발!",
-	WarningShoutSoon	= "도발 5초 전!"
+	WarningShoutNow		= "분열의 외침!",
+	WarningShoutSoon	= "분열의 외침 5초 전!",
+	WarningShieldWallSoon	= "뼈 보호막 종료 5초 전"	
 })
 
 L:SetTimerLocalization({
-	TimerShout			= "도발"
+	TimerShout			= "분열의 외침",
+	TimerTaunt			= "도발",
+	TimerShieldWall		= "뼈 보호막"	
 })
 
 ------------------------
