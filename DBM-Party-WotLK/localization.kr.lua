@@ -1375,6 +1375,6 @@ L:SetOptionLocalization({
 
 
 L:SetMiscLocalization({
-	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
+	yell1 = "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
 	WavePortal		= "포탈 열린 수: (%d+)/18"
 })
