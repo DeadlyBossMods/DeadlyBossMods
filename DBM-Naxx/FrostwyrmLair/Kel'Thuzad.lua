@@ -26,6 +26,7 @@ local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 function mod:OnCombatStart(delay)
 	timerPhase2:Start()
 	warnPhase2:Schedule(225)
+	self:Schedule(225, DBM.RangeCheck.Show, DBM.RangeCheck, 10)
 end
 
 local frostBlastTargets = {}
@@ -33,7 +34,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 27808 then
 		table.insert(frostBlastTargets, args.destName)
 		self:UnscheduleMethod("AnnounceBlastTargets")
-		self:ScheduleMethod(0.75, "AnnounceBlastTargets")
+		self:ScheduleMethod(0.5, "AnnounceBlastTargets")
 	elseif args.spellId == 27819 then
 		warnMana:Show(args.destName)
 		self:SetIcon(args.destName, 8, 5.5)
@@ -43,7 +44,7 @@ end
 function mod:AnnounceBlastTargets()
 	warnBlastTargets:Show(table.concat(frostBlastTargets, "< >"))
 	for i = #frostBlastTargets, 1, -1 do
-		self:SetIcon(frostBlastTargets[i], 9 - i, 4.5) 
+		self:SetIcon(frostBlastTargets[i], 8 - i, 4.5) 
 		frostBlastTargets[i] = nil
 	end
 end
