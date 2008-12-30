@@ -10,6 +10,7 @@ Arenas:RemoveOption("HealthFrame")
 Arenas:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 
 local timerStart	= Arenas:NewTimer(62, "TimerStart")
+local timerShadow	= Arenas:NewTimer(90, "TimerShadow")
 
 function Arenas:CHAT_MSG_BG_SYSTEM_NEUTRAL(args)
 	if not IsActiveBattlefieldArena() then return end
@@ -25,5 +26,6 @@ function Arenas:CHAT_MSG_BG_SYSTEM_NEUTRAL(args)
 			timerStart:Start()
 		end
 		timerStart:Update(46, 62)
+		timerShadow:Schedule(16)
 	end
 end

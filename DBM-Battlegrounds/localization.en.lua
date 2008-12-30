@@ -31,6 +31,7 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerStart	= "Game starts in",
+	TimerShadow	= "Shadow Sight"
 })
 
 L:SetOptionLocalization({
