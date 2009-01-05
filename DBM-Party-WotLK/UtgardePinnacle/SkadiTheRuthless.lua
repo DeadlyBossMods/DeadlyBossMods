@@ -14,9 +14,9 @@ mod:RegisterEvents(
 )
 
 local warningPoison		= mod:NewAnnounce("WarningPoison", 2, 59331)
-local warningWhirlwind		= mod:NewAnnounce("WarningWhirlwind", 3, 59332)
+local warningWhirlwind		= mod:NewAnnounce("WarningWhirlwind", 3, 59322)
 local timerPoison		= mod:NewTimer(12, "TimerPoison", 59331)
-local timerWhirlwindCD		= mod:NewTimer(30, "TimerWhirlwindCD", 59332)
+local timerWhirlwindCD		= mod:NewTimer(30, "TimerWhirlwindCD", 59322)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59331 or args.spellId == 50255 then
@@ -32,7 +32,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 59332 or args.spellId == 50228 then
+	if args.spellId == 59322 or args.spellId == 50228 then
 		warningWhirlwind:Show(args.spellName)
 		timerWhirlwindCD:Start(args.spellName)
 	end

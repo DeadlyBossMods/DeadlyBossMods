@@ -23,14 +23,14 @@ local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock")
 
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 42723 or args.spellId == 42669 then
+	if args.spellId == 42723 or args.spellId == 42669 or args.spellId == 59706 then
 		warningSmash:Show(args.spellName, args.spellName)
 		timerSmash:Start(args.spellName)
 	elseif args.spellId == 42708 or args.spellId == 42729
 	or args.spellId == 59708 or args.spellId == 59734 then
 		warningGrowl:Show(args.spellName, args.spellName)
 	end
-	if args.spellId == 42723 then
+	if args.spellId == 42723 or args.spllId == 59706 then
 		specWarnSpelllock:Show()
 	end
 end

@@ -19,7 +19,7 @@ local timerExplosion		= mod:NewTimer(8, "TimerExplosion", 51110)
 local specWarnBombYou		= mod:NewSpecialWarning("SpecWarnBombYou")
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 51110 then
+	if args.spellId == 51110 or args.spellId = 59377 then
 		warningExplosion:Show(args.spellName)
 		timerExplosion:Start(args.spellName)
 		if args.destName == UnitName("player") then
@@ -29,7 +29,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 51121 then
+	if args.spellId == 51121 or args.spellId == 59376 then
 		warningTimeBomb:Show(args.spellName, args.destName)
 		timerTimeBomb:Start(args.spellName, args.destName)
 	end
