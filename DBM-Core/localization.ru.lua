@@ -8,11 +8,11 @@ DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)";
 DBM_CORE_BOSS_DOWN					= "%s повержен(а) спустя %s!"
 DBM_CORE_BOSS_DOWN_LONG				= "%s повержен(а) спустя %s! Последний бой длился %s, лучший бой: %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s повержен(а) спустя %s! Это новая запись! (Предшествующая запись была %s)"
-DBM_CORE_COMBAT_ENDED				= "Бой с %s закончился спустя %s"
+DBM_CORE_COMBAT_ENDED				= "Бой с %s длился %s"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4сек.:сек.;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4мин.:мин.;"
-DBM_CORE_TIMER_FORMAT				= "%d |4мин.:мин.; и %d |4сек.:сек.;"
+DBM_CORE_TIMER_FORMAT				= "%d |4мин.:мин.; %d |4сек.:сек.;"
 
 DBM_CORE_MIN						= "мин."
 DBM_CORE_SEC						= "сек."
@@ -21,7 +21,7 @@ DBM_CORE_OK							= "ОК"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Исступление через %s %s"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "Исступление"
-DBM_CORE_OPTION_TIMER_ENRAGE		= "Отображать таймер Исступления"
+DBM_CORE_OPTION_TIMER_ENRAGE		= "Отображать отсчет времени до Исступления"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Отображать здоровье босса"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Индикаторы"
@@ -70,3 +70,9 @@ DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Скрыть"
 
 DBM_CORE_ALLIANCE					= "Альянс"
 DBM_CORE_HORDE						= "Орда"
+
+DBM_CORE_UNKNOWN					= "неизвестно"
+
+DBM_CORE_TIMER_PULL					= "Атака"
+DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек."
+DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
