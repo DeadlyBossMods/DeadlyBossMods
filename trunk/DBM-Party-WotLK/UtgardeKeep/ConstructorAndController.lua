@@ -31,7 +31,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args.spellId == 52611 then
+	if args.spellId == 52611 and (args.GUID == 24201 or args.GUID == 24000) then
 		warningSummon:Show(args.spellName)
 	end
 end
