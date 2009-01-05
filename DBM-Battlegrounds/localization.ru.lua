@@ -28,6 +28,7 @@ L:SetGeneralLocalization({
 })
 L:SetTimerLocalization({
 	TimerStart = "Бой начался!",
+    TimerShadow	= "Сумеречное зрение"
 })
 L:SetOptionLocalization({
 	TimerStart = "Показать отсчет времени до начала боя"
