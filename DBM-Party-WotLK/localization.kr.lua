@@ -879,10 +879,10 @@ L:SetOptionLocalization({
 ---------------------------------
 L = DBM:GetModLocalization("Commander")
 
-local commander = "알 수 없음"
-if UnitFactionGroup("player") == "얼라이언스" then
+local commander = "사령관"
+if UnitFactionGroup("player") == "Alliance" then
 	commander = "사령관 콜루르그"
-elseif UnitFactionGroup("player") == "호드" then
+elseif UnitFactionGroup("player") == "Horde" then
 	commander = "사령관 스타우트비어드"
 end
 
