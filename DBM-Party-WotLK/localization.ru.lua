@@ -751,10 +751,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "Time to get some answers! Let's get this show on the road!",
-	Phase1	= "xxx anti error xxx",
-	Phase2	= "xxx anti error xxx",
-	Phase3	= "xxx anti error xxx"
+	Pull	= "Теперь будьте внимательны! Не успеете и глазом моргнуть, как...",
+	Phase1	= "xxx анти-ошибка xxx",
+	Phase2	= "xxx анти-ошибка xxx",
+	Phase3	= "xxx анти-ошибка xxx"
 })
 
 ---------------
@@ -835,9 +835,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "There's plenty of me to go around.",		-- translate
-	SplitTrigger2 = "I'll give you more than you can handle.",	-- translate
-	MergeTrigger = "Now to finish the job!"				-- translate
+	SplitTrigger1 = "Меня на вас хватит!",		-- translate
+	SplitTrigger2 = "Вы получите больше, чем заслуживаете!",	-- translate
+	MergeTrigger = "Ну теперь, покончим с этим!"				-- translate
 })
 
 
