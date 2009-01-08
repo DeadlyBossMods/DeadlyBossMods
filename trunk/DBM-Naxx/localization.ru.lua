@@ -266,10 +266,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell1 = "Show them no mercy!", -- correct this
+	Yell1 = "Покажите мне, на что способны!",
 	Yell2 = "Обучение окончено! Покажите мне, что вы усвоили!",
 	Yell3 = "Вспомните, чему я вас учил!",
-	Yell4 = "Выше ногу! Или у тебя с этим проблемы?",
+	Yell4 = "Выше ногу! Или у тебя с этим проблемы?"
 })
 
 L:SetOptionLocalization({
@@ -327,9 +327,9 @@ L:SetMiscLocalization({
 	WarningWave1				= "%d %s",
 	WarningWave2				= "%d %s и %d %s",
 	WarningWave3				= "%d %s, %d %s и %d %s",
-	Trainee						= "|4Ученик:Ученики;",
-	Knight						= "|4Рыцарь:Рыцари;",
-	Rider						= "|4Всадник:Всадники;",
+	Trainee						= "|4Ученик:Ученика;",
+	Knight						= "|4Рыцарь:Рыцаря;",
+	Rider						= "|4Всадник:Всадника;",
 })
 ----------------
 --  Horsemen  --
