@@ -1,4 +1,4 @@
-if (GetLocale() == "koKR") then
+﻿if (GetLocale() == "koKR") then
 
 
 ----------------------------
@@ -32,6 +32,7 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerStart	= "게임 시작",
+	TimerShadow	= "Shadow Sight"
 })
 
 L:SetOptionLocalization({
@@ -89,7 +90,7 @@ L:SetMiscLocalization({
 	Alliance = "얼라이언스",
 	Horde = "호드",
 	WinBarText = "%s 획득",
-	BasesToWin = "필승 점령 갯수 : %d",
+	BasesToWin = "필요 점령 갯수 : %d",
 	Flag = "깃발"
 })
 
@@ -103,7 +104,7 @@ L:SetOptionLocalization({
 	TimerWin = "승리 예상 타이머 보기",
 	TimerCap = "깃발 점령 타이머 보기",
 	ShowAbEstimatedPoints = "승/패 예상 포인트 보기",
-	ShowAbBasesToWin = "필승 점령 갯수 보기"
+	ShowAbBasesToWin = "필요 점령 갯수 보기"
 })
 
 -----------------------
@@ -124,9 +125,9 @@ L:SetMiscLocalization({
 	Horde = "호드",
 	WinBarText = "%s 점령",
 	FlagReset = "깃발이 제자리로 돌아갔습니다.!",
-	FlagTaken = "(.+) << 깃발을 되찾았습니다.!",
-	FlagCaptured = "ha%w+ << 깃발을 획득 했습니다.!",
-	FlagDropped = "깃발을 떨어뜨렸습니다.!",
+	FlagTaken = "^(.+)|1이;가; 깃발을 차지했습니다!",
+	FlagCaptured = "(.+)|1이;가; 깃발을 차지했습니다!",
+	FlagDropped = "깃발을 떨어뜨렸습니다!",
 
 })
 
@@ -158,12 +159,12 @@ L:SetMiscLocalization({
 	Alliance = "얼라이언스",
 	Horde = "호드",	
 	InfoErrorText = "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
-	ExprFlagPickUp = "The (%w+) .lag was picked up by (.+)!",
-	ExprFlagCaptured = "(.+) captured the (%w+) flag!",
-	ExprFlagReturn = "The (%w+) .lag was returned to its base by (.+)!",
-	FlagAlliance = "얼라이언스 깃발: ",
-	FlagHorde = "호드 깃발: ",
-	FlagBase = "베이스",
+	ExprFlagPickUp = "(.+).|1이;가; (.+) 깃발을 손에 넣었습니다!",	
+	ExprFlagCaptured = "(.+).|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
+	ExprFlagReturn = "(.+).|1이;가; (.+) 깃발을 되찾았습니다!",
+	FlagAlliance = "얼라이언스 깃발 :",
+	FlagHorde = "호드 깃발 :",
+	FlagBase = "기지",
 })
 
 L:SetTimerLocalization({
