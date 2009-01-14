@@ -61,8 +61,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "1분 뒤 알터렉 계곡 전장이 시작됩니다.",
-	BgStart30 = "30초 뒤 알터렉 계곡 전장이 시작됩니다.",
+	BgStart60 = "알터랙 계곡 전투 개시 1분 전...",
+	BgStart30 = "알터랙 계곡 전투 개시 30초 전...",
 	ZoneName = "알터랙 계곡",
 })
 
@@ -83,8 +83,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "아라시 분지 전장의 시작이 1분 남았습니다.",
-	BgStart30 = "아라시 분지 전장의 시작이 30초 남았습니다.",
+	BgStart60 = "1분 후 아라시 분지 전투가 시작됩니다.",
+	BgStart30 = "30초 후 아라시 분지 전투가 시작됩니다.",
 	ZoneName = "아라시 분지",
 	ScoreExpr = "(%d+)/2000",
 	Alliance = "얼라이언스",
@@ -117,8 +117,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "폭풍의 눈 전투의 시작이 1분 남았습니다.!",
-	BgStart30 = "폭풍의 눈 전투의 시작이 30초 남았습니다.!",
+	BgStart60 = "1분 후 폭풍의 눈 전투가 시작됩니다.",
+	BgStart30 = "30초 후 폭풍의 눈 전투가 시작됩니다.",
 	ZoneName = "폭풍의 눈",
 	ScoreExpr = "(%d+)/2000",
 	Alliance = "얼라이언스",
@@ -153,15 +153,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "전쟁노래 협곡의 전투 시작이 1분 남았습니다.!",
-	BgStart30 = "전쟁노래 협곡의 전투가 30초 남았습니다.전투 준비를 마무리해 주세요.!",
+	BgStart60 = "1분 후 전쟁노래 협곡 전투가 시작됩니다!",
+	BgStart30 = "30초 후 전쟁노래 협곡 전투가 시작됩니다. 준비하십시오!",
 	ZoneName = "전쟁노래 협곡",
 	Alliance = "얼라이언스",
 	Horde = "호드",	
 	InfoErrorText = "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
-	ExprFlagPickUp = "(.+).|1이;가; (.+) 깃발을 손에 넣었습니다!",	
-	ExprFlagCaptured = "(.+).|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
-	ExprFlagReturn = "(.+).|1이;가; (.+) 깃발을 되찾았습니다!",
+	ExprFlagPickUp = "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",	
+	ExprFlagCaptured = "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
+	ExprFlagReturn = "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
 	FlagAlliance = "얼라이언스 깃발 :",
 	FlagHorde = "호드 깃발 :",
 	FlagBase = "기지",
