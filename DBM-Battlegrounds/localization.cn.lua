@@ -36,6 +36,7 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerStart	= "战斗即将开始",
+	TimerShadow	= "暗影之眼"
 })
 
 L:SetOptionLocalization({
