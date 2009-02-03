@@ -19,7 +19,7 @@ local timerExplosion		= mod:NewTimer(8, "TimerExplosion", 51110)
 local specWarnBombYou		= mod:NewSpecialWarning("SpecWarnBombYou")
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 51110 or args.spellId = 59377 then
+	if args.spellId == 51110 or args.spellId == 59377 then
 		warningExplosion:Show(args.spellName)
 		timerExplosion:Start(args.spellName)
 		if args.destName == UnitName("player") then
