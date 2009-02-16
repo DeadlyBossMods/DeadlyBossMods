@@ -1309,7 +1309,7 @@ local function CreateOptionsMenu()
 					anchorFrame:SetScript("OnMouseUp", function(self) 
 						RaidWarningFrame:StopMovingOrSizing()
 						RaidWarningFrame:SetMovable(0)
-						local point, _, _, xOfs, yOfs = RaidWarningFrame:GetPoint()		
+						local point, _, _, xOfs, yOfs = RaidWarningFrame:GetPoint(1)		
 						DBM.Options.RaidWarningPosition.Point = point
 						DBM.Options.RaidWarningPosition.X = xOfs
 						DBM.Options.RaidWarningPosition.Y = yOfs	
