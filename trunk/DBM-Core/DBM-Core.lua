@@ -484,8 +484,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM:CreatePizzaTimer(time, text, true)
 	elseif cmd:sub(0, 4) == "pull" then
 		if DBM:GetRaidRank() == 0 then
-			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
-			return
+			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
 		local timer = tonumber(cmd:sub(5)) or 10
 		DBM:CreatePizzaTimer(timer, DBM_CORE_TIMER_PULL, true)
@@ -840,11 +839,17 @@ do
 			end
 		end
 	end
-
+	
+	local function setRaidWarningPositon()
+		RaidWarningFrame:ClearAllPoints()
+		RaidWarningFrame:SetPoint(DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
+	end
+	
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
-		DBM:Schedule(5, RaidWarningFrame.SetPoint, RaidWarningFrame, DBM.Options.RaidWarningPosition.Point, UIParent, DBM.Options.RaidWarningPosition.Point, DBM.Options.RaidWarningPosition.X, DBM.Options.RaidWarningPosition.Y)
+		-- set this with a short delay to prevent issues with other addons also trying to do this ;)
+		DBM:Schedule(5, setRaidWarningPositon)
 	end
 
 	function loadModOptions(modId)
