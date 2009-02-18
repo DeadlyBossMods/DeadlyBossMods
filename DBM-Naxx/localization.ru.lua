@@ -45,7 +45,7 @@ L:SetWarningLocalization({
 	WarningEmbraceActive		= "Объятие Вдовы",
 	WarningEmbraceExpire		= "Объятие Вдовы через 5 секунд",
 	WarningEmbraceExpired		= "Объятие Вдовы исчезает",
-	WarningEnrageSoon			= "Исступление через 15 секунд",
+	WarningEnrageSoon			= "Исступление через 5 секунд",
 	WarningEnrageNow			= "Исступление!"
 })
 
@@ -260,7 +260,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell	= "Сталагг сокрушить вас!",
+	Yell	= "Сталагг сокрушит вас!",
 	Emote	= "Катушка Теслы перезагружается!",
 	Emote2	= "Катушка Теслы теряет связь!",
 })
