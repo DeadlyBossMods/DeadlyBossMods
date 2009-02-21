@@ -24,3 +24,5 @@ localization.tw.lua
 localization.kr.lua
 BMS-Core.lua
 BMS-Gui.lua
+BMS-CombatLog.lua
+
