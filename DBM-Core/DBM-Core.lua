@@ -1565,11 +1565,11 @@ end
 --  Chat Filter  --
 -------------------
 do
-	local function filterOutgoing(msg)
+	local function filterOutgoing(self, event, msg)
 		return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort
 	end
 
-	local function filterIncoming(msg)
+	local function filterIncoming(self, event, msg)
 		if DBM.Options.SpamBlockBossWhispers then
 			return #inCombat > 0 and (msg == "status" or msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort)
 		else
@@ -1577,7 +1577,7 @@ do
 		end
 	end
 
-	local function filterRaidWarning(msg)
+	local function filterRaidWarning(self, event, msg)
 		return DBM.Options.SpamBlockRaidWarning and type(msg) == "string" and (not not msg:match("^%s*%*%*%*"))
 	end
 
