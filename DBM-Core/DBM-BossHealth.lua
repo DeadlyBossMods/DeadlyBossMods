@@ -122,7 +122,7 @@ end
 
 do
 	local t = 0
-	local targetCache = setmetatable({}, {__mode = "v"})
+	local targetCache = setmetatable({}, {__mode = "kv"})
 	local function getCIDfromGUID(guid)
 		return (not guid and 0) or (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
 	end
@@ -134,6 +134,7 @@ do
 			for i, v in ipairs(bars) do
 				local id = targetCache[v.id]
 				if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then
+					targetCache[v.id] = nil
 					local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
 					for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 						id = (i == 0 and "target") or uId..i.."target"
