@@ -346,18 +346,32 @@ end
 --  OnUpdate/Scheduler  --
 --------------------------
 do
-	local scheduleData = {}
+	scheduled = nil
 	local scheduleTables = {}
 	setmetatable(scheduleTables, {__mode = "kv"})
 
-	local function getScheduleTable()
+	local function nextNode(list, node)
+		return not node and list or node.next, node
+	end
+	
+	local function removeAfter(list, node)
+		if node then
+			node.next = node.next.next
+		else
+			scheduled = scheduled.next
+		end
+	end
+
+	local function getScheduleTable(...)
 		local v = next(scheduleTables, nil)
 		if v then
 			scheduleTables[v] = nil
-			v.mod = nil
-			table.wipe(v.args)
+			table.wipe(v)
+			for i = 1, select("#", ...) do
+				v[#v + 1] = select(i, ...)
+			end
 		else
-			v = {args = {}}
+			v = {...}
 		end
 		return v
 	end
@@ -373,16 +387,13 @@ do
 				end
 			end
 		end
-		for i = #scheduleData, 1, -1 do
-			local v = scheduleData[i]
-			if time >= v.time and not v.dead then
-				table.remove(scheduleData, i)
-				scheduleTables[v] = v
-				v.func(unpack(v.args))
-			elseif v.dead then
-				v.dead = nil
-				table.remove(scheduleData, i)
-				scheduleTables[v] = v
+		if scheduled and time >= scheduled.time then
+			for node, prev in nextNode, scheduled do
+				if time >= node.time then
+					removeAfter(scheduled, prev)
+					scheduleTables[node] = node
+					node.func(unpack(node))
+				end
 			end
 		end
 		local k, v = next(modSyncSpam, nil)
@@ -397,28 +408,33 @@ do
 	end)
 
 	function schedule(t, f, mod, ...)
-		local v = getScheduleTable()
+		local v = getScheduleTable(...)
 		v.mod = mod
 		v.time = GetTime() + t
 		v.func = f
-		for i = 1, select("#", ...) do
-			v.args[#v.args + 1] = select(i, ...)
+		if scheduled and scheduled.time > v.time then
+			v.next = scheduled
+			scheduled = v
+		elseif scheduled then
+			v.next = scheduled.next
+			scheduled.next = v
+		else
+			scheduled = v
 		end
-		table.insert(scheduleData, v)
 	end
 
 	function unschedule(f, mod, ...)
-		for k = #scheduleData, 1, -1 do
-			local v = scheduleData[k]
-			if (not f or v.func == f) and ((not mod) or v.mod == mod) then
+		for node, prev in nextNode, scheduled do
+			if (not f or node.func == f) and ((not mod) or node.mod == mod) then
 				local match = true
 				for i = 1, select("#", ...) do
-					if select(i, ...) ~= v.args[i] then
+					if select(i, ...) ~= node[i] then
 						match = false
 					end
 				end
 				if match then
-					v.dead = true
+					removeAfter(scheduled, prev)
+					scheduleTables[node] = node
 				end
 			end
 		end
