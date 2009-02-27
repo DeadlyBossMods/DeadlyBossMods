@@ -1,0 +1,19 @@
+﻿## Interface: 30100
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMUlduar_SavedVars, DBMUlduar_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Name: Ulduar
+## X-DBM-Mod-Sort: 4
+## X-DBM-Mod-LoadZone: Ulduar
+localization.en.lua
+localization.de.lua
+localization.ru.lua
+localization.tw.lua
+localization.kr.lua
+Thorim.lua
+IronCouncil.lua
+Hodir.lua
+Freya.lua
