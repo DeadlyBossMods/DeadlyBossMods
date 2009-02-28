@@ -79,7 +79,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Wall			= "圍繞著撒爾薩里安的熔岩開始劇烈地翻騰!",
+	Wall			= "圍繞著%s的熔岩開始劇烈地翻騰!",
 	Portal			= "%s開始開啟暮光傳送門!",
 	NameTenebron	= "坦納伯朗",
 	NameShadron		= "夏德朗",
