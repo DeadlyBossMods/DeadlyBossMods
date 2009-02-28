@@ -2,19 +2,58 @@ local mod = DBM:NewMod("Thorim", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-
+--mod:SetCreatureID(0)
 mod:SetZone()
 
 --mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED"
 )
 
---mod:NewAnnounce("WarningSpark", 1, 59381)
---mod:NewTimer(30, "TimerSpark", 59381)
---mod:NewSpecialWarning("WarningSurgeYou")
---mod:NewEnrageTimer(615)
+local timerStormhammer	= mod:NewTimer(16, "TimerStormhammer", 62042)
+local warnStormhammer	= mod:NewAnnounce("WarningStormhammer", 1, 62470)
+
+local enrageTimer	= mod:NewEnrageTimer(300)
+
+
+--[[
+2/27 21:04:20.965  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:04:36.653  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:04:52.293  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:05:07.157  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:05:24.457  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:05:39.332  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:05:55.365  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:06:11.031  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:06:25.926  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:06:42.073  SPELL_CAST_START,0xF130008061005759,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:28:27.269  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:28:42.075  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:28:58.190  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:29:15.016  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:29:31.099  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:29:46.742  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:30:01.642  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:30:18.736  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+2/27 21:30:34.531  SPELL_CAST_START,0xF13000806100634C,"Thorim",0xa48,0x0000000000000000,nil,0x80000000,62042,"Stormhammer",0x8
+( seems to be 16 seconds, 0,5 sec cast so now bar is required )
+--]]
 
 function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)
 end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 62042 then
+		timerStormhammer:Start()
+
+		if args.destName then
+			warnStormhammer:Show( args.destName )
+		end
+	end
+end
+
+
+
 
