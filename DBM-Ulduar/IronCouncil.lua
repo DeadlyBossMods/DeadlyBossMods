@@ -11,6 +11,14 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
+mod:AddBoolOption("HealthFrame", true)
+
+mod:SetBossHealthInfo(
+	0, L.Steelbreaker,
+	0, L.RunemasterMolgeim,
+	0, L.StormcallerBrundir
+)
+
 local timerSupercharge	= mod:NewTimer(10, "TimerSupercharge", 61920)
 
 local warnSupercharge	= mod:NewAnnounce("WarningSupercharge", 1, 61920)
