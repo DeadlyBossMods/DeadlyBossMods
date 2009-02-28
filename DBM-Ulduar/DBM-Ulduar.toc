@@ -17,3 +17,7 @@ Thorim.lua
 IronCouncil.lua
 Hodir.lua
 Freya.lua
+FlameLeviathan.lua
+Ignis.lua
+Mimir.lua
+
