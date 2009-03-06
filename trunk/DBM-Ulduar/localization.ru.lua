@@ -8,20 +8,20 @@ local L
 L = DBM:GetModLocalization("Thorim")
 
 L:SetGeneralLocalization({
-	name = "Thorim"
+	name = "Торим"
 })
 
 L:SetWarningLocalization({
-	WarningStormhammer	= "Stormhammer: %s",
+	WarningStormhammer	= "Буремолот: %s",
 })
 
 L:SetTimerLocalization({
-	TimerStormhammer	= "Следующий Stormhammer",  -- applys AE Silience on the target
+	TimerStormhammer	= "Следующий Буремолот",  -- applys AE Silience on the target
 })
 
 L:SetOptionLocalization({
-	TimerStormhammer	= "Отображать время до восстановления Stormhammer",
-	WarningStormhammer	= "Отображать спец-предупреждение для Stormhammer",
+	TimerStormhammer	= "Отображать время до восстановления Буремолота",
+	WarningStormhammer	= "Отображать спец-предупреждение для Буремолота",
 })
 
 --L:SetMiscLocalization({ })
@@ -36,16 +36,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSupercharge	= "Приближается Supercharge",
+	WarningSupercharge	= "Приближается Сверхатака",
 })
 
 L:SetTimerLocalization({
-	TimerSupercharge	= "Supercharge",  -- gives the other bosses more power
+	TimerSupercharge	= "Сверхатака",  -- gives the other bosses more power
 })
 
 L:SetOptionLocalization({
-	TimerSupercharge	= "Отображать отсчет времени до Supercharge",
-	WarningSupercharge	= "Отображать предупреждение для Supercharge",
+	TimerSupercharge	= "Отображать отсчет времени до Сверхатаки",
+	WarningSupercharge	= "Отображать предупреждение для Сверхатаки",
 })
 
 L:SetMiscLocalization({
@@ -61,12 +61,12 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Hodir")
 
 L:SetGeneralLocalization({
-	name = "Hodir"
+	name = "Ходир"
 })
 
 L:SetWarningLocalization({
 	WarningFlashFreeze	= "Мгновенная заморозка",
-	WarningBitingCold	= "Biting Cold - ДВИГАЙТЕСЬ"
+	WarningBitingCold	= "Лютый холод - ДВИГАЙТЕСЬ"
 })
 
 L:SetTimerLocalization({
