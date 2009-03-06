@@ -12,16 +12,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningStormhammer	= "Stormhammer on %s",
+	WarningStormhammer	= "Stormhammer: %s",
 })
 
 L:SetTimerLocalization({
-	TimerStormhammer	= "Next Stormhammer",  -- applys AE Silience on the target
+	TimerStormhammer	= "Следующий Stormhammer",  -- applys AE Silience on the target
 })
 
 L:SetOptionLocalization({
-	TimerStormhammer	= "Show Stormhammer Cooldown",
-	WarningStormhammer	= "Announce Stormhammer Target",
+	TimerStormhammer	= "Отображать время до восстановления Stormhammer",
+	WarningStormhammer	= "Отображать спец-предупреждение для Stormhammer",
 })
 
 --L:SetMiscLocalization({ })
@@ -36,7 +36,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSupercharge	= "Supercharge incoming",
+	WarningSupercharge	= "Приближается Supercharge",
 })
 
 L:SetTimerLocalization({
@@ -44,8 +44,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSupercharge	= "Show Supercharge Timer",
-	WarningSupercharge	= "Show warning when Supercharge casting",
+	TimerSupercharge	= "Отображать отсчет времени до Supercharge",
+	WarningSupercharge	= "Отображать предупреждение для Supercharge",
 })
 
 L:SetMiscLocalization({
@@ -65,20 +65,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFlashFreeze	= "Flesh Freeze",
-	WarningBitingCold	= "Biting Cold - MOVE"
+	WarningFlashFreeze	= "Мгновенная заморозка",
+	WarningBitingCold	= "Biting Cold - ДВИГАЙТЕСЬ"
 })
 
 L:SetTimerLocalization({
-	TimerFlashFreeze	= "Flesh Freeze incoming",  -- all ppl have to move on the rock patches
+	TimerFlashFreeze	= "Приближается Мгновенная заморозка",  -- all ppl have to move on the rock patches
 })
 
 L:SetOptionLocalization({
-	TimerFlashFreeze	= "Show Flash Freeze Cast-Timer",
-	WarningFlashFreeze	= "Show Warning for Flash Freeze",
+	TimerFlashFreeze	= "Отображать отсчет времени до Мгновенной заморозки",
+	WarningFlashFreeze	= "Отображать предупреждение для Мгновенной заморозки",
 })
 
 L:SetMiscLocalization({
-	"PlaySoundOnFlashFreeze"	= "Play sound on Flash Freeze Cast",
+	"PlaySoundOnFlashFreeze"	= "Звуковой сигнал при чтении заклинания Мгновенная заморозка",
 })
 
