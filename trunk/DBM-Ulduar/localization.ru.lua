@@ -79,6 +79,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	"PlaySoundOnFlashFreeze"	= "Звуковой сигнал при чтении заклинания Мгновенная заморозка",
+	PlaySoundOnFlashFreeze	= "Звуковой сигнал при чтении заклинания Мгновенная заморозка",
 })
 

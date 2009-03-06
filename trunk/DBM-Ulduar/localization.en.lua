@@ -77,7 +77,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	"PlaySoundOnFlashFreeze"	= "Play sound on Flash Freeze Cast",
+	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
 })
 
 
