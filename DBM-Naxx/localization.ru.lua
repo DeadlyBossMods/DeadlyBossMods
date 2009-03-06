@@ -157,7 +157,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Loatheb")
 
 L:SetGeneralLocalization({
-	name = "Мерзот"
+	name = "Лотхиб"
 })
 
 L:SetWarningLocalization({
