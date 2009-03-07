@@ -32,7 +32,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("IronCouncil")
 
 L:SetGeneralLocalization({
-	name = "Iron Council"
+	name = "Железный совет"
 })
 
 L:SetWarningLocalization({
@@ -49,9 +49,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	"Steelbreaker"		= "Steelbreaker",
-	"RunemasterMolgeim" 	= "Runemaster Molgeim",
-	"StormcallerBrundir" 	= "Stormcaller Brundir",
+	"Steelbreaker"		= "Стальной разрушитель",
+	"RunemasterMolgeim" 	= "Мастер рун Молгейн",
+	"StormcallerBrundir" 	= "Призыватель бури Брундир",
 })
 
 
@@ -66,7 +66,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningFlashFreeze	= "Мгновенная заморозка",
-	WarningBitingCold	= "Лютый холод - ДВИГАЙТЕСЬ"
+	WarningBitingCold	= "Лютый холод - ДВИГАЙТЕСЬ",
 })
 
 L:SetTimerLocalization({
