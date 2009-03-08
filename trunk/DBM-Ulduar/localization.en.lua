@@ -47,9 +47,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	"Steelbreaker"		= "Steelbreaker",
-	"RunemasterMolgeim" 	= "Runemaster Molgeim",
-	"StormcallerBrundir" 	= "Stormcaller Brundir",
+	Steelbreaker		= "Steelbreaker",
+	RunemasterMolgeim	= "Runemaster Molgeim",
+	StormcallerBrundir 	= "Stormcaller Brundir",
 })
 
 
@@ -80,7 +80,18 @@ L:SetMiscLocalization({
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
 })
 
+-------------------
+--  IronCouncil  --
+-------------------
+L = DBM:GetModLocalization("FlameLeviathan")
 
+L:SetGeneralLocalization{
+	name = "Flame Leviathan"
+}
+
+L:SetMiscLocalization{
+	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+}
 
 
 
