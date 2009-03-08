@@ -1789,8 +1789,14 @@ end
 
 function bossModPrototype:GetUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
-	return (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
+	--return (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
+	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
 end
+
+function bossModPrototype:GetCIDFromGUID(guid)
+	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
+end
+
 
 
 -------------------------

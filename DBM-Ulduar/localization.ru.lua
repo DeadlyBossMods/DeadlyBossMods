@@ -49,9 +49,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	"Steelbreaker"		= "Стальной разрушитель",
-	"RunemasterMolgeim" 	= "Мастер рун Молгейн",
-	"StormcallerBrundir" 	= "Призыватель бури Брундир",
+	Steelbreaker		= "Стальной разрушитель",
+	RunemasterMolgeim 	= "Мастер рун Молгейн",
+	StormcallerBrundir 	= "Призыватель бури Брундир",
 })
 
 
