@@ -88,7 +88,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("FlameLeviathan")
 
 L:SetGeneralLocalization{
-	name = "Flame Leviathan"
+	name = "Огенный Левиафан"
 }
 
 L:SetMiscLocalization{
