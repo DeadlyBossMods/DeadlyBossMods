@@ -82,3 +82,23 @@ L:SetMiscLocalization({
 	PlaySoundOnFlashFreeze	= "Звуковой сигнал при чтении заклинания Мгновенная заморозка",
 })
 
+-------------------
+--  IronCouncil  --
+-------------------
+L = DBM:GetModLocalization("FlameLeviathan")
+
+L:SetGeneralLocalization{
+	name = "Flame Leviathan"
+}
+
+L:SetMiscLocalization{
+	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+}
+
+
+
+
+
+
+
+
