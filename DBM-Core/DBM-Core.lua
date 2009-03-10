@@ -1213,7 +1213,7 @@ do
 		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
-			if guid and bit.band(guid:sub(0, 5), 0x00F) == 3 then
+			if guid and (bit.band(guid:sub(0, 5), 0x00F) == 3 or bit.band(guid:sub(0, 5), 0x00F) == 5) then
 				local cId = tonumber(guid:sub(9, 12), 16)
 				targetList[cId] = id
 			end
@@ -1414,7 +1414,7 @@ function DBM:OnMobKill(cId, synced)
 end
 
 function DBM:UNIT_DIED(args)
-	if bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
+	if bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(0, 5), 0x00F) == 5  then
 		self:OnMobKill(tonumber(args.destGUID:sub(9, 12), 16))
 	end
 end
