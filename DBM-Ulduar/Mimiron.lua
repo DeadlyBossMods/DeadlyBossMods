@@ -12,7 +12,8 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED"
 )
 
 mod:AddBoolOption("PlaySoundOnShockBlast", true, "announce")
@@ -20,6 +21,8 @@ mod:AddBoolOption("PlaySoundOnShockBlast", true, "announce")
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast")
 local warnPlasmaBlast		= mod:NewAnnounce("WarningPlasmaBlast", 4, 64529)
 local timerProximityMines	= mod:NewTimer(40, "ProximityMines")
+
+local timerDarkGlare		= mod:NewTimer(30, "DarkGlare")
 
 function mod:OnCombatStart(delay)
 end
@@ -42,6 +45,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerProximityMines:Start()
 	end
 end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 63274 then
+		timerDarkGlare:Start()
+	end
+end
+
 
 
 
