@@ -81,7 +81,7 @@ L:SetMiscLocalization({
 })
 
 -------------------
---  IronCouncil  --
+--  FlameLeviathan  --
 -------------------
 L = DBM:GetModLocalization("FlameLeviathan")
 
@@ -94,6 +94,35 @@ L:SetMiscLocalization{
 }
 
 
+
+
+-------------------
+--  Mimiron  --
+-------------------
+L = DBM:GetModLocalization("Mimiron")
+
+L:SetGeneralLocalization({
+	name = "Mimiron"
+})
+
+L:SetWarningLocalization({
+	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
+})
+
+L:SetTimerLocalization({
+	ProximityMines		= "New Proximity Mines",
+})
+
+L:SetOptionLocalization({
+	WarningShockBlast	= "Show Shock Blast Warning",
+	WarningPlasmaBlast	= "Show Plasma Blast Warning",
+	ProximityMines		= "Show Timer for Proximity Mines",
+})
+
+L:SetMiscLocalization({
+	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",
+	PlaySoundOnShockBlast 	= "Play sound on Shock Blast cast",
+})
 
 
 
