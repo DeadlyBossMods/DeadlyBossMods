@@ -8,7 +8,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 
-mod:RegisterCombat("yell", L.YellPull)
+--mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -16,13 +16,19 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-mod:AddBoolOption("PlaySoundOnShockBlast", true, "announce")
+local isMelee = select(2, UnitClass("player")) == "ROGUE"
+or select(2, UnitClass("player")) == "WARRIOR"
+or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
-local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast")
-local warnPlasmaBlast		= mod:NewAnnounce("WarningPlasmaBlast", 4, 64529)
+mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
+mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
+
+local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local timerProximityMines	= mod:NewTimer(40, "ProximityMines")
 
-local timerDarkGlare		= mod:NewTimer(30, "DarkGlare")
+local timerDarkGlare		= mod:NewTimer(15, "DarkGlare")
+local timerNextDarkGlare		= mod:NewTimer(65, "NextDarkGlare")
+local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 
 function mod:OnCombatStart(delay)
 end
@@ -33,10 +39,7 @@ function mod:SPELL_CAST_START(args)
 
 		if self.Options.PlaySoundOnShockBlast then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end	
-
-	elseif args.spellId == 64529 then
-		warnPlasmaBlast:Show(args.destName)
+		end
 	end
 end
 
@@ -46,9 +49,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+local spam = 0
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63274 then
+	if args.spellId == 63274 and GetTime() - spam > 3 then
+		spam = GetTime()
 		timerDarkGlare:Start()
+		timerNextDarkGlare:Schedule(15)
+		warnDarkGlare:Show()
+		if self.Options.PlaySoundOnDarkGlare then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
 	end
 end
 
