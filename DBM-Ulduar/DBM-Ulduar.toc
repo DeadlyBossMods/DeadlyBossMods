@@ -22,5 +22,5 @@ Hodir.lua
 Freya.lua
 FlameLeviathan.lua
 Ignis.lua
-Mimir.lua
+Mimiron.lua
 
