@@ -22,7 +22,7 @@ local timerSystemOverload	= mod:NewTimer(20, "timerSystemOverload", 62475)
 local timerFlameVents		= mod:NewTimer(10, "timerFlameVents", 62396)
 
 local pursueSpecWarn	= mod:NewSpecialWarning("SystemOverload")
-local pursueWarn	= mod:NewWarning("PursueWarn", 2)
+local pursueWarn	= mod:NewAnnounce("PursueWarn", 2)
 
 
 local guids = {}
