@@ -46,7 +46,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	local player = guids[args.sourceGUID]
-	if player and args.spellId == 62363 then
+	if player and args.spellId == 62359 then
 		if not stats[player] then
 			stats[player] = {kills = 0, hits = 0, casts = 0, player = player}
 		end
