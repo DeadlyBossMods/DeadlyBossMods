@@ -20,7 +20,9 @@ mod:RegisterEvents(
 
 local timerSystemOverload	= mod:NewTimer(20, "timerSystemOverload", 62475)
 local timerFlameVents		= mod:NewTimer(10, "timerFlameVents", 62396)
-local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
+
+local pursueSpecWarn	= mod:NewSpecialWarning("SystemOverload")
+local pursueWarn	= mod:NewWarning("PursueWarn", 2)
 
 
 local guids = {}
@@ -66,10 +68,25 @@ function mod:SPELL_DAMAGE(args)
 	end
 end
 
+local sortedStats = {}
+local function sort(v1, v2)
+	return v1.kills > v2.kills
+end
+
 function mod:PrintStats()
-	for i, v in pairs(stats) do
-		SendChatMessage(("%%d. %s: %d kills (accuracy: %.2f%%)"):format(v.player, v.kills, v.casts / v.hits), "RAID")
+	local i = 0
+	for _, v in pairs(stats) do
+		sortedStats[#sortedStats + 1] = v
+		i = i + 1
+		if i >= 3 then
+			break
+		end
 	end
+	table.sort(sortedStats, sort)
+	for i, v in ipairs(sortedStats) do
+		SendChatMessage(("%d. %s: %d kills (accuracy: %.2f%%)"):format(i, v.player, v.kills, v.casts / v.hits * 100), "RAID")
+	end
+	table.wipe(sortedStats)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -89,6 +106,13 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
+	local target = emote:match(L.Emote)
+	if target then
+		if target == UnitName("player") then
+			pursueSpecWarn:Show()
+		end
+		pursueWarn:Show(target)
+	end
 	--if emote ~= "pursues %s" wtf
 end
 
