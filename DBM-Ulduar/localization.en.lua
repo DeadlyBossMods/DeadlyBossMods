@@ -136,4 +136,20 @@ L:SetMiscLocalization({
 })
 
 
+--------------------
+--  GeneralVezax  --
+--------------------
+L = DBM:GetModLocalization("GeneralVezax")
+
+L:SetGeneralLocalization{
+	name = "General Vezax"
+}
+
+L:SetMiscLocalization{
+}
+
+L:SetWarningLocalization{
+}
+
+
 
