@@ -3,18 +3,26 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 679 $"):sub(12, -3))
 
+mod:SetCreatureID(33113)
 mod:SetZone()
 
+--mod:RegisterCombat("combat")
 mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE"
+	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
+
+
+local timerSysOverload		= mod:NewTimer(20, "timerSysOverload", 62475)
+local timerFlameVents		= mod:NewTimer(10, "timerFlameVents", 62396)
+
 
 local guids = {}
 stats = {}
-
 local function buildGuidTable()
 	table.wipe(guids)
 	for i = 1, GetNumRaidMembers() do
@@ -23,6 +31,7 @@ local function buildGuidTable()
 end
 
 function mod:OnCombatStart(delay)
+	DBM:AddMsg("Combat against Flame Levitian started!")
 	buildGuidTable()
 	table.wipe(stats)
 end
@@ -55,5 +64,17 @@ function mod:PrintStats()
 	for i, v in pairs(stats) do
 		SendChatMessage(("%%d. %s: %d kills (accuracy: %.2f%%)"):format(v.player, v.kills, v.casts / v.hits), "RAID")
 	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 62396 then		-- Flame Vents
+		timerFlameVents:Start()
+
+	elseif args.spellId == 62475 then	-- Systems Shutdown / Overload
+		timerSysOverload:Start()
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE()
 end
 
