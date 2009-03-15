@@ -91,6 +91,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+	Emote		= "%%s pursues (%S+)%."
 }
 
 
