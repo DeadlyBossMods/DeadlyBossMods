@@ -11,14 +11,16 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
-	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
+	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_APPLIED",	
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 
-local timerSysOverload		= mod:NewTimer(20, "timerSysOverload", 62475)
+local timerSystemOverload	= mod:NewTimer(20, "timerSystemOverload", 62475)
 local timerFlameVents		= mod:NewTimer(10, "timerFlameVents", 62396)
+local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
 
 
 local guids = {}
@@ -34,6 +36,10 @@ function mod:OnCombatStart(delay)
 	DBM:AddMsg("Combat against Flame Levitian started!")
 	buildGuidTable()
 	table.wipe(stats)
+end
+
+function mod:OnCombatEnd()
+	mod:PrintStats()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
@@ -66,15 +72,23 @@ function mod:PrintStats()
 	end
 end
 
-function mod:SPELL_CAST_START(args)
+function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62396 then		-- Flame Vents
 		timerFlameVents:Start()
 
 	elseif args.spellId == 62475 then	-- Systems Shutdown / Overload
-		timerSysOverload:Start()
+		timerSystemOverload:Start()
+		warnSystemOverload:Show()
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE()
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 62396 then
+		timerFlameVents:Stop()
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
+	--if emote ~= "pursues %s" wtf
 end
 

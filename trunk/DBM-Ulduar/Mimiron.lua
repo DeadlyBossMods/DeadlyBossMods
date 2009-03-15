@@ -17,8 +17,8 @@ mod:RegisterEvents(
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
-or select(2, UnitClass("player")) == "WARRIOR"
-or select(2, UnitClass("player")) == "DEATHKNIGHT"
+	     or select(2, UnitClass("player")) == "WARRIOR"
+	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
 mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
 mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
@@ -27,7 +27,7 @@ local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local timerProximityMines	= mod:NewTimer(40, "ProximityMines")
 
 local timerDarkGlare		= mod:NewTimer(15, "DarkGlare")
-local timerNextDarkGlare		= mod:NewTimer(65, "NextDarkGlare")
+local timerNextDarkGlare	= mod:NewTimer(65, "NextDarkGlare")
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 
 function mod:OnCombatStart(delay)
