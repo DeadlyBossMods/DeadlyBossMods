@@ -94,6 +94,10 @@ L:SetMiscLocalization{
 	Emote		= "%%s pursues (%S+)%."
 }
 
+L:SetWarningLocalization{
+	pursueWarn = "Pursuing %s!"
+}
+
 
 
 
