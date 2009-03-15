@@ -23,4 +23,5 @@ Freya.lua
 FlameLeviathan.lua
 Ignis.lua
 Mimiron.lua
+GeneralVezax.lua
 
