@@ -95,7 +95,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	pursueWarn = "Pursuing %s!"
+	pursueWarn = "Pursuing >%s<!"
 }
 
 
