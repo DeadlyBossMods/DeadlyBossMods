@@ -1,28 +1,69 @@
 local L
 
---------------
---  Thorim  --
---------------
-L = DBM:GetModLocalization("Thorim")
+
+----------------------
+--  FlameLeviathan  --
+----------------------
+L = DBM:GetModLocalization("FlameLeviathan")
 
 L:SetGeneralLocalization({
-	name = "Thorim"
+	name = "Flame Leviathan"
+})
+
+L:SetMiscLocalization({
+	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+	Emote		= "%%s pursues (%S+)%."
 })
 
 L:SetWarningLocalization({
-	WarningStormhammer	= "Stormhammer on %s",
+	pursueWarn = "Pursuing >%s<!"
 })
 
-L:SetTimerLocalization({
-	TimerStormhammer	= "Next Stormhammer",  -- applys AE Silience on the target
+-------------
+--  Ignis  --
+-------------
+L = DBM:GetModLocalization("Ignis")
+
+L:SetGeneralLocalization({
+	name = "Ignis"
 })
 
-L:SetOptionLocalization({
-	TimerStormhammer	= "Show Stormhammer Cooldown",
-	WarningStormhammer	= "Announce Stormhammer Target",
+L:SetMiscLocalization({
 })
 
---L:SetMiscLocalization({ })
+L:SetWarningLocalization({
+})
+
+------------------
+--  Razorscale  --
+------------------
+L = DBM:GetModLocalization("Razorscale")
+
+L:SetGeneralLocalization({
+	name = "Razorscale"
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetWarningLocalization({
+})
+
+-------------
+--  XT002  --
+-------------
+L = DBM:GetModLocalization("XT002")
+
+L:SetGeneralLocalization({
+	name = "XT002"
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetWarningLocalization({
+})
+
 
 -------------------
 --  IronCouncil  --
@@ -53,6 +94,53 @@ L:SetMiscLocalization({
 })
 
 
+---------------
+--  Algalon  --
+---------------
+L = DBM:GetModLocalization("Algalon")
+
+L:SetGeneralLocalization({
+	name = "Algalon"
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetWarningLocalization({
+})
+
+
+----------------
+--  Kologarn  --
+----------------
+L = DBM:GetModLocalization("Kologarn")
+
+L:SetGeneralLocalization({
+	name = "Kologarn"
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetWarningLocalization({
+})
+
+--------------
+--  Auriya  --
+--------------
+L = DBM:GetModLocalization("Auriya")
+
+L:SetGeneralLocalization({
+	name = "Auriya"
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetWarningLocalization({
+})
+
+
 -------------
 --  Hodir  --
 -------------
@@ -80,25 +168,44 @@ L:SetMiscLocalization({
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
 })
 
--------------------
---  FlameLeviathan  --
--------------------
-L = DBM:GetModLocalization("FlameLeviathan")
 
-L:SetGeneralLocalization{
-	name = "Flame Leviathan"
-}
+--------------
+--  Thorim  --
+--------------
+L = DBM:GetModLocalization("Thorim")
 
-L:SetMiscLocalization{
-	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
-	Emote		= "%%s pursues (%S+)%."
-}
+L:SetGeneralLocalization({
+	name = "Thorim"
+})
 
-L:SetWarningLocalization{
-	pursueWarn = "Pursuing >%s<!"
-}
+L:SetWarningLocalization({
+	WarningStormhammer	= "Stormhammer on %s",
+})
+
+L:SetTimerLocalization({
+	TimerStormhammer	= "Next Stormhammer",  -- applys AE Silience on the target
+})
+
+L:SetOptionLocalization({
+	TimerStormhammer	= "Show Stormhammer Cooldown",
+	WarningStormhammer	= "Announce Stormhammer Target",
+})
 
 
+-------------
+--  Freya  --
+-------------
+L = DBM:GetModLocalization("Freya")
+
+L:SetGeneralLocalization({
+	name = "Freya"
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetWarningLocalization({
+})
 
 
 -------------------
@@ -141,15 +248,32 @@ L:SetMiscLocalization({
 --------------------
 L = DBM:GetModLocalization("GeneralVezax")
 
-L:SetGeneralLocalization{
+L:SetGeneralLocalization({
 	name = "General Vezax"
-}
+})
 
-L:SetMiscLocalization{
-}
+L:SetMiscLocalization({
+})
 
-L:SetWarningLocalization{
-}
+L:SetWarningLocalization({
+})
+
+
+-----------------
+--  YoggSaron  --
+-----------------
+L = DBM:GetModLocalization("YoggSaron")
+
+L:SetGeneralLocalization({
+	name = "Yogg-Saron"
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetWarningLocalization({
+})
+
 
 
 

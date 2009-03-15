@@ -16,12 +16,18 @@ localization.de.lua
 localization.ru.lua
 localization.tw.lua
 localization.kr.lua
-Thorim.lua
-IronCouncil.lua
-Hodir.lua
-Freya.lua
 FlameLeviathan.lua
 Ignis.lua
+Razorscale.lua
+XT002.lua
+IronCouncil.lua
+Algalon.lua
+Kologarn.lua
+Auriya.lua
+Hodir.lua
+Thorim.lua
+Freya.lua
 Mimiron.lua
 GeneralVezax.lua
+YoggSaron.lua
 
