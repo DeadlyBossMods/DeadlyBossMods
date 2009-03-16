@@ -34,9 +34,22 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62660 then
+
+do
+	local function setsymbol()
 		mod:SetIcon(mod:GetBossTarget(), 8, 5)
+		print(mod:GetBossTarget())
+	end
+
+--	self:ScheduleMethod(0.2, function() print(mod:GetBossTarget()) end)
+
+	function mod:SPELL_CAST_SUCCESS(args)
+		if args.spellId == 62660 then
+			self:ScheduleMethod(0.1, setsymbol)
+		
+		elseif args.spellId == 63276 then	-- Mark of the Faceless
+			mod:SetIcon(args.destName, 7, 10)
+		end
 	end
 end
 
