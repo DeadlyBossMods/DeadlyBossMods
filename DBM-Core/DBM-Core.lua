@@ -1797,6 +1797,14 @@ function bossModPrototype:GetCIDFromGUID(guid)
 	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
 end
 
+function bossModPrototype:GetBossTarget(cid)
+	cid = cid or self.creatureId
+	for i = 1, GetNumRaidMembers() do
+		if self:GetUnitCreatureId("raid"..i.."target") == cid then
+			return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
+		end
+	end
+end
 
 
 -------------------------
