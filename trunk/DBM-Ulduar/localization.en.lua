@@ -252,10 +252,17 @@ L:SetGeneralLocalization({
 	name = "General Vezax"
 })
 
-L:SetMiscLocalization({
+L:SetWarningLocalization({
 })
 
-L:SetWarningLocalization({
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	SaroniteVapors		= "A cloud of saronite vapors coalesces nearby!"
 })
 
 

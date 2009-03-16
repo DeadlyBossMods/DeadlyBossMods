@@ -9,47 +9,33 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_INTERRUPT",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
---mod:NewAnnounce("WarningSpark", 1, 59381)
---mod:NewTimer(30, "TimerSpark", 59381)
---mod:NewSpecialWarning("WarningSurgeYou")
---mod:NewEnrageTimer(615)
-
---local warnSearingFlames		= mod:NewSpecialWarning("WarningSearingFlames")
+local warnShadowCrash		= mod:NewSpecialWarning("WarningShadowCrash")
 local timerSearingFlamesCast	= mod:NewTimer(2, "timerSearingFlamesCast", 62661)
 local timerSurgeofDarkness	= mod:NewTimer(10, "timerSurgeofDarkness", 62662)
+local timerSaroniteVapors	= mod:NewTimer(30, "timerSaroniteVapors", 63322)
+
+mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
+mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
 
 function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62661 then	-- Searing Flames
-		--warnSearingFlames:Show()
 		timerSearingFlamesCast:Start()
-
 	end
 end
 
-
-do
-	local function setsymbol()
-		mod:SetIcon(mod:GetBossTarget(), 8, 5)
-		print(mod:GetBossTarget())
-	end
-
---	self:ScheduleMethod(0.2, function() print(mod:GetBossTarget()) end)
-
-	function mod:SPELL_CAST_SUCCESS(args)
-		if args.spellId == 62660 then
-			self:ScheduleMethod(0.1, setsymbol)
-		
-		elseif args.spellId == 63276 then	-- Mark of the Faceless
-			mod:SetIcon(args.destName, 7, 10)
-		end
+function mod:SPELL_INTERRUPT(args)
+	if args.spellId == 62661 then
+		timerSearingFlamesCast:Stop()
 	end
 end
 
@@ -65,7 +51,31 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+local function ShadowCrashTarget()
+	local targetname = mod:GetBossTarget()
 
+	if self.Options.SetIconOnShadowCrash then
+		mod:SetIcon(targetname, 8, 10)
+	end
 
+	if targetname == UnitName("player") then
+		warnShadowCrash:Show(targetname)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 62660 then		-- Shadow Crash
+		self:Schedule(0.1, ShadowCrashTarget)
+	
+	elseif args.spellId == 63276 and self.Options.SetIconOnLifeLeach then	-- Mark of the Faceless  (life leach)
+		mod:SetIcon(args.destName, 7, 10)
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
+	if emote == L.SaroniteVapors then
+		timerSaroniteVapors:Start()
+	end
+end
 
 
