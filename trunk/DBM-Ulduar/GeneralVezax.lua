@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_SUCCESS"
 )
 
 --mod:NewAnnounce("WarningSpark", 1, 59381)
@@ -30,20 +31,28 @@ function mod:SPELL_CAST_START(args)
 		--warnSearingFlames:Show()
 		timerSearingFlamesCast:Start()
 
-	elseif args.spellId == 62660 then
-		DBM:AddMsg(args.destName)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 62660 then
+		mod:SetIcon(mod:GetBossTarget(), 8, 5)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62662 then
+	if args.spellId == 62662 then	-- Surge of Darkness
 		timerSurgeofDarkness:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62662 then
+	if args.spellId == 62662 then	
 		timerSurgeofDarkness:Stop()
 	end
 end
+
+
+
+
 
