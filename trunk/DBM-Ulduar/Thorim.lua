@@ -5,9 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32865)
 mod:SetZone()
 
---mod:RegisterCombat("combat")
-mod:RegisterCombat("yell", L.YellPull)
-
+mod:RegisterCombat("yell", L.YellPhase1)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL"
@@ -19,11 +17,12 @@ local timerUnbalancingStrike	= mod:NewTimer(15, "TimerUnbalancingStrike", 62130)
 local warnStormhammer		= mod:NewAnnounce("WarningStormhammer", 1, 62470)
 local warnUnbalancingStrike	= mod:NewAnnounce("UnbalancingStrike", 4, 62130)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
 
-local enrageTimer		= mod:NewEnrageTimer(300)
+local enrageTimer		= mod:NewEnrageTimer(310)
 
 local phase = 0
 function mod:OnCombatStart(delay)
 	phase = 1
+	enrageTimer:Start()
 end
 
 function mod:OnCombatEnd()
@@ -31,12 +30,9 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62042 then
+	if args.spellId == 62042 then -- storm hammer
 		timerStormhammer:Start()
-
-		if args.destName then
-			warnStormhammer:Show( args.destName )
-		end
+		warnStormhammer:Show(args.destName)
 
 	elseif args.spellId == 62130 then	-- Unbalancing Strike
 		warnUnbalancingStrike:Show(args.destName)
