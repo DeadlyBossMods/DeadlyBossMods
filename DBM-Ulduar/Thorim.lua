@@ -40,7 +40,7 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif args.spellId == 62130 then	-- Unbalancing Strike
 		warnUnbalancingStrike:Show(args.destName)
-		if GetCurrentDungeonDifficulty() == 1 then
+		if GetInstanceDifficulty() == 1 then
 			timerUnbalancingStrike:Start(6)
 		else
 			timerUnbalancingStrike:Start(15)
