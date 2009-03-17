@@ -20,10 +20,12 @@ mod:RegisterEvents(
 
 local timerSystemOverload	= mod:NewTimer(20, "timerSystemOverload", 62475)
 local timerFlameVents		= mod:NewTimer(10, "timerFlameVents", 62396)
+local timerPursued		= mod:NewTimer(30, "timerPursued", 62374)
 local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
 
-local pursueSpecWarn	= mod:NewSpecialWarning("SystemOverload")
-local pursueWarn	= mod:NewAnnounce("PursueWarn", 2)
+local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
+local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2)
+local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3)
 
 
 local guids = {}
@@ -97,7 +99,18 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 62475 then	-- Systems Shutdown / Overload
 		timerSystemOverload:Start()
 		warnSystemOverload:Show()
+
+	elseif args.spellId == 62374 then	-- Pursued
+		local player = guids[args.destGUID] or "unknown"
+		warnNextPursueSoon:Shedule(25)
+		timerPursued:Start(player)
+		pursueTargetWarn:Show(player)
+
+		if player == UnitName("player") then
+			pursueSpecWarn:Show()
+		end
 	end
+
 end
 
 function mod:SPELL_AURA_REMOVED(args)
@@ -106,14 +119,18 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+--[[
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
 	local target = emote:match(L.Emote)
 	if target then
 		if target == UnitName("player") then
 			pursueSpecWarn:Show()
 		end
-		pursueWarn:Show(target)
+		pursueTargetWarn:Show(target)
 	end
-	--if emote ~= "pursues %s" wtf
 end
+--]]
+
+
+
 

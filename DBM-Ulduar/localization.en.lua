@@ -10,14 +10,32 @@ L:SetGeneralLocalization({
 	name = "Flame Leviathan"
 })
 
+L:SetTimerLocalization({
+	timerPursued		= "Pursued: %s"
+	timerFlameVents		= "Flame Vents"
+	timerSystemOverload	= "System Overloaded"
+})
+	
 L:SetMiscLocalization({
-	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
-	Emote		= "%%s pursues (%S+)%."
+	YellPull		= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+	Emote			= "%%s pursues (%S+)%."
 })
 
 L:SetWarningLocalization({
-	pursueWarn = "Pursuing >%s<!"
+	pursueTargetWarn	= "Pursuing >%s<!"
+	warnNextPursueSoon	= "pursue change in 5 Seconds"
 })
+
+L:SetOptionLocalization({
+	timerSystemOverload	= "Show Timer for System Overload",
+	timerFlameVents		= "Show Timer for Flame Vents",
+	timerPursued		= "Show Timer for Pursued",
+	SystemOverload		= "Show Special Warning for System Overload",
+	SpecialPursueWarnYou	= "Show Special Warning when Pursued",
+	PursueWarn		= "Show Raidwarning for pursue on Player",
+	warnNextPursueSoon	= "Warn before next pursue"
+})
+
 
 -------------
 --  Ignis  --
