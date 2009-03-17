@@ -11,8 +11,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	timerPursued		= "Pursued: %s"
-	timerFlameVents		= "Flame Vents"
+	timerPursued		= "Pursued: %s",
+	timerFlameVents		= "Flame Vents",
 	timerSystemOverload	= "System Overloaded"
 })
 	
@@ -22,7 +22,7 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	pursueTargetWarn	= "Pursuing >%s<!"
+	pursueTargetWarn	= "Pursuing >%s<!",
 	warnNextPursueSoon	= "pursue change in 5 Seconds"
 })
 
@@ -271,16 +271,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningShadowCrash	= "Shadow Crash on YOU"
 })
 
 L:SetTimerLocalization({
+	timerSearingFlamesCast	= "Searing Flames",
+	timerSurgeofDarkness	= "Surge of Darkness",
+	timerSaroniteVapors	= "Next Saronite Vapors"
 })
 
 L:SetOptionLocalization({
+	WarningShadowCrash	= "Show Special Warning for Shadow Crash",
+	timerSearingFlamesCast	= "Show Timer for Searing Flame Cast",
+	timerSurgeofDarkness	= "Show Timer for Sourge of Darkness",
+	timerSaroniteVapors	= "Show Timer for Saronite Vapors",
+	SetIconOnShadowCrash	= "Set Icon on Shadow Crash target (skull)",
+	SetIconOnLifeLeach	= "Set Icon on Life Leach target (cross)"
 })
 
 L:SetMiscLocalization({
-	SaroniteVapors		= "A cloud of saronite vapors coalesces nearby!"
+	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!"
 })
 
 

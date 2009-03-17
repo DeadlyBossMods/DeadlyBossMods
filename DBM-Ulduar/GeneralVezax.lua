@@ -73,7 +73,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
-	if emote == L.SaroniteVapors then
+	if emote == L.EmoteSaroniteVapors then
 		timerSaroniteVapors:Start()
 	end
 end
