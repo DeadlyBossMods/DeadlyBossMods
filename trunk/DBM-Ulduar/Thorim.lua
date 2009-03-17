@@ -5,8 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32865)
 mod:SetZone()
 
-mod:RegisterCombat("combat")
---mod:RegisterCombat("yell", L.YellPull)
+--mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
