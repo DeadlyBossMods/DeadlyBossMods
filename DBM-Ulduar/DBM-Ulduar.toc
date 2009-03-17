@@ -10,7 +10,7 @@
 ## X-DBM-Mod-Name: Ulduar
 ## X-DBM-Mod-Name-ruRU: Ульдуар
 ## X-DBM-Mod-Name-koKR: 울드아르
-## X-DBM-Mod-Sort: 4
+## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Ulduar
 ## X-DBM-Mod-LoadZone-ruRU: Ульдуар
 ## X-DBM-Mod-LoadZone-koKR: 울드아르
@@ -24,13 +24,12 @@ Ignis.lua
 Razorscale.lua
 XT002.lua
 IronCouncil.lua
-Algalon.lua
 Kologarn.lua
 Auriya.lua
-Hodir.lua
-Thorim.lua
-Freya.lua
 Mimiron.lua
+Freya.lua
+Thorim.lua
+Hodir.lua
 GeneralVezax.lua
 YoggSaron.lua
-
+Algalon.lua
