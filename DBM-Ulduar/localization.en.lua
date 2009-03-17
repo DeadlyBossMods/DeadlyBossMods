@@ -197,16 +197,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningStormhammer	= "Stormhammer on %s",
+	WarningStormhammer	= "Stormhammer on >%s<",
+	UnbalancingStrike	= "Unbalancing Strike on >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerStormhammer	= "Next Stormhammer",  -- applys AE Silience on the target
+	TimerStormhammer	= "Next Stormhammer",
+	TimerUnbalancingStrike	= "Unbalancing Strike"
 })
 
 L:SetOptionLocalization({
 	TimerStormhammer	= "Show Stormhammer Cooldown",
+	TimerUnbalancingStrike	= "Show Timer for Unbalancing Strike",
 	WarningStormhammer	= "Announce Stormhammer Target",
+	UnbalancingStrike	= "Announce Unbalancing Strike Target"
+})
+
+L:SetMiscLocalization({
+	YellPhase1		= "Interlopers!",
+	YellPhase2		= "Impertinent wheips. I will crush you myself!"
 })
 
 
