@@ -214,7 +214,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPhase1		= "Interlopers!",
+	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
 	YellPhase2		= "Impertinent wheips. I will crush you myself!"
 })
 
