@@ -198,13 +198,15 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningStormhammer	= "Stormhammer on >%s<",
-	UnbalancingStrike	= "Unbalancing Strike on >%s<"
-	WarningPhase2	= "Phase 2"
+	UnbalancingStrike	= "Unbalancing Strike on >%s<",
+	WarningPhase2	= "Phase 2",
+	WarningBomb	= "Rune Detonation on >%s<",
+	LightningOrb = "Lightning Shock on You! Move!"
 })
 
 L:SetTimerLocalization({
-	TimerStormhammer	= "Next Stormhammer",
-	TimerUnbalancingStrike	= "Unbalancing Strike CD"
+	TimerStormhammer	= "Stormhammer CD",
+	TimerUnbalancingStrike	= "Unbalancing Strike CD",
 	TimerHardmode	= "Hard Mode"
 })
 
@@ -214,7 +216,8 @@ L:SetOptionLocalization({
 	TimerHardmode	= "Show Timer for Hard Mode",
 	UnbalancingStrike	= "Announce Unbalancing Strike Target",
 	WarningStormhammer	= "Announce Stormhammer Target",
-	WarningPhase2	= "Announce Phase 2"
+	WarningPhase2	= "Announce Phase 2",
+	RangeFrame	= "Show Range Frame"
 })
 
 L:SetMiscLocalization({
