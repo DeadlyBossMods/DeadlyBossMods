@@ -199,23 +199,27 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningStormhammer	= "Stormhammer on >%s<",
 	UnbalancingStrike	= "Unbalancing Strike on >%s<"
+	WarningPhase2	= "Phase 2"
 })
 
 L:SetTimerLocalization({
 	TimerStormhammer	= "Next Stormhammer",
-	TimerUnbalancingStrike	= "Unbalancing Strike"
+	TimerUnbalancingStrike	= "Unbalancing Strike CD"
+	TimerHardmode	= "Hard Mode"
 })
 
 L:SetOptionLocalization({
 	TimerStormhammer	= "Show Stormhammer Cooldown",
 	TimerUnbalancingStrike	= "Show Timer for Unbalancing Strike",
+	TimerHardmode	= "Show Timer for Hard Mode",
+	UnbalancingStrike	= "Announce Unbalancing Strike Target",
 	WarningStormhammer	= "Announce Stormhammer Target",
-	UnbalancingStrike	= "Announce Unbalancing Strike Target"
+	WarningPhase2	= "Announce Phase 2"
 })
 
 L:SetMiscLocalization({
 	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
-	YellPhase2		= "Impertinent wheips. I will crush you myself!"
+	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!"
 })
 
 
