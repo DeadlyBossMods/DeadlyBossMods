@@ -2071,6 +2071,10 @@ do
 		end
 	end
 
+--	function timerPrototype:SetNormalModeTimer(timer)
+--		self.shortTimer = timer
+--	end
+
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
 		local obj = setmetatable(
 			{
@@ -2112,6 +2116,7 @@ do
 		self.bar:Start()
 		if timer > 660 then self.warning1:Schedule(timer - 600, 10, DBM_CORE_MIN) end
 		if timer > 300 then self.warning1:Schedule(timer - 300, 5, DBM_CORE_MIN) end
+		if timer > 180 then self.warning2:Schedule(timer - 180, 3, DBM_CORE_MIN) end
 		if timer > 60 then self.warning2:Schedule(timer - 60, 1, DBM_CORE_MIN) end
 		if timer > 30 then self.warning2:Schedule(timer - 30, 30, DBM_CORE_SEC) end
 		if timer > 10 then self.warning2:Schedule(timer - 10, 10, DBM_CORE_SEC) end
@@ -2127,6 +2132,7 @@ do
 		self.warning2:Cancel()
 		self.bar:Stop()
 	end
+	enragePrototype.Stop = enragePrototype.Cancel
 
 	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
 		timer = timer or 600
