@@ -6,27 +6,27 @@ local L
 ----------------------
 L = DBM:GetModLocalization("FlameLeviathan")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Flame Leviathan"
-})
+}
 
-L:SetTimerLocalization({
+L:SetTimerLocalization{
 	timerPursued		= "Pursued: %s",
 	timerFlameVents		= "Flame Vents",
 	timerSystemOverload	= "System Overloaded"
-})
+}
 	
-L:SetMiscLocalization({
+L:SetMiscLocalization{
 	YellPull		= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
 	Emote			= "%%s pursues (%S+)%."
-})
+}
 
-L:SetWarningLocalization({
+L:SetWarningLocalization{
 	pursueTargetWarn	= "Pursuing >%s<!",
 	warnNextPursueSoon	= "pursue change in 5 Seconds"
-})
+}
 
-L:SetOptionLocalization({
+L:SetOptionLocalization{
 	timerSystemOverload	= "Show Timer for System Overload",
 	timerFlameVents		= "Show Timer for Flame Vents",
 	timerPursued		= "Show Timer for Pursued",
@@ -34,7 +34,7 @@ L:SetOptionLocalization({
 	SpecialPursueWarnYou	= "Show Special Warning when Pursued",
 	PursueWarn		= "Show Raidwarning for pursue on Player",
 	warnNextPursueSoon	= "Warn before next pursue"
-})
+}
 
 
 -------------
@@ -42,45 +42,45 @@ L:SetOptionLocalization({
 -------------
 L = DBM:GetModLocalization("Ignis")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Ignis"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+}
 
 ------------------
 --  Razorscale  --
 ------------------
 L = DBM:GetModLocalization("Razorscale")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Razorscale"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+}
 
 -------------
 --  XT002  --
 -------------
 L = DBM:GetModLocalization("XT002")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "XT002"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+}
 
 
 -------------------
@@ -88,28 +88,28 @@ L:SetWarningLocalization({
 -------------------
 L = DBM:GetModLocalization("IronCouncil")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Iron Council"
-})
+}
 
-L:SetWarningLocalization({
+L:SetWarningLocalization{
 	WarningSupercharge	= "Supercharge incoming",
-})
+}
 
-L:SetTimerLocalization({
+L:SetTimerLocalization{
 	TimerSupercharge	= "Supercharge",  -- gives the other bosses more power
-})
+}
 
-L:SetOptionLocalization({
+L:SetOptionLocalization{
 	TimerSupercharge	= "Show Supercharge Timer",
 	WarningSupercharge	= "Show warning when Supercharge casting",
-})
+}
 
-L:SetMiscLocalization({
+L:SetMiscLocalization{
 	Steelbreaker		= "Steelbreaker",
 	RunemasterMolgeim	= "Runemaster Molgeim",
 	StormcallerBrundir 	= "Stormcaller Brundir",
-})
+}
 
 
 ---------------
@@ -117,15 +117,15 @@ L:SetMiscLocalization({
 ---------------
 L = DBM:GetModLocalization("Algalon")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Algalon"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+}
 
 
 ----------------
@@ -133,30 +133,30 @@ L:SetWarningLocalization({
 ----------------
 L = DBM:GetModLocalization("Kologarn")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Kologarn"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+}
 
 --------------
 --  Auriya  --
 --------------
 L = DBM:GetModLocalization("Auriya")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Auriya"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+}
 
 
 -------------
@@ -164,27 +164,27 @@ L:SetWarningLocalization({
 -------------
 L = DBM:GetModLocalization("Hodir")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Hodir"
-})
+}
 
-L:SetWarningLocalization({
+L:SetWarningLocalization{
 	WarningFlashFreeze	= "Flesh Freeze",
 	WarningBitingCold	= "Biting Cold - MOVE"
-})
+}
 
-L:SetTimerLocalization({
+L:SetTimerLocalization{
 	TimerFlashFreeze	= "Flesh Freeze incoming",  -- all ppl have to move on the rock patches
-})
+}
 
-L:SetOptionLocalization({
+L:SetOptionLocalization{
 	TimerFlashFreeze	= "Show Flash Freeze Cast-Timer",
 	WarningFlashFreeze	= "Show Warning for Flash Freeze",
-})
+}
 
-L:SetMiscLocalization({
+L:SetMiscLocalization{
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
-})
+}
 
 
 --------------
@@ -192,25 +192,25 @@ L:SetMiscLocalization({
 --------------
 L = DBM:GetModLocalization("Thorim")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Thorim"
-})
+}
 
-L:SetWarningLocalization({
+L:SetWarningLocalization{
 	WarningStormhammer	= "Stormhammer on >%s<",
 	UnbalancingStrike	= "Unbalancing Strike on >%s<",
 	WarningPhase2	= "Phase 2",
 	WarningBomb	= "Rune Detonation on >%s<",
 	LightningOrb = "Lightning Shock on You! Move!"
-})
+}
 
-L:SetTimerLocalization({
+L:SetTimerLocalization{
 	TimerStormhammer	= "Stormhammer CD",
 	TimerUnbalancingStrike	= "Unbalancing Strike CD",
 	TimerHardmode	= "Hard Mode"
-})
+}
 
-L:SetOptionLocalization({
+L:SetOptionLocalization{
 	TimerStormhammer	= "Show Stormhammer Cooldown",
 	TimerUnbalancingStrike	= "Show Timer for Unbalancing Strike",
 	TimerHardmode	= "Show Timer for Hard Mode",
@@ -218,12 +218,12 @@ L:SetOptionLocalization({
 	WarningStormhammer	= "Announce Stormhammer Target",
 	WarningPhase2	= "Announce Phase 2",
 	RangeFrame	= "Show Range Frame"
-})
+}
 
-L:SetMiscLocalization({
+L:SetMiscLocalization{
 	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
 	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!"
-})
+}
 
 
 -------------
@@ -231,15 +231,21 @@ L:SetMiscLocalization({
 -------------
 L = DBM:GetModLocalization("Freya")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Freya"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+	WarnUnstableSunBeam = "Unstable Sun Beam on >%s<",
+	SpecWarnUnstableSunBeam = "Unstable Sun Beam on You!",
+}
+
+L:SetTimerLocalization{
+	TimerUnstableSunBeam = "Sun Beam: %s"
+}
 
 
 -------------------
@@ -247,25 +253,25 @@ L:SetWarningLocalization({
 -------------------
 L = DBM:GetModLocalization("Mimiron")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Mimiron"
-})
+}
 
-L:SetWarningLocalization({
+L:SetWarningLocalization{
 	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
-})
+}
 
-L:SetTimerLocalization({
+L:SetTimerLocalization{
 	ProximityMines		= "New Proximity Mines",
-})
+}
 
-L:SetOptionLocalization({
+L:SetOptionLocalization{
 	WarningShockBlast	= "Show Shock Blast Warning",
 	WarningPlasmaBlast	= "Show Plasma Blast Warning",
 	ProximityMines		= "Show Timer for Proximity Mines",
-})
+}
 
-L:SetMiscLocalization({
+L:SetMiscLocalization{
 	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",
 	PlaySoundOnShockBlast 	= "Play sound on Shock Blast cast",
 	
@@ -274,7 +280,7 @@ L:SetMiscLocalization({
 
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
 	Phase3Engaged		= "Phase 3 incoming - regroup now",
-})
+}
 
 
 --------------------
@@ -282,32 +288,32 @@ L:SetMiscLocalization({
 --------------------
 L = DBM:GetModLocalization("GeneralVezax")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "General Vezax"
-})
+}
 
-L:SetWarningLocalization({
+L:SetWarningLocalization{
 	WarningShadowCrash	= "Shadow Crash on YOU"
-})
+}
 
-L:SetTimerLocalization({
+L:SetTimerLocalization{
 	timerSearingFlamesCast	= "Searing Flames",
 	timerSurgeofDarkness	= "Surge of Darkness",
 	timerSaroniteVapors	= "Next Saronite Vapors"
-})
+}
 
-L:SetOptionLocalization({
+L:SetOptionLocalization{
 	WarningShadowCrash	= "Show Special Warning for Shadow Crash",
 	timerSearingFlamesCast	= "Show Timer for Searing Flame Cast",
 	timerSurgeofDarkness	= "Show Timer for Sourge of Darkness",
 	timerSaroniteVapors	= "Show Timer for Saronite Vapors",
 	SetIconOnShadowCrash	= "Set Icon on Shadow Crash target (skull)",
 	SetIconOnLifeLeach	= "Set Icon on Life Leach target (cross)"
-})
+}
 
-L:SetMiscLocalization({
+L:SetMiscLocalization{
 	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!"
-})
+}
 
 
 -----------------
@@ -315,15 +321,15 @@ L:SetMiscLocalization({
 -----------------
 L = DBM:GetModLocalization("YoggSaron")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Yogg-Saron"
-})
+}
 
-L:SetMiscLocalization({
-})
+L:SetMiscLocalization{
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+}
 
 
 
