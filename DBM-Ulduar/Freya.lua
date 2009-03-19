@@ -8,23 +8,20 @@ mod:SetCreatureID(32906)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 mod:AddBoolOption("AddHealthFrame")
 mod:RemoveOption("HealthFrame") -- we cannot use the default static health frame as we need to be able to add/remove mobs
 
-local specWarnSunBeam = mod:NewSpecialWarning("SpecWarnUnstableSunBeam")
-local warnSunBeam = mod:NewAnnounce("WarnUnstableSunBeam", 2, 62243)
 local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
 local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
 
 local enrage = mod:NewEnrageTimer(600)
 
-local timerSunBeam = mod:NewTimer(20, "TimerUnstableSunBeam", 62243)
 local timerAlliesOfNature = mod:NewTimer(60, "TimerAlliesOfNature", 62678)
 local timerSimulKill = mod:NewTimer(60, "TimerSimulKill")
 
@@ -32,24 +29,20 @@ function mod:OnCombatStart(delay)
 	enrage:Start()
 	if self.Options.AddHealthFrame then
 		DBM.BossHealth:Show(L.name)
-		DBM.BossHealth:AddBoss(L.name, 32906) -- Freya
+		DBM.BossHealth:AddBoss(32906, L.name) -- Freya
 	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
---[[	if args.spellId == 62243 then -- unstable sun beam
-		warnSunBeam:Show(args.destName)
-		if args.destName == UnitName("player") then
-			specWarnSunBeam:Show()
-		end
-		self:SetIcon(args.destName, 8, 21)
-		timerSunBeam:Start(args.destName)
-	end]]--
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 62519 then
 		warnPhase2:Show()
+	end
+end
+
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 62678 then -- Summon Allies of Nature
+		timerAlliesOfNature:Start()
 	end
 end
 
@@ -62,9 +55,8 @@ end
 
 local adds = {}
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62678 then -- Summon Allies of Nature
-		timerAlliesOfNature:Start()
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.SpawnYell then
 		DBM.BossHealth:AddBoss(33202, L.WaterSpirit) -- ancient water spirit
 		DBM.BossHealth:AddBoss(32916, L.Snaplasher) -- snaplasher
 		DBM.BossHealth:AddBoss(32919, L.StormLasher) -- storm lasher

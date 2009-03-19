@@ -236,11 +236,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
+	SpawnYell = "Children, assist me!",
+	WaterSpirit = "Ancient Water Spirit",
+	Snaplasher = "Snaplasher",
+	StormLasher = "Storm Lasher",
 }
 
 L:SetWarningLocalization{
-	WarnUnstableSunBeam = "Unstable Sun Beam on >%s<",
-	SpecWarnUnstableSunBeam = "Unstable Sun Beam on You!",
 	WarnPhase2 = "Phase 2",
 	WarnSimulKill = "First add down - Resurrection in 1 min"
 }
