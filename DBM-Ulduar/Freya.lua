@@ -37,14 +37,14 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62243 then -- unstable sun beam
+--[[	if args.spellId == 62243 then -- unstable sun beam
 		warnSunBeam:Show(args.destName)
 		if args.destName == UnitName("player") then
 			specWarnSunBeam:Show()
 		end
 		self:SetIcon(args.destName, 8, 21)
 		timerSunBeam:Start(args.destName)
-	end
+	end]]--
 end
 
 function mod:SPELL_AURA_REMOVED(args)
