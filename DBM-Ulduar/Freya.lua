@@ -20,12 +20,16 @@ mod:RemoveOption("HealthFrame") -- we cannot use the default static health frame
 local specWarnSunBeam = mod:NewSpecialWarning("SpecWarnUnstableSunBeam")
 local warnSunBeam = mod:NewAnnounce("WarnUnstableSunBeam", 2, 62243)
 local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
+local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
+
+local enrage = mod:NewEnrageTimer(600)
 
 local timerSunBeam = mod:NewTimer(20, "TimerUnstableSunBeam", 62243)
 local timerAlliesOfNature = mod:NewTimer(60, "TimerAlliesOfNature", 62678)
 local timerSimulKill = mod:NewTimer(60, "TimerSimulKill")
 
 function mod:OnCombatStart(delay)
+	enrage:Start()
 	if self.Options.AddHealthFrame then
 		DBM.BossHealth:Show(L.name)
 		DBM.BossHealth:AddBoss(L.name, 32906) -- Freya
@@ -76,6 +80,7 @@ function mod:UNIT_DIED(args)
 		DBM.BossHealth:RemoveBoss(cid)
 		if not timerSimulKill:IsStarted() then
 			timerSimulKill:Start()
+			warnSimulKill:Show()
 		end
 		adds[cid] = nil
 		local counter = 0
