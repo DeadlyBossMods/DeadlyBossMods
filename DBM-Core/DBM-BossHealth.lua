@@ -167,7 +167,7 @@ function bossHealth:Clear()
 		local bar = bars[i]
 		bar:Hide()
 		bar:ClearAllPoints()
-		barCache[#barCache] = bar
+		barCache[#barCache + 1] = bar
 		bars[i] = nil
 	end
 end
@@ -178,5 +178,21 @@ end
 
 function bossHealth:AddBoss(cId, name)
 	table.insert(bars, createBar(self, cId, name))
+end
+
+function bossHealth:RemoveBoss(cId)
+	for i, bar in bars do
+		if bar.id == cId then
+			if bars[i + 1] then
+				local next = bars[i + 1]
+				next:SetPoint("TOP", bars[i - 1] or anchor, "BOTTOM", 0, 0)
+			end
+			bar:Hide()
+			bar:ClearAllPoints()
+			barCache[#barCache + 1] = bar
+			table.remove(bars, i)
+			break
+		end
+	end
 end
 
