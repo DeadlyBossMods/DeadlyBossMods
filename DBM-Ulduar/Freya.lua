@@ -28,7 +28,7 @@ local enrage = mod:NewEnrageTimer(600)
 
 local timerAlliesOfNature = mod:NewTimer(60, "TimerAlliesOfNature", 62678)
 local timerSimulKill = mod:NewTimer(60, "TimerSimulKill")
-local timerFuryYou = mod:NewTimer(10, "TimerFuryYou")
+local timerFuryYou = mod:NewTimer(10, "TimerFuryYou", 63571)
 
 function mod:OnCombatStart(delay)
 	enrage:Start()
