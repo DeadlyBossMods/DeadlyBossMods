@@ -75,7 +75,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:UNIT_DIED(args)
-	local cid = GetCIDFromGUID(args.destName)
+	local cid = self:GetCIDFromGUID(args.destName)
 	if cid == 33202 or cid == 32916 or cid == 32919 then
 		DBM.BossHealth:RemoveBoss(cid)
 		if not timerSimulKill:IsStarted() then
