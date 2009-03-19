@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE_FILTERED"
 )
 
 mod:AddBoolOption("AddHealthFrame")
@@ -19,11 +20,15 @@ mod:RemoveOption("HealthFrame") -- we cannot use the default static health frame
 
 local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
 local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
+local warnFury = mod:NewAnnounce("WarnFury", 2, 63571)
+
+local specWarnFury = mod:NewSpecialWarning("SpecWarnFury")
 
 local enrage = mod:NewEnrageTimer(600)
 
 local timerAlliesOfNature = mod:NewTimer(60, "TimerAlliesOfNature", 62678)
 local timerSimulKill = mod:NewTimer(60, "TimerSimulKill")
+local timerFuryYou = mod:NewTimer(10, "TimerFuryYou")
 
 function mod:OnCombatStart(delay)
 	enrage:Start()
@@ -39,10 +44,18 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-
+local altIcon = true
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 62678 then -- Summon Allies of Nature
 		timerAlliesOfNature:Start()
+	elseif args.spellId == 63571 then -- Nature's Fury
+		altIcon = not altIcon
+		self:SetIcon(args.destName, altIcon and 7 or 8, 10)
+		warnFury:Show(args.destName)
+		if args.destName == UnitName("player") then -- only cast on players; no need to check destFlags
+			specWarnFury:Show()
+			timerFuryYou:Start()
+		end
 	end
 end
 
@@ -57,12 +70,18 @@ local adds = {}
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SpawnYell then
-		DBM.BossHealth:AddBoss(33202, L.WaterSpirit) -- ancient water spirit
-		DBM.BossHealth:AddBoss(32916, L.Snaplasher) -- snaplasher
-		DBM.BossHealth:AddBoss(32919, L.StormLasher) -- storm lasher
+		if not adds[33202] then DBM.BossHealth:AddBoss(33202, L.WaterSpirit) end -- ancient water spirit
+		if not adds[32916] then DBM.BossHealth:AddBoss(32916, L.Snaplasher) end  -- snaplasher
+		if not adds[32919] then DBM.BossHealth:AddBoss(32919, L.StormLasher) end -- storm lasher
 		adds[33202] = true
 		adds[32916] = true
 		adds[32919] = true
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE_FILTERED(msg, sender)
+	if msg == L.EmoteTree then
+		-- todo
 	end
 end
 
