@@ -201,6 +201,10 @@ do
 
 	DBM:RegisterEvents("ADDON_LOADED")
 
+	function DBM:FilterRaidBossEmote(msg, ...)
+		return handleEvent(nil, "CHAT_MSG_RAID_BOSS_EMOTE_FILTERED", msg:gsub("\124c%x+(.-)\124r", "%1"), ...)
+	end
+
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		if not registeredEvents[event] then return end
 		table.wipe(args)
@@ -1272,8 +1276,9 @@ do
 		return onMonsterMessage("emote", msg)
 	end
 
-	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-		return onMonsterMessage("emote", msg)
+	function DBM:CHAT_MSG_RAID_BOSS_EMOTE(msg, ...)
+		onMonsterMessage("emote", msg)
+		return self:FilterRaidBossEmote(msg, ...)
 	end
 
 	function DBM:CHAT_MSG_MONSTER_SAY(msg)

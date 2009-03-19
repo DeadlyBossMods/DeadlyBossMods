@@ -240,17 +240,21 @@ L:SetMiscLocalization{
 	WaterSpirit = "Ancient Water Spirit",
 	Snaplasher = "Snaplasher",
 	StormLasher = "Storm Lasher",
+	EmoteTree = "???" -- /chatlog failed
 }
 
 L:SetWarningLocalization{
 	WarnPhase2 = "Phase 2",
-	WarnSimulKill = "First add down - Resurrection in 1 min"
+	WarnSimulKill = "First add down - Resurrection in 1 min",
+	WarnFury = "Nature's Fury on >%s<",
+	SpecWarnFury = "Nature's Fury on You!"
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam = "Sun Beam: %s",
 	TimerAlliesOfNature = "Allies of Nature CD",
-	TimerSimulKill = "Resurrection"
+	TimerSimulKill = "Resurrection",
+	TimerFuryYou = "Nature's Fury on you"
 }
 
 
