@@ -241,7 +241,8 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarnUnstableSunBeam = "Unstable Sun Beam on >%s<",
 	SpecWarnUnstableSunBeam = "Unstable Sun Beam on You!",
-	WarnPhase2 = "Phase 2"
+	WarnPhase2 = "Phase 2",
+	WarnSimulKill = "First add down - Resurrection in 1 min"
 }
 
 L:SetTimerLocalization{
