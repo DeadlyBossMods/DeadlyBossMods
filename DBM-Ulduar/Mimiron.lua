@@ -84,7 +84,7 @@ do
 	local count = 0
 	local last = 0
 	function mod:SPELL_AURA_REMOVED(args)
-		if self:GetCIDFromGUID(args.destGUID) == 33432 then
+		if phase == 1 and self:GetCIDFromGUID(args.destGUID) == 33432 then
 			if args.timestamp == last then	-- all events in the same second
 				count = count + 1
 
