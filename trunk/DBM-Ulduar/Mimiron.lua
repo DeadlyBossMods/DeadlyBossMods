@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_REMOVED",
+	"SPELL_AURA_REMOVED"
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
@@ -29,8 +29,8 @@ local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local timerProximityMines	= mod:NewTimer(35, "ProximityMines", 63027)
 
 local timerDarkGlareCast	= mod:NewTimer(15, "DarkGlare", 63274)
-local timerNextDarkGlare	= mod:NewTimer(60, "NextDarkGlare", 63274)
-local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
+local timerNextDarkGlare	= mod:NewTimer(41, "NextDarkGlare", 63274)
+local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
 
 local timerP1toP2		= mod:NewTimer(30, "TimeToP2")
 local timerSpinUp		= mod:NewTimer(4, "SpinUp", 63414)
@@ -64,8 +64,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-
 function mod:CHAT_MSG_MONSTER_YELL(msg)
+	self:AddMsg(msg)
 	if msg == L.YellPhase2 then
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
@@ -80,7 +80,7 @@ do
 	function mod:SPELL_AURA_REMOVED(args)
 		if self:GetCIDFromGUID(args.destGUID) == 33432 then
 			if args.time == last then	-- all events in the same second
-				count = count = count + 1
+				count = count + 1
 
 				if count > 20 then
 					DBM:AddMsg("Phase1 ENDE detected")
