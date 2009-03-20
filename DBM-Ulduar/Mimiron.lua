@@ -13,7 +13,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
@@ -61,6 +62,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.YellPhase2 then
+		timerProximityMines:Stop()
+	elseif msg == L.YellPhase3 then
+		timerDarkGlare:Stop()
+	end
+end
+
 
 
 
