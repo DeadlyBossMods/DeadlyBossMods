@@ -68,15 +68,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	self:AddMsg(msg)
-	if msg == L.YellPhase2 then
-		phase = 2
-		timerProximityMines:Stop()
-		timerP1toP2:Start()
-
-	elseif msg == L.YellPhase3 then
+	if msg == L.YellPhase3 then
 		phase = 3
-		timerDarkGlare:Stop()
+		timerDarkGlareCast:Cancel()
+		timerDarkGlareCast:Cancel()
 	end
 end
 
@@ -87,13 +82,10 @@ do
 		if phase == 1 and self:GetCIDFromGUID(args.destGUID) == 33432 then
 			if args.timestamp == last then	-- all events in the same second
 				count = count + 1
-
 				if count > 20 then
-					DBM:AddMsg("Phase1 ENDE detected")
-					DBM:AddMsg("Phase1 ENDE detected")
-					DBM:AddMsg("Phase1 ENDE detected")
-					DBM:AddMsg("Phase1 ENDE detected")
-					DBM:AddMsg("Phase1 ENDE detected")
+					phase = 2
+					timerProximityMines:Stop()
+					timerP1toP2:Start()
 				end
 			else
 				count = 1
