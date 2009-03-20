@@ -27,7 +27,7 @@ local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local timerProximityMines	= mod:NewTimer(40, "ProximityMines", 63027)
 
 local timerDarkGlare		= mod:NewTimer(15, "DarkGlare", 63274)
-local timerNextDarkGlare	= mod:NewTimer(65, "NextDarkGlare", 63274)
+local timerNextDarkGlare	= mod:NewTimer(30, "NextDarkGlare", 63274)
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 
 function mod:OnCombatStart(delay)
