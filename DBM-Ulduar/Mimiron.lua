@@ -35,7 +35,10 @@ local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
 local timerP1toP2		= mod:NewTimer(30, "TimeToP2")
 local timerSpinUp		= mod:NewTimer(4, "SpinUp", 63414)
 
+local phase = 0 
+
 function mod:OnCombatStart(delay)
+	phase = 1
 end
 
 function mod:SPELL_CAST_START(args)
@@ -67,9 +70,12 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	self:AddMsg(msg)
 	if msg == L.YellPhase2 then
+		phase = 2
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
+
 	elseif msg == L.YellPhase3 then
+		phase = 3
 		timerDarkGlare:Stop()
 	end
 end
@@ -79,7 +85,7 @@ do
 	local last = 0
 	function mod:SPELL_AURA_REMOVED(args)
 		if self:GetCIDFromGUID(args.destGUID) == 33432 then
-			if args.time == last then	-- all events in the same second
+			if args.timestamp == last then	-- all events in the same second
 				count = count + 1
 
 				if count > 20 then
@@ -92,7 +98,7 @@ do
 			else
 				count = 1
 			end
-			last = args.time
+			last = args.timestamp
 		end
 	end
 end
