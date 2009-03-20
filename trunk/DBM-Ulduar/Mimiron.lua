@@ -27,9 +27,12 @@ mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local timerProximityMines	= mod:NewTimer(40, "ProximityMines", 63027)
 
-local timerDarkGlare		= mod:NewTimer(15, "DarkGlare", 63274)
+local timerDarkGlareCast	= mod:NewTimer(15, "DarkGlare", 63274)
 local timerNextDarkGlare	= mod:NewTimer(60, "NextDarkGlare", 63274)
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
+
+local timerP1toP2		= mod:NewTimer(30, "TimeToP2")
+local timerSpinUp		= mod:NewTimer(4, "SpinUp", 63414)
 
 function mod:OnCombatStart(delay)
 end
@@ -45,27 +48,26 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63027 then	-- mines
+	if args.spellId == 63027 then		-- mines
 		timerProximityMines:Start()
-	end
-end
 
-local spam = 0
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63274 and GetTime() - spam > 3 then
-		spam = GetTime()
-		timerDarkGlare:Start()
-		timerNextDarkGlare:Schedule(15)
+	elseif args.spellId == 63414 then	-- Spinning UP (before DarkGlare)
+		timerSpinUp:Start()
+		timerDarkGlareCast:Schedule(4)
+		timerNextDarkGlare:Schedule(19)	-- 4 (cast spinup) + 15 sec (cast darkglare)
 		warnDarkGlare:Show()
+
 		if self.Options.PlaySoundOnDarkGlare then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	end
 end
 
+
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 then
 		timerProximityMines:Stop()
+		timerP1toP2:Start()
 	elseif msg == L.YellPhase3 then
 		timerDarkGlare:Stop()
 	end
