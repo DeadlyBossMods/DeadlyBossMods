@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_AURA_REMOVED",
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
@@ -73,8 +74,28 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+do 
+	local count = 0
+	local last = 0
+	function mod:SPELL_AURA_REMOVED(args)
+		if self:GetCIDFromGUID(args.destGUID) == 33432 then
+			if args.time == last then	-- all events in the same second
+				count = count = count + 1
 
-
+				if count > 20 then
+					DBM:AddMsg("Phase1 ENDE detected")
+					DBM:AddMsg("Phase1 ENDE detected")
+					DBM:AddMsg("Phase1 ENDE detected")
+					DBM:AddMsg("Phase1 ENDE detected")
+					DBM:AddMsg("Phase1 ENDE detected")
+				end
+			else
+				count = 1
+			end
+			last = args.time
+		end
+	end
+end
 
 
 
