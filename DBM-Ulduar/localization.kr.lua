@@ -234,15 +234,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
+	SpawnYell = "Children, assist me!",
+	WaterSpirit = "고대 물의 정령",
+	Snaplasher = "철썩채찍",
+	StormLasher = "폭풍 채찍",
+	EmoteTree = "???" -- /chatlog failed
 }
 
 L:SetWarningLocalization{
-	WarnUnstableSunBeam = ">%s< 에게 불안정한 태양 광선!",
-	SpecWarnUnstableSunBeam = "당신에게 불안정한 태양 광선!",
+	WarnPhase2 = "2 페이즈",
+	WarnSimulKill = "First add down - Resurrection in 1 min",
+	WarnFury = ">%s< 에게 자연의 분노",
+	SpecWarnFury = "당신에게 자연의 분노!"
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam = "태양 광선: %s"
+	TimerUnstableSunBeam = "태양 광선: %s",
+	TimerAlliesOfNature = "Allies of Nature CD",
+	TimerSimulKill = "Resurrection",
+	TimerFuryYou = "당신에게 자연의 분노"
 }
 
 
