@@ -24,10 +24,10 @@ mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
 mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
 
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
-local timerProximityMines	= mod:NewTimer(40, "ProximityMines")
+local timerProximityMines	= mod:NewTimer(40, "ProximityMines", 63027)
 
-local timerDarkGlare		= mod:NewTimer(15, "DarkGlare")
-local timerNextDarkGlare	= mod:NewTimer(65, "NextDarkGlare")
+local timerDarkGlare		= mod:NewTimer(15, "DarkGlare", 63274)
+local timerNextDarkGlare	= mod:NewTimer(65, "NextDarkGlare", 63274)
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 
 function mod:OnCombatStart(delay)
