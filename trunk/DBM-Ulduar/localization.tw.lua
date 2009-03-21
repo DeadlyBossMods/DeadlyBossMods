@@ -185,7 +185,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	PlaySoundOnFlashFreeze	= "當閃霜的施放播放音效",
+	PlaySoundOnFlashFreeze	= "當閃霜施放時播放音效",
 }
 
 
@@ -201,25 +201,25 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarningStormhammer	= 風暴之錘: >%s<",
 	UnbalancingStrike	= "失衡打擊: >%s<",
-	WarningPhase2	= "第二階段",
-	WarningBomb	= "引爆符文: >%s<",
-	LightningOrb = "你中了閃電充能! 快跑!"
+	WarningPhase2		= "第二階段",
+	WarningBomb		= "引爆符文: >%s<",
+	LightningOrb 		= "你中了閃電充能! 快跑!"
 }
 
 L:SetTimerLocalization{
 	TimerStormhammer	= "風暴之錘冷卻",
 	TimerUnbalancingStrike	= "失衡打擊冷卻",
-	TimerHardmode	= "困難模式"
+	TimerHardmode		= "困難模式"
 }
 
 L:SetOptionLocalization{
 	TimerStormhammer	= "顯示風暴之錘冷卻時間",
 	TimerUnbalancingStrike	= "顯示失衡打擊計時器",
-	TimerHardmode	= "顯示困難模式計時器",
+	TimerHardmode		= "顯示困難模式計時器",
 	UnbalancingStrike	= "提示失衡打擊的目標",
 	WarningStormhammer	= "提示風暴之錘的目標",
-	WarningPhase2	= "提示第二階段",
-	RangeFrame	= "顯示距離框"
+	WarningPhase2		= "提示第二階段",
+	RangeFrame		= "顯示距離框"
 }
 
 L:SetMiscLocalization{
@@ -238,25 +238,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell = "孩子們, 幫助我!", --Children, assist me!
-	WaterSpirit = "古代水靈" --Ancient Water Spirit
-	Snaplasher = "撕咬鞭打者", --Snaplasher
-	StormLasher = "暴風鞭打者", --Storm Lasher
-	EmoteTree = "???" -- /chatlog failed
+	SpawnYell 		= "孩子們, 幫助我!", --Children, assist me!
+	WaterSpirit 		= "古代水靈" --Ancient Water Spirit
+	Snaplasher 		= "撕咬鞭打者", --Snaplasher
+	StormLasher 		= "暴風鞭打者", --Storm Lasher
+	EmoteTree 		= "???" -- /chatlog failed
 }
 
 L:SetWarningLocalization{
-	WarnPhase2 = "第二階段",
-	WarnSimulKill = "第一支小怪死亡 - 1分鐘後復活",
-	WarnFury = "自然烈怒: >%s<",
-	SpecWarnFury = "你中了自然烈怒!"
+	WarnPhase2 		= "第二階段",
+	WarnSimulKill		= "第一支小怪死亡 - 1分鐘後復活",
+	WarnFury 		= "自然烈怒: >%s<",
+	SpecWarnFury 		= "你中了自然烈怒!"
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam = "太陽光束: %s",
-	TimerAlliesOfNature = "自然和諧冷卻",
-	TimerSimulKill = "復活",
-	TimerFuryYou = "你中了自然烈怒"
+	TimerUnstableSunBeam 	= "太陽光束: %s",
+	TimerAlliesOfNature 	= "自然和諧冷卻",
+	TimerSimulKill 		= "復活",
+	TimerFuryYou 		= "你中了自然烈怒"
 }
 
 
@@ -271,27 +271,25 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningPlasmaBlast	= "離子衝擊: %s - 治療",
+	Phase2Engaged		= "第二階段即將到來 - 現在重組",
+	Phase3Engaged		= "第三階段即將到來 - 現在重組",
 }
 
 L:SetTimerLocalization{
-	ProximityMines		= "下一個 環罩地雷",
+	ProximityMines		= "新的環罩地雷",
 }
 
 L:SetOptionLocalization{
 	WarningShockBlast	= "顯示震爆警告",
 	WarningPlasmaBlast	= "顯示離子衝擊",
 	ProximityMines		= "顯示環罩地雷計時器",
+	PlaySoundOnShockBlast 	= "當震爆施放時播放音效",
 }
 
 L:SetMiscLocalization{
-	YellPull		= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",
-	PlaySoundOnShockBlast 	= "當震爆施放時播放音效",
-	
+	YellPull		= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",	
 	YellPhase2		= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
-	Phase2Engaged		= "第二階段即將到來 - 現在重組",
-
 	YellPhase3		= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
-	Phase3Engaged		= "第三階段即將到來 - 現在重組",
 }
 
 
