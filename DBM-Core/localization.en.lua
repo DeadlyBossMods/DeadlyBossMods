@@ -75,3 +75,8 @@ DBM_CORE_UNKNOWN					= "unknown"
 DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
+
+
+-- Generic Warnings
+DBM_CORE_GENERIC_TARGET_WARN = "%s on >%%s<!"
+DBM_CORE_GENERIC_TARGET_OPTION = "Announce target of %s"
