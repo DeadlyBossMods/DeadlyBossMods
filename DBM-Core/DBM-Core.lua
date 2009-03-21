@@ -2298,6 +2298,20 @@ function bossModPrototype:GetHP()
 	return self:GetBossHPString((self.combatInfo and self.combatInfo.mob) or self.creatureId)
 end
 
+function bossModPrototype:IsWipe()
+	local wipe = true
+	local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+		local id = (i == 0 and "player") or uId..i
+		if UnitAffectingCombat(id) and not UnitIsDeadOrGhost(id) then
+			wipe = false
+			break
+		end
+	end
+	return wipe
+end
+
+
 
 -----------------------
 --  Synchronization  --
