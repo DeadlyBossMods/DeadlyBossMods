@@ -29,7 +29,7 @@ Razorscale.lua
 XT002.lua
 IronCouncil.lua
 Kologarn.lua
-Auriya.lua
+Auriaya.lua
 Mimiron.lua
 Freya.lua
 Thorim.lua
