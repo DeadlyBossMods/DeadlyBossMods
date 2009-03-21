@@ -1830,6 +1830,17 @@ function bossModPrototype:SetBossHealthInfo(...)
 	self.bossHealthInfo = {...}
 end
 
+-----------------------------
+--  Generic Target Warning --
+-----------------------------
+function bossModPrototype:NewGenericTargetAnnounce(spellId, color, ...)
+	local id = "GenericTarget"..spellId
+	local spellName = GetSpellInfo(spellId)
+	self.localization.warnings[id] = DBM_CORE_GENERIC_TARGET_WARN:format(spellName)
+	self.localization.options[id] = DBM_CORE_GENERIC_TARGET_OPTION:format(spellName)
+	return self:NewAnnounce(id, color, spellId, ...)
+end
+
 
 -----------------------
 --  Announce Object  --
