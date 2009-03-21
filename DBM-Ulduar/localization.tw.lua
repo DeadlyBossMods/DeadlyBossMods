@@ -199,7 +199,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer	= 風暴之錘: >%s<",
+	WarningStormhammer	= "風暴之錘: >%s<",
 	UnbalancingStrike	= "失衡打擊: >%s<",
 	WarningPhase2		= "第二階段",
 	WarningBomb		= "引爆符文: >%s<",
@@ -239,7 +239,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	SpawnYell 		= "孩子們, 幫助我!", --Children, assist me!
-	WaterSpirit 		= "古代水靈" --Ancient Water Spirit
+	WaterSpirit 		= "古代水靈", --Ancient Water Spirit
 	Snaplasher 		= "撕咬鞭打者", --Snaplasher
 	StormLasher 		= "暴風鞭打者", --Storm Lasher
 	EmoteTree 		= "???" -- /chatlog failed
