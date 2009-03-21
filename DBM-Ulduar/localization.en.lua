@@ -144,12 +144,12 @@ L:SetWarningLocalization{
 }
 
 --------------
---  Auriya  --
+--  Auriaya  --
 --------------
-L = DBM:GetModLocalization("Auriya")
+L = DBM:GetModLocalization("Auriaya")
 
 L:SetGeneralLocalization{
-	name = "Auriya"
+	name = "Auriaya"
 }
 
 L:SetMiscLocalization{
