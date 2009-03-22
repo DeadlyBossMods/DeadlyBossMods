@@ -143,9 +143,9 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 }
 
---------------
+---------------
 --  Auriaya  --
---------------
+---------------
 L = DBM:GetModLocalization("Auriaya")
 
 L:SetGeneralLocalization{
@@ -159,8 +159,8 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	SpecWarnBlast = "Sentinel Blast - Interrupt!",
 	WarnCatDied = "Feral Defender down (%d lifes remaining)",
-	WarnFear = "Show Fear Warning",
-	WarnFearSoon = "Next Fear soon!"
+	WarnFear = "Fear!",
+	WarnFearSoon = "Next Fear soon"
 }
 
 L:SetOptionLocalization{
