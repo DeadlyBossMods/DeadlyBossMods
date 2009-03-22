@@ -112,7 +112,7 @@ local function checkEntry(t, val)
 			return true
 		end
 	end
-	return nil
+	return false
 end
 
 local function removeEntry(t, val)
@@ -147,9 +147,20 @@ local function strFromTime(time)
 	end
 end
 
-local function pformat(fstr, ...)
-	local ok, str = pcall(format, fstr, ...)
-	return (ok and str) or fstr:gsub("%%%S+", DBM_CORE_UNKNOWN)
+local pformat
+do
+	local function replace(cap1, cap2)
+		return cap1 == "%" and DBM_CORE_UNKNOWN
+	end
+	
+	-- fail-safe format, replaces missing arguments with unknown
+	-- note: doesn't handle cases like %%%s correct at the moment (should become %unknown, but becomes %%s)
+	-- also, the end of the format directive is not detected in all cases, but handles everything that occurs in our boss mods ;)
+	--> not suitable for general-purpose use, just for our warnings and timers (where an argument like a spell-target might be nil due to missing target information)
+	function pformat(fstr, ...)
+		local ok, str = pcall(format, fstr, ...)
+		return ok and str or fstr:gsub("(%%+)([^%%%s<]+)", replace):gsub("%%%%", "%%")
+	end
 end
 
 local function checkLanguage()
@@ -2005,17 +2016,29 @@ do
 
 	function timerPrototype:Start(timer, ...)
 		if timer and type(timer) ~= "number" then
-			return self:Start(nil, timer, ...)
+			return self:Start(nil, timer, ...) -- first argument is optional!
 		end
 		if not self.option or self.mod.Options[self.option] then
 			local timer = timer and ((timer > 0 and timer) or self.timer + timer) or self.timer
 			local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
-			local name = pformat(self.text, ...)
 			local bar = DBM.Bars:CreateBar(timer, id, self.icon)
-			if bar then bar:SetText(name) end
+			if not bar then
+				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
+			end
+			if self.type then
+				bar:SetText(pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...))
+				print(self.mod:GetLocalizedTimerText(self.type, self.spellId))
+				print(...)
+				print(pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...))
+			else				
+				bar:SetText(pformat(self.text, ...))
+			end
 			table.insert(self.startedTimers, id)
 			self.mod:Unschedule(removeEntry, self.startedTimers, id)
 			self.mod:Schedule(timer, removeEntry, self.startedTimers, id)
+			return bar
+		else
+			return false, "disabled"
 		end
 	end
 	timerPrototype.Show = timerPrototype.Start
@@ -2097,34 +2120,86 @@ do
 			bar.small = true
 		end
 	end
-
---	function timerPrototype:SetNormalModeTimer(timer)
---		self.shortTimer = timer
---	end
-
+	
+	function timerPrototype:AddOption(optionDefault, optionName)
+		if optionName ~= false then
+			self.option = optionName or self.id
+			self.mod:AddBoolOption(self.option, optionDefault, "timer")
+		end
+	end
+	
 	function bossModPrototype:NewTimer(timer, name, icon, optionDefault, optionName, r, g, b)
+		local icon = type(icon) == "number" and select(3, GetSpellInfo(icon)) or icon
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[name],
 				timer = timer,
 				id = name,
-				icon = (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
+				icon = icon,
 				r = r,
 				g = g,
 				b = b,
-				option = optionName or name,
 				startedTimers = {},
 				mod = self,
 			},
 			mt
 		)
-		if optionName == false then
-			obj.option = nil
-		else
-			self:AddBoolOption(optionName or name, optionDefault, "timer")
-		end
+		obj:AddOption(optionDefault, optionName)
 		table.insert(self.timers, obj)
 		return obj
+	end
+	
+	-- new constructor for the new auto-localized timer types
+	local function newTimer(self, timerType, timer, spellId, optionDefault, optionName, texture, r, g, b)
+		local id = "Timer"..spellId..self.id..#self.timers
+		local icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
+		local obj = setmetatable(
+			{
+				type = timerType,
+				spellId = spellId,
+				timer = timer,
+				id = id,
+				icon = icon,
+				r = r,
+				g = g,
+				b = b,
+				startedTimers = {},
+				mod = self,
+			},
+			mt
+		)
+		obj:AddOption(optionDefault, optionName)
+		table.insert(self.timers, obj)
+		return obj
+	end
+
+
+	function bossModPrototype:NewTargetTimer(...)
+		return newTimer(self, "target", ...)
+	end
+
+	function bossModPrototype:NewCastTimer(timer, ...)
+		if timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
+			local spellId = timer
+			timer = select(7, GetSpellInfo(spellId)) -- GetSpellInfo takes YOUR spell haste into account...WTF?
+			local spellHaste = select(7, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
+			timer = timer / spellHaste -- calculate the real cast time of the spell...
+			return self:NewCastTimer(timer / 1000, spellId, ...)
+		end
+		return newTimer(self, "cast", timer, ...)
+	end
+	
+	function bossModPrototype:NewCDTimer(...)
+		return newTimer(self, "cd", ...)
+	end
+	
+	function bossModPrototype:NewNextTimer(...)
+		return newTimer(self, "next", ...)
+	end
+	
+	function bossModPrototype:GetLocalizedTimerText(timerType, spellId)
+		local spellName = GetSpellInfo(spellId)
+		return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType], spellName)
 	end
 end
 

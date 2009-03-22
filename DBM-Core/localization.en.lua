@@ -80,3 +80,12 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
 -- Generic Warnings
 DBM_CORE_GENERIC_TARGET_WARN = "%s on >%%s<!"
 DBM_CORE_GENERIC_TARGET_OPTION = "Announce target of %s"
+
+-- Auto-generated Timer Localizations
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	cd = "%s CD",
+	next = "Next %s",
+}
+
