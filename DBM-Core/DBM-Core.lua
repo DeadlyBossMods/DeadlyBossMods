@@ -102,6 +102,19 @@ local loadModOptions
 local checkWipe
 local fireEvent
 
+--------------------------------------------------------
+--  Cache frequently used global variables in locals  --
+--------------------------------------------------------
+local DBM = DBM
+-- these global functions are accessed all the time by the event handler
+-- so caching them is worth the afford
+local ipairs, pairs, next = ipairs, pairs, next
+local type = type
+local select = select
+local tinsert = table.insert
+local tremove = table.remove
+local twipe = table.wipe
+
 
 ---------------------------------
 --  General (local) functions  --
@@ -163,13 +176,6 @@ do
 	end
 end
 
-local function checkLanguage()
-	local l = GetLocale()
-	--if l == "koKR" then
-	--	DBM:AddMsg(("Your client language \"%s\" is currently unsupported in DBMv4.\nIf you want to help us translating DBM: drop us a line! (email: tandanu@deadlybossmods.com, forum: http://www.deadlybossmods.com/forum)"):format(l))
-	--end
-end
-
 
 --------------
 --  Events  --
@@ -191,7 +197,7 @@ do
 		for i = 1, select("#", ...) do
 			local ev = select(i, ...)
 			registeredEvents[ev] = registeredEvents[ev] or {}
-			table.insert(registeredEvents[ev], self)
+			tinsert(registeredEvents[ev], self)
 			mainFrame:RegisterEvent(ev)
 		end
 	end
@@ -200,7 +206,7 @@ do
 		for i, v in pairs(registeredEvents) do
 			for i = #v, 1 do
 				if v[i] == self then
-					table.remove(v, i)
+					tremove(v, i)
 				end
 			end
 			if #v == 0 then
@@ -218,7 +224,7 @@ do
 
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		if not registeredEvents[event] then return end
-		table.wipe(args)
+		twipe(args)
 		args.timestamp = timestamp
 		args.event = event
 		args.sourceGUID = sourceGUID
@@ -962,7 +968,6 @@ do
 			DBM:Schedule(1.5, function() combatInitialized = true end)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
-			checkLanguage()
 		end
 	end
 end
