@@ -2027,9 +2027,6 @@ do
 			end
 			if self.type then
 				bar:SetText(pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...))
-				print(self.mod:GetLocalizedTimerText(self.type, self.spellId))
-				print(...)
-				print(pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...))
 			else				
 				bar:SetText(pformat(self.text, ...))
 			end
