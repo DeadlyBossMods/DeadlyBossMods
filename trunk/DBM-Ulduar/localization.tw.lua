@@ -146,18 +146,30 @@ L:SetWarningLocalization{
 }
 
 --------------
---  Auriya  --
+--  Auriaya  --
 --------------
-L = DBM:GetModLocalization("Auriya")
+L = DBM:GetModLocalization("Auriaya")
 
 L:SetGeneralLocalization{
 	name = "奧芮雅"
 }
 
 L:SetMiscLocalization{
+	Defender = "野性防衛者 (%d)"
 }
 
 L:SetWarningLocalization{
+	SpecWarnBlast = "哨兵衝擊 - 打斷!",
+	WarnCatDied = "野性防衛者倒下 (剩餘%d支)",
+	WarnFear = "恐懼",
+	WarnFearSoon = "下一次恐懼即將到來!"
+}
+
+L:SetOptionLocalization{
+	SpecWarnBlast = "為哨兵衝擊顯示特別警告",
+	WarnFear = "顯示恐懼警告",
+	WarnFearSoon = "顯示即將恐懼警告",
+	WarnCatDied = "當野性防衛者死亡時顯示警告"
 }
 
 
