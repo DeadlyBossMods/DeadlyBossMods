@@ -44,7 +44,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	mod:PrintStats()
+--	mod:PrintStats()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
