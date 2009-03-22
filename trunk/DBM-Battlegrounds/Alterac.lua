@@ -38,7 +38,7 @@ local gyTimer = Alterac:NewTimer(243, "TimerGY", "Interface\\Icons\\Spell_Shadow
 
 -- http://www.wowwiki.com/API_GetMapLandmarkInfo
 
-graveyards = {}
+local graveyards = {}
 local function is_graveyard(id)
 	return id == 15 or id == 4 or id == 13 or id == 14 or id == 8 
 end
@@ -206,7 +206,7 @@ do
 			{6801, 17306},
 		},
 		[13257] = {6781, 17422, 20},
-		[13176] = {7224, 17422, 20},
+		[13176] = {6741, 17422, 20},
 		[13577] = {7026, 17643},
 		[13179] = {6825, 17326},
 		[13438] = {6942, 17502},
