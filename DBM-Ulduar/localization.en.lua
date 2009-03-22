@@ -23,7 +23,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	pursueTargetWarn	= "Pursuing >%s<!",
-	warnNextPursueSoon	= "pursue change in 5 Seconds"
+	warnNextPursueSoon	= "Target Change in 5 Sec"
 }
 
 L:SetOptionLocalization{
@@ -32,7 +32,7 @@ L:SetOptionLocalization{
 	timerPursued		= "Show Timer for Pursued",
 	SystemOverload		= "Show Special Warning for System Overload",
 	SpecialPursueWarnYou	= "Show Special Warning when Pursued",
-	PursueWarn		= "Show Raidwarning for pursue on Player",
+	PursueWarn		= "Show warning for pursue on Player",
 	warnNextPursueSoon	= "Warn before next pursue"
 }
 
