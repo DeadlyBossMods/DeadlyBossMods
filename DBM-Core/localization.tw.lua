@@ -72,3 +72,12 @@ DBM_CORE_ALLIANCE					= "聯盟"
 DBM_CORE_HORDE						= "部落"
 
 DBM_CORE_UNKNOWN					= "未知"
+
+DBM_CORE_TIMER_PULL					= "戰鬥準備"
+DBM_CORE_ANNOUNCE_PULL				= "%d秒後拉怪"
+DBM_CORE_ANNOUNCE_PULL_NOW			= "拉怪囉!"
+
+
+-- Generic Warnings
+DBM_CORE_GENERIC_TARGET_WARN = "%s 在 >%%s<!"
+DBM_CORE_GENERIC_TARGET_OPTION = "提示目標 %s"
