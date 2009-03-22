@@ -27,13 +27,15 @@ end
 mod:RemoveOption("HealthFrame") -- we don't want the automatically generated healthframe so remove the option to enable it
 mod:AddBoolOption("AddHealthFrame") -- we use our own health frame instead
 
-local warnSwarm = mod:NewGenericTargetAnnounce(64396, 2)
+local warnSwarm = mod:NewGenericTargetAnnounce(64396, 2) -- do not use this method; it will be replaced sone
+
 local specWarnBlast = mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local warnFear = mod:NewAnnounce("WarnFear", 3, 64386)
 local warnFearSoon = mod:NewAnnounce("WarnFearSoon", 1, 64386)
 local warnCatDied = mod:NewAnnounce("WarnCatDied", 3, 64455)
 
-local timerNextFear = mod:NewTimer(37.5, "TimerFear", 64386)
+local timerFear = mod:NewCastTimer(64386)
+local timerNextFear = mod:NewNextTimer(35.5, 64386)
 
 function mod:OnCombatStart(delay)
 	if self.Options.AddHealthFrame then
@@ -47,7 +49,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnBlast:Show()
 	elseif args.spellId == 64386 then -- Terrifying Screech
 		warnFear:Show()
-		timerNextFear:Start()
+		timerFear:Start()
+		timerNextFear:Schedule(2)
 		warnFearSoon:Schedule(34)
 	elseif args.spellid == 64688 then --Sonic Screech
 		-- warning needed here?

@@ -20,7 +20,7 @@ mod:RegisterEvents(
 
 local timerSystemOverload	= mod:NewTimer(20, "timerSystemOverload", 62475)
 local timerFlameVents		= mod:NewTimer(10, "timerFlameVents", 62396)
-local timerPursued		= mod:NewTimer(30, "timerPursued", 62374)
+local timerPursued			= mod:NewTimer(30, "timerPursued", 62374)
 local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
 
 local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
