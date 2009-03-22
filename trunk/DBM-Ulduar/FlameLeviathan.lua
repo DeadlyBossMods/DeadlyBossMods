@@ -102,7 +102,7 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif args.spellId == 62374 then	-- Pursued
 		local player = guids[args.destGUID] or "unknown"
-		warnNextPursueSoon:Shedule(25)
+		warnNextPursueSoon:Schedule(25)
 		timerPursued:Start(player)
 		pursueTargetWarn:Show(player)
 
