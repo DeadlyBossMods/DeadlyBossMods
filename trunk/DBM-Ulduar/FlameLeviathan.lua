@@ -28,8 +28,8 @@ local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2)
 local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3)
 
 
+--local stats = {}
 local guids = {}
-local stats = {}
 local function buildGuidTable()
 	table.wipe(guids)
 	for i = 1, GetNumRaidMembers() do
@@ -38,11 +38,39 @@ local function buildGuidTable()
 end
 
 function mod:OnCombatStart(delay)
-	DBM:AddMsg("Combat against Flame Levitian started!")
 	buildGuidTable()
-	table.wipe(stats)
+--	table.wipe(stats)
 end
 
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 62396 then		-- Flame Vents
+		timerFlameVents:Start()
+
+	elseif args.spellId == 62475 then	-- Systems Shutdown / Overload
+		timerSystemOverload:Start()
+		warnSystemOverload:Show()
+
+	elseif args.spellId == 62374 then	-- Pursued
+		local player = guids[args.destGUID]
+		warnNextPursueSoon:Schedule(25)
+		timerPursued:Start(player)
+		pursueTargetWarn:Show(player)
+
+		if player == UnitName("player") then
+			pursueSpecWarn:Show()
+		end
+	end
+
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 62396 then
+		timerFlameVents:Stop()
+	end
+end
+
+--[[
 function mod:OnCombatEnd()
 --	mod:PrintStats()
 end
@@ -87,37 +115,11 @@ function mod:PrintStats()
 	end
 	table.sort(sortedStats, sort)
 	for i, v in ipairs(sortedStats) do
-		SendChatMessage(("%d. %s: %d kills (accuracy: %.2f%%)"):format(i, v.player, v.kills, v.casts / v.hits * 100), "RAID")
+		SendChatMessage(("%d. %s: %d kills (accuracy: %.2f%%)"):format(i, v.player, v.kills, math.max(math.min(v.casts / v.hits * 100, 100), 0), "RAID")
 	end
 	table.wipe(sortedStats)
-end
+end]]--
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62396 then		-- Flame Vents
-		timerFlameVents:Start()
-
-	elseif args.spellId == 62475 then	-- Systems Shutdown / Overload
-		timerSystemOverload:Start()
-		warnSystemOverload:Show()
-
-	elseif args.spellId == 62374 then	-- Pursued
-		local player = guids[args.destGUID] or "unknown"
-		warnNextPursueSoon:Schedule(25)
-		timerPursued:Start(player)
-		pursueTargetWarn:Show(player)
-
-		if player == UnitName("player") then
-			pursueSpecWarn:Show()
-		end
-	end
-
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62396 then
-		timerFlameVents:Stop()
-	end
-end
 
 --[[
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
