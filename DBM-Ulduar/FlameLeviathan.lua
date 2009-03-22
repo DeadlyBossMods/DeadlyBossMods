@@ -29,7 +29,7 @@ local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3)
 
 
 local guids = {}
-stats = {}
+local stats = {}
 local function buildGuidTable()
 	table.wipe(guids)
 	for i = 1, GetNumRaidMembers() do
