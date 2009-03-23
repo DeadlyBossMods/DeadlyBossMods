@@ -436,11 +436,11 @@ end
 --  General Bar Methods  --
 ---------------------------
 function DBT:ShowTestBars()
-	self:CreateBar(10, "Test 1")
-	self:CreateBar(14, "Test 2")
-	self:CreateBar(20, "Test 3")
-	self:CreateBar(12, "Test 4")
-	self:CreateBar(21.5, "Test 5")
+	self:CreateBar(10, "Test 1", "Interface\\Icons\\Spell_Nature_WispSplode")
+	self:CreateBar(14, "Test 2", "Interface\\Icons\\Spell_Nature_WispSplode")
+	self:CreateBar(20, "Test 3", "Interface\\Icons\\Spell_Nature_WispSplode")
+	self:CreateBar(12, "Test 4", "Interface\\Icons\\Spell_Nature_WispSplode")
+	self:CreateBar(21.5, "Test 5", "Interface\\Icons\\Spell_Nature_WispSplode")
 end
 
 function barPrototype:SetTimer(timer)

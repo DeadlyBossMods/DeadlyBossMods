@@ -109,11 +109,9 @@ local DBM = DBM
 -- these global functions are accessed all the time by the event handler
 -- so caching them is worth the afford
 local ipairs, pairs, next = ipairs, pairs, next
+local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 local type = type
 local select = select
-local tinsert = table.insert
-local tremove = table.remove
-local twipe = table.wipe
 
 
 ---------------------------------
