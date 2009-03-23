@@ -145,9 +145,9 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 }
 
---------------
+---------------
 --  Auriaya  --
---------------
+---------------
 L = DBM:GetModLocalization("Auriaya")
 
 L:SetGeneralLocalization{
@@ -250,9 +250,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell 		= "孩子們, 幫助我!", --Children, assist me!
+	SpawnYell 		= "孩子們，協助我!",
 	WaterSpirit 		= "古代水靈", --Ancient Water Spirit
-	Snaplasher 		= "撕咬鞭打者", --Snaplasher
+	Snaplasher 		= "猛攫鞭笞者",
 	StormLasher 		= "暴風鞭打者", --Storm Lasher
 	EmoteTree 		= "???" -- /chatlog failed
 }
