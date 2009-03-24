@@ -161,7 +161,7 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	SpecWarnBlast = "哨兵衝擊 - 打斷!",
 	WarnCatDied = "野性防衛者倒下 (剩餘%d支)",
-	WarnFear = "恐懼",
+	WarnFear = "恐懼!",
 	WarnFearSoon = "下一次恐懼即將到來!"
 }
 
@@ -251,9 +251,9 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	SpawnYell 		= "孩子們，協助我!",
-	WaterSpirit 		= "古代水靈", --Ancient Water Spirit
+	WaterSpirit 		= "上古水之靈",
 	Snaplasher 		= "猛攫鞭笞者",
-	StormLasher 		= "暴風鞭打者", --Storm Lasher
+	StormLasher 		= "風暴鞭笞者",
 	EmoteTree 		= "???" -- /chatlog failed
 }
 
@@ -329,8 +329,8 @@ L:SetOptionLocalization{
 	timerSearingFlamesCast	= "顯示暗影暴擊計時器",
 	timerSurgeofDarkness	= "顯示暗鬱奔騰計時器",
 	timerSaroniteVapors	= "顯示薩倫煙霧計時器",
-	SetIconOnShadowCrash	= "為暗影暴擊的目標設置標記(頭顱l)",
-	SetIconOnLifeLeach	= "為無面者印記的目標設置標記 (十字)" --Life Leach
+	SetIconOnShadowCrash	= "為暗影暴擊的目標設置標記(頭顱)",
+	SetIconOnLifeLeach	= "為無面者印記的目標設置標記(十字)" --Life Leach
 }
 
 L:SetMiscLocalization{
@@ -352,7 +352,3 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 }
-
-
-
-
