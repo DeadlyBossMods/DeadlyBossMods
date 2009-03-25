@@ -51,11 +51,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-local function ShadowCrashTarget()
-	local targetname = mod:GetBossTarget()
+function mod:ShadowCrashTarget()
+	local targetname = self:GetBossTarget()
 
 	if self.Options.SetIconOnShadowCrash then
-		mod:SetIcon(targetname, 8, 10)
+		self:SetIcon(targetname, 8, 10)
 	end
 
 	if targetname == UnitName("player") then
@@ -65,7 +65,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 62660 then		-- Shadow Crash
-		self:Schedule(0.1, ShadowCrashTarget)
+		self:ScheduleMethod(0.1, "ShadowCrashTarget")
 	
 	elseif args.spellId == 63276 and self.Options.SetIconOnLifeLeach then	-- Mark of the Faceless  (life leach)
 		mod:SetIcon(args.destName, 7, 10)
