@@ -183,7 +183,7 @@ do
 	local args = {}
 
 	local function handleEvent(self, event, ...)
-		if DBM.Options and not DBM.Options.Enabled then return end
+		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
 			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText())) and (not v.Options or v.Options.Enabled) then
 				v[event](v, ...)
@@ -1911,6 +1911,7 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
+	-- old constructor (no auto-localize)
 	function bossModPrototype:NewAnnounce(text, color, icon, optionDefault, optionName)
 		local obj = setmetatable(
 			{
@@ -1929,6 +1930,25 @@ do
 		end
 		table.insert(self.announces, obj)
 		return obj
+	end
+	
+	-- new constructor (auto-localized warnings and options, yay!)
+	local function newAnnounce(self, type, ...)
+	end
+	
+	function bossModPrototype:NewTargetAnnounce(...)
+		return newAnnounce(self, "target", ...)
+	end
+
+	function bossModPrototype:NewCastTimer(timer, ...)
+		if timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
+			local spellId = timer
+			timer = select(7, GetSpellInfo(spellId)) -- GetSpellInfo takes YOUR spell haste into account...WTF?
+			local spellHaste = select(7, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
+			timer = timer / spellHaste -- calculate the real cast time of the spell...
+			return self:NewCastTimer(timer / 1000, spellId, ...)
+		end
+		return newTimer(self, "cast", timer, ...)
 	end
 end
 
