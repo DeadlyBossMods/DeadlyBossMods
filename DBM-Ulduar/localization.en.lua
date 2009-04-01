@@ -324,7 +324,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash	= "Show Special Warning for Shadow Crash",
+	WarningShadowCrash	= "Show Warning for Shadow Crash",
 	timerSearingFlamesCast	= "Show Timer for Searing Flame Cast",
 	timerSurgeofDarkness	= "Show Timer for Sourge of Darkness",
 	timerSaroniteVapors	= "Show Timer for Saronite Vapors",
