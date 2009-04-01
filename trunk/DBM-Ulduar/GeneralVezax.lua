@@ -16,10 +16,12 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnShadowCrash		= mod:NewSpecialWarning("WarningShadowCrash")
+local specWarnShadowCrash		= mod:NewSpecialWarning("SpecialWarningShadowCrash")
 local timerSearingFlamesCast	= mod:NewTimer(2, "timerSearingFlamesCast", 62661)
 local timerSurgeofDarkness	= mod:NewTimer(10, "timerSurgeofDarkness", 62662)
 local timerSaroniteVapors	= mod:NewTimer(30, "timerSaroniteVapors", 63322)
+
+local warnShadowCrash	= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
 
 mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
@@ -53,13 +55,18 @@ end
 
 function mod:ShadowCrashTarget()
 	local targetname = self:GetBossTarget()
-
+	if not targetname then return end
 	if self.Options.SetIconOnShadowCrash then
 		self:SetIcon(targetname, 8, 10)
 	end
-
+	
+	if DBM:GetRaidRank() >= 1 then
+		-- temporary hack; will be replaced with SendHiddenWhisper and an option soon
+		SendChatMessage("Shadow Crash on You! RUN!", "WHISPER", nil, targetname)
+	end
+	warnShadowCrash:Show(targetname)
 	if targetname == UnitName("player") then
-		warnShadowCrash:Show(targetname)
+		specWarnShadowCrash:Show(targetname)
 	end
 end
 
