@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
 
-local timerFlashFreeze	= mod:NewTimer(9, "TimerFlashFreeze", 61968)  -- spell id required!
+local timerFlashFreeze	= mod:NewTimer(9, "TimerFlashFreeze", 61968)
 
 local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
 local warnBitingCold	= mod:NewSpecialWarning("WarningBitingCold")
@@ -27,7 +27,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 61968 then  -- spell id (FlashFreeze) required
+	if args.spellId == 61968 then
 		timerFlashFreeze:Start()
 		warnFlashFreeze:Show()
 

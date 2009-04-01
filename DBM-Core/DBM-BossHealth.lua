@@ -83,6 +83,7 @@ end
 
 local function createBar(self, cId, name)
 	local bar = table.remove(barCache, #barCache) or CreateFrame("Frame", "DBM_BossHealth_Bar_"..getBarId(), anchor, "DBMBossHealthBarTemplate")
+	bar:Show()
 	local bartext = _G[bar:GetName().."BarName"]
 	local barborder = _G[bar:GetName().."BarBorder"]
 	barborder:SetScript("OnMouseDown", onMouseDown)
