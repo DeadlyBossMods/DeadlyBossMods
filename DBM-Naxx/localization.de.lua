@@ -459,7 +459,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhase2			= "Timer für Phase 2 anzeigen",
+	TimerPhase2		= "Timer für Phase 2 anzeigen",
 	WarningBlastTargets	= "Warnung für Frostblast anzeigen",
 	WarningPhase2		= "Show Phase 2 warning",
 	WarningFissure		= "Show Shadow Fissure warning",
@@ -476,7 +476,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "Phase 2"
+	TimerPhase2		= "Phase 2"
 })
 
 
