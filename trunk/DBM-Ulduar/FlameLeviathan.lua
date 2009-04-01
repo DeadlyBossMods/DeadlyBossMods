@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("FlameLeviathan", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 679 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 
 mod:SetCreatureID(33113)
 mod:SetZone()
