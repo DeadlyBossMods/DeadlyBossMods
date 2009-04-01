@@ -16,8 +16,8 @@ mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
 
 local timerFlashFreeze	= mod:NewTimer(9, "TimerFlashFreeze", 61968)  -- spell id required!
 
-local warnFlashFreeze	= mod:NewSpecialWarning("WarningrFlashFreeze")
-local warnBitingCold	= mod:NewSpecialWarning("WarningrBitingCold")
+local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
+local warnBitingCold	= mod:NewSpecialWarning("WarningBitingCold")
 
 local enrageTimer	= mod:NewEnrageTimer(300)
 
@@ -39,7 +39,7 @@ end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args.spellId == 62188 and bits.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bits.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then -- Biting Cold
-		if args.amount >= 4 then
+		if args.amount >= 5 then
 			warnBitingCold:Show()
 		end
 	end
