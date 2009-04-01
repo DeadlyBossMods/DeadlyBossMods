@@ -17,6 +17,8 @@ mod:RegisterEvents(
 )
 
 local specWarnShadowCrash		= mod:NewSpecialWarning("SpecialWarningShadowCrash")
+local specWarnSurgeDarkness	= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
+
 local timerSearingFlamesCast	= mod:NewTimer(2, "timerSearingFlamesCast", 62661)
 local timerSurgeofDarkness	= mod:NewTimer(10, "timerSurgeofDarkness", 62662)
 local timerSaroniteVapors	= mod:NewTimer(30, "timerSaroniteVapors", 63322)
@@ -44,6 +46,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62662 then	-- Surge of Darkness
 		timerSurgeofDarkness:Start()
+		specWarnSurgeDarkness:Show()
 	end
 end
 
