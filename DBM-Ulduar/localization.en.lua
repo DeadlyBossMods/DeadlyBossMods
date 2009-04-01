@@ -315,7 +315,9 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "Shadow Crash on You",
 	SpecialWarningSurgeDarkness	= "Surge of Darkness",
-	WarningShadowCrash		= "Shadow Crash on >%s<"
+	WarningShadowCrash			= "Shadow Crash on >%s<",
+	specWarnLifeLeechYou		= "Life Leech on you!",
+	specWarnLifeLeechNear		= "Life Leech on %s near you!"
 }
 
 L:SetTimerLocalization{

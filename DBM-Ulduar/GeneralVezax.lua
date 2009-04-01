@@ -18,6 +18,8 @@ mod:RegisterEvents(
 
 local specWarnShadowCrash	= mod:NewSpecialWarning("SpecialWarningShadowCrash")
 local specWarnSurgeDarkness	= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
+local specWarnLifeLeechYou	= mod:NewSpecialWarning("SpecialWarningLLYou")
+local specWarnLifeLeechNear = mod:NewSpecialWarning("SpecialWarningLLNear")
 
 local timerSearingFlamesCast	= mod:NewTimer(2, "timerSearingFlamesCast", 62661)
 local timerSurgeofDarkness	= mod:NewTimer(10, "timerSurgeofDarkness", 62662)
@@ -78,9 +80,21 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 62660 then		-- Shadow Crash
 		self:ScheduleMethod(0.1, "ShadowCrashTarget")
-	
-	elseif args.spellId == 63276 and self.Options.SetIconOnLifeLeach then	-- Mark of the Faceless  (life leach)
-		mod:SetIcon(args.destName, 7, 10)
+	elseif args.spellId == 63276 then	-- Mark of the Faceless
+		if self.Options.SetIconOnLifeLeach then
+			mod:SetIcon(args.destName, 7, 10)
+		end
+		if args.destName == UnitName("player") then
+			specWarnLifeLeechYou:Show()
+		else
+			local uId = DBM:GetRaidUnitId(args.destName)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
+					specWarnLifeLeechNear:Show(args.destName)
+				end
+			end
+		end
 	end
 end
 
