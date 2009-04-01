@@ -314,22 +314,25 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "Shadow Crash on You",
-	WarningShadowCrash	= "Shadow Crash on >%s<"
+	SpecialWarningSurgeDarkness	= "Surge of Darkness",
+	WarningShadowCrash		= "Shadow Crash on >%s<"
 }
 
 L:SetTimerLocalization{
-	timerSearingFlamesCast	= "Searing Flames",
-	timerSurgeofDarkness	= "Surge of Darkness",
-	timerSaroniteVapors	= "Next Saronite Vapors"
+	timerSearingFlamesCast		= "Searing Flames",
+	timerSurgeofDarkness		= "Surge of Darkness",
+	timerSaroniteVapors		= "Next Saronite Vapors"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash	= "Show Warning for Shadow Crash",
-	timerSearingFlamesCast	= "Show Timer for Searing Flame Cast",
-	timerSurgeofDarkness	= "Show Timer for Sourge of Darkness",
-	timerSaroniteVapors	= "Show Timer for Saronite Vapors",
-	SetIconOnShadowCrash	= "Set Icon on Shadow Crash target (skull)",
-	SetIconOnLifeLeach	= "Set Icon on Life Leach target (cross)"
+	WarningShadowCrash		= "Show Warning for Shadow Crash",
+	timerSearingFlamesCast		= "Show Timer for Searing Flame Cast",
+	timerSurgeofDarkness		= "Show Timer for Sourge of Darkness",
+	timerSaroniteVapors		= "Show Timer for Saronite Vapors",
+	SetIconOnShadowCrash		= "Set Icon on Shadow Crash target (skull)",
+	SetIconOnLifeLeach		= "Set Icon on Life Leach target (cross)",
+	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
+	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",
 }
 
 L:SetMiscLocalization{
