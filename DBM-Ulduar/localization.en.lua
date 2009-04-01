@@ -313,7 +313,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningShadowCrash	= "Shadow Crash on YOU"
+	SpecialWarningShadowCrash	= "Shadow Crash on You",
+	WarningShadowCrash	= "Shadow Crash on >%s<"
 }
 
 L:SetTimerLocalization{
