@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local specWarnShadowCrash		= mod:NewSpecialWarning("SpecialWarningShadowCrash")
+local specWarnShadowCrash	= mod:NewSpecialWarning("SpecialWarningShadowCrash")
 local specWarnSurgeDarkness	= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
 
 local timerSearingFlamesCast	= mod:NewTimer(2, "timerSearingFlamesCast", 62661)
@@ -34,6 +34,9 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62661 then	-- Searing Flames
 		timerSearingFlamesCast:Start()
+
+	elseif args.spellId == 62662 then 
+		specWarnSurgeDarkness:Show()
 	end
 end
 
@@ -46,7 +49,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62662 then	-- Surge of Darkness
 		timerSurgeofDarkness:Start()
-		specWarnSurgeDarkness:Show()
 	end
 end
 
