@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
 
-local timerFlashFreeze	= mod:NewTimer(9, "TimerFlashFreeze", 0)  -- spell id required!
+local timerFlashFreeze	= mod:NewTimer(9, "TimerFlashFreeze", 61968)  -- spell id required!
 
 local warnFlashFreeze	= mod:NewSpecialWarning("WarningrFlashFreeze")
 local warnBitingCold	= mod:NewSpecialWarning("WarningrBitingCold")
@@ -27,7 +27,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 0 then  -- spell id (FlashFreeze) required
+	if args.spellId == 61968 then  -- spell id (FlashFreeze) required
 		timerFlashFreeze:Start()
 		warnFlashFreeze:Show()
 
@@ -37,10 +37,9 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 0 and args.destName == UnitName("player") then -- Biting Cold
-		warnBitingCold:Show()
-		if args.amount >= 4 then -- don't know it
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args.spellId == 62188 and bits.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bits.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then -- Biting Cold
+		if args.amount >= 4 then
 			warnBitingCold:Show()
 		end
 	end

@@ -332,7 +332,7 @@ L:SetOptionLocalization{
 	timerSurgeofDarkness		= "Show Timer for Sourge of Darkness",
 	timerSaroniteVapors		= "Show Timer for Saronite Vapors",
 	SetIconOnShadowCrash		= "Set Icon on Shadow Crash target (skull)",
-	SetIconOnLifeLeach		= "Set Icon on Life Leach target (cross)",
+	SetIconOnLifeLeach		= "Set Icon on Life Leech target (cross)",
 	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
 	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",
 }
