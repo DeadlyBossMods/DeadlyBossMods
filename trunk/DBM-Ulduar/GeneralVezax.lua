@@ -41,6 +41,9 @@ function mod:SPELL_CAST_START(args)
 
 	elseif args.spellId == 62662 then 
 		specWarnSurgeDarkness:Show()
+		if self.Options.SpecialWarningSurgeDarkness then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
 	end
 end
 
