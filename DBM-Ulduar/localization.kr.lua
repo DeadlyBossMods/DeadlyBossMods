@@ -152,11 +152,22 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
+	Defender = "Feral Defender (%d)"
 }
 
 L:SetWarningLocalization{
+	SpecWarnBlast = "Sentinel Blast - Interrupt!",
+	WarnCatDied = "Feral Defender down (%d lifes remaining)",
+	WarnFear = "Fear!",
+	WarnFearSoon = "Next Fear soon"
 }
 
+L:SetOptionLocalization{
+	SpecWarnBlast = "Show Special Warning on Sentinel Blast",
+	WarnFear = "Show Fear Warning",
+	WarnFearSoon = "Show Fear soon Warning",
+	WarnCatDied = "Show Warning when the Feral Defender dies"
+}
 
 -------------
 --  호디르  --
@@ -267,6 +278,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningPlasmaBlast	= "%s 에게 플라즈마 폭발 - 폭힐! 폭힐!",
+	Phase2Engaged		= "Phase 2 incoming - regroup now",
+	Phase3Engaged		= "Phase 3 incoming - regroup now",	
 }
 
 L:SetTimerLocalization{
@@ -277,17 +290,13 @@ L:SetOptionLocalization{
 	WarningShockBlast	= "전기충격 폭발 경보 보기",
 	WarningPlasmaBlast	= "플라즈마 폭발 경보 보기",
 	ProximityMines		= "접근 지뢰 타이머 보기",
+	PlaySoundOnShockBlast 	= "Play sound on Shock Blast cast",	
 }
 
 L:SetMiscLocalization{
 	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",
-	PlaySoundOnShockBlast 	= "전기 충격 폭파 시전 소리 재생",
-	
 	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9%! Barely a dent! Moving right along.",
-	Phase2Engaged		= "2 페이즈 시작 - regroup now",
-
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
-	Phase3Engaged		= "3 페이즈 시작 - regroup now",
 }
 
 
@@ -301,7 +310,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningShadowCrash	= "당신에게 그림자 충돌!"
+	SpecialWarningShadowCrash	= "Shadow Crash on You",
+	SpecialWarningSurgeDarkness	= "Surge of Darkness",
+	WarningShadowCrash	= "당신에게 그림자 충돌!",
+	specWarnLifeLeechYou		= "Life Leech on you!",
+	specWarnLifeLeechNear		= "Life Leech on %s near you!"	
 }
 
 L:SetTimerLocalization{
@@ -316,7 +329,9 @@ L:SetOptionLocalization{
 	timerSurgeofDarkness	= "밀려오는 어둠 타이머 보기",
 	timerSaroniteVapors	= "Show Timer for Saronite Vapors",
 	SetIconOnShadowCrash	= "그림자 충돌 대상 표시하기(해골)",
-	SetIconOnLifeLeach	= "Set Icon on Life Leach target (cross)"
+	SetIconOnLifeLeach	= "Set Icon on Life Leach target (cross)",
+	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
+	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",	
 }
 
 L:SetMiscLocalization{
