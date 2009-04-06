@@ -13,7 +13,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED"
 )
 
 local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
