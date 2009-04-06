@@ -80,8 +80,20 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 }
 
-L:SetWarningLocalization{
+L:SetWarningLocalization{	
+	SpecWarnDevouringFlame		= "Devouring Flame - MOVE"
 }
+L:SetTimerLocalization{
+	timerDeepBreathCooldown		= "Next Flame Breath in",
+	timerDeepBreathCast		= "Flame Breath",
+}
+L:SetOptionLocalization{
+	timerDeepBreathCooldown		= "Show timer for next Flame Breath",
+	timerDeepBreathCast		= "Show Flame Breath Cast timer",
+	SpecWarnDevouringFlame		= "Show Special Warning while in Devouring Flame patch",
+	PlaySoundOnDevouringFlame	= "Play Sound when afflicted by Devoring Flame",
+}
+
 
 -------------
 --  XT002  --
