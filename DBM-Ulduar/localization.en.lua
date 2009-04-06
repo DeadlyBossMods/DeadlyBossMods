@@ -77,9 +77,6 @@ L:SetGeneralLocalization{
 	name = "Razorscale"
 }
 
-L:SetMiscLocalization{
-}
-
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame		= "Devouring Flame - MOVE"
 }
@@ -101,15 +98,37 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("XT002")
 
 L:SetGeneralLocalization{
-	name = "XT002"
+	name = "XT-002 Deconstructor"
 }
 
-L:SetMiscLocalization{
+L:SetTimerLocalization{
+	timerTympanicTantrumCast	= "Tympanic Tandrum Cast",
+	timerTympanicTantrum		= "Tympanic Tandrum",
+	timerLightBomb			= "Light Bomb: %s",
+	timerGravityBomb		= "Gravity Bomb: %s",
 }
 
 L:SetWarningLocalization{
+	SpecialWarningLightBomb 	= "Light Bomb on YOU",
+	WarningLightBomb		= "Light Bomb on >%s<",
+	SpecialWarningGravityBomb	= "Gravity Bomb on YOU",
+	WarningGravityBomb		= "Gravity Bomb on >%s<",
 }
 
+L:SetOptionLocalization{
+	timerTympanicTantrumCast	= "Show Tympanic Tantrum Cast timer",
+	timerTympanicTantrum		= "Show Tympanic Tantrum duration timer",
+	SpecialWarningLightBomb		= "Show Special Warning when Light Bomb on You",
+	WarningLightBomb		= "Announce Light Bomb",
+	timerLightBomb			= "Show Light Bomb timer",
+	SpecialWarningGravityBomb	= "Show Special Warning when Gravity Bomb on You",
+	WarningGravityBomb		= "Announce Gravity Bomb",
+	timerGravityBomb		= "Show Gravity Bomb timer",
+	PlaySoundOnGravityBomb		= "Play Sound when Gravity Bomb on You",
+	PlaySoundOnTympanicTantrum	= "Play Sound on Tympanic Tandrum",
+	SetIconOnLightBombTarget	= "Set Icon on Light Bomb target",
+	SetIconOnGravityBombTarget	= "Set Icon on Gravity Bomb target",
+}
 
 -------------------
 --  IronCouncil  --
