@@ -43,13 +43,29 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Ignis")
 
 L:SetGeneralLocalization{
-	name = "Ignis"
+	name = "Ignis the Furnace Master"
 }
 
-L:SetMiscLocalization{
+L:SetTimerLocalization{
+	TimerFlameJetsCast	= "Flame Jets",
+	TimerFlameJetsCooldown	= "Next Flame Jets in",
+	TimerScorch		= "Next Scorch in",
+	TimerScorchCast		= "Scorch",
+	TimerSlagPot		= "Slag Pot: %s"
 }
 
 L:SetWarningLocalization{
+	WarningSlagPot		= "Slag Pot on >%s<"
+}
+
+L:SetOptionLocalization{
+	SpecWarnJetsCast	= "Show Special Warning for Flame Jets Cast (counterspell)",
+	TimerFlameJetsCast	= "Show Flame Jets Cast timer",
+	TimerFlameJetsCooldown	= "Show Flame Jets Cooldown timer",
+	TimerScorch		= "Show Scorch Cooldown timer",
+	TimerScorchCast		= "Show Scorch Cast timer",
+	WarningSlagPot		= "Announce Slag Pot Target",
+	TimerSlagPot		= "Show Slag Pot timer"
 }
 
 ------------------
@@ -118,13 +134,22 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
-	name = "Algalon"
+	name = "Algalon the Observer"
 }
 
-L:SetMiscLocalization{
+L:SetTimerLocalization{
+	TimerBigBangCast	= "Big Bang cast",
 }
-
 L:SetWarningLocalization{
+	WarningPhasePunch	= "Phase Punch on >%s<",
+	WarningBlackHole	= "Black Hole",
+}
+
+L:SetOptionLocalization{
+	TimerBigBangCast	= "Show Castbar for Big Bang",
+	SpecWarnPhasePunch	= "Show Special Warning when Phase Punch on you",
+	WarningPhasePunch	= "Announce Phase Punch target",
+	WarningBlackHole	= "Announce Black Hole",
 }
 
 
@@ -315,7 +340,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "Shadow Crash on You",
 	SpecialWarningSurgeDarkness	= "Surge of Darkness",
-	WarningShadowCrash			= "Shadow Crash on >%s<",
+	WarningShadowCrash		= "Shadow Crash on >%s<",
 	specWarnLifeLeechYou		= "Life Leech on you!",
 	specWarnLifeLeechNear		= "Life Leech on %s near you!"
 }
@@ -338,7 +363,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!"
+	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!"
 }
 
 
