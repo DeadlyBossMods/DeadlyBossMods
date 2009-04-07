@@ -140,16 +140,48 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge	= "Supercharge incoming",
+	WarningSupercharge		= "Supercharge incoming",
+	WarningChainlight		= "Chaing Light",
+	WarningFusionPunch		= "Fusion Punch",
+	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
+	WarningRuneofPower		= "Rune of Power",
+	WarningRuneofDeath		= "Rune of Death"
+	RuneofDeath			= "Rune of Death - MOVE",
+	LightningTendrils		= "Lightning Tendrils - MOVE AWAY",
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge	= "Supercharge",  -- gives the other bosses more power
+	TimerSupercharge		= "Supercharge",
+	TimerOverload			= "Overload",
+	TimerLightningWhirl		= "Lightning Whirl",
+	TimerLightningTendrils		= "Lightning Tendrils",
+	timerFusionPunchCast		= "Fusion Punch cast",
+	timerFusionPunchActive		= "Fusion Punch: %s",
+	timerOverwhelmingPower		= "Overwhelming Power: %s",
+	timerRunicBarrier		= "Runic Barrier",
+	timerRuneofDeath		= "Rune of Death",
 }
 
 L:SetOptionLocalization{
-	TimerSupercharge	= "Show Supercharge Timer",
-	WarningSupercharge	= "Show warning when Supercharge casting",
+	TimerSupercharge		= "Show Supercharge Timer",
+	WarningSupercharge		= "Show warning when Supercharge casting",
+	WarningChainlight		= "Announce Chain Light",
+	TimerOverload			= "Show Overload cast timer",
+	TimerLightningWhirl		= "Show Lightning Whirl cast timer",
+	LightningTendrils		= "Show Special Warning for Lightning Tendrils",
+	TimerLightningTendrils		= "Show Lightning Tendrils duration timer",
+	PlaySoundLightningTendrils	= "Play Sound on Lightning Tendrils",
+	WarningFusionPunch		= "Announce Fusion Punch",
+	timerFusionPunchCast		= "Show Castbar for Fusion Punch",
+	timerFusionPunchActive		= "Show Fusion Punch timer",
+	WarningOverwhelmingPower	= "Announce Overwhelming Power",
+	timerOverwhelmingPower		= "Show Overwhelming Power timer",
+	SetIconOnOverwhelmingPower	= "Set Icon on Overwhelming Power target",
+	timerRunicBarrier		= "Show Runic Barrier timer",
+	WarningRuneofPower		= "Announce Rune of Power",
+	WarningRuneofDeath		= "Announce Rune of Death",
+	RuneofDeath			= "Show Special Warning for Rune of Death",
+	timerRuneofDeath		= "Show Rune of Death duration timer",
 }
 
 L:SetMiscLocalization{
