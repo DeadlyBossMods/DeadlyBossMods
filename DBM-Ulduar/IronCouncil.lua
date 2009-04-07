@@ -2,10 +2,10 @@ local mod = DBM:NewMod("IronCouncil", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-
+mod:SetCreatureID(32867)
 mod:SetZone()
 
---mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START"
@@ -13,63 +13,95 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("HealthFrame", true)
 
-mod:SetBossHealthInfo(
+mod:SetBossHealthInfo(		-- 32927 32857 32867
 	0, L.Steelbreaker,
 	0, L.RunemasterMolgeim,
 	0, L.StormcallerBrundir
 )
 
-local timerSupercharge	= mod:NewTimer(10, "TimerSupercharge", 61920)
+local timerSupercharge		= mod:NewTimer(10, "TimerSupercharge", 61920)
+local warnSupercharge		= mod:NewAnnounce("WarningSupercharge", 3, 61920)
 
-local warnSupercharge	= mod:NewAnnounce("WarningSupercharge", 1, 61920)
+-- Stormcaller Brundir
+-- High Voltage ... 63498
+local warnChainlight		= mod:NewAnnounce("WarningChainlight", 1, 64215)
+local timerOverload		= mod:NewTimer(6, "TimerOverload", 63481)
+local timerLightningWhirl	= mod:NewTimer(5, "TimerLightningWhirl", 63483)
+local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
+local timerLightningTendrils	= mod:NewTimer(35, "TimerLightningTendrils", 63486)
+mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
 
-local enrageTimer	= mod:NewEnrageTimer(600) -- don't realy know
-
-
---[[
-Fight (List of abilities taken from the StratsFu Strategy Guide)
-Each time you kill a member of the council, he will cast Supercharge and the remaining monsters will gain extra abilities and gain 25% damage.
-
-    * http://thottbot.com/test/s61920 Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.
-
-
-Steelbreaker - 10M HP (Heroic) / 3M HP (Normal)
-
-    * http://thottbot.com/test/s63493 Fusion Punch - An attack infused with energy that inflicts 100% weapon damage and an additional 8000 Nature damage per second. - He casts Fusion Punch on a ten second cooldown (but we saw it as late as 25 seconds.) If he is in a Rune of Power he will hit far harder, so it's vitally important that he's never standing in them.
-    * http://thottbot.com/test/s63498 High Voltage - This is an aura that inflicts 2500 Nature damage every 3 sec. When he dies the aura disappears.
-    * http://thottbot.com/test/s63494 Static Disruption (1 Mob Down) - Deals 7500 Nature damage to enemies in an area and increases Nature damage taken by 50% for 20 sec. (12 Yards radius)
-
-
-Runemaster Molgeim - 10M HP (Heroic) / 3M HP (Normal)
-
-    * http://thottbot.com/test/s61974 Rune of Power - Runemaster Molgeim casts Rune of Power on a target NPC periodically -- there's a few seconds with no rune and then another appears. It will buff anyone standing in it, including a mob.
-    * http://thottbot.com/test/s63490 Rune of Death (1 Mob Down) - Summons a Rune of Death at a random enemy target's location. This rune deals 3000 Shadow damage every half-second to anyone within 13 yards of that location. - This will be casted on a target player and inflict anyone within 13 yards of this player.
-    * http://thottbot.com/test/s62273 Rune of Summoning (2 Mob Down) - Runemaster Moldeim gains Rune of Summoning which summons Lightning Elementals. These chase after players and appear to explode and deal damage. Their melee attack is Lightning Blast: deals 14-15.8k nature damage to everyone within 30 yards and kills the elemental in the process. 
+-- Steelbreaker
+-- High Voltage ... don't know what to show here - 63498
+local warnFusionPunch		= mod:NewAnnounce("WarningFusionPunch", 4, 61903)
+local timerFusionPunchCast	= mod:NewTimer(3, "timerFusionPunchCast", 61903)
+local timerFusionPunchActive	= mod:NewTimer(4, "timerFusionPunchActive", 61903)
+local warnOverwhelmingPower	= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
+local timerOverwhelmingPower	= mod:NewTimer(25, "timerOverwhelmingPower", 61888)
+mod:AddBoolOption("SetIconOnOverwhelmingPower", true, "announce")
 
 
-Stormcaller Brundir - 10M HP (Heroic) / 3M HP (Normal)
+-- Runemaster Molgeim
+-- Lightning Blast ... don't know 63491
+local timerRunicBarrier		= mod:NewTimer(20, "timerRunicBarrier", 62338)
+local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
+local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
+local specwarnRuneofDeath	= mod:NewSpecialWarning("RuneofDeath")
+local timerRuneofDeathDura	= mod:NewTimer(30, "timerRuneofDeath", 63490)
+-- Rune of Summoning .. wtf! :)
 
-    * http://thottbot.com/test/s63479 Chain Lightning - Strikes an enemy with a lightning bolt that arcs to another nearby enemy. The spell affects up to 5 targets, causing Nature damage to each. - Stormcaller Brundir casts Chain Lightning which chains through the raid. It can be interrupted, and he can have his cast time slowed (e.g. with Curse of Tongues.)
-    * http://thottbot.com/test/s63481 Overload - He emotes "PEASANT HAS CROSSED THE LINE" as he cast this spell (10 seconds cast time): it's vitally important that everyone gets out of range (it deals 25000 nature damage to everyone within 30 yards.)
-    * http://thottbot.com/test/s63483 Lightning Whirl - Spins around throwing off bolts of lightning at random enemy targets. Each bolt deals 6598 to 7402 Nature damage. Lasts 5 sec. - Stormcaller Brundir gains Lightning Whirl, which does AE lightning bolts. It's interruptable.
-    * http://thottbot.com/test/s63485 Lightning Tendrils (Screenshot) - Tendrils of lightning shoot out of the caster's chest, lifting them into the air. These lightning tendrils deal 4000 Nature damage to all enemies around the caster every second. - Stormcaller Brundir gains Lightning Tendrils, where he launches into the area and chases after players, AE'ing everyone in his path.
 
---]]
 
-local phase = 1
 function mod:OnCombatStart(delay)
-	enrageTimer:Start(-delay)
-	phase = 1
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 61920 then -- Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.	
-		phase = phase + 1
 		timerSupercharge:Start()
 		warnSupercharge:Show()
+
+	elseif args.spellId == 64215 then				-- Chain light (require the 10ppl spellid)
+		warnChainlight:Show()
+	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
+		timerOverload:Start()
+	elseif args.spellId == 63483 then				-- LightningWhirl
+		timerLightningWhirl:Start()
+	elseif args.spellId == 61887 or args.spellId == 63486 then	-- LightningTendrils
+		timerLightningTendrils:Start()
+		specwarnLightningTendrils:Show()
+		if self.Options.PlaySoundLightningTendrils then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
+
+	elseif args.spellId == 61903 or args.spellId == 63493 then	-- Fusion Punch
+		warnFusionPunch:Show()
+		timerFusionPunchCast:Start()
+	elseif args.spellId == 61888 then				-- Overwhelming Power
+		warnOverwhelmingPower:Show(args.destName)
+		timerOverwhelmingPower:Start(args.destName)
+		if self.Options.SetIconOnOverwhelmingPower then
+			mod:SetIcon(args.destName, 8, 25) -- skull for 25 seconds (until meltdown)
+		end
+
+	elseif args.spellId == 62338 then				-- Runic Barrier
+		timerRunicBarrier:Start()
+	elseif args.spellId == 64320 then				-- Rune of Power
+		warnRuneofPower:Show()
+	elseif args.spellId == 63490 then				-- Rune of Death
+		warnRuneofDeath:Show()
+		timerRuneofDeathDura:Start()
 	end
 end
 
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 61903 or args.spellId == 63493 then
+		timerFusionPunchActive:Start(args.destName)
 
+	elseif args.spellId == 62269 or args.spellId == 63490 then	-- Rune of Death - move away from it
+		if args.destName == UnitName("player") then
+			specwarnRuneofDeath:Show()
+		end
+	end
+end
 
 
