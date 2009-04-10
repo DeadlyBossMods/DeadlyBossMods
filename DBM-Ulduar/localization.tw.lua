@@ -48,10 +48,26 @@ L:SetGeneralLocalization{
 	name = "『火爐之主』伊格尼司"
 }
 
-L:SetMiscLocalization{
+L:SetTimerLocalization{
+	TimerFlameJetsCast	= "烈焰噴洩",
+	TimerFlameJetsCooldown	= "下一次 烈焰噴洩",
+	TimerScorch		= "下一次 灼燒",
+	TimerScorchCast		= "灼燒",
+	TimerSlagPot		= "熔渣之盆: %s"
 }
 
 L:SetWarningLocalization{
+	WarningSlagPot		= "熔渣之盆: >%s<"
+}
+
+L:SetOptionLocalization{
+	SpecWarnJetsCast	= "為烈焰噴洩顯示特別警告 (斷法)",
+	TimerFlameJetsCast	= "顯示烈焰噴洩的施法計時器",
+	TimerFlameJetsCooldown	= "顯示烈焰噴洩的冷卻計時器",
+	TimerScorch		= "顯示灼燒的冷卻計時",
+	TimerScorchCast		= "顯示灼燒的施法計時",
+	WarningSlagPot		= "提示熔渣之盆的目標",
+	TimerSlagPot		= "顯示熔渣之盆計時器"
 }
 
 ------------------
@@ -63,10 +79,18 @@ L:SetGeneralLocalization{
 	name = "銳鱗"
 }
 
-L:SetMiscLocalization{
+L:SetWarningLocalization{	
+	SpecWarnDevouringFlame		= "吞噬烈焰 - 移動囉!!"
 }
-
-L:SetWarningLocalization{
+L:SetTimerLocalization{
+	timerDeepBreathCooldown		= "下一次 火息術",
+	timerDeepBreathCast		= "火息術",
+}
+L:SetOptionLocalization{
+	timerDeepBreathCooldown		= "為下一次火息術顯示計時器",
+	timerDeepBreathCast		= "顯示火息術的施法計時器",
+	SpecWarnDevouringFlame		= "當你在吞噬烈焰的攻擊範圍時顯示特別警告",
+	PlaySoundOnDevouringFlame	= "當受到吞噬烈焰時播放音效",
 }
 
 -------------
@@ -78,10 +102,33 @@ L:SetGeneralLocalization{
 	name = "XT-002拆解者"
 }
 
-L:SetMiscLocalization{
+L:SetTimerLocalization{
+	timerTympanicTantrumCast	= "躁怒施放",
+	timerTympanicTantrum		= "躁怒",
+	timerLightBomb			= "裂光彈: %s",
+	timerGravityBomb		= "重力彈: %s",
 }
 
 L:SetWarningLocalization{
+	SpecialWarningLightBomb 	= "你中了裂光彈!",
+	WarningLightBomb		= "裂光彈: >%s<",
+	SpecialWarningGravityBomb	= "你中了重力彈!",
+	WarningGravityBomb		= "重力彈: >%s<",
+}
+
+L:SetOptionLocalization{
+	timerTympanicTantrumCast	= "顯示躁怒的施法計時器",
+	timerTympanicTantrum		= "顯示躁怒的持續時間計時器",
+	SpecialWarningLightBomb		= "當你中了裂光彈時顯示特別警告",
+	WarningLightBomb		= "提示裂光彈",
+	timerLightBomb			= "顯示裂光彈計時器",
+	SpecialWarningGravityBomb	= "當你中了重力彈時顯示特別警告",
+	WarningGravityBomb		= "提示重力彈",
+	timerGravityBomb		= "顯示重力彈計時器",
+	PlaySoundOnGravityBomb		= "當你中了重力彈時播放音效",
+	PlaySoundOnTympanicTantrum	= "躁怒時播放音效",
+	SetIconOnLightBombTarget	= "設置標記在裂光彈的目標",
+	SetIconOnGravityBombTarget	= "設置標記在重力彈的目標",
 }
 
 
@@ -123,10 +170,19 @@ L:SetGeneralLocalization{
 	name = "艾爾加隆"
 }
 
-L:SetMiscLocalization{
+L:SetTimerLocalization{
+	TimerBigBangCast	= "Big Bang cast",
+}
+L:SetWarningLocalization{
+	WarningPhasePunch	= "Phase Punch on >%s<",
+	WarningBlackHole	= "Black Hole",
 }
 
-L:SetWarningLocalization{
+L:SetOptionLocalization{
+	TimerBigBangCast	= "Show Castbar for Big Bang",
+	SpecWarnPhasePunch	= "Show Special Warning when Phase Punch on you",
+	WarningPhasePunch	= "Announce Phase Punch target",
+	WarningBlackHole	= "Announce Black Hole",
 }
 
 
@@ -315,7 +371,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningShadowCrash	= "你中了暗影暴擊"
+	WarningShadowCrash	= "你中了暗影暴擊",
+	SpecialWarningSurgeDarkness	= "暗鬱奔騰",
+	WarningShadowCrash		= "暗影暴擊: >%s<",
+	specWarnLifeLeechYou		= "你中了無面者印記!",
+	specWarnLifeLeechNear		= "接近你的%s中了無面者印記!"
 }
 
 L:SetTimerLocalization{
@@ -330,7 +390,9 @@ L:SetOptionLocalization{
 	timerSurgeofDarkness	= "顯示暗鬱奔騰計時器",
 	timerSaroniteVapors	= "顯示薩倫煙霧計時器",
 	SetIconOnShadowCrash	= "為暗影暴擊的目標設置標記(頭顱)",
-	SetIconOnLifeLeach	= "為無面者印記的目標設置標記(十字)" --Life Leach
+	SetIconOnLifeLeach	= "為無面者印記的目標設置標記(十字)" --Life Leech
+	SpecialWarningSurgeDarkness	= "為暗鬱奔騰顯示特別警告",
+	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
 }
 
 L:SetMiscLocalization{
