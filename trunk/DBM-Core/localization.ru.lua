@@ -5,9 +5,9 @@ DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для '%s'!"
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)";
-DBM_CORE_BOSS_DOWN					= "%s повержен(а) спустя %s!"
-DBM_CORE_BOSS_DOWN_LONG				= "%s повержен(а) спустя %s! Последний бой длился %s, лучший бой: %s."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s повержен(а) спустя %s! Это новая запись! (Предшествующая запись была %s)"
+DBM_CORE_BOSS_DOWN					= "%s погибает спустя %s!"
+DBM_CORE_BOSS_DOWN_LONG				= "%s погибает спустя %s! Последний бой длился %s, лучший бой: %s."
+DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s погибает спустя %s! Это новая запись! (Предшествующая запись была %s)"
 DBM_CORE_COMBAT_ENDED				= "Бой с %s длился %s"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4сек.:сек.;"
@@ -76,3 +76,17 @@ DBM_CORE_UNKNOWN					= "неизвестно"
 DBM_CORE_TIMER_PULL					= "Атака"
 DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек."
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
+
+-- Generic Warnings
+DBM_CORE_GENERIC_TARGET_WARN = "%s под воздействием >%%s<!"
+DBM_CORE_GENERIC_TARGET_OPTION = "Объявлять цели о %s"
+
+-- Auto-generated Timer Localizations
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	cd = "%s CD",
+	next = "Следующий %s",
+}
+
+
