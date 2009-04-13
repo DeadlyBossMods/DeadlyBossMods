@@ -145,7 +145,7 @@ L:SetWarningLocalization{
 	WarningFusionPunch		= "Fusion Punch",
 	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
 	WarningRuneofPower		= "Rune of Power",
-	WarningRuneofDeath		= "Rune of Death"
+	WarningRuneofDeath		= "Rune of Death",
 	RuneofDeath			= "Rune of Death - MOVE",
 	LightningTendrils		= "Lightning Tendrils - MOVE AWAY",
 }

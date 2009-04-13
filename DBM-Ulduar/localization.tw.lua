@@ -93,6 +93,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDevouringFlame	= "當受到吞噬烈焰時播放音效",
 }
 
+
 -------------
 --  XT002  --
 -------------
@@ -131,7 +132,6 @@ L:SetOptionLocalization{
 	SetIconOnGravityBombTarget	= "設置標記在重力彈的目標",
 }
 
-
 -------------------
 --  IronCouncil  --
 -------------------
@@ -147,7 +147,7 @@ L:SetWarningLocalization{
 	WarningFusionPunch		= "熔能拳擊",
 	WarningOverwhelmingPower	= "極限威能: >%s<",
 	WarningRuneofPower		= "力之符文",
-	WarningRuneofDeath		= "死亡符文"
+	WarningRuneofDeath		= "死亡符文",
 	RuneofDeath			= "死亡符文 - 移動",
 	LightningTendrils		= "閃電觸鬚 - 跑開!",
 }
@@ -422,7 +422,7 @@ L:SetOptionLocalization{
 	timerSurgeofDarkness		= "顯示暗鬱奔騰計時器",
 	timerSaroniteVapors		= "顯示薩倫煙霧計時器",
 	SetIconOnShadowCrash		= "為暗影暴擊的目標設置標記(頭顱)",
-	SetIconOnLifeLeach		= "為無面者印記的目標設置標記(十字)" --Life Leech
+	SetIconOnLifeLeach		= "為無面者印記的目標設置標記(十字)", --Life Leech
 	SpecialWarningSurgeDarkness	= "為暗鬱奔騰顯示特別警告",
 	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
 }
