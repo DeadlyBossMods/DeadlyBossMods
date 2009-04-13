@@ -145,7 +145,7 @@ L:SetWarningLocalization{
 	WarningSupercharge		= "超級充能 即將到來",
 	WarningChainlight		= "閃電鏈",
 	WarningFusionPunch		= "熔能拳擊",
-	WarningOverwhelmingPower	= "Overwhelming Power: >%s<",
+	WarningOverwhelmingPower	= "極限威能: >%s<",
 	WarningRuneofPower		= "力之符文",
 	WarningRuneofDeath		= "死亡符文"
 	RuneofDeath			= "死亡符文 - 移動",
@@ -159,8 +159,8 @@ L:SetTimerLocalization{
 	TimerLightningTendrils		= "閃電觸鬚",
 	timerFusionPunchCast		= "熔能拳擊施放",
 	timerFusionPunchActive		= "熔能拳擊: %s",
-	timerOverwhelmingPower		= "Overwhelming Power: %s",
-	timerRunicBarrier		= "符文屏障", --Runic Barrier
+	timerOverwhelmingPower		= "極限威能: %s",
+	timerRunicBarrier		= "符刻屏障",
 	timerRuneofDeath		= "死亡符文",
 }
 
@@ -176,10 +176,10 @@ L:SetOptionLocalization{
 	WarningFusionPunch		= "提示熔能拳擊",
 	timerFusionPunchCast		= "為熔能拳擊顯示施法計時條",
 	timerFusionPunchActive		= "顯示熔能拳擊計時器",
-	WarningOverwhelmingPower	= "提示Overwhelming Power",
-	timerOverwhelmingPower		= "顯示Overwhelming Power計時器",
-	SetIconOnOverwhelmingPower	= "設置標記在Overwhelming Power的目標",
-	timerRunicBarrier		= "顯示符文屏障計時器",
+	WarningOverwhelmingPower	= "提示極限威能",
+	timerOverwhelmingPower		= "顯示極限威能計時器",
+	SetIconOnOverwhelmingPower	= "設置標記在極限威能的目標",
+	timerRunicBarrier		= "顯示符刻屏障計時器",
 	WarningRuneofPower		= "提示力之符文",
 	WarningRuneofDeath		= "提示死亡符文",
 	RuneofDeath			= "為死亡符文顯示特別警告",
@@ -203,18 +203,18 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBigBangCast		= "Big Bang施放",
+	TimerBigBangCast		= "大爆炸 施放",
 }
 L:SetWarningLocalization{
-	WarningPhasePunch		= "Phase Punch: >%s<",
-	WarningBlackHole		= "黑洞", --Black Hole
+	WarningPhasePunch		= "相位拳擊: >%s<",
+	WarningBlackHole		= "黑洞爆炸",
 }
 
 L:SetOptionLocalization{
-	TimerBigBangCast		= "為Big Bang顯示施法計時條",
-	SpecWarnPhasePunch		= "當你中了Phase Punch顯示特別警告",
-	WarningPhasePunch		= "提示Phase Punch的目標",
-	WarningBlackHole		= "提示黑洞",
+	TimerBigBangCast		= "為大爆炸顯示施法計時條",
+	SpecWarnPhasePunch		= "當你中了相位拳擊顯示特別警告",
+	WarningPhasePunch		= "提示相位拳擊的目標",
+	WarningBlackHole		= "提示黑洞爆炸",
 }
 
 
