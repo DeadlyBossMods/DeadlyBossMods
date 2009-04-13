@@ -78,4 +78,16 @@ DBM_CORE_TIMER_PULL					= "풀링 중 입니다."
 DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 풀링 합니다."
 DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
 
+-- Generic Warnings
+DBM_CORE_GENERIC_TARGET_WARN = ">%%s< 에게 %s!"
+DBM_CORE_GENERIC_TARGET_OPTION = "%s 의 대상 알리기"
+
+-- Auto-generated Timer Localizations
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	cd = "%s 쿨다운",
+	next = "다음 %s",
+}
+
 end
