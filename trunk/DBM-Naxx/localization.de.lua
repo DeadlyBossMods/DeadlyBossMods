@@ -8,28 +8,28 @@ local L
 L = DBM:GetModLocalization("Anub'Rekhan")
 
 L:SetGeneralLocalization({
-	name = "Anub'Rekhan"
+   name = "Anub'Rekhan"
 })
 
 L:SetWarningLocalization({
-	SpecialLocust		= "Heuschreckenschwarm!",
-	WarningLocustSoon	= "Heuschreckenschwarm in 15 Sek",
-	WarningLocustNow	= "Heuschreckenschwarm!",
-	WarningLocustFaded	= "Heuschreckenschwarm ausgelaufen"
+   SpecialLocust      = "Heuschreckenschwarm!",
+   WarningLocustSoon   = "Heuschreckenschwarm in 15 Sek",
+   WarningLocustNow   = "Heuschreckenschwarm!",
+   WarningLocustFaded   = "Heuschreckenschwarm ausgelaufen"
 })
 
 L:SetTimerLocalization({
-	TimerLocustIn	= "Heuschreckenschwarm", 
-	TimerLocustFade = "Heuschreckenschwarm aktiv"
+   TimerLocustIn   = "Heuschreckenschwarm",
+   TimerLocustFade = "Heuschreckenschwarm aktiv"
 })
 
 L:SetOptionLocalization({
-	SpecialLocust		= "Spezialwarnung für Heuschreckenschwarm",
-	WarningLocustSoon	= "Vorwarnung für Heuschreckenschwarm anzeigen",
-	WarningLocustNow	= "Warnung für Heuschreckenschwarm anzeigen",
-	WarningLocustFaded	= "Warnung wenn Heuschreckenschwarm ausläuft",
-	TimerLocustIn		= "Timer für Heuschreckenschwarm anzeigen", 
-	TimerLocustFade 	= "Timer für Auslaufen des Heuschreckenschwarms anzeigen"
+   SpecialLocust      = "Spezialwarnung für Heuschreckenschwarm",
+   WarningLocustSoon   = "Vorwarnung für Heuschreckenschwarm anzeigen",
+   WarningLocustNow   = "Warnung für Heuschreckenschwarm anzeigen",
+   WarningLocustFaded   = "Warnung wenn Heuschreckenschwarm ausläuft",
+   TimerLocustIn      = "Timer für Heuschreckenschwarm anzeigen",
+   TimerLocustFade    = "Timer für Auslaufen des Heuschreckenschwarms anzeigen"
 })
 
 
@@ -39,27 +39,27 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Faerlina")
 
 L:SetGeneralLocalization({
-	name = "Großwitwe Faerlina"
+   name = "Großwitwe Faerlina"
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceActive	= "Umarmung aktiv",
-	WarningEmbraceExpire	= "Umarmung endet in 5 Sek",
-	WarningEmbraceExpired	= "Umarmung ausgelaufen",
-	WarningEnrageSoon		= "Enrage in 5 Sek",
-	WarningEnrageNow		= "Enrage!"
+   WarningEmbraceActive   = "Umarmung aktiv",
+   WarningEmbraceExpire   = "Umarmung endet in 5 Sek",
+   WarningEmbraceExpired   = "Umarmung ausgelaufen",
+   WarningEnrageSoon      = "Raserei in 5 Sek",
+   WarningEnrageNow      = "Raserei!"
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace	= "Umarmung aktiv",
-	TimerEnrage		= "Enrage",
+   TimerEmbrace   = "Umarmung aktiv",
+   TimerEnrage      = "Raserei",
 })
 
 L:SetOptionLocalization({
-	TimerEmbrace			= "Timer für Umarmung anzeigen",
-	WarningEmbraceActive	= "Warnung für Umarmung anzeigen",
-	WarningEmbraceExpire	= "Warnung anzeigen wenn Umarmung ausläuft",
-	WarningEmbraceExpired	= "Warnung anzeigen wenn Umarmung bald ausläuft"
+   TimerEmbrace         = "Timer für Umarmung anzeigen",
+   WarningEmbraceActive   = "Warnung für Umarmung anzeigen",
+   WarningEmbraceExpire   = "Warnung anzeigen wenn Umarmung ausläuft",
+   WarningEmbraceExpired   = "Warnung anzeigen wenn Umarmung bald ausläuft"
 })
 
 
@@ -69,34 +69,34 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Maexxna")
 
 L:SetGeneralLocalization({
-	name = "Maexxna"
+   name = "Maexxna"
 })
 
 L:SetWarningLocalization({
-	WarningWebWrap		= "Web Wrap: >%s<",
-	WarningWebSpraySoon	= "Web Spray in 5 sec",
-	WarningWebSprayNow	= "Web Spray!",
-	WarningSpidersSoon	= "Spinnen in 5 Sek",
-	WarningSpidersNow	= "Spinnen gespawnt!"
+   WarningWebWrap      = "Fangnetz: >%s<",
+   WarningWebSpraySoon   = "Gespinstschauer in 5 Sek",--aka Netz versprühen (heroisch)
+   WarningWebSprayNow   = "Gespinstschauer!",--aka Netz versprühen (heroisch)
+   WarningSpidersSoon   = "Spinnen in 5 Sek",
+   WarningSpidersNow   = "Spinnen gespawnt!"
 })
 
 L:SetTimerLocalization({
-	TimerWebSpray	= "Web Spray",
-	TimerSpider		= "Spinnen"
+   TimerWebSpray   = "Web Spray",
+   TimerSpider      = "Spinnen"
 })
 
 L:SetOptionLocalization({
-	WarningWebWrap		= "Announce Web Wrap targets",
-	WarningWebSpraySoon	= "Show Web Spray pre-warning",
-	WarningWebSprayNow	= "Show Web Spray warning",
-	WarningSpidersSoon	= "Show Spider pre-warning",
-	WarningSpidersNow	= "Show Spider warning",
-	TimerWebSpray		= "Show Web Spray timer",
-	TimerSpider			= "Show Spider timer"
+   WarningWebWrap      = "Verkünde Fangnetzziele",
+   WarningWebSpraySoon   = "Zeige Gespinstschauer Vorwarnung",--aka Netz versprühen (heroisch)
+   WarningWebSprayNow   = "Zeige Gespinstschauer Warnung", --aka  Netz versprühen (heroisch)
+   WarningSpidersSoon   = "Zeige Spinnenvorwarnung",
+   WarningSpidersNow   = "Warne für Spinnen",
+   TimerWebSpray      = "Zeit bis Gespinstschauer",-- aka Netz versprühen (heroisch)
+   TimerSpider         = "Zeige Zeit bis Spinnen"
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "Ich bin eingenetzt! Hilfe!"
+   YellWebWrap         = "Ich bin eingenetzt! Hilfe!"
 })
 
 ------------------------------
@@ -105,26 +105,26 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Noth")
 
 L:SetGeneralLocalization({
-	name = "Noth der Seuchenbringer"
+   name = "Noth der Seuchenbringer"
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Teleporiert!",
-	WarningTeleportSoon	= "Teleport in 20 Sek",
-	WarningCurse		= "Fluch!"
+   WarningTeleportNow   = "Teleporiert!",
+   WarningTeleportSoon   = "Teleport in 20 Sek",
+   WarningCurse      = "Fluch!"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Teleport",
-	TimerTeleportBack	= "Teleport zurück"
+   TimerTeleport      = "Teleport",
+   TimerTeleportBack   = "Teleport zurück"
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "Warnung für Teleport anzeigen",
-	WarningTeleportSoon		= "Vorwarnung für Teleport anzeigen",
-	WarningCurse			= "Warnung für Fluch anzeigen",
-	TimerTeleport			= "Timer für Teleport anzeigen",
-	TimerTeleportBack		= "Timer für Teleport zurück anzeigen"
+   WarningTeleportNow      = "Warnung für Teleport anzeigen",
+   WarningTeleportSoon      = "Vorwarnung für Teleport anzeigen",
+   WarningCurse         = "Warnung für Fluch anzeigen",
+   TimerTeleport         = "Timer für Teleport anzeigen",
+   TimerTeleportBack      = "Timer für Teleport zurück anzeigen"
 })
 
 
@@ -134,24 +134,24 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Heigan")
 
 L:SetGeneralLocalization({
-	name = "Heigan der Unreine"
+   name = "Heigan der Unreine"
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Teleportiert!",
-	WarningTeleportSoon	= "Teleport in %d Sek",
+   WarningTeleportNow   = "Teleportiert!",
+   WarningTeleportSoon   = "Teleport in %d Sek",
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Teleport",
+   TimerTeleport      = "Teleport",
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "Warnung für Teleport anzeigen",
-	WarningTeleportSoon		= "Vorwarnung für Teleport anzeigen",
-	WarningCurse			= "Warnung für Fluch anzeigen",
-	TimerTeleport			= "Timer für Teleport anzeigen",
-	TimerTeleportBack		= "Timer für Teleport zurück anzeigen"
+   WarningTeleportNow      = "Warnung für Teleport anzeigen",
+   WarningTeleportSoon      = "Vorwarnung für Teleport anzeigen",
+   WarningCurse         = "Warnung für Fluch anzeigen",
+   TimerTeleport         = "Timer für Teleport anzeigen",
+   TimerTeleportBack      = "Timer für Teleport zurück anzeigen"
 })
 
 
@@ -161,32 +161,32 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Loatheb")
 
 L:SetGeneralLocalization({
-	name = "Loatheb"
+   name = "Loatheb"
 })
 
 L:SetWarningLocalization({
-	WarningSporeNow		= "Spore gespawnt!",
-	WarningSporeSoon	= "Spore in 5 Sek",
-	WarningDoomNow		= "Verdammnis #%d",
-	WarningHealSoon		= "Heilung in 3 Sek möglich",
-	WarningHealNow		= "Jetzt heilen!"
+   WarningSporeNow      = "Spore gespawnt!",
+   WarningSporeSoon   = "Spore in 5 Sek",
+   WarningDoomNow      = "Verdammnis #%d",
+   WarningHealSoon      = "Heilung in 3 Sek möglich",
+   WarningHealNow      = "Jetzt heilen!"
 })
 
 L:SetTimerLocalization({
-	TimerDoom			= "Verdammnis #%d",
-	TimerSpore			= "Nächste Spore",
-	TimerAura			= "Nekrotische Aura"
+   TimerDoom         = "Verdammnis #%d",
+   TimerSpore         = "Nächste Spore",
+   TimerAura         = "Nekrotische Aura"
 })
 
 L:SetOptionLocalization({
-	WarningSporeNow		= "Warnung für Sporen anzeigen",
-	WarningSporeSoon	= "Vorwarnung für Sporen anzeigen",
-	WarningDoomNow		= "Warnung für Verdammnis anzeigen",
-	WarningHealSoon		= "Vorwarnung für \"Jetzt heilen!\" anzeigen",
-	WarningHealNow		= "Warnung für \"Jetzt heilen\" anzeigen",
-	TimerDoom			= "Timer für Verdammnis anzeigen",
-	TimerSpore			= "Timer für Sporen anzeigen",
-	TimerAura			= "Timer für Nekrotische Aura anzeigen"
+   WarningSporeNow      = "Warnung für Sporen anzeigen",
+   WarningSporeSoon   = "Vorwarnung für Sporen anzeigen",
+   WarningDoomNow      = "Warnung für Verdammnis anzeigen",
+   WarningHealSoon      = "Vorwarnung für \"Jetzt heilen!\" anzeigen",
+   WarningHealNow      = "Warnung für \"Jetzt heilen\" anzeigen",
+   TimerDoom         = "Timer für Verdammnis anzeigen",
+   TimerSpore         = "Timer für Sporen anzeigen",
+   TimerAura         = "Timer für Nekrotische Aura anzeigen"
 })
 
 
@@ -197,17 +197,17 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Patchwerk")
 
 L:SetGeneralLocalization({
-	name = "Patchwerk"
+   name = "Patchwerk"
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Announce Hateful Strikes to raid chat\n(you must be promoted or raid leader to use this)"
+   WarningHateful = "Verkünde Hasserfüllte Stöße im Raidchat\nbenötigt Assistent/Raidleiter)"
 })
 
 L:SetMiscLocalization({
-	yell1 = "Patchwerk want to play!",
-	yell2 = "Kel'thuzad make Patchwerk his avatar of war!",
-	HatefulStrike = "Hateful Strike --> %s [%s]"
+   yell1 = "Flickwerk spielen möchte!",
+   yell2 = "Kel’Thuzad macht Flickwerk zu seinem Abgesandten von Krieg!",
+   HatefulStrike = "Hasserfüllter Stoß --> %s [%s]"
 })
 
 
@@ -217,17 +217,17 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Grobbulus")
 
 L:SetGeneralLocalization({
-	name = "Grobbulus"
+   name = "Grobbulus"
 })
 
 L:SetOptionLocalization({
-	WarningInjection		= "Show Mutating Injection warning",
-	SpecialWarningInjection	= "Show special warning when you are afflicted by Mutating Injection"
+   WarningInjection      = "Warne für Mutagene Inkektion",
+   SpecialWarningInjection   = "Zeige spezielle Warnung wenn man selbst Ziel der Mutagenen Injektion ist"
 })
 
 L:SetWarningLocalization({
-	WarningInjection		= "Mutating Injection: >%s<",
-	SpecialWarningInjection	= "Mutating Injection on you!"
+   WarningInjection      = "Mutatagene Injektion: >%s<",
+   SpecialWarningInjection   = "Mutagene Injektion auf dir!"
 })
 
 
@@ -238,22 +238,22 @@ L:SetWarningLocalization({
 L = DBM:GetModLocalization("Gluth")
 
 L:SetGeneralLocalization({
-	name = "Gluth"
+   name = "Gluth"
 })
 
 L:SetOptionLocalization({
-	WarningDecimateNow	= "Warnung für Dezimieren anzeign",
-	WarningDecimateSoon	= "Vorwarnung für Dezimieren anzeigen",
-	TimerDecimate		= "Timer für Dezimieren anzeigen"
+   WarningDecimateNow   = "Warnung für Dezimieren anzeign",
+   WarningDecimateSoon   = "Vorwarnung für Dezimieren anzeigen",
+   TimerDecimate      = "Timer für Dezimieren anzeigen"
 })
 
 L:SetWarningLocalization({
-	WarningDecimateNow	= "Dezimieren!",
-	WarningDecimateSoon	= "Dezimieren in 10 Sek"
+   WarningDecimateNow   = "Dezimieren!",
+   WarningDecimateSoon   = "Dezimieren in 10 Sek"
 })
 
 L:SetTimerLocalization({
-	TimerDecimate		= "Dezimieren"
+   TimerDecimate      = "Dezimieren"
 })
 
 
@@ -263,37 +263,37 @@ L:SetTimerLocalization({
 L = DBM:GetModLocalization("Thaddius")
 
 L:SetGeneralLocalization({
-	name = "Thaddius"
+   name = "Thaddius"
 })
 
 L:SetMiscLocalization({
-	Yell	= "Stalagg crush you!"
+   Yell   = "Stalagg zerquetschen!"
 })
 
 L:SetOptionLocalization({
-	WarningShiftCasting		= "Show Polarity Shift warning",
-	WarningChargeChanged	= "Show special warning when your polarity changed",
-	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
-	TimerShiftCast			= "Show Polarity Shift cast timer",
-	TimerNextShift			= "Show Polarity Shift cooldown timer",
-	ArrowsEnabled			= "Pfeile anzeigen",
-	ArrowsRightLeft			= "Links/rechts-Pfeile anzeigen",
-	ArrowsInverse			= "Umgedrehte Taktik (Pfeil nach rechts anzeigen wenn sich die Polarität ändert)"
+   WarningShiftCasting      = "Warne für Polaritätsveränderung",
+   WarningChargeChanged   = "Zeige spezielle Warnung wenn deine Polarität gewechselt hat",
+   WarningChargeNotChanged   = "Zeige spezielle Warnung wenn deine Polarität nicht gewechselt hat",
+   TimerShiftCast         = "Zeige die Zeit in der Polaritätsveränderung  gewirkt wird",
+   TimerNextShift         = "Zeige die Abklingzeit für Polaritätsveränderung",
+   ArrowsEnabled         = "Pfeile anzeigen",
+   ArrowsRightLeft         = "Links/rechts-Pfeile anzeigen",
+   ArrowsInverse         = "Umgedrehte Taktik (Pfeil nach rechts anzeigen wenn sich die Polarität ändert)"
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting		= "Polarity Shift in 3 sec!",
-	WarningChargeChanged	= "Polarity changed to %s",
-	WarningChargeNotChanged	= "Polarity didn't change"
+   WarningShiftCasting      = "Polaritätsveränderung in 3 sek!",
+   WarningChargeChanged   = "Polarität geändert zu : %s",
+   WarningChargeNotChanged   = "Polarität änderte sich nicht"
 })
 
 L:SetTimerLocalization({
-	TimerShiftCast			= "Polarity Shift Cast",
-	TimerNextShift			= "Next Polarity Shift",
+   TimerShiftCast         = "Polaritätsveränderung gewirkt",
+   TimerNextShift         = "Nächste Polaritätsveränderung",
 })
 
 L:SetOptionCatLocalization({
-	Arrows	= "Pfeile",
+   Arrows   = "Pfeile",
 })
 
 
@@ -303,29 +303,29 @@ L:SetOptionCatLocalization({
 L = DBM:GetModLocalization("Razuvious")
 
 L:SetGeneralLocalization({
-	name = "Razuvious"
+   name = "Razuvious"
 })
 
 L:SetMiscLocalization({
-	Yell1 = "Show them no mercy!",
-	Yell2 = "The time for practice is over! Show me what you have learned!",
-	Yell3 = "Do as I taught you!",
-	Yell4 = "Sweep the leg... Do you have a problem with that?"
+   Yell1 = "Show them no mercy!",
+   Yell2 = "The time for practice is over! Show me what you have learned!",
+   Yell3 = "Do as I taught you!",
+   Yell4 = "Sweep the leg... Do you have a problem with that?"
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow		= "Show Disrupting Shout warning",
-	WarningShoutSoon	= "Show Disrupting Shout pre-warning",
-	TimerShout			= "Show Disrupting Shout timer"
+   WarningShoutNow      = "Warne für Unterbrechender Schrei",-- oder Unterbrechungsruf , Blizzard war sich nich einig
+   WarningShoutSoon   = "Zeige Vor-Warnung für Unterbrechender Schrei",
+   TimerShout         = "Zeige Zeit bis Unterbrechender Schrei",
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow		= "Disrupting Shout!",
-	WarningShoutSoon	= "Disrupting Shout in 5 sec"
+   WarningShoutNow      = "Unterbrechender Schrei!",
+   WarningShoutSoon   = "Unterbrechender Schrei in 5 sek"
 })
 
 L:SetTimerLocalization({
-	TimerShout			= "Disrupting Shout"
+   TimerShout         = "Unterbrechender Schrei"
 })
 
 --------------
@@ -334,40 +334,40 @@ L:SetTimerLocalization({
 L = DBM:GetModLocalization("Gothik")
 
 L:SetGeneralLocalization({
-	name = "Gothik"
+   name = "Gothik"
 })
 
 L:SetOptionLocalization({
-	TimerWave			= "Show Wave timer",
-	TimerPhase2			= "Show Phase 2 timer",
-	WarningWaveSoon		= "Show Wave pre-warning",
-	WarningWaveSpawned	= "Show Wave spawned warning",
-	WarningRiderDown	= "Show warning when a Rider dies",
-	WarningKnightDown	= "Show warning when a Knight dies",
-	WarningPhase2		= "Show Phase 2 warning"
+   TimerWave         = "Zeige Timer für Wellen",
+   TimerPhase2         = "Zeige Phase 2 Timer",
+   WarningWaveSoon      = "Zeige Vor-Warnung für die Wellen",
+   WarningWaveSpawned   = "Warne, wenn eine Welle spawnt",
+   WarningRiderDown   = "Warne when ein Reiter stirbt",
+   WarningKnightDown   = "Warne wenn ein Ritter stirbt",
+   WarningPhase2      = "Phase 2 Warnung"
 })
 
 L:SetTimerLocalization({
-	TimerWave	= "Wave #%d",
-	TimerPhase2	= "Phase 2"
+   TimerWave   = "Welle #%d",
+   TimerPhase2   = "Phase 2"
 })
 
 L:SetWarningLocalization({
-	WarningWaveSoon		= "Wave %d: %s in 3 sec",
-	WarningWaveSpawned	= "Wave %d: %s spawned",
-	WarningRiderDown	= "Rider down",
-	WarningKnightDown	= "Knight down",
-	WarningPhase2		= "Phase 2"
+   WarningWaveSoon      = "Welle %d: %s in 3 sek",
+   WarningWaveSpawned   = "Welle %d: %s gespawnt",
+   WarningRiderDown   = "Reiter tot",
+   WarningKnightDown   = "Ritter tot",
+   WarningPhase2      = "Phase 2"
 })
 
 L:SetMiscLocalization({
-	yell			= "Foolishly you have sought your own demise.",
-	WarningWave1	= "%d %s",
-	WarningWave2	= "%d %s and %d %s",
-	WarningWave3	= "%d %s, %d %s and %d %s",
---	Trainee			= "|4Trainee:Trainees;",
---	Knight			= "|4Knight:Knights;",
---	Rider			= "|4Rider:Riders;",
+   yell         = "Ihr Narren habt euren eigenen Untergang heraufbeschworen.",
+   WarningWave1   = "%d %s",
+   WarningWave2   = "%d %s und %d %s",
+   WarningWave3   = "%d %s, %d %s und %d %s",
+   Trainee         = "|4Lehrling:Lehrlinge;",
+   Knight         = "|4Ritter:Ritter;",
+   Rider         = "|4Reiter:Reiter;",
 })
 
 
@@ -377,31 +377,31 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Horsemen")
 
 L:SetGeneralLocalization({
-	name = "Four Horsemen"
+   name = "Four Horsemen"
 })
 
 L:SetOptionLocalization({
-	TimerMark					= "Timer für Mark anzeigen",
-	WarningMarkSoon				= "Vorwarnung für Mark anzeigen",
-	WarningMarkNow				= "Warnung für Mark anzeigen",
-	SpecialWarningMarkOnPlayer	= "Spezialwarnung anzeigen wenn du mehr als 4 Marks auf dir hast"
+   TimerMark               = "Timer für Mal anzeigen",
+   WarningMarkSoon            = "Vorwarnung für Mal anzeigen",
+   WarningMarkNow            = "Warnung für Mal anzeigen",
+   SpecialWarningMarkOnPlayer   = "Spezialwarnung anzeigen wenn du mehr als 4 Male auf dir hast"
 })
 
 L:SetTimerLocalization({
-	TimerMark = "Mark %d"
+   TimerMark = "Mal %d"
 })
 
 L:SetWarningLocalization({
-	WarningMarkSoon				= "Mark %d in 4 Sek",
-	WarningMarkNow				= "Mark %d!",
-	SpecialWarningMarkOnPlayer	= "%s: %s",
+   WarningMarkSoon            = "Mal %d in 4 Sek",
+   WarningMarkNow            = "Mal %d!",
+   SpecialWarningMarkOnPlayer   = "%s: %s",
 })
 
 L:SetMiscLocalization({
-	Korthazz	= "Thane Korth'azz",
-	Rivendare	= "Baron Rivendare",
-	Blaumeux	= "Lady Blaumeux",
-	Zeliek		= "Sir Zeliek",
+   Korthazz   = "Thane Korth'azz",
+   Rivendare   = "Baron Rivendare",
+   Blaumeux   = "Lady Blaumeux",
+   Zeliek      = "Sir Zeliek",
 })
 
 
@@ -411,41 +411,41 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Sapphiron")
 
 L:SetGeneralLocalization({
-	name = "Sapphiron"
+   name = "Sapphiron"
 })
 
 L:SetOptionLocalization({
-	WarningDrainLifeNow		= "Show Drain Life warning",
-	WarningDrainLifeSoon	= "Show Drain Life pre-warning",
-	WarningAirPhaseSoon		= "Show Air Phase pre-warning",
-	WarningAirPhaseNow		= "Show Air Phase warning",
-	WarningLanded			= "Show Ground Phase warning",
-	TimerDrainLifeCD		= "Show Drain Life timer",
-	TimerAir				= "Show Air Phase timer",
-	TimerLanding			= "Show Landing in timer",
-	TimerIceBlast			= "Show Deep Breath timer",
-	WarningDeepBreath		= "Show Deep Breath special warning"
+   WarningDrainLifeNow      = "Warne vor Lebensentzug",
+   WarningDrainLifeSoon   = "Zeige Vor-Warnung für Lebensentzug",
+   WarningAirPhaseSoon      = "Zeige VorWarnung für die Flugphase",
+   WarningAirPhaseNow      = "Verkünde die Flugphase",
+   WarningLanded         = "Warne vor der Bodenphase",
+   TimerDrainLifeCD      = "Zeige Timer für Lebensentzug",
+   TimerAir            = "Zeige Timer für die Flugphase",
+   TimerLanding         = "Zeige Timer für die Landung",
+   TimerIceBlast         = "Zeige Timer für  Tiefen Atem",
+   WarningDeepBreath      = "Zeige spezielle Warnung für Tiefen Atem"
 })
 
 L:SetMiscLocalization({
-	EmoteBreath			= "%s takes in a deep breath...",
-	WarningYellIceblock	= "Ich bin ein Eisblock!"
+   EmoteBreath         = "%s holt tief Luft.",
+   WarningYellIceblock   = "Ich bin ein Eisblock!"
 })
 
 L:SetWarningLocalization({
-	WarningDrainLifeNow		= "Drain Life!",
-	WarningDrainLifeSoon	= "Drain Life soon",
-	WarningAirPhaseSoon		= "Flugphase in 10 Sek",
-	WarningAirPhaseNow		= "Flugphase",
-	WarningLanded			= "Sapphiron ist gelandet",
-	WarningDeepBreath		= "Tiefer Atem!",
+   WarningDrainLifeNow      = "Lebensentzug!",
+   WarningDrainLifeSoon   = "Lebensentzug  bald!",
+   WarningAirPhaseSoon      = "Flugphase in 10 Sek",
+   WarningAirPhaseNow      = "Flugphase",
+   WarningLanded         = "Sapphiron ist gelandet",
+   WarningDeepBreath      = "Tiefer Atem!",
 })
 
 L:SetTimerLocalization({
-	TimerDrainLifeCD		= "Drain Life CD",
-	TimerAir				= "Flugphase",
-	TimerLanding			= "Landung in",
-	TimerIceBlast			= "Tiefer Atem"	
+   TimerDrainLifeCD      = "Lebensentzug CD",
+   TimerAir            = "Flugphase",
+   TimerLanding         = "Landung in",
+   TimerIceBlast         = "Tiefer Atem"   
 })
 
 ------------------
@@ -455,29 +455,28 @@ L:SetTimerLocalization({
 L = DBM:GetModLocalization("Kel'Thuzad")
 
 L:SetGeneralLocalization({
-	name = "Kel'Thuzad"
+   name = "Kel'Thuzad"
 })
 
 L:SetOptionLocalization({
-	TimerPhase2		= "Timer für Phase 2 anzeigen",
-	WarningBlastTargets	= "Warnung für Frostblast anzeigen",
-	WarningPhase2		= "Show Phase 2 warning",
-	WarningFissure		= "Show Shadow Fissure warning",
+   TimerPhase2         = "Timer für Phase 2 anzeigen",
+   WarningBlastTargets   = "Warnung für Frostschlag anzeigen",
+   WarningPhase2      = "Zeige Phase 2 Warnung",
+   WarningFissure      = "Warne vor Schattenspalt",
 })
 
 L:SetMiscLocalization({
-	Yell = "Minions, servants, soldiers of the cold dark! Obey the call of Kel'Thuzad!"
+   Yell = "Lakaien, Diener, Soldaten der eisigen Finsternis! Folgt dem Ruf von Kel'Thuzad!"
 })
 
 L:SetWarningLocalization({
-	WarningBlastTargets	= "Frost Blast: >%s<",
-	WarningPhase2		= "Phase 2",
-	WarningFissure		= "Shadow Fissure spawned"
+   WarningBlastTargets   = "Frostschlag: >%s<",
+   WarningPhase2      = "Phase 2",
+   WarningFissure      = "Schattenspalt gespawnt"
 })
 
 L:SetTimerLocalization({
-	TimerPhase2		= "Phase 2"
+   TimerPhase2         = "Phase 2"
 })
-
 
 
