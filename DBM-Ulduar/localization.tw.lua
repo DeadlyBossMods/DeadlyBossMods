@@ -476,7 +476,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!!"
+	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!!",
 	CrashWhisper			= "Shadow Crash on You! Run away!"
 }
 
