@@ -227,10 +227,33 @@ L:SetGeneralLocalization{
 	name = "柯洛剛恩"
 }
 
-L:SetMiscLocalization{
+L:SetWarningLocalization{
+	SpecialWarningEyebeam		= "集束目光看著你 - 跑開",
+	WarningEyebeam			= "集束目光: >%s<"
 }
 
-L:SetWarningLocalization{
+L:SetTimerLocalization{
+	timerEyebeam			= "集束目光: %s",
+	timerPetrifyingBreath		= "石化之息",
+	timerNextShockwave		= "下一個 震攝波",
+	timerLeftArm			= "左臂 重生",
+	timerRightArm			= "右臂 重生"
+}
+
+L:SetOptionLocalization{
+	SpecialWarningEyebeam		= "當集束目光看著你顯示特別警告",
+	WarningEyebeam			= "提示集束目光的目標",
+	timerEyebeam			= "顯示集束目光的計時器",
+	SetIconOnEyebeamTarget		= "設置標記在集束目光的目標",
+	timerPetrifyingBreath		= "顯示石化之息的計時器",
+	timerNextShockwave		= "顯示震攝波的計時器",
+	timerLeftArm			= "顯示手臂重生(左) 的計時器",
+	timerRightArm			= "顯示手臂重生(右) 的計時器"
+}
+
+L:SetMiscLocalization{
+	Yell_Trigger_arm_left		= "Just a scratch!",
+	Yell_Trigger_arm_right		= "Only a flesh wound!"
 }
 
 ---------------
