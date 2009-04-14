@@ -443,7 +443,8 @@ L:SetOptionLocalization({
 	TimerAir				= "顯示空中階段計時器",
 	TimerLanding			= "顯示降落計時器",
 	TimerIceBlast			= "顯示深呼吸計時器",
-	WarningDeepBreath		= "顯示深呼吸特別警告"
+	WarningDeepBreath		= "顯示深呼吸特別警告",
+	WarningIceblock		= "當你中了冰箱大喊",
 })
 
 L:SetMiscLocalization({
