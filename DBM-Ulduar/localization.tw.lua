@@ -473,11 +473,12 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
 	SpecialWarningSurgeDarkness	= "為暗鬱奔騰顯示特別警告",
 	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
+	CrashWhisper = "密語提示中了暗影暴擊的人"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!!",
-	CrashWhisper			= "Shadow Crash on You! Run away!"
+	CrashWhisper			= "你中了暗影暴擊! 跑開!"
 }
 
 
