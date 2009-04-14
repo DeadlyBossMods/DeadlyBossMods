@@ -225,10 +225,33 @@ L:SetGeneralLocalization{
 	name = "Kologarn"
 }
 
-L:SetMiscLocalization{
+L:SetWarningLocalization{
+	SpecialWarningEyebeam		= "Eye Beam on YOU - MOVE AWAY",
+	WarningEyebeam			= "Eye Beam on >%s<"
 }
 
-L:SetWarningLocalization{
+L:SetTimerLocalization{
+	timerEyebeam			= "Eye Beam: %s",
+	timerPetrifyingBreath		= "Petrifying Breath",
+	timerNextShockwave		= "next Shockwave",
+	timerLeftArm			= "Respawn Left Arm",
+	timerRightArm			= "Respawn Right Arm"
+}
+
+L:SetOptionLocalization{
+	SpecialWarningEyebeam		= "Show a Special Warning for Eye Beam on YOU",
+	WarningEyebeam			= "Announce Eye Beam target",
+	timerEyebeam			= "Show timer for Eye Beam",
+	SetIconOnEyebeamTarget		= "Set an Icon on Eye Beam Target",
+	timerPetrifyingBreath		= "Show timer for Petrifying Breath",
+	timerNextShockwave		= "Show timer for Shockwave",
+	timerLeftArm			= "Show timer for Arm Respawn (left)",
+	timerRightArm			= "Show timer for Arm Respawn (right)"
+}
+
+L:SetMiscLocalization{
+	Yell_Trigger_arm_left		= "Just a scratch!",
+	Yell_Trigger_arm_right		= "Only a flesh wound!"
 }
 
 ---------------
