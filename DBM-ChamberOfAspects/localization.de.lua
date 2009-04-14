@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Shadron")
 
 L:SetGeneralLocalization({
-	name = "Shadron"
+   name = "Shadron"
 })
 
 
@@ -18,7 +18,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Tenebron")
 
 L:SetGeneralLocalization({
-	name = "Tenebron"
+   name = "Tenebron"
 })
 
 
@@ -28,7 +28,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Vesperon")
 
 L:SetGeneralLocalization({
-	name = "Vesperon"
+   name = "Vesperon"
 })
 
 
@@ -38,60 +38,58 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Sartharion")
 
 L:SetGeneralLocalization({
-	name = "Sartharion"
+   name = "Sartharion"
 })
 
 L:SetWarningLocalization({
-	WarningTenebron			= "Tenebron incoming",
-	WarningShadron			= "Shadron incoming",
-	WarningVesperon			= "Vesperon incoming",
-	WarningFireWall			= "Fire Wall!",
-	WarningVesperonPortal	= "Vesperon's Portal!",
-	WarningTenebronPortal	= "Tenebron's Portal!",
-	WarningShadronPortal	= "Shadron's Portal!",
+   WarningTenebron         = "Tenebron kommt",
+   WarningShadron         = "Shadron kommt",
+   WarningVesperon         = "Vesperon kommt",
+   WarningFireWall         = "Feuerwand!",
+   WarningVesperonPortal   = "Vesperon's Portal!",
+   WarningTenebronPortal   = "Tenebron's Portal!",
+   WarningShadronPortal   = "Shadron's Portal!",
 })
 
 L:SetTimerLocalization({
-	TimerWall	= "Fire Wall cooldown",
-	TimerTenebron	= "Tenebron incoming",
-	TimerShadron	= "Shadron incoming",
-	TimerVesperon	= "Vesperon incoming"
+   TimerWall   = "Feuerwand cooldown",
+   TimerTenebron   = "Tenebron kommt",
+   TimerShadron   = "Shadron kommt",
+   TimerVesperon   = "Vesperon kommt"
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall	= "Play sound for \"Fire Wall\"",
-	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to the raid chat (requires announce enabled and promoted/leader status)",
+   PlaySoundOnFireWall   = "Akkustische Warnung für \"Feuerwand\"",
+   AnnounceFails      = "Verkünde Spieler, welche bei Feuerwand und Zone der Leere  scheitern im Schlachtzugschat ( benötigt Assistent/Leiter Status und aktivierte Raidansage)",
 
-	TimerWall		= "Show a Timer for \"Fire Wall\"",
-	TimerTenebron		= "Show a timer for Tenebron",
-	TimerShadron		= "Show a timer for Shadron",
-	TimerVesperon		= "Show a timer for Vesperon",
+   TimerWall      = "Zeit bis  \"Feuerwand\"",
+   TimerTenebron      = "Zeigt die Zeit bis Tenebron",
+   TimerShadron      = "Zeigt die Zeit bis  Shadron",
+   TimerVesperon      = "Zeigt die Zeit bis  Vesperon",
 
-	WarningFireWall		= "Show \"Fire Wall\" special-warning",
-	WarningTenebron		= "Show Tenebron spawn timer",
-	WarningShadron		= "Show Shadron spawn timer",
-	WarningVesperon		= "Show Vesperon spawn timer",
+   WarningFireWall      = "Zeige  spezielle Warnung für \"Feuerwand\"",
+   WarningTenebron      = "Zeit bis Tenebron erscheint",
+   WarningShadron      = "Zeit bis Shadron erscheint",
+   WarningVesperon      = "Zeit bis Vesperon erscheint",
 
-	WarningTenebronPortal	= "Show special-warning for Tenebron's portals",
-	WarningShadronPortal	= "Show special-warning for Shadron's portals",
-	WarningVesperonPortal	= "Show special-warning for Vesperon's portals",
+   WarningTenebronPortal   = "Zeige spezielle Warnung für Tenebron's Portale",
+   WarningShadronPortal   = "Zeige spezielle Warnung für Shadron's Portale",
+   WarningVesperonPortal   = "Zeige spezielle Warnung für Vesperon's Portale",
 })
 
 L:SetMiscLocalization({
-	Wall			= "Die Lava um %s brodelt!",
-	Portal			= "%s begins to open a Twilight Portal!",
-	NameTenebron	= "Tenebron",
-	NameShadron		= "Shadron",
-	NameVesperon	= "Vesperon",
-	FireWallOn		= "Fire wall: %s",
-	VoidZoneOn		= "Void zone: %s",
-	VoidZones		= "Void zone fails (this try): %s",
-	FireWalls		= "Fire wall fails (this try): %s",
-	--[[ not in use; don't translate.
-	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
-	Shadron		= "Shadron! Come to me! All is at risk!",
-	Tenebron	= "Tenebron! The eggs are yours to protect as well!"
-	--]]
+   Wall         = "Die Lava um %s brodelt!",
+   Portal         = "%s beginnt, ein Portal des Zwielichts zu öffnen!",
+   NameTenebron   = "Tenebron",
+   NameShadron      = "Shadron",
+   NameVesperon   = "Vesperon",
+   FireWallOn      = "Feuerwand: %s",
+   VoidZoneOn      = "Zone der Leere: %s",
+   VoidZones      = "Versagen für Zone der Leere(dieser Versuch): %s",
+   FireWalls      = "Versagen für Feuerwand (dieser Versuch: %s",
+   --[[ not in use; don't translate.
+   Vesperon   = "Vesperon, the clutch is in danger! Assist me!",
+   Shadron      = "Shadron! Come to me! All is at risk!",
+   Tenebron   = "Tenebron! The eggs are yours to protect as well!"
+   --]]
 })
-
-
