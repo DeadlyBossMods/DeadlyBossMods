@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("FlameLeviathan")
 
 L:SetGeneralLocalization{
-	name = "거대 화염 전차"
+	name = "거대 화염전차"
 }
 
 L:SetTimerLocalization{
@@ -43,7 +43,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Ignis")
 
 L:SetGeneralLocalization{
-	name = "이그니스"
+	name = "용광로 군주 이그니스"
 }
 
 L:SetTimerLocalization{
@@ -67,6 +67,7 @@ L:SetOptionLocalization{
 	WarningSlagPot				= "잿가루 구덩이 대상 알리기",
 	TimerSlagPot				= "잿가루 구덩이 타이머 보기"
 }
+
 ------------------
 --  Razorscale  --
 ------------------
@@ -194,7 +195,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
-	name = "알갤론"
+	name = "관찰자 알갈론"
 }
 
 L:SetTimerLocalization{
@@ -221,10 +222,33 @@ L:SetGeneralLocalization{
 	name = "콜로간"
 }
 
-L:SetMiscLocalization{
+L:SetWarningLocalization{
+	SpecialWarningEyebeam	= "당신에게 안광 - 빠르게 이동!",
+	WarningEyebeam			= ">%s< 에게 안광 집중"
 }
 
-L:SetWarningLocalization{
+L:SetTimerLocalization{
+	timerEyebeam			= "안광 : %s",
+	timerPetrifyingBreath	= "석화 숨결",
+	timerNextShockwave		= "다음 충격파",
+	timerLeftArm			= "왼쪽 팔 재생성",
+	timerRightArm			= "오른쪽 팔 재생성"
+}
+
+L:SetOptionLocalization{
+	SpecialWarningEyebeam	= "당신에게 안광 집중이 될 때 특수 경고 보기",
+	WarningEyebeam			= "안광 집중 대상 알리기",
+	timerEyebeam			= "안광 집중 타이머 보기",
+	SetIconOnEyebeamTarget	= "안광 집중 대상 아이콘 설정",
+	timerPetrifyingBreath	= "석화 숨결 타이머 보기",
+	timerNextShockwave		= "충격파 타이머 보기",
+	timerLeftArm			= "왼쪽 팔 재생성 타이머 보기",
+	timerRightArm			= "오른쪽 팔 재생성 타이머 보기"
+}
+
+L:SetMiscLocalization{
+	Yell_Trigger_arm_left		= "Just a scratch!",
+	Yell_Trigger_arm_right		= "Only a flesh wound!"
 }
 
 --------------
@@ -438,10 +462,4 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 }
-
-
-
-
-
-
 
