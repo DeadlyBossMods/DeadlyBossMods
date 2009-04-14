@@ -2,10 +2,12 @@ local mod = DBM:NewMod("Kologarn", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(0) missing
+mod:SetCreatureID(32930)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+
+-- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -13,14 +15,15 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
+local specWarnEyebeam		= mod:NewSpecialWarning("SpecialWarningEyebeam")
 local warnEyebeam			= mod:NewAnnounce("WarningEyebeam", 2, 63976)
 local timerEyebeam			= mod:NewTimer(10, "timerEyebeam", 63976)
+
 mod:AddBoolOption("SetIconOnEyebeamTarget", true)
 
 local timerPetrifyingBreath		= mod:NewTimer(4, "timerPetrifyingBreath", 63980)	-- never seen this in the movie looks like a "move away" type
 
-local timerNextShockwave		= mod:NewTimer(22, "timerNextShockwave", 63982)		-- don't realy know, move quality was anoying ;)
+local timerNextShockwave		= mod:NewTimer(22, "timerNextShockwave", 63982)		-- don't really know, movie quality was low ;)
 
 local timerRespawnLeftArm		= mod:NewTimer(60, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(60, "timerRightArm")
@@ -37,7 +40,7 @@ function mod:SPELL_CAST_START(args)
 		timerPetrifyingBreath:Start()
 
 --	elseif args.spellId == 64290 or args.spellId == 64292 then	-- Stone Grip
-		-- startet by emote / I think, no message is required
+		-- startet by emote?
 	end
 end
 
@@ -54,7 +57,7 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg) -- maybe its possible from combatlog to get a UNIT_DIED or something like this event so no translation is required
+function mod:CHAT_MSG_MONSTER_YELL(msg) -- maybe it's possible to use a UNIT_DIED event or something like this here to get rid of the translation issue
 	if msg == L.Yell_Trigger_arm_left then
 		timerRespawnLeftArm:Start()
 

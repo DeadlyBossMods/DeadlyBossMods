@@ -5,9 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 
 mod:SetZone()
 
--- freely created by provided informations from
--- http://www.mmo-champion.com/index.php?page=840
--- this mod issn't fully working and finished - please provide combatlogs
+-- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
 
 mod:RegisterCombat("combat")
 
@@ -20,14 +18,14 @@ local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
 local timerDeepBreathCooldown		= mod:NewTimer(21, "timerDeepBreathCooldown", 64021)
 local timerDeepBreathCast		= mod:NewTimer(2.5, "timerDeepBreathCast", 64021)
 
-mod:AddBoolOption("PlaySoundOnDevouringFlame", true, "announce")
+mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 
 
 function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63816 and args.destName == UnitName("player") then		-- you stay in the Devouring Flame (some shit on the ground ^^)
+	if args.spellId == 63816 and args.destName == UnitName("player") then		-- you are standing in Devouring Flame (some flame stuff on the ground)
 		specWarnDevouringFlame:Show()
 		if self.Options.PlaySoundOnDevouringFlame then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
