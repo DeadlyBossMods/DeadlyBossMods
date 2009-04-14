@@ -38,7 +38,7 @@
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
 	Version = "4.10",
-	DisplayVersion = "4.10"
+	DisplayVersion = "4.11 (alpha)"
 }
 
 DBM_SavedOptions = {}
