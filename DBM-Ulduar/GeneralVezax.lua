@@ -30,6 +30,7 @@ local warnShadowCrash	= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
 
 mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
+mod:AddBoolOption("CrashWhisper", false, "announce")
 
 function mod:OnCombatStart(delay)
 	timerEnrage:Start(-delay)
@@ -72,9 +73,8 @@ function mod:ShadowCrashTarget()
 		self:SetIcon(targetname, 8, 10)
 	end
 	
-	if DBM:GetRaidRank() >= 1 then
-		-- temporary hack; will be replaced with SendHiddenWhisper and an option soon
-		SendChatMessage("Shadow Crash on You! RUN!", "WHISPER", nil, targetname)
+	if DBM:GetRaidRank() >= 1 and self.Options.CrashWhisper then
+		self:SendWhisper(L.CrashWhisper, targetname)
 	end
 	warnShadowCrash:Show(targetname)
 	if targetname == UnitName("player") then

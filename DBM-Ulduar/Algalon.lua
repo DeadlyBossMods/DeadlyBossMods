@@ -2,12 +2,11 @@ local mod = DBM:NewMod("Algalon", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-
+--mod:SetCreatureID() -- ??
 mod:SetZone()
 
--- freely created by provided informations from
--- http://www.mmo-champion.com/index.php?page=850
--- this mod issn't fully working and finished - please provide combatlogs
+-- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
+
 
 mod:RegisterCombat("combat")
 
@@ -20,19 +19,6 @@ local timerBigBangCast		= mod:NewTimer(8, "TimerBigBangCast", 64584)
 local announceBlackHole		= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announcePhasePunch	= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
 local specWarnPhasePunch	= mod:NewSpecialWarning("SpecWarnPhasePunch")
-
-function mod:OnCombatStart(delay)
-	DBM:AddMsg("We require more combatlogs on www.deadlybossmods.com to improve DBM, start logging now")
-	LoggingCombat(1)
-	LoggingChat(1)
-end
-
-function mod:OnCombatEnd()
-	LoggingCombat(0)	
-	LoggingChat(0)
-	DBM:AddMsg("[DE] Hallo, dieses Bossmod ist nicht fertig. Ein Chat und Kampflog wurde erzeugt, bitte lade es auf www.deadlybossmods.com hoch.")
-	DBM:AddMsg("[EN] Hello, this Bossmod is not yet finished. A Chat and Combatlog was created, please upload it on www.deadlybossmods.com.")
-end
 
 
 function mod:SPELL_CAST_START(args)

@@ -37,8 +37,8 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.05",
-	DisplayVersion = "4.10 (alpha)"
+	Version = "4.10",
+	DisplayVersion = "4.10"
 }
 
 DBM_SavedOptions = {}
@@ -1847,9 +1847,9 @@ end
 -----------------------------
 --  Generic Target Warning --
 -----------------------------
-function bossModPrototype:NewGenericTargetAnnounce(spellId, color, ...)
+function bossModPrototype:NewGenericTargetAnnounce(spellId, color, ...) -- deprecated - DON'T USE THIS
 	local id = "GenericTarget"..spellId
-	local spellName = GetSpellInfo(spellId)
+	local spellName = GetSpellInfo(spellId) or "unknown spell"
 	self.localization.warnings[id] = DBM_CORE_GENERIC_TARGET_WARN:format(spellName)
 	self.localization.options[id] = DBM_CORE_GENERIC_TARGET_OPTION:format(spellName)
 	return self:NewAnnounce(id, color, spellId, ...)
@@ -1940,7 +1940,7 @@ do
 		return newAnnounce(self, "target", ...)
 	end
 
-	function bossModPrototype:NewCastTimer(timer, ...)
+--[[	function bossModPrototype:NewCastTimer(timer, ...)
 		if timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
 			timer = select(7, GetSpellInfo(spellId)) -- GetSpellInfo takes YOUR spell haste into account...WTF?
@@ -1949,7 +1949,7 @@ do
 			return self:NewCastTimer(timer / 1000, spellId, ...)
 		end
 		return newTimer(self, "cast", timer, ...)
-	end
+	end]]
 end
 
 
@@ -2201,7 +2201,7 @@ do
 	function bossModPrototype:NewCastTimer(timer, ...)
 		if timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
 			local spellId = timer
-			timer = select(7, GetSpellInfo(spellId)) -- GetSpellInfo takes YOUR spell haste into account...WTF?
+			timer = select(7, GetSpellInfo(spellId)) or 1000 -- GetSpellInfo takes YOUR spell haste into account...WTF?
 			local spellHaste = select(7, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
 			timer = timer / spellHaste -- calculate the real cast time of the spell...
 			return self:NewCastTimer(timer / 1000, spellId, ...)
