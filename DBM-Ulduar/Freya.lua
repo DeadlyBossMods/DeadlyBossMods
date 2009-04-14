@@ -16,7 +16,7 @@ mod:RegisterEvents(
 )
 
 mod:AddBoolOption("AddHealthFrame")
-mod:RemoveOption("HealthFrame") -- we cannot use the default static health frame as we need to be able to add/remove mobs
+mod:RemoveOption("HealthFrame") -- we cannot use the default static health frame as we need to be able to add/remove mobs (okay, it would be possible to use this but it would be ugly)
 
 local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
 local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
@@ -81,7 +81,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE_FILTERED(msg, sender)
 	if msg == L.EmoteTree then
-		-- todo
+		-- todo, /chatlog fails when a chat message contains a color code -.-
 	end
 end
 

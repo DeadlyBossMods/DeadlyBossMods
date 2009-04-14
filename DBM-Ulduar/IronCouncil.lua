@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32867)
 mod:SetZone()
 
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -14,9 +15,9 @@ mod:RegisterEvents(
 mod:AddBoolOption("HealthFrame", true)
 
 mod:SetBossHealthInfo(		-- 32927 32857 32867
-	0, L.Steelbreaker,
-	0, L.RunemasterMolgeim,
-	0, L.StormcallerBrundir
+	32927, L.Steelbreaker,
+	32857, L.RunemasterMolgeim,
+	32867, L.StormcallerBrundir
 )
 
 local timerSupercharge		= mod:NewTimer(10, "TimerSupercharge", 61920)
@@ -42,7 +43,7 @@ mod:AddBoolOption("SetIconOnOverwhelmingPower", true, "announce")
 
 
 -- Runemaster Molgeim
--- Lightning Blast ... don't know 63491
+-- Lightning Blast ... don't know, maybe 63491
 local timerRunicBarrier		= mod:NewTimer(20, "timerRunicBarrier", 62338)
 local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
 local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
@@ -60,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 		timerSupercharge:Start()
 		warnSupercharge:Show()
 
-	elseif args.spellId == 64215 then				-- Chain light (require the 10ppl spellid)
+	elseif args.spellId == 64215 then				-- Chain light (need the 10ppl spellid)
 		warnChainlight:Show()
 	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
 		timerOverload:Start()

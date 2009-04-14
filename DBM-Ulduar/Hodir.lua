@@ -5,6 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(0) -- Mob ID Required!
 mod:SetZone()
 
+-- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(

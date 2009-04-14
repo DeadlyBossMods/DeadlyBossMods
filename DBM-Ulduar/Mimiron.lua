@@ -55,10 +55,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 63027 then		-- mines
 		timerProximityMines:Start()
 
-	elseif args.spellId == 63414 then	-- Spinning UP (before DarkGlare)
+	elseif args.spellId == 63414 then	-- Spinning UP (before Dark Glare)
 		timerSpinUp:Start()
 		timerDarkGlareCast:Schedule(4)
-		timerNextDarkGlare:Schedule(19)	-- 4 (cast spinup) + 15 sec (cast darkglare)
+		timerNextDarkGlare:Schedule(19)	-- 4 (cast spinup) + 15 sec (cast dark glare)
 		warnDarkGlare:Show()
 
 		if self.Options.PlaySoundOnDarkGlare then
@@ -80,7 +80,7 @@ do
 	local last = 0
 	function mod:SPELL_AURA_REMOVED(args)
 		if phase == 1 and self:GetCIDFromGUID(args.destGUID) == 33432 then
-			if args.timestamp == last then	-- all events in the same second
+			if args.timestamp == last then	-- all events in the same second to detect the 2nd phase early and localization-independent
 				count = count + 1
 				if count > 20 then
 					phase = 2
