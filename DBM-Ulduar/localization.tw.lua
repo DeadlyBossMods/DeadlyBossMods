@@ -280,7 +280,8 @@ L:SetOptionLocalization{
 	SpecWarnBlast	 		= "為哨兵衝擊顯示特別警告",
 	WarnFear 			= "顯示恐懼警告",
 	WarnFearSoon 			= "顯示即將恐懼警告",
-	WarnCatDied 			= "當野性防衛者死亡時顯示警告"
+	WarnCatDied 			= "當野性防衛者死亡時顯示警告",
+	AddHealthFrame 			= "顯示小怪血量框架"
 }
 
 
@@ -305,10 +306,12 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerFlashFreeze		= "顯示閃霜的施放計時器",
 	WarningFlashFreeze		= "為閃霜顯示警告",
+	WarningBitingCold		= "為刺骨之寒顯示警告",
+	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效"
 }
 
 L:SetMiscLocalization{
-	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效",
+	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效", --unusable?
 }
 
 
@@ -342,7 +345,9 @@ L:SetOptionLocalization{
 	UnbalancingStrike		= "提示失衡打擊的目標",
 	WarningStormhammer		= "提示風暴之錘的目標",
 	WarningPhase2			= "提示第二階段",
-	RangeFrame			= "顯示距離框"
+	RangeFrame			= "顯示距離框",
+	WarningBomb			= "提示引爆符文",
+	LightningOrb 			= "當你中了閃電充能時顯示特別警告"
 }
 
 L:SetMiscLocalization{
@@ -365,7 +370,7 @@ L:SetMiscLocalization{
 	WaterSpirit 			= "上古水之靈",
 	Snaplasher 			= "猛攫鞭笞者",
 	StormLasher 			= "風暴鞭笞者",
-	EmoteTree 			= "???" -- /chatlog failed
+	EmoteTree 			= "???" -- /chatlog does not log messages with color codes...lol
 }
 
 L:SetWarningLocalization{
@@ -382,6 +387,15 @@ L:SetTimerLocalization{
 	TimerFuryYou 			= "你中了自然烈怒"
 }
 
+L:SetOptionLocalization{
+	TimerAlliesOfNature 		= "顯示自然和諧冷卻時間",
+	TimerSimulKill 			= "顯示小怪復活計時器",
+	TimerFuryYou 			= "顯示自然烈怒計時器",
+	WarnPhase2 			= "提示第二階段",
+	WarnSimulKill			= "提示小怪復活",
+	WarnFury 			= "提示自然烈怒",
+	SpecWarnFury 			= "當你中了自然烈怒時顯示特別警告"
+}
 
 -------------------
 --  Mimiron  --
@@ -400,6 +414,10 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	ProximityMines			= "新的環罩地雷",
+	DarkGlare 			= "雷射彈幕",
+	NextDarkGlare 			= "下一次 雷射彈幕",
+	TimeToP2 			= "第二階段",
+	SpinUp 				= "雷射彈幕 即將到來"
 }
 
 L:SetOptionLocalization{
@@ -407,6 +425,11 @@ L:SetOptionLocalization{
 	WarningPlasmaBlast		= "顯示離子衝擊",
 	ProximityMines			= "顯示環罩地雷計時器",
 	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
+	DarkGlare 			= "提示雷射彈幕",
+	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
+	NextDarkGlare 			= "下一次 雷射彈幕的計时器",
+	TimeToP2 			= "顯示第二階段計時器",
+	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器"
 }
 
 L:SetMiscLocalization{
@@ -426,7 +449,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningShadowCrash		= "你中了暗影暴擊",
+	SpecialWarningShadowCrash	= "你中了暗影暴擊",
 	SpecialWarningSurgeDarkness	= "暗鬱奔騰",
 	WarningShadowCrash		= "暗影暴擊: >%s<",
 	specWarnLifeLeechYou		= "你中了無面者印記!",
@@ -446,12 +469,15 @@ L:SetOptionLocalization{
 	timerSaroniteVapors		= "顯示薩倫煙霧計時器",
 	SetIconOnShadowCrash		= "為暗影暴擊的目標設置標記(頭顱)",
 	SetIconOnLifeLeach		= "為無面者印記的目標設置標記(十字)", --Life Leech
+	SpecialWarningLLYou		= "當你中了無面者印記時顯示特別警告",
+	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
 	SpecialWarningSurgeDarkness	= "為暗鬱奔騰顯示特別警告",
 	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!!"
+	CrashWhisper			= "Shadow Crash on You! Run away!"
 }
 
 

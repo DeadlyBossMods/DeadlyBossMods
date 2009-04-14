@@ -27,7 +27,8 @@ end
 mod:RemoveOption("HealthFrame") -- we don't want the automatically generated healthframe so remove the option to enable it
 mod:AddBoolOption("AddHealthFrame") -- we use our own health frame instead
 
-local warnSwarm 	= mod:NewGenericTargetAnnounce(64396, 2) -- do not use this method; it will be replaced soon.
+--local warnSwarm 	= mod:NewGenericTargetAnnounce(64396, 2) -- do not use this method; it will be replaced sone
+--fix the options disappear problem
 
 local specWarnBlast 	= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local warnFear 		= mod:NewAnnounce("WarnFear", 3, 64386)
