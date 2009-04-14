@@ -1,7 +1,7 @@
 ﻿-- Warsong mod v3.0
 -- rewrite by Nitram and Tandanu
 --
--- thanks to LeoLeal and DiabloHu and Са°ЧТВ
+-- thanks to LeoLeal, DiabloHu and Са°ЧТВ
 
 
 local Warsong = DBM:NewMod("Warsong", "DBM-Battlegrounds")
@@ -102,12 +102,14 @@ function Warsong:CreateFlagCarrierButton()
 		self.FlagCarrierFrame1Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
 		self.FlagCarrierFrame1Button:SetHeight(15)
 		self.FlagCarrierFrame1Button:SetWidth(150)
+		self.FlagCarrierFrame1Button:SetAttribute("type", "macro")
 		self.FlagCarrierFrame1Button:SetPoint("LEFT", "AlwaysUpFrame1", "RIGHT", 28, 4)
 	end
 	if not self.FlagCarrierFrame2Button then
 		self.FlagCarrierFrame2Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
 		self.FlagCarrierFrame2Button:SetHeight(15)
 		self.FlagCarrierFrame2Button:SetWidth(150)
+		self.FlagCarrierFrame2Button:SetAttribute("type", "macro")
 		self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame2", "RIGHT", 28, 4)
 	end
 	self.FlagCarrierFrame1Button:Show()		
@@ -126,12 +128,10 @@ end
 function Warsong:CheckFlagCarrier()
 	if not UnitAffectingCombat("player") then
 		if FlagCarrier[1] and self.FlagCarrierFrame1 then
-			self.FlagCarrierFrame1Button:SetAttribute( "type", "macro" )
-			self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/target " .. FlagCarrier[1] )
+			self.FlagCarrierFrame1Button:SetAttribute("macrotext", "/targetexact " .. FlagCarrier[1])
 		end
 		if FlagCarrier[2] and self.FlagCarrierFrame2 then
-			self.FlagCarrierFrame2Button:SetAttribute( "type", "macro" )
-			self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/target " .. FlagCarrier[2] )
+			self.FlagCarrierFrame2Button:SetAttribute("macrotext", "/targetexact " .. FlagCarrier[2])
 		end
 	end
 end
@@ -181,9 +181,8 @@ function Warsong:PLAYER_REGEN_ENABLED()
 end
 
 do
-	local function updateflagcarrier(self, event)
+	local function updateflagcarrier(self, event, arg1)
 		if not self.Options.ShowFlagCarrier then return end
-
 		if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
 			if string.match(arg1, L.ExprFlagPickUp) then
 				local sArg1, sArg2 =  string.match(arg1, L.ExprFlagPickUp)
@@ -203,11 +202,10 @@ do
 					self:ColorFlagCarrier(mNick)
 					if UnitAffectingCombat("player") then
 						if self.Options.ShowFlagCarrierErrorNote then
-							DBM.AddMsg(L.InfoErrorText)
+							self:AddMsg(L.InfoErrorText)
 						end
 					end
-					self.FlagCarrierFrame2Button:SetAttribute( "type", "macro" )
-					self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/target " .. mNick )
+					self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
 
 				elseif mSide == L.Horde then
 					FlagCarrier[1] = mNick
@@ -216,11 +214,10 @@ do
 					self:ColorFlagCarrier(mNick)
 					if UnitAffectingCombat("player") then
 						if self.Options.ShowFlagCarrierErrorNote then
-							DBM.AddMsg(L.InfoErrorText)
+							self:AddMsg(L.InfoErrorText)
 						end
 					end
-					self.FlagCarrierFrame1Button:SetAttribute( "type", "macro" )
-					self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/target " .. mNick )
+					self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
 				end
 				
 			elseif string.match(arg1, L.ExprFlagReturn) then
@@ -251,11 +248,11 @@ do
 			end
 		end
 	end
-	function Warsong:CHAT_MSG_BG_SYSTEM_ALLIANCE()
-		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_ALLIANCE")
+	function Warsong:CHAT_MSG_BG_SYSTEM_ALLIANCE(...)
+		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_ALLIANCE", ...)
 	end
-	function Warsong:CHAT_MSG_BG_SYSTEM_HORDE()
-		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_HORDE")
+	function Warsong:CHAT_MSG_BG_SYSTEM_HORDE(...)
+		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_HORDE", ...)
 	end
 end
 
