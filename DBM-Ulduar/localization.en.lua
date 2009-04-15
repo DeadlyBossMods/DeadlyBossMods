@@ -79,17 +79,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Devouring Flame - MOVE"
+	SpecWarnDevouringFlame	= "Devouring Flame - MOVE",
+	warnTurretsReadySoon	= "Fourth Turret Ready in 20 Sec",
+	warnTurretsReady		= "Fourth Turret Ready",
 }
 L:SetTimerLocalization{
-	timerDeepBreathCooldown		= "Next Flame Breath in",
-	timerDeepBreathCast			= "Flame Breath",
+	timerDeepBreathCooldown	= "Next Flame Breath in",
+	timerDeepBreathCast		= "Flame Breath",
+	timerAllTurretsReady	= "Turrets"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Show timer for next Flame Breath",
-	timerDeepBreathCast			= "Show Flame Breath Cast timer",
+	timerDeepBreathCast			= "Show Flame Breath cast timer",
 	SpecWarnDevouringFlame		= "Show Special Warning while in Devouring Flame patch",
 	PlaySoundOnDevouringFlame	= "Play Sound when afflicted by Devoring Flame",
+	timerAllTurretsReady		= "Show timer for turrets",
+	warnTurretsReadySoon		= "Show pre-warning for turrets",
+	warnTurretsReady			= "Show warning for turrets",
+}
+
+L:SetMiscLocalization{
+	YellAir = "Give us a moment to prepare to build the turrets."
 }
 
 
