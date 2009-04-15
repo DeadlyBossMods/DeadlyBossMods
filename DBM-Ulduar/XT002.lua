@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33293)
 mod:SetZone()
 
--- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
 
 mod:RegisterCombat("combat")
 
@@ -43,7 +42,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62775 and args.auraType == "BUFF" then	-- Tympanic Tantrum
 		timerTympanicTantrum:Start()
 
-	elseif args.spellId == 63023 or args.spellId == 6302 or args.spellId == 65121 then 	-- Light Bomb  (which Ulduar10 spell id is correct?)
+	elseif args.spellId == 63023 or args.spellId == 63022 or args.spellId == 65121 then 	-- Light Bomb  (which Ulduar10 spell id is correct?)
 		if args.destName == UnitName("player") then
 			specWarnLightBomb:Show()
 		end
