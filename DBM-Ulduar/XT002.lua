@@ -13,21 +13,26 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local timerTympanicTantrumCast		= mod:NewTimer(2, "timerTympanicTantrumCast", 62776)
+local timerTympanicTantrumCast	= mod:NewTimer(2, "timerTympanicTantrumCast", 62776)
 local timerTympanicTantrum		= mod:NewTimer(12, "timerTympanicTantrum", 62775)
 
 local specWarnLightBomb			= mod:NewSpecialWarning("SpecialWarningLightBomb")
-local warnLightBomb			= mod:NewAnnounce("WarningLightBomb", 3, 63018)
+local warnLightBomb				= mod:NewAnnounce("WarningLightBomb", 3, 63018)
 local timerLightBomb			= mod:NewTimer(9, "timerLightBomb", 65120)
 
 local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 63024)
 local timerGravityBomb			= mod:NewTimer(9, "timerGravityBomb", 63024)
 
+local enrageTimer			= mod:NewEnrageTimer(600)
+
 mod:AddBoolOption("PlaySoundOnTympanicTantrum", true, "announce")
 mod:AddBoolOption("SetIconOnLightBombTarget", true)
 mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
+function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62776 then					-- Tympanic Tantrum (aoe damge + daze)
