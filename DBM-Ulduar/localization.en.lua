@@ -128,7 +128,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerTympanicTantrumCast	= "Show Tympanic Tantrum Cast timer",
+	timerTympanicTantrumCast	= "Show Tympanic Tantrum cast timer",
 	timerTympanicTantrum		= "Show Tympanic Tantrum duration timer",
 	SpecialWarningLightBomb		= "Show Special Warning when Light Bomb on You",
 	WarningLightBomb			= "Announce Light Bomb",

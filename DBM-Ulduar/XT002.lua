@@ -26,14 +26,14 @@ local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 64234)
 local timerGravityBomb			= mod:NewTimer(9, "timerGravityBomb", 64234)
 
-local enrageTimer				= mod:NewEnrageTimer(365)
+local enrageTimer				= mod:NewEnrageTimer(362)
 
 mod:AddBoolOption("SetIconOnLightBombTarget", true)
 mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	timerTympanicTantrumCD:Start(-delay)
+	timerTympanicTantrumCD:Start(65)
 end
 
 function mod:SPELL_CAST_START(args)
