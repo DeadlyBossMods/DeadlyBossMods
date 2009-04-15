@@ -12,7 +12,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_SUCCESS"
 )
 
 local warnFlameJetsCast			= mod:NewSpecialWarning("SpecWarnJetsCast")	-- spell interrupt (according to the tooltip)
@@ -36,8 +37,11 @@ function mod:SPELL_CAST_START(args)
 		timerFlameJetsCast:Start()
 		warnFlameJetsCast:Show()
 		timerFlameJetsCooldown:Start()
+	end
+end
 
-	elseif args.spellId == 63473 then	-- Scorch
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 63474 then	-- Scorch
 		timerScorchCast:Start()
 		timerScorchCooldown:Start()
 	end
