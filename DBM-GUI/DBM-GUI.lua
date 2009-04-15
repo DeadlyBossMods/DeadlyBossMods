@@ -230,13 +230,11 @@ do
 		x, y = x / scale, y / scale
 		GameTooltip:SetPoint("BOTTOMLEFT", nil, "BOTTOMLEFT", x + 5, y + 2)
 	end
-	
-
-	
+		
 	local function onHyperlinkClick(self, data, link)
 		if IsShiftKeyDown() and ChatFrameEditBox:IsShown() then
 			ChatFrameEditBox:Insert(link:gsub("|h(.*)|h", "|h[%1]|h"))
-		else
+		elseif not IsShiftKeyDown() then
 			if cursorInHitBox(self:GetParent()) then
 				self:GetParent():Click()
 			end

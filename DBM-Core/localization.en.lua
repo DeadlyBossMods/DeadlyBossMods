@@ -85,13 +85,15 @@ DBM_CORE_GENERIC_TARGET_OPTION = "Announce target of %s"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
 	cast = "%s",
+	active = "%s",
 	cd = "%s CD",
 	next = "Next %s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Show |cff71d5ff|Hspell:%d|h%s|h|r timer",
-	cast = "Show |cff71d5ff|Hspell:%d|h%s|h|r timer",
+	target = "Show |cff71d5ff|Hspell:%d|h%s|h|r debuff timer",
+	cast = "Show |cff71d5ff|Hspell:%d|h%s|h|r cast timer",
+	active = "Show |cff71d5ff|Hspell:%d|h%s|h|r duration timer",
 	cd = "Show |cff71d5ff|Hspell:%d|h%s|h|r cooldown timer",
 	next = "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
 }
