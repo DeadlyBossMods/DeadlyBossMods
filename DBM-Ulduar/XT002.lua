@@ -2,7 +2,7 @@ local mod = DBM:NewMod("XT002", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-
+mod:SetCreatureID(33293)
 mod:SetZone()
 
 -- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
@@ -37,7 +37,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62776 then					-- Tympanic Tantrum (aoe damge + daze)
-		specWarnDevouringFlame:Show()
+--		specWarnDevouringFlame:Show()
 		if self.Options.PlaySoundOnTympanicTantrum then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
