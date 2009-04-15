@@ -2,7 +2,7 @@ local mod = DBM:NewMod("Ignis", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-
+mod:SetCreatureID(33118)
 mod:SetZone()
 
 -- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
