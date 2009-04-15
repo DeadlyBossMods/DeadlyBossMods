@@ -13,16 +13,17 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local timerTympanicTantrumCast	= mod:NewTimer(2, "timerTympanicTantrumCast", 62776)
+local timerTympanicTantrumCast	= mod:NewTimer(2, "timerTympanicTantrumCast", 62775)
 local timerTympanicTantrum		= mod:NewTimer(12, "timerTympanicTantrum", 62775)
+local timerHeart				= mod:NewCastTimer(30, 63849)
 
 local specWarnLightBomb			= mod:NewSpecialWarning("SpecialWarningLightBomb")
-local warnLightBomb				= mod:NewAnnounce("WarningLightBomb", 3, 63018)
-local timerLightBomb			= mod:NewTimer(9, "timerLightBomb", 65120)
+local warnLightBomb				= mod:NewAnnounce("WarningLightBomb", 3, 65121)
+local timerLightBomb			= mod:NewTimer(9, "timerLightBomb", 65121)
 
 local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
-local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 63024)
-local timerGravityBomb			= mod:NewTimer(9, "timerGravityBomb", 63024)
+local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 64234)
+local timerGravityBomb			= mod:NewTimer(9, "timerGravityBomb", 64234)
 
 local enrageTimer				= mod:NewEnrageTimer(600)
 
@@ -61,6 +62,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnGravityBomb:Show(args.destName)
 		timerGravityBomb:Start(args.destName)
+	elseif args.spellId == 63849 then
+		timerHeart:Start()
 	end
 end
 
