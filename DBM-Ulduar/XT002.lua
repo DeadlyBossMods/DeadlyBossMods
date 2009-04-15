@@ -43,12 +43,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62775 and args.auraType == "BUFF" then	-- Tympanic Tantrum
 		timerTympanicTantrum:Start()
 
-	elseif args.spellId == 63023 or args.spellId == 6302 or args.spellId == 65120 then 	-- Light Bomb  (which Ulduar10 spell id is correct?)
+	elseif args.spellId == 63023 or args.spellId == 6302 or args.spellId == 65121 then 	-- Light Bomb  (which Ulduar10 spell id is correct?)
 		if args.destName == UnitName("player") then
 			specWarnLightBomb:Show()
 		end
 		if self.Options.SetIconOnLightBombTarget then
-			mod:SetIcon(args.destName, 7, 9)
+			self:SetIcon(args.destName, 7, 9)
 		end
 		warnLightBomb:Show(args.destName)
 		timerLightBomb:Start(args.destName)
@@ -57,7 +57,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGravityBomb:Show()
 		end
 		if self.Options.SetIconOnGravityBombTarget then
-			mod:SetIcon(args.destName, 8, 9)
+			self:SetIcon(args.destName, 8, 9)
 		end
 		warnGravityBomb:Show(args.destName)
 		timerGravityBomb:Start(args.destName)
