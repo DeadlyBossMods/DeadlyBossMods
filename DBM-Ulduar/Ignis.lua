@@ -29,7 +29,7 @@ local timerSlagPot			= mod:NewTimer(10, "TimerSlagPot", 63477)
 mod:AddBoolOption("SlagPotIcon")
 
 function mod:OnCombatStart(delay)
-	timerScorchCooldown:Start(10-delay)
+	timerScorchCooldown:Start(12-delay)
 end
 
 function mod:SPELL_CAST_START(args)
