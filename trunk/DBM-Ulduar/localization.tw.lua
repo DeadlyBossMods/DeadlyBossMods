@@ -252,8 +252,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "Just a scratch!",
-	Yell_Trigger_arm_right		= "Only a flesh wound!"
+	Yell_Trigger_arm_left		= "小小的擦傷!",
+	Yell_Trigger_arm_right		= "只是皮肉之傷!"
 }
 
 ---------------
