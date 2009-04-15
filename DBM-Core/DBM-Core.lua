@@ -2192,12 +2192,17 @@ do
 		)
 		obj:AddOption(optionDefault, optionName)
 		table.insert(self.timers, obj)
-		self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellName)
+		-- todo: move the string creation to the GUI with SetFormattedString...
+		self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellId, spellName)
 		return obj
 	end
 
 	function bossModPrototype:NewTargetTimer(...)
 		return newTimer(self, "target", ...)
+	end
+	
+	function bossModPrototype:NewBuffActiveTimer(...)
+		return newTimer(self, "active", ...)
 	end
 
 	function bossModPrototype:NewCastTimer(timer, ...)

@@ -90,8 +90,8 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Show '%s' timer",
-	cast = "Show '%s' timer",
-	cd = "Show '%s' cooldown timer",
-	next = "Show timer for next '%s'",
+	target = "Show |cff71d5ff|Hspell:%d|h%s|h|r timer",
+	cast = "Show |cff71d5ff|Hspell:%d|h%s|h|r timer",
+	cd = "Show |cff71d5ff|Hspell:%d|h%s|h|r cooldown timer",
+	next = "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
 }
