@@ -55,7 +55,8 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot			= "Slag Pot on >%s<"
+	WarningSlagPot			= "Slag Pot on >%s<",
+	SpecWarnJetsCast		= "Jets - Stop Casting"
 }
 
 L:SetOptionLocalization{
