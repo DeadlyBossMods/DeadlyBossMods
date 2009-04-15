@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33118)
 mod:SetZone()
 
--- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
 
 
 mod:RegisterCombat("combat")
@@ -26,10 +25,13 @@ local timerScorchCast		= mod:NewTimer(3, "TimerScorchCast", 63473)
 local announceSlagPot		= mod:NewAnnounce("WarningSlagPot", 3, 63477)
 local timerSlagPot			= mod:NewTimer(10, "TimerSlagPot", 63477)
 
+local enrageTimer			= mod:NewEnrageTimer(600)
+
 mod:AddBoolOption("SlagPotIcon")
 
 function mod:OnCombatStart(delay)
 	timerScorchCooldown:Start(12-delay)
+	enrageTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
