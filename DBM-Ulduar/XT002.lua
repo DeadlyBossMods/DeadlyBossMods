@@ -25,36 +25,17 @@ local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 63024)
 local timerGravityBomb			= mod:NewTimer(9, "timerGravityBomb", 63024)
 
-mod:AddBoolOption("PlaySoundOnGravityBomb", true, "announce")
 mod:AddBoolOption("PlaySoundOnTympanicTantrum", true, "announce")
 mod:AddBoolOption("SetIconOnLightBombTarget", true)
 mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
-function mod:OnCombatStart(delay)
-
-end
-
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62776 then					-- Tympanic Tantrum (aoe damge + daze)
---		specWarnDevouringFlame:Show()
+		timerTympanicTantrumCast:Start()
 		if self.Options.PlaySoundOnTympanicTantrum then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
-
-	elseif args.spellId == 63024 or args.spellId == 64234 then	-- Gravity Bomb
-		if self.Options.SetIconOnGravityBombTarget then
-			mod:SetIcon(args.destName, 8, 9)	-- set Skull for 9 seconds on target
-		end
-		warnGravityBomb:Show(args.destName)
-		timerGravityBomb:Start(args.destName)
-
-	elseif args.spellId == 63018 or args.spellId == 65121 then	-- Light Bomb	
-		if self.Options.SetIconOnLightBombTarget then 
-			mod:SetIcon(args.destName, 4, 9)	-- set Triangle for 9 seconds on target
-		end
-		warnLightBomb:Show(args.destName)
-		timerLightBomb:Start(args.destName)
 	end
 end
 
@@ -62,17 +43,24 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62775 and args.auraType == "BUFF" then	-- Tympanic Tantrum
 		timerTympanicTantrum:Start()
 
-	elseif args.spellId == 63023 or args.spellId == 65120 then 	-- Light Bomb
+	elseif args.spellId == 63023 or args.spellId == 6302 or args.spellId == 65120 then 	-- Light Bomb  (which Ulduar10 spell id is correct?)
 		if args.destName == UnitName("player") then
 			specWarnLightBomb:Show()
 		end
-		
-	elseif args.spellId == 63025 or args.spellId == 64233 then		-- Gravity Bomb
-		if self.Options.PlaySoundOnGravityBomb and args.destName == UnitName("player") then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end		
+		if self.Options.SetIconOnLightBombTarget then
+			mod:SetIcon(args.destName, 7, 9)
+		end
+		warnLightBomb:Show(args.destName)
+		timerLightBomb:Start(args.destName)
+	elseif args.spellId == 63025 or args.spellId == 63024 or args.spellId == 64234 then		-- Gravity Bomb (which Ulduar10 spell id is correct?)
+		if args.destName == UnitName("player") then
+			specWarnGravityBomb:Show()
+		end
+		if self.Options.SetIconOnGravityBombTarget then
+			mod:SetIcon(args.destName, 8, 9)
+		end
+		warnGravityBomb:Show(args.destName)
+		timerGravityBomb:Start(args.destName)
 	end
 end
-
-
 
