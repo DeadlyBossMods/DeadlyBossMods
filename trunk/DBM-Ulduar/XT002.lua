@@ -13,18 +13,18 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local timerTympanicTantrumCast	= mod:NewTimer(2, "timerTympanicTantrumCast", 62775)
-local timerTympanicTantrum		= mod:NewTimer(12, "timerTympanicTantrum", 62775)
+local timerTympanicTantrumCast	= mod:NewCastTimer(62775)
+local timerTympanicTantrum		= mod:NewBuffActiveTimer(12, 62775)
 local timerTympanicTantrumCD	= mod:NewCDTimer(28, 62776)
 local timerHeart				= mod:NewCastTimer(30, 63849)
 
+local timerLightBomb			= mod:NewTargetTimer(9, 65121)
+local timerGravityBomb			= mod:NewTargetTimer(9, 64234)
+
 local specWarnLightBomb			= mod:NewSpecialWarning("SpecialWarningLightBomb")
 local warnLightBomb				= mod:NewAnnounce("WarningLightBomb", 3, 65121)
-local timerLightBomb			= mod:NewTimer(9, "timerLightBomb", 65121)
-
 local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 64234)
-local timerGravityBomb			= mod:NewTimer(9, "timerGravityBomb", 64234)
 
 local enrageTimer				= mod:NewEnrageTimer(362)
 
