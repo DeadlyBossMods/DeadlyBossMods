@@ -195,6 +195,8 @@ do
 	end
 end
 
+
+
 -- This function creates a check box
 -- Autoplaced buttons will be placed under the last widget
 --
@@ -204,44 +206,95 @@ end
 --  arg4 = DBM.Options[arg4] 
 --  arg5 = DBM.Bars:SetOption(arg5, ...)
 --
-function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
-	local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
-	button.myheight = 25
-	button.mytype = "checkbutton"
-	getglobal(button:GetName() .. 'Text'):SetText(name)
-	getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
-
-	if textleft then
-		getglobal(button:GetName() .. 'Text'):ClearAllPoints()
-		getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 0, 0)
-		getglobal(button:GetName() .. 'Text'):SetJustifyH("RIGHT")
-	else
-		getglobal(button:GetName() .. 'Text'):SetJustifyH("LEFT")
+do
+	local function cursorInHitBox(frame)
+		local x = GetCursorPosition()
+		local fX = frame:GetCenter()
+		local hitBoxSize = -100 -- default value from the default UI template
+		return x - fX < hitBoxSize
 	end
 	
-	if dbmvar and DBM.Options[dbmvar] ~= nil then
-		button:SetScript("OnShow",  function(self) button:SetChecked(DBM.Options[dbmvar]) end)
-		button:SetScript("OnClick", function(self) DBM.Options[dbmvar] = not DBM.Options[dbmvar] end)
-	end
-
-	if dbtvar then
-		button:SetScript("OnShow",  function(self) button:SetChecked( DBM.Bars:GetOption(dbtvar) ) end)
-		button:SetScript("OnClick", function(self) DBM.Bars:SetOption(dbtvar, not DBM.Bars:GetOption(dbtvar)) end)
-	end
-
-	if autoplace then
-		local x = self:GetLastObj()
-		if x.mytype == "checkbutton" then
-			button:ClearAllPoints()
-			button:SetPoint('TOPLEFT', self:GetLastObj(), "BOTTOMLEFT", 0, 2)
+	local function onHyperlinkClick(self, data, link)
+		if IsShiftKeyDown() and ChatFrameEditBox:IsShown() then
+			ChatFrameEditBox:Insert(link:gsub("|h(.*)|h", "|h[%1]|h"))
 		else
-			button:ClearAllPoints()
-			button:SetPoint('TOPLEFT', 10, -12)
+			-- check if we are in the hit box of the 
+			if cursorInHitBox(self:GetParent()) then
+				self:GetParent():Click()
+			end
 		end
 	end
 
-	self:SetLastObj(button)
-	return button
+	local function onHyperlinkEnter(self, data, link)
+		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+		GameTooltip:SetHyperlink(data)
+		GameTooltip:Show()
+		if cursorInHitBox(self:GetParent()) then
+			self:GetParent().fakeHighlight = true
+			self:GetParent():LockHighlight()
+		end
+	end
+
+	local function onHyperlinkLeave(self, data, link)
+		GameTooltip:Hide()
+		if self:GetParent().fakeHighlight then
+			self:GetParent().fakeHighlight = nil
+			self:GetParent():UnlockHighlight()
+		end
+	end
+	
+	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
+		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
+		button.myheight = 25
+		button.mytype = "checkbutton"
+		-- font strings do not support hyperlinks, so check if we need one
+		if name:find("|H") then
+			-- and replace it with a SimpleHTML frame
+			setglobal(button:GetName().."Text", CreateFrame("SimpleHTML", button:GetName().."Text", button))
+			local html = getglobal(button:GetName().."Text")
+			html:SetHeight(12)
+			html:SetFontObject("GameFontNormal")
+			html:SetPoint("LEFT", button, "RIGHT", 0, 1)
+			html:SetScript("OnHyperlinkClick", onHyperlinkClick)
+			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
+			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
+		end
+		getglobal(button:GetName() .. 'Text'):SetText(name)
+		getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
+
+		if textleft then
+			getglobal(button:GetName() .. 'Text'):ClearAllPoints()
+			getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 0, 0)
+			getglobal(button:GetName() .. 'Text'):SetJustifyH("RIGHT")
+		else
+			getglobal(button:GetName() .. 'Text'):SetJustifyH("LEFT")
+		end
+		
+		if dbmvar and DBM.Options[dbmvar] ~= nil then
+			button:SetScript("OnShow",  function(self) button:SetChecked(DBM.Options[dbmvar]) end)
+			button:SetScript("OnClick", function(self) DBM.Options[dbmvar] = not DBM.Options[dbmvar] end)
+		end
+
+		if dbtvar then
+			button:SetScript("OnShow",  function(self) button:SetChecked( DBM.Bars:GetOption(dbtvar) ) end)
+			button:SetScript("OnClick", function(self) DBM.Bars:SetOption(dbtvar, not DBM.Bars:GetOption(dbtvar)) end)
+		end
+
+		if autoplace then
+			local x = self:GetLastObj()
+			if x.mytype == "checkbutton" then
+				button:ClearAllPoints()
+				button:SetPoint('TOPLEFT', self:GetLastObj(), "BOTTOMLEFT", 0, 2)
+			else
+				button:ClearAllPoints()
+				button:SetPoint('TOPLEFT', 10, -12)
+			end
+		end
+
+		self:SetLastObj(button)
+		return button
+	end
+
 end
 
 do
