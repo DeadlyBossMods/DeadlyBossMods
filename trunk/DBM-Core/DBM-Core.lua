@@ -2171,6 +2171,7 @@ do
 	
 	-- new constructor for the new auto-localized timer types
 	local function newTimer(self, timerType, timer, spellId, optionDefault, optionName, texture, r, g, b)
+		local spellName = GetSpellInfo(spellId) or tostring(spellId)
 		local id = "Timer"..spellId..self.id..#self.timers
 		local icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
 		local obj = setmetatable(
@@ -2190,9 +2191,9 @@ do
 		)
 		obj:AddOption(optionDefault, optionName)
 		table.insert(self.timers, obj)
+		self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellName)
 		return obj
 	end
-
 
 	function bossModPrototype:NewTargetTimer(...)
 		return newTimer(self, "target", ...)
@@ -2543,6 +2544,7 @@ function bossModPrototype:GetLocalizedStrings()
 	return self.localization.miscStrings
 end
 
+-- Not really good, needs a few updates 
 do
 	local modLocalizations = {}
 	local modLocalizationPrototype = {}

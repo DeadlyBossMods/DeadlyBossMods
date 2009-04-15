@@ -77,7 +77,7 @@ DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
 
 
--- Generic Warnings
+-- Generic Warnings (deprecated)
 DBM_CORE_GENERIC_TARGET_WARN = "%s on >%%s<!"
 DBM_CORE_GENERIC_TARGET_OPTION = "Announce target of %s"
 
@@ -89,3 +89,9 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	next = "Next %s",
 }
 
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "Show '%s' timer",
+	cast = "Show '%s' timer",
+	cd = "Show '%s' cooldown timer",
+	next = "Show timer for next '%s'",
+}
