@@ -15,6 +15,7 @@ mod:RegisterEvents(
 
 local timerTympanicTantrumCast	= mod:NewTimer(2, "timerTympanicTantrumCast", 62775)
 local timerTympanicTantrum		= mod:NewTimer(12, "timerTympanicTantrum", 62775)
+local timerTympanicTantrumCD	= mod:NewCDTimer(28, 62776)
 local timerHeart				= mod:NewCastTimer(30, 63849)
 
 local specWarnLightBomb			= mod:NewSpecialWarning("SpecialWarningLightBomb")
@@ -32,6 +33,7 @@ mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
+	timerTympanicTantrumCD:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -42,6 +44,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62775 and args.auraType == "BUFF" then	-- Tympanic Tantrum
+		timerTympanicTantrumCD:Start()
 		timerTympanicTantrum:Start()
 
 	elseif args.spellId == 63023 or args.spellId == 63022 or args.spellId == 65121 then 	-- Light Bomb  (which Ulduar10 spell id is correct?)
