@@ -17,14 +17,17 @@ mod:RegisterEvents(
 
 local warnFlameJetsCast			= mod:NewSpecialWarning("SpecWarnJetsCast")	-- spell interrupt (according to the tooltip)
 local timerFlameJetsCast		= mod:NewTimer(2.7, "TimerFlameJetsCast", 63472)
-local timerFlameJetsCooldown	= mod:NewTimer(35, "TimerFlameJetsCooldown", 63472)
+local timerFlameJetsCooldown		= mod:NewTimer(35, "TimerFlameJetsCooldown", 63472)
 
 local timerScorchCooldown		= mod:NewTimer(25, "TimerScorch", 63473)
 local timerScorchCast			= mod:NewTimer(3, "TimerScorchCast", 63473)
 
 local announceSlagPot			= mod:NewAnnounce("WarningSlagPot", 3, 63477)
-local timerSlagPot				= mod:NewTimer(10, "TimerSlagPot", 63477)
+local timerSlagPot			= mod:NewTimer(10, "TimerSlagPot", 63477)
 
+function mod:OnCombatStart(delay)
+	timerScorchCooldown:Start(10-delay)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 63472 then		-- Flame Jets
