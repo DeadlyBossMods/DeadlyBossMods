@@ -214,11 +214,29 @@ do
 		return x - fX < hitBoxSize
 	end
 	
+	local currActiveButton
+	local updateFrame = CreateFrame("Frame")
+	local function onUpdate(self, elapsed)
+		local inHitBox = cursorInHitBox(currActiveButton)
+		if currActiveButton.fakeHighlight and not inHitBox then
+			currActiveButton:UnlockHighlight()
+			currActiveButton.fakeHighlight = nil
+		elseif not currActiveButton.fakeHighlight and inHitBox then
+			currActiveButton:LockHighlight()
+			currActiveButton.fakeHighlight = true
+		end
+		local x, y = GetCursorPosition()
+		local scale = UIParent:GetEffectiveScale()
+		x, y = x / scale, y / scale
+		GameTooltip:SetPoint("BOTTOMLEFT", nil, "BOTTOMLEFT", x + 5, y + 2)
+	end
+	
+
+	
 	local function onHyperlinkClick(self, data, link)
 		if IsShiftKeyDown() and ChatFrameEditBox:IsShown() then
 			ChatFrameEditBox:Insert(link:gsub("|h(.*)|h", "|h[%1]|h"))
 		else
-			-- check if we are in the hit box of the 
 			if cursorInHitBox(self:GetParent()) then
 				self:GetParent():Click()
 			end
@@ -226,9 +244,11 @@ do
 	end
 
 	local function onHyperlinkEnter(self, data, link)
-		GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+		GameTooltip:SetOwner(self, "ANCHOR_NONE") -- I want to anchor BOTTOMLEFT of the tooltip to the cursor... (not BOTTOM as in ANCHOR_CURSOR)
 		GameTooltip:SetHyperlink(data)
 		GameTooltip:Show()
+		currActiveButton = self:GetParent()
+		updateFrame:SetScript("OnUpdate", onUpdate)
 		if cursorInHitBox(self:GetParent()) then
 			self:GetParent().fakeHighlight = true
 			self:GetParent():LockHighlight()
@@ -237,6 +257,7 @@ do
 
 	local function onHyperlinkLeave(self, data, link)
 		GameTooltip:Hide()
+		updateFrame:SetScript("OnUpdate", nil)
 		if self:GetParent().fakeHighlight then
 			self:GetParent().fakeHighlight = nil
 			self:GetParent():UnlockHighlight()
