@@ -65,8 +65,9 @@ L:SetOptionLocalization{
 	TimerFlameJetsCooldown	= "Show Flame Jets Cooldown timer",
 	TimerScorch				= "Show Scorch Cooldown timer",
 	TimerScorchCast			= "Show Scorch Cast timer",
-	WarningSlagPot			= "Announce Slag Pot Target",
-	TimerSlagPot			= "Show Slag Pot timer"
+	WarningSlagPot			= "Announce Slag Pot target",
+	TimerSlagPot			= "Show Slag Pot timer",
+	SlagPotIcon				= "Set Icon on Slag Pot target"
 }
 
 ------------------
