@@ -24,9 +24,8 @@ local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 63024)
 local timerGravityBomb			= mod:NewTimer(9, "timerGravityBomb", 63024)
 
-local enrageTimer			= mod:NewEnrageTimer(600)
+local enrageTimer				= mod:NewEnrageTimer(600)
 
-mod:AddBoolOption("PlaySoundOnTympanicTantrum", true, "announce")
 mod:AddBoolOption("SetIconOnLightBombTarget", true)
 mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
@@ -37,9 +36,6 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62776 then					-- Tympanic Tantrum (aoe damge + daze)
 		timerTympanicTantrumCast:Start()
-		if self.Options.PlaySoundOnTympanicTantrum then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
 	end
 end
 
