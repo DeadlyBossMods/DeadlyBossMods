@@ -17,13 +17,15 @@ mod:RegisterEvents(
 
 local warnFlameJetsCast			= mod:NewSpecialWarning("SpecWarnJetsCast")	-- spell interrupt (according to the tooltip)
 local timerFlameJetsCast		= mod:NewTimer(2.7, "TimerFlameJetsCast", 63472)
-local timerFlameJetsCooldown		= mod:NewTimer(35, "TimerFlameJetsCooldown", 63472)
+local timerFlameJetsCooldown	= mod:NewTimer(35, "TimerFlameJetsCooldown", 63472)
 
-local timerScorchCooldown		= mod:NewTimer(25, "TimerScorch", 63473)
-local timerScorchCast			= mod:NewTimer(3, "TimerScorchCast", 63473)
+local timerScorchCooldown	= mod:NewTimer(25, "TimerScorch", 63473)
+local timerScorchCast		= mod:NewTimer(3, "TimerScorchCast", 63473)
 
-local announceSlagPot			= mod:NewAnnounce("WarningSlagPot", 3, 63477)
+local announceSlagPot		= mod:NewAnnounce("WarningSlagPot", 3, 63477)
 local timerSlagPot			= mod:NewTimer(10, "TimerSlagPot", 63477)
+
+mod:AddBoolOption("SlagPotIcon")
 
 function mod:OnCombatStart(delay)
 	timerScorchCooldown:Start(10-delay)
@@ -45,6 +47,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63477 then		-- Slag Pot
 		announceSlagPot:Show(args.destName)
 		timerSlagPot:Start(args.destName)
+		if self.Options.SlagPotIcon then
+			self:SetIcon(args.destName, 8, 10)
+		end
 	end
 end
 
