@@ -55,7 +55,8 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot		= ">%s< 에게 잿가루 구덩이"
+	WarningSlagPot		= ">%s< 에게 잿가루 구덩이",
+	SpecWarnJetsCast	= "분사 - 시전 중지"
 }
 
 L:SetOptionLocalization{
