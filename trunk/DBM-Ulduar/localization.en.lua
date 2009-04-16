@@ -124,9 +124,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "Show Special Warning when Light Bomb on You",
+	SpecialWarningLightBomb		= "Show Special Warning when you are affected by Light Bomb",
 	WarningLightBomb			= "Announce Light Bomb",
-	SpecialWarningGravityBomb	= "Show Special Warning when Gravity Bomb on You",
+	SpecialWarningGravityBomb	= "Show Special Warning when you are affected by Gravity Bomb",
 	WarningGravityBomb			= "Announce Gravity Bomb",
 	PlaySoundOnGravityBomb		= "Play Sound when Gravity Bomb is on you",
 	PlaySoundOnTympanicTantrum	= "Play Sound on Tympanic Tandrum",

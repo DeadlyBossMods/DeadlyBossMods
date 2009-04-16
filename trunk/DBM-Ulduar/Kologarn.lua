@@ -7,24 +7,24 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
--- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED",
 	"SPELL_SUMMON",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_CAST_SUCCESS"
 )
 
 local specWarnEyebeam		= mod:NewSpecialWarning("SpecialWarningEyebeam")
+local warnGrip				= mod:NewAnnounce("Grip on >%s<, >%s< and >%s<", 2)
 local warnEyebeam			= mod:NewAnnounce("WarningEyebeam", 2, 63976)
 local timerEyebeam			= mod:NewTimer(10, "timerEyebeam", 63976)
+
 
 mod:AddBoolOption("SetIconOnEyebeamTarget", true)
 
 local timerPetrifyingBreath		= mod:NewTimer(4, "timerPetrifyingBreath", 63980)	-- never seen this in the movie looks like a "move away" type
-
 local timerNextShockwave		= mod:NewTimer(22, "timerNextShockwave", 63982)		-- don't really know, movie quality was low ;)
-
 local timerRespawnLeftArm		= mod:NewTimer(60, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(60, "timerRightArm")
 
@@ -42,6 +42,22 @@ function mod:SPELL_CAST_START(args)
 --	elseif args.spellId == 64290 or args.spellId == 64292 then	-- Stone Grip
 		-- startet by emote?
 	end
+end
+
+local gripTargets = {}
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 63981 then
+		table.insert(gripTargets, args.destName)
+		self:UnscheduleMethod(0.2, "GripAnnounce")
+		if #gripTargets >= 3 then
+			self:GripAnnounce()
+		end
+		self:ScheduleMethod(0.2, "GripAnnounce")
+	end
+end
+
+function mod:GripAnnounce()
+	warnGrip:Show(unpack(gripTargets))
 end
 
 function mod:SPELL_SUMMON(args)
