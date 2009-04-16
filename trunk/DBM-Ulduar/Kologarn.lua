@@ -9,7 +9,6 @@ mod:RegisterCombat("combat")
 
 
 mod:RegisterEvents(
-	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
@@ -17,26 +16,17 @@ mod:RegisterEvents(
 
 local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
 local warnGrip				= mod:NewAnnounce("Grip on >%s<, >%s< and >%s<", 2)
-local warnEyebeam			= mod:NewAnnounce("WarningEyebeam", 2, 63976)
---local timerEyebeam			= mod:NewTimer(10, "timerEyebeam", 63976)
 
 
 mod:AddBoolOption("SetIconOnEyebeamTarget", true)
 
-local timerPetrifyingBreath		= mod:NewTimer(4, "timerPetrifyingBreath", 63980)	-- never seen this in the movie looks like a "move away" type
-local timerNextShockwave		= mod:NewTimer(22, "timerNextShockwave", 63982)		-- don't really know, movie quality was low ;)
-local timerRespawnLeftArm		= mod:NewTimer(60, "timerLeftArm")
-local timerRespawnRightArm		= mod:NewTimer(60, "timerRightArm")
+local timerNextShockwave		= mod:NewCDTimer(18, 63982)
+local timerRespawnLeftArm		= mod:NewTimer(50, "timerLeftArm")
+local timerRespawnRightArm		= mod:NewTimer(50, "timerRightArm")
 
 mod:AddBoolOption("SetIconOnGripTarget", true)
 
 function mod:OnCombatStart(delay)
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62030 or args.spellId == 63980 then 	-- Petrifying Breath
-		timerPetrifyingBreath:Start()
-	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
