@@ -18,7 +18,7 @@ mod:RegisterEvents(
 local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
 local warnGrip				= mod:NewAnnounce("Grip on >%s<, >%s< and >%s<", 2)
 local warnEyebeam			= mod:NewAnnounce("WarningEyebeam", 2, 63976)
-local timerEyebeam			= mod:NewTimer(10, "timerEyebeam", 63976)
+--local timerEyebeam			= mod:NewTimer(10, "timerEyebeam", 63976)
 
 
 mod:AddBoolOption("SetIconOnEyebeamTarget", true)
@@ -51,6 +51,8 @@ end
 function mod:SPELL_DAMAGE(args)
 	if (args.spellId == 63783 or args.spellId == 63982) and args.destName == UnitName("player") then	-- Shockwave
 		timerNextShockwave:Start()
+	elseif args.spellid == 63976 and args.destName == UnitName("player") then
+		specWarnEyebeam:Show()
 	end
 end
 
@@ -60,7 +62,7 @@ function mod:GripAnnounce()
 	table.wipe(gripTargets)
 end
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62166 or args.spellId == 63981 then
+	if args.spellId == 62166 or args.spellId == 64292 then
 		table.insert(gripTargets, args.destName)
 		self:UnscheduleMethod("GripAnnounce")
 
