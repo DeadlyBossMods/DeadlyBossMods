@@ -202,6 +202,55 @@ options = {
 	},
 }
 
+--------------------------
+--  Double Linked List  --
+--------------------------
+--
+-- this linked list can only contain tables that do not use the fields "prev" and "next"
+--
+
+local DLL = {}
+DLL.__index = DLL
+
+function DLL:Append(obj)
+	if self.len == 0 then
+		self.first = obj
+		self.last = obj
+	else
+		obj.prev = self.last
+		self.last.next = obj
+		self.last = obj
+	end
+	self.len = self.len + 1
+	return obj
+end
+
+function DLL:Remove(obj)
+	if self.len == 1 then
+		self.first = nil
+		self.last = nil
+	elseif self.first == obj then
+		self.first = obj.next
+		self.first.prev = nil
+	elseif self.last == obj then
+		self.last = obj.prev
+		self.last.next = nil
+	else
+		obj.prev.next, obj.next.prev = obj.next, obj.prev
+	end
+	obj.prev = nil
+	obj.next = nil
+	self.len = self.len - 1
+end
+
+function DLL:New()
+	return setmetatable({
+		len = 0,
+		first = nil,
+		last = nil
+	}, self)
+end
+setmetatable(DLL, {__call = DLL.New})
 
 -------------------------------
 --  DBT Constructor/Options  --
@@ -226,10 +275,8 @@ do
 				mainAnchor = CreateFrame("Frame", nil, UIParent),
 				secAnchor = CreateFrame("Frame", nil, UIParent),
 				bars = {},
-				mainFirstBar = nil,
-				mainLastBar = nil,
-				secFirstBar = nil,
-				secLastBar = nil,
+				smallBars = DLL(),
+				hugeBars = DLL()
 			},
 			mt
 		)
@@ -329,12 +376,12 @@ do
 			newBar.fadingIn = 0
 			newBar.frame.obj = newBar
 			newBar.small = small
-			newBar:AddToList()
 			self.numBars = (self.numBars or 0) + 1
+			self.smallBars:Append(newBar)
 		end
 		if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then
-			newBar:RemoveFromList()
-			newBar:AddToList(true)
+			self.smallBars:Remove(newBar)
+			self.HugeBars:Append(newBar)
 			newBar.enlarged = true
 		end
 		newBar.color = color
@@ -458,7 +505,7 @@ function barPrototype:SetElapsed(elapsed)
 		if next then
 			next:MoveToNextPosition()
 		end
-		self:AddToList()
+		self.owner.smallBars:Append(self)
 		self:SetPosition()
 	end
 	self:Update(0)
@@ -556,7 +603,7 @@ function barPrototype:Update(elapsed)
 	elseif self.moving == "enlarge" then
 		self.moving = nil
 		self.enlarged = true
-		self:AddToList(true)
+		self.owner.hugeBars:Append(self)
 		self:ApplyStyle()
 		self:SetPosition()
 	end
@@ -626,43 +673,9 @@ end
 --  Bar Handling  --
 --------------------
 function barPrototype:RemoveFromList()
-	if self.moving == "enlarge" then return end
-	local first = (self.enlarged and "secFirstBar") or "mainFirstBar"
-	local last = (self.enlarged and "secLastBar") or "mainLastBar"
-	if self == self.owner[first] then
-		if self.next then
-			self.next.prev = nil
-			self.owner[first] = self.next
-		else
-			self.owner[first] = nil
-			self.owner[last] = nil
-		end
-	elseif self == self.owner[last] then
-		if self.prev then
-			self.prev.next = nil
-			self.owner[last] = self.prev
-		else
-			self.owner[last] = nil
-			self.owner[first] = nil
-		end
-	else
-		self.prev.next = self.next
-		self.next.prev = self.prev
+	if self.moving ~= "enlarge" then
+		(self.enlarged and self.owner.hugeBars or self.owner.smallBars):Remove(self)
 	end
-	self.prev = nil
-	self.next = nil
-end
-
-function barPrototype:AddToList(huge)
-	local first = huge and "secFirstBar" or "mainFirstBar"
-	local last = huge and "secLastBar" or "mainLastBar"
-	self.prev = self.owner[last]
-	self.next = nil
-	if self.owner[last] then
-		self.owner[last].next = self
-	end
-	self.owner[last] = self
-	self.owner[first] = self.owner[first] or self
 end
 
 
@@ -731,7 +744,7 @@ function DBT:UpdateOrientation()
 			if bar.moving == "enlarge" then
 				bar.enlarged = true
 				bar.moving = false
-				bar:AddToList(true)
+				self.owner.hugeBars:Append(self)
 				bar:ApplyStyle()
 			end
 			bar.moving = nil
@@ -849,7 +862,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 	else
 		self.moving = nil
 		self.enlarged = true
-		self:AddToList(true)
+		self.owner.hugeBars:Append(self)
 		self:ApplyStyle()
 		self:SetPosition()
 	end
