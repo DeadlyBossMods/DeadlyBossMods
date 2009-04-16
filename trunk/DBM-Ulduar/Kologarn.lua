@@ -28,6 +28,8 @@ local timerNextShockwave		= mod:NewTimer(22, "timerNextShockwave", 63982)		-- do
 local timerRespawnLeftArm		= mod:NewTimer(60, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(60, "timerRightArm")
 
+mod:AddBoolOption("SetIconOnGripTarget", true)
+
 function mod:OnCombatStart(delay)
 end
 
@@ -61,10 +63,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62166 or args.spellId == 63981 then
 		table.insert(gripTargets, args.destName)
 		self:UnscheduleMethod("GripAnnounce")
+
+		if self.Options.SetIconOnGripTarget then
+			self:SetIcon(args.destName, (8-#gripTargets), 10)
+		end
+
 		if #gripTargets >= 3 then
 			self:GripAnnounce()
+		else
+			self:ScheduleMethod(0.2, "GripAnnounce")
 		end
-		self:ScheduleMethod(0.2, "GripAnnounce")
 	end
 end
 
