@@ -80,9 +80,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "활활 타오르는 화염 - 이동! 이동! 이동!"
+	SpecWarnDevouringFlame		= "활활 타오르는 화염 - 이동! 이동! 이동!",
 	warnTurretsReadySoon	= "Fourth Turret Ready in 20 Sec",
-	warnTurretsReady		= "Fourth Turret Ready",
+	warnTurretsReady		= "Fourth Turret Ready"
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결",
@@ -444,11 +444,11 @@ L:SetOptionLocalization{
 	SetIconOnShadowCrash	= "그림자 충돌 대상 표시하기(해골)",
 	SetIconOnLifeLeach	= "Set Icon on Life Leach target (cross)",
 	SpecialWarningSurgeDarkness	= "밀려오는 어둠 특수 경고 보기",
-	SpecialWarningShadowCrash	= "그림자 충돌 특수 경고 보기",	
+	SpecialWarningShadowCrash	= "그림자 충돌 특수 경고 보기"
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!"
+	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!",
 	CrashWhisper			= "Shadow Crash on You! Run away!"	
 }
 
