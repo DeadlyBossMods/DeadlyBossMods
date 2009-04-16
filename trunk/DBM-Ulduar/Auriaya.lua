@@ -24,8 +24,6 @@ do
 		or class == "MAGE"
 end
 
-mod:RemoveOption("HealthFrame") -- we don't want the automatically generated healthframe so remove the option to enable it
-mod:AddBoolOption("AddHealthFrame") -- we use our own health frame instead
 
 local warnSwarm 	= mod:NewGenericTargetAnnounce(64396, 2) -- do not use this method; it will be replaced soon.
 
@@ -37,12 +35,6 @@ local warnCatDied 	= mod:NewAnnounce("WarnCatDied", 3, 64455)
 local timerFear 	= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
 
-function mod:OnCombatStart(delay)
-	if self.Options.AddHealthFrame then
-		DBM.BossHealth:Show(L.name)
-		DBM.BossHealth:AddBoss(33515, L.name) -- Auriaya
-	end
-end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 64678 then -- Sentinel Blast
@@ -67,15 +59,19 @@ end
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if args.spellId == 64455 then -- Feral Essence
-		DBM.BossHealth:RemoveBoss(34035)
-		DBM.BossHealth:AddBoss(34035, L.Defender:format(args.amount))
 		warnCatDied:Show(args.amount)
+		if self.Options.HealthFrame then
+			DBM.BossHealth:RemoveBoss(34035)
+			DBM.BossHealth:AddBoss(34035, L.Defender:format(args.amount))
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 64455 then -- Feral Essence
-		DBM.BossHealth:RemoveBoss(34035)
+		if self.Options.HealthFrame then
+			DBM.BossHealth:RemoveBoss(34035)
+		end
 	end
 end
 
