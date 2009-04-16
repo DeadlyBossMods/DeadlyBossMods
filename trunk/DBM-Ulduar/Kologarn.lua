@@ -48,7 +48,7 @@ local gripTargets = {}
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63981 then
 		table.insert(gripTargets, args.destName)
-		self:UnscheduleMethod(0.2, "GripAnnounce")
+		self:UnscheduleMethod("GripAnnounce")
 		if #gripTargets >= 3 then
 			self:GripAnnounce()
 		end
@@ -58,6 +58,7 @@ end
 
 function mod:GripAnnounce()
 	warnGrip:Show(unpack(gripTargets))
+	table.wipe(gripTargets)
 end
 
 function mod:SPELL_SUMMON(args)
