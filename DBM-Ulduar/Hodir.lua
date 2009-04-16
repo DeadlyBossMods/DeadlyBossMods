@@ -21,7 +21,7 @@ local timerFlashFreeze	= mod:NewTimer(9, "TimerFlashFreeze", 61968)
 local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
 local warnBitingCold	= mod:NewSpecialWarning("WarningBitingCold")
 
-local enrageTimer	= mod:NewEnrageTimer(300)
+local enrageTimer	= mod:NewEnrageTimer(600)
 
 
 function mod:OnCombatStart(delay)
