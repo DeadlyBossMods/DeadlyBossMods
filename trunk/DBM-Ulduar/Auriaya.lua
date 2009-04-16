@@ -46,8 +46,8 @@ function mod:SPELL_CAST_START(args)
 		timerFear:Start()
 		timerNextFear:Schedule(2)
 		warnFearSoon:Schedule(34)
-	elseif args.spellid == 64688 then --Sonic Screech
-		-- warning needed here?
+--	elseif args.spellid == 64688 then --Sonic Screech
+--		-- warning needed here?
 	end
 end
 
