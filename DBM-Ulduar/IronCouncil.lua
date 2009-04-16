@@ -14,10 +14,10 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("HealthFrame", true)
 
-mod:SetBossHealthInfo(		-- 32927 32857 32867
-	32927, L.Steelbreaker,
-	32857, L.RunemasterMolgeim,
-	32867, L.StormcallerBrundir
+mod:SetBossHealthInfo(
+	32867, L.Steelbreaker,
+	32927, L.RunemasterMolgeim,
+	32857, L.StormcallerBrundir
 )
 
 local timerSupercharge		= mod:NewTimer(10, "TimerSupercharge", 61920)
