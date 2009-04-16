@@ -207,32 +207,35 @@ options = {
 --------------------------
 --
 -- this linked list can only contain tables that do not use the fields "prev" and "next"
---
+-- this restriction especially means that an object must not be in two different linked lists at the same time
+-- but this is sufficient for DBT here, having a wrapper object would just be an unnecessary overhead
+-- special table keys for "prev"/"next" (e.g. userdata values) would add unnecessary complexity
 
 local DLL = {}
 DLL.__index = DLL
 
 function DLL:Append(obj)
-	if self.len == 0 then
+	if self.first == nil then -- list is empty
 		self.first = obj
 		self.last = obj
-	else
+	else -- list is not empty
 		obj.prev = self.last
 		self.last.next = obj
 		self.last = obj
 	end
-	self.len = self.len + 1
 	return obj
 end
 
 function DLL:Remove(obj)
-	if self.len == 1 then
+	if self.first == nil then -- list is empty...
+		-- ...meaning the object is not even in the list, nothing we can do here expect for removing the "prev" and "next" entries from obj
+	elseif self.first == self.last then -- list has only one element
 		self.first = nil
 		self.last = nil
-	elseif self.first == obj then
+	elseif self.first == obj then -- trying to remove the first element
 		self.first = obj.next
 		self.first.prev = nil
-	elseif self.last == obj then
+	elseif self.last == obj then -- trying to remove the last element
 		self.last = obj.prev
 		self.last.next = nil
 	else
@@ -240,12 +243,10 @@ function DLL:Remove(obj)
 	end
 	obj.prev = nil
 	obj.next = nil
-	self.len = self.len - 1
 end
 
 function DLL:New()
 	return setmetatable({
-		len = 0,
 		first = nil,
 		last = nil
 	}, self)
@@ -361,31 +362,44 @@ do
 			newBar:ApplyStyle()
 		else
 			newBar = next(unusedBarObjects, nil)
+			local newFrame = createBarFrame(self)
 			if newBar then
 				unusedBarObjects[newBar] = nil
-			else
-				newBar = setmetatable({}, mt)
+				newBar.frame = newFrame
+				newBar.id = id
+				newBar.timer = timer
+				newBar.totalTime = timer
+				newBar.owner = self
+				newBar.moving = nil
+				newBar.enlarged = nil
+				newBar.fadingIn = 0
+				newBar.small = small
+				newBar.color = color
+				newBar.flashing = nil
+			else  -- yes, this is duplicate code but it's slightly faster this way ;)
+				newBar = setmetatable({
+					frame = newFrame,
+					id = id,
+					timer = timer,
+					totalTime = timer,
+					owner = self,
+					moving = nil,
+					enlarged = nil,
+					fadingIn = 0,
+					small = small,
+					color = color,
+					flashing = nil
+				}, mt)
 			end
-			newBar.frame = createBarFrame(self)
-			newBar.id = id
-			newBar.timer = timer
-			newBar.totalTime = timer
-			newBar.owner = self
-			newBar.moving = nil
-			newBar.enlarged = nil
-			newBar.fadingIn = 0
-			newBar.frame.obj = newBar
-			newBar.small = small
+			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
 			self.smallBars:Append(newBar)
 		end
-		if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then
-			self.smallBars:Remove(newBar)
-			self.HugeBars:Append(newBar)
+		if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
+			self:RemoveFromList()
+			self.hugeBars:Append(newBar)
 			newBar.enlarged = true
 		end
-		newBar.color = color
-		newBar.flashing = false
 		newBar:SetPosition()
 		newBar:ApplyStyle()
 		newBar:SetText(id)
@@ -782,7 +796,7 @@ end
 -----------------------
 function barPrototype:SetPosition()
 	if self.moving == "enlarge" then return end
-	local anchor = (self.prev and self.prev.frame) or self.enlarged and self.owner.secAnchor or self.owner.mainAnchor
+	local anchor = (self.prev and self.prev.frame) or (self.enlarged and self.owner.secAnchor) or self.owner.mainAnchor
 	self.frame:ClearAllPoints()
 	if self.owner.options.ExpandUpwards then
 		self.frame:SetPoint("TOP", anchor, "BOTTOM", self.owner.options.BarXOffset, 40 + self.owner.options.BarYOffset)
