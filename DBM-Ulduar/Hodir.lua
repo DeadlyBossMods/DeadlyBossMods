@@ -25,7 +25,7 @@ local enrageTimer	= mod:NewEnrageTimer(300)
 
 
 function mod:OnCombatStart(delay)
-	--enrageTimer:Start(-delay)
+	enrageTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
