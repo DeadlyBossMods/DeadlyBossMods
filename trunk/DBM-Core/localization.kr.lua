@@ -86,8 +86,16 @@ DBM_CORE_GENERIC_TARGET_OPTION = "%s 의 대상 알리기"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
 	cast = "%s",
+	active = "%s",	
 	cd = "%s 쿨다운",
 	next = "다음 %s",
 }
 
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "|cff71d5ff|H주문:%d|h%s|h|r 디버프 타이머 보기",
+	cast = "|cff71d5ff|H주문:%d|h%s|h|r 시전 타이머 보기",
+	active = "|cff71d5ff|H주문:%d|h%s|h|r 유지 타이머 보기",
+	cd = "|cff71d5ff|H주문:%d|h%s|h|r 쿨다운 타이머 보기",
+	next = "다음 |cff71d5ff|H주문:%d|h%s|h|r 타이머 보기",
+}
 end

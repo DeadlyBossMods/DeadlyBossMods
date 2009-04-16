@@ -66,7 +66,8 @@ L:SetOptionLocalization{
 	TimerScorch					= "불태우기 쿨다운 타이머 보기",
 	TimerScorchCast				= "불태우기 시전 타이머 보기",
 	WarningSlagPot				= "잿가루 구덩이 대상 알리기",
-	TimerSlagPot				= "잿가루 구덩이 타이머 보기"
+	TimerSlagPot				= "잿가루 구덩이 타이머 보기",
+	SlagPotIcon				= "Set Icon on Slag Pot target"	
 }
 
 ------------------
@@ -80,18 +81,27 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame		= "활활 타오르는 화염 - 이동! 이동! 이동!"
+	warnTurretsReadySoon	= "Fourth Turret Ready in 20 Sec",
+	warnTurretsReady		= "Fourth Turret Ready",
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결",
 	timerDeepBreathCast			= "화염 숨결",
+	timerAllTurretsReady	= "Turrets"	
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결 타이머 보기",
 	timerDeepBreathCast			= "화염 숨결 시전 타이머 보기",
 	SpecWarnDevouringFlame		= "활활 타오르는 화염 대상 특수 경보 보기",
 	PlaySoundOnDevouringFlame	= "활활 타오르는 화염의 데미지를 받을 때 사운드 재생",
+	timerAllTurretsReady		= "Show timer for turrets",
+	warnTurretsReadySoon		= "Show pre-warning for turrets",
+	warnTurretsReady			= "Show warning for turrets",	
 }
 
+L:SetMiscLocalization{
+	YellAir = "Give us a moment to prepare to build the turrets."
+}
 -------------
 --  XT002  --
 -------------
@@ -102,10 +112,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerTympanicTantrumCast	= "귀청이 찢어지는 소리 시전",
-	timerTympanicTantrum		= "귀청이 찣어지는 소리",
-	timerLightBomb				= "빛의 폭탄 : %s",
-	timerGravityBomb			= "중력 폭탄 : %s",
+
 }
 
 L:SetWarningLocalization{
@@ -116,14 +123,10 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerTympanicTantrumCast	= "귀청이 찢어지는 소리 시전 타이머 보기",
-	timerTympanicTantrum		= "귀청이 찢어지는 소리 지속 시간 보기",
 	SpecialWarningLightBomb		= "당신이 빛의 폭탄일 때 특수 경고 보기",
 	WarningLightBomb		= "빛의 폭탄 알리기",
-	timerLightBomb			= "빛의 폭탄 타이머 보기",
 	SpecialWarningGravityBomb	= "당신이 중력 폭탄일 때 특수 경고 보기",
 	WarningGravityBomb		= "중력 폭탄 알리기",
-	timerGravityBomb		= "중력 폭탄 타이머 보기",
 	PlaySoundOnGravityBomb		= "당신이 중력 폭탄일 때 소리 재생",
 	PlaySoundOnTympanicTantrum	= "귀청이 찢어지는 소리일 때 소리 재생",
 	SetIconOnLightBombTarget	= "빛의 폭탄 대상에게 공격대 아이콘 표시",
@@ -359,7 +362,7 @@ L:SetMiscLocalization{
 	WaterSpirit = "고대 물의 정령",
 	Snaplasher = "철썩채찍",
 	StormLasher = "폭풍 채찍",
-	EmoteTree = "???" -- /chatlog failed
+	EmoteTree	= "???" -- /chatlog does not log messages with color codes...lol
 }
 
 L:SetWarningLocalization{
@@ -446,6 +449,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!"
+	CrashWhisper			= "Shadow Crash on You! Run away!"	
 }
 
 
