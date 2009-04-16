@@ -2,14 +2,15 @@ local mod = DBM:NewMod("IronCouncil", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(32867)
+mod:SetCreatureID(32927)
 mod:SetZone()
 
-
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat", 32867, 32927, 32857)
 
 mod:RegisterEvents(
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_SUCCESS"
 )
 
 mod:AddBoolOption("HealthFrame", true)
@@ -49,11 +50,17 @@ local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
 local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
 local specwarnRuneofDeath	= mod:NewSpecialWarning("RuneofDeath")
 local timerRuneofDeathDura	= mod:NewTimer(30, "timerRuneofDeath", 63490)
+local timerRuneofPower		= mod:NewCDTimer(30, 61974)
+local timerRuneofDeath		= mod:NewCDTimer(30, 63490)
+mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
+
 -- Rune of Summoning .. wtf! :)
 
+local enrageTimer		= mod:NewEnrageTimer(600)
 
 
 function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)	
 end
 
 function mod:SPELL_CAST_START(args)
@@ -61,18 +68,12 @@ function mod:SPELL_CAST_START(args)
 		timerSupercharge:Start()
 		warnSupercharge:Show()
 
-	elseif args.spellId == 64215 then				-- Chain light (need the 10ppl spellid)
+	elseif args.spellId == 63479 then				-- Chain light (need the 10ppl spellid)
 		warnChainlight:Show()
 	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
 		timerOverload:Start()
 	elseif args.spellId == 63483 then				-- LightningWhirl
 		timerLightningWhirl:Start()
-	elseif args.spellId == 61887 or args.spellId == 63486 then	-- LightningTendrils
-		timerLightningTendrils:Start()
-		specwarnLightningTendrils:Show()
-		if self.Options.PlaySoundLightningTendrils then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
 
 	elseif args.spellId == 61903 or args.spellId == 63493 then	-- Fusion Punch
 		warnFusionPunch:Show()
@@ -86,11 +87,17 @@ function mod:SPELL_CAST_START(args)
 
 	elseif args.spellId == 62338 then				-- Runic Barrier
 		timerRunicBarrier:Start()
-	elseif args.spellId == 64320 then				-- Rune of Power
-		warnRuneofPower:Show()
-	elseif args.spellId == 63490 then				-- Rune of Death
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 63490 then				-- Rune of Death
 		warnRuneofDeath:Show()
 		timerRuneofDeathDura:Start()
+
+	elseif args.spellId == 64321 or args.spellId == 61974 then		-- Rune of Power
+		warnRuneofPower:Show()
+		timerRuneofPower:Start()
 	end
 end
 
@@ -101,6 +108,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 62269 or args.spellId == 63490 then	-- Rune of Death - move away from it
 		if args.destName == UnitName("player") then
 			specwarnRuneofDeath:Show()
+			if self.Options.PlaySoundDeathRune then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
+		end
+	elseif args.spellId == 63486 then	-- lightning
+		timerLightningTendrils:Start()
+		specwarnLightningTendrils:Show()
+		if self.Options.PlaySoundLightningTendrils then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	end
 end
