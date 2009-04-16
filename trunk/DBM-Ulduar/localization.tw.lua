@@ -57,7 +57,8 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot			= "熔渣之盆: >%s<"
+	WarningSlagPot			= "熔渣之盆: >%s<",
+	SpecWarnJetsCast		= "烈焰噴洩 - 停止施法"
 }
 
 L:SetOptionLocalization{
@@ -67,7 +68,8 @@ L:SetOptionLocalization{
 	TimerScorch			= "顯示灼燒的冷卻計時",
 	TimerScorchCast			= "顯示灼燒的施法計時",
 	WarningSlagPot			= "提示熔渣之盆的目標",
-	TimerSlagPot			= "顯示熔渣之盆計時器"
+	TimerSlagPot			= "顯示熔渣之盆計時器",
+	SlagPotIcon				= "設置標記在熔渣之盆的目標"
 }
 
 ------------------
@@ -80,17 +82,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "吞噬烈焰 - 移動囉!!"
+	SpecWarnDevouringFlame		= "吞噬烈焰 - 移動囉!!",
+	warnTurretsReadySoon	= "20秒後 第四座塔樓完成",
+	warnTurretsReady		= "第四座塔樓已完成",
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "下一次 火息術",
 	timerDeepBreathCast		= "火息術",
+	timerAllTurretsReady	= "塔樓"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "為下一次火息術顯示計時器",
 	timerDeepBreathCast		= "顯示火息術的施法計時器",
 	SpecWarnDevouringFlame		= "當你在吞噬烈焰的攻擊範圍時顯示特別警告",
 	PlaySoundOnDevouringFlame	= "當受到吞噬烈焰時播放音效",
+	timerAllTurretsReady		= "為塔樓顯示計時器",
+	warnTurretsReadySoon		= "顯示塔樓的預先警告",
+	warnTurretsReady			= "顯示塔樓的警告",
+}
+
+L:SetMiscLocalization{
+	YellAir = "Give us a moment to prepare to build the turrets."
 }
 
 
@@ -104,10 +116,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerTympanicTantrumCast	= "躁怒施放",
-	timerTympanicTantrum		= "躁怒",
-	timerLightBomb			= "裂光彈: %s",
-	timerGravityBomb		= "重力彈: %s",
 }
 
 L:SetWarningLocalization{
@@ -118,14 +126,10 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerTympanicTantrumCast	= "顯示躁怒的施法計時器",
-	timerTympanicTantrum		= "顯示躁怒的持續時間計時器",
 	SpecialWarningLightBomb		= "當你中了裂光彈時顯示特別警告",
 	WarningLightBomb		= "提示裂光彈",
-	timerLightBomb			= "顯示裂光彈計時器",
 	SpecialWarningGravityBomb	= "當你中了重力彈時顯示特別警告",
 	WarningGravityBomb		= "提示重力彈",
-	timerGravityBomb		= "顯示重力彈計時器",
 	PlaySoundOnGravityBomb		= "當你中了重力彈時播放音效",
 	PlaySoundOnTympanicTantrum	= "躁怒時播放音效",
 	SetIconOnLightBombTarget	= "設置標記在裂光彈的目標",
