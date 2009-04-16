@@ -15,8 +15,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE_FILTERED"
 )
 
-mod:AddBoolOption("AddHealthFrame")
-mod:RemoveOption("HealthFrame") -- we cannot use the default static health frame as we need to be able to add/remove mobs (okay, it would be possible to use this but it would be ugly)
+mod:AddBoolOption("HealthFrame", true)
 
 local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
 local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
@@ -32,10 +31,6 @@ local timerFuryYou = mod:NewTimer(10, "TimerFuryYou", 63571)
 
 function mod:OnCombatStart(delay)
 	enrage:Start()
-	if self.Options.AddHealthFrame then
-		DBM.BossHealth:Show(L.name)
-		DBM.BossHealth:AddBoss(32906, L.name) -- Freya
-	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
@@ -70,9 +65,11 @@ local adds = {}
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SpawnYell then
-		if not adds[33202] then DBM.BossHealth:AddBoss(33202, L.WaterSpirit) end -- ancient water spirit
-		if not adds[32916] then DBM.BossHealth:AddBoss(32916, L.Snaplasher) end  -- snaplasher
-		if not adds[32919] then DBM.BossHealth:AddBoss(32919, L.StormLasher) end -- storm lasher
+		if self.Options.HealthFrame then
+			if not adds[33202] then DBM.BossHealth:AddBoss(33202, L.WaterSpirit) end -- ancient water spirit
+			if not adds[32916] then DBM.BossHealth:AddBoss(32916, L.Snaplasher) end  -- snaplasher
+			if not adds[32919] then DBM.BossHealth:AddBoss(32919, L.StormLasher) end -- storm lasher
+		end
 		adds[33202] = true
 		adds[32916] = true
 		adds[32919] = true
@@ -88,7 +85,9 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destName)
 	if cid == 33202 or cid == 32916 or cid == 32919 then
-		DBM.BossHealth:RemoveBoss(cid)
+		if self.Options.HealthFrame then
+			DBM.BossHealth:RemoveBoss(cid)
+		end
 		if not timerSimulKill:IsStarted() then
 			timerSimulKill:Start()
 			warnSimulKill:Show()
