@@ -78,6 +78,23 @@ DBM_CORE_ANNOUNCE_PULL				= "%d秒後拉怪"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "拉怪囉!"
 
 
--- Generic Warnings
+-- Generic Warnings (deprecated)
 DBM_CORE_GENERIC_TARGET_WARN = "%s 在 >%%s<!"
 DBM_CORE_GENERIC_TARGET_OPTION = "提示目標 %s"
+
+-- Auto-generated Timer Localizations
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	active = "%s",
+	cd = "%s 冷卻",
+	next = "下一次 %s",
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "顯示|cff71d5ff|Hspell:%d|h%s|h|r的減益計時器",
+	cast = "顯示|cff71d5ff|Hspell:%d|h%s|h|r的施法計時器",
+	active = "顯示|cff71d5ff|Hspell:%d|h%s|h|r的持續時間計時器",
+	cd = "顯示|cff71d5ff|Hspell:%d|h%s|h|r的冷卻計時器",
+	next = "顯示下一次 |cff71d5ff|Hspell:%d|h%s|h|r的計時器",
+}
