@@ -25,6 +25,8 @@ do
 end
 
 
+mod:AddBoolOption("HealthFrame", true)
+
 local warnSwarm 	= mod:NewGenericTargetAnnounce(64396, 2) -- do not use this method; it will be replaced soon.
 
 local specWarnBlast 	= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
