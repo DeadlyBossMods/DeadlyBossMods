@@ -396,7 +396,7 @@ do
 			self.smallBars:Append(newBar)
 		end
 		if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
-			self:RemoveFromList()
+			newBar:RemoveFromList()
 			self.hugeBars:Append(newBar)
 			newBar.enlarged = true
 		end
