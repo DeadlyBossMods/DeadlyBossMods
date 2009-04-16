@@ -101,7 +101,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 
 	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
 		timerOverload:Start()
-		if self.Options.PlaySoundOnOverload then
+		if self.Options.PlaySoundOnOverload and UnitName("target") == L.StormcallerBrundir then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	end
