@@ -32,6 +32,7 @@ local timerLightningWhirl	= mod:NewTimer(5, "TimerLightningWhirl", 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
 local timerLightningTendrils	= mod:NewTimer(35, "TimerLightningTendrils", 63486)
 mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
+mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
 
 -- Steelbreaker
 -- High Voltage ... don't know what to show here - 63498
@@ -70,8 +71,7 @@ function mod:SPELL_CAST_START(args)
 
 	elseif args.spellId == 63479 then				-- Chain light (need the 10ppl spellid)
 		warnChainlight:Show()
-	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
-		timerOverload:Start()
+
 	elseif args.spellId == 63483 then				-- LightningWhirl
 		timerLightningWhirl:Start()
 
@@ -91,13 +91,19 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63490 then				-- Rune of Death
+	if args.spellId == 63490 then					-- Rune of Death
 		warnRuneofDeath:Show()
 		timerRuneofDeathDura:Start()
 
-	elseif args.spellId == 64321 or args.spellId == 61974 then		-- Rune of Power
+	elseif args.spellId == 64321 or args.spellId == 61974 then	-- Rune of Power
 		warnRuneofPower:Show()
 		timerRuneofPower:Start()
+
+	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
+		timerOverload:Start()
+		if self.Options.PlaySoundOnOverload then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
 	end
 end
 
