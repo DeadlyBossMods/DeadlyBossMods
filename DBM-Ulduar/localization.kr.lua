@@ -80,7 +80,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "활활 타오르는 화염 - 이동! 이동! 이동!",
+	SpecWarnDevouringFlame	= "활활 타오르는 화염 - 이동! 이동! 이동!",
 	warnTurretsReadySoon	= "Fourth Turret Ready in 20 Sec",
 	warnTurretsReady		= "Fourth Turret Ready"
 }
@@ -123,9 +123,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "당신이 빛의 폭탄일 때 특수 경고 보기",
+	SpecialWarningLightBomb		= "당신이 빛의 폭탄에 영향을 받을 때 특수 경고 보기",
 	WarningLightBomb		= "빛의 폭탄 알리기",
-	SpecialWarningGravityBomb	= "당신이 중력 폭탄일 때 특수 경고 보기",
+	SpecialWarningGravityBomb	= "당신이 중력 폭탄에 영향을 받을 때 특수 경고 보기",
 	WarningGravityBomb		= "중력 폭탄 알리기",
 	PlaySoundOnGravityBomb		= "당신이 중력 폭탄일 때 소리 재생",
 	PlaySoundOnTympanicTantrum	= "귀청이 찢어지는 소리일 때 소리 재생",
@@ -390,6 +390,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	DarkGlare		= "Laser Barrage",
 	WarningPlasmaBlast	= "%s 에게 플라즈마 폭발 - 폭힐! 폭힐!",
 	Phase2Engaged		= "곧 2 페이즈 - 지금 재 그룹 하세요.",
 	Phase3Engaged		= "곧 3 페이즈 - 지금 재 그룹 하세요.",	
@@ -400,14 +401,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningShockBlast	= "전기충격 폭발 경보 보기",
-	WarningPlasmaBlast	= "플라즈마 폭발 경보 보기",
-	ProximityMines		= "접근 지뢰 타이머 보기",
-	PlaySoundOnShockBlast 	= "전기충격 폭발 시전 사운드 효과",	
+	TimeToPhase2		= "begin Phase2"
 }
 
 L:SetMiscLocalization{
-	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",
+	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
 	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9%! Barely a dent! Moving right along.",
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
 }
