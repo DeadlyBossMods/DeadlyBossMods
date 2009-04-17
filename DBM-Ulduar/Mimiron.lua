@@ -27,6 +27,7 @@ mod:AddBoolOption("HealthFramePhase4", true)
 
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
+local blastWarn				= mod:NewAnnounce("WarnBlast", 4)
 local shellWarn				= mod:NewAnnounce("WarnShell", 2)
 
 local timerProximityMines	= mod:NewNextTimer(35, 63027)
@@ -66,7 +67,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63666 then -- Napalm Shell
 		shellWarn:Show(args.destName)
 		self:SetIcon(args.destName, 8, 6)
-	elseif args.spellId == 64529 then
+	elseif args.spellId == 64529 then -- Plasma Blast
 		blastWarn:Show(args.destName)
 		self:SetIcon(args.destName, 7, 6)
 	end
@@ -99,7 +100,9 @@ function mod:NextPhase()
 		timerNextDarkGlare:Cancel()
 		timerP2toP3:Start()
 	elseif phase == 4 then
-		if self.Options.AddBoolOption
+		if self.Options.HealthFramePhase4 then
+			
+		end
 	end
 end
 
