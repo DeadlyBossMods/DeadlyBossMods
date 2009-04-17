@@ -35,7 +35,7 @@ local timerNextDarkGlare	= mod:NewCDTimer(41, 63274)
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 
 local timerSpinUp		= mod:NewCastTimer(4, 63414)
-local timerP1toP2		= mod:NewTimer(42, "TimeToPhase2")
+local timerP1toP2		= mod:NewTimer(43, "TimeToPhase2")
 
 local phase = 0 
 
