@@ -209,3 +209,25 @@ L:SetOptionLocalization({
 	WarningShards = "Show Rock Shards warning",
 	WarningGrab = "Show Tank Grab warning"
 })
+
+--------------
+--  Emalon  --
+--------------
+
+L = DBM:GetModLocalization("Emalon")
+
+L:SetGeneralLocalization({
+	name = "Emalon the Stone Watcher"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
+})
