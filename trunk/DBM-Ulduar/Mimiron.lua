@@ -101,7 +101,8 @@ function mod:NextPhase()
 		timerP2toP3:Start()
 	elseif phase == 4 then
 		if self.Options.HealthFramePhase4 then
-			
+			DBM.BossHealth:Show(L.name)
+			DBM.BossHealth:Add
 		end
 	end
 end
