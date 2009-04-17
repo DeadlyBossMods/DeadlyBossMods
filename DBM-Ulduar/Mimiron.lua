@@ -23,6 +23,7 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 
 mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
 mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
+mod:AddBoolOption("HealthFramePhase4", true)
 
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
@@ -64,7 +65,10 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63666 then -- Napalm Shell
 		shellWarn:Show(args.destName)
-		self:SetIcon(args.destName, 8, 10)
+		self:SetIcon(args.destName, 8, 6)
+	elseif args.spellId == 64529 then
+		blastWarn:Show(args.destName)
+		self:SetIcon(args.destName, 7, 6)
 	end
 end
 
@@ -95,6 +99,7 @@ function mod:NextPhase()
 		timerNextDarkGlare:Cancel()
 		timerP2toP3:Start()
 	elseif phase == 4 then
+		if self.Options.AddBoolOption
 	end
 end
 
