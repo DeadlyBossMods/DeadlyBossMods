@@ -14,9 +14,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_STOP",
-	"UNIT_SPELLCAST_FAILED",
-	"UNIT_SPELLCAST_FAILED_QUIET",
 	"UNIT_SPELLCAST_CHANNEL_STOP"
 )
 
@@ -28,14 +25,14 @@ mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
 mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
 
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
-local timerProximityMines	= mod:NewCDTimer(35, 63027)
+local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
+local shellWarn				= mod:NewAnnounce("WarnShell", 2)
 
+local timerProximityMines	= mod:NewNextTimer(35, 63027)
 local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
-local timerNextDarkGlare	= mod:NewCDTimer(41, 63274)
-local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
-
-local timerSpinUp		= mod:NewCastTimer(4, 63414)
-local timerP1toP2		= mod:NewTimer(43, "TimeToPhase2")
+local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
+local timerSpinUp			= mod:NewCastTimer(4, 63414)
+local timerP1toP2			= mod:NewTimer(43, "TimeToPhase2")
 
 local phase = 0 
 
@@ -43,30 +40,14 @@ function mod:OnCombatStart(delay)
 	phase = 1
 end
 
--- todo...
 local spinningUp = GetSpellInfo(63414)
-function mod:WTF(event, unit, spell)
-	if spell == spinningUp then
-		print(event, unit, spell)
-		timerSpinUp:Cancel()
-		timerDarkGlareCast:Cancel()
-		timerNextDarkGlare:Cancel()
-		warnDarkGlare:Cancel()
+local lastSpinUp = 0
+function mod:UNIT_SPELLCAST_CHANNEL_STOP(unit, spell)
+	if spell == spinningUp and GetTime() - lastSpinUp < 3.9 then
+		self:SendSync("SpinUpFail")
 	end
 end
 
-function mod:UNIT_SPELLCAST_STOP(...)
-	return self:WTF("UNIT_SPELLCAST_STOP", ...)
-end
-function mod:UNIT_SPELLCAST_FAILED(...)
-	return self:WTF("UNIT_SPELLCAST_FAILED", ...)
-end
-function mod:UNIT_SPELLCAST_FAILED_QUIET(...)
-	return self:WTF("UNIT_SPELLCAST_FAILED_QUIET", ...)
-end
-function mod:UNIT_SPELLCAST_CHANNEL_STOP(...)
-		return self:WTF("UNIT_SPELLCAST_CHANNEL_STOP", ...)
-end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 63631 then
@@ -75,6 +56,13 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.PlaySoundOnShockBlast then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 63666 then -- Napalm Shell
+		shellWarn:Show(args.destName)
+		self:SetIcon(args.destName, 8, 10)
 	end
 end
 
@@ -87,18 +75,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDarkGlareCast:Schedule(4)
 		timerNextDarkGlare:Schedule(19)	-- 4 (cast spinup) + 15 sec (cast dark glare)
 		warnDarkGlare:Show()
-
 		if self.Options.PlaySoundOnDarkGlare then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
+		lastSpinUp = GetTime()
 	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase3 then
-		phase = 3
-		timerDarkGlareCast:Cancel()
-		timerDarkGlareCast:Cancel()
+		self:SendSync("Phase3")
 	end
 end
 
@@ -107,7 +93,7 @@ do
 	local last = 0
 	function mod:SPELL_AURA_REMOVED(args)
 		if phase == 1 and self:GetCIDFromGUID(args.destGUID) == 33432 then
-			if args.timestamp == last then	-- all events in the same second to detect the 2nd phase early and localization-independent
+			if args.timestamp == last then	-- all events in the same second to detect the 2nd phase earlier (than the yell) and localization-independent
 				count = count + 1
 				if count > 15 then
 					phase = 2
@@ -123,6 +109,15 @@ do
 end
 
 function mod:OnSync(event, args)
-	
+	if event == "SpinUpFail" then
+		timerSpinUp:Cancel()
+		timerDarkGlareCast:Cancel()
+		timerNextDarkGlare:Cancel()
+		warnDarkGlare:Cancel()
+	elseif event == "Phase3" then
+		phase = 3
+		timerDarkGlareCast:Cancel()
+		timerNextDarkGlare:Cancel()
+	end
 end
 
