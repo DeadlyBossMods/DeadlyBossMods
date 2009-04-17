@@ -395,10 +395,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DarkGlare		= "Laser Barrage",
+	DarkGlare			= "Laser Barrage",
 	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
 	Phase2Engaged		= "Phase 2 incoming - regroup now",
 	Phase3Engaged		= "Phase 3 incoming - regroup now",
+	WarnShell			= "Napalm Shells on >%s<"
 }
 
 L:SetTimerLocalization{
@@ -406,7 +407,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimeToPhase2		= "begin Phase2"
+	TimeToPhase2		= "begin Phase 2"
 }
 
 L:SetMiscLocalization{
