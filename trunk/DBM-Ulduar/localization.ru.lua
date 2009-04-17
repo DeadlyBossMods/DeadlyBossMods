@@ -12,29 +12,29 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPursued		= "Pursuing: %s",
-	timerFlameVents		= "Flame Vents",
-	timerSystemOverload	= "System Overloaded"
+	timerPursued		= "Преследование: %s",
+	timerFlameVents		= "Огненное дыхание",
+	timerSystemOverload	= "Отключение системы"
 }
 	
 L:SetMiscLocalization{
 	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
-	Emote		= "%%s pursues (%S+)%."
+	Emote		= "%%s преследуется (%S+)%."
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn	= "Pursuing >%s<!",
-	warnNextPursueSoon	= "Target Change in 5 Sec"
+	pursueTargetWarn	= "Преследуется >%s<!",
+	warnNextPursueSoon	= "Смена цели через 5 сек."
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload		= "Отображать отсчет времени до System Overload",
-	timerFlameVents			= "Отображать отсчет времени до Flame Vents",
-	timerPursued			= "Отображать отсчет времени до Pursued",
-	SystemOverload			= "Show Special Warning for System Overload",
-	SpecialPursueWarnYou	= "Show Special Warning when Pursued",
-	PursueWarn				= "Show warning for pursue on Player",
-	warnNextPursueSoon		= "Warn before next pursue"
+	timerSystemOverload		= "Отображать отсчет времени до Отключения системы",
+	timerFlameVents			= "Отображать отсчет времени до Огненного дыхания",
+	timerPursued			= "Отображать отсчет времени до Преследования",
+	SystemOverload			= "Отображать спец-предупреждение для Отключения системы",
+	SpecialPursueWarnYou	= "Отображать спец-предупреждение для Преследования",
+	PursueWarn				= "Отображать предупреждение для преследуемого игрока",
+	warnNextPursueSoon		= "Предупреждать перед следующим преследованием"
 }
 
 
@@ -44,29 +44,29 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Ignis")
 
 L:SetGeneralLocalization{
-	name = "Игнис Повелитель Кузни"
+	name = "Повелитель Горнов Игнис"
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast		= "Flame Jets",
-	TimerFlameJetsCooldown	= "Next Flame Jets in",
-	TimerScorch				= "Next Scorch in",
-	TimerScorchCast			= "Scorch",
-	TimerSlagPot			= "Slag Pot: %s"
+	TimerFlameJetsCast		= "Огненная струя",
+	TimerFlameJetsCooldown	= "Следующая Огненная струя через",
+	TimerScorch				= "Следующий Ожог через",
+	TimerScorchCast			= "Ожог",
+	TimerSlagPot			= "Шлаковый ковш: %s"
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot			= "Slag Pot on >%s<"
+	WarningSlagPot			= ">%s< в шлаковом ковше"
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast		= "Show Special Warning for Flame Jets Cast (interrupt)",
-	TimerFlameJetsCast		= "Show Flame Jets Cast timer",
-	TimerFlameJetsCooldown	= "Show Flame Jets Cooldown timer",
-	TimerScorch				= "Show Scorch Cooldown timer",
-	TimerScorchCast			= "Show Scorch Cast timer",
-	WarningSlagPot			= "Announce Slag Pot Target",
-	TimerSlagPot			= "Show Slag Pot timer"
+	SpecWarnJetsCast		= "Отображать спец-предупреждение для заклинания Огненная струя (прерывано)",
+	TimerFlameJetsCast		= "Отображать время действия заклинания Огненная струя",
+	TimerFlameJetsCooldown	= "Отображать отсчет времени до восстановления Огненной струи",
+	TimerScorch				= "Отображать отсчет времени до восстановления Ожога",
+	TimerScorchCast			= "Отображать время действия заклинания Ожог",
+	WarningSlagPot			= "Объявлять цель помещенную в шлаковый ковш",
+	TimerSlagPot			= "Отображать время действия заклинания Шлаковый ковш"
 }
 
 ------------------
@@ -75,21 +75,21 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Razorscale")
 
 L:SetGeneralLocalization{
-	name = "Razorscale"
+	name = "Острокрылая"
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Devouring Flame - MOVE"
+	SpecWarnDevouringFlame		= "Лавовая бомба - БЕГИТЕ!"
 }
 L:SetTimerLocalization{
-	timerDeepBreathCooldown		= "Next Flame Breath in",
-	timerDeepBreathCast			= "Flame Breath",
+	timerDeepBreathCooldown		= "Следующее Огненное дыхание через",
+	timerDeepBreathCast			= "Огненное дыхание",
 }
 L:SetOptionLocalization{
-	timerDeepBreathCooldown		= "Отображать отсчет времени до next Flame Breath",
-	timerDeepBreathCast			= "Show Flame Breath Cast timer",
-	SpecWarnDevouringFlame		= "Show Special Warning while in Devouring Flame patch",
-	PlaySoundOnDevouringFlame	= "Play Sound when afflicted by Devoring Flame",
+	timerDeepBreathCooldown		= "Отображать отсчет времени до следующего Огненного дыхания",
+	timerDeepBreathCast			= "Отображать время действия заклинания Огненное дыхание",
+	SpecWarnDevouringFlame		= "Отображать спец-предупреждение ноходящемуся под плевком лавовой бомбы",
+	PlaySoundOnDevouringFlame	= "Звуковой сигнал, когда под воздействием лавовой бомбы",
 }
 
 
@@ -99,36 +99,36 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("XT002")
 
 L:SetGeneralLocalization{
-	name = "XT-002 Deconstructor"
+	name = "Разрушитель XT-002"
 }
 
 L:SetTimerLocalization{
-	timerTympanicTantrumCast	= "Tympanic Tandrum Cast",
-	timerTympanicTantrum		= "Tympanic Tandrum",
-	timerLightBomb				= "Light Bomb: %s",
-	timerGravityBomb			= "Gravity Bomb: %s",
+	timerTympanicTantrumCast	= "Раскаты ярости",
+	timerTympanicTantrum		= "Раскаты ярости",
+	timerLightBomb				= "Светлый взрыв: %s",
+	timerGravityBomb			= "Гравитационная бомба: %s",
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "Light Bomb on YOU",
-	WarningLightBomb			= "Light Bomb on >%s<",
-	SpecialWarningGravityBomb	= "Gravity Bomb on YOU",
-	WarningGravityBomb			= "Gravity Bomb on >%s<",
+	SpecialWarningLightBomb 	= "Светлый взрыв на ВАС!",
+	WarningLightBomb			= ">%s< под воздействием эффекта Светлый взрыв",
+	SpecialWarningGravityBomb	= "Гравитационная бомба на ВАС!",
+	WarningGravityBomb			= ">%s< под воздействием эффекта Гравитационная бомба",
 }
 
 L:SetOptionLocalization{
-	timerTympanicTantrumCast	= "Show Tympanic Tantrum Cast timer",
-	timerTympanicTantrum		= "Show Tympanic Tantrum duration timer",
-	SpecialWarningLightBomb		= "Show Special Warning when Light Bomb on You",
-	WarningLightBomb			= "Announce Light Bomb",
-	timerLightBomb				= "Show Light Bomb timer",
-	SpecialWarningGravityBomb	= "Show Special Warning when Gravity Bomb on You",
-	WarningGravityBomb			= "Announce Gravity Bomb",
-	timerGravityBomb			= "Show Gravity Bomb timer",
-	PlaySoundOnGravityBomb		= "Play Sound when Gravity Bomb is on you",
-	PlaySoundOnTympanicTantrum	= "Play Sound on Tympanic Tandrum",
-	SetIconOnLightBombTarget	= "Set Icon on Light Bomb target",
-	SetIconOnGravityBombTarget	= "Set Icon on Gravity Bomb target",
+	timerTympanicTantrumCast	= "Отображать время действия эффекта Раскаты ярости",
+	timerTympanicTantrum		= "Отображать радиус действия эффекта Раскаты ярости",
+	SpecialWarningLightBomb		= "Отображать спец-предупреждение, когда Светлый взрыв на ВАС",
+	WarningLightBomb			= "Объявлять Светлый взрыв",
+	timerLightBomb				= "Отображать время действия эффекта Светлый взрыв",
+	SpecialWarningGravityBomb	= "Отображать спец-предупреждение, когда Гравитационная бомба на ВАС",
+	WarningGravityBomb			= "Объявлять Гравитационная бомба",
+	timerGravityBomb			= "Отображать время действия эффекта Гравитационная бомба",
+	PlaySoundOnGravityBomb		= "Звуковой сигнал, когда Гравитационная бомба на ВАС",
+	PlaySoundOnTympanicTantrum	= "Звуковой сигнал во время эффекта Раскаты ярости",
+	SetIconOnLightBombTarget	= "Установить метку на цель под воздействием эффекта Светлый взрыв",
+	SetIconOnGravityBombTarget	= "Установить метку на цель под воздействием эффекта Гравитационная бомба",
 }
 
 -------------------
@@ -137,58 +137,58 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("IronCouncil")
 
 L:SetGeneralLocalization{
-	name = "Iron Council"
+	name = "Железное Собрание"
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge			= "Supercharge incoming",
-	WarningChainlight			= "Chaing Lightning",
-	WarningFusionPunch			= "Fusion Punch",
-	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
-	WarningRuneofPower			= "Rune of Power",
-	WarningRuneofDeath			= "Rune of Death",
-	RuneofDeath					= "Rune of Death - MOVE",
-	LightningTendrils			= "Lightning Tendrils - MOVE",
+	WarningSupercharge			= "Суперзаряд",
+	WarningChainlight			= "Цепная молния",
+	WarningFusionPunch			= "Энергетический удар",
+	WarningOverwhelmingPower	= ">%s< под воздействием эффекта Переполняющая энергия",
+	WarningRuneofPower			= "Руна мощи",
+	WarningRuneofDeath			= "Руна смерти",
+	RuneofDeath					= "Руна смерти - БЕГИТЕ!",
+	LightningTendrils			= "Светящиеся придатки - БЕГИТЕ!",
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge		= "Supercharge",
-	TimerOverload			= "Overload",
-	TimerLightningWhirl		= "Lightning Whirl",
-	TimerLightningTendrils	= "Lightning Tendrils",
-	timerFusionPunchCast	= "Fusion Punch cast",
-	timerFusionPunchActive	= "Fusion Punch: %s",
-	timerOverwhelmingPower	= "Overwhelming Power: %s",
-	timerRunicBarrier		= "Runic Barrier",
-	timerRuneofDeath		= "Rune of Death",
+	TimerSupercharge		= "Суперзаряд",
+	TimerOverload			= "Перегрузка",
+	TimerLightningWhirl		= "Вихрь молний",
+	TimerLightningTendrils	= "Светящиеся придатки",
+	timerFusionPunchCast	= "Энергетический удар cast",
+	timerFusionPunchActive	= "Энергетический удар: %s",
+	timerOverwhelmingPower	= "Переполняющая энергия: %s",
+	timerRunicBarrier		= "Руническая преграда",
+	timerRuneofDeath		= "Руна смерти",
 }
 
 L:SetOptionLocalization{
-	TimerSupercharge			= "Show Supercharge Timer",
-	WarningSupercharge			= "Show warning when Supercharge is  being cast",
-	WarningChainlight			= "Announce Chain Lightning",
-	TimerOverload				= "Show Overload cast timer",
-	TimerLightningWhirl			= "Show Lightning Whirl cast timer",
-	LightningTendrils			= "Show Special Warning for Lightning Tendrils",
-	TimerLightningTendrils		= "Show Lightning Tendrils duration timer",
-	PlaySoundLightningTendrils	= "Play Sound on Lightning Tendrils",
-	WarningFusionPunch			= "Announce Fusion Punch",
-	timerFusionPunchCast		= "Show Castbar for Fusion Punch",
-	timerFusionPunchActive		= "Show Fusion Punch timer",
-	WarningOverwhelmingPower	= "Announce Overwhelming Power",
-	timerOverwhelmingPower		= "Show Overwhelming Power timer",
-	SetIconOnOverwhelmingPower	= "Set icon on Overwhelming Power target",
-	timerRunicBarrier			= "Show Runic Barrier timer",
-	WarningRuneofPower			= "Announce Rune of Power",
-	WarningRuneofDeath			= "Announce Rune of Death",
-	RuneofDeath					= "Show Special Warning for Rune of Death",
-	timerRuneofDeath			= "Show Rune of Death duration timer",
+	TimerSupercharge			= "Отображать время действия эффекта Суперзаряд",
+	WarningSupercharge			= "Отображать предупреждение для Суперзаряда",
+	WarningChainlight			= "Объявлять Цепную молнию",
+	TimerOverload				= "Отображать отсчет времени до Перегрузки",
+	TimerLightningWhirl			= "Отображать отсчет времени до Вихря молний",
+	LightningTendrils			= "Отображать спец-предупреждение для Светящихся придатков",
+	TimerLightningTendrils		= "Отображать время действия Светящихся придатков",
+	PlaySoundLightningTendrils	= "Звуковой сигнал во время эффекта Светящиеся придатки",
+	WarningFusionPunch			= "Объявлять Энергетический удар",
+	timerFusionPunchCast		= "Отображать индикатор для Энергетического удара",
+	timerFusionPunchActive		= "Отображать время действия Энергетический удар",
+	WarningOverwhelmingPower	= "Объявлять Переполняющую энергию",
+	timerOverwhelmingPower		= "Отображать отсчет времени до Переполняющей энергии",
+	SetIconOnOverwhelmingPower	= "Установить метку на цель под воздействием эффекта Переполняющая энергия",
+	timerRunicBarrier			= "Отображать время действия Руническая преграда",
+	WarningRuneofPower			= "Объявлять Руну мощи",
+	WarningRuneofDeath			= "Объявлять Руну смерти",
+	RuneofDeath					= "Отображать спец-предупреждение для Руны смерти",
+	timerRuneofDeath			= "Отображать время действия Руны смерти",
 }
 
 L:SetMiscLocalization{
-	Steelbreaker		= "Steelbreaker",
-	RunemasterMolgeim	= "Runemaster Molgeim",
-	StormcallerBrundir 	= "Stormcaller Brundir",
+	Steelbreaker		= "Сталелом",
+	RunemasterMolgeim	= "Мастер рун Молгейм",
+	StormcallerBrundir 	= "Буревестник Брундир",
 }
 
 
@@ -198,22 +198,22 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
-	name = "Algalon the Observer"
+	name = "Алгалон Наблюдатель"
 }
 
 L:SetTimerLocalization{
-	TimerBigBangCast	= "Big Bang cast",
+	TimerBigBangCast	= "Суровый удар",
 }
 L:SetWarningLocalization{
-	WarningPhasePunch	= "Phase Punch on >%s<",
-	WarningBlackHole	= "Black Hole",
+	WarningPhasePunch	= ">%s< под воздействием эффекта Фазовый удар",
+	WarningBlackHole	= "Черная дыра",
 }
 
 L:SetOptionLocalization{
-	TimerBigBangCast	= "Show Castbar for Big Bang",
-	SpecWarnPhasePunch	= "Show Special Warning when Phase Punch on you",
-	WarningPhasePunch	= "Announce Phase Punch target",
-	WarningBlackHole	= "Announce Black Hole",
+	TimerBigBangCast	= "Отображать индикатор для Сурового удара",
+	SpecWarnPhasePunch	= "Отображать спец-предупреждение, когда Фазовый удар на ВАС",
+	WarningPhasePunch	= "Объявлять цель под воздействием эффекта Фазовый удар",
+	WarningBlackHole	= "Объявлять Чернаую дыру",
 }
 
 
@@ -223,31 +223,31 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Kologarn")
 
 L:SetGeneralLocalization{
-	name = "Kologarn"
+	name = "Кологарн"
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam	= "Eye Beam on YOU - MOVE AWAY",
-	WarningEyebeam			= "Eye Beam on >%s<"
+	SpecialWarningEyebeam	= "Сосредоточенный взгляд на ВАС - БЕГИТЕ!",
+	WarningEyebeam			= ">%s< под воздействием эффекта Сосредоточенный взгляд"
 }
 
 L:SetTimerLocalization{
-	timerEyebeam			= "Eye Beam: %s",
-	timerPetrifyingBreath	= "Petrifying Breath",
-	timerNextShockwave		= "Next Shockwave",
-	timerLeftArm			= "Respawn Left Arm",
-	timerRightArm			= "Respawn Right Arm"
+	timerEyebeam			= "Сосредоточенный взгляд: %s",
+	timerPetrifyingBreath	= "Каменящее дыхание",
+	timerNextShockwave		= "Следующая Ударная волна",
+	timerLeftArm			= "Возрождение левой руки",
+	timerRightArm			= "Возрождение правой руки"
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam		= "Show a Special Warning for Eye Beam on YOU",
-	WarningEyebeam				= "Announce Eye Beam target",
-	timerEyebeam				= "Отображать отсчет времени до Eye Beam",
-	SetIconOnEyebeamTarget		= "Set an Icon on Eye Beam Target",
-	timerPetrifyingBreath		= "Отображать отсчет времени до Petrifying Breath",
-	timerNextShockwave			= "Отображать отсчет времени до Shockwave",
-	timerLeftArm				= "Отображать отсчет времени до Arm Respawn (left)",
-	timerRightArm				= "Отображать отсчет времени до Arm Respawn (right)"
+	SpecialWarningEyebeam		= "Отображать спец-предупреждение, когда Сосредоточенный взгляд на ВАС",
+	WarningEyebeam				= "Объявлять цель под воздействием эффекта Сосредоточенный взгляд",
+	timerEyebeam				= "Отображать отсчет времени до Сосредоточенного взгляда",
+	SetIconOnEyebeamTarget		= "Установить метку на цель под воздействием эффекта Сосредоточенный взгляд",
+	timerPetrifyingBreath		= "Отображать отсчет времени до Каменящего дыхания",
+	timerNextShockwave			= "Отображать отсчет времени до Ударной волны",
+	timerLeftArm				= "Отображать отсчет времени до Возрождения руки (левая)",
+	timerRightArm				= "Отображать отсчет времени до Возрождения руки (правая)"
 }
 
 L:SetMiscLocalization{
@@ -261,25 +261,25 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Auriaya")
 
 L:SetGeneralLocalization{
-	name = "Auriaya"
+	name = "Ауриайа"
 }
 
 L:SetMiscLocalization{
-	Defender = "Feral Defender (%d)"
+	Defender = "Дикий эащитник (%d)"
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast	= "Sentinel Blast - Interrupt!",
-	WarnCatDied 	= "Feral Defender down (%d lifes remaining)",
-	WarnFear		= "Fear!",
-	WarnFearSoon 	= "Next Fear soon"
+	SpecWarnBlast	= "Удар часового - Interrupt!",
+	WarnCatDied 	= "Дикий эащитник погибает (Осталось живых: %d)",
+	WarnFear		= "Страх!",
+	WarnFearSoon 	= "Скоро следующий Страх"
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast	= "Show Special Warning on Sentinel Blast",
-	WarnFear		= "Show Fear Warning",
-	WarnFearSoon	= "Show Fear soon Warning",
-	WarnCatDied		= "Show Warning when the Feral Defender dies"
+	SpecWarnBlast	= "Отображать спец-предупреждение on Удар часового",
+	WarnFear		= "Отображать предупреждение Страх",
+	WarnFearSoon	= "Отображать предупреждение \"Скоро следующий Страх\"",
+	WarnCatDied		= "Отображать предупреждение, когда погибает дикий защитник"
 }
 
 
@@ -289,25 +289,25 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Hodir")
 
 L:SetGeneralLocalization{
-	name = "Hodir"
+	name = "Ходир"
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "Flesh Freeze",
-	WarningBitingCold	= "Biting Cold - MOVE"
+	WarningFlashFreeze	= "Мгновенная заморозка",
+	WarningBitingCold	= "Лютый холод - БЕГИТЕ!"
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "Flesh Freeze incoming",  -- all ppl have to move on the rock patches
+	TimerFlashFreeze	= "Мгновенная заморозка",  -- all ppl have to move on the rock patches
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze	= "Show Flash Freeze Cast-Timer",
-	WarningFlashFreeze	= "Show Warning for Flash Freeze",
+	TimerFlashFreeze	= "Отображать отсчет времени до Мгновенной заморозки",
+	WarningFlashFreeze	= "Отображать предупреждение для Мгновенной заморозки",
 }
 
 L:SetMiscLocalization{
-	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
+	PlaySoundOnFlashFreeze	= "Звуковой сигнал при Мгновенной заморозке",
 }
 
 
@@ -317,31 +317,31 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Thorim")
 
 L:SetGeneralLocalization{
-	name = "Thorim"
+	name = "Торим"
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer	= "Stormhammer on >%s<",
-	UnbalancingStrike	= "Unbalancing Strike on >%s<",
-	WarningPhase2		= "Phase 2",
-	WarningBomb			= "Rune Detonation on >%s<",
-	LightningOrb		= "Lightning Shock on You! Move!"
+	WarningStormhammer	= ">%s< под воздействием Молота бури",
+	UnbalancingStrike	= ">%s< под воздействием Дисбалансирующего удара",
+	WarningPhase2		= "Фаза 2",
+	WarningBomb			= ">%s< под воздействием Взрыва руны",
+	LightningOrb		= "Поражение громом на ВАС! БЕГИТЕ!!"
 }
 
 L:SetTimerLocalization{
-	TimerStormhammer		= "Stormhammer CD",
-	TimerUnbalancingStrike	= "Unbalancing Strike CD",
-	TimerHardmode		= "Hard Mode"
+	TimerStormhammer		= "Молот бури",
+	TimerUnbalancingStrike	= "Дисбалансирующий удар",
+	TimerHardmode		= "Сложный режим"
 }
 
 L:SetOptionLocalization{
-	TimerStormhammer		= "Show Stormhammer Cooldown",
-	TimerUnbalancingStrike	= "Отображать отсчет времени до Unbalancing Strike",
-	TimerHardmode			= "Отображать отсчет времени до Hard Mode",
-	UnbalancingStrike		= "Announce Unbalancing Strike Target",
-	WarningStormhammer		= "Announce Stormhammer Target",
-	WarningPhase2			= "Announce Phase 2",
-	RangeFrame				= "Show Range Frame"
+	TimerStormhammer		= "Отображать восстановление Молота бури",
+	TimerUnbalancingStrike	= "Отображать отсчет времени до Дисбалансирующий удар",
+	TimerHardmode			= "Отображать отсчет времени до сложного режима",
+	UnbalancingStrike		= "Объявлять цель под воздействием Дисбалансирующего удара",
+	WarningStormhammer		= "Объявлять цель под воздействием Молота бури",
+	WarningPhase2			= "Объявлять фазу 2",
+	RangeFrame				= "Отображать окно допустимой дистанции"
 }
 
 L:SetMiscLocalization{
@@ -356,29 +356,29 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Freya")
 
 L:SetGeneralLocalization{
-	name = "Freya"
+	name = "Фрейа"
 }
 
 L:SetMiscLocalization{
-	SpawnYell	= "Children, assist me!",
-	WaterSpirit	= "Ancient Water Spirit",
-	Snaplasher	= "Snaplasher",
-	StormLasher	= "Storm Lasher",
+	SpawnYell	= "Дети, помогите мне!",
+	WaterSpirit	= "Древних духа воды",
+	Snaplasher	= "Хватоплета",
+	StormLasher	= "Грозовых плеточника",
 	EmoteTree	= "???" -- /chatlog does not log messages with color codes...lol
 }
 
 L:SetWarningLocalization{
-	WarnPhase2		= "Phase 2",
-	WarnSimulKill	= "First add down - Resurrection in 1 min",
-	WarnFury		= "Nature's Fury on >%s<",
-	SpecWarnFury	= "Nature's Fury on You!"
+	WarnPhase2		= "Фаза 2",
+	WarnSimulKill	= "Первый союзник погибает - воскрешение через 1 мин.",
+	WarnFury		= ">%s< под воздействием ярости природы",
+	SpecWarnFury	= "Ярость природы на ВАС!"
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam	= "Sun Beam: %s",
-	TimerAlliesOfNature		= "Allies of Nature CD",
-	TimerSimulKill			= "Resurrection",
-	TimerFuryYou			= "Nature's Fury on you"
+	TimerUnstableSunBeam	= "Луч солнца: %s",
+	TimerAlliesOfNature		= "Союзники природы",
+	TimerSimulKill			= "Воскрешение",
+	TimerFuryYou			= "Ярость природы на ВАС!"
 }
 
 
@@ -388,24 +388,24 @@ L:SetTimerLocalization{
 L = DBM:GetModLocalization("Mimiron")
 
 L:SetGeneralLocalization{
-	name = "Mimiron"
+	name = "Мимирон"
 }
 
 L:SetWarningLocalization{
-	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
-	Phase2Engaged		= "Phase 2 incoming - regroup now",
-	Phase3Engaged		= "Phase 3 incoming - regroup now",
+	WarningPlasmaBlast	= "%s под воздействием Взрыва плазмы - лечите",
+	Phase2Engaged		= "Фаза 2 - перегруппируйтесь",
+	Phase3Engaged		= "Фаза 3 - перегруппируйтесь",
 }
 
 L:SetTimerLocalization{
-	ProximityMines		= "New Proximity Mines",
+	ProximityMines		= "Мины ближнего действия",
 }
 
 L:SetOptionLocalization{
-	WarningShockBlast		= "Show Shock Blast Warning",
-	WarningPlasmaBlast		= "Show Plasma Blast Warning",
-	ProximityMines			= "Отображать отсчет времени до Proximity Mines",
-	PlaySoundOnShockBlast	= "Play sound on Shock Blast cast",
+	WarningShockBlast		= "Отображать предупреждение для Шокового удара",
+	WarningPlasmaBlast		= "Отображать предупреждение для Взрыва плазмы",
+	ProximityMines			= "Отображать отсчет времени до мин ближнего действия",
+	PlaySoundOnShockBlast	= "Звуковой сигнал при Шоковом ударе",
 }
 
 L:SetMiscLocalization{
@@ -421,37 +421,37 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("GeneralVezax")
 
 L:SetGeneralLocalization{
-	name = "General Vezax"
+	name = "Генерал Везакс"
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "Shadow Crash on You",
-	SpecialWarningSurgeDarkness	= "Surge of Darkness",
-	WarningShadowCrash			= "Shadow Crash on >%s<",
-	specWarnLifeLeechYou		= "Life Leech on you!",
-	specWarnLifeLeechNear		= "Life Leech on %s near you!"
+	SpecialWarningShadowCrash	= "Темное сокрушение на ВАС!",
+	SpecialWarningSurgeDarkness	= "Наплыв Тьмы",
+	WarningShadowCrash			= ">%s< под воздействием Темного сокрушения",
+	specWarnLifeLeechYou		= "Life Leech на ВАС!",
+	specWarnLifeLeechNear		= "%s под воздействием Life Leech, около вас!"
 }
 
 L:SetTimerLocalization{
-	timerSearingFlamesCast		= "Searing Flames",
-	timerSurgeofDarkness		= "Surge of Darkness",
-	timerSaroniteVapors			= "Next Saronite Vapors"
+	timerSearingFlamesCast		= "Жгучее пламя",
+	timerSurgeofDarkness		= "Наплыв Тьмы",
+	timerSaroniteVapors			= "Следующие Саронитовые пары"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash			= "Show Warning for Shadow Crash",
-	timerSearingFlamesCast		= "Отображать отсчет времени до Searing Flame Cast",
-	timerSurgeofDarkness		= "Отображать отсчет времени до Sourge of Darkness",
-	timerSaroniteVapors			= "Отображать отсчет времени до Saronite Vapors",
-	SetIconOnShadowCrash		= "Set Icon on Shadow Crash target (skull)",
-	SetIconOnLifeLeach			= "Set Icon on Life Leech target (cross)",
-	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
-	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",
+	WarningShadowCrash			= "Отображать предупреждение для Темное сокрушение",
+	timerSearingFlamesCast		= "Отображать отсчет времени до Жгучего пламени",
+	timerSurgeofDarkness		= "Отображать отсчет времени до Наплыва Тьмы",
+	timerSaroniteVapors			= "Отображать отсчет времени до Саронитовых паров",
+	SetIconOnShadowCrash		= "Установить метку на цель под воздействием эффекта Темное сокрушение (череп)",
+	SetIconOnLifeLeach			= "Установить метку на цель под воздействием эффекта Life Leech (крест)",
+	SpecialWarningSurgeDarkness	= "Отображать спец-предупреждение для Наплыва Тьмы",
+	SpecialWarningShadowCrash	= "Отображать спец-предупреждение для Темное сокрушение",
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
-	CrashWhisper			= "Shadow Crash on You! Run away!"
+	EmoteSaroniteVapors		= "Облако саронитовых паров образовывается поблизости!",
+	CrashWhisper			= "Темное сокрушение на ВАС! БЕГИТЕ!"
 }
 
 
@@ -461,7 +461,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("YoggSaron")
 
 L:SetGeneralLocalization{
-	name = "Yogg-Saron"
+	name = "Йогг-Сарон"
 }
 
 L:SetMiscLocalization{
