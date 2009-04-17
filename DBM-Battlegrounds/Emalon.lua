@@ -18,6 +18,11 @@ local timerNova = mod:NewCastTimer(64216)
 local specWarnNova = mod:NewSpecialWarning("specWarnNova")
 local warnNova = mod:NewAnnounce("warnNova", 3)
 
+local overchargedMob
+function mod:OnCombatStart(delay)
+	overchargedMob = nil
+end
+
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 64216 then
 		timerNova:Start()

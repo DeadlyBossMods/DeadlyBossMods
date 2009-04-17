@@ -35,3 +35,4 @@ Warsong.lua
 EyeOfTheStorm.lua
 Arenas.lua
 Archavon.lua
+Emalon.lua
