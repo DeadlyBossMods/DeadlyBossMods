@@ -88,17 +88,23 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+function mod:NextPhase()
+	phase = phase + 1
+	print(phase)
+					timerProximityMines:Stop()
+					timerP1toP2:Start()
+end
+
 do 
 	local count = 0
 	local last = 0
 	function mod:SPELL_AURA_REMOVED(args)
-		if phase == 1 and self:GetCIDFromGUID(args.destGUID) == 33432 then
-			if args.timestamp == last then	-- all events in the same second to detect the 2nd phase earlier (than the yell) and localization-independent
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 33432 or cid == 33670 then
+			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
 				if count > 15 then
-					phase = 2
-					timerProximityMines:Stop()
-					timerP1toP2:Start()
+					self:NextPhase()
 				end
 			else
 				count = 1
@@ -107,6 +113,7 @@ do
 		end
 	end
 end
+
 
 function mod:OnSync(event, args)
 	if event == "SpinUpFail" then
