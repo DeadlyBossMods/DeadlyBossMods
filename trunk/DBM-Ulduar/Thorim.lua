@@ -46,17 +46,6 @@ function mod:OnCombatEnd()
 	end
 end
 
---[[ unbalancing strike
-3/17 20:19:19.431  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0x10a48,0x01000000007BB1B6,"Corsicaxd",0x514,62130,"Unbalancing Strike",0x1
-3/17 20:19:46.325  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0xa48,0x01000000007CE3AF,"Mârilyn",0x10514,62130,"Unbalancing Strike",0x1
-3/17 20:20:11.266  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0xa48,0x01000000007CE3AF,"Mârilyn",0x514,62130,"Unbalancing Strike",0x1
-3/17 20:20:36.981  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0x10a48,0x01000000007BB1B6,"Corsicaxd",0x514,62130,"Unbalancing Strike",0x1
-3/17 20:20:57.870  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0xa48,0x01000000007CE3AF,"Mârilyn",0x514,62130,"Unbalancing Strike",0x1
-3/17 20:21:19.891  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0xa48,0x01000000007CE3AF,"Mârilyn",0x514,62130,"Unbalancing Strike",0x1
-3/17 20:21:43.609  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0xa48,0x01000000007BB1B6,"Corsicaxd",0x514,62130,"Unbalancing Strike",0x1
-3/17 20:22:05.700  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0x10a48,0x01000000007CE3AF,"Mârilyn",0x514,62130,"Unbalancing Strike",0x1
-3/17 20:22:37.850  SPELL_CAST_SUCCESS,0xF13000806100D018,"Thorim",0xa48,0x01000000007DDA8E,"Sadai",0x10514,62130,"Unbalancing Strike",0x1
-]]--
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62042 then -- Storm Hammer
@@ -86,6 +75,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+--[[
 local spam = 0
 function mod:SPELL_DAMAGE(args)
 	if args.spellId == 62017 then -- Lightning Shock
@@ -97,7 +87,8 @@ function mod:SPELL_DAMAGE(args)
 		end
 	end
 end
-
+--]]
+--
 function mod:OnSync(event, arg)
 	if event == "Phase2" then
 		warnPhase2:Show()
