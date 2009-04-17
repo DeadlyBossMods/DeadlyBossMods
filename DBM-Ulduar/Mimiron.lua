@@ -94,7 +94,7 @@ function mod:NextPhase()
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		timerP2toP3:Start()
-	elseif phase == 4
+	elseif phase == 4 then
 	end
 end
 
