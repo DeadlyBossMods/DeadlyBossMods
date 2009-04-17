@@ -216,18 +216,19 @@ L:SetOptionLocalization({
 
 L = DBM:GetModLocalization("Emalon")
 
-L:SetGeneralLocalization({
+L:SetGeneralLocalization{
 	name = "Emalon the Stone Watcher"
-})
+}
 
-L:SetWarningLocalization({
-})
+L:SetWarningLocalization{
+	specWarnNova = "Lightning Nova",
+	warnNova = "Lightning Nova"
+}
 
-L:SetTimerLocalization({
-})
+L:SetTimerLocalization{
+}
 
-L:SetMiscLocalization({
-})
-
-L:SetOptionLocalization({
-})
+L:SetOptionLocalization{
+	specWarnNova = ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
+	warnNova = ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova")
+}
