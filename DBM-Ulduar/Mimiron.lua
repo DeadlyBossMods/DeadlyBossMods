@@ -83,18 +83,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase3 then
-		self:SendSync("Phase3")
-	end
-end
-
 function mod:NextPhase()
 	phase = phase + 1
 	print(phase)
 	if phase == 2 then
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
+	elseif phase == 3 then
+		timerDarkGlareCast:Cancel()
+		timerNextDarkGlare:Cancel()
 	end
 end
 
@@ -104,7 +101,7 @@ do
 	local lastPhaseChange = 0
 	function mod:SPELL_AURA_REMOVED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
-		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33670) then
+		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33670) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
 				if count > 15 then
@@ -126,10 +123,6 @@ function mod:OnSync(event, args)
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		warnDarkGlare:Cancel()
-	elseif event == "Phase3" then
-		phase = 3
-		timerDarkGlareCast:Cancel()
-		timerNextDarkGlare:Cancel()
 	end
 end
 
