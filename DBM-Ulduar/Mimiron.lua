@@ -31,6 +31,7 @@ local shellWarn				= mod:NewAnnounce("WarnShell", 2)
 local timerProximityMines	= mod:NewNextTimer(35, 63027)
 local timerShockBlast		= mod:NewCastTimer(63631)
 local timerP1toP2			= mod:NewTimer(43, "TimeToPhase2")
+local timerP2toP3			= mod:NewTimer(25, "TimeToPhase3")
 local timerSpinUp			= mod:NewCastTimer(4, 63414)
 local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
 local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
@@ -85,13 +86,13 @@ end
 
 function mod:NextPhase()
 	phase = phase + 1
-	print(phase)
 	if phase == 2 then
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
 	elseif phase == 3 then
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
+		timerP2toP3:Start()
 	end
 end
 
