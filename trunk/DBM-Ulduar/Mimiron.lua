@@ -2,13 +2,11 @@ local mod = DBM:NewMod("Mimiron", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(33350)
+mod:SetCreatureID(33432)
 mod:SetZone()
 
-mod:RegisterCombat("combat")
-
-
---mod:RegisterCombat("yell", L.YellPull)
+--mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -26,14 +24,14 @@ mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
 mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
 
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
-local timerProximityMines	= mod:NewTimer(35, "ProximityMines", 63027)
+local timerProximityMines	= mod:NewCDTimer(35, 63027)
 
-local timerDarkGlareCast	= mod:NewTimer(15, "DarkGlare", 63274)
-local timerNextDarkGlare	= mod:NewTimer(41, "NextDarkGlare", 63274)
-local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
+local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
+local timerNextDarkGlare	= mod:NewCDTimer(41, 63274)
+local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 
-local timerP1toP2		= mod:NewTimer(30, "TimeToP2")
-local timerSpinUp		= mod:NewTimer(4, "SpinUp", 63414)
+local timerSpinUp		= mod:NewCastTimer(4, 63414)
+local timerP1toP2		= mod:NewTimer(30, "TimeToPhase2")
 
 local phase = 0 
 
@@ -82,7 +80,7 @@ do
 		if phase == 1 and self:GetCIDFromGUID(args.destGUID) == 33432 then
 			if args.timestamp == last then	-- all events in the same second to detect the 2nd phase early and localization-independent
 				count = count + 1
-				if count > 20 then
+				if count > 15 then
 					phase = 2
 					timerProximityMines:Stop()
 					timerP1toP2:Start()

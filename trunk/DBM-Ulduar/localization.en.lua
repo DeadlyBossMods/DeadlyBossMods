@@ -395,6 +395,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	DarkGlare		= "Laser Barrage",
 	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
 	Phase2Engaged		= "Phase 2 incoming - regroup now",
 	Phase3Engaged		= "Phase 3 incoming - regroup now",
@@ -405,14 +406,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningShockBlast		= "Show Shock Blast Warning",
-	WarningPlasmaBlast		= "Show Plasma Blast Warning",
-	ProximityMines			= "Show Timer for Proximity Mines",
-	PlaySoundOnShockBlast	= "Play sound on Shock Blast cast",
+	TimeToPhase2		= "begin Phase2"
 }
 
 L:SetMiscLocalization{
-	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",
+	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
 	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9%! Barely a dent! Moving right along.",
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
 }
