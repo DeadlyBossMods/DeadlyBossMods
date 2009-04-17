@@ -2067,6 +2067,10 @@ do
 	function timerPrototype:Schedule(t, ...)
 		return schedule(t, self.Start, self.mod, self, ...)
 	end
+	
+	function timerPrototype:Unschedule(t, ...)
+		return unschedule(self.Start, self.mod, self, ...)
+	end
 
 	function timerPrototype:Stop(...)
 		if select("#", ...) == 0 then
@@ -2084,7 +2088,11 @@ do
 			end
 		end
 	end
-	timerPrototype.Cancel = timerPrototype.Stop
+	
+	function timerPrototype:Cancel(...)
+		self:Stop(...)
+		self:Unschedule(...)
+	end
 
 	function timerPrototype:GetTime(...)
 		local id = self.id..pformat((("\t%s"):rep(select("#", ...))), ...)
