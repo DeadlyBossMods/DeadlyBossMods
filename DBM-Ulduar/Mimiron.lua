@@ -29,10 +29,11 @@ local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
 local shellWarn				= mod:NewAnnounce("WarnShell", 2)
 
 local timerProximityMines	= mod:NewNextTimer(35, 63027)
+local timerShockBlast		= mod:NewCastTimer(63631)
+local timerP1toP2			= mod:NewTimer(43, "TimeToPhase2")
+local timerSpinUp			= mod:NewCastTimer(4, 63414)
 local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
 local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
-local timerSpinUp			= mod:NewCastTimer(4, 63414)
-local timerP1toP2			= mod:NewTimer(43, "TimeToPhase2")
 
 local phase = 0 
 
@@ -52,7 +53,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 63631 then
 		warnShockBlast:Show()
-
+		timerShockBlast:Start()
 		if self.Options.PlaySoundOnShockBlast then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
