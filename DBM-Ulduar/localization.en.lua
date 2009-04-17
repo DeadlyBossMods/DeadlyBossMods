@@ -399,7 +399,7 @@ L:SetWarningLocalization{
 	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
 	Phase2Engaged		= "Phase 2 incoming - regroup now",
 	Phase3Engaged		= "Phase 3 incoming - regroup now",
-	WarnShell			= "Napalm Shells on >%s<"
+	WarnShell			= "Napalm Shells on >%s<",
 	WarnBlast			= "Plasma Blast on >%s<"
 }
 
