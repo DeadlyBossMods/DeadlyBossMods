@@ -75,20 +75,18 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
---[[
 local spam = 0
 function mod:SPELL_DAMAGE(args)
 	if args.spellId == 62017 then -- Lightning Shock
-		if bits.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0
-		and bits.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+		if bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0
+		and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 		and GetTime() - spam > 5 then
 			spam = GetTime()
 			specWarnOrb:Show()
 		end
 	end
 end
---]]
---
+
 function mod:OnSync(event, arg)
 	if event == "Phase2" then
 		warnPhase2:Show()
