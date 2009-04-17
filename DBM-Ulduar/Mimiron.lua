@@ -86,6 +86,7 @@ end
 
 function mod:NextPhase()
 	phase = phase + 1
+	print(phase)
 	if phase == 2 then
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
@@ -93,6 +94,7 @@ function mod:NextPhase()
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		timerP2toP3:Start()
+	elseif phase == 4
 	end
 end
 
@@ -102,10 +104,10 @@ do
 	local lastPhaseChange = 0
 	function mod:SPELL_AURA_REMOVED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
-		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33670) then
+		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33370) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
-				if count > 15 then
+				if count > 10 then
 					lastPhaseChange = GetTime()
 					self:NextPhase()
 				end
