@@ -16,7 +16,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"UNIT_SPELLCAST_STOP",
 	"UNIT_SPELLCAST_FAILED",
-	"UNIT_SPELLCAST_FAILED_QUIET"
+	"UNIT_SPELLCAST_FAILED_QUIET",
+	"UNIT_SPELLCAST_CHANNEL_STOP"
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
@@ -62,6 +63,9 @@ function mod:UNIT_SPELLCAST_FAILED(...)
 end
 function mod:UNIT_SPELLCAST_FAILED_QUIET(...)
 	return self:WTF("UNIT_SPELLCAST_FAILED_QUIET", ...)
+end
+function mod:UNIT_SPELLCAST_CHANNEL_STOP(...)
+		return self:WTF("UNIT_SPELLCAST_CHANNEL_STOP", ...)
 end
 
 function mod:SPELL_CAST_START(args)
