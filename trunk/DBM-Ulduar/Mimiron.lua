@@ -13,7 +13,10 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"UNIT_SPELLCAST_STOP",
+	"UNIT_SPELLCAST_FAILED",
+	"UNIT_SPELLCAST_FAILED_QUIET"
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
@@ -37,6 +40,28 @@ local phase = 0
 
 function mod:OnCombatStart(delay)
 	phase = 1
+end
+
+-- todo...
+local spinningUp = GetSpellInfo(63414)
+function mod:WTF(event, unit, spell)
+	if spell == spinningUp then
+		print(event, unit, spell)
+		timerSpinUp:Cancel()
+		timerDarkGlareCast:Cancel()
+		timerNextDarkGlare:Cancel()
+		warnDarkGlare:Cancel()
+	end
+end
+
+function mod:UNIT_SPELLCAST_STOP(...)
+	return self:WTF("UNIT_SPELLCAST_STOP", ...)
+end
+function mod:UNIT_SPELLCAST_FAILED(...)
+	return self:WTF("UNIT_SPELLCAST_FAILED", ...)
+end
+function mod:UNIT_SPELLCAST_FAILED_QUIET(...)
+	return self:WTF("UNIT_SPELLCAST_FAILED_QUIET", ...)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -93,5 +118,7 @@ do
 	end
 end
 
-
+function mod:OnSync(event, args)
+	
+end
 
