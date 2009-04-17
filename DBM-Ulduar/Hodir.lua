@@ -12,13 +12,16 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS"
 )
 
 mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
 
 local timerFlashFreeze	= mod:NewCastTimer(9, 61968)
 local timerFrozenBlows	= mod:NewBuffActiveTimer(20, 63512)
+local timerFlashFrCD	= mod:NewCDTimer(60, 61968)
+
 
 local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
 local warnBitingCold	= mod:NewSpecialWarning("WarningBitingCold")
@@ -28,6 +31,7 @@ local enrageTimer	= mod:NewEnrageTimer(600)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
+	timerFlashFrCD:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -38,6 +42,12 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.PlaySoundOnFlashFreeze then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end	
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 61968 then
+		timerFlashFrCD:Start()
 	end
 end
 
