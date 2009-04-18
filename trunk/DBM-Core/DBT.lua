@@ -229,7 +229,7 @@ end
 function DLL:Remove(obj)
 	if self.first == nil then -- list is empty...
 		-- ...meaning the object is not even in the list, nothing we can do here expect for removing the "prev" and "next" entries from obj
-	elseif self.first == self.last then -- list has only one element
+	elseif self.first == obj and self.last == obj then -- list has only one element
 		self.first = nil
 		self.last = nil
 	elseif self.first == obj then -- trying to remove the first element
@@ -252,6 +252,7 @@ function DLL:New()
 	}, self)
 end
 setmetatable(DLL, {__call = DLL.New})
+
 
 -------------------------------
 --  DBT Constructor/Options  --
