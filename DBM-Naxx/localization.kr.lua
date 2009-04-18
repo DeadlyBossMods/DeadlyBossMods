@@ -278,10 +278,10 @@ L:SetMiscLocalization({
 	Yell	= "스탈라그, 박살낸다!",
 	Emote	= "%s 광폭화!", -- ?
 	Emote2	= "테슬라 코일!!", -- ?
-	Boss1 = "Feugen",
-	Boss2 = "Stalagg",
-	Charge1 = "negative",
-	Charge2 = "positive",
+	Boss1 = "퓨진",
+	Boss2 = "스탈라그",
+	Charge1 = "마이너스 전하",
+	Charge2 = "플러스 전하",
 })
 
 L:SetOptionLocalization({
