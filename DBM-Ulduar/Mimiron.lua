@@ -46,8 +46,13 @@ local timerShell		= mod:NewCastTimer(6, 64529)
 local phase = 0 
 local lootmethod, masterlooterRaidID
 
+local spinningUp = GetSpellInfo(63414)
+local lastSpinUp = 0
+local is_spinningUp = false
+
 function mod:OnCombatStart(delay)
 	phase = 0
+	is_spinningUp = false
 	self:NextPhase()
 	timerPlasmaBlastCD:Start(20-delay)
 	if DBM:GetRaidRank() == 2 then
@@ -64,10 +69,9 @@ function mod:OnCombatEnd()
 	end
 end
 
-local spinningUp = GetSpellInfo(63414)
-local lastSpinUp = 0
 function mod:UNIT_SPELLCAST_CHANNEL_STOP(unit, spell)
 	if spell == spinningUp and GetTime() - lastSpinUp < 3.9 then
+		is_spinningUp = false
 		self:SendSync("SpinUpFail")
 	end
 end
@@ -105,18 +109,25 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63027 then		-- mines
-		timerProximityMines:Start()
-
-	elseif args.spellId == 63414 then	-- Spinning UP (before Dark Glare)
-		timerSpinUp:Start()
-		timerDarkGlareCast:Schedule(4)
-		timerNextDarkGlare:Schedule(19)	-- 4 (cast spinup) + 15 sec (cast dark glare)
+local function show_warning_for_spinup()
+	if is_spinningUp then
 		warnDarkGlare:Show()
 		if self.Options.PlaySoundOnDarkGlare then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 63027 then				-- mines
+		timerProximityMines:Start()
+
+	elseif args.spellId == 63414 then			-- Spinning UP (before Dark Glare)
+		is_spinningUp = true
+		timerSpinUp:Start()
+		timerDarkGlareCast:Schedule(4)
+		timerNextDarkGlare:Schedule(19)			-- 4 (cast spinup) + 15 sec (cast dark glare)
+		DBM:Schedule(0.15, show_warning_for_spinup)	-- wait 0.15 and then announce it, otherwise it will sometimes fail
 		lastSpinUp = GetTime()
 	end
 end
@@ -193,6 +204,7 @@ end
 
 function mod:OnSync(event, args)
 	if event == "SpinUpFail" then
+		is_spinningUp = false
 		timerSpinUp:Cancel()
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
