@@ -179,6 +179,12 @@ do
 	end
 end
 
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.YellPhase4 then
+		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
+	end
+end
+
 
 function mod:OnSync(event, args)
 	if event == "SpinUpFail" then
@@ -186,6 +192,10 @@ function mod:OnSync(event, args)
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		warnDarkGlare:Cancel()
+	elseif event == "Phase4" then -- alternate localized-dependent detection
+		if phase == 3 then
+			self:NextPhase()
+		end
 	end
 end
 
