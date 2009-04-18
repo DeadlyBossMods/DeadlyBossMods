@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Malygos")
 
 L:SetGeneralLocalization({
-	name = "瑪里苛斯"
+	name = "瑪里苟斯"
 })
 
 L:SetWarningLocalization({

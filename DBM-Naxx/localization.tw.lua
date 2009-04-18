@@ -209,7 +209,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 				= "縫補者要跟你玩!",
-	yell2 				= "科爾蘇加德讓縫補者成為戰爭的化身的戰神!",
+	yell2 				= "科爾蘇加德讓縫補者成為戰爭的化身!",
 	HatefulStrike 			= "憎恨打擊 --> %s [%s]"
 })
 
@@ -325,8 +325,8 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization({
 	Yell1 				= "絕不留情!",
-	Yell2 				= "練習時間到此為止絕不留情!都拿出真本事來絕不留情!",
-	Yell3 				= "照我教你的做絕不留情!",
+	Yell2 				= "練習時間到此為止絕不留情!都拿出真本事來!",
+	Yell3 				= "照我教你的做!",
 	Yell4 				= "絆腿……有什麼問題嗎?"
 })
 
