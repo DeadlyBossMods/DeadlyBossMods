@@ -33,7 +33,7 @@ local shellWarn			= mod:NewAnnounce("WarnShell", 2)
 local lootannounce		= mod:NewAnnounce("MagneticCore", 1)
 
 local timerP1toP2		= mod:NewTimer(43, "TimeToPhase2")
-local timerP2toP3		= mod:NewTimer(25, "TimeToPhase3")
+local timerP2toP3		= mod:NewTimer(30, "TimeToPhase3")
 local timerProximityMines	= mod:NewNextTimer(35, 63027)
 local timerShockBlast		= mod:NewCastTimer(63631)
 local timerSpinUp		= mod:NewCastTimer(4, 63414)
@@ -167,9 +167,9 @@ function mod:NextPhase()
 		end
 		if self.Options.HealthFramePhase4 or self.Options.HealthFrame then
 			DBM.BossHealth:Show(L.name)
-			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
-			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
 			DBM.BossHealth:AddBoss(33670, L.MobPhase3)
+			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
+			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 		end
 	end
 end
