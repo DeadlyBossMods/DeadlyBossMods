@@ -108,7 +108,7 @@ local fireEvent
 --------------------------------------------------------
 local DBM = DBM
 -- these global functions are accessed all the time by the event handler
--- so caching them is worth the afford
+-- so caching them is worth the effort
 local ipairs, pairs, next = ipairs, pairs, next
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 local type = type
@@ -118,6 +118,8 @@ local select = select
 ---------------------------------
 --  General (local) functions  --
 ---------------------------------
+-- checks if a given value is in an array
+-- returns true if it finds the value, false otherwise
 local function checkEntry(t, val)
 	for i, v in ipairs(t) do
 		if v == val then
@@ -127,6 +129,8 @@ local function checkEntry(t, val)
 	return false
 end
 
+-- removes all occurrences of a value in an array
+-- returns true if at least one occurrence was remove, false otherwise
 local function removeEntry(t, val)
 	local existed = false
 	for i = #t, 1, -1 do
@@ -138,6 +142,7 @@ local function removeEntry(t, val)
 	return existed
 end
 
+-- automatically sends an addon message to the appropriate channel (BATTLEGROUND, RAID or PARTY)
 local function sendSync(prefix, msg)
 	if select(2, IsInInstance()) == "pvp" then
 		SendAddonMessage(prefix, msg, "BATTLEGROUND")
@@ -148,6 +153,7 @@ local function sendSync(prefix, msg)
 	end
 end
 
+--
 local function strFromTime(time)
 	time = math.floor(time)
 	if time < 60 then
