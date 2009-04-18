@@ -230,8 +230,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam	= "Eye Beam on YOU - MOVE AWAY",
-	WarningEyebeam			= "Eye Beam on >%s<"
+	SpecialWarningEyebeam	= "Eye Beam on You - MOVE",
+	WarningEyebeam			= "Eye Beam on >%s<",
+	WarnGrip				= "Grip on >%s<"
 }
 
 L:SetTimerLocalization{

@@ -14,8 +14,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
-local warnGrip				= mod:NewAnnounce("Grip on >%s<, >%s< and >%s<", 2)
+local specWarnEyebeam	= mod:NewSpecialWarning("SpecialWarningEyebeam")
+local warnGrip			= mod:NewAnnounce("WarnGrip", 2)
 
 
 mod:AddBoolOption("SetIconOnEyebeamTarget", true)
@@ -45,18 +45,16 @@ end
 
 local gripTargets = {}
 function mod:GripAnnounce()
-	warnGrip:Show(unpack(gripTargets))
+	warnGrip:Show(table.concat(gripTargets, "<, >"))
 	table.wipe(gripTargets)
 end
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62166 or args.spellId == 64292 then
+	if args.spellId == 64290 or args.spellId == 64292 then
+		if self.Options.SetIconOnGripTarget then
+			self:SetIcon(args.destName, 8 - #gripTargets, 10)
+		end
 		table.insert(gripTargets, args.destName)
 		self:UnscheduleMethod("GripAnnounce")
-
-		if self.Options.SetIconOnGripTarget then
-			self:SetIcon(args.destName, (8-#gripTargets), 10)
-		end
-
 		if #gripTargets >= 3 then
 			self:GripAnnounce()
 		else
