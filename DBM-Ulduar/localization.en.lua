@@ -401,7 +401,9 @@ L:SetWarningLocalization{
 	Phase2Engaged		= "Phase 2 incoming - regroup now",
 	Phase3Engaged		= "Phase 3 incoming - regroup now",
 	WarnShell			= "Napalm Shells on >%s<",
-	WarnBlast			= "Plasma Blast on >%s<"
+	WarnBlast			= "Plasma Blast on >%s<",
+	MagneticCore		= ">%s< got Magnetic Core",
+	WarningShockBlast	= "Shock Blast - MOVE AWAY"
 }
 
 L:SetTimerLocalization{
@@ -409,7 +411,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimeToPhase2		= "begin Phase 2"
+	TimeToPhase2		= "begin Phase 2",
+	TimeToPhase3		= "begin Phase 3",
+	MagneticCore		= "Announce Magnetic Core looter",
+	HealthFramePhase4	= "Show Health Frame in Phase 4"
 }
 
 L:SetMiscLocalization{

@@ -27,19 +27,20 @@ mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
 mod:AddBoolOption("HealthFramePhase4", true)
 
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
-local warnDarkGlare			= mod:NewSpecialWarning("DarkGlare")
-local blastWarn				= mod:NewAnnounce("WarnBlast", 4)
-local shellWarn				= mod:NewAnnounce("WarnShell", 2)
+local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
+local blastWarn			= mod:NewAnnounce("WarnBlast", 4)
+local shellWarn			= mod:NewAnnounce("WarnShell", 2)
+local lootannounce		= mod:NewAnnounce("MagneticCore", 1)
 
+local timerP1toP2		= mod:NewTimer(43, "TimeToPhase2")
+local timerP2toP3		= mod:NewTimer(25, "TimeToPhase3")
 local timerProximityMines	= mod:NewNextTimer(35, 63027)
 local timerShockBlast		= mod:NewCastTimer(63631)
-local timerP1toP2			= mod:NewTimer(43, "TimeToPhase2")
-local timerP2toP3			= mod:NewTimer(25, "TimeToPhase3")
-local timerSpinUp			= mod:NewCastTimer(4, 63414)
+local timerSpinUp		= mod:NewCastTimer(4, 63414)
 local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
 local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
 local timerNextShockblast	= mod:NewNextTimer(34, 63631)
-local timerPlasmaBlastCD	= mod:NewCDTimer(28, 64529)
+local timerPlasmaBlastCD	= mod:NewCDTimer(30, 64529)
 local timerShell		= mod:NewCastTimer(6, 64529)
 
 local phase = 0 
@@ -48,7 +49,7 @@ local lootmethod, masterlooterRaidID
 function mod:OnCombatStart(delay)
 	phase = 0
 	self:NextPhase()
-	timerPlasmaBlastCD:Start(15-delay)
+	timerPlasmaBlastCD:Start(20-delay)
 	if DBM:GetRaidRank() == 2 then
 		lootmethod, _, masterlooterRaidID = GetLootMethod()
 	end
@@ -72,7 +73,11 @@ function mod:UNIT_SPELLCAST_CHANNEL_STOP(unit, spell)
 end
 
 function mod:CHAT_MSG_LOOT(msg)
-	DBM:AddMsg(msg)
+	-- DBM:AddMsg(msg) - Meridium receives loot: [Magnetic Core]
+	local _, _, player, itemID = string.find(msg, "([^%s]+).*Hitem:(%d+)");
+	if player and itemID and tonumber(itemID) == 46029 then
+		lootannounce:Show(player)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
