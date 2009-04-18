@@ -26,9 +26,6 @@ local timerRespawnRightArm		= mod:NewTimer(50, "timerRightArm")
 
 mod:AddBoolOption("SetIconOnGripTarget", true)
 
-function mod:OnCombatStart(delay)
-end
-
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Yell_Trigger_arm_left then
 		timerRespawnLeftArm:Start()
