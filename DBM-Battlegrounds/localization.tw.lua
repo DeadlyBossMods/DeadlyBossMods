@@ -225,14 +225,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova 		= "Lightning Nova",
-	warnNova 		= "Lightning Nova"
+	specWarnNova 		= "閃電新星",
+	warnNova 		= "閃電新星"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnNova 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova")
+	specWarnNova 		= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示特別警告"):format(64216, "Lightning Nova"),
+	warnNova 		= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64216, "Lightning Nova")
 }
