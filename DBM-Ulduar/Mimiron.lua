@@ -153,7 +153,7 @@ function mod:NextPhase()
 			DBM.BossHealth:Show(L.name)
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
-			DBM.BossHealth:AddBoss(33370, L.MobPhase3)
+			DBM.BossHealth:AddBoss(33670, L.MobPhase3)
 		end
 	end
 end
@@ -164,7 +164,7 @@ do
 	local lastPhaseChange = 0
 	function mod:SPELL_AURA_REMOVED(args)
 		local cid = self:GetCIDFromGUID(args.destGUID)
-		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33370) then
+		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33670) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
 				if count > 7 then
