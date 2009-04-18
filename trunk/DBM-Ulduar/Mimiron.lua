@@ -37,6 +37,7 @@ local timerP2toP3			= mod:NewTimer(25, "TimeToPhase3")
 local timerSpinUp			= mod:NewCastTimer(4, 63414)
 local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
 local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
+local timerNextShockblast	= mod:NewNextTimer(34, 63631)
 
 local phase = 0 
 
@@ -58,6 +59,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 63631 then
 		warnShockBlast:Show()
 		timerShockBlast:Start()
+		timerNextShockblast:Start()
 		if self.Options.PlaySoundOnShockBlast then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
