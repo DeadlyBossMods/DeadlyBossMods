@@ -15,15 +15,17 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("NovaSound")
 
-local timerNova = mod:NewCastTimer(64216)
+local timerNova			= mod:NewCastTimer(64216)
+local timerOvercharge	= mod:NewNextTimer(45, 64218)
 
-local specWarnNova = mod:NewSpecialWarning("specWarnNova")
-local warnNova = mod:NewAnnounce("warnNova", 3)
-local warnOverCharge = mod:NewAnnounce("warnOverCharge", 2)
+local specWarnNova		= mod:NewSpecialWarning("specWarnNova")
+local warnNova			= mod:NewAnnounce("warnNova", 3)
+local warnOverCharge	= mod:NewAnnounce("warnOverCharge", 2)
 
 local overchargedMob
 function mod:OnCombatStart(delay)
 	overchargedMob = nil
+	timerOvercharge:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -65,6 +67,7 @@ end
 function mod:SPELL_HEAL(args)
 	if args.spellId == 64218 then
 		warnOverCharge:Show()
+		timerOvercharge:Start()
 		self:TrySetTarget(args.destGUID)
 	end
 end
