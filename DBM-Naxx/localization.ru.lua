@@ -263,6 +263,10 @@ L:SetMiscLocalization({
 	Yell	= "Сталагг сокрушит вас!",
 	Emote	= "Катушка Теслы перезагружается!",
 	Emote2	= "Катушка Теслы теряет связь!",
+	Boss1 = "Feugen",
+	Boss2 = "Stalagg",
+	Charge1 = "negative",
+	Charge2 = "positive",
 })
 
 L:SetOptionLocalization({

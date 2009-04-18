@@ -267,7 +267,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-   Yell   = "Stalagg zerquetschen!"
+   Yell   = "Stalagg zerquetschen!",
+	Boss1 = "Feugen",
+	Boss2 = "Stalagg",
+	Charge1 = "negative",
+	Charge2 = "positive",
 })
 
 L:SetOptionLocalization({

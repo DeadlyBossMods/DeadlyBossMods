@@ -33,8 +33,8 @@ mod:AddBoolOption("ArrowsInverse", false, "Arrows")
 mod:AddBoolOption("HealthFrame", true)
 
 mod:SetBossHealthInfo(
-	15930, "Feugen",
-	15929, "Stalagg"
+	15930, L.Boss1,
+	15929, L.Boss2
 )
 
 local currentCharge
@@ -69,10 +69,10 @@ function mod:UNIT_AURA(elapsed)
 		local _, _, icon, count = UnitDebuff("player", i)
 		if icon == "Interface\\Icons\\Spell_ChargeNegative" then
 			if count > 1 then return end
-			charge = "negative"
+			charge = L.Charge1
 		elseif icon == "Interface\\Icons\\Spell_ChargePositive" then
 			if count > 1 then return end
-			charge = "positive"
+			charge = L.Charge2
 		end
 		i = i + 1
 	end
