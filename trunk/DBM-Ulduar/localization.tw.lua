@@ -69,7 +69,7 @@ L:SetOptionLocalization{
 	TimerScorchCast			= "顯示灼燒的施法計時",
 	WarningSlagPot			= "提示熔渣之盆的目標",
 	TimerSlagPot			= "顯示熔渣之盆計時器",
-	SlagPotIcon				= "設置標記在熔渣之盆的目標"
+	SlagPotIcon			= "設置標記在熔渣之盆的目標"
 }
 
 ------------------
@@ -203,7 +203,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
-	name = "艾爾加隆"
+	name = "『觀察者』艾爾加隆"
 }
 
 L:SetTimerLocalization{
@@ -233,7 +233,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam		= "集束目光看著你 - 跑開",
-	WarningEyebeam			= "集束目光: >%s<"
+	WarningEyebeam			= "集束目光: >%s<",
+	WarnGrip			= "堅石之握: >%s<"
 }
 
 L:SetTimerLocalization{
@@ -252,7 +253,9 @@ L:SetOptionLocalization{
 	timerPetrifyingBreath		= "顯示石化之息的計時器",
 	timerNextShockwave		= "顯示震攝波的計時器",
 	timerLeftArm			= "顯示手臂重生(左) 的計時器",
-	timerRightArm			= "顯示手臂重生(右) 的計時器"
+	timerRightArm			= "顯示手臂重生(右) 的計時器",
+	WarnGrip			= "提示堅石之握的目標",
+	SetIconOnGripTarget		= "設置標記在堅石之握的目標",
 }
 
 L:SetMiscLocalization{
@@ -285,7 +288,6 @@ L:SetOptionLocalization{
 	WarnFear 			= "顯示恐懼警告",
 	WarnFearSoon 			= "顯示即將恐懼警告",
 	WarnCatDied 			= "當野性防衛者死亡時顯示警告",
-	AddHealthFrame 			= "顯示小怪血量框架"
 }
 
 
@@ -411,17 +413,18 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	DarkGlare 			= "雷射彈幕",
 	WarningPlasmaBlast		= "離子衝擊: %s - 治療",
 	Phase2Engaged			= "第二階段即將到來 - 現在重組",
 	Phase3Engaged			= "第三階段即將到來 - 現在重組",
+	Warnshell			= "凝汽彈: >%s<",
+	WarnBlast			= "離子衝擊: >%s<"
 }
 
 L:SetTimerLocalization{
 	ProximityMines			= "新的環罩地雷",
-	DarkGlare 			= "雷射彈幕",
-	NextDarkGlare 			= "下一次 雷射彈幕",
-	TimeToP2 			= "第二階段",
-	SpinUp 				= "雷射彈幕 即將到來"
+	TimeToPhase2			= "第二階段開始",
+	TimeToPhase3			= "第三階段開始",
 }
 
 L:SetOptionLocalization{
@@ -432,8 +435,12 @@ L:SetOptionLocalization{
 	DarkGlare 			= "提示雷射彈幕",
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
 	NextDarkGlare 			= "下一次 雷射彈幕的計时器",
-	TimeToP2 			= "顯示第二階段計時器",
-	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器"
+	TimeToPhase2			= "顯示第二階段開始計时器", --第二階段開始
+	TimeToPhase3			= "顯示第三階段開始計时器", --第三階段開始
+	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
+	HealthFramePhase4		= "顯示第4階段的首領血量框架",
+	WarnShell			= "提示凝汽彈的目標",
+	WarnBlast			= "提示離子衝擊的目標"
 }
 
 L:SetMiscLocalization{

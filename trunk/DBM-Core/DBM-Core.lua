@@ -13,6 +13,7 @@
 --    * zhCN: Diablohu					http://wow.gamespot.com.cn
 --    * ruRU: BootWin					bootwin@gmail.com
 --    * zhTW: Hman						herman_c1@hotmail.com
+--    * zhTW: Azael/kc10577		kc10577@hotmail.com
 --    * koKR: BlueNyx					bluenyx@gmail.com
 --
 -- Special thanks to:
