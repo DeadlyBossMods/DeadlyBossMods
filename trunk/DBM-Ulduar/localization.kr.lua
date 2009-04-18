@@ -228,7 +228,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "당신에게 안광 - 빠르게 이동!",
-	WarningEyebeam			= ">%s< 에게 안광 집중"
+	WarningEyebeam			= ">%s< 에게 안광 집중",
+	WarnGrip				= "Grip on >%s<"
 }
 
 L:SetTimerLocalization{
@@ -401,7 +402,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimeToPhase2		= "begin Phase2"
+	TimeToPhase2		= "페이즈 2 시작"
 }
 
 L:SetMiscLocalization{
@@ -446,7 +447,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!",
+	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
 	CrashWhisper			= "Shadow Crash on You! Run away!"	
 }
 
