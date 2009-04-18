@@ -125,7 +125,11 @@ do
 	local t = 0
 	local targetCache = setmetatable({}, {__mode = "kv"})
 	local function getCIDfromGUID(guid)
-		return (not guid and 0) or (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
+		if not guid then
+			return -1
+		end
+		local cType = bit.band(guid:sub(0, 5), 0x00F)
+		return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
 	end
 
 	function updateFrame(self, e)
