@@ -41,7 +41,8 @@ local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
 local phase = 0 
 
 function mod:OnCombatStart(delay)
-	phase = 1
+	phase = 0
+	self:NextPhase()
 end
 
 local spinningUp = GetSpellInfo(63414)
@@ -91,8 +92,12 @@ end
 
 function mod:NextPhase()
 	phase = phase + 1
-	print(phase)
-	if phase == 2 then
+	if phase == 1 then
+		if self.Options.HealthFrame then
+			DBM.BossHealth:Clear()
+			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
+		end
+	elseif phase == 2 then
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
 		if self.Options.HealthFrame then
@@ -108,7 +113,7 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33370, L.MobPhase3)
 		end
 	elseif phase == 4 then
-		if self.Options.HealthFramePhase4 then
+		if self.Options.HealthFramePhase4 or self.Options.HealthFrame then
 			DBM.BossHealth:Show(L.name)
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
