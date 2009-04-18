@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_REMOVED",
-	"UNIT_SPELLCAST_CHANNEL_STOP"
+	"UNIT_SPELLCAST_CHANNEL_STOP",
+	"CHAT_MSG_LOOT"
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
@@ -70,6 +71,9 @@ function mod:UNIT_SPELLCAST_CHANNEL_STOP(unit, spell)
 	end
 end
 
+function mod:CHAT_MSG_LOOT(msg)
+	DBM:AddMsg(msg)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 63631 then
