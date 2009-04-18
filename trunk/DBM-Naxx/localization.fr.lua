@@ -272,6 +272,10 @@ L:SetMiscLocalization({
 	Yell	= "Stalagg écraser toi !",
 	Emote	= "%s entre en surcharge !", -- ?
 	Emote2	= "Bobine de Tesla entre en surcharge !", -- ?
+	Boss1 = "Feugen",
+	Boss2 = "Stalagg",
+	Charge1 = "negative",
+	Charge2 = "positive",
 })
 
 L:SetOptionLocalization({
