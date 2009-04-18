@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTympanicTantrumCD:Start()
 		timerTympanicTantrum:Start()
 
-	elseif args.spellId == 63023 or args.spellId == 63022 or args.spellId == 65121 then 	-- Light Bomb  (which Ulduar10 spell id is correct?)
+	elseif args.spellId == 63018 or args.spellId == 65121 then 	-- Light Bomb
 		if args.destName == UnitName("player") then
 			specWarnLightBomb:Show()
 		end
