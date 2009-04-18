@@ -38,12 +38,28 @@ local timerSpinUp			= mod:NewCastTimer(4, 63414)
 local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
 local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
 local timerNextShockblast	= mod:NewNextTimer(34, 63631)
+local timerPlasmaBlastCD	= mod:NewCDTimer(28, 64529)
+local timerShell		= mod:NewCastTimer(6, 64529)
 
 local phase = 0 
+local lootmethod, masterlooterRaidID
 
 function mod:OnCombatStart(delay)
 	phase = 0
 	self:NextPhase()
+	timerPlasmaBlastCD:Start(15-delay)
+	if DBM:GetRaidRank() == 2 then
+		lootmethod, _, masterlooterRaidID = GetLootMethod()
+	end
+end
+function mod:OnCombatEnd()
+	if DBM:GetRaidRank() == 2 then
+		if masterlooterRaidID then
+			SetLootMethod(lootmethod, "raid"..masterlooterRaidID)
+		else
+			SetLootMethod(lootmethod)
+		end
+	end
 end
 
 local spinningUp = GetSpellInfo(63414)
@@ -64,15 +80,19 @@ function mod:SPELL_CAST_START(args)
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	end
+	if args.spellId == 64529 then -- blasma blast
+		timerPlasmaBlastCD:Start()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63666 then -- Napalm Shell
+		timerShell:Start(args.destName)
 		shellWarn:Show(args.destName)
-		self:SetIcon(args.destName, 8, 6)
+		self:SetIcon(args.destName, 7, 6)
 	elseif args.spellId == 64529 then -- Plasma Blast
 		blastWarn:Show(args.destName)
-		self:SetIcon(args.destName, 7, 6)
+		self:SetIcon(args.destName, 8, 6)
 	end
 end
 
@@ -107,6 +127,9 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
 		end
 	elseif phase == 3 then
+		if DBM:GetRaidRank() == 2 then
+			SetLootMethod("freeforall")
+		end
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		timerP2toP3:Start()
@@ -115,6 +138,13 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33370, L.MobPhase3)
 		end
 	elseif phase == 4 then
+		if DBM:GetRaidRank() == 2 then
+			if masterlooterRaidID then
+				SetLootMethod(lootmethod, "raid"..masterlooterRaidID)
+			else
+				SetLootMethod(lootmethod)
+			end
+		end
 		if self.Options.HealthFramePhase4 or self.Options.HealthFrame then
 			DBM.BossHealth:Show(L.name)
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
@@ -133,7 +163,7 @@ do
 		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33370) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
-				if count > 10 then
+				if count > 7 then
 					lastPhaseChange = GetTime()
 					self:NextPhase()
 				end
