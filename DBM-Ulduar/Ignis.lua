@@ -33,7 +33,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 63472 then		-- Flame Jets
+	if args.spellId == 62680  or args.spellid == 63472 then		-- Flame Jets
 		timerFlameJetsCast:Start()
 		warnFlameJetsCast:Show()
 		timerFlameJetsCooldown:Start()
@@ -41,14 +41,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63474 then	-- Scorch
+	if args.spellId == 62548 or args.spellId == 63474 then	-- Scorch
 		timerScorchCast:Start()
 		timerScorchCooldown:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63477 then		-- Slag Pot
+	if args.spellId == 62717 or args.spellId == 63477 then		-- Slag Pot
 		announceSlagPot:Show(args.destName)
 		timerSlagPot:Start(args.destName)
 		if self.Options.SlagPotIcon then
