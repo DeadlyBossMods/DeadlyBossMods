@@ -139,7 +139,7 @@ function mod:NextPhase()
 		timerP2toP3:Start()
 		if self.Options.HealthFrame then
 			DBM.BossHealth:Clear()
-			DBM.BossHealth:AddBoss(33370, L.MobPhase3)
+			DBM.BossHealth:AddBoss(33670, L.MobPhase3)
 		end
 	elseif phase == 4 then
 		if DBM:GetRaidRank() == 2 then
