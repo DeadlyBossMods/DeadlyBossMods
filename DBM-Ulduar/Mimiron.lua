@@ -95,14 +95,24 @@ function mod:NextPhase()
 	if phase == 2 then
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
+		if self.Options.HealthFrame then
+			DBM.BossHealth:Clear()
+			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
+		end
 	elseif phase == 3 then
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		timerP2toP3:Start()
+		if self.Options.HealthFrame then
+			DBM.BossHealth:Clear()
+			DBM.BossHealth:AddBoss(33370, L.MobPhase3)
+		end
 	elseif phase == 4 then
 		if self.Options.HealthFramePhase4 then
 			DBM.BossHealth:Show(L.name)
-			DBM.BossHealth:Add()
+			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
+			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
+			DBM.BossHealth:AddBoss(33370, L.MobPhase3)
 		end
 	end
 end

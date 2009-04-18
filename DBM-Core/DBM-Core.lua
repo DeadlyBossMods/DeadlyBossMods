@@ -1342,7 +1342,6 @@ function DBM:StartCombat(mod, delay, synced)
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		self:Schedule(mod.minCombatTime or 3, checkWipe)
-		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if mod.Options.HealthFrame and mod.Options.Enabled then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
@@ -1353,6 +1352,7 @@ function DBM:StartCombat(mod, delay, synced)
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 			end
 		end
+		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if not synced then
 			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
 		end
