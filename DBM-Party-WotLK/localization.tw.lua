@@ -15,7 +15,7 @@ local optionTimerCast	= "顯示\"%s\"施法計時器"	-- translate
 
 
 --------------------------------
--- Ahnahet: The Old Kingdom --
+-- AhnKahet: The Old Kingdom --
 --------------------------------
 -- Prince Taldaram --
 ---------------------
@@ -278,9 +278,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningTime	= optionWarning:format("Time Stop/Warp"),	-- requires translation
+	WarningTime	= optionWarning:format("時間停止/扭曲"),
 	WarningCurse	= optionWarning:format(GetSpellInfo(52772)),
-	TimerTimeCD	= optionTimerCD:format("Time Stop/Warp"),	-- translate
+	TimerTimeCD	= optionTimerCD:format("時間停止/扭曲"),
 	TimerCurse	= optionTimerDur:format(GetSpellInfo(52772))
 })
 
@@ -413,12 +413,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSlash	= optionWarning:format("碎裂斬/穿甲斬"), 	-- needs translation
+	WarningSlash	= optionWarning:format("碎裂斬/穿甲斬"),
 	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
 	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
 	TimerFearCD	= optionTimerCD:format(GetSpellInfo(22686)),
-	TimerSlash	= optionTimerDur:format("碎裂斬/穿甲斬"), 	-- needs translation
-	TimerSlashCD	= optionTimerCD:format("碎裂斬/穿甲斬") 	-- needs translation
+	TimerSlash	= optionTimerDur:format("碎裂斬/穿甲斬"),
+	TimerSlashCD	= optionTimerCD:format("碎裂斬/穿甲斬")
 })
 
 
@@ -499,16 +499,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningElemental	= "元素階段",		-- translate :)
-	WarningStone		= "巨像階段"		-- translate :)
+	WarningElemental	= "元素階段",
+	WarningStone		= "巨像階段"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningElemental	= "顯示元素階段警告",	-- translate ;)
-	WarningStone		= "顯示巨像階段警告"		-- translate :)
+	WarningElemental	= "顯示元素階段警告",
+	WarningStone		= "顯示巨像階段警告"
 })
 
 
@@ -652,7 +652,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("MaidenOfGrief")
 
 L:SetGeneralLocalization({
-	name = "悲噗少女"
+	name = "悲嘆少女"
 })
 
 L:SetWarningLocalization({
@@ -752,9 +752,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull		= "Time to get some answers! Let's get this show on the road!",
-	Phase1	= "",
-	Phase2	= "",
-	Phase3	= ""
+	Phase1	= "xxx anti error xxx",
+	Phase2	= "xxx anti error xxx",
+	Phase3	= "xxx anti error xxx"
 })
 
 
@@ -830,15 +830,15 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= optionPreWarning:format("分裂"),	-- translate
-	WarningSplitNow		= optionWarning:format("分裂"),	-- translate
-	WarningMerge		= optionWarning:format("融合"),	-- translate
+	WarningSplitSoon	= optionPreWarning:format("分裂"),
+	WarningSplitNow		= optionWarning:format("分裂"),
+	WarningMerge		= optionWarning:format("融合"),
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "There's plenty of me to go around.",
+	SplitTrigger1 = "這裡有我千萬個分身。",
 	SplitTrigger2 = "I'll give you more than you can handle.",
-	MergeTrigger = "Now to finish the job!"
+	MergeTrigger = "現在，最後一步!"
 })
 
 
@@ -990,7 +990,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningShift	= spell,
 	WarningEnrage	= spell,
-	WarningShiftEnd	= "界域轉換結束"		-- translate
+	WarningShiftEnd	= "界域轉換結束"
 })
 
 L:SetTimerLocalization({
@@ -1000,7 +1000,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningShift	= optionWarning:format(GetSpellInfo(51162)),
-	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"), 	-- translate the word 'ending'
+	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"),
 	WarningEnrage	= optionWarning:format(GetSpellInfo(51170)),
 	TimerShift	= optionTimerDur:format(GetSpellInfo(51162)),
 	TimerEnrage	= optionTimerDur:format(GetSpellInfo(51170))
