@@ -468,11 +468,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!"
+	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
+	Sara = "Sara"
 }
 
 L:SetWarningLocalization{
 	WarningWellSpawned = "Sanity Well spawned",
+	WarningGuardianSpawned = "Guardian spawned"
 }
 
 
