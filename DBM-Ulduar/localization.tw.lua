@@ -414,11 +414,13 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare 			= "雷射彈幕",
-	WarningPlasmaBlast		= "離子衝擊: %s - 治療",
+	WarningPlasmaBlast		= "離子衝擊: %s - 治療", --unusable?
 	Phase2Engaged			= "第二階段即將到來 - 現在重組",
 	Phase3Engaged			= "第三階段即將到來 - 現在重組",
 	Warnshell			= "凝汽彈: >%s<",
-	WarnBlast			= "離子衝擊: >%s<"
+	WarnBlast			= "離子衝擊: >%s<",
+	MagneticCore		= ">%s< 拿到了磁能之核",
+	WarningShockBlast	= "震爆 - 跑開!"
 }
 
 L:SetTimerLocalization{
@@ -438,6 +440,7 @@ L:SetOptionLocalization{
 	TimeToPhase2			= "顯示第二階段開始計时器", --第二階段開始
 	TimeToPhase3			= "顯示第三階段開始計时器", --第三階段開始
 	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
+	MagneticCore		= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
 	WarnShell			= "提示凝汽彈的目標",
 	WarnBlast			= "提示離子衝擊的目標"
