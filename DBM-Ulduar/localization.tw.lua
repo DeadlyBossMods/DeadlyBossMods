@@ -466,27 +466,18 @@ L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "你中了暗影暴擊",
 	SpecialWarningSurgeDarkness	= "暗鬱奔騰",
 	WarningShadowCrash		= "暗影暴擊: >%s<",
-	specWarnLifeLeechYou		= "你中了無面者印記!",
-	specWarnLifeLeechNear		= "接近你的%s中了無面者印記!"
-}
-
-L:SetTimerLocalization{
-	timerSearingFlamesCast		= "灼熱烈焰",
-	timerSurgeofDarkness		= "暗鬱奔騰",
-	timerSaroniteVapors		= "下一次 薩倫煙霧"
+	SpecialWarningLLYou		= "你中了無面者印記!",
+	SpecialWarningLLNear		= "接近你的%s中了無面者印記!"
 }
 
 L:SetOptionLocalization{
 	WarningShadowCrash		= "為暗影暴擊顯示特別警告",
-	timerSearingFlamesCast		= "顯示暗影暴擊計時器",
-	timerSurgeofDarkness		= "顯示暗鬱奔騰計時器",
-	timerSaroniteVapors		= "顯示薩倫煙霧計時器",
 	SetIconOnShadowCrash		= "為暗影暴擊的目標設置標記(頭顱)",
-	SetIconOnLifeLeach		= "為無面者印記的目標設置標記(十字)", --Life Leech
-	SpecialWarningLLYou		= "當你中了無面者印記時顯示特別警告",
-	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
+	SetIconOnLifeLeach		= "為無面者印記的目標設置標記(十字)",
 	SpecialWarningSurgeDarkness	= "為暗鬱奔騰顯示特別警告",
 	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
+	SpecialWarningLLYou		= "當你中了無面者印記時顯示特別警告",
+	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
 	CrashWhisper = "密語提示中了暗影暴擊的人"
 }
 
