@@ -11,6 +11,7 @@
 --    * enGB/enUS: Tandanu
 --    * deDE: Tandanu/Nitram
 --    * ruRU: BootWin
+--    * zhTW: Azael/kc10577
 --    * (add your names here!)
 --
 -- Special thanks to:
