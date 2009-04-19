@@ -472,6 +472,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
+	WarningWellSpawned = "Sanity Well spawned",
 }
 
 
