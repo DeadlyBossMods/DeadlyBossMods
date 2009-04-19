@@ -1,5 +1,4 @@
 if GetLocale() ~= "koKR" then return end
-
 local L
 
 ----------------------
@@ -36,6 +35,7 @@ L:SetOptionLocalization{
 	PursueWarn		= "추적 플레이어 레이드 경보로 보기",
 	warnNextPursueSoon	= "다음 추적 경고"
 }
+
 
 -------------
 --  Ignis  --
@@ -102,6 +102,8 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAir = "Give us a moment to prepare to build the turrets."
 }
+
+
 -------------
 --  XT002  --
 -------------
@@ -112,7 +114,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-
 }
 
 L:SetWarningLocalization{
@@ -193,6 +194,7 @@ L:SetMiscLocalization{
 	StormcallerBrundir 	= "폭풍을 부르는 브룬디르",
 }
 
+
 ---------------
 --  Algalon  --
 ---------------
@@ -216,6 +218,7 @@ L:SetOptionLocalization{
 	WarningPhasePunch	= "Announce Phase Punch target",
 	WarningBlackHole	= "Announce Black Hole",
 }
+
 
 ----------------
 --  Kologarn  --
@@ -283,6 +286,7 @@ L:SetOptionLocalization{
 	WarnCatDied = "야생 수호자가 죽었을 때 경보 보기"
 }
 
+
 -------------
 --  호디르  --
 -------------
@@ -349,6 +353,7 @@ L:SetMiscLocalization{
 	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!"
 }
 
+
 -------------
 --  Freya  --
 -------------
@@ -395,6 +400,10 @@ L:SetWarningLocalization{
 	WarningPlasmaBlast	= "%s 에게 플라즈마 폭발 - 폭힐! 폭힐!",
 	Phase2Engaged		= "곧 2 페이즈 - 지금 재 그룹 하세요.",
 	Phase3Engaged		= "곧 3 페이즈 - 지금 재 그룹 하세요.",	
+	WarnShell			= "Napalm Shells on >%s<",
+	WarnBlast			= "Plasma Blast on >%s<",
+	MagneticCore		= ">%s< got Magnetic Core",
+	WarningShockBlast	= "Shock Blast - MOVE AWAY"	
 }
 
 L:SetTimerLocalization{
@@ -402,7 +411,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimeToPhase2		= "페이즈 2 시작"
+	TimeToPhase2		= "페이즈 2 시작",
+	TimeToPhase3		= "begin Phase 3",
+	MagneticCore		= "Announce Magnetic Core looter",
+	HealthFramePhase4	= "Show Health Frame in Phase 4"	
 }
 
 L:SetMiscLocalization{
@@ -429,22 +441,16 @@ L:SetWarningLocalization{
 	specWarnLifeLeechNear		= "Life Leech on %s near you!"	
 }
 
-L:SetTimerLocalization{
-	timerSearingFlamesCast		= "불사르는 화염",
-	timerSurgeofDarkness		= "밀려오는 어둠",
-	timerSaroniteVapors			= "Next Saronite Vapors"
-}
-
 L:SetOptionLocalization{
 	WarningShadowCrash			= "그림자 충돌의 특수 경보 보기",
-	timerSearingFlamesCast		= "불사르는 화염 시전 타이머 보기",
-	timerSurgeofDarkness		= "밀려오는 어둠 타이머 보기",
-	timerSaroniteVapors			= "Show Timer for Saronite Vapors",
-	SetIconOnShadowCrash	= "그림자 충돌 대상 표시하기(해골)",
-	SetIconOnLifeLeach	= "Set Icon on Life Leach target (cross)",
+	SetIconOnShadowCrash		= "그림자 충돌 대상 표시하기(해골)",
+	SetIconOnLifeLeach			= "Set Icon on Life Leach target (cross)",
 	SpecialWarningSurgeDarkness	= "밀려오는 어둠 특수 경고 보기",
-	SpecialWarningShadowCrash	= "그림자 충돌 특수 경고 보기"
-}
+	SpecialWarningShadowCrash	= "그림자 충돌 특수 경고 보기",
+	SpecialWarningLLYou			= "Show Special Warning for Life Leach on YOU",
+	SpecialWarningLLNear		= "Show Special Warning for Life Leach in near of you",
+	CrashWhisper				= "그림자 충돌 대상에게 귓속말 보내기"	
+	}
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
