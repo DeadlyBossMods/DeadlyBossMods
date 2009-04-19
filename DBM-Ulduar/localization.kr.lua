@@ -67,7 +67,7 @@ L:SetOptionLocalization{
 	TimerScorchCast				= "불태우기 시전 타이머 보기",
 	WarningSlagPot				= "잿가루 구덩이 대상 알리기",
 	TimerSlagPot				= "잿가루 구덩이 타이머 보기",
-	SlagPotIcon				= "Set Icon on Slag Pot target"	
+	SlagPotIcon				= "잿가루 구덩이 대상 아이콘(징표) 설정"	
 }
 
 ------------------
