@@ -441,21 +441,15 @@ L:SetWarningLocalization{
 	SpecialWarningLLNear		= "Life Leech on %s near you!"
 }
 
-L:SetTimerLocalization{
-	timerSearingFlamesCast		= "Searing Flames",
-	timerSurgeofDarkness		= "Surge of Darkness",
-	timerSaroniteVapors			= "Next Saronite Vapors"
-}
-
 L:SetOptionLocalization{
 	WarningShadowCrash			= "Show Warning for Shadow Crash",
-	timerSearingFlamesCast		= "Show Timer for Searing Flame Cast",
-	timerSurgeofDarkness		= "Show Timer for Sourge of Darkness",
-	timerSaroniteVapors			= "Show Timer for Saronite Vapors",
 	SetIconOnShadowCrash		= "Set Icon on Shadow Crash target (skull)",
 	SetIconOnLifeLeach			= "Set Icon on Life Leech target (cross)",
 	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
 	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",
+	SpecialWarningLLYou		= "Show Special Warning for Life Leach on YOU",
+	SpecialWarningLLNear		= "Show Special Warning for Life Leach in near of you",
+	CrashWhisper			= "Send Whisper to Shadow Crash Target"
 }
 
 L:SetMiscLocalization{
