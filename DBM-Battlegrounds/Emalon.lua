@@ -29,7 +29,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64216 then
+	if args.spellId == 64216 or args.spellId == 65279 then
 		timerNova:Start()
 		warnNova:Show()
 		specWarnNova:Show()
