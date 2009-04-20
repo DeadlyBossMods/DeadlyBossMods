@@ -123,7 +123,7 @@ end
 
 do
 	local t = 0
-	local targetCache = setmetatable({}, {__mode = "kv"})
+	local targetCache = {}
 	local function getCIDfromGUID(guid)
 		if not guid then
 			return -1
@@ -186,7 +186,8 @@ function bossHealth:AddBoss(cId, name)
 end
 
 function bossHealth:RemoveBoss(cId)
-	for i, bar in bars do
+	for i = #bars, 1, -1 do
+		local bar = bars[i]
 		if bar.id == cId then
 			if bars[i + 1] then
 				local next = bars[i + 1]
@@ -196,7 +197,6 @@ function bossHealth:RemoveBoss(cId)
 			bar:ClearAllPoints()
 			barCache[#barCache + 1] = bar
 			table.remove(bars, i)
-			break
 		end
 	end
 end
