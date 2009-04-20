@@ -276,14 +276,18 @@ L:SetWarningLocalization{
 	SpecWarnBlast	= "Sentinel Blast - Interrupt!",
 	WarnCatDied 	= "Feral Defender down (%d lifes remaining)",
 	WarnFear		= "Fear!",
-	WarnFearSoon 	= "Next Fear soon"
+	WarnFearSoon 	= "Next Fear soon",
+	WarnSonic		= "Sonic Screech!",
+	WarnSwarm		= "Guardian Swarm on >%s<"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBlast	= "Show Special Warning on Sentinel Blast",
 	WarnFear		= "Show Fear Warning",
 	WarnFearSoon	= "Show Fear soon Warning",
-	WarnCatDied		= "Show Warning when the Feral Defender dies"
+	WarnCatDied		= "Show Warning when the Feral Defender dies",
+	WarnSwarm		= "Show Warning on Guardian Swarm",
+	WarnSonic		= "Show Sonic Screech Warning"
 }
 
 
