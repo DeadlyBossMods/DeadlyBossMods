@@ -2,7 +2,7 @@ local mod = DBM:NewMod("YoggSaron", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID() --??
+mod:SetCreatureID(33288)
 mod:SetZone()
 
 mod:RegisterCombat("yell", L.YellPull)
