@@ -14,12 +14,17 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnWellSpawned 		= mod:NewAnnounce("WarningWellSpawned", 1, 64170)
-local warnGuardianSpawned 	= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
-local warnP2 			= mod:NewAnnounce("WarningP2", 2)
+--mod:NewAnnounce("WarningSpark", 1, 59381)
+--mod:NewTimer(30, "TimerSpark", 59381)
+--mod:NewSpecialWarning("WarningSurgeYou")
+--mod:NewEnrageTimer(615)
 
-local specWarnBrainLink		= mod:NewSpecialWarning("SpecialWarningBrainLink")
+local warnWellSpawned = mod:NewAnnounce("WarningWellSpawned", 1, 64170)
+local warnGuardianSpawned = mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
+local warnP2 = mod:NewAnnounce("WarningP2", 2)
 
+local warnBrainLink = mod:NewAnnounce("WarningBrainLink", 2)
+local specWarnBrainLink = mod:NewSpecialWarning("SpecWarnBrainLink")
 
 mod:AddBoolOption("ShowSaraHealth")
 
@@ -38,11 +43,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63802 and args.destname == UnitName("player") then
-		specWarnBrainLink:Show()
-	end
-end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
 	if msg == L.YellPhase2 then
@@ -53,6 +53,30 @@ end
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 62979 then
 		warnGuardianSpawned:Show()
+	end
+end
+
+local brainLink1
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 63802 then
+		if not brainLink1 then
+			self:SetIcon(args.destName, 8, 30)
+			brainLink1 = args.destName
+		else
+			self:SetIcon(args.destName, 7, 30)
+			warnBrainLink:Show(brainLink1, args.destName)
+			self:AnnounceBrainLink(brainLink1, args.destName)
+			self:AnnounceBrainLink(args.destName, brainLink1)
+		end
+	end
+end
+
+function mod:AnnounceBrainLink(player, other)
+	if player == UnitName("player") then
+		specWarnBrainLink:Show(other)
+	end
+	if DBM:GetRaidRank() >= 1 and self.Options.WhisperBrainLink then
+		self:SendWhisper(L.WhisperBrainLink:format(other), player)
 	end
 end
 
