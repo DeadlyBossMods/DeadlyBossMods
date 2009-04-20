@@ -13,7 +13,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED_DOSE",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"UNIT_DIED"
 )
 
 
@@ -25,6 +26,9 @@ local specWarnGuardianLow = mod:NewSpecialWarning("SpecWarnGuardianLow", false)
 local warnBrainLink = mod:NewAnnounce("WarningBrainLink", 2)
 local specWarnBrainLink = mod:NewSpecialWarning("SpecWarnBrainLink")
 local specWarnSanity = mod:NewSpecialWarning("SpecWarnSanity")
+local warnMadness = mod:NewAnnounce("WarnMadness", 1)
+
+local timerMadness = mod:NewCastTimer(60, 64059)
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
@@ -43,6 +47,9 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 64170 then
 		warnWellSpawned:Show()
+	elseif args.spellId == 64059 then
+		timerMadness:Start()
+		warnMadness:Show()
 	end
 end
 
@@ -98,6 +105,12 @@ function mod:UNIT_HEALTH(uId)
 	if uId == "target" and self:GetUnitCreatureId(uId) == 33136 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.3 and not targetWarningsShown[UnitGUID(uId)] then
 		targetWarningsShown[UnitGUID(uId)] = true
 		specWarnGuardianLow:Show()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if self:GetCIDFromGUID(args.srcGUID) == 33983 then
+		timerMadness:Stop()
 	end
 end
 
