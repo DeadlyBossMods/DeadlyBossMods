@@ -239,7 +239,7 @@ function DLL:Remove(obj)
 	elseif self.last == obj then -- trying to remove the last element
 		self.last = obj.prev
 		self.last.next = nil
-	else
+	elseif obj.prev and obj.next then -- trying to remove something in the middle of the list
 		obj.prev.next, obj.next.prev = obj.next, obj.prev
 	end
 	obj.prev = nil
