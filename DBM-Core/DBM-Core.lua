@@ -46,10 +46,10 @@ DBM_SavedOptions = {}
 
 DBM.DefaultOptions = {
 	WarningColors = {
-		{r = 0.41, g = 0.80, b = 0.94},
-		{r = 0.95, g = 0.95, b = 0.00},
-		{r = 1.00, g = 0.50, b = 0.00},
-		{r = 1.00, g = 0.10, b = 0.10},
+		{r = 0.41, g = 0.80, b = 0.94}, -- Color 1 - #69CCF0 - Turqoise
+		{r = 0.95, g = 0.95, b = 0.00}, -- Color 2 - #F2F200 - Yellow
+		{r = 1.00, g = 0.50, b = 0.00}, -- Color 3 - #FF8000 - Orange
+		{r = 1.00, g = 0.10, b = 0.10}, -- Color 4 - #FF1A1A - Red
 	},
 	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.wav",
 	SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.wav",

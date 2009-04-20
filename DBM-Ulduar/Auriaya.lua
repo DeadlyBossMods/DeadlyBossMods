@@ -27,33 +27,37 @@ end
 
 mod:AddBoolOption("HealthFrame", true)
 
-local warnSwarm 	= mod:NewGenericTargetAnnounce(64396, 2) -- do not use this method; it will be replaced soon.
+local warnSwarm 	= mod:NewAnnounce("WarnSwarm", 2, 64396)
 
-local specWarnBlast 	= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
+local specWarnBlast = mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local warnFear 		= mod:NewAnnounce("WarnFear", 3, 64386)
 local warnFearSoon 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)
 local warnCatDied 	= mod:NewAnnounce("WarnCatDied", 3, 64455)
+local warnSonic		= mod:NewAnnounce("WarnSonic", 2, 64688)
 
 local timerFear 	= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
+local timerSonic	= mod:NewCastTimer(64688)
 
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64678 then -- Sentinel Blast
+	if args.spellId == 64678 or args.spellId == 64389 then -- Sentinel Blast
 		specWarnBlast:Show()
 	elseif args.spellId == 64386 then -- Terrifying Screech
 		warnFear:Show()
 		timerFear:Start()
 		timerNextFear:Schedule(2)
 		warnFearSoon:Schedule(34)
---	elseif args.spellid == 64688 then --Sonic Screech
---		-- warning needed here?
+	elseif args.spellId == 64688 or args.spellId == 64422 then --Sonic Screech
+		warnSonic:Show()
+		timerSonic:Start()
+		-- What about adding a "soon" timer. It seems to be 25-35 seconds between Sonic Screeches
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 64396 then -- Guardian Swarm
-		warnSwarm:Show()
+		warnSwarm:Show(args.destName)
 	elseif args.spellId == 64455 then -- Feral Essence
 		DBM.BossHealth:AddBoss(34035, L.Defender:format(9))
 	end
