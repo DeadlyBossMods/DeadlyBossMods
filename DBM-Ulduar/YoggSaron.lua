@@ -11,22 +11,22 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED_DOSE"
 )
 
---mod:NewAnnounce("WarningSpark", 1, 59381)
---mod:NewTimer(30, "TimerSpark", 59381)
---mod:NewSpecialWarning("WarningSurgeYou")
---mod:NewEnrageTimer(615)
 
 local warnWellSpawned = mod:NewAnnounce("WarningWellSpawned", 1, 64170)
 local warnGuardianSpawned = mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
 local warnP2 = mod:NewAnnounce("WarningP2", 2)
+local warnSanity = mod:NewAnnounce("WarningSanity", 3)
 
 local warnBrainLink = mod:NewAnnounce("WarningBrainLink", 2)
 local specWarnBrainLink = mod:NewSpecialWarning("SpecWarnBrainLink")
+local specWarnSanity = mod:NewSpecialWarning("SpecWarnSanity")
 
 mod:AddBoolOption("ShowSaraHealth")
+mod:AddBoolOption("WhisperBrainLink", false)
 
 function mod:OnCombatStart(delay)
 	if self.Options.ShowSaraHealth and not self.Options.HealthFrame then
@@ -77,6 +77,17 @@ function mod:AnnounceBrainLink(player, other)
 	end
 	if DBM:GetRaidRank() >= 1 and self.Options.WhisperBrainLink then
 		self:SendWhisper(L.WhisperBrainLink:format(other), player)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED_DOSE(args)
+	if args.spellId == 63050 then
+		if args.amount == 50 then
+			warnSanity:Show(args.amount)
+		elseif args.amount == 25 or args.amount == 15 or args.amount == 5 then
+			warnSanity:Show(args.amount)
+			specWarnSanity:Show(args.amount)
+		end
 	end
 end
 
