@@ -33,8 +33,10 @@ local timerMadness = mod:NewCastTimer(60, 64059)
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
 
+local phase = 1
 local targetWarningsShown = {}
 function mod:OnCombatStart(delay)
+	phase = 1
 	if self.Options.ShowSaraHealth and not self.Options.HealthFrame then
 		DBM.BossHealth:Show(L.name)
 	end
@@ -102,7 +104,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if uId == "target" and self:GetUnitCreatureId(uId) == 33136 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.3 and not targetWarningsShown[UnitGUID(uId)] then
+	if phase == 1 and uId == "target" and self:GetUnitCreatureId(uId) == 33136 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.3 and not targetWarningsShown[UnitGUID(uId)] then
 		targetWarningsShown[UnitGUID(uId)] = true
 		specWarnGuardianLow:Show()
 	end
@@ -115,7 +117,8 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:OnSync(event, args)
-	if event == "Phase2" then
+	if event == "Phase2" and phase == 1 then
+		phase = 2
 		warnP2:Show()
 		if self.Options.ShowSaraHealth and self:GetCIDFromGUID(args.destGUID) == 33134 then
 			DBM.BossHealth:RemoveBoss(33134)
