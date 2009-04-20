@@ -29,6 +29,7 @@ local specWarnSanity = mod:NewSpecialWarning("SpecWarnSanity")
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
 
+local targetWarningsShown = {}
 function mod:OnCombatStart(delay)
 	if self.Options.ShowSaraHealth and not self.Options.HealthFrame then
 		DBM.BossHealth:Show(L.name)
@@ -36,6 +37,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.ShowSaraHealth then
 		DBM.BossHealth:AddBoss(33134, L.Sara)
 	end
+	table.wipe(targetWarningsShown)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -93,7 +95,8 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if uId == "target" and self:GetUnitCreatureId(uId) == 33136 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.3 then
+	if uId == "target" and self:GetUnitCreatureId(uId) == 33136 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.3 and not targetWarningsShown[UnitGUID(uId)] then
+		targetWarningsShown[UnitGUID(uId)] = true
 		specWarnGuardianLow:Show()
 	end
 end
