@@ -493,7 +493,8 @@ L:SetOptionLocalization({
 	WarningBlastTargets	= "냉기 작렬 경고 보기",
 	WarningPhase2		= "2 페이즈 경고 보기",
 	WarningFissure		= "어둠의 균열 경고 보기",
-	WarningMana			= "마나 폭발 경고 보기"
+	WarningMana			= "마나 폭발 경고 보기",
+	WarningChainsTargets= "Show Chains of Kel'Thuzad Warning"
 })
 
 L:SetMiscLocalization({
@@ -504,7 +505,8 @@ L:SetWarningLocalization({
 	WarningBlastTargets	= "냉기 작렬: >%s<",
 	WarningPhase2		= "2 페이즈",
 	WarningFissure		= "어둠의 균열 생성",
-	WarningMana			= "마나 폭발 : >%s<"
+	WarningMana			= "마나 폭발 : >%s<",
+	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<"
 })
 
 L:SetTimerLocalization({
