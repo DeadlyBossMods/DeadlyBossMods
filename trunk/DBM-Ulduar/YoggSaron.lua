@@ -91,7 +91,7 @@ function mod:AnnounceBrainLink(player, other)
 end
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
-	if args.spellId == 63050 then
+	if args.spellId == 63050 and args.destGUID == UnitGUID("player") then
 		if args.amount == 50 then
 			warnSanity:Show(args.amount)
 		elseif args.amount == 25 or args.amount == 15 or args.amount == 5 then
