@@ -12,7 +12,8 @@ mod:RegisterEvents(
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED_DOSE"
+	"SPELL_AURA_REMOVED_DOSE",
+	"UNIT_HEALTH"
 )
 
 
@@ -20,7 +21,7 @@ local warnWellSpawned = mod:NewAnnounce("WarningWellSpawned", 1, 64170)
 local warnGuardianSpawned = mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
 local warnP2 = mod:NewAnnounce("WarningP2", 2)
 local warnSanity = mod:NewAnnounce("WarningSanity", 3)
-
+local specWarnGuardianLow = mod:NewSpecialWarning("SpecWarnGuardianLow", false)
 local warnBrainLink = mod:NewAnnounce("WarningBrainLink", 2)
 local specWarnBrainLink = mod:NewSpecialWarning("SpecWarnBrainLink")
 local specWarnSanity = mod:NewSpecialWarning("SpecWarnSanity")
@@ -88,6 +89,12 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 			warnSanity:Show(args.amount)
 			specWarnSanity:Show(args.amount)
 		end
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if uId == "target" and self:GetUnitCreatureId(uId) == 33136 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.3 then
+		specWarnGuardianLow:Show()
 	end
 end
 
