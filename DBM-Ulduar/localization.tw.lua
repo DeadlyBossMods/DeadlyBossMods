@@ -83,26 +83,26 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame		= "吞噬烈焰 - 移動囉!!",
-	warnTurretsReadySoon	= "20秒後 第四座塔樓完成",
-	warnTurretsReady		= "第四座塔樓已完成",
+	warnTurretsReadySoon		= "20秒後 第四座砲塔完成",
+	warnTurretsReady		= "第四座砲塔已完成",
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "下一次 火息術",
 	timerDeepBreathCast		= "火息術",
-	timerAllTurretsReady	= "塔樓"
+	timerAllTurretsReady		= "砲塔"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "為下一次火息術顯示計時器",
 	timerDeepBreathCast		= "顯示火息術的施法計時器",
 	SpecWarnDevouringFlame		= "當你在吞噬烈焰的攻擊範圍時顯示特別警告",
 	PlaySoundOnDevouringFlame	= "當受到吞噬烈焰時播放音效",
-	timerAllTurretsReady		= "為塔樓顯示計時器",
-	warnTurretsReadySoon		= "顯示塔樓的預先警告",
-	warnTurretsReady			= "顯示塔樓的警告",
+	timerAllTurretsReady		= "為砲塔顯示計時器",
+	warnTurretsReadySoon		= "顯示砲塔的預先警告",
+	warnTurretsReady		= "顯示砲塔的警告",
 }
 
 L:SetMiscLocalization{
-	YellAir = "Give us a moment to prepare to build the turrets."
+	YellAir = "給我們一點時間來準備建造砲塔。"
 }
 
 
@@ -419,8 +419,8 @@ L:SetWarningLocalization{
 	Phase3Engaged			= "第三階段即將到來 - 現在重組",
 	Warnshell			= "凝汽彈: >%s<",
 	WarnBlast			= "離子衝擊: >%s<",
-	MagneticCore		= ">%s< 拿到了磁能之核",
-	WarningShockBlast	= "震爆 - 跑開!"
+	MagneticCore			= ">%s< 拿到了磁能之核",
+	WarningShockBlast		= "震爆 - 跑開!"
 }
 
 L:SetTimerLocalization{
@@ -478,11 +478,11 @@ L:SetOptionLocalization{
 	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
 	SpecialWarningLLYou		= "當你中了無面者印記時顯示特別警告",
 	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
-	CrashWhisper = "密語提示中了暗影暴擊的人"
+	CrashWhisper 			= "密語提示中了暗影暴擊的人"
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!!",
+	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!",
 	CrashWhisper			= "你中了暗影暴擊! 跑開!"
 }
 
@@ -497,7 +497,22 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
+	YellPull 			= "我們即將有機會打擊怪物的首腦!現在將你的憤怒與仇恨貫注在他的爪牙上!",
+	YellPhase2 			= "讓仇恨與狂怒帶領你的攻擊!",
+	Sara 				= "薩拉"
 }
 
 L:SetWarningLocalization{
+	WarningWellSpawned 		= "理智之井 出現了",
+	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
+	WarningP2 			= "第二階段",
+	SpecialWarningBrainLink 	= "腦波連結"
+}
+
+L:SetOptionLocalization{
+	WarningWellSpawned 		= "提示理智之井的出現",
+	WarningGuardianSpawned 		= "提示尤格薩倫守護者的出現",
+	WarningP2 			= "提示第二階段",
+	SpecialWarningBrainLink 	= "當你中了腦波連結顯示特別警告",
+	ShowSaraHealth			= "顯示薩拉的血量"
 }
