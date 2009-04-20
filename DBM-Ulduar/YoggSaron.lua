@@ -10,17 +10,16 @@ mod:RegisterCombat("yell", L.YellPull)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_SUMMON",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_AURA_APPLIED"
 )
 
---mod:NewAnnounce("WarningSpark", 1, 59381)
---mod:NewTimer(30, "TimerSpark", 59381)
---mod:NewSpecialWarning("WarningSurgeYou")
---mod:NewEnrageTimer(615)
+local warnWellSpawned 		= mod:NewAnnounce("WarningWellSpawned", 1, 64170)
+local warnGuardianSpawned 	= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
+local warnP2 			= mod:NewAnnounce("WarningP2", 2)
 
-local warnWellSpawned = mod:NewAnnounce("WarningWellSpawned", 1, 64170)
-local warnGuardianSpawned = mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
-local warnP2 = mod:NewAnnounce("WarningP2", 2)
+local specWarnBrainLink		= mod:NewSpecialWarning("SpecialWarningBrainLink")
+
 
 mod:AddBoolOption("ShowSaraHealth")
 
@@ -39,6 +38,11 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 63802 and args.destname == UnitName("player") then
+		specWarnBrainLink:Show()
+	end
+end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
 	if msg == L.YellPhase2 then
