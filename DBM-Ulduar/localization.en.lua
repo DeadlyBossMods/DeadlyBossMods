@@ -474,13 +474,16 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
 	YellPhase2 = "Let hatred an rage guide your blows!",
-	Sara = "Sara"
+	Sara = "Sara",
+	WhisperBrainLink = "Brain Link on you! Run to %s!",
 }
 
 L:SetWarningLocalization{
 	WarningWellSpawned = "Sanity Well spawned",
 	WarningGuardianSpawned = "Guardian spawned",
-	WarningP2 = "Phase 2"
+	WarningP2 = "Phase 2",
+	WarningBrainLink = "Brain Link on >%s< and >%s<",
+	SpecWarnBrainLink = "Brain Link on you and %s!",
 }
 
 
