@@ -484,7 +484,8 @@ L:SetOptionLocalization({
 	WarningBlastTargets	= "Show Frost Blast warning",
 	WarningPhase2		= "Show Phase 2 warning",
 	WarningFissure		= "Show Shadow Fissure warning",
-	WarningMana			= "Show Detonate warning"
+	WarningMana			= "Show Detonate warning",
+	WarningChainsTargets= "Show Chains of Kel'Thuzad Warning"
 })
 
 L:SetMiscLocalization({
@@ -495,7 +496,8 @@ L:SetWarningLocalization({
 	WarningBlastTargets	= "Frost Blast: >%s<",
 	WarningPhase2		= "Phase 2",
 	WarningFissure		= "Shadow Fissure spawned",
-	WarningMana			= "Detonate Mana: >%s<"
+	WarningMana			= "Detonate Mana: >%s<",
+	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<"
 })
 
 L:SetTimerLocalization({
