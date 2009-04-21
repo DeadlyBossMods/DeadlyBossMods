@@ -80,6 +80,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnBrainLink:Show(brainLink1, args.destName)
 			self:AnnounceBrainLink(brainLink1, args.destName)
 			self:AnnounceBrainLink(args.destName, brainLink1)
+			brainLink1 = nil
 		end
 	elseif args.spellId == 63830 then
 		self:SetIcon(args.destName, 8, 30)
@@ -94,6 +95,7 @@ function mod:AnnounceBrainLink(player, other)
 		self:SendWhisper(L.WhisperBrainLink:format(other), player)
 	end
 end
+
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if args.spellId == 63050 and args.destGUID == UnitGUID("player") then
@@ -131,6 +133,3 @@ function mod:OnSync(event, args)
 		end
 	end
 end
-
-
-
