@@ -60,7 +60,6 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
 	if msg == L.YellPhase2 then
-		brainportal:Start(70)
 		self:SendSync("Phase2")
 	end
 end
@@ -127,6 +126,7 @@ end
 function mod:OnSync(event, args)
 	if event == "Phase2" and phase == 1 then
 		phase = 2
+		brainportal:Start(70)
 		warnP2:Show()
 		if self.Options.ShowSaraHealth and self:GetCIDFromGUID(args.destGUID) == 33134 then
 			DBM.BossHealth:RemoveBoss(33134)
