@@ -19,17 +19,17 @@ mod:RegisterEvents(
 )
 
 
-local warnWellSpawned = mod:NewAnnounce("WarningWellSpawned", 1, 64170)
-local warnGuardianSpawned = mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
-local warnP2 = mod:NewAnnounce("WarningP2", 2)
-local warnSanity = mod:NewAnnounce("WarningSanity", 3)
-local specWarnGuardianLow = mod:NewSpecialWarning("SpecWarnGuardianLow", false)
-local warnBrainLink = mod:NewAnnounce("WarningBrainLink", 2)
-local specWarnBrainLink = mod:NewSpecialWarning("SpecWarnBrainLink")
-local specWarnSanity = mod:NewSpecialWarning("SpecWarnSanity")
-local warnMadness = mod:NewAnnounce("WarnMadness", 1)
+local warnGuardianSpawned 		= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
+local warnP2 				= mod:NewAnnounce("WarningP2", 2)
+local warnSanity 			= mod:NewAnnounce("WarningSanity", 3)
+local specWarnGuardianLow 		= mod:NewSpecialWarning("SpecWarnGuardianLow", false)
+local warnBrainLink 			= mod:NewAnnounce("WarningBrainLink", 2)
+local specWarnBrainLink 		= mod:NewSpecialWarning("SpecWarnBrainLink")
+local specWarnSanity 			= mod:NewSpecialWarning("SpecWarnSanity")
+local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
+local timerMadness 			= mod:NewCastTimer(60, 64059)
 
-local timerMadness = mod:NewCastTimer(60, 64059)
+local brainportal			= mod:NewTimer(30, "NextPortal")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
@@ -48,19 +48,18 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64170 then
-		warnWellSpawned:Show()
-	elseif args.spellId == 64059 then
+	if args.spellId == 64059 then
 		timerMadness:Start()
 		warnMadness:Show()
+		brainportal:Schedule(58)
 	end
 end
 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
 	if msg == L.YellPhase2 then
+		brainportal:Start(70)
 		self:SendSync("Phase2")
-		DBM:AddMsg("phase2")
 	end
 end
 
@@ -74,7 +73,7 @@ local brainLink1
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63802 then
 		if not brainLink1 then
-			self:SetIcon(args.destName, 8, 30)
+			self:SetIcon(args.destName, 6, 30)
 			brainLink1 = args.destName
 		else
 			self:SetIcon(args.destName, 7, 30)
@@ -82,6 +81,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:AnnounceBrainLink(brainLink1, args.destName)
 			self:AnnounceBrainLink(args.destName, brainLink1)
 		end
+	elseif args.spellId == 63830 then
+		self:SetIcon(args.destName, 8, 30)
 	end
 end
 
