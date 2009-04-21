@@ -223,14 +223,16 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	specWarnNova = "Lightning Nova",
-	warnNova = "Lightning Nova"
+	warnNova = "Lightning Nova",
+	warnOverCharge	= "Overcharge"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova = ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnNova = ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova")
+	specWarnNova 	= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
+	warnNova 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
+	warnOverCharge 	= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge")
 }
 end
