@@ -276,14 +276,18 @@ L:SetWarningLocalization{
 	SpecWarnBlast = "수호자의 폭파 - 차단!",
 	WarnCatDied = "야생의 수호자 죽음 (생명력 %d 남음)",
 	WarnFear = "공포!",
-	WarnFearSoon = "곧 다음 공포"
+	WarnFearSoon = "곧 다음 공포",
+	WarnSonic		= "Sonic Screech!",
+	WarnSwarm		= "Guardian Swarm on >%s<"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBlast = "수호자의 폭파 특수 경고 보기",
 	WarnFear = "공포 경보 보기",
 	WarnFearSoon = "공포 시전 전에 경보 보기",
-	WarnCatDied = "야생 수호자가 죽었을 때 경보 보기"
+	WarnCatDied = "야생 수호자가 죽었을 때 경보 보기",
+	WarnSwarm		= "Show Warning on Guardian Swarm",
+	WarnSonic		= "Show Sonic Screech Warning"
 }
 
 
@@ -308,10 +312,12 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerFlashFreeze	= "급속 결빙 시전 타이머 보기",
 	WarningFlashFreeze	= "급속 결빙 경보 보기",
+	WarningBitingCold	= "Show warning for Biting Cold",
+	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast"	
 }
 
 L:SetMiscLocalization{
-	PlaySoundOnFlashFreeze	= "급속 결빙 시전 소리 듣기",
+	
 }
 
 
@@ -327,25 +333,27 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarningStormhammer	= "%s 에게 폭풍망치",
 	UnbalancingStrike	= ">%s< 에게 넘어트리는 일격",
-	WarningPhase2	= "2 페이즈",
-	WarningBomb	= ">%s< 에게 룬 폭파",
-	LightningOrb = "당신은 번개 충격 범위! 이동하세요!"
+	WarningPhase2		= "2 페이즈",
+	WarningBomb			= ">%s< 에게 룬 폭파",
+	LightningOrb 		= "당신은 번개 충격 범위! 이동하세요!"
 }
 
 L:SetTimerLocalization{
-	TimerStormhammer	= "폭풍망치 쿨다운",
+	TimerStormhammer		= "폭풍망치 쿨다운",
 	TimerUnbalancingStrike	= "넘어트리는 일격 쿨다운",
-	TimerHardmode	= "하드 모드"
+	TimerHardmode			= "하드 모드"
 }
 
 L:SetOptionLocalization{
-	TimerStormhammer	= "폭풍망치 쿨다운 보기",
+	TimerStormhammer		= "폭풍망치 쿨다운 보기",
 	TimerUnbalancingStrike	= "넘어트리는 일격 타이머 보기",
-	TimerHardmode	= "하드 모드를 위한 타이머 보기",
-	UnbalancingStrike	= "넘어트리는 일격 타겟 알리기",
-	WarningStormhammer	= "폭풍망치 타겟 알리기",
-	WarningPhase2	= "2 페이즈 알리기",
-	RangeFrame	= "거리 창 보기"
+	TimerHardmode			= "하드 모드를 위한 타이머 보기",
+	UnbalancingStrike		= "넘어트리는 일격 타겟 알리기",
+	WarningStormhammer		= "폭풍망치 타겟 알리기",
+	WarningPhase2			= "2 페이즈 알리기",
+	UnbalancingStrike		= "Announce Unbalancing Strike",
+	WarningBomb				= "Announce Rune Detonation",	
+	RangeFrame				= "거리 창 보기"
 }
 
 L:SetMiscLocalization{
@@ -412,9 +420,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimeToPhase2		= "페이즈 2 시작",
-	TimeToPhase3		= "begin Phase 3",
+	TimeToPhase3		= "페이즈 3 시작",
 	MagneticCore		= "Announce Magnetic Core looter",
-	HealthFramePhase4	= "Show Health Frame in Phase 4"	
+	HealthFramePhase4	= "페이즈 4 의 체력 프레임 보기"	
 }
 
 L:SetMiscLocalization{
@@ -469,20 +477,33 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2 = "Let hatred an rage guide your blows!",
+	YellPhase2 = "I am the lucid dream.",
 	Sara = "Sara",
 	WhisperBrainLink = "Brain Link on you! Run to %s!",
 }
 
 L:SetWarningLocalization{
-	WarningWellSpawned = "Sanity Well spawned",
-	WarningGuardianSpawned = "Guardian spawned",
-	WarningP2 = "Phase 2",
-	WarningBrainLink = "Brain Link on >%s< and >%s<",
-	SpecWarnBrainLink = "Brain Link on you and %s!",
-	WarningSanity = "%d Sanity debuffs remaining",
-	SpecWarnSanity = "%d Sanity debuffs remaining",
-	SpecWarnGuardianLow = "Stop attacking this Guardian!",
-	WarnMadness = "Casting Induce Madness"
+	WarningGuardianSpawned 	= "Guardian spawned",
+	WarningP2 				= "Phase 2",
+	WarningBrainLink 		= "Brain Link on >%s< and >%s<",
+	SpecWarnBrainLink		= "Brain Link on you and %s!",
+	WarningSanity 			= "%d Sanity debuffs remaining",
+	SpecWarnSanity 			= "%d Sanity debuffs remaining",
+	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
+	WarnMadness 				= "Casting Induce Madness",
+	SpecWarnMadnessOutNow	= "Madness ends - MOVE OUT"
 }
+
+L:SetOptionLocalization{
+	WarningGuardianSpawned	= "Announce Guardian Spawns",
+	WarningP2				= "Announce Phase 2",
+	WarningBrainLink		= "Announce Brain Links",
+	SpecWarnBrainLink		= "Show Special Warning when Brain Linked",
+	WarningSanity			= "Show Warning when Sanity low",
+	SpecWarnSanity			= "Show Special Warning when Sanity very low",
+	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
+	WarnMadness				= "Announce Madness",
+	SpecWarnMadnessOutNow	= "Show Special Warning shortly before Madness ends"
+}
+
 
