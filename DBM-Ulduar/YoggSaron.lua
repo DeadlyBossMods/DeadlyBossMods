@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED_DOSE",
 	"UNIT_HEALTH",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 
@@ -59,6 +60,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
 	if msg == L.YellPhase2 then
 		self:SendSync("Phase2")
+		DBM:AddMsg("phase2")
 	end
 end
 
@@ -128,3 +130,6 @@ function mod:OnSync(event, args)
 		end
 	end
 end
+
+
+
