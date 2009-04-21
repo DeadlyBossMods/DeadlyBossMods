@@ -29,7 +29,7 @@ local specWarnSanity 			= mod:NewSpecialWarning("SpecWarnSanity")
 local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
 local timerMadness 			= mod:NewCastTimer(60, 64059)
 
-local brainportal			= mod:NewTimer(30, "NextPortal")
+local brainportal			= mod:NewTimer(27, "NextPortal")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
