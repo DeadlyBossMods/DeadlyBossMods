@@ -483,7 +483,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningWellSpawned = "Sanity Well spawned",
 	WarningGuardianSpawned = "Guardian spawned",
 	WarningP2 = "Phase 2",
 	WarningBrainLink = "Brain Link on >%s< and >%s<",
@@ -494,6 +493,15 @@ L:SetWarningLocalization{
 	WarnMadness = "Casting Induce Madness"
 }
 
-
+L:SetOptionLocalization{
+	WarningGuardianSpawned		= "Announce Guardian Spawns",
+	WarningP2			= "Announce Phase 2",
+	WarningBrainLink		= "Announce Brain Links",
+	SpecWarnBrainLink		= "Show Special Warning when Brain Linked",
+	WarningSanity			= "Show Warning when Sanity low",
+	SpecWarnSanity			= "Show Special Warning when Sanity very low",
+	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
+	WarnMadness			= "Announce Madness",
+}
 
 
