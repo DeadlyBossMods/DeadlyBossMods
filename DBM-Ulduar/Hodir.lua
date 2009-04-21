@@ -36,13 +36,10 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 61968 then
 		timerFlashFreeze:Start()
 		warnFlashFreeze:Show()
-
+		timerFlashFrCD:Start()
 		if self.Options.PlaySoundOnFlashFreeze then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
-
-	elseif args.spellId == 61968 then
-		timerFlashFrCD:Start()
 	end
 end
 

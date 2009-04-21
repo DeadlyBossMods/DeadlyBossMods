@@ -312,10 +312,12 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerFlashFreeze	= "Show Flash Freeze Cast-Timer",
 	WarningFlashFreeze	= "Show Warning for Flash Freeze",
+	WarningBitingCold	= "Show warning for Biting Cold",
+	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast"
 }
 
 L:SetMiscLocalization{
-	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
+	
 }
 
 
@@ -349,6 +351,8 @@ L:SetOptionLocalization{
 	UnbalancingStrike		= "Announce Unbalancing Strike Target",
 	WarningStormhammer		= "Announce Stormhammer Target",
 	WarningPhase2			= "Announce Phase 2",
+	UnbalancingStrike		= "Announce Unbalancing Strike",
+	WarningBomb				= "Announce Rune Detonation",
 	RangeFrame				= "Show Range Frame"
 }
 
