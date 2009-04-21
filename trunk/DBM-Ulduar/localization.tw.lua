@@ -173,6 +173,7 @@ L:SetOptionLocalization{
 	WarningSupercharge		= "當超級充能施放時顯示警告",
 	WarningChainlight		= "提示閃電鏈",
 	TimerOverload			= "顯示超載的施法計時器",
+	PlaySoundOnOverload		= "當超載施放時播放音效",
 	TimerLightningWhirl		= "顯示閃電旋風的施法計時器",
 	LightningTendrils		= "為閃電觸鬚顯示特別警告",
 	TimerLightningTendrils		= "顯示閃電旋風的持續時間計時器",
@@ -188,12 +189,13 @@ L:SetOptionLocalization{
 	WarningRuneofDeath		= "提示死亡符文",
 	RuneofDeath			= "為死亡符文顯示特別警告",
 	timerRuneofDeath		= "顯示死亡符文的持續時間計時器",
+	PlaySoundDeathRune		= "當死亡符文施放時播放音效"
 }
 
 L:SetMiscLocalization{
 	Steelbreaker			= "破鋼者",
 	RunemasterMolgeim		= "符文大師墨吉姆",
-	StormcallerBrundir 		= "風暴召喚者布倫迪爾",
+	StormcallerBrundir 		= "風暴召喚者布倫迪爾"
 }
 
 
@@ -280,7 +282,9 @@ L:SetWarningLocalization{
 	SpecWarnBlast 			= "哨兵衝擊 - 打斷!",
 	WarnCatDied 			= "野性防衛者倒下 (剩餘%d支)",
 	WarnFear 			= "恐懼!",
-	WarnFearSoon 			= "下一次恐懼即將到來!"
+	WarnFearSoon 			= "下一次恐懼即將到來!",
+	WarnSonic			= "音速尖嘯!",
+	WarnSwarm			= "群體守衛: >%s<"
 }
 
 L:SetOptionLocalization{
@@ -288,6 +292,8 @@ L:SetOptionLocalization{
 	WarnFear 			= "顯示恐懼警告",
 	WarnFearSoon 			= "顯示即將恐懼警告",
 	WarnCatDied 			= "當野性防衛者死亡時顯示警告",
+	WarnSwarm			= "當群體守衛出現時顯示警告",
+	WarnSonic			= "顯示音速尖嘯警告"
 }
 
 
@@ -317,7 +323,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效", --unusable?
+
 }
 
 
@@ -499,20 +505,32 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	YellPull 			= "我們即將有機會打擊怪物的首腦!現在將你的憤怒與仇恨貫注在他的爪牙上!",
 	YellPhase2 			= "讓仇恨與狂怒帶領你的攻擊!",
-	Sara 				= "薩拉"
+	Sara 				= "薩拉",
+	WhisperBrainLink 		= "你中了腦波連結! 跑向 %s!",
 }
 
 L:SetWarningLocalization{
 	WarningWellSpawned 		= "理智之井 出現了",
 	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
 	WarningP2 			= "第二階段",
-	SpecialWarningBrainLink 	= "腦波連結"
+	WarningBrainLink 		= "腦波連結: >%s< 和 >%s<",
+	SpecWarnBrainLink 		= "你和%s中了腦波連結!",
+	WarningSanity 			= "剩下 %d 理智",
+	SpecWarnSanity 			= "剩下 %d 理智",
+	SpecWarnGuardianLow 		= "停止攻擊這支守護者!",
+	WarnMadness 			= "正在施放 瘋狂誘陷"
 }
 
 L:SetOptionLocalization{
 	WarningWellSpawned 		= "提示理智之井的出現",
 	WarningGuardianSpawned 		= "提示尤格薩倫守護者的出現",
 	WarningP2 			= "提示第二階段",
-	SpecialWarningBrainLink 	= "當你中了腦波連結顯示特別警告",
+	WarningBrainLink		= "提示腦波連結",
+	SpecWarnBrainLink 		= "當你中了腦波連結顯示特別警告",
+	WarningSanity			= "當理智剩下50時顯示警告",
+	SpecWarnSanity			= "當理智過低(25,15,5)時顯示特別警告",
+	SpecWarnGuardianLow		= "當守護者血量過低時顯示特別警告",
+	WarnMadness 			= "顯示瘋狂誘陷的施放警告",
+	WhisperBrainLink 		= "密語提示中了腦波連結的人",
 	ShowSaraHealth			= "顯示薩拉的血量"
 }
