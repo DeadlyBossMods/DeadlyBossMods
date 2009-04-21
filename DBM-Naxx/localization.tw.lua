@@ -487,7 +487,8 @@ L:SetOptionLocalization({
 	WarningBlastTargets		= "顯示冰霜衝擊警告",
 	WarningPhase2			= "顯示第二階段警告",
 	WarningFissure			= "顯示暗影裂縫警告",
-	WarningMana			= "顯示爆裂法力警告"
+	WarningMana			= "顯示爆裂法力警告",
+	WarningChainsTargets		= "顯示科爾蘇加德之鍊(心控)警告"
 })
 
 L:SetMiscLocalization({
@@ -498,7 +499,8 @@ L:SetWarningLocalization({
 	WarningBlastTargets		= "冰霜衝擊: >%s<",
 	WarningPhase2			= "第二階段",
 	WarningFissure			= "暗影裂縫 出現了",
-	WarningMana			= "爆裂法力: >%s<"
+	WarningMana			= "爆裂法力: >%s<",
+	WarningChainsTargets		= "科爾蘇加德之鍊(心控): >%s<"
 })
 
 L:SetTimerLocalization({
