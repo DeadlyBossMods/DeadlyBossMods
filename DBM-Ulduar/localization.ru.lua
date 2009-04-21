@@ -269,7 +269,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast	= "Удар часового - Interrupt!",
+	SpecWarnBlast	= "Удар часового - Прерывание!",
 	WarnCatDied 	= "Дикий эащитник погибает (Осталось живых: %d)",
 	WarnFear		= "Страх!",
 	WarnFearSoon 	= "Скоро следующий Страх"
@@ -427,9 +427,9 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "Темное сокрушение на ВАС!",
 	SpecialWarningSurgeDarkness	= "Наплыв Тьмы",
-	WarningShadowCrash			= ">%s< под воздействием Темного сокрушения",
-	specWarnLifeLeechYou		= "Life Leech на ВАС!",
-	specWarnLifeLeechNear		= "%s под воздействием Life Leech, около вас!"
+	WarningShadowCrash			= ">%s< под воздействием Темное сокрушение",
+	specWarnLifeLeechYou		= "Кровопийца на ВАС!",
+	specWarnLifeLeechNear		= "%s около вас, под воздействием Кровопийца!"
 }
 
 L:SetTimerLocalization{
@@ -444,7 +444,7 @@ L:SetOptionLocalization{
 	timerSurgeofDarkness		= "Отображать отсчет времени до Наплыва Тьмы",
 	timerSaroniteVapors			= "Отображать отсчет времени до Саронитовых паров",
 	SetIconOnShadowCrash		= "Установить метку на цель под воздействием эффекта Темное сокрушение (череп)",
-	SetIconOnLifeLeach			= "Установить метку на цель под воздействием эффекта Life Leech (крест)",
+	SetIconOnLifeLeach			= "Установить метку на цель под воздействием эффекта Кровопийца (крест)",
 	SpecialWarningSurgeDarkness	= "Отображать спец-предупреждение для Наплыва Тьмы",
 	SpecialWarningShadowCrash	= "Отображать спец-предупреждение для Темное сокрушение",
 }
