@@ -28,6 +28,7 @@ local specWarnBrainLink 		= mod:NewSpecialWarning("SpecWarnBrainLink")
 local specWarnSanity 			= mod:NewSpecialWarning("SpecWarnSanity")
 local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
 local timerMadness 			= mod:NewCastTimer(60, 64059)
+local specWarnMadnessOutNow		= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 
 local brainportal			= mod:NewTimer(27, "NextPortal")
 
@@ -52,6 +53,7 @@ function mod:SPELL_CAST_START(args)
 		timerMadness:Start()
 		warnMadness:Show()
 		brainportal:Schedule(58)
+		specWarnMadnessOutNow:Schedule(56)
 	end
 end
 
@@ -71,7 +73,7 @@ end
 
 local brainLink1
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63802 then
+	if args.spellId == 63802 then		-- Brain Link
 		if not brainLink1 then
 			self:SetIcon(args.destName, 6, 30)
 			brainLink1 = args.destName
@@ -82,7 +84,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:AnnounceBrainLink(args.destName, brainLink1)
 			brainLink1 = nil
 		end
-	elseif args.spellId == 63830 then
+
+	elseif args.spellId == 63830 then	-- Malady of the Mind (Fear)
 		self:SetIcon(args.destName, 8, 30)
 	end
 end

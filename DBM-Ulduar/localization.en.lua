@@ -483,14 +483,15 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned = "Guardian spawned",
-	WarningP2 = "Phase 2",
-	WarningBrainLink = "Brain Link on >%s< and >%s<",
-	SpecWarnBrainLink = "Brain Link on you and %s!",
-	WarningSanity = "%d Sanity debuffs remaining",
-	SpecWarnSanity = "%d Sanity debuffs remaining",
-	SpecWarnGuardianLow = "Stop attacking this Guardian!",
-	WarnMadness = "Casting Induce Madness"
+	WarningGuardianSpawned 		= "Guardian spawned",
+	WarningP2 			= "Phase 2",
+	WarningBrainLink 		= "Brain Link on >%s< and >%s<",
+	SpecWarnBrainLink 		= "Brain Link on you and %s!",
+	WarningSanity 			= "%d Sanity debuffs remaining",
+	SpecWarnSanity 			= "%d Sanity debuffs remaining",
+	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
+	WarnMadness			= "Casting Induce Madness",
+	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT"
 }
 
 L:SetOptionLocalization{
@@ -502,6 +503,7 @@ L:SetOptionLocalization{
 	SpecWarnSanity			= "Show Special Warning when Sanity very low",
 	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
 	WarnMadness			= "Announce Madness",
-}
+}	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends"
+
 
 
