@@ -5,8 +5,11 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32930)
 mod:SetZone()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("combat", 32930, 32933, 32934)
 
+--32934 ^-- right arm
+--32933 ^-- left arm
+--32930 -- kologarn
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -21,8 +24,8 @@ local warnGrip			= mod:NewAnnounce("WarnGrip", 2)
 mod:AddBoolOption("SetIconOnEyebeamTarget", true)
 
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
-local timerRespawnLeftArm		= mod:NewTimer(50, "timerLeftArm")
-local timerRespawnRightArm		= mod:NewTimer(50, "timerRightArm")
+local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")
+local timerRespawnRightArm		= mod:NewTimer(48, "timerRightArm")
 
 mod:AddBoolOption("SetIconOnGripTarget", true)
 
