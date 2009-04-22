@@ -64,6 +64,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm broadcast timer <x> <text>: Транслирует <x> сек. Pizza Timer с указанным именем <text> в рейд (требуются права лидера или помощника)",
 	"/dbm help: вывод этой справки",
 }
+
 DBM_ERROR_NO_PERMISSION				= "У вас недостаточно прав, для выполнение этой операции."
 
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Скрыть"
@@ -77,6 +78,7 @@ DBM_CORE_TIMER_PULL					= "Атака"
 DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек."
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
 
+
 -- Generic Warnings
 DBM_CORE_GENERIC_TARGET_WARN = "%s под воздействием >%%s<!"
 DBM_CORE_GENERIC_TARGET_OPTION = "Объявлять цели о %s"
@@ -85,8 +87,15 @@ DBM_CORE_GENERIC_TARGET_OPTION = "Объявлять цели о %s"
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
 	cast = "%s",
-	cd = "%s CD",
+    active = "%s",
+	cd = "%s",
 	next = "Следующий %s",
 }
 
-
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "Отображать время действия эффекта |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Отображать время действия заклинания|cff71d5ff|Hspell:%d|h%s|h|r",
+	active = "Отображать продолжительность |cff71d5ff|Hspell:%d|h%s|h|r",
+	cd = "Отображать отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
+	next = "Отображать отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
+}
