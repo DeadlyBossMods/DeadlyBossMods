@@ -30,7 +30,7 @@ local warnChainlight		= mod:NewAnnounce("WarningChainlight", 1, 64215)
 local timerOverload		= mod:NewTimer(6, "TimerOverload", 63481)
 local timerLightningWhirl	= mod:NewTimer(5, "TimerLightningWhirl", 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
-local timerLightningTendrils	= mod:NewTimer(35, "TimerLightningTendrils", 63486)
+local timerLightningTendrils	= mod:NewTimer(27, "TimerLightningTendrils", 63486)
 mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
 mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
 
