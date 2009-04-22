@@ -102,7 +102,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAir = "給我們一點時間來準備建造砲塔。"
+	YellAir 			= "給我們一點時間來準備建造砲塔。"
 }
 
 
@@ -446,7 +446,7 @@ L:SetOptionLocalization{
 	TimeToPhase2			= "顯示第二階段開始計时器", --第二階段開始
 	TimeToPhase3			= "顯示第三階段開始計时器", --第三階段開始
 	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
-	MagneticCore		= "提示磁能之核的拾取者",
+	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
 	WarnShell			= "提示凝汽彈的目標",
 	WarnBlast			= "提示離子衝擊的目標"
@@ -518,7 +518,12 @@ L:SetWarningLocalization{
 	WarningSanity 			= "剩下 %d 理智",
 	SpecWarnSanity 			= "剩下 %d 理智",
 	SpecWarnGuardianLow 		= "停止攻擊這支守護者!",
-	WarnMadness 			= "正在施放 瘋狂誘陷"
+	WarnMadness 			= "正在施放 瘋狂誘陷",
+	SpecWarnMadnessOutNow		= "瘋狂誘陷即將完結 - 快傳送出去"
+}
+
+L:SetTimerLocalization{
+	NextPortal			= "下一次 傳送門",
 }
 
 L:SetOptionLocalization{
@@ -529,8 +534,10 @@ L:SetOptionLocalization{
 	SpecWarnBrainLink 		= "當你中了腦波連結顯示特別警告",
 	WarningSanity			= "當理智剩下50時顯示警告",
 	SpecWarnSanity			= "當理智過低(25,15,5)時顯示特別警告",
-	SpecWarnGuardianLow		= "當守護者血量過低時顯示特別警告",
+	SpecWarnGuardianLow		= "當守護者(P1)血量過低時(DD用)顯示特別警告",
 	WarnMadness 			= "顯示瘋狂誘陷的施放警告",
+	SpecWarnMadnessOutNow		= "在瘋狂誘陷完結前顯示特別警告",
 	WhisperBrainLink 		= "密語提示中了腦波連結的人",
+	NextPortal			= "顯示下一次 傳送門的計時器",
 	ShowSaraHealth			= "顯示薩拉的血量"
 }
