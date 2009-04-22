@@ -263,10 +263,6 @@ L:SetMiscLocalization({
 	Yell	= "Сталагг сокрушит вас!",
 	Emote	= "Катушка Теслы перезагружается!",
 	Emote2	= "Катушка Теслы теряет связь!",
-	Boss1 = "Feugen",
-	Boss2 = "Stalagg",
-	Charge1 = "negative",
-	Charge2 = "positive",
 })
 
 L:SetOptionLocalization({
@@ -320,10 +316,10 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarningShoutNow		= "Объявлять Разрушительный крик",
 	WarningShoutSoon	= "Предупреждать о приближении Разрушительного крика",
-	WarningShieldWallSoon	= "Предупреждать о скором исчезновении Стены костей",
 	TimerShout			= "Отображать отсчет времени до Разрушительного крика",
-	TimerTaunt			= "Отображать отсчет времени до Провокации",
-	TimerShieldWall		= "Отображать отсчет времени до Стены костей"
+	WarningShieldWallSoon	= "Предупреждать о скором исчезновении Стены костей",
+	TimerShieldWall		= "Отображать отсчет времени до Стены костей",
+	TimerTaunt			= "Отображать отсчет времени до Провокации"
 })
 
 L:SetWarningLocalization({
@@ -378,6 +374,9 @@ L:SetMiscLocalization({
 	Trainee						= "|4Ученик:Ученика;",
 	Knight						= "|4Рыцарь:Рыцаря;",
 	Rider						= "|4Всадник:Всадника;",
+--	Trainee			= "|4Ученик:Ученика;",
+--	Knight			= "|4Рыцарь:Рыцаря;",
+--	Rider			= "|4Всадник:Всадника;",
 })
 
 ----------------
