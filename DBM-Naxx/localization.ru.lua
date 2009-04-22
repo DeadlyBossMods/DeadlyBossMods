@@ -263,6 +263,10 @@ L:SetMiscLocalization({
 	Yell	= "Сталагг сокрушит вас!",
 	Emote	= "Катушка Теслы перезагружается!",
 	Emote2	= "Катушка Теслы теряет связь!",
+	Boss1	= "Фойген",
+	Boss2	= "Сталагг",
+	Charge1	= "Отрицательный",
+	Charge2	= "Положительный",
 })
 
 L:SetOptionLocalization({
@@ -271,9 +275,9 @@ L:SetOptionLocalization({
 	WarningChargeNotChanged		= "Отображать предупреждение когда ваша полярность не изменена",
 	TimerShiftCast				= "Отображать отсчет времени до Сдвига полярности",
 	TimerNextShift				= "Отображать отсчет времени до перезарядки Сдвига полярности",
-	ArrowsEnabled				= "Отображать стрелки (обычная \"2 camp\" стратегия)",
-	ArrowsRightLeft				= "Отображать стрелки влево/вправо для \"4 camp\" стратеги (влево, если полярность изменена, вправо, если нет)",
-	ArrowsInverse				= "Обратнная \"4 camp\" стратеги (вправо, если полярность изменена, влево, если нет)",
+	ArrowsEnabled				= "Отображать стрелки (обычная \"2-сторонняя\" стратегия)",
+	ArrowsRightLeft				= "Отображать стрелки влево/вправо для \"4-сторонней\" стратегии (влево, если полярность изменена, вправо, если нет)",
+	ArrowsInverse				= "Обратная \"4-сторонняя\" стратегия (вправо, если полярность изменена, влево, если нет)",
 	WarningThrow				= "Отображать предупреждение для Броска",
 	WarningThrowSoon			= "Отображать пред-предупреждение Бросок",
 	TimerThrow					= "Отображать отсчет времени до Броска"
@@ -371,9 +375,9 @@ L:SetMiscLocalization({
 	WarningWave1				= "%d %s",
 	WarningWave2				= "%d %s и %d %s",
 	WarningWave3				= "%d %s, %d %s и %d %s",
-	Trainee						= "|4Ученик:Ученика;",
-	Knight						= "|4Рыцарь:Рыцаря;",
-	Rider						= "|4Всадник:Всадника;",
+	Trainee						= "Ученика",
+	Knight						= "Рыцаря",
+	Rider						= "Всадника",
 --	Trainee			= "|4Ученик:Ученика;",
 --	Knight			= "|4Рыцарь:Рыцаря;",
 --	Rider			= "|4Всадник:Всадника;",
@@ -389,10 +393,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerMark					= "Отображать отсчет времени до Знака",
-	WarningMarkSoon				= "Отображать пред-предупреждение Знака",
-	WarningMarkNow				= "Отображать предупреждение для Знака",
-	SpecialWarningMarkOnPlayer	= "Отображать предупреждение когда >4 Знака на вас"
+	TimerMark					= "Отображать отсчет времени до знака",
+	WarningMarkSoon				= "Отображать пред-предупреждение знаков",
+	WarningMarkNow				= "Отображать предупреждение для знаков",
+	SpecialWarningMarkOnPlayer	= "Отображать предупреждение когда >4 знаков на вас"
 })
 
 L:SetTimerLocalization({
@@ -471,10 +475,11 @@ L:SetOptionLocalization({
 	WarningPhase2		= "Объявлять наступление второй фазы",
 	WarningFissure		= "Объявлять Расщелины тьмы",
 	WarningMana			= "Объявлять Взрыв маны"
+    WarningChainsTargets= "Отображать предупреждение для цепей Кел'Тузада"
 })
 
 L:SetMiscLocalization({
-	Yell = "Соратники, слуги, солдаты холодной тьмы! Повинуйтесь зову Кел-Тузада!"
+	Yell = "Соратники, слуги, солдаты холодной тьмы! Повинуйтесь зову Кел'Тузада!"
 })
 
 L:SetWarningLocalization({
@@ -482,6 +487,7 @@ L:SetWarningLocalization({
 	WarningPhase2		= "Фаза 2",
 	WarningFissure		= "Появилась Расщелина тьмы",
 	WarningMana			= "Взрыв маны: >%s<"
+    WarningChainsTargets= "Цепи Кел'Тузада: >%s<"
 })
 
 L:SetTimerLocalization({
