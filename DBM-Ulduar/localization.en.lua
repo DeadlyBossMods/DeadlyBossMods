@@ -145,7 +145,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge			= "Supercharge incoming",
-	WarningChainlight			= "Chaing Lightning",
+	WarningChainlight			= "Chain Lightning",
 	WarningFusionPunch			= "Fusion Punch",
 	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
 	WarningRuneofPower			= "Rune of Power",
