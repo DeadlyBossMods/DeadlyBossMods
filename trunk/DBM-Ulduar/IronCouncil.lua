@@ -27,7 +27,7 @@ local warnSupercharge		= mod:NewAnnounce("WarningSupercharge", 3, 61920)
 -- Stormcaller Brundir
 -- High Voltage ... 63498
 local warnChainlight		= mod:NewAnnounce("WarningChainlight", 1, 64215)
-local timerOverload		= mod:NewTimer(6, "TimerOverload", 63481)
+local timerOverload		= mod:NewCastTimer(6, 63481)
 local timerLightningWhirl	= mod:NewTimer(5, "TimerLightningWhirl", 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
 local timerLightningTendrils	= mod:NewTimer(27, "TimerLightningTendrils", 63486)
@@ -37,7 +37,7 @@ mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
 -- Steelbreaker
 -- High Voltage ... don't know what to show here - 63498
 local warnFusionPunch		= mod:NewAnnounce("WarningFusionPunch", 4, 61903)
-local timerFusionPunchCast	= mod:NewTimer(3, "timerFusionPunchCast", 61903)
+local timerFusionPunchCast	= mod:NewCastTimer(3, 61903)
 local timerFusionPunchActive	= mod:NewTimer(4, "timerFusionPunchActive", 61903)
 local warnOverwhelmingPower	= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
 local timerOverwhelmingPower	= mod:NewTimer(25, "timerOverwhelmingPower", 61888)
@@ -50,7 +50,7 @@ local timerRunicBarrier		= mod:NewTimer(20, "timerRunicBarrier", 62338)
 local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
 local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
 local specwarnRuneofDeath	= mod:NewSpecialWarning("RuneofDeath")
-local timerRuneofDeathDura	= mod:NewTimer(30, "timerRuneofDeath", 63490)
+local timerRuneofDeathDura	= mod:NewNextTimer(30, 63490)
 local timerRuneofPower		= mod:NewCDTimer(30, 61974)
 local timerRuneofDeath		= mod:NewCDTimer(30, 63490)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
