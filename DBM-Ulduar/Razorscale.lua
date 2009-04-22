@@ -5,8 +5,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33186)
 mod:SetZone()
 
-
-mod:RegisterCombat("combat")
+--mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.YellAir)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
