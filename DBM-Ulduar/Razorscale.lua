@@ -13,9 +13,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local specWarnDevouringFlame	= mod:NewSpecialWarning("SpecWarnDevouringFlame")
-local timerDeepBreathCooldown	= mod:NewTimer(21, "timerDeepBreathCooldown", 64021)
-local timerDeepBreathCast		= mod:NewTimer(2.5, "timerDeepBreathCast", 64021)
+local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
+local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
+local timerDeepBreathCast		= mod:NewCastTimer(2.5, 64021)
 local timerAllTurretsReady		= mod:NewTimer(115, "timerAllTurretsReady") -- todo: icon?
 local warnTurretsReadySoon		= mod:NewAnnounce("warnTurretsReadySoon", 1)
 local warnTurretsReady			= mod:NewAnnounce("warnTurretsReady", 3)
@@ -24,10 +24,13 @@ mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 
 
 function mod:OnCombatStart(delay)
+	timerAllTurretsReady:Start(-delay)
+	warnTurretsReadySoon:Schedule(95-delay)
+	warnTurretsReady:Schedule(115-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63816 and args.destName == UnitName("player") then		-- you are standing in Devouring Flame
+	if (args.spellId == 63816 or args.spellId == 64733) and args.destName == UnitName("player") then		-- you are standing in Devouring Flame	(is the 63816 correct?)
 		specWarnDevouringFlame:Show()
 		if self.Options.PlaySoundOnDevouringFlame then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
