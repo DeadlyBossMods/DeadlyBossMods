@@ -10,7 +10,8 @@ mod:RegisterCombat("yell", L.YellAir)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_DAMAGE",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
@@ -29,8 +30,8 @@ function mod:OnCombatStart(delay)
 	warnTurretsReady:Schedule(115-delay)
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if (args.spellId == 63816 or args.spellId == 64733) and args.destName == UnitName("player") then		-- you are standing in Devouring Flame	(is the 63816 correct?)
+function mod:SPELL_DAMAGE(args)
+	if args.spellId == 64733 and args.destName == UnitName("player") then		-- you are standing in Devouring Flame
 		specWarnDevouringFlame:Show()
 		if self.Options.PlaySoundOnDevouringFlame then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
