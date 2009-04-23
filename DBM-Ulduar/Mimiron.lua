@@ -60,6 +60,7 @@ function mod:OnCombatStart(delay)
 	end
 end
 function mod:OnCombatEnd()
+	DBM.BossHealth:Hide()
 	if DBM:GetRaidRank() == 2 then
 		if masterlooterRaidID then
 			SetLootMethod(lootmethod, "raid"..masterlooterRaidID)
