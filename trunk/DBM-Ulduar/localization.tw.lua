@@ -284,7 +284,7 @@ L:SetWarningLocalization{
 	WarnFear 			= "恐懼!",
 	WarnFearSoon 			= "下一次恐懼即將到來!",
 	WarnSonic			= "音速尖嘯!",
-	WarnSwarm			= "群體守衛: >%s<"
+	WarnSwarm			= "貓群守護者: >%s<"
 }
 
 L:SetOptionLocalization{
@@ -292,7 +292,7 @@ L:SetOptionLocalization{
 	WarnFear 			= "顯示恐懼警告",
 	WarnFearSoon 			= "顯示即將恐懼警告",
 	WarnCatDied 			= "當野性防衛者死亡時顯示警告",
-	WarnSwarm			= "當群體守衛出現時顯示警告",
+	WarnSwarm			= "當貓群守護者出現時顯示警告",
 	WarnSonic			= "顯示音速尖嘯警告"
 }
 
