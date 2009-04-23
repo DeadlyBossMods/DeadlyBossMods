@@ -43,6 +43,11 @@ local timerSonic	= mod:NewCastTimer(64688)
 
 local isFeared = false
 
+local enrageTimer				= mod:NewEnrageTimer(600)
+
+function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 64678 or args.spellId == 64389 then -- Sentinel Blast
