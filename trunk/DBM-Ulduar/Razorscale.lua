@@ -20,11 +20,13 @@ local timerDeepBreathCast		= mod:NewCastTimer(2.5, 64021)
 local timerAllTurretsReady		= mod:NewTimer(115, "timerAllTurretsReady") -- todo: icon?
 local warnTurretsReadySoon		= mod:NewAnnounce("warnTurretsReadySoon", 1)
 local warnTurretsReady			= mod:NewAnnounce("warnTurretsReady", 3)
+local enrageTimer			= mod:NewEnrageTimer(600)
 
 mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 
 
 function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)
 	timerAllTurretsReady:Start(-delay)
 	warnTurretsReadySoon:Schedule(95-delay)
 	warnTurretsReady:Schedule(115-delay)
