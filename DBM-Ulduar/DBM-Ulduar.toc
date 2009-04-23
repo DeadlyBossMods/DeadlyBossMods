@@ -1,7 +1,7 @@
 ﻿## Interface: 30100
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ульдуар|r
-## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울드아르|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울두아르|r
 ## Title-zhtw:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧杜亞|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -10,12 +10,12 @@
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Name: Ulduar
 ## X-DBM-Mod-Name-ruRU: Ульдуар
-## X-DBM-Mod-Name-koKR: 울드아르
+## X-DBM-Mod-Name-koKR: 울두아르
 ## X-DBM-Mod-Name-zhtw: 奧杜亞
 ## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Ulduar
 ## X-DBM-Mod-LoadZone-ruRU: Ульдуар
-## X-DBM-Mod-LoadZone-koKR: 울드아르
+## X-DBM-Mod-LoadZone-koKR: 울두아르
 ## X-DBM-Mod-LoadZone-zhtw: 奧杜亞
 localization.en.lua
 localization.de.lua
