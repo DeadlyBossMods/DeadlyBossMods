@@ -83,10 +83,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 64455 then -- Feral Essence
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(34035)
-		elseif args.spellId == 64386 and args.destName == UnitName("player") then
-			isFeared = false	
 		end
+	elseif args.spellId == 64386 and args.destName == UnitName("player") then
+		isFeared = false	
 	end
+	
 end
 
 function mod:SPELL_DAMAGE(args)
