@@ -17,7 +17,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local specWarnEyebeam	= mod:NewSpecialWarning("SpecialWarningEyebeam")
+local specWarnEyebeam		= mod:NewSpecialWarning("SpecialWarningEyebeam")
 local warnGrip			= mod:NewAnnounce("WarnGrip", 2)
 
 
