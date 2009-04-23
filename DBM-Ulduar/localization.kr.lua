@@ -17,7 +17,7 @@ L:SetTimerLocalization{
 }
 	
 L:SetMiscLocalization{
-	YellPull		= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+	YellPull		= "적대적인 존재 감지. 위협 수준 평가 체제 가동. 주 목표물과 교전. 위협 수준 재평가까지 30초.",
 	Emote			= "%%s 추적중 (%S+)%."
 }
 
@@ -51,11 +51,11 @@ L:SetTimerLocalization{
 	TimerFlameJetsCooldown	= "다음 화염 분사",
 	TimerScorch		= "다음 불태우기",
 	TimerScorchCast		= "불태우기",
-	TimerSlagPot		= "잿가루 구덩이 : %s"
+	TimerSlagPot		= "용암재 단지 : %s"
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot		= ">%s< 에게 잿가루 구덩이",
+	WarningSlagPot		= ">%s< 에게 용암재 단지",
 	SpecWarnJetsCast	= "분사 - 시전 중지"
 }
 
@@ -65,9 +65,9 @@ L:SetOptionLocalization{
 	TimerFlameJetsCooldown		= "화염 분사 쿨다운 타이머 보기",
 	TimerScorch					= "불태우기 쿨다운 타이머 보기",
 	TimerScorchCast				= "불태우기 시전 타이머 보기",
-	WarningSlagPot				= "잿가루 구덩이 대상 알리기",
-	TimerSlagPot				= "잿가루 구덩이 타이머 보기",
-	SlagPotIcon				= "잿가루 구덩이 대상 아이콘(징표) 설정"	
+	WarningSlagPot				= "용암재 단지 대상 알리기",
+	TimerSlagPot				= "용암재 단지 타이머 보기",
+	SlagPotIcon				= "용암재 단지 대상 아이콘(징표) 설정"	
 }
 
 ------------------
@@ -81,26 +81,26 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame	= "활활 타오르는 화염 - 이동! 이동! 이동!",
-	warnTurretsReadySoon	= "Fourth Turret Ready in 20 Sec",
-	warnTurretsReady		= "Fourth Turret Ready"
+	warnTurretsReadySoon	= "20초 후 4번째 포탑 준비",
+	warnTurretsReady		= "4번째 포탑 준비"
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결",
 	timerDeepBreathCast			= "화염 숨결",
-	timerAllTurretsReady	= "Turrets"	
+	timerAllTurretsReady		= "포탑"	
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결 타이머 보기",
 	timerDeepBreathCast			= "화염 숨결 시전 타이머 보기",
 	SpecWarnDevouringFlame		= "활활 타오르는 화염 대상 특수 경보 보기",
 	PlaySoundOnDevouringFlame	= "활활 타오르는 화염의 데미지를 받을 때 사운드 재생",
-	timerAllTurretsReady		= "Show timer for turrets",
-	warnTurretsReadySoon		= "Show pre-warning for turrets",
-	warnTurretsReady			= "Show warning for turrets",	
+	timerAllTurretsReady		= "포탑 타이머 보기",
+	warnTurretsReadySoon		= "포탑 사전 경보 보기",
+	warnTurretsReady			= "포탑 경보 보기",	
 }
 
 L:SetMiscLocalization{
-	YellAir = "Give us a moment to prepare to build the turrets."
+	YellAir = "저희에게 잠깐 포탑을 설치할 시간을 주세요."
 }
 
 
@@ -144,24 +144,24 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge	= "과충전(보스 버프) 시전",
-	WarningChainlight		= "연쇄 변개",
-	WarningFusionPunch		= "융합 주먹",
-	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
+	WarningSupercharge	= "전력 충전 시전",
+	WarningChainlight		= "연쇄 번개",
+	WarningFusionPunch		= "융해의 주먹",
+	WarningOverwhelmingPower	= ">%s< 에게 압도적인 힘",
 	WarningRuneofPower		= "마력의 룬",
 	WarningRuneofDeath		= "죽음의 룬",
 	RuneofDeath			= "죽음의 룬 - 이동! 이동! 이동!",
-	LightningTendrils		= "번개 촉수 - 느리면 푹!찍! 이동!",	
+	LightningTendrils		= "번개 덩굴 - 느리면 푹!찍! 이동!",	
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge	= "과충전(보스 버프)",  -- gives the other bosses more power
-	TimerOverload			= "과충전",
+	TimerSupercharge	= "전력 충전",  -- gives the other bosses more power
+	TimerOverload			= "고전압",
 	TimerLightningWhirl		= "번개 소용돌이",
-	TimerLightningTendrils		= "번개 촉수",
+	TimerLightningTendrils		= "번개 덩굴",
 	timerFusionPunchCast		= "융합 주먹 시전",
 	timerFusionPunchActive		= "융합 주먹 : %s",
-	timerOverwhelmingPower		= "Overwhelming Power: %s",
+	timerOverwhelmingPower		= "압도적인 힘 : %s",
 	timerRunicBarrier		= "방어막의 룬",
 	timerRuneofDeath		= "죽음의 룬",	
 }
@@ -178,9 +178,9 @@ L:SetOptionLocalization{
 	WarningFusionPunch			= "융합 주먹 알리기",
 	timerFusionPunchCast		= "융합 주먹 시전바 보기",
 	timerFusionPunchActive		= "융합 주먹 타이머 보기",
-	WarningOverwhelmingPower	= "Announce Overwhelming Power",
-	timerOverwhelmingPower		= "Show Overwhelming Power timer",
-	SetIconOnOverwhelmingPower	= "Set Icon on Overwhelming Power target",
+	WarningOverwhelmingPower	= "압도적인 힘 알리기",
+	timerOverwhelmingPower		= "압도적인 힘 타이머 보기",
+	SetIconOnOverwhelmingPower	= "압도적인 힘 대상 아이콘 설정",
 	timerRunicBarrier			= "방어막의 룬 타이머 보기",
 	WarningRuneofPower			= "마력의 룬 알리기",
 	WarningRuneofDeath			= "죽음의 룬 알리기",
@@ -189,9 +189,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Steelbreaker		= "강철분쇄자",
-	RunemasterMolgeim 	= "룬마스터 몰게임",
-	StormcallerBrundir 	= "폭풍을 부르는 브룬디르",
+	Steelbreaker		= "강철파괴자",
+	RunemasterMolgeim 	= "룬술사 몰가임",
+	StormcallerBrundir 	= "폭풍소환사 브룬디르",
 }
 
 
@@ -232,7 +232,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "당신에게 안광 - 빠르게 이동!",
 	WarningEyebeam			= ">%s< 에게 안광 집중",
-	WarnGrip				= "Grip on >%s<"
+	WarnGrip				= ">%s< 에게 바위 손아귀"
 }
 
 L:SetTimerLocalization{
@@ -255,14 +255,14 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "Just a scratch!",
-	Yell_Trigger_arm_right		= "Only a flesh wound!"
+	Yell_Trigger_arm_left		= "얕은 상처야!",
+	Yell_Trigger_arm_right		= "꽉꽉 쥐어짜 주마!"
 }
 
 --------------
 --  Auriya  --
 --------------
-L = DBM:GetModLocalization("Auriya")
+L = DBM:GetModLocalization("Auriaya")
 
 L:SetGeneralLocalization{
 	name = "아우리아야"
