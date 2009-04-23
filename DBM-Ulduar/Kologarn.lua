@@ -41,7 +41,7 @@ end
 function mod:SPELL_DAMAGE(args)
 	if (args.spellId == 63783 or args.spellId == 63982) and args.destName == UnitName("player") then	-- Shockwave
 		timerNextShockwave:Start()
-	elseif (args.spellId == 63346 or args.spellid == 63976) and args.destName == UnitName("player") then
+	elseif (args.spellId == 63346 or args.spellId == 63976) and args.destName == UnitName("player") then
 		specWarnEyebeam:Show()
 	end
 end
