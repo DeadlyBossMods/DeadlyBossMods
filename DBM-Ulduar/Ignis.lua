@@ -33,7 +33,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62680  or args.spellid == 63472 then		-- Flame Jets
+	if args.spellId == 62680  or args.spellId == 63472 then		-- Flame Jets
 		timerFlameJetsCast:Start()
 		warnFlameJetsCast:Show()
 		timerFlameJetsCooldown:Start()
