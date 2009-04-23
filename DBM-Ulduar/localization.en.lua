@@ -274,6 +274,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast	= "Sentinel Blast - Interrupt!",
+	SpecWarnVoid	= "Void Zone - MOVE!",
 	WarnCatDied 	= "Feral Defender down (%d lifes remaining)",
 	WarnFear		= "Fear!",
 	WarnFearSoon 	= "Next Fear soon",
@@ -283,6 +284,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBlast	= "Show Special Warning on Sentinel Blast",
+	SpecWarnBlast	= "Show Special Warning when standing in Feral Essence",
 	WarnFear		= "Show Fear Warning",
 	WarnFearSoon	= "Show Fear soon Warning",
 	WarnCatDied		= "Show Warning when the Feral Defender dies",
