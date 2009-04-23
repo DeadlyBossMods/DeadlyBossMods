@@ -12,7 +12,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED_DOSE",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE"
 )
 
 local canInterrupt
@@ -30,6 +31,7 @@ mod:AddBoolOption("HealthFrame", true)
 local warnSwarm 	= mod:NewAnnounce("WarnSwarm", 2, 64396)
 
 local specWarnBlast = mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
+local specWarnVoid 	= mod:NewSpecialWarning("SpecWarnVoid")
 local warnFear 		= mod:NewAnnounce("WarnFear", 3, 64386)
 local warnFearSoon 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)
 local warnCatDied 	= mod:NewAnnounce("WarnCatDied", 3, 64455)
@@ -38,6 +40,8 @@ local warnSonic		= mod:NewAnnounce("WarnSonic", 2, 64688)
 local timerFear 	= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
 local timerSonic	= mod:NewCastTimer(64688)
+
+local isFeared = false
 
 
 function mod:SPELL_CAST_START(args)
@@ -60,6 +64,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSwarm:Show(args.destName)
 	elseif args.spellId == 64455 then -- Feral Essence
 		DBM.BossHealth:AddBoss(34035, L.Defender:format(9))
+	elseif args.spellId == 64386 and args.destName == UnitName("player") then
+		isFeared = true		
 	end
 end
 
@@ -77,8 +83,17 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 64455 then -- Feral Essence
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(34035)
+		elseif args.spellId == 64386 and args.destName == UnitName("player") then
+			isFeared = false	
 		end
 	end
 end
 
+function mod:SPELL_DAMAGE(args)
+	if (args.spellId == 64459 or args.spellId == 64675) and args.destName == UnitName("player") then
+		specWarnVoid:Show()
+	end
+end
+		
+		
 
