@@ -284,7 +284,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBlast = "수호자의 폭파 특수 경고 보기",
-	SpecWarnBlast	= "Show Special Warning when standing in Feral Essence",	
+	SpecWarnVoid	= "Show Special Warning when standing in Feral Essence",	
 	WarnFear = "공포 경보 보기",
 	WarnFearSoon = "공포 시전 전에 경보 보기",
 	WarnCatDied = "야생 수호자가 죽었을 때 경보 보기",
