@@ -218,21 +218,21 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
-	name = "Emalon the Stone Watcher"
+	name = "폭풍의 감시자 에말론"
 }
 
 L:SetWarningLocalization{
-	specWarnNova = "Lightning Nova",
-	warnNova = "Lightning Nova",
-	warnOverCharge	= "Overcharge"
+	specWarnNova = "번개 회오리",
+	warnNova = "번개 회오리",
+	warnOverCharge	= "과충전"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 	= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnNova 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnOverCharge 	= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge")
+	specWarnNova 	= ("특수 경보로 볼 |cff71d5ff|H주문:%d|h%s|h|r"):format(64216, "번개 회오리"),
+	warnNova 		= ("공격대 경고 |cff71d5ff|H주문:%d|h%s|h|r"):format(64216, "번개 회오리"),
+	warnOverCharge 	= ("공격대 경고 |cff71d5ff|H주문:%d|h%s|h|r"):format(64218, "과충전")
 }
 end
