@@ -6,6 +6,7 @@ mod:SetCreatureID(32865)
 mod:SetZone()
 
 mod:RegisterCombat("yell", L.YellPhase1)
+mod:RegisterKill("yell", L.YellKill)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",

@@ -360,7 +360,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
-	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!"
+	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
+	YellKill		= "Stay your arms! I yield!"
 }
 
 
@@ -378,7 +379,8 @@ L:SetMiscLocalization{
 	WaterSpirit	= "Ancient Water Spirit",
 	Snaplasher	= "Snaplasher",
 	StormLasher	= "Storm Lasher",
-	EmoteTree	= "???" -- /chatlog does not log messages with color codes...lol
+	EmoteTree	= "???", -- /chatlog does not log messages with color codes...lol
+	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
 }
 
 L:SetWarningLocalization{

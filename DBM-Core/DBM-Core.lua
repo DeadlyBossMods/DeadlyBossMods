@@ -1279,12 +1279,23 @@ do
 end
 
 do
+	-- called for all mob chat events
 	local function onMonsterMessage(type, msg)
+		-- pull detection
 		if combatInfo[GetRealZoneText()] then
 			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
 				if v.type == type and checkEntry(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0)
 				end
+			end
+		end
+		-- kill detection (wipe detection would also be nice to have)
+		-- todo: add sync
+		for i = #inCombat, 1, -1 do
+			local v = inCombat[i]
+			if not v.combatInfo then return end
+			if v.combatInfo.killType == type and v.combatInfo.killMsgs[msg] then
+				self:EndCombat(v)
 			end
 		end
 	end
@@ -2398,6 +2409,19 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	for i, v in ipairs(self.zones) do
 		combatInfo[v] = combatInfo[v] or {}
 		table.insert(combatInfo[v], info)
+	end
+end
+
+-- needs to be called _AFTER_ RegisterCombat
+function bossModPrototype:RegisterKill(msgType, ...)
+	if not self.combatInfo then
+		return
+	end
+	self.combatInfo.killType = msgType
+	self.combatInfo.killMsgs = {}
+	for i = 1, select("#", ...) do
+		local v = select(i, ...)
+		self.combatInfo.killMsgs[v] = true
 	end
 end
 
