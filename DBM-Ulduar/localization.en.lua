@@ -303,12 +303,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "Flesh Freeze",
+	WarningFlashFreeze	= "Flash Freeze",
 	WarningBitingCold	= "Biting Cold - MOVE"
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "Flesh Freeze incoming",  -- all ppl have to move on the rock patches
+	TimerFlashFreeze	= "Flash Freeze incoming",  -- all ppl have to move on the rock patches
 }
 
 L:SetOptionLocalization{
