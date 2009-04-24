@@ -29,8 +29,11 @@ local timerAlliesOfNature = mod:NewTimer(60, "TimerAlliesOfNature", 62678)
 local timerSimulKill = mod:NewTimer(60, "TimerSimulKill")
 local timerFuryYou = mod:NewTimer(10, "TimerFuryYou", 63571)
 
+local adds = {}
+
 function mod:OnCombatStart(delay)
 	enrage:Start()
+	table.wipe(adds)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
@@ -43,8 +46,8 @@ local altIcon = true
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 62678 then -- Summon Allies of Nature
 		timerAlliesOfNature:Start()
-	elseif args.spellId == 63571 then -- Nature's Fury
-		altIcon = not altIcon
+	elseif args.spellId == 63571 or args.spellId == 62589 then -- Nature's Fury
+		altIcon = not altIcon	--Alternates between Skull and X
 		self:SetIcon(args.destName, altIcon and 7 or 8, 10)
 		warnFury:Show(args.destName)
 		if args.destName == UnitName("player") then -- only cast on players; no need to check destFlags
@@ -60,8 +63,6 @@ end
 0xF130008097004D95,"Storm Lasher" --> 32919
 0xF13000808A004B25,"Freya" --> 32906
 ]]--
-
-local adds = {}
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SpawnYell then
@@ -83,7 +84,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE_FILTERED(msg, sender)
 end
 
 function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destName)
+	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 33202 or cid == 32916 or cid == 32919 then
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(cid)
