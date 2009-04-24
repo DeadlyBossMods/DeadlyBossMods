@@ -189,12 +189,12 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Archavon")
 
 L:SetGeneralLocalization({
-	name = "아카본 석실"
+	name = "바위 감시자 아카본"
 })
 
 L:SetWarningLocalization({
 	WarningShards	= "바위 조각 대상 : >%s<",
-	WarningGrab		= "Archavon grabbed >%s<"
+	WarningGrab		= ">%s< 에게 분쇄의 도약"
 })
 
 L:SetTimerLocalization({
@@ -202,13 +202,13 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	TankSwitch = "%%s lunges for (%S+)!"
+	TankSwitch = "%%s 이 (%S+) 으로 탱커 전환!"
 })
 
 L:SetOptionLocalization({
 	TimerShards = "바위 조각 타이머 보기",
 	WarningShards = "바위 조각 경고 보기",
-	WarningGrab = "Show Tank Grab warning"
+	WarningGrab = "분쇄의 도약 경고 보기"
 })
 
 --------------
