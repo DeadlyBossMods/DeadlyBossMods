@@ -366,7 +366,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPhase1			= "擅闖者!像你們這種膽敢干涉我好事的凡人將付出…等等--你……",
-	YellPhase2			= "無禮的小輩，你竟敢在我的王座之上挑戰我?我會親手碾碎你們!"
+	YellPhase2			= "無禮的小輩，你竟敢在我的王座之上挑戰我?我會親手碾碎你們!",
+	YellKill		= "Stay your arms! I yield!"
 }
 
 
@@ -384,7 +385,8 @@ L:SetMiscLocalization{
 	WaterSpirit 			= "上古水之靈",
 	Snaplasher 			= "猛攫鞭笞者",
 	StormLasher 			= "風暴鞭笞者",
-	EmoteTree 			= "???" -- /chatlog does not log messages with color codes...lol
+	EmoteTree 			= "???", -- /chatlog does not log messages with color codes...lol
+	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
 }
 
 L:SetWarningLocalization{
