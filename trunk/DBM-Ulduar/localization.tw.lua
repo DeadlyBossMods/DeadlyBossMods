@@ -325,7 +325,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-
+	YellKill		= "I... I am released from his grasp... at last."
 }
 
 
@@ -509,7 +509,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	YellPull 			= "我們即將有機會打擊怪物的首腦!現在將你的憤怒與仇恨貫注在他的爪牙上!",
-	YellPhase2 			= "讓仇恨與狂怒帶領你的攻擊!",
+	YellPhase2 			= "我是清醒的夢境。",
 	Sara 				= "薩拉",
 	WhisperBrainLink 		= "你中了腦波連結! 跑向 %s!",
 }
