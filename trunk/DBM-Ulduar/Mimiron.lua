@@ -79,7 +79,7 @@ end
 
 function mod:CHAT_MSG_LOOT(msg)
 	-- DBM:AddMsg(msg) - Meridium receives loot: [Magnetic Core]
-	local _, _, player, itemID = string.find(msg, "([^%s]+).*Hitem:(%d+)");
+	local _, _, player, itemID = string.find(msg, L.LootMsg);
 	if player and itemID and tonumber(itemID) == 46029 then
 		lootannounce:Show(player)
 	end
@@ -100,7 +100,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63666 then -- Napalm Shell
+	if args.spellId == 63666 or args.spellId == 65026 then -- Napalm Shell
 		timerShell:Start(args.destName)
 		shellWarn:Show(args.destName)
 		self:SetIcon(args.destName, 7, 6)
