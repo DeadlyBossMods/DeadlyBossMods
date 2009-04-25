@@ -280,7 +280,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast 			= "哨兵衝擊 - 打斷!",
-	SpecWarnVoid	= "虛空區域 - 移動!",
+	SpecWarnVoid			= "虛空區域 - 移動!",
 	WarnCatDied 			= "野性防衛者倒下 (剩餘%d支)",
 	WarnFear 			= "恐懼!",
 	WarnFearSoon 			= "下一次恐懼即將到來!",
@@ -290,7 +290,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBlast	 		= "為哨兵衝擊顯示特別警告",
-	SpecWarnVoid	= "當站在野性精華上面時顯示特別警告",
+	SpecWarnVoid			= "當站在野性精華上面時顯示特別警告",
 	WarnFear 			= "顯示恐懼警告",
 	WarnFearSoon 			= "顯示即將恐懼警告",
 	WarnCatDied 			= "當野性防衛者死亡時顯示警告",
@@ -367,7 +367,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPhase1			= "擅闖者!像你們這種膽敢干涉我好事的凡人將付出…等等--你……",
 	YellPhase2			= "無禮的小輩，你竟敢在我的王座之上挑戰我?我會親手碾碎你們!",
-	YellKill		= "Stay your arms! I yield!"
+	YellKill			= "Stay your arms! I yield!"
 }
 
 
@@ -386,7 +386,7 @@ L:SetMiscLocalization{
 	Snaplasher 			= "猛攫鞭笞者",
 	StormLasher 			= "風暴鞭笞者",
 	EmoteTree 			= "???", -- /chatlog does not log messages with color codes...lol
-	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
+	YellKill			= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
 }
 
 L:SetWarningLocalization{
@@ -427,7 +427,7 @@ L:SetWarningLocalization{
 	WarningPlasmaBlast		= "離子衝擊: %s - 治療", --unusable?
 	Phase2Engaged			= "第二階段即將到來 - 現在重組",
 	Phase3Engaged			= "第三階段即將到來 - 現在重組",
-	Warnshell			= "凝汽彈: >%s<",
+	WarnShell			= "凝汽彈: >%s<",
 	WarnBlast			= "離子衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
 	WarningShockBlast		= "震爆 - 跑開!"
@@ -460,6 +460,7 @@ L:SetMiscLocalization{
 	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",	
 	YellPhase2			= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
 	YellPhase3			= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
+	LootMsg				= "(.+)(.*)了物品:(%d+)。"
 }
 
 
