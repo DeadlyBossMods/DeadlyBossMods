@@ -67,7 +67,7 @@ L:SetOptionLocalization{
 	TimerScorchCast				= "불태우기 시전 타이머 보기",
 	WarningSlagPot				= "용암재 단지 대상 알리기",
 	TimerSlagPot				= "용암재 단지 타이머 보기",
-	SlagPotIcon				= "용암재 단지 대상 아이콘(징표) 설정"	
+	SlagPotIcon					= "용암재 단지 대상 아이콘(징표) 설정"	
 }
 
 ------------------
@@ -118,16 +118,16 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningLightBomb 	= "당신에게 빛의 폭탄",
-	WarningLightBomb		= ">%s< 에게 빛의 폭탄",
+	WarningLightBomb			= ">%s< 에게 빛의 폭탄",
 	SpecialWarningGravityBomb	= "당신에게 중력 폭탄",
-	WarningGravityBomb		= ">%s< 에게 중력 폭탄",
+	WarningGravityBomb			= ">%s< 에게 중력 폭탄",
 }
 
 L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "당신이 빛의 폭탄에 영향을 받을 때 특수 경고 보기",
-	WarningLightBomb		= "빛의 폭탄 알리기",
+	WarningLightBomb			= "빛의 폭탄 알리기",
 	SpecialWarningGravityBomb	= "당신이 중력 폭탄에 영향을 받을 때 특수 경고 보기",
-	WarningGravityBomb		= "중력 폭탄 알리기",
+	WarningGravityBomb			= "중력 폭탄 알리기",
 	PlaySoundOnGravityBomb		= "당신이 중력 폭탄일 때 소리 재생",
 	PlaySoundOnTympanicTantrum	= "귀청이 찢어지는 소리일 때 소리 재생",
 	SetIconOnLightBombTarget	= "빛의 폭탄 대상에게 공격대 아이콘 표시",
@@ -144,26 +144,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge	= "전력 충전 시전",
-	WarningChainlight		= "연쇄 번개",
-	WarningFusionPunch		= "융해의 주먹",
+	WarningSupercharge			= "전력 충전 시전",
+	WarningChainlight			= "연쇄 번개",
+	WarningFusionPunch			= "융해의 주먹",
 	WarningOverwhelmingPower	= ">%s< 에게 압도적인 힘",
-	WarningRuneofPower		= "마력의 룬",
-	WarningRuneofDeath		= "죽음의 룬",
-	RuneofDeath			= "죽음의 룬 - 이동! 이동! 이동!",
-	LightningTendrils		= "번개 덩굴 - 느리면 푹!찍! 이동!",	
+	WarningRuneofPower			= "마력의 룬",
+	WarningRuneofDeath			= "죽음의 룬",
+	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
+	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",	
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge	= "전력 충전",  -- gives the other bosses more power
-	TimerOverload			= "고전압",
-	TimerLightningWhirl		= "번개 소용돌이",
+	TimerSupercharge			= "전력 충전",  -- gives the other bosses more power
+	TimerOverload				= "고전압",
+	TimerLightningWhirl			= "번개 소용돌이",
 	TimerLightningTendrils		= "번개 덩굴",
 	timerFusionPunchCast		= "융합 주먹 시전",
 	timerFusionPunchActive		= "융합 주먹 : %s",
 	timerOverwhelmingPower		= "압도적인 힘 : %s",
-	timerRunicBarrier		= "방어막의 룬",
-	timerRuneofDeath		= "죽음의 룬",	
+	timerRunicBarrier			= "방어막의 룬",
+	timerRuneofDeath			= "죽음의 룬",	
 }
 
 L:SetOptionLocalization{
@@ -189,9 +189,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Steelbreaker		= "강철파괴자",
-	RunemasterMolgeim 	= "룬술사 몰가임",
-	StormcallerBrundir 	= "폭풍소환사 브룬디르",
+	Steelbreaker				= "강철파괴자",
+	RunemasterMolgeim 			= "룬술사 몰가임",
+	StormcallerBrundir 			= "폭풍소환사 브룬디르",
 }
 
 
@@ -273,23 +273,23 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast = "수호자의 폭파 - 차단!",
-	SpecWarnVoid	= "Void Zone - MOVE!",	
-	WarnCatDied = "야생의 수호자 죽음 (생명력 %d 남음)",
-	WarnFear = "공포!",
-	WarnFearSoon = "곧 다음 공포",
-	WarnSonic		= "Sonic Screech!",
-	WarnSwarm		= "Guardian Swarm on >%s<"
+	SpecWarnBlast 		= "수호자의 폭파 - 차단!",
+	SpecWarnVoid		= "공허의 지대 - 이동!",	
+	WarnCatDied 			= "야생의 수호자 죽음 (생명력 %d 남음)",
+	WarnFear 			= "공포!",
+	WarnFearSoon 		= "곧 다음 공포",
+	WarnSonic			= "날카로운 음파!",
+	WarnSwarm			= ">%s< 에게 무리의 수호자"
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast = "수호자의 폭파 특수 경고 보기",
-	SpecWarnVoid	= "Show Special Warning when standing in Feral Essence",	
-	WarnFear = "공포 경보 보기",
-	WarnFearSoon = "공포 시전 전에 경보 보기",
-	WarnCatDied = "야생 수호자가 죽었을 때 경보 보기",
-	WarnSwarm		= "Show Warning on Guardian Swarm",
-	WarnSonic		= "Show Sonic Screech Warning"
+	SpecWarnBlast 		= "수호자의 폭파 특수 경고 보기",
+	SpecWarnVoid		= "공허의 지대에 서있을 경우 특수 경보 보기",	
+	WarnFear 			= "공포 경보 보기",
+	WarnFearSoon		= "공포 시전 전에 경보 보기",
+	WarnCatDied 			= "야생 수호자가 죽었을 때 경보 보기",
+	WarnSwarm			= "무리의 수호자 대상 경보 보기",
+	WarnSonic			= "날카로운 음파 경보 보기"
 }
 
 
@@ -304,7 +304,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze	= "급속 결빙",
-	WarningBitingCold	= "살을 애는 추위 - 움직이세요!"
+	WarningBitingCold	= "매서운 추위 - 움직이세요!"
 }
 
 L:SetTimerLocalization{
@@ -314,8 +314,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerFlashFreeze	= "급속 결빙 시전 타이머 보기",
 	WarningFlashFreeze	= "급속 결빙 경보 보기",
-	WarningBitingCold	= "Show warning for Biting Cold",
-	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast"	
+	WarningBitingCold	= "매서운 추위 경보 보기",
+	PlaySoundOnFlashFreeze	= "급속 결빙 시전일 때 사운드 재생"	
 }
 
 L:SetMiscLocalization{
@@ -353,14 +353,15 @@ L:SetOptionLocalization{
 	UnbalancingStrike		= "넘어트리는 일격 타겟 알리기",
 	WarningStormhammer		= "폭풍망치 타겟 알리기",
 	WarningPhase2			= "2 페이즈 알리기",
-	UnbalancingStrike		= "Announce Unbalancing Strike",
-	WarningBomb				= "Announce Rune Detonation",	
+	UnbalancingStrike		= "넘어뜨리는 일격 알리기",
+	WarningBomb				= "룬 폭파 알리기",	
 	RangeFrame				= "거리 창 보기"
 }
 
 L:SetMiscLocalization{
-	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
-	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!"
+	YellPhase1		= "침입자라니! 감히 내 취미 생활을 방해하는 놈들은 쓴맛을 단단히... 잠깐... 너는...",
+	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
+	YellKill		= "Stay your arms! I yield!"
 }
 
 
@@ -379,6 +380,7 @@ L:SetMiscLocalization{
 	Snaplasher = "철썩채찍",
 	StormLasher = "폭풍 채찍",
 	EmoteTree	= "???" -- /chatlog does not log messages with color codes...lol
+	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."	
 }
 
 L:SetWarningLocalization{
@@ -431,6 +433,7 @@ L:SetMiscLocalization{
 	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
 	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9%! Barely a dent! Moving right along.",
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
+	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
 
