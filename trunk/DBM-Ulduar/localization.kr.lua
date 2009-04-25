@@ -379,7 +379,7 @@ L:SetMiscLocalization{
 	WaterSpirit = "고대 물의 정령",
 	Snaplasher = "철썩채찍",
 	StormLasher = "폭풍 채찍",
-	EmoteTree	= "???" -- /chatlog does not log messages with color codes...lol
+	EmoteTree	= "???", -- /chatlog does not log messages with color codes...lol
 	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."	
 }
 
@@ -467,7 +467,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
-	CrashWhisper			= "Shadow Crash on You! Run away!"	
+	CrashWhisper			= "당신에게 그림자 충돌! 뛰세요!"	
 }
 
 
@@ -483,13 +483,13 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
 	YellPhase2 = "I am the lucid dream.",
-	Sara = "Sara",
+	Sara = "사라",
 	WhisperBrainLink = "Brain Link on you! Run to %s!",
 }
 
 L:SetWarningLocalization{
 	WarningGuardianSpawned 	= "Guardian spawned",
-	WarningP2 				= "Phase 2",
+	WarningP2 				= "2 페이즈",
 	WarningBrainLink 		= "Brain Link on >%s< and >%s<",
 	SpecWarnBrainLink		= "Brain Link on you and %s!",
 	WarningSanity 			= "%d Sanity debuffs remaining",
@@ -501,7 +501,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarningGuardianSpawned	= "Announce Guardian Spawns",
-	WarningP2				= "Announce Phase 2",
+	WarningP2				= "2 페이즈 알리기",
 	WarningBrainLink		= "Announce Brain Links",
 	SpecWarnBrainLink		= "Show Special Warning when Brain Linked",
 	WarningSanity			= "Show Warning when Sanity low",
