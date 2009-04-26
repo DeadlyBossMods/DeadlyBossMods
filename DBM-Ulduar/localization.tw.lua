@@ -20,12 +20,14 @@ L:SetTimerLocalization{
 	
 L:SetMiscLocalization{
 	YellPull			= "發現敵意實體。啟動威脅評估協定。首要目標接近中。30秒後將再度評估。",
-	Emote				= "%%s獵殺(%S+)%."
+	Emote				= "%%s緊追(%S+)%。"
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn		= "獵殺 >%s<!",
-	warnNextPursueSoon		= "5秒後 獵殺轉換"
+	PursueWarn			= "獵殺 >%s<!",
+	warnNextPursueSoon		= "5秒後 獵殺轉換",
+	SpecialPursueWarnYou		= "你中了獵殺囉 快跑",
+	SystemOverload			= "電路超載"
 }
 
 L:SetOptionLocalization{
@@ -325,7 +327,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellKill		= "I... I am released from his grasp... at last."
+	YellKill			= "I... I am released from his grasp... at last."
 }
 
 
@@ -460,10 +462,10 @@ L:SetMiscLocalization{
 	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",	
 	YellPhase2			= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
 	YellPhase3			= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
-	LootMsg				= "([^%s]+).*Hitem:(%d+)",
-	MobPhase1 = "空中指揮裝置",
-	MobPhase2 = "VX-001",
-	MobPhase3 = "戰輪MK II"
+	LootMsg				= "([^%s]+)拾取了物品:(%d+)。",
+	MobPhase1 			= "空中指揮裝置",
+	MobPhase2 			= "VX-001",
+	MobPhase3 			= "戰輪MK II"
 }
 
 
