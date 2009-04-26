@@ -292,7 +292,7 @@ L:SetOptionLocalization({
 	ArrowsInverse			= "倒轉的 \"四角\" 站位打法 (如果極性改變顯示左箭頭, 沒變顯示右箭頭)",
 	WarningThrow			= "顯示投擲坦克警告",
 	WarningThrowSoon		= "顯示投擲坦克的預先警告",
-	TimerThrow			= "顯投擲坦克計時器"
+	TimerThrow			= "顯示投擲坦克計時器"
 })
 
 L:SetWarningLocalization({
@@ -325,7 +325,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization({
 	Yell1 				= "絕不留情!",
-	Yell2 				= "練習時間到此為止絕不留情!都拿出真本事來!",
+	Yell2 				= "練習時間到此為止!都拿出真本事來!",
 	Yell3 				= "照我教你的做!",
 	Yell4 				= "絆腿……有什麼問題嗎?"
 })
