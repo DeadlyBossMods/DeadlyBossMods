@@ -529,7 +529,8 @@ L:SetWarningLocalization{
 	SpecWarnSanity 			= "剩下 %d 理智",
 	SpecWarnGuardianLow 		= "停止攻擊這支守護者!",
 	WarnMadness 			= "正在施放 瘋狂誘陷",
-	SpecWarnMadnessOutNow		= "瘋狂誘陷即將完結 - 快傳送出去"
+	SpecWarnMadnessOutNow		= "瘋狂誘陷即將完結 - 快傳送出去",
+	WarnBrainPortalSoon		= "3秒後 傳送門出現"
 }
 
 L:SetTimerLocalization{
@@ -549,5 +550,6 @@ L:SetOptionLocalization{
 	SpecWarnMadnessOutNow		= "在瘋狂誘陷完結前顯示特別警告",
 	WhisperBrainLink 		= "密語提示中了腦波連結的人",
 	NextPortal			= "顯示下一次 傳送門的計時器",
+	WarnBrainPortalSoon		= "提示傳送門",
 	ShowSaraHealth			= "顯示薩拉的血量"
 }
