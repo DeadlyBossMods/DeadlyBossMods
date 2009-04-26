@@ -29,6 +29,7 @@ local specWarnSanity 			= mod:NewSpecialWarning("SpecWarnSanity")
 local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
 local timerMadness 			= mod:NewCastTimer(60, 64059)
 local specWarnMadnessOutNow		= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
+local warnBrainPortalSoon		= mod:NewAnnounce("WarnBrainPortalSoon", 1)
 
 local brainportal			= mod:NewTimer(27, "NextPortal")
 
@@ -53,6 +54,7 @@ function mod:SPELL_CAST_START(args)
 		timerMadness:Start()
 		warnMadness:Show()
 		brainportal:Schedule(58)
+		warnBrainPortalSoon:Schedule(85)
 		specWarnMadnessOutNow:Schedule(56)
 	end
 end
@@ -127,8 +129,10 @@ function mod:OnSync(event, args)
 	if event == "Phase2" and phase == 1 then
 		phase = 2
 		brainportal:Start(70)
+		warnBrainPortalSoon:Schedule(70)
 		warnP2:Show()
-		if self.Options.ShowSaraHealth and self:GetCIDFromGUID(args.destGUID) == 33134 then
+		--if self.Options.ShowSaraHealth and self:GetCIDFromGUID(args.destGUID) == 33134 then
+		if self.Options.ShowSaraHealth then
 			DBM.BossHealth:RemoveBoss(33134)
 			if not self.Options.HealthFrame then
 				DBM.BossHealth:Hide()

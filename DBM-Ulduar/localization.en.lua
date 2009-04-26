@@ -496,7 +496,8 @@ L:SetWarningLocalization{
 	SpecWarnSanity 			= "%d Sanity debuffs remaining",
 	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
 	WarnMadness			= "Casting Induce Madness",
-	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT"
+	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT",
+	WarnBrainPortalSoon		= "Portal  in 3 sec"
 }
 
 L:SetOptionLocalization{
@@ -508,6 +509,7 @@ L:SetOptionLocalization{
 	SpecWarnSanity			= "Show Special Warning when Sanity very low",
 	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
 	WarnMadness			= "Announce Madness",
+	WarnBrainPortalSoon		= "Announce Potral",
 }	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends"
 
 
