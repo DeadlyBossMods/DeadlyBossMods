@@ -360,8 +360,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPhase1		= "침입자라니! 감히 내 취미 생활을 방해하는 놈들은 쓴맛을 단단히... 잠깐... 너는...",
-	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
-	YellKill		= "Stay your arms! I yield!"
+	YellPhase2		= "건방진 젖먹이 같으니... 감히 여기까지 기어올라와 내게 도전해? 내 손으로 쓸어버리겠다!",
+	YellKill		= "무기를 거둬라! 내가 졌다!"
 }
 
 
@@ -375,12 +375,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell = "Children, assist me!",
+	SpawnYell = "얘들아, 날 도와라!",
 	WaterSpirit = "고대 물의 정령",
 	Snaplasher = "철썩채찍",
 	StormLasher = "폭풍 채찍",
-	EmoteTree	= "???", -- /chatlog does not log messages with color codes...lol
-	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."	
+	EmoteTree	= "|cFF00FFFF생명의 어머니의 선물|r이 자라기 시작합니다!", -- /chatlog does not log messages with color codes...lol
+	YellKill	= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다."	
 }
 
 L:SetWarningLocalization{
@@ -413,8 +413,8 @@ L:SetWarningLocalization{
 	Phase2Engaged		= "곧 2 페이즈 - 지금 재 그룹 하세요.",
 	Phase3Engaged		= "곧 3 페이즈 - 지금 재 그룹 하세요.",	
 	WarnShell			= "Napalm Shells on >%s<",
-	WarnBlast			= "Plasma Blast on >%s<",
-	MagneticCore		= ">%s< got Magnetic Core",
+	WarnBlast			= ">%s< 에게 플라즈마 폭발!",
+	MagneticCore		= ">%s< 님이 자기 증폭기를 획득했습니다.",
 	WarningShockBlast	= "Shock Blast - MOVE AWAY"	
 }
 
@@ -425,7 +425,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimeToPhase2		= "페이즈 2 시작",
 	TimeToPhase3		= "페이즈 3 시작",
-	MagneticCore		= "Announce Magnetic Core looter",
+	MagneticCore		= "자기 증폭기 획득자 알리기",
 	HealthFramePhase4	= "페이즈 4 의 체력 프레임 보기"	
 }
 
@@ -466,7 +466,7 @@ L:SetOptionLocalization{
 	}
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
+	EmoteSaroniteVapors		= "가까운 사로나이트 증기 구름이 합쳐집니다!",
 	CrashWhisper			= "당신에게 그림자 충돌! 뛰세요!"	
 }
 
@@ -482,7 +482,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2 = "I am the lucid dream.",
+	YellPhase2 = "나는, 살아 있는 꿈이다.",
 	Sara = "사라",
 	WhisperBrainLink = "Brain Link on you! Run to %s!",
 }
@@ -496,7 +496,8 @@ L:SetWarningLocalization{
 	SpecWarnSanity 			= "%d Sanity debuffs remaining",
 	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
 	WarnMadness 				= "Casting Induce Madness",
-	SpecWarnMadnessOutNow	= "Madness ends - MOVE OUT"
+	SpecWarnMadnessOutNow	= "Madness ends - MOVE OUT",
+	WarnBrainPortalSoon		= "Portal  in 3 sec"
 }
 
 L:SetOptionLocalization{
@@ -508,6 +509,7 @@ L:SetOptionLocalization{
 	SpecWarnSanity			= "Show Special Warning when Sanity very low",
 	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
 	WarnMadness				= "Announce Madness",
+	WarnBrainPortalSoon		= "Announce Potral",	
 	SpecWarnMadnessOutNow	= "Show Special Warning shortly before Madness ends"
 }
 
