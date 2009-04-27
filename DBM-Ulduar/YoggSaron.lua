@@ -40,6 +40,8 @@ mod:AddBoolOption("WhisperBrainLink", false)
 mod:AddBoolOption("WarningSqueeze", false, "announce")
 mod:AddBoolOption("SetIconOnFearTarget")
 
+local enrageTimer	= mod:NewEnrageTimer(900)
+
 local phase = 1
 local targetWarningsShown = {}
 function mod:OnCombatStart(delay)
