@@ -94,7 +94,7 @@ function mod:SPELL_CAST_START(args)
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	end
-	if args.spellId == 64529 then -- blasma blast
+	if args.spellId == 64529 or args.spellId == 62997 then -- plasma blast
 		timerPlasmaBlastCD:Start()
 	end
 end
@@ -104,7 +104,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerShell:Start(args.destName)
 		shellWarn:Show(args.destName)
 		self:SetIcon(args.destName, 7, 6)
-	elseif args.spellId == 64529 then -- Plasma Blast
+	elseif args.spellId == 64529 or args.spellId == 62997 then -- Plasma Blast
 		blastWarn:Show(args.destName)
 		self:SetIcon(args.destName, 8, 6)
 	end
