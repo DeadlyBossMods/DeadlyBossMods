@@ -30,11 +30,13 @@ local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
 local timerMadness 			= mod:NewCastTimer(60, 64059)
 local specWarnMadnessOutNow		= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local warnBrainPortalSoon		= mod:NewAnnounce("WarnBrainPortalSoon", 1)
+local warnSqueeze		= mod:NewAnnounce("WarnSqueeze", 1)
 
 local brainportal			= mod:NewTimer(27, "NextPortal")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
+mod:AddBoolOption("WarningSqueeze", false, "announce")
 
 local phase = 1
 local targetWarningsShown = {}
@@ -88,6 +90,12 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif args.spellId == 63830 then	-- Malady of the Mind (Fear)
 		self:SetIcon(args.destName, 8, 30)
+		
+	elseif args.spellId == 64126 then	-- Squeeze
+		warnSqueeze:Show(args.destName)
+		if args.destName == UnitName("player") and self.Options.WarningSqueeze then
+			SendChatMessage(L.WarningYellSqueeze, "YELL")	
+		end
 	end
 end
 
