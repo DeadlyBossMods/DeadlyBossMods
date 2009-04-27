@@ -346,6 +346,7 @@ do
 		if unusedBars[#unusedBars] then
 			frame = unusedBars[#unusedBars]
 			unusedBars[#unusedBars] = nil
+			frame:Show()
 		else
 			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
 			fCounter = fCounter + 1
@@ -358,11 +359,13 @@ do
 		if timer <= 0 then return end
 		if (self.numBars or 0) >= 15 then return end
 		local newBar = self:GetBar(id)
-		if newBar then
+		if newBar then -- update an existing bar
 			newBar:SetTimer(timer)
 			newBar:SetElapsed(0)
 			newBar:ApplyStyle()
-		else
+			newBar:SetText(id)
+			newBar:SetIcon(icon)
+		else -- create a new one
 			newBar = next(unusedBarObjects, nil)
 			local newFrame = createBarFrame(self)
 			if newBar then
@@ -395,19 +398,19 @@ do
 			end
 			newFrame.obj = newBar
 			self.numBars = (self.numBars or 0) + 1
-			self.smallBars:Append(newBar)
+			if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
+				newBar.enlarged = true
+				self.hugeBars:Append(newBar)
+			else
+				self.smallBars:Append(newBar)
+			end
+			newBar:ApplyStyle()
+			newBar:SetText(id)
+			newBar:SetIcon(icon)
+			newBar:SetPosition()
+			newBar:Update(0)
+			self.bars[newBar] = true
 		end
-		if (timer <= self.options.EnlargeBarsTime or huge) and self:GetOption("HugeBarsEnabled") then -- starts enlarged?
-			newBar:RemoveFromList()
-			self.hugeBars:Append(newBar)
-			newBar.enlarged = true
-		end
-		newBar:SetPosition()
-		newBar:ApplyStyle()
-		newBar:SetText(id)
-		newBar:SetIcon(icon)
-		newBar:Update(0)
-		self.bars[newBar] = true
 		return newBar
 	end
 end
@@ -709,7 +712,7 @@ function barPrototype:Cancel()
 	end
 	self.owner.bars[self] = nil
 	unusedBarObjects[self] = self
-	self.owner.numBars = (self.owner.numBars or 0) - 1
+	self.owner.numBars = (self.owner.numBars or 1) - 1
 end
 
 
