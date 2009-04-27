@@ -524,6 +524,7 @@ L:SetWarningLocalization{
 	WarningWellSpawned 		= "理智之井 出現了",
 	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
 	WarningP2 			= "第二階段",
+	WarningP3 			= "第三階段",
 	WarningBrainLink 		= "腦波連結: >%s< 和 >%s<",
 	SpecWarnBrainLink 		= "你和%s中了腦波連結!",
 	WarningSanity 			= "剩下 %d 理智",
@@ -543,6 +544,7 @@ L:SetOptionLocalization{
 	WarningWellSpawned 		= "提示理智之井的出現",
 	WarningGuardianSpawned 		= "提示尤格薩倫守護者的出現",
 	WarningP2 			= "提示第二階段",
+	WarningP3			= "提示第三階段",
 	WarningBrainLink		= "提示腦波連結",
 	SpecWarnBrainLink 		= "當你中了腦波連結顯示特別警告",
 	WarningSanity			= "當理智剩下50時顯示警告",
@@ -555,5 +557,6 @@ L:SetOptionLocalization{
 	WarnBrainPortalSoon		= "提示傳送門",
 	WarnSqueeze			= "提示壓榨 (觸手綁人)",
 	WarningSqueeze			= "當你中了壓榨 (觸手綁人)時大喊",
+	SetIconOnFearTarget		= "設置標記在恐懼的目標",
 	ShowSaraHealth			= "顯示薩拉的血量"
 }
