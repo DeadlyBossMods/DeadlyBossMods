@@ -485,6 +485,7 @@ L:SetMiscLocalization{
 	YellPhase2 = "I am the lucid dream.",
 	Sara = "Sara",
 	WhisperBrainLink = "Brain Link on you! Run to %s!",
+	WarningYellSqueeze	= "Squeeze on me! Help me!"
 }
 
 L:SetWarningLocalization{
@@ -497,7 +498,8 @@ L:SetWarningLocalization{
 	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
 	WarnMadness			= "Casting Induce Madness",
 	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT",
-	WarnBrainPortalSoon		= "Portal  in 3 sec"
+	WarnBrainPortalSoon		= "Portal  in 3 sec",
+	WarnSqueeze = "Squeeze: >%s<",
 }
 
 L:SetOptionLocalization{

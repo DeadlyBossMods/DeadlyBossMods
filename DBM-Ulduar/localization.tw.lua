@@ -517,6 +517,7 @@ L:SetMiscLocalization{
 	YellPhase2 			= "我是清醒的夢境。",
 	Sara 				= "薩拉",
 	WhisperBrainLink 		= "你中了腦波連結! 跑向 %s!",
+	WarningYellSqueeze		= "我給觸手綁了! 快救命!"
 }
 
 L:SetWarningLocalization{
@@ -530,7 +531,8 @@ L:SetWarningLocalization{
 	SpecWarnGuardianLow 		= "停止攻擊這支守護者!",
 	WarnMadness 			= "正在施放 瘋狂誘陷",
 	SpecWarnMadnessOutNow		= "瘋狂誘陷即將完結 - 快傳送出去",
-	WarnBrainPortalSoon		= "3秒後 傳送門出現"
+	WarnBrainPortalSoon		= "3秒後 傳送門出現",
+	WarnSqueeze 			= "壓榨(觸手綁人): >%s<"
 }
 
 L:SetTimerLocalization{
@@ -551,5 +553,7 @@ L:SetOptionLocalization{
 	WhisperBrainLink 		= "密語提示中了腦波連結的人",
 	NextPortal			= "顯示下一次 傳送門的計時器",
 	WarnBrainPortalSoon		= "提示傳送門",
+	WarnSqueeze			= "提示壓榨 (觸手綁人)",
+	WarningSqueeze			= "當你中了壓榨 (觸手綁人)時大喊",
 	ShowSaraHealth			= "顯示薩拉的血量"
 }
