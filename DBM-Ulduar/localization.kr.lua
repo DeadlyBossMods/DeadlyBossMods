@@ -384,17 +384,17 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2 = "2 페이즈",
-	WarnSimulKill = "첫번째 애드 죽음 - 1분 후 부활",
-	WarnFury = ">%s< 에게 자연의 분노",
+	WarnPhase2 		= "2 페이즈",
+	WarnSimulKill	 = "첫번째 애드 죽음 - 1분 후 부활",
+	WarnFury 		= ">%s< 에게 자연의 분노",
 	SpecWarnFury = "당신에게 자연의 분노!"
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam = "태양 광선: %s",
-	TimerAlliesOfNature = "자연 조화 쿨다운",
-	TimerSimulKill = "부활",
-	TimerFuryYou = "당신에게 자연의 분노"
+	TimerUnstableSunBeam 	= "태양 광선: %s",
+	TimerAlliesOfNature		 = "자연 조화 쿨다운",
+	TimerSimulKill 			= "부활",
+	TimerFuryYou 			= "당신에게 자연의 분노"
 }
 
 
@@ -408,19 +408,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DarkGlare		= "Laser Barrage",
+	DarkGlare		= "레이저 탄막",
 	WarningPlasmaBlast	= "%s 에게 플라즈마 폭발 - 폭힐! 폭힐!",
 	Phase2Engaged		= "곧 2 페이즈 - 지금 재 그룹 하세요.",
 	Phase3Engaged		= "곧 3 페이즈 - 지금 재 그룹 하세요.",	
-	WarnShell			= "Napalm Shells on >%s<",
+	WarnShell			= ">%s< 에게 네이팜 탄!",
 	WarnBlast			= ">%s< 에게 플라즈마 폭발!",
-	MagneticCore		= ">%s< 님이 자기 증폭기를 획득했습니다.",
-	WarningShockBlast	= "Shock Blast - MOVE AWAY"	
+	MagneticCore		= ">%s< 자기 증폭기를 획득했습니다.",
+	WarningShockBlast	= "충격파 - 움직이세요!"	
 }
 
 L:SetTimerLocalization{
 	ProximityMines		= "새로운 접근 지뢰",
 }
+
 
 L:SetOptionLocalization{
 	TimeToPhase2		= "페이즈 2 시작",
@@ -430,9 +431,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
-	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9%! Barely a dent! Moving right along.",
-	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
+	YellPull		= "시간이 없어, 친구들! 내가 최근에 만든 기막힌 발명품을 시험하게 도와 주겠지? 자, 마음 바꿀 생각은 말라고. XT-002를 그 꼬락서니로 만들었으니, 너흰 나한테 빚진 셈이란 걸 잊지 마!",	
+	YellPhase2		= "멋지군! 참으로 경이적인 결과야! 차체 내구도 98.9 퍼센트라! 손상이라고 보기도 어렵지! 계속하자고.",
+	YellPhase3		= "고맙다, 친구들! 너희 덕분에 멋진 자료를 좀 얻었어! 자, 그걸 어디 뒀더라... 아, 여기 있군.",
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
@@ -481,35 +482,37 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2 = "나는, 살아 있는 꿈이다.",
-	Sara = "사라",
-	WhisperBrainLink = "Brain Link on you! Run to %s!",
+	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
+	YellPhase2 			= "나는, 살아 있는 꿈이다.",
+	Sara 				= "사라",
+	WhisperBrainLink 	= "당신에게 두뇌의 고리! %s 에게 뛰세요!",
+	WarningYellSqueeze	= "Squeeze on me! Help me!"	
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 	= "Guardian spawned",
+	WarningGuardianSpawned 	= "요그사론의 수호자 소환!",
 	WarningP2 				= "2 페이즈",
-	WarningBrainLink 		= "Brain Link on >%s< and >%s<",
-	SpecWarnBrainLink		= "Brain Link on you and %s!",
+	WarningBrainLink 		= ">%s< 그리고 >%s< 두뇌의 고리",
+	SpecWarnBrainLink		= "당신 그리고 %s 에게 두뇌의 고리!",
 	WarningSanity 			= "%d Sanity debuffs remaining",
 	SpecWarnSanity 			= "%d Sanity debuffs remaining",
 	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
 	WarnMadness 				= "Casting Induce Madness",
 	SpecWarnMadnessOutNow	= "Madness ends - MOVE OUT",
-	WarnBrainPortalSoon		= "Portal  in 3 sec"
+	WarnBrainPortalSoon		= "3 초 후 포탈",	
+	WarnSqueeze 				= "Squeeze: >%s<"
 }
 
 L:SetOptionLocalization{
-	WarningGuardianSpawned	= "Announce Guardian Spawns",
+	WarningGuardianSpawned	= "요그사론의 수호자 소환 알리기",
 	WarningP2				= "2 페이즈 알리기",
-	WarningBrainLink		= "Announce Brain Links",
-	SpecWarnBrainLink		= "Show Special Warning when Brain Linked",
+	WarningBrainLink		= "두뇌의 고리 알리기",
+	SpecWarnBrainLink		= "두뇌의 고리 특수 경고 보기",
 	WarningSanity			= "Show Warning when Sanity low",
 	SpecWarnSanity			= "Show Special Warning when Sanity very low",
 	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
-	WarnMadness				= "Announce Madness",
-	WarnBrainPortalSoon		= "Announce Potral",	
+	WarnMadness				= "광기 유발 알리기",
+	WarnBrainPortalSoon		= "차원문 알리기",	
 	SpecWarnMadnessOutNow	= "Show Special Warning shortly before Madness ends"
 }
 
