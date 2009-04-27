@@ -37,7 +37,8 @@ local brainportal			= mod:NewTimer(27, "NextPortal")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
-mod:AddBoolOption("WarningSqueeze", false, "announce")mod:AddBoolOption("SetIconOnFearTarget")
+mod:AddBoolOption("WarningSqueeze", false, "announce")
+mod:AddBoolOption("SetIconOnFearTarget")
 
 local phase = 1
 local targetWarningsShown = {}
