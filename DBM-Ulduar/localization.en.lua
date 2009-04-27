@@ -481,10 +481,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2 = "I am the lucid dream.",
-	Sara = "Sara",
-	WhisperBrainLink = "Brain Link on you! Run to %s!",
+	YellPull 		= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
+	YellPhase2 		= "I am the lucid dream.",
+	Sara 			= "Sara",
+	WhisperBrainLink 	= "Brain Link on you! Run to %s!",
 	WarningYellSqueeze	= "Squeeze on me! Help me!"
 }
 
@@ -498,7 +498,9 @@ L:SetWarningLocalization{
 	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
 	WarnMadness			= "Casting Induce Madness",
 	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT",
-	WarnBrainPortalSoon		= "Portal  in 3 sec",	WarnSqueeze = "Squeeze: >%s<",}
+	WarnBrainPortalSoon		= "Portal  in 3 sec",	
+	WarnSqueeze 			= "Squeeze: >%s<"
+}
 
 L:SetOptionLocalization{
 	WarningGuardianSpawned		= "Announce Guardian Spawns",
