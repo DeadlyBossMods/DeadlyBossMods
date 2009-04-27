@@ -360,8 +360,10 @@ do
 		if (self.numBars or 0) >= 15 then return end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
-			newBar:SetTimer(timer)
-			newBar:SetElapsed(0)
+			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
+			if newBar.dead then return end
+			newBar:SetElapsed(0) -- same
+			if newBar.dead then return end
 			newBar:ApplyStyle()
 			newBar:SetText(id)
 			newBar:SetIcon(icon)
@@ -370,6 +372,7 @@ do
 			local newFrame = createBarFrame(self)
 			if newBar then
 				unusedBarObjects[newBar] = nil
+				newBar.dead = nil -- resurrected it :)
 				newBar.frame = newFrame
 				newBar.id = id
 				newBar.timer = timer
@@ -566,8 +569,7 @@ function barPrototype:Update(elapsed)
 		spark:SetVertexColor(r, g, b)
 	end
 	if self.timer <= 0 then
-		self:Cancel()
-		return
+		return self:Cancel()
 	else
 		if obj.options.FillUpBars then
 			bar:SetValue(1 - self.timer/self.totalTime)
@@ -712,6 +714,7 @@ function barPrototype:Cancel()
 	end
 	self.owner.bars[self] = nil
 	unusedBarObjects[self] = self
+	self.dead = true
 	self.owner.numBars = (self.owner.numBars or 1) - 1
 end
 
@@ -835,7 +838,7 @@ function barPrototype:MoveToNextPosition(oldX, oldY)
 end
 
 function barPrototype:Enlarge()
-	local newAnchor = (self.owner.secLastBar and self.owner.secLastBar.frame) or self.owner.secAnchor
+	local newAnchor = (self.owner.hugeBars.last and self.owner.hugeBars.last.frame) or self.owner.secAnchor
 	local oldX = self.frame:GetRight() - self.frame:GetWidth()/2
 	local oldY = self.frame:GetTop()
 	self.frame:ClearAllPoints()
