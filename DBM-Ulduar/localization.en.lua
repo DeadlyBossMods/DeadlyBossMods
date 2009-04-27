@@ -498,13 +498,12 @@ L:SetWarningLocalization{
 	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
 	WarnMadness			= "Casting Induce Madness",
 	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT",
-	WarnBrainPortalSoon		= "Portal  in 3 sec",
-	WarnSqueeze = "Squeeze: >%s<",
-}
+	WarnBrainPortalSoon		= "Portal  in 3 sec",	WarnSqueeze = "Squeeze: >%s<",}
 
 L:SetOptionLocalization{
 	WarningGuardianSpawned		= "Announce Guardian Spawns",
 	WarningP2			= "Announce Phase 2",
+	WarningP3			= "Announce Phase 3",
 	WarningBrainLink		= "Announce Brain Links",
 	SpecWarnBrainLink		= "Show Special Warning when Brain Linked",
 	WarningSanity			= "Show Warning when Sanity low",
@@ -512,7 +511,9 @@ L:SetOptionLocalization{
 	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
 	WarnMadness			= "Announce Madness",
 	WarnBrainPortalSoon		= "Announce Potral",
-}	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends"
+	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends",
+	SetIconOnFearTarget		= "Set Icon on Fear Target"
+}
 
 
 
