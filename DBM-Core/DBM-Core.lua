@@ -1637,24 +1637,25 @@ do
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterRaidWarning)
 end
 
-do
-	local old = RaidBossEmoteFrame_OnEvent
-	RaidBossEmoteFrame_OnEvent = function(...)
-		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then
-			return
-		end
-		return old(...)
-	end
-end
 
 do
-	local old = RaidWarningFrame_OnEvent
-	RaidWarningFrame_OnEvent = function(self, event, msg, ...)
+	local old = RaidWarningFrame:GetScript("OnEvent")
+	RaidWarningFrame:SetScript("OnEvent", function(self, event, msg, ...)
 		if DBM.Options.SpamBlockRaidWarning and msg:find("%*%*%* .* %*%*%*") then
 			return
 		end
 		return old(self, event, msg, ...)
-	end
+	end)
+end
+
+do	
+	local old = RaidBossEmoteFrame:GetScript("OnEvent")
+	RaidBossEmoteFrame:SetScript("OnEvent", function(...)
+		if DBM.Options.HideBossEmoteFrame and #inCombat > 0 then
+			return
+		end
+		return old(...)
+	end)
 end
 
 
