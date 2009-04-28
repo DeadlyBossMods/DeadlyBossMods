@@ -474,7 +474,7 @@ L:SetOptionLocalization({
 	WarningBlastTargets	= "Объявлять цели Ледяного взрыва",
 	WarningPhase2		= "Объявлять наступление второй фазы",
 	WarningFissure		= "Объявлять Расщелины тьмы",
-	WarningMana			= "Объявлять Взрыв маны"
+	WarningMana			= "Объявлять Взрыв маны",
     WarningChainsTargets= "Отображать предупреждение для цепей Кел'Тузада"
 })
 
@@ -486,7 +486,7 @@ L:SetWarningLocalization({
 	WarningBlastTargets	= "Ледяной взрыв: >%s<",
 	WarningPhase2		= "Фаза 2",
 	WarningFissure		= "Появилась Расщелина тьмы",
-	WarningMana			= "Взрыв маны: >%s<"
+	WarningMana			= "Взрыв маны: >%s<",
     WarningChainsTargets= "Цепи Кел'Тузада: >%s<"
 })
 
