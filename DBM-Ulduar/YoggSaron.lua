@@ -44,8 +44,11 @@ local enrageTimer	= mod:NewEnrageTimer(900)
 
 local phase = 1
 local targetWarningsShown = {}
+local brainLink1
+
 function mod:OnCombatStart(delay)
 	phase = 1
+	brainLink1 = nil
 	if self.Options.ShowSaraHealth and not self.Options.HealthFrame then
 		DBM.BossHealth:Show(L.name)
 	end
@@ -71,9 +74,8 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
--- 4/24 21:56:29.656  SPELL_AURA_APPLIED,0xF150008208022C87,"Yogg-Saron",0xa48,0xF150008208022C87,"Yogg-Saron",0xa48,63894,"Shadowy Barrier",0x20,BUFF
+-- 4/24 21:56:29.656  SPELL_AURA_APPLIED,0xF150008208022C87,"Yogg-Saron",0xa48,0xF150008208022C87,"Yogg-Saron",0xa48,63894,"Shadowy Barrier",0x20,BUFFfunction mod:SPELL_AURA_APPLIED(args)
 
-local brainLink1
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63802 then		-- Brain Link
 		if not brainLink1 then
