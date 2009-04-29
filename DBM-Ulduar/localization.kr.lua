@@ -22,18 +22,20 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn	= "추적중! >%s<!",
-	warnNextPursueSoon	= "추적 전환 5 초전"
+	pursueTargetWarn		= "추적중! >%s<!",
+	warnNextPursueSoon		= "추적 전환 5 초전",
+	SpecialPursueWarnYou	= "거대 화염전차가 당신을 추적합니다!",	
+	SystemOverload			= "시스템 과부화"	
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload	= "시스템 과부화 타이머 보기",
-	timerFlameVents		= "화염 분출 타이머 보기",
-	timerPursued		= "추적 타이머 보기",
-	SystemOverload		= "시스템 과부화 특수 경고 보기",
+	timerSystemOverload		= "시스템 과부화 타이머 보기",
+	timerFlameVents			= "화염 분출 타이머 보기",
+	timerPursued			= "추적 타이머 보기",
+	SystemOverload			= "시스템 과부화 특수 경고 보기",
 	SpecialPursueWarnYou	= "추적자 특수 경보 보기",
-	PursueWarn		= "추적 플레이어 레이드 경보로 보기",
-	warnNextPursueSoon	= "다음 추적 경고"
+	PursueWarn				= "추적 플레이어 레이드 경보로 보기",
+	warnNextPursueSoon		= "다음 추적 경고"
 }
 
 
@@ -408,10 +410,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DarkGlare		= "레이저 탄막",
+	DarkGlare			= "레이저 탄막",
 	WarningPlasmaBlast	= "%s 에게 플라즈마 폭발 - 폭힐! 폭힐!",
-	Phase2Engaged		= "곧 2 페이즈 - 지금 재 그룹 하세요.",
-	Phase3Engaged		= "곧 3 페이즈 - 지금 재 그룹 하세요.",	
+	Phase2Engaged		= "곧 2 페이즈 - 지금 자리 잡으세요.",
+	Phase3Engaged		= "곧 3 페이즈 - 지금 자리 잡으세요.",	
 	WarnShell			= ">%s< 에게 네이팜 탄!",
 	WarnBlast			= ">%s< 에게 플라즈마 폭발!",
 	MagneticCore		= ">%s< 자기 증폭기를 획득했습니다.",
@@ -420,14 +422,21 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	ProximityMines		= "새로운 접근 지뢰",
+	TimeToPhase2			= "2 페이즈 시작",
+	TimeToPhase3			= "3 페이즈 시작",	
 }
 
 
 L:SetOptionLocalization{
-	TimeToPhase2		= "페이즈 2 시작",
-	TimeToPhase3		= "페이즈 3 시작",
-	MagneticCore		= "자기 증폭기 획득자 알리기",
-	HealthFramePhase4	= "페이즈 4 의 체력 프레임 보기"	
+	ProximityMines			= "접근 지뢰 알리기",
+	DarkGlare 				= "레이저 탄막 알리기",	
+	PlaySoundOnDarkGlare 	= "레이저 탄막 대상 특수 사운드 경보 재생",	
+	TimeToPhase2			= "페이즈 2 시작",
+	TimeToPhase3			= "페이즈 3 시작",
+	MagneticCore			= "자기 증폭기 획득자 알리기",
+	WarnShell				= "네이팜 탄 대상 알리기",
+	WarnBlast				= "플라즈마 폭발 대상 알리기",	
+	HealthFramePhase4		= "페이즈 4 의 체력 프레임 보기"	
 }
 
 L:SetMiscLocalization{
@@ -448,27 +457,31 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "당신에게 그림자 충돌",
-	SpecialWarningSurgeDarkness	= "밀려오는 어둠",
-	WarningShadowCrash			= "당신에게 그림자 충돌!",
-	specWarnLifeLeechYou		= "Life Leech on you!",
-	specWarnLifeLeechNear		= "Life Leech on %s near you!"	
+	SpecialWarningShadowCrash	= "당신에게 어둠 붕괴",
+	SpecialWarningSurgeDarkness	= "어둠 쇄도",
+	WarningShadowCrash			= ">%s< 에게 어둠 붕괴!",
+	SpecialWarningLLYou		= "당신에게 얼굴 없는 자의 징표!",
+	SpecialWarningLLNear		= "%s 에게 가까운 당신에게 생명력 흡수 시전!"	
+}
+
+L:SetTimerLocalization{
+	timerSurgeofDarkness			= "어둠 쇄도"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash			= "그림자 충돌의 특수 경보 보기",
-	SetIconOnShadowCrash		= "그림자 충돌 대상 표시하기(해골)",
-	SetIconOnLifeLeach			= "Set Icon on Life Leach target (cross)",
-	SpecialWarningSurgeDarkness	= "밀려오는 어둠 특수 경고 보기",
-	SpecialWarningShadowCrash	= "그림자 충돌 특수 경고 보기",
-	SpecialWarningLLYou			= "Show Special Warning for Life Leach on YOU",
-	SpecialWarningLLNear		= "Show Special Warning for Life Leach in near of you",
-	CrashWhisper				= "그림자 충돌 대상에게 귓속말 보내기"	
+	WarningShadowCrash			= "어둠 붕괴의 특수 경보 보기",
+	SetIconOnShadowCrash		= "어둠 붕괴 대상 표시하기(해골 징표)",
+	SetIconOnLifeLeach			= "얼굴 없는 자의 징표 대상 아이콘 설정 (엑스 징표)",
+	SpecialWarningSurgeDarkness	= "어둠 쇄도 특수 경고 보기",
+	SpecialWarningShadowCrash	= "어둠 붕괴 특수 경고 보기",
+	SpecialWarningLLYou			= "얼굴 없는 자의 징표 특수 경보 보기",
+	SpecialWarningLLNear		= "생명력 흡수 주변 특수 경보 보기",
+	CrashWhisper				= "어둠 붕괴 대상에게 귓속말 보내기"	
 	}
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "가까운 사로나이트 증기 구름이 합쳐집니다!",
-	CrashWhisper			= "당신에게 그림자 충돌! 뛰세요!"	
+	CrashWhisper			= "당신에게 어둠 붕괴! 뛰세요!"	
 }
 
 
@@ -486,12 +499,13 @@ L:SetMiscLocalization{
 	YellPhase2 			= "나는, 살아 있는 꿈이다.",
 	Sara 				= "사라",
 	WhisperBrainLink 	= "당신에게 두뇌의 고리! %s 에게 뛰세요!",
-	WarningYellSqueeze	= "Squeeze on me! Help me!"	
+	WarningYellSqueeze	= "압착의 촉수에 붙잡혔어요! 살려주세요!"	
 }
 
 L:SetWarningLocalization{
 	WarningGuardianSpawned 	= "요그사론의 수호자 소환!",
 	WarningP2 				= "2 페이즈",
+	WarningP3 				= "3 페이즈",	
 	WarningBrainLink 		= ">%s< 그리고 >%s< 두뇌의 고리",
 	SpecWarnBrainLink		= "당신 그리고 %s 에게 두뇌의 고리!",
 	WarningSanity 			= "%d Sanity debuffs remaining",
@@ -503,9 +517,14 @@ L:SetWarningLocalization{
 	WarnSqueeze 				= "Squeeze: >%s<"
 }
 
+L:SetTimerLocalization{
+	NextPortal			= "다음 차원문",
+}
+
 L:SetOptionLocalization{
 	WarningGuardianSpawned	= "요그사론의 수호자 소환 알리기",
 	WarningP2				= "2 페이즈 알리기",
+	WarningP3				= "3 페이즈 알리기",	
 	WarningBrainLink		= "두뇌의 고리 알리기",
 	SpecWarnBrainLink		= "두뇌의 고리 특수 경고 보기",
 	WarningSanity			= "Show Warning when Sanity low",
