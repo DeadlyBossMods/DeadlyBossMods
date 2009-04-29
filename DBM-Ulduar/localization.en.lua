@@ -80,9 +80,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame	= "Devouring Flame - MOVE",
-	warnTurretsReadySoon	= "Fourth Turret Ready in 20 Sec",
-	warnTurretsReady		= "Fourth Turret Ready",
+	SpecWarnDevouringFlame		= "Devouring Flame - MOVE",
+	warnTurretsReadySoon		= "Fourth Turret Ready in 20 Sec",
+	warnTurretsReady			= "Fourth Turret Ready",
+	SpecWarnDevouringFlameCast	= "Devouring Flame on You",
+	WarnDevouringFlameCast		= "Devouring Flame on >%s<", 
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown	= "Next Flame Breath in",
@@ -97,6 +99,8 @@ L:SetOptionLocalization{
 	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
 	warnTurretsReady			= "Show warning for turrets",
+	SpecWarnDevouringFlameCast    = "Show Special Warning when Devouring Flame cast on you",
+	WarnDevouringFlameCast       = "Show warning when Devouring Flame cast", 
 }
 
 L:SetMiscLocalization{
