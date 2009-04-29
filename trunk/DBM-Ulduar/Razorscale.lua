@@ -11,7 +11,8 @@ mod:RegisterCombat("yell", L.YellAir)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_TARGET"
 )
 
 local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
@@ -22,8 +23,12 @@ local warnTurretsReadySoon		= mod:NewAnnounce("warnTurretsReadySoon", 1)
 local warnTurretsReady			= mod:NewAnnounce("warnTurretsReady", 3)
 local enrageTimer			= mod:NewEnrageTimer(600)
 
+local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
+local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733) 
+
 mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 
+local castFlames
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
@@ -53,6 +58,33 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 64021 then	-- deep breath
 		timerDeepBreathCast:Start()
 		timerDeepBreathCooldown:Start()
+	elseif args.spellId == 63236 then
+		local target = self:GetBossTarget(self.creatureId)
+		if target then
+			self:flameCast(target)
+		else
+			castFlames = true
+		end
 	end
 end
+
+function mod:UNIT_TARGET(unit)
+	if castFlames and self:GetUnitCreatureId(unit.."target") == self.creatureId then
+		local target = UnitName(unit.."targettarget")
+		if target then
+			self:flameCast(target)
+		else
+			self:flameCast("UNKNOWN")
+		end
+		castFlames = false
+	end
+end 
+
+function mod:flameCast(target)
+   warnDevouringFlameCast:Show(target)
+   if target == UnitName("player") then
+      specWarnDevouringFlameCast:Show()
+   end
+   self:SetIcon(target, 8, 9)
+end 
 
