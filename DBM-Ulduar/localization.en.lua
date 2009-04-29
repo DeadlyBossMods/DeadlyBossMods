@@ -147,21 +147,22 @@ L:SetWarningLocalization{
 	WarningSupercharge			= "Supercharge incoming",
 	WarningChainlight			= "Chain Lightning",
 	WarningFusionPunch			= "Fusion Punch",
-	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
+	WarningOverwhelmingPower		= "Overwhelming Power on >%s<",
 	WarningRuneofPower			= "Rune of Power",
 	WarningRuneofDeath			= "Rune of Death",
-	RuneofDeath					= "Rune of Death - MOVE",
+	RuneofDeath				= "Rune of Death - MOVE",
 	LightningTendrils			= "Lightning Tendrils - MOVE",
+	WarningRuneofSummoning			= "Rune of Summoning"
 }
 
 L:SetTimerLocalization{
 	TimerSupercharge		= "Supercharge",
 	TimerOverload			= "Overload",
 	TimerLightningWhirl		= "Lightning Whirl",
-	TimerLightningTendrils	= "Lightning Tendrils",
-	timerFusionPunchCast	= "Fusion Punch cast",
-	timerFusionPunchActive	= "Fusion Punch: %s",
-	timerOverwhelmingPower	= "Overwhelming Power: %s",
+	TimerLightningTendrils		= "Lightning Tendrils",
+	timerFusionPunchCast		= "Fusion Punch cast",
+	timerFusionPunchActive		= "Fusion Punch: %s",
+	timerOverwhelmingPower		= "Overwhelming Power: %s",
 	timerRunicBarrier		= "Runic Barrier",
 	timerRuneofDeath		= "Rune of Death",
 }
@@ -184,6 +185,7 @@ L:SetOptionLocalization{
 	timerRunicBarrier			= "Show Runic Barrier timer",
 	WarningRuneofPower			= "Announce Rune of Power",
 	WarningRuneofDeath			= "Announce Rune of Death",
+	WarningRuneofSummoning			= "Announce Rune of Summoning",
 	RuneofDeath					= "Show Special Warning for Rune of Death",
 	timerRuneofDeath			= "Show Rune of Death duration timer",
 }
