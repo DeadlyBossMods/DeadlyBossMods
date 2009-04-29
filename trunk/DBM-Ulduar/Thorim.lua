@@ -40,8 +40,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	enrageTimer:Stop()
-	timerHardmode:Stop()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
@@ -93,6 +91,7 @@ function mod:OnSync(event, arg)
 		warnPhase2:Show()
 		enrageTimer:Stop()
 		timerHardmode:Stop()
+		enrageTimer:Start(300)
 	end
 end
 
