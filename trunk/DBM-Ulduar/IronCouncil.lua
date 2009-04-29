@@ -49,11 +49,14 @@ mod:AddBoolOption("SetIconOnOverwhelmingPower", true, "announce")
 local timerRunicBarrier		= mod:NewTimer(20, "timerRunicBarrier", 62338)
 local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
 local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
+local warnRuneofSummoning	= mod:NewAnnounce("WarningRuneofSummoning", 3, 62273)
 local specwarnRuneofDeath	= mod:NewSpecialWarning("RuneofDeath")
 local timerRuneofDeathDura	= mod:NewNextTimer(30, 63490)
 local timerRuneofPower		= mod:NewCDTimer(30, 61974)
 local timerRuneofDeath		= mod:NewCDTimer(30, 63490)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
+
+
 
 -- Rune of Summoning .. wtf! :)
 
@@ -87,6 +90,8 @@ function mod:SPELL_CAST_START(args)
 
 	elseif args.spellId == 62338 then				-- Runic Barrier
 		timerRunicBarrier:Start()
+	elseif args.spellId == 62273 then				-- Rune of Summoning
+		warnRuneofSummoning:Show()
 	end
 end
 
