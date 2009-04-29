@@ -40,7 +40,7 @@
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
 	Version = "4.13",
-	DisplayVersion = "4.13"
+	DisplayVersion = "4.14 (alpha)"
 }
 
 DBM_SavedOptions = {}
@@ -1296,7 +1296,7 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.combatInfo.killType == type and v.combatInfo.killMsgs[msg] then
-				self:EndCombat(v)
+				DBN:EndCombat(v)
 			end
 		end
 	end
