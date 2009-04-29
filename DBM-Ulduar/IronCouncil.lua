@@ -57,7 +57,7 @@ mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 
 -- Rune of Summoning .. wtf! :)
 
-local enrageTimer		= mod:NewEnrageTimer(600)
+local enrageTimer		= mod:NewEnrageTimer(900)
 
 
 function mod:OnCombatStart(delay)
