@@ -1296,7 +1296,7 @@ do
 			local v = inCombat[i]
 			if not v.combatInfo then return end
 			if v.combatInfo.killType == type and v.combatInfo.killMsgs[msg] then
-				DBN:EndCombat(v)
+				DBM:EndCombat(v)
 			end
 		end
 	end
