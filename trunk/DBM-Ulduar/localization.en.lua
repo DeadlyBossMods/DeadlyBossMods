@@ -104,7 +104,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAir = "Give us a moment to prepare to build the turrets."
+	YellAir = "Give us a moment to prepare to build the turrets.",
+	FlamecastUnknown			= "UNKNOWN"
 }
 
 

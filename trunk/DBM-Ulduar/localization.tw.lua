@@ -87,6 +87,8 @@ L:SetWarningLocalization{
 	SpecWarnDevouringFlame		= "吞噬烈焰 - 移動囉!!",
 	warnTurretsReadySoon		= "20秒後 第四座砲塔完成",
 	warnTurretsReady		= "第四座砲塔已完成",
+	SpecWarnDevouringFlameCast	= "你中了吞噬烈焰",
+	WarnDevouringFlameCast		= "吞噬烈焰: >%s<", 
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "下一次 火息術",
@@ -101,10 +103,13 @@ L:SetOptionLocalization{
 	timerAllTurretsReady		= "為砲塔顯示計時器",
 	warnTurretsReadySoon		= "顯示砲塔的預先警告",
 	warnTurretsReady		= "顯示砲塔的警告",
+	SpecWarnDevouringFlameCast    	= "當你中了吞噬烈焰時顯示特別警告",
+	WarnDevouringFlameCast       	= "當施放吞噬烈焰時顯示警告",
 }
 
 L:SetMiscLocalization{
-	YellAir 			= "給我們一點時間來準備建造砲塔。"
+	YellAir 			= "給我們一點時間來準備建造砲塔。",
+	FlamecastUnknown			= "未知"
 }
 
 
@@ -156,6 +161,7 @@ L:SetWarningLocalization{
 	WarningRuneofDeath		= "死亡符文",
 	RuneofDeath			= "死亡符文 - 移動",
 	LightningTendrils		= "閃電觸鬚 - 跑開!",
+	WarningRuneofSummoning			= "召喚符文"
 }
 
 L:SetTimerLocalization{
@@ -191,7 +197,8 @@ L:SetOptionLocalization{
 	WarningRuneofDeath		= "提示死亡符文",
 	RuneofDeath			= "為死亡符文顯示特別警告",
 	timerRuneofDeath		= "顯示死亡符文的持續時間計時器",
-	PlaySoundDeathRune		= "當死亡符文施放時播放音效"
+	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
+	WarningRuneofSummoning 		= "提示召喚符文"
 }
 
 L:SetMiscLocalization{
@@ -284,6 +291,7 @@ L:SetWarningLocalization{
 	SpecWarnBlast 			= "哨兵衝擊 - 打斷!",
 	SpecWarnVoid			= "虛空區域 - 移動!",
 	WarnCatDied 			= "野性防衛者倒下 (剩餘%d支)",
+	WarnCatDiedOne 			= "野性防衛者倒下 (剩下最後一條命)",
 	WarnFear 			= "恐懼!",
 	WarnFearSoon 			= "下一次恐懼即將到來!",
 	WarnSonic			= "音速尖嘯!",
@@ -296,6 +304,7 @@ L:SetOptionLocalization{
 	WarnFear 			= "顯示恐懼警告",
 	WarnFearSoon 			= "顯示即將恐懼警告",
 	WarnCatDied 			= "當野性防衛者死亡時顯示警告",
+	WarnCatDiedOne 			= "當野性防衛者剩下最後一條命時顯示警告",
 	WarnSwarm			= "當貓群守護者出現時顯示警告",
 	WarnSonic			= "顯示音速尖嘯警告"
 }
