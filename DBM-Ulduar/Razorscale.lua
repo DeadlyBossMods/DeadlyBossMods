@@ -74,7 +74,7 @@ function mod:UNIT_TARGET(unit)
 		if target then
 			self:flameCast(target)
 		else
-			self:flameCast("UNKNOWN")
+			self:flameCast(L.FlamecastUnknown)
 		end
 		castFlames = false
 	end
