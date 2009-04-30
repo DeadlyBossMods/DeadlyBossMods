@@ -35,6 +35,7 @@ local specWarnVoid 	= mod:NewSpecialWarning("SpecWarnVoid")
 local warnFear 		= mod:NewAnnounce("WarnFear", 3, 64386)
 local warnFearSoon 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)
 local warnCatDied 	= mod:NewAnnounce("WarnCatDied", 3, 64455)
+local warnCatDiedOne	= mod:NewAnnounce("WarnCatDiedOne", 3, 64455)
 local warnSonic		= mod:NewAnnounce("WarnSonic", 2, 64688)
 
 local timerFear 	= mod:NewCastTimer(64386)
@@ -76,7 +77,11 @@ end
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
 	if args.spellId == 64455 then -- Feral Essence
-		warnCatDied:Show(args.amount)
+		if args.amount == 1 then
+			warnCatDiedOne:Show()
+		else
+			warnCatDied:Show(args.amount)
+		end
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(34035)
 			DBM.BossHealth:AddBoss(34035, L.Defender:format(args.amount))
