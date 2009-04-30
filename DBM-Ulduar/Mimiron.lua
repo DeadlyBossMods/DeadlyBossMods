@@ -41,7 +41,7 @@ local timerDarkGlareCast	= mod:NewCastTimer(10, 63274)
 local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
 local timerNextShockblast	= mod:NewNextTimer(34, 63631)
 local timerPlasmaBlastCD	= mod:NewCDTimer(30, 64529)
-local timerShell		= mod:NewCastTimer(6, 64529)
+local timerShell		= mod:NewTargetTimer(6, 63666)
 
 local phase = 0 
 local lootmethod, masterlooterRaidID
@@ -99,8 +99,10 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+local spamShell = 0
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63666 or args.spellId == 65026 then -- Napalm Shell
+	if GetTime() - spamShell > 5 and (args.spellId == 63666 or args.spellId == 65026) then -- Napalm Shell
+		spamShell = GetTime()
 		timerShell:Start(args.destName)
 		shellWarn:Show(args.destName)
 		self:SetIcon(args.destName, 7, 6)
