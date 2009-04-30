@@ -281,7 +281,8 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	SpecWarnBlast	= "Sentinel Blast - Interrupt!",
 	SpecWarnVoid	= "Void Zone - MOVE!",
-	WarnCatDied 	= "Feral Defender down (%d lifes remaining)",
+	WarnCatDied 	= "Feral Defender down (%d lives remaining)",
+	WarnCatDiedOne 	= "Feral Defender down (1 life remaining)",
 	WarnFear		= "Fear!",
 	WarnFearSoon 	= "Next Fear soon",
 	WarnSonic		= "Sonic Screech!",
