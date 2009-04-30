@@ -49,16 +49,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast	= "화염 분사",
+	TimerFlameJetsCast		= "화염 분사",
 	TimerFlameJetsCooldown	= "다음 화염 분사",
-	TimerScorch		= "다음 불태우기",
-	TimerScorchCast		= "불태우기",
-	TimerSlagPot		= "용암재 단지 : %s"
+	TimerScorch				= "다음 불태우기",
+	TimerScorchCast			= "불태우기",
+	TimerSlagPot			= "용암재 단지 : %s"
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot		= ">%s< 에게 용암재 단지",
-	SpecWarnJetsCast	= "분사 - 시전 중지"
+	WarningSlagPot			= ">%s< 에게 용암재 단지",
+	SpecWarnJetsCast		= "분사 - 시전 중지"
 }
 
 L:SetOptionLocalization{
@@ -82,9 +82,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame	= "활활 타오르는 화염 - 이동! 이동! 이동!",
-	warnTurretsReadySoon	= "20초 후 4번째 포탑 준비",
-	warnTurretsReady		= "4번째 포탑 준비"
+	SpecWarnDevouringFlame		= "활활 타오르는 화염 - 이동! 이동! 이동!",
+	warnTurretsReadySoon		= "20초 후 4번째 포탑 준비",
+	warnTurretsReady			= "4번째 포탑 준비"
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결",
@@ -119,7 +119,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "당신에게 빛의 폭탄",
+	SpecialWarningLightBomb	 	= "당신에게 빛의 폭탄",
 	WarningLightBomb			= ">%s< 에게 빛의 폭탄",
 	SpecialWarningGravityBomb	= "당신에게 중력 폭탄",
 	WarningGravityBomb			= ">%s< 에게 중력 폭탄",
@@ -186,8 +186,10 @@ L:SetOptionLocalization{
 	timerRunicBarrier			= "방어막의 룬 타이머 보기",
 	WarningRuneofPower			= "마력의 룬 알리기",
 	WarningRuneofDeath			= "죽음의 룬 알리기",
+	WarningRuneofSummoning		= "소환의 룬 알리기",	
 	RuneofDeath					= "죽음의 룬 특수 경고 보기",
-	timerRuneofDeath			= "죽음의 룬 지속 타이머 보기",	
+	timerRuneofDeath			= "죽음의 룬 지속 타이머 보기",
+	PlaySoundDeathRune			= "죽음의 룬일 때 소리 재생"	
 }
 
 L:SetMiscLocalization{
@@ -211,14 +213,14 @@ L:SetTimerLocalization{
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= "Phase Punch on >%s<",
-	WarningBlackHole	= "Black Hole",
+	WarningBlackHole	= "블랙 홀",
 }
 
 L:SetOptionLocalization{
 	TimerBigBangCast	= "Show Castbar for Big Bang",
 	SpecWarnPhasePunch	= "Show Special Warning when Phase Punch on you",
 	WarningPhasePunch	= "Announce Phase Punch target",
-	WarningBlackHole	= "Announce Black Hole",
+	WarningBlackHole	= "블랙 홀 알리기",
 }
 
 
@@ -253,6 +255,9 @@ L:SetOptionLocalization{
 	timerPetrifyingBreath	= "석화 숨결 타이머 보기",
 	timerNextShockwave		= "충격파 타이머 보기",
 	timerLeftArm			= "왼쪽 팔 재생성 타이머 보기",
+	WarnGrip				= "바위 손아귀 대상 알리기",
+	SetIconOnGripTarget		= "바위 손아귀 대상 아이콘 설정",
+	timerLeftArm			= "왼쪽 팔 재생성 타이머 보기",	
 	timerRightArm			= "오른쪽 팔 재생성 타이머 보기"
 }
 
@@ -277,7 +282,8 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	SpecWarnBlast 		= "수호자의 폭파 - 차단!",
 	SpecWarnVoid		= "공허의 지대 - 이동!",	
-	WarnCatDied 			= "야생의 수호자 죽음 (생명력 %d 남음)",
+	WarnCatDied 			= "야생의 수호자 죽음 (%d 번 남음)",
+	WarnCatDiedOne 		= "야생의 수호자 죽음 (1 번 남음)",	
 	WarnFear 			= "공포!",
 	WarnFearSoon 		= "곧 다음 공포",
 	WarnSonic			= "날카로운 음파!",
@@ -305,23 +311,23 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "급속 결빙",
+	WarningFlashFreeze	= "순간 빙결",
 	WarningBitingCold	= "매서운 추위 - 움직이세요!"
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "급속 결빙 시전",  -- all ppl have to move on the rock patches
+	TimerFlashFreeze	= "순간 빙결 시전",  -- all ppl have to move on the rock patches
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze	= "급속 결빙 시전 타이머 보기",
-	WarningFlashFreeze	= "급속 결빙 경보 보기",
+	TimerFlashFreeze	= "순간 빙결 시전 타이머 보기",
+	WarningFlashFreeze	= "순간 빙결 경보 보기",
 	WarningBitingCold	= "매서운 추위 경보 보기",
-	PlaySoundOnFlashFreeze	= "급속 결빙 시전일 때 사운드 재생"	
+	PlaySoundOnFlashFreeze	= "순간 빙결 시전일 때 사운드 재생"	
 }
 
 L:SetMiscLocalization{
-	YellKill		= "I... I am released from his grasp... at last."
+	YellKill		= "드디어... 드디어 그의 손아귀를... 벗어나는구나."
 }
 
 
@@ -355,9 +361,9 @@ L:SetOptionLocalization{
 	UnbalancingStrike		= "넘어트리는 일격 타겟 알리기",
 	WarningStormhammer		= "폭풍망치 타겟 알리기",
 	WarningPhase2			= "2 페이즈 알리기",
-	UnbalancingStrike		= "넘어뜨리는 일격 알리기",
 	WarningBomb				= "룬 폭파 알리기",	
-	RangeFrame				= "거리 창 보기"
+	RangeFrame				= "거리 창 보기",
+	LightningOrb 			= "번개 충격 알리기"	
 }
 
 L:SetMiscLocalization{
@@ -386,19 +392,28 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2 		= "2 페이즈",
-	WarnSimulKill	 = "첫번째 애드 죽음 - 1분 후 부활",
-	WarnFury 		= ">%s< 에게 자연의 분노",
-	SpecWarnFury = "당신에게 자연의 분노!"
+	WarnPhase2 			= "2 페이즈",
+	WarnSimulKill		= "첫번째 애드 죽음 - 1분 후 부활",
+	WarnFury 			= ">%s< 에게 자연의 분노",
+	SpecWarnFury 		= "당신에게 자연의 분노!"
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam 	= "태양 광선: %s",
-	TimerAlliesOfNature		 = "자연 조화 쿨다운",
+	TimerAlliesOfNature		= "자연 조화 쿨다운",
 	TimerSimulKill 			= "부활",
 	TimerFuryYou 			= "당신에게 자연의 분노"
 }
 
+L:SetOptionLocalization{
+	TimerAlliesOfNature 		= "자연의 조화 타이머 보기",
+	TimerSimulKill 			= "부활 타이머 보기",
+	TimerFuryYou 			= "자연의 분노 타이머 보기",
+	WarnPhase2 				= "2 페이즈 경고 보기",
+	WarnSimulKill			= "부활 경고 보기",
+	WarnFury 				= "자연의 분노 경고 보기",
+	SpecWarnFury 			= "자연의 분노 특수 경고 보기"
+}
 
 -------------------
 --  Mimiron  --
@@ -421,7 +436,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	ProximityMines		= "새로운 접근 지뢰",
+	ProximityMines			= "새로운 접근 지뢰",
 	TimeToPhase2			= "2 페이즈 시작",
 	TimeToPhase3			= "3 페이즈 시작",	
 }
@@ -429,8 +444,12 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	ProximityMines			= "접근 지뢰 알리기",
-	DarkGlare 				= "레이저 탄막 알리기",	
+	DarkGlare 				= "레이저 탄막 알리기",
+	WarningPlasmaBlast		= "플라즈마 폭발 알리기",	
+	WarningShockBlast		= "충격파 알리기",
+	PlaySoundOnShockBlast 	= "충격파 특수 사운드 경보 재생",
 	PlaySoundOnDarkGlare 	= "레이저 탄막 대상 특수 사운드 경보 재생",	
+	NextDarkGlare 			= "다음 레이저 탄막",
 	TimeToPhase2			= "페이즈 2 시작",
 	TimeToPhase3			= "페이즈 3 시작",
 	MagneticCore			= "자기 증폭기 획득자 알리기",
@@ -457,11 +476,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "당신에게 어둠 붕괴",
-	SpecialWarningSurgeDarkness	= "어둠 쇄도",
-	WarningShadowCrash			= ">%s< 에게 어둠 붕괴!",
-	SpecialWarningLLYou		= "당신에게 얼굴 없는 자의 징표!",
-	SpecialWarningLLNear		= "%s 에게 가까운 당신에게 생명력 흡수 시전!"	
+	SpecialWarningShadowCrash		= "당신에게 어둠 붕괴",
+	SpecialWarningSurgeDarkness		= "어둠 쇄도",
+	WarningShadowCrash				= ">%s< 에게 어둠 붕괴!",
+	SpecialWarningLLYou				= "당신에게 얼굴 없는 자의 징표!",
+	SpecialWarningLLNear			= "%s 에게 가까운 당신에게 생명력 흡수 시전!"	
 }
 
 L:SetTimerLocalization{
@@ -469,15 +488,15 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash			= "어둠 붕괴의 특수 경보 보기",
-	SetIconOnShadowCrash		= "어둠 붕괴 대상 표시하기(해골 징표)",
-	SetIconOnLifeLeach			= "얼굴 없는 자의 징표 대상 아이콘 설정 (엑스 징표)",
-	SpecialWarningSurgeDarkness	= "어둠 쇄도 특수 경고 보기",
-	SpecialWarningShadowCrash	= "어둠 붕괴 특수 경고 보기",
-	SpecialWarningLLYou			= "얼굴 없는 자의 징표 특수 경보 보기",
-	SpecialWarningLLNear		= "생명력 흡수 주변 특수 경보 보기",
-	CrashWhisper				= "어둠 붕괴 대상에게 귓속말 보내기"	
-	}
+	WarningShadowCrash				= "어둠 붕괴의 특수 경보 보기",
+	SetIconOnShadowCrash			= "어둠 붕괴 대상 표시하기(해골 징표)",
+	SetIconOnLifeLeach				= "얼굴 없는 자의 징표 대상 아이콘 설정 (엑스 징표)",
+	SpecialWarningSurgeDarkness		= "어둠 쇄도 특수 경고 보기",
+	SpecialWarningShadowCrash		= "어둠 붕괴 특수 경고 보기",
+	SpecialWarningLLYou				= "얼굴 없는 자의 징표 특수 경보 보기",
+	SpecialWarningLLNear			= "생명력 흡수 주변 특수 경보 보기",
+	CrashWhisper					= "어둠 붕괴 대상에게 귓속말 보내기"	
+}
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "가까운 사로나이트 증기 구름이 합쳐집니다!",
@@ -534,5 +553,3 @@ L:SetOptionLocalization{
 	WarnBrainPortalSoon		= "차원문 알리기",	
 	SpecWarnMadnessOutNow	= "Show Special Warning shortly before Madness ends"
 }
-
-
