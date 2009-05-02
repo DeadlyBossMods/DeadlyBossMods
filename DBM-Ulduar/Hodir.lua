@@ -45,7 +45,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63512 then
+	if args.spellId == 62478 or args.spellId == 63512 then
 		timerFrozenBlows:Start()
 	end
 end
@@ -53,7 +53,7 @@ end
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args.spellId == 62188 and args.destName == UnitName("player") then 
 		-- bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then -- Biting Cold
-		if args.amount >= 3 then
+		if args.amount >= 2 then
 			warnBitingCold:Show()
 		end
 	end
