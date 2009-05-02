@@ -49,6 +49,7 @@ local brainLink1
 function mod:OnCombatStart(delay)
 	phase = 1
 	brainLink1 = nil
+	enrageTimer:Start()
 	if self.Options.ShowSaraHealth and not self.Options.HealthFrame then
 		DBM.BossHealth:Show(L.name)
 	end
