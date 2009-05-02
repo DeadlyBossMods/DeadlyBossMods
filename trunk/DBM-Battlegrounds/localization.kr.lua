@@ -32,11 +32,12 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerStart	= "게임 시작",
-	TimerShadow	= "Shadow Sight"
+	TimerShadow	= "어둠의 눈"
 })
 
 L:SetOptionLocalization({
-	TimerStart = "시작 타이머 보이기"
+	TimerStart = "시작 타이머 보이기",
+	TimerShadow	= "어둠의 눈"	
 })
 
 L:SetMiscLocalization({
@@ -55,22 +56,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "게임 시작", 
-	TimerTower = "%s",
-	TimerGY = "%s",
+	TimerStart 	= "게임 시작", 
+	TimerTower	 = "%s",
+	TimerGY	 = "%s",
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "알터랙 계곡 전투 개시 1분 전...",
-	BgStart30 = "알터랙 계곡 전투 개시 30초 전...",
-	ZoneName = "알터랙 계곡",
+	BgStart60 	= "알터랙 계곡 전투 개시 1분 전...",
+	BgStart30 	= "알터랙 계곡 전투 개시 30초 전...",
+	ZoneName	= "알터랙 계곡",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "시작 타이머 보기",
-	TimerTower = "탑 점령 타이머 보기",
-	TimerGY = "무덤 점령 타이머 보기",
-	AutoTurnIn = "퀘스트 아이템 자동 수락"
+	TimerStart 	= "시작 타이머 보기",
+	TimerTower	= "탑 점령 타이머 보기",
+	TimerGY 		= "무덤 점령 타이머 보기",
+	AutoTurnIn 	= "퀘스트 아이템 자동 수락"
 })
 
 ---------------
@@ -83,28 +84,28 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "1분 후 아라시 분지 전투가 시작됩니다.",
-	BgStart30 = "30초 후 아라시 분지 전투가 시작됩니다.",
-	ZoneName = "아라시 분지",
-	ScoreExpr = "(%d+)/2000",
-	Alliance = "얼라이언스",
-	Horde = "호드",
-	WinBarText = "%s 획득",
-	BasesToWin = "필요 점령 갯수 : %d",
-	Flag = "깃발"
+	BgStart60 	= "1분 후 아라시 분지 전투가 시작됩니다.",
+	BgStart30 	= "30초 후 아라시 분지 전투가 시작됩니다.",
+	ZoneName 	= "아라시 분지",
+	ScoreExpr 	= "(%d+)/2000",
+	Alliance 	= "얼라이언스",
+	Horde 		= "호드",
+	WinBarText 	= "%s 획득",
+	BasesToWin 	= "필요 점령 갯수 : %d",
+	Flag 		= "깃발"
 })
 
 L:SetTimerLocalization({
-	TimerStart = "게임 시작", 
-	TimerCap = "%s",
+	TimerStart	 = "게임 시작", 
+	TimerCap	 = "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "시작 타이머 보기",
-	TimerWin = "승리 예상 타이머 보기",
-	TimerCap = "깃발 점령 타이머 보기",
-	ShowAbEstimatedPoints = "승/패 예상 포인트 보기",
-	ShowAbBasesToWin = "필요 점령 갯수 보기"
+	TimerStart  				= "시작 타이머 보기",
+	TimerWin 				= "승리 예상 타이머 보기",
+	TimerCap		 		= "깃발 점령 타이머 보기",
+	ShowAbEstimatedPoints 	= "승/패 예상 포인트 보기",
+	ShowAbBasesToWin		 = "필요 점령 갯수 보기"
 })
 
 -----------------------
@@ -158,13 +159,13 @@ L:SetMiscLocalization({
 	ZoneName = "전쟁노래 협곡",
 	Alliance = "얼라이언스",
 	Horde = "호드",	
-	InfoErrorText = "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
-	ExprFlagPickUp = "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",	
-	ExprFlagCaptured = "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
-	ExprFlagReturn = "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
-	FlagAlliance = "얼라이언스 깃발 :",
-	FlagHorde = "호드 깃발 :",
-	FlagBase = "기지",
+	InfoErrorText		 = "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
+	ExprFlagPickUp		 = "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",	
+	ExprFlagCaptured 	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
+	ExprFlagReturn 		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
+	FlagAlliance 		= "얼라이언스 깃발 :",
+	FlagHorde 			= "호드 깃발 :",
+	FlagBase 			= "기지",
 })
 
 L:SetTimerLocalization({
