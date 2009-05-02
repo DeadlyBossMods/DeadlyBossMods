@@ -206,7 +206,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	TankSwitch 		= "%%ss撲向(%S+)!"
+	TankSwitch 		= "%%s撲向(%S+)!"
 })
 
 L:SetOptionLocalization({
