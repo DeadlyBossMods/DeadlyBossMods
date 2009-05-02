@@ -23,6 +23,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	pursueTargetWarn		= "추적중! >%s<!",
+	PursueWarn				= "추적 경고",	
 	warnNextPursueSoon		= "추적 전환 5 초전",
 	SpecialPursueWarnYou	= "거대 화염전차가 당신을 추적합니다!",	
 	SystemOverload			= "시스템 과부화"	
@@ -83,8 +84,11 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame		= "활활 타오르는 화염 - 이동! 이동! 이동!",
+	SpecWarnDevouringFlameCast	= "당신에게 활활 타오르는 화염!",
+	WarnDevouringFlameCast		= ">%s< 에게 활활 타오르는 화염", 	
 	warnTurretsReadySoon		= "20초 후 4번째 포탑 준비",
 	warnTurretsReady			= "4번째 포탑 준비"
+	
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결",
@@ -95,14 +99,17 @@ L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결 타이머 보기",
 	timerDeepBreathCast			= "화염 숨결 시전 타이머 보기",
 	SpecWarnDevouringFlame		= "활활 타오르는 화염 대상 특수 경보 보기",
+	SpecWarnDevouringFlameCast	= "활활 타오르는 화염 시전 경보 보기",	
 	PlaySoundOnDevouringFlame	= "활활 타오르는 화염의 데미지를 받을 때 사운드 재생",
 	timerAllTurretsReady		= "포탑 타이머 보기",
 	warnTurretsReadySoon		= "포탑 사전 경보 보기",
-	warnTurretsReady			= "포탑 경보 보기",	
+	warnTurretsReady			= "포탑 경보 보기",
+	WarnDevouringFlameCast      	= "활활 타오르는 화염 시전 경보 보기", 	
 }
 
 L:SetMiscLocalization{
-	YellAir = "저희에게 잠깐 포탑을 설치할 시간을 주세요."
+	YellAir 						= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
+	FlamecastUnknown			= "UNKNOWN"
 }
 
 
@@ -152,6 +159,7 @@ L:SetWarningLocalization{
 	WarningOverwhelmingPower	= ">%s< 에게 압도적인 힘",
 	WarningRuneofPower			= "마력의 룬",
 	WarningRuneofDeath			= "죽음의 룬",
+	WarningRuneofSummoning		= "소환의 룬",	
 	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
 	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",	
 }
@@ -295,7 +303,8 @@ L:SetOptionLocalization{
 	SpecWarnVoid		= "공허의 지대에 서있을 경우 특수 경보 보기",	
 	WarnFear 			= "공포 경보 보기",
 	WarnFearSoon		= "공포 시전 전에 경보 보기",
-	WarnCatDied 			= "야생 수호자가 죽었을 때 경보 보기",
+	WarnCatDied 			= "남은 야생의 수호자 경보 보기",
+	WarnCatDiedOne 		= "마지막 야생의 수호자 경보 보기(1 번 남음)",		
 	WarnSwarm			= "무리의 수호자 대상 경보 보기",
 	WarnSonic			= "날카로운 음파 경보 보기"
 }
@@ -383,12 +392,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell = "얘들아, 날 도와라!",
-	WaterSpirit = "고대 물의 정령",
-	Snaplasher = "철썩채찍",
-	StormLasher = "폭풍 채찍",
-	EmoteTree	= "|cFF00FFFF생명의 어머니의 선물|r이 자라기 시작합니다!", -- /chatlog does not log messages with color codes...lol
-	YellKill	= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다."	
+	SpawnYell		 = "얘들아, 날 도와라!",
+	WaterSpirit		 = "고대 물의 정령",
+	Snaplasher 		= "악어덩굴손",
+	StormLasher 		= "폭풍덩굴손",
+	EmoteTree		= "|cFF00FFFF생명의 어머니의 선물|r이 자라기 시작합니다!", -- /chatlog does not log messages with color codes...lol
+	YellKill		= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다."	
 }
 
 L:SetWarningLocalization{
@@ -462,7 +471,10 @@ L:SetMiscLocalization{
 	YellPull		= "시간이 없어, 친구들! 내가 최근에 만든 기막힌 발명품을 시험하게 도와 주겠지? 자, 마음 바꿀 생각은 말라고. XT-002를 그 꼬락서니로 만들었으니, 너흰 나한테 빚진 셈이란 걸 잊지 마!",	
 	YellPhase2		= "멋지군! 참으로 경이적인 결과야! 차체 내구도 98.9 퍼센트라! 손상이라고 보기도 어렵지! 계속하자고.",
 	YellPhase3		= "고맙다, 친구들! 너희 덕분에 멋진 자료를 좀 얻었어! 자, 그걸 어디 뒀더라... 아, 여기 있군.",
-	LootMsg			= "([^%s]+).*Hitem:(%d+)"
+	LootMsg			= "([^%s]+).*Hitem:(%d+)",
+	MobPhase1 		= "거대 전차 Mk II",
+	MobPhase2 		= "VX-001",
+	MobPhase3 		= "공중지휘기"
 }
 
 
