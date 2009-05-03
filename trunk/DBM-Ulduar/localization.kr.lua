@@ -252,7 +252,8 @@ L:SetTimerLocalization{
 	timerPetrifyingBreath	= "석화 숨결",
 	timerNextShockwave		= "다음 충격파",
 	timerLeftArm			= "왼쪽 팔 재생성",
-	timerRightArm			= "오른쪽 팔 재생성"
+	timerRightArm			= "오른쪽 팔 재생성",
+	achievementDisarmed		= "무장해제"	
 }
 
 L:SetOptionLocalization{
@@ -266,12 +267,16 @@ L:SetOptionLocalization{
 	WarnGrip				= "바위 손아귀 대상 알리기",
 	SetIconOnGripTarget		= "바위 손아귀 대상 아이콘 설정",
 	timerLeftArm			= "왼쪽 팔 재생성 타이머 보기",	
-	timerRightArm			= "오른쪽 팔 재생성 타이머 보기"
+	timerRightArm			= "오른쪽 팔 재생성 타이머 보기",
+	achievementDisarmed		= "무장해제 타이머 보기"	
 }
 
 L:SetMiscLocalization{
 	Yell_Trigger_arm_left		= "얕은 상처야!",
-	Yell_Trigger_arm_right		= "꽉꽉 쥐어짜 주마!"
+	Yell_Trigger_arm_right		= "꽉꽉 쥐어짜 주마!",
+	Health_Body				= "콜로간 몸통",
+	Health_Right_Arm		= "오른쪽 팔",
+	Health_Left_Arm			= "왼쪽 팔"	
 }
 
 --------------
@@ -541,11 +546,11 @@ L:SetWarningLocalization{
 	SpecWarnBrainLink		= "당신 그리고 %s 에게 두뇌의 고리!",
 	WarningSanity 			= "%d Sanity debuffs remaining",
 	SpecWarnSanity 			= "%d Sanity debuffs remaining",
-	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
-	WarnMadness 				= "Casting Induce Madness",
-	SpecWarnMadnessOutNow	= "Madness ends - MOVE OUT",
+	SpecWarnGuardianLow 		= "이 수호자를 더이상 치지 마세요! - 공격 중지!",
+	WarnMadness 				= "광기 유발을 시전합니다.",
+	SpecWarnMadnessOutNow	= "광기 유발이 끝났습니다. - 밖으로 이동!",
 	WarnBrainPortalSoon		= "3 초 후 포탈",	
-	WarnSqueeze 				= "Squeeze: >%s<"
+	WarnSqueeze 				= "압착의 촉수: >%s<"
 }
 
 L:SetTimerLocalization{
@@ -560,8 +565,8 @@ L:SetOptionLocalization{
 	SpecWarnBrainLink		= "두뇌의 고리 특수 경고 보기",
 	WarningSanity			= "Show Warning when Sanity low",
 	SpecWarnSanity			= "Show Special Warning when Sanity very low",
-	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
+	SpecWarnGuardianLow		= "수호자의 생명력이 낮을 때 특수 경고 알리기(딜러)",
 	WarnMadness				= "광기 유발 알리기",
 	WarnBrainPortalSoon		= "차원문 알리기",	
-	SpecWarnMadnessOutNow	= "Show Special Warning shortly before Madness ends"
+	SpecWarnMadnessOutNow	= "광기가 끝나기 전에 특수 경고 알리기"
 }
