@@ -93,7 +93,11 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "下一次 火息術",
 	timerDeepBreathCast		= "火息術",
-	timerAllTurretsReady		= "砲塔"
+	timerAllTurretsReady		= "砲塔",
+	timerTurret1			= "砲塔1",
+	timerTurret2			= "砲塔2",
+	timerTurret3			= "砲塔3",
+	timerTurret4			= "砲塔4"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "為下一次火息術顯示計時器",
@@ -105,11 +109,17 @@ L:SetOptionLocalization{
 	warnTurretsReady		= "顯示砲塔的警告",
 	SpecWarnDevouringFlameCast    	= "當你中了吞噬烈焰時顯示特別警告",
 	WarnDevouringFlameCast       	= "當施放吞噬烈焰時顯示警告",
+	timerTurret1			= "顯示砲塔1的計时器",
+	timerTurret2			= "顯示砲塔2的計时器",
+	timerTurret3			= "顯示砲塔3的計时器 (英雄)",
+	timerTurret4			= "顯示砲塔4的計时器 (英雄)",
 }
 
 L:SetMiscLocalization{
 	YellAir 			= "給我們一點時間來準備建造砲塔。",
-	FlamecastUnknown			= "未知"
+	YellGroundTemp			= "Move quickly! She won't remain grounded for long!",
+	EmotePhase2			= "%%s grounded permanently!",
+	FlamecastUnknown		= "未知"
 }
 
 
@@ -253,7 +263,8 @@ L:SetTimerLocalization{
 	timerPetrifyingBreath		= "石化之息",
 	timerNextShockwave		= "下一個 震攝波",
 	timerLeftArm			= "左臂 重生",
-	timerRightArm			= "右臂 重生"
+	timerRightArm			= "右臂 重生",
+	achievementDisarmed		= "卸除手臂 計时器"
 }
 
 L:SetOptionLocalization{
@@ -267,11 +278,15 @@ L:SetOptionLocalization{
 	timerRightArm			= "顯示手臂重生(右) 的計時器",
 	WarnGrip			= "提示堅石之握的目標",
 	SetIconOnGripTarget		= "設置標記在堅石之握的目標",
+	achievementDisarmed		= "為成就:卸除手臂顯示計時器"
 }
 
 L:SetMiscLocalization{
 	Yell_Trigger_arm_left		= "小小的擦傷!",
-	Yell_Trigger_arm_right		= "只是皮肉之傷!"
+	Yell_Trigger_arm_right		= "只是皮肉之傷!",
+	Health_Body			= "柯洛剛恩身體",
+	Health_Right_Arm		= "右臂",
+	Health_Left_Arm			= "左臂"
 }
 
 ---------------
