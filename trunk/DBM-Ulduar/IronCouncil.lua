@@ -56,12 +56,7 @@ local timerRuneofPower		= mod:NewCDTimer(30, 61974)
 local timerRuneofDeath		= mod:NewCDTimer(30, 63490)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 
-
-
--- Rune of Summoning .. wtf! :)
-
 local enrageTimer		= mod:NewEnrageTimer(900)
-
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)	

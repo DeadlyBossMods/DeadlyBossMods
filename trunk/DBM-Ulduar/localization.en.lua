@@ -82,30 +82,40 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame		= "Devouring Flame - MOVE",
 	warnTurretsReadySoon		= "Fourth Turret Ready in 20 Sec",
-	warnTurretsReady			= "Fourth Turret Ready",
+	warnTurretsReady		= "Fourth Turret Ready",
 	SpecWarnDevouringFlameCast	= "Devouring Flame on You",
-	WarnDevouringFlameCast		= "Devouring Flame on >%s<", 
+	WarnDevouringFlameCast		= "Devouring Flame on >%s<" 
 }
 L:SetTimerLocalization{
-	timerDeepBreathCooldown	= "Next Flame Breath in",
+	timerDeepBreathCooldown		= "Next Flame Breath in",
 	timerDeepBreathCast		= "Flame Breath",
-	timerAllTurretsReady	= "Turrets"
+	timerAllTurretsReady		= "Turrets",
+	timerTurret1			= "Turret 1",
+	timerTurret2			= "Turret 2",
+	timerTurret3			= "Turret 3",
+	timerTurret4			= "Turret 4"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Show timer for next Flame Breath",
-	timerDeepBreathCast			= "Show Flame Breath cast timer",
+	timerDeepBreathCast		= "Show Flame Breath cast timer",
 	SpecWarnDevouringFlame		= "Show Special Warning while in Devouring Flame patch",
 	PlaySoundOnDevouringFlame	= "Play Sound when afflicted by Devoring Flame",
 	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
-	warnTurretsReady			= "Show warning for turrets",
-	SpecWarnDevouringFlameCast    = "Show Special Warning when Devouring Flame cast on you",
-	WarnDevouringFlameCast       = "Show warning when Devouring Flame cast", 
+	warnTurretsReady		= "Show warning for turrets",
+	SpecWarnDevouringFlameCast	= "Show Special Warning when Devouring Flame cast on you",
+	WarnDevouringFlameCast		= "Show warning when Devouring Flame cast",
+	timerTurret1			= "Show timer for Turret 1",
+	timerTurret2			= "Show timer for Turret 2",
+	timerTurret3			= "Show timer for Turret 3 (Heroic)",
+	timerTurret4			= "Show timer for Turret 4 (Heroic)",	
 }
 
 L:SetMiscLocalization{
-	YellAir = "Give us a moment to prepare to build the turrets.",
-	FlamecastUnknown			= "UNKNOWN"
+	YellAir				= "Give us a moment to prepare to build the turrets.",
+	YellGroundTemp			= "Move quickly! She won't remain grounded for long!",
+	EmotePhase2			= "%%s grounded permanently!",
+	FlamecastUnknown		= "UNKNOWN"
 }
 
 
