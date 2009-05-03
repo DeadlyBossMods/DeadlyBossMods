@@ -7,22 +7,23 @@ mod:SetZone()
 
 mod:RegisterCombat("combat", 32930, 32933, 32934)
 
---32934 ^-- right arm
---32933 ^-- left arm
---32930 -- kologarn
-
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local specWarnEyebeam		= mod:NewSpecialWarning("SpecialWarningEyebeam")
-local warnGrip			= mod:NewAnnounce("WarnGrip", 2)
+mod:AddBoolOption("HealthFrame", true)
+mod:SetBossHealthInfo(
+	32930, L.Health_Body,
+	32934, L.Health_Right_Arm,
+	32933, L.Health_Left_Arm
+)
 
 
-mod:AddBoolOption("SetIconOnEyebeamTarget", true)
-
+local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
+local warnGrip				= mod:NewAnnounce("WarnGrip", 2)
+local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC / 12 nonHC
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
 local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(48, "timerRightArm")
@@ -32,9 +33,19 @@ mod:AddBoolOption("SetIconOnGripTarget", true)
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Yell_Trigger_arm_left then
 		timerRespawnLeftArm:Start()
+		if GetInstanceDifficulty() == 1 then
+			timerTimeForDisarmed:Start(12)
+		else
+			timerTimeForDisarmed:Start()
+		end
 
 	elseif msg == L.Yell_Trigger_arm_right then
 		timerRespawnRightArm:Start()
+		if GetInstanceDifficulty() == 1 then
+			timerTimeForDisarmed:Start(12)
+		else
+			timerTimeForDisarmed:Start()
+		end
 	end
 end
 
