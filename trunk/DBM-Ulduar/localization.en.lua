@@ -401,22 +401,23 @@ L:SetMiscLocalization{
 	WaterSpirit	= "Ancient Water Spirit",
 	Snaplasher	= "Snaplasher",
 	StormLasher	= "Storm Lasher",
-	EmoteTree	= "???", -- /chatlog does not log messages with color codes...lol
 	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
 }
 
 L:SetWarningLocalization{
-	WarnPhase2		= "Phase 2",
+	WarnPhase2	= "Phase 2",
 	WarnSimulKill	= "First add down - Resurrection in 1 min",
-	WarnFury		= "Nature's Fury on >%s<",
-	SpecWarnFury	= "Nature's Fury on You!"
+	WarnFury	= "Nature's Fury on >%s<",
+	SpecWarnFury	= "Nature's Fury on You!",
+	WarningTremor   = "GROUND TREMOR - STOP CASTING"
+	
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam	= "Sun Beam: %s",
-	TimerAlliesOfNature		= "Allies of Nature CD",
-	TimerSimulKill			= "Resurrection",
-	TimerFuryYou			= "Nature's Fury on you"
+	TimerAlliesOfNature	= "Allies of Nature CD",
+	TimerSimulKill		= "Resurrection",
+	TimerFuryYou		= "Nature's Fury on you"
 }
 
 
