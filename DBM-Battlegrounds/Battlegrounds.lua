@@ -4,6 +4,7 @@
 -- thanks to LeoLeal and DiabloHu
 
 local mod = DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
+local L = mod:GetLocalizedStrings()
 
 
 mod:AddBoolOption("ColorByClass", true)
@@ -48,10 +49,11 @@ mod:RegisterOnUpdateHandler(function(self, elapsed)
 	if self.Options.ShowInviteTimer and MAX_BATTLEFIELD_QUEUES and PVP_TEAMSIZE then
 		for i = 1, MAX_BATTLEFIELD_QUEUES do
 			local status, mapName, instanceID, _, _, teamSize = GetBattlefieldStatus(i)
-			if (mapName and (instanceID ~= 0)) then
-				mapName = mapName.." "..instanceID
-				if (teamSize ~= 0) then
-					mapName = mapName.." "..format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
+			if mapName and (instanceID > 0 or teamSize > 0) then
+				if (teamSize > 0) then
+					mapName = L.ArenaInvite.." "..format(PVP_TEAMSIZE, tostring(teamSize), tostring(teamSize))
+				else
+					mapName = mapName.." "..instanceID
 				end
 			end
 			if status == "confirm" and inviteTimer:GetTime(mapName) == 0 then
