@@ -436,7 +436,8 @@ L:SetOptionLocalization{
 	WarnPhase2 			= "提示第二階段",
 	WarnSimulKill			= "提示小怪復活",
 	WarnFury 			= "提示自然烈怒",
-	SpecWarnFury 			= "當你中了自然烈怒時顯示特別警告"
+	SpecWarnFury 			= "當你中了自然烈怒時顯示特別警告",
+	WarningTremor   		= "當王施放地面震顫時顯示特別警告"
 }
 
 -------------------
