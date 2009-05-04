@@ -29,6 +29,7 @@ local enrage = mod:NewEnrageTimer(600)
 local timerAlliesOfNature	= mod:NewTimer(60, "TimerAlliesOfNature", 62678)
 local timerSimulKill		= mod:NewTimer(60, "TimerSimulKill")
 local timerFuryYou		= mod:NewTimer(10, "TimerFuryYou", 63571)
+local timerTremorCD 	= mod:NewCDTimer(28, 62859) 
 local warnTremor		= mod:NewSpecialWarning("WarningTremor")
 
 local adds = {}
@@ -46,8 +47,8 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62437 or args.spellId == 62859 then
-		warnGroundTremorCast:Show()
-		timerGroundTremorCooldown:Start()
+		warnTremor:Show()
+		timerTremorCD:Start()
 	end
 end 
 
