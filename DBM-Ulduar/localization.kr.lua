@@ -36,7 +36,7 @@ L:SetOptionLocalization{
 	SystemOverload			= "시스템 과부화 특수 경고 보기",
 	SpecialPursueWarnYou	= "추적자 특수 경보 보기",
 	PursueWarn				= "추적 플레이어 레이드 경보로 보기",
-	warnNextPursueSoon		= "다음 추적 경고"
+	warnNextPursueSoon		= "다음 추적 경고 보기"
 }
 
 
@@ -93,7 +93,11 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결",
 	timerDeepBreathCast			= "화염 숨결",
-	timerAllTurretsReady		= "포탑"	
+	timerAllTurretsReady		= "포탑",
+	timerTurret1			= "포탑1",
+	timerTurret2			= "포탑2",
+	timerTurret3			= "포탑3",
+	timerTurret4			= "포탑4"	
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "다음 화염 숨결 타이머 보기",
@@ -104,12 +108,18 @@ L:SetOptionLocalization{
 	timerAllTurretsReady		= "포탑 타이머 보기",
 	warnTurretsReadySoon		= "포탑 사전 경보 보기",
 	warnTurretsReady			= "포탑 경보 보기",
-	WarnDevouringFlameCast      	= "활활 타오르는 화염 시전 경보 보기", 	
+	WarnDevouringFlameCast      	= "활활 타오르는 화염 시전 경보 보기",
+	timerTurret1				= "첫번째 포탑 타이머 보기",
+	timerTurret2				= "두번째 포탑 타이머 보기",
+	timerTurret3				= "세번째 포탑 타이머 보기(25인)",
+	timerTurret4				= "네번째 포탑 타이머 보기(25인)", 	
 }
 
 L:SetMiscLocalization{
 	YellAir 						= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
-	FlamecastUnknown			= "UNKNOWN"
+	YellGroundTemp				= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
+	EmotePhase2					= "%%s|1이;가; 완전히 땅에 내려앉았습니다!",	
+	FlamecastUnknown			= "알 수 없음"
 }
 
 
@@ -181,6 +191,7 @@ L:SetOptionLocalization{
 	WarningSupercharge			= "과충전 시전 경보 보기",
 	WarningChainlight			= "연쇄 번개 알리기",
 	TimerOverload				= "과충전 시전 타이머 보기",
+	PlaySoundOnOverload			= "과충전 일 때 소리 재생",	
 	TimerLightningWhirl			= "번개 소용돌이 시전 타이머 보기",
 	LightningTendrils			= "번개 촉수 특수 경고 보기",
 	TimerLightningTendrils		= "번개 촉수 지속 타이머 보기",
@@ -264,16 +275,15 @@ L:SetOptionLocalization{
 	timerPetrifyingBreath	= "석화 숨결 타이머 보기",
 	timerNextShockwave		= "충격파 타이머 보기",
 	timerLeftArm			= "왼쪽 팔 재생성 타이머 보기",
+	timerRightArm			= "오른쪽 팔 재생성 타이머 보기",	
 	WarnGrip				= "바위 손아귀 대상 알리기",
 	SetIconOnGripTarget		= "바위 손아귀 대상 아이콘 설정",
-	timerLeftArm			= "왼쪽 팔 재생성 타이머 보기",	
-	timerRightArm			= "오른쪽 팔 재생성 타이머 보기",
 	achievementDisarmed		= "무장해제 타이머 보기"	
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "얕은 상처야!",
-	Yell_Trigger_arm_right		= "꽉꽉 쥐어짜 주마!",
+	Yell_Trigger_arm_left	= "얕은 상처야!",
+	Yell_Trigger_arm_right	= "꽉꽉 쥐어짜 주마!",
 	Health_Body				= "콜로간 몸통",
 	Health_Right_Arm		= "오른쪽 팔",
 	Health_Left_Arm			= "왼쪽 팔"	
@@ -363,14 +373,14 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerStormhammer		= "폭풍망치 쿨다운",
-	TimerUnbalancingStrike	= "넘어트리는 일격 쿨다운",
+--	TimerStormhammer		= "폭풍망치 쿨다운",
+--	TimerUnbalancingStrike	= "넘어트리는 일격 쿨다운",
 	TimerHardmode			= "하드 모드"
 }
 
 L:SetOptionLocalization{
-	TimerStormhammer		= "폭풍망치 쿨다운 보기",
-	TimerUnbalancingStrike	= "넘어트리는 일격 타이머 보기",
+--	TimerStormhammer		= "폭풍망치 쿨다운 보기",
+--	TimerUnbalancingStrike	= "넘어트리는 일격 타이머 보기",
 	TimerHardmode			= "하드 모드를 위한 타이머 보기",
 	UnbalancingStrike		= "넘어트리는 일격 타겟 알리기",
 	WarningStormhammer		= "폭풍망치 타겟 알리기",
@@ -401,7 +411,7 @@ L:SetMiscLocalization{
 	WaterSpirit		 = "고대 물의 정령",
 	Snaplasher 		= "악어덩굴손",
 	StormLasher 		= "폭풍덩굴손",
-	EmoteTree		= "|cFF00FFFF생명의 어머니의 선물|r이 자라기 시작합니다!", -- /chatlog does not log messages with color codes...lol
+--	EmoteTree		= "|cFF00FFFF생명의 어머니의 선물|r이 자라기 시작합니다!", -- /chatlog does not log messages with color codes...lol
 	YellKill		= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다."	
 }
 
@@ -409,7 +419,8 @@ L:SetWarningLocalization{
 	WarnPhase2 			= "2 페이즈",
 	WarnSimulKill		= "첫번째 애드 죽음 - 1분 후 부활",
 	WarnFury 			= ">%s< 에게 자연의 분노",
-	SpecWarnFury 		= "당신에게 자연의 분노!"
+	SpecWarnFury 		= "당신에게 자연의 분노!",
+	WarningTremor   		= "지진! - 시전 중지!"	
 }
 
 L:SetTimerLocalization{
@@ -426,7 +437,8 @@ L:SetOptionLocalization{
 	WarnPhase2 				= "2 페이즈 경고 보기",
 	WarnSimulKill			= "부활 경고 보기",
 	WarnFury 				= "자연의 분노 경고 보기",
-	SpecWarnFury 			= "자연의 분노 특수 경고 보기"
+	SpecWarnFury 			= "자연의 분노 특수 경고 보기",	
+	WarningTremor  	 		= "지진 시전 특수 경보 보기"	
 }
 
 -------------------
@@ -467,6 +479,7 @@ L:SetOptionLocalization{
 	TimeToPhase2			= "페이즈 2 시작",
 	TimeToPhase3			= "페이즈 3 시작",
 	MagneticCore			= "자기 증폭기 획득자 알리기",
+	SpinUp	 				= "회전 가속 알리기",	
 	WarnShell				= "네이팜 탄 대상 알리기",
 	WarnBlast				= "플라즈마 폭발 대상 알리기",	
 	HealthFramePhase4		= "페이즈 4 의 체력 프레임 보기"	
@@ -567,6 +580,11 @@ L:SetOptionLocalization{
 	SpecWarnSanity			= "Show Special Warning when Sanity very low",
 	SpecWarnGuardianLow		= "수호자의 생명력이 낮을 때 특수 경고 알리기(딜러)",
 	WarnMadness				= "광기 유발 알리기",
+	WhisperBrainLink 		= "두뇌의 고리 특수 경고 알리기(귓속말)",
+	NextPortal				= "다음 차원문 알리기",	
 	WarnBrainPortalSoon		= "차원문 알리기",	
-	SpecWarnMadnessOutNow	= "광기가 끝나기 전에 특수 경고 알리기"
+	SpecWarnMadnessOutNow	= "광기가 끝나기 전에 특수 경고 알리기",
+	WarnSqueeze				= "압착의 촉수 대상 알리기",
+	WarningSqueeze			= "압착의 촉수 경고 보기",	
+	ShowSaraHealth			= "사라 체력 보기"
 }
