@@ -374,14 +374,10 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerStormhammer		= "風暴之錘冷卻",
-	TimerUnbalancingStrike		= "失衡打擊冷卻",
 	TimerHardmode			= "困難模式"
 }
 
 L:SetOptionLocalization{
-	TimerStormhammer		= "顯示風暴之錘冷卻時間",
-	TimerUnbalancingStrike		= "顯示失衡打擊計時器",
 	TimerHardmode			= "顯示困難模式計時器",
 	UnbalancingStrike		= "提示失衡打擊的目標",
 	WarningStormhammer		= "提示風暴之錘的目標",
