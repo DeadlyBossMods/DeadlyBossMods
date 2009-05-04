@@ -123,9 +123,6 @@ function mod:UNIT_TARGET(unit)	-- I think this is useless, why have anyone in th
 end 
 
 function mod:flameCast(target)
-	if target == nil then
-		WarnDevouringFlameCastNoTarget:Show()
-	else
 	warnDevouringFlameCast:Show(target)
 	if target == UnitName("player") then
 		specWarnDevouringFlameCast:Show()
