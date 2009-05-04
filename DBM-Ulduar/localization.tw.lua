@@ -117,8 +117,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAir 			= "給我們一點時間來準備建造砲塔。",
-	YellGroundTemp			= "Move quickly! She won't remain grounded for long!",
-	EmotePhase2			= "%%s grounded permanently!",
+	YellGroundTemp			= "快!她可不會在地面上待太久!",
+	EmotePhase2			= "%%s再也飛不動了!",
 	FlamecastUnknown		= "未知"
 }
 
@@ -411,7 +411,6 @@ L:SetMiscLocalization{
 	WaterSpirit 			= "上古水之靈",
 	Snaplasher 			= "猛攫鞭笞者",
 	StormLasher 			= "風暴鞭笞者",
-	EmoteTree 			= "???", -- /chatlog does not log messages with color codes...lol
 	YellKill			= "他對我的操控已然退散。我已再次恢復神智了。感激不盡，英雄們。"
 }
 
@@ -419,7 +418,8 @@ L:SetWarningLocalization{
 	WarnPhase2 			= "第二階段",
 	WarnSimulKill			= "第一支小怪死亡 - 1分鐘後復活",
 	WarnFury 			= "自然烈怒: >%s<",
-	SpecWarnFury 			= "你中了自然烈怒!"
+	SpecWarnFury 			= "你中了自然烈怒!",
+	WarningTremor   		= "GROUND TREMOR - STOP CASTING"
 }
 
 L:SetTimerLocalization{
