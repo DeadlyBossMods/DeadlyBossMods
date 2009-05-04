@@ -23,6 +23,10 @@ L:SetOptionLocalization({
 	AutoSpirit		= "自動釋放靈魂"
 })
 
+L:SetMiscLocalization({
+	ArenaInvite		= "競技場邀請"
+})
+
 
 --------------
 --  Arenas  --
@@ -40,7 +44,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart 		= "顯示開始計時器",
-	TimerShadow 		= "顯示暗影之眼計時器"
+	TimerShadow 		= "顯示暗影水晶計時器"
 })
 
 L:SetMiscLocalization({
@@ -229,9 +233,6 @@ L:SetWarningLocalization{
 	specWarnNova 		= "閃電新星",
 	warnNova 		= "閃電新星",
 	warnOverCharge		= "超載"
-}
-
-L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
