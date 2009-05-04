@@ -419,7 +419,7 @@ L:SetWarningLocalization{
 	WarnSimulKill			= "第一支小怪死亡 - 1分鐘後復活",
 	WarnFury 			= "自然烈怒: >%s<",
 	SpecWarnFury 			= "你中了自然烈怒!",
-	WarningTremor   		= "GROUND TREMOR - STOP CASTING"
+	WarningTremor   		= "地面震顫 - 停止施法"
 }
 
 L:SetTimerLocalization{
