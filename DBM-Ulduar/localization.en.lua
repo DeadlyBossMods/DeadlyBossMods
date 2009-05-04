@@ -358,26 +358,24 @@ L:SetWarningLocalization{
 	WarningStormhammer	= "Stormhammer on >%s<",
 	UnbalancingStrike	= "Unbalancing Strike on >%s<",
 	WarningPhase2		= "Phase 2",
-	WarningBomb			= "Rune Detonation on >%s<",
+	WarningLightningCharge	= "Lightning Charge",
+	WarningBomb		= "Rune Detonation on >%s<",
 	LightningOrb		= "Lightning Shock on You! Move!"
 }
 
 L:SetTimerLocalization{
-	TimerStormhammer		= "Stormhammer CD",
-	TimerUnbalancingStrike	= "Unbalancing Strike CD",
 	TimerHardmode		= "Hard Mode"
 }
 
 L:SetOptionLocalization{
-	TimerStormhammer		= "Show Stormhammer Cooldown",
-	TimerUnbalancingStrike	= "Show Timer for Unbalancing Strike",
 	TimerHardmode			= "Show Timer for Hard Mode",
 	UnbalancingStrike		= "Announce Unbalancing Strike Target",
 	WarningStormhammer		= "Announce Stormhammer Target",
+	WarningLightningCharge		= "Announce Lightning Charge",
 	WarningPhase2			= "Announce Phase 2",
 	UnbalancingStrike		= "Announce Unbalancing Strike",
-	WarningBomb				= "Announce Rune Detonation",
-	RangeFrame				= "Show Range Frame"
+	WarningBomb			= "Announce Rune Detonation",
+	RangeFrame			= "Show Range Frame"
 }
 
 L:SetMiscLocalization{

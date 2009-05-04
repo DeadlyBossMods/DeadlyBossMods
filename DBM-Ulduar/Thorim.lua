@@ -17,16 +17,18 @@ mod:RegisterEvents(
 
 local enrageTimer		= mod:NewEnrageTimer(309)
 
-local timerStormhammer		= mod:NewTimer(16, "TimerStormhammer", 62042)
-local timerUnbalancingStrike	= mod:NewTimer(21, "TimerUnbalancingStrike", 62130)
+local timerStormhammer		= mod:NewCastTimer(16, 62042)
+local timerLightningCharge 	= mod:NewCDTimer(16, 62466) 
+local timerUnbalancingStrike	= mod:NewCastTimer(21, 62130)
 local timerHardmode		= mod:NewTimer(189, "TimerHardmode", 62042)
 
-local warnPhase2			= mod:NewAnnounce("WarningPhase2", 1)
+local warnPhase2		= mod:NewAnnounce("WarningPhase2", 1)
 local warnStormhammer		= mod:NewAnnounce("WarningStormhammer", 2, 62470)
+local warnLightningCharge	= mod:NewAnnounce("WarningLightningCharge", 2, 62466)
 local warnUnbalancingStrike	= mod:NewAnnounce("UnbalancingStrike", 4, 62130)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
-local warningBomb			= mod:NewAnnounce("WarningBomb", 4)
+local warningBomb		= mod:NewAnnounce("WarningBomb", 4)
 
-local specWarnOrb			= mod:NewSpecialWarning("LightningOrb")
+local specWarnOrb		= mod:NewSpecialWarning("LightningOrb")
 
 
 mod:AddBoolOption("RangeFrame")
@@ -60,8 +62,10 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62042 then -- Storm Hammer
+	if args.spellId == 62042 then 		-- Storm Hammer
 		timerStormhammer:Schedule(2)
+	elseif args.spellId == 62466 then   	-- Lightning Charge
+		timerLightningCharge:Start()	
 	elseif args.spellId == 62130 then	-- Unbalancing Strike
 		timerUnbalancingStrike:Start()
 	end
