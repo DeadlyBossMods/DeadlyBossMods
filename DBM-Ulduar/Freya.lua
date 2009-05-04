@@ -9,11 +9,11 @@ mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.YellKill)
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE_FILTERED"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 mod:AddBoolOption("HealthFrame", true)
@@ -26,9 +26,10 @@ local specWarnFury = mod:NewSpecialWarning("SpecWarnFury")
 
 local enrage = mod:NewEnrageTimer(600)
 
-local timerAlliesOfNature = mod:NewTimer(60, "TimerAlliesOfNature", 62678)
-local timerSimulKill = mod:NewTimer(60, "TimerSimulKill")
-local timerFuryYou = mod:NewTimer(10, "TimerFuryYou", 63571)
+local timerAlliesOfNature	= mod:NewTimer(60, "TimerAlliesOfNature", 62678)
+local timerSimulKill		= mod:NewTimer(60, "TimerSimulKill")
+local timerFuryYou		= mod:NewTimer(10, "TimerFuryYou", 63571)
+local warnTremor		= mod:NewSpecialWarning("WarningTremor")
 
 local adds = {}
 
@@ -42,6 +43,14 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase2:Show()
 	end
 end
+
+function mod:SPELL_CAST_START(args)
+	if args.spellId == 62437 or args.spellId == 62859 then
+		warnGroundTremorCast:Show()
+		timerGroundTremorCooldown:Start()
+	end
+end 
+
 
 local altIcon = true
 function mod:SPELL_CAST_SUCCESS(args)
@@ -58,13 +67,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[
-0xF1300081B2004D93,"Ancient Water Spirit" --> 33202
-0xF130008094004D94,"Snaplasher" --> 32916
-0xF130008097004D95,"Storm Lasher" --> 32919
-0xF13000808A004B25,"Freya" --> 32906
-]]--
-
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SpawnYell then
 		if self.Options.HealthFrame then
@@ -75,12 +77,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		adds[33202] = true
 		adds[32916] = true
 		adds[32919] = true
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE_FILTERED(msg, sender)
-	if msg == L.EmoteTree then
-		-- todo, /chatlog fails when a chat message contains a color code -.-
 	end
 end
 
