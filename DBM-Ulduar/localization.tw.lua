@@ -368,8 +368,9 @@ L:SetWarningLocalization{
 	WarningStormhammer		= "風暴之錘: >%s<",
 	UnbalancingStrike		= "失衡打擊: >%s<",
 	WarningPhase2			= "第二階段",
+	WarningLightningCharge		= "閃電充能",
 	WarningBomb			= "引爆符文: >%s<",
-	LightningOrb 			= "你中了閃電充能! 快跑!"
+	LightningOrb 			= "你中了閃電震擊! 快跑!"
 }
 
 L:SetTimerLocalization{
@@ -384,6 +385,7 @@ L:SetOptionLocalization{
 	TimerHardmode			= "顯示困難模式計時器",
 	UnbalancingStrike		= "提示失衡打擊的目標",
 	WarningStormhammer		= "提示風暴之錘的目標",
+	WarningLightningCharge		= "提示閃電充能",
 	WarningPhase2			= "提示第二階段",
 	RangeFrame			= "顯示距離框",
 	WarningBomb			= "提示引爆符文",
