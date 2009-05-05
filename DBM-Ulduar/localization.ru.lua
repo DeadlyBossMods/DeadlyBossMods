@@ -19,7 +19,7 @@ L:SetTimerLocalization{
 }
 	
 L:SetMiscLocalization{
-	YellPull	= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+	YellPull	= "Обнаружены противники. Запуск протокола оценки угрозы. Главная цель выявлена. Повторный анализ через 30 секунд.",
 	Emote		= "%%s преследуется (%S+)%"
 }
 
@@ -257,8 +257,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "Just a scratch!",
-	Yell_Trigger_arm_right		= "Only a flesh wound!"
+	Yell_Trigger_arm_left		= "Царапина...",
+	Yell_Trigger_arm_right		= "Всего лишь плоть!"
 }
 
 ---------------
@@ -335,7 +335,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarningStormhammer	= ">%s< под воздействием Молота бури",
 	UnbalancingStrike	= ">%s< под воздействием Дисбалансирующего удара",
-	WarningPhase2		= "Phase 2",
+	WarningPhase2		= "Фаза 2",
 	WarningBomb			= ">%s< под воздействием Взрыва руны",
 	LightningOrb		= "Поражение громом на вас - БЕГИТЕ!"
 }
@@ -359,8 +359,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
-	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!"
+	YellPhase1		= "Незваные гости! Вы заплатите за то, что посмели вмешаться... Погодите, вы...",
+	YellPhase2		= "Бесстыжие выскочки, вы решили бросить вызов мне лично? Я сокрушу вас всех!"
 }
 
 
@@ -374,11 +374,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell	= "Дети, помогите мне!",
-	WaterSpirit	= "Древних духа воды",
-	Snaplasher	= "Хватоплета",
-	StormLasher	= "Грозовых плеточника",
-	EmoteTree	= "???" -- /chatlog does not log messages with color codes...lol
+	SpawnYell	= "Помогите мне, дети мои!",
+	WaterSpirit	= "Древний дух воды",
+	Snaplasher	= "Хватоплет",
+	StormLasher	= "Грозовой плеточник",
+	EmoteTree	= "Дар Хранительницы жизни начинает расти!" -- /chatlog does not log messages with color codes...lol
 }
 
 L:SetWarningLocalization{
@@ -428,9 +428,12 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
-	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9%! Barely a dent! Moving right along.",
-	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
+	YellPull		= "У нас мало времени, друзья! Вы поможете испытать новейшее и величайшее из моих изобретений. И учтите: после того, что вы натворили с XT-002, отказываться просто некрасиво.",	
+	YellPhase2		= "ПРЕВОСХОДНО! Просто восхитительный результат! Целостность обшивки – 98,9 процента! Почти что ни царапинки! Продолжаем!",
+	YellPhase3		= "Спасибо, друзья! Благодаря вам я получил ценнейшие сведения! Так, а куда же я дел... – ах, вот куда.",
+	MobPhase1		= "Левиафан II",
+	MobPhase2		= "VX-001 <Противопехотная пушка>",
+	MobPhase3		= "Воздушное судно",
 }
 
 
@@ -478,8 +481,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2 = "I am the lucid dream.",
+	YellPull = "Скоро мы сразимся с главарем этих извергов! Обратите гнев и ненависть против его прислужников!",
+	YellPhase2 = "Я – это сон наяву.",
 	Sara = "Сара",
 	WhisperBrainLink = "Схожее мышление на вас! Бегите к %s!",
 }
