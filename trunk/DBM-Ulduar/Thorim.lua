@@ -15,12 +15,12 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local enrageTimer		= mod:NewEnrageTimer(309)
+local enrageTimer		= mod:NewEnrageTimer(369)
 
 local timerStormhammer		= mod:NewCastTimer(16, 62042)
 local timerLightningCharge 	= mod:NewCDTimer(16, 62466) 
 local timerUnbalancingStrike	= mod:NewCastTimer(21, 62130)
-local timerHardmode		= mod:NewTimer(189, "TimerHardmode", 62042)
+local timerHardmode		= mod:NewTimer(175, "TimerHardmode", 62042)
 
 local warnPhase2		= mod:NewAnnounce("WarningPhase2", 1)
 local warnStormhammer		= mod:NewAnnounce("WarningStormhammer", 2, 62470)
