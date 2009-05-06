@@ -26,7 +26,7 @@ local specWarnLightBomb			= mod:NewSpecialWarning("SpecialWarningLightBomb")
 local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 64234)
 local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 
-local enrageTimer			= mod:NewEnrageTimer(480)
+local enrageTimer			= mod:NewEnrageTimer(600)
 
 mod:AddBoolOption("SetIconOnLightBombTarget", true)
 mod:AddBoolOption("SetIconOnGravityBombTarget", true)
