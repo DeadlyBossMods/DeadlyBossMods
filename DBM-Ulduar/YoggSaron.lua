@@ -9,6 +9,7 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_APPLIED",
@@ -21,6 +22,7 @@ mod:RegisterEvents(
 
 
 local warnGuardianSpawned 		= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
+local warnCrusherTentacleSpawned	= mod:NewAnnounce("WarningCrusherTentacleSpawned", 2)
 local warnP2 				= mod:NewAnnounce("WarningP2", 2)
 local warnP3 				= mod:NewAnnounce("WarningP3", 2)
 local warnSanity 			= mod:NewAnnounce("WarningSanity", 3)
@@ -68,6 +70,13 @@ function mod:SPELL_CAST_START(args)
 		specWarnMadnessOutNow:Schedule(56)
 	end
 end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 64144 and self:GetUnitCreatureId(args.sourceGUID) == 33966 then 
+		warnCrusherTentacleSpawned:Show()
+	end
+end
+
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 62979 then
