@@ -81,6 +81,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	next = "Nächster %s",
 }
 
+
 DBM_CORE_AUTO_TIMER_OPTIONS = {
 	target = "Debufftimer für |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	cast = "Casttimer für |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
