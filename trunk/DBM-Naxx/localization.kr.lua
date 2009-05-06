@@ -60,7 +60,10 @@ L:SetOptionLocalization({
 	TimerEmbrace			= "귀부인의 은총(침묵) 타이머 보기",	
 	WarningEmbraceActive	= "귀부인의 은총 경고 보기",
 	WarningEmbraceExpire	= "귀부인의 은총 종료 경보 보기",
-	WarningEmbraceExpired	= "귀부인의 은총 사라짐 경보 보기"
+	WarningEmbraceExpired	= "귀부인의 은총 사라짐 경보 보기",
+	WarningEnrageSoon		= "격노 5초전 경고 알리기",
+	WarningEnrageNow		= "격노 경고 알리기",
+	TimerEnrage				= "격노 타이머 보기",	
 })
 
 
@@ -300,7 +303,7 @@ L:SetOptionLocalization({
 
 L:SetWarningLocalization({
 	WarningShiftCasting		= "극성 변환 3초 전!!",
-	WarningChargeChanged	= "%s으로 전하가 바뀌었습니다.",
+	WarningChargeChanged	= "%s로 전하가 바뀌었습니다.",
 	WarningChargeNotChanged	= "전하가 바뀌지 않았습니다.",
 	WarningThrow			= "탱커 던지기!",
 	WarningThrowSoon		= "탱커 던지기 3 초 전!!"
@@ -494,7 +497,7 @@ L:SetOptionLocalization({
 	WarningPhase2		= "2 페이즈 경고 보기",
 	WarningFissure		= "어둠의 균열 경고 보기",
 	WarningMana			= "마나 폭발 경고 보기",
-	WarningChainsTargets= "Show Chains of Kel'Thuzad Warning"
+	WarningChainsTargets= "켈투자드 정신 지배 경고 보기"
 })
 
 L:SetMiscLocalization({
@@ -506,7 +509,7 @@ L:SetWarningLocalization({
 	WarningPhase2		= "2 페이즈",
 	WarningFissure		= "어둠의 균열 생성",
 	WarningMana			= "마나 폭발 : >%s<",
-	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<"
+	WarningChainsTargets= "정신 지배 : >%s<"
 })
 
 L:SetTimerLocalization({
