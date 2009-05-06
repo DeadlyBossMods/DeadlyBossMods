@@ -71,3 +71,20 @@ DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Verstecken"
 
 DBM_CORE_ALLIANCE					= "Allianz"
 DBM_CORE_HORDE						= "Horde"
+
+-- Auto-generated Timer Localizations
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	active = "%s",
+	cd = "%s CD",
+	next = "Nächster %s",
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "Debufftimer für |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
+	cast = "Casttimer für |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
+	active = "Timer während |cff71d5ff|Hspell:%d|h%s|h|r aktiv ist anzeigen",
+	cd = "Cooldowntimer für |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
+	next = "Timer für nächstes |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
+}
