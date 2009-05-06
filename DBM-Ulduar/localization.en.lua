@@ -511,6 +511,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarningGuardianSpawned 		= "Guardian spawned",
+	WarningCrusherTentacleSpawned	= "Crusher Tentacle Spawned",
 	WarningP2 			= "Phase 2",
 	WarningBrainLink 		= "Brain Link on >%s< and >%s<",
 	SpecWarnBrainLink 		= "Brain Link on you and %s!",
@@ -525,6 +526,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarningGuardianSpawned		= "Announce Guardian Spawns",
+	WarningCrusherTentacleSpawned	= "Announce Crusher Tentacle Spawns",
 	WarningP2			= "Announce Phase 2",
 	WarningP3			= "Announce Phase 3",
 	WarningBrainLink		= "Announce Brain Links",
