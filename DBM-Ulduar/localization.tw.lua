@@ -90,18 +90,17 @@ L:SetWarningLocalization{
 	SpecWarnDevouringFlameCast	= "你中了吞噬烈焰",
 	WarnDevouringFlameCast		= "吞噬烈焰: >%s<", 
 }
+
 L:SetTimerLocalization{
-	timerDeepBreathCooldown		= "下一次 火息術",
-	timerDeepBreathCast		= "火息術",
 	timerAllTurretsReady		= "砲塔",
 	timerTurret1			= "砲塔1",
 	timerTurret2			= "砲塔2",
 	timerTurret3			= "砲塔3",
-	timerTurret4			= "砲塔4"
+	timerTurret4			= "砲塔4",
+	timerGroundedTemp		= "地上階段",
 }
+
 L:SetOptionLocalization{
-	timerDeepBreathCooldown		= "為下一次火息術顯示計時器",
-	timerDeepBreathCast		= "顯示火息術的施法計時器",
 	SpecWarnDevouringFlame		= "當你在吞噬烈焰的攻擊範圍時顯示特別警告",
 	PlaySoundOnDevouringFlame	= "當受到吞噬烈焰時播放音效",
 	timerAllTurretsReady		= "為砲塔顯示計時器",
@@ -113,6 +112,7 @@ L:SetOptionLocalization{
 	timerTurret2			= "顯示砲塔2的計时器",
 	timerTurret3			= "顯示砲塔3的計时器 (英雄)",
 	timerTurret4			= "顯示砲塔4的計时器 (英雄)",
+	timerGroundedTemp		= "顯示地上階段計時器",
 }
 
 L:SetMiscLocalization{
@@ -171,33 +171,28 @@ L:SetWarningLocalization{
 	WarningRuneofDeath		= "死亡符文",
 	RuneofDeath			= "死亡符文 - 移動",
 	LightningTendrils		= "閃電觸鬚 - 跑開!",
-	WarningRuneofSummoning			= "召喚符文"
+	WarningRuneofSummoning		= "召喚符文"
 }
 
 L:SetTimerLocalization{
 	TimerSupercharge		= "超級充能",
-	TimerOverload			= "超載",
 	TimerLightningWhirl		= "閃電旋風",
 	TimerLightningTendrils		= "閃電觸鬚",
-	timerFusionPunchCast		= "熔能拳擊施放",
 	timerFusionPunchActive		= "熔能拳擊: %s",
 	timerOverwhelmingPower		= "極限威能: %s",
 	timerRunicBarrier		= "符刻屏障",
-	timerRuneofDeath		= "死亡符文",
 }
 
 L:SetOptionLocalization{
 	TimerSupercharge		= "顯示超級充能計時器",
 	WarningSupercharge		= "當超級充能施放時顯示警告",
 	WarningChainlight		= "提示閃電鏈",
-	TimerOverload			= "顯示超載的施法計時器",
 	PlaySoundOnOverload		= "當超載施放時播放音效",
 	TimerLightningWhirl		= "顯示閃電旋風的施法計時器",
 	LightningTendrils		= "為閃電觸鬚顯示特別警告",
 	TimerLightningTendrils		= "顯示閃電旋風的持續時間計時器",
 	PlaySoundLightningTendrils	= "閃電觸鬚時播放音效",
 	WarningFusionPunch		= "提示熔能拳擊",
-	timerFusionPunchCast		= "為熔能拳擊顯示施法計時條",
 	timerFusionPunchActive		= "顯示熔能拳擊計時器",
 	WarningOverwhelmingPower	= "提示極限威能",
 	timerOverwhelmingPower		= "顯示極限威能計時器",
@@ -206,7 +201,6 @@ L:SetOptionLocalization{
 	WarningRuneofPower		= "提示力之符文",
 	WarningRuneofDeath		= "提示死亡符文",
 	RuneofDeath			= "為死亡符文顯示特別警告",
-	timerRuneofDeath		= "顯示死亡符文的持續時間計時器",
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
 	WarningRuneofSummoning 		= "提示召喚符文"
 }
@@ -261,7 +255,6 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	timerEyebeam			= "集束目光: %s",
 	timerPetrifyingBreath		= "石化之息",
-	timerNextShockwave		= "下一個 震攝波",
 	timerLeftArm			= "左臂 重生",
 	timerRightArm			= "右臂 重生",
 	achievementDisarmed		= "卸除手臂 計时器"
@@ -273,7 +266,6 @@ L:SetOptionLocalization{
 	timerEyebeam			= "顯示集束目光的計時器",
 	SetIconOnEyebeamTarget		= "設置標記在集束目光的目標",
 	timerPetrifyingBreath		= "顯示石化之息的計時器",
-	timerNextShockwave		= "顯示震攝波的計時器",
 	timerLeftArm			= "顯示手臂重生(左) 的計時器",
 	timerRightArm			= "顯示手臂重生(右) 的計時器",
 	WarnGrip			= "提示堅石之握的目標",
@@ -339,12 +331,7 @@ L:SetWarningLocalization{
 	WarningBitingCold		= "刺骨之寒 - 移動"
 }
 
-L:SetTimerLocalization{
-	TimerFlashFreeze		= "閃霜 即將到來",  -- all ppl have to move on the rock patches
-}
-
 L:SetOptionLocalization{
-	TimerFlashFreeze		= "顯示閃霜的施放計時器",
 	WarningFlashFreeze		= "為閃霜顯示警告",
 	WarningBitingCold		= "為刺骨之寒顯示警告",
 	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效"
@@ -459,7 +446,6 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	ProximityMines			= "新的環罩地雷",
 	TimeToPhase2			= "第二階段開始",
 	TimeToPhase3			= "第三階段開始",
 }
@@ -470,7 +456,6 @@ L:SetOptionLocalization{
 	WarningPlasmaBlast		= "顯示離子衝擊",
 	WarnShell			= "提示凝汽彈的目標",
 	WarnBlast			= "提示離子衝擊的目標",
-	ProximityMines			= "顯示環罩地雷計時器",
 	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
 	NextDarkGlare 			= "下一次 雷射彈幕的計时器",
@@ -479,7 +464,6 @@ L:SetOptionLocalization{
 	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
 	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
-
 	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取"
 }
 
