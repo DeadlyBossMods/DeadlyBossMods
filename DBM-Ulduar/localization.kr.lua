@@ -365,27 +365,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer	= "%s 에게 폭풍망치",
-	UnbalancingStrike	= ">%s< 에게 넘어트리는 일격",
-	WarningPhase2		= "2 페이즈",
-	WarningBomb			= ">%s< 에게 룬 폭파",
-	LightningOrb 		= "당신은 번개 충격 범위! 이동하세요!"
+	WarningStormhammer		= "%s 에게 폭풍망치",
+	UnbalancingStrike		= ">%s< 에게 넘어트리는 일격",
+	WarningPhase2			= "2 페이즈",
+	WarningBomb				= ">%s< 에게 룬 폭파",
+	WarningLightningCharge	= "번개 충전",
+	LightningOrb 			= "당신은 번개 충격 범위! 이동하세요!"
 }
 
 L:SetTimerLocalization{
---	TimerStormhammer		= "폭풍망치 쿨다운",
---	TimerUnbalancingStrike	= "넘어트리는 일격 쿨다운",
 	TimerHardmode			= "하드 모드"
 }
 
 L:SetOptionLocalization{
---	TimerStormhammer		= "폭풍망치 쿨다운 보기",
---	TimerUnbalancingStrike	= "넘어트리는 일격 타이머 보기",
 	TimerHardmode			= "하드 모드를 위한 타이머 보기",
 	UnbalancingStrike		= "넘어트리는 일격 타겟 알리기",
 	WarningStormhammer		= "폭풍망치 타겟 알리기",
 	WarningPhase2			= "2 페이즈 알리기",
-	WarningBomb				= "룬 폭파 알리기",	
+	WarningBomb				= "룬 폭파 알리기",
+	WarningLightningCharge	= "번개 충전 알리기",
 	RangeFrame				= "거리 창 보기",
 	LightningOrb 			= "번개 충격 알리기"	
 }
@@ -458,7 +456,7 @@ L:SetWarningLocalization{
 	WarnShell			= ">%s< 에게 네이팜 탄!",
 	WarnBlast			= ">%s< 에게 플라즈마 폭발!",
 	MagneticCore		= ">%s< 자기 증폭기를 획득했습니다.",
-	WarningShockBlast	= "충격파 - 움직이세요!"	
+	WarningShockBlast	= "충격파 - 움직이세요!"	,
 }
 
 L:SetTimerLocalization{
@@ -470,9 +468,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	ProximityMines			= "접근 지뢰 알리기",
-	DarkGlare 				= "레이저 탄막 알리기",
+	DarkGlare 				= "레이저 탄막 특수 경고 알리기",
 	WarningPlasmaBlast		= "플라즈마 폭발 알리기",	
-	WarningShockBlast		= "충격파 알리기",
+	WarningShockBlast		= "충격파 특수 경고 알리기",
 	PlaySoundOnShockBlast 	= "충격파 특수 사운드 경보 재생",
 	PlaySoundOnDarkGlare 	= "레이저 탄막 대상 특수 사운드 경보 재생",	
 	NextDarkGlare 			= "다음 레이저 탄막",
@@ -482,7 +480,8 @@ L:SetOptionLocalization{
 	SpinUp	 				= "회전 가속 알리기",	
 	WarnShell				= "네이팜 탄 대상 알리기",
 	WarnBlast				= "플라즈마 폭발 대상 알리기",	
-	HealthFramePhase4		= "페이즈 4 의 체력 프레임 보기"	
+	HealthFramePhase4		= "페이즈 4 의 체력 프레임 보기",
+	AutoChangeLootToFFA		= "3 페이즈에 루팅 옵션 자동 변경하기"	
 }
 
 L:SetMiscLocalization{
@@ -544,7 +543,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
+	YellPull 			= "짐승의 대장을 칠 때가 곧 다가올 거예요! 놈의 졸개들에게 노여움과 미움을 쏟아부으세요!",
 	YellPhase2 			= "나는, 살아 있는 꿈이다.",
 	Sara 				= "사라",
 	WhisperBrainLink 	= "당신에게 두뇌의 고리! %s 에게 뛰세요!",
