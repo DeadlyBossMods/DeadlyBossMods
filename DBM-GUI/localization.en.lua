@@ -97,7 +97,7 @@ L.FillUpBars		= "Fill up Bars"
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Spam Filter"
 L.Area_SpamFilter		= "General Spam Filter Options"
-L.HideBossEmoteFrame	= "Hide raid boss emote frame"
-L.SpamBlockRaidWarning	= "Filter announces from other boss mods" 
-L.SpamBlockBossWhispers	= "Filter <DBM> warning whispers while fighting"
-
+L.HideBossEmoteFrame		= "Hide raid boss emote frame"
+L.SpamBlockRaidWarning		= "Filter announces from other boss mods" 
+L.SpamBlockBossWhispers		= "Filter <DBM> warning whispers while fighting"
+L.ShowVersionUpadeAsPopup	= "Show Version Popup when your Version is Outdated"
