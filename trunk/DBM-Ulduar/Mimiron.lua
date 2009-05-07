@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33432)
 mod:SetZone()
 
---mod:RegisterCombat("combat")
 mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
@@ -25,6 +24,7 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
 mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
 mod:AddBoolOption("HealthFramePhase4", true)
+mod:AddBoolOption("AutoChangeLootToFFA", true)
 
 local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 end
 function mod:OnCombatEnd()
 	DBM.BossHealth:Hide()
-	if DBM:GetRaidRank() == 2 then
+	if self.Options.AutoChangeLootToFFA and DBM:GetRaidRank() == 2 then
 		if masterlooterRaidID then
 			SetLootMethod(lootmethod, "raid"..masterlooterRaidID)
 		else
@@ -143,6 +143,7 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 		end
 	elseif phase == 2 then
+		timerNextShockblast:Stop()
 		timerProximityMines:Stop()
 		timerP1toP2:Start()
 		if self.Options.HealthFrame then
@@ -150,7 +151,7 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
 		end
 	elseif phase == 3 then
-		if DBM:GetRaidRank() == 2 then
+		if self.Options.AutoChangeLootToFFA and DBM:GetRaidRank() == 2 then
 			SetLootMethod("freeforall")
 		end
 		timerDarkGlareCast:Cancel()
@@ -161,7 +162,7 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33670, L.MobPhase3)
 		end
 	elseif phase == 4 then
-		if DBM:GetRaidRank() == 2 then
+		if self.Options.AutoChangeLootToFFA and DBM:GetRaidRank() == 2 then
 			if masterlooterRaidID then
 				SetLootMethod(lootmethod, "raid"..masterlooterRaidID)
 			else
@@ -186,7 +187,7 @@ do
 		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33670) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
-				if count > 7 then
+				if (GetInstanceDifficulty() == 1 and count > 3) or (GetInstanceDifficulty() == 2 and count > 7) then
 					lastPhaseChange = GetTime()
 					self:NextPhase()
 				end
@@ -213,9 +214,9 @@ function mod:OnSync(event, args)
 		timerNextDarkGlare:Cancel()
 		warnDarkGlare:Cancel()
 	elseif event == "Phase4" then -- alternate localized-dependent detection
-		if phase == 3 then
+--		if phase == 3 then
 			self:NextPhase()
-		end
+--		end
 	end
 end
 
