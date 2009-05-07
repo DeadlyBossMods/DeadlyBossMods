@@ -69,6 +69,7 @@ DBM.DefaultOptions = {
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
+	ShowVersionUpdateAsPopup = true,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,
@@ -619,6 +620,8 @@ do
 			cancel = link:match("DBM:ignore:(.+):[^%s:]+$")
 			ignore = link:match(":([^:]+)$")
 			StaticPopup_Show("DBM_CONFIRM_IGNORE", ignore)
+		elseif linkType == "DBM" and arg1 == "update" then
+			DBM:ShowUpdateReminder(arg2, arg3) -- displayVersion, revision			
 		end
 	end)
 end
@@ -1094,7 +1097,13 @@ do
 						end
 					end
 					if found then
-						DBM:ShowUpdateReminder(displayVersion, revision)
+						if DBM.Options.ShowVersionUpdateAsPopup then
+							DBM:ShowUpdateReminder(displayVersion, revision)
+						else 
+							DBM:AddMsg( (DBM_CORE_UPDATEREMINDER_HEADER:match('([^\n]*)')) )
+							DBM:AddMsg( (DBM_CORE_UPDATEREMINDER_HEADER:match('\n(.*)')):format(displayVersion, revision) )
+							DBM:AddMsg( ("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision) )
+						end
 					end
 				end
 			end
@@ -1153,6 +1162,7 @@ end
 -----------------------
 function DBM:ShowUpdateReminder(newVersion, newRevision)
 	showedUpdateReminder = true
+
 	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(430)
@@ -1226,6 +1236,7 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 		frame:Hide()
 	end)
 end
+
 
 
 ----------------------
