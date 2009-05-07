@@ -465,11 +465,13 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	DarkGlare 			= "提示雷射彈幕",
 	WarningShockBlast		= "顯示震爆警告",
 	WarningPlasmaBlast		= "顯示離子衝擊",
+	WarnShell			= "提示凝汽彈的目標",
+	WarnBlast			= "提示離子衝擊的目標",
 	ProximityMines			= "顯示環罩地雷計時器",
 	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
-	DarkGlare 			= "提示雷射彈幕",
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
 	NextDarkGlare 			= "下一次 雷射彈幕的計时器",
 	TimeToPhase2			= "顯示第二階段開始計时器", --第二階段開始
@@ -477,8 +479,8 @@ L:SetOptionLocalization{
 	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
 	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
-	WarnShell			= "提示凝汽彈的目標",
-	WarnBlast			= "提示離子衝擊的目標"
+
+	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取"
 }
 
 L:SetMiscLocalization{
@@ -486,9 +488,9 @@ L:SetMiscLocalization{
 	YellPhase2			= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
 	YellPhase3			= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
 	LootMsg				= "(.+)拾取了物品:.*Hitem:(%d+)",
-	MobPhase1 			= "空中指揮裝置",
+	MobPhase1 			= "戰輪MK II",
 	MobPhase2 			= "VX-001",
-	MobPhase3 			= "戰輪MK II"
+	MobPhase3 			= "空中指揮裝置"
 }
 
 
@@ -546,6 +548,7 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningWellSpawned 		= "理智之井 出現了",
 	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
+	WarningCrusherTentacleSpawned	= "粉碎大觸手 出現了",
 	WarningP2 			= "第二階段",
 	WarningP3 			= "第三階段",
 	WarningBrainLink 		= "腦波連結: >%s< 和 >%s<",
@@ -566,6 +569,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningWellSpawned 		= "提示理智之井的出現",
 	WarningGuardianSpawned 		= "提示尤格薩倫守護者的出現",
+	WarningCrusherTentacleSpawned	= "提示粉碎大觸手的出現",
 	WarningP2 			= "提示第二階段",
 	WarningP3			= "提示第三階段",
 	WarningBrainLink		= "提示腦波連結",
