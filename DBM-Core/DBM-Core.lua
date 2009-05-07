@@ -864,7 +864,7 @@ do
 			if t1[i] == nil then
 				t1[i] = v
 			elseif type(v) == "table" then
-				return addDefaultOptions(v, t2[i])
+				addDefaultOptions(v, t2[i])
 			end
 		end
 	end
