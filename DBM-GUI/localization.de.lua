@@ -98,7 +98,7 @@ L.EnableHugeBar 	= "Aktiviere große Bar (Bar 2)"
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Spam Filter"
 L.Area_SpamFilter		= "Allgemeine Spam Filter Einstellungen"
-L.HideBossEmoteFrame	= "Schlachtzugsboss-Emote-Fenster verstecken"
-L.SpamBlockRaidWarning	= "Ansagen von anderen Boss Mods filtern" 
-L.SpamBlockBossWhispers	= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
-
+L.HideBossEmoteFrame		= "Schlachtzugsboss-Emote-Fenster verstecken"
+L.SpamBlockRaidWarning		= "Ansagen von anderen Boss Mods filtern" 
+L.SpamBlockBossWhispers		= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
+L.ShowVersionUpadeAsPopup	= "Informiere mit einem Fenster über eine neue DBM Version"
