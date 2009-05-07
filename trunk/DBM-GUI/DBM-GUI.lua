@@ -1608,6 +1608,8 @@ local function CreateOptionsMenu()
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
 		spamArea:CreateCheckButton(L.SpamBlockRaidWarning, true, nil, "SpamBlockRaidWarning")
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
+		spamArea:CreateCheckButton(L.ShowVersionUpadeAsPopup, true, nil, "ShowVersionUpdateAsPopup")
+		
 	end
 	
 	-- Set Revision // please don't translate this!
