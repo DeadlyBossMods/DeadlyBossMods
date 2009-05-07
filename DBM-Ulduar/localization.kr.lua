@@ -551,13 +551,14 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 	= "요그사론의 수호자 소환!",
+	WarningGuardianSpawned 			= "요그사론의 수호자 소환!",
+	WarningCrusherTentacleSpawned	= "분쇄의 촉수가 생성되었습니다!",	
 	WarningP2 				= "2 페이즈",
 	WarningP3 				= "3 페이즈",	
 	WarningBrainLink 		= ">%s< 그리고 >%s< 두뇌의 고리",
 	SpecWarnBrainLink		= "당신 그리고 %s 에게 두뇌의 고리!",
-	WarningSanity 			= "%d Sanity debuffs remaining",
-	SpecWarnSanity 			= "%d Sanity debuffs remaining",
+	WarningSanity 			= "> %d < 이성이 낮습니다.",
+	SpecWarnSanity 			= ">> %d << 이성이 매우 낮습니다. 채우세요!",
 	SpecWarnGuardianLow 		= "이 수호자를 더이상 치지 마세요! - 공격 중지!",
 	WarnMadness 				= "광기 유발을 시전합니다.",
 	SpecWarnMadnessOutNow	= "광기 유발이 끝났습니다. - 밖으로 이동!",
@@ -570,13 +571,14 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningGuardianSpawned	= "요그사론의 수호자 소환 알리기",
+	WarningGuardianSpawned			= "요그사론의 수호자 소환 알리기",
+	WarningCrusherTentacleSpawned	= "분쇄의 촉수 생성 알리기",	
 	WarningP2				= "2 페이즈 알리기",
 	WarningP3				= "3 페이즈 알리기",	
 	WarningBrainLink		= "두뇌의 고리 알리기",
 	SpecWarnBrainLink		= "두뇌의 고리 특수 경고 보기",
-	WarningSanity			= "Show Warning when Sanity low",
-	SpecWarnSanity			= "Show Special Warning when Sanity very low",
+	WarningSanity			= "이성(Sanity)이 낮은 경우 경고 보기",
+	SpecWarnSanity			= "이성(Sanity)이 매우 낮은 경우 특수 경고 보기",
 	SpecWarnGuardianLow		= "수호자의 생명력이 낮을 때 특수 경고 알리기(딜러)",
 	WarnMadness				= "광기 유발 알리기",
 	WhisperBrainLink 		= "두뇌의 고리 특수 경고 알리기(귓속말)",
