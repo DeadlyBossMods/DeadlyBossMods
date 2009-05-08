@@ -70,7 +70,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 63479 then				-- Chain light (need the 10ppl spellid)
 		warnChainlight:Show()
 
-	elseif args.spellId == 63483 then				-- LightningWhirl
+	elseif args.spellId == 63483 or args.spellId == 61915 then				-- LightningWhirl
 		timerLightningWhirl:Start()
 
 	elseif args.spellId == 61903 or args.spellId == 63493 then	-- Fusion Punch
@@ -91,7 +91,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63490 then					-- Rune of Death
+	if args.spellId == 63490 or args.spellId == 62269 then					-- Rune of Death
 		warnRuneofDeath:Show()
 		timerRuneofDeathDura:Start()
 
@@ -99,7 +99,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnRuneofPower:Show()
 		timerRuneofPower:Start()
 
-	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
+	elseif args.spellId == 61869 or args.spellId == 63481 or args.spellId == 61878 then	-- Overload (spellId 10?)
 		timerOverload:Start()
 		if self.Options.PlaySoundOnOverload and UnitName("target") == L.StormcallerBrundir then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
@@ -118,7 +118,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
 		end
-	elseif args.spellId == 63486 then	-- lightning
+	elseif args.spellId == 63486 or args.spellId == 61887 then	-- lightning
 		timerLightningTendrils:Start()
 		specwarnLightningTendrils:Show()
 		if self.Options.PlaySoundLightningTendrils then
