@@ -200,7 +200,11 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase4 then
+	if msg == L.YellPhase2 then
+		--self:SendSync("Phase2")	// untested alpha!
+	elseif msg == L.YellPhase3 then
+		--self:SendSync("Phase3")	// untested alpha!
+	elseif msg == L.YellPhase4 then
 		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
 	end
 end
@@ -213,10 +217,15 @@ function mod:OnSync(event, args)
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		warnDarkGlare:Cancel()
-	elseif event == "Phase4" then -- alternate localized-dependent detection
---		if phase == 3 then
-			self:NextPhase()
---		end
+	elseif event == "Phase2" then -- alternate localized-dependent detection
+		phase = 1
+		self:NextPhase()
+	elseif event == "Phase3" then
+		phase = 2
+		self:NextPhase()
+	elseif event == "Phase4" then
+		phase = 3
+		self:NextPhase()
 	end
 end
 
