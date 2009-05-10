@@ -326,6 +326,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze	= "Flash Freeze",
+	WarningStormCloud	= "Storm Cloud on >%s<", 
 	WarningBitingCold	= "Biting Cold - MOVE"
 }
 
@@ -337,7 +338,9 @@ L:SetOptionLocalization{
 	TimerFlashFreeze	= "Show Flash Freeze Cast-Timer",
 	WarningFlashFreeze	= "Show Warning for Flash Freeze",
 	WarningBitingCold	= "Show warning for Biting Cold",
-	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast"
+	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
+	WarningStormCloud	= "Announce Storm Cloud Players",
+	YellOnStormCloud	= "Yell when Storm Cloud active"
 }
 
 L:SetMiscLocalization{
