@@ -344,7 +344,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellKill		= "I... I am released from his grasp... at last."
+	YellKill		= "I... I am released from his grasp... at last.",
+	YellCloud		= "Storm Cloud on me!"
 }
 
 
