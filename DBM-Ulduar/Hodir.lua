@@ -21,11 +21,13 @@ local timerFlashFreeze	= mod:NewCastTimer(9, 61968)
 local timerFrozenBlows	= mod:NewBuffActiveTimer(20, 63512)
 local timerFlashFrCD	= mod:NewCDTimer(50, 61968)
 
-
+local warnStormCloud   = mod:NewSpecialWarning("WarningStormCloud")
 local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
 local warnBitingCold	= mod:NewSpecialWarning("WarningBitingCold")
 
 local enrageTimer	= mod:NewEnrageTimer(475)
+
+mod:AddBoolOption("YellOnStormCloud", true, "announce")
 
 
 function mod:OnCombatStart(delay)
@@ -47,6 +49,11 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62478 or args.spellId == 63512 then
 		timerFrozenBlows:Start()
+	elseif args.spellId == 65123 or args.spellId == 65133 then
+		warnStormCloud:Show(args.destName)
+		if self.Options.YellOnStormCloud and args.destName == UnitName("player") then
+			SendChatMessage(L.YellCloud, "YELL")
+		end
 	end
 end
 
