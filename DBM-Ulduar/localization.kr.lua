@@ -92,10 +92,10 @@ L:SetWarningLocalization{
 }
 L:SetTimerLocalization{
 	timerAllTurretsReady	= "포탑",
-	timerTurret1			= "포탑1",
-	timerTurret2			= "포탑2",
-	timerTurret3			= "포탑3",
-	timerTurret4			= "포탑4",
+	timerTurret1			= "1 번째 포탑",
+	timerTurret2			= "2 번째 포탑",
+	timerTurret3			= "3 번째 포탑",
+	timerTurret4			= "4 번째 포탑",
 	timerGroundedTemp		= "지상 착지",	
 }
 L:SetOptionLocalization{
@@ -326,17 +326,25 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze	= "순간 빙결",
+	WarningStormCloud	= "폭풍 구름 : >%s<", 	
 	WarningBitingCold	= "매서운 추위 - 움직이세요!"
 }
 
+L:SetTimerLocalization{
+	TimerFlashFreeze	= "곧 순간 빙결",  -- all ppl have to move on the rock patches
+}
+
 L:SetOptionLocalization{
+	TimerFlashFreeze	= "순간 빙결 시전 타이머 보기",
 	WarningFlashFreeze	= "순간 빙결 경보 보기",
 	WarningBitingCold	= "매서운 추위 경보 보기",
-	PlaySoundOnFlashFreeze	= "순간 빙결 시전일 때 사운드 재생"	
+	WarningStormCloud	= "폭풍 구름 경보 보기",
+	YellOnStormCloud	= "폭풍 구름을 얻을 경우 외치기"	
 }
 
 L:SetMiscLocalization{
-	YellKill		= "드디어... 드디어 그의 손아귀를... 벗어나는구나."
+	YellKill		= "드디어... 드디어 그의 손아귀를... 벗어나는구나.",
+	YellCloud		= "폭풍 구름! Yo!!"
 }
 
 
@@ -471,6 +479,7 @@ L:SetMiscLocalization{
 	YellPull		= "시간이 없어, 친구들! 내가 최근에 만든 기막힌 발명품을 시험하게 도와 주겠지? 자, 마음 바꿀 생각은 말라고. XT-002를 그 꼬락서니로 만들었으니, 너흰 나한테 빚진 셈이란 걸 잊지 마!",	
 	YellPhase2		= "멋지군! 참으로 경이적인 결과야! 차체 내구도 98.9 퍼센트라! 손상이라고 보기도 어렵지! 계속하자고.",
 	YellPhase3		= "고맙다, 친구들! 너희 덕분에 멋진 자료를 좀 얻었어! 자, 그걸 어디 뒀더라... 아, 여기 있군.",
+	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",	
 	LootMsg			= "([^%s]+).*Hitem:(%d+)",
 	MobPhase1 		= "거대 전차 Mk II",
 	MobPhase2 		= "VX-001",

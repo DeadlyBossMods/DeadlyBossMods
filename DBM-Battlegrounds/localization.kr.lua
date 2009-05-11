@@ -35,12 +35,12 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerStart	= "게임 시작",
-	TimerShadow	= "Shadow Sight"
+	TimerShadow	= "어둠의 시야"
 })
 
 L:SetOptionLocalization({
 	TimerStart = "시작 타이머 보이기",
-	TimerShadow 	= "Show timer for Shadow Crystals"	
+	TimerShadow 	= "어둠의 눈 타이머 보기"	
 })
 
 L:SetMiscLocalization({
