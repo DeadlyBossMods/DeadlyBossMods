@@ -328,7 +328,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze		= "閃霜",	
-	WarningStormCloud		= "風暴雷雲: >%s<", 
+	WarningStormCloud		= "風暴威能: %s", 
 	WarningBitingCold		= "刺骨之寒 - 移動"
 }
 
@@ -336,13 +336,13 @@ L:SetOptionLocalization{
 	WarningFlashFreeze		= "為閃霜顯示警告",
 	WarningBitingCold		= "為刺骨之寒顯示警告",
 	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效",
-	WarningStormCloud		= "提示中了風暴雷雲的玩家",
-	YellOnStormCloud		= "當風暴雷雲生效時大喊"
+	WarningStormCloud		= "提示中了風暴威能的玩家",
+	YellOnStormCloud		= "當風暴威能生效時大喊"
 }
 
 L:SetMiscLocalization{
 	YellKill			= "我…我終於從他的掌控中…解脫了。",
-	YellCloud			= "我中了風暴雷雲 快接近我"
+	YellCloud			= "我中了風暴威能 快接近我"
 }
 
 
@@ -475,6 +475,7 @@ L:SetMiscLocalization{
 	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",	
 	YellPhase2			= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
 	YellPhase3			= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
+	YellPhase4			= "初步測試階段完成。現在要玩真的啦!",
 	LootMsg				= "(.+)拾取了物品:.*Hitem:(%d+)",
 	MobPhase1 			= "戰輪MK II",
 	MobPhase2 			= "VX-001",
