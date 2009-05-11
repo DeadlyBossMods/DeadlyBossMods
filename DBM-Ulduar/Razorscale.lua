@@ -28,7 +28,7 @@ local timerTurret3			= mod:NewTimer(95, "timerTurret3")
 local timerTurret4			= mod:NewTimer(115, "timerTurret4")
 local timerGroundedTemp			= mod:NewTimer(45, "timerGroundedTemp")
 
-local enrageTimer			= mod:NewEnrageTimer(600)
+local enrageTimer			= mod:NewEnrageTimer(900) -- uhm?
 
 local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
 local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733) 
