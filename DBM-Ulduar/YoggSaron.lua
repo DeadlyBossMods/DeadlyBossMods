@@ -36,11 +36,15 @@ local specWarnMadnessOutNow		= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local warnBrainPortalSoon		= mod:NewAnnounce("WarnBrainPortalSoon", 1)
 local warnSqueeze			= mod:NewAnnounce("WarnSqueeze", 1)
 local brainportal			= mod:NewTimer(27, "NextPortal")
+local warnFavor				= mod:NewAnnounce("WarnFavor", 1)
+local specWarnFavor			= mod:NewSpecialWarning("SpecWarnFavor")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
 mod:AddBoolOption("WarningSqueeze", false, "announce")
 mod:AddBoolOption("SetIconOnFearTarget")
+mod:AddBoolOption("SetIconOnFavorTarget")
+
 
 local enrageTimer	= mod:NewEnrageTimer(900)
 
@@ -107,6 +111,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args.destName == UnitName("player") and self.Options.WarningSqueeze then			
 			SendChatMessage(L.WarningYellSqueeze, "YELL")			
 		end	
+
+	elseif args.spellId == 63138 then	-- Sara's Favor
+		warnFavor:Show(args.destName)
+		if self.Options.SetIconOnFavorTarget then
+			self:SetIcon(args.destName, 4, 30)
+		end
+		if args.destName == UnitName("player") then 
+			specWarnFavor:Show()
+		end
 
 	elseif args.spellId == 63894 then	-- Shadowy Barrier of Yogg-Saron (this is happening when p2 starts)
 		phase = 2
