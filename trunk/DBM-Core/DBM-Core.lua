@@ -70,6 +70,7 @@ DBM.DefaultOptions = {
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
 	ShowVersionUpdateAsPopup = true,
+	ShowBigBrotherOnCombatStart = false,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,
@@ -1385,6 +1386,10 @@ function DBM:StartCombat(mod, delay, synced)
 			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
 		end
 		fireEvent("pull", mod, delay, synced)
+		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
+		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
+			BigBrother:ConsumableCheck("SELF")
+		end		
 	end
 end
 
