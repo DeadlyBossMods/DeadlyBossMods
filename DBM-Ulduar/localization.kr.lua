@@ -580,7 +580,7 @@ L:SetOptionLocalization{
 	WarnSqueeze				= "압착의 촉수 대상 알리기",
 	WarningSqueeze			= "압착의 촉수 경고 보기",
 	SetIconOnFearTarget		= "공포 타겟 아이콘 설정하기",
-	SetIconOnFavorTarge		= "사라의 열정 타겟 아이콘 설정하기",
+	SetIconOnFavorTarget	= "사라의 열정 타겟 아이콘 설정하기",
 	ShowSaraHealth			= "사라 체력 보기",
 	WarnFavor				= "사라의 열정 대상 알리기",
 	SpecWarnFavor			= "사라의 열정 특수 경보 보기"
