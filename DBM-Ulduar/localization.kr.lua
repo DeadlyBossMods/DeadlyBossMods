@@ -325,21 +325,18 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "순간 빙결",
-	WarningStormCloud	= "폭풍 구름 : >%s<", 	
-	WarningBitingCold	= "매서운 추위 - 움직이세요!"
-}
-
-L:SetTimerLocalization{
-	TimerFlashFreeze	= "곧 순간 빙결",  -- all ppl have to move on the rock patches
+	WarningFlashFreeze		= "순간 빙결",
+ 	PlaySoundOnFlashFreeze	= "순간 빙결",
+	WarningStormCloud		= "폭풍 구름 : >%s<", 	
+	WarningBitingCold		= "매서운 추위 - 움직이세요!"
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze	= "순간 빙결 시전 타이머 보기",
-	WarningFlashFreeze	= "순간 빙결 경보 보기",
-	WarningBitingCold	= "매서운 추위 경보 보기",
-	WarningStormCloud	= "폭풍 구름 경보 보기",
-	YellOnStormCloud	= "폭풍 구름을 얻을 경우 외치기"	
+	WarningFlashFreeze		= "순간 빙결 경보 보기",
+ 	PlaySoundOnFlashFreeze	= "순간 빙결 경고 소리 듣기",	
+	WarningBitingCold		= "매서운 추위 경보 보기",
+	WarningStormCloud		= "폭풍 구름 경보 보기",
+	YellOnStormCloud		= "폭풍 구름을 얻을 경우 외치기"	
 }
 
 L:SetMiscLocalization{
@@ -402,7 +399,6 @@ L:SetMiscLocalization{
 	WaterSpirit		 = "고대 물의 정령",
 	Snaplasher 		= "악어덩굴손",
 	StormLasher 		= "폭풍덩굴손",
---	EmoteTree		= "|cFF00FFFF생명의 어머니의 선물|r이 자라기 시작합니다!", -- /chatlog does not log messages with color codes...lol
 	YellKill		= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다."	
 }
 
@@ -479,7 +475,7 @@ L:SetMiscLocalization{
 	YellPull		= "시간이 없어, 친구들! 내가 최근에 만든 기막힌 발명품을 시험하게 도와 주겠지? 자, 마음 바꿀 생각은 말라고. XT-002를 그 꼬락서니로 만들었으니, 너흰 나한테 빚진 셈이란 걸 잊지 마!",	
 	YellPhase2		= "멋지군! 참으로 경이적인 결과야! 차체 내구도 98.9 퍼센트라! 손상이라고 보기도 어렵지! 계속하자고.",
 	YellPhase3		= "고맙다, 친구들! 너희 덕분에 멋진 자료를 좀 얻었어! 자, 그걸 어디 뒀더라... 아, 여기 있군.",
-	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",	
+	YellPhase4		= "예비 시험은 이걸로 끝이다. Now comes the true test!",	
 	LootMsg			= "([^%s]+).*Hitem:(%d+)",
 	MobPhase1 		= "거대 전차 Mk II",
 	MobPhase2 		= "VX-001",
@@ -500,12 +496,9 @@ L:SetWarningLocalization{
 	SpecialWarningShadowCrash		= "당신에게 어둠 붕괴",
 	SpecialWarningSurgeDarkness		= "어둠 쇄도",
 	WarningShadowCrash				= ">%s< 에게 어둠 붕괴!",
+	WarningLeechLife				= ">%s< 에게 생명력 흡수 시전!",
 	SpecialWarningLLYou				= "당신에게 얼굴 없는 자의 징표!",
 	SpecialWarningLLNear			= "%s 에게 가까운 당신에게 생명력 흡수 시전!"	
-}
-
-L:SetTimerLocalization{
-	timerSurgeofDarkness			= "어둠 쇄도"
 }
 
 L:SetOptionLocalization{
@@ -516,12 +509,16 @@ L:SetOptionLocalization{
 	SpecialWarningShadowCrash		= "어둠 붕괴 특수 경고 보기",
 	SpecialWarningLLYou				= "얼굴 없는 자의 징표 특수 경보 보기",
 	SpecialWarningLLNear			= "생명력 흡수 주변 특수 경보 보기",
-	CrashWhisper					= "어둠 붕괴 대상에게 귓속말 보내기"	
+	CrashWhisper					= "어둠 붕괴 대상에게 귓속말 보내기"	,
+	YellOnLifeLeech					= "생명력 흡수를 당할 때 외치기",
+	YellOnShadowCrash				= "어둠 붕괴일 때 외치기"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "가까운 사로나이트 증기 구름이 합쳐집니다!",
-	CrashWhisper			= "당신에게 어둠 붕괴! 뛰세요!"	
+	CrashWhisper			= "당신에게 어둠 붕괴! 뛰세요!",
+	YellLeech				= "저에게 생명력 흡수 시전!",
+	YellCrash				= "저에게 어둠 붕괴! 피하세요!"
 }
 
 
@@ -555,7 +552,9 @@ L:SetWarningLocalization{
 	WarnMadness 				= "광기 유발을 시전합니다.",
 	SpecWarnMadnessOutNow	= "광기 유발이 끝났습니다. - 밖으로 이동!",
 	WarnBrainPortalSoon		= "3 초 후 포탈",	
-	WarnSqueeze 				= "압착의 촉수: >%s<"
+	WarnSqueeze 				= "압착의 촉수: >%s<",
+	WarnFavor				= ">%s< 에게 사라의 열정!",
+	SpecWarnFavor			= "당신에게 사라의 열정"
 }
 
 L:SetTimerLocalization{
@@ -579,6 +578,9 @@ L:SetOptionLocalization{
 	SpecWarnMadnessOutNow	= "광기가 끝나기 전에 특수 경고 알리기",
 	WarnSqueeze				= "압착의 촉수 대상 알리기",
 	WarningSqueeze			= "압착의 촉수 경고 보기",
-	SetIconOnFearTarget		= "공포 타겟 아이콘 설정하기",	
-	ShowSaraHealth			= "사라 체력 보기"
+	SetIconOnFearTarget		= "공포 타겟 아이콘 설정하기",
+	SetIconOnFavorTarge		= "사라의 열정 타겟 아이콘 설정하기",
+	ShowSaraHealth			= "사라 체력 보기",
+	WarnFavor				= "사라의 열정 대상 알리기",
+	SpecWarnFavor			= "사라의 열정 특수 경보 보기"
 }
