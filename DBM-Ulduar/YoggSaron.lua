@@ -106,7 +106,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 63830 and self.Options.SetIconOnFearTarget then	-- Malady of the Mind (Fear)
 		self:SetIcon(args.destName, 8, 30)
 
-	elseif args.spellId == 64126 then	-- Squeeze		
+	elseif args.spellId == 64126 or args.spellId == 64125 then	-- Squeeze		
 		warnSqueeze:Show(args.destName)		
 		if args.destName == UnitName("player") and self.Options.WarningSqueeze then			
 			SendChatMessage(L.WarningYellSqueeze, "YELL")			
