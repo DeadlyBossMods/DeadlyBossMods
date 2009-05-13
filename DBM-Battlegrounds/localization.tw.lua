@@ -235,8 +235,14 @@ L:SetWarningLocalization{
 	warnOverCharge		= "超載"
 }
 
+L:SetTimerLocalization{
+	timerMobOvercharge	= "超載爆炸"
+}
+
 L:SetOptionLocalization{
 	specWarnNova 		= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示特別警告"):format(64216, "閃電新星"),
 	warnNova 		= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64216, "閃電新星"),
-	warnOverCharge 		= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64218, "超載")
+	NovaSound		= "當施放閃電新星時播放音效",
+	warnOverCharge 		= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64218, "超載"),
+	timerMobOvercharge	= "為超載的小怪顯示計時器(減益疊加)"
 }
