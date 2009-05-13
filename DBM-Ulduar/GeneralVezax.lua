@@ -22,15 +22,20 @@ local specWarnLifeLeechYou	= mod:NewSpecialWarning("SpecialWarningLLYou")
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear")
 
 local timerEnrage		= mod:NewEnrageTimer(600)
-local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661) -- "timerSearingFlamesCast",
-local timerSurgeofDarkness	= mod:NewBuffActiveTimer(10, 62662) -- "timerSurgeofDarkness",
-local timerSaroniteVapors	= mod:NewNextTimer(30, 63322) -- "timerSaroniteVapors",
+local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
+local timerSurgeofDarkness	= mod:NewBuffActiveTimer(10, 62662)
+local timerSaroniteVapors	= mod:NewNextTimer(30, 63322)
+local timerLifeLeech		= mod:NewTargetTimer(10, 63276)
 
-local warnShadowCrash	= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
+local warnShadowCrash		= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
+local warnLeechLife		= mod:NewAnnounce("WarningLeechLife", 3, 63276)
 
 mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
 mod:AddBoolOption("CrashWhisper", false, "announce")
+mod:AddBoolOption("YellOnLifeLeech", true, "announce")
+mod:AddBoolOption("YellOnShadowCrash", true, "announce")
+
 
 function mod:OnCombatStart(delay)
 	timerEnrage:Start(-delay)
@@ -79,6 +84,9 @@ function mod:ShadowCrashTarget()
 	warnShadowCrash:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnShadowCrash:Show(targetname)
+		if self.Options.YellOnShadowCrash then
+			SendChatMessage(L.YellCrash, "YELL")
+		end
 	end
 end
 
@@ -89,8 +97,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.SetIconOnLifeLeach then
 			mod:SetIcon(args.destName, 7, 10)
 		end
+		warnLeechLife:Show(args.destName)
+		timerLifeLeech:Start(args.destName)
 		if args.destName == UnitName("player") then
 			specWarnLifeLeechYou:Show()
+			if self.Options.YellOnLifeLeech then
+				SendChatMessage(L.YellLeech, "YELL")
+			end
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)
 			if uId then
