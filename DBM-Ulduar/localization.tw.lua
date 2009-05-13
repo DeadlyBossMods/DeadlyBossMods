@@ -496,6 +496,7 @@ L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "你中了暗影暴擊",
 	SpecialWarningSurgeDarkness	= "暗鬱奔騰",
 	WarningShadowCrash		= "暗影暴擊: >%s<",
+	WarningLeechLife		= "無面者印記: >%s<",
 	SpecialWarningLLYou		= "你中了無面者印記!",
 	SpecialWarningLLNear		= "接近你的%s中了無面者印記!"
 }
