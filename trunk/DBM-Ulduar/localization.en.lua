@@ -531,7 +531,9 @@ L:SetWarningLocalization{
 	WarnMadness			= "Casting Induce Madness",
 	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT",
 	WarnBrainPortalSoon		= "Portal  in 3 sec",	
-	WarnSqueeze 			= "Squeeze: >%s<"
+	WarnSqueeze 			= "Squeeze: >%s<",
+	WarnFavor			= "Sara's Favor on >%s<",
+	SpecWarnFavor			= "Sara's Favor on YOU"
 }
 
 L:SetOptionLocalization{
@@ -547,7 +549,9 @@ L:SetOptionLocalization{
 	WarnMadness			= "Announce Madness",
 	WarnBrainPortalSoon		= "Announce Potral",
 	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends",
-	SetIconOnFearTarget		= "Set Icon on Fear Target"
+	SetIconOnFearTarget		= "Set Icon on Fear Target",
+	WarnFavor			= "Announce Sara's Favor target",
+	SpecWarnFavor			= "Show Special Warning for Sara's Favor"
 }
 
 
