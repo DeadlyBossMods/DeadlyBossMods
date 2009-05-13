@@ -231,8 +231,14 @@ L:SetWarningLocalization{
 	warnOverCharge		= "Overcharge"
 }
 
+L:SetTimerLocalization{
+	timerMobOvercharge	= "Overcharge explosion"
+}
+
 L:SetOptionLocalization{
 	specWarnNova 		= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
 	warnNova 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge")
+	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
+	timerMobOvercharge	= "Show Timer for Overchaged Mob (stacking debuff)"
 }
+
