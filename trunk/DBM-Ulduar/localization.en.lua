@@ -552,7 +552,7 @@ L:SetOptionLocalization{
 	SpecWarnSanity			= "Show Special Warning when Sanity very low",
 	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
 	WarnMadness			= "Announce Madness",
-	WarnBrainPortalSoon		= "Announce Potral",
+	WarnBrainPortalSoon		= "Announce Portal",
 	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends",
 	SetIconOnFearTarget		= "Set Icon on Fear Target",
 	WarnFavor			= "Announce Sara's Favor target",
