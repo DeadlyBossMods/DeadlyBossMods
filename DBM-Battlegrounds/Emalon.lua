@@ -32,7 +32,7 @@ local overchargedMob
 function mod:OnCombatStart(delay)
 	overchargedMob = nil
 	timerOvercharge:Start(-delay)
-	enrageTimer:Start(-delay)
+	--enrageTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -85,7 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:SPELl_AURA_REMOVED(args)
+function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 64217 then
 		timerMobOvercharge:Stop()
 	end
