@@ -506,14 +506,19 @@ L:SetOptionLocalization{
 	SetIconOnLifeLeach		= "為無面者印記的目標設置標記(十字)",
 	SpecialWarningSurgeDarkness	= "為暗鬱奔騰顯示特別警告",
 	SpecialWarningShadowCrash	= "為暗影暴擊顯示特別警告",
+	WarningLeechLife		= "提示無面者印記",
 	SpecialWarningLLYou		= "當你中了無面者印記時顯示特別警告",
 	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
-	CrashWhisper 			= "密語提示中了暗影暴擊的人"
+	CrashWhisper 			= "密語提示中了暗影暴擊的人",
+	YellOnLifeLeech			= "當中了無面者印記時大喊",
+	YellOnShadowCrash		= "當中了暗影暴擊時大喊"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "一片薩倫煙霧在附近聚合!",
-	CrashWhisper			= "你中了暗影暴擊! 跑開!"
+	CrashWhisper			= "你中了暗影暴擊! 跑開!",
+	YellLeech			= "我中了無面者印記!",
+	YellCrash			= "我中了暗影暴擊!"
 }
 
 
@@ -548,7 +553,9 @@ L:SetWarningLocalization{
 	WarnMadness 			= "正在施放 瘋狂誘陷",
 	SpecWarnMadnessOutNow		= "瘋狂誘陷即將完結 - 快傳送出去",
 	WarnBrainPortalSoon		= "3秒後 傳送門出現",
-	WarnSqueeze 			= "壓榨(觸手綁人): >%s<"
+	WarnSqueeze 			= "壓榨(觸手綁人): >%s<",
+	WarnFavor			= "薩拉的熱誠: >%s<",
+	SpecWarnFavor			= "你中了薩拉的熱誠"
 }
 
 L:SetTimerLocalization{
@@ -574,5 +581,8 @@ L:SetOptionLocalization{
 	WarnSqueeze			= "提示壓榨 (觸手綁人)",
 	WarningSqueeze			= "當你中了壓榨 (觸手綁人)時大喊",
 	SetIconOnFearTarget		= "設置標記在恐懼的目標",
-	ShowSaraHealth			= "顯示薩拉的血量"
+	ShowSaraHealth			= "顯示薩拉的血量",
+	WarnFavor			= "提示薩拉的熱誠的目標",
+	SpecWarnFavor			= "為薩拉的熱誠顯示特別警告",
+	SetIconOnFavorTarget		= "設置標記在薩拉的熱誠的目標"
 }
