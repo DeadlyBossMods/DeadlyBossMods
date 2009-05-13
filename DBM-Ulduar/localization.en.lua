@@ -480,25 +480,30 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "Shadow Crash on You",
 	SpecialWarningSurgeDarkness	= "Surge of Darkness",
-	WarningShadowCrash			= "Shadow Crash on >%s<",
+	WarningShadowCrash		= "Shadow Crash on >%s<",
+	WarningLeechLife		= "Life Leech on >%s<",
 	SpecialWarningLLYou		= "Life Leech on you!",
 	SpecialWarningLLNear		= "Life Leech on %s near you!"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash			= "Show Warning for Shadow Crash",
+	WarningShadowCrash		= "Show Warning for Shadow Crash",
 	SetIconOnShadowCrash		= "Set Icon on Shadow Crash target (skull)",
-	SetIconOnLifeLeach			= "Set Icon on Life Leech target (cross)",
+	SetIconOnLifeLeach		= "Set Icon on Life Leech target (cross)",
 	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
 	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",
 	SpecialWarningLLYou		= "Show Special Warning for Life Leach on YOU",
 	SpecialWarningLLNear		= "Show Special Warning for Life Leach in near of you",
-	CrashWhisper			= "Send Whisper to Shadow Crash Target"
+	CrashWhisper			= "Send Whisper to Shadow Crash Target",
+	YellOnLifeLeech			= "Yell on Life Leech",
+	YellOnShadowCrash		= "Yell on Shadow Crash"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
-	CrashWhisper			= "Shadow Crash on You! Run away!"
+	CrashWhisper			= "Shadow Crash on You! Run away!",
+	YellLeech			= "Life Leech on me!",
+	YellCrash			= "Shadow Crash on me!"
 }
 
 
