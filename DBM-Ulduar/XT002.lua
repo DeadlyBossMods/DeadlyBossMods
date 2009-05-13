@@ -33,7 +33,7 @@ mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	timerTympanicTantrumCD:Start(65-delay)
+	timerTympanicTantrumCD:Start(50-delay)
 end
 
 function mod:SPELL_CAST_START(args)
