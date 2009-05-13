@@ -102,3 +102,5 @@ L.HideBossEmoteFrame		= "Schlachtzugsboss-Emote-Fenster verstecken"
 L.SpamBlockRaidWarning		= "Ansagen von anderen Boss Mods filtern" 
 L.SpamBlockBossWhispers		= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
 L.ShowVersionUpadeAsPopup	= "Informiere mit einem Fenster über eine neue DBM Version"
+L.ShowBigBrotherOnCombatStart	= "Zeige BigBrother Meldung bei Kampfbeginn"
+

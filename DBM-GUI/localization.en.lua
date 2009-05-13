@@ -101,4 +101,5 @@ L.HideBossEmoteFrame		= "Hide raid boss emote frame"
 L.SpamBlockRaidWarning		= "Filter announces from other boss mods" 
 L.SpamBlockBossWhispers		= "Filter <DBM> warning whispers while fighting"
 L.ShowVersionUpadeAsPopup	= "Show Version Popup when your Version is Outdated"
+L.ShowBigBrotherOnCombatStart	= "Show BigBrother on Combat Start"
 
