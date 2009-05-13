@@ -507,6 +507,7 @@ L:SetOptionLocalization{
 	SetIconOnLifeLeach				= "얼굴 없는 자의 징표 대상 아이콘 설정 (엑스 징표)",
 	SpecialWarningSurgeDarkness		= "어둠 쇄도 특수 경고 보기",
 	SpecialWarningShadowCrash		= "어둠 붕괴 특수 경고 보기",
+	WarningLeechLife				= "생명력 흡수 시전 경고 보기",	
 	SpecialWarningLLYou				= "얼굴 없는 자의 징표 특수 경보 보기",
 	SpecialWarningLLNear			= "생명력 흡수 주변 특수 경보 보기",
 	CrashWhisper					= "어둠 붕괴 대상에게 귓속말 보내기"	,
