@@ -131,6 +131,7 @@ local function showRootWarning()
 	table.wipe(rootedPlayers)
 end
 
+local iconId = 6
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62861 then
 		iconId = iconId - 1
