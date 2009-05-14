@@ -12,6 +12,7 @@
 --    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
 --    * zhCN: Diablohu                   http://wow.gamespot.com.cn
 --    * zhTW: Hman			 herman_c1@hotmail.com
+--    * zhTW: Azael/kc10577				kc10577@hotmail.com
 --    * (add your names here!)
 --
 -- Special thanks to:
@@ -23,8 +24,8 @@
 --
 --
 --  You are free:
---    * to Share — to copy, distribute, display, and perform the work
---    * to Remix — to make derivative works
+--    * to Share ?to copy, distribute, display, and perform the work
+--    * to Remix ?to make derivative works
 --  Under the following conditions:
 --    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
 --    * Noncommercial. You may not use this work for commercial purposes.
