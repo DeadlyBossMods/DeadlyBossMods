@@ -377,6 +377,15 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
+				<FontString name="$parentTranslation" inherits="GameFontDisableSmall" text="">
+					<Anchors>
+						<Anchor point="LEFT" relativeTo="$parentRevision" relativePoint="RIGHT">
+							<Offset>
+								<AbsDimension x="20" y="0"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
 				<FontString name="$parentAuthors" inherits="GameFontDisableSmall" text="">
 					<Anchors>
 						<Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
