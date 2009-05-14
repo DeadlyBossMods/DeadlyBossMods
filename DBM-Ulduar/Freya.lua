@@ -139,7 +139,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63601 then
 		iconId = iconId - 1
-		self:SetIcon(args.destName, symbolid, 15)
+		self:SetIcon(args.destName, iconId, 15)
 		debuffedPlayers[args.destGUID] = true
 	end
 end
