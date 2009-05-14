@@ -5,6 +5,8 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
+L.TranslationBy 	= "흑묘서희@에이그윈서버 호드진영"
+
 L.TabCategory_Options 	= "일반 옵션"
 L.TabCategory_WOTLK 		= "리치왕의 분노"
 L.TabCategory_BC 		= "불타는 성전"
