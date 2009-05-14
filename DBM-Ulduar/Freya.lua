@@ -43,6 +43,8 @@ local timerFuryYou		= mod:NewTimer(10, "TimerFuryYou", 63571)
 local timerTremorCD 	= mod:NewCDTimer(28, 62859) 
 local warnTremor		= mod:NewSpecialWarning("WarningTremor")
 
+mod:AddBoolOption("PlaySoundOnFury")
+
 local adds = {}
 
 local iconId = 6
@@ -82,6 +84,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:SetIcon(args.destName, altIcon and 7 or 8, 10)
 		warnFury:Show(args.destName)
 		if args.destName == UnitName("player") then -- only cast on players; no need to check destFlags
+			if self.Options.PlaySoundOnFury then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
 			specWarnFury:Show()
 			timerFuryYou:Start()
 		end
