@@ -5,6 +5,8 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
+L.TranslationBy 	= "Nightkiller@日落沼澤(kc10577)"
+
 L.TabCategory_Options 	= "綜合設置"
 L.TabCategory_WOTLK 	= "巫妖王之怒"
 L.TabCategory_BC 	= "燃燒的遠征"
