@@ -32,6 +32,7 @@ mod:AddBoolOption("HealthFrame", true)
 local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
 local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
 local warnFury = mod:NewAnnounce("WarnFury", 2, 63571)
+local warnRoots = mod:NewAnnounce("WarnRoots", 2, 63601)
 
 local specWarnFury = mod:NewSpecialWarning("SpecWarnFury")
 
@@ -47,15 +48,8 @@ mod:AddBoolOption("PlaySoundOnFury")
 
 local adds = {}
 
-local iconId = 6
-local function incIconId()
-	if incIconId < 6 then
-		iconId = iconId + 1
-	end
-end
 
 function mod:OnCombatStart(delay)
-	iconId = 6
 	enrage:Start()
 	table.wipe(adds)
 end
@@ -106,8 +100,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-local debuffedPlayers = {}
-
 local killTime = 0
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
@@ -129,25 +121,33 @@ function mod:UNIT_DIED(args)
 			timerSimulKill:Stop()
 		end
 	end
-	if debuffedPlayers[args.destGUID] then
-		debuffedPlayers[args.destGUID] = nil
-		incIconId()
-	end
+
 end
 
+
+local rootedPlayers = {}
+local function showRootWarning()
+	warnRoots:Show(table.concat(rootedPlayers, "< >"))
+	table.wipe(rootedPlayers)
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63601 then
 		iconId = iconId - 1
 		self:SetIcon(args.destName, iconId, 15)
-		debuffedPlayers[args.destGUID] = true
+		table.insert(rootedPlayers, args.destName)
+		self:Unschedule(showRootWarning)
+		if #rootedPlayers >= 3 then
+			showRootWarning()
+		else
+			self:Schedule(0.5, showRootWarning)
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 63601 then
 		self:RemoveIcon(args.destName)
-		incIconId()
 	end
 end
 
