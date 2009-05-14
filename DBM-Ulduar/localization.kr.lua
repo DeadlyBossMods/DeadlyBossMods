@@ -404,7 +404,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnPhase2 			= "2 페이즈",
-	WarnSimulKill		= "첫번째 애드 죽음 - 1분 후 부활",
+	WarnSimulKill		= "첫번째 애드 죽음 - 12초 후 부활",
 	WarnFury 			= ">%s< 에게 자연의 분노",
 	SpecWarnFury 		= "당신에게 자연의 분노!",
 	WarningTremor   		= "지진! - 시전 중지!",
@@ -426,6 +426,7 @@ L:SetOptionLocalization{
 	WarnSimulKill			= "부활 경고 보기",
 	WarnFury 				= "자연의 분노 경고 보기",
 	SpecWarnFury 			= "자연의 분노 특수 경고 보기",
+	PlaySoundOnFury			= "자연의 분노 특수 사운드 재생",
 	WarnRoots 				= "무쇠뿌리 대상 특수 경고 보기",
 	WarningTremor  	 		= "지진 시전 특수 경보 보기"	
 }
