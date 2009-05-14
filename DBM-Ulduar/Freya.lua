@@ -115,14 +115,14 @@ end
 
 local symbolid = 6
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62861 then
+	if args.spellId == 63601 then
 		symboldid = symbolid - 1
 		self:SetIcon(args.destName, symbolid, 15)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62861 then
+	if args.spellId == 63601 then
 		symboldid = symbolid + 1
 	end
 end
