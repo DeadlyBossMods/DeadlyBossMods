@@ -13,8 +13,19 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
+
+-- Trash: 33430 Guardian Lasher (so ne blume)
+-- 33355 (nymphe)
+-- 33354 (baum)
+
+--
+-- Elder Stonebark (ground tremor / fist of stone)
+-- Elder Brightleaf (unstable sunbeam)
+
 
 mod:AddBoolOption("HealthFrame", true)
 
@@ -99,6 +110,20 @@ function mod:UNIT_DIED(args)
 		if counter == 0 then
 			timerSimulKill:Stop()
 		end
+	end
+end
+
+local symbolid = 6
+function mod:SPELL_AURA_APPLIED(args)
+	if args.spellId == 62861 then
+		symboldid = symbolid - 1
+		self:SetIcon(args.destName, symbolid, 15)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 62861 then
+		symboldid = symbolid + 1
 	end
 end
 
