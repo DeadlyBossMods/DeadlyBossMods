@@ -38,17 +38,26 @@ local specWarnFury = mod:NewSpecialWarning("SpecWarnFury")
 local enrage = mod:NewEnrageTimer(600)
 
 local timerAlliesOfNature	= mod:NewTimer(60, "TimerAlliesOfNature", 62678)
-local timerSimulKill		= mod:NewTimer(60, "TimerSimulKill")
+local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
 local timerFuryYou		= mod:NewTimer(10, "TimerFuryYou", 63571)
 local timerTremorCD 	= mod:NewCDTimer(28, 62859) 
 local warnTremor		= mod:NewSpecialWarning("WarningTremor")
 
 local adds = {}
 
+local iconId = 6
+local function incIconId()
+	if incIconId < 6 then
+		iconId = iconId + 1
+	end
+end
+
 function mod:OnCombatStart(delay)
+	iconId = 6
 	enrage:Start()
 	table.wipe(adds)
 end
+
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 62519 then
@@ -92,13 +101,17 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+local debuffedPlayers = {}
+
+local killTime = 0
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 33202 or cid == 32916 or cid == 32919 then
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(cid)
 		end
-		if not timerSimulKill:IsStarted() then
+		if (GetTime() - killTime) > 13 then
+			killTime = GetTime()
 			timerSimulKill:Start()
 			warnSimulKill:Show()
 		end
@@ -111,19 +124,25 @@ function mod:UNIT_DIED(args)
 			timerSimulKill:Stop()
 		end
 	end
+	if debuffedPlayers[args.destGUID] then
+		debuffedPlayers[args.destGUID] = nil
+		incIconId()
+	end
 end
 
-local symbolid = 6
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 63601 then
-		symboldid = symbolid - 1
+		iconId = iconId - 1
 		self:SetIcon(args.destName, symbolid, 15)
+		debuffedPlayers[args.destGUID] = true
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 63601 then
-		symboldid = symbolid + 1
+		self:RemoveIcon(args.destName)
+		incIconId()
 	end
 end
 
