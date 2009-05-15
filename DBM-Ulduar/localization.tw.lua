@@ -408,7 +408,8 @@ L:SetWarningLocalization{
 	WarnSimulKill			= "第一支小怪死亡 - 1分鐘後復活",
 	WarnFury 			= "自然烈怒: >%s<",
 	SpecWarnFury 			= "你中了自然烈怒!",
-	WarningTremor   		= "地面震顫 - 停止施法"
+	WarningTremor   		= "地面震顫 - 停止施法",
+	WarnRoots 			= "鐵之根鬚: >%s<"
 }
 
 L:SetTimerLocalization{
@@ -426,7 +427,9 @@ L:SetOptionLocalization{
 	WarnSimulKill			= "提示小怪復活",
 	WarnFury 			= "提示自然烈怒",
 	SpecWarnFury 			= "當你中了自然烈怒時顯示特別警告",
-	WarningTremor   		= "當王施放地面震顫時顯示特別警告"
+	WarningTremor   		= "當王施放地面震顫時顯示特別警告",
+	WarnRoots 			= "提示鐵之根鬚",
+	PlaySoundOnFury			= "當你中了自然烈怒時播放音效"
 }
 
 -------------------
@@ -564,7 +567,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningWellSpawned 		= "提示理智之井的出現",
 	WarningGuardianSpawned 		= "提示尤格薩倫守護者的出現",
 	WarningCrusherTentacleSpawned	= "提示粉碎大觸手的出現",
 	WarningP2 			= "提示第二階段",
