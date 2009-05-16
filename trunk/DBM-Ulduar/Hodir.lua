@@ -23,7 +23,6 @@ local timerFlashFrCD	= mod:NewCDTimer(50, 61968)
 
 local warnStormCloud	= mod:NewAnnounce("WarningStormCloud")
 local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
-local warnBitingCold	= mod:NewSpecialWarning("WarningBitingCold")
 
 local enrageTimer	= mod:NewEnrageTimer(475)
 
@@ -56,15 +55,5 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
-
-function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args.spellId == 62188 and args.destName == UnitName("player") then 
-		-- bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0 then -- Biting Cold
-		if args.amount >= 2 then
-			warnBitingCold:Show()
-		end
-	end
-end
-
 
 
