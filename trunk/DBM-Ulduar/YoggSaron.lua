@@ -16,8 +16,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_AURA_REMOVED_DOSE",
 	"UNIT_HEALTH",
-	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"UNIT_DIED"
 )
 
 
@@ -34,6 +33,7 @@ local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
 local timerMadness 			= mod:NewCastTimer(60, 64059)
 local specWarnMadnessOutNow		= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local warnBrainPortalSoon		= mod:NewAnnounce("WarnBrainPortalSoon", 1)
+local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
 local warnSqueeze			= mod:NewAnnounce("WarnSqueeze", 1)
 local brainportal			= mod:NewTimer(27, "NextPortal")
 local warnFavor				= mod:NewAnnounce("WarnFavor", 1)
@@ -44,6 +44,8 @@ mod:AddBoolOption("WhisperBrainLink", false)
 mod:AddBoolOption("WarningSqueeze", false, "announce")
 mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFavorTarget")
+mod:AddBoolOption("SetIconOnMCTarget")
+mod:AddBoolOption("RaidRageSpam", false)
 
 
 local enrageTimer	= mod:NewEnrageTimer(900)
@@ -71,7 +73,16 @@ function mod:SPELL_CAST_START(args)
 		warnMadness:Show()
 		brainportal:Schedule(60)
 		warnBrainPortalSoon:Schedule(85)
-		specWarnMadnessOutNow:Schedule(56)
+		specWarnBrainPortalSoon:Schedule(85)
+		specWarnMadnessOutNow:Schedule(55)
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
+	if msg == L.YellRage then
+		if self.Options.RaidRageSpam then
+			SendChatMessage(L.RaidRage, "RAID")
+		end
 	end
 end
 
@@ -106,6 +117,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 63830 and self.Options.SetIconOnFearTarget then	-- Malady of the Mind (Fear)
 		self:SetIcon(args.destName, 8, 30)
 
+	elseif args.spellId == 63042 and self.Options.SetIconOnMCTarget then	-- MC
+		self:SetIcon(args.destName, 4, 30)
+
 	elseif args.spellId == 64126 or args.spellId == 64125 then	-- Squeeze		
 		warnSqueeze:Show(args.destName)		
 		if args.destName == UnitName("player") and self.Options.WarningSqueeze then			
@@ -125,6 +139,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		phase = 2
 		brainportal:Start(60)
 		warnBrainPortalSoon:Schedule(57)
+		specWarnBrainPortalSoon:Schedule(57)
 		warnP2:Show()
 		if self.Options.ShowSaraHealth then
 			DBM.BossHealth:RemoveBoss(33134)
@@ -171,32 +186,5 @@ function mod:UNIT_HEALTH(uId)
 	end
 end
 
---[[
-function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.srcGUID) == 33983 then
-		timerMadness:Stop()
-	end
-end
-function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
-	if msg == L.YellPhase2 then
-		self:SendSync("Phase2")
-	end
-end
-function mod:OnSync(event, args)
-	if event == "Phase2" and phase == 1 then
-		phase = 2
-		brainportal:Start(70)
-		warnBrainPortalSoon:Schedule(70)
-		warnP2:Show()
-		--if self.Options.ShowSaraHealth and self:GetCIDFromGUID(args.destGUID) == 33134 then
-		if self.Options.ShowSaraHealth then
-			DBM.BossHealth:RemoveBoss(33134)
-			if not self.Options.HealthFrame then
-				DBM.BossHealth:Hide()
-			end
-		end
-	end
-end
---]]
 
 
