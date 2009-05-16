@@ -191,7 +191,7 @@ L:SetOptionLocalization{
 	PlaySoundOnOverload		= "當超載施放時播放音效",
 	TimerLightningWhirl		= "顯示閃電旋風的施法計時器",
 	LightningTendrils		= "為閃電觸鬚顯示特別警告",
-	TimerLightningTendrils		= "顯示閃電旋風的持續時間計時器",
+	TimerLightningTendrils		= "顯示閃電觸鬚的持續時間計時器",
 	PlaySoundLightningTendrils	= "閃電觸鬚時播放音效",
 	WarningFusionPunch		= "提示熔能拳擊",
 	timerFusionPunchActive		= "顯示熔能拳擊計時器",
