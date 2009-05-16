@@ -98,5 +98,5 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "顯示|cff71d5ff|Hspell:%d|h%s|h|r的持續時間計時器",
 	cd = "顯示|cff71d5ff|Hspell:%d|h%s|h|r的冷卻計時器",
 	next = "顯示下一次 |cff71d5ff|Hspell:%d|h%s|h|r的計時器",
-	achievement = "Show timer for %s", -- translate
+	achievement = "為成就:%s顯示計時器",
 }

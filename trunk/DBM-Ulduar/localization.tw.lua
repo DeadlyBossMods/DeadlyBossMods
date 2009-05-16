@@ -558,7 +558,8 @@ L:SetMiscLocalization{
 	YellPhase2 			= "我是清醒的夢境。",
 	Sara 				= "薩拉",
 	WhisperBrainLink 		= "你中了腦波連結! 跑向 %s!",
-	WarningYellSqueeze		= "我給觸手綁了! 快救命!"
+	WarningYellSqueeze		= "我給觸手綁了! 快救命!",
+	YellRage			= "在我的真身面前顫抖吧。" --unknow message, will change later
 }
 
 L:SetWarningLocalization{
@@ -577,7 +578,9 @@ L:SetWarningLocalization{
 	WarnBrainPortalSoon		= "3秒後 傳送門出現",
 	WarnSqueeze 			= "壓榨(觸手綁人): >%s<",
 	WarnFavor			= "薩拉的熱誠: >%s<",
-	SpecWarnFavor			= "你中了薩拉的熱誠"
+	SpecWarnFavor			= "你中了薩拉的熱誠",
+	specWarnBrainPortalSoon		= "傳送門 即將出現",
+	RaidRage			= "薩拉生氣了 快吻她囉"
 }
 
 L:SetTimerLocalization{
@@ -605,5 +608,8 @@ L:SetOptionLocalization{
 	ShowSaraHealth			= "顯示薩拉的血量",
 	WarnFavor			= "提示薩拉的熱誠的目標",
 	SpecWarnFavor			= "為薩拉的熱誠顯示特別警告",
-	SetIconOnFavorTarget		= "設置標記在薩拉的熱誠的目標"
+	SetIconOnFavorTarget		= "設置標記在薩拉的熱誠的目標",
+	specWarnBrainPortalSoon		= "當傳送門即將出現時顯示特別警告",
+	SetIconOnMCTarget		= "設置標記在心控的目標",
+	RaidRageSpam			= "提示 成就:接吻和好 的時機"
 }
