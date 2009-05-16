@@ -194,7 +194,7 @@ L:SetOptionLocalization{
 	TimerLightningTendrils		= "顯示閃電觸鬚的持續時間計時器",
 	PlaySoundLightningTendrils	= "閃電觸鬚時播放音效",
 	WarningFusionPunch		= "提示熔能拳擊",
-	timerFusionPunchActive		= "顯示熔能拳擊計時器",
+	timerFusionPunchActive		= "顯示熔能拳擊DEBUFF計時器",
 	WarningOverwhelmingPower	= "提示極限威能",
 	timerOverwhelmingPower		= "顯示極限威能計時器",
 	SetIconOnOverwhelmingPower	= "設置標記在極限威能的目標",
