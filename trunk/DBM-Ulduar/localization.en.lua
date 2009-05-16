@@ -461,6 +461,7 @@ L:SetWarningLocalization{
 	WarnBlast		= "Plasma Blast on >%s<",
 	MagneticCore		= ">%s< got Magnetic Core",
 	WarningShockBlast	= "Shock Blast - MOVE AWAY",
+	WarnBombSpawn		= "Bomb Bot spawned"
 }
 
 L:SetTimerLocalization{
@@ -476,7 +477,8 @@ L:SetOptionLocalization{
 	TimeToPhase3		= "begin Phase 3",
 	MagneticCore		= "Announce Magnetic Core looter",
 	HealthFramePhase4	= "Show Health Frame in Phase 4",
-	AutoChangeLootToFFA	= "Auto Switch Looting to FreeForAll in Phase3"
+	AutoChangeLootToFFA	= "Auto Switch Looting to FreeForAll in Phase3",
+	WarnBombSpawn		= "Announce Bomb Bots"
 }
 
 L:SetMiscLocalization{

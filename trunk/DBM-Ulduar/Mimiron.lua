@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_REMOVED",
 	"UNIT_SPELLCAST_CHANNEL_STOP",
-	"CHAT_MSG_LOOT"
+	"CHAT_MSG_LOOT",
+	"SPELL_SUMMON"
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
@@ -31,6 +32,7 @@ local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 local blastWarn			= mod:NewAnnounce("WarnBlast", 4)
 local shellWarn			= mod:NewAnnounce("WarnShell", 2)
 local lootannounce		= mod:NewAnnounce("MagneticCore", 1)
+local warnBombSpawn		= mod:NewAnnounce("WarnBombSpawn", 3)
 
 local timerP1toP2		= mod:NewTimer(43, "TimeToPhase2")
 local timerP2toP3		= mod:NewTimer(32, "TimeToPhase3")
@@ -69,6 +71,13 @@ function mod:OnCombatEnd()
 		end
 	end
 end
+
+function mod:SPELL_SUMMON(args)
+	if args.spellId == 63811 then -- Bomb Bot
+		warnBombSpawn:Show()
+	end
+end
+
 
 function mod:UNIT_SPELLCAST_CHANNEL_STOP(unit, spell)
 	if spell == spinningUp and GetTime() - lastSpinUp < 3.9 then
