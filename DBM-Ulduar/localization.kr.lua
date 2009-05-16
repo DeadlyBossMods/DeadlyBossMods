@@ -168,7 +168,7 @@ L:SetWarningLocalization{
 	WarningRuneofPower			= "마력의 룬",
 	WarningRuneofDeath			= "죽음의 룬",
 	WarningRuneofSummoning		= "소환의 룬",
-	WarningStaticDisruption		= ">%s< 에게 전자기 붕괴!"
+	WarningStaticDisruption		= ">%s< 에게 전자기 붕괴!",
 	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
 	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",	
 }
