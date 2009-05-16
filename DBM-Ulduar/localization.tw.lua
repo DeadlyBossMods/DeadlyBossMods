@@ -171,7 +171,8 @@ L:SetWarningLocalization{
 	WarningRuneofDeath		= "死亡符文",
 	RuneofDeath			= "死亡符文 - 移動",
 	LightningTendrils		= "閃電觸鬚 - 跑開!",
-	WarningRuneofSummoning		= "召喚符文"
+	WarningRuneofSummoning		= "召喚符文",
+	WarningStaticDisruption		= "靜電崩裂: >%s<"
 }
 
 L:SetTimerLocalization{
@@ -464,7 +465,8 @@ L:SetWarningLocalization{
 	WarnShell			= "凝汽彈: >%s<",
 	WarnBlast			= "離子衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
-	WarningShockBlast		= "震爆 - 跑開!"
+	WarningShockBlast		= "震爆 - 跑開!",
+	WarnBombSpawn			= "炸彈機械人出現了"
 }
 
 L:SetTimerLocalization{
@@ -486,7 +488,8 @@ L:SetOptionLocalization{
 	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
 	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
-	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取"
+	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取",
+	WarnBombSpawn			= "提示炸彈機械人"
 }
 
 L:SetMiscLocalization{
