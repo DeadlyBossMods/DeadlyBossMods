@@ -89,6 +89,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	active = "%s",	
 	cd = "%s 쿨다운",
 	next = "다음 %s",
+	achievement = "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -97,5 +98,6 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "|cff71d5ff|H주문:%d|h%s|h|r 유지 타이머 보기",
 	cd = "|cff71d5ff|H주문:%d|h%s|h|r 쿨다운 타이머 보기",
 	next = "다음 |cff71d5ff|H주문:%d|h%s|h|r 타이머 보기",
+	achievement = "Show timer for %s", -- translate
 }
 end
