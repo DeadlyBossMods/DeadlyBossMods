@@ -33,12 +33,17 @@ mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	timerTympanicTantrumCD:Start(50-delay)
+	if GetInstanceDifficulty() == 1 then
+		timerTympanicTantrumCD:Start(35-delay)
+	else
+		timerTympanicTantrumCD:Start(50-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 62776 then					-- Tympanic Tantrum (aoe damge + daze)
 		timerTympanicTantrumCast:Start()
+		timerTympanicTantrumCD:Stop()
 	end
 end
 

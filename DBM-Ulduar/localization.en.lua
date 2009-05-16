@@ -189,20 +189,21 @@ L:SetOptionLocalization{
 	TimerOverload				= "Show Overload cast timer",
 	TimerLightningWhirl			= "Show Lightning Whirl cast timer",
 	LightningTendrils			= "Show Special Warning for Lightning Tendrils",
-	TimerLightningTendrils		= "Show Lightning Tendrils duration timer",
-	PlaySoundLightningTendrils	= "Play Sound on Lightning Tendrils",
+	TimerLightningTendrils			= "Show Lightning Tendrils duration timer",
+	PlaySoundLightningTendrils		= "Play Sound on Lightning Tendrils",
 	WarningFusionPunch			= "Announce Fusion Punch",
-	timerFusionPunchCast		= "Show Castbar for Fusion Punch",
-	timerFusionPunchActive		= "Show Fusion Punch timer",
-	WarningOverwhelmingPower	= "Announce Overwhelming Power",
-	timerOverwhelmingPower		= "Show Overwhelming Power timer",
-	SetIconOnOverwhelmingPower	= "Set icon on Overwhelming Power target",
+	timerFusionPunchCast			= "Show Castbar for Fusion Punch",
+	timerFusionPunchActive			= "Show Fusion Punch timer",
+	WarningOverwhelmingPower		= "Announce Overwhelming Power",
+	timerOverwhelmingPower			= "Show Overwhelming Power timer",
+	SetIconOnOverwhelmingPower		= "Set Icon on Overwhelming Power target",
 	timerRunicBarrier			= "Show Runic Barrier timer",
 	WarningRuneofPower			= "Announce Rune of Power",
 	WarningRuneofDeath			= "Announce Rune of Death",
 	WarningRuneofSummoning			= "Announce Rune of Summoning",
-	RuneofDeath					= "Show Special Warning for Rune of Death",
+	RuneofDeath				= "Show Special Warning for Rune of Death",
 	timerRuneofDeath			= "Show Rune of Death duration timer",
+	SetIconOnStaticDisruption		= "Set Icon on Static Disruption Target"
 }
 
 L:SetMiscLocalization{
@@ -327,7 +328,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarningFlashFreeze	= "Flash Freeze",
 	WarningStormCloud	= "Storm Cloud on >%s<", 
-	WarningBitingCold	= "Biting Cold - MOVE"
 }
 
 L:SetTimerLocalization{
@@ -337,7 +337,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerFlashFreeze	= "Show Flash Freeze Cast-Timer",
 	WarningFlashFreeze	= "Show Warning for Flash Freeze",
-	WarningBitingCold	= "Show warning for Biting Cold",
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
 	WarningStormCloud	= "Announce Storm Cloud Players",
 	YellOnStormCloud	= "Yell when Storm Cloud active"
@@ -412,15 +411,35 @@ L:SetWarningLocalization{
 	WarnFury	= "Nature's Fury on >%s<",
 	SpecWarnFury	= "Nature's Fury on You!",
 	WarningTremor   = "Ground Tremor - Stop Casting!",
-	WarnRoots = "Roots on >%s<"
-	
+	WarnRoots	= "Roots on >%s<"
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam	= "Sun Beam: %s",
-	TimerAlliesOfNature	= "Allies of Nature CD",
 	TimerSimulKill		= "Resurrection",
 	TimerFuryYou		= "Nature's Fury on you"
+}
+
+L:SetOptionLocalization{
+	WarnPhase2		= "Announce Phase2",
+	WarnSimulKill		= "Announce first mob down",
+	WarnFury		= "Announce Nature's Fury target",
+	WarnRoots		= "Announce Iron Roots targets",
+	SpecWarnFury		= "Show Special Warning for Nature's Fury",
+	WarningTremor		= "Show Special Warning for Ground Tremor (hard mode)",
+	TimerSimulKill		= "Show Timer for mob resurrection"
+}
+
+-- Elders
+L = DBM:GetModLocalization("Freya_Elders")
+
+L:SetGeneralLocalization{
+	name = "Freya's Elders"
+}
+
+L:SetOptionLocalization{
+	SpecWarnFistOfStone	= "Show Special Warning for Fist of Stone",
+	WarnFistofStone		= "Announce Fist of Stone"
 }
 
 

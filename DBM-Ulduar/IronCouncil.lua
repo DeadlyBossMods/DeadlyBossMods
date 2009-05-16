@@ -41,8 +41,9 @@ local timerFusionPunchCast	= mod:NewCastTimer(3, 61903)
 local timerFusionPunchActive	= mod:NewTimer(4, "timerFusionPunchActive", 61903)
 local warnOverwhelmingPower	= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
 local timerOverwhelmingPower	= mod:NewTimer(25, "timerOverwhelmingPower", 61888)
-mod:AddBoolOption("SetIconOnOverwhelmingPower", true, "announce")
-
+local warnStaticDisruption	= mod:NewAnnounce("WarningStaticDisruption", 3, 61912) 
+mod:AddBoolOption("SetIconOnOverwhelmingPower")
+mod:AddBoolOption("SetIconOnStaticDisruption")
 
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
@@ -70,17 +71,25 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 63479 then				-- Chain light (need the 10ppl spellid)
 		warnChainlight:Show()
 
-	elseif args.spellId == 63483 or args.spellId == 61915 then				-- LightningWhirl
+	elseif args.spellId == 63483 or args.spellId == 61915 then	-- LightningWhirl
 		timerLightningWhirl:Start()
 
 	elseif args.spellId == 61903 or args.spellId == 63493 then	-- Fusion Punch
 		warnFusionPunch:Show()
 		timerFusionPunchCast:Start()
-	elseif args.spellId == 61888 then				-- Overwhelming Power
+	elseif args.spellId == 64637 or args.spellId == 61888 then	-- Overwhelming Power
 		warnOverwhelmingPower:Show(args.destName)
-		timerOverwhelmingPower:Start(args.destName)
+		if GetInstanceDifficulty() == 1 then
+			timerOverwhelmingPower:Start(60, args.destName)
+		else
+			timerOverwhelmingPower:Start(25, args.destName)
+		end
 		if self.Options.SetIconOnOverwhelmingPower then
-			mod:SetIcon(args.destName, 8, 25) -- skull for 25 seconds (until meltdown)
+			if GetInstanceDifficulty() == 1 then
+				mod:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
+			else
+				mod:SetIcon(args.destName, 8, 25) -- skull for 25 seconds (until meltdown)
+			end
 		end
 
 	elseif args.spellId == 62338 then				-- Runic Barrier
@@ -123,6 +132,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specwarnLightningTendrils:Show()
 		if self.Options.PlaySoundLightningTendrils then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
+
+	elseif args.spellId == 61912 or args.spellId == 63494 then	-- Static Disruption (Hard Mode) don't know 25 id, took it from wowhead
+		warnStaticDisruption:Show(args.destName)
+		if self.Options.SetIconOnStaticDisruption then 
+			mod:SetIcon(args.destName, 8, 20)
 		end
 	end
 end
