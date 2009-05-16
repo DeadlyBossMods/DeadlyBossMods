@@ -81,6 +81,7 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
 -- Generic Warnings
 DBM_CORE_GENERIC_TARGET_WARN = ">%%s< 에게 %s!"
 DBM_CORE_GENERIC_TARGET_OPTION = "%s 의 대상 알리기"
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적 타이머)"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
@@ -89,7 +90,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	active = "%s",	
 	cd = "%s 쿨다운",
 	next = "다음 %s",
-	achievement = "%s",
+	achievement = "%s",	
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -98,6 +99,6 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "|cff71d5ff|H주문:%d|h%s|h|r 유지 타이머 보기",
 	cd = "|cff71d5ff|H주문:%d|h%s|h|r 쿨다운 타이머 보기",
 	next = "다음 |cff71d5ff|H주문:%d|h%s|h|r 타이머 보기",
-	achievement = "Show timer for %s", -- translate
+	achievement = "%s 위한 타이머 보기", -- translate	
 }
 end

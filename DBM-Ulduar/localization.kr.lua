@@ -167,7 +167,8 @@ L:SetWarningLocalization{
 	WarningOverwhelmingPower	= ">%s< 에게 압도적인 힘",
 	WarningRuneofPower			= "마력의 룬",
 	WarningRuneofDeath			= "죽음의 룬",
-	WarningRuneofSummoning		= "소환의 룬",	
+	WarningRuneofSummoning		= "소환의 룬",
+	WarningStaticDisruption		= ">%s< 에게 전자기 붕괴!"
 	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
 	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",	
 }
@@ -200,7 +201,10 @@ L:SetOptionLocalization{
 	WarningRuneofDeath			= "죽음의 룬 알리기",
 	WarningRuneofSummoning		= "소환의 룬 알리기",	
 	RuneofDeath					= "죽음의 룬 특수 경고 보기",
-	PlaySoundDeathRune			= "죽음의 룬일 때 소리 재생"	
+	PlaySoundDeathRune			= "죽음의 룬일 때 소리 재생",
+	timerRuneofDeath			= "죽음의 룬 타이머 보기",
+	WarningStaticDisruption		= "전자기 붕괴 알리기",	
+	SetIconOnStaticDisruption	= "전자기 붕괴 대상 타겟 아이콘 설정하기(하드 모드)"	
 }
 
 L:SetMiscLocalization{
@@ -326,15 +330,12 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze		= "순간 빙결",
- 	PlaySoundOnFlashFreeze	= "순간 빙결",
-	WarningStormCloud		= "폭풍 구름 : >%s<", 	
-	WarningBitingCold		= "매서운 추위 - 움직이세요!"
+	WarningStormCloud		= "폭풍 구름 : >%s<"
 }
 
 L:SetOptionLocalization{
 	WarningFlashFreeze		= "순간 빙결 경보 보기",
  	PlaySoundOnFlashFreeze	= "순간 빙결 경고 소리 듣기",	
-	WarningBitingCold		= "매서운 추위 경보 보기",
 	WarningStormCloud		= "폭풍 구름 경보 보기",
 	YellOnStormCloud		= "폭풍 구름을 얻을 경우 외치기"	
 }
@@ -395,8 +396,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell		 = "얘들아, 날 도와라!",
-	WaterSpirit		 = "고대 물의 정령",
+	SpawnYell		= "얘들아, 날 도와라!",
+	WaterSpirit		= "고대 물의 정령",
 	Snaplasher 		= "악어덩굴손",
 	StormLasher 		= "폭풍덩굴손",
 	YellKill		= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다."	
@@ -404,7 +405,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnPhase2 			= "2 페이즈",
-	WarnSimulKill		= "첫번째 애드 죽음 - 12초 후 부활",
+	WarnSimulKill		= "첫번째 소환 죽음 - 12초 후 부활",
 	WarnFury 			= ">%s< 에게 자연의 분노",
 	SpecWarnFury 		= "당신에게 자연의 분노!",
 	WarningTremor   		= "지진! - 시전 중지!",
@@ -413,22 +414,34 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam 	= "태양 광선: %s",
-	TimerAlliesOfNature		= "자연 조화 쿨다운",
+	TimerAlliesOfNature 		= "자연의 조화",	
 	TimerSimulKill 			= "부활",
 	TimerFuryYou 			= "당신에게 자연의 분노"
 }
 
 L:SetOptionLocalization{
 	TimerAlliesOfNature 		= "자연의 조화 타이머 보기",
-	TimerSimulKill 			= "부활 타이머 보기",
+	TimerSimulKill 			= "소환수 부활 타이머 보기",
 	TimerFuryYou 			= "자연의 분노 타이머 보기",
 	WarnPhase2 				= "2 페이즈 경고 보기",
-	WarnSimulKill			= "부활 경고 보기",
-	WarnFury 				= "자연의 분노 경고 보기",
+	WarnSimulKill			= "첫번째 소환 제거 알리기",
+	WarnFury 				= "자연의 분노 타겟 알리기",
 	SpecWarnFury 			= "자연의 분노 특수 경고 보기",
 	PlaySoundOnFury			= "자연의 분노 특수 사운드 재생",
-	WarnRoots 				= "무쇠뿌리 대상 특수 경고 보기",
-	WarningTremor  	 		= "지진 시전 특수 경보 보기"	
+	WarnRoots 				= "무쇠뿌리 대상 알리기",
+	WarningTremor  	 		= "지진 시전 특수 경보 보기 (하드 모드)"	
+}
+
+-- Elders
+L = DBM:GetModLocalization("Freya_Elders")
+
+L:SetGeneralLocalization{
+	name = "프레이야의 장로"
+}
+
+L:SetOptionLocalization{
+	SpecWarnFistOfStone	= "돌덩이 주먹 특수 경보 보기",
+	WarnFistofStone		= "돌덩이 주먹 알리기"
 }
 
 -------------------
@@ -448,7 +461,8 @@ L:SetWarningLocalization{
 	WarnShell			= ">%s< 에게 네이팜 탄!",
 	WarnBlast			= ">%s< 에게 플라즈마 폭발!",
 	MagneticCore		= ">%s< 자기 증폭기를 획득했습니다.",
-	WarningShockBlast	= "충격파 - 움직이세요!"	,
+	WarningShockBlast	= "충격파 - 움직이세요!",
+	WarnBombSpawn		= "폭탄 로봇 생성!"
 }
 
 L:SetTimerLocalization{
@@ -471,7 +485,8 @@ L:SetOptionLocalization{
 	WarnShell				= "네이팜 탄 대상 알리기",
 	WarnBlast				= "플라즈마 폭발 대상 알리기",	
 	HealthFramePhase4		= "페이즈 4 의 체력 프레임 보기",
-	AutoChangeLootToFFA		= "3 페이즈에 루팅 옵션 자동 변경하기"	
+	AutoChangeLootToFFA		= "3 페이즈에서 루팅 옵션 자동 변경하기",
+	WarnBombSpawn			= "폭탄 로봇 생성 알리기"	
 }
 
 L:SetMiscLocalization{
