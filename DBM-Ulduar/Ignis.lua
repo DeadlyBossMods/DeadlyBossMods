@@ -25,10 +25,12 @@ local timerScorchCast		= mod:NewTimer(3, "TimerScorchCast", 63473)
 local announceSlagPot		= mod:NewAnnounce("WarningSlagPot", 3, 63477)
 local timerSlagPot			= mod:NewTimer(10, "TimerSlagPot", 63477)
 
+local timerAchieve	= mod:NewAchievementTimer(240, 2930, "TimerSpeedKill")
 
 mod:AddBoolOption("SlagPotIcon")
 
 function mod:OnCombatStart(delay)
+	timerAchieve:Start()
 	timerScorchCooldown:Start(12-delay)
 end
 

@@ -149,6 +149,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 62861 then
 		self:RemoveIcon(args.destName)
+		iconId = iconId + 1
 	end
 end
 

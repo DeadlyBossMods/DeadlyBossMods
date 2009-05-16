@@ -26,11 +26,14 @@ local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
 
 local enrageTimer	= mod:NewEnrageTimer(475)
 
+local timerAchieve	= mod:NewAchievementTimer(180, 3182, "TimerSpeedKill")
+
 mod:AddBoolOption("YellOnStormCloud", true, "announce")
 
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
+	timerAchieve:Start()
 	timerFlashFrCD:Start(-delay)
 end
 

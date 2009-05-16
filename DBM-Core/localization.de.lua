@@ -79,6 +79,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	active = "%s",
 	cd = "%s CD",
 	next = "Nächster %s",
+	achievement = "%s"
 }
 
 
@@ -88,4 +89,5 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "Timer während |cff71d5ff|Hspell:%d|h%s|h|r aktiv ist anzeigen",
 	cd = "Cooldowntimer für |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
 	next = "Timer für nächstes |cff71d5ff|Hspell:%d|h%s|h|r anzeigen",
+	achievement = "Timer für %s anzeigen"
 }

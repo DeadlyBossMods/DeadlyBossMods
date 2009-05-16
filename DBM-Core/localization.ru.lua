@@ -90,6 +90,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
     active = "%s",
 	cd = "%s",
 	next = "Следующий %s",
+	achievement = "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -98,4 +99,5 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "Отображать продолжительность |cff71d5ff|Hspell:%d|h%s|h|r",
 	cd = "Отображать отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
 	next = "Отображать отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
+	achievement = "Show timer for %s", -- translate
 }
