@@ -29,19 +29,19 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("HealthFrame", true)
 
-local warnPhase2 = mod:NewAnnounce("WarnPhase2", 3)
-local warnSimulKill = mod:NewAnnounce("WarnSimulKill", 1)
-local warnFury = mod:NewAnnounce("WarnFury", 2, 63571)
-local warnRoots = mod:NewAnnounce("WarnRoots", 2, 63601)
+local warnPhase2		= mod:NewAnnounce("WarnPhase2", 3)
+local warnSimulKill		= mod:NewAnnounce("WarnSimulKill", 1)
+local warnFury			= mod:NewAnnounce("WarnFury", 2, 63571)
+local warnRoots			= mod:NewAnnounce("WarnRoots", 2, 63601)
 
-local specWarnFury = mod:NewSpecialWarning("SpecWarnFury")
+local specWarnFury		= mod:NewSpecialWarning("SpecWarnFury")
 
-local enrage = mod:NewEnrageTimer(600)
+local enrage 			= mod:NewEnrageTimer(600)
 
-local timerAlliesOfNature	= mod:NewTimer(60, "TimerAlliesOfNature", 62678)
+local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
 local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
-local timerFuryYou		= mod:NewTimer(10, "TimerFuryYou", 63571)
-local timerTremorCD 	= mod:NewCDTimer(28, 62859) 
+local timerFury			= mod:NewBuffActiveTimer(10, 63571)
+local timerTremorCD 		= mod:NewCDTimer(28, 62859) 
 local warnTremor		= mod:NewSpecialWarning("WarningTremor")
 
 mod:AddBoolOption("PlaySoundOnFury")
@@ -82,8 +82,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
 			specWarnFury:Show()
-			timerFuryYou:Start()
 		end
+		timerFury:Start(args.destName)
 	end
 end
 
@@ -107,7 +107,7 @@ function mod:UNIT_DIED(args)
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(cid)
 		end
-		if (GetTime() - killTime) > 13 then
+		if (GetTime() - killTime) > 20 then
 			killTime = GetTime()
 			timerSimulKill:Start()
 			warnSimulKill:Show()
@@ -151,5 +151,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:RemoveIcon(args.destName)
 	end
 end
+
 
 
