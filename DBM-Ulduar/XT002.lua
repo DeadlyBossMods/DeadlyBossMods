@@ -27,12 +27,14 @@ local warnGravityBomb			= mod:NewAnnounce("WarningGravityBomb", 3, 64234)
 local specWarnGravityBomb		= mod:NewSpecialWarning("SpecialWarningGravityBomb")
 
 local enrageTimer			= mod:NewEnrageTimer(600)
+local timerAchieve			= mod:NewAchievementTimer(205, 2937, "TimerSpeedKill")
 
 mod:AddBoolOption("SetIconOnLightBombTarget", true)
 mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
+	timerAchieve:Start()
 	if GetInstanceDifficulty() == 1 then
 		timerTympanicTantrumCD:Start(35-delay)
 	else

@@ -39,6 +39,8 @@ local brainportal			= mod:NewTimer(27, "NextPortal")
 local warnFavor				= mod:NewAnnounce("WarnFavor", 1)
 local specWarnFavor			= mod:NewSpecialWarning("SpecWarnFavor")
 
+local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
+
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
 mod:AddBoolOption("WarningSqueeze", false, "announce")
@@ -58,6 +60,7 @@ function mod:OnCombatStart(delay)
 	phase = 1
 	brainLink1 = nil
 	enrageTimer:Start()
+	timerAchieve:Start()
 	if self.Options.ShowSaraHealth and not self.Options.HealthFrame then
 		DBM.BossHealth:Show(L.name)
 	end

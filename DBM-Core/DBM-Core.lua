@@ -2083,7 +2083,7 @@ do
 			if not bar then
 				return false, "error" -- creating the timer failed somehow, maybe hit the hard-coded timer limit of 15
 			end
-			if self.type then
+			if self.type and not self.text then
 				bar:SetText(pformat(self.mod:GetLocalizedTimerText(self.type, self.spellId), ...))
 			else				
 				bar:SetText(pformat(self.text, ...))
@@ -2213,12 +2213,32 @@ do
 	end
 	
 	-- new constructor for the new auto-localized timer types
-	local function newTimer(self, timerType, timer, spellId, optionDefault, optionName, texture, r, g, b)
-		local spellName = GetSpellInfo(spellId) or tostring(spellId)
+	-- note that the function might look unclear because it needs to handle different timer types, especially achievement timers need special treatment
+	-- todo: disable the timer if the player already has the achievement and when the ACHIEVEMENT_EARNED event is fired
+	-- problem: heroic/normal achievements :[
+	-- local achievementTimers = {}
+	local function newTimer(self, timerType, timer, spellId, timerText, optionDefault, optionName, texture, r, g, b)
+		-- new argument timerText is optional (usually only required for achievement timers as they have looooong names)
+		if type(timerText) == "boolean" or type(optionDefault) == "string" then -- check if the argument was skipped
+			return newTimer(self, timerType, timer, spellId, nil, timerText, optionDefault, optionName, texture, r, g, b)
+		end
+		local spellName, icon
+		if timerType == "achievement" then
+			spellName = select(2, GetAchievementInfo(spellId))
+			icon = type(texture) == "number" and select(10, GetAchievementInfo(texture)) or texture or spellId and select(10, GetAchievementInfo(spellId))
+--			if optionDefault == nil then
+--				local completed = select(4, GetAchievementInfo(spellId))
+--				optionDefault = not completed
+--			end
+		else
+			spellName = GetSpellInfo(spellId)
+			icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
+		end
+		spellName = spellName or tostring(spellId)
 		local id = "Timer"..spellId..self.id..#self.timers
-		local icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
 		local obj = setmetatable(
 			{
+				text = self.localization.timers[timerText],
 				type = timerType,
 				spellId = spellId,
 				timer = timer,
@@ -2235,7 +2255,11 @@ do
 		obj:AddOption(optionDefault, optionName)
 		table.insert(self.timers, obj)
 		-- todo: move the string creation to the GUI with SetFormattedString...
-		self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellId, spellName)
+		if timerType == "achievement" then
+			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(GetAchievementLink(spellId):gsub("%[(.+)%]", "%1"))
+		else
+			self.localization.options[id] = DBM_CORE_AUTO_TIMER_OPTIONS[timerType]:format(spellId, spellName)
+		end
 		return obj
 	end
 
@@ -2266,8 +2290,17 @@ do
 		return newTimer(self, "next", ...)
 	end
 	
+	function bossModPrototype:NewAchievementTimer(...)
+		return newTimer(self, "achievement", ...)
+	end
+	
 	function bossModPrototype:GetLocalizedTimerText(timerType, spellId)
-		local spellName = GetSpellInfo(spellId)
+		local spellName
+		if timerType == "achievement" then
+			spellName = select(2, GetAchievementInfo(spellId))
+		else
+			spellName = GetSpellInfo(spellId)
+		end
 		return pformat(DBM_CORE_AUTO_TIMER_TEXTS[timerType], spellName)
 	end
 end
@@ -2620,7 +2653,8 @@ do
 	}
 	local defaultTimerLocalization = {
 		__index = setmetatable({
-			timer_enrage = DBM_CORE_GENERIC_TIMER_ENRAGE
+			timer_enrage = DBM_CORE_GENERIC_TIMER_ENRAGE,
+			TimerSpeedKill = DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL
 		}, returnKey)
 	}
 	local defaultAnnounceLocalization = {
