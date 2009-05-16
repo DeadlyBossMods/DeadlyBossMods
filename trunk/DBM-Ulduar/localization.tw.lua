@@ -203,6 +203,7 @@ L:SetOptionLocalization{
 	RuneofDeath			= "為死亡符文顯示特別警告",
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
 	WarningRuneofSummoning 		= "提示召喚符文",
+	WarningStaticDisruption		= "提示靜電崩裂",
 	SetIconOnStaticDisruption	= "設置標記在靜電崩裂的目標"
 }
 
