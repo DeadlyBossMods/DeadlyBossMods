@@ -202,7 +202,8 @@ L:SetOptionLocalization{
 	WarningRuneofDeath		= "提示死亡符文",
 	RuneofDeath			= "為死亡符文顯示特別警告",
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
-	WarningRuneofSummoning 		= "提示召喚符文"
+	WarningRuneofSummoning 		= "提示召喚符文",
+	SetIconOnStaticDisruption	= "設置標記在靜電崩裂的目標"
 }
 
 L:SetMiscLocalization{
@@ -420,17 +421,30 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerAlliesOfNature 		= "顯示自然和諧冷卻時間",
-	TimerSimulKill 			= "顯示小怪復活計時器",
-	TimerFuryYou 			= "顯示自然烈怒計時器",
 	WarnPhase2 			= "提示第二階段",
-	WarnSimulKill			= "提示小怪復活",
+	WarnSimulKill			= "提示第一支小怪死亡",
 	WarnFury 			= "提示自然烈怒",
-	SpecWarnFury 			= "當你中了自然烈怒時顯示特別警告",
-	WarningTremor   		= "當王施放地面震顫時顯示特別警告",
 	WarnRoots 			= "提示鐵之根鬚",
+	SpecWarnFury 			= "當你中了自然烈怒時顯示特別警告",
+	WarningTremor   		= "當王施放地面震顫時(困難模式)顯示特別警告",
+	TimerAlliesOfNature 		= "顯示自然和諧冷卻時間",
+	TimerFuryYou 			= "顯示自然烈怒計時器",
+	TimerSimulKill 			= "顯示小怪復活計時器",
 	PlaySoundOnFury			= "當你中了自然烈怒時播放音效"
 }
+
+-- Elders
+L = DBM:GetModLocalization("Freya_Elders")
+
+L:SetGeneralLocalization{
+	name = "芙蕾雅的長者們"
+}
+
+L:SetOptionLocalization{
+	SpecWarnFistOfStone		= "為石拳連擊顯示特別警告",
+	WarnFistofStone			= "提示石拳連擊"
+}
+
 
 -------------------
 --  Mimiron  --
