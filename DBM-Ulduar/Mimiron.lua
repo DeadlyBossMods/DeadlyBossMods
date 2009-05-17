@@ -6,6 +6,7 @@ mod:SetCreatureID(33432)
 mod:SetZone()
 
 mod:RegisterCombat("yell", L.YellPull)
+mod:RegisterCombat("yell", L.YellHardPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -44,6 +45,9 @@ local timerNextDarkGlare	= mod:NewNextTimer(41, 63274)
 local timerNextShockblast	= mod:NewNextTimer(34, 63631)
 local timerPlasmaBlastCD	= mod:NewCDTimer(30, 64529)
 local timerShell		= mod:NewTargetTimer(6, 63666)
+local timerHardmode		= mod:NewTimer(598, "TimerHardmode", 64582)
+local timerFlameSuppressant	= mod:NewCastTimer(59, 64570)
+local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
 
 local phase = 0 
 local lootmethod, masterlooterRaidID
@@ -141,6 +145,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerNextDarkGlare:Schedule(19)			-- 4 (cast spinup) + 15 sec (cast dark glare)
 		DBM:Schedule(0.15, show_warning_for_spinup)	-- wait 0.15 and then announce it, otherwise it will sometimes fail
 		lastSpinUp = GetTime()
+	
+	elseif args.spellID == 64570 then
+		timerNextFlameSuppressant:start()
 	end
 end
 
@@ -215,6 +222,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		--self:SendSync("Phase3")	// untested alpha!
 	elseif msg == L.YellPhase4 then
 		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
+	elseif msg == L.YellHardPull then
+		timerHardmode:Start()
+		timerFlameSuppressant:Start()
 	end
 end
 
