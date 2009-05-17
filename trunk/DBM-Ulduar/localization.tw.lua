@@ -478,6 +478,7 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	TimeToPhase2			= "第二階段開始",
 	TimeToPhase3			= "第三階段開始",
+	TimerHardmode			= "困難模式 - 自毀程序"
 }
 
 L:SetOptionLocalization{
@@ -495,11 +496,13 @@ L:SetOptionLocalization{
 	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
 	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取",
-	WarnBombSpawn			= "提示炸彈機械人"
+	WarnBombSpawn			= "提示炸彈機械人",
+	TimerHardmode			= "顯示困難模式計時器"
 }
 
 L:SetMiscLocalization{
-	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",	
+	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",
+	YellHardPull		= "為什麼你要做出這種事?難道你沒看見標示上寫著「請勿觸碰這個按鈕!」嗎?現在自爆裝置已經啟動了，我們要怎麼完成測試呢?",
 	YellPhase2			= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
 	YellPhase3			= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
 	YellPhase4			= "初步測試階段完成。現在要玩真的啦!",
