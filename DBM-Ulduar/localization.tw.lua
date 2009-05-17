@@ -55,7 +55,8 @@ L:SetTimerLocalization{
 	TimerFlameJetsCooldown		= "下一次 烈焰噴洩",
 	TimerScorch			= "下一次 灼燒",
 	TimerScorchCast			= "灼燒",
-	TimerSlagPot			= "熔渣之盆: %s"
+	TimerSlagPot			= "熔渣之盆: %s",
+	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetWarningLocalization{
@@ -133,6 +134,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetWarningLocalization{
@@ -335,6 +337,10 @@ L:SetWarningLocalization{
 	WarningBitingCold		= "刺骨之寒 - 移動"
 }
 
+L:SetTimerLocalization{
+	TimerSpeedKill			= "快速擊殺"
+}
+
 L:SetOptionLocalization{
 	WarningFlashFreeze		= "為閃霜顯示警告",
 	WarningBitingCold		= "為刺骨之寒顯示警告",
@@ -345,7 +351,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellKill			= "我…我終於從他的掌控中…解脫了。",
-	YellCloud			= "我中了風暴威能 快接近我"
+	YellCloud			= "我中了風暴威能 快接近我",
 }
 
 
@@ -585,6 +591,7 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	NextPortal			= "下一次 傳送門",
+	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetOptionLocalization{
