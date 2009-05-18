@@ -31,8 +31,10 @@ local timerOverload		= mod:NewCastTimer(6, 63481)
 local timerLightningWhirl	= mod:NewTimer(5, "TimerLightningWhirl", 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
 local timerLightningTendrils	= mod:NewTimer(27, "TimerLightningTendrils", 63486)
-mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
+local specwarnOverload		= mod:NewSpecialWarning("Overload") 
+mod:AddBoolOption("AllwaysWarnOnOverload", false, "announce")
 mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
+mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
 
 -- Steelbreaker
 -- High Voltage ... don't know what to show here - 63498
@@ -100,7 +102,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63490 or args.spellId == 62269 then					-- Rune of Death
+	if args.spellId == 63490 or args.spellId == 62269 then		-- Rune of Death
 		warnRuneofDeath:Show()
 		timerRuneofDeathDura:Start()
 
@@ -110,14 +112,18 @@ function mod:SPELL_CAST_SUCCESS(args)
 
 	elseif args.spellId == 61869 or args.spellId == 63481 or args.spellId == 61878 then	-- Overload (spellId 10?)
 		timerOverload:Start()
-		if self.Options.PlaySoundOnOverload and UnitName("target") == L.StormcallerBrundir then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+
+		if self.Options.AllwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
+			specwarnOverload:Start()
+			if self.Options.PlaySoundOnOverload then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
 		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 61903 or args.spellId == 63493 then
+	if args.spellId == 61903 or args.spellId == 63493 then		-- Fusion Punch
 		timerFusionPunchActive:Start(args.destName)
 
 	elseif args.spellId == 62269 or args.spellId == 63490 then	-- Rune of Death - move away from it
