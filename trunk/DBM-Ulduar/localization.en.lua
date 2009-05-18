@@ -167,7 +167,8 @@ L:SetWarningLocalization{
 	WarningRuneofDeath			= "Rune of Death",
 	RuneofDeath				= "Rune of Death - MOVE",
 	LightningTendrils			= "Lightning Tendrils - MOVE",
-	WarningRuneofSummoning			= "Rune of Summoning"
+	WarningRuneofSummoning			= "Rune of Summoning",
+	Overload				= "Overload - MOVE AWAY"
 }
 
 L:SetTimerLocalization{
@@ -179,7 +180,7 @@ L:SetTimerLocalization{
 	timerFusionPunchActive		= "Fusion Punch: %s",
 	timerOverwhelmingPower		= "Overwhelming Power: %s",
 	timerRunicBarrier		= "Runic Barrier",
-	timerRuneofDeath		= "Rune of Death",
+	timerRuneofDeath		= "Rune of Death"
 }
 
 L:SetOptionLocalization{
@@ -203,7 +204,9 @@ L:SetOptionLocalization{
 	WarningRuneofSummoning			= "Announce Rune of Summoning",
 	RuneofDeath				= "Show Special Warning for Rune of Death",
 	timerRuneofDeath			= "Show Rune of Death duration timer",
-	SetIconOnStaticDisruption		= "Set Icon on Static Disruption Target"
+	SetIconOnStaticDisruption		= "Set Icon on Static Disruption Target",
+	Overload				= "Show Special Warning for Overload",
+	AllwaysWarnOnOverload			= "Allways Warn on Overload (otherwise only when targeted)"
 }
 
 L:SetMiscLocalization{
