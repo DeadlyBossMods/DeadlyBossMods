@@ -206,7 +206,7 @@ L:SetOptionLocalization{
 	timerRuneofDeath			= "Show Rune of Death duration timer",
 	SetIconOnStaticDisruption		= "Set Icon on Static Disruption Target",
 	Overload				= "Show Special Warning for Overload",
-	AllwaysWarnOnOverload			= "Allways Warn on Overload (otherwise only when targeted)"
+	AllwaysWarnOnOverload			= "Always Warn on Overload (otherwise only when targeted)"
 }
 
 L:SetMiscLocalization{

@@ -174,7 +174,8 @@ L:SetWarningLocalization{
 	RuneofDeath			= "死亡符文 - 移動",
 	LightningTendrils		= "閃電觸鬚 - 跑開!",
 	WarningRuneofSummoning		= "召喚符文",
-	WarningStaticDisruption		= "靜電崩裂: >%s<"
+	WarningStaticDisruption		= "靜電崩裂: >%s<",
+	Overload			= "超載 - 跑開!"
 }
 
 L:SetTimerLocalization{
@@ -207,7 +208,9 @@ L:SetOptionLocalization{
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
 	WarningRuneofSummoning 		= "提示召喚符文",
 	WarningStaticDisruption		= "提示靜電崩裂",
-	SetIconOnStaticDisruption	= "設置標記在靜電崩裂的目標"
+	SetIconOnStaticDisruption	= "設置標記在靜電崩裂的目標",
+	Overload			= "為超載顯示特別警告",
+	AllwaysWarnOnOverload		= "總是對超載顯示警告(否則只有當目標是風暴召喚者的時候顯示)"
 }
 
 L:SetMiscLocalization{
