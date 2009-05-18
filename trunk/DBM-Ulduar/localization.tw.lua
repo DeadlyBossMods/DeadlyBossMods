@@ -336,7 +336,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze		= "閃霜",	
-	WarningStormCloud		= "風暴威能: %s", 
+	WarningStormCloud		= "風暴雷雲: %s", 
 	WarningBitingCold		= "刺骨之寒 - 移動"
 }
 
@@ -349,12 +349,13 @@ L:SetOptionLocalization{
 	WarningBitingCold		= "為刺骨之寒顯示警告",
 	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效",
 	WarningStormCloud		= "提示中了風暴威能的玩家",
-	YellOnStormCloud		= "當風暴威能生效時大喊"
+	YellOnStormCloud		= "當風暴雷雲生效時大喊",
+	SetIconOnStormCloud		= "設置標記在風暴雷雲的目標"
 }
 
 L:SetMiscLocalization{
 	YellKill			= "我…我終於從他的掌控中…解脫了。",
-	YellCloud			= "我中了風暴威能 快接近我",
+	YellCloud			= "我中了風暴雷雲 快接近我",
 }
 
 

@@ -342,7 +342,8 @@ L:SetOptionLocalization{
 	WarningFlashFreeze	= "Show Warning for Flash Freeze",
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
 	WarningStormCloud	= "Announce Storm Cloud Players",
-	YellOnStormCloud	= "Yell when Storm Cloud active"
+	YellOnStormCloud	= "Yell when Storm Cloud active",
+	SetIconOnStormCloud		= "Set Icon on Storm Cloud Target"
 }
 
 L:SetMiscLocalization{
