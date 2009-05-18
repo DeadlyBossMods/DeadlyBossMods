@@ -29,7 +29,7 @@ local enrageTimer	= mod:NewEnrageTimer(475)
 local timerAchieve	= mod:NewAchievementTimer(180, 3182, "TimerSpeedKill")
 
 mod:AddBoolOption("YellOnStormCloud", true, "announce")
-
+mod:AddBoolOption("SetIconOnStormCloud")
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
@@ -55,6 +55,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnStormCloud:Show(args.destName)
 		if self.Options.YellOnStormCloud and args.destName == UnitName("player") then
 			SendChatMessage(L.YellCloud, "YELL")
+		end
+		if self.Options.SetIconOnStormCloud then 
+			mod:SetIcon(args.destName, 8, 6)
 		end
 	end
 end
