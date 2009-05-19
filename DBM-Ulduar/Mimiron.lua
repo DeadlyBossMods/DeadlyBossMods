@@ -49,6 +49,8 @@ local timerHardmode		= mod:NewTimer(598, "TimerHardmode", 64582)
 local timerFlameSuppressant	= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
 
+local enrage 			= mod:NewEnrageTimer(900)
+
 local phase = 0 
 local lootmethod, masterlooterRaidID
 
@@ -57,6 +59,7 @@ local lastSpinUp = 0
 local is_spinningUp = false
 
 function mod:OnCombatStart(delay)
+	enrage:Start(-delay)
 	phase = 0
 	is_spinningUp = false
 	self:NextPhase()

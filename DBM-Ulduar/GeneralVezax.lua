@@ -17,9 +17,10 @@ mod:RegisterEvents(
 )
 
 local specWarnShadowCrash	= mod:NewSpecialWarning("SpecialWarningShadowCrash")
+local specWarnShadowCrashNear	= mod:NewSpecialWarning("SpecialWarningShadowCrashNear", false)
 local specWarnSurgeDarkness	= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
 local specWarnLifeLeechYou	= mod:NewSpecialWarning("SpecialWarningLLYou")
-local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear")
+local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
 
 local timerEnrage		= mod:NewEnrageTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
@@ -86,6 +87,14 @@ function mod:ShadowCrashTarget()
 		specWarnShadowCrash:Show(targetname)
 		if self.Options.YellOnShadowCrash then
 			SendChatMessage(L.YellCrash, "YELL")
+		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			if inRange then
+				specWarnShadowCrashNear:Show()
+			end
 		end
 	end
 end
