@@ -506,7 +506,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull			= "我們沒有太多時間，朋友們!你們要幫我測試我最新也是最偉大的創作。在你們改變心意之前，別忘了就是你們把XT-002搞得一團糟，你們欠我一次。",
-	YellHardPull		= "為什麼你要做出這種事?難道你沒看見標示上寫著「請勿觸碰這個按鈕!」嗎?現在自爆裝置已經啟動了，我們要怎麼完成測試呢?",
+	YellHardPull			= "為什麼你要做出這種事?難道你沒看見標示上寫著「請勿觸碰這個按鈕!」嗎?現在自爆裝置已經啟動了，我們要怎麼完成測試呢?",
 	YellPhase2			= "太好了!絕妙的良好結果!外殼完整度98.9%!幾乎只有一點擦痕!繼續下去。",
 	YellPhase3			= "感謝你，朋友們!我們的努力讓我獲得了一些絕佳的資料!現在，我把東西放在哪兒了--噢，在這裡。",
 	YellPhase4			= "初步測試階段完成。現在要玩真的啦!",
@@ -530,6 +530,7 @@ L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "你中了暗影暴擊",
 	SpecialWarningSurgeDarkness	= "暗鬱奔騰",
 	WarningShadowCrash		= "暗影暴擊: >%s<",
+	SpecialWarningShadowCrashNear	= "暗影暴擊很接近你!",
 	WarningLeechLife		= "無面者印記: >%s<",
 	SpecialWarningLLYou		= "你中了無面者印記!",
 	SpecialWarningLLNear		= "接近你的%s中了無面者印記!"
@@ -546,7 +547,8 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
 	CrashWhisper 			= "密語提示中了暗影暴擊的人",
 	YellOnLifeLeech			= "當中了無面者印記時大喊",
-	YellOnShadowCrash		= "當中了暗影暴擊時大喊"
+	YellOnShadowCrash		= "當中了暗影暴擊時大喊",
+	SpecialWarningShadowCrashNear	= "當你附近的人中了暗影暴擊時顯示特別警告"
 }
 
 L:SetMiscLocalization{
