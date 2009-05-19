@@ -510,6 +510,7 @@ L:SetWarningLocalization{
 	SpecialWarningShadowCrash	= "Shadow Crash on You",
 	SpecialWarningSurgeDarkness	= "Surge of Darkness",
 	WarningShadowCrash		= "Shadow Crash on >%s<",
+	SpecialWarningShadowCrashNear	= "Shadow Crash near you!",
 	WarningLeechLife		= "Life Leech on >%s<",
 	SpecialWarningLLYou		= "Life Leech on you!",
 	SpecialWarningLLNear		= "Life Leech on %s near you!"
@@ -525,7 +526,8 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear		= "Show Special Warning for Life Leach in near of you",
 	CrashWhisper			= "Send Whisper to Shadow Crash Target",
 	YellOnLifeLeech			= "Yell on Life Leech",
-	YellOnShadowCrash		= "Yell on Shadow Crash"
+	YellOnShadowCrash		= "Yell on Shadow Crash",
+	specWarnShadowCrashNear		= "Show Special Warning when Shadow Crash near you"
 }
 
 L:SetMiscLocalization{
@@ -585,7 +587,9 @@ L:SetOptionLocalization{
 	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends",
 	SetIconOnFearTarget		= "Set Icon on Fear Target",
 	WarnFavor			= "Announce Sara's Favor target",
-	SpecWarnFavor			= "Show Special Warning for Sara's Favor"
+	SpecWarnFavor			= "Show Special Warning for Sara's Favor",
+	WarnSqueeze			= "Announce Squeeze target",
+	specWarnBrainPortalSoon		= "Announce Brain Portal soon"
 }
 
 
