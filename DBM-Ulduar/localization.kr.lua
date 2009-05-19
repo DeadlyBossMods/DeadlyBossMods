@@ -170,7 +170,8 @@ L:SetWarningLocalization{
 	WarningRuneofSummoning		= "소환의 룬",
 	WarningStaticDisruption		= ">%s< 에게 전자기 붕괴!",
 	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
-	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",	
+	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",
+	Overload					= "과부하 - 이동!"	
 }
 
 L:SetTimerLocalization{
@@ -180,6 +181,7 @@ L:SetTimerLocalization{
 	timerFusionPunchActive		= "융합 주먹 : %s",
 	timerOverwhelmingPower		= "압도적인 힘 : %s",
 	timerRunicBarrier			= "방어막의 룬",
+	timerRuneofDeath			= "죽음의 룬"
 }
 
 L:SetOptionLocalization{
@@ -204,7 +206,9 @@ L:SetOptionLocalization{
 	PlaySoundDeathRune			= "죽음의 룬일 때 소리 재생",
 	timerRuneofDeath			= "죽음의 룬 타이머 보기",
 	WarningStaticDisruption		= "전자기 붕괴 알리기",	
-	SetIconOnStaticDisruption	= "전자기 붕괴 대상 타겟 아이콘 설정하기(하드 모드)"	
+	SetIconOnStaticDisruption	= "전자기 붕괴 대상 타겟 아이콘 설정하기(하드 모드)"	,
+	Overload					= "과부하 일 때 특수 경보 보기",
+	AllwaysWarnOnOverload		= "과부하 일 때 지속적인 경보 알리기(타겟일 경우만)"
 }
 
 L:SetMiscLocalization{
@@ -227,14 +231,14 @@ L:SetTimerLocalization{
 	TimerBigBangCast	= "Big Bang cast",
 }
 L:SetWarningLocalization{
-	WarningPhasePunch	= "Phase Punch on >%s<",
+	WarningPhasePunch	= ">%s< 에게 위상의 주먹",
 	WarningBlackHole	= "블랙 홀",
 }
 
 L:SetOptionLocalization{
 	TimerBigBangCast	= "Show Castbar for Big Bang",
-	SpecWarnPhasePunch	= "Show Special Warning when Phase Punch on you",
-	WarningPhasePunch	= "Announce Phase Punch target",
+	SpecWarnPhasePunch	= "의상의 주먹 대상이 될 경우 특수 경보 보기",
+	WarningPhasePunch	= "위상의 주먹 대상 알리기",
 	WarningBlackHole	= "블랙 홀 알리기",
 }
 
@@ -333,11 +337,17 @@ L:SetWarningLocalization{
 	WarningStormCloud		= "폭풍 구름 : >%s<"
 }
 
+L:SetTimerLocalization{
+	TimerSpeedKill			= "업적 타이머"
+}
+
 L:SetOptionLocalization{
+	TimerFlashFreeze		= "순간 빙결 시전 타이머 보기",
 	WarningFlashFreeze		= "순간 빙결 경보 보기",
  	PlaySoundOnFlashFreeze	= "순간 빙결 경고 소리 듣기",	
 	WarningStormCloud		= "폭풍 구름 경보 보기",
-	YellOnStormCloud		= "폭풍 구름을 얻을 경우 외치기"	
+	YellOnStormCloud		= "폭풍 구름을 얻을 경우 외치기",
+	SetIconOnStormCloud		= "폭풍 구름 대상 아이콘 설정 하기"
 }
 
 L:SetMiscLocalization{
@@ -467,7 +477,8 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimeToPhase2			= "2 페이즈 시작",
-	TimeToPhase3			= "3 페이즈 시작",	
+	TimeToPhase3			= "3 페이즈 시작",
+	TimerHardmode			= "하드 모드 - 자폭장치 가동"	
 }
 
 
@@ -486,11 +497,13 @@ L:SetOptionLocalization{
 	WarnBlast				= "플라즈마 폭발 대상 알리기",	
 	HealthFramePhase4		= "페이즈 4 의 체력 프레임 보기",
 	AutoChangeLootToFFA		= "3 페이즈에서 루팅 옵션 자동 변경하기",
-	WarnBombSpawn			= "폭탄 로봇 생성 알리기"	
+	WarnBombSpawn			= "폭탄 로봇 생성 알리기",
+	TimerHardmode			= "하드 모드를 위한 타이머 보기"	
 }
 
 L:SetMiscLocalization{
 	YellPull		= "시간이 없어, 친구들! 내가 최근에 만든 기막힌 발명품을 시험하게 도와 주겠지? 자, 마음 바꿀 생각은 말라고. XT-002를 그 꼬락서니로 만들었으니, 너흰 나한테 빚진 셈이란 걸 잊지 마!",	
+	YellHardPull	= "아니 대체 왜 그런짓을 한게지? '누르지 마시오'라고 쓰여진 경고문구 못봤나? 자폭장치를 활성화 해 놓으면 도대체 어떻게 발명품을 시험하지?",	
 	YellPhase2		= "멋지군! 참으로 경이적인 결과야! 차체 내구도 98.9 퍼센트라! 손상이라고 보기도 어렵지! 계속하자고.",
 	YellPhase3		= "고맙다, 친구들! 너희 덕분에 멋진 자료를 좀 얻었어! 자, 그걸 어디 뒀더라... 아, 여기 있군.",
 	YellPhase4		= "예비 시험은 이걸로 끝이다. 자 이제부터가 진짜라고!",	
@@ -514,6 +527,7 @@ L:SetWarningLocalization{
 	SpecialWarningShadowCrash		= "당신에게 어둠 붕괴",
 	SpecialWarningSurgeDarkness		= "어둠 쇄도",
 	WarningShadowCrash				= ">%s< 에게 어둠 붕괴!",
+	SpecialWarningShadowCrashNear	= "당신 주변에 어둠 붕괴!",	
 	WarningLeechLife				= ">%s< 에게 생명력 흡수 시전!",
 	SpecialWarningLLYou				= "당신에게 얼굴 없는 자의 징표!",
 	SpecialWarningLLNear			= "%s 에게 가까운 당신에게 생명력 흡수 시전!"	
@@ -530,7 +544,8 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear			= "생명력 흡수 주변 특수 경보 보기",
 	CrashWhisper					= "어둠 붕괴 대상에게 귓속말 보내기"	,
 	YellOnLifeLeech					= "생명력 흡수를 당할 때 외치기",
-	YellOnShadowCrash				= "어둠 붕괴일 때 외치기"
+	YellOnShadowCrash				= "어둠 붕괴일 때 외치기",
+	specWarnShadowCrashNear			= "주변에 어둠 붕괴일 때 특수 경보 보기"
 }
 
 L:SetMiscLocalization{
@@ -561,48 +576,49 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "요그사론의 수호자 소환!",
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수가 생성되었습니다!",	
-	WarningP2 					= "2 페이즈",
-	WarningP3 					= "3 페이즈",	
-	WarningBrainLink 			= ">%s< 그리고 >%s< 두뇌의 고리",
-	SpecWarnBrainLink			= "당신 그리고 %s 에게 두뇌의 고리!",
-	WarningSanity 				= "> %d < 이성이 낮습니다.",
-	SpecWarnSanity 				= ">> %d << 이성이 매우 낮습니다. 채우세요!",
-	SpecWarnGuardianLow 			= "수호자 딜 주의하세요! - 공격 주의!",
-	WarnMadness 					= "광기 유발을 시전합니다.",
-	SpecWarnMadnessOutNow		= "광기 유발이 끝났습니다. - 밖으로 이동!",
-	WarnBrainPortalSoon			= "3 초 후 내부 포탈",
-	specWarnBrainPortalSoon		= "3 초 후 차원문이 열립니다!",	
-	WarnSqueeze 					= "압착의 촉수: >%s<",
-	WarnFavor					= ">%s< 에게 사라의 열정!",
-	SpecWarnFavor				= "당신에게 사라의 열정"
+	WarningP2 						= "2 페이즈",
+	WarningP3 						= "3 페이즈",	
+	WarningBrainLink 				= ">%s< 그리고 >%s< 두뇌의 고리",
+	SpecWarnBrainLink				= "당신 그리고 %s 에게 두뇌의 고리!",
+	WarningSanity 					= "> %d < 이성이 낮습니다.",
+	SpecWarnSanity 					= ">> %d << 이성이 매우 낮습니다. 채우세요!",
+	SpecWarnGuardianLow 				= "수호자 딜 주의하세요! - 공격 주의!",
+	WarnMadness 						= "광기 유발을 시전합니다.",
+	SpecWarnMadnessOutNow			= "광기 유발이 끝났습니다. - 밖으로 이동!",
+	WarnBrainPortalSoon				= "3 초 후 내부 포탈",
+	specWarnBrainPortalSoon			= "3 초 후 차원문이 열립니다!",	
+	WarnSqueeze 						= "압착의 촉수: >%s<",
+	WarnFavor						= ">%s< 에게 사라의 열정!",
+	SpecWarnFavor					= "당신에게 사라의 열정"
 }
 
 L:SetTimerLocalization{
 	NextPortal			= "다음 차원문",
+	TimerSpeedKill		= "업적 타이머"	
 }
 
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "요그사론의 수호자 소환 알리기",
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수 생성 알리기",	
-	WarningP2					= "2 페이즈 알리기",
-	WarningP3					= "3 페이즈 알리기",	
-	WarningBrainLink			= "두뇌의 고리 알리기",
-	SpecWarnBrainLink			= "두뇌의 고리 특수 경고 보기",
-	WhisperBrainLink 			= "두뇌의 고리 특수 경고 알리기(귓속말)",	
-	WarningSanity				= "이성(Sanity)이 낮은 경우 경고 보기",
-	SpecWarnSanity				= "이성(Sanity)이 매우 낮은 경우 특수 경고 보기",
-	SpecWarnGuardianLow			= "수호자의 생명력이 낮을 때 특수 경고 알리기(딜러)",
-	NextPortal					= "다음 차원문 알리기",	
-	WarnBrainPortalSoon			= "내부 차원문 알리기",
-	specWarnBrainPortalSoon		= "내부 차원문 특수 경보 알리기",	
-	WarnMadness					= "광기 유발 알리기",
-	SpecWarnMadnessOutNow		= "광기가 끝나기 전에 특수 경고 알리기",
-	WarnSqueeze					= "압착의 촉수 대상 알리기",
-	WarningSqueeze				= "압착의 촉수 경고 보기",
-	SetIconOnFearTarget			= "병든 정신 타겟 아이콘 설정하기",
-	SetIconOnFavorTarget		= "사라의 열정 타겟 아이콘 설정하기",
-	SetIconOnMCTarget			= "정신 지배에 걸린 플레이어 타겟 아이콘 설정하기",	
-	ShowSaraHealth				= "사라 체력 보기",
-	WarnFavor					= "사라의 열정 대상 알리기",
-	SpecWarnFavor				= "사라의 열정 특수 경보 보기"
+	WarningP2						= "2 페이즈 알리기",
+	WarningP3						= "3 페이즈 알리기",	
+	WarningBrainLink				= "두뇌의 고리 알리기",
+	SpecWarnBrainLink				= "두뇌의 고리 특수 경고 보기",
+	WhisperBrainLink 				= "두뇌의 고리 특수 경고 알리기(귓속말)",	
+	WarningSanity					= "이성(Sanity)이 낮은 경우 경고 보기",
+	SpecWarnSanity					= "이성(Sanity)이 매우 낮은 경우 특수 경고 보기",
+	SpecWarnGuardianLow				= "수호자의 생명력이 낮을 때 특수 경고 알리기(딜러)",
+	NextPortal						= "다음 차원문 알리기",	
+	WarnBrainPortalSoon				= "내부 차원문 알리기",
+	specWarnBrainPortalSoon			= "내부 차원문 특수 경보 알리기",	
+	WarnMadness						= "광기 유발 알리기",
+	SpecWarnMadnessOutNow			= "광기가 끝나기 전에 특수 경고 알리기",
+	WarnSqueeze						= "압착의 촉수 대상 알리기",
+	WarningSqueeze					= "압착의 촉수 경고 보기",
+	SetIconOnFearTarget				= "병든 정신 타겟 아이콘 설정하기",
+	SetIconOnFavorTarget			= "사라의 열정 타겟 아이콘 설정하기",
+	SetIconOnMCTarget				= "정신 지배에 걸린 플레이어 타겟 아이콘 설정하기",	
+	ShowSaraHealth					= "사라 체력 보기",
+	WarnFavor						= "사라의 열정 대상 알리기",
+	SpecWarnFavor					= "사라의 열정 특수 경보 보기",
 }
