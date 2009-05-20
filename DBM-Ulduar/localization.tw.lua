@@ -452,9 +452,20 @@ L:SetGeneralLocalization{
 	name = "芙蕾雅的長者們"
 }
 
+L:SetWarningLocalization{
+	specWarnFistofStone 		= "石拳連擊",
+	specWarnGroundTremor   		= "地面震顫 - 停止施法"
+}
+
+L:SetTimerLocalization{
+	TrashRespawnTimer 		= "小怪重生"
+}
+
 L:SetOptionLocalization{
-	SpecWarnFistOfStone		= "為石拳連擊顯示特別警告",
-	WarnFistofStone			= "提示石拳連擊"
+	specWarnFistofStone		= "為石拳連擊顯示特別警告",
+	PlaySoundOnFistOfStone		= "當石拳連擊施放時播放音效",
+	specWarnGroundTremor		= "施放地面震顫時顯示特別警告",
+	TrashRespawnTimer		= "顯示小怪重生時間條"
 }
 
 
