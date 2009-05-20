@@ -114,7 +114,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerOverload:Start()
 
 		if self.Options.AllwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
-			specwarnOverload:Start()
+			specwarnOverload:Show()
 			if self.Options.PlaySoundOnOverload then
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
