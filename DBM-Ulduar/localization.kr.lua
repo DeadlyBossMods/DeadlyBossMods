@@ -100,7 +100,7 @@ L:SetTimerLocalization{
 }
 L:SetOptionLocalization{
 	SpecWarnDevouringFlame		= "활활 타오르는 화염 대상 특수 경보 보기",
-	SpecWarnDevouringFlameCast	= "활활 타오르는 화염 시전 경보 보기",	
+	SpecWarnDevouringFlameCast	= "활활 타오르는 화염의 대상이 되었을 때 특수 경보 보기",	
 	PlaySoundOnDevouringFlame	= "활활 타오르는 화염의 데미지를 받을 때 사운드 재생",
 	timerAllTurretsReady		= "포탑 타이머 보기",
 	warnTurretsReadySoon		= "포탑 사전 경보 보기",
@@ -110,13 +110,14 @@ L:SetOptionLocalization{
 	timerTurret2				= "두번째 포탑 타이머 보기",
 	timerTurret3				= "세번째 포탑 타이머 보기(25인)",
 	timerTurret4				= "네번째 포탑 타이머 보기(25인)", 
-	timerGroundedTemp			= "지상 착지 유지 시간 보기",		
+	timerGroundedTemp			= "지상 착지 유지 시간 보기",
+	OptionDevouringFlame		= "활활 타오르는 화염의 대상 알리기 (부정확함)"
 }
 
 L:SetMiscLocalization{
 	YellAir 						= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
 	YellGroundTemp				= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
-	EmotePhase2					= "%%s|1이;가; 완전히 땅에 내려앉았습니다!",	
+	EmotePhase2					= "%%s이 완전히 땅에 내려앉았습니다!",	
 	FlamecastUnknown			= "알 수 없음"
 }
 
@@ -448,10 +449,21 @@ L = DBM:GetModLocalization("Freya_Elders")
 L:SetGeneralLocalization{
 	name = "프레이야의 장로"
 }
+L:SetWarningLocalization{
+	specWarnFistofStone 		= "돌덩이 주먹",
+	specWarnGroundTremor   	= "지진 - 시전 중지!"
+}
+
+L:SetTimerLocalization{
+	TrashRespawnTimer 		= "소환수 재생성"
+}
 
 L:SetOptionLocalization{
-	SpecWarnFistOfStone	= "돌덩이 주먹 특수 경보 보기",
-	WarnFistofStone		= "돌덩이 주먹 알리기"
+	specWarnFistofStone		= "돌덩이 주먹 특수 경보 보기",
+	PlaySoundOnFistOfStone	= "돌덩이 주먹 특수 사운드 재생",
+	WarnFistofStone			= "돌덩이 주먹 알리기",
+	specWarnGroundTremor	= "지진 특수 경보 보기",
+	TrashRespawnTimer		= "소환수 재생성 타이머 보기"
 }
 
 -------------------
