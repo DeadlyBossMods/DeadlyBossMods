@@ -47,7 +47,7 @@ mod:AddBoolOption("WarningSqueeze", false, "announce")
 mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFavorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")
-mod:AddBoolOption("RaidRageSpam", false)
+--mod:AddBoolOption("RaidRageSpam", false)
 
 
 local enrageTimer	= mod:NewEnrageTimer(900)
@@ -84,7 +84,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
 	if msg == L.YellRage then
 		if self.Options.RaidRageSpam then
-			SendChatMessage(L.RaidRage, "RAID")
+--			SendChatMessage(L.RaidRage, "RAID")
 		end
 	end
 end

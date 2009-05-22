@@ -31,7 +31,7 @@ local timerGroundedTemp			= mod:NewTimer(45, "timerGroundedTemp")
 local enrageTimer			= mod:NewEnrageTimer(900) -- uhm?
 
 local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
-local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733) 
+local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733, false, "OptionDevouringFlame") -- new option is just a work-around...the saved variable handling will be updated to allow changing and updating default values soon
 
 mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 
