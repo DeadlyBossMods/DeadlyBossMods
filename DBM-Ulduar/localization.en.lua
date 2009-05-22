@@ -103,12 +103,12 @@ L:SetOptionLocalization{
 	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
 	warnTurretsReady		= "Show warning for turrets",
-	SpecWarnDevouringFlameCast	= "Show Special Warning when Devouring Flame cast on you",
-	WarnDevouringFlameCast		= "Show warning when Devouring Flame cast",
+	SpecWarnDevouringFlameCast	= "Show Special Warning when Devouring Flame is cast on you",
 	timerTurret1			= "Show timer for Turret 1",
 	timerTurret2			= "Show timer for Turret 2",
 	timerTurret3			= "Show timer for Turret 3 (Heroic)",
-	timerTurret4			= "Show timer for Turret 4 (Heroic)",	
+	timerTurret4			= "Show timer for Turret 4 (Heroic)",
+	OptionDevouringFlame	= "Announce target of Devouring Flame (unreliable)"
 }
 
 L:SetMiscLocalization{
