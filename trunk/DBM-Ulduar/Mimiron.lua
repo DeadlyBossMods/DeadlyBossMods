@@ -113,6 +113,9 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 64529 or args.spellId == 62997 then -- plasma blast
 		timerPlasmaBlastCD:Start()
 	end
+	if args.spellID == 64570 then
+		timerFlameSuppressant:Start()
+	end
 end
 
 local spamShell = 0
@@ -164,6 +167,7 @@ function mod:NextPhase()
 	elseif phase == 2 then
 		timerNextShockblast:Stop()
 		timerProximityMines:Stop()
+		timerFlameSuppressant:Stop()
 		timerP1toP2:Start()
 		if self.Options.HealthFrame then
 			DBM.BossHealth:Clear()
