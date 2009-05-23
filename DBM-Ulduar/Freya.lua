@@ -133,7 +133,7 @@ end
 
 local iconId = 6
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62861 then
+	if args.spellId == 62861 or args.spellId == 62438 then
 		iconId = iconId - 1
 		self:SetIcon(args.destName, iconId, 15)
 		table.insert(rootedPlayers, args.destName)
@@ -147,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62861 then
+	if args.spellId == 62861 or args.spellId == 62438 then
 		self:RemoveIcon(args.destName)
 		iconId = iconId + 1
 	end
