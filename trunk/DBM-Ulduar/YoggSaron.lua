@@ -38,6 +38,9 @@ local warnSqueeze			= mod:NewAnnounce("WarnSqueeze", 1)
 local brainportal			= mod:NewTimer(27, "NextPortal")
 local warnFavor				= mod:NewAnnounce("WarnFavor", 1)
 local specWarnFavor			= mod:NewSpecialWarning("SpecWarnFavor")
+local timerLunaricGaze			= mod:NewCastTimer(4, 64163)
+local timerNextLunaricGaze		= mod:NewCDTimer(9, 64163)
+
 
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
@@ -150,6 +153,8 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.BossHealth:Hide()
 			end
 		end
+	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze (reduces sanity)
+		timerLunaricGaze:Start()
 	end
 end
 
@@ -158,6 +163,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnP3:Show()
 		phase = 3
 		brainportal:Stop()
+
+	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze
+		timerNextLunaricGaze:Start()
 	end
 end
 
