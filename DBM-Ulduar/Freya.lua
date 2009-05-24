@@ -54,6 +54,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(adds)
 end
 
+function mod:OnCombatEnd()
+	DBM.BossHealth:Hide()
+end
+
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 62519 then
