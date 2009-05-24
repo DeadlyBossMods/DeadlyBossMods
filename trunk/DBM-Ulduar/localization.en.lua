@@ -488,8 +488,11 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+	MobPhase1		= "Leviathan Mk II",
+	MobPhase2		= "VX-001",
+	MobPhase3		= "Aerial Command Unit",
 	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
-	YellHardPull		= "Now why would you go and do something like that? Didn't you see the sign that said 'DO NOT PUSH THIS BUTTON!'? How will we finish testing with the self-destruct mechanism active?",
+	YellHardPull	= "Now why would you go and do something like that? Didn't you see the sign that said 'DO NOT PUSH THIS BUTTON!'? How will we finish testing with the self-destruct mechanism active?",
 	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9%! Barely a dent! Moving right along.",
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
 	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",
