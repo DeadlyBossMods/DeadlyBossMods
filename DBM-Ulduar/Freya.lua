@@ -42,7 +42,8 @@ local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
 local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
 local timerFury			= mod:NewBuffActiveTimer(10, 63571)
 local timerTremorCD 		= mod:NewCDTimer(28, 62859) 
-local warnTremor		= mod:NewSpecialWarning("WarningTremor")
+local warnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hardmode
+local specWarnBeam		= mod:NewSpecialWarning("UnstableEnergy")		-- Hardmode
 
 mod:AddBoolOption("PlaySoundOnFury")
 
@@ -147,7 +148,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.5, showRootWarning)
 		end
-	end
+
+	elseif (args.spellId == 62451 or args.spellId == 62865) and args.destName == UnitName("player")  then
+		specWarnBeam:Show()
+	end 
 end
 
 function mod:SPELL_AURA_REMOVED(args)
