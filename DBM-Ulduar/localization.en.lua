@@ -415,7 +415,8 @@ L:SetWarningLocalization{
 	WarnFury	= "Nature's Fury on >%s<",
 	SpecWarnFury	= "Nature's Fury on You!",
 	WarningTremor   = "Ground Tremor - Stop Casting!",
-	WarnRoots	= "Roots on >%s<"
+	WarnRoots	= "Roots on >%s<",
+	UnstableEnergy	= "Unstable Energy - MOVE"
 }
 
 L:SetTimerLocalization{
@@ -431,7 +432,8 @@ L:SetOptionLocalization{
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury		= "Show Special Warning for Nature's Fury",
 	WarningTremor		= "Show Special Warning for Ground Tremor (hard mode)",
-	TimerSimulKill		= "Show Timer for mob resurrection"
+	TimerSimulKill		= "Show Timer for mob resurrection",
+	UnstableEnergy		= "Show Special Warning for Unstable Energy"
 }
 
 -- Elders
