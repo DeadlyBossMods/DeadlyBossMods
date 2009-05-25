@@ -1167,7 +1167,7 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:SetFrameStrata("DIALOG")
 	frame:SetWidth(430)
-	frame:SetHeight(130)
+	frame:SetHeight(155)
 	frame:SetPoint("TOP", 0, -230)
 	frame:SetBackdrop({
 		bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
@@ -1236,9 +1236,16 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	button:SetScript("OnClick", function(self)
 		frame:Hide()
 	end)
+
+	--[[
+	-- /print DBM:ShowUpdateReminder(5, 10)
+	local nevershow = CreateFrame('CheckButton', "VersionPopUpCheckBox", frame, 'OptionsCheckButtonTemplate')
+	getglobal(nevershow:GetName() .. 'Text'):SetText(DBM_CORE_UPDATEREMINDER_NOTAGAIN)
+	nevershow:SetPoint("BOTTOM", -125, 36)
+	nevershow:SetScript("OnShow",  function(self) nevershow:SetChecked(DBM.Options.ShowVersionUpdateAsPopup) end)
+	nevershow:SetScript("OnClick", function(self) DBM.Options.ShowVersionUpdateAsPopup = not DBM.Options.ShowVersionUpdateAsPopup end)
+	--]]
 end
-
-
 
 ----------------------
 --  Pull Detection  --
