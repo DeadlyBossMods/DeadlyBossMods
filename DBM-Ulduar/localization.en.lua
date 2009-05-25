@@ -589,8 +589,8 @@ L:SetOptionLocalization{
 	WarnBrainPortalSoon		= "Announce Portal",
 	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends",
 	SetIconOnFearTarget		= "Set Icon on Fear Target",
-	WarnFavor			= "Announce Sara's Favor target",
-	SpecWarnFavor			= "Show Special Warning for Sara's Favor",
+	WarnFavor			= "Announce Sara's Fervor target",
+	SpecWarnFavor			= "Show Special Warning for Sara's Fervor",
 	WarnSqueeze			= "Announce Squeeze target",
 	specWarnBrainPortalSoon		= "Announce Brain Portal soon"
 }
