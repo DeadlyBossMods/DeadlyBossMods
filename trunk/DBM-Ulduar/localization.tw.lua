@@ -422,7 +422,8 @@ L:SetWarningLocalization{
 	WarnFury 			= "自然烈怒: >%s<",
 	SpecWarnFury 			= "你中了自然烈怒!",
 	WarningTremor   		= "地面震顫 - 停止施法",
-	WarnRoots 			= "鐵之根鬚: >%s<"
+	WarnRoots 			= "鐵之根鬚: >%s<",
+	UnstableEnergy			= "不穩定的能量 - 移動"
 }
 
 L:SetTimerLocalization{
@@ -442,7 +443,8 @@ L:SetOptionLocalization{
 	TimerAlliesOfNature 		= "顯示自然和諧冷卻時間",
 	TimerFuryYou 			= "顯示自然烈怒計時器",
 	TimerSimulKill 			= "顯示小怪復活計時器",
-	PlaySoundOnFury			= "當你中了自然烈怒時播放音效"
+	PlaySoundOnFury			= "當你中了自然烈怒時播放音效",
+	UnstableEnergy			= "為不穩定的能量顯示特別警告"
 }
 
 -- Elders
