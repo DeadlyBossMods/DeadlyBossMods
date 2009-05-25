@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Name-koKR: 전장
 ## X-DBM-Mod-Sort: 99
 ## X-DBM-Mod-LoadZone: Arathi Basin,Warsong Gulch,Alterac Valley,Eye of the Storm,Vault of Archavon
-## X-DBM-Mod-LoadZone: Arathibecken,Kriegshymnenschlucht,Alteractal,Auge des Sturms,Archavons Kammer,Strand der Uralten
+## X-DBM-Mod-LoadZone-deDE: Arathibecken,Kriegshymnenschlucht,Alteractal,Auge des Sturms,Archavons Kammer,Strand der Uralten
 ## X-DBM-Mod-LoadZone-ruRU: Низина Арати,Ущелье Песни Войны,Альтеракская долина,Око Бури,Склеп Аркавона
 ## X-DBM-Mod-LoadZone-zhTW: 阿拉希盆地,戰歌峽谷,奧特蘭克山谷,暴風之眼,亞夏梵穹殿
 ## X-DBM-Mod-LoadZone-zhCN: 阿拉希盆地,战歌峡谷,奥特兰克山谷,风暴之眼,远古海滩
