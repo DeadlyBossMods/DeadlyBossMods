@@ -83,9 +83,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "활활 타오르는 화염 - 이동! 이동! 이동!",
-	SpecWarnDevouringFlameCast	= "당신에게 활활 타오르는 화염!",
-	WarnDevouringFlameCast		= ">%s< 에게 활활 타오르는 화염", 	
+	SpecWarnDevouringFlame		= "파멸의 불길 - 이동! 이동! 이동!",
+	SpecWarnDevouringFlameCast	= "당신에게 파멸의 불길!",
+	WarnDevouringFlameCast		= ">%s< 에게 파멸의 불길", 	
 	warnTurretsReadySoon		= "20초 후 4번째 포탑 준비",
 	warnTurretsReady			= "4번째 포탑 준비"
 	
@@ -99,19 +99,19 @@ L:SetTimerLocalization{
 	timerGroundedTemp		= "지상 착지",	
 }
 L:SetOptionLocalization{
-	SpecWarnDevouringFlame		= "활활 타오르는 화염 대상 특수 경보 보기",
-	SpecWarnDevouringFlameCast	= "활활 타오르는 화염의 대상이 되었을 때 특수 경보 보기",	
-	PlaySoundOnDevouringFlame	= "활활 타오르는 화염의 데미지를 받을 때 사운드 재생",
+	SpecWarnDevouringFlame		= "파멸의 불길 대상 특수 경보 보기",
+	SpecWarnDevouringFlameCast	= "파멸의 불길 대상이 되었을 때 특수 경보 보기",	
+	PlaySoundOnDevouringFlame	= "파멸의 불길 데미지를 받을 때 사운드 재생",
 	timerAllTurretsReady		= "포탑 타이머 보기",
 	warnTurretsReadySoon		= "포탑 사전 경보 보기",
 	warnTurretsReady			= "포탑 경보 보기",
-	WarnDevouringFlameCast      	= "활활 타오르는 화염 시전 경보 보기",
+	WarnDevouringFlameCast      	= "파멸의 불길 시전 경보 보기",
 	timerTurret1				= "첫번째 포탑 타이머 보기",
 	timerTurret2				= "두번째 포탑 타이머 보기",
 	timerTurret3				= "세번째 포탑 타이머 보기(25인)",
 	timerTurret4				= "네번째 포탑 타이머 보기(25인)", 
 	timerGroundedTemp			= "지상 착지 유지 시간 보기",
-	OptionDevouringFlame		= "활활 타오르는 화염의 대상 알리기 (부정확함)"
+	OptionDevouringFlame		= "파멸의 불길 대상 알리기 (부정확함)"
 }
 
 L:SetMiscLocalization{
@@ -162,7 +162,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge			= "전력 충전 시전",
+	WarningSupercharge			= "전기 충전 시전",
 	WarningChainlight			= "연쇄 번개",
 	WarningFusionPunch			= "융해의 주먹",
 	WarningOverwhelmingPower	= ">%s< 에게 압도적인 힘",
@@ -176,7 +176,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge			= "전력 충전",  -- gives the other bosses more power
+	TimerSupercharge			= "전기 충전",  -- gives the other bosses more power
 	TimerLightningWhirl			= "번개 소용돌이",
 	TimerLightningTendrils		= "번개 덩굴",
 	timerFusionPunchActive		= "융합 주먹 : %s",
@@ -186,14 +186,14 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSupercharge			= "과충전 타이머 보기",
-	WarningSupercharge			= "과충전 시전 경보 보기",
+	TimerSupercharge			= "전기 충전 타이머 보기",
+	WarningSupercharge			= "전기 충전 시전 경보 보기",
 	WarningChainlight			= "연쇄 번개 알리기",
-	PlaySoundOnOverload			= "과충전 일 때 소리 재생",	
+	PlaySoundOnOverload			= "과부화 일 때 소리 재생",	
 	TimerLightningWhirl			= "번개 소용돌이 시전 타이머 보기",
-	LightningTendrils			= "번개 촉수 특수 경고 보기",
-	TimerLightningTendrils		= "번개 촉수 지속 타이머 보기",
-	PlaySoundLightningTendrils	= "번개 촉수일 때 소리 재생",
+	LightningTendrils			= "번개 덩굴 특수 경고 보기",
+	TimerLightningTendrils		= "번개 덩굴 지속 타이머 보기",
+	PlaySoundLightningTendrils	= "번개 덩굴일 때 소리 재생",
 	WarningFusionPunch			= "융합 주먹 알리기",
 	timerFusionPunchActive		= "융합 주먹 타이머 보기",
 	WarningOverwhelmingPower	= "압도적인 힘 알리기",
@@ -298,14 +298,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender = "야생 수호자 (%d)"
+	Defender = "수호 야수 (%d)"
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast 		= "수호자의 폭파 - 차단!",
+	SpecWarnBlast 		= "수호 야수 폭발 - 차단!",
 	SpecWarnVoid		= "공허의 지대 - 이동!",	
-	WarnCatDied 			= "야생의 수호자 죽음 (%d 번 남음)",
-	WarnCatDiedOne 		= "야생의 수호자 죽음 (1 번 남음)",	
+	WarnCatDied 			= "수호 야수 죽음 (%d 번 남음)",
+	WarnCatDiedOne 		= "수호 야수 죽음 (1 번 남음)",	
 	WarnFear 			= "공포!",
 	WarnFearSoon 		= "곧 다음 공포",
 	WarnSonic			= "날카로운 음파!",
@@ -313,12 +313,12 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast 		= "수호자의 폭파 특수 경고 보기",
+	SpecWarnBlast 		= "수호 야수 폭발 특수 경고 보기",
 	SpecWarnVoid		= "공허의 지대에 서있을 경우 특수 경보 보기",	
 	WarnFear 			= "공포 경보 보기",
 	WarnFearSoon		= "공포 시전 전에 경보 보기",
-	WarnCatDied 			= "남은 야생의 수호자 경보 보기",
-	WarnCatDiedOne 		= "마지막 야생의 수호자 경보 보기(1 번 남음)",		
+	WarnCatDied 			= "수호 야수의 남은 부활 횟수 경보 보기",
+	WarnCatDiedOne 		= "마지막 수호 야수 경보 보기(1 번 남음)",		
 	WarnSwarm			= "무리의 수호자 대상 경보 보기",
 	WarnSonic			= "날카로운 음파 경보 보기"
 }
@@ -417,28 +417,24 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarnPhase2 			= "2 페이즈",
 	WarnSimulKill		= "첫번째 소환 죽음 - 12초 후 부활",
-	WarnFury 			= ">%s< 에게 자연의 분노",
-	SpecWarnFury 		= "당신에게 자연의 분노!",
+	WarnFury 			= ">%s< 에게 자연의 격노",
+	SpecWarnFury 		= "당신에게 자연의 격노!",
 	WarningTremor   		= "지진! - 시전 중지!",
 	WarnRoots 			= ">%s< 에게 무쇠 뿌리!"	
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam 	= "태양 광선: %s",
-	TimerAlliesOfNature 		= "자연의 조화",	
-	TimerSimulKill 			= "부활",
-	TimerFuryYou 			= "당신에게 자연의 분노"
+	TimerSimulKill 			= "소환수 부활",
 }
 
 L:SetOptionLocalization{
-	TimerAlliesOfNature 		= "자연의 조화 타이머 보기",
 	TimerSimulKill 			= "소환수 부활 타이머 보기",
-	TimerFuryYou 			= "자연의 분노 타이머 보기",
 	WarnPhase2 				= "2 페이즈 경고 보기",
 	WarnSimulKill			= "첫번째 소환 제거 알리기",
-	WarnFury 				= "자연의 분노 타겟 알리기",
-	SpecWarnFury 			= "자연의 분노 특수 경고 보기",
-	PlaySoundOnFury			= "자연의 분노 특수 사운드 재생",
+	WarnFury 				= "자연의 격노 타겟 알리기",
+	SpecWarnFury 			= "자연의 격노 특수 경고 보기",
+	PlaySoundOnFury			= "자연의 격노 특수 사운드 재생",
 	WarnRoots 				= "무쇠뿌리 대상 알리기",
 	WarningTremor  	 		= "지진 시전 특수 경보 보기 (하드 모드)"	
 }
@@ -482,7 +478,7 @@ L:SetWarningLocalization{
 	Phase3Engaged		= "곧 3 페이즈 - 지금 자리 잡으세요.",	
 	WarnShell			= ">%s< 에게 네이팜 탄!",
 	WarnBlast			= ">%s< 에게 플라즈마 폭발!",
-	MagneticCore		= ">%s< 자기 증폭기를 획득했습니다.",
+	MagneticCore		= "자기 증폭기 획득 : >%s<",
 	WarningShockBlast	= "충격파 - 움직이세요!",
 	WarnBombSpawn		= "폭탄 로봇 생성!"
 }
