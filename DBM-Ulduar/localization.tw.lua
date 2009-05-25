@@ -348,7 +348,7 @@ L:SetOptionLocalization{
 	WarningFlashFreeze		= "為閃霜顯示警告",
 	WarningBitingCold		= "為刺骨之寒顯示警告",
 	PlaySoundOnFlashFreeze		= "當閃霜施放時播放音效",
-	WarningStormCloud		= "提示中了風暴威能的玩家",
+	WarningStormCloud		= "提示中了風暴雷雲的玩家",
 	YellOnStormCloud		= "當風暴雷雲生效時大喊",
 	SetIconOnStormCloud		= "設置標記在風暴雷雲的目標"
 }
