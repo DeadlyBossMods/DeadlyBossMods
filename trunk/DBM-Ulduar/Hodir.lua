@@ -26,7 +26,7 @@ local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
 
 local enrageTimer	= mod:NewEnrageTimer(475)
 
-local timerAchieve	= mod:NewAchievementTimer(180, 3182, "TimerSpeedKill")
+local timerAchieve	= mod:NewAchievementTimer(179, 3182, "TimerSpeedKill")
 
 mod:AddBoolOption("YellOnStormCloud", true, "announce")
 mod:AddBoolOption("SetIconOnStormCloud")
