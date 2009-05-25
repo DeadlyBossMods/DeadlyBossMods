@@ -50,8 +50,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast		= "화염 분사",
-	TimerFlameJetsCooldown	= "다음 화염 분사",
+	TimerFlameJetsCast		= "화염 분출",
+	TimerFlameJetsCooldown	= "다음 화염 분출",
 	TimerScorch				= "다음 불태우기",
 	TimerScorchCast			= "불태우기",
 	TimerSlagPot			= "용암재 단지 : %s"
@@ -59,13 +59,13 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarningSlagPot			= ">%s< 에게 용암재 단지",
-	SpecWarnJetsCast		= "분사 - 시전 중지"
+	SpecWarnJetsCast		= "화염 분출 - 시전 중지"
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast			= "화염 분사 시전의 특수 경보 보기(counterspell)",
-	TimerFlameJetsCast			= "화염 분사 시전 타이머 보기",
-	TimerFlameJetsCooldown		= "화염 분사 쿨다운 타이머 보기",
+	SpecWarnJetsCast			= "화염 분출 시전의 특수 경보 보기(counterspell)",
+	TimerFlameJetsCast			= "화염 분출 시전 타이머 보기",
+	TimerFlameJetsCooldown		= "화염 분출 쿨다운 타이머 보기",
 	TimerScorch					= "불태우기 쿨다운 타이머 보기",
 	TimerScorchCast				= "불태우기 시전 타이머 보기",
 	WarningSlagPot				= "용암재 단지 대상 알리기",
@@ -131,9 +131,6 @@ L:SetGeneralLocalization{
 	name = "XT-002 해체자"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetWarningLocalization{
 	SpecialWarningLightBomb	 	= "당신에게 빛의 폭탄",
 	WarningLightBomb			= ">%s< 에게 빛의 폭탄",
@@ -146,8 +143,6 @@ L:SetOptionLocalization{
 	WarningLightBomb			= "빛의 폭탄 알리기",
 	SpecialWarningGravityBomb	= "당신이 중력 폭탄에 영향을 받을 때 특수 경고 보기",
 	WarningGravityBomb			= "중력 폭탄 알리기",
-	PlaySoundOnGravityBomb		= "당신이 중력 폭탄일 때 소리 재생",
-	PlaySoundOnTympanicTantrum	= "귀청이 찢어지는 소리일 때 소리 재생",
 	SetIconOnLightBombTarget	= "빛의 폭탄 대상에게 공격대 아이콘 표시",
 	SetIconOnGravityBombTarget	= "중력 폭탄 대상에게 공격대 아이콘 표시",
 }
@@ -181,7 +176,7 @@ L:SetTimerLocalization{
 	TimerLightningTendrils		= "번개 덩굴",
 	timerFusionPunchActive		= "융합 주먹 : %s",
 	timerOverwhelmingPower		= "압도적인 힘 : %s",
-	timerRunicBarrier			= "방어막의 룬",
+	timerRunicBarrier			= "룬문자 방벽",
 	timerRuneofDeath			= "죽음의 룬"
 }
 
@@ -199,7 +194,7 @@ L:SetOptionLocalization{
 	WarningOverwhelmingPower	= "압도적인 힘 알리기",
 	timerOverwhelmingPower		= "압도적인 힘 타이머 보기",
 	SetIconOnOverwhelmingPower	= "압도적인 힘 대상 아이콘 설정",
-	timerRunicBarrier			= "방어막의 룬 타이머 보기",
+	timerRunicBarrier			= "룬문자 방벽 타이머 보기",
 	WarningRuneofPower			= "마력의 룬 알리기",
 	WarningRuneofDeath			= "죽음의 룬 알리기",
 	WarningRuneofSummoning		= "소환의 룬 알리기",	
@@ -338,10 +333,6 @@ L:SetWarningLocalization{
 	WarningStormCloud		= "폭풍 구름 : >%s<"
 }
 
-L:SetTimerLocalization{
-	TimerSpeedKill			= "업적 타이머"
-}
-
 L:SetOptionLocalization{
 	TimerFlashFreeze		= "순간 빙결 시전 타이머 보기",
 	WarningFlashFreeze		= "순간 빙결 경보 보기",
@@ -368,7 +359,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningStormhammer		= "%s 에게 폭풍망치",
-	UnbalancingStrike		= ">%s< 에게 넘어트리는 일격",
+	UnbalancingStrike		= ">%s< 에게 혼란의 일격",
 	WarningPhase2			= "2 페이즈",
 	WarningBomb				= ">%s< 에게 룬 폭파",
 	WarningLightningCharge	= "번개 충전",
@@ -381,7 +372,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "하드 모드를 위한 타이머 보기",
-	UnbalancingStrike		= "넘어트리는 일격 타겟 알리기",
+	UnbalancingStrike		= "혼란의 일격 타겟 알리기",
 	WarningStormhammer		= "폭풍망치 타겟 알리기",
 	WarningPhase2			= "2 페이즈 알리기",
 	WarningBomb				= "룬 폭파 알리기",
@@ -601,8 +592,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	NextPortal			= "다음 차원문",
-	TimerSpeedKill		= "업적 타이머"	
+	NextPortal			= "다음 차원문"
 }
 
 L:SetOptionLocalization{
