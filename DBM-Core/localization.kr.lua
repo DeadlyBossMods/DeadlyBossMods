@@ -39,6 +39,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명의 플레이어가 설치되어 있는 �
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 죽이는 보스 모드 버전이 옛날 버전입니다.\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl-C 를 누르면 클립보드에 복사가 됩니다."
+DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "새로운 버전이 검색되면 관련 창을 띄웁니다."
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
