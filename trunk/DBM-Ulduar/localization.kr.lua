@@ -411,7 +411,8 @@ L:SetWarningLocalization{
 	WarnFury 			= ">%s< 에게 자연의 격노",
 	SpecWarnFury 		= "당신에게 자연의 격노!",
 	WarningTremor   		= "지진! - 시전 중지!",
-	WarnRoots 			= ">%s< 에게 무쇠 뿌리!"	
+	WarnRoots 			= ">%s< 에게 무쇠 뿌리!"	,
+	UnstableEnergy		= "불안정한 힘 - 움직이세요!"
 }
 
 L:SetTimerLocalization{
@@ -427,7 +428,8 @@ L:SetOptionLocalization{
 	SpecWarnFury 			= "자연의 격노 특수 경고 보기",
 	PlaySoundOnFury			= "자연의 격노 특수 사운드 재생",
 	WarnRoots 				= "무쇠뿌리 대상 알리기",
-	WarningTremor  	 		= "지진 시전 특수 경보 보기 (하드 모드)"	
+	WarningTremor  	 		= "지진 시전 특수 경보 보기 (하드 모드)",
+	UnstableEnergy			= "불안정한 힘일 때 특수 경보 보기"	
 }
 
 -- Elders
