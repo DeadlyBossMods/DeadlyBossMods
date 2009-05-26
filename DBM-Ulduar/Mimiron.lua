@@ -164,6 +164,7 @@ function mod:NextPhase()
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 		end
+
 	elseif phase == 2 then
 		timerNextShockblast:Stop()
 		timerProximityMines:Stop()
@@ -173,6 +174,7 @@ function mod:NextPhase()
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
 		end
+
 	elseif phase == 3 then
 		if self.Options.AutoChangeLootToFFA and DBM:GetRaidRank() == 2 then
 			SetLootMethod("freeforall")
@@ -184,6 +186,7 @@ function mod:NextPhase()
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(33670, L.MobPhase3)
 		end
+
 	elseif phase == 4 then
 		if self.Options.AutoChangeLootToFFA and DBM:GetRaidRank() == 2 then
 			if masterlooterRaidID then
@@ -210,7 +213,7 @@ do
 		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33670) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
-				if (GetInstanceDifficulty() == 1 and count > 3) or (GetInstanceDifficulty() == 2 and count > 7) then
+				if (GetInstanceDifficulty() == 1 and count > 4) or (GetInstanceDifficulty() == 2 and count > 7) then
 					lastPhaseChange = GetTime()
 					self:NextPhase()
 				end
@@ -224,11 +227,17 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 then
-		--self:SendSync("Phase2")	// untested alpha!
+		DBM:AddMsg("ALPHA: yell detect phase2, syncing to clients")
+		self:SendSync("Phase2")	-- untested alpha! (this will result in a wrong timer)
+
 	elseif msg == L.YellPhase3 then
-		--self:SendSync("Phase3")	// untested alpha!
+		DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
+		self:SendSync("Phase3")	-- untested alpha! (this will result in a wrong timer)
+
 	elseif msg == L.YellPhase4 then
+		DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
 		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
+
 	elseif msg == L.YellHardPull then
 		timerHardmode:Start()
 		timerFlameSuppressant:Start()
