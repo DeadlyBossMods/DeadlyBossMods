@@ -21,16 +21,15 @@ mod:SetBossHealthInfo(
 	32857, L.StormcallerBrundir
 )
 
-local timerSupercharge		= mod:NewTimer(10, "TimerSupercharge", 61920)
 local warnSupercharge		= mod:NewAnnounce("WarningSupercharge", 3, 61920)
 
 -- Stormcaller Brundir
 -- High Voltage ... 63498
 local warnChainlight		= mod:NewAnnounce("WarningChainlight", 1, 64215)
 local timerOverload		= mod:NewCastTimer(6, 63481)
-local timerLightningWhirl	= mod:NewTimer(5, "TimerLightningWhirl", 63483)
+local timerLightningWhirl	= mod:NewCastTimer(5, 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
-local timerLightningTendrils	= mod:NewTimer(27, "TimerLightningTendrils", 63486)
+local timerLightningTendrils	= mod:NewBuffActiveTimer(27, 63486)
 local specwarnOverload		= mod:NewSpecialWarning("Overload") 
 mod:AddBoolOption("AllwaysWarnOnOverload", false, "announce")
 mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
@@ -40,16 +39,16 @@ mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
 -- High Voltage ... don't know what to show here - 63498
 local warnFusionPunch		= mod:NewAnnounce("WarningFusionPunch", 4, 61903)
 local timerFusionPunchCast	= mod:NewCastTimer(3, 61903)
-local timerFusionPunchActive	= mod:NewTimer(4, "timerFusionPunchActive", 61903)
+local timerFusionPunchActive	= mod:NewTargetTimer(4, 61903)
 local warnOverwhelmingPower	= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
-local timerOverwhelmingPower	= mod:NewTimer(25, "timerOverwhelmingPower", 61888)
+local timerOverwhelmingPower	= mod:NewNextTimer(25, 61888)
 local warnStaticDisruption	= mod:NewAnnounce("WarningStaticDisruption", 3, 61912) 
 mod:AddBoolOption("SetIconOnOverwhelmingPower")
 mod:AddBoolOption("SetIconOnStaticDisruption")
 
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
-local timerRunicBarrier		= mod:NewTimer(20, "timerRunicBarrier", 62338)
+local timerRunicBarrier		= mod:NewBuffActiveTimer(20, 62338)
 local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
 local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
 local warnRuneofSummoning	= mod:NewAnnounce("WarningRuneofSummoning", 3, 62273)
@@ -67,7 +66,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 61920 then -- Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.	
-		timerSupercharge:Start()
 		warnSupercharge:Show()
 
 	elseif args.spellId == 63479 then				-- Chain light (need the 10ppl spellid)
