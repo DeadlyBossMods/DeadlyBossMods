@@ -30,7 +30,7 @@ mod:AddBoolOption("HealthFrame", true)
 
 local warnSwarm 	= mod:NewAnnounce("WarnSwarm", 2, 64396)
 
-local specWarnBlast = mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
+local specWarnBlast	= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local specWarnVoid 	= mod:NewSpecialWarning("SpecWarnVoid")
 local warnFear 		= mod:NewAnnounce("WarnFear", 3, 64386)
 local warnFearSoon 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)

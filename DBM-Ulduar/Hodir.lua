@@ -17,16 +17,16 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
 
-local timerFlashFreeze	= mod:NewCastTimer(9, 61968)
-local timerFrozenBlows	= mod:NewBuffActiveTimer(20, 63512)
-local timerFlashFrCD	= mod:NewCDTimer(50, 61968)
+local timerFlashFreeze		= mod:NewCastTimer(9, 61968)
+local timerFrozenBlows		= mod:NewBuffActiveTimer(20, 63512)
+local timerFlashFrCD		= mod:NewCDTimer(50, 61968)
 
-local warnStormCloud	= mod:NewAnnounce("WarningStormCloud")
-local warnFlashFreeze	= mod:NewSpecialWarning("WarningFlashFreeze")
+local warnStormCloud		= mod:NewAnnounce("WarningStormCloud")
+local warnFlashFreeze		= mod:NewSpecialWarning("WarningFlashFreeze")
 
-local enrageTimer	= mod:NewEnrageTimer(475)
+local enrageTimer		= mod:NewEnrageTimer(475)
 
-local timerAchieve	= mod:NewAchievementTimer(179, 3182, "TimerSpeedKill")
+local timerAchieve		= mod:NewAchievementTimer(179, 3182, "TimerSpeedKill")
 
 mod:AddBoolOption("YellOnStormCloud", true, "announce")
 mod:AddBoolOption("SetIconOnStormCloud")
