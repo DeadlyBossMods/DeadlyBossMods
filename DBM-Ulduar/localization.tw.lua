@@ -108,12 +108,12 @@ L:SetOptionLocalization{
 	warnTurretsReadySoon		= "顯示砲塔的預先警告",
 	warnTurretsReady		= "顯示砲塔的警告",
 	SpecWarnDevouringFlameCast    	= "當你中了吞噬烈焰時顯示特別警告",
-	WarnDevouringFlameCast       	= "當施放吞噬烈焰時顯示警告",
 	timerTurret1			= "顯示砲塔1的計时器",
 	timerTurret2			= "顯示砲塔2的計时器",
 	timerTurret3			= "顯示砲塔3的計时器 (英雄)",
 	timerTurret4			= "顯示砲塔4的計时器 (英雄)",
 	timerGroundedTemp		= "顯示地上階段計時器",
+	OptionDevouringFlame		= "提示吞噬烈焰的目標(不可靠)"
 }
 
 L:SetMiscLocalization{
@@ -460,7 +460,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TrashRespawnTimer 		= "小怪重生"
+	TrashRespawnTimer 		= "小怪重生",
 }
 
 L:SetOptionLocalization{
