@@ -2,9 +2,6 @@ if GetLocale() ~= "deDE" then return end
 
 local L
 
-local L
-
-
 ----------------------
 -- FlameLeviathan --
 ----------------------
@@ -15,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Hostile entities detected. Threat assessment protocol active. Primary target engaged. Time minus 30 seconds to re-evaluation.",
+	YellPull		= "Feindeinheiten erkannt. Bedrohungsbewertung aktiv. Hauptziel erfasst. Neubewertung in T minus 30 Sekunden.",
 	Emote			= "%%s pursues (%S+)%."
 }
 
@@ -89,8 +86,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAir				= "Give us a moment to prepare to build the turrets.",
-	YellGroundTemp			= "Move quickly! She won't remain grounded for long!",
+	YellAir				= "Gebt uns einen Moment, damit wir uns auf den Bau der Geschütze vorbereiten können.",
+	YellGroundTemp			= "Beeilt Euch! Sie wird nicht lange am Boden bleiben!", 
 	EmotePhase2			= "%%s grounded permanently!",
 	FlamecastUnknown		= "UNBEKANNT"
 }
@@ -166,9 +163,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Steelbreaker		= "Steelbreaker",
-	RunemasterMolgeim	= "Runemaster Molgeim",
-	StormcallerBrundir 	= "Stormcaller Brundir",
+	Steelbreaker		= "Stahlbrecher",
+	RunemasterMolgeim	= "Runenmeister Molgeim",
+	StormcallerBrundir	= "Sturmrufer Brundir"
 }
 
 
@@ -295,7 +292,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellKill		= "I... I am released from his grasp... at last.",
+	YellKill		= "Ich... bin von ihm befreit... endlich.", 
 	YellCloud		= "Storm Cloud on me!"
 }
 
@@ -310,16 +307,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer	= "Stormhammer auf >%s<",
-	UnbalancingStrike	= "Unbalancing Strike auf >%s<",
-	WarningPhase2		= "Phase 2",
-	WarningLightningCharge	= "Lightning Charge",
-	WarningBomb		= "Rune Detonation auf >%s<",
-	LightningOrb		= "Lightning Shock auf dir! Move!"
+	WarningStormhammer		= "Stormhammer auf >%s<",
+	UnbalancingStrike		= "Unbalancing Strike auf >%s<",
+	WarningPhase2			= "Phase 2",
+	WarningLightningCharge		= "Lightning Charge",
+	WarningBomb			= "Rune Detonation auf >%s<",
+	LightningOrb			= "Lightning Shock auf dir! Move!"
 }
 
 L:SetTimerLocalization{
-	TimerHardmode		= "Hard Mode"
+	TimerHardmode			= "Hard Mode"
 }
 
 L:SetOptionLocalization{
@@ -334,6 +331,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+	YellPhase1		= " Eindringlinge! Ihr Sterblichen, die Ihr es wagt, Euch in mein Vergnügen einzumischen, werdet... Wartet... Ihr...",
+	YellPhase2		= "Ihr unverschämtes Geschmeiß! Ihr wagt es, mich in meinem Refugium herauszufordern? Ich werde Euch eigenhändig zerschmettern!",
+	YellKill		= "Senkt Eure Waffen! Ich ergebe mich!",	
 	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
 	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
 	YellKill		= "Stay your arms! I yield!"
@@ -350,11 +350,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell		= "Children, assist me!",
-	WaterSpirit		= "Ancient Water Spirit",
-	Snaplasher		= "Snaplasher",
-	StormLasher		= "Storm Lasher",
-	YellKill		= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
+	SpawnYell		= "Helft mir, Kinder!",
+	WaterSpirit		= "Uralter Wassergeist",
+	Snaplasher		= "Knallpeitscher",
+	StormLasher		= "Sturmpeitscher",
+	YellKill		= "Seine Macht über mich beginnt zu schwinden. Endlich kann ich wieder klar sehen. Ich danke Euch, Helden." 
 }
 
 L:SetWarningLocalization{
