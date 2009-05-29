@@ -460,7 +460,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TrashRespawnTimer 		= "小怪重生",
+	TimerTrashRespawn 		= "小怪重生",
 }
 
 L:SetOptionLocalization{
