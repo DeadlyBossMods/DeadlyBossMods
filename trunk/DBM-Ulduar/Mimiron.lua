@@ -252,14 +252,11 @@ function mod:OnSync(event, args)
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
 		warnDarkGlare:Cancel()
-	elseif event == "Phase2" then -- alternate localized-dependent detection
-		phase = 1
+	elseif event == "Phase2" and phase == 1 then -- alternate localized-dependent detection
 		self:NextPhase()
-	elseif event == "Phase3" then
-		phase = 2
+	elseif event == "Phase3" and phase == 2 then
 		self:NextPhase()
-	elseif event == "Phase4" then
-		phase = 3
+	elseif event == "Phase4" and phase == 3 then
 		self:NextPhase()
 	end
 end
