@@ -751,7 +751,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "Time to get some answers! Let's get this show on the road!",
+	Pull		= "是找出答案的時候了!讓好戲開演吧!",
 	Phase1	= "xxx anti error xxx",
 	Phase2	= "xxx anti error xxx",
 	Phase3	= "xxx anti error xxx"
@@ -837,7 +837,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	SplitTrigger1 = "這裡有我千萬個分身。",
-	SplitTrigger2 = "I'll give you more than you can handle.",
+	SplitTrigger2 = "我要讓你們嚐嚐無所適從的滋味!",
 	MergeTrigger = "現在，最後一步!"
 })
 
@@ -1071,7 +1071,7 @@ L:SetWarningLocalization({
 	WarningSmash			= spell,
 	WarningGrowl			= spell,
 	WarningWoeStrike		= debuff,
-	SpecialWarningSpelllock 	= "法術封鎖 - 停止施法!"  -- translate
+	SpecialWarningSpelllock 	= "法術封鎖 - 停止施法!"
 })
 
 L:SetTimerLocalization({

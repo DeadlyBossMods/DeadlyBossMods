@@ -16,7 +16,7 @@ mod:RegisterEvents(
 mod:AddBoolOption("PlaySoundOnFistOfStone", false)
 local specWarnFistofStone	= mod:NewSpecialWarning("specWarnFistofStone", false)
 local specWarnGroundTremor	= mod:NewSpecialWarning("specWarnGroundTremor", true)
-mod:AddBoolOption("TrashRespawnTimer", true, "timer")
+local timerTrashRespawn		= mod:NewTimer(7200, "TimerTrashRespawn")
 
 --
 -- Trash: 33430 Guardian Lasher (so ne blume)
@@ -49,7 +49,7 @@ function mod:UNIT_DIED(args)
 	if self.Options.TrashRespawnTimer and not DBM.Bars:GetBar(L.TrashRespawnTimer) then
 		local guid = tonumber(args.destGUID:sub(9, 12), 16)
 		if guid == 33430 or guid == 33355 or guid == 33354 then		-- guardian lasher / nymphe / tree
-			DBM.Bars:CreateBar(7200, L.TrashRespawnTimer)
+			timerTrashRespawn:Start()
 		end
 	end
 end
