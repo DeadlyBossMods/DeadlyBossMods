@@ -49,13 +49,13 @@ end
 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62042 then -- Storm Hammer
+	if args.spellId == 62042 then 					-- Storm Hammer
 		warnStormhammer:Show(args.destName)
 
-	elseif args.spellId == 62130 then	-- Unbalancing Strike
+	elseif args.spellId == 62130 then				-- Unbalancing Strike
 		warnUnbalancingStrike:Show(args.destName)
 		
-	elseif args.spellId == 62526 then -- Runic Detonation
+	elseif args.spellId == 62526 or args.spellId == 62527 then	-- Runic Detonation - missing 10ppl ID
 		self:SetIcon(args.destName, 8, 5)
 		warningBomb:Show(args.destName)
 	end
