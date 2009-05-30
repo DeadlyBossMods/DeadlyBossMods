@@ -376,7 +376,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Show Timer for Hard Mode",
-	UnbalancingStrike		= "Announce Unbalancing Strike Target",
 	WarningStormhammer		= "Announce Stormhammer Target",
 	WarningLightningCharge		= "Announce Lightning Charge",
 	WarningPhase2			= "Announce Phase 2",
