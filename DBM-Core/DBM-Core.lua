@@ -2045,10 +2045,15 @@ do
 		return unschedule(self.Show, self.mod, self, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound)
+	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound)
+		if type(text) == "number" then
+			text = GetSpellInfo(text)
+		else
+			text = self.localization.warnings[text]
+		end
 		local obj = setmetatable(
 			{
-				text = self.localization.warnings[text],
+				text = text,
 				option = optionName or text,
 				mod = self,
 				sound = not noSound,
@@ -2058,7 +2063,7 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddBoolOption(optionName or text, optionDefault, "announce")
+			self:AddBoolOption(optionName or text, optionDefault, "announce")		
 		end
 		return obj
 	end
