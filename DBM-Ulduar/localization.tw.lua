@@ -418,7 +418,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnPhase2 			= "第二階段",
-	WarnSimulKill			= "第一支小怪死亡 - 1分鐘後復活",
+	WarnSimulKill			= "第一支小怪死亡 - 大約12秒後復活",
 	WarnFury 			= "自然烈怒: >%s<",
 	SpecWarnFury 			= "你中了自然烈怒!",
 	WarningTremor   		= "地面震顫 - 停止施法",
