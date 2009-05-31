@@ -222,7 +222,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
-	name = "Emalon the Stone Watcher"
+	name = "Emalon the Storm Watcher"
 }
 
 L:SetWarningLocalization{
