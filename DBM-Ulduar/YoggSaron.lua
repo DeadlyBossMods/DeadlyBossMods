@@ -78,8 +78,8 @@ function mod:SPELL_CAST_START(args)
 		timerMadness:Start()
 		warnMadness:Show()
 		brainportal:Schedule(60)
-		warnBrainPortalSoon:Schedule(83)
-		specWarnBrainPortalSoon:Schedule(83)
+		warnBrainPortalSoon:Schedule(80)
+		specWarnBrainPortalSoon:Schedule(80)
 		specWarnMadnessOutNow:Schedule(55)
 	end
 end
