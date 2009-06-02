@@ -27,6 +27,7 @@ local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
 local timerSurgeofDarkness	= mod:NewBuffActiveTimer(10, 62662)
 local timerSaroniteVapors	= mod:NewNextTimer(30, 63322)
 local timerLifeLeech		= mod:NewTargetTimer(10, 63276)
+local timerHardmode		= mod:NewTimer(259, "hardmodeSpawn")
 
 local warnShadowCrash		= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
 local warnLeechLife		= mod:NewAnnounce("WarningLeechLife", 3, 63276)
@@ -40,6 +41,7 @@ mod:AddBoolOption("YellOnShadowCrash", true, "announce")
 
 function mod:OnCombatStart(delay)
 	timerEnrage:Start(-delay)
+	timerHardmode:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
