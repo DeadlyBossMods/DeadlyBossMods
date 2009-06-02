@@ -40,7 +40,7 @@ local enrage 			= mod:NewEnrageTimer(600)
 
 local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
 local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
-local timerFury			= mod:NewBuffActiveTimer(10, 63571)
+local timerFury			= mod:NewTargetTimer(10, 63571)
 local timerTremorCD 		= mod:NewCDTimer(28, 62859) 
 local warnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hardmode
 local specWarnBeam		= mod:NewSpecialWarning("UnstableEnergy")		-- Hardmode
