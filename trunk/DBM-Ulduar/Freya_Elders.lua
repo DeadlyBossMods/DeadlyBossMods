@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Freya_Elders", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1114 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1192 $"):sub(12, -3))
 mod:SetZone()
 
 -- passive mod to provide information for multiple fight (trash respawn)
@@ -16,7 +16,7 @@ mod:RegisterEvents(
 mod:AddBoolOption("PlaySoundOnFistOfStone", false)
 local specWarnFistofStone	= mod:NewSpecialWarning("specWarnFistofStone", false)
 local specWarnGroundTremor	= mod:NewSpecialWarning("specWarnGroundTremor", true)
-local timerTrashRespawn		= mod:NewTimer(7200, "TimerTrashRespawn")
+mod:AddBoolOption("TrashRespawnTimer", true, "timer")
 
 --
 -- Trash: 33430 Guardian Lasher (so ne blume)
@@ -49,7 +49,7 @@ function mod:UNIT_DIED(args)
 	if self.Options.TrashRespawnTimer and not DBM.Bars:GetBar(L.TrashRespawnTimer) then
 		local guid = tonumber(args.destGUID:sub(9, 12), 16)
 		if guid == 33430 or guid == 33355 or guid == 33354 then		-- guardian lasher / nymphe / tree
-			timerTrashRespawn:Start()
+			DBM.Bars:CreateBar(7200, L.TrashRespawnTimer)
 		end
 	end
 end
