@@ -389,13 +389,16 @@ L:SetOptionLocalization{
 	WarningPhase2			= "提示第二階段",
 	RangeFrame			= "顯示距離框",
 	WarningBomb			= "提示引爆符文",
-	LightningOrb 			= "當你中了閃電充能時顯示特別警告"
+	LightningOrb 			= "當你中了閃電充能時顯示特別警告",
+	AnnounceFails			= "公布中了閃電充能的玩家到團隊頻道(需要開啟團隊廣播及團長/隊長權限)" 
 }
 
 L:SetMiscLocalization{
 	YellPhase1			= "擅闖者!像你們這種膽敢干涉我好事的凡人將付出…等等--你……",
 	YellPhase2			= "無禮的小輩，你竟敢在我的王座之上挑戰我?我會親手碾碎你們!",
-	YellKill			= "住手!我認輸了!"
+	YellKill			= "住手!我認輸了!",
+	ChargeOn			= "閃電充能: %s",
+	Charge				= "中了閃電充能 (這一次): %s" 
 }
 
 
@@ -537,6 +540,10 @@ L = DBM:GetModLocalization("GeneralVezax")
 
 L:SetGeneralLocalization{
 	name = "威札斯將軍"
+}
+
+L:SetTimerLocalization{
+	hardmodeSpawn 			= "薩倫聚惡體 出現"
 }
 
 L:SetWarningLocalization{
