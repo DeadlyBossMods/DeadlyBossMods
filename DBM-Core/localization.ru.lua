@@ -1,7 +1,7 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 
 DBM_CORE_LOAD_MOD_ERROR				= "Ошибка при загрузке DBM для %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для '%s'!"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для \"%s\"!"
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)";
@@ -10,13 +10,13 @@ DBM_CORE_BOSS_DOWN_LONG				= "%s погибает спустя %s! Послед�
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s погибает спустя %s! Это новая запись! (Предшествующая запись была %s)"
 DBM_CORE_COMBAT_ENDED				= "Бой с %s длился %s"
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4сек.:сек.;"
-DBM_CORE_TIMER_FORMAT_MINS			= "%d |4мин.:мин.;"
-DBM_CORE_TIMER_FORMAT				= "%d |4мин.:мин.; %d |4сек.:сек.;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%d |4сек:сек;"
+DBM_CORE_TIMER_FORMAT_MINS			= "%d |4мин:мин;"
+DBM_CORE_TIMER_FORMAT				= "%d |4мин:мин; %d |4сек:сек;"
 
-DBM_CORE_MIN						= "мин."
-DBM_CORE_SEC						= "сек."
-DBM_CORE_DEAD						= "мертвы"
+DBM_CORE_MIN						= "мин"
+DBM_CORE_SEC						= "сек"
+DBM_CORE_DEAD						= "мертв"
 DBM_CORE_OK							= "ОК"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Исступление через %s %s"
