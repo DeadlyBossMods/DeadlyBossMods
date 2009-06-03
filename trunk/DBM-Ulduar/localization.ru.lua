@@ -448,7 +448,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnFistOfStone	= "Отображать спец-предупреждение для Каменный кулак",
+	SpecWarnFistOfStone	= "Отображать спец-предупреждение для Каменного кулака",
 	WarnFistofStone		= "Объявлять Каменный кулак"
 }
 
