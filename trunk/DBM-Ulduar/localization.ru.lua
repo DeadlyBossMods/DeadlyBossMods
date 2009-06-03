@@ -392,7 +392,7 @@ L:SetMiscLocalization{
 	YellPhase2		= "Бесстыжие выскочки, вы решили бросить вызов мне лично? Я сокрушу вас всех!"
 	YellKill		= "Stay your arms! I yield!",
 	ChargeOn		= "Разряд молнии: %s",
-	Charge			= "Разряд недостал (в этот раз): %s" 
+	Charge			= "Разряд не достал (в этот раз): %s" 
 }
 
 
