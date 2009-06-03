@@ -5,6 +5,8 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
+L.TranslationBy 	= "Игорь Бутвин <bootwin@gmail.com>"
+
 L.TabCategory_Options		= "Общие параметры"
 L.TabCategory_WOTLK			= "Wrath of the Lich King"
 L.TabCategory_BC			= "The Burning Crusade"
@@ -101,3 +103,5 @@ L.Area_SpamFilter			= "Общие параметры фильтра навязч
 L.HideBossEmoteFrame		= "Скрывать сообщения эмоций рейдового босса"
 L.SpamBlockRaidWarning		= "Фильтрация предупреждения от других DBM" 
 L.SpamBlockBossWhispers		= "Фильтрация <DBM> предупреждения шепотом в бою"
+L.ShowVersionUpadeAsPopup	= "Отображать всплывающее сообщение, если ваша версия устарела"
+L.ShowBigBrotherOnCombatStart	= "Отображать \"BigBrother\" когда начались боевые действия"
