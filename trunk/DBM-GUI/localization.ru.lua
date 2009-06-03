@@ -104,4 +104,4 @@ L.HideBossEmoteFrame		= "Скрывать сообщения эмоций рей
 L.SpamBlockRaidWarning		= "Фильтрация предупреждения от других DBM" 
 L.SpamBlockBossWhispers		= "Фильтрация <DBM> предупреждения шепотом в бою"
 L.ShowVersionUpadeAsPopup	= "Всплывающее сообщение, если версия устарела"
-L.ShowBigBrotherOnCombatStart	= "Отображать \"BigBrother\" когда начались боевые действия"
+L.ShowBigBrotherOnCombatStart	= "Отображать \"BigBrother\", во время боевых действий"
