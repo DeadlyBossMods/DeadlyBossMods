@@ -63,10 +63,10 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnJetsCast		= "Отображать спец-предупреждение для Огненной струи (прерывание заклинаний)",
-	TimerFlameJetsCast		= "Отображать время действия заклинания Огненная струя",
-	TimerFlameJetsCooldown	= "Отображать отсчет времени до восстановления Огненной струи",
-	TimerScorch				= "Отображать отсчет времени до восстановления Ожога",
-	TimerScorchCast			= "Отображать время действия заклинания Ожог",
+	TimerFlameJetsCast		= "Время действия заклинания Огненная струя",
+	TimerFlameJetsCooldown	= "Отсчет времени до восстановления Огненной струи",
+	TimerScorch				= "Отсчет времени до восстановления Ожога",
+	TimerScorchCast			= "Время действия заклинания Ожог",
 	WarningSlagPot			= "Объявлять цель помещенную в шлаковый ковш",
 	TimerSlagPot			= "Отображать время действия шлакового ковша",
 	SlagPotIcon				= "Установить метку на цель в шлаковом ковше"
@@ -98,8 +98,8 @@ L:SetTimerLocalization{
 	timerTurret4			= "Гарпунная пушка 4"
 }
 L:SetOptionLocalization{
-	timerDeepBreathCooldown		= "Отображать отсчет времени до следующего Огненного дыхани",
-	timerDeepBreathCast		= "Отображать время действия заклинания Огненное дыхание",
+	timerDeepBreathCooldown		= "Отсчет времени до следующего Огненного дыхани",
+	timerDeepBreathCast		= "Время действия заклинания Огненное дыхание",
 	SpecWarnDevouringFlame		= "Отображать спец-предупреждение ноходящемуся в лавовой бомбе",
 	PlaySoundOnDevouringFlame	= "Звуковой сигнал, когда под воздействием лавовой бомбы",
 	timerAllTurretsReady		= "Отображать отсчет времени до пушек",
