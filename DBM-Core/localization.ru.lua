@@ -39,6 +39,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "Найдено %d игроков с устан�
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Ваша версия Deadly Boss Mods, устарела.\n Для загрузки доступна новая версия %s (r%d) здесь:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Нажмите CTRL+C, чтобы скопировать ссылку загрузки в буфер обмена."
+DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Всплывающее сообщение при наличии новой версии"
 
 DBM_CORE_MOVABLE_BAR				= "Перетащите!"
 
@@ -83,6 +84,8 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
 DBM_CORE_GENERIC_TARGET_WARN = "%s под воздействием >%%s<!"
 DBM_CORE_GENERIC_TARGET_OPTION = "Объявлять цели о %s"
 
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Скорость убийства"
+
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
@@ -99,5 +102,5 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "Отображать продолжительность |cff71d5ff|Hspell:%d|h%s|h|r",
 	cd = "Отображать отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
 	next = "Отображать отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
-	achievement = "Show timer for %s", -- translate
+	achievement = "Отображать отсчет времени для %s",
 }
