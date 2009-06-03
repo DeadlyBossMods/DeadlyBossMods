@@ -11,8 +11,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPursued		= "추적: %s",
-	timerFlameVents		= "화염 분출",
+	timerPursued			= "추적: %s",
+	timerFlameVents			= "화염 분출",
 	timerSystemOverload	= "시스템 과부화"
 }
 	
@@ -22,11 +22,11 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn		= "추적중! >%s<!",
-	PursueWarn				= "추적 경고",	
+	--pursueTargetWarn		= "추적중! >%s<!",
+	PursueWarn					= "추적 >%s<!",	
 	warnNextPursueSoon		= "추적 전환 5 초전",
-	SpecialPursueWarnYou	= "거대 화염전차가 당신을 추적합니다!",	
-	SystemOverload			= "시스템 과부화"	
+	SpecialPursueWarnYou		= "거대 화염전차가 당신을 추적합니다!",	
+	SystemOverload				= "시스템 과부화"	
 }
 
 L:SetOptionLocalization{
@@ -143,6 +143,8 @@ L:SetOptionLocalization{
 	WarningLightBomb			= "빛의 폭탄 알리기",
 	SpecialWarningGravityBomb	= "당신이 중력 폭탄에 영향을 받을 때 특수 경고 보기",
 	WarningGravityBomb			= "중력 폭탄 알리기",
+	PlaySoundOnGravityBomb		= "당신에게 중력 폭탄일 때 특수 사운드 재생",
+	PlaySoundOnTympanicTantrum	= "당신에게 빛의 폭탄일 때 특수 사운드 재생",	
 	SetIconOnLightBombTarget	= "빛의 폭탄 대상에게 공격대 아이콘 표시",
 	SetIconOnGravityBombTarget	= "중력 폭탄 대상에게 공격대 아이콘 표시",
 }
@@ -334,17 +336,17 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze		= "순간 빙결 시전 타이머 보기",
+	TimerFlashFreeze			= "순간 빙결 시전 타이머 보기",
 	WarningFlashFreeze		= "순간 빙결 경보 보기",
  	PlaySoundOnFlashFreeze	= "순간 빙결 경고 소리 듣기",	
 	WarningStormCloud		= "폭풍 구름 경보 보기",
-	YellOnStormCloud		= "폭풍 구름을 얻을 경우 외치기",
+	YellOnStormCloud			= "폭풍 구름을 얻을 경우 외치기",
 	SetIconOnStormCloud		= "폭풍 구름 대상 아이콘 설정 하기"
 }
 
 L:SetMiscLocalization{
 	YellKill		= "드디어... 드디어 그의 손아귀를... 벗어나는구나.",
-	YellCloud		= "폭풍 구름! Yo!!"
+	YellCloud		= "폭풍 구름! 비벼요!!"
 }
 
 
@@ -371,20 +373,23 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerHardmode			= "하드 모드를 위한 타이머 보기",
-	UnbalancingStrike		= "혼란의 일격 타겟 알리기",
+	TimerHardmode				= "하드 모드를 위한 타이머 보기",
+	UnbalancingStrike			= "혼란의 일격 타겟 알리기",
 	WarningStormhammer		= "폭풍망치 타겟 알리기",
-	WarningPhase2			= "2 페이즈 알리기",
+	WarningPhase2				= "2 페이즈 알리기",
 	WarningBomb				= "룬 폭파 알리기",
 	WarningLightningCharge	= "번개 충전 알리기",
-	RangeFrame				= "거리 창 보기",
-	LightningOrb 			= "번개 충격 알리기"	
+	RangeFrame					= "거리 창 보기",
+	LightningOrb 				= "번개 충격 알리기",
+	AnnounceFails				= "번개 충전 피하기 실패 했을 경우 공격대에 알리기 (번개 충전 알리기 및 공대장 권한이 있을 경우)" 
 }
 
 L:SetMiscLocalization{
-	YellPhase1		= "침입자라니! 감히 내 취미 생활을 방해하는 놈들은 쓴맛을 단단히... 잠깐... 너는...",
-	YellPhase2		= "건방진 젖먹이 같으니... 감히 여기까지 기어올라와 내게 도전해? 내 손으로 쓸어버리겠다!",
-	YellKill		= "무기를 거둬라! 내가 졌다!"
+	YellPhase1	= "침입자라니! 감히 내 취미 생활을 방해하는 놈들은 쓴맛을 단단히... 잠깐... 너는...",
+	YellPhase2	= "건방진 젖먹이 같으니... 감히 여기까지 기어올라와 내게 도전해? 내 손으로 쓸어버리겠다!",
+	YellKill			= "무기를 거둬라! 내가 졌다!",
+	ChargeOn		= "번개 충전: %s",
+	Charge			= "번개 충전 실패 (현재 트라이): %s"
 }
 
 
@@ -418,14 +423,17 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	TimerUnstableSunBeam 	= "태양 광선: %s",
 	TimerSimulKill 			= "소환수 부활",
+	TimerFuryYou			= "당신에게 자연의 격노"	
 }
 
 L:SetOptionLocalization{
 	TimerSimulKill 			= "소환수 부활 타이머 보기",
+	TimerFuryYou 			= "자연의 격노 유지 타이머 보기",	
 	WarnPhase2 				= "2 페이즈 경고 보기",
 	WarnSimulKill			= "첫번째 소환 제거 알리기",
 	WarnFury 				= "자연의 격노 타겟 알리기",
 	SpecWarnFury 			= "자연의 격노 특수 경고 보기",
+	TimerAlliesOfNature 		= "자연의 동맹 타이머 보기",	
 	PlaySoundOnFury			= "자연의 격노 특수 사운드 재생",
 	WarnRoots 				= "무쇠뿌리 대상 알리기",
 	WarningTremor  	 		= "지진 시전 특수 경보 보기 (하드 모드)",
@@ -444,7 +452,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TrashRespawnTimer 		= "소환수 재생성"
+	TimerTrashRespawn 		= "소환수 재생성"
 }
 
 L:SetOptionLocalization{
@@ -452,7 +460,7 @@ L:SetOptionLocalization{
 	PlaySoundOnFistOfStone	= "돌덩이 주먹 특수 사운드 재생",
 	WarnFistofStone			= "돌덩이 주먹 알리기",
 	specWarnGroundTremor	= "지진 특수 경보 보기",
-	TrashRespawnTimer		= "소환수 재생성 타이머 보기"
+	TimerTrashRespawn		= "소환수 재생성 타이머 보기"
 }
 
 -------------------
@@ -479,6 +487,7 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	TimeToPhase2			= "2 페이즈 시작",
 	TimeToPhase3			= "3 페이즈 시작",
+	ProximityMines			= "새로운 접근 폭파 지뢰",	
 	TimerHardmode			= "하드 모드 - 자폭장치 가동"	
 }
 
@@ -522,6 +531,10 @@ L = DBM:GetModLocalization("GeneralVezax")
 
 L:SetGeneralLocalization{
 	name = "장군 베작스"
+}
+
+L:SetTimerLocalization{
+	hardmodeSpawn = "사로나이트 원혼 생성"
 }
 
 L:SetWarningLocalization{
