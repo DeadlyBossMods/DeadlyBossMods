@@ -91,7 +91,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
 	cast = "%s",
     active = "%s",
-	cd = "%s",
+	cd = "%s - перезарядка",
 	next = "Следующий %s",
 	achievement = "%s",
 }
