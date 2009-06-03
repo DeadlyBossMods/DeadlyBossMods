@@ -97,10 +97,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Отображать время действия эффекта |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Отображать время действия заклинания|cff71d5ff|Hspell:%d|h%s|h|r",
+	target = "Время действия эффекта |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Время действия заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 	active = "Отображать продолжительность |cff71d5ff|Hspell:%d|h%s|h|r",
-	cd = "Отображать отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
-	next = "Отображать отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
+	cd = "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
+	next = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Отображать отсчет времени для %s",
 }
