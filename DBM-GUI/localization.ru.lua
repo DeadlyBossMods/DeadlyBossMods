@@ -44,7 +44,7 @@ L.Statistic_Heroic			= "Героического уровня"
 -- Tab: General Options
 L.General					= "Общие параметры DBM"
 L.EnableDBM					= "Включить DBM"
-L.EnableStatus				= "Ответить шепотом сообщив 'статус' боя"
+L.EnableStatus				= "Ответить шепотом сообщив \"статус\" боя"
 L.AutoRespond				= "Включить авто-ответ в бою"
 L.EnableMiniMapIcon			= "Отображать кнопку на мини-карте"
 
@@ -103,5 +103,5 @@ L.Area_SpamFilter			= "Общие параметры фильтра навязч
 L.HideBossEmoteFrame		= "Скрывать сообщения эмоций рейдового босса"
 L.SpamBlockRaidWarning		= "Фильтрация предупреждения от других DBM" 
 L.SpamBlockBossWhispers		= "Фильтрация <DBM> предупреждения шепотом в бою"
-L.ShowVersionUpadeAsPopup	= "Отображать всплывающее сообщение, если ваша версия устарела"
+L.ShowVersionUpadeAsPopup	= "Всплывающее сообщение, если версия устарела"
 L.ShowBigBrotherOnCombatStart	= "Отображать \"BigBrother\" когда начались боевые действия"
