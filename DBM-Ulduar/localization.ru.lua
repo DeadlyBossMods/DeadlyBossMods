@@ -91,7 +91,7 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	timerDeepBreathCooldown	= "Следующее Огненное дыхание через",
 	timerDeepBreathCast		= "Огненное дыхание",
-	timerAllTurretsReady	= "Гарпунные пушки"
+	timerAllTurretsReady	= "Гарпунные пушки",
 	timerTurret1			= "Гарпунная пушка 1",
 	timerTurret2			= "Гарпунная пушка 2",
 	timerTurret3			= "Гарпунная пушка 3",
@@ -263,7 +263,7 @@ L:SetTimerLocalization{
 	timerPetrifyingBreath	= "Каменящее дыхание",
 	timerNextShockwave		= "Следующая Ударная волна",
 	timerLeftArm			= "Возрождение левой руки",
-	timerRightArm			= "Возрождение правой руки"
+	timerRightArm			= "Возрождение правой руки",
 	achievementDisarmed		= "Разоружение"
 }
 
@@ -274,7 +274,7 @@ L:SetOptionLocalization{
 	timerPetrifyingBreath		= "Отображать отсчет времени до Каменящего дыхания",
 	timerNextShockwave			= "Отображать отсчет времени до Ударной волны",
 	timerLeftArm				= "Отображать отсчет времени до Возрождения руки (левая)",
-	timerRightArm				= "Отображать отсчет времени до Возрождения руки (правая)"
+	timerRightArm				= "Отображать отсчет времени до Возрождения руки (правая)",
 	achievementDisarmed		= "Отображать отсчет времени до приминения Разоружения"
 }
 
@@ -383,13 +383,13 @@ L:SetOptionLocalization{
 	WarningPhase2			= "Объявлять фазу 2",
 	UnbalancingStrike		= "Объявлять Дисбалансирующий удар",
 	WarningBomb				= "Объявлять Взрыв руны",
-	RangeFrame				= "Отображать окно допустимой дистанции"
+	RangeFrame				= "Отображать окно допустимой дистанции",
 	AnnounceFails			= "Post player fails for Lightning Charge to the raid chat (requires announce enabled and promoted/leader status)" 
 }
 
 L:SetMiscLocalization{
 	YellPhase1		= "Незваные гости! Вы заплатите за то, что посмели вмешаться... Погодите, вы...",
-	YellPhase2		= "Бесстыжие выскочки, вы решили бросить вызов мне лично? Я сокрушу вас всех!"
+	YellPhase2		= "Бесстыжие выскочки, вы решили бросить вызов мне лично? Я сокрушу вас всех!",
 	YellKill		= "Stay your arms! I yield!",
 	ChargeOn		= "Разряд молнии: %s",
 	Charge			= "Разряд не достал (в этот раз): %s" 
@@ -597,7 +597,7 @@ L:SetOptionLocalization{
 	SpecWarnGuardianLow		= "Отображать спец-предупреждение, когда страж (Ф1) ослаблен (Для ДД)",
 	WarnMadness			= "Объявлять Помешательство",
 	WarnBrainPortalSoon		= "Объявлять портал",
-	SpecWarnMadnessOutNow		= "Отображать спец-предупреждение незадолго до окончания Помешательства"
+	SpecWarnMadnessOutNow		= "Отображать спец-предупреждение незадолго до окончания Помешательства",
 	SetIconOnFearTarget		= "Установить метку на цель под Благосклонностью Сары",
 	WarnFavor			= "Объявлять цель под Благосклонностью Сары",
 	SpecWarnFavor			= "Отображать спец-предупреждение для Благосклонности Сары",
