@@ -568,7 +568,8 @@ L:SetOptionLocalization{
 	CrashWhisper 			= "密語提示中了暗影暴擊的人",
 	YellOnLifeLeech			= "當中了無面者印記時大喊",
 	YellOnShadowCrash		= "當中了暗影暴擊時大喊",
-	SpecialWarningShadowCrashNear	= "當你附近的人中了暗影暴擊時顯示特別警告"
+	SpecialWarningShadowCrashNear	= "當你附近的人中了暗影暴擊時顯示特別警告",
+	hardmodeSpawn 			= "顯然薩倫聚惡體出現(困難模式)計時器"
 }
 
 L:SetMiscLocalization{
