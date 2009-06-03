@@ -462,8 +462,8 @@ L:SetWarningLocalization{
 	specWarnGroundTremor   		= "地面震顫 - 停止施法"
 }
 
-L:SetTimerLocalization{
-	TimerTrashRespawn 		= "小怪重生",
+L:SetMiscLocalization{
+	TrashRespawnTimer 		= "小怪重生",
 }
 
 L:SetOptionLocalization{
