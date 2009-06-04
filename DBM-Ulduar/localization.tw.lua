@@ -391,7 +391,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "顯示距離框",
 	WarningBomb			= "提示引爆符文",
 	LightningOrb 			= "當你中了閃電充能時顯示特別警告",
-	AnnounceFails			= "公布中了閃電充能的玩家到團隊頻道(需要開啟團隊廣播及團長/隊長權限)" 
+	AnnounceFails			= "公佈中了閃電充能的玩家到團隊頻道(需要開啟團隊廣播及團長/隊長權限)" 
 }
 
 L:SetMiscLocalization{
