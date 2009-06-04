@@ -2046,14 +2046,9 @@ do
 	end
 
 	function bossModPrototype:NewSpecialWarning(text, optionDefault, optionName, noSound, runSound)
-		if type(text) == "number" then
-			text = GetSpellInfo(text)
-		else
-			text = self.localization.warnings[text]
-		end
 		local obj = setmetatable(
 			{
-				text = text,
+				text = self.localization.warnings[text], 
 				option = optionName or text,
 				mod = self,
 				sound = not noSound,
