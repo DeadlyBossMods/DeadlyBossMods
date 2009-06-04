@@ -37,6 +37,7 @@ local warnBombSpawn		= mod:NewAnnounce("WarnBombSpawn", 3)
 
 local timerP1toP2		= mod:NewTimer(43, "TimeToPhase2")
 local timerP2toP3		= mod:NewTimer(32, "TimeToPhase3")
+local timerP3toP4		= mod:NewTimer(25, "TimeToPhase4")
 local timerProximityMines	= mod:NewNextTimer(35, 63027)
 local timerShockBlast		= mod:NewCastTimer(63631)
 local timerSpinUp		= mod:NewCastTimer(4, 63414)
@@ -195,6 +196,7 @@ function mod:NextPhase()
 				SetLootMethod(lootmethod)
 			end
 		end
+		timerP3toP4:Start()
 		if self.Options.HealthFramePhase4 or self.Options.HealthFrame then
 			DBM.BossHealth:Show(L.name)
 			DBM.BossHealth:AddBoss(33670, L.MobPhase3)
@@ -227,15 +229,15 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 then
-		DBM:AddMsg("ALPHA: yell detect phase2, syncing to clients")
+		--DBM:AddMsg("ALPHA: yell detect phase2, syncing to clients")
 		self:SendSync("Phase2")	-- untested alpha! (this will result in a wrong timer)
 
 	elseif msg == L.YellPhase3 then
-		DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
+		--DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
 		self:SendSync("Phase3")	-- untested alpha! (this will result in a wrong timer)
 
 	elseif msg == L.YellPhase4 then
-		DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
+		--DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
 		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
 
 	elseif msg == L.YellHardPull then

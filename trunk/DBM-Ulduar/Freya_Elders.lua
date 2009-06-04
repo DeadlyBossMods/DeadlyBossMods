@@ -14,8 +14,8 @@ mod:RegisterEvents(
 )
 
 mod:AddBoolOption("PlaySoundOnFistOfStone", false)
-local specWarnFistofStone	= mod:NewSpecialWarning("specWarnFistofStone", false)
-local specWarnGroundTremor	= mod:NewSpecialWarning("specWarnGroundTremor", true)
+local specWarnFistofStone	= mod:NewSpecialWarning("SpecWarnFistofStone", false)
+local specWarnGroundTremor	= mod:NewSpecialWarning("SpecWarnGroundTremor", true)
 mod:AddBoolOption("TrashRespawnTimer", true, "timer")
 
 --

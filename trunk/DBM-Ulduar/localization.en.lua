@@ -273,7 +273,8 @@ L:SetOptionLocalization{
 	timerNextShockwave		= "Show timer for Shockwave",
 	timerLeftArm			= "Show timer for Arm Respawn (left)",
 	timerRightArm			= "Show timer for Arm Respawn (right)",
-	achievementDisarmed		= "Show timer for Disarm Achievement"
+	achievementDisarmed		= "Show timer for Disarm Achievement",
+	WarnGrip			= "Announce Grip Targets"
 }
 
 L:SetMiscLocalization{
@@ -298,24 +299,25 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast	= "Sentinel Blast - Interrupt!",
-	SpecWarnVoid	= "Void Zone - MOVE!",
-	WarnCatDied 	= "Feral Defender down (%d lives remaining)",
-	WarnCatDiedOne 	= "Feral Defender down (1 life remaining)",
+	SpecWarnBlast		= "Sentinel Blast - Interrupt!",
+	SpecWarnVoid		= "Void Zone - MOVE!",
+	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
+	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",
 	WarnFear		= "Fear!",
-	WarnFearSoon 	= "Next Fear soon",
+	WarnFearSoon 		= "Next Fear soon",
 	WarnSonic		= "Sonic Screech!",
 	WarnSwarm		= "Guardian Swarm on >%s<"
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast	= "Show Special Warning on Sentinel Blast",
-	SpecWarnVoid	= "Show Special Warning when standing in Feral Essence",
+	SpecWarnBlast		= "Show Special Warning on Sentinel Blast",
+	SpecWarnVoid		= "Show Special Warning when standing in Feral Essence",
 	WarnFear		= "Show Fear Warning",
-	WarnFearSoon	= "Show Fear soon Warning",
+	WarnFearSoon		= "Show Fear soon Warning",
 	WarnCatDied		= "Show Warning when the Feral Defender dies",
 	WarnSwarm		= "Show Warning on Guardian Swarm",
-	WarnSonic		= "Show Sonic Screech Warning"
+	WarnSonic		= "Show Sonic Screech Warning",
+	WarnCatDiedOne		= "Show Warning when Cat dies"
 }
 
 
@@ -447,7 +449,9 @@ L:SetGeneralLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnFistOfStone	= "Show Special Warning for Fist of Stone",
-	WarnFistofStone		= "Announce Fist of Stone"
+	SpecWarnGroundTremor	= "Show Special Warning for Ground Tremor",
+	PlaySoundOnFistOfStone	= "Play Sound on Fist of Stone cast",
+	TrashRespawnTimer	= "Show Trash Respawn timer"
 }
 
 
@@ -463,8 +467,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	DarkGlare		= "Laser Barrage",
 	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
-	Phase2Engaged		= "Phase 2 incoming - regroup now",
-	Phase3Engaged		= "Phase 3 incoming - regroup now",
 	WarnShell		= "Napalm Shells on >%s<",
 	WarnBlast		= "Plasma Blast on >%s<",
 	MagneticCore		= ">%s< got Magnetic Core",
@@ -474,7 +476,10 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	ProximityMines		= "New Proximity Mines",
-	TimerHardmode		= "Hard Mode - Self-Destruct"
+	TimerHardmode		= "Hard Mode - Self-Destruct",
+	TimeToPhase2		= "Start Phase 2",
+	TimeToPhase3		= "Start Phase 3",
+	TimeToPhase4		= "Start Phase 4"
 }
 
 L:SetOptionLocalization{
@@ -484,11 +489,14 @@ L:SetOptionLocalization{
 	WarnShell		= "Announce Napalm Shells target",
 	TimeToPhase2		= "begin Phase 2",
 	TimeToPhase3		= "begin Phase 3",
+	TimeToPhase4		= "begin Phase 4",
 	MagneticCore		= "Announce Magnetic Core looter",
 	HealthFramePhase4	= "Show Health Frame in Phase 4",
 	AutoChangeLootToFFA	= "Auto Switch Looting to FreeForAll in Phase3",
 	WarnBombSpawn		= "Announce Bomb Bots",
-	TimerHardmode		= "Show Timer for Hard Mode"
+	TimerHardmode		= "Show Timer for Hard Mode",
+	PlaySoundOnShockBlast	= "Play Sound on Shock Blast",
+	PlaySoundOnDarkGlare	= "Play Sound on Dark Glare"
 }
 
 L:SetMiscLocalization{
