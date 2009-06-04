@@ -37,7 +37,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d players with Deadly Boss Mods"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is outdated.\n Version %s (r%d) is available for download here:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Press Ctrl-C to copy the download link to your clipboard."
-DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Popup when a new Version is available"
+DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Show popup when a new version is available"
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
 
