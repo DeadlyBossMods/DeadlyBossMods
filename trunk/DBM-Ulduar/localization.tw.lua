@@ -108,12 +108,12 @@ L:SetOptionLocalization{
 	warnTurretsReadySoon		= "顯示砲塔的預先警告",
 	warnTurretsReady		= "顯示砲塔的警告",
 	SpecWarnDevouringFlameCast    	= "當你中了吞噬烈焰時顯示特別警告",
-	timerTurret1			= "顯示砲塔1的計时器",
-	timerTurret2			= "顯示砲塔2的計时器",
-	timerTurret3			= "顯示砲塔3的計时器 (英雄)",
-	timerTurret4			= "顯示砲塔4的計时器 (英雄)",
-	timerGroundedTemp		= "顯示地上階段計時器",
-	OptionDevouringFlame		= "提示吞噬烈焰的目標(不可靠)"
+	timerTurret1			= "顯示砲塔1的計時器",
+	timerTurret2			= "顯示砲塔2的計時器",
+	timerTurret3			= "顯示砲塔3的計時器 (英雄)",
+	timerTurret4			= "顯示砲塔4的計時器 (英雄)",
+	OptionDevouringFlame		= "提示吞噬烈焰的目標(不可靠)",
+	timerGroundedTemp		= "顯示地上階段計時器"
 }
 
 L:SetMiscLocalization{
@@ -256,7 +256,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam		= "集束目光看著你 - 跑開",
-	WarningEyebeam			= "集束目光: >%s<",
+	WarnEyeBeam			= "集束目光: >%s<",
 	WarnGrip			= "堅石之握: >%s<"
 }
 
@@ -265,12 +265,12 @@ L:SetTimerLocalization{
 	timerPetrifyingBreath		= "石化之息",
 	timerLeftArm			= "左臂 重生",
 	timerRightArm			= "右臂 重生",
-	achievementDisarmed		= "卸除手臂 計时器"
+	achievementDisarmed		= "卸除手臂 計時器"
 }
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "當集束目光看著你顯示特別警告",
-	WarningEyebeam			= "提示集束目光的目標",
+	WarnEyeBeam			= "提示集束目光的目標",
 	timerEyebeam			= "顯示集束目光的計時器",
 	SetIconOnEyebeamTarget		= "設置標記在集束目光的目標",
 	timerPetrifyingBreath		= "顯示石化之息的計時器",
@@ -286,7 +286,8 @@ L:SetMiscLocalization{
 	Yell_Trigger_arm_right		= "只是皮肉之傷!",
 	Health_Body			= "柯洛剛恩身體",
 	Health_Right_Arm		= "右臂",
-	Health_Left_Arm			= "左臂"
+	Health_Left_Arm			= "左臂",
+	FocusedEyebeam			= "%s focuses his eyes on you!"
 }
 
 ---------------
@@ -458,8 +459,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnFistofStone 		= "石拳連擊",
-	specWarnGroundTremor   		= "地面震顫 - 停止施法"
+	SpecWarnFistOfStone 		= "石拳連擊",
+	SpecWarnGroundTremor   		= "地面震顫 - 停止施法"
 }
 
 L:SetMiscLocalization{
@@ -467,9 +468,9 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnFistofStone		= "為石拳連擊顯示特別警告",
+	SpecWarnFistOfStone		= "為石拳連擊顯示特別警告",
 	PlaySoundOnFistOfStone		= "當石拳連擊施放時播放音效",
-	specWarnGroundTremor		= "施放地面震顫時顯示特別警告",
+	SpecWarnGroundTremor		= "施放地面震顫時顯示特別警告",
 	TrashRespawnTimer		= "顯示小怪重生時間條"
 }
 
@@ -485,9 +486,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare 			= "雷射彈幕",
-	WarningPlasmaBlast		= "離子衝擊: %s - 治療", --unusable?
-	Phase2Engaged			= "第二階段即將到來 - 現在重組",
-	Phase3Engaged			= "第三階段即將到來 - 現在重組",
 	WarnShell			= "凝汽彈: >%s<",
 	WarnBlast			= "離子衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
@@ -496,9 +494,10 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerHardmode			= "困難模式 - 自毀程序",
 	TimeToPhase2			= "第二階段開始",
 	TimeToPhase3			= "第三階段開始",
-	TimerHardmode			= "困難模式 - 自毀程序"
+	TimeToPhase4			= "第四階段開始"
 }
 
 L:SetOptionLocalization{
@@ -509,9 +508,10 @@ L:SetOptionLocalization{
 	WarnBlast			= "提示離子衝擊的目標",
 	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
-	NextDarkGlare 			= "下一次 雷射彈幕的計时器",
-	TimeToPhase2			= "顯示第二階段開始計时器", --第二階段開始
-	TimeToPhase3			= "顯示第三階段開始計时器", --第三階段開始
+	NextDarkGlare 			= "下一次 雷射彈幕的計時器",
+	TimeToPhase2			= "顯示第二階段開始計時器",
+	TimeToPhase3			= "顯示第三階段開始計時器",
+	TimeToPhase4			= "顯示第四階段開始計時器",
 	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
 	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
