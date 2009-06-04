@@ -217,15 +217,16 @@ L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "Zeige Spezialwarnung wenn betroffen von Fokussierter Augenstrahl",
 	timerLeftArm			= "Zeige Timer für Arm-Nachwachsen (links)",
 	timerRightArm			= "Zeige Timer für Arm-Nachwachsen (rechts)",
-	achievementDisarmed		= "Zeige Timer fpr Armlos Erfolg"
+	achievementDisarmed		= "Zeige Timer für Armlos Erfolg"
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "Just a scratch!",
-	Yell_Trigger_arm_right		= "Only a flesh wound!",
-	Health_Body			= "Kologarn Body",
-	Health_Right_Arm		= "right Arm",
-	Health_Left_Arm			= "left Arm"
+	Yell_Trigger_arm_left		= "Das ist nur ein Kratzer!",	
+	Yell_Trigger_arm_right		= "Ist nur 'ne Fleischwunde!",
+	Health_Body			= "Kologarn",
+	Health_Right_Arm		= "Rechter Arm",
+	Health_Left_Arm			= "Linker Arm",
+	FocusedEyebeam			= "%s fokussiert seinen Blick auf Euch!"
 }
 
 ---------------
