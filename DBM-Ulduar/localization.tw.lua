@@ -287,7 +287,7 @@ L:SetMiscLocalization{
 	Health_Body			= "柯洛剛恩身體",
 	Health_Right_Arm		= "右臂",
 	Health_Left_Arm			= "左臂",
-	FocusedEyebeam			= "%s focuses his eyes on you!"
+	FocusedEyebeam			= "%s正在注視著你!"
 }
 
 ---------------
