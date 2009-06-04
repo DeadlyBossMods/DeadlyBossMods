@@ -93,7 +93,8 @@ L:SetTimerLocalization{
 	timerTurret1			= "Turret 1",
 	timerTurret2			= "Turret 2",
 	timerTurret3			= "Turret 3",
-	timerTurret4			= "Turret 4"
+	timerTurret4			= "Turret 4",
+	timerGroundedTemp		= "on the Ground"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Show timer for next Flame Breath",
@@ -108,7 +109,8 @@ L:SetOptionLocalization{
 	timerTurret2			= "Show timer for Turret 2",
 	timerTurret3			= "Show timer for Turret 3 (Heroic)",
 	timerTurret4			= "Show timer for Turret 4 (Heroic)",
-	OptionDevouringFlame	= "Announce target of Devouring Flame (unreliable)"
+	OptionDevouringFlame		= "Announce target of Devouring Flame (unreliable)",
+	timerGroundedTemp		= "Show Timer for Ground Phase Duration"
 }
 
 L:SetMiscLocalization{
@@ -206,7 +208,9 @@ L:SetOptionLocalization{
 	timerRuneofDeath			= "Show Rune of Death duration timer",
 	SetIconOnStaticDisruption		= "Set Icon on Static Disruption Target",
 	Overload				= "Show Special Warning for Overload",
-	AllwaysWarnOnOverload			= "Always Warn on Overload (otherwise only when targeted)"
+	AllwaysWarnOnOverload			= "Always Warn on Overload (otherwise only when targeted)",
+	PlaySoundOnOverload			= "Play Sound on Overload",
+	WarningStaticDisruption			= "Announce Static Disruption"
 }
 
 L:SetMiscLocalization{
@@ -274,7 +278,9 @@ L:SetOptionLocalization{
 	timerLeftArm			= "Show timer for Arm Respawn (left)",
 	timerRightArm			= "Show timer for Arm Respawn (right)",
 	achievementDisarmed		= "Show timer for Disarm Achievement",
-	WarnGrip			= "Announce Grip Targets"
+	WarnGrip			= "Announce Grip Targets",
+	WarnEyeBeam			= "Announce Eye Beam Target",
+	SetIconOnGripTarget		= "Set Icons on Grip Targets"
 }
 
 L:SetMiscLocalization{
@@ -282,7 +288,8 @@ L:SetMiscLocalization{
 	Yell_Trigger_arm_right		= "Only a flesh wound!",
 	Health_Body			= "Kologarn Body",
 	Health_Right_Arm		= "right Arm",
-	Health_Left_Arm			= "left Arm"
+	Health_Left_Arm			= "left Arm",
+	FocusedEyebeam			= "%s focuses his eyes on you!"
 }
 
 ---------------
@@ -345,7 +352,7 @@ L:SetOptionLocalization{
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze Cast",
 	WarningStormCloud	= "Announce Storm Cloud Players",
 	YellOnStormCloud	= "Yell when Storm Cloud active",
-	SetIconOnStormCloud		= "Set Icon on Storm Cloud Target"
+	SetIconOnStormCloud	= "Set Icon on Storm Cloud Target"
 }
 
 L:SetMiscLocalization{
@@ -541,12 +548,15 @@ L:SetOptionLocalization{
 	SetIconOnLifeLeach		= "Set Icon on Life Leech target (cross)",
 	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
 	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",
+	SpecialWarningShadowCrashNear	= "Show Special Warning for Shadow Crash in near of you",
 	SpecialWarningLLYou		= "Show Special Warning for Life Leach on YOU",
 	SpecialWarningLLNear		= "Show Special Warning for Life Leach in near of you",
 	CrashWhisper			= "Send Whisper to Shadow Crash Target",
 	YellOnLifeLeech			= "Yell on Life Leech",
 	YellOnShadowCrash		= "Yell on Shadow Crash",
-	specWarnShadowCrashNear		= "Show Special Warning when Shadow Crash near you"
+	specWarnShadowCrashNear		= "Show Special Warning when Shadow Crash near you",
+	WarningLeechLife		= "Announce Life Leech Target",
+	hardmodeSpawn			= "Show Timer for Saronite Animus Spawn (hardmode)"
 }
 
 L:SetMiscLocalization{
@@ -591,6 +601,10 @@ L:SetWarningLocalization{
 	SpecWarnFavor			= "Sara's Favor on YOU"
 }
 
+L:SetTimerLocalization{
+	NextPortal			= "Brain Portal"
+}
+
 L:SetOptionLocalization{
 	WarningGuardianSpawned		= "Announce Guardian Spawns",
 	WarningCrusherTentacleSpawned	= "Announce Crusher Tentacle Spawns",
@@ -608,7 +622,13 @@ L:SetOptionLocalization{
 	WarnFavor			= "Announce Sara's Fervor target",
 	SpecWarnFavor			= "Show Special Warning for Sara's Fervor",
 	WarnSqueeze			= "Announce Squeeze target",
-	specWarnBrainPortalSoon		= "Announce Brain Portal soon"
+	specWarnBrainPortalSoon		= "Announce Brain Portal soon",
+	WarningSqueeze			= "Announce Squeeze Targets",
+	NextPortal			= "Show Timer for Next Brain Portal",
+	WhisperBrainLink		= "Whisper players on Brain Link",
+	SetIconOnFavorTarget		= "Set Icon on Saras Fervor target",
+	SetIconOnMCTarget		= "Set Icon on Mindcontrol target",
+	ShowSaraHealth			= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)"
 }
 
 

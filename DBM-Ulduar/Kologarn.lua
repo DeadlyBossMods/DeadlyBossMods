@@ -10,7 +10,8 @@ mod:RegisterCombat("combat", 32930, 32933, 32934)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 mod:AddBoolOption("HealthFrame", true)
@@ -27,6 +28,7 @@ local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC /
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
 local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(48, "timerRightArm")
+local warnFocusedEyebeam		= mod:NewAnnounce("WarnEyeBeam", 3)
 
 -- 5/23 00:33:48.648  SPELL_AURA_APPLIED,0x0000000000000000,nil,0x80000000,0x0480000001860FAC,"Hâzzad",0x4000512,63355,"Crunch Armor",0x1,DEBUFF
 
@@ -56,6 +58,19 @@ function mod:SPELL_DAMAGE(args)
 	if (args.spellId == 63783 or args.spellId == 63982) and args.destName == UnitName("player") then	-- Shockwave
 		timerNextShockwave:Start()
 	elseif (args.spellId == 63346 or args.spellId == 63976) and args.destName == UnitName("player") then
+		specWarnEyebeam:Show()
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.FocusedEyebeam then
+		self:SendSync("EyebeamOn", UnitName("player"))
+	end
+end
+
+function mod:OnSync(event, arg)
+	if event == "EyebeamOn" then
+		warnFocusedEyebeam:Show(arg)
 		specWarnEyebeam:Show()
 	end
 end
