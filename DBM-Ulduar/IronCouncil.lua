@@ -82,13 +82,13 @@ function mod:SPELL_CAST_START(args)
 		if GetInstanceDifficulty() == 1 then
 			timerOverwhelmingPower:Start(60, args.destName)
 		else
-			timerOverwhelmingPower:Start(25, args.destName)
+			timerOverwhelmingPower:Start(30, args.destName)
 		end
 		if self.Options.SetIconOnOverwhelmingPower then
 			if GetInstanceDifficulty() == 1 then
 				mod:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
 			else
-				mod:SetIcon(args.destName, 8, 25) -- skull for 25 seconds (until meltdown)
+				mod:SetIcon(args.destName, 8, 30) -- skull for 25 seconds (until meltdown)
 			end
 		end
 
