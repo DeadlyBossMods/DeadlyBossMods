@@ -477,7 +477,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		DBM.Bars:ShowMovableBar()
 	elseif cmd == "help" then
 		for i, v in ipairs(DBM_CORE_SLASHCMD_HELP) do DBM:AddMsg(v) end
-	elseif cmd:sub(0, 5) == "timer" then
+	elseif cmd:sub(1, 5) == "timer" then
 		local time, text = msg:match("^%w+ ([%d:]+) (.+)$")
 		if not (time and text) then
 			DBM:AddMsg(DBM_PIZZA_ERROR_USAGE)
@@ -490,9 +490,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			sec = min
 			min = 0
 		end
-		time = min*  60 + sec
+		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text)
-	elseif cmd:sub(0, 15) == "broadcast timer" then
+	elseif cmd:sub(1, 15) == "broadcast timer" then
 		local time, text = msg:match("^%w+ %w+ ([%d:]+) (.+)$")
 		if DBM:GetRaidRank() == 0 then
 			DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
@@ -508,9 +508,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			sec = min
 			min = 0
 		end
-		time = min*  60 + sec
+		time = min * 60 + sec
 		DBM:CreatePizzaTimer(time, text, true)
-	elseif cmd:sub(0, 4) == "pull" then
+	elseif cmd:sub(1, 4) == "pull" then
 		if DBM:GetRaidRank() == 0 then
 			return DBM:AddMsg(DBM_ERROR_NO_PERMISSION)
 		end
@@ -534,7 +534,12 @@ SlashCmdList["DBMRANGE"] = function(msg)
 	if DBM.RangeCheck:IsShown() then
 		DBM.RangeCheck:Hide()
 	else
-		DBM.RangeCheck:Show(10)
+		local r = tonumber(msg)
+		if r and (r == 10 or r == 11 or r == 15 or r == 28) then
+			DBM.RangeCheck:Show(r)
+		else
+			DBM.RangeCheck:Show(10)
+		end
 	end
 end
 
@@ -576,7 +581,7 @@ do
 	local ignore = {}
 	function DBM:CreatePizzaTimer(time, text, broadcast, sender)
 		if sender and ignore[sender] then return end
-		text = text:sub(0, 16)
+		text = text:sub(1, 16)
 		text = text:gsub("%%t", UnitName("target") or "<no target>")
 		self.Bars:CreateBar(time, text)
 		if broadcast and self:GetRaidRank() >= 1 then
@@ -1257,7 +1262,7 @@ do
 		for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
-			if guid and (bit.band(guid:sub(0, 5), 0x00F) == 3 or bit.band(guid:sub(0, 5), 0x00F) == 5) then
+			if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 				local cId = tonumber(guid:sub(9, 12), 16)
 				targetList[cId] = id
 			end
@@ -1474,7 +1479,7 @@ function DBM:OnMobKill(cId, synced)
 end
 
 function DBM:UNIT_DIED(args)
-	if bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(0, 5), 0x00F) == 5  then
+	if bit.band(args.destGUID:sub(1, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(1, 5), 0x00F) == 5  then
 		self:OnMobKill(tonumber(args.destGUID:sub(9, 12), 16))
 	end
 end
@@ -1632,7 +1637,7 @@ do
 			-- as this would be even worse than the issue with missing whisper messages ;)
 			return filterOutgoing(nil, nil, self, event)
 		end
-		return msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort, ...
+		return msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort, ...
 	end
 
 	local function filterIncoming(self, event, ...)
@@ -1641,7 +1646,7 @@ do
 			return filterIncoming(nil, nil, self, event)
 		end
 		if DBM.Options.SpamBlockBossWhispers then
-			return #inCombat > 0 and (msg == "status" or msg:sub(0, chatPrefix:len()) == chatPrefix or msg:sub(0, chatPrefixShort:len()) == chatPrefixShort), ...
+			return #inCombat > 0 and (msg == "status" or msg:sub(1, chatPrefix:len()) == chatPrefix or msg:sub(1, chatPrefixShort:len()) == chatPrefixShort), ...
 		else
 			return msg == "status" and #inCombat > 0, ...
 		end
@@ -1861,7 +1866,7 @@ end
 
 function bossModPrototype:GetUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
-	--return (guid and bit.band(guid:sub(0, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
+	--return (guid and bit.band(guid:sub(1, 5), 0x00F) == 3 and tonumber(guid:sub(9, 12), 16)) or 0
 	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
 end
 
