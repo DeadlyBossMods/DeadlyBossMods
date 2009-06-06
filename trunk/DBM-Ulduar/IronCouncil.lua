@@ -63,6 +63,11 @@ local enrageTimer		= mod:NewEnrageTimer(900)
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)	
 end
+function mod:OnCombatEnd()
+--	if DBM.RangeCheck:IsShown() then
+--		DBM.RangeCheck:Hide()
+--	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 61920 then -- Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.	
@@ -88,9 +93,14 @@ function mod:SPELL_CAST_START(args)
 			if GetInstanceDifficulty() == 1 then
 				mod:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
 			else
-				mod:SetIcon(args.destName, 8, 30) -- skull for 25 seconds (until meltdown)
+				mod:SetIcon(args.destName, 8, 30) -- skull for 30 seconds (until meltdown)
 			end
 		end
+--		if args.destName == UnitName("player") then
+--			if self.Options.RangeFrame then
+--				DBM.RangeCheck:Show(30)
+--			end
+--		end
 
 	elseif args.spellId == 62338 then				-- Runic Barrier
 		timerRunicBarrier:Start()
@@ -120,6 +130,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+
+local disruptTargets = {}
+function mod:DisruptAnnounce()
+	warnStaticDisruption:Show(table.concat(disruptTargets, "<, >"))
+	table.wipe(disruptTargets)
+end
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 61903 or args.spellId == 63493 then		-- Fusion Punch
 		timerFusionPunchActive:Start(args.destName)
@@ -131,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
 		end
-	elseif args.spellId == 63486 or args.spellId == 61887 then	-- lightning
+	elseif args.spellId == 63486 or args.spellId == 61887 then	-- Lightning Tendrils
 		timerLightningTendrils:Start()
 		specwarnLightningTendrils:Show()
 		if self.Options.PlaySoundLightningTendrils then
@@ -139,11 +155,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 
 	elseif args.spellId == 61912 or args.spellId == 63494 then	-- Static Disruption (Hard Mode) don't know 25 id, took it from wowhead
-		warnStaticDisruption:Show(args.destName)
 		if self.Options.SetIconOnStaticDisruption then 
-			mod:SetIcon(args.destName, 8, 20)
+			self:SetIcon(args.destName, 8 - #disruptTargets, 20)
 		end
+		table.insert(disruptTargets, args.destName)
+		self:UnscheduleMethod("DisruptAnnounce")
+		self:ScheduleMethod(0.15, "DisruptAnnounce")
 	end
 end
+
 
 

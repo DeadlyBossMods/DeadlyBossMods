@@ -170,7 +170,8 @@ L:SetWarningLocalization{
 	RuneofDeath				= "Rune of Death - MOVE",
 	LightningTendrils			= "Lightning Tendrils - MOVE",
 	WarningRuneofSummoning			= "Rune of Summoning",
-	Overload				= "Overload - MOVE AWAY"
+	Overload				= "Overload - MOVE AWAY",
+	WarningStaticDisruption			= "Static Disruption on >%s<"
 }
 
 L:SetTimerLocalization{
