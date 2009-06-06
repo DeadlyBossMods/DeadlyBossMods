@@ -174,8 +174,8 @@ L:SetWarningLocalization{
 	RuneofDeath			= "死亡符文 - 移動",
 	LightningTendrils		= "閃電觸鬚 - 跑開!",
 	WarningRuneofSummoning		= "召喚符文",
-	WarningStaticDisruption		= "靜電崩裂: >%s<",
-	Overload			= "超載 - 跑開!"
+	Overload			= "超載 - 跑開!",
+	WarningStaticDisruption		= "靜電崩裂: >%s<"
 }
 
 L:SetTimerLocalization{
@@ -230,18 +230,30 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBigBangCast		= "大爆炸 施放",
+	NextCollapsingStar	= "下一次 崩陷之星",
+	PossibleNextCosmicSmash	= "下一次 宇宙潰擊"
 }
 L:SetWarningLocalization{
-	WarningPhasePunch		= "相位拳擊: >%s<",
-	WarningBlackHole		= "黑洞爆炸",
+	WarningPhasePunch	= "相位拳擊: >%s< - 第%d層",
+	WarningBlackHole	= "黑洞爆炸",
+	WarningBigBang		= "大爆炸來臨",
+	PreWarningBigBang	= "約10秒後 大爆炸",
 }
 
 L:SetOptionLocalization{
-	TimerBigBangCast		= "為大爆炸顯示施法計時條",
-	SpecWarnPhasePunch		= "當你中了相位拳擊顯示特別警告",
-	WarningPhasePunch		= "提示相位拳擊的目標",
-	WarningBlackHole		= "提示黑洞爆炸",
+	SpecWarnPhasePunch	= "當你中了相位拳擊時顯示特別警告",
+	WarningBigBang		= "提示大爆炸的施放",
+	PreWarningBigBang	= "預先提示大爆炸",
+	WarningPhasePunch	= "提示相位拳擊的目標",
+	WarningBlackHole	= "提示黑洞爆炸",
+	NextCollapsingStar	= "為下一次 崩陷之星顯示計時器",
+	PossibleNextCosmicSmash	= "為下一次 宇宙潰擊顯示計時器"
+}
+
+L:SetMiscLocalization{
+	YellPull		= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
+	Emote_CollapsingStars	= "%s開始召喚崩陷之星!",
+	Emote_CosmicSmash	= "%s開始施放宇宙潰擊!"
 }
 
 
