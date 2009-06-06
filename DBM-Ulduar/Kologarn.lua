@@ -53,26 +53,6 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
---[[
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Yell_Trigger_arm_left then
-		timerRespawnLeftArm:Start()
-		if GetInstanceDifficulty() == 1 then
-			timerTimeForDisarmed:Start(12)
-		else
-			timerTimeForDisarmed:Start()
-		end
-
-	elseif msg == L.Yell_Trigger_arm_right then
-		timerRespawnRightArm:Start()
-		if GetInstanceDifficulty() == 1 then
-			timerTimeForDisarmed:Start(12)
-		else
-			timerTimeForDisarmed:Start()
-		end
-	end
-end
---]]
 
 function mod:SPELL_DAMAGE(args)
 	if (args.spellId == 63783 or args.spellId == 63982) and args.destName == UnitName("player") then	-- Shockwave
@@ -83,6 +63,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	DBM:AddMsg(msg)
 	if msg == L.FocusedEyebeam then
 		self:SendSync("EyebeamOn", UnitName("player"))
 	end
