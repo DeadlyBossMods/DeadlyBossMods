@@ -60,7 +60,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == "%s begins to Summon Collapsing Stars!" then
 		timerNextColapsingStar:Start()
-	elseif msg = "%s begins to cast Cosmic Smash!" then
+	elseif msg == "%s begins to cast Cosmic Smash!" then
 		timerCDCosmicSmash:Start()
 	end
 end
