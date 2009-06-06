@@ -40,10 +40,6 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 65108 then 	-- Black Hole Explosion
 		announceBlackHole:Show()
 	
-	--elseif args.spellId == 62311 then	-- Cosmic Smash		%s begins to cast Cosmic Smash!
-	--elseif args.spellId == 64395 then	-- Quantum Strike
-	--elseif args.spellId == 64412 then 	-- Phase Punch
-
 	elseif args.spellId == 64584 then 	-- Big Bang
 		timerBigBangCast:Start()
 		timerNextBigBang:Start()
@@ -51,7 +47,6 @@ function mod:SPELL_CAST_START(args)
 		announcePreBigBang:Schedule(80)
 	end
 end
-
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 64412 then
