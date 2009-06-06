@@ -2,11 +2,8 @@ local mod = DBM:NewMod("Algalon", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID() -- ??
+mod:SetCreatureID(32871)
 mod:SetZone()
-
--- disclaimer: we never did this boss on the PTR, this boss mod is based on combat logs and movies. This boss mod might be completely wrong or broken, we will replace it with an updated version asap
-
 
 mod:RegisterCombat("combat")
 
@@ -15,11 +12,23 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local timerBigBangCast		= mod:NewTimer(8, "TimerBigBangCast", 64584)
+local timerNextBigBang		= mod:NewCDTimer(90.5, 64584)
+local timerBigBangCast		= mod:NewCastTimer(8, 64584)
+local announceBigBang		= mod:NewAnnounce("WarningBigBang", 3, 64584)
+local announcePreBigBang	= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
+
 local announceBlackHole		= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announcePhasePunch	= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
 local specWarnPhasePunch	= mod:NewSpecialWarning("SpecWarnPhasePunch")
 
+local enrageTimer		= mod:NewEnrageTimer(366) -- combatstart take some combattime
+
+function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)
+	-- added 6 seconds because of +combat until spawn difference
+	timerNextBigBang:Start(96.5-delay)
+	announcePreBigBang:Schedule(86-delay)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 65108 then 	-- Black Hole Explosion
@@ -31,6 +40,9 @@ function mod:SPELL_CAST_START(args)
 
 	elseif args.spellId == 64584 then 	-- Big Bang
 		timerBigBangCast:Start()
+		timerNextBigBang:Start()
+		announceBigBang:Show()
+		announcePreBigBang:Schedule(80)
 	end
 end
 
@@ -43,4 +55,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		announcePhasePunch:Show(args.destName)
 	end
 end
+
+--[[
+(18:33:24) Kyrana: 6 min enrage timer 
+beginn entweder mit dem ersten hit vom tank auf ihn oder dem ersten hit von ihm auf den tank, dazwischen liegen paar sec weil er erst noch labert
+sollte sich aber anhand der logs sagen lassen da gleichzeitig auch der timer für big bang startet Big Bang alle 1:30 -> durch die voidportale   
+(reset bei 20%?) 15sec in fight Erste Sternengruppe (Collapsing Star) 4 Stück, von da an alle 15sec (laut  Aussage, im Video sieht’s nach wesentlich mehr aus)Nacheinander töten -> Black Hole Explosion ->Black Hole (für BigBang) 
+
+(18:33:40) Kyrana: Cosmic Smash alle 25sec, void (wie bei Kel) unter demjenigen Rauslaufen und Abstand halten Kein Targeting vom Boss, keine erkannter debuff auf dem mit der Void Living Constellations ca jede 1:10min Aggroliste, stun bar, benötigen keine Aufmerksamkeit, schießen nach ihrer Aggroliste immer wieder Bolts, kein nennenswerter dmg/effektLiving Constellations schließen immer wieder die Voidportale Phase Punch Alle 15sec auf den Tank -> debuff, bei ca 3 taunt vom anderen Tank Debuff hält 45 secBei 5 stacks wird der tank von algalon ignoriert 
+
+(18:33:51) Kyrana: 20% Alle Collapsing Stars, Living Constellations und Black Holes verschwinden4 neue Black Holes erscheinen (kann man nicht durch) daraus spawnt je ein Unleashed Dark Matter, offtanken, weiter dmg auf Algalon25-30sec später nochmal 4 (genauen timer im log?) Quantum Strike alle 30 sec ?    Wichtigsten Timer:EnrageBigBangPhase Punsh (plus ansage wieviele Stacks wann taunt (ca 3 stacks), wanns bei dem Tank ausläuft)Cosmic Smash Collapsing StarLiving Constellation Bei 20% ansage Unleashed Dark Matter gleich oä + Timer für nächsten   
+--]]
 
