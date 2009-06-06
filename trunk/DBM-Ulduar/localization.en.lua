@@ -231,7 +231,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextColapsingStar	= "Next Colapsing Star"
+	NextCollapsingStar	= "Next Collapsing Star"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= "Phase Punch on >%s< - Stack %d",
@@ -246,11 +246,13 @@ L:SetOptionLocalization{
 	PreWarningBigBang	= "Pre Announce Big Bang",
 	WarningPhasePunch	= "Announce Phase Punch target",
 	WarningBlackHole	= "Announce Black Hole",
-	NextColapsingStar	= "Show Timer for Next Colapsing Star"
+	NextCollapsingStar	= "Show Timer for Next Colapsing Star"
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome."
+	YellPull		= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
+	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
+	Emote_CosmicSmash	= "%s begins to cast Cosmic Smash!"
 }
 
 

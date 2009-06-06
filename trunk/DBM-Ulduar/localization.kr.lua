@@ -225,7 +225,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextColapsingStar	= "다음 붕괴의 별"	
+	NextCollapsingStar	= "다음 붕괴의 별"	
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= "위상의 주먹 : >%s< - %d 중첩",
@@ -240,7 +240,7 @@ L:SetOptionLocalization{
 	PreWarningBigBang	= "대 폭발 사전(미리) 알리기",	
 	WarningPhasePunch	= "위상의 주먹 대상 알리기",
 	WarningBlackHole		= "블랙 홀 알리기",
-	NextColapsingStar		= "다음 붕괴의 별 시전 알리기"	
+	NextCollapsingStar		= "다음 붕괴의 별 시전 알리기"	
 }
 
 L:SetMiscLocalization{
