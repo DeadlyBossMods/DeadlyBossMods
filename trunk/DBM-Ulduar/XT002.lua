@@ -14,7 +14,7 @@ mod:RegisterEvents(
 )
 
 local timerTympanicTantrumCast		= mod:NewCastTimer(62775)
-local timerTympanicTantrum		= mod:NewBuffActiveTimer(12, 62775)
+local timerTympanicTantrum		= mod:NewBuffActiveTimer(8, 62775)
 local timerTympanicTantrumCD		= mod:NewCDTimer(28, 62776)
 local timerHeart			= mod:NewCastTimer(30, 63849)
 local timerLightBomb			= mod:NewTargetTimer(9, 65121)
@@ -50,7 +50,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62775 and args.auraType == "BUFF" then	-- Tympanic Tantrum
+	if args.spellId == 62775 and args.auraType == "DEBUFF" then	-- Tympanic Tantrum
 		timerTympanicTantrumCD:Start()
 		timerTympanicTantrum:Start()
 
