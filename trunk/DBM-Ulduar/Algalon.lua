@@ -9,13 +9,17 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local timerNextBigBang		= mod:NewCDTimer(90.5, 64584)
 local timerBigBangCast		= mod:NewCastTimer(8, 64584)
 local announceBigBang		= mod:NewAnnounce("WarningBigBang", 3, 64584)
 local announcePreBigBang	= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
+
+local timerNextColapsingStar	= mod:NewTimer(15, "NextColapsingStar")
+local timerCDCosmicSmash	= mod:NewTimer(25, "PossibleNextCosmicSmash")
 
 local announceBlackHole		= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announcePhasePunch	= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
@@ -28,13 +32,15 @@ function mod:OnCombatStart(delay)
 	-- added 6 seconds because of +combat until spawn difference
 	timerNextBigBang:Start(96.5-delay)
 	announcePreBigBang:Schedule(86-delay)
+	timerNextColapsingStar:Start(21-delay)
+	timerCDCosmicSmash:Start(31-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 65108 then 	-- Black Hole Explosion
 		announceBlackHole:Show()
-
-	--elseif args.spellId == 62311 then	-- Cosmic Smash
+	
+	--elseif args.spellId == 62311 then	-- Cosmic Smash		%s begins to cast Cosmic Smash!
 	--elseif args.spellId == 64395 then	-- Quantum Strike
 	--elseif args.spellId == 64412 then 	-- Phase Punch
 
@@ -53,6 +59,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPhasePunch:Show()
 		end
 		announcePhasePunch:Show(args.destName)
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == "%s begins to Summon Collapsing Stars!" then
+		timerNextColapsingStar:Start()
+	elseif msg = "%s begins to cast Cosmic Smash!" then
+		timerCDCosmicSmash:Start()
 	end
 end
 
