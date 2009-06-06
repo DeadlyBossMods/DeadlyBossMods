@@ -225,18 +225,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBigBangCast	= "Big Bang cast",
+	NextColapsingStar	= "다음 붕괴의 별"	
 }
 L:SetWarningLocalization{
-	WarningPhasePunch	= ">%s< 에게 위상의 주먹",
-	WarningBlackHole	= "블랙 홀",
+	WarningPhasePunch	= "위상의 주먹 : >%s< - %d 중첩",
+	WarningBlackHole		= "검은 구멍 폭발",
+	WarningBigBang		= "대 폭발!",
+	PreWarningBigBang	= "대 폭발 10초 전!",
 }
 
 L:SetOptionLocalization{
-	TimerBigBangCast	= "Show Castbar for Big Bang",
-	SpecWarnPhasePunch	= "의상의 주먹 대상이 될 경우 특수 경보 보기",
+	SpecWarnPhasePunch	= "위상의 주먹 대상이 될 경우 특수 경보 보기",
+	WarningBigBang		= "대 폭발 시전 알리기",
+	PreWarningBigBang	= "대 폭발 사전(미리) 알리기",	
 	WarningPhasePunch	= "위상의 주먹 대상 알리기",
-	WarningBlackHole	= "블랙 홀 알리기",
+	WarningBlackHole		= "블랙 홀 알리기",
+	NextColapsingStar		= "다음 붕괴의 별 시전 알리기"	
+}
+
+L:SetMiscLocalization{
+	YellPull		= "너희 행동은 비논리적이다. 이 전투에서 가능한 결말은 모두 계산되었다. 결과와 상관없이 판테온은 관찰자의 전갈을 받을 것이다."
 }
 
 
@@ -265,7 +273,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "당신에게 안광 집중이 될 때 특수 경고 보기",
-	WarnEyebeam				= "안광 집중 대상 알리기",
+	WarnEyeBeam				= "안광 집중 대상 알리기",
 	timerEyebeam				= "안광 집중 타이머 보기",
 	SetIconOnEyebeamTarget	= "안광 집중 대상 아이콘 설정",
 	timerPetrifyingBreath		= "석화 숨결 타이머 보기",
@@ -550,17 +558,17 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarningShadowCrash				= "어둠 붕괴의 특수 경보 보기",
 	SetIconOnShadowCrash			= "어둠 붕괴 대상 표시하기(해골 징표)",
-	SetIconOnLifeLeach				= "얼굴 없는 자의 징표 대상 아이콘 설정 (엑스 징표)",
-	SpecialWarningSurgeDarkness		= "어둠 쇄도 특수 경고 보기",
+	SetIconOnLifeLeach					= "얼굴 없는 자의 징표 대상 아이콘 설정 (엑스 징표)",
+	SpecialWarningSurgeDarkness	= "어둠 쇄도 특수 경고 보기",
 	SpecialWarningShadowCrash		= "어둠 붕괴 특수 경고 보기",
-	WarningLeechLife				= "생명력 흡수 시전 경고 보기",	
+	SpecialWarningShadowCrashNear	= "주변에 어둠 붕괴일 때 특수 경보 보기",	
 	SpecialWarningLLYou				= "얼굴 없는 자의 징표 특수 경보 보기",
-	SpecialWarningLLNear			= "생명력 흡수 주변 특수 경보 보기",
-	CrashWhisper					= "어둠 붕괴 대상에게 귓속말 보내기"	,
-	YellOnLifeLeech					= "생명력 흡수를 당할 때 외치기",
+	SpecialWarningLLNear				= "생명력 흡수 주변 특수 경보 보기",	
+	CrashWhisper						= "어둠 붕괴 대상에게 귓속말 보내기"	,
+	YellOnLifeLeech						= "생명력 흡수를 당할 때 외치기",
 	YellOnShadowCrash				= "어둠 붕괴일 때 외치기",
-	specWarnShadowCrashNear			= "주변에 어둠 붕괴일 때 특수 경보 보기",
-	hardmodeSpawn				= "사로나이드 원혼 생성 타이머 보기(하드모드)"
+	WarningLeechLife					= "생명력 흡수 시전 경고 보기",		
+	hardmodeSpawn					= "사로나이드 원혼 생성 타이머 보기(하드모드)"
 }
 
 L:SetMiscLocalization{
