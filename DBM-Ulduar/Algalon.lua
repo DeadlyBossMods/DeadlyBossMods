@@ -1,6 +1,13 @@
 local mod = DBM:NewMod("Algalon", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
+--[[
+--
+--  Thanks to  Apathy @ Vek'nilash  who provided us with Informations and Combatlog about Algalon
+--
+--]]
+
+
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32871)
 mod:SetZone()
