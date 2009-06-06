@@ -10,7 +10,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"SPELL_AURA_APPLIED_DOSE",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_HEALTH"
 )
 
 local timerNextBigBang		= mod:NewCDTimer(90.5, 64584)
@@ -22,18 +24,32 @@ local timerNextColapsingStar	= mod:NewTimer(15, "NextColapsingStar")
 local timerCDCosmicSmash	= mod:NewTimer(25, "PossibleNextCosmicSmash")
 
 local announceBlackHole		= mod:NewAnnounce("WarningBlackHole", 2, 65108)
+
+local timerPhasePunch		= mod:NewBuffActiveTimer(45, 64412)
+local timerNextPhasePunch	= mod:NewNextTimer(16, 64412)
 local announcePhasePunch	= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
 local specWarnPhasePunch	= mod:NewSpecialWarning("SpecWarnPhasePunch")
 
 local enrageTimer		= mod:NewEnrageTimer(366) -- combatstart take some combattime
 
+local phase = 0
+
 function mod:OnCombatStart(delay)
+	phase = 1
 	enrageTimer:Start(-delay)
 	-- added 6 seconds because of +combat until spawn difference
 	timerNextBigBang:Start(96.5-delay)
 	announcePreBigBang:Schedule(86-delay)
 	timerNextColapsingStar:Start(21-delay)
 	timerCDCosmicSmash:Start(31-delay)
+end
+
+function mod:UNIT_HEALTH(unitid)
+	if phase == 1 and UnitName(unitid) == L.name then
+		if UnitHealth(unitid) <= 20 then
+			phase = 2
+		end
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -50,12 +66,17 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 64412 then
-		if args.destName == UnitName("player") then
+		timerNextPhasePunch:Start()
+		local amount = args.amount or 1
+		if args.destName == UnitName("player") and amount >= 3 then
 			specWarnPhasePunch:Show()
 		end
-		announcePhasePunch:Show(args.destName)
+		timerPhasePunch:Start(args.destName)
+		announcePhasePunch:Show(args.destName, amount)
 	end
 end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == "%s begins to Summon Collapsing Stars!" then
