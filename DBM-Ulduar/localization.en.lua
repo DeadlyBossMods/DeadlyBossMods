@@ -232,10 +232,13 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerBigBangCast	= "Big Bang cast",
+	NextColapsingStar	= "Next Colapsing Star"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= "Phase Punch on >%s<",
 	WarningBlackHole	= "Black Hole",
+	WarningBigBang		= "Big Bang NOW",
+	PreWarningBigBang	= "Big Bang in ~10 sec",
 }
 
 L:SetOptionLocalization{
