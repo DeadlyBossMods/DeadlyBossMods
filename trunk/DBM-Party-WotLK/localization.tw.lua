@@ -4,14 +4,14 @@ local L
 
 local spell		= "%s"				
 local debuff		= "%s: >%s<"			
-local spellCD		= "%s 冷卻"			-- translate
-local spellSoon		= "%s 即將到來"			-- translate
-local optionWarning	= "顯示\"%s\"警告"		-- translate
-local optionPreWarning	= "顯示\"%s\"的預先警告"	-- translate
-local optionSpecWarning	= "顯示\"%s\"的特別警告"	-- translate
-local optionTimerCD	= "顯示\"%s\"的冷卻計時器"	-- translate
-local optionTimerDur	= "顯示\"%s\"的存在計時器"	-- translate
-local optionTimerCast	= "顯示\"%s\"施法計時器"	-- translate
+local spellCD		= "%s 冷卻"
+local spellSoon		= "%s 即將到來"
+local optionWarning	= "顯示\"%s\"警告"
+local optionPreWarning	= "顯示\"%s\"的預先警告"
+local optionSpecWarning	= "顯示\"%s\"的特別警告"
+local optionTimerCD	= "顯示\"%s\"的冷卻計時器"
+local optionTimerDur	= "顯示\"%s\"的存在計時器"
+local optionTimerCast	= "顯示\"%s\"施法計時器"
 
 
 --------------------------------
@@ -751,7 +751,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "是找出答案的時候了!讓好戲開演吧!",
+	Pull		= "幫我看著外頭!我只要三兩下就可以搞定這玩意--",
 	Phase1	= "xxx anti error xxx",
 	Phase2	= "xxx anti error xxx",
 	Phase3	= "xxx anti error xxx"
