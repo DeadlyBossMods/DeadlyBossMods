@@ -48,6 +48,8 @@ local onUpdate
 local dropdownFrame
 local initialize
 
+-- for Phanx' Class Colors
+local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 
 ---------------------
 --  Dropdown Menu  --
