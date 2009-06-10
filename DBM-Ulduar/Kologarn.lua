@@ -63,7 +63,6 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	DBM:AddMsg(msg)
 	if msg == L.FocusedEyebeam then
 		self:SendSync("EyebeamOn", UnitName("player"))
 	end
