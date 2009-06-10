@@ -2067,6 +2067,7 @@ do
 		else
 			self:AddBoolOption(optionName or text, optionDefault, "announce")		
 		end
+		table.insert(self.announces, obj)
 		return obj
 	end
 
