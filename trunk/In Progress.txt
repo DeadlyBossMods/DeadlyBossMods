@@ -1,8 +1,0 @@
-DBM-Core - Done
-DBM-BossModStudio - Done
-DBM-GUI - Done
-DBM-Party-WotLK - In Progress
-DBM-Battlegrounds - In Progress
-DBM-ChamberOfAspects - In Progress
-DBM-EyeOfEternity - In Progress
-DBM-Naxx - In Progress
