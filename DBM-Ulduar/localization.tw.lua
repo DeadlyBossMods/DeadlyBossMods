@@ -86,8 +86,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame		= "吞噬烈焰 - 移動囉!!",
-	warnTurretsReadySoon		= "20秒後 第四座砲塔完成",
-	warnTurretsReady		= "第四座砲塔已完成",
+	warnTurretsReadySoon		= "20秒後 最後一座砲塔完成",
+	warnTurretsReady		= "最後一座砲塔已完成",
 	SpecWarnDevouringFlameCast	= "你中了吞噬烈焰",
 	WarnDevouringFlameCast		= "吞噬烈焰: >%s<", 
 }
@@ -117,7 +117,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAir 			= "給我們一點時間來準備建造砲塔。",
+	YellAir 			= "火熄了!讓我們重建砲塔!",
 	YellGroundTemp			= "快!她可不會在地面上待太久!",
 	EmotePhase2			= "%%s再也飛不動了!",
 	FlamecastUnknown		= "未知"
