@@ -114,7 +114,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 64529 or args.spellId == 62997 then -- plasma blast
 		timerPlasmaBlastCD:Start()
 	end
-	if args.spellID == 64570 then
+	if args.spellId == 64570 then
 		timerFlameSuppressant:Start()
 	end
 end
@@ -153,8 +153,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		DBM:Schedule(0.15, show_warning_for_spinup)	-- wait 0.15 and then announce it, otherwise it will sometimes fail
 		lastSpinUp = GetTime()
 	
-	elseif args.spellID == 64570 then
-		timerNextFlameSuppressant:start()
+	elseif args.spellId == 65192 then
+		timerNextFlameSuppressant:Start()
 	end
 end
 
