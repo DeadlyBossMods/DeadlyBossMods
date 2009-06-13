@@ -23,12 +23,14 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 	     or select(2, UnitClass("player")) == "WARRIOR"
 	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
-mod:AddBoolOption("PlaySoundOnShockBlast", isMelee, "announce")
-mod:AddBoolOption("PlaySoundOnDarkGlare", true, "announce")
+mod:AddBoolOption("PlaySoundOnShockBlast", isMelee)
+mod:AddBoolOption("PlaySoundOnDarkGlare", true)
 mod:AddBoolOption("HealthFramePhase4", true)
 mod:AddBoolOption("AutoChangeLootToFFA", true)
 
-local warnShockBlast		= mod:NewSpecialWarning("WarningShockBlast", isMelee)
+local warnShockBlast	= mod:NewSpecialWarning("WarningShockBlast", nil, false)
+mod:AddBoolOption("ShockBlastWarningInP1", isMelee, "announce")
+mod:AddBoolOption("ShockBlastWarningInP4", false, "announce")
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 local blastWarn			= mod:NewAnnounce("WarnBlast", 4)
 local shellWarn			= mod:NewAnnounce("WarnShell", 2)
@@ -95,8 +97,8 @@ function mod:UNIT_SPELLCAST_CHANNEL_STOP(unit, spell)
 end
 
 function mod:CHAT_MSG_LOOT(msg)
-	-- DBM:AddMsg(msg) - Meridium receives loot: [Magnetic Core]
-	local _, _, player, itemID = string.find(msg, L.LootMsg);
+	-- DBM:AddMsg(msg) --> Meridium receives loot: [Magnetic Core]
+	local player, itemID = msg:match(L.LootMsg)
 	if player and itemID and tonumber(itemID) == 46029 then
 		lootannounce:Show(player)
 	end
@@ -104,7 +106,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 63631 then
-		warnShockBlast:Show()
+		if phase == 1 and self.Options.ShockBlastWarningInP1 or phase == 4 and self.Options.ShockBlastWarningInP4 then
+			warnShockBlast:Show()
+		end
 		timerShockBlast:Start()
 		timerNextShockblast:Start()
 		if self.Options.PlaySoundOnShockBlast then
