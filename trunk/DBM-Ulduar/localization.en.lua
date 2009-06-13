@@ -266,38 +266,38 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam		= "Eye Beam on You - MOVE",
+	SpecialWarningEyebeam	= "Eye Beam on You - MOVE",
 	WarningEyebeam			= "Eye Beam on >%s<",
-	WarnGrip			= "Grip on >%s<"
+	WarnGrip				= "Grip on >%s<"
 }
 
 L:SetTimerLocalization{
 	timerEyebeam			= "Eye Beam: %s",
-	timerPetrifyingBreath		= "Petrifying Breath",
+	timerPetrifyingBreath	= "Petrifying Breath",
 	timerNextShockwave		= "Next Shockwave",
 	timerLeftArm			= "Respawn Left Arm",
 	timerRightArm			= "Respawn Right Arm",
-	achievementDisarmed		= "time for Disarm"
+	achievementDisarmed		= "Time for Disarm"
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam		= "Show a Special Warning for Eye Beam on YOU",
+	SpecialWarningEyebeam	= "Show a Special Warning for Eye Beam on YOU",
 	WarningEyebeam			= "Announce Eye Beam target",
 	timerEyebeam			= "Show timer for Eye Beam",
-	timerPetrifyingBreath		= "Show timer for Petrifying Breath",
+	timerPetrifyingBreath	= "Show timer for Petrifying Breath",
 	timerNextShockwave		= "Show timer for Shockwave",
 	timerLeftArm			= "Show timer for Arm Respawn (left)",
 	timerRightArm			= "Show timer for Arm Respawn (right)",
 	achievementDisarmed		= "Show timer for Disarm Achievement",
-	WarnGrip			= "Announce Grip Targets",
-	WarnEyeBeam			= "Announce Eye Beam Target",
+	WarnGrip				= "Announce Grip Targets",
+	WarnEyeBeam				= "Announce Eye Beam Target",
 	SetIconOnGripTarget		= "Set Icons on Grip Targets"
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "Just a scratch!",
-	Yell_Trigger_arm_right		= "Only a flesh wound!",
-	Health_Body			= "Kologarn Body",
+	Yell_Trigger_arm_left	= "Just a scratch!",
+	Yell_Trigger_arm_right	= "Only a flesh wound!",
+	Health_Body				= "Kologarn Body",
 	Health_Right_Arm		= "right Arm",
 	Health_Left_Arm			= "left Arm",
 	FocusedEyebeam			= "%s focuses his eyes on you!"

@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
 --	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"UNIT_DIED"
 )
 
@@ -62,16 +62,16 @@ function mod:SPELL_DAMAGE(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg == L.FocusedEyebeam then
-		self:SendSync("EyebeamOn", UnitName("player"))
+		self:SendSync("EyeBeamOn", UnitName("player"))
+		specWarnEyebeam:Show()
 	end
 end
 
 function mod:OnSync(event, arg)
-	if event == "EyebeamOn" then
+	if event == "EyeBeamOn" and arg and DBM:GetRaidUnitId(arg) ~= "none" then
 		warnFocusedEyebeam:Show(arg)
-		specWarnEyebeam:Show()
 	end
 end
 
