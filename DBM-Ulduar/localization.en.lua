@@ -483,10 +483,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DarkGlare		= "Laser Barrage",
+	DarkGlare			= "Laser Barrage",
 	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
-	WarnShell		= "Napalm Shells on >%s<",
-	WarnBlast		= "Plasma Blast on >%s<",
+	WarnShell			= "Napalm Shells on >%s<",
+	WarnBlast			= "Plasma Blast on >%s<",
 	MagneticCore		= ">%s< got Magnetic Core",
 	WarningShockBlast	= "Shock Blast - MOVE AWAY",
 	WarnBombSpawn		= "Bomb Bot spawned"
@@ -495,26 +495,27 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	ProximityMines		= "New Proximity Mines",
 	TimerHardmode		= "Hard Mode - Self-Destruct",
-	TimeToPhase2		= "Start Phase 2",
-	TimeToPhase3		= "Start Phase 3",
-	TimeToPhase4		= "Start Phase 4"
+	TimeToPhase2		= "Phase 2",
+	TimeToPhase3		= "Phase 3",
+	TimeToPhase4		= "Phase 4"
 }
 
 L:SetOptionLocalization{
-	DarkGlare		= "Show Special Warning for Laser Barrage",
-	WarningShockBlast	= "Show Special Warning for Shock Blast",
-	WarnBlast		= "Announce Plasma Blast target",
-	WarnShell		= "Announce Napalm Shells target",
-	TimeToPhase2		= "begin Phase 2",
-	TimeToPhase3		= "begin Phase 3",
-	TimeToPhase4		= "begin Phase 4",
-	MagneticCore		= "Announce Magnetic Core looter",
-	HealthFramePhase4	= "Show Health Frame in Phase 4",
-	AutoChangeLootToFFA	= "Auto Switch Looting to FreeForAll in Phase3",
-	WarnBombSpawn		= "Announce Bomb Bots",
-	TimerHardmode		= "Show Timer for Hard Mode",
+	DarkGlare				= "Show Special Warning for Laser Barrage",
+	WarnBlast				= "Announce Plasma Blast target",
+	WarnShell				= "Announce Napalm Shells target",
+	TimeToPhase2			= "Show Timer for Phase 2",
+	TimeToPhase3			= "Show Timer for Phase 3",
+	TimeToPhase4			= "Show Timer for Phase 4",
+	MagneticCore			= "Announce Magnetic Core looter",
+	HealthFramePhase4		= "Show Health Frame in Phase 4",
+	AutoChangeLootToFFA		= "Switch Loot Mode to Free For All in Phase 3",
+	WarnBombSpawn			= "Announce Bomb Bots",
+	TimerHardmode			= "Show Timer for Hard Mode",
 	PlaySoundOnShockBlast	= "Play Sound on Shock Blast",
-	PlaySoundOnDarkGlare	= "Play Sound on Dark Glare"
+	PlaySoundOnDarkGlare	= "Play Sound on Dark Glare",
+	ShockBlastWarningInP1	= "Show Special Warning for Shock Blast in Phase 1",
+	ShockBlastWarningInP4	= "Show Special Warning for Shock Blast in Phase 2"
 }
 
 L:SetMiscLocalization{
