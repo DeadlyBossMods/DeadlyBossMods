@@ -103,26 +103,26 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 63236 then
 		local target = self:GetBossTarget(self.creatureId)
 		if target then
-			self:flameCast(target)
+			self:CastFlame(target)
 		else
-			castFlames = true
+			castFlames = GetTime()
 		end
 	end
 end
 
-function mod:UNIT_TARGET(unit)	-- I think this is useless, why have anyone in the raid razorflame as target? (this is required for this function)
-	if castFlames and self:GetUnitCreatureId(unit.."target") == self.creatureId then
+function mod:UNIT_TARGET(unit)	-- I think this is useless, why would anyone in the raid target razorflame right after the flame stuff?
+	if castFlames and GetTime() - castFlames <= 1 and self:GetUnitCreatureId(unit.."target") == self.creatureId then
 		local target = UnitName(unit.."targettarget")
 		if target then
-			self:flameCast(target)
+			self:CastFlame(target)
 		else
-			self:flameCast(L.FlamecastUnknown)
+			self:CastFlame(L.FlamecastUnknown)
 		end
 		castFlames = false
 	end
 end 
 
-function mod:flameCast(target)
+function mod:CastFlame(target)
 	warnDevouringFlameCast:Show(target)
 	if target == UnitName("player") then
 		specWarnDevouringFlameCast:Show()

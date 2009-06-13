@@ -18,9 +18,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
--- Trash: 33430 Guardian Lasher (so ne blume)
--- 33355 (nymphe)
--- 33354 (baum)
+-- Trash: 33430 Guardian Lasher (flower)
+-- 33355 (nymph)
+-- 33354 (tree)
 
 --
 -- Elder Stonebark (ground tremor / fist of stone)
@@ -40,10 +40,10 @@ local enrage 			= mod:NewEnrageTimer(600)
 
 local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
 local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
-local timerFury			= mod:NewTargetTimer(10, 63571)
+local timerFury				= mod:NewTargetTimer(10, 63571)
 local timerTremorCD 		= mod:NewCDTimer(28, 62859) 
-local warnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hardmode
-local specWarnBeam		= mod:NewSpecialWarning("UnstableEnergy")		-- Hardmode
+local warnTremor			= mod:NewSpecialWarning("WarningTremor")	-- Hard mode
+local specWarnBeam			= mod:NewSpecialWarning("UnstableEnergy")		-- Hard mode
 
 mod:AddBoolOption("PlaySoundOnFury")
 
