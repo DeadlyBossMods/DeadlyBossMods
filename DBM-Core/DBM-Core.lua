@@ -115,6 +115,7 @@ local ipairs, pairs, next = ipairs, pairs, next
 local tinsert, tremove, twipe = table.insert, table.remove, table.wipe
 local type = type
 local select = select
+local floor = math.floor
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -171,14 +172,15 @@ end
 
 local pformat
 do
-	local function replace(cap1, cap2)
-		return cap1 == "%" and DBM_CORE_UNKNOWN
-	end
-	
 	-- fail-safe format, replaces missing arguments with unknown
 	-- note: doesn't handle cases like %%%s correct at the moment (should become %unknown, but becomes %%s)
 	-- also, the end of the format directive is not detected in all cases, but handles everything that occurs in our boss mods ;)
 	--> not suitable for general-purpose use, just for our warnings and timers (where an argument like a spell-target might be nil due to missing target information)
+	
+	local function replace(cap1, cap2)
+		return cap1 == "%" and DBM_CORE_UNKNOWN
+	end
+	
 	function pformat(fstr, ...)
 		local ok, str = pcall(format, fstr, ...)
 		return ok and str or fstr:gsub("(%%+)([^%%%s<]+)", replace):gsub("%%%%", "%%")
@@ -376,24 +378,138 @@ end
 --  OnUpdate/Scheduler  --
 --------------------------
 do
-	local scheduleData = {}
-	local scheduleTables = {}
-	setmetatable(scheduleTables, {__mode = "kv"})
-
-	local function getScheduleTable()
-		local v = next(scheduleTables, nil)
-		if v then
-			scheduleTables[v] = nil
-			v.mod = nil
-			table.wipe(v.args)
-		else
-			v = {args = {}}
+	-- stack that stores a few tables (up to 6) which will be recycled
+	local popCachedTable, pushCachedTable
+	local numChachedTables = 0
+	do
+		local tableCache = nil
+		
+		-- gets a table from the stack, it will then be recycled.
+		function popCachedTable()
+			local t = tableCache
+			if t then
+				tableCache = t.next
+				numChachedTables = numChachedTables - 1
+			end
+			return t
 		end
-		return v
+		
+		-- tries to push a table on the stack
+		-- only tables with <= 4 array entries are accepted as cached tables are only used for tasks with few arguments for performance reasons
+		-- also, the maximum number of cached tables is limited to 8 as DBM rarely has more than eight scheduled tasks with less than 4 arguments at the same time
+		-- note that the cache does not use weak references anywhere for performance reasons, so a cached table will never be deleted by the garbage collector
+		function pushCachedTable(t)
+			if numChachedTables < 8 and #t <= 4 then
+				twipe(t)
+				t.next = tableCache
+				tableCache = t
+				numChachedTables = numChachedTables + 1
+			end
+		end
+	end
+	
+	-- priority queue (min-heap) that stores all scheduled tasks.
+	-- insert: O(log n)
+	-- deleteMin: O(log n)
+	-- getMin: O(1)
+	-- removeAllMatching: O(n)
+	local insert, removeAllMatching, getMin, deleteMin
+	do
+		local heap = {}
+		local firstFree = 1
+		
+		-- gets the next task
+		function getMin()
+			return heap[1]
+		end
+		
+		-- restores the heap invariant by moving an item up
+		local function siftUp(n)
+			local parent = floor(n / 2)
+			while n > 1 and heap[parent].time > heap[n].time do -- move the element up until the heap invariant is restored, meaning the element is at the top or the element's parent is <= the element
+				heap[n], heap[parent] = heap[parent], heap[n] -- swap the element with its parent
+				n = parent
+				parent = floor(n / 2)
+			end
+		end
+		
+		-- restores the heap invariant by moving an item down
+		local function siftDown(n)
+			local m -- position of the smaller child
+			while 2 * n < firstFree do -- #children >= 1
+				-- swap the element with its smaller child
+				if 2 * n + 1 == firstFree then -- n does not have a right child --> it only has a left child as #children >= 1
+					m = 2 * n -- left child
+				elseif heap[2 * n].time < heap[2 * n + 1].time then -- #children = 2 and left child < right child
+					m = 2 * n -- left child
+				else -- #children = 2 and right child is smaller than the left one
+					m = 2 * n + 1 -- right
+				end
+				if heap[n].time <= heap[m].time then -- n is <= its smallest child --> heap invariant restored
+					return
+				end
+				heap[n], heap[m] = heap[m], heap[n]
+				n = m
+			end
+		end
+		
+		-- inserts a new element into the heap
+		function insert(ele)
+			heap[firstFree] = ele
+			siftUp(firstFree)
+			firstFree = firstFree + 1
+		end
+		
+		-- deletes the min element
+		function deleteMin()
+			local min = heap[1]
+			firstFree = firstFree - 1
+			heap[1], heap[firstFree] = heap[firstFree], nil
+			siftDown(1)
+			return min
+		end
+		
+		-- removes multiple scheduled tasks from the heap
+		-- note that this function is comparatively slow by design as it has to check all tasks and allows partial matches
+		function removeAllMatching(f, mod, ...)
+			-- remove all elements that match the signature, this destroyes the heap and leaves a normal array
+			local v, match
+			for i = #heap, 1, -1 do -- iterate backwards over the array to allow usage of table.remove
+				v = heap[i]
+				if (not f or v.func == f) and (not mod or v.mod == mod) then
+					match = true
+					for i = 1, select("#", ...) do
+						if select(i, ...) ~= v[i] then
+							match = false
+							break
+						end
+					end
+					if match then
+						table.remove(heap, i)
+						firstFree = firstFree - 1
+					end
+				end
+			end
+			-- rebuild the heap from the array in O(n)
+			for i = floor((firstFree - 1) / 2), 1, -1 do
+				siftDown(i)
+			end
+		end
 	end
 
 	mainFrame:SetScript("OnUpdate", function(self, elapsed)
 		local time = GetTime()
+		
+		-- execute scheduled tasks
+		local nextTask = getMin()
+		while nextTask and nextTask.time <= time do
+			deleteMin()
+			nextTask.func(unpack(nextTask))
+			pushCachedTable(nextTask)
+			nextTask = getMin()
+		end
+		
+		-- execute OnUpdate handlers of all modules
 		for i, v in pairs(updateFunctions) do
 			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText())) then
 				i.elapsed = (i.elapsed or 0) + elapsed
@@ -403,18 +519,9 @@ do
 				end
 			end
 		end
-		for i = #scheduleData, 1, -1 do
-			local v = scheduleData[i]
-			if time >= v.time and not v.dead then
-				table.remove(scheduleData, i)
-				scheduleTables[v] = v
-				v.func(unpack(v.args))
-			elseif v.dead then
-				v.dead = nil
-				table.remove(scheduleData, i)
-				scheduleTables[v] = v
-			end
-		end
+		
+		-- clean up sync spam timers and auto respond spam blockers
+		-- TODO: optimize (but how?); using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than a few entries...
 		local k, v = next(modSyncSpam, nil)
 		if v and (time - v > 2.5) then
 			modSyncSpam[k] = nil
@@ -427,31 +534,23 @@ do
 	end)
 
 	function schedule(t, f, mod, ...)
-		local v = getScheduleTable()
-		v.mod = mod
-		v.time = GetTime() + t
-		v.func = f
-		for i = 1, select("#", ...) do
-			v.args[#v.args + 1] = select(i, ...)
+		local v
+		if numChachedTables > 0 and select("#", ...) <= 4 then -- a cached table is available and all arguments fit into an array with four slots
+			v = popCachedTable()
+			v.time = GetTime() + t
+			v.func = f
+			v.mod = mod
+			for i = 1, select("#", ...) do
+				v[i] = select(i, ...)
+			end
+		else -- create a new table
+			v = {time = GetTime() + t, func = f, mod = mod, ...}
 		end
-		table.insert(scheduleData, v)
+		insert(v)
 	end
 
 	function unschedule(f, mod, ...)
-		for k = #scheduleData, 1, -1 do
-			local v = scheduleData[k]
-			if (not f or v.func == f) and ((not mod) or v.mod == mod) then
-				local match = true
-				for i = 1, select("#", ...) do
-					if select(i, ...) ~= v.args[i] then
-						match = false
-					end
-				end
-				if match then
-					v.dead = true
-				end
-			end
-		end
+		return removeAllMatching(f, mod, ...)
 	end
 end
 
