@@ -19,9 +19,9 @@ local specWarnGroundTremor	= mod:NewSpecialWarning("SpecWarnGroundTremor", true)
 mod:AddBoolOption("TrashRespawnTimer", true, "timer")
 
 --
--- Trash: 33430 Guardian Lasher (so ne blume)
--- 33355 (nymphe)
--- 33354 (baum)
+-- Trash: 33430 Guardian Lasher (flower)
+-- 33355 (nymph)
+-- 33354 (tree)
 --
 -- Elder Stonebark (ground tremor / fist of stone)
 -- Elder Brightleaf (unstable sunbeam)
@@ -48,7 +48,7 @@ end
 function mod:UNIT_DIED(args)
 	if self.Options.TrashRespawnTimer and not DBM.Bars:GetBar(L.TrashRespawnTimer) then
 		local guid = tonumber(args.destGUID:sub(9, 12), 16)
-		if guid == 33430 or guid == 33355 or guid == 33354 then		-- guardian lasher / nymphe / tree
+		if guid == 33430 or guid == 33355 or guid == 33354 then		-- guardian lasher / nymph / tree
 			DBM.Bars:CreateBar(7200, L.TrashRespawnTimer)
 		end
 	end

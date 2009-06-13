@@ -984,13 +984,13 @@ do
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
-		-- set this with a short delay to prevent issues with other addons also trying to do this ;)
+		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
 		DBM:Schedule(5, setRaidWarningPositon)
 	end
 
 	function loadModOptions(modId)
-		local savedOptions = getglobal(modId:gsub("-", "").."_SavedVars") or {}
-		local savedStats = getglobal(modId:gsub("-", "").."_SavedStats") or {}
+		local savedOptions = _G[modId:gsub("-", "").."_SavedVars"] or {}
+		local savedStats = _G[modId:gsub("-", "").."_SavedStats"] or {}
 		for i, v in ipairs(DBM.Mods) do
 			if v.modId == modId then
 				savedOptions[v.id] = savedOptions[v.id] or v.Options
@@ -1980,6 +1980,8 @@ function bossModPrototype:GetBossTarget(cid)
 	for i = 1, GetNumRaidMembers() do
 		if self:GetUnitCreatureId("raid"..i.."target") == cid then
 			return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
+		elseif self:GetUnitCreatureId("raid"..i.."focus") == cid then
+			return UnitName("raid"..i.."focustarget"), "raid"..i.."focustarget"
 		end
 	end
 end

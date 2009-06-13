@@ -117,7 +117,7 @@ L:SetMiscLocalization{
 	YellAir				= "Give us a moment to prepare to build the turrets.",
 	YellGroundTemp			= "Move quickly! She won't remain grounded for long!",
 	EmotePhase2			= "%%s grounded permanently!",
-	FlamecastUnknown		= "UNKNOWN"
+	FlamecastUnknown		= DBM_CORE_UNKNOWN
 }
 
 
