@@ -1609,8 +1609,10 @@ local function CreateOptionsMenu()
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
 		spamArea:CreateCheckButton(L.SpamBlockRaidWarning, true, nil, "SpamBlockRaidWarning")
 		spamArea:CreateCheckButton(L.SpamBlockBossWhispers, true, nil, "SpamBlockBossWhispers")
-		spamArea:CreateCheckButton(L.ShowVersionUpadeAsPopup, true, nil, "ShowVersionUpdateAsPopup")
-		spamArea:CreateCheckButton(L.ShowBigBrotherOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
+		spamArea:CreateCheckButton(L.BlockVersionUpdatePopup, true, nil, "BlockVersionUpdatePopup")
+		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then
+			spamArea:CreateCheckButton(L.ShowBigBrotherOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
+		end
 
 		spamPanel:SetMyOwnHeight()
 	end

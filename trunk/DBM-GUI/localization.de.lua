@@ -101,6 +101,6 @@ L.Area_SpamFilter		= "Allgemeine Spam Filter Einstellungen"
 L.HideBossEmoteFrame		= "Schlachtzugsboss-Emote-Fenster verstecken"
 L.SpamBlockRaidWarning		= "Ansagen von anderen Boss Mods filtern" 
 L.SpamBlockBossWhispers		= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
-L.ShowVersionUpadeAsPopup	= "Informiere mit einem Fenster über eine neue DBM Version"
+L.BlockVersionUpdatePopup	= "Zeige Update-Meldung im Chat statt als Popup"
 L.ShowBigBrotherOnCombatStart	= "Zeige BigBrother Meldung bei Kampfbeginn"
 
