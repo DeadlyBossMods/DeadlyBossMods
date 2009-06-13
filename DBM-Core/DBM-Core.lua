@@ -69,7 +69,7 @@ DBM.DefaultOptions = {
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
-	ShowVersionUpdateAsPopup = true,
+	BlockVersionUpdatePopup = true,
 	ShowBigBrotherOnCombatStart = false,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
@@ -1204,12 +1204,12 @@ do
 						end
 					end
 					if found then
-						if DBM.Options.ShowVersionUpdateAsPopup then
+						if not DBM.Options.BlockVersionUpdatePopup then
 							DBM:ShowUpdateReminder(displayVersion, revision)
 						else 
-							DBM:AddMsg( (DBM_CORE_UPDATEREMINDER_HEADER:match('([^\n]*)')) )
-							DBM:AddMsg( (DBM_CORE_UPDATEREMINDER_HEADER:match('\n(.*)')):format(displayVersion, revision) )
-							DBM:AddMsg( ("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision) )
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
+							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision))
 						end
 					end
 				end
@@ -1342,15 +1342,6 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	button:SetScript("OnClick", function(self)
 		frame:Hide()
 	end)
-
-	--[[
-	-- /print DBM:ShowUpdateReminder(5, 10)
-	local nevershow = CreateFrame('CheckButton', "VersionPopUpCheckBox", frame, 'OptionsCheckButtonTemplate')
-	getglobal(nevershow:GetName() .. 'Text'):SetText(DBM_CORE_UPDATEREMINDER_NOTAGAIN)
-	nevershow:SetPoint("BOTTOM", -125, 36)
-	nevershow:SetScript("OnShow",  function(self) nevershow:SetChecked(DBM.Options.ShowVersionUpdateAsPopup) end)
-	nevershow:SetScript("OnClick", function(self) DBM.Options.ShowVersionUpdateAsPopup = not DBM.Options.ShowVersionUpdateAsPopup end)
-	--]]
 end
 
 ----------------------
