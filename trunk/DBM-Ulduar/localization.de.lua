@@ -204,7 +204,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam		= "Augenstrahl auf dir - MOVE",
-	WarnGrip			= "Steinerner Griff auf >%s<"
+	WarningEyebeam				= "Augenstrahl auf >%s<",
+	WarnGrip					= "Steinerner Griff auf >%s<"
 }
 
 L:SetTimerLocalization{
