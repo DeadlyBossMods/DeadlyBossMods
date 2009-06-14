@@ -117,7 +117,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAir 			= "火熄了!讓我們重建砲塔!",
+	YellAir 			= "給我們一點時間來準備建造砲塔。",
+	YellAir2 			= "火熄了!讓我們重建砲塔!",
 	YellGroundTemp			= "快!她可不會在地面上待太久!",
 	EmotePhase2			= "%%s再也飛不動了!",
 	FlamecastUnknown		= DBM_CORE_UNKNOWN

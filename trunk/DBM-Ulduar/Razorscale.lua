@@ -76,7 +76,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
-	if msg == L.YellAir then
+	if msg == L.YellAir or msg == L.YellAir2 then
 		if GetInstanceDifficulty() == 1 then
 			warnTurretsReadySoon:Schedule(70)
 			warnTurretsReady:Schedule(75)
