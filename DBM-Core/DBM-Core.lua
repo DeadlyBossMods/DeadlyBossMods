@@ -397,6 +397,7 @@ do
 		-- tries to push a table on the stack
 		-- only tables with <= 4 array entries are accepted as cached tables are only used for tasks with few arguments for performance reasons
 		-- also, the maximum number of cached tables is limited to 8 as DBM rarely has more than eight scheduled tasks with less than 4 arguments at the same time
+		-- this is just to re-use all the tables of the small tasks that are scheduled all the time (like the wipe detection)
 		-- note that the cache does not use weak references anywhere for performance reasons, so a cached table will never be deleted by the garbage collector
 		function pushCachedTable(t)
 			if numChachedTables < 8 and #t <= 4 then
@@ -464,7 +465,9 @@ do
 		function deleteMin()
 			local min = heap[1]
 			firstFree = firstFree - 1
-			heap[1], heap[firstFree] = heap[firstFree], nil
+			heap[1] = heap[firstFree]
+			heap[firstFree] = nil
+--			heap[1], heap[firstFree] = heap[firstFree], nil -- does not work, but why?
 			siftDown(1)
 			return min
 		end
