@@ -120,7 +120,7 @@ L:SetMiscLocalization{
 	YellAir 			= "火熄了!讓我們重建砲塔!",
 	YellGroundTemp			= "快!她可不會在地面上待太久!",
 	EmotePhase2			= "%%s再也飛不動了!",
-	FlamecastUnknown		= "未知"
+	FlamecastUnknown		= DBM_CORE_UNKNOWN
 }
 
 
@@ -515,21 +515,21 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	DarkGlare 			= "提示雷射彈幕",
 	WarningShockBlast		= "顯示震爆警告",
-	WarningPlasmaBlast		= "顯示離子衝擊",
-	WarnShell			= "提示凝汽彈的目標",
 	WarnBlast			= "提示離子衝擊的目標",
-	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
-	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
+	WarnShell			= "提示凝汽彈的目標",
 	NextDarkGlare 			= "下一次 雷射彈幕的計時器",
 	TimeToPhase2			= "顯示第二階段開始計時器",
 	TimeToPhase3			= "顯示第三階段開始計時器",
 	TimeToPhase4			= "顯示第四階段開始計時器",
-	SpinUp 				= "顯示暖機(雷射彈幕施放前的技能)計時器",
 	MagneticCore			= "提示磁能之核的拾取者",
 	HealthFramePhase4		= "顯示第4階段的首領血量框架",
 	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取",
 	WarnBombSpawn			= "提示炸彈機械人",
-	TimerHardmode			= "顯示困難模式計時器"
+	TimerHardmode			= "顯示困難模式計時器",
+	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
+	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
+	ShockBlastWarningInP1		= "為第一階段的震爆顯示特別警告",
+	ShockBlastWarningInP4		= "為第四階段的震爆顯示特別警告"
 }
 
 L:SetMiscLocalization{
