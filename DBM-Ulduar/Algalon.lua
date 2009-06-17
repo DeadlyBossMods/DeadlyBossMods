@@ -1,4 +1,4 @@
-local mod = DBM:NewMod("Algalon", "DBM-Ulduar")
+﻿local mod = DBM:NewMod("Algalon", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 --[[
@@ -47,7 +47,7 @@ function mod:OnCombatStart(delay)
 	-- added 6 seconds because of +combat until spawn difference
 	timerNextBigBang:Start(96.5-delay)
 	announcePreBigBang:Schedule(86-delay)
-	timerNextColapsingStar:Start(21-delay)
+	timerNextCollapsingStar:Start(21-delay)
 	timerCDCosmicSmash:Start(31-delay)
 end
 
