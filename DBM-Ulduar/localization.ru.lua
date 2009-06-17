@@ -96,7 +96,7 @@ L:SetTimerLocalization{
 	timerTurret2			= "Гарпунная пушка 2",
 	timerTurret3			= "Гарпунная пушка 3",
 	timerTurret4			= "Гарпунная пушка 4",
-    timerGroundedTemp		= "on the Ground"
+    timerGroundedTemp		= "на Земле"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Отсчет времени до следующего Огненного дыхани",
@@ -112,7 +112,7 @@ L:SetOptionLocalization{
 	timerTurret3				= "Отображать отсчет времени до пушки 3 (Героический)",
 	timerTurret4				= "Отображать отсчет времени до пушки 4 (Героический)",
 	OptionDevouringFlame		= "Объявлять цель под воздействием лавовой бомбы (неточно)",
-    timerGroundedTemp		= "Show Timer for Ground Phase Duration"
+    timerGroundedTemp		= "Отсчет времени до наземной фазы"
 }
 
 L:SetMiscLocalization{
@@ -174,7 +174,7 @@ L:SetWarningLocalization{
 	LightningTendrils			= "Светящиеся придатки - БЕГИТЕ!",
 	WarningRuneofSummoning			= "Руна призыва",
 	Overload				= "Перегрузка - БЕГИТЕ!",
-    WarningStaticDisruption			= "Static Disruption on >%s<"
+    WarningStaticDisruption			= ">%s< под воздействием Статического сбоя"
 }
 
 L:SetTimerLocalization{
@@ -213,8 +213,8 @@ L:SetOptionLocalization{
 	SetIconOnStaticDisruption		= "Установить метку на цель под воздействием эффекта Статический сбой",
 	Overload				= "Отображать спец-предупреждение для Перегрузки",
 	AllwaysWarnOnOverload			= "Объявлять когда Перегрузка (иначе, только когда нацеливание)",
-    PlaySoundOnOverload			= "Play Sound on Overload",
-	WarningStaticDisruption			= "Announce Static Disruption"
+    PlaySoundOnOverload			= "Звуковой сигнал во время Перегрузки",
+	WarningStaticDisruption			= "Объявлять Статический сбой"
 }
 
 L:SetMiscLocalization{
@@ -234,7 +234,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextCollapsingStar	= "Next Collapsing Star"
+	NextCollapsingStar	= "Collapsing Star"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= ">%s< под воздействием Фазового удара",
@@ -250,13 +250,13 @@ L:SetOptionLocalization{
 	PreWarningBigBang	= "Pre Announce Big Bang",
 	WarningPhasePunch	= "Объявлять цель под воздействием эффекта Фазовый удар",
 	WarningBlackHole	= "Объявлять Чернаую дыру",
-    NextCollapsingStar	= "Show Timer for Next Colapsing Star"
+    NextCollapsingStar	= "Отображать отсчет времени до Colapsing Star"
 }
 
 L:SetMiscLocalization{
 	YellPull		= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
-	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
-	Emote_CosmicSmash	= "%s begins to cast Cosmic Smash!"
+	Emote_CollapsingStars	= "%s призывает Collapsing Stars!",
+	Emote_CosmicSmash	= "%s читает заклинание Кара небесная!"
 }
 
 
