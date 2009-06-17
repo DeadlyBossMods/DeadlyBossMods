@@ -231,7 +231,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextCollapsingStar	= "下一次 崩陷之星",
+	timerNextCollapsingStar	= "下一次 崩陷之星",
 	PossibleNextCosmicSmash	= "下一次 宇宙潰擊"
 }
 L:SetWarningLocalization{
