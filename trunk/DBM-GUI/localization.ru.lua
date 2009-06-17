@@ -103,5 +103,5 @@ L.Area_SpamFilter			= "Общие параметры фильтра навязч
 L.HideBossEmoteFrame		= "Скрывать сообщения эмоций рейдового босса"
 L.SpamBlockRaidWarning		= "Фильтрация предупреждения от других DBM" 
 L.SpamBlockBossWhispers		= "Фильтрация <DBM> предупреждения шепотом в бою"
-L.ShowVersionUpadeAsPopup	= "Всплывающее сообщение, если версия устарела"
+L.BlockVersionUpdatePopup	= "Всплывающее сообщение, если версия устарела"
 L.ShowBigBrotherOnCombatStart	= "Отображать \"BigBrother\", во время боевых действий"
