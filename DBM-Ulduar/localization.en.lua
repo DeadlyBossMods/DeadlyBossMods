@@ -590,28 +590,28 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 		= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2 		= "I am the lucid dream.",
-	Sara 			= "Sara",
+	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
+	YellPhase2	 		= "I am the lucid dream.",
+	Sara 				= "Sara",
 	WhisperBrainLink 	= "Brain Link on you! Run to %s!",
 	WarningYellSqueeze	= "Squeeze on me! Help me!"
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 		= "Guardian spawned",
+	WarningGuardianSpawned 			= "Guardian spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle Spawned",
-	WarningP2 			= "Phase 2",
-	WarningBrainLink 		= "Brain Link on >%s< and >%s<",
-	SpecWarnBrainLink 		= "Brain Link on you and %s!",
-	WarningSanity 			= "%d Sanity debuffs remaining",
-	SpecWarnSanity 			= "%d Sanity debuffs remaining",
-	SpecWarnGuardianLow 		= "Stop attacking this Guardian!",
-	WarnMadness			= "Casting Induce Madness",
-	SpecWarnMadnessOutNow		= "Madness ends - MOVE OUT",
-	WarnBrainPortalSoon		= "Portal  in 3 sec",	
-	WarnSqueeze 			= "Squeeze: >%s<",
-	WarnFavor			= "Sara's Favor on >%s<",
-	SpecWarnFavor			= "Sara's Favor on YOU"
+	WarningP2 						= "Phase 2",
+	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
+	SpecWarnBrainLink 				= "Brain Link on you and %s!",
+	WarningSanity 					= "%d Sanity debuffs remaining",
+	SpecWarnSanity 					= "%d Sanity debuffs remaining",
+	SpecWarnGuardianLow				= "Stop attacking this Guardian!",
+	WarnMadness						= "Casting Induce Madness",
+	SpecWarnMadnessOutNow			= "Madness ends - MOVE OUT",
+	WarnBrainPortalSoon				= "Portal  in 3 sec",	
+	WarnSqueeze 					= "Squeeze: >%s<",
+	WarnFavor						= "Sara's Fervor on >%s<",
+	SpecWarnFavor					= "Sara's Fervor on YOU"
 }
 
 L:SetTimerLocalization{
@@ -619,29 +619,29 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningGuardianSpawned		= "Announce Guardian Spawns",
+	WarningGuardianSpawned			= "Announce Guardian Spawns",
 	WarningCrusherTentacleSpawned	= "Announce Crusher Tentacle Spawns",
-	WarningP2			= "Announce Phase 2",
-	WarningP3			= "Announce Phase 3",
-	WarningBrainLink		= "Announce Brain Links",
-	SpecWarnBrainLink		= "Show Special Warning when Brain Linked",
-	WarningSanity			= "Show Warning when Sanity low",
-	SpecWarnSanity			= "Show Special Warning when Sanity very low",
-	SpecWarnGuardianLow		= "Show Special Warning when Guardian (P1) is low (for DDs)",
-	WarnMadness			= "Announce Madness",
-	WarnBrainPortalSoon		= "Announce Portal",
-	SpecWarnMadnessOutNow		= "Show Special Warning shortly before Madness ends",
-	SetIconOnFearTarget		= "Set Icon on Fear Target",
-	WarnFavor			= "Announce Sara's Fervor target",
-	SpecWarnFavor			= "Show Special Warning for Sara's Fervor",
-	WarnSqueeze			= "Announce Squeeze target",
-	specWarnBrainPortalSoon		= "Announce Brain Portal soon",
-	WarningSqueeze			= "Announce Squeeze Targets",
-	NextPortal			= "Show Timer for Next Brain Portal",
-	WhisperBrainLink		= "Whisper players on Brain Link",
-	SetIconOnFavorTarget		= "Set Icon on Saras Fervor target",
-	SetIconOnMCTarget		= "Set Icon on Mindcontrol target",
-	ShowSaraHealth			= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)"
+	WarningP2						= "Announce Phase 2",
+	WarningP3						= "Announce Phase 3",
+	WarningBrainLink				= "Announce Brain Links",
+	SpecWarnBrainLink				= "Show Special Warning when Brain Linked",
+	WarningSanity					= "Show Warning when Sanity low",
+	SpecWarnSanity					= "Show Special Warning when Sanity very low",
+	SpecWarnGuardianLow				= "Show Special Warning when Guardian (P1) is low (for DDs)",
+	WarnMadness						= "Announce Madness",
+	WarnBrainPortalSoon				= "Announce Portal",
+	SpecWarnMadnessOutNow			= "Show Special Warning shortly before Madness ends",
+	SetIconOnFearTarget				= "Set Icon on Fear Target",
+	WarnFavor						= "Announce Sara's Fervor target",
+	SpecWarnFavor					= "Show Special Warning for Sara's Fervor",
+	WarnSqueeze						= "Announce Squeeze target",
+	specWarnBrainPortalSoon			= "Announce Brain Portal soon",
+	WarningSqueeze					= "Announce Squeeze Targets",
+	NextPortal						= "Show Timer for Next Brain Portal",
+	WhisperBrainLink				= "Whisper players on Brain Link",
+	SetIconOnFavorTarget			= "Set Icon on Saras Fervor target",
+	SetIconOnMCTarget				= "Set Icon on Mindcontrol target",
+	ShowSaraHealth					= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)"
 }
 
 
