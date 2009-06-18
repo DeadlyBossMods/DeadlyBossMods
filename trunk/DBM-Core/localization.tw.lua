@@ -83,6 +83,8 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "拉怪囉!"
 DBM_CORE_GENERIC_TARGET_WARN = "%s 在 >%%s<!"
 DBM_CORE_GENERIC_TARGET_OPTION = "提示目標 %s"
 
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速擊殺"
+
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
