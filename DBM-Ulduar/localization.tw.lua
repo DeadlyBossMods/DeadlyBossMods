@@ -134,10 +134,6 @@ L:SetGeneralLocalization{
 	name = "XT-002拆解者"
 }
 
-L:SetTimerLocalization{
-	TimerSpeedKill			= "快速擊殺"
-}
-
 L:SetWarningLocalization{
 	SpecialWarningLightBomb 	= "你中了裂光彈!",
 	WarningLightBomb		= "裂光彈: >%s<",
@@ -231,30 +227,30 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerNextCollapsingStar	= "下一次 崩陷之星",
-	PossibleNextCosmicSmash	= "下一次 宇宙潰擊"
+	NextCollapsingStar		= "下一次 崩陷之星",
+	PossibleNextCosmicSmash		= "下一次 宇宙潰擊"
 }
 L:SetWarningLocalization{
-	WarningPhasePunch	= "相位拳擊: >%s< - 第%d層",
-	WarningBlackHole	= "黑洞爆炸",
-	WarningBigBang		= "大爆炸來臨",
-	PreWarningBigBang	= "約10秒後 大爆炸",
+	WarningPhasePunch		= "相位拳擊: >%s< - 第%d層",
+	WarningBlackHole		= "黑洞爆炸",
+	WarningBigBang			= "大爆炸來臨",
+	PreWarningBigBang		= "約10秒後 大爆炸",
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch	= "當你中了相位拳擊時顯示特別警告",
-	WarningBigBang		= "提示大爆炸的施放",
-	PreWarningBigBang	= "預先提示大爆炸",
-	WarningPhasePunch	= "提示相位拳擊的目標",
-	WarningBlackHole	= "提示黑洞爆炸",
-	NextCollapsingStar	= "為下一次 崩陷之星顯示計時器",
-	PossibleNextCosmicSmash	= "為下一次 宇宙潰擊顯示計時器"
+	SpecWarnPhasePunch		= "當你中了相位拳擊時顯示特別警告",
+	WarningBigBang			= "提示大爆炸的施放",
+	PreWarningBigBang		= "預先提示大爆炸",
+	WarningPhasePunch		= "提示相位拳擊的目標",
+	WarningBlackHole		= "提示黑洞爆炸",
+	NextCollapsingStar		= "為下一次 崩陷之星顯示計時器",
+	PossibleNextCosmicSmash		= "為下一次 宇宙潰擊顯示計時器"
 }
 
 L:SetMiscLocalization{
-	YellPull		= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
-	Emote_CollapsingStars	= "%s開始召喚崩陷之星!",
-	Emote_CosmicSmash	= "%s開始施放宇宙潰擊!"
+	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
+	Emote_CollapsingStars		= "%s開始召喚崩陷之星!",
+	Emote_CosmicSmash		= "%s開始施放宇宙潰擊!"
 }
 
 
@@ -269,7 +265,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam		= "集束目光看著你 - 跑開",
-	WarnEyeBeam			= "集束目光: >%s<",
+	WarningEyeBeam			= "集束目光: >%s<",
 	WarnGrip			= "堅石之握: >%s<"
 }
 
@@ -283,7 +279,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "當集束目光看著你顯示特別警告",
-	WarnEyeBeam			= "提示集束目光的目標",
+	WarningEyeBeam			= "提示集束目光的目標",
 	timerEyebeam			= "顯示集束目光的計時器",
 	SetIconOnEyebeamTarget		= "設置標記在集束目光的目標",
 	timerPetrifyingBreath		= "顯示石化之息的計時器",
@@ -352,10 +348,6 @@ L:SetWarningLocalization{
 	WarningFlashFreeze		= "閃霜",	
 	WarningStormCloud		= "風暴雷雲: %s", 
 	WarningBitingCold		= "刺骨之寒 - 移動"
-}
-
-L:SetTimerLocalization{
-	TimerSpeedKill			= "快速擊殺"
 }
 
 L:SetOptionLocalization{
@@ -633,8 +625,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	NextPortal			= "下一次 傳送門",
-	TimerSpeedKill			= "快速擊殺"
+	NextPortal			= "下一次 傳送門"
 }
 
 L:SetOptionLocalization{
