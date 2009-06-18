@@ -29,6 +29,7 @@ local announcePreBigBang	= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 
 local timerNextCollapsingStar	= mod:NewTimer(15, "NextCollapsingStar")
 local timerCDCosmicSmash	= mod:NewTimer(25, "PossibleNextCosmicSmash")
+local timerCastCosmicSmash		= mod:NewCastTimer(4, 62311)
 
 local announceBlackHole		= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 
@@ -89,6 +90,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emote_CollapsingStar then
 		timerNextCollapsingStar:Start()
 	elseif msg == L.Emote_CosmicSmash then
+		timerCastCosmicSmash:Start()
 		timerCDCosmicSmash:Start()
 	end
 end
