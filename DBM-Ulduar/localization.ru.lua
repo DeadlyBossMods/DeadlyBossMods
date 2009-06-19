@@ -234,7 +234,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextCollapsingStar	= "Collapsing Star"
+	NextCollapsingStar	= "Свернувшейся звезды"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= ">%s< под воздействием Фазового удара",
@@ -249,12 +249,12 @@ L:SetOptionLocalization{
 	PreWarningBigBang	= "Объявлять Суровый удар",
 	WarningPhasePunch	= "Объявлять цель под воздействием эффекта Фазовый удар",
 	WarningBlackHole	= "Объявлять Чернаую дыру",
-    NextCollapsingStar	= "Отсчет времени до Collapsing Star"
+    NextCollapsingStar	= "Отсчет времени до Свернувшейся звезды"
 }
 
 L:SetMiscLocalization{
 	YellPull		= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
-	Emote_CollapsingStars	= "%s призывает Collapsing Stars!",
+	Emote_CollapsingStars	= "%s призывает Свернувшуюся звезду!",
 	Emote_CosmicSmash	= "%s читает заклинание Кара небесная!"
 }
 
@@ -394,18 +394,18 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerHardmode		= "Сложный режим"
+	TimerHardmode		= "Высокая сложность"
 }
 
 L:SetOptionLocalization{
-	TimerHardmode			= "Отсчет времени для сложного режима",
+	TimerHardmode			= "Отсчет времени для высокой сложности",
 	WarningStormhammer		= "Объявлять Молот бури",
 	WarningLightningCharge		= "Объявлять Разряд молнии",
 	WarningPhase2			= "Объявлять фазу 2",
 	UnbalancingStrike		= "Объявлять Дисбалансирующий удар",
 	WarningBomb				= "Объявлять Взрыв руны",
 	RangeFrame				= "Отображать окно допустимой дистанции",
-	AnnounceFails			= "Post player fails for Lightning Charge to the raid chat (requires announce enabled and promoted/leader status)" 
+	AnnounceFails			= "Объявлять игрока под разрядом молнии в рейд-чат (требуются права лидера или помощника)" 
 }
 
 L:SetMiscLocalization{
@@ -470,9 +470,9 @@ L:SetGeneralLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnFistOfStone	= "Спец-предупреждение для Каменного кулака",
-    SpecWarnGroundTremor	= "Show Special Warning for Ground Tremor",
-	PlaySoundOnFistOfStone	= "Play Sound on Fist of Stone cast",
-	TrashRespawnTimer	= "Show Trash Respawn timer"
+    SpecWarnGroundTremor	= "Спец-предупреждение для Дрожания земли",
+	PlaySoundOnFistOfStone	= "Воспроизводить звук для Каменного кулака",
+	TrashRespawnTimer	= "Отсчет времени до повторного Дрожания земли"
 }
 
 
@@ -515,10 +515,10 @@ L:SetOptionLocalization{
 	AutoChangeLootToFFA	= "Автоподсветка добычи доступной для всех в фазе 3",
 	WarnBombSpawn		= "Объявлять Бомботов",
 	TimerHardmode		= "Отсчет времени для высокой сложности",
-    PlaySoundOnShockBlast	= "Play Sound on Shock Blast",
-	PlaySoundOnDarkGlare	= "Play Sound on Dark Glare",
-	ShockBlastWarningInP1	= "Show Special Warning for Shock Blast in Phase 1",
-	ShockBlastWarningInP4	= "Show Special Warning for Shock Blast in Phase 2"
+    PlaySoundOnShockBlast	= "Воспроизводить звук для Взрыва плазмы",
+	PlaySoundOnDarkGlare	= "Воспроизводить звук для Лазерного заграждения",
+	ShockBlastWarningInP1	= "Спец-предупреждение для Взрыва плазмы в фазе 1",
+	ShockBlastWarningInP4	= "Спец-предупреждение для Взрыва плазмы в фазе 2"
 }
 
 L:SetMiscLocalization{
@@ -544,7 +544,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	hardmodeSpawn = "Саронитовын враги"
+	hardmodeSpawn = "Саронитовые враги"
 }
 
 L:SetWarningLocalization{
@@ -563,15 +563,15 @@ L:SetOptionLocalization{
 	SetIconOnLifeLeach			= "Установить метку на цель под воздействием эффекта Вытягивание жизни (крест)",
 	SpecialWarningSurgeDarkness	= "Спец-предупреждение для Наплыва Тьмы",
 	SpecialWarningShadowCrash	= "Спец-предупреждение для Темное сокрушение",
-    SpecialWarningShadowCrashNear	= "Show Special Warning for Shadow Crash in near of you",
+    SpecialWarningShadowCrashNear	= "Спец-предупреждение о Темном сокрушении, около вас",
 	SpecialWarningLLYou		= "Спец-предупреждение, когда Вытягивание жизни на вас",
 	SpecialWarningLLNear		= "Спец-предупреждение о Вытягивании жизни, около вас",
 	CrashWhisper			= "Сообщить цели, под воздействием Темного сокрушения",
 	YellOnLifeLeech			= "Крикнуть о воздействии Вытягивания жизни",
 	YellOnShadowCrash		= "Крикнуть о воздействии Темного сокрушения",
 	specWarnShadowCrashNear		= "Спец-предупреждение о Темном сокрушении, около вас",
-    WarningLeechLife		= "Announce Life Leech Target",
-	hardmodeSpawn			= "Show Timer for Saronite Animus Spawn (hardmode)"
+    WarningLeechLife		= "Объявлять цель под воздействием Вытягивание жизни",
+	hardmodeSpawn			= "Отсчет времени до появления Саронитовых врагов (высокая сложность)"
 }
 
 L:SetMiscLocalization{
@@ -612,12 +612,12 @@ L:SetWarningLocalization{
 	SpecWarnMadnessOutNow		= "Помешательство заканчивается - БЕГИТЕ!",
 	WarnBrainPortalSoon		= "Портал через 3 сек.",	
 	WarnSqueeze 			= "Выдавливание: >%s<",
-	WarnFavor			= ">%s< под Благосклонностью Сары",
-	SpecWarnFavor			= "Благосклонность Сары на вас!"
+	WarnFavor			= ">%s< под Рвением Сары",
+	SpecWarnFavor			= "Рвение Сары на вас!"
 }
 
 L:SetTimerLocalization{
-	NextPortal			= "Brain Portal"
+	NextPortal			= "Следующий портал"
 }
 
 L:SetOptionLocalization{
@@ -633,17 +633,17 @@ L:SetOptionLocalization{
 	WarnMadness			= "Объявлять Помешательство",
 	WarnBrainPortalSoon		= "Объявлять портал",
 	SpecWarnMadnessOutNow		= "Спец-предупреждение незадолго до окончания Помешательства",
-	SetIconOnFearTarget		= "Установить метку на цель под Благосклонностью Сары",
-	WarnFavor			= "Объявлять цель под Благосклонностью Сары",
-	SpecWarnFavor			= "Спец-предупреждение для Благосклонности Сары",
+	SetIconOnFearTarget		= "Установить метку на цель под Рвением Сары",
+	WarnFavor			= "Объявлять цель под Рвением Сары",
+	SpecWarnFavor			= "Спец-предупреждение для Рвения Сары",
 	WarnSqueeze			= "Объявлять цель под воздействием Выдавливание",
 	specWarnBrainPortalSoon		= "Объявлять Портал",
-    WarningSqueeze			= "Announce Squeeze Targets",
-	NextPortal			= "Show Timer for Next Brain Portal",
-	WhisperBrainLink		= "Whisper players on Brain Link",
-	SetIconOnFavorTarget		= "Set Icon on Saras Fervor target",
-	SetIconOnMCTarget		= "Set Icon on Mindcontrol target",
-	ShowSaraHealth			= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)"
+    WarningSqueeze			= "Объявлять цели Выдавливание",
+	NextPortal			= "Отсчет времени до следующего портала",
+	WhisperBrainLink		= "Сообщить цели, под воздействием Схожее мышление",
+	SetIconOnFavorTarget		= "Установить метку на цель под воздействием Рвения Сары",
+	SetIconOnMCTarget		= "Установить метку на цель под контролем над разумом",
+	ShowSaraHealth			= "Показать здоровье Сары в фазе 1 (должна быть под прицелом хотябы одного игрока)"
 }
 
 
