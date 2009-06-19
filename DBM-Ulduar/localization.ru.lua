@@ -29,9 +29,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload		= "Отображать отсчет времени до Отключения системы",
-	timerFlameVents			= "Отображать отсчет времени до Огненного дыхания",
-	timerPursued			= "Отображать отсчет времени до Преследования",
+	timerSystemOverload		= "Отсчет времени до Отключения системы",
+	timerFlameVents			= "Отсчет времени до Огненного дыхания",
+	timerPursued			= "Отсчет времени до Преследования",
 	SystemOverload			= "Отображать спец-предупреждение для Отключения системы",
 	SpecialPursueWarnYou	= "Отображать спец-предупреждение для Преследования",
 	PursueWarn				= "Отображать предупреждение для преследуемого игрока",
@@ -103,14 +103,14 @@ L:SetOptionLocalization{
 	timerDeepBreathCast		= "Время действия заклинания Огненное дыхание",
 	SpecWarnDevouringFlame		= "Отображать спец-предупреждение ноходящемуся в лавовой бомбе",
 	PlaySoundOnDevouringFlame	= "Звуковой сигнал, когда под воздействием лавовой бомбы",
-	timerAllTurretsReady		= "Отображать отсчет времени до пушек",
+	timerAllTurretsReady		= "Отсчет времени до пушек",
 	warnTurretsReadySoon		= "Отображать пред-предупреждение для пушек",
 	warnTurretsReady			= "Отображать предупреждение для пушек",
 	SpecWarnDevouringFlameCast	= "Отображать спец-предупреждение, когда вы в лавовой бомбе",
-	timerTurret1				= "Отображать отсчет времени до пушки 1",
-	timerTurret2				= "Отображать отсчет времени до пушки 2",
-	timerTurret3				= "Отображать отсчет времени до пушки 3 (Героический)",
-	timerTurret4				= "Отображать отсчет времени до пушки 4 (Героический)",
+	timerTurret1				= "Отсчет времени до пушки 1",
+	timerTurret2				= "Отсчет времени до пушки 2",
+	timerTurret3				= "Отсчет времени до пушки 3 (Героический)",
+	timerTurret4				= "Отсчет времени до пушки 4 (Героический)",
 	OptionDevouringFlame		= "Объявлять цель под воздействием лавовой бомбы (неточно)",
     timerGroundedTemp		= "Отсчет времени до наземной фазы"
 }
@@ -193,8 +193,8 @@ L:SetOptionLocalization{
 	TimerSupercharge			= "Отображать время действия Суперзаряда",
 	WarningSupercharge			= "Отображать предупреждение для заклинания Суперзаряд",
 	WarningChainlight			= "Объявлять Цепную молнию",
-	TimerOverload				= "Отображать отсчет времени до Перегрузки",
-	TimerLightningWhirl			= "Отображать отсчет времени до Вихря молний",
+	TimerOverload				= "Отсчет времени до Перегрузки",
+	TimerLightningWhirl			= "Отсчет времени до Вихря молний",
 	LightningTendrils			= "Отображать спец-предупреждение для Светящихся придатков",
 	TimerLightningTendrils		= "Отображать время действия Светящихся придатков",
 	PlaySoundLightningTendrils	= "Звуковой сигнал во время эффекта Светящиеся придатки",
@@ -202,7 +202,7 @@ L:SetOptionLocalization{
 	timerFusionPunchCast		= "Отображать индикатор для Энергетического удара",
 	timerFusionPunchActive		= "Отображать время действия Энергетический удар",
 	WarningOverwhelmingPower	= "Объявлять Переполняющую энергию",
-	timerOverwhelmingPower		= "Отображать отсчет времени до Переполняющей энергии",
+	timerOverwhelmingPower		= "Отсчет времени до Переполняющей энергии",
 	SetIconOnOverwhelmingPower	= "Установить метку на цель под воздействием эффекта Переполняющая энергия",
 	timerRunicBarrier			= "Отображать время действия Руническая преграда",
 	WarningRuneofPower			= "Объявлять Руну мощи",
@@ -241,16 +241,15 @@ L:SetWarningLocalization{
 	WarningBlackHole	= "Черная дыра",
     WarningBigBang		= "Суровый удар",
 	PreWarningBigBang	= "Суровый удар через ~10 сек",
-
 }
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch	= "Отображать спец-предупреждение, когда Фазовый удар на вас",
-    WarningBigBang		= "Announce Big Bang Cast",
-	PreWarningBigBang	= "Pre Announce Big Bang",
+    WarningBigBang		= "Объявлять чтение заклинания Суровый удар",
+	PreWarningBigBang	= "Объявлять Суровый удар",
 	WarningPhasePunch	= "Объявлять цель под воздействием эффекта Фазовый удар",
 	WarningBlackHole	= "Объявлять Чернаую дыру",
-    NextCollapsingStar	= "Отображать отсчет времени до Colapsing Star"
+    NextCollapsingStar	= "Отсчет времени до Collapsing Star"
 }
 
 L:SetMiscLocalization{
@@ -287,15 +286,15 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "Отображать спец-предупреждение, когда Сосредоточенный взгляд на ВАС",
 	WarningEyebeam				= "Объявлять цель под воздействием эффекта Сосредоточенный взгляд",
-	timerEyebeam				= "Отображать отсчет времени до Сосредоточенного взгляда",
-	timerPetrifyingBreath		= "Отображать отсчет времени до Каменящего дыхания",
-	timerNextShockwave			= "Отображать отсчет времени до Ударной волны",
-	timerLeftArm				= "Отображать отсчет времени до Возрождения руки (левая)",
-	timerRightArm				= "Отображать отсчет времени до Возрождения руки (правая)",
-	achievementDisarmed		= "Отображать отсчет времени до приминения Разоружения",
-    WarnGrip				= "Announce Grip Targets",
-	WarnEyeBeam				= "Announce Eye Beam Target",
-	SetIconOnGripTarget		= "Set Icons on Grip Targets"
+	timerEyebeam				= "Отсчет времени до Сосредоточенного взгляда",
+	timerPetrifyingBreath		= "Отсчет времени до Каменящего дыхания",
+	timerNextShockwave			= "Отсчет времени до Ударной волны",
+	timerLeftArm				= "Отсчет времени до Возрождения руки (левая)",
+	timerRightArm				= "Отсчет времени до Возрождения руки (правая)",
+	achievementDisarmed		= "Отсчет времени до приминения Разоружения",
+    WarnGrip				= "Объявлять цели под воздействием Хватки смерти",
+	WarnEyeBeam				= "Объявлять цель под воздействием Луча ока",
+	SetIconOnGripTarget		= "Установить метку на цели под воздействием Хватки смерти"
 }
 
 L:SetMiscLocalization{
@@ -304,7 +303,7 @@ L:SetMiscLocalization{
 	Health_Body			= "Кологарн",
 	Health_Right_Arm		= "Правая рука",
 	Health_Left_Arm			= "Левая рука",
-    FocusedEyebeam			= "%s focuses his eyes on you!"
+    FocusedEyebeam			= "%s сосредотачивает взгляд на вас!"
 }
 
 ---------------
@@ -339,7 +338,7 @@ L:SetOptionLocalization{
 	WarnCatDied		= "Отображать предупреждение, когда погибает дикий защитник",
 	WarnSwarm		= "Отображать предупреждение для крадущегося стража",
 	WarnSonic		= "Отображать предупреждение визга",
-    WarnCatDiedOne		= "Show Warning when Cat dies"
+    WarnCatDiedOne		= "Отображать предупреждение, когда погибает кошка"
 }
 
 
@@ -362,7 +361,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze	= "Отображать отсчет времени до Мгновенной заморозки",
+	TimerFlashFreeze	= "Отсчет времени до Мгновенной заморозки",
 	WarningFlashFreeze	= "Отображать предупреждение для Мгновенной заморозки",
 	PlaySoundOnFlashFreeze	= "Звуковой сигнал при Мгновенной заморозке",
 	WarningStormCloud	= "Объявлять цель под Грозовой тучей",
@@ -399,7 +398,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerHardmode			= "Отображать отсчет времени для сложного режима",
+	TimerHardmode			= "Отсчет времени для сложного режима",
 	WarningStormhammer		= "Объявлять Молот бури",
 	WarningLightningCharge		= "Объявлять Разряд молнии",
 	WarningPhase2			= "Объявлять фазу 2",
@@ -458,7 +457,7 @@ L:SetOptionLocalization{
 	WarnRoots		= "Объявлять цель под воздействием Железные корни",
 	SpecWarnFury		= "Отображать спец-предупреждение для Гнев природы",
 	WarningTremor		= "Отображать спец-предупреждение для Дрожание земли (высокая сложность)",
-	TimerSimulKill		= "Отображать отсчет времени до воскрешения монстров",
+	TimerSimulKill		= "Отсчет времени до воскрешения монстров",
 	UnstableEnergy		= "Отображать спец-предупреждение для Нестабильная энергия"
 }
 
@@ -505,7 +504,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	DarkGlare		= "Отображать отсчет времени для Лазерного заграждения",
+	DarkGlare		= "Отсчет времени для Лазерного заграждения",
 	WarnBlast		= "Объявлять цель под воздействием Взрыва плазмы",
 	WarnShell		= "Объявлять цель под воздействием Заряда напалма",
 	TimeToPhase2		= "Отсчет времени для фазы 2",
@@ -515,7 +514,7 @@ L:SetOptionLocalization{
 	HealthFramePhase4	= "Отображать индикатор здоровъя в фазе 4",
 	AutoChangeLootToFFA	= "Автоподсветка добычи доступной для всех в фазе 3",
 	WarnBombSpawn		= "Объявлять Бомботов",
-	TimerHardmode		= "Отображать отсчет времени для высокой сложности",
+	TimerHardmode		= "Отсчет времени для высокой сложности",
     PlaySoundOnShockBlast	= "Play Sound on Shock Blast",
 	PlaySoundOnDarkGlare	= "Play Sound on Dark Glare",
 	ShockBlastWarningInP1	= "Show Special Warning for Shock Blast in Phase 1",
