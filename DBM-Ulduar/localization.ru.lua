@@ -32,9 +32,9 @@ L:SetOptionLocalization{
 	timerSystemOverload		= "Отсчет времени до Отключения системы",
 	timerFlameVents			= "Отсчет времени до Огненного дыхания",
 	timerPursued			= "Отсчет времени до Преследования",
-	SystemOverload			= "Отображать спец-предупреждение для Отключения системы",
-	SpecialPursueWarnYou	= "Отображать спец-предупреждение для Преследования",
-	PursueWarn				= "Отображать предупреждение для преследуемого игрока",
+	SystemOverload			= "Спец-предупреждение для Отключения системы",
+	SpecialPursueWarnYou	= "Спец-предупреждение для Преследования",
+	PursueWarn				= "Предупреждение для преследуемого игрока",
 	warnNextPursueSoon		= "Предупреждать перед следующим преследованием"
 }
 
@@ -62,7 +62,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast		= "Отображать спец-предупреждение для Огненной струи (прерывание заклинаний)",
+	SpecWarnJetsCast		= "Спец-предупреждение для Огненной струи (прерывание заклинаний)",
 	TimerFlameJetsCast		= "Время действия заклинания Огненная струя",
 	TimerFlameJetsCooldown	= "Отсчет времени до восстановления Огненной струи",
 	TimerScorch				= "Отсчет времени до восстановления Ожога",
@@ -101,12 +101,12 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Отсчет времени до следующего Огненного дыхани",
 	timerDeepBreathCast		= "Время действия заклинания Огненное дыхание",
-	SpecWarnDevouringFlame		= "Отображать спец-предупреждение ноходящемуся в лавовой бомбе",
+	SpecWarnDevouringFlame		= "Спец-предупреждение ноходящемуся в лавовой бомбе",
 	PlaySoundOnDevouringFlame	= "Звуковой сигнал, когда под воздействием лавовой бомбы",
 	timerAllTurretsReady		= "Отсчет времени до пушек",
 	warnTurretsReadySoon		= "Отображать пред-предупреждение для пушек",
-	warnTurretsReady			= "Отображать предупреждение для пушек",
-	SpecWarnDevouringFlameCast	= "Отображать спец-предупреждение, когда вы в лавовой бомбе",
+	warnTurretsReady			= "Предупреждение для пушек",
+	SpecWarnDevouringFlameCast	= "Спец-предупреждение, когда вы в лавовой бомбе",
 	timerTurret1				= "Отсчет времени до пушки 1",
 	timerTurret2				= "Отсчет времени до пушки 2",
 	timerTurret3				= "Отсчет времени до пушки 3 (Героический)",
@@ -144,9 +144,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "Отображать спец-предупреждение, когда Светлый взрыв на вас",
+	SpecialWarningLightBomb		= "Спец-предупреждение, когда Светлый взрыв на вас",
 	WarningLightBomb			= "Объявлять Светлый взрыв",
-	SpecialWarningGravityBomb	= "Отображать спец-предупреждение, когда Гравитационная бомба на вас",
+	SpecialWarningGravityBomb	= "Спец-предупреждение, когда Гравитационная бомба на вас",
 	WarningGravityBomb			= "Объявлять Гравитационная бомба",
 	PlaySoundOnGravityBomb		= "Звуковой сигнал, когда Гравитационная бомба на вас",
 	PlaySoundOnTympanicTantrum	= "Звуковой сигнал во время эффекта Раскаты ярости",
@@ -191,11 +191,11 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerSupercharge			= "Отображать время действия Суперзаряда",
-	WarningSupercharge			= "Отображать предупреждение для заклинания Суперзаряд",
+	WarningSupercharge			= "Предупреждение для заклинания Суперзаряд",
 	WarningChainlight			= "Объявлять Цепную молнию",
 	TimerOverload				= "Отсчет времени до Перегрузки",
 	TimerLightningWhirl			= "Отсчет времени до Вихря молний",
-	LightningTendrils			= "Отображать спец-предупреждение для Светящихся придатков",
+	LightningTendrils			= "Спец-предупреждение для Светящихся придатков",
 	TimerLightningTendrils		= "Отображать время действия Светящихся придатков",
 	PlaySoundLightningTendrils	= "Звуковой сигнал во время эффекта Светящиеся придатки",
 	WarningFusionPunch			= "Объявлять Энергетический удар",
@@ -208,10 +208,10 @@ L:SetOptionLocalization{
 	WarningRuneofPower			= "Объявлять Руну мощи",
 	WarningRuneofDeath			= "Объявлять Руну смерти",
 	WarningRuneofSummoning			= "Объявлять Руну призыва",
-	RuneofDeath					= "Отображать спец-предупреждение для Руны смерти",
+	RuneofDeath					= "Спец-предупреждение для Руны смерти",
 	timerRuneofDeath			= "Отображать время действия Руны смерти",
 	SetIconOnStaticDisruption		= "Установить метку на цель под воздействием эффекта Статический сбой",
-	Overload				= "Отображать спец-предупреждение для Перегрузки",
+	Overload				= "Спец-предупреждение для Перегрузки",
 	AllwaysWarnOnOverload			= "Объявлять когда Перегрузка (иначе, только когда нацеливание)",
     PlaySoundOnOverload			= "Звуковой сигнал во время Перегрузки",
 	WarningStaticDisruption			= "Объявлять Статический сбой"
@@ -244,7 +244,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch	= "Отображать спец-предупреждение, когда Фазовый удар на вас",
+	SpecWarnPhasePunch	= "Спец-предупреждение, когда Фазовый удар на вас",
     WarningBigBang		= "Объявлять чтение заклинания Суровый удар",
 	PreWarningBigBang	= "Объявлять Суровый удар",
 	WarningPhasePunch	= "Объявлять цель под воздействием эффекта Фазовый удар",
@@ -284,7 +284,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam		= "Отображать спец-предупреждение, когда Сосредоточенный взгляд на ВАС",
+	SpecialWarningEyebeam		= "Спец-предупреждение, когда Сосредоточенный взгляд на ВАС",
 	WarningEyebeam				= "Объявлять цель под воздействием эффекта Сосредоточенный взгляд",
 	timerEyebeam				= "Отсчет времени до Сосредоточенного взгляда",
 	timerPetrifyingBreath		= "Отсчет времени до Каменящего дыхания",
@@ -331,14 +331,14 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast	= "Отображать спец-предупреждение когда применяет Удар часового",
-	SpecWarnVoid	= "Отображать спец-предупреждение находящемуся под воздействием Дикая сущность",
+	SpecWarnBlast	= "Спец-предупреждение когда применяет Удар часового",
+	SpecWarnVoid	= "Спец-предупреждение находящемуся под воздействием Дикая сущность",
 	WarnFear		= "Отображать предупреждение Страх",
 	WarnFearSoon	= "Отображать предупреждение о следующем Страхе",
-	WarnCatDied		= "Отображать предупреждение, когда погибает дикий защитник",
-	WarnSwarm		= "Отображать предупреждение для крадущегося стража",
+	WarnCatDied		= "Предупреждение, когда погибает дикий защитник",
+	WarnSwarm		= "Предупреждение для крадущегося стража",
 	WarnSonic		= "Отображать предупреждение визга",
-    WarnCatDiedOne		= "Отображать предупреждение, когда погибает кошка"
+    WarnCatDiedOne		= "Предупреждение, когда погибает кошка"
 }
 
 
@@ -362,7 +362,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerFlashFreeze	= "Отсчет времени до Мгновенной заморозки",
-	WarningFlashFreeze	= "Отображать предупреждение для Мгновенной заморозки",
+	WarningFlashFreeze	= "Предупреждение для Мгновенной заморозки",
 	PlaySoundOnFlashFreeze	= "Звуковой сигнал при Мгновенной заморозке",
 	WarningStormCloud	= "Объявлять цель под Грозовой тучей",
 	YellOnStormCloud	= "Крикнуть, когда Грозовой туче активны",
@@ -455,10 +455,10 @@ L:SetOptionLocalization{
 	WarnSimulKill		= "Объявлять, когда первый монстр погибает",
 	WarnFury		= "Объявлять цель под воздействием Гнев природы",
 	WarnRoots		= "Объявлять цель под воздействием Железные корни",
-	SpecWarnFury		= "Отображать спец-предупреждение для Гнев природы",
-	WarningTremor		= "Отображать спец-предупреждение для Дрожание земли (высокая сложность)",
+	SpecWarnFury		= "Спец-предупреждение для Гнев природы",
+	WarningTremor		= "Спец-предупреждение для Дрожание земли (высокая сложность)",
 	TimerSimulKill		= "Отсчет времени до воскрешения монстров",
-	UnstableEnergy		= "Отображать спец-предупреждение для Нестабильная энергия"
+	UnstableEnergy		= "Спец-предупреждение для Нестабильная энергия"
 }
 
 -- Elders
@@ -469,7 +469,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnFistOfStone	= "Отображать спец-предупреждение для Каменного кулака",
+	SpecWarnFistOfStone	= "Спец-предупреждение для Каменного кулака",
     SpecWarnGroundTremor	= "Show Special Warning for Ground Tremor",
 	PlaySoundOnFistOfStone	= "Play Sound on Fist of Stone cast",
 	TrashRespawnTimer	= "Show Trash Respawn timer"
@@ -558,18 +558,18 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash			= "Отображать предупреждение для Темного сокрушения",
+	WarningShadowCrash			= "Предупреждение для Темного сокрушения",
 	SetIconOnShadowCrash		= "Установить метку на цель под воздействием эффекта Темное сокрушение (череп)",
 	SetIconOnLifeLeach			= "Установить метку на цель под воздействием эффекта Вытягивание жизни (крест)",
-	SpecialWarningSurgeDarkness	= "Отображать спец-предупреждение для Наплыва Тьмы",
-	SpecialWarningShadowCrash	= "Отображать спец-предупреждение для Темное сокрушение",
+	SpecialWarningSurgeDarkness	= "Спец-предупреждение для Наплыва Тьмы",
+	SpecialWarningShadowCrash	= "Спец-предупреждение для Темное сокрушение",
     SpecialWarningShadowCrashNear	= "Show Special Warning for Shadow Crash in near of you",
-	SpecialWarningLLYou		= "Отображать спец-предупреждение, когда Вытягивание жизни на вас",
-	SpecialWarningLLNear		= "Отображать спец-предупреждение о Вытягивании жизни, около вас",
+	SpecialWarningLLYou		= "Спец-предупреждение, когда Вытягивание жизни на вас",
+	SpecialWarningLLNear		= "Спец-предупреждение о Вытягивании жизни, около вас",
 	CrashWhisper			= "Сообщить цели, под воздействием Темного сокрушения",
 	YellOnLifeLeech			= "Крикнуть о воздействии Вытягивания жизни",
 	YellOnShadowCrash		= "Крикнуть о воздействии Темного сокрушения",
-	specWarnShadowCrashNear		= "Отображать спец-предупреждение о Темном сокрушении, около вас",
+	specWarnShadowCrashNear		= "Спец-предупреждение о Темном сокрушении, около вас",
     WarningLeechLife		= "Announce Life Leech Target",
 	hardmodeSpawn			= "Show Timer for Saronite Animus Spawn (hardmode)"
 }
@@ -626,16 +626,16 @@ L:SetOptionLocalization{
 	WarningP2			= "Объявлять фазу 2",
 	WarningP3			= "Объявлять фазу 3",
 	WarningBrainLink		= "Объявлять Схожее мышление",
-	SpecWarnBrainLink		= "Отображать спец-предупреждение для Схожего мышления",
-	WarningSanity			= "Отображать предупреждение, когда Здравомыслие ослаблено",
-	SpecWarnSanity			= "Отображать спец-предупреждение, когда Здравомыслие очень ослаблено",
-	SpecWarnGuardianLow		= "Отображать спец-предупреждение, когда страж (Ф1) ослаблен (Для ДД)",
+	SpecWarnBrainLink		= "Спец-предупреждение для Схожего мышления",
+	WarningSanity			= "Предупреждение, когда Здравомыслие ослаблено",
+	SpecWarnSanity			= "Спец-предупреждение, когда Здравомыслие очень ослаблено",
+	SpecWarnGuardianLow		= "Спец-предупреждение, когда страж (Ф1) ослаблен (Для ДД)",
 	WarnMadness			= "Объявлять Помешательство",
 	WarnBrainPortalSoon		= "Объявлять портал",
-	SpecWarnMadnessOutNow		= "Отображать спец-предупреждение незадолго до окончания Помешательства",
+	SpecWarnMadnessOutNow		= "Спец-предупреждение незадолго до окончания Помешательства",
 	SetIconOnFearTarget		= "Установить метку на цель под Благосклонностью Сары",
 	WarnFavor			= "Объявлять цель под Благосклонностью Сары",
-	SpecWarnFavor			= "Отображать спец-предупреждение для Благосклонности Сары",
+	SpecWarnFavor			= "Спец-предупреждение для Благосклонности Сары",
 	WarnSqueeze			= "Объявлять цель под воздействием Выдавливание",
 	specWarnBrainPortalSoon		= "Объявлять Портал",
     WarningSqueeze			= "Announce Squeeze Targets",
