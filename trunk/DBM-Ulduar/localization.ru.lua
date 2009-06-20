@@ -137,9 +137,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "Светлый взрыв на ВАС!",
+	SpecialWarningLightBomb 	= "Светлый взрыв на вас!",
 	WarningLightBomb			= ">%s< под воздействием Светлого взрыва",
-	SpecialWarningGravityBomb	= "Гравитационная бомба на ВАС!",
+	SpecialWarningGravityBomb	= "Гравитационная бомба на вас!",
 	WarningGravityBomb			= ">%s< под воздействием Гравитационной бомбы",
 }
 
@@ -149,9 +149,9 @@ L:SetOptionLocalization{
 	SpecialWarningGravityBomb	= "Спец-предупреждение, когда Гравитационная бомба на вас",
 	WarningGravityBomb			= "Объявлять Гравитационная бомба",
 	PlaySoundOnGravityBomb		= "Звуковой сигнал, когда Гравитационная бомба на вас",
-	PlaySoundOnTympanicTantrum	= "Звуковой сигнал во время эффекта Раскаты ярости",
-	SetIconOnLightBombTarget	= "Установить метку на цель под воздействием эффекта Светлый взрыв",
-	SetIconOnGravityBombTarget	= "Установить метку на цель под воздействием эффекта Гравитационная бомба",
+	PlaySoundOnTympanicTantrum	= "Звуковой сигнал во время Раскаты ярости",
+	SetIconOnLightBombTarget	= "Установить метку на цель под Светлым взрывом",
+	SetIconOnGravityBombTarget	= "Установить метку на цель под Гравитационной бомбой",
 }
 
 -------------------
@@ -197,22 +197,22 @@ L:SetOptionLocalization{
 	TimerLightningWhirl			= "Отсчет времени до Вихря молний",
 	LightningTendrils			= "Спец-предупреждение для Светящихся придатков",
 	TimerLightningTendrils		= "Отображать время действия Светящихся придатков",
-	PlaySoundLightningTendrils	= "Звуковой сигнал во время эффекта Светящиеся придатки",
+	PlaySoundLightningTendrils	= "Звуковой сигнал во время Светящиеся придатки",
 	WarningFusionPunch			= "Объявлять Энергетический удар",
 	timerFusionPunchCast		= "Отображать индикатор для Энергетического удара",
 	timerFusionPunchActive		= "Отображать время действия Энергетический удар",
 	WarningOverwhelmingPower	= "Объявлять Переполняющую энергию",
 	timerOverwhelmingPower		= "Отсчет времени до Переполняющей энергии",
-	SetIconOnOverwhelmingPower	= "Установить метку на цель под воздействием эффекта Переполняющая энергия",
+	SetIconOnOverwhelmingPower	= "Установить метку на цель под Переполняющей энергией",
 	timerRunicBarrier			= "Отображать время действия Руническая преграда",
 	WarningRuneofPower			= "Объявлять Руну мощи",
 	WarningRuneofDeath			= "Объявлять Руну смерти",
 	WarningRuneofSummoning			= "Объявлять Руну призыва",
 	RuneofDeath					= "Спец-предупреждение для Руны смерти",
 	timerRuneofDeath			= "Отображать время действия Руны смерти",
-	SetIconOnStaticDisruption		= "Установить метку на цель под воздействием эффекта Статический сбой",
+	SetIconOnStaticDisruption		= "Установить метку на цель под Статическим сбоем",
 	Overload				= "Спец-предупреждение для Перегрузки",
-	AllwaysWarnOnOverload			= "Объявлять когда Перегрузка (иначе, только когда нацеливание)",
+	AllwaysWarnOnOverload			= "Объявлять когда Перегрузка (иначе, когда нацеливание)",
     PlaySoundOnOverload			= "Звуковой сигнал во время Перегрузки",
 	WarningStaticDisruption			= "Объявлять Статический сбой"
 }
@@ -234,7 +234,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextCollapsingStar	= "Свернувшейся звезды"
+	NextCollapsingStar	= "Свернувшаяся звезда",
+    PossibleNextCosmicSmash	= "Кара небесная"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= ">%s< под воздействием Фазового удара",
@@ -247,9 +248,10 @@ L:SetOptionLocalization{
 	SpecWarnPhasePunch	= "Спец-предупреждение, когда Фазовый удар на вас",
     WarningBigBang		= "Объявлять чтение заклинания Суровый удар",
 	PreWarningBigBang	= "Объявлять Суровый удар",
-	WarningPhasePunch	= "Объявлять цель под воздействием эффекта Фазовый удар",
+	WarningPhasePunch	= "Объявлять цель под воздействием Фазовый удар",
 	WarningBlackHole	= "Объявлять Чернаую дыру",
-    NextCollapsingStar	= "Отсчет времени до Свернувшейся звезды"
+    NextCollapsingStar	= "Отсчет времени до Свернувшейся звезды",
+    PossibleNextCosmicSmash	= "Отсчет времени до Кары небесной"
 }
 
 L:SetMiscLocalization{
@@ -284,8 +286,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam		= "Спец-предупреждение, когда Сосредоточенный взгляд на ВАС",
-	WarningEyebeam				= "Объявлять цель под воздействием эффекта Сосредоточенный взгляд",
+	SpecialWarningEyebeam		= "Спец-предупреждение, когда Сосредоточенный взгляд на вас",
+	WarningEyeBeam				= "Объявлять цель под воздействием Сосредоточенный взгляд",
 	timerEyebeam				= "Отсчет времени до Сосредоточенного взгляда",
 	timerPetrifyingBreath		= "Отсчет времени до Каменящего дыхания",
 	timerNextShockwave			= "Отсчет времени до Ударной волны",
@@ -332,7 +334,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBlast	= "Спец-предупреждение когда применяет Удар часового",
-	SpecWarnVoid	= "Спец-предупреждение находящемуся под воздействием Дикая сущность",
+	SpecWarnVoid	= "Спец-предупреждение под воздействием Дикая сущность",
 	WarnFear		= "Отображать предупреждение Страх",
 	WarnFearSoon	= "Отображать предупреждение о следующем Страхе",
 	WarnCatDied		= "Предупреждение, когда погибает дикий защитник",
@@ -405,6 +407,7 @@ L:SetOptionLocalization{
 	UnbalancingStrike		= "Объявлять Дисбалансирующий удар",
 	WarningBomb				= "Объявлять Взрыв руны",
 	RangeFrame				= "Отображать окно допустимой дистанции",
+    LightningOrb			= "Спец-предупреждение для Поражения громом",
 	AnnounceFails			= "Объявлять игрока под разрядом молнии в рейд-чат (требуются права лидера или помощника)" 
 }
 
@@ -453,12 +456,13 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnPhase2		= "Объявлять фазу 2",
 	WarnSimulKill		= "Объявлять, когда первый монстр погибает",
-	WarnFury		= "Объявлять цель под воздействием Гнев природы",
-	WarnRoots		= "Объявлять цель под воздействием Железные корни",
-	SpecWarnFury		= "Спец-предупреждение для Гнев природы",
-	WarningTremor		= "Спец-предупреждение для Дрожание земли (высокая сложность)",
+	WarnFury		= "Объявлять цель под воздействием Гнева природы",
+	WarnRoots		= "Объявлять цель под воздействием Железных корней",
+	SpecWarnFury		= "Спец-предупреждение для Гнева природы",
+	WarningTremor		= "Спец-предупреждение для Дрожания земли (высокая сложность)",
 	TimerSimulKill		= "Отсчет времени до воскрешения монстров",
-	UnstableEnergy		= "Спец-предупреждение для Нестабильная энергия"
+    PlaySoundOnFury		= "Воспроизводить звук для Гнева природы",
+	UnstableEnergy		= "Спец-предупреждение для Нестабильной энергии"
 }
 
 -- Elders
@@ -559,8 +563,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarningShadowCrash			= "Предупреждение для Темного сокрушения",
-	SetIconOnShadowCrash		= "Установить метку на цель под воздействием эффекта Темное сокрушение (череп)",
-	SetIconOnLifeLeach			= "Установить метку на цель под воздействием эффекта Вытягивание жизни (крест)",
+	SetIconOnShadowCrash		= "Установить метку на цель под Темным сокрушением (череп)",
+	SetIconOnLifeLeach			= "Установить метку на цель под Вытягиванием жизни (крест)",
 	SpecialWarningSurgeDarkness	= "Спец-предупреждение для Наплыва Тьмы",
 	SpecialWarningShadowCrash	= "Спец-предупреждение для Темное сокрушение",
     SpecialWarningShadowCrashNear	= "Спец-предупреждение о Темном сокрушении, около вас",
@@ -632,7 +636,7 @@ L:SetOptionLocalization{
 	SpecWarnGuardianLow		= "Спец-предупреждение, когда страж (Ф1) ослаблен (Для ДД)",
 	WarnMadness			= "Объявлять Помешательство",
 	WarnBrainPortalSoon		= "Объявлять портал",
-	SpecWarnMadnessOutNow		= "Спец-предупреждение незадолго до окончания Помешательства",
+	SpecWarnMadnessOutNow		= "Спец-предупреждение до окончания Помешательства",
 	SetIconOnFearTarget		= "Установить метку на цель под Рвением Сары",
 	WarnFavor			= "Объявлять цель под Рвением Сары",
 	SpecWarnFavor			= "Спец-предупреждение для Рвения Сары",
@@ -643,7 +647,7 @@ L:SetOptionLocalization{
 	WhisperBrainLink		= "Сообщить цели, под воздействием Схожее мышление",
 	SetIconOnFavorTarget		= "Установить метку на цель под воздействием Рвения Сары",
 	SetIconOnMCTarget		= "Установить метку на цель под контролем над разумом",
-	ShowSaraHealth			= "Показать здоровье Сары в фазе 1 (должна быть под прицелом хотябы одного игрока)"
+	ShowSaraHealth			= "Показать здоровье Сары в Ф1 (должна быть под прицелом)"
 }
 
 
