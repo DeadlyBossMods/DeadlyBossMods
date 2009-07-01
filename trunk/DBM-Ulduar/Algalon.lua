@@ -26,10 +26,13 @@ local timerNextBigBang		= mod:NewCDTimer(90.5, 64584)
 local timerBigBangCast		= mod:NewCastTimer(8, 64584)
 local announceBigBang		= mod:NewAnnounce("WarningBigBang", 3, 64584)
 local announcePreBigBang	= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
+local specWarnBigBang	= mod:NewSpecialWarning("SpecWarnBigBang")
 
 local timerNextCollapsingStar	= mod:NewTimer(15, "NextCollapsingStar")
 local timerCDCosmicSmash	= mod:NewTimer(25, "PossibleNextCosmicSmash")
 local timerCastCosmicSmash		= mod:NewCastTimer(4, 62311)
+local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
+local specWarnCosmicSmash	= mod:NewSpecialWarning("SpecWarnCosmicSmash")
 
 local announceBlackHole		= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 
@@ -69,6 +72,7 @@ function mod:SPELL_CAST_START(args)
 		timerNextBigBang:Start()
 		announceBigBang:Show()
 		announcePreBigBang:Schedule(80)
+		specWarnBigBang:Show()
 	end
 end
 
@@ -92,6 +96,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	elseif msg == L.Emote_CosmicSmash then
 		timerCastCosmicSmash:Start()
 		timerCDCosmicSmash:Start()
+		announceCosmicSmash:Show()
+		specWarnCosmicSmash:Show()
 	end
 end
 

@@ -238,16 +238,22 @@ L:SetWarningLocalization{
 	WarningPhasePunch	= "Phase Punch on >%s< - Stack %d",
 	WarningBlackHole	= "Black Hole",
 	WarningBigBang		= "Big Bang NOW",
+	SpecWarnBigBang		= "Big Bang",
 	PreWarningBigBang	= "Big Bang in ~10 sec",
+	WarningCosmicSmash 	= "Cosmic Smash - Explosion in 4 sec",
+	SpecWarnCosmicSmash 	= "Cosmic Smash"
 }
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch	= "Show Special Warning when Phase Punch on you",
 	WarningBigBang		= "Announce Big Bang Cast",
 	PreWarningBigBang	= "Pre Announce Big Bang",
+	SpecWarnBigBang		= "Show Special Warning for Big Bang",
 	WarningPhasePunch	= "Announce Phase Punch target",
 	WarningBlackHole	= "Announce Black Hole",
-	NextCollapsingStar	= "Show Timer for Next Colapsing Star"
+	NextCollapsingStar	= "Show Timer for Next Colapsing Star",
+	WarningCosmicSmash 	= "Announce Cosmic Smash",
+	SpecWarnCosmicSmash 	= "Show Special Warning for Cosmic Smash"
 }
 
 L:SetMiscLocalization{
