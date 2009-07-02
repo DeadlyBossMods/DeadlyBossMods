@@ -51,6 +51,8 @@ local timerShell		= mod:NewTargetTimer(6, 63666)
 local timerHardmode		= mod:NewTimer(598, "TimerHardmode", 64582)
 local timerFlameSuppressant	= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
+local warnFrostBomb		= mod:NewAnnounce("WarnFrostBomb", 3, 64623)
+local timerBombExplosion	= mod:NewCastTimer(15, 65333)
 
 local enrage 			= mod:NewEnrageTimer(900)
 
@@ -120,6 +122,10 @@ function mod:SPELL_CAST_START(args)
 	end
 	if args.spellId == 64570 then
 		timerFlameSuppressant:Start()
+	end
+	if args.spellId == 64623 or args.spellId == 64624 or args.spellId == 64625 or args.spellId == 64627 then
+		warnFrostBomb:Show()
+		timerBombExplosion:Start()
 	end
 end
 

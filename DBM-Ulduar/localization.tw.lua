@@ -501,7 +501,8 @@ L:SetWarningLocalization{
 	WarnBlast			= "離子衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
 	WarningShockBlast		= "震爆 - 跑開!",
-	WarnBombSpawn			= "炸彈機械人出現了"
+	WarnBombSpawn			= "炸彈機械人出現了",
+	WarnFrostBomb		= "冰霜炸彈"
 }
 
 L:SetTimerLocalization{
@@ -528,7 +529,8 @@ L:SetOptionLocalization{
 	PlaySoundOnShockBlast 		= "當震爆施放時播放音效",
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
 	ShockBlastWarningInP1		= "為第一階段的震爆顯示特別警告",
-	ShockBlastWarningInP4		= "為第四階段的震爆顯示特別警告"
+	ShockBlastWarningInP4		= "為第四階段的震爆顯示特別警告",
+	WarnFrostBomb		= "提示冰霜炸彈"
 }
 
 L:SetMiscLocalization{
