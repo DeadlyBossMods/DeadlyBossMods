@@ -115,9 +115,10 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAir 					= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
+	YellAir2					= "Fires out! Let's rebuild those turrets!",	
 	YellGroundTemp		= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
 	EmotePhase2			= "%%s이 완전히 땅에 내려앉았습니다!",	
-	FlamecastUnknown		= "알 수 없음"
+	FlamecastUnknown		= DBM_CORE_UNKNOWN
 }
 
 
@@ -225,22 +226,30 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextCollapsingStar	= "다음 붕괴의 별"	
+	NextCollapsingStar	= "다음 붕괴의 별",
+	PossibleNextCosmicSmash	 = "다음 우주의 강타"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch	= "위상의 주먹 : >%s< - %d 중첩",
-	WarningBlackHole		= "검은 구멍 폭발",
-	WarningBigBang		= "대 폭발!",
+	WarningBlackHole		= "블랙홀 폭발",
+	WarningBigBang		= "곧 대 폭발!",
+	SpecWarnBigBang		= "대 폭발!",
 	PreWarningBigBang	= "대 폭발 10초 전!",
+	WarningCosmicSmash 	= "우주의 강타 - 폭발 4초 전",
+	SpecWarnCosmicSmash 	= "우주의 강타"
 }
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch	= "위상의 주먹 대상이 될 경우 특수 경보 보기",
 	WarningBigBang		= "대 폭발 시전 알리기",
-	PreWarningBigBang	= "대 폭발 사전(미리) 알리기",	
+	PreWarningBigBang	= "대 폭발 사전(미리) 알리기",
+	SpecWarnBigBang		= "대 폭발 특수 경보 알리기",	
 	WarningPhasePunch	= "위상의 주먹 대상 알리기",
 	WarningBlackHole		= "블랙 홀 알리기",
-	NextCollapsingStar		= "다음 붕괴의 별 시전 알리기"	
+	NextCollapsingStar		= "다음 붕괴의 별 시전 타이머 보기",
+	PossibleNextCosmicSmash		= "다음 우주의 강타 시전 타이머 보기",	
+	WarningCosmicSmash 	= "우주의 강타 알리기",
+	SpecWarnCosmicSmash 	= "우주의 강타 특수 경보 보기"	
 }
 
 L:SetMiscLocalization{
@@ -275,7 +284,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "당신에게 안광 집중이 될 때 특수 경고 보기",
-	WarnEyeBeam				= "안광 집중 대상 알리기",
+	WarningEyeBeam				= "안광 집중 대상 알리기",
 	timerEyebeam				= "안광 집중 타이머 보기",
 	SetIconOnEyebeamTarget	= "안광 집중 대상 아이콘 설정",
 	timerPetrifyingBreath		= "석화 숨결 타이머 보기",
@@ -489,15 +498,15 @@ L:SetWarningLocalization{
 	WarnBlast				= ">%s< 에게 플라즈마 폭발!",
 	MagneticCore			= "자기 증폭기 획득 : >%s<",
 	WarningShockBlast		= "충격파 - 움직이세요!",
-	WarnBombSpawn		= "폭탄 로봇 생성!"
+	WarnBombSpawn		= "폭탄 로봇 생성!",
+	WarnFrostBomb			= "서리 폭탄"
 }
 
 L:SetTimerLocalization{
+	TimerHardmode			= "하드 모드 - 자폭장치 가동",
 	TimeToPhase2			= "2 페이즈",
 	TimeToPhase3			= "3 페이즈",
-	TimeToPhase4			= "4 페이즈",	
-	ProximityMines			= "새로운 접근 폭파 지뢰",	
-	TimerHardmode			= "하드 모드 - 자폭장치 가동"	
+	TimeToPhase4			= "4 페이즈"	
 }
 
 
@@ -517,22 +526,20 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare 	= "레이저 탄막 대상 특수 사운드 경보 재생",
 	ShockBlastWarningInP1	= "1 페이즈 충격파의 특수 경보 보기(근접 딜러)",
 	ShockBlastWarningInP4	= "4 페이즈 충격파의 특수 경보 보기(근접 딜러)",
---	WarningPlasmaBlast		= "플라즈마 폭발 알리기",	
 	WarningShockBlast			= "충격파 특수 경고 알리기",
---	NextDarkGlare 				= "다음 레이저 탄막 알리기",
---	SpinUp	 					= "회전 가속 알리기",	
+	WarnFrostBomb				= "서리 폭탄 알리기"	
 }
 
 L:SetMiscLocalization{
+	MobPhase1 		= "거대 전차 Mk II",
+	MobPhase2 		= "VX-001",
+	MobPhase3 		= "공중지휘기",
 	YellPull			= "시간이 없어, 친구들! 내가 최근에 만든 기막힌 발명품을 시험하게 도와 주겠지? 자, 마음 바꿀 생각은 말라고. XT-002를 그 꼬락서니로 만들었으니, 너흰 나한테 빚진 셈이란 걸 잊지 마!",	
 	YellHardPull		= "아니 대체 왜 그런짓을 한게지? \"누르지 마시오\"라고 쓰여진 경고문구 못봤나? 자폭장치를 활성화 해 놓으면 도대체 어떻게 발명품을 시험하지?",	
 	YellPhase2		= "멋지군! 참으로 경이적인 결과야! 차체 내구도 98.9 퍼센트라! 손상이라고 보기도 어렵지! 계속하자고.",
 	YellPhase3		= "고맙다, 친구들! 너희 덕분에 멋진 자료를 좀 얻었어! 자, 그걸 어디 뒀더라... 아, 여기 있군.",
 	YellPhase4		= "예비 시험은 이걸로 끝이다. 자 이제부터가 진짜라고!",	
-	LootMsg			= "([^%s]+).*Hitem:(%d+)",
-	MobPhase1 		= "거대 전차 Mk II",
-	MobPhase2 		= "VX-001",
-	MobPhase3 		= "공중지휘기"
+	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
 
