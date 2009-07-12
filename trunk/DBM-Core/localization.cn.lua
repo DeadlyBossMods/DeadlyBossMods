@@ -1,4 +1,4 @@
-﻿-- Simplified Chinese by Diablohu
+﻿-- Simplified Chinese by Diablohu/yleaf(yaroot@gmail.com)
 -- http://wow.gamespot.com.cn
 -- Last Update: 12/13/2008
 if GetLocale() ~= "zhCN" then return end
@@ -41,6 +41,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "团队中有%d名成员正在使用Deadly Boss 
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "你的Deadly Boss Mods版本已过期。\n你可以在如下地址下载到新版本%s(r%d)："
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl-C：复制下载地址到剪切板。"
+DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "发现新版本后弹出提示框"
 
 DBM_CORE_MOVABLE_BAR				= "拖动我！"
 
@@ -79,3 +80,29 @@ DBM_CORE_UNKNOWN					= "未知"
 DBM_CORE_TIMER_PULL					= "开怪倒计时"
 DBM_CORE_ANNOUNCE_PULL				= "%d 秒后开怪"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "开怪！"
+
+
+-- Generic Warnings (deprecated)
+DBM_CORE_GENERIC_TARGET_WARN = "%s 于 >%%s<!"
+DBM_CORE_GENERIC_TARGET_OPTION = "提示目标 %s"
+
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速击杀"
+
+-- Auto-generated Timer Localizations
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	active = "%s",
+	cd = "%s 冷却",
+	next = "下一次 %s",
+	achievement = "%s",
+}
+
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "显示 |cff71d5ff|Hspell:%d|h%s|h|r debuff计时",
+	cast = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 施法计时",
+	active = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 持续计时",
+	cd = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 冷却计时",
+	next = "显示下一次 |cff71d5ff|Hspell:%d|h%s|h|r 计时",
+	achievement = "显示成就: %s 计时",
+}
