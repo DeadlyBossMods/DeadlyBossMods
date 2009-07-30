@@ -497,7 +497,8 @@ L:SetWarningLocalization{
 	MagneticCore		= ">%s< got Magnetic Core",
 	WarningShockBlast	= "Shock Blast - MOVE AWAY",
 	WarnBombSpawn		= "Bomb Bot spawned",
-	WarnFrostBomb		= "Frost Bomb"
+	WarnFrostBomb		= "Frost Bomb",
+	WarnFlamesSoon		= "New Flames in ~5sec!"
 }
 
 L:SetTimerLocalization{
@@ -505,7 +506,8 @@ L:SetTimerLocalization{
 	TimerHardmode		= "Hard Mode - Self-Destruct",
 	TimeToPhase2		= "Phase 2",
 	TimeToPhase3		= "Phase 3",
-	TimeToPhase4		= "Phase 4"
+	TimeToPhase4		= "Phase 4",
+	TimerNewFlames		= "New Flames"
 }
 
 L:SetOptionLocalization{
@@ -523,7 +525,7 @@ L:SetOptionLocalization{
 	PlaySoundOnShockBlast	= "Play Sound on Shock Blast",
 	PlaySoundOnDarkGlare	= "Play Sound on Dark Glare",
 	ShockBlastWarningInP1	= "Show Special Warning for Shock Blast in Phase 1",
-	ShockBlastWarningInP4	= "Show Special Warning for Shock Blast in Phase 2",
+	ShockBlastWarningInP4	= "Show Special Warning for Shock Blast in Phase 4",
 	WarnFrostBomb		= "Announce Frost Bomb"
 }
 
