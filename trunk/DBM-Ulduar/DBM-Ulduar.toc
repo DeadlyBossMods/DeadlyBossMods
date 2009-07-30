@@ -39,4 +39,6 @@ Hodir.lua
 GeneralVezax.lua
 YoggSaron.lua
 Algalon.lua
+YoggSaron-Method.lua
+
 
