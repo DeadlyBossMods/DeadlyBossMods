@@ -1,4 +1,4 @@
-﻿## Interface: 30100
+﻿## Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chamber of Aspects|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Обсидиановое святилище|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑曜聖所|r
@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Name-zhTW: 黑曜聖所
 ## X-DBM-Mod-Name-koKR: 흑요석 성소
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
-## X-DBM-Mod-Sort: 2
+## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZone: The Obsidian Sanctum
 ## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище

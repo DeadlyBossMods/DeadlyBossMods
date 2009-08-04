@@ -1,4 +1,4 @@
-﻿## Interface: 30100
+﻿## Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Око Вечности|r
@@ -14,7 +14,7 @@
 ## X-DBM-Mod-Name-ruRU: Око Вечности
 ## X-DBM-Mod-Name-zhTW: 永恆之眼
 ## X-DBM-Mod-Name-koKR: 영원의 눈
-## X-DBM-Mod-Sort: 3
+## X-DBM-Mod-Sort: 4
 ## X-DBM-Mod-LoadZone: The Eye of Eternity
 ## X-DBM-Mod-LoadZone-deDE: Das Auge der Ewigkeit
 ## X-DBM-Mod-LoadZone-ruRU: Око Вечности
