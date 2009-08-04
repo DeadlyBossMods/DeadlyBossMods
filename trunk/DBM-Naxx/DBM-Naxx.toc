@@ -1,4 +1,4 @@
-﻿## Interface: 30100
+﻿## Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Наксрамас|r
@@ -19,7 +19,7 @@
 ## X-DBM-Mod-Name-ruRU: Наксрамас
 ## X-DBM-Mod-Name-zhTW: 納克薩瑪斯
 ## X-DBM-Mod-Name-koKR: 낙스라마스
-## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-Sort: 2
 ## X-DBM-Mod-LoadZone: Naxxramas
 ## X-DBM-Mod-LoadZone-deDE: Naxxramas
 ## X-DBM-Mod-LoadZone-ruRU: Наксрамас

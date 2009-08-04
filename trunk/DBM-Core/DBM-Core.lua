@@ -378,7 +378,7 @@ end
 --  OnUpdate/Scheduler  --
 --------------------------
 do
-	-- stack that stores a few tables (up to 6) which will be recycled
+	-- stack that stores a few tables (up to 8) which will be recycled
 	local popCachedTable, pushCachedTable
 	local numChachedTables = 0
 	do
@@ -467,7 +467,6 @@ do
 			firstFree = firstFree - 1
 			heap[1] = heap[firstFree]
 			heap[firstFree] = nil
---			heap[1], heap[firstFree] = heap[firstFree], nil -- does not work, but why?
 			siftDown(1)
 			return min
 		end
