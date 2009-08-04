@@ -9,7 +9,8 @@ mod:RegisterCombat("combat", 34796)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local timerBreath		= mod:NewCastTimer(5, 67650)
@@ -21,6 +22,7 @@ local warnRage			= mod:NewAnnounce("WarningRage", 3, 67657)
 
 local specWarnSpray		= mod:NewSpecialWarning("SpecialWarningSpray")
 local specWarnSilence	= mod:NewSpecialWarning("SpecialWarningSilence")
+local specWarnCharge	= mod:NewSpecialWarning("SpecialWarningCharge")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 67616 then
@@ -43,3 +45,11 @@ function mod:SPELL_CAST_START(args)
 		warnBreath:Show()
 	end
 end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	local target = msg:match(L.Charge)
+	if target and target == UnitName("player") then
+		specWarnCharge:Show()
+	end
+end
+
