@@ -9,13 +9,18 @@ L:SetGeneralLocalization{
 	name = "Northrend Beasts"
 }
 
+L:SetMiscLocalization{
+	Charge	= "^%%s glares at (%S+) and lets out",
+}
+
 L:SetOptionLocalization{
 	WarningImpale			= "Show warning for Impale",
 	WarningBreath			= "Show warning for Arctic Breath",
 	WarningSpray			= "Show warning for Paralytic Spray",
 	WarningRage				= "Show warning for Frothing Rages",
 	SpecialWarningSilence	= "Show special warning for Spell Block",
-	SpecialWarningSpray		= "Show special warning if you have Paralytic Spray"
+	SpecialWarningSpray		= "Show special warning if you have Paralytic Spray",
+	SpecialWarningCharge	= "Show special warning when Icehowl is about to charge you"
 }
 
 L:SetWarningLocalization{
@@ -24,5 +29,6 @@ L:SetWarningLocalization{
 	WarningBreath			= "Arctic Breath",
 	WarningRage				= "Frothing Rages",
 	SpecialWarningSilence	= "Spell Block in 0.5 Seconds!",
-	SpecialWarningSpray		= "Paralytic Spray on You"
+	SpecialWarningSpray		= "Paralytic Spray on You",
+	SpecialWarningCharge	= "Charge on You! Run!"
 }
