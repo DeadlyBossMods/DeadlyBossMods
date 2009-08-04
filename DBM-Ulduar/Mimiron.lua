@@ -30,7 +30,7 @@ mod:AddBoolOption("AutoChangeLootToFFA", true)
 
 local warnShockBlast	= mod:NewSpecialWarning("WarningShockBlast", nil, false)
 mod:AddBoolOption("ShockBlastWarningInP1", isMelee, "announce")
-mod:AddBoolOption("ShockBlastWarningInP4", isMeele, "announce")
+mod:AddBoolOption("ShockBlastWarningInP4", isMelee, "announce")
 local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
 local blastWarn			= mod:NewAnnounce("WarnBlast", 4)
 local shellWarn			= mod:NewAnnounce("WarnShell", 2)
