@@ -24,7 +24,7 @@ local timerLocustFade 		= mod:NewTimer(26, "TimerLocustFade", 28785)
 
 
 function mod:OnCombatStart(delay)
-	if GetCurrentDungeonDifficulty() == 2 then
+	if GetDungeonDifficulty() == 2 then
 		timerLocustIn:Start(90 - delay)
 		warningLocustSoon:Schedule(75 - delay)
 	else
@@ -39,7 +39,7 @@ function mod:SPELL_CAST_START(args)
 		warningLocustNow:Show()
 		specialWarningLocust:Show()
 		timerLocustIn:Stop()
-		if GetCurrentDungeonDifficulty() == 2 then
+		if GetDungeonDifficulty() == 2 then
 			timerLocustFade:Start(26)
 		else
 			timerLocustFade:Start(19)

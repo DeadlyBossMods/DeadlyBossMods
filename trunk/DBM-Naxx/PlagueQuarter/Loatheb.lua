@@ -29,7 +29,7 @@ local sporeTimer = 36
 
 function mod:OnCombatStart(delay)
 	doomCounter = 0
-	if GetCurrentDungeonDifficulty() == 2 then
+	if GetDungeonDifficulty() == 2 then
 		sporeTimer = 18
 	else
 		sporeTimer = 36
