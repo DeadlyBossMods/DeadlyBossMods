@@ -19,6 +19,10 @@ L:SetOptionLocalization({
 	ShowInviteTimer = "Отображать отсчет времени до входа на ПБ",
 	AutoSpirit = "Автоматически покидать тело"
 })
+
+L:SetMiscLocalization({
+	ArenaInvite	= "Приглашение на Арену"
+})
 --------------
 --  Arenas  --
 --------------
@@ -35,6 +39,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart = "Отображать отсчет времени до начала боя"
+	TimerShadow 	= "Отображать отсчет времени для Сумрачного кристалла"
 })
 
 L:SetMiscLocalization({
@@ -217,15 +222,18 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	specWarnNova	= "Вспышка молнии",
-	warnNova 		= "Вспышка молнии",
+	warnNova 	= "Вспышка молнии",
 	warnOverCharge	= "Перезарядка"
 }
 
 L:SetTimerLocalization{
+	timerMobOvercharge	= "Взрыв избыточно заряда"
 }
 
 L:SetOptionLocalization{
-	specWarnNova 	= ("Отображать спец-предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышки молнии"),
+	specWarnNova 		= ("Отображать спец-предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышки молнии"),
 	warnNova 		= ("Отображать предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышки молнии"),
-	warnOverCharge 	= ("Отображать предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Перезарядки")
+	warnOverCharge 		= ("Отображать предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Перезарядки")
+	timerMobOvercharge	= "Отсчет времени для Избыточно заряда (складывающийся отрицательный эффект)"
 }
+
