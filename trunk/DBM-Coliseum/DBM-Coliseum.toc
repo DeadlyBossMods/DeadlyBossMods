@@ -11,7 +11,7 @@
 ## X-DBM-Mod-Name-deDE: Kolosseum der Kreuzfahrer
 ## X-DBM-Mod-Name-ruRU: Испытание крестоносца
 ## X-DBM-Mod-Sort: 1
-## X-DBM-Mod-LoadZone: Crusader's Coliseum
+## X-DBM-Mod-LoadZone: Trial of the Crusader
 ## X-DBM-Mod-LoadZone-deDE: Kolosseum der Kreuzfahrer
 ## X-DBM-Mod-LoadZone-deDE: Испытание крестоносца
 localization.en.lua
