@@ -1467,7 +1467,7 @@ function DBM:StartCombat(mod, delay, synced)
 		if not mod.combatInfo then return end
 		table.insert(inCombat, mod)
 		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
-		if GetCurrentDungeonDifficulty() == 2 then
+		if GetDungeonDifficulty() == 2 then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
 		else
 			mod.stats.pulls = mod.stats.pulls + 1
@@ -1515,7 +1515,7 @@ function DBM:EndCombat(mod, wipe)
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
 			if thisTime < 30 then
-				if GetCurrentDungeonDifficulty() == 2 then
+				if GetDungeonDifficulty() == 2 then
 					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
 				else
 					mod.stats.pulls = mod.stats.pulls - 1
@@ -1525,9 +1525,9 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = ((GetCurrentDungeonDifficulty() == 2) and mod.stats.heroicLastTime) or mod.stats.lastTime
-			local bestTime = ((GetCurrentDungeonDifficulty() == 2) and mod.stats.heroicBestTime) or mod.stats.bestTime
-			if GetCurrentDungeonDifficulty() == 2 then
+			local lastTime = ((GetDungeonDifficulty() == 2) and mod.stats.heroicLastTime) or mod.stats.lastTime
+			local bestTime = ((GetDungeonDifficulty() == 2) and mod.stats.heroicBestTime) or mod.stats.bestTime
+			if GetDungeonDifficulty() == 2 then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
 				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)

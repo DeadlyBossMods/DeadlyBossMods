@@ -79,7 +79,7 @@ local function getWaveString(wave)
 end
 
 function mod:OnCombatStart(delay)
-	if GetCurrentDungeonDifficulty() == 2 then
+	if GetDungeonDifficulty() == 2 then
 		waves = wavesHeroic
 	else
 		waves = wavesNormal
