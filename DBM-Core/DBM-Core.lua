@@ -757,7 +757,11 @@ do
 			end
 			local loaded, reason = LoadAddOn("DBM-GUI")
 			if not loaded then
-				self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
+				if reason then
+					self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
+				else
+					self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(DBM_CORE_UNKNOWN))
+				end
 				return false
 			end
 			table.sort(callOnLoad, function(v1, v2) return v1[2] < v2[2] end)
@@ -1117,7 +1121,11 @@ function DBM:LoadMod(mod)
 
 	local loaded, reason = LoadAddOn(mod.modId)
 	if not loaded then
-		self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
+		if reason then
+			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
+		else
+			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN))
+		end
 		return false
 	else
 		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
