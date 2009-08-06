@@ -627,7 +627,8 @@ L:SetWarningLocalization{
 	specWarnBrainPortalSoon			= "3 초 후 차원문이 열립니다!",	
 	WarnSqueeze 						= "압착의 촉수: >%s<",
 	WarnFavor						= ">%s< 에게 사라의 열정!",
-	SpecWarnFavor					= "당신에게 사라의 열정"
+	SpecWarnFavor					= "당신에게 사라의 열정",
+	WarnEmpowerSoon					= "곧 암흑 강화!"
 }
 
 L:SetTimerLocalization{
@@ -658,4 +659,5 @@ L:SetOptionLocalization{
 	ShowSaraHealth				= "사라 체력 보기",
 	WarnFavor					= "사라의 열정 대상 알리기",
 	SpecWarnFavor				= "사라의 열정 특수 경보 보기",
+	WarnEmpowerSoon				= "암흑 강화 경보 보기"
 }
