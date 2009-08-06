@@ -20,26 +20,28 @@ mod:RegisterEvents(
 )
 
 
-local warnGuardianSpawned 		= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
+local warnGuardianSpawned 			= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
 local warnCrusherTentacleSpawned	= mod:NewAnnounce("WarningCrusherTentacleSpawned", 2)
-local warnP2 				= mod:NewAnnounce("WarningP2", 2)
-local warnP3 				= mod:NewAnnounce("WarningP3", 2)
-local warnSanity 			= mod:NewAnnounce("WarningSanity", 3)
-local specWarnGuardianLow 		= mod:NewSpecialWarning("SpecWarnGuardianLow", false)
-local warnBrainLink 			= mod:NewAnnounce("WarningBrainLink", 2)
-local specWarnBrainLink 		= mod:NewSpecialWarning("SpecWarnBrainLink")
-local specWarnSanity 			= mod:NewSpecialWarning("SpecWarnSanity")
-local warnMadness 			= mod:NewAnnounce("WarnMadness", 1)
-local timerMadness 			= mod:NewCastTimer(60, 64059)
-local specWarnMadnessOutNow		= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
-local warnBrainPortalSoon		= mod:NewAnnounce("WarnBrainPortalSoon", 1)
+local warnP2 						= mod:NewAnnounce("WarningP2", 2)
+local warnP3 						= mod:NewAnnounce("WarningP3", 2)
+local warnSanity 					= mod:NewAnnounce("WarningSanity", 3)
+local specWarnGuardianLow 			= mod:NewSpecialWarning("SpecWarnGuardianLow", false)
+local warnBrainLink 				= mod:NewAnnounce("WarningBrainLink", 2)
+local specWarnBrainLink 			= mod:NewSpecialWarning("SpecWarnBrainLink")
+local specWarnSanity 				= mod:NewSpecialWarning("SpecWarnSanity")
+local warnMadness 					= mod:NewAnnounce("WarnMadness", 1)
+local timerMadness 					= mod:NewCastTimer(60, 64059)
+local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
+local warnBrainPortalSoon			= mod:NewAnnounce("WarnBrainPortalSoon", 1)
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
-local warnSqueeze			= mod:NewAnnounce("WarnSqueeze", 1)
-local brainportal			= mod:NewTimer(27, "NextPortal")
-local warnFavor				= mod:NewAnnounce("WarnFavor", 1)
-local specWarnFavor			= mod:NewSpecialWarning("SpecWarnFavor")
-local timerLunaricGaze			= mod:NewCastTimer(4, 64163)
-local timerNextLunaricGaze		= mod:NewCDTimer(8.5, 64163)
+local warnSqueeze					= mod:NewAnnounce("WarnSqueeze", 1)
+local brainportal					= mod:NewTimer(27, "NextPortal")
+local warnFavor						= mod:NewAnnounce("WarnFavor", 1)
+local specWarnFavor					= mod:NewSpecialWarning("SpecWarnFavor")
+local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
+local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
+local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpower", 4)
+local timerEmpower					= mod:NewCDTimer(46, 64465)
 
 
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
@@ -155,6 +157,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze (reduces sanity)
 		timerLunaricGaze:Start()
+	elseif args.spellId == 64465 then
+        timerEmpower:Stop()
+        timerEmpower:Start()
+        warnEmpowerSoon:Schedule(40)
 	end
 end
 
@@ -163,6 +169,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnP3:Show()
 		phase = 3
 		brainportal:Stop()
+        timerEmpower:Start()
+        warnEmpowerSoon:Schedule(40)	
 
 	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze
 		timerNextLunaricGaze:Start()
