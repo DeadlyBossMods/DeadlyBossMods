@@ -1972,8 +1972,12 @@ function bossModPrototype:GetBossTarget(cid)
 	for i = 1, GetNumRaidMembers() do
 		if self:GetUnitCreatureId("raid"..i.."target") == cid then
 			return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
-		elseif self:GetUnitCreatureId("raid"..i.."focus") == cid then
+
+		elseif self:GetUnitCreatureId("raid"..i.."focus") == cid then	-- don't think this will ever work, but have no time to test it (i think it will be removed soon)
 			return UnitName("raid"..i.."focustarget"), "raid"..i.."focustarget"
+
+		elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
+			return UnitName("focustarget"), "focustarget"
 		end
 	end
 end
