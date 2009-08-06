@@ -21,9 +21,11 @@ L:SetOptionLocalization{
 	WarningRage				= "Show warning for Frothing Rages",
 	SpecialWarningImpale3	= "Show special warning for Impale (>=3 Stacks)",
 	SpecialWarningFireBomb	= "Show special warning for Fire Bomb on You",
+	SpecialWarningSlimePool	= "Show special warning for Slime Pool",
 	SpecialWarningSilence	= "Show special warning for Spell Block",
 	SpecialWarningSpray		= "Show special warning if you have Paralytic Spray",
-	SpecialWarningCharge	= "Show special warning when Icehowl is about to charge you"
+	SpecialWarningToxin		= "Show special warning if you have Paralytic Toxin",
+	SpecialWarningCharge	= "Show special warning when Icehowl is about to charge You"
 }
 
 L:SetWarningLocalization{
@@ -34,7 +36,11 @@ L:SetWarningLocalization{
 	WarningRage				= "Frothing Rages",
 	SpecialWarningImpale3	= "Impale on You",
 	SpecialWarningFireBomb	= "Fire Bomb on You",
+	SpecialWarningSlimePool	= "Slime Pool, Move out!",
 	SpecialWarningSilence	= "Spell Block in 0.5 Seconds!",
 	SpecialWarningSpray		= "Paralytic Spray on You",
+	SpecialWarningToxin		= "Toxin on You! Move!",
 	SpecialWarningCharge	= "Charge on You! Run!"
 }
+
+
