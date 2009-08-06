@@ -1100,7 +1100,8 @@ end
 function DBM:ZONE_CHANGED_NEW_AREA()
 	for i, v in ipairs(self.AddOns) do
 		if checkEntry(v.zone, GetRealZoneText()) and not IsAddOnLoaded(v.modId) then
-			self:LoadMod(v)
+			--DBM:LoadMod(v)
+			DBM:Schedule(3, function() DBM:LoadMod(v) end)		-- wtf blizzard,.. 
 		end
 	end
 	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("Alterac") then
@@ -1114,6 +1115,7 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 end
 
 function DBM:LoadMod(mod)
+	if type(mod) ~= "table" then return false end
 	local _, _, _, enabled = GetAddOnInfo(mod.modId)
 	if not enabled then
 		EnableAddOn(mod.modId)
