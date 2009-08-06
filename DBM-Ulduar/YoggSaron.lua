@@ -39,7 +39,7 @@ local brainportal			= mod:NewTimer(27, "NextPortal")
 local warnFavor				= mod:NewAnnounce("WarnFavor", 1)
 local specWarnFavor			= mod:NewSpecialWarning("SpecWarnFavor")
 local timerLunaricGaze			= mod:NewCastTimer(4, 64163)
-local timerNextLunaricGaze		= mod:NewCDTimer(9, 64163)
+local timerNextLunaricGaze		= mod:NewCDTimer(8.5, 64163)
 
 
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
