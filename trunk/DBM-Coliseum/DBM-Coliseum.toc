@@ -16,7 +16,7 @@
 ## X-DBM-Mod-LoadZone: Crusader's Coliseum
 ## X-DBM-Mod-LoadZone-koKR: 십자군의 시험장
 ## X-DBM-Mod-LoadZone-deDE: Kolosseum der Kreuzfahrer
-## X-DBM-Mod-LoadZone-deDE: Испытание крестоносца
+## X-DBM-Mod-LoadZone-ruRU: Испытание крестоносца
 localization.en.lua
 localization.de.lua
 localization.fr.lua
