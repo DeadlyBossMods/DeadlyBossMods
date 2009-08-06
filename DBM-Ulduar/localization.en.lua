@@ -621,7 +621,8 @@ L:SetWarningLocalization{
 	WarnBrainPortalSoon				= "Portal  in 3 sec",	
 	WarnSqueeze 					= "Squeeze: >%s<",
 	WarnFavor						= "Sara's Fervor on >%s<",
-	SpecWarnFavor					= "Sara's Fervor on YOU"
+	SpecWarnFavor					= "Sara's Fervor on YOU",
+	WarnEmpowerSoon					= "Empowering Shadows Soon!"	
 }
 
 L:SetTimerLocalization{
@@ -651,7 +652,8 @@ L:SetOptionLocalization{
 	WhisperBrainLink				= "Whisper players on Brain Link",
 	SetIconOnFavorTarget			= "Set Icon on Saras Fervor target",
 	SetIconOnMCTarget				= "Set Icon on Mindcontrol target",
-	ShowSaraHealth					= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)"
+	ShowSaraHealth					= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)",
+	WarnEmpowerSoon					= "Warn for Empowering Shadows soon"	
 }
 
 
