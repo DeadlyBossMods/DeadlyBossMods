@@ -40,7 +40,7 @@ local warnFavor						= mod:NewAnnounce("WarnFavor", 1)
 local specWarnFavor					= mod:NewSpecialWarning("SpecWarnFavor")
 local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
 local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
-local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpower", 4)
+local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpowerSoon", 4)
 local timerEmpower					= mod:NewCDTimer(46, 64465)
 
 
