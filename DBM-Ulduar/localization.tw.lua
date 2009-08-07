@@ -629,7 +629,8 @@ L:SetWarningLocalization{
 	WarnFavor			= "薩拉的熱誠: >%s<",
 	SpecWarnFavor			= "你中了薩拉的熱誠",
 	specWarnBrainPortalSoon		= "傳送門 即將出現",
-	RaidRage			= "薩拉生氣了 快吻她囉"
+	RaidRage			= "薩拉生氣了 快吻她囉",
+	WarnEmpowerSoon			= "暗影信標 即將到來!"
 }
 
 L:SetTimerLocalization{
@@ -660,5 +661,6 @@ L:SetOptionLocalization{
 	SetIconOnFavorTarget		= "設置標記在薩拉的熱誠的目標",
 	specWarnBrainPortalSoon		= "當傳送門即將出現時顯示特別警告",
 	SetIconOnMCTarget		= "設置標記在心控的目標",
-	RaidRageSpam			= "提示 成就:接吻和好 的時機"
+	RaidRageSpam			= "提示 成就:接吻和好 的時機",
+	WarnEmpowerSoon			= "為即將到來的暗影信標顯示警告"	
 }
