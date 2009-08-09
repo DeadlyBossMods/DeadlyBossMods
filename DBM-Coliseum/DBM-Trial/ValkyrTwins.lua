@@ -16,9 +16,9 @@ mod:SetBossHealthInfo(
 	34496, L.Eydis
 )
 
-local warnSpecial			= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
-local timerSpecial			= mod:NewTimer(45, "TimerSpecialSpell")
-local specWarnSpecial			= mod:NewSpecialWarning("SpecWarnSpecial")
+local warnSpecial		= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
+local timerSpecial		= mod:NewTimer(45, "TimerSpecialSpell")
+local specWarnSpecial	= mod:NewSpecialWarning("SpecWarnSpecial")
 
 function mod:OnCombatStart(delay)
 	timerSpecial:Start(-delay)

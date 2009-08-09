@@ -12,16 +12,16 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnPortalSoon			= mod:NewAnnounce("PortalSoonWarning", 3)
-local warnVolcanoSoon			= mod:NewAnnounce("VolcanoSoonWarning", 3)
-local warnFlame				= mod:NewAnnounce("WarnFlame", 3)
+local warnPortalSoon	= mod:NewAnnounce("PortalSoonWarning", 3)
+local warnVolcanoSoon	= mod:NewAnnounce("VolcanoSoonWarning", 3)
+local warnFlame			= mod:NewAnnounce("WarnFlame", 3)
 
-local timerFlame 			= mod:NewTargetTimer(6, 68123)
-local timerFlameCD			= mod:NewCDTimer(30, 68125) 
-local timerFlesh			= mod:NewTargetTimer(12, 67049)
-local timerFleshCD			= mod:NewCDTimer(23, 67051) 
-local timerPortalCD			= mod:NewCDTimer(120, 67900)
-local timerVolcanoCD			= mod:NewCDTimer(120, 67901)
+local timerFlame 		= mod:NewTargetTimer(6, 68123)
+local timerFlameCD		= mod:NewCDTimer(30, 68125) 
+local timerFlesh		= mod:NewTargetTimer(12, 67049)
+local timerFleshCD		= mod:NewCDTimer(23, 67051) 
+local timerPortalCD		= mod:NewCDTimer(120, 67900)
+local timerVolcanoCD	= mod:NewCDTimer(120, 67901)
 
 local specWarnFlame		= mod:NewSpecialWarning("SpecWarnFlame")
 local specWarnFlesh		= mod:NewSpecialWarning("SpecWarnFlesh")
