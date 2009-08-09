@@ -57,7 +57,7 @@ local function getWaveString(wave)
 end
 
 function mod:UPDATE_WORLD_STATES(args)
-	if GetDungeonDifficulty() == 2 then 
+	if mod:IsDifficulty("heroic25") then 
 		waves = wavesHeroic 
 	else 
 		waves = wavesNormal 

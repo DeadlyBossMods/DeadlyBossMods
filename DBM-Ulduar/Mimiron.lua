@@ -225,7 +225,7 @@ do
 		if GetTime() - lastPhaseChange > 30 and (cid == 33432 or cid == 33651 or cid == 33670) then
 			if args.timestamp == last then	-- all events in the same tick to detect the phases earlier (than the yell) and localization-independent
 				count = count + 1
-				if (GetInstanceDifficulty() == 1 and count > 4) or (GetInstanceDifficulty() == 2 and count > 9) then
+				if (mod:IsDifficulty("heroic10") and count > 4) or (mod:IsDifficulty("heroic25") and count > 9) then
 					lastPhaseChange = GetTime()
 					self:NextPhase()
 				end

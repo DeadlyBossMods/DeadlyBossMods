@@ -39,7 +39,7 @@ local castFlames
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	if GetInstanceDifficulty() == 1 then
+	if mod:IsDifficulty("heroic10")then
 		warnTurretsReadySoon:Schedule(70-delay)
 		warnTurretsReady:Schedule(75-delay)
 		timerTurret1:Start(-delay)
@@ -77,7 +77,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 	if msg == L.YellAir or msg == L.YellAir2 then
-		if GetInstanceDifficulty() == 1 then
+		if mod:IsDifficulty("heroic10") then
 			warnTurretsReadySoon:Schedule(70)
 			warnTurretsReady:Schedule(75)
 			timerTurret1:Start()
