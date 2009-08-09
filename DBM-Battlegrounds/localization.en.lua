@@ -242,3 +242,36 @@ L:SetOptionLocalization{
 	timerMobOvercharge	= "Show Timer for Overchaged Mob (stacking debuff)"
 }
 
+
+------------------------
+--  Isle of Conquest  --
+------------------------
+
+L = DBM:GetModLocalization("IsleOfConquest")
+
+L:SetGeneralLocalization({
+	name = "Isle of Conquest"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerStart		= "Game starts", 
+	TimerPOI		= "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart		= "Show timer for Game Start", 
+	TimerPOI		= "Show timer for Captures",
+})
+
+L:SetMiscLocalization({
+	ZoneName		= "Isle of Conquest",
+	BgStart60		= "",
+	BgStart30		= "The battle will begin in 30 seconds.",
+})
+
+
+
+
