@@ -39,14 +39,14 @@ mod:AddBoolOption("SetIconOnGripTarget", true)
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 32934 then 		-- right arm
 		timerRespawnRightArm:Start()
-		if GetInstanceDifficulty() == 1 then
+		if mod:IsDifficulty("heroic10") then
 			timerTimeForDisarmed:Start(12)
 		else
 			timerTimeForDisarmed:Start()
 		end
 	elseif self:GetCIDFromGUID(args.destGUID) == 32933 then		-- left arm
 		timerRespawnLeftArm:Start()
-		if GetInstanceDifficulty() == 1 then
+		if mod:IsDifficulty("heroic10") then
 			timerTimeForDisarmed:Start(12)
 		else
 			timerTimeForDisarmed:Start()

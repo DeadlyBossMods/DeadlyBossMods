@@ -84,13 +84,13 @@ function mod:SPELL_CAST_START(args)
 		timerFusionPunchCast:Start()
 	elseif args.spellId == 64637 or args.spellId == 61888 then	-- Overwhelming Power
 		warnOverwhelmingPower:Show(args.destName)
-		if GetInstanceDifficulty() == 1 then
+		if mod:IsDifficulty("heroic10") then
 			timerOverwhelmingPower:Start(60, args.destName)
 		else
 			timerOverwhelmingPower:Start(30, args.destName)
 		end
 		if self.Options.SetIconOnOverwhelmingPower then
-			if GetInstanceDifficulty() == 1 then
+			if mod:IsDifficulty("heroic10") then
 				mod:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
 			else
 				mod:SetIcon(args.destName, 8, 30) -- skull for 30 seconds (until meltdown)

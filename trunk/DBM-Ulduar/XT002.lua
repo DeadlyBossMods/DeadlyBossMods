@@ -35,7 +35,7 @@ mod:AddBoolOption("SetIconOnGravityBombTarget", true)
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	timerAchieve:Start()
-	if GetInstanceDifficulty() == 1 then
+	if mod:IsDifficulty("heroic10") then
 		timerTympanicTantrumCD:Start(35-delay)
 	else
 		timerTympanicTantrumCD:Start(50-delay)
