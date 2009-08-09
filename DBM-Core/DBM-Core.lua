@@ -196,7 +196,7 @@ do
 	local argsMT = {__index = {}}
 	local args = setmetatable({}, argsMT)
 	
-	function args.__index:IsSpellID(...)
+	function argsMT.__index:IsSpellID(...)
 		for i = 1, select("#", ...), 1 do
 			local v = select(i,  ...)
 			if v == self.spellId then
@@ -1111,8 +1111,8 @@ end
 function DBM:ZONE_CHANGED_NEW_AREA()
 	for i, v in ipairs(self.AddOns) do
 		if checkEntry(v.zone, GetRealZoneText()) and not IsAddOnLoaded(v.modId) then
-			--DBM:LoadMod(v)
-			DBM:Schedule(3, function() DBM:LoadMod(v) end)		-- wtf blizzard,.. 
+			DBM:Unschedule(DBM.LoadMod, DBM, v) -- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
+			DBM:Schedule(3, DBM.LoadMod, DBM, v)
 		end
 	end
 	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("Alterac") then
@@ -1137,7 +1137,7 @@ function DBM:LoadMod(mod)
 		if reason then
 			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
 		else
-			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN))
+--			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN)) -- wtf, this should never happen....(but it does happen sometimes if you reload your UI in an instance...)
 		end
 		return false
 	else
