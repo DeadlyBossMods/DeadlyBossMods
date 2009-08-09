@@ -43,11 +43,11 @@ local function is_graveyard(id)
 	return id == 15 or id == 4 or id == 13 or id == 14 or id == 8 
 end
 local function gy_state(id)
-	if id == 15 then	return 1	-- if gy_state(id) > 2 then .. conflict state ...
+	if id == 15 then		return 1	-- if gy_state(id) > 2 then .. conflict state ...
 	elseif id == 13 then 	return 2
-	elseif id == 4 then	return 3	-- if gy_state(id) == 3 then --- alliance takes gy from horde
-	elseif id == 14 then	return 4	-- if gy_state(id) == 4 then --- horde takes gy from alliance
-	elseif id == 8 then	return 5	-- if gy_state(id) == 5 then --- untaken
+	elseif id == 8 then		return 3	-- if gy_state(id) == 3 then --- untaken
+	elseif id == 4 then		return 4	-- if gy_state(id) == 4 then --- alliance takes gy from horde
+	elseif id == 14 then	return 5	-- if gy_state(id) == 5 then --- horde takes gy from alliance
 	else return 0
 	end
 end
@@ -63,11 +63,11 @@ local function is_tower(id)
 	return id == 10 or id == 12 or id == 11 or id == 9 or id == 6
 end
 local function tower_state(id)
-	if id == 11 then	return 1	-- if tower_state(id) > 2 then .. conflict state ...
+	if id == 11 then		return 1	-- if tower_state(id) > 2 then .. conflict state ...
 	elseif id == 10 then	return 2
-	elseif id == 9 then	return 3	-- if tower_state(id) == 3 then --- alliance trys to destroy the tower
+	elseif id == 9 then		return 3	-- if tower_state(id) == 3 then --- alliance trys to destroy the tower
 	elseif id == 12 then	return 4	-- if tower_state(id) == 4 then --- horde trys to destroy the tower
-	elseif id == 6 then	return 5	-- if tower_state(id) == 5 then --- destroyed
+	elseif id == 6 then		return 5	-- if tower_state(id) == 5 then --- destroyed
 	else return 0
 	end
 end
@@ -119,17 +119,17 @@ local function check_for_updates()
 	for k,v in pairs(graveyards) do
 		local name, _, textureIndex = GetMapLandmarkInfo(k)
 		if name and textureIndex then
-			if gy_state(v) <= 2 and gy_state(textureIndex) > 2 then
+			if gy_state(v) <= 3 and gy_state(textureIndex) > 3 then
 				-- gy is now in conflict, we have to start a bar :)
 				gyTimer:Start(nil, name)
 
-				if gy_state(textureIndex) == 3 then
+				if gy_state(textureIndex) == 4 then
 					gyTimer:SetColor(allyColor, name)
 				else
 					gyTimer:SetColor(hordeColor, name)
 				end
 				
-			elseif gy_state(textureIndex) <= 2 then
+			elseif gy_state(textureIndex) <= 3 then
 				-- gy is now longer under conflict, remove the bars
 				gyTimer:Stop(name)
 			end

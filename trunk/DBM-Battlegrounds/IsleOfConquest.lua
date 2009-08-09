@@ -126,7 +126,7 @@ function IsleOfConquest:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
 	elseif arg1 == L.BgStart15 then
-		startTimer:Update(16, 62)
+		startTimer:Update(47, 62)
 	end
 	scheduleCheck(self)
 end
