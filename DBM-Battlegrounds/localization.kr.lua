@@ -60,15 +60,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "게임 시작", 
-	TimerTower = "%s",
-	TimerGY = "%s",
+	TimerStart 	= "게임 시작", 
+	TimerTower	= "%s",
+	TimerGY 	= "%s",
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "알터랙 계곡 전투 개시 1분 전...",
-	BgStart30 = "알터랙 계곡 전투 개시 30초 전...",
-	ZoneName = "알터랙 계곡",
+	BgStart60 	= "알터랙 계곡 전투 개시 1분 전...",
+	BgStart30 	= "알터랙 계곡 전투 개시 30초 전...",
+	ZoneName 	= "알터랙 계곡",
 })
 
 L:SetOptionLocalization({
@@ -91,7 +91,7 @@ L:SetMiscLocalization({
 	BgStart60 = "1분 후 아라시 분지 전투가 시작됩니다.",
 	BgStart30 = "30초 후 아라시 분지 전투가 시작됩니다.",
 	ZoneName = "아라시 분지",
-	ScoreExpr = "(%d+)/2000",
+	ScoreExpr = "(%d+)/1600",
 	Alliance = "얼라이언스",
 	Horde = "호드",
 	WinBarText = "%s 획득",
@@ -125,7 +125,7 @@ L:SetMiscLocalization({
 	BgStart60 = "1분 후 폭풍의 눈 전투가 시작됩니다.",
 	BgStart30 = "30초 후 폭풍의 눈 전투가 시작됩니다.",
 	ZoneName = "폭풍의 눈",
-	ScoreExpr = "(%d+)/2000",
+	ScoreExpr = "(%d+)/1600",
 	Alliance = "얼라이언스",
 	Horde = "호드",
 	WinBarText = "%s 점령",
@@ -243,4 +243,35 @@ L:SetOptionLocalization{
 	warnOverCharge 	= ("공격대 경고 |cff71d5ff|H주문:%d|h%s|h|r"):format(64218, "과충전"),
 	timerMobOvercharge	= "과충전 된 몹의 시간 보기(stacking debuff)"
 }
+
+
+------------------------
+--  Isle of Conquest  --
+------------------------
+
+L = DBM:GetModLocalization("IsleOfConquest")
+
+L:SetGeneralLocalization({
+	name = "정복의 섬"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerStart		= "게임 시작", 
+	TimerPOI		= "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart		= "게임 시작 타이머 보기", 
+	TimerPOI		= "획득 타이머 보기",
+})
+
+L:SetMiscLocalization({
+	ZoneName		= "정복의 섬",
+	BgStart60		= "The battle will begin in 60 seconds.",
+	BgStart30		= "The battle will begin in 30 seconds.",
+	BgStart15		= "The battle will begin in 15 seconds.",
+})
 
