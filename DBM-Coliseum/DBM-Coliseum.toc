@@ -15,7 +15,7 @@
 ## X-DBM-Mod-Name-ruRU: Колизей Авангарда
 ## X-DBM-Mod-Name-zhTW: 十字軍大競技場
 ## X-DBM-Mod-Sort: 0
-## X-DBM-Mod-LoadZone: Crusader's Coliseum
+## X-DBM-Mod-LoadZone: Trial of the Crusader
 ## X-DBM-Mod-LoadZone-koKR: 십자군의 시험장
 ## X-DBM-Mod-LoadZone-deDE: Prüfung des Kreuzfahrers
 ## X-DBM-Mod-LoadZone-ruRU: Колизей Серебряного Авангарда
