@@ -268,8 +268,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ZoneName		= "Isle of Conquest",
-	BgStart60		= "",
+	BgStart60		= "The battle will begin in 60 seconds.",
 	BgStart30		= "The battle will begin in 30 seconds.",
+	BgStart15		= "The battle will begin in 15 seconds.",
 })
 
 

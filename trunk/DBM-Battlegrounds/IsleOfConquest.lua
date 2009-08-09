@@ -126,6 +126,8 @@ function IsleOfConquest:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 		startTimer:Start()
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
+	elseif arg1 == L.BgStart15 then
+		startTimer:Update(16, 62)
 	end
 	schedule_check(self)
 end
@@ -141,8 +143,10 @@ local function check_for_updates()
 
 				if poi_state(textureIndex) == 3 then
 					POITimer:SetColor(allyColor, name)
+					towerTimer:UpdateIcon(allyTowerIcon, name)
 				else
 					POITimer:SetColor(hordeColor, name)
+					towerTimer:UpdateIcon(hordeTowerIcon, name)
 				end
 				
 			elseif poi_state(textureIndex) <= 2 then
