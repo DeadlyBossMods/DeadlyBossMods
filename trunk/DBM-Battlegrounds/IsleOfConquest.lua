@@ -143,10 +143,10 @@ local function check_for_updates()
 
 				if poi_state(textureIndex) == 3 then
 					POITimer:SetColor(allyColor, name)
-					towerTimer:UpdateIcon(allyTowerIcon, name)
+					POITimer:UpdateIcon(allyTowerIcon, name)
 				else
 					POITimer:SetColor(hordeColor, name)
-					towerTimer:UpdateIcon(hordeTowerIcon, name)
+					POITimer:UpdateIcon(hordeTowerIcon, name)
 				end
 				
 			elseif poi_state(textureIndex) <= 2 then
