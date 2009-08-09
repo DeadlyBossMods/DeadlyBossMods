@@ -31,7 +31,7 @@ local function isinargs(val, ...)	-- search for val in all args (...)
 end
 
 local poi = {}
-local function is_poi(id)
+function is_poi(id)
 	return (id >= 16 and id <= 20) 		-- Quarry
 		or (id >= 135 and id <= 139)	-- Workshop
 		or (id >= 140 and id <= 144)	-- Hangar
