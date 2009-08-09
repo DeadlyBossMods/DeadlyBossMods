@@ -1077,7 +1077,7 @@ do
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
 						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
 						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
-						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 0,
+						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
 						modId		= GetAddOnInfo(i),
 					})
 				end
@@ -1532,7 +1532,7 @@ end
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
-		self:Stop()
+		mod:Stop()
 		mod.inCombat = false
 		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
