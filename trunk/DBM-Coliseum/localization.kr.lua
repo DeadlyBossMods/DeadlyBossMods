@@ -59,21 +59,21 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	PortalSoonWarning	= "곧 황천의 차원문!",
-	VolcanoSoonWarning	= "곧 군단의 불꽃!",
-	WarnFlame			= "군단의 불길 : >%s<!"
+	VolcanoSoonWarning	= "곧 지옥불 정령 분출!",
+	WarnFlame			= "군단의 불꽃 : >%s<!"
 }
 
 L:SetMiscLocalization{
 	SpecWarnFlame		= "당신에게 군단의 불꽃!",
-	SpecWarnFlesh		= "당신에게 불태우기!"
+	SpecWarnFlesh		= "당신에게 살점 소각!"
 }
 
 L:SetOptionLocalization{
 	PortalSoonWarning	= "황천의 차원문 사전 경고 알리기",
-	VolcanoSoonWarning	= "군단의 불꽃 사전 경고 알리기",
+	VolcanoSoonWarning	= "지옥불 정령 분출 사전 경고 알리기",
 	WarnFlame			= "군단의 불꽃 경고하기",
-	SpecWarnFlame		= "군단의 불길에 걸렸을 경우 특수 경보 알리기",
-	SpecWarnFlesh		= "불태우기에 걸렸을 경우 특수 경보 알리기"
+	SpecWarnFlame		= "군단의 불꽃에 걸렸을 경우 특수 경보 알리기",
+	SpecWarnFlesh		= "살점 소각에 걸렸을 경우 특수 경보 알리기"
 }
 
 
