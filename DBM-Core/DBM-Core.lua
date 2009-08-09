@@ -1058,7 +1058,11 @@ do
 		}
 		StaticPopup_Show("DBM_OLD_VERSION")
 	end
-
+	
+	local function setCombatInitialized()
+		combatInitialized = true
+	end
+	
 	function DBM:ADDON_LOADED(modname)
 		if modname == "DBM-Core" then
 			loadOptions()
@@ -1073,6 +1077,7 @@ do
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
 						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
 						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
+						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 0,
 						modId		= GetAddOnInfo(i),
 					})
 				end
@@ -1097,7 +1102,7 @@ do
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
 			self:PARTY_MEMBERS_CHANGED()
-			DBM:Schedule(1.5, function() combatInitialized = true end)
+			DBM:Schedule(1.5, setCombatInitialized)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
 		end
@@ -1488,9 +1493,9 @@ function DBM:StartCombat(mod, delay, synced)
 		if not mod.combatInfo then return end
 		table.insert(inCombat, mod)
 		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
-		if GetDungeonDifficulty() == 2 then
+		if mod:IsDifficulty("heroic5", "heroic25") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-		else
+		elseif mod:IsDifficulty("normal5", "heroic10") then
 			mod.stats.pulls = mod.stats.pulls + 1
 		end
 		mod.inCombat = true
@@ -1533,9 +1538,9 @@ function DBM:EndCombat(mod, wipe)
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
 			if thisTime < 30 then
-				if GetDungeonDifficulty() == 2 then
+				if mod:IsDifficulty("heroic5", "heroic25") then
 					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
-				else
+				elseif mod:IsDifficulty("normal5", "heroic10") then
 					mod.stats.pulls = mod.stats.pulls - 1
 				end
 			end
@@ -1543,13 +1548,13 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = ((GetDungeonDifficulty() == 2) and mod.stats.heroicLastTime) or mod.stats.lastTime
-			local bestTime = ((GetDungeonDifficulty() == 2) and mod.stats.heroicBestTime) or mod.stats.bestTime
-			if GetDungeonDifficulty() == 2 then
+			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod.stats.lastTime and mod:IsDifficulty("normal5", "heroic10")
+			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod.stats.bestTime and mod:IsDifficulty("normal5", "heroic10")
+			if mod:IsDifficulty("heroic5", "heroic25") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
 				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
-			else
+			elseif mod:IsDifficulty("normal5", "heroic10") then
 				mod.stats.kills = mod.stats.kills + 1
 				mod.stats.lastTime = thisTime
 				mod.stats.bestTime = math.min(bestTime or math.huge, thisTime)
@@ -2002,6 +2007,32 @@ function bossModPrototype:Stop(cid)
 		v:Stop()
 	end
 	self:Unschedule()
+end
+
+-- hard coded party-mod support, yay :)
+-- return heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
+function bossModPrototype:GetDifficulty()
+	if GetInstanceDifficulty() == 1 then
+		return self.modId == "DBM-Party-WotLK" and "normal5" or
+		self.hasHeroic and "normal10" or "heroic10"
+	elseif GetInstanceDifficulty() == 2 then
+		return self.modId == "DBM-Party-WotLK" and "heroic5" or
+		self.hasHeroic and "normal25" or "heroic25"
+	elseif GetInstanceDifficulty() == 3 then
+		return "heroic10"
+	elseif GetInstanceDifficulty() == 4 then
+		return "heroic25"
+	end
+end
+
+function bossModPrototype:IsDifficulty(...)
+	local diff = self:GetDifficulty()
+	for i = 1, select("#", ...) do
+		if diff == select(i, ...) then
+			return true
+		end
+	end
+	return false
 end
 
 
