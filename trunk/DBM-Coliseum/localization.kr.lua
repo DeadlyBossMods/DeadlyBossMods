@@ -44,3 +44,130 @@ L:SetWarningLocalization{
 	SpecialWarningCharge	= "당신에게 돌진! 뛰세요!"
 }
 
+
+-------------------
+-- Lord Jaraxxus --
+-------------------
+L = DBM:GetModLocalization("Jaraxxus")
+
+L:SetGeneralLocalization{
+	name = "군주 자락서스"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+	PortalSoonWarning	= "곧 황천의 차원문!",
+	VolcanoSoonWarning	= "곧 군단의 불꽃!",
+	WarnFlame			= "군단의 불길 : >%s<!"
+}
+
+L:SetMiscLocalization{
+	SpecWarnFlame		= "당신에게 군단의 불꽃!",
+	SpecWarnFlesh		= "당신에게 불태우기!"
+}
+
+L:SetOptionLocalization{
+	PortalSoonWarning	= "황천의 차원문 사전 경고 알리기",
+	VolcanoSoonWarning	= "군단의 불꽃 사전 경고 알리기",
+	WarnFlame			= "군단의 불꽃 경고하기",
+	SpecWarnFlame		= "군단의 불길에 걸렸을 경우 특수 경보 알리기",
+	SpecWarnFlesh		= "불태우기에 걸렸을 경우 특수 경보 알리기"
+}
+
+
+-----------------------
+-- Faction Champions --
+-----------------------
+L = DBM:GetModLocalization("Champions")
+
+L:SetGeneralLocalization{
+	name = "진영 대표 용사"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetMiscLocalization{
+	Gorgrim		= "DK - Gorgrim Shadowcleave",	-- 34458
+	Birana 		= "D - Birana Stormhoof",	-- 34451
+	Erin		= "D - Erin Misthoof",		-- 34459
+	Rujkah		= "H - Ruj'kah",		-- 34448
+	Ginselle	= "M - Ginselle Blightslinger",	-- 34449
+	Liandra		= "P - Liandra Suncaller",	-- 45
+	Malithas	= "P - Malithas Brightblade",	-- 56
+	Caiphus		= "PR - Caiphus the Stern",	-- 47
+	Vivienne	= "PR - Vivienne Blackwhisper",	-- 41
+	Mazdinah	= "R - Maz'dinah",		-- 54
+	Thrakgar	= "S - Thrakgar",		--  44
+	Broln		= "S - Broln Stouthorn",	-- 55
+	Harkzog		= "WL - Harkzog",		-- 50
+	Narrhok		= "W - Narrhok Steelbreaker"	-- 53
+} 
+
+L:SetOptionLocalization{
+}
+
+
+------------------
+-- Valkyr Twins --
+------------------
+L = DBM:GetModLocalization("Twins")
+
+L:SetGeneralLocalization{
+	name = "발키르 쌍둥이"
+}
+
+L:SetTimerLocalization{
+	TimerSpecialSpell	= "Next Special Ability"	
+}
+
+L:SetWarningLocalization{
+	WarnSpecialSpellSoon	= "Special Ability Soon!",
+	SpecWarnSpecial		= "Change color!"
+}
+
+L:SetMiscLocalization{
+	YellPull 	= "In the name of our dark master. For the Lich King. You. Will. Die.",
+	Fjola 		= "Fjola Lightbane",
+	Eydis		= "Eydis Darkbane"
+}
+
+L:SetOptionLocalization{
+	TimerSpecialSpell	= "Show a timer for the next special ability",
+	WarnSpecialSpellSoon	= "Prewarning for the next Special Ability",
+	SpecWarnSpecial		= "Show a special warning when you have to change color"
+}
+
+
+------------------
+-- Anub'arak --
+------------------
+L = DBM:GetModLocalization("Anub'arak_Coliseum")
+
+L:SetGeneralLocalization{
+	name = "아눕아락"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+	WarnBurrow	= "Burrow!",
+	WarnPursue	= "Pursuing >%s<",
+	SpecWarnPursue	= "Pursuing YOU!"
+}
+
+L:SetMiscLocalization{
+	YellPull	= "This place will serve as your tomb!"
+}
+
+L:SetOptionLocalization{
+	WarnBurrow	= "Warning for Submerge",
+	WarnPursue	= "Warning who is being followed",
+	SpecWarnPursue	= "Special warning if YOU are followed"
+}
