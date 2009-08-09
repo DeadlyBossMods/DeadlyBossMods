@@ -79,7 +79,6 @@ end
 -- 153 Refinerie - Horde Controlled
 -- 154 Refinerie - In Conflict (to Horde)
 --
---
 -- 77 Horde Gate - OK
 -- 78 - i think its at half hp
 -- 79 Horde Gate - Destroyed
@@ -97,7 +96,7 @@ end
 
 local bgzone = false
 do
-	local function initialize()
+	local function initialize(self)
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
 			for i=1, GetNumMapLandmarks(), 1 do
