@@ -193,7 +193,18 @@ end
 --------------
 do
 	local registeredEvents = {}
-	local args = {}
+	local argsMT = {__index = {}}
+	local args = setmetatable({}, argsMT)
+	
+	function args.__index:IsSpellID(...)
+		for i = 1, select("#", ...), 1 do
+			local v = select(i,  ...)
+			if v == self.spellId then
+				return true
+			end
+		end
+		return false
+	end
 
 	local function handleEvent(self, event, ...)
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
@@ -1511,10 +1522,7 @@ end
 
 function DBM:EndCombat(mod, wipe)
 	if removeEntry(inCombat, mod) then
-		for i, v in ipairs(mod.timers) do
-			v:Stop()
-		end
-		mod:Unschedule()
+		self:Stop()
 		mod.inCombat = false
 		mod.blockSyncs = true
 		if mod.combatInfo.killMobs then
@@ -1945,10 +1953,7 @@ function bossModPrototype:EnableMod()
 end
 
 function bossModPrototype:DisableMod()
-	for i, v in ipairs(self.timers) do
-		v:Stop()
-	end
-	self:Unschedule()
+	self:Stop()
 	self.Options.Enabled = false
 end
 
@@ -1990,6 +1995,13 @@ function bossModPrototype:GetBossTarget(cid)
 			return UnitName("focustarget"), "focustarget"
 		end
 	end
+end
+
+function bossModPrototype:Stop(cid)
+	for i, v in ipairs(self.timers) do
+		v:Stop()
+	end
+	self:Unschedule()
 end
 
 
