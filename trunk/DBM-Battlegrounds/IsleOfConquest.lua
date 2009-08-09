@@ -1,4 +1,3 @@
-
 local IsleOfConquest = DBM:NewMod("IsleOfConquest", "DBM-Battlegrounds")
 local L = IsleOfConquest:GetLocalizedStrings()
 
@@ -13,25 +12,25 @@ IsleOfConquest:RegisterEvents(
 )
 
 local allyTowerIcon = "Interface\\AddOns\\DBM-Battlegrounds\\Textures\\GuardTower"
-local allyColor = { r = 0,	g = 0,	b = 1 }
+local allyColor = {r = 0, g = 0, b = 1}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-Battlegrounds\\Textures\\OrcTower"
-local hordeColor = { r = 1,	g = 0,	b = 0 }
+local hordeColor = {r = 1, g = 0, b = 0}
 
 local startTimer = IsleOfConquest:NewTimer(62, "TimerStart")
-local POITimer = IsleOfConquest:NewTimer(61, "TimerPOI")	-- point of interrest 
+local POITimer = IsleOfConquest:NewTimer(61, "TimerPOI")	-- point of interest 
 
-local function isinargs(val, ...)	-- search for val in all args (...)
-		for i=1, select("#", ...), 1 do
-			local v = select(i,  ...)
-			if v == val then
-					return true
-			end
+local function isInArgs(val, ...)	-- search for val in all args (...)
+	for i=1, select("#", ...), 1 do
+		local v = select(i,  ...)
+		if v == val then
+			return true
 		end
-		return false
+	end
+	return false
 end
 
 local poi = {}
-function is_poi(id)
+local function isPoi(id)
 	return (id >= 16 and id <= 20) 		-- Quarry
 		or (id >= 135 and id <= 139)	-- Workshop
 		or (id >= 140 and id <= 144)	-- Hangar
@@ -39,12 +38,12 @@ function is_poi(id)
 		or (id >= 150 and id <= 154)	-- Refinerie
 		or (id >= 9 and id <= 12)		-- Keep
 end
-local function poi_state(id)
-	if isinargs(id, 18, 136, 141, 146, 151) then		return 1		-- allianz
-	elseif isinargs(id, 20, 138, 143, 148, 153) then 	return 2		-- horde
-	elseif isinargs(id, 17, 137, 142, 147, 152) then	return 3		-- if poi_state(id) == 3 then --- alliance takes from horde
-	elseif isinargs(id, 19, 139, 144, 149, 154) then	return 4		-- if poi_state(id) == 4 then --- horde takes from alliance
-	elseif isinargs(id, 16, 135, 140, 145, 150) then	return 5		-- if poi_state(id) == 5 then --- untaken
+local function getPoiState(id)
+	if isInArgs(id, 18, 136, 141, 146, 151) then		return 1		-- alliance
+	elseif isInArgs(id, 20, 138, 143, 148, 153) then 	return 2		-- horde
+	elseif isInArgs(id, 17, 137, 142, 147, 152) then	return 3		-- if getPoiState(id) == 3 then --- alliance takes from horde
+	elseif isInArgs(id, 19, 139, 144, 149, 154) then	return 4		-- if getPoiState(id) == 4 then --- horde takes from alliance
+	elseif isInArgs(id, 16, 135, 140, 145, 150) then	return 5		-- if getPoiState(id) == 5 then --- untaken
 	else return 0
 	end
 end
@@ -57,25 +56,25 @@ end
 -- 20 Quarry - Horde Controlled
 --
 -- 135 Workshop - Uncontrolled
--- 136 Workshop - Allianz
+-- 136 Workshop - Alliance
 -- 137 Workshop - In Conflict (to Alliance)
 -- 138 Workshop - Horde Controlled
 -- 139 Workshop - In Conflict (to Horde)
 --
 -- 140 Hangar - Uncontrolled
--- 141 Hangar - Allianz
+-- 141 Hangar - Alliance
 -- 142 Hangar - In Conflict (to Alliance)
 -- 143 Hangar - Horde Controlled
 -- 144 Hangar - In Conflict (to Horde)
 --
 -- 145 Docks - Uncontrolled
--- 146 Docks - Allianz
+-- 146 Docks - Alliance
 -- 147 Docks - In Conflict (to Alliance)
 -- 148 Docks - Horde
 -- 149 Docks - In Conflict (to Horde)
 --
 -- 150 Refinerie - Uncontrolled
--- 151 Refinerie - Allianz
+-- 151 Refinerie - Alliance
 -- 152 Refiniere - In Conflict (to Alliance)
 -- 153 Refinerie - Horde Controlled
 -- 154 Refinerie - In Conflict (to Horde)
@@ -85,40 +84,41 @@ end
 -- 78 - i think its at half hp
 -- 79 Horde Gate - Destroyed
 --
--- 80 Allianz Gate - OK
+-- 80 Alliance Gate - OK
 -- 81 - i think its at half hp
 -- 82 Allianz Gate - Destroyed
 --
 -- 9 Keep - In Conflict (to Allianz)
 -- 10 Keep - Horde Controlled 
--- 11 Keep - Allianz
+-- 11 Keep - Alliance
 -- 12 Keep - In Conflict (to Horde)
 --
 
 
 local bgzone = false
 do
-	local function IOC_Initialize()
+	local function initialize()
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
-					if is_poi(textureIndex) then
+					if isPoi(textureIndex) then
 						poi[i] = textureIndex
 					end
 				end
 			end
-
 		elseif bgzone then
+			self:Stop()
 			bgzone = false
 		end
 	end
-	IsleOfConquest.OnInitialize = IOC_Initialize
-	IsleOfConquest.ZONE_CHANGED_NEW_AREA = IOC_Initialize
+	
+	IsleOfConquest.OnInitialize = initialize
+	IsleOfConquest.ZONE_CHANGED_NEW_AREA = initialize
 end
 
-local schedule_check
+local scheduleCheck
 
 function IsleOfConquest:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	if not bgzone then return end
@@ -129,19 +129,19 @@ function IsleOfConquest:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 	elseif arg1 == L.BgStart15 then
 		startTimer:Update(16, 62)
 	end
-	schedule_check(self)
+	scheduleCheck(self)
 end
 
-local function check_for_updates()
+local function checkForUpdates()
 	if not bgzone then return end
 	for k,v in pairs(poi) do
 		local name, _, textureIndex = GetMapLandmarkInfo(k)
 		if name and textureIndex then
-			if poi_state(v) <= 2 and poi_state(textureIndex) > 2 then
+			if getPoiState(v) <= 2 and getPoiState(textureIndex) > 2 then
 				-- poi is now in conflict, we have to start a bar :)
 				POITimer:Start(nil, name)
 
-				if poi_state(textureIndex) == 3 then
+				if getPoiState(textureIndex) == 3 then
 					POITimer:SetColor(allyColor, name)
 					POITimer:UpdateIcon(allyTowerIcon, name)
 				else
@@ -149,8 +149,8 @@ local function check_for_updates()
 					POITimer:UpdateIcon(hordeTowerIcon, name)
 				end
 				
-			elseif poi_state(textureIndex) <= 2 then
-				-- poi is now longer under conflict, remove the bars
+			elseif getPoiState(textureIndex) <= 2 then
+				-- poi is now longer in conflict, remove the bars
 				POITimer:Stop(name)
 			end
 			poi[k] = textureIndex
@@ -158,14 +158,14 @@ local function check_for_updates()
 	end
 end
 
-function schedule_check(self)
-	self:Schedule(1, check_for_updates)
+function scheduleCheck(self)
+	self:Schedule(1, checkForUpdates)
 end
 
 
-IsleOfConquest.CHAT_MSG_MONSTER_YELL = schedule_check
-IsleOfConquest.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
-IsleOfConquest.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
+IsleOfConquest.CHAT_MSG_MONSTER_YELL = scheduleCheck
+IsleOfConquest.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
+IsleOfConquest.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
 
 
 
