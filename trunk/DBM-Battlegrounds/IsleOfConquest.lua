@@ -38,12 +38,12 @@ local function isPoi(id)
 		or (id >= 150 and id <= 154)	-- Refinerie
 		or (id >= 9 and id <= 12)		-- Keep
 end
-local function getPoiState(id)
+function getPoiState(id)
 	if isInArgs(id, 18, 136, 141, 146, 151) then		return 1		-- alliance
 	elseif isInArgs(id, 20, 138, 143, 148, 153) then 	return 2		-- horde
-	elseif isInArgs(id, 17, 137, 142, 147, 152) then	return 3		-- if getPoiState(id) == 3 then --- alliance takes from horde
-	elseif isInArgs(id, 19, 139, 144, 149, 154) then	return 4		-- if getPoiState(id) == 4 then --- horde takes from alliance
-	elseif isInArgs(id, 16, 135, 140, 145, 150) then	return 5		-- if getPoiState(id) == 5 then --- untaken
+	elseif isInArgs(id, 16, 135, 140, 145, 150) then	return 3		-- if getPoiState(id) == 3 then --- untaken
+	elseif isInArgs(id, 17, 137, 142, 147, 152) then	return 4		-- if getPoiState(id) == 4 then --- alliance takes
+	elseif isInArgs(id, 19, 139, 144, 149, 154) then	return 5		-- if getPoiState(id) == 5 then --- horde takes
 	else return 0
 	end
 end
@@ -136,11 +136,12 @@ local function checkForUpdates()
 	for k,v in pairs(poi) do
 		local name, _, textureIndex = GetMapLandmarkInfo(k)
 		if name and textureIndex then
-			if getPoiState(v) <= 2 and getPoiState(textureIndex) > 2 then
+			--      new state       vs     old state
+			if getPoiState(v) <= 3 and getPoiState(textureIndex) > 3 then
 				-- poi is now in conflict, we have to start a bar :)
 				POITimer:Start(nil, name)
 
-				if getPoiState(textureIndex) == 3 then
+				if getPoiState(textureIndex) == 4 then		-- alliance takes
 					POITimer:SetColor(allyColor, name)
 					POITimer:UpdateIcon(allyTowerIcon, name)
 				else

@@ -182,3 +182,36 @@ L:SetOptionLocalization({
 
 
 
+------------------------
+--  Isle of Conquest  --
+------------------------
+
+L = DBM:GetModLocalization("IsleOfConquest")
+
+L:SetGeneralLocalization({
+	name = "Isle of Conquest"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerStart		= "Game starts", 
+	TimerPOI		= "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart		= "Zeige Startzeit an", 
+	TimerPOI		= "Zeige Zeit für Eroberungen",
+})
+
+L:SetMiscLocalization({
+	ZoneName		= "Insel der Eroberung",
+	BgStart60		= "Die Schlacht beginnt in 60 Sekunden.",
+	BgStart30		= "Die Schlacht beginnt in 30 Sekunden.",
+	BgStart15		= "Die Schlacht beginnt in 15 Sekunden.",
+})
+
+
+
+
