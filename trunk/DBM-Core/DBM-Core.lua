@@ -1148,6 +1148,11 @@ function DBM:LoadMod(mod)
 	else
 		self:AddMsg(DBM_CORE_LOAD_MOD_SUCCESS:format(tostring(mod.name)))
 		loadModOptions(mod.modId)
+		for i, v in ipairs(DBM.Mods) do -- load the hasHeroic attribute from the toc into all boss mods as required by the GetDifficulty() method
+			if v.modId == mod.modId then
+				v.hasHeroic = mod.hasHeroic
+			end
+		end
 		if DBM_GUI then
 			DBM_GUI:UpdateModList()
 		end
