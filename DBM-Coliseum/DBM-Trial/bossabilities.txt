@@ -1,0 +1,64 @@
+NORTHREND BEASTS
+ - Phase 1, 2, 3 Bosshealth bars update
+ - Gormok:
+    + Staggering Stomp:
+	= Raid Warning + 5 seconds pre-warning 
+	= 21seconds cooldown timer
+    + Impaler:
+	= Warn when someone has 2 or more stacks of Impaler
+ - Jormungars:
+    + Acidic/Molten Spew
+	= Raid Warning when they cast it
+    + Paralytic Toxin + Burning Bile
+	= Raid Warning the people who have this debuff
+	= Special Warning if YOU have 1 of these debuffs
+    + Slime Pool
+	= Raid Warning when they cast this
+    + Enrage
+	= Raid Warning when they enrage
+ - Icehowl
+    + Ferocious Butt
+	= Raid Warning who has the debuff
+	= 12 seconds cooldown timer
+    + Furious Charge			!!!! Not yet implemented, need the emote !!!!
+	= Announce who has it
+	= Special Warning if it is on YOU!
+    + Staggered Daze
+	= Warn when Icehowl gains Staggered Daze
+    + Frothing Rage
+	= Warn when Icehowl gains Frothing Rage
+
+LORD JARAXXUS
+ - Legion Flame:
+    + 6 seconds duration timer
+    + 30 seconds cooldown timer
+    + Raid Warning:  Legion Flame on ...
+    + Special Warning when YOU have it
+    + Icon (blue square) on target
+ - Incinerate Flesh:
+    + 12 seconds duration timer
+       = stopped when debuff is removed
+    + 23 seconds cooldown timer
+    + Special Warning when YOU have it
+    + Icon (skull) on target
+ - Nether Portal:
+    + 45 seconds after engage
+    + 120 seconds after last Nether Portal
+ - Infernal Volcano
+    + 105 seconds after engage
+    + 120 seconds after last Infernal Volcano
+
+FACTION CHAMPIONS
+ - 
+
+VALKYR TWINS
+ - Dark/Light Pact   AND  Dark/Light Vortex   (these share the cooldown timer)
+    + 5 seconds prewarning
+    + 45 seconds cooldown timer
+ - Dark/Light Vortex
+    + Special Warning when you have to change color
+
+ANUBARAK
+ - Pursue
+    + Raid Warning who is being followed
+    + Special Warning if YOU are being followed
