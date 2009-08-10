@@ -19,23 +19,28 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local timerBreath		= mod:NewCastTimer(5, 67650)
-local timerNextStomp	= mod:NewNextTimer(20, 66330)
-local timerNextImpale	= mod:NewNextTimer(10, 67477)
+local timerBreath			= mod:NewCastTimer(5, 67650)
+local timerNextStomp		= mod:NewNextTimer(20, 66330)
+local timerNextImpale		= mod:NewNextTimer(10, 67477)
 
-local warnImpaleOn		= mod:NewAnnounce("WarningImpale", 2, 67478)
-local warnFireBomb		= mod:NewAnnounce("WarningFireBomb", 4, 66317)
-local warnSpray			= mod:NewAnnounce("WarningSpray", 2, 67616)
-local warnBreath		= mod:NewAnnounce("WarningBreath", 1, 67650)
-local warnRage			= mod:NewAnnounce("WarningRage", 3, 67657)
+local warnImpaleOn			= mod:NewAnnounce("WarningImpale", 2, 67478)
+local warnFireBomb			= mod:NewAnnounce("WarningFireBomb", 4, 66317, false)
+--local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
+local warnBreath			= mod:NewAnnounce("WarningBreath", 1, 67650)
+local warnRage				= mod:NewAnnounce("WarningRage", 3, 67657)
+local warnCharge			= mod:NewAnnounce("WarningCharge", 4)
 
-local specWarnImpale3	= mod:NewSpecialWarning("SpecialWarningImpale3", false)
-local specWarnFireBomb	= mod:NewSpecialWarning("SpecialWarningFireBomb")
-local specWarnSlimePool	= mod:NewSpecialWarning("SpecialWarningSlimePool")
-local specWarnSpray		= mod:NewSpecialWarning("SpecialWarningSpray")
-local specWarnToxin		= mod:NewSpecialWarning("SpecialWarningToxin")
-local specWarnSilence	= mod:NewSpecialWarning("SpecialWarningSilence")
-local specWarnCharge	= mod:NewSpecialWarning("SpecialWarningCharge")
+local specWarnImpale3		= mod:NewSpecialWarning("SpecialWarningImpale3", false)
+local specWarnFireBomb		= mod:NewSpecialWarning("SpecialWarningFireBomb")
+local specWarnSlimePool		= mod:NewSpecialWarning("SpecialWarningSlimePool")
+--local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
+local specWarnToxin			= mod:NewSpecialWarning("SpecialWarningToxin")
+local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
+local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
+local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
+
+mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
+
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 67477 or args.spellId == 66331 then
@@ -50,10 +55,10 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 66901 or args.spellId == 67615 then
-		warnSpray:Show(args.spellName)
-		-- todo: get target of spellcast
-	elseif args.spellId == 67648 then
+--	if args.spellId == 66901 or args.spellId == 67615 then	-- seems to be hard buggy  >> unknown on unknown << xD what a message *G*
+--		warnSpray:Show(args.spellName, args.destName)
+-- 		todo: get target of spellcast
+	if args.spellId == 67648 then
 		specWarnSilence:Show()
 	elseif args.spellId == 67650 then		
 		timerBreath:Start()
@@ -67,17 +72,33 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg:match(L.Charge)
-	if target and target == UnitName("player") then
-		specWarnCharge:Show()
+	if target then
+		if target == UnitName("player") then
+			specWarnCharge:Show()
+		else
+			local uId = DBM:GetRaidUnitId(target)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
+					specWarnChargeNear:Show()
+				end
+			end
+		end
+		if self.Options.SetIconOnChargeTarget then
+			self:SetIcon(target, 8, 4)
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if (args.spellId == 67477 or args.spellId == 66331) and args.amount >= 3 then
+	if (args.spellId == 67477 or args.spellId == 66331) then
 		timerNextImpale:Start()
-		warnImpaleOn:Show(args.spellName, args.destName)
-		if UnitName("player") == args.destName then
-			specWarnImpale3:Show()
+		if args.amount >= 3 then 
+			local name = GetSpellInfo(args.spellId)
+			warnImpaleOn:Show(name, args.destName)
+			if UnitName("player") == args.destName then
+				specWarnImpale3:Show(args.amount)
+			end
 		end
 	end
 end
