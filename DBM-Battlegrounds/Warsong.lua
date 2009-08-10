@@ -72,21 +72,21 @@ end
 
 function Warsong:ShowFlagCarrier()
 	if not Warsong.Options.ShowFlagCarrier then return end
-	if AlwaysUpFrame1DynamicIconButton and AlwaysUpFrame2DynamicIconButton then
+	if AlwaysUpFrame3DynamicIconButton and AlwaysUpFrame3DynamicIconButton then
 		if not self.FlagCarrierFrame1 then
-			self.FlagCarrierFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame1DynamicIconButton)
+			self.FlagCarrierFrame1 = CreateFrame("Frame", nil, AlwaysUpFrame2DynamicIconButton)
 			self.FlagCarrierFrame1:SetHeight(10)
 			self.FlagCarrierFrame1:SetWidth(100)
-			self.FlagCarrierFrame1:SetPoint("LEFT", "AlwaysUpFrame1DynamicIconButton", "RIGHT", 4, 0)
+			self.FlagCarrierFrame1:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
 			self.FlagCarrierFrame1Text = self.FlagCarrierFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.FlagCarrierFrame1Text:SetAllPoints(self.FlagCarrierFrame1)
 			self.FlagCarrierFrame1Text:SetJustifyH("LEFT")
 		end
 		if not self.FlagCarrierFrame2 then
-			self.FlagCarrierFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame2DynamicIconButton)
+			self.FlagCarrierFrame2 = CreateFrame("Frame", nil, AlwaysUpFrame3DynamicIconButton)
 			self.FlagCarrierFrame2:SetHeight(10)
 			self.FlagCarrierFrame2:SetWidth(100)
-			self.FlagCarrierFrame2:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
+			self.FlagCarrierFrame2:SetPoint("LEFT", "AlwaysUpFrame3DynamicIconButton", "RIGHT", 4, 0)
 			self.FlagCarrierFrame2Text= self.FlagCarrierFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.FlagCarrierFrame2Text:SetAllPoints(self.FlagCarrierFrame2)
 			self.FlagCarrierFrame2Text:SetJustifyH("LEFT")
@@ -103,14 +103,14 @@ function Warsong:CreateFlagCarrierButton()
 		self.FlagCarrierFrame1Button:SetHeight(15)
 		self.FlagCarrierFrame1Button:SetWidth(150)
 		self.FlagCarrierFrame1Button:SetAttribute("type", "macro")
-		self.FlagCarrierFrame1Button:SetPoint("LEFT", "AlwaysUpFrame1", "RIGHT", 28, 4)
+		self.FlagCarrierFrame1Button:SetPoint("LEFT", "AlwaysUpFrame2", "RIGHT", 28, 4)
 	end
 	if not self.FlagCarrierFrame2Button then
 		self.FlagCarrierFrame2Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
 		self.FlagCarrierFrame2Button:SetHeight(15)
 		self.FlagCarrierFrame2Button:SetWidth(150)
 		self.FlagCarrierFrame2Button:SetAttribute("type", "macro")
-		self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame2", "RIGHT", 28, 4)
+		self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame3", "RIGHT", 28, 4)
 	end
 	self.FlagCarrierFrame1Button:Show()		
 	self.FlagCarrierFrame2Button:Show()
@@ -194,7 +194,7 @@ do
 					mSide = sArg1
 					mNick = sArg2
 				end
-				
+			
 				if mSide == L.Alliance then
 					FlagCarrier[2] = mNick
 					self.FlagCarrierFrame2Text:SetText(mNick)
