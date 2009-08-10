@@ -44,3 +44,131 @@ L:SetWarningLocalization{
 	SpecialWarningToxin		= "痲痺劇毒! 跑開!",
 	SpecialWarningCharge		= "你中了撞擊! 跑開!"
 }
+
+
+-------------------
+-- Lord Jaraxxus --
+-------------------
+L = DBM:GetModLocalization("Jaraxxus")
+
+L:SetGeneralLocalization{
+	name = "賈拉克瑟斯領主"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+	PortalSoonWarning	= "虛空傳送門 即將到來!",
+	VolcanoSoonWarning	= "煉獄爆發 即將到來!",
+	WarnFlame		= "聚合烈焰: >%s<!"
+}
+
+L:SetMiscLocalization{
+	SpecWarnFlame		= "你中了聚合烈焰!",
+	SpecWarnFlesh		= "你中了焚化血肉!"
+}
+
+L:SetOptionLocalization{
+	PortalSoonWarning	= "預先提示虛空傳送門的出現",
+	VolcanoSoonWarning	= "預先提示煉獄爆發的出現",
+	WarnFlame		= "為聚合烈焰顯示警告",
+	SpecWarnFlame		= "當你中了聚合烈焰時顯示特別警告",
+	SpecWarnFlesh		= "當你中了焚化血肉時顯示特別警告"
+}
+
+
+-----------------------
+-- Faction Champions --
+-----------------------
+L = DBM:GetModLocalization("Champions")
+
+L:SetGeneralLocalization{
+	name = "各陣營勇士"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetMiscLocalization{
+	Gorgrim		= "DK - 高葛林·影斬",	-- 34458
+	Birana 		= "D - 碧菈娜·風暴之蹄",-- 34451
+	Erin		= "D - 艾琳·霧蹄",	-- 34459
+	Rujkah		= "H - 茹卡",		-- 34448
+	Ginselle	= "M - 金賽兒·凋擲",	-- 34449
+	Liandra		= "P - 黎安卓·喚日",	-- 45
+	Malithas	= "P - 瑪力薩·亮刃",	-- 56
+	Caiphus		= "PR - 嚴厲的凱普司",	-- 47
+	Vivienne	= "PR - 薇薇安·黑語",	-- 41
+	Mazdinah	= "R - 馬茲迪娜",	-- 54
+	Thrakgar	= "S - 瑟瑞克加爾",	--  44
+	Broln		= "S - 伯洛連·頑角",	-- 55
+	Harkzog		= "WL - 哈克佐格",	-- 50
+	Narrhok		= "W - 納霍克·破鋼者"	-- 53
+} 
+
+L:SetOptionLocalization{
+}
+
+
+------------------
+-- Valkyr Twins --
+------------------
+L = DBM:GetModLocalization("Twins")
+
+L:SetGeneralLocalization{
+	name = "華爾琪雙子"
+}
+
+L:SetTimerLocalization{
+	TimerSpecialSpell	= "下一次 特別技能"	
+}
+
+L:SetWarningLocalization{
+	WarnSpecialSpellSoon	= "特別技能 即將到來!",
+	SpecWarnSpecial		= "顏色變換!"
+}
+
+L:SetMiscLocalization{
+	YellPull 	= "以我們的黑暗君王之名。為了巫妖王。你‧得‧死。",
+	Fjola 		= "菲歐拉·光寂",
+	Eydis		= "艾狄絲·暗寂"
+}
+
+L:SetOptionLocalization{
+	TimerSpecialSpell	= "為下一次 特別技能顯示計時器",
+	WarnSpecialSpellSoon	= "為下一次 特別技能預先提示",
+	SpecWarnSpecial		= "當你需要變換焚化血肉時顯示特別警告"
+}
+
+
+------------------
+-- Anub'arak --
+------------------
+L = DBM:GetModLocalization("Anub'arak_Coliseum")
+
+L:SetGeneralLocalization{
+	name = "阿努巴拉克"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+	WarnBurrow	= "鑽地!",
+	WarnPursue	= "追擊尖刺: >%s<",
+	SpecWarnPursue	= "你中了追擊尖刺!"
+}
+
+L:SetMiscLocalization{
+	YellPull	= "這裡將會是你們的墳墓!"
+}
+
+L:SetOptionLocalization{
+	WarnBurrow	= "為隱沒(鑽地)顯示警告",
+	WarnPursue	= "警告誰受到了追擊",
+	SpecWarnPursue	= "當你受到追擊時顯示特別警告"
+}
