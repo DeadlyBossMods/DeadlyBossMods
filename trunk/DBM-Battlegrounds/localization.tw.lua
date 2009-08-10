@@ -50,7 +50,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Start60 		= "競技場戰鬥在1分鐘內開始!",
 	Start30 		= "競技場戰鬥在30秒內開始!",
-	Start15 		= "競技場戰鬥在30秒內開始!"
+	Start15 		= "競技場戰鬥在15秒內開始!"
 })
 
 ---------------
@@ -94,7 +94,7 @@ L:SetMiscLocalization({
 	BgStart60 		= "阿拉希盆地的戰鬥將在1分鐘後開始。",
 	BgStart30 		= "阿拉希盆地的戰鬥將在30秒後開始。",
 	ZoneName 		= "阿拉希盆地",
-	ScoreExpr 		= "(%d+)/2000",
+	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "聯盟",
 	Horde 			= "部落",
 	WinBarText 		= "%s 勝利",
@@ -128,7 +128,7 @@ L:SetMiscLocalization({
 	BgStart60 		= "戰鬥在1分鐘內開始!",
 	BgStart30 		= "戰鬥在30秒內開始!",
 	ZoneName 		= "暴風之眼",
-	ScoreExpr 		= "(%d+)/2000",
+	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "聯盟",
 	Horde 			= "部落",
 	WinBarText 		= "%s 勝利",
@@ -246,3 +246,34 @@ L:SetOptionLocalization{
 	warnOverCharge 		= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64218, "超載"),
 	timerMobOvercharge	= "為超載的小怪顯示計時器(減益疊加)"
 }
+
+
+------------------------
+--  Isle of Conquest  --
+------------------------
+
+L = DBM:GetModLocalization("IsleOfConquest")
+
+L:SetGeneralLocalization({
+	name = "征服之島"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerStart		= "戰鬥開始", 
+	TimerPOI		= "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart		= "顯示開始計時器", 
+	TimerPOI		= "顯示奪取計時器",
+})
+
+L:SetMiscLocalization({
+	ZoneName		= "征服之島",
+	BgStart60		= "戰鬥在1分鐘內開始!",
+	BgStart30		= "戰鬥在30秒內開始!",
+	BgStart15		= "戰鬥在15秒內開始!",
+})
