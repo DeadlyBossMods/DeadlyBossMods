@@ -25,21 +25,25 @@ local timerNextImpale		= mod:NewNextTimer(10, 67477)
 
 local warnImpaleOn			= mod:NewAnnounce("WarningImpale", 2, 67478)
 local warnFireBomb			= mod:NewAnnounce("WarningFireBomb", 4, 66317, false)
---local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
 local warnBreath			= mod:NewAnnounce("WarningBreath", 1, 67650)
 local warnRage				= mod:NewAnnounce("WarningRage", 3, 67657)
 local warnCharge			= mod:NewAnnounce("WarningCharge", 4)
+local warnToxin				= mod:NewAnnounce("WarningToxin", 2, 66823)
 
 local specWarnImpale3		= mod:NewSpecialWarning("SpecialWarningImpale3", false)
 local specWarnFireBomb		= mod:NewSpecialWarning("SpecialWarningFireBomb")
 local specWarnSlimePool		= mod:NewSpecialWarning("SpecialWarningSlimePool")
---local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
 local specWarnToxin			= mod:NewSpecialWarning("SpecialWarningToxin")
 local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
 local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
 
 mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
+mod:AddBoolOption("SetIconOnToxinTarget", true, "announce")
+
+--local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
+--local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
+-- 8/10 23:12:43.755  SPELL_AURA_APPLIED,0xF1300089480001B3,"Acidmaw",0xa48,0x048000000000F464,"Volker",0x512,66823,"Paralytic Toxin",0x8,DEBUFF
 
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -48,8 +52,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 67657 then
 		warnRage:Show()
 	elseif args.spellId == 66823 or args.spellId == 67618 then
+		warnToxin:Show(args.destName)
 		if UnitName("player") == args.destName then
 			specWarnToxin:Show()
+		end
+		if mod.Options.SetIconOnToxinTarget then
+			self:SetIcon(args.destName, 8, 4)
 		end
 	end
 end
