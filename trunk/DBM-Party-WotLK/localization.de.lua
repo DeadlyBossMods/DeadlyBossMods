@@ -187,7 +187,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
-	name = "Anub'arak"
+	name = "Anubarak"
 })
 
 L:SetWarningLocalization({
