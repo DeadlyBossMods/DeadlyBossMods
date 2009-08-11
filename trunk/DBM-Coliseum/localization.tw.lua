@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge				= "^%%s怒視著(%S+)，並發出震耳的咆哮!",
+	Charge				= "%%s怒視著(%S+)，並發出震耳的咆哮!",
 	CombatStart			= "來自風暴群山最深邃，最黑暗的洞穴。歡迎『穿刺者』戈莫克!戰鬥吧，英雄們!";
 }
 
@@ -31,6 +31,7 @@ L:SetOptionLocalization{
 	SpecialWarningSilence		= "為法術沉默顯示特別警告",
 	SpecialWarningSpray		= "當你中了痲痺噴霧時顯示特別警告",
 	SpecialWarningToxin		= "當你中了痲痺劇毒時顯示特別警告",
+	SpecialWarningBile		= "當你中了燃燒膽汁時顯示特別警告",
 	SpecialWarningCharge		= "當冰嚎即將撞擊你時顯示特別警告",
 	SpecialWarningChargeNear	= "當冰嚎的撞擊接近你時顯示特別警告",
 	SetIconOnChargeTarget		= "為撞擊的目標設置標記(頭顱)",
