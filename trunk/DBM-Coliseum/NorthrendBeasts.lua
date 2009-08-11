@@ -9,7 +9,7 @@ mod:SetZone()
 -- 34816 npc to talk to
 -- 34797 npc icehowl died
 
-mod:RegisterCombat("yell", "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!")
+mod:RegisterCombat("yell", L.CombatStart)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -22,6 +22,7 @@ mod:RegisterEvents(
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
 local timerNextImpale		= mod:NewNextTimer(10, 67477)
+local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
 
 local warnImpaleOn			= mod:NewAnnounce("WarningImpale", 2, 67478)
 local warnFireBomb			= mod:NewAnnounce("WarningFireBomb", 4, 66317, false)
@@ -43,8 +44,6 @@ mod:AddBoolOption("SetIconOnToxinTarget", true, "announce")
 
 --local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
 --local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
--- 8/10 23:12:43.755  SPELL_AURA_APPLIED,0xF1300089480001B3,"Acidmaw",0xa48,0x048000000000F464,"Volker",0x512,66823,"Paralytic Toxin",0x8,DEBUFF
-
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 67477 or args.spellId == 66331 then
@@ -59,6 +58,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if mod.Options.SetIconOnToxinTarget then
 			self:SetIcon(args.destName, 8, 4)
 		end
+	elseif args.spellId == 66758 then 
+		timerStaggeredDaze:Start()
 	end
 end
 
@@ -66,15 +67,14 @@ function mod:SPELL_CAST_START(args)
 --	if args.spellId == 66901 or args.spellId == 67615 then	-- seems to be hard buggy  >> unknown on unknown << xD what a message *G*
 --		warnSpray:Show(args.spellName, args.destName)
 -- 		todo: get target of spellcast
-	if args.spellId == 67648 then
-		specWarnSilence:Show()
-	elseif args.spellId == 67650 then		
+	if args.spellId == 66689 or args.spellId == 67650 then		
 		timerBreath:Start()
 		warnBreath:Show()
-	elseif args.spellId == 66313 then		-- FireBomb (Impaler)
+	elseif args.spellId == 66313 then							-- FireBomb (Impaler)
 		warnFireBomb:Show()
 	elseif args.spellId == 66330 or args.spellId == 67647 then	-- Staggering Stomp
 		timerNextStomp:Start()
+		specWarnSilence:Show()
 	end
 end
 
@@ -116,8 +116,10 @@ function mod:SPELL_DAMAGE(args)
 		if UnitName("player") == args.destName then
 			specWarnFireBomb:Show()
 		end
-	elseif args.spellId == 66881 and args.destName == UnitName("player") then
-		specWarnSlimePool:Show()
+	elseif args.spellId == 66881 or args.spellId == 66883 then
+		if args.destName == UnitName("player") then
+			specWarnSlimePool:Show()
+		end
 	end
 end
 
