@@ -28,23 +28,23 @@ end
 
 mod:AddBoolOption("HealthFrame", true)
 
-local warnSwarm 	= mod:NewAnnounce("WarnSwarm", 2, 64396)
+local warnSwarm 		= mod:NewAnnounce("WarnSwarm", 2, 64396)
 
-local specWarnBlast	= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
-local specWarnVoid 	= mod:NewSpecialWarning("SpecWarnVoid")
-local warnFear 		= mod:NewAnnounce("WarnFear", 3, 64386)
-local warnFearSoon 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)
-local warnCatDied 	= mod:NewAnnounce("WarnCatDied", 3, 64455)
+local specWarnBlast		= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
+local specWarnVoid 		= mod:NewSpecialWarning("SpecWarnVoid")
+local warnFear 			= mod:NewAnnounce("WarnFear", 3, 64386)
+local warnFearSoon	 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)
+local warnCatDied 		= mod:NewAnnounce("WarnCatDied", 3, 64455)
 local warnCatDiedOne	= mod:NewAnnounce("WarnCatDiedOne", 3, 64455)
-local warnSonic		= mod:NewAnnounce("WarnSonic", 2, 64688)
+local warnSonic			= mod:NewAnnounce("WarnSonic", 2, 64688)
 
-local timerFear 	= mod:NewCastTimer(64386)
+local timerFear 		= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
-local timerSonic	= mod:NewCastTimer(64688)
+local timerSonic		= mod:NewCastTimer(64688)
 
 local isFeared = false
 
-local enrageTimer				= mod:NewEnrageTimer(600)
+local enrageTimer		= mod:NewEnrageTimer(600)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)

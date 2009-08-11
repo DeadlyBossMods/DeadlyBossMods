@@ -328,20 +328,20 @@ L:SetWarningLocalization{
 	SpecWarnVoid		= "Void Zone - MOVE!",
 	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
 	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",
-	WarnFear		= "Fear!",
+	WarnFear			= "Fear!",
 	WarnFearSoon 		= "Next Fear soon",
-	WarnSonic		= "Sonic Screech!",
-	WarnSwarm		= "Guardian Swarm on >%s<"
+	WarnSonic			= "Sonic Screech!",
+	WarnSwarm			= "Guardian Swarm on >%s<"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBlast		= "Show Special Warning on Sentinel Blast",
 	SpecWarnVoid		= "Show Special Warning when standing in Feral Essence",
-	WarnFear		= "Show Fear Warning",
+	WarnFear			= "Show Fear Warning",
 	WarnFearSoon		= "Show Fear soon Warning",
-	WarnCatDied		= "Show Warning when the Feral Defender dies",
-	WarnSwarm		= "Show Warning on Guardian Swarm",
-	WarnSonic		= "Show Sonic Screech Warning",
+	WarnCatDied			= "Show Warning when the Feral Defender dies",
+	WarnSwarm			= "Show Warning on Guardian Swarm",
+	WarnSonic			= "Show Sonic Screech Warning",
 	WarnCatDiedOne		= "Show Warning when Cat dies"
 }
 
