@@ -30,11 +30,13 @@ local warnBreath			= mod:NewAnnounce("WarningBreath", 1, 67650)
 local warnRage				= mod:NewAnnounce("WarningRage", 3, 67657)
 local warnCharge			= mod:NewAnnounce("WarningCharge", 4)
 local warnToxin				= mod:NewAnnounce("WarningToxin", 2, 66823)
+local warnBile				= mod:NewAnnounce("WarningBile", 3, 66869)
 
 local specWarnImpale3		= mod:NewSpecialWarning("SpecialWarningImpale3", false)
 local specWarnFireBomb		= mod:NewSpecialWarning("SpecialWarningFireBomb")
 local specWarnSlimePool		= mod:NewSpecialWarning("SpecialWarningSlimePool")
-local specWarnToxin			= mod:NewSpecialWarning("SpecialWarningToxin")
+local specWarnToxin		= mod:NewSpecialWarning("SpecialWarningToxin")
+local specWarnBile		= mod:NewSpecialWarning("SpecialWarningBile")
 local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
 local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
@@ -45,22 +47,53 @@ mod:AddBoolOption("SetIconOnToxinTarget", true, "announce")
 --local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
 --local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
 
+local BileTargets = {}
+local ToxinTargets = {}
+local burnIcon = 8
+
+function mod:OnCombatStart(delay)
+	table.wipe(BurnTargets)
+	table.wipe(ToxinTargets)
+	burnIcon = 8
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 67477 or args.spellId == 66331 then
 		timerNextImpale:Start()
 	elseif args.spellId == 67657 then
 		warnRage:Show()
 	elseif args.spellId == 66823 or args.spellId == 67618 then
-		warnToxin:Show(args.destName)
+		self:UnscheduleMethod("warnToxin")
+		ToxinTargets[#ToxinTargets + 1] = args.destName
 		if UnitName("player") == args.destName then
 			specWarnToxin:Show()
 		end
-		if mod.Options.SetIconOnToxinTarget then
-			self:SetIcon(args.destName, 8, 4)
+		mod:ScheduleMethod(0.2, "warnToxin")
+	elseif args.spellId == 66869 then  -- ADD 10man Burning Bile ID
+		self:UnscheduleMethod("warnBile")
+		BurnTargets[#BurnTargets + 1] = args.destName
+		if UnitName("player") == args.destName then
+			specWarnBile:Show()
 		end
+		if mod.Options.SetIconOnBurnTarget and burnIcon > 0 then
+			mod:SetIcon(args.destName, burnIcon)
+			burnIcon = burnIcon - 1
+		end
+		mod:ScheduleMethod(0.2, "warnBile")
 	elseif args.spellId == 66758 then 
 		timerStaggeredDaze:Start()
 	end
+end
+
+function mod:warnToxin()
+	warnToxin:Show(table.comcat(ToxinTargets, "<, >"))
+	table.wipe(ToxinTargets)
+end
+
+function mod:warnBile()
+	warnBile:Show(table.comcat(BileTargets, "<, >"))
+	table.wipe(BileTargets)
+	burnIcon = 8
 end
 
 function mod:SPELL_CAST_START(args)
