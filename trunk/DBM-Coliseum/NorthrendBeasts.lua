@@ -42,7 +42,7 @@ local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
 
 mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
-mod:AddBoolOption("SetIconOnToxinTarget", true, "announce")
+mod:AddBoolOption("SetIconOnBileTarget", true, "announce")
 
 --local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
 --local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
@@ -71,11 +71,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		mod:ScheduleMethod(0.2, "warnToxin")
 	elseif args.spellId == 66869 then  -- ADD 10man Burning Bile ID
 		self:UnscheduleMethod("warnBile")
-		BurnTargets[#BurnTargets + 1] = args.destName
+		BileTargets[#BileTargets + 1] = args.destName
 		if UnitName("player") == args.destName then
 			specWarnBile:Show()
 		end
-		if mod.Options.SetIconOnBurnTarget and burnIcon > 0 then
+		if mod.Options.SetIconOnBileTarget and burnIcon > 0 then
 			mod:SetIcon(args.destName, burnIcon)
 			burnIcon = burnIcon - 1
 		end
