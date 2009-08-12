@@ -73,12 +73,17 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	PortalSoonWarning	= "곧 황천의 차원문!",
 	VolcanoSoonWarning	= "곧 지옥불 정령 분출!",
-	WarnFlame			= "군단의 불꽃 : >%s<!"
+	WarnFlame			= "군단의 불꽃 : >%s<!",
+	WarnTouch			= "군단의 불길 : >%s<"
 }
 
 L:SetMiscLocalization{
 	SpecWarnFlame		= "당신에게 군단의 불꽃!",
-	SpecWarnFlesh		= "당신에게 살점 소각!"
+	SpecWarnFlesh		= "당신에게 살점 소각!",
+	WhisperFlame		= "당신에게 군단의 불꽃!",
+	SpecWarnTouch		= "당신에게 군단의 불길!",
+	SpecWarnKiss		= "여군주의 키스",
+	SpecWarnTouchNear	= "당신 주변의 군단의 불길 : >%s<"
 }
 
 L:SetOptionLocalization{
@@ -86,7 +91,14 @@ L:SetOptionLocalization{
 	VolcanoSoonWarning	= "지옥불 정령 분출 사전 경고 알리기",
 	WarnFlame			= "군단의 불꽃 경고하기",
 	SpecWarnFlame		= "군단의 불꽃에 걸렸을 경우 특수 경보 알리기",
-	SpecWarnFlesh		= "살점 소각에 걸렸을 경우 특수 경보 알리기"
+	SpecWarnFlesh		= "살점 소각에 걸렸을 경우 특수 경보 알리기",
+	IncinerateFleshIcon	= "살점 소각의 공격대 대상 아이콘 설정",
+	LegionFlameIcon		= "군단의 불꽃의 공격대 대상 아이콘 설정",
+	LegionFlameWhisper	= "군단의 불꽃 대상에게 귓속말 보내기",
+	TouchJaraxxusIcon	= "군단의 불길의 공격대 대상 아이콘 설정",
+	WarnTouch			= "군단의 불길 경보 알리기",
+	SpecWarnTouch		= "당신에게 군단의 불길 특수 경고 알리기",
+	SpecWarnTouchNear	= "당신 주변에 군단의 불길이 존재할 경우 특수 경고 알리기"
 }
 
 
