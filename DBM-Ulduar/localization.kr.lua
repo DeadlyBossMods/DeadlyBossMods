@@ -604,11 +604,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 					= "짐승의 대장을 칠 때가 곧 다가올 거예요! 놈의 졸개들에게 노여움과 미움을 쏟아부으세요!",
+	YellPull 				= "짐승의 대장을 칠 때가 곧 다가올 거예요! 놈의 졸개들에게 노여움과 미움을 쏟아부으세요!",
 	YellPhase2 				= "나는, 살아 있는 꿈이다.",
-	Sara 						= "사라",
+	Sara 					= "사라",
 	WhisperBrainLink 		= "당신에게 두뇌의 고리! %s 에게 뛰세요!",
-	WarningYellSqueeze	= "압착의 촉수에 붙잡혔어요! 살려주세요!"	
+	WarningYellSqueeze		= "압착의 촉수에 붙잡혔어요! 살려주세요!"	
 }
 
 L:SetWarningLocalization{
@@ -620,15 +620,16 @@ L:SetWarningLocalization{
 	SpecWarnBrainLink				= "당신 그리고 %s 에게 두뇌의 고리!",
 	WarningSanity 					= "> %d < 이성이 낮습니다.",
 	SpecWarnSanity 					= ">> %d << 이성이 매우 낮습니다. 채우세요!",
-	SpecWarnGuardianLow 				= "수호자 딜 주의하세요! - 공격 주의!",
-	WarnMadness 						= "광기 유발을 시전합니다.",
+	SpecWarnGuardianLow 			= "수호자 딜 주의하세요! - 공격 주의!",
+	WarnMadness 					= "광기 유발을 시전합니다.",
 	SpecWarnMadnessOutNow			= "광기 유발이 끝났습니다. - 밖으로 이동!",
 	WarnBrainPortalSoon				= "3 초 후 내부 포탈",
 	specWarnBrainPortalSoon			= "3 초 후 차원문이 열립니다!",	
-	WarnSqueeze 						= "압착의 촉수: >%s<",
+	WarnSqueeze 					= "압착의 촉수: >%s<",
 	WarnFavor						= ">%s< 에게 사라의 열정!",
 	SpecWarnFavor					= "당신에게 사라의 열정",
-	WarnEmpowerSoon					= "곧 암흑 강화!"
+	WarnEmpowerSoon					= "곧 암흑 강화!",
+	MaladyNear						= ">%s< 의 주변에 병든 정신"	
 }
 
 L:SetTimerLocalization{
@@ -647,17 +648,18 @@ L:SetOptionLocalization{
 	SpecWarnSanity					= "이성(Sanity)이 매우 낮은 경우 특수 경고 보기",
 	SpecWarnGuardianLow				= "수호자의 생명력이 낮을 때 특수 경고 알리기(딜러)",
 	NextPortal						= "다음 차원문 알리기",	
-	WarnBrainPortalSoon			= "내부 차원문 알리기",
-	specWarnBrainPortalSoon		= "내부 차원문 특수 경보 알리기",	
-	WarnMadness					= "광기 유발 알리기",
-	SpecWarnMadnessOutNow		= "광기가 끝나기 전에 특수 경고 알리기",
-	WarnSqueeze					= "압착의 촉수 대상 알리기",
-	WarningSqueeze				= "압착의 촉수 경고 보기",
-	SetIconOnFearTarget			= "병든 정신 타겟 아이콘 설정하기",
-	SetIconOnFavorTarget		= "사라의 열정 타겟 아이콘 설정하기",
-	SetIconOnMCTarget			= "정신 지배에 걸린 플레이어 타겟 아이콘 설정하기",	
+	WarnBrainPortalSoon				= "내부 차원문 알리기",
+	specWarnBrainPortalSoon			= "내부 차원문 특수 경보 알리기",	
+	WarnMadness						= "광기 유발 알리기",
+	SpecWarnMadnessOutNow			= "광기가 끝나기 전에 특수 경고 알리기",
+	WarnSqueeze						= "압착의 촉수 대상 알리기",
+	WarningSqueeze					= "압착의 촉수 경고 보기",
+	SetIconOnFearTarget				= "병든 정신 타겟 아이콘 설정하기",
+	SetIconOnFavorTarget			= "사라의 열정 타겟 아이콘 설정하기",
+	SetIconOnMCTarget				= "정신 지배에 걸린 플레이어 타겟 아이콘 설정하기",	
 	ShowSaraHealth				= "사라 체력 보기",
 	WarnFavor					= "사라의 열정 대상 알리기",
 	SpecWarnFavor				= "사라의 열정 특수 경보 보기",
-	WarnEmpowerSoon				= "암흑 강화 경보 보기"
+	WarnEmpowerSoon				= "암흑 강화 경보 보기",
+	SpecWarnMaladyNear				= "병든 정신이 걸린 플레이어가 근처에 있을 경우 특수 경보 알리기(병든 정신 종료 후)"
 }
