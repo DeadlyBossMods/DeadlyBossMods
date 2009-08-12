@@ -103,3 +103,13 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	next = "顯示下一次 |cff71d5ff|Hspell:%d|h%s|h|r的計時器",
 	achievement = "為成就:%s顯示計時器",
 }
+
+DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	target = "%s: %s",
+	spell = "%s",
+}
+
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	target = "當|cff71d5ff|Hspell:%d|h%s|h|r施放在玩家身上時顯示警告",
+	spell = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告"
+}
