@@ -2137,23 +2137,39 @@ do
 	end
 	
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, type, ...)
+	local function newAnnounce(self, announcetype, spellId, text, color, icon, optionDefault, optionName)
+		spellName = GetSpellInfo(spellId) or "unknown"
+		icon = icon or spellId
+
+		local obj = setmetatable(
+			{
+				text = self.localization.warnings[text],
+				announcetype = announcetype,
+				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
+				option = optionName or text,
+				mod = self,
+				icon = (type(icon) == "number" and select(3, GetSpellInfo(icon))) or icon,
+			},
+			mt
+		)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(optionName or text, optionDefault, "announce")
+		end
+		table.insert(self.announces, obj)
+		self.localization.options[id] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announcetype]:format(spellId, spellName)
+		return obj
 	end
 	
 	function bossModPrototype:NewTargetAnnounce(...)
 		return newAnnounce(self, "target", ...)
 	end
 
---[[	function bossModPrototype:NewCastTimer(timer, ...)
-		if timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
-			local spellId = timer
-			timer = select(7, GetSpellInfo(spellId)) -- GetSpellInfo takes YOUR spell haste into account...WTF?
-			local spellHaste = select(7, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
-			timer = timer / spellHaste -- calculate the real cast time of the spell...
-			return self:NewCastTimer(timer / 1000, spellId, ...)
-		end
-		return newTimer(self, "cast", timer, ...)
-	end]]
+	function bossModPrototype:NewCastAnnounce(...)
+		return newAnnounce(self, "cast", ...)
+	end
+
 end
 
 

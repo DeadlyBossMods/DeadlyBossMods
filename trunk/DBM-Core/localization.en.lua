@@ -102,3 +102,18 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	next = "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Show timer for %s",
 }
+
+DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	target = "%s on %s",
+	spell = "%s",
+}
+
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	target = "Show Warning when |cff71d5ff|Hspell:%d|h%s|h|r is casted on a Player",
+	spell = "Show Warning on |cff71d5ff|Hspell:%d|h%s|h|r cast"
+}
+
+
+
+
+
