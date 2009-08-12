@@ -11,8 +11,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
-	--Charge	= "^%%s ([^%s]+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",	
+	--Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
+	--Charge	= "^%%s ([^%s]+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
+	Charge		= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
+	CombatStart	= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!";	
 }
 
 L:SetOptionLocalization{
@@ -21,15 +23,20 @@ L:SetOptionLocalization{
 	WarningBreath				= "북극의 숨결 경보 보기",
 	WarningRage					= "분노 경보 보기",
 	WarningCharge				= "사나운 돌진 대상 경보 보기",
+	WarningToxin				= "마비 독 대상 경보 보기",
+	WarningBile					= "타오르는 담즙 대상 경보 보기",	
 	SpecialWarningImpale3		= "꿰뚫기 특수 경보 보기(>=3 중첩)",
 	SpecialWarningFireBomb		= "자신의 화염 폭탄 특수 경보 보기",
 	SpecialWarningSlimePool		= "독 구름 특수 경보 보기",
 	SpecialWarningSilence		= "주문 차단 특수 경보 보기",
 	SpecialWarningSpray			= "당신이 마비의 이빨에 걸릴 경우 특수 경보 보기",
 	SpecialWarningToxin			= "당신이 마비독에 걸릴 경우 특수 경보 보기",
+	SpecialWarningBile			= "당신이 타오르는 담즙에 걸릴 경우 특수 경보 보기",
 	SpecialWarningCharge		= "얼음울음이 당신에게 사나운 돌진을 할 경우 특수 경보 보기",
 	SpecialWarningChargeNear	= "얼음울음이 당신 주변에 사나운 돌진을 할 경우 특수 경보 보기",
-	SetIconOnChargeTarget		= "사나운 돌진 대상 아이콘 설정 (해골)"	
+	SetIconOnChargeTarget		= "사나운 돌진 대상 아이콘 설정 (해골)",
+	SetIconOnToxinTarget		= "마비 독 대상 아이콘 설정 (해골)",
+	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",	
 }
 
 L:SetWarningLocalization{
@@ -38,6 +45,8 @@ L:SetWarningLocalization{
 	WarningBreath				= "북극의 숨결",
 	WarningRage					= "분노",
 	WarningCharge				= "사나운 돌진 : >%s<",	
+	WarningToxin				= "마비 독 : >%s<",
+	WarningBile					= "타오르는 담즙 : >%s<",	
 	SpecialWarningImpale3		= "당신에게 꿰뚫기(3중첩 이상)",
 	SpecialWarningFireBomb		= "당신에게 화염 폭탄!",
 	SpecialWarningSlimePool		= "독 구름, 벗어나세요!",
