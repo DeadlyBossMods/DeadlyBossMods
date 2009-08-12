@@ -13,8 +13,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge			= "^%%s glares at (%S+) and lets out",
-	CombatStart		= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!";
+	Charge			= "%%s sieht (%S+) zornig an und lässt einen gewaltigen Schrei ertönen!",
+	CombatStart		= "Er kommt aus den tiefsten, dunkelsten Höhlen der Sturmgipfel - Gormok der Pfähler! Voran, Helden!";
 }
 
 L:SetOptionLocalization{
