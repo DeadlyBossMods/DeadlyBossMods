@@ -86,12 +86,12 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:warnToxin()
-	warnToxin:Show(table.comcat(ToxinTargets, "<, >"))
+	warnToxin:Show(table.concat(ToxinTargets, "<, >"))
 	table.wipe(ToxinTargets)
 end
 
 function mod:warnBile()
-	warnBile:Show(table.comcat(BileTargets, "<, >"))
+	warnBile:Show(table.concat(BileTargets, "<, >"))
 	table.wipe(BileTargets)
 	burnIcon = 8
 end
