@@ -72,13 +72,17 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	PortalSoonWarning	= "Nether Portal Soon!",
 	VolcanoSoonWarning	= "Infernal Volcano Soon!",
-	WarnFlame		= "Legion Flame on >%s<!"
+	WarnFlame		= "Legion Flame on >%s<",
+	WarnTouch		= "Touch of Jaraxxus on >%s<"
 }
 
 L:SetMiscLocalization{
 	SpecWarnFlame		= "Legion Flame on YOU!",
 	SpecWarnFlesh		= "Incinerate Flesh on YOU!",
-	WhisperFlame		= "Legion Flame on YOU!"
+	WhisperFlame		= "Legion Flame on YOU!",
+	SpecWarnTouch		= "Touch of Jaraxxus on YOU!",
+	SpecWarnKiss		= "Mistress' Kiss",
+	SpecWarnTouchNear	= "Touch of Jaraxxus on >%s< near you" 
 }
 
 L:SetOptionLocalization{
@@ -89,7 +93,12 @@ L:SetOptionLocalization{
 	SpecWarnFlesh		= "Special warning when you have Incinerate Flesh",
 	IncinerateFleshIcon	= "Set Icon on Incinerate Flesh target",
 	LegionFlameIcon		= "Set Icon on Legion Flame target",
-	LegionFlameWhisper	= "Send Whisper to Legion Flame target"
+	LegionFlameWhisper	= "Send Whisper to Legion Flame target",
+	TouchJaraxxusIcon	= "Set Icon on Touch of Jaraxxus target",
+	WarnTouch		= "Show warning for Touch of Jaraxxus",
+	SpecWarnTouch		= "Special warning for Touch of Jaraxxus on you",
+	SpecWarnTouchNear	= "Special warning for Touch of Jaraxxus near you"
+	
 }
 
 
