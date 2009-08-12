@@ -52,7 +52,7 @@ local ToxinTargets = {}
 local burnIcon = 8
 
 function mod:OnCombatStart(delay)
-	table.wipe(BurnTargets)
+	table.wipe(BileTargets)
 	table.wipe(ToxinTargets)
 	burnIcon = 8
 end
