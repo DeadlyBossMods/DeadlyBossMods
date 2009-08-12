@@ -53,6 +53,7 @@ L:SetWarningLocalization{
 	SpecialWarningSilence		= "~1.5秒後 法術沉默!",
 	SpecialWarningSpray		= "你中了痲痺噴霧!",
 	SpecialWarningToxin		= "痲痺劇毒! 跑開!",
+	SpecialWarningBile		= "你中了燃燒膽汁! 離開人群!",
 	SpecialWarningCharge		= "你中了撞擊! 跑開!",
 	SpecialWarningChargeNear	= "撞擊接近你! 跑開!"
 }
