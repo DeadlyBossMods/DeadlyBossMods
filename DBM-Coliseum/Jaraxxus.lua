@@ -26,6 +26,10 @@ local timerVolcanoCD	= mod:NewCDTimer(120, 67901)
 local specWarnFlame		= mod:NewSpecialWarning("SpecWarnFlame")
 local specWarnFlesh		= mod:NewSpecialWarning("SpecWarnFlesh")
 
+mod:AddBoolOption("LegionFlameWhisper", false, "announce")
+mod:AddBoolOption("LegionFlameIcon", true, "announce")
+mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
+
 function mod:OnCombatStart(delay)
 	timerVolcano:Start(105-delay)
 	timerPortal:Start(45-delay)
@@ -39,8 +43,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 67051 or args.spellId == 67049 then		-- Incinerate Flesh
 		timerFlesh:Start(args.destName)
 		timerFleshCD:Start()
-		self:SetIcon(args.destName, 8, 12)
+		if self.Options.IncinerateFleshIcon then
+			self:SetIcon(args.destName, 8, 12)
+		end
 		if args.destName == UnitName("player") then
+
 			specWarnFlesh:Show()
 		end
 	elseif args.spellId == 68125 or args.spellId == 68123 then	-- Legion Flame
@@ -48,8 +55,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFlame:Show(args.destName)
 		timerFlame:Start(args.destName)
 		timerFlameCD:Start()
-		self:SetIcon(args.destName, 6, 8)
-		self:SendWhisper("Legion Flame on YOU!", targetname)
+		if self.Options.LegionFlameIcon then
+			self:SetIcon(args.destName, 6, 8)
+		end
+		if DBM:GetRaidRank() >= 1 and self.Options.LegionFlameWhisper then
+			self:SendWhisper(L.WhisperFlame, targetname)
+		end
 		if args.destName == UnitName("player") then
 			specWarnFlame:Show()
 		end
