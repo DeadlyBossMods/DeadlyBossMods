@@ -15,6 +15,7 @@ mod:RegisterEvents(
 local warnPortalSoon	= mod:NewAnnounce("PortalSoonWarning", 3)
 local warnVolcanoSoon	= mod:NewAnnounce("VolcanoSoonWarning", 3)
 local warnFlame			= mod:NewAnnounce("WarnFlame", 3)
+local warnTouch		= mod:NewAnnounce("WarnTouch", 3)
 
 local timerFlame 		= mod:NewTargetTimer(6, 68123)
 local timerFlameCD		= mod:NewCDTimer(30, 68125) 
@@ -22,13 +23,18 @@ local timerFlesh		= mod:NewTargetTimer(12, 67049)
 local timerFleshCD		= mod:NewCDTimer(23, 67051) 
 local timerPortalCD		= mod:NewCDTimer(120, 67900)
 local timerVolcanoCD	= mod:NewCDTimer(120, 67901)
+--local timerTouchCD		= mod:NewCDTimer(999, 12345)	-- No idea about the cd timer for this spell
 
 local specWarnFlame		= mod:NewSpecialWarning("SpecWarnFlame")
 local specWarnFlesh		= mod:NewSpecialWarning("SpecWarnFlesh")
+local specWarnTouch		= mod:NewSpecialWarning("SpecWarnTouch")
+local specWarnTouchNear		= mod:NewSpecialWarning("SpecWarnTouchNear", false)
+--local specWarnKiss		= mod:NewSpecialWarning("SpecWarnKiss")		-- no SpellId known yet
 
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameIcon", true, "announce")
 mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
+mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
 
 function mod:OnCombatStart(delay)
 	timerVolcano:Start(105-delay)
@@ -63,6 +69,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args.destName == UnitName("player") then
 			specWarnFlame:Show()
+		end
+	elseif args.spellId == 66209 then	-- Touch of Jaraxxus
+		-- timerTouchCD:Start()
+		warnTouch:Show(args.destName)
+		local uId = DBM:GetRaidUnitId(args.destName)
+		if args.destName == UnitName("player") then
+			specWarnTouch:Show()
+		end
+		if self.Options.TouchJaraxxusIcon then
+			self:SetIcon(args.destName, 7, 12)
+		end
+		if uId then 
+			local inRange = CheckInteractDistance(uId, 2) 
+			if inRange then 
+				specWarnTouchNear:Show(args.destName) 
+			end 
 		end
 	end
 end
