@@ -77,7 +77,8 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	SpecWarnFlame		= "Legion Flame on YOU!",
-	SpecWarnFlesh		= "Incinerate Flesh on YOU!"
+	SpecWarnFlesh		= "Incinerate Flesh on YOU!",
+	WhisperFlame		= "Legion Flame on YOU!"
 }
 
 L:SetOptionLocalization{
@@ -85,7 +86,10 @@ L:SetOptionLocalization{
 	VolcanoSoonWarning	= "Prewarn Infernal Volcano spawning",
 	WarnFlame		= "Warns for Legion Flame",
 	SpecWarnFlame		= "Special warning when you have Legion Flame",
-	SpecWarnFlesh		= "Special warning when you have Incinerate Flesh"
+	SpecWarnFlesh		= "Special warning when you have Incinerate Flesh",
+	IncinerateFleshIcon	= "Set Icon on Incinerate Flesh target",
+	LegionFlameIcon		= "Set Icon on Legion Flame target",
+	LegionFlameWhisper	= "Send Whisper to Legion Flame target"
 }
 
 
