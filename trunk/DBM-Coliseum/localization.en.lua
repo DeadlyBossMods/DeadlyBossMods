@@ -66,40 +66,42 @@ L:SetGeneralLocalization{
 	name = "Lord Jaraxxus"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetWarningLocalization{
-	PortalSoonWarning	= "Nether Portal Soon!",
-	VolcanoSoonWarning	= "Infernal Volcano Soon!",
-	WarnFlame		= "Legion Flame on >%s<",
-	WarnTouch		= "Touch of Jaraxxus on >%s<"
+	WarnFlame				= "Legion Flame on >%s<",
+	WarnTouch				= "Touch of Jaraxxus on >%s<",
+	WarnNetherPower			= "Nether Power on Jaraxxus! Dispell Now!",
+	WarnPortalSoon			= "Nether Portal Soon!",
+	WarnVolcanoSoon			= "Infernal Volcano Soon!",
+	SpecWarnFlesh			= "Incinerate Flesh on YOU!",
+	SpecWarnTouch			= "Touch of Jaraxxus on YOU!",
+	SpecWarnKiss			= "Mistress' Kiss",
+	SpecWarnTouchNear		= "Touch of Jaraxxus on >%s< near you",
+	SpecWarnFlame			= "Legion Flame! Run!",
+	SpecWarnNetherPower		= "Dispell Now!",
+	SpecWarnFelInferno		= "Fel Inferno! Run Away!"
 }
 
 L:SetMiscLocalization{
-	SpecWarnFlame		= "Legion Flame on YOU!",
-	SpecWarnFlesh		= "Incinerate Flesh on YOU!",
-	WhisperFlame		= "Legion Flame on YOU!",
-	SpecWarnTouch		= "Touch of Jaraxxus on YOU!",
-	SpecWarnKiss		= "Mistress' Kiss",
-	SpecWarnTouchNear	= "Touch of Jaraxxus on >%s< near you" 
+	WhisperFlame			= "Legion Flame on YOU!",
 }
 
 L:SetOptionLocalization{
-	PortalSoonWarning	= "Prewarn Nether Portal spawning",
-	VolcanoSoonWarning	= "Prewarn Infernal Volcano spawning",
-	WarnFlame		= "Warns for Legion Flame",
-	SpecWarnFlame		= "Special warning when you have Legion Flame",
-	SpecWarnFlesh		= "Special warning when you have Incinerate Flesh",
-	IncinerateFleshIcon	= "Set Icon on Incinerate Flesh target",
-	LegionFlameIcon		= "Set Icon on Legion Flame target",
-	LegionFlameWhisper	= "Send Whisper to Legion Flame target",
-	TouchJaraxxusIcon	= "Set Icon on Touch of Jaraxxus target",
-	WarnTouch		= "Show warning for Touch of Jaraxxus",
-	SpecWarnTouch		= "Special warning for Touch of Jaraxxus on you",
-	SpecWarnTouchNear	= "Special warning for Touch of Jaraxxus near you",
-	SpecWarnKiss		= "Special warning for Mistress' Kiss on you"
-	
+	WarnFlame				= "Warns for Legion Flame",
+	WarnTouch				= "Show warning for Touch of Jaraxxus",
+	WarnNetherPower			= "Warn when Jaraxxus gains Nether Power (for dispell/steal)",
+	WarnPortalSoon			= "Prewarn Nether Portal spawning",
+	WarnVolcanoSoon			= "Prewarn Infernal Volcano spawning",
+	SpecWarnFlame			= "Special warning when you have Legion Flame",
+	SpecWarnFlesh			= "Special warning when you have Incinerate Flesh",
+	SpecWarnTouch			= "Special warning for Touch of Jaraxxus on you",
+	SpecWarnTouchNear		= "Special warning for Touch of Jaraxxus near you",
+	SpecWarnKiss			= "Special warning for Mistress' Kiss on you",
+	SpecWarnNetherPower		= "Special warning for Nether Power (to dispell jaraxxus)",
+	SpecWarnFelInferno		= "Special warning when you are to near to an Fel Inferno",
+	TouchJaraxxusIcon		= "Set Icon on Touch of Jaraxxus target (cross)",
+	IncinerateFleshIcon		= "Set Icon on Incinerate Flesh target (skull)",
+	LegionFlameIcon			= "Set Icon on Legion Flame target (square)",
+	LegionFlameWhisper		= "Send Whisper to Legion Flame target"
 }
 
 
