@@ -655,7 +655,7 @@ L:SetOptionLocalization{
 	SetIconOnMCTarget				= "Set Icon on Mindcontrol target",
 	ShowSaraHealth					= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)",
 	WarnEmpowerSoon					= "Warn for Empowering Shadows soon",
-	MaladyNear			= "Special Warning if someone close to you has Malady of the Mind"
+	SpecWarnMaladyNear				= "Special Warning if someone close to you has Malady of the Mind"
 }
 
 
