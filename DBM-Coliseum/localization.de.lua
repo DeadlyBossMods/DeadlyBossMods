@@ -49,7 +49,7 @@ L:SetWarningLocalization{
 	SpecialWarningImpale3		= "%d. Pfählen auf Dir",
 	SpecialWarningFireBomb		= "Feuerbombe! Lauf raus!",
 	SpecialWarningSlimePool		= "Schleimpfütze! Lauf raus!",
-	SpecialWarningSilence		= "Spell Block in 0.5 Seconds!",
+	SpecialWarningSilence		= "Spell Block in ~1.5 Seconds!",
 	SpecialWarningToxin			= "Toxin auf Dir! Lauf!",
 	SpecialWarningCharge		= "Charge auf Dich! Lauf!",
 	SpecialWarningChargeNear	= "Charge bei Dir! Lauf!"

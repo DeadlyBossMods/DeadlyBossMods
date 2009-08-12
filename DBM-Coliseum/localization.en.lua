@@ -22,7 +22,7 @@ L:SetOptionLocalization{
 	WarningRage					= "Show warning for Frothing Rages",
 	WarningCharge				= "Show warning for Charge Target",
 	WarningToxin				= "Show warning for Toxin Targets",
-	WarningBile				= "Show warning for Burning Bile Targets",
+	WarningBile					= "Show warning for Burning Bile Targets",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 Stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on You",
 	SpecialWarningSlimePool		= "Show special warning for Slime Pool",
@@ -33,7 +33,7 @@ L:SetOptionLocalization{
 	SpecialWarningCharge		= "Show special warning when Icehowl is about to charge You",
 	SpecialWarningChargeNear	= "Show special warning when Icehowl charges near You",
 	SetIconOnChargeTarget		= "Set Icon on Charge Target (skull)",
-	SetIconOnBileTarget		= "Set Icon on Burning Bile Targets",
+	SetIconOnBileTarget			= "Set Icon on Burning Bile Targets",
 }
 
 L:SetWarningLocalization{
@@ -44,11 +44,11 @@ L:SetWarningLocalization{
 	WarningRage					= "Frothing Rages",
 	WarningCharge				= "Charge on >%s<",
 	WarningToxin				= "Toxin on >%s<",
-	WarningBile				= "Burning Bile on >%s<",
+	WarningBile					= "Burning Bile on >%s<",
 	SpecialWarningImpale3		= "Impale >%d< on You",
 	SpecialWarningFireBomb		= "Fire Bomb on You",
 	SpecialWarningSlimePool		= "Slime Pool, Move out!",
-	SpecialWarningSilence		= "Spell Block in 0.5 Seconds!",
+	SpecialWarningSilence		= "Spell Block in ~1.5 Seconds!",
 	SpecialWarningSpray			= "Paralytic Spray on You",
 	SpecialWarningToxin			= "Toxin on You! Move!",
 	SpecialWarningCharge		= "Charge on You! Run!",

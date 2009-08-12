@@ -35,8 +35,8 @@ local warnBile				= mod:NewAnnounce("WarningBile", 3, 66869)
 local specWarnImpale3		= mod:NewSpecialWarning("SpecialWarningImpale3", false)
 local specWarnFireBomb		= mod:NewSpecialWarning("SpecialWarningFireBomb")
 local specWarnSlimePool		= mod:NewSpecialWarning("SpecialWarningSlimePool")
-local specWarnToxin		= mod:NewSpecialWarning("SpecialWarningToxin")
-local specWarnBile		= mod:NewSpecialWarning("SpecialWarningBile")
+local specWarnToxin			= mod:NewSpecialWarning("SpecialWarningToxin")
+local specWarnBile			= mod:NewSpecialWarning("SpecialWarningBile")
 local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
 local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
@@ -107,7 +107,7 @@ function mod:SPELL_CAST_START(args)
 		warnFireBomb:Show()
 	elseif args.spellId == 66330 or args.spellId == 67647 then	-- Staggering Stomp
 		timerNextStomp:Start()
-		specWarnSilence:Show()
+		specWarnSilence:Schedule(19)	-- prewarn ~1,5 sec before next
 	end
 end
 
