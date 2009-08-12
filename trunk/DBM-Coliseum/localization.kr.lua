@@ -97,8 +97,9 @@ L:SetOptionLocalization{
 	LegionFlameWhisper	= "군단의 불꽃 대상에게 귓속말 보내기",
 	TouchJaraxxusIcon	= "군단의 불길의 공격대 대상 아이콘 설정",
 	WarnTouch			= "군단의 불길 경보 알리기",
-	SpecWarnTouch		= "당신에게 군단의 불길 특수 경고 알리기",
-	SpecWarnTouchNear	= "당신 주변에 군단의 불길이 존재할 경우 특수 경고 알리기"
+	SpecWarnTouch		= "당신이 군단의 불길에 걸렸을 경우 특수 경고 알리기",
+	SpecWarnTouchNear	= "당신 주변에 군단의 불길이 존재할 경우 특수 경고 알리기",
+	SpecWarnKiss		= "당신이 여군주의 키스에 걸렸을 경우 특수 경고 알리기"
 }
 
 
