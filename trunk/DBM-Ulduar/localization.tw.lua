@@ -630,7 +630,8 @@ L:SetWarningLocalization{
 	SpecWarnFavor			= "你中了薩拉的熱誠",
 	specWarnBrainPortalSoon		= "傳送門 即將出現",
 	RaidRage			= "薩拉生氣了 快吻她囉",
-	WarnEmpowerSoon			= "暗影信標 即將到來!"
+	WarnEmpowerSoon			= "暗影信標 即將到來!",
+	MaladyNear			= "接近你的%s中了心靈缺陷!"
 }
 
 L:SetTimerLocalization{
@@ -655,12 +656,13 @@ L:SetOptionLocalization{
 	WarnSqueeze			= "提示壓榨 (觸手綁人)",
 	WarningSqueeze			= "當你中了壓榨 (觸手綁人)時大喊",
 	SetIconOnFearTarget		= "設置標記在恐懼的目標",
-	ShowSaraHealth			= "顯示薩拉的血量",
+	ShowSaraHealth			= "顯示薩拉在P1的血量 (需要最少一名團隊成員的目標是薩拉)",
 	WarnFavor			= "提示薩拉的熱誠的目標",
 	SpecWarnFavor			= "為薩拉的熱誠顯示特別警告",
 	SetIconOnFavorTarget		= "設置標記在薩拉的熱誠的目標",
 	specWarnBrainPortalSoon		= "當傳送門即將出現時顯示特別警告",
 	SetIconOnMCTarget		= "設置標記在心控的目標",
 	RaidRageSpam			= "提示 成就:接吻和好 的時機",
-	WarnEmpowerSoon			= "為即將到來的暗影信標顯示警告"	
+	WarnEmpowerSoon			= "為即將到來的暗影信標顯示警告",
+	SpecWarnMaladyNear		= "當接近你的人中了心靈缺陷時顯示特別警告"	
 }
