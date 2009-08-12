@@ -493,49 +493,50 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2 			= "I am the lucid dream.",
-	Sara 				= "Sara",
-	WhisperBrainLink 		= "Brain Link auf dir! Run to %s!",
-	WarningYellSqueeze		= "Quetschen auf mir! Hilfe!"
+	YellPull 					= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
+	YellPhase2 					= "I am the lucid dream.",
+	Sara 						= "Sara",
+	WhisperBrainLink 			= "Brain Link auf dir! Run to %s!",
+	WarningYellSqueeze			= "Quetschen auf mir! Hilfe!"
 }
 
 L:SetWarningLocalization{
-	WarningP2 			= "Phase 2",
-	WarningGuardianSpawned 		= "neuer Wächter",
+	WarningP2 						= "Phase 2",
+	WarningGuardianSpawned 			= "neuer Wächter",
 	WarningCrusherTentacleSpawned	= "neues Mörderischen Schlammling",
-	WarningBrainLink 		= "Gehirnverbindung auf >%s< und >%s<",
-	SpecWarnBrainLink 		= "Gehirnverbindung zwischen dir and %s!",
-	WarningSanity 			= "%d Geistige Gesundheit übrig",
-	SpecWarnSanity 			= "%d Geistige Gesundheit übrig",
-	SpecWarnGuardianLow 		= "Wächter nicht mehr angreifen!",
-	WarnMadness			= "Wahnsinn hervorrufen",
-	SpecWarnMadnessOutNow		= "Wahnsinn hervorrufen - LAUF RAUS",
-	WarnBrainPortalSoon		= "Portal in 3 sec",	
-	WarnSqueeze 			= "Quetschen: >%s<",
-	WarnFavor			= "Saras Eifer auf >%s<",
-	SpecWarnFavor			= "Saras Eifer auf dir!"
+	WarningBrainLink 				= "Gehirnverbindung auf >%s< und >%s<",
+	SpecWarnBrainLink 				= "Gehirnverbindung zwischen dir and %s!",
+	WarningSanity 					= "%d Geistige Gesundheit übrig",
+	SpecWarnSanity 					= "%d Geistige Gesundheit übrig",
+	SpecWarnGuardianLow 			= "Wächter nicht mehr angreifen!",
+	WarnMadness						= "Wahnsinn hervorrufen",
+	SpecWarnMadnessOutNow			= "Wahnsinn hervorrufen - LAUF RAUS",
+	WarnBrainPortalSoon				= "Portal in 3 sec",	
+	WarnSqueeze 					= "Quetschen: >%s<",
+	WarnFavor						= "Saras Eifer auf >%s<",
+	SpecWarnFavor					= "Saras Eifer auf dir!"
 }
 
 L:SetOptionLocalization{
-	WarningP2			= "Warnung für Phase 2",
-	WarningP3			= "Warnung für Phase 3",
-	WarningGuardianSpawned		= "Warnung für neue Wächter",
+	WarningP2						= "Warnung für Phase 2",
+	WarningP3						= "Warnung für Phase 3",
+	WarningGuardianSpawned			= "Warnung für neue Wächter",
 	WarningCrusherTentacleSpawned	= "Warnung für neue Mörderischen Schlammling",
-	WarningBrainLink		= "Warnung für Gehirnverbindung",
-	SpecWarnBrainLink		= "Spezialwarnung bei Gehirnverbindung",
-	WarningSanity			= "Zeige Warnung wenn Geistige Gesundheit niedrig",
-	SpecWarnSanity			= "Spezialwarnung bei Geistige Gesundheit sehr niedrig",
-	SpecWarnGuardianLow		= "Spezialwarnung bei Wächter (P1) ist kurz vor dem Tot (für DDs)",
-	WarnMadness			= "Warnung für Wahnsinn hervorrufen",
-	SpecWarnMadnessOutNow		= "Spezialwarnung kurz vor Ende von Wahnsinn hervorrufen",
-	SpecWarnFavor			= "Spezialwarnung für Saras Eifer",
-	WarnFavor			= "Warnung für Saras Eifer",
-	WarnSqueeze			= "Warnung für Quetschen",
-	WarnBrainPortalSoon		= "Warnung für Portale",
-	specWarnBrainPortalSoon		= "Warnung für Brain Portal in Kürze",
-	SetIconOnFearTarget		= "Setze Symbol auf Spieler mit Geisteskrankheit",
-	SetIconOnMCTarget		= "Setze Symbol auf Spieler mit Gedanken beherrschen",
+	WarningBrainLink				= "Warnung für Gehirnverbindung",
+	SpecWarnBrainLink				= "Spezialwarnung bei Gehirnverbindung",
+	WarningSanity					= "Zeige Warnung wenn Geistige Gesundheit niedrig",
+	SpecWarnSanity					= "Spezialwarnung bei Geistige Gesundheit sehr niedrig",
+	SpecWarnGuardianLow				= "Spezialwarnung bei Wächter (P1) ist kurz vor dem Tot (für DDs)",
+	WarnMadness						= "Warnung für Wahnsinn hervorrufen",
+	SpecWarnMadnessOutNow			= "Spezialwarnung kurz vor Ende von Wahnsinn hervorrufen",
+	SpecWarnFavor					= "Spezialwarnung für Saras Eifer",
+	WarnFavor						= "Warnung für Saras Eifer",
+	WarnSqueeze						= "Warnung für Quetschen",
+	WarnBrainPortalSoon				= "Warnung für Portale",
+	specWarnBrainPortalSoon			= "Warnung für Brain Portal in Kürze",
+	SetIconOnFearTarget				= "Setze Symbol auf Spieler mit Geisteskrankheit",
+	SetIconOnMCTarget				= "Setze Symbol auf Spieler mit Gedanken beherrschen",
+	SpecWarnMaladyNear				= "Spezialwarnung f�r Geisteskrankheit in deiner N�he"
 }
 
 

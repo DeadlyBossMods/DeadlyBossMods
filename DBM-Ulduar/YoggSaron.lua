@@ -42,7 +42,7 @@ local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
 local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
 local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpowerSoon", 4)
 local timerEmpower					= mod:NewCDTimer(46, 64465)
-local specWarnMaladyNear       = mod:NewSpecialWarning("MaladyNear", true)
+local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
@@ -122,7 +122,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			brainLink1 = nil
 		end
 
-	elseif args.spellId == 63830 and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Fear) 
+	elseif (args.spellId == 63830 or args.spellId == 63881) and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Fear) 
 		self:SetIcon(args.destName, 8, 30) 
 		local uId = DBM:GetRaidUnitId(args.destName) 
 		if uId then 
@@ -132,7 +132,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end 
 		end 
 
-	elseif args.spellId == 63881 and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Jump) 
+--[[	elseif args.spellId == 63881 and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Jump) 
 		self:SetIcon(args.destName, 8, 30) 
 		local uId = DBM:GetRaidUnitId(args.destName) 
 		if uId then 
@@ -141,7 +141,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnMaladyNear:Show(args.destName) 
 			end 
 		end
-
+--]]
 	elseif args.spellId == 63042 and self.Options.SetIconOnMCTarget then	-- MC
 		self:SetIcon(args.destName, 4, 30)
 
