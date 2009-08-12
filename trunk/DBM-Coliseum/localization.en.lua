@@ -69,7 +69,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame				= "Legion Flame on >%s<",
 	WarnTouch				= "Touch of Jaraxxus on >%s<",
-	WarnNetherPower			= "Nether Power on Jaraxxus! Dispell Now!",
+	WarnNetherPower			= "Nether Power on Jaraxxus! Dispel Now!",
 	WarnPortalSoon			= "Nether Portal Soon!",
 	WarnVolcanoSoon			= "Infernal Volcano Soon!",
 	SpecWarnFlesh			= "Incinerate Flesh on YOU!",
@@ -88,7 +88,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarnFlame				= "Warns for Legion Flame",
 	WarnTouch				= "Show warning for Touch of Jaraxxus",
-	WarnNetherPower			= "Warn when Jaraxxus gains Nether Power (for dispell/steal)",
+	WarnNetherPower			= "Warn when Jaraxxus gains Nether Power (for dispel/steal)",
 	WarnPortalSoon			= "Prewarn Nether Portal spawning",
 	WarnVolcanoSoon			= "Prewarn Infernal Volcano spawning",
 	SpecWarnFlame			= "Special warning when you have Legion Flame",

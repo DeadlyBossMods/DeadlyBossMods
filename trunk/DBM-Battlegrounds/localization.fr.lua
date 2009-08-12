@@ -244,3 +244,35 @@ L:SetOptionLocalization{
 	timerMobOvercharge	= "Show Timer for Overchaged Mob (stacking debuff)"
 }
 
+------------------------
+--  Isle of Conquest  --
+------------------------
+
+L = DBM:GetModLocalization("IsleOfConquest")
+
+L:SetGeneralLocalization({
+	name = "Île des Conquérants"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerStart		= "La partie commance", 
+	TimerPOI		= "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart		= "Montre le timer avant le début de la partie", 
+	TimerPOI		= "Montre le timer pour les captures",
+})
+
+L:SetMiscLocalization({
+	ZoneName		= "Île des Conquérants",
+	BgStart60		= "La bataille commance dans 60 secondes.",
+	BgStart30		= "La bataille commance dans 30 secondes.",
+	BgStart15		= "La bataille commance dans 15 secondes.",
+})
+
+
+
