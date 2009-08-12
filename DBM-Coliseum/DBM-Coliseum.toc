@@ -12,12 +12,14 @@
 ## X-DBM-Mod-Name: Crusader's Coliseum
 ## X-DBM-Mod-Name-koKR: 십자군의 시험장
 ## X-DBM-Mod-Name-deDE: Kolosseum der Kreuzfahrer
+## X-DBM-Mod-Name-frFR: L'Appel de la Croisade
 ## X-DBM-Mod-Name-ruRU: Колизей Авангарда
 ## X-DBM-Mod-Name-zhTW: 十字軍試煉
 ## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Trial of the Crusader
 ## X-DBM-Mod-LoadZone-koKR: 십자군의 시험장
 ## X-DBM-Mod-LoadZone-deDE: Prüfung des Kreuzfahrers
+## X-DBM-Mod-LoadZone-frFR: L'épreuve du croisé
 ## X-DBM-Mod-LoadZone-ruRU: Колизей Серебряного Авангарда
 ## X-DBM-Mod-LoadZone-zhTW: 十字軍試煉
 localization.en.lua
