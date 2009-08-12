@@ -55,6 +55,8 @@ function mod:OnCombatStart(delay)
 	table.wipe(BileTargets)
 	table.wipe(ToxinTargets)
 	burnIcon = 8
+	timerNextStomp:Start(38-delay)
+	specWarnSilence:Schedule(37-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
