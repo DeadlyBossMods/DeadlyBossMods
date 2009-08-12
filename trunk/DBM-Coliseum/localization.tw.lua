@@ -50,7 +50,7 @@ L:SetWarningLocalization{
 	SpecialWarningImpale3		= "你中了刺穿>%d<!",
 	SpecialWarningFireBomb		= "你中了燃燒彈!",
 	SpecialWarningSlimePool		= "泥漿池, 跑開!",
-	SpecialWarningSilence		= "0.5秒後 法術沉默!",
+	SpecialWarningSilence		= "~1.5秒後 法術沉默!",
 	SpecialWarningSpray		= "你中了痲痺噴霧!",
 	SpecialWarningToxin		= "痲痺劇毒! 跑開!",
 	SpecialWarningCharge		= "你中了撞擊! 跑開!",
@@ -67,39 +67,42 @@ L:SetGeneralLocalization{
 	name = "賈拉克瑟斯領主"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetWarningLocalization{
-	PortalSoonWarning		= "虛空傳送門 即將到來!",
-	VolcanoSoonWarning		= "煉獄爆發 即將到來!",
 	WarnFlame			= "聚合烈焰: >%s<",
-	WarnTouch			= "賈拉克瑟斯之觸: >%s<"
+	WarnTouch			= "賈拉克瑟斯之觸: >%s<",
+	WarnNetherPower			= "虛空威能在賈拉克瑟斯領主身上! 現在驅散!",
+	WarnPortalSoon			= "虛空傳送門 即將到來!",
+	WarnVolcanoSoon			= "煉獄爆發 即將到來!",
+	SpecWarnFlesh			= "你中了焚化血肉!",
+	SpecWarnTouch			= "你中了賈拉克瑟斯之觸!",
+	SpecWarnKiss			= "仕女之吻",
+	SpecWarnTouchNear		= "接近你的%s中了賈拉克瑟斯之觸!",
+	SpecWarnFlame			= "聚合烈焰! 跑開!",
+	SpecWarnNetherPower		= "現在驅散!",
+	SpecWarnFelInferno		= "魔化煉獄! 跑開!"
 }
 
 L:SetMiscLocalization{
-	SpecWarnFlame			= "你中了聚合烈焰!",
-	SpecWarnFlesh			= "你中了焚化血肉!",
-	WhisperFlame			= "你中了聚合烈焰!",
-	SpecWarnTouch			= "你中了賈拉克瑟斯之觸!",
-	SpecWarnKiss			= "仕女之吻",
-	SpecWarnTouchNear		= "接近你的%s中了賈拉克瑟斯之觸!" 
+	WhisperFlame			= "你中了聚合烈焰!"
 }
 
 L:SetOptionLocalization{
-	PortalSoonWarning		= "預先提示虛空傳送門的出現",
-	VolcanoSoonWarning		= "預先提示煉獄爆發的出現",
 	WarnFlame			= "為聚合烈焰顯示警告",
+	WarnTouch			= "為賈拉克瑟斯之觸顯示警告",
+	WarnNetherPower			= "當賈拉克瑟斯領主擁有了虛空威能時警告 (驅散/竊取用)",
+	WarnPortalSoon			= "預先提示虛空傳送門的出現",
+	WarnVolcanoSoon			= "預先提示煉獄爆發的出現",
 	SpecWarnFlame			= "當你中了聚合烈焰時顯示特別警告",
 	SpecWarnFlesh			= "當你中了焚化血肉時顯示特別警告",
-	IncinerateFleshIcon		= "為焚化血肉的目標設置標記",
-	LegionFlameIcon			= "為聚合烈焰的目標設置標記",
-	LegionFlameWhisper		= "密語提示中了聚合烈焰的人",
-	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記",
-	WarnTouch			= "為賈拉克瑟斯之觸顯示警告",
 	SpecWarnTouch			= "當你中了賈拉克瑟斯之觸時顯示特別警告",
 	SpecWarnTouchNear		= "當你附近的人中了賈拉克瑟斯之觸時顯示特別警告",
-	SpecWarnKiss			= "當你中了仕女之吻時顯示特別警告"
+	SpecWarnKiss			= "當你中了仕女之吻時顯示特別警告",
+	SpecWarnNetherPower		= "為虛空威能顯示特別警告 (驅散賈拉克瑟斯領主用)",
+	SpecWarnFelInferno		= "當你太接近魔化煉獄時顯示特別警告",
+	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記 (十字)",
+	IncinerateFleshIcon		= "為焚化血肉的目標設置標記 (頭顱)",
+	LegionFlameIcon			= "為聚合烈焰的目標設置標記 (正方)",
+	LegionFlameWhisper		= "密語提示中了聚合烈焰的人"
 }
 
 
