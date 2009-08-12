@@ -55,11 +55,21 @@ function mod:OnCombatStart(delay)
 	timerFlameCD:Start(20-delay)
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args.spellId == 66877 or args.spellId == 67070 then
-		specWarnFlame:Show()
-	elseif args.spellId == 66496 or args.spellId == 68716 then
-		specWarnFelInferno:Show()
+do
+	local lastflame = 0
+	local lastinferno = 0
+	function mod:SPELL_DAMAGE(args)
+		if args.spellId == 66877 or args.spellId == 67070 then
+			if GetTime() - 4 > lastflame then
+				specWarnFlame:Show()
+				lastflame = GetTime()
+			end
+		elseif args.spellId == 66496 or args.spellId == 68716 then
+			if GetTime() - 4 > lastflame then
+				specWarnFelInferno:Show()
+				lastinferno = GetTime()
+			end
+		end
 	end
 end
 
