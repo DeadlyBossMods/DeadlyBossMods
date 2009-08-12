@@ -97,7 +97,8 @@ L:SetOptionLocalization{
 	TouchJaraxxusIcon	= "Set Icon on Touch of Jaraxxus target",
 	WarnTouch		= "Show warning for Touch of Jaraxxus",
 	SpecWarnTouch		= "Special warning for Touch of Jaraxxus on you",
-	SpecWarnTouchNear	= "Special warning for Touch of Jaraxxus near you"
+	SpecWarnTouchNear	= "Special warning for Touch of Jaraxxus near you",
+	SpecWarnKiss		= "Special warning for Mistress' Kiss on you"
 	
 }
 

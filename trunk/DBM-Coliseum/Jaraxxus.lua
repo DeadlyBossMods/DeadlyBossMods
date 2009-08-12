@@ -29,7 +29,7 @@ local specWarnFlame		= mod:NewSpecialWarning("SpecWarnFlame")
 local specWarnFlesh		= mod:NewSpecialWarning("SpecWarnFlesh")
 local specWarnTouch		= mod:NewSpecialWarning("SpecWarnTouch")
 local specWarnTouchNear		= mod:NewSpecialWarning("SpecWarnTouchNear", false)
---local specWarnKiss		= mod:NewSpecialWarning("SpecWarnKiss")		-- no SpellId known yet
+local specWarnKiss		= mod:NewSpecialWarning("SpecWarnKiss", false)
 
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameIcon", true, "announce")
@@ -85,6 +85,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			if inRange then 
 				specWarnTouchNear:Show(args.destName) 
 			end 
+		end
+	elseif args.spellId == 67907 then
+		if args.destName == UnitName("player") then
+			specWarnKiss:Show()
 		end
 	end
 end
