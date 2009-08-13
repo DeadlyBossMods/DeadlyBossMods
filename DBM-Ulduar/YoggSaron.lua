@@ -42,6 +42,7 @@ local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
 local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
 local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpowerSoon", 4)
 local timerEmpower					= mod:NewCDTimer(46, 64465)
+local timerEmpowerDuration			= mod:NewBuffActiveTimer(10, 64465)
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
@@ -175,9 +176,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze (reduces sanity)
 		timerLunaricGaze:Start()
 	elseif args.spellId == 64465 then
-        timerEmpower:Stop()
         timerEmpower:Start()
-        warnEmpowerSoon:Schedule(40)
+		timerEmpowerDuration:Start()
+		warnEmpowerSoon:Schedule(40)
 	end
 end
 
