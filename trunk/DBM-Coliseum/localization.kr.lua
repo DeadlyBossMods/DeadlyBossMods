@@ -14,7 +14,7 @@ L:SetMiscLocalization{
 	--Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
 	--Charge	= "^%%s ([^%s]+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
 	Charge		= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
-	CombatStart	= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!";	
+	CombatStart	= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!";	
 }
 
 L:SetOptionLocalization{
