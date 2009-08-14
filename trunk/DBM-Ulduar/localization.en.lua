@@ -623,7 +623,7 @@ L:SetWarningLocalization{
 	WarnFavor						= "Sara's Fervor on >%s<",
 	SpecWarnFavor					= "Sara's Fervor on YOU",
 	WarnEmpowerSoon					= "Empowering Shadows Soon!",
-	MaladyNear					= "Malady Near You on >%s<"	
+	SpecWarnMaladyNear					= "Malady Near You on >%s<"	
 }
 
 L:SetTimerLocalization{
