@@ -502,7 +502,7 @@ L:SetWarningLocalization{
 	MagneticCore			= ">%s< 拿到了磁能之核",
 	WarningShockBlast		= "震爆 - 跑開!",
 	WarnBombSpawn			= "炸彈機械人出現了",
-	WarnFrostBomb		= "冰霜炸彈"
+	WarnFrostBomb			= "冰霜炸彈"
 }
 
 L:SetTimerLocalization{
@@ -530,7 +530,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
 	ShockBlastWarningInP1		= "為第一階段的震爆顯示特別警告",
 	ShockBlastWarningInP4		= "為第四階段的震爆顯示特別警告",
-	WarnFrostBomb		= "提示冰霜炸彈"
+	WarnFrostBomb			= "提示冰霜炸彈"
 }
 
 L:SetMiscLocalization{
@@ -631,7 +631,7 @@ L:SetWarningLocalization{
 	specWarnBrainPortalSoon		= "傳送門 即將出現",
 	RaidRage			= "薩拉生氣了 快吻她囉",
 	WarnEmpowerSoon			= "暗影信標 即將到來!",
-	MaladyNear			= "接近你的%s中了心靈缺陷!"
+	SpecWarnMaladyNear		= "接近你的%s中了心靈缺陷!"
 }
 
 L:SetTimerLocalization{
