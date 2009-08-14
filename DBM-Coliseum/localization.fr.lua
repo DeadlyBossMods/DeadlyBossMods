@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge	= "^%%s glares at (%S+) and lets out",
+	Charge	= "^%%s fusille (%S+) du regard et lâche un rugissement assourdissant !",
 	CombatStart		= "Arrivant tout droit des plus noires et profondes cavernes des pics Foudroyés, Gormok l'Empaleur !"
 }
 
@@ -65,7 +65,7 @@ L:SetWarningLocalization{
 L = DBM:GetModLocalization("Jaraxxus")
 
 L:SetGeneralLocalization{
-	name = "Lord Jaraxxus"
+	name = "Seigneur Jaraxxus"
 }
 
 L:SetWarningLocalization{
@@ -105,4 +105,101 @@ L:SetOptionLocalization{
 	LegionFlameIcon			= "Met une icone sur la cible des Flamme de la Légion (Carré)",
 	LegionFlameWhisper		= "Chuchotte a la cible des Flamme de la Légion pour la prévenir"
 }
+
+
+-----------------------
+-- Faction Champions --
+-----------------------
+L = DBM:GetModLocalization("Champions")
+
+L:SetGeneralLocalization{
+	name = "Champion des Factions"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetMiscLocalization{
+	Gorgrim		= "DK - Gorgrim Shadowcleave",	-- 34458
+	Birana 		= "D - Birana Stormhoof",	-- 34451
+	Erin		= "D - Erin Misthoof",		-- 34459
+	Rujkah		= "H - Ruj'kah",		-- 34448
+	Ginselle	= "M - Ginselle Blightslinger",	-- 34449
+	Liandra		= "P - Liandra Suncaller",	-- 45
+	Malithas	= "P - Malithas Brightblade",	-- 56
+	Caiphus		= "PR - Caiphus the Stern",	-- 47
+	Vivienne	= "PR - Vivienne Blackwhisper",	-- 41
+	Mazdinah	= "R - Maz'dinah",		-- 54
+	Thrakgar	= "S - Thrakgar",		--  44
+	Broln		= "S - Broln Stouthorn",	-- 55
+	Harkzog		= "WL - Harkzog",		-- 50
+	Narrhok		= "W - Narrhok Steelbreaker"	-- 53
+} 
+
+L:SetOptionLocalization{
+}
+
+
+------------------
+-- Valkyr Twins --
+------------------
+L = DBM:GetModLocalization("Twins")
+
+L:SetGeneralLocalization{
+	name = "Soeurs Val'kyr"
+}
+
+L:SetTimerLocalization{
+	TimerSpecialSpell	= "Next Special Ability"	
+}
+
+L:SetWarningLocalization{
+	WarnSpecialSpellSoon	= "Special Ability Soon!",
+	SpecWarnSpecial		= "Change color!"
+}
+
+L:SetMiscLocalization{
+	YellPull 	= "In the name of our dark master. For the Lich King. You. Will. Die.",
+	Fjola 		= "Fjola Lightbane",
+	Eydis		= "Eydis Darkbane"
+}
+
+L:SetOptionLocalization{
+	TimerSpecialSpell	= "Show a timer for the next special ability",
+	WarnSpecialSpellSoon	= "Prewarning for the next Special Ability",
+	SpecWarnSpecial		= "Show a special warning when you have to change color"
+}
+
+
+------------------
+-- Anub'arak --
+------------------
+L = DBM:GetModLocalization("Anub'arak_Coliseum")
+
+L:SetGeneralLocalization{
+	name = "Anub'Arak"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetWarningLocalization{
+	WarnBurrow	= "Burrow!",
+	WarnPursue	= "Pursuing >%s<",
+	SpecWarnPursue	= "Pursuing YOU!"
+}
+
+L:SetMiscLocalization{
+	YellPull	= "This place will serve as your tomb!"
+}
+
+L:SetOptionLocalization{
+	WarnBurrow	= "Warning for Submerge",
+	WarnPursue	= "Warning who is being followed",
+	SpecWarnPursue	= "Special warning if YOU are followed"
+}
+
 
