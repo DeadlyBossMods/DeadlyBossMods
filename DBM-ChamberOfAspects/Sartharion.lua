@@ -116,7 +116,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self:ScheduleMethod(5, "CheckDrakes", delay)
-	timerWall(-delay)
+	timerWall:Start(-delay)
 
 	table.wipe(lastvoids)
 	table.wipe(lastfire)
