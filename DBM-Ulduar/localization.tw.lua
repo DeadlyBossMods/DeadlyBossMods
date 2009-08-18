@@ -232,6 +232,7 @@ L:SetTimerLocalization{
 }
 L:SetWarningLocalization{
 	WarningPhasePunch		= "相位拳擊: >%s< - 第%d層",
+	SpecWarnPhasePunch		= "你中了相位拳擊第2層了!",
 	WarningBlackHole		= "黑洞爆炸",
 	WarningBigBang			= "大爆炸來臨",
 	SpecWarnBigBang			= "大爆炸",

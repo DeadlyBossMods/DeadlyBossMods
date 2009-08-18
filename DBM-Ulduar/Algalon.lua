@@ -64,15 +64,19 @@ function mod:UNIT_HEALTH(unitid)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 65108 then 	-- Black Hole Explosion
-		announceBlackHole:Show()
-	
-	elseif args.spellId == 64584 then 	-- Big Bang
+	if args.spellId == 64584 then 	-- Big Bang
 		timerBigBangCast:Start()
 		timerNextBigBang:Start()
 		announceBigBang:Show()
 		announcePreBigBang:Schedule(80)
 		specWarnBigBang:Show()
+	end
+end
+
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 65108 then 	-- Black Hole Explosion
+		announceBlackHole:Show()
 	end
 end
 
