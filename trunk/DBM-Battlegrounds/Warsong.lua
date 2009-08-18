@@ -195,6 +195,11 @@ do
 					mNick = sArg2
 				end
 			
+				if( GetLocale() == "koKR") then
+					mSide = sArg2
+					mNick = sArg1
+				end
+				
 				if mSide == L.Alliance then
 					FlagCarrier[2] = mNick
 					self.FlagCarrierFrame2Text:SetText(mNick)
