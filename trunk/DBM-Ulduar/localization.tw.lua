@@ -257,7 +257,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
 	Emote_CollapsingStars		= "%s開始召喚崩陷之星!",
-	Emote_CosmicSmash		= "%s開始施放宇宙潰擊!"
+	Emote_CosmicSmash		= "%s開始施展宇宙潰擊!"
 }
 
 
