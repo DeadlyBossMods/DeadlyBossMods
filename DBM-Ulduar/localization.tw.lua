@@ -499,7 +499,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	DarkGlare 			= "雷射彈幕",
 	WarnShell			= "凝汽彈: >%s<",
-	WarnBlast			= "離子衝擊: >%s<",
+	WarnBlast			= "電漿衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
 	WarningShockBlast		= "震爆 - 跑開!",
 	WarnBombSpawn			= "炸彈機械人出現了",
@@ -516,7 +516,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	DarkGlare 			= "提示雷射彈幕",
 	WarningShockBlast		= "顯示震爆警告",
-	WarnBlast			= "提示離子衝擊的目標",
+	WarnBlast			= "提示電漿衝擊的目標",
 	WarnShell			= "提示凝汽彈的目標",
 	NextDarkGlare 			= "下一次 雷射彈幕的計時器",
 	TimeToPhase2			= "顯示第二階段開始計時器",
