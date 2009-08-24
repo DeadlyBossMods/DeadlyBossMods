@@ -41,6 +41,8 @@ local specWarnKiss			= mod:NewSpecialWarning("SpecWarnKiss", false)
 local spelWarnNetherPower	= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno	= mod:NewSpecialWarning("SpecWarnFelInferno")
 
+local enrageTimer			= mod:NewEnrageTimer(600)
+
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameIcon", true, "announce")
 mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
@@ -53,6 +55,7 @@ function mod:OnCombatStart(delay)
 	warnPortalSoon:Schedule(40-delay)
 	timerFleshCD:Start(14-delay)
 	timerFlameCD:Start(20-delay)
+	enrageTimer:Start(-delay)
 end
 
 do
