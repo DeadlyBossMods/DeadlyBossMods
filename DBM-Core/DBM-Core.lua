@@ -1555,6 +1555,7 @@ function DBM:EndCombat(mod, wipe)
 			local thisTime = GetTime() - mod.combatInfo.pull
 			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod.stats.lastTime and mod:IsDifficulty("normal5", "heroic10")
 			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod.stats.bestTime and mod:IsDifficulty("normal5", "heroic10")
+			if type(bestTime) ~= "number" then bestTime = math.huge end  -- maybe this will fix the bug (http://www.deadlybossmods.com/forum/viewtopic.php?t=1682) (never got this, can't check don't know the cause)
 			if mod:IsDifficulty("heroic5", "heroic25") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
