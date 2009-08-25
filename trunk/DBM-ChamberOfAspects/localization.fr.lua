@@ -76,6 +76,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	Wall			= "La lave qui entoure %s bouillonne !",
 	Portal			= "%s Commance a incanter un portail!",
 	NameTenebron	= "Ténébron",
 	NameShadron		= "Obscuron",
