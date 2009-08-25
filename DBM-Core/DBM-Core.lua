@@ -160,7 +160,8 @@ end
 
 --
 local function strFromTime(time)
-	time = math.floor(time or 0)
+	if type(time) ~= "number" then time = 0 end
+	time = math.floor(time)
 	if time < 60 then
 		return DBM_CORE_TIMER_FORMAT_SECS:format(time)
 	elseif time % 60 == 0 then
