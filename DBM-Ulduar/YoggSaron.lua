@@ -189,6 +189,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		brainportal:Stop()
         timerEmpower:Start()
         warnEmpowerSoon:Schedule(40)	
+		warnBrainPortalSoon:Unschedule()
 
 	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze
 		timerNextLunaricGaze:Start()

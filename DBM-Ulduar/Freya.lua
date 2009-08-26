@@ -1,5 +1,6 @@
 local mod = DBM:NewMod("Freya", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
+local L_Elder = DBM:GetModLocalization("Freya_Elders").localization.miscStrings
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetZone()
@@ -57,6 +58,10 @@ end
 
 function mod:OnCombatEnd()
 	DBM.BossHealth:Hide()
+	DBM:AddMsg(L_Elder.TrashRespawnTimer)
+	if DBM.Bars:GetBar(L_Elder.TrashRespawnTimer) then
+		DBM.Bars:RemoveBar(L_Elder.TrashRespawnTimer) 
+	end	
 end
 
 
