@@ -3,6 +3,9 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1236 $"):sub(12, -3))
 mod:SetCreatureID(34441)
+mod:SetMinCombatTime(30)
+mod:SetZone()
+
 
 mod:RegisterCombat("combat", 34441)
 
@@ -28,3 +31,5 @@ mod:SetBossHealthInfo(
 
 function mod:OnCombatStart(delay)
 end
+
+
