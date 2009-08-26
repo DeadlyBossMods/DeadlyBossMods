@@ -21,7 +21,7 @@ mod:SetBossHealthInfo(
 
 mod:AddBoolOption("HealthFrame", true)
 
-local enrageTimer			= mod:NewEnrageTimer(600)
+local enrageTimer			= mod:NewEnrageTimer(360)
 
 local warnSpecial			= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
 local timerSpecial			= mod:NewTimer(45, "TimerSpecialSpell")
