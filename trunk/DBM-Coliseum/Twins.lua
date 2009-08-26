@@ -2,7 +2,9 @@
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1236 $"):sub(12, -3))
-mod:SetCreatureID(34497)  
+--mod:SetCreatureID(34497, 34496)  
+mod:SetMinCombatTime(30)
+mod:SetZone()
 
 mod:RegisterCombat("yell", L.YellPull)
 
@@ -19,6 +21,7 @@ mod:SetBossHealthInfo(
 
 mod:AddBoolOption("HealthFrame", true)
 
+local enrageTimer			= mod:NewEnrageTimer(600)
 
 local warnSpecial			= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
 local timerSpecial			= mod:NewTimer(45, "TimerSpecialSpell")
@@ -32,6 +35,7 @@ local specWarnEmpoweredLight		= mod:NewSpecialWarning("SpecWarnEmpoweredLight")
 function mod:OnCombatStart(delay)
 	timerSpecial:Start(-delay)
 	warnSpecial:Schedule(40-delay)
+	enrageTimer:Start(-delay)
 end
 
 local LightEssence = GetSpellInfo(67223)
@@ -50,7 +54,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args.spellId == 67306 then	-- Light Pact
 		local debuff = true
 		self:SpecialAbility(debuff)
-
 	elseif args.spellId == 65875 or args.spellId == 65876 then		-- Heal
 		timerHeal:Start()
 	end
