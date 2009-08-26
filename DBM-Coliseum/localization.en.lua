@@ -166,9 +166,11 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell	= "Show a timer for the next special ability",
-	WarnSpecialSpellSoon	= "Prewarning for the next Special Ability",
-	SpecWarnSpecial		= "Show a special warning when you have to change color"
+	TimerSpecialSpell			= "Show a timer for the next special ability",
+	WarnSpecialSpellSoon		= "Prewarning for the next Special Ability",
+	SpecWarnSpecial				= "Show a special warning when you have to change color",
+	SpecWarnEmpoweredDarkness	= "Show Special Warning for Empowered Darkness",
+	SpecWarnEmpoweredLight		= "Show Special Warning for Empowered Light",
 }
 
 
