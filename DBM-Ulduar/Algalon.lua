@@ -22,26 +22,26 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local timerNextBigBang		= mod:NewCDTimer(90.5, 64584)
-local timerBigBangCast		= mod:NewCastTimer(8, 64584)
-local announceBigBang		= mod:NewAnnounce("WarningBigBang", 3, 64584)
-local announcePreBigBang	= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
-local specWarnBigBang	= mod:NewSpecialWarning("SpecWarnBigBang")
+local timerNextBigBang			= mod:NewCDTimer(90.5, 64584)
+local timerBigBangCast			= mod:NewCastTimer(8, 64584)
+local announceBigBang			= mod:NewAnnounce("WarningBigBang", 3, 64584)
+local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
+local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
 
 local timerNextCollapsingStar	= mod:NewTimer(15, "NextCollapsingStar")
-local timerCDCosmicSmash	= mod:NewTimer(25, "PossibleNextCosmicSmash")
-local timerCastCosmicSmash		= mod:NewCastTimer(4, 62311)
+local timerCDCosmicSmash		= mod:NewTimer(25, "PossibleNextCosmicSmash")
+local timerCastCosmicSmash		= mod:NewCastTimer(4.5, 62311)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
-local specWarnCosmicSmash	= mod:NewSpecialWarning("SpecWarnCosmicSmash")
+local specWarnCosmicSmash		= mod:NewSpecialWarning("SpecWarnCosmicSmash")
 
-local announceBlackHole		= mod:NewAnnounce("WarningBlackHole", 2, 65108)
+local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 
-local timerPhasePunch		= mod:NewBuffActiveTimer(45, 64412)
-local timerNextPhasePunch	= mod:NewNextTimer(16, 64412)
-local announcePhasePunch	= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
-local specWarnPhasePunch	= mod:NewSpecialWarning("SpecWarnPhasePunch")
+local timerPhasePunch			= mod:NewBuffActiveTimer(45, 64412)
+local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
+local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
+local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
 
-local enrageTimer		= mod:NewEnrageTimer(366) -- combatstart take some combattime
+local enrageTimer				= mod:NewEnrageTimer(366) -- combatstart take some combattime
 
 local phase = 0
 
@@ -77,6 +77,12 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 65108 then 	-- Black Hole Explosion
 		announceBlackHole:Show()
+
+	elseif args.spellId == 64598 then	-- Cosmic Smash
+		timerCastCosmicSmash:Start()
+		timerCDCosmicSmash:Start()
+		announceCosmicSmash:Show()
+		specWarnCosmicSmash:Show()
 	end
 end
 
@@ -84,7 +90,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 64412 then
 		timerNextPhasePunch:Start()
 		local amount = args.amount or 1
-		if args.destName == UnitName("player") and amount >= 3 then
+		if args.destName == UnitName("player") and amount >= 4 then
 			specWarnPhasePunch:Show()
 		end
 		timerPhasePunch:Start(args.destName)
@@ -97,22 +103,13 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emote_CollapsingStar then
 		timerNextCollapsingStar:Start()
-	elseif msg == L.Emote_CosmicSmash then
-		timerCastCosmicSmash:Start()
-		timerCDCosmicSmash:Start()
-		announceCosmicSmash:Show()
-		specWarnCosmicSmash:Show()
+--	elseif msg == L.Emote_CosmicSmash then
+--		timerCastCosmicSmash:Start()
+--		timerCDCosmicSmash:Start()
+--		announceCosmicSmash:Show()
+--		specWarnCosmicSmash:Show()
 	end
 end
 
---[[
-(18:33:24) Kyrana: 6 min enrage timer 
-beginn entweder mit dem ersten hit vom tank auf ihn oder dem ersten hit von ihm auf den tank, dazwischen liegen paar sec weil er erst noch labert
-sollte sich aber anhand der logs sagen lassen da gleichzeitig auch der timer für big bang startet Big Bang alle 1:30 -> durch die voidportale   
-(reset bei 20%?) 15sec in fight Erste Sternengruppe (Collapsing Star) 4 Stück, von da an alle 15sec (laut  Aussage, im Video sieht’s nach wesentlich mehr aus)Nacheinander töten -> Black Hole Explosion ->Black Hole (für BigBang) 
 
-(18:33:40) Kyrana: Cosmic Smash alle 25sec, void (wie bei Kel) unter demjenigen Rauslaufen und Abstand halten Kein Targeting vom Boss, keine erkannter debuff auf dem mit der Void Living Constellations ca jede 1:10min Aggroliste, stun bar, benötigen keine Aufmerksamkeit, schießen nach ihrer Aggroliste immer wieder Bolts, kein nennenswerter dmg/effektLiving Constellations schließen immer wieder die Voidportale Phase Punch Alle 15sec auf den Tank -> debuff, bei ca 3 taunt vom anderen Tank Debuff hält 45 secBei 5 stacks wird der tank von algalon ignoriert 
-
-(18:33:51) Kyrana: 20% Alle Collapsing Stars, Living Constellations und Black Holes verschwinden4 neue Black Holes erscheinen (kann man nicht durch) daraus spawnt je ein Unleashed Dark Matter, offtanken, weiter dmg auf Algalon25-30sec später nochmal 4 (genauen timer im log?) Quantum Strike alle 30 sec ?    Wichtigsten Timer:EnrageBigBangPhase Punsh (plus ansage wieviele Stacks wann taunt (ca 3 stacks), wanns bei dem Tank ausläuft)Cosmic Smash Collapsing StarLiving Constellation Bei 20% ansage Unleashed Dark Matter gleich oä + Timer für nächsten   
---]]
 
