@@ -68,7 +68,7 @@ do
 				lastflame = GetTime()
 			end
 		elseif (args.spellId == 66496 or args.spellId == 68716) and args.destName == UnitName("player") then
-			if GetTime() - 3 > lastflame then
+			if GetTime() - 3 > lastinferno then
 				specWarnFelInferno:Show()
 				lastinferno = GetTime()
 			end
