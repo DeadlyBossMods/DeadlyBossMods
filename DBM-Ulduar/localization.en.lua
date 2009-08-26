@@ -451,7 +451,8 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	TimerUnstableSunBeam	= "Sun Beam: %s",
 	TimerSimulKill		= "Resurrection",
-	TimerFuryYou		= "Nature's Fury on you"
+	TimerFuryYou		= "Nature's Fury on you",
+	TrashRespawnTimer	= "Freya Trash Respawn"
 }
 
 L:SetOptionLocalization{
@@ -470,6 +471,10 @@ L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
 	name = "Freya's Elders"
+}
+
+L:SetTimerLocalization{
+	TrashRespawnTimer	= "Freya Trash Respawn"
 }
 
 L:SetOptionLocalization{
