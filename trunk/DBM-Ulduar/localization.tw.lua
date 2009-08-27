@@ -447,7 +447,7 @@ L:SetTimerLocalization{
 	TimerAlliesOfNature 		= "自然和諧冷卻",
 	TimerSimulKill 			= "復活",
 	TimerFuryYou 			= "你中了自然烈怒",
-	TrashRespawnTimer 		= "芙蕾雅的小怪重生"
+	TrashRespawnTimer		= "芙蕾雅的小怪重生"
 }
 
 L:SetOptionLocalization{
@@ -474,6 +474,10 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecWarnFistOfStone 		= "石拳連擊",
 	SpecWarnGroundTremor   		= "地面震顫 - 停止施法"
+}
+
+L:SetTimerLocalization{
+	TrashRespawnTimer		= "芙蕾雅的小怪重生"
 }
 
 L:SetOptionLocalization{
