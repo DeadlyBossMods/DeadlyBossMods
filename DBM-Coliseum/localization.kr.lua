@@ -12,7 +12,6 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	--Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
-	--Charge	= "^%%s ([^%s]+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
 	Charge		= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
 	CombatStart	= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!";	
 }
@@ -50,6 +49,7 @@ L:SetWarningLocalization{
 	SpecialWarningImpale3		= "당신에게 꿰뚫기(3중첩 이상)",
 	SpecialWarningFireBomb		= "당신에게 화염 폭탄!",
 	SpecialWarningSlimePool		= "독 구름, 벗어나세요!",
+	SpecialWarningBile			= "당신에게 타오르는 담즙!",
 	SpecialWarningSilence		= "1.5 초이내 주문 차단!!!",
 	SpecialWarningSpray			= "당신에게 마비의 이빨!",
 	SpecialWarningToxin			= "당신에게 마비독! 이동하세요!",
@@ -152,24 +152,28 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSpecialSpell	= "Next Special Ability"	
+	TimerSpecialSpell	= "다음 속성의 소용돌이"	
 }
 
 L:SetWarningLocalization{
-	WarnSpecialSpellSoon	= "Special Ability Soon!",
-	SpecWarnSpecial		= "Change color!"
+	WarnSpecialSpellSoon		= "곧 속성의 소용돌이!",
+	SpecWarnSpecial				= "속성(빛/어둠) 변경!",
+	SpecWarnEmpoweredDarkness	= "강화된 어둠",
+	SpecWarnEmpoweredLight		= "강화된 빛"
 }
 
 L:SetMiscLocalization{
 	YellPull 	= "In the name of our dark master. For the Lich King. You. Will. Die.",
-	Fjola 		= "Fjola Lightbane",
-	Eydis		= "Eydis Darkbane"
+	Fjola 		= "피올라 라이트베인",
+	Eydis		= "에디스 다크베인"
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell	= "Show a timer for the next special ability",
-	WarnSpecialSpellSoon	= "Prewarning for the next Special Ability",
-	SpecWarnSpecial		= "Show a special warning when you have to change color"
+	TimerSpecialSpell			= "다음 속성의 소용돌이의 타이머 보기",
+	WarnSpecialSpellSoon		= "다음 속성의 소용돌이 사전 경고 보기",
+	SpecWarnSpecial				= "속성(색) 변경을 해야할 때 특수 경고 보기",
+	SpecWarnEmpoweredDarkness	= "강화된 어둠 특수 경고 보기",
+	SpecWarnEmpoweredLight		= "강화된 빛 특수 경고 보기",
 }
 
 
