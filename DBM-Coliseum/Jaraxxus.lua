@@ -51,10 +51,10 @@ mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
 mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
 
 function mod:OnCombatStart(delay)
-	timerVolcano:Start(105-delay)
-	timerPortal:Start(45-delay)
-	warnVolcanoSoon:Schedule(100-delay)
+	timerPortalCD:Start(45-delay)
 	warnPortalSoon:Schedule(40-delay)
+	timerVolcanoCD:Start(105-delay)
+	warnVolcanoSoon:Schedule(100-delay)
 	timerFleshCD:Start(14-delay)
 	timerFlameCD:Start(20-delay)
 	enrageTimer:Start(-delay)
@@ -79,7 +79,7 @@ do
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 67051 or args.spellId == 67049 then		-- Incinerate Flesh
+	if args.spellId == 67051 or args.spellId == 67049 or args.spellId == 66237 then		-- Incinerate Flesh
 		timerFlesh:Start(args.destName)
 		timerFleshCD:Start()
 		if self.Options.IncinerateFleshIcon then
