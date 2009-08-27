@@ -256,8 +256,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
-	Emote_CollapsingStars		= "%s開始召喚崩陷之星!",
-	Emote_CosmicSmash		= "%s開始施展宇宙潰擊!"
+	YellPullFirst			= "",
+	Emote_CollapsingStars		= "%s開始召喚崩陷之星!"
 }
 
 
@@ -446,7 +446,8 @@ L:SetTimerLocalization{
 	TimerUnstableSunBeam 		= "太陽光束: %s",
 	TimerAlliesOfNature 		= "自然和諧冷卻",
 	TimerSimulKill 			= "復活",
-	TimerFuryYou 			= "你中了自然烈怒"
+	TimerFuryYou 			= "你中了自然烈怒",
+	TrashRespawnTimer 		= "芙蕾雅的小怪重生"
 }
 
 L:SetOptionLocalization{
@@ -475,15 +476,11 @@ L:SetWarningLocalization{
 	SpecWarnGroundTremor   		= "地面震顫 - 停止施法"
 }
 
-L:SetMiscLocalization{
-	TrashRespawnTimer 		= "小怪重生",
-}
-
 L:SetOptionLocalization{
 	SpecWarnFistOfStone		= "為石拳連擊顯示特別警告",
 	PlaySoundOnFistOfStone		= "當石拳連擊施放時播放音效",
 	SpecWarnGroundTremor		= "施放地面震顫時顯示特別警告",
-	TrashRespawnTimer		= "顯示小怪重生時間條"
+	TrashRespawnTimer		= "顯示芙蕾雅的小怪重生計時器"
 }
 
 
