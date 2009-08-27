@@ -57,10 +57,9 @@ end
 
 function mod:OnCombatEnd()
 	DBM.BossHealth:Hide()
-	DBM:AddMsg(L.TrashRespawnTimer)
-	if DBM.Bars:GetBar(L.TrashRespawnTimer) then
-		DBM.Bars:CancelBar(L.TrashRespawnTimer) 
-	end	
+--	if DBM.Bars:GetBar(L.TrashRespawnTimer) then
+--		DBM.Bars:CancelBar(L.TrashRespawnTimer) 
+--	end	
 end
 
 
