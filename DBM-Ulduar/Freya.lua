@@ -55,11 +55,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(adds)
 end
 
-function mod:OnCombatEnd()
+function mod:OnCombatEnd(wipe)
 	DBM.BossHealth:Hide()
---	if DBM.Bars:GetBar(L.TrashRespawnTimer) then
---		DBM.Bars:CancelBar(L.TrashRespawnTimer) 
---	end	
+	if not wipe then
+		if DBM.Bars:GetBar(L.TrashRespawnTimer) then
+			DBM.Bars:CancelBar(L.TrashRespawnTimer) 
+		end	
+	end
 end
 
 
