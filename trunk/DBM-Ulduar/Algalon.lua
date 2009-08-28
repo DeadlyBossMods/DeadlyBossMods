@@ -64,7 +64,7 @@ function mod:UNIT_HEALTH(unitid)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64584 then 	-- Big Bang
+	if args.spellId == 64584 or args.spellId == 64443 then 	-- Big Bang
 		timerBigBangCast:Start()
 		timerNextBigBang:Start()
 		announceBigBang:Show()
@@ -103,11 +103,11 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emote_CollapsingStar then
 		timerNextCollapsingStar:Start()
---	elseif msg == L.Emote_CosmicSmash then
---		timerCastCosmicSmash:Start()
---		timerCDCosmicSmash:Start()
---		announceCosmicSmash:Show()
---		specWarnCosmicSmash:Show()
+	elseif msg == L.Emote_CosmicSmash then
+		timerCastCosmicSmash:Start()
+		timerCDCosmicSmash:Start()
+		announceCosmicSmash:Show()
+		specWarnCosmicSmash:Show()
 	end
 end
 
