@@ -7,7 +7,7 @@ mod:SetMinCombatTime(30)
 mod:SetZone()
 
 
-mod:RegisterCombat("combat", 34441)
+mod:RegisterCombat("combat", 34458, 34451, 34459, 34448, 34449, 34445, 34456, 34447, 34441, 34454, 34444, 34455, 34450, 34453)
 
 mod:RegisterEvents(
 )
