@@ -1554,10 +1554,8 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
---			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod.stats.lastTime and mod:IsDifficulty("normal5", "heroic10")
---			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod.stats.bestTime and mod:IsDifficulty("normal5", "heroic10")
-			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod.stats.lastTime
-			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod.stats.bestTime
+			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.lastTime
+			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.bestTime
 			if mod:IsDifficulty("heroic5", "heroic25") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
@@ -2000,9 +1998,6 @@ function bossModPrototype:GetBossTarget(cid)
 	for i = 1, GetNumRaidMembers() do
 		if self:GetUnitCreatureId("raid"..i.."target") == cid then
 			return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
-
-		elseif self:GetUnitCreatureId("raid"..i.."focus") == cid then	-- don't think this will ever work, but have no time to test it (i think it will be removed soon)
-			return UnitName("raid"..i.."focustarget"), "raid"..i.."focustarget"
 
 		elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
 			return UnitName("focustarget"), "focustarget"
@@ -2636,6 +2631,9 @@ function bossModPrototype:RegisterCombat(cType, ...)
 		msgs = (cType ~= "combat") and {...},
 		mod = self
 	}
+	if self.multiMobPullDetection then
+		info.multiMobPullDetection = self.multiMobPullDetection
+	end
 	for i = 1, select("#", ...) do
 		local v = select(i, ...)
 		if type(v) == "number" then
