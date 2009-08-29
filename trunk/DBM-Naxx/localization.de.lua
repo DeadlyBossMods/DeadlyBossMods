@@ -197,7 +197,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Patchwerk")
 
 L:SetGeneralLocalization({
-   name = "Patchwerk"
+   name = "Flickwerk"
 })
 
 L:SetOptionLocalization({
@@ -205,9 +205,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-   yell1 = "Flickwerk spielen möchte!",
-   yell2 = "Kel’Thuzad macht Flickwerk zu seinem Abgesandten von Krieg!",
-   HatefulStrike = "Hasserfüllter Stoß --> %s [%s]"
+	yell1 = "Flickwerk will spielen!", 
+	yell2 = "Kel’Thuzad macht Flickwerk zu seinem Abgesandten von Krieg!",
+	HatefulStrike = "Hasserfüllter Stoß --> %s [%s]"
 })
 
 
@@ -267,11 +267,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-   Yell   = "Stalagg zerquetschen!",
+	Yell   = "Stalagg zerquetschen!",
 	Boss1 = "Feugen",
 	Boss2 = "Stalagg",
 	Charge1 = "negative",
 	Charge2 = "positive",
+	Emote = "%s überlädt!",
+	Emote2 = "Teslaspule überlädt!"
 })
 
 L:SetOptionLocalization({
