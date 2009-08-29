@@ -22,10 +22,10 @@ local timerDeepBreathCast			= mod:NewCastTimer(2.5, 64021)
 local warnTurretsReadySoon			= mod:NewAnnounce("warnTurretsReadySoon", 1)
 local warnTurretsReady				= mod:NewAnnounce("warnTurretsReady", 3)
 
-local timerTurret1					= mod:NewTimer(55, "timerTurret1")
-local timerTurret2					= mod:NewTimer(75, "timerTurret2")
-local timerTurret3					= mod:NewTimer(95, "timerTurret3")
-local timerTurret4					= mod:NewTimer(115, "timerTurret4")
+local timerTurret1					= mod:NewTimer(28, "timerTurret1")
+local timerTurret2					= mod:NewTimer(48, "timerTurret2")
+local timerTurret3					= mod:NewTimer(68, "timerTurret3")
+local timerTurret4					= mod:NewTimer(88, "timerTurret4")
 local timerGroundedTemp				= mod:NewTimer(45, "timerGroundedTemp")
 
 local enrageTimer					= mod:NewEnrageTimer(900) -- uhm?
