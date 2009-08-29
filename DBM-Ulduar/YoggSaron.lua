@@ -35,7 +35,7 @@ local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local warnBrainPortalSoon			= mod:NewAnnounce("WarnBrainPortalSoon", 1)
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
 local warnSqueeze					= mod:NewAnnounce("WarnSqueeze", 1)
-local brainportal					= mod:NewTimer(25, "NextPortal")
+local brainportal					= mod:NewTimer(20, "NextPortal")
 local warnFavor						= mod:NewAnnounce("WarnFavor", 1)
 local specWarnFavor					= mod:NewSpecialWarning("SpecWarnFavor")
 local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
@@ -161,7 +161,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFavor:Show()
 		end
 
-	elseif args.spellId == 63894 then	-- Shadowy Barrier of Yogg-Saron (this is happening when p2 starts)
+	elseif args.spellId == 63894 then	-- Shadowy Barrier of Yogg-Saron (this is happens when p2 starts)
 		phase = 2
 		brainportal:Start(60)
 		warnBrainPortalSoon:Schedule(57)
