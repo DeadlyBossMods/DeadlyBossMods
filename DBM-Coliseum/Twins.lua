@@ -69,7 +69,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 65724 and args.destName == UnitName("player") then 		-- Empowered Darkness
-		specWarnEmpowered:Show()
+		specWarnEmpoweredDarkness:Show()
 	elseif args.spellId == 65748 and args.destName == UnitName("player") then	-- Empowered Light
 		specWarnEmpoweredLight:Show()
 	end
