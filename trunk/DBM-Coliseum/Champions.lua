@@ -3,13 +3,14 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1236 $"):sub(12, -3))
 mod:SetCreatureID(34441)
-mod:SetMinCombatTime(30)
 mod:SetZone()
 
 
 mod:RegisterCombat("combat", 34458, 34451, 34459, 34448, 34449, 34445, 34456, 34447, 34441, 34454, 34444, 34455, 34450, 34453)
 
 mod:RegisterEvents(
+	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE"
 )
 
 mod:SetBossHealthInfo(
@@ -29,7 +30,25 @@ mod:SetBossHealthInfo(
 	34453, L.Narrhok
 )
 
+
+local warnHellfire			= mod:NewAnnounce("WarnHellfire", 1)
+local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
+
+
 function mod:OnCombatStart(delay)
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	if args.spellId == 65816 or args.spellId == 68145 then
+		warnHellfire:Show()
+	end
+end
+
+function mod:SPELL_DAMAGE(args)
+	if args.spellId == 65817 or args.spellId == 68142 then
+		if args.destName == UnitName("player") then
+			specWarnHellfire:Show()
+		end
+	end
+end
 
