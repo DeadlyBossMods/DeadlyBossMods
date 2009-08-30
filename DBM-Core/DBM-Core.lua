@@ -206,6 +206,22 @@ do
 		end
 		return false
 	end
+	
+	function argsMT.__index:IsPlayer()
+		return bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+	end
+	
+	function argsMT.__index:IsPlayerSource()
+		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+	end
+	
+	function argsMT.__index:IsPet()
+		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
+	end
+	
+	function argsMT.__index:IsPetSource()
+		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
+	end
 
 	local function handleEvent(self, event, ...)
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
@@ -1595,19 +1611,28 @@ end
 function DBM:OnMobKill(cId, synced)
 	for i = #inCombat, 1, -1 do
 		local v = inCombat[i]
-		if not v.combatInfo then return end
+		if not v.combatInfo then
+			return
+		end
 		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
-			if not synced then sendSync("DBMv4-Kill", cId) end
+			if not synced then
+				sendSync("DBMv4-Kill", cId)
+			end
 			v.combatInfo.killMobs[cId] = false
 			local allMobsDown = true
 			for i, v in pairs(v.combatInfo.killMobs) do
-				if v then allMobsDown = false break end
+				if v then
+					allMobsDown = false
+					break
+				end
 			end
 			if allMobsDown then
 				self:EndCombat(v)
 			end
-		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not combatInfo.multiMobPullDetection then
-			if not synced then sendSync("DBMv4-Kill", cId) end
+		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
+			if not synced then
+				sendSync("DBMv4-Kill", cId)
+			end
 			self:EndCombat(v)
 		end
 	end
@@ -1967,6 +1992,9 @@ function bossModPrototype:SetCreatureID(...)
 	self.creatureId = ...
 	if select("#", ...) > 1 then
 		self.multiMobPullDetection = {...}
+		if self.combatInfo then
+			self.combatInfo.multiMobPullDetection = self.multiMobPullDetection
+		end
 	end
 end
 
@@ -2063,17 +2091,6 @@ end
 -------------------------
 function bossModPrototype:SetBossHealthInfo(...)
 	self.bossHealthInfo = {...}
-end
-
------------------------------
---  Generic Target Warning --
------------------------------
-function bossModPrototype:NewGenericTargetAnnounce(spellId, color, ...) -- deprecated - DON'T USE THIS
-	local id = "GenericTarget"..spellId
-	local spellName = GetSpellInfo(spellId) or "unknown spell"
-	self.localization.warnings[id] = DBM_CORE_GENERIC_TARGET_WARN:format(spellName)
-	self.localization.options[id] = DBM_CORE_GENERIC_TARGET_OPTION:format(spellName)
-	return self:NewAnnounce(id, color, spellId, ...)
 end
 
 
