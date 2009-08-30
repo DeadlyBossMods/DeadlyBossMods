@@ -1411,10 +1411,10 @@ do
 	local function checkForPull(mob, combatInfo)
 		local uId = targetList[mob]
 		if uId and UnitAffectingCombat(uId) then
-			self:StartCombat(combatInfo.mod, 0)
+			DBM:StartCombat(combatInfo.mod, 0)
 			return true
 		elseif uId then
-			self:Schedule(3, scanForCombat, combatInfo)
+			DBM:Schedule(3, scanForCombat, combatInfo)
 		end
 	end
 
@@ -1958,6 +1958,8 @@ function bossModPrototype:SetZone(...)
 		self.zones = (self.addon and self.addon.zone) or {}
 	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then -- note that DBM_DISABLE_ZONE_DETECTION is never initialized and therefore nil ;)
 		self.zones = {...}
+	else -- disable zone detection
+		self.zones = nil
 	end
 end
 
