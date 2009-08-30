@@ -177,7 +177,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	TimerSpecialSpell		= "為下一次 特別技能顯示計時器",
 	WarnSpecialSpellSoon		= "為下一次 特別技能預先提示",
-	SpecWarnSpecial			= "當你需要變換焚化血肉時顯示特別警告",
+	SpecWarnSpecial			= "當你需要變換顏色時顯示特別警告",
 	SpecWarnEmpoweredDarkness	= "為強力黑暗顯示特別警告",
 	SpecWarnEmpoweredLight		= "為強力光明顯示特別警告",
 }
