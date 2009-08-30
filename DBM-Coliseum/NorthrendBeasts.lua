@@ -4,7 +4,6 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 599 $"):sub(12, -3))
 mod:SetCreatureID(34797)
 mod:SetMinCombatTime(30)
-mod:SetZone()
 
 -- 34816 npc to talk to
 -- 34797 npc icehowl died

@@ -9,6 +9,8 @@ local L = Warsong:GetLocalizedStrings()
 
 Warsong:RemoveOption("HealthFrame")
 
+Warsong:SetZone(DBM_DISABLE_ZONE_DETECTION)
+
 local bgzone = false
 local FlagCarrier = {
 	[1] = nil,
