@@ -6,6 +6,7 @@
 local mod = DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
 local L = mod:GetLocalizedStrings()
 
+mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("ColorByClass", true)
 mod:AddBoolOption("ShowInviteTimer", true)

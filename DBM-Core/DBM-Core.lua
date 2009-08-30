@@ -1407,6 +1407,16 @@ do
 			clearTargetList()
 		end
 	end
+	
+	local function checkForPull(mob, combatInfo)
+		local uId = targetList[mob]
+		if uId and UnitAffectingCombat(uId) then
+			self:StartCombat(combatInfo.mod, 0)
+			return true
+		elseif uId then
+			self:Schedule(3, scanForCombat, combatInfo)
+		end
+	end
 
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
@@ -1414,11 +1424,14 @@ do
 			buildTargetList()
 			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
 				if v.type == "combat" then
-					local uId = targetList[v.mob]
-					if uId and UnitAffectingCombat(uId) then
-						self:StartCombat(v.mod, 0)
-					elseif uId then
-						self:Schedule(3, scanForCombat, v)
+					if v.multiMobPullDetection then
+						for i, v in ipairs(v.multiMobPullDetection) do
+							if checkForPull(v, combatInfo) then
+								break
+							end
+						end
+					else
+						checkForPull(v.mob, combatInfo)
 					end
 				end
 			end
@@ -1593,7 +1606,7 @@ function DBM:OnMobKill(cId, synced)
 			if allMobsDown then
 				self:EndCombat(v)
 			end
-		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs then
+		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not combatInfo.multiMobPullDetection then
 			if not synced then sendSync("DBMv4-Kill", cId) end
 			self:EndCombat(v)
 		end
@@ -1923,6 +1936,7 @@ do
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
 		obj:AddBoolOption("HealthFrame", false, "misc")
+		obj:SetZone()
 		return obj
 	end
 
@@ -1942,13 +1956,16 @@ bossModPrototype.AddMsg = DBM.AddMsg
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
 		self.zones = (self.addon and self.addon.zone) or {}
-	else
+	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then -- note that DBM_DISABLE_ZONE_DETECTION is never initialized and therefore nil ;)
 		self.zones = {...}
 	end
 end
 
-function bossModPrototype:SetCreatureID(id)
-	self.creatureId = id
+function bossModPrototype:SetCreatureID(...)
+	self.creatureId = ...
+	if select("#", ...) > 1 then
+		self.multiMobPullDetection = {...}
+	end
 end
 
 function bossModPrototype:Toggle()
@@ -2013,7 +2030,7 @@ function bossModPrototype:Stop(cid)
 end
 
 -- hard coded party-mod support, yay :)
--- return heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
+-- returns heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
 function bossModPrototype:GetDifficulty()
 	if GetInstanceDifficulty() == 1 then
 		return self.modId == "DBM-Party-WotLK" and "normal5" or

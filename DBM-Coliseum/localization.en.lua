@@ -136,7 +136,8 @@ L:SetMiscLocalization{
 	Thrakgar	= "S - Thrakgar",					-- 34444
 	Broln		= "S - Broln Stouthorn",			-- 34455
 	Harkzog		= "WL - Harkzog",					-- 34450
-	Narrhok		= "W - Narrhok Steelbreaker"		-- 34453
+	Narrhok		= "W - Narrhok Steelbreaker",		-- 34453
+	YellKill	= "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death."
 } 
 
 L:SetOptionLocalization{
