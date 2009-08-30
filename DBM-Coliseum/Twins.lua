@@ -31,11 +31,13 @@ local specWarnSpecial		= mod:NewSpecialWarning("SpecWarnSpecial")
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
 local specWarnEmpoweredLight		= mod:NewSpecialWarning("SpecWarnEmpoweredLight")
+local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 
 function mod:OnCombatStart(delay)
 	timerSpecial:Start(-delay)
 	warnSpecial:Schedule(40-delay)
 	enrageTimer:Start(-delay)
+	timerAchieve:Start(-delay)
 end
 
 local LightEssence = GetSpellInfo(67223)
