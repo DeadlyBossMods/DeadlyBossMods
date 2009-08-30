@@ -22,7 +22,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 67574 then		-- Pursue
+	if args:IsSpellID(67574) then		-- Pursue
 		if args.destName == UnitName("player") then
 			specWarnPursue:Show()
 		end
@@ -30,3 +30,5 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPursue:Start()
 	end
 end
+
+
