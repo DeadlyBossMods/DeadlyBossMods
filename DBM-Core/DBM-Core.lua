@@ -1398,11 +1398,11 @@ do
 		table.wipe(targetList)
 	end
 
-	local function scanForCombat(combatInfo)
-		if not checkEntry(inCombat, combatInfo.mod) then
+	local function scanForCombat(mod, mob)
+		if not checkEntry(inCombat, mod) then
 			buildTargetList()
-			if targetList[combatInfo.mob] and UnitAffectingCombat(targetList[combatInfo.mob]) then
-				DBM:StartCombat(combatInfo.mod, 3)
+			if targetList[mob] and UnitAffectingCombat(targetList[mob]) then
+				DBM:StartCombat(mod, 3)
 			end
 			clearTargetList()
 		end
@@ -1414,7 +1414,7 @@ do
 			DBM:StartCombat(combatInfo.mod, 0)
 			return true
 		elseif uId then
-			DBM:Schedule(3, scanForCombat, combatInfo)
+			DBM:Schedule(3, scanForCombat, combatInfo.mod, mob)
 		end
 	end
 
@@ -1425,13 +1425,13 @@ do
 			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
 				if v.type == "combat" then
 					if v.multiMobPullDetection then
-						for i, v in ipairs(v.multiMobPullDetection) do
-							if checkForPull(v, combatInfo) then
+						for _, mob in ipairs(v.multiMobPullDetection) do
+							if checkForPull(mob, v) then
 								break
 							end
 						end
 					else
-						checkForPull(v.mob, combatInfo)
+						checkForPull(v.mob, v)
 					end
 				end
 			end
