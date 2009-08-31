@@ -4,8 +4,7 @@
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0戰場|r
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0战场|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0전장|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
-## Author: Nitram/Tandanu/Interplay
+## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMBattlegrounds_SavedVars
@@ -16,24 +15,23 @@
 ## X-DBM-Mod-Name-ruRU: Поля Боя
 ## X-DBM-Mod-Name-zhTW: 戰埸
 ## X-DBM-Mod-Name-koKR: 전장
-## X-DBM-Mod-Name-esES: Campos de Batalla
 ## X-DBM-Mod-Sort: 99
 ## X-DBM-Mod-LoadZone: Arathi Basin,Warsong Gulch,Alterac Valley,Eye of the Storm,Vault of Archavon,Isle of Conquest
 ## X-DBM-Mod-LoadZone-deDE: Arathibecken,Kriegshymnenschlucht,Alteractal,Auge des Sturms,Archavons Kammer,Strand der Uralten,Insel der Eroberung
 ## X-DBM-Mod-LoadZone-frFR: Bassin d'Arathi,Goulet des Chanteguerres,Vallée d'Alterac,L'Œil du cyclone,Caveau d'Archavon,Rivage des anciens,Île des Conquérants
+## X-DBM-Mod-LoadZone-esES: Valle de Alterac,Cuenca de Arathi,Garganta Grito de Guerra,Ojo de Tormenta,Playa de los Ancentros,Isla de la Conquista
 ## X-DBM-Mod-LoadZone-ruRU: Низина Арати,Ущелье Песни Войны,Альтеракская долина,Око Бури,Склеп Аркавона
 ## X-DBM-Mod-LoadZone-zhTW: 阿拉希盆地,戰歌峽谷,奧特蘭克山谷,暴風之眼,亞夏梵穹殿
 ## X-DBM-Mod-LoadZone-zhCN: 阿拉希盆地,战歌峡谷,奥特兰克山谷,风暴之眼,远古海滩
 ## X-DBM-Mod-LoadZone-koKR: 아라시 분지,전쟁노래 협곡,알터랙 계곡,폭풍의 눈,아카본 석실,정복의 섬
-## X-DBM-Mod-LoadZone-esES: Cuenca de Arathi,Garganta Grito de Guerra,Valle de Alterac,Ojo de la Tormenta,La Cámara de Archavon,Isla de la Conquista
 localization.en.lua
 localization.de.lua
 localization.tw.lua
 localization.cn.lua
+localization.es.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua
-localization.es.lua
 Battlegrounds.lua
 Arathi.lua
 Alterac.lua

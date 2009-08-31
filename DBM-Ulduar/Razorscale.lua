@@ -3,7 +3,6 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33186)
-mod:SetZone()
 
 --mod:RegisterCombat("combat")
 mod:RegisterCombat("yell", L.YellAir)
@@ -18,17 +17,17 @@ mod:RegisterEvents(
 
 local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
 local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
-local timerDeepBreathCast		= mod:NewCastTimer(2.5, 64021)
-local warnTurretsReadySoon		= mod:NewAnnounce("warnTurretsReadySoon", 1)
-local warnTurretsReady			= mod:NewAnnounce("warnTurretsReady", 3)
+local timerDeepBreathCast			= mod:NewCastTimer(2.5, 64021)
+local warnTurretsReadySoon			= mod:NewAnnounce("warnTurretsReadySoon", 1)
+local warnTurretsReady				= mod:NewAnnounce("warnTurretsReady", 3)
 
-local timerTurret1			= mod:NewTimer(55, "timerTurret1")
-local timerTurret2			= mod:NewTimer(75, "timerTurret2")
-local timerTurret3			= mod:NewTimer(95, "timerTurret3")
-local timerTurret4			= mod:NewTimer(115, "timerTurret4")
-local timerGroundedTemp			= mod:NewTimer(45, "timerGroundedTemp")
+local timerTurret1					= mod:NewTimer(55, "timerTurret1")
+local timerTurret2					= mod:NewTimer(75, "timerTurret2")
+local timerTurret3					= mod:NewTimer(95, "timerTurret3")
+local timerTurret4					= mod:NewTimer(115, "timerTurret4")
+local timerGroundedTemp				= mod:NewTimer(45, "timerGroundedTemp")
 
-local enrageTimer			= mod:NewEnrageTimer(900) -- uhm?
+local enrageTimer					= mod:NewEnrageTimer(900) -- uhm?
 
 local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
 local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733, false, "OptionDevouringFlame") -- new option is just a work-around...the saved variable handling will be updated to allow changing and updating default values soon
@@ -39,11 +38,13 @@ local castFlames
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	if mod:IsDifficulty("heroic10")then
-		warnTurretsReadySoon:Schedule(70-delay)
-		warnTurretsReady:Schedule(75-delay)
-		timerTurret1:Start(-delay)
-		timerTurret2:Start(-delay)
+	warnTurretsReadySoon:Cancel()
+	warnTurretsReady:Cancel()
+	if mod:IsDifficulty("heroic10") then
+		warnTurretsReadySoon:Schedule(65 - delay - 27)
+		warnTurretsReady:Schedule(75 - delay - 27)
+		timerTurret1:Start(-delay - 27)
+		timerTurret2:Start(-delay - 27)
 	else
 		warnTurretsReadySoon:Schedule(95-delay)
 		warnTurretsReady:Schedule(115-delay)
@@ -77,11 +78,13 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 	if msg == L.YellAir or msg == L.YellAir2 then
-		if mod:IsDifficulty("heroic10") then
-			warnTurretsReadySoon:Schedule(70)
-			warnTurretsReady:Schedule(75)
-			timerTurret1:Start()
-			timerTurret2:Start()
+		warnTurretsReadySoon:Cancel()
+		warnTurretsReady:Cancel()
+		if mod:IsDifficulty("heroic10") then -- not sure?
+			warnTurretsReadySoon:Schedule(65 - 27)
+			warnTurretsReady:Schedule(75 - 27)
+			timerTurret1:Start(-27)
+			timerTurret2:Start(-27)
 		else
 			warnTurretsReadySoon:Schedule(95)
 			warnTurretsReady:Schedule(115)

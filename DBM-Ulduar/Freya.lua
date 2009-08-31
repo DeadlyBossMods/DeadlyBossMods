@@ -2,7 +2,6 @@ local mod = DBM:NewMod("Freya", "DBM-Ulduar")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetZone()
 
 mod:SetCreatureID(32906)
 mod:RegisterCombat("combat")
@@ -55,8 +54,13 @@ function mod:OnCombatStart(delay)
 	table.wipe(adds)
 end
 
-function mod:OnCombatEnd()
+function mod:OnCombatEnd(wipe)
 	DBM.BossHealth:Hide()
+	if not wipe then
+		if DBM.Bars:GetBar(L.TrashRespawnTimer) then
+			DBM.Bars:CancelBar(L.TrashRespawnTimer) 
+		end	
+	end
 end
 
 

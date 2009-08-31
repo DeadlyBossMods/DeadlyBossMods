@@ -3,6 +3,7 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1236 $"):sub(12, -3))
 mod:SetCreatureID(34780)
+mod:SetMinCombatTime(30)
 
 mod:RegisterCombat("combat")
 
@@ -41,30 +42,43 @@ local specWarnKiss			= mod:NewSpecialWarning("SpecWarnKiss", false)
 local spelWarnNetherPower	= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno	= mod:NewSpecialWarning("SpecWarnFelInferno")
 
+local enrageTimer			= mod:NewEnrageTimer(600)
+
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameIcon", true, "announce")
 mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
 mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
 
 function mod:OnCombatStart(delay)
-	timerVolcano:Start(105-delay)
-	timerPortal:Start(45-delay)
-	warnVolcanoSoon:Schedule(100-delay)
+	timerPortalCD:Start(45-delay)
 	warnPortalSoon:Schedule(40-delay)
+	timerVolcanoCD:Start(105-delay)
+	warnVolcanoSoon:Schedule(100-delay)
 	timerFleshCD:Start(14-delay)
 	timerFlameCD:Start(20-delay)
+	enrageTimer:Start(-delay)
 end
 
-function mod:SPELL_DAMAGE(args)
-	if args.spellId == 66877 or args.spellId == 67070 then
-		specWarnFlame:Show()
-	elseif args.spellId == 66496 or args.spellId == 68716 then
-		specWarnFelInferno:Show()
+do
+	local lastflame = 0
+	local lastinferno = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(66877, 67070) and args.destName == UnitName("player") then
+			if GetTime() - 3 > lastflame then
+				specWarnFlame:Show()
+				lastflame = GetTime()
+			end
+		elseif args:IsSpellID(66496, 68716) and args.destName == UnitName("player") then
+			if GetTime() - 3 > lastinferno then
+				specWarnFelInferno:Show()
+				lastinferno = GetTime()
+			end
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 67051 or args.spellId == 67049 then		-- Incinerate Flesh
+	if args:IsSpellID(67051, 67049, 66237) then			-- Incinerate Flesh
 		timerFlesh:Start(args.destName)
 		timerFleshCD:Start()
 		if self.Options.IncinerateFleshIcon then
@@ -74,7 +88,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFlesh:Show()
 		end
 
-	elseif args.spellId == 68125 or args.spellId == 68123 then	-- Legion Flame
+	elseif args:IsSpellID(6812, 68123) then				-- Legion Flame
 		local targetname = args.destName
 		timerFlame:Start(args.destName)
 		timerFlameCD:Start()
@@ -85,7 +99,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SendWhisper(L.WhisperFlame, targetname)
 		end
 
-	elseif args.spellId == 66209 then							-- Touch of Jaraxxus
+	elseif args:IsSpellID(66209) then					-- Touch of Jaraxxus
 		-- timerTouchCD:Start()
 		warnTouch:Show(args.destName)
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -102,7 +116,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end 
 		end
 
-	elseif args.spellId == 67907 then
+	elseif args:IsSpellID(67907) then
 		if args.destName == UnitName("player") then
 			specWarnKiss:Show()
 		end
@@ -110,25 +124,25 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 67051 or args.spellId == 67049 then		-- Incinerate Flesh
+	if args:IsSpellID(67051, 67049) then		-- Incinerate Flesh
 		timerFlesh:Stop()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 67009 then								-- Nether Power
+	if args:IsSpellID(67009) then				-- Nether Power
 		warnNetherPower:Show()
 		spelWarnNetherPower:Show()
 
-	elseif args.spellId == 67901 then							-- Infernal Volcano
+	elseif args:IsSpellID(67901) then			-- Infernal Volcano
 		timerVolcanoCD:Start()
 		warnVolcanoSoon:Schedule(110)
 
-	elseif args.spellId == 67900 or args.spellId == 67898 then	-- Nether Portal
+	elseif args:IsSpellID(67900, 67898) then	-- Nether Portal
 		timerPortalCD:Start()
 		warnPortalSoon:Schedule(40)
 
-	elseif args.spellId == 68123 or args.spellId == 66197 then	-- Legion Flame on destName
+	elseif args:IsSpellID(68123, 66197) then 	-- Legion Flame
 		warnFlame:Show(args.destName)
 	end
 end

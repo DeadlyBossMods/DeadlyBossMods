@@ -6,6 +6,7 @@
 local mod = DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
 local L = mod:GetLocalizedStrings()
 
+mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("ColorByClass", true)
 mod:AddBoolOption("ShowInviteTimer", true)
@@ -56,8 +57,8 @@ mod:RegisterOnUpdateHandler(function(self, elapsed)
 					mapName = mapName.." "..instanceID
 				end
 			end
-			if status == "confirm" and inviteTimer:GetTime(mapName) == 0 then
-				inviteTimer:Start(GetBattlefieldPortExpiration(i)/1000, mapName)
+			if status == "confirm" and inviteTimer:GetTime(mapName) == 0 and GetBattlefieldPortExpiration(i) >= 3 then	-- do not start a bar if less then 3 secs
+				inviteTimer:Start(GetBattlefieldPortExpiration(i), mapName)
 			end
 		end
 	end
@@ -95,3 +96,6 @@ hooksecurefunc("WorldStateScoreFrame_Update", function() --re-color the players 
 		end
 	end
 end)
+
+
+
