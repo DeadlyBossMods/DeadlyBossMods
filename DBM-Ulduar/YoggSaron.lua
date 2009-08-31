@@ -3,7 +3,6 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33288)
-mod:SetZone()
 
 mod:RegisterCombat("yell", L.YellPull)
 
@@ -35,13 +34,14 @@ local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local warnBrainPortalSoon			= mod:NewAnnounce("WarnBrainPortalSoon", 1)
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
 local warnSqueeze					= mod:NewAnnounce("WarnSqueeze", 1)
-local brainportal					= mod:NewTimer(27, "NextPortal")
+local brainportal					= mod:NewTimer(20, "NextPortal")
 local warnFavor						= mod:NewAnnounce("WarnFavor", 1)
 local specWarnFavor					= mod:NewSpecialWarning("SpecWarnFavor")
 local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
 local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
 local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpowerSoon", 4)
 local timerEmpower					= mod:NewCDTimer(46, 64465)
+local timerEmpowerDuration			= mod:NewBuffActiveTimer(10, 64465)
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
@@ -80,8 +80,8 @@ function mod:SPELL_CAST_START(args)
 		timerMadness:Start()
 		warnMadness:Show()
 		brainportal:Schedule(60)
-		warnBrainPortalSoon:Schedule(80)
-		specWarnBrainPortalSoon:Schedule(80)
+		warnBrainPortalSoon:Schedule(78)
+		specWarnBrainPortalSoon:Schedule(78)
 		specWarnMadnessOutNow:Schedule(55)
 	end
 end
@@ -160,7 +160,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFavor:Show()
 		end
 
-	elseif args.spellId == 63894 then	-- Shadowy Barrier of Yogg-Saron (this is happening when p2 starts)
+	elseif args.spellId == 63894 then	-- Shadowy Barrier of Yogg-Saron (this is happens when p2 starts)
 		phase = 2
 		brainportal:Start(60)
 		warnBrainPortalSoon:Schedule(57)
@@ -175,9 +175,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze (reduces sanity)
 		timerLunaricGaze:Start()
 	elseif args.spellId == 64465 then
-        timerEmpower:Stop()
         timerEmpower:Start()
-        warnEmpowerSoon:Schedule(40)
+		timerEmpowerDuration:Start()
+		warnEmpowerSoon:Schedule(40)
 	end
 end
 
@@ -188,6 +188,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		brainportal:Stop()
         timerEmpower:Start()
         warnEmpowerSoon:Schedule(40)	
+		warnBrainPortalSoon:Cancel()
 
 	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze
 		timerNextLunaricGaze:Start()

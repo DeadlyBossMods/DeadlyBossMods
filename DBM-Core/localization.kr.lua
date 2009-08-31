@@ -102,4 +102,14 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	next = "다음 |cff71d5ff|H주문:%d|h%s|h|r 타이머 보기",
 	achievement = "%s 위한 타이머 보기", -- translate	
 }
+
+DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	target = "%s : %s",
+	spell = "%s",
+}
+
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	target	= "|cff71d5ff|H주문:%d|h%s|h|r을 플레이어에게 시전할 경우 경고 보기",
+	spell 	= "|cff71d5ff|H주문:%d|h%s|h|r을 시전할 경우 경고 보기"
+}
 end

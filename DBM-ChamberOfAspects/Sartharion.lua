@@ -25,7 +25,7 @@ local warnTenebron	= mod:NewAnnounce("WarningTenebron", 2, nil, false)
 local warnShadron	= mod:NewAnnounce("WarningShadron", 2, nil, false)
 local warnVesperon	= mod:NewAnnounce("WarningVesperon", 2, nil, false)
 
-local warnFireWall		= mod:NewSpecialWarning("WarningFireWall", nil, nil, true)
+local warnFireWall			= mod:NewSpecialWarning("WarningFireWall", nil, nil, true)
 local warnVesperonPortal	= mod:NewSpecialWarning("WarningVesperonPortal", false)
 local warnTenebronPortal	= mod:NewSpecialWarning("WarningTenebronPortal", false)
 local warnShadronPortal		= mod:NewSpecialWarning("WarningShadronPortal", false)
@@ -116,7 +116,7 @@ end
 
 function mod:OnCombatStart(delay)
 	self:ScheduleMethod(5, "CheckDrakes", delay)
-	self:timerWall(-delay)
+	timerWall:Start(-delay)
 
 	table.wipe(lastvoids)
 	table.wipe(lastfire)

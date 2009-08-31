@@ -1,281 +1,162 @@
-﻿if GetLocale() ~= "esES" then return end
-
-local L
-
-----------------------------
---  General BG functions  --
-----------------------------
-L = DBM:GetModLocalization("Battlegrounds")
-
-L:SetGeneralLocalization({
-	name = "Opciones"
-})
-
-L:SetTimerLocalization({
-	TimerInvite = "%s"
-})
-
-L:SetOptionLocalization({
-	ColorByClass	= "Mostrar colores de clases en la Tabla de Estadísticas.",
-	ShowInviteTimer	= "Mostrar tiempo restante para entrar en batalla.",
-	AutoSpirit	= "Liberar espíritu automaticamente"
-})
-
-L:SetMiscLocalization({
-	ArenaInvite	= "Invitación a la Arena"
-})
+﻿-- Traducción por Herenvarno C'thun
 
 
---------------
---  Arenas  --
---------------
-L = DBM:GetModLocalization("Arenas")
-
-L:SetGeneralLocalization({
-	name = "Arena"
-})
-
-L:SetTimerLocalization({
-	TimerStart	= "¡La arena va a Comenzar!",
-	TimerShadow	= "Visión de las Sombras"
-})
-
-L:SetOptionLocalization({
-	TimerStart	= "Mostrar tiempo para que la Arena empieze.",
-	TimerShadow 	= "Mostrar tiempo para que salga Visión de las Sombras."
-})
-
-L:SetMiscLocalization({
-    Start60     = "¡Un minuto hasta que comience la batalla en la arena!",
-	Start45     = "¡Cuarenta y cinco segundos hasta que comience la batalla en la arena!",
-	Start30		= "¡Treinta segundos hasta que comience la batalla en arena!",
-	Start15		= "¡Quince segundos hasta que comience la batalla en arena!"
-})
-
----------------
---  Alterac  --
----------------
-L = DBM:GetModLocalization("Alterac")
-
-L:SetGeneralLocalization({
-	name = "Valle de Alterac"
-})
-
-L:SetTimerLocalization({
-	TimerStart		= "El juego comienza en", 
-	TimerTower		= "%s",
-	TimerGY			= "%s",
-})
-
-L:SetMiscLocalization({
-	BgStart60		= "1 minuto para que dé comienzo la batalla por el Valle de Alterac.",
-	BgStart30		= "30 segundos para que dé comienzo la batalla por el Valle de Alterac.",
-	ZoneName		= "Valle de Alterac",
-})
-
-L:SetOptionLocalization({
-	TimerStart		= "Mostrar tiempo para que comienze la Batalla.",
-	TimerTower		= "Mostrar tiempo para conquistar las Torres.",
-	TimerGY			= "Mostrar tiempo para conquistar los Cementerios.",
-	AutoTurnIn		= "Completar automaticamente las misiones de entregar piezas."
-})
-
----------------
---  Arathi  --
----------------
-L = DBM:GetModLocalization("Arathi")
-
-L:SetGeneralLocalization({
-	name = "Cuenca de Arathi"
-})
-
-L:SetMiscLocalization({
-	BgStart60		= "La batalla por la Cuenca de Arathi comenzará en 1 minuto.",
-	BgStart30		= "La Batalla por la Cuenca de Arathi comenzará en 30 segundos.",
-	ZoneName 		= "Cuenca de Arathi",
-	ScoreExpr 		= "(%d+)/1600",
-	Alliance 		= "La Alianza",
-	Horde 			= "La Horda",
-	WinBarText 		= "%s ganara en",
-	BasesToWin 		= "Bases necesarias para ganar: %d",
-	Flag 			= "Bandera"
-})
-
-L:SetTimerLocalization({
-	TimerStart 		= "¡La batalla va Comenzar!", 
-	TimerCap 		= "%s",
-})
-
-L:SetOptionLocalization({
-	TimerStart  		= "Mostrar tiempo para que comienze la Batalla.",
-	TimerWin 		= "Mostrar tiempo para que una faccion Gane la Batalla.",
-	TimerCap 		= "Mostrar tiempo que tarda en conquistar Banderas.",
-	ShowAbEstimatedPoints	= "Mostrar recursos estimados a ganar.",
-	ShowAbBasesToWin	= "Mostrar bases para ganar."
-})
-
------------------------
---  Eye of the Storm --
------------------------
-L = DBM:GetModLocalization("EyeOfTheStorm")
-
-L:SetGeneralLocalization({
-	name = "Ojo de la Tormenta"
-})
-
-L:SetMiscLocalization({
-	BgStart60		= "¡La batalla comienza en un minuto!",
-	BgStart30		= "¡La batalla comienza en treinta segundos!",
-	ZoneName		= "Ojo de la Tormenta",
-	ScoreExpr		= "(%d+)/1600",
-	Alliance 		= "La Alianza",
-	Horde 			= "La Horda",
-	WinBarText 		= "%s ganara en",
-	FlagReset 		= "La bandera se ha restablecido.",
-	FlagTaken 		= "¡ (.+) ha tomado la bandera!",
-	FlagCaptured 		= "¡La .+ ha%w+ ha capturado la bandera!",
-	FlagDropped 		= "¡Ha caído la bandera!",
-
-})
-
-L:SetTimerLocalization({
-	TimerStart 		= "¡La batalla va a Comenzar!", 
-	TimerFlag 		= "Bandera Restablecida",
-})
-
-L:SetOptionLocalization({
-	TimerStart  		= "Mostrar tiempo para que comienze la Batalla.",
-	TimerWin 		= "Mostrar tiempo para que una faccion Gane la Batalla.",
-	TimerFlag 		= "Mostrar tiempo que tarda en restablecer la Bandera.",
-	ShowPointFrame 		= "Ver puntos que dara la bandera.",
-})
-
---------------------
---  Warsong Gulch --
---------------------
-L = DBM:GetModLocalization("Warsong")
-
-L:SetGeneralLocalization({
-	name = "Garganta Grito de Guerra"
-})
-
-L:SetMiscLocalization({
-	BgStart60 			= "La batalla por la Garganta Grito de Guerra comenzará en 1 minuto..",
-	BgStart30 			= "La batalla por la Garganta Grito de Guerra comenzará en 30 segundos.¡Preparaos!",
-	ZoneName 			= "Garganta Grito de Guerra",
-	Alliance 			= "Alianza",
-	Horde 				= "Horda",	
-	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
-	ExprFlagPickUp 			= "The (%w+) .lag was picked up by (.+)!",
-	ExprFlagCaptured 		= "(.+) ha capturado la bandera de la(%w+)!",
-	ExprFlagReturn 			= "The (%w+) .lag was returned to its base by (.+)!",
-	FlagAlliance 			= "Banderas capturadas por la Alianza: ",
-	FlagHorde			= "Banderas capturadas por la Horda: ",
-	FlagBase			= "Base",
-})
-
-L:SetTimerLocalization({
-	TimerStart 			= "La batalla va comenzar", 
-	TimerFlag 			= "La bandera reaperecere",
-})
-
-L:SetOptionLocalization({
-	TimerStart  			= "Mostrar tiempo para que comienze la Batalla.",
-	TimerWin 			= "Mostrar tiempo para que una faccion Gane la Batalla.",
-	TimerFlag			= "Mostrar tiempo que tarda en restablecer la Bandera.",
-	ShowFlagCarrier			= "Show flag carrier",
-	ShowFlagCarrierErrorNote 	= "Shows flag carrier error message when in combat",
-})
+if (GetLocale()=="esES") then
+--[[DBM_BGMOD_LANG["THANKS"] 		= "Gracias pecadores por usarme";
+	DBM_BGMOD_LANG["WINS"]			= "¡La (%w+) gana!"; 
+	DBM_BGMOD_LANG["BEGINS"]		= "Campo de Batalla en";
+	DBM_BGMOD_LANG["ALLIANCE"]		= "Alianza";
+	DBM_BGMOD_LANG["HORDE"]		= "Horda";
+	DBM_BGMOD_LANG["ALLI_TAKE_ANNOUNCE"] 	= "*** La Alianza ha tomado %s  ***";
+	DBM_BGMOD_LANG["HORDE_TAKE_ANNOUNCE"]	= "*** La Horda ha tomado %s ***";
 
 
-
-----------------
---  Archavon  --
-----------------
-
-L = DBM:GetModLocalization("Archavon")
-
-L:SetGeneralLocalization({
-	name = "Archavon el Vigía de piedra"
-})
-
-L:SetWarningLocalization({
-	WarningShards	= "Fragmentos de roca en >%s<",
-	WarningGrab	= "Archavon agarró >%s<"
-})
-
-L:SetTimerLocalization({
-	TimerShards 	= "Fragmentos de roca: %s"
-})
-
-L:SetMiscLocalization({
-	TankSwitch	 = "%%s se abalanza sobre (%S+)!"
-})
-
-L:SetOptionLocalization({
-	TimerShards 	= "Mostrar tiempo para fragmentos de roca",
-	WarningShards 	= "Mostrar aviso para fragmentos de roca",
-	WarningGrab 	= "Mostrar aviso para cambiar tank"
-})
-
---------------
---  Emalon  --
---------------
-
-L = DBM:GetModLocalization("Emalon")
-
-L:SetGeneralLocalization{
-	name = "Emalon el Vigía de la Tormenta"
-}
-
-L:SetWarningLocalization{
-	specWarnNova		= "Nova de relámpagos",
-	warnNova 		= "Nova de relámpagos",
-	warnOverCharge		= "Sobrecarga"
-}
-
-L:SetTimerLocalization{
-	timerMobOvercharge	= "Sobrecarga"
-}
-
-L:SetOptionLocalization{
-	specWarnNova 		= ("Mostrar aviso especial para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Nova de relámpagos"),
-	warnNova 		= ("Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Nova de relámpagos"),
-	warnOverCharge 		= ("Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Sobrecarga"),
-	timerMobOvercharge	= "Mostrar tiempo para que un Mob se haga grande."
-}
+		-- AV
+	DBM_BGMOD_LANG["AV_ZONE"] 		= "Valle de Alterac";
+	DBM_BGMOD_LANG["AV_START60SEC"]	= "1 minuto para que dé comienzo la batalla por el Valle de Alterac.";
+	DBM_BGMOD_LANG["AV_START30SEC"]	= "30 segundos para que dé comienzo la batalla por el Valle de Alterac.";
+	DBM_BGMOD_LANG["AV_TURNININFO"] 	= "Auto turn-in reputation items";
+	DBM_BGMOD_LANG["AV_NPC"] 		= {
+			["SMITHREGZAR"] = "Schmied Regzar", -- armor
+			["PRIMALISTTHURLOGA"] = "Primalist Thurloga", -- icelord
+			["WINGCOMMANDERJEZTOR"] = "Comandante del Aire Jeztor", 
+			["WINGCOMMANDERGUSE"] = "Comandante del Aire Guse",
+			["WINGCOMMANDERMULVERICK"] = "Comandante del Aire Mulverick",
+			["MURGOTDEEPFORGE"] = "Murgot Deepforge", -- armor
+			["ARCHDRUIDRENFERAL"] = "Arch Druid Renferal", -- forestlord
+			["WINGCOMMANDERVIPORE"] = "Comandante del Aire Vipore",
+			["WINDCOMMANDERSLIDORE"] = "Comandante del Aire Slidore",
+			["WINGCOMMANDERICHMAN"] = "Comandante del Aire Ichman",
+			["STORMPIKERAMRIDERCOMMANDER"] = "Stormpike Ram Rider Commander", -- riders
+			["FROSTWOLFWOLFRIDERCOMMANDER"] = "Frostwolf Wolf Rider Commander",
+		};
+	DBM_BGMOD_LANG["AV_ITEM"] 		= {
+			["ARMORSCRAPS"] = "Trocitos de armadura",
+			["SOLDIERSBLOOD"] = "Sangre de Soldado Picotormenta",
+			["LIEUTENANTSFLESH"] = "Carne de Teniente Picotormenta",
+			["SOLDIERSFLESH"] = "Carne de Soldado Picotormenta",
+			["COMMANDERSFLESH"] = "Carne de Comandante Picotormenta";
+			["STORMCRYSTAL"] = "Cristal de tormenta",
+			["LIEUTENANTSMEDAL"] = "Medalla de Teniente Lobo Gélido",
+			["SOLDIERSMEDAL"] = "Medalla de Soldado Lobo Gélido",
+			["COMMANDERSMEDAL"] = "Medalla de Comandante Lobo Gélido",
+			["FROSTWOLFHIDE"] = "Pellejo Lobo Gélido",
+			["ALTERACRAMHIDE"] = "Pellejo Carnero de Alterac",
+		};
+	DBM_BGMOD_LANG["AV_TARGETS"] 		= {
+			"Puesto de Auxilio Pico Tormenta",
+			"Búnker Norte de Dun Baldar",
+			"Búnker Sur de Dun Baldar",
+			"Cementerio Pico Tormenta",
+			"Búnker de Ala Gélida",
+			"Cementerio Piedrahogar",
+			"Búnker Piedrahogar",
+			"Cementerio Avalancha",
+			"Torre Sangre Fría",
+			"Cementerio Sangre Fría",
+			"Torre de la Punta",
+			"Cementerio Lobo Gélido",
+			"La Torre Oeste Lobo Gélido",
+			"La Torre Este Lobo Gélido",
+			"Puesto de Auxilio Lobo Gélido"
+	};
+	DBM_BGMOD_LANG["AV_UNDERATTACK"]	= "¡(.*) (.+) (.*)! ¡Si no hacemos algo, la (%w+) (.*)!";
+	DBM_BGMOD_LANG["AV_WASTAKENBY"]	= "La (%w+) ha (.*) (.+)";
+	DBM_BGMOD_LANG["AV_WASDESTROYED"]	= "(.+) fue destruido por la (%w+)!";	
+	--DBM_BGMOD_LANG["AV_IVUS"]		= "Wicked, Wicked, Mortals! The forest weeps";
+	--DBM_BGMOD_LANG["AV_ICEY"]		= "WHO DARES SUMMON LOKHOLAR";
 
 
-------------------------
---  Isle of Conquest  --
-------------------------
+		-- AB
+	DBM_BGMOD_LANG["AB_ZONE"] = "Cuenca de Arathi";
+	DBM_BGMOD_LANG["AB_INFOFRAME_INFO"]	= "Show estimated final points";
+	DBM_BGMOD_LANG["AB_START60SEC"] = "1 minuto para que dé comienzo la batalla por la Cuenca de Arathi.";
+	DBM_BGMOD_LANG["AB_START30SEC"] = "30 segundos para que dé comienzo la batalla por la Cuenca de Arathi.";
+	DBM_BGMOD_LANG["AB_CLAIMSTHE"] = "(.+) claims the (.+)!  If left unchallenged, the (%w+) will control it in 1 minute!";
+	DBM_BGMOD_LANG["AB_HASTAKENTHE"] = "La (%w+) ha tomado (.+)!";
+	DBM_BGMOD_LANG["AB_HASDEFENDEDTHE"] = "(.+) ha defendido (.+)!";
+	DBM_BGMOD_LANG["AB_HASASSAULTED"] = "ha asaltado";
+	DBM_BGMOD_LANG["AB_SCOREEXP"] = "Bases: (%d+)  Recursos: (%d+)/2000"; -- beware of the dual spaces
+	DBM_BGMOD_LANG["AB_WINALLY"] = "Alianza gana en";
+	DBM_BGMOD_LANG["AB_WINHORDE"] = "Horda gana en";
+	DBM_BGMOD_LANG["AB_TARGETS"] 		= {
+			"granja",
+			"serrería",
+			"herrería",
+			"mina",
+			"Establos"
+		};
 
-L = DBM:GetModLocalization("IsleOfConquest")
+	DBM_BGMOD_LANG["AB_TARGETS_ANNOUNCE"] 		= {
+			"La Granja",
+			"La Serrería",
+			"La Herrería",
+			"La mina",
+			"Los Establos"
+	};
+		
+		-- WSG
+	DBM_BGMOD_LANG["WSG_ZONE"] = "Grito de guerra";
+	DBM_BGMOD_LANG["WSG_START60SEC"] = "Comenzamos en 1 Minuto.";
+	DBM_BGMOD_LANG["WSG_START30SEC"] = "Comenzamos en 30 segundos";
+	DBM_BGMOD_LANG["WSG_INFOFRAME_INFO"] = "Show flag carrier";
+	DBM_BGMOD_LANG["WSG_FLAG_PICKUP"] = "The (%w+) .lag was picked up by (.+)!";
+	DBM_BGMOD_LANG["WSG_FLAG_RETURN"] = "The (%w+) .lag was returned to its base by (.+)!";
+	DBM_BGMOD_LANG["WSG_ALLYFLAG"] = "Bandera de la Alianza: ";
+	DBM_BGMOD_LANG["WSG_HORDEFLAG"] = "Bandera de la Horda: ";
+	DBM_BGMOD_LANG["WSG_FLAG_BASE"] = "Base";
+	DBM_BGMOD_LANG["WSG_HASCAPTURED"] = "¡¡(.+) ha capturado la bandera de la (%w+)!!";
 
-L:SetGeneralLocalization({
-	name = "Isla de la Conquista"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-	TimerStart		= "¡La batalla va comenzar!", 
-	TimerPOI		= "%s",
-})
-
-L:SetOptionLocalization({
-	TimerStart		= "Mostrar tiempo para que comienze la Batalla.", 
-	TimerPOI		= "Mostrar tiempo para las Capturas",
-})
-
-L:SetMiscLocalization({
-	ZoneName		= "Isla de la Conquista",
-	BgStart60		= "La batalla comenzará en 60 segundos.",
-	BgStart30		= "La batalla comenzará en 30 segundos.",
-	BgStart15		= "La batalla comenzará en 15 segundos.",
-})
-
-
+	--added 9.12
+	DBM_BGMOD_LANG["ARENA_BEGIN"]		= "One minute until the Arena battle begins!";
+	DBM_BGMOD_LANG["ARENA_BEGIN30"]	= "Thirty seconds until the Arena battle begins!";
+	DBM_BGMOD_LANG["ARENA_BEGIN15"]	= "Fifteen seconds until the Arena battle begins!";
+	
 
 
+	-- DBM_SBT["Flag respawn"] = "Bandera reaparece en";
+	-- DBM_SBT["Ivus spawn"] = "";
+	-- DBM_SBT["Ice spawn"] = "";
+	DBM_SBT["Begins"] = DBM_BGMOD_LANG["BEGINS"];
+	DBM_SBT["AB_WINHORDE"] = DBM_BGMOD_LANG.AB_WINHORDE;
+	DBM_SBT["AB_WINALLY"] = DBM_BGMOD_LANG.AB_WINALLY;
+	DBM_BGMOD_LANG["SHOW_INV_TIMER"] = "Show battleground join timer";
+	DBM_BGMOD_LANG["COLOR_BY_CLASS"] = "Set name color to class color in the score frame";
+	
+	
+	DBM_BGMOD_LANG["AB_DESCRIPTION"]	= "Control de timers de bases.";
+	DBM_BGMOD_LANG["AV_DESCRIPTION"]	= "Control de los timers de cementerios y torres.";
+	DBM_BGMOD_LANG["WS_DESCRIPTION"]	= "Control de Banderas";
+	
+
+	DBM_ARENAS				= "Arenas";
+	DBM_ARENAS_DESCRIPTION	= "Temporizadores de arenas";
+
+	
+	-- eye of the storm
+
+	DBM_EOTS_NAME			= "Ojo de la Tormenta";
+	DBM_EOTS_DESCRIPTION	= "Muestra el tiempo estimado hasta qeu un bando gane.";
+
+	DBM_EOTS_BEGINS_60		= "The battle begins in 1 minute!";
+	DBM_EOTS_BEGINS_30		= "The battle begins in 30 seconds!";
+
+	DBM_EOTS_FLAG_TAKEN		= "(.+) has taken the flag!";
+	DBM_EOTS_FLAG_RESET		= "The flag has been reset!";
+	DBM_EOTS_FLAG_CAPTURED	= "The .+ ha%w+ captured the flag!"; 
+	DBM_EOTS_FLAG_DROPPED	= "The flag has been dropped!";
+
+	DBM_EOTS_POINTS			= "Bases: (%d+)  Puntos de Victoria: (%d+)/2000";
+	DBM_EOTS_FLAG			= "Bandera";	
+
+	DBM_SBT["Alliance wins in"] = "Alianza gana en";
+	DBM_SBT["Horde wins in"] = "Horda gana en";
+	
+
+	DBM_BGMOD_OPTION_AUTOSPIRIT			= "Auto-release spirit"
+	
+	DBM_BGMOD_AV_BARS = {
+		[13] = "La Torre Oeste Lobo Gélido",
+		[14] = "La Torre Este Lobo Gélido",
+	}]]--
+end

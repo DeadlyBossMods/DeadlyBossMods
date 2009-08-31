@@ -12,9 +12,8 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	--Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
-	--Charge	= "^%%s ([^%s]+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
 	Charge		= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
-	CombatStart	= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!";	
+	CombatStart	= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!";	
 }
 
 L:SetOptionLocalization{
@@ -50,7 +49,8 @@ L:SetWarningLocalization{
 	SpecialWarningImpale3		= "당신에게 꿰뚫기(3중첩 이상)",
 	SpecialWarningFireBomb		= "당신에게 화염 폭탄!",
 	SpecialWarningSlimePool		= "독 구름, 벗어나세요!",
-	SpecialWarningSilence		= "주문 차단 0.5 초 전!!!",
+	SpecialWarningBile			= "당신에게 타오르는 담즙!",
+	SpecialWarningSilence		= "1.5 초이내 주문 차단!!!",
 	SpecialWarningSpray			= "당신에게 마비의 이빨!",
 	SpecialWarningToxin			= "당신에게 마비독! 이동하세요!",
 	SpecialWarningCharge		= "당신에게 사나운 돌진! 뛰세요!",
@@ -67,39 +67,42 @@ L:SetGeneralLocalization{
 	name = "군주 자락서스"
 }
 
-L:SetTimerLocalization{
-}
-
 L:SetWarningLocalization{
-	PortalSoonWarning	= "곧 황천의 차원문!",
-	VolcanoSoonWarning	= "곧 지옥불 정령 분출!",
-	WarnFlame			= "군단의 불꽃 : >%s<!",
-	WarnTouch			= "군단의 불길 : >%s<"
+	WarnFlame			= "군단 불꽃 : >%s<!",
+	WarnTouch			= "자락서스의 손길 : >%s<",
+	WarnNetherPower			= "자락서스가 황천의 힘을 얻었습니다! 해제하세요!",
+	WarnPortalSoon			= "곧 황천의 차원문!",
+	WarnVolcanoSoon			= "곧 지옥불 정령 분출!",
+	SpecWarnFlesh			= "당신에게 살점 소각!",
+	SpecWarnTouch			= "당신에게 자락서스의 손길!",
+	SpecWarnKiss			= "여군주의 키스",
+	SpecWarnTouchNear		= "당신 주변에 자락서스의 손길 : >%s<",
+	SpecWarnFlame			= "군단 불꽃! 뛰세요!",
+	SpecWarnNetherPower		= "지금 해제!",
+	SpecWarnFelInferno		= "군단 불꽃! 움직이세요!"	
 }
 
 L:SetMiscLocalization{
-	SpecWarnFlame		= "당신에게 군단의 불꽃!",
-	SpecWarnFlesh		= "당신에게 살점 소각!",
 	WhisperFlame		= "당신에게 군단의 불꽃!",
-	SpecWarnTouch		= "당신에게 군단의 불길!",
-	SpecWarnKiss		= "여군주의 키스",
-	SpecWarnTouchNear	= "당신 주변의 군단의 불길 : >%s<"
 }
 
 L:SetOptionLocalization{
-	PortalSoonWarning	= "황천의 차원문 사전 경고 알리기",
-	VolcanoSoonWarning	= "지옥불 정령 분출 사전 경고 알리기",
-	WarnFlame			= "군단의 불꽃 경고하기",
-	SpecWarnFlame		= "군단의 불꽃에 걸렸을 경우 특수 경보 알리기",
-	SpecWarnFlesh		= "살점 소각에 걸렸을 경우 특수 경보 알리기",
-	IncinerateFleshIcon	= "살점 소각의 공격대 대상 아이콘 설정",
-	LegionFlameIcon		= "군단의 불꽃의 공격대 대상 아이콘 설정",
-	LegionFlameWhisper	= "군단의 불꽃 대상에게 귓속말 보내기",
-	TouchJaraxxusIcon	= "군단의 불길의 공격대 대상 아이콘 설정",
-	WarnTouch			= "군단의 불길 경보 알리기",
-	SpecWarnTouch		= "당신이 군단의 불길에 걸렸을 경우 특수 경고 알리기",
-	SpecWarnTouchNear	= "당신 주변에 군단의 불길이 존재할 경우 특수 경고 알리기",
-	SpecWarnKiss		= "당신이 여군주의 키스에 걸렸을 경우 특수 경고 알리기"
+	WarnFlame				= "군단 불꽃 경고 알리기",
+	WarnTouch				= "자락서스의 손길 경고 알리기",
+	WarnNetherPower			= "자락서스가 황천의 힘을 얻었을 경우 경고 하기 (해제를 위한 경고)",
+	WarnPortalSoon			= "황천의 차원문 생성 사전 경고 알리기",
+	WarnVolcanoSoon			= "지옥불 정령 분출 사전 경고 알리기",
+	SpecWarnFlame			= "군단 불꽃에 걸렸을 경우 특수 경보 알리기",
+	SpecWarnFlesh			= "살점 소각에 걸렸을 경우 특수 경보 알리기",
+	SpecWarnTouch			= "당신이 자락서스의 손길에 걸렸을 경우 특수 경고 알리기",
+	SpecWarnTouchNear		= "당신 주변의 플레이어가 자락서스의 손길에 걸렸을 경우 특수 경고 알리기",
+	SpecWarnKiss			= "당신이 여군주의 키스에 걸렸을 경우 특수 경고 알리기",
+	SpecWarnNetherPower		= "황천의 힘 특수 경고 알리기 (자락서스 해제클래스-법사/사제/주술사)",
+	SpecWarnFelInferno		= "당신 주변에 군단 불꽃이 있을 경우 특수 경고 알리기(바닥)",
+	TouchJaraxxusIcon		= "자락서스의 손길 대상 공격대 아이콘 설정 (엑스)",
+	IncinerateFleshIcon		= "살점 소각의 공격대 대상 아이콘 설정 (해골)",
+	LegionFlameIcon			= "군단의 불꽃의 공격대 대상 아이콘 설정 (네모)",
+	LegionFlameWhisper		= "군단의 불꽃 대상에게 귓속말 보내기",
 }
 
 
@@ -113,29 +116,48 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	WarnHellfire		= "지옥의 불길",
+	SpecWarnHellfire	= "지옥의 불길! 이동 하세요!"
 }
 
 L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "DK - Gorgrim Shadowcleave",	-- 34458
-	Birana 		= "D - Birana Stormhoof",	-- 34451
-	Erin		= "D - Erin Misthoof",		-- 34459
-	Rujkah		= "H - Ruj'kah",		-- 34448
-	Ginselle	= "M - Ginselle Blightslinger",	-- 34449
-	Liandra		= "P - Liandra Suncaller",	-- 45
-	Malithas	= "P - Malithas Brightblade",	-- 56
-	Caiphus		= "PR - Caiphus the Stern",	-- 47
-	Vivienne	= "PR - Vivienne Blackwhisper",	-- 41
-	Mazdinah	= "R - Maz'dinah",		-- 54
-	Thrakgar	= "S - Thrakgar",		--  44
-	Broln		= "S - Broln Stouthorn",	-- 55
-	Harkzog		= "WL - Harkzog",		-- 50
-	Narrhok		= "W - Narrhok Steelbreaker"	-- 53
-} 
+	Gorgrim		= "죽기 - 고어그림 쉐도우클리브",		-- 34458, Horde
+	-- Tyrius	= "DK - Tyrius Duskblade", 				-- ??, Allience
+	Birana 		= "조드 - 비라나 스톰후프",				-- 34451, Horde
+	Erin		= "회드 - 에린 미스트후프",				-- 34459, Horde
+	-- Kavina	= "D - Kavina Grovesong",				-- ??, Allience
+	-- Melador	= "D - Melador Balestrider",			-- ??, Allience
+	Rujkah		= "사냥꾼 - 루즈카",					-- 34448, Horde
+	-- Alyssia 	= "H - Moonstalker",					-- ??, Allience
+	Ginselle	= "마법사 - 진셀 블라이트링거",			-- 34449, Horde
+	-- Noozle	= "M - Noozle Whizzlestick",			-- ??, Allience
+	Liandra		= "신성 - 태양의 소환사 리안드리아",	-- 34445, Horde
+	Malithas	= "징벌 - 말리사스 브라이트블레이드",	-- 34456, Horde
+	-- Baelnor 	= "P - Baelnor Lightbearer",			-- ??, Allience
+	-- Velanaa	= "P - Velanaa", 						-- ??, Allience
+	Caiphus		= "수양 - 엄격한 캐퍼스",				-- 34447, Horde
+	Vivienne	= "암흑 - 검은휘파람의 비비엔느",		-- 34441, Horde
+	-- Anthar	= "PR - Anthar Forgemender",		 	-- ??, Allience
+	-- Brienna	= "PR - Brienna Nightfel",				-- ??, Allience
+	Mazdinah	= "도적 - 마즈디나",					-- 34454, Horde
+	-- Irieth	= "R - Irieth Shadowstep",				-- ??, Allience
+	Thrakgar	= "정기 - 스라가",						-- 34444, Horde
+	Broln		= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
+	-- Shaamul	= "S - Shaamul", 						-- ??, Allience
+	-- Shaabad	= "S - Shaabad", 						-- ??, Allience
+	Harkzog		= "흑마법사 - 학조그",					-- 34450, Horde
+	-- Serissa	= "WL - Serissa Grimdabbler",			-- ??, Allience
+	Narrhok		= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
+	--Shocuul	= "W - Shocuul"							-- ??, Allience
+	YellKill	= "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death.",
+}
 
 L:SetOptionLocalization{
+	WarnHellfire			= "지옥의 불길을 시전할 때 경고",
+	SpecWarnHellfire		= "지옥의 불길로 인해 피해를 입을 경우 특수 경고 보기"
 }
 
 
@@ -149,24 +171,28 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSpecialSpell	= "Next Special Ability"	
+	TimerSpecialSpell	= "다음 속성의 소용돌이"	
 }
 
 L:SetWarningLocalization{
-	WarnSpecialSpellSoon	= "Special Ability Soon!",
-	SpecWarnSpecial		= "Change color!"
+	WarnSpecialSpellSoon		= "곧 속성의 소용돌이!",
+	SpecWarnSpecial				= "속성(빛/어둠) 변경!",
+	SpecWarnEmpoweredDarkness	= "강화된 어둠",
+	SpecWarnEmpoweredLight		= "강화된 빛"
 }
 
 L:SetMiscLocalization{
 	YellPull 	= "In the name of our dark master. For the Lich King. You. Will. Die.",
-	Fjola 		= "Fjola Lightbane",
-	Eydis		= "Eydis Darkbane"
+	Fjola 		= "피올라 라이트베인",
+	Eydis		= "에디스 다크베인"
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell	= "Show a timer for the next special ability",
-	WarnSpecialSpellSoon	= "Prewarning for the next Special Ability",
-	SpecWarnSpecial		= "Show a special warning when you have to change color"
+	TimerSpecialSpell			= "다음 속성의 소용돌이의 타이머 보기",
+	WarnSpecialSpellSoon		= "다음 속성의 소용돌이 사전 경고 보기",
+	SpecWarnSpecial				= "속성(색) 변경을 해야할 때 특수 경고 보기",
+	SpecWarnEmpoweredDarkness	= "강화된 어둠 특수 경고 보기",
+	SpecWarnEmpoweredLight		= "강화된 빛 특수 경고 보기",
 }
 
 
