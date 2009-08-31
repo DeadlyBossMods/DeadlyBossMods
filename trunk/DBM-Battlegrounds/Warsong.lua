@@ -9,6 +9,8 @@ local L = Warsong:GetLocalizedStrings()
 
 Warsong:RemoveOption("HealthFrame")
 
+Warsong:SetZone(DBM_DISABLE_ZONE_DETECTION)
+
 local bgzone = false
 local FlagCarrier = {
 	[1] = nil,
@@ -195,6 +197,11 @@ do
 					mNick = sArg2
 				end
 			
+				if( GetLocale() == "koKR") then
+					mSide = sArg2
+					mNick = sArg1
+				end
+				
 				if mSide == L.Alliance then
 					FlagCarrier[2] = mNick
 					self.FlagCarrierFrame2Text:SetText(mNick)

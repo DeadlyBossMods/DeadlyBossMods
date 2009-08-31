@@ -170,29 +170,44 @@ L:SetMiscLocalization{
 
 
 ---------------
--- Algalon --
+--  Algalon  --
 ---------------
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
-	name = "Algalon the Observer"
+	name = "Algalon der Beobachter"
 }
 
 L:SetTimerLocalization{
-	TimerBigBangCast	= "Big Bang cast",
+	NextCollapsingStar		= "neue kollabierende Sterne"
 }
 L:SetWarningLocalization{
-	WarningPhasePunch	= "Phase Punch auf >%s<",
-	WarningBlackHole	= "Black Hole",
+	WarningPhasePunch		= "Phasenschlag auf >%s< - %d mal",
+	WarningBlackHole		= "Schwarzes Loch",
+	WarningBigBang			= "Großer Knall jetzt",
+	SpecWarnBigBang			= "Großer Knall",
+	PreWarningBigBang		= "Großer Knall in ~10 sec",
+	WarningCosmicSmash 		= "Kosmisches Schmettern - Explosion in 4 sek",
+	SpecWarnCosmicSmash 	= "Kosmisches Schmettern"
 }
 
 L:SetOptionLocalization{
-	TimerBigBangCast	= "Show Castbar for Big Bang",
-	SpecWarnPhasePunch	= "Spezialwarnung bei Phase Punch on you",
-	WarningPhasePunch	= "Warnung fÃ¼r Phase Punch target",
-	WarningBlackHole	= "Warnung fÃ¼r Black Hole",
+	SpecWarnPhasePunch		= "Spezial Warnung für Phasenschlag stacks",
+	WarningBigBang			= "Warnung bei Großer Knall",
+	PreWarningBigBang		= "Vorwarnung für Großer Knall",
+	SpecWarnBigBang			= "Spezialwarnung für Großer Knall",
+	WarningPhasePunch		= "Warnung bei Phasenschlag",
+	WarningBlackHole		= "Warnung für Schwarzes Loch",
+	NextCollapsingStar		= "Zeit für kollabierende Sterne anzeigen",
+	WarningCosmicSmash 		= "Warnung bei Kosmisches Schmettern",
+	SpecWarnCosmicSmash 	= "Spezialwarnung für Kosmisches Schmettern"
 }
 
+L:SetMiscLocalization{
+	YellPull				= "Euer Handeln ist unlogisch. Alle Möglichkeiten dieser Begegnung wurden berechnet. Das Pantheon wird die Nachricht des Beobachters erhalten, ungeachtet des Ausgangs.",
+	YellPullFirst			= "Seht Eure Welt durch meine Augen: Ein Universum so gewaltig - grenzenlos - unbegreiflich selbst für die Klügsten unter Euch.",
+	Emote_CollapsingStars	= "%s beginnt damit, kollabierende Sterne zu beschwören!!",
+}
 
 ----------------
 -- Kologarn --
