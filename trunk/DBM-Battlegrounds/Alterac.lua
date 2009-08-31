@@ -4,8 +4,6 @@
 local Alterac = DBM:NewMod("Alterac", "DBM-Battlegrounds")
 local L = Alterac:GetLocalizedStrings()
 
-Alterac:SetZone(DBM_DISABLE_ZONE_DETECTION)
-
 Alterac:AddBoolOption("AutoTurnIn")
 Alterac:RemoveOption("HealthFrame")
 

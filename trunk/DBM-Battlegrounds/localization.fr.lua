@@ -36,7 +36,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "La bataille commence dans",
+	TimerStart	= "Le jeux commance dans",
 	TimerShadow	= "Cristal d'ombre"
 })
 
@@ -46,9 +46,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Start60		= "Une minute avant de début de l'arène !",
-	Start30		= "Trente seconde avant de début de l'arène !",
-	Start15		= "Quinze seconde avant de début de l'arène !"
+	Start60		= "Une minute avant de début de l'arène!",
+	Start30		= "Trente seconde avant de début de l'arène!",
+	Start15		= "Quinze seconde avant de début de l'arène!"
 })
 
 ---------------
@@ -61,14 +61,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "La bataille commence dans", 
+	TimerStart		= "Le jeux commance", 
 	TimerTower		= "%s",
 	TimerGY			= "%s",
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La bataille pour la vallée d'Alterac commence dans 1 minute.",
-	BgStart30		= "La bataille pour la vallée d'Alterac commence dans 30 secondes.",
+	BgStart60		= "1 minute avant le commancement de la bataille de la Vallée d'Alterac.",
+	BgStart30		= "30 seconds avant le commancement de la bataille de la Vallée d'Alterac",
 	ZoneName		= "Vallée d'Alterac",
 })
 
@@ -89,10 +89,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La bataille pour le bassin d'Arathi commence dans 1 minute.",
-	BgStart30		= "La bataille pour le bassin d'Arathi commence dans 30 secondes.",
+	BgStart60		= "La bataille pour le Bassin d'Arathi commance dans 1 minute.",
+	BgStart30		= "La bataille pour le Bassin d'Arathi commance dans 30 secondes.",
 	ZoneName 		= "Bassin d'Arathi",
-	ScoreExpr 		= "(%d+)/1600",
+	ScoreExpr 		= "(%d+)/2000",
 	Alliance 		= "Alliance",
 	Horde 			= "Horde",
 	WinBarText 		= "%s Gagne",
@@ -101,7 +101,7 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 		= "La bataille commence dans", 
+	TimerStart 		= "Le jeux commance", 
 	TimerCap 		= "%s",
 })
 
@@ -123,22 +123,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La bataille commence dans 1 minute !",
-	BgStart30		= "La bataille commence dans 30 secondes !",
+	BgStart60		= "La bataille commance dans 1 minute!",
+	BgStart30		= "La bataille commance dans 30 secondes!",
 	ZoneName		= "L'Œil du cyclone",
-	ScoreExpr		= "(%d+)/1600",
+	ScoreExpr		= "(%d+)/2000",
 	Alliance 		= "Alliance",
 	Horde 			= "Horde",
 	WinBarText 		= "%s Gagne",
-	FlagReset 		= "Le drapeau a été réinitialisé.",
-	FlagTaken 		= "(.+) a pris le drapeau !",
-	FlagCaptured 		= "La .+ ha%w+ s'est emparée du drapeau !",
-	FlagDropped 		= "Le drapeau viens d'être lacher !",
+	FlagReset 		= "Le drapeau viens d'être reset a la base",
+	FlagTaken 		= "(.+) a pris le drapeau",
+	FlagCaptured 		= "The .+ ha%w+ a capturer le drapeau!",
+	FlagDropped 		= "Le drapeau viens d'être lacher!",
 
 })
 
 L:SetTimerLocalization({
-	TimerStart 		= "La bataille commence dans", 
+	TimerStart 		= "Le jeux commance", 
 	TimerFlag 		= "Respawn du drapeau",
 })
 
@@ -159,22 +159,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "La bataille pour le goulet des Chanteguerres commence dans 1 minute.",
-	BgStart30 			= "La bataille pour le goulet des Chanteguerres commence dans 30 secondes. Préparez-vous !",
+	BgStart60 			= "La bataille du Goulet des Chanteguerres commance dans 1 minute.",
+	BgStart30 			= "La bataille du Goulet des Chanteguerres commance dans 30 seconde - Préparez vous!",
 	ZoneName 			= "Goulet des Chanteguerres",
 	Alliance 			= "Alliance",
 	Horde 				= "Horde",	
 	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
-	ExprFlagPickUp 			= "Le (%w+) .lag a était pris par (.+) !",
+	ExprFlagPickUp 			= "Le (%w+) .lag a était pris par (.+)!",
 	ExprFlagCaptured 		= "(.+) a capturer le (%w+) drapeau!",
-	ExprFlagReturn 			= "Le (%w+) .lag a été renvoyer a la base par (.+) !",
+	ExprFlagReturn 			= "Le (%w+) .lag a été renvoyer a la base par (.+)!",
 	FlagAlliance 			= "Drapeau de l'alliance: ",
 	FlagHorde			= "Drapeau de la horde: ",
 	FlagBase			= "Base",
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "La bataille commence dans", 
+	TimerStart 			= "Le jeux commance", 
 	TimerFlag 			= "Respawn du drapeau",
 })
 
@@ -258,7 +258,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "La bataille commence dans", 
+	TimerStart		= "La partie commance", 
 	TimerPOI		= "%s",
 })
 

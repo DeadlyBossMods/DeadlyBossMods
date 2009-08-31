@@ -39,7 +39,7 @@
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
 	Version = "4.23",
-	DisplayVersion = "4.24 alpha"
+	DisplayVersion = "4.23"
 }
 
 DBM_SavedOptions = {}
@@ -160,7 +160,6 @@ end
 
 --
 local function strFromTime(time)
-	if type(time) ~= "number" then time = 0 end
 	time = math.floor(time)
 	if time < 60 then
 		return DBM_CORE_TIMER_FORMAT_SECS:format(time)
@@ -205,22 +204,6 @@ do
 			end
 		end
 		return false
-	end
-	
-	function argsMT.__index:IsPlayer()
-		return bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
-	end
-	
-	function argsMT.__index:IsPlayerSource()
-		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0 and bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
-	end
-	
-	function argsMT.__index:IsPet()
-		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
-	end
-	
-	function argsMT.__index:IsPetSource()
-		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
 	end
 
 	local function handleEvent(self, event, ...)
@@ -1414,23 +1397,13 @@ do
 		table.wipe(targetList)
 	end
 
-	local function scanForCombat(mod, mob)
-		if not checkEntry(inCombat, mod) then
+	local function scanForCombat(combatInfo)
+		if not checkEntry(inCombat, combatInfo.mod) then
 			buildTargetList()
-			if targetList[mob] and UnitAffectingCombat(targetList[mob]) then
-				DBM:StartCombat(mod, 3)
+			if targetList[combatInfo.mob] and UnitAffectingCombat(targetList[combatInfo.mob]) then
+				DBM:StartCombat(combatInfo.mod, 3)
 			end
 			clearTargetList()
-		end
-	end
-	
-	local function checkForPull(mob, combatInfo)
-		local uId = targetList[mob]
-		if uId and UnitAffectingCombat(uId) then
-			DBM:StartCombat(combatInfo.mod, 0)
-			return true
-		elseif uId then
-			DBM:Schedule(3, scanForCombat, combatInfo.mod, mob)
 		end
 	end
 
@@ -1440,14 +1413,11 @@ do
 			buildTargetList()
 			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
 				if v.type == "combat" then
-					if v.multiMobPullDetection then
-						for _, mob in ipairs(v.multiMobPullDetection) do
-							if checkForPull(mob, v) then
-								break
-							end
-						end
-					else
-						checkForPull(v.mob, v)
+					local uId = targetList[v.mob]
+					if uId and UnitAffectingCombat(uId) then
+						self:StartCombat(v.mod, 0)
+					elseif uId then
+						self:Schedule(3, scanForCombat, v)
 					end
 				end
 			end
@@ -1583,8 +1553,8 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.lastTime
-			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.bestTime
+			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod.stats.lastTime and mod:IsDifficulty("normal5", "heroic10")
+			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod.stats.bestTime and mod:IsDifficulty("normal5", "heroic10")
 			if mod:IsDifficulty("heroic5", "heroic25") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
@@ -1611,28 +1581,19 @@ end
 function DBM:OnMobKill(cId, synced)
 	for i = #inCombat, 1, -1 do
 		local v = inCombat[i]
-		if not v.combatInfo then
-			return
-		end
+		if not v.combatInfo then return end
 		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
-			if not synced then
-				sendSync("DBMv4-Kill", cId)
-			end
+			if not synced then sendSync("DBMv4-Kill", cId) end
 			v.combatInfo.killMobs[cId] = false
 			local allMobsDown = true
 			for i, v in pairs(v.combatInfo.killMobs) do
-				if v then
-					allMobsDown = false
-					break
-				end
+				if v then allMobsDown = false break end
 			end
 			if allMobsDown then
 				self:EndCombat(v)
 			end
-		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
-			if not synced then
-				sendSync("DBMv4-Kill", cId)
-			end
+		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs then
+			if not synced then sendSync("DBMv4-Kill", cId) end
 			self:EndCombat(v)
 		end
 	end
@@ -1961,7 +1922,6 @@ do
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
 		obj:AddBoolOption("HealthFrame", false, "misc")
-		obj:SetZone()
 		return obj
 	end
 
@@ -1981,21 +1941,13 @@ bossModPrototype.AddMsg = DBM.AddMsg
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
 		self.zones = (self.addon and self.addon.zone) or {}
-	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then -- note that DBM_DISABLE_ZONE_DETECTION is never initialized and therefore nil ;)
+	else
 		self.zones = {...}
-	else -- disable zone detection
-		self.zones = nil
 	end
 end
 
-function bossModPrototype:SetCreatureID(...)
-	self.creatureId = ...
-	if select("#", ...) > 1 then
-		self.multiMobPullDetection = {...}
-		if self.combatInfo then
-			self.combatInfo.multiMobPullDetection = self.multiMobPullDetection
-		end
-	end
+function bossModPrototype:SetCreatureID(id)
+	self.creatureId = id
 end
 
 function bossModPrototype:Toggle()
@@ -2046,6 +1998,9 @@ function bossModPrototype:GetBossTarget(cid)
 		if self:GetUnitCreatureId("raid"..i.."target") == cid then
 			return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
 
+		elseif self:GetUnitCreatureId("raid"..i.."focus") == cid then	-- don't think this will ever work, but have no time to test it (i think it will be removed soon)
+			return UnitName("raid"..i.."focustarget"), "raid"..i.."focustarget"
+
 		elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
 			return UnitName("focustarget"), "focustarget"
 		end
@@ -2060,7 +2015,7 @@ function bossModPrototype:Stop(cid)
 end
 
 -- hard coded party-mod support, yay :)
--- returns heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
+-- return heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
 function bossModPrototype:GetDifficulty()
 	if GetInstanceDifficulty() == 1 then
 		return self.modId == "DBM-Party-WotLK" and "normal5" or
@@ -2091,6 +2046,17 @@ end
 -------------------------
 function bossModPrototype:SetBossHealthInfo(...)
 	self.bossHealthInfo = {...}
+end
+
+-----------------------------
+--  Generic Target Warning --
+-----------------------------
+function bossModPrototype:NewGenericTargetAnnounce(spellId, color, ...) -- deprecated - DON'T USE THIS
+	local id = "GenericTarget"..spellId
+	local spellName = GetSpellInfo(spellId) or "unknown spell"
+	self.localization.warnings[id] = DBM_CORE_GENERIC_TARGET_WARN:format(spellName)
+	self.localization.options[id] = DBM_CORE_GENERIC_TARGET_OPTION:format(spellName)
+	return self:NewAnnounce(id, color, spellId, ...)
 end
 
 
@@ -2130,7 +2096,7 @@ do
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
 						if frame ~= RaidWarningFrame and frame:GetScript("OnEvent") then
-							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 99, "")
+							frame:GetScript("OnEvent")(frame, "CHAT_MSG_RAID_WARNING", text, UnitName("player"), GetDefaultLanguage("player"), "", UnitName("player"), "", 0, 0, "", 0, 99)
 						end
 					end
 				else
@@ -2667,9 +2633,6 @@ function bossModPrototype:RegisterCombat(cType, ...)
 		msgs = (cType ~= "combat") and {...},
 		mod = self
 	}
-	if self.multiMobPullDetection then
-		info.multiMobPullDetection = self.multiMobPullDetection
-	end
 	for i = 1, select("#", ...) do
 		local v = select(i, ...)
 		if type(v) == "number" then
