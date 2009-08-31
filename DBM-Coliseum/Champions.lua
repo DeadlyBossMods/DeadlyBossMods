@@ -13,6 +13,7 @@ mod:RegisterEvents(
 )
 
 mod:SetBossHealthInfo(
+-- Horde
 	34458, L.Gorgrim,
 	34451, L.Birana,
 	34459, L.Erin,
@@ -27,6 +28,21 @@ mod:SetBossHealthInfo(
 	34455, L.Broln,
 	34450, L.Harkzog,
 	34453, L.Narrhok
+-- Allience
+--??, L.Tyrius,
+--??, L.Kavina,
+--??, L.Melador,
+--??, L.Alyssia,
+--??, L.Noozle,
+--??, L.Baelnor,
+--??, L.Velanaa,
+--??, L.Anthar,
+--??, L.Brienna,
+--??, L.Irieth,
+--??, L.Shaamul,
+--??, L.Shaabad,
+--??, L.Serissa,
+--??, L.Shocuul
 )
 
 

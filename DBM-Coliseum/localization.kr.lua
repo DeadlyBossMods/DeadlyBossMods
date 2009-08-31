@@ -116,29 +116,48 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	WarnHellfire		= "지옥의 불길",
+	SpecWarnHellfire	= "지옥의 불길! 이동 하세요!"
 }
 
 L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "DK - Gorgrim Shadowcleave",	-- 34458
-	Birana 		= "D - Birana Stormhoof",	-- 34451
-	Erin		= "D - Erin Misthoof",		-- 34459
-	Rujkah		= "H - Ruj'kah",		-- 34448
-	Ginselle	= "M - Ginselle Blightslinger",	-- 34449
-	Liandra		= "P - Liandra Suncaller",	-- 45
-	Malithas	= "P - Malithas Brightblade",	-- 56
-	Caiphus		= "PR - Caiphus the Stern",	-- 47
-	Vivienne	= "PR - Vivienne Blackwhisper",	-- 41
-	Mazdinah	= "R - Maz'dinah",		-- 54
-	Thrakgar	= "S - Thrakgar",		--  44
-	Broln		= "S - Broln Stouthorn",	-- 55
-	Harkzog		= "WL - Harkzog",		-- 50
-	Narrhok		= "W - Narrhok Steelbreaker"	-- 53
-} 
+	Gorgrim		= "죽기 - 고어그림 쉐도우클리브",		-- 34458, Horde
+	-- Tyrius	= "DK - Tyrius Duskblade", 				-- ??, Allience
+	Birana 		= "조드 - 비라나 스톰후프",				-- 34451, Horde
+	Erin		= "회드 - 에린 미스트후프",				-- 34459, Horde
+	-- Kavina	= "D - Kavina Grovesong",				-- ??, Allience
+	-- Melador	= "D - Melador Balestrider",			-- ??, Allience
+	Rujkah		= "사냥꾼 - 루즈카",					-- 34448, Horde
+	-- Alyssia 	= "H - Moonstalker",					-- ??, Allience
+	Ginselle	= "마법사 - 진셀 블라이트링거",			-- 34449, Horde
+	-- Noozle	= "M - Noozle Whizzlestick",			-- ??, Allience
+	Liandra		= "신성 - 태양의 소환사 리안드리아",	-- 34445, Horde
+	Malithas	= "징벌 - 말리사스 브라이트블레이드",	-- 34456, Horde
+	-- Baelnor 	= "P - Baelnor Lightbearer",			-- ??, Allience
+	-- Velanaa	= "P - Velanaa", 						-- ??, Allience
+	Caiphus		= "수양 - 엄격한 캐퍼스",				-- 34447, Horde
+	Vivienne	= "암흑 - 검은휘파람의 비비엔느",		-- 34441, Horde
+	-- Anthar	= "PR - Anthar Forgemender",		 	-- ??, Allience
+	-- Brienna	= "PR - Brienna Nightfel",				-- ??, Allience
+	Mazdinah	= "도적 - 마즈디나",					-- 34454, Horde
+	-- Irieth	= "R - Irieth Shadowstep",				-- ??, Allience
+	Thrakgar	= "정기 - 스라가",						-- 34444, Horde
+	Broln		= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
+	-- Shaamul	= "S - Shaamul", 						-- ??, Allience
+	-- Shaabad	= "S - Shaabad", 						-- ??, Allience
+	Harkzog		= "흑마법사 - 학조그",					-- 34450, Horde
+	-- Serissa	= "WL - Serissa Grimdabbler",			-- ??, Allience
+	Narrhok		= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
+	--Shocuul	= "W - Shocuul"							-- ??, Allience
+	YellKill	= "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death.",
+}
 
 L:SetOptionLocalization{
+	WarnHellfire			= "지옥의 불길을 시전할 때 경고",
+	SpecWarnHellfire		= "지옥의 불길로 인해 피해를 입을 경우 특수 경고 보기"
 }
 
 
