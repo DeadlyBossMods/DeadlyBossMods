@@ -649,9 +649,9 @@
 					self:UpdateMenuFrame( getglobal(self:GetName().."BossMods") )
 				end
 				if math.random(1,2) == 1 then	-- who is first? hmm lets do it random :)
-					getglobal(self:GetName().."Authors"):SetText("DBMv4 by Nitram@EU-Azshara and Tandanu@EU-Aegwynn - visit www.deadlybossmods.com")
+					getglobal(self:GetName().."Authors"):SetText("DBMv4 Español by Interplay@EU-Sanguino - visita www.golden-club.co.cc")
 				else
-					getglobal(self:GetName().."Authors"):SetText("DBMv4 by Tandanu@EU-Aegwynn and Nitram@EU-Azshara - visit www.deadlybossmods.com")
+					getglobal(self:GetName().."Authors"):SetText("DBMv4 Español by Interplay@EU-Sanguino - visita www.golden-club.co.cc")
 				end
 			</OnShow>
 			<OnDragStart>

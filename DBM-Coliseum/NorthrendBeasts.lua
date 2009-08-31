@@ -4,6 +4,7 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 599 $"):sub(12, -3))
 mod:SetCreatureID(34797)
 mod:SetMinCombatTime(30)
+mod:SetZone()
 
 -- 34816 npc to talk to
 -- 34797 npc icehowl died
@@ -59,18 +60,18 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(67477, 66331) then
+	if args.spellId == 67477 or args.spellId == 66331 then
 		timerNextImpale:Start()
-	elseif args:IsSpellID(67657) then
+	elseif args.spellId == 67657 then
 		warnRage:Show()
-	elseif args:IsSpellID(66823, 67618) then
+	elseif args.spellId == 66823 or args.spellId == 67618 then
 		self:UnscheduleMethod("warnToxin")
 		ToxinTargets[#ToxinTargets + 1] = args.destName
 		if UnitName("player") == args.destName then
 			specWarnToxin:Show()
 		end
 		mod:ScheduleMethod(0.2, "warnToxin")
-	elseif args:IsSpellID(66869) then  -- ADD 10man Burning Bile ID
+	elseif args.spellId == 66869 then  -- ADD 10man Burning Bile ID
 		self:UnscheduleMethod("warnBile")
 		BileTargets[#BileTargets + 1] = args.destName
 		if UnitName("player") == args.destName then
@@ -81,7 +82,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			burnIcon = burnIcon - 1
 		end
 		mod:ScheduleMethod(0.2, "warnBile")
-	elseif args:IsSpellID(66758) then 
+	elseif args.spellId == 66758 then 
 		timerStaggeredDaze:Start()
 	end
 end
@@ -101,14 +102,14 @@ function mod:SPELL_CAST_START(args)
 --	if args.spellId == 66901 or args.spellId == 67615 then	-- seems to be hard buggy  >> unknown on unknown << xD what a message *G*
 --		warnSpray:Show(args.spellName, args.destName)
 -- 		todo: get target of spellcast
-	if args:IsSpellID(66689, 67650) then		
+	if args.spellId == 66689 or args.spellId == 67650 then		
 		timerBreath:Start()
 		warnBreath:Show()
-	elseif args:IsSpellID(66313) then			-- FireBomb (Impaler)
+	elseif args.spellId == 66313 then							-- FireBomb (Impaler)
 		warnFireBomb:Show()
-	elseif args:IsSpellID(66330, 67647) then	-- Staggering Stomp
+	elseif args.spellId == 66330 or args.spellId == 67647 then	-- Staggering Stomp
 		timerNextStomp:Start()
-		specWarnSilence:Schedule(19)			-- prewarn ~1,5 sec before next
+		specWarnSilence:Schedule(19)	-- prewarn ~1,5 sec before next
 	end
 end
 
@@ -133,7 +134,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(67477, 66331) then
+	if (args.spellId == 67477 or args.spellId == 66331) then
 		timerNextImpale:Start()
 		if args.amount >= 3 then 
 			local name = GetSpellInfo(args.spellId)
@@ -146,11 +147,11 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(66320, 66317) then
+	if args.spellId == 66320 or args.spellId == 66317 then
 		if UnitName("player") == args.destName then
 			specWarnFireBomb:Show()
 		end
-	elseif args:IsSpellID(66881, 66883) then
+	elseif args.spellId == 66881 or args.spellId == 66883 then
 		if args.destName == UnitName("player") then
 			specWarnSlimePool:Show()
 		end
