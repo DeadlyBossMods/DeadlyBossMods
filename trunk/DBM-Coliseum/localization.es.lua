@@ -163,7 +163,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon	= "Habilidad especial pronto!",
-	SpecWarnSpecial		= "Cambia color!"
+	SpecWarnSpecial		= "Cambia color!",
 	SpecWarnEmpoweredDarkness	= "Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Empowered Light"
 }

@@ -20,6 +20,7 @@
 ## X-DBM-Mod-Name: Party Boss Mods
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья
 ## X-DBM-Mod-Name-zhTW: 隊伍首領模組
+## X-DBM-Mod-Name-esES: Mazmorras
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold
 ## X-DBM-Mod-LoadZone-frFR: Ahn'kahet : l'Ancien royaume,Azjol -Nérub,L'Épuration de Stratholme,Donjon de Drak'Tharon,Gundrak,Les salles de Foudre,Les salles de Pierre,Le Nexus,L'Oculus,Donjon d'Utgarde,Cime d'Utgarde,Le fort Pourpre
