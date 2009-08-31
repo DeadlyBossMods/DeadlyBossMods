@@ -3,8 +3,6 @@ local L = IsleOfConquest:GetLocalizedStrings()
 
 IsleOfConquest:RemoveOption("HealthFrame")
 
-IsleOfConquest:SetZone(DBM_DISABLE_ZONE_DETECTION)
-
 IsleOfConquest:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA", 	-- Required for BG start
 	"CHAT_MSG_MONSTER_YELL",

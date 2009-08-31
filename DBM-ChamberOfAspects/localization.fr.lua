@@ -45,12 +45,14 @@ L:SetWarningLocalization({
 	WarningTenebron			= "Ténébron Arrive",
 	WarningShadron			= "Obscuron Arrive",
 	WarningVesperon			= "Vespéron Arrive",
-	WarningVesperonPortal	= "Portail de Vespéron",
+	WarningFireWall			= "Vague de Flammes",
+	WarningVesperonPortal	= "Portal de Vespéron",
 	WarningTenebronPortal	= "Portail de Ténébron",
 	WarningShadronPortal	= "Portail d'Obscuron",
 })
 
 L:SetTimerLocalization({
+	TimerWall	= "Cooldown Vague de Flammes",
 	TimerTenebron	= "Ténébron Arrive",
 	TimerShadron	= "Obscuron Arrive",
 	TimerVesperon	= "Vespéron Arrive"
@@ -81,8 +83,10 @@ L:SetMiscLocalization({
 	NameTenebron	= "Ténébron",
 	NameShadron		= "Obscuron",
 	NameVesperon	= "Vespéron",
+	FireWallOn		= "Vague de Flammes: %s",
 	VoidZoneOn		= "Void Zone: %s",
 	VoidZones		= "Void Zone raté (Ce try): %s",
+	FireWalls		= "Vague de Flammes raté (Ce try): %s",
 	--[[ not in use; don't translate.
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
 	Shadron		= "Shadron! Come to me! All is at risk!",

@@ -53,7 +53,6 @@ L:SetWarningLocalization{
 	SpecialWarningSilence		= "~1.5秒後 法術沉默!",
 	SpecialWarningSpray		= "你中了痲痺噴霧!",
 	SpecialWarningToxin		= "痲痺劇毒! 跑開!",
-	SpecialWarningBile		= "你中了燃燒膽汁! 離開人群!",
 	SpecialWarningCharge		= "你中了撞擊! 跑開!",
 	SpecialWarningChargeNear	= "撞擊接近你! 跑開!"
 }
@@ -120,8 +119,6 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnHellfire			= "地獄烈焰",
-	SpecWarnHellfire		= "地獄烈焰! 跑開!"
 }
 
 L:SetMiscLocalization{
@@ -130,21 +127,18 @@ L:SetMiscLocalization{
 	Erin				= "D - 艾琳·霧蹄",	-- 34459
 	Rujkah				= "H - 茹卡",		-- 34448
 	Ginselle			= "M - 金賽兒·凋擲",	-- 34449
-	Liandra				= "P - 黎安卓·喚日",	-- 34445
-	Malithas			= "P - 瑪力薩·亮刃",	-- 34456
-	Caiphus				= "PR - 嚴厲的凱普司",	-- 34447
-	Vivienne			= "PR - 薇薇安·黑語",	-- 34441
-	Mazdinah			= "R - 馬茲迪娜",	-- 34454
-	Thrakgar			= "S - 瑟瑞克加爾",	-- 34444
-	Broln				= "S - 伯洛連·頑角",	-- 34455
-	Harkzog				= "WL - 哈克佐格",	-- 34450
-	Narrhok				= "W - 納霍克·破鋼者"	-- 34453
+	Liandra				= "P - 黎安卓·喚日",	-- 45
+	Malithas			= "P - 瑪力薩·亮刃",	-- 56
+	Caiphus				= "PR - 嚴厲的凱普司",	-- 47
+	Vivienne			= "PR - 薇薇安·黑語",	-- 41
+	Mazdinah			= "R - 馬茲迪娜",	-- 54
+	Thrakgar			= "S - 瑟瑞克加爾",	--  44
+	Broln				= "S - 伯洛連·頑角",	-- 55
+	Harkzog				= "WL - 哈克佐格",	-- 50
+	Narrhok				= "W - 納霍克·破鋼者"	-- 53
 } 
 
 L:SetOptionLocalization{
-	WarnHellfire			= "當哈克佐格施放地獄烈焰時警告",
-	SpecWarnHellfire		= "當你受到地獄烈焰時顯示特別警告"
-
 }
 
 
@@ -163,9 +157,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "特別技能 即將到來!",
-	SpecWarnSpecial			= "顏色變換!",
-	SpecWarnEmpoweredDarkness	= "強力黑暗",
-	SpecWarnEmpoweredLight		= "強力光明"
+	SpecWarnSpecial			= "顏色變換!"
 }
 
 L:SetMiscLocalization{
@@ -177,9 +169,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	TimerSpecialSpell		= "為下一次 特別技能顯示計時器",
 	WarnSpecialSpellSoon		= "為下一次 特別技能預先提示",
-	SpecWarnSpecial			= "當你需要變換顏色時顯示特別警告",
-	SpecWarnEmpoweredDarkness	= "為強力黑暗顯示特別警告",
-	SpecWarnEmpoweredLight		= "為強力光明顯示特別警告",
+	SpecWarnSpecial			= "當你需要變換焚化血肉時顯示特別警告"
 }
 
 

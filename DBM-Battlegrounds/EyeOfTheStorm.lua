@@ -8,8 +8,6 @@ local L = EyeOfTheStorm:GetLocalizedStrings()
 
 EyeOfTheStorm:RemoveOption("HealthFrame")
 
-EyeOfTheStorm:SetZone(DBM_DISABLE_ZONE_DETECTION)
-
 EyeOfTheStorm:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
 	"CHAT_MSG_BG_SYSTEM_HORDE",

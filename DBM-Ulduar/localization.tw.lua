@@ -232,7 +232,6 @@ L:SetTimerLocalization{
 }
 L:SetWarningLocalization{
 	WarningPhasePunch		= "相位拳擊: >%s< - 第%d層",
-	SpecWarnPhasePunch		= "你中了相位拳擊第2層了!",
 	WarningBlackHole		= "黑洞爆炸",
 	WarningBigBang			= "大爆炸來臨",
 	SpecWarnBigBang			= "大爆炸",
@@ -256,9 +255,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
-	YellPullFirst			= "從我的雙眼觀看你的世界:一個無邊無際的宇宙--連你們之中最具智慧者都無法想像的廣闊無垠。",
 	Emote_CollapsingStars		= "%s開始召喚崩陷之星!",
-	Emote_CosmicSmash		= "%s開始施展宇宙潰擊!"
+	Emote_CosmicSmash		= "%s開始施放宇宙潰擊!"
 }
 
 
@@ -447,8 +445,7 @@ L:SetTimerLocalization{
 	TimerUnstableSunBeam 		= "太陽光束: %s",
 	TimerAlliesOfNature 		= "自然和諧冷卻",
 	TimerSimulKill 			= "復活",
-	TimerFuryYou 			= "你中了自然烈怒",
-	TrashRespawnTimer		= "芙蕾雅的小怪重生"
+	TimerFuryYou 			= "你中了自然烈怒"
 }
 
 L:SetOptionLocalization{
@@ -477,15 +474,15 @@ L:SetWarningLocalization{
 	SpecWarnGroundTremor   		= "地面震顫 - 停止施法"
 }
 
-L:SetTimerLocalization{
-	TrashRespawnTimer		= "芙蕾雅的小怪重生"
+L:SetMiscLocalization{
+	TrashRespawnTimer 		= "小怪重生",
 }
 
 L:SetOptionLocalization{
 	SpecWarnFistOfStone		= "為石拳連擊顯示特別警告",
 	PlaySoundOnFistOfStone		= "當石拳連擊施放時播放音效",
 	SpecWarnGroundTremor		= "施放地面震顫時顯示特別警告",
-	TrashRespawnTimer		= "顯示芙蕾雅的小怪重生計時器"
+	TrashRespawnTimer		= "顯示小怪重生時間條"
 }
 
 
@@ -501,11 +498,11 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	DarkGlare 			= "雷射彈幕",
 	WarnShell			= "凝汽彈: >%s<",
-	WarnBlast			= "電漿衝擊: >%s<",
+	WarnBlast			= "離子衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
 	WarningShockBlast		= "震爆 - 跑開!",
 	WarnBombSpawn			= "炸彈機械人出現了",
-	WarnFrostBomb			= "冰霜炸彈"
+	WarnFrostBomb		= "冰霜炸彈"
 }
 
 L:SetTimerLocalization{
@@ -518,7 +515,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	DarkGlare 			= "提示雷射彈幕",
 	WarningShockBlast		= "顯示震爆警告",
-	WarnBlast			= "提示電漿衝擊的目標",
+	WarnBlast			= "提示離子衝擊的目標",
 	WarnShell			= "提示凝汽彈的目標",
 	NextDarkGlare 			= "下一次 雷射彈幕的計時器",
 	TimeToPhase2			= "顯示第二階段開始計時器",
@@ -533,7 +530,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare 		= "雷射彈幕施放前播放音效",
 	ShockBlastWarningInP1		= "為第一階段的震爆顯示特別警告",
 	ShockBlastWarningInP4		= "為第四階段的震爆顯示特別警告",
-	WarnFrostBomb			= "提示冰霜炸彈"
+	WarnFrostBomb		= "提示冰霜炸彈"
 }
 
 L:SetMiscLocalization{
@@ -634,7 +631,7 @@ L:SetWarningLocalization{
 	specWarnBrainPortalSoon		= "傳送門 即將出現",
 	RaidRage			= "薩拉生氣了 快吻她囉",
 	WarnEmpowerSoon			= "暗影信標 即將到來!",
-	SpecWarnMaladyNear		= "接近你的%s中了心靈缺陷!"
+	MaladyNear			= "接近你的%s中了心靈缺陷!"
 }
 
 L:SetTimerLocalization{

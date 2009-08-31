@@ -6,8 +6,6 @@
 local Arathi = DBM:NewMod("Arathi", "DBM-Battlegrounds")
 local L = Arathi:GetLocalizedStrings()
 
-Arathi:SetZone(DBM_DISABLE_ZONE_DETECTION)
-
 Arathi:RemoveOption("HealthFrame")
 
 Arathi:RegisterEvents(

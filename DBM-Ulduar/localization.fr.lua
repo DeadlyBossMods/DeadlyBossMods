@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -550,42 +550,33 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "Déferlante d'ombre sur VOUS",
-	SpecialWarningSurgeDarkness	= "Vague de ténèbres",
-	WarningShadowCrash		= "Déferlante d'ombre sur >%s<",
-	SpecialWarningShadowCrashNear	= "Déferlante d'ombre a coter de VOUS!",
-	WarningLeechLife		= "Marque du Sans-visage sur >%s<",
-	SpecialWarningLLYou		= "Marque du Sans-visage sur VOUS!",
-	SpecialWarningLLNear		= "Marque du Sans-visage sur %s a coter de VOUS!"
+	SpecialWarningShadowCrash	= "Shadow Crash on You",
+	SpecialWarningSurgeDarkness	= "Surge of Darkness",
+	WarningShadowCrash		= "Shadow Crash on >%s<",
+	specWarnLifeLeechYou		= "Life Leech on you!",
+	specWarnLifeLeechNear		= "Life Leech on %s near you!"
 }
 
 L:SetTimerLocalization{
-	timerSearingFlamesCast		= "Flammes incendiaires",
-	timerSurgeofDarkness		= "Vague de ténèbres",
-	timerSaroniteVapors		= "Prochaine vapeur de saronite"
+	timerSearingFlamesCast		= "Searing Flames",
+	timerSurgeofDarkness		= "Surge of Darkness",
+	timerSaroniteVapors		= "Next Saronite Vapors"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash		= "Montre une alerte spéciale pour les Déferlante d'ombre",
-	SetIconOnShadowCrash		= "met une icone sur la cible des Déferlante d'ombre ( Tête de mort )",
-	SetIconOnLifeLeach		= "Met une icone sur la cible de la Marque du Sans-visage ( Croix )",
-	SpecialWarningSurgeDarkness	= "Montre une alerte spéciale pour les Vague de ténèbres",
-	SpecialWarningShadowCrash	= "Montre une alerte spéciale pour les Déferlante d'ombre",
-	SpecialWarningShadowCrashNear	= "Montre une alerte spéciale quand la Déferlante d'ombre tombe a coter de vous",
-	SpecialWarningLLYou		= "Montre une alerte spéciale quand la Marque du Sans-visage est sur Vous",
-	SpecialWarningLLNear		= "Montre une alerte spéciale quand la Marque du Sans-visage est a coter de vous",
-	CrashWhisper			= "Envoie un wisp a la cible de la Déferlante d'ombre",
-	YellOnLifeLeech			= "Crie pour la Marque du Sans-visage",
-	YellOnShadowCrash		= "Crie pour la Déferlante d'ombre",
-	specWarnShadowCrashNear		= "Montre une alerte spéciale quand la Déferlante d'ombre tombe a coter de vous",
-	WarningLeechLife		= "Annonce la cible de la Marque du Sans-visage"
+	WarningShadowCrash		= "Show Warning for Shadow Crash",
+	timerSearingFlamesCast		= "Show Timer for Searing Flame Cast",
+	timerSurgeofDarkness		= "Show Timer for Sourge of Darkness",
+	timerSaroniteVapors		= "Show Timer for Saronite Vapors",
+	SetIconOnShadowCrash		= "Set Icon on Shadow Crash target (skull)",
+	SetIconOnLifeLeach		= "Set Icon on Life Leech target (cross)",
+	SpecialWarningSurgeDarkness	= "Show Special Warning for Surge of Darkness",
+	SpecialWarningShadowCrash	= "Show Special Warning for Shadow Crash",
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
-	CrashWhisper			= "Déferlante d'ombre sur toi ! BOUGE !",
-	YellLeech			= "Marque du Sans-visage sur moi !",
-	YellCrash			= "Déferlante d'ombre sur moi !"
+	CrashWhisper			= "Shadow Crash on You! Run away!"
 }
 
 
@@ -599,60 +590,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull = "Il sera bientôt temps de frapper la tête de la bête ! Concentrez votre rage et votre haine sur ses laquais !",
-	YellPhase2 = "Je suis le rêve éveillé",
+	YellPull = "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
+	YellPhase2 = "Let hatred an rage guide your blows!",
 	Sara = "Sara",
-	WhisperBrainLink = "Votre cerveau est lié ! Courez vers %s!",
-	WarningYellSqueeze	= "Ecrasement sur moi ! Aidez Moi !"
+	WhisperBrainLink = "Brain Link on you! Run to %s!",
 }
 
 L:SetWarningLocalization{
-	WarningWellSpawned = "La bonne Santé mentale viens de spawn",
-	WarningGuardianSpawned 			= "Un gardien viens d'arriver",
-	WarningCrusherTentacleSpawned	= "Une Tentacule écraseur viens d'arriver",
-	WarningP2 						= "Phase 2",
-	WarningBrainLink 				= "Cerveaux liés sur >%s< et >%s<",
-	SpecWarnBrainLink 				= "Cerveaux liés sur Vous et sur %s!",
-	WarningSanity 					= "%d de Santé mentale est conserver",
-	SpecWarnSanity 					= "%d de Santé mentale est conserver",
-	SpecWarnGuardianLow				= "Arretez d'attaquer le gardien!",
-	WarnMadness						= "Incantation de Susciter la folie en cour",
-	SpecWarnMadnessOutNow			= "Cast de Susciter la folie fini - BOUGEZ",
-	WarnBrainPortalSoon				= "Portail dans 3 sec",	
-	WarnSqueeze 					= "Ecrasement: >%s<",
-	WarnFavor						= "Ferveur de Sara sur >%s<",
-	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
-	WarnEmpowerSoon					= "Renforcement des ombres Bientôt!"	
+	WarningWellSpawned = "Sanity Well spawned",
+	WarningGuardianSpawned = "Guardian spawned",
+	WarningP2 = "Phase 2",
+	WarningBrainLink = "Brain Link on >%s< and >%s<",
+	SpecWarnBrainLink = "Brain Link on you and %s!",
+	WarningSanity = "%d Sanity debuffs remaining",
+	SpecWarnSanity = "%d Sanity debuffs remaining",
+	SpecWarnGuardianLow = "Stop attacking this Guardian!",
+	WarnMadness = "Casting Induce Madness"
 }
-
-L:SetTimerLocalization{
-	NextPortal			= "Portail du Cerveau"
-}
-
-L:SetOptionLocalization{
-	WarningGuardianSpawned			= "Annonce l'arrivée des Gardiens",
-	WarningCrusherTentacleSpawned	= "Annonce l'arrivée des Tentacule",
-	WarningP2						= "Annonce la Phase 2",
-	WarningP3						= "Annonce la Phase 3",
-	WarningBrainLink				= "Annonce les Cerveaux liés",
-	SpecWarnBrainLink				= "Montre une alerte spécial quand il y a des Cerveaux liés",
-	WarningSanity					= "Montre une alerte quand la Santé mentale est basse",
-	SpecWarnSanity					= "Montre une alerte quand la Santé mentale est très basse",
-	SpecWarnGuardianLow				= "Montre une alerte spéciale quand les gardiens (P1) na plus beaucoup de vie",
-	WarnMadness						= "Annonce Susciter la folie",
-	WarnBrainPortalSoon				= "Annonce les Portails",
-	SpecWarnMadnessOutNow			= "Montre une alerte spéciale avant la fin du cast de Susciter la folie",
-	SetIconOnFearTarget				= "Met une icone sur la cible du fear",
-	WarnFavor						= "Annonce la cible de la ferveur de Sara",
-	SpecWarnFavor					= "Montre une alerte spéciale pour la ferveur de Sara",
-	WarnSqueeze						= "Annonce la cible d'Ecrasement",
-	specWarnBrainPortalSoon			= "Annonce l'arriver d'un portail",
-	WarningSqueeze					= "Annonce la cible d'Ecrasement",
-	NextPortal						= "Montre un timer avant le prochain portail",
-	WhisperBrainLink				= "Whisper players on Brain Link",
-	SetIconOnFavorTarget			= "Met une icone sur les cible de la ferveur de Sara",
-	SetIconOnMCTarget				= "met une icone sur la cible du controle mental",
-	ShowSaraHealth					= "Montre la vie de Sara durant la P1 ( Doit être sélectionner une fois par un membre du groupe raid )",
-	WarnEmpowerSoon					= "Alerte avant le Renforcement des ombres"	
-}
-

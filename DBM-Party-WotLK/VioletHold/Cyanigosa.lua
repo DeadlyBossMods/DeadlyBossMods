@@ -24,7 +24,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 58694 then
+	if args.spellId == 58694 then 
 		warningVacuum:Show(args.spellName)
 		timerVacuumCD:Cancel()
 		timerVacuumCD:Start(args.spellName)
