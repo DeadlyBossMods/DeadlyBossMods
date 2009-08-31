@@ -13,6 +13,7 @@
 --    * zhCN: Diablohu                   http://wow.gamespot.com.cn
 --    * zhTW: Hman			 herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				kc10577@hotmail.com
+--    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
 --    * (add your names here!)
 --
 -- Special thanks to:
