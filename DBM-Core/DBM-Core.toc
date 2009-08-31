@@ -4,6 +4,7 @@
 ## Title-ruRU:|cffffd200Deadly Boss Mods|r |cff69ccf0Основной|r
 ## Title-zhTW:|cffffd200Deadly Boss Mods|r |cff69ccf0核心|r
 ## Title-koKR:|cffffd200Deadly Boss Mods|r |cff69ccf0핵심 모듈|r
+## Title-esES:|cffffd200Deadly Boss Mods|r |cff69ccf0Proceso|r
 ## Notes: Deadly Boss Mods
 ## SavedVariablesPerCharacter: DBM_SavedOptions, DBT_SavedOptions
 ## LoadOnDemand: 0
@@ -17,6 +18,7 @@ localization.ru.lua
 localization.fr.lua
 localization.tw.lua
 localization.kr.lua
+localization.es.lua
 DBT-Template.xml
 DBT.lua
 DBM-Core.lua
