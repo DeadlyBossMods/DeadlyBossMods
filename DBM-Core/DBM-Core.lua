@@ -199,9 +199,10 @@ do
 	local args = setmetatable({}, argsMT)
 	
 	function argsMT.__index:IsSpellID(...)
+		local id = self.spellId
 		for i = 1, select("#", ...), 1 do
 			local v = select(i,  ...)
-			if v == self.spellId then
+			if v == id then
 				return true
 			end
 		end
@@ -2186,6 +2187,8 @@ do
 			else
 				text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, DBM_CORE_SEC_FMT:format(preWarnTime or 5))
 			end
+		elseif announceType == "phase" then
+			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellId)
 		else
 			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName)
 		end
@@ -2210,24 +2213,28 @@ do
 		return obj
 	end
 	
-	function bossModPrototype:NewTargetAnnounce(...)
-		return newAnnounce(self, "target", ...)
+	function bossModPrototype:NewTargetAnnounce(spellId, color, ...)
+		return newAnnounce(self, "target", spellId, color or 2, ...)
 	end
 	
-	function bossModPrototype:NewSpellAnnounce(...)
-		return newAnnounce(self, "spell", ...)
+	function bossModPrototype:NewSpellAnnounce(spellId, color, ...)
+		return newAnnounce(self, "spell", spellId, color or 3, ...)
 	end
 
 	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName)
-		return newAnnounce(self, "cast", spellId, color, icon, optionDefault, optionName, castTime)
+		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime)
 	end
 
-	function bossModPrototype:NewSoonAnnounce(...)
-		return newAnnounce(self, "soon", ...)
+	function bossModPrototype:NewSoonAnnounce(spellId, color, ...)
+		return newAnnounce(self, "soon", spellId, color or 1, ...)
 	end
 	
 	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName)
-		return newAnnounce(self, "prewarn", spellId, color, icon, optionDefault, optionName, nil, time)
+		return newAnnounce(self, "prewarn", spellId, color or 1, icon, optionDefault, optionName, nil, time)
+	end
+	
+	function bossModPrototype:NewPhaseAnnounce(phase, color, icon, ...)
+		return newAnnounce(self, "phase", phase, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
 	end
 end
 
