@@ -120,26 +120,31 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnHellfire		= "Flammes infernales",
+	SpecWarnHellfire	= "Flammes infernales ! BOUGEZ !"
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "DK - Gorgrim Shadowcleave",	-- 34458
-	Birana 		= "D - Birana Stormhoof",	-- 34451
-	Erin		= "D - Erin Misthoof",		-- 34459
-	Rujkah		= "H - Ruj'kah",		-- 34448
-	Ginselle	= "M - Ginselle Blightslinger",	-- 34449
-	Liandra		= "P - Liandra Suncaller",	-- 45
-	Malithas	= "P - Malithas Brightblade",	-- 56
-	Caiphus		= "PR - Caiphus the Stern",	-- 47
-	Vivienne	= "PR - Vivienne Blackwhisper",	-- 41
-	Mazdinah	= "R - Maz'dinah",		-- 54
-	Thrakgar	= "S - Thrakgar",		--  44
-	Broln		= "S - Broln Stouthorn",	-- 55
-	Harkzog		= "WL - Harkzog",		-- 50
-	Narrhok		= "W - Narrhok Steelbreaker"	-- 53
+	Gorgrim		= "DK - Gorgrim Shadowcleave",		-- 34458
+	Birana 		= "D - Birana Stormhoof",			-- 34451
+	Erin		= "D - Erin Misthoof",				-- 34459
+	Rujkah		= "H - Ruj'kah",					-- 34448
+	Ginselle	= "M - Ginselle Blightslinger",		-- 34449
+	Liandra		= "P - Liandra Suncaller",			-- 34445
+	Malithas	= "P - Malithas Brightblade",		-- 34456
+	Caiphus		= "PR - Caiphus the Stern",			-- 34447
+	Vivienne	= "PR - Vivienne Blackwhisper",		-- 34441
+	Mazdinah	= "R - Maz'dinah",					-- 34454
+	Thrakgar	= "S - Thrakgar",					-- 34444
+	Broln		= "S - Broln Stouthorn",			-- 34455
+	Harkzog		= "WL - Harkzog",					-- 34450
+	Narrhok		= "W - Narrhok Steelbreaker",		-- 34453
+	YellKill	= "Une victoire tragique et depourvue de sens. La perte subie aujourd'hui nous affaiblira tous, car qui d'autre que le roi-liche pourrait beneficier d'une telle folie?? De grands guerriers ont perdu la vie. Et pour quoi?? La vraie menace plane a l'horizon?: le roi-liche nous attend, tous, dans la mort."
 } 
 
 L:SetOptionLocalization{
+	WarnHellfire			= "Alerte quand Harzog incante les Flammes infernales",
+	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales"
 }
 
 
@@ -153,24 +158,28 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSpecialSpell	= "Next Special Ability"	
+	TimerSpecialSpell	= "Prochaine Abiliter Spéciale"	
 }
 
 L:SetWarningLocalization{
-	WarnSpecialSpellSoon	= "Special Ability Soon!",
-	SpecWarnSpecial		= "Change color!"
+	WarnSpecialSpellSoon		= "Abiliter spéciale Bientôt !",
+	SpecWarnSpecial				= "Changement de couleur !",
+	SpecWarnEmpoweredDarkness	= "Ténèbres surpuissantes",
+	SpecWarnEmpoweredLight		= "Lumière surpuissante"
 }
 
 L:SetMiscLocalization{
-	YellPull 	= "In the name of our dark master. For the Lich King. You. Will. Die.",
-	Fjola 		= "Fjola Lightbane",
-	Eydis		= "Eydis Darkbane"
+	YellPull 	= "Au nom de notre ténébreux maître. Pour le roi-liche. Vous. Allez. Mourir.",
+	Fjola 		= "Fjola Plaie-lumineuse",
+	Eydis		= "Eydis Plaie-sombre"
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell	= "Show a timer for the next special ability",
-	WarnSpecialSpellSoon	= "Prewarning for the next Special Ability",
-	SpecWarnSpecial		= "Show a special warning when you have to change color"
+	TimerSpecialSpell			= "Montre une alerte spéciale pour la prochaine Abiliter spéciale",
+	WarnSpecialSpellSoon		= "Montre une Pré-Alerte pour la prochaine Abiliter spéciale",
+	SpecWarnSpecial				= "Montre une alerte spéciale quand vous avez changer de couleur",
+	SpecWarnEmpoweredDarkness	= "Montre une alerte spéciale pour les Ténèbres surpuissantes",
+	SpecWarnEmpoweredLight		= "Montre une alerte spéciale pour la Lumière surpuissante",
 }
 
 
