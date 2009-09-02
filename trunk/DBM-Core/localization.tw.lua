@@ -14,7 +14,9 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d分鐘"
 DBM_CORE_TIMER_FORMAT				= "%d分%d秒"
 
 DBM_CORE_MIN					= "分"
+DBM_CORE_MIN_FMT				= "%d 分"
 DBM_CORE_SEC					= "秒"
+DBM_CORE_SEC_FMT				= "%d 秒"
 DBM_CORE_DEAD					= "死亡"
 DBM_CORE_OK						= "確定"
 
@@ -107,9 +109,15 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target = "%s: %s",
 	spell = "%s",
+	cast = "施放 %s: %.1f 秒",
+	soon = "%s 即將發動",
+	prewarn = "%s 在 %s",
 }
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target = "當|cff71d5ff|Hspell:%d|h%s|h|r施放在玩家身上時顯示警告",
-	spell = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告"
+	spell = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
+	cast = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告",
+	soon = prewarnOption,
+	prewarn = prewarnOption
 }
