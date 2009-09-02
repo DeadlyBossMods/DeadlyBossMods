@@ -29,7 +29,7 @@ mod:SetBossHealthInfo(
 	34455, L.Broln,
 	34450, L.Harkzog,
 	34453, L.Narrhok
--- Allience
+-- Alliance
 	--34461, L.Tyrius,
 	--34460, L.Kavina,
 	--34469, L.Melador,
