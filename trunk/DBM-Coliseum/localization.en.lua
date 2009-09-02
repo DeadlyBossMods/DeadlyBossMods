@@ -203,7 +203,7 @@ L:SetMiscLocalization{
 	YellPull			= "This place will serve as your tomb!",
 	Swarm				= "The swarm shall overtake you!",
 	Emerge				= "%%s emerges from the ground!",
-	Submerge			= "%%s burrows into the ground!"
+	Burrow				= "%%s burrows into the ground!"
 }
 
 L:SetOptionLocalization{
