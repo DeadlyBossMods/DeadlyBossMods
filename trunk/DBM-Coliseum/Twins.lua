@@ -68,7 +68,7 @@ function mod:SpecialAbility(debuff)
 	warnSpecial:Schedule(40)
 end
 
-function mod:SPELL_AURA_APPLIED(args)	-- don't think this is realy required
+function mod:SPELL_AURA_APPLIED(args)	-- don't think this is really needed
 	if args:IsSpellID(65724, 67213, 67214, 67215) and args:IsPlayer() then 		-- Empowered Darkness
 		specWarnEmpoweredDarkness:Show()
 	elseif args:IsSpellID(65748, 67216, 67217, 67218) and args:IsPlayer() then	-- Empowered Light

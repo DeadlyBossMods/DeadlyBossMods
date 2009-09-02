@@ -2104,7 +2104,7 @@ do
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
 
-	function announcePrototype:Show(...)
+	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
 			if self.mod.Options.Announce and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
 				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), "RAID_WARNING")
@@ -2116,7 +2116,7 @@ do
 				pformat(self.text, ...),
 				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 			)
-			text = text:gsub(">%S+<", function(cap)
+			text = text:gsub(">%S+<", function(cap) -- todo: cache this
 				cap = cap:sub(2, -2)
 				if DBM:GetRaidClass(cap) then
 					local color = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or self.color
@@ -2126,7 +2126,7 @@ do
 			end)
 			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work
 			if DBM.Options.ShowWarningsInChat then
-				text = text:gsub(textureExp, "") -- textures @ chat frame can distort the font
+				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font
 				if DBM.Options.ShowFakedRaidWarnings then
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
@@ -2172,14 +2172,27 @@ do
 	end
 	
 	-- new constructor (auto-localized warnings and options, yay!)
-	local function newAnnounce(self, announcetype, spellId, text, color, icon, optionDefault, optionName)
+	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
 		spellName = GetSpellInfo(spellId) or "unknown"
 		icon = icon or spellId
-
-		local obj = setmetatable(
+		local text
+		if announceType == "cast" then
+			local spellHaste = select(7, GetSpellInfo(53142)) / 10000 -- 53142 = Dalaran Portal, should have 10000 ms cast time
+			local timer = (select(7, GetSpellInfo(spellId)) or 1000) / spellHaste
+			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, castTime or (timer / 1000))
+		elseif announceType == "prewarn" then
+			if type(preWarnTime) == "string" then
+				text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, preWarnTime)
+			else
+				text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, DBM_CORE_SEC_FMT:format(preWarnTime or 5))
+			end
+		else
+			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName)
+		end
+		local obj = setmetatable( -- todo: fix duplicate code
 			{
-				text = self.localization.warnings[text],
-				announcetype = announcetype,
+				text = text,
+				announceType = announceType,
 				color = DBM.Options.WarningColors[color or 1] or DBM.Options.WarningColors[1],
 				option = optionName or text,
 				mod = self,
@@ -2193,18 +2206,29 @@ do
 			self:AddBoolOption(optionName or text, optionDefault, "announce")
 		end
 		table.insert(self.announces, obj)
-		self.localization.options[id] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announcetype]:format(spellId, spellName)
+		self.localization.options[text] = DBM_CORE_AUTO_ANNOUNCE_OPTIONS[announceType]:format(spellId, spellName)
 		return obj
 	end
 	
 	function bossModPrototype:NewTargetAnnounce(...)
 		return newAnnounce(self, "target", ...)
 	end
-
-	function bossModPrototype:NewCastAnnounce(...)
-		return newAnnounce(self, "cast", ...)
+	
+	function bossModPrototype:NewSpellAnnounce(...)
+		return newAnnounce(self, "spell", ...)
 	end
 
+	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName)
+		return newAnnounce(self, "cast", spellId, color, icon, optionDefault, optionName, castTime)
+	end
+
+	function bossModPrototype:NewSoonAnnounce(...)
+		return newAnnounce(self, "soon", ...)
+	end
+	
+	function bossModPrototype:NewPreWarnAnnounce(spellId, time, color, icon, optionDefault, optionName)
+		return newAnnounce(self, "prewarn", spellId, color, icon, optionDefault, optionName, nil, time)
+	end
 end
 
 
