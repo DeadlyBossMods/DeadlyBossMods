@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 local enrageTimer	= mod:NewEnrageTimer(300)
 
-local warnBreath	= mod:NewCastAnnounce(66665)
+local warnBreath	= mod:NewSpellAnnounce(66665)
 local timerBreath	= mod:NewBuffActiveTimer(4.5, 66665)
 
 local warnMeteor		= mod:NewSpellAnnounce(67331, 3, 66809)
@@ -34,7 +34,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(67328, 66665) then
 		warnBreath:Show()
 		timerBreath:Start()
-	elseif args:IsSpellID(66725) then
+	elseif args:IsSpellID(66725, 66808) then
 		warnMeteor:Show()
 		timerNextMeteor:Start()
 		warnMeteorSoon:Schedule(42)

@@ -54,6 +54,10 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(66118, 67630, 68646, 68647) then
 		warnPhase3:Show()
+		warnEmergeSoon:Cancel()
+		warnSubmergeSoon:Cancel()
+		timerEmerge:Stop()
+		timerSubmerge:Stop()
 	end
 end
 
