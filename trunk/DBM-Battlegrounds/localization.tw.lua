@@ -247,6 +247,29 @@ L:SetOptionLocalization{
 	timerMobOvercharge	= "為超載的小怪顯示計時器(減益疊加)"
 }
 
+---------------
+--  Koralon  --
+---------------
+
+L = DBM:GetModLocalization("Koralon")
+
+L:SetGeneralLocalization{
+	name = "『烈焰看守者』寇拉隆"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	Meteor	= "%s施展隕石之拳!"
+}
+
 
 ------------------------
 --  Isle of Conquest  --
