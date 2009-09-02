@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_HEALTH"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnPursue			= mod:NewAnnounce("WarnPursue", 3)
@@ -20,11 +20,15 @@ local timerPursue			= mod:NewTargetTimer(30, 67574)
 local timerBurrowCD			= mod:NewCDTimer(90, 67322)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
 
+local timerEmerged			= mod:NewTimer(65, "TimerEmerged")
+local timerNextEmerge		= mod:NewTimer(90, "TimerNextEmerged")
+
 mod:AddBoolOption("PlaySoundOnPursue")
 
 local phase = 1
 function mod:OnCombatStart(delay)
 	phase = 1
+	timerNextEmerge:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -40,14 +44,19 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(67322) then		-- Submerge
-		phase = 2
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Swarm then
+		phase = 3
 	end
 end
-mod.SPELL_CAST_SUCCESS = mod.SPELL_CAST_START		-- currently unsure if this is start/success ^^
 
-function mod:UNIT_HEALTH(uId)
-
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Emerge then
+		timerEmerged:Start()
+	elseif msg == L.Submerge then
+--		timerEmerged:Stop()
+	end
 end
+
+
 
