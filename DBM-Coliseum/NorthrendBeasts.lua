@@ -22,7 +22,7 @@ local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
 local timerNextImpale		= mod:NewNextTimer(10, 67477)
 local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
-local timerNextBoss			= mod:NewTimer(160, "NextBoss")
+local timerNextBoss			= mod:NewTimer(160, "TimerNextBoss")
 
 local warnImpaleOn			= mod:NewAnnounce("WarningImpale", 2, 67478)
 local warnFireBomb			= mod:NewAnnounce("WarningFireBomb", 4, 66317, false)
@@ -55,9 +55,11 @@ function mod:OnCombatStart(delay)
 	table.wipe(BileTargets)
 	table.wipe(ToxinTargets)
 	burnIcon = 8
-	timerNextStomp:Start(38-delay)
 	specWarnSilence:Schedule(37-delay)
-	timerNextBoss:Start(-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerNextBoss:Start(-delay)
+	end
+	timerNextStomp:Start(38-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)

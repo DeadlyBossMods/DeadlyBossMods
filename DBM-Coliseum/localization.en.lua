@@ -34,6 +34,11 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "Show special warning when Icehowl charges near You",
 	SetIconOnChargeTarget		= "Set Icon on Charge Target (skull)",
 	SetIconOnBileTarget			= "Set Icon on Burning Bile Targets",
+	TimerNextBoss				= "Show timer for next boss spawn"
+}
+
+L:SetTimerLocalization{
+	TimerNextBoss				= "Next boss in"
 }
 
 L:SetWarningLocalization{
