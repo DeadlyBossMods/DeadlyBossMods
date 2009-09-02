@@ -187,26 +187,27 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
-	name = "Anub'arak"
+	name 				= "Anub'arak"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBurrow	= "Burrow!",
-	WarnPursue	= "Pursuing >%s<",
-	SpecWarnPursue	= "Pursuing YOU!"
+	WarnBurrow			= "Burrow!",
+	WarnPursue			= "Pursuing >%s<",
+	SpecWarnPursue		= "Pursuing YOU!"
 }
 
 L:SetMiscLocalization{
-	YellPull	= "This place will serve as your tomb!"
+	YellPull			= "This place will serve as your tomb!"
 }
 
 L:SetOptionLocalization{
-	WarnBurrow	= "Warning for Submerge",
-	WarnPursue	= "Warning who is being followed",
-	SpecWarnPursue	= "Special warning if YOU are followed"
+	WarnBurrow			= "Warning for Submerge",
+	WarnPursue			= "Warning who is being followed",
+	SpecWarnPursue		= "Special warning if YOU are followed",
+	PlaySoundOnPursue	= "Play Sound when followed"
 }
 
 

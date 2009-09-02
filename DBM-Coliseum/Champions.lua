@@ -60,10 +60,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(65817, 68142) then
-		if args.destName == UnitName("player") then
-			specWarnHellfire:Show()
-		end
+	if args:IsSpellID(65817, 68142) and args:IsPlayer() then
+		specWarnHellfire:Show()
 	end
 end
 
