@@ -101,20 +101,22 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	achievement = "為成就:%s顯示計時器",
 }
 
+-- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s: %s",
+	target = "%s: >%s<",
 	spell = "%s",
 	cast = "施放 %s: %.1f 秒",
 	soon = "%s 即將發動",
 	prewarn = "%s 在 %s",
-	phase = "階段 %d",
+	phase = "第%d階段",
 }
 
+local prewarnOption = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target = "當|cff71d5ff|Hspell:%d|h%s|h|r施放在玩家身上時顯示警告",
 	spell = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
 	cast = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Show warning for phase %d"
+	phase = "為第%d階段顯示警告"
 }
