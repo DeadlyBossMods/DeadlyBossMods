@@ -121,38 +121,40 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnHellfire		= "지옥의 불길",
+	SpecWarnHellfire	= "지옥의 불길! 이동 하세요!"
 }
 
 L:SetMiscLocalization{
 	Gorgrim		= "죽기 - 고어그림 쉐도우클리브",		-- 34458, Horde
-	-- Tyrius	= "DK - Tyrius Duskblade", 				-- ??, Allience
+	Tyrius		= "죽기 - 티리우스 더스크블레이드",		-- 34461, Allience
 	Birana 		= "조드 - 비라나 스톰후프",				-- 34451, Horde
 	Erin		= "회드 - 에린 미스트후프",				-- 34459, Horde
-	-- Kavina	= "D - Kavina Grovesong",				-- ??, Allience
-	-- Melador	= "D - Melador Balestrider",			-- ??, Allience
+	Kavina		= "조드 - 카비나 그루브송",				-- 34460, Allience
+	Melador		= "회드 - 말라도르 베일스트라이더",		-- 34469, Allience
 	Rujkah		= "사냥꾼 - 루즈카",					-- 34448, Horde
-	-- Alyssia 	= "H - Moonstalker",					-- ??, Allience
+	Alyssia 	= "사냥꾼 - 앨리시아",					-- 34467, Allience
 	Ginselle	= "마법사 - 진셀 블라이트링거",			-- 34449, Horde
-	-- Noozle	= "M - Noozle Whizzlestick",			-- ??, Allience
+	Noozle		= "마법사 - 누즐 위즐스틱",				-- 34468, Allience
 	Liandra		= "신성 - 태양의 소환사 리안드리아",	-- 34445, Horde
 	Malithas	= "징벌 - 말리사스 브라이트블레이드",	-- 34456, Horde
-	-- Baelnor 	= "P - Baelnor Lightbearer",			-- ??, Allience
-	-- Velanaa	= "P - Velanaa", 						-- ??, Allience
+	Baelnor 	= "신성 - 빛의 인도자 밸누어",			-- 34471, Allience
+	Velanaa		= "징벌 - 벨라나", 						-- 34465, Allience
 	Caiphus		= "수양 - 엄격한 캐퍼스",				-- 34447, Horde
 	Vivienne	= "암흑 - 검은휘파람의 비비엔느",		-- 34441, Horde
-	-- Anthar	= "PR - Anthar Forgemender",		 	-- ??, Allience
-	-- Brienna	= "PR - Brienna Nightfel",				-- ??, Allience
+	Anthar		= "안타르 포지멘더",			 		-- 34466, Allience
+	Brienna		= "암흑 - 브리에나 나이트펠",			-- 34473, Allience
 	Mazdinah	= "도적 - 마즈디나",					-- 34454, Horde
-	-- Irieth	= "R - Irieth Shadowstep",				-- ??, Allience
+	Irieth		= "도적 - 이리에스 쉐도우스텝",			-- 34472, Allience
 	Thrakgar	= "정기 - 스라가",						-- 34444, Horde
 	Broln		= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
-	-- Shaamul	= "S - Shaamul", 						-- ??, Allience
-	-- Shaabad	= "S - Shaabad", 						-- ??, Allience
+	Saamul		= "사아물", 							-- 34470, Allience
+	Shaabad		= "고양 - 샤베드", 						-- 34463, Allience
 	Harkzog		= "흑마법사 - 학조그",					-- 34450, Horde
-	-- Serissa	= "WL - Serissa Grimdabbler",			-- ??, Allience
+	Serissa		= "세리사 그림데블러",					-- 34474, Allience
 	Narrhok		= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
-	--Shocuul	= "W - Shocuul"							-- ??, Allience
-	YellKill	= "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death.",
+	Shocuul		= "쇼쿨",								-- 34475, Allience
+	YellKill	= "상처뿐인 승리로군. 오늘 받은 손해로 우리 전력은 약해졌네. 이런 어리석은 짓으로 리치 왕 말고 또 누가 이득을 보겠나? 위대한 용사들이 목숨을 잃었네. 무엇을 위해서였나? 진짜 위협은 저 앞에 있네. 리치 왕이 우리 모두를 죽음 안에서 기다린다네.",
 }
 
 L:SetOptionLocalization{
@@ -182,7 +184,7 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 	= "In the name of our dark master. For the Lich King. You. Will. Die.",
+	YellPull 	= "어둠의 주인님을 받들어. 리치 왕을 위하여. 너희에게. 죽음을. 안기리라.",
 	Fjola 		= "피올라 라이트베인",
 	Eydis		= "에디스 다크베인"
 }
@@ -221,5 +223,6 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarnBurrow	= "Warning for Submerge",
 	WarnPursue	= "Warning who is being followed",
-	SpecWarnPursue	= "Special warning if YOU are followed"
+	SpecWarnPursue	= "Special warning if YOU are followed",
+	PlaySoundOnPursue	= "Play Sound when followed"
 }

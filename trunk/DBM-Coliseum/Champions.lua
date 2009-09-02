@@ -2,7 +2,8 @@
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1236 $"):sub(12, -3))
-mod:SetCreatureID(34458, 34451, 34459, 34448, 34449, 34445, 34456, 34447, 34441, 34454, 34444, 34455, 34450, 34453)
+mod:SetCreatureID(34458, 34451, 34459, 34448, 34449, 34445, 34456, 34447, 34441, 34454, 34444, 34455, 34450, 34453, 34461)
+-- 34460, 34469, 34467, 34468, 34471, 34465, 34466, 34473, 34472, 34470, 34463, 34474, 34475
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.YellKill)
@@ -29,20 +30,20 @@ mod:SetBossHealthInfo(
 	34450, L.Harkzog,
 	34453, L.Narrhok
 -- Allience
---??, L.Tyrius,
---??, L.Kavina,
---??, L.Melador,
---??, L.Alyssia,
---??, L.Noozle,
---??, L.Baelnor,
---??, L.Velanaa,
---??, L.Anthar,
---??, L.Brienna,
---??, L.Irieth,
---??, L.Shaamul,
---??, L.Shaabad,
---??, L.Serissa,
---??, L.Shocuul
+	--34461, L.Tyrius,
+	--34460, L.Kavina,
+	--34469, L.Melador,
+	--34467, L.Alyssia,
+	--34468, L.Noozle,
+	--34471, L.Baelnor,
+	--34465, L.Velanaa,
+	--34466, L.Anthar,
+	--34473, L.Brienna,
+	--34472, L.Irieth,
+	--34470, L.Saamul,
+	--34463, L.Shaabad,
+	--34474, L.Serissa,
+	--34475, L.Shocuul
 )
 
 
