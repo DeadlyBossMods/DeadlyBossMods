@@ -245,16 +245,21 @@ L:SetWarningLocalization{
 	WarningBlackHole	= "Trou noir",
 	WarningBigBang		= "Big Bang MAINTENANT",
 	PreWarningBigBang	= "Big Bang dans ~10 sec",
+	WarningCosmicSmash 		= "Choc cosmique - Explosion dans 4 sec",
+	SpecWarnCosmicSmash 	= "Choc cosmique"
 }
 
 L:SetOptionLocalization{
 	TimerBigBangCast	= "Afficher une barre d'incantation pour le Big Bang",
 	SpecWarnPhasePunch	= "Activer l'avertissement spécial quand vous êtes la cible du coup de poing phasique",
 	WarningPhasePunch	= "Annoncer la cible du Coup de poing phasique",
+	SpecWarnBigBang			= "Montre une alerte spéciale pour le Big Bang",
 	WarningBlackHole	= "Annoncer les trous noirs",
 	WarningBigBang		= "Annonce le cast du Big Bang",
 	PreWarningBigBang	= "Pré annonce le Big Bang",
-	NextCollapsingStar	= "Montre un timer pour le prochain choque cosmique"
+	NextCollapsingStar	= "Montre un timer pour le prochain choque cosmique",
+	WarningCosmicSmash 		= "Annonce le Choc cosmique",
+	SpecWarnCosmicSmash 	= "Montre une alerte spéciale pour le Choc cosmique"
 }
 
 L:SetMiscLocalization{
@@ -622,7 +627,8 @@ L:SetWarningLocalization{
 	WarnSqueeze 					= "Ecrasement: >%s<",
 	WarnFavor						= "Ferveur de Sara sur >%s<",
 	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
-	WarnEmpowerSoon					= "Renforcement des ombres Bientôt!"	
+	WarnEmpowerSoon					= "Renforcement des ombres Bientôt!",
+	SpecWarnMaladyNear					= "Mal de la raison a coter de vous sur >%s<"
 }
 
 L:SetTimerLocalization{
@@ -653,6 +659,7 @@ L:SetOptionLocalization{
 	SetIconOnFavorTarget			= "Met une icone sur les cible de la ferveur de Sara",
 	SetIconOnMCTarget				= "met une icone sur la cible du controle mental",
 	ShowSaraHealth					= "Montre la vie de Sara durant la P1 ( Doit être sélectionner une fois par un membre du groupe raid )",
-	WarnEmpowerSoon					= "Alerte avant le Renforcement des ombres"	
+	WarnEmpowerSoon					= "Alerte avant le Renforcement des ombres",
+	SpecWarnMaladyNear				= "Montre une alerte spéciale si une personne a coter de vous est victime du Mal de la raison"
 }
 
