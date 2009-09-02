@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnPursue			= mod:NewAnnounce("WarnPursue", 3)
@@ -54,7 +55,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emerge then
 		timerEmerged:Start()
 	elseif msg == L.Submerge then
---		timerEmerged:Stop()
+		timerNextEmerge:Start()
 	end
 end
 
