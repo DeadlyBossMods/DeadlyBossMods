@@ -63,12 +63,12 @@ do
 	local lastflame = 0
 	local lastinferno = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(66877, 67070) and args.destName == UnitName("player") then
+		if args:IsSpellID(66877, 67070, 67071, 67072) and args:IsPlayer() then		-- Legion Flame
 			if GetTime() - 3 > lastflame then
 				specWarnFlame:Show()
 				lastflame = GetTime()
 			end
-		elseif args:IsSpellID(66496, 68716) and args.destName == UnitName("player") then
+		elseif args:IsSpellID(66496, 68716, 68717, 68718) and args:IsPlayer() then	-- Fel Inferno
 			if GetTime() - 3 > lastinferno then
 				specWarnFelInferno:Show()
 				lastinferno = GetTime()
@@ -78,17 +78,17 @@ do
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(67051, 67049, 66237) then			-- Incinerate Flesh
+	if args:IsSpellID(67051, 67050, 67049, 66237) then			-- Incinerate Flesh
 		timerFlesh:Start(args.destName)
 		timerFleshCD:Start()
 		if self.Options.IncinerateFleshIcon then
 			self:SetIcon(args.destName, 8, 15)
 		end
-		if args.destName == UnitName("player") then
+		if args:IsPlayer() then
 			specWarnFlesh:Show()
 		end
 
-	elseif args:IsSpellID(6812, 68123) then				-- Legion Flame
+	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		local targetname = args.destName
 		timerFlame:Start(args.destName)
 		timerFlameCD:Start()
@@ -99,11 +99,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SendWhisper(L.WhisperFlame, targetname)
 		end
 
-	elseif args:IsSpellID(66209) then					-- Touch of Jaraxxus
+	elseif args:IsSpellID(66209) then					-- Touch of Jaraxxus		causes Curse of the Nether ID:66210
 		-- timerTouchCD:Start()
 		warnTouch:Show(args.destName)
 		local uId = DBM:GetRaidUnitId(args.destName)
-		if args.destName == UnitName("player") then
+		if args:IsPlayer() then
 			specWarnTouch:Show()
 		end
 		if self.Options.TouchJaraxxusIcon then
@@ -116,33 +116,31 @@ function mod:SPELL_AURA_APPLIED(args)
 			end 
 		end
 
-	elseif args:IsSpellID(67907) then
-		if args.destName == UnitName("player") then
+	elseif args:IsSpellID(67907) and args:IsPlayer() then
 			specWarnKiss:Show()
-		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(67051, 67049) then		-- Incinerate Flesh
+	if args:IsSpellID(67051, 67050, 67049, 66237) then			-- Incinerate Flesh
 		timerFlesh:Stop()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(67009) then				-- Nether Power
+	if args:IsSpellID(67009) then								-- Nether Power
 		warnNetherPower:Show()
 		spelWarnNetherPower:Show()
 
-	elseif args:IsSpellID(67901) then			-- Infernal Volcano
+	elseif args:IsSpellID(67901, 67902, 67903, 66258) then		-- Infernal Volcano
 		timerVolcanoCD:Start()
 		warnVolcanoSoon:Schedule(110)
 
-	elseif args:IsSpellID(67900, 67898) then	-- Nether Portal
+	elseif args:IsSpellID(67900, 67899, 67898, 66269) then		-- Nether Portal
 		timerPortalCD:Start()
 		warnPortalSoon:Schedule(40)
-
-	elseif args:IsSpellID(68123, 66197) then 	-- Legion Flame
+	
+	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		warnFlame:Show(args.destName)
 	end
 end
