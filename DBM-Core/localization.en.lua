@@ -13,7 +13,9 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
 DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; and %d |4second:seconds;"
 
 DBM_CORE_MIN						= "min"
+DBM_CORE_MIN_FMT					= "%d min"
 DBM_CORE_SEC						= "sec"
+DBM_CORE_SEC_FMT					= "%d sec"
 DBM_CORE_DEAD						= "dead"
 DBM_CORE_OK							= "Okay"
 
@@ -104,13 +106,20 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 }
 
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s on %s",
+	target = "%s on >%%s<",
 	spell = "%s",
+	cast = "Casting %s: %.1f sec",
+	soon = "%s soon",
+	prewarn = "%s in %s",
 }
 
+local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Show Warning when |cff71d5ff|Hspell:%d|h%s|h|r is casted on a Player",
-	spell = "Show Warning on |cff71d5ff|Hspell:%d|h%s|h|r cast"
+	target = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is cast on a player",
+	spell = "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	soon = prewarnOption,
+	prewarn = prewarnOption
 }
 
 

@@ -196,7 +196,7 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnBurrow			= "Burrow!",
 	WarnPursue			= "Pursuing >%s<",
-	SpecWarnPursue		= "Pursuing YOU!"
+	SpecWarnPursue		= "Pursuing you!"
 }
 
 L:SetMiscLocalization{
@@ -208,9 +208,9 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	WarnBurrow			= "Warning for Submerge",
-	WarnPursue			= "Warning who is being followed",
-	SpecWarnPursue		= "Special warning if YOU are followed",
-	PlaySoundOnPursue	= "Play Sound when followed"
+	WarnPursue			= "Announce who is being followed",
+	SpecWarnPursue		= "Special warning when you are being followed",
+	PlaySoundOnPursue	= "Play Sound when you are being followed"
 }
 
 
