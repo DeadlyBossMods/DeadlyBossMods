@@ -356,9 +356,9 @@ do
 	end	
 	local mt = {__index = barPrototype}
 	
-	function DBT:CreateBar(timer, id, icon, huge, small, color)
+	function DBT:CreateBar(timer, id, icon, huge, small, color, isDummy)
 		if timer <= 0 then return end
-		if (self.numBars or 0) >= 15 then return end
+		if (self.numBars or 0) >= 15 and not isDummy then return end
 		local newBar = self:GetBar(id)
 		if newBar then -- update an existing bar
 			newBar:SetTimer(timer) -- this can kill the timer and the timer methods don't like dead timers
@@ -385,7 +385,7 @@ do
 				newBar.small = small
 				newBar.color = color
 				newBar.flashing = nil
-			else  -- yes, this is duplicate code but it's slightly faster this way ;)
+			else  -- duplicate code ;(
 				newBar = setmetatable({
 					frame = newFrame,
 					id = id,
@@ -434,7 +434,7 @@ do
 	end
 	function DBT:CreateDummyBar()
 		dummyBars = dummyBars + 1
-		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true)
+		local dummy = self:CreateBar(25, "dummy"..dummyBars, "Interface\\Icons\\Spell_Nature_WispSplode", nil, true, nil, true)
 		dummy:SetText("Dummy")
 		dummy:Cancel()
 		self.bars[dummy] = true
