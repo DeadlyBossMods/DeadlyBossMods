@@ -253,12 +253,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	SpecWarnCinder	= "You are in a Flaming Cinder! Run away!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	SpecWarnCinder		= "Show special warning when you are standing in Flaming Cinder",
+	PlaySoundOnCinder	= "Play sound when you are standing in Flaming Cinder",
 }
 
 L:SetMiscLocalization{
