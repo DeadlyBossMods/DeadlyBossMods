@@ -35,6 +35,7 @@ localization.ru.lua
 localization.fr.lua
 localization.kr.lua
 Battlegrounds.lua
+IsleOfConquest.lua
 Arathi.lua
 Alterac.lua
 Warsong.lua
@@ -43,5 +44,5 @@ Arenas.lua
 Archavon.lua
 Emalon.lua
 Koralon.lua
-IsleOfConquest.lua
+
 
