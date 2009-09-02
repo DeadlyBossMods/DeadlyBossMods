@@ -42,5 +42,6 @@ EyeOfTheStorm.lua
 Arenas.lua
 Archavon.lua
 Emalon.lua
+Koralon.lua
 IsleOfConquest.lua
 

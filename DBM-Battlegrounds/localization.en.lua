@@ -193,7 +193,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Archavon")
 
 L:SetGeneralLocalization({
-	name = "Archavon"
+	name = "Archavon the Stone Watcher"
 })
 
 L:SetWarningLocalization({
@@ -240,6 +240,29 @@ L:SetOptionLocalization{
 	warnNova 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
 	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
 	timerMobOvercharge	= "Show Timer for Overchaged Mob (stacking debuff)"
+}
+
+---------------
+--  Koralon  --
+---------------
+
+L = DBM:GetModLocalization("Koralon")
+
+L:SetGeneralLocalization{
+	name = "Koralon the Flame Watcher"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	Meteor	= "%s casts Meteor Fists!"
 }
 
 

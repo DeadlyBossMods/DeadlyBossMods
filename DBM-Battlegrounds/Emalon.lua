@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Emalon", "DBM-Battlegrounds")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 155 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33993)
 
 mod:RegisterCombat("combat")
