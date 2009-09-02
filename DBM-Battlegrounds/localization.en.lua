@@ -193,7 +193,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Archavon")
 
 L:SetGeneralLocalization({
-	name = "Archavon the Stone Watcher"
+	name = "Archavon"
 })
 
 L:SetWarningLocalization({
@@ -222,7 +222,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
-	name = "Emalon the Storm Watcher"
+	name = "Emalon"
 }
 
 L:SetWarningLocalization{
@@ -249,7 +249,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Koralon")
 
 L:SetGeneralLocalization{
-	name = "Koralon the Flame Watcher"
+	name = "Koralon"
 }
 
 L:SetWarningLocalization{
