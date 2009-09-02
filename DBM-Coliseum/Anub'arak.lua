@@ -1,61 +1,72 @@
 ﻿local mod = DBM:NewMod("Anub'arak_Coliseum", "DBM-Coliseum")
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1236 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34660)  
 
---mod:RegisterCombat("combat")
 mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnPursue			= mod:NewAnnounce("WarnPursue", 3)
-local warnBurrow			= mod:NewAnnounce("WarnBurrow", 2)
-local timerPursue			= mod:NewTargetTimer(30, 67574)
-local timerBurrowCD			= mod:NewCDTimer(90, 67322)
+-- Pursue
+local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
-
-local timerEmerged			= mod:NewTimer(65, "TimerEmerged")
-local timerNextEmerge		= mod:NewTimer(85, "TimerNextEmerged")
-
 mod:AddBoolOption("PlaySoundOnPursue")
+mod:AddBoolOption("PursueIcon")
 
-local phase = 1
+-- Emerge
+local warnEmerge			= mod:NewAnnounce("WarnEmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local warnEmergeSoon		= mod:NewAnnounce("WarnEmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerEmerge			= mod:NewTimer(65, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+
+-- Submerge
+local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local warnSubmergeSoon		= mod:NewAnnounce("WarnSubmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local timerSubmerge			= mod:NewTimer(85, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+
+-- Phases
+local warnPhase3			= mod:NewPhaseAnnounce(3)
+
+
 function mod:OnCombatStart(delay)
-	phase = 1
-	timerNextEmerge:Start(-delay)
+	timerSubmerge:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(67574) then		-- Pursue
-		if args.destName == UnitName("player") then
+		if args:IsPlayer() then
 			specWarnPursue:Show()
 			if self.Options.PlaySoundOnPursue then
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
+			if self.Options.PursueIcon then
+				self:SetIcon(args.destName, 8, 15)
+			end
 		end
 		warnPursue:Show(args.destName)
-		timerPursue:Start()
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Swarm then
-		phase = 3
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(66118, 67630, 68646, 68647) then
+		warnPhase3:Show()
 	end
 end
+
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Burrow then
-		timerEmerged:Start()
+		warnSubmerge:Show()
+		warnEmergeSoon:Schedule(55)
+		timerEmerge:Start()
 	elseif msg == L.Emerge then
-		timerNextEmerge:Start()
+		warnEmerge:Show()
+		warnSubmergeSoon:Schedule(75)
+		timerSubmerge:Start()
 	end
 end
 

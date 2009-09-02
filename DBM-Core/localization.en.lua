@@ -79,11 +79,6 @@ DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull now!"
 
-
--- Generic Warnings (deprecated)
-DBM_CORE_GENERIC_TARGET_WARN = "%s on >%%s<!"
-DBM_CORE_GENERIC_TARGET_OPTION = "Announce target of %s"
-
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill"
 
 -- Auto-generated Timer Localizations
@@ -105,21 +100,24 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	achievement = "Show timer for %s",
 }
 
+-- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target = "%s on >%%s<",
 	spell = "%s",
 	cast = "Casting %s: %.1f sec",
 	soon = "%s soon",
 	prewarn = "%s in %s",
+	phase = "Phase %d",
 }
 
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is cast on a player",
+	target = "Announce target of |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell = "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
 	soon = prewarnOption,
-	prewarn = prewarnOption
+	prewarn = prewarnOption,
+	phase = "Show warning for phase %d"
 }
 
 
