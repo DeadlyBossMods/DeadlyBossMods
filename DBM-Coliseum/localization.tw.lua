@@ -200,11 +200,14 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerEmerged			= "鑽地",
-	TimerNextEmerged		= "下一次 鑽地"
+	TimerSubmerge			= "隱沒"
 }
 
 L:SetWarningLocalization{
-	WarnBurrow			= "鑽地!",
+	WarnEmerge			= "阿努巴拉克鑽地了",
+	WarnEmergeSoon			= "10秒後 鑽地",
+	WarnSubmerge			= "阿努巴拉克隱沒了",
+	WarnSubmergeSoon		= "10秒後 隱沒",
 	WarnPursue			= "追擊尖刺: >%s<",
 	SpecWarnPursue			= "你中了追擊尖刺!"
 }
@@ -217,10 +220,13 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBurrow			= "為隱沒(鑽地)顯示警告",
+	WarnEmerge			= "為鑽地顯示警告",
+	WarnEmergeSoon			= "為鑽地顯示預先警告",
+	WarnSubmerge			= "為隱沒顯示警告",
+	WarnSubmergeSoon		= "為隱沒顯示預先警告",
 	WarnPursue			= "警告誰受到了追擊",
 	SpecWarnPursue			= "當你受到追擊時顯示特別警告",
-	PlaySoundOnPursue		= "當你受到追擊時播放音效",
-	TimerEmerged			= "顯示鑽地計時器",
-	TimerNextEmerged		= "顯示下一次鑽地的計時器"
+	TimerEmerged			= "顯示鑽地的計時器",
+	TimerNextEmerged		= "顯示隱沒的計時器"
+	PlaySoundOnPursue		= "當你受到追擊時播放音效"
 }

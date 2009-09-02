@@ -80,11 +80,6 @@ DBM_CORE_TIMER_PULL				= "戰鬥準備"
 DBM_CORE_ANNOUNCE_PULL				= "%d秒後拉怪"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "拉怪囉!"
 
-
--- Generic Warnings (deprecated)
-DBM_CORE_GENERIC_TARGET_WARN = "%s 在 >%%s<!"
-DBM_CORE_GENERIC_TARGET_OPTION = "提示目標 %s"
-
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速擊殺"
 
 -- Auto-generated Timer Localizations
@@ -112,6 +107,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast = "施放 %s: %.1f 秒",
 	soon = "%s 即將發動",
 	prewarn = "%s 在 %s",
+	phase = "階段 %d",
 }
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
@@ -119,5 +115,6 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	spell = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
 	cast = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告",
 	soon = prewarnOption,
-	prewarn = prewarnOption
+	prewarn = prewarnOption,
+	phase = "Show warning for phase %d"
 }
