@@ -138,7 +138,8 @@ L:SetMiscLocalization{
 	Thrakgar			= "S - 瑟瑞克加爾",	-- 34444
 	Broln				= "S - 伯洛連·頑角",	-- 34455
 	Harkzog				= "WL - 哈克佐格",	-- 34450
-	Narrhok				= "W - 納霍克·破鋼者"	-- 34453
+	Narrhok				= "W - 納霍克·破鋼者",		-- 34453
+	YellKill			= "膚淺而悲痛的勝利。今天痛失的生命反而令我們更加的頹弱。除了巫妖王之外，誰還能從中獲利?偉大的戰士失去了寶貴生命。為了什麼?真正的威脅就在前方 - 巫妖王在死亡的領域中等著我們。"
 } 
 
 L:SetOptionLocalization{
@@ -202,11 +203,15 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull			= "這裡將會是你們的墳墓!"
+	YellPull			= "這裡將會是你們的墳墓!",
+	Swarm				= "The swarm shall overtake you!",
+	Emerge				= "%%s emerges from the ground!",
+	Submerge			= "%%s burrows into the ground!"
 }
 
 L:SetOptionLocalization{
 	WarnBurrow			= "為隱沒(鑽地)顯示警告",
 	WarnPursue			= "警告誰受到了追擊",
-	SpecWarnPursue			= "當你受到追擊時顯示特別警告"
+	SpecWarnPursue			= "當你受到追擊時顯示特別警告",
+	PlaySoundOnPursue		= "當你受到追擊時播放音效"
 }
