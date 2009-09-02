@@ -22,7 +22,7 @@ local timerBurrowCD			= mod:NewCDTimer(90, 67322)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
 
 local timerEmerged			= mod:NewTimer(65, "TimerEmerged")
-local timerNextEmerge		= mod:NewTimer(90, "TimerNextEmerged")
+local timerNextEmerge		= mod:NewTimer(85, "TimerNextEmerged")
 
 mod:AddBoolOption("PlaySoundOnPursue")
 
@@ -52,9 +52,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.Emerge then
+	if msg == L.Burrow then
 		timerEmerged:Start()
-	elseif msg == L.Submerge then
+	elseif msg == L.Emerge then
 		timerNextEmerge:Start()
 	end
 end
