@@ -59,21 +59,21 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(67477, 66331) then
+	if args:IsSpellID(67477, 66331, 67478, 67479) then					-- Impale
 		timerNextImpale:Start()
-	elseif args:IsSpellID(67657) then
+	elseif args:IsSpellID(67657, 66759, 67658, 67659) then				-- Frothing Rage
 		warnRage:Show()
-	elseif args:IsSpellID(66823, 67618) then
+	elseif args:IsSpellID(66823, 67618, 67619, 67620) then				-- Paralytic Toxin
 		self:UnscheduleMethod("warnToxin")
 		ToxinTargets[#ToxinTargets + 1] = args.destName
-		if UnitName("player") == args.destName then
+		if args:IsPlayer() then
 			specWarnToxin:Show()
 		end
 		mod:ScheduleMethod(0.2, "warnToxin")
-	elseif args:IsSpellID(66869) then  -- ADD 10man Burning Bile ID
+	elseif args:IsSpellID(66869, 66870, 67621, 67622, 67623) then		-- Burning Bile
 		self:UnscheduleMethod("warnBile")
 		BileTargets[#BileTargets + 1] = args.destName
-		if UnitName("player") == args.destName then
+		if args:IsPlayer() then
 			specWarnBile:Show()
 		end
 		if mod.Options.SetIconOnBileTarget and burnIcon > 0 then
@@ -98,17 +98,14 @@ function mod:warnBile()
 end
 
 function mod:SPELL_CAST_START(args)
---	if args.spellId == 66901 or args.spellId == 67615 then	-- seems to be hard buggy  >> unknown on unknown << xD what a message *G*
---		warnSpray:Show(args.spellName, args.destName)
--- 		todo: get target of spellcast
-	if args:IsSpellID(66689, 67650) then		
+	if args:IsSpellID(66689, 67650, 67651, 67652) then		-- Arctic Breath
 		timerBreath:Start()
 		warnBreath:Show()
-	elseif args:IsSpellID(66313) then			-- FireBomb (Impaler)
+	elseif args:IsSpellID(66313) then						-- FireBomb (Impaler)
 		warnFireBomb:Show()
-	elseif args:IsSpellID(66330, 67647) then	-- Staggering Stomp
+	elseif args:IsSpellID(66330, 67647, 67648, 67649) then	-- Staggering Stomp
 		timerNextStomp:Start()
-		specWarnSilence:Schedule(19)			-- prewarn ~1,5 sec before next
+		specWarnSilence:Schedule(19)						-- prewarn ~1,5 sec before next
 	end
 end
 
@@ -133,12 +130,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(67477, 66331) then
+	if args:IsSpellID(67477, 66331, 67478, 67479) then		-- Impale
 		timerNextImpale:Start()
 		if args.amount >= 3 then 
 			local name = GetSpellInfo(args.spellId)
 			warnImpaleOn:Show(name, args.destName)
-			if UnitName("player") == args.destName then
+			if args:IsPlayer() then
 				specWarnImpale3:Show(args.amount)
 			end
 		end
@@ -146,14 +143,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(66320, 66317) then
-		if UnitName("player") == args.destName then
-			specWarnFireBomb:Show()
-		end
-	elseif args:IsSpellID(66881, 66883) then
-		if args.destName == UnitName("player") then
-			specWarnSlimePool:Show()
-		end
+	if args:IsSpellID(66320, 66317, 67472) and args:IsPlayer() then				-- Fire Bomb
+		specWarnFireBomb:Show()
+	elseif args:IsSpellID(66881, 66883) and args:IsPlayer() then				-- Slime Pool
+		specWarnSlimePool:Show()
 	end
 end
 
