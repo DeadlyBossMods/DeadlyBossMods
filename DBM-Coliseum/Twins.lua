@@ -35,8 +35,12 @@ local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 function mod:OnCombatStart(delay)
 	timerSpecial:Start(-delay)
 	warnSpecial:Schedule(40-delay)
-	enrageTimer:Start(-delay)
 	timerAchieve:Start(-delay)
+	if self:IsDifficulty("normal25", "heroic25") then
+		enrageTimer:Start(480-delay)
+	else
+		enrageTimer:Start(-delay)
+	end
 end
 
 local LightEssence = GetSpellInfo(67223)
