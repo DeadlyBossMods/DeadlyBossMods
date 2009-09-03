@@ -199,34 +199,34 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerEmerge			= "鑽地",
-	TimerSubmerge			= "隱沒"
+	TimerEmerge			= "鑽地維持",
+	TimerSubmerge			= "下一次 鑽地"
 }
 
 L:SetWarningLocalization{
-	WarnEmerge			= "阿努巴拉克鑽地了",
-	WarnEmergeSoon			= "10秒後 鑽地",
-	WarnSubmerge			= "阿努巴拉克隱沒了",
-	WarnSubmergeSoon		= "10秒後 隱沒",
+	WarnEmerge			= "阿努巴拉克從地底鑽出來了",
+	WarnEmergeSoon			= "10秒後 鑽進地裡",
+	WarnSubmerge			= "阿努巴拉克鑽進地裡了",
+	WarnSubmergeSoon		= "10秒後 鑽出來",
 	WarnPursue			= "追擊尖刺: >%s<",
 	SpecWarnPursue			= "你中了追擊尖刺!"	
 }
 
 L:SetMiscLocalization{
 	YellPull			= "這裡將會是你們的墳墓!",
-	Swarm				= "The swarm shall overtake you!",
-	Emerge				= "%%s emerges from the ground!",
-	Burrow				= "%%s burrows into the ground!"
+	Swarm				= "蟲群將會淹沒你們!",
+	Emerge				= "%s從地底鑽出!",
+	Burrow				= "%s鑽進地裡!"
 }
 
 L:SetOptionLocalization{
 	WarnEmerge			= "為鑽地顯示警告",
 	WarnEmergeSoon			= "為鑽地顯示預先警告",
-	WarnSubmerge			= "為隱沒顯示警告",
-	WarnSubmergeSoon		= "為隱沒顯示預先警告",
+	WarnSubmerge			= "為下一次 鑽地顯示警告",
+	WarnSubmergeSoon		= "為下一次 鑽地顯示預先警告",
 	SpecWarnPursue			= "當你受到追擊時顯示特別警告",
 	TimerEmerge			= "顯示鑽地的計時器",
-	TimerSubmerge			= "顯示隱沒的計時器",
+	TimerSubmerge			= "顯示下一次鑽地的計時器",
 	PlaySoundOnPursue		= "當你受到追擊時播放音效",
 	PursueIcon			= "為受到追擊的玩家設置標記",
 	WarnPursue			= "警告誰受到了追擊"
