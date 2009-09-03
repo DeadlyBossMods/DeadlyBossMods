@@ -15,7 +15,9 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d |4분:분;"
 DBM_CORE_TIMER_FORMAT				= "%d |4분:분; and %d |4초:초;"
 
 DBM_CORE_MIN						= "분"
+DBM_CORE_MIN_FMT					= "%d 분"
 DBM_CORE_SEC						= "초"
+DBM_CORE_SEC_FMT					= "%d 초"
 DBM_CORE_DEAD						= "죽음"
 DBM_CORE_OK							= "수락"
 
@@ -79,9 +81,6 @@ DBM_CORE_TIMER_PULL					= "풀링 중 입니다."
 DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 풀링 합니다."
 DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
 
--- Generic Warnings
-DBM_CORE_GENERIC_TARGET_WARN = ">%%s< 에게 %s!"
-DBM_CORE_GENERIC_TARGET_OPTION = "%s 의 대상 알리기"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적 타이머)"
 
 -- Auto-generated Timer Localizations
@@ -103,13 +102,23 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	achievement = "%s 위한 타이머 보기", -- translate	
 }
 
+-- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s : %s",
+	target = "%s : >%%s<",
 	spell = "%s",
+	cast = "주문시전 %s : %.1f 초",
+	soon = "곧 %s",
+	prewarn = "%s : %s",
+	phase = "페이즈 %d",	
 }
 
+local prewarnOption = "|cff71d5ff|H주문:%d|h%s|h|r의 사전 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "|cff71d5ff|H주문:%d|h%s|h|r을 플레이어에게 시전할 경우 경고 보기",
+	target	= "대상의 |cff71d5ff|H주문:%d|h%s|h|r을 알리기",
 	spell 	= "|cff71d5ff|H주문:%d|h%s|h|r을 시전할 경우 경고 보기"
+	cast = "|cff71d5ff|H주문:%d|h%s|h|r의 시전을 시작할 경우 경고 보기",
+	soon = prewarnOption,
+	prewarn = prewarnOption,
+	phase = "페이즈 %d 의 경고 보기"	
 }
 end

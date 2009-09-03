@@ -244,6 +244,32 @@ L:SetOptionLocalization{
 	timerMobOvercharge	= "과충전 된 몹의 시간 보기(stacking debuff)"
 }
 
+---------------
+--  Koralon  --
+---------------
+
+L = DBM:GetModLocalization("Koralon")
+
+L:SetGeneralLocalization{
+	name = "화염 감시자 코랄론"
+}
+
+L:SetWarningLocalization{
+	SpecWarnCinder		= "당신은 불타는 잿더미에 있습니다! 뛰세요!!"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SpecWarnCinder		= "불타는 잿더미 위에 서있을 경우 특수 경고 보기",
+	PlaySoundOnCinder	= "불타는 잿더미 위에 서있을 경우 소리 재생하기",
+}
+
+L:SetMiscLocalization{
+	Meteor	= "%s casts Meteor Fists!"
+}
+
 
 ------------------------
 --  Isle of Conquest  --
