@@ -15,8 +15,10 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minuto:minutos;"
 DBM_CORE_TIMER_FORMAT				= "%d |4minuto:minutos; y %d |4segundo:segundos;"
 
 DBM_CORE_MIN						= "min"
+DBM_CORE_MIN_FMT					= "%d min"
 DBM_CORE_SEC						= "seg"
-DBM_CORE_DEAD						= "muerte"
+DBM_CORE_SEC_FMT					= "%d sec"
+DBM_CORE_DEAD						= "muerto"
 DBM_CORE_OK							= "Aceptar"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Enrage en %s %s"
@@ -79,11 +81,6 @@ DBM_CORE_TIMER_PULL					= "Pull en"
 DBM_CORE_ANNOUNCE_PULL				= "Pull en %d seg"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull ahora!"
 
-
--- Generic Warnings (deprecated)
-DBM_CORE_GENERIC_TARGET_WARN = "%s en >%%s<!"
-DBM_CORE_GENERIC_TARGET_OPTION = "Anunciar objetivo de %s"
-
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Matar rapido"
 
 -- Auto-generated Timer Localizations
@@ -105,16 +102,25 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	achievement = "Mostrar tiempo para %s",
 }
 
+-- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s en %s",
+	target = "%s en >%%s<",
 	spell = "%s",
+	cast = "Casteando %s: %.1f seg",
+	soon = "%s pronto",
+	prewarn = "%s en %s",
+	phase = "Fase %d",
 }
 
+local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Mostrar aviso cuando |cff71d5ff|Hspell:%d|h%s|h|r se castea en un jugador",
-	spell = "Mostrar aviso de casteo de |cff71d5ff|Hspell:%d|h%s|h|r "
+	target = "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r",
+	spell = "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r",
+	soon = prewarnOption,
+	prewarn = prewarnOption,
+	phase = "Mostrar aviso para fase %d"
 }
-
 
 
 
