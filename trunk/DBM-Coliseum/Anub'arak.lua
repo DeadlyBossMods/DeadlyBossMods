@@ -21,19 +21,21 @@ mod:AddBoolOption("PursueIcon")
 -- Emerge
 local warnEmerge			= mod:NewAnnounce("WarnEmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnEmergeSoon		= mod:NewAnnounce("WarnEmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local timerEmerge			= mod:NewTimer(65, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerEmerge			= mod:NewTimer(75, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 -- Submerge
 local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnSubmergeSoon		= mod:NewAnnounce("WarnSubmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-local timerSubmerge			= mod:NewTimer(85, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 
 -- Phases
 local warnPhase3			= mod:NewPhaseAnnounce(3)
 
+local enrageTimer			= mod:NewEnrageTimer(570)	-- 9:30 ? hmpf (no enrage while underground... this sucks)
 
 function mod:OnCombatStart(delay)
 	timerSubmerge:Start(-delay)
+	enrageTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
