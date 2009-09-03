@@ -36,6 +36,11 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "Mostrar aviso especial si Aullahielo va a por ti",
 	SetIconOnChargeTarget		= "Poner icono a por quien va",
 	SetIconOnBileTarget			= "Poner icono quien tiene Bilis ardiente",
+	TimerNextBoss               = "Mostrar tiempo para el proximo boss"
+}
+
+L:SetTimerLocalization{
+	TimerNextBoss				= "Proximo boss en"
 }
 
 L:SetWarningLocalization{
@@ -189,26 +194,39 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
-	name = "Anub'arak"
+	name 				= "Anub'arak"
 }
 
 L:SetTimerLocalization{
+	TimerEmerge			= "Emerger en",
+	TimerSubmerge		= "Sumersion en"
 }
 
 L:SetWarningLocalization{
-	WarnBurrow	= "Burrow!",
-	WarnPursue	= "Persigue a >%s<",
-	SpecWarnPursue	= "Te persigue a TI!"
+	WarnEmerge			= "Anub'arak emergido",
+	WarnEmergeSoon		= "Emerger en 10 seg",
+	WarnSubmerge		= "Anub'arak sumergido",
+	WarnSubmergeSoon	= "Sumersion en 10 seg",
+	WarnPursue			= "Persigue a >%s<",
+	SpecWarnPursue		= "Te persigue a ti!"
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Este lugar será su tumba!"
+	YellPull			= "This place will serve as your tomb!",
+	Swarm				= "The swarm shall overtake you!",
+	Emerge				= "%s emerges from the ground!",
+	Burrow				= "%s burrows into the ground!"
 }
 
 L:SetOptionLocalization{
-	WarnBurrow	= "Aviso para Sumersión",
-	WarnPursue	= "Aviso a quien sigue",
-	SpecWarnPursue	= "Aviso especial si te persigue a TI"
+	WarnEmerge			= "Mostrar aviso para Emerger",
+	WarnEmergeSoon		= "Mostrar pre-aviso para Emerger",
+	WarnSubmerge		= "Mostrar aviso para Sumersion",
+	WarnSubmergeSoon	= "Mostrar pre-aviso para Sumersion",
+	SpecWarnPursue		= "Mostrar aviso especial si te sigue a ti",
+	TimerEmerge			= "Mostrar tiempo para Emerger",
+	TimerSubmerge		= "Mostrar tiempo para Sumerger",
+	PlaySoundOnPursue	= "Reproducir sonidos si te persigue",
+	PursueIcon			= "Poner icono en jugador",
+	WarnPursue			= "Avisar jugador perseguido"
 }
-
-

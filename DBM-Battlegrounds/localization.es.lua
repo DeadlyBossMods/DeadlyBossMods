@@ -225,7 +225,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
-	name = "Emalon el Vigía de la Tormenta"
+	name = "Emalon"
 }
 
 L:SetWarningLocalization{
@@ -243,6 +243,32 @@ L:SetOptionLocalization{
 	warnNova 		= ("Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Nova de relámpagos"),
 	warnOverCharge 		= ("Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Sobrecarga"),
 	timerMobOvercharge	= "Mostrar tiempo para que un Mob se haga grande."
+}
+
+---------------
+--  Koralon  --
+---------------
+
+L = DBM:GetModLocalization("Koralon")
+
+L:SetGeneralLocalization{
+	name = "Koralon"
+}
+
+L:SetWarningLocalization{
+	SpecWarnCinder	= "Estas en Ceniza flamígera! Corre!"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SpecWarnCinder		= "Mostrar aviso especial cuando estas en Ceniza flamigera",
+	PlaySoundOnCinder	= "Reproducir sonido si estas en Ceniza flamigera",
+}
+
+L:SetMiscLocalization{
+	Meteor	= "%s castea Meteorito!"
 }
 
 
