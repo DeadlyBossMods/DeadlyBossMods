@@ -193,22 +193,35 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerEmerge			= "Sort du sol",
+	TimerSubmerge		= "Rentre dans le sol"
 }
 
 L:SetWarningLocalization{
-	WarnBurrow	= "Burrow!",
-	WarnPursue	= "Pursuing >%s<",
-	SpecWarnPursue	= "Pursuing YOU!"
+	WarnEmerge			= "Anub'arak Sort du sol",
+	WarnEmergeSoon		= "Anub'arak Sort du sol dans 10 sec",
+	WarnSubmerge		= "Anub'arak Rentre dans le sol",
+	WarnSubmergeSoon	= "Anub'arak Rentre dans le sol dans 10 sec",
+	WarnPursue			= "Poursuivi >%s<",
+	SpecWarnPursue		= "Vous êtes poursuivi"
 }
 
 L:SetMiscLocalization{
-	YellPull	= "This place will serve as your tomb!"
+	YellPull			= "Ce terreau sera votre tombeau !",
+	Swarm				= "L'essaim va vous submerger !",
+	Emerge				= "%s surgit de la terre !",
+	Burrow				= "%s s'enfonce dans le sol !"
 }
 
 L:SetOptionLocalization{
-	WarnBurrow	= "Warning for Submerge",
-	WarnPursue	= "Warning who is being followed",
-	SpecWarnPursue	= "Special warning if YOU are followed"
+	WarnEmerge			= "Montre une alerte quand le boss sort du sol",
+	WarnEmergeSoon		= "Montre une alerte avant que le boss sorte du sol",
+	WarnSubmerge		= "Montre une alerte quand le boss rentre dans le sol",
+	WarnSubmergeSoon	= "Montre une alerte avant que le boss ne rentre dans le sol",
+	SpecWarnPursue		= "Montre une alerte quand vous commancer a être suivi",
+	TimerEmerge			= "Montre le timer pour la sortie du boss",
+	TimerSubmerge		= "Montre le timer pour la rentrer du boss dans la terre",
+	PlaySoundOnPursue	= "Joue un sons quand vous êtes suivi",
+	PursueIcon			= "Met une icone sur la tête du joueur qui est suivi",
+	WarnPursue			= "Annonce le joueur qui est suivi"
 }
-
-
