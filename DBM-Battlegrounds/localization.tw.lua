@@ -258,16 +258,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	SpecWarnCinder		= "你在燃焰餘燼上面! 跑開!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	SpecWarnCinder		= "當你站在燃焰餘燼上面時顯示特別警告",
+	PlaySoundOnCinder	= "當你站在燃焰餘燼上面時播放音效",
 }
 
 L:SetMiscLocalization{
-	Meteor	= "%s施展隕石之拳!"
+	Meteor			= "%s施展隕石之拳!"
 }
 
 
