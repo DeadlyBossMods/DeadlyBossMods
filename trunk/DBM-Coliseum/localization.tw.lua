@@ -11,10 +11,6 @@ L:SetGeneralLocalization{
 	name = "北裂境野獸"
 }
 
-L:SetTimerLocalization{
-	NextBoss			= "下一隻王到來"
-}
-
 L:SetMiscLocalization{
 	Charge				= "%%s怒視著(%S+)，並發出震耳的咆哮!",
 	CombatStart			= "來自風暴群山最深邃，最黑暗的洞穴。歡迎『穿刺者』戈莫克!戰鬥吧，英雄們!";
@@ -40,7 +36,11 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "當冰嚎的撞擊接近你時顯示特別警告",
 	SetIconOnChargeTarget		= "為撞擊的目標設置標記(頭顱)",
 	SetIconOnBileTarget		= "為燃燒膽汁的目標設置標記",
-	NextBoss			= "顯示下一隻王到來的計時器"
+	TimerNextBoss			= "為下一隻王到來顯示計時器"
+}
+
+L:SetTimerLocalization{
+	TimerNextBoss			= "下一隻王到來"
 }
 
 L:SetWarningLocalization{
