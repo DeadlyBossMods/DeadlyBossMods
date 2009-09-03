@@ -244,6 +244,33 @@ L:SetOptionLocalization{
 	timerMobOvercharge	= "Show Timer for Overchaged Mob (stacking debuff)"
 }
 
+---------------
+--  Koralon  --
+---------------
+
+L = DBM:GetModLocalization("Koralon")
+
+L:SetGeneralLocalization{
+	name = "Koralon"
+}
+
+L:SetWarningLocalization{
+	SpecWarnCinder	= "Vous êtes sur une Braise enflammée ! BOUGEZ !"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SpecWarnCinder		= "Montre une alerte spéciale quand vous êtes dans les Braise enflammée",
+	PlaySoundOnCinder	= "Joue un sons quand vous êtes dans les Braise enflammée",
+}
+
+L:SetMiscLocalization{
+	Meteor	= "%s incante Poings météoriques"
+}
+
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------
