@@ -36,6 +36,11 @@ L:SetOptionLocalization{
 	SetIconOnChargeTarget		= "사나운 돌진 대상 아이콘 설정 (해골)",
 	SetIconOnToxinTarget		= "마비 독 대상 아이콘 설정 (해골)",
 	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",	
+	TimerNextBoss				= "다음 보스 등장 타이머 보기"
+}
+
+L:SetTimerLocalization{
+	TimerNextBoss				= "곧 다음 보스"
 }
 
 L:SetWarningLocalization{
@@ -208,21 +213,35 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerEmerge			= "출현",
+	TimerSubmerge		= "숨기"
 }
 
 L:SetWarningLocalization{
-	WarnBurrow	= "Burrow!",
-	WarnPursue	= "Pursuing >%s<",
-	SpecWarnPursue	= "Pursuing YOU!"
+	WarnEmerge			= "아눕아락 출현!",
+	WarnEmergeSoon		= "아눕아락 10초 이내 출현!",
+	WarnSubmerge		= "아눕아락 잠수!",
+	WarnSubmergeSoon	= "아눕아락 10초 이내 잠수!",
+	WarnPursue			= "아눕아락의 추격 : >%s<",
+	SpecWarnPursue		= "당신을 추격 합니다!"
 }
 
 L:SetMiscLocalization{
-	YellPull	= "This place will serve as your tomb!"
+	YellPull			= "여기가 네 무덤이 되리라!",
+	Swarm				= "The swarm shall overtake you!",
+	Emerge				= "%s emerges from the ground!",
+	Burrow				= "%s burrows into the ground!"
 }
 
 L:SetOptionLocalization{
-	WarnBurrow	= "Warning for Submerge",
-	WarnPursue	= "Warning who is being followed",
-	SpecWarnPursue	= "Special warning if YOU are followed",
-	PlaySoundOnPursue	= "Play Sound when followed"
+	WarnEmerge			= "출현 경고 보기",
+	WarnEmergeSoon		= "출현의 사전 경고 보기",
+	WarnSubmerge		= "숨기 경고 보기",
+	WarnSubmergeSoon	= "숨기의 사전 경고 보기",
+	SpecWarnPursue		= "당신을 추격하기 시작할 때 특수 경고 알리기",
+	TimerEmerge			= "출현 타이머 보기",
+	TimerSubmerge		= "숨기 타이머 보기",
+	PlaySoundOnPursue	= "당신을 추격하기 시작할 때 특수 소리 재생",
+	PursueIcon			= "추격 대상자 공격대 아이콘 설정하기",
+	WarnPursue			= "추격 대상자 알리기"
 }
