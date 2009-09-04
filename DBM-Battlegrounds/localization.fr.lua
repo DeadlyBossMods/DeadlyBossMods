@@ -267,7 +267,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Meteor	= "%s incante Poings météoriques"
+	Meteor	= "%s lance Poings météoriques !"
 }
 
 
