@@ -58,6 +58,7 @@ function mod:OnCombatStart(delay)
 	specWarnSilence:Schedule(37-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerNextBoss:Start(-delay)
+		timerNextBoss:Schedule(150)
 	end
 	timerNextStomp:Start(38-delay)
 end
