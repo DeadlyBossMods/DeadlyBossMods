@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "frFR" then return end
+if GetLocale() ~= "frFR" then return end
 
 DBM_CORE_LOAD_MOD_ERROR				= "Erreur durant le chargement du boss mod pour %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss mod pour '%s' chargé!"
@@ -15,7 +15,9 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
 DBM_CORE_TIMER_FORMAT				= "%d |4minute:minutes; et %d |4seconde:secondes;"
 
 DBM_CORE_MIN						= "min"
+DBM_CORE_MIN_FMT					= "%d min"
 DBM_CORE_SEC						= "sec"
+DBM_CORE_SEC_FMT					= "%d sec"
 DBM_CORE_DEAD						= "mort"
 DBM_CORE_OK							= "Okay"
 
@@ -39,6 +41,7 @@ DBM_CORE_VERSIONCHECK_FOOTER		= "a trouvé %d joueurs avec Deadly Boss Mods"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\n Version %s (r%d) disponible ici:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copier le lien ?otre presse-papier."
+DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Montre une annonce quand une nouvelle version de DBM est disponible."
 
 DBM_CORE_MOVABLE_BAR				= "Déplace moi!"
 
@@ -78,10 +81,6 @@ DBM_CORE_TIMER_PULL					= "Pull dans"
 DBM_CORE_ANNOUNCE_PULL				= "Pull dans %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull maintenant!"
 
--- Generic Warnings (deprecated)
-DBM_CORE_GENERIC_TARGET_WARN = "%s sur >%%s<!"
-DBM_CORE_GENERIC_TARGET_OPTION = "Annoncer la cible de: %s"
-
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
@@ -100,3 +99,24 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	next = "Afficher le timer pour le prochain: |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Show timer for %s" -- translate
 }
+
+-- Auto-generated Warning Localizations
+DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	target = "%s sur >%%s<",
+	spell = "%s",
+	cast = "Cast %s: %.1f sec",
+	soon = "%s bientôt",
+	prewarn = "%s dans %s",
+	phase = "Phase %d",
+}
+
+local prewarnOption = "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	target = "Annonce la cible de |cff71d5ff|Hspell:%d|h%s|h|r",
+	spell = "Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Montre une alerte quand |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	soon = prewarnOption,
+	prewarn = prewarnOption,
+	phase = "Montre une alerte pour la phase %d"
+}
+
