@@ -91,10 +91,11 @@ L.Slider_BarScale 	= "Bar scale: %0.2f"
 L.AreaTitle_BarSetup 	= "General Bar Options"
 L.AreaTitle_BarSetupSmall = "Small Bar Options"
 L.AreaTitle_BarSetupHuge = "Huge Bar Options"
-L.BarIconLeft 		= "Left Icon"
-L.BarIconRight 		= "Right Icon"
-L.EnableHugeBar 	= "Enable Huge Bar (Bar 2)"
-L.FillUpBars		= "Fill up Bars"
+L.BarIconLeft 		= "Left icon"
+L.BarIconRight 		= "Right icon"
+L.EnableHugeBar 	= "Enable huge bar (aka Bar 2)"
+L.FillUpBars		= "Fill up bars"
+L.ClickThrough		= "Disable mouse events (allows you to click through bars)"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Spam Filter"
@@ -103,5 +104,7 @@ L.HideBossEmoteFrame		= "Hide raid boss emote frame"
 L.SpamBlockRaidWarning		= "Filter announces from other boss mods" 
 L.SpamBlockBossWhispers		= "Filter <DBM> warning whispers while fighting"
 L.BlockVersionUpdatePopup	= "Disable the update notification popup"
+
+
 L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
 

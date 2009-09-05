@@ -1416,7 +1416,7 @@ local function CreateOptionsMenu()
 	do
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 180, true)
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 200, true)
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
@@ -1523,6 +1523,8 @@ local function CreateOptionsMenu()
 		local FillUpBars = BarSetup:CreateCheckButton(L.FillUpBars, false, nil, nil, "FillUpBars")
 		FillUpBars:SetPoint("TOP", ExpandUpwards, "BOTTOM", 0, 5)
 		
+		local ClickThrough = BarSetup:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
+		ClickThrough:SetPoint("TOPLEFT", color1reset, "BOTTOMLEFT", -7, -5)
 
 		-- Functions for the next 2 Areas
 		local function createDBTOnShowHandler(option)
@@ -1788,18 +1790,21 @@ do
 		
 		for _, catident in pairs(mod.categorySort) do
 			category = mod.optionCategories[catident]
-
 			local catpanel = panel:CreateArea(mod.localization.cats[catident], nil, nil, true)
+			local button, lastButton, addSpacer
 			for _,v in ipairs(category) do
-
-				if type(mod.Options[v]) == "boolean" then
-
-					local button = catpanel:CreateCheckButton(mod.localization.options[v], true)
-
+				if v == DBM_OPTION_SPACER then
+					addSpacer = true
+				elseif type(mod.Options[v]) == "boolean" then
+					lastButton = button
+					button = catpanel:CreateCheckButton(mod.localization.options[v], true)
+					if addSpacer then
+						button:SetPoint("TOPLEFT", lastButton, "BOTTOMLEFT", 0, -6)
+						addSpacer = false
+					end
 					button:SetScript("OnShow",  function(self) 
 						self:SetChecked(mod.Options[v]) 
 					end)
-
 					button:SetScript("OnClick", function(self) 
 						mod.Options[v] = not mod.Options[v]
 						if mod.optionFuncs and mod.optionFuncs[v] then mod.optionFuncs[v]() end

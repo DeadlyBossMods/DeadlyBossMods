@@ -21,7 +21,7 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local enrageTimer			= mod:NewEnrageTimer(210)		-- heroic 3:30 after Icehow spawns
+local enrageTimer			= mod:NewEnrageTimer(210)		-- heroic 3:30 after Icehowl spawns
 
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
