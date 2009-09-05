@@ -12,8 +12,9 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	--Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
-	Charge		= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
-	CombatStart	= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!";	
+	Charge			= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
+	CombatStart		= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!",
+	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
 }
 
 L:SetOptionLocalization{
@@ -35,7 +36,8 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "얼음울음이 당신 주변에 사나운 돌진을 할 경우 특수 경보 보기",
 	SetIconOnChargeTarget		= "사나운 돌진 대상 아이콘 설정 (해골)",
 	SetIconOnToxinTarget		= "마비 독 대상 아이콘 설정 (해골)",
-	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",	
+	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",
+	ClearIconsOnIceHowl			= "얼음울음의 사나운 돌진 이후 모든 공격대 아이콘 없앰",
 	TimerNextBoss				= "다음 보스 등장 타이머 보기"
 }
 
@@ -59,7 +61,7 @@ L:SetWarningLocalization{
 	SpecialWarningSpray			= "당신에게 마비의 이빨!",
 	SpecialWarningToxin			= "당신에게 마비독! 이동하세요!",
 	SpecialWarningCharge		= "당신에게 사나운 돌진! 뛰세요!",
-	SpecialWarningChargeNear	= "당신 주변에 사나운 돌진! 뛰세요!"	
+	SpecialWarningChargeNear	= "당신 주변에 사나운 돌진! 뛰세요!"
 }
 
 
