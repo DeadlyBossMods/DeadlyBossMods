@@ -11,7 +11,8 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Charge			= "^%%s glares at (%S+) and lets out",
-	CombatStart		= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!";
+	CombatStart		= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!",
+	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
 }
 
 L:SetOptionLocalization{
@@ -34,6 +35,7 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "Show special warning when Icehowl charges near You",
 	SetIconOnChargeTarget		= "Set Icon on Charge Target (skull)",
 	SetIconOnBileTarget			= "Set Icon on Burning Bile Targets",
+	ClearIconsOnIceHowl			= "Clear all Icons before Charge",
 	TimerNextBoss				= "Show timer for next boss spawn"
 }
 
@@ -57,7 +59,8 @@ L:SetWarningLocalization{
 	SpecialWarningSpray			= "Paralytic Spray on You",
 	SpecialWarningToxin			= "Toxin on You! Move!",
 	SpecialWarningCharge		= "Charge on You! Run!",
-	SpecialWarningChargeNear	= "Charge near You! Run!"
+	SpecialWarningChargeNear	= "Charge near You! Run!",
+	SpecialWarningBile			= "Bile on You!"
 }
 
 
