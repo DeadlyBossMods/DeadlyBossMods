@@ -2851,6 +2851,21 @@ function bossModPrototype:RemoveIcon(target, timer)
 	return self:SetIcon(target, 0, timer)
 end
 
+function bossModPrototype:ClearIcons()
+	if GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if UnitExists("raid"..i) and GetRaidTargetIndex("raid"..i) then
+				SetRaidTarget("raid"..i, 0)
+			end
+		end
+	else
+		for i = 1, GetNumPartyMembers() do
+			if UnitExists("party"..i) and GetRaidTargetIndex("party"..i) then
+				SetRaidTarget("party"..i, 0)
+			end
+		end
+	end	
+end
 
 -----------------------
 --  Model Functions  --
