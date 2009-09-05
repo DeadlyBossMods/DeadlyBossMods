@@ -6,6 +6,7 @@ mod:SetCreatureID(34797)
 mod:SetMinCombatTime(30)
 
 -- 34816 npc to talk to
+-- 34796 Gormok the Impaler
 -- 34797 npc icehowl died
 
 mod:RegisterCombat("yell", L.CombatStart)
@@ -16,7 +17,8 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_APPLIED_DOSE"
+	"SPELL_AURA_APPLIED_DOSE",
+	"UNIT_DIED"
 )
 
 local enrageTimer			= mod:NewEnrageTimer(210)		-- heroic 3:30 after Icehow spawns
@@ -107,6 +109,13 @@ function mod:warnBile()
 	burnIcon = 8
 end
 
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 34796 then
+		specWarnSilence:Cancel()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(66689, 67650, 67651, 67652) then		-- Arctic Breath
 		timerBreath:Start()
@@ -123,7 +132,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg:match(L.Charge)
 	if target then
 		timerNextCrash:Start()
-		if self.Option.ClearIconsOnIceHowl then
+		if self.Options.ClearIconsOnIceHowl then
 			self:ClearIcons()
 		end
 		if target == UnitName("player") then
