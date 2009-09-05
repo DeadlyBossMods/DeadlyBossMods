@@ -202,6 +202,10 @@ options = {
 		type = "boolean",
 		default = true,
 	},
+	ClickThrough = {
+		type = "boolean",
+		default = false,
+	}
 }
 
 --------------------------
@@ -352,6 +356,7 @@ do
 			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
 			fCounter = fCounter + 1
 		end
+		frame:EnableMouse(not self.options.ClickThrough)
 		return frame
 	end	
 	local mt = {__index = barPrototype}
@@ -761,7 +766,7 @@ function barPrototype:ApplyStyle()
 	self:Update(0)
 end
 
-function DBT:UpdateOrientation()
+local function updateOrientation(self)
 	for bar in self:GetBarIterator() do
 		if not bar.dummy then
 			if bar.moving == "enlarge" then
@@ -775,9 +780,19 @@ function DBT:UpdateOrientation()
 		end
 	end
 end
-options.ExpandUpwards.onChange = DBT.UpdateOrientation
-options.BarYOffset.onChange = DBT.UpdateOrientation
-options.BarXOffset.onChange = DBT.UpdateOrientation
+options.ExpandUpwards.onChange = updateOrientation
+options.BarYOffset.onChange = updateOrientation
+options.BarXOffset.onChange = updateOrientation
+
+local function updateClickThrough(self, newValue)
+	for bar in self:GetBarIterator() do
+		if not bar.dummy then
+			bar.frame:EnableMouse(not newValue)
+		end
+	end
+end
+	
+options.ClickThrough.onChange = updateClickThrough
 
 
 --------------------
@@ -891,6 +906,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 	end
 end
 
+--[[
 do
 	local breakFrames = {}
 	function barPrototype:Break() -- coming soon
@@ -906,4 +922,44 @@ do
 		tex1:SetTexCoord(0, 0.5, 0, 1)
 	end
 end
+]]--
 
+----------------------------------------
+-- Functions used by the XML Template --
+----------------------------------------
+function DBT_Bar_OnLoad(self)
+	self:SetMinMaxValues(0, 1)
+	self:SetValue(1)
+end
+
+function DBT_Bar_OnUpdate(self, elapsed)
+	self.obj:Update(elapsed)
+end
+
+function DBT_Bar_OnMouseDown(self, btn)
+	if self.obj.owner.movable and btn == "LeftButton" then
+		if self.obj.enlarged then
+			self.obj.owner.secAnchor:StartMoving()
+		else
+			self.obj.owner.mainAnchor:StartMoving()
+		end
+	end
+end
+
+function DBT_Bar_OnMouseUp(self, btn)
+	self.obj.owner.mainAnchor:StopMovingOrSizing()
+	self.obj.owner.secAnchor:StopMovingOrSizing()
+	self.obj.owner:SavePosition()
+	if btn == "RightButton" then
+		self.obj:Cancel()
+	elseif btn == "LeftButton" and IsShiftKeyDown() then
+		self.obj:Announce()
+	end
+end
+
+function DBT_Bar_OnHide(self)
+	if self.obj then
+		self.obj.owner.mainAnchor:StopMovingOrSizing()
+		self.obj.owner.secAnchor:StopMovingOrSizing()
+	end
+end

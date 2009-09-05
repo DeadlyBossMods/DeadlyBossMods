@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-	<Frame name="DBTBarTemplate" enableMouse="true" virtual="true" frameStrata="MEDIUM" topLevel="true">
+	<Frame name="DBTBarTemplate" virtual="true" frameStrata="MEDIUM" topLevel="true">
 		<Size>
 			<AbsDimension x="195" y="20"/>
 		</Size>
@@ -82,42 +82,15 @@
 				<BarTexture name="$parentTexture" file="Interface\AddOns\DBM-Core\textures\default.tga"/>
 				<BarColor r="1.0" g="0.7" b="0.0"/>
 				<Scripts>
-					<OnLoad>
-						self:SetMinMaxValues(0, 1)
-						self:SetValue(1)
-					</OnLoad>
+					<OnLoad function="DBT_Bar_OnLoad"/>
 				</Scripts>
 			</StatusBar>
 		</Frames>
 		<Scripts>
-			<OnUpdate>
-				self.obj:Update(arg1)
-			</OnUpdate>
-			<OnMouseDown>
-				if self.obj.owner.movable and arg1 == "LeftButton" then
-					if self.obj.enlarged then
-						self.obj.owner.secAnchor:StartMoving()
-					else
-						self.obj.owner.mainAnchor:StartMoving()
-					end
-				end
-			</OnMouseDown>
-			<OnMouseUp>
-				self.obj.owner.mainAnchor:StopMovingOrSizing()
-				self.obj.owner.secAnchor:StopMovingOrSizing()
-				self.obj.owner:SavePosition()
-				if arg1 == "RightButton" then
-					self.obj:Cancel()
-				elseif arg1 == "LeftButton" and IsShiftKeyDown() then
-					self.obj:Announce()
-				end
-			</OnMouseUp>
-			<OnHide>
-				if self.obj then
-					self.obj.owner.mainAnchor:StopMovingOrSizing()
-					self.obj.owner.secAnchor:StopMovingOrSizing()
-				end
-			</OnHide>
+			<OnUpdate function="DBT_Bar_OnUpdate"/>
+			<OnMouseDown function="DBT_Bar_OnMouseDown"/>
+			<OnMouseUp function="DBT_Bar_OnMouseUp"/>
+			<OnHide function="DBT_Bar_OnHide"/>
 		</Scripts>
 	</Frame>
 </Ui>	
