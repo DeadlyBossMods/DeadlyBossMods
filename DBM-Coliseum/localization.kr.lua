@@ -12,8 +12,8 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	--Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
-	Charge			= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
-	CombatStart		= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!",
+	Charge		= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
+	CombatStart	= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!",
 	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
 }
 
@@ -61,7 +61,7 @@ L:SetWarningLocalization{
 	SpecialWarningSpray			= "당신에게 마비의 이빨!",
 	SpecialWarningToxin			= "당신에게 마비독! 이동하세요!",
 	SpecialWarningCharge		= "당신에게 사나운 돌진! 뛰세요!",
-	SpecialWarningChargeNear	= "당신 주변에 사나운 돌진! 뛰세요!"
+	SpecialWarningChargeNear	= "당신 주변에 사나운 돌진! 뛰세요!"	
 }
 
 
@@ -75,8 +75,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnFlame			= "군단 불꽃 : >%s<!",
-	WarnTouch			= "자락서스의 손길 : >%s<",
+	WarnFlame				= "군단 불꽃 : >%s<!",
+	WarnTouch				= "자락서스의 손길 : >%s<",
 	WarnNetherPower			= "자락서스가 황천의 힘을 얻었습니다! 해제하세요!",
 	WarnPortalSoon			= "곧 황천의 차원문!",
 	WarnVolcanoSoon			= "곧 지옥불 정령 분출!",
@@ -90,7 +90,7 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	WhisperFlame		= "당신에게 군단의 불꽃!",
+	WhisperFlame			= "당신에게 군단의 불꽃!",
 }
 
 L:SetOptionLocalization{
@@ -192,8 +192,8 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	YellPull 	= "어둠의 주인님을 받들어. 리치 왕을 위하여. 너희에게. 죽음을. 안기리라.",
-	Fjola 		= "피올라 라이트베인",
-	Eydis		= "에디스 다크베인"
+	Fjola 		= "피욜라 라이트베인",
+	Eydis		= "아이디스 다크베인"
 }
 
 L:SetOptionLocalization{
