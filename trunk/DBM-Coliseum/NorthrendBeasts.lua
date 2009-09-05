@@ -43,6 +43,7 @@ local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
 
 mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
 mod:AddBoolOption("SetIconOnBileTarget", true, "announce")
+mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
 
 --local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
 --local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
@@ -117,6 +118,9 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg:match(L.Charge)
 	if target then
+		if self.Option.ClearIconsOnIceHowl then
+			self:ClearIcons()
+		end
 		if target == UnitName("player") then
 			specWarnCharge:Show()
 		else
@@ -129,7 +133,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			end
 		end
 		if self.Options.SetIconOnChargeTarget then
-			self:SetIcon(target, 8, 4)
+			self:SetIcon(target, 8, 5)
 		end
 	end
 end
@@ -137,9 +141,9 @@ end
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(67477, 66331, 67478, 67479) then		-- Impale
 		timerNextImpale:Start()
-		if args.amount >= 3 then 
-			local name = GetSpellInfo(args.spellId)
-			warnImpaleOn:Show(name, args.destName)
+		local name = GetSpellInfo(args.spellId)
+		warnImpaleOn:Show(name, args.destName)
+		if (args.amount >= 3 and not self:IsDifficulty("heroic10", "heroic25") ) or ( args.amount >= 2 and self:IsDifficulty("heroic10", "heroic25") ) then 
 			if args:IsPlayer() then
 				specWarnImpale3:Show(args.amount)
 			end
