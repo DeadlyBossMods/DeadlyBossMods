@@ -15,14 +15,18 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_AURA_APPLIED_DOSE"
 )
+
+local enrageTimer			= mod:NewEnrageTimer(210)		-- heroic 3:30 after Icehow spawns
 
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
 local timerNextImpale		= mod:NewNextTimer(10, 67477)
 local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
 local timerNextBoss			= mod:NewTimer(160, "TimerNextBoss")
+local timerNextCrash		= mod:NewCDTimer(55, 67662)
 
 local warnImpaleOn			= mod:NewAnnounce("WarningImpale", 2, 67478)
 local warnFireBomb			= mod:NewAnnounce("WarningFireBomb", 4, 66317, false)
@@ -118,6 +122,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg:match(L.Charge)
 	if target then
+		timerNextCrash:Start()
 		if self.Option.ClearIconsOnIceHowl then
 			self:ClearIcons()
 		end
@@ -156,6 +161,15 @@ function mod:SPELL_DAMAGE(args)
 		specWarnFireBomb:Show()
 	elseif args:IsSpellID(66881, 66883) and args:IsPlayer() then				-- Slime Pool
 		specWarnSlimePool:Show()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Phase3 then
+		if self:IsDifficulty("heroic10", "heroic25") then
+			enrageTimer:Start()
+		end
+		timerNextCrash:Start(47)
 	end
 end
 
