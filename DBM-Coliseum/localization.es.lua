@@ -13,7 +13,8 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Charge			= "^%%s glares at (%S+) and lets out",
-	CombatStart		= "Desde las cavernas más oscuras y profundas de Las Cumbres Tormentosas: ¡Gormok el Empalador! ¡A luchar, héroes!";
+	CombatStart		= "Desde las cavernas más oscuras y profundas de Las Cumbres Tormentosas: ¡Gormok el Empalador! ¡A luchar, héroes!",
+	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
 }
 
 L:SetOptionLocalization{
@@ -36,6 +37,7 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "Mostrar aviso especial si Aullahielo va a por ti",
 	SetIconOnChargeTarget		= "Poner icono a por quien va",
 	SetIconOnBileTarget			= "Poner icono quien tiene Bilis ardiente",
+	ClearIconsOnIceHowl			= "Limpiar iconos despues de cargar",
 	TimerNextBoss               = "Mostrar tiempo para el proximo boss"
 }
 
@@ -59,7 +61,8 @@ L:SetWarningLocalization{
 	SpecialWarningSpray			= "Pulverizador paralizador en Ti",
 	SpecialWarningToxin			= "Toxina en Ti! Muevete!",
 	SpecialWarningCharge		= "Te mira a ti! Muevete!",
-	SpecialWarningChargeNear	= "Charge near You! Run!"
+	SpecialWarningChargeNear	= "Charge near You! Run!",
+	SpecialWarningBile			= "Toxina en Ti!"
 }
 
 
