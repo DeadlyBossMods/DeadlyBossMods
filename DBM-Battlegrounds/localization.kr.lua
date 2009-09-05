@@ -267,7 +267,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Meteor	= "%s casts Meteor Fists!"
+	Meteor	= "%s 유성 주먹을 시전합니다!"
 }
 
 
