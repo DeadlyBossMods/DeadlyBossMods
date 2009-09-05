@@ -1,8 +1,8 @@
 if GetLocale() ~= "deDE" then return end
-
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 local L = DBM_GUI_Translations
 
+L.TranslationBy 	= "Nitram & Tandanu"
 
 L.MainFrame = "Deadly Boss Mods"
 
@@ -94,6 +94,8 @@ L.AreaTitle_BarSetupHuge = "Große Bar Optionen"
 L.BarIconLeft 		= "Symbol links"
 L.BarIconRight 		= "Symbol rechts"
 L.EnableHugeBar 	= "Aktiviere große Bar (Bar 2)"
+L.FillUpBars		= "Bars auffüllen"
+L.ClickThrough		= "Maus deaktivieren (macht die Timer durchklickbar)"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Spam Filter"
@@ -102,5 +104,6 @@ L.HideBossEmoteFrame		= "Schlachtzugsboss-Emote-Fenster verstecken"
 L.SpamBlockRaidWarning		= "Ansagen von anderen Boss Mods filtern" 
 L.SpamBlockBossWhispers		= "Aktiviere Filter für <DBM> Flüstermitteilungen im Kampf"
 L.BlockVersionUpdatePopup	= "Zeige Update-Meldung im Chat statt als Popup"
+
 L.ShowBigBrotherOnCombatStart	= "Zeige BigBrother Meldung bei Kampfbeginn"
 

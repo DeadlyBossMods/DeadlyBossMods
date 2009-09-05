@@ -83,6 +83,11 @@ DBM.DefaultOptions = {
 DBM.Bars = DBT:New()
 DBM.Mods = {}
 
+------------------------
+-- Global Identifiers --
+------------------------
+DBM_DISABLE_ZONE_DETECTION = newproxy(false)
+DBM_OPTION_SPACER = newproxy(false)
 
 --------------
 --  Locals  --
@@ -1983,7 +1988,7 @@ bossModPrototype.AddMsg = DBM.AddMsg
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
 		self.zones = (self.addon and self.addon.zone) or {}
-	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then -- note that DBM_DISABLE_ZONE_DETECTION is never initialized and therefore nil ;)
+	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then
 		self.zones = {...}
 	else -- disable zone detection
 		self.zones = nil
@@ -2675,6 +2680,22 @@ function bossModPrototype:AddDropdownOption(name, options, default, cat, func)
 		self.optionFuncs[name] = func
 	end
 end
+
+function bossModPrototype:AddOptionSpacer(cat)
+	cat = cat or "misc"
+	if self.optionCategories[cat] then
+		table.insert(self.optionCategories[cat], DBM_OPTION_SPACER)
+	end
+end
+
+function bossModPrototype:AddAnnounceSpacer()
+	return self:AddOptionSpacer("announce")
+end
+
+function bossModPrototype:AddTimerSpacer()
+	return self:AddOptionSpacer("timer")
+end
+	
 
 function bossModPrototype:SetOptionCategory(name, cat)
 	for _, options in pairs(self.optionCategories) do
