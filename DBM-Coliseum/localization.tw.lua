@@ -13,7 +13,8 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Charge				= "%%s怒視著(%S+)，並發出震耳的咆哮!",
-	CombatStart			= "來自風暴群山最深邃，最黑暗的洞穴。歡迎『穿刺者』戈莫克!戰鬥吧，英雄們!";
+	CombatStart			= "來自風暴群山最深邃，最黑暗的洞穴。歡迎『穿刺者』戈莫克!戰鬥吧，英雄們!",
+	Phase3				= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
 }
 
 L:SetOptionLocalization{
@@ -36,6 +37,7 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "當冰嚎的撞擊接近你時顯示特別警告",
 	SetIconOnChargeTarget		= "為撞擊的目標設置標記(頭顱)",
 	SetIconOnBileTarget		= "為燃燒膽汁的目標設置標記",
+	ClearIconsOnIceHowl		= "撞擊前消除所有標記",
 	TimerNextBoss			= "為下一隻王到來顯示計時器"
 }
 
@@ -58,9 +60,9 @@ L:SetWarningLocalization{
 	SpecialWarningSilence		= "~1.5秒後 法術沉默!",
 	SpecialWarningSpray		= "你中了痲痺噴霧!",
 	SpecialWarningToxin		= "痲痺劇毒! 跑開!",
-	SpecialWarningBile		= "你中了燃燒膽汁! 離開人群!",
 	SpecialWarningCharge		= "你中了撞擊! 跑開!",
-	SpecialWarningChargeNear	= "撞擊接近你! 跑開!"
+	SpecialWarningChargeNear	= "撞擊接近你! 跑開!",
+	SpecialWarningBile		= "你中了燃燒膽汁!"
 }
 
 
