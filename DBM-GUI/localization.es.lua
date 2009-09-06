@@ -96,6 +96,7 @@ L.BarIconLeft 		= "Icono izq."
 L.BarIconRight 		= "Icono der."
 L.EnableHugeBar 	= "Habilitar barra del medio (Bar 2)"
 L.FillUpBars		= "Llénese Barras"
+L.ClickThrough		= "Desabilitar acciones de raton ( si pulsas en las barras )"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Filtro de Spam"
@@ -104,5 +105,7 @@ L.HideBossEmoteFrame		= "Esconder lo que dice el boss"
 L.SpamBlockRaidWarning		= "Filtrar anuncios de otros Boss Mods" 
 L.SpamBlockBossWhispers		= "Avisar por susurros spam de cada boss <DBM> "
 L.BlockVersionUpdatePopup	= "Desabilitar actualizaciones"
+
+
 L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
 
