@@ -13,7 +13,8 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Charge	= "^%%s fusille (%S+) du regard et lâche un rugissement assourdissant !",
-	CombatStart		= "Arrivant tout droit des plus noires et profondes cavernes des pics Foudroyés, Gormok l'Empaleur !"
+	CombatStart		= "Arrivant tout droit des plus noires et profondes cavernes des pics Foudroyés, Gormok l'Empaleur !",
+	Phase3			= "L'air se gèle à l'entrée de notre prochain combattant, Glace-hurlante ! Tuez ou soyez tués, champions !"
 }
 
 L:SetOptionLocalization{
@@ -36,6 +37,12 @@ L:SetOptionLocalization{
 	SpecialWarningChargeNear	= "Montre une alerte spéciale quand Icehowl charge a coter de vous",
 	SetIconOnChargeTarget		= "Met une icone sur la cible de la charge ( Tête de mort )",
 	SetIconOnBileTarget			= "Met une icone sur la cible de la Bile brûlante",
+	ClearIconsOnIceHowl			= "Enlève toutes les icones avant la prochaine charge",
+	TimerNextBoss				= "Montre le timer pour l'arrivée du prochain boss"
+}
+
+L:SetTimerLocalization{
+	TimerNextBoss				= "Prochain Boss Dans"
 }
 
 L:SetWarningLocalization{
@@ -54,7 +61,8 @@ L:SetWarningLocalization{
 	SpecialWarningSpray			= "Jet paralysant",
 	SpecialWarningToxin			= "Toxine paralysante sur vous, BOUGEZ!",
 	SpecialWarningCharge		= "Charge sur vous! COUREZ!",
-	SpecialWarningChargeNear	= "Charge a coter de vous! COUREZ!"
+	SpecialWarningChargeNear	= "Charge a coter de vous! COUREZ!",
+	SpecialWarningBile			= "Bile brûlante sur VOUS !"
 }
 
 
