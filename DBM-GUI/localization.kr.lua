@@ -96,6 +96,7 @@ L.BarIconLeft 		= "왼쪽 아이콘"
 L.BarIconRight 		= "오른쪽 아이콘"
 L.EnableHugeBar 	= "커다란 바 사용(바 2)"
 L.FillUpBars		= "바를 채워나가기"
+L.ClickThrough		= "마우스 이벤트 사용 안함 (바를 클릭하는 행위 등)"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "스팸 필터"
