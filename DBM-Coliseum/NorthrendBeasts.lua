@@ -178,7 +178,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 		end
-		timerNextCrash:Start(47)
+		timerNextCrash:Start(45)
 	end
 end
 
