@@ -44,9 +44,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.PlaySoundOnPursue then
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
-			if self.Options.PursueIcon then
-				self:SetIcon(args.destName, 8, 15)
-			end
+		end
+		if self.Options.PursueIcon then
+			self:SetIcon(args.destName, 8, 15)
 		end
 		warnPursue:Show(args.destName)
 	end
