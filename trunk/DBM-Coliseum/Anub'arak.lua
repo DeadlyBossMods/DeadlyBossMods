@@ -21,7 +21,7 @@ mod:AddBoolOption("PursueIcon")
 -- Emerge
 local warnEmerge			= mod:NewAnnounce("WarnEmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnEmergeSoon		= mod:NewAnnounce("WarnEmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local timerEmerge			= mod:NewTimer(75, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerEmerge			= mod:NewTimer(65, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 -- Submerge
 local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
@@ -33,7 +33,7 @@ local warnPhase3			= mod:NewPhaseAnnounce(3)
 local enrageTimer			= mod:NewEnrageTimer(570)	-- 9:30 ? hmpf (no enrage while submerged... this sucks)
 
 function mod:OnCombatStart(delay)
-	timerSubmerge:Start(-delay)
+	timerSubmerge:Start(80-delay)
 	enrageTimer:Start(-delay)
 end
 
