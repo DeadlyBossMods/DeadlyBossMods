@@ -14,7 +14,7 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge				= "%%s怒視著(%S+)，並發出震耳的咆哮!",
 	CombatStart			= "來自風暴群山最深邃，最黑暗的洞穴。歡迎『穿刺者』戈莫克!戰鬥吧，英雄們!",
-	Phase3				= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
+	Phase3				= "下一場參賽者的出場連空氣都會為之凝結:冰嚎!戰個你死我活吧，勇士們!"
 }
 
 L:SetOptionLocalization{
