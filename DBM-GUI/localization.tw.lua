@@ -97,6 +97,7 @@ L.BarIconLeft 		= "左側顯示圖示"
 L.BarIconRight 		= "右側顯示圖示"
 L.EnableHugeBar 	= "開啟大型計時條（2號計時條）"
 L.FillUpBars		= "填滿計時條"
+L.ClickThrough		= "禁用鼠標事件（允許你點擊穿透計時條）"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "垃圾過濾"
