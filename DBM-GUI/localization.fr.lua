@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "frFR" then return end
+if GetLocale() ~= "frFR" then return end
 
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 local L = DBM_GUI_Translations
@@ -50,7 +50,7 @@ L.EnableMiniMapIcon	= "Afficher le bouton sur minicarte "
 L.Button_RangeFrame	= "Afficher/Cacher la fenêtre de portée"
 L.Button_TestBars	= "Lancer les barres de test"
 
-L.PizzaTimer_Headline 	= 'Créer un "Pizza Timer"'
+L.PizzaTimer_Headline 	= 'Crée un "Pizza Timer"'
 L.PizzaTimer_Title	= 'Nom (ex. "Pizza!")'
 L.PizzaTimer_Hours 	= "Heures"
 L.PizzaTimer_Mins 	= "Min"
@@ -67,13 +67,13 @@ L.RaidWarnColor_3 	= "Couleur 3"
 L.RaidWarnColor_4 	= "Couleur 4"
 L.InfoRaidWarning	= [[Vous pouvez spécifier la position et la couleurs de l'affichage des Alertes Raid.
 Cet affichage est utilisé pour des messages comme "Joueur X est affecté par Y"]]
-L.ColorResetted 	= "La couleur de ce champs a été remise à zéro."
-L.ShowWarningsInChat 	= "Afficher les alertes dans la fenétre de dialogue"
+L.ColorResetted 	= "La couleur de ce champs a été remise à zéro."
+L.ShowWarningsInChat 	= "Afficher les alertes dans la fenètre de dialogue"
 L.ShowFakedRaidWarnings = "Afficher les alertes comme de faux avertissements de raid"
 L.WarningIconLeft 	= "Afficher l'icone à gauche"
 L.WarningIconRight 	= "Afficher l'icone à droite"
 L.RaidWarnMessage 	= "Merci d'utiliser Deadly Boss Mods"
-L.BarWhileMove 		= "Alerte-raid déplacable"
+L.BarWhileMove 		= "Alerte-raid délacable"
 L.RaidWarnSound		= "Jouer un son pour les alertes raid"
 L.SpecialWarnSound	= "Jouer un son pour les alertes spéciales"
 
@@ -95,10 +95,16 @@ L.BarIconLeft 		= "Icone gauche"
 L.BarIconRight 		= "Icone droit"
 L.EnableHugeBar 	= "Activé les grandes barres (Barre 2)"
 L.FillUpBars		= "Remplir les barres"
+L.ClickThrough		= "Enlève le controle par la souris ( Vous autorise a cliquer a travers les barres )"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Filtre anti-spam"
 L.Area_SpamFilter		= "Options générales du filtre anti-spam"
-L.HideBossEmoteFrame	= "Cacher la fen�tre des emotes de boss"
+L.HideBossEmoteFrame	= "Cacher la fenêtre des emotes de boss"
 L.SpamBlockRaidWarning	= "Filtrer les annonces venant d'autre boss mods"
 L.SpamBlockBossWhispers	= "Filtrer les alertes <DBM> chuchotement pendant les combats"
+L.BlockVersionUpdatePopup	= "Enlève le message pup-up quand vous êtes sur un boss"
+
+
+L.ShowBigBrotherOnCombatStart	= "Autoriser Big Brother pour regarder les buffs quand le combat débute"
+
