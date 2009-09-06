@@ -61,7 +61,7 @@ L:SetWarningLocalization{
 	SpecialWarningSpray		= "你中了痲痺噴霧!",
 	SpecialWarningToxin		= "痲痺劇毒! 跑開!",
 	SpecialWarningCharge		= "你中了撞擊! 跑開!",
-	SpecialWarningChargeNear	= "撞擊接近你! 跑開!",
+	SpecialWarningChargeNear	= "接近你的人中了撞擊! 跑開!",
 	SpecialWarningBile		= "你中了燃燒膽汁!"
 }
 
@@ -78,13 +78,13 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame			= "聚合烈焰: >%s<",
 	WarnTouch			= "賈拉克瑟斯之觸: >%s<",
-	WarnNetherPower			= "虛空威能在賈拉克瑟斯領主身上! 現在驅散!",
+	WarnNetherPower			= "虛空威能在賈拉克瑟斯領主身上! 快驅散!",
 	WarnPortalSoon			= "虛空傳送門 即將到來!",
 	WarnVolcanoSoon			= "煉獄爆發 即將到來!",
 	SpecWarnFlesh			= "你中了焚化血肉!",
 	SpecWarnTouch			= "你中了賈拉克瑟斯之觸!",
 	SpecWarnKiss			= "仕女之吻",
-	SpecWarnTouchNear		= "接近你的%s中了賈拉克瑟斯之觸!",
+	SpecWarnTouchNear		= "接近你的>%s<中了賈拉克瑟斯之觸!",
 	SpecWarnFlame			= "聚合烈焰! 跑開!",
 	SpecWarnNetherPower		= "現在驅散!",
 	SpecWarnFelInferno		= "魔化煉獄! 跑開!"
@@ -97,7 +97,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarnFlame			= "為聚合烈焰顯示警告",
 	WarnTouch			= "為賈拉克瑟斯之觸顯示警告",
-	WarnNetherPower			= "當賈拉克瑟斯領主擁有了虛空威能時警告 (驅散/竊取用)",
+	WarnNetherPower			= "當賈拉克瑟斯領主擁有虛空威能時警告 (驅散/竊取用)",
 	WarnPortalSoon			= "預先提示虛空傳送門的出現",
 	WarnVolcanoSoon			= "預先提示煉獄爆發的出現",
 	SpecWarnFlame			= "當你中了聚合烈焰時顯示特別警告",
@@ -171,7 +171,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "特別技能 即將到來!",
-	SpecWarnSpecial			= "顏色變換!",
+	SpecWarnSpecial			= "另一顏色AE即將來臨 快變換顏色!",
 	SpecWarnEmpoweredDarkness	= "強力黑暗",
 	SpecWarnEmpoweredLight		= "強力光明"
 }
@@ -226,10 +226,10 @@ L:SetOptionLocalization{
 	WarnEmergeSoon			= "為鑽地顯示預先警告",
 	WarnSubmerge			= "為下一次 鑽地顯示警告",
 	WarnSubmergeSoon		= "為下一次 鑽地顯示預先警告",
-	SpecWarnPursue			= "當你受到追擊時顯示特別警告",
+	SpecWarnPursue			= "當你被追擊時顯示特別警告",
 	TimerEmerge			= "顯示鑽地的計時器",
 	TimerSubmerge			= "顯示下一次鑽地的計時器",
-	PlaySoundOnPursue		= "當你受到追擊時播放音效",
-	PursueIcon			= "為受到追擊的玩家設置標記",
-	WarnPursue			= "警告誰受到了追擊"
+	PlaySoundOnPursue		= "當你被追擊時播放音效",
+	PursueIcon			= "為被追擊的玩家設置標記",
+	WarnPursue			= "提示被追擊的玩家"
 }
