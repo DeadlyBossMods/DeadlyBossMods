@@ -113,6 +113,8 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 34796 then
 		specWarnSilence:Cancel()
+		timerNextStomp:Stop()
+		timerNextImpale:Stop()
 	end
 end
 
