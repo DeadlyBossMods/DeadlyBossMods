@@ -21,7 +21,7 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local enrageTimer			= mod:NewEnrageTimer(210)		-- heroic 3:30 after Icehowl spawns
+local enrageTimer			= mod:NewEnrageTimer(190)		-- heroic 3:10 after Icehowl spawns
 
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
@@ -65,7 +65,7 @@ function mod:OnCombatStart(delay)
 	specWarnSilence:Schedule(37-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerNextBoss:Start(-delay)
-		timerNextBoss:Schedule(150)
+		timerNextBoss:Schedule(170)
 	end
 	timerNextStomp:Start(38-delay)
 end
