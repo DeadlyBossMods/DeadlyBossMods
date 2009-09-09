@@ -34,6 +34,7 @@ L:SetOptionLocalization{
 	SpecialWarningToxin			= "Mostrar aviso especial si te afecta Toxina paralizadora",
 	SpecialWarningBile			= "Mostrar aviso especial si te afecta Bilis ardiente",
 	SpecialWarningCharge		= "Mostrar aviso especial si Aullahielo te mira",
+	PingCharge					= "Pulsar en el Minimapa si Aullahielo va a por Ti",
 	SpecialWarningChargeNear	= "Mostrar aviso especial si Aullahielo va a por ti",
 	SetIconOnChargeTarget		= "Poner icono a por quien va",
 	SetIconOnBileTarget			= "Poner icono quien tiene Bilis ardiente",
