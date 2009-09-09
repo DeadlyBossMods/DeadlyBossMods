@@ -34,6 +34,7 @@ L:SetOptionLocalization{
 	SpecialWarningToxin		= "當你中了痲痺劇毒時顯示特別警告",
 	SpecialWarningBile		= "當你中了燃燒膽汁時顯示特別警告",
 	SpecialWarningCharge		= "當冰嚎即將撞擊你時顯示特別警告",
+	PingCharge			= "當冰嚎即將撞擊你時點擊小地圖",
 	SpecialWarningChargeNear	= "當冰嚎的撞擊接近你時顯示特別警告",
 	SetIconOnChargeTarget		= "為撞擊的目標設置標記(頭顱)",
 	SetIconOnBileTarget		= "為燃燒膽汁的目標設置標記",
