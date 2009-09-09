@@ -32,6 +32,7 @@ L:SetOptionLocalization{
 	SpecialWarningToxin			= "Show special warning if you have Paralytic Toxin",
 	SpecialWarningBile			= "Show special warning if you have Burning Bile",
 	SpecialWarningCharge		= "Show special warning when Icehowl is about to charge You",
+	PingCharge					= "Ping the minimap when Icehowl is about to charge You",
 	SpecialWarningChargeNear	= "Show special warning when Icehowl charges near You",
 	SetIconOnChargeTarget		= "Set Icon on Charge Target (skull)",
 	SetIconOnBileTarget			= "Set Icon on Burning Bile Targets",
