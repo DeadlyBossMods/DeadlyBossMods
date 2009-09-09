@@ -86,7 +86,7 @@ L:SetWarningLocalization{
 	SpecWarnKiss			= "Mistress' Kiss",
 	SpecWarnTouchNear		= "Touch of Jaraxxus on >%s< near you",
 	SpecWarnFlame			= "Legion Flame! Run!",
-	SpecWarnNetherPower		= "Dispell Now!",
+	SpecWarnNetherPower		= "Dispel Now!",
 	SpecWarnFelInferno		= "Fel Inferno! Run Away!"
 }
 
@@ -105,7 +105,7 @@ L:SetOptionLocalization{
 	SpecWarnTouch			= "Special warning for Touch of Jaraxxus on you",
 	SpecWarnTouchNear		= "Special warning for Touch of Jaraxxus near you",
 	SpecWarnKiss			= "Special warning for Mistress' Kiss on you",
-	SpecWarnNetherPower		= "Special warning for Nether Power (to dispell jaraxxus)",
+	SpecWarnNetherPower		= "Special warning for Nether Power (to dispel Jaraxxus)",
 	SpecWarnFelInferno		= "Special warning when you are to near to an Fel Inferno",
 	TouchJaraxxusIcon		= "Set Icon on Touch of Jaraxxus target (cross)",
 	IncinerateFleshIcon		= "Set Icon on Incinerate Flesh target (skull)",
