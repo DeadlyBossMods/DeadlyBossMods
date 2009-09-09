@@ -21,13 +21,13 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local enrageTimer			= mod:NewEnrageTimer(190)		-- heroic 3:10 after Icehowl spawns
+local enrageTimer			= mod:NewEnrageTimer(230)		-- heroic 3:10 after Icehowl spawns
 
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
 local timerNextImpale		= mod:NewNextTimer(10, 67477)
 local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
-local timerNextBoss			= mod:NewTimer(160, "TimerNextBoss")
+local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss")
 local timerNextCrash		= mod:NewCDTimer(55, 67662)
 
 local warnImpaleOn			= mod:NewAnnounce("WarningImpale", 2, 67478)
@@ -65,7 +65,7 @@ function mod:OnCombatStart(delay)
 	burnIcon = 8
 	specWarnSilence:Schedule(37-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerNextBoss:Start(-delay)
+		timerNextBoss:Start(160-delay)
 		timerNextBoss:Schedule(170)
 	end
 	timerNextStomp:Start(38-delay)
