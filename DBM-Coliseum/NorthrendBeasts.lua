@@ -47,6 +47,7 @@ local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
 local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
 
+mod:AddBoolOption("PingCharge")
 mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
 mod:AddBoolOption("SetIconOnBileTarget", true, "announce")
 mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
@@ -139,6 +140,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		end
 		if target == UnitName("player") then
 			specWarnCharge:Show()
+			if self.Options.PingCharge then
+				Minimap:PingLocation()
+			end
 		else
 			local uId = DBM:GetRaidUnitId(target)
 			if uId then
