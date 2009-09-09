@@ -59,52 +59,132 @@ local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 ---------------------
 --  Dropdown Menu  --
 ---------------------
+
+-- todo: this dropdown menu is somewhat ugly and unflexible....
 do
 	local function setRange(self, range)
 		rangeCheck:Show(range)
 	end
-	function initialize(dropdownFrame, level)
+	
+	local sound0 = "none"
+	local sound1 = "Interface\\AddOns\\DBM-Core\\Sounds\\blip_8.ogg"
+	local sound2 = "Interface\\AddOns\\DBM-Core\\Sounds\\alarmclockbeeps.ogg"
+	local function setSound(self, option, sound)
+		DBM.Options[option] = sound
+		if sound ~= "none" then
+			PlaySoundFile(sound)
+		end
+	end
+	
+	function initialize(dropdownFrame, level, menu)
 		local info
 		if level == 1 then
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_SETRANGE
 			info.notCheckable = true
 			info.hasArrow = true
+			info.menuList = "range"
 			UIDropDownMenu_AddButton(info, 1)
+			
+			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_RANGECHECK_SOUNDS
+			info.notCheckable = true
+			info.hasArrow = true
+			info.menuList = "sounds"
+			UIDropDownMenu_AddButton(info, 1)
+			
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_HIDE
 			info.notCheckable = true
 			info.func = function() rangeCheck:Hide() end
 			UIDropDownMenu_AddButton(info, 1)
 		elseif level == 2 then
+			if menu == "range" then
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(10)
+				info.func = setRange
+				info.arg1 = 10
+				info.checked = (frame.range == 10)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(11)
+				info.func = setRange
+				info.arg1 = 11
+				info.checked = (frame.range == 11)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(15)
+				info.func = setRange
+				info.arg1 = 15
+				info.checked = (frame.range == 15)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(28)
+				info.func = setRange
+				info.arg1 = 28
+				info.checked = (frame.range == 28)
+				UIDropDownMenu_AddButton(info, 2)
+			elseif menu == "sounds" then
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SOUND_OPTION_1
+				info.notCheckable = true
+				info.hasArrow = true
+				info.menuList = "RangeFrameSound1"
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SOUND_OPTION_2
+				info.notCheckable = true
+				info.hasArrow = true
+				info.menuList = "RangeFrameSound2"
+				UIDropDownMenu_AddButton(info, 2)
+			end
+		elseif level == 3 then
+			local option = menu
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(10)
-			info.func = setRange
-			info.arg1 = 10
-			info.checked = (frame.range == 10)
-			UIDropDownMenu_AddButton(info, 2)
+			info.text = DBM_CORE_RANGECHECK_SOUND_0
+			info.func = setSound
+			info.arg1 = option
+			info.arg2 = sound0
+			info.checked = (DBM.Options[option] == sound0)
+			UIDropDownMenu_AddButton(info, 3)
+			
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(11)
-			info.func = setRange
-			info.arg1 = 11
-			info.checked = (frame.range == 11)
-			UIDropDownMenu_AddButton(info, 2)
+			info.text = DBM_CORE_RANGECHECK_SOUND_1
+			info.func = setSound
+			info.arg1 = option
+			info.arg2 = sound1
+			info.checked = (DBM.Options[option] == sound1)
+			UIDropDownMenu_AddButton(info, 3)
+			
 			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(15)
-			info.func = setRange
-			info.arg1 = 15
-			info.checked = (frame.range == 15)
-			UIDropDownMenu_AddButton(info, 2)
-			info = UIDropDownMenu_CreateInfo()
-			info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(28)
-			info.func = setRange
-			info.arg1 = 28
-			info.checked = (frame.range == 28)
-			UIDropDownMenu_AddButton(info, 2)
+			info.text = DBM_CORE_RANGECHECK_SOUND_2
+			info.func = setSound
+			info.arg1 = option
+			info.arg2 = sound2
+			info.checked = (DBM.Options[option] == sound2)
+			UIDropDownMenu_AddButton(info, 3)
 		end
 	end
 end
 
+-----------------
+-- Play Sounds --
+-----------------
+local function updateSound(numPlayers) -- called every 5 seconds
+	if numPlayers == 1 then
+		if DBM.Options.RangeFrameSound1 ~= "none" then
+			PlaySoundFile(DBM.Options.RangeFrameSound1)
+		end
+	elseif numPlayers > 1 then
+		if DBM.Options.RangeFrameSound2 ~= "none" then
+			PlaySoundFile(DBM.Options.RangeFrameSound2)
+		end
+	end
+end
 
 ------------------------
 --  Create the frame  --
@@ -137,7 +217,7 @@ function createFrame()
 	frame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
 		if elapsed >= 0.5 and self.checkFunc then
-			onUpdate(self)
+			onUpdate(self, elapsed)
 			elapsed = 0
 		end
 	end)
@@ -154,7 +234,8 @@ end
 ----------------
 --  OnUpdate  --
 ----------------
-function onUpdate(self)
+local soundUpdate = 0
+function onUpdate(self, elapsed)
 	local color
 	local j = 0
 	self:ClearLines()
@@ -166,6 +247,11 @@ function onUpdate(self)
 			self:AddLine(UnitName("raid"..i), color.r, color.g, color.b)
 			if j >= 5 then break end
 		end
+	end
+	soundUpdate = soundUpdate + elapsed
+	if soundUpdate >= 5 and j > 0 then
+		updateSound(j)
+		soundUpdate = 0
 	end
 	self:Show()
 end
@@ -187,7 +273,7 @@ checkFuncs[28] = function(uId)
 end
 
 do
-	local bandages = {21991, 34721, 38643, 34722}  -- you should have one of these bandages in your cache
+	local bandages = {21991, 34721, 38643, 34722, 34721, 34722}  -- you should have one of these bandages in your cache
 
 	checkFuncs[15] = function(uId)
 		for i, v in ipairs(bandages) do
@@ -211,7 +297,7 @@ function rangeCheck:Show(range)
 	frame.range = range
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
-	onUpdate(frame)
+	onUpdate(frame, 0)
 end
 
 function rangeCheck:Hide()

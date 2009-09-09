@@ -54,6 +54,12 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click or right-click to move\nAlt+shif
 
 DBM_CORE_RANGECHECK_HEADER			= "Range Check (%d yd)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Set range"
+DBM_CORE_RANGECHECK_SOUNDS			= "Sounds"
+DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Sound when one player is in range"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sound for more than one player"
+DBM_CORE_RANGECHECK_SOUND_0			= "No sound"
+DBM_CORE_RANGECHECK_SOUND_1			= "Default sound"
+DBM_CORE_RANGECHECK_SOUND_2			= "Annoying beep"
 DBM_CORE_RANGECHECK_HIDE			= "Hide"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 
