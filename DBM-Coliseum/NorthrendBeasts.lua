@@ -5,9 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34797)
 mod:SetMinCombatTime(30)
 
--- 34816 npc to talk to
--- 34796 Gormok the Impaler
--- 34797 npc icehowl died
+-- 34816 = npc to talk to
 
 mod:RegisterCombat("yell", L.CombatStart)
 
@@ -55,20 +53,41 @@ mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
 --local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
 --local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
 
-local BileTargets = {}
-local ToxinTargets = {}
+local bileTargets = {}
+local toxinTargets = {}
 local burnIcon = 8
+local oneWormDead = false
+local phases = {}
+
+local function updateHealthFrame(phase)
+	if phases[phase] then
+		return
+	end
+	phases[phase] = true
+	if phase == 1 then
+		DBM.BossHealth:Clear()
+		DBM.BossHealth:AddBoss(34796, L.Gormok)
+	elseif phase == 2 then
+		DBM.BossHealth:AddBoss(35144, L.Acidmaw)
+		DBM.BossHealth:AddBoss(34799, L.Dreadscale)
+	elseif phase == 3 then
+		DBM.BossHealth:AddBoss(34797, L.Icehowl)
+	end
+end
 
 function mod:OnCombatStart(delay)
-	table.wipe(BileTargets)
-	table.wipe(ToxinTargets)
+	table.wipe(bileTargets)
+	table.wipe(toxinTargets)
+	table.wipe(phases)
 	burnIcon = 8
+	oneWormDead = false
 	specWarnSilence:Schedule(37-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerNextBoss:Start(160-delay)
 		timerNextBoss:Schedule(170)
 	end
 	timerNextStomp:Start(38-delay)
+	updateHealthFrame(1)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -78,14 +97,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRage:Show()
 	elseif args:IsSpellID(66823, 67618, 67619, 67620) then				-- Paralytic Toxin
 		self:UnscheduleMethod("warnToxin")
-		ToxinTargets[#ToxinTargets + 1] = args.destName
+		toxinTargets[#toxinTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnToxin:Show()
 		end
 		mod:ScheduleMethod(0.2, "warnToxin")
 	elseif args:IsSpellID(66869, 66870, 67621, 67622, 67623) then		-- Burning Bile
 		self:UnscheduleMethod("warnBile")
-		BileTargets[#BileTargets + 1] = args.destName
+		bileTargets[#bileTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnBile:Show()
 		end
@@ -94,19 +113,20 @@ function mod:SPELL_AURA_APPLIED(args)
 			burnIcon = burnIcon - 1
 		end
 		mod:ScheduleMethod(0.2, "warnBile")
+		updateHealthFrame(2) 
 	elseif args:IsSpellID(66758) then 
 		timerStaggeredDaze:Start()
 	end
 end
 
 function mod:warnToxin()
-	warnToxin:Show(table.concat(ToxinTargets, "<, >"))
-	table.wipe(ToxinTargets)
+	warnToxin:Show(table.concat(toxinTargets, "<, >"))
+	table.wipe(toxinTargets)
 end
 
 function mod:warnBile()
-	warnBile:Show(table.concat(BileTargets, "<, >"))
-	table.wipe(BileTargets)
+	warnBile:Show(table.concat(bileTargets, "<, >"))
+	table.wipe(bileTargets)
 	burnIcon = 8
 end
 
@@ -116,6 +136,16 @@ function mod:UNIT_DIED(args)
 		specWarnSilence:Cancel()
 		timerNextStomp:Stop()
 		timerNextImpale:Stop()
+	end
+	if cid == 34796 or cid == 34797 then -- remove Gormok and Icehowl
+		DBM.BossHealth:RemoveBoss(cid)
+	elseif cid == 35144	or cid == 34799 then -- remove the worms together
+		if oneWormDead then
+			DBM.BossHealth:RemoveBoss(35144)
+			DBM.BossHealth:RemoveBoss(34799)
+		else
+			oneWormDead = true
+		end
 	end
 end
 
@@ -181,6 +211,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase3 then
+		updateHealthFrame(3)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 		end

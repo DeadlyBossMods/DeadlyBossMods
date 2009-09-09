@@ -29,7 +29,12 @@
 --    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
-
+--
+--
+-- This file makes use of the following free (Creative Commons Sampling Plus 1.0) sounds:
+--    * alarmclockbeeps.ogg by tedthetrumpet (http://www.freesound.org/usersViewSingle.php?id=177)
+--    * blip_8.ogg by Corsica_S (http://www.freesound.org/usersViewSingle.php?id=7037)
+--  The full of text of the license can be found in the file "Sounds\Creative Commons Sampling Plus 1.0.txt".
 
 ---------------
 --  Globals  --
