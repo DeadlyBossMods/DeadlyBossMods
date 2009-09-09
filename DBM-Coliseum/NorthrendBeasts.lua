@@ -136,9 +136,7 @@ function mod:UNIT_DIED(args)
 		specWarnSilence:Cancel()
 		timerNextStomp:Stop()
 		timerNextImpale:Stop()
-	end
-	if cid == 34796 or cid == 34797 then -- remove Gormok and Icehowl
-		DBM.BossHealth:RemoveBoss(cid)
+		DBM.BossHealth:RemoveBoss(cid) -- remove Gormok from the health frame
 	elseif cid == 35144	or cid == 34799 then -- remove the worms together
 		if oneWormDead then
 			DBM.BossHealth:RemoveBoss(35144)
@@ -211,6 +209,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase3 then
+		self:SendSync("Phase3")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "Phase3" then
 		updateHealthFrame(3)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
