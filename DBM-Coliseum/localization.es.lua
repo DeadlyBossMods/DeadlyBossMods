@@ -14,7 +14,11 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge			= "^%%s glares at (%S+) and lets out",
 	CombatStart		= "Desde las cavernas más oscuras y profundas de Las Cumbres Tormentosas: ¡Gormok el Empalador! ¡A luchar, héroes!",
-	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
+	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!",
+	Gormok			= "Gormok el Empalador",
+	Acidmaw			= "Fauceácida",
+	Dreadscale		= "Aterraescama",
+	Icehowl			= "Aullahielo"
 }
 
 L:SetOptionLocalization{
