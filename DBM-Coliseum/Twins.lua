@@ -30,6 +30,8 @@ local specWarnSpecial		= mod:NewSpecialWarning("SpecWarnSpecial")
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
 local specWarnEmpoweredLight		= mod:NewSpecialWarning("SpecWarnEmpoweredLight")
+local timerLightTouch	= mod:NewBuffActiveTimer(12, 67298)
+local timerDarkTouch	= mod:NewBuffActiveTimer(12, 67283)
 local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 
 function mod:OnCombatStart(delay)
@@ -77,6 +79,10 @@ function mod:SPELL_AURA_APPLIED(args)	-- don't think this is really needed
 		specWarnEmpoweredDarkness:Show()
 	elseif args:IsSpellID(65748, 67216, 67217, 67218) and args:IsPlayer() then	-- Empowered Light
 		specWarnEmpoweredLight:Show()
+	elseif args:IsSpellID(65950, 67296, 67297, 67298) and args:IsPlayer() then	-- Touch of Light
+		timerLightTouch:Start(args.destName)
+	elseif args:IsSpellID(66001, 67281, 67282, 67283) and args:IsPlayer() then	-- Touch of Darkness
+		timerDarkTouch:Start(args.destName)
 	end
 end
 
