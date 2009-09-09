@@ -124,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 
 	elseif args:IsSpellID(67907) and args:IsPlayer() then
-			specWarnKiss:Show()
+		specWarnKiss:Show()
 	end
 end
 
@@ -144,8 +144,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnVolcanoSoon:Schedule(110)
 
 	elseif args:IsSpellID(67900, 67899, 67898, 66269) then		-- Nether Portal
-			timerPortalCD:Start()
-			warnPortalSoon:Schedule(40)
+		timerPortalCD:Start()
+		warnPortalSoon:Schedule(40)
 	
 	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		warnFlame:Show(args.destName)
