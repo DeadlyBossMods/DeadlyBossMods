@@ -50,10 +50,17 @@ mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
 mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
 
 function mod:OnCombatStart(delay)
-	timerPortalCD:Start(45-delay)
-	warnPortalSoon:Schedule(40-delay)
-	timerVolcanoCD:Start(105-delay)
-	warnVolcanoSoon:Schedule(100-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		timerPortalCD:Start(20-delay)
+		warnPortalSoon:Schedule(15-delay)
+		timerVolcanoCD:Start(60-delay)
+		warnVolcanoSoon:Schedule(55-delay)
+	else
+		timerPortalCD:Start(45-delay)
+		warnPortalSoon:Schedule(40-delay)
+		timerVolcanoCD:Start(105-delay)
+		warnVolcanoSoon:Schedule(100-delay)
+	end
 	timerFleshCD:Start(14-delay)
 	timerFlameCD:Start(20-delay)
 	enrageTimer:Start(-delay)
@@ -137,8 +144,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnVolcanoSoon:Schedule(110)
 
 	elseif args:IsSpellID(67900, 67899, 67898, 66269) then		-- Nether Portal
-		timerPortalCD:Start()
-		warnPortalSoon:Schedule(40)
+			timerPortalCD:Start()
+			warnPortalSoon:Schedule(40)
 	
 	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		warnFlame:Show(args.destName)
