@@ -11,10 +11,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	--Charge	= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
-	Charge		= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
-	CombatStart	= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!",
+	--Charge		= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
+	Charge			= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
+	CombatStart		= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!",
 	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!"
+	Gormok			= "꿰뚫는 자 고르목",
+	Acidmaw			= "산성아귀",
+	Dreadscale		= "공포비늘",
+	Icehowl			= "얼음울음"	
 }
 
 L:SetOptionLocalization{
