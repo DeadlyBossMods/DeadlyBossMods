@@ -14,7 +14,11 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge				= "%%s怒視著(%S+)，並發出震耳的咆哮!",
 	CombatStart			= "來自風暴群山最深邃，最黑暗的洞穴。歡迎『穿刺者』戈莫克!戰鬥吧，英雄們!",
-	Phase3				= "下一場參賽者的出場連空氣都會為之凝結:冰嚎!戰個你死我活吧，勇士們!"
+	Phase3				= "下一場參賽者的出場連空氣都會為之凝結:冰嚎!戰個你死我活吧，勇士們!",
+	Gormok				= "『穿刺者』戈莫克",
+	Acidmaw				= "酸喉",
+	Dreadscale			= "懼鱗",
+	Icehowl				= "冰嚎"
 }
 
 L:SetOptionLocalization{
@@ -208,9 +212,9 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnEmerge			= "阿努巴拉克從地底鑽出來了",
-	WarnEmergeSoon			= "10秒後 鑽進地裡",
+	WarnEmergeSoon			= "10秒後 鑽出來",
 	WarnSubmerge			= "阿努巴拉克鑽進地裡了",
-	WarnSubmergeSoon		= "10秒後 鑽出來",
+	WarnSubmergeSoon		= "10秒後 鑽進地裡",
 	WarnPursue			= "追擊尖刺: >%s<",
 	SpecWarnPursue			= "你中了追擊尖刺!"	
 }
@@ -223,10 +227,10 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnEmerge			= "為鑽地顯示警告",
-	WarnEmergeSoon			= "為鑽地顯示預先警告",
-	WarnSubmerge			= "為下一次 鑽地顯示警告",
-	WarnSubmergeSoon		= "為下一次 鑽地顯示預先警告",
+	WarnEmerge			= "顯示王從地底鑽出來的警告",
+	WarnEmergeSoon			= "顯示鑽地的預先警告",
+	WarnSubmerge			= "顯示王鑽進地裡的警告",
+	WarnSubmergeSoon		= "顯示下一次鑽地的預先警告",
 	SpecWarnPursue			= "當你被追擊時顯示特別警告",
 	TimerEmerge			= "顯示鑽地的計時器",
 	TimerSubmerge			= "顯示下一次鑽地的計時器",
