@@ -56,6 +56,12 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Mayus+Raton1 o Raton2 para mover\nAlt+Mayus+
 
 DBM_CORE_RANGECHECK_HEADER			= "Comprobacion de Rango (%d yd)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Ajustar Rango"
+DBM_CORE_RANGECHECK_SOUNDS			= "Sonidos"
+DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Sonido si una persona esta a rango"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sonido si mas de una persona estan a rango"
+DBM_CORE_RANGECHECK_SOUND_0			= "Sin sonido"
+DBM_CORE_RANGECHECK_SOUND_1			= "Sonido por defecto"
+DBM_CORE_RANGECHECK_SOUND_2			= "Sonido de despertador"
 DBM_CORE_RANGECHECK_HIDE			= "Esconder"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 
