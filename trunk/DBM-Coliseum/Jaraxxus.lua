@@ -58,8 +58,8 @@ function mod:OnCombatStart(delay)
 	elseif self:IsDifficulty("heroic10") then
 		timerPortalCD:Start(20-delay)
 		warnPortalSoon:Schedule(15-delay)
-		timerVolcanoCD:Start(84-delay)
-		warnVolcanoSoon:Schedule(79-delay)
+		timerVolcanoCD:Start(85-delay)
+		warnVolcanoSoon:Schedule(80-delay)
 	else
 		timerPortalCD:Start(45-delay)
 		warnPortalSoon:Schedule(40-delay)
