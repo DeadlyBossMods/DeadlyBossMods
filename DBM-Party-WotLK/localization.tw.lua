@@ -187,7 +187,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
-	name = "阿努巴拉克"
+	name = "阿努 巴拉克" --change for aviod bug
 })
 
 L:SetWarningLocalization({
