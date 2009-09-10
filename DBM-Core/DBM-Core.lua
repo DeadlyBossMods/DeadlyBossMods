@@ -2111,6 +2111,8 @@ do
 	local textureExp = " |T(%S+):24:24|t "
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
+	
+	local cachedColorFunctions = setmetatable({}, {__mode = "kv"})
 
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
@@ -2124,15 +2126,19 @@ do
 				pformat(self.text, ...),
 				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 			)
-			text = text:gsub(">%S+<", function(cap) -- todo: cache this
-				cap = cap:sub(2, -2)
-				if DBM:GetRaidClass(cap) then
-					local color = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or self.color
-					cap = ("|r|cff%.2x%.2x%.2x%s|r%s"):format(color.r * 255, color.g * 255, color.b * 255, cap, colorCode)
+			if not cachedColorFunctions[self.color] then
+				local color = self.color -- upvalue for the function to colorize names
+				cachedColorFunctions[color] = function(cap)
+					cap = cap:sub(2, -2)
+					if DBM:GetRaidClass(cap) then
+						local playerColor = RAID_CLASS_COLORS[DBM:GetRaidClass(cap)] or color
+						cap = ("|r|cff%.2x%.2x%.2x%s|r|cff%.2x%.2x%.2x"):format(playerColor.r * 255, playerColor.g * 255, playerColor.b * 255, cap, color.r * 255, color.g * 255, color.b * 255)
+					end
+					return cap
 				end
-				return cap
-			end)
-			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work
+			end
+			text = text:gsub(">%S+<", cachedColorFunctions[self.color])
+			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this)
 			if DBM.Options.ShowWarningsInChat then
 				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font
 				if DBM.Options.ShowFakedRaidWarnings then
@@ -2245,6 +2251,35 @@ do
 	end
 end
 
+--------------------
+--  Sound Object  --
+--------------------
+do
+	local soundPrototype = {}
+	local mt = { __index = soundPrototype }
+	function bossModPrototype:NewRunAwaySound(spellId, optionName, optionDefault)
+		self.numSounds = self.numSounds and self.numSounds + 1 or 1
+		local obj = setmetatable(
+			{
+				option = optionName or "Sound"..self.numSounds,
+				mod = self,
+			},
+			mt
+		)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(obj.option, optionDefault, "misc")
+		end
+		return obj
+	end
+	
+	function soundPrototype:Play()
+		if not self.option or self.mod.Options[self.option] then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
+	end
+end
 
 ------------------------------
 --  Special Warning Object  --
