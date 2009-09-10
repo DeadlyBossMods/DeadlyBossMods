@@ -56,6 +56,12 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+clique ou clique droit pour déplacer"
 
 DBM_CORE_RANGECHECK_HEADER			= "Vérifie la portée (%d m)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Définir la portée"
+DBM_CORE_RANGECHECK_SOUNDS			= "Sons"
+DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Joue un sons quand un joueur est dans la zone"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Joue un autre sons quand plus d'un joueur sont dans la zone"
+DBM_CORE_RANGECHECK_SOUND_0			= "Pas de sons"
+DBM_CORE_RANGECHECK_SOUND_1			= "Sons par défaux"
+DBM_CORE_RANGECHECK_SOUND_2			= "Sons Ennuyeux"
 DBM_CORE_RANGECHECK_HIDE			= "Cacher"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 

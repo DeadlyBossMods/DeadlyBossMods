@@ -14,7 +14,11 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge	= "^%%s fusille (%S+) du regard et lâche un rugissement assourdissant !",
 	CombatStart		= "Arrivant tout droit des plus noires et profondes cavernes des pics Foudroyés, Gormok l'Empaleur !",
-	Phase3			= "L'air se gèle à l'entrée de notre prochain combattant, Glace-hurlante ! Tuez ou soyez tués, champions !"
+	Phase3			= "L'air se gèle à l'entrée de notre prochain combattant, Glace-hurlante ! Tuez ou soyez tués, champions !",
+	Gormok			= "Gormok l'Empaleur",
+	Acidmaw			= "Gueule-d'acide",
+	Dreadscale		= "Ecaille-d'effroi",
+	Icehowl			= "Glace-hurlante"
 }
 
 L:SetOptionLocalization{
@@ -33,8 +37,9 @@ L:SetOptionLocalization{
 	SpecialWarningSpray			= "Montre une alerte spéciale si vous êtes victime d'un Jet paralysant",
 	SpecialWarningToxin			= "Montre une alerte spéciale si vous êtes victime de la Toxine paralysante",
 	SpecialWarningBile			= "Montre une alerte spéciale si vous avez la Bile brûlante sur Vous",
-	SpecialWarningCharge		= "Montre une alerte spéciale quand Icehowl est sur le point de vous charger",
-	SpecialWarningChargeNear	= "Montre une alerte spéciale quand Icehowl charge a coter de vous",
+	SpecialWarningCharge		= "Montre une alerte spéciale quand Glace-hurlante est sur le point de vous charger",
+	PingCharge					= "Ping sur la minimap quand Glace-hurlante va vous charger",
+	SpecialWarningChargeNear	= "Montre une alerte spéciale quand Glace-hurlante charge a coter de vous",
 	SetIconOnChargeTarget		= "Met une icone sur la cible de la charge ( Tête de mort )",
 	SetIconOnBileTarget			= "Met une icone sur la cible de la Bile brûlante",
 	ClearIconsOnIceHowl			= "Enlève toutes les icones avant la prochaine charge",
@@ -197,7 +202,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
-	name = "Anub'Arak"
+	name 				= "Anub'arak"
 }
 
 L:SetTimerLocalization{
