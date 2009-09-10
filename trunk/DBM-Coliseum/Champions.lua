@@ -55,13 +55,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(65816, 68145) then
+	if args:IsSpellID(65816, 68145, 68146) then
 		warnHellfire:Show()
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(65817, 68142) and args:IsPlayer() then
+	if args:IsSpellID(65817, 68142, 68146) and args:IsPlayer() then
 		specWarnHellfire:Show()
 	end
 end
