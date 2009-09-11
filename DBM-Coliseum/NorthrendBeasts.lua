@@ -109,7 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBile:Show()
 		end
 		if mod.Options.SetIconOnBileTarget and burnIcon > 0 then
-			mod:SetIcon(args.destName, burnIcon)
+			mod:SetIcon(args.destName, burnIcon, 15)
 			burnIcon = burnIcon - 1
 		end
 		mod:ScheduleMethod(0.2, "warnBile")

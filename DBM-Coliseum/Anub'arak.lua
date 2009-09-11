@@ -8,6 +8,7 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
@@ -32,13 +33,25 @@ local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DB
 local warnPhase3			= mod:NewPhaseAnnounce(3)
 local enrageTimer			= mod:NewEnrageTimer(570)	-- 9:30 ? hmpf (no enrage while submerged... this sucks)
 
+-- Penetrating Cold
+local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)
+local timerPCold			= mod:NewTargetTimer(15, 68509)
+mod:AddBoolOption("SetIconsOnPCold", true, "announce")
+
+
+local PColdIcon = 7
+function mod:resetIcons()
+	PColdIcon = 7
+end
+
 function mod:OnCombatStart(delay)
 	timerSubmerge:Start(80-delay)
 	enrageTimer:Start(-delay)
+	self:resetIcons()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(67574) then		-- Pursue
+	if args:IsSpellID(67574) then			-- Pursue
 		if args:IsPlayer() then
 			specWarnPursue:Show()
 			if self.Options.PlaySoundOnPursue then
@@ -49,6 +62,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8, 15)
 		end
 		warnPursue:Show(args.destName)
+
+	elseif args:IsSpellID(66013, 68509) then		-- Penetrating Cold
+		mod:ScheduleMethod(3, "resetIcons")		
+		if args:IsPlayer() then
+			specWarnPCold:Show()
+		end
+		if self.Options.SetIconsOnPCold and PColdIcon > 0 then
+			mod:SetIcon(args.destName, PColdIcon, 15)
+			PColdIcon = PColdIcon - 1
+		end
+		timerPCold:Show(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(66013, 68509) then			-- Penetrating Cold
+		mod:SetIcon(args.destName, 0)
 	end
 end
 
