@@ -168,6 +168,7 @@ function bossHealth:Show(name)
 end
 
 function bossHealth:Clear()
+	if not anchor or not anchor:IsShown() then return end
 	for i = #bars, 1, -1 do
 		local bar = bars[i]
 		bar:Hide()
@@ -182,10 +183,12 @@ function bossHealth:Hide()
 end
 
 function bossHealth:AddBoss(cId, name)
+	if not anchor or not anchor:IsShown() then return end
 	table.insert(bars, createBar(self, cId, name))
 end
 
 function bossHealth:RemoveBoss(cId)
+	if not anchor or not anchor:IsShown() then return end
 	for i = #bars, 1, -1 do
 		local bar = bars[i]
 		if bar.id == cId then
