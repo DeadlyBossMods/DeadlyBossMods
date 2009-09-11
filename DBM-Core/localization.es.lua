@@ -32,7 +32,7 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "Miscelaneo"
 
 DBM_CORE_AUTO_RESPONDED				= "Auto-respusta."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d gete viva"
-DBM_CORE_AUTO_RESPOND_WHISPER		= "%s esta ocupado en la batalla conta %s (%s, %d/%d gete viva)"
+DBM_CORE_AUTO_RESPOND_WHISPER		= "%s esta ocupado en la batalla contra %s (%s, %d/%d gente viva)"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Version"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
