@@ -2760,9 +2760,17 @@ function bossModPrototype:RegisterCombat(cType, ...)
 	if self.multiMobPullDetection then
 		info.multiMobPullDetection = self.multiMobPullDetection
 	end
+	local addedKillMobs = false
 	for i = 1, select("#", ...) do
 		local v = select(i, ...)
 		if type(v) == "number" then
+			info.killMobs = info.killMobs or {}
+			info.killMobs[select(i, ...)] = true
+			addedKillMobs = true
+		end
+	end
+	if not addedKillMobs and self.multiMobPullDetection then
+		for i, v in ipairs(self.multiMobPullDetection) do
 			info.killMobs = info.killMobs or {}
 			info.killMobs[select(i, ...)] = true
 		end
