@@ -49,7 +49,7 @@ mod:SetBossHealthInfo(
 
 local warnHellfire			= mod:NewAnnounce("WarnHellfire", 1)
 local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
-
+local warnHeroism			= mod:NewSpellAnnounce(65980)
 
 function mod:OnCombatStart(delay)
 end
@@ -57,6 +57,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(65816, 68145, 68146) then
 		warnHellfire:Show()
+	elseif args:IsSpellID(65980) then		-- missing SpellID for Heroism (if NPCs are Alliance)
+		warnHeroism:Show()
 	end
 end
 
