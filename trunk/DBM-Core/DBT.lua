@@ -48,6 +48,7 @@ local barPrototype = {}
 local unusedBars = {}
 local unusedBarObjects = setmetatable({}, {__mode = "kv"})
 local instances = {}
+local updateClickThrough
 local options
 local function stringFromTimer(t)
 	if t <= 60 then
@@ -356,7 +357,7 @@ do
 			frame = CreateFrame("Frame", "DBT_Bar_"..fCounter, self.mainAnchor, "DBTBarTemplate")
 			fCounter = fCounter + 1
 		end
-		frame:EnableMouse(not self.options.ClickThrough)
+		frame:EnableMouse(not self.options.ClickThrough or self.movable)
 		return frame
 	end	
 	local mt = {__index = barPrototype}
@@ -678,6 +679,7 @@ end
 
 do
 	local function moveEnd(self)
+		updateClickThrough(self, self:GetOption("ClickThrough"))
 		self.movable = false
 	end
 	
@@ -690,7 +692,9 @@ do
 			local bar2 = self:CreateBar(20, "Move2", "Interface\\Icons\\Spell_Nature_WispSplode", true)
 			bar2:SetText(DBM_CORE_MOVABLE_BAR)
 		end
+		updateClickThrough(self, false)
 		self.movable = true
+		DBM:Unschedule(moveEnd, self)
 		DBM:Schedule(20, moveEnd, self)
 	end
 end
@@ -784,10 +788,12 @@ options.ExpandUpwards.onChange = updateOrientation
 options.BarYOffset.onChange = updateOrientation
 options.BarXOffset.onChange = updateOrientation
 
-local function updateClickThrough(self, newValue)
-	for bar in self:GetBarIterator() do
-		if not bar.dummy then
-			bar.frame:EnableMouse(not newValue)
+function updateClickThrough(self, newValue)
+	if not self.movable then
+		for bar in self:GetBarIterator() do
+			if not bar.dummy then
+				bar.frame:EnableMouse(not newValue)
+			end
 		end
 	end
 end
