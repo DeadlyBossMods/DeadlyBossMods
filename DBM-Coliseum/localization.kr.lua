@@ -147,24 +147,24 @@ L:SetMiscLocalization{
 	Alyssia 	= "사냥꾼 - 앨리시아",					-- 34467, Allience
 	Ginselle	= "마법사 - 진셀 블라이트링거",			-- 34449, Horde
 	Noozle		= "마법사 - 누즐 위즐스틱",				-- 34468, Allience
-	Liandra		= "신성 - 태양의 소환사 리안드리아",	-- 34445, Horde
+	Liandra		= "신성 - 태양의 소환사 리안드라",		-- 34445, Horde
 	Malithas	= "징벌 - 말리사스 브라이트블레이드",	-- 34456, Horde
 	Baelnor 	= "신성 - 빛의 인도자 밸누어",			-- 34471, Allience
 	Velanaa		= "징벌 - 벨라나", 						-- 34465, Allience
 	Caiphus		= "수양 - 엄격한 캐퍼스",				-- 34447, Horde
 	Vivienne	= "암흑 - 검은휘파람의 비비엔느",		-- 34441, Horde
-	Anthar		= "안타르 포지멘더",			 		-- 34466, Allience
-	Brienna		= "암흑 - 브리에나 나이트펠",			-- 34473, Allience
+	Anthar		= "수양 - 안타르 포지멘더",				-- 34466, Allience
+	Brienna		= "암흑 - 브리엔나 나이트펠",			-- 34473, Allience
 	Mazdinah	= "도적 - 마즈디나",					-- 34454, Horde
 	Irieth		= "도적 - 이리에스 쉐도우스텝",			-- 34472, Allience
 	Thrakgar	= "정기 - 스라가",						-- 34444, Horde
 	Broln		= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
-	Saamul		= "사아물", 							-- 34470, Allience
+	Saamul		= "정기 - 사아물", 						-- 34470, Allience
 	Shaabad		= "고양 - 샤베드", 						-- 34463, Allience
 	Harkzog		= "흑마법사 - 학조그",					-- 34450, Horde
-	Serissa		= "세리사 그림데블러",					-- 34474, Allience
+	Serissa		= "흑마법사 - 세리사 그림데블러",		-- 34474, Allience
 	Narrhok		= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
-	Shocuul		= "쇼쿨",								-- 34475, Allience
+	Shocuul		= "전사 - 쇼쿨",						-- 34475, Allience
 	YellKill	= "상처뿐인 승리로군. 오늘 받은 손해로 우리 전력은 약해졌네. 이런 어리석은 짓으로 리치 왕 말고 또 누가 이득을 보겠나? 위대한 용사들이 목숨을 잃었네. 무엇을 위해서였나? 진짜 위협은 저 앞에 있네. 리치 왕이 우리 모두를 죽음 안에서 기다린다네.",
 }
 
@@ -229,12 +229,13 @@ L:SetWarningLocalization{
 	WarnSubmerge		= "아눕아락 잠수!",
 	WarnSubmergeSoon	= "아눕아락 10초 이내 잠수!",
 	WarnPursue			= "아눕아락의 추격 : >%s<",
-	SpecWarnPursue		= "당신을 추격 합니다!"
+	SpecWarnPursue		= "당신을 추격 합니다!",
+	SpecWarnPCold	 	= "당신은 냉기 관통! 조심하세요!"
 }
 
 L:SetMiscLocalization{
 	YellPull			= "여기가 네 무덤이 되리라!",
-	Swarm				= "The swarm shall overtake you!",
+	Swarm				= "착취의 무리가 너희를 덮치리라!",
 	Emerge				= "%s 땅속에서 모습을 드러냅니다!",
 	Burrow				= "%s 땅속으로 숨어버립니다!"
 }
@@ -249,5 +250,7 @@ L:SetOptionLocalization{
 	TimerSubmerge		= "숨기 타이머 보기",
 	PlaySoundOnPursue	= "당신을 추격하기 시작할 때 특수 소리 재생",
 	PursueIcon			= "추격 대상자 공격대 아이콘 설정하기",
-	WarnPursue			= "추격 대상자 알리기"
+	WarnPursue			= "추격 대상자 알리기",
+	SpecWarnPCold		= "냉기 관통 특수 경고 보기",
+	SetIconsOnPCold		= "냉기 관통 대상자 공격대 아이콘 설정하기"
 }
