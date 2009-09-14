@@ -20,28 +20,27 @@ mod:SetBossHealthInfo(
 
 mod:AddBoolOption("HealthFrame", true)
 
-local enrageTimer			= mod:NewEnrageTimer(360)
-
-local warnSpecial			= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
-local timerSpecial			= mod:NewTimer(45, "TimerSpecialSpell")
-local specWarnSpecial		= mod:NewSpecialWarning("SpecWarnSpecial")
+local enrageTimer		= mod:NewEnrageTimer(360)
+local warnSpecial		= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
+local timerSpecial		= mod:NewTimer(45, "TimerSpecialSpell")
+local specWarnSpecial	= mod:NewSpecialWarning("SpecWarnSpecial")
 
 
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
 local specWarnEmpoweredLight		= mod:NewSpecialWarning("SpecWarnEmpoweredLight")
-local timerLightTouch	= mod:NewBuffActiveTimer(12, 67298)
-local timerDarkTouch	= mod:NewBuffActiveTimer(12, 67283)
+local timerLightTouch				= mod:NewBuffActiveTimer(12, 67298)
+local timerDarkTouch				= mod:NewBuffActiveTimer(12, 67283)
 local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 
 function mod:OnCombatStart(delay)
 	timerSpecial:Start(-delay)
 	warnSpecial:Schedule(40-delay)
 	timerAchieve:Start(-delay)
-	if self:IsDifficulty("normal25", "heroic25") then
-		enrageTimer:Start(480-delay)
+	if self:IsDifficulty("heroic10", "heroic25") then
+		enrageTimer:Start(360-delay)
 	else
-		enrageTimer:Start(-delay)
+		enrageTimer:Start(480-delay)
 	end
 end
 
