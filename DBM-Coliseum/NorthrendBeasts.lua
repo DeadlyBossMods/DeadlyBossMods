@@ -83,7 +83,7 @@ function mod:OnCombatStart(delay)
 	oneWormDead = false
 	specWarnSilence:Schedule(37-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
-		timerNextBoss:Start(160-delay)
+		timerNextBoss:Start(175 - delay)
 		timerNextBoss:Schedule(170)
 	end
 	timerNextStomp:Start(38-delay)
