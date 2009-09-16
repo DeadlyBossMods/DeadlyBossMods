@@ -55,7 +55,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(65816, 68145, 68146) then
+	if args:IsSpellID(65816, 68145, 68146, 68147) then
 		warnHellfire:Show()
 	elseif args:IsSpellID(65980) then		-- missing SpellID for Heroism (if NPCs are Alliance)
 		warnHeroism:Show()
@@ -63,7 +63,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(65817, 68142, 68146) and args:IsPlayer() then
+	if args:IsSpellID(65817, 68142, 68143, 68144) and args:IsPlayer() then
 		specWarnHellfire:Show()
 	end
 end
