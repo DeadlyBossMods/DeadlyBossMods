@@ -230,7 +230,8 @@ L:SetWarningLocalization{
 	WarnSubmerge			= "阿努巴拉克鑽進地裡了",
 	WarnSubmergeSoon		= "10秒後 鑽進地裡",
 	WarnPursue			= "追擊尖刺: >%s<",
-	SpecWarnPursue			= "你中了追擊尖刺!"	
+	SpecWarnPursue			= "你中了追擊尖刺!",
+	SpecWarnPCold			= "你中了透骨之寒!"	
 }
 
 L:SetMiscLocalization{
@@ -250,5 +251,7 @@ L:SetOptionLocalization{
 	TimerSubmerge			= "顯示下一次鑽地的計時器",
 	PlaySoundOnPursue		= "當你被追擊時播放音效",
 	PursueIcon			= "為被追擊的玩家設置標記",
-	WarnPursue			= "提示被追擊的玩家"
+	WarnPursue			= "提示被追擊的玩家",
+	SpecWarnPCold			= "為透骨之寒顯示特別警告",
+	SetIconsOnPCold			= "為透骨之寒的目標設置標記"
 }

@@ -63,7 +63,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnPursue:Show(args.destName)
 
-	elseif args:IsSpellID(66013, 68509) then		-- Penetrating Cold
+	elseif args:IsSpellID(66013, 67700, 68509, 68510) then		-- Penetrating Cold
 		mod:ScheduleMethod(3, "resetIcons")		
 		if args:IsPlayer() then
 			specWarnPCold:Show()
@@ -77,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(66013, 68509) then			-- Penetrating Cold
+	if args:IsSpellID(66013, 67700, 68509, 68510) then			-- Penetrating Cold
 		mod:SetIcon(args.destName, 0)
 	end
 end

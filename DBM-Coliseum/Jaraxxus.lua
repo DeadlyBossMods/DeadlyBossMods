@@ -123,7 +123,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end 
 		end
 
-	elseif args:IsSpellID(67907) and args:IsPlayer() then
+	elseif args:IsSpellID(66334, 67905, 67906, 67907) and args:IsPlayer() then
 		specWarnKiss:Show()
 	end
 end
