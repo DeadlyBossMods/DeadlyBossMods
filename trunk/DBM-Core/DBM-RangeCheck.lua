@@ -76,6 +76,10 @@ do
 		end
 	end
 	
+	local function toggleLocked()
+		DBM.Options.RangeFrameLocked = not DBM.Options.RangeFrameLocked
+	end
+	
 	function initialize(dropdownFrame, level, menu)
 		local info
 		if level == 1 then
@@ -94,9 +98,18 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 			
 			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_RANGECHECK_LOCK
+			if DBM.Options.RangeFrameLocked then
+				info.checked = true
+			end
+			info.func = toggleLocked
+			UIDropDownMenu_AddButton(info, 1)
+			
+			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_RANGECHECK_HIDE
 			info.notCheckable = true
-			info.func = function() rangeCheck:Hide() end
+			info.func = rangeCheck.Hide
+			info.arg1 = rangeCheck
 			UIDropDownMenu_AddButton(info, 1)
 		elseif level == 2 then
 			if menu == "range" then
@@ -175,6 +188,9 @@ end
 -- Play Sounds --
 -----------------
 local function updateSound(numPlayers) -- called every 5 seconds
+	if not UnitAffectingCombat("player") then
+		return
+	end
 	if numPlayers == 1 then
 		if DBM.Options.RangeFrameSound1 ~= "none" then
 			PlaySoundFile(DBM.Options.RangeFrameSound1)
@@ -204,7 +220,9 @@ function createFrame()
 	frame:SetPadding(16)
 	frame:RegisterForDrag("LeftButton")
 	frame:SetScript("OnDragStart", function(self)
-		self:StartMoving()
+		if not DBM.Options.RangeFrameLocked then
+			self:StartMoving()
+		end
 	end)
 	frame:SetScript("OnDragStop", function(self)
 		self:StopMovingOrSizing()
