@@ -1,7 +1,11 @@
 ﻿-- Simplified Chinese by Diablohu/yleaf(yaroot@gmail.com)
 -- http://wow.gamespot.com.cn
 -- Last Update: 12/13/2008
+
+-- yleaf (yaroot@gmail.com) 9-19-2009
+
 if GetLocale() ~= "zhCN" then return end
+
 DBM_CORE_LOAD_MOD_ERROR				= "读取%s模块时发生错误：%s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "成功读取%s模块！"
 DBM_CORE_LOAD_GUI_ERROR				= "无法读取图形界面：%s"
@@ -17,7 +21,9 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d分钟"
 DBM_CORE_TIMER_FORMAT				= "%d分%d秒"
 
 DBM_CORE_MIN						= "分"
+DBM_CORE_MIN_FMT					= "%d 分"
 DBM_CORE_SEC						= "秒"
+DBM_CORE_SEC_FMT					= "%d 秒"
 DBM_CORE_DEAD						= "死亡"
 DBM_CORE_OK							= "确定"
 
@@ -56,6 +62,12 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+单击或右键点击即可移动"
 
 DBM_CORE_RANGECHECK_HEADER			= "距离监视（%d码）"
 DBM_CORE_RANGECHECK_SETRANGE		= "设置距离"
+DBM_CORE_RANGECHECK_SOUNDS			= "声音"
+DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "当有玩家接近时播放声音提示"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "多名玩家接近提示"
+DBM_CORE_RANGECHECK_SOUND_0			= "无"
+DBM_CORE_RANGECHECK_SOUND_1			= "默认声音"
+DBM_CORE_RANGECHECK_SOUND_2			= "蜂鸣"
 DBM_CORE_RANGECHECK_HIDE			= "隐藏"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d码"
 
@@ -81,11 +93,6 @@ DBM_CORE_TIMER_PULL					= "开怪倒计时"
 DBM_CORE_ANNOUNCE_PULL				= "%d 秒后开怪"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "开怪！"
 
-
--- Generic Warnings (deprecated)
-DBM_CORE_GENERIC_TARGET_WARN = "%s 于 >%%s<!"
-DBM_CORE_GENERIC_TARGET_OPTION = "提示目标 %s"
-
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速击杀"
 
 -- Auto-generated Timer Localizations
@@ -106,3 +113,28 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	next = "显示下一次 |cff71d5ff|Hspell:%d|h%s|h|r 计时",
 	achievement = "显示成就: %s 计时",
 }
+
+-- Auto-generated Warning Localizations
+DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	target = "%s 于 >%%s<",
+	spell = "%s",
+	cast = "%s: %.1f sec",
+	soon = "即将 %s",
+	prewarn = "%2$s 后 %1$s",
+	phase = "第 %d 阶段",
+}
+
+local prewarnOption = "提前警报 |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	target = "警报目标的: |cff71d5ff|Hspell:%d|h%s|h|r",
+	spell = "显示警报: |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "施法提示: |cff71d5ff|Hspell:%d|h%s|h|r",
+	soon = prewarnOption,
+	prewarn = prewarnOption,
+	phase = "显示阶段提示: %d"
+}
+
+
+
+
+
