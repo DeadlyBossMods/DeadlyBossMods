@@ -2,12 +2,16 @@
 -- http://wow.gamespot.com.cn
 -- Last Update: 12/13/2008
 
+-- yleaf (yaroot@gmail.com) 9-19-2009
+
 if GetLocale() ~= "zhCN" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 
 local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
+
+L.TranslationBy 	= "Diablohu & yleaf"
 
 L.TabCategory_Options 	= "综合设置"
 L.TabCategory_WOTLK 	= "巫妖王之怒"
@@ -98,6 +102,7 @@ L.BarIconLeft 		= "左侧显示图标"
 L.BarIconRight 		= "右侧显示图标"
 L.EnableHugeBar 	= "开启大型计时条（2号计时条）"
 L.FillUpBars		= "填充计时条"
+L.ClickThrough		= "禁用鼠标点击事件 (允许你点击计时条)"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "信息过滤"
@@ -105,4 +110,8 @@ L.Area_SpamFilter		= "常规设置"
 L.HideBossEmoteFrame	= "隐藏BOSS表情"
 L.SpamBlockRaidWarning	= "过滤其他首领预警插件警报" 
 L.SpamBlockBossWhispers	= "战斗中过滤DBM密语警报"
+L.BlockVersionUpdatePopup	= "禁用升级提示"
+
+
+L.ShowBigBrotherOnCombatStart	= "战斗开始时使用BigBrother检测增益情况"
 
