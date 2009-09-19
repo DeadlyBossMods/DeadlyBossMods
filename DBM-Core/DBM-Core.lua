@@ -77,6 +77,7 @@ DBM.DefaultOptions = {
 	RangeFrameY = -50,
 	RangeFrameSound1 = "none",
 	RangeFrameSound2 = "none",
+	RangeFrameLocked = false,
 	HPFramePoint = "CENTER",
 	HPFrameX = -50,
 	HPFrameY = 50,

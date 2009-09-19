@@ -58,6 +58,7 @@ DBM_CORE_RANGECHECK_HEADER			= "Abstandscheck (%d m)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Abstand einstellen"
 DBM_CORE_RANGECHECK_HIDE			= "Verstecken"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
+DBM_CORE_RANGECHECK_LOCK			= "Frame sperren"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Verfügbare Slash-Commands:",

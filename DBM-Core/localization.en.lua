@@ -62,6 +62,7 @@ DBM_CORE_RANGECHECK_SOUND_1			= "Default sound"
 DBM_CORE_RANGECHECK_SOUND_2			= "Annoying beep"
 DBM_CORE_RANGECHECK_HIDE			= "Hide"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
+DBM_CORE_RANGECHECK_LOCK			= "Lock frame"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available Slash Commands:",
