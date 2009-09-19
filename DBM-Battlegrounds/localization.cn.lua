@@ -43,7 +43,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart = "显示开始计时"
+	TimerStart = "显示开始计时",
 	TimerShadow 	= "显示暗影水晶计时"
 })
 
