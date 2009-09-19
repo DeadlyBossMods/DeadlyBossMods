@@ -1,5 +1,4 @@
 ﻿-- yleaf(yaroot@gmail.com)
--- based on Diablohu's work;)
 
 if GetLocale() ~= "zhCN" then return end
 
@@ -24,6 +23,10 @@ L:SetOptionLocalization({
 	AutoSpirit	= "自动释放灵魂"
 })
 
+L:SetMiscLocalization({
+	ArenaInvite	= "竞技场邀请"
+})
+
 
 --------------
 --  Arenas  --
@@ -41,6 +44,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart = "显示开始计时"
+	TimerShadow 	= "显示暗影水晶计时"
 })
 
 L:SetMiscLocalization({
