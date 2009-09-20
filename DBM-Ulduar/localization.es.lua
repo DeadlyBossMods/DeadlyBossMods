@@ -277,13 +277,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam	= "Haz ocular en Ti - MUEVETE",
+	SpecialWarningEyebeam	= "Estas en el Rayo - MUEVETE",
 	WarningEyebeam			= "Haz ocular en >%s<",
 	WarnGrip				= "Agarra a >%s<"
 }
 
 L:SetTimerLocalization{
-	timerEyebeam			= "Haz ocular: %s",
+	timerEyebeam			= "Rayo: %s",
 	timerPetrifyingBreath	= "Aliento petrificador",
 	timerNextShockwave		= "Siguiente Ola de choque",
 	timerLeftArm			= "Reaparición del brazo izquierdo",
@@ -311,7 +311,7 @@ L:SetMiscLocalization{
 	Health_Body				= "Kologarn",
 	Health_Right_Arm		= "Brazo derecho",
 	Health_Left_Arm			= "Brazo izquierdo",
-	FocusedEyebeam			= "¡%s fija sus ojos en ti!"
+	FocusedEyebeam			= "¡%s fija sus ojos en ti, MUEVETE!"
 }
 
 ---------------
