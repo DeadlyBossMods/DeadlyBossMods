@@ -64,6 +64,7 @@ DBM_CORE_RANGECHECK_SOUND_1			= "Sonido por defecto"
 DBM_CORE_RANGECHECK_SOUND_2			= "Sonido de despertador"
 DBM_CORE_RANGECHECK_HIDE			= "Esconder"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
+DBM_CORE_RANGECHECK_LOCK			= "Bloquear ventana"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Comandos disponibles:",
@@ -79,7 +80,7 @@ DBM_ERROR_NO_PERMISSION				= "No tienes permiso para hacer eso."
 DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Esconder"
 
 DBM_CORE_ALLIANCE					= "Alianza"
-DBM_CORE_HORDE						= "Hordo"
+DBM_CORE_HORDE						= "Horda"
 
 DBM_CORE_UNKNOWN					= "desconocido"
 
