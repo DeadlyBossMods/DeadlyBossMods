@@ -148,8 +148,8 @@ L:SetMiscLocalization{
 	Noozle		= "마법사 - 누즐 위즐스틱",				-- 34468, Allience
 	Liandra		= "신성 - 리안드라 선콜러",				-- 34445, Horde
 	Malithas	= "징벌 - 말리타스 브라이트블레이드",	-- 34456, Horde
-	Baelnor 	= "신성 - 벨노르 라이트베이러",			-- 34471, Allience
-	Velanaa		= "징벌 - 벨라나", 						-- 34465, Allience
+	Baelnor 	= "징벌 - 벨노르 라이트베이러",			-- 34471, Allience
+	Velanaa		= "신성 - 벨라나", 						-- 34465, Allience
 	Caiphus		= "수양 - 준엄한 카이푸스",				-- 34447, Horde
 	Vivienne	= "암흑 - 비비안 블랙위스퍼",			-- 34441, Horde
 	Anthar		= "수양 - 안타르 포지멘더",				-- 34466, Allience
