@@ -64,6 +64,7 @@ DBM_CORE_RANGECHECK_SOUND_1			= "기본 소리"
 DBM_CORE_RANGECHECK_SOUND_2			= "짜증나는 소리(-_-;)"
 DBM_CORE_RANGECHECK_HIDE			= "숨기기"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
+DBM_CORE_RANGECHECK_LOCK			= "프레임 잠금"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능한 명령어:",
@@ -118,11 +119,11 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase = "페이즈 %d",	
 }
 
-local prewarnOption = "|cff71d5ff|H주문:%d|h%s|h|r의 사전 경고 보기"
+local prewarnOption = "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "대상의 |cff71d5ff|H주문:%d|h%s|h|r을 알리기",
-	spell 	= "|cff71d5ff|H주문:%d|h%s|h|r을 시전할 경우 경고 보기",
-	cast = "|cff71d5ff|H주문:%d|h%s|h|r의 시전을 시작할 경우 경고 보기",
+	target	= "대상의 |cff71d5ff|Hspell:%d|h%s|h|r을 알리기",
+	spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r을 시전할 경우 경고 보기",
+	cast = "|cff71d5ff|Hspell:%d|h%s|h|r의 시전을 시작할 경우 경고 보기",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
 	phase = "페이즈 %d 의 경고 보기"	
