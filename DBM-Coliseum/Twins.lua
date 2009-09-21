@@ -21,19 +21,28 @@ mod:SetBossHealthInfo(
 
 mod:AddBoolOption("HealthFrame", true)
 
-local enrageTimer		= mod:NewEnrageTimer(360)
-local warnSpecial		= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
-local timerSpecial		= mod:NewTimer(45, "TimerSpecialSpell")
-local specWarnSpecial	= mod:NewSpecialWarning("SpecWarnSpecial")
-local specWarnSwitch	= mod:NewSpecialWarning("SpecWarnSwitchTarget")
-local specWarnKickNow 	= mod:NewSpecialWarning("SpecWarnKickNow")
+local enrageTimer			= mod:NewEnrageTimer(360)
+local warnSpecial			= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
+local timerSpecial			= mod:NewTimer(45, "TimerSpecialSpell")
+local specWarnSpecial		= mod:NewSpecialWarning("SpecWarnSpecial")
+local specWarnSwitch		= mod:NewSpecialWarning("SpecWarnSwitchTarget")
+local specWarnKickNow 		= mod:NewSpecialWarning("SpecWarnKickNow")
+
 
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
 local specWarnEmpoweredLight		= mod:NewSpecialWarning("SpecWarnEmpoweredLight")
-local timerLightTouch				= mod:NewBuffActiveTimer(12, 67298)
-local timerDarkTouch				= mod:NewBuffActiveTimer(12, 67283)
+local timerLightTouch				= mod:NewTargetTimer(20, 67298)
+local timerDarkTouch				= mod:NewTargetTimer(20, 67283)
+local warnTouchDebuff				= mod:NewAnnounce("WarningTouchDebuff", 2, 66823)
 local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
+
+mod:AddBoolOption("SetIconOnDebuffTarget", true, "announce")
+mod:AddBoolOption("SpecialWarnOnDebuff", true, "announce")
+
+
+local debuffTargets = {}
+local debuffIcon = 8
 
 function mod:OnCombatStart(delay)
 	timerSpecial:Start(-delay)
@@ -44,6 +53,7 @@ function mod:OnCombatStart(delay)
 	else
 		enrageTimer:Start(480-delay)
 	end
+	debuffIcon = 8
 end
 
 local LightEssence = GetSpellInfo(67223)
@@ -81,15 +91,42 @@ function mod:SpecialAbility(debuff)
 	warnSpecial:Schedule(40)
 end
 
+
+function mod:warnDebuff()
+	warnTouchDebuff:Show(table.concat(debuffTargets, "<, >"))
+	table.wipe(debuffTargets)
+	debuffIcon = 8
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(65724, 67213, 67214, 67215) and args:IsPlayer() then 		-- Empowered Darkness
 		specWarnEmpoweredDarkness:Show()
 	elseif args:IsSpellID(65748, 67216, 67217, 67218) and args:IsPlayer() then	-- Empowered Light
 		specWarnEmpoweredLight:Show()
-	elseif args:IsSpellID(65950, 67296, 67297, 67298) and args:IsPlayer() then	-- Touch of Light
+	elseif args:IsSpellID(65950, 67296, 67297, 67298) then	-- Touch of Light
+		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
+			specWarnSpecial:Show()
+		end
 		timerLightTouch:Start(args.destName)
-	elseif args:IsSpellID(66001, 67281, 67282, 67283) and args:IsPlayer() then	-- Touch of Darkness
+		if self.Options.SetIconOnDebuffTarget then
+			mod:SetIcon(args.destName, debuffIcon, 15)
+			debuffIcon = debuffIcon - 1
+		end
+		debuffTargets[#debuffTargets + 1] = args.destName
+		self:UnscheduleMethod("warnDebuff")
+		mod:ScheduleMethod(0.2, "warnDebuff")		
+	elseif args:IsSpellID(66001, 67281, 67282, 67283) then	-- Touch of Darkness
+		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
+			specWarnSpecial:Show()
+		end
 		timerDarkTouch:Start(args.destName)
+		if self.Options.SetIconOnDebuffTarget then
+			mod:SetIcon(args.destName, debuffIcon, 15)
+			debuffIcon = debuffIcon - 1
+		end
+		debuffTargets[#debuffTargets + 1] = args.destName
+		self:UnscheduleMethod("warnDebuff")
+		mod:ScheduleMethod(0.2, "warnDebuff")		
 	end
 end
 

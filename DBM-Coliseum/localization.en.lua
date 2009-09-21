@@ -178,7 +178,8 @@ L:SetWarningLocalization{
 	SpecWarnEmpoweredDarkness	= "Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Empowered Light",
 	SpecWarnSwitchTarget		= "Switch Target!",
-	SpecWarnKickNow				= "Kick Now!"
+	SpecWarnKickNow				= "Kick Now!",
+	WarningDebuff				= "Debuff on >%s<"
 }
 
 L:SetMiscLocalization{
@@ -194,7 +195,10 @@ L:SetOptionLocalization{
 	SpecWarnEmpoweredDarkness	= "Show Special Warning for Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Show Special Warning for Empowered Light",
 	SpecWarnSwitchTarget		= "Show Special Warning when the other Boss is Casting",
-	SpecWarnKickNow				= "Show Special Warning when you have to do a Counterspell"
+	SpecWarnKickNow				= "Show Special Warning when you have to Interrupt",
+	SpecialWarnOnDebuff			= "Show Special Warning when debuffed (to switch debuff)",
+	SetIconOnDebuffTarget		= "Set Icon on Touch debuff Targets (for Heroic)",
+	WarningTouchDebuff			= "Announce Touch of Lightning/Darkness debuff Targets"
 }
 
 
