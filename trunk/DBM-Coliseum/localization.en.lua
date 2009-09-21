@@ -176,7 +176,9 @@ L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "Special Ability Soon!",
 	SpecWarnSpecial				= "Change color!",
 	SpecWarnEmpoweredDarkness	= "Empowered Darkness",
-	SpecWarnEmpoweredLight		= "Empowered Light"
+	SpecWarnEmpoweredLight		= "Empowered Light",
+	SpecWarnSwitchTarget		= "Switch Target!",
+	SpecWarnKickNow				= "Kick Now!"
 }
 
 L:SetMiscLocalization{
@@ -191,6 +193,8 @@ L:SetOptionLocalization{
 	SpecWarnSpecial				= "Show a special warning when you have to change color",
 	SpecWarnEmpoweredDarkness	= "Show Special Warning for Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Show Special Warning for Empowered Light",
+	SpecWarnSwitchTarget		= "Show Special Warning when the other Boss is Casting",
+	SpecWarnKickNow				= "Show Special Warning when you have to do a Counterspell"
 }
 
 

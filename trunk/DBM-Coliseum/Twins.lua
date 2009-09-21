@@ -10,7 +10,8 @@ mod:RegisterCombat("yell", L.YellPull)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
 mod:SetBossHealthInfo(
@@ -24,7 +25,8 @@ local enrageTimer		= mod:NewEnrageTimer(360)
 local warnSpecial		= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
 local timerSpecial		= mod:NewTimer(45, "TimerSpecialSpell")
 local specWarnSpecial	= mod:NewSpecialWarning("SpecWarnSpecial")
-
+local specWarnSwitch	= mod:NewSpecialWarning("SpecWarnSwitchTarget")
+local specWarnKickNow 	= mod:NewSpecialWarning("SpecWarnKickNow")
 
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
@@ -58,10 +60,16 @@ function mod:SPELL_CAST_START(args)
 		timerHeal:Start()
 		local debuff = true
 		self:SpecialAbility(debuff)
+		if self:GetUnitCreatureId("target") == 34497 then	-- if lightbane, then switch to darkbane
+			specWarnSwitch:Show()	
+		end
 	elseif args:IsSpellID(65876, 67306, 67307, 67308) then		-- Light Pact
 		timerHeal:Start()
 		local debuff = true
 		self:SpecialAbility(debuff)
+		if self:GetUnitCreatureId("target") == 34496 then	-- if darkbane, then switch to lightbane
+			specWarnSwitch:Show()
+		end
 	end
 end
 
@@ -73,7 +81,7 @@ function mod:SpecialAbility(debuff)
 	warnSpecial:Schedule(40)
 end
 
-function mod:SPELL_AURA_APPLIED(args)	-- don't think this is really needed
+function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(65724, 67213, 67214, 67215) and args:IsPlayer() then 		-- Empowered Darkness
 		specWarnEmpoweredDarkness:Show()
 	elseif args:IsSpellID(65748, 67216, 67217, 67218) and args:IsPlayer() then	-- Empowered Light
@@ -84,4 +92,15 @@ function mod:SPELL_AURA_APPLIED(args)	-- don't think this is really needed
 		timerDarkTouch:Start(args.destName)
 	end
 end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(65874, 67256, 67257, 67258) and (UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34496) then			-- Shield of Darkness
+		specWarnKickNow:Show()
+	elseif args:IsSpellID(65858, 67259, 67260, 67261) and (UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34497) then		-- Shield of Lights
+		specWarnKickNow:Show()
+	end
+end
+
+
+
 
