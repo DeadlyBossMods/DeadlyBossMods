@@ -180,9 +180,9 @@ L:SetWarningLocalization{
 	SpecWarnEmpoweredDarkness	= "Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Empowered Light",
 	SpecWarnSwitchTarget		= "Cambio!",
-	SpecWarnKickNow				= "Pegar ahora!",
+	SpecWarnKickNow				= "Cortar ahora!",
 	WarningDebuff				= "Debuff en >%s<",
-	WarningPoweroftheTwins		= "Poder de Gemelas - mas heal a >%s<"
+	WarningPoweroftheTwins		= "Pacto de las Gemelas - mas heal a >%s<"
 }
 
 L:SetMiscLocalization{
