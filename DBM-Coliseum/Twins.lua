@@ -27,7 +27,7 @@ local timerSpecial			= mod:NewTimer(45, "TimerSpecialSpell")
 local specWarnSpecial		= mod:NewSpecialWarning("SpecWarnSpecial")
 local specWarnSwitch		= mod:NewSpecialWarning("SpecWarnSwitchTarget")
 local specWarnKickNow 		= mod:NewSpecialWarning("SpecWarnKickNow")
-
+local warnPoweroftheTwins	= mod:NewAnnounce("WarningPoweroftheTwins", 4)	
 
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
@@ -124,7 +124,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		self:ScheduleMethod(0.2, "warnDebuff")		
+		self:ScheduleMethod(0.2, "warnDebuff")
+	elseif args:IsSpellID(67246, 65879, 65916, 67244, 67245, 67248, 67249, 67250) then	-- Power of the Twins 
+		warnPoweroftheTwins:Show(self:GetBossTarget(args:GetDestCreatureID()))
 	end
 end
 
