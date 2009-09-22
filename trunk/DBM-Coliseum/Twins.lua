@@ -21,13 +21,14 @@ mod:SetBossHealthInfo(
 
 mod:AddBoolOption("HealthFrame", true)
 
-local enrageTimer			= mod:NewEnrageTimer(360)
-local warnSpecial			= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
-local timerSpecial			= mod:NewTimer(45, "TimerSpecialSpell")
-local specWarnSpecial		= mod:NewSpecialWarning("SpecWarnSpecial")
-local specWarnSwitch		= mod:NewSpecialWarning("SpecWarnSwitchTarget")
-local specWarnKickNow 		= mod:NewSpecialWarning("SpecWarnKickNow")
-local warnPoweroftheTwins	= mod:NewAnnounce("WarningPoweroftheTwins", 4)	
+local enrageTimer				= mod:NewEnrageTimer(360)
+local warnSpecial				= mod:NewAnnounce("WarnSpecialSpellSoon", 2)	
+local timerSpecial				= mod:NewTimer(45, "TimerSpecialSpell")
+local specWarnSpecial			= mod:NewSpecialWarning("SpecWarnSpecial")
+local specWarnSwitch			= mod:NewSpecialWarning("SpecWarnSwitchTarget")
+local specWarnKickNow 			= mod:NewSpecialWarning("SpecWarnKickNow")
+local warnPoweroftheTwins		= mod:NewAnnounce("WarningPoweroftheTwins", 4)	
+local specWarnPoweroftheTwins	= mod:NewSpecialWarning("SpecWarnPoweroftheTwins")
 
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
@@ -96,6 +97,14 @@ function mod:warnDebuff()
 	debuffIcon = 8
 end
 
+local function showPowerWarning(self, cid)
+	local target = self:GetBossTarget(cid)
+	warnPoweroftheTwins:Show(target)
+	if target == UnitName("player") then
+		specWarnPoweroftheTwins:Show()
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(65724, 67213, 67214, 67215) and args:IsPlayer() then 		-- Empowered Darkness
 		specWarnEmpoweredDarkness:Show()
@@ -126,11 +135,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:UnscheduleMethod("warnDebuff")
 		self:ScheduleMethod(0.5, "warnDebuff")
 	elseif args:IsSpellID(67246, 65879, 65916, 67244, 67245, 67248, 67249, 67250) then	-- Power of the Twins 
-		if args:GetDestCreatureID() == 34496 then
-			warnPoweroftheTwins:Show(self:GetBossTarget(34497))
-		else
-			warnPoweroftheTwins:Show(self:GetBossTarget(34496))
-		end
+		self:Schedule(0.1, showPowerWarning, self, args:GetDestCreatureID())
 	end
 end
 
