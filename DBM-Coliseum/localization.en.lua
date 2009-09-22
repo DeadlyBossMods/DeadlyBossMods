@@ -180,7 +180,8 @@ L:SetWarningLocalization{
 	SpecWarnSwitchTarget		= "Switch Target!",
 	SpecWarnKickNow				= "Kick Now!",
 	WarningTouchDebuff			= "Debuff on >%s<",
-	WarningPoweroftheTwins		= "Power of the Twins - more heal on >%s<"
+	WarningPoweroftheTwins		= "Power of the Twins - more heal on >%s<",
+	SpecWarnPoweroftheTwins		= "Power of the Twins!"
 }
 
 L:SetMiscLocalization{
@@ -193,14 +194,15 @@ L:SetOptionLocalization{
 	TimerSpecialSpell			= "Show a timer for the next special ability",
 	WarnSpecialSpellSoon		= "Prewarning for the next Special Ability",
 	SpecWarnSpecial				= "Show a special warning when you have to change color",
-	SpecWarnEmpoweredDarkness	= "Show Special Warning for Empowered Darkness",
-	SpecWarnEmpoweredLight		= "Show Special Warning for Empowered Light",
-	SpecWarnSwitchTarget		= "Show Special Warning when the other Boss is Casting",
-	SpecWarnKickNow				= "Show Special Warning when you have to Interrupt",
-	SpecialWarnOnDebuff			= "Show Special Warning when debuffed (to switch debuff)",
-	SetIconOnDebuffTarget		= "Set Icon on Touch debuff Targets (for Heroic)",
-	WarningTouchDebuff			= "Announce Touch of Lightning/Darkness debuff Targets",
-	WarningPoweroftheTwins		= "Announce current target for Power of the Twins"
+	SpecWarnEmpoweredDarkness	= "Show special warning for Empowered Darkness",
+	SpecWarnEmpoweredLight		= "Show special warning for Empowered Light",
+	SpecWarnSwitchTarget		= "Show special warning when the other boss is casting",
+	SpecWarnKickNow				= "Show special warning when you have to interrupt",
+	SpecialWarnOnDebuff			= "Show special warning when debuffed (to switch debuff)",
+	SetIconOnDebuffTarget		= "Set icon on touch debuff Targets (for heroic)",
+	WarningTouchDebuff			= "Announce Touch of Light/Darkness debuff targets",
+	WarningPoweroftheTwins		= "Announce current target for Power of the Twins",
+	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an enpowered Twin"
 }
 
 
