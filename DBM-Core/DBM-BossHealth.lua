@@ -16,6 +16,7 @@ local updateBar
 local anchor
 local header
 local dropdownFrame
+local sortingEnabled
 
 do
 	local id = 0
@@ -31,6 +32,7 @@ end
 local menu = {
 	[1] = {
 		text = DBM_CORE_BOSSHEALTH_HIDE_FRAME,
+		notCheckable = true,
 		func = function() bossHealth:Hide() end
 	}
 }
@@ -90,6 +92,7 @@ local function createBar(self, cId, name)
 	barborder:SetScript("OnMouseUp", onMouseUp)
 	barborder:SetScript("OnHide", onHide)
 	bar.id = cId
+	bar.hidden = false
 	bar:SetPoint("TOP", bars[#bars] or anchor, "BOTTOM", 0, 0)
 	bartext:SetText(name)
 	updateBar(bar, 100)
@@ -131,26 +134,45 @@ do
 		local cType = bit.band(guid:sub(0, 5), 0x00F)
 		return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
 	end
-
+	
+	local function compareBars(b1, b2)
+		return b1.value > b2.value
+	end
+	
 	function updateFrame(self, e)
 		t = t + e
 		if t >= 0.5 then
 			t = 0
+			if #bars > DBM.Options.HPFrameMaxEntries then
+				sortingEnabled = true
+			end
+			if sortingEnabled then
+--				table.sort(bars, compareBars)
+			end
 			for i, v in ipairs(bars) do
-				local id = targetCache[v.id]
-				if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then
-					targetCache[v.id] = nil
-					local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-					for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
-						id = (i == 0 and "target") or uId..i.."target"
-						if getCIDfromGUID(UnitGUID(id or "")) == v.id then
-							targetCache[v.id] = id
-							break
+				if i > DBM.Options.HPFrameMaxEntries then
+--					v:Hide()
+				else
+--					v:Show()
+				end
+				if type(v.id) == "number" then
+					local id = targetCache[v.id]
+					if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then
+						targetCache[v.id] = nil
+						local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+						for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+							id = (i == 0 and "target") or uId..i.."target"
+							if getCIDfromGUID(UnitGUID(id or "")) == v.id then
+								targetCache[v.id] = id
+								break
+							end
 						end
 					end
-				end
-				if getCIDfromGUID(UnitGUID(id or "")) == v.id then
-					updateBar(v, ((UnitHealth(id)) / (UnitHealthMax(id)) * 100 or 100))
+					if getCIDfromGUID(UnitGUID(id or "")) == v.id then
+						updateBar(v, ((UnitHealth(id)) / (UnitHealthMax(id)) * 100 or 100))
+					end
+				elseif type(v.id) == "function" then
+					updateBar(v, v.id())
 				end
 			end
 		end
@@ -176,6 +198,7 @@ function bossHealth:Clear()
 		barCache[#barCache + 1] = bar
 		bars[i] = nil
 	end
+	sortingEnabled = false
 end
 
 function bossHealth:Hide()

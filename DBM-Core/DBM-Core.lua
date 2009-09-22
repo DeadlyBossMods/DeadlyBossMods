@@ -81,6 +81,7 @@ DBM.DefaultOptions = {
 	HPFramePoint = "CENTER",
 	HPFrameX = -50,
 	HPFrameY = 50,
+	HPFrameMaxEntries = 5
 }
 
 DBM.Bars = DBT:New()
@@ -383,7 +384,7 @@ do
 		elseif event == "ENVIRONMENTAL_DAMAGE" then
 			args.environmentalType = select(1,...)
 			args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(2, ...)
-			args.spellName = getglobal("ACTION_"..event.."_"..args.environmentalType)
+			args.spellName = _G["ACTION_"..event.."_"..args.environmentalType]
 			args.spellSchool = args.school
 		elseif event == "DAMAGE_SPLIT" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)
@@ -804,7 +805,7 @@ do
 			local loaded, reason = LoadAddOn("DBM-GUI")
 			if not loaded then
 				if reason then
-					self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(getglobal("ADDON_"..reason or ""))))
+					self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(tostring(_G["ADDON_"..reason or ""])))
 				else
 					self:AddMsg(DBM_CORE_LOAD_GUI_ERROR:format(DBM_CORE_UNKNOWN))
 				end
@@ -1069,8 +1070,8 @@ do
 				end
 			end
 		end
-		setglobal(modId:gsub("-", "").."_SavedVars", savedOptions)
-		setglobal(modId:gsub("-", "").."_SavedStats", savedStats)
+		_G[modId:gsub("-", "").."_SavedVars"] = savedOptions
+		_G[modId:gsub("-", "").."_SavedStats"] = savedStats
 	end
 end
 
@@ -1175,7 +1176,7 @@ function DBM:LoadMod(mod)
 	local loaded, reason = LoadAddOn(mod.modId)
 	if not loaded then
 		if reason then
-			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(getglobal("ADDON_"..reason or ""))))
+			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), tostring(_G["ADDON_"..reason or ""])))
 		else
 --			self:AddMsg(DBM_CORE_LOAD_MOD_ERROR:format(tostring(mod.name), DBM_CORE_UNKNOWN)) -- wtf, this should never happen....(but it does happen sometimes if you reload your UI in an instance...)
 		end
@@ -1931,7 +1932,7 @@ DBM.Bars:SetAnnounceHook(function(bar)
 		prefix = DBM_CORE_ALLIANCE
 	end
 	if prefix then
-		return ("%s: %s  %d:%02d"):format(prefix, getglobal(bar.frame:GetName().."BarName"):GetText(), math.floor(bar.timer / 60), bar.timer % 60)
+		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName().."BarName"]:GetText(), math.floor(bar.timer / 60), bar.timer % 60)
 	end
 end)
 
