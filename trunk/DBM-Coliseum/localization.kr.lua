@@ -190,7 +190,11 @@ L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "곧 속성의 소용돌이!",
 	SpecWarnSpecial				= "속성(빛/어둠) 변경!",
 	SpecWarnEmpoweredDarkness	= "강화된 어둠",
-	SpecWarnEmpoweredLight		= "강화된 빛"
+	SpecWarnEmpoweredLight		= "강화된 빛",
+	SpecWarnSwitchTarget		= "대상 전환!",
+	SpecWarnKickNow				= "지금 차단!",
+	WarningDebuff				= "디버프 : >%s<",
+	WarningPoweroftheTwins		= "쌍둥이의 힘 - 오버힐!!  >%s<"
 }
 
 L:SetMiscLocalization{
@@ -205,6 +209,12 @@ L:SetOptionLocalization{
 	SpecWarnSpecial				= "속성(색) 변경을 해야할 때 특수 경고 보기",
 	SpecWarnEmpoweredDarkness	= "강화된 어둠 특수 경고 보기",
 	SpecWarnEmpoweredLight		= "강화된 빛 특수 경고 보기",
+	SpecWarnSwitchTarget		= "다른 보스에게 시전해야 할 경우 특수 경고 보기",
+	SpecWarnKickNow				= "당신이 차단을 해야할 경우 특수 경고 보기",
+	SpecialWarnOnDebuff			= "디버프일 경우 특수 경고 보기 (디버프를 바꿀 경우)",
+	SetIconOnDebuffTarget		= "손길 디버프 대상에게 공격대 아이콘 설정하기(영웅 모드)",
+	WarningTouchDebuff			= "빛/어둠의 손길 디버프 대상 알리기",
+	WarningPoweroftheTwins		= "쌍둥이의 힘의 현재 대상 알리기"
 }
 
 
