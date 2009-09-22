@@ -68,15 +68,13 @@ function mod:SPELL_CAST_START(args)
 		self:SpecialAbility(debuff)
 	elseif args:IsSpellID(65875, 67303, 67304, 67305) then 		-- Twin's Pact
 		timerHeal:Start()
-		local debuff = true
-		self:SpecialAbility(debuff)
+		self:SpecialAbility(true)
 		if self:GetUnitCreatureId("target") == 34497 then	-- if lightbane, then switch to darkbane
 			specWarnSwitch:Show()	
 		end
 	elseif args:IsSpellID(65876, 67306, 67307, 67308) then		-- Light Pact
 		timerHeal:Start()
-		local debuff = true
-		self:SpecialAbility(debuff)
+		self:SpecialAbility(true)
 		if self:GetUnitCreatureId("target") == 34496 then	-- if darkbane, then switch to lightbane
 			specWarnSwitch:Show()
 		end
@@ -109,24 +107,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		timerLightTouch:Start(args.destName)
 		if self.Options.SetIconOnDebuffTarget then
-			mod:SetIcon(args.destName, debuffIcon, 15)
+			self:SetIcon(args.destName, debuffIcon, 15)
 			debuffIcon = debuffIcon - 1
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		mod:ScheduleMethod(0.2, "warnDebuff")		
+		self:ScheduleMethod(0.2, "warnDebuff")		
 	elseif args:IsSpellID(66001, 67281, 67282, 67283) then	-- Touch of Darkness
 		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
 			specWarnSpecial:Show()
 		end
 		timerDarkTouch:Start(args.destName)
 		if self.Options.SetIconOnDebuffTarget then
-			mod:SetIcon(args.destName, debuffIcon, 15)
+			self:SetIcon(args.destName, debuffIcon)
 			debuffIcon = debuffIcon - 1
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		mod:ScheduleMethod(0.2, "warnDebuff")		
+		self:ScheduleMethod(0.2, "warnDebuff")		
 	end
 end
 
@@ -135,6 +133,16 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnKickNow:Show()
 	elseif args:IsSpellID(65858, 67259, 67260, 67261) and (UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34497) then		-- Shield of Lights
 		specWarnKickNow:Show()
+	elseif args:IsSpellID(65950, 67296, 67297, 67298) then	-- Touch of Light
+		timerLightTouch:Stop(args.destName)
+		if self.Options.SetIconOnDebuffTarget then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(66001, 67281, 67282, 67283) then	-- Touch of Darkness
+		timerDarkTouch:Start(args.destName)
+		if self.Options.SetIconOnDebuffTarget then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
