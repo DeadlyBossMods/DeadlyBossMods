@@ -232,7 +232,15 @@ do
 	function argsMT.__index:IsPetSource()
 		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
 	end
-
+	
+	function argsMT.__index:GetSrcCreatureID()
+		return (guid and tonumber(self.sourceGUID:sub(9, 12), 16)) or 0
+	end
+	
+	function argsMT.__index:GetDestCreatureID()
+		return (guid and tonumber(self.destGUID:sub(9, 12), 16)) or 0
+	end
+	
 	local function handleEvent(self, event, ...)
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
@@ -2055,7 +2063,6 @@ function bossModPrototype:GetBossTarget(cid)
 	for i = 1, GetNumRaidMembers() do
 		if self:GetUnitCreatureId("raid"..i.."target") == cid then
 			return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
-
 		elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
 			return UnitName("focustarget"), "focustarget"
 		end
