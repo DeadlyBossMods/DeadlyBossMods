@@ -179,7 +179,8 @@ L:SetWarningLocalization{
 	SpecWarnEmpoweredLight		= "Empowered Light",
 	SpecWarnSwitchTarget		= "Switch Target!",
 	SpecWarnKickNow				= "Kick Now!",
-	WarningDebuff				= "Debuff on >%s<"
+	WarningDebuff				= "Debuff on >%s<",
+	WarningPoweroftheTwins		= "Power of the Twins - more heal on >%s<"
 }
 
 L:SetMiscLocalization{
@@ -198,7 +199,8 @@ L:SetOptionLocalization{
 	SpecWarnKickNow				= "Show Special Warning when you have to Interrupt",
 	SpecialWarnOnDebuff			= "Show Special Warning when debuffed (to switch debuff)",
 	SetIconOnDebuffTarget		= "Set Icon on Touch debuff Targets (for Heroic)",
-	WarningTouchDebuff			= "Announce Touch of Lightning/Darkness debuff Targets"
+	WarningTouchDebuff			= "Announce Touch of Lightning/Darkness debuff Targets",
+	WarningPoweroftheTwins		= "Announce current target for Power of the Twins"
 }
 
 
