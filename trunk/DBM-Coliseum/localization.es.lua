@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge			= "^%%s glares at (%S+) and lets out",
+	Charge			= "¡^%%s mira a (%S+) y emite un bramido!",
 	CombatStart		= "Desde las cavernas más oscuras y profundas de Las Cumbres Tormentosas: ¡Gormok el Empalador! ¡A luchar, héroes!",
 	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!",
 	Gormok			= "Gormok el Empalador",
@@ -24,14 +24,14 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarningImpale				= "Mostrar aviso para Empalar",
 	WarningFireBomb				= "Mostrar aviso para Bomba de fuego",
-	WarningBreath				= "Mostrar aviso para Aliento articoShow warning for Arctic Breath",
+	WarningBreath				= "Mostrar aviso para Aliento artico",
 --	WarningSpray				= "Mostrar aviso para Pulverizador paralizador",
 	WarningRage					= "Mostrar aviso para Espumarajo",
 	WarningCharge				= "Mostrar aviso para el objetivo a cargar",
 	WarningToxin				= "Mostrar aviso para el objetivo de toxinas",
 	WarningBile					= "Mostrar aviso para el objetivo de Bilis ardiente",
 	SpecialWarningImpale3		= "Mostrar aviso especial para Emaplar(>=3 Stacks)",
-	SpecialWarningFireBomb		= "Mostrar aviso especial para Bomba de Fuego en Ti",
+	SpecialWarningFireBomb		= "Mostrar aviso especial si estas en la Bomba de Fuego",
 	SpecialWarningSlimePool		= "Mostrar aviso especial Charco de baba",
 	SpecialWarningSilence		= "Mostrar aviso especial para Silencio (bloqueo de hechizos)",
 	SpecialWarningSpray			= "Mostrar aviso especial si te afecta Pulverizador paralizador",
@@ -40,8 +40,8 @@ L:SetOptionLocalization{
 	SpecialWarningCharge		= "Mostrar aviso especial si Aullahielo te mira",
 	PingCharge					= "Pulsar en el Minimapa si Aullahielo va a por Ti",
 	SpecialWarningChargeNear	= "Mostrar aviso especial si Aullahielo va a por ti",
-	SetIconOnChargeTarget		= "Poner icono a por quien va",
-	SetIconOnBileTarget			= "Poner icono quien tiene Bilis ardiente",
+	SetIconOnChargeTarget		= "Poner marca a por quien va",
+	SetIconOnBileTarget			= "Poner marca quien tiene Bilis ardiente",
 	ClearIconsOnIceHowl			= "Limpiar iconos despues de cargar",
 	TimerNextBoss               = "Mostrar tiempo para el proximo boss"
 }
@@ -55,19 +55,19 @@ L:SetWarningLocalization{
 	WarningFireBomb				= "Bomba de Fuego",
 --	WarningSpray				= "%s en >%s<",
 	WarningBreath				= "Aliento Artico",
-	WarningRage					= "Espumarajo",
+	WarningRage					= "Enrage",
 	WarningCharge				= "Carga a >%s<",
 	WarningToxin				= "Toxina en >%s<",
 	WarningBile					= "Bilis ardiente en >%s<",
-	SpecialWarningImpale3		= "Empalar >%d< en Ti",
-	SpecialWarningFireBomb		= "Bomba de Fuego en Ti",
+	SpecialWarningImpale3		= "Llevas >%d< stacks de Empalar",
+	SpecialWarningFireBomb		= "Muevete!",
 	SpecialWarningSlimePool		= "Charco de babas, Muevete!",
 	SpecialWarningSilence		= "Silencio en ~1.5 segundos!",
 	SpecialWarningSpray			= "Pulverizador paralizador en Ti",
-	SpecialWarningToxin			= "Toxina en Ti! Muevete!",
-	SpecialWarningCharge		= "Te mira a ti! Muevete!",
-	SpecialWarningChargeNear	= "Charge near You! Run!",
-	SpecialWarningBile			= "Toxina en Ti!"
+	SpecialWarningToxin			= "Tienes la Toxina Paralizante!",
+	SpecialWarningCharge		= "Te esta mirando! Muevete!",
+	SpecialWarningChargeNear	= "El boss esta mirando a tu compañero! Muevete!",
+	SpecialWarningBile			= "Tienes Bilis Ardiente!"
 }
 
 
@@ -178,7 +178,11 @@ L:SetWarningLocalization{
 	WarnSpecialSpellSoon	= "Habilidad especial pronto!",
 	SpecWarnSpecial		= "Cambia color!",
 	SpecWarnEmpoweredDarkness	= "Empowered Darkness",
-	SpecWarnEmpoweredLight		= "Empowered Light"
+	SpecWarnEmpoweredLight		= "Empowered Light",
+	SpecWarnSwitchTarget		= "Cambio!",
+	SpecWarnKickNow				= "Pegar ahora!",
+	WarningDebuff				= "Debuff en >%s<",
+	WarningPoweroftheTwins		= "Poder de Gemelas - mas heal a >%s<"
 }
 
 L:SetMiscLocalization{

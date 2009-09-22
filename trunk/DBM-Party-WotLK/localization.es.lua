@@ -1358,25 +1358,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPortalSoon	= "Pronto nuevo portal",
-	WarningPortalNow	= "Portal #%d",
-	WarningBossNow		= "Toca boss"
+	WarningPortalSoon	= "Preparate para el portal",
+	WarningPortalNow	= "Portal Nº%d abierto",
+	WarningBossNow		= "Ahora toca boss"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Portal #%d" , 
+	TimerPortalIn	= "Portal Nº%d en" , 
 })
 
 L:SetOptionLocalization({
-	WarningPortalNow		= optionWarning:format("New Portal"),
-	WarningPortalSoon		= optionPreWarning:format("New Portal"),
-	WarningBossNow			= optionWarning:format("Boss Now"),
-	TimerPortalIn			= "Activar/Desactivar tiempo para \"Portal: #\" ",
+	WarningPortalNow		= optionWarning:format("Nuevo portal"),
+	WarningPortalSoon		= optionPreWarning:format("Nuevo portal"),
+	WarningBossNow			= optionWarning:format("Toca boss"),
+	TimerPortalIn			= "Activar/Desactivar tiempo para \"Portal: Nº\" ",
 	ShowAllPortalWarnings		= "Activar/Desactivar aviso para todos los portales"
 })
 
 
 L:SetMiscLocalization({
-	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
+	yell1 = "¡Guardias de la prisión, nos largamos! ¡Esos aventureros están dominando el cotarro! ¡Vamos, vamos!",
 	WavePortal		= "Portales abiertos: (%d+)/18"
 })
