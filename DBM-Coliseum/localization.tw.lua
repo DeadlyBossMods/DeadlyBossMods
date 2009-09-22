@@ -190,9 +190,13 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "特別技能 即將到來!",
-	SpecWarnSpecial			= "另一顏色AE即將來臨 快變換顏色!",
+	SpecWarnSpecial			= "快變換顏色!",
 	SpecWarnEmpoweredDarkness	= "強力黑暗",
-	SpecWarnEmpoweredLight		= "強力光明"
+	SpecWarnEmpoweredLight		= "強力光明",
+	SpecWarnSwitchTarget		= "另一支王放盾了!快轉目標打!",
+	SpecWarnKickNow			= "現在斷法!",
+	WarningDebuff			= "光明或黑暗之觸: >%s<",
+	WarningPoweroftheTwins		= "雙子威能 - 需要多點治療在 >%s< 身上"
 }
 
 L:SetMiscLocalization{
@@ -207,6 +211,12 @@ L:SetOptionLocalization{
 	SpecWarnSpecial			= "當你需要變換顏色時顯示特別警告",
 	SpecWarnEmpoweredDarkness	= "為強力黑暗顯示特別警告",
 	SpecWarnEmpoweredLight		= "為強力光明顯示特別警告",
+	SpecWarnSwitchTarget		= "當你目標的另一支王施放補血盾時顯示特別警告",
+	SpecWarnKickNow			= "當你需要斷法時顯示特別警告",
+	SpecialWarnOnDebuff		= "當中了光明或黑暗之觸時顯示特別警告 (切換減益)",
+	SetIconOnDebuffTarget		= "為光明或黑暗之觸的目標設置標記 (英雄模式)",
+	WarningTouchDebuff		= "提示光明或黑暗之觸的目標",
+	WarningPoweroftheTwins		= "提示雙子威能的當前目標"
 }
 
 
