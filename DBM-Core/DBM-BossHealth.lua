@@ -16,7 +16,7 @@ local updateBar
 local anchor
 local header
 local dropdownFrame
-local sortingEnabled
+--local sortingEnabled
 
 do
 	local id = 0
@@ -135,26 +135,26 @@ do
 		return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
 	end
 	
-	local function compareBars(b1, b2)
-		return b1.value > b2.value
-	end
+--	local function compareBars(b1, b2)
+--		return b1.value > b2.value
+--	end
 	
 	function updateFrame(self, e)
 		t = t + e
 		if t >= 0.5 then
 			t = 0
-			if #bars > DBM.Options.HPFrameMaxEntries then
-				sortingEnabled = true
-			end
-			if sortingEnabled then
+--			if #bars > DBM.Options.HPFrameMaxEntries then
+--				sortingEnabled = true
+--			end
+--			if sortingEnabled then
 --				table.sort(bars, compareBars)
-			end
+--			end
 			for i, v in ipairs(bars) do
-				if i > DBM.Options.HPFrameMaxEntries then
+--				if i > DBM.Options.HPFrameMaxEntries then
 --					v:Hide()
-				else
+--				else
 --					v:Show()
-				end
+--				end
 				if type(v.id) == "number" then
 					local id = targetCache[v.id]
 					if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then
@@ -198,7 +198,7 @@ function bossHealth:Clear()
 		barCache[#barCache + 1] = bar
 		bars[i] = nil
 	end
-	sortingEnabled = false
+--	sortingEnabled = false
 end
 
 function bossHealth:Hide()

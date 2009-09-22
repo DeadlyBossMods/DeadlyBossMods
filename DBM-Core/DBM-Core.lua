@@ -2270,7 +2270,7 @@ do
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
 			{
-				option = optionName or "Sound"..self.numSounds,
+				option = optionName or "Sound"..spellId..self.numSounds,
 				mod = self,
 			},
 			mt
