@@ -112,7 +112,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		self:ScheduleMethod(0.2, "warnDebuff")		
+		self:ScheduleMethod(0.5, "warnDebuff")		
 	elseif args:IsSpellID(66001, 67281, 67282, 67283) then	-- Touch of Darkness
 		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
 			specWarnSpecial:Show()
@@ -124,9 +124,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		self:ScheduleMethod(0.2, "warnDebuff")
+		self:ScheduleMethod(0.5, "warnDebuff")
 	elseif args:IsSpellID(67246, 65879, 65916, 67244, 67245, 67248, 67249, 67250) then	-- Power of the Twins 
-		warnPoweroftheTwins:Show(self:GetBossTarget(args:GetDestCreatureID()))
+		if args:GetDestCreatureID() == 34496 then
+			warnPoweroftheTwins:Show(self:GetBossTarget(34497))
+		else
+			warnPoweroftheTwins:Show(self:GetBossTarget(34496))
+		end
 	end
 end
 
