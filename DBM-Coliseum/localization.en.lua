@@ -179,7 +179,7 @@ L:SetWarningLocalization{
 	SpecWarnEmpoweredLight		= "Empowered Light",
 	SpecWarnSwitchTarget		= "Switch Target!",
 	SpecWarnKickNow				= "Kick Now!",
-	WarningDebuff				= "Debuff on >%s<",
+	WarningTouchDebuff			= "Debuff on >%s<",
 	WarningPoweroftheTwins		= "Power of the Twins - more heal on >%s<"
 }
 
