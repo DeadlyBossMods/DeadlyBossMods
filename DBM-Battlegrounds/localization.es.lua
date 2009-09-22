@@ -22,7 +22,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ArenaInvite	= "Invitación a la Arena"
+	ArenaInvite	= "Mostrar tiempo para la Arena"
 })
 
 
@@ -62,7 +62,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "El juego comienza en", 
+	TimerStart		= "La batalla comezara en", 
 	TimerTower		= "%s",
 	TimerGY			= "%s",
 })
@@ -160,15 +160,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "La batalla por la Garganta Grito de Guerra comenzará en 1 minuto..",
-	BgStart30 			= "La batalla por la Garganta Grito de Guerra comenzará en 30 segundos.¡Preparaos!",
+	BgStart60 			= "La batalla por la Garganta Grito de Guerra comenzará en 1 minuto.",
+	BgStart30 			= "La batalla por la Garganta Grito de Guerra comenzará en 30 segundos. ¡Preparaos!",
 	ZoneName 			= "Garganta Grito de Guerra",
 	Alliance 			= "Alianza",
 	Horde 				= "Horda",	
 	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
-	ExprFlagPickUp 			= "The (%w+) .lag was picked up by (.+)!",
-	ExprFlagCaptured 		= "(.+) ha capturado la bandera de la(%w+)!",
-	ExprFlagReturn 			= "The (%w+) .lag was returned to its base by (.+)!",
+	ExprFlagPickUp 			= "¡(.+) ha cogido la bandera de la (%w+)!",
+	ExprFlagCaptured 		= "¡(.+) ha capturado la bandera de la (%w+)!",
+	ExprFlagReturn 			= "¡(.+) ha devuelto la bandera de la (%w+) a su base!",
 	FlagAlliance 			= "Banderas capturadas por la Alianza: ",
 	FlagHorde			= "Banderas capturadas por la Horda: ",
 	FlagBase			= "Base",
@@ -176,15 +176,15 @@ L:SetMiscLocalization({
 
 L:SetTimerLocalization({
 	TimerStart 			= "La batalla va comenzar", 
-	TimerFlag 			= "La bandera reaperecere",
+	TimerFlag 			= "La bandera se resetea en",
 })
 
 L:SetOptionLocalization({
 	TimerStart  			= "Mostrar tiempo para que comienze la Batalla.",
 	TimerWin 			= "Mostrar tiempo para que una faccion Gane la Batalla.",
 	TimerFlag			= "Mostrar tiempo que tarda en restablecer la Bandera.",
-	ShowFlagCarrier			= "Show flag carrier",
-	ShowFlagCarrierErrorNote 	= "Shows flag carrier error message when in combat",
+	ShowFlagCarrier			= "Mostrar por donde va la bandera",
+	ShowFlagCarrierErrorNote 	= "Mostrar error de por donde va la bandera",
 })
 
 
