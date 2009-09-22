@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local timerBreath	= mod:NewTimer(6, "TimerBreath", 17086)
-local timerWhelps	= mod:NewTimer(90, "TimerWhelps", 10697)
+local timerWhelps	= mod:NewTimer(80, "TimerWhelps", 10697)
 
 local specWarnBreath	= mod:NewSpecialWarning("SpecWarnBreath")
 
@@ -42,7 +42,7 @@ function mod:OnSync(msg)
 		timerBreath:Start()
 	elseif msg == "Phase2" then
 		timerWhelps:Start()
-		warnWhelpsSoon:Schedule(75)
+		warnWhelpsSoon:Schedule(67)
 	end
 end
 
