@@ -44,6 +44,9 @@ local timerEmpower					= mod:NewCDTimer(46, 64465)
 local timerEmpowerDuration			= mod:NewBuffActiveTimer(10, 64465)
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
+local timerCastDeafeningRoar		= mod:NewCastTimer(2.3, 64189)
+local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
+
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
 mod:AddBoolOption("ShowSaraHealth")
@@ -83,6 +86,9 @@ function mod:SPELL_CAST_START(args)
 		warnBrainPortalSoon:Schedule(78)
 		specWarnBrainPortalSoon:Schedule(78)
 		specWarnMadnessOutNow:Schedule(55)
+	elseif args:IsSpellID(64189) then		--Deafening Roar
+		timerCastDeafeningRoar:Start()
+		specWarnDeafeningRoar:Show()
 	end
 end
 
@@ -222,6 +228,5 @@ function mod:UNIT_HEALTH(uId)
 		specWarnGuardianLow:Show()
 	end
 end
-
 
 
