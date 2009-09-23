@@ -1,7 +1,4 @@
--- The localizations are written by Мегерка, Гордунни EU
--- Перевод и адаптация - Мегерка, Гордунни EU
-
-if GetLocale() ~= "ruRU" then return end
+﻿if GetLocale() ~= "ruRU" then return end
 
 local L
 
@@ -15,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge			= "%%s глядит на (%S+) и испускает гортанный вой!",
+	Charge			= "%%s смотрит на (%S+) и испускает гортанный вой!",
 	CombatStart		= "Из самых глубоких и темных пещер Грозовой Гряды был призван Гормок Пронзающий Бивень! В бой, герои!",
 	Phase3			= "В воздухе повеяло ледяным дыханием следующего бойца: на арену выходит Ледяной Рев! Сражайтесь или погибните, чемпионы!",
 	Gormok			= "Гормок Пронзающий Бивень",
@@ -25,28 +22,28 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningImpale			= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(67479, "Прокалывания"),
-	WarningFireBomb			= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(66313, "Зажигательной бомбы"),
-	WarningBreath			= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(66689, "Арктического дыхания"),
---	WarningSpray			= "Show warning for Paralytic Spray",
-	WarningRage			= ("Предупреждение когда Айсхаул впадает в |cff71d5ff|Hspell:%d|h%s|h|r"):format(66759, "Бурлящую ярость"),
-	WarningCharge			= ("Предупреждение для цели |cff71d5ff|Hspell:%d|h%s|h|r"):format(66734, "Топота"),
-	WarningToxin			= ("Спец-предупреждение, для цели |cff71d5ff|Hspell:%d|h%s|h|r"):format(66823, "Паралитического токсина"),
-	WarningBile			= ("Спец-предупреждение, для цели |cff71d5ff|Hspell:%d|h%s|h|r"):format(66869, "Горящей Желчи"),
-	SpecialWarningImpale3		= ("Спец-предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(67479, "Прокалывания"),
-	SpecialWarningFireBomb		= ("Спец-предупреждение если на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(66313, "Зажигательная бомба"),
-	SpecialWarningSlimePool		= ("Спец-предупреждение, если под Вами |cff71d5ff|Hspell:%d|h%s|h|r"):format(66883, "Лужа жижи"),
-	SpecialWarningSilence		= ("Спец-предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(66330, "Сотрясающего топота"),
-	SpecialWarningSpray		= ("Спец-предупреждение когда Вы попадаете под |cff71d5ff|Hspell:%d|h%s|h|r"):format(66901, "Парализующие брызги"),
-	SpecialWarningToxin		= ("Спец-предупреждение, если на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(66823, "Паралитический токсин"),
-	SpecialWarningBile		= ("Спец-предупреждение, когда на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(66869, "Горящея Желчь"),
-	SpecialWarningCharge		= ("Спец-предупреждение, если Айсхаул хочет Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(66734, "Растаптать"),
-	SpecialWarningChargeNear	= ("Спец-предупреждение, если Айсхаул хочет кого рядом |cff71d5ff|Hspell:%d|h%s|h|r"):format(66734, "Растаптать"),
-	SetIconOnChargeTarget		= ("Помечать иконкой (череп) цель |cff71d5ff|Hspell:%d|h%s|h|r"):format(66734, "Топота"),
-	SetIconOnBileTarget		= ("Помечать иконкой игроков под |cff71d5ff|Hspell:%d|h%s|h|r"):format(66869, "Горящей Желчью"),
-	PingCharge			= "Показать на миникарте место, куда попадает Ледяной Рев, если он избрал Вас целью",
-	ClearIconsOnIceHowl		= ("Снимать все иконки перед |cff71d5ff|Hspell:%d|h%s|h|r"):format(66734, "Топотом"),
-	TimerNextBoss			= "Показать таймер появления следующего противника"
+	WarningImpale			= "Предупреждение для Прокалывания",
+	WarningFireBomb			= "Предупреждение для Зажигательной бомбы",
+	WarningBreath			= "Предупреждение для Арктического дыхания",
+--	WarningSpray			= "Предупреждение для Парализующих брызг",
+	WarningRage			= "Предупреждение когда Айсхаул впадает в Бурлящую ярость",
+	WarningCharge			= "Предупреждение для цели Топота",
+	WarningToxin			= "Спец-предупреждение, для цели Паралитического токсина",
+	WarningBile			= "Спец-предупреждение, для цели Горящей Желчи",
+	SpecialWarningImpale3		= "Спец-предупреждение для Прокалывания",
+	SpecialWarningFireBomb		= "Спец-предупреждение если на вас Зажигательная бомба",
+	SpecialWarningSlimePool		= "Спец-предупреждение, если под вами Лужа жижи",
+	SpecialWarningSilence		= "Спец-предупреждение для Сотрясающего топота",
+	SpecialWarningSpray		= "Спец-предупреждение когда Вы попадаете под Парализующие брызги",
+	SpecialWarningToxin		= "Спец-предупреждение, если на вас Паралитический токсин",
+	SpecialWarningBile		= "Спец-предупреждение, когда на вас Горящея Желчь",
+	SpecialWarningCharge		= "Спец-предупреждение, если Айсхаул хочет вас Растаптать",
+	SpecialWarningChargeNear	= "Спец-предупреждение, если Айсхаул хочет кого рядом Растаптать",
+	SetIconOnChargeTarget		= "Установить метку на цель Топота",
+	SetIconOnBileTarget		= "Установить метку игроков под воздействием Горящей Желчью",
+	PingCharge			= "Показать на миникарте место, куда попадает Ледяной Рев, если он избрал вас целью",
+	ClearIconsOnIceHowl		= "Снимать все иконки перед Топотом",
+	TimerNextBoss			= "Отсчет времени до появления следующего противника"
 }
 
 L:SetTimerLocalization{
@@ -62,15 +59,15 @@ L:SetWarningLocalization{
 	WarningCharge			= "Рывок к >%s<",
 	WarningToxin			= "Токсин на >%s<",
 	WarningBile			= "Горящая Желчь на >%s<",
-	SpecialWarningImpale3		= "Прокалывание >%d< на Вас!",
-	SpecialWarningFireBomb		= "Зажигательная бомба на Вас",
-	SpecialWarningBile		= "Горящая Желчь на Вас!",
-	SpecialWarningSlimePool		= "Кислотная Жижа, ОТОЙДИТЕ!",
+	SpecialWarningImpale3		= "Прокалывание >%d< на вас!",
+	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
+	SpecialWarningBile		= "Горящая Желчь на вас!",
+	SpecialWarningSlimePool		= "Кислотная Жижа, Бегите!",
 	SpecialWarningSilence		= "Блок чар через 2 сек!",
-	SpecialWarningSpray		= "Парализующие брызги на Вас",
-	SpecialWarningToxin		= "Токсин на Вас! Двигайтесь!",
-	SpecialWarningCharge		= "Рывок к вам, БЕГИТЕ!",
-	SpecialWarningChargeNear	= "Рывок около Вас, БЕГИТЕ!"
+	SpecialWarningSpray		= "Парализующие брызги на вас",
+	SpecialWarningToxin		= "Токсин на вас! Двигайтесь!",
+	SpecialWarningCharge		= "Рывок к вам, Бегите!",
+	SpecialWarningChargeNear	= "Рывок около вас, Бегите!"
 }
 
 -------------------
@@ -83,41 +80,41 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnFlame			= "Пламя Легиона на >%s<",
+	WarnFlame			= ">%s< под воздействием Пламени Легиона",
 	WarnTouch			= "Касание Джараксуса на >%s<",
 	WarnNetherPower			= "Сила Пустоты на Лорде Джараксусе! Рассейте немедленно!",
 	WarnPortalSoon			= "Открываются Врата Пустоты!",
 	WarnVolcanoSoon			= "Скоро Инфернальное извержение!",
-	SpecWarnFlesh			= "Испепеление плоти на Вас!",
-	SpecWarnTouch			= "Касание Джараксуса на Вас!",
+	SpecWarnFlesh			= "Испепеление плоти на вас!",
+	SpecWarnTouch			= "Касание Джараксуса на вас!",
 	SpecWarnKiss			= "Поцелуй Госпожи",
-	SpecWarnTouchNear		= ">%s<, около Вас, отмечен Касанием Джараксуса!",
-	SpecWarnFlame			= "Пламя Легиона! БЕГИТЕ!",
+	SpecWarnTouchNear		= ">%s<, около вас, отмечен Касанием Джараксуса!",
+	SpecWarnFlame			= "Пламя Легиона! Бегите!",
 	SpecWarnNetherPower		= "Рассейте заклинание!",
-	SpecWarnFelInferno		= "Геенна скверны! ОТОЙДИТЕ!"
+	SpecWarnFelInferno		= "Геенна скверны! Бегите!"
 }
 
 L:SetMiscLocalization{
-	WhisperFlame			= "Пламя Легиона на Вас!",
+	WhisperFlame			= "Пламя Легиона на вас!",
 }
 
 L:SetOptionLocalization{
-	WarnFlame			= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(68124, "Пламени легиона"),
-	WarnTouch			= ("Предупреждать о |cff71d5ff|Hspell:%d|h%s|h|r"):format(66209, "Касании Джараксуса"),
-	WarnNetherPower			= ("Предупреждать, когда Джараксус получает |cff71d5ff|Hspell:%d|h%s|h|r"):format(67108, "Силу пустоты"),
-	WarnPortalSoon			= ("Предупреждать о раскрытии |cff71d5ff|Hspell:%d|h%s|h|r"):format(66264, "Врат пустоты"),
-	WarnVolcanoSoon			= ("Предупреждать о |cff71d5ff|Hspell:%d|h%s|h|r"):format(66258, "Инфернальном извержении"),
-	SpecWarnFlame			= ("Спец-предупреждение, когда на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(68124, "Пламя легиона"),
-	SpecWarnFlesh			= ("Спец-предупреждение, когда на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(66237, "Испепеление плоти"),
-	SpecWarnTouch			= ("Спец-предупреждение, когда на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(66209, "Касание Джараксуса"),
-	SpecWarnTouchNear		= ("Спец-предупреждение, когда рядом с Вами |cff71d5ff|Hspell:%d|h%s|h|r"):format(66209, "Касание Джараксуса"),
-	SpecWarnKiss			= ("Спец-предупреждение, когда на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(67075, "Поцелуй Госпожи"),
-	SpecWarnNetherPower		= ("Спец-предупреждение (для рассеивания) о |cff71d5ff|Hspell:%d|h%s|h|r"):format(67108, "Силе пустоты"),
-	SpecWarnFelInferno		= ("Спец-предупреждение, если около Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(67047, "Геена скверны"),
-	TouchJaraxxusIcon		= ("Помечать иконкой (крест) игрока с |cff71d5ff|Hspell:%d|h%s|h|r"):format(66209, "Касанием Джараксуса"),
-	IncinerateFleshIcon		= ("Помечать иконкой (череп) игрока с |cff71d5ff|Hspell:%d|h%s|h|r"):format(66237, "Испепелением плоти"),
-	LegionFlameIcon			= ("Помечать иконкой (квадрат) игрока с |cff71d5ff|Hspell:%d|h%s|h|r"):format(68124, "Пламенем легиона"),
-	LegionFlameWhisper		= ("Посылать личное сообщение цели |cff71d5ff|Hspell:%d|h%s|h|r"):format(68124, "Пламени легиона")
+	WarnFlame			= "Предупреждение для Пламени легиона",
+	WarnTouch			= "Предупреждать о Касании Джараксуса",
+	WarnNetherPower			= "Предупреждать, когда Джараксус получает Силу пустоты",
+	WarnPortalSoon			= "Предупреждать о открытии Врат пустоты",
+	WarnVolcanoSoon			= "Предупреждать о Инфернальном извержении",
+	SpecWarnFlame			= "Спец-предупреждение, когда на вас Пламя легиона",
+	SpecWarnFlesh			= "Спец-предупреждение, когда на вас Испепеление плоти",
+	SpecWarnTouch			= "Спец-предупреждение, когда на вас Касание Джараксуса",
+	SpecWarnTouchNear		= "Спец-предупреждение, когда рядом с вами Касание Джараксуса",
+	SpecWarnKiss			= "Спец-предупреждение, когда на вас Поцелуй Госпожи",
+	SpecWarnNetherPower		= "Спец-предупреждение (для рассеивания) о Силе пустоты",
+	SpecWarnFelInferno		= "Спец-предупреждение, если около вас Геена скверны",
+	TouchJaraxxusIcon		= "Установить метку на цель с Касанием Джараксуса (крест)",
+	IncinerateFleshIcon		= "Установить метку на игрока с Испепелением плоти (череп)",
+	LegionFlameIcon			= "Установить метку на игрока с Пламенем легиона (квадрат)",
+	LegionFlameWhisper		= "Посылать личное сообщение цели Пламени легиона"
 }
 
 -----------------------
@@ -156,8 +153,8 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	WarnHellfire			= ("Предупреждать, когда Харкзок поддерживает |cff71d5ff|Hspell:%d|h%s|h|r"):format(65816, "Адское пламя"),
-	SpecWarnHellfire		= ("Спец-предупреждение, когда Вы получаете урон от |cff71d5ff|Hspell:%d|h%s|h|r"):format(65816, "Адского пламени")
+	WarnHellfire			= "Предупреждать, когда Харкзок поддерживает Адское пламя",
+	SpecWarnHellfire		= "Спец-предупреждение, когда вы получаете урон от Адского пламени"
 }
 
 ------------------
@@ -178,6 +175,11 @@ L:SetWarningLocalization{
 	SpecWarnSpecial			= "Смена цвета!",
 	SpecWarnEmpoweredDarkness	= "Могущественная Тьма",
 	SpecWarnEmpoweredLight		= "Могущественный Свет"
+	SpecWarnSwitchTarget		= "Switch Target!",
+	SpecWarnKickNow			= "Kick Now!",
+	WarningTouchDebuff		= ">%s< под воздействем отрицательного эффекта",
+	WarningPoweroftheTwins		= "Power of the Twins - more heal on >%s<",
+	SpecWarnPoweroftheTwins		= "Power of the Twins!"
 }
 
 L:SetMiscLocalization{
@@ -187,12 +189,18 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell		= "Показать таймер перезарядки спец-способности",
+	TimerSpecialSpell		= "Отсчет времени до перезарядки спец-способности",
 	WarnSpecialSpellSoon		= "Предупреждать следующую спец-способность",
-	SpecWarnSpecial			= "Спецпредупреждение для смены цветов",
-	SpecWarnEmpoweredDarkness	= ("Спец-предупреждение, когда на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(65724, "Могущественная тьма"),
-	SpecWarnEmpoweredLight		= ("Спец-предупреждение, когда на Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(65748, "Могущественный свет"),
---Плеть не остановить...
+	SpecWarnSpecial			= "Спец-предупреждение для смены цветов",
+	SpecWarnEmpoweredDarkness	= "Спец-предупреждение, когда на вас Могущественная тьма",
+	SpecWarnEmpoweredLight		= "Спец-предупреждение, когда на вас Могущественный свет",
+	SpecWarnSwitchTarget		= "Спец-предупреждение для других, когда босс читает заклинание",
+	SpecWarnKickNow			= "Спец-предупреждение, когда you have to interrupt",
+	SpecialWarnOnDebuff		= "Спец-предупреждение, когда отрицательный эфект",
+	SetIconOnDebuffTarget		= "Установить метку на получившего отрицательный эффект (героический режим)",
+	WarningTouchDebuff		= "Announce Touch of Light/Darkness debuff targets",
+	WarningPoweroftheTwins		= "Announce current target for Power of the Twins",
+	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an enpowered Twin"
 }
 
 ------------------
@@ -205,8 +213,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerEmerge		= "Появление",
-	TimerSubmerge		= "Погружение"
+	TimerEmerge		= "Появление через",
+	TimerSubmerge		= "Погружение через"
 }
 
 L:SetWarningLocalization{
@@ -215,7 +223,7 @@ L:SetWarningLocalization{
 	WarnSubmerge		= "Появляется Ануб'арак!",
 	WarnSubmergeSoon	= "Погружение через 10 сек",
 	WarnPursue		= "Шипы Ануб'арака преследуют >%s<",
-	SpecWarnPursue		= "ВАС ПРЕСЛЕДУЮТ!"
+	SpecWarnPursue		= "Вас приследуют!"
 }
 
 L:SetMiscLocalization{
@@ -226,20 +234,20 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnEmerge		= "Спецпредупреждение, для Появления",
-	WarnEmergeSoon		= "Предупреждать о Появлении заранее",
-	WarnSubmerge		= ("Предупреждать о |cff71d5ff|Hspell:%d|h%s|h|r"):format(67322, "Погружении"),
-	WarnSubmergeSoon	= ("Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"):format(67322, "Погружении"),
-	SpecWarnPursue		= ("Спец-предупреждение, если Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(67574, "Преследуют"),
-	TimerEmerge		= "Показать таймер для Появления",
-	TimerSubmerge		= ("Показать таймер до |cff71d5ff|Hspell:%d|h%s|h|r"):format(67322, "Погружения"),
-	PlaySoundOnPursue	= ("Проиграть звук, если Вас |cff71d5ff|Hspell:%d|h%s|h|r"):format(67574, "Преследуют"),
-	PursueIcon		= ("Помечать иконкой |cff71d5ff|Hspell:%d|h%s|h|r"):format(67574, "Преследуемого"),
-	WarnPursue		= ("Объявлять |cff71d5ff|Hspell:%d|h%s|h|r"):format(67574, "Преследуемого")
+	WarnEmerge		= "Предупреждение, для появления",
+	WarnEmergeSoon		= "Предупреждать заранее о появлении",
+	WarnSubmerge		= "Предупреждать о погружении",
+	WarnSubmergeSoon	= "Предупреждать заранее о погружении",
+	SpecWarnPursue		= "Спец-предупреждение, если вас преследуют",
+	TimerEmerge		= "Отсчет времени до Появления",
+	TimerSubmerge		= "Отсчет времени до погружения",
+	PlaySoundOnPursue	= "Звуковой сигнал, если вас преследуют",
+	PursueIcon		= "Установить метку на преследуемого",
+	WarnPursue		= "Объявлять Преследуемого"
 }
 
---Ануб'арак выпускает рой жуков-трупоедов, чтобы восстановить здоровье!
 
---Ануб'арак кричит: Я подвел тебя, господин...
---Верховный лорд Тирион Фордринг кричит: Чемпионы, вы выстояли в этом поединке! Вы не только прошли все испытания, но и бросили вызов самому Артасу, расстроив его зловещие планы! Ваши умения и сила послужат нам отличным подспорьем в бою против Плети! Отличная работа! Позвольте одному из магов Авангарда отправить вас обратно на поверхность.
---Ануб'арак кричит: Ауум на-л ак-к-к-к, ишшш. Вставайте, слуги мои. Время пожирать...
+
+
+
+
