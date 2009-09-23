@@ -1,5 +1,6 @@
 ﻿## Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
+## Title-esES: |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMOnyxia_SavedVars, DBMOnyxia_SavedStats
@@ -7,8 +8,10 @@
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Onyxia's Lair
+## X-DBM-Mod-Name-esES: Guarida de Onyxia
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZone: Onyxia's Lair
+## X-DBM-Mod-LoadZone-esES: Guarida de Onyxia
 localization.en.lua
 localization.de.lua
 localization.fr.lua
