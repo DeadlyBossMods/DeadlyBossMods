@@ -133,8 +133,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-    WarnHellfire		= "Llamas infernales",
-	SpecWarnHellfire	= "Llamas infernales! Vete lejos!"
+	SpecWarnHellfire		= "Llamas infernales! Vete lejos!",
+	SpecWarnHandofProt		= "Mano de proteccion en >%s<",
+	SpecWarnDivineShield	= "Escudo divino en >%s<"
 }
 
 L:SetMiscLocalization{
@@ -156,8 +157,9 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	WarnHellfire			= "Aviso cuando Harzog castea Llamas infernales",
-	SpecWarnHellfire		= "Aviso especail cuando sufras el efecto de Llamas Infernales"
+	SpecWarnHellfire		= "Aviso especial si te hacen daño las llamas infernales",
+	SpecWarnHandofProt		= "Aviso especial si el paladin pone Mano de proteccion a alguien",
+	SpecWarnDivineShield	= "Aviso especial si el paladin se pone Escudo divino"
 }
 
 
@@ -181,8 +183,9 @@ L:SetWarningLocalization{
 	SpecWarnEmpoweredLight		= "Empowered Light",
 	SpecWarnSwitchTarget		= "Cambio!",
 	SpecWarnKickNow				= "Cortar ahora!",
-	WarningDebuff				= "Debuff en >%s<",
-	WarningPoweroftheTwins		= "Pacto de las Gemelas - mas heal a >%s<"
+	WarningTouchDebuff			= "Debuff en >%s<",
+	WarningPoweroftheTwins		= "Pacto de las Gemelas - curar mas a >%s<",
+	SpecWarnPoweroftheTwins		= "Pacto de las Gemelas!"
 }
 
 L:SetMiscLocalization{
@@ -196,7 +199,14 @@ L:SetOptionLocalization{
 	WarnSpecialSpellSoon	= "Pre-aviso para la siguiente habilidad especial",
 	SpecWarnSpecial		= "Mostrar aviso especial si tienes que cambiar de color",
 	SpecWarnEmpoweredDarkness	= "Mostrar aviso especial para Empowered Darkness",
-	SpecWarnEmpoweredLight		= "Mostrar aviso especial para Empowered Light"
+	SpecWarnEmpoweredLight		= "Mostrar aviso especial para Empowered Light",
+	SpecWarnSwitchTarget		= "Mostrar aviso especial si hay que ir al otro boss",
+	SpecWarnKickNow				= "Mostrar aviso especial cuando tienes que cortar el hechizo",
+	SpecialWarnOnDebuff			= "Mostrar aviso especial cuando tienes que cambiar de debuff",
+	SetIconOnDebuffTarget		= "Poner iconos a los objetivos con debuff ( solo heroico )",
+	WarningTouchDebuff			= "Anunciar objetivos del debuff de Toque de Luz/Oscuridad",
+	WarningPoweroftheTwins		= "Anunciar objetivo de Pacto de las Gemelas",
+	SpecWarnPoweroftheTwins		= "Mostrar aviso especial si eres el tank y estas en una gemela con el pacto de las gemelas"
 }
 
 
