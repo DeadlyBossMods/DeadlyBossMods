@@ -131,8 +131,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnHellfire		= "Hellfire",
-	SpecWarnHellfire	= "Hellfire! Move Away!"
+	SpecWarnHellfire		= "Hellfire! Move Away!",
+	SpecWarnHandofProt		= "Hand of Protection on >%s<",
+	SpecWarnDivineShield	= "Divine Shield on >%s<"
 }
 
 L:SetMiscLocalization{
@@ -154,8 +155,9 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	WarnHellfire			= "Warn when Harzog casts Hellfire",
-	SpecWarnHellfire		= "Special Warning when you take damage from Hellfire"
+	SpecWarnHellfire		= "Special Warning when you take damage from Hellfire",
+	SpecWarnHandofProt		= "Special Warning when the Paladin casts Hand of Protection",
+	SpecWarnDivineShield	= "Special Warning when the Paladin casts Divine Shield"
 }
 
 
