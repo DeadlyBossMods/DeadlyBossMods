@@ -174,7 +174,7 @@ L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "Скоро спец-способность!",
 	SpecWarnSpecial			= "Смена цвета!",
 	SpecWarnEmpoweredDarkness	= "Могущественная Тьма",
-	SpecWarnEmpoweredLight		= "Могущественный Свет"
+	SpecWarnEmpoweredLight		= "Могущественный Свет",
 	SpecWarnSwitchTarget		= "Switch Target!",
 	SpecWarnKickNow			= "Kick Now!",
 	WarningTouchDebuff		= ">%s< под воздействем отрицательного эффекта",
