@@ -15,7 +15,9 @@ DBM_CORE_TIMER_FORMAT_MINS			= "%d |4мин:мин;"
 DBM_CORE_TIMER_FORMAT				= "%d |4мин:мин; %d |4сек:сек;"
 
 DBM_CORE_MIN						= "мин"
+DBM_CORE_MIN_FMT					= "%d мин"
 DBM_CORE_SEC						= "сек"
+DBM_CORE_SEC_FMT					= "%d сек"
 DBM_CORE_DEAD						= "мертв"
 DBM_CORE_OK							= "ОК"
 
@@ -54,8 +56,15 @@ DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+щелчок или щелкните �
 
 DBM_CORE_RANGECHECK_HEADER			= "Проверка дистанции (%d м)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Настройка дистанции"
+DBM_CORE_RANGECHECK_SOUNDS			= "Звуки"
+DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Звук, когда игрок находится в диапазоне"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Звук для всех остальных игроков"
+DBM_CORE_RANGECHECK_SOUND_0			= "Без звука"
+DBM_CORE_RANGECHECK_SOUND_1			= "По умолчанию"
+DBM_CORE_RANGECHECK_SOUND_2			= "Раздражающий звуковой сигнал"
 DBM_CORE_RANGECHECK_HIDE			= "Скрыть"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d м"
+DBM_CORE_RANGECHECK_LOCK			= "Закрепить полосу"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Доступные (/) команды:",
@@ -79,12 +88,8 @@ DBM_CORE_TIMER_PULL					= "Атака"
 DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек."
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
 
-
--- Generic Warnings
-DBM_CORE_GENERIC_TARGET_WARN = "%s под воздействием >%%s<!"
-DBM_CORE_GENERIC_TARGET_OPTION = "Объявлять цели о %s"
-
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Скорость убийства"
+
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
@@ -104,3 +109,28 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	next = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Отображать отсчет времени для %s",
 }
+
+-- Auto-generated Warning Localizations
+DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	target = "%s под воздействием >%%s<",
+	spell = "%s",
+	cast = "Читение заклинания %s: %.1f сек",
+	soon = "Скоро %s",
+	prewarn = "%s через %s",
+	phase = "Фаза %d",
+}
+
+local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	target = "Сообщить цели, под воздействием |cff71d5ff|Hspell:%d|h%s|h|r",
+	spell = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Предупреждение, когда |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	soon = prewarnOption,
+	prewarn = prewarnOption,
+	phase = "Предупреждение для фазы %d"
+}
+
+
+
+
+
