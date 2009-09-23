@@ -115,6 +115,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnSubmerge:Show()
 		warnEmergeSoon:Schedule(55)
 		timerEmerge:Start()
+		timerFreezingSlash:Stop()
 	elseif msg == L.Emerge then
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
