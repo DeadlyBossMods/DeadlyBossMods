@@ -132,8 +132,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnHellfire			= "地獄烈焰",
-	SpecWarnHellfire		= "地獄烈焰! 跑開!"
+	SpecWarnHellfire		= "地獄烈焰! 跑開!",
+	SpecWarnHandofProt		= "保護聖禦: >%s<",
+	SpecWarnDivineShield		= "聖盾術: >%s<"
 }
 
 L:SetMiscLocalization{
@@ -169,8 +170,9 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	WarnHellfire			= "當哈克佐格施放地獄烈焰時警告",
-	SpecWarnHellfire		= "當你受到地獄烈焰時顯示特別警告"
+	SpecWarnHellfire		= "當你受到地獄烈焰的傷害時顯示特別警告",
+	SpecWarnHandofProt		= "當聖騎士施放保護聖禦時顯示特別警告",
+	SpecWarnDivineShield		= "當聖騎士施放聖盾術時顯示特別警告"
 
 }
 
@@ -196,7 +198,8 @@ L:SetWarningLocalization{
 	SpecWarnSwitchTarget		= "另一支王放盾了!快轉目標打!",
 	SpecWarnKickNow			= "現在斷法!",
 	WarningDebuff			= "光明或黑暗之觸: >%s<",
-	WarningPoweroftheTwins		= "雙子威能 - 需要多點治療在 >%s< 身上"
+	WarningPoweroftheTwins		= "雙子威能 - 需要多點治療在 >%s< 身上",
+	SpecWarnPoweroftheTwins		= "雙子威能!"
 }
 
 L:SetMiscLocalization{
@@ -216,7 +219,8 @@ L:SetOptionLocalization{
 	SpecialWarnOnDebuff		= "當中了光明或黑暗之觸時顯示特別警告 (切換減益)",
 	SetIconOnDebuffTarget		= "為光明或黑暗之觸的目標設置標記 (英雄模式)",
 	WarningTouchDebuff		= "提示光明或黑暗之觸的目標",
-	WarningPoweroftheTwins		= "提示雙子威能的當前目標"
+	WarningPoweroftheTwins		= "提示雙子威能的當前目標",
+	SpecWarnPoweroftheTwins		= "當你正在坦威能中的雙子時顯示特別警告"
 }
 
 

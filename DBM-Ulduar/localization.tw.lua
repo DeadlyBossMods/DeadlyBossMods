@@ -630,7 +630,8 @@ L:SetWarningLocalization{
 	specWarnBrainPortalSoon		= "傳送門 即將出現",
 	RaidRage			= "薩拉生氣了 快吻她唷",
 	WarnEmpowerSoon			= "暗影信標 即將到來!",
-	SpecWarnMaladyNear		= "你附近的>%s<中了心靈缺陷!"
+	SpecWarnMaladyNear		= "你附近的>%s<中了心靈缺陷!",
+	SpecWarnDeafeningRoar		= "震耳咆哮"
 }
 
 L:SetTimerLocalization{
@@ -663,5 +664,6 @@ L:SetOptionLocalization{
 	SetIconOnMCTarget		= "設置標記在心控的目標(三角)",
 	RaidRageSpam			= "提示 成就:接吻和好 的時機",
 	WarnEmpowerSoon			= "為即將到來的暗影信標顯示警告",
-	SpecWarnMaladyNear		= "當你附近的人中了心靈缺陷時顯示特別警告"
+	SpecWarnMaladyNear		= "當你附近的人中了心靈缺陷時顯示特別警告",
+	SpecWarnDeafeningRoar		= "當施放震耳咆哮時顯示特別警告 (沉默和橘錘用!)"
 }
