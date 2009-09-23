@@ -57,7 +57,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(65816, 68145, 68146, 68147) then
 		warnHellfire:Show()
-	elseif args:IsSpellID(65980) then		-- missing SpellID for Heroism (if NPCs are Alliance)
+	elseif args:IsSpellID(65980, 65983) then		-- missing SpellID for Heroism (if NPCs are Alliance)
 		warnHeroism:Show()
 	end
 end
