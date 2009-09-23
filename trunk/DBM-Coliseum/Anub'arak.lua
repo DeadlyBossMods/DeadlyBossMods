@@ -40,7 +40,7 @@ mod:AddBoolOption("SetIconsOnPCold", true, "announce")
 
 -- Freezing Slash
 local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
-local timerFreezingSlash	= mod:NewCDTimer(20, 66015)
+local timerFreezingSlash	= mod:NewCDTimer(20, 66012)
 
 -- Shadow Strike
 --local timerShadowStrike		= mod:NewNextTimer(30, 66134)
