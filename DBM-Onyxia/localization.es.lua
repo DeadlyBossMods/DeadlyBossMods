@@ -26,7 +26,7 @@ L:SetOptionLocalization{
 	TimerBreath		= "Mostrar tiempo para Aliento profundo",
 	TimerWhelps		= "Mostrar tiempo para las crias",
 	WarnWhelpsSoon	= "Mostrar pre-aviso para las crias",
-	SoundBreath		= "Sonido sie stas en el area del Aliento profundo"
+	SoundBreath		= "Sonido si estas en el area del Aliento profundo"
 }
 
 L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
