@@ -38,6 +38,10 @@ local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)
 local timerPCold			= mod:NewTargetTimer(15, 68509)
 mod:AddBoolOption("SetIconsOnPCold", true, "announce")
 
+-- Freezing Slash
+local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
+local timerFreezingSlash	= mod:NewCDTimer(20, 66015)
+
 -- Shadow Strike
 --local timerShadowStrike		= mod:NewNextTimer(30, 66134)
 --local preWarnShadowStrike	= mod:NewCastTimer(66134, 3)
@@ -53,6 +57,14 @@ function mod:OnCombatStart(delay)
 	timerSubmerge:Start(80-delay)
 	enrageTimer:Start(-delay)
 	self:resetIcons()
+	timerFreezingSlash:Start(-delay)
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(66012) then		-- Freezing Slash
+		warnFreezingSlash:Show(args.destName)
+		timerFreezingSlash:Start()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -107,6 +119,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
+		timerFreezingSlash:Start()
 	end
 end
 
