@@ -16,10 +16,13 @@ local timerBreath	= mod:NewTimer(6, "TimerBreath", 17086)
 local timerWhelps	= mod:NewTimer(79, "TimerWhelps", 10697)
 
 local specWarnBreath	= mod:NewSpecialWarning("SpecWarnBreath")
-
 local warnWhelpsSoon	= mod:NewAnnounce("WarnWhelpsSoon", 1)
-
 local sndBreath			= mod:NewRunAwaySound(nil, "SoundBreath")
+local timerAchieve		= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
+
+function mod:OnCombatStart(delay)
+   timerAchieve:Start(-delay)
+end 
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Breath then
