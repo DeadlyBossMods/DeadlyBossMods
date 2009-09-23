@@ -77,7 +77,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 
 DBM_ERROR_NO_PERMISSION				= "해당 명령어를 실행하기 위한 권한을 가지고 있지 않습니다."
 
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "숨기기"
+DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "보스 체력 프레임 닫기"
 
 DBM_CORE_ALLIANCE					= "얼라이언스"
 DBM_CORE_HORDE						= "호드"
