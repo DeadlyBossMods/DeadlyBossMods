@@ -82,7 +82,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Llama devoradora - MUEVE TE",
+	SpecWarnDevouringFlame		= "Llama devoradora - MUEVETE",
 	warnTurretsReadySoon		= "La torreta estara lista en 20 segundos",
 	warnTurretsReady		= "La torreta esta LISTA",
 	SpecWarnDevouringFlameCast	= "Llava devoradora en Ti",
@@ -170,8 +170,8 @@ L:SetWarningLocalization{
 	WarningOverwhelmingPower		= "Poder sobrecogedor en >%s<",
 	WarningRuneofPower			= "Runa de poder",
 	WarningRuneofDeath			= "Runa de muerte",
-	RuneofDeath				= "Runa de muerte - MUEVE TE",
-	LightningTendrils			= "Zarcillos de relámpagos - MUEVE TE",
+	RuneofDeath				= "Runa de muerte - MUEVETE",
+	LightningTendrils			= "Zarcillos de relámpagos - MUEVETE",
 	WarningRuneofSummoning			= "Runa de invocación",
 	Overload				= "Sobrecarga - VETE LEJOS",
 	WarningStaticDisruption			= "Perturbación estática en >%s<"
@@ -329,7 +329,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast		= "Explosión de centinela - Interrumpe!",
-	SpecWarnVoid		= "Zona de vacio - MUEVE TE!",
+	SpecWarnVoid		= "Zona de vacio - MUEVETE!",
 	WarnCatDied 		= "Defensor feral muerto (Le quedan %d vidas)",
 	WarnCatDiedOne 		= "Defensor feral muerto (Le queda 1 vida)",
 	WarnFear			= "Miedo!",
