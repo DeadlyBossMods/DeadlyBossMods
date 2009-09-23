@@ -2263,6 +2263,7 @@ end
 --------------------
 --  Sound Object  --
 --------------------
+-- deprecated! do not use!
 do
 	local soundPrototype = {}
 	local mt = { __index = soundPrototype }

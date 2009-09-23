@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local timerBreath	= mod:NewTimer(6, "TimerBreath", 17086)
-local timerWhelps	= mod:NewTimer(80, "TimerWhelps", 10697)
+local timerWhelps	= mod:NewTimer(79, "TimerWhelps", 10697)
 
 local specWarnBreath	= mod:NewSpecialWarning("SpecWarnBreath")
 
@@ -33,6 +33,16 @@ mod.CHAT_MSG_MONSTER_EMOTE = mod.CHAT_MSG_RAID_BOSS_EMOTE -- todo: check if this
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellP2 then
 		self:SendSync("Phase2")
+	elseif msg == L.YellP3 then
+		self:SendSync("Phase3")
+	end
+end
+
+function mod:Whelps()
+	if self:IsInCombat() then
+		timerWhelps:Start()
+		warnWhelpsSoon:Schedule(67)
+		self:ScheduleMethod(79, "Whelps")
 	end
 end
 
@@ -41,8 +51,11 @@ function mod:OnSync(msg)
 		specWarnBreath:Show()
 		timerBreath:Start()
 	elseif msg == "Phase2" then
-		timerWhelps:Start()
-		warnWhelpsSoon:Schedule(67)
+		self:Whelps()
+	elseif msg == "Phase3" then
+		self:UnscheduleMethod("Whelps")
+		timerWhelps:Stop()
+		warnWhelpsSoon:Cancel()
 	end
 end
 
