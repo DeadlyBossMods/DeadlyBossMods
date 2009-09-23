@@ -664,7 +664,7 @@ L:SetOptionLocalization{
 	ShowSaraHealth					= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)",
 	WarnEmpowerSoon					= "Warn for Empowering Shadows soon",
 	SpecWarnMaladyNear				= "Special Warning if someone close to you has Malady of the Mind",
-	SpecWarnDeafeningRoar			= "Special Warning when casting Deafening Roar (silience and for Legendary!)
+	SpecWarnDeafeningRoar			= "Special Warning when casting Deafening Roar (silience and for Legendary!)"
 }
 
 
