@@ -629,7 +629,8 @@ L:SetWarningLocalization{
 	WarnFavor						= ">%s< 에게 사라의 열정!",
 	SpecWarnFavor					= "당신에게 사라의 열정",
 	WarnEmpowerSoon					= "곧 암흑 강화!",
-	SpecWarnMaladyNear				= ">%s< 의 주변에 병든 정신"	
+	SpecWarnMaladyNear				= ">%s< 의 주변에 병든 정신",
+	SpecWarnDeafeningRoar			= "포효"
 }
 
 L:SetTimerLocalization{
@@ -661,5 +662,6 @@ L:SetOptionLocalization{
 	WarnFavor						= "사라의 열정 대상 알리기",
 	SpecWarnFavor					= "사라의 열정 특수 경보 보기",
 	WarnEmpowerSoon					= "암흑 강화 경보 보기",
-	SpecWarnMaladyNear				= "병든 정신이 걸린 플레이어가 근처에 있을 경우 특수 경보 알리기(병든 정신 종료 후)"
+	SpecWarnMaladyNear				= "병든 정신이 걸린 플레이어가 근처에 있을 경우 특수 경보 알리기(병든 정신 종료 후)",
+	SpecWarnDeafeningRoar			= "포효 시전을 할 경우 특수 경고 보기 (침묵 그리고 레전드리를 위하여!!)"
 }

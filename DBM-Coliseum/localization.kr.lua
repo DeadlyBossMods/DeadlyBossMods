@@ -131,8 +131,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnHellfire		= "지옥의 불길",
-	SpecWarnHellfire	= "지옥의 불길! 이동 하세요!"
+	SpecWarnHellfire		= "지옥의 불길! 이동 하세요!",
+	SpecWarnHandofProt		= "보호의 손길 : >%s<",
+	SpecWarnDivineShield	= "천상의 보호막 :  >%s<"
 }
 
 L:SetMiscLocalization{
@@ -168,8 +169,9 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnHellfire			= "지옥의 불길을 시전할 때 경고",
-	SpecWarnHellfire		= "지옥의 불길로 인해 피해를 입을 경우 특수 경고 보기"
+	SpecWarnHellfire		= "지옥의 불길로 인해 피해를 입을 경우 특수 경고 보기",
+	SpecWarnHandofProt		= "성기사가 보호의 손길을 시전 했을 경우 특수 경고 보기",
+	SpecWarnDivineShield	= "성기사가 천상의 보호막을 시전 햇을 경우 특수 경고 보기"
 }
 
 
@@ -193,8 +195,9 @@ L:SetWarningLocalization{
 	SpecWarnEmpoweredLight		= "강화된 빛",
 	SpecWarnSwitchTarget		= "대상 전환!",
 	SpecWarnKickNow				= "지금 차단!",
-	WarningDebuff				= "디버프 : >%s<",
-	WarningPoweroftheTwins		= "쌍둥이의 힘 - 오버힐!!  >%s<"
+	WarningTouchDebuf			= "디버프 : >%s<",
+	WarningPoweroftheTwins		= "쌍둥이의 힘 - 오버힐!!  >%s<",
+	SpecWarnPoweroftheTwins		= "쌍둥이의 힘!"
 }
 
 L:SetMiscLocalization{
@@ -214,7 +217,8 @@ L:SetOptionLocalization{
 	SpecialWarnOnDebuff			= "디버프일 경우 특수 경고 보기 (디버프를 바꿀 경우)",
 	SetIconOnDebuffTarget		= "손길 디버프 대상에게 공격대 아이콘 설정하기(영웅 모드)",
 	WarningTouchDebuff			= "빛/어둠의 손길 디버프 대상 알리기",
-	WarningPoweroftheTwins		= "쌍둥이의 힘의 현재 대상 알리기"
+	WarningPoweroftheTwins		= "쌍둥이의 힘의 현재 대상 알리기",
+	SpecWarnPoweroftheTwins		= "쌍둥이의 힘의 특수 경고 보기(탱커일 경우)"
 }
 
 
