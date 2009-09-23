@@ -39,7 +39,7 @@ local specWarnFlesh			= mod:NewSpecialWarning("SpecWarnFlesh")
 local specWarnTouch			= mod:NewSpecialWarning("SpecWarnTouch")
 local specWarnTouchNear		= mod:NewSpecialWarning("SpecWarnTouchNear", false)
 local specWarnKiss			= mod:NewSpecialWarning("SpecWarnKiss", false)
-local spelWarnNetherPower	= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
+local specWarnNetherPower	= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno	= mod:NewSpecialWarning("SpecWarnFelInferno")
 
 local enrageTimer			= mod:NewEnrageTimer(600)
@@ -137,7 +137,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(67009) then								-- Nether Power
 		warnNetherPower:Show()
-		spelWarnNetherPower:Show()
+		specWarnNetherPower:Show()
 
 	elseif args:IsSpellID(67901, 67902, 67903, 66258) then		-- Infernal Volcano
 		timerVolcanoCD:Start()
