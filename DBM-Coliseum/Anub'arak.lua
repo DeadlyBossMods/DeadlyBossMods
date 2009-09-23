@@ -38,6 +38,11 @@ local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)
 local timerPCold			= mod:NewTargetTimer(15, 68509)
 mod:AddBoolOption("SetIconsOnPCold", true, "announce")
 
+-- Shadow Strike
+--local timerShadowStrike		= mod:NewNextTimer(30, 66134)
+--local preWarnShadowStrike	= mod:NewCastTimer(66134, 3)
+--local warnShadowStrike		= mod:NewCastTimer(66134, 4)
+
 
 local PColdIcon = 7
 function mod:resetIcons()
