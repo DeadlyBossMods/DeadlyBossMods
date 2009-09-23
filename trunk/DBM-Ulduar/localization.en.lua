@@ -630,7 +630,8 @@ L:SetWarningLocalization{
 	WarnFavor						= "Sara's Fervor on >%s<",
 	SpecWarnFavor					= "Sara's Fervor on YOU",
 	WarnEmpowerSoon					= "Empowering Shadows Soon!",
-	SpecWarnMaladyNear					= "Malady Near You on >%s<"	
+	SpecWarnMaladyNear				= "Malady Near You on >%s<"	,
+	SpecWarnDeafeningRoar			= "Deafening Roar"
 }
 
 L:SetTimerLocalization{
@@ -662,7 +663,8 @@ L:SetOptionLocalization{
 	SetIconOnMCTarget				= "Set Icon on Mindcontrol target",
 	ShowSaraHealth					= "Show Healthframe for Sara in P1 (must be targeted by at least one Raidmember)",
 	WarnEmpowerSoon					= "Warn for Empowering Shadows soon",
-	SpecWarnMaladyNear				= "Special Warning if someone close to you has Malady of the Mind"
+	SpecWarnMaladyNear				= "Special Warning if someone close to you has Malady of the Mind",
+	SpecWarnDeafeningRoar			= "Special Warning when casting Deafening Roar (silience and for Legendary!)
 }
 
 
