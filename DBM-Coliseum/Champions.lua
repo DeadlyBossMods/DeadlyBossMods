@@ -14,38 +14,44 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-mod:SetBossHealthInfo(
--- Horde
-	34458, L.Gorgrim,
-	34451, L.Birana,
-	34459, L.Erin,
-	34448, L.Rujkah,
-	34449, L.Ginselle,
-	34445, L.Liandra,
-	34456, L.Malithas,
-	34447, L.Caiphus,
-	34441, L.Vivienne,
-	34454, L.Mazdinah,
-	34444, L.Thrakgar,
-	34455, L.Broln,
-	34450, L.Harkzog,
-	34453, L.Narrhok
--- Alliance
-	--34461, L.Tyrius,
-	--34460, L.Kavina,
-	--34469, L.Melador,
-	--34467, L.Alyssia,
-	--34468, L.Noozle,
-	--34471, L.Baelnor,
-	--34465, L.Velanaa,
-	--34466, L.Anthar,
-	--34473, L.Brienna,
-	--34472, L.Irieth,
-	--34470, L.Saamul,
-	--34463, L.Shaabad,
-	--34474, L.Serissa,
-	--34475, L.Shocuul
-)
+
+if UnitFactionGroup("player") == "Alliance" then
+	mod:SetBossHealthInfo(
+	-- Horde
+		34458, L.Gorgrim,
+		34451, L.Birana,
+		34459, L.Erin,
+		34448, L.Rujkah,
+		34449, L.Ginselle,
+		34445, L.Liandra,
+		34456, L.Malithas,
+		34447, L.Caiphus,
+		34441, L.Vivienne,
+		34454, L.Mazdinah,
+		34444, L.Thrakgar,
+		34455, L.Broln,
+		34450, L.Harkzog,
+		34453, L.Narrhok
+	)
+else
+	mod:SetBossHealthInfo(
+	-- Alliance
+		34461, L.Tyrius,
+		34460, L.Kavina,
+		34469, L.Melador,
+		34467, L.Alyssia,
+		34468, L.Noozle,
+		34471, L.Baelnor,
+		34465, L.Velanaa,
+		34466, L.Anthar,
+		34473, L.Brienna,
+		34472, L.Irieth,
+		34470, L.Saamul,
+		34463, L.Shaabad,
+		34474, L.Serissa,
+		34475, L.Shocuul
+	)
+end
 
 local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
               or select(2, UnitClass("player")) == "PRIEST"
