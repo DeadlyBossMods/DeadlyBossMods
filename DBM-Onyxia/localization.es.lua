@@ -22,15 +22,15 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath	= "Mostrar aviso especial para Aliento profundo",
-	TimerBreath		= "Mostrar tiempo para Aliento profundo",
+	SpecWarnBreath	= "Mostrar aviso especial para Aliento Profundo ( Echa fuego )",
+	TimerBreath		= "Mostrar tiempo para Alieto Profundo ( Fuego )",
 	TimerWhelps		= "Mostrar tiempo para las crias",
 	WarnWhelpsSoon	= "Mostrar pre-aviso para las crias",
-	SoundBreath		= "Sonido si estas en el area del Aliento profundo"
+	SoundBreath		= "Sonido si estas en el area del fuego"
 }
 
 L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
-	Breath = "%s takes in a deep breath...",
-	YellP2 = "This meaningless exertion bores me. I'll incinerate you all from above!",
-	YellP3 = "It seems you'll need another lesson, mortals!"
+	Breath = "%s toma aliento...",
+	YellP2 = "Este ejercicio sin sentido me aburre. ¡Os inceneraré a todos desde arriba!",
+	YellP3 = "¡Aprende a saber estar, mortal!"
 }
