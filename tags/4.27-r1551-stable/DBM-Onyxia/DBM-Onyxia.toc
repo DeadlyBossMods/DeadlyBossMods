@@ -1,0 +1,20 @@
+﻿## Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMOnyxia_SavedVars, DBMOnyxia_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Name: Onyxia's Lair
+## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-LoadZone: Onyxia's Lair
+localization.en.lua
+localization.de.lua
+localization.fr.lua
+localization.ru.lua
+localization.tw.lua
+localization.kr.lua
+localization.tw.lua
+localization.es.lua
+Onyxia.lua
