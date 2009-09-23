@@ -10,7 +10,8 @@ mod:RegisterKill("yell", L.YellKill)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"SPELL_AURA_APPLIED"
 )
 
 mod:SetBossHealthInfo(
@@ -46,19 +47,40 @@ mod:SetBossHealthInfo(
 	--34475, L.Shocuul
 )
 
+local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
+              or select(2, UnitClass("player")) == "PRIEST"
+              or select(2, UnitClass("player")) == "SHAMAN"
 
-local warnHellfire			= mod:NewAnnounce("WarnHellfire", 1)
+local warnHellfire			= mod:NewSpellAnnounce(68147, 1)
 local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
-local warnHeroism			= mod:NewSpellAnnounce(65980)
+local warnHeroism			= mod:NewSpellAnnounce(65983, 2)
+local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
+local warnHandofProt		= mod:NewSpellAnnounce(66009, 3)
+local warnDivineShield		= mod:NewTargetAnnounce(66010, 4)
+local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
+local specWarnDivineShield	= mod:NewSpecialWarning("SpecWarnDivineShield", isDispeller) 
+
 
 function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(65816, 68145, 68146, 68147) then
+	if args:IsSpellID(65816, 68145, 68146, 68147) then		-- Hellfire
 		warnHellfire:Show()
-	elseif args:IsSpellID(65980, 65983) then		-- missing SpellID for Heroism (if NPCs are Alliance)
+	elseif args:IsSpellID(65983) then						-- Heroism
 		warnHeroism:Show()
+	elseif args:IsSpellID(65980) then						-- Blood lust
+		warnBloodlust:Show()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(66010) then							-- Divine Shield on <mobname>
+		warnDivineShield:Show(args.destName)
+		specWarnDivineShield:Show(args.destName)
+	elseif args:IsSpellID(66009) then						-- Hand of Protection on <mobname>
+		warnHandofProt:Show(args.destName)
+		specWarnHandofProt:Show(args.destName)
 	end
 end
 
