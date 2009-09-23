@@ -96,6 +96,7 @@ L.BarIconLeft				= "Значок слева"
 L.BarIconRight				= "Значок справа"
 L.EnableHugeBar				= "Включить увеличенный индикатор (Полоса 2)"
 L.FillUpBars				= "Наполняющая заливка полос"
+L.ClickThrough				= "Отключить события мыши (позволяет вам щелкать мышью скозь полосы)"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter			= "Фильтрация сообщений"
@@ -104,4 +105,7 @@ L.HideBossEmoteFrame		= "Скрывать сообщения эмоций рей
 L.SpamBlockRaidWarning		= "Фильтрация предупреждения от других DBM" 
 L.SpamBlockBossWhispers		= "Фильтрация <DBM> предупреждения шепотом в бою"
 L.BlockVersionUpdatePopup	= "Всплывающее сообщение, если версия устарела"
-L.ShowBigBrotherOnCombatStart	= "Отображать \"BigBrother\", во время боевых действий"
+
+
+L.ShowBigBrotherOnCombatStart	= "Выполнять проверку \"BigBrother \" положительных эффектов, перед началом боевых действий"
+
