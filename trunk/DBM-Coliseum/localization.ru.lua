@@ -82,7 +82,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame			= ">%s< под воздействием Пламени Легиона",
 	WarnTouch			= "Касание Джараксуса на >%s<",
-	WarnNetherPower			= "Сила Пустоты на Лорде Джараксусе! Рассейте немедленно!",
+	WarnNetherPower			= "Сила Пустоты на Лорде Джараксусе! Рассейте заклинание!",
 	WarnPortalSoon			= "Открываются Врата Пустоты!",
 	WarnVolcanoSoon			= "Скоро Инфернальное извержение!",
 	SpecWarnFlesh			= "Испепеление плоти на вас!",
