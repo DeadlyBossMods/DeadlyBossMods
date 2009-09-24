@@ -63,13 +63,15 @@ function mod:OnSync(msg)
 		self:Whelps()
 		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
 		sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
-		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
+		sndFunny:Schedule(17, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
 	elseif msg == "Phase3" then
 		self:UnscheduleMethod("Whelps")
 		timerWhelps:Stop()
 		warnWhelpsSoon:Cancel()
-
 		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
+   		sndFunny:Schedule(30, "Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
+		sndFunny:Schedule(40, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
+		sndFunny:Schedule(50, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
 	end
 end
 
