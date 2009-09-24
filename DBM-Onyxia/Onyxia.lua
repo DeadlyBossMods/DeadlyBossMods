@@ -79,6 +79,12 @@ function mod:OnSync(msg)
 	end
 end
 
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(68867, 69286) and args:IsPlayer() then		-- Tail Sweep
+		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\watch-the-tail.mp3")
+	end
+end
+
 function mod:UNIT_DIED(args)
 	if args:IsPlayer() then
 		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\thats-a-fucking-fifty-dkp-minus.mp3")
