@@ -26,7 +26,8 @@ L:SetOptionLocalization{
 	TimerBreath		= "為深呼吸顯示計時器",
 	TimerWhelps		= "為幼龍顯示計時器",
 	WarnWhelpsSoon		= "為幼龍出現顯示預先警告",
-	SoundBreath		= "深呼吸時播放音效"
+	SoundBreath		= "深呼吸時播放音效",
+	SoundWTF		= "為經典傳奇式奧妮克希亞副本播放一些有趣的音效"
 }
 
 L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
