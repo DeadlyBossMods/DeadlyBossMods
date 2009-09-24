@@ -29,8 +29,8 @@ L:SetOptionLocalization{
 	SoundBreath		= "Звуковой сигнал, когда Глубокий вдох"
 }
 
-L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
-	Breath = "%s takes in a deep breath...",
-	YellP2 = "This meaningless exertion bores me. I'll incinerate you all from above!",
+L:SetMiscLocalization{
+	Breath = "%s под воздействием Глубокого вдоха...",
+	YellP2 = "Эта бессмысленная возня вгоняет меня в тоску. Я сожгу вас всех!",
 	YellP3 = "It seems you'll need another lesson, mortals!"
 }
