@@ -18,14 +18,14 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerBreath	= "Глубокий вдох",
-	TimerWhelps = "Вызов дракончиков"
+	TimerWhelps 	= "Вызов дракончиков"
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath	= "Спец-предупреждение для Глубокого вдоха",
+	SpecWarnBreath		= "Спец-предупреждение для Глубокого вдоха",
 	TimerBreath		= "Отсчет времени до Глубокого вдоха",
 	TimerWhelps		= "Отсчет времени до вызова дракончиков",
-	WarnWhelpsSoon	= "Пред-предупреждение для вызова дракончиков",
+	WarnWhelpsSoon		= "Предупредить зарание о вызове дракончиков",
 	SoundBreath		= "Звуковой сигнал, когда Глубокий вдох"
 }
 
