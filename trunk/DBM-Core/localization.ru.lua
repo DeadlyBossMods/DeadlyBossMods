@@ -120,11 +120,11 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase = "Фаза %d",
 }
 
-local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
+local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target = "Сообщить цели, под воздействием |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Предупреждение, когда |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	cast = "Предупреждение, когда читает заклинание |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
 	phase = "Предупреждение для фазы %d"
