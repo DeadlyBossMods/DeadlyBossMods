@@ -204,7 +204,6 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	YellPull 			= "以我們的黑暗君王之名。為了巫妖王。你‧得‧死。",
-	YellKill			= "誰也阻擋不了天譴軍團……",
 	Fjola 				= "菲歐拉·光寂",
 	Eydis				= "艾狄絲·暗寂"
 }
