@@ -2263,11 +2263,10 @@ end
 --------------------
 --  Sound Object  --
 --------------------
--- deprecated! do not use!
 do
 	local soundPrototype = {}
 	local mt = { __index = soundPrototype }
-	function bossModPrototype:NewRunAwaySound(spellId, optionName, optionDefault)
+	function bossModPrototype:NewSound(spellId, optionName, optionDefault)
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
 			{
@@ -2283,12 +2282,21 @@ do
 		end
 		return obj
 	end
+	bossModPrototype.NewRunAwaySound = bossModPrototype.NewSound
 	
-	function soundPrototype:Play()
+	function soundPrototype:Play(file)
 		if not self.option or self.mod.Options[self.option] then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	end
+
+	function soundPrototype:Schedule(t, ...)
+		return schedule(t, self.Play, self.mod, self, ...)
+	end
+
+	function soundPrototype:Cancel(...)
+		return unschedule(self.Play, self.mod, self, ...)
+	end	
 end
 
 ------------------------------
