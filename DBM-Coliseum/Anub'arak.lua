@@ -60,13 +60,6 @@ function mod:OnCombatStart(delay)
 	timerFreezingSlash:Start(-delay)
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(66012) then		-- Freezing Slash
-		warnFreezingSlash:Show(args.destName)
-		timerFreezingSlash:Start()
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(67574) then			-- Pursue
 		if args:IsPlayer() then
@@ -90,6 +83,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			PColdIcon = PColdIcon - 1
 		end
 		timerPCold:Show(args.destName)
+	elseif args:IsSpellID(66012) then		-- Freezing Slash
+		warnFreezingSlash:Show(args.destName)
+		timerFreezingSlash:Start()
 	end
 end
 
@@ -120,7 +116,6 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
-		timerFreezingSlash:Start()
 	end
 end
 
