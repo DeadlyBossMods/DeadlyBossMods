@@ -110,7 +110,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s: >%s<",
+	target = "%s: >%%s<",
 	spell = "%s",
 	cast = "施放 %s: %.1f 秒",
 	soon = "%s 即將發動",
