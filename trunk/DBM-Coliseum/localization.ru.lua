@@ -175,11 +175,11 @@ L:SetWarningLocalization{
 	SpecWarnSpecial			= "Смена цвета!",
 	SpecWarnEmpoweredDarkness	= "Могущественная Тьма",
 	SpecWarnEmpoweredLight		= "Могущественный Свет",
-	SpecWarnSwitchTarget		= "Switch Target!",
-	SpecWarnKickNow			= "Kick Now!",
+	SpecWarnSwitchTarget		= "Смена цели!",
+	SpecWarnKickNow			= "Пинок!",
 	WarningTouchDebuff		= ">%s< под воздействем отрицательного эффекта",
-	WarningPoweroftheTwins		= "Power of the Twins - more heal on >%s<",
-	SpecWarnPoweroftheTwins		= "Power of the Twins!"
+	WarningPoweroftheTwins		= "Сила близнецов - на: >%s<",
+	SpecWarnPoweroftheTwins		= "Сила близнецов!"
 }
 
 L:SetMiscLocalization{
@@ -195,12 +195,12 @@ L:SetOptionLocalization{
 	SpecWarnEmpoweredDarkness	= "Спец-предупреждение, когда на вас Могущественная тьма",
 	SpecWarnEmpoweredLight		= "Спец-предупреждение, когда на вас Могущественный свет",
 	SpecWarnSwitchTarget		= "Спец-предупреждение для других, когда босс читает заклинание",
-	SpecWarnKickNow			= "Спец-предупреждение, когда you have to interrupt",
+	SpecWarnKickNow			= "Спец-предупреждение, когда вы должы прервать заклинание",
 	SpecialWarnOnDebuff		= "Спец-предупреждение, когда отрицательный эфект",
 	SetIconOnDebuffTarget		= "Установить метку на получившего отрицательный эффект (героический режим)",
-	WarningTouchDebuff		= "Announce Touch of Light/Darkness debuff targets",
-	WarningPoweroftheTwins		= "Announce current target for Power of the Twins",
-	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an enpowered Twin"
+	WarningTouchDebuff		= "Объявлять цели получившей отрицательный эффект",
+	WarningPoweroftheTwins		= "Объявлять цель под влиянием Силы близнецов",
+	SpecWarnPoweroftheTwins		= "Спец-предупреждение, когда на вас Сила близнецов"
 }
 
 ------------------
