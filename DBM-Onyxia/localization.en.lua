@@ -25,7 +25,7 @@ L:SetOptionLocalization{
 	TimerWhelps		= "Show timer for whelp spawns",
 	WarnWhelpsSoon	= "Show pre-warning for whelp spawns",
 	SoundBreath		= "Play sound on Deep Breath",
-	SoundWTF		= "Play some funny sounds of an legendary Onyxia Classic Raid"
+	SoundWTF		= "Play some funny sounds of a legendary Onyxia classic raid"
 }
 
 L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
