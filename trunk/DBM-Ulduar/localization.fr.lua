@@ -628,7 +628,8 @@ L:SetWarningLocalization{
 	WarnFavor						= "Ferveur de Sara sur >%s<",
 	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
 	WarnEmpowerSoon					= "Renforcement des ombres Bientôt!",
-	SpecWarnMaladyNear					= "Mal de la raison a coter de vous sur >%s<"
+	SpecWarnMaladyNear				= "Mal de la raison a coter de vous sur >%s<",
+	SpecWarnDeafeningRoar			= "Rugissement assourdissant"
 }
 
 L:SetTimerLocalization{
@@ -660,6 +661,7 @@ L:SetOptionLocalization{
 	SetIconOnMCTarget				= "met une icone sur la cible du controle mental",
 	ShowSaraHealth					= "Montre la vie de Sara durant la P1 ( Doit être sélectionner une fois par un membre du groupe raid )",
 	WarnEmpowerSoon					= "Alerte avant le Renforcement des ombres",
-	SpecWarnMaladyNear				= "Montre une alerte spéciale si une personne a coter de vous est victime du Mal de la raison"
+	SpecWarnMaladyNear				= "Montre une alerte spéciale si une personne a coter de vous est victime du Mal de la raison",
+	SpecWarnDeafeningRoar			= "Montre une alerte spéciale pour le Rugissement assourdissant"
 }
 
