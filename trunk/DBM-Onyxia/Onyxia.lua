@@ -9,7 +9,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_EMOTE",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_DIED"
 )
 
 local timerBreath	= mod:NewTimer(6, "TimerBreath", 17086)
@@ -20,8 +21,13 @@ local warnWhelpsSoon	= mod:NewAnnounce("WarnWhelpsSoon", 1)
 local sndBreath			= mod:NewRunAwaySound(nil, "SoundBreath")
 local timerAchieve		= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
 
+local sndFunny			= mod:NewSound(nil, "SoundWTF", false)
+
 function mod:OnCombatStart(delay)
    timerAchieve:Start(-delay)
+   sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\dps-very-very-slowly.mp3")
+   sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
+   sndFunny:Schedule(30, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
 end 
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
@@ -55,11 +61,21 @@ function mod:OnSync(msg)
 		timerBreath:Start()
 	elseif msg == "Phase2" then
 		self:Whelps()
+		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
+		sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
+		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
 	elseif msg == "Phase3" then
 		self:UnscheduleMethod("Whelps")
 		timerWhelps:Stop()
 		warnWhelpsSoon:Cancel()
+
+		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
 	end
 end
 
+function mod:UNIT_DIED(args)
+	if args:IsPlayer() then
+		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\thats-a-fucking-fifty-dkp-minus.mp3")
+	end
+end
 
