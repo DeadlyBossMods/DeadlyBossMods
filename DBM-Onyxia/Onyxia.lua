@@ -14,15 +14,16 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local timerBreath		= mod:NewTimer(6, "TimerBreath", 17086)
-local timerWhelps		= mod:NewTimer(79, "TimerWhelps", 10697)
+local timerBreath			= mod:NewTimer(6, "TimerBreath", 17086)
+local timerWhelps			= mod:NewTimer(79, "TimerWhelps", 10697)
 
-local specWarnBreath	= mod:NewSpecialWarning("SpecWarnBreath")
-local warnWhelpsSoon	= mod:NewAnnounce("WarnWhelpsSoon", 1)
-local sndBreath			= mod:NewRunAwaySound(nil, "SoundBreath")
-local timerAchieve		= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
+local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
+local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
+local sndBreath				= mod:NewRunAwaySound(nil, "SoundBreath")
+local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
+local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps") 
 
-local sndFunny			= mod:NewSound(nil, "SoundWTF", false)
+local sndFunny				= mod:NewSound(nil, "SoundWTF")
 
 function mod:OnCombatStart(delay)
    timerAchieve:Start(-delay)
@@ -51,8 +52,8 @@ end
 function mod:Whelps()
 	if self:IsInCombat() then
 		timerWhelps:Start()
-		warnWhelpsSoon:Schedule(67)
-		self:ScheduleMethod(79, "Whelps")
+		warnWhelpsSoon:Schedule(95)
+		self:ScheduleMethod(105, "Whelps")
 		-- we replay sounds as long as p2 is running
 		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
 		sndFunny:Schedule(35, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
@@ -64,9 +65,8 @@ function mod:OnSync(msg)
 		specWarnBreath:Show()
 		timerBreath:Start()
 	elseif msg == "Phase2" then
-	--	self:Whelps()
+		timerAchieveWhelps:Start()
 		self:ScheduleMethod(5, "Whelps")
-		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
 		sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
 		sndFunny:Schedule(17, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
 	elseif msg == "Phase3" then
