@@ -145,7 +145,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 
 	elseif args:IsSpellID(67900, 67899, 67898, 66269) then		-- Nether Portal
 		timerPortalCD:Start()
-		warnPortalSoon:Schedule(40)
+		warnPortalSoon:Schedule(110)
 	
 	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		warnFlame:Show(args.destName)
