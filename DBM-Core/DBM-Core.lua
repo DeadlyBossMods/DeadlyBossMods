@@ -311,7 +311,7 @@ do
 			elseif event == "SPELL_MISSED" then
 				args.missType, args.amountMissed = select(4, ...)
 			elseif event == "SPELL_HEAL" then
-				args.amount, args.overheal, args.critical = select(4, ...)
+				args.amount, args.overheal, args.absorbed, args.critical = select(4, ...)
 				args.school = args.spellSchool
 			elseif event == "SPELL_ENERGIZE" then
 				args.valueType = 2
@@ -322,7 +322,7 @@ do
 				elseif event == "SPELL_PERIODIC_DAMAGE" then
 					args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(4, ...)
 				elseif event == "SPELL_PERIODIC_HEAL" then
-					args.amount, args.critical = select(4, ...)
+					args.amount, args.overheal, args.absorbed, args.critical = select(4, ...)
 					args.school = args.spellSchool
 				elseif event == "SPELL_PERIODIC_DRAIN" then
 					args.amount, args.powerType, args.extraAmount = select(4, ...)
