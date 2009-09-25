@@ -2103,6 +2103,10 @@ function bossModPrototype:IsDifficulty(...)
 	return false
 end
 
+function bossModPrototype:SetUsedIcons(...)
+	self.usedIcons = {...}
+end
+
 
 -------------------------
 --  Boss Health Frame  --
