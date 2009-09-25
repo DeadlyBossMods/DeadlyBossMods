@@ -11,7 +11,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"SPELL_HEAL",
+	"SPELL_PERIODIC_HEAL"
 )
 
 
@@ -32,7 +34,7 @@ local timerFlesh			= mod:NewTargetTimer(12, 67049)
 local timerFleshCD			= mod:NewCDTimer(23, 67051) 
 local timerPortalCD			= mod:NewCDTimer(120, 67900)
 local timerVolcanoCD		= mod:NewCDTimer(120, 67901)
---local timerTouchCD		= mod:NewCDTimer(999, 12345)	-- No idea about the cd timer for this spell
+--local timerTouchCD		= mod:NewCDTimer(999, 12345)	-- cooldown?
 
 local specWarnFlame			= mod:NewSpecialWarning("SpecWarnFlame")
 local specWarnFlesh			= mod:NewSpecialWarning("SpecWarnFlesh")
@@ -49,7 +51,14 @@ mod:AddBoolOption("LegionFlameIcon", true, "announce")
 mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
 mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
 
+mod:RemoveOption("HealthFrame")
+mod:AddBoolOption("IncinerateShieldFrame", true, "misc")
+
 function mod:OnCombatStart(delay)
+	if self.Options.IncinerateShieldFrame then
+		DBM.BossHealth:Show(L.name)
+		DBM.BossHealth:AddBoss(34780, L.name)
+	end
 --	if self:IsDifficulty("heroic10", "heroic25") then
 		timerPortalCD:Start(20-delay)
 		warnPortalSoon:Schedule(15-delay)
@@ -66,21 +75,57 @@ function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 end
 
+function mod:OnCombatEnd()
+	DBM.BossHealth:Clear()
+end
+
 do
 	local lastflame = 0
 	local lastinferno = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(66877, 67070, 67071, 67072) and args:IsPlayer() then		-- Legion Flame
+		if args:IsPlayer() and args:IsSpellID(66877, 67070, 67071, 67072) and then		-- Legion Flame
 			if GetTime() - 3 > lastflame then
 				specWarnFlame:Show()
 				lastflame = GetTime()
 			end
-		elseif args:IsSpellID(66496, 68716, 68717, 68718) and args:IsPlayer() then	-- Fel Inferno
+		elseif args:IsPlayer() and args:IsSpellID(66496, 68716, 68717, 68718) then	-- Fel Inferno
 			if GetTime() - 3 > lastinferno then
 				specWarnFelInferno:Show()
 				lastinferno = GetTime()
 			end
 		end
+	end
+end
+
+local setIncinerateTarget, clearIncinerateTarget
+do
+	local incinerateTarget
+	local healed = 0
+	local maxAbsorb = 0
+	local function getShieldHP()
+		return math.floor(healed / maxAbsorb)
+	end
+	
+	function mod:SPELL_HEAL(args)
+		if args.destGUID == incinerateTarget then
+			healed = healed + (args.absorbed or 0)
+		end
+	end	
+	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
+	
+	function setIncinerateTarget(mod, target, name)
+		incinerateTarget = target
+		healed = 0
+		maxAbsorb = mod:IsDifficulty("heroic25") and 85000 or
+					mod:IsDifficulty("heroic10") and 40000 or
+					mod:IsDifficulty("normal25") and 60000 or
+					mod:IsDifficulty("normal10") and 30000 or 0
+		DBM.BossHealth:RemoveBoss(getShieldHP)
+		DBM.BossHealth:AddBoss(getShieldHP, L.IncinerateTarget:format(name))
+	end
+	
+	function clearIncinerateTarget()
+		DBM.BossHealth:RemoveBoss(getShieldHP)
 	end
 end
 
@@ -94,6 +139,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFlesh:Show()
 		end
+		setIncinerateTarget(self, args.destGUID, args.destName)
+		self:Schedule(15, clearIncinerateTarget)
 
 	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		local targetname = args.destName
@@ -131,6 +178,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(67051, 67050, 67049, 66237) then			-- Incinerate Flesh
 		timerFlesh:Stop()
+		clearIncinerateTarget()
 	end
 end
 
