@@ -115,7 +115,7 @@ local shieldValues = {
 	[67261] = 1200000,
 	[67258] = 1200000,
 }
-local showShieldHealthBar
+local showShieldHealthBar, hideShieldHealthBar
 do
 	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
 	local shieldedMob
@@ -145,6 +145,11 @@ do
 		maxAbsorb = absorb
 		DBM.BossHealth:RemoveBoss(getShieldHP)
 		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
+		self:Schedule(15, hideShieldHealthBar)
+	end
+	
+	function hideShieldHealthBar()
+		DBM.BossHealth:RemoveBoss(getShieldHP)
 	end
 end
 
@@ -164,7 +169,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		self:ScheduleMethod(0.5, "warnDebuff")		
+		self:ScheduleMethod(0.5, "warnDebuff")
 	elseif args:IsSpellID(66001, 67281, 67282, 67283) then	-- Touch of Darkness
 		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
 			specWarnSpecial:Show()
@@ -179,16 +184,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:ScheduleMethod(0.5, "warnDebuff")
 	elseif args:IsSpellID(67246, 65879, 65916, 67244, 67245, 67248, 67249, 67250) then	-- Power of the Twins 
 		self:Schedule(0.1, showPowerWarning, self, args:GetDestCreatureID())
-	elseif args:IsSpellID(65950, 67296, 67297, 67298, 66001, 67281, 67282, 67283) then  -- Shield of Darkness/Lights
+	elseif args:IsSpellID(65874, 67256, 67257, 67258, 65858, 67259, 67260, 67261) then  -- Shield of Darkness/Lights
 		showShieldHealthBar(args.destGUID, args.spellName, shieldValues[args.spellId] or 0)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34496 and args:IsSpellID(65874, 67256, 67257, 67258) then			-- Shield of Darkness
-		specWarnKickNow:Show()
-	elseif UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34497 and args:IsSpellID(65858, 67259, 67260, 67261) then		-- Shield of Lights
-		specWarnKickNow:Show()
+	if args:IsSpellID(65874, 67256, 67257, 67258) then			-- Shield of Darkness
+		if UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34496 then
+			specWarnKickNow:Show()
+		end
+		hideShieldHealthBar()
+	elseif args:IsSpellID(65858, 67259, 67260, 67261) then		-- Shield of Lights
+		if UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34497 then
+			specWarnKickNow:Show()
+		end
+		hideShieldHealthBar()
 	elseif args:IsSpellID(65950, 67296, 67297, 67298) then	-- Touch of Light
 		timerLightTouch:Stop(args.destName)
 		if self.Options.SetIconOnDebuffTarget then
