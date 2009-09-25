@@ -96,7 +96,8 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	WhisperFlame			= "你中了軍團烈焰!"
+	WhisperFlame			= "你中了軍團烈焰!",
+	IncinerateTarget		= "焚化血肉: %s"
 }
 
 L:SetOptionLocalization{
@@ -115,7 +116,8 @@ L:SetOptionLocalization{
 	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記 (十字)",
 	IncinerateFleshIcon		= "為焚化血肉的目標設置標記 (頭顱)",
 	LegionFlameIcon			= "為軍團烈焰的目標設置標記 (正方)",
-	LegionFlameWhisper		= "密語提示中了軍團烈焰的人"
+	LegionFlameWhisper		= "密語提示中了軍團烈焰的人",
+	IncinerateShieldFrame		= "為焚化血肉在首領血量裡顯示血量"
 }
 
 
