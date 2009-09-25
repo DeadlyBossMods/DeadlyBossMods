@@ -81,7 +81,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnFlame			= "聚合烈焰: >%s<",
+	WarnFlame			= "軍團烈焰: >%s<",
 	WarnTouch			= "賈拉克瑟斯之觸: >%s<",
 	WarnNetherPower			= "虛空威能在賈拉克瑟斯領主身上! 快驅散!",
 	WarnPortalSoon			= "虛空傳送門 即將到來!",
@@ -90,22 +90,22 @@ L:SetWarningLocalization{
 	SpecWarnTouch			= "你中了賈拉克瑟斯之觸!",
 	SpecWarnKiss			= "你中了仕女之吻!",
 	SpecWarnTouchNear		= "你附近的>%s<中了賈拉克瑟斯之觸!",
-	SpecWarnFlame			= "聚合烈焰! 跑開!",
+	SpecWarnFlame			= "軍團烈焰! 快跑開!",
 	SpecWarnNetherPower		= "現在驅散!",
-	SpecWarnFelInferno		= "魔化煉獄! 跑開!"
+	SpecWarnFelInferno		= "魔化煉獄! 快跑開!"
 }
 
 L:SetMiscLocalization{
-	WhisperFlame			= "你中了聚合烈焰!"
+	WhisperFlame			= "你中了軍團烈焰!"
 }
 
 L:SetOptionLocalization{
-	WarnFlame			= "為聚合烈焰顯示警告",
+	WarnFlame			= "為軍團烈焰顯示警告",
 	WarnTouch			= "為賈拉克瑟斯之觸顯示警告",
 	WarnNetherPower			= "當賈拉克瑟斯領主擁有虛空威能時警告 (驅散/竊取用)",
 	WarnPortalSoon			= "預先提示虛空傳送門的出現",
 	WarnVolcanoSoon			= "預先提示煉獄爆發的出現",
-	SpecWarnFlame			= "當你中了聚合烈焰時顯示特別警告",
+	SpecWarnFlame			= "當你中了軍團烈焰時顯示特別警告",
 	SpecWarnFlesh			= "當你中了焚化血肉時顯示特別警告",
 	SpecWarnTouch			= "當你中了賈拉克瑟斯之觸時顯示特別警告",
 	SpecWarnTouchNear		= "當你附近的人中了賈拉克瑟斯之觸時顯示特別警告",
@@ -114,8 +114,8 @@ L:SetOptionLocalization{
 	SpecWarnFelInferno		= "當你太接近魔化煉獄時顯示特別警告",
 	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記 (十字)",
 	IncinerateFleshIcon		= "為焚化血肉的目標設置標記 (頭顱)",
-	LegionFlameIcon			= "為聚合烈焰的目標設置標記 (正方)",
-	LegionFlameWhisper		= "密語提示中了聚合烈焰的人"
+	LegionFlameIcon			= "為軍團烈焰的目標設置標記 (正方)",
+	LegionFlameWhisper		= "密語提示中了軍團烈焰的人"
 }
 
 
