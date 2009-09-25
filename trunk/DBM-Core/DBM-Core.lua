@@ -207,15 +207,21 @@ do
 	local argsMT = {__index = {}}
 	local args = setmetatable({}, argsMT)
 	
-	function argsMT.__index:IsSpellID(...)
-		local id = self.spellId
-		for i = 1, select("#", ...), 1 do
-			local v = select(i,  ...)
-			if v == id then
-				return true
+	do
+		local functionTemplate = "return function(id, %s) return id == %s end"
+		local cachedFunctions = setmetatable({[0] = function() return false end}, {
+			__index = function(t, k)
+				local buf = {}
+				for i = 1, k do
+					buf[#buf + 1] = "a"..i
+				end
+				t[k] = loadstring(functionTemplate:format(table.concat(buf, ", "), table.concat(buf, " or id == ")))()
+				return t[k]
 			end
+		})
+		function argsMT.__index:IsSpellID(...)
+			return cachedFunctions[select("#", ...)](self.spellId, ...)
 		end
-		return false
 	end
 	
 	function argsMT.__index:IsPlayer()
