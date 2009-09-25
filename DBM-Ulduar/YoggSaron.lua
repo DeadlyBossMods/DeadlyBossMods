@@ -18,6 +18,8 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
+mod:SetUsedIcons(4, 6, 7, 8)
+
 
 local warnGuardianSpawned 			= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
 local warnCrusherTentacleSpawned	= mod:NewAnnounce("WarningCrusherTentacleSpawned", 2)
@@ -44,8 +46,11 @@ local timerEmpower					= mod:NewCDTimer(46, 64465)
 local timerEmpowerDuration			= mod:NewBuffActiveTimer(10, 64465)
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
+local warnDeafeningRoarSoon			= mod:NewPreWarnAnnounce(64189, 5, 3)
 local timerCastDeafeningRoar		= mod:NewCastTimer(2.3, 64189)
+local timerNextDeafeningRoar		= mod:NewNextTimer(30, 64189)
 local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
+
 
 local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
@@ -79,7 +84,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64059 then	-- Induce Madness
+	if args:IsSpellID(64059) then	-- Induce Madness
 		timerMadness:Start()
 		warnMadness:Show()
 		brainportal:Schedule(60)
@@ -87,6 +92,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnBrainPortalSoon:Schedule(78)
 		specWarnMadnessOutNow:Schedule(55)
 	elseif args:IsSpellID(64189) then		--Deafening Roar
+		timerNextDeafeningRoar:Start()
+		warnDeafeningRoarSoon:Schedule(55)
 		timerCastDeafeningRoar:Start()
 		specWarnDeafeningRoar:Show()
 	end
@@ -101,14 +108,14 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, sender)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 64144 and self:GetUnitCreatureId(args.sourceGUID) == 33966 then 
+	if args:IsSpellID(64144) and self:GetUnitCreatureId(args.sourceGUID) == 33966 then 
 		warnCrusherTentacleSpawned:Show()
 	end
 end
 
 
 function mod:SPELL_SUMMON(args)
-	if args.spellId == 62979 then
+	if args:IsSpellID(62979) then
 		warnGuardianSpawned:Show()
 	end
 end
@@ -116,7 +123,7 @@ end
 -- 4/24 21:56:29.656  SPELL_AURA_APPLIED,0xF150008208022C87,"Yogg-Saron",0xa48,0xF150008208022C87,"Yogg-Saron",0xa48,63894,"Shadowy Barrier",0x20,BUFFfunction mod:SPELL_AURA_APPLIED(args)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 63802 then		-- Brain Link
+	if args:IsSpellID(63802) then		-- Brain Link
 		if not brainLink1 then
 			self:SetIcon(args.destName, 6, 30)
 			brainLink1 = args.destName
@@ -128,7 +135,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			brainLink1 = nil
 		end
 
-	elseif (args.spellId == 63830 or args.spellId == 63881) and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Fear) 
+	elseif args:IsSpellID(63830, 63881) and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Fear) 
 		self:SetIcon(args.destName, 8, 30) 
 		local uId = DBM:GetRaidUnitId(args.destName) 
 		if uId then 
@@ -137,27 +144,17 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnMaladyNear:Show(args.destName) 
 			end 
 		end 
-
---[[	elseif args.spellId == 63881 and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Jump) 
-		self:SetIcon(args.destName, 8, 30) 
-		local uId = DBM:GetRaidUnitId(args.destName) 
-		if uId then 
-			local inRange = CheckInteractDistance(uId, 2) 
-			if inRange then 
-				specWarnMaladyNear:Show(args.destName) 
-			end 
-		end
---]]
-	elseif args.spellId == 63042 and self.Options.SetIconOnMCTarget then	-- MC
+		
+	elseif args:IsSpellID(63042) and self.Options.SetIconOnMCTarget then	-- MC
 		self:SetIcon(args.destName, 4, 30)
 
-	elseif args.spellId == 64126 or args.spellId == 64125 then	-- Squeeze		
+	elseif args:IsSpellID(64126, 64125) then	-- Squeeze		
 		warnSqueeze:Show(args.destName)		
 		if args.destName == UnitName("player") and self.Options.WarningSqueeze then			
 			SendChatMessage(L.WarningYellSqueeze, "YELL")			
 		end	
 
-	elseif args.spellId == 63138 then	-- Sara's Favor
+	elseif args:IsSpellID(63138) then	-- Sara's Favor
 		warnFavor:Show(args.destName)
 		if self.Options.SetIconOnFavorTarget then
 			self:SetIcon(args.destName, 4, 30)
@@ -166,7 +163,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFavor:Show()
 		end
 
-	elseif args.spellId == 63894 then	-- Shadowy Barrier of Yogg-Saron (this is happens when p2 starts)
+	elseif args:IsSpellID(63894) then	-- Shadowy Barrier of Yogg-Saron (this is happens when p2 starts)
 		phase = 2
 		brainportal:Start(60)
 		warnBrainPortalSoon:Schedule(57)
@@ -178,9 +175,9 @@ function mod:SPELL_AURA_APPLIED(args)
 				DBM.BossHealth:Hide()
 			end
 		end
-	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze (reduces sanity)
+	elseif args:IsSpellID(64167, 64163) then	-- Lunatic Gaze (reduces sanity)
 		timerLunaricGaze:Start()
-	elseif args.spellId == 64465 then
+	elseif args:IsSpellID(64465) then
         timerEmpower:Start()
 		timerEmpowerDuration:Start()
 		warnEmpowerSoon:Schedule(40)
@@ -188,15 +185,16 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 63894 then		-- Shadowy Barrier removed from Yogg-Saron (start p3)
+	if args:IsSpellID(63894) then		-- Shadowy Barrier removed from Yogg-Saron (start p3)
 		warnP3:Show()
 		phase = 3
 		brainportal:Stop()
         timerEmpower:Start()
         warnEmpowerSoon:Schedule(40)	
 		warnBrainPortalSoon:Cancel()
-
-	elseif args.spellId == 64167 or args.spellId == 64163 then	-- Lunatic Gaze
+		timerNextDeafeningRoar:Start(30)
+		warnDeafeningRoarSoon:Schedule(25)
+	elseif args:IsSpellID(64167, 64163) then	-- Lunatic Gaze
 		timerNextLunaricGaze:Start()
 	end
 end
@@ -212,7 +210,7 @@ end
 
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
-	if args.spellId == 63050 and args.destGUID == UnitGUID("player") then
+	if args:IsSpellID(63050) and args.destGUID == UnitGUID("player") then
 		if args.amount == 50 then
 			warnSanity:Show(args.amount)
 		elseif args.amount == 25 or args.amount == 15 or args.amount == 5 then
