@@ -122,7 +122,7 @@ do
 	local absorbRemaining = 0
 	local maxAbsorb = 0
 	local function getShieldHP()
-		return math.max(1, math.floor(absorbed / maxAbsorb * 100))
+		return math.max(1, math.floor(absorbRemaining / maxAbsorb * 100))
 	end
 	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
