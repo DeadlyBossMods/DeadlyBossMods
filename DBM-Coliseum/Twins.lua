@@ -57,15 +57,15 @@ function mod:OnCombatStart(delay)
 	debuffIcon = 8
 end
 
-local LightEssence = GetSpellInfo(67223)
-local DarkEssence = GetSpellInfo(67176)
+local lightEssence = GetSpellInfo(67223)
+local darkEssence = GetSpellInfo(67176)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(66046, 67206, 67207, 67208) then 			-- Light Vortex
-		local debuff = UnitDebuff("player", LightEssence)
+		local debuff = UnitDebuff("player", lightEssence)
 		self:SpecialAbility(debuff)
 	elseif args:IsSpellID(66058, 67182, 67183, 67184) then		-- Dark Vortex
-		local debuff = UnitDebuff("player", DarkEssence)
+		local debuff = UnitDebuff("player", darkEssence)
 		self:SpecialAbility(debuff)
 	elseif args:IsSpellID(65875, 67303, 67304, 67305) then 		-- Twin's Pact
 		timerHeal:Start()
@@ -105,10 +105,53 @@ local function showPowerWarning(self, cid)
 	end
 end
 
+local shieldValues = {
+	[65874] = 175000,
+	[65858] = 175000,
+	[67257] = 300000,
+	[67260] = 300000,
+	[67256] = 700000,
+	[67259] = 700000,
+	[67261] = 1200000,
+	[67258] = 1200000,
+}
+local showShieldHealthBar
+do
+	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
+	local shieldedMob
+	local absorbRemaining = 0
+	local maxAbsorb = 0
+	local function getShieldHP()
+		return math.max(1, math.floor(absorbed / maxAbsorb * 100))
+	end
+	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
+		if mod:IsInCombat() and shieldedMob == destGUID then
+			local absorbed
+			if subevent == "RANGE_DAMAGE" or subevent == "SPELL_DAMAGE" or subevent == "SPELL_PERIODIC_DAMAGE" then
+				absorbed = select(9, ...)
+			elseif subevent == "SWING_DAMAGE" then
+				absorbed = select(6, ...)
+			end
+			if absorbed then
+				absorbRemaining = absorbRemaining - absorbed
+			end
+		end
+	end)
+	
+	function showShieldHealthBar(mob, shieldName, absorb)
+		shieldedMob = mob
+		absorbRemaining = absorb
+		maxAbsorb = absorb
+		DBM.BossHealth:RemoveBoss(getShieldHP)
+		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(65724, 67213, 67214, 67215) and args:IsPlayer() then 		-- Empowered Darkness
+	if args:IsPlayer() and args:IsSpellID(65724, 67213, 67214, 67215) then 		-- Empowered Darkness
 		specWarnEmpoweredDarkness:Show()
-	elseif args:IsSpellID(65748, 67216, 67217, 67218) and args:IsPlayer() then	-- Empowered Light
+	elseif args:IsPlayer() and args:IsSpellID(65748, 67216, 67217, 67218) then	-- Empowered Light
 		specWarnEmpoweredLight:Show()
 	elseif args:IsSpellID(65950, 67296, 67297, 67298) then	-- Touch of Light
 		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
@@ -136,13 +179,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:ScheduleMethod(0.5, "warnDebuff")
 	elseif args:IsSpellID(67246, 65879, 65916, 67244, 67245, 67248, 67249, 67250) then	-- Power of the Twins 
 		self:Schedule(0.1, showPowerWarning, self, args:GetDestCreatureID())
+	elseif args:IsSpellID(65950, 67296, 67297, 67298, 66001, 67281, 67282, 67283) then  -- Shield of Darkness/Lights
+		showShieldHealthBar(args.destGUID, args.spellName, shieldValues[args.spellId] or 0)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(65874, 67256, 67257, 67258) and (UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34496) then			-- Shield of Darkness
+	if UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34496 and args:IsSpellID(65874, 67256, 67257, 67258) then			-- Shield of Darkness
 		specWarnKickNow:Show()
-	elseif args:IsSpellID(65858, 67259, 67260, 67261) and (UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34497) then		-- Shield of Lights
+	elseif UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 34497 and args:IsSpellID(65858, 67259, 67260, 67261) then		-- Shield of Lights
 		specWarnKickNow:Show()
 	elseif args:IsSpellID(65950, 67296, 67297, 67298) then	-- Touch of Light
 		timerLightTouch:Stop(args.destName)
