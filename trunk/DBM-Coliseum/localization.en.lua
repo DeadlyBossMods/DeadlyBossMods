@@ -96,6 +96,7 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	WhisperFlame			= "Legion Flame on YOU!",
+	IncinerateTarget		= "Incinerate Flesh: %s"
 }
 
 L:SetOptionLocalization{
@@ -114,7 +115,8 @@ L:SetOptionLocalization{
 	TouchJaraxxusIcon		= "Set Icon on Touch of Jaraxxus target (cross)",
 	IncinerateFleshIcon		= "Set Icon on Incinerate Flesh target (skull)",
 	LegionFlameIcon			= "Set Icon on Legion Flame target (square)",
-	LegionFlameWhisper		= "Send Whisper to Legion Flame target"
+	LegionFlameWhisper		= "Send Whisper to Legion Flame target",
+	IncinerateShieldFrame	= "Show boss health with a health bar for Incinerate Flesh"
 }
 
 
