@@ -128,9 +128,9 @@ do
 	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		if mod:IsInCombat() and shieldedMob == destGUID then
 			local absorbed
-			if subevent == "RANGE_DAMAGE" or subevent == "SPELL_DAMAGE" or subevent == "SPELL_PERIODIC_DAMAGE" then
+			if subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then
 				absorbed = select(9, ...)
-			elseif subevent == "SWING_DAMAGE" then
+			elseif subEvent == "SWING_DAMAGE" then
 				absorbed = select(6, ...)
 			end
 			if absorbed then
