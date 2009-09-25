@@ -124,7 +124,7 @@ do
 		DBM.BossHealth:AddBoss(getShieldHP, L.IncinerateTarget:format(name))
 	end
 	
-	function clearIncinerateTarget(name)
+	function clearIncinerateTarget(self, name)
 		DBM.BossHealth:RemoveBoss(getShieldHP)
 		if self.Options.IncinerateFleshIcon then
 			self:RemoveIcon(name)
@@ -143,7 +143,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFlesh:Show()
 		end
 		setIncinerateTarget(self, args.destGUID, args.destName)
-		self:Schedule(15, clearIncinerateTarget, args.destName)
+		self:Schedule(15, clearIncinerateTarget, self, args.destName)
 
 	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		local targetname = args.destName
@@ -181,7 +181,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(67051, 67050, 67049, 66237) then			-- Incinerate Flesh
 		timerFlesh:Stop()
-		clearIncinerateTarget(args.destName)
+		clearIncinerateTarget(self, args.destName)
 	end
 end
 
