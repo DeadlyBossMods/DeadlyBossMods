@@ -2104,7 +2104,10 @@ function bossModPrototype:IsDifficulty(...)
 end
 
 function bossModPrototype:SetUsedIcons(...)
-	self.usedIcons = {...}
+	self.usedIcons = {}
+	for i = 1, select("#", ...) do
+		self.usedIcons[select(i, ...)] = true
+	end
 end
 
 
