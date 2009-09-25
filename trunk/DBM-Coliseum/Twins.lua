@@ -139,7 +139,7 @@ do
 		end
 	end)
 	
-	function showShieldHealthBar(mob, shieldName, absorb)
+	function showShieldHealthBar(self, mob, shieldName, absorb)
 		shieldedMob = mob
 		absorbRemaining = absorb
 		maxAbsorb = absorb
@@ -185,7 +185,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(67246, 65879, 65916, 67244, 67245, 67248, 67249, 67250) then	-- Power of the Twins 
 		self:Schedule(0.1, showPowerWarning, self, args:GetDestCreatureID())
 	elseif args:IsSpellID(65874, 67256, 67257, 67258, 65858, 67259, 67260, 67261) then  -- Shield of Darkness/Lights
-		showShieldHealthBar(args.destGUID, args.spellName, shieldValues[args.spellId] or 0)
+		showShieldHealthBar(self, args.destGUID, args.spellName, shieldValues[args.spellId] or 0)
 	end
 end
 
