@@ -103,7 +103,7 @@ do
 	local healed = 0
 	local maxAbsorb = 0
 	local function getShieldHP()
-		return math.max(1, math.floor(healed / maxAbsorb) * 100)
+		return math.max(1, math.floor(healed / maxAbsorb * 100))
 	end
 	
 	function mod:SPELL_HEAL(args)
