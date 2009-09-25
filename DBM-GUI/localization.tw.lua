@@ -34,6 +34,8 @@ L.Disable		= "關閉"
 
 L.NoSound		= "靜音"
 
+L.IconsInUse	= "此模組已使用的標記"
+
 -- Tab: Boss Statistics
 L.BossStatistics	= "首領狀態"
 L.Statistic_Kills	= "擊殺："
