@@ -1784,13 +1784,13 @@ do
 		iconstat:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -16, -16)
 		iconstat:SetFontObject(GameFontNormal)
 		iconstat:SetText(L.IconsInUse)
-		for i=1, 8, 1 do			
+		for i=1, 8, 1 do
 			local icon = panel.frame:CreateTexture()
 			icon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp")
 			icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", 2-(i*18), -32)
 			icon:SetWidth(16)
 			icon:SetHeight(16)
-			icon:SetAlpha(0.25)
+			if not mod.usedIcons or not mod.usedIcons[i] then		icon:SetAlpha(0.25)		end
 			if 		i == 1 then		icon:SetTexCoord(0,		0.25,	0,		0.25)
 			elseif	i == 2 then		icon:SetTexCoord(0.25,	0.5,	0,		0.25)
 			elseif	i == 3 then		icon:SetTexCoord(0.5, 	0.75,	0,		0.25)
