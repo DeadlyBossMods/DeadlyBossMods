@@ -83,7 +83,7 @@ do
 	local lastflame = 0
 	local lastinferno = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsPlayer() and args:IsSpellID(66877, 67070, 67071, 67072) and then		-- Legion Flame
+		if args:IsPlayer() and args:IsSpellID(66877, 67070, 67071, 67072) then		-- Legion Flame
 			if GetTime() - 3 > lastflame then
 				specWarnFlame:Show()
 				lastflame = GetTime()
