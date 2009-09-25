@@ -233,17 +233,17 @@ L:SetWarningLocalization{
 	WarningPhasePunch		= "相位拳擊: >%s< - 第%d層",
 	SpecWarnPhasePunch		= "你中了相位拳擊第2層了!",
 	WarningBlackHole		= "黑洞爆炸",
-	WarningBigBang			= "大爆炸來臨",
-	SpecWarnBigBang			= "大爆炸",
-	PreWarningBigBang		= "約10秒後 大爆炸",
+	WarningBigBang			= "大霹靂來臨",
+	SpecWarnBigBang			= "大霹靂",
+	PreWarningBigBang		= "約10秒後 大霹靂",
 	WarningCosmicSmash 		= "宇宙潰擊 - 約4秒後爆炸",
 	SpecWarnCosmicSmash 		= "宇宙潰擊"
 }
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch		= "當你中了相位拳擊超過2層時顯示特別警告",
-	WarningBigBang			= "提示大爆炸的施放",
-	PreWarningBigBang		= "預先提示大爆炸",
+	WarningBigBang			= "提示大霹靂的施放",
+	PreWarningBigBang		= "預先提示大霹靂",
 	SpecWarnBigBang			= "為大爆炸顯示特別警告",
 	WarningPhasePunch		= "提示相位拳擊的目標",
 	WarningBlackHole		= "提示黑洞爆炸",
