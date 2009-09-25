@@ -1779,7 +1779,29 @@ do
 		end
 		local panel = mod.panel
 		local category
-	
+
+		local iconstat = panel.frame:CreateFontString("DBM_GUI_Mod_Icons"..mod.localization.general.name, "ARTWORK")
+		iconstat:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", -16, -16)
+		iconstat:SetFontObject(GameFontNormal)
+		iconstat:SetText(L.IconsInUse)
+		for i=1, 8, 1 do			
+			local icon = panel.frame:CreateTexture()
+			icon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcons.blp")
+			icon:SetPoint("TOPRIGHT", panel.frame, "TOPRIGHT", 2-(i*18), -32)
+			icon:SetWidth(16)
+			icon:SetHeight(16)
+			icon:SetAlpha(0.25)
+			if 		i == 1 then		icon:SetTexCoord(0,		0.25,	0,		0.25)
+			elseif	i == 2 then		icon:SetTexCoord(0.25,	0.5,	0,		0.25)
+			elseif	i == 3 then		icon:SetTexCoord(0.5, 	0.75,	0,		0.25)
+			elseif	i == 4 then		icon:SetTexCoord(0.75,	1,		0,		0.25)
+			elseif	i == 5 then		icon:SetTexCoord(0,		0.25,	0.25,	0.5)
+			elseif	i == 6 then		icon:SetTexCoord(0.25,	0.5,	0.25,	0.5)
+			elseif	i == 7 then		icon:SetTexCoord(0.5,	0.75,	0.25,	0.5)
+			elseif	i == 8 then		icon:SetTexCoord(0.75,	1,		0.25,	0.5)
+			end
+		end
+
 		local button = panel:CreateCheckButton(L.Mod_Enabled, true)
 		button:SetScript("OnShow",  function(self) self:SetChecked(mod.Options.Enabled) end)
 		button:SetScript("OnClick", function(self) mod:Toggle()	end)
