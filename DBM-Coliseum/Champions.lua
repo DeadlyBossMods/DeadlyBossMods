@@ -91,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(65817, 68142, 68143, 68144) and args:IsPlayer() then
+	if args:IsPlayer() and args:IsSpellID(65817, 68142, 68143, 68144) then
 		specWarnHellfire:Show()
 	end
 end
