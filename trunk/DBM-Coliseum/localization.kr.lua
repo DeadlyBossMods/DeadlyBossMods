@@ -96,6 +96,7 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	WhisperFlame			= "당신에게 군단의 불꽃!",
+	IncinerateTarget		= "살점 소각: %s"
 }
 
 L:SetOptionLocalization{
@@ -115,6 +116,7 @@ L:SetOptionLocalization{
 	IncinerateFleshIcon		= "살점 소각의 공격대 대상 아이콘 설정 (해골)",
 	LegionFlameIcon			= "군단의 불꽃의 공격대 대상 아이콘 설정 (네모)",
 	LegionFlameWhisper		= "군단의 불꽃 대상에게 귓속말 보내기",
+	IncinerateShieldFrame	= "보스 체력 프레임과 함께 살점 소각 대상자 체력바 보기"
 }
 
 
