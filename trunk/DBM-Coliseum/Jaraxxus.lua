@@ -50,17 +50,17 @@ mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
 mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
 
 function mod:OnCombatStart(delay)
-	if self:IsDifficulty("heroic10", "heroic25") then
+--	if self:IsDifficulty("heroic10", "heroic25") then
 		timerPortalCD:Start(20-delay)
 		warnPortalSoon:Schedule(15-delay)
 		timerVolcanoCD:Start(85-delay)
 		warnVolcanoSoon:Schedule(80-delay)
-	else
-		timerPortalCD:Start(45-delay)
-		warnPortalSoon:Schedule(40-delay)
-		timerVolcanoCD:Start(105-delay)
-		warnVolcanoSoon:Schedule(100-delay)
-	end
+--	else
+--		timerPortalCD:Start(45-delay)
+--		warnPortalSoon:Schedule(40-delay)
+--		timerVolcanoCD:Start(105-delay)
+--		warnVolcanoSoon:Schedule(100-delay)
+--	end
 	timerFleshCD:Start(14-delay)
 	timerFlameCD:Start(20-delay)
 	enrageTimer:Start(-delay)
