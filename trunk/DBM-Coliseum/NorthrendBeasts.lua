@@ -200,9 +200,9 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(66320, 66317, 67472) and args:IsPlayer() then				-- Fire Bomb
+	if args:IsPlayer() and args:IsSpellID(66320, 66317, 67472) then				-- Fire Bomb
 		specWarnFireBomb:Show()
-	elseif args:IsSpellID(66881, 66883) and args:IsPlayer() then				-- Slime Pool
+	elseif args:IsPlayer() and args:IsSpellID(66881, 66883) then				-- Slime Pool
 		specWarnSlimePool:Show()
 	end
 end
