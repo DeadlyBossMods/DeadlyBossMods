@@ -22,8 +22,10 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn	= "Pursuing >%s<!",
-	warnNextPursueSoon	= "Target Change in 5 Sec"
+	PursueWarn				= "Pursuing >%s<!",
+	warnNextPursueSoon		= "Target Change in 5 Sec",
+	SpecialPursueWarnYou	= "Pursuing you!",
+	SystemOverload			= "System Overload"
 }
 
 L:SetOptionLocalization{
@@ -618,6 +620,7 @@ L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Guardian spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle Spawned",
 	WarningP2 						= "Phase 2",
+	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
 	SpecWarnBrainLink 				= "Brain Link on you and %s!",
 	WarningSanity 					= "%d Sanity debuffs remaining",
