@@ -23,12 +23,12 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-   SpecWarnBreath	= "Zeige Spezialwarnung für tiefen Atem",
-   TimerBreath		= "Zeige Timer für tiefen Atem",
-   TimerWhelps		= "Zeige Timer für Welpenspawn",
-   WarnWhelpsSoon	= "Zeige Vorwarnung für Welpenspawn",
+   SpecWarnBreath	= "Zeige Spezialwarnung fÃ¼r tiefen Atem",
+   TimerBreath		= "Zeige Timer fÃ¼r tiefen Atem",
+   TimerWhelps		= "Zeige Timer fÃ¼r Welpenspawn",
+   WarnWhelpsSoon	= "Zeige Vorwarnung fÃ¼r Welpenspawn",
    SoundBreath		= "Spiele Sound bei tiefem Atem",
-   SoundWTF			= "Spiele witzige Sounds eines legendären Onyxia-Classic-Raids"
+   SoundWTF			= "Spiele witzige Sounds eines legendÃ¤ren Classic-Raids"
 }
 
 L:SetMiscLocalization{
