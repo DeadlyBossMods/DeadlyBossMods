@@ -182,9 +182,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
 		self:ScheduleMethod(0.5, "warnDebuff")
-	elseif args:IsSpellID(67246, 65879, 65916, 67244, 67245, 67248, 67249, 67250) then	-- Power of the Twins 
+	elseif args:IsSpellID(67246, 65879, 65916, 67244) or args:IsSpellID(67245, 67248, 67249, 67250) then	-- Power of the Twins 
 		self:Schedule(0.1, showPowerWarning, self, args:GetDestCreatureID())
-	elseif args:IsSpellID(65874, 67256, 67257, 67258, 65858, 67259, 67260, 67261) then  -- Shield of Darkness/Lights
+	elseif args:IsSpellID(65874, 67256, 67257, 67258) or args:IsSpellID(65858, 67259, 67260, 67261) then  -- Shield of Darkness/Lights
 		showShieldHealthBar(self, args.destGUID, args.spellName, shieldValues[args.spellId] or 0)
 	end
 end
