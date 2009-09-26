@@ -98,6 +98,7 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	WhisperFlame			= "Llama de la Legion en TI!",
+	IncinerateTarget		= "Incinerar carne en: %s"
 }
 
 L:SetOptionLocalization{
@@ -116,7 +117,8 @@ L:SetOptionLocalization{
 	TouchJaraxxusIcon		= "Poner icono quien tenga Toque de Jaraxxus(X)",
 	IncinerateFleshIcon		= "Poner icono quien tenga Carne (calavera)",
 	LegionFlameIcon			= "Poner icono quien tenga Llama de la Legion(cuadrado)",
-	LegionFlameWhisper		= "Send Whisper to Legion Flame target"
+	LegionFlameWhisper		= "Susurrar a quien tenga la llama de la legion",
+	IncinerateShieldFrame	= "Mostrar la vida del boss con la barra de incinerar carne"
 }
 
 
