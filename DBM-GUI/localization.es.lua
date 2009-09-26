@@ -34,6 +34,8 @@ L.Disable		= "desabilitar"
 
 L.NoSound		= "Sin sonido"
 
+L.IconsInUse	= "Iconos usados por este mod"
+
 -- Tab: Boss Statistics
 L.BossStatistics	= "Estadisticas de Boss"
 L.Statistic_Kills	= "Muertes:"
