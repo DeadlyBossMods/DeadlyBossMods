@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass = "Показывать имена цветом класса в таблице очков",
-	ShowInviteTimer = "Отображать отсчет времени до входа на ПБ",
+	ShowInviteTimer = "Отсчет времени до входа на ПБ",
 	AutoSpirit = "Автоматически покидать тело"
 })
 
@@ -38,8 +38,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart = "Отображать отсчет времени до начала боя",
-	TimerShadow 	= "Отображать отсчет времени для Сумрачного кристалла"
+	TimerStart = "Отсчет времени до начала боя",
+	TimerShadow 	= "Отсчет времени для Сумрачного кристалла"
 })
 
 L:SetMiscLocalization({
@@ -69,9 +69,9 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отображать отсчет времени до начала боя",
-	TimerTower = "Отображать отсчет времени до захвата",
-	TimerGY = "Отображать отсчет времени до захвата кладбищь",
+	TimerStart  = "Отсчет времени до начала боя",
+	TimerTower = "Отсчет времени до захвата",
+	TimerGY = "Отсчет времени до захвата кладбищь",
 	AutoTurnIn = "Авто-сдача заданий в Альтеракской долине"
 })
 
@@ -102,9 +102,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отображать отсчет времени до начала боя",
-	TimerWin = "Отображать отсчет времени до победы",
-	TimerCap = "Отображать отсчет времени до захвата",
+	TimerStart  = "Отсчет времени до начала боя",
+	TimerWin = "Отсчет времени до победы",
+	TimerCap = "Отсчет времени до захвата",
 	ShowAbEstimatedPoints = "Отображать предполагаемые очки оставшиеся до победы/поражения",
 	ShowAbBasesToWin = "Отображать базы, которые необходимо захватить"
 })
@@ -139,9 +139,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отображать отсчет времени до начала боя",
-	TimerWin = "Отображать отсчет времени до победы",
-	TimerFlag = "Отображать отсчет времени до восстановления флага",
+	TimerStart  = "Отсчет времени до начала боя",
+	TimerWin = "Отсчет времени до победы",
+	TimerFlag = "Отсчет времени до восстановления флага",
 	ShowPointFrame = "Отображать флагоносца и предполагаемые очки",
 })
 
@@ -175,11 +175,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отображать отсчет времени до начала боя",
-	TimerWin = "Отображать отсчет времени до победы",
-	TimerFlag = "Отображать отсчет времени до восстановления флага",
+	TimerStart  = "Отсчет времени до начала боя",
+	TimerWin = "Отсчет времени до победы",
+	TimerFlag = "Отсчет времени до восстановления флага",
 	ShowFlagCarrier = "Показать флагоносца",
-	ShowFlagCarrierErrorNote = "Отображать сообщения об ошибках в режиме боя",
+	ShowFlagCarrierErrorNote = "Сообщения об ошибках в режиме боя",
 })
 
 ----------------
@@ -206,9 +206,9 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShards = "Отображать отсчет времени до града из Каменных осколков",
-	WarningShards = "Отображать предупреждение для Каменных осколков",
-	WarningGrab = "Отображать предупреждение для Захвата"
+	TimerShards = "Отсчет времени до града из Каменных осколков",
+	WarningShards = "Предупреждение для Каменных осколков",
+	WarningGrab = "Предупреждение для Захвата"
 })
 --------------
 --  Emalon  --
@@ -231,9 +231,65 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= ("Отображать спец-предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышки молнии"),
-	warnNova 		= ("Отображать предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышки молнии"),
-	warnOverCharge 		= ("Отображать предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Перезарядки"),
-	timerMobOvercharge	= "Отсчет времени для Избыточно заряда (складывающийся отрицательный эффект)"
+	specWarnNova 		= "Спец-предупреждение для Вспышки молнии",
+	warnNova 		= "Предупреждение для Вспышки молнии",
+	warnOverCharge 		= "Предупреждение для Перезарядки",
+	timerMobOvercharge	= "Отсчет времени для Избыточно заряда (суммирующийся отрицательный эффект)"
 }
 
+---------------
+--  Koralon  --
+---------------
+
+L = DBM:GetModLocalization("Koralon")
+
+L:SetGeneralLocalization{
+	name = "Коралон Страж Огня"
+}
+
+L:SetWarningLocalization{
+	SpecWarnCinder	= "Вы в Пылающей головне! Бегите!"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SpecWarnCinder		= "Спец-предупреждение, когда вы в Пылающей головне",
+	PlaySoundOnCinder	= "Звуковое уведомление, когда вы в Пылающей головне",
+}
+
+L:SetMiscLocalization{
+	Meteor	= "%s бросает Кулаки-метеоры!"
+}
+
+
+------------------------
+--  Isle of Conquest  --
+------------------------
+
+L = DBM:GetModLocalization("IsleOfConquest")
+
+L:SetGeneralLocalization({
+	name = "Остров Завоеваний"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+	TimerStart		= "Бой начался!", 
+	TimerPOI		= "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart		= "Отсчет времени до начала боя", 
+	TimerPOI		= "Отсчет времени до захвата",
+})
+
+L:SetMiscLocalization({
+	ZoneName		= "Остров Завоеваний",
+	BgStart60		= "Битва начнется через 1 минуту!",
+	BgStart30		= "Битва начнется через 30 секунд!",
+	BgStart15		= "Битва начнется через 15 секунд!",
+})
