@@ -18,7 +18,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ColorByClass	= "Met le nom en couleur en fonction de la classe dans le tableau des scores",
 	ShowInviteTimer	= "Montre le temps d'acceptation des champs de bataille",
-	AutoSpirit	= "Auto-rez a un Ange"
+	AutoSpirit	= "Auto-rez à un Ange"
 })
 
 L:SetMiscLocalization({
@@ -47,8 +47,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Start60		= "Une minute avant de début de l'arène !",
-	Start30		= "Trente seconde avant de début de l'arène !",
-	Start15		= "Quinze seconde avant de début de l'arène !"
+	Start30		= "Trente secondes avant de début de l'arène !",
+	Start15		= "Quinze secondes avant de début de l'arène !"
 })
 
 ---------------
@@ -73,10 +73,10 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Voir le timer du commancement",
-	TimerTower		= "Voir le timer des capture des tours",
-	TimerGY			= "Voir le timer des capture des cimetères",
-	AutoTurnIn		= "Fini automatiquement les quètes dans la Vallée d'Alterac"
+	TimerStart		= "Voir le timer du commencement",
+	TimerTower		= "Voir le timer des captures des tours",
+	TimerGY			= "Voir le timer des captures des cimetères",
+	AutoTurnIn		= "Fini automatiquement les quêtes dans la Vallée d'Alterac"
 })
 
 ---------------
@@ -110,7 +110,7 @@ L:SetOptionLocalization({
 	TimerWin 		= "Montre le timer de la victoire",
 	TimerCap 		= "Montre le timer de capture",
 	ShowAbEstimatedPoints	= "Montre l'estimation de point pour gagner / perdre",
-	ShowAbBasesToWin	= "Montre les base a avoir pour gagner"
+	ShowAbBasesToWin	= "Montre les bases à avoir pour gagner"
 })
 
 -----------------------
@@ -133,7 +133,7 @@ L:SetMiscLocalization({
 	FlagReset 		= "Le drapeau a été réinitialisé.",
 	FlagTaken 		= "(.+) a pris le drapeau !",
 	FlagCaptured 		= "La .+ ha%w+ s'est emparée du drapeau !",
-	FlagDropped 		= "Le drapeau viens d'être lacher !",
+	FlagDropped 		= "Le drapeau vient d'être laché !",
 
 })
 
@@ -146,7 +146,7 @@ L:SetOptionLocalization({
 	TimerStart  		= "Montre le timer avant le début de la partie",
 	TimerWin 		= "Montre le timer de la victoire",
 	TimerFlag 		= "Montre le timer du respawn du drapeau",
-	ShowPointFrame 		= "Montre les porteurs des drapeau et les points estimer",
+	ShowPointFrame 		= "Montre les porteurs des drapeaux et les points estimés",
 })
 
 --------------------
@@ -165,9 +165,9 @@ L:SetMiscLocalization({
 	Alliance 			= "Alliance",
 	Horde 				= "Horde",	
 	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
-	ExprFlagPickUp 			= "Le (%w+) .lag a était pris par (.+) !",
-	ExprFlagCaptured 		= "(.+) a capturer le (%w+) drapeau!",
-	ExprFlagReturn 			= "Le (%w+) .lag a été renvoyer a la base par (.+) !",
+	ExprFlagPickUp 			= "Le (%w+) .lag a été pris par (.+) !",
+	ExprFlagCaptured 		= "(.+) a capturé le (%w+) drapeau!",
+	ExprFlagReturn 			= "Le (%w+) .lag a été renvoyé à la base par (.+) !",
 	FlagAlliance 			= "Drapeau de l'alliance: ",
 	FlagHorde			= "Drapeau de la horde: ",
 	FlagBase			= "Base",
@@ -200,7 +200,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningShards	= "Eclats de pierre sur >%s<",
-	WarningGrab	= "Archavon a Empaler >%s<"
+	WarningGrab	= "Archavon a Empalé >%s<"
 })
 
 L:SetTimerLocalization({
@@ -214,7 +214,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	TimerShards 	= "Montre le timer pour les Eclats de pierre",
 	WarningShards 	= "Montre les alertes pour les Eclats de pierre",
-	WarningGrab 	= "Montre l'alerte pour le tank qui a été Empaler"
+	WarningGrab 	= "Montre l'alerte pour le tank qui a été empalé"
 })
 
 --------------
@@ -238,10 +238,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnNova 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
-	timerMobOvercharge	= "Show Timer for Overchaged Mob (stacking debuff)"
+	specWarnNova 		= ("Montre une alerte spéciale pour |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Nova de foudre"),
+	warnNova 		= ("Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Nova de foudre"),
+	warnOverCharge 		= ("Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Surcharge explosive"),
+	timerMobOvercharge	= "Montre le timer pour le séide surchargé (debuff empilable)"
 }
 
 ---------------
@@ -262,8 +262,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "Montre une alerte spéciale quand vous êtes dans les Braise enflammée",
-	PlaySoundOnCinder	= "Joue un sons quand vous êtes dans les Braise enflammée",
+	SpecWarnCinder		= "Montre une alerte spéciale quand vous êtes dans les Braises enflammées",
+	PlaySoundOnCinder	= "Joue un son quand vous êtes dans les Braises enflammées",
 }
 
 L:SetMiscLocalization{

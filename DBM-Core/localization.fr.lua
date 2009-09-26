@@ -6,7 +6,7 @@ DBM_CORE_LOAD_GUI_ERROR				= "Ne peut charger le GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s engagé. Bonne chance et amusez-vous bien ! :)";
 DBM_CORE_BOSS_DOWN					= "%s est mort après %s!"
-DBM_CORE_BOSS_DOWN_LONG				= "%s est mort après %s! Votre dernier down a durée %s et le plus rapide a durée %s."
+DBM_CORE_BOSS_DOWN_LONG				= "%s est mort après %s! Votre dernier down a durée %s et le plus rapide a duré %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s est mort après %s! C'est un nouveau record! (l'ancien record était de %s)"
 DBM_CORE_COMBAT_ENDED				= "Combat contre %s terminé après %s."
 
@@ -40,10 +40,10 @@ DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM non installé"
 DBM_CORE_VERSIONCHECK_FOOTER		= "a trouvé %d joueurs avec Deadly Boss Mods"
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\n Version %s (r%d) disponible ici:"
-DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copier le lien ?otre presse-papier."
+DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copier le lien votre presse-papier."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Montre une annonce quand une nouvelle version de DBM est disponible."
 
-DBM_CORE_MOVABLE_BAR				= "Déplace moi!"
+DBM_CORE_MOVABLE_BAR				= "Déplace-moi!"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h vous envoie un timer pizza: '%2$s'\n|HDBM:annuler:%2$s:nil|h|cff3588ff[Annuler ce timer]|r|h  |HDBM:ignorer:%2$s:%1$s|h|cff3588ff[Ignorer les timers de %1$s]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "Voulez vous vraiment ignorer les timers pizza de %s pour cette session?"
@@ -52,26 +52,25 @@ DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods est lancé en double car vous avez DBMv3 et DBMv4 d'installé et d'activé!\nCliquez sur \"Okay\" pour désactiver DBMv3 et recharger votre interfarce.\nVous pouvez aussi nettoyer votre fichier AddOns en supprimant l'ancien fichier DBMv3."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
-DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+clique ou clique droit pour déplacer"
+DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+clic ou clic droit pour déplacer"
 
 DBM_CORE_RANGECHECK_HEADER			= "Vérifie la portée (%d m)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Définir la portée"
 DBM_CORE_RANGECHECK_SOUNDS			= "Sons"
-DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Joue un sons quand un joueur est dans la zone"
-DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Joue un autre sons quand plus d'un joueur sont dans la zone"
-DBM_CORE_RANGECHECK_SOUND_0			= "Pas de sons"
-DBM_CORE_RANGECHECK_SOUND_1			= "Sons par défaux"
-DBM_CORE_RANGECHECK_SOUND_2			= "Sons Ennuyeux"
+DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Joue un son quand un joueur est dans la zone"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Joue un autre son quand plus d'un joueur sont dans la zone"
+DBM_CORE_RANGECHECK_SOUND_0			= "Pas de son"
+DBM_CORE_RANGECHECK_SOUND_1			= "Son par défaut"
+DBM_CORE_RANGECHECK_SOUND_2			= "Son Ennuyeux"
 DBM_CORE_RANGECHECK_HIDE			= "Cacher"
-DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
-DBM_CORE_RANGECHECK_LOCK			= "Vérouille la fenêtre"
+DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Commandes slash disponible:",
 	"/dbm version: Vérifie la version du raid (alias: ver)",
 	"/dbm unlock: Affiche un Timer Status déplacable (alias: move)",
 	"/dbm timer <x> <text>: Commence un <x> second Timer Pizza avec le nom <text>",
-	"/dbm broadcast timer <x> <text>: Diffuse un Timer Pizza de <x> secondes avec le nom <text> au raid (Nécessite d'étre promu ou leader)",
+	"/dbm broadcast timer <x> <text>: Diffuse un Timer Pizza de <x> secondes avec le nom <text> au raid (Nécessite d'être promu ou leader)",
 	"/dbm help: Affiche l'aide",
 }
 

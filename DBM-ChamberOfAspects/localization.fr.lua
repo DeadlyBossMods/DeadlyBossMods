@@ -57,8 +57,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall	= "Joue un sons pour les Vague de Flammes",
-	AnnounceFails		= "Ecris dans le chatt les joueurs qui n'ont pas éviter les zones noir / Vague de Flammes (requires announce enabled and promoted/leader status)",
+	PlaySoundOnFireWall	= "Joue un son pour les Vagues de Flammes",
+	AnnounceFails		= "Affiche les joueurs qui n'ont pas évité les zones de vide / Vague de Flammes (requires announce enabled and promoted/leader status)",
 
 	TimerWall		= "Montre le timer pour les Vague de Flammes",
 	TimerTenebron		= "Montre le timer pour Ténébron",
@@ -70,19 +70,19 @@ L:SetOptionLocalization({
 	WarningShadron		= "Montre le timer avant qu'Obscuron arrive",
 	WarningVesperon		= "Montre le timer avant que Vespéron arrive",
 
-	WarningTenebronPortal	= "Montre une alerte spécial pour les portails de Ténébron",
-	WarningShadronPortal	= "Montre une alerte spécial pour les portails d'Obscuron",
-	WarningVesperonPortal	= "Montre une alerte spécial pour les portails de Vespéron",
+	WarningTenebronPortal	= "Montre une alerte spéciale pour les portails de Ténébron",
+	WarningShadronPortal	= "Montre une alerte spéciale pour les portails d'Obscuron",
+	WarningVesperonPortal	= "Montre une alerte spéciale pour les portails de Vespéron",
 })
 
 L:SetMiscLocalization({
 	Wall			= "La lave qui entoure %s bouillonne !",
-	Portal			= "%s Commance a incanter un portail!",
+	Portal			= "%s commence à incanter un portail!",
 	NameTenebron	= "Ténébron",
 	NameShadron		= "Obscuron",
 	NameVesperon	= "Vespéron",
-	VoidZoneOn		= "Void Zone: %s",
-	VoidZones		= "Void Zone raté (Ce try): %s",
+	VoidZoneOn		= "Zone de vide : %s",
+	VoidZones		= "Zones de vide ratées (cet essai): %s",
 	--[[ not in use; don't translate.
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
 	Shadron		= "Shadron! Come to me! All is at risk!",
