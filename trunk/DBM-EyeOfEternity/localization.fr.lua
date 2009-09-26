@@ -29,17 +29,17 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSpark		= "Montre une alerte pour les Etincelle de puissance",
+	WarningSpark		= "Montre une alerte pour les Etincelles de puissance",
 	WarningVortex		= "Montre une alerte pour le Vortex",
 	WarningBreathSoon	= "Montre une Pré-Alerte pour l'Inspiration profonde",
 	WarningBreath		= "Montre une alerte pour l'Inspiration profonde",
-	WarningSurge		= "Montre une alerte pour les Vague de puissance",
-	TimerSpark			= "Montre le timer pour les Etincelle de puissance",
+	WarningSurge		= "Montre une alerte pour les Vagues de puissance",
+	TimerSpark			= "Montre le timer pour les Etincelles de puissance",
 	TimerVortex			= "Montre le timer pour le Vortex",
 	TimerBreath			= "Montre le timer pour l'Inspiration profonde",
 	TimerVortexCD		= "Montre le timer pour le Cooldown du Vortex (inaccurate)",
 	WarningVortexSoon	= "Montre une Pré-Alerte pour le Vortex (inaccurate)",
-	WarningSurgeYou		= "Montre une alerte spéciale quand vous êtes affecter par la Vague de puissance"
+	WarningSurgeYou		= "Montre une alerte spéciale quand vous êtes affecté par la Vague de puissance"
 })
 
 L:SetMiscLocalization({
@@ -47,7 +47,7 @@ L:SetMiscLocalization({
 	EmoteSpark		= "Une étincelle de puissance surgit d'une faille proche !",
 	YellPhase2		= "Je pensais mettre rapidement fin à vos existences",
 	EmoteBreath		= "%s a pris un souffle.",
-	YellBreath		= "Vous n'arriverez a rien tant qu'il me restera un souffle !",
+	YellBreath		= "Vous n'arriverez à rien tant qu'il me restera un souffle !",
 	YellPhase3		= "Vos bienfaiteurs font enfin leur entrée, mais ils arrivent trop tard !"
 })
 

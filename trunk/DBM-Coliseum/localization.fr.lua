@@ -23,8 +23,8 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	WarningImpale				= "Montre une alerte spéciale pour Empaler",
-	WarningFireBomb				= "Montre une alerte spéciale pour les Bombe incendiaire",
-	WarningBreath				= "Montre une alerte spéciale pour les Souffle arctique",
+	WarningFireBomb				= "Montre une alerte spéciale pour les Bombes incendiaires",
+	WarningBreath				= "Montre une alerte spéciale pour les Souffles arctiques",
 --	WarningSpray				= "Montre une alerte spéciale pour les Jet paralysant",
 	WarningRage					= "Montre une alerte spéciale pour la Rage écumeuse",
 	WarningCharge				= "Montre une alerte spéciale pour la cible de la charge",
@@ -39,10 +39,10 @@ L:SetOptionLocalization{
 	SpecialWarningBile			= "Montre une alerte spéciale si vous avez la Bile brûlante sur Vous",
 	SpecialWarningCharge		= "Montre une alerte spéciale quand Glace-hurlante est sur le point de vous charger",
 	PingCharge					= "Ping sur la minimap quand Glace-hurlante va vous charger",
-	SpecialWarningChargeNear	= "Montre une alerte spéciale quand Glace-hurlante charge a coter de vous",
-	SetIconOnChargeTarget		= "Met une icone sur la cible de la charge ( Tête de mort )",
-	SetIconOnBileTarget			= "Met une icone sur la cible de la Bile brûlante",
-	ClearIconsOnIceHowl			= "Enlève toutes les icones avant la prochaine charge",
+	SpecialWarningChargeNear	= "Montre une alerte spéciale quand Glace-hurlante charge à côté de vous",
+	SetIconOnChargeTarget		= "Met une icône sur la cible de la charge ( Tête de mort )",
+	SetIconOnBileTarget			= "Met une icône sur la cible de la Bile brûlante",
+	ClearIconsOnIceHowl			= "Enlève toutes les icônes avant la prochaine charge",
 	TimerNextBoss				= "Montre le timer pour l'arrivée du prochain boss"
 }
 
@@ -66,7 +66,7 @@ L:SetWarningLocalization{
 	SpecialWarningSpray			= "Jet paralysant",
 	SpecialWarningToxin			= "Toxine paralysante sur vous, BOUGEZ!",
 	SpecialWarningCharge		= "Charge sur vous! COUREZ!",
-	SpecialWarningChargeNear	= "Charge a coter de vous! COUREZ!",
+	SpecialWarningChargeNear	= "Charge à côté de vous! COUREZ!",
 	SpecialWarningBile			= "Bile brûlante sur VOUS !"
 }
 
@@ -90,7 +90,7 @@ L:SetWarningLocalization{
 	SpecWarnFlesh			= "Incinérer la chair sur VOUS!",
 	SpecWarnTouch			= "Toucher de Jaraxxus sur VOUS!",
 	SpecWarnKiss			= "Baiser de la Maîtresse",
-	SpecWarnTouchNear		= "Toucher de Jaraxxus sur >%s< a coter de vous",
+	SpecWarnTouchNear		= "Toucher de Jaraxxus sur >%s< à côté de vous",
 	SpecWarnFlame			= "Flamme de la Légion! COUREZ!",
 	SpecWarnNetherPower		= "Dispell Maintenant!",
 	SpecWarnFelInferno		= "Inferno gangrené! Courez plus loin!"
@@ -101,22 +101,22 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnFlame				= "Alerte pour les Flamme de la Légion",
+	WarnFlame				= "Alerte pour les Flammes de la Légion",
 	WarnTouch				= "Montre une alerte pour le Toucher de Jaraxxus",
-	WarnNetherPower			= "Alerte quand Jaraxxus gagne Puissance du Néant (Pour le dispel)",
+	WarnNetherPower			= "Alerte quand Jaraxxus gagne Puissance du Néant (Pour le dispell)",
 	WarnPortalSoon			= "Montre une alerte avant qu'un Portail de Néant arrive",
 	WarnVolcanoSoon			= "Montre une alerte avant qu'un Inferno brûlant arrive",
 	SpecWarnFlame			= "Montre une alerte spéciale quand vous avez Flamme de la Légion",
 	SpecWarnFlesh			= "Montre une alerte spéciale quand vous avez Incinérer la chair",
 	SpecWarnTouch			= "Montre une alerte spéciale quand le Toucher de Jaraxxus est sur vous",
-	SpecWarnTouchNear		= "Montre une alerte spéciale quand le Toucher de Jaraxxus est a coter de vous",
+	SpecWarnTouchNear		= "Montre une alerte spéciale quand le Toucher de Jaraxxus est à côté de vous",
 	SpecWarnKiss			= "Montre une alerte spéciale pour le Baiser de la Maîtresse",
 	SpecWarnNetherPower		= "Montre une alerte spéciale pour la Puissance du Néant (Pour dispell Jaraxxus)",
-	SpecWarnFelInferno		= "Montre une alerte spéciale quand vous êtes pret d'un Inferno gangrené",
-	TouchJaraxxusIcon		= "Met une icone sur la cible du Toucher de Jaraxxus (Croix)",
-	IncinerateFleshIcon		= "Met une icone sur la cible d' Incinérer la chair (Tête de mort)",
-	LegionFlameIcon			= "Met une icone sur la cible des Flamme de la Légion (Carré)",
-	LegionFlameWhisper		= "Chuchotte a la cible des Flamme de la Légion pour la prévenir"
+	SpecWarnFelInferno		= "Montre une alerte spéciale quand vous êtes près d'un Inferno gangrené",
+	TouchJaraxxusIcon		= "Met une icône sur la cible du Toucher de Jaraxxus (Croix)",
+	IncinerateFleshIcon		= "Met une icône sur la cible d'Incinérer la chair (Tête de mort)",
+	LegionFlameIcon			= "Met une icône sur la cible des Flammes de la Légion (Carré)",
+	LegionFlameWhisper		= "Chuchote à la cible des Flammes de la Légion pour la prévenir"
 }
 
 
@@ -134,34 +134,30 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnHellfire		= "Flammes infernales",
-	SpecWarnHellfire	= "Flammes infernales ! BOUGEZ !",
-	SpecWarnHandofProt		= "Main de protection sur >%s<",
-	SpecWarnDivineShield	= "Bouclier divin sur >%s<"
+	SpecWarnHellfire	= "Flammes infernales ! BOUGEZ !"
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "DK - Gorgrim Shadowcleave",		-- 34458
-	Birana 		= "D - Birana Stormhoof",			-- 34451
-	Erin		= "D - Erin Misthoof",				-- 34459
-	Rujkah		= "H - Ruj'kah",					-- 34448
-	Ginselle	= "M - Ginselle Blightslinger",		-- 34449
-	Liandra		= "P - Liandra Suncaller",			-- 34445
-	Malithas	= "P - Malithas Brightblade",		-- 34456
-	Caiphus		= "PR - Caiphus the Stern",			-- 34447
-	Vivienne	= "PR - Vivienne Blackwhisper",		-- 34441
-	Mazdinah	= "R - Maz'dinah",					-- 34454
-	Thrakgar	= "S - Thrakgar",					-- 34444
-	Broln		= "S - Broln Stouthorn",			-- 34455
-	Harkzog		= "WL - Harkzog",					-- 34450
-	Narrhok		= "W - Narrhok Steelbreaker",		-- 34453
-	YellKill	= "Une victoire tragique et depourvue de sens. La perte subie aujourd'hui nous affaiblira tous, car qui d'autre que le roi-liche pourrait beneficier d'une telle folie?? De grands guerriers ont perdu la vie. Et pour quoi?? La vraie menace plane a l'horizon?: le roi-liche nous attend, tous, dans la mort."
+	Gorgrim		= "DK - Gorgrim Fend-les-ombres",		-- 34458
+	Birana 		= "Druide - Birana Sabot-tempête",		-- 34451
+	Erin		= "Druide - Erin Sabot-de-brume",		-- 34459
+	Rujkah		= "Chasseur - Ruj'kah",					-- 34448
+	Ginselle	= "Mage - Ginselle Jettechancre",		-- 34449
+	Liandra		= "Paladin - Liandra Mande-soleil",		-- 34445
+	Malithas	= "Paladin - Malithas Brillelame",		-- 34456
+	Caiphus		= "Prêtre - Caiphus le Sévère",			-- 34447
+	Vivienne	= "Prêtre - Vivienne Murmenoir",		-- 34441
+	Mazdinah	= "Voleur - Maz'dinah",					-- 34454
+	Thrakgar	= "Chaman - Thrakgar",					-- 34444
+	Broln		= "Chaman - Broln Corne-rude",			-- 34455
+	Harkzog		= "Démoniste - Harkzog",				-- 34450
+	Narrhok		= "Guerrier - Narrhok Brise-acier",		-- 34453
+	YellKill	= "Une victoire tragique et depourvue de sens. La perte subie aujourd'hui nous affaiblira tous, car qui d'autre que le roi-liche pourrait beneficier d'une telle folie?? De grands guerriers ont perdu la vie. Et pour quoi?? La vraie menace plane à l'horizon?: le roi-liche nous attend, tous, dans la mort."
 } 
 
 L:SetOptionLocalization{
 	WarnHellfire			= "Alerte quand Harzog incante les Flammes infernales",
-	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales",
-	SpecWarnHandofProt		= "Montre une alerte spéciale quand le paladin cast la Main de protection",
-	SpecWarnDivineShield	= "Montre une alerte spéciale quand le paladin cast le Bouclier divin"
+	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales"
 }
 
 
@@ -175,19 +171,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSpecialSpell	= "Prochaine Abiliter Spéciale"	
+	TimerSpecialSpell	= "Prochaine Capacité Spéciale"	
 }
 
 L:SetWarningLocalization{
-	WarnSpecialSpellSoon		= "Abiliter spéciale Bientôt !",
+	WarnSpecialSpellSoon		= "Capacité spéciale Bientôt !",
 	SpecWarnSpecial				= "Changement de couleur !",
 	SpecWarnEmpoweredDarkness	= "Ténèbres surpuissantes",
-	SpecWarnEmpoweredLight		= "Lumière surpuissante",
-	SpecWarnSwitchTarget		= "Changez de cible !",
-	SpecWarnKickNow				= "Casser Maintenant !",
-	WarningTouchDebuff			= "Debuff sur >%s<",
-	WarningPoweroftheTwins		= "Puissance des jumelles - Plus de heal sur >%s<",
-	SpecWarnPoweroftheTwins		= "Puissance des jumelles !"
+	SpecWarnEmpoweredLight		= "Lumière surpuissante"
 }
 
 L:SetMiscLocalization{
@@ -197,18 +188,11 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell			= "Montre une alerte spéciale pour la prochaine Abiliter spéciale",
-	WarnSpecialSpellSoon		= "Montre une Pré-Alerte pour la prochaine Abiliter spéciale",
-	SpecWarnSpecial				= "Montre une alerte spéciale quand vous avez changer de couleur",
+	TimerSpecialSpell			= "Montre une alerte spéciale pour la prochaine Capacité spéciale",
+	WarnSpecialSpellSoon		= "Montre une Pré-Alerte pour la prochaine Capacité spéciale",
+	SpecWarnSpecial				= "Montre une alerte spéciale quand vous devez changer de couleur",
 	SpecWarnEmpoweredDarkness	= "Montre une alerte spéciale pour les Ténèbres surpuissantes",
 	SpecWarnEmpoweredLight		= "Montre une alerte spéciale pour la Lumière surpuissante",
-	SpecWarnSwitchTarget		= "Montre une alerte spéciale quand l'autre boss cast",
-	SpecWarnKickNow				= "Montre une alerte spéciale quand vous devez couper l'incantation du sort",
-	SpecialWarnOnDebuff			= "Montre une alerte spéciale quand vous changez de débuff",
-	SetIconOnDebuffTarget		= "Met une icone sur la cible des débuff ( Heroique )",
-	WarningTouchDebuff			= "Annonce le débuff de Lumière / Ombre",
-	WarningPoweroftheTwins		= "Annonce la cible de la Puissance des jumelles",
-	SpecWarnPoweroftheTwins		= "Montre une alerte spéciale quand vous êtes sur la Jumelle qui a la puissance"
 }
 
 
@@ -247,10 +231,10 @@ L:SetOptionLocalization{
 	WarnEmergeSoon		= "Montre une alerte avant que le boss sorte du sol",
 	WarnSubmerge		= "Montre une alerte quand le boss rentre dans le sol",
 	WarnSubmergeSoon	= "Montre une alerte avant que le boss ne rentre dans le sol",
-	SpecWarnPursue		= "Montre une alerte quand vous commancer a être suivi",
+	SpecWarnPursue		= "Montre une alerte quand vous commencez à être suivi",
 	TimerEmerge			= "Montre le timer pour la sortie du boss",
-	TimerSubmerge		= "Montre le timer pour la rentrer du boss dans la terre",
-	PlaySoundOnPursue	= "Joue un sons quand vous êtes suivi",
-	PursueIcon			= "Met une icone sur la tête du joueur qui est suivi",
+	TimerSubmerge		= "Montre le timer pour la rentrée du boss dans la terre",
+	PlaySoundOnPursue	= "Joue un son quand vous êtes suivi",
+	PursueIcon			= "Met une icône sur la tête du joueur qui est suivi",
 	WarnPursue			= "Annonce le joueur qui est suivi"
 }

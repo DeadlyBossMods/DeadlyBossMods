@@ -15,16 +15,16 @@ L.TabCategory_OTHER     = "Autres Boss Mods"
 L.BossModLoaded 	= "%s statistiques"
 L.BossModLoad_now 	= [[Ce boss mod n'est pas chargé.
 Il sera chargé quand vous entrerez dans l'instance. 
-Vous pouvez aussi cliquer sur le bouton pour chargé le mod manuellement.]]
+Vous pouvez aussi cliquer sur le bouton pour charger le mod manuellement.]]
 
 L.PosX = "Position X"
 L.PosY = "Position Y"
 
-L.MoveMe 		= "Déplacez moi"
+L.MoveMe 		= "Déplacez-moi"
 L.Button_OK 		= "OK"
 L.Button_Cancel 	= "Annuler"
 L.Button_LoadMod 	= "Charger l'AddOn"
-L.Mod_Enabled		= "Activé boss mod"
+L.Mod_Enabled		= "Activer boss mod"
 L.Mod_EnableAnnounce	= "Annoncer au raid"
 L.Reset 		= "Reset"
 
@@ -65,15 +65,15 @@ L.RaidWarnColor_1 	= "Couleur 1"
 L.RaidWarnColor_2 	= "Couleur 2"
 L.RaidWarnColor_3 	= "Couleur 3"
 L.RaidWarnColor_4 	= "Couleur 4"
-L.InfoRaidWarning	= [[Vous pouvez spécifier la position et la couleurs de l'affichage des Alertes Raid.
+L.InfoRaidWarning	= [[Vous pouvez spécifier la position et la couleur de l'affichage des Alertes Raid.
 Cet affichage est utilisé pour des messages comme "Joueur X est affecté par Y"]]
 L.ColorResetted 	= "La couleur de ce champs a été remise à zéro."
-L.ShowWarningsInChat 	= "Afficher les alertes dans la fenètre de dialogue"
+L.ShowWarningsInChat 	= "Afficher les alertes dans la fenêtre de dialogue"
 L.ShowFakedRaidWarnings = "Afficher les alertes comme de faux avertissements de raid"
-L.WarningIconLeft 	= "Afficher l'icone à gauche"
-L.WarningIconRight 	= "Afficher l'icone à droite"
+L.WarningIconLeft 	= "Afficher l'icône à gauche"
+L.WarningIconRight 	= "Afficher l'icône à droite"
 L.RaidWarnMessage 	= "Merci d'utiliser Deadly Boss Mods"
-L.BarWhileMove 		= "Alerte-raid délacable"
+L.BarWhileMove 		= "Alerte-raid déplaçable"
 L.RaidWarnSound		= "Jouer un son pour les alertes raid"
 L.SpecialWarnSound	= "Jouer un son pour les alertes spéciales"
 
@@ -91,11 +91,11 @@ L.Slider_BarScale 	= "Echelle: %0.2f"
 L.AreaTitle_BarSetup 	= "Options générales des barres"
 L.AreaTitle_BarSetupSmall = "Options des petites barres"
 L.AreaTitle_BarSetupHuge = "Options des grandes barres"
-L.BarIconLeft 		= "Icone gauche"
-L.BarIconRight 		= "Icone droit"
-L.EnableHugeBar 	= "Activé les grandes barres (Barre 2)"
+L.BarIconLeft 		= "Icône gauche"
+L.BarIconRight 		= "Icône droit"
+L.EnableHugeBar 	= "Activer les grandes barres (Barre 2)"
 L.FillUpBars		= "Remplir les barres"
-L.ClickThrough		= "Enlève le controle par la souris ( Vous autorise a cliquer a travers les barres )"
+L.ClickThrough		= "Enlève le contrôle par la souris ( Vous autorise à cliquer à travers les barres )"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Filtre anti-spam"
@@ -103,7 +103,7 @@ L.Area_SpamFilter		= "Options générales du filtre anti-spam"
 L.HideBossEmoteFrame	= "Cacher la fenêtre des emotes de boss"
 L.SpamBlockRaidWarning	= "Filtrer les annonces venant d'autre boss mods"
 L.SpamBlockBossWhispers	= "Filtrer les alertes <DBM> chuchotement pendant les combats"
-L.BlockVersionUpdatePopup	= "Enlève le message pup-up quand vous êtes sur un boss"
+L.BlockVersionUpdatePopup	= "Enlève le message pop-up quand vous êtes sur un boss"
 
 
 L.ShowBigBrotherOnCombatStart	= "Autoriser Big Brother pour regarder les buffs quand le combat débute"

@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -59,7 +59,7 @@ L:SetOptionLocalization({
 	TimerEmbrace			= "Activer le timer pour le baisé de la veuve",
 	WarningEmbraceActive	= "Activer l'avertissement pour le baisé de la veuve",
 	WarningEmbraceExpire	= "Activer l'avertissement de fin du baisé de la veuve",
-	WarningEmbraceExpired	= "Afficher un avertiseement quand le baisé de la veuve va se terminé"
+	WarningEmbraceExpired	= "Afficher un avertiseement quand le baisé de la veuve va se terminer"
 })
 
 
@@ -77,7 +77,7 @@ L:SetWarningLocalization({
 	WarningWebSpraySoon	= "Jet de rets dans 5 sec",
 	WarningWebSprayNow	= "Jet de rets!",
 	WarningSpidersSoon	= "Araignées dans 5 sec",
-	WarningSpidersNow	= "Arrivé des araignées!"
+	WarningSpidersNow	= "Arrivée des araignées!"
 })
 
 L:SetTimerLocalization({
@@ -96,7 +96,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "Je suis dans un cocon! Aidez moi!"
+	YellWebWrap			= "Je suis dans un cocon! Aidez-moi!"
 })
 
 ------------------------------
@@ -165,7 +165,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSporeNow		= "Arrivé d'un spore!",
+	WarningSporeNow		= "Arrivée d'un spore!",
 	WarningSporeSoon	= "Spore dans 5 sec",
 	WarningDoomNow		= "Malédiction inévitable #%d",
 	WarningHealSoon		= "Soins possibles dans 3 sec",
@@ -181,7 +181,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningSporeNow		= "Activer l'avertissement pour les Spores",
 	WarningSporeSoon	= "Activer le pré-avertissement pour les Spores",
-	WarningDoomNow		= "Activer l'avertissement pour les Malédictions inévitable",
+	WarningDoomNow		= "Activer l'avertissement pour les Malédictions inévitables",
 	WarningHealSoon		= "Activer l'avertissement \"Soins dans 3 sec\" ",
 	WarningHealNow		= "Activer l'avertissement \"SOIGNEZ MAINTENANT\" ",
 	TimerDoom			= "Activer le timer pour la Malédiction inévitable",
@@ -201,13 +201,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Annoncer les Hateful Strikes au raid\n(vous devez être promote ou le raid leader pour le faire)"
+	WarningHateful = "Annoncer les Frappes Haineuses au raid\n(vous devez être promote ou le raid leader pour le faire)"
 })
 
 L:SetMiscLocalization({
 	yell1 = "R'cousu veut jouer !",
 	yell2 = "R'cousu avatar de guerre pour Kel'Thuzad !",
-	HatefulStrike = "Hateful Strike --> %s [%s]"
+	HatefulStrike = "Frappe Haineuse --> %s [%s]"
 })
 
 
@@ -274,7 +274,7 @@ L:SetMiscLocalization({
 	Emote2	= "Bobine de Tesla entre en surcharge !", -- ?
 	Boss1 = "Feugen",
 	Boss2 = "Stalagg",
-	Charge1 = "negative",
+	Charge1 = "négative",
 	Charge2 = "positive",
 })
 
@@ -443,7 +443,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	EmoteBreath			= "%s prend une grande inspiration...",
-	WarningYellIceblock	= "Je suis un bloque de glace!"
+	WarningYellIceblock	= "Je suis un bloc de glace!"
 })
 
 L:SetWarningLocalization({
