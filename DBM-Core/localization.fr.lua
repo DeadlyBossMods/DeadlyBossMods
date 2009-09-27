@@ -52,7 +52,7 @@ DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods est lancé en double car vous avez DBMv3 et DBMv4 d'installé et d'activé!\nCliquez sur \"Okay\" pour désactiver DBMv3 et recharger votre interfarce.\nVous pouvez aussi nettoyer votre fichier AddOns en supprimant l'ancien fichier DBMv3."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "Deadly Boss Mods"
-DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+clic ou clic droit pour déplacer"
+DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+clic ou clic droit pour déplacer\nAlt+shift+click pour drag&drop librement"
 
 DBM_CORE_RANGECHECK_HEADER			= "Vérifie la portée (%d m)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Définir la portée"
@@ -64,7 +64,7 @@ DBM_CORE_RANGECHECK_SOUND_1			= "Son par défaut"
 DBM_CORE_RANGECHECK_SOUND_2			= "Son Ennuyeux"
 DBM_CORE_RANGECHECK_HIDE			= "Cacher"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
-DBM_CORE_RANGECHECK_LOCK			= "Vérouille la fenêtre"
+DBM_CORE_RANGECHECK_LOCK			= "Verrouiller la fenêtre"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Commandes slash disponible:",

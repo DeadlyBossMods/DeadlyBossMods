@@ -15,7 +15,7 @@ local optionTimerCast	= "Afficher le timer pour le cast de: \"%s\" "	-- translat
 
 
 --------------------------------
--- Ahn�Kahet: The Old Kingdom --
+-- Ahn'Kahet: The Old Kingdom --
 --------------------------------
 -- Prince Taldaram --
 ---------------------
@@ -309,6 +309,47 @@ L:SetOptionLocalization({
 	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
 })
 
+-----------------
+-- Wave Timers --
+-----------------
+L = DBM:GetModLocalization("StratWaves")
+
+L:SetGeneralLocalization({
+	name = "Vagues de Stratholme"
+})
+
+L:SetWarningLocalization({
+	WarningWaveNow		= "Vague %d: %s",
+})
+
+L:SetTimerLocalization({
+	TimerWaveIn	= 	"Prochaine vague (6)", 
+})
+
+L:SetOptionLocalization({
+	WarningWaveNow		= optionWarning:format("New Wave"),
+	TimerWaveIn		= "Montre le timer \"Prochaine vague\" (vague 6 seulement)",
+})
+
+
+L:SetMiscLocalization({
+	Meathook	= "Grancrochet",
+	Salramm		= "Salramm le Façonneur de chair",
+	Devouring	= "Goule dévorante",
+	Enraged		= "Goule enragée",
+	Necro		= "Nécromancien",
+	Friend		= "Démon des cryptes",
+	Tomb		= "Traqueur des tombes",
+	Abom		= "Assemblage recousu",
+	Acolyte		= "Acolyte",
+	Wave1		= "%d %s",
+	Wave2		= "%d %s et %d %s",
+	Wave3		= "%d %s, %d %s et %d %s",
+	Wave4		= "%d %s, %d %s, %d %s et %d %s",
+	WaveBoss	= "%s",
+	WaveCheck	= "Vagues du Fléau = %d/10"
+})
+
 
 ----------------------
 -- Drak'Tharon Keep --
@@ -372,12 +413,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSlash	= optionWarning:format("Mangling/Piercing Slash"), 	-- needs translation
+	WarningSlash	= optionWarning:format("Entaille transperçante/mutilante"), 	-- needs translation
 	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
 	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
 	TimerFear	= optionTimerCD:format(GetSpellInfo(22686)),
-	TimerSlash	= optionTimerDur:format("Mangling/Piercing Slash"), 	-- needs translation
-	TimerSlashCD	= optionTimerCD:format("Mangling/Piercing Slash") 	-- needs translation
+	TimerSlash	= optionTimerDur:format("Entaille transperçante/mutilante"), 	-- needs translation
+	TimerSlashCD	= optionTimerCD:format("Entaille transperçante/mutilante") 	-- needs translation
 })
 
 
@@ -1115,7 +1156,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("GortokPalehoof")
 
 L:SetGeneralLocalization({
-	name = "Gortok P�le-sabot"
+	name = "Gortok Pâle-sabot"
 })
 
 L:SetWarningLocalization({
