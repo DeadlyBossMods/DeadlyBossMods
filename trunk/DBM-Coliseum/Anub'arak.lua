@@ -43,10 +43,10 @@ local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
 local timerFreezingSlash	= mod:NewCDTimer(20, 66012)
 
 -- Shadow Strike
---local timerShadowStrike		= mod:NewNextTimer(30, 66134)
---local preWarnShadowStrike	= mod:NewCastTimer(66134, 3)
---local warnShadowStrike		= mod:NewCastTimer(66134, 4)
-
+local timerShadowStrike		= mod:NewNextTimer(30, 66134)
+local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
+local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
+local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", false)
 
 local PColdIcon = 7
 function mod:resetIcons()
@@ -58,6 +58,15 @@ function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	self:resetIcons()
 	timerFreezingSlash:Start(-delay)
+end
+
+function mod:ShadowStrike()
+	if self:IsInCombat() then
+		timerShadowStrike:Start()
+		preWarnShadowStrike:Cancel()
+		preWarnShadowStrike:Schedule(25)
+		self:ScheduleMethod(30, "ShadowStrike")
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -96,15 +105,18 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(66118, 67630, 68646, 68647) then
+	if args:IsSpellID(66118, 67630, 68646, 68647) then		-- Swarm
 		warnPhase3:Show()
 		warnEmergeSoon:Cancel()
 		warnSubmergeSoon:Cancel()
 		timerEmerge:Stop()
 		timerSubmerge:Stop()
+	elseif args:IsSpellID(66134) then						-- Shadow Strike
+		self:ScheduleMethod(0.1, "ShadowStrike")
+		specWarnShadowStrike:Show()
+		warnShadowStrike:Show()
 	end
 end
-
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Burrow then
@@ -116,8 +128,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
+		self:ScheduleMethod(5, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
 	end
 end
-
-
 
