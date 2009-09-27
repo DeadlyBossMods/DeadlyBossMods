@@ -37,7 +37,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPolymorph:Show(args.destName)
 	elseif args:IsSpellID(67534) then							-- Hex of Mending on <x>
 		warnHexOfMending:Show(args.destName)
-	elseif args:IsSpellID(66045) and then							-- Haste on <x> Warns when on player too, don't know how to fix this.
+	elseif args:IsSpellID(66045) then							-- Haste on <x> Warns when on player too, don't know how to fix this.
 		warnHaste:Show(args.destName)
 		specWarnHaste:Show(args.destName)
 	elseif args:IsSpellID(67594, 68316) and args:IsPlayer() then							-- Standing in Poison Bottle.
