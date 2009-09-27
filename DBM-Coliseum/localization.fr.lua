@@ -240,8 +240,8 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull			= "Ce terreau sera votre tombeau !",
 	Swarm				= "L'essaim va vous submerger !",
-	Emerge				= "%s surgit de la terre !",
-	Burrow				= "%s s'enfonce dans le sol !"
+	Emerge				= "surgit de la terre !",
+	Burrow				= "s'enfonce dans le sol !"
 }
 
 L:SetOptionLocalization{

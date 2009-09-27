@@ -251,8 +251,8 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull			= "여기가 네 무덤이 되리라!",
 	Swarm				= "착취의 무리가 너희를 덮치리라!",
-	Emerge				= "%s 땅속에서 모습을 드러냅니다!",
-	Burrow				= "%s 땅속으로 숨어버립니다!"
+	Emerge				= "땅속에서 모습을 드러냅니다!",
+	Burrow				= "땅속으로 숨어버립니다!"
 }
 
 L:SetOptionLocalization{
