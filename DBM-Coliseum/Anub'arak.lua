@@ -124,12 +124,12 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.Burrow then
+	if msg and msg:find(L.Burrow) then
 		warnSubmerge:Show()
 		warnEmergeSoon:Schedule(55)
 		timerEmerge:Start()
 		timerFreezingSlash:Stop()
-	elseif msg == L.Emerge then
+	elseif msg and msg:find(L.Emerge) then
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
