@@ -3,6 +3,7 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33271)
+mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -15,21 +16,21 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local specWarnShadowCrash	= mod:NewSpecialWarning("SpecialWarningShadowCrash")
+local specWarnShadowCrash		= mod:NewSpecialWarning("SpecialWarningShadowCrash")
 local specWarnShadowCrashNear	= mod:NewSpecialWarning("SpecialWarningShadowCrashNear", false)
-local specWarnSurgeDarkness	= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
-local specWarnLifeLeechYou	= mod:NewSpecialWarning("SpecialWarningLLYou")
+local specWarnSurgeDarkness		= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
+local specWarnLifeLeechYou		= mod:NewSpecialWarning("SpecialWarningLLYou")
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
 
-local timerEnrage		= mod:NewEnrageTimer(600)
+local timerEnrage				= mod:NewEnrageTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
-local timerSurgeofDarkness	= mod:NewBuffActiveTimer(10, 62662)
-local timerSaroniteVapors	= mod:NewNextTimer(30, 63322)
-local timerLifeLeech		= mod:NewTargetTimer(10, 63276)
-local timerHardmode		= mod:NewTimer(189, "hardmodeSpawn")
+local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 62662)
+local timerSaroniteVapors		= mod:NewNextTimer(30, 63322)
+local timerLifeLeech			= mod:NewTargetTimer(10, 63276)
+local timerHardmode				= mod:NewTimer(189, "hardmodeSpawn")
 
-local warnShadowCrash		= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
-local warnLeechLife		= mod:NewAnnounce("WarningLeechLife", 3, 63276)
+local warnShadowCrash			= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
+local warnLeechLife				= mod:NewAnnounce("WarningLeechLife", 3, 63276)
 
 mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
