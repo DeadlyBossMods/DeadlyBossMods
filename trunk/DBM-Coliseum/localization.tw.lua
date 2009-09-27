@@ -247,7 +247,8 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "10秒後 鑽進地裡",
 	WarnPursue			= "追擊尖刺: >%s<",
 	SpecWarnPursue			= "你中了追擊尖刺!",
-	SpecWarnPCold			= "你中了透骨之寒!"	
+	SpecWarnPCold			= "你中了透骨之寒!",
+	SpecWarnShadowStrike		= "暗影打擊! 現在斷法!"
 }
 
 L:SetMiscLocalization{
@@ -269,5 +270,6 @@ L:SetOptionLocalization{
 	PursueIcon			= "為被追擊的玩家設置標記",
 	WarnPursue			= "提示被追擊的玩家",
 	SpecWarnPCold			= "為透骨之寒顯示特別警告",
-	SetIconsOnPCold			= "為透骨之寒的目標設置標記"
+	SetIconsOnPCold			= "為透骨之寒的目標設置標記",
+	SpecWarnShadowStrike		= "為暗影打擊顯示特別警告 (斷法用)"
 }
