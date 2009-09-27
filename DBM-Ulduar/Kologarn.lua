@@ -3,6 +3,7 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32930)
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterCombat("combat", 32930, 32933, 32934)
 
@@ -23,7 +24,7 @@ mod:SetBossHealthInfo(
 
 
 local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
-local warnGrip				= mod:NewAnnounce("WarnGrip", 2)
+local warnGrip					= mod:NewAnnounce("WarnGrip", 2)
 local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC / 12 nonHC
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
 local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")

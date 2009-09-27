@@ -3,6 +3,7 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32927)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat", 32867, 32927, 32857)
 
@@ -20,44 +21,44 @@ mod:SetBossHealthInfo(
 	32857, L.StormcallerBrundir
 )
 
-local warnSupercharge		= mod:NewAnnounce("WarningSupercharge", 3, 61920)
+local warnSupercharge			= mod:NewAnnounce("WarningSupercharge", 3, 61920)
 
 -- Stormcaller Brundir
 -- High Voltage ... 63498
-local warnChainlight		= mod:NewAnnounce("WarningChainlight", 1, 64215)
-local timerOverload		= mod:NewCastTimer(6, 63481)
-local timerLightningWhirl	= mod:NewCastTimer(5, 63483)
+local warnChainlight			= mod:NewAnnounce("WarningChainlight", 1, 64215)
+local timerOverload				= mod:NewCastTimer(6, 63481)
+local timerLightningWhirl		= mod:NewCastTimer(5, 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
 local timerLightningTendrils	= mod:NewBuffActiveTimer(27, 63486)
-local specwarnOverload		= mod:NewSpecialWarning("Overload") 
+local specwarnOverload			= mod:NewSpecialWarning("Overload") 
 mod:AddBoolOption("AllwaysWarnOnOverload", false, "announce")
 mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
 mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
 
 -- Steelbreaker
 -- High Voltage ... don't know what to show here - 63498
-local warnFusionPunch		= mod:NewAnnounce("WarningFusionPunch", 4, 61903)
-local timerFusionPunchCast	= mod:NewCastTimer(3, 61903)
+local warnFusionPunch			= mod:NewAnnounce("WarningFusionPunch", 4, 61903)
+local timerFusionPunchCast		= mod:NewCastTimer(3, 61903)
 local timerFusionPunchActive	= mod:NewTargetTimer(4, 61903)
-local warnOverwhelmingPower	= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
+local warnOverwhelmingPower		= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
 local timerOverwhelmingPower	= mod:NewNextTimer(25, 61888)
-local warnStaticDisruption	= mod:NewAnnounce("WarningStaticDisruption", 3, 61912) 
+local warnStaticDisruption		= mod:NewAnnounce("WarningStaticDisruption", 3, 61912) 
 mod:AddBoolOption("SetIconOnOverwhelmingPower")
 mod:AddBoolOption("SetIconOnStaticDisruption")
 
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
-local timerRunicBarrier		= mod:NewBuffActiveTimer(20, 62338)
-local warnRuneofPower		= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
-local warnRuneofDeath		= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
-local warnRuneofSummoning	= mod:NewAnnounce("WarningRuneofSummoning", 3, 62273)
-local specwarnRuneofDeath	= mod:NewSpecialWarning("RuneofDeath")
-local timerRuneofDeathDura	= mod:NewNextTimer(30, 63490)
-local timerRuneofPower		= mod:NewCDTimer(30, 61974)
-local timerRuneofDeath		= mod:NewCDTimer(30, 63490)
+local timerRunicBarrier			= mod:NewBuffActiveTimer(20, 62338)
+local warnRuneofPower			= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
+local warnRuneofDeath			= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
+local warnRuneofSummoning		= mod:NewAnnounce("WarningRuneofSummoning", 3, 62273)
+local specwarnRuneofDeath		= mod:NewSpecialWarning("RuneofDeath")
+local timerRuneofDeathDura		= mod:NewNextTimer(30, 63490)
+local timerRuneofPower			= mod:NewCDTimer(30, 61974)
+local timerRuneofDeath			= mod:NewCDTimer(30, 63490)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 
-local enrageTimer		= mod:NewEnrageTimer(900)
+local enrageTimer				= mod:NewEnrageTimer(900)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)	
