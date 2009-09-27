@@ -64,6 +64,7 @@ DBM_CORE_RANGECHECK_SOUND_1			= "Son par défaut"
 DBM_CORE_RANGECHECK_SOUND_2			= "Son Ennuyeux"
 DBM_CORE_RANGECHECK_HIDE			= "Cacher"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
+DBM_CORE_RANGECHECK_LOCK			= "Vérouille la fenêtre"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Commandes slash disponible:",
