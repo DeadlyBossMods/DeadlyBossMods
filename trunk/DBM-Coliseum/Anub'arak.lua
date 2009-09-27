@@ -13,6 +13,9 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
+mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
+
+
 -- Pursue
 local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")

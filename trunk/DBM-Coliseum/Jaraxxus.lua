@@ -4,6 +4,7 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34780)
 mod:SetMinCombatTime(30)
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -59,17 +60,10 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:Show(L.name)
 		DBM.BossHealth:AddBoss(34780, L.name)
 	end
---	if self:IsDifficulty("heroic10", "heroic25") then
-		timerPortalCD:Start(20-delay)
-		warnPortalSoon:Schedule(15-delay)
-		timerVolcanoCD:Start(85-delay)
-		warnVolcanoSoon:Schedule(80-delay)
---	else
---		timerPortalCD:Start(45-delay)
---		warnPortalSoon:Schedule(40-delay)
---		timerVolcanoCD:Start(105-delay)
---		warnVolcanoSoon:Schedule(100-delay)
---	end
+	timerPortalCD:Start(20-delay)
+	warnPortalSoon:Schedule(15-delay)
+	timerVolcanoCD:Start(85-delay)
+	warnVolcanoSoon:Schedule(80-delay)
 	timerFleshCD:Start(14-delay)
 	timerFlameCD:Start(20-delay)
 	enrageTimer:Start(-delay)
