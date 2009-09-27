@@ -1378,3 +1378,128 @@ L:SetMiscLocalization({
 	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
 	WavePortal		= "Portals Opened: (%d+)/18"
 })
+
+
+---------------------
+-- Trial of the Champion --
+---------------------
+-------------------
+-- The Black Knight --
+-------------------
+L = DBM:GetModLocalization("BlackKnight")
+
+L:SetGeneralLocalization({
+	name = "The Black Knight"
+})
+
+L:SetWarningLocalization({
+	specWarnDesecration		= "Desecration! Move Away!",
+	warnExplode		= "Ghoul Minion is casting Explode. Move away!"
+})
+
+L:SetOptionLocalization({
+	specWarnDesecration		= "Special Warning when you take damage from Desecration",
+	warnExplode		= "Warn when Ghoul Minion casts Explode on self."
+})
+
+
+-------------------
+-- Grand Champions --
+-------------------
+L = DBM:GetModLocalization("GrandChampions")
+
+L:SetGeneralLocalization({
+	name = "Grand Champions"
+})
+
+L:SetWarningLocalization({
+	specWarnHaste		= "Haste on >%s<! Dispel Now!",
+	warnPoison		= "Rogue has thrown poison Bottle",
+	specWarnPoison		= "Poison! Move Away!",
+	warnHealingWave		= "Shamen casting Healing Wave. Interupt!"
+})
+
+L:SetOptionLocalization({
+	warnHealingWave		= "Warn when Shamen casts Healing Wave.",
+	specWarnHaste		= "Special Warning when Mage gains Haste (for dispel/steal)",
+	warnPoison		= "Warn when Rogue throws poison Bottle",
+	specWarnPoison		= "Special Warning when you take damage from poison Bottle"
+})
+
+
+-------------------
+-- Argent Confessor Paletress --
+-------------------
+L = DBM:GetModLocalization("Confessor")
+
+L:SetGeneralLocalization({
+	name = "Argent Confessor Paletress"
+})
+
+L:SetWarningLocalization({
+	specwarnRenew		= "Confessor cast renew on >%s< Dispel Now!",
+	warnReflectiveShield		= "Confessor has gained Reflective Shield"
+})
+
+L:SetOptionLocalization({
+	warnRenew		= "Warn when Confessor Casts Renew",
+	specwarnRenew		= "Warn when Confessor gains Renew (for dispel/steal)",
+	warnReflectiveShield		= "Warn when Confessor gains Reflective Shield"
+})
+
+
+-------------------
+-- Eadric the Pure --
+-------------------
+L = DBM:GetModLocalization("EadricthePure")
+
+L:SetGeneralLocalization({
+	name = "Eadric the Pure"
+})
+
+L:SetWarningLocalization({
+	warnHammerofRighteous		= "Eadric casting Hammer of Righteous!",
+	specwarnHammerofJustice		= "Hammer of Justice on >%s<. Dispel now!",
+	specwarnRadiance		= "Radiance. Look Away!"
+})
+
+L:SetOptionLocalization({
+	warnHammerofRighteous		= "Warn when Eadric casts Hammer of Righteous",
+	specwarnHammerofJustice		= "Show Special Warning for Hammer of Justice (for dispel)",
+	specwarnRadiance		= "Show Special warning for Radiance."
+})
+
+
+---------------------
+-- Holiday --
+---------------------
+-------------------
+-- Coren Direbrew --
+-------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "Coren Direbrew"
+})
+
+L:SetWarningLocalization({
+	warnBarrel	= "Barrel on >%s<", 
+--	specwarnDaughters		= "Daughter Spawned!",
+	specwarnDisarm		= "Disarm. Move Away!",
+	specWarnBrew		= "Get rid of the brew before she tosses you another one!",
+	specWarnBrewStun		= "HINT: You were bonked, remember to drink the brew next time!"
+})
+
+L:SetOptionLocalization({
+	warnBarrel		= "Announce the Target of Barrel.",
+--	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
+	specwarnDisarm		= "Show Special Warning for Disarm",
+	specWarnBrew		= "Show Special Warning for Dark Brewmaiden's Brew",
+	specWarnBrewStun		= "Show Special Warning for Dark Brewmaiden's Stun",
+	PlaySoundOnDisarm	= "Play sound on Disarm",
+	YellOnBarrel	= "Yell when you have Barrel"
+})
+
+L:SetMiscLocalization{
+	YellBarrel		= "Barrel on me!"
+}
