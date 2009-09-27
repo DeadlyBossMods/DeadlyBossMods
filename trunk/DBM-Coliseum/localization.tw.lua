@@ -254,8 +254,8 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull			= "這裡將會是你們的墳墓!",
 	Swarm				= "蟲群將會淹沒你們!",
-	Emerge				= "%s從地底鑽出!",
-	Burrow				= "%s鑽進地裡!"
+	Emerge				= "從地底鑽出!",
+	Burrow				= "鑽進地裡!"
 }
 
 L:SetOptionLocalization{

@@ -244,8 +244,8 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull		= "Это место станет вашей могилой!",
 	Swarm			= "Рой направляется к вам!",
-	Emerge			= "%s вылезает на поверхность!",
-	Burrow			= "%s зарывается в землю!"
+	Emerge			= "вылезает на поверхность!",
+	Burrow			= "зарывается в землю!"
 }
 
 L:SetOptionLocalization{
