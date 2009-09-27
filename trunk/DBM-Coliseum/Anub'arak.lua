@@ -58,6 +58,11 @@ function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	self:resetIcons()
 	timerFreezingSlash:Start(-delay)
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerShadowStrike:Start()
+		preWarnShadowStrike:Schedule(25)
+		self:ScheduleMethod(30, "ShadowStrike")
+	end
 end
 
 function mod:ShadowStrike()
