@@ -162,7 +162,6 @@ L:SetOptionLocalization{
 	SpecWarnDivineShield	= "Special Warning when the Paladin casts Divine Shield"
 }
 
-
 ------------------
 -- Valkyr Twins --
 ------------------
@@ -216,39 +215,41 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
-	name 				= "Anub'arak"
+	name 					= "Anub'arak"
 }
 
 L:SetTimerLocalization{
-	TimerEmerge			= "Emerge in",
-	TimerSubmerge		= "Submerge in"
+	TimerEmerge				= "Emerge in",
+	TimerSubmerge			= "Submerge in"
 }
 
 L:SetWarningLocalization{
-	WarnEmerge			= "Anub'arak emerged",
-	WarnEmergeSoon		= "Emerge in 10 sec",
-	WarnSubmerge		= "Anub'arak submerged",
-	WarnSubmergeSoon	= "Submerge in 10 sec",
-	WarnPursue			= "Pursuing >%s<",
-	SpecWarnPursue		= "Pursuing you!"
+	WarnEmerge				= "Anub'arak emerged",
+	WarnEmergeSoon			= "Emerge in 10 sec",
+	WarnSubmerge			= "Anub'arak submerged",
+	WarnSubmergeSoon		= "Submerge in 10 sec",
+	WarnPursue				= "Pursuing >%s<",
+	SpecWarnPursue			= "Pursuing you!",
+	SpecWarnShadowStrike	= "Shadow Strike! Kick now!"
 }
 
 L:SetMiscLocalization{
-	YellPull			= "This place will serve as your tomb!",
-	Swarm				= "The swarm shall overtake you!",
-	Emerge				= "%s emerges from the ground!",
-	Burrow				= "%s burrows into the ground!"
+	YellPull				= "This place will serve as your tomb!",
+	Swarm					= "The swarm shall overtake you!",
+	Emerge					= "%s emerges from the ground!",
+	Burrow					= "%s burrows into the ground!"
 }
 
 L:SetOptionLocalization{
-	WarnEmerge			= "Show warning for Emerge",
-	WarnEmergeSoon		= "Show pre-warning for Emerge",
-	WarnSubmerge		= "Show warning for Submerge",
-	WarnSubmergeSoon	= "Show pre-warning for Submerge",
-	SpecWarnPursue		= "Special warning when you are being followed",
-	TimerEmerge			= "Show timer for Emerge",
-	TimerSubmerge		= "Show timer for Submerge",
-	PlaySoundOnPursue	= "Play sound when you are being followed",
-	PursueIcon			= "Set icon on pursued player",
-	WarnPursue			= "Announce pursued player"
+	WarnEmerge				= "Show warning for Emerge",
+	WarnEmergeSoon			= "Show pre-warning for Emerge",
+	WarnSubmerge			= "Show warning for Submerge",
+	WarnSubmergeSoon		= "Show pre-warning for Submerge",
+	SpecWarnPursue			= "Special warning when you are being followed",
+	TimerEmerge				= "Show timer for Emerge",
+	TimerSubmerge			= "Show timer for Submerge",
+	PlaySoundOnPursue		= "Play sound when you are being followed",
+	PursueIcon				= "Set icon on pursued player",
+	WarnPursue				= "Announce pursued player",
+	SpecWarnShadowStrike	= "Show Special Warning for Shadow Strike (to kick)"
 }
