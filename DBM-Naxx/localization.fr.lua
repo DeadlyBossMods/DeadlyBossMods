@@ -330,16 +330,22 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarningShoutNow		= "Activer l'avertissement pour les Cris perturbants",
 	WarningShoutSoon	= "Activer le pré-avertissement pour les Cris perturbants",
-	TimerShout			= "Afficher le timer pour les Cris perturbants"
+	TimerShout			= "Afficher le timer pour les Cris perturbants",
+	WarningShieldWallSoon	= "Activer l'avertissement du Mur de Bouclier",
+	TimerShieldWall			= "Afficher le timer du Mur de Bouclier",
+	TimerTaunt				= "Afficher le timer du Taunt"
 })
 
 L:SetWarningLocalization({
 	WarningShoutNow		= "Cri perturbant!",
 	WarningShoutSoon	= "Cri perturbant dans 5 sec"
+	WarningShieldWallSoon	= "Mur de Bouclier expire dans 5 sec"
 })
 
 L:SetTimerLocalization({
 	TimerShout			= "Cri perturbant"
+	TimerTaunt			= "Taunt",
+	TimerShieldWall		= "Mur de Bouclier"
 })
 
 --------------
@@ -478,6 +484,7 @@ L:SetOptionLocalization({
 	WarningPhase2		= "Activer l'avertissement pour la Phase 2",
 	WarningFissure		= "Activer l'avertissement pour la Fissure d'ombre",
 	WarningMana			= "Activer l'avertissement pour le Mana détonant"
+	WarningChainsTargets= "Activer l'avertissement pour les Chaînes de Kel'Thuzad"
 })
 
 L:SetMiscLocalization({
@@ -489,6 +496,7 @@ L:SetWarningLocalization({
 	WarningPhase2		= "Phase 2",
 	WarningFissure		= "Arrivée d'une Fissure d'ombre",
 	WarningMana			= "Mana détonant: >%s<"
+	WarningChainsTargets= "Chaînes de Kel'Thuzad: >%s<"
 })
 
 L:SetTimerLocalization({

@@ -45,27 +45,29 @@ L:SetWarningLocalization({
 	WarningTenebron			= "Ténébron Arrive",
 	WarningShadron			= "Obscuron Arrive",
 	WarningVesperon			= "Vespéron Arrive",
+	WarningFireWall			= "Tsunami de flammes!",
 	WarningVesperonPortal	= "Portail de Vespéron",
 	WarningTenebronPortal	= "Portail de Ténébron",
 	WarningShadronPortal	= "Portail d'Obscuron",
 })
 
 L:SetTimerLocalization({
+	TimerWall	= "Tsunami de flammes cooldown",
 	TimerTenebron	= "Ténébron Arrive",
 	TimerShadron	= "Obscuron Arrive",
 	TimerVesperon	= "Vespéron Arrive"
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall	= "Joue un son pour les Vagues de Flammes",
-	AnnounceFails		= "Affiche les joueurs qui n'ont pas évité les zones de vide / Vague de Flammes (requires announce enabled and promoted/leader status)",
+	PlaySoundOnFireWall	= "Joue un son pour les Tsunamis de flammes",
+	AnnounceFails		= "Affiche les joueurs qui n'ont pas évité les zones de vide / Tsunamis de flammes (requires announce enabled and promoted/leader status)",
 
-	TimerWall		= "Montre le timer pour les Vague de Flammes",
+	TimerWall		= "Montre le timer pour les Tsunamis de flammes",
 	TimerTenebron		= "Montre le timer pour Ténébron",
 	TimerShadron		= "Montre le timer pour Obscuron",
 	TimerVesperon		= "Montre le timer pour Vespéron",
 
-	WarningFireWall		= "Montre une alerte spécial pour les Vague de Flammes",
+	WarningFireWall		= "Montre une alerte spécial pour les Tsunamis de flammes",
 	WarningTenebron		= "Montre le timer avant que Ténébron arrive",
 	WarningShadron		= "Montre le timer avant qu'Obscuron arrive",
 	WarningVesperon		= "Montre le timer avant que Vespéron arrive",
@@ -81,8 +83,10 @@ L:SetMiscLocalization({
 	NameTenebron	= "Ténébron",
 	NameShadron		= "Obscuron",
 	NameVesperon	= "Vespéron",
+	FireWallOn		= "Tsunamis de flammes: %s",
 	VoidZoneOn		= "Zone de vide : %s",
 	VoidZones		= "Zones de vide ratées (cet essai): %s",
+	FireWalls		= "Tsunamis de flammes ratés (cet essai): %s",
 	--[[ not in use; don't translate.
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
 	Shadron		= "Shadron! Come to me! All is at risk!",
