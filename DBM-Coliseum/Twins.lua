@@ -39,7 +39,7 @@ local warnTouchDebuff				= mod:NewAnnounce("WarningTouchDebuff", 2, 66823)
 local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 
 mod:AddBoolOption("SetIconOnDebuffTarget", true, "announce")
-mod:AddBoolOption("SpecialWarnOnDebuff", true, "announce")
+mod:AddBoolOption("SpecialWarnOnDebuff", false, "announce")
 
 
 local debuffTargets = {}
