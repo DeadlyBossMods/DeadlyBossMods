@@ -3,8 +3,9 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32865)
+mod:SetUsedIcons(8)
 
-mod:RegisterCombat("yell", L.YellPhase1)
+--mod:RegisterCombat("yell", L.YellPhase1)
 mod:RegisterKill("yell", L.YellKill)
 
 mod:RegisterEvents(
@@ -14,20 +15,20 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local enrageTimer		= mod:NewEnrageTimer(369)
+local enrageTimer				= mod:NewEnrageTimer(369)
 
-local timerStormhammer		= mod:NewCastTimer(16, 62042)
-local timerLightningCharge 	= mod:NewCDTimer(16, 62466) 
+local timerStormhammer			= mod:NewCastTimer(16, 62042)
+local timerLightningCharge	 	= mod:NewCDTimer(16, 62466) 
 local timerUnbalancingStrike	= mod:NewCastTimer(26, 62130)
-local timerHardmode		= mod:NewTimer(175, "TimerHardmode", 62042)
+local timerHardmode				= mod:NewTimer(175, "TimerHardmode", 62042)
 
-local warnPhase2		= mod:NewAnnounce("WarningPhase2", 1)
-local warnStormhammer		= mod:NewAnnounce("WarningStormhammer", 2, 62470)
-local warnLightningCharge	= mod:NewAnnounce("WarningLightningCharge", 2, 62466)
-local warnUnbalancingStrike	= mod:NewAnnounce("UnbalancingStrike", 4, 62130)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
-local warningBomb		= mod:NewAnnounce("WarningBomb", 4)
+local warnPhase2				= mod:NewAnnounce("WarningPhase2", 1)
+local warnStormhammer			= mod:NewAnnounce("WarningStormhammer", 2, 62470)
+local warnLightningCharge		= mod:NewAnnounce("WarningLightningCharge", 2, 62466)
+local warnUnbalancingStrike		= mod:NewAnnounce("UnbalancingStrike", 4, 62130)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
+local warningBomb				= mod:NewAnnounce("WarningBomb", 4)
 
-local specWarnOrb		= mod:NewSpecialWarning("LightningOrb")
+local specWarnOrb				= mod:NewSpecialWarning("LightningOrb")
 
 local lastcharge = {} 
 mod:AddBoolOption("RangeFrame")
