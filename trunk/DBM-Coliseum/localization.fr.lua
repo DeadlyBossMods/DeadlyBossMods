@@ -98,6 +98,7 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	WhisperFlame			= "Flamme de la Légion sur VOUS!",
+	IncinerateTarget		= "Incinérer la chair: %s"
 }
 
 L:SetOptionLocalization{
@@ -116,7 +117,8 @@ L:SetOptionLocalization{
 	TouchJaraxxusIcon		= "Met une icône sur la cible du Toucher de Jaraxxus (Croix)",
 	IncinerateFleshIcon		= "Met une icône sur la cible d'Incinérer la chair (Tête de mort)",
 	LegionFlameIcon			= "Met une icône sur la cible des Flammes de la Légion (Carré)",
-	LegionFlameWhisper		= "Chuchote à la cible des Flammes de la Légion pour la prévenir"
+	LegionFlameWhisper		= "Chuchote à la cible des Flammes de la Légion pour la prévenir",
+	IncinerateShieldFrame	= "Montre la vie du Boss avec une barre de vie pour Incinérer la chair"
 }
 
 
@@ -135,8 +137,8 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnHellfire		= "Flammes infernales",
 	SpecWarnHellfire	= "Flammes infernales ! BOUGEZ !",
-	SpecWarnHandofProt		= "Main de protection sur >%s<",
-	SpecWarnDivineShield	= "Bouclier divin sur >%s<"
+	SpecWarnHandofProt		= "Main de Protection sur >%s<",
+	SpecWarnDivineShield	= "Bouclier Divin sur >%s<"
 }
 
 L:SetMiscLocalization{
@@ -159,9 +161,9 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	WarnHellfire			= "Alerte quand Harzog incante les Flammes infernales",
-	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales",
-	SpecWarnHandofProt		= "Montre une alerte spéciale quand le paladin incante la Main de protection",
-	SpecWarnDivineShield	= "Montre une alerte spéciale quand le paladin incante le Bouclier divin"
+	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales"
+	SpecWarnHandofProt		= "Montre une alerte spéciale quand le Paladin lance Main de Protection",
+	SpecWarnDivineShield	= "Montre une alerte spéciale quand le Paladin lance Bouclier Divin"
 }
 
 
@@ -183,11 +185,11 @@ L:SetWarningLocalization{
 	SpecWarnSpecial				= "Changement de couleur !",
 	SpecWarnEmpoweredDarkness	= "Ténèbres surpuissantes",
 	SpecWarnEmpoweredLight		= "Lumière surpuissante",
-	SpecWarnSwitchTarget		= "Changez de cible !",
-	SpecWarnKickNow				= "Cassez Maintenant !",
-	WarningTouchDebuff			= "Debuff sur >%s<",
-	WarningPoweroftheTwins		= "Puissance des jumelles - Plus de heal sur >%s<",
-	SpecWarnPoweroftheTwins		= "Puissance des jumelles !"
+	SpecWarnSwitchTarget		= "Changement de cible!",
+	SpecWarnKickNow				= "Kick Maintenant!",
+	WarningTouchDebuff			= "Toucher sur >%s<",
+	WarningPoweroftheTwins		= "Puissance des jumelles - plus de soins sur >%s<",
+	SpecWarnPoweroftheTwins		= "Puissance des jumelles!"
 }
 
 L:SetMiscLocalization{
@@ -202,13 +204,13 @@ L:SetOptionLocalization{
 	SpecWarnSpecial				= "Montre une alerte spéciale quand vous devez changer de couleur",
 	SpecWarnEmpoweredDarkness	= "Montre une alerte spéciale pour les Ténèbres surpuissantes",
 	SpecWarnEmpoweredLight		= "Montre une alerte spéciale pour la Lumière surpuissante",
-	SpecWarnSwitchTarget		= "Montre une alerte spéciale quand l'autre boss cast",
-	SpecWarnKickNow				= "Montre une alerte spéciale quand vous devez couper l'incantation du sort",
-	SpecialWarnOnDebuff			= "Montre une alerte spéciale quand vous changez de débuff",
-	SetIconOnDebuffTarget		= "Met une icone sur la cible des débuff ( Heroique )",
-	WarningTouchDebuff			= "Annonce le débuff de Lumière / Ombre",
-	WarningPoweroftheTwins		= "Annonce la cible de la Puissance des jumelles",
-	SpecWarnPoweroftheTwins		= "Montre une alerte spéciale quand vous êtes sur la Jumelle qui a la puissance"
+	SpecWarnSwitchTarget		= "Montre une alerte spéciale quand l'autre boss est en train d'incanter",
+	SpecWarnKickNow				= "Montre une alerte spéciale quand vous devez interrompre l'incantation",
+	SpecialWarnOnDebuff			= "Montre une alerte spéciale quand vous avez un Toucher (pour changer de debuff)",
+	SetIconOnDebuffTarget		= "Met des icônes sur les cibles des Toucher (héroique)",
+	WarningTouchDebuff			= "Annoncer les cibles des débuff Toucher de Lumière/des Ténèbres",
+	WarningPoweroftheTwins		= "Annoncer la cible pour Puissance des jumelles",
+	SpecWarnPoweroftheTwins		= "Montre une alerte spéciale quand vous êtes en train de tanker une Jumelle puissante"
 }
 
 
