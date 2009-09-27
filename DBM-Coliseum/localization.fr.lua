@@ -161,7 +161,7 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	WarnHellfire			= "Alerte quand Harzog incante les Flammes infernales",
-	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales"
+	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales",
 	SpecWarnHandofProt		= "Montre une alerte spéciale quand le Paladin lance Main de Protection",
 	SpecWarnDivineShield	= "Montre une alerte spéciale quand le Paladin lance Bouclier Divin"
 }
