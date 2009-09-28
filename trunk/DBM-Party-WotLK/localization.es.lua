@@ -1380,3 +1380,131 @@ L:SetMiscLocalization({
 	yell1 = "¡Guardias de la prisión, nos largamos! ¡Esos aventureros están dominando el cotarro! ¡Vamos, vamos!",
 	WavePortal		= "Portales abiertos: (%d+)/18"
 })
+
+
+---------------------
+-- Trial of the Champion --
+---------------------
+-------------------
+-- The Black Knight --
+-------------------
+L = DBM:GetModLocalization("BlackKnight")
+
+L:SetGeneralLocalization({
+	name = "El Caballero Negro"
+})
+
+L:SetWarningLocalization({
+	specWarnDesecration		= "Profanación! Alejate!",
+	warnExplode		= "Explosión de necrófago. Alejate!"
+})
+
+L:SetOptionLocalization({
+	specWarnDesecration		= "Aviso especial si te hace daño la Profanacion",
+	warnExplode		= "Avisar cuando un Necrofago vaya a explotar."
+})
+
+
+-------------------
+-- Grand Champions --
+-------------------
+L = DBM:GetModLocalization("GrandChampions")
+
+L:SetGeneralLocalization({
+	name = "Grand Champions"
+})
+
+L:SetWarningLocalization({
+	specWarnHaste		= ">%s< tiene celeridad. Robalo o dispelea!",
+	warnPoison		= "El picaro ha echado la botella de veneno",
+	specWarnPoison		= "Veneno! Alejate!",
+	warnHealingWave		= "El chaman castea Ola de sanacion. Interrumpe!",
+	specWarnHealingWave = "Interrumpe al chaman!"
+})
+
+L:SetOptionLocalization({
+	warnHealingWave		= "Mostrar aviso cuando el chaman castee ola de sanacion.",
+	specWarnHealingWave = "Mostrar aviso especial cuando el chaman castee ola de sanacion.",
+	warnWarnHaste       = "Mostrar aviso cuando el mago tenga celeridad ( para robar o dispelear )",
+	specWarnHaste		= "Mostrar aviso especial cuando el mago tenga celeridad ( para robar o dispelear )",
+	warnPoison		= "Mostrar aviso cuando el picaro lanze botella de veneno",
+	specWarnPoison		= "Mostrar aviso especial si recibes daño del veneno"
+})
+
+
+-------------------
+-- Argent Confessor Paletress --
+-------------------
+L = DBM:GetModLocalization("Confessor")
+
+L:SetGeneralLocalization({
+	name = "Confesora Argenta Cabelloclaro"
+})
+
+L:SetWarningLocalization({
+	specwarnRenew		= "Confesora argenta castea renovar a >%s< Dispelea Ya!",
+	warnReflectiveShield		= "Confesora argenta tiene escudo reflectante"
+})
+
+L:SetOptionLocalization({
+	warnRenew		= "Mostrar aviso cuando la Confesora argenta castee renovar",
+	specwarnRenew		= "Mostrar aviso especial cuando la Confesora argenta tenga "renovar" para (robar o cortar)",
+	warnReflectiveShield		= "Mostrar aviso cuando la Confesora argenta tenga el Escudo refelctante"
+})
+
+
+-------------------
+-- Eadric the Pure --
+-------------------
+L = DBM:GetModLocalization("EadricthePure")
+
+L:SetGeneralLocalization({
+	name = "Eadric el Puro"
+})
+
+L:SetWarningLocalization({
+	warnHammerofRighteous		= "Eadric castea Martillo del honrado!",
+	specwarnHammerofJustice		= "Martillo de Justicia en >%s<. Dispelea ya!",
+	specwarnRadiance		= "Radiancia. Date la vuelta!"
+})
+
+L:SetOptionLocalization({
+	warnHammerofRighteous		= "Mostrar aviso cuando Eadric castee martillo del honrado",
+	specwarnHammerofJustice		= "Mostrar aviso especial para martillo de justicia ( para dispelear )",
+	specwarnRadiance		= "Mostrar aviso especial para Radiancia."
+})
+
+
+---------------------
+-- Holiday --
+---------------------
+-------------------
+-- Coren Direbrew --
+-------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "Coren Cerveza Temible"
+})
+
+L:SetWarningLocalization({
+	warnBarrel	= "Barril en >%s<", 
+--	specwarnDaughters		= "Ha salido la hija!",
+	specwarnDisarm		= "Desarmar. Alejate!",
+	specWarnBrew		= "Matar a la hija antes de que lanze otra cerveza!",
+	specWarnBrewStun		= "SUGERENCIA: Bebe la cerveza si te ha lanzado!"
+})
+
+L:SetOptionLocalization({
+	warnBarrel		= "Anunciar el objetivo del barril.",
+--	specwarnDaughters		= "Anunciar salida de Urusla/Ilsa",
+	specwarnDisarm		= "Mostrar aviso especial para Desarmar",
+	specWarnBrew		= "Mostrar aviso especial para Dark Brewmaiden's Brew",
+	specWarnBrewStun		= "Mostrar aviso especial para Dark Brewmaiden's Stun",
+	PlaySoundOnDisarm	= "Sonido para Desarmar",
+	YellOnBarrel	= "Avisar si tienes el Barril"
+})
+
+L:SetMiscLocalization{
+	YellBarrel		= "Tengo el Barril!"
+}
