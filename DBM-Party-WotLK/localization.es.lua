@@ -1419,13 +1419,10 @@ L:SetWarningLocalization({
 	warnPoison		= "El picaro ha echado la botella de veneno",
 	specWarnPoison		= "Veneno! Alejate!",
 	warnHealingWave		= "El chaman castea Ola de sanacion. Interrumpe!",
-	specWarnHealingWave = "Interrumpe al chaman!"
 })
 
 L:SetOptionLocalization({
 	warnHealingWave		= "Mostrar aviso cuando el chaman castee ola de sanacion.",
-	specWarnHealingWave = "Mostrar aviso especial cuando el chaman castee ola de sanacion.",
-	warnWarnHaste       = "Mostrar aviso cuando el mago tenga celeridad ( para robar o dispelear )",
 	specWarnHaste		= "Mostrar aviso especial cuando el mago tenga celeridad ( para robar o dispelear )",
 	warnPoison		= "Mostrar aviso cuando el picaro lanze botella de veneno",
 	specWarnPoison		= "Mostrar aviso especial si recibes daño del veneno"
@@ -1438,17 +1435,18 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Confessor")
 
 L:SetGeneralLocalization({
-	name = "Confesora Argenta Cabelloclaro"
+	name = "Confesora Argenta"
 })
 
 L:SetWarningLocalization({
-	specwarnRenew		= "Confesora argenta castea renovar a >%s< Dispelea Ya!",
+    warnRenew       = "Renovar",
+	specwarnRenew		= "Confesora argenta castea renovar a >%s<. Dispelea Ya!",
 	warnReflectiveShield		= "Confesora argenta tiene escudo reflectante"
 })
 
 L:SetOptionLocalization({
 	warnRenew		= "Mostrar aviso cuando la Confesora argenta castee renovar",
-	specwarnRenew		= "Mostrar aviso especial cuando la Confesora argenta tenga "renovar" para (robar o cortar)",
+	specwarnRenew		= "Mostrar aviso especial cuando la Confesora argenta tenga renovar para (robar o cortar)",
 	warnReflectiveShield		= "Mostrar aviso cuando la Confesora argenta tenga el Escudo refelctante"
 })
 
