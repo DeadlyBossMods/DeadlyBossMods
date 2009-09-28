@@ -1414,7 +1414,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnHaste		= "Haste on >%s<! Dispel Now!",
-	warnPoison		= "Rogue has thrown poison Bottle",
 	specWarnPoison		= "Poison! Move Away!",
 	warnHealingWave		= "Shamen casting Healing Wave. Interupt!"
 })
@@ -1422,7 +1421,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnHealingWave		= "Warn when Shamen casts Healing Wave.",
 	specWarnHaste		= "Special Warning when Mage gains Haste (for dispel/steal)",
-	warnPoison		= "Warn when Rogue throws poison Bottle",
 	specWarnPoison		= "Special Warning when you take damage from poison Bottle"
 })
 
@@ -1443,7 +1441,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnRenew		= "Warn when Confessor Casts Renew",
-	specwarnRenew		= "Warn when Confessor gains Renew (for dispel/steal)",
+	specwarnRenew		= "Special Warning for Renew target (for dispel/steal)",
 	warnReflectiveShield		= "Warn when Confessor gains Reflective Shield"
 })
 
