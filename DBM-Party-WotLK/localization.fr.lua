@@ -1371,3 +1371,126 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	yell1 = "Gardes, nous partons ! Ces aventuriers vont se charger de la suite ! Allez, en route !",
 })
+
+
+---------------------
+-- Trial of the Champion --
+---------------------
+-------------------
+-- The Black Knight --
+-------------------
+L = DBM:GetModLocalization("BlackKnight")
+
+L:SetGeneralLocalization({
+	name = "Le Chevalier noir"
+})
+
+L:SetWarningLocalization({
+	specWarnDesecration		= "Violation ! Bougez !",
+	warnExplode		= "Séide goule incante explosion ! Bougez !"
+})
+
+L:SetOptionLocalization({
+	specWarnDesecration		= "Montre une alerte spéciale quand vous prenez des dégats venant de la Violation",
+	warnExplode		= "Alerte quand une Séide goule incante explosion sur elle même"
+})
+
+
+-------------------
+-- Grand Champions --
+-------------------
+L = DBM:GetModLocalization("GrandChampions")
+
+L:SetGeneralLocalization({
+	name = "Grand Champions"
+})
+
+L:SetWarningLocalization({
+	specWarnHaste		= "Hâte sur >%s< ! Dispel Maintenant !",
+	specWarnPoison		= "Poison ! Bougez !",
+	warnHealingWave		= "Le chaman incante une vague de soins. Cassez !"
+})
+
+L:SetOptionLocalization({
+	warnHealingWave		= "Alerte quand le chaman icante une vague de soins",
+	specWarnHaste		= "Montre une alerte spéciale quand le mage gagne la hate (Pour Dispell/Voler)",
+	specWarnPoison		= "Montre une alerte spéciale quand vous subissez des dégats provenant de la Bouteille de poison"
+})
+
+
+-------------------
+-- Argent Confessor Paletress --
+-------------------
+L = DBM:GetModLocalization("Confessor")
+
+L:SetGeneralLocalization({
+	name = "Confesseur d'argent Paletress"
+})
+
+L:SetWarningLocalization({
+	specwarnRenew		= "Confessor incante une rénovation sur >%s< Dispel Maintenant !",
+	warnReflectiveShield		= "Confessor viens de gagner Bouclier réflecteur"
+})
+
+L:SetOptionLocalization({
+	warnRenew		= "Alerte quand le Confesseur incante une rénovation",
+	specwarnRenew		= "Montre une alerte spéciale pour la cible de la rénovation (Pour Dispell/Voler)",
+	warnReflectiveShield		= "Alerte quand le Confesseur gagne le Bouclier réflecteur"
+})
+
+
+-------------------
+-- Eadric the Pure --
+-------------------
+L = DBM:GetModLocalization("EadricthePure")
+
+L:SetGeneralLocalization({
+	name = "Eadric le Pur"
+})
+
+L:SetWarningLocalization({
+	warnHammerofRighteous		= "Eadric incante Marteau du vertueux !",
+	specwarnHammerofJustice		= "Marteau de la justice sur >%s<. Dispel Maintenant !",
+	specwarnRadiance		= "Radiance. Retournez vous !"
+})
+
+L:SetOptionLocalization({
+	warnHammerofRighteous		= "Alerte quand Eadric incante Marteau du vertueux",
+	specwarnHammerofJustice		= "Montre une alerte spéciale pour le Marteau de la justice (Pour Dispel)",
+	specwarnRadiance		= "Montre une alerte spéciale pour Radiance."
+})
+
+
+---------------------
+-- Holiday --
+---------------------
+-------------------
+-- Coren Direbrew --
+-------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "Coren Navrebière"
+})
+
+L:SetWarningLocalization({
+	warnBarrel	= "Tonneau sur >%s<", 
+--	specwarnDaughters		= "Daughter Spawned!",
+	specwarnDisarm		= "Désarmement. Bougez !",
+	specWarnBrew		= "Débarrassez-vous de la bière avant qu'elle ne vous en lance une autre !",
+	specWarnBrewStun		= "Vous avez reçu un coup sur la tête. La prochaine fois, videz votre verre !"
+})
+
+L:SetOptionLocalization({
+	warnBarrel		= "Annonce la cible du Tonneau.",
+--	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
+	specwarnDisarm		= "Montre une alerte spéciale pour le désarmement",
+	specWarnBrew		= "Montre une alerte spéciale pour la Sombrebière de la vierge",
+	specWarnBrewStun		= "Montre une alerte spéciale pour l'Etourdir de la vierge bierrière",
+	PlaySoundOnDisarm	= "Joue un sons pour le désarmement",
+	YellOnBarrel	= "Crie quand vous avez un Tonneau sur vous"
+})
+
+L:SetMiscLocalization{
+	YellBarrel		= "Tonneau sur moi !"
+}
