@@ -1378,3 +1378,126 @@ L:SetMiscLocalization({
 	yell1 = "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
 	WavePortal		= "포탈 열린 수: (%d+)/18"
 })
+
+
+---------------------
+-- Trial of the Champion --
+---------------------
+-------------------
+-- The Black Knight --
+-------------------
+L = DBM:GetModLocalization("BlackKnight")
+
+L:SetGeneralLocalization({
+	name = "흑기사"
+})
+
+L:SetWarningLocalization({
+	specWarnDesecration		= "모독! 이동하세요!",
+	warnExplode				= "구울 폭발을 시전합니다. 이동하세요!"
+})
+
+L:SetOptionLocalization({
+	specWarnDesecration		= "모독으로부터 타격을 받을 경우 특수 경보 알리기",
+	warnExplode				= "구울 폭발을 시전할 경우 경고 알리기"
+})
+
+
+-------------------
+-- Grand Champions --
+-------------------
+L = DBM:GetModLocalization("GrandChampions")
+
+L:SetGeneralLocalization({
+	name = "도시 대표 용사"
+})
+
+L:SetWarningLocalization({
+	specWarnHaste		= ">%s< 가속!! 지금 해제!",
+	specWarnPoison		= "독액! 이동하세요!",
+	warnHealingWave		= "주술사가 치유의 물결을 시전합니다. 차단!"
+})
+
+L:SetOptionLocalization({
+	warnHealingWave		= "주술사가 치유의 물결을 시전할 경우 경고 알리기",
+	specWarnHaste		= "마법사가 가속을 얻었을 경우 특수 경고 알리기(해제/훔치기)",
+	specWarnPoison		= "독병에 의해 타격을 받을 경우 특수 경고 알리기"
+})
+
+
+-------------------
+-- Argent Confessor Paletress --
+-------------------
+L = DBM:GetModLocalization("Confessor")
+
+L:SetGeneralLocalization({
+	name = "은빛 고해사제 페일트리스"
+})
+
+L:SetWarningLocalization({
+	specwarnRenew			= "고해사제 소생 시전 : >%s<, 지금 해제!",
+	warnReflectiveShield	= "고해사제가 반사의 보호막을 얻었습니다!"
+})
+
+L:SetOptionLocalization({
+	warnRenew				= "고해사제가 소생을 시전 할 경우 경고 알리기",
+	specwarnRenew			= "고해사제의 소생 대상 특수 경고 알리기(해제/훔치기)",
+	warnReflectiveShield	= "고해사제가 반사의 보호막을 얻었을 경우 경고 알리기"
+})
+
+
+-------------------
+-- Eadric the Pure --
+-------------------
+L = DBM:GetModLocalization("EadricthePure")
+
+L:SetGeneralLocalization({
+	name = "성기사 에드릭"
+})
+
+L:SetWarningLocalization({
+	warnHammerofRighteous		= "에드릭이 정의의 망치를 시전했습니다!",
+	specwarnHammerofJustice		= "심판의 망치 : >%s<. 지금 해제!",
+	specwarnRadiance			= "광휘! 뒤돌아보세요!"
+})
+
+L:SetOptionLocalization({
+	warnHammerofRighteous		= "에드릭이 정의의 망치를 시전할 경우 경고 알리기",
+	specwarnHammerofJustice		= "심판의 망치 특수 경고 보기(해제 관련)",
+	specwarnRadiance			= "광휘의 특수 경고 보기."
+})
+
+
+---------------------
+-- Holiday --
+---------------------
+-------------------
+-- Coren Direbrew --
+-------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "코렌 다이어브루"
+})
+
+L:SetWarningLocalization({
+	warnBarrel	= "맥주통 : >%s<", 
+--	specwarnDaughters		= "Daughter Spawned!",
+	specwarnDisarm			= "무장 해제. Move Away!",
+	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 마셔버리세요!",
+	specWarnBrewStun		= "힌트: 맥주를 들고있네요.흑맥주요정의 맥주가 오기전에 마셔버리면 됩니다!"
+})
+
+L:SetOptionLocalization({
+	warnBarrel				= "맥주통의 대상 알리기",
+--	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
+	specwarnDisarm			= "무장하제의 특수 경고 보기",
+	specWarnBrew			= "흑맥주요정의 맥주 특수 경고 보기",
+	specWarnBrewStun		= "흑맥주요정의 기절 특수 경고 보기",
+	PlaySoundOnDisarm		= "무장 해제의 소리 재생",
+	YellOnBarrel			= "맥주통을 가지게 될 경우 외치기"
+})
+
+L:SetMiscLocalization{
+	YellBarrel		= "저에게 맥주통!"
+}
