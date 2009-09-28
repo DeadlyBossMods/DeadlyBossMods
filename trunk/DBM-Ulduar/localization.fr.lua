@@ -617,15 +617,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull = "Il sera bientôt temps de frapper la tête de la bête ! Concentrez votre rage et votre haine sur ses laquais !",
-	YellPhase2 = "Je suis le rêve éveillé",
-	Sara = "Sara",
-	WhisperBrainLink = "Votre cerveau est lié ! Courez vers %s!",
-	WarningYellSqueeze	= "Ecrasement sur moi ! Aidez-moi !"
+	YellPull 						= "Il sera bientôt temps de frapper la tête de la bête ! Concentrez votre rage et votre haine sur ses laquais !",
+	YellPhase2 						= "Je suis le rêve éveillé",
+	Sara 							= "Sara",
+	WhisperBrainLink 				= "Votre cerveau est lié ! Courez vers %s!",
+	WarningYellSqueeze				= "Ecrasement sur moi ! Aidez-moi !"
 }
 
 L:SetWarningLocalization{
-	WarningWellSpawned = "La bonne Santé mentale vient de spawn",
+	WarningWellSpawned 				= "La bonne Santé mentale vient de spawn",
 	WarningGuardianSpawned 			= "Un gardien vient d'arriver",
 	WarningCrusherTentacleSpawned	= "Une Tentacule écraseur vient d'arriver",
 	WarningP2 						= "Phase 2",
@@ -641,7 +641,7 @@ L:SetWarningLocalization{
 	WarnFavor						= "Ferveur de Sara sur >%s<",
 	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
 	WarnEmpowerSoon					= "Renforcement des ombres Bientôt!",
-	SpecWarnMaladyNear					= "Mal de la raison à côté de vous sur >%s<"
+	SpecWarnMaladyNear				= "Mal de la raison à côté de vous sur >%s<",
 	SpecWarnDeafeningRoar			= "Rugissement assourdissant"
 }
 
@@ -674,7 +674,7 @@ L:SetOptionLocalization{
 	SetIconOnMCTarget				= "met une icône sur la cible du contrôle mental",
 	ShowSaraHealth					= "Montre la vie de Sara durant la P1 ( Doit être sélectionné une fois par un membre du groupe raid )",
 	WarnEmpowerSoon					= "Alerte avant le Renforcement des ombres",
-	SpecWarnMaladyNear				= "Montre une alerte spéciale si une personne à côté de vous est victime du Mal de la raison"
+	SpecWarnMaladyNear				= "Montre une alerte spéciale si une personne à côté de vous est victime du Mal de la raison",
 	SpecWarnDeafeningRoar			= "Montre une alerte spéciale pour le Rugissement assourdissant"
 }
 
