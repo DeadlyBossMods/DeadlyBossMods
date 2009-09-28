@@ -38,17 +38,17 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(47376) then							-- Brew
+	if args:IsSpellID(47376) and args:IsPlayer() then							-- Brew
 		specWarnBrew:Show()
-		timerBrew:Start()
-	elseif args:IsSpellID(47340) then							-- Brew Stun
+		timerBrew:Start(args.destName)
+	elseif args:IsSpellID(47340) and args:IsPlayer() then							-- Brew Stun
 		specWarnBrewStun:Show()
-		timerBrewStun:Start()
+		timerBrewStun:Start(args.destName)
 	elseif args:IsSpellID(47442, 51413) then							-- Barreled!
 		warnBarrel:Show(args.destName)
 		if self.Options.YellOnBarrel and args.destName == UnitName("player") then
 			SendChatMessage(L.YellBarrel, "YELL")
-			timerBarrel:Start()
+			timerBarrel:Start(args.destName)
 		end
 	end
 end
