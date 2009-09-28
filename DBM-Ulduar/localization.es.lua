@@ -24,8 +24,10 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn	= "Persigue a >%s<!",
-	warnNextPursueSoon	= "Cambiara de objetivo en 5 seg"
+	pursueTargetWarn	    = "Persigue a >%s<!",
+	warnNextPursueSoon	    = "Cambiara de objetivo en 5 seg",
+	SpecialPursueWarnYou	= "Te persigue a ti!",
+	SystemOverload			= "Desconexion de sistemas"
 }
 
 L:SetOptionLocalization{
@@ -84,43 +86,43 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{	
 	SpecWarnDevouringFlame		= "Llama devoradora - MUEVETE",
 	warnTurretsReadySoon		= "La torreta estara lista en 20 segundos",
-	warnTurretsReady		= "La torreta esta LISTA",
+	warnTurretsReady		    = "La torreta esta LISTA",
 	SpecWarnDevouringFlameCast	= "Llava devoradora en Ti",
 	WarnDevouringFlameCast		= "Llama devoradora en >%s<" 
 }
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "Siguiente Aliento de Llamas en",
-	timerDeepBreathCast		= "Aliento de Llamas",
+	timerDeepBreathCast		    = "Aliento de Llamas",
 	timerAllTurretsReady		= "Torretas",
-	timerTurret1			= "Torreta 1",
-	timerTurret2			= "Torreta 2",
-	timerTurret3			= "Torreta 3",
-	timerTurret4			= "Torreta 4",
-	timerGroundedTemp		= "sobre el suelo"
+	timerTurret1			    = "Torreta 1",
+	timerTurret2			    = "Torreta 2",
+	timerTurret3			    = "Torreta 3",
+	timerTurret4			    = "Torreta 4",
+	timerGroundedTemp		    = "sobre el suelo"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Mostrar el cd de Aliente de Llamas.",
-	timerDeepBreathCast		= "Mostrar cuadno hara Aliento de Llamas.",
+	timerDeepBreathCast		    = "Mostrar cuadno hara Aliento de Llamas.",
 	SpecWarnDevouringFlame		= "Mostrar aviso especial para Llama devoradora.",
 	PlaySoundOnDevouringFlame	= "Mostrar aviso por sonido si pisas la Llama devoradora.",
 	timerAllTurretsReady		= "Mostrar tiempo para que las torretas esten listas.",
 	warnTurretsReadySoon		= "Mostrar aviso antes de que las torretas esten listas",
-	warnTurretsReady		= "Mostrar aviso si estan listas las torretas.",
+	warnTurretsReady		    = "Mostrar aviso si estan listas las torretas.",
 	SpecWarnDevouringFlameCast	= "Mostrar aviso especial cuando Llama devoradora se lanze a ti.",
-	timerTurret1			= "Mostrar aviso para Torreta 1",
-	timerTurret2			= "Mostrar aviso para Torreta 2",
-	timerTurret3			= "Mostrar aviso para Torreta 3 ( solo en raid 25 ).",
-	timerTurret4			= "Mostrar aviso para Torreta 4 ( solo en raid 25 ).",
+	timerTurret1			    = "Mostrar aviso para Torreta 1",
+	timerTurret2			    = "Mostrar aviso para Torreta 2",
+	timerTurret3			    = "Mostrar aviso para Torreta 3 ( solo en raid 25 ).",
+	timerTurret4			    = "Mostrar aviso para Torreta 4 ( solo en raid 25 ).",
 	OptionDevouringFlame		= "Mostrar aviso a quien lanza la Llama devoradora ( poco fiable )",
-	timerGroundedTemp		= "Mostrar cuanto durara en el suelo."
+	timerGroundedTemp		    = "Mostrar cuanto durara en el suelo."
 }
 
 L:SetMiscLocalization{
-	YellAir				= "Danos un momento para que nos preparemos para construir las torretas.",
-	YellAir2			= "Listos para salir, ¡impedid que esos enanos se peguen a nuestra espalda!!",
-	YellGroundTemp			= "¡Moveros! ¡No seguira mucho mas en el suelo!",
-	EmotePhase2			= "%%s ha aterrizado permanentemente!",
-	FlamecastUnknown		= DBM_CORE_UNKNOWN
+	YellAir				        = "Danos un momento para que nos preparemos para construir las torretas.",
+	YellAir2			        = "Listos para salir, ¡impedid que esos enanos se peguen a nuestra espalda!!",
+	YellGroundTemp			    = "¡Moveros! ¡No seguira mucho mas en el suelo!",
+	EmotePhase2			        = "%%s ha aterrizado permanentemente!",
+	FlamecastUnknown		    = DBM_CORE_UNKNOWN
 }
 
 
@@ -620,6 +622,7 @@ L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Guardian spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle Spawned",
 	WarningP2 						= "Phase 2",
+	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
 	SpecWarnBrainLink 				= "Brain Link on you and %s!",
 	WarningSanity 					= "%d Sanity debuffs remaining",
