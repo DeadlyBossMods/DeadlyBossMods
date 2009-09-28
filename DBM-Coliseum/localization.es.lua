@@ -218,39 +218,41 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
-	name 				= "Anub'arak"
+	name 					= "Anub'arak"
 }
 
 L:SetTimerLocalization{
-	TimerEmerge			= "Emerger en",
-	TimerSubmerge		= "Sumersion en"
+	TimerEmerge				= "Emerger en",
+	TimerSubmerge			= "Sumersion en"
 }
 
 L:SetWarningLocalization{
-	WarnEmerge			= "Anub'arak emergido",
-	WarnEmergeSoon		= "Emerger en 10 seg",
-	WarnSubmerge		= "Anub'arak sumergido",
-	WarnSubmergeSoon	= "Sumersion en 10 seg",
-	WarnPursue			= "Persigue a >%s<",
-	SpecWarnPursue		= "Te persigue a ti!"
+	WarnEmerge				= "Anub'arak emergido",
+	WarnEmergeSoon			= "Emerger en 10 seg",
+	WarnSubmerge			= "Anub'arak sumergido",
+	WarnSubmergeSoon		= "Sumersion en 10 seg",
+	WarnPursue				= "Persigue a >%s<",
+	SpecWarnPursue			= "Te persigue a ti!",
+	SpecWarnShadowStrike	= "Golpe de sombras! Corta ahora!"
 }
 
 L:SetMiscLocalization{
-	YellPull			= "This place will serve as your tomb!",
-	Swarm				= "The swarm shall overtake you!",
-	Emerge				= "emerges from the ground!",
-	Burrow				= "burrows into the ground!"
+	YellPull				= "This place will serve as your tomb!",
+	Swarm					= "The swarm shall overtake you!",
+	Emerge					= "emerges from the ground!",
+	Burrow					= "burrows into the ground!"
 }
 
 L:SetOptionLocalization{
-	WarnEmerge			= "Mostrar aviso para Emerger",
-	WarnEmergeSoon		= "Mostrar pre-aviso para Emerger",
-	WarnSubmerge		= "Mostrar aviso para Sumersion",
-	WarnSubmergeSoon	= "Mostrar pre-aviso para Sumersion",
-	SpecWarnPursue		= "Mostrar aviso especial si te sigue a ti",
-	TimerEmerge			= "Mostrar tiempo para Emerger",
-	TimerSubmerge		= "Mostrar tiempo para Sumerger",
-	PlaySoundOnPursue	= "Reproducir sonidos si te persigue",
-	PursueIcon			= "Poner icono en jugador",
-	WarnPursue			= "Avisar jugador perseguido"
+	WarnEmerge				= "Mostrar aviso para Emerger",
+	WarnEmergeSoon			= "Mostrar pre-aviso para Emerger",
+	WarnSubmerge			= "Mostrar aviso para Sumersion",
+	WarnSubmergeSoon		= "Mostrar pre-aviso para Sumersion",
+	SpecWarnPursue			= "Mostrar aviso especial si te sigue a ti",
+	TimerEmerge				= "Mostrar tiempo para Emerger",
+	TimerSubmerge			= "Mostrar tiempo para Sumerger",
+	PlaySoundOnPursue		= "Reproducir sonidos si te persigue",
+	PursueIcon				= "Poner icono en jugador",
+	WarnPursue				= "Avisar jugador perseguido",
+	SpecWarnShadowStrike	= "Mostrar aviso especial para Golpe de sombras ( para cortar )"
 }
