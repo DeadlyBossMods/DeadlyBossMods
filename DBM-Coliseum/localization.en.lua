@@ -82,11 +82,11 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame				= "Legion Flame on >%s<",
 	WarnTouch				= "Touch of Jaraxxus on >%s<",
-	WarnNetherPower			= "Nether Power on Jaraxxus! Dispel Now!",
+	WarnNetherPower			= "Nether Power on Jaraxxus! Dispel now!",
 	WarnPortalSoon			= "Nether Portal Soon!",
 	WarnVolcanoSoon			= "Infernal Volcano Soon!",
-	SpecWarnFlesh			= "Incinerate Flesh on YOU!",
-	SpecWarnTouch			= "Touch of Jaraxxus on YOU!",
+	SpecWarnFlesh			= "Incinerate Flesh on you!",
+	SpecWarnTouch			= "Touch of Jaraxxus on you!",
 	SpecWarnKiss			= "Mistress' Kiss",
 	SpecWarnTouchNear		= "Touch of Jaraxxus on >%s< near you",
 	SpecWarnFlame			= "Legion Flame! Run!",
@@ -100,18 +100,18 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnFlame				= "Warns for Legion Flame",
+	WarnFlame				= "Show warning for Legion Flame",
 	WarnTouch				= "Show warning for Touch of Jaraxxus",
-	WarnNetherPower			= "Warn when Jaraxxus gains Nether Power (for dispel/steal)",
-	WarnPortalSoon			= "Prewarn Nether Portal spawning",
-	WarnVolcanoSoon			= "Prewarn Infernal Volcano spawning",
-	SpecWarnFlame			= "Special warning when you have Legion Flame",
-	SpecWarnFlesh			= "Special warning when you have Incinerate Flesh",
-	SpecWarnTouch			= "Special warning for Touch of Jaraxxus on you",
-	SpecWarnTouchNear		= "Special warning for Touch of Jaraxxus near you",
-	SpecWarnKiss			= "Special warning for Mistress' Kiss on you",
-	SpecWarnNetherPower		= "Special warning for Nether Power (to dispel Jaraxxus)",
-	SpecWarnFelInferno		= "Special warning when you are to near to an Fel Inferno",
+	WarnNetherPower			= "Show warning when Jaraxxus gains Nether Power (for dispel/steal)",
+	WarnPortalSoon			= "Show pre-warning for Nether Portal spawn",
+	WarnVolcanoSoon			= "Show pre-warning for Infernal Volcano spawn",
+	SpecWarnFlame			= "Show special warning when you have Legion Flame",
+	SpecWarnFlesh			= "Show special warning when you have Incinerate Flesh",
+	SpecWarnTouch			= "Show special warning for Touch of Jaraxxus on you",
+	SpecWarnTouchNear		= "Show special warning for Touch of Jaraxxus near you",
+	SpecWarnKiss			= "Show special warning for Mistress' Kiss on you",
+	SpecWarnNetherPower		= "Show special warning for Nether Power (to dispel Jaraxxus)",
+	SpecWarnFelInferno		= "Show special warning when you are to near to an Fel Inferno",
 	TouchJaraxxusIcon		= "Set Icon on Touch of Jaraxxus target (cross)",
 	IncinerateFleshIcon		= "Set Icon on Incinerate Flesh target (skull)",
 	LegionFlameIcon			= "Set Icon on Legion Flame target (square)",
@@ -157,9 +157,9 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	SpecWarnHellfire		= "Special Warning when you take damage from Hellfire",
-	SpecWarnHandofProt		= "Special Warning when the Paladin casts Hand of Protection",
-	SpecWarnDivineShield	= "Special Warning when the Paladin casts Divine Shield"
+	SpecWarnHellfire		= "Show special warning when you take damage from Hellfire",
+	SpecWarnHandofProt		= "Show special warning when the Paladin casts Hand of Protection",
+	SpecWarnDivineShield	= "Show special warning when the Paladin casts Divine Shield"
 }
 
 ------------------
@@ -195,7 +195,7 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	TimerSpecialSpell			= "Show a timer for the next special ability",
-	WarnSpecialSpellSoon		= "Prewarning for the next Special Ability",
+	WarnSpecialSpellSoon		= "Show pre-warning for the next Special Ability",
 	SpecWarnSpecial				= "Show a special warning when you have to change color",
 	SpecWarnEmpoweredDarkness	= "Show special warning for Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Show special warning for Empowered Light",
@@ -230,7 +230,8 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "Submerge in 10 sec",
 	WarnPursue				= "Pursuing >%s<",
 	SpecWarnPursue			= "Pursuing you!",
-	SpecWarnShadowStrike	= "Shadow Strike! Kick now!"
+	SpecWarnShadowStrike	= "Shadow Strike! Kick now!",
+	SpecWarnPCold			= "Penetrating Cold"
 }
 
 L:SetMiscLocalization{
@@ -251,5 +252,6 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "Play sound when you are being followed",
 	PursueIcon				= "Set icon on pursued player",
 	WarnPursue				= "Announce pursued player",
-	SpecWarnShadowStrike	= "Show Special Warning for Shadow Strike (to kick)"
+	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to kick)",
+	SpecWarnPCold			= "Show special warning for Penetrating Cold"
 }
