@@ -20,15 +20,12 @@ local warnHealingWave	= mod:NewAnnounce("warnHealingWave")
 local warnPolymorph		= mod:NewTargetAnnounce(66043)
 local warnHexOfMending		= mod:NewTargetAnnounce(67534)
 local warnHaste		= mod:NewTargetAnnounce(66045)
-local warnPoison		= mod:NewSpecialWarning("warnPoison")
 local specWarnPoison		= mod:NewSpecialWarning("specWarnPoison")
 local specWarnHaste	= mod:NewSpecialWarning("specWarnHaste", isDispeller)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68318, 67528) then							-- Healing Wave
 		warnHealingWave:Show(args.spellName)
-	elseif args:IsSpellID(67701) then							-- Poison Bottle being thrown.
-		warnPoisen:Show(args.spellName)
 	end
 end
 
