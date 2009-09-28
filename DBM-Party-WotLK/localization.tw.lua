@@ -1380,3 +1380,126 @@ L:SetMiscLocalization({
 	yell1 = "監獄守衛，我們要離開了!這些冒險者會接手!動作快!",
 	WavePortal		= "傳送門開啟:(%d+)/18"
 })
+
+
+---------------------
+-- Trial of the Champion --
+---------------------
+-------------------
+-- The Black Knight --
+-------------------
+L = DBM:GetModLocalization("BlackKnight")
+
+L:SetGeneralLocalization({
+	name = "黑騎士"
+})
+
+L:SetWarningLocalization({
+	specWarnDesecration		= "褻瀆! 跑開!",
+	warnExplode		= "食屍鬼爪牙正在施放自爆. 跑開!"
+})
+
+L:SetOptionLocalization({
+	specWarnDesecration		= "當你受到褻瀆的傷害時顯示特別警告",
+	warnExplode		= "食屍鬼爪牙施放自爆時警告"
+})
+
+
+-------------------
+-- Grand Champions --
+-------------------
+L = DBM:GetModLocalization("GrandChampions")
+
+L:SetGeneralLocalization({
+	name = "大勇士"
+})
+
+L:SetWarningLocalization({
+	specWarnHaste		= "加速在>%s<身上! 現在驅散!",
+	specWarnPoison		= "毒藥! 跑開!",
+	warnHealingWave		= "薩滿正在施放治療波. 打斷!"
+})
+
+L:SetOptionLocalization({
+	warnHealingWave		= "當薩滿施放治療波時警告",
+	specWarnHaste		= "當法師獲得加速時特別警告 (驅散/偷竊用)",
+	specWarnPoison		= "當你受到毒藥的傷害時顯示特別警告"
+})
+
+
+-------------------
+-- Argent Confessor Paletress --
+-------------------
+L = DBM:GetModLocalization("Confessor")
+
+L:SetGeneralLocalization({
+	name = "銀白告解者帕爾璀絲"
+})
+
+L:SetWarningLocalization({
+	specwarnRenew		= "告解者施放恢復在>%s< 現在驅散!",
+	warnReflectiveShield		= "告解者獲得了反射護盾"
+})
+
+L:SetOptionLocalization({
+	warnRenew		= "當告解者施放恢復時警告",
+	specwarnRenew		= "為恢復的目標顯示特別警告 (驅散/偷竊用)",
+	warnReflectiveShield		= "當告解者獲得反射護盾時警告"
+})
+
+
+-------------------
+-- Eadric the Pure --
+-------------------
+L = DBM:GetModLocalization("EadricthePure")
+
+L:SetGeneralLocalization({
+	name = "『純淨者』埃卓克"
+})
+
+L:SetWarningLocalization({
+	warnHammerofRighteous		= "埃卓克正在施放公正力量之錘!",
+	specwarnHammerofJustice		= "制裁之錘: >%s<. 驅散!",
+	specwarnRadiance		= "烈光! 背對王!"
+})
+
+L:SetOptionLocalization({
+	warnHammerofRighteous		= "當埃卓克正在施放公正力量之錘時警告",
+	specwarnHammerofJustice		= "為制裁之錘顯示特別警告 (驅散用)",
+	specwarnRadiance		= "為烈光顯示特別警告"
+})
+
+
+---------------------
+-- Holiday --
+---------------------
+-------------------
+-- Coren Direbrew --
+-------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "寇仁·恐酒"
+})
+
+L:SetWarningLocalization({
+	warnBarrel	= "空桶(暈): >%s<", 
+--	specwarnDaughters		= "女兒出現了!",
+	specwarnDisarm		= "繳械. 跑開!",
+	specWarnBrew		= "在他再丟你一個前喝掉酒!",
+	specWarnBrewStun		= "提示:你瘋狂了,記得下一次喝啤酒!"
+})
+
+L:SetOptionLocalization({
+	warnBarrel		= "提示空桶(暈)的目標",
+--	specwarnDaughters		= "提示厄蘇拉/伊爾莎的出現",
+	specwarnDisarm		= "為繳械顯示特別警告",
+	specWarnBrew		= "為黑鐵啤酒辣妹的啤酒顯示特別警告",
+	specWarnBrewStun		= "為黑鐵啤酒辣妹的暈顯示特別警告",
+	PlaySoundOnDisarm	= "當繳械時播放音效",
+	YellOnBarrel	= "當你中了空桶(暈)時大叫"
+})
+
+L:SetMiscLocalization{
+	YellBarrel		= "我中了空桶(暈)!"
+}
