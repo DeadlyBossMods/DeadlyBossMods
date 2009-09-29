@@ -9,10 +9,15 @@ mod:RegisterCombat("combat")
 
 local warningNova	= mod:NewAnnounce("WarningNova", 3, 52960)
 local timerNovaCD	= mod:NewTimer(30, "TimerNovaCD", 52960)
+local timerAchieve			= mod:NewAchievementTimer(120, 1867, "TimerSpeedKill") 
 
 mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
+
+function mod:OnCombatStart(delay)
+   timerAchieve:Start(-delay)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 52960 or args.spellId == 59835 then

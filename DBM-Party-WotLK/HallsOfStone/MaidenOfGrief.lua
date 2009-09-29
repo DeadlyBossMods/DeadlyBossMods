@@ -20,6 +20,11 @@ local timerWoe		= mod:NewTimer(10, "TimerWoe", 50761)
 local timerSorrow	= mod:NewTimer(6, "TimerSorrow", 50760)
 local timerStormCD	= mod:NewTimer(20, "TimerStormCD", 50752)
 local timerSorrowCD	= mod:NewTimer(30, "TimerSorrowCD", 50760)
+local timerAchieve			= mod:NewAchievementTimer(60, 1866, "TimerSpeedKill") 
+
+function mod:OnCombatStart(delay)
+   timerAchieve:Start(-delay)
+end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 50760 or args.spellId == 59726 then
