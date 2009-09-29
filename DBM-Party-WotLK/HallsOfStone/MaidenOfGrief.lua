@@ -23,7 +23,9 @@ local timerSorrowCD	= mod:NewTimer(30, "TimerSorrowCD", 50760)
 local timerAchieve			= mod:NewAchievementTimer(60, 1866, "TimerSpeedKill") 
 
 function mod:OnCombatStart(delay)
-   timerAchieve:Start(-delay)
+	if mod:IsDifficulty("heroic5") then
+		timerAchieve:Start(-delay)
+	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)

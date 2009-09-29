@@ -15,7 +15,9 @@ local warningPound		= mod:NewAnnounce("WarningPound", 3, 53472)
 local timerAchieve			= mod:NewAchievementTimer(240, 1860, "TimerSpeedKill") 
 
 function mod:OnCombatStart(delay)
-   timerAchieve:Start(-delay)
+	if mod:IsDifficulty("heroic5") then
+		timerAchieve:Start(-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
