@@ -1,0 +1,96 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+	<Frame name="DBTBarTemplate" virtual="true" frameStrata="MEDIUM" topLevel="true">
+		<Size>
+			<AbsDimension x="195" y="20"/>
+		</Size>
+		<Frames>
+			<StatusBar name="$parentBar">
+				<Size>
+					<AbsDimension x="195" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER" relativePoint="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Layers>
+					<Layer level="BACKGROUND">
+						<Texture name="$parentBackground">
+							<Color r="0" g="0" b="0" a="0.3"/>
+						</Texture>
+					</Layer>
+					<Layer level="OVERLAY">
+						<Texture name="$parentSpark" file="Interface\AddOns\DBM-Core\textures\Spark.blp" alphaMode="ADD">
+							<Size>
+								<AbsDimension x="32" y="64"/>
+							</Size>
+							<Anchors>
+								<Anchor point="CENTER">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+						<FontString name="$parentName" inherits="GameFontHighlightSmall" text="">
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="LEFT">
+									<Offset>
+										<AbsDimension x="7" y="0.5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<FontString name="$parentTimer" inherits="GameFontHighlightSmall" text="">
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="-1" y="0.5"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</FontString>
+						<Texture name="$parentIcon1">
+							<Size>
+								<AbsDimension x="20" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="RIGHT" relativePoint="LEFT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+						<Texture name="$parentIcon2">
+							<Size>
+								<AbsDimension x="20" y="20"/>
+							</Size>
+							<Anchors>
+								<Anchor point="LEFT" relativePoint="RIGHT">
+									<Offset>
+										<AbsDimension x="0" y="0"/>
+									</Offset>
+								</Anchor>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<BarTexture name="$parentTexture" file="Interface\AddOns\DBM-Core\textures\default.tga"/>
+				<BarColor r="1.0" g="0.7" b="0.0"/>
+				<Scripts>
+					<OnLoad function="DBT_Bar_OnLoad"/>
+				</Scripts>
+			</StatusBar>
+		</Frames>
+		<Scripts>
+			<OnUpdate function="DBT_Bar_OnUpdate"/>
+			<OnMouseDown function="DBT_Bar_OnMouseDown"/>
+			<OnMouseUp function="DBT_Bar_OnMouseUp"/>
+			<OnHide function="DBT_Bar_OnHide"/>
+		</Scripts>
+	</Frame>
+</Ui>	
