@@ -12,11 +12,16 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-mod:AddBoolOption("PlaySoundOnDisarm", true, "announce")
+local isMelee = select(2, UnitClass("player")) == "ROGUE"
+	     or select(2, UnitClass("player")) == "WARRIOR"
+	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
+
+mod:AddBoolOption("PlaySoundOnDisarm", isMelee)
 
 local warnBarrel				= mod:NewAnnounce("warnBarrel")
 local timerBarrel				= mod:NewTargetTimer(8, 51413)
-local specWarnDisarm			= mod:NewSpecialWarning("specwarnDisarm")
+local specWarnDisarm			= mod:NewSpecialWarning("specwarnDisarm", nil, false)
+mod:AddBoolOption("DisarmWarning", isMelee, "announce")
 local specWarnBrew				= mod:NewSpecialWarning("specWarnBrew")
 local timerBrew					= mod:NewTargetTimer(10, 47376)
 local specWarnBrewStun			= mod:NewSpecialWarning("specWarnBrewStun")
@@ -26,7 +31,9 @@ mod:AddBoolOption("YellOnBarrel", true, "announce")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(47310) then
-		specWarnDisarm:Show()
+		if self.Options.DisarmWarning then
+			specWarnDisarm:Show()
+		end
 		if self.Options.PlaySoundOnDisarm then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
