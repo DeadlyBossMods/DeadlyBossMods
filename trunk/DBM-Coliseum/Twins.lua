@@ -91,11 +91,15 @@ function mod:SpecialAbility(debuff)
 	warnSpecial:Schedule(40)
 end
 
+function mod:resetDebuff()
+	debuffIcon = 8
+end
 
 function mod:warnDebuff()
 	warnTouchDebuff:Show(table.concat(debuffTargets, "<, >"))
 	table.wipe(debuffTargets)
-	debuffIcon = 8
+	self:UnscheduleMethod("resetDebuff")
+	self:ScheduleMethod(5, "resetDebuff")
 end
 
 local function showPowerWarning(self, cid)
@@ -170,7 +174,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		self:ScheduleMethod(0.5, "warnDebuff")
+		self:ScheduleMethod(0.75, "warnDebuff")
 	elseif args:IsSpellID(66001, 67281, 67282, 67283) then	-- Touch of Darkness
 		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
 			specWarnSpecial:Show()
@@ -182,7 +186,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		self:ScheduleMethod(0.5, "warnDebuff")
+		self:ScheduleMethod(0.75, "warnDebuff")
 	elseif args:IsSpellID(67246, 65879, 65916, 67244) or args:IsSpellID(67245, 67248, 67249, 67250) then	-- Power of the Twins 
 		self:Schedule(0.1, showPowerWarning, self, args:GetDestCreatureID())
 	elseif args:IsSpellID(65874, 67256, 67257, 67258) or args:IsSpellID(65858, 67259, 67260, 67261) then  -- Shield of Darkness/Lights
