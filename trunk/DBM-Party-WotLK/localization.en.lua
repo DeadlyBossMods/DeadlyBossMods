@@ -625,7 +625,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Kronus")
 
 L:SetGeneralLocalization({
-	name = "Kronus"
+	name = "Loken"
 })
 
 L:SetWarningLocalization({
@@ -637,8 +637,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningNova	= optionWarning:format(GetSpellInfo(53960)),
-	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(53960))
+	WarningNova	= optionWarning:format(GetSpellInfo(52960)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(52960))
 })
 
 
@@ -1399,7 +1399,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "Special Warning when you take damage from Desecration",
-	warnExplode		= "Warn when Ghoul Minion casts Explode on self."
+	warnExplode		= "Warn when Ghoul Minion casts Explode on self.",
+	SetIconOnMarkedTarget	= "Set icon on Marked For Death target"
 })
 
 
@@ -1464,7 +1465,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnHammerofRighteous		= "Warn when Eadric casts Hammer of Righteous",
 	specwarnHammerofJustice		= "Show Special Warning for Hammer of Justice (for dispel)",
-	specwarnRadiance		= "Show Special warning for Radiance."
+	specwarnRadiance		= "Show Special warning for Radiance.",
+	SetIconOnHammerTarget	= "Set icon on Hammer of Justice target"
 })
 
 

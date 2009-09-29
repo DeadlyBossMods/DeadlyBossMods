@@ -12,6 +12,11 @@ mod:RegisterEvents(
 )
 
 local warningInsanity	= mod:NewAnnounce("WarningInsanity", 3, 57496)
+local timerAchieve			= mod:NewAchievementTimer(120, 1862, "TimerSpeedKill") 
+
+function mod:OnCombatStart(delay)
+   timerAchieve:Start(-delay)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 57496 then

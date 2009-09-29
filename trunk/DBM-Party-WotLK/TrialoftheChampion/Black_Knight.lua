@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("BlackKnight", "DBM-Party-WotLK", 13)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 559 $"):sub(12, -3))
+mod:SetRevision(("$Revision: 1663 $"):sub(12, -3))
 mod:SetCreatureID(35451)
 --mod:SetZone()
 
@@ -19,6 +19,8 @@ local warnMarked	= mod:NewTargetAnnounce(67823)
 local timerMarked			= mod:NewTargetTimer(10, 67823)
 local specWarnDesecration		= mod:NewSpecialWarning("specWarnDesecration")
 
+mod:AddBoolOption("SetIconOnMarkedTarget", false)
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(67729, 67886) then							-- Explode (elite explodes self, not BK. Phase 2)
 		warnExplode:Show(args.spellName)
@@ -33,6 +35,9 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(67823, 67882) then							-- Marked For Death
+		if self.Options.SetIconOnMarkedTarget then
+			self:SetIcon(args.destName, 8, 10)
+		end
 		warnMarked:Show(args.destName)
 		timerMarked:Show(args.destName)
 	elseif args:IsSpellID(67751) then							-- Ghoul Explode (BK exlodes Army of the dead. Phase 3)
