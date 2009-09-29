@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(47442, 51413) then								-- Barreled!
 		warnBarrel:Show(args.destName)
 		timerBarrel:Start(args.destName)
-		if self.Options.YellOnBarrel and not args:IsPlayer() then
+		if self.Options.YellOnBarrel and args:IsPlayer() then
 			SendChatMessage(L.YellBarrel, "YELL")
 		end
 	end
