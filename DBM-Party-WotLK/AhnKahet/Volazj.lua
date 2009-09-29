@@ -15,7 +15,9 @@ local warningInsanity	= mod:NewAnnounce("WarningInsanity", 3, 57496)
 local timerAchieve			= mod:NewAchievementTimer(120, 1862, "TimerSpeedKill") 
 
 function mod:OnCombatStart(delay)
-   timerAchieve:Start(-delay)
+	if mod:IsDifficulty("heroic5") then
+		timerAchieve:Start(-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
