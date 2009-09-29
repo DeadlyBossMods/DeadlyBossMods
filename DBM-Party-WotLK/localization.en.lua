@@ -1430,7 +1430,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
-}
+})
 
 -------------------
 -- Argent Confessor Paletress --
@@ -1453,7 +1453,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 --	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
-}
+})
 
 -------------------
 -- Eadric the Pure --
