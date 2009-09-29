@@ -1394,15 +1394,18 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnDesecration		= "Desecration! Move Away!",
-	warnExplode		= "Ghoul Minion is casting Explode. Move away!"
+	warnExplode				= "Ghoul Minion is casting Explode. Move away!"
 })
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "Special Warning when you take damage from Desecration",
-	warnExplode		= "Warn when Ghoul Minion casts Explode on self.",
+	warnExplode				= "Warn when Ghoul Minion casts Explode on self.",
 	SetIconOnMarkedTarget	= "Set icon on Marked For Death target"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+})
 
 -------------------
 -- Grand Champions --
@@ -1414,17 +1417,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste		= "Haste on >%s<! Dispel Now!",
-	specWarnPoison		= "Poison! Move Away!",
-	warnHealingWave		= "Shamen casting Healing Wave. Interupt!"
+	specWarnHaste			= "Haste on >%s<! Dispel Now!",
+	specWarnPoison			= "Poison! Move Away!",
+	warnHealingWave			= "Shamen casting Healing Wave. Interupt!"
 })
 
 L:SetOptionLocalization({
-	warnHealingWave		= "Warn when Shamen casts Healing Wave.",
-	specWarnHaste		= "Special Warning when Mage gains Haste (for dispel/steal)",
-	specWarnPoison		= "Special Warning when you take damage from poison Bottle"
+	warnHealingWave			= "Warn when Shamen casts Healing Wave.",
+	specWarnHaste			= "Special Warning when Mage gains Haste (for dispel/steal)",
+	specWarnPoison			= "Special Warning when you take damage from poison Bottle"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+}
 
 -------------------
 -- Argent Confessor Paletress --
@@ -1436,16 +1442,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew		= "Confessor cast renew on >%s< Dispel Now!",
+	specwarnRenew				= "Confessor cast renew on >%s< Dispel Now!",
 	warnReflectiveShield		= "Confessor has gained Reflective Shield"
 })
 
 L:SetOptionLocalization({
-	warnRenew		= "Warn when Confessor Casts Renew",
-	specwarnRenew		= "Special Warning for Renew target (for dispel/steal)",
+	specwarnRenew				= "Special Warning for Renew target (for dispel/steal)",
 	warnReflectiveShield		= "Warn when Confessor gains Reflective Shield"
 })
 
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+}
 
 -------------------
 -- Eadric the Pure --
@@ -1459,16 +1467,19 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnHammerofRighteous		= "Eadric casting Hammer of Righteous!",
 	specwarnHammerofJustice		= "Hammer of Justice on >%s<. Dispel now!",
-	specwarnRadiance		= "Radiance. Look Away!"
+	specwarnRadiance			= "Radiance. Look Away!"
 })
 
 L:SetOptionLocalization({
 	warnHammerofRighteous		= "Warn when Eadric casts Hammer of Righteous",
 	specwarnHammerofJustice		= "Show Special Warning for Hammer of Justice (for dispel)",
-	specwarnRadiance		= "Show Special warning for Radiance.",
-	SetIconOnHammerTarget	= "Set icon on Hammer of Justice target"
+	specwarnRadiance			= "Show Special warning for Radiance.",
+	SetIconOnHammerTarget		= "Set icon on Hammer of Justice target"
 })
 
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
 
 ---------------------
 -- Holiday --
@@ -1483,23 +1494,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel	= "Barrel on >%s<", 
+	warnBarrel				= "Barrel on >%s<", 
 --	specwarnDaughters		= "Daughter Spawned!",
-	specwarnDisarm		= "Disarm. Move Away!",
-	specWarnBrew		= "Get rid of the brew before she tosses you another one!",
+	specwarnDisarm			= "Disarm. Move Away!",
+	specWarnBrew			= "Get rid of the brew before she tosses you another one!",
 	specWarnBrewStun		= "HINT: You were bonked, remember to drink the brew next time!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel		= "Announce the Target of Barrel.",
+	warnBarrel				= "Announce the Target of Barrel.",
 --	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
-	specwarnDisarm		= "Show Special Warning for Disarm",
-	specWarnBrew		= "Show Special Warning for Dark Brewmaiden's Brew",
+	specwarnDisarm			= "Show Special Warning for Disarm",
+	specWarnBrew			= "Show Special Warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun		= "Show Special Warning for Dark Brewmaiden's Stun",
-	PlaySoundOnDisarm	= "Play sound on Disarm",
-	YellOnBarrel	= "Yell when you have Barrel"
+	PlaySoundOnDisarm		= "Play sound on Disarm",
+	YellOnBarrel			= "Yell when you have Barrel"
 })
 
 L:SetMiscLocalization{
-	YellBarrel		= "Barrel on me!"
+	YellBarrel				= "Barrel on me!"
 }
+
+
