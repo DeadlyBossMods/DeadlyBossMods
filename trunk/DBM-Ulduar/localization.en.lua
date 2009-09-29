@@ -592,7 +592,6 @@ L:SetOptionLocalization{
 	CrashWhisper					= "Send whisper to Shadow Crash target",
 	YellOnLifeLeech					= "Yell on Life Leech",
 	YellOnShadowCrash				= "Yell on Shadow Crash",
-	specWarnShadowCrashNear			= "Show special warning for Shadow Crash near you",
 	WarningLeechLife				= "Announce Life Leech target",
 	hardmodeSpawn					= "Show timer for Saronite Animus spawn (Hard Mode)"
 }
