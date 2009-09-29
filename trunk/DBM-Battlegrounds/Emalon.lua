@@ -18,7 +18,7 @@ mod:AddBoolOption("NovaSound")
 
 local timerNova			= mod:NewCastTimer(64216)
 local timerOvercharge		= mod:NewNextTimer(45, 64218)
-local timerMobOvercharge	= mod:NewTimer(24, "timerMobOvercharge", 64217)
+local timerMobOvercharge	= mod:NewTimer(20, "timerMobOvercharge", 64217)
 
 local specWarnNova		= mod:NewSpecialWarning("specWarnNova")
 local warnNova			= mod:NewAnnounce("warnNova", 3)
@@ -79,7 +79,7 @@ function mod:SPELL_HEAL(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 64217 then	-- 1 of 12 stacks (+1 each 2 seconds)
+	if args.spellId == 64217 then	-- 1 of 10 stacks (+1 each 2 seconds)
 		timerMobOvercharge:Start()
 	end
 end
