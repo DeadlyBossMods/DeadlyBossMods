@@ -16,7 +16,9 @@ mod:RegisterEvents(
 )
 
 function mod:OnCombatStart(delay)
-   timerAchieve:Start(-delay)
+	if mod:IsDifficulty("heroic5") then
+		timerAchieve:Start(-delay)
+	end
 end
 
 function mod:SPELL_CAST_START(args)
