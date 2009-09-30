@@ -1401,7 +1401,12 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "當你受到褻瀆的傷害時顯示特別警告",
-	warnExplode		= "食屍鬼爪牙施放自爆時警告"
+	warnExplode		= "食屍鬼爪牙施放自爆時警告",
+	SetIconOnMarkedTarget	= "為死亡標記的目標設置標記"
+})
+
+L:SetMiscLocalization({
+	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
 })
 
 
@@ -1426,6 +1431,10 @@ L:SetOptionLocalization({
 	specWarnPoison		= "當你受到毒藥的傷害時顯示特別警告"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
+
 
 -------------------
 -- Argent Confessor Paletress --
@@ -1442,9 +1451,12 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnRenew		= "當告解者施放恢復時警告",
 	specwarnRenew		= "為恢復的目標顯示特別警告 (驅散/偷竊用)",
 	warnReflectiveShield		= "當告解者獲得反射護盾時警告"
+})
+
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
 })
 
 
@@ -1466,9 +1478,13 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnHammerofRighteous		= "當埃卓克正在施放公正力量之錘時警告",
 	specwarnHammerofJustice		= "為制裁之錘顯示特別警告 (驅散用)",
-	specwarnRadiance		= "為烈光顯示特別警告"
+	specwarnRadiance		= "為烈光顯示特別警告",
+	SetIconOnHammerTarget		= "為制裁之錘的目標設置標記"
 })
 
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
 
 ---------------------
 -- Holiday --
@@ -1483,7 +1499,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel	= "空桶(暈): >%s<", 
+	warnBarrel		= "空桶(暈): >%s<", 
 --	specwarnDaughters		= "女兒出現了!",
 	specwarnDisarm		= "繳械. 跑開!",
 	specWarnBrew		= "在他再丟你一個前喝掉酒!",
@@ -1497,7 +1513,7 @@ L:SetOptionLocalization({
 	specWarnBrew		= "為黑鐵啤酒辣妹的啤酒顯示特別警告",
 	specWarnBrewStun		= "為黑鐵啤酒辣妹的暈顯示特別警告",
 	PlaySoundOnDisarm	= "當繳械時播放音效",
-	YellOnBarrel	= "當你中了空桶(暈)時大叫"
+	YellOnBarrel		= "當你中了空桶(暈)時大叫"
 })
 
 L:SetMiscLocalization{
