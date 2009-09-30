@@ -639,8 +639,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningNova	= optionWarning:format(GetSpellInfo(53960)),
-	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(53960))
+	WarningNova	= optionWarning:format(GetSpellInfo(52960)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(52960))
 })
 
 
@@ -1392,9 +1392,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "Montre une alerte spéciale quand vous prenez des dégats venant de la Violation",
-	warnExplode		= "Alerte quand une Séide goule incante explosion sur elle même"
+	warnExplode		= "Alerte quand une Séide goule incante explosion sur elle même",
+	SetIconOnMarkedTarget	= "Met une icone sur la cible de la mort"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+})
 
 -------------------
 -- Grand Champions --
@@ -1417,6 +1421,9 @@ L:SetOptionLocalization({
 	specWarnPoison		= "Montre une alerte spéciale quand vous subissez des dégats provenant de la Bouteille de poison"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
 
 -------------------
 -- Argent Confessor Paletress --
@@ -1433,11 +1440,13 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnRenew		= "Alerte quand le Confesseur incante une rénovation",
 	specwarnRenew		= "Montre une alerte spéciale pour la cible de la rénovation (Pour Dispell/Voler)",
 	warnReflectiveShield		= "Alerte quand le Confesseur gagne le Bouclier réflecteur"
 })
 
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
 
 -------------------
 -- Eadric the Pure --
@@ -1457,9 +1466,13 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnHammerofRighteous		= "Alerte quand Eadric incante Marteau du vertueux",
 	specwarnHammerofJustice		= "Montre une alerte spéciale pour le Marteau de la justice (Pour Dispel)",
-	specwarnRadiance		= "Montre une alerte spéciale pour Radiance."
+	specwarnRadiance		= "Montre une alerte spéciale pour Radiance.",
+	SetIconOnHammerTarget		= "Met une icone sur la cible du Marteau du vertueux"
 })
 
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
 
 ---------------------
 -- Holiday --
@@ -1484,7 +1497,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnBarrel		= "Annonce la cible du Tonneau.",
 --	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
-	specwarnDisarm		= "Montre une alerte spéciale pour le désarmement",
+	DisarmWarning		= "Montre une alerte spéciale pour le désarmement",
 	specWarnBrew		= "Montre une alerte spéciale pour la Sombrebière de la vierge",
 	specWarnBrewStun		= "Montre une alerte spéciale pour l'Etourdir de la vierge bierrière",
 	PlaySoundOnDisarm	= "Joue un sons pour le désarmement",

@@ -26,7 +26,8 @@ L:SetOptionLocalization{
 	TimerBreath		= "Montre le timer pour la Respiration profonde",
 	TimerWhelps		= "Montre le timer pour l'arrivée des Jeunes dragonnets onyxien",
 	WarnWhelpsSoon	= "Montre une pré-alerte avant l'arrivée des Jeunes dragonnets onyxien",
-	SoundBreath		= "Joue un son pour la Respiration profonde"
+	SoundBreath		= "Joue un son pour la Respiration profonde",
+	SoundWTF		= "Joue des sons amusant du légendaire raid classic d'Onyxia"
 }
 
 L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
