@@ -24,8 +24,10 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn	= "Poursuit >%s<!",
-	warnNextPursueSoon	= "Changement de cible dans 5 Sec"
+	PursueWarn				= "Poursuit >%s<!",
+	warnNextPursueSoon		= "Changement de cible dans 5 Sec",
+	SpecialPursueWarnYou	= "Vous êtes poursuivit!",
+	SystemOverload			= "Extinction des systèmes !"
 }
 
 L:SetOptionLocalization{
@@ -96,7 +98,7 @@ L:SetTimerLocalization{
 	timerTurret2			= "Tourelle 2",
 	timerTurret3			= "Tourelle 3",
 	timerTurret4			= "Tourelle 4",
-	timerGroundedTemp		= "sur le sol"
+	timerGroundedTemp		= "Sur le sol"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Afficher un timer pour le prochain Souffle de flammes",
@@ -120,6 +122,7 @@ L:SetMiscLocalization{
 	YellAir2			= "Incendie éteint ! Reconstruisons les tourelles !",
 	YellGroundTemp		= "Faites vite ! Elle va pas rester au sol très longtemps !",
 	EmotePhase2			= "%%s bloquée au sol !",
+	FlamecastUnknown			= DBM_CORE_UNKNOWN
 }
 
 
@@ -133,17 +136,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerTympanicTantrumCast	= "Lancement de Colère assourdissante",
-	timerTympanicTantrum		= "Colère assourdissante",
-	timerLightBomb			= "Bombe de lumière: %s",
-	timerGravityBomb		= "Bombe à gravité: %s",
 }
 
 L:SetWarningLocalization{
 	SpecialWarningLightBomb 	= "Bombe de lumière sur TOI",
 	WarningLightBomb			= "Bombe de lumière sur >%s<",
 	SpecialWarningGravityBomb	= "Bombe à gravité sur TOI",
-	WarningGravityBomb			= "Bombe à gravité sur >%s<",
+	WarningGravityBomb			= "Bombe à gravité sur >%s<"
 }
 
 L:SetOptionLocalization{
@@ -154,7 +153,7 @@ L:SetOptionLocalization{
 	PlaySoundOnGravityBomb		= "Jouer un son quand la bombe à gravité est sur vous",
 	PlaySoundOnTympanicTantrum	= "Jouer un son au lancement de la colère assourdissante",
 	SetIconOnLightBombTarget	= "Mettre un icône sur la cible de la bombe de lumière",
-	SetIconOnGravityBombTarget	= "Mettre un icône sur la cible de la bombe à gravité",
+	SetIconOnGravityBombTarget	= "Mettre un icône sur la cible de la bombe à gravité"
 }
 
 -------------------
@@ -177,7 +176,8 @@ L:SetWarningLocalization{
 	LightningTendrils		= "Vrilles de foudre - COURREZ",
 	WarningRuneofSummoning	= "Rune d'invocation",
 	Overload				= "Surchage - BOUGEZ",
-	WarningStaticDisruption	= "Static Disruption sur >%s<"
+	WarningStaticDisruption	= "Static Disruption sur >%s<",
+	PlaySoundDeathRune			= "Death Rune"
 }
 
 L:SetTimerLocalization{
@@ -217,7 +217,8 @@ L:SetOptionLocalization{
 	Overload				= "Montre une alerte spéciale pour la Surcharge",
 	AllwaysWarnOnOverload			= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
 	PlaySoundOnOverload			= "Joue un son à la surcharge",
-	WarningStaticDisruption			= "Annonce la Static Disruption"
+	WarningStaticDisruption			= "Annonce la Static Disruption",
+	PlaySoundDeathRune			= "Joue un son pour les runes de mort"
 }
 
 L:SetMiscLocalization{
@@ -240,6 +241,7 @@ L:SetTimerLocalization{
 	TimerBigBangCast	= "Incantation du Big Bang",
 	NextCollapsingStar	= "Prochain choc cosmique"
 }
+
 L:SetWarningLocalization{
 	WarningPhasePunch	= "Coup de poing phasique sur >%s<",
 	WarningBlackHole	= "Trou noir",
@@ -251,7 +253,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerBigBangCast	= "Afficher une barre d'incantation pour le Big Bang",
+	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique",
 	SpecWarnPhasePunch	= "Activer l'avertissement spécial quand vous êtes la cible du coup de poing phasique",
 	WarningBigBang		= "Annonce le cast du Big Bang",
 	PreWarningBigBang	= "Pré annonce le Big Bang",
@@ -264,8 +266,12 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Vos actions sont illogiques. Tous les résultats possibles de cette rencontre ont été calculés. Le panthéon recevra le message de l'Observateur quelque soit l'issue."
+	YellPull		= "Vos actions sont illogiques. Tous les résultats possibles de cette rencontre ont été calculés. Le panthéon recevra le message de l'Observateur quelque soit l'issue.",
+	YellPullFirst			= "",
+	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
+	Emote_CosmicSmash		= "%s begins to cast Cosmic Smash!"
 }
+
 
 ----------------
 --  Kologarn  --
@@ -295,7 +301,6 @@ L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "Activer l'avertissement spécial quand vous êtes la cible du Rayon de l'Œil",
 	WarningEyebeam			= "Annoncer la cible du Rayon de l'Œil",
 	timerEyebeam			= "Afficher un timer pour le Rayon de l'Œil",
-	SetIconOnEyebeamTarget		= "Mettre un icône sur la cible du Rayon de l'Œil",
 	timerPetrifyingBreath		= "Afficher un timer pour le souffle pétrifiant",
 	timerNextShockwave		= "Afficher un timer pour l'onde de choc",
 	timerLeftArm			= "Afficher un timer pour le repop du bras gauche",
@@ -362,7 +367,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze	= "Gel instantané",
-	WarningBitingCold	= "Froid mordant - BOUGE",
 	WarningStormCloud	= "Tempète de glace sur >%s<"
 }
 
@@ -373,7 +377,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerFlashFreeze	= "Afficher une barre d'incantation pour le gel instantané",
 	WarningFlashFreeze	= "Activer l'avertissement pour le gel instantané",
-	WarningBitingCold	= "Activer l'avertissement pour le froid mordant",
 	PlaySoundOnFlashFreeze	= "Jouer un son lors de l'incantation du gel instantané",
 	WarningStormCloud	= "Annonce le joueur de la tempête de glace",
 	YellOnStormCloud	= "Crie quand la tempête de glace est active",
@@ -405,14 +408,10 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerStormhammer	= "Marteau-tempête (CD)",
-	TimerUnbalancingStrike	= "Frappe déséquilibrante (CD)",
 	TimerHardmode	= "Mode difficile"
 }
 
 L:SetOptionLocalization{
-	TimerStormhammer	= "Afficher le cooldown du marteau-tempête",
-	TimerUnbalancingStrike	= "Afficher le timer pour la frappe déséquilibrante",
 	TimerHardmode	= "Afficher le timer pour le mode difficile",
 	UnbalancingStrike	= "Annoncer la cible de la frappe déséquilibrante",
 	WarningStormhammer	= "Annoncer la cible du marteau-tempête",
@@ -420,12 +419,14 @@ L:SetOptionLocalization{
 	WarningBomb	= "Annoncer la détonation runique",
 	RangeFrame	= "Afficher la fenêtre de portée",
 	WarningLightningCharge		= "Annonce les charges de foudre",
-	AnnounceFails			= "Post player fails for Lightning Charge to the raid chat (requires announce enabled and promoted/leader status)" 
+	AnnounceFails			= "Post player fails for Lightning Charge to the raid chat (requires announce enabled and promoted/leader status)",
+	LightningOrb			= "Montre une alerte spéciale pour les Charge de foudre"
 }
 
 L:SetMiscLocalization{
 	YellPhase1		= "Des intrus ! Mortels, vous qui osez me déranger en plein divertissement, allez payer ! Attendez... vous ?",    -- A vérifier
 	YellPhase2		= "Avortons impertinents. Vous osez me défier sur mon piédestal ! Je vais vous écraser moi-même !",              -- A vérifier
+	YellKill		= "Stay your arms! I yield!",
 	ChargeOn		= "Charge(s) de foudre: %s",
 	Charge			= "Charge(s) de foudre non évitée(s) (cet essai): %s" 
 }
@@ -460,7 +461,6 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam = "Rayon de soleil: %s",
-	TimerAlliesOfNature = "Alliés de la Nature CD",
 	TimerSimulKill = "Résurrection",
 	TimerFuryYou = "Fureur de la nature sur vous",
 	TrashRespawnTimer	= "Respawn des Trashs de Freya"
@@ -508,8 +508,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	DarkGlare			= "Barrage laser",
 	WarningPlasmaBlast	= "Explosion de plasma sur %s - heal",
-	Phase2Engaged		= "La phase 2 arrive - Regroupez vous",
-	Phase3Engaged		= "La phase 3 arrive - Regroupez vous",
 	WarnShell			= "Obus napalm sur >%s<",
 	WarnBlast			= "Explosion de plasma sur >%s<",
 	MagneticCore		= ">%s< vient de loot le Core Magnétique",
@@ -521,15 +519,14 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	ProximityMines		= "Nouvelles Mines de proximité",
+	TimerHardmode		= "Hard Mode - Autodestruction",
 	TimeToPhase2		= "Phase 2",
 	TimeToPhase3		= "Phase 3",
-	TimeToPhase4		= "Phase 4"
+	TimeToPhase4		= "Phase 4",
+	TimerNewFlames		= "Nouvelles flammes"
 }
 
 L:SetOptionLocalization{
-	WarningShockBlast	= "Montre les alertes pour les Horions explosifs",
-	WarningPlasmaBlast	= "Montre les alertes pour les Explosions de plasma",
-	ProximityMines		= "Montre le timer pour les Mines de proximité",
 	DarkGlare				= "Montre une alerte spéciale pour le Barrage laser",
 	WarnBlast				= "Annonce la cible des Explosions de plasma",
 	WarnShell				= "Annonce la cible des Obus napalm",
@@ -540,10 +537,12 @@ L:SetOptionLocalization{
 	HealthFramePhase4		= "Montre les barres de vie dans la phase 4",
 	AutoChangeLootToFFA		= "Met le butin en accès libre durant la phase 3",
 	WarnBombSpawn			= "Annonce les Robots Bombes",
+	TimerHardmode			= "Montre le timer pour le Hard Mode",
 	PlaySoundOnShockBlast	= "Joue un son lors des Horions explosifs",
 	PlaySoundOnDarkGlare	= "Joue un son au Barrage laser",
 	ShockBlastWarningInP1	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 1",
-	ShockBlastWarningInP4	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 2"
+	ShockBlastWarningInP4	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 4",
+	WarnFrostBomb			= "Annonce les Bombes de Givre"
 }
 
 L:SetMiscLocalization{
@@ -555,6 +554,7 @@ L:SetMiscLocalization{
 	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9 percent! Barely a dent! Moving right along.",
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
 	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",
+	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
 
@@ -568,9 +568,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerSearingFlamesCast		= "Flammes incendiaires",
-	timerSurgeofDarkness		= "Vague de ténèbres",
-	timerSaroniteVapors		= "Prochaine vapeur de saronite"
+	hardmodeSpawn = "Arriver d'Animus de saronite"
 }
 
 L:SetWarningLocalization{
@@ -595,8 +593,8 @@ L:SetOptionLocalization{
 	CrashWhisper			= "Envoie un whisp à la cible de la Déferlante d'ombre",
 	YellOnLifeLeech			= "Crie pour la Marque du Sans-visage",
 	YellOnShadowCrash		= "Crie pour la Déferlante d'ombre",
-	specWarnShadowCrashNear		= "Montre une alerte spéciale quand la Déferlante d'ombre tombe à côté de vous",
-	WarningLeechLife		= "Annonce la cible de la Marque du Sans-visage"
+	WarningLeechLife		= "Annonce la cible de la Marque du Sans-visage",
+	hardmodeSpawn					= "Montre le timer pour l'arriver d'Animus de saronite (Hard Mode)"
 }
 
 L:SetMiscLocalization{
@@ -625,10 +623,10 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningWellSpawned 				= "La bonne Santé mentale vient de spawn",
 	WarningGuardianSpawned 			= "Un gardien vient d'arriver",
 	WarningCrusherTentacleSpawned	= "Une Tentacule écraseur vient d'arriver",
 	WarningP2 						= "Phase 2",
+	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Cerveaux liés sur >%s< et >%s<",
 	SpecWarnBrainLink 				= "Cerveaux liés sur Vous et sur %s!",
 	WarningSanity 					= "%d de Santé mentale est conservé",

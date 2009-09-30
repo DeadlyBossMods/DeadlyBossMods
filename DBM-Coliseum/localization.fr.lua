@@ -135,7 +135,6 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnHellfire		= "Flammes infernales",
 	SpecWarnHellfire	= "Flammes infernales ! BOUGEZ !",
 	SpecWarnHandofProt		= "Main de Protection sur >%s<",
 	SpecWarnDivineShield	= "Bouclier Divin sur >%s<"
@@ -160,7 +159,6 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	WarnHellfire			= "Alerte quand Harzog incante les Flammes infernales",
 	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales",
 	SpecWarnHandofProt		= "Montre une alerte spéciale quand le Paladin lance Main de Protection",
 	SpecWarnDivineShield	= "Montre une alerte spéciale quand le Paladin lance Bouclier Divin"
@@ -234,7 +232,9 @@ L:SetWarningLocalization{
 	WarnSubmerge		= "Anub'arak Rentre dans le sol",
 	WarnSubmergeSoon	= "Anub'arak Rentre dans le sol dans 10 sec",
 	WarnPursue			= "Poursuivi >%s<",
-	SpecWarnPursue		= "Vous êtes poursuivi"
+	SpecWarnPursue		= "Vous êtes poursuivi",
+	SpecWarnShadowStrike	= "Attaque d'ombre ! Kick Maintenant !",
+	SpecWarnPCold			= "Froid pénétrant"
 }
 
 L:SetMiscLocalization{
@@ -254,5 +254,7 @@ L:SetOptionLocalization{
 	TimerSubmerge		= "Montre le timer pour la rentrée du boss dans la terre",
 	PlaySoundOnPursue	= "Joue un son quand vous êtes suivi",
 	PursueIcon			= "Met une icône sur la tête du joueur qui est suivi",
-	WarnPursue			= "Annonce le joueur qui est suivi"
+	WarnPursue			= "Annonce le joueur qui est suivi",
+	SpecWarnShadowStrike	= "Montre une alerte spéciale pour les Attaque d'ombre (Pour les casser)",
+	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant"
 }
