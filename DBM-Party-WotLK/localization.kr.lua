@@ -636,8 +636,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningNova	= optionWarning:format(GetSpellInfo(59835)),
-	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(59835))
+	WarningNova	= optionWarning:format(GetSpellInfo(52960)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(52960))
 })
 
 
@@ -1399,10 +1399,13 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "모독으로부터 타격을 받을 경우 특수 경보 알리기",
-	warnExplode				= "구울 폭발을 시전할 경우 경고 알리기"
+	warnExplode				= "구울 폭발을 시전할 경우 경고 알리기",
+	SetIconOnMarkedTarget	= "죽음 대상에 공격대 아이콘 설정"
 })
 
-
+L:SetMiscLocalization({
+	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+})
 -------------------
 -- Grand Champions --
 -------------------
@@ -1424,6 +1427,10 @@ L:SetOptionLocalization({
 	specWarnPoison		= "독병에 의해 타격을 받을 경우 특수 경고 알리기"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
+
 
 -------------------
 -- Argent Confessor Paletress --
@@ -1440,11 +1447,13 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnRenew				= "고해사제가 소생을 시전 할 경우 경고 알리기",
 	specwarnRenew			= "고해사제의 소생 대상 특수 경고 알리기(해제/훔치기)",
 	warnReflectiveShield	= "고해사제가 반사의 보호막을 얻었을 경우 경고 알리기"
 })
 
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
 
 -------------------
 -- Eadric the Pure --
@@ -1467,6 +1476,9 @@ L:SetOptionLocalization({
 	specwarnRadiance			= "광휘의 특수 경고 보기."
 })
 
+L:SetMiscLocalization({
+--	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
 
 ---------------------
 -- Holiday --
@@ -1491,7 +1503,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnBarrel				= "맥주통의 대상 알리기",
 --	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
-	specwarnDisarm			= "무장하제의 특수 경고 보기",
+	DisarmWarning			= "무장해제의 특수 경고 보기",
 	specWarnBrew			= "흑맥주요정의 맥주 특수 경고 보기",
 	specWarnBrewStun		= "흑맥주요정의 기절 특수 경고 보기",
 	PlaySoundOnDisarm		= "무장 해제의 소리 재생",
