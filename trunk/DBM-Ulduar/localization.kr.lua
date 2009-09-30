@@ -85,8 +85,8 @@ L:SetWarningLocalization{
 	SpecWarnDevouringFlame		= "파멸의 불길 - 이동! 이동! 이동!",
 	SpecWarnDevouringFlameCast	= "당신에게 파멸의 불길!",
 	WarnDevouringFlameCast		= ">%s< 에게 파멸의 불길", 	
-	warnTurretsReadySoon		= "20초 후 4번째 포탑 준비",
-	warnTurretsReady			= "4번째 포탑 준비"
+	warnTurretsReadySoon		= "마지막 포탑 20초 전",
+	warnTurretsReady			= "마지막 포탑 준비"
 	
 }
 
