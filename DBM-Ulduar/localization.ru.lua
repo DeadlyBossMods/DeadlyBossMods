@@ -24,8 +24,10 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	pursueTargetWarn	= "Преследуется >%s<!",
-	warnNextPursueSoon	= "Смена цели через 5 сек"
+	pursueWarn	= "Преследуется >%s<!",
+	warnNextPursueSoon	= "Смена цели через 5 сек",
+	SpecialPursueWarnYou	= "Преследует вас!",
+	SystemOverload			= "Отключение системы"
 }
 
 L:SetOptionLocalization{
@@ -82,7 +84,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Лавовая бомба - БЕГИТЕ!",
+	SpecWarnDevouringFlame		= "Лавовая бомба! Бегите!",
 	warnTurretsReadySoon		= "Через 20 сек. гарпунные пушки будут собраны",
 	warnTurretsReady		= "Гарпунные пушки собраны",
 	SpecWarnDevouringFlameCast	= "Вы в лавовой бомбе",
@@ -170,11 +172,12 @@ L:SetWarningLocalization{
 	WarningOverwhelmingPower	= ">%s< под воздействием Переполняющей энергии",
 	WarningRuneofPower		= "Руна мощи",
 	WarningRuneofDeath		= "Руна смерти",
-	RuneofDeath			= "Руна смерти - БЕГИТЕ!",
-	LightningTendrils		= "Светящиеся придатки - БЕГИТЕ!",
+	RuneofDeath			= "Руна смерти! Бегите!",
+	LightningTendrils		= "Светящиеся придатки! Бегите!",
 	WarningRuneofSummoning		= "Руна призыва",
-	Overload			= "Перегрузка - БЕГИТЕ!",
-	WarningStaticDisruption		= ">%s< под воздействием Статического сбоя"
+	Overload			= "Перегрузка! Бегите!",
+	WarningStaticDisruption		= ">%s< под воздействием Статического сбоя",
+	PlaySoundDeathRune		= "Руна смерти"
 }
 
 L:SetTimerLocalization{
@@ -214,7 +217,8 @@ L:SetOptionLocalization{
 	Overload			= "Спец-предупреждение для Перегрузки",
 	AllwaysWarnOnOverload		= "Объявлять когда Перегрузка (иначе, когда нацеливание)",
 	PlaySoundOnOverload		= "Звуковой сигнал во время Перегрузки",
-	WarningStaticDisruption		= "Объявлять Статический сбой"
+	WarningStaticDisruption		= "Объявлять Статический сбой",
+	PlaySoundDeathRune		= "Звуковой сигнал для Руны смерти"
 }
 
 L:SetMiscLocalization{
@@ -237,15 +241,15 @@ L:SetTimerLocalization{
 	NextCollapsingStar	= "Вспыхивающая звезда",
 	PossibleNextCosmicSmash = "Кара небесная"
 }
+
 L:SetWarningLocalization{
 	WarningPhasePunch	= ">%s< под воздействием Фазового удара",
 	WarningBlackHole	= "Черная дыра",
 	WarningBigBang		= "Суровый удар",
 	SpecWarnBigBang		= "Суровый удар - ПРЯЧЬТЕСЬ!",
 	PreWarningBigBang	= "Суровый удар через ~10 сек",
-	PossibleNextCosmicSmash	= "Кара небесная",
 	WarningCosmicSmash 	= "Кара небесная - взрыв через 4 сек",
-	SpecWarnCosmicSmash 	= "Кара небесная - ОСМОТРИТЕСЬ!"
+	SpecWarnCosmicSmash 	= "Кара небесная"
 }
 
 L:SetOptionLocalization{
@@ -257,12 +261,13 @@ L:SetOptionLocalization{
 	WarningBlackHole	= "Объявлять Черную дыру",
 	NextCollapsingStar	= "Отсчет времени до Свернувшейся звезды",
 	WarningCosmicSmash 	= "Объявлять цель под воздействием Кары небесной",
-	PossibleNextCosmicSmash	= "Отсчет времени до Кара небесная",
-	SpecWarnCosmicSmash 	= "Спец-предупреждение для Кары небесной"
+	SpecWarnCosmicSmash 	= "Спец-предупреждение для Кары небесной",
+	PossibleNextCosmicSmash	= "Отсчет времени до Кара небесная"
 }
 
 L:SetMiscLocalization{		
 	YellPull		 = "Ваши действия нелогичны. Все возможные исходы этой схватки просчитаны. Пантеон получит сообщение от Наблюдателя в любом случае.",
+	YellPullFirst		 = "",
 	Emote_CollapsingStar	 = "%s призывает вспыхивающие звезды!",
 	Emote_CosmicSmash	 = "%s начинает читать заклинание \"Кара небесная\"!"
 }
@@ -278,7 +283,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam		= "Сосредоточенный взгляд на вас - БЕГИТЕ!",
+	SpecialWarningEyebeam		= "Сосредоточенный взгляд на вас! Бегите!",
 	WarningEyebeam			= ">%s< под сосредоточенным взглядом",
 	WarnGrip			= ">%s< под воздействием Каменной хватки"
 }
@@ -330,7 +335,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast	= "Удар часового - остановите чтение заклинаний!",
-	SpecWarnVoid	= "Портал бездны - БЕГИТЕ!",
+	SpecWarnVoid	= "Портал бездны! Бегите!",
 	WarnCatDied 	= "Дикий эащитник погибает (Осталось живых: %d)",
 	WarnCatDiedOne 	= "Дикий эащитник погибает (Это последний!)",
 	WarnFear	= "Страх!",
@@ -399,7 +404,7 @@ L:SetWarningLocalization{
 	WarningPhase2		= "Фаза 2",
 	WarningLightningCharge	= "Разряд молнии",
 	WarningBomb		= ">%s< под воздействием Взрыва руны",
-	LightningOrb		= "Поражение громом на вас - БЕГИТЕ!"
+	LightningOrb		= "Поражение громом на вас! Бегите!"
 }
 
 L:SetTimerLocalization{
@@ -414,7 +419,8 @@ L:SetOptionLocalization{
 	UnbalancingStrike	= "Объявлять Дисбалансирующий удар",
 	WarningBomb		= "Объявлять Взрыв руны",
 	RangeFrame		= "Отображать окно допустимой дистанции",
-	AnnounceFails		= "Объявлять игрока под разрядом молнии в рейд-чат (требуются права лидера или помощника)" 
+	AnnounceFails		= "Объявлять игрока под разрядом молнии в рейд-чат (требуются права лидера или помощника)",
+	LightningOrb		= "Спец-предупреждение для Поражения громом" 
 }
 
 L:SetMiscLocalization{
@@ -432,7 +438,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Freya")
 
 L:SetGeneralLocalization{
-	name = "Фрейа"
+	name = "Фрейя"
 }
 
 L:SetMiscLocalization{
@@ -450,13 +456,14 @@ L:SetWarningLocalization{
 	SpecWarnFury	= "Гнев природы на вас!",
 	WarningTremor   = "Дрожание земли - остановите чтение заклинаний!",
 	WarnRoots	= ">%s< в корнях",
-	UnstableEnergy	= "Нестабильная энергия - БЕГИТЕ!"
+	UnstableEnergy	= "Нестабильная энергия! Бегите!"
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam	= "Луч солнца: %s",
 	TimerSimulKill		= "Воскрешение",
-	TimerFuryYou		= "Гнев природы на вас!"
+	TimerFuryYou		= "Гнев природы на вас!",
+	TrashRespawnTimer	= "Фрейя возрождает Мусор"
 }
 
 L:SetOptionLocalization{
@@ -475,6 +482,10 @@ L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
 	name = "Древни Фреи"
+}
+
+L:SetTimerLocalization{
+	TrashRespawnTimer	= "Фрейя возрождает Мусор"
 }
 
 L:SetOptionLocalization{
@@ -500,7 +511,7 @@ L:SetWarningLocalization{
 	WarnShell		= ">%s< под зарядом напалма",
 	WarnBlast		= ">%s< под взрывом плазмы",
 	MagneticCore		= ">%s< под воздействием Магнитного ядра",
-	WarningShockBlast	= "Шоковый удар - БЕГИТЕ!",
+	WarningShockBlast	= "Шоковый удар! Бегите!",
 	WarnBombSpawn		= "Бомбот",
 	WarnFrostBomb		= "Ледяная бомба",
 	WarnFlamesSoon		= "Метание пламени через ~5 сек"
@@ -582,14 +593,13 @@ L:SetOptionLocalization{
 	CrashWhisper			= "Сообщить цели, под воздействием Темного сокрушения",
 	YellOnLifeLeech			= "Крикнуть о воздействии Вытягивания жизни",
 	YellOnShadowCrash		= "Крикнуть о воздействии Темного сокрушения",
-	specWarnShadowCrashNear		= "Спец-предупреждение о Темном сокрушении, около вас",
 	WarningLeechLife		= "Объявлять цель под воздействием Вытягивание жизни",
 	hardmodeSpawn			= "Отсчет времени до появления Саронитовых врагов (высокая сложность)"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "Облако саронитовых паров образовывается поблизости!",
-	CrashWhisper			= "Темное сокрушение на вас - БЕГИТЕ!",
+	CrashWhisper			= "Темное сокрушение на вас! Бегите!",
 	YellLeech			= "Вытягивание жизни на мне!",
 	YellCrash			= "Темное сокрушение на мне!"
 }
@@ -623,14 +633,14 @@ L:SetWarningLocalization{
 	SpecWarnSanity 			= "Эффект Здравомыслия: %d",
 	SpecWarnGuardianLow 		= "Прекратить нападение на Стражей!",
 	WarnMadness			= "Доведение до помешательства",
-	SpecWarnMadnessOutNow		= "Помешательство заканчивается - БЕГИТЕ!",
-	specWarnBrainPortalSoon		= "Портал через 3 сек.  - СКОРЕЕ ЗАХОДИТЕ ВНУТРЬ!",
+	SpecWarnMadnessOutNow		= "Помешательство заканчивается! Бегите!",
 	WarnBrainPortalSoon		= "Портал через 3 сек.",	
 	WarnSqueeze 			= "Выдавливание: >%s<",
 	WarnFavor			= ">%s< под Рвением Сары",
-	WarnEmpowerSoon			= "Приближается Сгущение тьмы!",
 	SpecWarnFavor			= "Рвение Сары на вас!",
-	MaladyNear			= "Душевная болезнь на >%s< около Вас"	
+	WarnEmpowerSoon			= "Приближается Сгущение тьмы!",
+	SpecWarnMaladyNear		= "Душевная болезнь около вас, на >%s<",
+	SpecWarnDeafeningRoar		= "Оглушающий рев"	
 }
 
 L:SetTimerLocalization{
@@ -662,10 +672,8 @@ L:SetOptionLocalization{
 	SetIconOnMCTarget		= "Установить метку на цель под контролем над разумом",
 	ShowSaraHealth			= "Показать здоровье Сары в Ф1 (должна быть под прицелом)",
 	WarnEmpowerSoon			= "Предупреждать о приближении Сгущения тьмы",
-	SpecWarnMaladyNear		= "Спец-предупреждение если кто-либо около вас получает Душевную болезнь"
-
-
+	SpecWarnMaladyNear		= "Спец-предупреждение если кто-либо около вас получает Душевную болезнь",
+	SpecWarnDeafeningRoar		= "Спец-предупреждение, когда применяется Оглушающий рев"
 }
-
 
 
