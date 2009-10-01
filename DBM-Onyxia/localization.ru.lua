@@ -33,5 +33,5 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	Breath = "%s под воздействием Глубокого вдоха...",
 	YellP2 = "Эта бессмысленная возня вгоняет меня в тоску. Я сожгу вас всех!",
-	YellP3 = "It seems you'll need another lesson, mortals!"
+	YellP3 = "Похоже, вам требуется преподать еще один урок, смертные!"
 }
