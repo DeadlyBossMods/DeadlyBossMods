@@ -1511,8 +1511,63 @@ L:SetOptionLocalization({
 	YellOnBarrel			= "Yell when you have Barrel"
 })
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	YellBarrel				= "Barrel on me!"
-}
+})
 
 
+---------------------
+-- Pit of Saron --
+---------------------
+-------------------
+-- Ick --
+-------------------
+L = DBM:GetModLocalization("Ick")
+
+L:SetGeneralLocalization({
+	name = "Ick"
+})
+
+L:SetWarningLocalization({
+	specWarnToxic		= "Toxic Waste! Move Away!"
+})
+
+L:SetOptionLocalization({
+	specWarnToxic		= "Special Warning when you take damage from Toxic Waste"
+})
+
+-------------------
+-- Forgemaster Garfrost --
+-------------------
+L = DBM:GetModLocalization("ForgemasterGarfrost")
+
+L:SetGeneralLocalization({
+	name = "Forgemaster Garfrost"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+-------------------
+-- Scourgelord Tyrannus --
+-------------------
+L = DBM:GetModLocalization("ScourgelordTyrannus")
+
+L:SetGeneralLocalization({
+	name = "Scourgelord Tyrannus"
+})
+
+L:SetWarningLocalization({
+	warnUnholyPower				= "Scourgelord Tyrannus is casting Unholy Power.",
+	warnHoarfrost				= "Rimefangs is casting Hoarfrost.",
+	specWarnIcyBlast		= "Icy Blast! Move Away!"
+})
+
+L:SetOptionLocalization({
+	warnUnholyPower				= "Show warning when Scourgelord Tyrannus casts Unholy Power.",
+	warnHoarfrost				= "Show warning when Rimefangs casts Hoarfrost.",
+	specWarnIcyBlast		= "Special Warning when you take damage from Icy Blast"
+})
