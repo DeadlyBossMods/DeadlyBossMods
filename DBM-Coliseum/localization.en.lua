@@ -25,10 +25,10 @@ L:SetOptionLocalization{
 	WarningBreath				= "Show warning for Arctic Breath",
 --	WarningSpray				= "Show warning for Paralytic Spray",
 	WarningRage					= "Show warning for Frothing Rages",
-	WarningCharge				= "Show warning for Charge Target",
-	WarningToxin				= "Show warning for Toxin Targets",
-	WarningBile					= "Show warning for Burning Bile Targets",
-	SpecialWarningImpale3		= "Show special warning for Impale (>=3 Stacks)",
+	WarningCharge				= "Show warning for Charge target",
+	WarningToxin				= "Show warning for Paralytic Toxin targets",
+	WarningBile					= "Show warning for Burning Bile targets",
+	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning for Slime Pool",
 	SpecialWarningSilence		= "Show special warning for Spell Block",
@@ -55,14 +55,14 @@ L:SetWarningLocalization{
 	WarningBreath				= "Arctic Breath",
 	WarningRage					= "Frothing Rages",
 	WarningCharge				= "Charge on >%s<",
-	WarningToxin				= "Toxin on >%s<",
+	WarningToxin				= "Paralytic Toxin on >%s<",
 	WarningBile					= "Burning Bile on >%s<",
-	SpecialWarningImpale3		= "Impale >%d< on You",
+	SpecialWarningImpale3		= "Impale >%d< on you",
 	SpecialWarningFireBomb		= "Fire Bomb on you",
-	SpecialWarningSlimePool		= "Slime Pool, Move out!",
-	SpecialWarningSilence		= "Spell Block in ~1.5 Seconds!",
+	SpecialWarningSlimePool		= "Slime Pool - Move out!",
+	SpecialWarningSilence		= "Spell Block in ~1.5 seconds!",
 	SpecialWarningSpray			= "Paralytic Spray on you",
-	SpecialWarningToxin			= "Toxin on you! Move!",
+	SpecialWarningToxin			= "Paralytic Toxin on you! Move!",
 	SpecialWarningCharge		= "Charge on you! Run!",
 	SpecialWarningChargeNear	= "Charge near you! Run!",
 	SpecialWarningBile			= "Bile on you!"
@@ -82,16 +82,16 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame				= "Legion Flame on >%s<",
 	WarnTouch				= "Touch of Jaraxxus on >%s<",
-	WarnNetherPower			= "Nether Power on Jaraxxus! Dispel now!",
-	WarnPortalSoon			= "Nether Portal soon!",
-	WarnVolcanoSoon			= "Infernal Volcano soon!",
+	WarnNetherPower			= "Nether Power on Jaraxxus - Dispel now!",
+	WarnPortalSoon			= "Nether Portal soon",
+	WarnVolcanoSoon			= "Infernal Volcano soon",
 	SpecWarnFlesh			= "Incinerate Flesh on you!",
 	SpecWarnTouch			= "Touch of Jaraxxus on you!",
 	SpecWarnKiss			= "Mistress' Kiss",
 	SpecWarnTouchNear		= "Touch of Jaraxxus on >%s< near you",
-	SpecWarnFlame			= "Legion Flame! Run!",
-	SpecWarnNetherPower		= "Dispel Now!",
-	SpecWarnFelInferno		= "Fel Inferno! Run Away!"
+	SpecWarnFlame			= "Legion Flame - Run!",
+	SpecWarnNetherPower		= "Dispel now!",
+	SpecWarnFelInferno		= "Fel Inferno - Run away!"
 }
 
 L:SetMiscLocalization{
@@ -133,7 +133,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnHellfire		= "Hellfire! Move Away!",
+	SpecWarnHellfire		= "Hellfire - Move away!",
 	SpecWarnHandofProt		= "Hand of Protection on >%s<",
 	SpecWarnDivineShield	= "Divine Shield on >%s<"
 }
@@ -172,19 +172,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSpecialSpell	= "Next Special Ability"	
+	TimerSpecialSpell	= "Next special ability"	
 }
 
 L:SetWarningLocalization{
-	WarnSpecialSpellSoon		= "Special Ability soon!",
+	WarnSpecialSpellSoon		= "Special ability soon",
 	SpecWarnSpecial				= "Change color!",
 	SpecWarnEmpoweredDarkness	= "Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Empowered Light",
-	SpecWarnSwitchTarget		= "Switch Target!",
-	SpecWarnKickNow				= "Kick Now!",
+	SpecWarnSwitchTarget		= "Switch target!",
+	SpecWarnKickNow				= "Interrupt now!",
 	WarningTouchDebuff			= "Debuff on >%s<",
-	WarningPoweroftheTwins		= "Power of the Twins - More healing on >%s<",
-	SpecWarnPoweroftheTwins		= "Power of the Twins!"
+	WarningPoweroftheTwins		= "Power of the Twins - More healing on >%s<!",
+	SpecWarnPoweroftheTwins		= "Power of the Twins"
 }
 
 L:SetMiscLocalization{
@@ -194,15 +194,15 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell			= "Show a timer for the next special ability",
-	WarnSpecialSpellSoon		= "Show pre-warning for the next special ability",
+	TimerSpecialSpell			= "Show timer for next special ability",
+	WarnSpecialSpellSoon		= "Show pre-warning for next special ability",
 	SpecWarnSpecial				= "Show special warning when you have to change color",
 	SpecWarnEmpoweredDarkness	= "Show special warning for Empowered Darkness",
 	SpecWarnEmpoweredLight		= "Show special warning for Empowered Light",
 	SpecWarnSwitchTarget		= "Show special warning when the other Twin is casting",
 	SpecWarnKickNow				= "Show special warning when you have to interrupt",
 	SpecialWarnOnDebuff			= "Show special warning when debuffed (to switch debuff)",
-	SetIconOnDebuffTarget		= "Set icon on Touch of Light/Darkness debuff targets (for heroic)",
+	SetIconOnDebuffTarget		= "Set icon on Touch of Light/Darkness debuff targets (Heroic)",
 	WarningTouchDebuff			= "Announce Touch of Light/Darkness debuff targets",
 	WarningPoweroftheTwins		= "Announce current target for Power of the Twins",
 	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an empowered Twin"
@@ -230,7 +230,7 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "Submerge in 10 seconds",
 	WarnPursue				= "Pursuing >%s<",
 	SpecWarnPursue			= "Pursuing you!",
-	SpecWarnShadowStrike	= "Shadow Strike! Interrupt now!",
+	SpecWarnShadowStrike	= "Shadow Strike - Interrupt now!",
 	SpecWarnPCold			= "Penetrating Cold"
 }
 
