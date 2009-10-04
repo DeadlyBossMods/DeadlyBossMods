@@ -23,8 +23,8 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 	    		 or select(2, UnitClass("player")) == "SHAMAN"
 
 
-local warnPortalSoon		= mod:NewAnnounce("WarnPortalSoon", 3)
-local warnVolcanoSoon		= mod:NewAnnounce("WarnVolcanoSoon", 3)
+local warnPortalSoon		= mod:NewAnnounce("WarnPortalSoon", 2)
+local warnVolcanoSoon		= mod:NewAnnounce("WarnVolcanoSoon", 2)
 local warnFlame				= mod:NewAnnounce("WarnFlame", 3)
 local warnTouch				= mod:NewAnnounce("WarnTouch", 3)
 local warnNetherPower		= mod:NewAnnounce("WarnNetherPower", 4)
@@ -143,6 +143,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		local targetname = args.destName
 		timerFlame:Start(args.destName)
 		timerFlameCD:Start()
+		specWarnFlame:Show()
 		if self.Options.LegionFlameIcon then
 			self:SetIcon(args.destName, 6, 8)
 		end
