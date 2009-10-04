@@ -19,6 +19,7 @@
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
+--    * Omegal @ US-Whisperwind (some patches, and DBM-Party updates)
 --
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
