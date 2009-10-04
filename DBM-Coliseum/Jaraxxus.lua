@@ -143,7 +143,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		local targetname = args.destName
 		timerFlame:Start(args.destName)
 		timerFlameCD:Start()
-		specWarnFlame:Show()
+		if args:IsPlayer() then
+			specWarnFlame:Show()
+		end
 		if self.Options.LegionFlameIcon then
 			self:SetIcon(args.destName, 6, 8)
 		end
