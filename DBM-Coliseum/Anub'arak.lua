@@ -136,7 +136,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
-		self:ScheduleMethod(5, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			self:ScheduleMethod(5, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
+		end
 	end
 end
 
