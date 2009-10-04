@@ -24,7 +24,7 @@ local specWarnIcyBlast		= mod:NewSpecialWarning("specWarnIcyBlast")
 --mod:AddBoolOption("SetIconOnHoarfrostTarget", true) --Needs chatlog data to finish implimentation
 
 function mod:OnCombatStart(delay)
-	timerForcefulSmash:Start(-delay)
+--	timerForcefulSmash:Start(-delay) --this is wrong place for this, combat doesn't start with him landed, event needs to be registered when he jumps off drake to start timer. Awaiting phasing bug fix so i can gather chat events and add register those events to start timer instead.
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69629, 69167) then							-- Unholy Power

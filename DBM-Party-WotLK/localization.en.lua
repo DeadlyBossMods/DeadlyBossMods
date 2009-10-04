@@ -1546,9 +1546,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnSaroniteRock				= "Saronite Rock! Line of Sight now!",
+	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
+	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
+	specWarnPermafrost		= "Special Warning when Permafrost stacks get to high (value not set in stone)"
 })
 
 -------------------
