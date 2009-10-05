@@ -5,36 +5,36 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
-L.TranslationBy 	= "흑묘서희@에이그윈서버 호드진영"
+L.TranslationBy 		= "흑묘서희@에이그윈서버 호드진영"
 
 L.TabCategory_Options 	= "일반 옵션"
-L.TabCategory_WOTLK 		= "리치왕의 분노"
+L.TabCategory_WOTLK 	= "리치왕의 분노"
 L.TabCategory_BC 		= "불타는 성전"
 L.TabCategory_CLASSIC 	= "오리지널"
 L.TabCategory_OTHER     = "기타 보스 모드"
 
-L.BossModLoaded 	= "%s 공략 상황"
-L.BossModLoad_now 	= [[현재 보스의 모드가 로드되지 않았습니다. 
+L.BossModLoaded 		= "%s 공략 상황"
+L.BossModLoad_now 		= [[현재 보스의 모드가 로드되지 않았습니다. 
 애드온 불러오기 버튼을 클릭하여 강제적으로 보스 모드를 실행시킬 수 있습니다.
 ]]
 
-L.PosX = '위치 X'
-L.PosY = '위치 Y'
+L.PosX 					= '위치 X'
+L.PosY 					= '위치 Y'
 
-L.MoveMe 		= '위치 이동'
-L.Button_OK 		= '확인'
-L.Button_Cancel 	= '취소'
-L.Button_LoadMod 	= '애드온 불러오기'
-L.Mod_Enabled		= "보스 모드 허용"
+L.MoveMe 				= '위치 이동'
+L.Button_OK 			= '확인'
+L.Button_Cancel 		= '취소'
+L.Button_LoadMod 		= '애드온 불러오기'
+L.Mod_Enabled			= "보스 모드 허용"
 L.Mod_EnableAnnounce	= "공격대 경보로 알리기"
-L.Reset 		= "리셋"
+L.Reset 				= "리셋"
 
-L.Enable  		= "켜기"
-L.Disable		= "끄기"
+L.Enable  				= "켜기"
+L.Disable				= "끄기"
 
-L.NoSound		= "사운드 끄기"
+L.NoSound				= "사운드 끄기"
 
-L.IconsInUse	= "현재 모드에 공격대 아이콘을 사용합니다."
+L.IconsInUse			= "현재 모드에 공격대 아이콘을 사용합니다."
 
 -- Tab: Boss Statistics
 L.BossStatistics		= "보스 공략 상황"
@@ -81,31 +81,38 @@ L.RaidWarnSound			= "레이드-경보 사운드"
 L.SpecialWarnSound		= "특별한 경보 사운드"
 
 -- Tab: Barsetup
-L.BarSetup  		= "바 스타일"
-L.BarTexture 		= "바 텍스쳐"
-L.BarStartColor	 	= "시작 컬러"
-L.BarEndColor 		= "마지막 컬러"
-L.ExpandUpwards		= "바를 위로 쌓기"
+L.BarSetup  				= "바 스타일"
+L.BarTexture 				= "바 텍스쳐"
+L.BarStartColor	 			= "시작 컬러"
+L.BarEndColor 				= "마지막 컬러"
+L.ExpandUpwards				= "바를 위로 쌓기"
 
-L.Slider_BarOffSetX 	= "자세한 가로 위치: %d"
-L.Slider_BarOffSetY 	= "자세한 세로 위치: %d"
-L.Slider_BarWidth 		= "바 길이: %d"
-L.Slider_BarScale 		= "바 스케일(크기): %0.2f"
-L.AreaTitle_BarSetup 	= "일반 바 옵션"
-L.AreaTitle_BarSetupSmall = "작은 바 옵션"
-L.AreaTitle_BarSetupHuge = "커다란 바 옵션"
-L.BarIconLeft 			= "왼쪽 아이콘"
-L.BarIconRight 			= "오른쪽 아이콘"
-L.EnableHugeBar 		= "커다란 바 사용(바 2)"
-L.FillUpBars			= "바를 채워나가기"
-L.ClickThrough			= "마우스 이벤트 사용 안함 (바를 클릭하는 행위 등)"
+L.Slider_BarOffSetX 		= "자세한 가로 위치: %d"
+L.Slider_BarOffSetY 		= "자세한 세로 위치: %d"
+L.Slider_BarWidth 			= "바 길이: %d"
+L.Slider_BarScale 			= "바 스케일(크기): %0.2f"
+L.AreaTitle_BarSetup 		= "일반 바 옵션"
+L.AreaTitle_BarSetupSmall 	= "작은 바 옵션"
+L.AreaTitle_BarSetupHuge 	= "커다란 바 옵션"
+L.BarIconLeft 				= "왼쪽 아이콘"
+L.BarIconRight 				= "오른쪽 아이콘"
+L.EnableHugeBar 			= "커다란 바 사용(바 2)"
+L.FillUpBars				= "바를 채워나가기"
+L.ClickThrough				= "마우스 이벤트 사용 안함 (바를 클릭하는 행위 등)"
+
+-- Tab: Spec Warn Frame
+L.Panel_SpecWarnFrame		= "특수 경고"
+L.Area_SpecWarn				= "특수 경고 설정"
+L.SpecWarn_Enabled			= "각 보스별 특수 경고 보기"
+L.SpecWarn_Font				= "특수 경고 폰트 사용"
+L.SpecWarn_DemoButton		= "예제 보기"
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter			= "스팸 필터"
-L.Area_SpamFilter			= "일반 스팸 필터 옵션"
-L.HideBossEmoteFrame		= "레이드 보스가 사용하는 감정표현 숨기기"
-L.SpamBlockRaidWarning		= "다른 보스 모드가 알리는 경보 감추기" 
-L.SpamBlockBossWhispers		= "전투 중 사용되는 <DBM> 경보 귓속말 감추기"
-L.ShowVersionUpadeAsPopup	= "업데이트 알림 창 끄기"
+L.Panel_SpamFilter				= "스팸 필터"
+L.Area_SpamFilter				= "일반 스팸 필터 옵션"
+L.HideBossEmoteFrame			= "레이드 보스가 사용하는 감정표현 숨기기"
+L.SpamBlockRaidWarning			= "다른 보스 모드가 알리는 경보 감추기" 
+L.SpamBlockBossWhispers			= "전투 중 사용되는 <DBM> 경보 귓속말 감추기"
+L.BlockVersionUpdatePopup		= "업데이트 알림 창 끄기"
 L.ShowBigBrotherOnCombatStart	= "전투가 시작되면 BigBrother 버프 체크 수락"
 
