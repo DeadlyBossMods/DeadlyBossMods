@@ -1607,6 +1607,20 @@ local function CreateOptionsMenu()
 	end
 
 	do
+		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
+		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 135, true)
+		specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
+
+		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
+		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)
+		showbutton:SetNormalFontObject(GameFontNormalSmall);
+		showbutton:SetHighlightFontObject(GameFontNormalSmall);		
+		showbutton:SetScript("OnClick", function() DBM:ShowSpecialWarning("Boooooooooom!") end)
+
+		specPanel:SetMyOwnHeight()
+	end
+	
+	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 135, true)
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
@@ -1619,7 +1633,7 @@ local function CreateOptionsMenu()
 
 		spamPanel:SetMyOwnHeight()
 	end
-	
+
 	-- Set Revision // please don't translate this!
 	DBM_GUI_OptionsFrameRevision:SetText("Version: "..DBM.DisplayVersion.." - Core: r"..DBM.Revision.." - Gui: r"..revision)
 	DBM_GUI_OptionsFrameTranslation:SetText("Translated by: "..L.TranslationBy)
