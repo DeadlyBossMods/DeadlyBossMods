@@ -20,18 +20,18 @@ You can also click the button to load the mod manually.]]
 L.PosX						= 'Position X'
 L.PosY						= 'Position Y'
 
-L.MoveMe 					= 'move me'
+L.MoveMe 					= 'Move me'
 L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Cancel'
 L.Button_LoadMod 			= 'Load AddOn'
 L.Mod_Enabled				= "Enable boss mod"
 L.Mod_EnableAnnounce		= "Announce to raid"
-L.Reset 					= "reset"
+L.Reset 					= "Reset"
 
-L.Enable  					= "enable"
-L.Disable					= "disable"
+L.Enable  					= "Enable"
+L.Disable					= "Disable"
 
-L.NoSound					= "No Sound"
+L.NoSound					= "No sound"
 
 L.IconsInUse				= "Icons used by this mod"
 
@@ -39,8 +39,8 @@ L.IconsInUse				= "Icons used by this mod"
 L.BossStatistics			= "Boss Statistics"
 L.Statistic_Kills			= "Kills:"
 L.Statistic_Wipes			= "Wipes:"
-L.Statistic_BestKill		= "Best kill:"
-L.Statistic_Heroic			= "heroic"
+L.Statistic_BestKill		= "Best Kill:"
+L.Statistic_Heroic			= "Heroic"
 
 -- Tab: General Options
 L.General 					= "General DBM Options"
@@ -49,7 +49,7 @@ L.EnableStatus 				= "Reply to 'status' whispers"
 L.AutoRespond 				= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon			= "Show minimap button"
 
-L.Button_RangeFrame			= "Show/Hide range-frame"
+L.Button_RangeFrame			= "Show/hide range frame"
 L.Button_TestBars			= "Start test bars"
 
 L.PizzaTimer_Headline 		= 'Create a "Pizza Timer"'
@@ -69,22 +69,22 @@ L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
 L.InfoRaidWarning			= [[You can specify the position and colors of the raid warning frame. 
 This frame is used for messages like "Player X is afflicted by Y" messages]]
-L.ColorResetted 			= "The color settings of this field have been resetted"
-L.ShowWarningsInChat 		= "Show warnings in chatframe"
+L.ColorResetted 			= "The color settings of this field have been reset"
+L.ShowWarningsInChat 		= "Show warnings in chat frame"
 L.ShowFakedRaidWarnings 	= "Show warnings as faked Raid Warning messages"
 L.WarningIconLeft 			= "Show icon on left side"
 L.WarningIconRight 			= "Show icon on right side"
 L.RaidWarnMessage 			= "Thanks for using Deadly Boss Mods"
-L.BarWhileMove 				= "Raidwarning movable"
-L.RaidWarnSound				= "Play sound on raid-warning"
-L.SpecialWarnSound			= "Play sound on special-warning"
+L.BarWhileMove 				= "Raid warning movable"
+L.RaidWarnSound				= "Play sound on raid warning"
+L.SpecialWarnSound			= "Play sound on special warning"
 
 -- Tab: Barsetup
 L.BarSetup   				= "Bar Style"
 L.BarTexture 				= "Bar Texture"
 L.BarStartColor				= "Start color"
 L.BarEndColor 				= "End color"
-L.ExpandUpwards				= "Expand bars upwards"
+L.ExpandUpwards				= "Expand bars upward"
 
 L.Slider_BarOffSetX 		= "Offset X: %d"
 L.Slider_BarOffSetY 		= "Offset Y: %d"
@@ -100,11 +100,11 @@ L.FillUpBars				= "Fill up bars"
 L.ClickThrough				= "Disable mouse events (allows you to click through bars)"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Special Warnings"
-L.Area_SpecWarn				= "Configure the Special Warnings"
-L.SpecWarn_Enabled			= "Show Special Warnings for Bossabilitys"
-L.SpecWarn_Font				= "Font used for Special Warning"
-L.SpecWarn_DemoButton		= "show example"
+L.Panel_SpecWarnFrame		= "Special warnings"
+L.Area_SpecWarn				= "Configure special warnings"
+L.SpecWarn_Enabled			= "Show special warnings for boss abilities"
+L.SpecWarn_Font				= "Font used for special warnings"
+L.SpecWarn_DemoButton		= "Show example"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Spam Filter"
