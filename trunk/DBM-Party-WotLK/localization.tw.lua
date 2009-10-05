@@ -6,12 +6,12 @@ local spell		= "%s"
 local debuff		= "%s: >%s<"			
 local spellCD		= "%s 冷卻"
 local spellSoon		= "%s 即將到來"
-local optionWarning	= "顯示\"%s\"警告"
-local optionPreWarning	= "顯示\"%s\"的預先警告"
-local optionSpecWarning	= "顯示\"%s\"的特別警告"
-local optionTimerCD	= "顯示\"%s\"的冷卻計時器"
-local optionTimerDur	= "顯示\"%s\"的存在計時器"
-local optionTimerCast	= "顯示\"%s\"施法計時器"
+local optionWarning	= "為\"%s\"顯示警告"
+local optionPreWarning	= "為\"%s\"顯示預先警告"
+local optionSpecWarning	= "為\"%s\"顯示特別警告"
+local optionTimerCD	= "為\"%s\"顯示冷卻計時器"
+local optionTimerDur	= "為\"%s\"顯示持續時間計時器"
+local optionTimerCast	= "為\"%s\"顯示施法計時器"
 
 
 --------------------------------
@@ -328,7 +328,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("新一波"),
-	TimerWaveIn		= "顯示\"下一波\"計時器 (只有第6波)",
+	TimerWaveIn		= "為\"下一波\"顯示計時器 (只有第6波)",
 })
 
 
@@ -507,8 +507,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningElemental	= "顯示元素階段警告",
-	WarningStone		= "顯示巨像階段警告"
+	WarningElemental	= "為元素階段顯示警告",
+	WarningStone		= "為巨像階段顯示警告"
 })
 
 
@@ -639,8 +639,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningNova	= optionWarning:format(GetSpellInfo(53960)),
-	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(53960))
+	WarningNova	= optionWarning:format(GetSpellInfo(52960)),
+	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(52960))
 })
 
 
@@ -989,7 +989,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningShift	= spell,
-	WarningEnrage	= spell,
+	WarningEnraged	= spell,
 	WarningShiftEnd	= "界域轉換結束"
 })
 
@@ -1001,7 +1001,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningShift	= optionWarning:format(GetSpellInfo(51162)),
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"),
-	WarningEnrage	= optionWarning:format(GetSpellInfo(51170)),
+	WarningEnraged	= optionWarning:format(GetSpellInfo(51170)),
 	TimerShift	= optionTimerDur:format(GetSpellInfo(51162)),
 	TimerEnrage	= optionTimerDur:format(GetSpellInfo(51170))
 })
@@ -1083,6 +1083,7 @@ L:SetOptionLocalization({
 	WarningSmash		= optionWarning:format(GetSpellInfo(42723)),
 	WarningGrowl		= optionWarning:format(GetSpellInfo(42708)),
 	WarningWoeStrike	= optionWarning:format(GetSpellInfo(42730)),
+	SpecialWarningSpelllock 	= optionSpecWarning:format(GetSpellInfo(42729)),
 	TimerSmash		= optionTimerCast:format(GetSpellInfo(42723)),
 	TimerWoeStrike		= optionTimerDur:format(GetSpellInfo(42730))
 })
@@ -1364,15 +1365,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "傳送門 #%d" , 
+	TimerPortalIn	= "傳送門 #%d",
 })
 
 L:SetOptionLocalization({
-	WarningPortalNow		= "顯示新傳送門警告",
-	WarningPortalSoon		= "顯示新傳送門預先警告",
-	WarningBossNow			= "顯示首領警告",
-	TimerPortalIn			= "顯示 \"傳送門: #\" 計時",
-	ShowAllPortalWarnings		= "顯示所有傳送門警告"
+	WarningPortalNow		= "為新傳送門顯示警告",
+	WarningPortalSoon		= "為新傳送門顯示預先警告",
+	WarningBossNow			= "為首領顯示警告",
+	TimerPortalIn			= "為 \"傳送門: #\" 顯示計時器",
+	ShowAllPortalWarnings		= "為所有傳送門顯示警告"
 })
 
 
@@ -1395,14 +1396,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration		= "褻瀆! 跑開!",
-	warnExplode		= "食屍鬼爪牙正在施放自爆. 跑開!"
+	specWarnDesecration		= "褻瀆 - 快跑開!",
+	warnExplode		= "食屍鬼爪牙即將爆炸 - 快跑開!"
 })
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "當你受到褻瀆的傷害時顯示特別警告",
-	warnExplode		= "食屍鬼爪牙施放自爆時警告",
-	SetIconOnMarkedTarget	= "為死亡標記的目標設置標記"
+	warnExplode		= "當食屍鬼爪牙即將自我爆炸時警告",
+	SetIconOnMarkedTarget	= "設置標記在死亡標記的目標"
 })
 
 L:SetMiscLocalization({
@@ -1416,19 +1417,19 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("GrandChampions")
 
 L:SetGeneralLocalization({
-	name = "大勇士"
+	name = "大勇士們"
 })
 
 L:SetWarningLocalization({
-	specWarnHaste		= "加速在>%s<身上! 現在驅散!",
-	specWarnPoison		= "毒藥! 跑開!",
-	warnHealingWave		= "薩滿正在施放治療波. 打斷!"
+	specWarnHaste		= "加速: >%s< - 快驅散!",
+	specWarnPoison		= "毒藥 - 快跑開!",
+	warnHealingWave		= "薩滿正在施放治療波 - 快斷法!"
 })
 
 L:SetOptionLocalization({
 	warnHealingWave		= "當薩滿施放治療波時警告",
-	specWarnHaste		= "當法師獲得加速時特別警告 (驅散/偷竊用)",
-	specWarnPoison		= "當你受到毒藥的傷害時顯示特別警告"
+	specWarnHaste		= "當法師獲得加速時特別警告 (驅散/竊取用)",
+	specWarnPoison		= "當你受到毒藥瓶的傷害時顯示特別警告"
 })
 
 L:SetMiscLocalization({
@@ -1446,13 +1447,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew		= "告解者施放恢復在>%s< 現在驅散!",
-	warnReflectiveShield		= "告解者獲得了反射護盾"
+	specwarnRenew		= "帕爾璀絲施放恢復於 >%s< - 快驅散!",
+	warnReflectiveShield		= "帕爾璀絲獲得反射護盾"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew		= "為恢復的目標顯示特別警告 (驅散/偷竊用)",
-	warnReflectiveShield		= "當告解者獲得反射護盾時警告"
+	specwarnRenew		= "為恢復的目標顯示特別警告 (驅散/竊取用)",
+	warnReflectiveShield		= "當帕爾璀絲獲得反射護盾時警告"
 })
 
 L:SetMiscLocalization({
@@ -1470,16 +1471,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHammerofRighteous		= "埃卓克正在施放公正力量之錘!",
-	specwarnHammerofJustice		= "制裁之錘: >%s<. 驅散!",
-	specwarnRadiance		= "烈光! 背對王!"
+	warnHammerofRighteous		= "埃卓克正在施放公正之錘!",
+	specwarnHammerofJustice		= "制裁之錘: >%s< - 快驅散!",
+	specwarnRadiance		= "烈光 - 背對王!"
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous		= "當埃卓克正在施放公正力量之錘時警告",
+	warnHammerofRighteous		= "當埃卓克正在施放公正之錘時警告",
 	specwarnHammerofJustice		= "為制裁之錘顯示特別警告 (驅散用)",
 	specwarnRadiance		= "為烈光顯示特別警告",
-	SetIconOnHammerTarget		= "為制裁之錘的目標設置標記"
+	SetIconOnHammerTarget		= "設置標記在制裁之錘的目標"
 })
 
 L:SetMiscLocalization({
@@ -1501,7 +1502,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnBarrel		= "空桶(暈): >%s<", 
 --	specwarnDaughters		= "女兒出現了!",
-	specwarnDisarm		= "繳械. 跑開!",
+	specwarnDisarm		= "繳械 - 快跑開!",
 	specWarnBrew		= "在他再丟你一個前喝掉酒!",
 	specWarnBrewStun		= "提示:你瘋狂了,記得下一次喝啤酒!"
 })
@@ -1509,13 +1510,74 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnBarrel		= "提示空桶(暈)的目標",
 --	specwarnDaughters		= "提示厄蘇拉/伊爾莎的出現",
-	specwarnDisarm		= "為繳械顯示特別警告",
+	DisarmWarning		= "為繳械顯示特別警告",
 	specWarnBrew		= "為黑鐵啤酒辣妹的啤酒顯示特別警告",
-	specWarnBrewStun		= "為黑鐵啤酒辣妹的暈顯示特別警告",
+	specWarnBrewStun		= "為黑鐵啤酒辣妹昏迷顯示特別警告",
 	PlaySoundOnDisarm	= "當繳械時播放音效",
-	YellOnBarrel		= "當你中了空桶(暈)時大叫"
+	YellOnBarrel		= "當你中了空桶(暈)時大喊"
 })
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	YellBarrel		= "我中了空桶(暈)!"
-}
+})
+
+
+---------------------
+-- Pit of Saron --
+---------------------
+-------------------
+-- Ick --
+-------------------
+L = DBM:GetModLocalization("Ick")
+
+L:SetGeneralLocalization({
+	name = "Ick"
+})
+
+L:SetWarningLocalization({
+	specWarnToxic		= "Toxic Waste! Move Away!"
+})
+
+L:SetOptionLocalization({
+	specWarnToxic		= "Special Warning when you take damage from Toxic Waste"
+})
+
+-------------------
+-- Forgemaster Garfrost --
+-------------------
+L = DBM:GetModLocalization("ForgemasterGarfrost")
+
+L:SetGeneralLocalization({
+	name = "Forgemaster Garfrost"
+})
+
+L:SetWarningLocalization({
+	warnSaroniteRock				= "Saronite Rock! Line of Sight now!",
+	specWarnPermafrost		= "%s: %s"
+})
+
+L:SetOptionLocalization({
+	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
+	specWarnPermafrost		= "Special Warning when Permafrost stacks get to high (value not set in stone)"
+})
+
+-------------------
+-- Scourgelord Tyrannus --
+-------------------
+L = DBM:GetModLocalization("ScourgelordTyrannus")
+
+L:SetGeneralLocalization({
+	name = "Scourgelord Tyrannus"
+})
+
+L:SetWarningLocalization({
+	warnUnholyPower				= "Scourgelord Tyrannus is casting Unholy Power.",
+	warnHoarfrost				= "Rimefangs is casting Hoarfrost.",
+	specWarnIcyBlast		= "Icy Blast! Move Away!"
+})
+
+L:SetOptionLocalization({
+	warnUnholyPower				= "Show warning when Scourgelord Tyrannus casts Unholy Power.",
+	warnHoarfrost				= "Show warning when Rimefangs casts Hoarfrost.",
+	specWarnIcyBlast		= "Special Warning when you take damage from Icy Blast"
+})
