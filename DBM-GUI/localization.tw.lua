@@ -101,6 +101,13 @@ L.EnableHugeBar 	= "開啟大型計時條（2號計時條）"
 L.FillUpBars		= "填滿計時條"
 L.ClickThrough		= "禁用鼠標事件（允許你點擊穿透計時條）"
 
+-- Tab: Spec Warn Frame
+L.Panel_SpecWarnFrame		= "特別警告"
+L.Area_SpecWarn				= "配置特別警告"
+L.SpecWarn_Enabled			= "為首領的技能顯示特別警告"
+L.SpecWarn_Font				= "特別警告使用的字型"
+L.SpecWarn_DemoButton		= "顯示範例"
+
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "垃圾過濾"
 L.Area_SpamFilter		= "基本垃圾過濾設定"
