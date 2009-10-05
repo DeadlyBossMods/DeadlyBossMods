@@ -72,6 +72,7 @@ DBM.DefaultOptions = {
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
 	BlockVersionUpdatePopup = true,
+	ShowSpecialWarnings = true,
 	ShowBigBrotherOnCombatStart = false,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
@@ -2304,7 +2305,7 @@ end
 ------------------------------
 --  Special Warning Object  --
 ------------------------------
-do
+do	
 	local frame = CreateFrame("Frame", nil, UIParent)
 	local font = frame:CreateFontString(nil, "OVERLAY", "ZoneTextFont")
 	frame:SetWidth(1)
@@ -2330,7 +2331,7 @@ do
 	end)
 
 	function specialWarningPrototype:Show(...)
-		if not self.option or self.mod.Options[self.option] then
+		if DBM.Options.HideBossEmoteFrame and (not self.option or self.mod.Options[self.option]) then
 			font:SetText(pformat(self.text, ...))
 			LowHealthFrame:Show()
 			LowHealthFrame:SetAlpha(1)
