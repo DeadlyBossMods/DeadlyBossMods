@@ -38,7 +38,7 @@ local enrageTimer			= mod:NewEnrageTimer(570)	-- 9:30 ? hmpf (no enrage while su
 
 -- Penetrating Cold
 local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)
-local timerPCold			= mod:NewTargetTimer(15, 68509)
+local timerPCold			= mod:NewBuffActiveTimer(15, 68509)
 mod:AddBoolOption("SetIconsOnPCold", true, "announce")
 
 -- Freezing Slash
