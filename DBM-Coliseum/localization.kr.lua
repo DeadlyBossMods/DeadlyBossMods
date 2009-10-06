@@ -197,7 +197,7 @@ L:SetWarningLocalization{
 	SpecWarnEmpoweredLight		= "강화된 빛",
 	SpecWarnSwitchTarget		= "대상 전환!",
 	SpecWarnKickNow				= "지금 차단!",
-	WarningTouchDebuf			= "디버프 : >%s<",
+	WarningTouchDebuff			= "디버프 : >%s<",
 	WarningPoweroftheTwins		= "쌍둥이의 힘 - 오버힐!!  >%s<",
 	SpecWarnPoweroftheTwins		= "쌍둥이의 힘!"
 }
