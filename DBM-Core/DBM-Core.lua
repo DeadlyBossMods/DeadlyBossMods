@@ -2331,7 +2331,8 @@ do
 	end)
 
 	function specialWarningPrototype:Show(...)
-		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) then			font:SetText(pformat(self.text, ...))
+		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) then	
+			font:SetText(pformat(self.text, ...))
 			LowHealthFrame:Show()
 			LowHealthFrame:SetAlpha(1)
 			frame:Show()
