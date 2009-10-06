@@ -91,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPursue:Show(args.destName)
 
 	elseif args:IsSpellID(66013, 67700, 68509, 68510) then		-- Penetrating Cold
-		mod:ScheduleMethod(3, "resetIcons")		
+		mod:ScheduleMethod(3, "resetIcons")
 		if args:IsPlayer() then
 			specWarnPCold:Show()
 		end
@@ -99,7 +99,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			mod:SetIcon(args.destName, PColdIcon, 15)
 			PColdIcon = PColdIcon - 1
 		end
-		timerPCold:Show(args.destName)
+		timerPCold:Show()
 	elseif args:IsSpellID(66012) then		-- Freezing Slash
 		warnFreezingSlash:Show(args.destName)
 		timerFreezingSlash:Start()
