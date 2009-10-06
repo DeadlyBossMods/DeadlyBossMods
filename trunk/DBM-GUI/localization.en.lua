@@ -57,7 +57,7 @@ L.PizzaTimer_Title			= 'Name (e.g. "Pizza!")'
 L.PizzaTimer_Hours 			= "Hours"
 L.PizzaTimer_Mins 			= "Min"
 L.PizzaTimer_Secs 			= "Sec"
-L.PizzaTimer_ButtonStart 	= "Start Timer"
+L.PizzaTimer_ButtonStart 	= "Start timer"
 L.PizzaTimer_BroadCast		= "Broadcast to Raid"
 
 -- Tab: Raidwarning
@@ -68,10 +68,10 @@ L.RaidWarnColor_2 			= "Color 2"
 L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
 L.InfoRaidWarning			= [[You can specify the position and colors of the raid warning frame. 
-This frame is used for messages like "Player X is afflicted by Y" messages]]
+This frame is used for messages like "Player X is affected by Y".]]
 L.ColorResetted 			= "The color settings of this field have been reset"
 L.ShowWarningsInChat 		= "Show warnings in chat frame"
-L.ShowFakedRaidWarnings 	= "Show warnings as faked Raid Warning messages"
+L.ShowFakedRaidWarnings 	= "Show warnings as faked raid warning messages"
 L.WarningIconLeft 			= "Show icon on left side"
 L.WarningIconRight 			= "Show icon on right side"
 L.RaidWarnMessage 			= "Thanks for using Deadly Boss Mods"
@@ -100,7 +100,7 @@ L.FillUpBars				= "Fill up bars"
 L.ClickThrough				= "Disable mouse events (allows you to click through bars)"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Special warnings"
+L.Panel_SpecWarnFrame		= "Special Warnings"
 L.Area_SpecWarn				= "Configure special warnings"
 L.SpecWarn_Enabled			= "Show special warnings for boss abilities"
 L.SpecWarn_Font				= "Font used for special warnings"
