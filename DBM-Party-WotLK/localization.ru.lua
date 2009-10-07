@@ -1475,7 +1475,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnHammerofRighteous		= "Спец-предупреждение, когда Эдрик бросает Молот праведника",
 	specwarnHammerofJustice		= "Спец-предупреждение для \"Молота правосудия\" (для рассеивания)",
-	specwarnRadiance		= "Show Special warning for Radiance.",
+	specwarnRadiance		= "Спец-предупреждение для \"Сияния\".",
 	SetIconOnHammerTarget		= "Установить метку на цель под воздействием \"Молота правосудия\""
 })
 
@@ -1498,7 +1498,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnBarrel			= "Бочка на >%s<", 
 --	specwarnDaughters		= "Daughter Spawned!",
-	specwarnDisarm			= "Disarm. Move Away!",
+	specwarnDisarm			= "Обезвреживание Зловещего Варева. Отбегите!",
 	specWarnBrew			= "Get rid of the brew before she tosses you another one!",
 	specWarnBrewStun		= "HINT: You were bonked, remember to drink the brew next time!"
 })
@@ -1509,8 +1509,8 @@ L:SetOptionLocalization({
 	DisarmWarning			= "Show Special Warning for Disarm",
 	specWarnBrew			= "Show Special Warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun		= "Show Special Warning for Dark Brewmaiden's Stun",
-	PlaySoundOnDisarm		= "Play sound on Disarm",
-	YellOnBarrel			= "Yell when you have Barrel"
+	PlaySoundOnDisarm		= "Звуковой сигнал, когда \"Обезвреживание Зловещего Варева\"",
+	YellOnBarrel			= "Крикнуть, когда на вас \"Бочка\""
 })
 
 L:SetMiscLocalization({
@@ -1531,11 +1531,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnToxic		= "Toxic Waste! Move Away!"
+	specWarnToxic		= "Токсический выброс! Отбегите!"
 })
 
 L:SetOptionLocalization({
-	specWarnToxic		= "Special Warning when you take damage from Toxic Waste"
+	specWarnToxic		= "Спец-предупреждение, когда вы получаете урон от \"Токсического выброса\""
 })
 
 -------------------
