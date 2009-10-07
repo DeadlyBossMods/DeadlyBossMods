@@ -4,13 +4,13 @@ local L
 
 local spell		= "%s"				
 local debuff		= "%s: >%s<"			
-local spellCD		= "Восстановление: %s"		-- translate
-local spellSoon		= "Скоро %s"		-- translate
+local spellCD		= "Восстановление: %s"				-- translate
+local spellSoon		= "Скоро %s"					-- translate
 local optionWarning	= "Отображать предупреждение \"%s\""		-- translate
 local optionPreWarning	= "Отображать пред-предупреждение \"%s\""	-- translate
 local optionSpecWarning	= "Отображать спец-предупреждение \"%s\""	-- translate
 local optionTimerCD	= "Отображать время до восстановления \"%s\""	-- translate
-local optionTimerDur	= "Отображать отсчет времени до \"%s\""	-- translate
+local optionTimerDur	= "Отображать отсчет времени до \"%s\""		-- translate
 local optionTimerCast	= "Отображать время чтения заклинания \"%s\""	-- translate
 
 
@@ -1379,4 +1379,201 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	yell1 = "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!", -- Аметистовая крепость
 	WavePortal		= "Открыто порталов: (%d+)/18"
+})
+
+
+---------------------
+-- Trial of the Champion --
+---------------------
+-------------------
+-- The Black Knight --
+-------------------
+L = DBM:GetModLocalization("BlackKnight")
+
+L:SetGeneralLocalization({
+	name = "Черный рыцарь"
+})
+
+L:SetWarningLocalization({
+	specWarnDesecration		= "Осквернение! Отбегите!",
+	warnExplode			= "Вурдалак-прислужник собирается взорваться. Отбегите!"
+})
+
+L:SetOptionLocalization({
+	specWarnDesecration		= "Спец-предупреждение, когда на вас \"Осквернение\"",
+	warnExplode			= "Предупреждение, когда все вурдалаки-прислужники собираются взорваться.",
+	SetIconOnMarkedTarget		= "Установить метку на цель под воздействием \"Метки смерти\""
+})
+
+L:SetMiscLocalization({
+	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+})
+
+-------------------
+-- Grand Champions --
+-------------------
+L = DBM:GetModLocalization("GrandChampions")
+
+L:SetGeneralLocalization({
+	name = "Абсолютные чемпионы"
+})
+
+L:SetWarningLocalization({
+	specWarnHaste			= "Ускорение на >%s<! Рассейте заклинание!",
+	specWarnPoison			= "Бутыль яда! Отбегите!",
+	warnHealingWave			= "Шаман читает заклинаие Волна исцеления. Прерывание!"
+})
+
+L:SetOptionLocalization({
+	warnHealingWave			= "Предупреждение, когда шаман читает заклинаие \"Волна исцеления\".",
+	specWarnHaste			= "Спец-предупреждение, когда маг читает \"Ускорение\" (для рассеивания/прерывания)",
+	specWarnPoison			= "Спец-предупреждение, когда вы получаете урон от яда"
+})
+
+L:SetMiscLocalization({
+	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
+
+-------------------
+-- Argent Confessor Paletress --
+-------------------
+L = DBM:GetModLocalization("Confessor")
+
+L:SetGeneralLocalization({
+	name = "Исповедница Серебряного Авангарда Пейлтресс"
+})
+
+L:SetWarningLocalization({
+	specwarnRenew			= "Исповедница читает заклинаие Обновление на >%s< Рассейте заклинание!",
+	warnReflectiveShield		= "Исповедница применяет Отражающий щит"
+})
+
+L:SetOptionLocalization({
+	specwarnRenew			= "Спец-предупреждение, когда на цели \"Обновление\" (для рассеивания/прерывания)",
+	warnReflectiveShield		= "Предупреждение, когда Исповедница применяет \"Отражающий щит\""
+})
+
+L:SetMiscLocalization({
+--	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
+
+-------------------
+-- Eadric the Pure --
+-------------------
+L = DBM:GetModLocalization("EadricthePure")
+
+L:SetGeneralLocalization({
+	name = "Эдрик Чистый"
+})
+
+L:SetWarningLocalization({
+	warnHammerofRighteous		= "Эдрик бросает Молот праведника!",
+	specwarnHammerofJustice		= "Молот правосудия на >%s<. Рассейте заклинание!",
+	specwarnRadiance		= "Сияние. Отвернитесь!"
+})
+
+L:SetOptionLocalization({
+	warnHammerofRighteous		= "Спец-предупреждение, когда Эдрик бросает Молот праведника",
+	specwarnHammerofJustice		= "Спец-предупреждение для \"Молота правосудия\" (для рассеивания)",
+	specwarnRadiance		= "Show Special warning for Radiance.",
+	SetIconOnHammerTarget		= "Установить метку на цель под воздействием \"Молота правосудия\""
+})
+
+L:SetMiscLocalization({
+--	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
+
+---------------------
+-- Holiday --
+---------------------
+-------------------
+-- Coren Direbrew --
+-------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "Корен Худовар"
+})
+
+L:SetWarningLocalization({
+	warnBarrel			= "Бочка на >%s<", 
+--	specwarnDaughters		= "Daughter Spawned!",
+	specwarnDisarm			= "Disarm. Move Away!",
+	specWarnBrew			= "Get rid of the brew before she tosses you another one!",
+	specWarnBrewStun		= "HINT: You were bonked, remember to drink the brew next time!"
+})
+
+L:SetOptionLocalization({
+	warnBarrel				= "Announce the Target of Barrel.",
+--	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
+	DisarmWarning			= "Show Special Warning for Disarm",
+	specWarnBrew			= "Show Special Warning for Dark Brewmaiden's Brew",
+	specWarnBrewStun		= "Show Special Warning for Dark Brewmaiden's Stun",
+	PlaySoundOnDisarm		= "Play sound on Disarm",
+	YellOnBarrel			= "Yell when you have Barrel"
+})
+
+L:SetMiscLocalization({
+	YellBarrel				= "Бочка на мне!"
+})
+
+
+---------------------
+-- Pit of Saron --
+---------------------
+-------------------
+-- Ick --
+-------------------
+L = DBM:GetModLocalization("Ick")
+
+L:SetGeneralLocalization({
+	name = "Плут"
+})
+
+L:SetWarningLocalization({
+	specWarnToxic		= "Toxic Waste! Move Away!"
+})
+
+L:SetOptionLocalization({
+	specWarnToxic		= "Special Warning when you take damage from Toxic Waste"
+})
+
+-------------------
+-- Forgemaster Garfrost --
+-------------------
+L = DBM:GetModLocalization("ForgemasterGarfrost")
+
+L:SetGeneralLocalization({
+	name = "Начальник кузни Гарфрост"
+})
+
+L:SetWarningLocalization({
+	warnSaroniteRock				= "Saronite Rock! Line of Sight now!",
+	specWarnPermafrost		= "%s: %s"
+})
+
+L:SetOptionLocalization({
+	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
+	specWarnPermafrost		= "Special Warning when Permafrost stacks get to high (value not set in stone)"
+})
+
+-------------------
+-- Scourgelord Tyrannus --
+-------------------
+L = DBM:GetModLocalization("ScourgelordTyrannus")
+
+L:SetGeneralLocalization({
+	name = "Повелитель Плети Тираний"
+})
+
+L:SetWarningLocalization({
+	warnUnholyPower				= "Scourgelord Tyrannus is casting Unholy Power.",
+	warnHoarfrost				= "Rimefangs is casting Hoarfrost.",
+	specWarnIcyBlast		= "Icy Blast! Move Away!"
+})
+
+L:SetOptionLocalization({
+	warnUnholyPower				= "Show warning when Scourgelord Tyrannus casts Unholy Power.",
+	warnHoarfrost				= "Show warning when Rimefangs casts Hoarfrost.",
+	specWarnIcyBlast		= "Special Warning when you take damage from Icy Blast"
 })
