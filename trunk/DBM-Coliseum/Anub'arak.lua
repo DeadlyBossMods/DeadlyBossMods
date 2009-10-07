@@ -64,15 +64,16 @@ function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Schedule(25)
-		self:ScheduleMethod(30, "ShadowStrike")
+		self:ScheduleMethod(32, "ShadowStrike")
 	end
 end
 
 function mod:ShadowStrike()
 	if self:IsInCombat() then
+		timerShadowStrike:Stop()
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Cancel()
-		preWarnShadowStrike:Schedule(25)
+		preWarnShadowStrike:Schedule(27)
 		self:ScheduleMethod(30, "ShadowStrike")
 	end
 end
@@ -137,7 +138,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			self:ScheduleMethod(5, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
+			timerShadowStrike:Stop()
+			preWarnShadowStrike:Cancel()
+			self:ScheduleMethod(7, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
 		end
 	end
 end
