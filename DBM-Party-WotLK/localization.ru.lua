@@ -1338,13 +1338,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningVoidShift			= optionWarning:format(GetSpellInfo(59743)),
-	WarningVoidShifted			= optionWarning:format(GetSpellInfo(59343)),
-	WarningShroudOfDarkness			= optionWarning:format(GetSpellInfo(59745)),
-	SpecialWarningVoidShifted		= optionSpecWarning:format(GetSpellInfo(59343)),
-	SpecialShroudofDarkness			= optionSpecWarning:format(GetSpellInfo(59745)),
-	TimerVoidShift				= optionTimerDur:format(GetSpellInfo(59743)),
-	TimerVoidShifted			= optionTimerDur:format(GetSpellInfo(59343))
+	WarningVoidShift		= optionWarning:format(GetSpellInfo(59743)),
+	WarningVoidShifted		= optionWarning:format(GetSpellInfo(59343)),
+	WarningShroudOfDarkness		= optionWarning:format(GetSpellInfo(59745)),
+	SpecialWarningVoidShifted	= optionSpecWarning:format(GetSpellInfo(59343)),
+	SpecialShroudofDarkness		= optionSpecWarning:format(GetSpellInfo(59745)),
+	TimerVoidShift			= optionTimerDur:format(GetSpellInfo(59743)),
+	TimerVoidShifted		= optionTimerDur:format(GetSpellInfo(59343))
 })
 
 
@@ -1358,13 +1358,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPortalSoon	= "Скоро новый портал",
-	WarningPortalNow	= "Портал #%d",
-	WarningBossNow		= "Прибытие Босса"
+	WarningPortalSoon		= "Скоро новый портал",
+	WarningPortalNow		= "Портал #%d",
+	WarningBossNow			= "Прибытие Босса"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Портал #%d" , 
+	TimerPortalIn			= "Портал #%d" , 
 })
 
 L:SetOptionLocalization({
@@ -1377,8 +1377,8 @@ L:SetOptionLocalization({
 
 
 L:SetMiscLocalization({
-	yell1 = "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!", -- Аметистовая крепость
-	WavePortal		= "Открыто порталов: (%d+)/18"
+	yell1 				= "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!",
+	WavePortal			= "Открыто порталов: (%d+)/18"
 })
 
 
@@ -1406,8 +1406,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
-})
+	YellCombatEnd			= "Нет! Я не могу... снова... проиграть."
 
 -------------------
 -- Grand Champions --
@@ -1431,7 +1430,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+	YellCombatEnd			= "Вы отлично сражались! Следующим испытанием станет битва с одним из членов Авангарда. Вы проверите свои силы в схватке с достойным соперником."
 })
 
 -------------------
@@ -1454,7 +1453,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+--	YellCombatEnd			= "Вы отлично сражались! Следующим испытанием станет битва с одним из членов Авангарда. Вы проверите свои силы в схватке с достойным соперником."
 })
 
 -------------------
@@ -1480,7 +1479,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+--	YellCombatEnd			= "Вы отлично сражались! Следующим испытанием станет битва с одним из членов Авангарда. Вы проверите свои силы в схватке с достойным соперником."
 })
 
 ---------------------
@@ -1497,24 +1496,24 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnBarrel			= "Бочка на >%s<", 
---	specwarnDaughters		= "Daughter Spawned!",
+д--	specwarnDaughters		= "Дочь!",
 	specwarnDisarm			= "Обезвреживание Зловещего Варева. Отбегите!",
-	specWarnBrew			= "Get rid of the brew before she tosses you another one!",
-	specWarnBrewStun		= "HINT: You were bonked, remember to drink the brew next time!"
+	specWarnBrew			= "Избавьтесь от варева прежде, чем она бросит вам другое!",
+	specWarnBrewStun		= "СОВЕТ: Вы получили удар, не забудте выпить варево в следующий раз!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel				= "Announce the Target of Barrel.",
---	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
-	DisarmWarning			= "Show Special Warning for Disarm",
-	specWarnBrew			= "Show Special Warning for Dark Brewmaiden's Brew",
-	specWarnBrewStun		= "Show Special Warning for Dark Brewmaiden's Stun",
-	PlaySoundOnDisarm		= "Звуковой сигнал, когда \"Обезвреживание Зловещего Варева\"",
+	warnBarrel			= "Сообщить цели, под воздействием \"Бочка\".",
+--	specwarnDaughters		= "Предупреждать о призыве Урсулы/Ильсы",
+	DisarmWarning			= "Спец-предупреждение для разоружения",
+	specWarnBrew			= "Спец-предупреждение для \"Пива темной официантки\"",
+	specWarnBrewStun		= "Спец-предупреждение для \"Оглушения темным пивом официантки\"",
+	PlaySoundOnDisarm		= "Звуковой сигнал, когда разоружение"",
 	YellOnBarrel			= "Крикнуть, когда на вас \"Бочка\""
 })
 
 L:SetMiscLocalization({
-	YellBarrel				= "Бочка на мне!"
+	YellBarrel			= "Бочка на мне!"
 })
 
 
@@ -1548,12 +1547,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock				= "Saronite Rock! Line of Sight now!",
+	warnSaroniteRock		= "Saronite Rock! Line of Sight now!",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
+	warnSaroniteRock		= "Show warning for Saronite Rock (to clear Permafrost)",
 	specWarnPermafrost		= "Special Warning when Permafrost stacks get to high (value not set in stone)"
 })
 
@@ -1567,13 +1566,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnUnholyPower				= "Scourgelord Tyrannus is casting Unholy Power.",
+	warnUnholyPower				= "Повелитель читает заклинание Нечистая сила.",
 	warnHoarfrost				= "Rimefangs is casting Hoarfrost.",
-	specWarnIcyBlast		= "Icy Blast! Move Away!"
+	specWarnIcyBlast			= "Ледяной вихрь! Убегайте!"
 })
 
 L:SetOptionLocalization({
-	warnUnholyPower				= "Show warning when Scourgelord Tyrannus casts Unholy Power.",
-	warnHoarfrost				= "Show warning when Rimefangs casts Hoarfrost.",
-	specWarnIcyBlast		= "Special Warning when you take damage from Icy Blast"
+	warnUnholyPower				= "Предупреждение, когда Повелитель читает заклинание \"Нечистая сила\".",
+	warnHoarfrost				= "Предупреждение, когда Rimefangs casts Hoarfrost.",
+	specWarnIcyBlast			= "Предупреждение, когда вы получаете урон от ледяного вихря"
 })
