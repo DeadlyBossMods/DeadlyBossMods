@@ -1529,13 +1529,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnToxic		= "Toxic Waste! Move Away!"
+	warnPursuit			= "Pursuit in 5 seconds",
+	specWarnToxic		= "Toxic Waste! Move Away!",
+	specWarnPursuit		= "You are being pursued. Run away!"
 })
 
 L:SetOptionLocalization({
-	specWarnToxic		= "Special Warning when you take damage from Toxic Waste"
+	warnPursuit			= "Show warning when Pursuit is soon",
+	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
+	specWarnPursuit		= "Special warning when you are being pursued"
 })
 
+L:SetMiscLocalization({
+	IckPursuit			= "%s is chasing you!"
+})
 -------------------
 -- Forgemaster Garfrost --
 -------------------
@@ -1552,7 +1559,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
-	specWarnPermafrost		= "Special Warning when Permafrost stacks get to high (value not set in stone)"
+	specWarnPermafrost		= "Special warning when Permafrost stacks get to high (value not set in stone)"
 })
 
 -------------------
@@ -1574,4 +1581,46 @@ L:SetOptionLocalization({
 	warnUnholyPower				= "Show warning when Scourgelord Tyrannus casts Unholy Power.",
 	warnHoarfrost				= "Show warning when Rimefangs casts Hoarfrost.",
 	specWarnIcyBlast		= "Special Warning when you take damage from Icy Blast"
+})
+
+L:SetMiscLocalization({
+	HoarfrostTarget			= "^%%s gazes at (%S+) and readies an icy attack!"
+})
+---------------------
+-- Forge of Souls --
+---------------------
+-------------------
+-- Bronjahm --
+-------------------
+L = DBM:GetModLocalization("Bronjahm")
+
+L:SetGeneralLocalization({
+	name = "Bronjahm"
+})
+
+L:SetWarningLocalization({
+	specwarnSoulstorm		= "Soulstorm! Move In!"
+})
+
+L:SetOptionLocalization({
+	specwarnSoulstorm		= "Special warning when Soulstorm is cast (to move in)"
+})
+
+-------------------
+-- Devourer of Souls --
+-------------------
+L = DBM:GetModLocalization("DevourerofSouls")
+
+L:SetGeneralLocalization({
+	name = "Devourer of Souls"
+})
+
+L:SetWarningLocalization({
+	specwarnMirroredSoul		= "Stop DPS!",
+	warnWellofSouls				= "Devourer of Souls is casting Well of Souls."
+})
+
+L:SetOptionLocalization({
+	specwarnMirroredSoul		= "Special warning to stop DPS for Mirrored Soul",
+	warnWellofSouls		= "Show warning when Devourer of Souls casts Well of Soul."
 })
