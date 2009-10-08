@@ -1526,17 +1526,24 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Ick")
 
 L:SetGeneralLocalization({
-	name = "Плут"
+	name = "Ик и Крик"
 })
 
 L:SetWarningLocalization({
-	specWarnToxic			= "Токсический выброс! Отбегите!"
+	warnPursuit			= "Погоня через 5 секунд",
+	specWarnToxic			= "Токсический выброс! Отбегите!",
+	specWarnPursuit			= "Вас приследуют. Бегите!"
 })
 
 L:SetOptionLocalization({
-	specWarnToxic			= "Спец-предупреждение, когда вы получаете урон от \"Токсического выброса\""
+	warnPursuit			= "Предупреждение о приблежающейся Погоне",
+	specWarnToxic			= "Спец-предупреждение, когда вы получаете урон от \"Токсического выброса\"",
+	specWarnPursuit			= "Спец-предупреждение, когда вас преследуют"
 })
 
+L:SetMiscLocalization({
+	IckPursuit			= "%s преследует вас!"
+})
 -------------------
 -- Forgemaster Garfrost --
 -------------------
@@ -1566,13 +1573,54 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnUnholyPower			= "Повелитель читает заклинание Нечистая сила.",
-	warnHoarfrost			= "Rimefangs читает заклинание Hoarfrost.",
-	specWarnIcyBlast		= "Ледяной вихрь! Бегите!"
+	specWarnIcyBlast		= "Ледяной вихр! Бегите!",
+	specWarnHoarfrost		= "Hoarfrost на вас! Бегите!",
+	specWarnHoarfrostNear		= "Hoarfrost около вас! Бегите!"
 })
 
 L:SetOptionLocalization({
-	warnUnholyPower			= "Предупреждение, когда Повелитель читает заклинание \"Нечистая сила\".",
-	warnHoarfrost			= "Предупреждение, когда Rimefangs читает заклинание \"Hoarfrost\".",
-	specWarnIcyBlast		= "Предупреждение, когда вы получаете урон от \"Ледяного вихря\"."
+	specWarnIcyBlast		= "Спец-предупреждение, когда вы получаете урон от \"Ледяного вихря\"",
+	specWarnHoarfrost		= "Спец-предупреждение, когда Hoarfrost на вас",
+	specWarnHoarfrostNear		= "Спец-предупреждение, когда Hoarfrost около вас",
+	SetIconOnHoarfrostTarget	= "Установить метку на цель под воздействием Hoarfrost"
+})
+
+L:SetMiscLocalization({
+	HoarfrostTarget			= "^%%s пристально смотрит на (%S+) и готовится к ледяной атаке!"
+})
+---------------------
+-- Forge of Souls --
+---------------------
+-------------------
+-- Bronjahm --
+-------------------
+L = DBM:GetModLocalization("Bronjahm")
+
+L:SetGeneralLocalization({
+	name = "Броньям"
+})
+
+L:SetWarningLocalization({
+	specwarnSoulstorm		= "Soulstorm! Приблизьтесь!"
+})
+
+L:SetOptionLocalization({
+	specwarnSoulstorm		= "Спец-предупреждение, когда Soulstorm (подбежать ближе)"
+})
+
+-------------------
+-- Devourer of Souls --
+-------------------
+L = DBM:GetModLocalization("DevourerofSouls")
+
+L:SetGeneralLocalization({
+	name = "Пожиратель душ"
+})
+
+L:SetWarningLocalization({
+	specwarnMirroredSoul		= "Прекратите атаку!"
+})
+
+L:SetOptionLocalization({
+	specwarnMirroredSoul		= "Спец-предупреждение о прикращении атаки, при Mirrored Soul"
 })
