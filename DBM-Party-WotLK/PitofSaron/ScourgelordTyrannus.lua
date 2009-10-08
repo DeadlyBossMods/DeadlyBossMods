@@ -2,7 +2,7 @@ local mod = DBM:NewMod("ScourgelordTyrannus", "DBM-Party-WotLK", 15)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1665 $"):sub(12, -3))
-mod:SetCreatureID(12800)
+mod:SetCreatureID(12800, 13568)
 mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
