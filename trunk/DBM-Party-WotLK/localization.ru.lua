@@ -1496,7 +1496,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnBarrel			= "Бочка на >%s<", 
-д--	specwarnDaughters		= "Дочь!",
+--	specwarnDaughters		= "Дочь!",
 	specwarnDisarm			= "Обезвреживание Зловещего Варева. Отбегите!",
 	specWarnBrew			= "Избавьтесь от варева прежде, чем она бросит вам другое!",
 	specWarnBrewStun		= "СОВЕТ: Вы получили удар, не забудте выпить варево в следующий раз!"
@@ -1508,7 +1508,7 @@ L:SetOptionLocalization({
 	DisarmWarning			= "Спец-предупреждение для разоружения",
 	specWarnBrew			= "Спец-предупреждение для \"Пива темной официантки\"",
 	specWarnBrewStun		= "Спец-предупреждение для \"Оглушения темным пивом официантки\"",
-	PlaySoundOnDisarm		= "Звуковой сигнал, когда разоружение"",
+	PlaySoundOnDisarm		= "Звуковой сигнал, когда разоружение",
 	YellOnBarrel			= "Крикнуть, когда на вас \"Бочка\""
 })
 
