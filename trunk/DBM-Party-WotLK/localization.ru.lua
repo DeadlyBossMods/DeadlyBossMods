@@ -4,14 +4,14 @@ local L
 
 local spell		= "%s"				
 local debuff		= "%s: >%s<"			
-local spellCD		= "Восстановление: %s"				-- translate
-local spellSoon		= "Скоро %s"					-- translate
-local optionWarning	= "Отображать предупреждение \"%s\""		-- translate
-local optionPreWarning	= "Отображать пред-предупреждение \"%s\""	-- translate
-local optionSpecWarning	= "Отображать спец-предупреждение \"%s\""	-- translate
-local optionTimerCD	= "Отображать время до восстановления \"%s\""	-- translate
-local optionTimerDur	= "Отображать отсчет времени до \"%s\""		-- translate
-local optionTimerCast	= "Отображать время чтения заклинания \"%s\""	-- translate
+local spellCD		= "Восстановление: %s"
+local spellSoon		= "Скоро %s"
+local optionWarning	= "Предупреждение для \"%s\""
+local optionPreWarning	= "Предупреждать заранее о \"%s\""
+local optionSpecWarning	= "Спец-предупреждение для \"%s\""
+local optionTimerCD	= "Отсчеть времени до восстановления \"%s\""
+local optionTimerDur	= "Отсчет времени до \"%s\""
+local optionTimerCast	= "Время чтения заклинания \"%s\""
 
 
 --------------------------------
@@ -280,7 +280,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTime	= optionWarning:format("Искажение/Остановка времени"),	-- requires translation
 	WarningCurse	= optionWarning:format(GetSpellInfo(52772)),
-	TimerTimeCD	= optionTimerCD:format("Искажение/Остановка времени"),	-- translate
+	TimerTimeCD	= optionTimerCD:format("Искажение/Остановка времени"),
 	TimerCurse	= optionTimerDur:format(GetSpellInfo(52772))
 })
 
@@ -328,7 +328,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("Новая волна"),
-	TimerWaveIn		= "Отображать время до \"Следующая волна\" (только волна 6)",
+	TimerWaveIn		= "Отсчет времени до \"Следующей волны\" (только волна 6)",
 })
 
 
@@ -499,16 +499,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warningElemental	= "Фаза элементаля",		-- translate :)
-	WarningStone		= "Фаза колосса"		-- translate :)
+	warningElemental	= "Фаза элементаля",
+	WarningStone		= "Фаза колосса"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningElemental	= "Отображать предупреждение фазы элементаля",	-- translate ;)
-	WarningStone		= "Отображать предупреждение фазы колосса"		-- translate :)
+	WarningElemental	= "Предупреждение для фазы элементаля",
+	WarningStone		= "Предупреждение для фазы колосса"
 })
 
 
@@ -820,24 +820,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Скоро Разделение",		-- translate
-	WarningSplitNow		= "Разделение",		-- translate
-	WarningMerge		= "Размытие"		-- translate
+	WarningSplitSoon	= "Скоро Разделение",
+	WarningSplitNow		= "Разделение",
+	WarningMerge		= "Размытие"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= optionPreWarning:format("Разделение"),	-- translate
-	WarningSplitNow		= optionWarning:format("Разделение"),	-- translate
-	WarningMerge		= optionWarning:format("Размытие"),	-- translate
+	WarningSplitSoon	= optionPreWarning:format("Разделение"),
+	WarningSplitNow		= optionWarning:format("Разделение"),
+	WarningMerge		= optionWarning:format("Размытие"),
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "Меня на вас хватит!",		-- translate
-	SplitTrigger2 = "Вы получите больше, чем заслуживаете!",	-- translate
-	MergeTrigger = "Ну теперь, покончим с этим!"				-- translate
+	SplitTrigger1 		= "Меня на вас хватит!",
+	SplitTrigger2		= "Вы получите больше, чем заслуживаете!",
+	MergeTrigger 		= "Ну теперь, покончим с этим!"	
 })
 
 
@@ -989,7 +989,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningShift	= spell,
 	WarningEnrage	= spell,
-	WarningShiftEnd	= "Сдвига плоскости заканчивается"		-- translate
+	WarningShiftEnd	= "Сдвига плоскости заканчивается"
 })
 
 L:SetTimerLocalization({
@@ -1071,7 +1071,7 @@ L:SetWarningLocalization({
 	WarningSmash			= spell,
 	WarningGrowl			= spell,
 	WarningWoeStrike		= debuff,
-	SpecialWarningSpelllock 	= "Запрет чар - прекратите чтение заклинаний!"  -- translate
+	SpecialWarningSpelllock 	= "Запрет чар - прекратите чтение заклинаний!"
 })
 
 L:SetTimerLocalization({
@@ -1396,13 +1396,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnDesecration		= "Осквернение! Отбегите!",
-	warnExplode			= "Вурдалак-прислужник собирается взорваться. Отбегите!"
+	warnExplode			= "Вурдалак-прислужник готовится к Взрыванию. Отбегите!"
 })
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "Спец-предупреждение, когда на вас \"Осквернение\"",
-	warnExplode			= "Предупреждение, когда все вурдалаки-прислужники собираются взорваться.",
-	SetIconOnMarkedTarget		= "Установить метку на цель под воздействием \"Метки смерти\""
+	warnExplode			= "Предупреждение, когда все вурдалаки-прислужники готовятся к \"Взрыванию\".",
+	SetIconOnMarkedTarget		= "Установить метку на цель под воздействием \"Метка смерти\""
 })
 
 L:SetMiscLocalization({
@@ -1426,7 +1426,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnHealingWave			= "Предупреждение, когда шаман читает заклинаие \"Волна исцеления\".",
 	specWarnHaste			= "Спец-предупреждение, когда маг читает \"Ускорение\" (для рассеивания/прерывания)",
-	specWarnPoison			= "Спец-предупреждение, когда вы получаете урон от яда"
+	specWarnPoison			= "Спец-предупреждение, когда вы получаете урон от \"Бутыля яда\""
 })
 
 L:SetMiscLocalization({
@@ -1443,7 +1443,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "Исповедница читает заклинаие Обновление на >%s< Рассейте заклинание!",
+	specwarnRenew			= "Исповедница читает заклинаие Обновление на >%s<. Рассейте заклинание!",
 	warnReflectiveShield		= "Исповедница применяет Отражающий щит"
 })
 
@@ -1472,7 +1472,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous		= "Спец-предупреждение, когда Эдрик бросает Молот праведника",
+	warnHammerofRighteous		= "Спец-предупреждение, когда Эдрик бросает \"Молот праведника\"",
 	specwarnHammerofJustice		= "Спец-предупреждение для \"Молота правосудия\" (для рассеивания)",
 	specwarnRadiance		= "Спец-предупреждение для \"Сияния\".",
 	SetIconOnHammerTarget		= "Установить метку на цель под воздействием \"Молота правосудия\""
@@ -1530,11 +1530,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnToxic		= "Токсический выброс! Отбегите!"
+	specWarnToxic			= "Токсический выброс! Отбегите!"
 })
 
 L:SetOptionLocalization({
-	specWarnToxic		= "Спец-предупреждение, когда вы получаете урон от \"Токсического выброса\""
+	specWarnToxic			= "Спец-предупреждение, когда вы получаете урон от \"Токсического выброса\""
 })
 
 -------------------
@@ -1547,13 +1547,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "Saronite Rock! Line of Sight now!",
+	warnSaroniteRock		= "Саронитовая скала! Линия видимости!",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock		= "Show warning for Saronite Rock (to clear Permafrost)",
-	specWarnPermafrost		= "Special Warning when Permafrost stacks get to high (value not set in stone)"
+	warnSaroniteRock		= "Предупреждение для \"Саронитовой скалы\" (очистка Вечной мерзлотой)",
+	specWarnPermafrost		= "Спец-предупреждение, когда превышено суммарное количество эффектов \"Вечной мерзлоты\""
 })
 
 -------------------
@@ -1566,13 +1566,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnUnholyPower				= "Повелитель читает заклинание Нечистая сила.",
-	warnHoarfrost				= "Rimefangs is casting Hoarfrost.",
-	specWarnIcyBlast			= "Ледяной вихрь! Убегайте!"
+	warnUnholyPower			= "Повелитель читает заклинание Нечистая сила.",
+	warnHoarfrost			= "Rimefangs читает заклинание Hoarfrost.",
+	specWarnIcyBlast		= "Ледяной вихрь! Бегите!"
 })
 
 L:SetOptionLocalization({
-	warnUnholyPower				= "Предупреждение, когда Повелитель читает заклинание \"Нечистая сила\".",
-	warnHoarfrost				= "Предупреждение, когда Rimefangs casts Hoarfrost.",
-	specWarnIcyBlast			= "Предупреждение, когда вы получаете урон от ледяного вихря"
+	warnUnholyPower			= "Предупреждение, когда Повелитель читает заклинание \"Нечистая сила\".",
+	warnHoarfrost			= "Предупреждение, когда Rimefangs читает заклинание \"Hoarfrost\".",
+	specWarnIcyBlast		= "Предупреждение, когда вы получаете урон от \"Ледяного вихря\"."
 })
