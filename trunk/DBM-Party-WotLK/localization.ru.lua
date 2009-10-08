@@ -1407,7 +1407,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellCombatEnd			= "Нет! Я не могу... снова... проиграть."
-
+})
 -------------------
 -- Grand Champions --
 -------------------
