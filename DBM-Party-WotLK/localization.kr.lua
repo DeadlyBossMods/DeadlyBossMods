@@ -1513,3 +1513,112 @@ L:SetOptionLocalization({
 L:SetMiscLocalization{
 	YellBarrel		= "저에게 맥주통!"
 }
+
+
+---------------------
+-- Pit of Saron --
+---------------------
+-------------------
+-- Ick --
+-------------------
+L = DBM:GetModLocalization("Ick")
+
+L:SetGeneralLocalization({
+	name = "이크"
+})
+
+L:SetWarningLocalization({
+	warnPursuit			= "추격 5 초 전",
+	specWarnToxic		= "Toxic Waste! Move Away!",
+	specWarnPursuit		= "당신을 곧 추격. 뛰세요!"
+})
+
+L:SetOptionLocalization({
+	warnPursuit			= "곧 추격일 경우 경고 보기",
+	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
+	specWarnPursuit		= "당신을 추격 하게 될 경우 특수 경고 보기"
+})
+
+L:SetMiscLocalization({
+	IckPursuit			= "%s is chasing you!"
+})
+-------------------
+-- Forgemaster Garfrost --
+-------------------
+L = DBM:GetModLocalization("ForgemasterGarfrost")
+
+L:SetGeneralLocalization({
+	name = "괴철로감독관 가프로스트"
+})
+
+L:SetWarningLocalization({
+	warnSaroniteRock			= "Saronite Rock! Line of Sight now!",
+	specWarnPermafrost			= "%s: %s"
+})
+
+L:SetOptionLocalization({
+	warnSaroniteRock			= "Show warning for Saronite Rock (to clear Permafrost)",
+	specWarnPermafrost			= "Special warning when Permafrost stacks get to high (value not set in stone)"
+})
+
+-------------------
+-- Scourgelord Tyrannus --
+-------------------
+L = DBM:GetModLocalization("ScourgelordTyrannus")
+
+L:SetGeneralLocalization({
+	name = "스컬지군주 티라누스"
+})
+
+L:SetWarningLocalization({
+	specWarnIcyBlast			= "Icy Blast! Move Away!",
+	specWarnHoarfrost			= "당신에게 흰 서리! 이동하세요!",
+	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
+})
+
+L:SetOptionLocalization({
+	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
+	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
+	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
+	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
+})
+
+L:SetMiscLocalization({
+	HoarfrostTarget				= "^%%s gazes at (%S+) and readies an icy attack!"
+})
+---------------------
+-- Forge of Souls --
+---------------------
+-------------------
+-- Bronjahm --
+-------------------
+L = DBM:GetModLocalization("Bronjahm")
+
+L:SetGeneralLocalization({
+	name = "브론잠"
+})
+
+L:SetWarningLocalization({
+	specwarnSoulstorm		= "영혼폭풍! 들어가세요!"
+})
+
+L:SetOptionLocalization({
+	specwarnSoulstorm		= "영혼폭풍을 시전 할 경우 특수 경고 보기(이동경고)"
+})
+
+-------------------
+-- Devourer of Souls --
+-------------------
+L = DBM:GetModLocalization("DevourerofSouls")
+
+L:SetGeneralLocalization({
+	name = "영혼의 포식자"
+})
+
+L:SetWarningLocalization({
+	specwarnMirroredSoul		= "비춰진 영혼! 딜 중지!"
+})
+
+L:SetOptionLocalization({
+	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기"
+})
