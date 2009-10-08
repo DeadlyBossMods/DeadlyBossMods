@@ -1439,7 +1439,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Confessor")
 
 L:SetGeneralLocalization({
-	name = "Исповедница Серебряного Авангарда Пейлтресс"
+	name = "Исповедница Пейлтресс"
 })
 
 L:SetWarningLocalization({
