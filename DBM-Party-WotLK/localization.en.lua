@@ -1572,15 +1572,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnUnholyPower				= "Scourgelord Tyrannus is casting Unholy Power.",
-	warnHoarfrost				= "Rimefangs is casting Hoarfrost.",
-	specWarnIcyBlast		= "Icy Blast! Move Away!"
+	specWarnIcyBlast			= "Icy Blast! Move Away!",
+	specWarnHoarfrost			= "Hoarfrost on you! Move!",
+	specWarnHoarfrostNear		= "Hoarfrost near to you! Move!"
 })
 
 L:SetOptionLocalization({
-	warnUnholyPower				= "Show warning when Scourgelord Tyrannus casts Unholy Power.",
-	warnHoarfrost				= "Show warning when Rimefangs casts Hoarfrost.",
-	specWarnIcyBlast		= "Special Warning when you take damage from Icy Blast"
+	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
+	specWarnHoarfrost			= "Show Special Warning when Hoarfrost on you",
+	specWarnHoarfrostNear		= "Show Special Warning when Hoarfrost near you"
 })
 
 L:SetMiscLocalization({
