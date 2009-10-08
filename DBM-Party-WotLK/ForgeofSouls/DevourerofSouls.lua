@@ -12,14 +12,18 @@ mod:RegisterEvents(
 )
 
 local warnMirroredSoul			= mod:NewTargetAnnounce(69051)
-local warnUnleashedSouls			= mod:NewTargetAnnounce(68939)
-local warnWailingSouls			= mod:NewTargetAnnounce(68899)
-local warnWellofSouls				= mod:NewAnnounce("warnWellofSouls")
+local warnUnleashedSouls			= mod:NewSpellAnnounce(68939)
+local warnWailingSouls			= mod:NewSpellAnnounce(68899)
+local warnWellofSouls				= mod:NewSpellAnnounce(68820)
 local specwarnMirroredSoul	= mod:NewSpecialWarning("specwarnMirroredSoul")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68820) then							-- Well of Souls
 		warnWellofSouls:Show(args.spellName)
+	elseif args:IsSpellID(68939) then							-- Unleashed Souls
+		warnUnleashedSouls:Show(args.spellName)
+	elseif args:IsSpellID(68899) then							-- Wailing Souls
+		warnWailingSouls:Show(args.spellName)
 	end
 end
 
@@ -29,10 +33,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnMirroredSoul:Show()
 			specwarnMirroredSoul:Show()
 		end
-	elseif args:IsSpellID(68939) then							-- Unleashed Souls
-		warnUnleashedSouls:Show(args.destName)
-	elseif args:IsSpellID(68899) then							-- Wailing Souls
-		warnWailingSouls:Show(args.destName)
 	end
 end
 
