@@ -1580,7 +1580,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
 	specWarnHoarfrost			= "Show Special Warning when Hoarfrost on you",
-	specWarnHoarfrostNear		= "Show Special Warning when Hoarfrost near you"
+	specWarnHoarfrostNear		= "Show Special Warning when Hoarfrost near you",
+	SetIconOnHoarfrostTarget	= "Set icon on Hoarfrost target"
 })
 
 L:SetMiscLocalization({
@@ -1616,11 +1617,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "Stop DPS!",
-	warnWellofSouls				= "Devourer of Souls is casting Well of Souls."
+	specwarnMirroredSoul		= "Stop DPS!"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "Special warning to stop DPS for Mirrored Soul",
-	warnWellofSouls		= "Show warning when Devourer of Souls casts Well of Soul."
+	specwarnMirroredSoul		= "Special warning to stop DPS for Mirrored Soul"
 })
