@@ -10,10 +10,11 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local timerForcefulSmash	= mod:NewNextTimer(40, 69627) --Experimental, Timer may not be exact
+local timerForcefulSmash	= mod:NewNextTimer(40, 69627) --Experimental, Timer may not be exact. Aso needs to be added to boss landing (jumpping off drake) event. But need BOSS emote for it first.
 local warnUnholyPower				= mod:NewAnnounce("warnUnholyPower")
 local timerUnholyPower				= mod:NewBuffActiveTimer(10, 69629)
 local warnOverlordsBrand			= mod:NewTargetAnnounce(69172)
@@ -23,14 +24,11 @@ local specWarnIcyBlast		= mod:NewSpecialWarning("specWarnIcyBlast")
 
 --mod:AddBoolOption("SetIconOnHoarfrostTarget", true) --Needs chatlog data to finish implimentation
 
-function mod:OnCombatStart(delay)
---	timerForcefulSmash:Start(-delay) --this is wrong place for this, combat doesn't start with him landed, event needs to be registered when he jumps off drake to start timer. Awaiting phasing bug fix so i can gather chat events and add register those events to start timer instead.
-
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69629, 69167) then							-- Unholy Power
 		warnUnholyPower:Show(args.spellName)
-	elseif args:IsSpellID(69246) then							-- Hoarfrost
-		warnHoarfrost:Show(args.spellName)
+--	elseif args:IsSpellID(69246) then							-- Trying a new method for this and using BOSS EMOTE instead, this method just wasn't working.
+--		warnHoarfrost:Show(args.spellName)
 	elseif args:IsSpellID(69155, 69627) then							-- Forceful Smash
 	timerForcefulSmash:Start()
 	end
@@ -52,7 +50,12 @@ end
 		elseif args:IsSpellID(69172) then							-- Overlord's Brand
 			warnOverlordsBrand:Show(args.destName)
 			timerOverlordsBrand:Show(args.destName)
-		end
 	end
 end
 
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	local target = msg and msg:match(L.HoarfrostTarget)
+	if target then
+		warnHoarfrost:Show(target)
+	end
+end
