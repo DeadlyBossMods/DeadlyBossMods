@@ -34,6 +34,8 @@ L.Disable				= "откл."
 
 L.NoSound				= "Без звука"
 
+L.IconsInUse				= "Используемые метки"
+
 -- Tab: Boss Statistics
 L.BossStatistics			= "Статистика для босса"
 L.Statistic_Kills			= "Убийств:"
