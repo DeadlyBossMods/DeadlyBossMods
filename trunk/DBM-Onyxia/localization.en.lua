@@ -12,6 +12,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecWarnBreath	= "Deep Breath",
 	WarnWhelpsSoon	= "Whelp spawn soon",
+	WarnPhase3Soon	= "Phase 3 incoming soon"
 }
 
 L:SetTimerLocalization{
@@ -25,10 +26,11 @@ L:SetOptionLocalization{
 	TimerWhelps		= "Show timer for whelp spawns",
 	WarnWhelpsSoon	= "Show pre-warning for whelp spawns",
 	SoundBreath		= "Play sound on Deep Breath",
-	SoundWTF		= "Play some funny sounds of a legendary Onyxia classic raid"
+	SoundWTF		= "Play some funny sounds of a legendary Onyxia classic raid",
+	WarnPhase3Soon	= "Pre warn on P3 (at ~41%)"
 }
 
-L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
+L:SetMiscLocalization{
 	Breath = "%s takes in a deep breath...",
 	YellP2 = "This meaningless exertion bores me. I'll incinerate you all from above!",
 	YellP3 = "It seems you'll need another lesson, mortals!"
