@@ -27,7 +27,7 @@ L:SetOptionLocalization{
 	WarnWhelpsSoon	= "Show pre-warning for whelp spawns",
 	SoundBreath		= "Play sound on Deep Breath",
 	SoundWTF		= "Play some funny sounds of a legendary Onyxia classic raid",
-	WarnPhase3Soon	= "Pre warn on P3 (at ~41%)"
+	WarnPhase3Soon	= "Show pre-warning for Phase 3 (at ~41%)"
 }
 
 L:SetMiscLocalization{
