@@ -12,6 +12,7 @@ mod:RegisterEvents(
 )
 
 local warnMirroredSoul			= mod:NewTargetAnnounce(69051)
+local timerMirroredSoul			= mod:NewTargetTimer(8, 69051)
 local warnUnleashedSouls			= mod:NewSpellAnnounce(68939)
 local warnWailingSouls			= mod:NewSpellAnnounce(68899)
 local warnWellofSouls				= mod:NewSpellAnnounce(68820)
@@ -30,7 +31,8 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69051) then							-- Mirroed Soul
 		if args:IsPlayer() then
-			warnMirroredSoul:Show()
+			warnMirroredSoul:Show(args.destName)
+			timerMirroredSoul:Show(args.destName)
 			specwarnMirroredSoul:Show()
 		end
 	end
