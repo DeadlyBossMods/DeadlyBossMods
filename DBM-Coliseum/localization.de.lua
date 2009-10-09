@@ -56,3 +56,53 @@ L:SetWarningLocalization{
 }
 
 
+
+------------------
+-- Anub'arak --
+------------------
+L = DBM:GetModLocalization("Anub'arak_Coliseum")
+
+L:SetGeneralLocalization{
+	name 					= "Anub'arak"
+}
+
+L:SetTimerLocalization{
+	TimerEmerge				= "Auftauchen in",
+	TimerSubmerge			= "Untertauchen in"
+}
+
+L:SetWarningLocalization{
+	WarnEmerge				= "Anub'arak taucht auf",
+	WarnEmergeSoon			= "Auftauchen in 10 Sekunden",
+	WarnSubmerge			= "Anub'arak taucht unter",
+	WarnSubmergeSoon		= "Untertauchen in 10 Sekunden",
+	WarnPursue				= "Anub verfolgt >%s<",
+	SpecWarnPursue			= "Anub verfolgt dich!",
+	SpecWarnShadowStrike	= "Schattenhieb - Unterbreche jetzt!",
+	SpecWarnPCold			= "Durchdringende Kälte"
+}
+
+L:SetMiscLocalization{
+	YellPull				= "Dieser Ort wird Euch als Grab dienen!",
+	Emerge					= "entsteigt dem Boden!",
+	Burrow					= "gräbt sich in den Boden!"
+}
+
+L:SetOptionLocalization{
+	WarnEmerge				= "Warnung für auftauchen",
+	WarnEmergeSoon			= "Zeige Vorwarnung für auftauchen",
+	WarnSubmerge			= "Warnung für abtauchen",
+	WarnSubmergeSoon		= "Zeige Vorwarnung für abtauchen",
+	SpecWarnPursue			= "Zeige Spezialwarnung wenn du verfolgt wirst",
+	TimerEmerge				= "Zeit für auftauchen anzeigen",
+	TimerSubmerge			= "Zeit für abtauchen anzeigen",
+	PlaySoundOnPursue		= "Spiele Sound wenn du verfolgt wirst",
+	PursueIcon				= "Setze Symbol auf den Spieler der verfolgt wird",
+	WarnPursue				= "Zeige Spieler an die verfolgt werden",
+	SpecWarnShadowStrike	= "Spezialwarnung für Schattenhieb (zum unterbrechen)",
+	SpecWarnPCold			= "Spezialwarnung bei Durchdringende Kälte",
+	RemoveHealthBuffsInP3	= "Lösche Trefferpunkt steigernde Buffs bei Phase 3"
+}
+
+
+
