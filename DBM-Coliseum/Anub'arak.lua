@@ -134,19 +134,9 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg and msg:find(L.Burrow) then
-		warnSubmerge:Show()
-		warnEmergeSoon:Schedule(55)
-		timerEmerge:Start()
-		timerFreezingSlash:Stop()
+		self:SendSync("Burrow")
 	elseif msg and msg:find(L.Emerge) then
-		warnEmerge:Show()
-		warnSubmergeSoon:Schedule(75)
-		timerSubmerge:Start()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerShadowStrike:Stop()
-			preWarnShadowStrike:Cancel()
-			self:ScheduleMethod(7, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
-		end
+		self:SendSync("Emerge")
 	end
 end
 
@@ -157,4 +147,21 @@ function mod:RemoveBuffs()
 	CancelUnitBuff("player", (GetSpellInfo(69377)))		-- Runescroll of Fortitude
 end
 
+function mod:OnSync(msg, arg)
+	if msg == "Burrow" then
+		warnSubmerge:Show()
+		warnEmergeSoon:Schedule(55)
+		timerEmerge:Start()
+		timerFreezingSlash:Stop()
+	elseif msg == "Emerge" then
+		warnEmerge:Show()
+		warnSubmergeSoon:Schedule(75)
+		timerSubmerge:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerShadowStrike:Stop()
+			preWarnShadowStrike:Cancel()
+			self:ScheduleMethod(7, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
+		end
+	end
+end
 
