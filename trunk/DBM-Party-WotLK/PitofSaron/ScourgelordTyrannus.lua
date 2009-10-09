@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"SPELL_PERIODIC_DAMAGE"
 )
@@ -19,6 +20,7 @@ local warnUnholyPower				= mod:NewSpellAnnounce(69167)
 local timerUnholyPower				= mod:NewBuffActiveTimer(10, 69629)
 local warnOverlordsBrand			= mod:NewTargetAnnounce(69172)
 local timerOverlordsBrand			= mod:NewTargetTimer(8, 69172)
+local specTyrannusEngaged				= mod:NewSpecialWarning("specTyrannusEngaged", nil, false)
 local specWarnIcyBlast				= mod:NewSpecialWarning("specWarnIcyBlast")
 
 -- Hoarfrost ID 69246
@@ -26,9 +28,14 @@ local warnHoarfrost					= mod:NewSpellAnnounce(69246)
 local specWarnHoarfrost				= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoerfrostNear			= mod:NewSpecialWarning("specWarnHoarfrostNear")
 
-
 mod:AddBoolOption("SetIconOnHoarfrostTarget", true, "announce")
 
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.TyrannusYell then		-- Tyrannus Jumps down from drake. Phase 2 so to speak.
+		timerForcefulSmash:Start()  --Experimental support for possible next Forceful smash after he's been engaged.
+		specTyrannusEngaged:Show()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69629, 69167) then						-- Unholy Power
