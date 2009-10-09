@@ -271,5 +271,6 @@ L:SetOptionLocalization{
 	WarnPursue			= "提示被追擊的玩家",
 	SpecWarnPCold			= "為透骨之寒顯示特別警告",
 	SetIconsOnPCold			= "為透骨之寒的目標設置標記",
-	SpecWarnShadowStrike		= "為暗影打擊顯示特別警告 (斷法用)"
+	SpecWarnShadowStrike		= "為暗影打擊顯示特別警告 (斷法用)",
+	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益"
 }
