@@ -253,5 +253,7 @@ L:SetOptionLocalization{
 	PursueIcon				= "Set icon on pursued player",
 	WarnPursue				= "Announce pursued player",
 	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to interrupt)",
-	SpecWarnPCold			= "Show special warning for Penetrating Cold"
+	SpecWarnPCold			= "Show special warning for Penetrating Cold",
+	RemoveHealthBuffsInP3	= "Remove HP Buffs on start of phase 3"
 }
+

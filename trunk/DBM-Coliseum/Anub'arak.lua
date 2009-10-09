@@ -16,6 +16,8 @@ mod:RegisterEvents(
 mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
 
+mod:AddBoolOption("RemoveHealthBuffsInP3", false)
+
 -- Pursue
 local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
@@ -114,12 +116,15 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(66118, 67630, 68646, 68647) then		-- Swarm
+	if args:IsSpellID(66118, 67630, 68646, 68647) then		-- Swarm (start p3)
 		warnPhase3:Show()
 		warnEmergeSoon:Cancel()
 		warnSubmergeSoon:Cancel()
 		timerEmerge:Stop()
 		timerSubmerge:Stop()
+		if self.Options.RemoveHealthBuffsInP3 then
+			mod:ScheduleMethod(0.1, "RemoveBuffs")
+		end
 	elseif args:IsSpellID(66134) then						-- Shadow Strike
 		self:ScheduleMethod(0.1, "ShadowStrike")
 		specWarnShadowStrike:Show()
@@ -144,4 +149,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		end
 	end
 end
+
+function mod:RemoveBuffs()
+	CancelUnitBuff("player", (GetSpellInfo(47440)))		-- Commanding Shout
+	CancelUnitBuff("player", (GetSpellInfo(48161)))		-- Power Word: Fortitude
+	CancelUnitBuff("player", (GetSpellInfo(48162)))		-- Prayer of Fortitude
+	CancelUnitBuff("player", (GetSpellInfo(69377)))		-- Runescroll of Fortitude
+end
+
 
