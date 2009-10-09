@@ -14,6 +14,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecWarnBreath		= "深呼吸",
 	WarnWhelpsSoon		= "幼龍即將出現",
+	WarnPhase3Soon		= "第3階段 即將到來"
 }
 
 L:SetTimerLocalization{
@@ -27,7 +28,8 @@ L:SetOptionLocalization{
 	TimerWhelps		= "為幼龍顯示計時器",
 	WarnWhelpsSoon		= "為幼龍出現顯示預先警告",
 	SoundBreath		= "深呼吸時播放音效",
-	SoundWTF		= "為經典傳奇式奧妮克希亞副本播放一些有趣的音效"
+	SoundWTF		= "為經典傳奇式奧妮克希亞副本播放一些有趣的音效",
+	WarnPhase3Soon		= "為第3階段顯示預先警告 (大約在41%)"
 }
 
 L:SetMiscLocalization{
