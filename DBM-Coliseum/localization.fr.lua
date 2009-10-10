@@ -256,5 +256,6 @@ L:SetOptionLocalization{
 	PursueIcon			= "Met une icône sur la tête du joueur qui est suivi",
 	WarnPursue			= "Annonce le joueur qui est suivi",
 	SpecWarnShadowStrike	= "Montre une alerte spéciale pour les Attaque d'ombre (Pour les casser)",
-	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant"
+	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant",
+	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3"
 }

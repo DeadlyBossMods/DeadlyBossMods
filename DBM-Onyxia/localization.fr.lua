@@ -14,6 +14,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecWarnBreath	= "Respiration profonde",
 	WarnWhelpsSoon	= "Les Jeunes dragonnets onyxien arrivent bientôt",
+	WarnPhase3Soon	= "Phase 3 bientôt"
 }
 
 L:SetTimerLocalization{
@@ -27,7 +28,8 @@ L:SetOptionLocalization{
 	TimerWhelps		= "Montre le timer pour l'arrivée des Jeunes dragonnets onyxien",
 	WarnWhelpsSoon	= "Montre une pré-alerte avant l'arrivée des Jeunes dragonnets onyxien",
 	SoundBreath		= "Joue un son pour la Respiration profonde",
-	SoundWTF		= "Joue des sons amusant du légendaire raid classic d'Onyxia"
+	SoundWTF		= "Joue des sons amusant du légendaire raid classic d'Onyxia",
+	WarnPhase3Soon	= "Montre une alerte pour la phase 3 (~41%)"
 }
 
 L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
