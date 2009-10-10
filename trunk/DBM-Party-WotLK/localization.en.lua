@@ -1563,7 +1563,7 @@ L:SetOptionLocalization({
 	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
 	specWarnSaroniteRock		= "Special warning when Saronite Throw on you",
 	specWarnPermafrost		= "Special warning when Permafrost stacks get to high (value not set in stone)"
---	SetIconOnSaroniteRockTarget	= "Set icon on Pursuit target"
+--	SetIconOnSaroniteRockTarget	= "Set icon on Saronite Rock target"
 })
 
 L:SetMiscLocalization({
