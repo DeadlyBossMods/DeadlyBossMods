@@ -1538,6 +1538,7 @@ L:SetOptionLocalization({
 	warnPursuit			= "Show warning when Pursuit is soon",
 	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
 	specWarnPursuit		= "Special warning when you are being pursued"
+--	SetIconOnPursuitTarget	= "Set icon on Pursuit target"
 })
 
 L:SetMiscLocalization({
@@ -1562,6 +1563,7 @@ L:SetOptionLocalization({
 	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
 	specWarnSaroniteRock		= "Special warning when Saronite Throw on you",
 	specWarnPermafrost		= "Special warning when Permafrost stacks get to high (value not set in stone)"
+--	SetIconOnSaroniteRockTarget	= "Set icon on Pursuit target"
 })
 
 L:SetMiscLocalization({

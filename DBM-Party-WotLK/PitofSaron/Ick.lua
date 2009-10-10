@@ -21,7 +21,7 @@ local timerPustulantFlesh				= mod:NewTargetTimer(10, 69581)
 local specWarnToxic		= mod:NewSpecialWarning("specWarnToxic")
 local specWarnPursuit		= mod:NewSpecialWarning("specWarnPursuit")
 
---mod:AddBoolOption("SetIconOnPursueTarget", true) --Needs syncing implimentation to be added.
+--mod:AddBoolOption("SetIconOnPursuitTarget", true) --Needs syncing implimentation to be added.
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68987) then							-- Pursuit
@@ -36,9 +36,9 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69029) then							-- Pursuit Confusion
+	if args:IsSpellID(69029, 70850) then							-- Pursuit Confusion (possible heroic spellid drycoded from thotbot testrealm database)
 		timerPursuitConfusion:Show(args.destName)
-	elseif args:IsSpellID(69581) then							-- Pustulant Flesh
+	elseif args:IsSpellID(69581, 70273) then							-- Pustulant Flesh (possible heroic spellid drycoded from thotbot testrealm database)
 		warnPustulantFlesh:Show(args.destName)
 		timerPustulantFlesh:Show(args.destName)
 	end
@@ -47,7 +47,7 @@ end
 do 
 	local lasttoxic = 0
 	function mod:SPELL_PERIODIC_DAMAGE(args)
-		if args:IsSpellID(70274) and args:IsPlayer() and time() - lasttoxic > 2 then		-- Toxic Waste, MOVE!
+		if args:IsSpellID(69024, 70274, 70436) and args:IsPlayer() and time() - lasttoxic > 2 then		-- Toxic Waste, MOVE! (possible heroic spellid(s) drycoded from thotbot testrealm database)
 			specWarnToxic:Show()
 			lasttoxic = time()
 		end
