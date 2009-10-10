@@ -17,6 +17,8 @@ local warnSaroniteRock				= mod:NewAnnounce("warnSaroniteRock")
 local specWarnSaroniteRock	= mod:NewSpecialWarning("specWarnSaroniteRock")
 local specWarnPermafrost	= mod:NewSpecialWarning("specWarnPermafrost", false)
 
+--mod:AddBoolOption("SetIconOnSaroniteRockTarget", true) --Needs syncing implimentation to be added.
+
 function mod:SPELL_CREATE(args)
 	if args:IsSpellID(68789, 70851) then							-- Saronite Rock
 		warnSaroniteRock:Show(args.spellName)

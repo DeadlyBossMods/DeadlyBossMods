@@ -23,7 +23,7 @@ function mod:SPELL_CAST_START(args)
 		warnWellofSouls:Show(args.spellName)
 	elseif args:IsSpellID(68939) then							-- Unleashed Souls
 		warnUnleashedSouls:Show(args.spellName)
-	elseif args:IsSpellID(68899) then							-- Wailing Souls
+	elseif args:IsSpellID(68899, 70324) then							-- Wailing Souls (possible heroic spellid drycoded from thotbot testrealm database)
 		warnWailingSouls:Show(args.spellName)
 	end
 end
