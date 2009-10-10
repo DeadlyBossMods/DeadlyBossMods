@@ -251,7 +251,7 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	YellPull			= "여기가 네 무덤이 되리라!",
-	Swarm				= "착취의 무리가 너희를 덮치리라!",
+--	Swarm				= "착취의 무리가 너희를 덮치리라!",
 	Emerge				= "땅속에서 모습을 드러냅니다!",
 	Burrow				= "땅속으로 숨어버립니다!"
 }
@@ -269,5 +269,6 @@ L:SetOptionLocalization{
 	WarnPursue				= "추격 대상자 알리기",
 	SpecWarnPCold			= "냉기 관통 특수 경고 보기",
 	SetIconsOnPCold			= "냉기 관통 대상자 공격대 아이콘 설정하기",
-	SpecWarnShadowStrike	= "어둠의 일격 특수 경고 보기(차단 관련)"
+	SpecWarnShadowStrike	= "어둠의 일격 특수 경고 보기(차단 관련)",
+	RemoveHealthBuffsInP3	= "3 페이즈를 시작할 때 HP 버프 지우기"
 }

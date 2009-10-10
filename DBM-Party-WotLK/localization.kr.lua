@@ -1537,6 +1537,7 @@ L:SetOptionLocalization({
 	warnPursuit			= "곧 추격일 경우 경고 보기",
 	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
 	specWarnPursuit		= "당신을 추격 하게 될 경우 특수 경고 보기"
+--	SetIconOnPursuitTarget	= "Set icon on Pursuit target"	
 })
 
 L:SetMiscLocalization({
@@ -1553,12 +1554,19 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock			= "Saronite Rock! Line of Sight now!",
+	specWarnSaroniteRock		= "Saronite Throw on you! Move!",
 	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "Show warning for Saronite Rock (to clear Permafrost)",
+	specWarnSaroniteRock		= "Special warning when Saronite Throw on you",	
 	specWarnPermafrost			= "Special warning when Permafrost stacks get to high (value not set in stone)"
+--	SetIconOnSaroniteRockTarget	= "Set icon on Pursuit target"	
+})
+
+L:SetMiscLocalization({
+	SaroniteRockThrow			= "%s hurls a massive saronite boulder at you!"
 })
 
 -------------------
@@ -1571,8 +1579,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down. Get ready!",
 	specWarnIcyBlast			= "Icy Blast! Move Away!",
-	specWarnHoarfrost			= "당신에게 흰 서리! 이동하세요!",
+	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
 })
 
@@ -1584,6 +1593,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	TyrannusYell			= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "^%%s gazes at (%S+) and readies an icy attack!"
 })
 ---------------------
