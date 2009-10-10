@@ -549,11 +549,11 @@ L:SetMiscLocalization{
 	MobPhase1		= "Léviathan Mod. II",
 	MobPhase2		= "VX-001",
 	MobPhase3		= "Unité de commandement aérien",
-	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
+	YellPull		= "Nous n'avons pas beaucoup de temps, les amis ! Vous allez m'aider à tester ma dernière création en date, la plus grande de toutes. Avant de changer d'avis, n'oubliez pas que que vous me devez bien ça après m'avoir complètement déglingué le XT-002.",	
 	YellHardPull	= "Now, why would you go and do something like that? Didn't you see the sign that said, \"DO NOT PUSH THIS BUTTON!\"? How will we finish testing with the self-destruct mechanism active?",
-	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9 percent! Barely a dent! Moving right along.",
+	YellPhase2		= "MERVEILLEUX ! Résultats parfaitement formidables ! Intégrité de la coque à 98,9 pour cent ! À peine une égratignure ! Poursuivons l'opération.",
 	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
-	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",
+	YellPhase4		= "Fin de la phase d'essais préliminaires. Passons à la véritable expérience !",
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
