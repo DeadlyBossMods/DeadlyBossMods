@@ -3,9 +3,9 @@ if GetLocale() ~= "frFR" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 local L = DBM_GUI_Translations
 
-L.TranslationBy 	= "Psyco Alias Exodius & Vranwen@EU-Kirin Tor"
-
 L.MainFrame 		= "Deadly Boss Mods"
+
+L.TranslationBy 	= "Psyco Alias Exodius & Vranwen@EU-Kirin Tor"
 
 L.TabCategory_Options 	= "Options Générales"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
@@ -106,6 +106,10 @@ L.Area_SpecWarn				= "Configuration des alertes spéciales"
 L.SpecWarn_Enabled			= "Montre les alertes spéciales pour les capacités des boss"
 L.SpecWarn_Font				= "Police utilisée pour les alertes spéciales"
 L.SpecWarn_DemoButton		= "Montre un exemple"
+L.SpecWarn_MoveMe			= "Définir la position"
+L.SpecWarn_FontSize			= "Taille de police"
+L.SpecWarn_FontColor		= "Couleur de police"
+L.SpecWarn_FontType			= "Choisir la police"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Filtre anti-spam"
