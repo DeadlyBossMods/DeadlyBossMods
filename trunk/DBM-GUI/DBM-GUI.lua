@@ -1615,7 +1615,7 @@ local function CreateOptionsMenu()
 		showbutton:SetPoint('TOPRIGHT', specArea.frame, "TOPRIGHT", -5, -5)
 		showbutton:SetNormalFontObject(GameFontNormalSmall);
 		showbutton:SetHighlightFontObject(GameFontNormalSmall);		
-		showbutton:SetScript("OnClick", function() DBM:ShowSpecialWarning("Boooooooooom!") end)
+		showbutton:SetScript("OnClick", function() DBM:ShowTestSpecialWarning() end)
 
 		local movemebutton = specArea:CreateButton(L.SpecWarn_MoveMe, 120, 16)
 		movemebutton:SetPoint('TOPRIGHT', showbutton, "BOTTOMRIGHT", 0, -5)
@@ -1626,11 +1626,15 @@ local function CreateOptionsMenu()
 		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 40, 1)
 		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -55)
 		fontSizeSlider:SetScript("OnShow", function(self) self:SetValue(DBM.Options.SpecialWarningFontSize) end)
-		fontSizeSlider:HookScript("OnValueChanged", function(self)
-				DBM.Options.SpecialWarningFontSize = self:GetValue()
-				DBM:UpdateSpecialWarningOptions()
-				DBM:ShowTestSpecialWarning()
-		end)
+		do
+			local firstshow = true
+			fontSizeSlider:HookScript("OnValueChanged", function(self)
+					if firstshow then firstshow = false; return end
+					DBM.Options.SpecialWarningFontSize = self:GetValue()
+					DBM:UpdateSpecialWarningOptions()
+					DBM:ShowTestSpecialWarning()
+			end)
+		end
 
 		local color1 = specArea:CreateColorSelect(64)
 		color1:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -105)		
