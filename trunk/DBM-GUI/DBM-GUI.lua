@@ -1625,9 +1625,12 @@ local function CreateOptionsMenu()
 
 		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 40, 1)
 		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -55)
-		fontSizeSlider:SetScript("OnShow", function(self) self:SetValue(DBM.Options.SpecialWarningFontSize) end)
 		do
 			local firstshow = true
+			fontSizeSlider:SetScript("OnShow", function(self) 
+					firstshow = true
+					self:SetValue(DBM.Options.SpecialWarningFontSize) 
+			end)
 			fontSizeSlider:HookScript("OnValueChanged", function(self)
 					if firstshow then firstshow = false; return end
 					DBM.Options.SpecialWarningFontSize = self:GetValue()
@@ -1650,11 +1653,12 @@ local function CreateOptionsMenu()
 				DBM:UpdateSpecialWarningOptions()
 				DBM:ShowTestSpecialWarning()
 		end)
-		color1:SetScript("OnShow", function(self)
-				self:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
-		end)
 		do
 			local firstshow = true
+			color1:SetScript("OnShow", function(self)
+					firstshow = true
+					self:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+			end)
 			color1:SetScript("OnColorSelect", function(self)
 					if firstshow then firstshow = false; return end
 					DBM.Options.SpecialWarningFontColor[1] = select(1, self:GetColorRGB())
