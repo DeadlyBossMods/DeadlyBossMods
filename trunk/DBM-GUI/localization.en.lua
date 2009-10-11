@@ -105,6 +105,10 @@ L.Area_SpecWarn				= "Configure special warnings"
 L.SpecWarn_Enabled			= "Show special warnings for boss abilities"
 L.SpecWarn_Font				= "Font used for special warnings"
 L.SpecWarn_DemoButton		= "Show example"
+L.SpecWarn_MoveMe			= "set position"
+L.SpecWarn_FontSize			= "font size"
+L.SpecWarn_FontColor		= "font color"
+L.SpecWarn_FontType			= "select font"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Spam Filter"
