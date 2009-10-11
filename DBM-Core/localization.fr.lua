@@ -88,6 +88,8 @@ DBM_CORE_TIMER_PULL					= "Pull dans"
 DBM_CORE_ANNOUNCE_PULL				= "Pull dans %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull maintenant!"
 
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill"
+
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
 	target = "%s: %%s",
@@ -126,4 +128,12 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	prewarn = prewarnOption,
 	phase = "Montre une alerte pour la phase %d"
 }
+
+
+-- New special warnings
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Alerte spéciale déplaçable"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
+
+
+
 

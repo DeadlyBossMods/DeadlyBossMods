@@ -1417,7 +1417,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnHealingWave		= "Alerte quand le chaman incante une vague de soins",
-	specWarnHaste		= "Montre une alerte spéciale quand le mage gagne la hâte (Pour Dispell/Voler)",
+	specWarnHaste		= "Montre une alerte spéciale quand le mage gagne la hâte (pour Dispell/Voler)",
 	specWarnPoison		= "Montre une alerte spéciale quand vous subissez des dégâts provenant de la Bouteille de poison"
 })
 
@@ -1440,7 +1440,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnRenew			= "Montre une alerte spéciale pour la cible de la rénovation (Pour Dispell/Voler)",
+	specwarnRenew			= "Montre une alerte spéciale pour la cible de la rénovation (pour Dispell/Voler)",
 	warnReflectiveShield	= "Alerte quand Paletress gagne le Bouclier réflecteur"
 })
 
@@ -1465,7 +1465,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnHammerofRighteous	= "Montre une alerte quand Eadric incante le Marteau du vertueux",
-	specwarnHammerofJustice	= "Montre une alerte spéciale pour le Marteau de la justice (Pour Dispell)",
+	specwarnHammerofJustice	= "Montre une alerte spéciale pour le Marteau de la justice (pour Dispell)",
 	specwarnRadiance		= "Montre une alerte spéciale pour Radiance.",
 	SetIconOnHammerTarget	= "Met une icône sur la cible du Marteau du vertueux"
 })
@@ -1603,11 +1603,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnSoulstorm		= "Soulstorm! Allez au centre !"
+	specwarnSoulstorm		= "Tempête d'âme ! Allez au centre !"
 })
 
 L:SetOptionLocalization({
-	specwarnSoulstorm		= "Montre une alerte spéciale lorsque Soulstorm est lancé (pour aller au centre)"
+	specwarnSoulstorm		= "Montre une alerte spéciale lorsque Tempête d'âme est lancé (pour aller au centre)"
 })
 
 -------------------
