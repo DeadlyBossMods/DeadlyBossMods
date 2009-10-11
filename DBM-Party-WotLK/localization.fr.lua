@@ -1391,9 +1391,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDesecration		= "Montre une alerte spéciale quand vous prenez des dégats venant de la Violation",
-	warnExplode		= "Alerte quand une Séide goule incante explosion sur elle même",
-	SetIconOnMarkedTarget	= "Met une icone sur la cible de la mort"
+	specWarnDesecration		= "Montre une alerte spéciale quand vous prenez des dégâts venant de la Violation",
+	warnExplode				= "Alerte quand une Séide goule incante explosion sur elle-même",
+	SetIconOnMarkedTarget	= "Met une icône sur la cible de la mort"
 })
 
 L:SetMiscLocalization({
@@ -1435,13 +1435,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew		= "Confessor incante une rénovation sur >%s< Dispel Maintenant !",
-	warnReflectiveShield		= "Confessor viens de gagner Bouclier réflecteur"
+	specwarnRenew		= "Paletress incante une rénovation sur >%s<. Dispel Maintenant !",
+	warnReflectiveShield		= "Paletress vient de gagner Bouclier réflecteur"
 })
 
 L:SetOptionLocalization({
 	specwarnRenew		= "Montre une alerte spéciale pour la cible de la rénovation (Pour Dispell/Voler)",
-	warnReflectiveShield		= "Alerte quand le Confesseur gagne le Bouclier réflecteur"
+	warnReflectiveShield		= "Alerte quand Paletress gagne le Bouclier réflecteur"
 })
 
 L:SetMiscLocalization({
@@ -1464,10 +1464,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous		= "Alerte quand Eadric incante Marteau du vertueux",
-	specwarnHammerofJustice		= "Montre une alerte spéciale pour le Marteau de la justice (Pour Dispel)",
+	warnHammerofRighteous	= "Alerte quand Eadric incante Marteau du vertueux",
+	specwarnHammerofJustice	= "Montre une alerte spéciale pour le Marteau de la justice (Pour Dispell)",
 	specwarnRadiance		= "Montre une alerte spéciale pour Radiance.",
-	SetIconOnHammerTarget		= "Met une icone sur la cible du Marteau du vertueux"
+	SetIconOnHammerTarget	= "Met une icône sur la cible du Marteau du vertueux"
 })
 
 L:SetMiscLocalization({
@@ -1491,19 +1491,138 @@ L:SetWarningLocalization({
 --	specwarnDaughters		= "Daughter Spawned!",
 	specwarnDisarm		= "Désarmement. Bougez !",
 	specWarnBrew		= "Débarrassez-vous de la bière avant qu'elle ne vous en lance une autre !",
-	specWarnBrewStun		= "Vous avez reçu un coup sur la tête. La prochaine fois, videz votre verre !"
+	specWarnBrewStun	= "Vous avez reçu un coup sur la tête. La prochaine fois, videz votre verre !"
 })
 
 L:SetOptionLocalization({
-	warnBarrel		= "Annonce la cible du Tonneau.",
+	warnBarrel			= "Annonce la cible du Tonneau.",
 --	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
 	DisarmWarning		= "Montre une alerte spéciale pour le désarmement",
 	specWarnBrew		= "Montre une alerte spéciale pour la Sombrebière de la vierge",
-	specWarnBrewStun		= "Montre une alerte spéciale pour l'Etourdir de la vierge bierrière",
-	PlaySoundOnDisarm	= "Joue un sons pour le désarmement",
-	YellOnBarrel	= "Crie quand vous avez un Tonneau sur vous"
+	specWarnBrewStun	= "Montre une alerte spéciale pour l'Etourdir de la vierge bierrière",
+	PlaySoundOnDisarm	= "Joue un son pour le désarmement",
+	YellOnBarrel		= "Crie quand vous avez un Tonneau sur vous"
 })
 
 L:SetMiscLocalization{
 	YellBarrel		= "Tonneau sur moi !"
 }
+
+
+---------------------
+-- Pit of Saron --
+---------------------
+-------------------
+-- Ick --
+-------------------
+L = DBM:GetModLocalization("Ick")
+
+L:SetGeneralLocalization({
+	name = "Ick"
+})
+
+L:SetWarningLocalization({
+	warnPursuit			= "Pursuit in 5 seconds",
+	specWarnToxic		= "Déchets toxiques ! Bougez !",
+	specWarnPursuit		= "Vous êtes poursuivi. Courrez !"
+})
+
+L:SetOptionLocalization({
+	warnPursuit			= "Montre une alerte lorsque la Poursuite est pour bientôt",
+	specWarnToxic		= "Montre une alerte spéciale lorsque vous prenez des dégâts des Déchets toxiques",
+	specWarnPursuit		= "Montre une alerte spéciale lorsque vous êtes poursuivi"
+--	SetIconOnPursuitTarget	= "Met une icône sur la cible de la Poursuite"
+})
+
+L:SetMiscLocalization({
+	IckPursuit			= "%s is chasing you!"
+})
+-------------------
+-- Forgemaster Garfrost --
+-------------------
+L = DBM:GetModLocalization("ForgemasterGarfrost")
+
+L:SetGeneralLocalization({
+	name = "Maître-forge Gargivre"
+})
+
+L:SetWarningLocalization({
+	warnSaroniteRock		= "Rocher de Saronite ! Ligne de Vue maintenant !",
+	specWarnSaroniteRock	= "Lancer de Saronite sur vous ! Bougez !",
+	specWarnPermafrost		= "%s: %s"
+})
+
+L:SetOptionLocalization({
+	warnSaroniteRock		= "Montre une alerte for Saronite Rock (to clear Permafrost)",
+	specWarnSaroniteRock	= "Montre une alerte spéciale lorsque le Lancer de Saronite est sur vous",
+	specWarnPermafrost		= "Montre une alerte spéciale when Permafrost stacks get to high (value not set in stone)"
+--	SetIconOnSaroniteRockTarget	= "Met une icône sur la cible du Rocher de Saronite"
+})
+
+L:SetMiscLocalization({
+	SaroniteRockThrow			= "%s hurls a massive saronite boulder at you!"
+})
+
+-------------------
+-- Scourgelord Tyrannus --
+-------------------
+L = DBM:GetModLocalization("ScourgelordTyrannus")
+
+L:SetGeneralLocalization({
+	name = "Seigneur du Fléau Tyrannus"
+})
+
+L:SetWarningLocalization({
+	specTyrannusEngaged			= "Seigneur du Fléau Tyrannus descend. Préparez-vous !",
+	specWarnIcyBlast			= "Icy Blast! Bougez !",
+	specWarnHoarfrost			= "Hoarfrost on you!",
+	specWarnHoarfrostNear		= "Hoarfrost near to you! Bougez !"
+})
+
+L:SetOptionLocalization({
+	specWarnIcyBlast			= "Montre une alerte spéciale when you take damage from Icy Blast",
+	specWarnHoarfrost			= "Montre une alerte spéciale when Hoarfrost on you",
+	specWarnHoarfrostNear		= "Montre une alerte spéciale when Hoarfrost near you",
+	SetIconOnHoarfrostTarget	= "Met une icône sur la cible Hoarfrost target"
+})
+
+L:SetMiscLocalization({
+	TyrannusYell		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	HoarfrostTarget			= "^%%s gazes at (%S+) and readies an icy attack!"
+})
+---------------------
+-- Forge of Souls --
+---------------------
+-------------------
+-- Bronjahm --
+-------------------
+L = DBM:GetModLocalization("Bronjahm")
+
+L:SetGeneralLocalization({
+	name = "Bronjahm"
+})
+
+L:SetWarningLocalization({
+	specwarnSoulstorm		= "Soulstorm! Allez au centre !"
+})
+
+L:SetOptionLocalization({
+	specwarnSoulstorm		= "Montre une alerte spéciale lorsque Soulstorm est lancé (pour aller au centre)"
+})
+
+-------------------
+-- Devourer of Souls --
+-------------------
+L = DBM:GetModLocalization("DevourerofSouls")
+
+L:SetGeneralLocalization({
+	name = "Dévoreur d'âmes"
+})
+
+L:SetWarningLocalization({
+	specwarnMirroredSoul		= "Stop DPS!"
+})
+
+L:SetOptionLocalization({
+	specwarnMirroredSoul		= "Montre une alerte spéciale pour arrêter le DPS lorsque Mirrored Soul"
+})
