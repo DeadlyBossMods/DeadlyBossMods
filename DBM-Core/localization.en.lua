@@ -128,6 +128,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 }
 
 
+-- New special warnings
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Special warning movable"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Special Warning"
+
 
 
 

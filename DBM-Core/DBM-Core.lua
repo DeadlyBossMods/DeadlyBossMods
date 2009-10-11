@@ -83,7 +83,10 @@ DBM.DefaultOptions = {
 	HPFramePoint = "CENTER",
 	HPFrameX = -50,
 	HPFrameY = 50,
-	HPFrameMaxEntries = 5
+	HPFrameMaxEntries = 5,
+	SpecialWarningPoint = "CENTER",
+	SpecialWarningX = 0,
+	SpecialWarningY = 75
 }
 
 DBM.Bars = DBT:New()
@@ -1033,6 +1036,8 @@ do
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
+		-- load positions
+		DBM:LoadSpecialWarningPosition()
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
 		DBM:Schedule(5, setRaidWarningPositon)
 	end
@@ -2308,14 +2313,19 @@ end
 do	
 	local frame = CreateFrame("Frame", nil, UIParent)
 	local font = frame:CreateFontString(nil, "OVERLAY", "ZoneTextFont")
+	frame:SetMovable(1)
 	frame:SetWidth(1)
 	frame:SetHeight(1)
 	frame:SetPoint("CENTER", 0, 75)
+	frame:SetFrameStrata("HIGH")
+	frame:SetClampedToScreen()
 	frame:Hide()
 	font:SetWidth(1024)
 	font:SetHeight(0)
 	font:SetPoint("CENTER", 0, 0)
 	font:SetTextColor(0, 0, 1)
+	
+	local moving
 	local specialWarningPrototype = {}
 	local mt = {__index = specialWarningPrototype}
 
@@ -2329,9 +2339,13 @@ do
 			frame:Hide()
 		end
 	end)
+	
+	function DBM:LoadSpecialWarningPosition()
+		frame:SetPoint(DBM.Options.SpecialWarningPoint, UIParent, DBM.Options.SpecialWarningPoint, DBM.Options.SpecialWarningX, DBM.Options.SpecialWarningY)
+	end
 
 	function specialWarningPrototype:Show(...)
-		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) then	
+		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving then	
 			font:SetText(pformat(self.text, ...))
 			LowHealthFrame:Show()
 			LowHealthFrame:SetAlpha(1)
@@ -2370,8 +2384,68 @@ do
 		table.insert(self.announces, obj)
 		return obj
 	end
+	
+	do
+		local anchorFrame
+		local function moveEnd()
+			moving = false
+			anchorFrame:Hide()
+			frame.timer = 1.5 -- fade out
+			frame:SetFrameStrata("HIGH")
+			DBM:Unschedule(moveEnd)
+			DBM.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+		end
+		
+		function DBM:MoveSpecialWarning()
+			if not anchorFrame then
+				anchorFrame = CreateFrame("Frame", nil, frame)
+				anchorFrame:SetWidth(32)
+				anchorFrame:SetHeight(32)
+				anchorFrame:EnableMouse(true)
+				anchorFrame:SetPoint("CENTER", 0, -32)
+				anchorFrame:RegisterForDrag("LeftButton")
+				anchorFrame:SetClampedToScreen()
+				anchorFrame:Hide()
+				local texture = anchorFrame:CreateTexture()
+				texture:SetTexture("Interface\\Addons\\DBM-GUI\\textures\\dot.blp")
+				texture:SetPoint("CENTER", anchorFrame, "CENTER", 0, 0)
+				texture:SetWidth(32)
+				texture:SetHeight(32)
+				anchorFrame:SetScript("OnDragStart", function() 
+					frame:StartMoving()
+					DBM:Unschedule(moveEnd)
+					DBM.Bars:CancelBar(DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+				end)
+				anchorFrame:SetScript("OnDragStop", function() 
+					frame:StopMovingOrSizing()
+					local point, _, _, xOfs, yOfs = frame:GetPoint(1)		
+					DBM.Options.SpecialWarningPoint = point
+					DBM.Options.SpecialWarningX = xOfs
+					DBM.Options.SpecialWarningY = yOfs	
+					DBM:Schedule(15, moveEnd)
+					DBM.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+				end)
+			end
+			if anchorFrame:IsShown() then
+				moveEnd()
+			else
+				moving = true
+				anchorFrame:Show()
+				self:Schedule(15, moveEnd)
+				DBM.Bars:CreateBar(15, DBM_CORE_MOVE_SPECIAL_WARNING_BAR)
+				font:SetText(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
+				frame:Show()
+				frame:SetFrameStrata("TOOLTIP")
+				frame:SetAlpha(1)
+				frame.timer = math.huge
+			end
+		end
+	end
 
 	function DBM:ShowSpecialWarning(text)
+		if moving then
+			return
+		end
 		font:SetText(text)
 		frame:Show()
 		frame:SetAlpha(1)
