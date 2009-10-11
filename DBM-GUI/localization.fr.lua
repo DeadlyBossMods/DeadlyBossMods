@@ -3,7 +3,7 @@ if GetLocale() ~= "frFR" then return end
 if not DBM_GUI_Translations then DBM_GUI_Translations = {} end
 local L = DBM_GUI_Translations
 
-L.TranslationBy 	= "Psyco Alias Exodius"
+L.TranslationBy 	= "Psyco Alias Exodius & Vranwen@EU-Kirin Tor"
 
 L.MainFrame 		= "Deadly Boss Mods"
 

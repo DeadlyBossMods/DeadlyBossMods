@@ -1387,17 +1387,17 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnDesecration		= "Violation ! Bougez !",
-	warnExplode		= "Séide goule incante explosion ! Bougez !"
+	warnExplode				= "Séide goule incante explosion ! Bougez !"
 })
 
 L:SetOptionLocalization({
 	specWarnDesecration		= "Montre une alerte spéciale quand vous prenez des dégâts venant de la Violation",
-	warnExplode				= "Alerte quand une Séide goule incante explosion sur elle-même",
+	warnExplode				= "Montre une alerte quand une Séide goule incante explosion sur elle-même",
 	SetIconOnMarkedTarget	= "Met une icône sur la cible de la mort"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+	YellCombatEnd			= "Non ! Pas encore... un échec..."
 })
 
 -------------------
@@ -1410,19 +1410,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste		= "Hâte sur >%s< ! Dispel Maintenant !",
+	specWarnHaste		= "Hâte sur >%s< ! Dispell Maintenant !",
 	specWarnPoison		= "Poison ! Bougez !",
 	warnHealingWave		= "Le chaman incante une vague de soins. Cassez !"
 })
 
 L:SetOptionLocalization({
-	warnHealingWave		= "Alerte quand le chaman icante une vague de soins",
-	specWarnHaste		= "Montre une alerte spéciale quand le mage gagne la hate (Pour Dispell/Voler)",
-	specWarnPoison		= "Montre une alerte spéciale quand vous subissez des dégats provenant de la Bouteille de poison"
+	warnHealingWave		= "Alerte quand le chaman incante une vague de soins",
+	specWarnHaste		= "Montre une alerte spéciale quand le mage gagne la hâte (Pour Dispell/Voler)",
+	specWarnPoison		= "Montre une alerte spéciale quand vous subissez des dégâts provenant de la Bouteille de poison"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+	YellCombatEnd			= "Joli combat ! Votre prochain défi vient directement des rangs de la Croisade. L'épreuve sera de vous mesurer à l'incroyable vituosité de ses cavaliers."
 })
 
 -------------------
@@ -1435,13 +1435,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew		= "Paletress incante une rénovation sur >%s<. Dispel Maintenant !",
-	warnReflectiveShield		= "Paletress vient de gagner Bouclier réflecteur"
+	specwarnRenew			= "Paletress incante une rénovation sur >%s<. Dispell Maintenant !",
+	warnReflectiveShield	= "Paletress vient de gagner Bouclier réflecteur"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew		= "Montre une alerte spéciale pour la cible de la rénovation (Pour Dispell/Voler)",
-	warnReflectiveShield		= "Alerte quand Paletress gagne le Bouclier réflecteur"
+	specwarnRenew			= "Montre une alerte spéciale pour la cible de la rénovation (Pour Dispell/Voler)",
+	warnReflectiveShield	= "Alerte quand Paletress gagne le Bouclier réflecteur"
 })
 
 L:SetMiscLocalization({
@@ -1458,20 +1458,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHammerofRighteous		= "Eadric incante Marteau du vertueux !",
-	specwarnHammerofJustice		= "Marteau de la justice sur >%s<. Dispel Maintenant !",
+	warnHammerofRighteous	= "Eadric incante Marteau du vertueux !",
+	specwarnHammerofJustice	= "Marteau de la justice sur >%s<. Dispell Maintenant !",
 	specwarnRadiance		= "Radiance. Retournez vous !"
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous	= "Alerte quand Eadric incante Marteau du vertueux",
+	warnHammerofRighteous	= "Montre une alerte quand Eadric incante le Marteau du vertueux",
 	specwarnHammerofJustice	= "Montre une alerte spéciale pour le Marteau de la justice (Pour Dispell)",
 	specwarnRadiance		= "Montre une alerte spéciale pour Radiance.",
 	SetIconOnHammerTarget	= "Met une icône sur la cible du Marteau du vertueux"
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+	YellCombatEnd				= "Grâce ! Je me rends. Excellent travail. Puis-je me débiner, maintenant ?"
 })
 
 ---------------------
@@ -1524,7 +1524,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnPursuit			= "Pursuit in 5 seconds",
 	specWarnToxic		= "Déchets toxiques ! Bougez !",
-	specWarnPursuit		= "Vous êtes poursuivi. Courrez !"
+	specWarnPursuit		= "Vous êtes poursuivi ! Courrez !"
 })
 
 L:SetOptionLocalization({
