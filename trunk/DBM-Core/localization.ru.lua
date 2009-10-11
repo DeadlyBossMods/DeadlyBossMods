@@ -23,7 +23,7 @@ DBM_CORE_OK							= "ОК"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Исступление через %s %s"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "Исступление"
-DBM_CORE_OPTION_TIMER_ENRAGE		= "Отображать отсчет времени до Исступления"
+DBM_CORE_OPTION_TIMER_ENRAGE		= "Отсчет времени до Исступления"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Отображать здоровье босса"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Индикаторы"
@@ -107,7 +107,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	active = "Отображать продолжительность |cff71d5ff|Hspell:%d|h%s|h|r",
 	cd = "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
 	next = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
-	achievement = "Отображать отсчет времени для %s",
+	achievement = "Отсчет времени для %s",
 }
 
 -- Auto-generated Warning Localizations
