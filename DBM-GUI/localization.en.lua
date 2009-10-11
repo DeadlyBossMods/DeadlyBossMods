@@ -69,7 +69,7 @@ L.RaidWarnColor_3		 	= "Color 3"
 L.RaidWarnColor_4 			= "Color 4"
 L.InfoRaidWarning			= [[You can specify the position and colors of the raid warning frame. 
 This frame is used for messages like "Player X is affected by Y".]]
-L.ColorResetted 			= "The color settings of this field have been reset"
+L.ColorResetted 			= "The color settings of this field have been reset."
 L.ShowWarningsInChat 		= "Show warnings in chat frame"
 L.ShowFakedRaidWarnings 	= "Show warnings as faked raid warning messages"
 L.WarningIconLeft 			= "Show icon on left side"
@@ -101,15 +101,15 @@ L.ClickThrough				= "Disable mouse events (allows you to click through bars)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Special Warnings"
-L.Area_SpecWarn				= "Configure special warnings"
+L.Area_SpecWarn				= "Configure Special Warnings"
 L.SpecWarn_Enabled			= "Show special warnings for boss abilities"
 L.SpecWarn_Font				= "Font used for special warnings"
 L.SpecWarn_DemoButton		= "Show example"
-L.SpecWarn_MoveMe			= "set position"
-L.SpecWarn_FontSize			= "font size"
-L.SpecWarn_FontColor		= "font color"
-L.SpecWarn_FontType			= "select font"
-L.SpecWarn_ResetMe			= "reset to defaults"
+L.SpecWarn_MoveMe			= "Set position"
+L.SpecWarn_FontSize			= "Font size"
+L.SpecWarn_FontColor		= "Font color"
+L.SpecWarn_FontType			= "Select font"
+L.SpecWarn_ResetMe			= "Reset to defaults"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Spam Filter"
