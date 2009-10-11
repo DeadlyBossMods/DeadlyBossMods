@@ -122,6 +122,8 @@ do
 				end
 				if values[i+self.offset].font then
 					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(values[i+self.offset].font, values[i+self.offset].fontsize or 14)
+				else
+					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(STANDARD_TEXT_FONT, 10)
 				end
 				self.buttons[i]:Show()
 			else
@@ -149,6 +151,7 @@ do
 			self.buttons[i]:Hide()
 			self.buttons[i]:SetBackdrop(nil)
 			self.buttons[i]:SetWidth(default_button_width)
+			_G[self.buttons[i]:GetName().."NormalText"]:SetFontObject(GameFontHighlightSmall)
 		end
 		self:SetWidth(default_button_width+22)
 		self:Hide()

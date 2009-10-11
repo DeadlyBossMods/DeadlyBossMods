@@ -109,6 +109,7 @@ L.SpecWarn_MoveMe			= "set position"
 L.SpecWarn_FontSize			= "font size"
 L.SpecWarn_FontColor		= "font color"
 L.SpecWarn_FontType			= "select font"
+L.SpecWarn_ResetMe			= "reset to defaults"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Spam Filter"
