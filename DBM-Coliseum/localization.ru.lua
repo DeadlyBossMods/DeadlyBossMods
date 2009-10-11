@@ -38,10 +38,10 @@ L:SetOptionLocalization{
 	SpecialWarningToxin		= "Спец-предупреждение, если на вас \"Паралитический токсин\"",
 	SpecialWarningBile		= "Спец-предупреждение, когда на вас \"Горящея Желчь\"",
 	SpecialWarningCharge		= "Спец-предупреждение, если Айсхаул хочет вас \"Растаптать\"",
+	PingCharge			= "Показать на миникарте место, куда попадает \"Ледяной Рев\", если он избрал вас целью",
 	SpecialWarningChargeNear	= "Спец-предупреждение, если Айсхаул хочет кого рядом \"Растаптать\"",
 	SetIconOnChargeTarget		= "Установить метку на цель \"Топота\"",
 	SetIconOnBileTarget		= "Установить метку игроков под воздействием \"Горящей Желчью\"",
-	PingCharge			= "Показать на миникарте место, куда попадает \"Ледяной Рев\", если он избрал вас целью",
 	ClearIconsOnIceHowl		= "Снимать все иконки перед \"Топотом\"",
 	TimerNextBoss			= "Отсчет времени до появления следующего противника"
 }
@@ -61,13 +61,13 @@ L:SetWarningLocalization{
 	WarningBile			= "Горящая Желчь на >%s<",
 	SpecialWarningImpale3		= "Прокалывание >%d< на вас!",
 	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
-	SpecialWarningBile		= "Горящая Желчь на вас!",
 	SpecialWarningSlimePool		= "Кислотная Жижа, Бегите!",
 	SpecialWarningSilence		= "Блок чар через 1.5 сек!",
 	SpecialWarningSpray		= "Парализующие брызги на вас",
 	SpecialWarningToxin		= "Паралитический токсин на вас! Двигайтесь!",
 	SpecialWarningCharge		= "Рывок к вам, Бегите!",
-	SpecialWarningChargeNear	= "Рывок около вас, Бегите!"
+	SpecialWarningChargeNear	= "Рывок около вас, Бегите!",
+	SpecialWarningBile		= "Горящая Желчь на вас!"
 }
 
 -------------------
@@ -248,7 +248,6 @@ L:SetWarningLocalization{
 
 L:SetMiscLocalization{
 	YellPull		= "Это место станет вашей могилой!",
-	Swarm			= "Рой направляется к вам!",
 	Emerge			= "вылезает на поверхность!",
 	Burrow			= "зарывается в землю!"
 }
@@ -264,7 +263,8 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue	= "Звуковой сигнал, если вас преследуют",
 	PursueIcon		= "Установить метку на преследуемого",
 	WarnPursue		= "Объявлять преследуемого",
-	SpecWarnPCold		= "Спец-предупреждение, когда на вас \"Пронизывающий холод\"",
 	SpecWarnShadowStrike	= "Спец-предупреждение, когда \"Теневой удар\" (для прерывания)",
-	SetIconsOnPCold		= "Установить метку на цель под воздействием \"Пронизывающего холода\""
+	SpecWarnPCold		= "Спец-предупреждение, когда на вас \"Пронизывающий холод\"",
+	RemoveHealthBuffsInP3	= "Удалить усиления здоровья в начале фазы 3"
 }
+
