@@ -1539,6 +1539,7 @@ L:SetOptionLocalization({
 	warnPursuit			= "Предупреждение о приблежающейся Погоне",
 	specWarnToxic			= "Спец-предупреждение, когда вы получаете урон от \"Токсического выброса\"",
 	specWarnPursuit			= "Спец-предупреждение, когда вас преследуют"
+--	SetIconOnPursuitTarget		= "Установить метку на преследуемую цель"
 })
 
 L:SetMiscLocalization({
@@ -1555,12 +1556,19 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock		= "Саронитовая скала! Линия видимости!",
+	specWarnSaroniteRock		= "Саронитовый бросок на вас! Бегите!",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock		= "Предупреждение для \"Саронитовой скалы\" (очистка Вечной мерзлотой)",
+	specWarnSaroniteRock		= "Спец-предупреждение, когда \"Саронитовый бросок\" на вас",
 	specWarnPermafrost		= "Спец-предупреждение, когда превышено суммарное количество эффектов \"Вечной мерзлоты\""
+--	SetIconOnSaroniteRockTarget	= "Установить метку на цель под воздействием \"Саронитовой скалы\""
+})
+
+L:SetMiscLocalization({
+	SaroniteRockThrow		= "%s бросает огромный саронитовый валун в вас!"
 })
 
 -------------------
@@ -1573,6 +1581,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specTyrannusEngaged		= "Повелитель Плети Тираний спускается. Приготовтесь!",
 	specWarnIcyBlast		= "Ледяной вихр! Бегите!",
 	specWarnHoarfrost		= "Hoarfrost на вас! Бегите!",
 	specWarnHoarfrostNear		= "Hoarfrost около вас! Бегите!"
@@ -1586,6 +1595,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	TyrannusYell			= "Увы, ",
 	HoarfrostTarget			= "^%%s пристально смотрит на (%S+) и готовится к ледяной атаке!"
 })
 ---------------------
