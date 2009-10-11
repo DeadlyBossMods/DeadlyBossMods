@@ -63,14 +63,14 @@ L.PizzaTimer_BroadCast		= "공격대에 알리기"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 		= "공격대 경보"
-L.RaidWarnColors 		= "공격대 경보 컬러"
-L.RaidWarnColor_1 		= "컬러 1"
-L.RaidWarnColor_2 		= "컬러 2"
-L.RaidWarnColor_3 		= "컬러 3"
-L.RaidWarnColor_4 		= "컬러 4"
+L.RaidWarnColors 		= "공격대 경보 색상"
+L.RaidWarnColor_1 		= "색상 1"
+L.RaidWarnColor_2 		= "색상 2"
+L.RaidWarnColor_3 		= "색상 3"
+L.RaidWarnColor_4 		= "색상 4"
 L.InfoRaidWarning		= [[레이드 경고 프레임의 위치와 컬러를 수정할 수 있습니다. 
-이것은 메세지를 위한 컬러 수정 프레임이며 "Y 가 X에게 주문을 걸었습니다." 같은 메세지를 뜻합니다.]]
-L.ColorResetted 		= "현재 필드의 컬러 셋팅을 초기화 합니다."
+이것은 메세지를 위한 색상 수정 프레임이며 "Y 가 X에게 주문을 걸었습니다." 같은 메세지를 뜻합니다.]]
+L.ColorResetted 		= "현재 필드의 색상 셋팅을 초기화 합니다."
 L.ShowWarningsInChat 	= "위험 알림을 채팅 창에 보여줍니다."
 L.ShowFakedRaidWarnings = "위험 알림을 공격대 경보 메세지처럼 보여줍니다."
 L.WarningIconLeft 		= "아이콘을 왼쪽에 보여주기"
@@ -83,8 +83,8 @@ L.SpecialWarnSound		= "특별한 경보 사운드"
 -- Tab: Barsetup
 L.BarSetup  				= "바 스타일"
 L.BarTexture 				= "바 텍스쳐"
-L.BarStartColor	 			= "시작 컬러"
-L.BarEndColor 				= "마지막 컬러"
+L.BarStartColor	 			= "시작 색상"
+L.BarEndColor 				= "마지막 색상"
 L.ExpandUpwards				= "바를 위로 쌓기"
 
 L.Slider_BarOffSetX 		= "자세한 가로 위치: %d"
@@ -104,8 +104,12 @@ L.ClickThrough				= "마우스 이벤트 사용 안함 (바를 클릭하는 행�
 L.Panel_SpecWarnFrame		= "특수 경고"
 L.Area_SpecWarn				= "특수 경고 설정"
 L.SpecWarn_Enabled			= "각 보스별 특수 경고 보기"
-L.SpecWarn_Font				= "특수 경고 폰트 사용"
+L.SpecWarn_Font				= "특수 경고를 위한 폰트 사용"
 L.SpecWarn_DemoButton		= "예제 보기"
+L.SpecWarn_MoveMe			= "위치 설정"
+L.SpecWarn_FontSize			= "폰트 크기"
+L.SpecWarn_FontColor		= "폰트 색상"
+L.SpecWarn_FontType			= "폰트 선택"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "스팸 필터"

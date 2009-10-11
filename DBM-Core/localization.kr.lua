@@ -128,4 +128,9 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	prewarn = prewarnOption,
 	phase = "페이즈 %d 의 경고 보기"	
 }
+
+-- New special warnings
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "특수 경고 움직이기"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "특수 경고"
+
 end
