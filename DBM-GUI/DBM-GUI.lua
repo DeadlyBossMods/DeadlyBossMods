@@ -1608,7 +1608,7 @@ local function CreateOptionsMenu()
 
 	do
 		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
-		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 135, true)
+		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 205, true)
 		specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
 
 		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
@@ -1617,7 +1617,54 @@ local function CreateOptionsMenu()
 		showbutton:SetHighlightFontObject(GameFontNormalSmall);		
 		showbutton:SetScript("OnClick", function() DBM:ShowSpecialWarning("Boooooooooom!") end)
 
-		specPanel:SetMyOwnHeight()
+		local movemebutton = specArea:CreateButton(L.SpecWarn_MoveMe, 120, 16)
+		movemebutton:SetPoint('TOPRIGHT', showbutton, "BOTTOMRIGHT", 0, -5)
+		movemebutton:SetNormalFontObject(GameFontNormalSmall);
+		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
+		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
+
+		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 96, 1)
+		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -55)
+		fontSizeSlider:SetScript("OnShow", function(self) self:SetValue(DBM.Options.SpecialWarningFontSize) end)
+		fontSizeSlider:HookScript("OnValueChanged", function(self) 
+				DBM.Options.SpecialWarningFontSize = self:GetValue()
+				DBM:UpdateSpecialWarningOptions() 
+		end)
+
+		local color1 = specArea:CreateColorSelect(64)
+		color1:SetPoint('TOPLEFT', specArea.frame, "TOPLEFT", 20, -105)		
+		color1:SetScript("OnColorSelect", function(self)
+							DBM.Options.SpecialWarningFontColor[1] = select(1, self:GetColorRGB())
+							DBM.Options.SpecialWarningFontColor[2] = select(2, self:GetColorRGB())
+							DBM.Options.SpecialWarningFontColor[3] = select(3, self:GetColorRGB())
+							color1text:SetTextColor(self:GetColorRGB())
+						  end)
+
+		local color1reset = specArea:CreateButton(L.Reset, 64, 10, nil, GameFontNormalSmall)
+		color1reset:SetPoint('TOP', color1, "BOTTOM", 5, -10)
+
+		local color1text = specArea:CreateText(L.SpecWarn_FontColor, 80)
+		color1text:SetPoint("BOTTOM", color1, "TOP", 0, 4)
+
+		local Fonts = { 
+			{	text	= "FrizQ",			value 	= "Fonts\\FRIZQT__.TTF",		font = "Fonts\\FRIZQT__.TTF"	},
+			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
+			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
+			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("font") do
+				table.insert(Fonts, {text=k, value=v, font=v})
+			end
+		end		
+		local FontDropDown = specArea:CreateDropdown(L.SpecWarn_FontType, Fonts, DBM.Options.SpecialWarningFont, 
+			function(value) 
+				DBM.Options.SpecialWarningFont = value
+				DBM:UpdateSpecialWarningOptions()
+			end
+		);
+		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -100)
+
 	end
 	
 	do

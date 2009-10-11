@@ -120,6 +120,9 @@ do
 					BackDropTable.bgFile = values[i+self.offset].texture
 					self.buttons[i]:SetBackdrop(BackDropTable)
 				end
+				if values[i+self.offset].font then
+					_G[self.buttons[i]:GetName().."NormalText"]:SetFont(values[i+self.offset].font, values[i+self.offset].fontsize or 14)
+				end
 				self.buttons[i]:Show()
 			else
 				self.buttons[i]:Hide()
