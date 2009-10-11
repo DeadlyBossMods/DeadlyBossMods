@@ -131,6 +131,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 }
 
 
+-- New special warnings
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Индикатор спец-предупреждения"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Специальное предупреждение"
+
 
 
 
