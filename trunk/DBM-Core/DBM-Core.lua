@@ -2336,7 +2336,13 @@ do
 		font:SetFont(DBM.Options.SpecialWarningFont, DBM.Options.SpecialWarningFontSize, "THICKOUTLINE")
 		font:SetTextColor(unpack(DBM.Options.SpecialWarningFontColor))
 	end
-
+	
+	local shakeFrame = CreateFrame("Frame")
+	shakeFrame:SetScript("OnUpdate", function(self, elapsed)
+		self.timer = self.timer - elapsed
+	end)
+	shakeFrame:Hide()
+	
 	frame:SetScript("OnUpdate", function(self, elapsed)
 		self.timer = self.timer - elapsed
 		if self.timer >= 3 and self.timer <= 4 then
@@ -2445,14 +2451,21 @@ do
 			end
 		end
 	end
-
-	function DBM:ShowSpecialWarning(text)
-		if moving or not frame then
+	
+	local function testWarningEnd()
+		frame:SetFrameStrata("HIGH")
+	end
+	
+	function DBM:ShowTestSpecialWarning(text)
+		if moving then
 			return
 		end
-		font:SetText(text)
+		font:SetText(DBM_CORE_MOVE_SPECIAL_WARNING_TEXT)
 		frame:Show()
 		frame:SetAlpha(1)
+		frame:SetFrameStrata("TOOLTIP")
+		self:Unschedule(testWarningEnd)
+		self:Schedule(5, testWarningEnd)
 		frame.timer = 5
 	end
 end
