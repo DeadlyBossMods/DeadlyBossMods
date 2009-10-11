@@ -1623,13 +1623,13 @@ local function CreateOptionsMenu()
 		movemebutton:SetHighlightFontObject(GameFontNormalSmall);		
 		movemebutton:SetScript("OnClick", function() DBM:MoveSpecialWarning() end)
 
-		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 32, 1)
+		local fontSizeSlider = specArea:CreateSlider(L.SpecWarn_FontSize, 8, 40, 1)
 		fontSizeSlider:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 20, -55)
 		fontSizeSlider:SetScript("OnShow", function(self) self:SetValue(DBM.Options.SpecialWarningFontSize) end)
 		fontSizeSlider:HookScript("OnValueChanged", function(self)
 				DBM.Options.SpecialWarningFontSize = self:GetValue()
 				DBM:UpdateSpecialWarningOptions()
-				DBM:ShowSpecialWarning("Boooooooooom!")
+				DBM:ShowTestSpecialWarning()
 		end)
 
 		local color1 = specArea:CreateColorSelect(64)
@@ -1644,20 +1644,24 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningFontColor[3] = DBM.DefaultOptions.SpecialWarningFontColor[3]
 				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
 				DBM:UpdateSpecialWarningOptions()
-				DBM:ShowSpecialWarning("Boooooooooom!")
+				DBM:ShowTestSpecialWarning()
 		end)
 		color1:SetScript("OnShow", function(self)
 				self:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
 		end)
-		color1:SetScript("OnColorSelect", function(self)
-				DBM.Options.SpecialWarningFontColor[1] = select(1, self:GetColorRGB())
-				DBM.Options.SpecialWarningFontColor[2] = select(2, self:GetColorRGB())
-				DBM.Options.SpecialWarningFontColor[3] = select(3, self:GetColorRGB())
-				color1text:SetTextColor(self:GetColorRGB())
-				DBM:UpdateSpecialWarningOptions()
-				DBM:ShowSpecialWarning("Boooooooooom!")
-		end)
-		
+		do
+			local firstshow = true
+			color1:SetScript("OnColorSelect", function(self)
+					if firstshow then firstshow = false; return end
+					DBM.Options.SpecialWarningFontColor[1] = select(1, self:GetColorRGB())
+					DBM.Options.SpecialWarningFontColor[2] = select(2, self:GetColorRGB())
+					DBM.Options.SpecialWarningFontColor[3] = select(3, self:GetColorRGB())
+					color1text:SetTextColor(self:GetColorRGB())
+					DBM:UpdateSpecialWarningOptions()
+					DBM:ShowTestSpecialWarning()
+			end)
+		end
+
 		local Fonts = { 
 			{	text	= "FrizQ",			value 	= "Fonts\\FRIZQT__.TTF",		font = "Fonts\\FRIZQT__.TTF"	},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
@@ -1673,7 +1677,7 @@ local function CreateOptionsMenu()
 			function(value) 
 				DBM.Options.SpecialWarningFont = value
 				DBM:UpdateSpecialWarningOptions()
-				DBM:ShowSpecialWarning("Boooooooooom!")
+				DBM:ShowTestSpecialWarning()
 			end
 		);
 		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -100)
@@ -1692,6 +1696,7 @@ local function CreateOptionsMenu()
 				DBM.Options.SpecialWarningX = DBM.DefaultOptions.SpecialWarningX
 				DBM.Options.SpecialWarningY = DBM.DefaultOptions.SpecialWarningY
 				color1:SetColorRGB(DBM.Options.SpecialWarningFontColor[1], DBM.Options.SpecialWarningFontColor[2], DBM.Options.SpecialWarningFontColor[3])
+				fontSizeSlider:SetValue(DBM.DefaultOptions.SpecialWarningFontSize)
 				DBM:UpdateSpecialWarningOptions()
 		end)
 	end
