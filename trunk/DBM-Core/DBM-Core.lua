@@ -86,7 +86,10 @@ DBM.DefaultOptions = {
 	HPFrameMaxEntries = 5,
 	SpecialWarningPoint = "CENTER",
 	SpecialWarningX = 0,
-	SpecialWarningY = 75
+	SpecialWarningY = 75,
+	SpecialWarningFont = STANDARD_TEXT_FONT,
+	SpecialWarningFontSize = 50,
+	SpecialWarningFontColor = {0.0, 0.0, 1.0}
 }
 
 DBM.Bars = DBT:New()
@@ -1036,8 +1039,8 @@ do
 	function loadOptions()
 		DBM.Options = DBM_SavedOptions
 		addDefaultOptions(DBM.Options, DBM.DefaultOptions)
-		-- load positions
-		DBM:LoadSpecialWarningPosition()
+		-- load special warning options
+		DBM:UpdateSpecialWarningOptions()
 		-- set this with a short delay to prevent issues with other addons also trying to do the same thing with another position ;)
 		DBM:Schedule(5, setRaidWarningPositon)
 	end
@@ -2315,19 +2318,24 @@ do
 	local font = frame:CreateFontString(nil, "OVERLAY", "ZoneTextFont")
 	frame:SetMovable(1)
 	frame:SetWidth(1)
-	frame:SetHeight(1)
-	frame:SetPoint("CENTER", 0, 75)
+	frame:SetHeight(1)	
 	frame:SetFrameStrata("HIGH")
 	frame:SetClampedToScreen()
 	frame:Hide()
 	font:SetWidth(1024)
 	font:SetHeight(0)
 	font:SetPoint("CENTER", 0, 0)
-	font:SetTextColor(0, 0, 1)
-	
+		
 	local moving
 	local specialWarningPrototype = {}
 	local mt = {__index = specialWarningPrototype}
+
+	function DBM:UpdateSpecialWarningOptions()
+		frame:ClearAllPoints()
+		frame:SetPoint(DBM.Options.SpecialWarningPoint, UIParent, DBM.Options.SpecialWarningPoint, DBM.Options.SpecialWarningX, DBM.Options.SpecialWarningY)
+		font:SetFont(DBM.Options.SpecialWarningFont, DBM.Options.SpecialWarningFontSize, "THICKOUTLINE")
+		font:SetTextColor(unpack(DBM.Options.SpecialWarningFontColor))
+	end
 
 	frame:SetScript("OnUpdate", function(self, elapsed)
 		self.timer = self.timer - elapsed
@@ -2339,13 +2347,9 @@ do
 			frame:Hide()
 		end
 	end)
-	
-	function DBM:LoadSpecialWarningPosition()
-		frame:SetPoint(DBM.Options.SpecialWarningPoint, UIParent, DBM.Options.SpecialWarningPoint, DBM.Options.SpecialWarningX, DBM.Options.SpecialWarningY)
-	end
 
 	function specialWarningPrototype:Show(...)
-		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving then	
+		if DBM.Options.ShowSpecialWarnings and (not self.option or self.mod.Options[self.option]) and not moving and frame then	
 			font:SetText(pformat(self.text, ...))
 			LowHealthFrame:Show()
 			LowHealthFrame:SetAlpha(1)
@@ -2443,7 +2447,7 @@ do
 	end
 
 	function DBM:ShowSpecialWarning(text)
-		if moving then
+		if moving or not frame then
 			return
 		end
 		font:SetText(text)
