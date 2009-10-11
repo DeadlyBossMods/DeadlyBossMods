@@ -14,6 +14,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecWarnBreath	= "Глубокий вдох",
 	WarnWhelpsSoon	= "Скоро вызов дракончиков",
+	WarnPhase3Soon	= "Скоро начнется фаза 3"
 }
 
 L:SetTimerLocalization{
@@ -22,12 +23,13 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath		= "Спец-предупреждение для Глубокого вдоха",
-	TimerBreath		= "Отсчет времени до Глубокого вдоха",
+	SpecWarnBreath		= "Спец-предупреждение для \"Глубокого вдоха\"",
+	TimerBreath		= "Отсчет времени до \"Глубокого вдоха\"",
 	TimerWhelps		= "Отсчет времени до вызова дракончиков",
 	WarnWhelpsSoon		= "Предупредить зарание о вызове дракончиков",
-	SoundBreath		= "Звуковой сигнал, когда Глубокий вдох",
-	SoundWTF		= "Воспроизводить забавное озвучивание легендарного классического рейда на Ониксию (англ.)"
+	SoundBreath		= "Звуковой сигнал, когда \"Глубокий вдох\"",
+	SoundWTF		= "Воспроизводить забавное озвучивание легендарного классического рейда на Ониксию (англ.)",
+	WarnPhase3Soon		= "Предупредить зарание о фазе 3 (при ~41% здоровья босса)"
 }
 
 L:SetMiscLocalization{
