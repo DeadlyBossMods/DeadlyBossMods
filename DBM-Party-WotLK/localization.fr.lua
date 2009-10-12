@@ -1610,6 +1610,11 @@ L:SetOptionLocalization({
 	specwarnSoulstorm		= "Montre une alerte spéciale lorsque Tempête d'âme est lancé (pour aller au centre)"
 })
 
+L:SetMiscLocalization({
+--	YellPull				= "De nouvelles âmes pour alimenter le moteur !"
+--	YellCombatEnd			= "Mon âme vous appartient, maître."
+})
+
 -------------------
 -- Devourer of Souls --
 -------------------
@@ -1620,9 +1625,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "Stop DPS!"
+	specwarnMirroredSoul		= "Âme réfléchie ! Stop DPS !"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "Montre une alerte spéciale pour arrêter le DPS lorsque Mirrored Soul"
+	specwarnMirroredSoul		= "Montre une alerte spéciale pour arrêter le DPS lorsque vous êtes la cible d'Âme réfléchie"
 })

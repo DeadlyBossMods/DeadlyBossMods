@@ -101,7 +101,7 @@ L.FillUpBars		= "Remplir les barres"
 L.ClickThrough		= "Enlève le contrôle par la souris (Vous autorise à cliquer à travers les barres)"
 
 -- Tab: Spec Warn Frame
-L.Panel_SpecWarnFrame		= "Alerte spéciale"
+L.Panel_SpecWarnFrame		= "Alertes spéciales"
 L.Area_SpecWarn				= "Configuration des alertes spéciales"
 L.SpecWarn_Enabled			= "Montre les alertes spéciales pour les capacités des boss"
 L.SpecWarn_Font				= "Police utilisée pour les alertes spéciales"
@@ -110,13 +110,20 @@ L.SpecWarn_MoveMe			= "Définir la position"
 L.SpecWarn_FontSize			= "Taille de police"
 L.SpecWarn_FontColor		= "Couleur de police"
 L.SpecWarn_FontType			= "Choisir la police"
+L.SpecWarn_ResetMe			= "Réinitialiser"
+
+-- Tab: HealthFrame
+L.Panel_HPFrame				= "Barre de vie"
+L.Area_HPFrame				= "Configurer la Barre de vie"
+L.HP_Enabled				= "Toujours montrer la Barre de vie, même si elle est désactivée dans le Module"
+
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter		= "Filtre anti-spam"
-L.Area_SpamFilter		= "Options générales du filtre anti-spam"
-L.HideBossEmoteFrame	= "Cacher la fenêtre des emotes de boss"
-L.SpamBlockRaidWarning	= "Filtrer les annonces venant d'autres boss mods"
-L.SpamBlockBossWhispers	= "Filtrer les alertes <DBM> chuchotement pendant les combats"
-L.BlockVersionUpdatePopup	= "Enlève le message pop-up quand vous êtes sur un boss"
+L.Panel_SpamFilter				= "Filtre anti-spam"
+L.Area_SpamFilter				= "Options générales du filtre anti-spam"
+L.HideBossEmoteFrame			= "Cacher la fenêtre des emotes de boss"
+L.SpamBlockRaidWarning			= "Filtrer les annonces venant d'autres boss mods"
+L.SpamBlockBossWhispers			= "Filtrer les alertes <DBM> chuchotement pendant les combats"
+L.BlockVersionUpdatePopup		= "Enlève le message pop-up quand vous êtes sur un boss"
 L.ShowBigBrotherOnCombatStart	= "Autoriser Big Brother pour regarder les buffs quand le combat débute"
 
