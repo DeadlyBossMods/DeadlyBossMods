@@ -483,8 +483,13 @@ L:SetGeneralLocalization{
 	name = "Freya's Elders"
 }
 
-L:SetTimerLocalization{
+L:SetMiscLocalization{
 	TrashRespawnTimer	= "Freya Trash Respawn"
+}
+
+L:SetWarningLocalization{
+	SpecWarnGroundTremor	= "Ground Tremor! stop casting!",
+	SpecWarnFistOfStone		= "Fist of Stone"
 }
 
 L:SetOptionLocalization{
