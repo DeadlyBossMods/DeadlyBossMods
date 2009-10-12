@@ -453,7 +453,7 @@ L:SetWarningLocalization{
 	WarnSimulKill	= "First add down - Resurrection in ~12 seconds",
 	WarnFury		= "Nature's Fury on >%s<",
 	SpecWarnFury	= "Nature's Fury on you!",
-	WarningTremor	= "Ground Tremor - Stop Casting!",
+	WarningTremor	= "Ground Tremor - Stop casting!",
 	WarnRoots		= "Roots on >%s<",
 	UnstableEnergy	= "Unstable Energy - Move!"
 }
@@ -472,7 +472,7 @@ L:SetOptionLocalization{
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury	= "Show special warning for Nature's Fury",
 	WarningTremor	= "Show special warning for Ground Tremor (Hard Mode)",
-	TimerSimulKill	= "Show Timer for mob resurrection",
+	TimerSimulKill	= "Show timer for mob resurrection",
 	UnstableEnergy	= "Show special warning for Unstable Energy"
 }
 
@@ -484,19 +484,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	TrashRespawnTimer	= "Freya Trash Respawn"
+	TrashRespawnTimer	= "Freya trash respawn"
 }
 
 L:SetWarningLocalization{
-	SpecWarnGroundTremor	= "Ground Tremor! stop casting!",
-	SpecWarnFistOfStone		= "Fist of Stone"
+	SpecWarnGroundTremor	= "Ground Tremor - Stop casting!",
+	SpecWarnFistOfStone		= "Fists of Stone"
 }
 
 L:SetOptionLocalization{
-	SpecWarnFistOfStone		= "Show special warning for Fist of Stone",
+	SpecWarnFistOfStone		= "Show special warning for Fists of Stone",
 	SpecWarnGroundTremor	= "Show special warning for Ground Tremor",
-	PlaySoundOnFistOfStone	= "Play Sound for Fist of Stone cast",
-	TrashRespawnTimer		= "Show trash respawn timer"
+	PlaySoundOnFistOfStone	= "Play sound for Fists of Stone cast",
+	TrashRespawnTimer		= "Show timer for trash respawn"
 }
 
 
