@@ -107,6 +107,11 @@ L.Area_SpecWarn				= "配置特別警告"
 L.SpecWarn_Enabled			= "為首領的技能顯示特別警告"
 L.SpecWarn_Font				= "特別警告使用的字型"
 L.SpecWarn_DemoButton		= "顯示範例"
+L.SpecWarn_MoveMe			= "設定位置"
+L.SpecWarn_FontSize			= "字型大小"
+L.SpecWarn_FontColor		= "字型顏色"
+L.SpecWarn_FontType			= "選擇字型"
+L.SpecWarn_ResetMe			= "回復原廠設定值"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "垃圾過濾"
