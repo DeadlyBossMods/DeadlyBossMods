@@ -111,6 +111,12 @@ L.SpecWarn_FontColor		= "Font color"
 L.SpecWarn_FontType			= "Select font"
 L.SpecWarn_ResetMe			= "Reset to defaults"
 
+-- Tab: HealthFrame
+L.Panel_HPFrame				= "Health Frame"
+L.Area_HPFrame				= "Configure the Health Frame"
+L.HP_Enabled				= "Always show Health Frame, even if disabled in the Mod"
+
+
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Spam Filter"
 L.Area_SpamFilter				= "General Spam Filter Options"

@@ -1708,7 +1708,14 @@ local function CreateOptionsMenu()
 				DBM:UpdateSpecialWarningOptions()
 		end)
 	end
-	
+
+	do
+		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HPFrame, "option")
+		local specArea = specPanel:CreateArea(L.Area_HPFrame, nil, 205, true)
+		specArea:CreateCheckButton(L.HP_Enabled, true, nil, "AlwaysShowHealthFrame")
+
+	end
+
 	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 135, true)
