@@ -73,6 +73,7 @@ DBM.DefaultOptions = {
 	ShowMinimapButton = true,
 	BlockVersionUpdatePopup = true,
 	ShowSpecialWarnings = true,
+	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
@@ -1560,7 +1561,7 @@ function DBM:StartCombat(mod, delay, synced)
 		mod.blockSyncs = nil
 		mod.combatInfo.pull = GetTime() - (delay or 0)
 		self:Schedule(mod.minCombatTime or 3, checkWipe)
-		if mod.Options.HealthFrame and mod.Options.Enabled then
+		if (DBM.Options.AlwaysShowHealthFrame or mod.Options.HealthFrame) and mod.Options.Enabled then
 			DBM.BossHealth:Show(mod.localization.general.name)
 			if mod.bossHealthInfo then
 				for i = 1, #mod.bossHealthInfo, 2 do
