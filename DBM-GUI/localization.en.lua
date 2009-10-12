@@ -113,8 +113,8 @@ L.SpecWarn_ResetMe			= "Reset to defaults"
 
 -- Tab: HealthFrame
 L.Panel_HPFrame				= "Health Frame"
-L.Area_HPFrame				= "Configure the Health Frame"
-L.HP_Enabled				= "Always show Health Frame, even if disabled in the Mod"
+L.Area_HPFrame				= "Configure Health Frame"
+L.HP_Enabled				= "Always show health frame (Overrides boss-specific option)"
 
 
 -- Tab: Spam Filter
