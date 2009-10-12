@@ -133,9 +133,9 @@ do
 	frame:SetScript("OnEvent", function(self, event, timestamp, subEvent, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		if shieldedMob == destGUID then
 			local absorbed
-			if subEvent == "RANGE_DAMAGE" or subEvent == "SPELL_DAMAGE" or subEvent == "SPELL_PERIODIC_DAMAGE" then
+			if subEvent == "RANGE_MISSED" or subEvent == "SPELL_MISSED" or subEvent == "SPELL_PERIODIC_MISSED" then
 				absorbed = select(9, ...)
-			elseif subEvent == "SWING_DAMAGE" then
+			elseif subEvent == "SWING_MISSED" then
 				absorbed = select(6, ...)
 			end
 			if absorbed then
