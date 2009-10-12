@@ -110,6 +110,12 @@ L.SpecWarn_MoveMe			= "위치 설정"
 L.SpecWarn_FontSize			= "폰트 크기"
 L.SpecWarn_FontColor		= "폰트 색상"
 L.SpecWarn_FontType			= "폰트 선택"
+L.SpecWarn_ResetMe			= "초기화"
+
+-- Tab: HealthFrame
+L.Panel_HPFrame				= "보스 체력 프레임"
+L.Area_HPFrame				= "체력 프레임 설정"
+L.HP_Enabled				= "해당 모드에서 끈 상태라도 항상 체력 프레임 보기(강제)"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "스팸 필터"
