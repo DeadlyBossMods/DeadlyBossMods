@@ -18,8 +18,8 @@ L.BossModLoad_now			= [[База данных для этих боссов не 
 Она будет загружена сразу после входа в подземелье. 
 Можно также нажать кнопку, чтобы загрузить вручную.]]
 
-L.PosX = 'Положение X'
-L.PosY = 'Положение Y'
+L.PosX 					= 'Положение X'
+L.PosY 					= 'Положение Y'
 
 L.MoveMe				= 'Действие'
 L.Button_OK				= 'OK'
@@ -106,6 +106,17 @@ L.Area_SpecWarn				= "Настройка специальных предупре
 L.SpecWarn_Enabled			= "Отображать спец-предупреждения для способностей босса"
 L.SpecWarn_Font				= "Выбор шрифта для специальных предупреждений"
 L.SpecWarn_DemoButton			= "Показать пример"
+L.SpecWarn_MoveMe			= "Расположение"
+L.SpecWarn_FontSize			= "Размер"
+L.SpecWarn_FontColor			= "Цвет шрифта"
+L.SpecWarn_FontType			= "Выбор шрифта"
+L.SpecWarn_ResetMe			= "Восстановить умолчания"
+
+-- Tab: HealthFrame
+L.Panel_HPFrame				= "Здоровье"
+L.Area_HPFrame				= "Настройка Здоровья"
+L.HP_Enabled				= "Всегда отображать Здоровье, даже если оно было отключено в приложении"
+
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter			= "Фильтрация сообщений"
