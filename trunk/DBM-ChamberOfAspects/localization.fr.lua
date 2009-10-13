@@ -45,7 +45,7 @@ L:SetWarningLocalization({
 	WarningTenebron			= "Ténébron Arrive",
 	WarningShadron			= "Obscuron Arrive",
 	WarningVesperon			= "Vespéron Arrive",
-	WarningFireWall			= "Tsunami de flammes!",
+	WarningFireWall			= "Tsunami de flammes !",
 	WarningVesperonPortal	= "Portail de Vespéron",
 	WarningTenebronPortal	= "Portail de Ténébron",
 	WarningShadronPortal	= "Portail d'Obscuron",
@@ -60,7 +60,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Joue un son pour les Tsunamis de flammes",
-	AnnounceFails		= "Affiche les joueurs qui n'ont pas évité les zones de vide / Tsunamis de flammes (requires announce enabled and promoted/leader status)",
+	AnnounceFails		= "Affiche les joueurs qui n'ont pas évité les zones de vide / Tsunamis de flammes (Nécessite l'activation des annonces et être promu ou leader)",
 
 	TimerWall		= "Montre le timer pour les Tsunamis de flammes",
 	TimerTenebron		= "Montre le timer pour Ténébron",

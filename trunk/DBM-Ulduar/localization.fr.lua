@@ -253,7 +253,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique",
 	SpecWarnPhasePunch	= "Activer l'avertissement spécial quand vous êtes la cible du coup de poing phasique",
 	WarningBigBang		= "Annonce le cast du Big Bang",
 	PreWarningBigBang	= "Pré annonce le Big Bang",
@@ -263,6 +262,7 @@ L:SetOptionLocalization{
 	NextCollapsingStar	= "Montre un timer pour le prochain choque cosmique",
 	WarningCosmicSmash 		= "Annonce le Choc cosmique",
 	SpecWarnCosmicSmash 	= "Montre une alerte spéciale pour le Choc cosmique"
+	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique",
 }
 
 L:SetMiscLocalization{
@@ -270,6 +270,7 @@ L:SetMiscLocalization{
 	YellPullFirst			= "",
 	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
 	Emote_CosmicSmash		= "%s begins to cast Cosmic Smash!"
+
 }
 
 
@@ -284,7 +285,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "Rayon de l'Œil sur TOI - ECARTE-TOI",
-	WarningEyebeam			= "Rayon de l'Œil sur >%s<",
+	WarningEyeBeam			= "Rayon de l'Œil sur >%s<",
 	WarnGrip				= "Poigne sur >%s<"
 }
 
@@ -298,10 +299,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam		= "Activer l'avertissement spécial quand vous êtes la cible du Rayon de l'Œil",
-	WarningEyebeam			= "Annoncer la cible du Rayon de l'Œil",
+	SpecialWarningEyebeam	= "Activer l'avertissement spécial quand vous êtes la cible du Rayon de l'Œil",
+	WarningEyeBeam			= "Annoncer la cible du Rayon de l'Œil",
 	timerEyebeam			= "Afficher un timer pour le Rayon de l'Œil",
-	timerPetrifyingBreath		= "Afficher un timer pour le souffle pétrifiant",
+	timerPetrifyingBreath	= "Afficher un timer pour le souffle pétrifiant",
 	timerNextShockwave		= "Afficher un timer pour l'onde de choc",
 	timerLeftArm			= "Afficher un timer pour le repop du bras gauche",
 	timerRightArm			= "Afficher un timer pour le repop du bras droit",
@@ -312,8 +313,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Yell_Trigger_arm_left		= "Juste une éraflure !",
-	Yell_Trigger_arm_right		= "Une blessure superficielle !",
+	Yell_Trigger_arm_left	= "Juste une éraflure !",
+	Yell_Trigger_arm_right	= "Une blessure superficielle !",
 	Health_Body				= "Torse de Kologarn",
 	Health_Right_Arm		= "Bras droit",
 	Health_Left_Arm			= "Bras gauche",
@@ -334,24 +335,24 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast = "Déflagration du factionnaire - Interrompu!",
-	WarnCatDied = "Défenseur farouche mort (%d vies restantes)",
-	WarnFear = "Hurlement terrifiant!",
-	WarnFearSoon = "Hurlement terrifiant imminent",
-	WarnSonic		= "Hurlement sonore",
-	WarnSwarm		= "Essaim gardien sur >%s<",
+	SpecWarnBlast 		= "Déflagration du factionnaire - Interrompu!",
 	SpecWarnVoid		= "Zone de Vide - BOUGEZ!",
+	WarnCatDied 		= "Défenseur farouche mort (%d vies restantes)",
 	WarnCatDiedOne 		= "Défenseur farouche mort (1 vie en moins)"
+	WarnFear 			= "Hurlement terrifiant!",
+	WarnFearSoon 		= "Hurlement terrifiant imminent",
+	WarnSonic			= "Hurlement sonore",
+	WarnSwarm			= "Essaim gardien sur >%s<",
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast = "Activer l'avertissement spécial pour les Déflagration du factionnaire",
-	WarnFear = "Activer l'avertissement pour les Hurlements terrifiants",
-	WarnFearSoon = "Activer l'avertissement pour le Hurlement terrifiant imminent",
-	WarnCatDied = "Activer l'avertissement quand un défenseur farouche meurt",
-	WarnSwarm		= "Activer l'avertissement pour les Essaims gardiens",
-	WarnSonic		= "Activer l'avertissement pour les Hurlements sonores",
+	SpecWarnBlast 		= "Activer l'avertissement spécial pour les Déflagration du factionnaire",
 	SpecWarnVoid		= "Montre une alerte spéciale quand vous êtes dans une Zone de Vide",
+	WarnFear 			= "Activer l'avertissement pour les Hurlements terrifiants",
+	WarnFearSoon 		= "Activer l'avertissement pour le Hurlement terrifiant imminent",
+	WarnCatDied 		= "Activer l'avertissement quand un défenseur farouche meurt",
+	WarnSwarm			= "Activer l'avertissement pour les Essaims gardiens",
+	WarnSonic			= "Activer l'avertissement pour les Hurlements sonores",
 	WarnCatDiedOne		= "Montre une alerte spéciale quand un Défenseur farouche meurt"
 }
 
@@ -375,12 +376,12 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze	= "Afficher une barre d'incantation pour le gel instantané",
-	WarningFlashFreeze	= "Activer l'avertissement pour le gel instantané",
+	TimerFlashFreeze		= "Afficher une barre d'incantation pour le gel instantané",
+	WarningFlashFreeze		= "Activer l'avertissement pour le gel instantané",
 	PlaySoundOnFlashFreeze	= "Jouer un son lors de l'incantation du gel instantané",
-	WarningStormCloud	= "Annonce le joueur de la tempête de glace",
-	YellOnStormCloud	= "Crie quand la tempête de glace est active",
-	SetIconOnStormCloud	= "Met une icône sur la cible de la tempête de glace"
+	WarningStormCloud		= "Annonce le joueur de la tempête de glace",
+	YellOnStormCloud		= "Crie quand la tempête de glace est active",
+	SetIconOnStormCloud		= "Met une icône sur la cible de la tempête de glace"
 }
 
 L:SetMiscLocalization{
@@ -399,12 +400,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer	= "Marteau-tempête sur >%s<",
-	UnbalancingStrike	= "Frappe déséquilibrante sur >%s<",
-	WarningPhase2	= "Phase 2",
+	WarningStormhammer		= "Marteau-tempête sur >%s<",
+	UnbalancingStrike		= "Frappe déséquilibrante sur >%s<",
+	WarningPhase2			= "Phase 2",
 	WarningLightningCharge	= "Charge de foudre",
-	WarningBomb	= "Détonation runique sur >%s<",
-	LightningOrb = "Horion de foudre sur TOI! Bouge!"
+	WarningBomb				= "Détonation runique sur >%s<",
+	LightningOrb 			= "Horion de foudre sur TOI! Bouge!"
 }
 
 L:SetTimerLocalization{
@@ -412,15 +413,15 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerHardmode	= "Afficher le timer pour le mode difficile",
-	UnbalancingStrike	= "Annoncer la cible de la frappe déséquilibrante",
-	WarningStormhammer	= "Annoncer la cible du marteau-tempête",
-	WarningPhase2	= "Annoncer la phase 2",
-	WarningBomb	= "Annoncer la détonation runique",
-	RangeFrame	= "Afficher la fenêtre de portée",
-	WarningLightningCharge		= "Annonce les charges de foudre",
-	AnnounceFails			= "Post player fails for Lightning Charge to the raid chat (requires announce enabled and promoted/leader status)",
-	LightningOrb			= "Montre une alerte spéciale pour les Charge de foudre"
+	TimerHardmode			= "Afficher le timer pour le mode difficile",
+	WarningStormhammer		= "Annoncer la cible du marteau-tempête",
+	WarningLightningCharge	= "Annonce les charges de foudre",
+	WarningPhase2			= "Annoncer la phase 2",
+	UnbalancingStrike		= "Annoncer la cible de la frappe déséquilibrante",
+	WarningBomb				= "Annoncer la détonation runique",
+	RangeFrame				= "Afficher la fenêtre de portée",
+	AnnounceFails			= "Affiche les joueurs qui n'ont pas évité les Charges de foudre (Nécessite l'activation des annonces et être promu ou leader)",
+	LightningOrb			= "Montre une alerte spéciale pour les Charges de foudre"
 }
 
 L:SetMiscLocalization{
@@ -442,35 +443,35 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell = "Mes enfants, venez m'aider !",
+	SpawnYell 	= "Mes enfants, venez m'aider !",
 	WaterSpirit = "Esprit de l'eau ancien",
-	Snaplasher = "Flagellant mordant",
+	Snaplasher 	= "Flagellant mordant",
 	StormLasher = "Flagellant des tempêtes",
 	YellKill	= "Son emprise sur moi se dissipe. J'y vois à nouveau clair. Merci, héros."
 }
 
 L:SetWarningLocalization{
-	WarnPhase2 = "Phase 2",
-	WarnSimulKill = "Premier add mort - Résurrection dans 1 minute",
-	WarnFury = "Fureur de la nature sur >%s<",
-	SpecWarnFury = "Fureur de la nature sur VOUS!",
+	WarnPhase2 		= "Phase 2",
+	WarnSimulKill 	= "Premier add mort - Résurrection dans 1 minute",
+	WarnFury 		= "Fureur de la nature sur >%s<",
+	SpecWarnFury 	= "Fureur de la nature sur VOUS!",
 	WarningTremor   = "Tremblement de terre - Arretez d'incanter!",
-	WarnRoots	= "Racines de fer sur >%s<",
+	WarnRoots		= "Racines de fer sur >%s<",
 	UnstableEnergy	= "Energie instable - BOUGEZ!"
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam = "Rayon de soleil: %s",
-	TimerSimulKill = "Résurrection",
-	TimerFuryYou = "Fureur de la nature sur vous",
-	TrashRespawnTimer	= "Respawn des Trashs de Freya"
+	TimerUnstableSunBeam 	= "Rayon de soleil: %s",
+	TimerSimulKill 			= "Résurrection",
+	TimerFuryYou 			= "Fureur de la nature sur vous",
+	TrashRespawnTimer		= "Respawn des Trashs de Freya"
 }
 
 L:SetOptionLocalization{
-	WarnPhase2		= "Annonce la phase 2",
+	WarnPhase2			= "Annonce la phase 2",
 	WarnSimulKill		= "Annonce la mort du premier mob",
-	WarnFury		= "Annonce la cible de la fureur de la nature",
-	WarnRoots		= "Annonce les cibles des racines de fer",
+	WarnFury			= "Annonce la cible de la fureur de la nature",
+	WarnRoots			= "Annonce les cibles des racines de fer",
 	SpecWarnFury		= "Montre des alertes spéciales pour la Fureur de la Nature",
 	WarningTremor		= "Montre une alerte spéciale pour le tremblement de terre (Hard-Mode)",
 	TimerSimulKill		= "Montre le timer de la résurrection des mobs",
@@ -484,15 +485,20 @@ L:SetGeneralLocalization{
 	name = "Freya's Elders"
 }
 
-L:SetTimerLocalization{
+L:SetMiscLocalization{
 	TrashRespawnTimer	= "Respawn des Trashs de Freya"
 }
 
+L:SetWarningLocalization{
+	SpecWarnGroundTremor	= "Tremblement de terre - Arrêtez les sorts !",
+	SpecWarnFistOfStone		= "Poings de pierre"
+}
+
 L:SetOptionLocalization{
-	SpecWarnFistOfStone	= "Montre une alerte spécial pour le coup de poings de pierre",
+	SpecWarnFistOfStone		= "Montre une alerte spéciale pour le coup de poings de pierre",
 	SpecWarnGroundTremor	= "Montre une alerte spéciale pour le tremblement de terre",
-	PlaySoundOnFistOfStone	= "Joue un son au cast de poings de pierre",
-	TrashRespawnTimer	= "Montre le timer du repop des trashs"
+	PlaySoundOnFistOfStone	= "Joue un son à l'incantation des poings de pierre",
+	TrashRespawnTimer		= "Montre le timer du repop des trashs"
 }
 
 
@@ -559,7 +565,7 @@ L:SetMiscLocalization{
 
 
 --------------------
---  GeneralVezax  --
+--  General Vezax  --
 --------------------
 L = DBM:GetModLocalization("GeneralVezax")
 
@@ -572,34 +578,34 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "Déferlante d'ombre sur VOUS",
-	SpecialWarningSurgeDarkness	= "Vague de ténèbres",
-	WarningShadowCrash		= "Déferlante d'ombre sur >%s<",
+	SpecialWarningShadowCrash		= "Déferlante d'ombre sur VOUS",
+	SpecialWarningSurgeDarkness		= "Vague de ténèbres",
+	WarningShadowCrash				= "Déferlante d'ombre sur >%s<",
 	SpecialWarningShadowCrashNear	= "Déferlante d'ombre à côté de VOUS!",
-	WarningLeechLife		= "Marque du Sans-visage sur >%s<",
-	SpecialWarningLLYou		= "Marque du Sans-visage sur VOUS!",
-	SpecialWarningLLNear		= "Marque du Sans-visage sur %s à côté de VOUS!"
+	WarningLeechLife				= "Marque du Sans-visage sur >%s<",
+	SpecialWarningLLYou				= "Marque du Sans-visage sur VOUS!",
+	SpecialWarningLLNear			= "Marque du Sans-visage sur %s à côté de VOUS!"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash		= "Montre une alerte spéciale pour les Déferlante d'ombre",
-	SetIconOnShadowCrash		= "met une icône sur la cible des Déferlante d'ombre ( Tête de mort )",
-	SetIconOnLifeLeach		= "Met une icône sur la cible de la Marque du Sans-visage ( Croix )",
-	SpecialWarningSurgeDarkness	= "Montre une alerte spéciale pour les Vague de ténèbres",
-	SpecialWarningShadowCrash	= "Montre une alerte spéciale pour les Déferlante d'ombre",
+	WarningShadowCrash				= "Montre une alerte spéciale pour les Déferlante d'ombre",
+	SetIconOnShadowCrash			= "met une icône sur la cible des Déferlante d'ombre ( Tête de mort )",
+	SetIconOnLifeLeach				= "Met une icône sur la cible de la Marque du Sans-visage ( Croix )",
+	SpecialWarningSurgeDarkness		= "Montre une alerte spéciale pour les Vague de ténèbres",
+	SpecialWarningShadowCrash		= "Montre une alerte spéciale pour les Déferlante d'ombre",
 	SpecialWarningShadowCrashNear	= "Montre une alerte spéciale quand la Déferlante d'ombre tombe à côté de vous",
-	SpecialWarningLLYou		= "Montre une alerte spéciale quand la Marque du Sans-visage est sur Vous",
-	SpecialWarningLLNear		= "Montre une alerte spéciale quand la Marque du Sans-visage est à côté de vous",
-	CrashWhisper			= "Envoie un whisp à la cible de la Déferlante d'ombre",
-	YellOnLifeLeech			= "Crie pour la Marque du Sans-visage",
-	YellOnShadowCrash		= "Crie pour la Déferlante d'ombre",
-	WarningLeechLife		= "Annonce la cible de la Marque du Sans-visage",
+	SpecialWarningLLYou				= "Montre une alerte spéciale quand la Marque du Sans-visage est sur Vous",
+	SpecialWarningLLNear			= "Montre une alerte spéciale quand la Marque du Sans-visage est à côté de vous",
+	CrashWhisper					= "Envoie un whisp à la cible de la Déferlante d'ombre",
+	YellOnLifeLeech					= "Crie pour la Marque du Sans-visage",
+	YellOnShadowCrash				= "Crie pour la Déferlante d'ombre",
+	WarningLeechLife				= "Annonce la cible de la Marque du Sans-visage",
 	hardmodeSpawn					= "Montre le timer pour l'arriver d'Animus de saronite (Hard Mode)"
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors		= "A cloud of saronite vapors coalesces nearby!",
-	CrashWhisper			= "Déferlante d'ombre sur toi ! BOUGE !",
+	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!",
+	CrashWhisper		= "Déferlante d'ombre sur toi ! BOUGE !",
 	YellLeech			= "Marque du Sans-visage sur moi !",
 	YellCrash			= "Déferlante d'ombre sur moi !"
 }
@@ -618,7 +624,7 @@ L:SetMiscLocalization{
 	YellPull 						= "Il sera bientôt temps de frapper la tête de la bête ! Concentrez votre rage et votre haine sur ses laquais !",
 	YellPhase2 						= "Je suis le rêve éveillé",
 	Sara 							= "Sara",
-	WhisperBrainLink 				= "Votre cerveau est lié ! Courez vers %s!",
+	WhisperBrainLink 				= "Votre cerveau est lié ! Courez vers %s !",
 	WarningYellSqueeze				= "Ecrasement sur moi ! Aidez-moi !"
 }
 
@@ -628,17 +634,17 @@ L:SetWarningLocalization{
 	WarningP2 						= "Phase 2",
 	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Cerveaux liés sur >%s< et >%s<",
-	SpecWarnBrainLink 				= "Cerveaux liés sur Vous et sur %s!",
-	WarningSanity 					= "%d de Santé mentale est conservé",
-	SpecWarnSanity 					= "%d de Santé mentale est conservé",
-	SpecWarnGuardianLow				= "Arretez d'attaquer le gardien!",
+	SpecWarnBrainLink 				= "Cerveaux liés sur Vous et sur %s !",
+	WarningSanity 					= "%d de Santé mentale restant",
+	SpecWarnSanity 					= "%d de Santé mentale restant",
+	SpecWarnGuardianLow				= "Arretez d'attaquer ce gardien !",
 	WarnMadness						= "Incantation de Susciter la folie en cours",
-	SpecWarnMadnessOutNow			= "Incantation de Susciter la folie fini - BOUGEZ",
+	SpecWarnMadnessOutNow			= "Incantation de Susciter la folie fini - SORTEZ",
 	WarnBrainPortalSoon				= "Portail dans 3 sec",	
 	WarnSqueeze 					= "Ecrasement: >%s<",
 	WarnFavor						= "Ferveur de Sara sur >%s<",
 	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
-	WarnEmpowerSoon					= "Renforcement des ombres Bientôt!",
+	WarnEmpowerSoon					= "Renforcement des ombres Bientôt !",
 	SpecWarnMaladyNear				= "Mal de la raison à côté de vous sur >%s<",
 	SpecWarnDeafeningRoar			= "Rugissement assourdissant"
 }
@@ -670,9 +676,11 @@ L:SetOptionLocalization{
 	WhisperBrainLink				= "Envoie un whisp aux Cerveaux liés",
 	SetIconOnFavorTarget			= "Met une icône sur les cible de la ferveur de Sara",
 	SetIconOnMCTarget				= "met une icône sur la cible du contrôle mental",
-	ShowSaraHealth					= "Montre la vie de Sara durant la P1 ( Doit être sélectionné une fois par un membre du groupe raid )",
+	ShowSaraHealth					= "Montre la vie de Sara durant la P1 (Doit être sélectionnée par au moins un membre du raid)",
 	WarnEmpowerSoon					= "Alerte avant le Renforcement des ombres",
 	SpecWarnMaladyNear				= "Montre une alerte spéciale si une personne à côté de vous est victime du Mal de la raison",
-	SpecWarnDeafeningRoar			= "Montre une alerte spéciale pour le Rugissement assourdissant"
+	SpecWarnDeafeningRoar			= "Montre une alerte spéciale pour le Rugissement assourdissant (silence et haut-fait)"
 }
+
+
 
