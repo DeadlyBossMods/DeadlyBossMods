@@ -488,10 +488,15 @@ L:SetTimerLocalization{
 	TrashRespawnTimer	= "Фрейя возрождает Мусор"
 }
 
+L:SetWarningLocalization{
+	SpecWarnGroundTremor	= "Дрожание земли - остановите чтение заклинаний!",
+	SpecWarnFistOfStone	= "Каменные кулаки"
+}
+
 L:SetOptionLocalization{
-	SpecWarnFistOfStone	= "Спец-предупреждение для Каменного кулака",
+	SpecWarnFistOfStone	= "Спец-предупреждение для Каменных кулаков",
 	SpecWarnGroundTremor	= "Спец-предупреждение для Дрожания земли",
-	PlaySoundOnFistOfStone	= "Воспроизводить звук для Каменного кулака",
+	PlaySoundOnFistOfStone	= "Воспроизводить звук для Каменных кулаков",
 	TrashRespawnTimer	= "Отсчет времени до повторного Дрожания земли"
 }
 
