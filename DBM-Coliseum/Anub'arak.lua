@@ -8,6 +8,7 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REFRESH", 	
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
@@ -77,6 +78,21 @@ function mod:ShadowStrike()
 		preWarnShadowStrike:Cancel()
 		preWarnShadowStrike:Schedule(27)
 		self:ScheduleMethod(30, "ShadowStrike")
+	end
+end
+
+-- Penetrating Cold bug fix
+function mod:SPELL_AURA_REFRESH(args)
+	if args:IsSpellID(66013, 67700, 68509, 68510) then  -- Penetrating Cold
+		mod:ScheduleMethod(3, "resetIcons")
+		if args:IsPlayer() then
+			specWarnPCold:Show()
+		end
+		if self.Options.SetIconsOnPCold and PColdIcon > 0 then
+			mod:SetIcon(args.destName, PColdIcon, 15)
+			PColdIcon = PColdIcon - 1
+		end
+		timerPCold:Show() 
 	end
 end
 
