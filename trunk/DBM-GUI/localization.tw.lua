@@ -113,6 +113,12 @@ L.SpecWarn_FontColor		= "字型顏色"
 L.SpecWarn_FontType			= "選擇字型"
 L.SpecWarn_ResetMe			= "回復原廠設定值"
 
+-- Tab: HealthFrame
+L.Panel_HPFrame				= "血量框架"
+L.Area_HPFrame				= "配置血量框架"
+L.HP_Enabled				= "永久顯示血量框架 (覆蓋首領模組的選項)"
+
+
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "垃圾過濾"
 L.Area_SpamFilter		= "基本垃圾過濾設定"
