@@ -261,8 +261,8 @@ L:SetOptionLocalization{
 	WarningBlackHole	= "Annoncer les trous noirs",
 	NextCollapsingStar	= "Montre un timer pour le prochain choque cosmique",
 	WarningCosmicSmash 		= "Annonce le Choc cosmique",
-	SpecWarnCosmicSmash 	= "Montre une alerte spéciale pour le Choc cosmique"
-	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique",
+	SpecWarnCosmicSmash 	= "Montre une alerte spéciale pour le Choc cosmique",
+	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique"
 }
 
 L:SetMiscLocalization{
@@ -338,11 +338,11 @@ L:SetWarningLocalization{
 	SpecWarnBlast 		= "Déflagration du factionnaire - Interrompu!",
 	SpecWarnVoid		= "Zone de Vide - BOUGEZ!",
 	WarnCatDied 		= "Défenseur farouche mort (%d vies restantes)",
-	WarnCatDiedOne 		= "Défenseur farouche mort (1 vie en moins)"
+	WarnCatDiedOne 		= "Défenseur farouche mort (1 vie en moins)",
 	WarnFear 			= "Hurlement terrifiant!",
 	WarnFearSoon 		= "Hurlement terrifiant imminent",
 	WarnSonic			= "Hurlement sonore",
-	WarnSwarm			= "Essaim gardien sur >%s<",
+	WarnSwarm			= "Essaim gardien sur >%s<"
 }
 
 L:SetOptionLocalization{
