@@ -22,20 +22,20 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	PursueWarn				= "Pursuing >%s<!",
+	PursueWarn				= "Pursuing >%s<",
 	warnNextPursueSoon		= "Target change in 5 seconds",
-	SpecialPursueWarnYou	= "Pursuing you!",
+	SpecialPursueWarnYou	= "Pursuing you",
 	SystemOverload			= "System Overload"
 }
 
 L:SetOptionLocalization{
 	timerSystemOverload		= "Show timer for System Overload",
 	timerFlameVents			= "Show timer for Flame Vents",
-	timerPursued			= "Show timer for Pursued",
+	timerPursued			= "Show timer for pursue",
 	SystemOverload			= "Show special warning for System Overload",
-	SpecialPursueWarnYou	= "Show special warning when pursued",
+	SpecialPursueWarnYou	= "Show special warning when you are pursued",
 	PursueWarn				= "Show warning for pursue on player",
-	warnNextPursueSoon		= "Warn before next pursue"
+	warnNextPursueSoon		= "Show pre-warning for next pursue"
 }
 
 
@@ -58,11 +58,11 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarningSlagPot			= "Slag Pot on >%s<",
-	SpecWarnJetsCast		= "Jets - Stop Casting!"
+	SpecWarnJetsCast		= "Flame Jets - Stop casting"
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast		= "Show special warning for Flame Jets cast (interrupt)",
+	SpecWarnJetsCast		= "Show special warning for Flame Jets cast",
 	TimerFlameJetsCast		= "Show timer for Flame Jets cast",
 	TimerFlameJetsCooldown	= "Show timer for Flame Jets cooldown",
 	TimerScorch				= "Show timer for Scorch cooldown",
@@ -82,7 +82,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Devouring Flame - Move!",
+	SpecWarnDevouringFlame		= "Devouring Flame - Move",
 	warnTurretsReadySoon		= "Last turret ready in 20 seconds",
 	warnTurretsReady			= "Last turret ready",
 	SpecWarnDevouringFlameCast	= "Devouring Flame on you",
@@ -96,13 +96,13 @@ L:SetTimerLocalization{
 	timerTurret2				= "Turret 2",
 	timerTurret3				= "Turret 3",
 	timerTurret4				= "Turret 4",
-	timerGroundedTemp			= "on the Ground"
+	timerGroundedTemp			= "On the ground"
 }
 L:SetOptionLocalization{
-	timerDeepBreathCooldown		= "Show timer for next Flame Breath",
+	timerDeepBreathCooldown		= "Show timer for Flame Breath cooldown",
 	timerDeepBreathCast			= "Show timer for Flame Breath cast",
-	SpecWarnDevouringFlame		= "Show special warning while in Devouring Flame patch",
-	PlaySoundOnDevouringFlame	= "Play sound when affected by Devoring Flame",
+	SpecWarnDevouringFlame		= "Show special warning when you are in a Devouring Flame",
+	PlaySoundOnDevouringFlame	= "Play sound when affected by Devouring Flame",
 	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
 	warnTurretsReady			= "Show warning for turrets",
@@ -137,9 +137,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "Light Bomb on you!",
+	SpecialWarningLightBomb 	= "Light Bomb on you",
 	WarningLightBomb			= "Light Bomb on >%s<",
-	SpecialWarningGravityBomb	= "Gravity Bomb on you!",
+	SpecialWarningGravityBomb	= "Gravity Bomb on you",
 	WarningGravityBomb			= "Gravity Bomb on >%s<",
 }
 
@@ -148,8 +148,8 @@ L:SetOptionLocalization{
 	WarningLightBomb			= "Announce Light Bomb",
 	SpecialWarningGravityBomb	= "Show special warning when you are affected by Gravity Bomb",
 	WarningGravityBomb			= "Announce Gravity Bomb",
-	PlaySoundOnGravityBomb		= "Play sound when Gravity Bomb is on you",
-	PlaySoundOnTympanicTantrum	= "Play sound for Tympanic Tantrum",
+	PlaySoundOnGravityBomb		= "Play sound when you are affected by Gravity Bomb",
+	PlaySoundOnTympanicTantrum	= "Play sound on Tympanic Tantrum",
 	SetIconOnLightBombTarget	= "Set icon on Light Bomb target",
 	SetIconOnGravityBombTarget	= "Set icon on Gravity Bomb target",
 }
@@ -170,10 +170,10 @@ L:SetWarningLocalization{
 	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
 	WarningRuneofPower			= "Rune of Power",
 	WarningRuneofDeath			= "Rune of Death",
-	RuneofDeath					= "Rune of Death - Move!",
-	LightningTendrils			= "Lightning Tendrils - Move!",
+	RuneofDeath					= "Rune of Death - Move",
+	LightningTendrils			= "Lightning Tendrils - Move",
 	WarningRuneofSummoning		= "Rune of Summoning",
-	Overload					= "Overload - Move away!",
+	Overload					= "Overload - Move away",
 	WarningStaticDisruption		= "Static Disruption on >%s<",
 	PlaySoundDeathRune			= "Death Rune"
 }
@@ -198,7 +198,7 @@ L:SetOptionLocalization{
 	TimerLightningWhirl			= "Show timer for Lightning Whirl cast",
 	LightningTendrils			= "Show special warning for Lightning Tendrils",
 	TimerLightningTendrils		= "Show timer for Lightning Tendrils duration",
-	PlaySoundLightningTendrils	= "Play sound for Lightning Tendrils",
+	PlaySoundLightningTendrils	= "Play sound on Lightning Tendrils",
 	WarningFusionPunch			= "Announce Fusion Punch",
 	timerFusionPunchCast		= "Show cast bar for Fusion Punch",
 	timerFusionPunchActive		= "Show timer for Fusion Punch",
@@ -214,9 +214,9 @@ L:SetOptionLocalization{
 	SetIconOnStaticDisruption	= "Set icon on Static Disruption target",
 	Overload					= "Show special warning for Overload",
 	AllwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
-	PlaySoundOnOverload			= "Play sound for Overload",
+	PlaySoundOnOverload			= "Play sound on Overload",
 	WarningStaticDisruption		= "Announce Static Disruption",
-	PlaySoundDeathRune			= "Play sound for Rune of Death"
+	PlaySoundDeathRune			= "Play sound on Rune of Death"
 }
 
 L:SetMiscLocalization{
@@ -243,7 +243,7 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",
 	WarningBlackHole		= "Black Hole",
-	WarningBigBang			= "Big Bang NOW",
+	WarningBigBang			= "Big Bang now",
 	SpecWarnBigBang			= "Big Bang",
 	PreWarningBigBang		= "Big Bang in ~10 seconds",
 	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",
@@ -282,7 +282,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam	= "Eye Beam on you - Move!",
+	SpecialWarningEyebeam	= "Eye Beam on you - Move",
 	WarningEyeBeam			= "Eye Beam on >%s<",
 	WarnGrip				= "Grip on >%s<"
 }
@@ -291,19 +291,19 @@ L:SetTimerLocalization{
 	timerEyebeam			= "Eye Beam: %s",
 	timerPetrifyingBreath	= "Petrifying Breath",
 	timerNextShockwave		= "Next Shockwave",
-	timerLeftArm			= "Respawn Left Arm",
-	timerRightArm			= "Respawn Right Arm",
+	timerLeftArm			= "Left Arm respawn",
+	timerRightArm			= "Right Arm respawn",
 	achievementDisarmed		= "Timer for Disarm"
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam	= "Show a special warning for Eye Beam on you",
+	SpecialWarningEyebeam	= "Show a special warning when Eye Beam is on you",
 	WarningEyeBeam			= "Announce Eye Beam target",
 	timerEyebeam			= "Show timer for Eye Beam",
 	timerPetrifyingBreath	= "Show timer for Petrifying Breath",
 	timerNextShockwave		= "Show timer for Shockwave",
-	timerLeftArm			= "Show timer for Arm Respawn (left)",
-	timerRightArm			= "Show timer for Arm Respawn (right)",
+	timerLeftArm			= "Show timer for Left Arm respawn",
+	timerRightArm			= "Show timer for Right Arm respawn",
 	achievementDisarmed		= "Show timer for Disarm achievement",
 	WarnGrip				= "Announce Grip targets",
 	WarnEyeBeam				= "Announce Eye Beam target",
@@ -333,21 +333,21 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast		= "Sentinel Blast - Interrupt!",
-	SpecWarnVoid		= "Void Zone - Move!",
+	SpecWarnBlast		= "Sentinel Blast - Interrupt",
+	SpecWarnVoid		= "Void Zone - Move",
 	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
 	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",
-	WarnFear			= "Fear!",
-	WarnFearSoon 		= "Next Fear soon",
-	WarnSonic			= "Sonic Screech!",
+	WarnFear			= "Terrifying Screech",
+	WarnFearSoon 		= "Next Terrifying Screech soon",
+	WarnSonic			= "Sonic Screech",
 	WarnSwarm			= "Guardian Swarm on >%s<"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBlast		= "Show special warning for Sentinel Blast",
 	SpecWarnVoid		= "Show special warning when standing in Feral Essence",
-	WarnFear			= "Show warning for Fear warning",
-	WarnFearSoon		= "Show pre-warning for Fear",
+	WarnFear			= "Show warning for Terrifying Screech",
+	WarnFearSoon		= "Show pre-warning for Terrifying Screech",
 	WarnCatDied			= "Show warning when the Feral Defender dies",
 	WarnSwarm			= "Show warning for Guardian Swarm",
 	WarnSonic			= "Show warning for Sonic Screech",
@@ -370,15 +370,15 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "Flash Freeze incoming",  -- all ppl have to move on the rock patches
+	TimerFlashFreeze	= "Flash Freeze incoming",  -- Everyone have to move on the snow mounds
 }
 
 L:SetOptionLocalization{
 	TimerFlashFreeze		= "Show timer for Flash Freeze cast",
 	WarningFlashFreeze		= "Show warning for Flash Freeze",
-	PlaySoundOnFlashFreeze	= "Play sound for Flash Freeze cast",
+	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze cast",
 	WarningStormCloud		= "Announce Storm Cloud players",
-	YellOnStormCloud		= "Yell when Storm Cloud active",
+	YellOnStormCloud		= "Yell when Storm Cloud is active",
 	SetIconOnStormCloud		= "Set icon on Storm Cloud target"
 }
 
@@ -403,22 +403,22 @@ L:SetWarningLocalization{
 	WarningPhase2			= "Phase 2",
 	WarningLightningCharge	= "Lightning Charge",
 	WarningBomb				= "Rune Detonation on >%s<",
-	LightningOrb			= "Lightning Shock on you - Move!"
+	LightningOrb			= "Lightning Shock on you - Move"
 }
 
 L:SetTimerLocalization{
-	TimerHardmode	= "Hard Mode"
+	TimerHardmode	= "Hard-mode"
 }
 
 L:SetOptionLocalization{
-	TimerHardmode			= "Show timer for Hard Mode",
+	TimerHardmode			= "Show timer for hard-mode",
 	WarningStormhammer		= "Announce Stormhammer target",
 	WarningLightningCharge	= "Announce Lightning Charge",
 	WarningPhase2			= "Announce Phase 2",
 	UnbalancingStrike		= "Announce Unbalancing Strike",
 	WarningBomb				= "Announce Rune Detonation",
-	RangeFrame				= "Show Range Frame",
-	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce enabled and promoted/leader status)",
+	RangeFrame				= "Show range frame",
+	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce to be enabled and promoted/leader status)",
 	LightningOrb			= "Show special warning for Lightning Shock"
 }
 
@@ -452,10 +452,10 @@ L:SetWarningLocalization{
 	WarnPhase2		= "Phase 2",
 	WarnSimulKill	= "First add down - Resurrection in ~12 seconds",
 	WarnFury		= "Nature's Fury on >%s<",
-	SpecWarnFury	= "Nature's Fury on you!",
-	WarningTremor	= "Ground Tremor - Stop casting!",
+	SpecWarnFury	= "Nature's Fury on you",
+	WarningTremor	= "Ground Tremor - Stop casting",
 	WarnRoots		= "Roots on >%s<",
-	UnstableEnergy	= "Unstable Energy - Move!"
+	UnstableEnergy	= "Unstable Energy - Move"
 }
 
 L:SetTimerLocalization{
@@ -471,7 +471,7 @@ L:SetOptionLocalization{
 	WarnFury		= "Announce Nature's Fury target",
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury	= "Show special warning for Nature's Fury",
-	WarningTremor	= "Show special warning for Ground Tremor (Hard Mode)",
+	WarningTremor	= "Show special warning for Ground Tremor (hard-mode)",
 	TimerSimulKill	= "Show timer for mob resurrection",
 	UnstableEnergy	= "Show special warning for Unstable Energy"
 }
@@ -488,14 +488,14 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnGroundTremor	= "Ground Tremor - Stop casting!",
+	SpecWarnGroundTremor	= "Ground Tremor - Stop casting",
 	SpecWarnFistOfStone		= "Fists of Stone"
 }
 
 L:SetOptionLocalization{
 	SpecWarnFistOfStone		= "Show special warning for Fists of Stone",
 	SpecWarnGroundTremor	= "Show special warning for Ground Tremor",
-	PlaySoundOnFistOfStone	= "Play sound for Fists of Stone cast",
+	PlaySoundOnFistOfStone	= "Play sound on Fists of Stone cast",
 	TrashRespawnTimer		= "Show timer for trash respawn"
 }
 
@@ -511,23 +511,23 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare			= "Laser Barrage",
-	WarningPlasmaBlast	= "Plasma Blast on %s - heal",
+	WarningPlasmaBlast	= "Plasma Blast on %s - Heal",
 	WarnShell			= "Napalm Shells on >%s<",
 	WarnBlast			= "Plasma Blast on >%s<",
-	MagneticCore		= ">%s< got Magnetic Core",
-	WarningShockBlast	= "Shock Blast - Move away!",
+	MagneticCore		= ">%s< has Magnetic Core",
+	WarningShockBlast	= "Shock Blast - Move away",
 	WarnBombSpawn		= "Bomb Bot spawned",
 	WarnFrostBomb		= "Frost Bomb",
-	WarnFlamesSoon		= "New Flames in ~5 seconds"
+	WarnFlamesSoon		= "New flames in ~5 seconds"
 }
 
 L:SetTimerLocalization{
 	ProximityMines		= "New Proximity Mines",
-	TimerHardmode		= "Hard Mode - Self-Destruct",
+	TimerHardmode		= "Hard-mode - Self-Destruct",
 	TimeToPhase2		= "Phase 2",
 	TimeToPhase3		= "Phase 3",
 	TimeToPhase4		= "Phase 4",
-	TimerNewFlames		= "New Flames"
+	TimerNewFlames		= "New flames"
 }
 
 L:SetOptionLocalization{
@@ -541,9 +541,9 @@ L:SetOptionLocalization{
 	HealthFramePhase4		= "Show health frame in Phase 4",
 	AutoChangeLootToFFA		= "Switch loot mode to Free for All in Phase 3",
 	WarnBombSpawn			= "Announce Bomb Bots",
-	TimerHardmode			= "Show timer for Hard Mode",
-	PlaySoundOnShockBlast	= "Play sound for Shock Blast",
-	PlaySoundOnDarkGlare	= "Play sound for Laser Barrage",
+	TimerHardmode			= "Show timer for hard-mode",
+	PlaySoundOnShockBlast	= "Play sound on Shock Blast",
+	PlaySoundOnDarkGlare	= "Play sound on Laser Barrage",
 	ShockBlastWarningInP1	= "Show special warning for Shock Blast in Phase 1",
 	ShockBlastWarningInP4	= "Show special warning for Shock Blast in Phase 4",
 	WarnFrostBomb			= "Announce Frost Bomb"
@@ -576,13 +576,13 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash		= "Shadow Crash on you!",
+	SpecialWarningShadowCrash		= "Shadow Crash on you",
 	SpecialWarningSurgeDarkness		= "Surge of Darkness",
 	WarningShadowCrash				= "Shadow Crash on >%s<",
-	SpecialWarningShadowCrashNear	= "Shadow Crash near you!",
+	SpecialWarningShadowCrashNear	= "Shadow Crash near you",
 	WarningLeechLife				= "Life Leech on >%s<",
-	SpecialWarningLLYou				= "Life Leech on you!",
-	SpecialWarningLLNear			= "Life Leech on %s near you!"
+	SpecialWarningLLYou				= "Life Leech on you",
+	SpecialWarningLLNear			= "Life Leech on %s near you"
 }
 
 L:SetOptionLocalization{
@@ -592,18 +592,18 @@ L:SetOptionLocalization{
 	SpecialWarningSurgeDarkness		= "Show special warning for Surge of Darkness",
 	SpecialWarningShadowCrash		= "Show special warning for Shadow Crash",
 	SpecialWarningShadowCrashNear	= "Show special warning for Shadow Crash near you",
-	SpecialWarningLLYou				= "Show special warning for Life Leech on you",
+	SpecialWarningLLYou				= "Show special warning when you are affected by Life Leech",
 	SpecialWarningLLNear			= "Show special warning for Life Leech near you",
 	CrashWhisper					= "Send whisper to Shadow Crash target",
 	YellOnLifeLeech					= "Yell on Life Leech",
 	YellOnShadowCrash				= "Yell on Shadow Crash",
 	WarningLeechLife				= "Announce Life Leech target",
-	hardmodeSpawn					= "Show timer for Saronite Animus spawn (Hard Mode)"
+	hardmodeSpawn					= "Show timer for Saronite Animus spawn (hard-mode)"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!",
-	CrashWhisper		= "Shadow Crash on You! Run away!",
+	CrashWhisper		= "Shadow Crash on you - Run away",
 	YellLeech			= "Life Leech on me!",
 	YellCrash			= "Shadow Crash on me!"
 }
@@ -622,7 +622,7 @@ L:SetMiscLocalization{
 	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
 	YellPhase2	 		= "I am the lucid dream.",
 	Sara 				= "Sara",
-	WhisperBrainLink 	= "Brain Link on you! Run to %s!",
+	WhisperBrainLink 	= "Brain Link on you - Run to %s",
 	WarningYellSqueeze	= "Squeeze on me! Help me!"
 }
 
@@ -632,16 +632,16 @@ L:SetWarningLocalization{
 	WarningP2 						= "Phase 2",
 	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
-	SpecWarnBrainLink 				= "Brain Link on you and %s!",
+	SpecWarnBrainLink 				= "Brain Link on you and %s",
 	WarningSanity 					= "%d Sanity debuffs remaining",
 	SpecWarnSanity 					= "%d Sanity debuffs remaining",
-	SpecWarnGuardianLow				= "Stop attacking this Guardian!",
+	SpecWarnGuardianLow				= "Stop attacking this Guardian",
 	WarnMadness						= "Casting Induce Madness",
-	SpecWarnMadnessOutNow			= "Madness ends - Move out!",
+	SpecWarnMadnessOutNow			= "Induce Madness ending - Move out",
 	WarnBrainPortalSoon				= "Portal in 3 seconds",	
 	WarnSqueeze 					= "Squeeze: >%s<",
 	WarnFavor						= "Sara's Fervor on >%s<",
-	SpecWarnFavor					= "Sara's Fervor on you!",
+	SpecWarnFavor					= "Sara's Fervor on you",
 	WarnEmpowerSoon					= "Empowering Shadows soon",
 	SpecWarnMaladyNear				= "Malady near you on >%s<"	,
 	SpecWarnDeafeningRoar			= "Deafening Roar"
@@ -661,10 +661,10 @@ L:SetOptionLocalization{
 	WarningSanity					= "Show warning when Sanity is low",
 	SpecWarnSanity					= "Show special warning when Sanity is very low",
 	SpecWarnGuardianLow				= "Show special warning when Guardian (P1) is low (for DDs)",
-	WarnMadness						= "Announce Madness",
-	WarnBrainPortalSoon				= "Announce Portal",
-	SpecWarnMadnessOutNow			= "Show special warning shortly before Madness ends",
-	SetIconOnFearTarget				= "Set icon on Fear target",
+	WarnMadness						= "Announce Induce Madness",
+	WarnBrainPortalSoon				= "Announce Brain Portal",
+	SpecWarnMadnessOutNow			= "Show special warning shortly before Induce Madness ends",
+	SetIconOnFearTarget				= "Set icon on Malady target",
 	WarnFavor						= "Announce Sara's Fervor target",
 	SpecWarnFavor					= "Show special warning for Sara's Fervor",
 	WarnSqueeze						= "Announce Squeeze target",
@@ -673,11 +673,11 @@ L:SetOptionLocalization{
 	NextPortal						= "Show timer for next Brain Portal",
 	WhisperBrainLink				= "Whisper players on Brain Link",
 	SetIconOnFavorTarget			= "Set icon on Sara's Fervor target",
-	SetIconOnMCTarget				= "Set icon on Mind Control target",
-	ShowSaraHealth					= "Show health frame for Sara in P1 (must be targeted by at least one raid member)",
+	SetIconOnMCTarget				= "Set icon on mind-controlled target",
+	ShowSaraHealth					= "Show health frame for Sara in Phase 1 (must be targeted by at least one raid member)",
 	WarnEmpowerSoon					= "Show pre-warning for Empowering Shadows",
 	SpecWarnMaladyNear				= "Show special warning if someone close to you has Malady of the Mind",
-	SpecWarnDeafeningRoar			= "Show special warning when casting Deafening Roar (silence and for Legendary)"
+	SpecWarnDeafeningRoar			= "Show special warning when casting Deafening Roar (silence and for legendary)"
 }
 
 
