@@ -67,7 +67,7 @@ function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Schedule(25)
-		self:ScheduleMethod(32, "ShadowStrike")
+		self:ScheduleMethod(30, "ShadowStrike")
 	end
 end
 
@@ -76,7 +76,7 @@ function mod:ShadowStrike()
 		timerShadowStrike:Stop()
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Cancel()
-		preWarnShadowStrike:Schedule(27)
+		preWarnShadowStrike:Schedule(25)
 		self:ScheduleMethod(30, "ShadowStrike")
 	end
 end
@@ -173,11 +173,11 @@ function mod:OnSync(msg, arg)
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerShadowStrike:Stop()
-			preWarnShadowStrike:Cancel()
-			self:ScheduleMethod(7, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
-		end
+--		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+--			timerShadowStrike:Stop()
+--			preWarnShadowStrike:Cancel()
+--			self:ScheduleMethod(7, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
+--		end
 	end
 end
 
