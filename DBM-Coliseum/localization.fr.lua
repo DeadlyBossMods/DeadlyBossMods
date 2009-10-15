@@ -164,7 +164,6 @@ L:SetOptionLocalization{
 	SpecWarnDivineShield	= "Montre une alerte spéciale quand le Paladin lance Bouclier Divin"
 }
 
-
 ------------------
 -- Valkyr Twins --
 ------------------
@@ -259,3 +258,4 @@ L:SetOptionLocalization{
 	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant",
 	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3"
 }
+
