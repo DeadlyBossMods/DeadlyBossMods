@@ -238,8 +238,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBigBangCast	= "Incantation du Big Bang",
-	NextCollapsingStar	= "Prochain choc cosmique"
+	NextCollapsingStar		= "Prochain choc cosmique"
+	PossibleNextCosmicSmash	= "Prochain Choc cosmique possible"
+	TimerBigBangCast		= "Incantation du Big Bang",
 }
 
 L:SetWarningLocalization{
