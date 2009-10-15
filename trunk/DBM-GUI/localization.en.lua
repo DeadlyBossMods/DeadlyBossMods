@@ -58,7 +58,7 @@ L.PizzaTimer_Hours 			= "Hours"
 L.PizzaTimer_Mins 			= "Min"
 L.PizzaTimer_Secs 			= "Sec"
 L.PizzaTimer_ButtonStart 	= "Start timer"
-L.PizzaTimer_BroadCast		= "Broadcast to Raid"
+L.PizzaTimer_BroadCast		= "Broadcast to raid"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Raid Warnings"
