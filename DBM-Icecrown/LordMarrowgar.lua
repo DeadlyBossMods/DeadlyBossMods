@@ -12,12 +12,12 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local timerFirstWhirlwind			= mod:NewTimer(45, 69076) --Timer for first whirlwind only, will only be called once.
-local timerNextWhirlwind		= mod:NewNextTimer(60, 69076) --Timer for all other whirlwinds.
-local warnBoneSpike				= mod:NewSpellAnnounce(69057)
-local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Currently estimate do to limited combat log data, pug could not kill it.
+local timerFirstWhirlwind			= mod:NewCastTimer(45, 69076) --Timer for first whirlwind only, will only be called once.
+local timerNextWhirlwind			= mod:NewNextTimer(60, 69076) --Timer for all other whirlwinds.
+local warnBoneSpike					= mod:NewSpellAnnounce(69057)
+local timerBoneSpike				= mod:NewCDTimer(18, 69057) --Currently estimate do to limited combat log data, pug could not kill it.
 local timerWhirlwind				= mod:NewBuffActiveTimer(30, 69076)
-local warnImpale			= mod:NewTargetAnnounce(69062)
+local warnImpale					= mod:NewTargetAnnounce(69062)
 local specWarnWhirlwind				= mod:NewSpecialWarning("specWarnWhirlwind")
 local specWarnColdflame				= mod:NewSpecialWarning("specWarnColdflame")
 
