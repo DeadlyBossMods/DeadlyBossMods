@@ -269,7 +269,9 @@ do
 		button.myheight = 25
 		button.mytype = "checkbutton"
 		-- font strings do not support hyperlinks, so check if we need one
-		if name:find("|H") then
+		if name and type(name) == "number" then
+			DBM:AddMsg("You failed at coding! - try to use the correct functions NewTimer for example can't get a SpellID.")
+		elseif name and name:find("|H") then
 			-- and replace it with a SimpleHTML frame
 			setglobal(button:GetName().."Text", CreateFrame("SimpleHTML", button:GetName().."Text", button))
 			local html = getglobal(button:GetName().."Text")
@@ -280,7 +282,7 @@ do
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
 		end
-		getglobal(button:GetName() .. 'Text'):SetText(name)
+		getglobal(button:GetName() .. 'Text'):SetText(name or "unknown")
 		getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
 
 		if textleft then
