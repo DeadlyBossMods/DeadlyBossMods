@@ -1,6 +1,5 @@
 local L
 
-
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -18,5 +17,6 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	specWarnWhirlwind			= "Show special warning for Whirlwind",
 	specWarnColdflame			= "Show special warning when you take damage from Coldflame",
-	PlaySoundOnWhirlwind		= "Play sound for Whirlwind"
+	PlaySoundOnWhirlwind		= "Play sound for Whirlwind",
+	timerFirstWhirlwind			= "Show timer for first Whirlwind"
 }
