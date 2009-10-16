@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge			= "%%s смотрит на (%S+) и испускает гортанный вой!",
+	Charge			= "%%s смотрит на (%S+) и испускает гортанный вой!\",
 	CombatStart		= "Из самых глубоких и темных пещер Грозовой Гряды был призван Гормок Пронзающий Бивень! В бой, герои!",
 	Phase3			= "В воздухе повеяло ледяным дыханием следующего бойца: на арену выходит Ледяной Рев! Сражайтесь или погибните, чемпионы!",
 	Gormok			= "Гормок Пронзающий Бивень",
@@ -59,14 +59,14 @@ L:SetWarningLocalization{
 	WarningCharge			= "Рывок к >%s<",
 	WarningToxin			= "Паралитический токсин на >%s<",
 	WarningBile			= "Горящая Желчь на >%s<",
-	SpecialWarningImpale3		= "Прокалывание >%d< на вас!",
+	SpecialWarningImpale3		= "Прокалывание >%d< на вас",
 	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
-	SpecialWarningSlimePool		= "Кислотная Жижа, Бегите!",
+	SpecialWarningSlimePool		= "Кислотная Жижа - отбегите!",
 	SpecialWarningSilence		= "Блок чар через 1.5 сек!",
 	SpecialWarningSpray		= "Парализующие брызги на вас",
 	SpecialWarningToxin		= "Паралитический токсин на вас! Двигайтесь!",
-	SpecialWarningCharge		= "Рывок к вам, Бегите!",
-	SpecialWarningChargeNear	= "Рывок около вас, Бегите!",
+	SpecialWarningCharge		= "Рывок к вам! Бегите!",
+	SpecialWarningChargeNear	= "Рывок около вас! Бегите!",
 	SpecialWarningBile		= "Горящая Желчь на вас!"
 }
 
@@ -82,16 +82,16 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame			= ">%s< под воздействием Пламени Легиона",
 	WarnTouch			= "Касание Джараксуса на >%s<",
-	WarnNetherPower			= "Сила Пустоты на Лорде Джараксусе! Рассейте заклинание!",
+	WarnNetherPower			= "Сила Пустоты на Лорде Джараксусе - рассейте заклинание",
 	WarnPortalSoon			= "Открываются Врата Пустоты",
 	WarnVolcanoSoon			= "Скоро Инфернальное извержение",
-	SpecWarnFlesh			= "Испепеление плоти на вас!",
-	SpecWarnTouch			= "Касание Джараксуса на вас!",
+	SpecWarnFlesh			= "Испепеление плоти на вас",
+	SpecWarnTouch			= "Касание Джараксуса на вас",
 	SpecWarnKiss			= "Поцелуй Госпожи",
-	SpecWarnTouchNear		= ">%s<, около вас, отмечен Касанием Джараксуса!",
-	SpecWarnFlame			= "Пламя Легиона! Бегите!",
-	SpecWarnNetherPower		= "Рассейте заклинание!",
-	SpecWarnFelInferno		= "Геенна скверны! Отбегите!"
+	SpecWarnTouchNear		= ">%s<, около вас, отмечен Касанием Джараксуса",
+	SpecWarnFlame			= "Пламя Легиона - бегите",
+	SpecWarnNetherPower		= "Рассейте заклинание",
+	SpecWarnFelInferno		= "Геенна скверны - отбегите"
 }
 
 L:SetMiscLocalization{
@@ -189,7 +189,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnSpecialSpellSoon		= "Скоро спец-способность!",
+	WarnSpecialSpellSoon		= "Скоро спец-способность",
 	SpecWarnSpecial			= "Смена цвета!",
 	SpecWarnEmpoweredDarkness	= "Могущественная Тьма",
 	SpecWarnEmpoweredLight		= "Могущественный Свет",
@@ -242,8 +242,8 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon	= "Погружение через 10 сек",
 	WarnPursue		= "Шипы Ануб'арака преследуют >%s<",
 	SpecWarnPursue		= "Вас приследуют!",
-	SpecWarnShadowStrike	= "Теневой удар! Прерывание!",
-	SpecWarnPCold		= "Пронизывающий холод на вас!"	
+	SpecWarnShadowStrike	= "Теневой удар - прерывание!",
+	SpecWarnPCold		= "Пронизывающий холод"	
 }
 
 L:SetMiscLocalization{
