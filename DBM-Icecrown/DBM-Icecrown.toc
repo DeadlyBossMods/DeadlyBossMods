@@ -1,0 +1,26 @@
+## Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Icecrown Citadel|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ульдуар|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울두아르|r
+## Title-zhtw:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧杜亞|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Icecrown Citadel|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMIcecrown_SavedVars, DBMIcecrown_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Name: Icecrown Citadel
+## X-DBM-Mod-Name-ruRU: Ульдуар
+## X-DBM-Mod-Name-koKR: 울두아르
+## X-DBM-Mod-Name-zhtw: 奧杜亞
+## X-DBM-Mod-Name-esES: Icecrown
+## X-DBM-Mod-Sort: 6
+## X-DBM-Mod-LoadZone: Icecrown Citadel
+## X-DBM-Mod-LoadZone-ruRU: Ульдуар
+## X-DBM-Mod-LoadZone-koKR: 울두아르
+## X-DBM-Mod-LoadZone-zhtw: 奧杜亞
+## X-DBM-Mod-LoadZone-esES: Icecrown Citadel
+localization.en.lua
+LordMarrowgar.lua
+
+
