@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge			= "%%s смотрит на (%S+) и испускает гортанный вой!\",
+	Charge			= "%%s смотрит на (%S+) и испускает гортанный вой",
 	CombatStart		= "Из самых глубоких и темных пещер Грозовой Гряды был призван Гормок Пронзающий Бивень! В бой, герои!",
 	Phase3			= "В воздухе повеяло ледяным дыханием следующего бойца: на арену выходит Ледяной Рев! Сражайтесь или погибните, чемпионы!",
 	Gormok			= "Гормок Пронзающий Бивень",
@@ -61,13 +61,13 @@ L:SetWarningLocalization{
 	WarningBile			= "Горящая Желчь на >%s<",
 	SpecialWarningImpale3		= "Прокалывание >%d< на вас",
 	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
-	SpecialWarningSlimePool		= "Кислотная Жижа - отбегите!",
-	SpecialWarningSilence		= "Блок чар через 1.5 сек!",
+	SpecialWarningSlimePool		= "Кислотная Жижа - отбегите",
+	SpecialWarningSilence		= "Блок чар через 1.5 сек.!",
 	SpecialWarningSpray		= "Парализующие брызги на вас",
-	SpecialWarningToxin		= "Паралитический токсин на вас! Двигайтесь!",
-	SpecialWarningCharge		= "Рывок к вам! Бегите!",
-	SpecialWarningChargeNear	= "Рывок около вас! Бегите!",
-	SpecialWarningBile		= "Горящая Желчь на вас!"
+	SpecialWarningToxin		= "Паралитический токсин на вас - двигайтесь",
+	SpecialWarningCharge		= "Рывок к вам - бегите",
+	SpecialWarningChargeNear	= "Рывок около вас - бегите",
+	SpecialWarningBile		= "Горящая Желчь на вас"
 }
 
 -------------------
@@ -95,7 +95,7 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	WhisperFlame			= "Пламя Легиона на вас!",
+	WhisperFlame			= "Пламя Легиона на вас",
 	IncinerateTarget		= "Испепеление плоти: %s"
 }
 
@@ -132,7 +132,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnHellfire		= "Адское Пламя! Отбегите!",
+	SpecWarnHellfire		= "Адское Пламя - отбегите",
 	SpecWarnHandofProt		= "Длань защиты на >%s<",
 	SpecWarnDivineShield		= "Божественный щит на >%s<"
 }
@@ -190,13 +190,13 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "Скоро спец-способность",
-	SpecWarnSpecial			= "Смена цвета!",
+	SpecWarnSpecial			= "Смена цвета",
 	SpecWarnEmpoweredDarkness	= "Могущественная Тьма",
 	SpecWarnEmpoweredLight		= "Могущественный Свет",
-	SpecWarnSwitchTarget		= "Смена цели!",
-	SpecWarnKickNow			= "Прерывание!",
+	SpecWarnSwitchTarget		= "Смена цели",
+	SpecWarnKickNow			= "Прерывание",
 	WarningTouchDebuff		= ">%s< под воздействем отрицательного эффекта",
-	WarningPoweroftheTwins		= "Сила близнецов, больше исцеления на >%s<!",
+	WarningPoweroftheTwins		= "Сила близнецов, больше исцеления на >%s<",
 	SpecWarnPoweroftheTwins		= "Сила близнецов"
 }
 
@@ -238,11 +238,11 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnEmerge		= "Ануб'арак погружается",
 	WarnEmergeSoon		= "Появление через 10 сек",
-	WarnSubmerge		= "Появляется Ануб'арак!",
+	WarnSubmerge		= "Появляется Ануб'арак",
 	WarnSubmergeSoon	= "Погружение через 10 сек",
 	WarnPursue		= "Шипы Ануб'арака преследуют >%s<",
-	SpecWarnPursue		= "Вас приследуют!",
-	SpecWarnShadowStrike	= "Теневой удар - прерывание!",
+	SpecWarnPursue		= "Вас приследуют",
+	SpecWarnShadowStrike	= "Теневой удар - прерывание",
 	SpecWarnPCold		= "Пронизывающий холод"	
 }
 
