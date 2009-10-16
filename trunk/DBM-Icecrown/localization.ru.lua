@@ -13,7 +13,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	specWarnWhirlwind			= "Вихрь! Бегите!",
-	specWarnColdflame			= "Холодное пламя, двигайтесь!"
+	specWarnColdflame			= "Холодное пламя, отбегите!"
 }
 
 L:SetOptionLocalization{
