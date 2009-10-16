@@ -64,7 +64,7 @@ L:SetWarningLocalization{
 	SpecialWarningSlimePool		= "Кислотная Жижа - отбегите",
 	SpecialWarningSilence		= "Блок чар через 1.5 сек.!",
 	SpecialWarningSpray		= "Парализующие брызги на вас",
-	SpecialWarningToxin		= "Паралитический токсин на вас - двигайтесь",
+	SpecialWarningToxin		= "Паралитический токсин на вас - отбегите",
 	SpecialWarningCharge		= "Рывок к вам - бегите",
 	SpecialWarningChargeNear	= "Рывок около вас - бегите",
 	SpecialWarningBile		= "Горящая Желчь на вас"
