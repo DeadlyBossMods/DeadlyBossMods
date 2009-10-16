@@ -243,7 +243,7 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",
 	WarningBlackHole		= "Black Hole",
-	WarningBigBang			= "Big Bang now",
+	WarningBigBang			= "Big Bang",
 	SpecWarnBigBang			= "Big Bang",
 	PreWarningBigBang		= "Big Bang in ~10 seconds",
 	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",
