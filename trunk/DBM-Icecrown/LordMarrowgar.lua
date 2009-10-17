@@ -52,7 +52,7 @@ do
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69076) then						-- Whirlwind
+	if args:IsSpellID(69076) then						-- Whirlwind Begins
 		timerWhirlwind:Show(args.destName)
 	elseif args:IsSpellID(69062) then							-- Impale
 		warnImpale:Show(args.destName)
@@ -60,7 +60,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(69076) then						-- Whirlwind
-		timerNextWhirlwind:Show()
+	if args:IsSpellID(69076) then						-- Whirlwind Ends
+		timerNextWhirlwind:Start()
 	end
 end
