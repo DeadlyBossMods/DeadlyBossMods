@@ -9,17 +9,18 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
 local timerFirstWhirlwind			= mod:NewTimer(45, "timerFirstWhirlwind") --Timer for first whirlwind only, will only be called once.
-local timerNextWhirlwind		= mod:NewNextTimer(60, 69076) --Timer for all other whirlwinds.
-local warnBoneSpike				= mod:NewSpellAnnounce(69057)
-local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Currently estimate do to limited combat log data, pug could not kill it.
+local timerNextWhirlwind			= mod:NewNextTimer(60, 69076) --Timer for all other whirlwinds.
+local warnBoneSpike					= mod:NewSpellAnnounce(69057)
+local timerBoneSpike				= mod:NewCDTimer(18, 69057) --Currently estimate do to limited combat log data, pug could not kill it.
 local timerWhirlwind				= mod:NewBuffActiveTimer(30, 69076)
-local warnImpale			= mod:NewTargetAnnounce(69062)
-local specWarnWhirlwind				= mod:NewSpecialWarning("specWarnWhirlwind", 2)
-local specWarnColdflame				= mod:NewSpecialWarning("specWarnColdflame", 2)
+local warnImpale					= mod:NewTargetAnnounce(69062)
+local specWarnWhirlwind				= mod:NewSpecialWarning("specWarnWhirlwind")
+local specWarnColdflame				= mod:NewSpecialWarning("specWarnColdflame")
 
 mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 
@@ -30,7 +31,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69076) then						-- Whirlwind
-		timerNextWhirlwind:Start()
 		specWarnWhirlwind:Show()
 		if self.Options.PlaySoundOnWhirlwind then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
@@ -56,5 +56,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerWhirlwind:Show(args.destName)
 	elseif args:IsSpellID(69062) then							-- Impale
 		warnImpale:Show(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(69076) then						-- Whirlwind
+		timerNextWhirlwind:Show()
 	end
 end
