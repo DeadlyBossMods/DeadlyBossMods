@@ -8,12 +8,13 @@
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
 -- 
 -- The localizations are written by:
---    * enGB/enUS: Nitram/Tandanu        http://www.deadlybossmods.com
---    * deDE: Nitram/Tandanu             http://www.deadlybossmods.com
---    * zhCN: Diablohu                   http://wow.gamespot.com.cn
---    * zhTW: Hman			 herman_c1@hotmail.com
---    * zhTW: Azael/kc10577				kc10577@hotmail.com
+--    * enGB/enUS: Nitram/Tandanu       http://www.deadlybossmods.com
+--    * deDE: Nitram/Tandanu            http://www.deadlybossmods.com
+--    * zhCN: Diablohu                  http://wow.gamespot.com.cn
+--    * zhTW: Hman			herman_c1@hotmail.com
+--    * zhTW: Azael/kc10577		kc10577@hotmail.com
 --    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
+--    * ruRU: BootWin			bootwin@gmail.com
 --    * (add your names here!)
 --
 -- Special thanks to:
