@@ -1516,6 +1516,23 @@ L:SetMiscLocalization({
 	YellBarrel			= "Бочка на мне!"
 })
 
+-------------------
+-- Headless Horseman --
+-------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name = "Всадник без головы"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
 
 ---------------------
 -- Pit of Saron --
