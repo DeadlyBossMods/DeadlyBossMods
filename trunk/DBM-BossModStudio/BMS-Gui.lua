@@ -86,7 +86,12 @@ local function getIDfromTarget(textbox, mod)
 	return function(self)
 		local guid = UnitGUID("target")
 		if not guid then return end
-		local cId = tonumber(guid:sub(9, 12), 16)
+		local cId
+		if select(4, GetBuildInfo()) >= 30300 then
+			cId = tonumber(guid:sub(7, 10), 16)
+		else
+			cId = tonumber(guid:sub(9, 12), 16)
+		end
 		mod.BossIDs[textbox.id] = cId
 		textbox:SetText(cId)
 	end
