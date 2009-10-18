@@ -1521,6 +1521,29 @@ L:SetMiscLocalization({
 	YellBarrel		= "我中了空桶(暈)!"
 })
 
+-------------------
+-- Headless Horseman --
+-------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name = "無頭騎士"
+})
+
+L:SetWarningLocalization({
+	specWarnHorsemanHead			= "頭顱出現了! 轉換目標!",
+	specWarnHorsemanSoldiers		= "跳動的南瓜出現了!"
+})
+
+L:SetOptionLocalization({
+	specWarnHorsemanHead			= "為無頭騎士之頭出現顯示警告",
+	specWarnHorsemanSoldiers		= "為跳動的南瓜出現顯示警告"
+})
+
+L:SetMiscLocalization({
+	HorsemanHead				= "過來這裡，你這白痴!",
+	HorsemanSoldiers			= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!"
+})
 
 ---------------------
 -- Pit of Saron --
@@ -1535,13 +1558,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnToxic		= "Toxic Waste! Move Away!"
+	warnPursuit			= "Pursuit in 5 seconds",
+	specWarnToxic		= "Toxic Waste! Move Away!",
+	specWarnPursuit		= "You are being pursued. Run away!"
 })
 
 L:SetOptionLocalization({
-	specWarnToxic		= "Special Warning when you take damage from Toxic Waste"
+	warnPursuit			= "Show warning when Pursuit is soon",
+	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
+	specWarnPursuit		= "Special warning when you are being pursued"
+--	SetIconOnPursuitTarget	= "Set icon on Pursuit target"
 })
 
+L:SetMiscLocalization({
+	IckPursuit			= "%s is chasing you!"
+})
 -------------------
 -- Forgemaster Garfrost --
 -------------------
@@ -1553,12 +1584,19 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock				= "Saronite Rock! Line of Sight now!",
+	specWarnSaroniteRock		= "Saronite Throw on you! Move!",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
-	specWarnPermafrost		= "Special Warning when Permafrost stacks get to high (value not set in stone)"
+	specWarnSaroniteRock		= "Special warning when Saronite Throw on you",
+	specWarnPermafrost		= "Special warning when Permafrost stacks get to high (value not set in stone)"
+--	SetIconOnSaroniteRockTarget	= "Set icon on Saronite Rock target"
+})
+
+L:SetMiscLocalization({
+	SaroniteRockThrow			= "%s hurls a massive saronite boulder at you!"
 })
 
 -------------------
@@ -1571,13 +1609,56 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnUnholyPower				= "Scourgelord Tyrannus is casting Unholy Power.",
-	warnHoarfrost				= "Rimefangs is casting Hoarfrost.",
-	specWarnIcyBlast		= "Icy Blast! Move Away!"
+	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down. Get ready!",
+	specWarnIcyBlast			= "Icy Blast! Move Away!",
+	specWarnHoarfrost			= "Hoarfrost on you!",
+	specWarnHoarfrostNear		= "Hoarfrost near to you! Move!"
 })
 
 L:SetOptionLocalization({
-	warnUnholyPower				= "Show warning when Scourgelord Tyrannus casts Unholy Power.",
-	warnHoarfrost				= "Show warning when Rimefangs casts Hoarfrost.",
-	specWarnIcyBlast		= "Special Warning when you take damage from Icy Blast"
+	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
+	specWarnHoarfrost			= "Show Special Warning when Hoarfrost on you",
+	specWarnHoarfrostNear		= "Show Special Warning when Hoarfrost near you",
+	SetIconOnHoarfrostTarget	= "Set icon on Hoarfrost target"
+})
+
+L:SetMiscLocalization({
+	TyrannusYell		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	HoarfrostTarget			= "^%%s gazes at (%S+) and readies an icy attack!"
+})
+---------------------
+-- Forge of Souls --
+---------------------
+-------------------
+-- Bronjahm --
+-------------------
+L = DBM:GetModLocalization("Bronjahm")
+
+L:SetGeneralLocalization({
+	name = "Bronjahm"
+})
+
+L:SetWarningLocalization({
+	specwarnSoulstorm		= "Soulstorm! Move In!"
+})
+
+L:SetOptionLocalization({
+	specwarnSoulstorm		= "Special warning when Soulstorm is cast (to move in)"
+})
+
+-------------------
+-- Devourer of Souls --
+-------------------
+L = DBM:GetModLocalization("DevourerofSouls")
+
+L:SetGeneralLocalization({
+	name = "Devourer of Souls"
+})
+
+L:SetWarningLocalization({
+	specwarnMirroredSoul		= "Stop DPS!"
+})
+
+L:SetOptionLocalization({
+	specwarnMirroredSoul		= "Special warning to stop DPS for Mirrored Soul"
 })
