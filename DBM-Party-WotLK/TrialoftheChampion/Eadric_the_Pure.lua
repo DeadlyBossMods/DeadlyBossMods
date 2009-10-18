@@ -17,7 +17,7 @@ mod:RegisterEvents(
 local isDispeller = select(2, UnitClass("player")) == "PRIEST"
 				 or select(2, UnitClass("player")) == "PALADIN"
 
-local warnHammerofRighteous		= mod:NewAnnounce("warnHammerofRighteous")
+local warnHammerofRighteous		= mod:NewSpellAnnounce(66867)
 local warnHammerofJustice		= mod:NewTargetAnnounce(66940)
 local specwarnRadiance			= mod:NewSpecialWarning("specwarnRadiance")
 local specwarnHammerofJustice	= mod:NewSpecialWarning("specwarnHammerofJustice", isDispeller)

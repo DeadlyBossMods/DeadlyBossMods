@@ -1419,11 +1419,9 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnHaste			= "Haste on >%s<! Dispel Now!",
 	specWarnPoison			= "Poison! Move Away!",
-	warnHealingWave			= "Shamen casting Healing Wave. Interupt!"
 })
 
 L:SetOptionLocalization({
-	warnHealingWave			= "Warn when Shamen casts Healing Wave.",
 	specWarnHaste			= "Special Warning when Mage gains Haste (for dispel/steal)",
 	specWarnPoison			= "Special Warning when you take damage from poison Bottle"
 })
@@ -1442,13 +1440,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew				= "Confessor cast renew on >%s< Dispel Now!",
-	warnReflectiveShield		= "Confessor has gained Reflective Shield"
+--	specwarnRenew				= "Confessor cast renew on >%s< Dispel Now!"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew				= "Special Warning for Renew target (for dispel/steal)",
-	warnReflectiveShield		= "Warn when Confessor gains Reflective Shield"
+--	specwarnRenew				= "Special Warning for Renew target (for dispel/steal)"
 })
 
 L:SetMiscLocalization({
@@ -1465,13 +1461,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHammerofRighteous		= "Eadric casting Hammer of Righteous!",
 	specwarnHammerofJustice		= "Hammer of Justice on >%s<. Dispel now!",
 	specwarnRadiance			= "Radiance. Look Away!"
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous		= "Warn when Eadric casts Hammer of Righteous",
 	specwarnHammerofJustice		= "Show Special Warning for Hammer of Justice (for dispel)",
 	specwarnRadiance			= "Show Special warning for Radiance.",
 	SetIconOnHammerTarget		= "Set icon on Hammer of Justice target"
