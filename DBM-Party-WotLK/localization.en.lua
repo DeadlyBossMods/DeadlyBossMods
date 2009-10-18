@@ -1519,12 +1519,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specWarnHorsemanHead			= "Head spawned! Switch to the head!",
+	specWarnHorsemanSoldiers		= "Pulsing Pumpkin spawning!"
 })
 
 L:SetOptionLocalization({
+	specWarnHorsemanHead			= "Show warning for Head of the Horseman spawn",
+	specWarnHorsemanSoldiers		= "Show warning for Pulsing Pumpkin spawn"
 })
 
 L:SetMiscLocalization({
+	HorsemanHead				= "Get over here, you idiot!",
+	HorsemanSoldiers			= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!"
 })
 
 ---------------------
