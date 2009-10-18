@@ -1418,11 +1418,9 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnHaste		= ">%s< 가속!! 지금 해제!",
 	specWarnPoison		= "독액! 이동하세요!",
-	warnHealingWave		= "주술사가 치유의 물결을 시전합니다. 차단!"
 })
 
 L:SetOptionLocalization({
-	warnHealingWave		= "주술사가 치유의 물결을 시전할 경우 경고 알리기",
 	specWarnHaste		= "마법사가 가속을 얻었을 경우 특수 경고 알리기(해제/훔치기)",
 	specWarnPoison		= "독병에 의해 타격을 받을 경우 특수 경고 알리기"
 })
@@ -1442,13 +1440,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "고해사제 소생 시전 : >%s<, 지금 해제!",
-	warnReflectiveShield	= "고해사제가 반사의 보호막을 얻었습니다!"
+	specwarnRenew			= "고해사제 소생 시전 : >%s<, 지금 해제!"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew			= "고해사제의 소생 대상 특수 경고 알리기(해제/훔치기)",
-	warnReflectiveShield	= "고해사제가 반사의 보호막을 얻었을 경우 경고 알리기"
+	specwarnRenew			= "고해사제의 소생 대상 특수 경고 알리기(해제/훔치기)"
 })
 
 L:SetMiscLocalization({
@@ -1465,13 +1461,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHammerofRighteous		= "에드릭이 정의의 망치를 시전했습니다!",
 	specwarnHammerofJustice		= "심판의 망치 : >%s<. 지금 해제!",
 	specwarnRadiance			= "광휘! 뒤돌아보세요!"
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous		= "에드릭이 정의의 망치를 시전할 경우 경고 알리기",
 	specwarnHammerofJustice		= "심판의 망치 특수 경고 보기(해제 관련)",
 	specwarnRadiance			= "광휘의 특수 경고 보기."
 })
@@ -1514,6 +1508,30 @@ L:SetMiscLocalization{
 	YellBarrel		= "저에게 맥주통!"
 }
 
+-------------------
+-- Headless Horseman --
+-------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name = "저주받은 기사"
+})
+
+L:SetWarningLocalization({
+	warnHorsemanSoldiers		= "고동치는 호박 생성!",
+	specWarnHorsemanHead		= "머리 생성! 머리로 대상 전환!"
+})
+
+L:SetOptionLocalization({
+	warnHorsemanSoldiers		= "고동치는 호박 소환 경고 보기",
+	specWarnHorsemanHead		= "저주받은 기사의 머리 대상 전환 특수 경고 보기"
+})
+
+L:SetMiscLocalization({
+	HorsemanHead				= "냉큼 이리 와라, 이 얼간아!",
+	HorsemanSoldiers			= "일어나라, 별사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!",
+	SayCombatEnd				= "죽음은 이미 겪어 보았노라. 이제 어떤 모험이 날 기다리는가?"
+})
 
 ---------------------
 -- Pit of Saron --
