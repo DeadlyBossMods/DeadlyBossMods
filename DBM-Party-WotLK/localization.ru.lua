@@ -1419,12 +1419,10 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnHaste			= "Ускорение на >%s<! Рассейте заклинание!",
-	specWarnPoison			= "Бутыль яда! Отбегите!",
-	warnHealingWave			= "Шаман читает заклинаие Волна исцеления. Прерывание!"
+	specWarnPoison			= "Бутыль яда! Отбегите!"
 })
 
 L:SetOptionLocalization({
-	warnHealingWave			= "Предупреждение, когда шаман читает заклинаие \"Волна исцеления\".",
 	specWarnHaste			= "Спец-предупреждение, когда маг читает \"Ускорение\" (для рассеивания/прерывания)",
 	specWarnPoison			= "Спец-предупреждение, когда вы получаете урон от \"Бутыля яда\""
 })
@@ -1443,13 +1441,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "Исповедница читает заклинаие Обновление на >%s<. Рассейте заклинание!",
-	warnReflectiveShield		= "Исповедница применяет Отражающий щит"
+	specwarnRenew			= "Исповедница читает заклинаие Обновление на >%s<. Рассейте заклинание!"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew			= "Спец-предупреждение, когда на цели \"Обновление\" (для рассеивания/прерывания)",
-	warnReflectiveShield		= "Предупреждение, когда Исповедница применяет \"Отражающий щит\""
+	specwarnRenew			= "Спец-предупреждение, когда на цели \"Обновление\" (для рассеивания/прерывания)"
 })
 
 L:SetMiscLocalization({
@@ -1466,13 +1462,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHammerofRighteous		= "Эдрик бросает Молот праведника!",
 	specwarnHammerofJustice		= "Молот правосудия на >%s<. Рассейте заклинание!",
 	specwarnRadiance		= "Сияние. Отвернитесь!"
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous		= "Спец-предупреждение, когда Эдрик бросает \"Молот праведника\"",
 	specwarnHammerofJustice		= "Спец-предупреждение для \"Молота правосудия\" (для рассеивания)",
 	specwarnRadiance		= "Спец-предупреждение для \"Сияния\".",
 	SetIconOnHammerTarget		= "Установить метку на цель под воздействием \"Молота правосудия\""
@@ -1526,12 +1520,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnHorsemanSoldiers		= "Призыв Пульсирующих тыкв!",
+	specWarnHorsemanHead		= "Призыв Головы Всадника! Переключитесь на голову!"
 })
 
 L:SetOptionLocalization({
+	warnHorsemanSoldiers		= "Предупреждать о призыве Пульсирующих тыкв",
+	specWarnHorsemanHead		= "Спец-предупреждение о призыве Головы Всадника"
 })
 
 L:SetMiscLocalization({
+	HorsemanHead			= "Несчастный, ты достиг конца пути! Судьба решит, кому вперед идти!",
+	HorsemanSoldiers		= "Восстаньте слуги, устремитесь в бой! Пусть павший рыцарь обретет покой!",
+	SayCombatEnd			= "Со смертью мы давно уже друзья...Что ждет теперь на пустоши меня?"
 })
 
 ---------------------
