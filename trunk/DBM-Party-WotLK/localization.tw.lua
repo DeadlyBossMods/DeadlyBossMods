@@ -1531,13 +1531,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHorsemanHead			= "頭顱出現了! 轉換目標!",
-	specWarnHorsemanSoldiers		= "跳動的南瓜出現了!"
+	warnHorsemanSoldiers			= "跳動的南瓜出現了!",
+	specWarnHorsemanHead			= "頭顱出現了! 轉換目標!"
 })
 
 L:SetOptionLocalization({
-	specWarnHorsemanHead			= "為無頭騎士之頭出現顯示警告",
-	specWarnHorsemanSoldiers		= "為跳動的南瓜出現顯示警告"
+	warnHorsemanSoldiers			= "為跳動的南瓜出現顯示警告",
+	specWarnHorsemanHead			= "為無頭騎士之頭出現顯示警告"
+
 })
 
 L:SetMiscLocalization({
