@@ -1,4 +1,4 @@
-﻿## Interface: 30200
+## Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ulduar|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ульдуар|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0울두아르|r
@@ -15,7 +15,7 @@
 ## X-DBM-Mod-Name-koKR: 울두아르
 ## X-DBM-Mod-Name-zhtw: 奧杜亞
 ## X-DBM-Mod-Name-esES: Ulduar
-## X-DBM-Mod-Sort: 2
+## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-LoadZone: Ulduar
 ## X-DBM-Mod-LoadZone-ruRU: Ульдуар
 ## X-DBM-Mod-LoadZone-koKR: 울두아르
