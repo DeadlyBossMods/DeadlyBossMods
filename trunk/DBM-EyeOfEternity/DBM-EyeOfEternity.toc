@@ -18,7 +18,7 @@
 ## X-DBM-Mod-Name-zhTW: 永恆之眼
 ## X-DBM-Mod-Name-koKR: 영원의 눈
 ## X-DBM-Mod-Name-esES: El Ojo de la Eternidad
-## X-DBM-Mod-Sort: 5
+## X-DBM-Mod-Sort: 6
 ## X-DBM-Mod-LoadZone: The Eye of Eternity
 ## X-DBM-Mod-LoadZone-frFR: L'Œil de l'éternité
 ## X-DBM-Mod-LoadZone-deDE: Das Auge der Ewigkeit
