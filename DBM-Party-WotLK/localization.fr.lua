@@ -1504,10 +1504,34 @@ L:SetOptionLocalization({
 	YellOnBarrel		= "Crie quand vous avez un Tonneau sur vous"
 })
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	YellBarrel		= "Tonneau sur moi !"
-}
+})
 
+-------------------
+-- Headless Horseman --
+-------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name = "Cavalier sans tête"
+})
+
+L:SetWarningLocalization({
+	warnHorsemanSoldiers		= "Arrivée des Citrouilles vibrantes !",
+	specWarnHorsemanHead		= "Tapez la Tête du Cavalier"
+})
+
+L:SetOptionLocalization({
+	warnHorsemanSoldiers		= "Montre une alerte pour l'arrivée des Citrouilles vibrantes",
+	specWarnHorsemanHead		= "Montre une alerte spéciale pour l'arrivée de la Tête du Cavalier"
+})
+
+L:SetMiscLocalization({
+	HorsemanHead				= "Viens donc ici , sombre abruti !",  -- Attention, espace avant la virgule
+	HorsemanSoldiers			= "Levez-vous, mes recrues ! Au combat sans surseoir ! Au chevalier déchu, donnez enfin victoire !",
+	SayCombatEnd				= "Je la connais trop bien, cette fin importune. Que faut-il au destin pour changer ma fortune ?"
+})
 
 ---------------------
 -- Pit of Saron --
