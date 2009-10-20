@@ -22,6 +22,9 @@ mod:AddBoolOption("RemoveHealthBuffsInP3", false)
 -- Pursue
 local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
+local warnAdds				= mod:NewAnnounce("Adds Incoming", 3) 
+local timerAdds				= mod:NewTimer(45, "New Adds") 
+local Burrowed = false 
 mod:AddBoolOption("PlaySoundOnPursue")
 mod:AddBoolOption("PursueIcon")
 
@@ -60,6 +63,10 @@ function mod:resetIcons()
 end
 
 function mod:OnCombatStart(delay)
+	Burrowed = false 
+	timerAdds:Start(10-delay) 
+	warnAdds:Schedule(10-delay) 
+	self:ScheduleMethod(10-delay, "Adds") 
 	timerSubmerge:Start(80-delay)
 	enrageTimer:Start(-delay)
 	self:resetIcons()
@@ -69,6 +76,17 @@ function mod:OnCombatStart(delay)
 		preWarnShadowStrike:Schedule(25)
 		self:ScheduleMethod(30, "ShadowStrike")
 	end
+end
+
+function mod:Adds() 
+	if self:IsInCombat() then 
+		timerAdds:Stop() 
+		if not Burrowed then 
+			timerAdds:Start() 
+			warnAdds:Schedule(45) 
+			self:ScheduleMethod(45, "Adds") 
+		end 
+	end 
 end
 
 function mod:ShadowStrike()
@@ -150,8 +168,15 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg and msg:find(L.Burrow) then
+		Burrowed = true
+		timerAdds:Stop()
+		warnAdds:Cancel()
 		self:SendSync("Burrow")
 	elseif msg and msg:find(L.Emerge) then
+		Burrowed = false
+		timerAdds:Start(5)
+		warnAdds:Schedule(5)
+		self:ScheduleMethod(5, "Adds")
 		self:SendSync("Emerge")
 	end
 end
