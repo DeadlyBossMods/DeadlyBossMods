@@ -1440,11 +1440,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
---	specwarnRenew				= "Confessor cast renew on >%s< Dispel Now!"
+specwarnRenew				= "Confessor cast renew on >%s< Dispel Now!"
 })
 
 L:SetOptionLocalization({
---	specwarnRenew				= "Special Warning for Renew target (for dispel/steal)"
+specwarnRenew				= "Special Warning for Renew target (for dispel/steal)"
 })
 
 L:SetMiscLocalization({
