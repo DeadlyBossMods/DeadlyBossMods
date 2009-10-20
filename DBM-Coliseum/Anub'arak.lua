@@ -82,7 +82,6 @@ end
 
 function mod:Adds() 
 	if self:IsInCombat() then 
-		timerAdds:Stop() 
 		if not Burrowed then 
 			timerAdds:Start() 
 			warnAdds:Schedule(45) 
@@ -139,7 +138,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			PColdIcon = PColdIcon - 1
 		end
 		timerPCold:Show()
-	elseif args:IsSpellID(66012) then		-- Freezing Slash
+	elseif args:IsSpellID(66012) then							-- Freezing Slash
 		warnFreezingSlash:Show(args.destName)
 		timerFreezingSlash:Start()
 	end
@@ -152,7 +151,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(66118, 67630, 68646, 68647) then		-- Swarm (start p3)
+	if args:IsSpellID(66118, 67630, 68646, 68647) then			-- Swarm (start p3)
 		warnPhase3:Show()
 		warnEmergeSoon:Cancel()
 		warnSubmergeSoon:Cancel()
@@ -161,7 +160,12 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.RemoveHealthBuffsInP3 then
 			mod:ScheduleMethod(0.1, "RemoveBuffs")
 		end
-	elseif args:IsSpellID(66134) then						-- Shadow Strike
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
+			timerAdds:Cancel() 
+			warnAdds:Cancel() 
+			self:UnscheduleMethod("Adds")
+		end
+	elseif args:IsSpellID(66134) then							-- Shadow Strike
 		self:ScheduleMethod(0.1, "ShadowStrike")
 		specWarnShadowStrike:Show()
 		warnShadowStrike:Show()
@@ -171,7 +175,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg and msg:find(L.Burrow) then
 		Burrowed = true
-		timerAdds:Stop()
+		timerAdds:Cancel()
 		warnAdds:Cancel()
 		self:SendSync("Burrow")
 	elseif msg and msg:find(L.Emerge) then
@@ -200,11 +204,6 @@ function mod:OnSync(msg, arg)
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
---		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
---			timerShadowStrike:Stop()
---			preWarnShadowStrike:Cancel()
---			self:ScheduleMethod(7, "ShadowStrike")	-- 35sec after Emerge next ShadowStrike
---		end
 	end
 end
 
