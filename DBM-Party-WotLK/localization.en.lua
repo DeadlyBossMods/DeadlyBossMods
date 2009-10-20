@@ -1476,7 +1476,7 @@ L:SetMiscLocalization({
 })
 
 ---------------------
--- Holiday --
+-- World Events --
 ---------------------
 -------------------
 -- Coren Direbrew --
