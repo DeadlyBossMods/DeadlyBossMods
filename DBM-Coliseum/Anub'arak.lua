@@ -22,8 +22,8 @@ mod:AddBoolOption("RemoveHealthBuffsInP3", false)
 -- Pursue
 local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
-local warnAdds				= mod:NewAnnounce("Adds Incoming", 3) 
-local timerAdds				= mod:NewTimer(45, "New Adds") 
+local warnAdds				= mod:NewAnnounce("warnAdds", 3)
+local timerAdds				= mod:NewTimer(45, "timerAdds")
 local Burrowed = false 
 mod:AddBoolOption("PlaySoundOnPursue")
 mod:AddBoolOption("PursueIcon")
