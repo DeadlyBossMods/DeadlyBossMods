@@ -13,7 +13,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local timerFirstWhirlwind			= mod:NewTimer(45, "timerFirstWhirlwind") --Timer for first whirlwind only, will only be called once.
 local timerNextWhirlwind			= mod:NewNextTimer(60, 69076) --Timer for all other whirlwinds.
 local warnBoneSpike					= mod:NewSpellAnnounce(69057)
 local timerBoneSpike				= mod:NewCDTimer(18, 69057) --Currently estimate do to limited combat log data, pug could not kill it.
@@ -25,7 +24,7 @@ local specWarnColdflame				= mod:NewSpecialWarning("specWarnColdflame")
 mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 
 function mod:OnCombatStart(delay)
-	timerFirstWhirlwind:Start(-delay)
+	timerNextWhirlwind:Start(45-delay)
 	timerBoneSpike:Start(-delay)
 end
 
