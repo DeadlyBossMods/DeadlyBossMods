@@ -246,7 +246,7 @@ L:SetOptionLocalization{
 	WarnEmergeSoon			= "Show pre-warning for emerge",
 	WarnSubmerge			= "Show warning for submerge",
 	WarnSubmergeSoon		= "Show pre-warning for submerge",
-	SpecWarnPursue			= "Special warning when you are being pursued",
+	SpecWarnPursue			= "Show special warning when you are being pursued",
 	warnAdds				= "Show warning for new incoming adds",
 	timerAdds				= "Show timer for new incoming adds",
 	TimerEmerge				= "Show timer for emerge",
