@@ -19,12 +19,14 @@ mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
 mod:AddBoolOption("RemoveHealthBuffsInP3", false)
 
--- Pursue
-local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
-local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
+-- Adds
 local warnAdds				= mod:NewAnnounce("warnAdds", 3)
 local timerAdds				= mod:NewTimer(45, "timerAdds")
 local Burrowed = false 
+
+-- Pursue
+local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
+local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
 mod:AddBoolOption("PlaySoundOnPursue")
 mod:AddBoolOption("PursueIcon")
 
