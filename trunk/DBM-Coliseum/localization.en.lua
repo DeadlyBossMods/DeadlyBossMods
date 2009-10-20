@@ -230,6 +230,7 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "Submerge in 10 seconds",
 	WarnPursue				= "Pursuing >%s<",
 	SpecWarnPursue			= "Pursuing you",
+	warnAdds				= "Adds incoming",
 	SpecWarnShadowStrike	= "Shadow Strike - Interrupt now",
 	SpecWarnPCold			= "Penetrating Cold"
 }
@@ -246,6 +247,8 @@ L:SetOptionLocalization{
 	WarnSubmerge			= "Show warning for submerge",
 	WarnSubmergeSoon		= "Show pre-warning for submerge",
 	SpecWarnPursue			= "Special warning when you are being pursued",
+	warnAdds				= "Show warning for new incoming adds",
+	timerAdds				= "Show timer for new incoming adds",
 	TimerEmerge				= "Show timer for emerge",
 	TimerSubmerge			= "Show timer for submerge",
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
