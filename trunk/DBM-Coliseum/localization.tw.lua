@@ -237,7 +237,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerEmerge			= "持續鑽地",
-	TimerSubmerge			= "下一次 鑽地"
+	TimerSubmerge			= "下一次 鑽地",
+	timerAdds			= "下一次 中蟲出現"
 }
 
 L:SetWarningLocalization{
