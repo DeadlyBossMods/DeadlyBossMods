@@ -1467,7 +1467,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnHammerofJustice		= "심판의 망치 특수 경고 보기(해제 관련)",
-	specwarnRadiance			= "광휘의 특수 경고 보기."
+	specwarnRadiance			= "광휘의 특수 경고 보기.",
+	SetIconOnHammerTarget		= "심판의 망치 대상자 공격대 아이콘 설정하기"	
 })
 
 L:SetMiscLocalization({

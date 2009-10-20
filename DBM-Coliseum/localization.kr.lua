@@ -245,6 +245,7 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "아눕아락 10초 이내 잠수!",
 	WarnPursue				= "아눕아락의 추격 : >%s<",
 	SpecWarnPursue			= "당신을 추격 합니다!",
+	warnAdds				= "네루비안 땅무지 추가!",	
 	SpecWarnPCold	 		= "당신은 냉기 관통! 조심하세요!",
 	SpecWarnShadowStrike	= "어둠의 일격! 지금 차단!"
 }
@@ -262,6 +263,8 @@ L:SetOptionLocalization{
 	WarnSubmerge			= "숨기 경고 보기",
 	WarnSubmergeSoon		= "숨기의 사전 경고 보기",
 	SpecWarnPursue			= "당신을 추격하기 시작할 때 특수 경고 알리기",
+	warnAdds				= "새로운 네루비안 땅무지가 추가 될 때 경고 보기",
+	timerAdds				= "새로운 네루비안 땅무지 추가 타이머 보기",	
 	TimerEmerge				= "출현 타이머 보기",
 	TimerSubmerge			= "숨기 타이머 보기",
 	PlaySoundOnPursue		= "당신을 추격하기 시작할 때 특수 소리 재생",
