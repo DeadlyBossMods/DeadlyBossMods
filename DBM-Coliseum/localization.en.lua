@@ -221,7 +221,7 @@ L:SetGeneralLocalization{
 L:SetTimerLocalization{
 	TimerEmerge				= "Emerge in",
 	TimerSubmerge			= "Submerge in",
-	TimerAdds				= "New adds in"
+	timerAdds				= "New adds in"
 }
 
 L:SetWarningLocalization{
