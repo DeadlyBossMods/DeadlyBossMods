@@ -247,8 +247,9 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "10秒後 鑽進地裡",
 	WarnPursue			= "追擊尖刺: >%s<",
 	SpecWarnPursue			= "你被追擊了!",
-	SpecWarnPCold			= "你中了透骨之寒!",
-	SpecWarnShadowStrike		= "暗影打擊 - 快斷法!"
+	warnAdds			= "奈幽掘洞者 出現了!",
+	SpecWarnShadowStrike		= "暗影打擊 - 快斷法!",
+	SpecWarnPCold			= "你中了透骨之寒!"
 }
 
 L:SetMiscLocalization{
@@ -263,13 +264,15 @@ L:SetOptionLocalization{
 	WarnSubmerge			= "為鑽進地裡顯示警告",
 	WarnSubmergeSoon		= "為鑽進地裡顯示預先警告",
 	SpecWarnPursue			= "當你被追擊時顯示特別警告",
+	warnAdds			= "為新的奈幽掘洞者出現顯示警告",
+	timerAdds			= "為新的奈幽掘洞者出現顯示計時器",
 	TimerEmerge			= "為持續鑽地顯示計時器",
 	TimerSubmerge			= "為下一次 鑽地顯示計時器",
 	PlaySoundOnPursue		= "當你開始被追擊時播放音效",
 	PursueIcon			= "為被追擊的玩家設置標記",
 	WarnPursue			= "提示被追擊的玩家",
 	SpecWarnPCold			= "為透骨之寒顯示特別警告",
-	SetIconsOnPCold			= "為透骨之寒的目標設置標記",
 	SpecWarnShadowStrike		= "為暗影打擊顯示特別警告 (斷法用)",
-	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益"
+	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
+	SetIconsOnPCold         	= "為透骨之寒的目標設置標記"
 }
