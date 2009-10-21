@@ -5,17 +5,65 @@ local L
 ----------------------
 L = DBM:GetModLocalization("LordMarrowgar")
 
-L:SetGeneralLocalization{
+L:SetGeneralLocalization({
 	name = "Lord Marrowgar"
-}
+})
 
-L:SetWarningLocalization{
+L:SetWarningLocalization({
 	specWarnWhirlwind			= "Whirlwind! Run away!",
 	specWarnColdflame			= "Coldflame, MOVE!"
-}
+})
 
-L:SetOptionLocalization{
+L:SetOptionLocalization({
 	specWarnWhirlwind			= "Show special warning for Whirlwind",
 	specWarnColdflame			= "Show special warning when you take damage from Coldflame",
 	PlaySoundOnWhirlwind		= "Play sound for Whirlwind"
-}
+})
+
+
+-----------------
+--  Festergut  --
+-----------------
+L = DBM:GetModLocalization("Festergut")
+
+L:SetGeneralLocalization({
+	name = "Festergut"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
+---------------
+--  Rotface  --
+---------------
+L = DBM:GetModLocalization("Rotface")
+
+L:SetGeneralLocalization({
+	name = "Rotface"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
+
+----------------------
+--  Gunship Battle  --
+----------------------
+L = DBM:GetModLocalization("GunshipBattle")
+
+L:SetGeneralLocalization({
+	name = "Gunship Battle"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
+
+
+
