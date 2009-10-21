@@ -26,5 +26,7 @@ localization.cn.lua
 localization.fr.lua
 localization.es.lua
 LordMarrowgar.lua
-
+Festergut.lua
+GunshipBattle.lua
+Rotface.lua
 
