@@ -235,7 +235,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerEmerge			= "출현",
-	TimerSubmerge		= "숨기"
+	TimerSubmerge		= "숨기",
+	timerAdds			= "다음 네루비안 땅무지"
 }
 
 L:SetWarningLocalization{
