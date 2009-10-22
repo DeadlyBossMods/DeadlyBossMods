@@ -2,7 +2,7 @@ local mod = DBM:NewMod("LordMarrowgar", "DBM-Icecrown")
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
-mod:SetCreatureID(1024)
+mod:SetCreatureID(36612)
 
 mod:RegisterCombat("combat")
 
