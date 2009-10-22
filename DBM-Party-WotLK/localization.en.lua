@@ -1538,12 +1538,12 @@ L:SetMiscLocalization({
 -- Pit of Saron --
 ---------------------
 -------------------
--- Ick --
+-- Ick and Krick --
 -------------------
 L = DBM:GetModLocalization("Ick")
 
 L:SetGeneralLocalization({
-	name = "Ick"
+	name = "Ick and Krick"
 })
 
 L:SetWarningLocalization({

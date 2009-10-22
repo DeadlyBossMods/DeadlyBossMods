@@ -2,7 +2,7 @@ local mod = DBM:NewMod("ScourgelordTyrannus", "DBM-Party-WotLK", 15)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1665 $"):sub(12, -3))
-mod:SetCreatureID(12800, 13568)
+mod:SetCreatureID(36658, 36661)
 mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
@@ -26,7 +26,7 @@ local specWarnIcyBlast				= mod:NewSpecialWarning("specWarnIcyBlast")
 -- Hoarfrost ID 69246
 local warnHoarfrost					= mod:NewSpellAnnounce(69246)
 local specWarnHoarfrost				= mod:NewSpecialWarning("specWarnHoarfrost")
-local specWarnHoerfrostNear			= mod:NewSpecialWarning("specWarnHoarfrostNear")
+local specWarnHoarfrostNear			= mod:NewSpecialWarning("specWarnHoarfrostNear")
 
 mod:AddBoolOption("SetIconOnHoarfrostTarget", true, "announce")
 
@@ -81,7 +81,7 @@ function mod:OnSync(msg, arg)
 			if uId then
 				local inRange = CheckInteractDistance(uId, 2)
 				if inRange then
-					specWarnHoerfrostNear:Show()
+					specWarnHoarfrostNear:Show()
 				end
 			end
 		end

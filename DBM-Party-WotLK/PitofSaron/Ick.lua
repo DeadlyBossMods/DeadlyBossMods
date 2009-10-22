@@ -2,7 +2,7 @@ local mod = DBM:NewMod("Ick", "DBM-Party-WotLK", 15)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1665 $"):sub(12, -3))
-mod:SetCreatureID(31744)
+mod:SetCreatureID(36476, 36477)
 --mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
@@ -36,9 +36,9 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69029, 70850) then							-- Pursuit Confusion (possible heroic spellid drycoded from thotbot testrealm database)
+	if args:IsSpellID(69029, 70850) then							-- Pursuit Confusion
 		timerPursuitConfusion:Show(args.destName)
-	elseif args:IsSpellID(69581, 70273) then							-- Pustulant Flesh (possible heroic spellid drycoded from thotbot testrealm database)
+	elseif args:IsSpellID(69581, 70273) then							-- Pustulant Flesh
 		warnPustulantFlesh:Show(args.destName)
 		timerPustulantFlesh:Show(args.destName)
 	end
@@ -47,7 +47,7 @@ end
 do 
 	local lasttoxic = 0
 	function mod:SPELL_PERIODIC_DAMAGE(args)
-		if args:IsSpellID(69024, 70274, 70436) and args:IsPlayer() and time() - lasttoxic > 2 then		-- Toxic Waste, MOVE! (possible heroic spellid(s) drycoded from thotbot testrealm database)
+		if args:IsSpellID(69024, 70274, 70436) and args:IsPlayer() and time() - lasttoxic > 2 then		-- Toxic Waste, MOVE!
 			specWarnToxic:Show()
 			lasttoxic = time()
 		end
