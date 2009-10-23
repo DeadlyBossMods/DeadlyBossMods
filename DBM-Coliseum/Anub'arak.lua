@@ -54,7 +54,7 @@ local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
 local timerFreezingSlash	= mod:NewCDTimer(20, 66012)
 
 -- Shadow Strike
-local timerShadowStrike		= mod:NewNextTimer(30, 66134)
+local timerShadowStrike		= mod:NewNextTimer(30.5, 66134)
 local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
 local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
 local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", false)
@@ -75,8 +75,8 @@ function mod:OnCombatStart(delay)
 	timerFreezingSlash:Start(-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
-		preWarnShadowStrike:Schedule(25)
-		self:ScheduleMethod(30, "ShadowStrike")
+		preWarnShadowStrike:Schedule(25.5)
+		self:ScheduleMethod(30.5, "ShadowStrike")
 	end
 end
 
@@ -92,11 +92,11 @@ end
 
 function mod:ShadowStrike()
 	if self:IsInCombat() then
-		timerShadowStrike:Stop()
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Cancel()
-		preWarnShadowStrike:Schedule(25)
-		self:ScheduleMethod(30, "ShadowStrike")
+		preWarnShadowStrike:Schedule(25.5)
+		self:UnscheduleMethod("ShadowStrike")
+		self:ScheduleMethod(30.5, "ShadowStrike")
 	end
 end
 
@@ -166,7 +166,7 @@ function mod:SPELL_CAST_START(args)
 			self:UnscheduleMethod("Adds")
 		end
 	elseif args:IsSpellID(66134) then							-- Shadow Strike
-		self:ScheduleMethod(0.1, "ShadowStrike")
+		self:ShadowStrike()
 		specWarnShadowStrike:Show()
 		warnShadowStrike:Show()
 	end
@@ -204,6 +204,12 @@ function mod:OnSync(msg, arg)
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(75)
 		timerSubmerge:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerShadowStrike:Stop()
+			preWarnShadowStrike:Cancel()
+			self:UnscheduleMethod("ShadowStrike")
+			self:ScheduleMethod(5.5, "ShadowStrike")  -- 35-36sec after Emerge next ShadowStrike
+		end
 	end
 end
 
