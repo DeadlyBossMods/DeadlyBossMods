@@ -112,7 +112,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s под воздействием >%%s<",
+	target = ">%%s< под воздействием %s",
 	spell = "%s",
 	cast = "Читение заклинания %s: %.1f сек",
 	soon = "Скоро %s",
