@@ -13,6 +13,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "深呼吸",
+	specWarnBlastNova	= "奧妮克希亞巢穴守衛正在施放衝擊新星。跑開!",--http://www.wowhead.com/?npc=36561
 	WarnWhelpsSoon		= "幼龍即將出現",
 	WarnPhase3Soon		= "第3階段 即將到來"
 }
@@ -24,6 +25,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath		= "為深呼吸顯示特別警告",
+	BlastNovaWarning	= "為衝擊新星顯示特別警告",
+	PlaySoundOnBlastNova	= "為衝擊新星播放音效",
 	TimerBreath		= "為深呼吸顯示計時器",
 	TimerWhelps		= "為幼龍顯示計時器",
 	WarnWhelpsSoon		= "為幼龍出現顯示預先警告",
