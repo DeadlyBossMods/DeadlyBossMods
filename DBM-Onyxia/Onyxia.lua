@@ -10,15 +10,24 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
 	"UNIT_DIED",
 	"UNIT_HEALTH"
 )
 
+local isMelee = select(2, UnitClass("player")) == "ROGUE"
+	     or select(2, UnitClass("player")) == "WARRIOR"
+	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
+
+mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
+
 local timerBreath			= mod:NewTimer(6, "TimerBreath", 17086)
 local timerWhelps			= mod:NewTimer(79, "TimerWhelps", 10697)
 
 local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
+local specWarnBlastNova		= mod:NewSpecialWarning("specWarnBlastNova", nil, false)
+mod:AddBoolOption("BlastNovaWarning", isMelee, "announce")
 local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
 local sndBreath				= mod:NewRunAwaySound(nil, "SoundBreath")
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
@@ -90,6 +99,17 @@ function mod:OnSync(msg)
    		sndFunny:Schedule(35, "Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
 		sndFunny:Schedule(50, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
 		sndFunny:Schedule(65, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(68958) then
+		if self.Options.BlastNovaWarning then
+			specWarnBlastNova:Show()
+		end
+		if self.Options.PlaySoundOnBlastNova then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
 	end
 end
 

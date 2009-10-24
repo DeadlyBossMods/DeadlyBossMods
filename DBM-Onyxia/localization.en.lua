@@ -10,9 +10,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBreath	= "Deep Breath",
-	WarnWhelpsSoon	= "Whelp spawn soon",
-	WarnPhase3Soon	= "Phase 3 incoming soon"
+	SpecWarnBreath		= "Deep Breath",
+	specWarnBlastNova	= "Onyxian Lair Guard is casting Blast Nova. Move Away!",--http://www.wowhead.com/?npc=36561
+	WarnWhelpsSoon		= "Whelp spawn soon",
+	WarnPhase3Soon		= "Phase 3 incoming soon"
 }
 
 L:SetTimerLocalization{
@@ -21,13 +22,15 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath	= "Show special warning for Deep Breath",
-	TimerBreath		= "Show timer for Deep Breath",
-	TimerWhelps		= "Show timer for whelp spawns",
-	WarnWhelpsSoon	= "Show pre-warning for whelp spawns",
-	SoundBreath		= "Play sound on Deep Breath",
-	SoundWTF		= "Play some funny sounds of a legendary Onyxia classic raid",
-	WarnPhase3Soon	= "Show pre-warning for Phase 3 (at ~41%)"
+	SpecWarnBreath			= "Show special warning for Deep Breath",
+	BlastNovaWarning		= "Show special warning for Blast Nova",
+	TimerBreath				= "Show timer for Deep Breath",
+	TimerWhelps				= "Show timer for whelp spawns",
+	WarnWhelpsSoon			= "Show pre-warning for whelp spawns",
+	SoundBreath				= "Play sound on Deep Breath",
+	PlaySoundOnBlastNova	= "Play sound on Blast Nova",
+	SoundWTF				= "Play some funny sounds of a legendary Onyxia classic raid",
+	WarnPhase3Soon			= "Show pre-warning for Phase 3 (at ~41%)"
 }
 
 L:SetMiscLocalization{
