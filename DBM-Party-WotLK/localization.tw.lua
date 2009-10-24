@@ -1396,8 +1396,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration		= "褻瀆 - 快跑開!",
-	warnExplode		= "食屍鬼爪牙即將爆炸 - 快跑開!"
+	specWarnDesecration		= "褻瀆 - 快跑開",
+	warnExplode		= "食屍鬼爪牙即將爆炸 - 快跑開"
 })
 
 L:SetOptionLocalization({
@@ -1421,13 +1421,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste		= "加速: >%s< - 快驅散!",
-	specWarnPoison		= "毒藥 - 快跑開!",
-	warnHealingWave		= "薩滿正在施放治療波 - 快斷法!"
+	specWarnHaste		= "加速: >%s< - 快驅散",
+	specWarnPoison		= "毒藥瓶 - 快跑開",
 })
 
 L:SetOptionLocalization({
-	warnHealingWave		= "當薩滿施放治療波時警告",
 	specWarnHaste		= "當法師獲得加速時特別警告 (驅散/竊取用)",
 	specWarnPoison		= "當你受到毒藥瓶的傷害時顯示特別警告"
 })
@@ -1447,13 +1445,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew		= "帕爾璀絲施放恢復於 >%s< - 快驅散!",
-	warnReflectiveShield		= "帕爾璀絲獲得反射護盾"
+	specwarnRenew		= "帕爾璀絲施放恢復於 >%s< - 快驅散"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew		= "為恢復的目標顯示特別警告 (驅散/竊取用)",
-	warnReflectiveShield		= "當帕爾璀絲獲得反射護盾時警告"
+	specwarnRenew		= "為恢復的目標顯示特別警告 (驅散/竊取用)"
 })
 
 L:SetMiscLocalization({
@@ -1471,13 +1467,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHammerofRighteous		= "埃卓克正在施放公正之錘!",
-	specwarnHammerofJustice		= "制裁之錘: >%s< - 快驅散!",
-	specwarnRadiance		= "烈光 - 背對王!"
+	specwarnHammerofJustice		= "制裁之錘: >%s< - 快驅散",
+	specwarnRadiance		= "烈光 - 背對王"
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous		= "當埃卓克正在施放公正之錘時警告",
 	specwarnHammerofJustice		= "為制裁之錘顯示特別警告 (驅散用)",
 	specwarnRadiance		= "為烈光顯示特別警告",
 	SetIconOnHammerTarget		= "設置標記在制裁之錘的目標"
@@ -1488,7 +1482,7 @@ L:SetMiscLocalization({
 })
 
 ---------------------
--- Holiday --
+-- World Events --
 ---------------------
 -------------------
 -- Coren Direbrew --
@@ -1502,7 +1496,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnBarrel		= "空桶(暈): >%s<", 
 --	specwarnDaughters		= "女兒出現了!",
-	specwarnDisarm		= "繳械 - 快跑開!",
+	specwarnDisarm		= "繳械 - 快跑開",
 	specWarnBrew		= "在他再丟你一個前喝掉酒!",
 	specWarnBrewStun		= "提示:你瘋狂了,記得下一次喝啤酒!"
 })
@@ -1518,7 +1512,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellBarrel		= "我中了空桶(暈)!"
+	YellBarrel		= "我中了空桶(暈)"
 })
 
 -------------------
@@ -1556,24 +1550,24 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Ick")
 
 L:SetGeneralLocalization({
-	name = "Ick"
+	name = "艾克"
 })
 
 L:SetWarningLocalization({
-	warnPursuit			= "Pursuit in 5 seconds",
-	specWarnToxic		= "Toxic Waste! Move Away!",
-	specWarnPursuit		= "You are being pursued. Run away!"
+	warnPursuit			= "5 秒後 獵殺",
+	specWarnToxic		= "Toxic Waste - 快跑開",
+	specWarnPursuit		= "你中了獵殺 - 快跑"
 })
 
 L:SetOptionLocalization({
-	warnPursuit			= "Show warning when Pursuit is soon",
-	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
-	specWarnPursuit		= "Special warning when you are being pursued"
---	SetIconOnPursuitTarget	= "Set icon on Pursuit target"
+	warnPursuit			= "當獵殺即將到來時顯示警告",
+	specWarnToxic		= "當你受到Toxic Waste的傷害時顯示特別警告",
+	specWarnPursuit		= "當你中了獵殺時顯示特別警告",
+--	SetIconOnPursuitTarget	= "設置標記在獵殺的目標"
 })
 
 L:SetMiscLocalization({
-	IckPursuit			= "%s is chasing you!"
+	IckPursuit			= "%s正在追擊著你!"
 })
 -------------------
 -- Forgemaster Garfrost --
@@ -1581,20 +1575,20 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ForgemasterGarfrost")
 
 L:SetGeneralLocalization({
-	name = "Forgemaster Garfrost"
+	name = "『鍛造大師』加弗羅斯"
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock				= "Saronite Rock! Line of Sight now!",
-	specWarnSaroniteRock		= "Saronite Throw on you! Move!",
+	warnSaroniteRock				= "Saronite Rock! Line of Sight now",
+	specWarnSaroniteRock		= "你中了Saronite Throw - 快跑開",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock				= "Show warning for Saronite Rock (to clear Permafrost)",
-	specWarnSaroniteRock		= "Special warning when Saronite Throw on you",
-	specWarnPermafrost		= "Special warning when Permafrost stacks get to high (value not set in stone)"
---	SetIconOnSaroniteRockTarget	= "Set icon on Saronite Rock target"
+	warnSaroniteRock				= "為Saronite Rock顯示警告 (清除極寒冰霜用)",
+	specWarnSaroniteRock		= "當你中了Saronite Throw顯示特別警告",
+	specWarnPermafrost		= "當極寒冰霜堆疊太高時顯示特別警告 (數值並非一成不變)",
+--	SetIconOnSaroniteRockTarget	= "設置標記在Saronite Rock的目標"
 })
 
 L:SetMiscLocalization({
@@ -1607,21 +1601,21 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ScourgelordTyrannus")
 
 L:SetGeneralLocalization({
-	name = "Scourgelord Tyrannus"
+	name = "『天譴領主』提朗紐斯"
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down. Get ready!",
-	specWarnIcyBlast			= "Icy Blast! Move Away!",
-	specWarnHoarfrost			= "Hoarfrost on you!",
-	specWarnHoarfrostNear		= "Hoarfrost near to you! Move!"
+	specTyrannusEngaged			= "『天譴領主』提朗紐斯正在下來 - 做好準備",
+	specWarnIcyBlast			= "冰結衝擊 - 快跑開",
+	specWarnHoarfrost			= "你中了Hoarfrost - 快跑開",
+	specWarnHoarfrostNear		= "你附近有人被Hoarfrost - 快跑開"
 })
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
-	specWarnHoarfrost			= "Show Special Warning when Hoarfrost on you",
-	specWarnHoarfrostNear		= "Show Special Warning when Hoarfrost near you",
-	SetIconOnHoarfrostTarget	= "Set icon on Hoarfrost target"
+	specWarnIcyBlast			= "當你受到冰結衝擊的傷害時顯示特別警告",
+	specWarnHoarfrost			= "當你中了Hoarfrost時顯示特別警告",
+	specWarnHoarfrostNear		= "當你附近有人被Hoarfrost時顯示特別警告",
+	SetIconOnHoarfrostTarget	= "設置標記在Hoarfrost的目標"
 })
 
 L:SetMiscLocalization({
@@ -1637,15 +1631,15 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Bronjahm")
 
 L:SetGeneralLocalization({
-	name = "Bronjahm"
+	name = "『眾魂教父』布朗吉姆"
 })
 
 L:SetWarningLocalization({
-	specwarnSoulstorm		= "Soulstorm! Move In!"
+	specwarnSoulstorm		= "Soulstorm - 快跑進去"
 })
 
 L:SetOptionLocalization({
-	specwarnSoulstorm		= "Special warning when Soulstorm is cast (to move in)"
+	specwarnSoulstorm		= "當Soulstorm施放時顯示特別警告 (進駐用)"
 })
 
 -------------------
@@ -1654,13 +1648,13 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DevourerofSouls")
 
 L:SetGeneralLocalization({
-	name = "Devourer of Souls"
+	name = "眾魂監督者"
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "Stop DPS!"
+	specwarnMirroredSoul		= "停止攻擊"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "Special warning to stop DPS for Mirrored Soul"
+	specwarnMirroredSoul		= "為Mirrored Soul需要停止攻擊時顯示特別警告"
 })
