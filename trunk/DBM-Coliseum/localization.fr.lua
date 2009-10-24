@@ -182,8 +182,8 @@ L:SetWarningLocalization{
 	SpecWarnSpecial				= "Changement de couleur !",
 	SpecWarnEmpoweredDarkness	= "Ténèbres surpuissantes",
 	SpecWarnEmpoweredLight		= "Lumière surpuissante",
-	SpecWarnSwitchTarget		= "Changement de cible!",
-	SpecWarnKickNow				= "Kick Maintenant!",
+	SpecWarnSwitchTarget		= "Changement de cible !",
+	SpecWarnKickNow				= "Casser Maintenant !",
 	WarningTouchDebuff			= "Toucher sur >%s<",
 	WarningPoweroftheTwins		= "Puissance des jumelles - plus de soins sur >%s<",
 	SpecWarnPoweroftheTwins		= "Puissance des jumelles!"
@@ -222,7 +222,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerEmerge			= "Sort du sol",
-	TimerSubmerge		= "Rentre dans le sol"
+	TimerSubmerge		= "Rentre dans le sol",
+	timerAdds			= "Nouveaux add dans"
 }
 
 L:SetWarningLocalization{
@@ -232,13 +233,13 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon	= "Anub'arak Rentre dans le sol dans 10 sec",
 	WarnPursue			= "Poursuivi >%s<",
 	SpecWarnPursue		= "Vous êtes poursuivi",
-	SpecWarnShadowStrike	= "Attaque d'ombre ! Kick Maintenant !",
+	warnAdds				= "Les add arrivent",
+	SpecWarnShadowStrike	= "Attaque d'ombre ! Casser Maintenant !",
 	SpecWarnPCold			= "Froid pénétrant"
 }
 
 L:SetMiscLocalization{
 	YellPull			= "Ce terreau sera votre tombeau !",
-	Swarm				= "L'essaim va vous submerger !",
 	Emerge				= "surgit de la terre !",
 	Burrow				= "s'enfonce dans le sol !"
 }
@@ -249,6 +250,8 @@ L:SetOptionLocalization{
 	WarnSubmerge		= "Montre une alerte quand le boss rentre dans le sol",
 	WarnSubmergeSoon	= "Montre une alerte avant que le boss ne rentre dans le sol",
 	SpecWarnPursue		= "Montre une alerte quand vous commencez à être suivi",
+	warnAdds			= "Montre une alerte pour l'arrivée des add",
+	timerAdds			= "Montre le timer avant l'arrivée des nouveaux add",
 	TimerEmerge			= "Montre le timer pour la sortie du boss",
 	TimerSubmerge		= "Montre le timer pour la rentrée du boss dans la terre",
 	PlaySoundOnPursue	= "Joue un son quand vous êtes suivi",
@@ -256,6 +259,7 @@ L:SetOptionLocalization{
 	WarnPursue			= "Annonce le joueur qui est suivi",
 	SpecWarnShadowStrike	= "Montre une alerte spéciale pour les Attaque d'ombre (Pour les casser)",
 	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant",
-	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3"
+	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3",
+	SetIconsOnPCold         = "Met une icone sur la cible du Froid pénétrant"
 }
 
