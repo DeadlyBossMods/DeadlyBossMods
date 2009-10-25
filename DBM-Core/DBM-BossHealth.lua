@@ -72,6 +72,37 @@ end
 local onHide = onMouseUp
 
 
+-----------------
+-- Apply Style --
+-----------------
+local function updateBarStyle(bar, id)
+	bar:ClearAllPoints()
+	if DBM.Options.HealthFrameGrowUp then
+		bar:SetPoint("BOTTOM", bars[id - 1] or anchor, "TOP", 0, 0)
+	else
+		bar:SetPoint("TOP", bars[id - 1] or anchor, "BOTTOM", 0, 0)
+	end
+	local barborder = _G[bar:GetName().."BarBorder"]
+	local barbar = _G[bar:GetName().."Bar"]
+	local width = DBM.Options.HealthFrameWidth
+	if width < 175 then -- these health frames really suck :(
+		barbar:ClearAllPoints()
+		barbar:SetPoint("CENTER", barbar:GetParent(), "CENTER", -6, 0)
+		bar:SetWidth(DBM.Options.HealthFrameWidth)
+		barborder:SetWidth(DBM.Options.HealthFrameWidth * 0.99)
+		barbar:SetWidth(DBM.Options.HealthFrameWidth * 0.95)
+	elseif width >= 225 then
+		barbar:ClearAllPoints()
+		barbar:SetPoint("CENTER", barbar:GetParent(), "CENTER", 5, 0)
+		bar:SetWidth(DBM.Options.HealthFrameWidth)
+		barborder:SetWidth(DBM.Options.HealthFrameWidth * 0.995)
+		barbar:SetWidth(DBM.Options.HealthFrameWidth * 0.965)
+	else
+		bar:SetWidth(DBM.Options.HealthFrameWidth)
+		barborder:SetWidth(DBM.Options.HealthFrameWidth * 0.99)
+		barbar:SetWidth(DBM.Options.HealthFrameWidth * 0.95)
+	end
+end
 
 -----------------------
 -- Create the Frame  --
@@ -99,25 +130,16 @@ local function createBar(self, cId, name)
 	local bartext = _G[bar:GetName().."BarName"]
 	local barborder = _G[bar:GetName().."BarBorder"]
 	local barbar = _G[bar:GetName().."Bar"]
-	bar:SetWidth(DBM.Options.HealthFrameWidth)
-	barborder:SetWidth(DBM.Options.HealthFrameWidth - 2)
-	barbar:SetWidth(DBM.Options.HealthFrameWidth - 10)
 	barborder:SetScript("OnMouseDown", onMouseDown)
 	barborder:SetScript("OnMouseUp", onMouseUp)
 	barborder:SetScript("OnHide", onHide)
 	bar.id = cId
 	bar.hidden = false
 	bar:ClearAllPoints()
-	if DBM.Options.HealthFrameGrowUp then
-		bar:SetPoint("BOTTOM", bars[#bars] or anchor, "TOP", 0, 0)
-	else
-		bar:SetPoint("TOP", bars[#bars] or anchor, "BOTTOM", 0, 0)
-	end
 	bartext:SetText(name)
 	updateBar(bar, 100)
 	return bar
 end
-
 
 
 
@@ -237,6 +259,7 @@ end
 function bossHealth:AddBoss(cId, name)
 	if not anchor or not anchor:IsShown() then return end
 	table.insert(bars, createBar(self, cId, name))
+	updateBarStyle(bars[#bars], #bars)
 end
 
 function bossHealth:RemoveBoss(cId)
@@ -260,16 +283,6 @@ function bossHealth:UpdateSettings()
 	if not anchor then createFrame(bossHealth) end
 	anchor:SetPoint(DBM.Options.HPFramePoint, UIParent, DBM.Options.HPFramePoint, DBM.Options.HPFrameX, DBM.Options.HPFrameY)
 	for i, v in ipairs(bars) do
-		v:ClearAllPoints()
-		if DBM.Options.HealthFrameGrowUp then
-			v:SetPoint("BOTTOM", bars[i - 1] or anchor, "TOP", 0, 0)
-		else
-			v:SetPoint("TOP", bars[i - 1] or anchor, "BOTTOM", 0, 0)
-		end
-		local barborder = _G[v:GetName().."BarBorder"]
-		local barbar = _G[v:GetName().."Bar"]
-		v:SetWidth(DBM.Options.HealthFrameWidth)
-		barborder:SetWidth(DBM.Options.HealthFrameWidth - 2)
-		barbar:SetWidth(DBM.Options.HealthFrameWidth - 10)
+		updateBarStyle(v, i)
 	end
 end
