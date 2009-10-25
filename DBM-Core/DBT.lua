@@ -206,6 +206,14 @@ options = {
 	ClickThrough = {
 		type = "boolean",
 		default = false,
+	},
+	Font = {
+		type = "string",
+		default = STANDARD_TEXT_FONT,
+	},
+	FontSize = {
+		type = "number",
+		default = 10
 	}
 }
 
@@ -767,6 +775,8 @@ function barPrototype:ApplyStyle()
 	texture:SetAlpha(1)
 	bar:SetAlpha(1)
 	frame:SetAlpha(1)
+	name:SetFont(self.owner.options.Font, self.owner.options.FontSize)
+	timer:SetFont(self.owner.options.Font, self.owner.options.FontSize)
 	self:Update(0)
 end
 
