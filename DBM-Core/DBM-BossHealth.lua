@@ -160,22 +160,28 @@ do
 --					v:Show()
 --				end
 				if type(v.id) == "number" then
-					local id = targetCache[v.id]
-					if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then
+					local id = targetCache[v.id] -- ask the cache if we already know where the mob is
+					if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then -- the cache doesn't know it, update the cache
 						targetCache[v.id] = nil
-						local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
-						for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
-							id = (i == 0 and "target") or uId..i.."target"
-							if getCIDfromGUID(UnitGUID(id or "")) == v.id then
-								targetCache[v.id] = id
-								break
+						-- check focus target
+						if getCIDfromGUID(UnitGUID("focus") or "") == v.id then
+							targetCache[v.id] = "focus"
+						else
+							-- check target and raid/party targets
+							local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+							for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+								id = (i == 0 and "target") or uId..i.."target"
+								if getCIDfromGUID(UnitGUID(id or "")) == v.id then
+									targetCache[v.id] = id
+									break
+								end
 							end
 						end
 					end
-					if getCIDfromGUID(UnitGUID(id or "")) == v.id then
+					if getCIDfromGUID(UnitGUID(id or "")) == v.id then -- did we find the mob? if yes: update the health bar
 						updateBar(v, ((UnitHealth(id)) / (UnitHealthMax(id)) * 100 or 100))
 					end
-				elseif type(v.id) == "function" then
+				elseif type(v.id) == "function" then -- generic bars
 					updateBar(v, v.id())
 				end
 			end
@@ -231,3 +237,7 @@ function bossHealth:RemoveBoss(cId)
 	end
 end
 
+function bossHealth:UpdateSettings()
+	if not anchor then createFrame(bossHealth) end
+	anchor:SetPoint(DBM.Options.HPFramePoint, UIParent, DBM.Options.HPFramePoint, DBM.Options.HPFrameX, DBM.Options.HPFrameY)
+end
