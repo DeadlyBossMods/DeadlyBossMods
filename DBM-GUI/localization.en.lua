@@ -81,7 +81,7 @@ L.SpecialWarnSound			= "Play sound on special warning"
 
 -- Tab: Barsetup
 L.BarSetup   				= "Bar Style"
-L.BarTexture 				= "Bar Texture"
+L.BarTexture 				= "Bar texture"
 L.BarStartColor				= "Start color"
 L.BarEndColor 				= "End color"
 L.ExpandUpwards				= "Expand bars upward"
@@ -102,7 +102,7 @@ L.ClickThrough				= "Disable mouse events (allows you to click through bars)"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "Special Warnings"
-L.Area_SpecWarn				= "Configure Special Warnings"
+L.Area_SpecWarn				= "Special Warning Options"
 L.SpecWarn_Enabled			= "Show special warnings for boss abilities"
 L.SpecWarn_Font				= "Font used for special warnings"
 L.SpecWarn_DemoButton		= "Show example"
@@ -114,7 +114,7 @@ L.SpecWarn_ResetMe			= "Reset to defaults"
 
 -- Tab: HealthFrame
 L.Panel_HPFrame				= "Health Frame"
-L.Area_HPFrame				= "Configure Health Frame"
+L.Area_HPFrame				= "Health Frame Options"
 L.HP_Enabled				= "Always show health frame (Overrides boss-specific option)"
 L.HP_GrowUpwards			= "Expand health frame upward"
 L.HP_ShowDemo				= "Show HP frame"
@@ -122,7 +122,7 @@ L.BarWidth					= "Bar width: %d"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Spam Filter"
-L.Area_SpamFilter				= "General Spam Filter Options"
+L.Area_SpamFilter				= "Spam Filter Options"
 L.HideBossEmoteFrame			= "Hide raid boss emote frame"
 L.SpamBlockRaidWarning			= "Filter announces from other boss mods" 
 L.SpamBlockBossWhispers			= "Filter <DBM> warning whispers while fighting"

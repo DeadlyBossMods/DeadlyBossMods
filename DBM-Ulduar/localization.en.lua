@@ -348,7 +348,7 @@ L:SetOptionLocalization{
 	SpecWarnVoid		= "Show special warning when standing in Feral Essence",
 	WarnFear			= "Show warning for Terrifying Screech",
 	WarnFearSoon		= "Show pre-warning for Terrifying Screech",
-	WarnCatDied			= "Show warning when the Feral Defender dies",
+	WarnCatDied			= "Show warning when Feral Defender dies",
 	WarnSwarm			= "Show warning for Guardian Swarm",
 	WarnSonic			= "Show warning for Sonic Screech",
 	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining"
@@ -418,7 +418,7 @@ L:SetOptionLocalization{
 	UnbalancingStrike		= "Announce Unbalancing Strike",
 	WarningBomb				= "Announce Rune Detonation",
 	RangeFrame				= "Show range frame",
-	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce to be enabled and promoted/leader status)",
+	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce to be enabled and leader/promoted status)",
 	LightningOrb			= "Show special warning for Lightning Shock"
 }
 
