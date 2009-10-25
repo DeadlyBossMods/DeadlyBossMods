@@ -21,7 +21,7 @@ DBM_CORE_OK							= "Okay"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Enrage in %s %s"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "Enrage"
-DBM_CORE_OPTION_TIMER_ENRAGE		= "Show enrage timer"
+DBM_CORE_OPTION_TIMER_ENRAGE		= "Show timer for enrage"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Show boss health frame"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
@@ -99,10 +99,10 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Show |cff71d5ff|Hspell:%d|h%s|h|r debuff timer",
-	cast = "Show |cff71d5ff|Hspell:%d|h%s|h|r cast timer",
-	active = "Show |cff71d5ff|Hspell:%d|h%s|h|r duration timer",
-	cd = "Show |cff71d5ff|Hspell:%d|h%s|h|r cooldown timer",
+	target = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r debuff",
+	cast = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cast",
+	active = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r duration",
+	cd = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
 	next = "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Show timer for %s",
 }
@@ -124,7 +124,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Show warning for phase %d"
+	phase = "Show warning for Phase %d"
 }
 
 
