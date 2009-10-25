@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_PERIODIC_DAMAGE",
+	"SPELL_SUMMON",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
 )
@@ -50,11 +51,15 @@ do
 	end
 end
 
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(69062) then							-- Impale (This function is iffy and I'm not sure it'll work)
+		warnImpale:Show(args.destName)
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69076) then						-- Whirlwind Begins
 		timerWhirlwind:Show(args.destName)
-	elseif args:IsSpellID(69062) then							-- Impale
-		warnImpale:Show(args.destName)
 	end
 end
 
