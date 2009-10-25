@@ -1419,7 +1419,7 @@ local function CreateOptionsMenu()
 	do
 		local BarSetupPanel = DBM_GUI_Frame:CreateNewPanel(L.BarSetup, "option")
 		
-		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 200, true)
+		local BarSetup = BarSetupPanel:CreateArea(L.AreaTitle_BarSetup, nil, 240, true)
 
 		local movemebutton = BarSetup:CreateButton(L.MoveMe, 100, 16)
 		movemebutton:SetPoint('BOTTOMRIGHT', BarSetup.frame, "TOPRIGHT", 0, -1)
@@ -1500,7 +1500,6 @@ local function CreateOptionsMenu()
 							color2text:SetTextColor(self:GetColorRGB())
 						  end)					  
 
-
 		local Textures = { 
 			{	text	= "Default",	value 	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga", 	texture	= "Interface\\AddOns\\DBM-Core\\textures\\default.tga"	},
 			{	text	= "Blizzad",	value 	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar", 	texture	= "Interface\\PaperDollInfoFrame\\UI-Character-Skills-Bar"	},
@@ -1517,7 +1516,7 @@ local function CreateOptionsMenu()
 			DBM.Bars:GetOption("Texture"), function(value) 
 				DBM.Bars:SetOption("Texture", value) 
 			end
-		);
+		)
 		TextureDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -80)
 
 		local ExpandUpwards = BarSetup:CreateCheckButton(L.ExpandUpwards, false, nil, nil, "ExpandUpwards")
@@ -1528,7 +1527,7 @@ local function CreateOptionsMenu()
 		
 		local ClickThrough = BarSetup:CreateCheckButton(L.ClickThrough, false, nil, nil, "ClickThrough")
 		ClickThrough:SetPoint("TOPLEFT", color1reset, "BOTTOMLEFT", -7, -5)
-
+		
 		-- Functions for the next 2 Areas
 		local function createDBTOnShowHandler(option)
 			return function(self)
@@ -1540,6 +1539,28 @@ local function CreateOptionsMenu()
 				DBM.Bars:SetOption(option, self:GetValue())
 			end
 		end
+
+		local Fonts = { 
+			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
+			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
+			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
+			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("font") do
+				table.insert(Fonts, {text=k, value=v, font=v})
+			end
+		end
+		local FontDropDown = BarSetup:CreateDropdown(L.Bar_Font, Fonts, DBM.Bars:GetOption("Font"), 
+			function(value) 
+				DBM.Bars:SetOption("Font", value) 
+			end)
+		FontDropDown:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 210, -200)
+
+		local FontSizeSlider = BarSetup:CreateSlider(L.Bar_FontSize, 7, 18, 1)
+		FontSizeSlider:SetPoint("TOPLEFT", BarSetup.frame, "TOPLEFT", 20, -202)
+		FontSizeSlider:SetScript("OnShow", createDBTOnShowHandler("FontSize"))
+		FontSizeSlider:HookScript("OnValueChanged", createDBTOnValueChangedHandler("FontSize"))
 
 		-----------------------
 		-- Small Bar Options --
@@ -1674,7 +1695,7 @@ local function CreateOptionsMenu()
 		end
 
 		local Fonts = { 
-			{	text	= "FrizQ",			value 	= "Fonts\\FRIZQT__.TTF",		font = "Fonts\\FRIZQT__.TTF"	},
+			{	text	= "Default",		value 	= STANDARD_TEXT_FONT,			font = STANDARD_TEXT_FONT		},
 			{	text	= "Arial",			value 	= "Fonts\\ARIALN.TTF",			font = "Fonts\\ARIALN.TTF"		},
 			{	text	= "Skurri",			value 	= "Fonts\\skurri.ttf",			font = "Fonts\\skurri.ttf"		},
 			{	text	= "Morpheus",		value 	= "Fonts\\MORPHEUS.ttf",		font = "Fonts\\MORPHEUS.ttf"	}
@@ -1690,7 +1711,7 @@ local function CreateOptionsMenu()
 				DBM:UpdateSpecialWarningOptions()
 				DBM:ShowTestSpecialWarning()
 			end
-		);
+		)
 		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -100)
 
 		local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
@@ -1724,7 +1745,7 @@ local function CreateOptionsMenu()
 		end)
 
 
-		local BarWidthSlider = hpArea:CreateSlider(L.BarWidth, 100, 325, 1)
+		local BarWidthSlider = hpArea:CreateSlider(L.BarWidth, 100, 275, 1)
 		BarWidthSlider:SetPoint("TOPLEFT", hpArea.frame, "TOPLEFT", 20, -75)
 		BarWidthSlider:SetScript("OnShow", function(self) self:SetValue(DBM.Options.HealthFrameWidth or 100) end)
 		BarWidthSlider:HookScript("OnValueChanged", function(self) 
