@@ -43,10 +43,10 @@ L:SetWarningLocalization({
 	WarningTenebron			= "Tenebron incoming",
 	WarningShadron			= "Shadron incoming",
 	WarningVesperon			= "Vesperon incoming",
-	WarningFireWall			= "Fire Wall!",
-	WarningVesperonPortal	= "Vesperon's Portal!",
-	WarningTenebronPortal	= "Tenebron's Portal!",
-	WarningShadronPortal	= "Shadron's Portal!",
+	WarningFireWall			= "Fire Wall - Move away",
+	WarningVesperonPortal	= "Vesperon's portal",
+	WarningTenebronPortal	= "Tenebron's portal",
+	WarningShadronPortal	= "Shadron's portal",
 })
 
 L:SetTimerLocalization({
@@ -57,22 +57,22 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall	= "Play sound for \"Fire Wall\"",
-	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to the raid chat (requires announce enabled and promoted/leader status)",
+	PlaySoundOnFireWall	= "Play sound on \"Fire Wall\"",
+	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to raid chat (requires announce enabled and promoted/leader status)",
 
-	TimerWall		= "Show a Timer for \"Fire Wall\"",
-	TimerTenebron		= "Show a timer for Tenebron",
-	TimerShadron		= "Show a timer for Shadron",
-	TimerVesperon		= "Show a timer for Vesperon",
+	TimerWall		= "Show timer for \"Fire Wall\"",
+	TimerTenebron		= "Show timer for Tenebron",
+	TimerShadron		= "Show timer for Shadron",
+	TimerVesperon		= "Show timer for Vesperon",
 
-	WarningFireWall		= "Show \"Fire Wall\" special-warning",
-	WarningTenebron		= "Show Tenebron spawn timer",
-	WarningShadron		= "Show Shadron spawn timer",
-	WarningVesperon		= "Show Vesperon spawn timer",
+	WarningFireWall		= "Show special warning for \"Fire Wall\"",
+	WarningTenebron		= "Show warning for Tenebron spawn",
+	WarningShadron		= "Show warning for Shadron spawn",
+	WarningVesperon		= "Show warning for Vesperon spawn",
 
-	WarningTenebronPortal	= "Show special-warning for Tenebron's portals",
-	WarningShadronPortal	= "Show special-warning for Shadron's portals",
-	WarningVesperonPortal	= "Show special-warning for Vesperon's portals",
+	WarningTenebronPortal	= "Show special warning for Tenebron's portal",
+	WarningShadronPortal	= "Show special warning for Shadron's portal",
+	WarningVesperonPortal	= "Show special warning for Vesperon's portal",
 })
 
 L:SetMiscLocalization({
@@ -81,10 +81,10 @@ L:SetMiscLocalization({
 	NameTenebron	= "Tenebron",
 	NameShadron		= "Shadron",
 	NameVesperon	= "Vesperon",
-	FireWallOn		= "Fire wall: %s",
-	VoidZoneOn		= "Void zone: %s",
-	VoidZones		= "Void zone fails (this try): %s",
-	FireWalls		= "Fire wall fails (this try): %s",
+	FireWallOn		= "Fire Wall: %s",
+	VoidZoneOn		= "Void Zone: %s",
+	VoidZones		= "Void Zone fails (this try): %s",
+	FireWalls		= "Fire Wall fails (this try): %s",
 	--[[ not in use; don't translate.
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
 	Shadron		= "Shadron! Come to me! All is at risk!",
