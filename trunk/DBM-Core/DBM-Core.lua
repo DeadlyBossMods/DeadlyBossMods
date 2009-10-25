@@ -93,7 +93,8 @@ DBM.DefaultOptions = {
 	SpecialWarningFontSize = 50,
 	SpecialWarningFontColor = {0.0, 0.0, 1.0},
 	HealthFrameGrowUp = false,
-	HealthFrameLocked = false
+	HealthFrameLocked = false,
+	HealthFrameWidth = 200
 }
 
 DBM.Bars = DBT:New()
