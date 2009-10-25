@@ -29,8 +29,17 @@ end
 ------------
 --  Menu  --
 ------------
-local menu = {
-	[1] = {
+local menu
+menu = {
+	{
+		text = DBM_CORE_RANGECHECK_LOCK,
+		checked = false, -- requires DBM.Options which is not available yet
+		func = function(self)
+			self.checked = not self.checked
+			DBM.Options.HealthFrameLocked = self.checked
+		end
+	},
+	{
 		text = DBM_CORE_BOSSHEALTH_HIDE_FRAME,
 		notCheckable = true,
 		func = function() bossHealth:Hide() end
@@ -42,7 +51,7 @@ local menu = {
 --  Script Handlers  --
 -----------------------
 local function onMouseDown(self, button)
-	if button == "LeftButton" then
+	if button == "LeftButton" and not DBM.Options.HealthFrameLocked then
 		anchor.moving = true
 		anchor:StartMoving()
 	end
@@ -81,6 +90,7 @@ local function createFrame(self)
 	anchor:SetScript("OnMouseUp", onMouseUp)
 	anchor:SetScript("OnHide", onHide)
 	dropdownFrame = CreateFrame("Frame", "DBMBossHealthDropdown", anchor, "UIDropDownMenuTemplate")
+	menu[1].checked = DBM.Options.HealthFrameLocked
 end
 
 local function createBar(self, cId, name)
@@ -93,7 +103,11 @@ local function createBar(self, cId, name)
 	barborder:SetScript("OnHide", onHide)
 	bar.id = cId
 	bar.hidden = false
-	bar:SetPoint("TOP", bars[#bars] or anchor, "BOTTOM", 0, 0)
+	if DBM.Options.HealthFrameGrowUp then
+		bar:SetPoint("BOTTOM", bars[#bars] or anchor, "TOP", 0, 0)
+	else
+		bar:SetPoint("TOP", bars[#bars] or anchor, "BOTTOM", 0, 0)
+	end
 	bartext:SetText(name)
 	updateBar(bar, 100)
 	return bar
@@ -164,7 +178,7 @@ do
 					if getCIDfromGUID(UnitGUID(id or "")) ~= v.id then -- the cache doesn't know it, update the cache
 						targetCache[v.id] = nil
 						-- check focus target
-						if getCIDfromGUID(UnitGUID("focus") or "") == v.id then
+						if getCIDfromGUID(UnitGUID("focus")) == v.id then
 							targetCache[v.id] = "focus"
 						else
 							-- check target and raid/party targets
@@ -240,4 +254,11 @@ end
 function bossHealth:UpdateSettings()
 	if not anchor then createFrame(bossHealth) end
 	anchor:SetPoint(DBM.Options.HPFramePoint, UIParent, DBM.Options.HPFramePoint, DBM.Options.HPFrameX, DBM.Options.HPFrameY)
+	for i, v in ipairs(bars) do
+		if DBM.Options.HealthFrameGrowUp then
+			v:SetPoint("BOTTOM", bars[i - 1] or anchor, "TOP", 0, 0)
+		else
+			v:SetPoint("TOP", bars[i - 1] or anchor, "BOTTOM", 0, 0)
+		end
+	end
 end
