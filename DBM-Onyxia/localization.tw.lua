@@ -13,7 +13,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "深呼吸",
-	specWarnBlastNova	= "奧妮克希亞巢穴守衛正在施放衝擊新星。跑開!",--http://www.wowhead.com/?npc=36561
+	specWarnBlastNova	= "奧妮克希亞巢穴守衛正在施放衝擊新星 - 跑開!",--http://www.wowhead.com/?npc=36561
 	WarnWhelpsSoon		= "幼龍即將出現",
 	WarnPhase3Soon		= "第3階段 即將到來"
 }
