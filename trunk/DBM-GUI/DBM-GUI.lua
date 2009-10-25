@@ -1280,27 +1280,6 @@ local function CreateOptionsMenu()
 		)
 		RaidWarnSoundDropDown:SetPoint("TOPLEFT", WarningIconRight, "BOTTOMLEFT", 20, -10)
 
-		-- SpecialWarn Sound
-		local Sounds = {
-			{	text	= L.NoSound,		value	= "" },
-			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
-			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
-		}
-		if GetSharedMedia3() then
-			for k,v in next, GetSharedMedia3():HashTable("sound") do
-				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
-					table.insert(Sounds, {text=k, value=v, sound=true})
-				end
-			end
-		end
-		local SpecialWarnSoundDropDown = raidwarnoptions:CreateDropdown(L.SpecialWarnSound, Sounds, 
-			DBM.Options.SpecialWarningSound, function(value) 
-				DBM.Options.SpecialWarningSound = value
-			end
-		)
-		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", RaidWarnSoundDropDown, "TOPRIGHT", 40, 0)
-
-
 		local raidwarncolors = RaidWarningPanel:CreateArea(L.RaidWarnColors, nil, 175, true)
 	
 		local color1 = raidwarncolors:CreateColorSelect(64)
@@ -1714,6 +1693,27 @@ local function CreateOptionsMenu()
 		)
 		FontDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -100)
 
+		-- SpecialWarn Sound
+		local Sounds = {
+			{	text	= L.NoSound,		value	= "" },
+			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
+			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
+		}
+		if GetSharedMedia3() then
+			for k,v in next, GetSharedMedia3():HashTable("sound") do
+				if k ~= "None" then -- lol ace .. playsound accepts empty strings.. quite.mp3 wtf!
+					table.insert(Sounds, {text=k, value=v, sound=true})
+				end
+			end
+		end
+		local SpecialWarnSoundDropDown = specArea:CreateDropdown(L.SpecialWarnSound, Sounds, 
+			DBM.Options.SpecialWarningSound, function(value) 
+				DBM.Options.SpecialWarningSound = value
+			end
+		)
+		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -150)
+
+
 		local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
 		resetbutton:SetPoint('BOTTOMRIGHT', specArea.frame, "BOTTOMRIGHT", -5, 5)
 		resetbutton:SetNormalFontObject(GameFontNormalSmall);
@@ -1735,7 +1735,7 @@ local function CreateOptionsMenu()
 
 	do
 		local hpPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_HPFrame, "option")
-		local hpArea = hpPanel:CreateArea(L.Area_HPFrame, nil, 205, true)
+		local hpArea = hpPanel:CreateArea(L.Area_HPFrame, nil, 150, true)
 		hpArea:CreateCheckButton(L.HP_Enabled, true, nil, "AlwaysShowHealthFrame")
 		local growbttn = hpArea:CreateCheckButton(L.HP_GrowUpwards, true)
 		growbttn:SetScript("OnShow",  function(self) self:SetChecked(DBM.Options.HealthFrameGrowUp) end)
@@ -1745,7 +1745,7 @@ local function CreateOptionsMenu()
 		end)
 
 
-		local BarWidthSlider = hpArea:CreateSlider(L.BarWidth, 100, 275, 1)
+		local BarWidthSlider = hpArea:CreateSlider(L.BarWidth, 150, 275, 1)
 		BarWidthSlider:SetPoint("TOPLEFT", hpArea.frame, "TOPLEFT", 20, -75)
 		BarWidthSlider:SetScript("OnShow", function(self) self:SetValue(DBM.Options.HealthFrameWidth or 100) end)
 		BarWidthSlider:HookScript("OnValueChanged", function(self) 
