@@ -13,22 +13,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-   SpecWarnBreath	= "Tiefer Atem",
-   WarnWhelpsSoon	= "Welpen kommen bald",
+	SpecWarnBreath		= "Tiefer Atem",
+	SpecWarnBlastNova	= "Drucknova! lauf weg!",
+	WarnWhelpsSoon		= "Welpen kommen bald",
+	WarnPhase3Soon		= "Phase 3 beginnt gleich" 
 }
 
 L:SetTimerLocalization{
-   TimerBreath	= "Tiefer Atem",
-   TimerWhelps	= "Welpenspawn"
+	TimerBreath	= "Tiefer Atem",
+	TimerWhelps	= "Welpenspawn"
 }
 
 L:SetOptionLocalization{
-   SpecWarnBreath	= "Zeige Spezialwarnung für tiefen Atem",
-   TimerBreath		= "Zeige Timer für tiefen Atem",
-   TimerWhelps		= "Zeige Timer für Welpenspawn",
-   WarnWhelpsSoon	= "Zeige Vorwarnung für Welpenspawn",
-   SoundBreath		= "Spiele Sound bei tiefem Atem",
-   SoundWTF			= "Spiele witzige Sounds eines legendären Classic-Raids"
+	SpecWarnBreath			= "Zeige Spezialwarnung für tiefen Atem",
+	BlastNovaWarning		= "Zeige Spezialwarnung für Drucknova",
+	TimerBreath				= "Zeige Timer für tiefen Atem",
+	TimerWhelps				= "Zeige Timer für Welpenspawn",
+	WarnWhelpsSoon			= "Zeige Vorwarnung für Welpenspawn",
+	SoundBreath				= "Spiele Sound bei tiefem Atem",
+	PlaySoundOnBlastNova	= "Spiele Sound bei Drucknova",
+	SoundWTF				= "Spiele witzige Sounds eines legendären Classic-Raids",
+	WarnPhase3Soon			= "Zeige Vorwarnung für Phase 3 (bei ~41%)"
 }
 
 L:SetMiscLocalization{

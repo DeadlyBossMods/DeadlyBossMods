@@ -26,7 +26,7 @@ local timerBreath			= mod:NewTimer(6, "TimerBreath", 17086)
 local timerWhelps			= mod:NewTimer(79, "TimerWhelps", 10697)
 
 local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
-local specWarnBlastNova		= mod:NewSpecialWarning("specWarnBlastNova", nil, false)
+local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", nil, false)
 mod:AddBoolOption("BlastNovaWarning", isMelee, "announce")
 local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
 local sndBreath				= mod:NewRunAwaySound(nil, "SoundBreath")
