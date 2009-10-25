@@ -75,7 +75,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
 
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Close Health Frame"
+DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Close health frame"
 
 DBM_CORE_ALLIANCE					= "Alliance"
 DBM_CORE_HORDE						= "Horde"

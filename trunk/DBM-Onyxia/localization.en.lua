@@ -11,7 +11,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "Deep Breath",
-	SpecWarnBlastNova	= "Onyxian Lair Guard is casting Blast Nova. Move Away!",
+	SpecWarnBlastNova	= "Onyxian Lair Guard is casting Blast Nova. Move away!",
 	WarnWhelpsSoon		= "Whelp spawn soon",
 	WarnPhase3Soon		= "Phase 3 incoming soon"
 }
