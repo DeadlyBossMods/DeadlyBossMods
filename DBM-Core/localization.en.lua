@@ -21,7 +21,7 @@ DBM_CORE_OK							= "Okay"
 
 DBM_CORE_GENERIC_WARNING_ENRAGE		= "Enrage in %s %s"
 DBM_CORE_GENERIC_TIMER_ENRAGE		= "Enrage"
-DBM_CORE_OPTION_TIMER_ENRAGE		= "Show Enrage timer"
+DBM_CORE_OPTION_TIMER_ENRAGE		= "Show enrage timer"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Show boss health frame"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Bars"
