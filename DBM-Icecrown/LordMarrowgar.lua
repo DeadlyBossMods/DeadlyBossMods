@@ -43,7 +43,7 @@ end
 do 
 	local lastColdflame = 0
 	function mod:SPELL_PERIODIC_DAMAGE(args)
-		if args:IsSpellID(69146) and args:IsPlayer() and time() - lastColdflame > 2 then		-- Coldflame, MOVE!
+		if args:IsSpellID(69146, 70823, 70824, 70825) and args:IsPlayer() and time() - lastColdflame > 2 then		-- Coldflame, MOVE!
 			specWarnColdflame:Show()
 			lastColdflame = time()
 		end
