@@ -1539,7 +1539,7 @@ L:SetMiscLocalization({
 -- Pit of Saron --
 ---------------------
 -------------------
--- Ick --
+-- Ick and Krick --
 -------------------
 L = DBM:GetModLocalization("Ick")
 
