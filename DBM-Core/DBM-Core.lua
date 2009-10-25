@@ -12,14 +12,15 @@
 --    * deDE: Tandanu					http://www.deadlybossmods.com
 --    * zhCN: Diablohu					http://wow.gamespot.com.cn
 --    * ruRU: BootWin					bootwin@gmail.com
---    * zhTW: Hman					herman_c1@hotmail.com
+--    * zhTW: Hman						herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				kc10577@hotmail.com
 --    * koKR: BlueNyx					bluenyx@gmail.com
---    * esES: Interplay/1nn7erpLaY      		http://www.1nn7erpLaY.com
+--    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
 --    * Omegal @ US-Whisperwind (some patches, and DBM-Party updates)
+--    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
@@ -90,7 +91,9 @@ DBM.DefaultOptions = {
 	SpecialWarningY = 75,
 	SpecialWarningFont = STANDARD_TEXT_FONT,
 	SpecialWarningFontSize = 50,
-	SpecialWarningFontColor = {0.0, 0.0, 1.0}
+	SpecialWarningFontColor = {0.0, 0.0, 1.0},
+	HealthFrameGrowUp = false,
+	HealthFrameLocked = false
 }
 
 DBM.Bars = DBT:New()
