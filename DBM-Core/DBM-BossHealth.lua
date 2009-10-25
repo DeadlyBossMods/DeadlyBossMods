@@ -34,9 +34,9 @@ menu = {
 	{
 		text = DBM_CORE_RANGECHECK_LOCK,
 		checked = false, -- requires DBM.Options which is not available yet
-		func = function(self)
-			self.checked = not self.checked
-			DBM.Options.HealthFrameLocked = self.checked
+		func = function()
+			menu[1].checked = not menu[1].checked
+			DBM.Options.HealthFrameLocked = menu[1].checked
 		end
 	},
 	{
@@ -98,11 +98,16 @@ local function createBar(self, cId, name)
 	bar:Show()
 	local bartext = _G[bar:GetName().."BarName"]
 	local barborder = _G[bar:GetName().."BarBorder"]
+	local barbar = _G[bar:GetName().."Bar"]
+	bar:SetWidth(DBM.Options.HealthFrameWidth)
+	barborder:SetWidth(DBM.Options.HealthFrameWidth - 2)
+	barbar:SetWidth(DBM.Options.HealthFrameWidth - 10)
 	barborder:SetScript("OnMouseDown", onMouseDown)
 	barborder:SetScript("OnMouseUp", onMouseUp)
 	barborder:SetScript("OnHide", onHide)
 	bar.id = cId
 	bar.hidden = false
+	bar:ClearAllPoints()
 	if DBM.Options.HealthFrameGrowUp then
 		bar:SetPoint("BOTTOM", bars[#bars] or anchor, "TOP", 0, 0)
 	else
@@ -255,10 +260,16 @@ function bossHealth:UpdateSettings()
 	if not anchor then createFrame(bossHealth) end
 	anchor:SetPoint(DBM.Options.HPFramePoint, UIParent, DBM.Options.HPFramePoint, DBM.Options.HPFrameX, DBM.Options.HPFrameY)
 	for i, v in ipairs(bars) do
+		v:ClearAllPoints()
 		if DBM.Options.HealthFrameGrowUp then
 			v:SetPoint("BOTTOM", bars[i - 1] or anchor, "TOP", 0, 0)
 		else
 			v:SetPoint("TOP", bars[i - 1] or anchor, "BOTTOM", 0, 0)
 		end
+		local barborder = _G[v:GetName().."BarBorder"]
+		local barbar = _G[v:GetName().."Bar"]
+		v:SetWidth(DBM.Options.HealthFrameWidth)
+		barborder:SetWidth(DBM.Options.HealthFrameWidth - 2)
+		barbar:SetWidth(DBM.Options.HealthFrameWidth - 10)
 	end
 end
