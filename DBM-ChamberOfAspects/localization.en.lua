@@ -58,7 +58,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Play sound on \"Fire Wall\"",
-	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to raid chat (requires announce enabled and promoted/leader status)",
+	AnnounceFails		= "Post player fails for Fire Wall and Void Zone to raid chat (requires announce to be enabled and leader/promoted status)",
 
 	TimerWall		= "Show timer for \"Fire Wall\"",
 	TimerTenebron		= "Show timer for Tenebron",
@@ -66,9 +66,9 @@ L:SetOptionLocalization({
 	TimerVesperon		= "Show timer for Vesperon",
 
 	WarningFireWall		= "Show special warning for \"Fire Wall\"",
-	WarningTenebron		= "Show warning for Tenebron spawn",
-	WarningShadron		= "Show warning for Shadron spawn",
-	WarningVesperon		= "Show warning for Vesperon spawn",
+	WarningTenebron		= "Show warning for Tenebron incoming",
+	WarningShadron		= "Show warning for Shadron incoming",
+	WarningVesperon		= "Show warning for Vesperon incoming",
 
 	WarningTenebronPortal	= "Show special warning for Tenebron's portal",
 	WarningShadronPortal	= "Show special warning for Shadron's portal",
