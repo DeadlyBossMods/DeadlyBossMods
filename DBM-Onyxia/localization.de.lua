@@ -14,7 +14,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "Tiefer Atem",
-	SpecWarnBlastNova	= "Drucknova! lauf weg!",
+	SpecWarnBlastNova	= "Drucknova! Lauf weg!",
 	WarnWhelpsSoon		= "Welpen kommen bald",
 	WarnPhase3Soon		= "Phase 3 beginnt gleich" 
 }

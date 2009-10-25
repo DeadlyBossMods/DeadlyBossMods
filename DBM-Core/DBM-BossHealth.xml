@@ -12,7 +12,7 @@
 				<Anchors>
 					<Anchor point="CENTER" relativePoint="CENTER">
 						<Offset>
-							<AbsDimension x="0" y="0"/>
+							<AbsDimension x="2" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -27,7 +27,7 @@
 							<Anchors>
 								<Anchor point="LEFT" relativePoint="LEFT">
 									<Offset>
-										<AbsDimension x="1" y="1"/>
+										<AbsDimension x="2" y="1"/>
 									</Offset>
 								</Anchor>
 							</Anchors>
@@ -36,7 +36,7 @@
 							<Anchors>
 								<Anchor point="RIGHT" relativePoint="RIGHT">
 									<Offset>
-										<AbsDimension x="-1" y="1"/>
+										<AbsDimension x="-2" y="1"/>
 									</Offset>
 								</Anchor>
 							</Anchors>
@@ -51,7 +51,7 @@
 						<Anchors>
 							<Anchor point="LEFT">
 								<Offset>
-									<AbsDimension x="-5" y="0"/>
+									<AbsDimension x="-4" y="0"/>
 								</Offset>
 							</Anchor>
 						</Anchors>

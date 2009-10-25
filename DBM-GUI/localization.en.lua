@@ -116,8 +116,8 @@ L.SpecWarn_ResetMe			= "Reset to defaults"
 L.Panel_HPFrame				= "Health Frame"
 L.Area_HPFrame				= "Configure Health Frame"
 L.HP_Enabled				= "Always show health frame (Overrides boss-specific option)"
-L.HP_GrowUpwards			= "Grow health frame Upwards"
-L.HP_ShowDemo				= "Show HP Frame"
+L.HP_GrowUpwards			= "Expand health frame upwards"
+L.HP_ShowDemo				= "Show HP frame"
 L.BarWidth					= "Bar width: %d"
 
 -- Tab: Spam Filter
