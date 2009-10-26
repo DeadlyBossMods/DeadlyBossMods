@@ -100,11 +100,11 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示減益計時器",
-	cast = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示施法計時器",
-	active = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示持續時間計時器",
-	cd = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器",
-	next = "為下一次 |cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
+	target = "顯示|cff71d5ff|Hspell:%d|h%s|h|r減益計時器",
+	cast = "顯示|cff71d5ff|Hspell:%d|h%s|h|r施法計時器",
+	active = "顯示|cff71d5ff|Hspell:%d|h%s|h|r持續時間計時器",
+	cd = "顯示|cff71d5ff|Hspell:%d|h%s|h|r冷卻計時器",
+	next = "顯示下一次 |cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
 	achievement = "為成就:%s顯示計時器",
 }
 

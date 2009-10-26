@@ -104,7 +104,7 @@ L.ClickThrough			= "禁用鼠標事件（允許你點擊穿透計時條）"
 
 -- Tab: Spec Warn Frame
 L.Panel_SpecWarnFrame		= "特別警告"
-L.Area_SpecWarn			= "配置特別警告"
+L.Area_SpecWarn			= "特別警告設定"
 L.SpecWarn_Enabled		= "為首領的技能顯示特別警告"
 L.SpecWarn_Font			= "特別警告使用的字型"
 L.SpecWarn_DemoButton		= "顯示範例"
@@ -116,7 +116,7 @@ L.SpecWarn_ResetMe		= "回復原廠設定值"
 
 -- Tab: HealthFrame
 L.Panel_HPFrame			= "血量框架"
-L.Area_HPFrame			= "配置血量框架"
+L.Area_HPFrame			= "血量框架設定"
 L.HP_Enabled			= "永久顯示血量框架 (覆蓋首領模組的選項)"
 L.HP_GrowUpwards		= "血量框架向上延伸"
 L.HP_ShowDemo			= "顯示血量框架"
@@ -125,7 +125,7 @@ L.BarWidth			= "寬度: %d"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "垃圾過濾"
-L.Area_SpamFilter		= "基本垃圾過濾設定"
+L.Area_SpamFilter		= "垃圾過濾設定"
 L.HideBossEmoteFrame		= "隱藏團隊首領表情框"
 L.SpamBlockRaidWarning		= "過濾其他首領模組的通告" 
 L.SpamBlockBossWhispers		= "當戰鬥時過濾 <DBM> 密語警告"
