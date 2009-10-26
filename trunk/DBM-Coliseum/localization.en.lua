@@ -31,7 +31,7 @@ L:SetOptionLocalization{
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning for Slime Pool",
-	SpecialWarningSilence		= "Show special warning for Spell Block",
+	SpecialWarningSilence		= "Show special warning for Staggering Stomp (silence)",
 	SpecialWarningSpray			= "Show special warning if you have Paralytic Spray",
 	SpecialWarningToxin			= "Show special warning if you have Paralytic Toxin",
 	SpecialWarningBile			= "Show special warning if you have Burning Bile",
@@ -39,7 +39,7 @@ L:SetOptionLocalization{
 	PingCharge					= "Ping the minimap when Icehowl is about to charge you",
 	SpecialWarningChargeNear	= "Show special warning when Icehowl charges near you",
 	SetIconOnChargeTarget		= "Set icon on charge target (skull)",
-	SetIconOnBileTarget			= "Set icon on Burning Bile targets",
+	SetIconOnBileTarget			= "Set icons on Burning Bile targets",
 	ClearIconsOnIceHowl			= "Clear all icons before charge",
 	TimerNextBoss				= "Show timer for next boss spawn"
 }
@@ -60,7 +60,7 @@ L:SetWarningLocalization{
 	SpecialWarningImpale3		= "Impale >%d< on you",
 	SpecialWarningFireBomb		= "Fire Bomb on you",
 	SpecialWarningSlimePool		= "Slime Pool - Move out",
-	SpecialWarningSilence		= "Spell Block in ~1.5 seconds!",
+	SpecialWarningSilence		= "Silence in ~1.5 seconds!",
 	SpecialWarningSpray			= "Paralytic Spray on you",
 	SpecialWarningToxin			= "Paralytic Toxin on you - Move",
 	SpecialWarningCharge		= "Charge on you - Run away",
@@ -107,9 +107,9 @@ L:SetOptionLocalization{
 	WarnVolcanoSoon			= "Show pre-warning for Infernal Volcano spawn",
 	SpecWarnFlame			= "Show special warning when you are affected by Legion Flame",
 	SpecWarnFlesh			= "Show special warning when you are affected by Incinerate Flesh",
-	SpecWarnTouch			= "Show special warning for Touch of Jaraxxus on you",
+	SpecWarnTouch			= "Show special warning when you are affected by Touch of Jaraxxus",
 	SpecWarnTouchNear		= "Show special warning for Touch of Jaraxxus near you",
-	SpecWarnKiss			= "Show special warning for Mistress' Kiss on you",
+	SpecWarnKiss			= "Show special warning when you are affected by Mistress' Kiss",
 	SpecWarnNetherPower		= "Show special warning for Nether Power (to dispel/steal)",
 	SpecWarnFelInferno		= "Show special warning when you are near a Fel Inferno",
 	TouchJaraxxusIcon		= "Set icon on Touch of Jaraxxus target (cross)",
@@ -163,12 +163,12 @@ L:SetOptionLocalization{
 }
 
 ------------------
--- Valkyr Twins --
+-- Val'kyr Twins --
 ------------------
 L = DBM:GetModLocalization("Twins")
 
 L:SetGeneralLocalization{
-	name = "Valkyr Twins"
+	name = "Val'kyr Twins"
 }
 
 L:SetTimerLocalization{
@@ -202,9 +202,9 @@ L:SetOptionLocalization{
 	SpecWarnSwitchTarget		= "Show special warning when the other Twin is casting",
 	SpecWarnKickNow				= "Show special warning when you have to interrupt",
 	SpecialWarnOnDebuff			= "Show special warning when debuffed (to switch debuff)",
-	SetIconOnDebuffTarget		= "Set icon on Touch of Light/Darkness debuff targets (Heroic)",
+	SetIconOnDebuffTarget		= "Set icon on Touch of Light/Darkness debuff targets (heroic)",
 	WarningTouchDebuff			= "Announce Touch of Light/Darkness debuff targets",
-	WarningPoweroftheTwins		= "Announce current target for Power of the Twins",
+	WarningPoweroftheTwins		= "Announce current target of Power of the Twins",
 	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an empowered Twin"
 }
 
