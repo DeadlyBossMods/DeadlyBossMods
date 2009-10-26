@@ -21,7 +21,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local timerNextBigBang			= mod:NewCDTimer(90.5, 64584)
+local timerNextBigBang			= mod:NewNextTimer(90.5, 64584)
 local timerBigBangCast			= mod:NewCastTimer(8, 64584)
 local announceBigBang			= mod:NewAnnounce("WarningBigBang", 3, 64584)
 local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
