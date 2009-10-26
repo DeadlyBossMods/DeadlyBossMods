@@ -407,11 +407,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerHardmode	= "Hard-mode"
+	TimerHardmode	= "Hard mode"
 }
 
 L:SetOptionLocalization{
-	TimerHardmode			= "Show timer for hard-mode",
+	TimerHardmode			= "Show timer for hard mode",
 	WarningStormhammer		= "Announce Stormhammer target",
 	WarningLightningCharge	= "Announce Lightning Charge",
 	WarningPhase2			= "Announce Phase 2",
@@ -471,7 +471,7 @@ L:SetOptionLocalization{
 	WarnFury		= "Announce Nature's Fury target",
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury	= "Show special warning for Nature's Fury",
-	WarningTremor	= "Show special warning for Ground Tremor (hard-mode)",
+	WarningTremor	= "Show special warning for Ground Tremor (hard mode)",
 	TimerSimulKill	= "Show timer for mob resurrection",
 	UnstableEnergy	= "Show special warning for Unstable Energy"
 }
@@ -523,7 +523,7 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	ProximityMines		= "New Proximity Mines",
-	TimerHardmode		= "Hard-mode - Self-Destruct",
+	TimerHardmode		= "Hard mode - Self-destruct",
 	TimeToPhase2		= "Phase 2",
 	TimeToPhase3		= "Phase 3",
 	TimeToPhase4		= "Phase 4",
@@ -541,7 +541,7 @@ L:SetOptionLocalization{
 	HealthFramePhase4		= "Show health frame in Phase 4",
 	AutoChangeLootToFFA		= "Switch loot mode to Free for All in Phase 3",
 	WarnBombSpawn			= "Announce Bomb Bots",
-	TimerHardmode			= "Show timer for hard-mode",
+	TimerHardmode			= "Show timer for hard mode",
 	PlaySoundOnShockBlast	= "Play sound on Shock Blast",
 	PlaySoundOnDarkGlare	= "Play sound on Laser Barrage",
 	ShockBlastWarningInP1	= "Show special warning for Shock Blast in Phase 1",
@@ -598,7 +598,7 @@ L:SetOptionLocalization{
 	YellOnLifeLeech					= "Yell on Life Leech",
 	YellOnShadowCrash				= "Yell on Shadow Crash",
 	WarningLeechLife				= "Announce Life Leech target",
-	hardmodeSpawn					= "Show timer for Saronite Animus spawn (hard-mode)"
+	hardmodeSpawn					= "Show timer for Saronite Animus spawn (hard mode)"
 }
 
 L:SetMiscLocalization{
