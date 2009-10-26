@@ -8,6 +8,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -16,6 +17,10 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("AnnounceFails", true, "announce")
 mod:AddBoolOption("PlaySoundOnFireWall")
+
+local warnShadowFissure	= mod:NewSpellAnnounce(59127)
+local timerShadowFissure = mod:NewCastTimer(5, 59128)
+local isInCombatWithSartharion = false
 
 local timerTenebron	= mod:NewTimer(30, "TimerTenebron")
 local timerShadron	= mod:NewTimer(80, "TimerShadron")
@@ -48,6 +53,14 @@ local function isunitdebuffed(spellID)
 	return false
 end
 
+function mod:OnCombatStart(delay)
+    isInCombatWithSartharion = true;
+end
+
+function mod:OnCombatEnd()
+    isInCombatWithSartharion = false;
+end
+
 function mod:OnSync(event)
 	if event == "FireWall" then
 		timerWall:Start()
@@ -67,6 +80,15 @@ function mod:OnSync(event)
 	elseif event == "ShadronPortal" then
 		warnShadronPortal:Show()
 	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+    if (isInCombatWithSartharion) then
+        if (args.spellId == 57579 or args.spellId == 59127) then
+            warnShadowFissure:Show()
+            timerShadowFissure:Start
+        end
+    end
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, mob)
