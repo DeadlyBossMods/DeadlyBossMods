@@ -62,7 +62,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnLightBomb:Show(args.destName)
 		timerLightBomb:Start(args.destName)
-	elseif args.spellId == 63025 or args.spellId == 63024 or args.spellId == 64234 then		-- Gravity Bomb (which Ulduar10 spell id is correct?)
+	elseif args.spellId == 63024 or args.spellId == 64234 then		-- Gravity Bomb
 		if args.destName == UnitName("player") then
 			specWarnGravityBomb:Show()
 		end

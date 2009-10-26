@@ -103,7 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnToxin:Show()
 		end
 		mod:ScheduleMethod(0.2, "warnToxin")
-	elseif args:IsSpellID(66870, 67621, 67622, 67623) or args:IsSpellID(66869) then		-- Burning Bile (TODO: confirm spell id 66869)
+	elseif args:IsSpellID(66870, 67621, 67622, 67623) then		-- Burning Bile
 		self:UnscheduleMethod("warnBile")
 		bileTargets[#bileTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -201,9 +201,9 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsPlayer() and args:IsSpellID(66320, 66317, 67472) then				-- Fire Bomb
+	if args:IsPlayer() and args:IsSpellID(66317, 66320, 67472, 67473, 67475) then				-- Fire Bomb (66317 is impact damage, not avoidable but leaving in because it still means earliest possible warning to move. Other 4 are tick damage from standing in it)
 		specWarnFireBomb:Show()
-	elseif args:IsPlayer() and args:IsSpellID(66881, 66883) then				-- Slime Pool
+	elseif args:IsPlayer() and args:IsSpellID(66881, 67638, 67639, 67640) then				-- Slime Pool
 		specWarnSlimePool:Show()
 	end
 end

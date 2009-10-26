@@ -74,7 +74,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args.spellId == 62130 then				-- Unbalancing Strike
 		warnUnbalancingStrike:Show(args.destName)
 		
-	elseif args.spellId == 62526 or args.spellId == 62527 then	-- Runic Detonation - missing 10ppl ID
+	elseif args.spellId == 62526 or args.spellId == 62527 then	-- Runic Detonation
 		self:SetIcon(args.destName, 8, 5)
 		warningBomb:Show(args.destName)
 	end
