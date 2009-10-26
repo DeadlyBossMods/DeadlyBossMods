@@ -86,7 +86,7 @@ function mod:SPELL_CAST_SUCCESS(args)
     if (isInCombatWithSartharion) then
         if (args.spellId == 57579 or args.spellId == 59127) then
             warnShadowFissure:Show()
-            timerShadowFissure:Start
+            timerShadowFissure:Start()
         end
     end
 end
