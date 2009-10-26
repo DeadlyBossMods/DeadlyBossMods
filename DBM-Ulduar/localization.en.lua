@@ -102,7 +102,7 @@ L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Show timer for Flame Breath cooldown",
 	timerDeepBreathCast			= "Show timer for Flame Breath cast",
 	SpecWarnDevouringFlame		= "Show special warning when you are in a Devouring Flame",
-	PlaySoundOnDevouringFlame	= "Play sound when affected by Devouring Flame",
+	PlaySoundOnDevouringFlame	= "Play sound when you are affected by Devouring Flame",
 	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
 	warnTurretsReady			= "Show warning for turrets",
@@ -472,7 +472,7 @@ L:SetOptionLocalization{
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury	= "Show special warning for Nature's Fury",
 	WarningTremor	= "Show special warning for Ground Tremor (hard mode)",
-	PlaySoundOnFury = "Play sound when affected by Nature's Fury",
+	PlaySoundOnFury = "Play sound when you are affected by Nature's Fury",
 	TimerSimulKill	= "Show timer for mob resurrection",
 	UnstableEnergy	= "Show special warning for Unstable Energy"
 }
