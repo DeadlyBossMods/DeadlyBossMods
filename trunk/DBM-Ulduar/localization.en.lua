@@ -472,6 +472,7 @@ L:SetOptionLocalization{
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury	= "Show special warning for Nature's Fury",
 	WarningTremor	= "Show special warning for Ground Tremor (hard mode)",
+	PlaySoundOnFury = "Play sound when affected by Nature's Fury",
 	TimerSimulKill	= "Show timer for mob resurrection",
 	UnstableEnergy	= "Show special warning for Unstable Energy"
 }
