@@ -50,17 +50,17 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerEmbrace	= "Widow's Embrace active",
-	TimerEnrage		= "Frenzy",
+	TimerEnrage		= "Frenzy"
 })
 
 L:SetOptionLocalization({
 	TimerEmbrace			= "Show timer for Widow's Embrace",
 	WarningEmbraceActive	= "Show warning for Widow's Embrace",
 	WarningEmbraceExpire	= "Show warning when Widow's Embrace expires",
-	WarningEmbraceExpired	= "Show warning when Widow's Embrace is about to expire"
+	WarningEmbraceExpired	= "Show warning when Widow's Embrace is about to expire",
 	WarningEnrageSoon		= "Show pre-warning for Frenzy",
-	WarningEnrageNow		= "Show warning for Frenzy"
-	TimerEnrage				= "Show timer for Frenzy",
+	WarningEnrageNow		= "Show warning for Frenzy",
+	TimerEnrage				= "Show timer for Frenzy"
 })
 
 
@@ -448,7 +448,7 @@ L:SetOptionLocalization({
 	TimerAir				= "Show timer for air phase",
 	TimerLanding			= "Show timer for landing",
 	TimerIceBlast			= "Show timer for Frost Breath",
-	WarningDeepBreath		= "Show special warning for Frost Breath"
+	WarningDeepBreath		= "Show special warning for Frost Breath",
 	WarningIceblock			= "Yell on Ice Block"
 })
 
@@ -463,7 +463,7 @@ L:SetWarningLocalization({
 	WarningAirPhaseSoon		= "Air phase in 10 seconds",
 	WarningAirPhaseNow		= "Air phase",
 	WarningLanded			= "Sapphiron landed",
-	WarningDeepBreath		= "Frost Breath",
+	WarningDeepBreath		= "Frost Breath"
 })
 
 L:SetTimerLocalization({
