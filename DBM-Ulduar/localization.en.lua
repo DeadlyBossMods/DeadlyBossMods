@@ -370,7 +370,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "Flash Freeze incoming",  -- Everyone have to move on the snow mounds
+	TimerFlashFreeze	= "Flash Freeze incoming",
 }
 
 L:SetOptionLocalization{
