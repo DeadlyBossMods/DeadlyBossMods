@@ -66,7 +66,7 @@ DBM_CORE_RANGECHECK_LOCK			= "Lock frame"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available Slash Commands:",
-	"/dbm version: performans a raid-wide version check (alias: ver)",
+	"/dbm version: performs a raid-wide version check (alias: ver)",
 	"/dbm unlock: shows a movable status bar timer (alias: move)",
 	"/dbm timer <x> <text>: Starts a <x> second Pizza Timer with the name <text>",
 	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second Pizza Timer with the name <text> to the raid (required promoted or leader)",
