@@ -37,7 +37,7 @@ L:SetOptionLocalization({
 	TimerBreath			= "Show timer for Deep Breath",
 	TimerVortexCD		= "Show timer for Vortex cooldown (unreliable)",
 	WarningVortexSoon	= "Show pre-warning for Vortex (unreliable)",
-	WarningSurgeYou		= "Show special warning when you are affected by Surge of Power"
+	WarningSurgeYou		= "Show special warning when affected by Surge of Power"
 })
 
 L:SetMiscLocalization({
