@@ -62,6 +62,7 @@ L.PizzaTimer_BroadCast		= "Broadcast to raid"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 			= "Raid Warnings"
+L.RaidWarning_Header		= "Raid Warning Options"
 L.RaidWarnColors 			= "Raid Warning Colors"
 L.RaidWarnColor_1 			= "Color 1"
 L.RaidWarnColor_2 			= "Color 2"
