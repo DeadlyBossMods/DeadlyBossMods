@@ -74,10 +74,10 @@ end
 
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 65108 then 	-- Black Hole Explosion
+	if args.spellId == 65108 or args.spellId == 64122 then 	-- Black Hole Explosion
 		announceBlackHole:Show()
 
-	elseif args.spellId == 64598 then	-- Cosmic Smash
+	elseif args.spellId == 64598 or args.spellId == 62301 then	-- Cosmic Smash
 		timerCastCosmicSmash:Start()
 		timerCDCosmicSmash:Start()
 		announceCosmicSmash:Show()

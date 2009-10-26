@@ -73,7 +73,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 61920 then -- Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.	
 		warnSupercharge:Show()
 
-	elseif args.spellId == 63479 then				-- Chain light (need the 10ppl spellid)
+	elseif args.spellId == 63479 or args.spellId == 61879 then	-- Chain light
 		warnChainlight:Show()
 
 	elseif args.spellId == 63483 or args.spellId == 61915 then	-- LightningWhirl
@@ -118,7 +118,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnRuneofPower:Show()
 		timerRuneofPower:Start()
 
-	elseif args.spellId == 61869 or args.spellId == 63481 or args.spellId == 61878 then	-- Overload (spellId 10?)
+	elseif args.spellId == 61869 or args.spellId == 63481 then	-- Overload
 		timerOverload:Start()
 
 		if self.Options.AllwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
@@ -154,7 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 
-	elseif args.spellId == 61912 or args.spellId == 63494 then	-- Static Disruption (Hard Mode) don't know 25 id, took it from wowhead
+	elseif args.spellId == 61912 or args.spellId == 63494 then	-- Static Disruption (Hard Mode)
 		if self.Options.SetIconOnStaticDisruption then 
 			self:SetIcon(args.destName, 8 - #disruptTargets, 20)
 		end

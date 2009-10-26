@@ -123,7 +123,7 @@ function mod:SPELL_CAST_START(args)
 	if args.spellId == 64570 then
 		timerFlameSuppressant:Start()
 	end
-	if args.spellId == 64623 or args.spellId == 64624 or args.spellId == 64625 or args.spellId == 64627 then
+	if args.spellId == 64623 then
 		warnFrostBomb:Show()
 		timerBombExplosion:Start()
 	end
