@@ -179,13 +179,13 @@ L:SetOptionLocalization({
 })
 
 
------------------
---  Anub'arak  --
------------------
+-------------------------
+--  Anub'arak (Party)  --
+-------------------------
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
-	name = "Anub'arak"
+	name = "Anub'arak (Party)"
 })
 
 L:SetWarningLocalization({
@@ -1078,11 +1078,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSmash		= optionWarning:format(GetSpellInfo(42723)),
-	WarningGrowl		= optionWarning:format(GetSpellInfo(42708)),
-	WarningWoeStrike	= optionWarning:format(GetSpellInfo(42730)),
-	TimerSmash			= optionTimerCast:format(GetSpellInfo(42723)),
-	TimerWoeStrike		= optionTimerDur:format(GetSpellInfo(42730))
+	WarningSmash			= optionWarning:format(GetSpellInfo(42723)),
+	WarningGrowl			= optionWarning:format(GetSpellInfo(42708)),
+	WarningWoeStrike		= optionWarning:format(GetSpellInfo(42730)),
+	TimerSmash				= optionTimerCast:format(GetSpellInfo(42723)),
+	TimerWoeStrike			= optionTimerDur:format(GetSpellInfo(42730)),
+	SpecialWarningSpellock	= "Show special warning for spell lock"
 })
 
 
