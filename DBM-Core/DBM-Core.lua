@@ -2800,8 +2800,8 @@ do
 
 	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
 		timer = timer or 600
-		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, "warning_enrage")
-		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, "warning_enrage")
+		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 1, nil, "warning_enrage", false)
+		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_ENRAGE, 4, nil, "warning_enrage", false)
 		local bar = self:NewTimer(timer or 600, barText or DBM_CORE_GENERIC_TIMER_ENRAGE, barIcon or 28131, nil, "timer_enrage")
 		local obj = setmetatable(
 			{
