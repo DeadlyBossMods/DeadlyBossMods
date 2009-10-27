@@ -70,9 +70,9 @@ L:SetWarningLocalization{
 
 
 
--------------------
--- Lord Jaraxxus --
--------------------
+---------------------
+--  Lord Jaraxxus  --
+---------------------
 L = DBM:GetModLocalization("Jaraxxus")
 
 L:SetGeneralLocalization{
@@ -120,9 +120,9 @@ L:SetOptionLocalization{
 }
 
 
------------------------
--- Faction Champions --
------------------------
+-------------------------
+--  Faction Champions  --
+-------------------------
 L = DBM:GetModLocalization("Champions")
 
 L:SetGeneralLocalization{
@@ -162,9 +162,9 @@ L:SetOptionLocalization{
 	SpecWarnDivineShield	= "Show special warning when the Paladin casts Divine Shield"
 }
 
-------------------
--- Val'kyr Twins --
-------------------
+---------------------
+--  Val'kyr Twins  --
+---------------------
 L = DBM:GetModLocalization("Twins")
 
 L:SetGeneralLocalization{
@@ -209,9 +209,9 @@ L:SetOptionLocalization{
 }
 
 
-------------------
--- Anub'arak --
-------------------
+-----------------
+--  Anub'arak  --
+-----------------
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{

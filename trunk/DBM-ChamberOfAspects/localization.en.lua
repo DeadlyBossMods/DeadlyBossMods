@@ -10,9 +10,9 @@ L:SetGeneralLocalization({
 })
 
 
----------------
+----------------
 --  Tenebron  --
----------------
+----------------
 L = DBM:GetModLocalization("Tenebron")
 
 L:SetGeneralLocalization({
@@ -20,9 +20,9 @@ L:SetGeneralLocalization({
 })
 
 
----------------
+----------------
 --  Vesperon  --
----------------
+----------------
 L = DBM:GetModLocalization("Vesperon")
 
 L:SetGeneralLocalization({
@@ -30,9 +30,9 @@ L:SetGeneralLocalization({
 })
 
 
----------------
+------------------
 --  Sartharion  --
----------------
+------------------
 L = DBM:GetModLocalization("Sartharion")
 
 L:SetGeneralLocalization({
