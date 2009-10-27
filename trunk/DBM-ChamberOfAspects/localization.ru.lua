@@ -9,27 +9,31 @@ L = DBM:GetModLocalization("Shadron")
 L:SetGeneralLocalization({
 	name = "Шадрон"
 })
----------------
+
+
+----------------
 --  Tenebron  --
----------------
+----------------
 L = DBM:GetModLocalization("Tenebron")
 
 L:SetGeneralLocalization({
 	name = "Тенеброн"
 })
 
----------------
+
+----------------
 --  Vesperon  --
----------------
+----------------
 L = DBM:GetModLocalization("Vesperon")
 
 L:SetGeneralLocalization({
 	name = "Весперон"
 })
 
----------------
+
+------------------
 --  Sartharion  --
----------------
+------------------
 L = DBM:GetModLocalization("Sartharion")
 
 L:SetGeneralLocalization({
@@ -37,47 +41,47 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTenebron			= "Прибытие Тенеброна",
-	WarningShadron			= "Прибытие Шадрона",
-	WarningVesperon			= "Прибытие Весперона",
-	WarningFireWall			= "Огненная стена!",
+	WarningTenebron		= "Прибытие Тенеброна",
+	WarningShadron		= "Прибытие Шадрона",
+	WarningVesperon		= "Прибытие Весперона",
+	WarningFireWall		= "Огненная стена!",
 	WarningVesperonPortal	= "Портал Весперона!",
 	WarningTenebronPortal	= "Портал Тенеброна!",
 	WarningShadronPortal	= "Портал Шадрона!",
 })
 
 L:SetTimerLocalization({
-	TimerWall	= "Перезарядка Огненной стены",
-	TimerTenebron	= "Прибытие Тенеброна",
-	TimerShadron	= "Прибытие Шадрона",
-	TimerVesperon	= "Прибытие Весперона"
+	TimerWall		= "Перезарядка Огненной стены",
+	TimerTenebron		= "Прибытие Тенеброна",
+	TimerShadron		= "Прибытие Шадрона",
+	TimerVesperon		= "Прибытие Весперона"
 })
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Звуковой сигнал для волны из \"Огненной стены\"",
 	AnnounceFails		= "Объявить в чат рейда игрока миновавшего Огненную стену и Портал Бездны (требуются права лидера или помощника)",
 
-	TimerWall		= "Отображать отсчет времени до \"Огненной стены\"",
-	TimerTenebron		= "Отображать отсчет времени для Тенеброна",
-	TimerShadron		= "Отображать отсчет времени для Шадрона",
-	TimerVesperon		= "Отображать отсчет времени для Весперона",
+	TimerWall		= "Отсчет времени до \"Огненной стены\"",
+	TimerTenebron		= "Отсчет времени до прибытия Тенеброна",
+	TimerShadron		= "Отсчет времени до прибытия Шадрона",
+	TimerVesperon		= "Отсчет времени до прибытия Весперона",
 
-	WarningFireWall		= "Отображать спец-предупреждение для \"Огненной стены\"",
-	WarningTenebron		= "Отображать времея до призыва Тенеброна",
-	WarningShadron		= "Отображать времея до призыва Шадрона",
-	WarningVesperon		= "Отображать времея до призыва Весперона",
+	WarningFireWall		= "Cпец-предупреждение для \"Огненной стены\"",
+	WarningTenebron		= "Предупредить о призыве Тенеброна",
+	WarningShadron		= "Предупредить о призыве Шадрона",
+	WarningVesperon		= "Предупредить о призыве Весперона",
 
-	WarningTenebronPortal	= "Отображать спец-предупреждение для порталов Тенеброна",
-	WarningShadronPortal	= "Отображать спец-предупреждение для порталов Шадрона",
-	WarningVesperonPortal	= "Отображать спец-предупреждение для порталов Весперона",
+	WarningTenebronPortal	= "Cпец-предупреждение для порталов Тенеброна",
+	WarningShadronPortal	= "Cпец-предупреждение для порталов Шадрона",
+	WarningVesperonPortal	= "Cпец-предупреждение для порталов Весперона",
 })
 
 L:SetMiscLocalization({
 	Wall			= "Лава вокруг %s начинает бурлить!",
 	Portal			= "%s открывает сумрачный портал!",
-	NameTenebron	= "Тенеброн",
+	NameTenebron		= "Тенеброн",
 	NameShadron		= "Шадрон",
-	NameVesperon	= "Весперон",
+	NameVesperon		= "Весперон",
 	FireWallOn		= "Огненная стена: %s",
 	VoidZoneOn		= "Портал Бездны: %s",
 	VoidZones		= "Портал Бездны миновал (в этот раз): %s",
