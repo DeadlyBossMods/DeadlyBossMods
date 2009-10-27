@@ -17,10 +17,10 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningFear	= mod:NewAnnounce("WarningFear", 3, 19134)
-local warningWhirlwind	= mod:NewAnnounce("WarningWhirlwind", 3, 38619)
-local timerFearCD	= mod:NewTimer(20, "TimerFearCD", 19134)
-local timerWhirlwindCD	= mod:NewTimer(15, "TimerWhirlwindCD", 38619)
+local warningFear		= mod:NewSpellAnnounce(19134, 3)
+local warningWhirlwind	= mod:NewSpellAnnounce(38619, 3)
+local timerFearCD		= mod:NewCDTimer(20, 19134)
+local timerWhirlwindCD	= mod:NewCDTimer(15, 38619)
 
 
 function mod:SPELL_CAST_SUCCESS(args)
