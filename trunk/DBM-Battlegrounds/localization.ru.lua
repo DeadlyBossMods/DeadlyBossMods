@@ -33,19 +33,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Бой начался!",
+	TimerStart = "Битва начнется через",
     TimerShadow	= "Сумеречное зрение"
 })
 
 L:SetOptionLocalization({
-	TimerStart = "Отсчет времени до начала боя",
+	TimerStart = "Отсчет времени до начала битвы",
 	TimerShadow 	= "Отсчет времени для Сумрачного кристалла"
 })
 
 L:SetMiscLocalization({
-	Start60 = "Битва начнется через 1 минуту!",
-	Start30 = "Битва начнется через 30 секунд!",
-	Start15 = "Битва начнется через 15 секунд!"
+	Start60 = "До начала сражения на Арене остается 1 минута.",
+	Start30 = "30 секунд до начала сражения на Арене.",
+	Start15 = "15 секунд до начала сражения на Арене."
 })
 ---------------
 --  Alterac  --
@@ -57,19 +57,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Бой начался!", 
+	TimerStart = "Битва начнется через", 
 	TimerTower = "%s",
 	TimerGY = "%s",
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту!",
-	BgStart30 = "Битва начнется через 30 секунд!",
+	BgStart60 = "До начала сражения за Альтеракскую долину остается 1 минута.",
+	BgStart30 = "30 секунд до начала сражения в Альтеракской долине.",
 	ZoneName = "Альтеракская долина",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отсчет времени до начала боя",
+	TimerStart  = "Отсчет времени до начала битвы",
 	TimerTower = "Отсчет времени до захвата",
 	TimerGY = "Отсчет времени до захвата кладбищь",
 	AutoTurnIn = "Авто-сдача заданий в Альтеракской долине"
@@ -85,8 +85,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту!",
-	BgStart30 = "Битва начнется через 30 секунд!",
+	BgStart60 = "Битва за Низину Арати начнется через минуту.",
+	BgStart30 = "Битва за Низину Арати начнется через 30 секунд.",
 	ZoneName = "Низина Арати",
 	ScoreExpr = "(%d+)/1600",
 	Alliance = "Альянса",
@@ -97,12 +97,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Бой начался!", 
+	TimerStart = "Битва начнется через", 
 	TimerCap = "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отсчет времени до начала боя",
+	TimerStart  = "Отсчет времени до начала битвы",
 	TimerWin = "Отсчет времени до победы",
 	TimerCap = "Отсчет времени до захвата",
 	ShowAbEstimatedPoints = "Отображать предполагаемые очки оставшиеся до победы/поражения",
@@ -119,7 +119,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту!",
+	BgStart60 = "Битва начнется через минуту!",
 	BgStart30 = "Битва начнется через 30 секунд!",
 	ZoneName = "Око Бури",
 	ScoreExpr = "(%d+)/1600",
@@ -134,12 +134,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Бой начался!", 
+	TimerStart = "Битва начнется через", 
 	TimerFlag = "Флаг восстановлен",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отсчет времени до начала боя",
+	TimerStart  = "Отсчет времени до начала битвы",
 	TimerWin = "Отсчет времени до победы",
 	TimerFlag = "Отсчет времени до восстановления флага",
 	ShowPointFrame = "Отображать флагоносца и предполагаемые очки",
@@ -155,8 +155,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Битва начнется через 1 минуту!",
-	BgStart30 = "Битва начнется через 30 секунд!",
+	BgStart60 = "Битва за Ущелье Песни Войны начнется через 1 минуту.",
+	BgStart30 = "Битва за Ущелье Песни Войны начнется через 30 секунд. Приготовтесь!",
 	ZoneName = "Ущелье Песни Войны",
 	Alliance = "Альянса",
 	Horde = "Орды",
@@ -170,12 +170,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart = "Бой начался!", 
-	TimerFlag = "Флаг восстановлен",
+	TimerStart = "Битва начнется через", 
+	TimerFlag = "Восстановление флага",
 })
 
 L:SetOptionLocalization({
-	TimerStart  = "Отсчет времени до начала боя",
+	TimerStart  = "Отсчет времени до начала битвы",
 	TimerWin = "Отсчет времени до победы",
 	TimerFlag = "Отсчет времени до восстановления флага",
 	ShowFlagCarrier = "Показать флагоносца",
@@ -278,18 +278,18 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "Бой начался!", 
+	TimerStart		= "Битва начнется через", 
 	TimerPOI		= "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Отсчет времени до начала боя", 
+	TimerStart		= "Отсчет времени до начала битвы", 
 	TimerPOI		= "Отсчет времени до захвата",
 })
 
 L:SetMiscLocalization({
 	ZoneName		= "Остров Завоеваний",
-	BgStart60		= "Битва начнется через 1 минуту!",
-	BgStart30		= "Битва начнется через 30 секунд!",
-	BgStart15		= "Битва начнется через 15 секунд!",
+	BgStart60		= "Битва начнется через 60 секунд.",
+	BgStart30		= "Битва начнется через 30 секунд.",
+	BgStart15		= "Битва начнется через 15 секунд.",
 })
