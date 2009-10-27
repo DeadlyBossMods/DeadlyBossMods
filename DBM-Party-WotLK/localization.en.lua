@@ -24,20 +24,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFlame		= spell,
-	WarningEmbrace		= debuff
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace		= debuff,
-	TimerFlameCD		= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningFlame		= optionWarning:format(GetSpellInfo(55931)),
-	WarningEmbrace		= optionWarning:format(GetSpellInfo(55959)),
-	TimerEmbrace		= optionTimerDur:format(GetSpellInfo(55959)),
-	TimerFlameCD		= optionTimerCD:format(GetSpellInfo(55931))
 })
 
 
@@ -51,16 +43,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPlague	= debuff
 })
 
 L:SetTimerLocalization({
-	TimerPlague		= debuff
 })
 
 L:SetOptionLocalization({
-	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
-	TimerPlague		= optionTimerDur:format(GetSpellInfo(56130))
 })
 
 
@@ -74,16 +62,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningThundershock		= spell,
-	WarningCycloneStrike	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningThundershock		= optionWarning:format(GetSpellInfo(56926)),
-	WarningCycloneStrike	= optionWarning:format(GetSpellInfo(60030))
 })
 
 
@@ -97,14 +81,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningInsanity	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningInsanity	= optionWarning:format(GetSpellInfo(57496))
 })
 
 
@@ -118,16 +100,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMini	= spell
 })
 
 L:SetTimerLocalization({
-	TimerMiniCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningMini	= optionWarning:format(GetSpellInfo(57055)),
-	TimerMiniCD	= optionTimerCD:format(GetSpellInfo(57055))
 })
 
 
