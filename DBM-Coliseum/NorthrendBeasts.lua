@@ -6,8 +6,6 @@ mod:SetCreatureID(34797)
 mod:SetMinCombatTime(30)
 mod:SetUsedIcons(1,2, 3, 4, 5, 6, 7, 8)
 
--- 34816 = npc to talk to
-
 mod:RegisterCombat("yell", L.CombatStart)
 
 mod:RegisterEvents(
@@ -21,6 +19,7 @@ mod:RegisterEvents(
 )
 
 local enrageTimer			= mod:NewEnrageTimer(223)
+local timerCombatStart		= mod:NewTimer(20, "TimerCombatStart")
 
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
@@ -88,6 +87,7 @@ function mod:OnCombatStart(delay)
 		timerNextBoss:Schedule(170)
 	end
 	timerNextStomp:Start(38-delay)
+	timerCombatStart:Start(-delay)
 	updateHealthFrame(1)
 end
 
@@ -221,6 +221,7 @@ function mod:OnSync(msg, arg)
 			enrageTimer:Start()
 		end
 		timerNextCrash:Start(45)
+		timerNextBoss:Cancel()
 	end
 end
 
