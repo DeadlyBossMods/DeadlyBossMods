@@ -1153,7 +1153,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSword	= optionWarning:format(GetSpellInfo(48276))
 })
 
 
