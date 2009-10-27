@@ -1,8 +1,8 @@
 local L
 
----------------------------
+--------------------------
 --  General BG Options  --
----------------------------
+--------------------------
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
