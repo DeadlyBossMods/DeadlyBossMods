@@ -12,13 +12,13 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningChains		= mod:NewAnnounce("WarningChains", 4, 50997)
-local warningNova		= mod:NewAnnounce("WarningNova", 3, 48179)
-local warningEnrage		= mod:NewAnnounce("WarningEnrage", 3, 8599)
-local timerChains		= mod:NewTimer(10, "TimerChains", 50997)
-local timerChainsCD		= mod:NewTimer(25, "TimerChainsCD", 50997)
+local warningChains		= mod:NewTargetAnnounce(50997, 4)
+local warningNova		= mod:NewSpellAnnounce(48179, 3)
+local warningEnrage		= mod:NewSpellAnnounce(8599, 3)
+local timerChains		= mod:NewTargetTimer(10, 50997)
+local timerChainsCD		= mod:NewCDTimer(25, 50997)
 local timerNova			= mod:NewTimer(10, "TimerNova", 48179)
-local timerNovaCD		= mod:NewTimer(25, "TimerNovaCD", 48179)
+local timerNovaCD		= mod:NewCDTimer(25, 48179)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 50997 then

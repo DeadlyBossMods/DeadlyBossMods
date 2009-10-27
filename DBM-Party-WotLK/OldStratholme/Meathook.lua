@@ -11,9 +11,9 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warningChains	= mod:NewAnnounce("WarningChains", 4, 52696)
-local timerChains	= mod:NewTimer(5, "TimerChains", 52696)
-local timerChainsCD	= mod:NewTimer(15, "TimerChainsCD", 52696)
+local warningChains	= mod:NewTargetAnnounce(52696, 4)
+local timerChains	= mod:NewTargetTimer(5, 52696)
+local timerChainsCD	= mod:NewCDTimer(15, 52696)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 52696 or args.spellId == 58823 then
