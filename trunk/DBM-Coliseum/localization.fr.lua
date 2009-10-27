@@ -217,46 +217,46 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
-	name 				= "Anub'arak"
+	name 					= "Anub'arak"
 }
 
 L:SetTimerLocalization{
-	TimerEmerge			= "Sort du sol",
-	TimerSubmerge		= "Rentre dans le sol",
-	timerAdds			= "Nouveaux add dans"
+	TimerEmerge				= "Sort du sol",
+	TimerSubmerge			= "Rentre dans le sol",
+	timerAdds				= "Nouveaux add dans"
 }
 
 L:SetWarningLocalization{
-	WarnEmerge			= "Anub'arak Sort du sol",
-	WarnEmergeSoon		= "Anub'arak Sort du sol dans 10 sec",
-	WarnSubmerge		= "Anub'arak Rentre dans le sol",
-	WarnSubmergeSoon	= "Anub'arak Rentre dans le sol dans 10 sec",
-	WarnPursue			= "Poursuivi >%s<",
-	SpecWarnPursue		= "Vous êtes poursuivi",
+	WarnEmerge				= "Anub'arak Sort du sol",
+	WarnEmergeSoon			= "Anub'arak Sort du sol dans 10 sec",
+	WarnSubmerge			= "Anub'arak Rentre dans le sol",
+	WarnSubmergeSoon		= "Anub'arak Rentre dans le sol dans 10 sec",
+	WarnPursue				= "Poursuivi >%s<",
+	SpecWarnPursue			= "Vous êtes poursuivi",
 	warnAdds				= "Les add arrivent",
 	SpecWarnShadowStrike	= "Attaque d'ombre ! Casser Maintenant !",
 	SpecWarnPCold			= "Froid pénétrant"
 }
 
 L:SetMiscLocalization{
-	YellPull			= "Ce terreau sera votre tombeau !",
-	Emerge				= "surgit de la terre !",
-	Burrow				= "s'enfonce dans le sol !"
+	YellPull				= "Ce terreau sera votre tombeau !",
+	Emerge					= "surgit de la terre !",
+	Burrow					= "s'enfonce dans le sol !"
 }
 
 L:SetOptionLocalization{
-	WarnEmerge			= "Montre une alerte quand le boss sort du sol",
-	WarnEmergeSoon		= "Montre une alerte avant que le boss sorte du sol",
-	WarnSubmerge		= "Montre une alerte quand le boss rentre dans le sol",
-	WarnSubmergeSoon	= "Montre une alerte avant que le boss ne rentre dans le sol",
-	SpecWarnPursue		= "Montre une alerte quand vous commencez à être suivi",
-	warnAdds			= "Montre une alerte pour l'arrivée des add",
-	timerAdds			= "Montre le timer avant l'arrivée des nouveaux add",
-	TimerEmerge			= "Montre le timer pour la sortie du boss",
-	TimerSubmerge		= "Montre le timer pour la rentrée du boss dans la terre",
-	PlaySoundOnPursue	= "Joue un son quand vous êtes suivi",
-	PursueIcon			= "Met une icône sur la tête du joueur qui est suivi",
-	WarnPursue			= "Annonce le joueur qui est suivi",
+	WarnEmerge				= "Montre une alerte quand le boss sort du sol",
+	WarnEmergeSoon			= "Montre une alerte avant que le boss sorte du sol",
+	WarnSubmerge			= "Montre une alerte quand le boss rentre dans le sol",
+	WarnSubmergeSoon		= "Montre une alerte avant que le boss ne rentre dans le sol",
+	SpecWarnPursue			= "Montre une alerte quand vous commencez à être suivi",
+	warnAdds				= "Montre une alerte pour l'arrivée des add",
+	timerAdds				= "Montre le timer avant l'arrivée des nouveaux add",
+	TimerEmerge				= "Montre le timer pour la sortie du boss",
+	TimerSubmerge			= "Montre le timer pour la rentrée du boss dans la terre",
+	PlaySoundOnPursue		= "Joue un son quand vous êtes suivi",
+	PursueIcon				= "Met une icône sur la tête du joueur qui est suivi",
+	WarnPursue				= "Annonce le joueur qui est suivi",
 	SpecWarnShadowStrike	= "Montre une alerte spéciale pour les Attaque d'ombre (Pour les casser)",
 	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant",
 	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3",

@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "frFR" then return end
+if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -59,7 +59,10 @@ L:SetOptionLocalization({
 	TimerEmbrace			= "Activer le timer pour le baisé de la veuve",
 	WarningEmbraceActive	= "Activer l'avertissement pour le baisé de la veuve",
 	WarningEmbraceExpire	= "Activer l'avertissement de fin du baisé de la veuve",
-	WarningEmbraceExpired	= "Afficher un avertiseement quand le baisé de la veuve va se terminer"
+	WarningEmbraceExpired	= "Afficher un avertissement quand le baisé de la veuve va se terminer",
+	WarningEnrageSoon		= "Montre une alerte avant la Frénésie",
+	WarningEnrageNow		= "Montre une alerte pour la Frénésie",
+	TimerEnrage				= "Montre le timer pour la Frénésie"
 })
 
 
@@ -444,7 +447,8 @@ L:SetOptionLocalization({
 	TimerAir				= "Afficher le timer de la phase en vol",
 	TimerLanding			= "Afficher le timer de l'atterrissage",
 	TimerIceBlast			= "Afficher le timer du Deep Breath",
-	WarningDeepBreath		= "Activer l'avertissement spécial pour le Deep Breath"
+	WarningDeepBreath		= "Activer l'avertissement spécial pour le Deep Breath",
+	WarningIceblock			= "Crie dans un glaçon"
 })
 
 L:SetMiscLocalization({
@@ -479,12 +483,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
+	BlastTimer			= "Timer pour Trait de glace : 4 secondes avant que la victime ne meurt",
 	TimerPhase2			= "Afficher le timer pour la Phase 2",
 	WarningBlastTargets	= "Activer l'avertissement pour le Trait de glace",
 	WarningPhase2		= "Activer l'avertissement pour la Phase 2",
 	WarningFissure		= "Activer l'avertissement pour la Fissure d'ombre",
 	WarningMana			= "Activer l'avertissement pour le Mana détonant",
-	WarningChainsTargets= "Activer l'avertissement pour les Chaînes de Kel'Thuzad"
+	WarningChainsTargets= "Activer l'avertissement pour les Chaînes de Kel'Thuzad",
+	specwarnP2Soon 		= "Montre un timer pour prévenir 10 secondes avant l'arrivée de Kel'Thuzad",
+	ShowRange			= "Active l'indicateur de portée quand la phase 2 débute"
 })
 
 L:SetMiscLocalization({
@@ -492,15 +499,17 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBlastTargets	= "Trait de glace: >%s<",
-	WarningPhase2		= "Phase 2",
-	WarningFissure		= "Arrivée d'une Fissure d'ombre",
-	WarningMana			= "Mana détonant: >%s<",
-	WarningChainsTargets= "Chaînes de Kel'Thuzad: >%s<"
+	WarningBlastTargets		= "Trait de glace: >%s<",
+	WarningPhase2			= "Phase 2",
+	WarningFissure			= "Arrivée d'une Fissure d'ombre",
+	WarningMana				= "Mana détonant: >%s<",
+	WarningChainsTargets	= "Chaînes de Kel'Thuzad: >%s<",
+	specwarnP2Soon  		= "Kel'Thuzad sera actif dans 10 secondes"
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "Phase 2"
+	TimerPhase2			= "Phase 2",
+	BlastTimer			= "Heal Maintenant !"
 })
 
 
