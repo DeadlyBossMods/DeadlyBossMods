@@ -25,7 +25,9 @@ L:SetWarningLocalization{
 	PursueWarn				= "Pursuing >%s<",
 	warnNextPursueSoon		= "Target change in 5 seconds",
 	SpecialPursueWarnYou	= "Pursuing you",
-	SystemOverload			= "System Overload"
+	SystemOverload			= "System Overload",
+	warnWardofLife			= "Ward of Life spawned",
+	warnWrithingLasher		= "Writhing Lasher spawned"
 }
 
 L:SetOptionLocalization{
@@ -35,7 +37,9 @@ L:SetOptionLocalization{
 	SystemOverload			= "Show special warning for System Overload",
 	SpecialPursueWarnYou	= "Show special warning when you are being pursued",
 	PursueWarn				= "Show warning for pursue on player",
-	warnNextPursueSoon		= "Show pre-warning for next pursue"
+	warnNextPursueSoon		= "Show pre-warning for next pursue",
+	warnWardofLife			= "Show special warning for Ward of Life spawn",
+	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn"
 }
 
 
