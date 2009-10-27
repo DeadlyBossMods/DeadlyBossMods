@@ -187,18 +187,18 @@ L:SetOptionLocalization({
 
 
 ----------------
---  Archavon  --
+--  Archavon the Stone Watcher  --
 ----------------
 
 L = DBM:GetModLocalization("Archavon")
 
 L:SetGeneralLocalization({
-	name = "Archavon"
+	name = "Archavon the Stone Watcher"
 })
 
 L:SetWarningLocalization({
 	WarningShards	= "Rock Shards on >%s<",
-	WarningGrab	= "Archavon grabbed >%s<"
+	WarningGrab		= "Archavon grabbed >%s<"
 })
 
 L:SetTimerLocalization({
@@ -206,29 +206,29 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	TankSwitch	 = "%%s lunges for (%S+)!"
+	TankSwitch		= "%%s lunges for (%S+)!"
 })
 
 L:SetOptionLocalization({
-	TimerShards 	= "Show Rock Shards timer",
-	WarningShards 	= "Show Rock Shards warning",
-	WarningGrab 	= "Show Tank Grab warning"
+	TimerShards 	= "Show timer for Rock Shards",
+	WarningShards 	= "Show warning for Rock Shards",
+	WarningGrab 	= "Show warning for tank grab"
 })
 
 --------------
---  Emalon  --
+--  Emalon the Storm Watcher  --
 --------------
 
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
-	name = "Emalon"
+	name = "Emalon the Storm Watcher"
 }
 
 L:SetWarningLocalization{
-	specWarnNova		= "Lightning Nova",
+	specWarnNova	= "Lightning Nova",
 	warnNova 		= "Lightning Nova",
-	warnOverCharge		= "Overcharge"
+	warnOverCharge	= "Overcharge"
 }
 
 L:SetTimerLocalization{
@@ -236,24 +236,25 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnNova 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
+	specWarnNova		= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
+	warnNova			= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
 	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
-	timerMobOvercharge	= "Show Timer for Overchaged Mob (stacking debuff)"
+	NovaSound			= "Play sound on Lightning Nova",
+	timerMobOvercharge	= "Show timer for Overchaged mob (stacking debuff)"
 }
 
 ---------------
---  Koralon  --
+--  Koralon the Flame Watcher  --
 ---------------
 
 L = DBM:GetModLocalization("Koralon")
 
 L:SetGeneralLocalization{
-	name = "Koralon"
+	name = "Koralon the Flame Watcher"
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder	= "You are in a Flaming Cinder! Run away!"
+	SpecWarnCinder	= "You are in a Flaming Cinder - Run away"
 }
 
 L:SetTimerLocalization{
