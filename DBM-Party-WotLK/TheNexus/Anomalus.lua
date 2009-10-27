@@ -14,7 +14,7 @@ mod:RegisterEvents(
 )
 
 local warningRiftSoon		= mod:NewAnnounce("WarningRiftSoon", 2, 47743)
-local warningRiftNow		= mod:NewAnnounce("WarningRiftNow", 3, 47743)
+local warningRiftNow		= mod:NewSpellAnnounce(47743, 3)
 
 local warnedRift = false
 

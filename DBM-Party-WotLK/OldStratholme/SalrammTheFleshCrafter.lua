@@ -13,11 +13,11 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
-local warningCurse	= mod:NewAnnounce("WarningCurse", 1, 58845)
-local warningSteal	= mod:NewAnnounce("WarningSteal", 2, 52709)
-local warningGhoul	= mod:NewAnnounce("WarningGhoul", 3, 52451)
-local timerGhoulCD	= mod:NewTimer(20, "TimerGhoulCD", 52451)
-local timerCurse	= mod:NewTimer(30, "TimerCurse", 58845)
+local warningCurse	= mod:NewTargetAnnounce(58845, 1)
+local warningSteal	= mod:NewTargetAnnounce(52709, 2)
+local warningGhoul	= mod:NewSpellAnnounce(52451, 3)
+local timerGhoulCD	= mod:NewCDTimer(20, 52451)
+local timerCurse	= mod:NewTargetTimer(30, 58845)
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 52451 then
