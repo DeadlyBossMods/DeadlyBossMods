@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningSword	= mod:NewSpellAnnounce(48276)
+local warningSword	= mod:NewSpellAnnounce(48276, 2)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 48276 then
