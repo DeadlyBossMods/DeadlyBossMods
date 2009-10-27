@@ -12,7 +12,7 @@ mod:RegisterEvents(
 )
 
 local warnShadowFissure	= mod:NewSpellAnnounce(59127)
-local timerShadowFissure = mod:NewCastTimer(5, 59128)
+local timerShadowFissure = mod:NewCastTimer(5, 59128)--Cast timer until Void Blast. it's what happens when shadow fissure explodes.
 local isInCombatWithShadron = false
 
 function mod:OnCombatStart(delay)
