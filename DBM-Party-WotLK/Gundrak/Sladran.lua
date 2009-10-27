@@ -11,8 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningNova	= mod:NewAnnounce("WarningNova", 3, 55081)
-local timerNovaCD	= mod:NewTimer(24, "TimerNovaCD", 55081)
+local warningNova	= mod:NewSpellAnnounce(55081, 3)
+local timerNovaCD	= mod:NewCDTimer(24, 55081)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 55081 or args.spellId == 59842 then

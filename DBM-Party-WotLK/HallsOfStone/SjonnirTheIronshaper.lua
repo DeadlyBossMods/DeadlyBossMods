@@ -7,11 +7,11 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningCharge	= mod:NewAnnounce("WarningCharge", 2, 50834)
-local warningRing	= mod:NewAnnounce("WarningRing", 3, 50840)
-local timerCharge	= mod:NewTimer(10, "TimerCharge", 50834)
-local timerChargeCD	= mod:NewTimer(25, "TimerChargeCD", 50834)
-local timerRingCD	= mod:NewTimer(25, "TimerRingCD", 50840)
+local warningCharge	= mod:NewTargetAnnounce(50834, 2)
+local warningRing	= mod:NewSpellAnnounce(50840, 3)
+local timerCharge	= mod:NewTargetTimer(10, 50834)
+local timerChargeCD	= mod:NewCDTimer(25, 50834)
+local timerRingCD	= mod:NewCDTimer(25, 50840)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
