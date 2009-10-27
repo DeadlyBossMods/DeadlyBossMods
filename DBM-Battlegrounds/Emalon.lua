@@ -24,14 +24,14 @@ local specWarnNova		= mod:NewSpecialWarning("specWarnNova")
 local warnNova			= mod:NewAnnounce("warnNova", 3)
 local warnOverCharge		= mod:NewAnnounce("warnOverCharge", 2)
 
---local enrageTimer		= mod:NewEnrageTimer(360)
+local enrageTimer		= mod:NewEnrageTimer(360)
 
 
 local overchargedMob
 function mod:OnCombatStart(delay)
 	overchargedMob = nil
 	timerOvercharge:Start(-delay)
-	--enrageTimer:Start(-delay)
+	enrageTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
