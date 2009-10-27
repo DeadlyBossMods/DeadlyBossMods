@@ -3,9 +3,9 @@
 local L
 
 
-----------------------
---  FlameLeviathan  --
-----------------------
+-----------------------
+--  Flame Leviathan  --
+-----------------------
 L = DBM:GetModLocalization("FlameLeviathan")
 
 L:SetGeneralLocalization{
@@ -13,21 +13,23 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPursued		= "Преследование: %s",
-	timerFlameVents		= "Огненное дыхание",
-	timerSystemOverload	= "Отключение системы"
+	timerPursued			= "Преследование: %s",
+	timerFlameVents			= "Огненное дыхание",
+	timerSystemOverload		= "Отключение системы"
 }
 	
 L:SetMiscLocalization{
-	YellPull	= "Обнаружены противники. Запуск протокола оценки угрозы. Главная цель выявлена. Повторный анализ через 30 секунд.",
-	Emote		= "%%s наводится на (%S+)%"
+	YellPull			= "Обнаружены противники. Запуск протокола оценки угрозы. Главная цель выявлена. Повторный анализ через 30 секунд.",
+	Emote				= "%%s наводится на (%S+)%"
 }
 
 L:SetWarningLocalization{
-	pursueWarn	= "Преследуется >%s<!",
-	warnNextPursueSoon	= "Смена цели через 5 сек",
-	SpecialPursueWarnYou	= "Преследует вас!",
-	SystemOverload			= "Отключение системы"
+	pursueWarn			= "Преследуется >%s<",
+	warnNextPursueSoon		= "Смена цели через 5 секунд",
+	SpecialPursueWarnYou		= "Преследует вас",
+	SystemOverload			= "Отключение системы",
+	warnWardofLife			= "Призыв Защитника жизни",
+	warnWrithingLasher		= "Призыв Змеящегося плеточника"
 }
 
 L:SetOptionLocalization{
@@ -37,13 +39,15 @@ L:SetOptionLocalization{
 	SystemOverload			= "Спец-предупреждение для Отключения системы",
 	SpecialPursueWarnYou		= "Спец-предупреждение для Преследования",
 	PursueWarn			= "Предупреждение для преследуемого игрока",
-	warnNextPursueSoon		= "Предупреждать перед следующим преследованием"
+	warnNextPursueSoon		= "Предупреждать перед следующим преследованием",
+	warnWardofLife			= "Спец-предупреждение для призыва Защитника жизни",
+	warnWrithingLasher		= "Спец-предупреждение для призыва Змеящегося плеточника"
 }
 
 
--------------
---  Ignis  --
--------------
+--------------------------------
+--  Ignis the Furnace Master  --
+--------------------------------
 L = DBM:GetModLocalization("Ignis")
 
 L:SetGeneralLocalization{
@@ -60,7 +64,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarningSlagPot			= ">%s< в шлаковом ковше",
-	SpecWarnJetsCast		= "Огненная струя - остановите чтение заклинаний!"
+	SpecWarnJetsCast		= "Огненная струя - прекратите чтение заклинаний"
 }
 
 L:SetOptionLocalization{
@@ -84,8 +88,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Лавовая бомба! Бегите!",
-	warnTurretsReadySoon		= "Через 20 сек. гарпунные пушки будут собраны",
+	SpecWarnDevouringFlame		= "Лавовая бомба - бегите",
+	warnTurretsReadySoon		= "Через 20 секунд гарпунные пушки будут собраны",
 	warnTurretsReady		= "Гарпунные пушки собраны",
 	SpecWarnDevouringFlameCast	= "Вы в лавовой бомбе",
 	WarnDevouringFlameCast		= "В лавовой бомбе >%s<" 
@@ -172,10 +176,10 @@ L:SetWarningLocalization{
 	WarningOverwhelmingPower	= ">%s< под воздействием Переполняющей энергии",
 	WarningRuneofPower		= "Руна мощи",
 	WarningRuneofDeath		= "Руна смерти",
-	RuneofDeath			= "Руна смерти! Бегите!",
-	LightningTendrils		= "Светящиеся придатки! Бегите!",
+	RuneofDeath			= "Руна смерти - бегите",
+	LightningTendrils		= "Светящиеся придатки - бегите",
 	WarningRuneofSummoning		= "Руна призыва",
-	Overload			= "Перегрузка! Бегите!",
+	Overload			= "Перегрузка - бегите",
 	WarningStaticDisruption		= ">%s< под воздействием Статического сбоя",
 	PlaySoundDeathRune		= "Руна смерти"
 }
@@ -228,9 +232,9 @@ L:SetMiscLocalization{
 }
 
 
----------------
---  Algalon  --
----------------
+----------------------------
+--  Algalon the Observer  --
+----------------------------
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
@@ -247,8 +251,8 @@ L:SetWarningLocalization{
 	WarningBlackHole	= "Черная дыра",
 	WarningBigBang		= "Суровый удар",
 	SpecWarnBigBang		= "Суровый удар",
-	PreWarningBigBang	= "Суровый удар через ~10 сек",
-	WarningCosmicSmash 	= "Кара небесная - взрыв через 4 сек",
+	PreWarningBigBang	= "Суровый удар через ~10 секунд",
+	WarningCosmicSmash 	= "Кара небесная - взрыв через 4 секунд",
 	SpecWarnCosmicSmash 	= "Кара небесная"
 }
 
@@ -269,7 +273,7 @@ L:SetMiscLocalization{
 	YellPull		 = "Ваши действия нелогичны. Все возможные исходы этой схватки просчитаны. Пантеон получит сообщение от Наблюдателя в любом случае.",
 	YellPullFirst		 = "",
 	Emote_CollapsingStar	 = "%s призывает вспыхивающие звезды!",
-	Emote_CosmicSmash	 = "%s начинает читать заклинание \"Кара небесная\"!"
+	Emote_CosmicSmash	 = "%s начинает читать заклинание Кара небесная!"
 }
 
 
@@ -283,7 +287,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam		= "Сосредоточенный взгляд на вас! Бегите!",
+	SpecialWarningEyebeam		= "Сосредоточенный взгляд на вас - бегите",
 	WarningEyebeam			= ">%s< под сосредоточенным взглядом",
 	WarnGrip			= ">%s< под воздействием Каменной хватки"
 }
@@ -335,7 +339,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast	= "Удар часового - остановите чтение заклинаний!",
-	SpecWarnVoid	= "Портал бездны! Бегите!",
+	SpecWarnVoid	= "Портал бездны - бегите",
 	WarnCatDied 	= "Дикий эащитник погибает (Осталось живых: %d)",
 	WarnCatDiedOne 	= "Дикий эащитник погибает (Это последний!)",
 	WarnFear	= "Ужасающий вопль",
@@ -371,7 +375,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "Мгновенная заморозка",  -- Everyone have to move on the snow mounds
+	TimerFlashFreeze	= "Мгновенная заморозка",
 }
 
 L:SetOptionLocalization{
@@ -404,7 +408,7 @@ L:SetWarningLocalization{
 	WarningPhase2		= "Фаза 2",
 	WarningLightningCharge	= "Разряд молнии",
 	WarningBomb		= ">%s< под воздействием Взрыва руны",
-	LightningOrb		= "Поражение громом на вас! Бегите!"
+	LightningOrb		= "Поражение громом на вас - бегите"
 }
 
 L:SetTimerLocalization{
@@ -451,18 +455,18 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnPhase2	= "Фаза 2",
-	WarnSimulKill	= "Первый союзник погибает - воскрешение через 1 мин.",
+	WarnSimulKill	= "Первый союзник погибает - воскрешение через 1 минуту",
 	WarnFury	= ">%s< под воздействием Гнев природы",
-	SpecWarnFury	= "Гнев природы на вас!",
-	WarningTremor   = "Дрожание земли - остановите чтение заклинаний!",
+	SpecWarnFury	= "Гнев природы на вас",
+	WarningTremor   = "Дрожание земли - остановите чтение заклинаний",
 	WarnRoots	= ">%s< в корнях",
-	UnstableEnergy	= "Нестабильная энергия! Бегите!"
+	UnstableEnergy	= "Нестабильная энергия - бегите"
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam	= "Луч солнца: %s",
 	TimerSimulKill		= "Воскрешение",
-	TimerFuryYou		= "Гнев природы на вас!",
+	TimerFuryYou		= "Гнев природы на вас",
 	TrashRespawnTimer	= "Фрейя возрождает Мусор"
 }
 
@@ -473,11 +477,14 @@ L:SetOptionLocalization{
 	WarnRoots		= "Объявлять цель под воздействием Железных корней",
 	SpecWarnFury		= "Спец-предупреждение для Гнева природы",
 	WarningTremor		= "Спец-предупреждение для Дрожания земли (высокая сложность)",
+	PlaySoundOnFury 	= "Звуковой сигнал, когда вы под воздействем Гнева природы",
 	TimerSimulKill		= "Отсчет времени до воскрешения монстров",
 	UnstableEnergy		= "Спец-предупреждение для Нестабильной энергии"
 }
 
--- Elders
+----------------------
+--  Freya's Elders  --
+----------------------
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
@@ -501,9 +508,9 @@ L:SetOptionLocalization{
 }
 
 
--------------------
+---------------
 --  Mimiron  --
--------------------
+---------------
 L = DBM:GetModLocalization("Mimiron")
 
 L:SetGeneralLocalization{
@@ -512,14 +519,14 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare		= "Лазерное заграждение",
-	WarningPlasmaBlast	= "%s под воздействием Взрыва плазмы - лечите!",
+	WarningPlasmaBlast	= "%s под воздействием Взрыва плазмы - лечите",
 	WarnShell		= ">%s< под зарядом напалма",
 	WarnBlast		= ">%s< под взрывом плазмы",
 	MagneticCore		= ">%s< под воздействием Магнитного ядра",
-	WarningShockBlast	= "Шоковый удар! Бегите!",
+	WarningShockBlast	= "Шоковый удар - бегите",
 	WarnBombSpawn		= "Бомбот",
 	WarnFrostBomb		= "Ледяная бомба",
-	WarnFlamesSoon		= "Метание пламени через ~5 сек"
+	WarnFlamesSoon		= "Метание пламени через ~5 секунд"
 }
 
 L:SetTimerLocalization{
@@ -577,13 +584,13 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "Темное сокрушение на вас!",
+	SpecialWarningShadowCrash	= "Темное сокрушение на вас",
 	SpecialWarningSurgeDarkness	= "Наплыв Тьмы",
 	WarningShadowCrash		= ">%s< под воздействием Темного сокрушения",
-	SpecialWarningShadowCrashNear	= "Темное сокрушение около вас!",
+	SpecialWarningShadowCrashNear	= "Темное сокрушение около вас",
 	WarningLeechLife		= ">%s< под воздействием Вытягивание жизни",
-	SpecialWarningLLYou		= "Вытягивание жизни на вас!",
-	SpecialWarningLLNear		= "%s около вас, под воздействием Вытягивание жизни!"
+	SpecialWarningLLYou		= "Вытягивание жизни на вас",
+	SpecialWarningLLNear		= "%s около вас, под воздействием Вытягивание жизни"
 }
 
 L:SetOptionLocalization{
@@ -604,7 +611,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors		= "Облако саронитовых паров образовывается поблизости!",
-	CrashWhisper			= "Темное сокрушение на вас! Бегите!",
+	CrashWhisper			= "Темное сокрушение на вас - бегите",
 	YellLeech			= "Вытягивание жизни на мне!",
 	YellCrash			= "Темное сокрушение на мне!"
 }
@@ -623,7 +630,7 @@ L:SetMiscLocalization{
 	YellPull		= "Скоро мы сразимся с главарем этих извергов! Обратите гнев и ненависть против его прислужников!",
 	YellPhase2		= "Я – это сон наяву.",
 	Sara 			= "Сара",
-	WhisperBrainLink	= "Схожее мышление на вас! Бегите к %s!",
+	WhisperBrainLink	= "Схожее мышление на вас - бегите к %s",
 	WarningYellSqueeze	= "Выдавливание на мне! Помогите!"
 }
 
@@ -638,8 +645,8 @@ L:SetWarningLocalization{
 	SpecWarnSanity 			= "Эффект Здравомыслия: %d",
 	SpecWarnGuardianLow 		= "Прекратить нападение на Стражей!",
 	WarnMadness			= "Доведение до помешательства",
-	SpecWarnMadnessOutNow		= "Помешательство заканчивается! Бегите!",
-	WarnBrainPortalSoon		= "Портал через 3 сек.",	
+	SpecWarnMadnessOutNow		= "Помешательство заканчивается - бегите",
+	WarnBrainPortalSoon		= "Портал через 3 секунды",	
 	WarnSqueeze 			= "Выдавливание: >%s<",
 	WarnFavor			= ">%s< под Рвением Сары",
 	SpecWarnFavor			= "Рвение Сары на вас!",
