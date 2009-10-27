@@ -1,12 +1,12 @@
 local L
 
-----------------------------
---  General BG functions  --
-----------------------------
+---------------------------
+--  General BG Options  --
+---------------------------
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "General BG Functions"
+	name = "General Options"
 })
 
 L:SetTimerLocalization({
@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ColorByClass	= "Set name color to class color in the score frame",
 	ShowInviteTimer	= "Show battleground join timer",
-	AutoSpirit	= "Auto-release spirit"
+	AutoSpirit		= "Auto-release spirit"
 })
 
 L:SetMiscLocalization({
@@ -39,7 +39,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart	= "Show start timer",
+	TimerStart		= "Show start timer",
 	TimerShadow 	= "Show timer for Shadow Crystals"
 })
 
@@ -49,9 +49,9 @@ L:SetMiscLocalization({
 	Start15		= "Fifteen seconds until the Arena battle begins!"
 })
 
----------------
---  Alterac  --
----------------
+----------------------
+--  Alterac Valley  --
+----------------------
 L = DBM:GetModLocalization("Alterac")
 
 L:SetGeneralLocalization({
@@ -74,12 +74,12 @@ L:SetOptionLocalization({
 	TimerStart		= "Show start timer",
 	TimerTower		= "Show tower capture timer",
 	TimerGY			= "Show graveyard capture timer",
-	AutoTurnIn		= "Auto turn-in quests"
+	AutoTurnIn		= "Automatically turn-in quests"
 })
 
----------------
---  Arathi  --
----------------
+--------------------
+--  Arathi Basin  --
+--------------------
 L = DBM:GetModLocalization("Arathi")
 
 L:SetGeneralLocalization({
@@ -104,11 +104,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  		= "Show start timer",
-	TimerWin 		= "Show win timer",
-	TimerCap 		= "Show capture timer",
-	ShowAbEstimatedPoints	= "Show estimated points on win/lose",
-	ShowAbBasesToWin	= "Show bases required to win"
+	TimerStart				= "Show start timer",
+	TimerWin				= "Show win timer",
+	TimerCap				= "Show capture timer",
+	ShowAbEstimatedPoints	= "Show estimated points on win/loss",
+	ShowAbBasesToWin		= "Show bases required to win"
 })
 
 -----------------------
@@ -130,8 +130,8 @@ L:SetMiscLocalization({
 	WinBarText 		= "%s wins",
 	FlagReset 		= "The flag has been reset!",
 	FlagTaken 		= "(.+) has taken the flag!",
-	FlagCaptured 		= "The .+ ha%w+ captured the flag!",
-	FlagDropped 		= "The flag has been dropped!",
+	FlagCaptured	= "The .+ ha%w+ captured the flag!",
+	FlagDropped		= "The flag has been dropped!",
 
 })
 
@@ -141,10 +141,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  		= "Show start timer",
+	TimerStart		= "Show start timer",
 	TimerWin 		= "Show win timer",
 	TimerFlag 		= "Show flag respawn timer",
-	ShowPointFrame 		= "Show flag carrier and estimated points",
+	ShowPointFrame	= "Show flag carrier and estimated points",
 })
 
 --------------------
@@ -162,11 +162,11 @@ L:SetMiscLocalization({
 	ZoneName 			= "Warsong Gulch",
 	Alliance 			= "Alliance",
 	Horde 				= "Horde",	
-	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
-	ExprFlagPickUp 			= "The (%w+) .lag was picked up by (.+)!",
-	ExprFlagCaptured 		= "(.+) captured the (%w+) flag!",
-	ExprFlagReturn 			= "The (%w+) .lag was returned to its base by (.+)!",
-	FlagAlliance 			= "Alliance Flag: ",
+	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
+	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
+	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
+	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
+	FlagAlliance		= "Alliance Flag: ",
 	FlagHorde			= "Horde Flag: ",
 	FlagBase			= "Base",
 })
@@ -177,18 +177,18 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart  			= "Show start timer",
-	TimerWin 			= "Show win timer",
-	TimerFlag			= "Show flag respawn timer",
-	ShowFlagCarrier			= "Show flag carrier",
-	ShowFlagCarrierErrorNote 	= "Shows flag carrier error message when in combat",
+	TimerStart					= "Show start timer",
+	TimerWin 					= "Show win timer",
+	TimerFlag					= "Show flag respawn timer",
+	ShowFlagCarrier				= "Show flag carrier",
+	ShowFlagCarrierErrorNote	= "Shows flag carrier error message while in combat",
 })
 
 
 
-----------------
+----------------------------------
 --  Archavon the Stone Watcher  --
-----------------
+----------------------------------
 
 L = DBM:GetModLocalization("Archavon")
 
@@ -215,9 +215,9 @@ L:SetOptionLocalization({
 	WarningGrab 	= "Show warning for tank grab"
 })
 
---------------
+--------------------------------
 --  Emalon the Storm Watcher  --
---------------
+--------------------------------
 
 L = DBM:GetModLocalization("Emalon")
 
@@ -243,9 +243,9 @@ L:SetOptionLocalization{
 	timerMobOvercharge	= "Show timer for Overchaged mob (stacking debuff)"
 }
 
----------------
+---------------------------------
 --  Koralon the Flame Watcher  --
----------------
+---------------------------------
 
 L = DBM:GetModLocalization("Koralon")
 
@@ -289,8 +289,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Show timer for Game Start", 
-	TimerPOI		= "Show timer for Captures",
+	TimerStart		= "Show start timer", 
+	TimerPOI		= "Show capture timer",
 })
 
 L:SetMiscLocalization({
