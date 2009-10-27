@@ -63,6 +63,7 @@ L.PizzaTimer_BroadCast			= "Транслировать рейду"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning			= "Предупреждения для рейда"
+L.RaidWarning_Header			= "Параметры рейд-предупреждений"
 L.RaidWarnColors			= "Цвета предупреждений для рейда"
 L.RaidWarnColor_1			= "Цвет 1"
 L.RaidWarnColor_2			= "Цвет 2"
@@ -86,7 +87,8 @@ L.BarTexture				= "Текстура индикатора"
 L.BarStartColor				= "Цвет в начале"
 L.BarEndColor				= "Цвет в конце"
 L.ExpandUpwards				= "Выровнять по верху"
-
+L.Bar_Font				= "Шпифт для индикатора"
+L.Bar_FontSize				= "Размер шрифта"
 L.Slider_BarOffSetX			= "Сдвиг X: %d"
 L.Slider_BarOffSetY			= "Сдвиг Y: %d"
 L.Slider_BarWidth			= "Ширина: %d"
@@ -116,7 +118,9 @@ L.SpecWarn_ResetMe			= "Восстановить умолчания"
 L.Panel_HPFrame				= "Здоровье босса"
 L.Area_HPFrame				= "Настройка Здоровья"
 L.HP_Enabled				= "Всегда отображать количество очков здоровья босса\n(Заменяет определенный параметр для босса)"
-
+L.HP_GrowUpwards			= "Выровнять индикатор здоровья по верху"
+L.HP_ShowDemo				= "Индикатор здоровья"
+L.BarWidth				= "Ширина индикатора: %d"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter			= "Фильтрация сообщений"
