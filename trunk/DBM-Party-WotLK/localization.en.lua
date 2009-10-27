@@ -1083,7 +1083,7 @@ L:SetOptionLocalization({
 	WarningWoeStrike		= optionWarning:format(GetSpellInfo(42730)),
 	TimerSmash				= optionTimerCast:format(GetSpellInfo(42723)),
 	TimerWoeStrike			= optionTimerDur:format(GetSpellInfo(42730)),
-	SpecialWarningSpellock	= "Show special warning for spell lock"
+	SpecialWarningSpelllock	= "Show special warning for spell lock"
 })
 
 
