@@ -33,7 +33,7 @@ L:SetOptionLocalization{
 	timerFlameVents			= "Show timer for Flame Vents",
 	timerPursued			= "Show timer for pursue",
 	SystemOverload			= "Show special warning for System Overload",
-	SpecialPursueWarnYou	= "Show special warning when you are pursued",
+	SpecialPursueWarnYou	= "Show special warning when you are being pursued",
 	PursueWarn				= "Show warning for pursue on player",
 	warnNextPursueSoon		= "Show pre-warning for next pursue"
 }
