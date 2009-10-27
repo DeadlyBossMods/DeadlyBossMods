@@ -11,11 +11,10 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningSword	= mod:NewAnnounce("WarningSword", 2, 48276)
+local warningSword	= mod:NewSpellAnnounce(48276)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 48276 then
---		warningSword:Show(args.spellName, args.destName) -- doesn't work?!
-		warningSword:Show()
+		warningSword:Show(args.spellName)
 	end
 end
