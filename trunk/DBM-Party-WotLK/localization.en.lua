@@ -998,7 +998,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningShift	= optionWarning:format(GetSpellInfo(51162)),
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." ending"), 	-- translate the word 'ending'
-	WarningEnrage	= optionWarning:format(GetSpellInfo(51170)),
+	WarningEnraged	= optionWarning:format(GetSpellInfo(51170)),
 	TimerShift		= optionTimerDur:format(GetSpellInfo(51162)),
 	TimerEnrage		= optionTimerDur:format(GetSpellInfo(51170)),
 })
