@@ -484,7 +484,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	BlastTimer			= "Show Frost Blast timer (4 second timer until targets die)",
+	BlastTimer			= "Show timer for Frost Blast (4 second timer until targets die)",
 	TimerPhase2			= "Show timer for Phase 2",
 	WarningBlastTargets	= "Show warning for Frost Blast",
 	WarningPhase2		= "Show warning for Phase 2",
