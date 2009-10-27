@@ -31,13 +31,13 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload	= "Activer le timer pour la surchage du système",
-	timerFlameVents		= "Activer le timer pour les Flots de flammes",
-	timerPursued		= "Activer le timer pour la poursuite",
-	SystemOverload		= "Afficher l'avertissement spécial pour la surchage du système",
+	timerSystemOverload		= "Activer le timer pour la surchage du système",
+	timerFlameVents			= "Activer le timer pour les Flots de flammes",
+	timerPursued			= "Activer le timer pour la poursuite",
+	SystemOverload			= "Afficher l'avertissement spécial pour la surchage du système",
 	SpecialPursueWarnYou	= "Afficher l'avertissement spécial quand un joueur est poursuivi",
-	PursueWarn		= "Afficher l'avertissement quand vous êtes poursuivi",
-	warnNextPursueSoon	= "Prévenir avant la prochaine poursuite"
+	PursueWarn				= "Afficher l'avertissement quand vous êtes poursuivi",
+	warnNextPursueSoon		= "Prévenir avant la prochaine poursuite"
 }
 
 
@@ -64,14 +64,14 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast	= "Activer l'avertissement spécial pour les Flots de flammes (contresort)",
-	TimerFlameJetsCast	= "Afficher le timer des Flots de flammes",
+	SpecWarnJetsCast		= "Activer l'avertissement spécial pour les Flots de flammes (contresort)",
+	TimerFlameJetsCast		= "Afficher le timer des Flots de flammes",
 	TimerFlameJetsCooldown	= "Afficher le cooldown du Flots de flammes",
-	TimerScorch		= "Afficher le cooldown de brûlure",
-	TimerScorchCast		= "Afficher la barre de cast de brûlure",
-	WarningSlagPot		= "Annoncer la cible de la Marmite de scories",
-	TimerSlagPot		= "Afficher le timer de la Marmite de scories",
-	SlagPotIcon		= "Mettre une icône sur la cible de la Marmite de scories"
+	TimerScorch				= "Afficher le cooldown de brûlure",
+	TimerScorchCast			= "Afficher la barre de cast de brûlure",
+	WarningSlagPot			= "Annoncer la cible de la Marmite de scories",
+	TimerSlagPot			= "Afficher le timer de la Marmite de scories",
+	SlagPotIcon				= "Mettre une icône sur la cible de la Marmite de scories"
 }
 
 ------------------
@@ -84,9 +84,9 @@ L:SetGeneralLocalization{
 }     
 
 L:SetWarningLocalization{
-	SpecWarnDevouringFlame	= "Flamme dévorante - BOUGEZ",
-	warnTurretsReadySoon	= "Quatrième tourelle à harpon prête dans 20 Sec",
-	warnTurretsReady		= "Quatrième tourelle à harpon prête",
+	SpecWarnDevouringFlame		= "Flamme dévorante - BOUGEZ",
+	warnTurretsReadySoon		= "Quatrième tourelle à harpon prête dans 20 Sec",
+	warnTurretsReady			= "Quatrième tourelle à harpon prête",
 	SpecWarnDevouringFlameCast	= "Flamme dévorante sur Vous",
 	WarnDevouringFlameCast		= "Flamme dévorante sur >%s<" 
 }
@@ -113,7 +113,7 @@ L:SetOptionLocalization{
 	timerTurret2				= "Montre le timer pour la tourelle 2",
 	timerTurret3				= "Montre le timer pour la tourelle 3 (Héroique)",
 	timerTurret4				= "Montre le timer pour la tourelle 4 (Héroique)",
-	OptionDevouringFlame		= "Annonce la cible des Flammes dévorantes (incertain)",
+	OptionDevouringFlame		= "Annonce la cible des Flammes dévorantes (Incertain)",
 	timerGroundedTemp			= "Montre le timer pour la phase au sol"
 }
 
@@ -122,7 +122,7 @@ L:SetMiscLocalization{
 	YellAir2			= "Incendie éteint ! Reconstruisons les tourelles !",
 	YellGroundTemp		= "Faites vite ! Elle va pas rester au sol très longtemps !",
 	EmotePhase2			= "%%s bloquée au sol !",
-	FlamecastUnknown			= DBM_CORE_UNKNOWN
+	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
 
 
@@ -166,17 +166,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge		= "Supercharge imminente",
-	WarningChainlight		= "Chaîne d'éclairs",
-	WarningFusionPunch		= "Coup de poing fusion",
+	WarningSupercharge			= "Supercharge imminente",
+	WarningChainlight			= "Chaîne d'éclairs",
+	WarningFusionPunch			= "Coup de poing fusion",
 	WarningOverwhelmingPower	= "Puissance accablante sur >%s<",
-	WarningRuneofPower		= "Rune de puissance",
-	WarningRuneofDeath		= "Rune de mort",
-	RuneofDeath				= "Rune de mort - BOUGEZ",
-	LightningTendrils		= "Vrilles de foudre - COURREZ",
-	WarningRuneofSummoning	= "Rune d'invocation",
-	Overload				= "Surchage - BOUGEZ",
-	WarningStaticDisruption	= "Static Disruption sur >%s<",
+	WarningRuneofPower			= "Rune de puissance",
+	WarningRuneofDeath			= "Rune de mort",
+	RuneofDeath					= "Rune de mort - BOUGEZ",
+	LightningTendrils			= "Vrilles de foudre - COURREZ",
+	WarningRuneofSummoning		= "Rune d'invocation",
+	Overload					= "Surchage - BOUGEZ",
+	WarningStaticDisruption		= "Static Disruption sur >%s<",
 	PlaySoundDeathRune			= "Death Rune"
 }
 
@@ -193,31 +193,31 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerSupercharge		= "Afficher le timer de la Supercharge",
-	WarningSupercharge		= "Activer l'avertissement quand la Supercharge est incanté",
-	WarningChainlight		= "Annoncer les Chaînes d'éclairs",
-	TimerOverload			= "Afficher la barre d'incantation de la surcharge",
-	TimerLightningWhirl		= "Afficher la barre d'incantation des éclairs tourbillonnants",
-	LightningTendrils		= "Activer l'avertissement spécial pour les Vrilles d'éclair",
+	TimerSupercharge			= "Afficher le timer de la Supercharge",
+	WarningSupercharge			= "Activer l'avertissement quand la Supercharge est incanté",
+	WarningChainlight			= "Annoncer les Chaînes d'éclairs",
+	TimerOverload				= "Afficher la barre d'incantation de la surcharge",
+	TimerLightningWhirl			= "Afficher la barre d'incantation des éclairs tourbillonnants",
+	LightningTendrils			= "Activer l'avertissement spécial pour les Vrilles d'éclair",
 	TimerLightningTendrils		= "Afficher la durée des Vrilles d'éclair",
 	PlaySoundLightningTendrils	= "Jouer un son pour les Vrilles d'éclair",
-	WarningFusionPunch		= "Annoncer les coups de poing fusion",
+	WarningFusionPunch			= "Annoncer les coups de poing fusion",
 	timerFusionPunchCast		= "Afficher la barre d'incantation pour les coups de poing fusion",
 	timerFusionPunchActive		= "Afficher un timer pour les coups de poing fusion",
 	WarningOverwhelmingPower	= "Annoncer la Puissance accablante",
 	timerOverwhelmingPower		= "Afficher un timer pour la Puissance accablante",
 	SetIconOnOverwhelmingPower	= "Mettre un icône sur la cible de la Puissance accablante",
-	timerRunicBarrier		= "Afficher un timer pour la Barrière runique",
-	WarningRuneofPower		= "Annoncer les runes de puissance",
-	WarningRuneofDeath		= "Annoncer les runes de mort",
-	WarningRuneofSummoning			= "Annonce les Runes d'invocation",
-	RuneofDeath			= "Activer l'avertissement spécial pour les runes de mort",
-	timerRuneofDeath		= "Afficher la durée des runes de mort",
-	SetIconOnStaticDisruption		= "Met une icône sur la cible de Static Disruption",
-	Overload				= "Montre une alerte spéciale pour la Surcharge",
-	AllwaysWarnOnOverload			= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
+	timerRunicBarrier			= "Afficher un timer pour la Barrière runique",
+	WarningRuneofPower			= "Annoncer les runes de puissance",
+	WarningRuneofDeath			= "Annoncer les runes de mort",
+	WarningRuneofSummoning		= "Annonce les Runes d'invocation",
+	RuneofDeath					= "Activer l'avertissement spécial pour les runes de mort",
+	timerRuneofDeath			= "Afficher la durée des runes de mort",
+	SetIconOnStaticDisruption	= "Met une icône sur la cible de Static Disruption",
+	Overload					= "Montre une alerte spéciale pour la Surcharge",
+	AllwaysWarnOnOverload		= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
 	PlaySoundOnOverload			= "Joue un son à la surcharge",
-	WarningStaticDisruption			= "Annonce la Static Disruption",
+	WarningStaticDisruption		= "Annonce la Static Disruption",
 	PlaySoundDeathRune			= "Joue un son pour les runes de mort"
 }
 
@@ -239,8 +239,7 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "Prochain choc cosmique",
-	PossibleNextCosmicSmash	= "Prochain Choc cosmique possible",
-	TimerBigBangCast		= "Incantation du Big Bang"
+	PossibleNextCosmicSmash	= "Prochain Choc cosmique possible"
 }
 
 L:SetWarningLocalization{
@@ -426,8 +425,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPhase1		= "Des intrus ! Mortels, vous qui osez me déranger en plein divertissement, allez payer ! Attendez... vous ?",    -- A vérifier
-	YellPhase2		= "Avortons impertinents. Vous osez me défier sur mon piédestal ! Je vais vous écraser moi-même !",              -- A vérifier
+	YellPhase1		= "Des intrus ! Mortels, vous qui osez me déranger en plein divertissement, allez payer ! Attendez... vous ?",
+	YellPhase2		= "Avortons impertinents. Vous osez me défier sur mon piédestal ! Je vais vous écraser moi-même !",
 	YellKill		= "Stay your arms! I yield!",
 	ChargeOn		= "Charge(s) de foudre: %s",
 	Charge			= "Charge(s) de foudre non évitée(s) (cet essai): %s" 
@@ -469,14 +468,15 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2			= "Annonce la phase 2",
-	WarnSimulKill		= "Annonce la mort du premier mob",
-	WarnFury			= "Annonce la cible de la fureur de la nature",
-	WarnRoots			= "Annonce les cibles des racines de fer",
-	SpecWarnFury		= "Montre des alertes spéciales pour la Fureur de la Nature",
-	WarningTremor		= "Montre une alerte spéciale pour le tremblement de terre (Hard-Mode)",
-	TimerSimulKill		= "Montre le timer de la résurrection des mobs",
-	UnstableEnergy		= "Montre une alerte spéciale pour l'énergie instable"
+	WarnPhase2		= "Annonce la phase 2",
+	WarnSimulKill	= "Annonce la mort du premier mob",
+	WarnFury		= "Annonce la cible de la fureur de la nature",
+	WarnRoots		= "Annonce les cibles des racines de fer",
+	SpecWarnFury	= "Montre des alertes spéciales pour la Fureur de la Nature",
+	WarningTremor	= "Montre une alerte spéciale pour le tremblement de terre (Hard-Mode)",
+	PlaySoundOnFury = "Joue un sons quand vous êtes affecter par la Fureur de la nature",
+	TimerSimulKill	= "Montre le timer de la résurrection des mobs",
+	UnstableEnergy	= "Montre une alerte spéciale pour l'énergie instable"
 }
 
 -- Elders
@@ -612,9 +612,9 @@ L:SetMiscLocalization{
 }
 
 
------------------
---  YoggSaron  --
------------------
+------------------
+--  Yogg Saron  --
+------------------
 L = DBM:GetModLocalization("YoggSaron")
 
 L:SetGeneralLocalization{

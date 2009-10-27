@@ -63,6 +63,7 @@ L.PizzaTimer_BroadCast	= "Diffuser au Raid"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 	= "Alertes raid"
+L.RaidWarning_Header		= "Options des alertes de raid"
 L.RaidWarnColors 	= "Couleurs des alertes raid"
 L.RaidWarnColor_1 	= "Couleur 1"
 L.RaidWarnColor_2 	= "Couleur 2"
@@ -86,7 +87,8 @@ L.BarTexture 				= "Texture des barres"
 L.BarStartColor 			= "Couleur de départ"
 L.BarEndColor 				= "Couleur de fin"
 L.ExpandUpwards				= "Nouvelles barres au-dessus"
-
+L.Bar_Font					= "Police utiliser pour les barres"
+L.Bar_FontSize				= "Taille des polices"
 L.Slider_BarOffSetX 		= "Position X: %d"
 L.Slider_BarOffSetY 		= "Position Y: %d"
 L.Slider_BarWidth 			= "Largeur: %d"
@@ -116,7 +118,9 @@ L.SpecWarn_ResetMe			= "Réinitialiser"
 L.Panel_HPFrame				= "Barre de vie"
 L.Area_HPFrame				= "Configurer la Barre de vie"
 L.HP_Enabled				= "Toujours montrer la Barre de vie, même si elle est désactivée dans le Module"
-
+L.HP_GrowUpwards			= "Prolonge la barre de vie vers le haut"
+L.HP_ShowDemo				= "Montre la fenêtre des points de vie"
+L.BarWidth					= "Longueur de la barre: %d"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "Filtre anti-spam"

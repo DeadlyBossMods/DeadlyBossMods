@@ -4,14 +4,14 @@ local L
 
 local spell		= "%s"				
 local debuff		= "%s: >%s<"			
-local spellCD		= "%s cooldown"			-- translate
-local spellSoon		= "%s bientôt"			-- translate
-local optionWarning	= "Activer l'annonce: \"%s\" "		-- translate
-local optionPreWarning	= "Activer la pré-annonce: \"%s\" "	-- translate
-local optionSpecWarning	= "Activer l'avertissement spécial: \"%s\" "	-- translate
-local optionTimerCD	= "Afficher le timer pour le cooldown pour: \"%s\" "	-- translate
-local optionTimerDur	= "Afficher le timer de durée pour: \"%s\" "	-- translate
-local optionTimerCast	= "Afficher le timer pour le cast de: \"%s\" "	-- translate
+local spellCD		= "%s cooldown"
+local spellSoon		= "%s bientôt"
+local optionWarning	= "Activer l'annonce: \"%s\" "
+local optionPreWarning	= "Activer la pré-annonce: \"%s\" "
+local optionSpecWarning	= "Activer l'avertissement spécial: \"%s\" "
+local optionTimerCD	= "Afficher le timer pour le cooldown pour: \"%s\" "
+local optionTimerDur	= "Afficher le timer de durée pour: \"%s\" "
+local optionTimerCast	= "Afficher le timer pour le cast de: \"%s\" "
 
 
 --------------------------------
@@ -1411,12 +1411,10 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnHaste		= "Hâte sur >%s< ! Dispell Maintenant !",
-	specWarnPoison		= "Poison ! Bougez !",
-	warnHealingWave		= "Le chaman incante une vague de soins. Cassez !"
+	specWarnPoison		= "Poison ! Bougez !"
 })
 
 L:SetOptionLocalization({
-	warnHealingWave		= "Alerte quand le chaman incante une vague de soins",
 	specWarnHaste		= "Montre une alerte spéciale quand le mage gagne la hâte (pour Dispell/Voler)",
 	specWarnPoison		= "Montre une alerte spéciale quand vous subissez des dégâts provenant de la Bouteille de poison"
 })
@@ -1435,13 +1433,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "Paletress incante une rénovation sur >%s<. Dispell Maintenant !",
-	warnReflectiveShield	= "Paletress vient de gagner Bouclier réflecteur"
+	specwarnRenew			= "Paletress incante une rénovation sur >%s<. Dispell Maintenant !"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew			= "Montre une alerte spéciale pour la cible de la rénovation (pour Dispell/Voler)",
-	warnReflectiveShield	= "Alerte quand Paletress gagne le Bouclier réflecteur"
+	specwarnRenew			= "Montre une alerte spéciale pour la cible de la rénovation (pour Dispell/Voler)"
 })
 
 L:SetMiscLocalization({
@@ -1458,13 +1454,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHammerofRighteous	= "Eadric incante Marteau du vertueux !",
 	specwarnHammerofJustice	= "Marteau de la justice sur >%s<. Dispell Maintenant !",
 	specwarnRadiance		= "Radiance. Retournez vous !"
 })
 
 L:SetOptionLocalization({
-	warnHammerofRighteous	= "Montre une alerte quand Eadric incante le Marteau du vertueux",
 	specwarnHammerofJustice	= "Montre une alerte spéciale pour le Marteau de la justice (pour Dispell)",
 	specwarnRadiance		= "Montre une alerte spéciale pour Radiance.",
 	SetIconOnHammerTarget	= "Met une icône sur la cible du Marteau du vertueux"
