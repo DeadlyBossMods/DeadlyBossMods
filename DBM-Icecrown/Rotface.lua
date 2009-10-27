@@ -41,28 +41,28 @@ function mod:WallSlime()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:SpellID(69508) then
+	if args:IsSpellID(69508) then
 		nextSlimeSpray:Start()
 		warnSlimeSpray:Show()
-	elseif args:SpellID(69774) then
+	elseif args:IsSpellID(69774) then
 		nextStickyOoze:Start()
 		warnStickyOoze:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsPlayer() and args:SpellID(71208) then
+	if args:IsPlayer() and args:IsSpellID(71208) then
 		specWarnOoze:Show()
 		if self.Options.PlaySoundOnStickyOoze then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
-	elseif args:SpellID(69760) then
+	elseif args:IsSpellID(69760) then
 		warnRadiatingOoze:Show()
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:SpellID(69761, 71212) and args:IsPlayer() then
+	if args:IsSpellID(69761, 71212) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
 	end
 end
