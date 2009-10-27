@@ -14,11 +14,11 @@ local optionTimerDur	= "Отсчет времени до \"%s\""
 local optionTimerCast	= "Время чтения заклинания \"%s\""
 
 
---------------------------------
--- Ahn’Kahet: The Old Kingdom --
---------------------------------
--- Prince Taldaram --
----------------------
+----------------------------------
+--  Ahn’Kahet: The Old Kingdom  --
+----------------------------------
+--  Prince Taldaram  --
+-----------------------
 L = DBM:GetModLocalization("Taldaram")
 
 L:SetGeneralLocalization({
@@ -43,9 +43,9 @@ L:SetOptionLocalization({
 })
 
 
------------------
--- Elder Nadox --
------------------
+-------------------
+--  Elder Nadox  --
+-------------------
 L = DBM:GetModLocalization("Nadox")
 
 L:SetGeneralLocalization({
@@ -89,9 +89,9 @@ L:SetOptionLocalization({
 })
 
 
--------------------
--- Herald Volazj --
--------------------
+---------------------
+--  Herald Volazj  --
+---------------------
 L = DBM:GetModLocalization("Volazj")
 
 L:SetGeneralLocalization({
@@ -110,9 +110,9 @@ L:SetOptionLocalization({
 })
 
 
---------------
--- Amanitar --
---------------
+----------------
+--  Amanitar  --
+----------------
 L = DBM:GetModLocalization("Amanitar")
 
 L:SetGeneralLocalization({
@@ -133,11 +133,11 @@ L:SetOptionLocalization({
 })
 
 
------------------
--- Azjol-Nerub --
--------------------------------
--- Krik'thir the Gatewatcher --
--------------------------------
+-------------------
+--  Azjol-Nerub  --
+---------------------------------
+--  Krik'thir the Gatewatcher  --
+---------------------------------
 L = DBM:GetModLocalization("Krikthir")
 
 L:SetGeneralLocalization({
@@ -158,9 +158,9 @@ L:SetOptionLocalization({
 })
 
 
---------------
--- Hadronox --
---------------
+----------------
+--  Hadronox  --
+----------------
 L = DBM:GetModLocalization("Hadronox")
 
 L:SetGeneralLocalization({
@@ -181,9 +181,9 @@ L:SetOptionLocalization({
 })
 
 
----------------
--- Anub'arak --
----------------
+-------------------------
+--  Anub'arak (Party)  --
+-------------------------
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
@@ -202,11 +202,11 @@ L:SetOptionLocalization({
 })
 
 
---------------------------------------
--- Caverns of Time - Old Stratholme --
---------------------------------------
--- Meathook --
---------------
+---------------------------------------
+--  Caverns of Time: Old Stratholme  --
+---------------------------------------
+--  Meathook  --
+----------------
 L = DBM:GetModLocalization("Meathook")
 
 L:SetGeneralLocalization({
@@ -229,9 +229,9 @@ L:SetOptionLocalization({
 })
 
 
-------------------------------
--- Salramm the Fleshcrafter --
-------------------------------
+--------------------------------
+--  Salramm the Fleshcrafter  --
+--------------------------------
 L = DBM:GetModLocalization("SalrammTheFleshcrafter")
 
 L:SetGeneralLocalization({
@@ -258,9 +258,9 @@ L:SetOptionLocalization({
 })
 
 
------------------------
--- Chrono-Lord Epoch --
------------------------
+-------------------------
+--  Chrono-Lord Epoch  --
+-------------------------
 L = DBM:GetModLocalization("ChronoLordEpoch")
 
 L:SetGeneralLocalization({
@@ -285,9 +285,9 @@ L:SetOptionLocalization({
 })
 
 
----------------
--- Mal'Ganis --
----------------
+-----------------
+--  Mal'Ganis  --
+-----------------
 L = DBM:GetModLocalization("MalGanis")
 
 L:SetGeneralLocalization({
@@ -309,9 +309,9 @@ L:SetOptionLocalization({
 	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
 })
 
------------------
--- Wave Timers --
------------------
+-------------------
+--  Wave Timers  --
+-------------------
 L = DBM:GetModLocalization("StratWaves")
 
 L:SetGeneralLocalization({
@@ -351,11 +351,11 @@ L:SetMiscLocalization({
 })
 
 
-----------------------
--- Drak'Tharon Keep --
-----------------------
--- Trollgore --
----------------
+------------------------
+--  Drak'Tharon Keep  --
+------------------------
+--  Trollgore  --
+-----------------
 L = DBM:GetModLocalization("Trollgore")
 
 L:SetGeneralLocalization({
@@ -372,9 +372,9 @@ L:SetOptionLocalization({
 })
 
 
-------------------------
--- Novos the Summoner --
-------------------------
+--------------------------
+--  Novos the Summoner  --
+--------------------------
 L = DBM:GetModLocalization("NovosTheSummoner")
 
 L:SetGeneralLocalization({
@@ -391,9 +391,9 @@ L:SetOptionLocalization({
 })
 
 
----------------
--- King Dred --
----------------
+-----------------
+--  King Dred  --
+-----------------
 L = DBM:GetModLocalization("KingDred")
 
 L:SetGeneralLocalization({
@@ -422,9 +422,9 @@ L:SetOptionLocalization({
 })
 
 
----------------------------
--- The Prophet Tharon'ja --
----------------------------
+-----------------------------
+--  The Prophet Tharon'ja  --
+-----------------------------
 L = DBM:GetModLocalization("ProphetTharonja")
 
 L:SetGeneralLocalization({
@@ -443,11 +443,11 @@ L:SetOptionLocalization({
 })
 
 
---------------
--- Gun'Drak --
---------------
--- Slad'ran --
---------------
+---------------
+--  Gundrak  --
+----------------
+--  Slad'ran  --
+----------------
 L = DBM:GetModLocalization("Sladran")
 
 L:SetGeneralLocalization({
@@ -468,9 +468,9 @@ L:SetOptionLocalization({
 })
 
 
--------------
--- Moorabi --
--------------
+---------------
+--  Moorabi  --
+---------------
 L = DBM:GetModLocalization("Moorabi")
 
 L:SetGeneralLocalization({
@@ -489,9 +489,9 @@ L:SetOptionLocalization({
 })
 
 
------------------------
--- Drakkari Colossus --		
------------------------
+-------------------------
+--  Drakkari Colossus  --		
+-------------------------
 L = DBM:GetModLocalization("BloodstoneAnnihilator")
 
 L:SetGeneralLocalization({
@@ -512,9 +512,9 @@ L:SetOptionLocalization({
 })
 
 
----------------
--- Gal'darah --
----------------
+-----------------
+--  Gal'darah  --
+-----------------
 L = DBM:GetModLocalization("Galdarah")
 
 L:SetGeneralLocalization({
@@ -530,9 +530,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
------------------------
--- Eck the Ferocious --
------------------------
+-------------------------
+--  Eck the Ferocious  --
+-------------------------
 L = DBM:GetModLocalization("Eck")
 
 L:SetGeneralLocalization({
@@ -549,11 +549,11 @@ L:SetOptionLocalization({
 })
 
 
-------------------------
--- Halls of Lightning --
-------------------------
--- General Bjarngrim --
------------------------
+--------------------------
+--  Halls of Lightning  --
+--------------------------
+--  General Bjarngrim  --
+-------------------------
 L = DBM:GetModLocalization("Gjarngrin")
 
 L:SetGeneralLocalization({
@@ -572,9 +572,9 @@ L:SetOptionLocalization({
 })
 
 
------------
--- Ionar --
------------
+-------------
+--  Ionar  --
+-------------
 L = DBM:GetModLocalization("Ionar")
 
 L:SetGeneralLocalization({
@@ -597,9 +597,9 @@ L:SetOptionLocalization({
 })
 
 
--------------
--- Volkhan --
--------------
+---------------
+--  Volkhan  --
+---------------
 L = DBM:GetModLocalization("Volkhan")
 
 
@@ -621,9 +621,9 @@ L:SetOptionLocalization({
 })
 
 
-------------
--- Kronus --
-------------
+--------------
+--  Kronus  --
+--------------
 L = DBM:GetModLocalization("Kronus")
 
 L:SetGeneralLocalization({
@@ -644,11 +644,11 @@ L:SetOptionLocalization({
 })
 
 
---------------------
--- Halls of Stone --
----------------------
--- Maiden of Grief --
----------------------
+----------------------
+--  Halls of Stone  --
+-----------------------
+--  Maiden of Grief  --
+-----------------------
 L = DBM:GetModLocalization("MaidenOfGrief")
 
 L:SetGeneralLocalization({
@@ -679,9 +679,9 @@ L:SetOptionLocalization({
 })
 
 
-----------------
--- Krystallus --
-----------------
+------------------
+--  Krystallus  --
+------------------
 L = DBM:GetModLocalization("Krystallus")
 L:SetGeneralLocalization({
 	name = "Кристаллус"
@@ -701,9 +701,9 @@ L:SetOptionLocalization({
 })
 
 
-----------------------------
--- Sjonnir the Ironshaper --
-----------------------------
+------------------------------
+--  Sjonnir the Ironshaper  --
+------------------------------
 L = DBM:GetModLocalization("SjonnirTheIronshaper")
 
 L:SetGeneralLocalization({
@@ -730,9 +730,9 @@ L:SetOptionLocalization({
 })
 
 
-------------------------------------
--- Brann Bronzebeard Escort Event --
-------------------------------------
+--------------------------------------
+--  Brann Bronzebeard Escort Event  --
+--------------------------------------
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
@@ -757,11 +757,11 @@ L:SetMiscLocalization({
 	Phase3	= "xxx анти-ошибка xxx"
 })
 
----------------
--- The Nexus --
----------------
--- Anomalus --
---------------
+-----------------
+--  The Nexus  --
+-----------------
+--  Anomalus  --
+----------------
 L = DBM:GetModLocalization("Anomalus")
 
 L:SetGeneralLocalization({
@@ -779,9 +779,9 @@ L:SetOptionLocalization({
 })
 
 
------------------------------
--- Ormorok the Tree-Shaper --
------------------------------
+-------------------------------
+--  Ormorok the Tree-Shaper  --
+-------------------------------
 L = DBM:GetModLocalization("OrmorokTheTreeShaper")
 
 L:SetGeneralLocalization({
@@ -810,9 +810,9 @@ L:SetOptionLocalization({
 })
 
 
---------------------------
--- Grand Magus Telestra --
---------------------------
+----------------------------
+--  Grand Magus Telestra  --
+----------------------------
 L = DBM:GetModLocalization("GrandMagusTelestra")
 
 L:SetGeneralLocalization({
@@ -841,9 +841,9 @@ L:SetMiscLocalization({
 })
 
 
------------------
--- Keristrasza --
------------------
+-------------------
+--  Keristrasza  --
+-------------------
 L = DBM:GetModLocalization("Keristrasza")
 
 L:SetGeneralLocalization({
@@ -874,9 +874,9 @@ L:SetOptionLocalization({
 })
 
 
----------------------------------
--- Commander Kolurg/Stoutbeard --
----------------------------------
+-----------------------------------
+--  Commander Kolurg/Stoutbeard  --
+-----------------------------------
 L = DBM:GetModLocalization("Commander")
 
 local commander = "Неизвестный"
@@ -908,11 +908,11 @@ L:SetOptionLocalization({
 })
 
 
-----------------
--- The Oculus --
------------------------------
--- Drakos the Interrogator --
------------------------------
+------------------
+--  The Oculus  --
+-------------------------------
+--  Drakos the Interrogator  --
+-------------------------------
 L = DBM:GetModLocalization("DrakosTheInterrogator")
 
 L:SetGeneralLocalization({
@@ -928,9 +928,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
---------------------
--- Mage-Lord Urom --
---------------------
+----------------------
+--  Mage-Lord Urom  --
+----------------------
 L = DBM:GetModLocalization("MageLordUrom")
 
 L:SetGeneralLocalization({
@@ -956,9 +956,9 @@ L:SetOptionLocalization({
 })
 
 
-------------------------
--- Varos Cloudstrider --
-------------------------
+--------------------------
+--  Varos Cloudstrider  --
+--------------------------
 L = DBM:GetModLocalization("VarosCloudstrider")
 
 L:SetGeneralLocalization({
@@ -977,9 +977,9 @@ L:SetOptionLocalization({
 })
 
 
--------------------------
--- Ley-Guardian Eregos --
--------------------------
+---------------------------
+--  Ley-Guardian Eregos  --
+---------------------------
 L = DBM:GetModLocalization("LeyGuardianEregos")
 
 L:SetGeneralLocalization({
@@ -1007,11 +1007,11 @@ L:SetOptionLocalization({
 
 
 
-------------------
--- Utgarde Keep --
----------------------
--- Prince Keleseth --
----------------------
+--------------------
+--  Utgarde Keep  --
+-----------------------
+--  Prince Keleseth  --
+-----------------------
 L = DBM:GetModLocalization("Keleseth")
 
 L:SetGeneralLocalization({
@@ -1032,10 +1032,10 @@ L:SetOptionLocalization({
 })
 
 
-------------------------------
--- Skarvald the Constructor --
--- & Dalronn the Controller --
-------------------------------
+--------------------------------
+--  Skarvald the Constructor  --
+--  & Dalronn the Controller  --
+--------------------------------
 L = DBM:GetModLocalization("ConstructorAndController")
 
 L:SetGeneralLocalization({
@@ -1058,9 +1058,9 @@ L:SetOptionLocalization({
 })
 
 
---------------------------
--- Ingvar the Plunderer --
---------------------------
+----------------------------
+--  Ingvar the Plunderer  --
+----------------------------
 L = DBM:GetModLocalization("IngvarThePlunderer")
 
 L:SetGeneralLocalization({
@@ -1084,15 +1084,16 @@ L:SetOptionLocalization({
 	WarningGrowl		= optionWarning:format(GetSpellInfo(42708)),
 	WarningWoeStrike	= optionWarning:format(GetSpellInfo(42730)),
 	TimerSmash		= optionTimerCast:format(GetSpellInfo(42723)),
-	TimerWoeStrike		= optionTimerDur:format(GetSpellInfo(42730))
+	TimerWoeStrike		= optionTimerDur:format(GetSpellInfo(42730)),
+	SpecialWarningSpelllock	= "Спец-предупреждение для запрета чар"
 })
 
 
-----------------------
--- Utgarde Pinnacle --
 ------------------------
--- Skadi the Ruthless --
-------------------------
+--  Utgarde Pinnacle  --
+--------------------------
+--  Skadi the Ruthless  --
+--------------------------
 L = DBM:GetModLocalization("SkadiTheRuthless")
 
 L:SetGeneralLocalization({
@@ -1116,9 +1117,9 @@ L:SetOptionLocalization({
 	TimerWhirlwindCD	= optionTimerCD:format(GetSpellInfo(59332))
 })
 
-------------
--- Ymiron --
-------------
+-------------------
+--  King Ymiron  --
+-------------------
 L = DBM:GetModLocalization("Ymiron")
 
 L:SetGeneralLocalization({
@@ -1137,9 +1138,10 @@ L:SetOptionLocalization({
 })
 
 
------------------------
--- Svala Sorrowgrave --
------------------------
+
+-------------------------
+--  Svala Sorrowgrave  --
+-------------------------
 L = DBM:GetModLocalization("SvalaSorrowgrave")
 
 L:SetGeneralLocalization({
@@ -1158,9 +1160,9 @@ L:SetOptionLocalization({
 })
 
 
----------------------
--- Gortok Palehoof --
----------------------
+-----------------------
+--  Gortok Palehoof  --
+-----------------------
 L = DBM:GetModLocalization("GortokPalehoof")
 
 L:SetGeneralLocalization({
@@ -1181,11 +1183,11 @@ L:SetOptionLocalization({
 })
 
 
----------------------
--- The Violet Hold --
----------------------
--- Cyanigosa --
----------------
+-----------------------
+--  The Violet Hold  --
+-----------------------
+--  Cyanigosa  --
+-----------------
 L = DBM:GetModLocalization("Cyanigosa")
 
 L:SetGeneralLocalization({
@@ -1212,9 +1214,9 @@ L:SetOptionLocalization({
 })
 
 
-------------
--- Erekem --
-------------
+--------------
+--  Erekem  --
+--------------
 L = DBM:GetModLocalization("Erekem")
 
 L:SetGeneralLocalization({
@@ -1233,9 +1235,9 @@ L:SetOptionLocalization({
 })
 
 
--------------
--- Ichoron --
--------------
+---------------
+--  Ichoron  --
+---------------
 L = DBM:GetModLocalization("Ichoron")
 
 L:SetGeneralLocalization({
@@ -1252,9 +1254,9 @@ L:SetOptionLocalization({
 })
 
 
----------------
--- Lavanthor --
----------------
+-----------------
+--  Lavanthor  --
+-----------------
 L = DBM:GetModLocalization("Lavanthor")
 
 L:SetGeneralLocalization({
@@ -1271,9 +1273,9 @@ L:SetOptionLocalization({
 })
 
 
-------------
--- Moragg --
-------------
+--------------
+--  Moragg  --
+--------------
 L = DBM:GetModLocalization("Moragg")
 
 L:SetGeneralLocalization({
@@ -1296,9 +1298,9 @@ L:SetOptionLocalization({
 })
 
 
-------------
--- Xevoss --
-------------
+--------------
+--  Xevozz  --
+--------------
 L = DBM:GetModLocalization("Xevoss")
 
 L:SetGeneralLocalization({
@@ -1315,9 +1317,9 @@ L:SetOptionLocalization({
 })
 
 
------------------------------
--- Zuramat the Obliterator --
------------------------------
+-------------------------------
+--  Zuramat the Obliterator  --
+-------------------------------
 L = DBM:GetModLocalization("Zuramat")
 
 L:SetGeneralLocalization({
@@ -1348,9 +1350,9 @@ L:SetOptionLocalization({
 })
 
 
--------------------
--- Portal Timers --
--------------------
+---------------------
+--  Portal Timers  --
+---------------------
 L = DBM:GetModLocalization("PortalTimers")
 
 L:SetGeneralLocalization({
@@ -1382,12 +1384,11 @@ L:SetMiscLocalization({
 })
 
 
----------------------
--- Trial of the Champion --
----------------------
--------------------
--- The Black Knight --
--------------------
+-----------------------------
+--  Trial of the Champion  --
+-----------------------------
+--  The Black Knight  --
+------------------------
 L = DBM:GetModLocalization("BlackKnight")
 
 L:SetGeneralLocalization({
@@ -1408,9 +1409,9 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	YellCombatEnd			= "Нет! Я не могу... снова... проиграть."
 })
--------------------
--- Grand Champions --
--------------------
+-----------------------
+--  Grand Champions  --
+-----------------------
 L = DBM:GetModLocalization("GrandChampions")
 
 L:SetGeneralLocalization({
@@ -1431,9 +1432,9 @@ L:SetMiscLocalization({
 	YellCombatEnd			= "Вы отлично сражались! Следующим испытанием станет битва с одним из членов Авангарда. Вы проверите свои силы в схватке с достойным соперником."
 })
 
--------------------
--- Argent Confessor Paletress --
--------------------
+----------------------------------
+--  Argent Confessor Paletress  --
+----------------------------------
 L = DBM:GetModLocalization("Confessor")
 
 L:SetGeneralLocalization({
@@ -1452,9 +1453,9 @@ L:SetMiscLocalization({
 --	YellCombatEnd			= "Вы отлично сражались! Следующим испытанием станет битва с одним из членов Авангарда. Вы проверите свои силы в схватке с достойным соперником."
 })
 
--------------------
--- Eadric the Pure --
--------------------
+-----------------------
+--  Eadric the Pure  --
+-----------------------
 L = DBM:GetModLocalization("EadricthePure")
 
 L:SetGeneralLocalization({
@@ -1476,12 +1477,11 @@ L:SetMiscLocalization({
 --	YellCombatEnd			= "Вы отлично сражались! Следующим испытанием станет битва с одним из членов Авангарда. Вы проверите свои силы в схватке с достойным соперником."
 })
 
----------------------
--- World Events --
----------------------
--------------------
--- Coren Direbrew --
--------------------
+--------------------
+--  World Events  --
+----------------------
+--  Coren Direbrew  --
+----------------------
 L = DBM:GetModLocalization("CorenDirebrew")
 
 L:SetGeneralLocalization({
@@ -1510,9 +1510,9 @@ L:SetMiscLocalization({
 	YellBarrel			= "Бочка на мне!"
 })
 
--------------------
--- Headless Horseman --
--------------------
+-------------------------
+--  Headless Horseman  --
+-------------------------
 L = DBM:GetModLocalization("HeadlessHorseman")
 
 L:SetGeneralLocalization({
@@ -1535,12 +1535,11 @@ L:SetMiscLocalization({
 	SayCombatEnd			= "Со смертью мы давно уже друзья...Что ждет теперь на пустоши меня?"
 })
 
+--------------------
+--  Pit of Saron  --
 ---------------------
--- Pit of Saron --
+--  Ick and Krick  --
 ---------------------
--------------------
--- Ick and Krick --
--------------------
 L = DBM:GetModLocalization("Ick")
 
 L:SetGeneralLocalization({
@@ -1563,9 +1562,9 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	IckPursuit			= "%s преследует вас!"
 })
--------------------
--- Forgemaster Garfrost --
--------------------
+----------------------------
+--  Forgemaster Garfrost  --
+----------------------------
 L = DBM:GetModLocalization("ForgemasterGarfrost")
 
 L:SetGeneralLocalization({
@@ -1589,9 +1588,9 @@ L:SetMiscLocalization({
 	SaroniteRockThrow		= "%s бросает огромный саронитовый валун в вас!"
 })
 
--------------------
--- Scourgelord Tyrannus --
--------------------
+----------------------------
+--  Scourgelord Tyrannus  --
+----------------------------
 L = DBM:GetModLocalization("ScourgelordTyrannus")
 
 L:SetGeneralLocalization({
@@ -1616,12 +1615,11 @@ L:SetMiscLocalization({
 	TyrannusYell			= "Увы, ",
 	HoarfrostTarget			= "^%%s пристально смотрит на (%S+) и готовится к ледяной атаке!"
 })
----------------------
--- Forge of Souls --
----------------------
--------------------
--- Bronjahm --
--------------------
+----------------------
+--  Forge of Souls  --
+----------------------
+--  Bronjahm  --
+----------------
 L = DBM:GetModLocalization("Bronjahm")
 
 L:SetGeneralLocalization({
@@ -1636,9 +1634,9 @@ L:SetOptionLocalization({
 	specwarnSoulstorm		= "Спец-предупреждение, когда Soulstorm (подбежать ближе)"
 })
 
--------------------
--- Devourer of Souls --
--------------------
+-------------------------
+--  Devourer of Souls  --
+-------------------------
 L = DBM:GetModLocalization("DevourerofSouls")
 
 L:SetGeneralLocalization({
