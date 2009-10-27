@@ -1,38 +1,40 @@
--- **********************************************************
--- **                Deadly Boss Mods - GUI                **
--- **             http://www.deadlybossmods.com            **
--- **********************************************************
+-- *********************************************************
+-- **               Deadly Boss Mods - Core               **
+-- **            http://www.deadlybossmods.com            **
+-- *********************************************************
 --
 -- This addon is written and copyrighted by:
---    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 --    * Paul Emmerich (Tandanu @ EU-Aegwynn) (DBM-Core)
--- 
+--    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
+--
 -- The localizations are written by:
---    * enGB/enUS: Nitram/Tandanu       http://www.deadlybossmods.com
---    * deDE: Nitram/Tandanu            http://www.deadlybossmods.com
---    * zhCN: Diablohu                  http://wow.gamespot.com.cn
+--    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
+--    * deDE: Tandanu					http://www.deadlybossmods.com
+--    * zhCN: Diablohu					http://wow.gamespot.com.cn
+--    * ruRU: BootWin					bootwin@gmail.com
 --    * zhTW: Hman						herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				kc10577@hotmail.com
+--    * koKR: BlueNyx					bluenyx@gmail.com
 --    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
---    * ruRU: BootWin					bootwin@gmail.com
---    * (add your names here!)
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
--- 
+--    * Omegal @ US-Whisperwind (some patches, and DBM-Party updates)
+--    * Tennberg (a lot of fixes in the enGB/enUS localization)
+--
 --
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
--- All included textures and sounds are copyrighted by their respective owners.
+-- All included textures and sounds are copyrighted by their respective owners, license information for these media files can be found in the modules that make use of them.
 --
 --
 --  You are free:
---    * to Share ?to copy, distribute, display, and perform the work
---    * to Remix ?to make derivative works
+--    * to Share - to copy, distribute, display, and perform the work
+--    * to Remix - to make derivative works
 --  Under the following conditions:
---    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work).
+--    * Attribution. You must attribute the work in the manner specified by the author or licensor (but not in any way that suggests that they endorse you or your use of the work). (A link to http://www.deadlybossmods.com is sufficient)
 --    * Noncommercial. You may not use this work for commercial purposes.
 --    * Share Alike. If you alter, transform, or build upon this work, you may distribute the resulting work only under the same or similar license to this one.
-
+--
 
 local revision =("$Revision$"):sub(12, -3) 
 local FrameTitle = "DBM_GUI_Option_"	-- all GUI frames get automatically a name FrameTitle..ID
