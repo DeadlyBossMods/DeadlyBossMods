@@ -105,7 +105,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Show timer for Flame Breath cooldown",
 	timerDeepBreathCast			= "Show timer for Flame Breath cast",
-	SpecWarnDevouringFlame		= "Show special warning when you are in a Devouring Flame",
+	SpecWarnDevouringFlame		= "Show special warning when you are in Devouring Flame",
 	PlaySoundOnDevouringFlame	= "Play sound when you are affected by Devouring Flame",
 	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
