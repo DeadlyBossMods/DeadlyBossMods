@@ -7,8 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningShatter	= mod:NewAnnounce("WarningShatter", 3, 50810)
-local timerShatterCD	= mod:NewTimer(25, "TimerShatterCD", 50810)
+local warningShatter	= mod:NewSpellAnnounce(50810, 3)
+local timerShatterCD	= mod:NewCDTimer(25, 50810)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"

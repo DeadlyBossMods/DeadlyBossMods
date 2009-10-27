@@ -7,9 +7,9 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningNova	= mod:NewAnnounce("WarningNova", 3, 52960)
-local timerNovaCD	= mod:NewTimer(30, "TimerNovaCD", 52960)
-local timerAchieve			= mod:NewAchievementTimer(120, 1867, "TimerSpeedKill") 
+local warningNova	= mod:NewSpellAnnounce(52960, 3)
+local timerNovaCD	= mod:NewCDTimer(30, 52960)
+local timerAchieve	= mod:NewAchievementTimer(120, 1867, "TimerSpeedKill") 
 
 mod:RegisterEvents(
 	"SPELL_CAST_START"

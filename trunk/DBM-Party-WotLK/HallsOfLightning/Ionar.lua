@@ -7,9 +7,9 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningOverload	= mod:NewAnnounce("WarningOverload", 2, 52658)
-local warningSplit	= mod:NewAnnounce("WarningSplit", 3, 52770)
-local timerOverload	= mod:NewTimer(10, "TimerOverload", 52657)
+local warningOverload	= mod:NewTargetAnnounce(52658, 2)
+local warningSplit	= mod:NewSpellAnnounce(52770, 3)
+local timerOverload	= mod:NewTargetTimer(10, 52657)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
