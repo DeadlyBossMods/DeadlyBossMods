@@ -1,9 +1,9 @@
 local L
 
 
-----------------------
---  FlameLeviathan  --
-----------------------
+-----------------------
+--  Flame Leviathan  --
+-----------------------
 L = DBM:GetModLocalization("FlameLeviathan")
 
 L:SetGeneralLocalization{
@@ -43,9 +43,9 @@ L:SetOptionLocalization{
 }
 
 
--------------
---  Ignis  --
--------------
+--------------------------------
+--  Ignis the Furnace Master  --
+--------------------------------
 L = DBM:GetModLocalization("Ignis")
 
 L:SetGeneralLocalization{
@@ -128,9 +128,9 @@ L:SetMiscLocalization{
 }
 
 
--------------
---  XT002  --
--------------
+----------------------------
+--  XT-002 Deconstructor  --
+----------------------------
 L = DBM:GetModLocalization("XT002")
 
 L:SetGeneralLocalization{
@@ -158,9 +158,9 @@ L:SetOptionLocalization{
 	SetIconOnGravityBombTarget	= "Set icon on Gravity Bomb target",
 }
 
--------------------
---  IronCouncil  --
--------------------
+--------------------
+--  Iron Council  --
+--------------------
 L = DBM:GetModLocalization("IronCouncil")
 
 L:SetGeneralLocalization{
@@ -230,9 +230,9 @@ L:SetMiscLocalization{
 }
 
 
----------------
---  Algalon  --
----------------
+----------------------------
+--  Algalon the Observer  --
+----------------------------
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
@@ -481,7 +481,9 @@ L:SetOptionLocalization{
 	UnstableEnergy	= "Show special warning for Unstable Energy"
 }
 
--- Elders
+----------------------
+--  Freya's Elders  --
+----------------------
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
@@ -505,9 +507,9 @@ L:SetOptionLocalization{
 }
 
 
--------------------
+---------------
 --  Mimiron  --
--------------------
+---------------
 L = DBM:GetModLocalization("Mimiron")
 
 L:SetGeneralLocalization{
@@ -615,7 +617,7 @@ L:SetMiscLocalization{
 
 
 ------------------
---  Yogg Saron  --
+--  Yogg-Saron  --
 ------------------
 L = DBM:GetModLocalization("YoggSaron")
 

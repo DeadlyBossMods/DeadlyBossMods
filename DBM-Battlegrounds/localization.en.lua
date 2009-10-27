@@ -111,9 +111,9 @@ L:SetOptionLocalization({
 	ShowAbBasesToWin		= "Show bases required to win"
 })
 
------------------------
---  Eye of the Storm --
------------------------
+------------------------
+--  Eye of the Storm  --
+------------------------
 L = DBM:GetModLocalization("EyeOfTheStorm")
 
 L:SetGeneralLocalization({
@@ -147,9 +147,9 @@ L:SetOptionLocalization({
 	ShowPointFrame	= "Show flag carrier and estimated points",
 })
 
---------------------
---  Warsong Gulch --
---------------------
+---------------------
+--  Warsong Gulch  --
+---------------------
 L = DBM:GetModLocalization("Warsong")
 
 L:SetGeneralLocalization({
