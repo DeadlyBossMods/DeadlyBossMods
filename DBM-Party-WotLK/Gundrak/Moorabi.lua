@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningTransform	= mod:NewAnnounce("WarningTransform", 3, 55098)
+local warningTransform	= mod:NewSpellAnnounce(55098, 3)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 55098 then
