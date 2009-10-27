@@ -156,9 +156,9 @@ L:SetOptionLocalization({
 })
 
 
-----------------
---  Lolotheb  --
-----------------
+---------------
+--  Loatheb  --
+---------------
 L = DBM:GetModLocalization("Loatheb")
 
 L:SetGeneralLocalization({
@@ -312,9 +312,9 @@ L:SetOptionCatLocalization({
 })
 
 
------------------
---  Razuvious  --
------------------
+----------------------------
+--  Instructor Razuvious  --
+----------------------------
 L = DBM:GetModLocalization("Razuvious")
 
 L:SetGeneralLocalization({
@@ -349,9 +349,9 @@ L:SetTimerLocalization({
 	TimerShieldWall		= "Shield Wall"
 })
 
---------------
---  Gothik  --
---------------
+----------------------------
+--  Gothik the Harvester  --
+----------------------------
 L = DBM:GetModLocalization("Gothik")
 
 L:SetGeneralLocalization({
@@ -395,9 +395,9 @@ L:SetMiscLocalization({
 })
 
 
-----------------
---  Horsemen  --
-----------------
+---------------------
+--  Four Horsemen  --
+---------------------
 L = DBM:GetModLocalization("Horsemen")
 
 L:SetGeneralLocalization({
