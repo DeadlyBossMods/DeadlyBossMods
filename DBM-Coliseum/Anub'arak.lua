@@ -75,8 +75,8 @@ function mod:OnCombatStart(delay)
 	timerFreezingSlash:Start(-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
-		preWarnShadowStrike:Schedule(25.5)
-		self:ScheduleMethod(30.5, "ShadowStrike")
+		preWarnShadowStrike:Schedule(25.5-delay)
+		self:ScheduleMethod(30.5-delay, "ShadowStrike")
 	end
 end
 
