@@ -474,7 +474,7 @@ L:SetTimerLocalization({
 })
 
 ------------------
---  Kel'thuzad  --
+--  Kel'Thuzad  --
 ------------------
 
 L = DBM:GetModLocalization("Kel'Thuzad")
@@ -484,15 +484,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	BlastTimer			= "Frost Blast Timer: 4 second Countdown timer until the victims die",
+	BlastTimer			= "Show Frost Blast timer (4 second timer until targets die)",
 	TimerPhase2			= "Show timer for Phase 2",
 	WarningBlastTargets	= "Show warning for Frost Blast",
 	WarningPhase2		= "Show warning for Phase 2",
 	WarningFissure		= "Show warning for Shadow Fissure",
 	WarningMana			= "Show warning for Detonate Mana",
 	WarningChainsTargets= "Show warning for Chains of Kel'Thuzad",
-	specwarnP2Soon 		= "Show special warning 10 sec before Kel'Thuzad is active",
-	ShowRange			= "Turn on the RangeFinder when Phase 2 starts",
+	specwarnP2Soon 		= "Show special warning 10 seconds before Kel'Thuzad engages",
+	ShowRange			= "Show range frame when Phase 2 starts",
 })
 
 L:SetMiscLocalization({
@@ -505,12 +505,12 @@ L:SetWarningLocalization({
 	WarningFissure		= "Shadow Fissure spawned",
 	WarningMana			= "Detonate Mana: >%s<",
 	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<",
-	specwarnP2Soon 		= "Kel'Thuzad is active in 10 Seconds"
+	specwarnP2Soon 		= "Kel'Thuzad engages in 10 Seconds"
 })
 
 L:SetTimerLocalization({
 	TimerPhase2			= "Phase 2",
-	BlastTimer			= "Heal now!"
+	BlastTimer			= "Heal now"
 })
 
 
