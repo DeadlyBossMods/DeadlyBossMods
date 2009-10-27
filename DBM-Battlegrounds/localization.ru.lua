@@ -3,12 +3,12 @@
 local L
 
 ----------------------------
---  General BG functions  --
+--  General BG Options  --
 ----------------------------
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "Общие функции ПБ"
+	name = "Общие параметры"
 })
 L:SetTimerLocalization({
 	TimerInvite = "%s"
@@ -47,9 +47,9 @@ L:SetMiscLocalization({
 	Start30 = "30 секунд до начала сражения на Арене.",
 	Start15 = "15 секунд до начала сражения на Арене."
 })
----------------
---  Alterac  --
----------------
+----------------------
+--  Alterac Valley  --
+----------------------
 L = DBM:GetModLocalization("Alterac")
 
 L:SetGeneralLocalization({
@@ -72,12 +72,12 @@ L:SetOptionLocalization({
 	TimerStart  = "Отсчет времени до начала битвы",
 	TimerTower = "Отсчет времени до захвата",
 	TimerGY = "Отсчет времени до захвата кладбищь",
-	AutoTurnIn = "Авто-сдача заданий в Альтеракской долине"
+	AutoTurnIn = "Автоматическая сдача заданий"
 })
 
----------------
---  Arathi  --
----------------
+--------------------
+--  Arathi Basin  --
+--------------------
 L = DBM:GetModLocalization("Arathi")
 
 L:SetGeneralLocalization({
@@ -109,9 +109,9 @@ L:SetOptionLocalization({
 	ShowAbBasesToWin = "Отображать базы, которые необходимо захватить"
 })
 
------------------------
---  Eye of the Storm --
------------------------
+------------------------
+--  Eye of the Storm  --
+------------------------
 L = DBM:GetModLocalization("EyeOfTheStorm")
 
 L:SetGeneralLocalization({
@@ -145,9 +145,9 @@ L:SetOptionLocalization({
 	ShowPointFrame = "Отображать флагоносца и предполагаемые очки",
 })
 
---------------------
---  Warsong Gulch --
---------------------
+---------------------
+--  Warsong Gulch  --
+---------------------
 L = DBM:GetModLocalization("Warsong")
 
 L:SetGeneralLocalization({
@@ -182,42 +182,42 @@ L:SetOptionLocalization({
 	ShowFlagCarrierErrorNote = "Сообщения об ошибках в режиме боя",
 })
 
-----------------
---  Archavon  --
-----------------
+----------------------------------
+--  Archavon the Stone Watcher  --
+----------------------------------
 
 L = DBM:GetModLocalization("Archavon")
 
 L:SetGeneralLocalization({
-	name = "Склеп Аркавона"
+	name 		= "Склеп Аркавона"
 })
 
 L:SetWarningLocalization({
-	WarningShards = "Град из острых камней на >%s<",
-	WarningGrab = "Страж бросается к >%s<"
+	WarningShards 	= "Град из острых камней на >%s<",
+	WarningGrab 	= "Страж бросается к >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerShards = "Каменные осколки: %s"
+	TimerShards 	= "Каменные осколки: %s"
 })
 
 L:SetMiscLocalization({
-	TankSwitch = "%%s нападает на (%S+)!"
+	TankSwitch 	= "%%s нападает на (%S+)!"
 })
 
 L:SetOptionLocalization({
-	TimerShards = "Отсчет времени до града из Каменных осколков",
-	WarningShards = "Предупреждение для Каменных осколков",
-	WarningGrab = "Предупреждение для Захвата"
+	TimerShards 	= "Отсчет времени до града из Каменных осколков",
+	WarningShards 	= "Предупреждение для Каменных осколков",
+	WarningGrab 	= "Предупреждение для Захвата"
 })
---------------
---  Emalon  --
---------------
+--------------------------------
+--  Emalon the Storm Watcher  --
+--------------------------------
 
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
-	name = "Эмалон Созерцатель Бури"
+	name 		= "Эмалон Созерцатель Бури"
 }
 
 L:SetWarningLocalization{
@@ -231,15 +231,16 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= "Спец-предупреждение для Вспышки молнии",
-	warnNova 		= "Предупреждение для Вспышки молнии",
-	warnOverCharge 		= "Предупреждение для Перезарядки",
+	specWarnNova 		= ("Спец-предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышка молнии"),
+	warnNova 		= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышка молнии"),
+	warnOverCharge 		= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Перезарядка"),
+	NovaSound		= "Звуковой сигнал при Вспышке молнии",
 	timerMobOvercharge	= "Отсчет времени для Избыточно заряда (суммирующийся отрицательный эффект)"
 }
 
----------------
---  Koralon  --
----------------
+---------------------------------
+--  Koralon the Flame Watcher  --
+---------------------------------
 
 L = DBM:GetModLocalization("Koralon")
 
@@ -248,7 +249,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder	= "Вы в Пылающей головне! Бегите!"
+	SpecWarnCinder	= "Вы в Пылающей головне - бегите"
 }
 
 L:SetTimerLocalization{
