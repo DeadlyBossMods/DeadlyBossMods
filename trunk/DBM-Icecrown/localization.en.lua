@@ -10,7 +10,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnImpale				= ">%S< is impaled",
+	warnImpale				= ">%s< is impaled",
 	specWarnWhirlwind		= "Whirlwind - Run away",
 	specWarnColdflame		= "Coldflame - Move"
 })
