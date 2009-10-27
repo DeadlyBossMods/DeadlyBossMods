@@ -367,24 +367,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFear		= spell,
-	WarningBite		= debuff,
-	WarningSlash	= spell
 })
 
 L:SetTimerLocalization({
-	TimerFearCD		= spellCD,
-	TimerSlash		= debuff,
-	TimerSlashCD	= spellCD
 })
 
 L:SetOptionLocalization({
-	WarningSlash	= optionWarning:format("Mangling/Piercing Slash"), 	-- needs translation
-	WarningFear		= optionWarning:format(GetSpellInfo(22686)),
-	WarningBite		= optionWarning:format(GetSpellInfo(48920)),
-	TimerFearCD		= optionTimerCD:format(GetSpellInfo(22686)),
-	TimerSlash		= optionTimerDur:format("Mangling/Piercing Slash"), -- needs translation
-	TimerSlashCD	= optionTimerCD:format("Mangling/Piercing Slash") 	-- needs translation
 })
 
 
@@ -398,14 +386,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCloud	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningCloud	= optionWarning:format(GetSpellInfo(49548))
 })
 
 
