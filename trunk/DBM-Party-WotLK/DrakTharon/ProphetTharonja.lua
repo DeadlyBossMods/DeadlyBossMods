@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warningCloud = mod:NewAnnounce("WarningCloud", 3, 49548)
+local warningCloud = mod:NewSpellAnnounce(49548, 3)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 49548 or args.spellId == 59969 then
