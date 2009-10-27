@@ -13,7 +13,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "Respiration profonde",
-	specWarnBlastNova	= "Garde du repaire onyxien incante une Nova explosive. BOUGEZ !",--http://www.wowhead.com/?npc=36561
+	SpecWarnBlastNova	= "Garde du repaire onyxien incante une Nova explosive. BOUGEZ !",--http://www.wowhead.com/?npc=36561
 	WarnWhelpsSoon		= "Les Jeunes dragonnets onyxien arrivent bientôt",
 	WarnPhase3Soon		= "Phase 3 bientôt"
 }
@@ -35,7 +35,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Montre une alerte pour la phase 3 (~41%)"
 }
 
-L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
+L:SetMiscLocalization{
 	Breath = "%s prend une grande inspiration...",
 	YellP2 = "Cet exercice dénué de sens m'ennuie. Je vais vous incinérer d'un seul coup !",
 	YellP3 = "Il semble que vous ayez besoin d'une autre leçon, mortels !"
