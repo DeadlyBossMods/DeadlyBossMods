@@ -8,18 +8,19 @@ mod:SetCreatureID(33113)
 mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
-	"SPELL_CAST_SUCCESS",
-	"SPELL_DAMAGE",
 	"SPELL_AURA_REMOVED",
-	"SPELL_AURA_APPLIED",	
+	"SPELL_AURA_APPLIED",
+	"SPELL_SUMMON",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
-
 
 local timerSystemOverload	= mod:NewBuffActiveTimer(20, 62475)
 local timerFlameVents		= mod:NewCastTimer(10, 62396)
 local timerPursued			= mod:NewTargetTimer(30, 62374)
+local warnHodirsFury		= mod:NewTargetAnnounce(62297)
 local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
+local warnWardofLife		= mod:NewSpecialWarning("warnWardofLife")
+--local warnWrithingLasher		= mod:NewSpecialWarning("warnWrithingLasher")
 
 local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
 local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2)
@@ -38,6 +39,13 @@ function mod:OnCombatStart(delay)
 	buildGuidTable()
 end
 
+function mod:SPELL_SUMMON(args)
+	if args.spellId == 62907 then		-- Ward of Life spawned (Creature id: 34275)
+		warnWardofLife:Show()
+--	elseif args.spellId == 62947 then	-- Writhing Lasher spawned (Creature id: 33387) May cause spam, Disabled until tested.
+--		warnWrithingLasher:Show()
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 62396 then		-- Flame Vents
@@ -56,6 +64,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if player == UnitName("player") then
 			pursueSpecWarn:Show()
 		end
+	elseif args.spellId == 62297 then		-- Hodir's Fury (Person is frozen)
+		warnHodirsFury:Show(args.destName)
 	end
 
 end
@@ -65,4 +75,3 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerFlameVents:Stop()
 	end
 end
-
