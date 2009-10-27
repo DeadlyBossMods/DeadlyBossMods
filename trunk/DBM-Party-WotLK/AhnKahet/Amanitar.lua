@@ -11,8 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningMini	= mod:NewAnnounce("WarningMini", 3, 57055)
-local timerMiniCD	= mod:NewTimer(30, "TimerMiniCD", 57055)
+local warningMini	= mod:NewSpellAnnounce(57055, 3)
+local timerMiniCD	= mod:NewCDTimer(30, 57055)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 57055 then
