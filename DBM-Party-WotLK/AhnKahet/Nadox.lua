@@ -7,8 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningPlague	= mod:NewAnnounce("WarningPlague", 2, 56130)
-local timerPlague	= mod:NewTimer(30, "TimerPlague", 56130)
+local warningPlague	= mod:NewTargetAnnounce(56130, 2)
+local timerPlague	= mod:NewTargetTimer(30, 56130)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -17,8 +17,8 @@ mod:RegisterEvents(
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 56130 or args.spellId == 59467 then
-		warningPlague:Show(args.spellName, args.destName)
-		timerPlague:Start(args.spellName, args.destName)
+		warningPlague:Show(args.destName)
+		timerPlague:Start(args.destName)
 	end
 end
 

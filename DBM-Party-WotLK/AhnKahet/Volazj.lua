@@ -11,8 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningInsanity	= mod:NewAnnounce("WarningInsanity", 3, 57496)
-local timerAchieve			= mod:NewAchievementTimer(120, 1862, "TimerSpeedKill") 
+local warningInsanity	= mod:NewSpellAnnounce(57496, 3)
+local timerAchieve		= mod:NewAchievementTimer(120, 1862, "TimerSpeedKill") 
 
 function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic5") then

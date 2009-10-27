@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningThundershock	= mod:NewAnnounce("WarningThundershock", 3, 56926)
-local warningCycloneStrike	= mod:NewAnnounce("WarningCycloneStrike", 3, 56885)
+local warningThundershock	= mod:NewSpellAnnounce(56926, 3)
+local warningCycloneStrike	= mod:NewSpellAnnounce(56885, 3)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 56926 or args.spellId == 60029 then

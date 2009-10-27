@@ -13,11 +13,11 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningEmbrace		= mod:NewAnnounce("WarningEmbrace", 2, 55959)
-local warningFlame		= mod:NewAnnounce("WarningFlame", 3, 55931)
+local warningEmbrace	= mod:NewTargetAnnounce(55959, 2)
+local warningFlame		= mod:NewSpellAnnounce(55931, 3)
 
-local timerEmbrace		= mod:NewTimer(20, "TimerEmbrace", 55959)
-local timerFlameCD		= mod:NewTimer(17, "TimerFlameCD", 55959)
+local timerEmbrace		= mod:NewTargetTimer(20, 55959)
+local timerFlameCD		= mod:NewCDTimer(17, 55959)
 
 
 function mod:SPELL_CAST_START(args)
@@ -29,8 +29,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 55959 or args.spellId == 59513 then
-		warningEmbrace:Show(args.spellName, args.destName)
-		timerEmbrace:Start(args.spellName, args.destName)
+		warningEmbrace:Show(args.destName)
+		timerEmbrace:Start(args.destName)
 	end
 end
 
