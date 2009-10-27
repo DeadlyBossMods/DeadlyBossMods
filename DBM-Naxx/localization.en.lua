@@ -483,14 +483,6 @@ L:SetGeneralLocalization({
 	name = "Kel'Thuzad"
 })
 
-L:SetWarningLocalization({
-	specwarnP2Soon  = "Kel'Thuzad is active in 10 Seconds"
-})
-
-L:SetTimerLocalization({
-	BlastTimer		= "Heal now!"
-})
-
 L:SetOptionLocalization({
 	BlastTimer			= "Frost Blast Timer: 4 second Countdown timer until the victims die",
 	TimerPhase2			= "Show timer for Phase 2",
@@ -512,11 +504,13 @@ L:SetWarningLocalization({
 	WarningPhase2		= "Phase 2",
 	WarningFissure		= "Shadow Fissure spawned",
 	WarningMana			= "Detonate Mana: >%s<",
-	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<"
+	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<",
+	specwarnP2Soon  = "Kel'Thuzad is active in 10 Seconds"
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "Phase 2"
+	TimerPhase2			= "Phase 2",
+	BlastTimer			= "Heal now!"
 })
 
 
