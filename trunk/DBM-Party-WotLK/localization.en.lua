@@ -185,7 +185,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
-	name = "Anubarak"
+	name = "Anub'arak"
 })
 
 L:SetWarningLocalization({
@@ -1037,7 +1037,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("ConstructorAndController")
 
 L:SetGeneralLocalization({
-	name = "Constructor & Controller"
+	name = "Skarvald & Dalronn"
 })
 
 L:SetWarningLocalization({
@@ -1120,7 +1120,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ymiron")
 
 L:SetGeneralLocalization({
-	name = "King Ymirion"
+	name = "King Ymiron"
 })
 
 L:SetWarningLocalization({
@@ -1295,12 +1295,12 @@ L:SetOptionLocalization({
 
 
 ------------
--- Xevoss --
+-- Xevozz --
 ------------
 L = DBM:GetModLocalization("Xevoss")
 
 L:SetGeneralLocalization({
-	name = "Xevoss"
+	name = "Xevozz"
 })
 
 L:SetWarningLocalization({
