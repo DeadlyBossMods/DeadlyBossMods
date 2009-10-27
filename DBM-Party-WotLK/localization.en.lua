@@ -1502,7 +1502,7 @@ L:SetOptionLocalization({
 	specWarnBrew			= "Show special warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun		= "Show special warning for Dark Brewmaiden's Stun",
 	PlaySoundOnDisarm		= "Play sound on Disarm",
-	YellOnBarrel			= "Yell when you have Barrel"
+	YellOnBarrel			= "Yell on Barrel"
 })
 
 L:SetMiscLocalization({
@@ -1553,7 +1553,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPursuit			= "Show warning when Pursuit is soon",
+	warnPursuit			= "Show pre-warning for pursue",
 	specWarnToxic		= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit		= "Show special warning when you are being pursued"
 --	SetIconOnPursuitTarget	= "Set icon on Pursuit target"
@@ -1607,7 +1607,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnIcyBlast			= "Show special warning when you take damage from Icy Blast",
 	specWarnHoarfrost			= "Show special warning when you are affected by Hoarfrost",
-	specWarnHoarfrostNear		= "Show special warning when Hoarfrost near you",
+	specWarnHoarfrostNear		= "Show special warning for Hoarfrost near you",
 	SetIconOnHoarfrostTarget	= "Set icon on Hoarfrost target"
 })
 
@@ -1649,5 +1649,5 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "Show special warning to stop DPS for Mirrored Soul"
+	specwarnMirroredSoul		= "Show special warning to stop DPS on Mirrored Soul"
 })
