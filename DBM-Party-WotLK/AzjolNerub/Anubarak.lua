@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningPound		= mod:NewAnnounce("WarningPound", 3, 53472)
+local warningPound		= mod:NewSpellAnnounce(53472, 3)
 local timerAchieve			= mod:NewAchievementTimer(240, 1860, "TimerSpeedKill") 
 
 function mod:OnCombatStart(delay)

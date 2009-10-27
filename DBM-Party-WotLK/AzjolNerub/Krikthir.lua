@@ -7,8 +7,8 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningCurse	= mod:NewAnnounce("WarningCurse", 2, 52592)
-local timerCurseCD	= mod:NewTimer(20, "TimerCurseCD", 52592)
+local warningCurse	= mod:NewSpellAnnounce(52592, 2)
+local timerCurseCD	= mod:NewCDTimer(20, 52592)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
