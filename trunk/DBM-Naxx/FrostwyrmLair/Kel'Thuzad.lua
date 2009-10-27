@@ -19,14 +19,26 @@ local warnBlastTargets		= mod:NewAnnounce("WarningBlastTargets", 2)
 local warnFissure			= mod:NewAnnounce("WarningFissure", 3)
 local warnMana				= mod:NewAnnounce("WarningMana", 2)
 local warnChainsTargets		= mod:NewAnnounce("WarningChainsTargets", 2)
-
+local blastTimer			= mod:NewTimer(4, "BlastTimer")
+local specwarnP2Soon		= mod:NewSpecialWarning("specwarnP2Soon")
 local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 
+mod:AddBoolOption("ShowRange", true)
 
 function mod:OnCombatStart(delay)
+	if self.Options.ShowRange then
+		self:ScheduleMethod(215-delay, "RangeToggle", true)
+	end	
+	specwarnP2Soon:Schedule(215-delay)
 	timerPhase2:Start()
 	warnPhase2:Schedule(225)
 	self:Schedule(225, DBM.RangeCheck.Show, DBM.RangeCheck, 10)
+end
+
+function mod:OnCombatEnd()
+	if self.Options.ShowRange then
+		self:RangeToggle(false)
+	end
 end
 
 local frostBlastTargets = {}
@@ -36,6 +48,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		table.insert(frostBlastTargets, args.destName)
 		self:UnscheduleMethod("AnnounceBlastTargets")
 		self:ScheduleMethod(0.5, "AnnounceBlastTargets")
+		blastTimer:Start()
 	elseif args.spellId == 27819 then -- Mana Bomb
 		warnMana:Show(args.destName)
 		self:SetIcon(args.destName, 8, 5.5)
@@ -69,3 +82,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:RangeToggle(show)
+	if show then
+		DBM.RangeCheck:Show(10)
+	else
+		DBM.RangeCheck:Hide()
+	end
+end
