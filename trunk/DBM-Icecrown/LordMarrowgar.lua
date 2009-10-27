@@ -54,6 +54,7 @@ end
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(69062) then							-- Impale (This function is iffy and I'm not sure it'll work)
 		warnImpale:Show(args.sourceName)
+		timerBoneSpike:Start()
 	end
 end
 
