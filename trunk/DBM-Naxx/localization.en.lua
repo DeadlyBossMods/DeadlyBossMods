@@ -505,7 +505,7 @@ L:SetWarningLocalization({
 	WarningFissure		= "Shadow Fissure spawned",
 	WarningMana			= "Detonate Mana: >%s<",
 	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<",
-	specwarnP2Soon  = "Kel'Thuzad is active in 10 Seconds"
+	specwarnP2Soon 		= "Kel'Thuzad is active in 10 Seconds"
 })
 
 L:SetTimerLocalization({
