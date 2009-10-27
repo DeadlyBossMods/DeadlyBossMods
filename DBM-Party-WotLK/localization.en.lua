@@ -1153,7 +1153,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSword	= optionWarning:format(GetSpellInfo(48276))
+	WarningSword	= optionWarning:format(GetSpellInfo(48276)),
+	[GetSpellInfo(48276)] = "Show warning for Ritual of the Sword",
 })
 
 
