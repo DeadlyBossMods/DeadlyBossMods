@@ -14,9 +14,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local timerNextWhirlwind			= mod:NewNextTimer(60, 69076) --Timer for all other whirlwinds.
+local timerNextWhirlwind			= mod:NewNextTimer(60, 69076)
 local warnBoneSpike					= mod:NewSpellAnnounce(69057)
-local timerBoneSpike				= mod:NewCDTimer(18, 69057) --Currently estimate do to limited combat log data, pug could not kill it.
+local timerBoneSpike				= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18sec cooldown timer.
 local timerWhirlwind				= mod:NewBuffActiveTimer(30, 69076)
 local warnImpale					= mod:NewAnnounce("warnImpale")
 local specWarnWhirlwind				= mod:NewSpecialWarning("specWarnWhirlwind")
