@@ -63,6 +63,7 @@ L.PizzaTimer_BroadCast		= "공격대에 알리기"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 		= "공격대 경보"
+L.RaidWarning_Header		= "Raid Warning Options"
 L.RaidWarnColors 		= "공격대 경보 색상"
 L.RaidWarnColor_1 		= "색상 1"
 L.RaidWarnColor_2 		= "색상 2"
@@ -86,7 +87,8 @@ L.BarTexture 				= "바 텍스쳐"
 L.BarStartColor	 			= "시작 색상"
 L.BarEndColor 				= "마지막 색상"
 L.ExpandUpwards				= "바를 위로 쌓기"
-
+L.Bar_Font					= "바에 사용할 폰트"
+L.Bar_FontSize				= "폰트 크기"
 L.Slider_BarOffSetX 		= "자세한 가로 위치: %d"
 L.Slider_BarOffSetY 		= "자세한 세로 위치: %d"
 L.Slider_BarWidth 			= "바 길이: %d"
@@ -116,6 +118,9 @@ L.SpecWarn_ResetMe			= "초기화"
 L.Panel_HPFrame				= "보스 체력 프레임"
 L.Area_HPFrame				= "체력 프레임 설정"
 L.HP_Enabled				= "해당 모드에서 끈 상태라도 항상 체력 프레임 보기(강제)"
+L.HP_GrowUpwards			= "보스 체력 프레임을 위로 쌓기"
+L.HP_ShowDemo				= "체력 프레임 보기"
+L.BarWidth					= "바 길이: %d"
 
 -- Tab: Spam Filter
 L.Panel_SpamFilter				= "스팸 필터"

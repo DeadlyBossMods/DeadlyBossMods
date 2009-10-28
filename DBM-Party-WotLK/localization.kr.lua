@@ -2,14 +2,14 @@ if GetLocale() ~= "koKR" then return end
 
 local L
 
-local spell		= "%s"				
-local debuff		= "%s: >%s<"			
-local spellCD		= "%s 쿨다운"			-- translate
-local spellSoon		= "곧 %s 사용"			-- translate
-local optionWarning	= "\"%s\" 경고 보기"		-- translate
+local spell				= "%s"				
+local debuff			= "%s: >%s<"			
+local spellCD			= "%s 쿨다운"			-- translate
+local spellSoon			= "곧 %s 사용"			-- translate
+local optionWarning		= "\"%s\" 경고 보기"		-- translate
 local optionPreWarning	= "\"%s\" 사전 경고 보기"	-- translate
 local optionSpecWarning	= "\"%s\" 특수 경고 보기"	-- translate
-local optionTimerCD	= "\"%s\" 쿨다운 타이머 보기"	-- translate
+local optionTimerCD		= "\"%s\" 쿨다운 타이머 보기"	-- translate
 local optionTimerDur	= "\"%s\" 지속 타이머 보기"	-- translate
 local optionTimerCast	= "\"%s\" 시전 타이머 보기"	-- translate
 
@@ -25,20 +25,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFlame		= spell,
-	WarningEmbrace		= debuff
+
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace		= debuff,
-	TimerFlameCD		= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningFlame		= optionWarning:format(GetSpellInfo(55931)),
-	WarningEmbrace		= optionWarning:format(GetSpellInfo(55959)),
-	TimerEmbrace		= optionTimerDur:format(GetSpellInfo(55959)),
-	TimerFlameCD		= optionTimerCD:format(GetSpellInfo(55931))
+
 })
 
 -----------------
@@ -51,16 +46,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPlague	= debuff
+
 })
 
 L:SetTimerLocalization({
-	TimerPlague	= debuff	
+
 })
 
 L:SetOptionLocalization({
-	WarningPlague	= optionWarning:format(GetSpellInfo(56130)),
-	TimerPlague	= optionTimerDur:format(GetSpellInfo(56130))	
+	
 })
 
 
@@ -74,16 +68,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningThundershock	= spell,
-	WarningCycloneStrike = spell	
+	
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningThundershock	= optionWarning:format(GetSpellInfo(56926)),
-	WarningCycloneStrike	= optionWarning:format(GetSpellInfo(60030))
+
 })
 
 -------------------
@@ -96,14 +88,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningInsanity	= spell
+
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningInsanity	= optionWarning:format(GetSpellInfo(57496))
+
 })
 
 
@@ -118,16 +110,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMini	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerMiniCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningMini	= optionWarning:format(GetSpellInfo(57055)),
-	TimerMiniCD	= optionTimerCD:format(GetSpellInfo(57055))
+
 })
 
 -----------------
@@ -142,16 +133,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCurse	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerCurseCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningCurse 	= optionWarning:format(GetSpellInfo(52592)),
-	TimerCurseCD	= optionTimerCD:format(GetSpellInfo(52592))
+
 })
 
 
@@ -165,16 +155,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningLeech	= spell,
-	WarningCloud	= spell
+
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningLeech	= optionWarning:format(GetSpellInfo(53030)),
-	WarningCloud	= optionWarning:format(GetSpellInfo(53400))
+
 })
 
 
@@ -184,18 +172,18 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
-	name = "아눕아락"
+	name = "아눕아락(5인)"
 })
 
 L:SetWarningLocalization({
-	WarningPound	= spell
+
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPound	= optionWarning:format(GetSpellInfo(53472)),
+
 })
 
 
@@ -211,18 +199,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningChains	= debuff
+
 })
 
 L:SetTimerLocalization({
-	TimerChains	= debuff,
-	TimerChainsCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningChains	= optionWarning:format(GetSpellInfo(52696)),
-	TimerChains	= optionTimerDur:format(GetSpellInfo(52696)),
-	TimerChainsCD	= optionTimerCD:format(GetSpellInfo(52696))
+
 })
 
 
@@ -236,22 +221,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCurse	= debuff,
-	WarningSteal	= debuff,
-	WarningGhoul	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerGhoulCD	= spellCD,
-	TimerCurse	= debuff
+
 })
 
 L:SetOptionLocalization({
-	WarningCurse	= optionWarning:format(GetSpellInfo(58845)),
-	WarningSteal	= optionWarning:format(GetSpellInfo(52709)),
-	WarningGhoul	= optionWarning:format(GetSpellInfo(52451)),
-	TimerGhoulCD	= optionTimerCD:format(GetSpellInfo(52451)),
-	TimerCurse	= optionTimerDur:format(GetSpellInfo(58845))
+
 })
 
 
@@ -265,20 +243,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTime	= spell,
-	WarningCurse	= debuff
+
 })
 
 L:SetTimerLocalization({
-	TimerTimeCD	= spellCD,
-	TimerCurse	= debuff
+
 })
 
 L:SetOptionLocalization({
-	WarningTime	= optionWarning:format("시간 왜곡"),	-- requires translation
-	WarningCurse	= optionWarning:format(GetSpellInfo(52772)),
-	TimerTimeCD	= optionTimerCD:format("시간 왜곡"),	-- translate
-	TimerCurse	= optionTimerDur:format(GetSpellInfo(52772))
+
 })
 
 ---------------
@@ -291,18 +264,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSleep	= debuff
+
 })
 
 L:SetTimerLocalization({
-	TimerSleep	= debuff,
-	TimerSleepCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningSleep	= optionWarning:format(GetSpellInfo(52721)),
-	TimerSleep	= optionTimerDur:format(GetSpellInfo(52721)),
-	TimerSleepCD	= optionTimerCD:format(GetSpellInfo(52721))
+
 })
 
 -----------------
@@ -398,24 +368,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFear	= spell,
-	WarningBite	= debuff,
-	WarningSlash	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerFear	= spellCD,
-	TimerSlash	= debuff,
-	TimerSlashCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningSlash	= optionWarning:format("관통의(짓눌러) 베기"), 	-- needs translation
-	WarningFear	= optionWarning:format(GetSpellInfo(22686)),
-	WarningBite	= optionWarning:format(GetSpellInfo(48920)),
-	TimerFear	= optionTimerCD:format(GetSpellInfo(22686)),
-	TimerSlash	= optionTimerDur:format("관통의(짓눌러) 베기"), 	-- needs translation
-	TimerSlashCD	= optionTimerCD:format("관통의(짓눌러) 베기") 	-- needs translation
+
 })
 
 
@@ -429,14 +390,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCloud	= spell
+
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningCloud	= optionWarning:format(GetSpellInfo(49548))
+
 })
 
 --------------
@@ -451,16 +412,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningNova	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerNovaCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningNova	= optionWarning:format(GetSpellInfo(55081)),
-	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(55081))
+
 })
 
 
@@ -474,14 +434,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTransform	= spell
+
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningTransform	= optionWarning:format(GetSpellInfo(55098))
+
 })
 
 
@@ -558,14 +518,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWhirlwind	= spell
+
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWhirlwind	= optionWarning:format(GetSpellInfo(52027))
+
 })
 
 
@@ -579,18 +539,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningOverload	= debuff,
-	WarningSplit	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerOverload	= debuff
+
 })
 
 L:SetOptionLocalization({
-	WarningOverload = optionWarning:format(GetSpellInfo(52658)),
-	WarningSplit	= optionWarning:format(GetSpellInfo(52770)),
-	TimerOverload	= optionTimerDur:format(GetSpellInfo(52658))
+
 })
 
 
@@ -628,16 +585,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningNova	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerNovaCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningNova	= optionWarning:format(GetSpellInfo(52960)),
-	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(52960))
+
 })
 
 
@@ -654,26 +610,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWoe	= debuff,
-	WarningSorrow	= spell,
-	WarningStorm	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerWoe	= debuff,
-	TimerSorrow	= spell,
-	TimerSorrowCD	= spellCD,
-	TimerStormCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningWoe	= optionWarning:format(GetSpellInfo(50761)),
-	WarningSorrow	= optionWarning:format(GetSpellInfo(50760)),
-	WarningStorm	= optionWarning:format(GetSpellInfo(50752)),
-	TimerWoe	= optionTimerDur:format(GetSpellInfo(50761)),
-	TimerSorrow	= optionTimerDur:format(GetSpellInfo(50760)),
-	TimerSorrowCD	= optionTimerCD:format(GetSpellInfo(50760)),
-	TimerStormCD	= optionTimerCD:format(GetSpellInfo(50752))
+
 })
 
 
@@ -710,22 +655,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningCharge	= debuff,
-	WarningRing	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerCharge	= debuff,
-	TimerChargeCD	= spellCD,
-	TimerRingCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningCharge	= optionWarning:format(GetSpellInfo(50834)),
-	WarningRing	= optionWarning:format(GetSpellInfo(50840)),
-	TimerCharge	= optionTimerDur:format(GetSpellInfo(50834)),
-	TimerChargeCD	= optionTimerCD:format(GetSpellInfo(50834)),
-	TimerRingCD	= optionTimerCD:format(GetSpellInfo(50840))
+
 })
 
 
@@ -752,9 +690,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull		= "Time to get some answers! Let's get this show on the road!",
-	Phase1	= "",
-	Phase2	= "",
-	Phase3	= ""
+	Phase1		= "xxx anti error xxx",
+	Phase2		= "xxx anti error xxx",
+	Phase3		= "xxx anti error xxx"
 })
 
 ---------------
@@ -769,13 +707,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningRiftSoon		= spellSoon,
-	WarningRiftNow		= spell,
+	WarningRiftSoon		= spellSoon
 })
 
 L:SetOptionLocalization({
-	WarningRiftSoon		= optionPreWarning:format(GetSpellInfo(47743)),
-	WarningRiftNow		= optionWarning:format(GetSpellInfo(47743))
+	WarningRiftSoon		= optionPreWarning:format(GetSpellInfo(47743))
 })
 
 
@@ -851,26 +787,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningChains 	= debuff,
-	WarningEnrage	= spell,
-	WarningNova	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerChains	= debuff,
-	TimerNova	= spell,
-	TimerChainsCD	= spellCD,
-	TimerNovaCD	= spellCD
+	TimerNova	= spell
 })
 
 L:SetOptionLocalization({
-	WarningChains	= optionWarning:format(GetSpellInfo(50997)),
-	WarningNova	= optionWarning:format(GetSpellInfo(48179)),
-	WarningEnrage	= optionWarning:format(GetSpellInfo(8599)),
-	TimerChains	= optionTimerDur:format(GetSpellInfo(50997)),
-	TimerChainsCD	= optionTimerCD:format(GetSpellInfo(50997)),
-	TimerNova	= optionTimerDur:format(GetSpellInfo(48179)),
-	TimerNovaCD	= optionTimerCD:format(GetSpellInfo(48179))
+	TimerNova	= optionTimerDur:format(GetSpellInfo(48179))
 })
 
 
@@ -891,20 +816,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningFear 		= spell,
-	WarningWhirlwind	= spell
+
 })
 
 L:SetTimerLocalization({
-	TimerFearCD		= spellCD,
-	TimerWhirlwindCD	= spellCD
+
 })
 
 L:SetOptionLocalization({
-	WarningFear		= optionWarning:format(GetSpellInfo(19134)),
-	WarningWhirlwind	= optionWarning:format(GetSpellInfo(38619)),
-	TimerFearCD		= optionTimerCD:format(GetSpellInfo(19134)),
-	TimerWhirlwindCD	= optionTimerCD:format(GetSpellInfo(38619))
+
 })
 
 
@@ -1001,9 +921,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningShift	= optionWarning:format(GetSpellInfo(51162)),
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." 종료"), 	-- translate the word 'ending'
-	WarningEnrage	= optionWarning:format(GetSpellInfo(51170)),
-	TimerShift	= optionTimerDur:format(GetSpellInfo(51162)),
-	TimerEnrage	= optionTimerDur:format(GetSpellInfo(51170))
+	WarningEnraged	= optionWarning:format(GetSpellInfo(51170)),
+	TimerShift		= optionTimerDur:format(GetSpellInfo(51162)),
+	TimerEnrage		= optionTimerDur:format(GetSpellInfo(51170))
 })
 
 
@@ -1076,16 +996,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSmash	= spell,
-	TimerWoeStrike	= debuff
+	TimerSmash				= spell,
+	TimerWoeStrike			= debuff
 })
 
 L:SetOptionLocalization({
-	WarningSmash		= optionWarning:format(GetSpellInfo(42723)),
-	WarningGrowl		= optionWarning:format(GetSpellInfo(42708)),
-	WarningWoeStrike	= optionWarning:format(GetSpellInfo(42730)),
-	TimerSmash		= optionTimerCast:format(GetSpellInfo(42723)),
-	TimerWoeStrike		= optionTimerDur:format(GetSpellInfo(42730))
+	WarningSmash			= optionWarning:format(GetSpellInfo(42723)),
+	WarningGrowl			= optionWarning:format(GetSpellInfo(42708)),
+	WarningWoeStrike		= optionWarning:format(GetSpellInfo(42730)),
+	TimerSmash				= optionTimerCast:format(GetSpellInfo(42723)),
+	TimerWoeStrike			= optionTimerDur:format(GetSpellInfo(42730)),
+	SpecialWarningSpelllock	= "주문 잠금 특수 경고 보기"	
 })
 
 
@@ -1155,7 +1076,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSword	= optionWarning:format(GetSpellInfo(48276))
 })
 
 ---------------------
@@ -1478,7 +1398,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel	= "맥주통 : >%s<", 
+	warnBarrel				= "맥주통 : >%s<", 
 --	specwarnDaughters		= "Daughter Spawned!",
 	specwarnDisarm			= "무장 해제. Move Away!",
 	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 마셔버리세요!",
@@ -1528,7 +1448,7 @@ L:SetMiscLocalization({
 -- Pit of Saron --
 ---------------------
 -------------------
--- Ick --
+-- Ick and Krick --
 -------------------
 L = DBM:GetModLocalization("Ick")
 
@@ -1543,7 +1463,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPursuit			= "곧 추격일 경우 경고 보기",
+	warnPursuit			= "추격일 경우 사전 경고 보기",
 	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
 	specWarnPursuit		= "당신을 추격 하게 될 경우 특수 경고 보기"
 --	SetIconOnPursuitTarget	= "Set icon on Pursuit target"	
@@ -1562,15 +1482,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock			= "Saronite Rock! Line of Sight now!",
-	specWarnSaroniteRock		= "Saronite Throw on you! Move!",
+	warnSaroniteRock		= "Saronite Rock - Line of sight now",
+	specWarnSaroniteRock	= "Saronite Throw on you - Move",
 	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "Show warning for Saronite Rock (to clear Permafrost)",
-	specWarnSaroniteRock		= "Special warning when Saronite Throw on you",	
-	specWarnPermafrost			= "Special warning when Permafrost stacks get to high (value not set in stone)"
+	specWarnSaroniteRock		= "Show special warning when you are affected by Saronite Throw",
+	specWarnPermafrost			= "Show special warning when Permafrost stacks get too high (value not set in stone)"
 --	SetIconOnSaroniteRockTarget	= "Set icon on Pursuit target"	
 })
 
