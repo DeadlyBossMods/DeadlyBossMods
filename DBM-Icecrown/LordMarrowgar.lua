@@ -51,11 +51,20 @@ do
 	end
 end
 
+local impaleTargets = {}
+
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(69062) then							-- Impale (This function is iffy and I'm not sure it'll work)
-		warnImpale:Show(args.sourceName)
-		timerBoneSpike:Start()
+		self:UnscheduleMethod("warnImpale")
+		impaleTargets[#impaleTargets + 1] = args.sourceName
+		mod:ScheduleMethod(0.2, "warnImpale")   end
 	end
+end
+
+function mod:warnImpale() 
+	warnImpale:Show(table.concat(impaleTargets, "<, >")) 
+	timerBoneSpike:Start() 
+	table.wipe(impaleTargets) 
 end
 
 function mod:SPELL_AURA_APPLIED(args)
