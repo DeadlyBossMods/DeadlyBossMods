@@ -684,12 +684,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningMerge		= "Show warning for Merge"		-- translate
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningMerge		= optionWarning:format("Merge"),	-- translate
 })
 
 L:SetMiscLocalization({
