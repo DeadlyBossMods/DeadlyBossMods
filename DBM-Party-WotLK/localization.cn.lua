@@ -1280,26 +1280,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningVoidShift		= debuff,
-	WarningVoidShifted		= debuff,
-	WarningShroudOfDarkness		= spell,
 	SpecialWarningVoidShifted 	= spell:format(GetSpellInfo(54343)),
 	SpecialShroudofDarkness 	= spell:format(GetSpellInfo(59745))
 })
 
 L:SetTimerLocalization({
-	TimerVoidShift			= debuff,
-	TimerVoidShifted		= debuff
 })
 
 L:SetOptionLocalization({
-	WarningVoidShift			= optionWarning:format(GetSpellInfo(59743)),
-	WarningVoidShifted			= optionWarning:format(GetSpellInfo(59343)),
-	WarningShroudOfDarkness			= optionWarning:format(GetSpellInfo(59745)),
-	SpecialWarningVoidShifted		= optionSpecWarning:format(GetSpellInfo(59343)),
-	SpecialShroudofDarkness			= optionSpecWarning:format(GetSpellInfo(59745)),
-	TimerVoidShift				= optionTimerDur:format(GetSpellInfo(59743)),
-	TimerVoidShifted			= optionTimerDur:format(GetSpellInfo(59343))
+	SpecialWarningVoidShifted	= optionSpecWarning:format(GetSpellInfo(54343)),
+	SpecialShroudofDarkness		= optionSpecWarning:format(GetSpellInfo(59745))
 })
 
 
