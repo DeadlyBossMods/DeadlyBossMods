@@ -27,27 +27,29 @@ L:SetOptionLocalization{
 	WarningBreath			= "為寒地之息顯示警告",
 --	WarningSpray			= "為痲痺噴霧顯示警告",
 	WarningRage			= "為泡沫之怒顯示警告",
-	WarningCharge			= "為撞擊的目標顯示警告",
+	WarningCharge			= "為衝鋒的目標顯示警告",
 	WarningToxin			= "為痲痺劇毒的目標顯示警告",
 	WarningBile			= "為燃燒膽汁的目標顯示警告",
 	SpecialWarningImpale3		= "為刺穿(大於3層)顯示特別警告",
 	SpecialWarningFireBomb		= "當你中了燃燒彈時顯示特別警告",
 	SpecialWarningSlimePool		= "為泥漿池顯示特別警告",
-	SpecialWarningSilence		= "為法術沉默顯示特別警告",
+	SpecialWarningSilence		= "為驚恐踐踏顯示特別警告",
 --	SpecialWarningSpray		= "當你中了痲痺噴霧時顯示特別警告",
 	SpecialWarningToxin		= "當你中了痲痺劇毒時顯示特別警告",
 	SpecialWarningBile		= "當你中了燃燒膽汁時顯示特別警告",
-	SpecialWarningCharge		= "當冰嚎即將撞擊你時顯示特別警告",
-	PingCharge			= "當冰嚎即將撞擊你時自動點擊小地圖",
-	SpecialWarningChargeNear	= "當冰嚎的撞擊在你附近時顯示特別警告",
-	SetIconOnChargeTarget		= "設置標記在撞擊的目標(頭顱)",
+	SpecialWarningCharge		= "當冰嚎即將衝鋒你時顯示特別警告",
+	PingCharge			= "當冰嚎即將衝鋒你時自動點擊小地圖",
+	SpecialWarningChargeNear	= "當冰嚎的衝鋒在你附近時顯示特別警告",
+	SetIconOnChargeTarget		= "設置標記在衝鋒的目標(頭顱)",
 	SetIconOnBileTarget		= "設置標記在燃燒膽汁的目標",
-	ClearIconsOnIceHowl		= "撞擊前消除所有標記",
-	TimerNextBoss			= "為下一隻王到來顯示計時器"
+	ClearIconsOnIceHowl		= "衝鋒前消除所有標記",
+	TimerNextBoss			= "為下一隻王到來顯示計時器",
+	TimerCombatStart			= "為戰鬥開始顯示計時器"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss			= "下一隻王到來"
+	TimerNextBoss			= "下一隻王到來",
+	TimerCombatStart			= "戰鬥開始"
 }
 
 L:SetWarningLocalization{
@@ -56,24 +58,25 @@ L:SetWarningLocalization{
 --	WarningSpray			= "%s: >%s<",
 	WarningBreath			= "寒地之息",
 	WarningRage			= "泡沫之怒",
-	WarningCharge			= "撞擊: >%s<",
+	WarningCharge			= "衝鋒: >%s<",
 	WarningToxin			= "痲痺劇毒: >%s<",
 	WarningBile			= "燃燒膽汁: >%s<",
-	SpecialWarningImpale3		= "你中了刺穿>%d<!",
-	SpecialWarningFireBomb		= "你中了燃燒彈- 快跑開!",
-	SpecialWarningSlimePool		= "泥漿池 - 快跑開!",
-	SpecialWarningSilence		= "1.5秒後 法術沉默!",
---	SpecialWarningSpray		= "你中了痲痺噴霧!",
-	SpecialWarningToxin		= "痲痺劇毒 - 快跑開!",
-	SpecialWarningCharge		= "你中了撞擊 - 快跑開!",
-	SpecialWarningChargeNear	= "你附近有人被撞擊 - 快跑開!",
-	SpecialWarningBile		= "你中了燃燒膽汁!"
+	SpecialWarningImpale3		= "你中了刺穿>%d<",
+	SpecialWarningFireBomb		= "你中了燃燒彈- 快跑開",
+	SpecialWarningSlimePool		= "泥漿池 - 快跑開",
+	SpecialWarningSilence		= "1.5秒後 驚恐踐踏",
+--	SpecialWarningSpray		= "你中了痲痺噴霧",
+	SpecialWarningToxin		= "痲痺劇毒 - 快跑開",
+	SpecialWarningCharge		= "你被衝鋒了 - 快跑開",
+	SpecialWarningChargeNear	= "你附近有人被衝鋒 - 快跑開",
+	SpecialWarningBile		= "你中了燃燒膽汁"
 }
 
 
--------------------
--- Lord Jaraxxus --
--------------------
+
+---------------------
+--  Lord Jaraxxus  --
+---------------------
 L = DBM:GetModLocalization("Jaraxxus")
 
 L:SetGeneralLocalization{
@@ -83,20 +86,20 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame			= "軍團烈焰: >%s<",
 	WarnTouch			= "賈拉克瑟斯之觸: >%s<",
-	WarnNetherPower			= "虛空威能在賈拉克瑟斯領主身上 - 快驅散!",
-	WarnPortalSoon			= "虛空傳送門 即將到來!",
-	WarnVolcanoSoon			= "煉獄爆發 即將到來!",
-	SpecWarnFlesh			= "你中了焚化血肉!",
-	SpecWarnTouch			= "你中了賈拉克瑟斯之觸!",
-	SpecWarnKiss			= "你中了仕女之吻!",
-	SpecWarnTouchNear		= "你附近的>%s<中了賈拉克瑟斯之觸!",
-	SpecWarnFlame			= "軍團烈焰 - 快跑開!",
-	SpecWarnNetherPower		= "現在驅散!",
-	SpecWarnFelInferno		= "魔化煉獄 - 快跑開!"
+	WarnNetherPower			= "賈拉克瑟斯領主擁有虛空威能 - 快驅散",
+	WarnPortalSoon			= "虛空傳送門 即將到來",
+	WarnVolcanoSoon			= "煉獄火山 即將到來",
+	SpecWarnFlesh			= "你中了焚化血肉",
+	SpecWarnTouch			= "你中了賈拉克瑟斯之觸",
+	SpecWarnKiss			= "你中了仕女之吻",
+	SpecWarnTouchNear		= "你附近的>%s<中了賈拉克瑟斯之觸",
+	SpecWarnFlame			= "軍團烈焰 - 快跑開",
+	SpecWarnNetherPower		= "現在驅散",
+	SpecWarnFelInferno		= "魔化煉獄 - 快跑開"
 }
 
 L:SetMiscLocalization{
-	WhisperFlame			= "你中了軍團烈焰 - 快跑開!",
+	WhisperFlame			= "你中了軍團烈焰 - 快跑開",
 	IncinerateTarget		= "焚化血肉: %s"
 }
 
@@ -105,13 +108,13 @@ L:SetOptionLocalization{
 	WarnTouch			= "為賈拉克瑟斯之觸顯示警告",
 	WarnNetherPower			= "當賈拉克瑟斯領主擁有虛空威能時警告 (驅散/竊取用)",
 	WarnPortalSoon			= "為虛空傳送門的出現顯示預先警告",
-	WarnVolcanoSoon			= "為煉獄爆發的出現顯示預先警告",
+	WarnVolcanoSoon			= "為煉獄火山的出現顯示預先警告",
 	SpecWarnFlame			= "當你中了軍團烈焰時顯示特別警告",
 	SpecWarnFlesh			= "當你中了焚化血肉時顯示特別警告",
 	SpecWarnTouch			= "當你中了賈拉克瑟斯之觸時顯示特別警告",
 	SpecWarnTouchNear		= "當你附近的人中了賈拉克瑟斯之觸時顯示特別警告",
 	SpecWarnKiss			= "當你中了仕女之吻時顯示特別警告",
-	SpecWarnNetherPower		= "為虛空威能顯示特別警告 (驅散賈拉克瑟斯領主用)",
+	SpecWarnNetherPower		= "為虛空威能顯示特別警告 (驅散/竊取用)",
 	SpecWarnFelInferno		= "當你在魔化煉獄附近時顯示特別警告",
 	TouchJaraxxusIcon		= "設置標記在賈拉克瑟斯之觸的目標 (十字)",
 	IncinerateFleshIcon		= "設置標記在焚化血肉的目標 (頭顱)",
@@ -121,9 +124,9 @@ L:SetOptionLocalization{
 }
 
 
------------------------
--- Faction Champions --
------------------------
+-------------------------
+--  Faction Champions  --
+-------------------------
 L = DBM:GetModLocalization("Champions")
 
 L:SetGeneralLocalization{
@@ -134,7 +137,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnHellfire		= "地獄烈焰 - 快跑開!",
+	SpecWarnHellfire		= "地獄烈焰 - 快跑開",
 	SpecWarnHandofProt		= "保護聖禦: >%s< - 快驅散",
 	SpecWarnDivineShield		= "聖盾術: >%s< - 快驅散"
 }
@@ -178,10 +181,9 @@ L:SetOptionLocalization{
 
 }
 
-
-------------------
--- Valkyr Twins --
-------------------
+---------------------
+--  Val'kyr Twins  --
+---------------------
 L = DBM:GetModLocalization("Twins")
 
 L:SetGeneralLocalization{
@@ -193,14 +195,14 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnSpecialSpellSoon		= "特別技能 即將到來!",
-	SpecWarnSpecial			= "快變換顏色!",
+	WarnSpecialSpellSoon		= "特別技能 即將到來",
+	SpecWarnSpecial			= "快變換顏色",
 	SpecWarnEmpoweredDarkness	= "強力黑暗 - 傷害加倍",
 	SpecWarnEmpoweredLight		= "強力光明 - 傷害加倍",
-	SpecWarnSwitchTarget		= "快換目標打雙子契印!",
-	SpecWarnKickNow			= "現在斷法!",
+	SpecWarnSwitchTarget		= "快換目標打雙子契印",
+	SpecWarnKickNow			= "現在斷法",
 	WarningTouchDebuff		= "光明或黑暗之觸: >%s<",
-	WarningPoweroftheTwins		= "雙子威能 - 加大治療於 >%s<!",
+	WarningPoweroftheTwins		= "雙子威能 - 加大治療於 >%s<",
 	SpecWarnPoweroftheTwins		= "雙子威能"
 }
 
@@ -218,7 +220,7 @@ L:SetOptionLocalization{
 	SpecWarnEmpoweredLight		= "為強力光明顯示特別警告",
 	SpecWarnSwitchTarget		= "當另一個首領施放雙子契印時顯示特別警告",
 	SpecWarnKickNow			= "當你可以斷法時顯示特別警告",
-	SpecialWarnOnDebuff		= "當你中了光明或黑暗之觸顯示特別警告 (需切換顏色)",
+	SpecialWarnOnDebuff		= "當你中了光明或黑暗之觸時顯示特別警告 (需切換顏色)",
 	SetIconOnDebuffTarget		= "設置標記在光明或黑暗之觸的目標 (英雄模式)",
 	WarningTouchDebuff		= "提示中了光明或黑暗之觸的目標",
 	WarningPoweroftheTwins		= "提示雙子威能首領的當前目標",
@@ -226,9 +228,9 @@ L:SetOptionLocalization{
 }
 
 
-------------------
--- Anub'arak --
-------------------
+-----------------
+--  Anub'arak  --
+-----------------
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
@@ -246,11 +248,11 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "10秒後 鑽出地面",
 	WarnSubmerge			= "阿努巴拉克鑽進地裡了",
 	WarnSubmergeSoon		= "10秒後 鑽進地裡",
-	WarnPursue			= "追擊尖刺: >%s<",
-	SpecWarnPursue			= "你被追擊了!",
-	warnAdds			= "奈幽掘洞者 出現了!",
-	SpecWarnShadowStrike		= "暗影打擊 - 快斷法!",
-	SpecWarnPCold			= "你中了透骨之寒!"
+	WarnPursue			= "追擊: >%s<",
+	SpecWarnPursue			= "你被追擊了 - 快跑去撞冰塊",
+	warnAdds			= "奈幽掘洞者 出現了",
+	SpecWarnShadowStrike	= "暗影打擊 - 快斷法",
+	SpecWarnPCold			= "你中了透骨之寒"
 }
 
 L:SetMiscLocalization{
@@ -265,15 +267,15 @@ L:SetOptionLocalization{
 	WarnSubmerge			= "為鑽進地裡顯示警告",
 	WarnSubmergeSoon		= "為鑽進地裡顯示預先警告",
 	SpecWarnPursue			= "當你被追擊時顯示特別警告",
-	warnAdds			= "為新的奈幽掘洞者出現顯示警告",
-	timerAdds			= "為新的奈幽掘洞者出現顯示計時器",
+	warnAdds				= "為奈幽掘洞者出現顯示警告",
+	timerAdds				= "為下一次 奈幽掘洞者出現顯示計時器",
 	TimerEmerge			= "為持續鑽地顯示計時器",
 	TimerSubmerge			= "為下一次 鑽地顯示計時器",
 	PlaySoundOnPursue		= "當你開始被追擊時播放音效",
-	PursueIcon			= "為被追擊的玩家設置標記",
-	WarnPursue			= "提示被追擊的玩家",
-	SpecWarnPCold			= "為透骨之寒顯示特別警告",
+	PursueIcon			= "設置標記在被追擊的目標 (頭顱)",
+	WarnPursue			= "提示被追擊的目標",
 	SpecWarnShadowStrike		= "為暗影打擊顯示特別警告 (斷法用)",
+	SpecWarnPCold			= "為透骨之寒顯示特別警告",
 	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
-	SetIconsOnPCold         	= "為透骨之寒的目標設置標記"
+	SetIconsOnPCold			= "設置標記在透骨之寒的目標"
 }

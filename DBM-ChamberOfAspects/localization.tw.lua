@@ -12,9 +12,9 @@ L:SetGeneralLocalization({
 })
 
 
----------------
+----------------
 --  Tenebron  --
----------------
+----------------
 L = DBM:GetModLocalization("Tenebron")
 
 L:SetGeneralLocalization({
@@ -22,9 +22,9 @@ L:SetGeneralLocalization({
 })
 
 
----------------
+----------------
 --  Vesperon  --
----------------
+----------------
 L = DBM:GetModLocalization("Vesperon")
 
 L:SetGeneralLocalization({
@@ -32,9 +32,9 @@ L:SetGeneralLocalization({
 })
 
 
----------------
+------------------
 --  Sartharion  --
----------------
+------------------
 L = DBM:GetModLocalization("Sartharion")
 
 L:SetGeneralLocalization({
@@ -46,32 +46,32 @@ L:SetWarningLocalization({
 	WarningTenebron			= "坦納伯朗進入戰鬥",
 	WarningShadron			= "夏德朗進入戰鬥",
 	WarningVesperon			= "維斯佩朗進入戰鬥",
-	WarningFireWall			= "火牆!",
+	WarningFireWall			= "炎嘯",
 	WarningVesperonPortal		= "維斯佩朗的傳送門!",
 	WarningTenebronPortal		= "坦納伯朗的傳送門!",
 	WarningShadronPortal		= "夏德朗的傳送門!",
 })
 
 L:SetTimerLocalization({
-	TimerWall			= "火牆冷卻",
+	TimerWall			= "炎嘯冷卻",
 	TimerTenebron			= "坦納伯朗進入戰鬥",
 	TimerShadron			= "夏德朗進入戰鬥",
 	TimerVesperon			= "維斯佩朗進入戰鬥"
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall		= "為\"火牆\"播放音效",
-	AnnounceFails			= "公佈踩中虛空區域和撞上火牆的玩家到團隊頻道(需要開啟團隊廣播及團長/隊長權限)",
+	PlaySoundOnFireWall		= "為\"炎嘯\"播放音效",
+	AnnounceFails			= "公佈踩中暗影裂縫和撞上炎嘯的玩家到團隊頻道(需要團隊隊長或助理權限)",
 
-	TimerWall			= "為\"火牆\"顯示計時器",
-	TimerTenebron			= "為坦納伯朗顯示計時器",
-	TimerShadron			= "為夏德朗顯示計時器",
-	TimerVesperon			= "為維斯佩朗顯示計時器",
+	TimerWall			= "為\"炎嘯\"顯示計時器",
+	TimerTenebron			= "為坦納伯朗到來顯示計時器",
+	TimerShadron			= "為夏德朗到來顯示計時器",
+	TimerVesperon			= "為維斯佩朗到來顯示計時器",
 
-	WarningFireWall			= "顯示\"火牆\"的特別警告",
-	WarningTenebron			= "顯示坦納伯朗出現計時",
-	WarningShadron			= "顯示夏德朗出現計時",
-	WarningVesperon			= "顯示維斯佩朗出現計時",
+	WarningFireWall			= "為\"炎嘯\"顯示特別警告",
+	WarningTenebron			= "為坦納伯朗到來顯示警告",
+	WarningShadron			= "為夏德朗到來顯示警告",
+	WarningVesperon			= "為維斯佩朗到來顯示警告",
 
 	WarningTenebronPortal		= "為坦納伯朗的傳送門顯示特別警告",
 	WarningShadronPortal		= "為夏德朗的傳送門顯示特別警告",
@@ -84,10 +84,10 @@ L:SetMiscLocalization({
 	NameTenebron			= "坦納伯朗",
 	NameShadron			= "夏德朗",
 	NameVesperon			= "維斯佩朗",
-	FireWallOn			= "火牆: %s",
-	VoidZoneOn			= "虛空區域: %s",
-	VoidZones			= "踩中虛空區域(這一次): %s",
-	FireWalls			= "撞上火牆 (這一次): %s",
+	FireWallOn			= "炎嘯: %s",
+	VoidZoneOn			= "暗影裂縫: %s",
+	VoidZones			= "踩中暗影裂縫(這一次): %s",
+	FireWalls			= "撞上炎嘯 (這一次): %s",
 	--[[ not in use; don't translate.
 	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
 	Shadron		= "Shadron! Come to me! All is at risk!",
