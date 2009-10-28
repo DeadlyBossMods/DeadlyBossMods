@@ -13,7 +13,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warningRiftSoon		= mod:NewAnnounce("WarningRiftSoon", 2, 47743)
+local warningRiftSoon		= mod:NewSoonAnnounce(47743, 2)
 local warningRiftNow		= mod:NewSpellAnnounce(47743, 3)
 
 local warnedRift = false

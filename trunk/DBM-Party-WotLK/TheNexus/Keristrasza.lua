@@ -17,7 +17,7 @@ local warningNova		= mod:NewSpellAnnounce(48179, 3)
 local warningEnrage		= mod:NewSpellAnnounce(8599, 3)
 local timerChains		= mod:NewTargetTimer(10, 50997)
 local timerChainsCD		= mod:NewCDTimer(25, 50997)
-local timerNova			= mod:NewTimer(10, "TimerNova", 48179)
+local timerNova			= mod:NewBuffActiveTimer(10, 48179)
 local timerNovaCD		= mod:NewCDTimer(25, 48179)
 
 function mod:SPELL_CAST_SUCCESS(args)

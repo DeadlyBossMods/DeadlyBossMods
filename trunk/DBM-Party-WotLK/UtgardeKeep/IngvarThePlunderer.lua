@@ -13,11 +13,11 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningSmash		= mod:NewAnnounce("WarningSmash", 1, 42723)
-local warningGrowl		= mod:NewAnnounce("WarningGrowl", 3, 42708)
-local warningWoeStrike		= mod:NewAnnounce("WarningWoeStrike", 2, 42730)
-local timerSmash		= mod:NewTimer(3, "TimerSmash", 42723)
-local timerWoeStrike		= mod:NewTimer(10, "TimerWoeStrike", 42723)
+local warningSmash		= mod:NewSpellAnnounce(42723, 1)
+local warningGrowl		= mod:NewSpellAnnounce(42708, 3)
+local warningWoeStrike	= mod:NewTargetAnnounce(42730, 2)
+local timerSmash		= mod:NewCastTimer(3, 42723)
+local timerWoeStrike	= mod:NewTargetTimer(10, 42723)
 
 local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock")
 

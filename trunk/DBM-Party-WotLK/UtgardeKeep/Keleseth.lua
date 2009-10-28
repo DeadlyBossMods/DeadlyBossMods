@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningTomb	= mod:NewAnnounce("WarningTomb", 4, 48400)
-local timerTomb		= mod:NewTimer(10, "TimerTomb", 48400)
+local warningTomb	= mod:NewTargetAnnounce(48400, 4)
+local timerTomb		= mod:NewTargetTimer(10, 48400)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48400 then
