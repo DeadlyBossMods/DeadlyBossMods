@@ -34,7 +34,7 @@ L.Disable		= "Désactiver"
 
 L.NoSound		= "Pas de Son"
 
-L.IconsInUse	= "Icônes utilisées par cette addon"
+L.IconsInUse	= "Icônes utilisées par cet addon"
 
 -- Tab: Boss Statistics
 L.BossStatistics		= "Statistiques des boss"

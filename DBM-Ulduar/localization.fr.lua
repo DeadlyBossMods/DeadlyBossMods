@@ -483,7 +483,9 @@ L:SetOptionLocalization{
 	UnstableEnergy	= "Montre une alerte spéciale pour l'énergie instable"
 }
 
--- Elders
+----------------------
+--  Freya's Elders  --
+----------------------
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
