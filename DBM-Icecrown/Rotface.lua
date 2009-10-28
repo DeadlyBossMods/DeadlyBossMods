@@ -22,7 +22,7 @@ local nextStickyOoze		= mod:NewNextTimer(16, 69774)
 local warnStickyOoze		= mod:NewSpellAnnounce(69774)
 
 local specWarnStickyOoze	= mod:NewSpecialWarning("SpecWarnStickyOoze")
-mod:AddBoolOption("PlaySoundOnStickyOoze", true, "announce")
+local soundStickyOoze		= mod:NewSound(69760)
 
 local warnRadiatingOoze		= mod:NewSpellAnnounce(69760)
 local specWarnRadiatingOoze	= mod:NewSpecialWarning("SpecWarnRadiationOoze")
@@ -53,9 +53,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsPlayer() and args:IsSpellID(71208) then
 		specWarnOoze:Show()
-		if self.Options.PlaySoundOnStickyOoze then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
+		soundStickyOoze:Play()
 	elseif args:IsSpellID(69760) then
 		warnRadiatingOoze:Show()
 	end
