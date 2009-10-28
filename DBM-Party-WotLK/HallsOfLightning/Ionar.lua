@@ -9,7 +9,7 @@ mod:RegisterCombat("combat")
 
 local warningOverload	= mod:NewTargetAnnounce(52658, 2)
 local warningSplit	= mod:NewSpellAnnounce(52770, 3)
-local timerOverload	= mod:NewTargetTimer(10, 52657)
+local timerOverload	= mod:NewTargetTimer(10, 52658)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -17,7 +17,7 @@ mod:RegisterEvents(
 )
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 52657 or args.spellId == 59795 then
+	if args.spellId == 52658 or args.spellId == 59795 then
 		warningOverload:Show(args.spellName, args.destName)
 		timerOverload:Start(args.spellName, args.destName)
 	end
