@@ -120,7 +120,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:UNIT_DIED(args)
-	if args:IsPlayer() then
+	if self:IsInCombat() and args:IsPlayer() then
 		sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\thats-a-fucking-fifty-dkp-minus.mp3")
 	end
 end
