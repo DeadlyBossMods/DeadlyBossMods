@@ -16,7 +16,7 @@ mod:RegisterEvents(
 local warningPoison		= mod:NewTargetAnnounce(59331, 2)
 local warningWhirlwind	= mod:NewSpellAnnounce(59322, 3)
 local timerPoison		= mod:NewTargetTimer(12, 59331)
-local timerWhirlwindCD	= mod:NewCCTimer(30, 59322)
+local timerWhirlwindCD	= mod:NewCDTimer(30, 59322)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59331 or args.spellId == 50255 then
