@@ -58,18 +58,22 @@ function mod:SPELL_SUMMON(args)
 		self:UnscheduleMethod("warnImpale")
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		mod:ScheduleMethod(0.2, "warnImpale")   end
+	timerBoneSpike:Start()
 	end
 end
 
 function mod:warnImpale() 
 	warnImpale:Show(table.concat(impaleTargets, "<, >")) 
-	timerBoneSpike:Start() 
 	table.wipe(impaleTargets) 
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69076) then						-- Whirlwind Begins
 		timerWhirlwind:Show(args.destName)
+--[[	elseif args:IsSpellID(69065) then					-- Impale (this function is a last resort if summon doesn't work. This happens at least 1-2 seconds after the summon event and after person has already taken damage from it.
+		self:UnscheduleMethod("warnImpale")
+		impaleTargets[#impaleTargets + 1] = args.destName
+		mod:ScheduleMethod(0.2, "warnImpale")   end]]--
 	end
 end
 
