@@ -6,7 +6,7 @@ DBM_CORE_LOAD_GUI_ERROR			= "Не удалось загрузить GUI: %s"
 
 DBM_CORE_COMBAT_STARTED			= "%s вступает в бой. Удачи! :)";
 DBM_CORE_BOSS_DOWN			= "%s погибает спустя %s!"
-DBM_CORE_BOSS_DOWN_LONG			= "%s погибает спустя %s! Последний бой длился %s, лучший бой: %s."
+DBM_CORE_BOSS_DOWN_LONG			= "%s погибает спустя %s! Последний бой длился %s, лучший бой длился %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s погибает спустя %s! Это новая запись! (Предшествующая запись была %s)"
 DBM_CORE_COMBAT_ENDED			= "Бой с %s длился %s"
 
