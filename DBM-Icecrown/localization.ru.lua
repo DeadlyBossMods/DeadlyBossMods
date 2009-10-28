@@ -12,16 +12,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnImpale				= ">%S< проткнут(а)",
-	specWarnWhirlwind			= "Вихрь - бегите",
-	specWarnColdflame			= "Холодное пламя - отбегите"
+	warnImpale			= ">%S< проткнут(а)",
+	specWarnWhirlwind		= "Вихрь - бегите",
+	specWarnColdflame		= "Холодное пламя - отбегите"
 })
 
 L:SetOptionLocalization({
-	warnImpale				= "Предупредить о проткнутой цели",
-	specWarnWhirlwind			= "Спец-предупреждение для Вихря",
-	specWarnColdflame			= "Спец-предупреждение, когда вы получаете урон от Холодного пламени",
-	PlaySoundOnWhirlwind			= "Звуковой сигнал при Вихре"
+	warnImpale			= "Предупредить о проткнутой цели",
+	specWarnWhirlwind		= "Спец-предупреждение для Вихря",
+	specWarnColdflame		= "Спец-предупреждение, когда вы получаете урон от Холодного пламени",
+	PlaySoundOnWhirlwind		= "Звуковой сигнал при Вихре"
 })
 
 
@@ -48,13 +48,13 @@ L:SetGeneralLocalization({
 	name = "Гниломорд"
 })
 L:SetWarningLocalization({
-	SpecWarnStickyOoze	= "Липкая жижа - бегите"
+	SpecWarnStickyOoze		= "Липкая жижа - бегите"
 })
 L:SetOptionLocalization({
-	SpecWarnStickyOoze	= "Спец-предупреждение для Липкой жижи"
+	SpecWarnStickyOoze		= "Спец-предупреждение для Липкой жижи"
 })
 L:SetMiscLocalization({
-	YellSlimePipes		= "Хорошие новости,"	-- Professor Putricide
+	YellSlimePipes		= "Хорошие новости,"	-- Good news, everyone! I've fixed the poison slime pipes!
 })
 
 
