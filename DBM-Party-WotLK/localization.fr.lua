@@ -78,14 +78,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningThundershock	= spell
+	WarningThundershock		= spell
+	WarningCycloneStrike	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningThundershock	= optionWarning:format(GetSpellInfo(56926)),
+	WarningThundershock		= optionWarning:format(GetSpellInfo(56926)),
+	WarningCycloneStrike	= optionWarning:format(GetSpellInfo(60030))
 })
 
 
@@ -740,14 +742,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningPhase	= "Phase %d"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningPhase	= optionWarning:format("Phase #")
 })
 
+L:SetMiscLocalization({
+	Pull	= "Time to get some answers! Let's get this show on the road!",
+	Phase1	= "xxx anti error xxx",
+	Phase2	= "xxx anti error xxx",
+	Phase3	= "xxx anti error xxx"
+})
 
 ---------------
 -- The Nexus --
@@ -1470,8 +1480,7 @@ L:SetMiscLocalization({
 })
 
 ---------------------
--- Holiday --
----------------------
+--  World Events  --
 -------------------
 -- Coren Direbrew --
 -------------------
@@ -1530,9 +1539,8 @@ L:SetMiscLocalization({
 
 ---------------------
 -- Pit of Saron --
----------------------
 -------------------
--- Ick --
+--  Ick and Krick  --
 -------------------
 L = DBM:GetModLocalization("Ick")
 
@@ -1612,7 +1620,6 @@ L:SetMiscLocalization({
 ---------------------
 -- Forge of Souls --
 ---------------------
--------------------
 -- Bronjahm --
 -------------------
 L = DBM:GetModLocalization("Bronjahm")
