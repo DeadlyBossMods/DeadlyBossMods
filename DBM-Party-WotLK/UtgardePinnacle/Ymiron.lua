@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningBane	= mod:NewAnnounce("WarningBane", 3, 48294)
+local warningBane	= mod:NewSpellAnnounce(48294, 3)
 
 function mod:APELL_AURA_APPLIED(args)
 	if args.spellId == 48294 then

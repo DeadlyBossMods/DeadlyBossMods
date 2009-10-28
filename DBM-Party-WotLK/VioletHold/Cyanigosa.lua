@@ -7,11 +7,11 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningVacuum	= mod:NewAnnounce("WarningVacuum", 1, 58694)
-local warningBlizzard	= mod:NewAnnounce("WarningBlizzard", 3, 58693)
-local warningMana	= mod:NewAnnounce("WarningMana", 2, 59374)
-local timerVacuumCD	= mod:NewTimer(35, "TimerVacuumCD", 58694)
-local timerMana		= mod:NewTimer(8, "TimerMana", 59374)
+local warningVacuum		= mod:NewSpellAnnounce(58694, 1)
+local warningBlizzard	= mod:NewSpellAnnounce(58693, 3)
+local warningMana		= mod:NewTargetAnnounce(59374, 2)
+local timerVacuumCD		= mod:NewCDTimer(35, 58694)
+local timerMana			= mod:NewTargetTimer(8, 59374)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
