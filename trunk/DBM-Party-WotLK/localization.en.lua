@@ -415,16 +415,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningElemental	= "Elemental Phase",		-- translate :)
-	WarningStone		= "Colossus Phase"		-- translate :)
+	WarningElemental	= "Elemental phase",		-- translate :)
+	WarningStone		= "Colossus phase"		-- translate :)
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningElemental	= "Show warning for Elemental Phase",	-- translate ;)
-	WarningStone		= "Show warning for Colossus Phase"		-- translate :)
+	WarningElemental	= "Show warning for Elemental phase",	-- translate ;)
+	WarningStone		= "Show warning for Colossus phase"		-- translate :)
 })
 
 
