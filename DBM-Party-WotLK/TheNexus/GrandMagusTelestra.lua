@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warningSplitSoon	= mod:NewAnnounce("WarningSplitSoon", 2, 19569)
-local warningSplitNow	= mod:NewSpellAnnounce("WarningSplitNow", 3, 19569)
+local warningSplitSoon	= mod:NewSoonAnnounce(19569, 2)
+local warningSplitNow	= mod:NewSpellAnnounce(19569, 3)
 local warningMerge		= mod:NewAnnounce("WarningMerge", 2, 40105)
 
 local warnedSplit = false
