@@ -14,12 +14,12 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
-local warningSpikes	= mod:NewAnnounce("WarningSpikes", 2, 47958)
-local warningFrenzy	= mod:NewAnnounce("WarningFrenzy", 3, 48017)
-local warningReflection	= mod:NewAnnounce("WarningReflection", 4, 47981)
-local warningAdd	= mod:NewAnnounce("WarningAdd", 1, 61564)
-local timerReflection	= mod:NewTimer(15, "TimerReflection", 47981)
-local timerReflectionCD	= mod:NewTimer(30, "TimerReflectionCD", 47981)
+local warningSpikes		= mod:NewSpellAnnounce(47958, 2)
+local warningFrenzy		= mod:NewSpellAnnounce(48017, 3)
+local warningReflection	= mod:NewSpellAnnounce(47981, 4)
+local warningAdd		= mod:NewSpellAnnounce(61564, 1)
+local timerReflection	= mod:NewBuffActiveTimer(15, 47981)
+local timerReflectionCD	= mod:NewCDTimer(30, 47981)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 47958 or args.spellId == 57082 or args.spellId == 57083 then

@@ -12,10 +12,10 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningTimeBomb		= mod:NewAnnounce("WarningTimeBomb", 2, 51121)
-local warningExplosion		= mod:NewAnnounce("WarningExplosion", 3, 51110)
-local timerTimeBomb		= mod:NewTimer(6, "TimerTimeBomb", 51121)
-local timerExplosion		= mod:NewTimer(8, "TimerExplosion", 51110)
+local warningTimeBomb		= mod:NewTargetAnnounce(51121, 2)
+local warningExplosion		= mod:NewSpellAnnounce(51110, 3)
+local timerTimeBomb			= mod:NewTargetTimer(6, 51121)
+local timerExplosion		= mod:NewTargetTimer(8, 51110)
 local specWarnBombYou		= mod:NewSpecialWarning("SpecWarnBombYou")
 
 function mod:SPELL_CAST_START(args)

@@ -12,16 +12,18 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningAmplify = mod:NewAnnounce("WarningAmplify", 2, 51054)
+local warningAmplify = mod:NewTargetAnnounce(51054, 2)
+local timerAmplify	 = mod:NewTargetTimer(30, 51054)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 51054 or args.spellId == 59371 then
-		warningAmplify:Show(args.spellName, args.destName)
+		warningAmplify:Show(args.destName)
+		timerAmplify:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 51054 or args.spellId == 59371 then
-		warningAmplify:Cancel(args.spellName, args.destName)
+		timerAmplify:Cancel()
 	end
 end

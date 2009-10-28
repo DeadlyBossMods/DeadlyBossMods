@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningES	= mod:NewAnnounce("WarningES", 3, 54479)
+local warningES	= mod:NewSpellAnnounce(54479, 3)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if (args.spellId == 54479 or args.spellId == 59471)

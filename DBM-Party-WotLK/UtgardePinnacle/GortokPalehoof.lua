@@ -11,8 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningImpale	= mod:NewAnnounce("WarningImpale", 2, 48261)
-local timerImpale	= mod:NewTimer(9, "TimerImpale", 48261)
+local warningImpale	= mod:NewTargetAnnounce(48261, 2)
+local timerImpale	= mod:NewTargetTimer(9, 48261)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48261 or args.spellId == 59268 then
