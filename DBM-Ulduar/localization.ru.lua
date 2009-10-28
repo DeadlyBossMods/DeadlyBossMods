@@ -130,9 +130,9 @@ L:SetMiscLocalization{
 }
 
 
--------------
---  XT002  --
--------------
+----------------------------
+--  XT-002 Deconstructor  --
+----------------------------
 L = DBM:GetModLocalization("XT002")
 
 L:SetGeneralLocalization{
@@ -160,9 +160,9 @@ L:SetOptionLocalization{
 	SetIconOnGravityBombTarget	= "Установить метку на цель под Гравитационной бомбой",
 }
 
--------------------
---  IronCouncil  --
--------------------
+--------------------
+--  Iron Council  --
+--------------------
 L = DBM:GetModLocalization("IronCouncil")
 
 L:SetGeneralLocalization{
@@ -272,7 +272,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{		
 	YellPull		 = "Ваши действия нелогичны. Все возможные исходы этой схватки просчитаны. Пантеон получит сообщение от Наблюдателя в любом случае.",
 	YellPullFirst		 = "",
-	Emote_CollapsingStar	 = "%s призывает вспыхивающие звезды!",
+	Emote_CollapsingStars	 = "%s призывает вспыхивающие звезды!",
 	Emote_CosmicSmash	 = "%s начинает читать заклинание Кара небесная!"
 }
 
@@ -491,7 +491,7 @@ L:SetGeneralLocalization{
 	name = "Древни Фреи"
 }
 
-L:SetTimerLocalization{
+L:SetMiscLocalization{
 	TrashRespawnTimer	= "Фрейя возрождает Мусор"
 }
 
@@ -570,9 +570,9 @@ L:SetMiscLocalization{
 }
 
 
---------------------
---  GeneralVezax  --
---------------------
+---------------------
+--  General Vezax  --
+---------------------
 L = DBM:GetModLocalization("GeneralVezax")
 
 L:SetGeneralLocalization{
@@ -617,9 +617,9 @@ L:SetMiscLocalization{
 }
 
 
------------------
---  YoggSaron  --
------------------
+------------------
+--  Yogg-Saron  --
+------------------
 L = DBM:GetModLocalization("YoggSaron")
 
 L:SetGeneralLocalization{
