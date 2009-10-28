@@ -4,13 +4,13 @@ if GetLocale() ~= "zhTW" then return end
 
 local L
 
-----------------------------
---  General BG functions  --
-----------------------------
+--------------------------
+--  General BG Options  --
+--------------------------
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name 			= "基本戰埸功能"
+	name 			= "基本選項"
 })
 
 L:SetTimerLocalization({
@@ -19,7 +19,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass		= "在得分視窗中設置玩家名為職業顏色",
-	ShowInviteTimer		= "顯示戰場組隊計時",
+	ShowInviteTimer		= "顯示戰場組隊計時器",
 	AutoSpirit		= "自動釋放靈魂"
 })
 
@@ -53,9 +53,9 @@ L:SetMiscLocalization({
 	Start15 		= "競技場戰鬥在15秒內開始!"
 })
 
----------------
---  Alterac  --
----------------
+----------------------
+--  Alterac Valley  --
+----------------------
 L = DBM:GetModLocalization("Alterac")
 
 L:SetGeneralLocalization({
@@ -81,9 +81,9 @@ L:SetOptionLocalization({
 	AutoTurnIn 		= "自動繳交任務物品"
 })
 
----------------
---  Arathi  --
----------------
+--------------------
+--  Arathi Basin  --
+--------------------
 L = DBM:GetModLocalization("Arathi")
 
 L:SetGeneralLocalization({
@@ -115,9 +115,9 @@ L:SetOptionLocalization({
 	ShowAbBasesToWin 	= "顯示勝利需要的基地數量"
 })
 
------------------------
---  Eye of the Storm --
------------------------
+------------------------
+--  Eye of the Storm  --
+------------------------
 L = DBM:GetModLocalization("EyeOfTheStorm")
 
 L:SetGeneralLocalization({
@@ -151,9 +151,9 @@ L:SetOptionLocalization({
 	ShowPointFrame 		= "顯示旗幟攜帶者和預計勝利方",
 })
 
---------------------
---  Warsong Gulch --
---------------------
+---------------------
+--  Warsong Gulch  --
+---------------------
 L = DBM:GetModLocalization("Warsong")
 
 L:SetGeneralLocalization({
@@ -185,14 +185,14 @@ L:SetOptionLocalization({
 	TimerWin 		= "顯示勝利計時器",
 	TimerFlag 		= "顯示旗幟重生計時器",
 	ShowFlagCarrier 	= "顯示旗幟攜帶者",
-	ShowFlagCarrierErrorNote = "當正在戰鬥時顯示旗幟錯誤提示。",
+	ShowFlagCarrierErrorNote = "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。",
 })
 
 
 
-----------------
---  Archavon  --
-----------------
+----------------------------------
+--  Archavon the Stone Watcher  --
+----------------------------------
 
 L = DBM:GetModLocalization("Archavon")
 
@@ -202,7 +202,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningShards		= "岩石裂片: >%s<",
-	WarningGrab		= "亞夏梵撞擊 >%s<"
+	WarningGrab		= "亞夏梵擒握 >%s<"
 })
 
 L:SetTimerLocalization({
@@ -214,14 +214,14 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShards 		= "顯示岩石裂片計時器",
-	WarningShards 		= "顯示岩石裂片警告",
-	WarningGrab 		= "顯示坦克撞擊警告"
+	TimerShards 		= "為岩石裂片顯示計時器",
+	WarningShards 		= "為岩石裂片顯示警告",
+	WarningGrab 		= "為擒握坦克顯示警告"
 })
 
---------------
---  Emalon  --
---------------
+--------------------------------
+--  Emalon the Storm Watcher  --
+--------------------------------
 
 L = DBM:GetModLocalization("Emalon")
 
@@ -232,7 +232,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	specWarnNova 		= "閃電新星",
 	warnNova 		= "閃電新星",
-	warnOverCharge		= "超載"
+	warnOverCharge		= "超載 - 速殺小兵"
 }
 
 L:SetTimerLocalization{
@@ -247,9 +247,9 @@ L:SetOptionLocalization{
 	timerMobOvercharge	= "為超載的小怪顯示計時器(減益疊加)"
 }
 
----------------
---  Koralon  --
----------------
+---------------------------------
+--  Koralon the Flame Watcher  --
+---------------------------------
 
 L = DBM:GetModLocalization("Koralon")
 
@@ -258,7 +258,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder		= "你在燃焰餘燼上面! 跑開!"
+	SpecWarnCinder	= "你站在燃焰餘燼上面 - 快跑開!"
 }
 
 L:SetTimerLocalization{
