@@ -1535,7 +1535,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnPursuit				= "Pursuit in 5 seconds",
+	warnPursuit				= "Poursuite dans 5 secondes",
 	specWarnToxic			= "Déchets toxiques ! Bougez !",
 	specWarnPursuit			= "Vous êtes poursuivi ! Courrez !"
 })
@@ -1566,9 +1566,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "Montre une alerte for Saronite Rock (to clear Permafrost)",
+	warnSaroniteRock			= "Montre une alerte pour le Rocher de Saronite (pour effacer Gel prolongé)",
 	specWarnSaroniteRock		= "Montre une alerte spéciale lorsque le Lancer de Saronite est sur vous",
-	specWarnPermafrost			= "Montre une alerte spéciale when Permafrost stacks get to high (value not set in stone)"
+	specWarnPermafrost			= "Montre une alerte spéciale lorsque le nombre de charge de Gel prolongé est grand (valeur non fixée)"
 --	SetIconOnSaroniteRockTarget	= "Met une icône sur la cible du Rocher de Saronite"
 })
 
@@ -1587,21 +1587,21 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specTyrannusEngaged			= "Seigneur du Fléau Tyrannus descend. Préparez-vous !",
-	specWarnIcyBlast			= "Icy Blast! Bougez !",
-	specWarnHoarfrost			= "Hoarfrost on you!",
-	specWarnHoarfrostNear		= "Hoarfrost near to you! Bougez !"
+	specWarnIcyBlast			= "Déflagration glaciale ! Bougez !",
+	specWarnHoarfrost			= "Gelée blanche sur vous !",
+	specWarnHoarfrostNear		= "Gelée blanche proche de vous ! Bougez !"
 })
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "Montre une alerte spéciale when you take damage from Icy Blast",
-	specWarnHoarfrost			= "Montre une alerte spéciale when Hoarfrost on you",
-	specWarnHoarfrostNear		= "Montre une alerte spéciale when Hoarfrost near you",
-	SetIconOnHoarfrostTarget	= "Met une icône sur la cible Hoarfrost target"
+	specWarnIcyBlast			= "Montre une alerte spéciale lorsque vous subissez des dégâts de la Déflagration glaciale ",
+	specWarnHoarfrost			= "Montre une alerte spéciale lorsque la Gelée blanche est sur vous",
+	specWarnHoarfrostNear		= "Montre une alerte spéciale lorsque la Gelée blanche est proche de vous",
+	SetIconOnHoarfrostTarget	= "Met une icône sur la cible de la Gelée blanche"
 })
 
 L:SetMiscLocalization({
 	TyrannusYell				= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "^%%s gazes at (%S+) and readies an icy attack!"
+	HoarfrostTarget				= "^%%s fixe (%S+) du regard et prépare une attaque de glace !"
 })
 ---------------------
 -- Forge of Souls --
