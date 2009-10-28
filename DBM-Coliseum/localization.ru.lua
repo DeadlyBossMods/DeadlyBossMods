@@ -43,11 +43,13 @@ L:SetOptionLocalization{
 	SetIconOnChargeTarget		= "Установить метку на цель Топота",
 	SetIconOnBileTarget		= "Установить метку игроков под воздействием Горящей Желчью",
 	ClearIconsOnIceHowl		= "Снимать все иконки перед Топотом",
-	TimerNextBoss			= "Отсчет времени до появления следующего противника"
+	TimerNextBoss			= "Отсчет времени до появления следующего противника",
+	TimerCombatStart		= "Отсчет времени до начала битвы"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss			= "Прибытие следующего босса"
+	TimerNextBoss			= "Прибытие следующего босса",
+	TimerCombatStart		= "Битва начнется через"
 }
 
 L:SetWarningLocalization{
@@ -70,9 +72,9 @@ L:SetWarningLocalization{
 	SpecialWarningBile		= "Горящая Желчь на вас"
 }
 
--------------------
--- Lord Jaraxxus --
--------------------
+---------------------
+--  Lord Jaraxxus  --
+---------------------
 L = DBM:GetModLocalization("Jaraxxus")
 
 L:SetGeneralLocalization{
@@ -119,9 +121,9 @@ L:SetOptionLocalization{
 	IncinerateShieldFrame		= "Показать здоровье босса с индикатором здоровья для Испепеления плоти"
 }
 
------------------------
--- Faction Champions --
------------------------
+-------------------------
+--  Faction Champions  --
+-------------------------
 L = DBM:GetModLocalization("Champions")
 
 L:SetGeneralLocalization{
