@@ -17,15 +17,17 @@ L:SetTimerLocalization{
 }
 	
 L:SetMiscLocalization{
-	YellPull		= "적대적인 존재 감지. 위협 수준 평가 체제 가동. 주 목표물과 교전. 위협 수준 재평가까지 30초.",
-	Emote			= "%%s 추적중 (%S+)%."
+	YellPull				= "적대적인 존재 감지. 위협 수준 평가 체제 가동. 주 목표물과 교전. 위협 수준 재평가까지 30초.",
+	Emote					= "%%s 추적중 (%S+)%."
 }
 
 L:SetWarningLocalization{
 	PursueWarn				= "추적 >%s<!",	
 	warnNextPursueSoon		= "추적 전환 5 초전",
 	SpecialPursueWarnYou	= "거대 화염전차가 당신을 추적합니다!",	
-	SystemOverload			= "시스템 과부화"	
+	SystemOverload			= "시스템 과부화",
+	warnWardofLife			= "Ward of Life spawned",
+	warnWrithingLasher		= "Writhing Lasher spawned"	
 }
 
 L:SetOptionLocalization{
@@ -35,7 +37,9 @@ L:SetOptionLocalization{
 	SystemOverload			= "시스템 과부화 특수 경고 보기",
 	SpecialPursueWarnYou	= "추적자 특수 경보 보기",
 	PursueWarn				= "추적 플레이어 레이드 경보로 보기",
-	warnNextPursueSoon		= "다음 추적 경고 보기"
+	warnNextPursueSoon		= "다음 추적 경고 보기",
+	warnWardofLife			= "Show special warning for Ward of Life spawn",
+	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn"	
 }
 
 
@@ -356,6 +360,10 @@ L:SetWarningLocalization{
 	WarningStormCloud		= "폭풍 구름 : >%s<"
 }
 
+L:SetTimerLocalization{
+	TimerFlashFreeze		= "다음 순간 빙결",
+}
+
 L:SetOptionLocalization{
 	TimerFlashFreeze		= "순간 빙결 시전 타이머 보기",
 	WarningFlashFreeze		= "순간 빙결 경보 보기",
@@ -366,8 +374,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellKill		= "드디어... 드디어 그의 손아귀를... 벗어나는구나.",
-	YellCloud		= "폭풍 구름! 비벼요!!"
+	YellKill			= "드디어... 드디어 그의 손아귀를... 벗어나는구나.",
+	YellCloud			= "폭풍 구름! 비벼요!!"
 }
 
 
@@ -402,7 +410,7 @@ L:SetOptionLocalization{
 	WarningLightningCharge	= "번개 충전 알리기",
 	RangeFrame				= "거리 창 보기",
 	LightningOrb 			= "번개 충격 알리기",
-	AnnounceFails			= "번개 충전 피하기 실패 했을 경우 공격대에 알리기 (번개 충전 알리기 및 공대장 권한이 있을 경우)" 
+	AnnounceFails			= "번개 충전 피하기 실패 했을 경우 공격대에 알리기 (번개 충전 알리기/공대장 권한이 있을 경우)" 
 }
 
 L:SetMiscLocalization{
@@ -437,14 +445,14 @@ L:SetWarningLocalization{
 	WarnFury 			= ">%s< 에게 자연의 격노",
 	SpecWarnFury 		= "당신에게 자연의 격노!",
 	WarningTremor   	= "지진! - 시전 중지!",
-	WarnRoots 			= ">%s< 에게 무쇠 뿌리!"	,
+	WarnRoots 			= "무쇠 뿌리! : >%s<"	,
 	UnstableEnergy		= "불안정한 힘 - 움직이세요!"
 }
 
 L:SetTimerLocalization{
 	TimerUnstableSunBeam 	= "태양 광선: %s",
 	TimerSimulKill 			= "소환수 부활",
-	TimerFuryYou			= "당신에게 자연의 격노"	
+	TimerFuryYou			= "당신에게 자연의 격노"
 }
 
 L:SetOptionLocalization{

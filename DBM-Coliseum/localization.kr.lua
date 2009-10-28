@@ -29,10 +29,10 @@ L:SetOptionLocalization{
 	WarningCharge				= "사나운 돌진 대상 경보 보기",
 	WarningToxin				= "마비 독 대상 경보 보기",
 	WarningBile					= "타오르는 담즙 대상 경보 보기",	
-	SpecialWarningImpale3		= "꿰뚫기 특수 경보 보기(>=3 중첩)",
+	SpecialWarningImpale3		= "꿰뚫기 특수 경보 보기(3 중첩이거나 그 이상일 경우)",
 	SpecialWarningFireBomb		= "자신의 화염 폭탄 특수 경보 보기",
 	SpecialWarningSlimePool		= "독 구름 특수 경보 보기",
-	SpecialWarningSilence		= "주문 차단 특수 경보 보기",
+	SpecialWarningSilence		= "진동의 발구르기 특수 경보 보기",
 	SpecialWarningSpray			= "당신이 마비의 이빨에 걸릴 경우 특수 경보 보기",
 	SpecialWarningToxin			= "당신이 마비독에 걸릴 경우 특수 경보 보기",
 	SpecialWarningBile			= "당신이 타오르는 담즙에 걸릴 경우 특수 경보 보기",
@@ -43,11 +43,13 @@ L:SetOptionLocalization{
 	TimerNextBoss				= "다음 보스 등장 타이머 보기",	
 	SetIconOnChargeTarget		= "사나운 돌진 대상 아이콘 설정 (해골)",
 	SetIconOnToxinTarget		= "마비 독 대상 아이콘 설정 (해골)",
-	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정"
+	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",
+	TimerCombatStart			= "전투 시작 타이머 보기"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss				= "곧 다음 보스"
+	TimerNextBoss				= "곧 다음 보스",
+	TimerCombatStart			= "곧 전투 시작",
 }
 
 L:SetWarningLocalization{
@@ -58,11 +60,11 @@ L:SetWarningLocalization{
 	WarningCharge				= "사나운 돌진 : >%s<",	
 	WarningToxin				= "마비 독 : >%s<",
 	WarningBile					= "타오르는 담즙 : >%s<",	
-	SpecialWarningImpale3		= "당신에게 꿰뚫기(3중첩 이상)",
+	SpecialWarningImpale3		= "꿰뚫기 경고! 위험합니다!",
 	SpecialWarningFireBomb		= "당신에게 화염 폭탄!",
 	SpecialWarningSlimePool		= "독 구름, 벗어나세요!",
 	SpecialWarningBile			= "당신에게 타오르는 담즙!",
-	SpecialWarningSilence		= "1.5 초이내 주문 차단!!!",
+	SpecialWarningSilence		= "1.5 초이내 진동의 발구르기!!!",
 	SpecialWarningSpray			= "당신에게 마비의 이빨!",
 	SpecialWarningToxin			= "당신에게 마비독! 이동하세요!",
 	SpecialWarningCharge		= "당신에게 사나운 돌진! 뛰세요!",
