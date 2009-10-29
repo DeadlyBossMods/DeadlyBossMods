@@ -18,6 +18,7 @@
 ## X-DBM-Mod-SubCategories-koKR: 안카헤트: 고대 왕국,아졸네룹,시간의 동굴: 옛 스트라솔름,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보랏빛 요새,용사의 시험장,영혼의 제련소,사론의 구덩이,사색의 전당,이벤트 던전
 ## X-DBM-Mod-SubCategories-esES: Ahn'Kahlet,Azjol-Nerub,CoT: La Matanza de Stratholme,Fortaleza de Drak'Tharon,Gundrak,Camaras de Relampagos,Camaras de Piedra,El Nexo,El Oculus,Fortaleza de Utgarde,Pinaculo de Utgarde,Bastion Violeta,Prueba del Campeón,The Forge of Souls,Pit of Saron,Halls of Reflection,Fiesta de la Cerveza
 ## X-DBM-Mod-Name: Party
+## X-DBM-Mod-Name-frFR: Groupe
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья
 ## X-DBM-Mod-Name-zhTW: 隊伍首領模組
 ## X-DBM-Mod-Name-esES: Mazmorras
