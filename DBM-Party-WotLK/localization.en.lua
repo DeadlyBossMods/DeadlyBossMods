@@ -1215,7 +1215,6 @@ specwarnRenew				= "Show special warning for Renew target (to dispel/steal)"
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
 })
 
 -----------------------
@@ -1239,7 +1238,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
 })
 
 --------------------
