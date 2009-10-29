@@ -50,12 +50,12 @@ L:SetWarningLocalization({
 	SpecWarnRadiationOoze	= "Radiation Ooze"
 })
 L:SetTimerLocalization({
-	NextPoisonSlimePipes	= "Next Poisen Slime Pipes"
+	NextPoisonSlimePipes	= "Next Poison Slime Pipes"
 })
 L:SetOptionLocalization({
 	SpecWarnStickyOoze		= "Show special warning for Sticky Ooze",
 	SpecWarnRadiationOoze	= "Show special warning for Radiation Ooze",
-	NextPoisonSlimePipes	= "Show timer for Next Poisen Slime Pipes"
+	NextPoisonSlimePipes	= "Show timer for next Poison Slime Pipes"
 })
 L:SetMiscLocalization({
 	YellSlimePipes			= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
