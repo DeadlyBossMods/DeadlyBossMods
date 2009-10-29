@@ -46,13 +46,19 @@ L:SetGeneralLocalization({
 	name = "Rotface"
 })
 L:SetWarningLocalization({
-	SpecWarnStickyOoze	= "Ooze - Move out"
+	SpecWarnStickyOoze		= "Ooze - Move out",
+	SpecWarnRadiationOoze	= "Radiation Ooze"
+})
+L:SetTimerLocalization({
+	NextPoisonSlimePipes	= "Next Poisen Slime Pipes"
 })
 L:SetOptionLocalization({
-	SpecWarnStickyOoze	= "Show special warning for Sticky Ooze"
+	SpecWarnStickyOoze		= "Show special warning for Sticky Ooze",
+	SpecWarnRadiationOoze	= "Show special warning for Radiation Ooze",
+	NextPoisonSlimePipes	= "Show timer for Next Poisen Slime Pipes"
 })
 L:SetMiscLocalization({
-	YellSlimePipes		= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes			= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
 })
 
 

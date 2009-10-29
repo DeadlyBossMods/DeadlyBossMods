@@ -35,7 +35,7 @@ local warnVesperonPortal	= mod:NewSpecialWarning("WarningVesperonPortal", false)
 local warnTenebronPortal	= mod:NewSpecialWarning("WarningTenebronPortal", false)
 local warnShadronPortal		= mod:NewSpecialWarning("WarningShadronPortal", false)
 
-local timerWall         = mod:NewTimer(30, "TimerWall", 43113)  
+local timerWall         = mod:NewCDTimer(30, 43113)
 
 local lastvoids = {}
 local lastfire = {}
