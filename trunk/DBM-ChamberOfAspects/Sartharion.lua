@@ -93,9 +93,9 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, mob)
 	if not self:IsInCombat() then return end
-	if msg == L.Wall then
+	if msg == L.Wall or msg:find(L.Wall) then
 		self:SendSync("FireWall")
-	elseif msg == L.Portal then
+	elseif msg == L.Portal or msg:find(L.Portal) then
 		if mob == L.NameVesperon then
 			self:SendSync("VesperonPortal")
 		elseif mob == L.NameTenebron then
