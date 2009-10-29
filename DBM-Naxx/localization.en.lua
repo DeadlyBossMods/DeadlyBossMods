@@ -389,9 +389,6 @@ L:SetMiscLocalization({
 	Trainee			= "Trainees",
 	Knight			= "Knights",
 	Rider			= "Riders",
---	Trainee			= "|4Trainee:Trainees;",
---	Knight			= "|4Knight:Knights;",
---	Rider			= "|4Rider:Riders;",
 })
 
 
