@@ -52,7 +52,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsPlayer() and args:IsSpellID(71208) then
-		specWarnOoze:Show()
+		specWarnStickyOoze:Show()
 		soundStickyOoze:Play()
 	elseif args:IsSpellID(69760) then
 		warnRadiatingOoze:Show()
