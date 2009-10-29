@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
 )
@@ -18,14 +19,17 @@ local nextWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
 local nextSlimeSpray		= mod:NewNextTimer(21, 69508)
 local warnSlimeSpray		= mod:NewSpellAnnounce(69508)
 
+local warnMutatedInfection	= mod:NewTargetAnnounce(71224)
+local timerMutatedInfection	= mod:NewTargetTimer(12, 71224)
+
 local nextStickyOoze		= mod:NewNextTimer(16, 69774)
 local warnStickyOoze		= mod:NewSpellAnnounce(69774)
 
 local specWarnStickyOoze	= mod:NewSpecialWarning("SpecWarnStickyOoze")
 local soundStickyOoze		= mod:NewSound(69760)
 
-local warnRadiatingOoze		= mod:NewSpellAnnounce(69760)
-local specWarnRadiatingOoze	= mod:NewSpecialWarning("SpecWarnRadiationOoze")
+local warnRadiatingOoze		= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
+local specWarnRadiatingOoze	= mod:NewSpecialWarning("SpecWarnRadiationOoze", false)--Some strats purposely run to this so option is defaulted to off
 
 function mod:OnCombatStart(delay)
 	nextWallSlime:Start(25-delay)
@@ -56,6 +60,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		soundStickyOoze:Play()
 	elseif args:IsSpellID(69760) then
 		warnRadiatingOoze:Show()
+	elseif args:IsSpellID(69674, 71224) then
+		warnMutatedInfection:Show(args.destName)
+		timerMutatedInfection:Start(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(69674, 71224) then
+		timerMutatedInfection:Cancel()
 	end
 end
 
