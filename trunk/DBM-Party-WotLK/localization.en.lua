@@ -1255,7 +1255,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnBarrel				= "Barrel on >%s<", 
---	specwarnDaughters		= "Daughter Spawned!",
 	specwarnDisarm			= "Disarm - Move away",
 	specWarnBrew			= "Get rid of the brew before she tosses you another one!",
 	specWarnBrewStun		= "HINT: You were bonked, remember to drink the brew next time!"
@@ -1263,7 +1262,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel				= "Announce Barrel target",
---	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
 	DisarmWarning			= "Show special warning for Disarm",
 	specWarnBrew			= "Show special warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun		= "Show special warning for Dark Brewmaiden's Stun",
