@@ -67,7 +67,7 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(69062) then							-- Impale (This function is iffy and I'm not sure it'll work, but it is the earliest combatlog entry to detect off of.)
 		self:UnscheduleMethod("warnImpale")
 		impaleTargets[#impaleTargets + 1] = args.sourceName
-		mod:ScheduleMethod(0.2, "warnImpale")   end
+		mod:ScheduleMethod(0.2, "warnImpale")
 	end
 end
 
@@ -77,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 --[[	elseif args:IsSpellID(69065) then					-- Impale (this function is a backup if summon doesn't work. This happens at least 1-2 seconds after the summon event and after person has already taken damage from it.
 		self:UnscheduleMethod("warnImpale")
 		impaleTargets[#impaleTargets + 1] = args.destName
-		mod:ScheduleMethod(0.2, "warnImpale")   end]]--
+		mod:ScheduleMethod(0.2, "warnImpale")]]--
 	end
 end
 

@@ -16,7 +16,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnImpale				= "Show warning for Impale target",
+	warnImpale				= "Show warning for Impale targets",
 	specWarnWhirlwind		= "Show special warning for Whirlwind",
 	specWarnColdflame		= "Show special warning when you take damage from Coldflame",
 	PlaySoundOnWhirlwind	= "Play sound on Whirlwind"
