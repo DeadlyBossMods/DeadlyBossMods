@@ -653,7 +653,8 @@ L:SetWarningLocalization{
 	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
 	WarnEmpowerSoon					= "Renforcement des ombres Bientôt !",
 	SpecWarnMaladyNear				= "Mal de la raison à côté de vous sur >%s<",
-	SpecWarnDeafeningRoar			= "Rugissement assourdissant"
+	SpecWarnDeafeningRoar			= "Rugissement assourdissant",
+	specWarnBrainPortalSoon			= "Portail bientôt"
 }
 
 L:SetTimerLocalization{
