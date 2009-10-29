@@ -37,6 +37,20 @@ L:SetOptionLocalization({
 })
 
 
+-----------------
+--  Lady Deathwhisper  --
+-----------------
+L = DBM:GetModLocalization("Deathwhisper")
+
+L:SetGeneralLocalization({
+	name = "Lady Deathwhisper"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
 ---------------
 --  Rotface  --
 ---------------

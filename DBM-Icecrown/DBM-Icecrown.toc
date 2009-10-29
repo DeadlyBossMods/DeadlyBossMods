@@ -1,4 +1,4 @@
-﻿## Interface: 30200
+## Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Icecrown Citadel|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0얼음 왕관|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Цитадель Ледяная Корона|r
@@ -31,4 +31,4 @@ LordMarrowgar.lua
 Festergut.lua
 GunshipBattle.lua
 Rotface.lua
-
+Deathwhisper.lua
