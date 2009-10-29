@@ -23,7 +23,6 @@ L:SetOptionLocalization{
 	WarningImpale				= "Show warning for Impale",
 	WarningFireBomb				= "Show warning for Fire Bomb",
 	WarningBreath				= "Show warning for Arctic Breath",
---	WarningSpray				= "Show warning for Paralytic Spray",
 	WarningRage					= "Show warning for Frothing Rage",
 	WarningCharge				= "Show warning for charge target",
 	WarningToxin				= "Show warning for Paralytic Toxin targets",
@@ -53,7 +52,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarningImpale				= "%s on >%s<",
 	WarningFireBomb				= "Fire Bomb",
---	WarningSpray				= "%s on >%s<",
 	WarningBreath				= "Arctic Breath",
 	WarningRage					= "Frothing Rage",
 	WarningCharge				= "Charge on >%s<",
