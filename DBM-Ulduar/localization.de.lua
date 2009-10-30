@@ -184,18 +184,18 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarningPhasePunch		= "Phasenschlag auf >%s< - %d mal",
 	WarningBlackHole		= "Schwarzes Loch",
-	WarningBigBang			= "Grosser Knall jetzt",
-	SpecWarnBigBang			= "Grosser Knall",
-	PreWarningBigBang		= "Grosser Knall in ~10 sec",
+	WarningBigBang			= "Urknall jetzt",
+	SpecWarnBigBang			= "Urknall",
+	PreWarningBigBang		= "Urknall in ~10 sec",
 	WarningCosmicSmash 		= "Kosmisches Schmettern - Explosion in 4 sek",
 	SpecWarnCosmicSmash 	= "Kosmisches Schmettern"
 }
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch		= "Spezial Warnung für Phasenschlag stacks",
-	WarningBigBang			= "Warnung bei Grosser Knall",
-	PreWarningBigBang		= "Vorwarnung für Grosser Knall",
-	SpecWarnBigBang			= "Spezialwarnung für Grosser Knall",
+	WarningBigBang			= "Warnung bei Urknall",
+	PreWarningBigBang		= "Vorwarnung für Urknall",
+	SpecWarnBigBang			= "Spezialwarnung für Urknall",
 	WarningPhasePunch		= "Warnung bei Phasenschlag",
 	WarningBlackHole		= "Warnung für Schwarzes Loch",
 	NextCollapsingStar		= "Zeit für kollabierende Sterne anzeigen",
