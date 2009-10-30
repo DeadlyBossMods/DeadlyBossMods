@@ -450,8 +450,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteBreath			= "%s takes a deep breath.",
-	WarningYellIceblock	= "I'm an Ice Block!"
+	EmoteBreath				= "%s takes a deep breath.",
+	WarningYellIceblock		= "I'm an Ice Block!"
 })
 
 L:SetWarningLocalization({
@@ -481,15 +481,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	BlastTimer			= "Show timer for Frost Blast (4 second timer until targets die)",
-	TimerPhase2			= "Show timer for Phase 2",
-	WarningBlastTargets	= "Show warning for Frost Blast",
-	WarningPhase2		= "Show warning for Phase 2",
-	WarningFissure		= "Show warning for Shadow Fissure",
-	WarningMana			= "Show warning for Detonate Mana",
-	WarningChainsTargets= "Show warning for Chains of Kel'Thuzad",
-	specwarnP2Soon 		= "Show special warning 10 seconds before Kel'Thuzad engages",
-	ShowRange			= "Show range frame when Phase 2 starts",
+	BlastTimer				= "Show timer for Frost Blast (4 second timer until targets die)",
+	TimerPhase2				= "Show timer for Phase 2",
+	WarningBlastTargets		= "Show warning for Frost Blast",
+	WarningPhase2			= "Show warning for Phase 2",
+	WarningFissure			= "Show warning for Shadow Fissure",
+	WarningMana				= "Show warning for Detonate Mana",
+	WarningChainsTargets	= "Show warning for Chains of Kel'Thuzad",
+	specwarnP2Soon			= "Show special warning 10 seconds before Kel'Thuzad engages",
+	ShowRange				= "Show range frame when Phase 2 starts",
 })
 
 L:SetMiscLocalization({
@@ -497,12 +497,12 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBlastTargets	= "Frost Blast: >%s<",
-	WarningPhase2		= "Phase 2",
-	WarningFissure		= "Shadow Fissure spawned",
-	WarningMana			= "Detonate Mana: >%s<",
-	WarningChainsTargets= "Chains of Kel'Thuzad: >%s<",
-	specwarnP2Soon 		= "Kel'Thuzad engages in 10 Seconds"
+	WarningBlastTargets		= "Frost Blast: >%s<",
+	WarningPhase2			= "Phase 2",
+	WarningFissure			= "Shadow Fissure spawned",
+	WarningMana				= "Detonate Mana: >%s<",
+	WarningChainsTargets	= "Chains of Kel'Thuzad: >%s<",
+	specwarnP2Soon			= "Kel'Thuzad engages in 10 Seconds"
 })
 
 L:SetTimerLocalization({
