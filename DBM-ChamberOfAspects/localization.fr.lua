@@ -87,11 +87,6 @@ L:SetMiscLocalization({
 	VoidZoneOn		= "Zone de vide : %s",
 	VoidZones		= "Zones de vide ratées (cet essai): %s",
 	FireWalls		= "Tsunamis de flammes ratés (cet essai): %s",
-	--[[ not in use; don't translate.
-	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
-	Shadron		= "Shadron! Come to me! All is at risk!",
-	Tenebron	= "Tenebron! The eggs are yours to protect as well!"
-	--]]
 })
 
 

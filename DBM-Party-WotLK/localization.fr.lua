@@ -1217,7 +1217,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
 })
 
 -------------------
@@ -1257,7 +1256,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnBarrel			= "Tonneau sur >%s<", 
---	specwarnDaughters	= "Daughter Spawned!",
 	specwarnDisarm		= "Désarmement. Bougez !",
 	specWarnBrew		= "Débarrassez-vous de la bière avant qu'elle ne vous en lance une autre !",
 	specWarnBrewStun	= "Vous avez reçu un coup sur la tête. La prochaine fois, videz votre verre !"
@@ -1265,7 +1263,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel			= "Annonce la cible du Tonneau.",
---	specwarnDaughters	= "Announce Spawns of Ursula/Ilsa",
 	DisarmWarning		= "Montre une alerte spéciale pour le désarmement",
 	specWarnBrew		= "Montre une alerte spéciale pour la Sombrebière de la vierge",
 	specWarnBrewStun	= "Montre une alerte spéciale pour l'Etourdir de la vierge bierrière",
