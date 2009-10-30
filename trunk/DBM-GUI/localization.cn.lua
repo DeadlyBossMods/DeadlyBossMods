@@ -40,7 +40,7 @@ L.Disable		= "关闭"
 
 L.NoSound		= "静音"
 
-L.IconsInUse				= "此首领模块需要使用的标记"
+L.IconsInUse				= "此首领模块需要使用的团队标记"
 
 -- Tab: Boss Statistics
 L.BossStatistics	= "首领状态"
