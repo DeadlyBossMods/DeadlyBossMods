@@ -60,23 +60,23 @@ L:SetGeneralLocalization({
 	name = "Rotface"
 })
 L:SetWarningLocalization({
-	SpecWarnStickyOoze		= "Ooze - Move out",
+	SpecWarnStickyOoze			= "Sticky Ooze - Move out",
 	SpecWarnRadiationOoze		= "Radiation Ooze",
-	SpecWarnMutatedInfection 	= "Infection on YOU"
+	SpecWarnMutatedInfection 	= "Mutated Infection on you"
 })
 L:SetTimerLocalization({
 	NextPoisonSlimePipes		= "Next Poison Slime Pipes"
 })
 L:SetOptionLocalization({
-	SpecWarnStickyOoze		= "Show special warning for Sticky Ooze",
+	SpecWarnStickyOoze			= "Show special warning for Sticky Ooze",
 	SpecWarnRadiationOoze		= "Show special warning for Radiation Ooze",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	SpecWarnMutatedInfection 	= "Show special warning for Mutated Infection",
-	InfectionIcon			= "Set icon on Mutated Infection target",
-	WarnOozeSpawn			= "Show warning for Little Ooze spawning"
+	InfectionIcon				= "Set icon on Mutated Infection target",
+	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 })
 L:SetMiscLocalization({
-	YellSlimePipes			= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes				= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
 })
 
 
