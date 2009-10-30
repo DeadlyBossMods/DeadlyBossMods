@@ -40,6 +40,8 @@ L.Disable		= "关闭"
 
 L.NoSound		= "静音"
 
+L.IconsInUse				= "此首领模块需要使用的标记"
+
 -- Tab: Boss Statistics
 L.BossStatistics	= "首领状态"
 L.Statistic_Kills	= "击杀："
@@ -67,6 +69,7 @@ L.PizzaTimer_BroadCast	= "向团队广播"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 	= "团队警报"
+L.RaidWarning_Header		= "团队警报设置"
 L.RaidWarnColors 	= "团队警报颜色"
 L.RaidWarnColor_1 	= "颜色1"
 L.RaidWarnColor_2 	= "颜色2"
@@ -90,7 +93,8 @@ L.BarTexture = "计时条材质"
 L.BarStartColor = "初始颜色"
 L.BarEndColor = "结束颜色"
 L.ExpandUpwards		= "向上扩展"
-
+L.Bar_Font					= "计时条字体"
+L.Bar_FontSize				= "字体大小"
 L.Slider_BarOffSetX 	= "X偏移"
 L.Slider_BarOffSetY 	= "Y偏移"
 L.Slider_BarWidth 	= "宽度"
@@ -104,6 +108,26 @@ L.EnableHugeBar 	= "开启大型计时条（2号计时条）"
 L.FillUpBars		= "填充计时条"
 L.ClickThrough		= "禁用鼠标点击事件 (允许你点击计时条)"
 
+-- Tab: Spec Warn Frame
+L.Panel_SpecWarnFrame		= "特殊警报"
+L.Area_SpecWarn				= "特殊警报设置"
+L.SpecWarn_Enabled			= "显示首领技能特殊警报"
+L.SpecWarn_Font				= "特殊警报字体"
+L.SpecWarn_DemoButton		= "测试警报"
+L.SpecWarn_MoveMe			= "设置位置"
+L.SpecWarn_FontSize			= "字体大小"
+L.SpecWarn_FontColor		= "字体颜色"
+L.SpecWarn_FontType			= "选择字体"
+L.SpecWarn_ResetMe			= "重置选项"
+
+-- Tab: HealthFrame
+L.Panel_HPFrame				= "首领生命值框体"
+L.Area_HPFrame				= "首领生命值框体选项"
+L.HP_Enabled				= "总是显示首领生命值框体 (首领模块中单独的设置将不起作用)"
+L.HP_GrowUpwards			= "计量条想上增长"
+L.HP_ShowDemo				= "显示测试框体"
+L.BarWidth					= "计量条宽度: %d"
+
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "信息过滤"
 L.Area_SpamFilter		= "常规设置"
@@ -111,7 +135,5 @@ L.HideBossEmoteFrame	= "隐藏BOSS表情"
 L.SpamBlockRaidWarning	= "过滤其他首领预警插件警报" 
 L.SpamBlockBossWhispers	= "战斗中过滤DBM密语警报"
 L.BlockVersionUpdatePopup	= "禁用升级提示"
-
-
 L.ShowBigBrotherOnCombatStart	= "战斗开始时使用BigBrother检测增益情况"
 

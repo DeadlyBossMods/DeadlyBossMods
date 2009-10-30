@@ -135,6 +135,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 }
 
 
+-- New special warnings
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "移动特殊警报"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "特殊警报"
+
 
 
 
