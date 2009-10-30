@@ -388,9 +388,9 @@ L:SetMiscLocalization({
 	WarningWave1	= "%d %s",
 	WarningWave2	= "%d %s et %d %s",
 	WarningWave3	= "%d %s, %d %s et %d %s",
-	Trainee			= "|4Recrue:Recrues;",
-	Knight			= "|4Chevalier:Chevaliers;",
-	Rider			= "|4Cavalier:Cavaliers;",
+	Trainee			= "Recrues",
+	Knight			= "Chevaliers",
+	Rider			= "Cavaliers",
 })
 
 

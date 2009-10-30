@@ -39,9 +39,9 @@ L:SetOptionLocalization({
 })
 
 
------------------
+---------------------------
 --  Lady Deathwhisper  --
------------------
+---------------------------
 L = DBM:GetModLocalization("Deathwhisper")
 
 L:SetGeneralLocalization({
