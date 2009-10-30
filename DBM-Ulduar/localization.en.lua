@@ -86,7 +86,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Devouring Flame - Move",
+	SpecWarnDevouringFlame		= "Devouring Flame - Move away",
 	warnTurretsReadySoon		= "Last turret ready in 20 seconds",
 	warnTurretsReady			= "Last turret ready",
 	SpecWarnDevouringFlameCast	= "Devouring Flame on you",
@@ -174,10 +174,10 @@ L:SetWarningLocalization{
 	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
 	WarningRuneofPower			= "Rune of Power",
 	WarningRuneofDeath			= "Rune of Death",
-	RuneofDeath					= "Rune of Death - Move",
-	LightningTendrils			= "Lightning Tendrils - Move",
+	RuneofDeath					= "Rune of Death - Move away",
+	LightningTendrils			= "Lightning Tendrils - Run away",
 	WarningRuneofSummoning		= "Rune of Summoning",
-	Overload					= "Overload - Move away",
+	Overload					= "Overload - Run away",
 	WarningStaticDisruption		= "Static Disruption on >%s<",
 	PlaySoundDeathRune			= "Death Rune"
 }
@@ -338,7 +338,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast		= "Sentinel Blast - Interrupt",
-	SpecWarnVoid		= "Void Zone - Move",
+	SpecWarnVoid		= "Void Zone - Move away",
 	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
 	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",
 	WarnFear			= "Terrifying Screech",
@@ -407,7 +407,7 @@ L:SetWarningLocalization{
 	WarningPhase2			= "Phase 2",
 	WarningLightningCharge	= "Lightning Charge",
 	WarningBomb				= "Rune Detonation on >%s<",
-	LightningOrb			= "Lightning Shock on you - Move"
+	LightningOrb			= "Lightning Shock - Move away"
 }
 
 L:SetTimerLocalization{
@@ -459,7 +459,7 @@ L:SetWarningLocalization{
 	SpecWarnFury	= "Nature's Fury on you",
 	WarningTremor	= "Ground Tremor - Stop casting",
 	WarnRoots		= "Roots on >%s<",
-	UnstableEnergy	= "Unstable Energy - Move"
+	UnstableEnergy	= "Unstable Energy - Move away"
 }
 
 L:SetTimerLocalization{
@@ -522,7 +522,7 @@ L:SetWarningLocalization{
 	WarnShell			= "Napalm Shells on >%s<",
 	WarnBlast			= "Plasma Blast on >%s<",
 	MagneticCore		= ">%s< has Magnetic Core",
-	WarningShockBlast	= "Shock Blast - Move away",
+	WarningShockBlast	= "Shock Blast - Run away",
 	WarnBombSpawn		= "Bomb Bot spawned",
 	WarnFrostBomb		= "Frost Bomb",
 	WarnFlamesSoon		= "New flames in ~5 seconds"
@@ -583,10 +583,10 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash		= "Shadow Crash on you",
+	SpecialWarningShadowCrash		= "Shadow Crash on you - Move away",
 	SpecialWarningSurgeDarkness		= "Surge of Darkness",
 	WarningShadowCrash				= "Shadow Crash on >%s<",
-	SpecialWarningShadowCrashNear	= "Shadow Crash near you",
+	SpecialWarningShadowCrashNear	= "Shadow Crash near you - Watch out",
 	WarningLeechLife				= "Life Leech on >%s<",
 	SpecialWarningLLYou				= "Life Leech on you",
 	SpecialWarningLLNear			= "Life Leech on %s near you"

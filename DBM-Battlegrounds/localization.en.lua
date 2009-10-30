@@ -226,7 +226,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova	= "Lightning Nova",
+	specWarnNova	= "Lightning Nova - Run away",
 	warnNova 		= "Lightning Nova",
 	warnOverCharge	= "Overcharge"
 }
@@ -254,7 +254,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder	= "You are in a Flaming Cinder - Run away"
+	SpecWarnCinder	= "Flaming Cinder - Move away"
 }
 
 L:SetTimerLocalization{
