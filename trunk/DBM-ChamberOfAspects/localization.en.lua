@@ -43,7 +43,7 @@ L:SetWarningLocalization({
 	WarningTenebron			= "Tenebron incoming",
 	WarningShadron			= "Shadron incoming",
 	WarningVesperon			= "Vesperon incoming",
-	WarningFireWall			= "Fire Wall - Move away",
+	WarningFireWall			= "Fire Wall",
 	WarningVesperonPortal	= "Vesperon's portal",
 	WarningTenebronPortal	= "Tenebron's portal",
 	WarningShadronPortal	= "Shadron's portal",

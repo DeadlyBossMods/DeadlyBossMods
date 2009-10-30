@@ -59,7 +59,7 @@ L:SetWarningLocalization{
 	WarningBile					= "Burning Bile on >%s<",
 	SpecialWarningImpale3		= "Impale >%d< on you",
 	SpecialWarningFireBomb		= "Fire Bomb on you",
-	SpecialWarningSlimePool		= "Slime Pool - Move out",
+	SpecialWarningSlimePool		= "Slime Pool - Move away",
 	SpecialWarningSilence		= "Silence in ~1.5 seconds!",
 	SpecialWarningSpray			= "Paralytic Spray on you",
 	SpecialWarningToxin			= "Paralytic Toxin on you - Move",
