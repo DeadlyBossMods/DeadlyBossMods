@@ -259,7 +259,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn	= 	"Next wave (6)", 
+	TimerWaveIn		= "Next wave (6)", 
 })
 
 L:SetOptionLocalization({
@@ -695,9 +695,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1	= "There's plenty of me to go around.",		-- translate
-	SplitTrigger2	= "I'll give you more than you can handle.",	-- translate
-	MergeTrigger	= "Now to finish the job!"				-- translate
+	SplitTrigger1		= "There's plenty of me to go around.",		-- translate
+	SplitTrigger2		= "I'll give you more than you can handle.",	-- translate
+	MergeTrigger		= "Now to finish the job!"				-- translate
 })
 
 
@@ -1314,9 +1314,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPursuit			= "Show pre-warning for pursue",
-	specWarnToxic		= "Show special warning when you take damage from Toxic Waste",
-	specWarnPursuit		= "Show special warning when you are being pursued"
+	warnPursuit				= "Show pre-warning for pursue",
+	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
+	specWarnPursuit			= "Show special warning when you are being pursued"
 --	SetIconOnPursuitTarget	= "Set icon on Pursuit target"
 })
 
