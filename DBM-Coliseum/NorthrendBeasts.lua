@@ -103,7 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnToxin:Show()
 		end
 		mod:ScheduleMethod(0.2, "warnToxin")
-	elseif args:IsSpellID(66870, 67621, 67622, 67623) then		-- Burning Bile
+	elseif args:IsSpellID(66869) then		-- Burning Bile
 		self:UnscheduleMethod("warnBile")
 		bileTargets[#bileTargets + 1] = args.destName
 		if args:IsPlayer() then
