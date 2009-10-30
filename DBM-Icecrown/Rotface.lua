@@ -3,7 +3,7 @@ local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36627)
---mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(6, 7)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -15,12 +15,17 @@ mod:RegisterEvents(
 )
 
 
-local nextWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
+local nextWallSlime		= mod:NewTimer(20, "NextPoisonSlimePipes")
 local nextSlimeSpray		= mod:NewNextTimer(21, 69508)
 local warnSlimeSpray		= mod:NewSpellAnnounce(69508)
 
 local warnMutatedInfection	= mod:NewTargetAnnounce(71224)
 local timerMutatedInfection	= mod:NewTargetTimer(12, 71224)
+local specWarnMutatedInfection	= mod:NewSpecialWarning("SpecWarnMutatedInfection")
+mod:AddBoolOption("InfectionIcon")
+local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
+
+local warnOozeSpawn		= mod:NewAnnounce("WarnOozeSpawn")
 
 local nextStickyOoze		= mod:NewNextTimer(16, 69774)
 local warnStickyOoze		= mod:NewSpellAnnounce(69774)
@@ -34,6 +39,7 @@ local specWarnRadiatingOoze	= mod:NewSpecialWarning("SpecWarnRadiationOoze", fal
 function mod:OnCombatStart(delay)
 	nextWallSlime:Start(25-delay)
 	self:ScheduleMethod(25-delay, "WallSlime")
+	InfectionIcon = 7
 end
 
 function mod:WallSlime()
@@ -63,12 +69,27 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(69674, 71224) then
 		warnMutatedInfection:Show(args.destName)
 		timerMutatedInfection:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnMutatedInfection:Show()
+		end
+		if self.Options.InfectionIcon then
+			mod:SetIcon(args.destName, InfectionIcon, 12)
+			if InfectionIcon == 7 then	-- After ~3mins there is a chance 2 ppl will have the debuff, so we are alternating between 2 icons
+				InfectionIcon = 6
+			else
+				InfectionIcon = 7
+			end
+		end	
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69674, 71224) then
-		timerMutatedInfection:Cancel()
+		timerMutatedInfection:Cancel(args.destName)
+		warnOozeSpawn:Show()
+		if self.Options.InfectionIcon then
+			mod:SetIcon(args.destName, 0)
+		end
 	end
 end
 
