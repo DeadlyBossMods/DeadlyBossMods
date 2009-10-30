@@ -32,3 +32,4 @@ Festergut.lua
 GunshipBattle.lua
 Rotface.lua
 Deathwhisper.lua
+Sindragosa.lua

@@ -90,6 +90,17 @@ L:SetOptionLocalization({
 })
 
 
+------------------
+--  Sindragosa  --
+------------------
+L = DBM:GetModLocalization("Sindragosa")
 
+L:SetGeneralLocalization({
+	name = "Sindragosa"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
 
 
