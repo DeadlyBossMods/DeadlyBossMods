@@ -100,9 +100,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.Emote_CollapsingStar then
+	if msg == L.Emote_CollapsingStar or msg:find(L.Emote_CollapsingStar) then
 		timerNextCollapsingStar:Start()
-	elseif msg == L.Emote_CosmicSmash then
+	elseif msg == L.Emote_CosmicSmash or msg:find(L.Emote_CosmicSmash) then
 		timerCastCosmicSmash:Start()
 		timerCDCosmicSmash:Start()
 		announceCosmicSmash:Show()

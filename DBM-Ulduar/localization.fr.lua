@@ -125,7 +125,7 @@ L:SetMiscLocalization{
 	YellAir 			= "Laissez un instant pour préparer la construction des tourelles.",
 	YellAir2			= "Incendie éteint ! Reconstruisons les tourelles !",
 	YellGroundTemp		= "Faites vite ! Elle va pas rester au sol très longtemps !",
-	EmotePhase2			= "%%s bloquée au sol !",
+	EmotePhase2			= "bloquée au sol",
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
 
@@ -272,9 +272,8 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull		= "Vos actions sont illogiques. Tous les résultats possibles de cette rencontre ont été calculés. Le panthéon recevra le message de l'Observateur quelque soit l'issue.",
 	YellPullFirst			= "",
-	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
-	Emote_CosmicSmash		= "%s begins to cast Cosmic Smash!"
-
+	Emote_CollapsingStars	= "commence à lancer un effondrement",
+	Emote_CosmicSmash		= "commence à incanter un Choc cosmique"
 }
 
 
@@ -611,7 +610,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!",
+	EmoteSaroniteVapors	= "nuage de vapeurs saronitiques",
 	CrashWhisper		= "Déferlante d'ombre sur toi ! BOUGE !",
 	YellLeech			= "Marque du Sans-visage sur moi !",
 	YellCrash			= "Déferlante d'ombre sur moi !"

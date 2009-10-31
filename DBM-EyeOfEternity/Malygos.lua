@@ -44,9 +44,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.EmoteSpark then
+	if msg == L.EmoteSpark or msg:find(L.EmoteSpark) then
 		self:SendSync("Spark")
-	elseif msg == L.EmoteBreath then
+	elseif msg == L.EmoteBreath or msg:find(L.EmoteBreath) then
 		self:SendSync("Breath")
 	end
 end
