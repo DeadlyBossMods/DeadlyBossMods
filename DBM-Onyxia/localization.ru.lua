@@ -13,7 +13,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "Глубокий вдох",
-	specWarnBlastNova	= "Страж логова Ониксии читает заклинание Вспышка Огненной звезды. Бегите!",
+	specWarnBlastNova	= "Страж логова Ониксии читает заклинание Вспышка Огненной звезды - бегите",
 	WarnWhelpsSoon		= "Скоро дракончики Ониксии",
 	WarnPhase3Soon		= "Скоро фаза 3"
 }
