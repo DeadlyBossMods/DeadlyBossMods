@@ -653,7 +653,7 @@ L:SetWarningLocalization{
 	WarnEmpowerSoon			= "Приближается Сгущение тьмы!",
 	SpecWarnMaladyNear		= "Душевная болезнь около вас, на >%s<",
 	SpecWarnDeafeningRoar		= "Оглушающий рев",
-	specWarnBrainPortalSoon		= "Портал"	
+	specWarnBrainPortalSoon		= "Скоро Портал"	
 }
 
 L:SetTimerLocalization{
