@@ -6,12 +6,12 @@ local spell		= "%s"
 local debuff		= "%s: >%s<"			
 local spellCD		= "%s 冷卻"
 local spellSoon		= "%s 即將到來"
-local optionWarning	= "為\"%s\"顯示警告"
-local optionPreWarning	= "為\"%s\"顯示預先警告"
-local optionSpecWarning	= "為\"%s\"顯示特別警告"
-local optionTimerCD	= "為\"%s\"顯示冷卻計時器"
-local optionTimerDur	= "為\"%s\"顯示持續時間計時器"
-local optionTimerCast	= "為\"%s\"顯示施法計時器"
+local optionWarning	= "為%s顯示警告"
+local optionPreWarning	= "為%s顯示預先警告"
+local optionSpecWarning	= "為%s顯示特別警告"
+local optionTimerCD	= "為%s顯示冷卻計時器"
+local optionTimerDur	= "為%s顯示持續時間計時器"
+local optionTimerCast	= "為%s顯示施法計時器"
 
 
 --------------------------------
