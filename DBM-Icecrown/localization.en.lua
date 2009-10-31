@@ -184,7 +184,8 @@ L:SetOptionLocalization({
 	NextAirphase		= "Show timer for next airphase"
 })
 L:SetMiscLocalization({
-	YellAirphase		= "Your incursion ends here! None shall survive!"
+	YellAirphase		= "Your incursion ends here! None shall survive!",
+	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 })
 
 
