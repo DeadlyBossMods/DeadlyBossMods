@@ -1,4 +1,4 @@
-if GetLocale() ~= "deDE" then return end
+ï»¿if GetLocale() ~= "deDE" then return end
 
 local L
 ----------------------
@@ -43,7 +43,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast		= "Spezialwarnung fÃ¼r Flame Jets Cast (Zauber Unterbrechung)",
+	SpecWarnJetsCast		= "Spezialwarnung fÃ¼r Flame Jets Cast (fÃ¼r Unterbrechung)",
 	WarningSlagPot			= "Warnung fÃ¼r Slag Pot target",
 	SlagPotIcon			= "Setze Symbol auf Slag Pot target"
 }
@@ -86,7 +86,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAir				= "Gebt uns einen Moment, damit wir uns auf den Bau der GeschÃ¼tze vorbereiten kÃ¶nnen.",
-	YellAir2			= "Feuer einstellen! Lasst uns diese Geschütze reparieren!",
+	YellAir2			= "Feuer einstellen! Lasst uns diese GeschÃ¼tze reparieren!",
 	YellGroundTemp			= "Beeilt Euch! Sie wird nicht lange am Boden bleiben!", 
 	EmotePhase2			= "%%s grounded permanently!",
 	FlamecastUnknown		= "UNBEKANNT"
@@ -192,21 +192,21 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch		= "Spezial Warnung für Phasenschlag stacks",
+	SpecWarnPhasePunch		= "Spezial Warnung fÃ¼r Phasenschlag stacks",
 	WarningBigBang			= "Warnung bei Urknall",
-	PreWarningBigBang		= "Vorwarnung für Urknall",
-	SpecWarnBigBang			= "Spezialwarnung für Urknall",
+	PreWarningBigBang		= "Vorwarnung fÃ¼r Urknall",
+	SpecWarnBigBang			= "Spezialwarnung fÃ¼r Urknall",
 	WarningPhasePunch		= "Warnung bei Phasenschlag",
-	WarningBlackHole		= "Warnung für Schwarzes Loch",
-	NextCollapsingStar		= "Zeit für kollabierende Sterne anzeigen",
+	WarningBlackHole		= "Warnung fÃ¼r Schwarzes Loch",
+	NextCollapsingStar		= "Zeit fÃ¼r kollabierende Sterne anzeigen",
 	WarningCosmicSmash 		= "Warnung bei Kosmisches Schmettern",
-	SpecWarnCosmicSmash 	= "Spezialwarnung für Kosmisches Schmettern"
+	SpecWarnCosmicSmash 	= "Spezialwarnung fÃ¼r Kosmisches Schmettern"
 }
 
 L:SetMiscLocalization{
-	YellPull				= "Euer Handeln ist unlogisch. Alle Möglichkeiten dieser Begegnung wurden berechnet. Das Pantheon wird die Nachricht des Beobachters erhalten, ungeachtet des Ausgangs.",
-	YellPullFirst			= "Seht Eure Welt durch meine Augen: Ein Universum so gewaltig - grenzenlos - unbegreiflich selbst für die Klügsten unter Euch.",
-	Emote_CollapsingStars	= "%s beginnt damit, kollabierende Sterne zu beschwören!!",
+	YellPull				= "Euer Handeln ist unlogisch. Alle MÃ¶glichkeiten dieser Begegnung wurden berechnet. Das Pantheon wird die Nachricht des Beobachters erhalten, ungeachtet des Ausgangs.",
+	YellPullFirst			= "Seht Eure Welt durch meine Augen: Ein Universum so gewaltig - grenzenlos - unbegreiflich selbst fÃ¼r die KlÃ¼gsten unter Euch.",
+	Emote_CollapsingStars	= "%s beginnt damit, kollabierende Sterne zu beschwÃ¶ren!!",
 }
 
 ----------------
@@ -551,7 +551,7 @@ L:SetOptionLocalization{
 	specWarnBrainPortalSoon			= "Warnung fÃ¼r Brain Portal in KÃ¼rze",
 	SetIconOnFearTarget				= "Setze Symbol auf Spieler mit Geisteskrankheit",
 	SetIconOnMCTarget				= "Setze Symbol auf Spieler mit Gedanken beherrschen",
-	SpecWarnMaladyNear				= "Spezialwarnung für Geisteskrankheit in deiner Nähe"
+	SpecWarnMaladyNear				= "Spezialwarnung fÃ¼r Geisteskrankheit in deiner NÃ¤he"
 }
 
 
