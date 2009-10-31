@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 
 local L
 
@@ -6,12 +6,12 @@ local spell				= "%s"
 local debuff			= "%s: >%s<"			
 local spellCD			= "%s 쿨다운"			-- translate
 local spellSoon			= "곧 %s 사용"			-- translate
-local optionWarning		= "\"%s\" 경고 보기"		-- translate
-local optionPreWarning	= "\"%s\" 사전 경고 보기"	-- translate
-local optionSpecWarning	= "\"%s\" 특수 경고 보기"	-- translate
-local optionTimerCD		= "\"%s\" 쿨다운 타이머 보기"	-- translate
-local optionTimerDur	= "\"%s\" 지속 타이머 보기"	-- translate
-local optionTimerCast	= "\"%s\" 시전 타이머 보기"	-- translate
+local optionWarning		= "%s 경고 보기"		-- translate
+local optionPreWarning		= "%s 사전 경고 보기"	-- translate
+local optionSpecWarning		= "%s 특수 경고 보기"	-- translate
+local optionTimerCD		= "%s 쿨다운 타이머 보기"	-- translate
+local optionTimerDur		= "%s 지속 타이머 보기"	-- translate
+local optionTimerCast		= "%s 시전 타이머 보기"	-- translate
 
 --------------------------------
 -- 안카헤트 - 고대 왕국       --

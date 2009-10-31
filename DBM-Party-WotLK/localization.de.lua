@@ -6,12 +6,12 @@ local spell		= "%s"
 local debuff		= "%s: >%s<"			
 local spellCD		= "%s cooldown"			
 local spellSoon		= "%s bald"			
-local optionWarning	= "Show \"%s\" Warnung"		
-local optionPreWarning	= "Show \"%s\" Vorwarnung"
-local optionSpecWarning	= "Show \"%s\" Spezialwarnung"
-local optionTimerCD	= "Show \"%s\" cooldown timer"	
-local optionTimerDur	= "Show \"%s\" Dauer timer"	
-local optionTimerCast	= "Show \"%s\" Zauber timer"	
+local optionWarning	= "Show %s Warnung"		
+local optionPreWarning	= "Show %s Vorwarnung"
+local optionSpecWarning	= "Show %s Spezialwarnung"
+local optionTimerCD	= "Show %s cooldown timer"	
+local optionTimerDur	= "Show %s Dauer timer"	
+local optionTimerCast	= "Show %s Zauber timer"	
 
 
 --------------------------------

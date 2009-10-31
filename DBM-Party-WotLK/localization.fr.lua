@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -6,12 +6,12 @@ local spell				= "%s"
 local debuff			= "%s: >%s<"			
 local spellCD			= "%s cooldown"
 local spellSoon			= "%s bientôt"
-local optionWarning		= "Activer l'annonce: \"%s\" "
-local optionPreWarning	= "Activer la pré-annonce: \"%s\" "
-local optionSpecWarning	= "Activer l'avertissement spécial: \"%s\" "
-local optionTimerCD		= "Afficher le timer pour le cooldown pour: \"%s\" "
-local optionTimerDur	= "Afficher le timer de durée pour: \"%s\" "
-local optionTimerCast	= "Afficher le timer pour le cast de: \"%s\" "
+local optionWarning		= "Activer l'annonce: %s"
+local optionPreWarning		= "Activer la pré-annonce: %s"
+local optionSpecWarning		= "Activer l'avertissement spécial: %s"
+local optionTimerCD		= "Afficher le timer pour le cooldown pour: %s"
+local optionTimerDur		= "Afficher le timer de durée pour: %s"
+local optionTimerCast		= "Afficher le timer pour le cast de: %s"
 
 
 --------------------------------

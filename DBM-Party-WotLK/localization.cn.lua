@@ -10,12 +10,12 @@ local spell		= "%s"
 local debuff		= "%s: >%s<"			
 local spellCD		= "%s - 冷却"			-- translate
 local spellSoon		= "%s - 即将施放"			-- translate
-local optionWarning	= "显示“%s”警报"		-- translate
-local optionPreWarning	= "显示“%s”预警"	-- translate
-local optionSpecWarning	= "显示“%s”特殊警报"	-- translate
-local optionTimerCD	= "显示“%s”冷却计时器"	-- translate
-local optionTimerDur	= "显示“%s”持续时间"	-- translate
-local optionTimerCast	= "显示“%s”施法时间"	-- translate
+local optionWarning	= "显示%s警报"		-- translate
+local optionPreWarning	= "显示%s预警"	-- translate
+local optionSpecWarning	= "显示%s特殊警报"	-- translate
+local optionTimerCD	= "显示%s冷却计时器"	-- translate
+local optionTimerDur	= "显示%s持续时间"	-- translate
+local optionTimerCast	= "显示%s施法时间"	-- translate
 
 
 --------------------------------
