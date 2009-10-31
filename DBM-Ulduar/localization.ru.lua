@@ -584,10 +584,10 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "Темное сокрушение на вас",
+	SpecialWarningShadowCrash	= "Темное сокрушение на вас - бегите",
 	SpecialWarningSurgeDarkness	= "Наплыв Тьмы",
 	WarningShadowCrash		= ">%s< под воздействием Темного сокрушения",
-	SpecialWarningShadowCrashNear	= "Темное сокрушение около вас",
+	SpecialWarningShadowCrashNear	= "Темное сокрушение около вас - бегите",
 	WarningLeechLife		= ">%s< под воздействием Вытягивание жизни",
 	SpecialWarningLLYou		= "Вытягивание жизни на вас",
 	SpecialWarningLLNear		= "%s около вас, под воздействием Вытягивание жизни"
@@ -652,7 +652,8 @@ L:SetWarningLocalization{
 	SpecWarnFavor			= "Рвение Сары на вас!",
 	WarnEmpowerSoon			= "Приближается Сгущение тьмы!",
 	SpecWarnMaladyNear		= "Душевная болезнь около вас, на >%s<",
-	SpecWarnDeafeningRoar		= "Оглушающий рев"	
+	SpecWarnDeafeningRoar		= "Оглушающий рев",
+	specWarnBrainPortalSoon		= "Портал"	
 }
 
 L:SetTimerLocalization{
