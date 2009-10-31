@@ -64,7 +64,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarningSlagPot			= "Marmite de scories sur >%s<",
-	SpecWarnJetsCast		= "Flots de flammes - Stop Cast"
+	SpecWarnJetsCast		= "Flots de flammes - Stop Incantation"
 }
 
 L:SetOptionLocalization{
@@ -428,9 +428,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPhase1		= "Des intrus ! Mortels, vous qui osez me déranger en plein divertissement, allez payer ! Attendez... vous ?",
-	YellPhase2		= "Avortons impertinents. Vous osez me défier sur mon piédestal ! Je vais vous écraser moi-même !",
-	YellKill		= "Stay your arms! I yield!",
+	YellPhase1		= "Des intrus ! Mortels, vous qui osez me déranger en plein divertissement allez pay -  Attendez, vous -",
+	YellPhase2		= "Avortons impertinents, vous osez me défier sur mon piédestal ? Je vais vous écraser moi-même !",
+	YellKill		= "Retenez vos coups ! Je me rends !",
 	ChargeOn		= "Charge(s) de foudre: %s",
 	Charge			= "Charge(s) de foudre non évitée(s) (cet essai): %s" 
 }
@@ -564,7 +564,7 @@ L:SetMiscLocalization{
 	YellPull		= "Nous n'avons pas beaucoup de temps, les amis ! Vous allez m'aider à tester ma dernière création en date, la plus grande de toutes. Avant de changer d'avis, n'oubliez pas que que vous me devez bien ça après m'avoir complètement déglingué le XT-002.",	
 	YellHardPull	= "Now, why would you go and do something like that? Didn't you see the sign that said, \"DO NOT PUSH THIS BUTTON!\"? How will we finish testing with the self-destruct mechanism active?",
 	YellPhase2		= "MERVEILLEUX ! Résultats parfaitement formidables ! Intégrité de la coque à 98,9 pour cent ! À peine une égratignure ! Poursuivons l'opération.",
-	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
+	YellPhase3		= "Merci, les amis !",
 	YellPhase4		= "Fin de la phase d'essais préliminaires. Passons à la véritable expérience !",
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
