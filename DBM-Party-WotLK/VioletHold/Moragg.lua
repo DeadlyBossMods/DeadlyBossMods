@@ -17,9 +17,9 @@ local timerLinkCD	= mod:NewCDTimer(45, 54396)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 54396 then
-		warningLink:Show(args.spellName, args.destName)
-		timerLink:Start(args.spellName, args.destName)
+		warningLink:Show(args.destName)
+		timerLink:Start(args.destName)
 		timerLinkCD:Cancel()
-		timerLinkCD:Start(args.spellName)
+		timerLinkCD:Start()
 	end
 end

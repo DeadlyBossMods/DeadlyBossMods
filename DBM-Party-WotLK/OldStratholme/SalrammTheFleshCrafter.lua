@@ -21,17 +21,17 @@ local timerCurse	= mod:NewTargetTimer(30, 58845)
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 52451 then
-		warningGhoul:Show(args.spellName)
-		timerGhoulCD:Start(args.spellName)
+		warningGhoul:Show()
+		timerGhoulCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 58845 then
-		warningCurse:Show(args.spellName, args.destName)
-		timerCurse:Start(args.spellName, args.destName)
+		warningCurse:Show(args.destName)
+		timerCurse:Start(args.destName)
 	elseif args.spellId == 52709 then
-		wagningSteal:Show(args.spellName, args.destName)
+		wagningSteal:Show(args.destName)
 	end
 end
 

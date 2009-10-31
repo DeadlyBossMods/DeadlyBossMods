@@ -22,15 +22,15 @@ local timerNovaCD		= mod:NewCDTimer(25, 48179)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 50997 then
-		warningChains:Show(args.spellName, args.destName)
-		timerChains:Start(args.spellName, args.destName)
-		timerChainsCD:Start(args.spellName)
+		warningChains:Show(args.destName)
+		timerChains:Start(args.destName)
+		timerChainsCD:Start()
 	elseif args.spellId == 8599 and args.souceGUID == 26723 then
-		warningEnrage:Show(args.spellName)
+		warningEnrage:Show()
 	elseif args.spellId == 48179 then
-		warningNova:Show(args.spellName)
-		timerNova:Start(args.spellName)
-		timerNovaCD:Start(args.spellName)
+		warningNova:Show()
+		timerNova:Start()
+		timerNovaCD:Start()
 	end
 end
 

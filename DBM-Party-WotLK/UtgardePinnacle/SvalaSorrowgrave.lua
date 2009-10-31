@@ -15,6 +15,6 @@ local warningSword	= mod:NewSpellAnnounce(48276, 2)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 48276 then
-		warningSword:Show(args.spellName)
+		warningSword:Show()
 	end
 end

@@ -25,18 +25,18 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 58694 then
-		warningVacuum:Show(args.spellName)
+		warningVacuum:Show()
 		timerVacuumCD:Cancel()
-		timerVacuumCD:Start(args.spellName)
+		timerVacuumCD:Start()
 	elseif args.spellId == 58693 or args.spellId == 59369 then
-		warningBlizzard:Show(args.spellName)
+		warningBlizzard:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59374 then
-		warningMana:Show(args.spellName, args.destName)
-		timerMana:Start(args.spellName, args.destName)
+		warningMana:Show(args.destName)
+		timerMana:Start(args.destName)
 	end
 end
 

@@ -18,9 +18,9 @@ local timerSleepCD	= mod:NewCDTimer(20, 52721)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 52721 or args.spellId == 58849 then
-		warningSleep:Show(args.spellName, args.destName)
-		timerSleep:Start(args.spellName, args.destName)
-		timerSleepCD:Start(args.spellName)
+		warningSleep:Show(args.destName)
+		timerSleep:Start(args.destName)
+		timerSleepCD:Start()
 	end
 end
 

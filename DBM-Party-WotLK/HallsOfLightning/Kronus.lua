@@ -23,7 +23,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 52960 or args.spellId == 59835 then
-		warningNova:Show(args.spellName)
-		timerNovaCD:Start(args.spellName)
+		warningNova:Show()
+		timerNovaCD:Start()
 	end
 end

@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Bronjahm", "DBM-Party-WotLK", 14)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1728 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36497)
 
 mod:RegisterCombat("combat")

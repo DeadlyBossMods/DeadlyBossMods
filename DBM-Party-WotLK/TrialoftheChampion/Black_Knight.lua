@@ -1,8 +1,8 @@
 local mod = DBM:NewMod("BlackKnight", "DBM-Party-WotLK", 13)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1665 $"):sub(12, -3))
-mod:SetCreatureID(35451, 10000)		-- work around, DBM Api failes to handle a Boss to die, rebirth, die again, rebirth again and die to loot .. (this suck at blizzard..)
+mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetCreatureID(35451, 10000)		-- work around, DBM API failes to handle a Boss to die, rebirth, die again, rebirth again and die to loot...
 mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
