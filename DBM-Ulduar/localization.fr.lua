@@ -562,10 +562,10 @@ L:SetMiscLocalization{
 	MobPhase2		= "VX-001",
 	MobPhase3		= "Unité de commandement aérien",
 	YellPull		= "Nous n'avons pas beaucoup de temps, les amis ! Vous allez m'aider à tester ma dernière création en date, la plus grande de toutes. Avant de changer d'avis, n'oubliez pas que que vous me devez bien ça après m'avoir complètement déglingué le XT-002.",	
-	YellHardPull	= "Now, why would you go and do something like that? Didn't you see the sign that said, \"DO NOT PUSH THIS BUTTON!\"? How will we finish testing with the self-destruct mechanism active?",
-	YellPhase2		= "MERVEILLEUX ! Résultats parfaitement formidables ! Intégrité de la coque à 98,9 pour cent ! À peine une égratignure ! Poursuivons l'opération.",
+	YellHardPull	= "Mais, pourquoi",
+	YellPhase2		= "MERVEILLEUX ! Résultats parfaitement formidables !",
 	YellPhase3		= "Merci, les amis !",
-	YellPhase4		= "Fin de la phase d'essais préliminaires. Passons à la véritable expérience !",
+	YellPhase4		= "Fin de la phase d'essais préliminaires",
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
