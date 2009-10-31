@@ -26,11 +26,16 @@ local beaconTargets = {}
 local warnAirphase		= mod:NewAnnounce("WarnAirphase")
 local nextAirphase		= mod:NewTimer(110, "NextAirphase")
 
+-- Groundphase
+local nextGroundphase		= mod:NewTimer(45, "NextGroundphase")
+local prewarnGroundphase	= mod:NewAnnounce("PrewarnGroundphase", 2)
+
 -- Blistering Cold
 local warnBlisteringCold	= mod:NewAnnounce("WarnBlisteringCold", 3, 70117, isMelee)
 local castBlisteringCold	= mod:NewCastTimer(5, 70117)
 
-
+-- Frostbomb
+--local warnFrostbomb		= mod:NewTargetAnnounce(69846)  
 
 function mod:OnCombatStart(delay)
 	nextAirphase:Start(50-delay)
@@ -68,6 +73,8 @@ function mod:OnSync(msg, arg)
 	if msg == "Airphase" then
 		warnAirphase:Show()
 		nextAirphase:Start()
+		nextGroundphase:Start()
+		prewarnGroundphase:Schedule(40)
 	end
 end
 		
