@@ -6,12 +6,12 @@ local spell		= "%s"
 local debuff		= "%s: >%s<"			
 local spellCD		= "%s CD"			-- translate
 local spellSoon		= "%s Pronto"			-- translate
-local optionWarning	= "Mostrar cuadno haga \"%s\" "		-- translate
-local optionPreWarning	= "Mostrar pre-aviso de \"%s\" "	-- translate
-local optionSpecWarning	= "Mostrar aviso especial de \"%s\" "	-- translate
-local optionTimerCD	= "Mostrar barra de CD de \"%s\" "	-- translate
-local optionTimerDur	= "Mostrar duracion de \"%s\" "	-- translate
-local optionTimerCast	= "Mostrar tiempo de casteo \"%s\" "	-- translate
+local optionWarning	= "Mostrar cuadno haga %s "		-- translate
+local optionPreWarning	= "Mostrar pre-aviso de %s "	-- translate
+local optionSpecWarning	= "Mostrar aviso especial de %s "	-- translate
+local optionTimerCD	= "Mostrar barra de CD de %s "	-- translate
+local optionTimerDur	= "Mostrar duracion de %s "	-- translate
+local optionTimerCast	= "Mostrar tiempo de casteo %s "	-- translate
 
 
 --------------------------------
