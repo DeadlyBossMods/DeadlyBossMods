@@ -198,21 +198,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShards		= "바위 조각 대상 : >%s<",
-	WarningGrab			= ">%s< 에게 분쇄의 도약"
+	WarningShards	= "바위 조각 대상 : >%s<",
+	WarningGrab		= ">%s< 에게 분쇄의 도약"
 })
 
 L:SetTimerLocalization({
-	TimerShards			 = "바위 조각: %s"
+	TimerShards		 = "바위 조각: %s"
 })
 
 L:SetMiscLocalization({
-	TankSwitch 			= "%%s 이 (%S+) 으로 탱커 전환!"
+	TankSwitch 		= "%%s 이 (%S+) 으로 탱커 전환!"
 })
 
 L:SetOptionLocalization({
-	TimerShards			= "바위 조각 타이머 보기",
-	WarningShards 		= "바위 조각 경고 보기",
+	TimerShards		= "바위 조각 타이머 보기",
+	WarningShards 	= "바위 조각 경고 보기",
 	WarningGrab 		= "분쇄의 도약 경고 보기"
 })
 
@@ -237,10 +237,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= ("특수 경보로 볼 |cff71d5ff|H주문:%d|h%s|h|r"):format(64216, "번개 회오리"),
-	warnNova 			= ("공격대 경고 |cff71d5ff|H주문:%d|h%s|h|r"):format(64216, "번개 회오리"),
-	NovaSound			= "번개 회오리 특수 사운드 재생",	
-	warnOverCharge 		= ("공격대 경고 |cff71d5ff|H주문:%d|h%s|h|r"):format(64218, "과충전"),
+	specWarnNova 	= ("특수 경보로 볼 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "번개 회오리"),
+	warnNova 		= ("공격대 경고 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "번개 회오리"),
+	NovaSound		= "번개 회오리 특수 사운드 재생",	
+	warnOverCharge 	= ("공격대 경고 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "과충전"),
 	timerMobOvercharge	= "과충전 된 몹의 시간 보기(stacking debuff)"
 }
 
