@@ -179,11 +179,11 @@ L:SetTimerLocalization({
 	NextGroundphase		= "Наземная фаза"
 })
 L:SetWarningLocalization({
-	WarnAirphase		= "воздушная фаза",
+	WarnAirphase		= "Воздушная фаза",
 	WarnBlisteringCold	= "Blistering Cold",
 	SpecWarnBlisteringCold	= "Blisstering Cold - run out",
 	SpecWarnFrostBeacon	= "Frost beacon on you",
-	PrewarnGroundphase	= "Sindragosa landing soon",
+	PrewarnGroundphase	= "Синдрагоса приземляется",
 	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
