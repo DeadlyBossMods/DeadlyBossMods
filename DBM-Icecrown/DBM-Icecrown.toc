@@ -8,6 +8,7 @@
 ## SavedVariablesPerCharacter: DBMIcecrown_SavedVars, DBMIcecrown_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-SubCategories: Entryway,The Plagueworks,The Crimson Hall,Frostwing Halls,The Frozen Throne
 ## X-DBM-Mod-Name: Icecrown Citadel
 ## X-DBM-Mod-Name-deDE: Eiskronenzitadelle
 ## X-DBM-Mod-Name-koKR: 얼음 왕관
@@ -27,15 +28,15 @@ localization.tw.lua
 localization.cn.lua
 localization.fr.lua
 localization.es.lua
-LordMarrowgar.lua
-Deathwhisper.lua
-Deathbringer.lua
-GunshipBattle.lua
-Festergut.lua
-Rotface.lua
-Putricide.lua
-BPCouncil.lua
-Lanathel.lua
-Valithria.lua
-Sindragosa.lua
-LichKing.lua
+Entryway\LordMarrowgar.lua
+Entryway\Deathwhisper.lua
+Entryway\Deathbringer.lua
+Entryway\GunshipBattle.lua
+ThePlagueworks\Festergut.lua
+ThePlagueworks\Rotface.lua
+ThePlagueworks\Putricide.lua
+TheCrimsonHall\BPCouncil.lua
+TheCrimsonHall\Lanathel.lua
+FrostwingHalls\Valithria.lua
+FrostwingHalls\Sindragosa.lua
+TheFrozenThrone\LichKing.lua
