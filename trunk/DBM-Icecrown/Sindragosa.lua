@@ -9,7 +9,8 @@ mod:RegisterCombat("YELL", L.YellPull)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"SPELL_CAST_START"
 )
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
