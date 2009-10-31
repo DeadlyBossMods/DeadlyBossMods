@@ -61,8 +61,8 @@ local warnHellfire			= mod:NewSpellAnnounce(68147, 1)
 local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
 local warnHeroism			= mod:NewSpellAnnounce(65983, 2)
 local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
-local warnHandofProt		= mod:NewTargetAnnounce(66009, 3)
-local warnDivineShield		= mod:NewTargetAnnounce(66010, 4)
+local warnHandofProt		= mod:NewSpellAnnounce(66009, 2)
+local warnDivineShield		= mod:NewSpellAnnounce(66010, 2)
 local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
 local specWarnDivineShield	= mod:NewSpecialWarning("SpecWarnDivineShield", isDispeller) 
 
@@ -77,6 +77,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Blood lust
 		warnBloodlust:Show()
+	elseif args:IsSpellID(66009) then						-- Hand of Protection on <mobname>
+		warnHandofProt:Show(args.destName)
+		specWarnHandofProt:Show(args.destName)
 	end
 end
 
@@ -84,9 +87,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(66010) then							-- Divine Shield on <mobname>
 		warnDivineShield:Show(args.destName)
 		specWarnDivineShield:Show(args.destName)
-	elseif args:IsSpellID(66009) then						-- Hand of Protection on <mobname>
-		warnHandofProt:Show(args.destName)
-		specWarnHandofProt:Show(args.destName)
 	end
 end
 
