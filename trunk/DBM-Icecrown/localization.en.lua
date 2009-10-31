@@ -173,8 +173,8 @@ L:SetGeneralLocalization({
 	name = "Sindragosa"
 })
 L:SetTimerLocalization({
-	"NextAirphase" 		= "Next airphase",
-	"NextGroundphase"	= "Next groundphase"
+	NextAirphase 		= "Next airphase",
+	NextGroundphase		= "Next groundphase"
 })
 L:SetWarningLocalization({
 	WarnAirphase		= "Airphase",
