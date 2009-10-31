@@ -37,20 +37,6 @@ L:SetOptionLocalization({
 })
 
 
--------------------------
---  Lady Deathwhisper  --
--------------------------
-L = DBM:GetModLocalization("Deathwhisper")
-
-L:SetGeneralLocalization({
-	name = "Lady Deathwhisper"
-})
-L:SetWarningLocalization({
-})
-L:SetOptionLocalization({
-})
-
-
 ---------------
 --  Rotface  --
 ---------------
@@ -80,6 +66,19 @@ L:SetMiscLocalization({
 })
 
 
+-------------------------
+--  Lady Deathwhisper  --
+-------------------------
+L = DBM:GetModLocalization("Deathwhisper")
+
+L:SetGeneralLocalization({
+	name = "Lady Deathwhisper"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
 
 ----------------------
 --  Gunship Battle  --
@@ -88,6 +87,20 @@ L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization({
 	name = "Gunship Battle"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
+-----------------------------
+--  Valithria Dreamwalker  --
+-----------------------------
+L = DBM:GetModLocalization("Valithria")
+
+L:SetGeneralLocalization({
+	name = "Valithria Dreamwalker"
 })
 L:SetWarningLocalization({
 })
