@@ -15,6 +15,6 @@ local warningWhirlwind = mod:NewSpellAnnounce(52027, 3)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 52027 or args.spellId == 52028 then
-		warningWhirlwind:Show(args.spellName)
+		warningWhirlwind:Show()
 	end
 end

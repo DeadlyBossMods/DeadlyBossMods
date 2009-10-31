@@ -17,12 +17,12 @@ local warningCycloneStrike	= mod:NewSpellAnnounce(56855, 3)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 56926 or args.spellId == 60029 then
-		warningThundershock:Show(args.spellName)
+		warningThundershock:Show()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 56855 or args.spellId == 60030 then
-		warningCycloneStrike:Show(args.spellName)
+		warningCycloneStrike:Show()
 	end
 end

@@ -6,7 +6,7 @@ if faction == "Alliance" then
 	CreatureID = 26798
 end
 
-mod:SetRevision(("$Revision: 437 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(CreatureID)
 mod:SetZone()
 
@@ -26,15 +26,15 @@ local timerWhirlwindCD	= mod:NewCDTimer(15, 38619)
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 19134 
 	and (args.sourceGUID == 26796 or args.sourceGUID == 26798) then
-		warningFear:Show(args.spellName)
-		timerFearCD:Start(args.spellName)
+		warningFear:Show()
+		timerFearCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if (args.spellId == 38619 or args.spellId == 38618)
 	and (args.sourceGUID == 26796 or args.sourceGUID == 26798) then
-		warningWhirlwind:Show(args.spellName)
-		timerWhirlwindCD:Start(args.spellName)
+		warningWhirlwind:Show()
+		timerWhirlwindCD:Start()
 	end
 end

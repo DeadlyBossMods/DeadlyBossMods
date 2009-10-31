@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("DevourerofSouls", "DBM-Party-WotLK", 14)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1728 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36502)
 
 mod:RegisterCombat("combat")
@@ -20,11 +20,11 @@ local specwarnMirroredSoul	= mod:NewSpecialWarning("specwarnMirroredSoul")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68820) then							-- Well of Souls
-		warnWellofSouls:Show(args.spellName)
+		warnWellofSouls:Show()
 	elseif args:IsSpellID(68939) then							-- Unleashed Souls
-		warnUnleashedSouls:Show(args.spellName)
+		warnUnleashedSouls:Show()
 	elseif args:IsSpellID(68899, 70324) then							-- Wailing Souls (possible heroic spellid drycoded from thotbot testrealm database)
-		warnWailingSouls:Show(args.spellName)
+		warnWailingSouls:Show()
 	end
 end
 

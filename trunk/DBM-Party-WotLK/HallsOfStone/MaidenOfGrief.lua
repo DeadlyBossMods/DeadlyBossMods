@@ -30,18 +30,18 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 50760 or args.spellId == 59726 then
-		timerSorrow:Start(args.spellName)
-		warningSorrow:Show(args.spellName)
-		timerSorrowCD:Start(args.spellName)
+		timerSorrow:Start()
+		warningSorrow:Show()
+		timerSorrowCD:Start()
 	elseif args.spellId == 50752 or args.spellId == 59772 then
-		warningStorm:Show(args.spellName)
-		timerStormCD:Start(args.spellName)
+		warningStorm:Show()
+		timerStormCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 50761 or args.spellId == 59727 then
-		warningWoe:Show(args.spellName, args.destName)
-		timerWoe:Start(args.spellName, args.destName)
+		warningWoe:Show(args.destName)
+		timerWoe:Start(args.destName)
 	end
 end

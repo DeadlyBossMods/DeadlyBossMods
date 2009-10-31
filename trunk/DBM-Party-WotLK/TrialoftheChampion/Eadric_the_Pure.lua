@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("EadricthePure", "DBM-Party-WotLK", 13)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1664 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(35119)
 mod:SetUsedIcons(8)
 --mod:SetZone()
@@ -28,7 +28,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(66935, 66862, 67681) then					-- Radiance Look Away!
 		specwarnRadiance:Show()
 	elseif args:IsSpellID(66867) then							-- Hammer of the Righteous
-		warnHammerofRighteous:Show(args.spellName)
+		warnHammerofRighteous:Show()
 	end
 end
 

@@ -23,17 +23,17 @@ local timerReflectionCD	= mod:NewCDTimer(30, 47981)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 47958 or args.spellId == 57082 or args.spellId == 57083 then
-		warningSpikes:Show(args.spellName)
+		warningSpikes:Show()
 	elseif args.spellId == 48017 or args.spellId == 57086 then
-		warningFrenzy:Show(args.spellName)
+		warningFrenzy:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 47981 then
-		timerReflection:Start(args.spellName)
-		warningReflection:Show(args.spellName)
-		timerReflectionCD:Start(args.spellName)
+		timerReflection:Start()
+		warningReflection:Show()
+		timerReflectionCD:Start()
 	end
 end
 
@@ -45,6 +45,6 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 61564 then
-		warningAdd:Show(args.spellName)
+		warningAdd:Show()
 	end
 end

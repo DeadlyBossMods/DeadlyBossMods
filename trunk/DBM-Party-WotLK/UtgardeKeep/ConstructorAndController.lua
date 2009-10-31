@@ -19,19 +19,19 @@ local timerEnfeeble		= mod:NewTargetTimer(6, 43650)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 43650 then
-		warningEnfeeble:Show(args.spellName, args.destName)
-		timerEnfeeble:Start(args.spellName, args.destName)
+		warningEnfeeble:Show(args.destName)
+		timerEnfeeble:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 43650 then
-		timerEnfeeble:Cancel(args.spellName, args.destName)
+		timerEnfeeble:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 52611 and (args.GUID == 24201 or args.GUID == 24000) then
-		warningSummon:Show(args.spellName)
+		warningSummon:Show()
 	end
 end
