@@ -221,7 +221,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova		= "Вспышка молнии",
+	specWarnNova		= "Вспышка молнии - бегите",
 	warnNova 		= "Вспышка молнии",
 	warnOverCharge		= "Перезарядка"
 }
@@ -249,7 +249,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder		= "Вы в Пылающей головне - бегите"
+	SpecWarnCinder		= "Пылающая головня - бегите"
 }
 
 L:SetTimerLocalization{
