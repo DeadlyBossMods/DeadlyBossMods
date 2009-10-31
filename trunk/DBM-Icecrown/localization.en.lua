@@ -172,16 +172,23 @@ L = DBM:GetModLocalization("Sindragosa")
 L:SetGeneralLocalization({
 	name = "Sindragosa"
 })
+L:SetTimerLocalization({
+	"NextAirphase" 		= "Next airphase",
+	"NextGroundphase"	= "Next groundphase"
+})
 L:SetWarningLocalization({
 	WarnAirphase		= "Airphase",
 	WarnBlisteringCold	= "Blistering Cold",
-	SpecWarnFrostBeacon	= "Frost beacon on you"
+	SpecWarnFrostBeacon	= "Frost beacon on you",
+	PrewarnGroundphase	= "Sindragosa landing soon"
 })
 L:SetOptionLocalization({
 	WarnAirphase		= "Show warning for airphase",
 	WarnBlisteringCold	= "Show warning for Blistering Cold",
 	SpecWarnFrostBeacon	= "Show special warning for Frost Beacon",
-	NextAirphase		= "Show timer for next airphase"
+	PrewarnGroundphase	= "Show prewarning for groundphase",
+	NextAirphase		= "Show timer for next airphase",
+	NextGroundphase		= "Show timer for next groundphase"
 })
 L:SetMiscLocalization({
 	YellAirphase		= "Your incursion ends here! None shall survive!",
