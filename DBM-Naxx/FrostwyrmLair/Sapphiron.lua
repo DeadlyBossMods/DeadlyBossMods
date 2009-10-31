@@ -56,7 +56,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_MONSTER_EMOTE(msg)
-	if msg == L.EmoteBreath then
+	if msg == L.EmoteBreath or msg:find(L.EmoteBreath) then
 		self:SendSync("DeepBreath")
 	end
 end

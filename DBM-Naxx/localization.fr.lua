@@ -19,8 +19,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerLocustIn	= "Nuée de sauterelles",
-	TimerLocustFade = "Nuée de sauterelles active"
+	TimerLocustIn		= "Nuée de sauterelles",
+	TimerLocustFade 	= "Nuée de sauterelles active"
 })
 
 L:SetOptionLocalization({
@@ -51,8 +51,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace	= "Baisé actif",
-	TimerEnrage		= "Enragée",
+	TimerEmbrace			= "Baisé actif",
+	TimerEnrage				= "Enragée",
 })
 
 L:SetOptionLocalization({
@@ -84,8 +84,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWebSpray	= "Jet de rets",
-	TimerSpider		= "Araignées"
+	TimerWebSpray		= "Jet de rets",
+	TimerSpider			= "Araignées"
 })
 
 L:SetOptionLocalization({
@@ -112,14 +112,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Téléportation!",
-	WarningTeleportSoon	= "Téléportation dans in 20 sec",
-	WarningCurse		= "Malédiction!"
+	WarningTeleportNow		= "Téléportation!",
+	WarningTeleportSoon		= "Téléportation dans in 20 sec",
+	WarningCurse			= "Malédiction!"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Téléportation",
-	TimerTeleportBack	= "Retour de TP"
+	TimerTeleport			= "Téléportation",
+	TimerTeleportBack		= "Retour de TP"
 })
 
 L:SetOptionLocalization({
@@ -141,12 +141,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Téléportation!",
-	WarningTeleportSoon	= "Téléporation dans %d sec",
+	WarningTeleportNow		= "Téléportation!",
+	WarningTeleportSoon		= "Téléporation dans %d sec",
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Téléporation",
+	TimerTeleport			= "Téléporation",
 })
 
 L:SetOptionLocalization({
@@ -204,13 +204,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Annoncer les Frappes Haineuses au raid\n(vous devez être promote ou le raid leader pour le faire)"
+	WarningHateful 	= "Annoncer les Frappes Haineuses au raid\n(vous devez être promote ou le raid leader pour le faire)"
 })
 
 L:SetMiscLocalization({
-	yell1 = "R'cousu veut jouer !",
-	yell2 = "R'cousu avatar de guerre pour Kel'Thuzad !",
-	HatefulStrike = "Frappe Haineuse --> %s [%s]"
+	yell1 			= "R'cousu veut jouer !",
+	yell2 			= "R'cousu avatar de guerre pour Kel'Thuzad !",
+	HatefulStrike 	= "Frappe Haineuse --> %s [%s]"
 })
 
 
@@ -272,13 +272,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell	= "Stalagg écraser toi !",
-	Emote	= "%s entre en surcharge !", -- ?
-	Emote2	= "Bobine de Tesla entre en surcharge !", -- ?
-	Boss1 = "Feugen",
-	Boss2 = "Stalagg",
-	Charge1 = "négative",
-	Charge2 = "positive",
+	Yell					= "Stalagg écraser toi !",
+	Emote					= "%s entre en surcharge !", -- ?
+	Emote2					= "Bobine de Tesla entre en surcharge !", -- ?
+	Boss1 					= "Feugen",
+	Boss2 					= "Stalagg",
+	Charge1 				= "négative",
+	Charge2 				= "positive",
 })
 
 L:SetOptionLocalization({
@@ -310,7 +310,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionCatLocalization({
-	Arrows	= "Flèches",
+	Arrows					= "Flèches",
 })
 
 
@@ -324,31 +324,31 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell1 = "Pas de quartier !",
-	Yell2 = "Les cours sont terminés ! Montrez-moi ce que vous avez appris !",
-	Yell3 = "Faites ce que vous ai appris !",
-	Yell4 = "Frappe-le à la jambe"
+	Yell1 					= "Pas de quartier !",
+	Yell2 					= "Les cours sont terminés ! Montrez-moi ce que vous avez appris !",
+	Yell3 					= "Faites ce que vous ai appris !",
+	Yell4 					= "Frappe-le à la jambe"
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow		= "Activer l'avertissement pour les Cris perturbants",
-	WarningShoutSoon	= "Activer le pré-avertissement pour les Cris perturbants",
-	TimerShout			= "Afficher le timer pour les Cris perturbants",
+	WarningShoutNow			= "Activer l'avertissement pour les Cris perturbants",
+	WarningShoutSoon		= "Activer le pré-avertissement pour les Cris perturbants",
+	TimerShout				= "Afficher le timer pour les Cris perturbants",
 	WarningShieldWallSoon	= "Activer l'avertissement du Mur de Bouclier",
 	TimerShieldWall			= "Afficher le timer du Mur de Bouclier",
 	TimerTaunt				= "Afficher le timer du Taunt"
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow		= "Cri perturbant!",
-	WarningShoutSoon	= "Cri perturbant dans 5 sec",
+	WarningShoutNow			= "Cri perturbant!",
+	WarningShoutSoon		= "Cri perturbant dans 5 sec",
 	WarningShieldWallSoon	= "Mur de Bouclier expire dans 5 sec"
 })
 
 L:SetTimerLocalization({
-	TimerShout			= "Cri perturbant",
-	TimerTaunt			= "Taunt",
-	TimerShieldWall		= "Mur de Bouclier"
+	TimerShout				= "Cri perturbant",
+	TimerTaunt				= "Taunt",
+	TimerShieldWall			= "Mur de Bouclier"
 })
 
 --------------
@@ -371,8 +371,8 @@ L:SetOptionLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWave	= "Vague #%d",
-	TimerPhase2	= "Phase 2"
+	TimerWave			= "Vague #%d",
+	TimerPhase2			= "Phase 2"
 })
 
 L:SetWarningLocalization({
@@ -384,13 +384,13 @@ L:SetWarningLocalization({
 })
 
 L:SetMiscLocalization({
-	yell			= "Dans votre folie, vous avez provoqué votre propre mort.",
-	WarningWave1	= "%d %s",
-	WarningWave2	= "%d %s et %d %s",
-	WarningWave3	= "%d %s, %d %s et %d %s",
-	Trainee			= "Recrues",
-	Knight			= "Chevaliers",
-	Rider			= "Cavaliers",
+	yell				= "Dans votre folie, vous avez provoqué votre propre mort.",
+	WarningWave1		= "%d %s",
+	WarningWave2		= "%d %s et %d %s",
+	WarningWave3		= "%d %s, %d %s et %d %s",
+	Trainee				= "Recrues",
+	Knight				= "Chevaliers",
+	Rider				= "Cavaliers",
 })
 
 
@@ -411,7 +411,7 @@ L:SetOptionLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerMark = "Marque %d"
+	TimerMark 					= "Marque %d"
 })
 
 L:SetWarningLocalization({
@@ -421,10 +421,10 @@ L:SetWarningLocalization({
 })
 
 L:SetMiscLocalization({
-	Korthazz	= "Thane Korth'azz",
-	Rivendare	= "Baron Vaillefendre",
-	Blaumeux	= "Dame Blaumeux",
-	Zeliek		= "Sire Zeliek",
+	Korthazz					= "Thane Korth'azz",
+	Rivendare					= "Baron Vaillefendre",
+	Blaumeux					= "Dame Blaumeux",
+	Zeliek						= "Sire Zeliek",
 })
 
 
@@ -446,14 +446,14 @@ L:SetOptionLocalization({
 	TimerDrainLifeCD		= "Afficher le timer du Drain de vie",
 	TimerAir				= "Afficher le timer de la phase en vol",
 	TimerLanding			= "Afficher le timer de l'atterrissage",
-	TimerIceBlast			= "Afficher le timer du Deep Breath",
-	WarningDeepBreath		= "Activer l'avertissement spécial pour le Deep Breath",
+	TimerIceBlast			= "Afficher le timer du Souffle de givre",
+	WarningDeepBreath		= "Activer l'avertissement spécial pour le Souffle de givre",
 	WarningIceblock			= "Crie dans un glaçon"
 })
 
 L:SetMiscLocalization({
-	EmoteBreath			= "%s prend une grande inspiration...",
-	WarningYellIceblock	= "Je suis un bloc de glace!"
+	EmoteBreath				= "prend une grande inspiration",
+	WarningYellIceblock		= "Je suis un bloc de glace !"
 })
 
 L:SetWarningLocalization({
@@ -462,14 +462,14 @@ L:SetWarningLocalization({
 	WarningAirPhaseSoon		= "Envol dans 10 sec",
 	WarningAirPhaseNow		= "Dans les airs",
 	WarningLanded			= "Atterrissage de Sapphiron",
-	WarningDeepBreath		= "Deep Breath!",
+	WarningDeepBreath		= "Souffle de givre !",
 })
 
 L:SetTimerLocalization({
 	TimerDrainLifeCD		= "CD du drain de vie",
 	TimerAir				= "Envol",
 	TimerLanding			= "Atterrissage dans",
-	TimerIceBlast			= "Deep Breath"	
+	TimerIceBlast			= "Souffle de givre"	
 })
 
 ------------------
@@ -483,19 +483,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	BlastTimer			= "Timer pour Trait de glace : 4 secondes avant que la victime ne meurt",
-	TimerPhase2			= "Afficher le timer pour la Phase 2",
-	WarningBlastTargets	= "Activer l'avertissement pour le Trait de glace",
-	WarningPhase2		= "Activer l'avertissement pour la Phase 2",
-	WarningFissure		= "Activer l'avertissement pour la Fissure d'ombre",
-	WarningMana			= "Activer l'avertissement pour le Mana détonant",
-	WarningChainsTargets= "Activer l'avertissement pour les Chaînes de Kel'Thuzad",
-	specwarnP2Soon 		= "Montre un timer pour prévenir 10 secondes avant l'arrivée de Kel'Thuzad",
-	ShowRange			= "Active l'indicateur de portée quand la phase 2 débute"
+	BlastTimer				= "Timer pour Trait de glace : 4 secondes avant que la victime ne meurt",
+	TimerPhase2				= "Afficher le timer pour la Phase 2",
+	WarningBlastTargets		= "Activer l'avertissement pour le Trait de glace",
+	WarningPhase2			= "Activer l'avertissement pour la Phase 2",
+	WarningFissure			= "Activer l'avertissement pour la Fissure d'ombre",
+	WarningMana				= "Activer l'avertissement pour le Mana détonant",
+	WarningChainsTargets	= "Activer l'avertissement pour les Chaînes de Kel'Thuzad",
+	specwarnP2Soon 			= "Montre un timer pour prévenir 10 secondes avant l'arrivée de Kel'Thuzad",
+	ShowRange				= "Active l'indicateur de portée quand la phase 2 débute"
 })
 
 L:SetMiscLocalization({
-	Yell = "Serviteurs, valets et soldats des ténèbres glaciales ! Répondez à l'appel de Kel'Thuzad !"
+	Yell 					= "Serviteurs, valets et soldats des ténèbres glaciales ! Répondez à l'appel de Kel'Thuzad !"
 })
 
 L:SetWarningLocalization({
@@ -508,8 +508,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "Phase 2",
-	BlastTimer			= "Heal Maintenant !"
+	TimerPhase2				= "Phase 2",
+	BlastTimer				= "Heal Maintenant !"
 })
 
 

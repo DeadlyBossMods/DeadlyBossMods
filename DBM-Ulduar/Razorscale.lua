@@ -67,7 +67,7 @@ end
 
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
-	if emote == L.EmotePhase2 then
+	if emote == L.EmotePhase2 or emote:find(L.EmotePhase2) then
 		-- phase2
 		timerTurret1:Stop()
 		timerTurret2:Stop()

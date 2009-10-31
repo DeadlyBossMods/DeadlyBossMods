@@ -51,7 +51,7 @@ function mod:OnCombatStart(delay)
 end 
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.Breath then
+	if msg == L.Breath or msg:find(L.Breath) then
 		self:SendSync("Breath")
 		sndBreath:Play()
 	end
