@@ -28,9 +28,14 @@ localization.cn.lua
 localization.fr.lua
 localization.es.lua
 LordMarrowgar.lua
+Deathwhisper.lua
+Deathbringer.lua
+GunshipBattle.lua
 Festergut.lua
 Rotface.lua
-GunshipBattle.lua
-Deathwhisper.lua
+Putricide.lua
+BPCouncil.lua
+Lanathel.lua
 Valithria.lua
 Sindragosa.lua
+LichKing.lua
