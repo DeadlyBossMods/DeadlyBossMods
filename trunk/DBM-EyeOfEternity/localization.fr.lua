@@ -44,9 +44,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellPull		= "Ma patience a ses limites. Je vais me débarrasser de vous !",
-	EmoteSpark		= "Une étincelle de puissance surgit d'une faille proche !",
+	EmoteSpark		= "de puissance surgit",
 	YellPhase2		= "Je pensais mettre rapidement fin à vos existences",
-	EmoteBreath		= "%s a pris un souffle.",
+	EmoteBreath		= "inspire profondément",
 	YellBreath		= "Vous n'arriverez à rien tant qu'il me restera un souffle !",
 	YellPhase3		= "Vos bienfaiteurs font enfin leur entrée, mais ils arrivent trop tard !"
 })
