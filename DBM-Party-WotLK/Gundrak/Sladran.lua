@@ -16,7 +16,7 @@ local timerNovaCD	= mod:NewCDTimer(24, 55081)
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 55081 or args.spellId == 59842 then
-		warningNova:Show(args.spellName)
-		timerNovaCD:Start(args.spellName)
+		warningNova:Show()
+		timerNovaCD:Start()
 	end
 end

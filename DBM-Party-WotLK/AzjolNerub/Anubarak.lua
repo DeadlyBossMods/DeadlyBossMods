@@ -22,6 +22,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 53472 or args.spellId == 59433 then
-		warningPound:Show(args.spellName)
+		warningPound:Show()
 	end
 end

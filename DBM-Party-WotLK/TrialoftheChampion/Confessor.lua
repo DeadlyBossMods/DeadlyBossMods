@@ -1,7 +1,7 @@
 local mod = DBM:NewMod("Confessor", "DBM-Party-WotLK", 13)
 local L = mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 559 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34928)
 --mod:SetZone()
 
@@ -17,8 +17,8 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
              or select(2, UnitClass("player")) == "PRIEST"
              or select(2, UnitClass("player")) == "SHAMAN"
 
-local warnReflectiveShield	= mod:NewSpellAnnounce(66515)
-local warnRenew				= mod:NewSpellAnnounce(66537)
+local warnReflectiveShield	= mod:NewTargetAnnounce(66515)
+local warnRenew				= mod:NewTargetAnnounce(66537)
 local warnOldWounds			= mod:NewTargetAnnounce(67679)
 local timerOldWounds		= mod:NewTargetTimer(12, 67679)
 local warnHolyFire			= mod:NewTargetAnnounce(67676)

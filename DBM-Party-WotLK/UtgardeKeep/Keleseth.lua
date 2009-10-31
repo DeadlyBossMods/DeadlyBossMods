@@ -17,8 +17,8 @@ local timerTomb		= mod:NewTargetTimer(10, 48400)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 48400 then
-		warningTomb:Show(args.spellName, args.destName)
-		timerTomb:Start(args.spellName, args.destName)
+		warningTomb:Show(args.destName)
+		timerTomb:Start(args.destName)
 	end
 end
 

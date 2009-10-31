@@ -16,7 +16,7 @@ mod:RegisterEvents(
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 52592 or args.spellId == 59368 then
-		warningCurse:Show(args.spellName)
+		warningCurse:Show()
 		timerCurseCD:Start()
 	end
 end

@@ -15,7 +15,7 @@ local warningES	= mod:NewSpellAnnounce(54479, 3)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if (args.spellId == 54479 or args.spellId == 59471)
-	and args.sourceGUID == 29315 then
-		warningES:Show(args.spellName)
+	and mod:GetCIDFromGUID(args.sourceGUID) == 29315 then
+		warningES:Show()
 	end
 end

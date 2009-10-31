@@ -20,11 +20,11 @@ mod:RegisterEvents(
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59848 or args.spellId == 50840
 	or args.spellId == 59861 or args.spellId == 51849 then
-		warningRing:Show(args.spellName)
-		timerRingCD:Start(args.spellName)
+		warningRing:Show()
+		timerRingCD:Start()
 	elseif args.spellId == 50834 or args.spellId == 59846 then
-		warningCharge:Show(args.spellName, args.destName)
-		timerCharge:Start(args.spellName, args.destName)
-		timerChargeCD:Start(args.spellName)
+		warningCharge:Show(args.destName)
+		timerCharge:Start(args.destName)
+		timerChargeCD:Start()
 	end
 end

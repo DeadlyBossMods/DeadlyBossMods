@@ -16,7 +16,7 @@ mod:RegisterEvents(
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args.spellId == 50833 then
-		warningShatter:Show(GetSpellInfo(50810))	-- Shatter warning when Ground Slam is cast
-		timerShatterCD:Start(GetSpellInfo(50810))
+		warningShatter:Show()	-- Shatter warning when Ground Slam is cast
+		timerShatterCD:Start()
 	end
 end

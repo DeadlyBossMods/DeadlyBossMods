@@ -24,7 +24,7 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args.spellId == 47743 then
-		warningRiftNow:Show(args.spellName)
+		warningRiftNow:Show()
 	end
 end
 
@@ -36,7 +36,7 @@ function mod:UNIT_HEALTH(arg1)
 		end
 		if not warnedRift then
 			if (h < 80 and h > 77) or (h < 55 and h > 52) or (h < 30 and h > 27) then
-				WarningRiftSoon:Show(GetSpellInfo(47743))
+				WarningRiftSoon:Show()
 				warnedRift = true
 			end
 		end

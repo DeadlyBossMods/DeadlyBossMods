@@ -22,6 +22,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 57496 then
-		warningInsanity:Show(args.spellName)
+		warningInsanity:Show()
 	end
 end

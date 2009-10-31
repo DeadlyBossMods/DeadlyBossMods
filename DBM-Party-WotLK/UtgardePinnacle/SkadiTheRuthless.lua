@@ -20,20 +20,20 @@ local timerWhirlwindCD	= mod:NewCDTimer(30, 59322)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59331 or args.spellId == 50255 then
-		warningPoison:Show(args.spellName, args.destName)
-		timerPoison:Start(args.spellName, args.destName)
+		warningPoison:Show(args.destName)
+		timerPoison:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args.spellId == 59331 or args.spellId == 50255 then
-		timerPoison:Cancel(args.spellName, args.destName)
+		timerPoison:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 59322 or args.spellId == 50228 then
-		warningWhirlwind:Show(args.spellName)
-		timerWhirlwindCD:Start(args.spellName)
+		warningWhirlwind:Show()
+		timerWhirlwindCD:Start()
 	end
 end

@@ -23,15 +23,15 @@ local timerVoidShifted			= mod:NewTargetTimer(15, 54343)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args.spellId == 59743 or args.spellId == 54361 then			-- Void Shift            59743 (HC)  54361 (nonHC)
-		warningVoidShift:Show(args.spellName, args.destName)
-		timerVoidShift:Start(args.spellName, args.destName)
+		warningVoidShift:Show(args.destName)
+		timerVoidShift:Start(args.destName)
 	elseif args.spellId == 54343 then
 		if args.destName == UnitName("player") then
 			specWarnVoidShifted:Show()
 		end
-		timerVoidShifted:Start(args.spellName, args.destName)
+		timerVoidShifted:Start(args.destName)
 	elseif args.spellId == 59745 or args.spellId == 54524 then		-- Shroud of Darkness    59745 (HC)   54524 (nonHC)
-		warningShroudOfDarkness:Show(args.spellName)
+		warningShroudOfDarkness:Show()
 		specShroudOfDarkness:Show()
 	end
 end
