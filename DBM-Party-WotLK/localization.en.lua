@@ -4,12 +4,12 @@ local spell				= "%s"
 local debuff			= "%s: >%s<"			
 local spellCD			= "%s cooldown"			-- translate
 local spellSoon			= "%s soon"			-- translate
-local optionWarning		= "Show warning for \"%s\""		-- translate
-local optionPreWarning	= "Show pre-warning for \"%s\""	-- translate
-local optionSpecWarning	= "Show special warning for \"%s\""	-- translate
-local optionTimerCD		= "Show timer for \"%s\" cooldown"	-- translate
-local optionTimerDur	= "Show timer for \"%s\" duration"	-- translate
-local optionTimerCast	= "Show timer for \"%s\" cast"	-- translate
+local optionWarning		= "Show warning for %s"		-- translate
+local optionPreWarning	= "Show pre-warning for %s"	-- translate
+local optionSpecWarning	= "Show special warning for %s"	-- translate
+local optionTimerCD		= "Show timer for %s cooldown"	-- translate
+local optionTimerDur	= "Show timer for %s duration"	-- translate
+local optionTimerCast	= "Show timer for %s cast"	-- translate
 
 
 ----------------------------------
