@@ -32,11 +32,17 @@ local nextGroundphase		= mod:NewTimer(45, "NextGroundphase")
 local prewarnGroundphase	= mod:NewAnnounce("PrewarnGroundphase", 2)
 
 -- Blistering Cold
-local warnBlisteringCold	= mod:NewAnnounce("WarnBlisteringCold", 3, 70117, isMelee)
+local warnBlisteringCold	= mod:NewAnnounce("WarnBlisteringCold", 3, 70117)
+local specWarnBlisteringCold	= mod:NewSpecialWarning("SpecWarnBlisteringCold", isMelee)
 local castBlisteringCold	= mod:NewCastTimer(5, 70117)
 
 -- Frostbomb
---local warnFrostbomb		= mod:NewTargetAnnounce(69846)  
+--local warnFrostbomb		= mod:NewTargetAnnounce(69846)  -- no idea what Event is fired for this :(
+
+-- Unchained Magic
+local warnUnchainedMagic	= mod:NewTargetAnnounce(69762)
+local specWarnUnchainedMagic	= mod:NewSpecialWarning("SpecWarnUnchainedMagic")
+
 
 function mod:OnCombatStart(delay)
 	nextAirphase:Start(50-delay)
@@ -50,6 +56,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFrostBeacon:Show()
 		end
 		self:ScheduleMethod(0.2, "warnBeacon")
+	elseif args:IsSpellID(69762) then
+		warnUnchainedMagic:Show()
+		if args:IsPlayer() then
+			specWarnUnchainedMagic:Show()
+		end
 	end
 end
 
@@ -61,6 +72,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70117) then
 		warnBlisteringCold:Show()
+		specWarnBlisteringCold:Show()
 	end
 end	
 
