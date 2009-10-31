@@ -9,3 +9,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
+
+local enrageTimer				= mod:NewEnrageTimer(600)
+
+function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)
+end
