@@ -263,8 +263,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWaveNow	= optionWarning:format("New wave"),
-	TimerWaveIn		= "Show timer for \"Next wave\" (wave 6 only)",
+	WarningWaveNow	= optionWarning:format("new wave"),
+	TimerWaveIn		= "Show timer for next wave (wave 6 only)",
 })
 
 
@@ -627,7 +627,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("Phase #")
+	WarningPhase	= optionWarning:format("phase number")
 })
 
 L:SetMiscLocalization({
@@ -1134,10 +1134,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPortalNow		= optionWarning:format("New portal"),
-	WarningPortalSoon		= optionPreWarning:format("New portal"),
-	WarningBossNow			= optionWarning:format("Boss incoming"),
-	TimerPortalIn			= "Show timer for \"Portal #\"",
+	WarningPortalNow		= optionWarning:format("new portal"),
+	WarningPortalSoon		= optionPreWarning:format("new portal"),
+	WarningBossNow			= optionWarning:format("boss incoming"),
+	TimerPortalIn			= "Show timer for portal number",
 	ShowAllPortalWarnings	= "Show warnings for all waves"
 })
 
