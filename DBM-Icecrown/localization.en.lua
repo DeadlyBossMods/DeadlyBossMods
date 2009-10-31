@@ -173,8 +173,18 @@ L:SetGeneralLocalization({
 	name = "Sindragosa"
 })
 L:SetWarningLocalization({
+	WarnAirphase		= "Airphase",
+	WarnBlisteringCold	= "Blistering Cold",
+	SpecWarnFrostBeacon	= "Frost beacon on you"
 })
 L:SetOptionLocalization({
+	WarnAirphase		= "Show warning for airphase",
+	WarnBlisteringCold	= "Show warning for Blistering Cold",
+	SpecWarnFrostBeacon	= "Show special warning for Frost Beacon",
+	NextAirphase		= "Show timer for next airphase"
+})
+L:SetMiscLocalization({
+	YellAirphase		= "Your incursion ends here! None shall survive!"
 })
 
 
