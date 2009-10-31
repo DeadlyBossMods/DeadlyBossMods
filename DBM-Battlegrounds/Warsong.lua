@@ -211,8 +211,9 @@ do
 						if self.Options.ShowFlagCarrierErrorNote then
 							self:AddMsg(L.InfoErrorText)
 						end
-					end
-					self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
+					else
+						self.FlagCarrierFrame2Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
+					end					
 
 				elseif mSide == L.Horde then
 					FlagCarrier[1] = mNick
@@ -223,8 +224,9 @@ do
 						if self.Options.ShowFlagCarrierErrorNote then
 							self:AddMsg(L.InfoErrorText)
 						end
+					else
+						self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
 					end
-					self.FlagCarrierFrame1Button:SetAttribute( "macrotext", "/targetexact " .. mNick )
 				end
 				
 			elseif string.match(arg1, L.ExprFlagReturn) then
