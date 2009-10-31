@@ -41,7 +41,7 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.29",
+	Version = "4.291",
 	DisplayVersion = "4.30 alpha"
 }
 
@@ -1180,8 +1180,10 @@ do
 	end
 	-- It's not really worth translating this message as it will be removed in the next version
 	local msg = string.format("Your version of Deadly Boss Mods does not support '%s', please visit http://www.deadlybossmods.com to obtain the latest version.", zoneName)
+	local warningShown
 	function checkZone()
-		if GetRealZoneText() == zoneName then
+		if not warningShown and GetRealZoneText() == zoneName then
+			warningShown = true
 			DBM:AddMsg(msg)
 		end
 	end
