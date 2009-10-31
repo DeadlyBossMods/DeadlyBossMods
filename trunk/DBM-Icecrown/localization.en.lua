@@ -179,16 +179,20 @@ L:SetTimerLocalization({
 L:SetWarningLocalization({
 	WarnAirphase		= "Airphase",
 	WarnBlisteringCold	= "Blistering Cold",
+	SpecWarnBlisteringCold	= "Blisstering Cold - run out",
 	SpecWarnFrostBeacon	= "Frost beacon on you",
-	PrewarnGroundphase	= "Sindragosa landing soon"
+	PrewarnGroundphase	= "Sindragosa landing soon",
+	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
 	WarnAirphase		= "Show warning for airphase",
 	WarnBlisteringCold	= "Show warning for Blistering Cold",
+	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
 	SpecWarnFrostBeacon	= "Show special warning for Frost Beacon",
 	PrewarnGroundphase	= "Show prewarning for groundphase",
 	NextAirphase		= "Show timer for next airphase",
-	NextGroundphase		= "Show timer for next groundphase"
+	NextGroundphase		= "Show timer for next groundphase",
+	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magix"
 })
 L:SetMiscLocalization({
 	YellAirphase		= "Your incursion ends here! None shall survive!",
