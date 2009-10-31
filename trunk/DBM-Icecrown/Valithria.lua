@@ -8,5 +8,22 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
 )
+
+local warnGutSpray	= mod:NewTargetAnnounce(71283)
+local timerGutSpray	= mod:NewTargetTimer(12, 71283)
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(70633, 71283, 72025, 72026) then
+		warnGutSpray:Show(args.destName)
+		timerGutSpray:Start(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(70633, 71283, 72025, 72026) then
+		timerGutSpray:Cancel(args.destName)
+	end
+end
