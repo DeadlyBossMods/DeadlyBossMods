@@ -13,11 +13,6 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local isMelee = select(2, UnitClass("player")) == "ROGUE"
-	     or select(2, UnitClass("player")) == "WARRIOR"
-	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
-
-
 -- Frost Beacon
 local warnFrostBeacon		= mod:NewTargetAnnounce(70126)
 local specWarnFrostBeacon	= mod:NewSpecialWarning("SpecWarnFrostBeacon")
@@ -33,7 +28,7 @@ local prewarnGroundphase	= mod:NewAnnounce("PrewarnGroundphase", 2)
 
 -- Blistering Cold
 local warnBlisteringCold	= mod:NewAnnounce("WarnBlisteringCold", 3, 70117)
-local specWarnBlisteringCold	= mod:NewSpecialWarning("SpecWarnBlisteringCold", isMelee)
+local specWarnBlisteringCold	= mod:NewSpecialWarning("SpecWarnBlisteringCold", false)
 local castBlisteringCold	= mod:NewCastTimer(5, 70117)
 
 -- Frostbomb
