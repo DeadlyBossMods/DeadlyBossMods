@@ -23,6 +23,48 @@ L:SetOptionLocalization({
 })
 
 
+-------------------------
+--  Lady Deathwhisper  --
+-------------------------
+L = DBM:GetModLocalization("Deathwhisper")
+
+L:SetGeneralLocalization({
+	name = "Lady Deathwhisper"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
+------------------------
+--  The Deathbringer  --
+------------------------
+L = DBM:GetModLocalization("Deathbringer")
+
+L:SetGeneralLocalization({
+	name = "The Deathbringer"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
+----------------------
+--  Gunship Battle  --
+----------------------
+L = DBM:GetModLocalization("GunshipBattle")
+
+L:SetGeneralLocalization({
+	name = "Gunship Battle"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
 -----------------
 --  Festergut  --
 -----------------
@@ -66,13 +108,13 @@ L:SetMiscLocalization({
 })
 
 
--------------------------
---  Lady Deathwhisper  --
--------------------------
-L = DBM:GetModLocalization("Deathwhisper")
+---------------------------
+--  Professor Putricide  --
+---------------------------
+L = DBM:GetModLocalization("Putricide")
 
 L:SetGeneralLocalization({
-	name = "Lady Deathwhisper"
+	name = "Professor Putricide"
 })
 L:SetWarningLocalization({
 })
@@ -80,13 +122,27 @@ L:SetOptionLocalization({
 })
 
 
-----------------------
---  Gunship Battle  --
-----------------------
-L = DBM:GetModLocalization("GunshipBattle")
+----------------------------
+--  Blood Prince Council  --
+----------------------------
+L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization({
-	name = "Gunship Battle"
+	name = "Blood Prince Council"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
+
+
+-----------------------
+--  Queen Lana'thel  --
+-----------------------
+L = DBM:GetModLocalization("Lanathel")
+
+L:SetGeneralLocalization({
+	name = "Queen Lana'thel"
 })
 L:SetWarningLocalization({
 })
@@ -122,3 +178,15 @@ L:SetOptionLocalization({
 })
 
 
+---------------------
+--  The Lich King  --
+---------------------
+L = DBM:GetModLocalization("LichKing")
+
+L:SetGeneralLocalization({
+	name = "The Lich King"
+})
+L:SetWarningLocalization({
+})
+L:SetOptionLocalization({
+})
