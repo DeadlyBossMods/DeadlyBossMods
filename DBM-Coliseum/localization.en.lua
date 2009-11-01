@@ -24,20 +24,20 @@ L:SetOptionLocalization{
 	WarningFireBomb				= "Show warning for Fire Bomb",
 	WarningBreath				= "Show warning for Arctic Breath",
 	WarningRage					= "Show warning for Frothing Rage",
-	WarningCharge				= "Announce charge target",
+	WarningCharge				= "Announce charge targets",
 	WarningToxin				= "Announce Paralytic Toxin targets",
 	WarningBile					= "Announce Burning Bile targets",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning for Slime Pool",
 	SpecialWarningSilence		= "Show special warning for Staggering Stomp (silence)",
-	SpecialWarningSpray			= "Show special warning if you have Paralytic Spray",
-	SpecialWarningToxin			= "Show special warning if you have Paralytic Toxin",
-	SpecialWarningBile			= "Show special warning if you have Burning Bile",
+	SpecialWarningSpray			= "Show special warning when you are affected by Paralytic Spray",
+	SpecialWarningToxin			= "Show special warning when you are affected by Paralytic Toxin",
+	SpecialWarningBile			= "Show special warning when you are affected by Burning Bile",
 	SpecialWarningCharge		= "Show special warning when Icehowl is about to charge you",
 	PingCharge					= "Ping the minimap when Icehowl is about to charge you",
 	SpecialWarningChargeNear	= "Show special warning when Icehowl charges near you",
-	SetIconOnChargeTarget		= "Set icon on charge target (skull)",
+	SetIconOnChargeTarget		= "Set icons on charge targets (skull)",
 	SetIconOnBileTarget			= "Set icons on Burning Bile targets",
 	ClearIconsOnIceHowl			= "Clear all icons before charge",
 	TimerNextBoss				= "Show timer for next boss spawn",
@@ -60,7 +60,7 @@ L:SetWarningLocalization{
 	SpecialWarningImpale3		= "Impale >%d< on you",
 	SpecialWarningFireBomb		= "Fire Bomb on you",
 	SpecialWarningSlimePool		= "Slime Pool - Move away",
-	SpecialWarningSilence		= "Silence in ~1.5 seconds!",
+	SpecialWarningSilence		= "Silence in ~1.5 seconds",
 	SpecialWarningSpray			= "Paralytic Spray on you",
 	SpecialWarningToxin			= "Paralytic Toxin on you - Move",
 	SpecialWarningCharge		= "Charge on you - Run away",
@@ -82,7 +82,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnFlame				= "Legion Flame on >%s<",
 	WarnTouch				= "Touch of Jaraxxus on >%s<",
-	WarnNetherPower			= "Nether Power on Jaraxxus - Dispel now",
+	WarnNetherPower			= "Nether Power on Lord Jaraxxus - Dispel now",
 	WarnPortalSoon			= "Nether Portal soon",
 	WarnVolcanoSoon			= "Infernal Volcano soon",
 	SpecWarnFlesh			= "Incinerate Flesh on you",
@@ -102,7 +102,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarnFlame				= "Show warning for Legion Flame",
 	WarnTouch				= "Show warning for Touch of Jaraxxus",
-	WarnNetherPower			= "Show warning when Jaraxxus gains Nether Power (to dispel/steal)",
+	WarnNetherPower			= "Show warning when Lord Jaraxxus gains Nether Power (to dispel/steal)",
 	WarnPortalSoon			= "Show pre-warning for Nether Portal spawn",
 	WarnVolcanoSoon			= "Show pre-warning for Infernal Volcano spawn",
 	SpecWarnFlame			= "Show special warning when you are affected by Legion Flame",
@@ -112,10 +112,10 @@ L:SetOptionLocalization{
 	SpecWarnKiss			= "Show special warning when you are affected by Mistress' Kiss",
 	SpecWarnNetherPower		= "Show special warning for Nether Power (to dispel/steal)",
 	SpecWarnFelInferno		= "Show special warning when you are near a Fel Inferno",
-	TouchJaraxxusIcon		= "Set icon on Touch of Jaraxxus target (cross)",
-	IncinerateFleshIcon		= "Set icon on Incinerate Flesh target (skull)",
-	LegionFlameIcon			= "Set icon on Legion Flame target (square)",
-	LegionFlameWhisper		= "Send whisper to Legion Flame target",
+	TouchJaraxxusIcon		= "Set icons on Touch of Jaraxxus targets (cross)",
+	IncinerateFleshIcon		= "Set icons on Incinerate Flesh targets (skull)",
+	LegionFlameIcon			= "Set icons on Legion Flame targets (square)",
+	LegionFlameWhisper		= "Send whisper to Legion Flame targets",
 	IncinerateShieldFrame	= "Show boss health with a health bar for Incinerate Flesh"
 }
 
@@ -202,9 +202,9 @@ L:SetOptionLocalization{
 	SpecWarnSwitchTarget		= "Show special warning when the other Twin is casting",
 	SpecWarnKickNow				= "Show special warning when you have to interrupt",
 	SpecialWarnOnDebuff			= "Show special warning when debuffed (to switch debuff)",
-	SetIconOnDebuffTarget		= "Set icon on Touch of Light/Darkness debuff targets (heroic)",
+	SetIconOnDebuffTarget		= "Set icons on Touch of Light/Darkness debuff targets (heroic)",
 	WarningTouchDebuff			= "Announce Touch of Light/Darkness debuff targets",
-	WarningPoweroftheTwins		= "Announce Power of the Twins target",
+	WarningPoweroftheTwins		= "Announce Power of the Twins targets",
 	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an empowered Twin"
 }
 
@@ -219,9 +219,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerEmerge				= "Emerge in",
-	TimerSubmerge			= "Submerge in",
-	timerAdds				= "New adds in"
+	TimerEmerge				= "Emerge",
+	TimerSubmerge			= "Submerge",
+	timerAdds				= "New adds"
 }
 
 L:SetWarningLocalization{
@@ -253,8 +253,8 @@ L:SetOptionLocalization{
 	TimerEmerge				= "Show timer for emerge",
 	TimerSubmerge			= "Show timer for submerge",
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
-	PursueIcon				= "Set icon on pursued player",
-	WarnPursue				= "Announce pursued player",
+	PursueIcon				= "Set icons on pursued targets",
+	WarnPursue				= "Announce pursued targets",
 	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to interrupt)",
 	SpecWarnPCold			= "Show special warning for Penetrating Cold",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
