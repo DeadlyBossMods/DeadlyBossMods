@@ -1134,7 +1134,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Portal #%d" , 
+	TimerPortalIn	= "Portal #%d", 
 })
 
 L:SetOptionLocalization({
