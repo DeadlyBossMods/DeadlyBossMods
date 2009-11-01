@@ -23,7 +23,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "Show special warning for Deep Breath",
-	BlastNovaWarning		= "Show warning for Blast Nova",
+	BlastNovaWarning		= "Show special warning for Blast Nova",
 	TimerBreath				= "Show timer for Deep Breath",
 	TimerWhelps				= "Show timer for Onyxian Whelps",
 	WarnWhelpsSoon			= "Show pre-warning for Onyxian Whelps",
