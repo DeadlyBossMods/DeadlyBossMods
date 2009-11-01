@@ -115,7 +115,7 @@ L:SetOptionLocalization{
 	timerTurret2				= "Show timer for turret 2",
 	timerTurret3				= "Show timer for turret 3 (25 player)",
 	timerTurret4				= "Show timer for turret 4 (25 player)",
-	OptionDevouringFlame		= "Announce target of Devouring Flame (unreliable)",
+	OptionDevouringFlame		= "Announce Devouring Flame target (unreliable)",
 	timerGroundedTemp			= "Show timer for ground phase duration"
 }
 
@@ -149,9 +149,9 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "Show special warning when you are affected by Light Bomb",
-	WarningLightBomb			= "Announce Light Bomb",
+	WarningLightBomb			= "Announce Light Bomb target",
 	SpecialWarningGravityBomb	= "Show special warning when you are affected by Gravity Bomb",
-	WarningGravityBomb			= "Announce Gravity Bomb",
+	WarningGravityBomb			= "Announce Gravity Bomb target",
 	PlaySoundOnGravityBomb		= "Play sound when you are affected by Gravity Bomb",
 	PlaySoundOnTympanicTantrum	= "Play sound on Tympanic Tantrum",
 	SetIconOnLightBombTarget	= "Set icon on Light Bomb target",
@@ -197,29 +197,29 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerSupercharge			= "Show timer for Supercharge",
 	WarningSupercharge			= "Show warning when Supercharge is being cast",
-	WarningChainlight			= "Announce Chain Lightning",
+	WarningChainlight			= "Show warning for Chain Lightning",
 	TimerOverload				= "Show timer for Overload cast",
 	TimerLightningWhirl			= "Show timer for Lightning Whirl cast",
 	LightningTendrils			= "Show special warning for Lightning Tendrils",
 	TimerLightningTendrils		= "Show timer for Lightning Tendrils duration",
 	PlaySoundLightningTendrils	= "Play sound on Lightning Tendrils",
-	WarningFusionPunch			= "Announce Fusion Punch",
+	WarningFusionPunch			= "Announce Fusion Punch target",
 	timerFusionPunchCast		= "Show cast bar for Fusion Punch",
 	timerFusionPunchActive		= "Show timer for Fusion Punch",
-	WarningOverwhelmingPower	= "Announce Overwhelming Power",
+	WarningOverwhelmingPower	= "Announce Overwhelming Power target",
 	timerOverwhelmingPower		= "Show timer for Overwhelming Power",
 	SetIconOnOverwhelmingPower	= "Set icon on Overwhelming Power target",
 	timerRunicBarrier			= "Show timer for Runic Barrier",
-	WarningRuneofPower			= "Announce Rune of Power",
-	WarningRuneofDeath			= "Announce Rune of Death",
-	WarningRuneofSummoning		= "Announce Rune of Summoning",
+	WarningRuneofPower			= "Show warning for Rune of Power",
+	WarningRuneofDeath			= "Show warning for Rune of Death",
+	WarningRuneofSummoning		= "Show warning for Rune of Summoning",
 	RuneofDeath					= "Show special warning for Rune of Death",
 	timerRuneofDeath			= "Show timer for Rune of Death duration",
 	SetIconOnStaticDisruption	= "Set icon on Static Disruption target",
 	Overload					= "Show special warning for Overload",
 	AllwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
 	PlaySoundOnOverload			= "Play sound on Overload",
-	WarningStaticDisruption		= "Announce Static Disruption",
+	WarningStaticDisruption		= "Announce Static Disruption target",
 	PlaySoundDeathRune			= "Play sound on Rune of Death"
 }
 
@@ -256,13 +256,13 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch		= "Show special warning when Phase Punch is on you",
-	WarningBigBang			= "Announce Big Bang cast",
+	WarningBigBang			= "Show warning for Big Bang cast",
 	PreWarningBigBang		= "Show pre-warning for Big Bang",
 	SpecWarnBigBang			= "Show special warning for Big Bang",
 	WarningPhasePunch		= "Announce Phase Punch target",
-	WarningBlackHole		= "Announce Black Hole",
+	WarningBlackHole		= "Show warning for Black Hole",
 	NextCollapsingStar		= "Show timer for next Collapsing Star",
-	WarningCosmicSmash 		= "Announce Cosmic Smash",
+	WarningCosmicSmash 		= "Show warning for Cosmic Smash",
 	SpecWarnCosmicSmash 	= "Show special warning for Cosmic Smash",
 	PossibleNextCosmicSmash	= "Show timer for next possible Cosmic Smash"
 }
@@ -381,7 +381,7 @@ L:SetOptionLocalization{
 	TimerFlashFreeze		= "Show timer for Flash Freeze cast",
 	WarningFlashFreeze		= "Show warning for Flash Freeze",
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze cast",
-	WarningStormCloud		= "Announce Storm Cloud players",
+	WarningStormCloud		= "Announce Storm Cloud targets",
 	YellOnStormCloud		= "Yell when Storm Cloud is active",
 	SetIconOnStormCloud		= "Set icon on Storm Cloud target"
 }
@@ -417,10 +417,10 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerHardmode			= "Show timer for hard mode",
 	WarningStormhammer		= "Announce Stormhammer target",
-	WarningLightningCharge	= "Announce Lightning Charge",
+	WarningLightningCharge	= "Show warning for Lightning Charge",
 	WarningPhase2			= "Announce Phase 2",
-	UnbalancingStrike		= "Announce Unbalancing Strike",
-	WarningBomb				= "Announce Rune Detonation",
+	UnbalancingStrike		= "Show warning for Unbalancing Strike",
+	WarningBomb				= "Announce Rune Detonation target",
 	RangeFrame				= "Show range frame",
 	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce to be enabled and leader/promoted status)",
 	LightningOrb			= "Show special warning for Lightning Shock"
@@ -547,13 +547,13 @@ L:SetOptionLocalization{
 	MagneticCore			= "Announce Magnetic Core looter",
 	HealthFramePhase4		= "Show health frame in Phase 4",
 	AutoChangeLootToFFA		= "Switch loot mode to Free for All in Phase 3",
-	WarnBombSpawn			= "Announce Bomb Bots",
+	WarnBombSpawn			= "Show warning for Bomb Bots",
 	TimerHardmode			= "Show timer for hard mode",
 	PlaySoundOnShockBlast	= "Play sound on Shock Blast",
 	PlaySoundOnDarkGlare	= "Play sound on Laser Barrage",
 	ShockBlastWarningInP1	= "Show special warning for Shock Blast in Phase 1",
 	ShockBlastWarningInP4	= "Show special warning for Shock Blast in Phase 4",
-	WarnFrostBomb			= "Announce Frost Bomb"
+	WarnFrostBomb			= "Show warning for Frost Bomb"
 }
 
 L:SetMiscLocalization{
@@ -645,7 +645,7 @@ L:SetWarningLocalization{
 	SpecWarnGuardianLow				= "Stop attacking this Guardian",
 	WarnMadness						= "Casting Induce Madness",
 	SpecWarnMadnessOutNow			= "Induce Madness ending - Move out",
-	WarnBrainPortalSoon				= "Portal in 3 seconds",	
+	WarnBrainPortalSoon				= "Brain Portal in 3 seconds",	
 	WarnSqueeze 					= "Squeeze: >%s<",
 	WarnFavor						= "Sara's Fervor on >%s<",
 	SpecWarnFavor					= "Sara's Fervor on you",
@@ -660,23 +660,23 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningGuardianSpawned			= "Announce Guardian spawns",
-	WarningCrusherTentacleSpawned	= "Announce Crusher Tentacle spawns",
+	WarningGuardianSpawned			= "Show warning for Guardian spawns",
+	WarningCrusherTentacleSpawned	= "Show warning Crusher Tentacle spawns",
 	WarningP2						= "Announce Phase 2",
 	WarningP3						= "Announce Phase 3",
-	WarningBrainLink				= "Announce Brain Links",
+	WarningBrainLink				= "Announce Brain Link targets",
 	SpecWarnBrainLink				= "Show special warning when Brain Linked",
 	WarningSanity					= "Show warning when Sanity is low",
 	SpecWarnSanity					= "Show special warning when Sanity is very low",
 	SpecWarnGuardianLow				= "Show special warning when Guardian (P1) is low (for DDs)",
-	WarnMadness						= "Announce Induce Madness",
-	WarnBrainPortalSoon				= "Announce Brain Portal",
+	WarnMadness						= "Show warning for Induce Madness",
+	WarnBrainPortalSoon				= "Show pre-warning for Brain Portal",
 	SpecWarnMadnessOutNow			= "Show special warning shortly before Induce Madness ends",
 	SetIconOnFearTarget				= "Set icon on Malady of the Mind target",
 	WarnFavor						= "Announce Sara's Fervor target",
 	SpecWarnFavor					= "Show special warning for Sara's Fervor",
 	WarnSqueeze						= "Announce Squeeze target",
-	specWarnBrainPortalSoon			= "Announce Brain Portal soon",
+	specWarnBrainPortalSoon			= "Show special warning for next Brain Portal",
 	WarningSqueeze					= "Announce Squeeze targets",
 	NextPortal						= "Show timer for next Brain Portal",
 	WhisperBrainLink				= "Whisper players on Brain Link",

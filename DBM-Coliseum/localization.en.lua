@@ -24,9 +24,9 @@ L:SetOptionLocalization{
 	WarningFireBomb				= "Show warning for Fire Bomb",
 	WarningBreath				= "Show warning for Arctic Breath",
 	WarningRage					= "Show warning for Frothing Rage",
-	WarningCharge				= "Show warning for charge target",
-	WarningToxin				= "Show warning for Paralytic Toxin targets",
-	WarningBile					= "Show warning for Burning Bile targets",
+	WarningCharge				= "Announce charge target",
+	WarningToxin				= "Announce Paralytic Toxin targets",
+	WarningBile					= "Announce Burning Bile targets",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning for Slime Pool",
@@ -204,7 +204,7 @@ L:SetOptionLocalization{
 	SpecialWarnOnDebuff			= "Show special warning when debuffed (to switch debuff)",
 	SetIconOnDebuffTarget		= "Set icon on Touch of Light/Darkness debuff targets (heroic)",
 	WarningTouchDebuff			= "Announce Touch of Light/Darkness debuff targets",
-	WarningPoweroftheTwins		= "Announce current target of Power of the Twins",
+	WarningPoweroftheTwins		= "Announce Power of the Twins target",
 	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an empowered Twin"
 }
 
