@@ -483,11 +483,11 @@ L:SetGeneralLocalization({
 L:SetOptionLocalization({
 	BlastTimer				= "Show timer for Frost Blast (4 second timer until targets die)",
 	TimerPhase2				= "Show timer for Phase 2",
-	WarningBlastTargets		= "Show warning for Frost Blast",
+	WarningBlastTargets		= "Announce Frost Blast targets",
 	WarningPhase2			= "Show warning for Phase 2",
 	WarningFissure			= "Show warning for Shadow Fissure",
 	WarningMana				= "Show warning for Detonate Mana",
-	WarningChainsTargets	= "Show warning for Chains of Kel'Thuzad",
+	WarningChainsTargets	= "Announce Chains of Kel'Thuzad targets",
 	specwarnP2Soon			= "Show special warning 10 seconds before Kel'Thuzad engages",
 	ShowRange				= "Show range frame when Phase 2 starts",
 })
