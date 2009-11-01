@@ -31,7 +31,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 28622 then -- Web Wrap
+	if args:IsSpellID(28622) then -- Web Wrap
 		warnWebWrap:Show(args.destName)
 		if args.destName == UnitName("player") then
 			SendChatMessage(L.YellWebWrap, "YELL")
@@ -40,8 +40,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 29484 	  -- Web Spray (10)
-	or args.spellId == 54125 then -- Web Spray (25)
+	if args:IsSpellID(29484, 54125) then -- Web Spray
 		warnWebSprayNow:Show()
 		warnWebSpraySoon:Schedule(35.5)
 		timerWebSpray:Start()

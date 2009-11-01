@@ -41,14 +41,13 @@ end
 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 28522 and args.destName == UnitName("player") and self.Options.WarningIceblock then
+	if args:IsSpellID(28522) and args:IsPlayer() and self.Options.WarningIceblock then
 		SendChatMessage(L.WarningYellIceblock, "YELL")
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 28542      -- Life Drain (10)
-	or args.spellId == 55665 then -- Life Drain (25)
+	if args:IsSpellID(28542, 55665) then -- Life Drain
 		warnDrainLifeNow:Show()
 		warnDrainLifeSoon:Schedule(18.5)
 		timerDrainLife:Start()
