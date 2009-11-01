@@ -34,7 +34,7 @@ local specWarnStickyOoze	= mod:NewSpecialWarning("SpecWarnStickyOoze")
 local soundStickyOoze		= mod:NewSound(69760)
 
 local warnRadiatingOoze		= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
-local specWarnRadiatingOoze	= mod:NewSpecialWarning("SpecWarnRadiationOoze", false)--Some strats purposely run to this so option is defaulted to off
+local specWarnRadiatingOoze	= mod:NewSpecialWarning("SpecWarnRadiatingOoze", false)--Some strats purposely run to this so option is defaulted to off
 
 function mod:OnCombatStart(delay)
 	nextWallSlime:Start(25-delay)

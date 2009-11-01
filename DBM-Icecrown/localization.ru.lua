@@ -90,7 +90,7 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	SpecWarnStickyOoze		= "Липкая жижа - бегите",
-	SpecWarnRadiationOoze		= "Radiation Ooze",
+	SpecWarnRadiatingOoze		= "Radiating Ooze",
 	SpecWarnMutatedInfection 	= "Mutated Infection on you"
 })
 L:SetTimerLocalization({
@@ -98,7 +98,7 @@ L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
 	SpecWarnStickyOoze		= "Спец-предупреждение для Липкой жижи",
-	SpecWarnRadiationOoze		= "Show special warning for Radiation Ooze",
+	SpecWarnRadiatingOoze		= "Show special warning for Radiating Ooze",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	SpecWarnMutatedInfection 	= "Show special warning for Mutated Infection",
 	InfectionIcon				= "Set icon on Mutated Infection target",

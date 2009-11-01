@@ -91,7 +91,7 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	SpecWarnStickyOoze			= "Sticky Ooze - 快跑開",
-	SpecWarnRadiationOoze		= "Radiation Ooze",
+	SpecWarnRadiatingOoze		= "Radiating Ooze",
 	SpecWarnMutatedInfection 	= "你中了Mutated Infection"
 })
 L:SetTimerLocalization({
@@ -99,7 +99,7 @@ L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
 	SpecWarnStickyOoze			= "為Sticky Ooze顯示特別警告",
-	SpecWarnRadiationOoze		= "為Radiation Ooze顯示特別警告",
+	SpecWarnRadiatingOoze		= "為Radiating Ooze顯示特別警告",
 	NextPoisonSlimePipes		= "為下一次 Poison Slime Pipes顯示計時器",
 	SpecWarnMutatedInfection 	= "為Mutated Infection顯示特別警告",
 	InfectionIcon				= "為Mutated Infection的目標設置標記",

@@ -63,14 +63,14 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	SpecWarnStickyOoze		= "Ooze - Bougez",
-	SpecWarnRadiationOoze	= "Radiation Ooze"
+	SpecWarnRadiatingOoze	= "Radiating Ooze"
 })
 L:SetTimerLocalization({
 	NextPoisonSlimePipes	= "Next Poison Slime Pipes"
 })
 L:SetOptionLocalization({
 	SpecWarnStickyOoze		= "Montre une alerte spéciale pour Sticky Ooze",
-	SpecWarnRadiationOoze	= "Montre une alerte spéciale pour Radiation Ooze",
+	SpecWarnRadiatingOoze	= "Montre une alerte spéciale pour Radiating Ooze",
 	NextPoisonSlimePipes	= "Activer le timer pour le prochain Poison Slime Pipes"
 })
 L:SetMiscLocalization({
