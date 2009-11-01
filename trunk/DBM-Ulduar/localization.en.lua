@@ -267,7 +267,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam	= "Show 	special warning when Eye Beam is on you",
+	SpecialWarningEyebeam	= "Show special warning when Eye Beam is on you",
 	WarningEyeBeam			= "Announce Eye Beam targets",
 	timerEyebeam			= "Show timer for Eye Beam",
 	timerPetrifyingBreath	= "Show timer for Petrifying Breath",
