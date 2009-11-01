@@ -9,7 +9,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_DAMAGE"
 )
 
 local timerTympanicTantrumCast		= mod:NewCastTimer(62776)
@@ -19,11 +20,12 @@ local timerHeart					= mod:NewCastTimer(30, 63849)
 local timerLightBomb				= mod:NewTargetTimer(9, 65121)
 local timerGravityBomb				= mod:NewTargetTimer(9, 64234)
 
-local warnLightBomb					= mod:NewAnnounce("WarningLightBomb", 3, 65121)
+local warnLightBomb					= mod:NewTargetAnnounce(65121, 3)
 local specWarnLightBomb				= mod:NewSpecialWarning("SpecialWarningLightBomb")
 
-local warnGravityBomb				= mod:NewAnnounce("WarningGravityBomb", 3, 64234)
+local warnGravityBomb				= mod:NewTargetAnnounce(64234, 3)
 local specWarnGravityBomb			= mod:NewSpecialWarning("SpecialWarningGravityBomb")
+local specWarnConsumption			= mod:NewSpecialWarning("specWarnConsumption")--Hard mode void zone dropped by Gravity Bomb
 
 local enrageTimer					= mod:NewEnrageTimer(600)
 local timerAchieve					= mod:NewAchievementTimer(205, 2937, "TimerSpeedKill")
@@ -76,3 +78,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+do 
+	local lastConsumption = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(64208, 64206) and args:IsPlayer() and time() - lastConsumption > 2 then		-- Desecration, MOVE!
+			specWarnConsumption:Show()
+			lastConsumption = time()
+		end
+	end
+end
