@@ -36,7 +36,7 @@ L:SetOptionLocalization{
 	timerPursued			= "Show timer for pursue",
 	SystemOverload			= "Show special warning for System Overload",
 	SpecialPursueWarnYou	= "Show special warning when you are being pursued",
-	PursueWarn				= "Show warning for pursue on player",
+	PursueWarn				= "Announce pursue target",
 	warnNextPursueSoon		= "Show pre-warning for next pursue",
 	warnWardofLife			= "Show special warning for Ward of Life spawn",
 	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn"
@@ -679,7 +679,7 @@ L:SetOptionLocalization{
 	specWarnBrainPortalSoon			= "Show special warning for next Brain Portal",
 	WarningSqueeze					= "Announce Squeeze targets",
 	NextPortal						= "Show timer for next Brain Portal",
-	WhisperBrainLink				= "Whisper players on Brain Link",
+	WhisperBrainLink				= "Send whisper to Brain Link targets",
 	SetIconOnFavorTarget			= "Set icon on Sara's Fervor target",
 	SetIconOnMCTarget				= "Set icon on mind-controlled target",
 	ShowSaraHealth					= "Show health frame for Sara in Phase 1 (must be targeted by at least one raid member)",

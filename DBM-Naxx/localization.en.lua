@@ -365,7 +365,7 @@ L:SetOptionLocalization({
 	WarningWaveSpawned	= "Show warning for wave spawned",
 	WarningRiderDown	= "Show warning when an Unrelenting Rider dies",
 	WarningKnightDown	= "Show warning when an Unrelenting Death Knight dies",
-	WarningPhase2		= "Show warning for Phase 2"
+	WarningPhase2		= "Announce Phase 2"
 })
 
 L:SetTimerLocalization({
@@ -439,8 +439,8 @@ L:SetOptionLocalization({
 	WarningDrainLifeNow		= "Show warning for Life Drain",
 	WarningDrainLifeSoon	= "Show pre-warning for Life Drain",
 	WarningAirPhaseSoon		= "Show pre-warning for air phase",
-	WarningAirPhaseNow		= "Show warning for air phase",
-	WarningLanded			= "Show warning for ground phase",
+	WarningAirPhaseNow		= "Announce air phase",
+	WarningLanded			= "Announce ground phase",
 	TimerDrainLifeCD		= "Show timer for Life Drain",
 	TimerAir				= "Show timer for air phase",
 	TimerLanding			= "Show timer for landing",
@@ -484,7 +484,7 @@ L:SetOptionLocalization({
 	BlastTimer				= "Show timer for Frost Blast (4 second timer until targets die)",
 	TimerPhase2				= "Show timer for Phase 2",
 	WarningBlastTargets		= "Announce Frost Blast targets",
-	WarningPhase2			= "Show warning for Phase 2",
+	WarningPhase2			= "Announce Phase 2",
 	WarningFissure			= "Show warning for Shadow Fissure",
 	WarningMana				= "Show warning for Detonate Mana",
 	WarningChainsTargets	= "Announce Chains of Kel'Thuzad targets",
