@@ -23,7 +23,7 @@ mod:RegisterEvents(
 
 local timerNextBigBang			= mod:NewNextTimer(90.5, 64584)
 local timerBigBangCast			= mod:NewCastTimer(8, 64584)
-local announceBigBang			= mod:NewAnnounce("WarningBigBang", 3, 64584)
+local announceBigBang			= mod:NewSpellAnnounce(64584, 3)
 local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
 

@@ -23,10 +23,10 @@ local timerUnbalancingStrike	= mod:NewCastTimer(26, 62130)
 local timerHardmode				= mod:NewTimer(175, "TimerHardmode", 62042)
 
 local warnPhase2				= mod:NewAnnounce("WarningPhase2", 1)
-local warnStormhammer			= mod:NewAnnounce("WarningStormhammer", 2, 62470)
+local warnStormhammer			= mod:NewTargetAnnounce(62470, 2)
 local warnLightningCharge		= mod:NewAnnounce("WarningLightningCharge", 2, 62466)
-local warnUnbalancingStrike		= mod:NewAnnounce("UnbalancingStrike", 4, 62130)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
-local warningBomb				= mod:NewAnnounce("WarningBomb", 4)
+local warnUnbalancingStrike		= mod:NewTargetAnnounce(62130, 4)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
+local warningBomb				= mod:NewTargetAnnounce(62526, 4)
 
 local specWarnOrb				= mod:NewSpecialWarning("LightningOrb")
 

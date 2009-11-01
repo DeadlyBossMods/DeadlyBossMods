@@ -25,7 +25,7 @@ local warnSupercharge			= mod:NewAnnounce("WarningSupercharge", 3, 61920)
 
 -- Stormcaller Brundir
 -- High Voltage ... 63498
-local warnChainlight			= mod:NewAnnounce("WarningChainlight", 1, 64215)
+local warnChainlight			= mod:NewSpellAnnounce(64215, 1)
 local timerOverload				= mod:NewCastTimer(6, 63481)
 local timerLightningWhirl		= mod:NewCastTimer(5, 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
@@ -37,21 +37,21 @@ mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
 
 -- Steelbreaker
 -- High Voltage ... don't know what to show here - 63498
-local warnFusionPunch			= mod:NewAnnounce("WarningFusionPunch", 4, 61903)
+local warnFusionPunch			= mod:NewSpellAnnounce(61903, 4)
 local timerFusionPunchCast		= mod:NewCastTimer(3, 61903)
 local timerFusionPunchActive	= mod:NewTargetTimer(4, 61903)
-local warnOverwhelmingPower		= mod:NewAnnounce("WarningOverwhelmingPower", 2, 61888)
-local timerOverwhelmingPower	= mod:NewNextTimer(25, 61888)
-local warnStaticDisruption		= mod:NewAnnounce("WarningStaticDisruption", 3, 61912) 
+local warnOverwhelmingPower		= mod:NewTargetAnnounce(61888, 2)
+local timerOverwhelmingPower	= mod:NewTargetTimer(25, 61888)
+local warnStaticDisruption		= mod:NewTargetAnnounce(61912, 3) 
 mod:AddBoolOption("SetIconOnOverwhelmingPower")
 mod:AddBoolOption("SetIconOnStaticDisruption")
 
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
 local timerRunicBarrier			= mod:NewBuffActiveTimer(20, 62338)
-local warnRuneofPower			= mod:NewAnnounce("WarningRuneofPower", 1, 64320)
-local warnRuneofDeath			= mod:NewAnnounce("WarningRuneofDeath", 2, 63490)
-local warnRuneofSummoning		= mod:NewAnnounce("WarningRuneofSummoning", 3, 62273)
+local warnRuneofPower			= mod:NewSpellAnnounce(64320, 1)
+local warnRuneofDeath			= mod:NewSpellAnnounce(63490, 2)
+local warnRuneofSummoning		= mod:NewSpellAnnounce(62273, 3)
 local specwarnRuneofDeath		= mod:NewSpecialWarning("RuneofDeath")
 local timerRuneofDeathDura		= mod:NewNextTimer(30, 63490)
 local timerRuneofPower			= mod:NewCDTimer(30, 61974)
