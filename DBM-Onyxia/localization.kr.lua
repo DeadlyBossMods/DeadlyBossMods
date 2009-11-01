@@ -12,15 +12,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBreath	= "깊은 숨",
-	SpecWarnBlastNova	= "오닉시아 둥지 수호병이 파멸의 회오리를 시전합니다. 피하세요!!!!!",--http://www.wowhead.com/?npc=36561
-	WarnWhelpsSoon	= "곧 새끼용 등장",
-	WarnPhase3Soon	= "곧 3 페이즈"	
+	SpecWarnBreath		= "깊은 숨",
+	SpecWarnBlastNova	= "파멸의 회오리!! 피하세요!!!",--http://www.wowhead.com/?npc=36561
+	WarnWhelpsSoon		= "곧 새끼용 등장",
+	WarnPhase3Soon		= "곧 3 페이즈"	
 }
 
 L:SetTimerLocalization{
-	TimerBreath		= "깊은 숨",
-	TimerWhelps 	= "새끼용"
+	TimerBreath			= "깊은 숨",
+	TimerWhelps 		= "새끼용"
 }
 
 L:SetOptionLocalization{
@@ -36,7 +36,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{ 
-	Breath = "%s 숨을 깊게 들이쉽니다.",
-	YellP2 = "쓸데없이 힘을 쓰는 것도 지루하군. 네 녀석들 머리 위에서 모조리 불살라 주마!",
-	YellP3 = "혼이 더 나야 정신을 차리겠구나!"
+	Breath 		= "%s 숨을 깊게 들이쉽니다.",
+	YellP2 		= "쓸데없이 힘을 쓰는 것도 지루하군. 네 녀석들 머리 위에서 모조리 불살라 주마!",
+	YellP3 		= "혼이 더 나야 정신을 차리겠구나!"
 }
