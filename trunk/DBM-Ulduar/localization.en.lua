@@ -222,7 +222,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch		= "Show special warning when Phase Punch is on you",
+	SpecWarnPhasePunch		= "Show special warning when you are affected by Phase Punch",
 	PreWarningBigBang		= "Show pre-warning for Big Bang",
 	SpecWarnBigBang			= "Show special warning for Big Bang",
 	WarningPhasePunch		= "Announce Phase Punch targets",
@@ -427,11 +427,11 @@ L:SetOptionLocalization{
 	WarnSimulKill	= "Announce first mob down",
 	WarnFury		= "Announce Nature's Fury targets",
 	WarnRoots		= "Announce Iron Roots targets",
-	SpecWarnFury	= "Show special warning for Nature's Fury",
+	SpecWarnFury	= "Show special warning when you are affected by Nature's Fury",
 	WarningTremor	= "Show special warning for Ground Tremor (hard mode)",
 	PlaySoundOnFury = "Play sound when you are affected by Nature's Fury",
 	TimerSimulKill	= "Show timer for mob resurrection",
-	UnstableEnergy	= "Show special warning for Unstable Energy"
+	UnstableEnergy	= "Show special warning when you are affected by Unstable Energy"
 }
 
 ----------------------
@@ -616,7 +616,7 @@ L:SetOptionLocalization{
 	SpecWarnBrainLink				= "Show special warning when you are affected by Brain Link",
 	WarningSanity					= "Show warning when Sanity is low",
 	SpecWarnSanity					= "Show special warning when Sanity is very low",
-	SpecWarnGuardianLow				= "Show special warning when Guardian (P1) is low (for DDs)",
+	SpecWarnGuardianLow				= "Show special warning when Guardian (Phase 1) is low (for DDs)",
 	WarnMadness						= "Show warning for Induce Madness",
 	WarnBrainPortalSoon				= "Show pre-warning for Brain Portal",
 	SpecWarnMadnessOutNow			= "Show special warning shortly before Induce Madness ends",
