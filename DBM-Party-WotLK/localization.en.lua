@@ -684,13 +684,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMerge		= "Show warning for Merge"		-- translate
+	WarningSplitSoon	= "Split soon",		-- translate
+	WarningSplitNow		= "Split",		-- translate
+	WarningMerge		= "Merge"		-- translate
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarningSplitSoon	= optionPreWarning:format("Split"),	-- translate
+	WarningSplitNow		= optionWarning:format("Split"),	-- translate
 	WarningMerge		= optionWarning:format("Merge"),	-- translate
 })
 
