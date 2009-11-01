@@ -15,7 +15,7 @@ mod:RegisterEvents(
 )
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 59529 or args.spellId == 52237 then
+	if args:IsSpellID(59529, 52237) then
 		warningStomp:Show()
 		timerStompCD:Start()
 	end

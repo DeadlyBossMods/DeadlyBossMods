@@ -24,24 +24,24 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 58694 then
+	if args:IsSpellID(58694) then
 		warningVacuum:Show()
 		timerVacuumCD:Cancel()
 		timerVacuumCD:Start()
-	elseif args.spellId == 58693 or args.spellId == 59369 then
+	elseif args:IsSpellID(58693, 59369) then
 		warningBlizzard:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 59374 then
+	if args:IsSpellID(59374) then
 		warningMana:Show(args.destName)
 		timerMana:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 59374 then
+	if args:IsSpellID(59374) then
 		timerMana:Cancel()
 	end
 end

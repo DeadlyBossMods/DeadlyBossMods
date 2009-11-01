@@ -18,11 +18,10 @@ mod:RegisterEvents(
 )
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 59848 or args.spellId == 50840
-	or args.spellId == 59861 or args.spellId == 51849 then
+	if args:IsSpellID(59848, 50840, 59861, 51849) then
 		warningRing:Show()
 		timerRingCD:Start()
-	elseif args.spellId == 50834 or args.spellId == 59846 then
+	elseif args:IsSpellID(50834, 59846) then
 		warningCharge:Show(args.destName)
 		timerCharge:Start(args.destName)
 		timerChargeCD:Start()

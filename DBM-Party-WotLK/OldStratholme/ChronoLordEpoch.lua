@@ -18,14 +18,14 @@ local timerCurse	= mod:NewTargetTimer(10, 52772)
 local timerTimeCD	= mod:NewCDTimer(25, 58848)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 58848 or args.spellId == 52766  then
+	if args:IsSpellID(58848, 52766)  then
 		warningTime:Show()
 		timerTimeCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 52772 then
+	if args:IsSpellID(52772) then
 		warningCurse:Show(args.destName)
 		timerCurse:Start(args.destName)
 	end

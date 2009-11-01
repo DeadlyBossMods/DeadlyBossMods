@@ -20,7 +20,7 @@ local warnUnholyPower				= mod:NewSpellAnnounce(69167)
 local timerUnholyPower				= mod:NewBuffActiveTimer(10, 69629)
 local warnOverlordsBrand			= mod:NewTargetAnnounce(69172)
 local timerOverlordsBrand			= mod:NewTargetTimer(8, 69172)
-local specTyrannusEngaged				= mod:NewSpecialWarning("specTyrannusEngaged", nil, false)
+local specTyrannusEngaged			= mod:NewSpecialWarning("specTyrannusEngaged", nil, false)
 local specWarnIcyBlast				= mod:NewSpecialWarning("specWarnIcyBlast")
 
 -- Hoarfrost ID 69246
@@ -39,7 +39,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69629, 69167) then						-- Unholy Power
-		warnUnholyPower:Show(args.spellName)
+		warnUnholyPower:Show()
 	elseif args:IsSpellID(69155, 69627) then					-- Forceful Smash
 		timerForcefulSmash:Start()
 	end

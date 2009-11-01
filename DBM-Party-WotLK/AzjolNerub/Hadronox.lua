@@ -15,9 +15,9 @@ mod:RegisterEvents(
 )
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 53030 or args.spellId == 59417 then
+	if args:IsSpellID(53030, 59417) then
 		warningLeech:Show()
-	elseif args.spellId == 53400 or args.spellId == 59419 then
+	elseif args:IsSpellID(53400, 59419) then
 		warningCloud:Show()
 	end
 end

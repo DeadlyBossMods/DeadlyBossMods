@@ -14,7 +14,7 @@ mod:RegisterEvents(
 local warningWhirlwind = mod:NewSpellAnnounce(52027, 3)
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 52027 or args.spellId == 52028 then
+	if args:IsSpellID(52027, 52028) then
 		warningWhirlwind:Show()
 	end
 end

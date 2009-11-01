@@ -23,20 +23,19 @@ local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock")
 
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 42723 or args.spellId == 42669 or args.spellId == 59706 then
+	if args:IsSpellID(42723, 42669, 59706) then
 		warningSmash:Show()
 		timerSmash:Start()
-	elseif args.spellId == 42708 or args.spellId == 42729
-	or args.spellId == 59708 or args.spellId == 59734 then
+	elseif args:IsSpellID(42708, 42729, 59708, 59734) then
 		warningGrowl:Show()
 	end
-	if args.spellId == 42729 then
+	if args:IsSpellID(42729) then
 		specWarnSpelllock:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 42730 or args.spellId == 59735 then
+	if args:IsSpellID(42730, 59735) then
 		warningWoeStrike:Show(args.destName)
 		timerWoeStrike:Start(args.destName)
 		mod:SetIcon(args.destName, 8, 10)
@@ -44,7 +43,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 42730 or args.spellId == 59735 then
+	if args:IsSpellID(42730, 59735) then
 		timerWoeStrike:Cancel()
 	end
 end
