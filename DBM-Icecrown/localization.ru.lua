@@ -175,30 +175,30 @@ L:SetGeneralLocalization({
 	name = "Синдрагоса"
 })
 L:SetTimerLocalization({
-	NextAirphase 		= "Воздушная фаза",
-	NextGroundphase		= "Наземная фаза"
+	TimerNextAirphase 		= "Воздушная фаза",
+	TimerNextGroundphase	= "Наземная фаза"
 })
 L:SetWarningLocalization({
-	WarnAirphase		= "Воздушная фаза",
-	WarnBlisteringCold	= "Blistering Cold",
+	WarnAirphase			= "Воздушная фаза",
+	WarnBlisteringCold		= "Blistering Cold",
 	SpecWarnBlisteringCold	= "Blisstering Cold - run out",
-	SpecWarnFrostBeacon	= "Frost beacon on you",
-	PrewarnGroundphase	= "Синдрагоса приземляется",
+	SpecWarnFrostBeacon		= "Frost beacon on you",
+	WarnGroundphaseSoon		= "Синдрагоса приземляется",
 	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
-	WarnAirphase		= "Предупредить о воздушной фазе",
-	WarnBlisteringCold	= "Show warning for Blistering Cold",
+	WarnAirphase			= "Предупредить о воздушной фазе",
+	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon	= "Show special warning for Frost Beacon",
-	PrewarnGroundphase	= "Предупредить зарание о наземной фазе",
-	NextAirphase		= "Отсчет времени до воздушной фазы",
-	NextGroundphase		= "Отсчет времени до наземной фазы",
+	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
+	WarnGroundphaseSoon		= "Предупредить зарание о наземной фазе",
+	TimerNextAirphase		= "Отсчет времени до воздушной фазы",
+	TimerNextGroundphase	= "Отсчет времени до наземной фазы",
 	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magix"
 })
 L:SetMiscLocalization({
-	YellAirphase		= "Your incursion ends here! None shall survive!",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase			= "Your incursion ends here! None shall survive!",
+	YellPull				= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 })
 
 

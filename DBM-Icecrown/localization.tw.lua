@@ -175,30 +175,30 @@ L:SetGeneralLocalization({
 	name = "Sindragosa"
 })
 L:SetTimerLocalization({
-	NextAirphase 		= "Next airphase",
-	NextGroundphase		= "Next groundphase"
+	TimerNextAirphase 		= "Next airphase",
+	TimerNextGroundphase	= "Next groundphase"
 })
 L:SetWarningLocalization({
-	WarnAirphase		= "Airphase",
-	WarnBlisteringCold	= "Blistering Cold",
+	WarnAirphase			= "Airphase",
+	WarnBlisteringCold		= "Blistering Cold",
 	SpecWarnBlisteringCold	= "Blisstering Cold - run out",
-	SpecWarnFrostBeacon	= "Frost beacon on you",
-	PrewarnGroundphase	= "Sindragosa landing soon",
+	SpecWarnFrostBeacon		= "Frost beacon on you",
+	WarnGroundphaseSoon		= "Sindragosa landing soon",
 	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
-	WarnAirphase		= "Show warning for airphase",
-	WarnBlisteringCold	= "Show warning for Blistering Cold",
+	WarnAirphase			= "Show warning for airphase",
+	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon	= "Show special warning for Frost Beacon",
-	PrewarnGroundphase	= "Show prewarning for groundphase",
-	NextAirphase		= "Show timer for next airphase",
-	NextGroundphase		= "Show timer for next groundphase",
+	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
+	WarnGroundphaseSoon		= "Show prewarning for groundphase",
+	TimerNextAirphase		= "Show timer for next airphase",
+	TimerNextGroundphase	= "Show timer for next groundphase",
 	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magix"
 })
 L:SetMiscLocalization({
-	YellAirphase		= "Your incursion ends here! None shall survive!",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase			= "Your incursion ends here! None shall survive!",
+	YellPull				= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 })
 
 
