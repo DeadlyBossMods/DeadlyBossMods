@@ -411,7 +411,7 @@ L:SetWarningLocalization{
 	WarnFury		= "Nature's Fury on >%s<",
 	SpecWarnFury	= "Nature's Fury on you",
 	WarningTremor	= "Ground Tremor - Stop casting",
-	WarnRoots		= "Roots on >%s<",
+	WarnRoots		= "Iron Roots on >%s<",
 	UnstableEnergy	= "Unstable Energy - Move away"
 }
 
@@ -541,7 +541,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash				= "Show warning for Shadow Crash",
+	WarningShadowCrash				= "Announce Shadow Crash targets",
 	SetIconOnShadowCrash			= "Set icons on Shadow Crash targets (skull)",
 	SetIconOnLifeLeach				= "Set icons on Life Leech targets (cross)",
 	SpecialWarningSurgeDarkness		= "Show special warning for Surge of Darkness",
@@ -598,7 +598,7 @@ L:SetWarningLocalization{
 	WarnFavor						= "Sara's Fervor on >%s<",
 	SpecWarnFavor					= "Sara's Fervor on you",
 	WarnEmpowerSoon					= "Empowering Shadows soon",
-	SpecWarnMaladyNear				= "Malady near you on >%s<",
+	SpecWarnMaladyNear				= "Malady of the Mind on %s near you",
 	SpecWarnDeafeningRoar			= "Deafening Roar",
 	specWarnBrainPortalSoon			= "Brain Portal soon"
 }
