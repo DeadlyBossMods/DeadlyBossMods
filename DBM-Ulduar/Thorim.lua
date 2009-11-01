@@ -68,24 +68,24 @@ end
 
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62042 then 					-- Storm Hammer
+	if args:IsSpellID(62042) then 					-- Storm Hammer
 		warnStormhammer:Show(args.destName)
 
-	elseif args.spellId == 62130 then				-- Unbalancing Strike
+	elseif args:IsSpellID(62130) then				-- Unbalancing Strike
 		warnUnbalancingStrike:Show(args.destName)
 		
-	elseif args.spellId == 62526 or args.spellId == 62527 then	-- Runic Detonation
+	elseif args:IsSpellID(62526, 62527) then	-- Runic Detonation
 		self:SetIcon(args.destName, 8, 5)
 		warningBomb:Show(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62042 then 		-- Storm Hammer
+	if args:IsSpellID(62042) then 		-- Storm Hammer
 		timerStormhammer:Schedule(2)
-	elseif args.spellId == 62466 then   	-- Lightning Charge
+	elseif args:IsSpellID(62466) then   	-- Lightning Charge
 		timerLightningCharge:Start()	
-	elseif args.spellId == 62130 then	-- Unbalancing Strike
+	elseif args:IsSpellID(62130) then	-- Unbalancing Strike
 		timerUnbalancingStrike:Start()
 	end
 end
@@ -99,14 +99,14 @@ end
 
 local spam = 0
 function mod:SPELL_DAMAGE(args)
-	if args.spellId == 62017 then -- Lightning Shock
+	if args:IsSpellID(62017) then -- Lightning Shock
 		if bit.band(args.destFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) ~= 0
 		and bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
 		and GetTime() - spam > 5 then
 			spam = GetTime()
 			specWarnOrb:Show()
 		end
-	elseif self.Options.AnnounceFails and args.spellId == 62466 and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
+	elseif self.Options.AnnounceFails and args:IsSpellID(62466) and DBM:GetRaidRank() >= 1 and DBM:GetRaidUnitId(args.destName) ~= "none" and args.destName then
 		lastcharge[args.destName] = (lastcharge[args.destName] or 0) + 1
 		SendChatMessage(L.ChargeOn:format(args.destName), "RAID")
 	end

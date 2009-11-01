@@ -32,12 +32,12 @@ mod:AddBoolOption("TrashRespawnTimer", true, "timer")
 --
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62344 then 						-- Fists of Stone
+	if args:IsSpellID(62344) then 						-- Fists of Stone
 		specWarnFistofStone:Show()
 		if self.Options.PlaySoundOnFistOfStone then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
-	elseif args.spellId == 62325 or args.spellId == 62932 then		-- Ground Tremor
+	elseif args:IsSpellID(62325, 62932) then		-- Ground Tremor
 		specWarnGroundTremor:Show()
 	end
 		-- Petrified Bark (not required)

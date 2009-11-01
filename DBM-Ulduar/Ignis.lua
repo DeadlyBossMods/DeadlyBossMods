@@ -15,7 +15,7 @@ mod:RegisterEvents(
 
 local warnFlameJetsCast			= mod:NewSpecialWarning("SpecWarnJetsCast")
 local timerFlameJetsCast		= mod:NewCastTimer(2.7, 63472)
-local timerFlameJetsCooldown		= mod:NewCDTimer(35, 63472)
+local timerFlameJetsCooldown	= mod:NewCDTimer(35, 63472)
 local timerScorchCooldown		= mod:NewNextTimer(25, 63473)
 local timerScorchCast			= mod:NewCastTimer(3, 63473)
 
@@ -32,7 +32,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62680  or args.spellId == 63472 then		-- Flame Jets
+	if args:IsSpellID(62680, 63472) then		-- Flame Jets
 		timerFlameJetsCast:Start()
 		warnFlameJetsCast:Show()
 		timerFlameJetsCooldown:Start()
@@ -40,14 +40,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62548 or args.spellId == 63474 then	-- Scorch
+	if args:IsSpellID(62548, 63474) then	-- Scorch
 		timerScorchCast:Start()
 		timerScorchCooldown:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62717 or args.spellId == 63477 then		-- Slag Pot
+	if args:IsSpellID(62717, 63477) then		-- Slag Pot
 		announceSlagPot:Show(args.destName)
 		timerSlagPot:Start(args.destName)
 		if self.Options.SlagPotIcon then
