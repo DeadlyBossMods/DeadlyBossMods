@@ -50,9 +50,6 @@ mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
 mod:AddBoolOption("SetIconOnBileTarget", true, "announce")
 mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
 
---local warnSpray				= mod:NewAnnounce("WarningSpray", 2, 67616)
---local specWarnSpray			= mod:NewSpecialWarning("SpecialWarningSpray")
-
 local bileTargets = {}
 local toxinTargets = {}
 local burnIcon = 8
