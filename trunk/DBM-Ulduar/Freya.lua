@@ -72,7 +72,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62437 or args.spellId == 62859 then
+	if args:IsSpellID(62437, 62859) then
 		warnTremor:Show()
 		timerTremorCD:Start()
 	end
@@ -81,13 +81,13 @@ end
 
 local altIcon = true
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62678 then -- Summon Allies of Nature
+	if args:IsSpellID(62678) then -- Summon Allies of Nature
 		timerAlliesOfNature:Start()
-	elseif args.spellId == 63571 or args.spellId == 62589 then -- Nature's Fury
+	elseif args:IsSpellID(63571, 62589) then -- Nature's Fury
 		altIcon = not altIcon	--Alternates between Skull and X
 		self:SetIcon(args.destName, altIcon and 7 or 8, 10)
 		warnFury:Show(args.destName)
-		if args.destName == UnitName("player") then -- only cast on players; no need to check destFlags
+		if args:IsPlayer() then -- only cast on players; no need to check destFlags
 			if self.Options.PlaySoundOnFury then
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
@@ -143,7 +143,7 @@ end
 
 local iconId = 6
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62861 or args.spellId == 62438 then
+	if args:IsSpellID(62861, 62438) then
 		iconId = iconId - 1
 		self:SetIcon(args.destName, iconId, 15)
 		table.insert(rootedPlayers, args.destName)
@@ -154,13 +154,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.5, showRootWarning)
 		end
 
-	elseif (args.spellId == 62451 or args.spellId == 62865) and args.destName == UnitName("player")  then
+	elseif args:IsSpellID(62451, 62865) and args:IsPlayer() then
 		specWarnBeam:Show()
 	end 
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62861 or args.spellId == 62438 then
+	if args:IsSpellID(62861, 62438) then
 		self:RemoveIcon(args.destName)
 		iconId = iconId + 1
 	end

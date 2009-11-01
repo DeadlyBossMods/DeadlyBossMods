@@ -57,7 +57,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if (args.spellId == 64733 or args.spellId == 64704) and args.destName == UnitName("player") then
+	if args:IsSpellID(64733, 64704) and args:IsPlayer() then
 		specWarnDevouringFlame:Show()
 		if self.Options.PlaySoundOnDevouringFlame then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
@@ -101,10 +101,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64021 then	-- deep breath
+	if args:IsSpellID(64021) then	-- deep breath
 		timerDeepBreathCast:Start()
 		timerDeepBreathCooldown:Start()
-	elseif args.spellId == 63236 then
+	elseif args:IsSpellID(63236) then
 		local target = self:GetBossTarget(self.creatureId)
 		if target then
 			self:CastFlame(target)

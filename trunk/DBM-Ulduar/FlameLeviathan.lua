@@ -40,22 +40,22 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args.spellId == 62907 then		-- Ward of Life spawned (Creature id: 34275)
+	if args:IsSpellID(62907) then		-- Ward of Life spawned (Creature id: 34275)
 		warnWardofLife:Show()
---	elseif args.spellId == 62947 then	-- Writhing Lasher spawned (Creature id: 33387) May cause spam, Disabled until tested.
+--	elseif args:IsSpellID(62947) then	-- Writhing Lasher spawned (Creature id: 33387) May cause spam, Disabled until tested.
 --		warnWrithingLasher:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62396 then		-- Flame Vents
+	if args:IsSpellID(62396) then		-- Flame Vents
 		timerFlameVents:Start()
 
-	elseif args.spellId == 62475 then	-- Systems Shutdown / Overload
+	elseif args:IsSpellID(62475) then	-- Systems Shutdown / Overload
 		timerSystemOverload:Start()
 		warnSystemOverload:Show()
 
-	elseif args.spellId == 62374 then	-- Pursued
+	elseif args:IsSpellID(62374) then	-- Pursued
 		local player = guids[args.destGUID]
 		warnNextPursueSoon:Schedule(25)
 		timerPursued:Start(player)
@@ -64,14 +64,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		if player == UnitName("player") then
 			pursueSpecWarn:Show()
 		end
-	elseif args.spellId == 62297 then		-- Hodir's Fury (Person is frozen)
+	elseif args:IsSpellID(62297) then		-- Hodir's Fury (Person is frozen)
 		warnHodirsFury:Show(args.destName)
 	end
 
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62396 then
+	if args:IsSpellID(62396) then
 		timerFlameVents:Stop()
 	end
 end

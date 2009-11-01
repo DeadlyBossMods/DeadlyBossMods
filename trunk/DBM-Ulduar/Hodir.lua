@@ -38,7 +38,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 61968 then
+	if args:IsSpellID(61968) then
 		timerFlashFreeze:Start()
 		warnFlashFreeze:Show()
 		timerFlashFrCD:Start()
@@ -49,11 +49,11 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62478 or args.spellId == 63512 then
+	if args:IsSpellID(62478, 63512) then
 		timerFrozenBlows:Start()
-	elseif args.spellId == 65123 or args.spellId == 65133 then
+	elseif args:IsSpellID(65123, 65133) then
 		warnStormCloud:Show(args.destName)
-		if self.Options.YellOnStormCloud and args.destName == UnitName("player") then
+		if self.Options.YellOnStormCloud and args:IsPlayer() then
 			SendChatMessage(L.YellCloud, "YELL")
 		end
 		if self.Options.SetIconOnStormCloud then 

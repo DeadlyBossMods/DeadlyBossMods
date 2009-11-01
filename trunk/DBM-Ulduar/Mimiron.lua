@@ -85,7 +85,7 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_SUMMON(args)
-	if args.spellId == 63811 then -- Bomb Bot
+	if args:IsSpellID(63811) then -- Bomb Bot
 		warnBombSpawn:Show()
 	end
 end
@@ -107,7 +107,7 @@ function mod:CHAT_MSG_LOOT(msg)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 63631 then
+	if args:IsSpellID(63631) then
 		if phase == 1 and self.Options.ShockBlastWarningInP1 or phase == 4 and self.Options.ShockBlastWarningInP4 then
 			warnShockBlast:Show()
 		end
@@ -117,13 +117,13 @@ function mod:SPELL_CAST_START(args)
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	end
-	if args.spellId == 64529 or args.spellId == 62997 then -- plasma blast
+	if args:IsSpellID(64529, 62997) then -- plasma blast
 		timerPlasmaBlastCD:Start()
 	end
-	if args.spellId == 64570 then
+	if args:IsSpellID(64570) then
 		timerFlameSuppressant:Start()
 	end
-	if args.spellId == 64623 then
+	if args:IsSpellID(64623) then
 		warnFrostBomb:Show()
 		timerBombExplosion:Start()
 	end
@@ -131,12 +131,12 @@ end
 
 local spamShell = 0
 function mod:SPELL_AURA_APPLIED(args)
-	if GetTime() - spamShell > 5 and (args.spellId == 63666 or args.spellId == 65026) then -- Napalm Shell
+	if GetTime() - spamShell > 5 and args:IsSpellID(63666, 65026) then -- Napalm Shell
 		spamShell = GetTime()
 		timerShell:Start(args.destName)
 		shellWarn:Show(args.destName)
 		self:SetIcon(args.destName, 7, 6)
-	elseif args.spellId == 64529 or args.spellId == 62997 then -- Plasma Blast
+	elseif args:IsSpellID(64529, 62997) then -- Plasma Blast
 		blastWarn:Show(args.destName)
 		self:SetIcon(args.destName, 8, 6)
 	end
@@ -152,10 +152,10 @@ local function show_warning_for_spinup()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 63027 then				-- mines
+	if args:IsSpellID(63027) then				-- mines
 		timerProximityMines:Start()
 
-	elseif args.spellId == 63414 then			-- Spinning UP (before Dark Glare)
+	elseif args:IsSpellID(63414) then			-- Spinning UP (before Dark Glare)
 		is_spinningUp = true
 		timerSpinUp:Start()
 		timerDarkGlareCast:Schedule(4)
@@ -163,7 +163,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		DBM:Schedule(0.15, show_warning_for_spinup)	-- wait 0.15 and then announce it, otherwise it will sometimes fail
 		lastSpinUp = GetTime()
 	
-	elseif args.spellId == 65192 then
+	elseif args:IsSpellID(65192) then
 		timerNextFlameSuppressant:Start()
 	end
 end

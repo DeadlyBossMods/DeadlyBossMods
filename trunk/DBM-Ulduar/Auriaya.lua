@@ -49,14 +49,14 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64678 or args.spellId == 64389 then -- Sentinel Blast
+	if args:IsSpellID(64678, 64389) then -- Sentinel Blast
 		specWarnBlast:Show()
-	elseif args.spellId == 64386 then -- Terrifying Screech
+	elseif args:IsSpellID(64386) then -- Terrifying Screech
 		warnFear:Show()
 		timerFear:Start()
 		timerNextFear:Schedule(2)
 		warnFearSoon:Schedule(34)
-	elseif args.spellId == 64688 or args.spellId == 64422 then --Sonic Screech
+	elseif args:IsSpellID(64688, 64422) then --Sonic Screech
 		warnSonic:Show()
 		timerSonic:Start()
 		-- What about adding a "soon" timer. It seems to be 25-35 seconds between Sonic Screeches
@@ -64,17 +64,17 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 64396 then -- Guardian Swarm
+	if args:IsSpellID(64396) then -- Guardian Swarm
 		warnSwarm:Show(args.destName)
-	elseif args.spellId == 64455 then -- Feral Essence
+	elseif args:IsSpellID(64455) then -- Feral Essence
 		DBM.BossHealth:AddBoss(34035, L.Defender:format(9))
-	elseif args.spellId == 64386 and args.destName == UnitName("player") then
+	elseif args:IsSpellID(64386) and args:IsPlayer() then
 		isFeared = true		
 	end
 end
 
 function mod:SPELL_AURA_REMOVED_DOSE(args)
-	if args.spellId == 64455 then -- Feral Essence
+	if args:IsSpellID(64455) then -- Feral Essence
 		if args.amount == 1 then
 			warnCatDiedOne:Show()
 		else
@@ -88,18 +88,18 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 64455 then -- Feral Essence
+	if args:IsSpellID(64455) then -- Feral Essence
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(34035)
 		end
-	elseif args.spellId == 64386 and args.destName == UnitName("player") then
+	elseif args:IsSpellID(64386) and args:IsPlayer() then
 		isFeared = false	
 	end
 	
 end
 
 function mod:SPELL_DAMAGE(args)
-	if (args.spellId == 64459 or args.spellId == 64675) and args.destName == UnitName("player") then
+	if args:IsSpellID(64459, 64675) and args:IsPlayer() then
 		specWarnVoid:Show()
 	end
 end
