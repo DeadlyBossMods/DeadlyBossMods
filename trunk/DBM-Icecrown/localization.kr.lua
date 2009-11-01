@@ -12,15 +12,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnImpale				= ">%s< is impaled",
-	specWarnWhirlwind		= "Whirlwind - Run away",
-	specWarnColdflame		= "Coldflame - Move away"
+	WarnImpale				= ">%s< is impaled",
+	SpecWarnWhirlwind		= "Whirlwind - Run away",
+	SpecWarnColdflame		= "Coldflame - Move away"
 })
 
 L:SetOptionLocalization({
-	warnImpale				= "Show warning for Impale targets",
-	specWarnWhirlwind		= "Show special warning for Whirlwind",
-	specWarnColdflame		= "Show special warning when you take damage from Coldflame",
+	WarnImpale				= "Announce Impale targets",
+	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
+	SpecWarnColdflame		= "Show special warning for Coldflame",
 	PlaySoundOnWhirlwind	= "Play sound on Whirlwind"
 })
 
@@ -91,7 +91,7 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	SpecWarnStickyOoze			= "Sticky Ooze - Move out",
-	SpecWarnRadiationOoze		= "Radiation Ooze",
+	SpecWarnRadiatingOoze		= "Radiating Ooze",
 	SpecWarnMutatedInfection 	= "Mutated Infection on you"
 })
 L:SetTimerLocalization({
@@ -99,10 +99,10 @@ L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
 	SpecWarnStickyOoze			= "Show special warning for Sticky Ooze",
-	SpecWarnRadiationOoze		= "Show special warning for Radiation Ooze",
+	SpecWarnRadiatingOoze		= "Show special warning for Radiating Ooze",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Show special warning for Mutated Infection",
-	InfectionIcon				= "Set icon on Mutated Infection target",
+	SpecWarnMutatedInfection 	= "Show special warning when you are affected by Mutated Infection",
+	InfectionIcon				= "Set icons on Mutated Infection targets",
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 })
 L:SetMiscLocalization({
@@ -175,26 +175,26 @@ L:SetGeneralLocalization({
 	name = "Sindragosa"
 })
 L:SetTimerLocalization({
-	NextAirphase			= "Next air phase",
-	NextGroundphase			= "Next ground phase"
+	TimerNextAirphase		= "Next air phase",
+	TimerNextGroundphase	= "Next ground phase"
 })
 L:SetWarningLocalization({
 	WarnAirphase			= "Air phase",
 	WarnBlisteringCold		= "Blistering Cold",
 	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
 	SpecWarnFrostBeacon		= "Frost Beacon on you",
-	PrewarnGroundphase		= "Sindragosa landing soon",
+	WarnGroundphaseSoon		= "Sindragosa landing soon",
 	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
-	WarnAirphase			= "Show warning for air phase",
+	WarnAirphase			= "Announce air phase",
 	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
-	PrewarnGroundphase		= "Show pre-warning for ground phase",
-	NextAirphase			= "Show timer for next air phase",
-	NextGroundphase			= "Show timer for next ground phase",
-	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magic"
+	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
+	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
+	TimerNextAirphase		= "Show timer for next air phase",
+	TimerNextGroundphase	= "Show timer for next ground phase",
+	SpecWarnUnchainedMagic	= "Show special warning when you are affected by Unchained Magic"
 })
 L:SetMiscLocalization({
 	YellAirphase			= "Your incursion ends here! None shall survive!",
@@ -214,7 +214,3 @@ L:SetWarningLocalization({
 })
 L:SetOptionLocalization({
 })
-
-
-
-
