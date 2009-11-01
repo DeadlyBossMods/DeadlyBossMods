@@ -10,15 +10,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnImpale				= ">%s< is impaled",
-	specWarnWhirlwind		= "Whirlwind - Run away",
-	specWarnColdflame		= "Coldflame - Move away"
+	WarnImpale				= ">%s< is impaled",
+	SpecWarnWhirlwind		= "Whirlwind - Run away",
+	SpecWarnColdflame		= "Coldflame - Move away"
 })
 
 L:SetOptionLocalization({
-	warnImpale				= "Announce Impale targets",
-	specWarnWhirlwind		= "Show special warning for Whirlwind",
-	specWarnColdflame		= "Show special warning when you take damage from Coldflame",
+	WarnImpale				= "Announce Impale targets",
+	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
+	SpecWarnColdflame		= "Show special warning when you take damage from Coldflame",
 	PlaySoundOnWhirlwind	= "Play sound on Whirlwind"
 })
 
