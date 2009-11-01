@@ -693,8 +693,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show warning for split soon",	-- translate
-	WarningSplitNow		= "Show warning for split",	-- translate
+	WarningSplitSoon	= "Show warning for Split soon",	-- translate
+	WarningSplitNow		= "Show warning for Split",	-- translate
 	WarningMerge		= "Show warning for Merge"	-- translate
 })
 
