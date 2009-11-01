@@ -8,20 +8,20 @@ local L
 L = DBM:GetModLocalization("LordMarrowgar")
 
 L:SetGeneralLocalization({
-	name = "瑪洛加爾領主"
+	name = "瑪洛嘉領主"
 })
 
 L:SetWarningLocalization({
 	warnImpale				= ">%s< 被刺穿了",
-	specWarnWhirlwind		= "Whirlwind - 快跑開!",
-	specWarnColdflame		= "Coldflame, MOVE!"
+	specWarnWhirlwind		= "旋風斬 - 快跑開",
+	specWarnColdflame		= "冷焰 - 快跑開"
 })
 
 L:SetOptionLocalization({
-	warnImpale				= "為被刺穿的目標顯示警告",
-	specWarnWhirlwind		= "為Whirlwind顯示特別警告",
-	specWarnColdflame		= "當你受到Coldflame的傷害時顯示特別警告",
-	PlaySoundOnWhirlwind	= "為Whirlwind播放音效"
+	warnImpale				= "提示刺穿的目標",
+	specWarnWhirlwind		= "為旋風斬顯示特別警告",
+	specWarnColdflame		= "當你受到冷焰的傷害時顯示特別警告",
+	PlaySoundOnWhirlwind	= "為旋風斬播放音效"
 })
 
 
@@ -31,7 +31,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Deathwhisper")
 
 L:SetGeneralLocalization({
-	name = "Lady Deathwhisper"
+	name = "緋紅亡語者"
 })
 L:SetWarningLocalization({
 })
@@ -73,7 +73,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Festergut")
 
 L:SetGeneralLocalization({
-	name = "Festergut"
+	name = "膿腸"
 })
 L:SetWarningLocalization({
 })
@@ -87,26 +87,26 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Rotface")
 
 L:SetGeneralLocalization({
-	name = "Rotface"
+	name = "腐臉"
 })
 L:SetWarningLocalization({
-	SpecWarnStickyOoze = "Ooze - 快跑出去!",
+	SpecWarnStickyOoze			= "Sticky Ooze - 快跑開",
 	SpecWarnRadiationOoze		= "Radiation Ooze",
-	SpecWarnMutatedInfection 	= "Mutated Infection on you"
+	SpecWarnMutatedInfection 	= "你中了Mutated Infection"
 })
 L:SetTimerLocalization({
-	NextPoisonSlimePipes		= "Next Poison Slime Pipes"
+	NextPoisonSlimePipes		= "下一次 Poison Slime Pipes"
 })
 L:SetOptionLocalization({
-	SpecWarnStickyOoze = "為Sticky Ooze顯示特別警告",
-	SpecWarnRadiationOoze = "為Radiation Ooze顯示特別警告",
-	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Show special warning for Mutated Infection",
-	InfectionIcon				= "Set icon on Mutated Infection target",
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
+	SpecWarnStickyOoze			= "為Sticky Ooze顯示特別警告",
+	SpecWarnRadiationOoze		= "為Radiation Ooze顯示特別警告",
+	NextPoisonSlimePipes		= "為下一次 Poison Slime Pipes顯示計時器",
+	SpecWarnMutatedInfection 	= "為Mutated Infection顯示特別警告",
+	InfectionIcon				= "為Mutated Infection的目標設置標記",
+	WarnOozeSpawn				= "為小軟泥怪出現顯示警告"
 })
 L:SetMiscLocalization({
-	YellSlimePipes		= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes				= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
 })
 
 
@@ -116,7 +116,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Putricide")
 
 L:SetGeneralLocalization({
-	name = "Professor Putricide"
+	name = "普崔希德教授"
 })
 L:SetWarningLocalization({
 })
@@ -144,7 +144,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Lanathel")
 
 L:SetGeneralLocalization({
-	name = "Queen Lana'thel"
+	name = "菈娜薩爾女王"
 })
 L:SetWarningLocalization({
 })
@@ -158,7 +158,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Valithria")
 
 L:SetGeneralLocalization({
-	name = "Valithria Dreamwalker"
+	name = "瓦莉絲瑞雅．夢行者"
 })
 L:SetWarningLocalization({
 })
@@ -172,29 +172,29 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Sindragosa")
 
 L:SetGeneralLocalization({
-	name = "Sindragosa"
+	name = "辛德拉苟莎"
 })
 L:SetTimerLocalization({
-	TimerNextAirphase 		= "Next airphase",
-	TimerNextGroundphase	= "Next groundphase"
+	NextAirphase			= "下一次 空中階段",
+	NextGroundphase			= "下一次 地上階段"
 })
 L:SetWarningLocalization({
-	WarnAirphase			= "Airphase",
+	WarnAirphase			= "空中階段",
 	WarnBlisteringCold		= "Blistering Cold",
-	SpecWarnBlisteringCold	= "Blisstering Cold - run out",
-	SpecWarnFrostBeacon		= "Frost beacon on you",
-	WarnGroundphaseSoon		= "Sindragosa landing soon",
-	SpecWarnUnchainedMagic	= "Unchained Magic on you"
+	SpecWarnBlisteringCold	= "Blistering Cold - 快跑開",
+	SpecWarnFrostBeacon		= "你中了Frost beacon",
+	PrewarnGroundphase		= "辛德拉苟莎 即將著陸",
+	SpecWarnUnchainedMagic	= "你中了Unchained Magic"
 })
 L:SetOptionLocalization({
-	WarnAirphase			= "Show warning for airphase",
-	WarnBlisteringCold		= "Show warning for Blistering Cold",
-	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
-	WarnGroundphaseSoon		= "Show prewarning for groundphase",
-	TimerNextAirphase		= "Show timer for next airphase",
-	TimerNextGroundphase	= "Show timer for next groundphase",
-	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magix"
+	WarnAirphase			= "提示空中階段",
+	WarnBlisteringCold		= "為Blistering Cold顯示警告",
+	SpecWarnBlisteringCold	= "為Blistering Cold顯示特別警告",
+	SpecWarnFrostBeacon		= "為Frost Beacon顯示特別警告",
+	PrewarnGroundphase		= "為地上階段顯示預先警告",
+	NextAirphase			= "為下一次 空中階段顯示計時器",
+	NextGroundphase			= "為下一次 地上階段顯示計時器",
+	SpecWarnUnchainedMagic	= "為Unchained Magic顯示特別警告"
 })
 L:SetMiscLocalization({
 	YellAirphase			= "Your incursion ends here! None shall survive!",
@@ -208,7 +208,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("LichKing")
 
 L:SetGeneralLocalization({
-	name = "The Lich King"
+	name = "巫妖王"
 })
 L:SetWarningLocalization({
 })
