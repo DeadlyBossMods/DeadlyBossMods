@@ -276,7 +276,6 @@ L:SetOptionLocalization{
 	timerRightArm			= "Show timer for Right Arm respawn",
 	achievementDisarmed		= "Show timer for Disarm achievement",
 	WarnGrip				= "Announce Grip targets",
-	WarnEyeBeam				= "Announce Eye Beam target",
 	SetIconOnGripTarget		= "Set icons on Grip targets"
 }
 
