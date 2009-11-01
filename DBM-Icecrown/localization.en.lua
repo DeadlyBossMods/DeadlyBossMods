@@ -18,7 +18,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnImpale				= "Announce Impale targets",
 	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
-	SpecWarnColdflame		= "Show special warning when you take damage from Coldflame",
+	SpecWarnColdflame		= "Show special warning for Coldflame",
 	PlaySoundOnWhirlwind	= "Play sound on Whirlwind"
 })
 
@@ -89,7 +89,7 @@ L:SetGeneralLocalization({
 })
 L:SetWarningLocalization({
 	SpecWarnStickyOoze			= "Sticky Ooze - Move out",
-	SpecWarnRadiationOoze		= "Radiation Ooze",
+	SpecWarnRadiatingOoze		= "Radiating Ooze",
 	SpecWarnMutatedInfection 	= "Mutated Infection on you"
 })
 L:SetTimerLocalization({
@@ -97,9 +97,9 @@ L:SetTimerLocalization({
 })
 L:SetOptionLocalization({
 	SpecWarnStickyOoze			= "Show special warning for Sticky Ooze",
-	SpecWarnRadiationOoze		= "Show special warning for Radiation Ooze",
+	SpecWarnRadiatingOoze		= "Show special warning for Radiating Ooze",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Show special warning for Mutated Infection",
+	SpecWarnMutatedInfection 	= "Show special warning when you are affected by Mutated Infection",
 	InfectionIcon				= "Set icons on Mutated Infection targets",
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 })
@@ -188,11 +188,11 @@ L:SetOptionLocalization({
 	WarnAirphase			= "Announce air phase",
 	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
+	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
 	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
 	TimerNextAirphase		= "Show timer for next air phase",
 	TimerNextGroundphase	= "Show timer for next ground phase",
-	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magic"
+	SpecWarnUnchainedMagic	= "Show special warning when you are affected by Unchained Magic"
 })
 L:SetMiscLocalization({
 	YellAirphase			= "Your incursion ends here! None shall survive!",
