@@ -1188,7 +1188,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste			= "Haste on >%s< - Dispel now",
+	specWarnHaste			= "Haste on %s - Dispel now",
 	specWarnPoison			= "Poison - Move away",
 })
 
@@ -1211,7 +1211,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-specwarnRenew				= "Confessor casts renew on >%s< - Dispel now"
+specwarnRenew				= "Confessor casts renew on %s - Dispel now"
 })
 
 L:SetOptionLocalization({
@@ -1231,7 +1231,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice		= "Hammer of Justice on >%s< - Dispel now",
+	specwarnHammerofJustice		= "Hammer of Justice on %s - Dispel now",
 	specwarnRadiance			= "Radiance - Look away"
 })
 

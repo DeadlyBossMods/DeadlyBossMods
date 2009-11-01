@@ -87,7 +87,7 @@ L:SetWarningLocalization{
 	SpecWarnFlesh			= "Incinerate Flesh on you",
 	SpecWarnTouch			= "Touch of Jaraxxus on you",
 	SpecWarnKiss			= "Mistress' Kiss",
-	SpecWarnTouchNear		= "Touch of Jaraxxus on >%s< near you",
+	SpecWarnTouchNear		= "Touch of Jaraxxus on %s near you",
 	SpecWarnFlame			= "Legion Flame - Run away",
 	SpecWarnNetherPower		= "Dispel now",
 	SpecWarnFelInferno		= "Fel Inferno - Run away"
@@ -133,8 +133,8 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnHellfire		= "Hellfire - Run away",
-	SpecWarnHandofProt		= "Hand of Protection on >%s<",
-	SpecWarnDivineShield	= "Divine Shield on >%s<"
+	SpecWarnHandofProt		= "Hand of Protection on %s",
+	SpecWarnDivineShield	= "Divine Shield on %s"
 }
 
 L:SetMiscLocalization{
