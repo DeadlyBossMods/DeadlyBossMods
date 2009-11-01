@@ -29,18 +29,18 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 50760 or args.spellId == 59726 then
+	if args:IsSpellID(50760, 59726) then
 		timerSorrow:Start()
 		warningSorrow:Show()
 		timerSorrowCD:Start()
-	elseif args.spellId == 50752 or args.spellId == 59772 then
+	elseif args:IsSpellID(50752, 59772) then
 		warningStorm:Show()
 		timerStormCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 50761 or args.spellId == 59727 then
+	if args:IsSpellID(50761, 59727) then
 		warningWoe:Show(args.destName)
 		timerWoe:Start(args.destName)
 	end

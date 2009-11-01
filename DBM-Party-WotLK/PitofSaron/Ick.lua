@@ -25,7 +25,7 @@ local specWarnPursuit		= mod:NewSpecialWarning("specWarnPursuit")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68987) then							-- Pursuit
-		warnPursuit:Show(args.spellName)
+		warnPursuit:Show()
 	end
 end
 

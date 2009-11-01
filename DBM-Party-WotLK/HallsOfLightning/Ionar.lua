@@ -17,14 +17,14 @@ mod:RegisterEvents(
 )
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 52658 or args.spellId == 59795 then
+	if args:IsSpellID(52658, 59795) then
 		warningOverload:Show(args.destName)
 		timerOverload:Start(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 52770 then
+	if args:IsSpellID(52770) then
 		warningSplit:Show()
 	end
 end

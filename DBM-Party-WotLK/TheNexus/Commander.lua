@@ -24,7 +24,7 @@ local timerWhirlwindCD	= mod:NewCDTimer(15, 38619)
 
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 19134 
+	if args:IsSpellID(19134) 
 	and (args.sourceGUID == 26796 or args.sourceGUID == 26798) then
 		warningFear:Show()
 		timerFearCD:Start()
@@ -32,7 +32,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if (args.spellId == 38619 or args.spellId == 38618)
+	if args:IsSpellID(38619, 38618)
 	and (args.sourceGUID == 26796 or args.sourceGUID == 26798) then
 		warningWhirlwind:Show()
 		timerWhirlwindCD:Start()

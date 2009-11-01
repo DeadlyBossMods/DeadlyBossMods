@@ -22,7 +22,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 52960 or args.spellId == 59835 then
+	if args:IsSpellID(52960, 59835) then
 		warningNova:Show()
 		timerNovaCD:Start()
 	end

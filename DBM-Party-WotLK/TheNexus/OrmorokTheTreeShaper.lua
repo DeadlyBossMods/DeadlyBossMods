@@ -22,15 +22,15 @@ local timerReflection	= mod:NewBuffActiveTimer(15, 47981)
 local timerReflectionCD	= mod:NewCDTimer(30, 47981)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 47958 or args.spellId == 57082 or args.spellId == 57083 then
+	if args:IsSpellID(47958, 57082, 57083) then
 		warningSpikes:Show()
-	elseif args.spellId == 48017 or args.spellId == 57086 then
+	elseif args:IsSpellID(48017, 57086) then
 		warningFrenzy:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 47981 then
+	if args:IsSpellID(47981) then
 		timerReflection:Start()
 		warningReflection:Show()
 		timerReflectionCD:Start()
@@ -38,13 +38,13 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 47981 then
+	if args:IsSpellID(47981) then
 		timerReflection:Cancel()
 	end
 end
 
 function mod:SPELL_SUMMON(args)
-	if args.spellId == 61564 then
+	if args:IsSpellID(61564) then
 		warningAdd:Show()
 	end
 end

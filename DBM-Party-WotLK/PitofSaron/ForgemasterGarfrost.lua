@@ -23,7 +23,7 @@ local specWarnPermafrost	= mod:NewSpecialWarning("specWarnPermafrost", false)
 
 function mod:SPELL_CREATE(args)
 	if args:IsSpellID(68789, 70851) then							-- Saronite Rock
-		warnSaroniteRock:Show(args.spellName)
+		warnSaroniteRock:Show()
 	end
 end
 
@@ -42,7 +42,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(68786, 70336) and args.destName == UnitName("player") then
+	if args:IsSpellID(68786, 70336) and args:IsPlayer() then
 		if args.amount >= 11 then --Unsure of a good amount, this is subject to tuning based on what damage it does when it goes live.
 			specWarnPermafrost:Show(args.spellName, args.amount)
 		end

@@ -17,7 +17,7 @@ local timerSleep	= mod:NewTargetTimer(10, 52721)
 local timerSleepCD	= mod:NewCDTimer(20, 52721)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 52721 or args.spellId == 58849 then
+	if args:IsSpellID(52721, 58849) then
 		warningSleep:Show(args.destName)
 		timerSleep:Start(args.destName)
 		timerSleepCD:Start()
@@ -25,7 +25,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 52721 or args.spellId == 58849 then
+	if args:IsSpellID(52721, 58849) then
 		timerSleep:Cancel()
 	end
 end

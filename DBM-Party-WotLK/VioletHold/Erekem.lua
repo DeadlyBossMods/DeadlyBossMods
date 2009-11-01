@@ -14,7 +14,7 @@ mod:RegisterEvents(
 local warningES	= mod:NewSpellAnnounce(54479, 3)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if (args.spellId == 54479 or args.spellId == 59471)
+	if args:IsSpellID(54479, 59471)
 	and mod:GetCIDFromGUID(args.sourceGUID) == 29315 then
 		warningES:Show()
 	end
