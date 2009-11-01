@@ -183,8 +183,8 @@ L:SetOptionLocalization({
 	WarningSporeNow		= "Show warning for Spore",
 	WarningSporeSoon	= "Show pre-warning for Spore",
 	WarningDoomNow		= "Show warning for Inevitable Doom",
-	WarningHealSoon		= "Show pre-warning for \"Heal in 3 seconds\"",
-	WarningHealNow		= "Show warning for \"Heal now\"",
+	WarningHealSoon		= "Show pre-warning for 3-second healing window",
+	WarningHealNow		= "Show warning for 3-second healing window",
 	TimerDoom			= "Show timer for Inevitable Doom",
 	TimerSpore			= "Show timer for Spore",
 	TimerAura			= "Show timer for Necrotic Aura"
@@ -405,7 +405,7 @@ L:SetOptionLocalization({
 	TimerMark					= "Show timer for Mark",
 	WarningMarkSoon				= "Show pre-warning for Mark",
 	WarningMarkNow				= "Show warning for Mark",
-	SpecialWarningMarkOnPlayer	= "Show special warning when you have >4 marks on you"
+	SpecialWarningMarkOnPlayer	= "Show special warning when you are affected by more than 4 marks"
 })
 
 L:SetTimerLocalization({
