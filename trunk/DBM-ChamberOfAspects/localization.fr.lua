@@ -48,11 +48,10 @@ L:SetWarningLocalization({
 	WarningFireWall			= "Tsunami de flammes !",
 	WarningVesperonPortal	= "Portail de Vespéron",
 	WarningTenebronPortal	= "Portail de Ténébron",
-	WarningShadronPortal	= "Portail d'Obscuron",
+	WarningShadronPortal	= "Portail d'Obscuron"
 })
 
 L:SetTimerLocalization({
-	TimerWall	= "Tsunami de flammes cooldown",
 	TimerTenebron	= "Ténébron Arrive",
 	TimerShadron	= "Obscuron Arrive",
 	TimerVesperon	= "Vespéron Arrive"
@@ -62,7 +61,6 @@ L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Joue un son pour les Tsunamis de flammes",
 	AnnounceFails		= "Affiche les joueurs qui n'ont pas évité les zones de vide / Tsunamis de flammes (Nécessite l'activation des annonces et être promu ou leader)",
 
-	TimerWall		= "Montre le timer pour les Tsunamis de flammes",
 	TimerTenebron		= "Montre le timer pour Ténébron",
 	TimerShadron		= "Montre le timer pour Obscuron",
 	TimerVesperon		= "Montre le timer pour Vespéron",
@@ -74,7 +72,7 @@ L:SetOptionLocalization({
 
 	WarningTenebronPortal	= "Montre une alerte spéciale pour les portails de Ténébron",
 	WarningShadronPortal	= "Montre une alerte spéciale pour les portails d'Obscuron",
-	WarningVesperonPortal	= "Montre une alerte spéciale pour les portails de Vespéron",
+	WarningVesperonPortal	= "Montre une alerte spéciale pour les portails de Vespéron"
 })
 
 L:SetMiscLocalization({
@@ -86,7 +84,7 @@ L:SetMiscLocalization({
 	FireWallOn		= "Tsunamis de flammes: %s",
 	VoidZoneOn		= "Zone de vide : %s",
 	VoidZones		= "Zones de vide ratées (cet essai): %s",
-	FireWalls		= "Tsunamis de flammes ratés (cet essai): %s",
+	FireWalls		= "Tsunamis de flammes ratés (cet essai): %s"
 })
 
 

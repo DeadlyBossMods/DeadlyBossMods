@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge	= "^%%s fusille (%S+) du regard et lâche un rugissement assourdissant !",
+	Charge			= "^%%s fusille (%S+) du regard et lâche un rugissement assourdissant !",
 	CombatStart		= "Arrivant tout droit des plus noires et profondes cavernes des pics Foudroyés, Gormok l'Empaleur !",
 	Phase3			= "L'air se gèle à l'entrée de notre prochain combattant, Glace-hurlante ! Tuez ou soyez tués, champions !",
 	Gormok			= "Gormok l'Empaleur",
@@ -25,7 +25,6 @@ L:SetOptionLocalization{
 	WarningImpale				= "Montre une alerte spéciale pour Empaler",
 	WarningFireBomb				= "Montre une alerte spéciale pour les Bombes incendiaires",
 	WarningBreath				= "Montre une alerte spéciale pour les Souffles arctiques",
---	WarningSpray				= "Montre une alerte spéciale pour les Jet paralysant",
 	WarningRage					= "Montre une alerte spéciale pour la Rage écumeuse",
 	WarningCharge				= "Montre une alerte spéciale pour la cible de la charge",
 	WarningToxin				= "Montre une alerte pour la cible de la Toxine paralysante",
@@ -55,7 +54,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarningImpale				= "%s sur >%s<",
 	WarningFireBomb				= "Bombe incendiaire",
---	WarningSpray				= "%s sur >%s<",
 	WarningBreath				= "Souffle arctique",
 	WarningRage					= "Rage écumeuse",
 	WarningCharge				= "Charge sur >%s<",
