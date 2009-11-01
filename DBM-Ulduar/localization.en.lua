@@ -24,7 +24,7 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	PursueWarn				= "Pursuing >%s<",
 	warnNextPursueSoon		= "Target change in 5 seconds",
-	SpecialPursueWarnYou	= "Pursuing you",
+	SpecialPursueWarnYou	= "You are being pursued - Run away",
 	SystemOverload			= "System Overload",
 	warnWardofLife			= "Ward of Life spawned",
 	warnWrithingLasher		= "Writhing Lasher spawned"
@@ -311,7 +311,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBlast		= "Show special warning for Sentinel Blast (to interrupt)",
-	SpecWarnVoid		= "Show special warning when standing in Feral Essence",
+	SpecWarnVoid		= "Show special warning when you are affected by Feral Essence",
 	WarnFearSoon		= "Show pre-warning for Terrifying Screech",
 	WarnCatDied			= "Show warning when Feral Defender dies",
 	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining"
