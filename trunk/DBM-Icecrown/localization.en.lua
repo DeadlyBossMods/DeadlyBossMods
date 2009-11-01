@@ -173,15 +173,15 @@ L:SetGeneralLocalization({
 	name = "Sindragosa"
 })
 L:SetTimerLocalization({
-	NextAirphase			= "Next air phase",
-	NextGroundphase			= "Next ground phase"
+	TimerNextAirphase		= "Next air phase",
+	TimerNextGroundphase	= "Next ground phase"
 })
 L:SetWarningLocalization({
 	WarnAirphase			= "Air phase",
 	WarnBlisteringCold		= "Blistering Cold",
 	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
 	SpecWarnFrostBeacon		= "Frost Beacon on you",
-	PrewarnGroundphase		= "Sindragosa landing soon",
+	WarnGroundphaseSoon		= "Sindragosa landing soon",
 	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
@@ -189,9 +189,9 @@ L:SetOptionLocalization({
 	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
 	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
-	PrewarnGroundphase		= "Show pre-warning for ground phase",
-	NextAirphase			= "Show timer for next air phase",
-	NextGroundphase			= "Show timer for next ground phase",
+	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
+	TimerNextAirphase		= "Show timer for next air phase",
+	TimerNextGroundphase	= "Show timer for next ground phase",
 	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magic"
 })
 L:SetMiscLocalization({
