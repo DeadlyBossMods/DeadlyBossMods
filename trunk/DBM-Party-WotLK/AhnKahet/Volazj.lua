@@ -21,7 +21,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 57496 then
+	if args:IsSpellID(57496) then
 		warningInsanity:Show()
 	end
 end

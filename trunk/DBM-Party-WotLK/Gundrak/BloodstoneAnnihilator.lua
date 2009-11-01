@@ -15,9 +15,9 @@ local warningElemental	= mod:NewAnnounce("WarningElemental", 3, 54850)
 local warningStone	= mod:NewAnnounce("WarningStone", 3, 54878)
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 54850 then
+	if args:IsSpellID(54850) then
 		warningElemental:Show()
-	elseif args.spellId == 54878 then
+	elseif args:IsSpellID(54878) then
 		warningStone:Show()
 	end
 end

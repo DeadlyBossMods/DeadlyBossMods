@@ -15,7 +15,7 @@ local warningImpale	= mod:NewTargetAnnounce(48261, 2)
 local timerImpale	= mod:NewTargetTimer(9, 48261)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 48261 or args.spellId == 59268 then
+	if args:IsSpellID(48261, 59268) then
 		warningImpale:Show(args.destName)
 		timerImpale:Start(args.destName)
 	end

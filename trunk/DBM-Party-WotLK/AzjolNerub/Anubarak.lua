@@ -21,7 +21,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 53472 or args.spellId == 59433 then
+	if args:IsSpellID(53472, 59433) then
 		warningPound:Show()
 	end
 end

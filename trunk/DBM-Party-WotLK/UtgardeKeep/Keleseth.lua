@@ -16,14 +16,14 @@ local warningTomb	= mod:NewTargetAnnounce(48400, 4)
 local timerTomb		= mod:NewTargetTimer(10, 48400)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 48400 then
+	if args:IsSpellID(48400) then
 		warningTomb:Show(args.destName)
 		timerTomb:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 48400 then
+	if args:IsSpellID(48400) then
 		timerTomb:Cancel()
 	end
 end

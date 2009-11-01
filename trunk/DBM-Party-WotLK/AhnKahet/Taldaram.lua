@@ -21,21 +21,21 @@ local timerFlameCD		= mod:NewCDTimer(17, 55959)
 
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId	== 55931 then
+	if args:IsSpellID(55931) then
 		warningFlame:Show()
 		timerFlameCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 55959 or args.spellId == 59513 then
+	if args:IsSpellID(55959, 59513) then
 		warningEmbrace:Show(args.destName)
 		timerEmbrace:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 55959 or args.spellId == 59513 then
+	if args:IsSpellID(55959, 59513) then
 		timerEmbrace:Cancel()
 	end
 end

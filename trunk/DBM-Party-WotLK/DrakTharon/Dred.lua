@@ -21,20 +21,20 @@ local timerSlash	= mod:NewTargetTimer(10, 48873)
 local timerSlashCD	= mod:NewCDTimer(18, 48873)
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 22686 and args.sourceGUID == 27483 then
+	if args:IsSpellID(22686) and args.sourceGUID == 27483 then
 		warningFear:Show()
 		timerFearCD:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 48920 then
+	if args:IsSpellID(48920) then
 		warningBite:Show(args.destName)
-	elseif args.spellId == 48873 then
+	elseif args:IsSpellID(48873) then
 		warningSlash:Show()
 		timerSlash:Start(15, args.destName)
 		timerSlashCD:Start()
-	elseif args.spellId == 48878 then
+	elseif args:IsSpellID(48878) then
 		warningSlash:Show()
 		timerSlash:Start(10, args.destName)
 		timerSlashCD:Start()

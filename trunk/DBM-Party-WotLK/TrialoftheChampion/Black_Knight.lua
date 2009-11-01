@@ -24,7 +24,7 @@ mod:AddBoolOption("SetIconOnMarkedTarget", false)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(67729, 67886) then							-- Explode (elite explodes self, not BK. Phase 2)
-		warnExplode:Show(args.spellName)
+		warnExplode:Show()
 	end
 end
 
