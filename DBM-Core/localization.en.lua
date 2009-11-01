@@ -119,7 +119,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Announce target of |cff71d5ff|Hspell:%d|h%s|h|r",
+	target = "Announce |cff71d5ff|Hspell:%d|h%s|h|r target",
 	spell = "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
 	soon = prewarnOption,
