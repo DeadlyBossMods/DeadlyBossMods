@@ -144,16 +144,14 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningLightBomb 	= "Bombe de lumière sur TOI",
-	WarningLightBomb			= "Bombe de lumière sur >%s<",
 	SpecialWarningGravityBomb	= "Bombe à gravité sur TOI",
-	WarningGravityBomb			= "Bombe à gravité sur >%s<"
+	specWarnConsumption			= "Zone de Vide - BOUGEZ !"
 }
 
 L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "Activer l'avertissement spécial quand vous êtes affecté par la bombe de lumière",
-	WarningLightBomb			= "Annoncer les bombes de lumière",
 	SpecialWarningGravityBomb	= "Activer l'avertissement spécial quand vous êtes affecté par la bombe à gravité",
-	WarningGravityBomb			= "Annoncer les bombes à gravité",
+	specWarnConsumption			= "Montre une alerte spéciale quand vous subissez des dégats venant des Zone de Vide ( Hard-mode )",
 	PlaySoundOnGravityBomb		= "Jouer un son quand la bombe à gravité est sur vous",
 	PlaySoundOnTympanicTantrum	= "Jouer un son au lancement de la colère assourdissante",
 	SetIconOnLightBombTarget	= "Mettre un icône sur la cible de la bombe de lumière",
@@ -171,52 +169,22 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge			= "Supercharge imminente",
-	WarningChainlight			= "Chaîne d'éclairs",
-	WarningFusionPunch			= "Coup de poing fusion",
-	WarningOverwhelmingPower	= "Puissance accablante sur >%s<",
-	WarningRuneofPower			= "Rune de puissance",
-	WarningRuneofDeath			= "Rune de mort",
 	RuneofDeath					= "Rune de mort - BOUGEZ",
 	LightningTendrils			= "Vrilles de foudre - COURREZ",
-	WarningRuneofSummoning		= "Rune d'invocation",
 	Overload					= "Surchage - BOUGEZ",
 	WarningStaticDisruption		= "Static Disruption sur >%s<",
 	PlaySoundDeathRune			= "Death Rune"
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge		= "Supercharge",
-	TimerOverload			= "Surchage",
-	TimerLightningWhirl		= "Eclair tourbillonnant",
-	TimerLightningTendrils	= "Vrilles d'éclair",
-	timerFusionPunchCast	= "Incantation du coup de poing fusion",
-	timerFusionPunchActive	= "Coup de poing fusion: %s",
-	timerOverwhelmingPower	= "Puissance accablante: %s",
-	timerRunicBarrier		= "Barrière runique",
-	timerRuneofDeath		= "Rune de mort"
 }
 
 L:SetOptionLocalization{
-	TimerSupercharge			= "Afficher le timer de la Supercharge",
 	WarningSupercharge			= "Activer l'avertissement quand la Supercharge est incanté",
-	WarningChainlight			= "Annoncer les Chaînes d'éclairs",
-	TimerOverload				= "Afficher la barre d'incantation de la surcharge",
-	TimerLightningWhirl			= "Afficher la barre d'incantation des éclairs tourbillonnants",
 	LightningTendrils			= "Activer l'avertissement spécial pour les Vrilles d'éclair",
-	TimerLightningTendrils		= "Afficher la durée des Vrilles d'éclair",
 	PlaySoundLightningTendrils	= "Jouer un son pour les Vrilles d'éclair",
-	WarningFusionPunch			= "Annoncer les coups de poing fusion",
-	timerFusionPunchCast		= "Afficher la barre d'incantation pour les coups de poing fusion",
-	timerFusionPunchActive		= "Afficher un timer pour les coups de poing fusion",
-	WarningOverwhelmingPower	= "Annoncer la Puissance accablante",
-	timerOverwhelmingPower		= "Afficher un timer pour la Puissance accablante",
 	SetIconOnOverwhelmingPower	= "Mettre un icône sur la cible de la Puissance accablante",
-	timerRunicBarrier			= "Afficher un timer pour la Barrière runique",
-	WarningRuneofPower			= "Annoncer les runes de puissance",
-	WarningRuneofDeath			= "Annoncer les runes de mort",
-	WarningRuneofSummoning		= "Annonce les Runes d'invocation",
 	RuneofDeath					= "Activer l'avertissement spécial pour les runes de mort",
-	timerRuneofDeath			= "Afficher la durée des runes de mort",
 	SetIconOnStaticDisruption	= "Met une icône sur la cible de Static Disruption",
 	Overload					= "Montre une alerte spéciale pour la Surcharge",
 	AllwaysWarnOnOverload		= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
@@ -247,30 +215,28 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningPhasePunch	= "Coup de poing phasique sur >%s<",
-	WarningBlackHole	= "Trou noir",
-	WarningBigBang		= "Big Bang MAINTENANT",
+	WarningPhasePunch		= "Coup de poing phasique sur >%s<",
+	WarningBlackHole		= "Trou noir",
 	SpecWarnBigBang			= "Big Bang",
-	PreWarningBigBang	= "Big Bang dans ~10 sec",
+	PreWarningBigBang		= "Big Bang dans ~10 sec",
 	WarningCosmicSmash 		= "Choc cosmique - Explosion dans 4 sec",
 	SpecWarnCosmicSmash 	= "Choc cosmique"
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch	= "Activer l'avertissement spécial quand vous êtes la cible du coup de poing phasique",
-	WarningBigBang		= "Annonce le cast du Big Bang",
-	PreWarningBigBang	= "Pré annonce le Big Bang",
+	SpecWarnPhasePunch		= "Activer l'avertissement spécial quand vous êtes la cible du coup de poing phasique",
+	PreWarningBigBang		= "Pré annonce le Big Bang",
 	SpecWarnBigBang			= "Montre une alerte spéciale pour le Big Bang",
-	WarningPhasePunch	= "Annoncer la cible du Coup de poing phasique",
-	WarningBlackHole	= "Annoncer les trous noirs",
-	NextCollapsingStar	= "Montre un timer pour le prochain choque cosmique",
+	WarningPhasePunch		= "Annoncer la cible du Coup de poing phasique",
+	WarningBlackHole		= "Annoncer les trous noirs",
+	NextCollapsingStar		= "Montre un timer pour le prochain choque cosmique",
 	WarningCosmicSmash 		= "Annonce le Choc cosmique",
 	SpecWarnCosmicSmash 	= "Montre une alerte spéciale pour le Choc cosmique",
 	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique"
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Vos actions sont illogiques. Tous les résultats possibles de cette rencontre ont été calculés. Le panthéon recevra le message de l'Observateur quelque soit l'issue.",
+	YellPull				= "Vos actions sont illogiques. Tous les résultats possibles de cette rencontre ont été calculés. Le panthéon recevra le message de l'Observateur quelque soit l'issue.",
 	YellPullFirst			= "",
 	Emote_CollapsingStars	= "commence à lancer un effondrement",
 	Emote_CosmicSmash		= "commence à incanter un Choc cosmique"
@@ -342,20 +308,14 @@ L:SetWarningLocalization{
 	SpecWarnVoid		= "Zone de Vide - BOUGEZ!",
 	WarnCatDied 		= "Défenseur farouche mort (%d vies restantes)",
 	WarnCatDiedOne 		= "Défenseur farouche mort (1 vie en moins)",
-	WarnFear 			= "Hurlement terrifiant!",
-	WarnFearSoon 		= "Hurlement terrifiant imminent",
-	WarnSonic			= "Hurlement sonore",
-	WarnSwarm			= "Essaim gardien sur >%s<"
+	WarnFearSoon 		= "Hurlement terrifiant imminent"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBlast 		= "Activer l'avertissement spécial pour les Déflagration du factionnaire",
 	SpecWarnVoid		= "Montre une alerte spéciale quand vous êtes dans une Zone de Vide",
-	WarnFear 			= "Activer l'avertissement pour les Hurlements terrifiants",
 	WarnFearSoon 		= "Activer l'avertissement pour le Hurlement terrifiant imminent",
 	WarnCatDied 		= "Activer l'avertissement quand un défenseur farouche meurt",
-	WarnSwarm			= "Activer l'avertissement pour les Essaims gardiens",
-	WarnSonic			= "Activer l'avertissement pour les Hurlements sonores",
 	WarnCatDiedOne		= "Montre une alerte spéciale quand un Défenseur farouche meurt"
 }
 
@@ -403,11 +363,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer		= "Marteau-tempête sur >%s<",
-	UnbalancingStrike		= "Frappe déséquilibrante sur >%s<",
 	WarningPhase2			= "Phase 2",
 	WarningLightningCharge	= "Charge de foudre",
-	WarningBomb				= "Détonation runique sur >%s<",
 	LightningOrb 			= "Horion de foudre sur TOI! Bouge!"
 }
 
@@ -417,11 +374,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Afficher le timer pour le mode difficile",
-	WarningStormhammer		= "Annoncer la cible du marteau-tempête",
 	WarningLightningCharge	= "Annonce les charges de foudre",
 	WarningPhase2			= "Annoncer la phase 2",
-	UnbalancingStrike		= "Annoncer la cible de la frappe déséquilibrante",
-	WarningBomb				= "Annoncer la détonation runique",
 	RangeFrame				= "Afficher la fenêtre de portée",
 	AnnounceFails			= "Affiche les joueurs qui n'ont pas évité les Charges de foudre (Nécessite l'activation des annonces et être promu ou leader)",
 	LightningOrb			= "Montre une alerte spéciale pour les Charges de foudre"
@@ -524,18 +478,14 @@ L:SetWarningLocalization{
 	WarnBlast			= "Explosion de plasma sur >%s<",
 	MagneticCore		= ">%s< vient de loot le Core Magnétique",
 	WarningShockBlast	= "Horion explosif - BOUGEZ",
-	WarnBombSpawn		= "Robot Bombe vient de pop",
-	WarnFrostBomb		= "Frost Bomb",
-	WarnFlamesSoon		= "New Flames in ~5sec!"
+	WarnBombSpawn		= "Robot Bombe vient de pop"
 }
 
 L:SetTimerLocalization{
-	ProximityMines		= "Nouvelles Mines de proximité",
 	TimerHardmode		= "Hard Mode - Autodestruction",
 	TimeToPhase2		= "Phase 2",
 	TimeToPhase3		= "Phase 3",
-	TimeToPhase4		= "Phase 4",
-	TimerNewFlames		= "Nouvelles flammes"
+	TimeToPhase4		= "Phase 4"
 }
 
 L:SetOptionLocalization{
@@ -553,8 +503,7 @@ L:SetOptionLocalization{
 	PlaySoundOnShockBlast	= "Joue un son lors des Horions explosifs",
 	PlaySoundOnDarkGlare	= "Joue un son au Barrage laser",
 	ShockBlastWarningInP1	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 1",
-	ShockBlastWarningInP4	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 4",
-	WarnFrostBomb			= "Annonce les Bombes de Givre"
+	ShockBlastWarningInP4	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 4"
 }
 
 L:SetMiscLocalization{
