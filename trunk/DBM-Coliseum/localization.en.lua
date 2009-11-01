@@ -31,7 +31,6 @@ L:SetOptionLocalization{
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning for Slime Pool",
 	SpecialWarningSilence		= "Show special warning for Staggering Stomp (silence)",
-	SpecialWarningSpray			= "Show special warning when you are affected by Paralytic Spray",
 	SpecialWarningToxin			= "Show special warning when you are affected by Paralytic Toxin",
 	SpecialWarningBile			= "Show special warning when you are affected by Burning Bile",
 	SpecialWarningCharge		= "Show special warning when Icehowl is about to charge you",
