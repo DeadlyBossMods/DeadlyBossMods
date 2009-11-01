@@ -2,14 +2,14 @@
 
 local L
 
-local spell				= "%s"				
-local debuff			= "%s: >%s<"			
-local spellCD			= "%s 쿨다운"			-- translate
-local spellSoon			= "곧 %s 사용"			-- translate
-local optionWarning		= "%s 경고 보기"		-- translate
+local spell					= "%s"				
+local debuff				= "%s: >%s<"			
+local spellCD				= "%s 쿨다운"			-- translate
+local spellSoon				= "곧 %s 사용"			-- translate
+local optionWarning			= "%s 경고 보기"		-- translate
 local optionPreWarning		= "%s 사전 경고 보기"	-- translate
 local optionSpecWarning		= "%s 특수 경고 보기"	-- translate
-local optionTimerCD		= "%s 쿨다운 타이머 보기"	-- translate
+local optionTimerCD			= "%s 쿨다운 타이머 보기"	-- translate
 local optionTimerDur		= "%s 지속 타이머 보기"	-- translate
 local optionTimerCast		= "%s 시전 타이머 보기"	-- translate
 
@@ -289,31 +289,31 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn	= 	"다음 웨이브 (6)", 
+	TimerWaveIn			= "다음 웨이브 (6)", 
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("새로운 웨이브"),
-	TimerWaveIn		= "\"다음 웨이브\" 타이머 보기 (웨이브 6만 보기)",
+	TimerWaveIn			= "다음 웨이브 타이머 보기 (웨이브 6만 보기)",
 })
 
 
 L:SetMiscLocalization({
-	Meathook	= "살덩이갈고리",
-	Salramm		= "살덩이창조자 살람",
-	Devouring	= "개걸스러운 구울",
-	Enraged		= "격노한 구울",
-	Necro		= "정예 강령술사",
-	Friend		= "어둠의 강령술사",
-	Tomb		= "무덤 거미",
-	Abom		= "위액 골렘",
-	Acolyte		= "수행 사제",
-	Wave1		= "%d %s",
-	Wave2		= "%d %s 그리고 %d %s",
-	Wave3		= "%d %s, %d %s 그리고 %d %s",
-	Wave4		= "%d %s, %d %s, %d %s 그리고 %d %s",
-	WaveBoss	= "%s",
-	WaveCheck	= "남은 웨이브 = %d/10"
+	Meathook		= "살덩이갈고리",
+	Salramm			= "살덩이창조자 살람",
+	Devouring		= "개걸스러운 구울",
+	Enraged			= "격노한 구울",
+	Necro			= "정예 강령술사",
+	Friend			= "어둠의 강령술사",
+	Tomb			= "무덤 거미",
+	Abom			= "위액 골렘",
+	Acolyte			= "수행 사제",
+	Wave1			= "%d %s",
+	Wave2			= "%d %s 그리고 %d %s",
+	Wave3			= "%d %s, %d %s 그리고 %d %s",
+	Wave4			= "%d %s, %d %s, %d %s 그리고 %d %s",
+	WaveBoss		= "%s",
+	WaveCheck		= "남은 웨이브 = %d/10"
 })
 
 
@@ -758,9 +758,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "호기심이 화를 부르는 법이지..",		-- translate
-	SplitTrigger2 = "과연 나를 감당할 수 있겠느냐!",	-- translate
-	MergeTrigger = "이제 끝을 볼 때다!"				-- translate
+	SplitTrigger1		= "호기심이 화를 부르는 법이지..",		-- translate
+	SplitTrigger2 		= "과연 나를 감당할 수 있겠느냐!",	-- translate
+	MergeTrigger		= "이제 끝을 볼 때다!"				-- translate
 })
 
 
@@ -1234,7 +1234,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("새로운 포탈"),
 	WarningBossNow			= optionWarning:format("보스 등장"),
 	TimerPortalIn			= "\"포탈: #\" 타이머 보기",
-	ShowAllPortalWarnings		= "모든 웨이브 경고 보기"
+	ShowAllPortalWarnings	= "모든 웨이브 경고 보기"
 })
 
 
@@ -1312,7 +1312,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+
 })
 
 -------------------
@@ -1336,7 +1336,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	YellCombatEnd				= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+
 })
 
 ---------------------
@@ -1353,7 +1353,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnBarrel				= "맥주통 : >%s<", 
---	specwarnDaughters		= "Daughter Spawned!",
 	specwarnDisarm			= "무장 해제. Move Away!",
 	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 마셔버리세요!",
 	specWarnBrewStun		= "힌트: 맥주를 들고있네요.흑맥주요정의 맥주가 오기전에 마셔버리면 됩니다!"
@@ -1361,7 +1360,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel				= "맥주통의 대상 알리기",
---	specwarnDaughters		= "Announce Spawns of Ursula/Ilsa",
 	DisarmWarning			= "무장해제의 특수 경고 보기",
 	specWarnBrew			= "흑맥주요정의 맥주 특수 경고 보기",
 	specWarnBrewStun		= "흑맥주요정의 기절 특수 경고 보기",
@@ -1476,7 +1474,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	TyrannusYell			= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	TyrannusYell				= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "^%%s gazes at (%S+) and readies an icy attack!"
 })
 ---------------------
