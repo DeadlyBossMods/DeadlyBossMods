@@ -25,16 +25,14 @@ L:SetOptionLocalization{
 	WarningImpale			= "為刺穿顯示警告",
 	WarningFireBomb			= "為燃燒彈顯示警告",
 	WarningBreath			= "為寒地之息顯示警告",
---	WarningSpray			= "為痲痺噴霧顯示警告",
 	WarningRage			= "為泡沫之怒顯示警告",
-	WarningCharge			= "為衝鋒的目標顯示警告",
-	WarningToxin			= "為痲痺劇毒的目標顯示警告",
-	WarningBile			= "為燃燒膽汁的目標顯示警告",
+	WarningCharge			= "提示衝鋒的目標",
+	WarningToxin			= "提示痲痺劇毒的目標",
+	WarningBile			= "提示燃燒膽汁的目標",
 	SpecialWarningImpale3		= "為刺穿(大於3層)顯示特別警告",
 	SpecialWarningFireBomb		= "當你中了燃燒彈時顯示特別警告",
 	SpecialWarningSlimePool		= "為泥漿池顯示特別警告",
 	SpecialWarningSilence		= "為驚恐踐踏顯示特別警告",
---	SpecialWarningSpray		= "當你中了痲痺噴霧時顯示特別警告",
 	SpecialWarningToxin		= "當你中了痲痺劇毒時顯示特別警告",
 	SpecialWarningBile		= "當你中了燃燒膽汁時顯示特別警告",
 	SpecialWarningCharge		= "當冰嚎即將衝鋒你時顯示特別警告",
@@ -44,28 +42,26 @@ L:SetOptionLocalization{
 	SetIconOnBileTarget		= "設置標記在燃燒膽汁的目標",
 	ClearIconsOnIceHowl		= "衝鋒前消除所有標記",
 	TimerNextBoss			= "為下一隻王到來顯示計時器",
-	TimerCombatStart			= "為戰鬥開始顯示計時器"
+	TimerCombatStart		= "為戰鬥開始顯示計時器"
 }
 
 L:SetTimerLocalization{
 	TimerNextBoss			= "下一隻王到來",
-	TimerCombatStart			= "戰鬥開始"
+	TimerCombatStart		= "戰鬥開始"
 }
 
 L:SetWarningLocalization{
 	WarningImpale			= "%s: >%s<",
 	WarningFireBomb			= "燃燒彈",
---	WarningSpray			= "%s: >%s<",
 	WarningBreath			= "寒地之息",
 	WarningRage			= "泡沫之怒",
 	WarningCharge			= "衝鋒: >%s<",
 	WarningToxin			= "痲痺劇毒: >%s<",
 	WarningBile			= "燃燒膽汁: >%s<",
 	SpecialWarningImpale3		= "你中了刺穿>%d<",
-	SpecialWarningFireBomb		= "你中了燃燒彈- 快跑開",
+	SpecialWarningFireBomb		= "你中了燃燒彈",
 	SpecialWarningSlimePool		= "泥漿池 - 快跑開",
 	SpecialWarningSilence		= "1.5秒後 驚恐踐踏",
---	SpecialWarningSpray		= "你中了痲痺噴霧",
 	SpecialWarningToxin		= "痲痺劇毒 - 快跑開",
 	SpecialWarningCharge		= "你被衝鋒了 - 快跑開",
 	SpecialWarningChargeNear	= "你附近有人被衝鋒 - 快跑開",
@@ -223,7 +219,7 @@ L:SetOptionLocalization{
 	SpecialWarnOnDebuff		= "當你中了光明或黑暗之觸時顯示特別警告 (需切換顏色)",
 	SetIconOnDebuffTarget		= "設置標記在光明或黑暗之觸的目標 (英雄模式)",
 	WarningTouchDebuff		= "提示中了光明或黑暗之觸的目標",
-	WarningPoweroftheTwins		= "提示雙子威能首領的當前目標",
+	WarningPoweroftheTwins		= "提示雙子威能的目標",
 	SpecWarnPoweroftheTwins		= "當你坦住的首領擁有雙子威能時顯示特別警告"
 }
 
@@ -234,7 +230,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Anub'arak_Coliseum")
 
 L:SetGeneralLocalization{
-	name = "阿努巴拉克"
+	name 				= "阿努巴拉克"
 }
 
 L:SetTimerLocalization{
@@ -251,7 +247,7 @@ L:SetWarningLocalization{
 	WarnPursue			= "追擊: >%s<",
 	SpecWarnPursue			= "你被追擊了 - 快跑去撞冰塊",
 	warnAdds			= "奈幽掘洞者 出現了",
-	SpecWarnShadowStrike	= "暗影打擊 - 快斷法",
+	SpecWarnShadowStrike		= "暗影打擊 - 快斷法",
 	SpecWarnPCold			= "你中了透骨之寒"
 }
 
@@ -267,8 +263,8 @@ L:SetOptionLocalization{
 	WarnSubmerge			= "為鑽進地裡顯示警告",
 	WarnSubmergeSoon		= "為鑽進地裡顯示預先警告",
 	SpecWarnPursue			= "當你被追擊時顯示特別警告",
-	warnAdds				= "為奈幽掘洞者出現顯示警告",
-	timerAdds				= "為下一次 奈幽掘洞者出現顯示計時器",
+	warnAdds			= "提示奈幽掘洞者出現",
+	timerAdds			= "為下一次 奈幽掘洞者出現顯示計時器",
 	TimerEmerge			= "為持續鑽地顯示計時器",
 	TimerSubmerge			= "為下一次 鑽地顯示計時器",
 	PlaySoundOnPursue		= "當你開始被追擊時播放音效",
