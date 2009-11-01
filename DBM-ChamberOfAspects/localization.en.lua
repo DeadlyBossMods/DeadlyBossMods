@@ -63,14 +63,14 @@ L:SetOptionLocalization({
 	TimerShadron		= "Show timer for Shadron's arrival",
 	TimerVesperon		= "Show timer for Vesperon's arrival",
 
-	WarningFireWall		= "Show special warning for Fire Wall",
+	WarningFireWall		= "Show warning for Fire Wall",
 	WarningTenebron		= "Show warning for Tenebron incoming",
 	WarningShadron		= "Show warning for Shadron incoming",
 	WarningVesperon		= "Show warning for Vesperon incoming",
 
-	WarningTenebronPortal	= "Show special warning for Tenebron's portal",
-	WarningShadronPortal	= "Show special warning for Shadron's portal",
-	WarningVesperonPortal	= "Show special warning for Vesperon's portal",
+	WarningTenebronPortal	= "Show warning for Tenebron's portal",
+	WarningShadronPortal	= "Show warning for Shadron's portal",
+	WarningVesperonPortal	= "Show warning for Vesperon's portal",
 })
 
 L:SetMiscLocalization({
