@@ -141,21 +141,19 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "Light Bomb on you",
-	WarningLightBomb			= "Light Bomb on >%s<",
+	SpecialWarningLightBomb 	= "Searing Light on you",
 	SpecialWarningGravityBomb	= "Gravity Bomb on you",
-	WarningGravityBomb			= "Gravity Bomb on >%s<",
+	specWarnConsumption			= "Consumption - Move away"
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "Show special warning when you are affected by Light Bomb",
-	WarningLightBomb			= "Announce Light Bomb target",
+	SpecialWarningLightBomb		= "Show special warning when you are affected by Searing Light",
 	SpecialWarningGravityBomb	= "Show special warning when you are affected by Gravity Bomb",
-	WarningGravityBomb			= "Announce Gravity Bomb target",
+	specWarnConsumption			= "Show special warning when you take damage from Consumption",
 	PlaySoundOnGravityBomb		= "Play sound when you are affected by Gravity Bomb",
 	PlaySoundOnTympanicTantrum	= "Play sound on Tympanic Tantrum",
 	SetIconOnLightBombTarget	= "Set icon on Light Bomb target",
-	SetIconOnGravityBombTarget	= "Set icon on Gravity Bomb target",
+	SetIconOnGravityBombTarget	= "Set icon on Gravity Bomb target"
 }
 
 --------------------
@@ -169,52 +167,22 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge			= "Supercharge incoming",
-	WarningChainlight			= "Chain Lightning",
-	WarningFusionPunch			= "Fusion Punch",
-	WarningOverwhelmingPower	= "Overwhelming Power on >%s<",
-	WarningRuneofPower			= "Rune of Power",
-	WarningRuneofDeath			= "Rune of Death",
 	RuneofDeath					= "Rune of Death - Move away",
 	LightningTendrils			= "Lightning Tendrils - Run away",
-	WarningRuneofSummoning		= "Rune of Summoning",
 	Overload					= "Overload - Run away",
 	WarningStaticDisruption		= "Static Disruption on >%s<",
 	PlaySoundDeathRune			= "Death Rune"
 }
 
 L:SetTimerLocalization{
-	TimerSupercharge		= "Supercharge",
-	TimerOverload			= "Overload",
-	TimerLightningWhirl		= "Lightning Whirl",
-	TimerLightningTendrils	= "Lightning Tendrils",
-	timerFusionPunchCast	= "Fusion Punch cast",
-	timerFusionPunchActive	= "Fusion Punch: %s",
-	timerOverwhelmingPower	= "Overwhelming Power: %s",
-	timerRunicBarrier		= "Runic Barrier",
-	timerRuneofDeath		= "Rune of Death"
 }
 
 L:SetOptionLocalization{
-	TimerSupercharge			= "Show timer for Supercharge",
 	WarningSupercharge			= "Show warning when Supercharge is being cast",
-	WarningChainlight			= "Show warning for Chain Lightning",
-	TimerOverload				= "Show timer for Overload cast",
-	TimerLightningWhirl			= "Show timer for Lightning Whirl cast",
 	LightningTendrils			= "Show special warning for Lightning Tendrils",
-	TimerLightningTendrils		= "Show timer for Lightning Tendrils duration",
 	PlaySoundLightningTendrils	= "Play sound on Lightning Tendrils",
-	WarningFusionPunch			= "Announce Fusion Punch target",
-	timerFusionPunchCast		= "Show cast bar for Fusion Punch",
-	timerFusionPunchActive		= "Show timer for Fusion Punch",
-	WarningOverwhelmingPower	= "Announce Overwhelming Power target",
-	timerOverwhelmingPower		= "Show timer for Overwhelming Power",
 	SetIconOnOverwhelmingPower	= "Set icon on Overwhelming Power target",
-	timerRunicBarrier			= "Show timer for Runic Barrier",
-	WarningRuneofPower			= "Show warning for Rune of Power",
-	WarningRuneofDeath			= "Show warning for Rune of Death",
-	WarningRuneofSummoning		= "Show warning for Rune of Summoning",
 	RuneofDeath					= "Show special warning for Rune of Death",
-	timerRuneofDeath			= "Show timer for Rune of Death duration",
 	SetIconOnStaticDisruption	= "Set icon on Static Disruption target",
 	Overload					= "Show special warning for Overload",
 	AllwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
@@ -247,7 +215,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",
 	WarningBlackHole		= "Black Hole",
-	WarningBigBang			= "Big Bang",
 	SpecWarnBigBang			= "Big Bang",
 	PreWarningBigBang		= "Big Bang in ~10 seconds",
 	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",
@@ -256,7 +223,6 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch		= "Show special warning when Phase Punch is on you",
-	WarningBigBang			= "Show warning for Big Bang cast",
 	PreWarningBigBang		= "Show pre-warning for Big Bang",
 	SpecWarnBigBang			= "Show special warning for Big Bang",
 	WarningPhasePunch		= "Announce Phase Punch target",
@@ -341,20 +307,14 @@ L:SetWarningLocalization{
 	SpecWarnVoid		= "Void Zone - Move away",
 	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
 	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",
-	WarnFear			= "Terrifying Screech",
 	WarnFearSoon 		= "Next Terrifying Screech soon",
-	WarnSonic			= "Sonic Screech",
-	WarnSwarm			= "Guardian Swarm on >%s<"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBlast		= "Show special warning for Sentinel Blast",
 	SpecWarnVoid		= "Show special warning when standing in Feral Essence",
-	WarnFear			= "Show warning for Terrifying Screech",
 	WarnFearSoon		= "Show pre-warning for Terrifying Screech",
 	WarnCatDied			= "Show warning when Feral Defender dies",
-	WarnSwarm			= "Show warning for Guardian Swarm",
-	WarnSonic			= "Show warning for Sonic Screech",
 	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining"
 }
 
@@ -402,11 +362,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningStormhammer		= "Stormhammer on >%s<",
-	UnbalancingStrike		= "Unbalancing Strike on >%s<",
 	WarningPhase2			= "Phase 2",
 	WarningLightningCharge	= "Lightning Charge",
-	WarningBomb				= "Rune Detonation on >%s<",
 	LightningOrb			= "Lightning Shock - Move away"
 }
 
@@ -416,11 +373,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Show timer for hard mode",
-	WarningStormhammer		= "Announce Stormhammer target",
 	WarningLightningCharge	= "Show warning for Lightning Charge",
 	WarningPhase2			= "Announce Phase 2",
-	UnbalancingStrike		= "Show warning for Unbalancing Strike",
-	WarningBomb				= "Announce Rune Detonation target",
 	RangeFrame				= "Show range frame",
 	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce to be enabled and leader/promoted status)",
 	LightningOrb			= "Show special warning for Lightning Shock"
@@ -523,18 +477,14 @@ L:SetWarningLocalization{
 	WarnBlast			= "Plasma Blast on >%s<",
 	MagneticCore		= ">%s< has Magnetic Core",
 	WarningShockBlast	= "Shock Blast - Run away",
-	WarnBombSpawn		= "Bomb Bot spawned",
-	WarnFrostBomb		= "Frost Bomb",
-	WarnFlamesSoon		= "New flames in ~5 seconds"
+	WarnBombSpawn		= "Bomb Bot spawned"
 }
 
 L:SetTimerLocalization{
-	ProximityMines		= "New Proximity Mines",
 	TimerHardmode		= "Hard mode - Self-destruct",
 	TimeToPhase2		= "Phase 2",
 	TimeToPhase3		= "Phase 3",
-	TimeToPhase4		= "Phase 4",
-	TimerNewFlames		= "New flames"
+	TimeToPhase4		= "Phase 4"
 }
 
 L:SetOptionLocalization{
@@ -553,7 +503,6 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare	= "Play sound on Laser Barrage",
 	ShockBlastWarningInP1	= "Show special warning for Shock Blast in Phase 1",
 	ShockBlastWarningInP4	= "Show special warning for Shock Blast in Phase 4",
-	WarnFrostBomb			= "Show warning for Frost Bomb"
 }
 
 L:SetMiscLocalization{

@@ -51,7 +51,7 @@ local timerShell		= mod:NewTargetTimer(6, 63666)
 local timerHardmode		= mod:NewTimer(607, "TimerHardmode", 64582)
 local timerFlameSuppressant	= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
-local warnFrostBomb		= mod:NewAnnounce("WarnFrostBomb", 3, 64623)
+local warnFrostBomb		= mod:NewSpellAnnounce(64623, 3)
 local timerBombExplosion	= mod:NewCastTimer(15, 65333)
 
 local enrage 			= mod:NewEnrageTimer(900)
