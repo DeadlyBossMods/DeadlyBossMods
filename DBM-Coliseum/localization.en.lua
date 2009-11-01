@@ -45,8 +45,8 @@ L:SetOptionLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss				= "Next boss in",
-	TimerCombatStart			= "Combat starts in"
+	TimerNextBoss				= "Next boss",
+	TimerCombatStart			= "Combat starts"
 }
 
 L:SetWarningLocalization{
