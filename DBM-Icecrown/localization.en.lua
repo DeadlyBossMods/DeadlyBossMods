@@ -100,7 +100,7 @@ L:SetOptionLocalization({
 	SpecWarnRadiationOoze		= "Show special warning for Radiation Ooze",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	SpecWarnMutatedInfection 	= "Show special warning for Mutated Infection",
-	InfectionIcon				= "Set icon on Mutated Infection target",
+	InfectionIcon				= "Set icons on Mutated Infection targets",
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 })
 L:SetMiscLocalization({
@@ -185,7 +185,7 @@ L:SetWarningLocalization({
 	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
-	WarnAirphase			= "Show warning for air phase",
+	WarnAirphase			= "Announce air phase",
 	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
 	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
