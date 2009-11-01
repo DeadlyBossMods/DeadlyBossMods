@@ -466,7 +466,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerDrainLifeCD		= "Life Drain cooldown",
 	TimerAir				= "Air phase",
-	TimerLanding			= "Landing in",
+	TimerLanding			= "Landing",
 	TimerIceBlast			= "Frost Breath"	
 })
 
