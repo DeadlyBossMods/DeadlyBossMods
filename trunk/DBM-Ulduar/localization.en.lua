@@ -598,7 +598,7 @@ L:SetWarningLocalization{
 	WarnFavor						= "Sara's Fervor on >%s<",
 	SpecWarnFavor					= "Sara's Fervor on you",
 	WarnEmpowerSoon					= "Empowering Shadows soon",
-	SpecWarnMaladyNear				= "Malady near you on >%s<"	,
+	SpecWarnMaladyNear				= "Malady near you on >%s<",
 	SpecWarnDeafeningRoar			= "Deafening Roar",
 	specWarnBrainPortalSoon			= "Brain Portal soon"
 }
