@@ -264,7 +264,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("new wave"),
-	TimerWaveIn		= "Show timer for next wave (wave 6 only)",
+	TimerWaveIn		= "Show timer for next set of waves (after wave 5 boss)",
 })
 
 
@@ -795,7 +795,7 @@ L:SetOptionLocalization({
 	WarningExplosion 	= optionWarning:format(GetSpellInfo(51110)),
 	TimerTimeBomb 		= optionTimerDur:format(GetSpellInfo(51121)),
 	TimerExplosion 		= optionTimerDur:format(GetSpellInfo(51110)),
-	SpecWarnBombYou		= "Show special warning for Time Bomb on you"
+	SpecWarnBombYou		= "Show special warning when you are affected by Time Bomb"
 })
 
 
@@ -1171,7 +1171,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specWarnDesecration		= "Show special warning when you take damage from Desecration",
 	warnExplode				= "Show warning when Ghoul Minion is about to explode",
-	SetIconOnMarkedTarget	= "Set icon on Marked For Death target"
+	SetIconOnMarkedTarget	= "Set icons on Marked For Death targets"
 })
 
 L:SetMiscLocalization({
@@ -1193,7 +1193,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnHaste			= "Show special warning when Mage gains Haste (to dispel/steal)",
+	specWarnHaste			= "Show special warning when the Mage gains Haste (to dispel/steal)",
 	specWarnPoison			= "Show special warning when you take damage from Vial of Poison"
 })
 
@@ -1215,7 +1215,7 @@ specwarnRenew				= "Confessor casts renew on >%s< - Dispel now"
 })
 
 L:SetOptionLocalization({
-specwarnRenew				= "Show special warning for Renew target (to dispel/steal)"
+specwarnRenew				= "Show special warning for Renew targets (to dispel/steal)"
 })
 
 L:SetMiscLocalization({
@@ -1238,7 +1238,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specwarnHammerofJustice		= "Show special warning for Hammer of Justice (to dispel)",
 	specwarnRadiance			= "Show special warning for Radiance",
-	SetIconOnHammerTarget		= "Set icon on Hammer of Justice target"
+	SetIconOnHammerTarget		= "Set icons on Hammer of Justice targets"
 })
 
 L:SetMiscLocalization({
@@ -1263,7 +1263,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnBarrel				= "Announce Barrel target",
+	warnBarrel				= "Announce Barrel targets",
 	DisarmWarning			= "Show special warning for Disarm",
 	specWarnBrew			= "Show special warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun		= "Show special warning for Dark Brewmaiden's Stun",
@@ -1321,7 +1321,7 @@ L:SetOptionLocalization({
 	warnPursuit				= "Show pre-warning for pursue",
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued"
---	SetIconOnPursuitTarget	= "Set icon on Pursuit target"
+--	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
 
 L:SetMiscLocalization({
@@ -1346,7 +1346,7 @@ L:SetOptionLocalization({
 	warnSaroniteRock			= "Show warning for Saronite Rock (to clear Permafrost)",
 	specWarnSaroniteRock		= "Show special warning when you are affected by Saronite Throw",
 	specWarnPermafrost			= "Show special warning when Permafrost stacks get too high (value not set in stone)"
---	SetIconOnSaroniteRockTarget	= "Set icon on Saronite Rock target"
+--	SetIconOnSaroniteRockTarget	= "Set icons on Saronite Rock targets"
 })
 
 L:SetMiscLocalization({
@@ -1373,7 +1373,7 @@ L:SetOptionLocalization({
 	specWarnIcyBlast			= "Show special warning when you take damage from Icy Blast",
 	specWarnHoarfrost			= "Show special warning when you are affected by Hoarfrost",
 	specWarnHoarfrostNear		= "Show special warning for Hoarfrost near you",
-	SetIconOnHoarfrostTarget	= "Set icon on Hoarfrost target"
+	SetIconOnHoarfrostTarget	= "Set icons on Hoarfrost targets"
 })
 
 L:SetMiscLocalization({
@@ -1409,9 +1409,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "Stop DPS"
+	specwarnMirroredSoul		= "Stop damage"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "Show special warning to stop DPS on Mirrored Soul"
+	specwarnMirroredSoul		= "Show special warning to stop damage on Mirrored Soul"
 })
