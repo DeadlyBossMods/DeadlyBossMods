@@ -12,7 +12,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnImpale				= ">%s< is impaled",
 	specWarnWhirlwind		= "Whirlwind - Run away",
-	specWarnColdflame		= "Coldflame - Move"
+	specWarnColdflame		= "Coldflame - Move away"
 })
 
 L:SetOptionLocalization({
@@ -173,30 +173,30 @@ L:SetGeneralLocalization({
 	name = "Sindragosa"
 })
 L:SetTimerLocalization({
-	NextAirphase 		= "Next airphase",
-	NextGroundphase		= "Next groundphase"
+	NextAirphase			= "Next air phase",
+	NextGroundphase			= "Next ground phase"
 })
 L:SetWarningLocalization({
-	WarnAirphase		= "Airphase",
-	WarnBlisteringCold	= "Blistering Cold",
-	SpecWarnBlisteringCold	= "Blisstering Cold - run out",
-	SpecWarnFrostBeacon	= "Frost beacon on you",
-	PrewarnGroundphase	= "Sindragosa landing soon",
+	WarnAirphase			= "Air phase",
+	WarnBlisteringCold		= "Blistering Cold",
+	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
+	SpecWarnFrostBeacon		= "Frost Beacon on you",
+	PrewarnGroundphase		= "Sindragosa landing soon",
 	SpecWarnUnchainedMagic	= "Unchained Magic on you"
 })
 L:SetOptionLocalization({
-	WarnAirphase		= "Show warning for airphase",
-	WarnBlisteringCold	= "Show warning for Blistering Cold",
+	WarnAirphase			= "Show warning for air phase",
+	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon	= "Show special warning for Frost Beacon",
-	PrewarnGroundphase	= "Show prewarning for groundphase",
-	NextAirphase		= "Show timer for next airphase",
-	NextGroundphase		= "Show timer for next groundphase",
-	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magix"
+	SpecWarnFrostBeacon		= "Show special warning for Frost Beacon",
+	PrewarnGroundphase		= "Show pre-warning for ground phase",
+	NextAirphase			= "Show timer for next air phase",
+	NextGroundphase			= "Show timer for next ground phase",
+	SpecWarnUnchainedMagic	= "Show special warning for Unchained Magic"
 })
 L:SetMiscLocalization({
-	YellAirphase		= "Your incursion ends here! None shall survive!",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase			= "Your incursion ends here! None shall survive!",
+	YellPull				= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 })
 
 
