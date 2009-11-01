@@ -43,7 +43,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSpore:Start(sporeTimer)
 		warnSporeNow:Show()
 		warnSporeSoon:Schedule(sporeTimer - 5)
-	elseif args:IsSpellID(29204, 55052 then  -- Inevitable Doom
+	elseif args:IsSpellID(29204, 55052) then  -- Inevitable Doom
 		doomCounter = doomCounter + 1
 		local timer = 30
 		if doomCounter >= 7 then
