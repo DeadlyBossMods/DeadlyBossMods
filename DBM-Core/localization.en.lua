@@ -56,7 +56,7 @@ DBM_CORE_RANGECHECK_HEADER			= "Range Check (%d yd)"
 DBM_CORE_RANGECHECK_SETRANGE		= "Set range"
 DBM_CORE_RANGECHECK_SOUNDS			= "Sounds"
 DBM_CORE_RANGECHECK_SOUND_OPTION_1	= "Sound when one player is in range"
-DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sound for more than one player"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2	= "Sound when more than one player is in range"
 DBM_CORE_RANGECHECK_SOUND_0			= "No sound"
 DBM_CORE_RANGECHECK_SOUND_1			= "Default sound"
 DBM_CORE_RANGECHECK_SOUND_2			= "Annoying beep"
@@ -119,12 +119,12 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Announce |cff71d5ff|Hspell:%d|h%s|h|r target",
+	target = "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
 	spell = "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Show warning for Phase %d"
+	phase = "Announce Phase %d"
 }
 
 
