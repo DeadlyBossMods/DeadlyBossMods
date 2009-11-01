@@ -45,10 +45,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62661 then	-- Searing Flames
+	if args:IsSpellID(62661) then	-- Searing Flames
 		timerSearingFlamesCast:Start()
 
-	elseif args.spellId == 62662 then 
+	elseif args:IsSpellID(62662) then 
 		specWarnSurgeDarkness:Show()
 		if self.Options.SpecialWarningSurgeDarkness then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
@@ -57,19 +57,19 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_INTERRUPT(args)
-	if args.spellId == 62661 then
+	if args:IsSpellID(62661) then
 		timerSearingFlamesCast:Stop()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62662 then	-- Surge of Darkness
+	if args:IsSpellID(62662) then	-- Surge of Darkness
 		timerSurgeofDarkness:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62662 then	
+	if args:IsSpellID(62662) then	
 		timerSurgeofDarkness:Stop()
 	end
 end
@@ -102,15 +102,15 @@ function mod:ShadowCrashTarget()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 62660 then		-- Shadow Crash
+	if args:IsSpellID(62660) then		-- Shadow Crash
 		self:ScheduleMethod(0.1, "ShadowCrashTarget")
-	elseif args.spellId == 63276 then	-- Mark of the Faceless
+	elseif args:IsSpellID(63276) then	-- Mark of the Faceless
 		if self.Options.SetIconOnLifeLeach then
 			mod:SetIcon(args.destName, 7, 10)
 		end
 		warnLeechLife:Show(args.destName)
 		timerLifeLeech:Start(args.destName)
-		if args.destName == UnitName("player") then
+		if args:IsPlayer() then
 			specWarnLifeLeechYou:Show()
 			if self.Options.YellOnLifeLeech then
 				SendChatMessage(L.YellLeech, "YELL")

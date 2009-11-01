@@ -63,7 +63,7 @@ function mod:UNIT_HEALTH(unitid)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 64584 or args.spellId == 64443 then 	-- Big Bang
+	if args:IsSpellID(64584, 64443) then 	-- Big Bang
 		timerBigBangCast:Start()
 		timerNextBigBang:Start()
 		announceBigBang:Show()
@@ -74,10 +74,10 @@ end
 
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 65108 or args.spellId == 64122 then 	-- Black Hole Explosion
+	if args:IsSpellID(65108, 64122) then 	-- Black Hole Explosion
 		announceBlackHole:Show()
 
-	elseif args.spellId == 64598 or args.spellId == 62301 then	-- Cosmic Smash
+	elseif args:IsSpellID(64598, 62301) then	-- Cosmic Smash
 		timerCastCosmicSmash:Start()
 		timerCDCosmicSmash:Start()
 		announceCosmicSmash:Show()
@@ -86,10 +86,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 64412 then
+	if args:IsSpellID(64412) then
 		timerNextPhasePunch:Start()
 		local amount = args.amount or 1
-		if args.destName == UnitName("player") and amount >= 4 then
+		if args:IsPlayer() and amount >= 4 then
 			specWarnPhasePunch:Show()
 		end
 		timerPhasePunch:Start(args.destName)

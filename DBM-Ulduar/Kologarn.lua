@@ -55,9 +55,9 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if (args.spellId == 63783 or args.spellId == 63982) and args.destName == UnitName("player") then	-- Shockwave
+	if args:IsSpellID(63783, 63982) and args:IsPlayer() then	-- Shockwave
 		timerNextShockwave:Start()
-	elseif (args.spellId == 63346 or args.spellId == 63976) and args.destName == UnitName("player") then
+	elseif args:IsSpellID(63346, 63976) and args:IsPlayer() then
 		specWarnEyebeam:Show()
 	end
 end
@@ -81,7 +81,7 @@ function mod:GripAnnounce()
 	table.wipe(gripTargets)
 end
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 64290 or args.spellId == 64292 then
+	if args:IsSpellID(64290, 64292) then
 		if self.Options.SetIconOnGripTarget then
 			self:SetIcon(args.destName, 8 - #gripTargets, 10)
 		end

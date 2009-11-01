@@ -42,19 +42,19 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args.spellId == 62776 then					-- Tympanic Tantrum (aoe damge + daze)
+	if args:IsSpellID(62776) then					-- Tympanic Tantrum (aoe damge + daze)
 		timerTympanicTantrumCast:Start()
 		timerTympanicTantrumCD:Stop()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 62775 and args.auraType == "DEBUFF" then	-- Tympanic Tantrum
+	if args:IsSpellID(62775) and args.auraType == "DEBUFF" then	-- Tympanic Tantrum
 		timerTympanicTantrumCD:Start()
 		timerTympanicTantrum:Start()
 
-	elseif args.spellId == 63018 or args.spellId == 65121 then 	-- Light Bomb
-		if args.destName == UnitName("player") then
+	elseif args:IsSpellID(63018, 65121) then 	-- Light Bomb
+		if args:IsPlayer() then
 			specWarnLightBomb:Show()
 		end
 		if self.Options.SetIconOnLightBombTarget then
@@ -62,8 +62,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnLightBomb:Show(args.destName)
 		timerLightBomb:Start(args.destName)
-	elseif args.spellId == 63024 or args.spellId == 64234 then		-- Gravity Bomb
-		if args.destName == UnitName("player") then
+	elseif args:IsSpellID(63024, 64234) then		-- Gravity Bomb
+		if args:IsPlayer() then
 			specWarnGravityBomb:Show()
 		end
 		if self.Options.SetIconOnGravityBombTarget then
@@ -71,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnGravityBomb:Show(args.destName)
 		timerGravityBomb:Start(args.destName)
-	elseif args.spellId == 63849 then
+	elseif args:IsSpellID(63849) then
 		timerHeart:Start()
 	end
 end

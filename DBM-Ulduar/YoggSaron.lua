@@ -150,7 +150,7 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif args:IsSpellID(64126, 64125) then	-- Squeeze		
 		warnSqueeze:Show(args.destName)		
-		if args.destName == UnitName("player") and self.Options.WarningSqueeze then			
+		if args:IsPlayer() and self.Options.WarningSqueeze then			
 			SendChatMessage(L.WarningYellSqueeze, "YELL")			
 		end	
 
@@ -159,7 +159,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFavorTarget then
 			self:SetIcon(args.destName, 4, 30)
 		end
-		if args.destName == UnitName("player") then 
+		if args:IsPlayer() then 
 			specWarnFavor:Show()
 		end
 
