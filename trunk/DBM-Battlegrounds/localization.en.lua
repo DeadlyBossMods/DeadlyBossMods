@@ -34,7 +34,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "Game starts in",
+	TimerStart	= "Game starts",
 	TimerShadow	= "Shadow Sight"
 })
 
@@ -211,8 +211,8 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	TimerShards 	= "Show timer for Rock Shards",
-	WarningShards 	= "Show warning for Rock Shards",
-	WarningGrab 	= "Show warning for tank grab"
+	WarningShards 	= "Announce Rock Shards targets",
+	WarningGrab 	= "Announce grab targets"
 })
 
 --------------------------------
@@ -240,7 +240,7 @@ L:SetOptionLocalization{
 	warnNova			= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
 	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
 	NovaSound			= "Play sound on Lightning Nova",
-	timerMobOvercharge	= "Show timer for Overchaged mob (stacking debuff)"
+	timerMobOvercharge	= "Show timer for Overcharged mob (stacking debuff)"
 }
 
 ---------------------------------
