@@ -29,7 +29,7 @@ L:SetOptionLocalization{
 	WarningBile					= "Announce Burning Bile targets",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
-	SpecialWarningSlimePool		= "Show special warning for Slime Pool",
+	SpecialWarningSlimePool		= "Show special warning when you take damage from Slime Pool",
 	SpecialWarningSilence		= "Show special warning for Staggering Stomp (silence)",
 	SpecialWarningToxin			= "Show special warning when you are affected by Paralytic Toxin",
 	SpecialWarningBile			= "Show special warning when you are affected by Burning Bile",
@@ -196,8 +196,8 @@ L:SetOptionLocalization{
 	TimerSpecialSpell			= "Show timer for next special ability",
 	WarnSpecialSpellSoon		= "Show pre-warning for next special ability",
 	SpecWarnSpecial				= "Show special warning when you have to change color",
-	SpecWarnEmpoweredDarkness	= "Show special warning for Empowered Darkness",
-	SpecWarnEmpoweredLight		= "Show special warning for Empowered Light",
+	SpecWarnEmpoweredDarkness	= "Show special warning you are affected by Empowered Darkness",
+	SpecWarnEmpoweredLight		= "Show special warning you are affected by Empowered Light",
 	SpecWarnSwitchTarget		= "Show special warning when the other Twin is casting",
 	SpecWarnKickNow				= "Show special warning when you have to interrupt",
 	SpecialWarnOnDebuff			= "Show special warning when debuffed (to switch debuff)",
@@ -255,7 +255,7 @@ L:SetOptionLocalization{
 	PursueIcon				= "Set icons on pursued targets",
 	WarnPursue				= "Announce pursued targets",
 	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to interrupt)",
-	SpecWarnPCold			= "Show special warning for Penetrating Cold",
+	SpecWarnPCold			= "Show special warning you are affected by Penetrating Cold",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
 	SetIconsOnPCold         = "Set icons on Penetrating Cold targets"
 }
