@@ -14,7 +14,7 @@ L:SetWarningLocalization({
 	WarningVortex		= "Vortex",
 	WarningBreathSoon	= "Deep Breath soon",
 	WarningBreath		= "Deep Breath",
-	WarningSurge		= "Surge on >%s<",
+	WarningSurge		= "Surge of Power on >%s<",
 	WarningVortexSoon	= "Vortex soon",
 	WarningSurgeYou		= "Surge of Power on you"
 })
@@ -31,13 +31,13 @@ L:SetOptionLocalization({
 	WarningVortex		= "Show warning for Vortex",
 	WarningBreathSoon	= "Show pre-warning for Deep Breath",
 	WarningBreath		= "Show warning for Deep Breath",
-	WarningSurge		= "Show warning for Surge of Power",
+	WarningSurge		= "Announce Surge of Power targets",
 	TimerSpark			= "Show timer for Power Spark",
 	TimerVortex			= "Show timer for Vortex",
 	TimerBreath			= "Show timer for Deep Breath",
 	TimerVortexCD		= "Show timer for Vortex cooldown (unreliable)",
 	WarningVortexSoon	= "Show pre-warning for Vortex (unreliable)",
-	WarningSurgeYou		= "Show special warning when you are affected by Surge of Power"
+	WarningSurgeYou		= "Show warning when you are affected by Surge of Power"
 })
 
 L:SetMiscLocalization({
