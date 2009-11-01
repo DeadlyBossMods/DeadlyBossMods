@@ -661,7 +661,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "Show warning for Guardian spawns",
-	WarningCrusherTentacleSpawned	= "Show warning Crusher Tentacle spawns",
+	WarningCrusherTentacleSpawned	= "Show warning for Crusher Tentacle spawns",
 	WarningP2						= "Announce Phase 2",
 	WarningP3						= "Announce Phase 3",
 	WarningBrainLink				= "Announce Brain Link targets",
