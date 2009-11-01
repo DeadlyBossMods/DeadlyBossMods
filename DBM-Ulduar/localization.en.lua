@@ -626,7 +626,7 @@ L:SetOptionLocalization{
 	SpecWarnFavor					= "Show special warning for Sara's Fervor",
 	WarnSqueeze						= "Announce Squeeze target",
 	specWarnBrainPortalSoon			= "Show special warning for next Brain Portal",
-	WarningSqueeze					= "Announce Squeeze targets",
+	WarningSqueeze					= "Yell on Squeeze",
 	NextPortal						= "Show timer for next Brain Portal",
 	WhisperBrainLink				= "Send whisper to Brain Link targets",
 	SetIconOnFavorTarget			= "Set icon on Sara's Fervor target",
