@@ -261,8 +261,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "Show special warning when you are standing in Flaming Cinder",
-	PlaySoundOnCinder	= "Play sound when you are standing in Flaming Cinder",
+	SpecWarnCinder		= "Show special warning when you are affected by Flaming Cinder",
+	PlaySoundOnCinder	= "Play sound when you are affected by Flaming Cinder",
 }
 
 L:SetMiscLocalization{
