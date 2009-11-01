@@ -18,7 +18,6 @@ local timerConflag					= mod:NewTargetTimer(4, 42380)
 local timerSquashSoul					= mod:NewTargetTimer(15, 42514)
 local warnHorsemanSoldiers			= mod:NewAnnounce("warnHorsemanSoldiers")
 local specWarnHorsemanHead			= mod:NewSpecialWarning("specWarnHorsemanHead")
-local specWarnHorsemanHead			= mod:NewSpecialWarning("specWarnHorsemanHead")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(42380) then											-- Conflagration
