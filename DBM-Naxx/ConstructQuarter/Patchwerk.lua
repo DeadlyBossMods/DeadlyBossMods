@@ -25,13 +25,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if (args.spellId == 28308 or args.spellId == 59192) and self.Options.WarningHateful and DBM:GetRaidRank() >= 1 then
+	if args:IsSpellID(28308, 59192) and self.Options.WarningHateful and DBM:GetRaidRank() >= 1 then
 		announceStrike(args.destName, args.amount or 0)
 	end
 end
 
 function mod:SPELL_MISSED(args)
-	if (args.spellId == 28308 or args.spellId == 59192) and self.Options.WarningHateful and DBM:GetRaidRank() >= 1 then
+	if args:IsSpellID(28308, 59192) and self.Options.WarningHateful and DBM:GetRaidRank() >= 1 then
 		announceStrike(args.destName, getglobal("ACTION_SPELL_MISSED_"..(args.missType)) or "")
 	end	
 end

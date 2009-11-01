@@ -24,14 +24,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 55543       -- Disrupting Shout (10)
-	or args.spellId == 29107 then  -- Disrupting Shout (25)
+	if args:IsSpellID(55543, 29107) then  -- Disrupting Shout
 		timerShout:Start()
 		warnShoutNow:Show()
 		warnShoutSoon:Schedule(11)
-	elseif args.spellId == 29060 then -- Taunt
+	elseif args:IsSpellID(29060) then -- Taunt
 		timerTaunt:Start()
-	elseif args.spellId == 29061 then -- ShieldWall
+	elseif args:IsSpellID(29061) then -- ShieldWall
 		timerShieldWall:Start()
 		warnShieldWall:Schedule(15)
 	end

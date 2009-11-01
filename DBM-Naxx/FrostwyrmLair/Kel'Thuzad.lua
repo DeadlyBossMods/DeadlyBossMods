@@ -44,15 +44,15 @@ end
 local frostBlastTargets = {}
 local chainsTargets = {}
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 27808 then -- Frost Blast
+	if args:IsSpellID(27808) then -- Frost Blast
 		table.insert(frostBlastTargets, args.destName)
 		self:UnscheduleMethod("AnnounceBlastTargets")
 		self:ScheduleMethod(0.5, "AnnounceBlastTargets")
 		blastTimer:Start()
-	elseif args.spellId == 27819 then -- Mana Bomb
+	elseif args:IsSpellID(27819) then -- Mana Bomb
 		warnMana:Show(args.destName)
 		self:SetIcon(args.destName, 8, 5.5)
-	elseif args.spellId == 28410 then -- Chains of Kel'Thuzad
+	elseif args:IsSpellID(28410) then -- Chains of Kel'Thuzad
 		table.insert(chainsTargets, args.destName)
 		self:UnscheduleMethod("AnnounceChainsTargets")
 		if #chainsTargets >= 3 then
@@ -77,7 +77,7 @@ function mod:AnnounceBlastTargets()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 27810 then
+	if args:IsSpellID(27810) then
 		warnFissure:Show()
 	end
 end

@@ -38,10 +38,7 @@ end
 
 local markSpam = 0
 function mod:SPELL_CAST_SUCCESS(args)
-	if (args.spellId == 28832
-	or args.spellId == 28833
-	or args.spellId == 28834
-	or args.spellId == 28835) and (GetTime() - markSpam) > 5 then
+	if args:IsSpellID(28832, 28833, 28834, 28835) and (GetTime() - markSpam) > 5 then
 		markSpam = GetTime()
 		markCounter = markCounter + 1
 --		warnMarkNow:Show(markCounter)
@@ -51,10 +48,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if (args.spellId == 28832
-	or args.spellId == 28833
-	or args.spellId == 28834
-	or args.spellId == 28835) and args.destName == UnitName("player") then
+	if args:IsSpellID(28832, 28833, 28834, 28835) and args:IsPlayer() then
 		if args.amount >= 4 then
 			specWarnMarkOnPlayer:Show(args.spellName, args.amount)
 		end

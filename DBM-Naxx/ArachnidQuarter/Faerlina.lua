@@ -30,8 +30,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if (args.spellId == 28732				-- Widow's Embrace (10)
-	or args.spellId == 54097)				-- Widow's Embrace (25)
+	if args:IsSpellID(28732, 54097)				-- Widow's Embrace
 	and (GetTime() - embraceSpam) > 5 then  -- This spell is casted twice in Naxx 25 (bug?)
 		embraceSpam = GetTime()
 		warnEmbraceExpire:Cancel()
@@ -51,8 +50,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 28798
-	or args.spellId == 54100 then			-- Frenzy
+	if args:IsSpellID(28798, 54100) then			-- Frenzy
 		warnEnrageNow:Show()
 		enraged = GetTime()
 	end
