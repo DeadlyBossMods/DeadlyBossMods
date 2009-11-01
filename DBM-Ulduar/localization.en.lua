@@ -39,7 +39,7 @@ L:SetOptionLocalization{
 	PursueWarn				= "Announce pursued targets",
 	warnNextPursueSoon		= "Show pre-warning for next pursue",
 	warnWardofLife			= "Show special warning for Ward of Life spawn",
-	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn"
+	--warnWrithingLasher		= "Show special warning for Writhing Lasher spawn" --commenting out as it is currently unused for Flame Leviathan
 }
 
 
@@ -338,7 +338,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerFlashFreeze		= "Show timer for Flash Freeze cast",
-	WarningFlashFreeze		= "Show warning for Flash Freeze",
+	WarningFlashFreeze		= "Show special warning for Flash Freeze",
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze cast",
 	WarningStormCloud		= "Announce Storm Cloud targets",
 	YellOnStormCloud		= "Yell when Storm Cloud is active",
@@ -622,7 +622,7 @@ L:SetOptionLocalization{
 	SpecWarnMadnessOutNow			= "Show special warning shortly before Induce Madness ends",
 	SetIconOnFearTarget				= "Set icons on Malady of the Mind targets",
 	WarnFavor						= "Announce Sara's Fervor targets",
-	SpecWarnFavor					= "Show special warning for Sara's Fervor",
+	SpecWarnFavor					= "Show special warning when you are affected by Sara's Fervor",
 	WarnSqueeze						= "Announce Squeeze targets",
 	specWarnBrainPortalSoon			= "Show special warning for next Brain Portal",
 	WarningSqueeze					= "Yell on Squeeze",
