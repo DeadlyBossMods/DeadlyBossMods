@@ -52,7 +52,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args.spellId == 56105 then
+	if args:IsSpellID(56105) then
 		timerVortexCD:Start()
 		warnVortexSoon:Schedule(54)
 		warnVortex:Show()
@@ -79,7 +79,7 @@ local function announceTargets(self)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 60936 or args.spellId == 57407 then
+	if args:IsSpellID(60936, 57407) then
 		local target = guids[args.destGUID or 0]
 		if target then
 			surgeTargets[#surgeTargets + 1] = target

@@ -16,9 +16,9 @@ local warnInjection			= mod:NewAnnounce("WarningInjection", 2, 28169)
 local specWarnInjection		= mod:NewSpecialWarning("SpecialWarningInjection")
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args.spellId == 28169 then
+	if args:IsSpellID(28169) then
 		warnInjection:Show(args.destName)
-		if args.destName == UnitName("player") then
+		if args:IsPlayer() then
 			specWarnInjection:Show()
 		end
 		self:SetIcon(args.destName, 8, 9)

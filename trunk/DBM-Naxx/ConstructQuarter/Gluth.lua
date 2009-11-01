@@ -27,7 +27,7 @@ end
 
 local decimateSpam = 0
 function mod:SPELL_DAMAGE(args)
-	if args.spellId == 28375 and (GetTime() - decimateSpam) > 20 then
+	if args:IsSpellID(28375) and (GetTime() - decimateSpam) > 20 then
 		decimateSpam = GetTime()
 		warnDecimateNow:Show()
 		timerDecimate:Start()

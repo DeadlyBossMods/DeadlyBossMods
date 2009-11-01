@@ -25,7 +25,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
     if (isInCombatWithShadron) then
-        if (args.spellId == 57579 or args.spellId == 59127) then
+        if args:IsSpellID(57579, 59127) then
             warnShadowFissure:Show()
             timerShadowFissure:Start()
         end
