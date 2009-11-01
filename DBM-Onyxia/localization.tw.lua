@@ -19,24 +19,26 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBreath		= "深呼吸",
-	TimerWhelps 		= "幼龍出現"
+	TimerBreath	= "深呼吸",
+	TimerWhelps = "奧妮克希亞幼龍"
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath		= "為深呼吸顯示特別警告",
-	BlastNovaWarning	= "為衝擊新星顯示特別警告",
-	TimerBreath		= "為深呼吸顯示計時器",
-	TimerWhelps		= "為奧妮克希亞幼龍顯示計時器",
-	WarnWhelpsSoon		= "為奧妮克希亞幼龍出現顯示預先警告",
-	SoundBreath		= "深呼吸時播放音效",
+	SpecWarnBreath			= "為深呼吸顯示特別警告",
+	BlastNovaWarning		= "為衝擊新星顯示特別警告",
+	TimerBreath				= "為深呼吸顯示計時器",
+	TimerWhelps				= "為奧妮克希亞幼龍顯示計時器",
+	WarnWhelpsSoon			= "為奧妮克希亞幼龍顯示預先警告",
+	SoundBreath				= "為深呼吸播放音效",
 	PlaySoundOnBlastNova	= "為衝擊新星播放音效",
-	SoundWTF		= "為經典傳奇式奧妮克希亞副本播放一些有趣的音效",
-	WarnPhase3Soon		= "為第3階段顯示預先警告 (大約在41%)"
+	SoundWTF				= "為經典傳奇式奧妮克希亞副本播放一些有趣的音效",
+	WarnPhase3Soon			= "為第3階段顯示預先警告 (大約在41%)"
 }
 
 L:SetMiscLocalization{
-	Breath 			= "%s深深地吸了一口氣……",
-	YellP2 			= "這毫無意義的行動讓我很厭煩。我會從上空把你們都燒成灰!",
-	YellP3 			= "看起來需要再給你一次教訓，凡人!"
+	Breath = "%s深深地吸了一口氣……",
+	YellP2 = "這毫無意義的行動讓我很厭煩。我會從上空把你們都燒成灰!",
+	YellP3 = "看起來需要再給你一次教訓，凡人!"
 }
+
+

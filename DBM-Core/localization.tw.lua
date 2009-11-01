@@ -87,7 +87,7 @@ DBM_CORE_TIMER_PULL				= "戰鬥準備"
 DBM_CORE_ANNOUNCE_PULL				= "%d秒後拉怪"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "拉怪囉!"
 
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速擊殺"
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL 		= "快速擊殺"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
@@ -120,15 +120,15 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 local prewarnOption = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "當|cff71d5ff|Hspell:%d|h%s|h|r施放在玩家身上時顯示警告",
+	target = "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
 	spell = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
 	cast = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "為第%d階段顯示警告"
+	phase = "提示第%d階段"
 }
 
 
 -- New special warnings
-DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "可拖動的特別警告"
-DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "特別警告"
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖動的特別警告"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特別警告"
