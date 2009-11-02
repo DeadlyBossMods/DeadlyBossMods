@@ -10,13 +10,13 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnShoutNow		= mod:NewAnnounce("WarningShoutNow", 1, 55543, false)
-local warnShoutSoon		= mod:NewAnnounce("WarningShoutSoon", 3, 55543, false)
+local warnShoutNow		= mod:NewSpellAnnounce(55543, 1)
+local warnShoutSoon		= mod:NewSoonAnnounce(55543, 3)
 local warnShieldWall	= mod:NewAnnounce("WarningShieldWallSoon", 3, 29061)
 
-local timerShout		= mod:NewTimer(16, "TimerShout", 55543)
-local timerTaunt		= mod:NewTimer(20, "TimerTaunt", 29060)
-local timerShieldWall	= mod:NewTimer(20, "TimerShieldWall", 29061)
+local timerShout		= mod:NewNextTimer(16, 55543)
+local timerTaunt		= mod:NewCDTimer(20, 29060)
+local timerShieldWall	= mod:NewCDTimer(20, 29061)
 
 function mod:OnCombatStart(delay)
 	timerShout:Start(16 - delay)
@@ -35,3 +35,4 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnShieldWall:Schedule(15)
 	end
 end
+

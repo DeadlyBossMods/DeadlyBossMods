@@ -12,7 +12,7 @@ mod:RegisterEvents(
 
 local warnTeleportNow		= mod:NewAnnounce("WarningTeleportNow", 3, 46573)
 local warnTeleportSoon		= mod:NewAnnounce("WarningTeleportSoon", 1, 46573)
-local warnCurse				= mod:NewAnnounce("WarningCurse", 2, 29213)
+local warnCurse				= mod:NewSpellAnnounce(29213, 2)
 
 local timerTeleport			= mod:NewTimer(90, "TimerTeleport", 46573)
 local timerTeleportBack		= mod:NewTimer(70, "TimerTeleportBack", 46573)

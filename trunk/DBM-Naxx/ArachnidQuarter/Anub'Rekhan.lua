@@ -14,18 +14,18 @@ mod:RegisterEvents(
 )
 
 local specialWarningLocust	= mod:NewSpecialWarning("SpecialLocust")
-local warningLocustSoon		= mod:NewAnnounce("WarningLocustSoon", 2, 28785)
-local warningLocustNow		= mod:NewAnnounce("WarningLocustNow", 3, 28785)
+local warningLocustSoon		= mod:NewSoonAnnounce(28785, 2)
+local warningLocustNow		= mod:NewSpellAnnounce(28785, 3)
 local warningLocustFaded	= mod:NewAnnounce("WarningLocustFaded", 1, 28785)
 
-local timerLocustIn			= mod:NewTimer(80, "TimerLocustIn", 28785)
-local timerLocustFade 		= mod:NewTimer(26, "TimerLocustFade", 28785)
+local timerLocustIn			= mod:NewCDTimer(80, 28785)
+local timerLocustFade 		= mod:NewBuffActiveTimer(26, 28785)
 
 
 function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic25") then
 		timerLocustIn:Start(90 - delay)
-		warningLocustSoon:Schedule(75 - delay)
+		warningLocustSoon:Schedule(80 - delay)
 	else
 		timerLocustIn:Start(91 - delay)
 		warningLocustSoon:Schedule(76 - delay)

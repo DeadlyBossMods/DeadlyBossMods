@@ -15,16 +15,16 @@ mod:RegisterEvents(
 	"UNIT_AURA"
 )
 
-local warnShiftCasting		= mod:NewAnnounce("WarningShiftCasting", 3, 28089)
+local warnShiftCasting		= mod:NewCastAnnounce(28089, 3)
 local warnChargeChanged		= mod:NewSpecialWarning("WarningChargeChanged")
 local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", false)
-local warnThrow				= mod:NewAnnounce("WarningThrow", 2, 58678)
-local warnThrowSoon			= mod:NewAnnounce("WarningThrowSoon", 1, 58678)
+local warnThrow				= mod:NewSpellAnnounce(28338, 2)
+local warnThrowSoon			= mod:NewSoonAnnounce(28338, 1)
 
 local enrageTimer			= mod:NewEnrageTimer(365)
-local timerNextShift		= mod:NewTimer(30, "TimerNextShift", 28089)
-local timerShiftCast		= mod:NewTimer(3, "TimerShiftCast", 28089)
-local timerThrow			= mod:NewTimer(20.6, "TimerThrow", 58678)
+local timerNextShift		= mod:NewNextTimer(30, 28089)
+local timerShiftCast		= mod:NewCastTimer(3, 28089)
+local timerThrow			= mod:NewNextTimer(20.6, 28338)
 
 mod:AddBoolOption("ArrowsEnabled", false, "Arrows")
 mod:AddBoolOption("ArrowsRightLeft", false, "Arrows")

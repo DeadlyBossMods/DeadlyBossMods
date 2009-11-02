@@ -14,12 +14,12 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnPhase2			= mod:NewAnnounce("WarningPhase2", 3)
-local warnBlastTargets		= mod:NewAnnounce("WarningBlastTargets", 2)
-local warnFissure			= mod:NewAnnounce("WarningFissure", 3)
-local warnMana				= mod:NewAnnounce("WarningMana", 2)
-local warnChainsTargets		= mod:NewAnnounce("WarningChainsTargets", 2)
-local blastTimer			= mod:NewTimer(4, "BlastTimer")
+local warnPhase2			= mod:NewPhaseAnnounce(2, 3)
+local warnBlastTargets		= mod:NewTargetAnnounce(27808, 2)
+local warnFissure			= mod:NewSpellAnnounce(27810, 3)
+local warnMana				= mod:NewTargetAnnounce(27819, 2)
+local warnChainsTargets		= mod:NewTargetAnnounce(28410, 2)
+local blastTimer			= mod:NewBuffActiveTimer(4, 27808)
 local specwarnP2Soon		= mod:NewSpecialWarning("specwarnP2Soon")
 local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 
