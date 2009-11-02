@@ -41,7 +41,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceActive	= "Widow's Embrace active",
+	WarningEmbraceActive	= "Widow's Embrace",
 	WarningEmbraceExpire	= "Widow's Embrace ends in 5 seconds",
 	WarningEmbraceExpired	= "Widow's Embrace faded",
 	WarningEnrageSoon		= "Frenzy soon",
@@ -56,8 +56,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerEmbrace			= "Show timer for Widow's Embrace",
 	WarningEmbraceActive	= "Show warning for Widow's Embrace",
-	WarningEmbraceExpire	= "Show warning when Widow's Embrace expires",
-	WarningEmbraceExpired	= "Show warning when Widow's Embrace is about to expire",
+	WarningEmbraceExpire	= "Show pre-warning for Widow's Embrace fade",
+	WarningEmbraceExpired	= "Show warning for Widow's Embrace fade",
 	WarningEnrageSoon		= "Show pre-warning for Frenzy",
 	WarningEnrageNow		= "Show warning for Frenzy",
 	TimerEnrage				= "Show timer for Frenzy"
@@ -332,7 +332,7 @@ L:SetOptionLocalization({
 	WarningShoutNow			= "Show warning for Disrupting Shout",
 	WarningShoutSoon		= "Show pre-warning for Disrupting Shout",
 	TimerShout				= "Show timer for Disrupting Shout",
-	WarningShieldWallSoon	= "Show pre-warning for Shield Wall expiration",
+	WarningShieldWallSoon	= "Show pre-warning for Shield Wall ending",
 	TimerShieldWall			= "Show timer for Shield Wall",
 	TimerTaunt				= "Show timer for Taunt"
 })
@@ -340,7 +340,7 @@ L:SetOptionLocalization({
 L:SetWarningLocalization({
 	WarningShoutNow			= "Disrupting Shout",
 	WarningShoutSoon		= "Disrupting Shout in 5 seconds",
-	WarningShieldWallSoon	= "Shield Wall expires in 5 seconds"
+	WarningShieldWallSoon	= "Shield Wall ends in 5 seconds"
 })
 
 L:SetTimerLocalization({
