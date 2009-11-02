@@ -320,8 +320,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze		= "閃霜",
-	WarningStormCloud		= "風暴雷雲: %s", 
+	WarningFlashFreeze		= "閃霜"
 }
 
 L:SetTimerLocalization{
@@ -332,8 +331,7 @@ L:SetOptionLocalization{
 	TimerFlashFreeze		= "為閃霜的施放顯示計時器",
 	WarningFlashFreeze		= "為閃霜顯示特別警告",
 	PlaySoundOnFlashFreeze		= "當施放閃霜時播放音效",
-	WarningStormCloud		= "提示風暴雷雲的目標",
-	YellOnStormCloud		= "當你中了風暴雷雲時大喊",
+	WarningStormCloud		= "提示風暴雷雲的目標"
 	SetIconOnStormCloud		= "為風暴雷雲的目標設置標記"
 }
 
@@ -354,7 +352,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningPhase2			= "第二階段",
-	WarningLightningCharge		= "閃電充能",
 	LightningOrb			= "你中了閃電震擊 - 快跑開"
 }
 
@@ -364,7 +361,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "為困難模式顯示計時器",
-	WarningLightningCharge		= "為閃電充能顯示警告",
 	WarningPhase2			= "提示第二階段",
 	RangeFrame			= "顯示距離框",
 	AnnounceFails			= "公佈中了閃電充能的玩家到團隊頻道(需要團隊隊長或助理權限)",
@@ -400,7 +396,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarnPhase2			= "第二階段",
 	WarnSimulKill			= "第一隻元素死亡 - 大約12秒後復活",
-	WarnFury			= "自然烈怒: >%s<",
 	SpecWarnFury			= "你中了自然烈怒",
 	WarningTremor			= "地面震顫 - 停止施法",
 	WarnRoots			= "鐵之根鬚: >%s<",
@@ -416,7 +411,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnPhase2			= "提示第二階段",
 	WarnSimulKill			= "提示第一隻元素死亡",
-	WarnFury			= "提示自然烈怒的目標",
 	WarnRoots			= "提示鐵之根鬚的目標",
 	SpecWarnFury			= "當你中了自然烈怒時顯示特別警告",
 	WarningTremor			= "為地面震顫顯示特別警告 (困難模式)",
@@ -461,9 +455,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DarkGlare			= "P3Wx2雷射彈幕",
-	WarnShell			= "凝汽彈: >%s<",
-	WarnBlast			= "電漿衝擊: >%s<",
 	MagneticCore			= ">%s< 拿到了磁能之核",
 	WarningShockBlast		= "震爆 - 快跑開",
 	WarnBombSpawn			= "炸彈機器人出現了"
@@ -478,8 +469,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	DarkGlare			= "為P3Wx2雷射彈幕顯示特別警告",
-	WarnBlast			= "提示電漿衝擊的目標",
-	WarnShell			= "提示凝汽彈的目標",
 	TimeToPhase2			= "為第二階段開始顯示計時器",
 	TimeToPhase3			= "為第三階段開始顯示計時器",
 	TimeToPhase4			= "為第四階段開始顯示計時器",
@@ -584,8 +573,6 @@ L:SetWarningLocalization{
 	WarnMadness			= "正在施放 瘋狂誘陷",
 	SpecWarnMadnessOutNow		= "瘋狂誘陷即將結束 - 快傳送出去",
 	WarnBrainPortalSoon		= "3秒後 腦部傳送門",
-	WarnSqueeze 			= "壓榨(觸手綁人): >%s<",
-	WarnFavor			= "薩拉的熱誠: >%s<",
 	SpecWarnFavor			= "你中了薩拉的熱誠",
 	WarnEmpowerSoon			= "暗影信標 即將到來",
 	SpecWarnMaladyNear		= "你附近的>%s<中了心靈缺陷",
@@ -611,9 +598,7 @@ L:SetOptionLocalization{
 	WarnBrainPortalSoon		= "為腦部傳送門顯示預先警告",
 	SpecWarnMadnessOutNow		= "為瘋狂誘陷結束前顯示特別警告",
 	SetIconOnFearTarget		= "為心靈缺陷的目標設置標記 (頭顱)",
-	WarnFavor			= "提示薩拉的熱誠的目標",
 	SpecWarnFavor			= "當你中了薩拉的熱誠時顯示特別警告",
-	WarnSqueeze			= "提示壓榨 (觸手綁人)的目標",
 	specWarnBrainPortalSoon		= "為下一次 腦部傳送門顯示特別警告",
 	WarningSqueeze			= "當你中了壓榨 (觸手綁人)時大喊",
 	NextPortal			= "為下一次 傳送門顯示計時器",
