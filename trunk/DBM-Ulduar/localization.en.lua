@@ -303,7 +303,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast		= "Sentinel Blast - Interrupt",
-	SpecWarnVoid		= "Void Zone - Move away",
+	SpecWarnVoid		= "Seeping Feral Essence - Move away",
 	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
 	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",
 	WarnFearSoon 		= "Next Terrifying Screech soon",
@@ -311,7 +311,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBlast		= "Show special warning for Sentinel Blast (to interrupt)",
-	SpecWarnVoid		= "Show special warning when you are affected by Feral Essence",
+	SpecWarnVoid		= "Show special warning when you are affected by Seeping Feral Essence",
 	WarnFearSoon		= "Show pre-warning for Terrifying Screech",
 	WarnCatDied			= "Show warning when Feral Defender dies",
 	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining"
