@@ -747,14 +747,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMerge		= "융합 경고 보기"		-- translate
+	WarningMerge		= "융합",		-- translate
+	WarningSplitSoon	= "곧 분리",		-- translate
+	WarningSplitNow		= "분리",		-- translate	
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningMerge		= optionWarning:format("융합"),	-- translate
+	WarningSplitSoon	= "분리 사전 경고 보기",	-- translate
+	WarningSplitNow		= "분리 경고 보기",	-- translate
+	WarningMerge		= "융합 경고 보기"	-- translate
 })
 
 L:SetMiscLocalization({
@@ -1268,7 +1272,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+	YellCombatEnd			= "축하하네, 용사들이여. 예정된 시험이든 뜻밖의 시험이든, 그대들은 모두 이겨냈군."	-- can also be "No! I must not fail... again ..."
 })
 -------------------
 -- Grand Champions --
@@ -1290,7 +1294,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+	YellCombatEnd			= "잘 싸웠네! 다음 상대는 은빛십자군의 일원이라네. 그들을 상대로 자신의 무용을 증명해 보게."
 })
 
 
