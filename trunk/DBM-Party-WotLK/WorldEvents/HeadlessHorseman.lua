@@ -13,9 +13,9 @@ mod:RegisterEvents(
 )
 
 local warnConflag					= mod:NewTargetAnnounce(42380)
-local warnSquashSoul					= mod:NewTargetAnnounce(42514)
+local warnSquashSoul				= mod:NewTargetAnnounce(42514)
 local timerConflag					= mod:NewTargetTimer(4, 42380)
-local timerSquashSoul					= mod:NewTargetTimer(15, 42514)
+local timerSquashSoul				= mod:NewTargetTimer(15, 42514)
 local warnHorsemanSoldiers			= mod:NewAnnounce("warnHorsemanSoldiers")
 local specWarnHorsemanHead			= mod:NewSpecialWarning("specWarnHorsemanHead")
 
@@ -36,3 +36,4 @@ function mod:CHAT_MSG_MONSTER_SAY(msg)
 		warnHorsemanSoldiers:Show()
 	end
 end
+
