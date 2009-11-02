@@ -122,12 +122,12 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Сообщить цели, под воздействием |cff71d5ff|Hspell:%d|h%s|h|r",
+	target = "Объявлять цель, под воздействием |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast = "Предупреждение, когда читает заклинание |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Предупреждение для фазы %d"
+	phase = "Объявлять фазу %d"
 }
 
 
