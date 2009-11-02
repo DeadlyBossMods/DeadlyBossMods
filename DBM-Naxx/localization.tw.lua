@@ -353,7 +353,7 @@ L:SetGeneralLocalization({
 L:SetOptionLocalization({
 	WarningAirPhaseSoon		= "為空中階段顯示預先警告",
 	WarningAirPhaseNow		= "提示空中階段",
-	WarningLanded			= "提示地上階段",,
+	WarningLanded			= "提示地上階段",
 	TimerAir				= "為空中階段顯示計時器",
 	TimerLanding			= "為降落顯示計時器",
 	TimerIceBlast			= "為冰息術顯示計時器",
