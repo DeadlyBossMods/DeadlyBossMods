@@ -328,8 +328,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "Flash Freeze",
-	WarningStormCloud	= "Storm Cloud on >%s<", 
+	WarningFlashFreeze	= "Flash Freeze"
 }
 
 L:SetTimerLocalization{
@@ -340,7 +339,6 @@ L:SetOptionLocalization{
 	TimerFlashFreeze		= "Show timer for Flash Freeze cast",
 	WarningFlashFreeze		= "Show special warning for Flash Freeze",
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze cast",
-	WarningStormCloud		= "Announce Storm Cloud targets",
 	YellOnStormCloud		= "Yell on Storm Cloud",
 	SetIconOnStormCloud		= "Set icons on Storm Cloud targets"
 }
@@ -362,7 +360,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningPhase2			= "Phase 2",
-	WarningLightningCharge	= "Lightning Charge",
 	LightningOrb			= "Lightning Shock - Move away"
 }
 
@@ -372,7 +369,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Show timer for hard mode",
-	WarningLightningCharge	= "Show warning for Lightning Charge",
 	WarningPhase2			= "Announce Phase 2",
 	RangeFrame				= "Show range frame",
 	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce to be enabled and leader/promoted status)",
@@ -407,8 +403,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnPhase2		= "Phase 2",
-	WarnSimulKill	= "First add down - Resurrection in ~12 seconds",
-	WarnFury		= "Nature's Fury on >%s<",
+	WarnSimulKill	= "First add down - Resurrection in ~12 seconds"
 	SpecWarnFury	= "Nature's Fury on you",
 	WarningTremor	= "Ground Tremor - Stop casting",
 	WarnRoots		= "Iron Roots on >%s<",
@@ -425,7 +420,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnPhase2		= "Announce Phase 2",
 	WarnSimulKill	= "Announce first mob down",
-	WarnFury		= "Announce Nature's Fury targets",
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury	= "Show special warning when you are affected by Nature's Fury",
 	WarningTremor	= "Show special warning for Ground Tremor (hard mode)",
@@ -471,9 +465,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare			= "Laser Barrage",
-	WarningPlasmaBlast	= "Plasma Blast on %s - Heal",
-	WarnShell			= "Napalm Shells on >%s<",
-	WarnBlast			= "Plasma Blast on >%s<",
 	MagneticCore		= ">%s< has Magnetic Core",
 	WarningShockBlast	= "Shock Blast - Run away",
 	WarnBombSpawn		= "Bomb Bot spawned"
@@ -488,8 +479,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	DarkGlare				= "Show special warning for Laser Barrage",
-	WarnBlast				= "Announce Plasma Blast targets",
-	WarnShell				= "Announce Napalm Shells targets",
 	TimeToPhase2			= "Show timer for Phase 2",
 	TimeToPhase3			= "Show timer for Phase 3",
 	TimeToPhase4			= "Show timer for Phase 4",
@@ -594,8 +583,6 @@ L:SetWarningLocalization{
 	WarnMadness						= "Casting Induce Madness",
 	SpecWarnMadnessOutNow			= "Induce Madness ending - Move out",
 	WarnBrainPortalSoon				= "Brain Portal in 3 seconds",	
-	WarnSqueeze 					= "Squeeze: >%s<",
-	WarnFavor						= "Sara's Fervor on >%s<",
 	SpecWarnFavor					= "Sara's Fervor on you",
 	WarnEmpowerSoon					= "Empowering Shadows soon",
 	SpecWarnMaladyNear				= "Malady of the Mind on %s near you",
@@ -621,9 +608,7 @@ L:SetOptionLocalization{
 	WarnBrainPortalSoon				= "Show pre-warning for Brain Portal",
 	SpecWarnMadnessOutNow			= "Show special warning shortly before Induce Madness ends",
 	SetIconOnFearTarget				= "Set icons on Malady of the Mind targets",
-	WarnFavor						= "Announce Sara's Fervor targets",
 	SpecWarnFavor					= "Show special warning when you are affected by Sara's Fervor",
-	WarnSqueeze						= "Announce Squeeze targets",
 	specWarnBrainPortalSoon			= "Show special warning for next Brain Portal",
 	WarningSqueeze					= "Yell on Squeeze",
 	NextPortal						= "Show timer for next Brain Portal",
