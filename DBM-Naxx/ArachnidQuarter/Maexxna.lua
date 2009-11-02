@@ -13,13 +13,13 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnWebWrap		= mod:NewAnnounce("WarningWebWrap", 2, 28622)
-local warnWebSpraySoon	= mod:NewAnnounce("WarningWebSpraySoon", 1, 29484)
-local warnWebSprayNow	= mod:NewAnnounce("WarningWebSprayNow", 3, 29484)
+local warnWebWrap		= mod:NewTargetAnnounce(28622, 2)
+local warnWebSpraySoon	= mod:NewSoonAnnounce(29484, 1)
+local warnWebSprayNow	= mod:NewSpellAnnounce(29484, 3)
 local warnSpidersSoon	= mod:NewAnnounce("WarningSpidersSoon", 2, 17332)
 local warnSpidersNow	= mod:NewAnnounce("WarningSpidersNow", 4, 17332)
 
-local timerWebSpray		= mod:NewTimer(40.5, "TimerWebSpray", 29484)
+local timerWebSpray		= mod:NewNextTimer(40.5, 29484)
 local timerSpider		= mod:NewTimer(30, "TimerSpider", 17332)
 
 function mod:OnCombatStart(delay)

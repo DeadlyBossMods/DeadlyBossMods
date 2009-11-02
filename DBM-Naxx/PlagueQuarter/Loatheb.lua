@@ -12,16 +12,16 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnSporeNow	= mod:NewAnnounce("WarningSporeNow", 2, 32329)
-local warnSporeSoon	= mod:NewAnnounce("WarningSporeSoon", 1, 32329)
-local warnDoomNow	= mod:NewAnnounce("WarningDoomNow", 3, 29204)
+local warnSporeNow	= mod:NewSpellAnnounce(32329, 2)
+local warnSporeSoon	= mod:NewSoonAnnounce(32329, 1)
+local warnDoomNow	= mod:NewSpellAnnounce(29204, 3)
 local warnHealSoon	= mod:NewAnnounce("WarningHealSoon", 4, 48071)
 local warnHealNow	= mod:NewAnnounce("WarningHealNow", 1, 48071, false)
 
 
-local timerSpore	= mod:NewTimer(36, "TimerSpore", 32329)
-local timerDoom		= mod:NewTimer(180, "TimerDoom", 29204)
-local timerAura		= mod:NewTimer(17, "TimerAura", 55593)
+local timerSpore	= mod:NewNextTimer(36, 32329)
+local timerDoom		= mod:NewNextTimer(180, 29204)
+local timerAura		= mod:NewBuffActiveTimer(17, 55593)
 
 local doomCounter = 0
 local sporeTimer = 36

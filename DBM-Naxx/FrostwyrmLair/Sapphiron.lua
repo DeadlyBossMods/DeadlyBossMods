@@ -17,14 +17,14 @@ mod:RegisterEvents(
 
 
 mod:AddBoolOption("WarningIceblock", true, "announce")
-local warnDrainLifeNow	= mod:NewAnnounce("WarningDrainLifeNow", 2, 28542)
-local warnDrainLifeSoon	= mod:NewAnnounce("WarningDrainLifeSoon", 1, 28542)
+local warnDrainLifeNow	= mod:NewSpellAnnounce(28542, 2)
+local warnDrainLifeSoon	= mod:NewSoonAnnounce(28542, 1)
 local warnAirPhaseSoon	= mod:NewAnnounce("WarningAirPhaseSoon", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnAirPhaseNow	= mod:NewAnnounce("WarningAirPhaseNow", 4, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnLanded		= mod:NewAnnounce("WarningLanded", 4, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnDeepBreath	= mod:NewSpecialWarning("WarningDeepBreath")
 
-local timerDrainLife	= mod:NewTimer(22, "TimerDrainLifeCD", 28542)
+local timerDrainLife	= mod:NewCDTimer(22, 28542)
 local timerAirPhase		= mod:NewTimer(66, "TimerAir", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local timerLanding		= mod:NewTimer(28.5, "TimerLanding", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local timerIceBlast		= mod:NewTimer(9.3, "TimerIceBlast", 15876)

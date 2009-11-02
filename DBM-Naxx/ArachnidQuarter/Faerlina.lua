@@ -11,14 +11,14 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnEmbraceActive		= mod:NewAnnounce("WarningEmbraceActive", 1, 28732)
+local warnEmbraceActive		= mod:NewSpellAnnounce(28732, 1)
 local warnEmbraceExpire		= mod:NewAnnounce("WarningEmbraceExpire", 2, 28732)
 local warnEmbraceExpired	= mod:NewAnnounce("WarningEmbraceExpired", 3, 28732)
-local warnEnrageSoon		= mod:NewAnnounce("WarningEnrageSoon", 3, 28131)
-local warnEnrageNow		= mod:NewAnnounce("WarningEnrageNow", 4, 28131)
+local warnEnrageSoon		= mod:NewSoonAnnounce(28131, 3)
+local warnEnrageNow			= mod:NewSpellAnnounce(28131, 4)
 
-local timerEmbrace		= mod:NewTimer(30, "TimerEmbrace", 28732)
-local timerEnrage		= mod:NewTimer(60, "TimerEnrage", 28131)
+local timerEmbrace			= mod:NewBuffActiveTimer(30, 28732)
+local timerEnrage			= mod:NewCDTimer(60, 28131)
 
 local embraceSpam = 0
 local enraged = false
