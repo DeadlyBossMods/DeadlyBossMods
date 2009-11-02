@@ -1285,19 +1285,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHorsemanSoldiers		= "Pulsing Pumpkin spawning",
-	specWarnHorsemanHead		= "Head spawned - Switch to the head"
+	warnHorsemanSoldiers	= "Pulsing Pumpkin spawning",
+	specWarnHorsemanHead	= "Head spawned - Switch to the head"
 })
 
 L:SetOptionLocalization({
-	warnHorsemanSoldiers		= "Show warning for Pulsing Pumpkin spawn",
-	specWarnHorsemanHead		= "Show special warning for Head of the Horseman spawn (2nd and later)"
+	warnHorsemanSoldiers	= "Show warning for Pulsing Pumpkin spawn",
+	specWarnHorsemanHead	= "Show special warning for Head of the Horseman spawn (2nd and later)"
 })
 
 L:SetMiscLocalization({
-	HorsemanHead				= "Get over here, you idiot!",
-	HorsemanSoldiers			= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
-	SayCombatEnd				= "This end have I reached before.  What new adventure lies in store?"
+	HorsemanHead			= "Get over here, you idiot!",
+	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
+	SayCombatEnd			= "This end have I reached before.  What new adventure lies in store?"
 })
 
 --------------------
