@@ -403,7 +403,7 @@ L:SetMiscLocalization{
 
 L:SetWarningLocalization{
 	WarnPhase2		= "Phase 2",
-	WarnSimulKill	= "First add down - Resurrection in ~12 seconds"
+	WarnSimulKill	= "First add down - Resurrection in ~12 seconds",
 	SpecWarnFury	= "Nature's Fury on you",
 	WarningTremor	= "Ground Tremor - Stop casting",
 	WarnRoots		= "Iron Roots on >%s<",
