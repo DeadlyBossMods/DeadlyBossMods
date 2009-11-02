@@ -1165,7 +1165,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnDesecration		= "Desecration - Move away",
-	warnExplode				= "Ghoul Minion is casting Explode - Move away"
+	warnExplode				= "Ghoul Explode - Run away"
 })
 
 L:SetOptionLocalization({
