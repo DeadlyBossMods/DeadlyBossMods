@@ -13,32 +13,24 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningSpark		= "Etincelle de puissance viens de d'arriver",
-	WarningVortex		= "Vortex",
 	WarningBreathSoon	= "Inspiration profonde Bientôt",
 	WarningBreath		= "Inspiration profonde!",
 	WarningSurge		= "Vague de puissance sur >%s<",
-	WarningVortexSoon	= "Vortex Bientôt",
 	WarningSurgeYou		= "Vague de puissance sur VOUS!"
 })
 
 L:SetTimerLocalization({
 	TimerSpark		= "Prochaine Etincelle de puissance",
-	TimerVortex		= "Vortex",
-	TimerBreath		= "Inspiration profonde",
-	TimerVortexCD	= "Cooldown Du Vortex"
+	TimerBreath		= "Inspiration profonde"
 })
 
 L:SetOptionLocalization({
 	WarningSpark		= "Montre une alerte pour les Etincelles de puissance",
-	WarningVortex		= "Montre une alerte pour le Vortex",
 	WarningBreathSoon	= "Montre une Pré-Alerte pour l'Inspiration profonde",
 	WarningBreath		= "Montre une alerte pour l'Inspiration profonde",
 	WarningSurge		= "Montre une alerte pour les Vagues de puissance",
 	TimerSpark			= "Montre le timer pour les Etincelles de puissance",
-	TimerVortex			= "Montre le timer pour le Vortex",
 	TimerBreath			= "Montre le timer pour l'Inspiration profonde",
-	TimerVortexCD		= "Montre le timer pour le Cooldown du Vortex (inaccurate)",
-	WarningVortexSoon	= "Montre une Pré-Alerte pour le Vortex (inaccurate)",
 	WarningSurgeYou		= "Montre une alerte spéciale quand vous êtes affecté par la Vague de puissance"
 })
 
