@@ -231,7 +231,7 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
 	PursueIcon				= "Set icons on pursued targets",
 	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to interrupt)",
-	SpecWarnPCold			= "Show special warning you are affected by Penetrating Cold",
+	SpecWarnPCold			= "Show special warning when you are affected by Penetrating Cold",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
 	SetIconsOnPCold         = "Set icons on Penetrating Cold targets"
 }
