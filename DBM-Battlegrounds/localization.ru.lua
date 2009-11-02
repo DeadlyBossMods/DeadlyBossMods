@@ -2,9 +2,9 @@
 
 local L
 
-----------------------------
+--------------------------
 --  General BG Options  --
-----------------------------
+--------------------------
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
@@ -207,8 +207,8 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	TimerShards 		= "Отсчет времени до града из Каменных осколков",
-	WarningShards 		= "Предупреждение для Каменных осколков",
-	WarningGrab 		= "Предупреждение для Захвата"
+	WarningShards 		= "Объявлять цели под Каменными осколками",
+	WarningGrab 		= "Объявлять о захвате цели"
 })
 --------------------------------
 --  Emalon the Storm Watcher  --
