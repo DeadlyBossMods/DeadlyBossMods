@@ -1167,7 +1167,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnDesecration		= "褻瀆 - 快跑開",
-	warnExplode				= "食屍鬼爪牙即將爆炸 - 快跑開"
+	warnExplode				= "食屍鬼爆炸 - 快跑開"
 })
 
 L:SetOptionLocalization({
@@ -1213,7 +1213,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "帕爾璀絲施放恢復於 >%s< - 快驅散"
+	specwarnRenew			= "恢復: %s - 快驅散"
 })
 
 L:SetOptionLocalization({
@@ -1233,7 +1233,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice		= "制裁之錘: >%s< - 快驅散",
+	specwarnHammerofJustice		= "制裁之錘: %s - 快驅散",
 	specwarnRadiance			= "烈光 - 背對王"
 })
 
