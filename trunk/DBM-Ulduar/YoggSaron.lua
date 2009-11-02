@@ -60,7 +60,7 @@ mod:AddBoolOption("WarningSqueeze", false, "announce")
 mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFavorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")
---mod:AddBoolOption("RaidRageSpam", false)
+mod:AddBoolOption("SetIconOnBrainLinkTarget")
 
 
 local enrageTimer	= mod:NewEnrageTimer(900)
@@ -125,10 +125,14 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(63802) then		-- Brain Link
 		if not brainLink1 then
-			self:SetIcon(args.destName, 6, 30)
+			if self.Options.SetIconOnBrainLinkTarget then
+				self:SetIcon(args.destName, 6, 30)
+			end
 			brainLink1 = args.destName
 		else
-			self:SetIcon(args.destName, 7, 30)
+			if self.Options.SetIconOnBrainLinkTarget then
+				self:SetIcon(args.destName, 7, 30)
+			end
 			warnBrainLink:Show(brainLink1, args.destName)
 			self:AnnounceBrainLink(brainLink1, args.destName)
 			self:AnnounceBrainLink(args.destName, brainLink1)

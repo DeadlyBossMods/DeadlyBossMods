@@ -633,7 +633,8 @@ L:SetOptionLocalization{
 	ShowSaraHealth					= "Show health frame for Sara in Phase 1 (must be targeted by at least one raid member)",
 	WarnEmpowerSoon					= "Show pre-warning for Empowering Shadows",
 	SpecWarnMaladyNear				= "Show special warning for Malady of the Mind near you",
-	SpecWarnDeafeningRoar			= "Show special warning when casting Deafening Roar (silence and for legendary)"
+	SpecWarnDeafeningRoar			= "Show special warning when casting Deafening Roar (silence and for legendary)",
+	SetIconOnBrainLinkTarget		= "Set icon on Brain Link targets"
 }
 
 
