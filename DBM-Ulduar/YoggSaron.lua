@@ -18,7 +18,7 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-mod:SetUsedIcons(4, 6, 7, 8)
+mod:SetUsedIcons(6, 7, 8)
 
 
 local warnGuardianSpawned 			= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
@@ -139,8 +139,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			brainLink1 = nil
 		end
 
-	elseif args:IsSpellID(63830, 63881) and self.Options.SetIconOnFearTarget then   -- Malady of the Mind (Fear) 
-		self:SetIcon(args.destName, 8, 30) 
+	elseif args:IsSpellID(63830, 63881) then   -- Malady of the Mind (Fear) 
+		if self.Options.SetIconOnFearTarget then
+			self:SetIcon(args.destName, 8, 30) 
+		end
 		local uId = DBM:GetRaidUnitId(args.destName) 
 		if uId then 
 			local inRange = CheckInteractDistance(uId, 2) 
@@ -150,7 +152,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end 
 		
 	elseif args:IsSpellID(63042) and self.Options.SetIconOnMCTarget then	-- MC
-		self:SetIcon(args.destName, 4, 30)
+		self:SetIcon(args.destName, 8, 30)
 
 	elseif args:IsSpellID(64126, 64125) then	-- Squeeze		
 		warnSqueeze:Show(args.destName)		
@@ -161,7 +163,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(63138) then	-- Sara's Favor
 		warnFavor:Show(args.destName)
 		if self.Options.SetIconOnFavorTarget then
-			self:SetIcon(args.destName, 4, 30)
+			self:SetIcon(args.destName, 7, 30)
 		end
 		if args:IsPlayer() then 
 			specWarnFavor:Show()
