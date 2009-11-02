@@ -24,7 +24,7 @@ local timerHardmode				= mod:NewTimer(175, "TimerHardmode", 62042)
 
 local warnPhase2				= mod:NewAnnounce("WarningPhase2", 1)
 local warnStormhammer			= mod:NewTargetAnnounce(62470, 2)
-local warnLightningCharge		= mod:NewAnnounce("WarningLightningCharge", 2, 62466)
+local warnLightningCharge		= mod:NewSpellAnnounce(62466, 2)
 local warnUnbalancingStrike		= mod:NewTargetAnnounce(62130, 4)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
 local warningBomb				= mod:NewTargetAnnounce(62526, 4)
 
@@ -84,6 +84,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(62042) then 		-- Storm Hammer
 		timerStormhammer:Schedule(2)
 	elseif args:IsSpellID(62466) then   	-- Lightning Charge
+		warnLightningCharge:Show()
 		timerLightningCharge:Start()	
 	elseif args:IsSpellID(62130) then	-- Unbalancing Strike
 		timerUnbalancingStrike:Start()
