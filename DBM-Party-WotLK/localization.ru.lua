@@ -266,13 +266,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("Новая волна"),
-	TimerWaveIn		= "Отсчет времени до cледующей волны (только волна 6)",
+	TimerWaveIn		= "Отсчет времени до cледующей волны (полсле волны 5 босс)",
 })
 
 
 L:SetMiscLocalization({
 	Meathook	= "Мясной Крюк",
-	Salramm		= "Салрамм Плоторез",
+	Salramm		= "Салрамм Плоторез",3
 	Devouring	= "Всепожирающий вурдалак",
 	Enraged		= "Разъярившийся вурдалак",
 	Necro		= "Мастер некромантии",
@@ -686,14 +686,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningMerge		= "Предупредить о Размытии"
+	WarningSplitSoon	= "Скоро Разделение",		-- translate
+	WarningSplitNow		= "Разделение",		-- translate
+	WarningMerge		= "Размытие"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningMerge		= optionWarning:format("Размытие"),
+	WarningSplitSoon	= "Предупредить о следующем Разделении",	-- translate
+	WarningSplitNow		= "Предупредить о Разделении",	-- translate
+	WarningMerge		= "Предупредить о Размытии"	-- translate
 })
 
 L:SetMiscLocalization({
