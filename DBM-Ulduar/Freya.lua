@@ -31,7 +31,7 @@ mod:AddBoolOption("HealthFrame", true)
 
 local warnPhase2		= mod:NewAnnounce("WarnPhase2", 3)
 local warnSimulKill		= mod:NewAnnounce("WarnSimulKill", 1)
-local warnFury			= mod:NewAnnounce("WarnFury", 2, 63571)
+local warnFury			= mod:NewTargetAnnounce(63571, 2)
 local warnRoots			= mod:NewAnnounce("WarnRoots", 2, 63601)
 
 local specWarnFury		= mod:NewSpecialWarning("SpecWarnFury")

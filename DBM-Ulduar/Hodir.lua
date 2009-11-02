@@ -21,7 +21,7 @@ local timerFlashFreeze		= mod:NewCastTimer(9, 61968)
 local timerFrozenBlows		= mod:NewBuffActiveTimer(20, 63512)
 local timerFlashFrCD		= mod:NewCDTimer(50, 61968)
 
-local warnStormCloud		= mod:NewAnnounce("WarningStormCloud")
+local warnStormCloud		= mod:NewTargetAnnounce(65123)
 local warnFlashFreeze		= mod:NewSpecialWarning("WarningFlashFreeze")
 
 local enrageTimer		= mod:NewEnrageTimer(475)
