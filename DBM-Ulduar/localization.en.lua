@@ -39,7 +39,7 @@ L:SetOptionLocalization{
 	PursueWarn				= "Announce pursued targets",
 	warnNextPursueSoon		= "Show pre-warning for next pursue",
 	warnWardofLife			= "Show special warning for Ward of Life spawn",
-	--warnWrithingLasher		= "Show special warning for Writhing Lasher spawn" --commenting out as it is currently unused for Flame Leviathan
+--	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn" --commenting out as it is currently unused for Flame Leviathan
 }
 
 
