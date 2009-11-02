@@ -22,18 +22,10 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningImpale			= "Предупреждение для Прокалывания",
-	WarningFireBomb			= "Предупреждение для Зажигательной бомбы",
-	WarningBreath			= "Предупреждение для Арктического дыхания",
-	WarningRage			= "Предупреждение когда Айсхаул впадает в Бурлящую ярость",
-	WarningCharge			= "Предупреждение для цели Топота",
-	WarningToxin			= "Спец-предупреждение, для цели Паралитического токсина",
-	WarningBile			= "Спец-предупреждение, для цели Горящей Желчи",
 	SpecialWarningImpale3		= "Спец-предупреждение для Прокалывания (>= 3 стека)",
 	SpecialWarningFireBomb		= "Спец-предупреждение если на вас Зажигательная бомба",
 	SpecialWarningSlimePool		= "Спец-предупреждение, если под вами Лужа жижи",
 	SpecialWarningSilence		= "Спец-предупреждение для Сотрясающего топота (безмолвие)",
-	SpecialWarningSpray		= "Спец-предупреждение, когда вы попадаете под Парализующие брызги",
 	SpecialWarningToxin		= "Спец-предупреждение, если на вас Паралитический токсин",
 	SpecialWarningBile		= "Спец-предупреждение, когда на вас Горящея Желчь",
 	SpecialWarningCharge		= "Спец-предупреждение, если Айсхаул хочет вас Растаптать",
@@ -52,18 +44,10 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningImpale			= "%s на >%s<",
-	WarningFireBomb			= "Зажигательная бомба",
-	WarningBreath			= "Арктическое дыхание",
-	WarningRage			= "Бурлящая ярость",
-	WarningCharge			= "Рывок к >%s<",
-	WarningToxin			= "Паралитический токсин на >%s<",
-	WarningBile			= "Горящая Желчь на >%s<",
 	SpecialWarningImpale3		= "Прокалывание >%d< на вас",
 	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
 	SpecialWarningSlimePool		= "Кислотная Жижа - бегите",
 	SpecialWarningSilence		= "Безмолвие через 1.5 секунды!",
-	SpecialWarningSpray		= "Парализующие брызги на вас",
 	SpecialWarningToxin		= "Паралитический токсин на вас - бегите",
 	SpecialWarningCharge		= "Рывок к вам - бегите",
 	SpecialWarningChargeNear	= "Рывок около вас - бегите",
@@ -80,18 +64,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnFlame			= ">%s< под воздействием Пламени Легиона",
-	WarnTouch			= "Касание Джараксуса на >%s<",
 	WarnNetherPower			= "Сила Пустоты на Лорде Джараксусе - рассейте заклинание",
-	WarnPortalSoon			= "Открываются Врата Пустоты",
-	WarnVolcanoSoon			= "Скоро Инфернальное извержение",
 	SpecWarnFlesh			= "Испепеление плоти на вас",
 	SpecWarnTouch			= "Касание Джараксуса на вас",
 	SpecWarnKiss			= "Поцелуй Госпожи",
 	SpecWarnTouchNear		= ">%s<, около вас, отмечен Касанием Джараксуса",
 	SpecWarnFlame			= "Пламя Легиона - бегите",
 	SpecWarnNetherPower		= "Рассейте заклинание",
-	SpecWarnFelInferno		= "Геенна скверны - бегите"
+	SpecWarnFelInferno		= "Геенна скверны - бегите",
+	SpecWarnFelFireball		= "Огненный шар Скверны - Прерывание",
+	SpecWarnFelFireballDispel	= "Огненный шар Скверны на %s - рассейте заклинание"
+
 }
 
 L:SetMiscLocalization{
@@ -100,11 +83,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnFlame			= "Предупреждение для Пламени легиона",
-	WarnTouch			= "Предупреждение для Касание Джараксуса",
 	WarnNetherPower			= "Предупреждение, когда Джараксус получает Силу пустоты",
-	WarnPortalSoon			= "Предупреждение о открытии Врат пустоты",
-	WarnVolcanoSoon			= "Предупреждение для Инфернальное извержении",
 	SpecWarnFlame			= "Спец-предупреждение, когда на вас Пламя легиона",
 	SpecWarnFlesh			= "Спец-предупреждение, когда на вас Испепеление плоти",
 	SpecWarnTouch			= "Спец-предупреждение, когда на вас Касание Джараксуса",
@@ -112,6 +91,8 @@ L:SetOptionLocalization{
 	SpecWarnKiss			= "Спец-предупреждение, когда на вас Поцелуй Госпожи",
 	SpecWarnNetherPower		= "Спец-предупреждение (для рассеивания) о Силе пустоты",
 	SpecWarnFelInferno		= "Спец-предупреждение, если около вас Геена скверны",
+	SpecWarnFelFireball		= "Спец-предупреждение для Огненного шара Скверны (для прерывания)",
+	SpecWarnFelFireballDispel	= "Спец-предупреждение, когда Огненный шар Скверны (для рассеивания)",
 	TouchJaraxxusIcon		= "Установить метку на цель с Касанием Джараксуса (крест)",
 	IncinerateFleshIcon		= "Установить метку на игрока с Испепелением плоти (череп)",
 	LegionFlameIcon			= "Установить метку на игрока с Пламенем легиона (квадрат)",
@@ -241,7 +222,6 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "Появление через 10 сек",
 	WarnSubmerge			= "Появляется Ануб'арак",
 	WarnSubmergeSoon		= "Погружение через 10 сек",
-	WarnPursue			= "Шипы Ануб'арака преследуют >%s<",
 	SpecWarnPursue			= "Вас приследуют",
 	warnAdds			= "Призыв помощников",
 	SpecWarnShadowStrike		= "Теневой удар - прерывание",
@@ -266,7 +246,6 @@ L:SetOptionLocalization{
 	TimerSubmerge			= "Отсчет времени до погружения",
 	PlaySoundOnPursue		= "Звуковой сигнал, если вас преследуют",
 	PursueIcon			= "Установить метку на преследуемого",
-	WarnPursue			= "Объявлять преследуемого",
 	SpecWarnShadowStrike		= "Спец-предупреждение, когда Теневой удар (для прерывания)",
 	SpecWarnPCold			= "Спец-предупреждение, когда на вас Пронизывающий холод",
 	RemoveHealthBuffsInP3		= "Удалить усиления здоровья в начале фазы 3",
