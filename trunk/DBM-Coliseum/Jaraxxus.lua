@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_HEAL",
@@ -22,11 +23,20 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 	    		 or select(2, UnitClass("player")) == "PRIEST"
 	    		 or select(2, UnitClass("player")) == "SHAMAN"
 
+local canInterrupt
+do
+	local class = select(2, UnitClass("player"))
+	canInterrupt = class == "SHAMAN"
+		or class == "WARRIOR"
+		or class == "ROGUE"
+		or class == "MAGE"
+end
 
 local warnPortalSoon		= mod:NewSoonAnnounce(67900, 2)
 local warnVolcanoSoon		= mod:NewSoonAnnounce(67901, 2)
 local warnFlame				= mod:NewTargetAnnounce(68123, 3)
 local warnTouch				= mod:NewTargetAnnounce(66209, 3)
+local warnFelFireball		= mod:NewTargetAnnounce(66963, 3)
 local warnNetherPower		= mod:NewAnnounce("WarnNetherPower", 4)
 
 local timerFlame 			= mod:NewTargetTimer(6, 68123)
@@ -44,6 +54,7 @@ local specWarnTouchNear		= mod:NewSpecialWarning("SpecWarnTouchNear", false)
 local specWarnKiss			= mod:NewSpecialWarning("SpecWarnKiss", false)
 local specWarnNetherPower	= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno	= mod:NewSpecialWarning("SpecWarnFelInferno")
+local SpecWarnFelFireball	= mod:NewSpecialWarning("SpecWarnFelFireball", canInterrupt)
 
 local enrageTimer			= mod:NewEnrageTimer(600)
 
@@ -172,6 +183,9 @@ function mod:SPELL_AURA_APPLIED(args)
 
 	elseif args:IsSpellID(66334, 67905, 67906, 67907) and args:IsPlayer() then
 		specWarnKiss:Show()
+
+	elseif args:IsSpellID(66532, 66963, 66964, 66965) then		-- Fel Fireball (announce if tank gets debuff for dispel)
+		warnFelFireball:Show(args.destName)
 	end
 end
 
@@ -179,6 +193,12 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(67051, 67050, 67049, 66237) then			-- Incinerate Flesh
 		timerFlesh:Stop()
 		clearIncinerateTarget(self, args.destName)
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(66532, 66963, 66964, 66965) then			-- Fel Fireball (track cast for interupt)
+		SpecWarnFelFireball:Show()
 	end
 end
 
