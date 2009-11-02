@@ -25,7 +25,7 @@ local timerAdds				= mod:NewTimer(45, "timerAdds")
 local Burrowed = false 
 
 -- Pursue
-local warnPursue			= mod:NewAnnounce("WarnPursue", 2)
+local warnPursue			= mod:NewTargetAnnounce(67574, 2)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
 mod:AddBoolOption("PlaySoundOnPursue")
 mod:AddBoolOption("PursueIcon")
