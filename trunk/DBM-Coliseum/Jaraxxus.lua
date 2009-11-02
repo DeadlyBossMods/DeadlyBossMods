@@ -18,43 +18,41 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_HEAL"
 )
 
-
 local isDispeller = select(2, UnitClass("player")) == "MAGE"
 	    		 or select(2, UnitClass("player")) == "PRIEST"
 	    		 or select(2, UnitClass("player")) == "SHAMAN"
 
-local canInterrupt
-do
-	local class = select(2, UnitClass("player"))
-	canInterrupt = class == "SHAMAN"
-		or class == "WARRIOR"
-		or class == "ROGUE"
-		or class == "MAGE"
-end
+local isMagicDispeller = select(2, UnitClass("player")) == "PALADIN"
+	    		 or select(2, UnitClass("player")) == "PRIEST"
 
-local warnPortalSoon		= mod:NewSoonAnnounce(67900, 2)
-local warnVolcanoSoon		= mod:NewSoonAnnounce(67901, 2)
-local warnFlame				= mod:NewTargetAnnounce(68123, 3)
-local warnTouch				= mod:NewTargetAnnounce(66209, 3)
-local warnFelFireball		= mod:NewTargetAnnounce(66963, 3)
-local warnNetherPower		= mod:NewAnnounce("WarnNetherPower", 4)
+local canInterrupt = select(2, UnitClass("player")) == "SHAMAN"
+	    		 or select(2, UnitClass("player")) == "WARRIOR"
+	    		 or select(2, UnitClass("player")) == "ROGUE"
+	    		 or select(2, UnitClass("player")) == "MAGE"
 
-local timerFlame 			= mod:NewTargetTimer(6, 68123)
-local timerFlameCD			= mod:NewCDTimer(30, 68125) 
-local timerFlesh			= mod:NewTargetTimer(12, 67049)
-local timerFleshCD			= mod:NewCDTimer(23, 67051) 
-local timerPortalCD			= mod:NewCDTimer(120, 67900)
-local timerVolcanoCD		= mod:NewCDTimer(120, 67901)
---local timerTouchCD		= mod:NewCDTimer(999, 12345)	-- cooldown?
+local warnPortalSoon			= mod:NewSoonAnnounce(67900, 2)
+local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 2)
+local warnFlame					= mod:NewTargetAnnounce(68123, 3)
+local warnTouch					= mod:NewTargetAnnounce(66209, 3)
+local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4)
 
-local specWarnFlame			= mod:NewSpecialWarning("SpecWarnFlame")
-local specWarnFlesh			= mod:NewSpecialWarning("SpecWarnFlesh")
-local specWarnTouch			= mod:NewSpecialWarning("SpecWarnTouch")
-local specWarnTouchNear		= mod:NewSpecialWarning("SpecWarnTouchNear", false)
-local specWarnKiss			= mod:NewSpecialWarning("SpecWarnKiss", false)
-local specWarnNetherPower	= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
-local specWarnFelInferno	= mod:NewSpecialWarning("SpecWarnFelInferno")
-local SpecWarnFelFireball	= mod:NewSpecialWarning("SpecWarnFelFireball", canInterrupt)
+local timerFlame 				= mod:NewTargetTimer(6, 68123)
+local timerFlameCD				= mod:NewCDTimer(30, 68125) 
+local timerFlesh				= mod:NewTargetTimer(12, 67049)
+local timerFleshCD				= mod:NewCDTimer(23, 67051) 
+local timerPortalCD				= mod:NewCDTimer(120, 67900)
+local timerVolcanoCD			= mod:NewCDTimer(120, 67901)
+--local timerTouchCD			= mod:NewCDTimer(999, 12345)	-- cooldown?
+
+local specWarnFlame				= mod:NewSpecialWarning("SpecWarnFlame")
+local specWarnFlesh				= mod:NewSpecialWarning("SpecWarnFlesh")
+local specWarnTouch				= mod:NewSpecialWarning("SpecWarnTouch")
+local specWarnTouchNear			= mod:NewSpecialWarning("SpecWarnTouchNear", false)
+local specWarnKiss				= mod:NewSpecialWarning("SpecWarnKiss", false)
+local specWarnNetherPower		= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
+local specWarnFelInferno		= mod:NewSpecialWarning("SpecWarnFelInferno")
+local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", canInterrupt)
+local SpecWarnFelFireballDispel	= mod:NewSpecialWarning("SpecWarnFelFireballDispel", isMagicDispeller)
 
 local enrageTimer			= mod:NewEnrageTimer(600)
 
@@ -185,7 +183,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnKiss:Show()
 
 	elseif args:IsSpellID(66532, 66963, 66964, 66965) then		-- Fel Fireball (announce if tank gets debuff for dispel)
-		warnFelFireball:Show(args.destName)
+		SpecWarnFelFireballDispel:Show(args.destName)
 	end
 end
 
