@@ -27,7 +27,7 @@ L:SetWarningLocalization{
 	SpecialPursueWarnYou	= "You are being pursued - Run away",
 	SystemOverload			= "System Overload",
 	warnWardofLife			= "Ward of Life spawned",
-	warnWrithingLasher		= "Writhing Lasher spawned"
+--	warnWrithingLasher		= "Writhing Lasher spawned"
 }
 
 L:SetOptionLocalization{
