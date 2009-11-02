@@ -12,24 +12,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialLocust				= "Жуки-трупоеды",
-	WarningLocustSoon			= "Жуки-трупоеды через 15 секунд",
-	WarningLocustNow			= "Жуки-трупоеды",
-	WarningLocustFaded			= "Жуки-трупоеды исчезают"
-})
-
-L:SetTimerLocalization({
-	TimerLocustIn				= "Жуки-трупоеды", 
-	TimerLocustFade				= "Жуки-трупоеды активны"
+	SpecialLocust			= "Жуки-трупоеды",
+	WarningLocustFaded		= "Жуки-трупоеды исчезают"
 })
 
 L:SetOptionLocalization({
-	SpecialLocust				= "Cпец-предупреждение для Жуков-трупоедов",
-	WarningLocustSoon			= "Предупреждать перед следующими Жуками-трупоедами",
-	WarningLocustNow			= "Предупреждение для Жуков-трупоедов",
-	WarningLocustFaded			= "Предупреждение для исчезновения Жуков-трупоедов",
-	TimerLocustIn				= "Отсчет времени до Жуков-трупоедов", 
-	TimerLocustFade 			= "Отсчет времени до исчезновения Жуков-трупоедов"
+	SpecialLocust			= "Cпец-предупреждение для Жуков-трупоедов",
+	WarningLocustFaded		= "Предупреждение для исчезновения Жуков-трупоедов",
+	TimerLocustFade 		= "Отсчет времени до исчезновения Жуков-трупоедов"
 })
 
 ----------------------------
@@ -42,26 +32,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceActive		= "Объятие Вдовы",
 	WarningEmbraceExpire		= "Объятие Вдовы через 5 секунд",
-	WarningEmbraceExpired		= "Объятие Вдовы исчезает",
-	WarningEnrageSoon			= "Скоро Исступление",
-	WarningEnrageNow			= "Исступление!"
-})
-
-L:SetTimerLocalization({
-	TimerEmbrace				= "Объятие Вдовы активно",
-	TimerEnrage					= "Исступление"
+	WarningEmbraceExpired		= "Объятие Вдовы исчезает"
 })
 
 L:SetOptionLocalization({
-	TimerEmbrace				= "Отсчет времени до Объятия Вдовы",
-	WarningEmbraceActive		= "Предупреждение для Объятия Вдовы",
 	WarningEmbraceExpire		= "Предупреждение, когда Объятие Вдовы исчезает",
-	WarningEmbraceExpired		= "Предупреждение, когда Объятие Вдовы закончится",
-	WarningEnrageSoon			= "Предупреждать о скором Исступлении",
-	WarningEnrageNow			= "Предупреждение для Исступления",
-	TimerEnrage					= "Отсчет времени до Исступления"
+	WarningEmbraceExpired		= "Предупреждение, когда Объятие Вдовы закончится"
 })
 
 ---------------
@@ -74,26 +51,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWebWrap				= "Опутывание паутиной: >%s<",
-	WarningWebSpraySoon			= "Летящая паутина через 5 секунд",
-	WarningWebSprayNow			= "Мексна разбрасывает нити паутины",
-	WarningSpidersSoon			= "Паученыши Мексны через 5 секунд",
-	WarningSpidersNow			= "В паутине появляются паучата"
+	WarningSpidersSoon		= "Паученыши Мексны через 5 секунд",
+	WarningSpidersNow		= "В паутине появляются паучата"
 })
 
 L:SetTimerLocalization({
-	TimerWebSpray				= "Летящая паутина",
-	TimerSpider					= "Паученыши Мексны"
+	TimerSpider			= "Паученыши Мексны"
 })
 
 L:SetOptionLocalization({
-	WarningWebWrap				= "Cпец-предупреждение для Опутывания паутиной",
-	WarningWebSpraySoon			= "Предупреждать перед следующей Летящей паутиной",
-	WarningWebSprayNow			= "Предупреждение для Летящей паутины",
-	WarningSpidersSoon			= "Предупреждать перед следующим призывом Паученышей Мексны",
-	WarningSpidersNow			= "Предупреждение для призыва Паученышей Мексны",
-	TimerWebSpray				= "Отсчет времени до Летящей паутины",
-	TimerSpider					= "Отсчет времени до призыва Паученышей Мексны"
+	WarningSpidersSoon		= "Предупреждать перед следующим призывом Паученышей Мексны",
+	WarningSpidersNow		= "Предупреждение для призыва Паученышей Мексны"
 })
 
 L:SetMiscLocalization({
@@ -111,8 +79,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningTeleportNow			= "Телепортация",
-	WarningTeleportSoon			= "Телепортация через 20 секунд",
-	WarningCurse				= "Проклятие Чумного"
+	WarningTeleportSoon			= "Телепортация через 20 секунд"
 })
 
 L:SetTimerLocalization({
@@ -123,7 +90,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow			= "Предупреждение о телепортации",
 	WarningTeleportSoon			= "Предупреждать перед следующей телепортацией",
-	WarningCurse				= "Предупреждение для Проклятия Чумного",
 	TimerTeleport				= "Отсчет времени до телепортации",
 	TimerTeleportBack			= "Отсчет времени до обратной телепортации"
 })
@@ -164,28 +130,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSporeNow				= "Призывает спору",
-	WarningSporeSoon			= "Вызов споры через 5 секунд",
-	WarningDoomNow				= "Неотвратимый рок #%d",
 	WarningHealSoon				= "Исцеление через 3 секунды",
 	WarningHealNow				= "Исцеление"
 })
 
-L:SetTimerLocalization({
-	TimerDoom					= "Неотвратимый рок #%d",
-	TimerSpore					= "Следующий Вызов споры",
-	TimerAura					= "Мертвенная аура"
-})
-
 L:SetOptionLocalization({
-	WarningSporeNow				= "Предупреждение для вызова спор",
-	WarningSporeSoon			= "Предупреждать перед следующим вызовом спор",
-	WarningDoomNow				= "Предупреждение для Неотвратимого рока",
 	WarningHealSoon				= "Предупреждать перед следующим исцелением",
-	WarningHealNow				= "Предупреждение для исцеления",
-	TimerDoom					= "Отсчет времени до Неотвратимого рока",
-	TimerSpore					= "Отсчет времени до вызова спор",
-	TimerAura					= "Отсчет времени до Мертвенной ауры"
+	WarningHealNow				= "Предупреждение для исцеления"
 })
 
 -----------------
@@ -202,9 +153,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yell1 = "Лоскутик хочет поиграть!",
-	yell2 = "Кел'Тузад объявил Лоскутика воплощением войны!",
-	HatefulStrike = "Удар ненависти --> %s [%s]"
+	yell1 					= "Лоскутик хочет поиграть!",
+	yell2 					= "Кел'Тузад объявил Лоскутика воплощением войны!",
+	HatefulStrike 				= "Удар ненависти --> %s [%s]"
 })
 
 -----------------
@@ -217,13 +168,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningInjection			= "Предупреждение для Мутагенного укола",
-	SpecialWarningInjection		= "Cпец-предупреждение для Мутагенного укола"
+	SpecialWarningInjection			= "Cпец-предупреждение для Мутагенного укола"
 })
 
 L:SetWarningLocalization({
-	WarningInjection			= "Мутагенный укол: >%s<",
-	SpecialWarningInjection		= "Вам сделали мутагенный укол."
+	SpecialWarningInjection			= "Вам сделали мутагенный укол."
 })
 
 L:SetTimerLocalization({
@@ -236,21 +185,7 @@ L = DBM:GetModLocalization("Gluth")
 
 L:SetGeneralLocalization({
 	name = "Глут"
-})
 
-L:SetOptionLocalization({
-	WarningDecimateNow			= "Предупреждение для Истребления",
-	WarningDecimateSoon			= "Предупреждать перед следующим Истреблением",
-	TimerDecimate				= "Отсчет времени до Истребления"
-})
-
-L:SetWarningLocalization({
-	WarningDecimateNow			= "Истребление!",
-	WarningDecimateSoon			= "Истребление через 10 секунд"
-})
-
-L:SetTimerLocalization({
-	TimerDecimate				= "Истребление"
 })
 
 ----------------
@@ -273,31 +208,17 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShiftCasting			= "Предупреждение для Сдвига полярности",
-	WarningChargeChanged		= "Предупреждение, когда ваша полярность изменена",
-	WarningChargeNotChanged		= "Предупреждение, когда ваша полярность не изменена",
+	WarningChargeChanged			= "Предупреждение, когда ваша полярность изменена",
+	WarningChargeNotChanged			= "Предупреждение, когда ваша полярность не изменена",
 	TimerShiftCast				= "Отсчет времени до Сдвига полярности",
-	TimerNextShift				= "Отсчет времени до перезарядки Сдвига полярности",
 	ArrowsEnabled				= "Отображать стрелки (обычная \"2-сторонняя\" стратегия)",
 	ArrowsRightLeft				= "Стрелки влево/вправо для \"4-сторонней\" стратегии",
 	ArrowsInverse				= "Обратная \"4-сторонняя\" стратегия (вправо, если полярность изменена, влево, если нет)",
-	WarningThrow				= "Предупреждение для Броска",
-	WarningThrowSoon			= "Предупреждать перед следующим Броском",
-	TimerThrow					= "Отсчет времени до Броска"
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting			= "Сдвиг полярности через 3 секунды",
-	WarningChargeChanged		= "%s - полярность изменена",
-	WarningChargeNotChanged		= "Полярность не изменена",
-	WarningThrow				= "Бросок",
-	WarningThrowSoon			= "Бросок через 3 секунды"
-})
-
-L:SetTimerLocalization({
-	TimerShiftCast				= "Сдвиг полярности",
-	TimerNextShift				= "Следующий Сдвиг полярности",
-	TimerThrow					= "Бросок"
+	WarningChargeChanged			= "%s - полярность изменена",
+	WarningChargeNotChanged			= "Полярность не изменена"
 })
 
 L:SetOptionCatLocalization({
@@ -321,24 +242,11 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow			= "Объявлять Разрушительный крик",
-	WarningShoutSoon		= "Предупреждать о приближении Разрушительного крика",
-	TimerShout			= "Отсчет времени до Разрушительного крика",
-	WarningShieldWallSoon		= "Предупреждать о скором исчезновении Стены костей",
-	TimerShieldWall			= "Отсчет времени до Стены костей",
-	TimerTaunt			= "Отсчет времени до Провокации"
+	WarningShieldWallSoon			= "Предупреждать о скором исчезновении Стены костей"
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow			= "Разрушительный крик",
-	WarningShoutSoon		= "Разрушительный крик через 5 секунд",
-	WarningShieldWallSoon		= "Стена костей закончится через 5 секунд"
-})
-
-L:SetTimerLocalization({
-	TimerShout			= "Разрушительный крик",
-	TimerTaunt			= "Провокация",
-	TimerShieldWall			= "Стена костей"
+	WarningShieldWallSoon			= "Стена костей закончится через 5 секунд"
 })
 
 ----------------------------
@@ -426,12 +334,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningDrainLifeNow		= "Объявлять Похищение жизни",
-	WarningDrainLifeSoon		= "Предупреждать о приближающемся Похищении жизни",
 	WarningAirPhaseSoon		= "Предупреждать о приближении Воздушной фазы",
 	WarningAirPhaseNow		= "Объявлять Воздушную фазу",
 	WarningLanded			= "Объявлять Наземную фазу",
-	TimerDrainLifeCD		= "Отсчет времени до перезарядки Похищения жизни",
 	TimerAir			= "Отсчет времени до Воздушной фазы",
 	TimerLanding			= "Отсчет времени до приземления",
 	TimerIceBlast			= "Отсчет времени до Ледяного дыхания",
@@ -445,8 +350,6 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningDrainLifeNow		= "Похищение Жизни!",
-	WarningDrainLifeSoon		= "Скоро Похищение жизни",
 	WarningAirPhaseSoon		= "Воздушная фаза через 10 секунд",
 	WarningAirPhaseNow		= "Воздушная фаза",
 	WarningLanded			= "Сапфирон приземляется",
@@ -454,7 +357,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrainLifeCD		= "Перезарядка Похищения жизни",
 	TimerAir			= "Воздушная фаза",
 	TimerLanding			= "Приземление",
 	TimerIceBlast			= "Ледяное дыхание"	
@@ -471,13 +373,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	BlastTimer			= "Отсчет времени до Ледяного взрыва (4-секундный отсчет до смерти цели)",
 	TimerPhase2			= "Отсчет времени до второй фазы",
-	WarningBlastTargets		= "Предупреждать о Ледяном взрыве",
-	WarningPhase2			= "Объявлять наступление второй фазы",
-	WarningFissure			= "Объявлять Расщелины тьмы",
-	WarningMana			= "Объявлять Взрыв маны",
-    	WarningChainsTargets		= "Предупреждение для цепей Кел'Тузада",
 	specwarnP2Soon 			= "Спец-предупреждение за 10 секунд до начала фазы Кел'Тузад",
 	ShowRange			= "Показать окно допустимой дистанции, когда начинается фаза 2"
 })
@@ -487,11 +383,6 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBlastTargets		= "Ледяной взрыв: >%s<",
-	WarningPhase2			= "Фаза 2",
-	WarningFissure			= "Появилась Расщелина тьмы",
-	WarningMana			= "Взрыв маны: >%s<",
-    	WarningChainsTargets		= "Цепи Кел'Тузада: >%s<",
 	specwarnP2Soon 			= "Кел'Тузад через 10 секунд"
 })
 
