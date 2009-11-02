@@ -20,13 +20,6 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningImpale				= "Show warning for Impale",
-	WarningFireBomb				= "Show warning for Fire Bomb",
-	WarningBreath				= "Show warning for Arctic Breath",
-	WarningRage					= "Show warning for Frothing Rage",
-	WarningCharge				= "Announce charge targets",
-	WarningToxin				= "Announce Paralytic Toxin targets",
-	WarningBile					= "Announce Burning Bile targets",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning when you take damage from Slime Pool",
@@ -49,13 +42,6 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningImpale				= "%s on >%s<",
-	WarningFireBomb				= "Fire Bomb",
-	WarningBreath				= "Arctic Breath",
-	WarningRage					= "Frothing Rage",
-	WarningCharge				= "Charge on >%s<",
-	WarningToxin				= "Paralytic Toxin on >%s<",
-	WarningBile					= "Burning Bile on >%s<",
 	SpecialWarningImpale3		= "Impale >%d< on you",
 	SpecialWarningFireBomb		= "Fire Bomb on you",
 	SpecialWarningSlimePool		= "Slime Pool - Move away",
@@ -79,11 +65,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnFlame				= "Legion Flame on >%s<",
-	WarnTouch				= "Touch of Jaraxxus on >%s<",
 	WarnNetherPower			= "Nether Power on Lord Jaraxxus - Dispel now",
-	WarnPortalSoon			= "Nether Portal soon",
-	WarnVolcanoSoon			= "Infernal Volcano soon",
 	SpecWarnFlesh			= "Incinerate Flesh on you",
 	SpecWarnTouch			= "Touch of Jaraxxus on you",
 	SpecWarnKiss			= "Mistress' Kiss",
@@ -99,11 +81,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnFlame				= "Show warning for Legion Flame",
-	WarnTouch				= "Show warning for Touch of Jaraxxus",
 	WarnNetherPower			= "Show warning when Lord Jaraxxus gains Nether Power (to dispel/steal)",
-	WarnPortalSoon			= "Show pre-warning for Nether Portal spawn",
-	WarnVolcanoSoon			= "Show pre-warning for Infernal Volcano spawn",
 	SpecWarnFlame			= "Show special warning when you are affected by Legion Flame",
 	SpecWarnFlesh			= "Show special warning when you are affected by Incinerate Flesh",
 	SpecWarnTouch			= "Show special warning when you are affected by Touch of Jaraxxus",
@@ -228,7 +206,6 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "Emerge in 10 seconds",
 	WarnSubmerge			= "Anub'arak submerges",
 	WarnSubmergeSoon		= "Submerge in 10 seconds",
-	WarnPursue				= "Pursuing >%s<",
 	SpecWarnPursue			= "Pursuing you",
 	warnAdds				= "Adds incoming",
 	SpecWarnShadowStrike	= "Shadow Strike - Interrupt now",
@@ -253,7 +230,6 @@ L:SetOptionLocalization{
 	TimerSubmerge			= "Show timer for submerge",
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
 	PursueIcon				= "Set icons on pursued targets",
-	WarnPursue				= "Announce pursued targets",
 	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to interrupt)",
 	SpecWarnPCold			= "Show special warning you are affected by Penetrating Cold",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 

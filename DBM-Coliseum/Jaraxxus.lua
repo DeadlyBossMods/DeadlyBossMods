@@ -23,10 +23,10 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 	    		 or select(2, UnitClass("player")) == "SHAMAN"
 
 
-local warnPortalSoon		= mod:NewAnnounce("WarnPortalSoon", 2)
-local warnVolcanoSoon		= mod:NewAnnounce("WarnVolcanoSoon", 2)
-local warnFlame				= mod:NewAnnounce("WarnFlame", 3)
-local warnTouch				= mod:NewAnnounce("WarnTouch", 3)
+local warnPortalSoon		= mod:NewSoonAnnounce(67900, 2)
+local warnVolcanoSoon		= mod:NewSoonAnnounce(67901, 2)
+local warnFlame				= mod:NewTargetAnnounce(68123, 3)
+local warnTouch				= mod:NewTargetAnnounce(66209, 3)
 local warnNetherPower		= mod:NewAnnounce("WarnNetherPower", 4)
 
 local timerFlame 			= mod:NewTargetTimer(6, 68123)
