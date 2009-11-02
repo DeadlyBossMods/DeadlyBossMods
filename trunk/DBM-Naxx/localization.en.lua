@@ -62,6 +62,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningSpidersSoon	= "Show pre-warning for Maexxna Spiderlings",
 	WarningSpidersNow	= "Show warning for Maexxna Spiderlings",
+	TimerSpider			= "Show timer for Maexxna Spiderlings"
 })
 
 L:SetMiscLocalization({
