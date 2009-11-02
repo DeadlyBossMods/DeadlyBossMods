@@ -65,38 +65,40 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnNetherPower			= "Nether Power on Lord Jaraxxus - Dispel now",
-	SpecWarnFlesh			= "Incinerate Flesh on you",
-	SpecWarnTouch			= "Touch of Jaraxxus on you",
-	SpecWarnKiss			= "Mistress' Kiss",
-	SpecWarnTouchNear		= "Touch of Jaraxxus on %s near you",
-	SpecWarnFlame			= "Legion Flame - Run away",
-	SpecWarnNetherPower		= "Dispel now",
-	SpecWarnFelInferno		= "Fel Inferno - Run away",
-	SpecWarnFelFireball		= "Fel Fireball - Interrupt"
+	WarnNetherPower				= "Nether Power on Lord Jaraxxus - Dispel now",
+	SpecWarnFlesh				= "Incinerate Flesh on you",
+	SpecWarnTouch				= "Touch of Jaraxxus on you",
+	SpecWarnKiss				= "Mistress' Kiss",
+	SpecWarnTouchNear			= "Touch of Jaraxxus on %s near you",
+	SpecWarnFlame				= "Legion Flame - Run away",
+	SpecWarnNetherPower			= "Dispel now",
+	SpecWarnFelInferno			= "Fel Inferno - Run away",
+	SpecWarnFelFireball			= "Fel Fireball - Interrupt",
+	SpecWarnFelFireballDispel	= "Fel Fireball on %s - Dispel"
 
 }
 
 L:SetMiscLocalization{
-	WhisperFlame			= "Legion Flame on you",
-	IncinerateTarget		= "Incinerate Flesh: %s"
+	WhisperFlame				= "Legion Flame on you",
+	IncinerateTarget			= "Incinerate Flesh: %s"
 }
 
 L:SetOptionLocalization{
-	WarnNetherPower			= "Show warning when Lord Jaraxxus gains Nether Power (to dispel/steal)",
-	SpecWarnFlame			= "Show special warning when you are affected by Legion Flame",
-	SpecWarnFlesh			= "Show special warning when you are affected by Incinerate Flesh",
-	SpecWarnTouch			= "Show special warning when you are affected by Touch of Jaraxxus",
-	SpecWarnTouchNear		= "Show special warning for Touch of Jaraxxus near you",
-	SpecWarnKiss			= "Show special warning when you are affected by Mistress' Kiss",
-	SpecWarnNetherPower		= "Show special warning for Nether Power (to dispel/steal)",
-	SpecWarnFelInferno		= "Show special warning when you are near a Fel Inferno",
-	SpecWarnFelFireball		= "Show special warning for Fel Fireball (to interrupt)",
-	TouchJaraxxusIcon		= "Set icons on Touch of Jaraxxus targets (cross)",
-	IncinerateFleshIcon		= "Set icons on Incinerate Flesh targets (skull)",
-	LegionFlameIcon			= "Set icons on Legion Flame targets (square)",
-	LegionFlameWhisper		= "Send whisper to Legion Flame targets",
-	IncinerateShieldFrame	= "Show boss health with a health bar for Incinerate Flesh"
+	WarnNetherPower				= "Show warning when Lord Jaraxxus gains Nether Power (to dispel/steal)",
+	SpecWarnFlame				= "Show special warning when you are affected by Legion Flame",
+	SpecWarnFlesh				= "Show special warning when you are affected by Incinerate Flesh",
+	SpecWarnTouch				= "Show special warning when you are affected by Touch of Jaraxxus",
+	SpecWarnTouchNear			= "Show special warning for Touch of Jaraxxus near you",
+	SpecWarnKiss				= "Show special warning when you are affected by Mistress' Kiss",
+	SpecWarnNetherPower			= "Show special warning for Nether Power (to dispel/steal)",
+	SpecWarnFelInferno			= "Show special warning when you are near a Fel Inferno",
+	SpecWarnFelFireball			= "Show special warning for Fel Fireball (to interrupt)",
+	SpecWarnFelFireballDispel	= "Show special warning for Fel Fireball (to dispel)",
+	TouchJaraxxusIcon			= "Set icons on Touch of Jaraxxus targets (cross)",
+	IncinerateFleshIcon			= "Set icons on Incinerate Flesh targets (skull)",
+	LegionFlameIcon				= "Set icons on Legion Flame targets (square)",
+	LegionFlameWhisper			= "Send whisper to Legion Flame targets",
+	IncinerateShieldFrame		= "Show boss health with a health bar for Incinerate Flesh"
 }
 
 
