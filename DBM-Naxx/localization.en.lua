@@ -11,22 +11,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecialLocust		= "Locust Swarm",
-	WarningLocustSoon	= "Locust Swarm in 15 seconds",
-	WarningLocustNow	= "Locust Swarm",
 	WarningLocustFaded	= "Locust Swarm faded"
-})
-
-L:SetTimerLocalization({
-	TimerLocustIn		= "Locust Swarm", 
-	TimerLocustFade		= "Locust Swarm active"
 })
 
 L:SetOptionLocalization({
 	SpecialLocust		= "Show special warning for Locust Swarm",
-	WarningLocustSoon	= "Show pre-warning for Locust Swarm",
-	WarningLocustNow	= "Show warning for Locust Swarm",
 	WarningLocustFaded	= "Show warning for Locust Swarm fade",
-	TimerLocustIn		= "Show timer for Locust Swarm", 
 	TimerLocustFade 	= "Show timer for Locust Swarm fade"
 })
 
@@ -41,26 +31,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningEmbraceActive	= "Widow's Embrace",
 	WarningEmbraceExpire	= "Widow's Embrace ends in 5 seconds",
 	WarningEmbraceExpired	= "Widow's Embrace faded",
-	WarningEnrageSoon		= "Frenzy soon",
-	WarningEnrageNow		= "Frenzy"
-})
-
-L:SetTimerLocalization({
-	TimerEmbrace			= "Widow's Embrace active",
-	TimerEnrage				= "Frenzy"
 })
 
 L:SetOptionLocalization({
-	TimerEmbrace			= "Show timer for Widow's Embrace",
-	WarningEmbraceActive	= "Show warning for Widow's Embrace",
 	WarningEmbraceExpire	= "Show pre-warning for Widow's Embrace fade",
 	WarningEmbraceExpired	= "Show warning for Widow's Embrace fade",
-	WarningEnrageSoon		= "Show pre-warning for Frenzy",
-	WarningEnrageNow		= "Show warning for Frenzy",
-	TimerEnrage				= "Show timer for Frenzy"
 })
 
 
@@ -74,26 +51,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWebWrap		= "Web Wrap: >%s<",
-	WarningWebSpraySoon	= "Web Spray in 5 seconds",
-	WarningWebSprayNow	= "Web Spray",
 	WarningSpidersSoon	= "Maexxna Spiderlings in 5 seconds",
 	WarningSpidersNow	= "Maexxna Spiderlings spawned"
 })
 
 L:SetTimerLocalization({
-	TimerWebSpray		= "Web Spray",
 	TimerSpider			= "Maexxna Spiderlings"
 })
 
 L:SetOptionLocalization({
-	WarningWebWrap		= "Announce Web Wrap targets",
-	WarningWebSpraySoon	= "Show pre-warning for Web Spray",
-	WarningWebSprayNow	= "Show warning for Web Spray",
 	WarningSpidersSoon	= "Show pre-warning for Maexxna Spiderlings",
 	WarningSpidersNow	= "Show warning for Maexxna Spiderlings",
-	TimerWebSpray		= "Show timer for Web Spray",
-	TimerSpider			= "Show timer for Maexxna Spiderlings"
 })
 
 L:SetMiscLocalization({
@@ -112,7 +80,6 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningTeleportNow		= "Teleported",
 	WarningTeleportSoon		= "Teleport in 20 seconds",
-	WarningCurse			= "Curse"
 })
 
 L:SetTimerLocalization({
@@ -123,7 +90,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow		= "Show warning for Teleport",
 	WarningTeleportSoon		= "Show pre-warning for Teleport",
-	WarningCurse			= "Show warning for Curse of the Plaguebringer",
 	TimerTeleport			= "Show timer for Teleport",
 	TimerTeleportBack		= "Show timer for Teleport back"
 })
@@ -166,28 +132,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSporeNow		= "Spore spawned",
-	WarningSporeSoon	= "Spore in 5 seconds",
-	WarningDoomNow		= "Inevitable Doom #%d",
 	WarningHealSoon		= "Healing possible in 3 seconds",
 	WarningHealNow		= "Heal now"
 })
 
-L:SetTimerLocalization({
-	TimerDoom			= "Inevitable Doom #%d",
-	TimerSpore			= "Next Spore",
-	TimerAura			= "Necrotic Aura"
-})
-
 L:SetOptionLocalization({
-	WarningSporeNow		= "Show warning for Spore",
-	WarningSporeSoon	= "Show pre-warning for Spore",
-	WarningDoomNow		= "Show warning for Inevitable Doom",
 	WarningHealSoon		= "Show pre-warning for 3-second healing window",
 	WarningHealNow		= "Show warning for 3-second healing window",
-	TimerDoom			= "Show timer for Inevitable Doom",
-	TimerSpore			= "Show timer for Spore",
-	TimerAura			= "Show timer for Necrotic Aura"
 })
 
 
@@ -222,12 +173,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningInjection		= "Show warning for Mutating Injection",
 	SpecialWarningInjection	= "Show special warning when you are affected by Mutating Injection"
 })
 
 L:SetWarningLocalization({
-	WarningInjection		= "Mutating Injection: >%s<",
 	SpecialWarningInjection	= "Mutating Injection on you"
 })
 
@@ -244,21 +193,6 @@ L:SetGeneralLocalization({
 	name = "Gluth"
 })
 
-L:SetOptionLocalization({
-	WarningDecimateNow	= "Show warning for Decimate",
-	WarningDecimateSoon	= "Show pre-warning for Decimate",
-	TimerDecimate		= "Show timer for Decimate"
-})
-
-L:SetWarningLocalization({
-	WarningDecimateNow	= "Decimate",
-	WarningDecimateSoon	= "Decimate in 10 seconds"
-})
-
-L:SetTimerLocalization({
-	TimerDecimate		= "Decimate cooldown"
-})
-
 
 ----------------
 --  Thaddius  --
@@ -271,8 +205,8 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization({
 	Yell	= "Stalagg crush you!",
-	Emote	= "%s overloads!", -- ?
-	Emote2	= "Tesla Coil overloads!", -- ?
+	Emote	= "%s overloads!",
+	Emote2	= "Tesla Coil overloads!",
 	Boss1	= "Feugen",
 	Boss2	= "Stalagg",
 	Charge1 = "negative",
@@ -280,31 +214,17 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShiftCasting		= "Show warning for Polarity Shift",
 	WarningChargeChanged	= "Show special warning when your polarity changed",
 	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
 	TimerShiftCast			= "Show timer for Polarity Shift cast",
-	TimerNextShift			= "Show timer for Polarity Shift cooldown",
 	ArrowsEnabled			= "Show arrows (normal \"2 camp\" strategy)",
 	ArrowsRightLeft			= "Show left/right arrows for the \"4 camp\" strategy (show left arrow if polarity changed, right if not)",
 	ArrowsInverse			= "Inverse \"4 camp\" strategy (show right arrow if polarity changed, left if not)",
-	WarningThrow			= "Show warning for tank throw",
-	WarningThrowSoon		= "Show pre-warning for tank throw",
-	TimerThrow				= "Show timer for tank throw"
 })
 
 L:SetWarningLocalization({
-	WarningShiftCasting		= "Polarity Shift in 3 seconds",
 	WarningChargeChanged	= "Polarity changed to %s",
 	WarningChargeNotChanged	= "Polarity did not change",
-	WarningThrow			= "Tank throw",
-	WarningThrowSoon		= "Tank throw in 3 seconds"
-})
-
-L:SetTimerLocalization({
-	TimerShiftCast			= "Polarity Shift cast",
-	TimerNextShift			= "Next Polarity Shift",
-	TimerThrow				= "Tank throw"
 })
 
 L:SetOptionCatLocalization({
@@ -329,25 +249,13 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShoutNow			= "Show warning for Disrupting Shout",
-	WarningShoutSoon		= "Show pre-warning for Disrupting Shout",
-	TimerShout				= "Show timer for Disrupting Shout",
 	WarningShieldWallSoon	= "Show pre-warning for Shield Wall ending",
-	TimerShieldWall			= "Show timer for Shield Wall",
-	TimerTaunt				= "Show timer for Taunt"
 })
 
 L:SetWarningLocalization({
-	WarningShoutNow			= "Disrupting Shout",
-	WarningShoutSoon		= "Disrupting Shout in 5 seconds",
 	WarningShieldWallSoon	= "Shield Wall ends in 5 seconds"
 })
 
-L:SetTimerLocalization({
-	TimerShout			= "Disrupting Shout",
-	TimerTaunt			= "Taunt",
-	TimerShieldWall		= "Shield Wall"
-})
 
 ----------------------------
 --  Gothik the Harvester  --
@@ -436,12 +344,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningDrainLifeNow		= "Show warning for Life Drain",
-	WarningDrainLifeSoon	= "Show pre-warning for Life Drain",
 	WarningAirPhaseSoon		= "Show pre-warning for air phase",
 	WarningAirPhaseNow		= "Announce air phase",
 	WarningLanded			= "Announce ground phase",
-	TimerDrainLifeCD		= "Show timer for Life Drain",
 	TimerAir				= "Show timer for air phase",
 	TimerLanding			= "Show timer for landing",
 	TimerIceBlast			= "Show timer for Frost Breath",
@@ -455,8 +360,6 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningDrainLifeNow		= "Life Drain",
-	WarningDrainLifeSoon	= "Life Drain soon",
 	WarningAirPhaseSoon		= "Air phase in 10 seconds",
 	WarningAirPhaseNow		= "Air phase",
 	WarningLanded			= "Sapphiron landed",
@@ -464,7 +367,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerDrainLifeCD		= "Life Drain cooldown",
 	TimerAir				= "Air phase",
 	TimerLanding			= "Landing",
 	TimerIceBlast			= "Frost Breath"	
@@ -481,13 +383,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	BlastTimer				= "Show timer for Frost Blast (4 second timer until targets die)",
 	TimerPhase2				= "Show timer for Phase 2",
-	WarningBlastTargets		= "Announce Frost Blast targets",
-	WarningPhase2			= "Announce Phase 2",
-	WarningFissure			= "Show warning for Shadow Fissure",
-	WarningMana				= "Show warning for Detonate Mana",
-	WarningChainsTargets	= "Announce Chains of Kel'Thuzad targets",
 	specwarnP2Soon			= "Show special warning 10 seconds before Kel'Thuzad engages",
 	ShowRange				= "Show range frame when Phase 2 starts",
 })
@@ -497,11 +393,6 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBlastTargets		= "Frost Blast: >%s<",
-	WarningPhase2			= "Phase 2",
-	WarningFissure			= "Shadow Fissure spawned",
-	WarningMana				= "Detonate Mana: >%s<",
-	WarningChainsTargets	= "Chains of Kel'Thuzad: >%s<",
 	specwarnP2Soon			= "Kel'Thuzad engages in 10 Seconds"
 })
 

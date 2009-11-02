@@ -13,10 +13,10 @@ mod:RegisterEvents(
 )
 
 
-local warnDecimateSoon	= mod:NewAnnounce("WarningDecimateSoon", 2, 54426)
-local warnDecimateNow	= mod:NewAnnounce("WarningDecimateNow", 3, 54426)
+local warnDecimateSoon	= mod:NewSoonAnnounce(54426, 2)
+local warnDecimateNow	= mod:NewSpellAnnounce(54426, 3)
 
-local timerDecimate		= mod:NewTimer(104, "TimerDecimate", 54426)
+local timerDecimate		= mod:NewCDTimer(104, 54426)
 local enrageTimer		= mod:NewEnrageTimer(420)
 
 function mod:OnCombatStart(delay)
