@@ -22,18 +22,10 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningImpale				= "Montre une alerte spéciale pour Empaler",
-	WarningFireBomb				= "Montre une alerte spéciale pour les Bombes incendiaires",
-	WarningBreath				= "Montre une alerte spéciale pour les Souffles arctiques",
-	WarningRage					= "Montre une alerte spéciale pour la Rage écumeuse",
-	WarningCharge				= "Montre une alerte spéciale pour la cible de la charge",
-	WarningToxin				= "Montre une alerte pour la cible de la Toxine paralysante",
-	WarningBile					= "Montre une alerte pour la cible de la Bile brûlante",
 	SpecialWarningImpale3		= "Montre une alerte spéciale pour l'empaler (>=3 Stacks)",
 	SpecialWarningFireBomb		= "Montre une alerte spéciale quand la Bombe incendiaire est sur vous",
 	SpecialWarningSlimePool		= "Montre une alerte spéciale pour les Flaque de bave",
 	SpecialWarningSilence		= "Montre une alerte spéciale pour le Piétinement ahurissant",
-	SpecialWarningSpray			= "Montre une alerte spéciale si vous êtes victime d'un Jet paralysant",
 	SpecialWarningToxin			= "Montre une alerte spéciale si vous êtes victime de la Toxine paralysante",
 	SpecialWarningBile			= "Montre une alerte spéciale si vous avez la Bile brûlante sur Vous",
 	SpecialWarningCharge		= "Montre une alerte spéciale quand Glace-hurlante est sur le point de vous charger",
@@ -52,18 +44,10 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningImpale				= "%s sur >%s<",
-	WarningFireBomb				= "Bombe incendiaire",
-	WarningBreath				= "Souffle arctique",
-	WarningRage					= "Rage écumeuse",
-	WarningCharge				= "Charge sur >%s<",
-	WarningToxin				= "Toxine paralysante sur >%s<",
-	WarningBile					= "Bile brûlante sur >%s<",
 	SpecialWarningImpale3		= "Empaler >%d< sur VOUS",
 	SpecialWarningFireBomb		= "Bombe incendiaire sur VOUS",
 	SpecialWarningSlimePool		= "Flaque de bave, BOUGEZ!",
 	SpecialWarningSilence		= "Piétinement ahurissant dans ~1.5 Seconde!",
-	SpecialWarningSpray			= "Jet paralysant",
 	SpecialWarningToxin			= "Toxine paralysante sur vous, BOUGEZ!",
 	SpecialWarningCharge		= "Charge sur vous! COUREZ!",
 	SpecialWarningChargeNear	= "Charge à côté de vous! COUREZ!",
@@ -82,18 +66,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnFlame				= "Flamme de la Légion sur >%s<",
-	WarnTouch				= "Toucher de Jaraxxus sur >%s<",
 	WarnNetherPower			= "Puissance du Néant sur Jaraxxus! Dispel Maintenant!",
-	WarnPortalSoon			= "Portail de Néant bientôt!",
-	WarnVolcanoSoon			= "Inferno brûlant bientôt!",
 	SpecWarnFlesh			= "Incinérer la chair sur VOUS!",
 	SpecWarnTouch			= "Toucher de Jaraxxus sur VOUS!",
 	SpecWarnKiss			= "Baiser de la Maîtresse",
 	SpecWarnTouchNear		= "Toucher de Jaraxxus sur >%s< à côté de vous",
 	SpecWarnFlame			= "Flamme de la Légion! COUREZ!",
 	SpecWarnNetherPower		= "Dispell Maintenant!",
-	SpecWarnFelInferno		= "Inferno gangrené! Courez plus loin!"
+	SpecWarnFelInferno		= "Inferno gangrené! Courez plus loin!",
+	SpecWarnFelFireball		= "Boule de feu - CASSEZ",
+	SpecWarnFelFireballDispel	= "Boule de feu sur %s - Dispel"
 }
 
 L:SetMiscLocalization{
@@ -102,11 +84,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnFlame				= "Alerte pour les Flammes de la Légion",
-	WarnTouch				= "Montre une alerte pour le Toucher de Jaraxxus",
 	WarnNetherPower			= "Alerte quand Jaraxxus gagne Puissance du Néant (Pour le dispell)",
-	WarnPortalSoon			= "Montre une alerte avant qu'un Portail de Néant arrive",
-	WarnVolcanoSoon			= "Montre une alerte avant qu'un Inferno brûlant arrive",
 	SpecWarnFlame			= "Montre une alerte spéciale quand vous avez Flamme de la Légion",
 	SpecWarnFlesh			= "Montre une alerte spéciale quand vous avez Incinérer la chair",
 	SpecWarnTouch			= "Montre une alerte spéciale quand le Toucher de Jaraxxus est sur vous",
@@ -114,11 +92,13 @@ L:SetOptionLocalization{
 	SpecWarnKiss			= "Montre une alerte spéciale pour le Baiser de la Maîtresse",
 	SpecWarnNetherPower		= "Montre une alerte spéciale pour la Puissance du Néant (Pour dispell Jaraxxus)",
 	SpecWarnFelInferno		= "Montre une alerte spéciale quand vous êtes près d'un Inferno gangrené",
+	SpecWarnFelFireball		= "Montre une alerte spéciale pour la boule de feu gangrené (Pour casser)",
+	SpecWarnFelFireballDispel	= "Montre une alerte spécale pour la boule de feu gangrené (Pour dispel)",
 	TouchJaraxxusIcon		= "Met une icône sur la cible du Toucher de Jaraxxus (Croix)",
 	IncinerateFleshIcon		= "Met une icône sur la cible d'Incinérer la chair (Tête de mort)",
 	LegionFlameIcon			= "Met une icône sur la cible des Flammes de la Légion (Carré)",
 	LegionFlameWhisper		= "Chuchote à la cible des Flammes de la Légion pour la prévenir",
-	IncinerateShieldFrame	= "Montre la vie du Boss avec une barre de vie pour Incinérer la chair"
+	IncinerateShieldFrame		= "Montre la vie du Boss avec une barre de vie pour Incinérer la chair"
 }
 
 
@@ -231,7 +211,6 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "Anub'arak Sort du sol dans 10 sec",
 	WarnSubmerge			= "Anub'arak Rentre dans le sol",
 	WarnSubmergeSoon		= "Anub'arak Rentre dans le sol dans 10 sec",
-	WarnPursue				= "Poursuivi >%s<",
 	SpecWarnPursue			= "Vous êtes poursuivi",
 	warnAdds				= "Les add arrivent",
 	SpecWarnShadowStrike	= "Attaque d'ombre ! Casser Maintenant !",
@@ -256,7 +235,6 @@ L:SetOptionLocalization{
 	TimerSubmerge			= "Montre le timer pour la rentrée du boss dans la terre",
 	PlaySoundOnPursue		= "Joue un son quand vous êtes suivi",
 	PursueIcon				= "Met une icône sur la tête du joueur qui est suivi",
-	WarnPursue				= "Annonce le joueur qui est suivi",
 	SpecWarnShadowStrike	= "Montre une alerte spéciale pour les Attaque d'ombre (Pour les casser)",
 	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant",
 	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3",
