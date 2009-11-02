@@ -17,8 +17,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerLocustIn	= "Locust Swarm", 
-	TimerLocustFade = "Locust Swarm active"
+	TimerLocustIn		= "Locust Swarm", 
+	TimerLocustFade		= "Locust Swarm active"
 })
 
 L:SetOptionLocalization({
@@ -49,8 +49,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerEmbrace	= "Widow's Embrace active",
-	TimerEnrage		= "Frenzy"
+	TimerEmbrace			= "Widow's Embrace active",
+	TimerEnrage				= "Frenzy"
 })
 
 L:SetOptionLocalization({
@@ -82,8 +82,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWebSpray	= "Web Spray",
-	TimerSpider		= "Maexxna Spiderlings"
+	TimerWebSpray		= "Web Spray",
+	TimerSpider			= "Maexxna Spiderlings"
 })
 
 L:SetOptionLocalization({
@@ -110,14 +110,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Teleported",
-	WarningTeleportSoon	= "Teleport in 20 seconds",
-	WarningCurse		= "Curse"
+	WarningTeleportNow		= "Teleported",
+	WarningTeleportSoon		= "Teleport in 20 seconds",
+	WarningCurse			= "Curse"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Teleport",
-	TimerTeleportBack	= "Teleport back"
+	TimerTeleport			= "Teleport",
+	TimerTeleportBack		= "Teleport back"
 })
 
 L:SetOptionLocalization({
@@ -139,12 +139,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow	= "Teleported",
-	WarningTeleportSoon	= "Teleport in %d seconds",
+	WarningTeleportNow		= "Teleported",
+	WarningTeleportSoon		= "Teleport in %d seconds",
 })
 
 L:SetTimerLocalization({
-	TimerTeleport		= "Teleport",
+	TimerTeleport			= "Teleport",
 })
 
 L:SetOptionLocalization({
@@ -202,13 +202,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Announce Hateful Strikes to raid chat\n(requires announce to be enabled and leader/promoted status)"
+	WarningHateful	= "Announce Hateful Strikes to raid chat\n(requires announce to be enabled and leader/promoted status)"
 })
 
 L:SetMiscLocalization({
-	yell1 = "Patchwerk want to play!",
-	yell2 = "Kel'thuzad make Patchwerk his avatar of war!",
-	HatefulStrike = "Hateful Strike --> %s [%s]"
+	yell1			= "Patchwerk want to play!",
+	yell2			= "Kel'thuzad make Patchwerk his avatar of war!",
+	HatefulStrike	= "Hateful Strike --> %s [%s]"
 })
 
 
