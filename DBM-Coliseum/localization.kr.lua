@@ -50,7 +50,6 @@ L:SetWarningLocalization{
 	SpecialWarningSlimePool		= "독 구름, 벗어나세요!",
 	SpecialWarningBile			= "당신에게 타오르는 담즙!",
 	SpecialWarningSilence		= "1.5 초이내 진동의 발구르기!!!",
-	SpecialWarningSpray			= "당신에게 마비의 이빨!",
 	SpecialWarningToxin			= "당신에게 마비독! 이동하세요!",
 	SpecialWarningCharge		= "당신에게 사나운 돌진! 뛰세요!",
 	SpecialWarningChargeNear	= "당신 주변에 사나운 돌진! 뛰세요!"	
@@ -67,14 +66,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnNetherPower			= "자락서스가 황천의 힘을 얻었습니다! 해제하세요!",
-	SpecWarnFlesh			= "당신에게 살점 소각!",
-	SpecWarnTouch			= "당신에게 자락서스의 손길!",
-	SpecWarnKiss			= "여군주의 키스",
-	SpecWarnTouchNear		= "당신 주변에 자락서스의 손길 : >%s<",
-	SpecWarnFlame			= "군단 불꽃! 뛰세요!",
-	SpecWarnNetherPower		= "지금 해제!",
-	SpecWarnFelInferno		= "군단 불꽃! 움직이세요!"	
+	WarnNetherPower				= "자락서스가 황천의 힘을 얻었습니다! 해제하세요!",
+	SpecWarnFlesh				= "당신에게 살점 소각!",
+	SpecWarnTouch				= "당신에게 자락서스의 손길!",
+	SpecWarnKiss				= "당신에게 여군주의 키스",
+	SpecWarnTouchNear			= "당신 주변에 자락서스의 손길 : >%s<",
+	SpecWarnFlame				= "당신에게 군단 불꽃! 뛰세요!",
+	SpecWarnNetherPower			= "지금 해제!",
+	SpecWarnFelInferno			= "군단 불꽃! 움직이세요!",
+	SpecWarnFelFireball			= "지옥 화염구 - 차단!",
+	SpecWarnFelFireballDispel	= "지옥 화염구 해제 : %s"	
 }
 
 L:SetMiscLocalization{
@@ -83,19 +84,21 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnNetherPower			= "자락서스가 황천의 힘을 얻었을 경우 경고 하기 (해제를 위한 경고)",
-	SpecWarnFlame			= "군단 불꽃에 걸렸을 경우 특수 경보 알리기",
-	SpecWarnFlesh			= "살점 소각에 걸렸을 경우 특수 경보 알리기",
-	SpecWarnTouch			= "당신이 자락서스의 손길에 걸렸을 경우 특수 경고 알리기",
-	SpecWarnTouchNear		= "당신 주변의 플레이어가 자락서스의 손길에 걸렸을 경우 특수 경고 알리기",
-	SpecWarnKiss			= "당신이 여군주의 키스에 걸렸을 경우 특수 경고 알리기",
-	SpecWarnNetherPower		= "황천의 힘 특수 경고 알리기 (자락서스 해제클래스-법사/사제/주술사)",
-	SpecWarnFelInferno		= "당신 주변에 군단 불꽃이 있을 경우 특수 경고 알리기(바닥)",
-	TouchJaraxxusIcon		= "자락서스의 손길 대상 공격대 아이콘 설정 (엑스)",
-	IncinerateFleshIcon		= "살점 소각의 공격대 대상 아이콘 설정 (해골)",
-	LegionFlameIcon			= "군단의 불꽃의 공격대 대상 아이콘 설정 (네모)",
-	LegionFlameWhisper		= "군단의 불꽃 대상에게 귓속말 보내기",
-	IncinerateShieldFrame	= "보스 체력 프레임과 함께 살점 소각 대상자 체력바 보기"
+	WarnNetherPower				= "자락서스가 황천의 힘을 얻었을 경우 경고 하기 (해제를 위한 경고)",
+	SpecWarnFlame				= "군단 불꽃에 걸렸을 경우 특수 경보 알리기",
+	SpecWarnFlesh				= "살점 소각에 걸렸을 경우 특수 경보 알리기",
+	SpecWarnTouch				= "당신이 자락서스의 손길에 걸렸을 경우 특수 경고 알리기",
+	SpecWarnTouchNear			= "당신 주변의 플레이어가 자락서스의 손길에 걸렸을 경우 특수 경고 알리기",
+	SpecWarnKiss				= "당신이 여군주의 키스에 걸렸을 경우 특수 경고 알리기",
+	SpecWarnNetherPower			= "황천의 힘 특수 경고 알리기 (자락서스 해제클래스-법사/사제/주술사)",
+	SpecWarnFelInferno			= "당신 주변에 군단 불꽃이 있을 경우 특수 경고 알리기(바닥)",
+	SpecWarnFelFireball			= "지옥 화염구의 특수 경고 보기(차단 관련)",
+	SpecWarnFelFireballDispel	= "지옥 화염구의 특수 경고 보기(해제 관련)",	
+	TouchJaraxxusIcon			= "자락서스의 손길 대상 공격대 아이콘 설정 (엑스)",
+	IncinerateFleshIcon			= "살점 소각의 공격대 대상 아이콘 설정 (해골)",
+	LegionFlameIcon				= "군단의 불꽃의 공격대 대상 아이콘 설정 (네모)",
+	LegionFlameWhisper			= "군단의 불꽃 대상에게 귓속말 보내기",
+	IncinerateShieldFrame		= "보스 체력 프레임과 함께 살점 소각 대상자 체력바 보기"
 }
 
 
@@ -172,8 +175,8 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "곧 속성의 소용돌이!",
 	SpecWarnSpecial				= "속성(빛/어둠) 변경!",
-	SpecWarnEmpoweredDarkness	= "강화된 어둠",
-	SpecWarnEmpoweredLight		= "강화된 빛",
+	SpecWarnEmpoweredDarkness	= "당신에게 강화된 어둠",
+	SpecWarnEmpoweredLight		= "당신에게 강화된 빛",
 	SpecWarnSwitchTarget		= "대상 전환!",
 	SpecWarnKickNow				= "지금 차단!",
 	WarningTouchDebuff			= "디버프 : >%s<",
