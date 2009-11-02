@@ -14,16 +14,16 @@ mod:RegisterEvents(
 )
 
 local warnSpark			= mod:NewAnnounce("WarningSpark", 1, 59381)
-local warnVortex		= mod:NewAnnounce("WarningVortex", 3, 56105)
+local warnVortex		= mod:NewSpellAnnounce(56105, 3)
+local warnVortexSoon	= mod:NewSoonAnnounce(56105, 2)
 local warnBreathInc		= mod:NewAnnounce("WarningBreathSoon", 3, 60071)
 local warnBreath		= mod:NewAnnounce("WarningBreath", 4, 60071)
-local warnSurge			= mod:NewAnnounce("WarningSurge", 2, 60936)
-local warnVortexSoon	= mod:NewAnnounce("WarningVortexSoon", 4, 56105)
+local warnSurge			= mod:NewTargetAnnounce(60936, 2)
 
 local timerSpark	= mod:NewTimer(30, "TimerSpark", 59381)
-local timerVortex	= mod:NewTimer(11, "TimerVortex", 56105)
+local timerVortex	= mod:NewCastTimer(11, 56105)
+local timerVortexCD	= mod:NewNextTimer(60, 56105)
 local timerBreath	= mod:NewTimer(59, "TimerBreath", 60071)
-local timerVortexCD	= mod:NewTimer(60, "TimerVortexCD", 56105)
 
 local specWarnSurge = mod:NewSpecialWarning("WarningSurgeYou")
 
