@@ -12,7 +12,7 @@ local optionTimerDur	= "Show timer for %s duration"	-- translate
 local optionTimerCast	= "Show timer for %s cast"	-- translate
 
 ----------------------------------
---  Ahn’Kahet: The Old Kingdom  --
+--  Ahn'Kahet: The Old Kingdom  --
 ----------------------------------
 --  Prince Taldaram  --
 -----------------------
