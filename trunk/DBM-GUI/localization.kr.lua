@@ -63,7 +63,7 @@ L.PizzaTimer_BroadCast		= "공격대에 알리기"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 		= "공격대 경보"
-L.RaidWarning_Header		= "Raid Warning Options"
+L.RaidWarning_Header	= "공격대 경고 설정"
 L.RaidWarnColors 		= "공격대 경보 색상"
 L.RaidWarnColor_1 		= "색상 1"
 L.RaidWarnColor_2 		= "색상 2"
