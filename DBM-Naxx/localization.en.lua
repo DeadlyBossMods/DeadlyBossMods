@@ -20,7 +20,6 @@ L:SetOptionLocalization({
 	TimerLocustFade 	= "Show timer for Locust Swarm fade"
 })
 
-
 ----------------------------
 --  Grand Widow Faerlina  --
 ----------------------------
@@ -39,7 +38,6 @@ L:SetOptionLocalization({
 	WarningEmbraceExpire	= "Show pre-warning for Widow's Embrace fade",
 	WarningEmbraceExpired	= "Show warning for Widow's Embrace fade",
 })
-
 
 ---------------
 --  Maexxna  --
@@ -95,7 +93,6 @@ L:SetOptionLocalization({
 	TimerTeleportBack		= "Show timer for Teleport back"
 })
 
-
 --------------------------
 --  Heigan the Unclean  --
 --------------------------
@@ -122,7 +119,6 @@ L:SetOptionLocalization({
 	TimerTeleportBack		= "Show timer for Teleport back"
 })
 
-
 ---------------
 --  Loatheb  --
 ---------------
@@ -142,8 +138,6 @@ L:SetOptionLocalization({
 	WarningHealNow		= "Show warning for 3-second healing window",
 })
 
-
-
 -----------------
 --  Patchwerk  --
 -----------------
@@ -162,7 +156,6 @@ L:SetMiscLocalization({
 	yell2			= "Kel'thuzad make Patchwerk his avatar of war!",
 	HatefulStrike	= "Hateful Strike --> %s [%s]"
 })
-
 
 -----------------
 --  Grobbulus  --
@@ -184,7 +177,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-
 -------------
 --  Gluth  --
 -------------
@@ -193,7 +185,6 @@ L = DBM:GetModLocalization("Gluth")
 L:SetGeneralLocalization({
 	name = "Gluth"
 })
-
 
 ----------------
 --  Thaddius  --
@@ -232,7 +223,6 @@ L:SetOptionCatLocalization({
 	Arrows	= "Arrows",
 })
 
-
 ----------------------------
 --  Instructor Razuvious  --
 ----------------------------
@@ -256,7 +246,6 @@ L:SetOptionLocalization({
 L:SetWarningLocalization({
 	WarningShieldWallSoon	= "Shield Wall ends in 5 seconds"
 })
-
 
 ----------------------------
 --  Gothik the Harvester  --
@@ -300,7 +289,6 @@ L:SetMiscLocalization({
 	Rider			= "Riders",
 })
 
-
 ---------------------
 --  Four Horsemen  --
 ---------------------
@@ -333,7 +321,6 @@ L:SetMiscLocalization({
 	Blaumeux	= "Lady Blaumeux",
 	Zeliek		= "Sir Zeliek",
 })
-
 
 -----------------
 --  Sapphiron  --
@@ -401,6 +388,4 @@ L:SetTimerLocalization({
 	TimerPhase2			= "Phase 2",
 	BlastTimer			= "Heal now"
 })
-
-
 
