@@ -27,8 +27,7 @@ local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
 local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
-local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", nil, false)
-mod:AddBoolOption("BlastNovaWarning", isMelee, "announce")
+local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
 local timerBreath			= mod:NewTimer(6, "TimerBreath", 17086)
@@ -103,9 +102,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68958) then
-		if self.Options.BlastNovaWarning then
-			specWarnBlastNova:Show()
-		end
+        specWarnBlastNova:Show()
 		if self.Options.PlaySoundOnBlastNova then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
