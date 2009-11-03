@@ -15,7 +15,6 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-mod:AddBoolOption("HealthFrame", true)
 mod:SetBossHealthInfo(
 	32930, L.Health_Body,
 	32934, L.Health_Right_Arm,
@@ -35,6 +34,7 @@ local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC /
 -- 5/23 00:33:48.648  SPELL_AURA_APPLIED,0x0000000000000000,nil,0x80000000,0x0480000001860FAC,"Hâzzad",0x4000512,63355,"Crunch Armor",0x1,DEBUFF
 -- 6/3 21:41:56.140 UNIT_DIED,0x0000000000000000,nil,0x80000000,0xF1500080A60274A0,"Rechter Arm",0xa48 
 
+mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnGripTarget", true)
 
 function mod:UNIT_DIED(args)
