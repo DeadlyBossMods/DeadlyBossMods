@@ -114,9 +114,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow		= "Show warning for Teleport",
 	WarningTeleportSoon		= "Show pre-warning for Teleport",
-	WarningCurse			= "Show warning for Curse",
 	TimerTeleport			= "Show timer for Teleport",
-	TimerTeleportBack		= "Show timer for Teleport back"
 })
 
 ---------------
