@@ -12,7 +12,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSpark		= "Призыв Искры мощи",
+	WarningSpark		= "Искра мощи",
 	WarningBreathSoon	= "Скоро Дыхание чар",
 	WarningBreath		= "Дыхание чар!",
 	WarningSurge		= ">%s< под воздействием Прилива мощи",
@@ -20,7 +20,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpark		= "Следующая Искра мощи",
+	TimerSpark		= "Искра мощи",
 	TimerBreath		= "Дыхание чар"
 })
 
