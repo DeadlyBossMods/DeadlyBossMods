@@ -121,12 +121,12 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 
 local prewarnOption = "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "대상의 |cff71d5ff|Hspell:%d|h%s|h|r을 알리기",
-	spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r을 시전할 경우 경고 보기",
-	cast = "|cff71d5ff|Hspell:%d|h%s|h|r의 시전을 시작할 경우 경고 보기",
-	soon = prewarnOption,
+	target	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기",
+	spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기",
+	cast 	= "|cff71d5ff|Hspell:%d|h%s|h|r 시전을 시작할 경우 경고 보기",
+	soon 	= prewarnOption,
 	prewarn = prewarnOption,
-	phase = "페이즈 %d 의 경고 보기"	
+	phase 	= "페이즈 %d 의 경고 보기"	
 }
 
 -- New special warnings
