@@ -10,7 +10,6 @@ L:SetGeneralLocalization({
 	name = "Шадрон"
 })
 
-
 ----------------
 --  Tenebron  --
 ----------------
@@ -20,7 +19,6 @@ L:SetGeneralLocalization({
 	name = "Тенеброн"
 })
 
-
 ----------------
 --  Vesperon  --
 ----------------
@@ -29,7 +27,6 @@ L = DBM:GetModLocalization("Vesperon")
 L:SetGeneralLocalization({
 	name = "Весперон"
 })
-
 
 ------------------
 --  Sartharion  --
