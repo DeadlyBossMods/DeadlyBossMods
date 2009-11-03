@@ -13,7 +13,6 @@ local optionTimerCD	= "Отсчеть времени до восстановле
 local optionTimerDur	= "Отсчет времени до %s"
 local optionTimerCast	= "Время чтения заклинания %s"
 
-
 ----------------------------------
 --  Ahn’Kahet: The Old Kingdom  --
 ----------------------------------
@@ -34,7 +33,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------
 --  Elder Nadox  --
 -------------------
@@ -52,7 +50,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------------
 -- Jedoga Shadowseeker --
@@ -72,7 +69,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------------
 --  Herald Volazj  --
 ---------------------
@@ -91,7 +87,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ----------------
 --  Amanitar  --
 ----------------
@@ -109,7 +104,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------
 --  Azjol-Nerub  --
@@ -131,7 +125,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ----------------
 --  Hadronox  --
 ----------------
@@ -150,7 +143,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------
 --  Anub'arak (Party)  --
 -------------------------
@@ -168,7 +160,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------------------------------
 --  Caverns of Time: Old Stratholme  --
@@ -190,7 +181,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------------
 --  Salramm the Fleshcrafter  --
 --------------------------------
@@ -209,7 +199,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------
 --  Chrono-Lord Epoch  --
 -------------------------
@@ -227,7 +216,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------
 --  Mal'Ganis  --
@@ -269,7 +257,6 @@ L:SetOptionLocalization({
 	TimerWaveIn		= "Отсчет времени до cледующей волны (полсле волны 5 босс)",
 })
 
-
 L:SetMiscLocalization({
 	Meathook	= "Мясной Крюк",
 	Salramm		= "Салрамм Плоторез",
@@ -287,7 +274,6 @@ L:SetMiscLocalization({
 	WaveBoss	= "%s",
 	WaveCheck	= "Волна плети = %d/10"
 })
-
 
 ------------------------
 --  Drak'Tharon Keep  --
@@ -309,7 +295,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------
 --  Novos the Summoner  --
 --------------------------
@@ -327,7 +312,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------
 --  King Dred  --
@@ -347,7 +331,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------------------
 --  The Prophet Tharon'ja  --
 -----------------------------
@@ -365,7 +348,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 --  Gundrak  --
@@ -387,7 +369,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------
 --  Moorabi  --
 ---------------
@@ -405,7 +386,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------------
 --  Drakkari Colossus  --		
@@ -428,7 +408,6 @@ L:SetOptionLocalization({
 	WarningElemental	= "Предупреждение для фазы элементаля",
 	WarningStone		= "Предупреждение для фазы колосса"
 })
-
 
 -----------------
 --  Gal'darah  --
@@ -466,7 +445,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------
 --  Halls of Lightning  --
 --------------------------
@@ -487,7 +465,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------
 --  Ionar  --
 -------------
@@ -506,12 +483,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------
 --  Volkhan  --
 ---------------
 L = DBM:GetModLocalization("Volkhan")
-
 
 L:SetGeneralLocalization({
 	name = "Волхан"
@@ -530,7 +505,6 @@ L:SetOptionLocalization({
 	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
 })
 
-
 --------------
 --  Kronus  --
 --------------
@@ -548,7 +522,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ----------------------
 --  Halls of Stone  --
@@ -570,11 +543,11 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------------
 --  Krystallus  --
 ------------------
 L = DBM:GetModLocalization("Krystallus")
+
 L:SetGeneralLocalization({
 	name = "Кристаллус"
 })
@@ -591,7 +564,6 @@ L:SetOptionLocalization({
 	WarningShatter	= optionWarning:format(GetSpellInfo(50810)),
 	TimerShatterCD	= optionTimerCD:format(GetSpellInfo(50810))
 })
-
 
 ------------------------------
 --  Sjonnir the Ironshaper  --
@@ -610,7 +582,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------------------------------
 --  Brann Bronzebeard Escort Event  --
@@ -656,7 +627,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------------
 --  Ormorok the Tree-Shaper  --
 -------------------------------
@@ -674,7 +644,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ----------------------------
 --  Grand Magus Telestra  --
@@ -706,7 +675,6 @@ L:SetMiscLocalization({
 	MergeTrigger 		= "Ну теперь, покончим с этим!"	
 })
 
-
 -------------------
 --  Keristrasza  --
 -------------------
@@ -724,7 +692,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------------------------
 --  Commander Kolurg/Stoutbeard  --
@@ -750,7 +717,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ------------------
 --  The Oculus  --
@@ -800,7 +766,6 @@ L:SetOptionLocalization({
 	SpecWarnBombYou		= "Спец-предупреждение, когда Часовая бомба на вас"
 })
 
-
 --------------------------
 --  Varos Cloudstrider  --
 --------------------------
@@ -818,7 +783,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------------------
 --  Ley-Guardian Eregos  --
@@ -840,8 +804,6 @@ L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." заканчивается"), 	-- translate the word 'ending'
 })
 
-
-
 --------------------
 --  Utgarde Keep  --
 -----------------------
@@ -862,7 +824,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------------
 --  Skarvald the Constructor  --
 --  & Dalronn the Controller  --
@@ -881,7 +842,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ----------------------------
 --  Ingvar the Plunderer  --
@@ -902,7 +862,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecialWarningSpelllock		= "Спец-предупреждение для запрета чар"
 })
-
 
 ------------------------
 --  Utgarde Pinnacle  --
@@ -942,8 +901,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
-
 -------------------------
 --  Svala Sorrowgrave  --
 -------------------------
@@ -962,7 +919,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------------
 --  Gortok Palehoof  --
 -----------------------
@@ -980,7 +936,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------------
 --  The Violet Hold  --
@@ -1002,7 +957,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------
 --  Erekem  --
 --------------
@@ -1020,7 +974,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 --  Ichoron  --
@@ -1040,7 +993,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------
 --  Lavanthor  --
 -----------------
@@ -1058,7 +1010,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------
 --  Moragg  --
@@ -1078,7 +1029,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------
 --  Xevozz  --
 --------------
@@ -1096,7 +1046,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------------------
 --  Zuramat the Obliterator  --
@@ -1119,7 +1068,6 @@ L:SetOptionLocalization({
 	SpecialWarningVoidShifted	= optionSpecWarning:format(GetSpellInfo(54343)),
 	SpecialShroudofDarkness		= optionSpecWarning:format(GetSpellInfo(59745))
 })
-
 
 ---------------------
 --  Portal Timers  --
@@ -1148,12 +1096,10 @@ L:SetOptionLocalization({
 	ShowAllPortalWarnings		= "Предупреждение для всех волн"
 })
 
-
 L:SetMiscLocalization({
 	yell1 				= "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!",
 	WavePortal			= "Открыто порталов: (%d+)/18"
 })
-
 
 -----------------------------
 --  Trial of the Champion  --
@@ -1180,6 +1126,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	YellCombatEnd			= "Нет! Я не могу... снова... проиграть."
 })
+
 -----------------------
 --  Grand Champions  --
 -----------------------
@@ -1329,6 +1276,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	IckPursuit			= "%s преследует вас!"
 })
+
 ----------------------------
 --  Forgemaster Garfrost  --
 ----------------------------
@@ -1382,6 +1330,7 @@ L:SetMiscLocalization({
 	TyrannusYell			= "Увы, ",
 	HoarfrostTarget			= "^%%s пристально смотрит на (%S+) и готовится к ледяной атаке!"
 })
+
 ----------------------
 --  Forge of Souls  --
 ----------------------
