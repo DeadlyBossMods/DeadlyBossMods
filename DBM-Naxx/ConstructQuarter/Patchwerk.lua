@@ -14,6 +14,7 @@ mod:RegisterEvents(
 )
 
 mod:AddBoolOption("WarningHateful", false, "announce")
+
 local enrageTimer = mod:NewEnrageTimer(360)
 
 local function announceStrike(target, damage)
