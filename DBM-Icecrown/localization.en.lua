@@ -107,8 +107,7 @@ L:SetOptionLocalization({
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	SpecWarnMutatedInfection 	= "Show special warning when you are affected by Mutated Infection",
 	InfectionIcon				= "Set icons on Mutated Infection targets",
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning",
-	soundStickyOoze				= "Play sound on Sticky Ooze"
+	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 })
 
 L:SetMiscLocalization({

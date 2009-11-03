@@ -31,7 +31,7 @@ local nextWallSlime         = mod:NewTimer(20, "NextPoisonSlimePipes")
 local nextSlimeSpray		= mod:NewNextTimer(21, 69508)
 local timerMutatedInfection	= mod:NewTargetTimer(12, 71224)
 
-local soundStickyOoze		= mod:NewSound("soundStickyOoze", 69760)
+local soundStickyOoze		= mod:NewSound(71208)
 mod:AddBoolOption("InfectionIcon")
 
 function mod:OnCombatStart(delay)
