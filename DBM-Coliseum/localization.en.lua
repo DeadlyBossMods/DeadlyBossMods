@@ -72,7 +72,7 @@ L:SetWarningLocalization{
 	SpecWarnFlame				= "Legion Flame on you - Run away",
 	SpecWarnNetherPower			= "Dispel now",
 	SpecWarnFelInferno			= "Fel Inferno - Run away",
-	SpecWarnFelFireball			= "Fel Fireball - Interrupt",
+	SpecWarnFelFireball			= "Fel Fireball - Interrupt now",
 	SpecWarnFelFireballDispel	= "Fel Fireball on %s - Dispel"
 
 }
@@ -211,9 +211,9 @@ L:SetWarningLocalization{
 	WarnSubmerge			= "Anub'arak submerges",
 	WarnSubmergeSoon		= "Submerge in 10 seconds",
 	SpecWarnPursue			= "You are being pursued - Run away",
-	warnAdds				= "Adds incoming",
+	warnAdds				= "New adds",
 	SpecWarnShadowStrike	= "Shadow Strike - Interrupt now",
-	SpecWarnPCold			= "Penetrating Cold"
+	SpecWarnPCold			= "Penetrating Cold on you"
 }
 
 L:SetMiscLocalization{
@@ -228,8 +228,8 @@ L:SetOptionLocalization{
 	WarnSubmerge			= "Show warning for submerge",
 	WarnSubmergeSoon		= "Show pre-warning for submerge",
 	SpecWarnPursue			= "Show special warning when you are being pursued",
-	warnAdds				= "Announce new incoming adds",
-	timerAdds				= "Show timer for new incoming adds",
+	warnAdds				= "Announce new adds",
+	timerAdds				= "Show timer for new adds",
 	TimerEmerge				= "Show timer for emerge",
 	TimerSubmerge			= "Show timer for submerge",
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
