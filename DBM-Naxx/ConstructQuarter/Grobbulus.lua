@@ -13,8 +13,10 @@ mod:RegisterEvents(
 )
 
 local warnInjection			= mod:NewTargetAnnounce(28169, 2)
-local timerInjection		= mod:NewTargetTimer(10, 28169)
+
 local specWarnInjection		= mod:NewSpecialWarning("SpecialWarningInjection")
+
+local timerInjection		= mod:NewTargetTimer(10, 28169)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(28169) then

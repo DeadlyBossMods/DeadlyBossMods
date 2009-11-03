@@ -13,10 +13,11 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local specialWarningLocust	= mod:NewSpecialWarning("SpecialLocust")
 local warningLocustSoon		= mod:NewSoonAnnounce(28785, 2)
 local warningLocustNow		= mod:NewSpellAnnounce(28785, 3)
 local warningLocustFaded	= mod:NewAnnounce("WarningLocustFaded", 1, 28785)
+
+local specialWarningLocust	= mod:NewSpecialWarning("SpecialLocust")
 
 local timerLocustIn			= mod:NewCDTimer(80, 28785)
 local timerLocustFade 		= mod:NewBuffActiveTimer(26, 28785)

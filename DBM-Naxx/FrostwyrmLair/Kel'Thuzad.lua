@@ -19,8 +19,10 @@ local warnBlastTargets		= mod:NewTargetAnnounce(27808, 2)
 local warnFissure			= mod:NewSpellAnnounce(27810, 3)
 local warnMana				= mod:NewTargetAnnounce(27819, 2)
 local warnChainsTargets		= mod:NewTargetAnnounce(28410, 2)
-local blastTimer			= mod:NewBuffActiveTimer(4, 27808)
+
 local specwarnP2Soon		= mod:NewSpecialWarning("specwarnP2Soon")
+
+local blastTimer			= mod:NewBuffActiveTimer(4, 27808)
 local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 
 mod:AddBoolOption("ShowRange", true)
