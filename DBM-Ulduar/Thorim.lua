@@ -22,6 +22,7 @@ local warnUnbalancingStrike		= mod:NewTargetAnnounce(62130, 4)	-- nice blizzard,
 local warningBomb				= mod:NewTargetAnnounce(62526, 4)
 
 local specWarnOrb				= mod:NewSpecialWarning("LightningOrb")
+mod:AddBoolOption("AnnounceFails", false, "announce")
 
 local enrageTimer				= mod:NewEnrageTimer(369)
 local timerStormhammer			= mod:NewCastTimer(16, 62042)
@@ -29,9 +30,9 @@ local timerLightningCharge	 	= mod:NewCDTimer(16, 62466)
 local timerUnbalancingStrike	= mod:NewCastTimer(26, 62130)
 local timerHardmode				= mod:NewTimer(175, "TimerHardmode", 62042)
 
-local lastcharge = {} 
 mod:AddBoolOption("RangeFrame")
-mod:AddBoolOption("AnnounceFails", false, "announce") 
+
+local lastcharge = {} 
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start()
