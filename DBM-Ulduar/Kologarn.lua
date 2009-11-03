@@ -22,14 +22,15 @@ mod:SetBossHealthInfo(
 	32933, L.Health_Left_Arm
 )
 
+local warnFocusedEyebeam		= mod:NewAnnounce("WarningEyeBeam", 3)
+local warnGrip					= mod:NewAnnounce("WarnGrip", 2)
 
 local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
-local warnGrip					= mod:NewAnnounce("WarnGrip", 2)
-local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC / 12 nonHC
+
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
 local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(48, "timerRightArm")
-local warnFocusedEyebeam		= mod:NewAnnounce("WarningEyeBeam", 3)
+local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC / 12 nonHC
 
 -- 5/23 00:33:48.648  SPELL_AURA_APPLIED,0x0000000000000000,nil,0x80000000,0x0480000001860FAC,"Hâzzad",0x4000512,63355,"Crunch Armor",0x1,DEBUFF
 -- 6/3 21:41:56.140 UNIT_DIED,0x0000000000000000,nil,0x80000000,0xF1500080A60274A0,"Rechter Arm",0xa48 
