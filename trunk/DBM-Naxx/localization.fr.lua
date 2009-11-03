@@ -116,7 +116,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow		= "Activer l'avertissement de Téléporation",
 	WarningTeleportSoon		= "Activer le pré-avertissement de Téléporation",
-	TimerTeleport			= "Activer le timer pour la Téléporation",
+	TimerTeleport			= "Activer le timer pour la Téléporation"
 })
 
 ----------------
