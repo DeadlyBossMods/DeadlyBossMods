@@ -186,8 +186,7 @@ end
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(67477, 66331, 67478, 67479) then		-- Impale
 		timerNextImpale:Start()
-		local name = GetSpellInfo(args.spellId)
-		warnImpaleOn:Show(name, args.destName)
+		warnImpaleOn:Show()
 		if (args.amount >= 3 and not self:IsDifficulty("heroic10", "heroic25") ) or ( args.amount >= 2 and self:IsDifficulty("heroic10", "heroic25") ) then 
 			if args:IsPlayer() then
 				specWarnImpale3:Show(args.amount)
