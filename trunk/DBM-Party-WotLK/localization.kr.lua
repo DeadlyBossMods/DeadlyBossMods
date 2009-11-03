@@ -795,7 +795,7 @@ L:SetOptionLocalization({
 ---------------------------------
 L = DBM:GetModLocalization("Commander")
 
-local commander = "사령관"
+local commander = "알 수 없음"
 if UnitFactionGroup("player") == "Alliance" then
 	commander = "사령관 콜루르그"
 elseif UnitFactionGroup("player") == "Horde" then
@@ -904,8 +904,6 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerShift	= spell,
-	TimerEnrage	= spell
 })
 
 L:SetOptionLocalization({
@@ -1237,7 +1235,7 @@ L:SetOptionLocalization({
 	WarningPortalNow		= optionWarning:format("새로운 포탈"),
 	WarningPortalSoon		= optionPreWarning:format("새로운 포탈"),
 	WarningBossNow			= optionWarning:format("보스 등장"),
-	TimerPortalIn			= "\"포탈: #\" 타이머 보기",
+	TimerPortalIn			= "포탈 갯수의 타이머 보기",
 	ShowAllPortalWarnings	= "모든 웨이브 경고 보기"
 })
 
@@ -1438,8 +1436,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "Saronite Rock - Line of sight now",
-	specWarnSaroniteRock	= "Saronite Throw on you - Move",
+	warnSaroniteRock			= "Saronite Rock - Line of sight now",
+	specWarnSaroniteRock		= "Saronite Throw on you - Move",
 	specWarnPermafrost			= "%s: %s"
 })
 

@@ -15,7 +15,6 @@ L:SetWarningLocalization({
 	WarningSpark		= "마력의 불꽃",
 	WarningBreathSoon	= "곧 깊은 숨결",
 	WarningBreath		= "깊은 숨결!",
-	WarningSurge		= ">%s< 에게 마력의 쇄도",
 	WarningSurgeYou		= "당신에게 마력의 쇄도!"
 })
 
@@ -28,7 +27,6 @@ L:SetOptionLocalization({
 	WarningSpark		= "마력의 불꽃 경고 보기",
 	WarningBreathSoon	= "깊은 숨결 사전 경고 보기",
 	WarningBreath		= "깊은 숨결 경고 보기",
-	WarningSurge		= "마력의 쇄도 대상 알리기",
 	TimerSpark			= "마력의 불꽃 타이머 보기",
 	TimerBreath			= "깊은 숨결 타이머 보기",
 	WarningSurgeYou		= "마력의 쇄도의 대상이 되었을 경우 특수 경고 보기"
