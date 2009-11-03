@@ -272,7 +272,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Meathook	= "Мясной Крюк",
-	Salramm		= "Салрамм Плоторез",3
+	Salramm		= "Салрамм Плоторез",
 	Devouring	= "Всепожирающий вурдалак",
 	Enraged		= "Разъярившийся вурдалак",
 	Necro		= "Мастер некромантии",
