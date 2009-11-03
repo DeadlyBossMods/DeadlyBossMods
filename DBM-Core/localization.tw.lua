@@ -128,7 +128,6 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	phase = "提示第%d階段"
 }
 
-
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖動的特別警告"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特別警告"
