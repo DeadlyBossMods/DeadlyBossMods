@@ -25,7 +25,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "為深呼吸顯示特別警告",
-	BlastNovaWarning		= "為衝擊新星顯示特別警告",
+	SpecWarnBlastNova		= "為衝擊新星顯示特別警告",
 	TimerBreath				= "為深呼吸顯示計時器",
 	TimerWhelps				= "為奧妮克希亞幼龍顯示計時器",
 	WarnWhelpsSoon			= "為奧妮克希亞幼龍顯示預先警告",
