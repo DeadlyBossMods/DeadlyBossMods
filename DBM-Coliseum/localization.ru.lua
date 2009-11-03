@@ -223,9 +223,9 @@ L:SetWarningLocalization{
 	WarnSubmerge			= "Появляется Ануб'арак",
 	WarnSubmergeSoon		= "Погружение через 10 сек",
 	SpecWarnPursue			= "Вас приследуют",
-	warnAdds			= "Призыв помощников",
+	warnAdds			= "Помощники",
 	SpecWarnShadowStrike		= "Теневой удар - прерывание",
-	SpecWarnPCold			= "Пронизывающий холод"	
+	SpecWarnPCold			= "Пронизывающий холод на вас"	
 }
 
 L:SetMiscLocalization{
