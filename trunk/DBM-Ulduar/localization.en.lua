@@ -105,7 +105,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Show timer for Flame Breath cooldown",
 	timerDeepBreathCast			= "Show timer for Flame Breath cast",
-	SpecWarnDevouringFlame		= "Show special warning when you are in Devouring Flame",
+	SpecWarnDevouringFlame		= "Show special warning when you are affected by Devouring Flame",
 	PlaySoundOnDevouringFlame	= "Play sound when you are affected by Devouring Flame",
 	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
@@ -171,7 +171,6 @@ L:SetWarningLocalization{
 	LightningTendrils			= "Lightning Tendrils - Run away",
 	Overload					= "Overload - Run away",
 	WarningStaticDisruption		= "Static Disruption on >%s<",
-	PlaySoundDeathRune			= "Death Rune"
 }
 
 L:SetTimerLocalization{
@@ -302,7 +301,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast		= "Sentinel Blast - Interrupt",
+	SpecWarnBlast		= "Sentinel Blast - Interrupt now",
 	SpecWarnVoid		= "Seeping Feral Essence - Move away",
 	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
 	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",

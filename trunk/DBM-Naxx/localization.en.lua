@@ -56,13 +56,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpider			= "Maexxna Spiderlings"
+	TimerSpider			= "Next Maexxna Spiderlings"
 })
 
 L:SetOptionLocalization({
 	WarningSpidersSoon	= "Show pre-warning for Maexxna Spiderlings",
 	WarningSpidersNow	= "Show warning for Maexxna Spiderlings",
-	TimerSpider			= "Show timer for Maexxna Spiderlings"
+	TimerSpider			= "Show timer for next Maexxna Spiderlings"
 })
 
 L:SetMiscLocalization({
@@ -268,7 +268,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWave			= "Show timer for wave",
+	TimerWave			= "Show timer for next wave",
 	TimerPhase2			= "Show timer for Phase 2",
 	WarningWaveSoon		= "Show pre-warning for wave",
 	WarningWaveSpawned	= "Show warning for wave spawned",
