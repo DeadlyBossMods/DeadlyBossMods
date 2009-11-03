@@ -39,4 +39,3 @@ L:SetMiscLocalization{
 	YellP3 = "It seems you'll need another lesson, mortals!"
 }
 
-

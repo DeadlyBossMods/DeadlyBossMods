@@ -1,6 +1,5 @@
 local L
 
-
 -----------------------
 --  Flame Leviathan  --
 -----------------------
@@ -41,7 +40,6 @@ L:SetOptionLocalization{
 	warnWardofLife			= "Show special warning for Ward of Life spawn",
 --	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn" --commenting out as it is currently unused for Flame Leviathan
 }
-
 
 --------------------------------
 --  Ignis the Furnace Master  --
@@ -92,6 +90,7 @@ L:SetWarningLocalization{
 	SpecWarnDevouringFlameCast	= "Devouring Flame on you",
 	WarnDevouringFlameCast		= "Devouring Flame on >%s<" 
 }
+
 L:SetTimerLocalization{
 	timerDeepBreathCooldown		= "Next Flame Breath",
 	timerDeepBreathCast			= "Flame Breath",
@@ -102,6 +101,7 @@ L:SetTimerLocalization{
 	timerTurret4				= "Turret 4",
 	timerGroundedTemp			= "On the ground"
 }
+
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Show timer for Flame Breath cooldown",
 	timerDeepBreathCast			= "Show timer for Flame Breath cast",
@@ -126,7 +126,6 @@ L:SetMiscLocalization{
 	EmotePhase2					= "%%s grounded permanently!",
 	FlamecastUnknown			= DBM_CORE_UNKNOWN
 }
-
 
 ----------------------------
 --  XT-002 Deconstructor  --
@@ -196,7 +195,6 @@ L:SetMiscLocalization{
 	StormcallerBrundir 	= "Stormcaller Brundir",
 }
 
-
 ----------------------------
 --  Algalon the Observer  --
 ----------------------------
@@ -237,9 +235,7 @@ L:SetMiscLocalization{
 	YellPullFirst			= "",
 	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
 	Emote_CosmicSmash		= "%s begins to cast Cosmic Smash!"
-
 }
-
 
 ----------------
 --  Kologarn  --
@@ -316,7 +312,6 @@ L:SetOptionLocalization{
 	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining"
 }
 
-
 -------------
 --  Hodir  --
 -------------
@@ -346,7 +341,6 @@ L:SetMiscLocalization{
 	YellKill	= "I... I am released from his grasp... at last.",
 	YellCloud	= "Storm Cloud on me!"
 }
-
 
 --------------
 --  Thorim  --
@@ -381,7 +375,6 @@ L:SetMiscLocalization{
 	ChargeOn		= "Lightning Charge: %s",
 	Charge			= "Lightning Charge fails (this try): %s" 
 }
-
 
 -------------
 --  Freya  --
@@ -452,7 +445,6 @@ L:SetOptionLocalization{
 	TrashRespawnTimer		= "Show timer for trash respawn"
 }
 
-
 ---------------
 --  Mimiron  --
 ---------------
@@ -504,7 +496,6 @@ L:SetMiscLocalization{
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
-
 ---------------------
 --  General Vezax  --
 ---------------------
@@ -550,7 +541,6 @@ L:SetMiscLocalization{
 	YellLeech			= "Life Leech on me!",
 	YellCrash			= "Shadow Crash on me!"
 }
-
 
 ------------------
 --  Yogg-Saron  --
@@ -620,6 +610,4 @@ L:SetOptionLocalization{
 	SpecWarnDeafeningRoar			= "Show special warning when casting Deafening Roar (silence and for legendary)",
 	SetIconOnBrainLinkTarget		= "Set icons on Brain Link targets"
 }
-
-
 

@@ -9,7 +9,6 @@ L:SetGeneralLocalization({
 	name = "Shadron"
 })
 
-
 ----------------
 --  Tenebron  --
 ----------------
@@ -19,7 +18,6 @@ L:SetGeneralLocalization({
 	name = "Tenebron"
 })
 
-
 ----------------
 --  Vesperon  --
 ----------------
@@ -28,7 +26,6 @@ L = DBM:GetModLocalization("Vesperon")
 L:SetGeneralLocalization({
 	name = "Vesperon"
 })
-
 
 ------------------
 --  Sartharion  --
@@ -81,5 +78,4 @@ L:SetMiscLocalization({
 	VoidZones		= "Void Zone fails (this try): %s",
 	FireWalls		= "Fire Wall fails (this try): %s",
 })
-
 
