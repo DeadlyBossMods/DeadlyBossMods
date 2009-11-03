@@ -12,34 +12,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSpark		= "마력의 불꽃 생성",
-	WarningVortex		= "회오리",
+	WarningSpark		= "마력의 불꽃",
 	WarningBreathSoon	= "곧 깊은 숨결",
 	WarningBreath		= "깊은 숨결!",
 	WarningSurge		= ">%s< 에게 마력의 쇄도",
-	WarningVortexSoon	= "곧 회오리",
 	WarningSurgeYou		= "당신에게 마력의 쇄도!"
 })
 
 L:SetTimerLocalization({
 	TimerSpark		= "다음 마력의 불꽃",
-	TimerVortex		= "회오리",
-	TimerBreath		= "깊은 숨결",
-	TimerVortexCD	= "회오리 대기시간"
+	TimerBreath		= "다음 깊은 숨결",
 })
 
 L:SetOptionLocalization({
-	WarningSpark		= "마력의 불꽃 경보 보기",
-	WarningVortex		= "회오리 경보 보기",
-	WarningBreathSoon	= "깊은 숨결 사전 경보 보기",
-	WarningBreath		= "깊은 숨결 경보 보기",
-	WarningSurge		= "마력의 쇄도 경보 보기",
+	WarningSpark		= "마력의 불꽃 경고 보기",
+	WarningBreathSoon	= "깊은 숨결 사전 경고 보기",
+	WarningBreath		= "깊은 숨결 경고 보기",
+	WarningSurge		= "마력의 쇄도 대상 알리기",
 	TimerSpark			= "마력의 불꽃 타이머 보기",
-	TimerVortex			= "회오리 타이머 보기",
 	TimerBreath			= "깊은 숨결 타이머 보기",
-	TimerVortexCD		= "회오리 쿨다운 타이머 보기(부정확함;;)",
-	WarningVortexSoon	= "회오리 사전 경보 보기 (부정확함;;)",
-	WarningSurgeYou		= "마력의 쇄도의 시전 대상의 플레이어에게 전술 표시를 지정합니다.(부정확함)"
+	WarningSurgeYou		= "마력의 쇄도의 대상이 되었을 경우 특수 경고 보기"
 })
 
 L:SetMiscLocalization({
