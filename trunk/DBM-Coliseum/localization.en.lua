@@ -52,8 +52,6 @@ L:SetWarningLocalization{
 	SpecialWarningBile			= "Burning Bile on you"
 }
 
-
-
 ---------------------
 --  Lord Jaraxxus  --
 ---------------------
@@ -99,7 +97,6 @@ L:SetOptionLocalization{
 	LegionFlameWhisper			= "Send whisper to Legion Flame targets",
 	IncinerateShieldFrame		= "Show boss health with a health bar for Incinerate Flesh"
 }
-
 
 -------------------------
 --  Faction Champions  --
@@ -188,7 +185,6 @@ L:SetOptionLocalization{
 	WarningPoweroftheTwins		= "Announce Power of the Twins targets",
 	SpecWarnPoweroftheTwins		= "Show special warning when you are tanking an empowered Twin"
 }
-
 
 -----------------
 --  Anub'arak  --

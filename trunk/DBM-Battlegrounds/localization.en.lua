@@ -23,7 +23,6 @@ L:SetMiscLocalization({
 	ArenaInvite	= "Arena invite"
 })
 
-
 --------------
 --  Arenas  --
 --------------
@@ -184,8 +183,6 @@ L:SetOptionLocalization({
 	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat",
 })
 
-
-
 ----------------------------------
 --  Archavon the Stone Watcher  --
 ----------------------------------
@@ -269,7 +266,6 @@ L:SetMiscLocalization{
 	Meteor	= "%s casts Meteor Fists!"
 }
 
-
 ------------------------
 --  Isle of Conquest  --
 ------------------------
@@ -299,7 +295,4 @@ L:SetMiscLocalization({
 	BgStart30		= "The battle will begin in 30 seconds.",
 	BgStart15		= "The battle will begin in 15 seconds.",
 })
-
-
-
 
