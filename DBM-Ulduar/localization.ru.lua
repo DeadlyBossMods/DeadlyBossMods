@@ -146,13 +146,13 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "Спец-предупреждение, когда Светлый взрыв на вас"
+	SpecialWarningLightBomb		= "Спец-предупреждение, когда Светлый взрыв на вас",
 	SpecialWarningGravityBomb	= "Спец-предупреждение, когда вы под воздействием эффекта Гравитационной бомбы",
 	specWarnConsumption		= "Спец-предупреждение, когда вы под воздействием Увядания",
 	PlaySoundOnGravityBomb		= "Звуковой сигнал, когда вы под воздействием эффекта Гравитационной бомбы",
 	PlaySoundOnTympanicTantrum	= "Звуковой сигнал во время Раскаты ярости",
 	SetIconOnLightBombTarget	= "Установить метки на цели под Опаляющим светом",
-	SetIconOnGravityBombTarget	= "Установить метки на цели под Гравитационной бомбой",
+	SetIconOnGravityBombTarget	= "Установить метки на цели под Гравитационной бомбой"
 }
 
 --------------------
@@ -193,7 +193,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	Steelbreaker		= "Сталелом",
 	RunemasterMolgeim	= "Мастер рун Молгейм",
-	StormcallerBrundir 	= "Буревестник Брундир",
+	StormcallerBrundir 	= "Буревестник Брундир"
 }
 
 ----------------------------
