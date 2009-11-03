@@ -23,26 +23,24 @@ do
 		or class == "MAGE"
 end
 
-
-mod:AddBoolOption("HealthFrame", true)
-
 local warnSwarm 		= mod:NewTargetAnnounce(64396, 2)
-
-local specWarnBlast		= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
-local specWarnVoid 		= mod:NewSpecialWarning("SpecWarnVoid")
 local warnFear 			= mod:NewSpellAnnounce(64386, 3)
 local warnFearSoon	 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)
 local warnCatDied 		= mod:NewAnnounce("WarnCatDied", 3, 64455)
 local warnCatDiedOne	= mod:NewAnnounce("WarnCatDiedOne", 3, 64455)
 local warnSonic			= mod:NewSpellAnnounce(64688, 2)
 
+local specWarnBlast		= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
+local specWarnVoid 		= mod:NewSpecialWarning("SpecWarnVoid")
+
+local enrageTimer		= mod:NewEnrageTimer(600)
 local timerFear 		= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
 local timerSonic		= mod:NewCastTimer(64688)
 
-local isFeared = false
+mod:AddBoolOption("HealthFrame", true)
 
-local enrageTimer		= mod:NewEnrageTimer(600)
+local isFeared = false
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)

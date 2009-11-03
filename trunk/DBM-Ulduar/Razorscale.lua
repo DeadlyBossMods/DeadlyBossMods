@@ -16,22 +16,21 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
-local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
-local timerDeepBreathCast			= mod:NewCastTimer(2.5, 64021)
 local warnTurretsReadySoon			= mod:NewAnnounce("warnTurretsReadySoon", 1)
 local warnTurretsReady				= mod:NewAnnounce("warnTurretsReady", 3)
+local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733, false, "OptionDevouringFlame") -- new option is just a work-around...the saved variable handling will be updated to allow changing and updating default values soon
 
+local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
+local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
+
+local enrageTimer					= mod:NewEnrageTimer(900) -- uhm?
+local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
+local timerDeepBreathCast			= mod:NewCastTimer(2.5, 64021)
 local timerTurret1					= mod:NewTimer(55, "timerTurret1")
 local timerTurret2					= mod:NewTimer(75, "timerTurret2")
 local timerTurret3					= mod:NewTimer(95, "timerTurret3")
 local timerTurret4					= mod:NewTimer(115, "timerTurret4")
 local timerGroundedTemp				= mod:NewTimer(45, "timerGroundedTemp")
-
-local enrageTimer					= mod:NewEnrageTimer(900) -- uhm?
-
-local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
-local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 64733, false, "OptionDevouringFlame") -- new option is just a work-around...the saved variable handling will be updated to allow changing and updating default values soon
 
 mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 

@@ -13,16 +13,16 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
+local announceSlagPot			= mod:NewAnnounce("WarningSlagPot", 3, 63477)
+
 local warnFlameJetsCast			= mod:NewSpecialWarning("SpecWarnJetsCast")
+
 local timerFlameJetsCast		= mod:NewCastTimer(2.7, 63472)
 local timerFlameJetsCooldown	= mod:NewCDTimer(35, 63472)
 local timerScorchCooldown		= mod:NewNextTimer(25, 63473)
 local timerScorchCast			= mod:NewCastTimer(3, 63473)
-
-local announceSlagPot			= mod:NewAnnounce("WarningSlagPot", 3, 63477)
-local timerSlagPot			= mod:NewTargetTimer(10, 63477)
-
-local timerAchieve			= mod:NewAchievementTimer(240, 2930, "TimerSpeedKill")
+local timerSlagPot				= mod:NewTargetTimer(10, 63477)
+local timerAchieve				= mod:NewAchievementTimer(240, 2930, "TimerSpeedKill")
 
 mod:AddBoolOption("SlagPotIcon")
 
