@@ -15,15 +15,17 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local timerWhirlwindCD			= mod:NewCDTimer(60, 69076)--Changed to a CD timer, it's always at least a minute but new logs indicate it's not dead on, i'm seing 61-65sec variation
 local warnBoneSpike				= mod:NewSpellAnnounce(69057)
-local timerBoneSpike			= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
-local timerWhirlwind			= mod:NewBuffActiveTimer(28, 69076)--Seems to be 28 second duration, down from 30 in last test. Will watch for more PTR adjustments.
 local warnImpale				= mod:NewAnnounce("WarnImpale")
+
 local specWarnWhirlwind			= mod:NewSpecialWarning("SpecWarnWhirlwind")
 local specWarnColdflame			= mod:NewSpecialWarning("SpecWarnColdflame")
 
 mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
+
+local timerBoneSpike			= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
+local timerWhirlwindCD			= mod:NewCDTimer(60, 69076)--Changed to a CD timer, it's always at least a minute but new logs indicate it's not dead on, i'm seing 61-65sec variation
+local timerWhirlwind			= mod:NewBuffActiveTimer(28, 69076)--Seems to be 28 second duration, down from 30 in last test. Will watch for more PTR adjustments.
 
 function mod:OnCombatStart(delay)
 	timerWhirlwindCD:Start(45-delay)
