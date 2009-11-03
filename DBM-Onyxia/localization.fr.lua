@@ -25,7 +25,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "Montre une alerte spéciale pour la Respiration profonde",
-	BlastNovaWarning		= "Montre une alerte spéciale pour la Nova explosive",
+	SpecWarnBlastNova		= "Montre une alerte spéciale pour la Nova explosive",
 	TimerBreath				= "Montre le timer pour la Respiration profonde",
 	TimerWhelps				= "Montre le timer pour l'arrivée des Jeunes dragonnets onyxien",
 	WarnWhelpsSoon			= "Montre une pré-alerte avant l'arrivée des Jeunes dragonnets onyxien",

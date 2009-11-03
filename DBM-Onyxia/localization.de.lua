@@ -26,7 +26,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "Zeige Spezialwarnung für tiefen Atem",
-	BlastNovaWarning		= "Zeige Spezialwarnung für Drucknova",
+	SpecWarnBlastNova		= "Zeige Spezialwarnung für Drucknova",
 	TimerBreath				= "Zeige Timer für tiefen Atem",
 	TimerWhelps				= "Zeige Timer für Welpenspawn",
 	WarnWhelpsSoon			= "Zeige Vorwarnung für Welpenspawn",
