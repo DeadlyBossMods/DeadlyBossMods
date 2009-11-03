@@ -331,7 +331,7 @@ L:SetOptionLocalization{
 	TimerFlashFreeze		= "為閃霜的施放顯示計時器",
 	WarningFlashFreeze		= "為閃霜顯示特別警告",
 	PlaySoundOnFlashFreeze		= "當施放閃霜時播放音效",
-	WarningStormCloud		= "提示風暴雷雲的目標"
+	WarningStormCloud		= "提示風暴雷雲的目標",
 	SetIconOnStormCloud		= "為風暴雷雲的目標設置標記"
 }
 
