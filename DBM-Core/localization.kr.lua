@@ -45,9 +45,9 @@ DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "새로운 버전이 검색되면 관련 창�
 
 DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a pizza timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
-DBM_PIZZA_CONFIRM_IGNORE			= "Do you really want to ignore pizza timers from %s for this session?"
-DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 피자 타이머 보냄: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[타이머 취소]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s 타이머 무시]|r|h"
+DBM_PIZZA_CONFIRM_IGNORE			= "현재 세션에서 %s님이 보낸 피자 타이머를 무시하도록 하겠습니까?"
+DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <시간> <글자>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods 가 실행중에 있습니다.\n당신께서 DBMv3 와 DBMv4를 동시에 설치하여 이런 상황이 발생한 것 같습니다.\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n또한, 애드온 폴더내에 존재하고 있는 DBMv3 폴더를 삭제하시길 권장합니다."
 

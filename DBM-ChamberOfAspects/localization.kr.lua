@@ -59,7 +59,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall		= "화염의 벽 특수 소리 듣기",
-	AnnounceFails			= "용암 파도 및 어둠의 균열을 피하지 못한 공대원 채팅창에 알리기\n(공대 경보 권한이 있을 경우)",
+	AnnounceFails			= "화염의 벽 및 어둠의 균열을 피하지 못한 공대원 채팅창에 알리기\n(공대 경보 권한이 있을 경우)",
 	TimerTenebron			= "테네브론 타이머 보기",
 	TimerShadron			= "샤드론 타이머 보기",
 	TimerVesperon			= "베스페론 타이머 보기",

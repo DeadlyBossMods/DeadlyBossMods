@@ -30,12 +30,11 @@ L:SetOptionLocalization{
 	SpecialWarningBile			= "당신이 타오르는 담즙에 걸릴 경우 특수 경보 보기",
 	SpecialWarningCharge		= "얼음울음이 당신에게 사나운 돌진을 할 경우 특수 경보 보기",
 	SpecialWarningChargeNear	= "얼음울음이 당신 주변에 사나운 돌진을 할 경우 특수 경보 보기",
-	PingCharge					= "얼음울음에게 사나운 돌진의 대상이 될 경우 미니맵에 핑 표시하기",	
-	ClearIconsOnIceHowl			= "얼음울음의 사나운 돌진 이후 모든 공격대 아이콘 없앰",
-	TimerNextBoss				= "다음 보스 등장 타이머 보기",	
 	SetIconOnChargeTarget		= "사나운 돌진 대상 아이콘 설정 (해골)",
-	SetIconOnToxinTarget		= "마비 독 대상 아이콘 설정 (해골)",
 	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",
+	ClearIconsOnIceHowl			= "얼음울음의 사나운 돌진 이후 모든 공격대 아이콘 없앰",
+	PingCharge					= "얼음울음에게 사나운 돌진의 대상이 될 경우 미니맵에 핑 표시하기",		
+	TimerNextBoss				= "다음 보스 등장 타이머 보기",		
 	TimerCombatStart			= "전투 시작 타이머 보기"
 }
 
@@ -45,7 +44,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningImpale3		= "꿰뚫기 경고! 위험합니다!",
+	SpecialWarningImpale3		= "당신에게 꿰뚫기 >%d<!",
 	SpecialWarningFireBomb		= "당신에게 화염 폭탄!",
 	SpecialWarningSlimePool		= "독 구름, 벗어나세요!",
 	SpecialWarningBile			= "당신에게 타오르는 담즙!",
@@ -121,7 +120,7 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "죽기 - 고르그림 섀도클리브",		-- 34458, Horde
+	Gorgrim		= "죽기 - 고르그림 섀도클리브",			-- 34458, Horde
 	Tyrius		= "죽기 - 티리우스 더스크블레이드",		-- 34461, Allience
 	Birana 		= "조드 - 비라나 스톰후프",				-- 34451, Horde
 	Erin		= "회드 - 에린 미스트후프",				-- 34459, Horde
@@ -226,7 +225,6 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "아눕아락 10초 이내 출현!",
 	WarnSubmerge			= "아눕아락 잠수!",
 	WarnSubmergeSoon		= "아눕아락 10초 이내 잠수!",
-	WarnPursue				= "아눕아락의 추격 : >%s<",
 	SpecWarnPursue			= "당신을 추격 합니다!",
 	warnAdds				= "네루비안 땅무지 추가!",	
 	SpecWarnPCold	 		= "당신은 냉기 관통! 조심하세요!",
@@ -252,7 +250,6 @@ L:SetOptionLocalization{
 	TimerSubmerge			= "숨기 타이머 보기",
 	PlaySoundOnPursue		= "당신을 추격하기 시작할 때 특수 소리 재생",
 	PursueIcon				= "추격 대상자 공격대 아이콘 설정하기",
-	WarnPursue				= "추격 대상자 알리기",
 	SpecWarnPCold			= "냉기 관통 특수 경고 보기",
 	SetIconsOnPCold			= "냉기 관통 대상자 공격대 아이콘 설정하기",
 	SpecWarnShadowStrike	= "어둠의 일격 특수 경고 보기(차단 관련)",
