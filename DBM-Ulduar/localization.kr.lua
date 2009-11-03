@@ -26,8 +26,7 @@ L:SetWarningLocalization{
 	warnNextPursueSoon		= "추적 전환 5 초전",
 	SpecialPursueWarnYou	= "거대 화염전차가 당신을 추적합니다!",	
 	SystemOverload			= "시스템 과부화",
-	warnWardofLife			= "Ward of Life spawned",
-	warnWrithingLasher		= "Writhing Lasher spawned"	
+	warnWardofLife			= "생명지기 덩굴손 등장",
 }
 
 L:SetOptionLocalization{
@@ -38,8 +37,7 @@ L:SetOptionLocalization{
 	SpecialPursueWarnYou	= "추적자 특수 경보 보기",
 	PursueWarn				= "추적 플레이어 레이드 경보로 보기",
 	warnNextPursueSoon		= "다음 추적 경고 보기",
-	warnWardofLife			= "Show special warning for Ward of Life spawn",
-	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn"	
+	warnWardofLife			= "생명지기 덩굴손 등장 특수 경고 보기",
 }
 
 
