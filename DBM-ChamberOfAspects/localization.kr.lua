@@ -44,36 +44,32 @@ L:SetWarningLocalization({
 	WarningTenebron			= "테네브론 진입",
 	WarningShadron			= "샤드론 진입",
 	WarningVesperon			= "베스페론 진입",
-	WarningFireWall			= "용암 파도!",
-	WarningVesperonPortal	= "베스페론의 포탈!!!!",
-	WarningTenebronPortal	= "테네브론의 포탈!!!!",
-	WarningShadronPortal	= "샤드론의 포탈!!!!",
+	WarningFireWall			= "화염의 벽!",
+	WarningVesperonPortal	= "베스페론의 포탈!!",
+	WarningTenebronPortal	= "테네브론의 포탈!!",
+	WarningShadronPortal	= "샤드론의 포탈!!",
 })
 
 L:SetTimerLocalization({
-	TimerWall	= "용암 파도 쿨다운",
-	TimerTenebron	= "테네브론 진입",
-	TimerShadron	= "샤드론 진입",
-	TimerVesperon	= "베스페론 진입"
+
+	TimerTenebron		= "테네브론 진입",
+	TimerShadron		= "샤드론 진입",
+	TimerVesperon		= "베스페론 진입"
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall	= "\"용암 파도\" 소리 켜기",
-	AnnounceFails		= "용암 파도 및 어둠의 균열 피하기 실패한 공대원을 공대 채팅창에 알리기(공대 경보 권한이 있을 경우)",
-
-	TimerWall			= "\"용암 파도\" 타이머 보기",
-	TimerTenebron		= "테네브론 타이머 보기",
-	TimerShadron		= "샤드론 타이머 보기",
-	TimerVesperon		= "베스페론 타이머 보기",
-
-	WarningFireWall		= "\"용암 파도\" 특수 경보 보기",
-	WarningTenebron		= "테네브론 생성 타이머 보기",
-	WarningShadron		= "샤드론 생성 타이머 보기",
-	WarningVesperon		= "베스페론 생성 타이머 보기",
-
-	WarningTenebronPortal	= "테네브론 포탈 특수경보 보기",
-	WarningShadronPortal	= "샤드론 포탈 특수경보 보기",
-	WarningVesperonPortal	= "베스페론 포탈 특수경보 보기",
+	PlaySoundOnFireWall		= "화염의 벽 특수 소리 듣기",
+	AnnounceFails			= "용암 파도 및 어둠의 균열을 피하지 못한 공대원 채팅창에 알리기\n(공대 경보 권한이 있을 경우)",
+	TimerTenebron			= "테네브론 타이머 보기",
+	TimerShadron			= "샤드론 타이머 보기",
+	TimerVesperon			= "베스페론 타이머 보기",
+	WarningFireWall			= "화염의 벽 특수 경고 보기",
+	WarningTenebron			= "테네브론 생성 타이머 보기",
+	WarningShadron			= "샤드론 생성 타이머 보기",
+	WarningVesperon			= "베스페론 생성 타이머 보기",
+	WarningTenebronPortal	= "테네브론 포탈 특수 경고 보기",
+	WarningShadronPortal	= "샤드론 포탈 특수 경고 보기",
+	WarningVesperonPortal	= "베스페론 포탈 특수 경고 보기",
 })
 
 L:SetMiscLocalization({
