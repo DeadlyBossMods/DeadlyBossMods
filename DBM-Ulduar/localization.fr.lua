@@ -29,7 +29,7 @@ L:SetWarningLocalization{
 	SpecialPursueWarnYou	= "Vous êtes poursuivit!",
 	SystemOverload			= "Extinction des systèmes !",
 	warnWardofLife			= "Gardien de Vie viens d'arriver",
-	warnWrithingLasher		= "Flagellant frémissant viens d'arriver"
+--	warnWrithingLasher		= "Flagellant frémissant viens d'arriver"
 }
 
 L:SetOptionLocalization{
@@ -41,9 +41,8 @@ L:SetOptionLocalization{
 	PursueWarn				= "Afficher l'avertissement quand vous êtes poursuivi",
 	warnNextPursueSoon		= "Prévenir avant la prochaine poursuite",
 	warnWardofLife			= "Montre une alerte quand un Gardien de Vie arrive",
-	warnWrithingLasher		= "Montre une alerte quand un Flagellant frémissant arrive"
+--	warnWrithingLasher		= "Montre une alerte quand un Flagellant frémissant arrive"
 }
-
 
 -------------
 --  Ignis  --
@@ -94,6 +93,7 @@ L:SetWarningLocalization{
 	SpecWarnDevouringFlameCast	= "Flamme dévorante sur Vous",
 	WarnDevouringFlameCast		= "Flamme dévorante sur >%s<" 
 }
+
 L:SetTimerLocalization{
 	timerDeepBreathCooldown	= "Prochain souffle dans",
 	timerDeepBreathCast		= "Souffle de flammes",
@@ -104,6 +104,7 @@ L:SetTimerLocalization{
 	timerTurret4			= "Tourelle 4",
 	timerGroundedTemp		= "Sur le sol"
 }
+
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Afficher un timer pour le prochain Souffle de flammes",
 	timerDeepBreathCast			= "Afficher la  barre d'incantation pour le Souffle de flammes",
@@ -128,7 +129,6 @@ L:SetMiscLocalization{
 	EmotePhase2			= "bloquée au sol",
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
-
 
 -------------
 --  XT002  --
@@ -172,8 +172,7 @@ L:SetWarningLocalization{
 	RuneofDeath					= "Rune de mort - BOUGEZ",
 	LightningTendrils			= "Vrilles de foudre - COURREZ",
 	Overload					= "Surchage - BOUGEZ",
-	WarningStaticDisruption		= "Static Disruption sur >%s<",
-	PlaySoundDeathRune			= "Death Rune"
+	WarningStaticDisruption		= "Static Disruption sur >%s<"
 }
 
 L:SetTimerLocalization{
@@ -198,7 +197,6 @@ L:SetMiscLocalization{
 	RunemasterMolgeim	= "Maître des runes Molgeim",
 	StormcallerBrundir 	= "Mande-foudre Brundir"
 }
-
 
 ---------------
 --  Algalon  --
@@ -277,7 +275,6 @@ L:SetOptionLocalization{
 	timerRightArm			= "Afficher un timer pour le repop du bras droit",
 	achievementDisarmed		= "Afficher un timer pour le Haut Fait Désarmement",
 	WarnGrip				= "Annonce les cibles de la poigne",
-	WarnEyeBeam				= "Annonce les cibles du rayon",
 	SetIconOnGripTarget		= "Met une icône sur les joueurs victimes du sort poigne"
 }
 
@@ -319,7 +316,6 @@ L:SetOptionLocalization{
 	WarnCatDiedOne		= "Montre une alerte spéciale quand un Défenseur farouche meurt"
 }
 
-
 -------------
 --  Hodir  --
 -------------
@@ -330,8 +326,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "Gel instantané",
-	WarningStormCloud	= "Tempète de glace sur >%s<"
+	WarningFlashFreeze	= "Gel instantané"
 }
 
 L:SetTimerLocalization{
@@ -342,7 +337,6 @@ L:SetOptionLocalization{
 	TimerFlashFreeze		= "Afficher une barre d'incantation pour le gel instantané",
 	WarningFlashFreeze		= "Activer l'avertissement pour le gel instantané",
 	PlaySoundOnFlashFreeze	= "Jouer un son lors de l'incantation du gel instantané",
-	WarningStormCloud		= "Annonce le joueur de la tempête de glace",
 	YellOnStormCloud		= "Crie quand la tempête de glace est active",
 	SetIconOnStormCloud		= "Met une icône sur la cible de la tempête de glace"
 }
@@ -351,7 +345,6 @@ L:SetMiscLocalization{
 	YellKill		= "Je suis... libéré de son emprise... enfin.",
 	YellCloud		= "Tempête de glace sur moi!"
 }
-
 
 --------------
 --  Thorim  --
@@ -364,7 +357,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningPhase2			= "Phase 2",
-	WarningLightningCharge	= "Charge de foudre",
 	LightningOrb 			= "Horion de foudre sur TOI! Bouge!"
 }
 
@@ -374,7 +366,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Afficher le timer pour le mode difficile",
-	WarningLightningCharge	= "Annonce les charges de foudre",
 	WarningPhase2			= "Annoncer la phase 2",
 	RangeFrame				= "Afficher la fenêtre de portée",
 	AnnounceFails			= "Affiche les joueurs qui n'ont pas évité les Charges de foudre (Nécessite l'activation des annonces et être promu ou leader)",
@@ -388,7 +379,6 @@ L:SetMiscLocalization{
 	ChargeOn		= "Charge(s) de foudre: %s",
 	Charge			= "Charge(s) de foudre non évitée(s) (cet essai): %s" 
 }
-
 
 -------------
 --  Freya  --
@@ -410,7 +400,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarnPhase2 		= "Phase 2",
 	WarnSimulKill 	= "Premier add mort - Résurrection dans 1 minute",
-	WarnFury 		= "Fureur de la nature sur >%s<",
 	SpecWarnFury 	= "Fureur de la nature sur VOUS!",
 	WarningTremor   = "Tremblement de terre - Arretez d'incanter!",
 	WarnRoots		= "Racines de fer sur >%s<",
@@ -427,7 +416,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnPhase2		= "Annonce la phase 2",
 	WarnSimulKill	= "Annonce la mort du premier mob",
-	WarnFury		= "Annonce la cible de la fureur de la nature",
 	WarnRoots		= "Annonce les cibles des racines de fer",
 	SpecWarnFury	= "Montre des alertes spéciales pour la Fureur de la Nature",
 	WarningTremor	= "Montre une alerte spéciale pour le tremblement de terre (Hard-Mode)",
@@ -461,7 +449,6 @@ L:SetOptionLocalization{
 	TrashRespawnTimer		= "Montre le timer du repop des trashs"
 }
 
-
 -------------------
 --  Mimiron  --
 -------------------
@@ -473,9 +460,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare			= "Barrage laser",
-	WarningPlasmaBlast	= "Explosion de plasma sur %s - heal",
-	WarnShell			= "Obus napalm sur >%s<",
-	WarnBlast			= "Explosion de plasma sur >%s<",
 	MagneticCore		= ">%s< vient de loot le Core Magnétique",
 	WarningShockBlast	= "Horion explosif - BOUGEZ",
 	WarnBombSpawn		= "Robot Bombe vient de pop"
@@ -490,8 +474,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	DarkGlare				= "Montre une alerte spéciale pour le Barrage laser",
-	WarnBlast				= "Annonce la cible des Explosions de plasma",
-	WarnShell				= "Annonce la cible des Obus napalm",
 	TimeToPhase2			= "Montre le timer pour la Phase 2",
 	TimeToPhase3			= "Montre le timer pour la Phase 3",
 	TimeToPhase4			= "Montre le timer pour la Phase 4",
@@ -565,7 +547,6 @@ L:SetMiscLocalization{
 	YellCrash			= "Déferlante d'ombre sur moi !"
 }
 
-
 ------------------
 --  Yogg Saron  --
 ------------------
@@ -596,8 +577,6 @@ L:SetWarningLocalization{
 	WarnMadness						= "Incantation de Susciter la folie en cours",
 	SpecWarnMadnessOutNow			= "Incantation de Susciter la folie fini - SORTEZ",
 	WarnBrainPortalSoon				= "Portail dans 3 sec",	
-	WarnSqueeze 					= "Ecrasement: >%s<",
-	WarnFavor						= "Ferveur de Sara sur >%s<",
 	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
 	WarnEmpowerSoon					= "Renforcement des ombres Bientôt !",
 	SpecWarnMaladyNear				= "Mal de la raison à côté de vous sur >%s<",
@@ -623,9 +602,7 @@ L:SetOptionLocalization{
 	WarnBrainPortalSoon				= "Annonce les Portails",
 	SpecWarnMadnessOutNow			= "Montre une alerte spéciale avant la fin du cast de Susciter la folie",
 	SetIconOnFearTarget				= "Met une icône sur la cible du fear",
-	WarnFavor						= "Annonce la cible de la ferveur de Sara",
 	SpecWarnFavor					= "Montre une alerte spéciale pour la ferveur de Sara",
-	WarnSqueeze						= "Annonce la cible d'Ecrasement",
 	specWarnBrainPortalSoon			= "Annonce l'arrivée d'un portail",
 	WarningSqueeze					= "Annonce la cible d'Ecrasement",
 	NextPortal						= "Montre un timer avant le prochain portail",
@@ -635,8 +612,7 @@ L:SetOptionLocalization{
 	ShowSaraHealth					= "Montre la vie de Sara durant la P1 (Doit être sélectionnée par au moins un membre du raid)",
 	WarnEmpowerSoon					= "Alerte avant le Renforcement des ombres",
 	SpecWarnMaladyNear				= "Montre une alerte spéciale si une personne à côté de vous est victime du Mal de la raison",
-	SpecWarnDeafeningRoar			= "Montre une alerte spéciale pour le Rugissement assourdissant (silence et haut-fait)"
+	SpecWarnDeafeningRoar			= "Montre une alerte spéciale pour le Rugissement assourdissant (silence et haut-fait)",
+	SetIconOnBrainLinkTarget		= "Met une icone sur la cible des Cerveaux liés"
 }
-
-
 

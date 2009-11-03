@@ -22,7 +22,6 @@ L:SetOptionLocalization({
 	TimerLocustFade 	= "Afficher le timer pour la fin de la Nuée de sauterelles"
 })
 
-
 ----------------------------
 --  Grand Widow Faerlina  --
 ----------------------------
@@ -41,7 +40,6 @@ L:SetOptionLocalization({
 	WarningEmbraceExpire	= "Activer l'avertissement de fin du baisé de la veuve",
 	WarningEmbraceExpired	= "Afficher un avertissement quand le baisé de la veuve va se terminer"
 })
-
 
 ---------------
 --  Maexxna  --
@@ -63,7 +61,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningSpidersSoon	= "Activer le pré-avertissement pour les araignées",
-	WarningSpidersNow	= "Activer l'avertissement pour les araignées"
+	WarningSpidersNow	= "Activer l'avertissement pour les araignées",
+	TimerSpider			= "Montre le timer pour l'arrivée des araignées"
 })
 
 L:SetMiscLocalization({
@@ -96,7 +95,6 @@ L:SetOptionLocalization({
 	TimerTeleportBack		= "Activer le timer pour le retour de North"
 })
 
-
 --------------------------
 --  Heigan the Unclean  --
 --------------------------
@@ -118,11 +116,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow		= "Activer l'avertissement de Téléporation",
 	WarningTeleportSoon		= "Activer le pré-avertissement de Téléporation",
-	WarningCurse			= "Activer l'avertissement pour la Malédiction",
 	TimerTeleport			= "Activer le timer pour la Téléporation",
-	TimerTeleportBack		= "Activer le timer pour le retour de Heigan"
 })
-
 
 ----------------
 --  Lolotheb  --
@@ -134,7 +129,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-  WarningHealSoon		= "Soins possibles dans 3 sec",
+	WarningHealSoon		= "Soins possibles dans 3 sec",
 	WarningHealNow		= "SOIGNEZ MAINTENANT!"
 })
 
@@ -142,8 +137,6 @@ L:SetOptionLocalization({
 	WarningHealSoon		= "Activer l'avertissement \"Soins dans 3 sec\" ",
 	WarningHealNow		= "Activer l'avertissement \"SOIGNEZ MAINTENANT\" "
 })
-
-
 
 -----------------
 --  Patchwerk  --
@@ -163,7 +156,6 @@ L:SetMiscLocalization({
 	yell2 		     	= "R'cousu avatar de guerre pour Kel'Thuzad !",
 	HatefulStrike 	= "Frappe Haineuse --> %s [%s]"
 })
-
 
 -----------------
 --  Grobbulus  --
@@ -185,7 +177,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-
 -------------
 --  Gluth  --
 -------------
@@ -194,7 +185,6 @@ L = DBM:GetModLocalization("Gluth")
 L:SetGeneralLocalization({
 	name = "Gluth"
 })
-
 
 ----------------
 --  Thaddius  --
@@ -233,7 +223,6 @@ L:SetOptionCatLocalization({
 	Arrows					= "Flèches"
 })
 
-
 -----------------
 --  Razuvious  --
 -----------------
@@ -257,7 +246,6 @@ L:SetOptionLocalization({
 L:SetWarningLocalization({
 	WarningShieldWallSoon	= "Mur de Bouclier expire dans 5 sec"
 })
-
 
 --------------
 --  Gothik  --
@@ -301,7 +289,6 @@ L:SetMiscLocalization({
 	Rider				= "Cavaliers"
 })
 
-
 ----------------
 --  Horsemen  --
 ----------------
@@ -334,7 +321,6 @@ L:SetMiscLocalization({
 	Blaumeux					= "Dame Blaumeux",
 	Zeliek						= "Sire Zeliek"
 })
-
 
 -----------------
 --  Sapphiron  --
@@ -402,5 +388,4 @@ L:SetTimerLocalization({
 	TimerPhase2				= "Phase 2",
 	BlastTimer				= "Heal Maintenant !"
 })
-
 
