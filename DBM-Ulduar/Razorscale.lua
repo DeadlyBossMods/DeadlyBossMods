@@ -23,6 +23,8 @@ local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 647
 local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
 local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
 
+mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
+
 local enrageTimer					= mod:NewEnrageTimer(900) -- uhm?
 local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
 local timerDeepBreathCast			= mod:NewCastTimer(2.5, 64021)
@@ -31,8 +33,6 @@ local timerTurret2					= mod:NewTimer(75, "timerTurret2")
 local timerTurret3					= mod:NewTimer(95, "timerTurret3")
 local timerTurret4					= mod:NewTimer(115, "timerTurret4")
 local timerGroundedTemp				= mod:NewTimer(45, "timerGroundedTemp")
-
-mod:AddBoolOption("PlaySoundOnDevouringFlame", false, "announce")
 
 local castFlames
 

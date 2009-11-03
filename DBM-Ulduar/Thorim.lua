@@ -22,6 +22,7 @@ local warnUnbalancingStrike		= mod:NewTargetAnnounce(62130, 4)	-- nice blizzard,
 local warningBomb				= mod:NewTargetAnnounce(62526, 4)
 
 local specWarnOrb				= mod:NewSpecialWarning("LightningOrb")
+
 mod:AddBoolOption("AnnounceFails", false, "announce")
 
 local enrageTimer				= mod:NewEnrageTimer(369)
