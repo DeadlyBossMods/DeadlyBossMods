@@ -61,7 +61,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningSpidersSoon		= "Предупреждать перед следующим призывом Паученышей Мексны",
-	WarningSpidersNow		= "Предупреждение для призыва Паученышей Мексны"
+	WarningSpidersNow		= "Предупреждение для призыва Паученышей Мексны",
+	TimerSpider			= "Отсчет времени до Паученышей Мексны"
 })
 
 L:SetMiscLocalization({
@@ -115,9 +116,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow			= "Предупреждение о телепортации",
 	WarningTeleportSoon			= "Предупреждать перед следующей телепортацией",
-	WarningCurse				= "Предупреждение о проклятии",
-	TimerTeleport				= "Отсчет времени до телепортации",
-	TimerTeleportBack			= "Отсчет времени до обратной телепортации"
+	TimerTeleport				= "Отсчет времени до телепортации"
 })
 
 ---------------
