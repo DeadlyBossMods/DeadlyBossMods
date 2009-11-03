@@ -21,26 +21,24 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local timerNextBigBang			= mod:NewNextTimer(90.5, 64584)
-local timerBigBangCast			= mod:NewCastTimer(8, 64584)
 local announceBigBang			= mod:NewSpellAnnounce(64584, 3)
 local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
-local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
+local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
+local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
+local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
 
+local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
+local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
+local specWarnCosmicSmash		= mod:NewSpecialWarning("SpecWarnCosmicSmash")
+
+local enrageTimer				= mod:NewEnrageTimer(366) -- combatstart take some combattime
+local timerNextBigBang			= mod:NewNextTimer(90.5, 64584)
+local timerBigBangCast			= mod:NewCastTimer(8, 64584)
 local timerNextCollapsingStar	= mod:NewTimer(15, "NextCollapsingStar")
 local timerCDCosmicSmash		= mod:NewTimer(25, "PossibleNextCosmicSmash")
 local timerCastCosmicSmash		= mod:NewCastTimer(4.5, 62311)
-local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
-local specWarnCosmicSmash		= mod:NewSpecialWarning("SpecWarnCosmicSmash")
-
-local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
-
 local timerPhasePunch			= mod:NewBuffActiveTimer(45, 64412)
 local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
-local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
-local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
-
-local enrageTimer				= mod:NewEnrageTimer(366) -- combatstart take some combattime
 
 local phase = 0
 

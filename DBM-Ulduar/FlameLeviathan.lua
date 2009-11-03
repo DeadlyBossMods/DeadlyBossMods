@@ -14,18 +14,18 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local timerSystemOverload	= mod:NewBuffActiveTimer(20, 62475)
-local timerFlameVents		= mod:NewCastTimer(10, 62396)
-local timerPursued			= mod:NewTargetTimer(30, 62374)
 local warnHodirsFury		= mod:NewTargetAnnounce(62297)
-local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
-local warnWardofLife		= mod:NewSpecialWarning("warnWardofLife")
---local warnWrithingLasher		= mod:NewSpecialWarning("warnWrithingLasher")
-
-local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
 local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2)
 local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3)
 
+local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
+local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
+local warnWardofLife		= mod:NewSpecialWarning("warnWardofLife")
+--local warnWrithingLasher	= mod:NewSpecialWarning("warnWrithingLasher")
+
+local timerSystemOverload	= mod:NewBuffActiveTimer(20, 62475)
+local timerFlameVents		= mod:NewCastTimer(10, 62396)
+local timerPursued			= mod:NewTargetTimer(30, 62374)
 
 local guids = {}
 local function buildGuidTable()

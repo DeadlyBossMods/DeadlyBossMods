@@ -20,39 +20,38 @@ mod:RegisterEvents(
 
 mod:SetUsedIcons(6, 7, 8)
 
-
+local warnMadness 					= mod:NewCastAnnounce(64059, 1)
+local warnSqueeze					= mod:NewTargetAnnounce(64125, 1)
+local warnFavor						= mod:NewTargetAnnounce(63138, 1)
+local warnDeafeningRoarSoon			= mod:NewPreWarnAnnounce(64189, 5, 3)
 local warnGuardianSpawned 			= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
 local warnCrusherTentacleSpawned	= mod:NewAnnounce("WarningCrusherTentacleSpawned", 2)
 local warnP2 						= mod:NewAnnounce("WarningP2", 2)
 local warnP3 						= mod:NewAnnounce("WarningP3", 2)
 local warnSanity 					= mod:NewAnnounce("WarningSanity", 3)
-local specWarnGuardianLow 			= mod:NewSpecialWarning("SpecWarnGuardianLow", false)
 local warnBrainLink 				= mod:NewAnnounce("WarningBrainLink", 2)
+local warnBrainPortalSoon			= mod:NewAnnounce("WarnBrainPortalSoon", 1)
+local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpowerSoon", 4)
+
+local specWarnGuardianLow 			= mod:NewSpecialWarning("SpecWarnGuardianLow", false)
 local specWarnBrainLink 			= mod:NewSpecialWarning("SpecWarnBrainLink")
 local specWarnSanity 				= mod:NewSpecialWarning("SpecWarnSanity")
-local warnMadness 					= mod:NewCastAnnounce(64059, 1)
-local timerMadness 					= mod:NewCastTimer(60, 64059)
 local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
-local warnBrainPortalSoon			= mod:NewAnnounce("WarnBrainPortalSoon", 1)
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
-local warnSqueeze					= mod:NewTargetAnnounce(64125, 1)
-local brainportal					= mod:NewTimer(20, "NextPortal")
-local warnFavor						= mod:NewTargetAnnounce(63138, 1)
+local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
 local specWarnFavor					= mod:NewSpecialWarning("SpecWarnFavor")
-local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
-local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
-local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpowerSoon", 4)
-local timerEmpower					= mod:NewCDTimer(46, 64465)
-local timerEmpowerDuration			= mod:NewBuffActiveTimer(10, 64465)
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
-local warnDeafeningRoarSoon			= mod:NewPreWarnAnnounce(64189, 5, 3)
+local enrageTimer					= mod:NewEnrageTimer(900)
+local brainportal					= mod:NewTimer(20, "NextPortal")
+local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
+local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
+local timerEmpower					= mod:NewCDTimer(46, 64465)
+local timerEmpowerDuration			= mod:NewBuffActiveTimer(10, 64465)
+local timerMadness 					= mod:NewCastTimer(60, 64059)
 local timerCastDeafeningRoar		= mod:NewCastTimer(2.3, 64189)
 local timerNextDeafeningRoar		= mod:NewNextTimer(30, 64189)
-local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
-
-
-local timerAchieve	= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
+local timerAchieve					= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
@@ -61,9 +60,6 @@ mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFavorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")
 mod:AddBoolOption("SetIconOnBrainLinkTarget")
-
-
-local enrageTimer	= mod:NewEnrageTimer(900)
 
 local phase = 1
 local targetWarningsShown = {}
