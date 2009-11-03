@@ -36,14 +36,6 @@ local warnFlame					= mod:NewTargetAnnounce(68123, 3)
 local warnTouch					= mod:NewTargetAnnounce(66209, 3)
 local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4)
 
-local timerFlame 				= mod:NewTargetTimer(6, 68123)
-local timerFlameCD				= mod:NewCDTimer(30, 68125) 
-local timerFlesh				= mod:NewTargetTimer(12, 67049)
-local timerFleshCD				= mod:NewCDTimer(23, 67051) 
-local timerPortalCD				= mod:NewCDTimer(120, 67900)
-local timerVolcanoCD			= mod:NewCDTimer(120, 67901)
---local timerTouchCD			= mod:NewCDTimer(999, 12345)	-- cooldown?
-
 local specWarnFlame				= mod:NewSpecialWarning("SpecWarnFlame")
 local specWarnFlesh				= mod:NewSpecialWarning("SpecWarnFlesh")
 local specWarnTouch				= mod:NewSpecialWarning("SpecWarnTouch")
@@ -54,7 +46,14 @@ local specWarnFelInferno		= mod:NewSpecialWarning("SpecWarnFelInferno")
 local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", canInterrupt)
 local SpecWarnFelFireballDispel	= mod:NewSpecialWarning("SpecWarnFelFireballDispel", isMagicDispeller)
 
-local enrageTimer			= mod:NewEnrageTimer(600)
+local timerFlame 				= mod:NewTargetTimer(6, 68123)
+local timerFlameCD				= mod:NewCDTimer(30, 68125) 
+local timerFlesh				= mod:NewTargetTimer(12, 67049)
+local timerFleshCD				= mod:NewCDTimer(23, 67051) 
+local timerPortalCD				= mod:NewCDTimer(120, 67900)
+local timerVolcanoCD			= mod:NewCDTimer(120, 67901)
+local enrageTimer				= mod:NewEnrageTimer(600)
+--local timerTouchCD			= mod:NewCDTimer(999, 12345)	-- cooldown?
 
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameIcon", true, "announce")
