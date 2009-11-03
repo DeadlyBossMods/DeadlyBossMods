@@ -18,8 +18,8 @@ mod:RegisterEvents(
 local warnBoneSpike				= mod:NewSpellAnnounce(69057)
 local warnImpale				= mod:NewAnnounce("WarnImpale")
 
-local specWarnWhirlwind			= mod:NewSpecialWarning("SpecWarnWhirlwind")
 local specWarnColdflame			= mod:NewSpecialWarning("SpecWarnColdflame")
+local specWarnWhirlwind			= mod:NewSpecialWarning("SpecWarnWhirlwind")
 
 mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 
