@@ -39,7 +39,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart		= "Show start timer",
-	TimerShadow 	= "Show timer for Shadow Crystals"
+	TimerShadow 	= "Show timer for Shadow Sight"
 })
 
 L:SetMiscLocalization({
