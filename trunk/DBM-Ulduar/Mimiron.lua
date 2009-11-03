@@ -23,11 +23,6 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 	     or select(2, UnitClass("player")) == "WARRIOR"
 	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
-mod:AddBoolOption("PlaySoundOnShockBlast", isMelee)
-mod:AddBoolOption("PlaySoundOnDarkGlare", true)
-mod:AddBoolOption("HealthFramePhase4", true)
-mod:AddBoolOption("AutoChangeLootToFFA", true)
-
 local warnShockBlast	= mod:NewSpecialWarning("WarningShockBlast", nil, false)
 mod:AddBoolOption("ShockBlastWarningInP1", isMelee, "announce")
 mod:AddBoolOption("ShockBlastWarningInP4", isMelee, "announce")
@@ -54,6 +49,11 @@ local timerShell				= mod:NewTargetTimer(6, 63666)
 local timerFlameSuppressant		= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
 local timerBombExplosion		= mod:NewCastTimer(15, 65333)
+
+mod:AddBoolOption("PlaySoundOnShockBlast", isMelee)
+mod:AddBoolOption("PlaySoundOnDarkGlare", true)
+mod:AddBoolOption("HealthFramePhase4", true)
+mod:AddBoolOption("AutoChangeLootToFFA", true)
 
 local phase = 0 
 local lootmethod, masterlooterRaidID

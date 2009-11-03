@@ -20,22 +20,21 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 	     or select(2, UnitClass("player")) == "WARRIOR"
 	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
-mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
-
-local timerBreath			= mod:NewTimer(6, "TimerBreath", 17086)
-local timerWhelps			= mod:NewTimer(79, "TimerWhelps", 10697)
+local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
+local sndBreath				= mod:NewRunAwaySound(nil, "SoundBreath")
+local warnPhase2			= mod:NewPhaseAnnounce(2)
+local warnPhase3			= mod:NewPhaseAnnounce(3)
+local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
 local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
 local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", nil, false)
 mod:AddBoolOption("BlastNovaWarning", isMelee, "announce")
-local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
-local sndBreath				= mod:NewRunAwaySound(nil, "SoundBreath")
+mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
+
+local timerBreath			= mod:NewTimer(6, "TimerBreath", 17086)
+local timerWhelps			= mod:NewTimer(79, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
 local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps") 
-
-local warnPhase2			= mod:NewPhaseAnnounce(2)
-local warnPhase3			= mod:NewPhaseAnnounce(3)
-local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
 local sndFunny				= mod:NewSound(nil, "SoundWTF")
 
