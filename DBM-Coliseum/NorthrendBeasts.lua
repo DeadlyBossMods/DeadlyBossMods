@@ -18,16 +18,6 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local enrageTimer			= mod:NewEnrageTimer(223)
-local timerCombatStart		= mod:NewTimer(23, "TimerCombatStart")
-
-local timerBreath			= mod:NewCastTimer(5, 67650)
-local timerNextStomp		= mod:NewNextTimer(20, 66330)
-local timerNextImpale		= mod:NewNextTimer(10, 67477)
-local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
-local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss")
-local timerNextCrash		= mod:NewCDTimer(55, 67662)
-
 local warnImpaleOn			= mod:NewTargetAnnounce(67478, 2)
 local warnFireBomb			= mod:NewSpellAnnounce(66317, 4, nil, false)
 local warnBreath			= mod:NewSpellAnnounce(67650, 1)
@@ -43,6 +33,16 @@ local specWarnBile			= mod:NewSpecialWarning("SpecialWarningBile")
 local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
 local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
+
+local enrageTimer			= mod:NewEnrageTimer(223)
+local timerCombatStart		= mod:NewTimer(23, "TimerCombatStart")
+
+local timerBreath			= mod:NewCastTimer(5, 67650)
+local timerNextStomp		= mod:NewNextTimer(20, 66330)
+local timerNextImpale		= mod:NewNextTimer(10, 67477)
+local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
+local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss")
+local timerNextCrash		= mod:NewCDTimer(55, 67662)
 
 mod:AddBoolOption("PingCharge")
 mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
