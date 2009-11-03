@@ -90,6 +90,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(67477, 66331, 67478, 67479) then					-- Impale
 		timerNextImpale:Start()
+		warnImpaleOn:Show()
 	elseif args:IsSpellID(67657, 66759, 67658, 67659) then				-- Frothing Rage
 		warnRage:Show()
 	elseif args:IsSpellID(66823, 67618, 67619, 67620) then				-- Paralytic Toxin
