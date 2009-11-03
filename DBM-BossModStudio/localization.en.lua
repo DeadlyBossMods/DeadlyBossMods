@@ -1,4 +1,3 @@
-
 --if GetLocale() ~= "enUS" and GetLocale() ~= "enGB" then return end
 if type(DBM_BMS_Translations) ~= "table" then DBM_BMS_Translations = {} end
 
@@ -48,5 +47,3 @@ L.EventStartBar = "Start a timer Bar"
 L.EventWarnEnd = "Show warning before timer ends"
 L.EventWarnMsg = "Warning Message"
 L.EventSetIcon = "Set Icon on Target (on yells %t of text)"
-
-
