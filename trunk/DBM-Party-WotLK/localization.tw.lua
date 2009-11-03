@@ -13,9 +13,8 @@ local optionTimerCD	= "為%s顯示冷卻計時器"
 local optionTimerDur	= "為%s顯示持續時間計時器"
 local optionTimerCast	= "為%s顯示施法計時器"
 
-
 ----------------------------------
---  AhnKahet: The Old Kingdom  --
+--  Ahn'Kahet: The Old Kingdom  --
 ----------------------------------
 --  Prince Taldaram  --
 -----------------------
@@ -33,7 +32,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------
 --  Elder Nadox  --
@@ -53,7 +51,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------------------
 --  Jedoga Shadowseeker  --
 ---------------------------
@@ -71,7 +68,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------------
 --  Herald Volazj  --
@@ -91,7 +87,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ----------------
 --  Amanitar  --
 ----------------
@@ -109,7 +104,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------
 --  Azjol-Nerub  --
@@ -131,7 +125,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ----------------
 --  Hadronox  --
 ----------------
@@ -150,7 +143,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------
 --  Anub'arak (Party)  --
 -------------------------
@@ -168,7 +160,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------------------------------
 --  Caverns of Time: Old Stratholme  --
@@ -190,7 +181,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------------
 --  Salramm the Fleshcrafter  --
 --------------------------------
@@ -209,7 +199,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------
 --  Chrono-Lord Epoch  --
 -------------------------
@@ -227,7 +216,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------
 --  Mal'Ganis  --
@@ -288,7 +276,6 @@ L:SetMiscLocalization({
 	WaveCheck	= "Scourge Wave = %d/10"
 })
 
-
 ------------------------
 --  Drak'Tharon Keep  --
 ------------------------
@@ -309,7 +296,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------
 --  Novos the Summoner  --
 --------------------------
@@ -327,7 +313,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------
 --  King Dred  --
@@ -347,7 +332,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------------------
 --  The Prophet Tharon'ja  --
 -----------------------------
@@ -365,7 +349,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 --  Gundrak  --
@@ -387,7 +370,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------
 --  Moorabi  --
 ---------------
@@ -405,7 +387,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------------
 --  Drakkari Colossus  --		
@@ -428,7 +409,6 @@ L:SetOptionLocalization({
 	WarningElemental	= "為元素階段顯示警告",
 	WarningStone		= "為巨像階段顯示警告"
 })
-
 
 -----------------
 --  Gal'darah  --
@@ -466,7 +446,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------
 --  Halls of Lightning  --
 --------------------------
@@ -487,7 +466,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------
 --  Ionar  --
 -------------
@@ -505,7 +483,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 --  Volkhan  --
@@ -530,7 +507,6 @@ L:SetOptionLocalization({
 	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
 })
 
-
 --------------
 --  Kronus  --
 --------------
@@ -548,7 +524,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ----------------------
 --  Halls of Stone  --
@@ -569,7 +544,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ------------------
 --  Krystallus  --
@@ -592,7 +566,6 @@ L:SetOptionLocalization({
 	TimerShatterCD	= optionTimerCD:format(GetSpellInfo(50810))
 })
 
-
 ------------------------------
 --  Sjonnir the Ironshaper  --
 ------------------------------
@@ -610,7 +583,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------------------------------
 --  Brann Bronzebeard Escort Event  --
@@ -656,7 +628,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------------
 --  Ormorok the Tree-Shaper  --
 -------------------------------
@@ -674,7 +645,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ----------------------------
 --  Grand Magus Telestra  --
@@ -706,7 +676,6 @@ L:SetMiscLocalization({
 	MergeTrigger		= "現在，最後一步!"
 })
 
-
 -------------------
 --  Keristrasza  --
 -------------------
@@ -724,7 +693,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------------------------
 --  Commander Kolurg/Stoutbeard  --
@@ -750,7 +718,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ------------------
 --  The Oculus  --
@@ -800,7 +767,6 @@ L:SetOptionLocalization({
 	SpecWarnBombYou		= "當你中了時間炸彈時顯示特別警告"
 })
 
-
 --------------------------
 --  Varos Cloudstrider  --
 --------------------------
@@ -818,7 +784,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------------------
 --  Ley-Guardian Eregos  --
@@ -840,8 +805,6 @@ L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"),
 })
 
-
-
 --------------------
 --  Utgarde Keep  --
 -----------------------
@@ -862,7 +825,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------------
 --  Skarvald the Constructor  --
 --  & Dalronn the Controller  --
@@ -881,7 +843,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ----------------------------
 --  Ingvar the Plunderer  --
@@ -902,7 +863,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	SpecialWarningSpelllock	= "為法術封鎖顯示特別警告"
 })
-
 
 ------------------------
 --  Utgarde Pinnacle  --
@@ -942,7 +902,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------
 --  Svala Sorrowgrave  --
 -------------------------
@@ -961,7 +920,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------------
 --  Gortok Palehoof  --
 -----------------------
@@ -979,7 +937,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------------
 --  The Violet Hold  --
@@ -1001,7 +958,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------
 --  Erekem  --
 --------------
@@ -1019,7 +975,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 --  Ichoron  --
@@ -1039,7 +994,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------
 --  Lavanthor  --
 -----------------
@@ -1057,7 +1011,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------
 --  Moragg  --
@@ -1077,7 +1030,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------
 --  Xevozz  --
 --------------
@@ -1095,7 +1047,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------------------
 --  Zuramat the Obliterator  --
@@ -1118,7 +1069,6 @@ L:SetOptionLocalization({
 	SpecialWarningVoidShifted	= optionSpecWarning:format(GetSpellInfo(54343)),
 	SpecialShroudofDarkness		= optionSpecWarning:format(GetSpellInfo(59745))
 })
-
 
 ---------------------
 --  Portal Timers  --
@@ -1152,7 +1102,6 @@ L:SetMiscLocalization({
 	yell1		= "監獄守衛，我們要離開了!這些冒險者會接手!動作快!",
 	WavePortal	= "傳送門開啟:(%d+)/18"
 })
-
 
 -----------------------------
 --  Trial of the Champion  --
@@ -1329,6 +1278,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	IckPursuit			= "%s正在追擊著你!"
 })
+
 ----------------------------
 --  Forgemaster Garfrost  --
 ----------------------------
@@ -1382,6 +1332,7 @@ L:SetMiscLocalization({
 	TyrannusYell		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget		= "^%%s gazes at (%S+) and readies an icy attack!"
 })
+
 ----------------------
 --  Forge of Souls  --
 ----------------------

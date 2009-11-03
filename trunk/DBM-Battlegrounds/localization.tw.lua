@@ -1,6 +1,4 @@
-﻿
-if GetLocale() ~= "zhTW" then return end
-
+﻿if GetLocale() ~= "zhTW" then return end
 
 local L
 
@@ -26,7 +24,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ArenaInvite			= "競技場邀請"
 })
-
 
 --------------
 --  Arenas  --
@@ -188,8 +185,6 @@ L:SetOptionLocalization({
 	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。",
 })
 
-
-
 ----------------------------------
 --  Archavon the Stone Watcher  --
 ----------------------------------
@@ -272,7 +267,6 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	Meteor				= "%s施展隕石之拳!"
 }
-
 
 ------------------------
 --  Isle of Conquest  --

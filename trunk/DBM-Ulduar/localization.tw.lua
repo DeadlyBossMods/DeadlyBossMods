@@ -2,7 +2,6 @@
 
 local L
 
-
 -----------------------
 --  Flame Leviathan  --
 -----------------------
@@ -43,7 +42,6 @@ L:SetOptionLocalization{
 	warnWardofLife			= "為生命結界 出現顯示特別警告",
 --	warnWrithingLasher		= "為盤繞鞭笞者 出現顯示特別警告" --commenting out as it is currently unused for Flame Leviathan
 }
-
 
 --------------------------------
 --  Ignis the Furnace Master  --
@@ -103,7 +101,7 @@ L:SetTimerLocalization{
 	timerGroundedTemp		= "地上階段",
 }
 L:SetOptionLocalization{
-	SpecWarnDevouringFlame		= "當你在吞噬烈焰的範圍內時顯示特別警告",
+	SpecWarnDevouringFlame		= "當你受到吞噬烈焰時顯示特別警告",
 	PlaySoundOnDevouringFlame	= "當你受到吞噬烈焰時播放音效",
 	timerAllTurretsReady		= "為砲塔顯示計時器",
 	warnTurretsReadySoon		= "為砲塔顯示預先警告",
@@ -124,7 +122,6 @@ L:SetMiscLocalization{
 	EmotePhase2			= "%%s再也飛不動了!",
 	FlamecastUnknown		= DBM_CORE_UNKNOWN
 }
-
 
 ----------------------------
 --  XT-002 Deconstructor  --
@@ -193,7 +190,6 @@ L:SetMiscLocalization{
 	StormcallerBrundir 		= "風暴召喚者布倫迪爾"
 }
 
-
 ----------------------------
 --  Algalon the Observer  --
 ----------------------------
@@ -234,7 +230,6 @@ L:SetMiscLocalization{
 	Emote_CollapsingStars		= "%s開始召喚崩陷之星!",
 	Emote_CosmicSmash		= "%s開始施展宇宙潰擊!"
 }
-
 
 ----------------
 --  Kologarn  --
@@ -309,7 +304,6 @@ L:SetOptionLocalization{
 	WarnCatDiedOne			= "當野性防衛者剩下最後一隻時顯示警告"
 }
 
-
 -------------
 --  Hodir  --
 -------------
@@ -339,7 +333,6 @@ L:SetMiscLocalization{
 	YellKill			= "我…我終於從他的掌控中…解脫了。",
 	YellCloud			= "我中了風暴雷雲 快接近我!",
 }
-
 
 --------------
 --  Thorim  --
@@ -374,7 +367,6 @@ L:SetMiscLocalization{
 	ChargeOn			= "閃電充能: %s",
 	Charge				= "中了閃電充能 (這一次): %s" 
 }
-
 
 -------------
 --  Freya  --
@@ -444,7 +436,6 @@ L:SetOptionLocalization{
 	TrashRespawnTimer		= "為芙蕾雅的小怪重生顯示計時器"
 }
 
-
 ---------------
 --  Mimiron  --
 ---------------
@@ -495,7 +486,6 @@ L:SetMiscLocalization{
 	LootMsg				= "(.+)拾取了物品:.*Hitem:(%d+)"
 }
 
-
 ---------------------
 --  General Vezax  --
 ---------------------
@@ -541,7 +531,6 @@ L:SetMiscLocalization{
 	YellLeech			= "我中了無面者印記 - 遠離我",
 	YellCrash			= "我中了暗影暴擊 - 遠離我"
 }
-
 
 ------------------
 --  Yogg-Saron  --

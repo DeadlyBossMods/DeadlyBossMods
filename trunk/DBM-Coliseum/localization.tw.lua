@@ -54,8 +54,6 @@ L:SetWarningLocalization{
 	SpecialWarningBile		= "你中了燃燒膽汁"
 }
 
-
-
 ---------------------
 --  Lord Jaraxxus  --
 ---------------------
@@ -100,7 +98,6 @@ L:SetOptionLocalization{
 	LegionFlameWhisper		= "密語提示中了軍團烈焰的目標",
 	IncinerateShieldFrame		= "在首領血量裡顯示焚化血肉的血量"
 }
-
 
 -------------------------
 --  Faction Champions  --
@@ -204,7 +201,6 @@ L:SetOptionLocalization{
 	WarningPoweroftheTwins		= "提示雙子威能的目標",
 	SpecWarnPoweroftheTwins		= "當你坦住的首領擁有雙子威能時顯示特別警告"
 }
-
 
 -----------------
 --  Anub'arak  --

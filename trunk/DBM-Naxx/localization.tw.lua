@@ -22,7 +22,6 @@ L:SetOptionLocalization({
 	TimerLocustFade 	= "為蝗蟲風暴結束顯示計時器"
 })
 
-
 ----------------------------
 --  Grand Widow Faerlina  --
 ----------------------------
@@ -42,7 +41,6 @@ L:SetOptionLocalization({
 	WarningEmbraceExpired	= "為寡婦之擁結束顯示警告"
 })
 
-
 ---------------
 --  Maexxna  --
 ---------------
@@ -58,12 +56,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpider		= "梅克絲娜之子"
+	TimerSpider		= "下一次 梅克絲娜之子"
 })
 
 L:SetOptionLocalization({
 	WarningSpidersSoon	= "為梅克絲娜之子顯示預先警告",
-	WarningSpidersNow	= "為梅克絲娜之子顯示警告"
+	WarningSpidersNow	= "為梅克絲娜之子顯示警告",
+	TimerSpider		= "為下一次梅克絲娜之子顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -96,7 +95,6 @@ L:SetOptionLocalization({
 	TimerTeleportBack		= "為傳送回來顯示計時器"
 })
 
-
 --------------------------
 --  Heigan the Unclean  --
 --------------------------
@@ -118,11 +116,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow		= "為傳送顯示警告",
 	WarningTeleportSoon		= "為傳送顯示預先警告",
-	WarningCurse			= "為詛咒顯示警告",
-	TimerTeleport			= "為傳送顯示計時器",
-	TimerTeleportBack		= "為傳送回來顯示計時器"
+	TimerTeleport			= "為傳送顯示計時器"
 })
-
 
 ---------------
 --  Loatheb  --
@@ -143,8 +138,6 @@ L:SetOptionLocalization({
 	WarningHealNow		= "為現在治療顯示警告"
 })
 
-
-
 -----------------
 --  Patchwerk  --
 -----------------
@@ -163,7 +156,6 @@ L:SetMiscLocalization({
 	yell2 = "科爾蘇加德讓縫補者成為戰爭的化身!",
 	HatefulStrike = "憎恨打擊 --> %s [%s]"
 })
-
 
 -----------------
 --  Grobbulus  --
@@ -185,7 +177,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-
 -------------
 --  Gluth  --
 -------------
@@ -194,7 +185,6 @@ L = DBM:GetModLocalization("Gluth")
 L:SetGeneralLocalization({
 	name = "古魯斯"
 })
-
 
 ----------------
 --  Thaddius  --
@@ -239,7 +229,6 @@ L:SetOptionCatLocalization({
 	Arrows	= "箭頭",
 })
 
-
 ----------------------------
 --  Instructor Razuvious  --
 ----------------------------
@@ -274,7 +263,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerWave			= "為波數顯示計時器",
+	TimerWave			= "為下一波顯示計時器",
 	TimerPhase2			= "為第二階段顯示計時器",
 	WarningWaveSoon		= "為波數顯示預先警告",
 	WarningWaveSpawned	= "為波數出現顯示警告",
@@ -305,7 +294,6 @@ L:SetMiscLocalization({
 	Knight			= "死亡騎士",
 	Rider			= "騎兵",
 })
-
 
 ---------------------
 --  Four Horsemen  --
@@ -339,7 +327,6 @@ L:SetMiscLocalization({
 	Blaumeux	= "布洛莫斯女士",
 	Zeliek		= "札里克爵士",
 })
-
 
 -----------------
 --  Sapphiron  --
