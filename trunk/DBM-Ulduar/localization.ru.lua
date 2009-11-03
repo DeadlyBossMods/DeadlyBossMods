@@ -2,7 +2,6 @@
 
 local L
 
-
 -----------------------
 --  Flame Leviathan  --
 -----------------------
@@ -43,7 +42,6 @@ L:SetOptionLocalization{
 	warnWardofLife			= "Спец-предупреждение для призыва Защитника жизни",
 	warnWrithingLasher		= "Спец-предупреждение для призыва Змеящегося плеточника"
 }
-
 
 --------------------------------
 --  Ignis the Furnace Master  --
@@ -129,7 +127,6 @@ L:SetMiscLocalization{
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
 
-
 ----------------------------
 --  XT-002 Deconstructor  --
 ----------------------------
@@ -199,7 +196,6 @@ L:SetMiscLocalization{
 	StormcallerBrundir 	= "Буревестник Брундир",
 }
 
-
 ----------------------------
 --  Algalon the Observer  --
 ----------------------------
@@ -241,7 +237,6 @@ L:SetMiscLocalization{
 	Emote_CollapsingStars	 = "%s призывает вспыхивающие звезды!",
 	Emote_CosmicSmash	 = "%s начинает читать заклинание Кара небесная!"
 }
-
 
 ----------------
 --  Kologarn  --
@@ -318,7 +313,6 @@ L:SetOptionLocalization{
 	WarnCatDiedOne	= "Предупреждение, когда погибает кошка"
 }
 
-
 -------------
 --  Hodir  --
 -------------
@@ -348,7 +342,6 @@ L:SetMiscLocalization{
 	YellKill	= "Наконец-то я... свободен от его оков…",
 	YellCloud	= "На мне Грозовая Туча!"
 }
-
 
 --------------
 --  Thorim  --
@@ -383,7 +376,6 @@ L:SetMiscLocalization{
 	ChargeOn	 = "Разряд молнии: %s",
 	Charge		 = "Разряд не достал (в этот раз): %s"
 }
-
 
 -------------
 --  Freya  --
@@ -454,7 +446,6 @@ L:SetOptionLocalization{
 	TrashRespawnTimer	= "Отсчет времени до повторного Дрожания земли"
 }
 
-
 ---------------
 --  Mimiron  --
 ---------------
@@ -506,7 +497,6 @@ L:SetMiscLocalization{
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
-
 ---------------------
 --  General Vezax  --
 ---------------------
@@ -552,7 +542,6 @@ L:SetMiscLocalization{
 	YellLeech			= "Вытягивание жизни на мне!",
 	YellCrash			= "Темное сокрушение на мне!"
 }
-
 
 ------------------
 --  Yogg-Saron  --
