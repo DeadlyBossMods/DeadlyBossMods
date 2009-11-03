@@ -42,6 +42,8 @@ local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", f
 local specWarnFavor					= mod:NewSpecialWarning("SpecWarnFavor")
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
+mod:AddBoolOption("WarningSqueeze", false, "announce")
+
 local enrageTimer					= mod:NewEnrageTimer(900)
 local brainportal					= mod:NewTimer(20, "NextPortal")
 local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
@@ -55,7 +57,6 @@ local timerAchieve					= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
-mod:AddBoolOption("WarningSqueeze", false, "announce")
 mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFavorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")

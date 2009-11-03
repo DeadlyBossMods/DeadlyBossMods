@@ -19,14 +19,15 @@ local warnStormCloud		= mod:NewTargetAnnounce(65123)
 
 local warnFlashFreeze		= mod:NewSpecialWarning("WarningFlashFreeze")
 
+mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
+mod:AddBoolOption("YellOnStormCloud", true, "announce")
+
 local enrageTimer			= mod:NewEnrageTimer(475)
 local timerFlashFreeze		= mod:NewCastTimer(9, 61968)
 local timerFrozenBlows		= mod:NewBuffActiveTimer(20, 63512)
 local timerFlashFrCD		= mod:NewCDTimer(50, 61968)
 local timerAchieve			= mod:NewAchievementTimer(179, 3182, "TimerSpeedKill")
 
-mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
-mod:AddBoolOption("YellOnStormCloud", true, "announce")
 mod:AddBoolOption("SetIconOnStormCloud")
 
 function mod:OnCombatStart(delay)

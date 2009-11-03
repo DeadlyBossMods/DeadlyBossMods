@@ -25,18 +25,18 @@ local specWarnSurgeDarkness		= mod:NewSpecialWarning("SpecialWarningSurgeDarknes
 local specWarnLifeLeechYou		= mod:NewSpecialWarning("SpecialWarningLLYou")
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
 
+mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
+mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
+mod:AddBoolOption("CrashWhisper", false, "announce")
+mod:AddBoolOption("YellOnLifeLeech", true, "announce")
+mod:AddBoolOption("YellOnShadowCrash", true, "announce")
+
 local timerEnrage				= mod:NewEnrageTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
 local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 62662)
 local timerSaroniteVapors		= mod:NewNextTimer(30, 63322)
 local timerLifeLeech			= mod:NewTargetTimer(10, 63276)
 local timerHardmode				= mod:NewTimer(189, "hardmodeSpawn")
-
-mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
-mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
-mod:AddBoolOption("CrashWhisper", false, "announce")
-mod:AddBoolOption("YellOnLifeLeech", true, "announce")
-mod:AddBoolOption("YellOnShadowCrash", true, "announce")
 
 
 function mod:OnCombatStart(delay)

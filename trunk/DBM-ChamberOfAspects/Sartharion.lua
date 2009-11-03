@@ -15,27 +15,27 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_EMOTE"
 )
 
-mod:AddBoolOption("AnnounceFails", true, "announce")
-mod:AddBoolOption("PlaySoundOnFireWall")
-
-local warnShadowFissure	= mod:NewSpellAnnounce(59127)
-local timerShadowFissure = mod:NewCastTimer(5, 59128)--Cast timer until Void Blast. it's what happens when shadow fissure explodes.
 local isInCombatWithSartharion = false
 
-local timerTenebron	= mod:NewTimer(30, "TimerTenebron")
-local timerShadron	= mod:NewTimer(80, "TimerShadron")
-local timerVesperon	= mod:NewTimer(120, "TimerVesperon")
-
-local warnTenebron	= mod:NewAnnounce("WarningTenebron", 2, nil, false)
-local warnShadron	= mod:NewAnnounce("WarningShadron", 2, nil, false)
-local warnVesperon	= mod:NewAnnounce("WarningVesperon", 2, nil, false)
+local warnShadowFissure	    = mod:NewSpellAnnounce(59127)
+local warnTenebron          = mod:NewAnnounce("WarningTenebron", 2, nil, false)
+local warnShadron           = mod:NewAnnounce("WarningShadron", 2, nil, false)
+local warnVesperon          = mod:NewAnnounce("WarningVesperon", 2, nil, false)
 
 local warnFireWall			= mod:NewSpecialWarning("WarningFireWall", nil, nil, true)
 local warnVesperonPortal	= mod:NewSpecialWarning("WarningVesperonPortal", false)
 local warnTenebronPortal	= mod:NewSpecialWarning("WarningTenebronPortal", false)
 local warnShadronPortal		= mod:NewSpecialWarning("WarningShadronPortal", false)
 
-local timerWall         = mod:NewCDTimer(30, 43113)
+mod:AddBoolOption("AnnounceFails", true, "announce")
+
+local timerShadowFissure    = mod:NewCastTimer(5, 59128)--Cast timer until Void Blast. it's what happens when shadow fissure explodes.
+local timerWall             = mod:NewCDTimer(30, 43113)
+local timerTenebron         = mod:NewTimer(30, "TimerTenebron")
+local timerShadron          = mod:NewTimer(80, "TimerShadron")
+local timerVesperon         = mod:NewTimer(120, "TimerVesperon")
+
+mod:AddBoolOption("PlaySoundOnFireWall")
 
 local lastvoids = {}
 local lastfire = {}
