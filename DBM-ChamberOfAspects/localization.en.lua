@@ -47,9 +47,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerTenebron	= "Tenebron incoming",
-	TimerShadron	= "Shadron incoming",
-	TimerVesperon	= "Vesperon incoming"
+	TimerTenebron	= "Tenebron arrives",
+	TimerShadron	= "Shadron arrives",
+	TimerVesperon	= "Vesperon arrives"
 })
 
 L:SetOptionLocalization({
