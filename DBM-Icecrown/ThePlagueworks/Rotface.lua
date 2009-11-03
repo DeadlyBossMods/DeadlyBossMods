@@ -14,27 +14,25 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-
-local nextWallSlime		= mod:NewTimer(20, "NextPoisonSlimePipes")
-local nextSlimeSpray		= mod:NewNextTimer(21, 69508)
-local warnSlimeSpray		= mod:NewSpellAnnounce(69508)
-
-local warnMutatedInfection	= mod:NewTargetAnnounce(71224)
-local timerMutatedInfection	= mod:NewTargetTimer(12, 71224)
-local specWarnMutatedInfection	= mod:NewSpecialWarning("SpecWarnMutatedInfection")
-mod:AddBoolOption("InfectionIcon")
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
-local warnOozeSpawn		= mod:NewAnnounce("WarnOozeSpawn")
-
+local warnSlimeSpray		= mod:NewSpellAnnounce(69508)
+local warnMutatedInfection	= mod:NewTargetAnnounce(71224)
+local warnRadiatingOoze		= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
+local warnOozeSpawn         = mod:NewAnnounce("WarnOozeSpawn")
 local nextStickyOoze		= mod:NewNextTimer(16, 69774)
 local warnStickyOoze		= mod:NewSpellAnnounce(69774)
 
-local specWarnStickyOoze	= mod:NewSpecialWarning("SpecWarnStickyOoze")
-local soundStickyOoze		= mod:NewSound(69760)
+local specWarnMutatedInfection  = mod:NewSpecialWarning("SpecWarnMutatedInfection")
+local specWarnStickyOoze        = mod:NewSpecialWarning("SpecWarnStickyOoze")
+local specWarnRadiatingOoze     = mod:NewSpecialWarning("SpecWarnRadiatingOoze", false)--Some strats purposely run to this so option is defaulted to off
 
-local warnRadiatingOoze		= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
-local specWarnRadiatingOoze	= mod:NewSpecialWarning("SpecWarnRadiatingOoze", false)--Some strats purposely run to this so option is defaulted to off
+local nextWallSlime         = mod:NewTimer(20, "NextPoisonSlimePipes")
+local nextSlimeSpray		= mod:NewNextTimer(21, 69508)
+local timerMutatedInfection	= mod:NewTargetTimer(12, 71224)
+
+local soundStickyOoze		= mod:NewSound("soundStickyOoze", 69760)
+mod:AddBoolOption("InfectionIcon")
 
 function mod:OnCombatStart(delay)
 	nextWallSlime:Start(25-delay)
