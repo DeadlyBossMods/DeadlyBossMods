@@ -13,7 +13,6 @@ L:SetWarningLocalization({
 	WarningSpark		= "Power Spark",
 	WarningBreathSoon	= "Deep Breath soon",
 	WarningBreath		= "Deep Breath",
-	WarningSurge		= "Surge of Power on >%s<",
 	WarningSurgeYou		= "Surge of Power on you"
 })
 
@@ -26,7 +25,6 @@ L:SetOptionLocalization({
 	WarningSpark		= "Show warning for Power Spark",
 	WarningBreathSoon	= "Show pre-warning for Deep Breath",
 	WarningBreath		= "Show warning for Deep Breath",
-	WarningSurge		= "Announce Surge of Power targets",
 	TimerSpark			= "Show timer for next Power Spark",
 	TimerBreath			= "Show timer for next Deep Breath",
 	WarningSurgeYou		= "Show special warning when you are affected by Surge of Power"
