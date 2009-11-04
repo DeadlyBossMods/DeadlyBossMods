@@ -18,12 +18,12 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
              or select(2, UnitClass("player")) == "SHAMAN"
 
 local warnReflectiveShield	= mod:NewTargetAnnounce(66515)
-local warnRenew				= mod:NewTargetAnnounce(66537)--Still bugged for mages spellsteal, Fixing it is beyond me.
+local warnRenew				= mod:NewTargetAnnounce(66537)--Trying another hack for mage spellsteal, may work, may not.
 local warnOldWounds			= mod:NewTargetAnnounce(67679)
 local timerOldWounds		= mod:NewTargetTimer(12, 67679)
 local warnHolyFire			= mod:NewTargetAnnounce(67676)
 local timerHolyFire			= mod:NewTargetTimer(8, 67676)
-local specwarnRenew			= mod:NewSpecialWarning("specwarnRenew", isDispeller)--Still bugged for mages spellsteal, Fixing it is beyond me.
+local specwarnRenew			= mod:NewSpecialWarning("specwarnRenew", isDispeller)--Trying another hack for mage spellsteal, may work, may not.
 
 local shielded = false
 
@@ -36,10 +36,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnReflectiveShield:Show(args.destName)
 		shielded = true
 	elseif args:IsSpellID(66537, 67675) then               -- Renew
-		warnRenew:Show(args.destName)
-		if args.destName == L.name and shielded then
-			-- nothing, she casted it on herself and you cant dispel
-		else
+		if args:IsPlayer() then
+		-- nothing, Mage spellstole it.
+        end
+    else
+        warnRenew:Show(args.destName)
+        if args.destName == L.name and shielded then
+		-- nothing, she casted it on herself and you cant dispel
+        else
 			specwarnRenew:Show(args.destName)
 		end
 	elseif args:IsSpellID(66620, 67679) then                     -- Old Wounds
