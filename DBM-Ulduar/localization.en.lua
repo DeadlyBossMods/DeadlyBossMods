@@ -10,9 +10,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPursued		= "Pursuing: %s",
-	timerFlameVents		= "Flame Vents",
-	timerSystemOverload	= "System Overload"
 }
 	
 L:SetMiscLocalization{
@@ -30,9 +27,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload		= "Show timer for System Overload",
-	timerFlameVents			= "Show timer for Flame Vents",
-	timerPursued			= "Show timer for pursue",
 	SystemOverload			= "Show special warning for System Overload",
 	SpecialPursueWarnYou	= "Show special warning when you are being pursued",
 	PursueWarn				= "Announce pursued targets",
@@ -51,11 +45,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast		= "Flame Jets",
-	TimerFlameJetsCooldown	= "Next Flame Jets",
-	TimerScorch				= "Next Scorch",
-	TimerScorchCast			= "Scorch",
-	TimerSlagPot			= "Slag Pot: %s"
 }
 
 L:SetWarningLocalization{
@@ -65,12 +54,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnJetsCast		= "Show special warning for Flame Jets cast",
-	TimerFlameJetsCast		= "Show timer for Flame Jets cast",
-	TimerFlameJetsCooldown	= "Show timer for Flame Jets cooldown",
-	TimerScorch				= "Show timer for Scorch cooldown",
-	TimerScorchCast			= "Show timer for Scorch cast",
 	WarningSlagPot			= "Announce Slag Pot targets",
-	TimerSlagPot			= "Show timer for Slag Pot",
 	SlagPotIcon				= "Set icons on Slag Pot targets"
 }
 
@@ -92,9 +76,6 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerDeepBreathCooldown		= "Next Flame Breath",
-	timerDeepBreathCast			= "Flame Breath",
-	timerAllTurretsReady		= "Turrets",
 	timerTurret1				= "Turret 1",
 	timerTurret2				= "Turret 2",
 	timerTurret3				= "Turret 3",
@@ -103,11 +84,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	timerDeepBreathCooldown		= "Show timer for Flame Breath cooldown",
-	timerDeepBreathCast			= "Show timer for Flame Breath cast",
 	SpecWarnDevouringFlame		= "Show special warning when you are affected by Devouring Flame",
 	PlaySoundOnDevouringFlame	= "Play sound when you are affected by Devouring Flame",
-	timerAllTurretsReady		= "Show timer for turrets",
 	warnTurretsReadySoon		= "Show pre-warning for turrets",
 	warnTurretsReady			= "Show warning for turrets",
 	SpecWarnDevouringFlameCast	= "Show special warning when Devouring Flame is cast on you",
@@ -149,8 +127,6 @@ L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "Show special warning when you are affected by Searing Light",
 	SpecialWarningGravityBomb	= "Show special warning when you are affected by Gravity Bomb",
 	specWarnConsumption			= "Show special warning when you take damage from Consumption",
-	PlaySoundOnGravityBomb		= "Play sound when you are affected by Gravity Bomb",
-	PlaySoundOnTympanicTantrum	= "Play sound on Tympanic Tantrum",
 	SetIconOnLightBombTarget	= "Set icons on Searing Light targets",
 	SetIconOnGravityBombTarget	= "Set icons on Gravity Bomb targets"
 }
@@ -169,7 +145,6 @@ L:SetWarningLocalization{
 	RuneofDeath					= "Rune of Death - Move away",
 	LightningTendrils			= "Lightning Tendrils - Run away",
 	Overload					= "Overload - Run away",
-	WarningStaticDisruption		= "Static Disruption on >%s<",
 }
 
 L:SetTimerLocalization{
@@ -183,9 +158,8 @@ L:SetOptionLocalization{
 	RuneofDeath					= "Show special warning for Rune of Death",
 	SetIconOnStaticDisruption	= "Set icons on Static Disruption targets",
 	Overload					= "Show special warning for Overload",
-	AllwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
+	AlwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
 	PlaySoundOnOverload			= "Play sound on Overload",
-	WarningStaticDisruption		= "Announce Static Disruption targets",
 	PlaySoundDeathRune			= "Play sound on Rune of Death"
 }
 
@@ -253,9 +227,6 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerEyebeam			= "Eye Beam: %s",
-	timerPetrifyingBreath	= "Petrifying Breath",
-	timerNextShockwave		= "Next Shockwave",
 	timerLeftArm			= "Left Arm respawn",
 	timerRightArm			= "Right Arm respawn",
 	achievementDisarmed		= "Timer for Disarm"
@@ -264,9 +235,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "Show special warning when Eye Beam is on you",
 	WarningEyeBeam			= "Announce Eye Beam targets",
-	timerEyebeam			= "Show timer for Eye Beam",
-	timerPetrifyingBreath	= "Show timer for Petrifying Breath",
-	timerNextShockwave		= "Show timer for Shockwave",
 	timerLeftArm			= "Show timer for Left Arm respawn",
 	timerRightArm			= "Show timer for Right Arm respawn",
 	achievementDisarmed		= "Show timer for Disarm achievement",
@@ -326,11 +294,9 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "Flash Freeze incoming",
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze		= "Show timer for Flash Freeze cast",
 	WarningFlashFreeze		= "Show special warning for Flash Freeze",
 	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze cast",
 	YellOnStormCloud		= "Yell on Storm Cloud",
@@ -403,10 +369,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam	= "Sun Beam: %s",
 	TimerSimulKill			= "Resurrection",
-	TimerFuryYou			= "Nature's Fury on you",
-	TrashRespawnTimer		= "Freya trash respawn"
 }
 
 L:SetOptionLocalization{
@@ -569,7 +532,6 @@ L:SetWarningLocalization{
 	WarningSanity 					= "%d Sanity debuffs remaining",
 	SpecWarnSanity 					= "%d Sanity debuffs remaining",
 	SpecWarnGuardianLow				= "Stop attacking this Guardian",
-	WarnMadness						= "Casting Induce Madness",
 	SpecWarnMadnessOutNow			= "Induce Madness ending - Move out",
 	WarnBrainPortalSoon				= "Brain Portal in 3 seconds",	
 	SpecWarnFavor					= "Sara's Fervor on you",
@@ -593,7 +555,6 @@ L:SetOptionLocalization{
 	WarningSanity					= "Show warning when Sanity is low",
 	SpecWarnSanity					= "Show special warning when Sanity is very low",
 	SpecWarnGuardianLow				= "Show special warning when Guardian (Phase 1) is low (for DDs)",
-	WarnMadness						= "Show warning for Induce Madness",
 	WarnBrainPortalSoon				= "Show pre-warning for Brain Portal",
 	SpecWarnMadnessOutNow			= "Show special warning shortly before Induce Madness ends",
 	SetIconOnFearTarget				= "Set icons on Malady of the Mind targets",

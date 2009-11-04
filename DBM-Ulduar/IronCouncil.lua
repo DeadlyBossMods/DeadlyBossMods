@@ -31,7 +31,7 @@ local timerLightningWhirl		= mod:NewCastTimer(5, 63483)
 local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
 local timerLightningTendrils	= mod:NewBuffActiveTimer(27, 63486)
 local specwarnOverload			= mod:NewSpecialWarning("Overload") 
-mod:AddBoolOption("AllwaysWarnOnOverload", false, "announce")
+mod:AddBoolOption("AlwaysWarnOnOverload", false, "announce")
 mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
 mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
 
@@ -121,7 +121,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(61869, 63481) then	-- Overload
 		timerOverload:Start()
 
-		if self.Options.AllwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
+		if self.Options.AlwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
 			specwarnOverload:Show()
 			if self.Options.PlaySoundOnOverload then
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
