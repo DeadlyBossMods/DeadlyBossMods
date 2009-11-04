@@ -241,7 +241,23 @@ do
 	function argsMT.__index:IsPetSource()
 		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
 	end
-	
+
+	function argsMT.__index:IsSrcTypePlayer()
+		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+	end
+
+	function argsMT.__index:IsDestTypePlayer()
+		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PLAYER) ~= 0
+	end
+
+	function argsMT.__index:IsSrcTypeHostile()
+		return bit.band(args.sourceFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0
+	end
+
+	function argsMT.__index:IsDestTypeHostile()
+		return bit.band(args.destFlags, COMBATLOG_OBJECT_REACTION_HOSTILE) ~= 0
+	end
+
 	function argsMT.__index:GetSrcCreatureID()
 		if wowVersion >= 30300 then
 			return tonumber(self.sourceGUID:sub(7, 10), 16) or 0
@@ -733,6 +749,20 @@ do
 			end
 		end
 		self:AddMsg(DBM_CORE_VERSIONCHECK_FOOTER:format(#sortMe))
+		for i = #sortMe, 1, -1 do
+			sortMe[i] = nil
+		end
+	end
+	function DBM:InformOldVersions()	-- just to annoy my raid mates ;)
+		for i, v in pairs(raid) do
+			table.insert(sortMe, v)
+		end
+		table.sort(sortMe, sort)
+		for i, v in ipairs(sortMe) do
+			if not v.version or v.version < tonumber(DBM.Version) then
+				SendChatMessage(chatPrefixShort.."Deine DBM Version ist veraltert oder nicht vorhanden, bitte update möglichst bald (und klick die Banner *g*) danke!!!", "WHISPER", nil, v.name)
+			end
+		end
 		for i = #sortMe, 1, -1 do
 			sortMe[i] = nil
 		end
