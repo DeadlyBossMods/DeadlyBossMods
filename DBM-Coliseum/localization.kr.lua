@@ -116,7 +116,8 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	SpecWarnHellfire		= "지옥의 불길! 이동 하세요!",
 	SpecWarnHandofProt		= "보호의 손길 : >%s<",
-	SpecWarnDivineShield	= "천상의 보호막 :  >%s<"
+	SpecWarnDivineShield	= "천상의 보호막 :  >%s<",
+	specWarnIceBlock       	= "얼음 방어막 : %s"
 }
 
 L:SetMiscLocalization{
@@ -153,8 +154,9 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnHellfire		= "지옥의 불길로 인해 피해를 입을 경우 특수 경고 보기",
-	SpecWarnHandofProt		= "성기사가 보호의 손길을 시전 했을 경우 특수 경고 보기",
-	SpecWarnDivineShield	= "성기사가 천상의 보호막을 시전 햇을 경우 특수 경고 보기"
+	SpecWarnHandofProt		= "성기사가 보호의 손길을 시전 했을 경우 특수 경고 보기(해제)",
+	SpecWarnDivineShield	= "성기사가 천상의 보호막을 시전 했을 경우 특수 경고 보기(해제)",
+	specWarnIceBlock       	= "마법사가 얼음 방어막을 시전 했을 경우 특수 경고 보기(해제)"	
 }
 
 
@@ -232,10 +234,12 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull			= "여기가 네 무덤이 되리라!",
---	Swarm				= "착취의 무리가 너희를 덮치리라!",
-	Emerge				= "땅속에서 모습을 드러냅니다!",
-	Burrow				= "땅속으로 숨어버립니다!"
+	YellPull				= "여기가 네 무덤이 되리라!",
+--	Swarm					= "착취의 무리가 너희를 덮치리라!",
+	Emerge					= "땅속에서 모습을 드러냅니다!",
+	Burrow					= "땅속으로 숨어버립니다!",
+	PcoldIconSet			= "냉기 관통 아이콘{rt%d} : %s",
+	PcoldIconRemoved		= "냉기 관통 아이콘 제거 : %s"	
 }
 
 L:SetOptionLocalization{
@@ -253,5 +257,6 @@ L:SetOptionLocalization{
 	SpecWarnPCold			= "냉기 관통 특수 경고 보기",
 	SetIconsOnPCold			= "냉기 관통 대상자 공격대 아이콘 설정하기",
 	SpecWarnShadowStrike	= "어둠의 일격 특수 경고 보기(차단 관련)",
-	RemoveHealthBuffsInP3	= "3 페이즈를 시작할 때 HP 버프 지우기"
+	RemoveHealthBuffsInP3	= "3 페이즈를 시작할 때 HP 버프 지우기",
+	AnnouncePColdIcons		= "냉기 관통 대상자 공격대 아이콘 설정을 채팅으로 알리기"	
 }
