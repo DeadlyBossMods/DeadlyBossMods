@@ -63,8 +63,10 @@ local warnHeroism			= mod:NewSpellAnnounce(65983, 2)
 local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
 local warnHandofProt		= mod:NewSpellAnnounce(66009, 2)
 local warnDivineShield		= mod:NewSpellAnnounce(66010, 2)
+local warnIceBlock  		= mod:NewSpellAnnounce(65802, 2)
 local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
 local specWarnDivineShield	= mod:NewSpecialWarning("SpecWarnDivineShield", isDispeller) 
+local specWarnIceBlock  	= mod:NewSpecialWarning("specWarnIceBlock", isDispeller) 
 
 
 function mod:OnCombatStart(delay)
@@ -87,6 +89,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(66010) then							-- Divine Shield on <mobname>
 		warnDivineShield:Show(args.destName)
 		specWarnDivineShield:Show(args.destName)
+	elseif args:IsSpellID(65802) then							-- Iceblock on <mobname>
+		warnIceBlock:Show(args.destName)
+		specWarnIceBlock:Show(args.destName)
 	end
 end
 

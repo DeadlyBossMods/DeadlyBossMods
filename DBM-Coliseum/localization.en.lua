@@ -113,7 +113,8 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	SpecWarnHellfire		= "Hellfire - Run away",
 	SpecWarnHandofProt		= "Hand of Protection on %s",
-	SpecWarnDivineShield	= "Divine Shield on %s"
+	SpecWarnDivineShield	= "Divine Shield on %s",
+	specWarnIceBlock       	= "Ice Block on %s"
 }
 
 L:SetMiscLocalization{
@@ -136,8 +137,9 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnHellfire		= "Show special warning when you take damage from Hellfire",
-	SpecWarnHandofProt		= "Show special warning when the Paladin casts Hand of Protection",
-	SpecWarnDivineShield	= "Show special warning when the Paladin casts Divine Shield"
+	SpecWarnHandofProt		= "Show special warning when the Paladin casts Hand of Protection (to dispel)",
+	SpecWarnDivineShield	= "Show special warning when the Paladin casts Divine Shield (to dispel)",
+	specWarnIceBlock       	= "Show special warning when the Mage casts Ice Block (to dispel)"
 }
 
 ---------------------
