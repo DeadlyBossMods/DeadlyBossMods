@@ -159,7 +159,7 @@ L:SetOptionLocalization{
 	RuneofDeath				= "Spezialwarnung für Rune des Todes",
 	SetIconOnStaticDisruption		= "Setze Symbol auf Statische Störung Ziel",
 	Overload				= "Spezialwarnung für Überladen",
-	AllwaysWarnOnOverload			= "Warne immer bei Überladen (ansonsten nur wenn Boss im Ziel)"
+	AlwaysWarnOnOverload			= "Warne immer bei Überladen (ansonsten nur wenn Boss im Ziel)"
 }
 
 L:SetMiscLocalization{

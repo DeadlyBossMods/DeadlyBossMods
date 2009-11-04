@@ -186,7 +186,7 @@ L:SetOptionLocalization{
 	RuneofDeath					= "Activer l'avertissement spécial pour les runes de mort",
 	SetIconOnStaticDisruption	= "Met une icône sur la cible de Static Disruption",
 	Overload					= "Montre une alerte spéciale pour la Surcharge",
-	AllwaysWarnOnOverload		= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
+	AlwaysWarnOnOverload		= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
 	PlaySoundOnOverload			= "Joue un son à la surcharge",
 	WarningStaticDisruption		= "Annonce la Static Disruption",
 	PlaySoundDeathRune			= "Joue un son pour les runes de mort"
