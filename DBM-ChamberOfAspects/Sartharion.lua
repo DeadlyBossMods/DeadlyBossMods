@@ -54,11 +54,11 @@ local function isunitdebuffed(spellID)
 end
 
 function mod:OnCombatStart(delay)
-    isInCombatWithSartharion = true;
+    isInCombatWithSartharion = true
 end
 
 function mod:OnCombatEnd()
-    isInCombatWithSartharion = false;
+    isInCombatWithSartharion = false
 end
 
 function mod:OnSync(event)
@@ -83,11 +83,9 @@ function mod:OnSync(event)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-    if (isInCombatWithSartharion) then
-        if args:IsSpellID(57579, 59127) then
-            warnShadowFissure:Show()
-            timerShadowFissure:Start()
-        end
+    if args:IsSpellID(57579, 59127) and isInCombatWithSartharion then
+        warnShadowFissure:Show()
+        timerShadowFissure:Start()
     end
 end
 

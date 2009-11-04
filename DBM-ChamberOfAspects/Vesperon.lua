@@ -24,10 +24,8 @@ function mod:OnCombatEnd()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-    if (isInCombatWithVesperon) then
-        if args:IsSpellID(57579, 59127) then
-            warnShadowFissure:Show()
-            timerShadowFissure:Start()
-        end
+    if args:IsSpellID(57579, 59127) and isInCombatWithVesperon then
+        warnShadowFissure:Show()
+        timerShadowFissure:Start()
     end
 end
