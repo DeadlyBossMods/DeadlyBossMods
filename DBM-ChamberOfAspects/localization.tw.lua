@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Shadron")
 
 L:SetGeneralLocalization({
-	name = "夏德朗"
+	name 			= "夏德朗"
 })
 
 ----------------
@@ -17,7 +17,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Tenebron")
 
 L:SetGeneralLocalization({
-	name = "坦納伯朗"
+	name 			= "坦納伯朗"
 })
 
 ----------------
@@ -26,7 +26,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Vesperon")
 
 L:SetGeneralLocalization({
-	name = "維斯佩朗"
+	name 			= "維斯佩朗"
 })
 
 ------------------
@@ -35,24 +35,24 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Sartharion")
 
 L:SetGeneralLocalization({
-	name = "『黑曜守護者』撒爾薩里安"
+	name 			= "『黑曜守護者』撒爾薩里安"
 })
 
 
 L:SetWarningLocalization({
-	WarningTenebron			= "坦納伯朗進入戰鬥",
-	WarningShadron			= "夏德朗進入戰鬥",
-	WarningVesperon			= "維斯佩朗進入戰鬥",
-	WarningFireWall			= "炎嘯",
+	WarningTenebron		= "坦納伯朗進入戰鬥",
+	WarningShadron		= "夏德朗進入戰鬥",
+	WarningVesperon		= "維斯佩朗進入戰鬥",
+	WarningFireWall		= "炎嘯",
 	WarningVesperonPortal	= "維斯佩朗的傳送門!",
 	WarningTenebronPortal	= "坦納伯朗的傳送門!",
 	WarningShadronPortal	= "夏德朗的傳送門!",
 })
 
 L:SetTimerLocalization({
-	TimerTenebron	= "坦納伯朗進入戰鬥",
-	TimerShadron	= "夏德朗進入戰鬥",
-	TimerVesperon	= "維斯佩朗進入戰鬥"
+	TimerTenebron		= "坦納伯朗進入戰鬥",
+	TimerShadron		= "夏德朗進入戰鬥",
+	TimerVesperon		= "維斯佩朗進入戰鬥"
 })
 
 L:SetOptionLocalization({
@@ -76,9 +76,9 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Wall			= "圍繞著%s的熔岩開始劇烈地翻騰!",
 	Portal			= "%s開始開啟暮光傳送門!",
-	NameTenebron	= "坦納伯朗",
+	NameTenebron		= "坦納伯朗",
 	NameShadron		= "夏德朗",
-	NameVesperon	= "維斯佩朗",
+	NameVesperon		= "維斯佩朗",
 	FireWallOn		= "炎嘯: %s",
 	VoidZoneOn		= "暗影裂縫: %s",
 	VoidZones		= "踩中暗影裂縫(這一次): %s",
