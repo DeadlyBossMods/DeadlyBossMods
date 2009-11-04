@@ -217,7 +217,9 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull				= "This place will serve as your tomb!",
 	Emerge					= "emerges from the ground!",
-	Burrow					= "burrows into the ground!"
+	Burrow					= "burrows into the ground!",
+	PcoldIconSet			= "Pcold Icon {rt%d} set on %s",
+	PcoldIconRemoved		= "Pcold Icon removed from %s"
 }
 
 L:SetOptionLocalization{
@@ -235,6 +237,7 @@ L:SetOptionLocalization{
 	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to interrupt)",
 	SpecWarnPCold			= "Show special warning when you are affected by Penetrating Cold",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
-	SetIconsOnPCold         = "Set icons on Penetrating Cold targets"
+	SetIconsOnPCold         = "Set icons on Penetrating Cold targets",
+	AnnouncePColdIcons		= "Announce Penetrating Cold icons to Raidchat"
 }
 
