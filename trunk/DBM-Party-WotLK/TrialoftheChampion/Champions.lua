@@ -19,7 +19,7 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 				 or select(2, UnitClass("player")) == "SHAMAN"
 
 local warnHealingWave		= mod:NewSpellAnnounce(68318)
-local warnHaste				= mod:NewTargetAnnounce(66045)--Still bugged for mages spellsteal, Fixing it is beyond me.
+local warnHaste				= mod:NewTargetAnnounce(66045)--Trying another hack for mage spellsteal, may work, may not.
 local warnPolymorph			= mod:NewTargetAnnounce(66043)
 local warnHexOfMending		= mod:NewTargetAnnounce(67534)
 local specWarnPoison		= mod:NewSpecialWarning("specWarnPoison")
@@ -32,8 +32,12 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(66045) then								-- Haste
-		warnHaste:Show(args.destName)
+    if args:IsSpellID(66045) then								-- Haste
+        if args:IsPlayer() then
+		-- nothing, Mage spellstole it.
+        end
+    else
+    	warnHaste:Show(args.destName)
 		specWarnHaste:Show(args.destName)
 	end
 end
