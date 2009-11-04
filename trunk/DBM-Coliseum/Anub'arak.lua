@@ -47,7 +47,8 @@ local enrageTimer			= mod:NewEnrageTimer(570)	-- 9:30 ? hmpf (no enrage while su
 -- Penetrating Cold
 local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)
 local timerPCold			= mod:NewBuffActiveTimer(15, 68509)
-mod:AddBoolOption("SetIconsOnPCold", true, "announce")
+mod:AddBoolOption("SetIconsOnPCold", true)
+mod:AddBoolOption("AnnouncePColdIcons")
 
 -- Freezing Slash
 local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
@@ -108,7 +109,10 @@ function mod:SPELL_AURA_REFRESH(args)
 			specWarnPCold:Show()
 		end
 		if self.Options.SetIconsOnPCold and PColdIcon > 0 then
-			mod:SetIcon(args.destName, PColdIcon, 15)
+			if self.Options.AnnouncePColdIcons and DBM:GetRaidRank() >= 1 then
+				SendChatMessage(L.PcoldIconSet:format(PColdIcon, args.destName), "RAID")
+			end
+			mod:SetIcon(args.destName, PColdIcon)
 			PColdIcon = PColdIcon - 1
 		end
 		timerPCold:Show() 
@@ -134,7 +138,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPCold:Show()
 		end
 		if self.Options.SetIconsOnPCold and PColdIcon > 0 then
-			mod:SetIcon(args.destName, PColdIcon, 15)
+			if self.Options.AnnouncePColdIcons and DBM:GetRaidRank() >= 1 then
+				SendChatMessage(L.PcoldIconSet:format(PColdIcon, args.destName), "RAID")
+			end
+			mod:SetIcon(args.destName, PColdIcon)
 			PColdIcon = PColdIcon - 1
 		end
 		timerPCold:Show()
@@ -147,6 +154,9 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(66013, 67700, 68509, 68510) then			-- Penetrating Cold
 		mod:SetIcon(args.destName, 0)
+		if self.Options.AnnouncePColdIcons and DBM:GetRaidRank() >= 1 then
+			SendChatMessage(L.PcoldIconRemoved:format(args.destName), "RAID")
+		end
 	end
 end
 
