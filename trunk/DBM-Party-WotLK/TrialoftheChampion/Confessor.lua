@@ -18,12 +18,12 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
              or select(2, UnitClass("player")) == "SHAMAN"
 
 local warnReflectiveShield	= mod:NewTargetAnnounce(66515)
-local warnRenew				= mod:NewTargetAnnounce(66537)
+local warnRenew				= mod:NewTargetAnnounce(66537)--Still bugged for mages spellsteal, Fixing it is beyond me.
 local warnOldWounds			= mod:NewTargetAnnounce(67679)
 local timerOldWounds		= mod:NewTargetTimer(12, 67679)
 local warnHolyFire			= mod:NewTargetAnnounce(67676)
 local timerHolyFire			= mod:NewTargetTimer(8, 67676)
-local specwarnRenew			= mod:NewSpecialWarning("specwarnRenew", isDispeller)
+local specwarnRenew			= mod:NewSpecialWarning("specwarnRenew", isDispeller)--Still bugged for mages spellsteal, Fixing it is beyond me.
 
 local shielded = false
 
