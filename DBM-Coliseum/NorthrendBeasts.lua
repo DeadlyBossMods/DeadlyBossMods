@@ -11,6 +11,7 @@ mod:RegisterCombat("yell", L.CombatStart)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
@@ -22,6 +23,7 @@ local warnImpaleOn			= mod:NewTargetAnnounce(67478, 2)
 local warnFireBomb			= mod:NewSpellAnnounce(66317, 4, nil, false)
 local warnBreath			= mod:NewSpellAnnounce(67650, 1)
 local warnRage				= mod:NewSpellAnnounce(67657, 3)
+local warnSlimePool			= mod:NewSpellAnnounce(67643, 2)
 local warnToxin				= mod:NewTargetAnnounce(66823, 2)
 local warnBile				= mod:NewTargetAnnounce(66869, 3)
 
@@ -154,6 +156,12 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(66330, 67647, 67648, 67649) then	-- Staggering Stomp
 		timerNextStomp:Start()
 		specWarnSilence:Schedule(19)						-- prewarn ~1,5 sec before next
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(67641, 66883, 67642, 67643) then		-- Slime Pool Cloud Spawn
+		warnSlimePool:Show()
 	end
 end
 
