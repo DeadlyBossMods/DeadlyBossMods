@@ -19,7 +19,7 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 				 or select(2, UnitClass("player")) == "SHAMAN"
 
 local warnHealingWave		= mod:NewSpellAnnounce(68318)
-local warnHaste				= mod:NewTargetAnnounce(66045)
+local warnHaste				= mod:NewTargetAnnounce(66045)--Still bugged for mages spellsteal, Fixing it is beyond me.
 local warnPolymorph			= mod:NewTargetAnnounce(66043)
 local warnHexOfMending		= mod:NewTargetAnnounce(67534)
 local specWarnPoison		= mod:NewSpecialWarning("specWarnPoison")
