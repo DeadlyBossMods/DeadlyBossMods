@@ -194,7 +194,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(66532, 66963, 66964, 66965) then			-- Fel Fireball (track cast for interupt)
+	if args:IsSpellID(66532, 66963, 66964, 66965) and args:GetSrcCreatureID() == 34780 then			-- Fel Fireball (track cast for interupt)
 		SpecWarnFelFireball:Show()
 	end
 end
