@@ -136,7 +136,7 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	SpecWarnHellfire		= "Show special warning when you take damage from Hellfire",
+	SpecWarnHellfire		= "Show special warning when you are affected by Hellfire",
 	SpecWarnHandofProt		= "Show special warning when the Paladin casts Hand of Protection (to dispel)",
 	SpecWarnDivineShield	= "Show special warning when the Paladin casts Divine Shield (to dispel)",
 	specWarnIceBlock       	= "Show special warning when the Mage casts Ice Block (to dispel)"
@@ -238,6 +238,6 @@ L:SetOptionLocalization{
 	SpecWarnPCold			= "Show special warning when you are affected by Penetrating Cold",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
 	SetIconsOnPCold         = "Set icons on Penetrating Cold targets",
-	AnnouncePColdIcons		= "Announce Penetrating Cold icons to Raidchat"
+	AnnouncePColdIcons		= "Post icons for Penetrating Cold targets to raid chat (requires announce to be enabled and leader/promoted status)"
 }
 
