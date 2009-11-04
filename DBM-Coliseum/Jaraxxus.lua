@@ -29,7 +29,9 @@ local canInterrupt = select(2, UnitClass("player")) == "SHAMAN"
 	    		 or select(2, UnitClass("player")) == "WARRIOR"
 	    		 or select(2, UnitClass("player")) == "ROGUE"
 	    		 or select(2, UnitClass("player")) == "MAGE"
+	    		 or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
+local warnFelFireball			= mod:NewSpellAnnounce(66532, 2)
 local warnPortalSoon			= mod:NewSoonAnnounce(67900, 2)
 local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 2)
 local warnFlame					= mod:NewTargetAnnounce(68123, 3)
@@ -43,7 +45,7 @@ local specWarnTouchNear			= mod:NewSpecialWarning("SpecWarnTouchNear", false)
 local specWarnKiss				= mod:NewSpecialWarning("SpecWarnKiss", false)
 local specWarnNetherPower		= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno		= mod:NewSpecialWarning("SpecWarnFelInferno")
-local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", canInterrupt)
+local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", canInterrupt, false)
 local SpecWarnFelFireballDispel	= mod:NewSpecialWarning("SpecWarnFelFireballDispel", isMagicDispeller)
 
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
@@ -182,6 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnKiss:Show()
 
 	elseif args:IsSpellID(66532, 66963, 66964, 66965) then		-- Fel Fireball (announce if tank gets debuff for dispel)
+		warnFelFireball:Show()
 		SpecWarnFelFireballDispel:Show(args.destName)
 	end
 end
