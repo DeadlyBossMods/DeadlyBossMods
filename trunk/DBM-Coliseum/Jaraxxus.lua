@@ -25,12 +25,6 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 local isMagicDispeller = select(2, UnitClass("player")) == "PALADIN"
 	    		 or select(2, UnitClass("player")) == "PRIEST"
 
-local canInterrupt = select(2, UnitClass("player")) == "SHAMAN"
-	    		 or select(2, UnitClass("player")) == "WARRIOR"
-	    		 or select(2, UnitClass("player")) == "ROGUE"
-	    		 or select(2, UnitClass("player")) == "MAGE"
-	    		 or select(2, UnitClass("player")) == "DEATHKNIGHT"
-
 local warnFelFireball			= mod:NewSpellAnnounce(66532, 2)
 local warnPortalSoon			= mod:NewSoonAnnounce(67900, 2)
 local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 2)
@@ -45,7 +39,7 @@ local specWarnTouchNear			= mod:NewSpecialWarning("SpecWarnTouchNear", false)
 local specWarnKiss				= mod:NewSpecialWarning("SpecWarnKiss", false)
 local specWarnNetherPower		= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno		= mod:NewSpecialWarning("SpecWarnFelInferno")
-local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", canInterrupt, false)
+local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", false)
 local SpecWarnFelFireballDispel	= mod:NewSpecialWarning("SpecWarnFelFireballDispel", isMagicDispeller)
 
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
