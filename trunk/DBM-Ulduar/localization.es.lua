@@ -214,7 +214,7 @@ L:SetOptionLocalization{
 	timerRuneofDeath			= "Mostrar tiempo que dura Runa de muerte",
 	SetIconOnStaticDisruption		= "Poner icono para el objetivo de Perturbación estática",
 	Overload				= "Mostrar aviso especial para Sobrecarga",
-	AllwaysWarnOnOverload			= "Siempre avisar Sobrecarga",
+	AlwaysWarnOnOverload			= "Siempre avisar Sobrecarga",
 	PlaySoundOnOverload			= "Reproducir sonido para Sobrecarga",
 	WarningStaticDisruption			= "Anunciar Perturbacion estatica"
 }

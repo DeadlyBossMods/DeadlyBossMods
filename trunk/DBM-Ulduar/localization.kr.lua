@@ -180,7 +180,7 @@ L:SetOptionLocalization{
 	Overload						= "과부하 일 때 특수 경고 보기",
 	WarningSupercharge				= "전기 충전 시전 경고 보기",
 	WarningStaticDisruption			= "전자기 붕괴 알리기",	
-	AllwaysWarnOnOverload			= "과부하 일 때 지속적인 경고 알리기(타겟일 경우만)",
+	AlwaysWarnOnOverload			= "과부하 일 때 지속적인 경고 알리기(타겟일 경우만)",
 	PlaySoundOnOverload				= "과부화 일 때 소리 재생",	
 	PlaySoundLightningTendrils		= "번개 덩굴일 때 소리 재생",
 	PlaySoundDeathRune				= "죽음의 룬일 때 소리 재생",

@@ -178,7 +178,7 @@ L:SetOptionLocalization{
 	RuneofDeath			= "為死亡符文顯示特別警告",
 	SetIconOnStaticDisruption	= "為靜電崩裂的目標設置標記",
 	Overload			= "為超載顯示特別警告",
-	AllwaysWarnOnOverload		= "總是對超載顯示警告(否則只有當目標是風暴召喚者的時候顯示)",
+	AlwaysWarnOnOverload		= "總是對超載顯示警告(否則只有當目標是風暴召喚者的時候顯示)",
 	PlaySoundOnOverload		= "當超載施放時播放音效",
 	WarningStaticDisruption		= "提示靜電崩裂的目標",
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效"

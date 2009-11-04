@@ -184,7 +184,7 @@ L:SetOptionLocalization{
 	RuneofDeath			= "Спец-предупреждение для Руны смерти",
 	SetIconOnStaticDisruption	= "Установить метку на цель под Статическим сбоем",
 	Overload			= "Спец-предупреждение для Перегрузки",
-	AllwaysWarnOnOverload		= "Объявлять когда Перегрузка (иначе, когда нацеливание)",
+	AlwaysWarnOnOverload		= "Объявлять когда Перегрузка (иначе, когда нацеливание)",
 	PlaySoundOnOverload		= "Звуковой сигнал при Перегрузке",
 	WarningStaticDisruption		= "Объявлять Статический сбой",
 	PlaySoundDeathRune		= "Звуковой сигнал при Рунах смерти"
