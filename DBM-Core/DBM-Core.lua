@@ -753,20 +753,6 @@ do
 			sortMe[i] = nil
 		end
 	end
-	function DBM:InformOldVersions()	-- just to annoy my raid mates ;)
-		for i, v in pairs(raid) do
-			table.insert(sortMe, v)
-		end
-		table.sort(sortMe, sort)
-		for i, v in ipairs(sortMe) do
-			if not v.version or v.version < tonumber(DBM.Version) then
-				SendChatMessage(chatPrefixShort.."Deine DBM Version ist veraltert oder nicht vorhanden, bitte update möglichst bald (und klick die Banner *g*) danke!!!", "WHISPER", nil, v.name)
-			end
-		end
-		for i = #sortMe, 1, -1 do
-			sortMe[i] = nil
-		end
-	end
 end
 
 
