@@ -54,7 +54,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall		= "Play sound on Fire Wall",
-	AnnounceFails			= "Post player fails for Fire Wall and Void Zone to raid chat (requires announce to be enabled and leader/promoted status)",
+	AnnounceFails			= "Post player fails for Fire Wall and Shadow Fissure to raid chat (requires announce to be enabled and leader/promoted status)",
 	TimerTenebron			= "Show timer for Tenebron's arrival",
 	TimerShadron			= "Show timer for Shadron's arrival",
 	TimerVesperon			= "Show timer for Vesperon's arrival",
@@ -74,8 +74,8 @@ L:SetMiscLocalization({
 	NameShadron		= "Shadron",
 	NameVesperon	= "Vesperon",
 	FireWallOn		= "Fire Wall: %s",
-	VoidZoneOn		= "Void Zone: %s",
-	VoidZones		= "Void Zone fails (this try): %s",
+	VoidZoneOn		= "Shadow Fissure: %s",
+	VoidZones		= "Shadow Fissure fails (this try): %s",
 	FireWalls		= "Fire Wall fails (this try): %s",
 })
 
