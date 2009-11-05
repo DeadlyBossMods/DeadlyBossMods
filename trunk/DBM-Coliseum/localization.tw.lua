@@ -22,6 +22,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
+	WarningSnobold			= "為極地狗頭人奴僕的出現顯示警告",
 	SpecialWarningImpale3		= "為刺穿(大於3層)顯示特別警告",
 	SpecialWarningFireBomb		= "當你中了燃燒彈時顯示特別警告",
 	SpecialWarningSlimePool		= "當你受到泥漿池的傷害時顯示特別警告",
@@ -44,6 +45,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	WarningSnobold			= "%s 出現了",
 	SpecialWarningImpale3		= "你中了刺穿>%d<",
 	SpecialWarningFireBomb		= "你中了燃燒彈",
 	SpecialWarningSlimePool		= "泥漿池 - 快跑開",
@@ -114,7 +116,8 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	SpecWarnHellfire		= "地獄烈焰 - 快跑開",
 	SpecWarnHandofProt		= "保護聖禦: %s - 快驅散",
-	SpecWarnDivineShield		= "聖盾術: %s - 快驅散"
+	SpecWarnDivineShield		= "聖盾術: %s - 快驅散",
+	specWarnIceBlock       		= "寒冰屏障: %s - 快驅散"
 }
 
 L:SetMiscLocalization{
@@ -150,9 +153,10 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	SpecWarnHellfire		= "當你受到地獄烈焰的傷害時顯示特別警告",
+	SpecWarnHellfire		= "當你中了地獄烈焰時顯示特別警告",
 	SpecWarnHandofProt		= "當聖騎士施放保護聖禦時顯示特別警告",
-	SpecWarnDivineShield		= "當聖騎士施放聖盾術時顯示特別警告"
+	SpecWarnDivineShield		= "當聖騎士施放聖盾術時顯示特別警告",
+	specWarnIceBlock       		= "當法師施放寒冰屏障時顯示特別警告"
 
 }
 
@@ -231,7 +235,9 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull			= "這裡將會是你們的墳墓!",
 	Emerge				= "從地底鑽出!",
-	Burrow				= "鑽進地裡!"
+	Burrow				= "鑽進地裡!",
+	PcoldIconSet			= "透骨之寒標記 {rt%d} 已設定在 %s 身上",
+	PcoldIconRemoved		= "%s的透骨之寒標記已移除"
 }
 
 L:SetOptionLocalization{
@@ -249,5 +255,6 @@ L:SetOptionLocalization{
 	SpecWarnShadowStrike		= "為暗影打擊顯示特別警告 (斷法用)",
 	SpecWarnPCold			= "當你中了透骨之寒時顯示特別警告",
 	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
-	SetIconsOnPCold			= "設置標記在透骨之寒的目標"
+	SetIconsOnPCold			= "設置標記在透骨之寒的目標",
+	AnnouncePColdIcons		= "公佈透骨之寒目標設置的標記到團隊頻道(需要團隊隊長或助理權限)"
 }
