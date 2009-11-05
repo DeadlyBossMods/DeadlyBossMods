@@ -370,6 +370,7 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerSimulKill			= "Resurrection",
+	TrashRespawnTimer		= "Freya trash respawn",
 }
 
 L:SetOptionLocalization{
