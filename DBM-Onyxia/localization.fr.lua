@@ -13,7 +13,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "Respiration profonde",
-	SpecWarnBlastNova	= "Garde du repaire onyxien incante une Nova explosive. BOUGEZ !",--http://www.wowhead.com/?npc=36561
+	SpecWarnBlastNova	= "Nova explosive. BOUGEZ !",
 	WarnWhelpsSoon		= "Les Jeunes dragonnets onyxien arrivent bientôt",
 	WarnPhase3Soon		= "Phase 3 bientôt"
 }

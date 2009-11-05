@@ -15,7 +15,6 @@ L:SetWarningLocalization({
 	WarningSpark		= "Etincelle de puissance viens de d'arriver",
 	WarningBreathSoon	= "Inspiration profonde Bientôt",
 	WarningBreath		= "Inspiration profonde!",
-	WarningSurge		= "Vague de puissance sur >%s<",
 	WarningSurgeYou		= "Vague de puissance sur VOUS!"
 })
 
@@ -28,7 +27,6 @@ L:SetOptionLocalization({
 	WarningSpark		= "Montre une alerte pour les Etincelles de puissance",
 	WarningBreathSoon	= "Montre une Pré-Alerte pour l'Inspiration profonde",
 	WarningBreath		= "Montre une alerte pour l'Inspiration profonde",
-	WarningSurge		= "Montre une alerte pour les Vagues de puissance",
 	TimerSpark			= "Montre le timer pour les Etincelles de puissance",
 	TimerBreath			= "Montre le timer pour l'Inspiration profonde",
 	WarningSurgeYou		= "Montre une alerte spéciale quand vous êtes affecté par la Vague de puissance"
