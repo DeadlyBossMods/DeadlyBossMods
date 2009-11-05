@@ -126,7 +126,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "Show special warning when you are affected by Searing Light",
 	SpecialWarningGravityBomb	= "Show special warning when you are affected by Gravity Bomb",
-	specWarnConsumption			= "Show special warning when you take damage from Consumption",
+	specWarnConsumption			= "Show special warning when you are affected by Consumption",
 	SetIconOnLightBombTarget	= "Set icons on Searing Light targets",
 	SetIconOnGravityBombTarget	= "Set icons on Gravity Bomb targets"
 }
