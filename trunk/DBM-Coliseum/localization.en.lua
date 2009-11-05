@@ -20,7 +20,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningSnobold				= "Show warning for Snobold Vassal spawn",
+	WarningSnobold				= "Show warning for Snobold Vassal spawns",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning when you are affected by Slime Pool",
