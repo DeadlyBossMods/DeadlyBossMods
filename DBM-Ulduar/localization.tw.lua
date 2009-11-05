@@ -369,7 +369,8 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSimulKill			= "復活"
+	TimerSimulKill			= "復活",
+	TrashRespawnTimer		= "芙蕾雅的小怪重生"
 }
 
 L:SetOptionLocalization{
