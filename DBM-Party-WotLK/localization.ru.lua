@@ -1137,8 +1137,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste			= "Ускорение на >%s<! Рассейте заклинание!",
-	specWarnPoison			= "Бутыль яда! Отбегите!"
+	specWarnHaste			= "Ускорение на >%s< - hассейте заклинание",
+	specWarnPoison			= "Бутыль яда - бегите"
 })
 
 L:SetOptionLocalization({
