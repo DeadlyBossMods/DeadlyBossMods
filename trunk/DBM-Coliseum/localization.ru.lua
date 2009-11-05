@@ -22,6 +22,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
+	WarningSnobold			= "Предупреждение о призыве Снобольда-вассала",
 	SpecialWarningImpale3		= "Спец-предупреждение для Прокалывания (>= 3 стека)",
 	SpecialWarningFireBomb		= "Спец-предупреждение если на вас Зажигательная бомба",
 	SpecialWarningSlimePool		= "Спец-предупреждение, если под вами Лужа жижи",
@@ -44,6 +45,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	WarningSnobold			= "Призыв %s",
 	SpecialWarningImpale3		= "Прокалывание >%d< на вас",
 	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
 	SpecialWarningSlimePool		= "Кислотная Жижа - бегите",
@@ -115,7 +117,8 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	SpecWarnHellfire		= "Адское Пламя - бегите",
 	SpecWarnHandofProt		= "Длань защиты на >%s<",
-	SpecWarnDivineShield		= "Божественный щит на >%s<"
+	SpecWarnDivineShield		= "Божественный щит на >%s<",
+	specWarnIceBlock       		= "Ледяная глыба на %s"
 }
 
 L:SetMiscLocalization{
@@ -153,7 +156,8 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	SpecWarnHellfire		= "Спец-предупреждение, когда вы получаете урон от Адского пламени",
 	SpecWarnHandofProt		= "Спец-предупреждение, когда Паладин использует Длань защиты",
-	SpecWarnDivineShield		= "Спец-предупреждение, когда Паладин использует Божественный щит"
+	SpecWarnDivineShield		= "Спец-предупреждение, когда Паладин использует Божественный щит",
+	specWarnIceBlock       		= "Спец-предупреждение, когда маг читает заклинание Ледяная глыба (для рассеивания)"
 }
 
 ---------------------
@@ -231,7 +235,9 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull			= "Это место станет вашей могилой!",
 	Emerge				= "вылезает на поверхность!",
-	Burrow				= "зарывается под землю!"
+	Burrow				= "зарывается под землю!",
+	PcoldIconSet			= "Метка холода {rt%d} установленна на %s",
+	PcoldIconRemoved		= "Метка холода снята с %s"
 }
 
 L:SetOptionLocalization{
@@ -249,6 +255,7 @@ L:SetOptionLocalization{
 	SpecWarnShadowStrike		= "Спец-предупреждение, когда Теневой удар (для прерывания)",
 	SpecWarnPCold			= "Спец-предупреждение, когда на вас Пронизывающий холод",
 	RemoveHealthBuffsInP3		= "Удалить усиления здоровья в начале фазы 3",
-	SetIconsOnPCold         	= "Установить метку на цель под воздействем Пронизывающий холод"
+	SetIconsOnPCold         	= "Установить метки на цели под воздействем Пронизывающего холода",
+	AnnouncePColdIcons		= "Объявлять в рейд-чат цели под воздействем Пронизывающего холода (требуются права лидера или помощника)"
 }
 
