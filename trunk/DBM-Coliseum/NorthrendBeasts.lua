@@ -26,6 +26,7 @@ local warnRage				= mod:NewSpellAnnounce(67657, 3)
 local warnSlimePool			= mod:NewSpellAnnounce(67643, 2)
 local warnToxin				= mod:NewTargetAnnounce(66823, 2)
 local warnBile				= mod:NewTargetAnnounce(66869, 3)
+local WarningSnobold		= mod:NewAnnounce("WarningSnobold", 2)
 
 local specWarnImpale3		= mod:NewSpecialWarning("SpecialWarningImpale3", false)
 local specWarnFireBomb		= mod:NewSpecialWarning("SpecialWarningFireBomb")
@@ -114,8 +115,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		mod:ScheduleMethod(0.2, "warnBile")
 		updateHealthFrame(2) 
-	elseif args:IsSpellID(66758) then 
+	elseif args:IsSpellID(66758) then
 		timerStaggeredDaze:Start()
+	elseif args:IsSpellID(66636) then		-- Rising Anger
+		WarningSnobold:Show(args.sourceName)
 	end
 end
 
@@ -201,6 +204,8 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 				specWarnImpale3:Show(args.amount)
 			end
 		end
+	elseif args:IsSpellID(66636) then		-- Rising Anger
+		WarningSnobold:Show(args.sourceName)
 	end
 end
 
