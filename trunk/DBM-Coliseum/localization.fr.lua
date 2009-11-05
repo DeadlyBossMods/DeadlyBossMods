@@ -22,6 +22,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
+	WarningSnobold				= "Montre une alerte quand les Vassal arrivent",
 	SpecialWarningImpale3		= "Montre une alerte spéciale pour l'empaler (>=3 Stacks)",
 	SpecialWarningFireBomb		= "Montre une alerte spéciale quand la Bombe incendiaire est sur vous",
 	SpecialWarningSlimePool		= "Montre une alerte spéciale pour les Flaque de bave",
@@ -44,6 +45,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	WarningSnobold				= "%s viens d'arriver",
 	SpecialWarningImpale3		= "Empaler >%d< sur VOUS",
 	SpecialWarningFireBomb		= "Bombe incendiaire sur VOUS",
 	SpecialWarningSlimePool		= "Flaque de bave, BOUGEZ!",
@@ -53,8 +55,6 @@ L:SetWarningLocalization{
 	SpecialWarningChargeNear	= "Charge à côté de vous! COUREZ!",
 	SpecialWarningBile			= "Bile brûlante sur VOUS !"
 }
-
-
 
 -------------------
 -- Lord Jaraxxus --
@@ -115,33 +115,35 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnHellfire	= "Flammes infernales ! BOUGEZ !",
+	SpecWarnHellfire		= "Flammes infernales ! BOUGEZ !",
 	SpecWarnHandofProt		= "Main de Protection sur >%s<",
-	SpecWarnDivineShield	= "Bouclier Divin sur >%s<"
+	SpecWarnDivineShield	= "Bouclier Divin sur >%s<",
+	specWarnIceBlock       	= "Bloc de glace sur %s"
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "DK - Gorgrim Fend-les-ombres",		-- 34458
-	Birana 		= "Druide - Birana Sabot-tempête",		-- 34451
-	Erin		= "Druide - Erin Sabot-de-brume",		-- 34459
-	Rujkah		= "Chasseur - Ruj'kah",					-- 34448
-	Ginselle	= "Mage - Ginselle Jettechancre",		-- 34449
-	Liandra		= "Paladin - Liandra Mande-soleil",		-- 34445
-	Malithas	= "Paladin - Malithas Brillelame",		-- 34456
-	Caiphus		= "Prêtre - Caiphus le Sévère",			-- 34447
-	Vivienne	= "Prêtre - Vivienne Murmenoir",		-- 34441
-	Mazdinah	= "Voleur - Maz'dinah",					-- 34454
-	Thrakgar	= "Chaman - Thrakgar",					-- 34444
-	Broln		= "Chaman - Broln Corne-rude",			-- 34455
-	Harkzog		= "Démoniste - Harkzog",				-- 34450
-	Narrhok		= "Guerrier - Narrhok Brise-acier",		-- 34453
-	YellKill	= "Une victoire tragique et depourvue de sens. La perte subie aujourd'hui nous affaiblira tous, car qui d'autre que le roi-liche pourrait beneficier d'une telle folie?? De grands guerriers ont perdu la vie. Et pour quoi?? La vraie menace plane à l'horizon?: le roi-liche nous attend, tous, dans la mort."
+	Gorgrim					= "DK - Gorgrim Fend-les-ombres",		-- 34458
+	Birana 					= "Druide - Birana Sabot-tempête",		-- 34451
+	Erin					= "Druide - Erin Sabot-de-brume",		-- 34459
+	Rujkah					= "Chasseur - Ruj'kah",					-- 34448
+	Ginselle				= "Mage - Ginselle Jettechancre",		-- 34449
+	Liandra					= "Paladin - Liandra Mande-soleil",		-- 34445
+	Malithas				= "Paladin - Malithas Brillelame",		-- 34456
+	Caiphus					= "Prêtre - Caiphus le Sévère",			-- 34447
+	Vivienne				= "Prêtre - Vivienne Murmenoir",		-- 34441
+	Mazdinah				= "Voleur - Maz'dinah",					-- 34454
+	Thrakgar				= "Chaman - Thrakgar",					-- 34444
+	Broln					= "Chaman - Broln Corne-rude",			-- 34455
+	Harkzog					= "Démoniste - Harkzog",				-- 34450
+	Narrhok					= "Guerrier - Narrhok Brise-acier",		-- 34453
+	YellKill				= "Une victoire tragique et depourvue de sens. La perte subie aujourd'hui nous affaiblira tous, car qui d'autre que le roi-liche pourrait beneficier d'une telle folie?? De grands guerriers ont perdu la vie. Et pour quoi?? La vraie menace plane à l'horizon?: le roi-liche nous attend, tous, dans la mort."
 } 
 
 L:SetOptionLocalization{
 	SpecWarnHellfire		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flammes infernales",
 	SpecWarnHandofProt		= "Montre une alerte spéciale quand le Paladin lance Main de Protection",
-	SpecWarnDivineShield	= "Montre une alerte spéciale quand le Paladin lance Bouclier Divin"
+	SpecWarnDivineShield	= "Montre une alerte spéciale quand le Paladin lance Bouclier Divin",
+	specWarnIceBlock       	= "Montre une alerte spéciale quand le mage incante sont bloc de glace ( Pour le dispell )"
 }
 
 ------------------
@@ -190,7 +192,6 @@ L:SetOptionLocalization{
 	SpecWarnPoweroftheTwins		= "Montre une alerte spéciale quand vous êtes en train de tanker une Jumelle puissante"
 }
 
-
 -----------------
 --  Anub'arak  --
 -----------------
@@ -220,7 +221,9 @@ L:SetWarningLocalization{
 L:SetMiscLocalization{
 	YellPull				= "Ce terreau sera votre tombeau !",
 	Emerge					= "surgit de la terre",
-	Burrow					= "enfonce dans le sol"
+	Burrow					= "enfonce dans le sol",
+	PcoldIconSet			= "Pcold Icon {rt%d} set on %s",
+	PcoldIconRemoved		= "Pcold Icon removed from %s"
 }
 
 L:SetOptionLocalization{
@@ -238,6 +241,7 @@ L:SetOptionLocalization{
 	SpecWarnShadowStrike	= "Montre une alerte spéciale pour les Attaque d'ombre (Pour les casser)",
 	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant",
 	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3",
-	SetIconsOnPCold         = "Met une icone sur la cible du Froid pénétrant"
+	SetIconsOnPCold         = "Met une icone sur la cible du Froid pénétrant",
+	AnnouncePColdIcons		= "Marque les icones des cible du Froid pénétrant dans le chatt (Requiert les annonces activer et être le leader ou avoir une promot)"
 }
 

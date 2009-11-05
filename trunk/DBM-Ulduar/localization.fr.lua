@@ -13,9 +13,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPursued		= "Poursuivi: %s",
-	timerFlameVents		= "Flots de flammes",
-	timerSystemOverload	= "Système en surchage"
 }
 	
 L:SetMiscLocalization{
@@ -33,9 +30,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload		= "Activer le timer pour la surchage du système",
-	timerFlameVents			= "Activer le timer pour les Flots de flammes",
-	timerPursued			= "Activer le timer pour la poursuite",
 	SystemOverload			= "Afficher l'avertissement spécial pour la surchage du système",
 	SpecialPursueWarnYou	= "Afficher l'avertissement spécial quand un joueur est poursuivi",
 	PursueWarn				= "Afficher l'avertissement quand vous êtes poursuivi",
@@ -54,11 +48,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast		= "Flots de flammes",
-	TimerFlameJetsCooldown	= "Prochain flots de flammes dans",
-	TimerScorch				= "Prochaine brûlure dans",
-	TimerScorchCast			= "Brûlure",
-	TimerSlagPot			= "Marmite de scories: %s"
 }
 
 L:SetWarningLocalization{
@@ -68,12 +57,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnJetsCast		= "Activer l'avertissement spécial pour les Flots de flammes (contresort)",
-	TimerFlameJetsCast		= "Afficher le timer des Flots de flammes",
-	TimerFlameJetsCooldown	= "Afficher le cooldown du Flots de flammes",
-	TimerScorch				= "Afficher le cooldown de brûlure",
-	TimerScorchCast			= "Afficher la barre de cast de brûlure",
 	WarningSlagPot			= "Annoncer la cible de la Marmite de scories",
-	TimerSlagPot			= "Afficher le timer de la Marmite de scories",
 	SlagPotIcon				= "Mettre une icône sur la cible de la Marmite de scories"
 }
 
@@ -95,9 +79,6 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerDeepBreathCooldown	= "Prochain souffle dans",
-	timerDeepBreathCast		= "Souffle de flammes",
-	timerAllTurretsReady	= "Tourelles",
 	timerTurret1			= "Tourelle 1",
 	timerTurret2			= "Tourelle 2",
 	timerTurret3			= "Tourelle 3",
@@ -106,11 +87,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	timerDeepBreathCooldown		= "Afficher un timer pour le prochain Souffle de flammes",
-	timerDeepBreathCast			= "Afficher la  barre d'incantation pour le Souffle de flammes",
 	SpecWarnDevouringFlame		= "Activer l'avertissement spécial pour les Flammes dévorantes",
 	PlaySoundOnDevouringFlame	= "Jouer un son quand vous êtes affecté par la Flamme dévorante",
-	timerAllTurretsReady		= "Afficher un timer pour les tourelles",
 	warnTurretsReadySoon		= "Activer le pré-avertissement pour les tourelles",
 	warnTurretsReady			= "Activer l'avertissement pour les tourelles",
 	SpecWarnDevouringFlameCast	= "Montre une alerte spéciale quand les Flammes dévorantes sont cast sur Vous",
@@ -152,8 +130,6 @@ L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "Activer l'avertissement spécial quand vous êtes affecté par la bombe de lumière",
 	SpecialWarningGravityBomb	= "Activer l'avertissement spécial quand vous êtes affecté par la bombe à gravité",
 	specWarnConsumption			= "Montre une alerte spéciale quand vous subissez des dégats venant des Zone de Vide ( Hard-mode )",
-	PlaySoundOnGravityBomb		= "Jouer un son quand la bombe à gravité est sur vous",
-	PlaySoundOnTympanicTantrum	= "Jouer un son au lancement de la colère assourdissante",
 	SetIconOnLightBombTarget	= "Mettre un icône sur la cible de la bombe de lumière",
 	SetIconOnGravityBombTarget	= "Mettre un icône sur la cible de la bombe à gravité"
 }
@@ -171,8 +147,7 @@ L:SetWarningLocalization{
 	WarningSupercharge			= "Supercharge imminente",
 	RuneofDeath					= "Rune de mort - BOUGEZ",
 	LightningTendrils			= "Vrilles de foudre - COURREZ",
-	Overload					= "Surchage - BOUGEZ",
-	WarningStaticDisruption		= "Static Disruption sur >%s<"
+	Overload					= "Surchage - BOUGEZ"
 }
 
 L:SetTimerLocalization{
@@ -188,7 +163,6 @@ L:SetOptionLocalization{
 	Overload					= "Montre une alerte spéciale pour la Surcharge",
 	AlwaysWarnOnOverload		= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
 	PlaySoundOnOverload			= "Joue un son à la surcharge",
-	WarningStaticDisruption		= "Annonce la Static Disruption",
 	PlaySoundDeathRune			= "Joue un son pour les runes de mort"
 }
 
@@ -240,7 +214,6 @@ L:SetMiscLocalization{
 	Emote_CosmicSmash		= "commence à incanter un Choc cosmique"
 }
 
-
 ----------------
 --  Kologarn  --
 ----------------
@@ -257,9 +230,6 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerEyebeam			= "Rayon de l'Œil: %s",
-	timerPetrifyingBreath	= "Souffle pétrifiant",
-	timerNextShockwave		= "Prochaine Onde de choc",
 	timerLeftArm			= "Repop du bras gauche",
 	timerRightArm			= "Repop du bras droit",
 	achievementDisarmed		= "Temps pour Désarmement"
@@ -268,9 +238,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "Activer l'avertissement spécial quand vous êtes la cible du Rayon de l'Œil",
 	WarningEyeBeam			= "Annoncer la cible du Rayon de l'Œil",
-	timerEyebeam			= "Afficher un timer pour le Rayon de l'Œil",
-	timerPetrifyingBreath	= "Afficher un timer pour le souffle pétrifiant",
-	timerNextShockwave		= "Afficher un timer pour l'onde de choc",
 	timerLeftArm			= "Afficher un timer pour le repop du bras gauche",
 	timerRightArm			= "Afficher un timer pour le repop du bras droit",
 	achievementDisarmed		= "Afficher un timer pour le Haut Fait Désarmement",
@@ -330,11 +297,9 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze	= "Gel instantané imminent"  -- all ppl have to move on the rock patches
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze		= "Afficher une barre d'incantation pour le gel instantané",
 	WarningFlashFreeze		= "Activer l'avertissement pour le gel instantané",
 	PlaySoundOnFlashFreeze	= "Jouer un son lors de l'incantation du gel instantané",
 	YellOnStormCloud		= "Crie quand la tempête de glace est active",
@@ -407,10 +372,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam 	= "Rayon de soleil: %s",
-	TimerSimulKill 			= "Résurrection",
-	TimerFuryYou 			= "Fureur de la nature sur vous",
-	TrashRespawnTimer		= "Respawn des Trashs de Freya"
+	TimerSimulKill 			= "Résurrection"
 }
 
 L:SetOptionLocalization{
@@ -574,7 +536,6 @@ L:SetWarningLocalization{
 	WarningSanity 					= "%d de Santé mentale restant",
 	SpecWarnSanity 					= "%d de Santé mentale restant",
 	SpecWarnGuardianLow				= "Arretez d'attaquer ce gardien !",
-	WarnMadness						= "Incantation de Susciter la folie en cours",
 	SpecWarnMadnessOutNow			= "Incantation de Susciter la folie fini - SORTEZ",
 	WarnBrainPortalSoon				= "Portail dans 3 sec",	
 	SpecWarnFavor					= "Ferveur de Sara sur VOUS",
@@ -598,7 +559,6 @@ L:SetOptionLocalization{
 	WarningSanity					= "Montre une alerte quand la Santé mentale est basse",
 	SpecWarnSanity					= "Montre une alerte quand la Santé mentale est très basse",
 	SpecWarnGuardianLow				= "Montre une alerte spéciale quand les gardiens (P1) n'a plus beaucoup de vie",
-	WarnMadness						= "Annonce Susciter la folie",
 	WarnBrainPortalSoon				= "Annonce les Portails",
 	SpecWarnMadnessOutNow			= "Montre une alerte spéciale avant la fin du cast de Susciter la folie",
 	SetIconOnFearTarget				= "Met une icône sur la cible du fear",
