@@ -1136,12 +1136,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnHaste			= "Haste on %s - Dispel now",
-	specWarnPoison			= "Poison - Move away",
+	specWarnPoison			= "Poison Bottle - Move away",
 })
 
 L:SetOptionLocalization({
 	specWarnHaste			= "Show special warning when the Mage gains Haste (to dispel/steal)",
-	specWarnPoison			= "Show special warning when you are affected by Vial of Poison"
+	specWarnPoison			= "Show special warning when you are affected by Poison Bottle"
 })
 
 L:SetMiscLocalization({
