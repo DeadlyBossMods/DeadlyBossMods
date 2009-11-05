@@ -1116,7 +1116,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDesecration		= "Show special warning when you take damage from Desecration",
+	specWarnDesecration		= "Show special warning when you are affected by Desecration",
 	warnExplode				= "Show warning when Ghoul Minion is about to explode",
 	SetIconOnMarkedTarget	= "Set icons on Marked For Death targets"
 })
@@ -1141,7 +1141,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnHaste			= "Show special warning when the Mage gains Haste (to dispel/steal)",
-	specWarnPoison			= "Show special warning when you take damage from Vial of Poison"
+	specWarnPoison			= "Show special warning when you are affected by Vial of Poison"
 })
 
 L:SetMiscLocalization({
