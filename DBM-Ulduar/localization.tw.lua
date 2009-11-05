@@ -12,9 +12,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPursued			= "獵殺: %s",
-	timerFlameVents			= "烈焰外洩",
-	timerSystemOverload		= "系統關閉"
 }
 	
 L:SetMiscLocalization{
@@ -32,9 +29,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload		= "為系統關閉顯示計時器",
-	timerFlameVents			= "為烈焰外洩顯示計時器",
-	timerPursued			= "為獵殺顯示計時器",
 	SystemOverload			= "為系統關閉顯示特別警告",
 	SpecialPursueWarnYou		= "當你中了獵殺時顯示特別警告",
 	PursueWarn			= "提示獵殺的目標",
@@ -53,11 +47,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast		= "烈焰噴洩",
-	TimerFlameJetsCooldown		= "下一次 烈焰噴洩",
-	TimerScorch			= "下一次 灼燒",
-	TimerScorchCast			= "灼燒",
-	TimerSlagPot			= "熔渣之盆: %s",
 }
 
 L:SetWarningLocalization{
@@ -67,12 +56,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnJetsCast		= "為烈焰噴洩顯示特別警告",
-	TimerFlameJetsCast		= "為烈焰噴洩的施法顯示計時器",
-	TimerFlameJetsCooldown		= "為烈焰噴洩顯示冷卻計時器",
-	TimerScorch			= "為灼燒顯示冷卻計時器",
-	TimerScorchCast			= "為灼燒的施法顯示計時器",
 	WarningSlagPot			= "提示熔渣之盆的目標",
-	TimerSlagPot			= "為熔渣之盆顯示計時器",
 	SlagPotIcon			= "為熔渣之盆的目標設置標記"
 }
 
@@ -141,9 +125,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "當你中了裂光彈時顯示特別警告",
 	SpecialWarningGravityBomb	= "當你中了重力彈時顯示特別警告",
-	specWarnConsumption		= "當你受到耗損的傷害時顯示特別警告",
-	PlaySoundOnGravityBomb		= "當你中了重力彈時播放音效",
-	PlaySoundOnTympanicTantrum	= "躁怒時播放音效",
+	specWarnConsumption		= "當你中了耗損的時顯示特別警告",
 	SetIconOnLightBombTarget	= "為裂光彈的目標設置標記",
 	SetIconOnGravityBombTarget	= "為重力彈的目標設置標記"
 }
@@ -161,8 +143,7 @@ L:SetWarningLocalization{
 	WarningSupercharge		= "超級充能 即將到來",
 	RuneofDeath			= "死亡符文 - 快跑開",
 	LightningTendrils		= "閃電觸鬚 - 快跑開",
-	Overload			= "超載 - 快跑開",
-	WarningStaticDisruption		= "靜電崩裂: >%s<"
+	Overload			= "超載 - 快跑開"
 }
 
 L:SetTimerLocalization{
@@ -180,7 +161,6 @@ L:SetOptionLocalization{
 	Overload			= "為超載顯示特別警告",
 	AlwaysWarnOnOverload		= "總是對超載顯示警告(否則只有當目標是風暴召喚者的時候顯示)",
 	PlaySoundOnOverload		= "當超載施放時播放音效",
-	WarningStaticDisruption		= "提示靜電崩裂的目標",
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效"
 }
 
@@ -247,8 +227,6 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerEyebeam			= "集束目光: %s",
-	timerPetrifyingBreath		= "石化之息",
 	timerLeftArm			= "左臂 重生",
 	timerRightArm			= "右臂 重生",
 	achievementDisarmed		= "卸除手臂 計時器"
@@ -257,8 +235,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "當集束目光看著你時顯示特別警告",
 	WarningEyeBeam			= "提示集束目光的目標",
-	timerEyebeam			= "為集束目光顯示計時器",
-	timerPetrifyingBreath		= "為石化之息顯示計時器",
 	timerLeftArm			= "為左臂重生顯示計時器",
 	timerRightArm			= "為右臂重生顯示計時器",
 	achievementDisarmed		= "為成就:卸除手臂顯示計時器",
@@ -318,11 +294,9 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze		= "閃霜 即將到來",
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze		= "為閃霜的施放顯示計時器",
 	WarningFlashFreeze		= "為閃霜顯示特別警告",
 	PlaySoundOnFlashFreeze		= "當施放閃霜時播放音效",
 	WarningStormCloud		= "提示風暴雷雲的目標",
@@ -395,9 +369,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam		= "太陽光束: %s",
-	TimerSimulKill			= "復活",
-	TrashRespawnTimer		= "芙蕾雅的小怪重生"
+	TimerSimulKill			= "復活"
 }
 
 L:SetOptionLocalization{
@@ -559,7 +531,6 @@ L:SetWarningLocalization{
 	WarningSanity 			= "剩下 %d 理智",
 	SpecWarnSanity 			= "剩下 %d 理智",
 	SpecWarnGuardianLow		= "停止攻擊這隻守護者",
-	WarnMadness			= "正在施放 瘋狂誘陷",
 	SpecWarnMadnessOutNow		= "瘋狂誘陷即將結束 - 快傳送出去",
 	WarnBrainPortalSoon		= "3秒後 腦部傳送門",
 	SpecWarnFavor			= "你中了薩拉的熱誠",
@@ -583,7 +554,6 @@ L:SetOptionLocalization{
 	WarningSanity			= "當理智剩下50時顯示警告",
 	SpecWarnSanity			= "當理智過低(25,15,5)時顯示特別警告",
 	SpecWarnGuardianLow		= "當守護者(P1)血量過低時顯示特別警告 (DD用)",
-	WarnMadness			= "為瘋狂誘陷顯示警告",
 	WarnBrainPortalSoon		= "為腦部傳送門顯示預先警告",
 	SpecWarnMadnessOutNow		= "為瘋狂誘陷結束前顯示特別警告",
 	SetIconOnFearTarget		= "為心靈缺陷的目標設置標記 (頭顱)",
