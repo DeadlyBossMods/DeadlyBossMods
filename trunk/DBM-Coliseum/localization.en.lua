@@ -22,7 +22,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
-	SpecialWarningSlimePool		= "Show special warning when you take damage from Slime Pool",
+	SpecialWarningSlimePool		= "Show special warning when you are affected by Slime Pool",
 	SpecialWarningSilence		= "Show special warning for Staggering Stomp (silence)",
 	SpecialWarningToxin			= "Show special warning when you are affected by Paralytic Toxin",
 	SpecialWarningBile			= "Show special warning when you are affected by Burning Bile",
