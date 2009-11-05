@@ -39,7 +39,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart 		= "Отсчет времени до начала битвы",
-	TimerShadow 		= "Отсчет времени для Сумрачного кристалла"
+	TimerShadow 		= "Отсчет времени для Сумрачного зрения"
 })
 
 L:SetMiscLocalization({
