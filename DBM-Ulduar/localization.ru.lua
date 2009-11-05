@@ -371,7 +371,8 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSimulKill			= "Воскрешение"
+	TimerSimulKill			= "Воскрешение",
+	TrashRespawnTimer		= "Фрейя возрождает Мусор"
 }
 
 L:SetOptionLocalization{
