@@ -45,7 +45,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSnobold			= "%s 出現了",
+	WarningSnobold			= "極地狗頭人奴僕 出現了",
 	SpecialWarningImpale3		= "你中了刺穿>%d<",
 	SpecialWarningFireBomb		= "你中了燃燒彈",
 	SpecialWarningSlimePool		= "泥漿池 - 快跑開",
