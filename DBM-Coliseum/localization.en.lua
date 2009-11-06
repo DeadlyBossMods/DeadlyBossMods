@@ -43,7 +43,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSnobold				= "%s spawned",
+	WarningSnobold				= "Snobold Vassal spawned",
 	SpecialWarningImpale3		= "Impale >%d< on you",
 	SpecialWarningFireBomb		= "Fire Bomb on you",
 	SpecialWarningSlimePool		= "Slime Pool - Move away",
