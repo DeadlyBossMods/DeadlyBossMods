@@ -29,7 +29,7 @@ L:SetOptionLocalization{
 	SpecialWarningBile			= "Show special warning when you are affected by Burning Bile",
 	SpecialWarningCharge		= "Show special warning when Icehowl is about to charge you",
 	PingCharge					= "Ping the minimap when Icehowl is about to charge you",
-	SpecialWarningChargeNear	= "Show special warning when Icehowl charges near you",
+	SpecialWarningChargeNear	= "Show special warning when Icehowl is about to charge near you",
 	SetIconOnChargeTarget		= "Set icons on charge targets (skull)",
 	SetIconOnBileTarget			= "Set icons on Burning Bile targets",
 	ClearIconsOnIceHowl			= "Clear all icons before charge",
