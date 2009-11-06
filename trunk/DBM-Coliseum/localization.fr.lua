@@ -45,7 +45,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSnobold				= "%s viens d'arriver",
+	WarningSnobold				= "Un Vassal frigbold viens d'arriver",
 	SpecialWarningImpale3		= "Empaler >%d< sur VOUS",
 	SpecialWarningFireBomb		= "Bombe incendiaire sur VOUS",
 	SpecialWarningSlimePool		= "Flaque de bave, BOUGEZ!",
