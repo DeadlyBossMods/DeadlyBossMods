@@ -1412,13 +1412,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnPursuit			= "추격 5 초 전",
-	specWarnToxic		= "Toxic Waste! Move Away!",
+	specWarnToxic		= "Toxic Waste! 이동하세요!",
 	specWarnPursuit		= "당신을 곧 추격. 뛰세요!"
 })
 
 L:SetOptionLocalization({
 	warnPursuit			= "추격일 경우 사전 경고 보기",
-	specWarnToxic		= "Special warning when you take damage from Toxic Waste",
+	specWarnToxic		= "Toxic Waste로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit		= "당신을 추격 하게 될 경우 특수 경고 보기"
 --	SetIconOnPursuitTarget	= "Set icon on Pursuit target"	
 })
@@ -1437,14 +1437,14 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock			= "Saronite Rock - Line of sight now",
-	specWarnSaroniteRock		= "Saronite Throw on you - Move",
+	specWarnSaroniteRock		= "당신에게 사로나이트를 던집니다. 이동!",
 	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "Show warning for Saronite Rock (to clear Permafrost)",
-	specWarnSaroniteRock		= "Show special warning when you are affected by Saronite Throw",
-	specWarnPermafrost			= "Show special warning when Permafrost stacks get too high (value not set in stone)"
+	warnSaroniteRock			= "Saronite Rock의 경고 보기 (to clear Permafrost)",
+	specWarnSaroniteRock		= "Saronite Throw의 영향을 받을 경우 특수 경고 보기",
+	specWarnPermafrost			= "Permafrost 의 중첩이 많을 경우 특수 경고 보기(value not set in stone)"
 --	SetIconOnSaroniteRockTarget	= "Set icon on Pursuit target"	
 })
 
@@ -1464,12 +1464,14 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down. Get ready!",
 	specWarnIcyBlast			= "Icy Blast! Move Away!",
+	specTyrannusEngaged			= "티라누스 격노",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
 })
 
 L:SetOptionLocalization({
 	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
+	specTyrannusEngaged			= "티라누스 격노 특수 경고 보기",
 	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
 	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
@@ -1477,7 +1479,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	TyrannusYell				= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "^%%s gazes at (%S+) and readies an icy attack!"
+	HoarfrostTarget				= "^%%s이 (%S+) 노려보며 얼음 공격을 준비합니다!"
 })
 ---------------------
 -- Forge of Souls --
