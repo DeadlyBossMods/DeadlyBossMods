@@ -330,7 +330,7 @@ L:SetOptionLocalization{
 	TimerHardmode			= "Show timer for hard mode",
 	WarningPhase2			= "Announce Phase 2",
 	RangeFrame				= "Show range frame",
-	AnnounceFails			= "Post player fails for Lightning Charge to raid chat (requires announce to be enabled and leader/promoted status)",
+	AnnounceFails			= "Post player fails for Lightning Charge to raid chat\n(requires announce to be enabled and leader/promoted status)",
 	LightningOrb			= "Show special warning for Lightning Shock"
 }
 
