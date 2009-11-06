@@ -16,8 +16,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecialLocust		= "Show special warning for Locust Swarm",
-	WarningLocustFaded	= "Show warning for Locust Swarm fade",
-	TimerLocustFade 	= "Show timer for Locust Swarm fade"
+	WarningLocustFaded	= "Show warning for Locust Swarm fade"
 })
 
 ----------------------------
