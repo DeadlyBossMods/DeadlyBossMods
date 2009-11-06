@@ -118,7 +118,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(66758) then
 		timerStaggeredDaze:Start()
 	elseif args:IsSpellID(66636) then		-- Rising Anger
-		WarningSnobold:Show(args.sourceName)
+		WarningSnobold:Show()
 	end
 end
 
