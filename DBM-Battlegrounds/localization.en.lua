@@ -177,7 +177,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart					= "Show start timer",
-	TimerWin 					= "Show win timer",
 	TimerFlag					= "Show flag respawn timer",
 	ShowFlagCarrier				= "Show flag carrier",
 	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat",
