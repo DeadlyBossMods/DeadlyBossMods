@@ -330,7 +330,7 @@ L:SetOptionLocalization{
 	TimerHardmode			= "為困難模式顯示計時器",
 	WarningPhase2			= "提示第二階段",
 	RangeFrame			= "顯示距離框",
-	AnnounceFails			= "公佈中了閃電充能的玩家到團隊頻道/n(需要團隊隊長或助理權限)",
+	AnnounceFails			= "公佈中了閃電充能的玩家到團隊頻道\n(需要團隊隊長或助理權限)",
 	LightningOrb			= "為閃電充能顯示特別警告"
 }
 
