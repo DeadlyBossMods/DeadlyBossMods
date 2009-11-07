@@ -262,7 +262,7 @@ L:SetOptionLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWave	= "Wave #%d",
+	TimerWave	= "Wave %d",
 	TimerPhase2	= "Phase 2"
 })
 
