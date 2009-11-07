@@ -156,6 +156,10 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+})
+
 ----------------------------
 --  Blood Prince Council  --
 ----------------------------
