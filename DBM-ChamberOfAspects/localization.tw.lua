@@ -57,7 +57,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "為炎嘯播放音效",
-	AnnounceFails		= "公佈踩中暗影裂縫和撞上炎嘯的玩家到團隊頻道(需要團隊隊長或助理權限)",
+	AnnounceFails		= "公佈踩中暗影裂縫和撞上炎嘯的玩家到團隊頻道/n(需要團隊隊長或助理權限)",
 
 	TimerTenebron		= "為坦納伯朗到來顯示計時器",
 	TimerShadron		= "為夏德朗到來顯示計時器",
