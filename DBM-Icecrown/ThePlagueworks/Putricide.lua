@@ -4,7 +4,7 @@ local L = mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36678, 38216)
 --mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
-mod:RegisterCombat("yell", "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!")
+mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
