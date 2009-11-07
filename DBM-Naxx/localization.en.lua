@@ -205,7 +205,6 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarningChargeChanged	= "Show special warning when your polarity changed",
 	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
-	TimerShiftCast			= "Show timer for Polarity Shift cast",
 	ArrowsEnabled			= "Show arrows (normal \"2 camp\" strategy)",
 	ArrowsRightLeft			= "Show left/right arrows for the \"4 camp\" strategy (show left arrow if polarity changed, right if not)",
 	ArrowsInverse			= "Inverse \"4 camp\" strategy (show right arrow if polarity changed, left if not)",
@@ -259,8 +258,7 @@ L:SetOptionLocalization({
 	WarningWaveSoon		= "Show pre-warning for wave",
 	WarningWaveSpawned	= "Show warning for wave spawned",
 	WarningRiderDown	= "Show warning when an Unrelenting Rider dies",
-	WarningKnightDown	= "Show warning when an Unrelenting Death Knight dies",
-	WarningPhase2		= "Announce Phase 2"
+	WarningKnightDown	= "Show warning when an Unrelenting Death Knight dies"
 })
 
 L:SetTimerLocalization({
@@ -296,14 +294,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerMark					= "Show timer for Mark",
 	WarningMarkSoon				= "Show pre-warning for Mark",
 	WarningMarkNow				= "Show warning for Mark",
 	SpecialWarningMarkOnPlayer	= "Show special warning when you are affected by more than 4 marks"
 })
 
 L:SetTimerLocalization({
-	TimerMark = "Mark %d"
 })
 
 L:SetWarningLocalization({
