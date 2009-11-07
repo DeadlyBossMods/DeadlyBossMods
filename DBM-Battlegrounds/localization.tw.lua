@@ -179,7 +179,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart			= "顯示開始計時器",
-	TimerWin 			= "顯示勝利計時器",
 	TimerFlag			= "顯示旗幟重生計時器",
 	ShowFlagCarrier			= "顯示旗幟攜帶者",
 	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。",

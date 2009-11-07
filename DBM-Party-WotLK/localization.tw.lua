@@ -665,7 +665,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "為分裂 即將到來顯示警告",
+	WarningSplitSoon	= "為分裂顯示預先警告",
 	WarningSplitNow		= "為分裂顯示警告",
 	WarningMerge		= "為融合顯示警告"
 })
@@ -1081,12 +1081,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "新傳送門即將開啟",
-	WarningPortalNow	= "傳送門 #%d",
+	WarningPortalNow	= "傳送門 %d",
 	WarningBossNow		= "首領即將到來",
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "傳送門 #%d",
+	TimerPortalIn	= "傳送門 %d",
 })
 
 L:SetOptionLocalization({

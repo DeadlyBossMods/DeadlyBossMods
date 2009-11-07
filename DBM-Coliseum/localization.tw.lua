@@ -31,7 +31,7 @@ L:SetOptionLocalization{
 	SpecialWarningBile		= "當你中了燃燒膽汁時顯示特別警告",
 	SpecialWarningCharge		= "當冰嚎即將衝鋒你時顯示特別警告",
 	PingCharge			= "當冰嚎即將衝鋒你時自動點擊小地圖",
-	SpecialWarningChargeNear	= "當冰嚎的衝鋒在你附近時顯示特別警告",
+	SpecialWarningChargeNear	= "當冰嚎的衝鋒即將在你附近時顯示特別警告",
 	SetIconOnChargeTarget		= "設置標記在衝鋒的目標(頭顱)",
 	SetIconOnBileTarget		= "設置標記在燃燒膽汁的目標",
 	ClearIconsOnIceHowl		= "衝鋒前消除所有標記",
@@ -256,5 +256,5 @@ L:SetOptionLocalization{
 	SpecWarnPCold			= "當你中了透骨之寒時顯示特別警告",
 	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
 	SetIconsOnPCold			= "設置標記在透骨之寒的目標",
-	AnnouncePColdIcons		= "公佈透骨之寒目標設置的標記到團隊頻道(需要團隊隊長或助理權限)"
+	AnnouncePColdIcons		= "公佈透骨之寒目標設置的標記到團隊頻道/n(需要團隊隊長或助理權限)"
 }

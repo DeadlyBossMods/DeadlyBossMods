@@ -33,10 +33,35 @@ L:SetGeneralLocalization({
 	name = "緋紅亡語者"
 })
 
+L:SetTimerLocalization({
+	TimerAdds		= "新的小怪"
+})
+
 L:SetWarningLocalization({
+	WarnAddsSoon		= "新的小怪即將到來",
+	WarnDeathDecay		= "死亡凋零",
+	WarnAdherent		= "Cult Adherent transforming",
+	WarnPhase2		= "第2階段",
+	SpecWarnDeathDecay	= "死亡凋零 - 快跑開",
+	SpecWarnCurseTorpor	= "你中了Curse of Torpor"
 })
 
 L:SetOptionLocalization({
+	WarnAddsSoon		= "為新的小怪即將出現顯示警告",
+	WarnDeathDecay		= "為死亡凋零顯示警告",
+	WarnPhase2		= "為第2階段顯示警告",
+	WarnAdherent		= "為Adherent的大叫顯示警告",	-- Cult Adherent -> Reanimated Adherent transformation iirc
+	SpecWarnDeathDecay	= "當你中了死亡凋零時顯示特別警告",
+	SpecWarnCurseTorpor	= "當你中了Curse of Torpor時顯示特別警告",
+	TimerAdds		= "為新的小怪出現顯示計時器"
+})
+
+L:SetMiscLocalization({
+	YellAdds		= "Arise, and exult in your pure form!",
+	YellPull		= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
+	YellAdherent		= "Loyal adherent, I release you from the curse of flesh!",
+	YellEmbrace		= "Embrace the darkness... darkness eternal.",
+	YellBlessing		= "Take this blessing and show these intruders a taste of the Master's power!"
 })
 
 ------------------------
