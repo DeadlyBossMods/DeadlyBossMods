@@ -662,7 +662,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show warning for Split soon",	-- translate
+	WarningSplitSoon	= "Show pre-warning for Split",	-- translate
 	WarningSplitNow		= "Show warning for Split",	-- translate
 	WarningMerge		= "Show warning for Merge"	-- translate
 })
@@ -1078,12 +1078,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "New portal soon",
-	WarningPortalNow	= "Portal #%d",
+	WarningPortalNow	= "Portal %d",
 	WarningBossNow		= "Boss incoming"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Portal #%d", 
+	TimerPortalIn	= "Portal %d", 
 })
 
 L:SetOptionLocalization({
@@ -1091,7 +1091,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("new portal"),
 	WarningBossNow			= optionWarning:format("boss incoming"),
 	TimerPortalIn			= "Show timer for portal number",
-	ShowAllPortalWarnings	= "Show warnings for all waves"
+	ShowAllPortalWarnings	= "Show warnings for all portals"
 })
 
 L:SetMiscLocalization({
