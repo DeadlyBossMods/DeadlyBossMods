@@ -256,5 +256,5 @@ L:SetOptionLocalization{
 	SpecWarnPCold			= "當你中了透骨之寒時顯示特別警告",
 	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
 	SetIconsOnPCold			= "設置標記在透骨之寒的目標",
-	AnnouncePColdIcons		= "公佈透骨之寒目標設置的標記到團隊頻道/n(需要團隊隊長或助理權限)"
+	AnnouncePColdIcons		= "公佈透骨之寒目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)"
 }
