@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Anomalus", "DBM-Party-WotLK", 8)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Anomalus", "DBM-Party-WotLK", 8)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(26763)
@@ -13,10 +13,10 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warningRiftSoon		= mod:NewSoonAnnounce(47743, 2)
-local warningRiftNow		= mod:NewSpellAnnounce(47743, 3)
+local warningRiftSoon	= mod:NewSoonAnnounce(47743, 2)
+local warningRiftNow	= mod:NewSpellAnnounce(47743, 3)
 
-local warnedRift = false
+local warnedRift		= false
 
 function mod:OnCombatStart()
 	warnedRift = false

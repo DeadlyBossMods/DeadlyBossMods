@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("BlackKnight", "DBM-Party-WotLK", 13)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("BlackKnight", "DBM-Party-WotLK", 13)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(35451, 10000)		-- work around, DBM API failes to handle a Boss to die, rebirth, die again, rebirth again and die to loot...
@@ -14,11 +14,11 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local warnExplode				= mod:NewAnnounce("warnExplode")
-local warnGhoulExplode			= mod:NewTargetAnnounce(67751)
-local warnMarked				= mod:NewTargetAnnounce(67823)
-local timerMarked				= mod:NewTargetTimer(10, 67823)
-local specWarnDesecration		= mod:NewSpecialWarning("specWarnDesecration")
+local warnExplode			= mod:NewAnnounce("warnExplode")
+local warnGhoulExplode		= mod:NewTargetAnnounce(67751)
+local warnMarked			= mod:NewTargetAnnounce(67823)
+local timerMarked			= mod:NewTargetTimer(10, 67823)
+local specWarnDesecration	= mod:NewSpecialWarning("specWarnDesecration")
 
 mod:AddBoolOption("SetIconOnMarkedTarget", false)
 

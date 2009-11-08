@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("StratWaves", "DBM-Party-WotLK", 3)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("StratWaves", "DBM-Party-WotLK", 3)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 
@@ -9,7 +9,7 @@ mod:RegisterEvents(
 )
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
-local timerWaveIn	= mod:NewTimer(60, "TimerWaveIn")
+local timerWaveIn		= mod:NewTimer(60, "TimerWaveIn")
 
 local wavesNormal = {
 	{2, L.Devouring},
@@ -37,8 +37,8 @@ local wavesHeroic = {
 	{L.Salramm},
 }
 
-local waves = wavesNormal
-local lastwave = 0
+local waves		= wavesNormal
+local lastwave	= 0
 local wave
 
 local function getWaveString(wave)
