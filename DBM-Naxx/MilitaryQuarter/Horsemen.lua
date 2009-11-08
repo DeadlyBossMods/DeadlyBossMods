@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Horsemen", "DBM-Naxx", 4)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Horsemen", "DBM-Naxx", 4)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(16063, 16064, 16065, 30549)

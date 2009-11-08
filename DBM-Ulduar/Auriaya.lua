@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Auriaya", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Auriaya", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 
@@ -40,7 +40,7 @@ local timerSonic		= mod:NewCastTimer(64688)
 
 mod:AddBoolOption("HealthFrame", true)
 
-local isFeared = false
+local isFeared			= false
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
