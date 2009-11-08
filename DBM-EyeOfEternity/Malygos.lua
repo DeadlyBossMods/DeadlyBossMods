@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Malygos", "DBM-EyeOfEternity")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Malygos", "DBM-EyeOfEternity")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(28859)
@@ -20,13 +20,13 @@ local warnBreathInc		= mod:NewAnnounce("WarningBreathSoon", 3, 60071)
 local warnBreath		= mod:NewAnnounce("WarningBreath", 4, 60071)
 local warnSurge			= mod:NewTargetAnnounce(60936, 2)
 
-local specWarnSurge = mod:NewSpecialWarning("WarningSurgeYou")
+local specWarnSurge		= mod:NewSpecialWarning("WarningSurgeYou")
 
-local enrageTimer	= mod:NewEnrageTimer(615)
-local timerSpark	= mod:NewTimer(30, "TimerSpark", 59381)
-local timerVortex	= mod:NewCastTimer(11, 56105)
-local timerVortexCD	= mod:NewNextTimer(60, 56105)
-local timerBreath	= mod:NewTimer(59, "TimerBreath", 60071)
+local enrageTimer		= mod:NewEnrageTimer(615)
+local timerSpark		= mod:NewTimer(30, "TimerSpark", 59381)
+local timerVortex		= mod:NewCastTimer(11, 56105)
+local timerVortexCD		= mod:NewNextTimer(60, 56105)
+local timerBreath		= mod:NewTimer(59, "TimerBreath", 60071)
 
 local guids = {}
 local surgeTargets = {}

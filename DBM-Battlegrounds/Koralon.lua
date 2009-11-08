@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Koralon", "DBM-Battlegrounds")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Koralon", "DBM-Battlegrounds")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(35013)

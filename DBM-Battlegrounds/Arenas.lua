@@ -2,8 +2,8 @@
 -- rewrite by Tandanu
 --
 
-local Arenas = DBM:NewMod("Arenas", "DBM-Battlegrounds")
-local L = Arenas:GetLocalizedStrings()
+local Arenas	= DBM:NewMod("Arenas", "DBM-Battlegrounds")
+local L			= Arenas:GetLocalizedStrings()
 
 Arenas:RemoveOption("HealthFrame")
 
