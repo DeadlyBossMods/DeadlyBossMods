@@ -13,17 +13,17 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnDominateMind		= mod:NewTargetAnnounce(71289, 3)
+local warnDominateMind	= mod:NewTargetAnnounce(71289, 3)
 local warnFrostbolt		= mod:NewCastAnnounce(72007, 2)
-local warnDeathDecay		= mod:NewAnnounce("WarnDeathDecay", 2)
+local warnDeathDecay	= mod:NewAnnounce("WarnDeathDecay", 2)
 local warnAddsSoon		= mod:NewAnnounce("WarnAddsSoon" , 4)
-local warnPhase2		= mod:NewAnnounce("WarnPhase2", 3)
+local warnPhase2		= mod:NewPhaseAnnounce(2, 3)
 local warnAddherent		= mod:NewAnnounce("WarnAdherent", 2)
 
 local specWarnCurseTorpor	= mod:NewSpecialWarning("SpecWarnCurseTorpor")
 local specWarnDeathDecay	= mod:NewSpecialWarning("SpecWarnDeathDecay")
 
-local timerAdds			= mod:NewTimer(21, "TimerAdds")
+local timerAdds             = mod:NewTimer(21, "TimerAdds")
 local timerDominateMind		= mod:NewTargetTimer(20, 71289)
 local timerDominateMindCD	= mod:NewCDTimer(40, 71289)
 
