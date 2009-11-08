@@ -1091,7 +1091,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("new portal"),
 	WarningBossNow			= optionWarning:format("boss incoming"),
 	TimerPortalIn			= "Show timer for portal number",
-	ShowAllPortalWarnings	= "Show warnings for all portals"
+	ShowAllPortalWarnings	= "Show warning for all portals"
 })
 
 L:SetMiscLocalization({
