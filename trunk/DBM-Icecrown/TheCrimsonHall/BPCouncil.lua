@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("BPCouncil", "DBM-Icecrown", 3)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("BPCouncil", "DBM-Icecrown", 3)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(37970, 37972, 37973)

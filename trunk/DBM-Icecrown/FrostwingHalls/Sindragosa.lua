@@ -1,5 +1,5 @@
-﻿local mod = DBM:NewMod("Sindragosa", "DBM-Icecrown", 4)
-local L = mod:GetLocalizedStrings()
+﻿local mod	= DBM:NewMod("Sindragosa", "DBM-Icecrown", 4)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36853)
@@ -30,13 +30,13 @@ local specWarnBlisteringCold	= mod:NewSpecialWarning("SpecWarnBlisteringCold", f
 local timerBlisteringCold		= mod:NewCastTimer(5, 70117)
 
 -- Frostbomb
---local warnFrostbomb		= mod:NewTargetAnnounce(69846)  -- no idea what Event is fired for this :(
+--local warnFrostbomb			= mod:NewTargetAnnounce(69846)  -- no idea what Event is fired for this :(
 
 -- Unchained Magic
 local warnUnchainedMagic		= mod:NewTargetAnnounce(69762)
 local specWarnUnchainedMagic	= mod:NewSpecialWarning("SpecWarnUnchainedMagic")
 
-local beaconTargets = {}
+local beaconTargets				= {}
 
 function mod:OnCombatStart(delay)
 	timerNextAirphase:Start(50-delay)

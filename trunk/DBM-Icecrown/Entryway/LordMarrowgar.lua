@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("LordMarrowgar", "DBM-Icecrown", 1)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("LordMarrowgar", "DBM-Icecrown", 1)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36612)
@@ -15,17 +15,17 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnBoneSpike				= mod:NewCastAnnounce(69057)
-local warnImpale				= mod:NewAnnounce("WarnImpale")
+local warnBoneSpike			= mod:NewCastAnnounce(69057)
+local warnImpale			= mod:NewAnnounce("WarnImpale")
 
-local specWarnColdflame			= mod:NewSpecialWarning("SpecWarnColdflame")
-local specWarnWhirlwind			= mod:NewSpecialWarning("SpecWarnWhirlwind")
+local specWarnColdflame		= mod:NewSpecialWarning("SpecWarnColdflame")
+local specWarnWhirlwind		= mod:NewSpecialWarning("SpecWarnWhirlwind")
 
 mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 
-local timerBoneSpike			= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
-local timerWhirlwindCD			= mod:NewCDTimer(60, 69076)--Changed to a CD timer, it's always at least a minute but new logs indicate it's not dead on, i'm seing 61-65sec variation
-local timerWhirlwind			= mod:NewBuffActiveTimer(28, 69076)--Seems to be 28 second duration, down from 30 in last test. Will watch for more PTR adjustments.
+local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
+local timerWhirlwindCD		= mod:NewCDTimer(60, 69076)--Changed to a CD timer, it's always at least a minute but new logs indicate it's not dead on, i'm seing 61-65sec variation
+local timerWhirlwind		= mod:NewBuffActiveTimer(28, 69076)--Seems to be 28 second duration, down from 30 in last test. Will watch for more PTR adjustments.
 
 function mod:OnCombatStart(delay)
 	timerWhirlwindCD:Start(45-delay)

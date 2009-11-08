@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Deathbringer", "DBM-Icecrown", 1)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Deathbringer", "DBM-Icecrown", 1)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID()--No creature IDs til blizz unviels the surprise boss on us.
