@@ -1,5 +1,5 @@
-﻿local mod = DBM:NewMod("Anub'arak_Coliseum", "DBM-Coliseum")
-local L = mod:GetLocalizedStrings()
+﻿local mod	= DBM:NewMod("Anub'arak_Coliseum", "DBM-Coliseum")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34564)  
@@ -22,7 +22,7 @@ mod:AddBoolOption("RemoveHealthBuffsInP3", false)
 -- Adds
 local warnAdds				= mod:NewAnnounce("warnAdds", 3)
 local timerAdds				= mod:NewTimer(45, "timerAdds")
-local Burrowed = false 
+local Burrowed				= false 
 
 -- Pursue
 local warnPursue			= mod:NewTargetAnnounce(67574, 2)
