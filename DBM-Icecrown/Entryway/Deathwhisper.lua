@@ -15,7 +15,7 @@ mod:RegisterEvents(
 
 local warnDominateMind	= mod:NewTargetAnnounce(71289, 3)
 local warnFrostbolt		= mod:NewCastAnnounce(72007, 2)
-local warnDeathDecay	= mod:NewAnnounce("WarnDeathDecay", 2)
+local warnDeathDecay	= mod:NewSpellAnnounce(72108, 2)
 local warnAddsSoon		= mod:NewAnnounce("WarnAddsSoon" , 4)
 local warnPhase2		= mod:NewPhaseAnnounce(2, 3)
 local warnAddherent		= mod:NewAnnounce("WarnAdherent", 2)
