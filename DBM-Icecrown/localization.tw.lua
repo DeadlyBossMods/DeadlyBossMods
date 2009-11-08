@@ -39,17 +39,13 @@ L:SetTimerLocalization({
 
 L:SetWarningLocalization({
 	WarnAddsSoon		= "新的小怪即將到來",
-	WarnDeathDecay		= "死亡凋零",
 	WarnAdherent		= "Cult Adherent transforming",
-	WarnPhase2		= "第2階段",
 	SpecWarnDeathDecay	= "死亡凋零 - 快跑開",
 	SpecWarnCurseTorpor	= "你中了Curse of Torpor"
 })
 
 L:SetOptionLocalization({
 	WarnAddsSoon		= "為新的小怪即將出現顯示警告",
-	WarnDeathDecay		= "為死亡凋零顯示警告",
-	WarnPhase2		= "為第2階段顯示警告",
 	WarnAdherent		= "為Adherent的大叫顯示警告",	-- Cult Adherent -> Reanimated Adherent transformation iirc
 	SpecWarnDeathDecay	= "當你中了死亡凋零時顯示特別警告",
 	SpecWarnCurseTorpor	= "當你中了Curse of Torpor時顯示特別警告",
@@ -221,7 +217,6 @@ L:SetTimerLocalization({
 
 L:SetWarningLocalization({
 	WarnAirphase			= "空中階段",
-	WarnBlisteringCold		= "Blistering Cold",
 	SpecWarnBlisteringCold	= "Blistering Cold - 快跑開",
 	SpecWarnFrostBeacon		= "你中了Frost beacon",
 	PrewarnGroundphase		= "辛德拉苟莎 即將著陸",
@@ -230,7 +225,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnAirphase			= "提示空中階段",
-	WarnBlisteringCold		= "為Blistering Cold顯示警告",
 	SpecWarnBlisteringCold	= "為Blistering Cold顯示特別警告",
 	SpecWarnFrostBeacon		= "為Frost Beacon顯示特別警告",
 	PrewarnGroundphase		= "為地上階段顯示預先警告",
