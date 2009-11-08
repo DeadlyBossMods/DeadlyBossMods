@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnBoneSpike				= mod:NewSpellAnnounce(69057)
+local warnBoneSpike				= mod:NewCastAnnounce(69057)
 local warnImpale				= mod:NewAnnounce("WarnImpale")
 
 local specWarnColdflame			= mod:NewSpecialWarning("SpecWarnColdflame")

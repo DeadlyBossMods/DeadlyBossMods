@@ -21,7 +21,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local announceBigBang			= mod:NewSpellAnnounce(64584, 3)
+local announceBigBang			= mod:NewCastAnnounce(64584, 3)
 local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)

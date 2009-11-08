@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warningTimeBomb		= mod:NewTargetAnnounce(51121, 2)
-local warningExplosion		= mod:NewSpellAnnounce(51110, 3)
+local warningExplosion		= mod:NewCastAnnounce(51110, 3)
 local timerTimeBomb			= mod:NewTargetTimer(6, 51121)
 local timerExplosion		= mod:NewTargetTimer(8, 51110)
 local specWarnBombYou		= mod:NewSpecialWarning("SpecWarnBombYou")

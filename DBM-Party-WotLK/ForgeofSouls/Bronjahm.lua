@@ -11,10 +11,10 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local timerNextSoulstorm	= mod:NewNextTimer(30, 68872) --Experimental, Timer may not be right
-local warnCorruptSoul			= mod:NewTargetAnnounce(68839)
+local warnCorruptSoul		= mod:NewTargetAnnounce(68839)
 local specwarnSoulstorm		= mod:NewSpecialWarning("specwarnSoulstorm")
-local timerSoulstorm				= mod:NewBuffActiveTimer(12, 68872)
+local timerSoulstorm		= mod:NewBuffActiveTimer(12, 68872)
+local timerNextSoulstorm	= mod:NewNextTimer(30, 68872) --Experimental, Timer may not be right
 
 function mod:OnCombatStart(delay)
 timerNextSoulstorm:Start(-delay)

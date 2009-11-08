@@ -25,7 +25,7 @@ local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase")
 local warnGroundphaseSoon		= mod:NewAnnounce("WarnGroundphaseSoon", 2)
 
 -- Blistering Cold
-local warnBlisteringCold		= mod:NewAnnounce("WarnBlisteringCold", 3, 70117)
+local warnBlisteringCold		= mod:NewCastAnnounce(70117, 3)
 local specWarnBlisteringCold	= mod:NewSpecialWarning("SpecWarnBlisteringCold", false)
 local timerBlisteringCold		= mod:NewCastTimer(5, 70117)
 

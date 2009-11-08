@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warningInsanity	= mod:NewSpellAnnounce(57496, 3)
+local warningInsanity	= mod:NewCastAnnounce(57496, 3)
 local timerAchieve		= mod:NewAchievementTimer(120, 1862, "TimerSpeedKill") 
 
 function mod:OnCombatStart(delay)

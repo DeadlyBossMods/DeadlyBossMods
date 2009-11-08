@@ -15,11 +15,11 @@ mod:RegisterEvents(
 )
 
 local warnPursuit				= mod:NewAnnounce("warnPursuit")
-local timerPursuitConfusion				= mod:NewBuffActiveTimer(12, 69029)
-local warnPustulantFlesh			= mod:NewTargetAnnounce(69581)
-local timerPustulantFlesh				= mod:NewTargetTimer(10, 69581)
-local specWarnToxic		= mod:NewSpecialWarning("specWarnToxic")
-local specWarnPursuit		= mod:NewSpecialWarning("specWarnPursuit")
+local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
+local warnPustulantFlesh		= mod:NewTargetAnnounce(69581)
+local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
+local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
+local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
 
 --mod:AddBoolOption("SetIconOnPursuitTarget", true) --Needs syncing implimentation to be added.
 
