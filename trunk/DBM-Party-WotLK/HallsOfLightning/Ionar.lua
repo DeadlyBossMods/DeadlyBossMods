@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Ionar", "DBM-Party-WotLK", 6)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Ionar", "DBM-Party-WotLK", 6)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(28546)
@@ -8,8 +8,8 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 local warningOverload	= mod:NewTargetAnnounce(52658, 2)
-local warningSplit	= mod:NewSpellAnnounce(52770, 3)
-local timerOverload	= mod:NewTargetTimer(10, 52658)
+local warningSplit		= mod:NewSpellAnnounce(52770, 3)
+local timerOverload		= mod:NewTargetTimer(10, 52658)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",

@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("GrandMagusTelestra", "DBM-Party-WotLK", 8)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("GrandMagusTelestra", "DBM-Party-WotLK", 8)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(26731)
@@ -16,7 +16,7 @@ local warningSplitSoon	= mod:NewAnnounce("WarningSplitSoon", 2)
 local warningSplitNow	= mod:NewAnnounce("WarningSplitNow", 3)
 local warningMerge		= mod:NewAnnounce("WarningMerge", 2)
 
-local warnedSplit = false
+local warnedSplit		= false
 
 function mod:OnCombatStart()
 	warnedSplit = false

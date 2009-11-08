@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("CorenDirebrew", "DBM-Party-WotLK", 17)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("CorenDirebrew", "DBM-Party-WotLK", 17)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(23872)
@@ -16,13 +16,13 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 	     or select(2, UnitClass("player")) == "WARRIOR"
 	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
-local warnBarrel				= mod:NewAnnounce("warnBarrel")
-local timerBarrel				= mod:NewTargetTimer(8, 51413)
-local specWarnDisarm			= mod:NewSpecialWarning("specwarnDisarm", isMelee)
-local specWarnBrew				= mod:NewSpecialWarning("specWarnBrew")
-local timerBrew					= mod:NewTargetTimer(10, 47376)
-local specWarnBrewStun			= mod:NewSpecialWarning("specWarnBrewStun")
-local timerBrewStun				= mod:NewTargetTimer(6, 47340)
+local warnBarrel			= mod:NewAnnounce("warnBarrel")
+local timerBarrel			= mod:NewTargetTimer(8, 51413)
+local specWarnDisarm		= mod:NewSpecialWarning("specwarnDisarm", isMelee)
+local specWarnBrew			= mod:NewSpecialWarning("specWarnBrew")
+local timerBrew				= mod:NewTargetTimer(10, 47376)
+local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")
+local timerBrewStun			= mod:NewTargetTimer(6, 47340)
 
 mod:AddBoolOption("YellOnBarrel", true, "announce")
 mod:AddBoolOption("PlaySoundOnDisarm", isMelee)
