@@ -1362,7 +1362,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel				= "맥주통의 대상 알리기",
-	DisarmWarning			= "무장해제의 특수 경고 보기",
+	specwarnDisarm			= "무장해제의 특수 경고 보기",
 	specWarnBrew			= "흑맥주요정의 맥주 특수 경고 보기",
 	specWarnBrewStun		= "흑맥주요정의 기절 특수 경고 보기",
 	PlaySoundOnDisarm		= "무장 해제의 소리 재생",
