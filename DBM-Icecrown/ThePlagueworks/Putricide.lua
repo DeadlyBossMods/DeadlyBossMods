@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnSlimePuddle			= mod:NewSpellAnnounce(70341, 3)
-local warnUnstableExperiment	= mod:NewCastAnnounce(70351, 3)
+local warnSlimePuddle		= mod:NewSpellAnnounce(70341, 3)
+local warnUnstableExperiment	= mod:NewSpellAnnounce(70351, 3)
 local warnVolatileOozeAdhesive	= mod:NewTargetAnnounce(70447, 4)
 
 local timerSlimePuddleCD	= mod:NewNextTimer(35, 70341)	-- guessed timer atm
