@@ -1215,7 +1215,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel				= "提示空桶(暈)的目標",
-	DisarmWarning			= "為繳械顯示特別警告",
+	specwarnDisarm			= "為繳械顯示特別警告",
 	specWarnBrew			= "為黑鐵啤酒辣妹的啤酒顯示特別警告",
 	specWarnBrewStun		= "為黑鐵啤酒辣妹昏迷顯示特別警告",
 	PlaySoundOnDisarm		= "當繳械時播放音效",

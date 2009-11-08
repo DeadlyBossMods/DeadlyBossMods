@@ -1263,7 +1263,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel			= "Annonce la cible du Tonneau.",
-	DisarmWarning		= "Montre une alerte spéciale pour le désarmement",
+	specwarnDisarm		= "Montre une alerte spéciale pour le désarmement",
 	specWarnBrew		= "Montre une alerte spéciale pour la Sombrebière de la vierge",
 	specWarnBrewStun	= "Montre une alerte spéciale pour l'Etourdir de la vierge bierrière",
 	PlaySoundOnDisarm	= "Joue un son pour le désarmement",
