@@ -1,5 +1,5 @@
-﻿local mod = DBM:NewMod("Algalon", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+﻿local mod	= DBM:NewMod("Algalon", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 --[[
 --
@@ -40,7 +40,7 @@ local timerCastCosmicSmash		= mod:NewCastTimer(4.5, 62311)
 local timerPhasePunch			= mod:NewBuffActiveTimer(45, 64412)
 local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
 
-local phase = 0
+local phase						= 0
 
 function mod:OnCombatStart(delay)
 	phase = 1

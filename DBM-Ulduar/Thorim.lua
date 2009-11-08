@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Thorim", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Thorim", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32865)
@@ -33,7 +33,7 @@ local timerHardmode				= mod:NewTimer(175, "TimerHardmode", 62042)
 
 mod:AddBoolOption("RangeFrame")
 
-local lastcharge = {} 
+local lastcharge				= {} 
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start()

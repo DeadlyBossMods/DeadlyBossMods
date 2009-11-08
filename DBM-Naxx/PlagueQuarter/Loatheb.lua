@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Loatheb", "DBM-Naxx", 3)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Loatheb", "DBM-Naxx", 3)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(16011)
@@ -23,8 +23,8 @@ local timerSpore	= mod:NewNextTimer(36, 32329)
 local timerDoom		= mod:NewNextTimer(180, 29204)
 local timerAura		= mod:NewBuffActiveTimer(17, 55593)
 
-local doomCounter = 0
-local sporeTimer = 36
+local doomCounter	= 0
+local sporeTimer	= 36
 
 function mod:OnCombatStart(delay)
 	doomCounter = 0

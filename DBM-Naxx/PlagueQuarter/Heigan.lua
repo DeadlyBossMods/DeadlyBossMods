@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Heigan", "DBM-Naxx", 3)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Heigan", "DBM-Naxx", 3)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15936)
@@ -10,10 +10,10 @@ mod:EnableModel()
 
 mod:RegisterEvents()
 
-local warnTeleportSoon		= mod:NewAnnounce("WarningTeleportSoon", 2, 46573)
-local warnTeleportNow		= mod:NewAnnounce("WarningTeleportNow", 3, 46573)
+local warnTeleportSoon	= mod:NewAnnounce("WarningTeleportSoon", 2, 46573)
+local warnTeleportNow	= mod:NewAnnounce("WarningTeleportNow", 3, 46573)
 
-local timerTeleport			= mod:NewTimer(90, "TimerTeleport", 46573)
+local timerTeleport		= mod:NewTimer(90, "TimerTeleport", 46573)
 
 function mod:OnCombatStart(delay)
 	mod:BackInRoom(90 - delay)

@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Freya", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Freya", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 
@@ -26,14 +26,14 @@ mod:RegisterEvents(
 -- Elder Stonebark (ground tremor / fist of stone)
 -- Elder Brightleaf (unstable sunbeam)
 
-local warnPhase2		= mod:NewPhaseAnnounce(2, 3)
-local warnSimulKill		= mod:NewAnnounce("WarnSimulKill", 1)
-local warnFury			= mod:NewTargetAnnounce(63571, 2)
-local warnRoots			= mod:NewAnnounce("WarnRoots", 2, 63601)
+local warnPhase2			= mod:NewPhaseAnnounce(2, 3)
+local warnSimulKill			= mod:NewAnnounce("WarnSimulKill", 1)
+local warnFury				= mod:NewTargetAnnounce(63571, 2)
+local warnRoots				= mod:NewAnnounce("WarnRoots", 2, 63601)
 
-local specWarnFury		= mod:NewSpecialWarning("SpecWarnFury")
-local specWarnTremor	= mod:NewSpecialWarning("WarningTremor")	-- Hard mode
-local specWarnBeam		= mod:NewSpecialWarning("UnstableEnergy")	-- Hard mode
+local specWarnFury			= mod:NewSpecialWarning("SpecWarnFury")
+local specWarnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hard mode
+local specWarnBeam			= mod:NewSpecialWarning("UnstableEnergy")	-- Hard mode
 
 local enrage 				= mod:NewEnrageTimer(600)
 local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
@@ -44,7 +44,7 @@ local timerTremorCD 		= mod:NewCDTimer(28, 62859)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("PlaySoundOnFury")
 
-local adds = {}
+local adds					= {}
 
 
 function mod:OnCombatStart(delay)

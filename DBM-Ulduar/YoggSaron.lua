@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("YoggSaron", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("YoggSaron", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33288)
@@ -62,8 +62,8 @@ mod:AddBoolOption("SetIconOnFavorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")
 mod:AddBoolOption("SetIconOnBrainLinkTarget")
 
-local phase = 1
-local targetWarningsShown = {}
+local phase							= 1
+local targetWarningsShown			= {}
 local brainLink1
 
 function mod:OnCombatStart(delay)
