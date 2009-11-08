@@ -1315,7 +1315,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "『天譴領主』提朗紐斯正在下來 - 做好準備",
+	warnTyrannusEngaged			= "『天譴領主』提朗紐斯正在下來 - 做好準備",
 	specWarnIcyBlast			= "冰結衝擊 - 快跑開",
 	specWarnHoarfrost			= "你中了Hoarfrost - 快跑開",
 	specWarnHoarfrostNear		= "你附近有人被Hoarfrost - 快跑開"
