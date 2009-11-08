@@ -1213,7 +1213,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel			= "Сообщить цели, под воздействием Бочка",
-	DisarmWarning			= "Спец-предупреждение для разоружения",
+	specwarnDisarm			= "Спец-предупреждение для разоружения",
 	specWarnBrew			= "Спец-предупреждение для Пива темной официантки",
 	specWarnBrewStun		= "Спец-предупреждение для Оглушения темным пивом официантки",
 	PlaySoundOnDisarm		= "Звуковой сигнал, когда разоружение",
