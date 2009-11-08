@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Freya_Elders", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Freya_Elders", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1192 $"):sub(12, -3))
 

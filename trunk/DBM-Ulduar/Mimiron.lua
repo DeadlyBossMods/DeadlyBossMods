@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Mimiron", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Mimiron", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33432)
@@ -23,16 +23,16 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 	     or select(2, UnitClass("player")) == "WARRIOR"
 	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
-local blastWarn			= mod:NewTargetAnnounce(64529, 4)
-local shellWarn			= mod:NewTargetAnnounce(63666, 2)
-local lootannounce		= mod:NewAnnounce("MagneticCore", 1)
-local warnBombSpawn		= mod:NewAnnounce("WarnBombSpawn", 3)
-local warnFrostBomb		= mod:NewSpellAnnounce(64623, 3)
+local blastWarn					= mod:NewTargetAnnounce(64529, 4)
+local shellWarn					= mod:NewTargetAnnounce(63666, 2)
+local lootannounce				= mod:NewAnnounce("MagneticCore", 1)
+local warnBombSpawn				= mod:NewAnnounce("WarnBombSpawn", 3)
+local warnFrostBomb				= mod:NewSpellAnnounce(64623, 3)
 
-local warnShockBlast	= mod:NewSpecialWarning("WarningShockBlast", nil, false)
+local warnShockBlast			= mod:NewSpecialWarning("WarningShockBlast", nil, false)
 mod:AddBoolOption("ShockBlastWarningInP1", isMelee, "announce")
 mod:AddBoolOption("ShockBlastWarningInP4", isMelee, "announce")
-local warnDarkGlare		= mod:NewSpecialWarning("DarkGlare")
+local warnDarkGlare				= mod:NewSpecialWarning("DarkGlare")
 
 local enrage 					= mod:NewEnrageTimer(900)
 local timerHardmode				= mod:NewTimer(607, "TimerHardmode", 64582)
@@ -56,12 +56,12 @@ mod:AddBoolOption("PlaySoundOnDarkGlare", true)
 mod:AddBoolOption("HealthFramePhase4", true)
 mod:AddBoolOption("AutoChangeLootToFFA", true)
 
-local phase = 0 
+local phase						= 0 
 local lootmethod, masterlooterRaidID
 
-local spinningUp = GetSpellInfo(63414)
-local lastSpinUp = 0
-local is_spinningUp = false
+local spinningUp				= GetSpellInfo(63414)
+local lastSpinUp				= 0
+local is_spinningUp				= false
 
 function mod:OnCombatStart(delay)
 	enrage:Start(-delay)

@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("FlameLeviathan", "DBM-Ulduar")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("FlameLeviathan", "DBM-Ulduar")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 

@@ -1,6 +1,6 @@
 -- this file uses the texture Textures/arrow.tga. This image was created by Everaldo Coelho and is licensed under the GNU Lesser General Public License. See Textures/lgpl.txt.
-local mod = DBM:NewMod("Thaddius", "DBM-Naxx", 2)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Thaddius", "DBM-Naxx", 2)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(15928)
