@@ -318,7 +318,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningPhase2			= "第二階段",
 	LightningOrb			= "你中了閃電震擊 - 快跑開"
 }
 
@@ -328,7 +327,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "為困難模式顯示計時器",
-	WarningPhase2			= "提示第二階段",
 	RangeFrame			= "顯示距離框",
 	AnnounceFails			= "公佈中了閃電充能的玩家到團隊頻道\n(需要團隊隊長或助理權限)",
 	LightningOrb			= "為閃電充能顯示特別警告"
@@ -360,7 +358,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2			= "第二階段",
 	WarnSimulKill			= "第一隻元素死亡 - 大約12秒後復活",
 	SpecWarnFury			= "你中了自然烈怒",
 	WarningTremor			= "地面震顫 - 停止施法",
@@ -374,7 +371,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2			= "提示第二階段",
 	WarnSimulKill			= "提示第一隻元素死亡",
 	WarnRoots			= "提示鐵之根鬚的目標",
 	SpecWarnFury			= "當你中了自然烈怒時顯示特別警告",
@@ -525,8 +521,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
 	WarningCrusherTentacleSpawned	= "粉碎觸手 出現了",
-	WarningP2 			= "第二階段",
-	WarningP3 			= "第三階段",
 	WarningBrainLink 		= "腦波連結: >%s< 和 >%s<",
 	SpecWarnBrainLink 		= "你和%s中了腦波連結",
 	WarningSanity 			= "剩下 %d 理智",
@@ -548,8 +542,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned		= "為尤格薩倫守護者出現顯示警告",
 	WarningCrusherTentacleSpawned	= "為粉碎觸手出現顯示警告",
-	WarningP2			= "提示第二階段",
-	WarningP3			= "提示第三階段",
 	WarningBrainLink		= "提示腦波連結的目標",
 	SpecWarnBrainLink		= "當你中了腦波連結時顯示特別警告",
 	WarningSanity			= "當理智剩下50時顯示警告",

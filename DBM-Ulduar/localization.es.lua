@@ -397,7 +397,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarningStormhammer	= "Stormhammer on >%s<",
 	UnbalancingStrike	= "Unbalancing Strike on >%s<",
-	WarningPhase2		= "Phase 2",
 	WarningLightningCharge	= "Lightning Charge",
 	WarningBomb		= "Rune Detonation on >%s<",
 	LightningOrb		= "Lightning Shock on You! Move!"
@@ -411,7 +410,6 @@ L:SetOptionLocalization{
 	TimerHardmode			= "Show Timer for Hard Mode",
 	WarningStormhammer		= "Announce Stormhammer Target",
 	WarningLightningCharge		= "Announce Lightning Charge",
-	WarningPhase2			= "Announce Phase 2",
 	UnbalancingStrike		= "Announce Unbalancing Strike",
 	WarningBomb			= "Announce Rune Detonation",
 	RangeFrame			= "Show Range Frame",
@@ -445,7 +443,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2	= "Phase 2",
 	WarnSimulKill	= "First add down - Resurrection in ~12 sec",
 	WarnFury	= "Nature's Fury on >%s<",
 	SpecWarnFury	= "Nature's Fury on You!",
@@ -462,7 +459,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2		= "Anunciar Fase 2",
 	WarnSimulKill		= "Anunciar primer mob muerto",
 	WarnFury		= "Anunciar objetivo de Nature's Fury",
 	WarnRoots		= "Anunciar objetivos de Iron Roots",
@@ -621,8 +617,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Guardian spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle Spawned",
-	WarningP2 						= "Phase 2",
-	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
 	SpecWarnBrainLink 				= "Brain Link on you and %s!",
 	WarningSanity 					= "%d Sanity debuffs remaining",
@@ -645,8 +639,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "Announce Guardian Spawns",
 	WarningCrusherTentacleSpawned	= "Announce Crusher Tentacle Spawns",
-	WarningP2						= "Announce Phase 2",
-	WarningP3						= "Announce Phase 3",
 	WarningBrainLink				= "Announce Brain Links",
 	SpecWarnBrainLink				= "Show Special Warning when Brain Linked",
 	WarningSanity					= "Show Warning when Sanity low",
