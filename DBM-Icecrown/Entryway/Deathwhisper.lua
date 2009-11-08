@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Deathwhisper", "DBM-Icecrown", 1)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Deathwhisper", "DBM-Icecrown", 1)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36855)
@@ -13,23 +13,23 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnDominateMind	= mod:NewTargetAnnounce(71289, 3)
-local warnFrostbolt		= mod:NewCastAnnounce(72007, 2)
-local warnDeathDecay	= mod:NewSpellAnnounce(72108, 2)
-local warnAddsSoon		= mod:NewAnnounce("WarnAddsSoon" , 4)
-local warnPhase2		= mod:NewPhaseAnnounce(2, 3)
-local warnAddherent		= mod:NewAnnounce("WarnAdherent", 2)
+local warnDominateMind			= mod:NewTargetAnnounce(71289, 3)
+local warnFrostbolt				= mod:NewCastAnnounce(72007, 2)
+local warnDeathDecay			= mod:NewSpellAnnounce(72108, 2)
+local warnAddsSoon				= mod:NewAnnounce("WarnAddsSoon" , 4)
+local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
+local warnAddherent				= mod:NewAnnounce("WarnAdherent", 2)
 
-local specWarnCurseTorpor	= mod:NewSpecialWarning("SpecWarnCurseTorpor")
-local specWarnDeathDecay	= mod:NewSpecialWarning("SpecWarnDeathDecay")
+local specWarnCurseTorpor		= mod:NewSpecialWarning("SpecWarnCurseTorpor")
+local specWarnDeathDecay		= mod:NewSpecialWarning("SpecWarnDeathDecay")
 
-local timerAdds             = mod:NewTimer(21, "TimerAdds")
-local timerDominateMind		= mod:NewTargetTimer(20, 71289)
-local timerDominateMindCD	= mod:NewCDTimer(40, 71289)
+local timerAdds					= mod:NewTimer(21, "TimerAdds")
+local timerDominateMind			= mod:NewTargetTimer(20, 71289)
+local timerDominateMindCD		= mod:NewCDTimer(40, 71289)
 
-local enrageTimer		= mod:NewEnrageTimer(600)
+local enrageTimer				= mod:NewEnrageTimer(600)
 
-local lastDD = 0
+local lastDD					= 0
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)

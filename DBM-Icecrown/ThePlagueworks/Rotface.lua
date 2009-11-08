@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Rotface", "DBM-Icecrown", 2)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Rotface", "DBM-Icecrown", 2)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36627)
@@ -16,22 +16,22 @@ mod:RegisterEvents(
 
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
-local warnSlimeSpray		= mod:NewSpellAnnounce(69508)
-local warnMutatedInfection	= mod:NewTargetAnnounce(71224)
-local warnRadiatingOoze		= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
-local warnOozeSpawn         = mod:NewAnnounce("WarnOozeSpawn")
-local nextStickyOoze		= mod:NewNextTimer(16, 69774)
-local warnStickyOoze		= mod:NewSpellAnnounce(69774)
+local warnSlimeSpray			= mod:NewSpellAnnounce(69508)
+local warnMutatedInfection		= mod:NewTargetAnnounce(71224)
+local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
+local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn")
+local nextStickyOoze			= mod:NewNextTimer(16, 69774)
+local warnStickyOoze			= mod:NewSpellAnnounce(69774)
 
-local specWarnMutatedInfection  = mod:NewSpecialWarning("SpecWarnMutatedInfection")
-local specWarnStickyOoze        = mod:NewSpecialWarning("SpecWarnStickyOoze")
-local specWarnRadiatingOoze     = mod:NewSpecialWarning("SpecWarnRadiatingOoze", false)--Some strats purposely run to this so option is defaulted to off
+local specWarnMutatedInfection	= mod:NewSpecialWarning("SpecWarnMutatedInfection")
+local specWarnStickyOoze		= mod:NewSpecialWarning("SpecWarnStickyOoze")
+local specWarnRadiatingOoze		= mod:NewSpecialWarning("SpecWarnRadiatingOoze", false)--Some strats purposely run to this so option is defaulted to off
 
-local nextWallSlime         = mod:NewTimer(20, "NextPoisonSlimePipes")
-local nextSlimeSpray		= mod:NewNextTimer(21, 69508)
-local timerMutatedInfection	= mod:NewTargetTimer(12, 71224)
+local nextWallSlime				= mod:NewTimer(20, "NextPoisonSlimePipes")
+local nextSlimeSpray			= mod:NewNextTimer(21, 69508)
+local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
 
-local soundStickyOoze		= mod:NewSound(71208)
+local soundStickyOoze			= mod:NewSound(71208)
 mod:AddBoolOption("InfectionIcon")
 
 function mod:OnCombatStart(delay)

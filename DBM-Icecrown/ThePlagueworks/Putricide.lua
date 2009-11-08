@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Putricide", "DBM-Icecrown", 2)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Putricide", "DBM-Icecrown", 2)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36678, 38216)
@@ -12,12 +12,12 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnSlimePuddle		= mod:NewSpellAnnounce(70341, 3)
-local warnUnstableExperiment	= mod:NewSpellAnnounce(70351, 3)
-local warnVolatileOozeAdhesive	= mod:NewTargetAnnounce(70447, 4)
+local warnSlimePuddle				= mod:NewSpellAnnounce(70341, 3)
+local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 3)
+local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 4)
 
-local timerSlimePuddleCD	= mod:NewNextTimer(35, 70341)	-- guessed timer atm
-local timerUnstableExperimentCD	= mod:NewNextTimer(35, 70351)
+local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)	-- guessed timer atm
+local timerUnstableExperimentCD		= mod:NewNextTimer(35, 70351)
 
 
 function mod:OnCombatStart(delay)
