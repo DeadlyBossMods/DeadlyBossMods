@@ -321,7 +321,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningPhase2			= "Phase 2",
 	LightningOrb 			= "Horion de foudre sur TOI! Bouge!"
 }
 
@@ -331,7 +330,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Afficher le timer pour le mode difficile",
-	WarningPhase2			= "Annoncer la phase 2",
 	RangeFrame				= "Afficher la fenêtre de portée",
 	AnnounceFails			= "Affiche les joueurs qui n'ont pas évité les Charges de foudre (Nécessite l'activation des annonces et être promu ou leader)",
 	LightningOrb			= "Montre une alerte spéciale pour les Charges de foudre"
@@ -363,7 +361,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2 		= "Phase 2",
 	WarnSimulKill 	= "Premier add mort - Résurrection dans 1 minute",
 	SpecWarnFury 	= "Fureur de la nature sur VOUS!",
 	WarningTremor   = "Tremblement de terre - Arretez d'incanter!",
@@ -377,7 +374,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2		= "Annonce la phase 2",
 	WarnSimulKill	= "Annonce la mort du premier mob",
 	WarnRoots		= "Annonce les cibles des racines de fer",
 	SpecWarnFury	= "Montre des alertes spéciales pour la Fureur de la Nature",
@@ -530,8 +526,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Un gardien vient d'arriver",
 	WarningCrusherTentacleSpawned	= "Une Tentacule écraseur vient d'arriver",
-	WarningP2 						= "Phase 2",
-	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Cerveaux liés sur >%s< et >%s<",
 	SpecWarnBrainLink 				= "Cerveaux liés sur Vous et sur %s !",
 	WarningSanity 					= "%d de Santé mentale restant",
@@ -553,8 +547,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "Annonce l'arrivée des Gardiens",
 	WarningCrusherTentacleSpawned	= "Annonce l'arrivée des Tentacules",
-	WarningP2						= "Annonce la Phase 2",
-	WarningP3						= "Annonce la Phase 3",
 	WarningBrainLink				= "Annonce les Cerveaux liés",
 	SpecWarnBrainLink				= "Montre une alerte spéciale quand il y a des Cerveaux liés",
 	WarningSanity					= "Montre une alerte quand la Santé mentale est basse",

@@ -354,7 +354,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningPhase2			= "2 페이즈",
 	LightningOrb 			= "당신은 번개 충격 범위! 이동하세요!"
 }
 
@@ -364,7 +363,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "하드 모드를 위한 타이머 보기",
-	WarningPhase2			= "2 페이즈 알리기",
 	RangeFrame				= "거리 창 보기",
 	LightningOrb 			= "번개 충격 알리기",
 	AnnounceFails			= "번개 충전을 피하지 못했을 경우 공격대에 알리기\n(번개 충전 알리기/공대장 권한이 있을 경우)" 
@@ -397,7 +395,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2 			= "2 페이즈",
 	WarnSimulKill		= "첫번째 소환 죽음 - 12초 후 부활",
 	SpecWarnFury 		= "당신에게 자연의 격노!",
 	WarningTremor   	= "지진! - 시전 중지!",
@@ -413,7 +410,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2 				= "2 페이즈 경고 보기",
 	WarnSimulKill			= "첫번째 소환 제거 알리기",
 	WarnRoots 				= "무쇠뿌리 대상 알리기",	
 	SpecWarnFury 			= "당신이 자연의 격노일 경우 특수 경고 보기",
@@ -566,8 +562,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "요그사론의 수호자 소환!",
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수가 생성되었습니다!",	
-	WarningP2 						= "2 페이즈",
-	WarningP3 						= "3 페이즈",	
 	WarningBrainLink 				= ">%s< 그리고 >%s< 두뇌의 고리",
 	SpecWarnBrainLink				= "당신 그리고 %s 에게 두뇌의 고리!",
 	WarningSanity 					= "> %d < 이성이 낮습니다.",
@@ -590,8 +584,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "요그사론의 수호자 소환 알리기",
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수 생성 알리기",	
-	WarningP2						= "2 페이즈 알리기",
-	WarningP3						= "3 페이즈 알리기",	
 	WarningBrainLink				= "두뇌의 고리 알리기",
 	SpecWarnBrainLink				= "두뇌의 고리 특수 경고 보기",
 	WhisperBrainLink 				= "두뇌의 고리 특수 경고 알리기(귓속말)",	
