@@ -318,7 +318,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningPhase2			= "Phase 2",
 	LightningOrb			= "Lightning Shock - Move away"
 }
 
@@ -328,7 +327,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Show timer for hard mode",
-	WarningPhase2			= "Announce Phase 2",
 	RangeFrame				= "Show range frame",
 	AnnounceFails			= "Post player fails for Lightning Charge to raid chat\n(requires announce to be enabled and leader/promoted status)",
 	LightningOrb			= "Show special warning for Lightning Shock"
@@ -360,7 +358,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2		= "Phase 2",
 	WarnSimulKill	= "First add down - Resurrection in ~12 seconds",
 	SpecWarnFury	= "Nature's Fury on you",
 	WarningTremor	= "Ground Tremor - Stop casting",
@@ -374,7 +371,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2		= "Announce Phase 2",
 	WarnSimulKill	= "Announce first mob down",
 	WarnRoots		= "Announce Iron Roots targets",
 	SpecWarnFury	= "Show special warning when you are affected by Nature's Fury",
@@ -526,8 +522,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Guardian spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle spawned",
-	WarningP2 						= "Phase 2",
-	WarningP3 						= "Phase 3",
 	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
 	SpecWarnBrainLink 				= "Brain Link on you and %s",
 	WarningSanity 					= "%d Sanity debuffs remaining",
@@ -549,8 +543,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "Show warning for Guardian spawns",
 	WarningCrusherTentacleSpawned	= "Show warning for Crusher Tentacle spawns",
-	WarningP2						= "Announce Phase 2",
-	WarningP3						= "Announce Phase 3",
 	WarningBrainLink				= "Announce Brain Link targets",
 	SpecWarnBrainLink				= "Show special warning when you are affected by Brain Link",
 	WarningSanity					= "Show warning when Sanity is low",
