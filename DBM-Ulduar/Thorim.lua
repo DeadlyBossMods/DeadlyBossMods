@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local warnPhase2				= mod:NewAnnounce("WarningPhase2", 1)
+local warnPhase2				= mod:NewPhaseAnnounce(2, 1)
 local warnStormhammer			= mod:NewTargetAnnounce(62470, 2)
 local warnLightningCharge		= mod:NewSpellAnnounce(62466, 2)
 local warnUnbalancingStrike		= mod:NewTargetAnnounce(62130, 4)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
