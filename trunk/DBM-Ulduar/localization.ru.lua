@@ -320,7 +320,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningPhase2			= "Фаза 2",
 	LightningOrb			= "Поражение громом на вас - бегите"
 }
 
@@ -330,7 +329,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode			= "Отсчет времени для высокой сложности",
-	WarningPhase2			= "Объявлять фазу 2",
 	RangeFrame			= "Отображать окно допустимой дистанции",
 	AnnounceFails			= "Объявлять игрока под разрядом молнии в рейд-чат (требуются права лидера или помощника)",
 	LightningOrb			= "Спец-предупреждение для Поражения громом" 
@@ -362,7 +360,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2			= "Фаза 2",
 	WarnSimulKill			= "Первый союзник погибает - воскрешение через 1 минуту",
 	SpecWarnFury			= "Гнев природы на вас",
 	WarningTremor   		= "Дрожание земли - остановите чтение заклинаний",
@@ -376,7 +373,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2			= "Объявлять фазу 2",
 	WarnSimulKill			= "Объявлять, когда первый монстр погибает",
 	WarnRoots			= "Объявлять цель под воздействием Железных корней",
 	SpecWarnFury			= "Спец-предупреждение для Гнева природы",
@@ -528,8 +524,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 		= "Страж",
 	WarningCrusherTentacleSpawned	= "Тяжелое щупальце",
-	WarningP2 			= "Фаза 2",
-	WarningP3 			= "Фаза 3",
 	WarningBrainLink 		= ">%s< и >%s< под воздествием Схожего мышления!",
 	SpecWarnBrainLink 		= "Вы и %s под воздествием Схожего мышления!",
 	WarningSanity 			= "Эффект Здравомыслия: %d",
@@ -551,8 +545,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned		= "Объявлять появление стражей",
 	WarningCrusherTentacleSpawned	= "Объявлять появление Тяжелого щупальца",
-	WarningP2			= "Объявлять фазу 2",
-	WarningP3			= "Объявлять фазу 3",
 	WarningBrainLink		= "Объявлять Схожее мышление",
 	SpecWarnBrainLink		= "Спец-предупреждение для Схожего мышления",
 	WarningSanity			= "Предупреждение, когда Здравомыслие ослаблено",

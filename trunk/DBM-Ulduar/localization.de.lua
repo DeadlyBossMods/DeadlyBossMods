@@ -321,7 +321,6 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarningStormhammer		= "Sturmhammer auf >%s<",
 	UnbalancingStrike		= "Schlag des Ungleichgewichts auf >%s<",
-	WarningPhase2			= "Phase 2",
 	WarningLightningCharge		= "Blitzladung",
 	WarningBomb			= "Runendetonation auf >%s<",
 	LightningOrb			= "Blitzladung auf dir, lauf weg!"
@@ -336,7 +335,6 @@ L:SetOptionLocalization{
 	UnbalancingStrike		= "Warnung für Schlag des Ungleichgewichts",
 	WarningStormhammer		= "Warnung für Sturmhammer",
 	WarningLightningCharge		= "Warnung für Blitzladung",
-	WarningPhase2			= "Warnung für Phase 2",
 	WarningBomb			= "Warnung für Runendetonation",
 	RangeFrame			= "Zeige Abstands Fenster"
 }
@@ -366,7 +364,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2		= "Phase 2",
 	WarnSimulKill		= "Erster tot - Wiederbelebung in ~12 sec",
 	WarnFury		= "Furor der Natur auf >%s<",
 	SpecWarnFury		= "Furor der Natur auf dir!",
@@ -380,7 +377,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2		= "Warnung für Phase 2",
 	WarnSimulKill		= "Warnung für erster der dreier Gruppe tot",
 	WarnFury		= "Warnung für Furor der Natur",
 	WarnRoots		= "Warnung für Gestärkte Eiserne Wurzeln",
@@ -516,7 +512,6 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningP2 						= "Phase 2",
 	WarningGuardianSpawned 			= "neuer Wächter",
 	WarningCrusherTentacleSpawned	= "neues Mörderischen Schlammling",
 	WarningBrainLink 				= "Gehirnverbindung auf >%s< und >%s<",
@@ -533,8 +528,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningP2						= "Warnung für Phase 2",
-	WarningP3						= "Warnung für Phase 3",
 	WarningGuardianSpawned			= "Warnung für neue Wächter",
 	WarningCrusherTentacleSpawned	= "Warnung für neue Mörderischen Schlammling",
 	WarningBrainLink				= "Warnung für Gehirnverbindung",
