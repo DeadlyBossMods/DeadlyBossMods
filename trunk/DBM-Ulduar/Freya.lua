@@ -32,7 +32,7 @@ local warnFury			= mod:NewTargetAnnounce(63571, 2)
 local warnRoots			= mod:NewAnnounce("WarnRoots", 2, 63601)
 
 local specWarnFury		= mod:NewSpecialWarning("SpecWarnFury")
-local warnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hard mode
+local specWarnTremor	= mod:NewSpecialWarning("WarningTremor")	-- Hard mode
 local specWarnBeam		= mod:NewSpecialWarning("UnstableEnergy")	-- Hard mode
 
 local enrage 				= mod:NewEnrageTimer(600)
@@ -70,7 +70,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(62437, 62859) then
-		warnTremor:Show()
+		specWarnTremor:Show()
 		timerTremorCD:Start()
 	end
 end 

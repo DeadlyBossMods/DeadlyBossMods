@@ -1211,7 +1211,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel				= "Announce Barrel targets",
-	DisarmWarning			= "Show special warning for Disarm",
+	specwarnDisarm			= "Show special warning for Disarm",
 	specWarnBrew			= "Show special warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun		= "Show special warning for Dark Brewmaiden's Stun",
 	PlaySoundOnDisarm		= "Play sound on Disarm",
@@ -1310,7 +1310,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down - Get ready",
+	warnTyrannusEngaged			= "Scourgelord Tyrannus is coming down - Get ready",
 	specWarnIcyBlast			= "Icy Blast - Move away",
 	specWarnHoarfrost			= "Hoarfrost on you",
 	specWarnHoarfrostNear		= "Hoarfrost near you - Move"
