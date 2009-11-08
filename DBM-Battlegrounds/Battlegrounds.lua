@@ -3,8 +3,8 @@
 --
 -- thanks to LeoLeal and DiabloHu
 
-local mod = DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Battlegrounds", "DBM-Battlegrounds")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
