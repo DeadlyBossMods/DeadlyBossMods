@@ -39,7 +39,6 @@ L:SetWarningLocalization({
 	WarnAddsSoon		= "New adds soon",
 	WarnDeathDecay		= "Death and Decay",
 	WarnAdherent		= "Cult Adherent transforming",
-	WarnPhase2		= "Phase 2",
 	SpecWarnDeathDecay	= "Death and Decay - move away",
 	SpecWarnCurseTorpor	= "Curse of Torpor on you"
 })
@@ -47,7 +46,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnAddsSoon		= "Show warning for new adds spawning soon",
 	WarnDeathDecay		= "Show warning for Death and Decay",
-	WarnPhase2		= "Show warning for Phase 2",
 	WarnAdherent		= "Show warning for Adherent yell",	-- Cult Adherent -> Reanimated Adherent transformation iirc
 	SpecWarnDeathDecay	= "Show special warning when you are affected by Death and Decay",
 	SpecWarnCurseTorpor	= "Show special warning when you are affected by Curse of Torpor",
