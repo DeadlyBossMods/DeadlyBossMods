@@ -1266,7 +1266,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnPursuit				= "Show pre-warning for pursue",
-	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
+	specWarnToxic			= "Show special warning when you are affected by Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued"
 --	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
@@ -1285,7 +1285,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock		= "Saronite Rock - Line of sight now",
-	specWarnSaroniteRock	= "Saronite Throw on you - Move",
+	specWarnSaroniteRock	= "Saronite Throw on you",
 	specWarnPermafrost		= "%s: %s"
 })
 
