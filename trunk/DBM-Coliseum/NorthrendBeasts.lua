@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("NorthrendBeasts", "DBM-Coliseum")
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("NorthrendBeasts", "DBM-Coliseum")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34797)
@@ -52,11 +52,11 @@ mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
 mod:AddBoolOption("SetIconOnBileTarget", true, "announce")
 mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
 
-local bileTargets = {}
-local toxinTargets = {}
-local burnIcon = 8
-local oneWormDead = false
-local phases = {}
+local bileTargets			= {}
+local toxinTargets			= {}
+local burnIcon				= 8
+local oneWormDead			= false
+local phases				= {}
 
 local function updateHealthFrame(phase)
 	if phases[phase] then

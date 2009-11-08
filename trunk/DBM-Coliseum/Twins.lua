@@ -1,5 +1,5 @@
-﻿local mod = DBM:NewMod("Twins", "DBM-Coliseum")
-local L = mod:GetLocalizedStrings()
+﻿local mod	= DBM:NewMod("Twins", "DBM-Coliseum")
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34497, 34496)  
@@ -32,19 +32,19 @@ local specWarnPoweroftheTwins		= mod:NewSpecialWarning("SpecWarnPoweroftheTwins"
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
 local specWarnEmpoweredLight		= mod:NewSpecialWarning("SpecWarnEmpoweredLight")
 
-local enrageTimer				= mod:NewEnrageTimer(360)
-local timerSpecial				= mod:NewTimer(45, "TimerSpecialSpell")
-local timerHeal					= mod:NewCastTimer(15, 65875)
-local timerLightTouch			= mod:NewTargetTimer(20, 67298)
-local timerDarkTouch			= mod:NewTargetTimer(20, 67283)
-local timerAchieve				= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
+local enrageTimer					= mod:NewEnrageTimer(360)
+local timerSpecial					= mod:NewTimer(45, "TimerSpecialSpell")
+local timerHeal						= mod:NewCastTimer(15, 65875)
+local timerLightTouch				= mod:NewTargetTimer(20, 67298)
+local timerDarkTouch				= mod:NewTargetTimer(20, 67283)
+local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 
 mod:AddBoolOption("SetIconOnDebuffTarget", true, "announce")
 mod:AddBoolOption("SpecialWarnOnDebuff", false, "announce")
 
 
-local debuffTargets = {}
-local debuffIcon = 8
+local debuffTargets					= {}
+local debuffIcon					= 8
 
 function mod:OnCombatStart(delay)
 	timerSpecial:Start(-delay)
