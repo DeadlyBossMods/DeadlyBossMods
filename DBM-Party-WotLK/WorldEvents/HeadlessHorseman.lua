@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("HeadlessHorseman", "DBM-Party-WotLK", 17)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("HeadlessHorseman", "DBM-Party-WotLK", 17)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(23682, 23775)
@@ -12,12 +12,12 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_SAY"
 )
 
-local warnConflag					= mod:NewTargetAnnounce(42380)
-local warnSquashSoul				= mod:NewTargetAnnounce(42514)
-local timerConflag					= mod:NewTargetTimer(4, 42380)
-local timerSquashSoul				= mod:NewTargetTimer(15, 42514)
-local warnHorsemanSoldiers			= mod:NewAnnounce("warnHorsemanSoldiers")
-local specWarnHorsemanHead			= mod:NewSpecialWarning("specWarnHorsemanHead")
+local warnConflag				= mod:NewTargetAnnounce(42380)
+local warnSquashSoul			= mod:NewTargetAnnounce(42514)
+local timerConflag				= mod:NewTargetTimer(4, 42380)
+local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
+local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers")
+local specWarnHorsemanHead		= mod:NewSpecialWarning("specWarnHorsemanHead")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(42380) then											-- Conflagration

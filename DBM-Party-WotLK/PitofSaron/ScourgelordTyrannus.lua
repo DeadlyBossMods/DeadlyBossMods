@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("ScourgelordTyrannus", "DBM-Party-WotLK", 15)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("ScourgelordTyrannus", "DBM-Party-WotLK", 15)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36658, 36661)
@@ -15,18 +15,18 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local timerForcefulSmash			= mod:NewNextTimer(40, 69627) --Experimental, Timer may not be exact. Aso needs to be added to boss landing (jumpping off drake) event. But need BOSS emote for it first.
-local warnUnholyPower				= mod:NewSpellAnnounce(69167)
-local timerUnholyPower				= mod:NewBuffActiveTimer(10, 69629)
-local warnOverlordsBrand			= mod:NewTargetAnnounce(69172)
-local timerOverlordsBrand			= mod:NewTargetTimer(8, 69172)
-local warnTyrannusEngaged			= mod:NewAnnounce("warnTyrannusEngaged", false)
-local specWarnIcyBlast				= mod:NewSpecialWarning("specWarnIcyBlast")
+local timerForcefulSmash		= mod:NewNextTimer(40, 69627) --Experimental, Timer may not be exact. Aso needs to be added to boss landing (jumpping off drake) event. But need BOSS emote for it first.
+local warnUnholyPower			= mod:NewSpellAnnounce(69167)
+local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
+local warnOverlordsBrand		= mod:NewTargetAnnounce(69172)
+local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
+local warnTyrannusEngaged		= mod:NewAnnounce("warnTyrannusEngaged", false)
+local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
 
 -- Hoarfrost ID 69246
-local warnHoarfrost					= mod:NewSpellAnnounce(69246)
-local specWarnHoarfrost				= mod:NewSpecialWarning("specWarnHoarfrost")
-local specWarnHoarfrostNear			= mod:NewSpecialWarning("specWarnHoarfrostNear")
+local warnHoarfrost				= mod:NewSpellAnnounce(69246)
+local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
+local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
 
 mod:AddBoolOption("SetIconOnHoarfrostTarget", true, "announce")
 

@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("Confessor", "DBM-Party-WotLK", 13)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("Confessor", "DBM-Party-WotLK", 13)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34928)
@@ -25,7 +25,7 @@ local warnHolyFire			= mod:NewTargetAnnounce(67676)
 local timerHolyFire			= mod:NewTargetTimer(8, 67676)
 local specwarnRenew			= mod:NewSpecialWarning("specwarnRenew", isDispeller)
 
-local shielded = false
+local shielded				= false
 
 function mod:OnCombatStart(delay)
    shielded = false

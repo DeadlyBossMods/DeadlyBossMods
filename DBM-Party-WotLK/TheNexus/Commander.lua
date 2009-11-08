@@ -1,7 +1,7 @@
-local mod = DBM:NewMod("Commander", "DBM-Party-WotLK", 8)
-local L = mod:GetLocalizedStrings()
-local faction = UnitFactionGroup("player")
-local CreatureID = 26796
+local mod			= DBM:NewMod("Commander", "DBM-Party-WotLK", 8)
+local L				= mod:GetLocalizedStrings()
+local faction		= UnitFactionGroup("player")
+local CreatureID	= 26796
 if faction == "Alliance" then
 	CreatureID = 26798
 end

@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("PortalTimers", "DBM-Party-WotLK", 12)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("PortalTimers", "DBM-Party-WotLK", 12)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(30658)
@@ -14,11 +14,11 @@ local warningPortalNow	= mod:NewAnnounce("WarningPortalNow", 2, 57687)
 local warningPortalSoon	= mod:NewAnnounce("WarningPortalSoon", 1, 57687)
 local warningBossNow	= mod:NewAnnounce("WarningBossNow", 4, 33341)
 
-local timerPortalIn	= mod:NewTimer(97, "TimerPortalIn", 57687)
+local timerPortalIn		= mod:NewTimer(97, "TimerPortalIn", 57687)
 
 mod:AddBoolOption("ShowAllPortalWarnings", false, "announce")
 
-local lastwave = 0
+local lastwave			= 0
 
 function mod:OnCombatStart()
 	lastwave = 0

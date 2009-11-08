@@ -1,5 +1,5 @@
-local mod = DBM:NewMod("VarosCloudstrider", "DBM-Party-WotLK", 9)
-local L = mod:GetLocalizedStrings()
+local mod	= DBM:NewMod("VarosCloudstrider", "DBM-Party-WotLK", 9)
+local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(27447)
@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningAmplify = mod:NewTargetAnnounce(51054, 2)
-local timerAmplify	 = mod:NewTargetTimer(30, 51054)
+local warningAmplify	= mod:NewTargetAnnounce(51054, 2)
+local timerAmplify		= mod:NewTargetTimer(30, 51054)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(51054, 59371) then
