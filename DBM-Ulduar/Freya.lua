@@ -26,7 +26,7 @@ mod:RegisterEvents(
 -- Elder Stonebark (ground tremor / fist of stone)
 -- Elder Brightleaf (unstable sunbeam)
 
-local warnPhase2		= mod:NewAnnounce("WarnPhase2", 3)
+local warnPhase2		= mod:NewPhaseAnnounce(2, 3)
 local warnSimulKill		= mod:NewAnnounce("WarnSimulKill", 1)
 local warnFury			= mod:NewTargetAnnounce(63571, 2)
 local warnRoots			= mod:NewAnnounce("WarnRoots", 2, 63601)
