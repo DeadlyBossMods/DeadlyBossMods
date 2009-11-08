@@ -25,7 +25,7 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 local isMagicDispeller = select(2, UnitClass("player")) == "PALADIN"
 	    		 or select(2, UnitClass("player")) == "PRIEST"
 
-local warnFelFireball			= mod:NewSpellAnnounce(66532, 2)
+local warnFelFireball			= mod:NewCastAnnounce(66532, 2)
 local warnPortalSoon			= mod:NewSoonAnnounce(67900, 2)
 local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 2)
 local warnFlame					= mod:NewTargetAnnounce(68123, 3)

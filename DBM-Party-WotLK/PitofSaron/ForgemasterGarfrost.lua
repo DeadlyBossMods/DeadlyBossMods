@@ -13,9 +13,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local warnForgeWeapon				= mod:NewSpellAnnounce(70335)
-local warnDeepFreeze			= mod:NewTargetAnnounce(70384)
-local warnSaroniteRock				= mod:NewAnnounce("warnSaroniteRock")
+local warnForgeWeapon		= mod:NewSpellAnnounce(70335)
+local warnDeepFreeze		= mod:NewTargetAnnounce(70384)
+local warnSaroniteRock		= mod:NewAnnounce("warnSaroniteRock")
 local specWarnSaroniteRock	= mod:NewSpecialWarning("specWarnSaroniteRock")
 local specWarnPermafrost	= mod:NewSpecialWarning("specWarnPermafrost", false)
 

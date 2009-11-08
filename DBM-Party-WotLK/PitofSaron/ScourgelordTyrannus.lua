@@ -20,7 +20,7 @@ local warnUnholyPower				= mod:NewSpellAnnounce(69167)
 local timerUnholyPower				= mod:NewBuffActiveTimer(10, 69629)
 local warnOverlordsBrand			= mod:NewTargetAnnounce(69172)
 local timerOverlordsBrand			= mod:NewTargetTimer(8, 69172)
-local specTyrannusEngaged			= mod:NewSpecialWarning("specTyrannusEngaged", false)
+local warnTyrannusEngaged			= mod:NewAnnounce("warnTyrannusEngaged", false)
 local specWarnIcyBlast				= mod:NewSpecialWarning("specWarnIcyBlast")
 
 -- Hoarfrost ID 69246

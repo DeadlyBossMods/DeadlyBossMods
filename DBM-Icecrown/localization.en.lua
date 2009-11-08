@@ -216,7 +216,6 @@ L:SetTimerLocalization({
 
 L:SetWarningLocalization({
 	WarnAirphase			= "Air phase",
-	WarnBlisteringCold		= "Blistering Cold",
 	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
 	SpecWarnFrostBeacon		= "Frost Beacon on you",
 	WarnGroundphaseSoon		= "Sindragosa landing soon",
@@ -225,7 +224,6 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnAirphase			= "Announce air phase",
-	WarnBlisteringCold		= "Show warning for Blistering Cold",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
 	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
 	WarnGroundphaseSoon		= "Show pre-warning for ground phase",

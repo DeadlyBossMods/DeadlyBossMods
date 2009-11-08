@@ -12,7 +12,7 @@ mod:RegisterEvents(
 )
 
 local warningPound		= mod:NewSpellAnnounce(53472, 3)
-local timerAchieve			= mod:NewAchievementTimer(240, 1860, "TimerSpeedKill") 
+local timerAchieve		= mod:NewAchievementTimer(240, 1860, "TimerSpeedKill") 
 
 function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic5") then
