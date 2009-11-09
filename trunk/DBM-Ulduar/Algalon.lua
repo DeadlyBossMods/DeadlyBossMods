@@ -31,6 +31,7 @@ local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
 local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
 local specWarnCosmicSmash		= mod:NewSpecialWarning("SpecWarnCosmicSmash")
 
+local timerCombatStart		    = mod:NewTimer(7, "TimerCombatStart")
 local enrageTimer				= mod:NewEnrageTimer(360)
 local timerNextBigBang			= mod:NewNextTimer(90.5, 64584)
 local timerBigBangCast			= mod:NewCastTimer(8, 64584)
@@ -44,9 +45,11 @@ function mod:OnCombatStart(delay)
 	local text = select(3, GetWorldStateUIInfo(1)) 
 	local _, _, time = string.find(text, L.PullCheck) 
 	if time == 60 then
-		self:ScheduleMethod(26-delay, "startTimers")	-- 26 seconds roleplaying
+		timerCombatStart:Start(25-delay)
+		self:ScheduleMethod(25-delay, "startTimers")	-- 25 seconds roleplaying
 	else 
-		self:ScheduleMethod(6-delay, "startTimers")	-- 6 seconds roleplaying
+		timerCombatStart:Start(-delay)
+		self:ScheduleMethod(7-delay, "startTimers")	-- 7 seconds roleplaying
 	end 
 end
 

@@ -182,7 +182,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "Вспыхивающая звезда",
-	PossibleNextCosmicSmash 	= "Кара небесная"
+	PossibleNextCosmicSmash = "Кара небесная",
+	TimerCombatStart		= "Битва начнется через"
 }
 
 L:SetWarningLocalization{
@@ -202,8 +203,9 @@ L:SetOptionLocalization{
 	WarningBlackHole		= "Объявлять Черную дыру",
 	NextCollapsingStar		= "Отсчет времени до Свернувшейся звезды",
 	WarningCosmicSmash 		= "Объявлять цель под воздействием Кары небесной",
-	SpecWarnCosmicSmash 		= "Спец-предупреждение для Кары небесной",
-	PossibleNextCosmicSmash		= "Отсчет времени до Кара небесная"
+	SpecWarnCosmicSmash 	= "Спец-предупреждение для Кары небесной",
+	PossibleNextCosmicSmash	= "Отсчет времени до Кара небесная",
+	TimerCombatStart		= "Отсчет времени до начала битвы"
 }
 
 L:SetMiscLocalization{		

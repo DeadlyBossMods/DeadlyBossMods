@@ -181,7 +181,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "下一次 崩陷之星",
-	PossibleNextCosmicSmash		= "下一次 宇宙潰擊"
+	PossibleNextCosmicSmash	= "下一次 宇宙潰擊",
+	TimerCombatStart		= "戰鬥開始"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch		= "相位拳擊: >%s< - 第%d層",
@@ -189,7 +190,7 @@ L:SetWarningLocalization{
 	SpecWarnBigBang			= "大霹靂",
 	PreWarningBigBang		= "約10秒後 大霹靂",
 	WarningCosmicSmash 		= "宇宙潰擊 - 約4秒後爆炸",
-	SpecWarnCosmicSmash 		= "宇宙潰擊"
+	SpecWarnCosmicSmash 	= "宇宙潰擊"
 }
 
 L:SetOptionLocalization{
@@ -200,8 +201,9 @@ L:SetOptionLocalization{
 	WarningBlackHole		= "為黑洞爆炸顯示警告",
 	NextCollapsingStar		= "為下一次 崩陷之星顯示計時器",
 	WarningCosmicSmash 		= "為宇宙潰擊顯示警告",
-	SpecWarnCosmicSmash 		= "為宇宙潰擊顯示特別警告",
-	PossibleNextCosmicSmash		= "為下一次 宇宙潰擊顯示計時器"
+	SpecWarnCosmicSmash 	= "為宇宙潰擊顯示特別警告",
+	PossibleNextCosmicSmash	= "為下一次 宇宙潰擊顯示計時器",
+	TimerCombatStart		= "為戰鬥開始顯示計時器"
 }
 
 L:SetMiscLocalization{
