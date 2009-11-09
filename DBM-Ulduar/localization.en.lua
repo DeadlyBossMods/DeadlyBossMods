@@ -180,7 +180,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "Next Collapsing Star",
-	PossibleNextCosmicSmash	= "Next possible Cosmic Smash"
+	PossibleNextCosmicSmash	= "Next possible Cosmic Smash",
+	TimerCombatStart		= "Combat starts"
 }
 
 L:SetWarningLocalization{
@@ -201,7 +202,8 @@ L:SetOptionLocalization{
 	NextCollapsingStar		= "Show timer for next Collapsing Star",
 	WarningCosmicSmash 		= "Show warning for Cosmic Smash",
 	SpecWarnCosmicSmash 	= "Show special warning for Cosmic Smash",
-	PossibleNextCosmicSmash	= "Show timer for next possible Cosmic Smash"
+	PossibleNextCosmicSmash	= "Show timer for next possible Cosmic Smash",
+	TimerCombatStart		= "Show timer for start of combat"
 }
 
 L:SetMiscLocalization{
