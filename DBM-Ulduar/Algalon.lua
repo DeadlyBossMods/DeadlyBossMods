@@ -44,18 +44,18 @@ function mod:OnCombatStart(delay)
 	local text = select(3, GetWorldStateUIInfo(1)) 
 	local _, _, time = string.find(text, L.PullCheck) 
 	if time == 60 then
-		self:ScheduleMethod(26-delay, "startTimers)	-- 26 seconds roleplaying
+		self:ScheduleMethod(26-delay, "startTimers")	-- 26 seconds roleplaying
 	else 
 		self:ScheduleMethod(6-delay, "startTimers")	-- 6 seconds roleplaying
 	end 
 end
 
 function mod:startTimers(delay)
-	enrageTimer:Start(+delay)
-	timerNextBigBang:Start(+delay)
-	announcePreBigBang:Schedule(80+delay)
-	timerNextCollapsingStar:Start(+delay)
-	timerCDCosmicSmash:Start(+delay)
+	enrageTimer:Start(360 + delay)
+	timerNextBigBang:Start(90.5 + delay)
+	announcePreBigBang:Schedule(80 + delay)
+	timerNextCollapsingStar:Start(15 + delay)
+	timerCDCosmicSmash:Start(25 + delay)
 end
 
 function mod:SPELL_CAST_START(args)
