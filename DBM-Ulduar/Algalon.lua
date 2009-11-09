@@ -31,7 +31,7 @@ local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
 local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
 local specWarnCosmicSmash		= mod:NewSpecialWarning("SpecWarnCosmicSmash")
 
-local enrageTimer				= mod:NewEnrageTimer(366) -- combatstart take some combattime
+local enrageTimer				= mod:NewEnrageTimer(360)
 local timerNextBigBang			= mod:NewNextTimer(90.5, 64584)
 local timerBigBangCast			= mod:NewCastTimer(8, 64584)
 local timerNextCollapsingStar	= mod:NewTimer(15, "NextCollapsingStar")
@@ -40,24 +40,22 @@ local timerCastCosmicSmash		= mod:NewCastTimer(4.5, 62311)
 local timerPhasePunch			= mod:NewBuffActiveTimer(45, 64412)
 local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
 
-local phase						= 0
-
 function mod:OnCombatStart(delay)
-	phase = 1
-	enrageTimer:Start(-delay)
-	-- added 6 seconds because of +combat until spawn difference
-	timerNextBigBang:Start(96.5-delay)
-	announcePreBigBang:Schedule(86-delay)
-	timerNextCollapsingStar:Start(21-delay)
-	timerCDCosmicSmash:Start(31-delay)
+	local text = select(3, GetWorldStateUIInfo(1)) 
+	local _, _, time = string.find(text, L.PullCheck) 
+	if time == 60 then
+		self:ScheduleMethod(26-delay, "startTimers)	-- 26 seconds roleplaying
+	else 
+		self:ScheduleMethod(6-delay, "startTimers")	-- 6 seconds roleplaying
+	end 
 end
 
-function mod:UNIT_HEALTH(unitid)
-	if phase == 1 and UnitName(unitid) == L.name then
-		if UnitHealth(unitid) <= 20 then
-			phase = 2
-		end
-	end
+function mod:startTimers(delay)
+	enrageTimer:Start(+delay)
+	timerNextBigBang:Start(+delay)
+	announcePreBigBang:Schedule(80+delay)
+	timerNextCollapsingStar:Start(+delay)
+	timerCDCosmicSmash:Start(+delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -69,7 +67,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnBigBang:Show()
 	end
 end
-
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(65108, 64122) then 	-- Black Hole Explosion
