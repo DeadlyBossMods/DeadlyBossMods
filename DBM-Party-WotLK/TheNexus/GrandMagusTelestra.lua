@@ -24,7 +24,7 @@ end
 
 function mod:UNIT_HEALTH(arg1)
 	if UnitName(arg1) == L.name then
-		local h = UnitHealth(arg1)
+		local h = ( UnitHealth(arg1) / UnitHealthMax(arg1) ) * 100
 		if h>85 then
 			warnedSplit = false
 		elseif h>50 and h<54 and not warnedSplit then
