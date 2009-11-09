@@ -206,7 +206,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
-	YellPullFirst			= "",
+	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
 	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
 	Emote_CosmicSmash		= "%s begins to cast Cosmic Smash!"
 }
