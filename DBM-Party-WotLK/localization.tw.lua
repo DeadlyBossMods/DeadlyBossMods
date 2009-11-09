@@ -1270,7 +1270,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnPursuit				= "當獵殺即將到來時顯示警告",
-	specWarnToxic			= "當你受到Toxic Waste的傷害時顯示特別警告",
+	specWarnToxic			= "當你中了Toxic Waste的時顯示特別警告",
 	specWarnPursuit			= "當你中了獵殺時顯示特別警告",
 --	SetIconOnPursuitTarget	= "設置標記在獵殺的目標"
 })
@@ -1290,7 +1290,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock		= "Saronite Rock - Line of sight now",
-	specWarnSaroniteRock	= "你中了Saronite Throw - 快跑開",
+	specWarnSaroniteRock	= "你中了Saronite Throw",
 	specWarnPermafrost		= "%s: %s"
 })
 
