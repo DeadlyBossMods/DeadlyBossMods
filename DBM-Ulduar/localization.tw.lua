@@ -181,7 +181,7 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "下一次 崩陷之星",
-	PossibleNextCosmicSmash	= "下一次 宇宙潰擊",
+	PossibleNextCosmicSmash		= "下一次 宇宙潰擊",
 	TimerCombatStart		= "戰鬥開始"
 }
 L:SetWarningLocalization{
@@ -190,7 +190,7 @@ L:SetWarningLocalization{
 	SpecWarnBigBang			= "大霹靂",
 	PreWarningBigBang		= "約10秒後 大霹靂",
 	WarningCosmicSmash 		= "宇宙潰擊 - 約4秒後爆炸",
-	SpecWarnCosmicSmash 	= "宇宙潰擊"
+	SpecWarnCosmicSmash 		= "宇宙潰擊"
 }
 
 L:SetOptionLocalization{
@@ -201,8 +201,8 @@ L:SetOptionLocalization{
 	WarningBlackHole		= "為黑洞爆炸顯示警告",
 	NextCollapsingStar		= "為下一次 崩陷之星顯示計時器",
 	WarningCosmicSmash 		= "為宇宙潰擊顯示警告",
-	SpecWarnCosmicSmash 	= "為宇宙潰擊顯示特別警告",
-	PossibleNextCosmicSmash	= "為下一次 宇宙潰擊顯示計時器",
+	SpecWarnCosmicSmash 		= "為宇宙潰擊顯示特別警告",
+	PossibleNextCosmicSmash		= "為下一次 宇宙潰擊顯示計時器",
 	TimerCombatStart		= "為戰鬥開始顯示計時器"
 }
 
@@ -210,7 +210,8 @@ L:SetMiscLocalization{
 	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
 	YellPullFirst			= "從我的雙眼觀看你的世界:一個無邊無際的宇宙--連你們之中最具智慧者都無法想像的廣闊無垠。",
 	Emote_CollapsingStars		= "%s開始召喚崩陷之星!",
-	Emote_CosmicSmash		= "%s開始施展宇宙潰擊!"
+	Emote_CosmicSmash		= "%s開始施展宇宙潰擊!",
+	PullCheck			= "艾爾加隆開始上傳滅世訊息的剩餘時間= (%d+)分鐘。"
 }
 
 ----------------
