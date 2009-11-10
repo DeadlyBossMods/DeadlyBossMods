@@ -226,7 +226,7 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "10秒後 鑽出地面",
 	WarnSubmerge			= "阿努巴拉克鑽進地裡了",
 	WarnSubmergeSoon		= "10秒後 鑽進地裡",
-	SpecWarnPursue			= "你被追擊了 - 快跑去撞冰塊",
+	SpecWarnPursue			= "你被追擊了 - 快跑",
 	warnAdds			= "奈幽掘洞者 出現了",
 	SpecWarnShadowStrike		= "暗影打擊 - 快斷法",
 	SpecWarnPCold			= "你中了透骨之寒"
