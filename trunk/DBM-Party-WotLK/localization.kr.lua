@@ -685,7 +685,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("Phase #")
+	WarningPhase	= optionWarning:format("# 페이즈")
 })
 
 L:SetMiscLocalization({
@@ -767,7 +767,6 @@ L:SetMiscLocalization({
 	MergeTrigger		= "이제 끝을 볼 때다!"				-- translate
 })
 
-
 -----------------
 -- 케리스트라자 --
 -----------------
@@ -788,7 +787,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 
 })
-
 
 ---------------------------------
 -- 사령관 콜루르그/스타우트비어드 --
@@ -818,7 +816,6 @@ L:SetOptionLocalization({
 
 })
 
-
 ----------------
 -- 마력의 눈 --
 -----------------------------
@@ -847,7 +844,6 @@ L = DBM:GetModLocalization("MageLordUrom")
 L:SetGeneralLocalization({
 	name = "마법사 군주 우롬"
 })
-
 
 L:SetWarningLocalization({
 	WarningTimeBomb		= debuff,
@@ -1241,7 +1237,7 @@ L:SetOptionLocalization({
 
 
 L:SetMiscLocalization({
-	yell1 = "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
+	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
 	WavePortal		= "포탈 열린 수: (%d+)/18"
 })
 
@@ -1292,7 +1288,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "잘 싸웠네! 다음 상대는 은빛십자군의 일원이라네. 그들을 상대로 자신의 무용을 증명해 보게."
+	YellCombatEnd		= "잘 싸웠네! 다음 상대는 은빛십자군의 일원이라네. 그들을 상대로 자신의 무용을 증명해 보게."
 })
 
 
@@ -1462,16 +1458,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down. Get ready!",
+	warnTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
 	specWarnIcyBlast			= "Icy Blast! Move Away!",
-	specTyrannusEngaged			= "티라누스 격노",
+--	specTyrannusEngaged			= "티라누스 격노",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
 })
 
 L:SetOptionLocalization({
+	warnTyrannusEngaged			= "스컬지군주 티라누스 격노 경고 보기",
 	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
-	specTyrannusEngaged			= "티라누스 격노 특수 경고 보기",
 	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
 	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
