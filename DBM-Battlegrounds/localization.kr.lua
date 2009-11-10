@@ -22,7 +22,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ArenaInvite	= "투기장 입장"
+	ArenaInvite	= "전투 참여"
 })
 
 --------------
@@ -45,9 +45,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Start60 	= "투기장 시작 1분 전 입니다.!",
-	Start30 	= "투기장 시작 30초 전 입니다.!",
-	Start15 	= "투기장 시작 15초 전 입니다.!"
+	Start60 	= "투기장 전투 시작 1분 전입니다!",
+	Start30 	= "투기장 전투 시작 30초 전입니다!",
+	Start15 	= "투기장 전투 시작 15초 전입니다!"
 })
 
 ---------------
@@ -179,7 +179,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart  			 	= "시작 타이머 보기",
-	TimerWin				 	= "승리 예상 타이머 보기",
 	TimerFlag 					= "깃발 재생성 타이머 보기",
 	ShowFlagCarrier 	 	 	= "깃발 운반자 보기",
 	ShowFlagCarrierErrorNote	= "전투중 깃발 운반자 에러 메세지 보기",
@@ -199,7 +198,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningShards	= "바위 조각 대상 : >%s<",
-	WarningGrab		= ">%s< 에게 분쇄의 도약"
+	WarningGrab		= "분쇄의 도약 : >%s<"
 })
 
 L:SetTimerLocalization({
@@ -296,7 +295,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	ZoneName		= "정복의 섬",
-	BgStart60		= "The battle will begin in 60 seconds.",
+	BgStart60		= "60초 후 전투가 시작됩니다.",
 	BgStart30		= "30초 후 전투가 시작됩니다.",
 	BgStart15		= "15초 후 전투가 시작됩니다.",
 })
