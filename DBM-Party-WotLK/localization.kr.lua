@@ -689,7 +689,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "Time to get some answers! Let's get this show on the road!",
+	Pull		= "해답을 찾을 시간입니다! 이제 가보자고요!",
 	Phase1		= "xxx anti error xxx",
 	Phase2		= "xxx anti error xxx",
 	Phase3		= "xxx anti error xxx"
