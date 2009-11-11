@@ -43,6 +43,7 @@ local timerCombatStart		= mod:NewTimer(23, "TimerCombatStart")
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
 local timerNextImpale		= mod:NewNextTimer(10, 67477)
+local timerRisingAnger      = mod:NewNextTimer(20.5, 66636)
 local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
 local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss")
 local timerNextCrash		= mod:NewCDTimer(55, 67662)
@@ -86,6 +87,7 @@ function mod:OnCombatStart(delay)
 		timerNextBoss:Schedule(170)
 	end
 	timerNextStomp:Start(38-delay)
+	timerRisingAnger:Start(28-delay)
 	timerCombatStart:Start(-delay)
 	updateHealthFrame(1)
 end
@@ -119,6 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerStaggeredDaze:Start()
 	elseif args:IsSpellID(66636) then		-- Rising Anger
 		WarningSnobold:Show()
+		timerRisingAnger:Show()
 	end
 end
 
@@ -205,7 +208,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 			end
 		end
 	elseif args:IsSpellID(66636) then		-- Rising Anger
-		WarningSnobold:Show(args.sourceName)
+		WarningSnobold:Show()
+		if args.amount <= 3 then
+            timerRisingAnger:Show()
+        end
 	end
 end
 
