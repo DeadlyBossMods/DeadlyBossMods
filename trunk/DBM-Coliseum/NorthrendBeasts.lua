@@ -87,7 +87,7 @@ function mod:OnCombatStart(delay)
 		timerNextBoss:Schedule(170)
 	end
 	timerNextStomp:Start(38-delay)
-	timerRisingAnger:Start(28-delay)
+	timerRisingAnger:Start(48-delay)
 	timerCombatStart:Start(-delay)
 	updateHealthFrame(1)
 end
