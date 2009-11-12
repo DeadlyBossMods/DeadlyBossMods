@@ -27,7 +27,7 @@ function mod:UNIT_HEALTH(uId)
         local h = UnitHealth(uId) / UnitHealthMax(uId)
         if h > 0.85 then
            warnedSplit = false
-        elseif h > 50 and h < 54 and not warnedSplit then
+        elseif h > 0.50 and h < 0.54 and not warnedSplit then
            warningSplitSoon: Show()
            warnedSplit = true
         end
