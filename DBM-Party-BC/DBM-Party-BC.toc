@@ -1,0 +1,72 @@
+## Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party-BC|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMPartyBC_SavedVars, DBMPartyBC_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: BC
+## X-DBM-Mod-SubCategories: Hellfire Ramparts,The Blood Furnace,The Shattered Halls,The Slave Pens,The Underbog,The Steamvault,Auchenai Crypts,Mana-Tombs,Sethekk Halls,Shadow Labyrinth,Old Hillsbrad Foothills,The Black Morass,The Mechanar,The Botanica,The Arcatraz,Magisters' Terrace,Zul'Gurub (Mounts)
+## X-DBM-Mod-Name: Party-BC
+## X-DBM-Mod-Sort: 101
+## X-DBM-Mod-LoadZone: Hellfire Ramparts,The Blood Furnace,The Shattered Halls,The Slave Pens,The Underbog,The Steamvault,Auchenai Crypts,Mana-Tombs,Sethekk Halls,Shadow Labyrinth,Old Hillsbrad Foothills,The Black Morass,The Mechanar,The Botanica,The Arcatraz,Magisters' Terrace,Zul'Gurub
+localization.en.lua
+Hellfire_Ramp\Gargolmar.lua
+Hellfire_Ramp\Omor.lua
+Hellfire_Ramp\Vazruden.lua
+Hellfire_BloodFurnace\Maker.lua
+Hellfire_BloodFurnace\Broggok.lua
+Hellfire_BloodFurnace\Keli'dan.lua
+Hellfire_ShatteredHalls\Nethekurse.lua
+Hellfire_ShatteredHalls\Porung.lua
+Hellfire_ShatteredHalls\O'mrogg.lua
+Hellfire_ShatteredHalls\Kargath.lua
+Coil_Slavepens\Mennu.lua
+Coil_Slavepens\Rokmar.lua
+Coil_Slavepens\Quagmirran.lua
+Coil_Underbog\Hungarfen.lua
+Coil_Underbog\Ghazan.lua
+Coil_Underbog\Muselek.lua
+Coil_Underbog\Stalker.lua
+Coil_Steamvault\Thespia.lua
+Coil_Steamvault\Steamrigger.lua
+Coil_Steamvault\Kalithresh.lua
+Auct_Crypts\Shirrak.lua
+Auct_Crypts\Maladaar.lua
+Auct_Tombs\Pandemonius.lua
+Auct_Tombs\Tavarok.lua
+Auct_Tombs\Shaffar.lua
+Auct_Tombs\Yor.lua
+Auct_SethekkHalls\Syth.lua
+Auct_SethekkHalls\Anzu.lua
+Auct_SethekkHalls\Ikiss.lua
+Auct_ShadowLabyrinth\Hellmaw.lua
+Auct_ShadowLabyrinth\Inciter.lua
+Auct_ShadowLabyrinth\Vorpil.lua
+Auct_ShadowLabyrinth\Murmur.lua
+CoT_OldHillsbrad\Drake.lua
+CoT_OldHillsbrad\Skarloc.lua
+CoT_OldHillsbrad\EpochHunter.lua
+CoT_BlackMorass\Deja.lua
+CoT_BlackMorass\Temporus.lua
+CoT_BlackMorass\Aeonus.lua
+CoT_BlackMorass\PortalTimers.lua
+TK_Mechanar\Gyrokill.lua
+TK_Mechanar\Ironhand.lua
+TK_Mechanar\Capacitus.lua
+TK_Mechanar\Sepethrea.lua
+TK_Mechanar\Pathaleon.lua
+TK_Botanica\Sarannis.lua
+TK_Botanica\Freywinn.lua
+TK_Botanica\Thorngrin.lua
+TK_Botanica\Laj.lua
+TK_Botanica\WarpSplinter.lua
+TK_Arcatraz\Zereketh.lua
+TK_Arcatraz\Dalliah.lua
+TK_Arcatraz\Soccothrates.lua
+TK_Arcatraz\Skyriss.lua
+MagistersTerrace\Selin.lua
+MagistersTerrace\Vexallus.lua
+MagistersTerrace\Delrissa.lua
+MagistersTerrace\Kael'thas.lua
+ZulGurub\Mandokir.lua
+ZulGurub\Thekal.lua
