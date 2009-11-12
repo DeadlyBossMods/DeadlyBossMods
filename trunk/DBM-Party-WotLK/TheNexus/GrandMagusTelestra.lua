@@ -22,16 +22,16 @@ function mod:OnCombatStart()
 	warnedSplit = false
 end
 
-function mod:UNIT_HEALTH(arg1)
-	if UnitName(arg1) == L.name then
-		local h = ( UnitHealth(uId) / UnitHealthMax(uId) ) * 100
-		if h>85 then
-			warnedSplit = false
-		elseif h>50 and h<54 and not warnedSplit then
-			warningSplitSoon:Show()
-			warnedSplit = true
-		end
-	end
+function mod:UNIT_HEALTH(uId)
+    if self:GetUnitCreatureID(uId) == 26731 then
+        local h = UnitHealth(uId) / UnitHealthMax(uId)
+        if h > 0.85 then
+           warnedSplit = false
+        elseif h > 50 and h < 54 and not warnedSplit then
+           warningSplitSoon: Show()
+           warnedSplit = true
+        end
+    end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
