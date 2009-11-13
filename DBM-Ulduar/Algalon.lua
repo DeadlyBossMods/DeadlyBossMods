@@ -14,11 +14,12 @@ mod:SetCreatureID(32871)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+    "UPDATE_WORLD_STATES",
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_HEALTH"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local announceBigBang			= mod:NewCastAnnounce(64584, 3)
@@ -26,6 +27,7 @@ local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
 local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
+--local WarningFirstPull		= mod:NewAnnounce("WarningFirstPull")--You're group is too much awesome for algalon. He needs more time to prepare
 
 local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
 local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
@@ -60,6 +62,38 @@ function mod:startTimers(delay)
 	timerNextCollapsingStar:Start(15 + delay)
 	timerCDCosmicSmash:Start(25 + delay)
 end
+
+--Backup function that wouldn't be as pretty but would probably work.
+--[[
+    function mod:OnCombatStart(delay)
+	-- added 7 seconds because of +combat until spawn difference
+    timerCombatStart:Start(-delay)
+	enrageTimer:Start(367-delay)
+	timerNextBigBang:Start(97.5-delay)
+	announcePreBigBang:Schedule(87-delay)
+	timerNextCollapsingStar:Start(22-delay)
+	timerCDCosmicSmash:Start(32-delay)
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.YellPullFirst then
+	-- cancel timers and resync to extra delay in combat start(another 10 sec after this yell til actual combat).
+	WarningFirstPull:Show()
+	enrageTimer:Cancel()
+	timerNextBigBang:Cancel()
+	announcePreBigBang:Cancel()
+	timerNextCollapsingStar:Cancel()
+	timerCDCosmicSmash:Cancel()
+    timerCombatStart:Start(10-delay)
+	enrageTimer:Start(370-delay)
+	timerNextBigBang:Start(100.5-delay)
+	announcePreBigBang:Schedule(90-delay)
+	timerNextCollapsingStar:Start(25-delay)
+	timerCDCosmicSmash:Start(35-delay)
+	end
+end
+
+--]]
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(64584, 64443) then 	-- Big Bang

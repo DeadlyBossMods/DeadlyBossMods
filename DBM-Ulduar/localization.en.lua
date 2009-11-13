@@ -185,6 +185,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+--	WarningFirstPull		= "First pull detected - Adjusting timers",
 	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",
 	WarningBlackHole		= "Black Hole",
 	SpecWarnBigBang			= "Big Bang",
@@ -194,6 +195,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+--	WarningFirstPull		= "Show warning for first pull",
 	SpecWarnPhasePunch		= "Show special warning when you are affected by Phase Punch",
 	PreWarningBigBang		= "Show pre-warning for Big Bang",
 	SpecWarnBigBang			= "Show special warning for Big Bang",
