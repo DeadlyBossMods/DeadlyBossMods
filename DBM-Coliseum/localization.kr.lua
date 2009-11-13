@@ -32,6 +32,7 @@ L:SetOptionLocalization{
 	SpecialWarningBile			= "당신이 타오르는 담즙에 걸릴 경우 특수 경보 보기",
 	SpecialWarningCharge		= "얼음울음이 당신에게 사나운 돌진을 할 경우 특수 경보 보기",
 	SpecialWarningChargeNear	= "얼음울음이 당신 주변에 사나운 돌진을 할 경우 특수 경보 보기",
+	SpecialWarningTranq			= "얼음울음이 거품 이는 분노를 얻었을 경우 특수 경고 보기(평정 사용 클래스)",	
 	SetIconOnChargeTarget		= "사나운 돌진 대상 아이콘 설정 (해골)",
 	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",
 	ClearIconsOnIceHowl			= "얼음울음의 사나운 돌진 이후 모든 공격대 아이콘 없앰",
@@ -55,7 +56,8 @@ L:SetWarningLocalization{
 	SpecialWarningSilence		= "1.5 초이내 진동의 발구르기!!!",
 	SpecialWarningToxin			= "당신에게 마비독! 이동하세요!",
 	SpecialWarningCharge		= "당신에게 사나운 돌진! 뛰세요!",
-	SpecialWarningChargeNear	= "당신 주변에 사나운 돌진! 뛰세요!"	
+	SpecialWarningChargeNear	= "당신 주변에 사나운 돌진! 뛰세요!",
+	SpecialWarningTranq			= "거품 이는 분노! - 지금 평정!"
 }
 
 
