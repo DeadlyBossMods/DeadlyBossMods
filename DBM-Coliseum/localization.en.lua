@@ -29,6 +29,7 @@ L:SetOptionLocalization{
 	SpecialWarningToxin			= "Show special warning when you are affected by Paralytic Toxin",
 	SpecialWarningBile			= "Show special warning when you are affected by Burning Bile",
 	SpecialWarningCharge		= "Show special warning when Icehowl is about to charge you",
+	SpecialWarningTranq			= "Show special warning when Icehowl gains Frothing Rage (to tranq)",
 	PingCharge					= "Ping the minimap when Icehowl is about to charge you",
 	SpecialWarningChargeNear	= "Show special warning when Icehowl is about to charge near you",
 	SetIconOnChargeTarget		= "Set icons on charge targets (skull)",
@@ -53,7 +54,8 @@ L:SetWarningLocalization{
 	SpecialWarningToxin			= "Paralytic Toxin on you - Move",
 	SpecialWarningCharge		= "Charge on you - Run away",
 	SpecialWarningChargeNear	= "Charge near you - Run away",
-	SpecialWarningBile			= "Burning Bile on you"
+	SpecialWarningBile			= "Burning Bile on you",
+	SpecialWarningTranq			= "Icehowl has Frothing Range - Tranq Now"
 }
 
 ---------------------

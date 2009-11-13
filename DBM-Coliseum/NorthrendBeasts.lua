@@ -19,6 +19,9 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
+local canTranq = select(2, UnitClass("player")) == "HUNTER"
+              or select(2, UnitClass("player")) == "ROGUE"
+
 local warnImpaleOn			= mod:NewTargetAnnounce(67478, 2)
 local warnFireBomb			= mod:NewSpellAnnounce(66317, 4, nil, false)
 local warnBreath			= mod:NewSpellAnnounce(67650, 1)
@@ -37,6 +40,7 @@ local specWarnBile			= mod:NewSpecialWarning("SpecialWarningBile")
 local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
 local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
+local specWarnTranq         = mod:NewSpecialWarning("SpecialWarningTranq", canTranq)
 
 local enrageTimer			= mod:NewEnrageTimer(223)
 local timerCombatStart		= mod:NewTimer(23, "TimerCombatStart")
@@ -99,6 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnImpaleOn:Show(args.destName)
 	elseif args:IsSpellID(67657, 66759, 67658, 67659) then				-- Frothing Rage
 		warnRage:Show()
+        specWarnTranq:Show()
 	elseif args:IsSpellID(66823, 67618, 67619, 67620) then				-- Paralytic Toxin
 		self:UnscheduleMethod("warnToxin")
 		toxinTargets[#toxinTargets + 1] = args.destName
