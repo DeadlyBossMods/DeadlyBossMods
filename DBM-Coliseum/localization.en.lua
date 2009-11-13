@@ -22,6 +22,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarningSnobold				= "Show warning for Snobold Vassal spawns",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
+	SpecialWarningAnger3		= "Show special warning for Rising Anger (>=3 stacks)",
 	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
 	SpecialWarningSlimePool		= "Show special warning when you are affected by Slime Pool",
 	SpecialWarningSilence		= "Show special warning for Staggering Stomp (silence)",
@@ -45,6 +46,7 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarningSnobold				= "Snobold Vassal spawned",
 	SpecialWarningImpale3		= "Impale >%d< on you",
+	SpecialWarningAnger3		= "Rising Anger >%d<",
 	SpecialWarningFireBomb		= "Fire Bomb on you",
 	SpecialWarningSlimePool		= "Slime Pool - Move away",
 	SpecialWarningSilence		= "Silence in ~1.5 seconds",

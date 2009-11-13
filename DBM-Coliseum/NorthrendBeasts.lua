@@ -29,6 +29,7 @@ local warnBile				= mod:NewTargetAnnounce(66869, 3)
 local WarningSnobold		= mod:NewAnnounce("WarningSnobold", 2)
 
 local specWarnImpale3		= mod:NewSpecialWarning("SpecialWarningImpale3", false)
+local specWarnAnger3		= mod:NewSpecialWarning("SpecialWarningAnger3", false)
 local specWarnFireBomb		= mod:NewSpecialWarning("SpecialWarningFireBomb")
 local specWarnSlimePool		= mod:NewSpecialWarning("SpecialWarningSlimePool")
 local specWarnToxin			= mod:NewSpecialWarning("SpecialWarningToxin")
@@ -211,6 +212,8 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		WarningSnobold:Show()
 		if args.amount <= 3 then
             timerRisingAnger:Show()
+		elseif args.amount >= 3 then
+            specWarnAnger3:Show(args.amount)
         end
 	end
 end
