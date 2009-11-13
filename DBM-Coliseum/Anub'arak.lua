@@ -48,7 +48,7 @@ local enrageTimer			= mod:NewEnrageTimer(570)	-- 9:30 ? hmpf (no enrage while su
 local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)
 local timerPCold			= mod:NewBuffActiveTimer(15, 68509)
 mod:AddBoolOption("SetIconsOnPCold", true)
-mod:AddBoolOption("AnnouncePColdIcons")
+mod:AddBoolOption("AnnouncePColdIcons", false)
 
 -- Freezing Slash
 local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
@@ -59,11 +59,6 @@ local timerShadowStrike		= mod:NewNextTimer(30.5, 66134)
 local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
 local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
 local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", false)
-
-local PColdIcon = 7
-function mod:resetIcons()
-	PColdIcon = 7
-end
 
 function mod:OnCombatStart(delay)
 	Burrowed = false 
@@ -101,19 +96,30 @@ function mod:ShadowStrike()
 	end
 end
 
--- Penetrating Cold bug fix
+local PColdTargets = {}
+function mod:SetPcoldIcons()
+	if self.Options.SetIconsOnPCold and DBM:GetRaidRank() > 0 then
+		table.sort(PColdTargets)
+		local PColdIcon = 7
+		for i, v in ipairs(PColdTargets) do
+			if self.Options.AnnouncePColdIcons then
+				SendChatMessage(L.PcoldIconSet:format(PColdIcon, UnitName(v)), "RAID")
+			end
+			mod:SetIcon(UnitName(v), PColdIcon)
+			PColdIcon = PColdIcon - 1
+		end
+		table.wipe(PColdTargets)	
+	end
+end
+
 function mod:SPELL_AURA_REFRESH(args)
 	if args:IsSpellID(66013, 67700, 68509, 68510) then  -- Penetrating Cold
-		mod:ScheduleMethod(3, "resetIcons")
 		if args:IsPlayer() then
 			specWarnPCold:Show()
 		end
-		if self.Options.SetIconsOnPCold and PColdIcon > 0 then
-			if self.Options.AnnouncePColdIcons and DBM:GetRaidRank() >= 1 then
-				SendChatMessage(L.PcoldIconSet:format(PColdIcon, args.destName), "RAID")
-			end
-			mod:SetIcon(args.destName, PColdIcon)
-			PColdIcon = PColdIcon - 1
+		if self.Options.SetIconsOnPCold then
+			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
+			mod:ScheduleMethod(0.1, "SetPcoldIcons")	-- this might cause problems when client is below 10 Fps but don't know for sure (and longer time will be bad too)
 		end
 		timerPCold:Show() 
 	end
@@ -133,18 +139,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnPursue:Show(args.destName)
 
 	elseif args:IsSpellID(66013, 67700, 68509, 68510) then		-- Penetrating Cold
-		mod:ScheduleMethod(3, "resetIcons")
 		if args:IsPlayer() then
 			specWarnPCold:Show()
 		end
-		if self.Options.SetIconsOnPCold and PColdIcon > 0 then
-			if self.Options.AnnouncePColdIcons and DBM:GetRaidRank() >= 1 then
-				SendChatMessage(L.PcoldIconSet:format(PColdIcon, args.destName), "RAID")
-			end
-			mod:SetIcon(args.destName, PColdIcon)
-			PColdIcon = PColdIcon - 1
+		if self.Options.SetIconsOnPCold then
+			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
+			mod:ScheduleMethod(0.1, "SetPcoldIcons")
 		end
-		timerPCold:Show()
+		timerPCold:Show() 
 	elseif args:IsSpellID(66012) then							-- Freezing Slash
 		warnFreezingSlash:Show(args.destName)
 		timerFreezingSlash:Start()
