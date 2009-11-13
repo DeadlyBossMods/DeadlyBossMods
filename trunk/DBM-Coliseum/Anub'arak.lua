@@ -67,7 +67,6 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(10-delay, "Adds") 
 	timerSubmerge:Start(80-delay)
 	enrageTimer:Start(-delay)
-	self:resetIcons()
 	timerFreezingSlash:Start(-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
