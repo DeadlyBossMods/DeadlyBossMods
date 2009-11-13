@@ -46,6 +46,9 @@ local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
 function mod:OnCombatStart(delay)
 	local text = select(3, GetWorldStateUIInfo(1)) 
 	local _, _, time = string.find(text, L.PullCheck) 
+	if not time then 
+        time = 0 
+    end
 	if time == 60 then
 		timerCombatStart:Start(25-delay)
 		self:ScheduleMethod(25-delay, "startTimers")	-- 25 seconds roleplaying
