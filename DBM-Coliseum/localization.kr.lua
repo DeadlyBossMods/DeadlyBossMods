@@ -24,6 +24,7 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarningSnobold				= "스노볼트 부하 생성 경고 보기",
 	SpecialWarningImpale3		= "꿰뚫기 특수 경보 보기(3 중첩이거나 그 이상일 경우)",
+	SpecialWarningAnger3		= "솟구치는 분노 특수 경고 보기(3 중첩이거나 그 이상일 경우)",	
 	SpecialWarningFireBomb		= "자신의 화염 폭탄 특수 경보 보기",
 	SpecialWarningSlimePool		= "독 구름 특수 경보 보기",
 	SpecialWarningSilence		= "진동의 발구르기 특수 경보 보기",
@@ -46,7 +47,8 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarningSnobold				= "스노볼트 부하 생성",
-	SpecialWarningImpale3		= "당신에게 꿰뚫기 >%d<!",
+	SpecialWarningImpale3		= "꿰뚫기 >%d<!",
+	SpecialWarningAnger3		= "솟구치는 분노 >%d<",	
 	SpecialWarningFireBomb		= "당신에게 화염 폭탄!",
 	SpecialWarningSlimePool		= "독 구름, 벗어나세요!",
 	SpecialWarningBile			= "당신에게 타오르는 담즙!",
