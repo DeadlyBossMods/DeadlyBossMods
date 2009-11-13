@@ -2,11 +2,22 @@ local mod	= DBM:NewMod("Deathbringer", "DBM-Icecrown", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
-mod:SetCreatureID()--No creature IDs til blizz unviels the surprise boss on us.
+mod:SetCreatureID(37813)
 --mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_SUCCESS"
 )
+
+local timerCallBloodBeast	= mod:NewNextTimer(30, 72173)
+
+function mod:OnCombatStart(delay)
+	timerCallBloodBeast:Start(-delay)
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(72173) then
+		timerCallBloodBeast:Start()
+	end
+end
