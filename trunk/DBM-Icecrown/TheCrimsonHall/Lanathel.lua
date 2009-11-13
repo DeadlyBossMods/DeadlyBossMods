@@ -7,6 +7,27 @@ mod:SetCreatureID(37955)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_AURA_APPLIED"
 )
+
+local warnPactDarkfallen	= mod:NewTargetAnnounce(71340, 3)
+
+local specWarnPactDarkfallen	= mod:NewSpecialWarning("SpecWarnPactDarkfallen")
+
+local pactTargets = {}
+
+function mod:warnPactTargets()
+	warnPactDarkfallen:Show(table.concat(pactTargets, "<, >"))
+	table.wipe(pactTargets)
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(71340) then
+		self:UnscheduleMethod("warnPactTargets")
+		pactTargets[#pactTargets + 1] = args.destName
+		self:ScheduleMethod(0.3, "warnPactTargets")
+		if args:IsPlayer() then
+			specWarnPactDarkfallen:Show()
+		end
+	end
+end
