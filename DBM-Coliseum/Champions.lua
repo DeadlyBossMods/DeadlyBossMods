@@ -58,12 +58,23 @@ local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
               or select(2, UnitClass("player")) == "SHAMAN"
 
 local warnHellfire			= mod:NewSpellAnnounce(68147, 1)
+local warnBladestorm		= mod:NewSpellAnnounce(65947, 1)
 local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
 local warnHeroism			= mod:NewSpellAnnounce(65983, 2)
 local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
 local warnHandofProt		= mod:NewSpellAnnounce(66009, 2)
 local warnDivineShield		= mod:NewSpellAnnounce(66010, 2)
 local warnIceBlock  		= mod:NewSpellAnnounce(65802, 2)
+local warnShadowstep		= mod:NewSpellAnnounce(66178, 2)
+local warnDeathgrip  		= mod:NewTargetAnnounce(66017, 2)
+local warnCyclone           = mod:NewTargetAnnounce(65859, false)
+local warnSheep             = mod:NewTargetAnnounce(65801, false)
+
+local timerBladestorm		= mod:NewBuffActiveTimer(8, 65947)
+local timerShadowstep		= mod:NewCDTimer(30, 66178)
+local timerDeathgrip  		= mod:NewCDTimer(35, 66017)
+
+
 local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
 local specWarnDivineShield	= mod:NewSpecialWarning("SpecWarnDivineShield", isDispeller) 
 local specWarnIceBlock  	= mod:NewSpecialWarning("specWarnIceBlock", isDispeller) 
@@ -73,25 +84,46 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(65816, 68145, 68146, 68147) then		-- Hellfire
+	if args:IsSpellID(65816, 68145, 68146, 68147) then		-- Warlock Hellfire
 		warnHellfire:Show()
-	elseif args:IsSpellID(65983) then						-- Heroism
+	elseif args:IsSpellID(65947) then						-- Warrior Bladestorm
+		warnBladestorm:Show()
+		timerBladestorm:Start()
+	elseif args:IsSpellID(65983) then						-- Shamen Heroism
 		warnHeroism:Show()
-	elseif args:IsSpellID(65980) then						-- Blood lust
+	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
 		warnBloodlust:Show()
-	elseif args:IsSpellID(66009) then						-- Hand of Protection on <mobname>
+	elseif args:IsSpellID(66009) then						-- Paladin Hand of Protection on <mobname>
 		warnHandofProt:Show(args.destName)
 		specWarnHandofProt:Show(args.destName)
+	elseif args:IsSpellID(66178, 68759, 68760, 68761) then	-- Rogue Shadowstep
+		warnShadowstep:Show()
+        if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 30 second cooldown, but on 25 heroic, it's 20sec
+            timerShadowstep:Start(20)
+        else
+            timerShadowstep:Start()
+        end
+	elseif args:IsSpellID(66017, 68753, 68754, 68755) then	-- DeathKnight DeathGrip
+		warnDeathgrip:Show(args.destName)
+        if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 35 second cooldown, but on 25 heroic, it's 20sec
+            timerDeathgrip:Start(20)
+        else
+            timerDeathgrip:Start()
+        end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(66010) then							-- Divine Shield on <mobname>
+	if args:IsSpellID(66010) then                                      -- Divine Shield on <mobname>
 		warnDivineShield:Show(args.destName)
 		specWarnDivineShield:Show(args.destName)
-	elseif args:IsSpellID(65802) then							-- Iceblock on <mobname>
+	elseif args:IsSpellID(65802) then                                  -- Iceblock on <mobname>
 		warnIceBlock:Show(args.destName)
 		specWarnIceBlock:Show(args.destName)
+	elseif args:IsSpellID(65859) and args:IsDestTypePlayer() then      -- Cyclone on <playername>
+		warnCyclone:Show(args.destName)
+	elseif args:IsSpellID(65801) and args:IsDestTypePlayer() then      -- Sheep on <playername>
+		warnSheep:Show(args.destName)
 	end
 end
 
