@@ -38,16 +38,16 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnAddsSoon			= "New adds soon",
 	WarnAdherent			= "Cult Adherent transforming",
-	SpecWarnDeathDecay		= "Death and Decay - move away",
+	SpecWarnDeathDecay		= "Death and Decay - Move away",
 	SpecWarnCurseTorpor		= "Curse of Torpor on you"
 }
 
 L:SetOptionLocalization{
-	WarnAddsSoon			= "Show warning for new adds spawning soon",
-	WarnAdherent			= "Show warning for Adherent yell",	-- Cult Adherent -> Reanimated Adherent transformation iirc
+	WarnAddsSoon			= "Show pre-warning for new adds spawning",
+	WarnAdherent			= "Show warning for Cult Adherent transformation",	-- Cult Adherent -> Reanimated Adherent transformation iirc
 	SpecWarnDeathDecay		= "Show special warning when you are affected by Death and Decay",
 	SpecWarnCurseTorpor		= "Show special warning when you are affected by Curse of Torpor",
-	TimerAdds				= "Show a timer for new adds spawning"
+	TimerAdds				= "Show timer for new adds spawning"
 }
 
 L:SetMiscLocalization{
