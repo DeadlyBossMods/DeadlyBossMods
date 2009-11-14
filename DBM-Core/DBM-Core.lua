@@ -2155,19 +2155,19 @@ end
 
 -- hard coded party-mod support, yay :)
 -- returns heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
-function bossModPrototype:GetDifficulty()
-	if GetInstanceDifficulty() == 1 then
-		return self.modId == "DBM-Party-WotLK" and "normal5" or
-		self.hasHeroic and "normal10" or "heroic10"
-	elseif GetInstanceDifficulty() == 2 then
-		return self.modId == "DBM-Party-WotLK" and "heroic5" or
-		self.hasHeroic and "normal25" or "heroic25"
-	elseif GetInstanceDifficulty() == 3 then
-		return "heroic10"
-	elseif GetInstanceDifficulty() == 4 then
-		return "heroic25"
-	end
-end
+function bossModPrototype:GetDifficulty() 
+    if GetInstanceDifficulty() == 1 then 
+        return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC") and "normal5" or 
+        self.hasHeroic and "normal10" or "heroic10" 
+    elseif GetInstanceDifficulty() == 2 then 
+        return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC") and "heroic5" or 
+        self.hasHeroic and "normal25" or "heroic25" 
+    elseif GetInstanceDifficulty() == 3 then 
+        return "heroic10" 
+    elseif GetInstanceDifficulty() == 4 then 
+        return "heroic25" 
+    end 
+end 
 
 function bossModPrototype:IsDifficulty(...)
 	local diff = self:GetDifficulty()
