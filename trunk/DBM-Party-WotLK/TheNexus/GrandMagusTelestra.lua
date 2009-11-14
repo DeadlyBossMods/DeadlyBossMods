@@ -23,7 +23,7 @@ function mod:OnCombatStart()
 end
 
 function mod:UNIT_HEALTH(uId)
-    if self:GetUnitCreatureID(uId) == 26731 then
+    if self:GetUnitCreatureId(uId) == 26731 then
         local h = UnitHealth(uId) / UnitHealthMax(uId)
         if h > 0.85 then
            warnedSplit = false
