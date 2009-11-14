@@ -185,7 +185,6 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
---	WarningFirstPull		= "First pull detected - Adjusting timers",
 	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",
 	WarningBlackHole		= "Black Hole",
 	SpecWarnBigBang			= "Big Bang",
@@ -195,7 +194,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
---	WarningFirstPull		= "Show warning for first pull",
 	SpecWarnPhasePunch		= "Show special warning when you are affected by Phase Punch",
 	PreWarningBigBang		= "Show pre-warning for Big Bang",
 	SpecWarnBigBang			= "Show special warning for Big Bang",
@@ -209,8 +207,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
-	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
+--	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
+--	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
 	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
 	Emote_CosmicSmash		= "%s begins to cast Cosmic Smash!",
 	PullCheck		= "Time until Algalon transmits distress signal= (%d+) min."
