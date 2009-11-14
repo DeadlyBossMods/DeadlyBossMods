@@ -43,6 +43,7 @@ local timerCastCosmicSmash		= mod:NewCastTimer(4.5, 62311)
 local timerPhasePunch			= mod:NewBuffActiveTimer(45, 64412)
 local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
 
+--[[
 function mod:OnCombatStart(delay)
 	local text = select(3, GetWorldStateUIInfo(1)) 
 	local _, _, time = string.find(text, L.PullCheck) 
@@ -64,10 +65,10 @@ function mod:startTimers(delay)
 	announcePreBigBang:Schedule(80 + delay)
 	timerNextCollapsingStar:Start(15 + delay)
 	timerCDCosmicSmash:Start(25 + delay)
-end
+end--]]
 
 --Backup function that wouldn't be as pretty but would probably work.
---[[
+
     function mod:OnCombatStart(delay)
 	-- added 7 seconds because of +combat until spawn difference
     timerCombatStart:Start(-delay)
@@ -95,8 +96,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	timerCDCosmicSmash:Start(35-delay)
 	end
 end
-
---]]
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(64584, 64443) then 	-- Big Bang
