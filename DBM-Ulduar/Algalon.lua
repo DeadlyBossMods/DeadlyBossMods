@@ -59,12 +59,12 @@ function mod:OnCombatStart(delay)
 	end 
 end
 
-function mod:startTimers(delay)
-	enrageTimer:Start(360 + delay)
-	timerNextBigBang:Start(90.5 + delay)
-	announcePreBigBang:Schedule(80 + delay)
-	timerNextCollapsingStar:Start(15 + delay)
-	timerCDCosmicSmash:Start(25 + delay)
+function mod:startTimers()
+	enrageTimer:Start(360)
+	timerNextBigBang:Start(90.5
+	announcePreBigBang:Schedule(80)
+	timerNextCollapsingStar:Start(15)
+	timerCDCosmicSmash:Start(25)
 end--]]
 
 --Backup function that wouldn't be as pretty but would probably work.
@@ -81,19 +81,19 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPullFirst then
-	-- cancel timers and resync to extra delay in combat start(another 10 sec after this yell til actual combat).
-	WarningFirstPull:Show()
+	-- cancel timers and resync to extra delay in combat start(another 11 sec after this yell til actual combat).
+	WarningFirstPull:Show(11)
 	enrageTimer:Cancel()
 	timerNextBigBang:Cancel()
 	announcePreBigBang:Cancel()
 	timerNextCollapsingStar:Cancel()
 	timerCDCosmicSmash:Cancel()
     timerCombatStart:Start(10-delay)
-	enrageTimer:Start(370-delay)
-	timerNextBigBang:Start(100.5-delay)
-	announcePreBigBang:Schedule(90-delay)
-	timerNextCollapsingStar:Start(25-delay)
-	timerCDCosmicSmash:Start(35-delay)
+	enrageTimer:Start(371-delay)
+	timerNextBigBang:Start(101.5)
+	announcePreBigBang:Schedule(91)
+	timerNextCollapsingStar:Start(26)
+	timerCDCosmicSmash:Start(36)
 	end
 end
 
