@@ -14,7 +14,6 @@ mod:SetCreatureID(32871)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-    "UPDATE_WORLD_STATES",
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -27,7 +26,6 @@ local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
 local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
---local WarningFirstPull		= mod:NewAnnounce("WarningFirstPull")--You're group is too much awesome for algalon. He needs more time to prepare
 
 local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
 local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
@@ -43,13 +41,13 @@ local timerCastCosmicSmash		= mod:NewCastTimer(4.5, 62311)
 local timerPhasePunch			= mod:NewBuffActiveTimer(45, 64412)
 local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
 
---[[
 function mod:OnCombatStart(delay)
 	local text = select(3, GetWorldStateUIInfo(1)) 
-	local _, _, time = string.find(text, L.PullCheck) 
+	local _, _, time = string.find(text, L.PullCheck)
 	if not time then 
-        time = 60
-    end
+        	time = 60 
+    	end
+	time = tonumber(time)
 	if time == 60 then
 		timerCombatStart:Start(25-delay)
 		self:ScheduleMethod(25-delay, "startTimers")	-- 25 seconds roleplaying
@@ -60,41 +58,11 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:startTimers()
-	enrageTimer:Start(360)
-	timerNextBigBang:Start(90.5
+	enrageTimer:Start()
+	timerNextBigBang:Start()
 	announcePreBigBang:Schedule(80)
-	timerNextCollapsingStar:Start(15)
-	timerCDCosmicSmash:Start(25)
-end--]]
-
---Backup function that wouldn't be as pretty but would probably work.
-
-    function mod:OnCombatStart(delay)
-	-- added 7 seconds because of +combat until spawn difference
-    timerCombatStart:Start(-delay)
-	enrageTimer:Start(367-delay)
-	timerNextBigBang:Start(97.5-delay)
-	announcePreBigBang:Schedule(87-delay)
-	timerNextCollapsingStar:Start(22-delay)
-	timerCDCosmicSmash:Start(32-delay)
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPullFirst then
-	-- cancel timers and resync to extra delay in combat start(another 11 sec after this yell til actual combat).
-	WarningFirstPull:Show(11)
-	enrageTimer:Cancel()
-	timerNextBigBang:Cancel()
-	announcePreBigBang:Cancel()
-	timerNextCollapsingStar:Cancel()
-	timerCDCosmicSmash:Cancel()
-    timerCombatStart:Start(10-delay)
-	enrageTimer:Start(371-delay)
-	timerNextBigBang:Start(101.5)
-	announcePreBigBang:Schedule(91)
-	timerNextCollapsingStar:Start(26)
-	timerCDCosmicSmash:Start(36)
-	end
+	timerNextCollapsingStar:Start()
+	timerCDCosmicSmash:Start()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -143,6 +111,3 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		specWarnCosmicSmash:Show()
 	end
 end
-
-
-
