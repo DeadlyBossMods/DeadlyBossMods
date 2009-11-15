@@ -36,12 +36,12 @@ L:SetGeneralLocalization({
 
 L:SetTimerLocalization({
 	TimerStart			= "戰鬥即將開始",
-	TimerShadow			= "暗影水晶"
+	TimerShadow			= "暗影視界"
 })
 
 L:SetOptionLocalization({
 	TimerStart			= "顯示開始計時器",
-	TimerShadow 			= "顯示暗影水晶計時器"
+	TimerShadow 			= "顯示暗影視界計時器"
 })
 
 L:SetMiscLocalization({
@@ -236,8 +236,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	specWarnNova			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示特別警告"):format(64216, "閃電新星"),
 	warnNova			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64216, "閃電新星"),
-	NovaSound			= "當施放閃電新星時播放音效",
 	warnOverCharge			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64218, "超載"),
+	NovaSound			= "當施放閃電新星時播放音效",
 	timerMobOvercharge		= "為超載的小兵顯示計時器(減益疊加)"
 }
 
@@ -259,8 +259,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder			= "當你站在燃焰餘燼上面時顯示特別警告",
-	PlaySoundOnCinder		= "當你站在燃焰餘燼上面時播放音效",
+	SpecWarnCinder			= "當你中了燃焰餘燼時顯示特別警告",
+	PlaySoundOnCinder		= "當你中了燃焰餘燼時播放音效",
 }
 
 L:SetMiscLocalization{

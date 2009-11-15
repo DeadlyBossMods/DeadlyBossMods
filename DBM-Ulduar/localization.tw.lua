@@ -77,7 +77,6 @@ L:SetWarningLocalization{
 	WarnDevouringFlameCast		= "吞噬烈焰: >%s<", 
 }
 L:SetTimerLocalization{
-	timerAllTurretsReady		= "砲塔",
 	timerTurret1			= "砲塔1",
 	timerTurret2			= "砲塔2",
 	timerTurret3			= "砲塔3",
@@ -87,7 +86,6 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecWarnDevouringFlame		= "當你受到吞噬烈焰時顯示特別警告",
 	PlaySoundOnDevouringFlame	= "當你受到吞噬烈焰時播放音效",
-	timerAllTurretsReady		= "為砲塔顯示計時器",
 	warnTurretsReadySoon		= "為砲塔顯示預先警告",
 	warnTurretsReady		= "為砲塔顯示警告",
 	SpecWarnDevouringFlameCast	= "當你中了吞噬烈焰時顯示特別警告",
@@ -117,16 +115,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "你中了裂光彈",
+	SpecialWarningLightBomb 	= "你中了灼熱之光",
 	SpecialWarningGravityBomb	= "你中了重力彈",
 	specWarnConsumption		= "耗損 - 快跑開"
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "當你中了裂光彈時顯示特別警告",
+	SpecialWarningLightBomb		= "當你中了灼熱之光時顯示特別警告",
 	SpecialWarningGravityBomb	= "當你中了重力彈時顯示特別警告",
-	specWarnConsumption		= "當你中了耗損的時顯示特別警告",
-	SetIconOnLightBombTarget	= "為裂光彈的目標設置標記",
+	specWarnConsumption		= "當你中了耗損時顯示特別警告",
+	SetIconOnLightBombTarget	= "為灼熱之光的目標設置標記",
 	SetIconOnGravityBombTarget	= "為重力彈的目標設置標記"
 }
 
@@ -153,8 +151,6 @@ L:SetOptionLocalization{
 	WarningSupercharge		= "當超級充能開始施放時顯示警告",
 	LightningTendrils		= "為閃電觸鬚顯示特別警告",
 	PlaySoundLightningTendrils	= "為閃電觸鬚播放音效",
-	WarningFusionPunch		= "提示熔能拳擊的目標",
-	timerFusionPunchActive		= "為熔能拳擊顯示減益計時器",
 	SetIconOnOverwhelmingPower	= "為極限威能的目標設置標記",
 	RuneofDeath			= "為死亡符文顯示特別警告",
 	SetIconOnStaticDisruption	= "為靜電崩裂的目標設置標記",
@@ -268,7 +264,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast			= "哨兵衝擊 - 快斷法",
+	SpecWarnBlast			= "哨兵衝擊 - 現在斷法",
 	SpecWarnVoid			= "滲洩野性精華 - 快跑開",
 	WarnCatDied 			= "野性防衛者倒下 (剩餘%d隻)",
 	WarnCatDiedOne 			= "野性防衛者倒下 (剩下最後一隻)",
@@ -276,7 +272,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast			= "為哨兵衝擊顯示特別警告",
+	SpecWarnBlast			= "為哨兵衝擊顯示特別警告 (斷法用)",
 	SpecWarnVoid			= "當你中了滲洩野性精華時顯示特別警告",
 	WarnFearSoon			= "為恐嚇尖嘯顯示預先警告",
 	WarnCatDied			= "當野性防衛者死亡時顯示警告",
@@ -302,7 +298,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningFlashFreeze		= "為閃霜顯示特別警告",
 	PlaySoundOnFlashFreeze		= "當施放閃霜時播放音效",
-	WarningStormCloud		= "提示風暴雷雲的目標",
+	YellOnStormCloud		= "當你中了風暴雷雲時大喊",
 	SetIconOnStormCloud		= "為風暴雷雲的目標設置標記"
 }
 
@@ -404,7 +400,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnFistOfStone		= "為石拳連擊顯示特別警告",
 	SpecWarnGroundTremor		= "當地面震顫時顯示特別警告",
-	PlaySoundOnFistOfStone		= "當石拳連擊施放時播放音效",
+	PlaySoundOnFistOfStone		= "為石拳連擊播放音效",
 	TrashRespawnTimer		= "為芙蕾雅的小怪重生顯示計時器"
 }
 
@@ -533,13 +529,13 @@ L:SetWarningLocalization{
 	WarnBrainPortalSoon		= "3秒後 腦部傳送門",
 	SpecWarnFavor			= "你中了薩拉的熱誠",
 	WarnEmpowerSoon			= "暗影信標 即將到來",
-	SpecWarnMaladyNear		= "你附近的>%s<中了心靈缺陷",
+	SpecWarnMaladyNear		= "你附近的%s中了心靈缺陷",
 	SpecWarnDeafeningRoar		= "震耳咆哮",
 	specWarnBrainPortalSoon		= "腦部傳送門 即將到來"
 }
 
 L:SetTimerLocalization{
-	NextPortal			= "下一次 傳送門"
+	NextPortal			= "下一次 腦部傳送門"
 }
 
 L:SetOptionLocalization{
@@ -549,7 +545,7 @@ L:SetOptionLocalization{
 	SpecWarnBrainLink		= "當你中了腦波連結時顯示特別警告",
 	WarningSanity			= "當理智剩下50時顯示警告",
 	SpecWarnSanity			= "當理智過低(25,15,5)時顯示特別警告",
-	SpecWarnGuardianLow		= "當守護者(P1)血量過低時顯示特別警告 (DD用)",
+	SpecWarnGuardianLow		= "當守護者(第1階段)血量過低時顯示特別警告 (DD用)",
 	WarnBrainPortalSoon		= "為腦部傳送門顯示預先警告",
 	SpecWarnMadnessOutNow		= "為瘋狂誘陷結束前顯示特別警告",
 	SetIconOnFearTarget		= "為心靈缺陷的目標設置標記 (頭顱)",

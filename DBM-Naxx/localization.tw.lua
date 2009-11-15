@@ -115,7 +115,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningTeleportNow		= "為傳送顯示警告",
 	WarningTeleportSoon		= "為傳送顯示預先警告",
-	TimerTeleport			= "為傳送顯示計時器"
+	TimerTeleport			= "為傳送顯示計時器",
+	TimerTeleportBack		= "為傳送回來顯示計時器"
 })
 
 ---------------
@@ -215,12 +216,6 @@ L:SetOptionLocalization({
 L:SetWarningLocalization({
 	WarningChargeChanged		= "極性變為%s",
 	WarningChargeNotChanged		= "極性沒有改變",
-})
-
-L:SetTimerLocalization({
-	TimerShiftCast			= "施放極性轉換",
-	TimerNextShift			= "下一次 極性轉換",
-	TimerThrow			= "投擲坦克"
 })
 
 L:SetOptionCatLocalization({
