@@ -59,6 +59,7 @@ local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
               or select(2, UnitClass("player")) == "SHAMAN"
 
 local warnHellfire			= mod:NewSpellAnnounce(68147, 1)
+local preWarnBladestorm 	= mod:NewSoonAnnounce(65947, 2)
 local warnBladestorm		= mod:NewSpellAnnounce(65947, 1)
 local warnHeroism			= mod:NewSpellAnnounce(65983, 2)
 local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
@@ -91,6 +92,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBladestorm:Show()
 		timerBladestorm:Start()
 		timerBladestormCD:Start()
+        preWarnBladestorm:Schedule(85-delay)				-- Pre-Warn will only announce for 2nd and later bladestorm.
 	elseif args:IsSpellID(65983) then						-- Shamen Heroism
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
@@ -143,5 +145,6 @@ function mod:UNIT_DIED(args)
 	   timerDeathgripCD:Cancel()
 	elseif cid == 34475 or cid == 34453 then
 	   timerBladestormCD:Cancel()
+	   preWarnBladestorm:Cancel()
 	end
 end
