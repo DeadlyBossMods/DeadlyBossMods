@@ -11,7 +11,8 @@ mod:RegisterKill("yell", L.YellKill)
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"UNIT_DIED"
 )
 
 
@@ -70,8 +71,9 @@ local warnCyclone           = mod:NewTargetAnnounce(65859, 2, false)
 local warnSheep             = mod:NewTargetAnnounce(65801, 2, false)
 
 local timerBladestorm		= mod:NewBuffActiveTimer(8, 65947)
-local timerShadowstep		= mod:NewCDTimer(30, 66178)
-local timerDeathgrip  		= mod:NewCDTimer(35, 66017)
+local timerShadowstepCD		= mod:NewCDTimer(30, 66178)
+local timerDeathgripCD  	= mod:NewCDTimer(35, 66017)
+local timerBladestormCD  	= mod:NewCDTimer(90, 65947)
 
 local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
 local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
@@ -88,6 +90,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(65947) then						-- Warrior Bladestorm
 		warnBladestorm:Show()
 		timerBladestorm:Start()
+		timerBladestormCD:Start()
 	elseif args:IsSpellID(65983) then						-- Shamen Heroism
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
@@ -98,16 +101,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(66178, 68759, 68760, 68761) then	-- Rogue Shadowstep
 		warnShadowstep:Show()
         if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 30 second cooldown, but on 25 heroic, it's 20sec
-            timerShadowstep:Start(20)
+            timerShadowstepCD:Start(20)
         else
-            timerShadowstep:Start()
+            timerShadowstepCD:Start()
         end
 	elseif args:IsSpellID(66017, 68753, 68754, 68755) then	-- DeathKnight DeathGrip
 		warnDeathgrip:Show(args.destName)
         if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 35 second cooldown, but on 25 heroic, it's 20sec
-            timerDeathgrip:Start(20)
+            timerDeathgripCD:Start(20)
         else
-            timerDeathgrip:Start()
+            timerDeathgripCD:Start()
         end
 	end
 end
@@ -132,3 +135,13 @@ function mod:SPELL_DAMAGE(args)
 	end
 end
 
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 34472 or cid == 34454 then
+	   timerShadowstepCD:Cancel()
+	elseif cid == 34458 or cid == 34461 then
+	   timerDeathgripCD:Cancel()
+	elseif cid == 34475 or cid == 34453 then
+	   timerBladestormCD:Cancel()
+	end
+end
