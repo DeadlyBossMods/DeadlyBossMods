@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("LordMarrowgar", "DBM-Icecrown", 1)
+0local mod	= DBM:NewMod("LordMarrowgar", "DBM-Icecrown", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
@@ -15,6 +15,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
+local preWarnWhirlwind   	= mod:NewSoonAnnounce(69076, 2)
 local warnBoneSpike			= mod:NewCastAnnounce(69057)
 local warnImpale			= mod:NewAnnounce("WarnImpale")
 
@@ -28,6 +29,7 @@ local timerWhirlwindCD		= mod:NewCDTimer(60, 69076)--Changed to a CD timer, it's
 local timerWhirlwind		= mod:NewBuffActiveTimer(28, 69076)--Seems to be 28 second duration, down from 30 in last test. Will watch for more PTR adjustments.
 
 function mod:OnCombatStart(delay)
+    preWarnWhirlwind:Schedule(40-delay)
 	timerWhirlwindCD:Start(45-delay)
 	timerBoneSpike:Start(-delay)
 end
@@ -86,5 +88,6 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69076) then						-- Whirlwind Ends
 		timerWhirlwindCD:Start()
+        preWarnWhirlwind:Schedule(55-delay)
 	end
 end
