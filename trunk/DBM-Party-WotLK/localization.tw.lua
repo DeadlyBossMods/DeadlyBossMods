@@ -254,7 +254,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("新一波"),
-	TimerWaveIn		= "為下一波顯示計時器 (只有6波)",
+	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)",
 })
 
 
@@ -549,6 +549,7 @@ L:SetOptionLocalization({
 --  Krystallus  --
 ------------------
 L = DBM:GetModLocalization("Krystallus")
+
 L:SetGeneralLocalization({
 	name = "克利斯托魯斯"
 })
@@ -1120,9 +1121,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnDesecration		= "當你受到褻瀆的傷害時顯示特別警告",
+	specWarnDesecration		= "當你中了褻瀆時顯示特別警告",
 	warnExplode				= "當食屍鬼爪牙即將自我爆炸時警告",
-	SetIconOnMarkedTarget	= "設置標記在死亡標記的目標"
+	SetIconOnMarkedTarget	= "為死亡標記的目標設置標記"
 })
 
 L:SetMiscLocalization({
@@ -1139,13 +1140,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste			= "加速: >%s< - 快驅散",
+	specWarnHaste			= "加速: %s - 快驅散",
 	specWarnPoison			= "毒藥瓶 - 快跑開",
 })
 
 L:SetOptionLocalization({
 	specWarnHaste			= "當法師獲得加速時特別警告 (驅散/竊取用)",
-	specWarnPoison			= "當你受到毒藥瓶的傷害時顯示特別警告"
+	specWarnPoison			= "當你中了毒藥瓶時顯示特別警告"
 })
 
 L:SetMiscLocalization({
@@ -1189,7 +1190,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specwarnHammerofJustice		= "為制裁之錘顯示特別警告 (驅散用)",
 	specwarnRadiance			= "為烈光顯示特別警告",
-	SetIconOnHammerTarget		= "設置標記在制裁之錘的目標"
+	SetIconOnHammerTarget		= "為制裁之錘的目標設置標記"
 })
 
 L:SetMiscLocalization({
@@ -1269,16 +1270,15 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPursuit				= "當獵殺即將到來時顯示警告",
-	specWarnToxic			= "當你中了Toxic Waste的時顯示特別警告",
-	specWarnPursuit			= "當你中了獵殺時顯示特別警告",
---	SetIconOnPursuitTarget	= "設置標記在獵殺的目標"
+	warnPursuit				= "為獵殺顯示預先警告",
+	specWarnToxic			= "當你中了Toxic Waste時顯示特別警告",
+	specWarnPursuit			= "當你被獵殺時顯示特別警告",
+--	SetIconOnPursuitTarget	= "為獵殺的目標設置標記"
 })
 
 L:SetMiscLocalization({
 	IckPursuit			= "%s正在追擊著你!"
 })
-
 ----------------------------
 --  Forgemaster Garfrost  --
 ----------------------------
@@ -1298,7 +1298,7 @@ L:SetOptionLocalization({
 	warnSaroniteRock			= "為Saronite Rock顯示警告 (清除極寒冰霜用)",
 	specWarnSaroniteRock		= "當你中了Saronite Throw顯示特別警告",
 	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (數值並非一成不變)",
---	SetIconOnSaroniteRockTarget	= "設置標記在Saronite Rock的目標"
+--	SetIconOnSaroniteRockTarget	= "為Saronite Rock的目標設置標記"
 })
 
 L:SetMiscLocalization({
@@ -1315,17 +1315,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTyrannusEngaged			= "『天譴領主』提朗紐斯正在下來 - 做好準備",
+	warnTyrannusEngaged			= "天譴領主提朗紐斯正在降落 - 做好準備",
 	specWarnIcyBlast			= "冰結衝擊 - 快跑開",
 	specWarnHoarfrost			= "你中了Hoarfrost - 快跑開",
 	specWarnHoarfrostNear		= "你附近有人被Hoarfrost - 快跑開"
 })
 
 L:SetOptionLocalization({
+	warnTyrannusEngaged			= "為天譴領主提朗紐斯正在降落顯示特別警告",
 	specWarnIcyBlast			= "當你受到冰結衝擊的傷害時顯示特別警告",
 	specWarnHoarfrost			= "當你中了Hoarfrost時顯示特別警告",
-	specWarnHoarfrostNear		= "當你附近有人被Hoarfrost時顯示特別警告",
-	SetIconOnHoarfrostTarget	= "設置標記在Hoarfrost的目標"
+	specWarnHoarfrostNear		= "你附近有人被Hoarfrost時顯示特別警告",
+	SetIconOnHoarfrostTarget	= "為Hoarfrost的目標設置標記"
 })
 
 L:SetMiscLocalization({

@@ -1,7 +1,7 @@
 ﻿if GetLocale() ~= "zhTW" then return end
-DBM_CORE_LOAD_MOD_ERROR				= "讀取%s模組時發生錯誤：%s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "成功讀取%s模組!"
-DBM_CORE_LOAD_GUI_ERROR				= "無法讀取圖形介面：%s"
+DBM_CORE_LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
+DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組!"
+DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 
 DBM_CORE_COMBAT_STARTED				= "%s開戰. 祝好運與盡興! :)";
 DBM_CORE_BOSS_DOWN				= "%s 倒地, 經過 %s!"
@@ -57,7 +57,7 @@ DBM_CORE_RANGECHECK_HEADER			= "距離監視（%d碼）"
 DBM_CORE_RANGECHECK_SETRANGE			= "設置距離"
 DBM_CORE_RANGECHECK_SOUNDS			= "音效"
 DBM_CORE_RANGECHECK_SOUND_OPTION_1		= "當一位玩家在範圍內時播放音效"
-DBM_CORE_RANGECHECK_SOUND_OPTION_2		= "當多於一位玩家時播放音效"
+DBM_CORE_RANGECHECK_SOUND_OPTION_2		= "當多於一位玩家在範圍內時播放音效"
 DBM_CORE_RANGECHECK_SOUND_0			= "沒有音效"
 DBM_CORE_RANGECHECK_SOUND_1			= "預設音效"
 DBM_CORE_RANGECHECK_SOUND_2			= "蜂鳴聲"
