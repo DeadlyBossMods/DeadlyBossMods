@@ -88,6 +88,6 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69076) then						-- Whirlwind Ends
 		timerWhirlwindCD:Start()
-        preWarnWhirlwind:Schedule(55-delay)
+        preWarnWhirlwind:Schedule(55)
 	end
 end
