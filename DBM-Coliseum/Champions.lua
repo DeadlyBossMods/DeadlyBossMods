@@ -92,7 +92,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBladestorm:Show()
 		timerBladestorm:Start()
 		timerBladestormCD:Start()
-        preWarnBladestorm:Schedule(85-delay)				-- Pre-Warn will only announce for 2nd and later bladestorm.
+        preWarnBladestorm:Schedule(85)				-- Pre-Warn will only announce for 2nd and later bladestorm.
 	elseif args:IsSpellID(65983) then						-- Shamen Heroism
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
