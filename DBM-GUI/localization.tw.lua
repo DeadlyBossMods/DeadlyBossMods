@@ -14,9 +14,9 @@ L.TabCategory_CLASSIC			= "舊世界"
 L.TabCategory_OTHER			= "其它"
 
 L.BossModLoaded				= "%s狀態"
-L.BossModLoad_now 			= [[該模組尚未啟動。
+L.BossModLoad_now 			= [[該模組尚未載入。
 當你進入相應副本時其會自動載入。
-你也可以點擊該按鈕手動啟動該模組。]]
+你也可以點擊該按鈕手動載入該模組。]]
 
 L.PosX					= 'X座標'
 L.PosY					= 'Y座標'
@@ -25,11 +25,11 @@ L.MoveMe 				= '移動'
 L.Button_OK 				= '確定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '載入模組'
-L.Mod_Enabled				= "開啟模組"
+L.Mod_Enabled				= "啟用首領模組"
 L.Mod_EnableAnnounce			= "團隊廣播"
 L.Reset 				= "重置"
 
-L.Enable  				= "開啟"
+L.Enable  				= "啟用"
 L.Disable				= "關閉"
 
 L.NoSound				= "靜音"
@@ -47,7 +47,7 @@ L.Statistic_Heroic			= "英雄模式"
 L.General 				= "DBM綜合設置"
 L.EnableDBM 				= "啟用DBM"
 L.EnableStatus 				= "回復“status”密語"
-L.AutoRespond 				= "開啟戰鬥中自動密語回復"
+L.AutoRespond 				= "啟用戰鬥中自動密語回復"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
@@ -77,7 +77,7 @@ L.ShowFakedRaidWarnings 		= "以偽裝團隊警告資訊的方式顯示警告內
 L.WarningIconLeft 			= "左側顯示圖示"
 L.WarningIconRight 			= "右側顯示圖示"
 L.RaidWarnMessage 			= "感謝您使用Deadly Boss Mods"
-L.BarWhileMove 				= "團隊警告可以移動"
+L.BarWhileMove 				= "可移動的團隊警告"
 L.RaidWarnSound				= "發出團隊警告時播放音效"
 L.SpecialWarnSound			= "發出特別警告時播放音效"
 
@@ -85,7 +85,7 @@ L.SpecialWarnSound			= "發出特別警告時播放音效"
 L.BarSetup   				= "計時條樣式"
 L.BarTexture 				= "計時條材質"
 L.BarStartColor				= "開始顏色"
-L.BarEndColor 				= "完結顏色"
+L.BarEndColor 				= "結束顏色"
 L.ExpandUpwards				= "計時條向上延伸"
 L.Bar_Font				= "計時條使用的字型"
 L.Bar_FontSize				= "字型大小"
