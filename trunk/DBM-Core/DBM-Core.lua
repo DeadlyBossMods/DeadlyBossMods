@@ -96,6 +96,7 @@ DBM.DefaultOptions = {
 	HealthFrameLocked = false,
 	HealthFrameWidth = 200,
 	-- next overall global values to change DBM behavior
+	DontShowBossAnnounces = false,
 	DontSendBossAnnounces = false,
 	DontSendBossWhispers = false,
 	DontSetBossIcons = false,
@@ -2266,6 +2267,7 @@ do
 			if (self.mod.Options.Announce and not self.Options.DontSendBossAnnounces) and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
 				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), "RAID_WARNING")
 			end
+			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the Announces if Spamfiltered
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			local text = ("%s%s%s|r%s"):format(
 				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
