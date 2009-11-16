@@ -130,9 +130,10 @@ L.SpamBlockBossWhispers			= "Filter <DBM> warning whispers while fighting"
 L.BlockVersionUpdatePopup		= "Disable update notification popup"
 L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
 
-L.Area_SpamFilter_Outgoing		= "Features from DBM that will affect other players"
-L.SpamBlockNoSendWhisper		= "Don't send whispers to other Players"
+L.Area_SpamFilter_Outgoing		= "Features from DBM Mods"
+L.SpamBlockNoShowAnnounce		= "Don't show Announces (and don't play sound)"
 L.SpamBlockNoSendAnnounce		= "Don't send Announces to RaidWarnung Chat"
+L.SpamBlockNoSendWhisper		= "Don't send whispers to other Players"
 L.SpamBlockNoSetIcon			= "Don't set Icons from BossMods"
 
 
