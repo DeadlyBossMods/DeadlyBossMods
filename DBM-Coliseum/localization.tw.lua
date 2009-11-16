@@ -57,7 +57,7 @@ L:SetWarningLocalization{
 	SpecialWarningCharge		= "你被衝鋒了 - 快跑開",
 	SpecialWarningChargeNear	= "你附近有人被衝鋒 - 快跑開",
 	SpecialWarningBile		= "你中了燃燒膽汁",
-	SpecialWarningTranq		= "冰嚎擁有泡沫之怒 - 現在消除"
+	SpecialWarningTranq		= "泡沫之怒 - 現在消除"
 }
 
 ---------------------
@@ -103,6 +103,7 @@ L:SetOptionLocalization{
 	IncinerateFleshIcon		= "為焚化血肉的目標設置標記 (頭顱)",
 	LegionFlameIcon			= "為軍團烈焰的目標設置標記 (正方)",
 	LegionFlameWhisper		= "密語提示軍團烈焰的目標",
+	LegionFlameRunSound		= "為軍團烈焰播放音效",
 	IncinerateShieldFrame		= "在首領血量裡顯示焚化血肉的血量"
 }
 
