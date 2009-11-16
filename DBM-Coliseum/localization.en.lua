@@ -55,7 +55,7 @@ L:SetWarningLocalization{
 	SpecialWarningCharge		= "Charge on you - Run away",
 	SpecialWarningChargeNear	= "Charge near you - Run away",
 	SpecialWarningBile			= "Burning Bile on you",
-	SpecialWarningTranq			= "Icehowl has Frothing Range - Tranq Now"
+	SpecialWarningTranq			= "Frothing Rage - Tranq now"
 }
 
 ---------------------
@@ -100,7 +100,7 @@ L:SetOptionLocalization{
 	IncinerateFleshIcon			= "Set icons on Incinerate Flesh targets (skull)",
 	LegionFlameIcon				= "Set icons on Legion Flame targets (square)",
 	LegionFlameWhisper			= "Send whisper to Legion Flame targets",
-	LegionFlameRunSound			= "Play Sound when affected by Legion Flame",
+	LegionFlameRunSound			= "Play sound on Legion Flame",
 	IncinerateShieldFrame		= "Show boss health with a health bar for Incinerate Flesh"
 }
 
