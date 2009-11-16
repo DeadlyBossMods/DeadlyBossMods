@@ -42,6 +42,7 @@ local specWarnFelInferno		= mod:NewSpecialWarning("SpecWarnFelInferno")
 local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", false)
 local SpecWarnFelFireballDispel	= mod:NewSpecialWarning("SpecWarnFelFireballDispel", isMagicDispeller)
 
+mod:AddBoolOption("LegionFlameRunSound", true, "announce")
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameIcon", true, "announce")
 mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
@@ -84,6 +85,9 @@ do
 		if args:IsPlayer() and args:IsSpellID(66877, 67070, 67071, 67072) then		-- Legion Flame
 			if GetTime() - 3 > lastflame then
 				specWarnFlame:Show()
+				if self.Options.LegionFlameRunSound then
+					PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+				end
 				lastflame = GetTime()
 			end
 		elseif args:IsPlayer() and args:IsSpellID(66496, 68716, 68717, 68718) then	-- Fel Inferno
@@ -146,10 +150,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
 		local targetname = args.destName
 		timerFlame:Start(args.destName)
-		timerFlameCD:Start()
+		timerFlameCD:Start()		
 		if args:IsPlayer() then
 			specWarnFlame:Show()
-		end
+			if self.Options.LegionFlameRunSound then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
+		end		
 		if self.Options.LegionFlameIcon then
 			self:SetIcon(args.destName, 6, 8)
 		end
