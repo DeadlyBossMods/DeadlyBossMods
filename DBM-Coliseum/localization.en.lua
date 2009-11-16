@@ -78,7 +78,6 @@ L:SetWarningLocalization{
 	SpecWarnFelInferno			= "Fel Inferno - Run away",
 	SpecWarnFelFireball			= "Fel Fireball - Interrupt now",
 	SpecWarnFelFireballDispel	= "Fel Fireball on %s - Dispel"
-
 }
 
 L:SetMiscLocalization{
@@ -101,6 +100,7 @@ L:SetOptionLocalization{
 	IncinerateFleshIcon			= "Set icons on Incinerate Flesh targets (skull)",
 	LegionFlameIcon				= "Set icons on Legion Flame targets (square)",
 	LegionFlameWhisper			= "Send whisper to Legion Flame targets",
+	LegionFlameRunSound			= "Play Sound when affected by Legion Flame",
 	IncinerateShieldFrame		= "Show boss health with a health bar for Incinerate Flesh"
 }
 
