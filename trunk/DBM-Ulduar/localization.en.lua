@@ -211,7 +211,7 @@ L:SetMiscLocalization{
 --	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
 	Emote_CollapsingStars	= "%s begins to Summon Collapsing Stars!",
 	Emote_CosmicSmash		= "%s begins to cast Cosmic Smash!",
-	PullCheck		= "Time until Algalon transmits distress signal= (%d+) min."
+	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."
 }
 
 ----------------
