@@ -1793,6 +1793,11 @@ local function CreateOptionsMenu()
 			spamArea:CreateCheckButton(L.ShowBigBrotherOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
 		end
 
+		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 100, true)
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSendWhisper, true, nil, "DontSendBossWhispers")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSendAnnounce, true, nil, "DontSendBossAnnounces")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetBossIcons")
+
 		spamPanel:SetMyOwnHeight()
 	end
 
