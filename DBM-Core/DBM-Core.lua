@@ -94,7 +94,11 @@ DBM.DefaultOptions = {
 	SpecialWarningFontColor = {0.0, 0.0, 1.0},
 	HealthFrameGrowUp = false,
 	HealthFrameLocked = false,
-	HealthFrameWidth = 200
+	HealthFrameWidth = 200,
+	-- next overall global values to change DBM behavior
+	DontSendBossAnnounces = false,
+	DontSendBossWhispers = false,
+	DontSetBossIcons = false,
 }
 
 DBM.Bars = DBT:New()
@@ -753,8 +757,55 @@ do
 			sortMe[i] = nil
 		end
 	end
-end
+	--[[ hmm don't think that this is realy good, so disabled for the moment
+	function DBM:ElectMaster()
+		-- FIXME: Add Zonecheck for raidmates
+		local elect_player = nil
+		local elect_revision = tonumber(DBM.Revision)
+		local electd_raidlead = false
 
+		-- first of all, we only import the ranked mates
+		for i, v in pairs(raid) do
+			if v.rank >= 1 then
+				table.insert(sortMe, v)
+			end
+		end
+		table.sort(sortMe, sort)		
+		if not #sortMe then return nil end	-- no raid, no election
+
+		local p = sortMe[1]
+		if p.revision >= tonumber(DBM.Revision) then	-- first we check the latest revision
+			DBM:AddMsg("Newest Version seems to be Revision of "..p.name.." r"..p.revision.." - local revision = r"..DBM.Revision)
+			elect_revision = tonumber(p.revision)
+		end
+		for i, v in ipairs(sortMe) do	-- now we kick all assists with a revision lower than the hightest
+			if tonumber(v.revision) < elect_revision then
+				table.remove(sortMe, i)
+			end
+		end		
+		for i, v in ipairs(sortMe) do	-- we prefere to elect the Raidleader so we try this
+			if v.rank >= 2 then
+				DBM:AddMsg("Revision of "..v.name.." is "..v.revision.." and thats the RaidLeader")
+				elect_player = v.name
+				elect_revision = tonumber(v.revision)
+				elect_raidlead = true
+			end
+		end
+		if not elect_raidlead then
+			table.sort(sortMe, function(v1, v2) return v1.name > v2.name end)	-- order by Name
+			if sortMe[#sortMe] then
+				p = sortMe[#sortMe]
+				DBM:AddMsg("Elected "..p.name.." is assist and best name")
+				elect_player = p.name
+				elect_revision = tonumber(p.revision)
+			end
+		end
+
+		table.wipe(sortMe)
+		return elect_player, elect_revision, elect_raidlead
+	end
+	--]]
+end
 
 -------------------
 --  Pizza Timer  --
@@ -2115,7 +2166,11 @@ function bossModPrototype:SetRevision(revision)
 end
 
 function bossModPrototype:SendWhisper(msg, target)
-	return SendChatMessage(chatPrefixShort..msg, "WHISPER", nil, target)
+	if not DBM.Options.DontSendBossWhispers then
+		return SendChatMessage(chatPrefixShort..msg, "WHISPER", nil, target)
+	else
+		return nil
+	end
 end
 
 function bossModPrototype:GetUnitCreatureId(uId)
@@ -2208,7 +2263,7 @@ do
 
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
-			if self.mod.Options.Announce and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
+			if (self.mod.Options.Announce and not self.Options.DontSendBossAnnounces) and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
 				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), "RAID_WARNING")
 			end
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
@@ -3086,6 +3141,7 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 function bossModPrototype:SetIcon(target, icon, timer)
+	if not DBM.Options.DontSetBossIcons then return end
 	if DBM:GetRaidRank() == 0 then return end
 	icon = (icon and icon >= 0 and icon <= 8 and icon) or 8
 	local oldIcon = self:GetIcon(target) or 0
