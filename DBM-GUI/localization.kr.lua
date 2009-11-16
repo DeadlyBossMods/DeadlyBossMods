@@ -131,3 +131,8 @@ L.SpamBlockBossWhispers			= "전투 중 사용되는 <DBM> 경보 귓속말 감�
 L.BlockVersionUpdatePopup		= "업데이트 알림 창 끄기"
 L.ShowBigBrotherOnCombatStart	= "전투가 시작되면 BigBrother 버프 체크 수락"
 
+L.Area_SpamFilter_Outgoing		= "공통 필터 옵션"
+L.SpamBlockNoShowAnnounce		= "알림 또는 경고 소리 실행하지 않기"
+L.SpamBlockNoSendAnnounce		= "공격대 채팅 알림을 보내지 않기"
+L.SpamBlockNoSendWhisper		= "다른 플레이어에게 귓속말을 보내지 않기"
+L.SpamBlockNoSetIcon			= "대상 공격대 아이콘 설정하지 않기"
