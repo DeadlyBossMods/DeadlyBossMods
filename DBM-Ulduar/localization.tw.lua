@@ -84,8 +84,8 @@ L:SetTimerLocalization{
 	timerGroundedTemp		= "地上階段",
 }
 L:SetOptionLocalization{
-	SpecWarnDevouringFlame		= "當你受到吞噬烈焰時顯示特別警告",
-	PlaySoundOnDevouringFlame	= "當你受到吞噬烈焰時播放音效",
+	SpecWarnDevouringFlame		= "當你中了吞噬烈焰時顯示特別警告",
+	PlaySoundOnDevouringFlame	= "當你中了吞噬烈焰時播放音效",
 	warnTurretsReadySoon		= "為砲塔顯示預先警告",
 	warnTurretsReady		= "為砲塔顯示警告",
 	SpecWarnDevouringFlameCast	= "當你中了吞噬烈焰時顯示特別警告",
@@ -414,6 +414,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	DarkGlare			= "P3Wx2雷射彈幕",
 	MagneticCore			= ">%s< 拿到了磁能之核",
 	WarningShockBlast		= "震爆 - 快跑開",
 	WarnBombSpawn			= "炸彈機器人出現了"

@@ -123,10 +123,16 @@ L.HP_ShowDemo				= "顯示血量框架"
 L.BarWidth				= "寬度: %d"
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter			= "垃圾過濾"
+L.Panel_SpamFilter			= "整體及垃圾過濾"
 L.Area_SpamFilter			= "垃圾過濾選項"
 L.HideBossEmoteFrame			= "隱藏團隊首領表情框"
 L.SpamBlockRaidWarning			= "過濾其他首領模組的警告" 
 L.SpamBlockBossWhispers			= "當戰鬥時過濾 <DBM> 密語警告"
 L.BlockVersionUpdatePopup		= "關閉彈出的更新通知"
 L.ShowBigBrotherOnCombatStart		= "戰鬥開始時顯示BigBrother(檢查團隊 增益/精煉UI)"
+
+L.Area_SpamFilter_Outgoing		= "整體過濾選項"
+L.SpamBlockNoShowAnnounce		= "不顯示提示或播放警告音效"
+L.SpamBlockNoSendAnnounce		= "不發送提示到團隊頻道"
+L.SpamBlockNoSendWhisper		= "不發送密語給其他玩家"
+L.SpamBlockNoSetIcon			= "不設置標記在目標上"
