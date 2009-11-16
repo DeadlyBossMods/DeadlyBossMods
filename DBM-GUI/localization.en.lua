@@ -122,7 +122,7 @@ L.HP_ShowDemo				= "Show HP frame"
 L.BarWidth					= "Bar width: %d"
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter				= "Spam Filter"
+L.Panel_SpamFilter				= "Global and Spam Filters"
 L.Area_SpamFilter				= "Spam Filter Options"
 L.HideBossEmoteFrame			= "Hide raid boss emote frame"
 L.SpamBlockRaidWarning			= "Filter announces from other boss mods" 
@@ -130,10 +130,9 @@ L.SpamBlockBossWhispers			= "Filter <DBM> warning whispers while fighting"
 L.BlockVersionUpdatePopup		= "Disable update notification popup"
 L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
 
-L.Area_SpamFilter_Outgoing		= "Features from DBM Mods"
-L.SpamBlockNoShowAnnounce		= "Don't show Announces (and don't play sound)"
-L.SpamBlockNoSendAnnounce		= "Don't send Announces to RaidWarnung Chat"
-L.SpamBlockNoSendWhisper		= "Don't send whispers to other Players"
-L.SpamBlockNoSetIcon			= "Don't set Icons from BossMods"
-
+L.Area_SpamFilter_Outgoing		= "Global Filter Options"
+L.SpamBlockNoShowAnnounce		= "Do not show announces or play warning sounds"
+L.SpamBlockNoSendAnnounce		= "Do not send announces to raid chat"
+L.SpamBlockNoSendWhisper		= "Do not send whispers to other players"
+L.SpamBlockNoSetIcon			= "Do not set icons on targets"
 
