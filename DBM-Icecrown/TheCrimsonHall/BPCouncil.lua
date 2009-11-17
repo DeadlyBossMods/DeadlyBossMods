@@ -7,16 +7,21 @@ mod:SetCreatureID(37970, 37972, 37973)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_SUMMON"
 )
 
 local warnTargetSwitch		= mod:NewAnnounce("WarnTargetSwitch", 3)
 local warnTargetSwitchSoon	= mod:NewAnnounce("WarnTargetSwitchSoon", 2)
+local warnConjureFlames		= mod:NewSpellAnnounce(72040)
+local warnDarkNucleus		= mod:NewSpellAnnounce(71943)			-- instant cast
+local warnShockVortex		= mod:NewCastAnnounce(72037)			-- 1,5sec cast
 
 local timerTargetSwitch		= mod:NewTimer(31, "TimerTargetSwitch")
-
-
+local timerDarkNucleus		= mod:NewNextTimer(15, 71943)			-- Seen a range from 14,9 - 16,8
+local timerShockVortex		= mod:NewNextTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6 
 
 --[[
 70982 Taldaram		71582 = 10man ??
@@ -29,41 +34,53 @@ local timerTargetSwitch		= mod:NewTimer(31, "TimerTargetSwitch")
 ]]--
 
 
-local currentTarget = "none"
+local currentPrince = "none"
 
 function mod:OnCombatStart(delay)
 	warnTargetSwitchSoon:Schedule(26-delay)
-	currentTarget = "none"
+	currentPrince = "none"
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellId(72037) then			-- Shock Vortex
+		warnShockVortex:Show()
+		timerShockVortex:Start()
+	elseif args:IsSpellId(71943) then		-- Dark Nucleus
+		warnDarkNucleus:Show()
+		timerDarkNucleus:Start()
+	elseif args:IsSpellId(71718, 72049) then	-- Conjure (Inferno) Flames
+		warnConjureFlames:Show()
+	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellId(71075) and not currentTarget = "V" then
+	if args:IsSpellId(71075) and not currentPrince == "V" then
 		warnTargetSwitch:Show(L.Valanar)
 		warnTargetSwitchSoon:Schedule(26)
-		currentTarget = "V"
-	elseif args:IsSpellId(71079) and not currentTarget = "K" then
+		currentPrince = "V"
+	elseif args:IsSpellId(71079) and not currentPrince == "K" then
 		warnTargetSwitch:Show(L.Keleseth)
 		warnTargetSwitchSoon:Schedule(26)
-		currentTarget = "K"
-	elseif args:IsSpellId(71082) and not currentTarget = "T" then
+		currentPrince = "K"
+	elseif args:IsSpellId(71082) and not currentPrince == "T" then
 		warnTargetSwitch:Show(L.Taldaram)
 		warnTargetSwitchSoon:Schedule(26)
-		currentTarget = "T"
+		currentPrince = "T"
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellId(70952) and not currentTarget = "V" then
+	if args:IsSpellId(70952) and not currentPrince == "V" then
 		warnTargetSwitch:Show(L.Valanar)
 		warnTargetSwitchSoon:Schedule(26)
-		currentTarget = "V"
-	elseif args:IsSpellId(70981) and not currentTarget = "K" then
+		currentPrince = "V"
+	elseif args:IsSpellId(70981) and not currentPrince == "K" then
 		warnTargetSwitch:Show(L.Keleseth)
 		warnTargetSwitchSoon:Schedule(26)
-		currentTarget = "K"
-	elseif args:IsSpellId(70982) and not currentTarget = "T" then
+		currentPrince = "K"
+	elseif args:IsSpellId(70982) and not currentPrince == "T" then
 		warnTargetSwitch:Show(L.Taldaram)
 		warnTargetSwitchSoon:Schedule(26)
-		currentTarget = "T"
+		currentPrince = "T"
 	end
 end

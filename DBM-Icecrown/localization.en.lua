@@ -169,11 +169,18 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerTargetSwitch	= "Possible target switch"
+}
 
 L:SetOptionLocalization{
 	WarnTargetSwitch	= "Warn when you have to switch targets",	-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Pre-warning for when the Princes switches",	-- Every ~31secs you have to dps a different Prince
 	TimerTargetSwitch	= "Timer for target switch cooldown"
+}
+
+L:SetMiscLocalization{
+	Keleseth		= "Prince Keleseth",
+	Taldaram		= "Prince Taldaram",
+	Valanar			= "Prince Valanar"
 }
 
 -----------------------
