@@ -206,7 +206,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull				= "Euer Handeln ist unlogisch. Alle Möglichkeiten dieser Begegnung wurden berechnet. Das Pantheon wird die Nachricht des Beobachters erhalten, ungeachtet des Ausgangs.",
 	YellPullFirst			= "Seht Eure Welt durch meine Augen: Ein Universum so gewaltig - grenzenlos - unbegreiflich selbst für die Klügsten unter Euch.",
-	Emote_CollapsingStars	= "%s beginnt damit, kollabierende Sterne zu beschwören!!",
+	Emote_CollapsingStar	= "%s beginnt damit, kollabierende Sterne zu beschwören!!",
 }
 
 ----------------

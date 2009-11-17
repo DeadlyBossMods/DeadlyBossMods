@@ -234,7 +234,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 --	YellPull				= "너희 행동은 비논리적이다. 이 전투에서 가능한 결말은 모두 계산되었다. 결과와 상관없이 판테온은 관찰자의 전갈을 받을 것이다.",
 --	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",	
-	Emote_CollapsingStars	= "%s에게 붕괴의 별을 시전 합니다!",
+	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
 	Emote_CosmicSmash		= "%s에게 우주의 강타를 시전합니다.!",
 	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."	
 }
