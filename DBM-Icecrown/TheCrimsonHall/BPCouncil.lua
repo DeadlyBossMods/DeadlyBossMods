@@ -9,15 +9,18 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
-	"SPELL_SUMMON"
+	"SPELL_AURA_APPLIED"
 )
+
+local isTank	= UnitHealth("player") > 40000			-- check if player is a tank based on HP
 
 local warnTargetSwitch		= mod:NewAnnounce("WarnTargetSwitch", 3)
 local warnTargetSwitchSoon	= mod:NewAnnounce("WarnTargetSwitchSoon", 2)
 local warnConjureFlames		= mod:NewSpellAnnounce(72040)
 local warnDarkNucleus		= mod:NewSpellAnnounce(71943)			-- instant cast
 local warnShockVortex		= mod:NewCastAnnounce(72037)			-- 1,5sec cast
+
+local specWarnResonance		= mod:NewSpecialWarning("SpecWarnResonance", isTank)
 
 local timerTargetSwitch		= mod:NewTimer(31, "TimerTargetSwitch")
 local timerDarkNucleus		= mod:NewNextTimer(15, 71943)			-- Seen a range from 14,9 - 16,8
@@ -82,5 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTargetSwitch:Show(L.Taldaram)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "T"
+	elseif args:IsSpellId(71822) and args:IsPlayer() then		-- Shadow Resonance
+		specWarnResonance:Show()
 	end
 end
