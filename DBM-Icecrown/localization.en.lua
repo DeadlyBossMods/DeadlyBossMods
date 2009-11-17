@@ -163,26 +163,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch	= "Target switch to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
+	WarnTargetSwitch		= "Switch target to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
 	WarnTargetSwitchSoon	= "Target switch soon",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
-	SpecWarnResonance	= "Shadow Resonance - move"
+	SpecWarnResonance		= "Shadow Resonance - Move"
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch	= "Possible target switch"
+	TimerTargetSwitch		= "Possible target switch"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch	= "Warn when you have to switch targets",			-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Pre-warning for when the Princes switches",			-- Every ~31secs you have to dps a different Prince
-	TimerTargetSwitch	= "Timer for target switch cooldown",
-	SpecWarnResonance	= "Show special warning when a Dark Nuclear is following you"	-- If it follows you, you have to move to the tank
+	WarnTargetSwitch		= "Show warming to switch targets",								-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",							-- Every ~31 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "Show timer for target switch cooldown",
+	SpecWarnResonance		= "Show special warning when a Dark Nucleus is following you"	-- If it follows you, you have to move to the tank
 }
 
 L:SetMiscLocalization{
-	Keleseth		= "Prince Keleseth",
-	Taldaram		= "Prince Taldaram",
-	Valanar			= "Prince Valanar"
+	Keleseth				= "Prince Keleseth",
+	Taldaram				= "Prince Taldaram",
+	Valanar					= "Prince Valanar"
 }
 
 -----------------------
