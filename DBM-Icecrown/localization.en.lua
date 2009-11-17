@@ -163,9 +163,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnTargetSwitch	= "Target switch to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
+	WarnTargetSwitchSoon	= "Target switch soon"			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
 }
 
+L:SetTimerLocalization{
+	TimerTargetSwitch	= "Possible target switch"
+
 L:SetOptionLocalization{
+	WarnTargetSwitch	= "Warn when you have to switch targets",	-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Pre-warning for when the Princes switches",	-- Every ~31secs you have to dps a different Prince
+	TimerTargetSwitch	= "Timer for target switch cooldown"
 }
 
 -----------------------
