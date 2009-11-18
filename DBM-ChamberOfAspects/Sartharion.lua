@@ -15,8 +15,6 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_EMOTE"
 )
 
-local isInCombatWithSartharion = false
-
 local warnShadowFissure	    = mod:NewSpellAnnounce(59127)
 local warnTenebron          = mod:NewAnnounce("WarningTenebron", 2, nil, false)
 local warnShadron           = mod:NewAnnounce("WarningShadron", 2, nil, false)
@@ -53,14 +51,6 @@ local function isunitdebuffed(spellID)
 	return false
 end
 
-function mod:OnCombatStart(delay)
-    isInCombatWithSartharion = true
-end
-
-function mod:OnCombatEnd()
-    isInCombatWithSartharion = false
-end
-
 function mod:OnSync(event)
 	if event == "FireWall" then
 		timerWall:Start()
@@ -83,7 +73,7 @@ function mod:OnSync(event)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-    if args:IsSpellID(57579, 59127) and isInCombatWithSartharion then
+    if args:IsSpellID(57579, 59127) and self:IsInCombat() then
         warnShadowFissure:Show()
         timerShadowFissure:Start()
     end
