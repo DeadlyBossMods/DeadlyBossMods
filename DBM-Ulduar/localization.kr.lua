@@ -236,7 +236,7 @@ L:SetMiscLocalization{
 --	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",	
 	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
 	Emote_CosmicSmash		= "%s에게 우주의 강타를 시전합니다.!",
-	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."	
+	PullCheck				= "(%d+)분 후에 알갈론이 신호 전송을 시작합니다."	
 }
 
 
