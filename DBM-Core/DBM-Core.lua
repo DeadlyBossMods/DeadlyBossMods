@@ -2805,6 +2805,10 @@ do
 	function bossModPrototype:NewBuffActiveTimer(...)
 		return newTimer(self, "active", ...)
 	end
+	
+	function bossModPrototype:NewCombatTimer(...)
+		return newTimer(self, "combatstart", ...)
+	end
 
 	function bossModPrototype:NewCastTimer(timer, ...)
 		if timer > 1000 then -- hehe :) best hack in DBM. This makes the first argument optional, so we can omit it to use the cast time from the spell id ;)
