@@ -8,7 +8,7 @@
 ## SavedVariablesPerCharacter: DBMIcecrown_SavedVars, DBMIcecrown_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
-## X-DBM-Mod-SubCategories: Entryway,The Plagueworks,The Crimson Hall,Frostwing Halls,The Frozen Throne
+## X-DBM-Mod-SubCategories: The Lower Spire,The Plagueworks,The Crimson Hall,Frostwing Halls,The Frozen Throne
 ## X-DBM-Mod-SubCategories-zhTW: 城塞大門,瘟疫工坊,赤紅大廳,霜翼大廳,冰封王座
 ## X-DBM-Mod-Name: Icecrown Citadel
 ## X-DBM-Mod-Name-deDE: Eiskronenzitadelle
