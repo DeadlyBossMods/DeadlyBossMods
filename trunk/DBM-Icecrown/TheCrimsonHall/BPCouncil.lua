@@ -48,10 +48,10 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(72037) then			-- Shock Vortex
 		warnShockVortex:Show()
 		timerShockVortex:Start()
-	elseif args:IsSpellId(71943) then		-- Dark Nucleus
+	elseif args:IsSpellID(71943) then		-- Dark Nucleus
 		warnDarkNucleus:Show()
 		timerDarkNucleus:Start()
-	elseif args:IsSpellId(71718, 72049) then	-- Conjure (Inferno) Flames
+	elseif args:IsSpellID(71718, 72049) then	-- Conjure (Inferno) Flames
 		warnConjureFlames:Show()
 	end
 end
@@ -61,11 +61,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnTargetSwitch:Show(L.Valanar)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "V"
-	elseif args:IsSpellId(71079) and not currentPrince == "K" then
+	elseif args:IsSpellID(71079) and not currentPrince == "K" then
 		warnTargetSwitch:Show(L.Keleseth)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "K"
-	elseif args:IsSpellId(71082) and not currentPrince == "T" then
+	elseif args:IsSpellID(71082) and not currentPrince == "T" then
 		warnTargetSwitch:Show(L.Taldaram)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "T"
@@ -77,15 +77,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTargetSwitch:Show(L.Valanar)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "V"
-	elseif args:IsSpellId(70981) and not currentPrince == "K" then
+	elseif args:IsSpellID(70981) and not currentPrince == "K" then
 		warnTargetSwitch:Show(L.Keleseth)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "K"
-	elseif args:IsSpellId(70982) and not currentPrince == "T" then
+	elseif args:IsSpellID(70982) and not currentPrince == "T" then
 		warnTargetSwitch:Show(L.Taldaram)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "T"
-	elseif args:IsSpellId(71822) and args:IsPlayer() then		-- Shadow Resonance
+	elseif args:IsSpellID(71822) and args:IsPlayer() then		-- Shadow Resonance
 		specWarnResonance:Show()
 	end
 end
