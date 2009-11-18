@@ -131,3 +131,9 @@ L.SpamBlockBossWhispers			= "Filtrer les alertes <DBM> chuchotement pendant les 
 L.BlockVersionUpdatePopup		= "Enlève le message pop-up quand vous êtes sur un boss"
 L.ShowBigBrotherOnCombatStart	= "Autoriser Big Brother à regarder les buffs quand le combat débute"
 
+L.Area_SpamFilter_Outgoing		= "Options Global des Filtres"
+L.SpamBlockNoShowAnnounce		= "Ne pas montrer les annonces ou jouer les sons"
+L.SpamBlockNoSendAnnounce		= "Ne pas écrire les annonces dans le chatt de raid"
+L.SpamBlockNoSendWhisper		= "Ne pas chuchotter les autres joueurs"
+L.SpamBlockNoSetIcon			= "Ne pas mettre d'icones sur la cible"
+

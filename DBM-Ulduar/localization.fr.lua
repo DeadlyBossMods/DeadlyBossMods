@@ -210,10 +210,11 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull				= "Vos actions sont illogiques. Tous les résultats possibles de cette rencontre ont été calculés. Le panthéon recevra le message de l'Observateur quelque soit l'issue.",
-	YellPullFirst			= "",
+--	YellPull				= "Vos actions sont illogiques. Tous les résultats possibles de cette rencontre ont été calculés. Le panthéon recevra le message de l'Observateur quelque soit l'issue.",
+--	YellPullFirst			= "",
 	Emote_CollapsingStar	= "commence à lancer un effondrement",
-	Emote_CosmicSmash		= "commence à incanter un Choc cosmique"
+	Emote_CosmicSmash		= "commence à incanter un Choc cosmique",
+	PullCheck				= "Signal de détresse d'Algalon transmis dans= (%d+) min."
 }
 
 ----------------
