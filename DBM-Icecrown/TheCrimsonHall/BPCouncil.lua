@@ -45,7 +45,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellId(72037) then			-- Shock Vortex
+	if args:IsSpellID(72037) then			-- Shock Vortex
 		warnShockVortex:Show()
 		timerShockVortex:Start()
 	elseif args:IsSpellId(71943) then		-- Dark Nucleus
@@ -57,7 +57,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellId(71075) and not currentPrince == "V" then
+	if args:IsSpellID(71075) and not currentPrince == "V" then
 		warnTargetSwitch:Show(L.Valanar)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "V"
@@ -73,7 +73,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellId(70952) and not currentPrince == "V" then
+	if args:IsSpellID(70952) and not currentPrince == "V" then
 		warnTargetSwitch:Show(L.Valanar)
 		warnTargetSwitchSoon:Schedule(26)
 		currentPrince = "V"
