@@ -107,7 +107,7 @@ function mod:SPELL_CAST_SUCCESS(args)
         else
             timerShadowstepCD:Start()
         end
-	elseif args:IsSpellID(66017, 68753, 68754, 68755) then	-- DeathKnight DeathGrip
+	elseif args:IsSpellID(66017, 68753, 68754, 68755) and args:IsDestTypePlayer() then	-- DeathKnight DeathGrip
 		warnDeathgrip:Show(args.destName)
         if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 35 second cooldown, but on 25 heroic, it's 20sec
             timerDeathgripCD:Start(20)
