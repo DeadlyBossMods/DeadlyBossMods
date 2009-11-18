@@ -1784,6 +1784,12 @@ local function CreateOptionsMenu()
 
 	do
 		local spamPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpamFilter, "option")
+		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 120, true)
+		spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSendAnnounce, true, nil, "DontSendBossAnnounces")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSendWhisper, true, nil, "DontSendBossWhispers")
+		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetBossIcons")
+
 		local spamArea = spamPanel:CreateArea(L.Area_SpamFilter, nil, 135, true)
 		spamArea:CreateCheckButton(L.HideBossEmoteFrame, true, nil, "HideBossEmoteFrame")
 		spamArea:CreateCheckButton(L.SpamBlockRaidWarning, true, nil, "SpamBlockRaidWarning")
@@ -1792,13 +1798,8 @@ local function CreateOptionsMenu()
 		if BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			spamArea:CreateCheckButton(L.ShowBigBrotherOnCombatStart, true, nil, "ShowBigBrotherOnCombatStart")
 		end
-
-		local spamOutArea = spamPanel:CreateArea(L.Area_SpamFilter_Outgoing, nil, 120, true)
-		spamOutArea:CreateCheckButton(L.SpamBlockNoShowAnnounce, true, nil, "DontShowBossAnnounces")
-		spamOutArea:CreateCheckButton(L.SpamBlockNoSendAnnounce, true, nil, "DontSendBossAnnounces")
-		spamOutArea:CreateCheckButton(L.SpamBlockNoSendWhisper, true, nil, "DontSendBossWhispers")
-		spamOutArea:CreateCheckButton(L.SpamBlockNoSetIcon, true, nil, "DontSetBossIcons")
-
+		spamArea:AutoSetDimension()
+		spamOutArea:AutoSetDimension()
 		spamPanel:SetMyOwnHeight()
 	end
 
