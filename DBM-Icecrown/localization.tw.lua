@@ -166,9 +166,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnTargetSwitch		= "轉換目標到: %s",		-- Ugh, no nice spellname/id to use for general localization :(
+	WarnTargetSwitchSoon	= "即將轉換目標",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	SpecWarnResonance		= "Shadow Resonance - 跑開"
+}
+
+L:SetTimerLocalization{
+	TimerTargetSwitch		= "可能的轉換目標"
 }
 
 L:SetOptionLocalization{
+	WarnTargetSwitch		= "為轉換目標顯示警告",								-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "為轉換目標顯示預先警告",							-- Every ~31 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "為目標轉換冷卻顯示計時器",
+	SpecWarnResonance		= "當Dark Nucleus跟隨你時顯示特別警告"	-- If it follows you, you have to move to the tank
+}
+
+L:SetMiscLocalization{
+	Keleseth				= "Prince Keleseth",
+	Taldaram				= "Prince Taldaram",
+	Valanar					= "Prince Valanar"
 }
 
 -----------------------
