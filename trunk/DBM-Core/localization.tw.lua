@@ -97,6 +97,7 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cd = "%s 冷卻",
 	next = "下一次 %s",
 	achievement = "%s",
+	combatstart = "戰鬥開始",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -106,6 +107,7 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cd = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器",
 	next = "為下一次 |cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
 	achievement = "為成就:%s顯示計時器",
+	combatstart = "為開始戰鬥顯示計時器",
 }
 
 -- Auto-generated Warning Localizations

@@ -173,7 +173,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Show warming to switch targets",								-- Warn when another Prince needs to be damaged
+	WarnTargetSwitch		= "Show warning to switch targets",								-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",							-- Every ~31 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Show timer for target switch cooldown",
 	SpecWarnResonance		= "Show special warning when a Dark Nucleus is following you"	-- If it follows you, you have to move to the tank
