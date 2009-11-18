@@ -203,8 +203,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
-	YellPullFirst			= "從我的雙眼觀看你的世界:一個無邊無際的宇宙--連你們之中最具智慧者都無法想像的廣闊無垠。",
+--	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
+--	YellPullFirst			= "從我的雙眼觀看你的世界:一個無邊無際的宇宙--連你們之中最具智慧者都無法想像的廣闊無垠。",
 	Emote_CollapsingStar		= "%s開始召喚崩陷之星!",
 	Emote_CosmicSmash		= "%s開始施展宇宙潰擊!",
 	PullCheck			= "艾爾加隆開始上傳滅世訊息的剩餘時間= (%d+)分鐘。"
