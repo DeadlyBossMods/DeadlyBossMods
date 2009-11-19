@@ -18,8 +18,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecialLocust			= "Cпец-предупреждение для Жуков-трупоедов",
-	WarningLocustFaded		= "Предупреждение для исчезновения Жуков-трупоедов",
-	TimerLocustFade 		= "Отсчет времени до исчезновения Жуков-трупоедов"
+	WarningLocustFaded		= "Предупреждение для исчезновения Жуков-трупоедов"
 })
 
 ----------------------------
@@ -148,7 +147,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful				= "Предупреждение для Удара ненависти\n(требуются права лидера или помощника)"
+	WarningHateful				= "Объявлять цели под Ударом ненависти\n(требуются права лидера или помощника)"
 })
 
 L:SetMiscLocalization({
@@ -209,7 +208,6 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarningChargeChanged			= "Предупреждение, когда ваша полярность изменена",
 	WarningChargeNotChanged			= "Предупреждение, когда ваша полярность не изменена",
-	TimerShiftCast				= "Отсчет времени до Сдвига полярности",
 	ArrowsEnabled				= "Отображать стрелки (обычная \"2-сторонняя\" стратегия)",
 	ArrowsRightLeft				= "Стрелки влево/вправо для \"4-сторонней\" стратегии",
 	ArrowsInverse				= "Обратная \"4-сторонняя\" стратегия (вправо, если полярность изменена, влево, если нет)",
@@ -263,8 +261,7 @@ L:SetOptionLocalization({
 	WarningWaveSoon			= "Предупреждать перед следующей волной",
 	WarningWaveSpawned		= "Предупреждение для волны призыва",
 	WarningRiderDown		= "Предупреждение, когда всадник мертв",
-	WarningKnightDown		= "Предупреждение, когда рыцарь мертв",
-	WarningPhase2			= "Предупреждение для фазы 2"
+	WarningKnightDown		= "Предупреждение, когда рыцарь мертв"
 })
 
 L:SetTimerLocalization({
@@ -300,7 +297,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerMark			= "Отсчет времени до знака",
 	WarningMarkSoon			= "Предупреждать перед следующими знаками",
 	WarningMarkNow			= "Предупреждение для знаков",
 	SpecialWarningMarkOnPlayer	= "Предупреждение, когда >4 знаков на вас"
