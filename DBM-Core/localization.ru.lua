@@ -75,57 +75,62 @@ DBM_CORE_SLASHCMD_HELP			= {
 	"/dbm help: вывод этой справки",
 }
 
-DBM_ERROR_NO_PERMISSION			= "У вас недостаточно прав, для выполнение этой операции."
+DBM_ERROR_NO_PERMISSION				= "У вас недостаточно прав, для выполнение этой операции."
 
-DBM_CORE_BOSSHEALTH_HIDE_FRAME		= "Скрыть"
+DBM_CORE_BOSSHEALTH_HIDE_FRAME			= "Скрыть"
 
-DBM_CORE_ALLIANCE			= "Альянс"
-DBM_CORE_HORDE				= "Орда"
+DBM_CORE_ALLIANCE				= "Альянс"
+DBM_CORE_HORDE					= "Орда"
 
-DBM_CORE_UNKNOWN			= "неизвестно"
+DBM_CORE_UNKNOWN				= "неизвестно"
 
-DBM_CORE_TIMER_PULL			= "Атака"
-DBM_CORE_ANNOUNCE_PULL			= "Атака через %d сек."
-DBM_CORE_ANNOUNCE_PULL_NOW		= "Атака!"
+DBM_CORE_TIMER_PULL				= "Атака"
+DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек."
+DBM_CORE_ANNOUNCE_PULL_NOW			= "Атака!"
 
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL 	= "Скорость убийства"
-
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL 		= "Скорость убийства"
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS.target 		= "%s: %%s"
-DBM_CORE_AUTO_TIMER_TEXTS.cast 			= "%s"
-DBM_CORE_AUTO_TIMER_TEXTS.active 		= "%s"
-DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "Восстановление %s"
-DBM_CORE_AUTO_TIMER_TEXTS.next 			= "Следующий %s"
-DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS = {
+	target = "%s: %%s",
+	cast = "%s",
+	active = "%s",
+	cd = "Восстановление %s",
+	next = "Следующий %s",
+	achievement = "%s",
+	combatstart = "Начало боя",
+}
 
-DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "Время действия эффекта |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "Время действия заклинания |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_TIMER_OPTIONS.active 		= "Отображать продолжительность |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Отсчет времени для %s"
+DBM_CORE_AUTO_TIMER_OPTIONS = {
+	target = "Время действия эффекта |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Время действия заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
+	active = "Время действия |cff71d5ff|Hspell:%d|h%s|h|r",
+	cd = "Отсчет времени до восстановления |cff71d5ff|Hspell:%d|h%s|h|r",
+	next = "Отсчет времени до следующего |cff71d5ff|Hspell:%d|h%s|h|r",
+	achievement = "Отсчет времени для %s",
+	combatstart = "Отсчет времени до начала боя",
+}
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.target		= ">%%s< под воздействием %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell		= "%s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast		= "Читение заклинания %s: %.1f сек"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon		= "Скоро %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s через %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase		= "Фаза %d"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
+	target = "%s на >%%s<",
+	spell = "%s",
+	cast = "Читение заклинания %s: %.1f сек",
+	soon = "Скоро %s",
+	prewarn = "%s через %s",
+	phase = "Фаза %d",
+}
 
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "Объявлять цель, под воздействием |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell	= "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast		= "Предупреждение, когда читает заклинание |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon		= "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase	= "Объявлять фазу %d"
-
+local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
+	target = "Объявлять цель, под воздействием |cff71d5ff|Hspell:%d|h%s|h|r",
+	spell = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Предупреждение, когда |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	soon = prewarnOption,
+	prewarn = prewarnOption,
+	phase = "Объявлять фазу %d"
 
 -- New special warnings
-DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Индикатор спец-предупреждения"
-DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Специальное предупреждение"
-
-
-
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "Индикатор спец-предупреждения"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "Специальное предупреждение"
 
