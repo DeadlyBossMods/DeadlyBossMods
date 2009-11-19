@@ -235,6 +235,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	Outro	= "你的旅途才剛開始，年輕的王子。召集你的軍隊，到北裂境的嚴寒之地來見我。在那裡，我們可以算算我們之間的新仇舊恨。你將在那裡理解你真正的命運。"
+})
+
 -------------------
 --  Wave Timers  --
 -------------------
