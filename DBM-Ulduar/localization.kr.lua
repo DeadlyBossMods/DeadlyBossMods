@@ -206,8 +206,7 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "다음 붕괴의 별",
-	PossibleNextCosmicSmash	= "다음 우주의 강타",
-	TimerCombatStart		= "곧 전투 시작"
+	PossibleNextCosmicSmash	= "다음 우주의 강타"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch		= "위상의 주먹 : >%s< - %d 중첩",
@@ -227,15 +226,14 @@ L:SetOptionLocalization{
 	NextCollapsingStar			= "다음 붕괴의 별 시전 타이머 보기",
 	PossibleNextCosmicSmash		= "다음 우주의 강타 시전 타이머 보기",	
 	WarningCosmicSmash 			= "우주의 강타 알리기",
-	SpecWarnCosmicSmash 		= "우주의 강타 특수 경고 보기",
-	TimerCombatStart			= "전투 시작 타이머 보기"
+	SpecWarnCosmicSmash 		= "우주의 강타 특수 경고 보기"
 }
 
 L:SetMiscLocalization{
 --	YellPull				= "너희 행동은 비논리적이다. 이 전투에서 가능한 결말은 모두 계산되었다. 결과와 상관없이 판테온은 관찰자의 전갈을 받을 것이다.",
 --	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",	
 	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
-	Emote_CosmicSmash		= "%s에게 우주의 강타를 시전합니다.!",
+	Emote_CosmicSmash		= "%s에게 우주의 강타를 시전합니다!",
 	PullCheck				= "(%d+)분 후에 알갈론이 신호 전송을 시작합니다."	
 }
 
