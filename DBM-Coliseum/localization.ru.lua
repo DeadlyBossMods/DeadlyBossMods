@@ -54,7 +54,7 @@ L:SetWarningLocalization{
 	SpecialWarningToxin		= "Паралитический токсин на вас - бегите",
 	SpecialWarningCharge		= "Рывок к вам - бегите",
 	SpecialWarningChargeNear	= "Рывок около вас - бегите",
-	SpecialWarningBile		= "Горящая Желчь на вас"?
+	SpecialWarningBile		= "Горящая Желчь на вас",
 	SpecialWarningTranq		= "Вскипающий гнев - Усмиряющий выстрел"
 }
 
