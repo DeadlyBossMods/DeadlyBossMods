@@ -35,13 +35,11 @@ L:SetOptionLocalization{
 	SetIconOnChargeTarget		= "Set icons on charge targets (skull)",
 	SetIconOnBileTarget			= "Set icons on Burning Bile targets",
 	ClearIconsOnIceHowl			= "Clear all icons before charge",
-	TimerNextBoss				= "Show timer for next boss spawn",
-	TimerCombatStart			= "Show timer for start of combat"
+	TimerNextBoss				= "Show timer for next boss spawn"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss				= "Next boss",
-	TimerCombatStart			= "Combat starts"
+	TimerNextBoss				= "Next boss"
 }
 
 L:SetWarningLocalization{
