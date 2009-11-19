@@ -43,7 +43,7 @@ local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
 local specWarnTranq         = mod:NewSpecialWarning("SpecialWarningTranq", canTranq)
 
 local enrageTimer			= mod:NewEnrageTimer(223)
-local timerCombatStart		= mod:NewTimer(23, "TimerCombatStart")
+local timerCombatStart		= mod:NewCombatTimer(23)
 
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
@@ -178,7 +178,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	local target = msg:match(L.Charge)
+	local target = msg:match(L.Charge) or msg:find(L.Charge)
 	if target then
 		timerNextCrash:Start()
 		if self.Options.ClearIconsOnIceHowl then
