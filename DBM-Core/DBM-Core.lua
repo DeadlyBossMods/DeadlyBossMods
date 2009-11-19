@@ -3151,7 +3151,7 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 function bossModPrototype:SetIcon(target, icon, timer)
-	if not DBM.Options.DontSetBossIcons then return end
+	if DBM.Options.DontSetBossIcons then return end
 	if DBM:GetRaidRank() == 0 then return end
 	icon = (icon and icon >= 0 and icon <= 8 and icon) or 8
 	local oldIcon = self:GetIcon(target) or 0
