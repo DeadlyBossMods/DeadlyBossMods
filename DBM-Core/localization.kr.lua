@@ -91,45 +91,36 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "풀링했습니다. 긴장하세요.!"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill(업적 타이머)"
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",	
-	cd = "%s 쿨다운",
-	next = "다음 %s",
-	achievement = "%s",	
-	combatstart = "전투 시작",	
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cast 			= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active 		= "%s"	
+DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "%s 쿨다운"
+DBM_CORE_AUTO_TIMER_TEXTS.next 			= "다음 %s"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.combatstart	= "전투 시작"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "|cff71d5ff|Hspell:%d|h%s|h|r 디버프 타이머 보기",
-	cast = "|cff71d5ff|Hspell:%d|h%s|h|r 시전 타이머 보기",
-	active = "|cff71d5ff|Hspell:%d|h%s|h|r 유지 타이머 보기",
-	cd = "|cff71d5ff|Hspell:%d|h%s|h|r 쿨다운 타이머 보기",
-	next = "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이머 보기",
-	achievement = "%s 위한 타이머 보기", -- translate	
-	combatstart = "전투 시작 타이머 보기",	
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "|cff71d5ff|Hspell:%d|h%s|h|r 디버프 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "|cff71d5ff|Hspell:%d|h%s|h|r 시전 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.active		= "|cff71d5ff|Hspell:%d|h%s|h|r 유지 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "|cff71d5ff|Hspell:%d|h%s|h|r 쿨다운 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "%s 위한 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.combatstart = "전투 시작 타이머 보기"
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s : >%%s<",
-	spell = "%s",
-	cast = "주문시전 %s : %.1f 초",
-	soon = "곧 %s",
-	prewarn = "%s : %s",
-	phase = "페이즈 %d",	
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target 	= "%s : >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell 		= "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast 		= "주문시전 %s : %.1f 초"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon 		= "곧 %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s : %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 		= "페이즈 %d"
 
-local prewarnOption = "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기",
-	spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기",
-	cast 	= "|cff71d5ff|Hspell:%d|h%s|h|r 시전을 시작할 경우 경고 보기",
-	soon 	= prewarnOption,
-	prewarn = prewarnOption,
-	phase 	= "페이즈 %d 의 경고 보기"	
-}
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast 	= "|cff71d5ff|Hspell:%d|h%s|h|r 시전을 시작할 경우 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "페이즈 %d 의 경고 보기"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "특수 경고 움직이기"

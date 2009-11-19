@@ -91,43 +91,34 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull ahora!"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Matar rapido"
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "%s CD",
-	next = "Siguiente %s",
-	achievement = "%s",
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cast 			= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "%s CD"
+DBM_CORE_AUTO_TIMER_TEXTS.next 			= "Siguiente %s"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement	= "%s"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Mostrar tiempo de debuff |cff71d5ff|Hspell:%d|h%s|h|r ",
-	cast = "mostrar tiempo de cast de |cff71d5ff|Hspell:%d|h%s|h|r ",
-	active = "Mostrar duracion de |cff71d5ff|Hspell:%d|h%s|h|r ",
-	cd = "Mostrar cd de |cff71d5ff|Hspell:%d|h%s|h|r ",
-	next = "Mostrar tiempo para el siguiente |cff71d5ff|Hspell:%d|h%s|h|r",
-	achievement = "Mostrar tiempo para %s",
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "Mostrar tiempo de debuff |cff71d5ff|Hspell:%d|h%s|h|r "
+DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "mostrar tiempo de cast de |cff71d5ff|Hspell:%d|h%s|h|r "
+DBM_CORE_AUTO_TIMER_OPTIONS.active 		= "Mostrar duracion de |cff71d5ff|Hspell:%d|h%s|h|r "
+DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "Mostrar cd de |cff71d5ff|Hspell:%d|h%s|h|r "
+DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "Mostrar tiempo para el siguiente |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Mostrar tiempo para %s"
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s en >%%s<",
-	spell = "%s",
-	cast = "Casteando %s: %.1f seg",
-	soon = "%s pronto",
-	prewarn = "%s en %s",
-	phase = "Fase %d",
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target = "%s en >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell = "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast = "Casteando %s: %.1f seg"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon = "%s pronto"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn = "%s en %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase = "Fase %d"
 
-local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r",
-	spell = "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r",
-	soon = prewarnOption,
-	prewarn = prewarnOption,
-	phase = "Mostrar aviso para fase %d"
-}
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast		= "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon		= "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase	= "Mostrar aviso para fase %d"
 
 
 

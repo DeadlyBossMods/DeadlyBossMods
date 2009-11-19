@@ -91,44 +91,35 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull maintenant!"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill"
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "CD de: %s",
-	next = "Prochain(e) %s",
-	achievement = "%s"
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target		= "%s: %%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cast			= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "CD de: %s"
+DBM_CORE_AUTO_TIMER_TEXTS.next			= "Prochain(e) %s"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement 	= "%s"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Afficher le temps du debuff pour: |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Afficher la barre d'incantation pour: |cff71d5ff|Hspell:%d|h%s|h|r",
-	active = "Afficher le timer pour la fin de: |cff71d5ff|Hspell:%d|h%s|h|r",
-	cd = "Afficher le cooldown pour: |cff71d5ff|Hspell:%d|h%s|h|r",
-	next = "Afficher le timer pour le prochain: |cff71d5ff|Hspell:%d|h%s|h|r",
-	achievement = "Show timer for %s" -- translate
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "Afficher le temps du debuff pour: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "Afficher la barre d'incantation pour: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_TIMER_OPTIONS.active 		= "Afficher le timer pour la fin de: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "Afficher le cooldown pour: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "Afficher le timer pour le prochain: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Show timer for %s" -- FR Translation required!!
+
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s sur >%%s<",
-	spell = "%s",
-	cast = "Cast %s: %.1f sec",
-	soon = "%s bientôt",
-	prewarn = "%s dans %s",
-	phase = "Phase %d",
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target		= "%s sur >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell		= "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast		= "Cast %s: %.1f sec"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon		= "%s bientôt"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s dans %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase		= "Phase %d"		-- FR Translation required!!
 
-local prewarnOption = "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Annonce la cible de |cff71d5ff|Hspell:%d|h%s|h|r",
-	spell = "Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Montre une alerte quand |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
-	soon = prewarnOption,
-	prewarn = prewarnOption,
-	phase = "Montre une alerte pour la phase %d"
-}
-
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "Annonce la cible de |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell	= "Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast		= "Montre une alerte quand |cff71d5ff|Hspell:%d|h%s|h|r is being cast"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon		= "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase	= "Montre une alerte pour la phase %d"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Alerte spéciale déplaçable"
