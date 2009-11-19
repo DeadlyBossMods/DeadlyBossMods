@@ -25,8 +25,8 @@ local specWarnWhirlwind		= mod:NewSpecialWarning("SpecWarnWhirlwind")
 mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 
 local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
-local timerWhirlwindCD		= mod:NewCDTimer(60, 69076)--Changed to a CD timer, it's always at least a minute but new logs indicate it's not dead on, i'm seing 61-65sec variation
-local timerWhirlwind		= mod:NewBuffActiveTimer(25, 69076)--Seems to be 28 second duration, down from 30 in last test. Will watch for more PTR adjustments.
+local timerWhirlwindCD		= mod:NewCDTimer(60, 69076)
+local timerWhirlwind		= mod:NewBuffActiveTimer(25, 69076)
 
 function mod:OnCombatStart(delay)
     preWarnWhirlwind:Schedule(40-delay)
@@ -68,7 +68,7 @@ function mod:warnImpale()
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(69062, 72669) then							-- Impale (This function is iffy and I'm not sure it'll work, but it is the earliest combatlog entry to detect off of.)
+	if args:IsSpellID(69062, 72669) then							-- Impale
 		self:UnscheduleMethod("warnImpale")
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		mod:ScheduleMethod(0.2, "warnImpale")
@@ -78,10 +78,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69076, 70834) then						-- Whirlwind Begins
 		timerWhirlwind:Show(args.destName)
---[[	elseif args:IsSpellID(69065) then					-- Impale (this function is a backup if summon doesn't work. This happens at least 1-2 seconds after the summon event and after person has already taken damage from it.
-		self:UnscheduleMethod("warnImpale")
-		impaleTargets[#impaleTargets + 1] = args.destName
-		mod:ScheduleMethod(0.2, "warnImpale")]]--
 	end
 end
 
