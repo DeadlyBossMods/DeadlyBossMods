@@ -24,36 +24,38 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarningSnobold			= "Предупреждение о призыве Снобольда-вассала",
 	SpecialWarningImpale3		= "Спец-предупреждение для Прокалывания (>= 3 стека)",
+	SpecialWarningAnger3		= "Спец-предупреждение для Вскипающего гнева (>=3 стека)",
 	SpecialWarningFireBomb		= "Спец-предупреждение если на вас Зажигательная бомба",
 	SpecialWarningSlimePool		= "Спец-предупреждение, если под вами Лужа жижи",
 	SpecialWarningSilence		= "Спец-предупреждение для Сотрясающего топота (безмолвие)",
 	SpecialWarningToxin		= "Спец-предупреждение, если на вас Паралитический токсин",
 	SpecialWarningBile		= "Спец-предупреждение, когда на вас Горящея Желчь",
-	SpecialWarningCharge		= "Спец-предупреждение, если Айсхаул хочет вас Растаптать",
+	SpecialWarningCharge		= "Спец-предупреждение, если Ледяной Рев хочет вас Растаптать",
+	SpecialWarningTranq		= "Спец-предупреждение, когда Ледяной Рев набирает Вскипающий гнев (Усмиряющий выстрел)",
 	PingCharge			= "Показать на миникарте место, куда попадает Ледяной Рев, если он избрал вас целью",
-	SpecialWarningChargeNear	= "Спец-предупреждение, если Айсхаул хочет кого рядом Растаптать",
-	SetIconOnChargeTarget		= "Установить метку на цель Топота",
-	SetIconOnBileTarget		= "Установить метку игроков под воздействием Горящей Желчью",
+	SpecialWarningChargeNear	= "Спец-предупреждение, когда Ледяной Рев готовится сделать рывок на цель рядом с вами",
+	SetIconOnChargeTarget		= "Установить метку на цель под воздействием Топота (череп)",
+	SetIconOnBileTarget		= "Установить метку на игроков под воздействием Горящей Желчи",
 	ClearIconsOnIceHowl		= "Снимать все иконки перед Топотом",
-	TimerNextBoss			= "Отсчет времени до появления следующего противника",
-	TimerCombatStart		= "Отсчет времени до начала битвы"
+	TimerNextBoss			= "Отсчет времени до появления следующего противника"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss			= "Прибытие следующего босса",
-	TimerCombatStart		= "Битва начнется через"
+	TimerNextBoss			= "Прибытие следующего босса"
 }
 
 L:SetWarningLocalization{
 	WarningSnobold			= "Призыв %s",
 	SpecialWarningImpale3		= "Прокалывание >%d< на вас",
+	SpecialWarningAnger3		= "Вскипающий гнев >%d<",
 	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
 	SpecialWarningSlimePool		= "Кислотная Жижа - бегите",
 	SpecialWarningSilence		= "Безмолвие через 1.5 секунды!",
 	SpecialWarningToxin		= "Паралитический токсин на вас - бегите",
 	SpecialWarningCharge		= "Рывок к вам - бегите",
 	SpecialWarningChargeNear	= "Рывок около вас - бегите",
-	SpecialWarningBile		= "Горящая Желчь на вас"
+	SpecialWarningBile		= "Горящая Желчь на вас"?
+	SpecialWarningTranq		= "Вскипающий гнев - Усмиряющий выстрел"
 }
 
 ---------------------
@@ -76,7 +78,6 @@ L:SetWarningLocalization{
 	SpecWarnFelInferno		= "Геенна скверны - бегите",
 	SpecWarnFelFireball		= "Огненный шар Скверны - Прерывание",
 	SpecWarnFelFireballDispel	= "Огненный шар Скверны на %s - рассейте заклинание"
-
 }
 
 L:SetMiscLocalization{
@@ -99,6 +100,7 @@ L:SetOptionLocalization{
 	IncinerateFleshIcon		= "Установить метку на игрока с Испепелением плоти (череп)",
 	LegionFlameIcon			= "Установить метку на игрока с Пламенем легиона (квадрат)",
 	LegionFlameWhisper		= "Сообщить цели, под воздействием Пламени легиона",
+	LegionFlameRunSound		= "Звуковой сигнал, когда Пламя Легиона",
 	IncinerateShieldFrame		= "Показать здоровье босса с индикатором здоровья для Испепеления плоти"
 }
 
