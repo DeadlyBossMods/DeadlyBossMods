@@ -123,11 +123,16 @@ L.HP_ShowDemo				= "Индикатор здоровья"
 L.BarWidth				= "Ширина индикатора: %d"
 
 -- Tab: Spam Filter
-L.Panel_SpamFilter			= "Фильтрация сообщений"
-L.Area_SpamFilter			= "Общие параметры фильтра навязчивых сообщений"
+L.Panel_SpamFilter			= "Общие и Фильтрация сообщений"
+L.Area_SpamFilter			= "Параметры Фильтрации навязчивых сообщений"
 L.HideBossEmoteFrame			= "Скрывать сообщения эмоций рейдового босса"
 L.SpamBlockRaidWarning			= "Фильтрация предупреждения от других DBM" 
 L.SpamBlockBossWhispers			= "Фильтрация <DBM> предупреждения шепотом в бою"
 L.BlockVersionUpdatePopup		= "Всплывающее сообщение, если версия устарела"
 L.ShowBigBrotherOnCombatStart		= "Выполнять проверку \"BigBrother \" положительных эффектов, перед началом боевых действий"
 
+L.Area_SpamFilter_Outgoing		= "Параметры общей Фильтрации"
+L.SpamBlockNoShowAnnounce		= "Не объявлять или предупреждать звуком игрока"
+L.SpamBlockNoSendAnnounce		= "Не объявлять в чат рейда"
+L.SpamBlockNoSendWhisper		= "Не отправлять предупреждения шепотом другим игроукам"
+L.SpamBlockNoSetIcon			= "Не устанавливать метки на цели"
