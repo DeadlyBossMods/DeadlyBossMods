@@ -95,11 +95,11 @@ function mod:ShadowStrike()
 	end
 end
 
+local PColdTargets = {}
 do
 	local function sort_by_group(v1, v2)
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
 	end
-	local PColdTargets = {}
 	function mod:SetPcoldIcons()
 		if self.Options.SetIconsOnPCold and DBM:GetRaidRank() > 0 then
 			table.sort(PColdTargets, sort_by_group)
