@@ -176,7 +176,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart  		= "Отсчет времени до начала битвы",
-	TimerWin 		= "Отсчет времени до победы",
 	TimerFlag 		= "Отсчет времени до восстановления флага",
 	ShowFlagCarrier 	= "Показать флагоносца",
 	ShowFlagCarrierErrorNote = "Сообщения об ошибках в режиме боя"
