@@ -95,19 +95,24 @@ function mod:ShadowStrike()
 	end
 end
 
-local PColdTargets = {}
-function mod:SetPcoldIcons()
-	if self.Options.SetIconsOnPCold and DBM:GetRaidRank() > 0 then
-		table.sort(PColdTargets)
-		local PColdIcon = 7
-		for i, v in ipairs(PColdTargets) do
-			if self.Options.AnnouncePColdIcons then
-				SendChatMessage(L.PcoldIconSet:format(PColdIcon, UnitName(v)), "RAID")
+do
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
+	end
+	local PColdTargets = {}
+	function mod:SetPcoldIcons()
+		if self.Options.SetIconsOnPCold and DBM:GetRaidRank() > 0 then
+			table.sort(PColdTargets, sort_by_group)
+			local PColdIcon = 7
+			for i, v in ipairs(PColdTargets) do
+				if self.Options.AnnouncePColdIcons then
+					SendChatMessage(L.PcoldIconSet:format(PColdIcon, UnitName(v)), "RAID")
+				end
+				mod:SetIcon(UnitName(v), PColdIcon)
+				PColdIcon = PColdIcon - 1
 			end
-			mod:SetIcon(UnitName(v), PColdIcon)
-			PColdIcon = PColdIcon - 1
+			table.wipe(PColdTargets)	
 		end
-		table.wipe(PColdTargets)	
 	end
 end
 
