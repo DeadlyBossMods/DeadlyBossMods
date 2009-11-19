@@ -37,11 +37,13 @@ L:SetOptionLocalization{
 	SetIconOnBileTarget			= "타오르는 담즙 대상 아이콘 설정",
 	ClearIconsOnIceHowl			= "얼음울음의 사나운 돌진 이후 모든 공격대 아이콘 없앰",
 	PingCharge					= "얼음울음에게 사나운 돌진의 대상이 될 경우 미니맵에 핑 표시하기",		
-	TimerNextBoss				= "다음 보스 등장 타이머 보기"
+	TimerNextBoss				= "다음 보스 등장 타이머 보기",
+	TimerCombatStart			= "전투 시작 타이머 보기"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss				= "곧 다음 보스"
+	TimerNextBoss				= "곧 다음 보스",
+	TimerCombatStart			= "곧 전투 시작"
 }
 
 L:SetWarningLocalization{
