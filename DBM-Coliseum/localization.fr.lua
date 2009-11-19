@@ -37,13 +37,11 @@ L:SetOptionLocalization{
 	SetIconOnChargeTarget		= "Met une icône sur la cible de la charge ( Tête de mort )",
 	SetIconOnBileTarget			= "Met une icône sur la cible de la Bile brûlante",
 	ClearIconsOnIceHowl			= "Enlève toutes les icônes avant la prochaine charge",
-	TimerNextBoss				= "Montre le timer pour l'arrivée du prochain boss",
-	TimerCombatStart			= "Montre le timer avant le début du combat"
+	TimerNextBoss				= "Montre le timer pour l'arrivée du prochain boss"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss				= "Prochain boss dans",
-	TimerCombatStart			= "Le combat débute dans"
+	TimerNextBoss				= "Prochain boss dans"
 }
 
 L:SetWarningLocalization{

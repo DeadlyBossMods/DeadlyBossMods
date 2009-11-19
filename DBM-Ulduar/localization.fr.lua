@@ -183,8 +183,7 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "Prochain choc cosmique",
-	PossibleNextCosmicSmash	= "Prochain Choc cosmique possible",
-	TimerCombatStart		= "Le combat débute dans"
+	PossibleNextCosmicSmash	= "Prochain Choc cosmique possible"
 }
 
 L:SetWarningLocalization{
@@ -205,8 +204,7 @@ L:SetOptionLocalization{
 	NextCollapsingStar		= "Montre un timer pour le prochain choque cosmique",
 	WarningCosmicSmash 		= "Annonce le Choc cosmique",
 	SpecWarnCosmicSmash 	= "Montre une alerte spéciale pour le Choc cosmique",
-	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique",
-	TimerCombatStart		= "Montre le timer avant le début du combat"
+	PossibleNextCosmicSmash	= "Montre le timer pour un possible Choc cosmique"
 }
 
 L:SetMiscLocalization{
