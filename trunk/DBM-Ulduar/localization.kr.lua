@@ -206,7 +206,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	NextCollapsingStar		= "다음 붕괴의 별",
-	PossibleNextCosmicSmash	= "다음 우주의 강타"
+	PossibleNextCosmicSmash	= "다음 우주의 강타",
+	TimerCombatStart		= "곧 전투 시작"
 }
 L:SetWarningLocalization{
 	WarningPhasePunch		= "위상의 주먹 : >%s< - %d 중첩",
@@ -226,7 +227,8 @@ L:SetOptionLocalization{
 	NextCollapsingStar			= "다음 붕괴의 별 시전 타이머 보기",
 	PossibleNextCosmicSmash		= "다음 우주의 강타 시전 타이머 보기",	
 	WarningCosmicSmash 			= "우주의 강타 알리기",
-	SpecWarnCosmicSmash 		= "우주의 강타 특수 경고 보기"
+	SpecWarnCosmicSmash 		= "우주의 강타 특수 경고 보기",
+	TimerCombatStart			= "전투 시작 타이머 보기"
 }
 
 L:SetMiscLocalization{
