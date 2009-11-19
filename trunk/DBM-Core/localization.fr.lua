@@ -97,13 +97,15 @@ DBM_CORE_AUTO_TIMER_TEXTS.active		= "%s"
 DBM_CORE_AUTO_TIMER_TEXTS.cd 			= "CD de: %s"
 DBM_CORE_AUTO_TIMER_TEXTS.next			= "Prochain(e) %s"
 DBM_CORE_AUTO_TIMER_TEXTS.achievement 	= "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.combatstart 	= "Le combat commence"
 
 DBM_CORE_AUTO_TIMER_OPTIONS.target 		= "Afficher le temps du debuff pour: |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "Afficher la barre d'incantation pour: |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_TIMER_OPTIONS.active 		= "Afficher le timer pour la fin de: |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "Afficher le cooldown pour: |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "Afficher le timer pour le prochain: |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Show timer for %s" -- FR Translation required!!
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "Montre le timer pour %s"
+DBM_CORE_AUTO_TIMER_OPTIONS.combatstart = "Montre le timer pour le début du combat"
 
 
 -- Auto-generated Warning Localizations
@@ -112,7 +114,7 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell		= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast		= "Cast %s: %.1f sec"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon		= "%s bientôt"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s dans %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase		= "Phase %d"		-- FR Translation required!!
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase		= "Phase %d"	
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "Annonce la cible de |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell	= "Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r"
