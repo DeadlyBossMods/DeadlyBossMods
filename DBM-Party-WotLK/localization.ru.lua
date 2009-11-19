@@ -234,6 +234,9 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
+L:SetMiscLocalization({
+	Outro	= "Your journey has just begun, young prince. Gather your forces, and meet me in the arctic land of Northrend. It is there we shall settle the score between us. It is there that your true destiny will unfold."
+})
 
 -------------------
 --  Wave Timers  --
@@ -664,7 +667,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Предупредить о следующем Разделении",	-- translate
+	WarningSplitSoon	= "Предупредить зарание о Разделении",	-- translate
 	WarningSplitNow		= "Предупредить о Разделении",	-- translate
 	WarningMerge		= "Предупредить о Размытии"	-- translate
 })
@@ -1093,7 +1096,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("Новый портал"),
 	WarningBossNow			= optionWarning:format("Босс"),
 	TimerPortalIn			= "Отсчет времени до портала",
-	ShowAllPortalWarnings		= "Предупреждение для всех волн"
+	ShowAllPortalWarnings		= "Предупреждения для всех порталов"
 })
 
 L:SetMiscLocalization({
@@ -1268,7 +1271,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnPursuit			= "Предупреждение о приблежающейся Погоне",
-	specWarnToxic			= "Спец-предупреждение, когда вы получаете урон от Токсического выброса",
+	specWarnToxic			= "Спец-предупреждение, когда вы под воздействием Токсического выброса",
 	specWarnPursuit			= "Спец-предупреждение, когда вас преследуют"
 --	SetIconOnPursuitTarget		= "Установить метку на преследуемую цель"
 })
@@ -1288,7 +1291,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock		= "Саронитовая скала! Линия видимости!",
-	specWarnSaroniteRock		= "Саронитовый бросок на вас! Бегите!",
+	specWarnSaroniteRock		= "Саронитовый бросок на вас",
 	specWarnPermafrost		= "%s: %s"
 })
 
@@ -1313,10 +1316,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged		= "Повелитель Плети Тираний спускается. Приготовтесь!",
-	specWarnIcyBlast		= "Ледяной вихр! Бегите!",
-	specWarnHoarfrost		= "Hoarfrost на вас! Бегите!",
-	specWarnHoarfrostNear		= "Hoarfrost около вас! Бегите!"
+	warnTyrannusEngaged		= "Повелитель Плети Тираний спускается - приготовтесь",
+	specWarnIcyBlast		= "Ледяной вихр - бегите",
+	specWarnHoarfrost		= "Hoarfrost на вас",
+	specWarnHoarfrostNear		= "Hoarfrost около вас - бегите"
 })
 
 L:SetOptionLocalization({
