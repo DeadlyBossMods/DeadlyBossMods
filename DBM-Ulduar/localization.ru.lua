@@ -203,16 +203,17 @@ L:SetOptionLocalization{
 	WarningBlackHole		= "Объявлять Черную дыру",
 	NextCollapsingStar		= "Отсчет времени до Свернувшейся звезды",
 	WarningCosmicSmash 		= "Объявлять цель под воздействием Кары небесной",
-	SpecWarnCosmicSmash 	= "Спец-предупреждение для Кары небесной",
-	PossibleNextCosmicSmash	= "Отсчет времени до Кара небесная",
+	SpecWarnCosmicSmash 		= "Спец-предупреждение для Кары небесной",
+	PossibleNextCosmicSmash		= "Отсчет времени до Кара небесная",
 	TimerCombatStart		= "Отсчет времени до начала битвы"
 }
 
 L:SetMiscLocalization{		
-	YellPull		 	= "Ваши действия нелогичны. Все возможные исходы этой схватки просчитаны. Пантеон получит сообщение от Наблюдателя в любом случае.",
-	YellPullFirst		 	= "",
+--	YellPull		 	= "Ваши действия нелогичны. Все возможные исходы этой схватки просчитаны. Пантеон получит сообщение от Наблюдателя в любом случае.",
+--	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
 	Emote_CollapsingStar	 	= "%s призывает вспыхивающие звезды!",
-	Emote_CosmicSmash	 	= "%s начинает читать заклинание Кара небесная!"
+	Emote_CosmicSmash	 	= "%s начинает читать заклинание Кара небесная!",
+	PullCheck			= "Время до передачи сигнала бедствия Алгалоном = (%d+) мин."
 }
 
 ----------------
