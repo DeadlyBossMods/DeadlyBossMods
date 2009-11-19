@@ -43,7 +43,7 @@ local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
 local specWarnTranq         = mod:NewSpecialWarning("SpecialWarningTranq", canTranq)
 
 local enrageTimer			= mod:NewEnrageTimer(223)
-local timerCombatStart		= mod:NewCombatTimer(23)
+local timerCombatStart		= mod:NewTimer(23, "TimerCombatStart")
 
 local timerBreath			= mod:NewCastTimer(5, 67650)
 local timerNextStomp		= mod:NewNextTimer(20, 66330)
