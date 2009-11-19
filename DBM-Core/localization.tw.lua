@@ -90,46 +90,38 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "拉怪囉!"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL 		= "快速擊殺"
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "%s 冷卻",
-	next = "下一次 %s",
-	achievement = "%s",
-	combatstart = "戰鬥開始",
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target = "%s: %%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cast = "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active = "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cd = "%s 冷卻"
+DBM_CORE_AUTO_TIMER_TEXTS.next = "下一次 %s"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement = "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.combatstart = "戰鬥開始"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示減益計時器",
-	cast = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示施法計時器",
-	active = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示持續時間計時器",
-	cd = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器",
-	next = "為下一次 |cff71d5ff|Hspell:%d|h%s|h|r顯示計時器",
-	achievement = "為成就:%s顯示計時器",
-	combatstart = "為開始戰鬥顯示計時器",
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示減益計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.cast = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示施法計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.active = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示持續時間計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.cd = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示冷卻計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.next = "為下一次 |cff71d5ff|Hspell:%d|h%s|h|r顯示計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "為成就:%s顯示計時器"
+DBM_CORE_AUTO_TIMER_OPTIONS.combatstart = "為開始戰鬥顯示計時器"
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s: >%%s<",
-	spell = "%s",
-	cast = "施放 %s: %.1f 秒",
-	soon = "%s 即將到來",
-	prewarn = "%s 在 %s",
-	phase = "第%d階段",
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target = "%s: >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell = "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast = "施放 %s: %.1f 秒"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon = "%s 即將到來"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn = "%s 在 %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase = "第%d階段"
 
-local prewarnOption = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
-	spell = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
-	cast = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告",
-	soon = prewarnOption,
-	prewarn = prewarnOption,
-	phase = "提示第%d階段"
-}
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target = "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast = "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn = "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase = "提示第%d階段"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖動的特別警告"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特別警告"
+

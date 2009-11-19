@@ -96,44 +96,34 @@ DBM_CORE_ANNOUNCE_PULL_NOW			= "开怪！"
 DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "快速击杀"
 
 -- Auto-generated Timer Localizations
-DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "%s 冷却",
-	next = "下一次 %s",
-	achievement = "%s",
-}
+DBM_CORE_AUTO_TIMER_TEXTS.target = "%s: %%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cast = "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.active = "%s"
+DBM_CORE_AUTO_TIMER_TEXTS.cd = "%s 冷却"
+DBM_CORE_AUTO_TIMER_TEXTS.next = "下一次 %s"
+DBM_CORE_AUTO_TIMER_TEXTS.achievement = "%s"
 
-DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "显示 |cff71d5ff|Hspell:%d|h%s|h|r debuff计时",
-	cast = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 施法计时",
-	active = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 持续计时",
-	cd = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 冷却计时",
-	next = "显示下一次 |cff71d5ff|Hspell:%d|h%s|h|r 计时",
-	achievement = "显示成就: %s 计时",
-}
+DBM_CORE_AUTO_TIMER_OPTIONS.target = "显示 |cff71d5ff|Hspell:%d|h%s|h|r debuff计时"
+DBM_CORE_AUTO_TIMER_OPTIONS.cast = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 施法计时"
+DBM_CORE_AUTO_TIMER_OPTIONS.active = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 持续计时"
+DBM_CORE_AUTO_TIMER_OPTIONS.cd = "显示 |cff71d5ff|Hspell:%d|h%s|h|r 冷却计时"
+DBM_CORE_AUTO_TIMER_OPTIONS.next = "显示下一次 |cff71d5ff|Hspell:%d|h%s|h|r 计时"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "显示成就: %s 计时"
 
 -- Auto-generated Warning Localizations
-DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s 于 >%%s<",
-	spell = "%s",
-	cast = "%s: %.1f sec",
-	soon = "即将 %s",
-	prewarn = "%2$s 后 %1$s",
-	phase = "第 %d 阶段",
-}
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.target = "%s 于 >%%s<"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell = "%s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast = "%s: %.1f sec"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon = "即将 %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn = "%2$s 后 %1$s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase = "第 %d 阶段"
 
-local prewarnOption = "提前警报 |cff71d5ff|Hspell:%d|h%s|h|r"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "警报目标的: |cff71d5ff|Hspell:%d|h%s|h|r",
-	spell = "显示警报: |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "施法提示: |cff71d5ff|Hspell:%d|h%s|h|r",
-	soon = prewarnOption,
-	prewarn = prewarnOption,
-	phase = "显示阶段提示: %d"
-}
-
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target = "警报目标的: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell = "显示警报: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast = "施法提示: |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon = "提前警报 |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn = "提前警报 |cff71d5ff|Hspell:%d|h%s|h|r"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase = "显示阶段提示: %d"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "移动特殊警报"
