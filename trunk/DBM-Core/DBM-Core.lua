@@ -2766,11 +2766,15 @@ do
 --				optionDefault = not completed
 --			end
 		else
-			spellName = GetSpellInfo(spellId)
-			icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
+			spellName = GetSpellInfo(spellId or 0)
+			if spellName then
+				icon = type(texture) == "number" and select(3, GetSpellInfo(texture)) or texture or spellId and select(3, GetSpellInfo(spellId))
+			else
+				icon = nil
+			end
 		end
 		spellName = spellName or tostring(spellId)
-		local id = "Timer"..spellId..self.id..#self.timers
+		local id = "Timer"..(spellId or 0)..self.id..#self.timers
 		local obj = setmetatable(
 			{
 				text = self.localization.timers[timerText],
