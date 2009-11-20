@@ -35,8 +35,8 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(69057, 70826) then					-- Bone Spike Graveyard
-		warnBoneSpike:Show(args.spellName)
+	if args:IsSpellID(69057, 70826) then				-- Bone Spike Graveyard
+		warnBoneSpike:Show()
 		timerBoneSpike:Start()
 	end
 end
@@ -68,7 +68,7 @@ function mod:warnImpale()
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(69062, 72669) then							-- Impale
+	if args:IsSpellID(69062, 72669) then						-- Impale
 		self:UnscheduleMethod("warnImpale")
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		mod:ScheduleMethod(0.2, "warnImpale")
@@ -82,7 +82,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(69076) then						-- Whirlwind Ends
+	if args:IsSpellID(69076) then						        -- Whirlwind Ends
 		timerWhirlwindCD:Start()
         preWarnWhirlwind:Schedule(55)
 	end
