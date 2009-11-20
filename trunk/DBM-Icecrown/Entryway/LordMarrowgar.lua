@@ -25,7 +25,7 @@ local specWarnWhirlwind		= mod:NewSpecialWarning("SpecWarnWhirlwind")
 mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 
 local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
-local timerWhirlwindCD		= mod:NewCDTimer(60, 69076)
+local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)
 local timerWhirlwind		= mod:NewBuffActiveTimer(25, 69076)
 
 function mod:OnCombatStart(delay)
@@ -44,6 +44,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(69076) then						-- Whirlwind
 		specWarnWhirlwind:Show()
+		timerWhirlwindCD:Start()
+		preWarnWhirlwind:Schedule(85)
 		if self.Options.PlaySoundOnWhirlwind then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
@@ -82,12 +84,5 @@ function mod:SPELL_AURA_APPLIED(args)
         else
             timerWhirlwind:Show(args.destName)						    -- 20-25seconds (ish) on normal.
         end
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(69076) then						        -- Whirlwind Ends
-		timerWhirlwindCD:Start()
-        preWarnWhirlwind:Schedule(55)
 	end
 end
