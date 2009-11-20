@@ -80,9 +80,9 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69076) then						-- Whirlwind Begins
         if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-            timerWhirlwind:Show(40, args.destName)						-- 40seconds (ish) on heroic
+            timerWhirlwind:Show(40)						-- 40seconds (ish) on heroic
         else
-            timerWhirlwind:Show(args.destName)						    -- 20-25seconds (ish) on normal.
+            timerWhirlwind:Show()						    -- 20-25seconds (ish) on normal.
         end
 	end
 end
