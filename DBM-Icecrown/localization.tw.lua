@@ -11,6 +11,10 @@ L:SetGeneralLocalization{
 	name = "瑪洛嘉領主"
 }
 
+L:SetTimerLocalization{
+	achievementBoned		= "自由時間"
+}
+
 L:SetWarningLocalization{
 	WarnImpale				= ">%s< 被刺穿了",
 	SpecWarnWhirlwind		= "旋風斬 - 快跑開",
@@ -21,7 +25,8 @@ L:SetOptionLocalization{
 	WarnImpale				= "提示刺穿的目標",
 	SpecWarnWhirlwind		= "為旋風斬顯示特別警告",
 	SpecWarnColdflame		= "當你受到冷焰的傷害時顯示特別警告",
-	PlaySoundOnWhirlwind	= "為旋風斬播放音效"
+	PlaySoundOnWhirlwind	= "為旋風斬播放音效",
+	achievementBoned		= "為Boned成就顯示計時器"
 }
 
 -------------------------
