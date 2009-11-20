@@ -76,7 +76,7 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69076, 70834) then						-- Whirlwind Begins
+	if args:IsSpellID(69076) then						-- Whirlwind Begins
 		timerWhirlwind:Show(args.destName)
 	end
 end
