@@ -9,6 +9,10 @@ L:SetGeneralLocalization{
 	name = "Lord Marrowgar"
 }
 
+L:SetTimerLocalization{
+	achievementBoned		= "Time to free"
+}
+
 L:SetWarningLocalization{
 	WarnImpale				= ">%s< is impaled",
 	SpecWarnWhirlwind		= "Whirlwind - Run away",
@@ -19,7 +23,8 @@ L:SetOptionLocalization{
 	WarnImpale				= "Announce Impale targets",
 	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
 	SpecWarnColdflame		= "Show special warning when you take damage from Coldflame",
-	PlaySoundOnWhirlwind	= "Play sound on Whirlwind"
+	PlaySoundOnWhirlwind	= "Play sound on Whirlwind",
+	achievementBoned		= "Show timer for Boned Achievement"
 }
 
 -------------------------

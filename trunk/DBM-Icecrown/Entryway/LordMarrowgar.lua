@@ -11,8 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_SUMMON",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_APPLIED"
 )
 
 local preWarnWhirlwind   	= mod:NewSoonAnnounce(69076, 2)
@@ -27,6 +26,7 @@ mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
 local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)
 local timerWhirlwind		= mod:NewBuffActiveTimer(25, 69076)
+local timerBoned            = mod:NewTimer(8, "achievementBoned", false) --Iffy, still not sure what combat event blizz actually checks for bonespikes.
 
 function mod:OnCombatStart(delay)
     preWarnWhirlwind:Schedule(40-delay)
@@ -74,6 +74,7 @@ function mod:SPELL_SUMMON(args)
 		self:UnscheduleMethod("warnImpale")
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		mod:ScheduleMethod(0.2, "warnImpale")
+		timerBoned:Start()
 	end
 end
 
@@ -82,7 +83,7 @@ function mod:SPELL_AURA_APPLIED(args)
         if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
             timerWhirlwind:Show(40)						-- 40seconds (ish) on heroic
         else
-            timerWhirlwind:Show()						    -- 20-25seconds (ish) on normal.
+            timerWhirlwind:Show()						-- 20-25seconds (ish) on normal.
         end
 	end
 end
