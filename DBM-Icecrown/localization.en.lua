@@ -37,30 +37,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerAdds				= "New adds"
 }
 
 L:SetWarningLocalization{
-	WarnAddsSoon			= "New adds soon",
-	WarnAdherent			= "Cult Adherent transforming",
-	SpecWarnDeathDecay		= "Death and Decay - Move away",
-	SpecWarnCurseTorpor		= "Curse of Torpor on you"
+	WarnReanimating			= "Add reviving",	-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance		= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	SpecWarnDeathDecay		= "Death and Decay - move away",
+	SpecWarnCurseTorpor		= "Curse of Torpor on you",
+	SpecWarnTouchInsignificance	= "Touch of Insignificance (3)"
 }
 
 L:SetOptionLocalization{
-	WarnAddsSoon			= "Show pre-warning for new adds spawning",
-	WarnAdherent			= "Show warning for Cult Adherent transformation",	-- Cult Adherent -> Reanimated Adherent transformation iirc
+	WarnTouchInsignificance		= "Show warning for Touch of Insignificance",
+	WarnReanimating			= "Show warning when an add is getting revived",	-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance	= "Show special warning when you have 3 stacks of Touch of Insignificance",
 	SpecWarnDeathDecay		= "Show special warning when you are affected by Death and Decay",
-	SpecWarnCurseTorpor		= "Show special warning when you are affected by Curse of Torpor",
-	TimerAdds				= "Show timer for new adds spawning"
+	SpecWarnCurseTorpor		= "Show special warning when you are affected by Curse of Torpor"
 }
 
 L:SetMiscLocalization{
-	YellAdds				= "Arise, and exult in your pure form!",
-	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellAdherent			= "Loyal adherent, I release you from the curse of flesh!",
-	YellEmbrace				= "Embrace the darkness... darkness eternal.",
-	YellBlessing			= "Take this blessing and show these intruders a taste of the Master's power!"
+	YellPull			= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
+	YellReanimatedFanatic		= "Arise, and exult in your pure form!",
 }
 ------------------------
 --  The Deathbringer  --
