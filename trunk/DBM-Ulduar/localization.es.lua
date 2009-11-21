@@ -264,7 +264,8 @@ L:SetMiscLocalization{
 	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
 	YellPullFirst			= "",
 	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",
-	Emote_CosmicSmash	= "%s begins to cast Cosmic Smash!"
+	Emote_CosmicSmash	= "%s begins to cast Cosmic Smash!",
+	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."
 
 }
 
@@ -439,7 +440,8 @@ L:SetMiscLocalization{
 	WaterSpirit	= "Ancient Water Spirit",
 	Snaplasher	= "Snaplasher",
 	StormLasher	= "Storm Lasher",
-	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
+	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes.",
+	TrashRespawnTimer	= "Reaparicion de Adds de Freya"
 }
 
 L:SetWarningLocalization{
@@ -455,7 +457,6 @@ L:SetTimerLocalization{
 	TimerUnstableSunBeam	= "Sun Beam: %s",
 	TimerSimulKill		= "Resurrection",
 	TimerFuryYou		= "Nature's Fury en Ti",
-	TrashRespawnTimer	= "Reaparicion de Adds de Freya"
 }
 
 L:SetOptionLocalization{
@@ -475,7 +476,7 @@ L:SetGeneralLocalization{
 	name = "Freya's Elders"
 }
 
-L:SetTimerLocalization{
+L:SetMiscLocalization{
 	TrashRespawnTimer	= "Reaparicion de Adds de Freya"
 }
 

@@ -394,7 +394,8 @@ L:SetMiscLocalization{
 	WaterSpirit		= "고대 물의 정령",
 	Snaplasher 		= "악어덩굴손",
 	StormLasher 	= "폭풍덩굴손",
-	YellKill		= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다."	
+	YellKill		= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다.",
+	TrashRespawnTimer		= "프레이야 지역 리젠타임"
 }
 
 L:SetWarningLocalization{
@@ -408,8 +409,7 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	TimerUnstableSunBeam 	= "태양 광선: %s",
 	TimerSimulKill 			= "소환수 부활",
-	TimerFuryYou			= "당신에게 자연의 격노",
-	TrashRespawnTimer		= "프레이야 지역 리젠타임"	
+	TimerFuryYou			= "당신에게 자연의 격노"
 }
 
 L:SetOptionLocalization{
@@ -434,7 +434,7 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	TrashRespawnTimer 		= "프레이야 지역 리젠타임",
+	TrashRespawnTimer 		= "프레이야 지역 리젠타임"
 }
 
 L:SetOptionLocalization{
