@@ -213,7 +213,7 @@ L:SetMiscLocalization{
 --	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
 	Emote_CollapsingStar	 	= "%s призывает вспыхивающие звезды!",
 	Emote_CosmicSmash	 	= "%s начинает читать заклинание Кара небесная!",
-	PullCheck			= "Время до передачи сигнала бедствия Алгалоном = (%d+) мин."
+	PullCheck			= "Алгалон подаст сигнал бедствия через (%d+) мин."
 }
 
 ----------------
