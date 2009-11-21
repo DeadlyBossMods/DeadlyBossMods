@@ -353,7 +353,8 @@ L:SetMiscLocalization{
 	WaterSpirit			= "上古水之靈",
 	Snaplasher			= "猛攫鞭笞者",
 	StormLasher			= "風暴鞭笞者",
-	YellKill			= "他對我的操控已然退散。我已再次恢復神智了。感激不盡，英雄們。"
+	YellKill			= "他對我的操控已然退散。我已再次恢復神智了。感激不盡，英雄們。",
+	TrashRespawnTimer		= "芙蕾雅的小怪重生"
 }
 
 L:SetWarningLocalization{
@@ -365,8 +366,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSimulKill			= "復活",
-	TrashRespawnTimer		= "芙蕾雅的小怪重生"
+	TimerSimulKill			= "復活"
 }
 
 L:SetOptionLocalization{

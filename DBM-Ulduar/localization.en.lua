@@ -354,11 +354,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell	= "Children, assist me!",
-	WaterSpirit	= "Ancient Water Spirit",
-	Snaplasher	= "Snaplasher",
-	StormLasher	= "Storm Lasher",
-	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes."
+	SpawnYell          = "Children, assist me!",
+	WaterSpirit        = "Ancient Water Spirit",
+	Snaplasher         = "Snaplasher",
+	StormLasher        = "Storm Lasher",
+	YellKill           = "His hold on me dissipates. I can see clearly once more. Thank you, heroes.",
+	TrashRespawnTimer  = "Freya trash respawn"
 }
 
 L:SetWarningLocalization{
@@ -370,8 +371,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSimulKill			= "Resurrection",
-	TrashRespawnTimer		= "Freya trash respawn",
+	TimerSimulKill	= "Resurrection"
 }
 
 L:SetOptionLocalization{
