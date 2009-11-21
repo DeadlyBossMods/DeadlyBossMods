@@ -14,6 +14,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
+local warnAddsSoon			= mod:NewAnnounce("WarnAddsSoon", 3)
 local warnDominateMind			= mod:NewTargetAnnounce(71289, 3)
 local warnDeathDecay			= mod:NewSpellAnnounce(72108, 2)
 local warnReanimating			= mod:NewAnnounce("WarnReanimating", 3)
@@ -28,6 +29,7 @@ local specWarnCurseTorpor		= mod:NewSpecialWarning("SpecWarnCurseTorpor")
 local specWarnDeathDecay		= mod:NewSpecialWarning("SpecWarnDeathDecay")
 local specWarnTouchInsignificance	= mod:NewSpecialWarning("SpecWarnTouchInsignificance")
 
+local timerAdds				= mod:NewTimer(60, "TimerAdds")
 local timerDominateMind			= mod:NewTargetTimer(20, 71289)
 local timerDominateMindCD		= mod:NewCDTimer(40, 71289)
 local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
@@ -36,10 +38,19 @@ local enrageTimer				= mod:NewEnrageTimer(600)
 
 local lastDD					= 0
 
+function mod:addsTimer()
+	timerAdds:Cancel()
+	warnAddsSoon:Cancel()
+	timerAdds:Start()
+	warnAddsSoon:Schedule(55)	-- 5 secs prewarning
+	self:ScheduleMethod(60, "addsTimer")
+end
+
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	timerAdds:Start(10)
-	warnAddsSoon:Schedule(7)
+	timerAdds:Start(7)
+	warnAddsSoon:Schedule(4)	-- 3sec pre-warning on start
+	self:ScheduleMethod(7, "addsTimer")
 	timerDominateMindCD:Start(30)	-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
 end
 
@@ -79,6 +90,9 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70842) then
 		warnPhase2:Show()
+		timerAdds:Cancel()
+		warnAddsSoon:Cancel()
+		self:UnscheduleMethod("addsTimer")
 	end
 end
 
