@@ -359,7 +359,8 @@ L:SetMiscLocalization{
 	WaterSpirit			= "Древний дух воды",
 	Snaplasher			= "Хватоплет",
 	StormLasher			= "Грозовой плеточник",
-	YellKill			= "Он больше не властен надо мной. Мой взор снова ясен. Благодарю вас, герои."
+	YellKill			= "Он больше не властен надо мной. Мой взор снова ясен. Благодарю вас, герои.",
+	TrashRespawnTimer		= "Фрейя возрождает Мусор"
 }
 
 L:SetWarningLocalization{
@@ -372,7 +373,6 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerSimulKill			= "Воскрешение",
-	TrashRespawnTimer		= "Фрейя возрождает Мусор"
 }
 
 L:SetOptionLocalization{

@@ -361,7 +361,8 @@ L:SetMiscLocalization{
 	WaterSpirit		= "Uralter Wassergeist",
 	Snaplasher		= "Knallpeitscher",
 	StormLasher		= "Sturmpeitscher",
-	YellKill		= "Seine Macht über mich beginnt zu schwinden. Endlich kann ich wieder klar sehen. Ich danke Euch, Helden." 
+	YellKill		= "Seine Macht über mich beginnt zu schwinden. Endlich kann ich wieder klar sehen. Ich danke Euch, Helden.",
+	TrashRespawnTimer  = "Freya trash respawn"--Translate Me
 }
 
 L:SetWarningLocalization{
@@ -392,6 +393,10 @@ L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
 	name = "Freya's Elders"
+}
+
+L:SetMiscLocalization{
+	TrashRespawnTimer	= "Freya trash respawn"--Translate Me
 }
 
 L:SetOptionLocalization{

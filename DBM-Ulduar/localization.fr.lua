@@ -360,7 +360,8 @@ L:SetMiscLocalization{
 	WaterSpirit = "Esprit de l'eau ancien",
 	Snaplasher 	= "Flagellant mordant",
 	StormLasher = "Flagellant des tempêtes",
-	YellKill	= "Son emprise sur moi se dissipe. J'y vois à nouveau clair. Merci, héros."
+	YellKill	= "Son emprise sur moi se dissipe. J'y vois à nouveau clair. Merci, héros.",
+	TrashRespawnTimer		= "Respawn des Trashs de Freya"
 }
 
 L:SetWarningLocalization{
@@ -372,8 +373,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSimulKill 			= "Résurrection",
-	TrashRespawnTimer		= "Respawn des Trashs de Freya"
+	TimerSimulKill 			= "Résurrection"
 }
 
 L:SetOptionLocalization{
