@@ -12,6 +12,8 @@ mod:RegisterEvents(
 
 local warnPactDarkfallen	= mod:NewTargetAnnounce(71340, 3)
 
+local timerPactDarkfallen	= mod:NewNextTimer(30, 71340)
+
 local specWarnPactDarkfallen	= mod:NewSpecialWarning("SpecWarnPactDarkfallen")
 
 local pactTargets = {}
@@ -19,6 +21,7 @@ local pactTargets = {}
 function mod:warnPactTargets()
 	warnPactDarkfallen:Show(table.concat(pactTargets, "<, >"))
 	table.wipe(pactTargets)
+	timerPactDarkfallen:Start(30)
 end
 
 function mod:SPELL_AURA_APPLIED(args)

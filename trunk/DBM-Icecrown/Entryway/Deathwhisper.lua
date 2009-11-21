@@ -8,24 +8,29 @@ mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnDominateMind			= mod:NewTargetAnnounce(71289, 3)
-local warnFrostbolt				= mod:NewCastAnnounce(72007, 2)
 local warnDeathDecay			= mod:NewSpellAnnounce(72108, 2)
-local warnAddsSoon				= mod:NewAnnounce("WarnAddsSoon" , 4)
-local warnPhase2				= mod:NewPhaseAnnounce(2, 3)
-local warnAddherent				= mod:NewAnnounce("WarnAdherent", 2)
+local warnReanimating			= mod:NewAnnounce("WarnReanimating", 3)
+local warnDarkTransformation		= mod:NewSpellAnnounce(70900, 4)
+local warnDarkEmpowerment		= mod:NewSpellAnnounce(70901, 4)
+local warnPhase2			= mod:NewPhaseAnnounce(2, 3)	
+local warnFrostbolt			= mod:NewCastAnnounce(72007, 2)
+local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 3)
+local warnDarkReckoning			= mod:NewTargetAnnounce(69483, 3)
 
 local specWarnCurseTorpor		= mod:NewSpecialWarning("SpecWarnCurseTorpor")
 local specWarnDeathDecay		= mod:NewSpecialWarning("SpecWarnDeathDecay")
+local specWarnTouchInsignificance	= mod:NewSpecialWarning("SpecWarnTouchInsignificance")
 
-local timerAdds					= mod:NewTimer(21, "TimerAdds")
 local timerDominateMind			= mod:NewTargetTimer(20, 71289)
 local timerDominateMindCD		= mod:NewCDTimer(40, 71289)
+local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
 local enrageTimer				= mod:NewEnrageTimer(600)
 
@@ -53,9 +58,23 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(71237) and args:IsPlayer() then
 		specWarnCurseTorpor:Show()
+	elseif args:IsSpellID(69483) then
+		warnDarkReckoning:Show(args.destName)
+	elseif args:IsSpellID(71204) then
+		warnTouchInsignificance:Show(args.spellName, args.destName, 1)
+		timerTouchInsignificance:Start(args.destName)
 	end
 end
 
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(71204) then
+		warnTouchInsignificance:Show(args.spellName, args.destName, args.amount)
+		if args:IsPlayer() and args.amount >= 3 then
+			specWarnTouchInsignificance:Show()
+		end
+		timerTouchInsignificance:Start(args.destName)
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70842) then
@@ -66,29 +85,26 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(72007) then
 		warnFrostbolt:Show()
+	elseif args:IsSpellID(70900) then
+		warnDarkTransformation:Show()
+	elseif args:IsSpellID(70901) then
+		warnDarkEmpowerment:Show()
 	end
 end
 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellAdds then
-		self:SendSync("Adds")
-	elseif msg == L.YellAdherent then
-		self:SendSync("Adherent")
---[[	elseif msg == L.YellEmbrace then
-		self:SendSync("Embrace")
-	elseif msg == L.YellBlessing then
-		self:SendSync("Blessing")
-						Dont know exactly what these 2 yells do, but added them in case they are needed :) 
-]]--
+	if msg == L.YellReanimatedFanatic then
+		self:SendSync("ReanimatedFanatic")
+	elseif msg == L.YellDeformedFanatic then
+		self:SendSync("DeformedFanatic")
 	end
 end
 
 function mod:OnSync(msg, arg)
-	if msg == "Adds" then
-		timerAdds:Start()
-		warnAddsSoon:Schedule(18)
-	elseif msg == "Adherent" then
-		warnAdherent:Show()
+	if msg == "DeformedFanatic" then
+		warnDeformedFanatic:Show()
+	elseif msg == "ReanimatedFanatic" then
+		warnReanimatedFanatic:Show()
 	end
 end
