@@ -17,13 +17,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBreath	= "Aliento profundo",
 	TimerWhelps = "Salen crias"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBreath	= "Mostrar aviso especial para Aliento Profundo ( Echa fuego )",
-	TimerBreath		= "Mostrar tiempo para Alieto Profundo ( Fuego )",
 	TimerWhelps		= "Mostrar tiempo para las crias",
 	WarnWhelpsSoon	= "Mostrar pre-aviso para las crias",
 	SoundBreath		= "Sonido si estas en el area del fuego"
