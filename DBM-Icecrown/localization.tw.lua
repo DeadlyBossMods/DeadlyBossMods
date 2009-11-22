@@ -39,30 +39,29 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerAdds				= "新的小怪"
 }
 
 L:SetWarningLocalization{
-	WarnAddsSoon			= "新的小怪 即將到來",
-	WarnAdherent			= "Cult Adherent transforming",
+	WarnReanimating			= "小怪復元中",	-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance		= "%s: >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay		= "死亡凋零 - 快跑開",
-	SpecWarnCurseTorpor		= "你中了Curse of Torpor"
+	SpecWarnCurseTorpor		= "你中了Curse of Torpor",
+	SpecWarnTouchInsignificance	= "Touch of Insignificance (3)",
+	WarnAddsSoon			= "新的小怪即將出現"
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
-	WarnAdherent			= "為Cult Adherent的改造顯示警告",
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204)),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	WarnReanimating			= "當小怪正在復元中時顯示警告",	-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance	= "當你中了3層Touch of Insignificance時顯示特別警告",
 	SpecWarnDeathDecay		= "當你中了死亡凋零時顯示特別警告",
 	SpecWarnCurseTorpor		= "當你中了Curse of Torpor時顯示特別警告",
-	TimerAdds				= "為新的小怪出現顯示計時器"
 }
 
 L:SetMiscLocalization{
-	YellAdds				= "Arise, and exult in your pure form!",
 	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellAdherent			= "Loyal adherent, I release you from the curse of flesh!",
-	YellEmbrace				= "Embrace the darkness... darkness eternal.",
-	YellBlessing			= "Take this blessing and show these intruders a taste of the Master's power!"
+	YellReanimatedFanatic		= "Arise, and exult in your pure form!",
 }
 
 ------------------------
