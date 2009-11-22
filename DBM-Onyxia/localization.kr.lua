@@ -19,14 +19,12 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBreath			= "깊은 숨",
 	TimerWhelps 		= "새끼용"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "깊은 숨의 특수 경고 보기",
 	SpecWarnBlastNova		= "파멸의 회오리 특수 경고 보기",	
-	TimerBreath				= "깊은 숨의 타이머 보기",
 	TimerWhelps				= "새끼용 등장 타이머 보기",
 	WarnWhelpsSoon			= "새끼용 등장의 사전 경고 보기",
 	SoundBreath				= "깊은 숨의 경고 소리 재생",
