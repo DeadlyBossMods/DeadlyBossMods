@@ -29,7 +29,7 @@ local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
 local timerNextBreath		= mod:NewNextTimer(69, 17086)--Experimental, if it is off please let me know.
-local timerBreath			= mod:NewTimer(8, "TimerBreath", 17086)
+local timerBreath			= mod:NewCastTimer(8, 17086)
 local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
 local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps") 

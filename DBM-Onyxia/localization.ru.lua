@@ -19,14 +19,12 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBreath		= "Глубокий вдох",
 	TimerWhelps 		= "Вызов дракончиков Ониксии"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBreath		= "Спец-предупреждение для Глубокого вдоха",
 	SpecWarnBlastNova	= "Спец-предупреждение для Вспышки Огненной звезды",
-	TimerBreath		= "Отсчет времени до Глубокого вдоха",
 	TimerWhelps		= "Отсчет времени до дракончиков Ониксии",
 	WarnWhelpsSoon		= "Предупредить зарание о дракончиках Ониксии",
 	SoundBreath		= "Звуковой сигнал, когда Глубокий вдох",
