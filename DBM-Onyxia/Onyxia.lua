@@ -95,7 +95,7 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.PlaySoundOnBlastNova then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
-	elseif args:IsSpellID(17086, 18351, 18584, 18609) or args:IsSpellID(18564, 18576, 18596, 18617) then		-- 1 ID for each direction?
+	elseif args:IsSpellID(17086, 18351, 18564, 18576) or args:IsSpellID(18584, 18596, 18609, 18617) then		-- 1 ID for each direction?
 		specWarnBreath:Show()
 		timerBreath:Start()
 		timerNextBreath:Start()
