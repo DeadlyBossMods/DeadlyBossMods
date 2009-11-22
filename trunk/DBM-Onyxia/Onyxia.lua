@@ -67,11 +67,7 @@ function mod:Whelps()
 end
 
 function mod:OnSync(msg)
-	if msg == "Breath" then
-		specWarnBreath:Show()
-		timerBreath:Start()
-		timerNextBreath:Start()
-	elseif msg == "Phase2" then
+	if msg == "Phase2" then
 		phase = 2
 		warnPhase2:Show()
 		timerNextBreath:Start(85)
@@ -101,6 +97,8 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(17086, 18351, 18584, 18609) or args:IsSpellID(18564, 18584, 18596, 18617) then		-- 1 ID for each direction?
 		specWarnBreath:Show()
+		timerBreath:Start()
+		timerNextBreath:Start()
 	end
 end
 
