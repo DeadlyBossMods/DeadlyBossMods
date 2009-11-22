@@ -40,26 +40,26 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnReanimating			= "Add reviving",	-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance		= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay		= "Death and Decay - move away",
-	SpecWarnCurseTorpor		= "Curse of Torpor on you",
-	SpecWarnTouchInsignificance	= "Touch of Insignificance (3)",
-	WarnAddsSoon			= "New Adds soon"
+	WarnReanimating					= "Add reviving",			-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	SpecWarnDeathDecay				= "Death and Decay - Move away",
+	SpecWarnCurseTorpor				= "Curse of Torpor on you",
+	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
+	WarnAddsSoon					= "New adds soon"
 }
 
 L:SetOptionLocalization{
-	WarnAddsSoon			= "Show pre-warning for adds spawning",
-	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204)),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating			= "Show warning when an add is getting revived",	-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance	= "Show special warning when you have 3 stacks of Touch of Insignificance",
-	SpecWarnDeathDecay		= "Show special warning when you are affected by Death and Decay",
-	SpecWarnCurseTorpor		= "Show special warning when you are affected by Curse of Torpor"
+	WarnAddsSoon					= "Show pre-warning for adds spawning",
+	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204)),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	WarnReanimating					= "Show warning when an add is getting revived",								-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
+	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
+	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor"
 }
 
 L:SetMiscLocalization{
-	YellPull			= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic		= "Arise, and exult in your pure form!",
+	YellPull						= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
+	YellReanimatedFanatic			= "Arise, and exult in your pure form!",
 }
 ------------------------
 --  The Deathbringer  --
