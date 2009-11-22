@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 
 local L
 
@@ -36,7 +36,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{ 
-	Breath 		= "%s 숨을 깊게 들이쉽니다.",
 	YellP2 		= "쓸데없이 힘을 쓰는 것도 지루하군. 네 녀석들 머리 위에서 모조리 불살라 주마!",
 	YellP3 		= "혼이 더 나야 정신을 차리겠구나!"
 }

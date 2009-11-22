@@ -36,7 +36,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Breath = "%s深深地吸了一口氣……",
 	YellP2 = "這毫無意義的行動讓我很厭煩。我會從上空把你們都燒成灰!",
 	YellP3 = "看起來需要再給你一次教訓，凡人!"
 }

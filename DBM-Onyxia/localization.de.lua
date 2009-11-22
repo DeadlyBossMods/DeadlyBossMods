@@ -1,4 +1,4 @@
-
+﻿
 if GetLocale() ~= "deDE" then return end
 
 local L
@@ -37,7 +37,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-   Breath = "%s atmet tief ein...",
    YellP2 = "Diese sinnlose Anstrengung langweilt mich. Ich werde Euch alle von oben verbrennen!",
    YellP3 = "Mir scheint, dass Ihr noch eine Lektion braucht, sterbliche Wesen!"
 }
