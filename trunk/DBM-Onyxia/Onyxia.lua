@@ -7,7 +7,6 @@ mod:SetCreatureID(10184)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
@@ -47,15 +46,6 @@ function mod:OnCombatStart(delay)
 	sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
 	sndFunny:Schedule(30, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
 end 
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.Breath or msg:find(L.Breath) then
-		self:SendSync("Breath")
-		sndBreath:Play()
-	end
-end
-
---mod.CHAT_MSG_MONSTER_EMOTE = mod.CHAT_MSG_RAID_BOSS_EMOTE -- todo: check if this is necessary
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellP2 then
@@ -105,10 +95,12 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68958) then
-        specWarnBlastNova:Show()
+        	specWarnBlastNova:Show()
 		if self.Options.PlaySoundOnBlastNova then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
+	elseif args:IsSpellID(17086, 18351, 18584, 18609) or args:IsSpellID(18564, 18584, 18596, 18617) then		-- 1 ID for each direction?
+		specWarnBreath:Show()
 	end
 end
 
