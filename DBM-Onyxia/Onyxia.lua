@@ -8,7 +8,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"CHAT_MSG_MONSTER_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
@@ -56,7 +55,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
-mod.CHAT_MSG_MONSTER_EMOTE = mod.CHAT_MSG_RAID_BOSS_EMOTE -- todo: check if this is necessary
+--mod.CHAT_MSG_MONSTER_EMOTE = mod.CHAT_MSG_RAID_BOSS_EMOTE -- todo: check if this is necessary
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellP2 then
