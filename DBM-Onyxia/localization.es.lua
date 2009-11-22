@@ -30,7 +30,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{ -- these yells are copy and pasted from our old onyxia mod...I don't know if they still work ;)
-	Breath = "%s toma aliento...",
 	YellP2 = "Este ejercicio sin sentido me aburre. ¡Os inceneraré a todos desde arriba!",
 	YellP3 = "¡Aprende a saber estar, mortal!"
 }
