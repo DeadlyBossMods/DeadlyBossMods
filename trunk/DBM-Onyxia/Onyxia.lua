@@ -30,8 +30,9 @@ local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
 local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
+local timerNextBreath		= mod:NewNextTimer(70, 17086)--Experimental, if it is off please let me know.
 local timerBreath			= mod:NewTimer(6, "TimerBreath", 17086)
-local timerWhelps			= mod:NewTimer(79, "TimerWhelps", 10697)
+local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
 local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps") 
 
@@ -80,9 +81,11 @@ function mod:OnSync(msg)
 	if msg == "Breath" then
 		specWarnBreath:Show()
 		timerBreath:Start()
+		timerNextBreath:Start()
 	elseif msg == "Phase2" then
 		phase = 2
 		warnPhase2:Show()
+		timerNextBreath:Start(85)
 		timerAchieveWhelps:Start()
 		self:ScheduleMethod(5, "Whelps")
 		sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
@@ -92,6 +95,7 @@ function mod:OnSync(msg)
 		warnPhase3:Show()
 		self:UnscheduleMethod("Whelps")
 		timerWhelps:Stop()
+		timerNextBreath:Stop()
 		warnWhelpsSoon:Cancel()
 		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
    		sndFunny:Schedule(35, "Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
