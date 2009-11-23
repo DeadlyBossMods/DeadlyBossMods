@@ -1269,13 +1269,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnPursuit			= "5 秒後 獵殺",
-	specWarnToxic		= "Toxic Waste - 快跑開",
+	specWarnToxic		= "毒性廢料 - 快跑開",
 	specWarnPursuit		= "你中了獵殺 - 快跑"
 })
 
 L:SetOptionLocalization({
 	warnPursuit				= "為獵殺顯示預先警告",
-	specWarnToxic			= "當你中了Toxic Waste時顯示特別警告",
+	specWarnToxic			= "當你中了毒性廢料時顯示特別警告",
 	specWarnPursuit			= "當你被獵殺時顯示特別警告",
 --	SetIconOnPursuitTarget	= "為獵殺的目標設置標記"
 })
@@ -1293,20 +1293,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "Saronite Rock - Line of sight now",
-	specWarnSaroniteRock	= "你中了Saronite Throw",
+	warnSaroniteRock		= "薩鋼岩 - 現在離開視線",
+	specWarnSaroniteRock	= "你中了投擲薩鋼",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "為Saronite Rock顯示警告 (清除極寒冰霜用)",
-	specWarnSaroniteRock		= "當你中了Saronite Throw顯示特別警告",
+	warnSaroniteRock			= "為薩鋼岩顯示警告 (清除極寒冰霜用)",
+	specWarnSaroniteRock		= "當你中了投擲薩鋼顯示特別警告",
 	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (數值並非一成不變)",
---	SetIconOnSaroniteRockTarget	= "為Saronite Rock的目標設置標記"
+--	SetIconOnSaroniteRockTarget	= "為薩鋼岩的目標設置標記"
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow		= "%s hurls a massive saronite boulder at you!"
+	SaroniteRockThrow		= "%s對你丟出一大塊薩鋼巨石!"
 })
 
 ----------------------------
@@ -1321,21 +1321,21 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnTyrannusEngaged			= "天譴領主提朗紐斯正在降落 - 做好準備",
 	specWarnIcyBlast			= "冰結衝擊 - 快跑開",
-	specWarnHoarfrost			= "你中了Hoarfrost - 快跑開",
-	specWarnHoarfrostNear		= "你附近有人被Hoarfrost - 快跑開"
+	specWarnHoarfrost			= "你中了白霜 - 快跑開",
+	specWarnHoarfrostNear		= "你附近有人中了白霜 - 快跑開"
 })
 
 L:SetOptionLocalization({
 	warnTyrannusEngaged			= "為天譴領主提朗紐斯正在降落顯示特別警告",
 	specWarnIcyBlast			= "當你受到冰結衝擊的傷害時顯示特別警告",
-	specWarnHoarfrost			= "當你中了Hoarfrost時顯示特別警告",
-	specWarnHoarfrostNear		= "你附近有人被Hoarfrost時顯示特別警告",
-	SetIconOnHoarfrostTarget	= "為Hoarfrost的目標設置標記"
+	specWarnHoarfrost			= "當你中了白霜時顯示特別警告",
+	specWarnHoarfrostNear		= "你附近有人中了白霜時顯示特別警告",
+	SetIconOnHoarfrostTarget	= "為白霜的目標設置標記"
 })
 
 L:SetMiscLocalization({
-	TyrannusYell		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget		= "^%%s gazes at (%S+) and readies an icy attack!"
+	TyrannusYell		= "終於，勇敢、勇敢的冒險者，你的干擾終到盡頭。你聽見了身後隧道中的金屬與骨頭敲擊聲嗎?這就是你即將面對的死亡之聲。", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	HoarfrostTarget		= "^%%s凝視著(%S+)，準備發動寒冰攻擊!"
 })
 
 ----------------------
@@ -1350,11 +1350,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnSoulstorm		= "Soulstorm - 快跑進去"
+	specwarnSoulstorm		= "靈魂風暴 - 快跑進去"
 })
 
 L:SetOptionLocalization({
-	specwarnSoulstorm		= "當Soulstorm施放時顯示特別警告 (進駐用)"
+	specwarnSoulstorm		= "當靈魂風暴施放時顯示特別警告 (進駐用)"
 })
 
 -------------------------
@@ -1371,5 +1371,5 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "為Mirrored Soul需要停止攻擊時顯示特別警告"
+	specwarnMirroredSoul		= "為鏡像之魂需要停止攻擊時顯示特別警告"
 })
