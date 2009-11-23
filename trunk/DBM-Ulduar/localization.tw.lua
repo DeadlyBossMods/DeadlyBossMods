@@ -81,7 +81,7 @@ L:SetTimerLocalization{
 	timerTurret2			= "砲塔2",
 	timerTurret3			= "砲塔3",
 	timerTurret4			= "砲塔4",
-	timerGroundedTemp		= "地上階段",
+	timerGrounded		= "地上階段",
 }
 L:SetOptionLocalization{
 	SpecWarnDevouringFlame		= "當你中了吞噬烈焰時顯示特別警告",
@@ -94,13 +94,13 @@ L:SetOptionLocalization{
 	timerTurret3			= "為砲塔3顯示計時器 (25人)",
 	timerTurret4			= "為砲塔4顯示計時器 (25人)",
 	OptionDevouringFlame		= "提示吞噬烈焰的目標 (不準確)",
-	timerGroundedTemp		= "為地上階段顯示計時器"
+	timerGrounded		= "為地上階段顯示計時器"
 }
 
 L:SetMiscLocalization{
 	YellAir				= "給我們一點時間來準備建造砲塔。",
 	YellAir2			= "火熄了!讓我們重建砲塔!",
-	YellGroundTemp			= "快!她可不會在地面上待太久!",
+	YellGround			= "快!她可不會在地面上待太久!",
 	EmotePhase2			= "%%s再也飛不動了!",
 	FlamecastUnknown		= DBM_CORE_UNKNOWN
 }

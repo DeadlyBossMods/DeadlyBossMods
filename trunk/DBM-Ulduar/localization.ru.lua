@@ -82,7 +82,7 @@ L:SetTimerLocalization{
 	timerTurret2			= "Гарпунная пушка 2",
 	timerTurret3			= "Гарпунная пушка 3",
 	timerTurret4			= "Гарпунная пушка 4",
-	timerGroundedTemp		= "на земле"
+	timerGrounded		= "на земле"
 }
 
 L:SetOptionLocalization{
@@ -96,13 +96,13 @@ L:SetOptionLocalization{
 	timerTurret3			= "Отсчет времени до пушки 3 (Героический)",
 	timerTurret4			= "Отсчет времени до пушки 4 (Героический)",
 	OptionDevouringFlame		= "Объявлять цели под воздействием лавовой бомбы (неточно)",
-	timerGroundedTemp		= "Отсчет времени до наземной фазы"
+	timerGrounded		= "Отсчет времени до наземной фазы"
 }
 
 L:SetMiscLocalization{
 	YellAir				= "Дайте время подготовить пушки.",
 	YellAir2			= "Fires out! Let's rebuild those turrets!",
-	YellGroundTemp			= "Быстрее! Сейчас она снова взлетит!",
+	YellGround			= "Быстрее! Сейчас она снова взлетит!",
 	EmotePhase2			= "%%s обессилела и больше не может летать!",
 	FlamecastUnknown		= DBM_CORE_UNKNOWN
 }

@@ -24,6 +24,7 @@ local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
+local preWarnBreath         = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
 local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
 local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
@@ -70,6 +71,7 @@ function mod:OnSync(msg)
 	if msg == "Phase2" then
 		phase = 2
 		warnPhase2:Show()
+		preWarnBreath:Schedule(72)	-- Pre-Warn Deep Breath
 		timerNextBreath:Start(77)
 		timerAchieveWhelps:Start()
 		self:ScheduleMethod(5, "Whelps")
@@ -82,6 +84,7 @@ function mod:OnSync(msg)
 		timerWhelps:Stop()
 		timerNextBreath:Stop()
 		warnWhelpsSoon:Cancel()
+		preWarnBreath:Cancel()
 		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
    		sndFunny:Schedule(35, "Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
 		sndFunny:Schedule(50, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
@@ -99,6 +102,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnBreath:Show()
 		timerBreath:Start()
 		timerNextBreath:Start()
+		preWarnBreath:Schedule(56)	-- Pre-Warn Deep Breath
 	end
 end
 
