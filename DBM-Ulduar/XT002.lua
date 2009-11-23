@@ -80,7 +80,7 @@ end
 do 
 	local lastConsumption = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(64208, 64206) and args:IsPlayer() and time() - lastConsumption > 2 then		-- Feral Defender Void zone.
+		if args:IsSpellID(64208, 64206) and args:IsPlayer() and time() - lastConsumption > 2 then		-- Hard mode void zone
 			specWarnConsumption:Show()
 			lastConsumption = time()
 		end
