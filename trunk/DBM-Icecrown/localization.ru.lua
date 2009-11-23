@@ -49,7 +49,8 @@ L:SetOptionLocalization({
 	WarnAdherent			= "Show warning for Cult Adherent transformation",	-- Cult Adherent -> Reanimated Adherent transformation iirc
 	SpecWarnDeathDecay		= "Спец-предупреждение, когда вы под воздействем эффекта Смерти и разложения",
 	SpecWarnCurseTorpor		= "Show special warning when you are affected by Curse of Torpor",
-	TimerAdds			= "Отсчет времени до призыва помощников"
+	TimerAdds			= "Отсчет времени до призыва помощников",
+	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 })
 
 L:SetMiscLocalization({
