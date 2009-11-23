@@ -50,7 +50,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAddsSoon					= "Show pre-warning for adds spawning",
-	--WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204)),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "Show warning when an add is getting revived",								-- Reanimated Adherent/Fanatic spawning
 	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
 	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
