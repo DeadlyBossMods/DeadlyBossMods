@@ -97,7 +97,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(64459, 64675) and args:IsPlayer() then
+	if args:IsSpellID(64459, 64675) and args:IsPlayer() then -- Feral Defender Void Zone
 		specWarnVoid:Show()
 	end
 end
