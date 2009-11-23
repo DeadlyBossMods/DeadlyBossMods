@@ -15,6 +15,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -78,7 +79,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(65108, 64122) then 	-- Black Hole Explosion
 		announceBlackHole:Show()
-
 	elseif args:IsSpellID(64598, 62301) then	-- Cosmic Smash
 		timerCastCosmicSmash:Start()
 		timerCDCosmicSmash:Start()
