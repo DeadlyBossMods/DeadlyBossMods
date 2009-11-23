@@ -224,8 +224,8 @@ L:SetMiscLocalization{
 	YellPull				= "This place will serve as your tomb!",
 	Emerge					= "emerges from the ground!",
 	Burrow					= "burrows into the ground!",
-	PcoldIconSet			= "Pcold Icon {rt%d} set on %s",
-	PcoldIconRemoved		= "Pcold Icon removed from %s"
+	PcoldIconSet			= "PCold icon {rt%d} set on %s",
+	PcoldIconRemoved		= "PCold icon removed from %s"
 }
 
 L:SetOptionLocalization{
