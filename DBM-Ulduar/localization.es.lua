@@ -98,7 +98,7 @@ L:SetTimerLocalization{
 	timerTurret2			    = "Torreta 2",
 	timerTurret3			    = "Torreta 3",
 	timerTurret4			    = "Torreta 4",
-	timerGroundedTemp		    = "sobre el suelo"
+	timerGrounded		    = "sobre el suelo"
 }
 L:SetOptionLocalization{
 	timerDeepBreathCooldown		= "Mostrar el cd de Aliente de Llamas.",
@@ -114,13 +114,13 @@ L:SetOptionLocalization{
 	timerTurret3			    = "Mostrar aviso para Torreta 3 ( solo en raid 25 ).",
 	timerTurret4			    = "Mostrar aviso para Torreta 4 ( solo en raid 25 ).",
 	OptionDevouringFlame		= "Mostrar aviso a quien lanza la Llama devoradora ( poco fiable )",
-	timerGroundedTemp		    = "Mostrar cuanto durara en el suelo."
+	timerGrounded		    = "Mostrar cuanto durara en el suelo."
 }
 
 L:SetMiscLocalization{
 	YellAir				        = "Danos un momento para que nos preparemos para construir las torretas.",
 	YellAir2			        = "Listos para salir, ¡impedid que esos enanos se peguen a nuestra espalda!!",
-	YellGroundTemp			    = "¡Moveros! ¡No seguira mucho mas en el suelo!",
+	YellGround			    = "¡Moveros! ¡No seguira mucho mas en el suelo!",
 	EmotePhase2			        = "%%s ha aterrizado permanentemente!",
 	FlamecastUnknown		    = DBM_CORE_UNKNOWN
 }

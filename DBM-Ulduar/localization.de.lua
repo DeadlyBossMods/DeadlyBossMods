@@ -87,7 +87,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAir				= "Gebt uns einen Moment, damit wir uns auf den Bau der Geschütze vorbereiten können.",
 	YellAir2			= "Feuer einstellen! Lasst uns diese Geschütze reparieren!",
-	YellGroundTemp			= "Beeilt Euch! Sie wird nicht lange am Boden bleiben!", 
+	YellGround			= "Beeilt Euch! Sie wird nicht lange am Boden bleiben!", 
 	EmotePhase2			= "%%s grounded permanently!",
 	FlamecastUnknown		= "UNBEKANNT"
 }

@@ -80,7 +80,7 @@ L:SetTimerLocalization{
 	timerTurret2				= "Turret 2",
 	timerTurret3				= "Turret 3",
 	timerTurret4				= "Turret 4",
-	timerGroundedTemp			= "On the ground"
+	timerGrounded               = "On the ground"
 }
 
 L:SetOptionLocalization{
@@ -94,13 +94,13 @@ L:SetOptionLocalization{
 	timerTurret3				= "Show timer for turret 3 (25 player)",
 	timerTurret4				= "Show timer for turret 4 (25 player)",
 	OptionDevouringFlame		= "Announce Devouring Flame targets (unreliable)",
-	timerGroundedTemp			= "Show timer for ground phase duration"
+	timerGrounded			    = "Show timer for ground phase duration"
 }
 
 L:SetMiscLocalization{
 	YellAir						= "Give us a moment to prepare to build the turrets.",
 	YellAir2					= "Fires out! Let's rebuild those turrets!",
-	YellGroundTemp				= "Move quickly! She won't remain grounded for long!",
+	YellGround				    = "Move quickly! She won't remain grounded for long!",
 	EmotePhase2					= "%%s grounded permanently!",
 	FlamecastUnknown			= DBM_CORE_UNKNOWN
 }

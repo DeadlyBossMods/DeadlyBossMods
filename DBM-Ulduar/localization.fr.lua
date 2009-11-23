@@ -83,7 +83,7 @@ L:SetTimerLocalization{
 	timerTurret2			= "Tourelle 2",
 	timerTurret3			= "Tourelle 3",
 	timerTurret4			= "Tourelle 4",
-	timerGroundedTemp		= "Sur le sol"
+	timerGrounded		= "Sur le sol"
 }
 
 L:SetOptionLocalization{
@@ -97,13 +97,13 @@ L:SetOptionLocalization{
 	timerTurret3				= "Montre le timer pour la tourelle 3 (Héroique)",
 	timerTurret4				= "Montre le timer pour la tourelle 4 (Héroique)",
 	OptionDevouringFlame		= "Annonce la cible des Flammes dévorantes (Incertain)",
-	timerGroundedTemp			= "Montre le timer pour la phase au sol"
+	timerGrounded			= "Montre le timer pour la phase au sol"
 }
 
 L:SetMiscLocalization{
 	YellAir 			= "Laissez un instant pour préparer la construction des tourelles.",
 	YellAir2			= "Incendie éteint ! Reconstruisons les tourelles !",
-	YellGroundTemp		= "Faites vite ! Elle va pas rester au sol très longtemps !",
+	YellGround		= "Faites vite ! Elle va pas rester au sol très longtemps !",
 	EmotePhase2			= "bloquée au sol",
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
