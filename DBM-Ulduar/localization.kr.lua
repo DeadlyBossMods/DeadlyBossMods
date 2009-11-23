@@ -98,7 +98,7 @@ L:SetTimerLocalization{
 	timerTurret2			= "2 번째 포탑",
 	timerTurret3			= "3 번째 포탑",
 	timerTurret4			= "4 번째 포탑",
-	timerGroundedTemp		= "지상 착지",	
+	timerGrounded		= "지상 착지",	
 }
 
 L:SetOptionLocalization{
@@ -113,14 +113,14 @@ L:SetOptionLocalization{
 	timerTurret2				= "두번째 포탑 타이머 보기",
 	timerTurret3				= "세번째 포탑 타이머 보기(25인)",
 	timerTurret4				= "네번째 포탑 타이머 보기(25인)", 
-	timerGroundedTemp			= "지상 착지 유지 시간 보기",
+	timerGrounded			= "지상 착지 유지 시간 보기",
 	OptionDevouringFlame		= "파멸의 불길 대상 알리기 (부정확함)"
 }
 
 L:SetMiscLocalization{
 	YellAir 			= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
 	YellAir2			= "불꽃이 꺼졌어요! 포탑을 재설치합시다!",	
-	YellGroundTemp		= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
+	YellGround		= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
 	EmotePhase2			= "%%s이 완전히 땅에 내려앉았습니다!",	
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }

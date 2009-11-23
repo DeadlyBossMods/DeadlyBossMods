@@ -32,7 +32,7 @@ local timerTurret1					= mod:NewTimer(55, "timerTurret1")
 local timerTurret2					= mod:NewTimer(75, "timerTurret2")
 local timerTurret3					= mod:NewTimer(95, "timerTurret3")
 local timerTurret4					= mod:NewTimer(115, "timerTurret4")
-local timerGroundedTemp				= mod:NewTimer(45, "timerGroundedTemp")
+local timerGrounded                 = mod:NewTimer(45, "timerGrounded")
 
 local castFlames
 
@@ -72,7 +72,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
 		timerTurret2:Stop()
 		timerTurret3:Stop()
 		timerTurret4:Stop()
-		timerGroundedTemp:Stop()
+		timerGrounded:Stop()
 	end
 end
 
@@ -94,8 +94,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 			timerTurret4:Start()
 		end
 
-	elseif msg == L.YellGroundTemp then
-		timerGroundedTemp:Start()
+	elseif msg == L.YellGround then
+		timerGrounded:Start()
 	end
 end
 
