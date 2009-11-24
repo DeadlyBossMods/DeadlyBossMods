@@ -265,7 +265,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender = "Feral Defender (%d)"
+	Defender = "Feral Defender (%d)",
+	YellPull = "Some things are better left alone!"
+}
+
+L:SetTimerLocalization{
+	timerDefender	= "Feral Defender activates"
 }
 
 L:SetWarningLocalization{
@@ -281,7 +286,8 @@ L:SetOptionLocalization{
 	SpecWarnVoid		= "Show special warning when you are affected by Seeping Feral Essence",
 	WarnFearSoon		= "Show pre-warning for Terrifying Screech",
 	WarnCatDied			= "Show warning when Feral Defender dies",
-	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining"
+	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining",
+	timerDefender       = "Show timer for when Feral Defender is activated"
 }
 
 -------------
