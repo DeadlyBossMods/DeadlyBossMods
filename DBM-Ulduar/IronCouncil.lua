@@ -48,11 +48,13 @@ mod:AddBoolOption("SetIconOnStaticDisruption")
 
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
-local timerRunicBarrier			= mod:NewBuffActiveTimer(20, 62338)
+local timerShieldofRunes		= mod:NewBuffActiveTimer(15, 63967)
 local warnRuneofPower			= mod:NewSpellAnnounce(64320, 1)
 local warnRuneofDeath			= mod:NewSpellAnnounce(63490, 2)
+local warnShieldofRunes			= mod:NewSpellAnnounce(63489, 2)
 local warnRuneofSummoning		= mod:NewSpellAnnounce(62273, 3)
 local specwarnRuneofDeath		= mod:NewSpecialWarning("RuneofDeath")
+local specwarnRuneofPower		= mod:NewSpecialWarning("RuneofPower", nil, false)
 local timerRuneofDeathDura		= mod:NewNextTimer(30, 63490)
 local timerRuneofPower			= mod:NewCDTimer(30, 61974)
 local timerRuneofDeath			= mod:NewCDTimer(30, 63490)
@@ -102,8 +104,8 @@ function mod:SPELL_CAST_START(args)
 --			end
 --		end
 
-	elseif args:IsSpellID(62338) then				-- Runic Barrier
-		timerRunicBarrier:Start()
+	elseif args:IsSpellID(62274, 63489) then		-- Shield of Runes
+		warnShieldofRunes:Start()
 	elseif args:IsSpellID(62273) then				-- Rune of Summoning
 		warnRuneofSummoning:Show()
 	end
@@ -140,6 +142,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(61903, 63493) then		-- Fusion Punch
 		timerFusionPunchActive:Start(args.destName)
 
+	elseif args:IsSpellID(64320) and not args:IsDestTypePlayer() then	-- Rune of Power
+		specwarnRuneofPower:Show(args.destName)
+
 	elseif args:IsSpellID(62269, 63490) then	-- Rune of Death - move away from it
 		if args:IsPlayer() then
 			specwarnRuneofDeath:Show()
@@ -147,6 +152,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
 		end
+		
+	elseif args:IsSpellID(62277, 63967) and not args:IsDestTypePlayer() then		-- Shield of Runes
+		timerShieldofRunes:Start()		
+
 	elseif args:IsSpellID(63486, 61887) then	-- Lightning Tendrils
 		timerLightningTendrils:Start()
 		specwarnLightningTendrils:Show()

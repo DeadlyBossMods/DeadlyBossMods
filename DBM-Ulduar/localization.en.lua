@@ -145,6 +145,7 @@ L:SetWarningLocalization{
 	RuneofDeath					= "Rune of Death - Move away",
 	LightningTendrils			= "Lightning Tendrils - Run away",
 	Overload					= "Overload - Run away",
+	RuneofPower        			= "Rune of Power on >%s<"
 }
 
 L:SetTimerLocalization{
@@ -160,7 +161,8 @@ L:SetOptionLocalization{
 	Overload					= "Show special warning for Overload",
 	AlwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
 	PlaySoundOnOverload			= "Play sound on Overload",
-	PlaySoundDeathRune			= "Play sound on Rune of Death"
+	PlaySoundDeathRune			= "Play sound on Rune of Death",
+	RuneofPower        			= "Show special warning when Boss is affected by Rune of Power"
 }
 
 L:SetMiscLocalization{
