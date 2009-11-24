@@ -12,6 +12,7 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge			= "^%%s glares at (%S+) and lets out",
 	CombatStart		= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!",
+	Phase2			= "Steel yourselves, heroes, for the twin terrors. Acidmaw and Dreadscale, enter the arena!",
 	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!",
 	Gormok			= "Gormok the Impaler",
 	Acidmaw			= "Acidmaw",
@@ -36,12 +37,16 @@ L:SetOptionLocalization{
 	SetIconOnBileTarget			= "Set icons on Burning Bile targets",
 	ClearIconsOnIceHowl			= "Clear all icons before charge",
 	TimerNextBoss				= "Show timer for next boss spawn",
-    TimerCombatStart		    = "Show timer for start of combat"
+	TimerCombatStart			= "Show timer for start of combat",
+	TimerEmerge					= "Show timer for emerge",
+	TimerSubmerge				= "Show timer for submerge"
 }
 
 L:SetTimerLocalization{
 	TimerNextBoss				= "Next boss",
-	TimerCombatStart            = "Combat starts"
+	TimerCombatStart			= "Combat starts",
+	TimerEmerge					= "Emerge",
+	TimerSubmerge				= "Submerge"
 }
 
 L:SetWarningLocalization{
