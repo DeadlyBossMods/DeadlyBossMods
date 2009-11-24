@@ -14,6 +14,7 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge			= "fusille (%S+) du regard",
 	CombatStart		= "Arrivant tout droit des plus noires et profondes cavernes des pics Foudroyés, Gormok l'Empaleur !",
+	Phase2			= "Apprêtez-vous, héros, car voici que les terreurs jumelles, Gueule-d'acide et Écaille-d'effroi, pénètrent dans l'arène !",
 	Phase3			= "L'air se gèle à l'entrée de notre prochain combattant, Glace-hurlante ! Tuez ou soyez tués, champions !",
 	Gormok			= "Gormok l'Empaleur",
 	Acidmaw			= "Gueule-d'acide",
@@ -38,12 +39,16 @@ L:SetOptionLocalization{
 	SetIconOnBileTarget			= "Met une icône sur la cible de la Bile brûlante",
 	ClearIconsOnIceHowl			= "Enlève toutes les icônes avant la prochaine charge",
 	TimerNextBoss				= "Montre le timer pour l'arrivée du prochain boss",
-	TimerCombatStart			= "Montre le timer avant le début du combat"
+	TimerCombatStart			= "Montre le timer avant le début du combat",
+	TimerEmerge					= "Montre le timer avant que les vers rentre dans le sol",
+	TimerSubmerge				= "Montre le timer avant que les vers sortent du sol"
 }
 
 L:SetTimerLocalization{
 	TimerNextBoss				= "Prochain boss dans",
-	TimerCombatStart			= "Le combat débute dans"
+	TimerCombatStart			= "Le combat débute dans",
+	TimerEmerge					= "Rentre dans le sol",
+	TimerSubmerge				= "Sort du sol"
 }
 
 L:SetWarningLocalization{

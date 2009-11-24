@@ -147,7 +147,8 @@ L:SetWarningLocalization{
 	WarningSupercharge			= "Supercharge imminente",
 	RuneofDeath					= "Rune de mort - BOUGEZ",
 	LightningTendrils			= "Vrilles de foudre - COURREZ",
-	Overload					= "Surchage - BOUGEZ"
+	Overload					= "Surchage - BOUGEZ",
+	RuneofPower        			= "Rune de puissance sur >%s<"
 }
 
 L:SetTimerLocalization{
@@ -163,7 +164,8 @@ L:SetOptionLocalization{
 	Overload					= "Montre une alerte spéciale pour la Surcharge",
 	AlwaysWarnOnOverload		= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
 	PlaySoundOnOverload			= "Joue un son à la surcharge",
-	PlaySoundDeathRune			= "Joue un son pour les runes de mort"
+	PlaySoundDeathRune			= "Joue un son pour les runes de mort",
+	RuneofPower        			= "Montre une alerte spéciale quand le boss est affecter par la Rune de puissance"
 }
 
 L:SetMiscLocalization{
@@ -265,7 +267,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender = "Défenseur farouche (%d)"
+	Defender 			= "Défenseur farouche (%d)",
+	YellPull 			= "Certaines choses ne doivent pas être dérangées !"
+}
+
+L:SetTimerLocalization{
+	timerDefender		= "Défenseur farouche activé"
 }
 
 L:SetWarningLocalization{
@@ -281,7 +288,8 @@ L:SetOptionLocalization{
 	SpecWarnVoid		= "Montre une alerte spéciale quand vous êtes dans une Zone de Vide",
 	WarnFearSoon 		= "Activer l'avertissement pour le Hurlement terrifiant imminent",
 	WarnCatDied 		= "Activer l'avertissement quand un défenseur farouche meurt",
-	WarnCatDiedOne		= "Montre une alerte spéciale quand un Défenseur farouche meurt"
+	WarnCatDiedOne		= "Montre une alerte spéciale quand un Défenseur farouche meurt",
+	timerDefender       = "Montre un timer quand le Défenseur farouche est activé"
 }
 
 -------------
