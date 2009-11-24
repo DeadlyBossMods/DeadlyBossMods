@@ -52,7 +52,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
-	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating			= "當小怪再活化時顯示警告",	-- Reanimated Adherent/Fanatic spawning
 	SpecWarnTouchInsignificance	= "當你中了3層無足輕重之觸時顯示特別警告",
 	SpecWarnDeathDecay		= "當你中了死亡凋零時顯示特別警告",
