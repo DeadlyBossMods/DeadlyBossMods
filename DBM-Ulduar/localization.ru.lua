@@ -209,10 +209,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{		
---	YellPull		 	= "Ваши действия нелогичны. Все возможные исходы этой схватки просчитаны. Пантеон получит сообщение от Наблюдателя в любом случае.",
---	YellPullFirst			= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
+	YellPull		 	= "Ваши действия нелогичны. Все возможные исходы этой схватки просчитаны. Пантеон получит сообщение от Наблюдателя в любом случае.",
 	Emote_CollapsingStar	 	= "%s призывает вспыхивающие звезды!",
-	Emote_CosmicSmash	 	= "%s начинает читать заклинание Кара небесная!",
 	PullCheck			= "Алгалон подаст сигнал бедствия через (%d+) мин."
 }
 
