@@ -30,6 +30,7 @@ local warnSlimePool			= mod:NewSpellAnnounce(67643, 2)
 local warnToxin				= mod:NewTargetAnnounce(66823, 2)
 local warnBile				= mod:NewTargetAnnounce(66869, 3)
 local WarningSnobold		= mod:NewAnnounce("WarningSnobold", 2)
+local warnEnrageWorm		= mod:NewSpellAnnounce(68335, 3)
 
 local specWarnImpale3		= mod:NewSpecialWarning("SpecialWarningImpale3", false)
 local specWarnAnger3		= mod:NewSpecialWarning("SpecialWarningAnger3", false)
@@ -52,6 +53,16 @@ local timerRisingAnger      = mod:NewNextTimer(20.5, 66636)
 local timerStaggeredDaze	= mod:NewBuffActiveTimer(15, 66758)
 local timerNextBoss			= mod:NewTimer(190, "TimerNextBoss")
 local timerNextCrash		= mod:NewCDTimer(55, 67662)
+local timerSubmerge			= mod:NewTimer(45, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp") 
+local timerEmerge			= mod:NewTimer(10, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerSweepCD			= mod:NewCDTimer(17, 66794)
+local timerSlimePoolCD		= mod:NewCDTimer(12, 66883)
+local timerAcidicSpewCD		= mod:NewCDTimer(21, 66819)
+local timerMoltenSpewCD		= mod:NewCDTimer(21, 66820)
+local timerParalyticSprayCD	= mod:NewCDTimer(17, 66901)
+local timerBurningSprayCD	= mod:NewCDTimer(21, 66902)
+local timerParalyticBiteCD	= mod:NewCDTimer(25, 66824)
+local timerBurningBiteCD	= mod:NewCDTimer(15, 66879)
 
 mod:AddBoolOption("PingCharge")
 mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
@@ -128,6 +139,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(66636) then		-- Rising Anger
 		WarningSnobold:Show()
 		timerRisingAnger:Show()
+	elseif args:IsSpellID(68335) then
+		warnEnrageWorm:Show()
 	end
 end
 
@@ -174,6 +187,21 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(67641, 66883, 67642, 67643) then		-- Slime Pool Cloud Spawn
 		warnSlimePool:Show()
+		timerSlimePoolCD:Show()
+	elseif args:IsSpellID(66794, 67644, 67645, 67646) then		-- Sweep stationary worm
+		timerSweepCD:Start()
+	elseif args:IsSpellID(66819) then							-- Acidic Spew
+		timerAcidicSpewCD:Start()
+	elseif args:IsSpellID(66820) then							-- Molten spew
+		timerMoltenSpewCD:Start()
+	elseif args:IsSpellID(66901, 67615, 67616, 67617) then		-- Paralytic Spray
+		timerParalyticSprayCD:Start()
+	elseif args:IsSpellID(66902, 67627, 67628, 67629) then		-- Burning Spray
+		timerBurningSprayCD:Start()
+	elseif args:IsSpellID(66824, 67612, 67613, 67614) then		-- Paralytic Bite
+		timerParalyticBiteCD:Start()
+	elseif args:IsSpellID(66879, 67624, 67625, 67626) then		-- Burning Bite
+		timerBurningBiteCD:Start()
 	end
 end
 
@@ -232,19 +260,57 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Phase3 then
+	if msg == L.Phase2 then
+		self:SendSync("Phase2")
+	elseif msg == L.Phase3 then
 		self:SendSync("Phase3")
 	end
 end
 
 function mod:OnSync(msg, arg)
-	if msg == "Phase3" then
+	if msg == "Phase2" then
+		self:ScheduleMethod(15, "WormsEmerge")
+		timerCombatStart:Show(15)
+		updateHealthFrame(2)
+	elseif msg == "Phase3" then
 		updateHealthFrame(3)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 		end
 		timerNextCrash:Start(45)
 		timerNextBoss:Cancel()
+		WormsSubmerge()				-- To cancel most P2 timers
+		self:UnscheduleMethod("WormsEmerge")	-- There wont be another Emerge phase ;)
+		timerEmerge:Cancel()			-- ^
 	end
 end
 
+function mod:WormsSubmerge()
+	self:UnscheduleMethod("WormsSubmerge")
+	timerEmerge:Show()
+	timerSubmerge:Cancel()
+	timerSweepCD:Cancel()
+	timerSlimePoolCD:Cancel()
+	timerAcidicSpewCD:Cancel()
+	timerMoltenSpewCD:Cancel()
+	timerParalyticSprayCD:Cancel()
+	timerBurningSprayCD:Cancel()
+	timerParalyticBiteCD:Cancel()
+	timerBurningBiteCD:Cancel()
+	self:ScheduleMethod(10, "WormsEmerge")
+end
+
+function mod:WormsEmerge()
+	self:UnscheduleMethod("WormsEmerge")
+	timerSubmerge:Show()
+	timerEmerge:Cancel()
+	timerSweepCD:Start(16)
+	timerSlimePoolCD:Start(14)
+	timerAcidicSpewCD:Start(10)
+	timerMoltenSpewCD:Start(10)
+	timerParalyticSprayCD:Start(10)
+	timerBurningSprayCD:Start(16)
+	timerParalyticBiteCD:Start(5)
+	timerBurningBiteCD:Start(5)
+	self:ScheduleMethod(45, "WormsSubmerge")
+end
