@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 
 mod:SetCreatureID(33515)
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -34,8 +34,11 @@ local specWarnBlast		= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local specWarnVoid 		= mod:NewSpecialWarning("SpecWarnVoid")
 
 local enrageTimer		= mod:NewEnrageTimer(600)
+local timerDefender 	= mod:NewCastTimer(35, "timerDefender")--this i need to check for consistency
 local timerFear 		= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
+local timerNextSwarm 	= mod:NewNextTimer(37.5, 64396)
+local timerNextSonic 	= mod:NewNextTimer(28, 64688)
 local timerSonic		= mod:NewCastTimer(64688)
 
 mod:AddBoolOption("HealthFrame", true)
@@ -44,6 +47,9 @@ local isFeared			= false
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
+	timerNextFear:Start(40-delay)--this i need to check for consistency
+	timerNextSonic:Start(60-delay)--this i need to check for consistency
+	timerDefender:Start(60-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -57,6 +63,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(64688, 64422) then --Sonic Screech
 		warnSonic:Show()
 		timerSonic:Start()
+		timerNextSonic:Start()
 		-- What about adding a "soon" timer. It seems to be 25-35 seconds between Sonic Screeches
 	end
 end
@@ -64,6 +71,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(64396) then -- Guardian Swarm
 		warnSwarm:Show(args.destName)
+		timerNextSwarm:Start()
 	elseif args:IsSpellID(64455) then -- Feral Essence
 		DBM.BossHealth:AddBoss(34035, L.Defender:format(9))
 	elseif args:IsSpellID(64386) and args:IsPlayer() then
@@ -77,6 +85,7 @@ function mod:SPELL_AURA_REMOVED_DOSE(args)
 			warnCatDiedOne:Show()
 		else
 			warnCatDied:Show(args.amount)
+            timerDefender:Start()
 		end
 		if self.Options.HealthFrame then
 			DBM.BossHealth:RemoveBoss(34035)
