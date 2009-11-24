@@ -204,6 +204,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
+--	YellKill			= "我曾經看過塵世沉浸在造物者的烈焰之中，眾生連一聲悲泣都無法呼出，就此凋零。整個星系在彈指之間歷經了毀滅與重生。然而在這段歷程之中，我的心卻無法感受到絲毫的…惻隱之念。我‧感‧受‧不‧到。成千上萬的生命就這麼消逝。他們是否擁有與你同樣堅韌的生命?他們是否與你同樣熱愛生命?",
 	Emote_CollapsingStar		= "%s開始召喚崩陷之星!",
 	PullCheck			= "艾爾加隆開始上傳滅世訊息的剩餘時間= (%d+)分鐘。"
 }
@@ -258,7 +259,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender 			= "野性防衛者 (%d)"
+	Defender 			= "野性防衛者 (%d)",
+	YellPull 			= "有些事情不該公諸於世!"
+}
+
+L:SetTimerLocalization{
+	timerDefender			= "野性防衛者復活"
 }
 
 L:SetWarningLocalization{
@@ -274,7 +280,8 @@ L:SetOptionLocalization{
 	SpecWarnVoid			= "當你中了滲洩野性精華時顯示特別警告",
 	WarnFearSoon			= "為恐嚇尖嘯顯示預先警告",
 	WarnCatDied			= "當野性防衛者死亡時顯示警告",
-	WarnCatDiedOne			= "當野性防衛者剩下最後一隻時顯示警告"
+	WarnCatDiedOne			= "當野性防衛者剩下最後一隻時顯示警告",
+	timerDefender       		= "當野性防衛者準備復活時顯示計時器"
 }
 
 -------------
