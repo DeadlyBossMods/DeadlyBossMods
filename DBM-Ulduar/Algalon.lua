@@ -49,11 +49,11 @@ function mod:OnCombatStart(delay)
     	end
 	time = tonumber(time)
 	if time == 60 then
-		timerCombatStart:Start(26-delay)
-		self:ScheduleMethod(26-delay, "startTimers")	-- 26 seconds roleplaying
+		timerCombatStart:Start(26.5-delay)
+		self:ScheduleMethod(26.5-delay, "startTimers")	-- 26 seconds roleplaying
 	else 
 		timerCombatStart:Start(-delay)
-		self:ScheduleMethod(7-delay, "startTimers")	-- 7 seconds roleplaying
+		self:ScheduleMethod(8-delay, "startTimers")	-- 8 seconds roleplaying
 	end 
 end
 
