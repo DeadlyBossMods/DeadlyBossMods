@@ -269,7 +269,7 @@ end
 
 function mod:OnSync(msg, arg)
 	if msg == "Phase2" then
-		self:ScheduleMethod(15, "WormsEmerge")
+		self:ScheduleMethod(17, "WormsEmerge")
 		timerCombatStart:Show(17)
 		updateHealthFrame(2)
 	elseif msg == "Phase3" then
