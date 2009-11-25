@@ -279,7 +279,7 @@ function mod:OnSync(msg, arg)
 		end
 		timerNextCrash:Start(45)
 		timerNextBoss:Cancel()
-		self:ScheduleMethod("WormsSubmerge")				-- To cancel most P2 timers
+		self:ScheduleMethod(0.1, "WormsSubmerge")	-- To cancel most P2 timers
 		self:UnscheduleMethod("WormsEmerge")	-- There wont be another Emerge phase ;)
 		timerEmerge:Cancel()			-- ^
 	end
