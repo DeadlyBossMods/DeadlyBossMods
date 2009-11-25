@@ -14,8 +14,8 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge			= "fusille (%S+) du regard",
 	CombatStart		= "Arrivant tout droit des plus noires et profondes cavernes des pics Foudroyés, Gormok l'Empaleur !",
-	Phase2			= "Apprêtez-vous, héros, car voici que les terreurs jumelles, Gueule-d'acide et Écaille-d'effroi, pénètrent dans l'arène !",
-	Phase3			= "L'air se gèle à l'entrée de notre prochain combattant, Glace-hurlante ! Tuez ou soyez tués, champions !",
+	Phase2			= "car voici que les terreurs jumelles",
+	Phase3			= "de notre prochain combattant",
 	Gormok			= "Gormok l'Empaleur",
 	Acidmaw			= "Gueule-d'acide",
 	Dreadscale		= "Ecaille-d'effroi",
