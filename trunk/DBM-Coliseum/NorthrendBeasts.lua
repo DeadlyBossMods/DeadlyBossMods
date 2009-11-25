@@ -277,11 +277,20 @@ function mod:OnSync(msg, arg)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 		end
+		self:UnscheduleMethod("WormsSubmerge")
+		self:UnscheduleMethod("WormsEmerge")
 		timerNextCrash:Start(45)
 		timerNextBoss:Cancel()
-		self:ScheduleMethod(0.1, "WormsSubmerge")	-- To cancel most P2 timers
-		self:UnscheduleMethod("WormsEmerge")	-- There wont be another Emerge phase ;)
-		timerEmerge:Cancel()			-- ^
+		timerSubmerge:Cancel()
+		timerSweepCD:Cancel()
+		timerSlimePoolCD:Cancel()
+		timerAcidicSpewCD:Cancel()
+		timerMoltenSpewCD:Cancel()
+		timerParalyticSprayCD:Cancel()
+		timerBurningSprayCD:Cancel()
+		timerParalyticBiteCD:Cancel()
+		timerBurningBiteCD:Cancel()
+		timerEmerge:Cancel()
 	end
 end
 
