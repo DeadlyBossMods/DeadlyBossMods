@@ -260,9 +260,9 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Phase2 then
+	if msg == L.Phase2 or msg:find(L.Phase2) then
 		self:SendSync("Phase2")
-	elseif msg == L.Phase3 then
+	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		self:SendSync("Phase3")
 	end
 end
