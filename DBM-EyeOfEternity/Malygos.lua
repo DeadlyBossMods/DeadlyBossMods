@@ -65,7 +65,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:sub(0, L.YellPhase2:len()) == L.YellPhase2 then
 		self:SendSync("Phase2")
-	elseif msg == L.YellBreath then
+	elseif msg == L.YellBreath or msg:find(L.YellBreath) then
 		self:SendSync("BreathSoon")
 	elseif msg:sub(0, L.YellPhase3:len()) == L.YellPhase3 then
 		self:SendSync("Phase3")

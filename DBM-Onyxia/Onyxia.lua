@@ -49,9 +49,9 @@ function mod:OnCombatStart(delay)
 end 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellP2 then
+	if msg == L.YellP2 or msg:find(L.YellP2) then
 		self:SendSync("Phase2")
-	elseif msg == L.YellP3 then
+	elseif msg == L.YellP3 or msg:find(L.YellP3) then
 		self:SendSync("Phase3")
 	end
 end
