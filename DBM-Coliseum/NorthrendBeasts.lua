@@ -278,7 +278,6 @@ function mod:OnSync(msg, arg)
 			enrageTimer:Start()
 		end
 		self:UnscheduleMethod("WormsSubmerge")
-		self:UnscheduleMethod("WormsEmerge")
 		timerNextCrash:Start(45)
 		timerNextBoss:Cancel()
 		timerSubmerge:Cancel()
