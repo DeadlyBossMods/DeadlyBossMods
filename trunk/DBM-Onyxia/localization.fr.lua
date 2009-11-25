@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "frFR" then return end
+if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -34,7 +34,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellP2 = "Cet exercice dénué de sens m'ennuie. Je vais vous incinérer d'un seul coup !",
-	YellP3 = "Il semble que vous ayez besoin d'une autre leçon, mortels !"
+	YellP2 = "exercice dénué de sens",
+	YellP3 = "semble que vous ayez besoin"
 }
 
