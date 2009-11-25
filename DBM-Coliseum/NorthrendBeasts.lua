@@ -181,6 +181,16 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(66330, 67647, 67648, 67649) then	-- Staggering Stomp
 		timerNextStomp:Start()
 		specWarnSilence:Schedule(19)						-- prewarn ~1,5 sec before next
+	elseif args:IsSpellID(66794, 67644, 67645, 67646) then		-- Sweep stationary worm
+		timerSweepCD:Start()
+	elseif args:IsSpellID(66821) then							-- Molten spew
+		timerMoltenSpewCD:Start()
+	elseif args:IsSpellID(66818) then							-- Acidic Spew
+		timerAcidicSpewCD:Start()
+	elseif args:IsSpellID(66901, 67615, 67616, 67617) then		-- Paralytic Spray
+		timerParalyticSprayCD:Start()
+	elseif args:IsSpellID(66902, 67627, 67628, 67629) then		-- Burning Spray
+		timerBurningSprayCD:Start()
 	end
 end
 
@@ -188,16 +198,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(67641, 66883, 67642, 67643) then		-- Slime Pool Cloud Spawn
 		warnSlimePool:Show()
 		timerSlimePoolCD:Show()
-	elseif args:IsSpellID(66794, 67644, 67645, 67646) then		-- Sweep stationary worm
-		timerSweepCD:Start()
-	elseif args:IsSpellID(66819) then							-- Acidic Spew
-		timerAcidicSpewCD:Start()
-	elseif args:IsSpellID(66820) then							-- Molten spew
-		timerMoltenSpewCD:Start()
-	elseif args:IsSpellID(66901, 67615, 67616, 67617) then		-- Paralytic Spray
-		timerParalyticSprayCD:Start()
-	elseif args:IsSpellID(66902, 67627, 67628, 67629) then		-- Burning Spray
-		timerBurningSprayCD:Start()
 	elseif args:IsSpellID(66824, 67612, 67613, 67614) then		-- Paralytic Bite
 		timerParalyticBiteCD:Start()
 	elseif args:IsSpellID(66879, 67624, 67625, 67626) then		-- Burning Bite
@@ -270,7 +270,7 @@ end
 function mod:OnSync(msg, arg)
 	if msg == "Phase2" then
 		self:ScheduleMethod(15, "WormsEmerge")
-		timerCombatStart:Show(15)
+		timerCombatStart:Show(17)
 		updateHealthFrame(2)
 	elseif msg == "Phase3" then
 		updateHealthFrame(3)
