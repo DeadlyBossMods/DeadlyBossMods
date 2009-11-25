@@ -14,6 +14,7 @@ L:SetMiscLocalization{
 	--Charge		= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
 	Charge			= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
 	CombatStart		= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!",
+	Phase2			= "마음을 단단히 먹게, 영웅들이여. 두 배의 공포, 산성아귀와 공포비늘이 투기장으로 들어온다네!",	
 	Phase3			= "다음은, 소개하는 순간 공기마저 얼어붙게 하는 얼음울음일세! 죽이지 않으면 죽을 걸세, 용사들이여!",
 	Gormok			= "꿰뚫는 자 고르목",
 	Acidmaw			= "산성아귀",
@@ -38,12 +39,16 @@ L:SetOptionLocalization{
 	ClearIconsOnIceHowl			= "얼음울음의 사나운 돌진 이후 모든 공격대 아이콘 없앰",
 	PingCharge					= "얼음울음에게 사나운 돌진의 대상이 될 경우 미니맵에 핑 표시하기",		
 	TimerNextBoss				= "다음 보스 등장 타이머 보기",
-	TimerCombatStart			= "전투 시작 타이머 보기"
+	TimerCombatStart			= "전투 시작 타이머 보기",
+	TimerEmerge					= "출현 타이머 보기",
+	TimerSubmerge				= "숨기 타이머 보기"
 }
 
 L:SetTimerLocalization{
 	TimerNextBoss				= "곧 다음 보스",
-	TimerCombatStart			= "곧 전투 시작"
+	TimerCombatStart			= "곧 전투 시작",
+	TimerEmerge					= "출현",
+	TimerSubmerge				= "숨기"
 }
 
 L:SetWarningLocalization{
