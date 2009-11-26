@@ -54,7 +54,8 @@ L:SetOptionLocalization{
 	WarnReanimating					= "Show warning when an add is getting revived",								-- Reanimated Adherent/Fanatic spawning
 	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
 	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
-	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor"
+	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor",
+	SetIconOnDominateMind			= "Set icons on Dominate Mind"
 }
 
 L:SetMiscLocalization{

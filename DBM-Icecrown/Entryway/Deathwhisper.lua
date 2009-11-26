@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36855)
---mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(5, 6, 7)
 mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
@@ -34,11 +34,14 @@ local timerDominateMind			= mod:NewTargetTimer(20, 71289)
 local timerDominateMindCD		= mod:NewCDTimer(40, 71289)
 local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
+mod:AddBoolOption("SetIconOnDominateMind", true)
+
 local enrageTimer				= mod:NewEnrageTimer(600)
 
 
 local lastDD	= 0
 local MCTargets	={}
+local MCIcon = 7
 
 function mod:addsTimer()
 	timerAdds:Cancel()
@@ -53,6 +56,7 @@ function mod:warnDominateMind()
 	timerDominateMind:Start(args.destName)
 	timerDominateMindCD:Start()
 	table.wipe(MCTargets)
+	MCIcon = 7
 end
 
 function mod:OnCombatStart(delay)
@@ -62,6 +66,7 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(7, "addsTimer")
 	timerDominateMindCD:Start(30)	-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
 	table.wipe(MCTargets)
+	MCIcon = 7
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -69,6 +74,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:UnscheduleMethod("warnDominateMind")
 		MCTargets[#MCTargets + 1] = args.destName
 		self:ScheduleMethod(0.3, "warnDominateMind")
+		mod:SetIcon(args.destName, MCIcon, 20)
+		MCIcon = MCIcon - 1
 	elseif args:IsSpellID(72108, 71001) then
 		if args:IsPlayer() then
 			specWarnDeathDecay:Show()
