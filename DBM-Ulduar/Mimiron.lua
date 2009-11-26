@@ -49,6 +49,7 @@ local timerPlasmaBlastCD		= mod:NewCDTimer(30, 64529)
 local timerShell				= mod:NewTargetTimer(6, 63666)
 local timerFlameSuppressant		= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
+local timerNextFrostBomb        = mod:NewNextTimer(30, 64623)
 local timerBombExplosion		= mod:NewCastTimer(15, 65333)
 
 mod:AddBoolOption("PlaySoundOnShockBlast", isMelee)
@@ -56,6 +57,7 @@ mod:AddBoolOption("PlaySoundOnDarkGlare", true)
 mod:AddBoolOption("HealthFramePhase4", true)
 mod:AddBoolOption("AutoChangeLootToFFA", true)
 
+local hardmode = false
 local phase						= 0 
 local lootmethod, masterlooterRaidID
 
@@ -64,6 +66,7 @@ local lastSpinUp				= 0
 local is_spinningUp				= false
 
 function mod:OnCombatStart(delay)
+    hardmode = false
 	enrage:Start(-delay)
 	phase = 0
 	is_spinningUp = false
@@ -129,6 +132,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(64623) then
 		warnFrostBomb:Show()
 		timerBombExplosion:Start()
+		timerNextFrostBomb:Start()
 	end
 end
 
@@ -188,6 +192,9 @@ function mod:NextPhase()
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
 		end
+		if hardmode then
+            timerNextFrostBomb:Start(45)
+        end
 
 	elseif phase == 3 then
 		if self.Options.AutoChangeLootToFFA and DBM:GetRaidRank() == 2 then
@@ -195,6 +202,7 @@ function mod:NextPhase()
 		end
 		timerDarkGlareCast:Cancel()
 		timerNextDarkGlare:Cancel()
+		timerNextFrostBomb:Cancel()
 		timerP2toP3:Start()
 		if self.Options.HealthFrame then
 			DBM.BossHealth:Clear()
@@ -216,6 +224,9 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 		end
+		if hardmode then
+            timerNextFrostBomb:Start()
+        end
 	end
 end
 
@@ -257,6 +268,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerHardmode:Start()
 		timerFlameSuppressant:Start()
 		enrage:Stop()
+		hardmode = true
 	end
 end
 
