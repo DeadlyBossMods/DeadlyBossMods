@@ -26,7 +26,7 @@ L:SetWarningLocalization{
 	SpecialPursueWarnYou	= "Vous êtes poursuivit!",
 	SystemOverload			= "Extinction des systèmes !",
 	warnWardofLife			= "Gardien de Vie viens d'arriver",
---	warnWrithingLasher		= "Flagellant frémissant viens d'arriver"
+	warnWrithingLasher		= "Flagellant frémissant viens d'arriver"
 }
 
 L:SetOptionLocalization{
@@ -35,7 +35,7 @@ L:SetOptionLocalization{
 	PursueWarn				= "Afficher l'avertissement quand vous êtes poursuivi",
 	warnNextPursueSoon		= "Prévenir avant la prochaine poursuite",
 	warnWardofLife			= "Montre une alerte quand un Gardien de Vie arrive",
---	warnWrithingLasher		= "Montre une alerte quand un Flagellant frémissant arrive"
+	warnWrithingLasher		= "Montre une alerte quand un Flagellant frémissant arrive"
 }
 
 -------------

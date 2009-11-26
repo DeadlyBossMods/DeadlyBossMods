@@ -21,7 +21,7 @@ local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3)
 local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
 local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
 local warnWardofLife		= mod:NewSpecialWarning("warnWardofLife")
---local warnWrithingLasher	= mod:NewSpecialWarning("warnWrithingLasher")
+local warnWrithingLasher	= mod:NewSpecialWarning("warnWrithingLasher", false)
 
 local timerSystemOverload	= mod:NewBuffActiveTimer(20, 62475)
 local timerFlameVents		= mod:NewCastTimer(10, 62396)
@@ -39,11 +39,13 @@ function mod:OnCombatStart(delay)
 	buildGuidTable()
 end
 
+local spam = 0
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(62907) then		-- Ward of Life spawned (Creature id: 34275)
 		warnWardofLife:Show()
---	elseif args:IsSpellID(62947) then	-- Writhing Lasher spawned (Creature id: 33387) May cause spam, Disabled until tested.
---		warnWrithingLasher:Show()
+	elseif args:IsSpellID(62947) and GetTime() - spam > 5 then	-- Writhing Lasher spawned (Creature id: 33387)
+		warnWrithingLasher:Show()
+		spam = GetTime()
 	end
 end
 

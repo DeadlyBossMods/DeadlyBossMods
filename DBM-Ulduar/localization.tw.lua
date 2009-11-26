@@ -25,7 +25,7 @@ L:SetWarningLocalization{
 	SpecialPursueWarnYou		= "你中了獵殺 - 快跑",
 	SystemOverload			= "電路超載",
 	warnWardofLife			= "生命結界 出現",
---	warnWrithingLasher		= "盤繞鞭笞者 出現"
+	warnWrithingLasher		= "盤繞鞭笞者 出現"
 }
 
 L:SetOptionLocalization{
@@ -34,7 +34,7 @@ L:SetOptionLocalization{
 	PursueWarn			= "提示獵殺的目標",
 	warnNextPursueSoon		= "為下一次 獵殺顯示預先警告",
 	warnWardofLife			= "為生命結界 出現顯示特別警告",
---	warnWrithingLasher		= "為盤繞鞭笞者 出現顯示特別警告" --commenting out as it is currently unused for Flame Leviathan
+	warnWrithingLasher		= "為盤繞鞭笞者 出現顯示特別警告"
 }
 
 --------------------------------
