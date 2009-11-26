@@ -22,6 +22,7 @@ local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
 local sndBreath				= mod:NewRunAwaySound(nil, "SoundBreath")
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
+local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
 local preWarnBreath         = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
@@ -29,7 +30,7 @@ local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
 local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
-local timerNextBreath		= mod:NewNextTimer(61, 17086)--Experimental, if it is off please let me know.
+local timerNextBreath		= mod:NewNextTimer(40, 17086)--Experimental, if it is off please let me know.
 local timerBreath			= mod:NewCastTimer(8, 17086)
 local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
@@ -37,10 +38,12 @@ local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps")
 
 local sndFunny				= mod:NewSound(nil, "SoundWTF")
 
+local warned_preP2 = false
 local warned_preP3 = false
 local phase = 0
 function mod:OnCombatStart(delay)
 	phase = 1
+    warned_preP2 = false
 	warned_preP3 = false
 	timerAchieve:Start(-delay)
 	sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\dps-very-very-slowly.mp3")
@@ -98,11 +101,11 @@ function mod:SPELL_CAST_START(args)
 		if self.Options.PlaySoundOnBlastNova then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
-	elseif args:IsSpellID(17086, 18351, 18564, 18576) or args:IsSpellID(18584, 18596, 18609, 18617) then		-- 1 ID for each direction?
+	elseif args:IsSpellID(17086, 18351, 18564, 18576) or args:IsSpellID(18584, 18596, 18609, 18617) then		-- 1 ID for each direction
 		specWarnBreath:Show()
 		timerBreath:Start()
 		timerNextBreath:Start()
-		preWarnBreath:Schedule(56)	-- Pre-Warn Deep Breath
+		preWarnBreath:Schedule(35)	-- Pre-Warn Deep Breath
 	end
 end
 
@@ -119,7 +122,10 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if phase == 2 and not warned_preP3 and self:GetUnitCreatureId(uId) == 10184 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.41 then
+	if phase == 1 and not warned_preP2 and self:GetUnitCreatureId(uId) == 10184 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.67 then
+		warned_preP2 = true
+		warnPhase2Soon:Show()	
+	elseif phase == 2 and not warned_preP3 and self:GetUnitCreatureId(uId) == 10184 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.41 then
 		warned_preP3 = true
 		warnPhase3Soon:Show()	
 	end
