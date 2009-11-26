@@ -52,7 +52,7 @@ end
 do 
 	local lasttoxic = 0
 	function mod:SPELL_PERIODIC_DAMAGE(args)
-		if args:IsSpellID(69024, 70274, 70436) and args:IsPlayer() and time() - lasttoxic > 2 then		-- Toxic Waste, MOVE!
+		if args:IsSpellID(69024, 70436) and args:IsPlayer() and time() - lasttoxic > 2 then		-- Toxic Waste, MOVE!
 			specWarnToxic:Show()
 			lasttoxic = time()
 		end
