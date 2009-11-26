@@ -228,7 +228,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "Eye Beam on you - Move",
 	WarningEyeBeam			= "Eye Beam on >%s<",
-	WarnGrip				= "Grip on >%s<"
+	WarnGrip				= "Grip on >%s<",
+	SpecWarnCrunchArmor2	= "Crunch Armor >%d< on you"
 }
 
 L:SetTimerLocalization{
@@ -239,6 +240,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "Show special warning when Eye Beam is on you",
+	SpecWarnCrunchArmor2	= "Show special warning for Crunch Armor (>=2 stacks)",
 	WarningEyeBeam			= "Announce Eye Beam targets",
 	timerLeftArm			= "Show timer for Left Arm respawn",
 	timerRightArm			= "Show timer for Right Arm respawn",
