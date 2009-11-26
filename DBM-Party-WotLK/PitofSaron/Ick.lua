@@ -21,6 +21,8 @@ local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
 local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
 
+mod:AddBoolOption("PlaySoundOnPursuit", true)
+
 --mod:AddBoolOption("SetIconOnPursuitTarget", true) --Needs syncing implimentation to be added.
 
 function mod:SPELL_CAST_START(args)
@@ -32,6 +34,9 @@ end
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg == L.IckPursuit then
 		specWarnPursuit:Show()
+		if self.Options.PlaySoundOnPursuit then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
 	end
 end
 
