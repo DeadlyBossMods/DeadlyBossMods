@@ -36,7 +36,9 @@ local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
 local enrageTimer				= mod:NewEnrageTimer(600)
 
-local lastDD					= 0
+
+local lastDD	= 0
+local MCTargets	={}
 
 function mod:addsTimer()
 	timerAdds:Cancel()
@@ -46,19 +48,27 @@ function mod:addsTimer()
 	self:ScheduleMethod(60, "addsTimer")
 end
 
+function mod:warnDominateMind()
+	warnDominateMind:Show(table.concat(MCTargets, "<, >"))
+	timerDominateMind:Start(args.destName)
+	timerDominateMindCD:Start()
+	table.wipe(MCTargets)
+end
+
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	timerAdds:Start(7)
 	warnAddsSoon:Schedule(4)	-- 3sec pre-warning on start
 	self:ScheduleMethod(7, "addsTimer")
 	timerDominateMindCD:Start(30)	-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
+	table.wipe(MCTargets)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71289) then
-		warnDominateMind:Show(args.destName)
-		timerDominateMind:Start(args.destName)
-		timerDominateMindCD:Start()
+		self:UnscheduleMethod("warnDominateMind")
+		MCTargets[#MCTargets + 1] = args.destName
+		self:ScheduleMethod(0.3, "warnDominateMind")
 	elseif args:IsSpellID(72108, 71001) then
 		if args:IsPlayer() then
 			specWarnDeathDecay:Show()
@@ -72,20 +82,15 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(69483) then
 		warnDarkReckoning:Show(args.destName)
 	elseif args:IsSpellID(71204) then
-		warnTouchInsignificance:Show(args.spellName, args.destName, 1)
-		timerTouchInsignificance:Start(args.destName)
-	end
-end
-
-function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(71204) then
-		warnTouchInsignificance:Show(args.spellName, args.destName, args.amount)
+		warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
 		if args:IsPlayer() and args.amount >= 3 then
 			specWarnTouchInsignificance:Show()
 		end
 		timerTouchInsignificance:Start(args.destName)
 	end
 end
+
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70842) then
