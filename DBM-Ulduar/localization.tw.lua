@@ -221,7 +221,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningEyebeam		= "集束目光看著你 - 快跑開",
 	WarningEyeBeam			= "集束目光: >%s<",
-	WarnGrip			= "堅石之握: >%s<"
+	WarnGrip			= "堅石之握: >%s<",
+	SpecWarnCrunchArmor2		= "你中了>%d<層粉碎護甲"
 }
 
 L:SetTimerLocalization{
@@ -232,6 +233,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam		= "當集束目光看著你時顯示特別警告",
+	SpecWarnCrunchArmor2		= "為粉碎護甲(>=2層)顯示特別警告",
 	WarningEyeBeam			= "提示集束目光的目標",
 	timerLeftArm			= "為左臂重生顯示計時器",
 	timerRightArm			= "為右臂重生顯示計時器",
