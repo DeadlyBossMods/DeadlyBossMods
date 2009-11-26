@@ -38,9 +38,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(69629, 69167) then						-- Unholy Power
-		warnUnholyPower:Show()
-	elseif args:IsSpellID(69155, 69627) then					-- Forceful Smash
+	if args:IsSpellID(69155, 69627) then					-- Forceful Smash
 		timerForcefulSmash:Start()
 	end
 end
@@ -57,6 +55,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69629, 69167) then						-- Unholy Power
+        warnUnholyPower:Show()
 		timerUnholyPower:Show(args.destName)
 	elseif args:IsSpellID(69172) then							-- Overlord's Brand
 		warnOverlordsBrand:Show(args.destName)

@@ -1267,7 +1267,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnPursuit				= "Show pre-warning for pursue",
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
-	specWarnPursuit			= "Show special warning when you are being pursued"
+	specWarnPursuit			= "Show special warning when you are being pursued",
+	PlaySoundOnPursuit		= "Play sound on Pursuit",
 --	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
 
