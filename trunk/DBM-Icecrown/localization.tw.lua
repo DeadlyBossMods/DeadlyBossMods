@@ -125,13 +125,13 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes		= "下一次 泥漿噴霧"
+	NextPoisonSlimePipes		= "下一次 劇毒軟泥管"
 }
 
 L:SetOptionLocalization{
 	SpecWarnStickyOoze		= "為粘稠軟泥顯示特別警告",
 	SpecWarnRadiatingOoze		= "為輻射軟泥顯示特別警告",
-	NextPoisonSlimePipes		= "為下一次泥漿噴霧顯示計時器",
+	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
 	SpecWarnMutatedInfection 	= "為突變感染顯示特別警告",
 	InfectionIcon			= "為突變感染的目標設置標記",
 	WarnOozeSpawn			= "為小軟泥怪出現顯示警告"
