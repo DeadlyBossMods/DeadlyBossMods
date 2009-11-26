@@ -8,27 +8,27 @@ mod:SetUsedIcons(8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local timerForcefulSmash		= mod:NewNextTimer(40, 69627) --Experimental, Timer may not be exact. Aso needs to be added to boss landing (jumpping off drake) event. But need BOSS emote for it first.
-local warnUnholyPower			= mod:NewSpellAnnounce(69167)
-local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
+local warnForcefulSmash			= mod:NewSpellAnnounce(69627)
 local warnOverlordsBrand		= mod:NewTargetAnnounce(69172)
 local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
 local warnTyrannusEngaged		= mod:NewAnnounce("warnTyrannusEngaged", false)
 local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
 
--- Hoarfrost ID 69246
 local warnHoarfrost				= mod:NewSpellAnnounce(69246)
 local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
 
-mod:AddBoolOption("SetIconOnHoarfrostTarget", true, "announce")
+local timerForcefulSmash		= mod:NewCDTimer(40, 69627) --Experimental, Timer may not be exact.
+local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
+
+mod:AddBoolOption("SetIconOnHoarfrostTarget", true)
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.TyrannusYell then		-- Tyrannus Jumps down from drake. Phase 2 so to speak.
@@ -37,8 +37,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-function mod:SPELL_CAST_START(args)
+function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(69155, 69627) then					-- Forceful Smash
+        warnForcefulSmash:Show()
 		timerForcefulSmash:Start()
 	end
 end
