@@ -9,6 +9,7 @@ mod:RegisterCombat("combat", 32930, 32933, 32934)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_DAMAGE",
 --	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_WHISPER",
@@ -23,9 +24,12 @@ mod:SetBossHealthInfo(
 
 local warnFocusedEyebeam		= mod:NewAnnounce("WarningEyeBeam", 3)
 local warnGrip					= mod:NewAnnounce("WarnGrip", 2)
+local warnCrunchArmor			= mod:NewTargetAnnounce(64002, 2)
 
 local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
+local specWarnCrunchArmor2		= mod:NewSpecialWarning("SpecWarnCrunchArmor2", false)
 
+local timerCrunch10             = mod:NewCastTimer(6, 63355)
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
 local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(48, "timerRightArm")
@@ -94,6 +98,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScheduleMethod(0.2, "GripAnnounce")
 		end
 	end
+	elseif args:IsSpellID(64002, 63355) then	-- Crunch Armor
+        warnCrunchArmor:Show(args.destName)
+		if mod:IsDifficulty("heroic10") then
+            timerCrunch10:Start(args.destName)  -- We track duration timer only in 10-man since it's only 6sec and tanks don't switch.
+		end
+    end
 end
 
-
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(64002) then		        -- Crunch Armor (25-man only)
+		warnCrunchArmor:Show(args.destName)
+        if args.amount >= 2 then 
+            if args:IsPlayer() then
+                specWarnCrunchArmor2:Show(args.amount)
+            end
+		end
+	end
+end
