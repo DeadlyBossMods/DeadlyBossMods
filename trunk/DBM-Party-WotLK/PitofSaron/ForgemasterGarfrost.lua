@@ -22,7 +22,7 @@ local specWarnPermafrost	= mod:NewSpecialWarning("specWarnPermafrost", false)
 --mod:AddBoolOption("SetIconOnSaroniteRockTarget", true) --Needs syncing implimentation to be added.
 
 function mod:SPELL_CREATE(args)
-	if args:IsSpellID(68789, 70851) then							-- Saronite Rock
+	if args:IsSpellID(68789, 70851) then						-- Saronite Rock
 		warnSaroniteRock:Show()
 	end
 end
@@ -36,14 +36,14 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70380, 70384) then						-- Deep Freeze
 		warnDeepFreeze:Show(args.destName)
-	elseif args:IsSpellID(68785, 70335) then						-- Forge Frostborn Mace
+	elseif args:IsSpellID(68785, 70335) then					-- Forge Frostborn Mace
 		warnForgeWeapon:Show(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(68786, 70336) and args:IsPlayer() then
-		if args.amount >= 11 then --Unsure of a good amount, this is subject to tuning based on what damage it does when it goes live.
+		if args.amount >= 11 then --11 stacks is what's needed for achievement I believe.
 			specWarnPermafrost:Show(args.spellName, args.amount)
 		end
 	end

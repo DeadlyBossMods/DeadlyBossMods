@@ -1285,7 +1285,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "Saronite Rock - Line of sight now",
+	warnSaroniteRock		= "Saronite Rock created - Line of sight now",
 	specWarnSaroniteRock	= "Saronite Throw on you - Move",
 	specWarnPermafrost		= "%s: %s"
 })
