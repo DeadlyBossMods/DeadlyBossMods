@@ -23,7 +23,7 @@ L:SetWarningLocalization{
 	SpecialPursueWarnYou	= "You are being pursued - Run away",
 	SystemOverload			= "System Overload",
 	warnWardofLife			= "Ward of Life spawned",
---	warnWrithingLasher		= "Writhing Lasher spawned"
+	warnWrithingLasher		= "Writhing Lashers spawned"
 }
 
 L:SetOptionLocalization{
@@ -32,7 +32,7 @@ L:SetOptionLocalization{
 	PursueWarn				= "Announce pursued targets",
 	warnNextPursueSoon		= "Show pre-warning for next pursue",
 	warnWardofLife			= "Show special warning for Ward of Life spawn",
---	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn" --commenting out as it is currently unused for Flame Leviathan
+	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn"
 }
 
 --------------------------------
