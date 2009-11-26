@@ -29,7 +29,7 @@ local warnCrunchArmor			= mod:NewTargetAnnounce(64002, 2)
 local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
 local specWarnCrunchArmor2		= mod:NewSpecialWarning("SpecWarnCrunchArmor2", false)
 
-local timerCrunch10             = mod:NewCastTimer(6, 63355)
+local timerCrunch10             = mod:NewTargetTimer(6, 63355)
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
 local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(48, "timerRightArm")
