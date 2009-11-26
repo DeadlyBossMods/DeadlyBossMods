@@ -105,7 +105,7 @@ function mod:SPELL_CAST_START(args)
 --		end
 
 	elseif args:IsSpellID(62274, 63489) then		-- Shield of Runes
-		warnShieldofRunes:Start()
+		warnShieldofRunes:Show()
 	elseif args:IsSpellID(62273) then				-- Rune of Summoning
 		warnRuneofSummoning:Show()
 	end
