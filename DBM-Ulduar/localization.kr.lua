@@ -27,6 +27,7 @@ L:SetWarningLocalization{
 	SpecialPursueWarnYou	= "거대 화염전차가 당신을 추적합니다!",	
 	SystemOverload			= "시스템 과부화",
 	warnWardofLife			= "생명지기 덩굴손 등장",
+	warnWrithingLasher		= "고뇌의 덩굴손 등장"	
 }
 
 L:SetOptionLocalization{
@@ -38,6 +39,7 @@ L:SetOptionLocalization{
 	PursueWarn				= "추적 플레이어 레이드 경고로 보기",
 	warnNextPursueSoon		= "다음 추적 경고 보기",
 	warnWardofLife			= "생명지기 덩굴손 등장 특수 경고 보기",
+	warnWrithingLasher		= "고뇌의 덩굴손 등장 특수 경고 보기"	
 }
 
 
@@ -168,7 +170,8 @@ L:SetWarningLocalization{
 	WarningStaticDisruption		= ">%s< 에게 전자기 붕괴!",
 	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
 	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",
-	Overload					= "과부하 - 이동!"	
+	Overload					= "과부하 - 이동!",
+	RuneofPower        			= "Rune of Power on >%s<"	
 }
 
 L:SetTimerLocalization{
@@ -233,6 +236,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "너희 행동은 비논리적이다. 이 전투에서 가능한 결말은 모두 계산되었다. 결과와 상관없이 판테온은 관찰자의 전갈을 받을 것이다.",
+--	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",	
 	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
 	PullCheck				= "(%d+)분 후에 알갈론이 신호 전송을 시작합니다."	
 }
@@ -294,8 +298,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender = "수호 야수 (%d)"
+	Defender = "수호 야수 (%d)",
+	YellPull = "Some things are better left alone!"
 }
+
+L:SetTimerLocalization{
+	timerDefender	= "Feral Defender activates"
+}
+
 
 L:SetWarningLocalization{
 	SpecWarnBlast 		= "수호 야수 폭발 - 차단!",
