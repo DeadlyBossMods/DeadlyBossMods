@@ -97,7 +97,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:ScheduleMethod(0.2, "GripAnnounce")
 		end
-	end
 	elseif args:IsSpellID(64002, 63355) then	-- Crunch Armor
         warnCrunchArmor:Show(args.destName)
 		if mod:IsDifficulty("heroic10") then
