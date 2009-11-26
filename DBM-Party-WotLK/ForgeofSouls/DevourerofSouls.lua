@@ -16,25 +16,26 @@ local warnWailingSouls			= mod:NewSpellAnnounce(68899)
 local warnWellofSouls			= mod:NewSpellAnnounce(68820)
 local warnMirroredSoul			= mod:NewTargetAnnounce(69051)
 local timerMirroredSoul			= mod:NewTargetTimer(8, 69051)
+local timerUnleashedSouls		= mod:NewBuffActiveTimer(5, 68939)
 local specwarnMirroredSoul      = mod:NewSpecialWarning("specwarnMirroredSoul")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68820) then							-- Well of Souls
 		warnWellofSouls:Show()
-	elseif args:IsSpellID(68939) then							-- Unleashed Souls
+	elseif args:IsSpellID(68939) then						-- Unleashed Souls
 		warnUnleashedSouls:Show()
-	elseif args:IsSpellID(68899, 70324) then							-- Wailing Souls (possible heroic spellid drycoded from thotbot testrealm database)
+	elseif args:IsSpellID(68899, 70324) then				-- Wailing Souls
 		warnWailingSouls:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69051) then							-- Mirroed Soul
-		if args:IsPlayer() then
-			warnMirroredSoul:Show(args.destName)
-			timerMirroredSoul:Show(args.destName)
-			specwarnMirroredSoul:Show()
-		end
+	if args:IsSpellID(69051) then							-- Mirrored Soul
+		warnMirroredSoul:Show(args.destName)
+		timerMirroredSoul:Show(args.destName)
+		specwarnMirroredSoul:Show()
+    elseif args:IsSpellID(68939) then						-- Unleashed Souls
+        timerUnleashedSouls:Start()
 	end
 end
 
