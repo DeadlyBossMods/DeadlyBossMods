@@ -1429,12 +1429,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnWellCorruption	= "Well of Corruption - move"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SpecWarnWellCorruption	= "Show special warning when you stand in Well of Corruption"
 })
 
 L:SetMiscLocalization({
