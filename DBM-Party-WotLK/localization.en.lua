@@ -233,10 +233,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-L:SetMiscLocalization({
-	Outro	= "Your journey has just begun, young prince. Gather your forces, and meet me in the arctic land of Northrend. It is there we shall settle the score between us. It is there that your true destiny will unfold."
-})
-
 -------------------
 --  Wave Timers  --
 -------------------
@@ -666,7 +662,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show pre-warning for Split",	-- translate
+	WarningSplitSoon	= "Show warning for Split soon",	-- translate
 	WarningSplitNow		= "Show warning for Split",	-- translate
 	WarningMerge		= "Show warning for Merge"	-- translate
 })
@@ -1082,12 +1078,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "New portal soon",
-	WarningPortalNow	= "Portal %d",
+	WarningPortalNow	= "Portal #%d",
 	WarningBossNow		= "Boss incoming"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Portal %d", 
+	TimerPortalIn	= "Portal #%d", 
 })
 
 L:SetOptionLocalization({
@@ -1095,7 +1091,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("new portal"),
 	WarningBossNow			= optionWarning:format("boss incoming"),
 	TimerPortalIn			= "Show timer for portal number",
-	ShowAllPortalWarnings	= "Show warning for all portals"
+	ShowAllPortalWarnings	= "Show warnings for all waves"
 })
 
 L:SetMiscLocalization({
@@ -1215,7 +1211,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel				= "Announce Barrel targets",
-	specwarnDisarm			= "Show special warning for Disarm",
+	DisarmWarning			= "Show special warning for Disarm",
 	specWarnBrew			= "Show special warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun		= "Show special warning for Dark Brewmaiden's Stun",
 	PlaySoundOnDisarm		= "Play sound on Disarm",
@@ -1270,7 +1266,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnPursuit				= "Show pre-warning for pursue",
-	specWarnToxic			= "Show special warning when you are affected by Toxic Waste",
+	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued"
 --	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
@@ -1289,7 +1285,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSaroniteRock		= "Saronite Rock - Line of sight now",
-	specWarnSaroniteRock	= "Saronite Throw on you",
+	specWarnSaroniteRock	= "Saronite Throw on you - Move",
 	specWarnPermafrost		= "%s: %s"
 })
 
@@ -1314,7 +1310,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTyrannusEngaged			= "Scourgelord Tyrannus is coming down - Get ready",
+	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down - Get ready",
 	specWarnIcyBlast			= "Icy Blast - Move away",
 	specWarnHoarfrost			= "Hoarfrost on you",
 	specWarnHoarfrostNear		= "Hoarfrost near you - Move"
@@ -1368,3 +1364,99 @@ L:SetOptionLocalization({
 	specwarnMirroredSoul		= "Show special warning to stop damage on Mirrored Soul"
 })
 
+
+-------------------------
+-- Halls of Reflection --
+-------------------------
+-- Wave Timers --
+-----------------
+L = DBM:GetModLocalization("HoRWaveTimer")
+
+L:SetGeneralLocalization({
+	name = "Wave Timers"
+})
+
+L:SetWarningLocalization({
+	WarnNewWaveSoon		= "New wave soon",
+	WarnNewWave		= "%s incoming"
+})
+
+L:SetTimerLocalization({
+	TimerNextWave		= "Next wave"
+})
+
+L:SetOptionLocalization({
+	WarnNewWave		= "Show warning when a boss is incoming (wave 5 + 10)",
+	WarnNewWaveSoon		= "Show pre-warning for when a boss is incoming",
+	ShowAllWaveWarnings	= "Show (pre-)warning for every new wave",
+	TimerNextWave		= "Show a timer for next wave after a boss is defeated",
+	ShowAllWaveTimers	= "Show a timer for every next wave"
+})
+
+L:SetMiscLocalization({
+	Falric		= "Falric",
+	WaveCheck	= "Spirit Wave = (%d+)/10"
+})
+
+------------
+-- Falric --
+------------
+L = DBM:GetModLocalization("Falric")
+
+L:SetGeneralLocalization({
+	name = "Falric"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+------------
+-- Marwyn --
+------------
+L = DBM:GetModLocalization("Marwyn")
+
+L:SetGeneralLocalization({
+	name = "Marwyn"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+---------------------
+-- Lich King Event --
+---------------------
+L = DBM:GetModLocalization("LichKingEvent")
+
+L:SetGeneralLocalization({
+	name = "Lich King event"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
