@@ -38,12 +38,16 @@ L:SetOptionLocalization{
 	SetIconOnBileTarget		= "為燃燒膽汁的目標設置標記",
 	ClearIconsOnIceHowl		= "衝鋒前消除所有標記",
 	TimerNextBoss			= "為下一隻王到來顯示計時器",
-	TimerCombatStart		= "為戰鬥開始顯示計時器"
+	TimerCombatStart		= "為戰鬥開始顯示計時器",
+	TimerEmerge			= "為持續鑽地顯示計時器",
+	TimerSubmerge			= "為下一次 鑽地顯示計時器"
 }
 
 L:SetTimerLocalization{
 	TimerNextBoss			= "下一隻王到來",
-	TimerCombatStart		= "戰鬥開始"
+	TimerCombatStart		= "戰鬥開始",
+	TimerEmerge			= "持續鑽地",
+	TimerSubmerge			= "下一次 鑽地"
 }
 
 L:SetWarningLocalization{
