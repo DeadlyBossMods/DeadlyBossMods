@@ -37,8 +37,8 @@ local enrageTimer		= mod:NewEnrageTimer(600)
 local timerDefender 	= mod:NewTimer(35, "timerDefender")--this i need to check for consistency
 local timerFear 		= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
-local timerNextSwarm 	= mod:NewNextTimer(37.5, 64396)
-local timerNextSonic 	= mod:NewNextTimer(28, 64688)
+local timerNextSwarm 	= mod:NewNextTimer(36, 64396)
+local timerNextSonic 	= mod:NewNextTimer(27, 64688)
 local timerSonic		= mod:NewCastTimer(64688)
 
 mod:AddBoolOption("HealthFrame", true)
