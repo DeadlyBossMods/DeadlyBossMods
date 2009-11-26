@@ -275,6 +275,10 @@ L:SetOptionLocalization({
 
 })
 
+L:SetMiscLocalization({
+	Outro	= "Your journey has just begun, young prince. Gather your forces, and meet me in the arctic land of Northrend. It is there we shall settle the score between us. It is there that your true destiny will unfold."
+})
+
 -----------------
 -- Wave Timers --
 -----------------
@@ -1408,13 +1412,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnPursuit			= "추격 5 초 전",
-	specWarnToxic		= "Toxic Waste! 이동하세요!",
+	specWarnToxic		= "독성 폐기물! 이동하세요!",
 	specWarnPursuit		= "당신을 곧 추격. 뛰세요!"
 })
 
 L:SetOptionLocalization({
 	warnPursuit			= "추격일 경우 사전 경고 보기",
-	specWarnToxic		= "Toxic Waste로부터 영향을 받을 경우 특수 경고 보기",
+	specWarnToxic		= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit		= "당신을 추격 하게 될 경우 특수 경고 보기"
 --	SetIconOnPursuitTarget	= "Set icon on Pursuit target"	
 })
@@ -1428,7 +1432,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ForgemasterGarfrost")
 
 L:SetGeneralLocalization({
-	name = "괴철로감독관 가프로스트"
+	name = "제련장인 가프로스트"
 })
 
 L:SetWarningLocalization({
@@ -1459,7 +1463,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
-	specWarnIcyBlast			= "Icy Blast! Move Away!",
+	specWarnIcyBlast			= "얼음 작렬! 이동하세요!",
 --	specTyrannusEngaged			= "티라누스 격노",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
@@ -1467,15 +1471,15 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnTyrannusEngaged			= "스컬지군주 티라누스 격노 경고 보기",
-	specWarnIcyBlast			= "Special Warning when you take damage from Icy Blast",
+	specWarnIcyBlast			= "얼음 작렬로부터 데미지를 받을 경우 특수 경고 보기",
 	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
 	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
 })
 
 L:SetMiscLocalization({
-	TyrannusYell				= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "^%%s이 (%S+) 노려보며 얼음 공격을 준비합니다!"
+	TyrannusYell				= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	HoarfrostTarget				= "^%%s가 (%S+) 노려보며 얼음 공격을 준비합니다!"
 })
 ---------------------
 -- Forge of Souls --
@@ -1512,4 +1516,104 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기"
+})
+
+
+
+-------------------------
+-- Halls of Reflection --
+-------------------------
+-- Wave Timers --
+-----------------
+L = DBM:GetModLocalization("HoRWaveTimer")
+
+L:SetGeneralLocalization({
+	name = "Wave Timers"
+})
+
+L:SetWarningLocalization({
+	WarnNewWaveSoon		= "New wave soon",
+	WarnNewWave		= "%s incoming"
+})
+
+L:SetTimerLocalization({
+	TimerNextWave		= "Next wave"
+})
+
+L:SetOptionLocalization({
+	WarnNewWave		= "Show warning when a boss is incoming (wave 5 + 10)",
+	WarnNewWaveSoon		= "Show pre-warning for when a boss is incoming",
+	ShowAllWaveWarnings	= "Show (pre-)warning for every new wave",
+	TimerNextWave		= "Show a timer for next wave after a boss is defeated",
+	ShowAllWaveTimers	= "Show a timer for every next wave"
+})
+
+L:SetMiscLocalization({
+	Falric		= "Falric",
+	WaveCheck	= "Spirit Wave = (%d+)/10"
+})
+
+------------
+-- Falric --
+------------
+L = DBM:GetModLocalization("Falric")
+
+L:SetGeneralLocalization({
+	name = "Falric"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+------------
+-- Marwyn --
+------------
+L = DBM:GetModLocalization("Marwyn")
+
+L:SetGeneralLocalization({
+	name = "Marwyn"
+})
+
+L:SetWarningLocalization({
+	SpecWarnWellCorruption	= "Well of Corruption - move"
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	SpecWarnWellCorruption	= "Show special warning when you stand in Well of Corruption"
+})
+
+L:SetMiscLocalization({
+})
+
+---------------------
+-- Lich King Event --
+---------------------
+L = DBM:GetModLocalization("LichKingEvent")
+
+L:SetGeneralLocalization({
+	name = "Lich King event"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
