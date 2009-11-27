@@ -12,12 +12,14 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE"
 )
 
 local warnStormCloud		= mod:NewTargetAnnounce(65123)
 
 local warnFlashFreeze		= mod:NewSpecialWarning("WarningFlashFreeze")
+local specWarnBitingCold	= mod:NewSpecialWarning("specWarnBitingCold", false)--False until more testing can be done
 
 mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
 mod:AddBoolOption("YellOnStormCloud", true, "announce")
@@ -61,4 +63,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-
+do 
+	local lastbitingcold = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(62038) and args:IsPlayer() and time() - lastbitingcold > 2 then		-- Biting Cold
+			specWarnBitingCold:Show()
+			lastbitingcold = time()
+		end
+	end
+end
