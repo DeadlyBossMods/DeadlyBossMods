@@ -49,7 +49,7 @@ mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
 mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
 
 local enrageTimer				= mod:NewEnrageTimer(600)
-local timerFlame 				= mod:NewTargetTimer(6, 68123)
+local timerFlame 				= mod:NewTargetTimer(8, 68123)--There are 8 debuff Ids. Since we detect first to warn, use an 8sec timer to cover duration of trigger spell and damage debuff.
 local timerFlameCD				= mod:NewCDTimer(30, 68125) 
 local timerFlesh				= mod:NewTargetTimer(12, 67049)
 local timerFleshCD				= mod:NewCDTimer(23, 67051) 
@@ -147,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		setIncinerateTarget(self, args.destGUID, args.destName)
 		self:Schedule(15, clearIncinerateTarget, self, args.destName)
 
-	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame
+	elseif args:IsSpellID(66197, 68123, 68124, 68125) then		-- Legion Flame ids 66199, 68126, 68127, 68128 (second debuff) do the actual damage. First 2 seconds are trigger debuff only.
 		local targetname = args.destName
 		timerFlame:Start(args.destName)
 		timerFlameCD:Start()		
