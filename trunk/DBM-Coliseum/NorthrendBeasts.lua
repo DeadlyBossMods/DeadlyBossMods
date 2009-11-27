@@ -162,7 +162,7 @@ function mod:UNIT_DIED(args)
 		timerNextStomp:Stop()
 		timerNextImpale:Stop()
 		DBM.BossHealth:RemoveBoss(cid) -- remove Gormok from the health frame
-	elseif cid == 35144	or cid == 34799 then -- remove the worms together
+	elseif cid == 35144	or cid == 34799 then
 		if oneWormDead then
 			DBM.BossHealth:RemoveBoss(35144)
 			DBM.BossHealth:RemoveBoss(34799)
@@ -269,7 +269,7 @@ end
 
 function mod:OnSync(msg, arg)
 	if msg == "Phase2" then
-		self:ScheduleMethod(17, "WormsEmerge")
+		self:ScheduleMethod(17, "WormsEmerge1")
 		timerCombatStart:Show(15)
 		updateHealthFrame(2)
 	elseif msg == "Phase3" then
@@ -277,7 +277,8 @@ function mod:OnSync(msg, arg)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 		end
-		self:UnscheduleMethod("WormsSubmerge")
+		self:UnscheduleMethod("WormsSubmerge1")
+		self:UnscheduleMethod("WormsSubmerge2")
 		timerNextCrash:Start(45)
 		timerNextBoss:Cancel()
 		timerSubmerge:Cancel()
@@ -293,32 +294,42 @@ function mod:OnSync(msg, arg)
 	end
 end
 
-function mod:WormsSubmerge()
-	self:UnscheduleMethod("WormsSubmerge")
-	timerEmerge:Show()
-	timerSubmerge:Cancel()
-	timerSweepCD:Cancel()
-	timerSlimePoolCD:Cancel()
-	timerAcidicSpewCD:Cancel()
-	timerMoltenSpewCD:Cancel()
-	timerParalyticSprayCD:Cancel()
-	timerBurningSprayCD:Cancel()
-	timerParalyticBiteCD:Cancel()
-	timerBurningBiteCD:Cancel()
-	self:ScheduleMethod(10, "WormsEmerge")
+function mod:WormsEmerge1()
+	timerSubmerge:Show()
+	timerSweepCD:Start(16)
+	timerSlimePoolCD:Start(14)
+	timerMoltenSpewCD:Start(10)
+	timerParalyticSprayCD:Start(10)
+	timerBurningBiteCD:Start(5)
+	self:ScheduleMethod(45, "WormsSubmerge1")
 end
 
-function mod:WormsEmerge()
-	self:UnscheduleMethod("WormsEmerge")
+function mod:WormsSubmerge1()
+	timerEmerge:Show()
+	timerSweepCD:Cancel()
+	timerSlimePoolCD:Cancel()
+	timerMoltenSpewCD:Cancel()
+	timerParalyticSprayCD:Cancel()
+	timerBurningBiteCD:Cancel()
+	self:ScheduleMethod(10, "WormsEmerge2")
+end
+
+function mod:WormsEmerge2()
 	timerSubmerge:Show()
-	timerEmerge:Cancel()
 	timerSweepCD:Start(16)
 	timerSlimePoolCD:Start(14)
 	timerAcidicSpewCD:Start(10)
-	timerMoltenSpewCD:Start(10)
-	timerParalyticSprayCD:Start(10)
 	timerBurningSprayCD:Start(16)
 	timerParalyticBiteCD:Start(5)
-	timerBurningBiteCD:Start(5)
-	self:ScheduleMethod(45, "WormsSubmerge")
+	self:ScheduleMethod(45, "WormsSubmerge2")
+end
+
+function mod:WormsSubmerge2()
+	timerEmerge:Show()
+	timerSweepCD:Cancel()
+	timerSlimePoolCD:Cancel()
+	timerAcidicSpewCD:Cancel()
+	timerBurningSprayCD:Cancel()
+	timerParalyticBiteCD:Cancel()
+	self:ScheduleMethod(10, "WormsEmerge1")
 end
