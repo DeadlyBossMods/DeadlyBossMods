@@ -25,15 +25,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
 -----------------
@@ -46,17 +43,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-	
 })
-
 
 -------------------------
 -- 어둠추적자 제도가 --
@@ -68,14 +61,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
 
 -------------------
@@ -88,17 +79,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
-
-
 
 --------------
 -- 아마니타르 --
@@ -110,15 +97,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
 -----------------
@@ -133,17 +117,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 --------------
 -- 하드로녹스 --
@@ -155,16 +135,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 ---------------
 -- 아눕아락 --
@@ -176,16 +153,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 --------------------------------------
 -- 시간의 동굴 : 옛 스트라솔름 --
@@ -199,17 +173,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 ------------------------------
 -- 살덩이창조자 살람 --
@@ -221,21 +191,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
------------------------
+------------------------
 -- 시간의 군주 에포크 --
------------------------
+------------------------
 L = DBM:GetModLocalization("ChronoLordEpoch")
 
 L:SetGeneralLocalization({
@@ -243,20 +209,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
----------------
+--------------
 -- 말가니스 --
----------------
+--------------
 L = DBM:GetModLocalization("MalGanis")
 
 L:SetGeneralLocalization({
@@ -264,19 +227,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
-})
-
-L:SetMiscLocalization({
-	Outro	= "Your journey has just begun, young prince. Gather your forces, and meet me in the arctic land of Northrend. It is there we shall settle the score between us. It is there that your true destiny will unfold."
 })
 
 -----------------
@@ -301,7 +257,6 @@ L:SetOptionLocalization({
 	TimerWaveIn			= "다음 웨이브 타이머 보기 (웨이브 6만 보기)",
 })
 
-
 L:SetMiscLocalization({
 	Meathook		= "살덩이갈고리",
 	Salramm			= "살덩이창조자 살람",
@@ -320,13 +275,11 @@ L:SetMiscLocalization({
 	WaveCheck		= "남은 웨이브 = %d/10"
 })
 
-
-
-----------------------
+-------------------
 -- 드락타론 성채 --
-----------------------
+-------------------
 -- 송곳아귀 --
----------------
+--------------
 L = DBM:GetModLocalization("Trollgore")
 
 L:SetGeneralLocalization({
@@ -342,10 +295,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
-------------------------
+-------------------
 -- 소환사 노보스 --
-------------------------
+-------------------
 L = DBM:GetModLocalization("NovosTheSummoner")
 
 L:SetGeneralLocalization({
@@ -361,10 +313,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
----------------
+---------------------
 -- 랩터왕 서슬발톱 --
----------------
+---------------------
 L = DBM:GetModLocalization("KingDred")
 
 L:SetGeneralLocalization({
@@ -372,21 +323,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
----------------------------
+-------------------
 -- 예언자 타론자 --
----------------------------
+-------------------
 L = DBM:GetModLocalization("ProphetTharonja")
 
 L:SetGeneralLocalization({
@@ -394,17 +341,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
 
---------------
+------------
 -- 군드락 --
 --------------
 -- 슬라드란 --
@@ -412,25 +357,21 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Sladran")
 
 L:SetGeneralLocalization({
-	name = "솔라드란"
+	name = "슬라드란"
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
--------------
+------------
 -- 무라비 --
--------------
+------------
 L = DBM:GetModLocalization("Moorabi")
 
 L:SetGeneralLocalization({
@@ -438,16 +379,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 -----------------------
 -- 드라카리 거대골램 --
@@ -470,8 +408,6 @@ L:SetOptionLocalization({
 	WarningElemental	= "드라카리 정령 페이즈 경고 보기",	-- translate ;)
 	WarningStone		= "드라카리 거대골렘 페이즈 경고 보기"		-- translate :)
 })
-
-
 
 ---------------
 -- 갈다라 --
@@ -509,12 +445,11 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
-------------------------
+-----------------
 -- 번개의 전당 --
-------------------------
+---------------------
 -- 장군 비야른그림 --
------------------------
+---------------------
 L = DBM:GetModLocalization("Gjarngrin")
 
 L:SetGeneralLocalization({
@@ -522,20 +457,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
 
-
------------
+--------------
 -- 아이오나 --
------------
+--------------
 L = DBM:GetModLocalization("Ionar")
 
 L:SetGeneralLocalization({
@@ -543,21 +475,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
--------------
+----------
 -- 볼칸 --
--------------
+----------
 L = DBM:GetModLocalization("Volkhan")
 
 
@@ -578,10 +506,9 @@ L:SetOptionLocalization({
 	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
 })
 
-
-------------
+----------
 -- 로켄 --
-------------
+----------
 L = DBM:GetModLocalization("Kronus")
 
 L:SetGeneralLocalization({
@@ -589,24 +516,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
-
----------------------
--- 돌의 전당       --
----------------------
+-----------------
+-- 돌의 전당   --
+-----------------
 -- 고뇌의 마녀 --
----------------------
+-----------------
 L = DBM:GetModLocalization("MaidenOfGrief")
 
 L:SetGeneralLocalization({
@@ -614,17 +536,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 ----------------
 -- 크리스탈루스 --
@@ -647,11 +565,9 @@ L:SetOptionLocalization({
 	TimerShatterCD	= optionTimerCD:format(GetSpellInfo(50810))
 })
 
-
-
-----------------------------
+-----------------------
 -- 무쇠구체자 쇼니르 --
-----------------------------
+-----------------------
 L = DBM:GetModLocalization("SjonnirTheIronshaper")
 
 L:SetGeneralLocalization({
@@ -659,18 +575,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
-
-
 
 ------------------------------------
 -- Brann Bronzebeard Escort Event --
@@ -701,9 +612,9 @@ L:SetMiscLocalization({
 
 ---------------
 -- 마력의 탑 --
----------------
+----------------
 -- 아노말루스 --
---------------
+----------------
 L = DBM:GetModLocalization("Anomalus")
 
 L:SetGeneralLocalization({
@@ -711,17 +622,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
------------------------------
+-----------------------
 -- 정원사 오르모로크 --
------------------------------
+-----------------------
 L = DBM:GetModLocalization("OrmorokTheTreeShaper")
 
 L:SetGeneralLocalization({
@@ -729,17 +637,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 --------------------------
 -- 대학자 텔레스트라 --
@@ -781,15 +685,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
 ---------------------------------
@@ -809,22 +710,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
 ----------------
 -- 마력의 눈 --
------------------------------
+---------------------
 -- 심문관 드라코스 --
------------------------------
+---------------------
 L = DBM:GetModLocalization("DrakosTheInterrogator")
 
 L:SetGeneralLocalization({
@@ -868,7 +766,6 @@ L:SetOptionLocalization({
 	SpecWarnBombYou		= "당신이 시한 폭탄에 걸렸을 경우 특수 경고 보기"
 })
 
-
 ------------------------
 -- 바로스 클라우드스트라이더 --
 ------------------------
@@ -879,16 +776,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 -------------------------
 -- 지맥 수호자 에레고스 --
@@ -910,8 +804,6 @@ L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." 종료") 	-- translate the word 'ending'
 })
 
-
-
 ------------------
 -- 우트가드 성채 --
 ---------------------
@@ -924,22 +816,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
-------------------------------
+---------------------
 -- 건축가 스카발드 --
--- & 감시자 달론 --
-------------------------------
+-- & 감시자 달론   --
+---------------------
 L = DBM:GetModLocalization("ConstructorAndController")
 
 L:SetGeneralLocalization({
@@ -947,21 +835,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
-
---------------------------
+---------------------
 -- 약탈자 잉그바르 --
---------------------------
+---------------------
 L = DBM:GetModLocalization("IngvarThePlunderer")
 
 L:SetGeneralLocalization({
@@ -973,19 +857,17 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-	SpecialWarningSpelllock	= "주문 잠금 특수 경고 보기"	
+	SpecialWarningSpelllock		= "주문 잠금 특수 경고 보기"	
 })
 
-
-----------------------
+-------------------
 -- 우트가드 첨탑 --
-------------------------
+-------------------
 -- 학살자 스카디 --
-------------------------
+-------------------
 L = DBM:GetModLocalization("SkadiTheRuthless")
 
 L:SetGeneralLocalization({
@@ -993,15 +875,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
 ------------
@@ -1014,16 +893,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningBane	= spell
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 -----------------------
 -- 스발라 소로우그레이브 --
@@ -1035,7 +911,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
@@ -1054,22 +929,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
----------------------
+-----------------
 -- 보라빛 요새 --
----------------------
+-----------------
 -- 시아니고사 --
----------------
+----------------
 L = DBM:GetModLocalization("Cyanigosa")
 
 L:SetGeneralLocalization({
@@ -1077,17 +949,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
-
 
 ------------
 -- 에레켐 --
@@ -1099,20 +967,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-
 })
 
-
--------------
+------------
 -- 이코론 --
--------------
+------------
 L = DBM:GetModLocalization("Ichoron")
 
 L:SetGeneralLocalization({
@@ -1127,7 +992,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 -- 라반토르 --
@@ -1147,7 +1011,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------
 -- 모라그 --
 ------------
@@ -1158,15 +1021,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
-
 })
 
 ------------
@@ -1187,10 +1047,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
------------------------------
+---------------------
 -- 파멸자 주라마트 --
------------------------------
+---------------------
 L = DBM:GetModLocalization("Zuramat")
 
 L:SetGeneralLocalization({
@@ -1203,14 +1062,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-
 })
 
 L:SetOptionLocalization({
 	SpecialWarningVoidShifted		= optionSpecWarning:format(GetSpellInfo(59343)),
 	SpecialShroudofDarkness			= optionSpecWarning:format(GetSpellInfo(59745))
 })
-
 
 -------------------
 -- Portal Timers --
@@ -1239,19 +1096,16 @@ L:SetOptionLocalization({
 	ShowAllPortalWarnings	= "모든 웨이브 경고 보기"
 })
 
-
 L:SetMiscLocalization({
 	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
 	WavePortal		= "포탈 열린 수: (%d+)/18"
 })
 
-
----------------------
+---------------------------
 -- Trial of the Champion --
----------------------
--------------------
+---------------------------
 -- The Black Knight --
--------------------
+----------------------
 L = DBM:GetModLocalization("BlackKnight")
 
 L:SetGeneralLocalization({
@@ -1272,6 +1126,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	YellCombatEnd			= "축하하네, 용사들이여. 예정된 시험이든 뜻밖의 시험이든, 그대들은 모두 이겨냈군."	-- can also be "No! I must not fail... again ..."
 })
+
 -------------------
 -- Grand Champions --
 -------------------
@@ -1295,10 +1150,9 @@ L:SetMiscLocalization({
 	YellCombatEnd		= "잘 싸웠네! 다음 상대는 은빛십자군의 일원이라네. 그들을 상대로 자신의 무용을 증명해 보게."
 })
 
-
--------------------
+--------------------------------
 -- Argent Confessor Paletress --
--------------------
+--------------------------------
 L = DBM:GetModLocalization("Confessor")
 
 L:SetGeneralLocalization({
@@ -1314,12 +1168,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-
 })
 
--------------------
+---------------------
 -- Eadric the Pure --
--------------------
+---------------------
 L = DBM:GetModLocalization("EadricthePure")
 
 L:SetGeneralLocalization({
@@ -1338,15 +1191,13 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-
 })
 
----------------------
--- Holiday --
----------------------
--------------------
+--------------------
+--  World Events  --
+--------------------
 -- Coren Direbrew --
--------------------
+--------------------
 L = DBM:GetModLocalization("CorenDirebrew")
 
 L:SetGeneralLocalization({
@@ -1398,9 +1249,8 @@ L:SetMiscLocalization({
 	SayCombatEnd				= "죽음은 이미 겪어 보았노라. 이제 어떤 모험이 날 기다리는가?"
 })
 
----------------------
+------------------
 -- Pit of Saron --
----------------------
 -------------------
 -- Ick and Krick --
 -------------------
@@ -1417,18 +1267,20 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnPursuit			= "추격일 경우 사전 경고 보기",
-	specWarnToxic		= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
-	specWarnPursuit		= "당신을 추격 하게 될 경우 특수 경고 보기"
+	warnPursuit				= "추격일 경우 사전 경고 보기",
+	specWarnToxic			= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
+	specWarnPursuit			= "당신을 추격 하게 될 경우 특수 경고 보기",
+	PlaySoundOnPursuit		= "당신이 추격당할 경우 특수 소리 재생",	
 --	SetIconOnPursuitTarget	= "Set icon on Pursuit target"	
 })
 
 L:SetMiscLocalization({
 	IckPursuit			= "%s is chasing you!"
 })
--------------------
+
+--------------------------
 -- Forgemaster Garfrost --
--------------------
+--------------------------
 L = DBM:GetModLocalization("ForgemasterGarfrost")
 
 L:SetGeneralLocalization({
@@ -1436,7 +1288,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock			= "Saronite Rock - Line of sight now",
+	warnSaroniteRock			= "Saronite Rock created - Line of sight now",
 	specWarnSaroniteRock		= "당신에게 사로나이트를 던집니다. 이동!",
 	specWarnPermafrost			= "%s: %s"
 })
@@ -1464,7 +1316,6 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
 	specWarnIcyBlast			= "얼음 작렬! 이동하세요!",
---	specTyrannusEngaged			= "티라누스 격노",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
 })
@@ -1481,12 +1332,13 @@ L:SetMiscLocalization({
 	TyrannusYell				= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "^%%s가 (%S+) 노려보며 얼음 공격을 준비합니다!"
 })
----------------------
+
+--------------------
 -- Forge of Souls --
----------------------
--------------------
+--------------------
+--------------
 -- Bronjahm --
--------------------
+--------------
 L = DBM:GetModLocalization("Bronjahm")
 
 L:SetGeneralLocalization({
@@ -1518,8 +1370,6 @@ L:SetOptionLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기"
 })
 
-
-
 -------------------------
 -- Halls of Reflection --
 -------------------------
@@ -1533,7 +1383,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnNewWaveSoon		= "New wave soon",
-	WarnNewWave		= "%s incoming"
+	WarnNewWave			= "%s incoming"
 })
 
 L:SetTimerLocalization({
@@ -1541,7 +1391,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnNewWave		= "Show warning when a boss is incoming (wave 5 + 10)",
+	WarnNewWave			= "Show warning when a boss is incoming (wave 5 + 10)",
 	WarnNewWaveSoon		= "Show pre-warning for when a boss is incoming",
 	ShowAllWaveWarnings	= "Show (pre-)warning for every new wave",
 	TimerNextWave		= "Show a timer for next wave after a boss is defeated",
@@ -1549,8 +1399,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Falric		= "Falric",
-	WaveCheck	= "Spirit Wave = (%d+)/10"
+	Falric				= "Falric",
+	WaveCheck			= "Spirit Wave = (%d+)/10"
 })
 
 ------------
