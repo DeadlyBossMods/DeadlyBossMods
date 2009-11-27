@@ -40,7 +40,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(69155, 69627) then					-- Forceful Smash
         warnForcefulSmash:Show()
-		timerForcefulSmash:Start()
+        timerForcefulSmash:Start()
 	end
 end
 
@@ -67,17 +67,17 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg and msg:match(L.HoarfrostTarget)
 	if target then
-		self:SendSync("Hoarfrost", target)
+		self:SendSync("Hoarfrost: "..target)
 	end
 end
 
-function mod:OnSync(msg, arg)
-	if msg == "Hoarfrost" then
-		warnHoarfrost:Show(arg)
-		if arg and arg == UnitName("player") then
+function mod:OnSync(msg)
+	if msg:find("Hoarfrost") then
+		local _, _, target = string.find(msg, "Hoarfrost: (%s+)")
+		if target == UnitName("player")
 			specWarnHoarfrost:Show()
-		elseif arg then
-			local uId = DBM:GetRaidUnitId(arg)
+		elseif target then
+			local uId = DBM:GetRaidUnitID(target)
 			if uId then
 				local inRange = CheckInteractDistance(uId, 2)
 				if inRange then
@@ -86,7 +86,7 @@ function mod:OnSync(msg, arg)
 			end
 		end
 		if self.Options.SetIconOnHoarfrostTarget then
-			self:SetIcon(arg, 8, 5)
+			self:SetIcon(target, 8, 5)
 		end
 	end
 end
