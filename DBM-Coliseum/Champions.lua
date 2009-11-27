@@ -63,6 +63,7 @@ local preWarnBladestorm 	= mod:NewSoonAnnounce(65947, 2)
 local warnBladestorm		= mod:NewSpellAnnounce(65947, 1)
 local warnHeroism			= mod:NewSpellAnnounce(65983, 2)
 local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
+local warnHandofFreedom		= mod:NewSpellAnnounce(68758, 2)
 local warnHandofProt		= mod:NewSpellAnnounce(66009, 2)
 local warnDivineShield		= mod:NewSpellAnnounce(66010, 2)
 local warnIceBlock  		= mod:NewSpellAnnounce(65802, 2)
@@ -92,11 +93,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBladestorm:Show()
 		timerBladestorm:Start()
 		timerBladestormCD:Start()
-        preWarnBladestorm:Schedule(85)				-- Pre-Warn will only announce for 2nd and later bladestorm.
+        preWarnBladestorm:Schedule(85)                      -- Pre-Warn will only announce for 2nd and later bladestorm.
 	elseif args:IsSpellID(65983) then						-- Shamen Heroism
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
 		warnBloodlust:Show()
+	elseif args:IsSpellID(68758, 68757, 68756, 66115) then	-- Paladin Hand of Freedom on <mobname>
+		warnHandofFreedom:Show(args.destName)
 	elseif args:IsSpellID(66009) then						-- Paladin Hand of Protection on <mobname>
 		warnHandofProt:Show(args.destName)
 		specWarnHandofProt:Show(args.destName)
