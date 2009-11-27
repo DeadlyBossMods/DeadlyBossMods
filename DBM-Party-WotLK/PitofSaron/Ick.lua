@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local warnPursuit				= mod:NewAnnounce("warnPursuit")
+local warnPursuitCast			= mod:NewCastAnnounce(68987)
 local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
 local warnPustulantFlesh		= mod:NewTargetAnnounce(69581)
 local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
@@ -27,7 +27,7 @@ mod:AddBoolOption("PlaySoundOnPursuit", true)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68987) then							-- Pursuit
-		warnPursuit:Show()
+		warnPursuitCast:Show()
 	end
 end
 

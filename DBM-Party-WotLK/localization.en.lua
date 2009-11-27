@@ -1259,13 +1259,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnPursuit			= "Pursuit in 5 seconds",
 	specWarnToxic		= "Toxic Waste - Move away",
 	specWarnPursuit		= "You are being pursued - Run away"
 })
 
 L:SetOptionLocalization({
-	warnPursuit				= "Show pre-warning for pursue",
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued",
 	PlaySoundOnPursuit		= "Play sound on Pursuit",
