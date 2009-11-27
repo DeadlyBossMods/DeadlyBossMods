@@ -343,6 +343,3 @@ function mod:OnSync(msg, arg)
 		timerSubmerge:Cancel()
 	end
 end
-
-
-
