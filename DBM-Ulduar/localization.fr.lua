@@ -229,7 +229,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "Rayon de l'Œil sur TOI - ECARTE-TOI",
 	WarningEyeBeam			= "Rayon de l'Œil sur >%s<",
-	WarnGrip				= "Poigne sur >%s<"
+	WarnGrip				= "Poigne sur >%s<",
+	SpecWarnCrunchArmor2	= "Broie armure >%d< sur Vous"
 }
 
 L:SetTimerLocalization{
@@ -240,6 +241,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "Activer l'avertissement spécial quand vous êtes la cible du Rayon de l'Œil",
+	SpecWarnCrunchArmor2	= "Montre une alerte spéciale pour Broie armure (>=2 stacks)",
 	WarningEyeBeam			= "Annoncer la cible du Rayon de l'Œil",
 	timerLeftArm			= "Afficher un timer pour le repop du bras gauche",
 	timerRightArm			= "Afficher un timer pour le repop du bras droit",
@@ -302,7 +304,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "Gel instantané"
+	WarningFlashFreeze	= "Gel instantané",
+	specWarnBitingCold	= "Froid mordant - BOUGEZ"
 }
 
 L:SetTimerLocalization{
@@ -312,7 +315,8 @@ L:SetOptionLocalization{
 	WarningFlashFreeze		= "Activer l'avertissement pour le gel instantané",
 	PlaySoundOnFlashFreeze	= "Jouer un son lors de l'incantation du gel instantané",
 	YellOnStormCloud		= "Crie quand la tempête de glace est active",
-	SetIconOnStormCloud		= "Met une icône sur la cible de la tempête de glace"
+	SetIconOnStormCloud		= "Met une icône sur la cible de la tempête de glace",
+	specWarnBitingCold		= "Montre une alerte spéciale quand vous êtes affecter par Froid mordant"
 }
 
 L:SetMiscLocalization{
