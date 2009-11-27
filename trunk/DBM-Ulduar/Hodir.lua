@@ -66,7 +66,7 @@ end
 do 
 	local lastbitingcold = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(62038) and args:IsPlayer() and time() - lastbitingcold > 2 then		-- Biting Cold
+		if args:IsSpellID(62038, 62188) and args:IsPlayer() and time() - lastbitingcold > 3 then		-- Biting Cold
 			specWarnBitingCold:Show()
 			lastbitingcold = time()
 		end
