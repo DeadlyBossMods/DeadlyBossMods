@@ -10,12 +10,12 @@ mod:RegisterCombat("yell", L.CombatStart)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_APPLIED_DOSE",
 	"UNIT_DIED"
 )
 
@@ -72,8 +72,9 @@ mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
 local bileTargets			= {}
 local toxinTargets			= {}
 local burnIcon				= 8
-local oneWormDead			= false
 local phases				= {}
+local DreadscaleActive		= true
+local wormsDead				= {}
 
 local function updateHealthFrame(phase)
 	if phases[phase] then
@@ -95,8 +96,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(bileTargets)
 	table.wipe(toxinTargets)
 	table.wipe(phases)
+	table.wipe(wormsDead)
 	burnIcon = 8
-	oneWormDead = false
+	DreadscaleActive = true
 	specWarnSilence:Schedule(37-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerNextBoss:Start(175 - delay)
@@ -108,13 +110,63 @@ function mod:OnCombatStart(delay)
 	updateHealthFrame(1)
 end
 
+function mod:warnToxin()
+	warnToxin:Show(table.concat(toxinTargets, "<, >"))
+	table.wipe(toxinTargets)
+end
+
+function mod:warnBile()
+	warnBile:Show(table.concat(bileTargets, "<, >"))
+	table.wipe(bileTargets)
+	burnIcon = 8
+end
+
+function mod:WormsEmerge()
+	timerSubmerge:Show()
+	if not wormsDead[35144] then
+		if DreadscaleActive then
+			timerSweepCD:Start(16)
+			timerParalyticSprayCD:Start(10)			
+		else
+			timerSlimePoolCD:Start(14)
+			timerParalyticBiteCD:Start(5)			
+			timerAcidicSpewCD:Start(10)
+		end
+	end
+	if not wormsDead[34799] then
+		if DreadscaleActive then
+			timerSlimePoolCD:Start(14)
+			timerMoltenSpewCD:Start(10)
+			timerBurningBiteCD:Start(5)
+		else
+			timerSweepCD:Start(16)
+			timerBurningSprayCD:Start(16)
+		end
+	end	
+	self:ScheduleMethod(45, "WormsSubmerge")
+end
+
+function mod:WormsSubmerge()
+	timerEmerge:Show()
+	timerSweepCD:Cancel()
+	timerSlimePoolCD:Cancel()
+	timerMoltenSpewCD:Cancel()
+	timerParalyticSprayCD:Cancel()
+	timerBurningBiteCD:Cancel()
+	timerAcidicSpewCD:Cancel()
+	timerBurningSprayCD:Cancel()
+	timerParalyticBiteCD:Cancel()
+	DreadscaleActive = not DreadscaleActive
+	self:ScheduleMethod(10, "WormsEmerge")
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(67477, 66331, 67478, 67479) then					-- Impale
 		timerNextImpale:Start()
 		warnImpaleOn:Show(args.destName)
 	elseif args:IsSpellID(67657, 66759, 67658, 67659) then				-- Frothing Rage
 		warnRage:Show()
-        specWarnTranq:Show()
+		specWarnTranq:Show()
 	elseif args:IsSpellID(66823, 67618, 67619, 67620) then				-- Paralytic Toxin
 		self:UnscheduleMethod("warnToxin")
 		toxinTargets[#toxinTargets + 1] = args.destName
@@ -144,30 +196,21 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:warnToxin()
-	warnToxin:Show(table.concat(toxinTargets, "<, >"))
-	table.wipe(toxinTargets)
-end
-
-function mod:warnBile()
-	warnBile:Show(table.concat(bileTargets, "<, >"))
-	table.wipe(bileTargets)
-	burnIcon = 8
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 34796 then
-		specWarnSilence:Cancel()
-		timerNextStomp:Stop()
-		timerNextImpale:Stop()
-		DBM.BossHealth:RemoveBoss(cid) -- remove Gormok from the health frame
-	elseif cid == 35144	or cid == 34799 then
-		if oneWormDead then
-			DBM.BossHealth:RemoveBoss(35144)
-			DBM.BossHealth:RemoveBoss(34799)
-		else
-			oneWormDead = true
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(67477, 66331, 67478, 67479) then		-- Impale
+		timerNextImpale:Start()
+		warnImpaleOn:Show(args.destName)
+		if (args.amount >= 3 and not self:IsDifficulty("heroic10", "heroic25") ) or ( args.amount >= 2 and self:IsDifficulty("heroic10", "heroic25") ) then 
+			if args:IsPlayer() then
+				specWarnImpale3:Show(args.amount)
+			end
+		end
+	elseif args:IsSpellID(66636) then		-- Rising Anger
+		WarningSnobold:Show()
+		if args.amount <= 3 then
+			timerRisingAnger:Show()
+		elseif args.amount >= 3 then
+			specWarnAnger3:Show(args.amount)
 		end
 	end
 end
@@ -205,6 +248,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:SPELL_DAMAGE(args)
+	if args:IsPlayer() and (args:IsSpellID(66320, 67472, 67473, 67475) or args:IsSpellID(66317)) then	-- Fire Bomb (66317 is impact damage, not avoidable but leaving in because it still means earliest possible warning to move. Other 4 are tick damage from standing in it)
+		specWarnFireBomb:Show()
+	elseif args:IsPlayer() and args:IsSpellID(66881, 67638, 67639, 67640) then				-- Slime Pool
+		specWarnSlimePool:Show()
+	end
+end
+
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg:match(L.Charge) or msg:find(L.Charge)
 	if target then
@@ -232,38 +283,47 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
-function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(67477, 66331, 67478, 67479) then		-- Impale
-		timerNextImpale:Start()
-		warnImpaleOn:Show(args.destName)
-		if (args.amount >= 3 and not self:IsDifficulty("heroic10", "heroic25") ) or ( args.amount >= 2 and self:IsDifficulty("heroic10", "heroic25") ) then 
-			if args:IsPlayer() then
-				specWarnImpale3:Show(args.amount)
-			end
-		end
-	elseif args:IsSpellID(66636) then		-- Rising Anger
-		WarningSnobold:Show()
-		if args.amount <= 3 then
-            timerRisingAnger:Show()
-		elseif args.amount >= 3 then
-            specWarnAnger3:Show(args.amount)
-        end
-	end
-end
-
-function mod:SPELL_DAMAGE(args)
-	if args:IsPlayer() and (args:IsSpellID(66320, 67472, 67473, 67475) or args:IsSpellID(66317)) then	-- Fire Bomb (66317 is impact damage, not avoidable but leaving in because it still means earliest possible warning to move. Other 4 are tick damage from standing in it)
-		specWarnFireBomb:Show()
-	elseif args:IsPlayer() and args:IsSpellID(66881, 67638, 67639, 67640) then				-- Slime Pool
-		specWarnSlimePool:Show()
-	end
-end
-
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase2 or msg:find(L.Phase2) then
 		self:SendSync("Phase2")
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		self:SendSync("Phase3")
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 34796 then
+		specWarnSilence:Cancel()
+		timerNextStomp:Stop()
+		timerNextImpale:Stop()
+		DBM.BossHealth:RemoveBoss(cid) -- remove Gormok from the health frame
+	elseif cid == 35144	or cid == 34799 then
+		if #wormsDead >= 1 then
+			DBM.BossHealth:RemoveBoss(35144)
+			DBM.BossHealth:RemoveBoss(34799)
+		else
+			wormsDead[cid] = true
+		end
+		if cid == 35144 then				-- If Acidmaw dies, cancel his timers
+			timerParalyticSprayCD:Cancel()
+			timerParalyticBiteCD:Cancel()
+			timerAcidicSpewCD:Cancel()
+			if DreadscaleActive then
+				timerSweepCD:Cancel()
+			else
+				timerSlimePoolCD:Cancel()
+			end
+		elseif cid == 34799 then			-- If Dreadscale dies, cancel his timers
+			timerBurningSprayCD:Cancel()
+			timerBurningBiteCD:Cancel()
+			timerMoltenSpewCD:Cancel()
+			if DreadscaleActive then
+				timerSlimePoolCD:Cancel()
+			else
+				timerSweepCD:Cancel()
+			end
+		end
 	end
 end
 
@@ -277,59 +337,12 @@ function mod:OnSync(msg, arg)
 		if self:IsDifficulty("heroic10", "heroic25") then
 			enrageTimer:Start()
 		end
-		self:UnscheduleMethod("WormsSubmerge1")
-		self:UnscheduleMethod("WormsSubmerge2")
+		self:UnscheduleMethod("WormsSubmerge")
 		timerNextCrash:Start(45)
 		timerNextBoss:Cancel()
 		timerSubmerge:Cancel()
-		timerSweepCD:Cancel()
-		timerSlimePoolCD:Cancel()
-		timerAcidicSpewCD:Cancel()
-		timerMoltenSpewCD:Cancel()
-		timerParalyticSprayCD:Cancel()
-		timerBurningSprayCD:Cancel()
-		timerParalyticBiteCD:Cancel()
-		timerBurningBiteCD:Cancel()
-		timerEmerge:Cancel()
 	end
 end
 
-function mod:WormsEmerge1()
-	timerSubmerge:Show()
-	timerSweepCD:Start(16)
-	timerSlimePoolCD:Start(14)
-	timerMoltenSpewCD:Start(10)
-	timerParalyticSprayCD:Start(10)
-	timerBurningBiteCD:Start(5)
-	self:ScheduleMethod(45, "WormsSubmerge1")
-end
 
-function mod:WormsSubmerge1()
-	timerEmerge:Show()
-	timerSweepCD:Cancel()
-	timerSlimePoolCD:Cancel()
-	timerMoltenSpewCD:Cancel()
-	timerParalyticSprayCD:Cancel()
-	timerBurningBiteCD:Cancel()
-	self:ScheduleMethod(10, "WormsEmerge2")
-end
 
-function mod:WormsEmerge2()
-	timerSubmerge:Show()
-	timerSweepCD:Start(16)
-	timerSlimePoolCD:Start(14)
-	timerAcidicSpewCD:Start(10)
-	timerBurningSprayCD:Start(16)
-	timerParalyticBiteCD:Start(5)
-	self:ScheduleMethod(45, "WormsSubmerge2")
-end
-
-function mod:WormsSubmerge2()
-	timerEmerge:Show()
-	timerSweepCD:Cancel()
-	timerSlimePoolCD:Cancel()
-	timerAcidicSpewCD:Cancel()
-	timerBurningSprayCD:Cancel()
-	timerParalyticBiteCD:Cancel()
-	self:ScheduleMethod(10, "WormsEmerge1")
-end
