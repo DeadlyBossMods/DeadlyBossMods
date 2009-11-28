@@ -30,6 +30,7 @@ L:SetOptionLocalization{
 	SoundBreath		= "為深呼吸播放音效",
 	PlaySoundOnBlastNova	= "為衝擊新星播放音效",
 	SoundWTF		= "為經典傳奇式奧妮克希亞副本播放一些有趣的音效",
+	WarnPhase2Soon		= "為第2階段顯示預先警告 (大約在67%)",
 	WarnPhase3Soon		= "為第3階段顯示預先警告 (大約在41%)"
 }
 
