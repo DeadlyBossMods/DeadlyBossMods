@@ -73,8 +73,9 @@ local bileTargets			= {}
 local toxinTargets			= {}
 local burnIcon				= 8
 local phases				= {}
-local DreadscaleActive		= true
-local wormsDead				= {}
+local DreadscaleActive		= true  	-- Is dreadscale moving?
+local DreadscaleDead	= false
+local AcidmawDead	= false
 
 local function updateHealthFrame(phase)
 	if phases[phase] then
@@ -96,9 +97,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(bileTargets)
 	table.wipe(toxinTargets)
 	table.wipe(phases)
-	table.wipe(wormsDead)
 	burnIcon = 8
 	DreadscaleActive = true
+	DreadscaleDead = false
+	AcidmawDead = false
 	specWarnSilence:Schedule(37-delay)
 	if self:IsDifficulty("heroic10", "heroic25") then
 		timerNextBoss:Start(175 - delay)
@@ -123,7 +125,7 @@ end
 
 function mod:WormsEmerge()
 	timerSubmerge:Show()
-	if not wormsDead[35144] then
+	if not AcidmawDead then
 		if DreadscaleActive then
 			timerSweepCD:Start(16)
 			timerParalyticSprayCD:Start(10)			
@@ -133,7 +135,7 @@ function mod:WormsEmerge()
 			timerAcidicSpewCD:Start(10)
 		end
 	end
-	if not wormsDead[34799] then
+	if not DreadscaleDead then
 		if DreadscaleActive then
 			timerSlimePoolCD:Start(14)
 			timerMoltenSpewCD:Start(10)
@@ -298,31 +300,33 @@ function mod:UNIT_DIED(args)
 		timerNextStomp:Stop()
 		timerNextImpale:Stop()
 		DBM.BossHealth:RemoveBoss(cid) -- remove Gormok from the health frame
-	elseif cid == 35144	or cid == 34799 then
-		if #wormsDead >= 1 then
+	elseif cid == 35144 then
+		AcidmawDead = true
+		timerParalyticSprayCD:Cancel()
+		timerParalyticBiteCD:Cancel()
+		timerAcidicSpewCD:Cancel()
+		if DreadscaleActive then
+			timerSweepCD:Cancel()
+		else
+			timerSlimePoolCD:Cancel()
+		end
+		if DreadscaleDead then
 			DBM.BossHealth:RemoveBoss(35144)
 			DBM.BossHealth:RemoveBoss(34799)
-		else
-			wormsDead[cid] = true
 		end
-		if cid == 35144 then				-- If Acidmaw dies, cancel his timers
-			timerParalyticSprayCD:Cancel()
-			timerParalyticBiteCD:Cancel()
-			timerAcidicSpewCD:Cancel()
-			if DreadscaleActive then
-				timerSweepCD:Cancel()
-			else
-				timerSlimePoolCD:Cancel()
-			end
-		elseif cid == 34799 then			-- If Dreadscale dies, cancel his timers
-			timerBurningSprayCD:Cancel()
-			timerBurningBiteCD:Cancel()
-			timerMoltenSpewCD:Cancel()
-			if DreadscaleActive then
-				timerSlimePoolCD:Cancel()
-			else
-				timerSweepCD:Cancel()
-			end
+	elseif cid == 34799 then
+		DreadscaleDead = true
+		timerBurningSprayCD:Cancel()
+		timerBurningBiteCD:Cancel()
+		timerMoltenSpewCD:Cancel()
+		if DreadscaleActive then
+			timerSlimePoolCD:Cancel()
+		else
+			timerSweepCD:Cancel()
+		end
+		if AcidmawDead then
+			DBM.BossHealth:RemoveBoss(35144)
+			DBM.BossHealth:RemoveBoss(34799)
 		end
 	end
 end
