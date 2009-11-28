@@ -20,7 +20,7 @@ local warnMarked			= mod:NewTargetAnnounce(67823)
 local timerMarked			= mod:NewTargetTimer(10, 67823)
 local specWarnDesecration	= mod:NewSpecialWarning("specWarnDesecration")
 
-mod:AddBoolOption("SetIconOnMarkedTarget", false)
+mod:AddBoolOption("SetIconOnMarkedTarget", true)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(67729, 67886) then							-- Explode (elite explodes self, not BK. Phase 2)

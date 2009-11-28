@@ -32,7 +32,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(66045) and not args:IsDestTypePlayer() then								-- Haste
+	if args:IsSpellID(66045) and not args:IsDestTypePlayer() then		-- Haste
 		warnHaste:Show(args.destName)
 		specWarnHaste:Show(args.destName)
 	end
