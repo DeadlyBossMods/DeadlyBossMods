@@ -22,7 +22,7 @@ local warnHammerofJustice		= mod:NewTargetAnnounce(66940)
 local specwarnRadiance			= mod:NewSpecialWarning("specwarnRadiance")
 local specwarnHammerofJustice	= mod:NewSpecialWarning("specwarnHammerofJustice", isDispeller)
 
-mod:AddBoolOption("SetIconOnHammerTarget", false)
+mod:AddBoolOption("SetIconOnHammerTarget", true)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(66935, 66862, 67681) then					-- Radiance Look Away!
