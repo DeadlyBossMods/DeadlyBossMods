@@ -258,9 +258,8 @@ function mod:SPELL_DAMAGE(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	local target = msg:match(L.Charge) or msg:find(L.Charge)
-	if target then
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
+	if msg:match(L.Charge) or msg:find(L.Charge) then
 		timerNextCrash:Start()
 		if self.Options.ClearIconsOnIceHowl then
 			self:ClearIcons()
