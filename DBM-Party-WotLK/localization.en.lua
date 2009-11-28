@@ -1364,11 +1364,11 @@ L:SetOptionLocalization({
 })
 
 
--------------------------
--- Halls of Reflection --
--------------------------
--- Wave Timers --
------------------
+---------------------------
+--  Halls of Reflection  --
+---------------------------
+--  Wave Timers  --
+-------------------
 L = DBM:GetModLocalization("HoRWaveTimer")
 
 L:SetGeneralLocalization({
@@ -1377,7 +1377,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnNewWaveSoon		= "New wave soon",
-	WarnNewWave		= "%s incoming"
+	WarnNewWave			= "%s incoming"
 })
 
 L:SetTimerLocalization({
@@ -1385,11 +1385,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnNewWave		= "Show warning when a boss is incoming (wave 5 + 10)",
-	WarnNewWaveSoon		= "Show pre-warning for when a boss is incoming",
-	ShowAllWaveWarnings	= "Show (pre-)warning for every new wave",
-	TimerNextWave		= "Show a timer for next wave after a boss is defeated",
-	ShowAllWaveTimers	= "Show a timer for every next wave"
+	WarnNewWave				= "Show warning for boss incoming",
+	WarnNewWaveSoon			= "Show pre-warning for new wave",
+	ShowAllWaveWarnings		= "Show pre-warnings for all waves",	--Is this a warning or a pre-warning?
+	TimerNextWave			= "Show timer for next set of waves (after wave 5 boss)",
+	ShowAllWaveTimers		= "Show timers for all waves"
 })
 
 L:SetMiscLocalization({
@@ -1397,9 +1397,9 @@ L:SetMiscLocalization({
 	WaveCheck	= "Spirit Wave = (%d+)/10"
 })
 
-------------
--- Falric --
-------------
+--------------
+--  Falric  --
+--------------
 L = DBM:GetModLocalization("Falric")
 
 L:SetGeneralLocalization({
@@ -1418,9 +1418,9 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 })
 
-------------
--- Marwyn --
-------------
+--------------
+--  Marwyn  --
+--------------
 L = DBM:GetModLocalization("Marwyn")
 
 L:SetGeneralLocalization({
@@ -1428,22 +1428,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "Well of Corruption - move"
+	SpecWarnWellCorruption	= "Well of Corruption - Move"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "Show special warning when you stand in Well of Corruption"
+	SpecWarnWellCorruption	= "Show special warning when you are affected by Well of Corruption"
 })
 
 L:SetMiscLocalization({
 })
 
----------------------
--- Lich King Event --
----------------------
+-----------------------
+--  Lich King Event  --
+-----------------------
 L = DBM:GetModLocalization("LichKingEvent")
 
 L:SetGeneralLocalization({
