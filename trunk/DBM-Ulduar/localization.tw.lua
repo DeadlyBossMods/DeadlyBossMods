@@ -296,7 +296,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze		= "閃霜"
+	WarningFlashFreeze		= "閃霜",
+	specWarnBitingCold		= "刺骨之寒 - 快移動"
 }
 
 L:SetTimerLocalization{
@@ -306,7 +307,8 @@ L:SetOptionLocalization{
 	WarningFlashFreeze		= "為閃霜顯示特別警告",
 	PlaySoundOnFlashFreeze		= "當施放閃霜時播放音效",
 	YellOnStormCloud		= "當你中了風暴雷雲時大喊",
-	SetIconOnStormCloud		= "為風暴雷雲的目標設置標記"
+	SetIconOnStormCloud		= "為風暴雷雲的目標設置標記",
+	specWarnBitingCold		= "當你中了刺骨之寒時顯示特別警告"
 }
 
 L:SetMiscLocalization{
