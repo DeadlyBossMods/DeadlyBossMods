@@ -42,7 +42,8 @@
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
 	Version = "4.30",
-	DisplayVersion = "4.31 alpha"
+	DisplayVersion = "4.31 alpha",
+	ReleaseRevision = 2373
 }
 
 DBM_SavedOptions = {}
@@ -659,7 +660,9 @@ SLASH_DEADLYBOSSMODS1 = "/dbm"
 SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 	local cmd = msg:lower()
 	if cmd == "ver" or cmd == "version" then
-		DBM:ShowVersions()
+		DBM:ShowVersions(false)
+	elseif cmd == "ver2" or cmd == "version2" then
+		DBM:ShowVersions(true)
 	elseif cmd == "unlock" or cmd == "move" then
 		DBM.Bars:ShowMovableBar()
 	elseif cmd == "help" then
@@ -735,7 +738,7 @@ do
 	local function sort(v1, v2)
 		return (v1.revision or 0) > (v2.revision or 0)
 	end
-	function DBM:ShowVersions()
+	function DBM:ShowVersions(notify)
 		for i, v in pairs(raid) do
 			table.insert(sortMe, v)
 		end
@@ -744,6 +747,9 @@ do
 		for i, v in ipairs(sortMe) do
 			if v.displayVersion then
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
+				if notify and (v.displayVersion ~= DBM.Version and v.revision < DBM.ReleaseRevision) then
+					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_SUCKS, "WHISPER", nil, v.name)
+				end
 			else
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
 			end
