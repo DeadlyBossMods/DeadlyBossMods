@@ -46,7 +46,7 @@ L:SetWarningLocalization{
 	WarnTouchInsignificance		= "%s: >%s< (%s)",	-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay		= "死亡凋零 - 快跑開",
 	SpecWarnCurseTorpor		= "你中了魯鈍詛咒",
-	SpecWarnTouchInsignificance	= "無足輕重之觸 (3)",
+	SpecWarnTouchInsignificance	= "無脅之觸 (3)",
 	WarnAddsSoon			= "新的小怪即將出現"
 }
 
@@ -54,7 +54,7 @@ L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating			= "當小怪再活化時顯示警告",	-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance	= "當你中了3層無足輕重之觸時顯示特別警告",
+	SpecWarnTouchInsignificance	= "當你中了3層無脅之觸時顯示特別警告",
 	SpecWarnDeathDecay		= "當你中了死亡凋零時顯示特別警告",
 	SpecWarnCurseTorpor		= "當你中了魯鈍詛咒時顯示特別警告",
 }
@@ -138,7 +138,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes			= "大夥聽著，好消息!我修好了劇毒軟泥管!"	-- Professor Putricide
+	YellSlimePipes			= "大夥聽著， 好消息!我修好了劇毒軟泥管!"	-- Professor Putricide
 }
 
 ---------------------------

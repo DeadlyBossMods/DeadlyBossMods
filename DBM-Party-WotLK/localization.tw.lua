@@ -6,10 +6,10 @@ local spell				= "%s"
 local debuff			= "%s: >%s<"			
 local spellCD			= "%s 冷卻"
 local spellSoon			= "%s 即將到來"
-local optionWarning	= "為%s顯示警告"
+local optionWarning		= "為%s顯示警告"
 local optionPreWarning	= "為%s顯示預先警告"
 local optionSpecWarning	= "為%s顯示特別警告"
-local optionTimerCD	= "為%s顯示冷卻計時器"
+local optionTimerCD		= "為%s顯示冷卻計時器"
 local optionTimerDur	= "為%s顯示持續時間計時器"
 local optionTimerCast	= "為%s顯示施法計時器"
 
@@ -235,10 +235,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-L:SetMiscLocalization({
-	Outro	= "你的旅途才剛開始，年輕的王子。召集你的軍隊，到北裂境的嚴寒之地來見我。在那裡，我們可以算算我們之間的新仇舊恨。你將在那裡理解你真正的命運。"
-})
-
 -------------------
 --  Wave Timers  --
 -------------------
@@ -260,7 +256,6 @@ L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("新一波"),
 	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)",
 })
-
 
 L:SetMiscLocalization({
 	Meathook	= "Meathook",
@@ -492,7 +487,6 @@ L:SetOptionLocalization({
 --  Volkhan  --
 ---------------
 L = DBM:GetModLocalization("Volkhan")
-
 
 L:SetGeneralLocalization({
 	name = "渥克瀚"
@@ -1086,12 +1080,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "新傳送門即將開啟",
-	WarningPortalNow	= "傳送門 %d",
+	WarningPortalNow	= "傳送門 #%d",
 	WarningBossNow		= "首領即將到來",
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "傳送門 %d",
+	TimerPortalIn	= "傳送門 #%d",
 })
 
 L:SetOptionLocalization({
@@ -1101,7 +1095,6 @@ L:SetOptionLocalization({
 	TimerPortalIn			= "為傳送門數顯示計時器",
 	ShowAllPortalWarnings	= "為所有傳送門顯示警告"
 })
-
 
 L:SetMiscLocalization({
 	yell1		= "監獄守衛，我們要離開了!這些冒險者會接手!動作快!",
@@ -1241,19 +1234,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHorsemanSoldiers		= "跳動的南瓜出現了!",
-	specWarnHorsemanHead		= "頭顱出現了! 轉換目標!"
+	warnHorsemanSoldiers	= "跳動的南瓜出現了!",
+	specWarnHorsemanHead	= "頭顱出現了! 轉換目標!"
 })
 
 L:SetOptionLocalization({
-	warnHorsemanSoldiers		= "為跳動的南瓜出現顯示警告",
-	specWarnHorsemanHead		= "為無頭騎士之頭出現顯示警告 (第二次以後的)"
+	warnHorsemanSoldiers	= "為跳動的南瓜出現顯示警告",
+	specWarnHorsemanHead	= "為無頭騎士之頭出現顯示警告 (第二次以後的)"
 })
 
 L:SetMiscLocalization({
-	HorsemanHead				= "過來這裡，你這白痴!",
-	HorsemanSoldiers			= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!",
-	SayCombatEnd				= "我也曾面對過這樣的末路。還有什麼新的冒險在等著呢?"
+	HorsemanHead			= "過來這裡，你這白痴!",
+	HorsemanSoldiers		= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!",
+	SayCombatEnd			= "我也曾面對過這樣的末路。還有什麼新的冒險在等著呢?"
 })
 
 --------------------
@@ -1268,15 +1261,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnPursuit			= "5 秒後 獵殺",
 	specWarnToxic		= "毒性廢料 - 快跑開",
 	specWarnPursuit		= "你中了獵殺 - 快跑"
 })
 
 L:SetOptionLocalization({
-	warnPursuit				= "為獵殺顯示預先警告",
 	specWarnToxic			= "當你中了毒性廢料時顯示特別警告",
 	specWarnPursuit			= "當你被獵殺時顯示特別警告",
+	PlaySoundOnPursuit		= "為獵殺播放音效",
 --	SetIconOnPursuitTarget	= "為獵殺的目標設置標記"
 })
 
@@ -1293,14 +1285,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "薩鋼岩 - 現在離開視線",
-	specWarnSaroniteRock	= "你中了投擲薩鋼",
+	warnSaroniteRock		= "產生薩鋼岩 - 現在離開視線",
+	specWarnSaroniteRock	= "你中了投擲薩鋼 - 快跑",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "為薩鋼岩顯示警告 (清除極寒冰霜用)",
-	specWarnSaroniteRock		= "當你中了投擲薩鋼顯示特別警告",
+	specWarnSaroniteRock		= "當你中了投擲薩鋼時顯示特別警告",
 	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (數值並非一成不變)",
 --	SetIconOnSaroniteRockTarget	= "為薩鋼岩的目標設置標記"
 })
@@ -1319,7 +1311,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTyrannusEngaged			= "天譴領主提朗紐斯正在降落 - 做好準備",
+	specTyrannusEngaged			= "天譴領主提朗紐斯正在降落 - 做好準備",
 	specWarnIcyBlast			= "冰結衝擊 - 快跑開",
 	specWarnHoarfrost			= "你中了白霜 - 快跑開",
 	specWarnHoarfrostNear		= "你附近有人中了白霜 - 快跑開"
@@ -1372,4 +1364,102 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul		= "為鏡像之魂需要停止攻擊時顯示特別警告"
+})
+
+-------------------------
+-- Halls of Reflection --
+-------------------------
+-- Wave Timers --
+-----------------
+L = DBM:GetModLocalization("HoRWaveTimer")
+
+L:SetGeneralLocalization({
+	name = "Wave Timers"
+})
+
+L:SetWarningLocalization({
+	WarnNewWaveSoon		= "新一波 即將到來",
+	WarnNewWave		= "%s 到來"
+})
+
+L:SetTimerLocalization({
+	TimerNextWave		= "新一波"
+})
+
+L:SetOptionLocalization({
+	WarnNewWave		= "當首領到來時顯示警告 (波數 5 + 10)",
+	WarnNewWaveSoon		= "為當首領到來時顯示預先警告",
+	ShowAllWaveWarnings	= "為每新一波顯示 (預先)警告",
+	TimerNextWave		= "當擊敗首領後為下一波顯示計時器",
+	ShowAllWaveTimers	= "為每下一波顯示計時器"
+})
+
+L:SetMiscLocalization({
+	Falric		= "法勒瑞克",
+	WaveCheck	= "Spirit Wave = (%d+)/10"
+})
+
+------------
+-- Falric --
+------------
+L = DBM:GetModLocalization("Falric")
+
+L:SetGeneralLocalization({
+	name = "法勒瑞克"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+------------
+-- Marwyn --
+------------
+L = DBM:GetModLocalization("Marwyn")
+
+L:SetGeneralLocalization({
+	name = "麥爾溫"
+})
+
+L:SetWarningLocalization({
+	SpecWarnWellCorruption	= "Well of Corruption - 快跑開"
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	SpecWarnWellCorruption	= "當你中了Well of Corruption時顯示特別警告"
+})
+
+L:SetMiscLocalization({
+})
+
+---------------------
+-- Lich King Event --
+---------------------
+L = DBM:GetModLocalization("LichKingEvent")
+
+L:SetGeneralLocalization({
+	name = "巫妖王事件"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })

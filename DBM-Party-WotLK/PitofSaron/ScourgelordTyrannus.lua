@@ -74,7 +74,7 @@ end
 function mod:OnSync(msg)
 	if msg:find("Hoarfrost") then
 		local _, _, target = string.find(msg, "Hoarfrost: (%s+)")
-		if target == UnitName("player")
+		if target == UnitName("player") then
 			specWarnHoarfrost:Show()
 		elseif target then
 			local uId = DBM:GetRaidUnitID(target)
