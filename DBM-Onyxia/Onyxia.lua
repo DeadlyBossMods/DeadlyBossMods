@@ -30,7 +30,7 @@ local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
 local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
-local timerNextBreath		= mod:NewNextTimer(40, 17086)--Experimental, if it is off please let me know.
+local timerNextBreath		= mod:NewCDTimer(40, 17086)--Experimental, her casts aren't perfectly consistent. Need more data.
 local timerBreath			= mod:NewCastTimer(8, 17086)
 local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
