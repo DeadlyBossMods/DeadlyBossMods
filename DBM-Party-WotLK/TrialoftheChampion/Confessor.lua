@@ -54,5 +54,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(66515) then
 		shielded = false
+	elseif args:IsSpellID(66538, 67676) then                     -- Holy Fire
+		timerHolyFire:Cancel(args.destName)
 	end
 end
