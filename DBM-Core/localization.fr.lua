@@ -38,6 +38,7 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM non installé"
 DBM_CORE_VERSIONCHECK_FOOTER		= "a trouvé %d joueurs avec Deadly Boss Mods"
+DBM_CORE_YOUR_VERSION_OUTDATED      = "Votre version de Deadly Boss Mods est périmé! Merci de visiter www.deadlybossmods.com pour avoir la dernière version."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\n Version %s (r%d) disponible ici:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copier le lien votre presse-papier."
