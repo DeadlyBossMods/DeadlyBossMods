@@ -748,7 +748,7 @@ do
 			if v.displayVersion then
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
 				if notify and (v.displayVersion ~= DBM.Version and v.revision < DBM.ReleaseRevision) then
-					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_SUCKS, "WHISPER", nil, v.name)
+					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			else
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM:format(v.name))
