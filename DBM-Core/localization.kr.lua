@@ -38,6 +38,7 @@ DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버젼"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 죽이는 보스 모드가 설치 되어있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명의 플레이어가 설치되어 있는 것을 찾았습니다."
+DBM_CORE_YOUR_VERSION_SUCKS			= "당신의 DBM 버전이 낡았군요. 새로 다운로드 받으셔요."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 죽이는 보스 모드 버전이 옛날 버전입니다.\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl-C 를 누르면 클립보드에 복사가 됩니다."
@@ -47,7 +48,7 @@ DBM_CORE_MOVABLE_BAR				= "나를 움직이세요~_~"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 피자 타이머 보냄: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[타이머 취소]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[%1$s 타이머 무시]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "현재 세션에서 %s님이 보낸 피자 타이머를 무시하도록 하겠습니까?"
-DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <시간> <글자>"
+DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <글자>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods 가 실행중에 있습니다.\n당신께서 DBMv3 와 DBMv4를 동시에 설치하여 이런 상황이 발생한 것 같습니다.\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n또한, 애드온 폴더내에 존재하고 있는 DBMv3 폴더를 삭제하시길 권장합니다."
 
@@ -118,8 +119,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 		= "페이즈 %d"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast 	= "|cff71d5ff|Hspell:%d|h%s|h|r 시전을 시작할 경우 경고 보기"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(soon)"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(prewarn)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "페이즈 %d 의 경고 보기"
 
 -- New special warnings
