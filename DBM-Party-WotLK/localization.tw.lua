@@ -1366,11 +1366,12 @@ L:SetOptionLocalization({
 	specwarnMirroredSoul		= "為鏡像之魂需要停止攻擊時顯示特別警告"
 })
 
--------------------------
--- Halls of Reflection --
--------------------------
--- Wave Timers --
------------------
+
+---------------------------
+--  Halls of Reflection  --
+---------------------------
+--  Wave Timers  --
+-------------------
 L = DBM:GetModLocalization("HoRWaveTimer")
 
 L:SetGeneralLocalization({
@@ -1379,19 +1380,19 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnNewWaveSoon		= "新一波 即將到來",
-	WarnNewWave		= "%s 到來"
+	WarnNewWave			= "%s 到來"
 })
 
 L:SetTimerLocalization({
-	TimerNextWave		= "新一波"
+	TimerNextWave		= "下一波"
 })
 
 L:SetOptionLocalization({
-	WarnNewWave		= "當首領到來時顯示警告 (波數 5 + 10)",
-	WarnNewWaveSoon		= "為當首領到來時顯示預先警告",
-	ShowAllWaveWarnings	= "為每新一波顯示 (預先)警告",
-	TimerNextWave		= "當擊敗首領後為下一波顯示計時器",
-	ShowAllWaveTimers	= "為每下一波顯示計時器"
+	WarnNewWave				= "當首領到來時顯示警告",
+	WarnNewWaveSoon			= "為新一波顯示預先警告",
+	ShowAllWaveWarnings		= "為所有波數顯示預先警告",
+	TimerNextWave			= "為下一波顯示計時器 (擊敗首領後)",
+	ShowAllWaveTimers		= "為所有波數顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -1399,9 +1400,9 @@ L:SetMiscLocalization({
 	WaveCheck	= "Spirit Wave = (%d+)/10"
 })
 
-------------
--- Falric --
-------------
+--------------
+--  Falric  --
+--------------
 L = DBM:GetModLocalization("Falric")
 
 L:SetGeneralLocalization({
@@ -1420,9 +1421,9 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 })
 
-------------
--- Marwyn --
-------------
+--------------
+--  Marwyn  --
+--------------
 L = DBM:GetModLocalization("Marwyn")
 
 L:SetGeneralLocalization({
@@ -1443,9 +1444,9 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 })
 
----------------------
--- Lich King Event --
----------------------
+-----------------------
+--  Lich King Event  --
+-----------------------
 L = DBM:GetModLocalization("LichKingEvent")
 
 L:SetGeneralLocalization({

@@ -37,6 +37,7 @@ DBM_CORE_VERSIONCHECK_HEADER			= "Deadly Boss Mods - 版本檢測"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s(r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM		= "%s：尚未安裝DBM"
 DBM_CORE_VERSIONCHECK_FOOTER			= "團隊中有%d名成員正在使用Deadly Boss Mods"
+DBM_CORE_YOUR_VERSION_OUTDATED      		= "你的 Deadly Boss Mod 已經過期! 請到 www.deadlybossmods.com 下載最新版本。"
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "你的 Deadly Boss Mod 已經過期! \n你可以在以下位址下載到新版本%s(r%d)："
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Ctrl-C：複製下載地址到剪貼簿。"
