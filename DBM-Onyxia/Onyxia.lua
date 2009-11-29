@@ -25,12 +25,13 @@ local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
-local preWarnBreath         = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
+--local preWarnDeepBreath     = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
 local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
 local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
-local timerNextBreath		= mod:NewCDTimer(40, 17086)--Experimental, her casts aren't perfectly consistent. Need more data.
+local timerNextFlameBreath	= mod:NewCDTimer(20, 68970)--Breath she does on ground in frontal cone.
+local timerNextDeepBreath	= mod:NewCDTimer(35, 17086)--Experimental, her casts aren't perfectly consistent. Need more data.
 local timerBreath			= mod:NewCastTimer(8, 17086)
 local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
@@ -74,9 +75,10 @@ function mod:OnSync(msg)
 	if msg == "Phase2" then
 		phase = 2
 		warnPhase2:Show()
-		preWarnBreath:Schedule(72)	-- Pre-Warn Deep Breath
-		timerNextBreath:Start(77)
+--		preWarnDeepBreath:Schedule(72)	-- Pre-Warn Deep Breath
+		timerNextDeepBreath:Start(77)
 		timerAchieveWhelps:Start()
+		timerNextFlameBreath:Cancel()
 		self:ScheduleMethod(5, "Whelps")
 		sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
 		sndFunny:Schedule(17, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
@@ -85,9 +87,9 @@ function mod:OnSync(msg)
 		warnPhase3:Show()
 		self:UnscheduleMethod("Whelps")
 		timerWhelps:Stop()
-		timerNextBreath:Stop()
+		timerNextDeepBreath:Stop()
 		warnWhelpsSoon:Cancel()
-		preWarnBreath:Cancel()
+--		preWarnDeepBreath:Cancel()
 		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
    		sndFunny:Schedule(35, "Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
 		sndFunny:Schedule(50, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
@@ -104,8 +106,10 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(17086, 18351, 18564, 18576) or args:IsSpellID(18584, 18596, 18609, 18617) then		-- 1 ID for each direction
 		specWarnBreath:Show()
 		timerBreath:Start()
-		timerNextBreath:Start()
-		preWarnBreath:Schedule(35)	-- Pre-Warn Deep Breath
+		timerNextDeepBreath:Start()
+--		preWarnDeepBreath:Schedule(35)              -- Pre-Warn Deep Breath
+	elseif args:IsSpellID(18435, 68970) then        -- Flame Breath (Ground phases)
+		timerNextFlameBreath:Start()
 	end
 end
 
