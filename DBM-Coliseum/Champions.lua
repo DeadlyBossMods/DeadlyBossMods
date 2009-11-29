@@ -98,7 +98,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
 		warnBloodlust:Show()
-	elseif args:IsSpellID(68758, 68757, 68756, 66115) then	-- Paladin Hand of Freedom on <mobname>
+	elseif args:IsSpellID(68758, 68757, 68756, 66115) and not args:IsDestTypePlayer() then	-- Paladin Hand of Freedom on <mobname>
 		warnHandofFreedom:Show(args.destName)
 	elseif args:IsSpellID(66009) then						-- Paladin Hand of Protection on <mobname>
 		warnHandofProt:Show(args.destName)
