@@ -32,7 +32,9 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "기타 추가 기능"
 
 DBM_CORE_AUTO_RESPONDED				= "자동-부활."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d 공대원이 생존해 있습니다."
-DBM_CORE_AUTO_RESPOND_WHISPER		= "%s 님은 현재 바쁩니다. %s 와 사투를 벌이고 있습니다. (%s, %d/%d 공대원 생존중) 전투가 끝난 후 통보를 받게 될 것입니다."
+DBM_CORE_AUTO_RESPOND_WHISPER		= "%s 님은 현재 바쁩니다. %s의 전투가 진행중입니다. (%s, %d/%d 공대원 생존중) 전투가 끝난 후 통보를 받게 될 것입니다."
+DBM_CORE_WHISPER_COMBAT_END_KILL	= "%s 님이 %s의 전투가 끝났습니다!"
+DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s 님이 %s의 전투에서 전멸하였습니다."
 
 DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버젼"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
