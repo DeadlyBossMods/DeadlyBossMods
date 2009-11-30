@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("IngvarThePlunderer", "DBM-Party-WotLK", 10)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(23980)
+mod:SetCreatureID(23980, 23954)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
