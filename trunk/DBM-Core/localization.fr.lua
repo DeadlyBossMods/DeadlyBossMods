@@ -33,6 +33,8 @@ DBM_CORE_OPTION_CATEGORY_MISC		= "Divers"
 DBM_CORE_AUTO_RESPONDED				= "Réponse automatique."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d personnes en vie"
 DBM_CORE_AUTO_RESPOND_WHISPER		= "%s est occupé(e) à combattre contre %s (%s, %d/%d personnes en vie)"
+DBM_CORE_WHISPER_COMBAT_END_KILL	= "%s a vaincu %s après %s !"
+DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s a wip sur %s après %s"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
