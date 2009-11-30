@@ -1722,6 +1722,9 @@ function DBM:EndCombat(mod, wipe)
 				end
 			end
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
+			for k, v in pairs(autoRespondSpam) do
+				SendChatMessage(chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), (mod.combatInfo.name or ""), strFromTime(thisTime)), "WHISPER", nil, k)
+			end
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
@@ -1743,8 +1746,12 @@ function DBM:EndCombat(mod, wipe)
 			else
 				self:AddMsg(DBM_CORE_BOSS_DOWN_LONG:format(mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime)))
 			end
+			for k, v in pairs(autoRespondSpam) do
+				SendChatMessage(chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), (mod.combatInfo.name or ""), strFromTime(thisTime)), "WHISPER", nil, k)
+			end
 			fireEvent("kill", mod)
 		end
+		table.wipe(autoRespondSpam)
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		DBM.BossHealth:Hide()
 	end
