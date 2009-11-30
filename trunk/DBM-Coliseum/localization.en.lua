@@ -129,21 +129,23 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "DK - Gorgrim Shadowcleave",		-- 34458
-	Birana 		= "D - Birana Stormhoof",			-- 34451
-	Erin		= "D - Erin Misthoof",				-- 34459
-	Rujkah		= "H - Ruj'kah",					-- 34448
-	Ginselle	= "M - Ginselle Blightslinger",		-- 34449
-	Liandra		= "P - Liandra Suncaller",			-- 34445
-	Malithas	= "P - Malithas Brightblade",		-- 34456
-	Caiphus		= "PR - Caiphus the Stern",			-- 34447
-	Vivienne	= "PR - Vivienne Blackwhisper",		-- 34441
-	Mazdinah	= "R - Maz'dinah",					-- 34454
-	Thrakgar	= "S - Thrakgar",					-- 34444
-	Broln		= "S - Broln Stouthorn",			-- 34455
-	Harkzog		= "WL - Harkzog",					-- 34450
-	Narrhok		= "W - Narrhok Steelbreaker",		-- 34453
-	YellKill	= "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death."
+	Gorgrim            = "DK - Gorgrim Shadowcleave",		-- 34458
+	Birana             = "D - Birana Stormhoof",			-- 34451
+	Erin               = "D - Erin Misthoof",				-- 34459
+	Rujkah             = "H - Ruj'kah",					-- 34448
+	Ginselle           = "M - Ginselle Blightslinger",		-- 34449
+	Liandra            = "P - Liandra Suncaller",			-- 34445
+	Malithas           = "P - Malithas Brightblade",		-- 34456
+	Caiphus            = "PR - Caiphus the Stern",			-- 34447
+	Vivienne           = "PR - Vivienne Blackwhisper",		-- 34441
+	Mazdinah           = "R - Maz'dinah",					-- 34454
+	Thrakgar           = "S - Thrakgar",					-- 34444
+	Broln              = "S - Broln Stouthorn",			-- 34455
+	Harkzog            = "WL - Harkzog",					-- 34450
+	Narrhok            = "W - Narrhok Steelbreaker",		-- 34453
+	AllianceVictory    = "Glory to the Alliance!",
+	HordeVictory       = "That was just a taste of what the future brings. FOR THE HORDE!",
+	YellKill           = "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death."
 } 
 
 L:SetOptionLocalization{

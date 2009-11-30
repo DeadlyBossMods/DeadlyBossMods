@@ -7,6 +7,8 @@ mod:SetCreatureID(34458, 34451, 34459, 34448, 34449, 34445, 34456, 34447, 34441,
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.YellKill)
+--mod:RegisterKill("yell", L.AllianceVictory)
+--mod:RegisterKill("yell", L.HordeVictory)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
