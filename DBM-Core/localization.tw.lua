@@ -32,8 +32,8 @@ DBM_CORE_OPTION_CATEGORY_MISC			= "其它"
 DBM_CORE_AUTO_RESPONDED				= "已自動回復密語。"
 DBM_CORE_STATUS_WHISPER				= "%s：%s，%d/%d存活"
 DBM_CORE_AUTO_RESPOND_WHISPER			= "%s正在與%s交戰，（當前%s，%d/%d存活）"
-DBM_CORE_WHISPER_COMBAT_END_KILL		= "%s已經擊敗 %s，經過 %s!"
-DBM_CORE_WHISPER_COMBAT_END_WIPE		= "%s在 %s 戰鬥中滅團，經過 %s"
+DBM_CORE_WHISPER_COMBAT_END_KILL		= "%s已經擊敗 %s!"
+DBM_CORE_WHISPER_COMBAT_END_WIPE		= "%s在 %s 戰鬥中滅團，經過"	-- please update this 1 (removed the timestamp as it gave errors)!
 
 DBM_CORE_VERSIONCHECK_HEADER			= "Deadly Boss Mods - 版本檢測"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s(r%d)"
