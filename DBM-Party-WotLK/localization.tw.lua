@@ -1375,7 +1375,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("HoRWaveTimer")
 
 L:SetGeneralLocalization({
-	name = "Wave Timers"
+	name = "波數計時"
 })
 
 L:SetWarningLocalization({
@@ -1397,7 +1397,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Falric		= "法勒瑞克",
-	WaveCheck	= "Spirit Wave = (%d+)/10"
+	WaveCheck	= "靈魂波數 = (%d+)/10"
 })
 
 --------------
@@ -1431,14 +1431,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "Well of Corruption - 快跑開"
+	SpecWarnWellCorruption	= "腐化之井 - 快跑開"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "當你中了Well of Corruption時顯示特別警告"
+	SpecWarnWellCorruption	= "當你中了腐化之井時顯示特別警告"
 })
 
 L:SetMiscLocalization({

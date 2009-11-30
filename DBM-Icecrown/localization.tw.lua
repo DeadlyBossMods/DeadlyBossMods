@@ -138,7 +138,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes			= "大夥聽著， 好消息!我修好了劇毒軟泥管!"	-- Professor Putricide
+	YellSlimePipes			= "大夥聽著，好消息!我修好了劇毒軟泥管!"	-- Professor Putricide
 }
 
 ---------------------------
