@@ -18,6 +18,14 @@ local timerEnraged		= mod:NewBuffActiveTimer(12, 51170)
 local timerShift		= mod:NewBuffActiveTimer(18, 51162)
 
 
+function mod:OnCombatEnd(wipe)
+	if not wipe then
+		if DBM.Bars:GetBar(L.MakeitCountTimer) then
+			DBM.Bars:CancelBar(L.MakeitCountTimer) 
+		end	
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(51162) then
 		warningShift:Show()
