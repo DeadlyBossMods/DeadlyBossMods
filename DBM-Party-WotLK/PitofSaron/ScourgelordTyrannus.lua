@@ -33,7 +33,7 @@ mod:AddBoolOption("SetIconOnHoarfrostTarget", true)
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.TyrannusYell then		-- Tyrannus Jumps down from drake. Phase 2 so to speak.
 		timerForcefulSmash:Start()  --Experimental support for possible next Forceful smash after he's been engaged.
-		specTyrannusEngaged:Show()
+		warnTyrannusEngaged:Show()
 	end
 end
 
