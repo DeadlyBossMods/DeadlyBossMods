@@ -23,6 +23,8 @@ local warnOldWounds			= mod:NewTargetAnnounce(67679)
 local timerOldWounds		= mod:NewTargetTimer(12, 67679)
 local warnHolyFire			= mod:NewTargetAnnounce(67676)
 local timerHolyFire			= mod:NewTargetTimer(8, 67676)
+local warnShadows			= mod:NewTargetAnnounce(67678)
+local timerShadows          = mod:NewTargetTimer(5, 67678)
 local specwarnRenew			= mod:NewSpecialWarning("specwarnRenew", isDispeller)
 
 local shielded				= false
@@ -48,6 +50,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(66538, 67676) then                     -- Holy Fire
 		warnHolyFire:Show(args.destName)
 		timerHolyFire:Show(args.destName)
+	elseif args:IsSpellID(66619, 67678) then                     -- Shadows of the Past
+		warnShadows:Show(args.destName)
+		timerShadows:Show(args.destName)
 	end
 end
 
@@ -56,5 +61,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		shielded = false
 	elseif args:IsSpellID(66538, 67676) then                     -- Holy Fire
 		timerHolyFire:Cancel(args.destName)
+	elseif args:IsSpellID(66619, 67678) then                     -- Shadows of the Past
+		timerShadows:Cancel(args.destName)
 	end
 end
