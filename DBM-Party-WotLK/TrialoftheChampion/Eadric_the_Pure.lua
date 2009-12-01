@@ -18,16 +18,18 @@ local isDispeller = select(2, UnitClass("player")) == "PRIEST"
 				 or select(2, UnitClass("player")) == "PALADIN"
 
 local warnHammerofRighteous		= mod:NewSpellAnnounce(66867)
+local warnVengeance             = mod:NewSpellAnnounce(66889)
 local warnHammerofJustice		= mod:NewTargetAnnounce(66940)
+local timerVengeance			= mod:NewBuffActiveTimer(6, 66889)
 local specwarnRadiance			= mod:NewSpecialWarning("specwarnRadiance")
 local specwarnHammerofJustice	= mod:NewSpecialWarning("specwarnHammerofJustice", isDispeller)
 
 mod:AddBoolOption("SetIconOnHammerTarget", true)
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(66935, 66862, 67681) then					-- Radiance Look Away!
+	if args:IsSpellID(66935) then					-- Radiance Look Away!
 		specwarnRadiance:Show()
-	elseif args:IsSpellID(66867) then							-- Hammer of the Righteous
+	elseif args:IsSpellID(66867) then				-- Hammer of the Righteous
 		warnHammerofRighteous:Show()
 	end
 end
@@ -39,6 +41,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnHammerofJustice:Show(args.destName)
 		specwarnHammerofJustice:Show(args.destName)
+	elseif args:IsSpellID(66889) then							-- Vengeance
+		warnVengeance:Show(args.destName)
+		timerVengeance:Start(args.destName)
 	end
 end
 
