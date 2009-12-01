@@ -286,8 +286,8 @@ L:SetTimerLocalization({
 L:SetWarningLocalization({
 	WarningWaveSoon		= "웨이브 %d: %s 등장하기 3초 전",
 	WarningWaveSpawned	= "웨이브 %d: %s 등장",
-	WarningRiderDown	= "무자비한 죽음의 기병 등장",
-	WarningKnightDown	= "무자비한 죽음의 기사 등장",
+	WarningRiderDown	= "무자비한 죽음의 기병 죽음",
+	WarningKnightDown	= "무자비한 죽음의 기사 죽음",
 	WarningPhase2		= "2 페이즈 시작"
 })
 
@@ -312,7 +312,7 @@ L:SetGeneralLocalization({
 
 L:SetOptionLocalization({
 	TimerMark					= "징표 타이머 보기",
-	WarningMarkSoon				= "징ㅍ 사전 경고 보기",
+	WarningMarkSoon				= "징표 사전 경고 보기",
 	WarningMarkNow				= "징표 경고 보기",
 	SpecialWarningMarkOnPlayer	= "자신의 징표가 4개가 됐을 때의 경고 보기"
 })
@@ -392,7 +392,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell = "어둠의 문지기와 하수인, 그리고 병사들이여, 나 켈투자드가 부르니 명을 받들라!"
+	Yell = "어둠의 문지기와 하수인, 그리고 병사들이여! 나 켈투자드가 부르니 명을 받들라!"
 })
 
 L:SetWarningLocalization({
