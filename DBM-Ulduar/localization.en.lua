@@ -457,6 +457,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare	= "Play sound on Laser Barrage",
 	ShockBlastWarningInP1	= "Show special warning for Shock Blast in Phase 1",
 	ShockBlastWarningInP4	= "Show special warning for Shock Blast in Phase 4",
+	RangeFrame				= "Show range frame in phase 1"
 }
 
 L:SetMiscLocalization{
