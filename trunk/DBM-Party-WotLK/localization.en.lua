@@ -1158,14 +1158,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-specwarnRenew				= "Renew on %s - Dispel now"
+    specwarnRenew			= "Renew on %s - Dispel now"
 })
 
 L:SetOptionLocalization({
-specwarnRenew				= "Show special warning for Renew targets (to dispel/steal)"
+    specwarnRenew			= "Show special warning for Renew targets (to dispel/steal)"
 })
 
 L:SetMiscLocalization({
+	YellCombatEnd			= "Excellent work!"
 })
 
 -----------------------
