@@ -171,7 +171,7 @@ L:SetWarningLocalization{
 	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
 	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",
 	Overload					= "과부하 - 이동!",
-	RuneofPower        			= "Rune of Power on >%s<"	
+	RuneofPower        			= "힘의 룬 : >%s<"	
 }
 
 L:SetTimerLocalization{
@@ -236,7 +236,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "너희 행동은 비논리적이다. 이 전투에서 가능한 결말은 모두 계산되었다. 결과와 상관없이 판테온은 관찰자의 전갈을 받을 것이다.",
---	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",	
+--	YellKill				= "나는 창조주의 불길이 씻어내린 세상을 보았다. 모두 변변히 저항도 못하고 사그라졌지. 너희 필멸자의 심장이 단 한번 뛸 시간에 전 행성계가 탄생하고 무너졌다. 그러나 그 모든 시간 동안, 나는 공감이란 감정을... 몰랐다. 나는, 아무것도, 느끼지, 못했다. 무수한, 무수한 생명이 꺼졌다. 그들이 모두 너희처럼 강인했더냐? 그들이 모두 너희처럼 삶을 사랑했단 말이냐?",	
 	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
 	PullCheck				= "(%d+)분 후에 알갈론이 신호 전송을 시작합니다."	
 }
@@ -303,7 +303,7 @@ L:SetMiscLocalization{
 }
 
 L:SetTimerLocalization{
-	timerDefender	= "Feral Defender activates"
+	timerDefender	= "수호 야수 활성"
 }
 
 
@@ -491,6 +491,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare 	= "레이저 탄막 대상 특수 사운드 경고 재생",
 	ShockBlastWarningInP1	= "1 페이즈 충격파의 특수 경고 보기(근접 딜러)",
 	ShockBlastWarningInP4	= "4 페이즈 충격파의 특수 경고 보기(근접 딜러)",
+	RangeFrame				= "1 페이즈에서 거리 프레임 보기"
 }
 
 L:SetMiscLocalization{

@@ -41,7 +41,8 @@ L:SetOptionLocalization{
 	TimerNextBoss				= "다음 보스 등장 타이머 보기",
 	TimerCombatStart			= "전투 시작 타이머 보기",
 	TimerEmerge					= "출현 타이머 보기",
-	TimerSubmerge				= "숨기 타이머 보기"
+	TimerSubmerge				= "숨기 타이머 보기",
+	RangeFrame                  = "2 페이즈에서 거리 프레임 보기"
 }
 
 L:SetTimerLocalization{
@@ -133,35 +134,37 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "죽기 - 고르그림 섀도클리브",			-- 34458, Horde
-	Tyrius		= "죽기 - 티리우스 더스크블레이드",		-- 34461, Allience
-	Birana 		= "조드 - 비라나 스톰후프",				-- 34451, Horde
-	Erin		= "회드 - 에린 미스트후프",				-- 34459, Horde
-	Kavina		= "조드 - 카비나 그로브송",				-- 34460, Allience
-	Melador		= "회드 - 멜라도르 베일스트라이더",		-- 34469, Allience
-	Rujkah		= "사냥꾼 - 루즈카",					-- 34448, Horde
-	Alyssia 	= "사냥꾼 - 알리시아 문스토커",			-- 34467, Allience
-	Ginselle	= "마법사 - 진셀 블라이트슬링어",		-- 34449, Horde
-	Noozle		= "마법사 - 누즐 위즐스틱",				-- 34468, Allience
-	Liandra		= "신성 - 리안드라 선콜러",				-- 34445, Horde
-	Malithas	= "징벌 - 말리타스 브라이트블레이드",	-- 34456, Horde
-	Baelnor 	= "징벌 - 벨노르 라이트베이러",			-- 34471, Allience
-	Velanaa		= "신성 - 벨라나", 						-- 34465, Allience
-	Caiphus		= "수양 - 준엄한 카이푸스",				-- 34447, Horde
-	Vivienne	= "암흑 - 비비안 블랙위스퍼",			-- 34441, Horde
-	Anthar		= "수양 - 안타르 포지멘더",				-- 34466, Allience
-	Brienna		= "암흑 - 브리에나 나이트펠",			-- 34473, Allience
-	Mazdinah	= "도적 - 마즈디나",					-- 34454, Horde
-	Irieth		= "도적 - 이리에스 섀도스텝",			-- 34472, Allience
-	Thrakgar	= "정기 - 스락가르",					-- 34444, Horde
-	Broln		= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
-	Saamul		= "정기 - 사아물", 						-- 34470, Allience
-	Shaabad		= "고양 - 샤베드", 						-- 34463, Allience
-	Harkzog		= "흑마법사 - 하크조그",				-- 34450, Horde
-	Serissa		= "흑마법사 - 세리사 그림대블러",		-- 34474, Allience
-	Narrhok		= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
-	Shocuul		= "전사 - 쇼쿨",						-- 34475, Allience
-	YellKill	= "상처뿐인 승리로군. 오늘 받은 손해로 우리 전력은 약해졌네. 이런 어리석은 짓으로 리치 왕 말고 또 누가 이득을 보겠나? 위대한 용사들이 목숨을 잃었네. 무엇을 위해서였나? 진짜 위협은 저 앞에 있네. 리치 왕이 우리 모두를 죽음 안에서 기다린다네.",
+	Gorgrim				= "죽기 - 고르그림 섀도클리브",			-- 34458, Horde
+	Tyrius				= "죽기 - 티리우스 더스크블레이드",		-- 34461, Allience
+	Birana 				= "조드 - 비라나 스톰후프",				-- 34451, Horde
+	Erin				= "회드 - 에린 미스트후프",				-- 34459, Horde
+	Kavina				= "조드 - 카비나 그로브송",				-- 34460, Allience
+	Melador				= "회드 - 멜라도르 베일스트라이더",		-- 34469, Allience
+	Rujkah				= "사냥꾼 - 루즈카",					-- 34448, Horde
+	Alyssia 			= "사냥꾼 - 알리시아 문스토커",			-- 34467, Allience
+	Ginselle			= "마법사 - 진셀 블라이트슬링어",		-- 34449, Horde
+	Noozle				= "마법사 - 누즐 위즐스틱",				-- 34468, Allience
+	Liandra				= "신성 - 리안드라 선콜러",				-- 34445, Horde
+	Malithas			= "징벌 - 말리타스 브라이트블레이드",	-- 34456, Horde
+	Baelnor 			= "징벌 - 벨노르 라이트베이러",			-- 34471, Allience
+	Velanaa				= "신성 - 벨라나", 						-- 34465, Allience
+	Caiphus				= "수양 - 준엄한 카이푸스",				-- 34447, Horde
+	Vivienne			= "암흑 - 비비안 블랙위스퍼",			-- 34441, Horde
+	Anthar				= "수양 - 안타르 포지멘더",				-- 34466, Allience
+	Brienna				= "암흑 - 브리에나 나이트펠",			-- 34473, Allience
+	Mazdinah			= "도적 - 마즈디나",					-- 34454, Horde
+	Irieth				= "도적 - 이리에스 섀도스텝",			-- 34472, Allience
+	Thrakgar			= "정기 - 스락가르",					-- 34444, Horde
+	Broln				= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
+	Saamul				= "정기 - 사아물", 						-- 34470, Allience
+	Shaabad				= "고양 - 샤베드", 						-- 34463, Allience
+	Harkzog				= "흑마법사 - 하크조그",				-- 34450, Horde
+	Serissa				= "흑마법사 - 세리사 그림대블러",		-- 34474, Allience
+	Narrhok				= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
+	Shocuul				= "전사 - 쇼쿨",						-- 34475, Allience
+	AllianceVictory 	= "Glory to the Alliance!",
+	HordeVictory		= "앞으로 일어날 일의 맛보기일 뿐이다. 호드를 위하여!",	
+	YellKill			= "상처뿐인 승리로군. 오늘 받은 손해로 우리 전력은 약해졌네. 이런 어리석은 짓으로 리치 왕 말고 또 누가 이득을 보겠나? 위대한 용사들이 목숨을 잃었네. 무엇을 위해서였나? 진짜 위협은 저 앞에 있네. 리치 왕이 우리 모두를 죽음 안에서 기다린다네.",
 }
 
 L:SetOptionLocalization{
