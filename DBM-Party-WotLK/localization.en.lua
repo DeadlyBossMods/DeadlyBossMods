@@ -1189,6 +1189,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCombatEnd			= "I yield! I submit. Excellent work. May I run away now?"
 })
 
 --------------------
