@@ -240,7 +240,8 @@ L:SetOptionLocalization{
 	warnNova 			= ("공격대 경고 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "번개 회오리"),
 	warnOverCharge 		= ("공격대 경고 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "과충전"),
 	NovaSound			= "번개 회오리 특수 사운드 재생",		
-	timerMobOvercharge	= "과충전 된 몹의 시간 보기(디버프 중첩)"
+	timerMobOvercharge	= "과충전 된 몹의 시간 보기(디버프 중첩)",
+	RangeFrame			= "거리 프레임 보기"
 }
 
 ---------------
