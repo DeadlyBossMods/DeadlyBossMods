@@ -39,7 +39,8 @@ L:SetOptionLocalization{
 	TimerNextBoss				= "Show timer for next boss spawn",
 	TimerCombatStart			= "Show timer for start of combat",
 	TimerEmerge					= "Show timer for emerge",
-	TimerSubmerge				= "Show timer for submerge"
+	TimerSubmerge				= "Show timer for submerge",
+	RangeFrame                  = "Show range frame in phase 2"
 }
 
 L:SetTimerLocalization{

@@ -41,7 +41,7 @@ local specWarnBile			= mod:NewSpecialWarning("SpecialWarningBile")
 local specWarnSilence		= mod:NewSpecialWarning("SpecialWarningSilence")
 local specWarnCharge		= mod:NewSpecialWarning("SpecialWarningCharge")
 local specWarnChargeNear	= mod:NewSpecialWarning("SpecialWarningChargeNear")
-local specWarnTranq         = mod:NewSpecialWarning("SpecialWarningTranq", canTranq)
+local specWarnTranq			= mod:NewSpecialWarning("SpecialWarningTranq", canTranq)
 
 local enrageTimer			= mod:NewEnrageTimer(223)
 local timerCombatStart		= mod:NewTimer(23, "TimerCombatStart")
@@ -68,6 +68,7 @@ mod:AddBoolOption("PingCharge")
 mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
 mod:AddBoolOption("SetIconOnBileTarget", true, "announce")
 mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
+mod:AddBoolOption("RangeFrame")
 
 local bileTargets			= {}
 local toxinTargets			= {}
@@ -110,6 +111,12 @@ function mod:OnCombatStart(delay)
 	timerRisingAnger:Start(48-delay)
 	timerCombatStart:Start(-delay)
 	updateHealthFrame(1)
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:warnToxin()
@@ -335,6 +342,9 @@ function mod:OnSync(msg, arg)
 		self:ScheduleMethod(17, "WormsEmerge")
 		timerCombatStart:Show(15)
 		updateHealthFrame(2)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)
+		end
 	elseif msg == "Phase3" then
 		updateHealthFrame(3)
 		if self:IsDifficulty("heroic10", "heroic25") then
@@ -344,5 +354,8 @@ function mod:OnSync(msg, arg)
 		timerNextCrash:Start(45)
 		timerNextBoss:Cancel()
 		timerSubmerge:Cancel()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
