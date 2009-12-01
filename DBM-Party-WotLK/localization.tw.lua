@@ -736,6 +736,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	MakeitCountTimer		= "為倒數吧(成就)顯示計時器"
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer			= "倒數吧"
 })
 
 ----------------------
@@ -802,6 +807,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"),
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer			= "倒數吧"
 })
 
 --------------------
