@@ -56,6 +56,7 @@ mod:AddBoolOption("PlaySoundOnShockBlast", isMelee)
 mod:AddBoolOption("PlaySoundOnDarkGlare", true)
 mod:AddBoolOption("HealthFramePhase4", true)
 mod:AddBoolOption("AutoChangeLootToFFA", true)
+mod:AddBoolOption("RangeFrame")
 
 local hardmode = false
 local phase						= 0 
@@ -75,9 +76,16 @@ function mod:OnCombatStart(delay)
 	if DBM:GetRaidRank() == 2 then
 		lootmethod, _, masterlooterRaidID = GetLootMethod()
 	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(10)
+	end
 end
+
 function mod:OnCombatEnd()
 	DBM.BossHealth:Hide()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 	if self.Options.AutoChangeLootToFFA and DBM:GetRaidRank() == 2 then
 		if masterlooterRaidID then
 			SetLootMethod(lootmethod, "raid"..masterlooterRaidID)
@@ -191,6 +199,9 @@ function mod:NextPhase()
 		if self.Options.HealthFrame then
 			DBM.BossHealth:Clear()
 			DBM.BossHealth:AddBoss(33651, L.MobPhase2)
+		end
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 		if hardmode then
             timerNextFrostBomb:Start(45)

@@ -68,21 +68,21 @@ local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
 local warnHandofFreedom		= mod:NewTargetAnnounce(68758, 2)
 local warnHandofProt		= mod:NewTargetAnnounce(66009, 2)
 local warnDivineShield		= mod:NewSpellAnnounce(66010, 2)
-local warnIceBlock  		= mod:NewSpellAnnounce(65802, 2)
+local warnIceBlock			= mod:NewSpellAnnounce(65802, 2)
 local warnShadowstep		= mod:NewSpellAnnounce(66178, 2)
-local warnDeathgrip  		= mod:NewTargetAnnounce(66017, 2)
-local warnCyclone           = mod:NewTargetAnnounce(65859, 2, false)
-local warnSheep             = mod:NewTargetAnnounce(65801, 2, false)
+local warnDeathgrip			= mod:NewTargetAnnounce(66017, 2)
+local warnCyclone			= mod:NewTargetAnnounce(65859, 2, false)
+local warnSheep				= mod:NewTargetAnnounce(65801, 2, false)
 
 local timerBladestorm		= mod:NewBuffActiveTimer(8, 65947)
 local timerShadowstepCD		= mod:NewCDTimer(30, 66178)
-local timerDeathgripCD  	= mod:NewCDTimer(35, 66017)
-local timerBladestormCD  	= mod:NewCDTimer(90, 65947)
+local timerDeathgripCD		= mod:NewCDTimer(35, 66017)
+local timerBladestormCD		= mod:NewCDTimer(90, 65947)
 
 local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
 local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
 local specWarnDivineShield	= mod:NewSpecialWarning("SpecWarnDivineShield", isDispeller) 
-local specWarnIceBlock  	= mod:NewSpecialWarning("specWarnIceBlock", isDispeller) 
+local specWarnIceBlock		= mod:NewSpecialWarning("specWarnIceBlock", isDispeller) 
 
 
 function mod:OnCombatStart(delay)
@@ -95,7 +95,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBladestorm:Show()
 		timerBladestorm:Start()
 		timerBladestormCD:Start()
-        preWarnBladestorm:Schedule(85)                      -- Pre-Warn will only announce for 2nd and later bladestorm.
+		preWarnBladestorm:Schedule(85)                      -- Pre-Warn will only announce for 2nd and later bladestorm.
 	elseif args:IsSpellID(65983) then						-- Shamen Heroism
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
@@ -108,17 +108,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(66178, 68759, 68760, 68761) then	-- Rogue Shadowstep
 		warnShadowstep:Show()
         if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 30 second cooldown, but on 25 heroic, it's 20sec
-            timerShadowstepCD:Start(20)
-        else
-            timerShadowstepCD:Start()
-        end
+			timerShadowstepCD:Start(20)
+		else
+			timerShadowstepCD:Start()
+		end
 	elseif args:IsSpellID(66017, 68753, 68754, 68755) and args:IsDestTypePlayer() then	-- DeathKnight DeathGrip
 		warnDeathgrip:Show(args.destName)
-        if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 35 second cooldown, but on 25 heroic, it's 20sec
-            timerDeathgripCD:Start(20)
-        else
-            timerDeathgripCD:Start()
-        end
+		if mod:IsDifficulty("heroic25") then                -- 3 out of 4 difficulties have 35 second cooldown, but on 25 heroic, it's 20sec
+			timerDeathgripCD:Start(20)
+		else
+			timerDeathgripCD:Start()
+		end
 	end
 end
 
@@ -145,11 +145,11 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 34472 or cid == 34454 then
-	   timerShadowstepCD:Cancel()
+		timerShadowstepCD:Cancel()
 	elseif cid == 34458 or cid == 34461 then
-	   timerDeathgripCD:Cancel()
+		timerDeathgripCD:Cancel()
 	elseif cid == 34475 or cid == 34453 then
-	   timerBladestormCD:Cancel()
-	   preWarnBladestorm:Cancel()
+		timerBladestormCD:Cancel()
+		preWarnBladestorm:Cancel()
 	end
 end
