@@ -734,6 +734,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	MakeitCountTimer		= "Show timer for Make it Count (achievement)"
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer			= "Make it Count"
 })
 
 ----------------------
@@ -800,6 +805,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." ending") 	-- translate the word 'ending'
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer			= "Make it Count"
 })
 
 --------------------
