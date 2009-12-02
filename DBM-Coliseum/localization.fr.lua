@@ -41,14 +41,15 @@ L:SetOptionLocalization{
 	TimerNextBoss				= "Montre le timer pour l'arrivée du prochain boss",
 	TimerCombatStart			= "Montre le timer avant le début du combat",
 	TimerEmerge					= "Montre le timer avant que les vers rentre dans le sol",
-	TimerSubmerge				= "Montre le timer avant que les vers sortent du sol"
+	TimerSubmerge				= "Montre le timer avant que les vers sortent du sol",
+	RangeFrame                  = "Affiche la fenêtre de portée pour la Phase 2"
 }
 
 L:SetTimerLocalization{
 	TimerNextBoss				= "Prochain boss dans",
 	TimerCombatStart			= "Le combat débute dans",
-	TimerEmerge					= "Rentre dans le sol",
-	TimerSubmerge				= "Sort du sol"
+	TimerEmerge					= "Sort du sol",
+	TimerSubmerge				= "Rentre dans le sol"
 }
 
 L:SetWarningLocalization{
