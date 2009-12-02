@@ -736,11 +736,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	MakeitCountTimer		= "為倒數吧(成就)顯示計時器"
-})
-
-L:SetMiscLocalization({
-	MakeitCountTimer			= "倒數吧"
 })
 
 ----------------------
@@ -807,10 +802,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"),
-})
-
-L:SetMiscLocalization({
-	MakeitCountTimer			= "倒數吧"
 })
 
 --------------------
@@ -1177,6 +1168,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCombatEnd			= "你們做得很好!"
 })
 
 -----------------------
@@ -1321,7 +1313,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "天譴領主提朗紐斯正在降落 - 做好準備",
+	warnTyrannusEngaged			= "天譴領主提朗紐斯正在降落 - 做好準備",
 	specWarnIcyBlast			= "冰結衝擊 - 快跑開",
 	specWarnHoarfrost			= "你中了白霜 - 快跑開",
 	specWarnHoarfrostNear		= "你附近有人中了白霜 - 快跑開"
