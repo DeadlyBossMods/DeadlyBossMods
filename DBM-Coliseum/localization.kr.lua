@@ -11,8 +11,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	--Charge		= "^%%s (%S+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
-	Charge			= "^%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
+	--Charge			= "%%s (%S+) 노려보며 큰 소리로 울부짖습니다.",
+	Charge			= "%%s이 ([^%s]+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",
+	--Charge			= "^%%s|1이;가; (.+)|1을;를; 노려보며 큰 소리로 울부짖습니다.",	
 	CombatStart		= "폭풍우 봉우리의 가장 깊고 어두운 동굴에서 온, 꿰뚫는 자 고르목일세! 영웅들이여, 전투에 임하게!",
 	Phase2			= "마음을 단단히 먹게, 영웅들이여. 두 배의 공포, 산성아귀와 공포비늘이 투기장으로 들어온다네!",	
 	Phase3			= "다음은, 소개하는 순간 공기마저 얼어붙게 하는 얼음울음일세! 죽이지 않으면 죽을 걸세, 용사들이여!",
@@ -171,7 +172,8 @@ L:SetOptionLocalization{
 	SpecWarnHellfire		= "지옥의 불길로 인해 피해를 입을 경우 특수 경고 보기",
 	SpecWarnHandofProt		= "성기사가 보호의 손길을 시전 했을 경우 특수 경고 보기(해제)",
 	SpecWarnDivineShield	= "성기사가 천상의 보호막을 시전 했을 경우 특수 경고 보기(해제)",
-	specWarnIceBlock       	= "마법사가 얼음 방어막을 시전 했을 경우 특수 경고 보기(해제)"	
+	specWarnIceBlock       	= "마법사가 얼음 방어막을 시전 했을 경우 특수 경고 보기(해제)",
+	PlaySoundOnBladestorm	= "전사가 칼폭을 시전 했을 경우 특수 소리 재생"	
 }
 
 
