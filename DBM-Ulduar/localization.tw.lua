@@ -433,25 +433,25 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerHardmode			= "困難模式 - 自毀程序",
-	TimeToPhase2			= "第二階段開始",
-	TimeToPhase3			= "第三階段開始",
-	TimeToPhase4			= "第四階段開始"
+	TimeToPhase2			= "第2階段開始",
+	TimeToPhase3			= "第3階段開始",
+	TimeToPhase4			= "第4階段開始"
 }
 
 L:SetOptionLocalization{
 	DarkGlare			= "為P3Wx2雷射彈幕顯示特別警告",
-	TimeToPhase2			= "為第二階段開始顯示計時器",
-	TimeToPhase3			= "為第三階段開始顯示計時器",
-	TimeToPhase4			= "為第四階段開始顯示計時器",
+	TimeToPhase2			= "為第2階段開始顯示計時器",
+	TimeToPhase3			= "為第3階段開始顯示計時器",
+	TimeToPhase4			= "為第4階段開始顯示計時器",
 	MagneticCore			= "提示磁能之核的拾取者",
-	HealthFramePhase4		= "顯示第四階段的首領血量框架",
-	AutoChangeLootToFFA		= "第三階段自動轉換拾取方式為自由拾取",
+	HealthFramePhase4		= "顯示第4階段的首領血量框架",
+	AutoChangeLootToFFA		= "第3階段自動轉換拾取方式為自由拾取",
 	WarnBombSpawn			= "為炸彈機器人顯示警告",
 	TimerHardmode			= "為困難模式顯示計時器",
 	PlaySoundOnShockBlast		= "當震爆施放時播放音效",
 	PlaySoundOnDarkGlare		= "當P3Wx2雷射彈幕施放前播放音效",
-	ShockBlastWarningInP1		= "為第一階段的震爆顯示特別警告",
-	ShockBlastWarningInP4		= "為第四階段的震爆顯示特別警告"
+	ShockBlastWarningInP1		= "為第1階段的震爆顯示特別警告",
+	ShockBlastWarningInP4		= "為第4階段的震爆顯示特別警告"
 }
 
 L:SetMiscLocalization{
@@ -568,7 +568,7 @@ L:SetOptionLocalization{
 	WhisperBrainLink		= "密語提示腦波連結的目標",
 	SetIconOnFavorTarget		= "為薩拉的熱誠的目標設置標記 (三角)",
 	SetIconOnMCTarget		= "為支配心靈的目標設置標記 (三角)",
-	ShowSaraHealth			= "顯示薩拉在P1的血量 (需要最少一名團隊成員的目標是薩拉)",
+	ShowSaraHealth			= "顯示薩拉在第1階段的血量 (需要最少一名團隊成員的目標是薩拉)",
 	WarnEmpowerSoon			= "為暗影信標顯示預先警告",
 	SpecWarnMaladyNear		= "當你附近的人中了心靈缺陷時顯示特別警告",
 	SpecWarnDeafeningRoar		= "當施放震耳咆哮時顯示特別警告 (沉默和橘錘用!)",
