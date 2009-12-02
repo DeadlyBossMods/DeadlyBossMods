@@ -153,7 +153,8 @@ L:SetOptionLocalization{
 	SpecWarnHellfire		= "Show special warning when you are affected by Hellfire",
 	SpecWarnHandofProt		= "Show special warning when the Paladin casts Hand of Protection (to dispel)",
 	SpecWarnDivineShield	= "Show special warning when the Paladin casts Divine Shield (to dispel)",
-	specWarnIceBlock       	= "Show special warning when the Mage casts Ice Block (to dispel)"
+	specWarnIceBlock		= "Show special warning when the Mage casts Ice Block (to dispel)",
+	PlaySoundOnBladestorm	= "Play sound on Bladestorm"
 }
 
 ---------------------
