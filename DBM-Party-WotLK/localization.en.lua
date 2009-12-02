@@ -653,7 +653,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Split soon",		-- translate
+	WarningSplitSoon	= "Split soon",	-- translate
 	WarningSplitNow		= "Split",		-- translate
 	WarningMerge		= "Merge"		-- translate
 })
@@ -663,14 +663,14 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningSplitSoon	= "Show warning for Split soon",	-- translate
-	WarningSplitNow		= "Show warning for Split",	-- translate
-	WarningMerge		= "Show warning for Merge"	-- translate
+	WarningSplitNow		= "Show warning for Split",			-- translate
+	WarningMerge		= "Show warning for Merge"			-- translate
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1		= "There's plenty of me to go around.",		-- translate
+	SplitTrigger1		= "There's plenty of me to go around.",			-- translate
 	SplitTrigger2		= "I'll give you more than you can handle.",	-- translate
-	MergeTrigger		= "Now to finish the job!"				-- translate
+	MergeTrigger		= "Now to finish the job!"						-- translate
 })
 
 -------------------
