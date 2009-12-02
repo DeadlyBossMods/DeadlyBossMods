@@ -40,7 +40,7 @@ L:SetOptionLocalization{
 	TimerCombatStart			= "Show timer for start of combat",
 	TimerEmerge					= "Show timer for emerge",
 	TimerSubmerge				= "Show timer for submerge",
-	RangeFrame                  = "Show range frame in phase 2"
+	RangeFrame                  = "Show range frame in Phase 2"
 }
 
 L:SetTimerLocalization{
@@ -133,7 +133,7 @@ L:SetMiscLocalization{
 	Gorgrim            = "DK - Gorgrim Shadowcleave",		-- 34458
 	Birana             = "D - Birana Stormhoof",			-- 34451
 	Erin               = "D - Erin Misthoof",				-- 34459
-	Rujkah             = "H - Ruj'kah",					-- 34448
+	Rujkah             = "H - Ruj'kah",						-- 34448
 	Ginselle           = "M - Ginselle Blightslinger",		-- 34449
 	Liandra            = "P - Liandra Suncaller",			-- 34445
 	Malithas           = "P - Malithas Brightblade",		-- 34456
@@ -141,7 +141,7 @@ L:SetMiscLocalization{
 	Vivienne           = "PR - Vivienne Blackwhisper",		-- 34441
 	Mazdinah           = "R - Maz'dinah",					-- 34454
 	Thrakgar           = "S - Thrakgar",					-- 34444
-	Broln              = "S - Broln Stouthorn",			-- 34455
+	Broln              = "S - Broln Stouthorn",				-- 34455
 	Harkzog            = "WL - Harkzog",					-- 34450
 	Narrhok            = "W - Narrhok Steelbreaker",		-- 34453
 	AllianceVictory    = "Glory to the Alliance!",
