@@ -457,7 +457,8 @@ L:SetOptionLocalization{
 	PlaySoundOnShockBlast	= "Joue un son lors des Horions explosifs",
 	PlaySoundOnDarkGlare	= "Joue un son au Barrage laser",
 	ShockBlastWarningInP1	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 1",
-	ShockBlastWarningInP4	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 4"
+	ShockBlastWarningInP4	= "Montre une alerte spéciale pour les Horions explosifs durant la Phase 4",
+	RangeFrame				= "Affiche la fenêtre de portée pour la phase 1"
 }
 
 L:SetMiscLocalization{
