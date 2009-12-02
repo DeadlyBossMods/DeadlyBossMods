@@ -56,9 +56,13 @@ else
 	)
 end
 
+local isMelee = select(2, UnitClass("player")) == "ROGUE"
+			or select(2, UnitClass("player")) == "WARRIOR"
+			or select(2, UnitClass("player")) == "DEATHKNIGHT"
+
 local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
-              or select(2, UnitClass("player")) == "PRIEST"
-              or select(2, UnitClass("player")) == "SHAMAN"
+				or select(2, UnitClass("player")) == "PRIEST"
+				or select(2, UnitClass("player")) == "SHAMAN"
 
 local warnHellfire			= mod:NewSpellAnnounce(68147, 1)
 local preWarnBladestorm 	= mod:NewSoonAnnounce(65947, 2)
@@ -82,7 +86,9 @@ local timerBladestormCD		= mod:NewCDTimer(90, 65947)
 local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
 local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
 local specWarnDivineShield	= mod:NewSpecialWarning("SpecWarnDivineShield", isDispeller) 
-local specWarnIceBlock		= mod:NewSpecialWarning("specWarnIceBlock", isDispeller) 
+local specWarnIceBlock		= mod:NewSpecialWarning("specWarnIceBlock", isDispeller)
+
+mod:AddBoolOption("PlaySoundOnBladestorm", isMelee)
 
 
 function mod:OnCombatStart(delay)
@@ -96,6 +102,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerBladestorm:Start()
 		timerBladestormCD:Start()
 		preWarnBladestorm:Schedule(85)                      -- Pre-Warn will only announce for 2nd and later bladestorm.
+		if self.Options.PlaySoundOnBladestorm then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
 	elseif args:IsSpellID(65983) then						-- Shamen Heroism
 		warnHeroism:Show()
 	elseif args:IsSpellID(65980) then						-- Shamen Blood lust
