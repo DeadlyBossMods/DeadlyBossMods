@@ -166,7 +166,8 @@ L:SetOptionLocalization{
 	SpecWarnHellfire		= "當你中了地獄烈焰時顯示特別警告",
 	SpecWarnHandofProt		= "當聖騎士施放保護聖禦時顯示特別警告",
 	SpecWarnDivineShield		= "當聖騎士施放聖盾術時顯示特別警告",
-	specWarnIceBlock       		= "當法師施放寒冰屏障時顯示特別警告"
+	specWarnIceBlock       		= "當法師施放寒冰屏障時顯示特別警告",
+	PlaySoundOnBladestorm		= "為劍刃風暴播放音效"
 }
 
 ---------------------
