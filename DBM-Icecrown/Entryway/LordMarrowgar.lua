@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_SUMMON",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
 local preWarnWhirlwind   	= mod:NewSoonAnnounce(69076, 2)
@@ -30,19 +31,8 @@ local timerBoned            = mod:NewAchievementTimer(8, 4610, "achievementBoned
 
 mod:AddBoolOption("SetIconOnImpale", true)
 
-function mod:OnCombatStart(delay)
-    preWarnWhirlwind:Schedule(40-delay)
-	timerWhirlwindCD:Start(45-delay)
-	timerBoneSpike:Start(-delay)
-end
-
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(69057, 70826) then				-- Bone Spike Graveyard
-		warnBoneSpike:Show()
-		timerBoneSpike:Start()
-		self:ClearIcons() --nuke all icons each time new impale is cast until find better way to cancel icons individually on people as they are freed.
-	end
-end
+local impaleTargets = {}
+local impaleIcon	= 8
 
 do 
 	local lastColdflame = 0
@@ -54,12 +44,23 @@ do
 	end
 end
 
-local impaleTargets = {}
-local impaleIcon	= 8
+function mod:OnCombatStart(delay)
+    preWarnWhirlwind:Schedule(40-delay)
+	timerWhirlwindCD:Start(45-delay)
+	timerBoneSpike:Start(-delay)
+end
 
-function mod:warnImpale() 
-	warnImpale:Show(table.concat(impaleTargets, "<, >")) 
-	table.wipe(impaleTargets) 
+function mod:warnImpale()
+	warnImpale:Show(table.concat(impaleTargets, "<, >"))
+	table.wipe(impaleTargets)
+	impaleIcon = 8
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(69057, 70826) then				-- Bone Spike Graveyard
+		warnBoneSpike:Show()
+		timerBoneSpike:Start()
+	end
 end
 
 function mod:SPELL_SUMMON(args)
@@ -69,7 +70,7 @@ function mod:SPELL_SUMMON(args)
 		mod:ScheduleMethod(0.2, "warnImpale")
 		timerBoned:Start()
 		if mod.Options.SetIconOnImpale and impaleIcon > 0 then
-			mod:SetIcon(args.sourceName, impaleIcon, 300)--How do you set an icon that stays forever but clears when freed?
+			mod:SetIcon(args.sourceName, impaleIcon)
 			impaleIcon = impaleIcon - 1
 		end
 	end
@@ -88,5 +89,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.PlaySoundOnWhirlwind then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(69065) then           -- Impaled
+		mod:SetIcon(args.destName, 0)
 	end
 end
