@@ -120,9 +120,9 @@ end
 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellReanimatedFanatic then
+	if msg == L.YellReanimatedFanatic or msg:find(L.YellReanimatedFanatic) then
 		self:SendSync("ReanimatedFanatic")
-	elseif msg == L.YellDeformedFanatic then
+	elseif msg == L.YellDeformedFanatic or msg:find(L.YellDeformedFanatic) then
 		self:SendSync("DeformedFanatic")
 	end
 end
