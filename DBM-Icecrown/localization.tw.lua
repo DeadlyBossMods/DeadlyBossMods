@@ -26,7 +26,8 @@ L:SetOptionLocalization{
 	SpecWarnWhirlwind		= "為旋風斬顯示特別警告",
 	SpecWarnColdflame		= "當你受到冷焰的傷害時顯示特別警告",
 	PlaySoundOnWhirlwind		= "為旋風斬播放音效",
-	achievementBoned		= "為Boned成就顯示計時器"
+	achievementBoned		= "為Boned成就顯示計時器",
+	SetIconOnImpale			= "為刺穿設置標記"
 }
 
 -------------------------
