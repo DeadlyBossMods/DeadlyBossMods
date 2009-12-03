@@ -9,15 +9,18 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: The Lower Spire,The Plagueworks,The Crimson Hall,Frostwing Halls,The Frozen Throne
+## X-DBM-Mod-SubCategories-frFR: The Lower Spire,The Plagueworks,The Crimson Hall,Frostwing Halls,The Frozen Throne
 ## X-DBM-Mod-SubCategories-zhTW: 城塞大門,瘟疫工坊,赤紅大廳,霜翼大廳,冰封王座
 ## X-DBM-Mod-Name: Icecrown Citadel
 ## X-DBM-Mod-Name-deDE: Eiskronenzitadelle
+## X-DBM-Mod-Name-frFR: Citadelle de la Couronne de Glace
 ## X-DBM-Mod-Name-koKR: 얼음 왕관
 ## X-DBM-Mod-Name-ruRU: Цитадель Ледяная Корона
 ## X-DBM-Mod-Name-zhTW: 冰冠城塞
 ## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Icecrown Citadel
 ## X-DBM-Mod-LoadZone-deDE: Eiskronenzitadelle
+## X-DBM-Mod-LoadZone-frFR: Citadelle de la Couronne de Glace
 ## X-DBM-Mod-LoadZone-koKR: 얼음 왕관
 ## X-DBM-Mod-LoadZone-ruRU: Цитадель Ледяная Корона
 ## X-DBM-Mod-LoadZone-zhTW: 冰冠城塞
