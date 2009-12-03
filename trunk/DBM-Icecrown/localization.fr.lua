@@ -16,18 +16,18 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale				= ">%s< is impaled",
-	SpecWarnWhirlwind		= "Whirlwind - Run away",
-	SpecWarnColdflame		= "Coldflame - Move away"
+	WarnImpale				= ">%s< est Empaler",
+	SpecWarnWhirlwind		= "Tourbillon d'os - COUREZ !",
+	SpecWarnColdflame		= "Flamme froide - BOUGEZ !"
 }
 
 L:SetOptionLocalization{
-	WarnImpale				= "Announce Impale targets",
-	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
-	SpecWarnColdflame		= "Show special warning when you take damage from Coldflame",
-	PlaySoundOnWhirlwind	= "Play sound on Whirlwind",
-	achievementBoned		= "Show timer for Boned Achievement",
-	SetIconOnImpale			= "Set icons on Impale"
+	WarnImpale				= "Annonce les cibles d'Empaler",
+	SpecWarnWhirlwind		= "Montre une alerte spéciale pour le Tourbillon d'os",
+	SpecWarnColdflame		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flamme froide",
+	PlaySoundOnWhirlwind	= "Joue un sons pour le Tourbillon d'os",
+	achievementBoned		= "Montre le timer pour le haut-Fait Boned",
+	SetIconOnImpale			= "Met une icone sur la cible d'Empaler"
 }
 
 -------------------------
@@ -43,27 +43,27 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnReanimating					= "Add reviving",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "Death and Decay - Move away",
-	SpecWarnCurseTorpor				= "Curse of Torpor on you",
+	WarnReanimating					= "Les adds revivent",			-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance			= "%s sur >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	SpecWarnDeathDecay				= "Mort et décomposition - BOUGEZ",
+	SpecWarnCurseTorpor				= "Curse of Torpor sur VOUS",
 	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
-	WarnAddsSoon					= "New adds soon"
+	WarnAddsSoon					= "Nouveaux add bientôt"
 }
 
 L:SetOptionLocalization{
-	WarnAddsSoon					= "Show pre-warning for adds spawning",
+	WarnAddsSoon					= "Montre une pré-alerte avant que les adds arrivent",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Show warning when an add is getting revived",								-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
-	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
-	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor",
-	SetIconOnDominateMind			= "Set icons on Dominate Mind"
+	WarnReanimating					= "Montre une alerte quand les add vont revenir a la vie",								-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance		= "Montre une alerte spéciale quand vous avez 3 stack de Touch of Insignificance",
+	SpecWarnDeathDecay				= "Montre une alerte spéciale quand vous subissez des dégats provenant de Mort et décomposition",
+	SpecWarnCurseTorpor				= "Montre une alerte spéciale quand vous êtes affecter par Curse of Torpor",
+	SetIconOnDominateMind			= "Met une icone sur Dominate Mind"
 }
 
 L:SetMiscLocalization{
 	YellPull						= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic			= "Arise, and exult in your pure form!",
+	YellReanimatedFanatic			= "Arise, and exult in your pure form!"
 }
 ------------------------
 --  The Deathbringer  --
@@ -120,26 +120,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze			= "Sticky Ooze - Move out",
+	SpecWarnStickyOoze			= "Sticky Ooze - BOUGEZ PLUS LOIN",
 	SpecWarnRadiatingOoze		= "Radiating Ooze",
-	SpecWarnMutatedInfection 	= "Mutated Infection on you"
+	SpecWarnMutatedInfection 	= "Mutated Infection sur vous"
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes		= "Next Poison Slime Pipes"
+	NextPoisonSlimePipes		= "Prochain distributeur de poison :"
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze			= "Show special warning for Sticky Ooze",
-	SpecWarnRadiatingOoze		= "Show special warning for Radiating Ooze",
-	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Show special warning when you are affected by Mutated Infection",
-	InfectionIcon				= "Set icons on Mutated Infection targets",
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
+	SpecWarnStickyOoze			= "Montre une alerte spéciale pour Sticky Ooze",
+	SpecWarnRadiatingOoze		= "Montre une alerte spéciale pour Radiating Ooze",
+	NextPoisonSlimePipes		= "Montre le timer pour le prochain distributeur de poison",
+	SpecWarnMutatedInfection 	= "Montre une alerte spéciale quand vous êtes affecter par Mutated Infection",
+	InfectionIcon				= "Met des icones sur la cible de Mutated Infection",
+	WarnOozeSpawn				= "Montre une alerte pour l'arriver des Little Ooze"
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes				= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes				= "Grande nouvelle, mes amis ! J'ai réparé le distributeur de poison !"	-- Professor Putricide
 }
 
 ---------------------------
@@ -171,20 +171,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "Switch target to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "Target switch soon",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
-	SpecWarnResonance		= "Shadow Resonance - Move"
+	WarnTargetSwitch		= "Changement de cible sur : %s",	-- Ugh, no nice spellname/id to use for general localization :(
+	WarnTargetSwitchSoon	= "Changement de cible bientôt",	-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	SpecWarnResonance		= "Shadow Resonance - BOUGEZ"
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "Possible target switch"
+	TimerTargetSwitch		= "Possible changement de cible"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Show warning to switch targets",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",							-- Every ~31 secs, you have to dps a different Prince
+	WarnTargetSwitch		= "Montre l'alerte pour le changement de cible",								-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Montre une pré-alerte pour le changement de cible",							-- Every ~31 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Show timer for target switch cooldown",
-	SpecWarnResonance		= "Show special warning when a Dark Nucleus is following you"	-- If it follows you, you have to move to the tank
+	SpecWarnResonance		= "Montre une alerte spéciale quand Dark Nucleus vous suis"	-- If it follows you, you have to move to the tank
 }
 
 L:SetMiscLocalization{
@@ -203,11 +203,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnPactDarkfallen	= "Pact of the Darkfallen on you"
+	SpecWarnPactDarkfallen	= "Pact of the Darkfallen sur vous"
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Show special warning when you are affected by Pact of the Darkfallen"
+	SpecWarnPactDarkfallen	= "Montre une alerte spéciale quand vous êtes affecter par Pact of the Darkfallen"
 }
 
 -----------------------------
@@ -235,30 +235,30 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerNextAirphase		= "Next air phase",
-	TimerNextGroundphase	= "Next ground phase"
+	TimerNextAirphase		= "Prochaine phase dans les airs",
+	TimerNextGroundphase	= "Prochaine phase sur le sol"
 }
 
 L:SetWarningLocalization{
-	WarnAirphase			= "Air phase",
-	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
-	SpecWarnFrostBeacon		= "Frost Beacon on you",
-	WarnGroundphaseSoon		= "Sindragosa landing soon",
-	SpecWarnUnchainedMagic	= "Unchained Magic on you"
+	WarnAirphase			= "Phase dans les airs",
+	SpecWarnBlisteringCold	= "Blistering Cold - COUREZ PLUS LOIN",
+	SpecWarnFrostBeacon		= "Frost Beacon sur vous",
+	WarnGroundphaseSoon		= "Sindragosa landing bientôt",
+	SpecWarnUnchainedMagic	= "Unchained Magic sur vous"
 }
 
 L:SetOptionLocalization{
-	WarnAirphase			= "Announce air phase",
-	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
-	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
-	TimerNextAirphase		= "Show timer for next air phase",
-	TimerNextGroundphase	= "Show timer for next ground phase",
-	SpecWarnUnchainedMagic	= "Show special warning when you are affected by Unchained Magic"
+	WarnAirphase			= "Annonce la phase dans les airs",
+	SpecWarnBlisteringCold	= "Montre une alerte spéciale pour Blistering Cold",
+	SpecWarnFrostBeacon		= "Montre une alerte spéciale quand vous êtes affecter par Frost Beacon",
+	WarnGroundphaseSoon		= "Montre une pré-alerte pour la phase au sol",
+	TimerNextAirphase		= "Montre un timer pour la prochaine phase dans les airs",
+	TimerNextGroundphase	= "Montre une timer pour la prochaine phase au sol",
+	SpecWarnUnchainedMagic	= "Montre une alerte spéciale quand vous êtes affecter par Unchained Magic"
 }
 
 L:SetMiscLocalization{
-	YellAirphase			= "Your incursion ends here! None shall survive!",
+	YellAirphase			= "Votre incursion s'arrête ici",
 	YellPull				= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 

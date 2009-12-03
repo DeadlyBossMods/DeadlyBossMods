@@ -72,7 +72,7 @@ function mod:SPELL_CAST_START(args)
 end	
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellAirphase then
+	if msg == L.YellAirphase or msg:find(L.YellAirphase) then
 		self:SendSync("Airphase")
 	end
 end
