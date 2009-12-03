@@ -21,8 +21,9 @@ mod:RegisterEvents(
 mod:SetUsedIcons(6, 7, 8)
 
 local warnMadness 					= mod:NewCastAnnounce(64059, 1)
+local warnFervorCast 				= mod:NewCastAnnounce(63138, 1)
 local warnSqueeze					= mod:NewTargetAnnounce(64125, 1)
-local warnFavor						= mod:NewTargetAnnounce(63138, 1)
+local warnFervor					= mod:NewTargetAnnounce(63138, 1)
 local warnDeafeningRoarSoon			= mod:NewPreWarnAnnounce(64189, 5, 3)
 local warnGuardianSpawned 			= mod:NewAnnounce("WarningGuardianSpawned", 3, 62979)
 local warnCrusherTentacleSpawned	= mod:NewAnnounce("WarningCrusherTentacleSpawned", 2)
@@ -39,7 +40,7 @@ local specWarnSanity 				= mod:NewSpecialWarning("SpecWarnSanity")
 local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
 local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
-local specWarnFavor					= mod:NewSpecialWarning("SpecWarnFavor")
+local specWarnFervor				= mod:NewSpecialWarning("SpecWarnFervor")
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
 mod:AddBoolOption("WarningSqueeze", false, "announce")
@@ -58,7 +59,7 @@ local timerAchieve					= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("WhisperBrainLink", false)
 mod:AddBoolOption("SetIconOnFearTarget")
-mod:AddBoolOption("SetIconOnFavorTarget")
+mod:AddBoolOption("SetIconOnFervorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")
 mod:AddBoolOption("SetIconOnBrainLinkTarget")
 
@@ -93,6 +94,8 @@ function mod:SPELL_CAST_START(args)
 		warnDeafeningRoarSoon:Schedule(55)
 		timerCastDeafeningRoar:Start()
 		specWarnDeafeningRoar:Show()
+	elseif args:IsSpellID(63138) then		--Sara's Fervor
+		warnFervorCast:Show()
 	end
 end
 
@@ -157,13 +160,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			SendChatMessage(L.WarningYellSqueeze, "YELL")			
 		end	
 
-	elseif args:IsSpellID(63138) then	-- Sara's Favor
-		warnFavor:Show(args.destName)
-		if self.Options.SetIconOnFavorTarget then
+	elseif args:IsSpellID(63138) then	-- Sara's Fervor
+		warnFervor:Show(args.destName)
+		if self.Options.SetIconOnFervorTarget then
 			self:SetIcon(args.destName, 7, 30)
 		end
 		if args:IsPlayer() then 
-			specWarnFavor:Show()
+			specWarnFervor:Show()
 		end
 
 	elseif args:IsSpellID(63894) then	-- Shadowy Barrier of Yogg-Saron (this is happens when p2 starts)
