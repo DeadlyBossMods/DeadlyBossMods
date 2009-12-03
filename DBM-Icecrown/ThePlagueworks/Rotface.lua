@@ -98,7 +98,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellSlimePipes then
+	if msg == L.YellSlimePipes or msg:find(L.YellSlimePipes) then
 		self:SendSync("PoisonSlimePipes")
 	end
 end
