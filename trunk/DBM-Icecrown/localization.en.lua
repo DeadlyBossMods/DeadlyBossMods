@@ -24,7 +24,8 @@ L:SetOptionLocalization{
 	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
 	SpecWarnColdflame		= "Show special warning when you take damage from Coldflame",
 	PlaySoundOnWhirlwind	= "Play sound on Whirlwind",
-	achievementBoned		= "Show timer for Boned Achievement"
+	achievementBoned		= "Show timer for Boned Achievement",
+	SetIconOnImpale			= "Set icons on Impale"
 }
 
 -------------------------
