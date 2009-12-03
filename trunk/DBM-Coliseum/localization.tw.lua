@@ -159,6 +159,8 @@ L:SetMiscLocalization{
  	Shaabad				= "薩滿 - 夏巴德", 		-- 34463, Allience
  	Serissa				= "術士 - 瑟芮莎·厲濺",		-- 34474, Allience
  	Shocuul				= "戰士 - 修庫爾",		-- 34475, Allience
+	AllianceVictory			= "榮耀歸於聯盟!",
+	HordeVictory			= "那只是讓你們知道將來必須面對的命運。為了部落!",
 	YellKill			= "膚淺而悲痛的勝利。今天痛失的生命反而令我們更加的頹弱。除了巫妖王之外，誰還能從中獲利?偉大的戰士失去了寶貴生命。為了什麼?真正的威脅就在前方 - 巫妖王在死亡的領域中等著我們。"
 } 
 
