@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36612)
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -27,6 +28,8 @@ local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)
 local timerWhirlwind		= mod:NewBuffActiveTimer(25, 69076)
 local timerBoned            = mod:NewAchievementTimer(8, 4610, "achievementBoned") --Iffy, still not sure what combat event blizz actually checks for bonespikes.
 
+mod:AddBoolOption("SetIconOnImpale", true)
+
 function mod:OnCombatStart(delay)
     preWarnWhirlwind:Schedule(40-delay)
 	timerWhirlwindCD:Start(45-delay)
@@ -37,6 +40,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69057, 70826) then				-- Bone Spike Graveyard
 		warnBoneSpike:Show()
 		timerBoneSpike:Start()
+		self:ClearIcons()
 	end
 end
 
@@ -51,6 +55,7 @@ do
 end
 
 local impaleTargets = {}
+local impaleIcon	= 8
 
 function mod:warnImpale() 
 	warnImpale:Show(table.concat(impaleTargets, "<, >")) 
@@ -63,6 +68,10 @@ function mod:SPELL_SUMMON(args)
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		mod:ScheduleMethod(0.2, "warnImpale")
 		timerBoned:Start()
+		if mod.Options.SetIconOnImpale and impaleIcon > 0 then
+			mod:SetIcon(args.sourceName, impaleIcon, 300)--How do you set an icon that stays forever but clears when freed?
+			impaleIcon = impaleIcon - 1
+		end
 	end
 end
 
