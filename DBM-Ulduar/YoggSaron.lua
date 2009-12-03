@@ -41,6 +41,7 @@ local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
 local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
 local specWarnFervor				= mod:NewSpecialWarning("SpecWarnFervor")
+local specWarnFervorCast			= mod:NewSpecialWarning("SpecWarnFervorCast")
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
 mod:AddBoolOption("WarningSqueeze", false, "announce")
@@ -95,7 +96,16 @@ function mod:SPELL_CAST_START(args)
 		timerCastDeafeningRoar:Start()
 		specWarnDeafeningRoar:Show()
 	elseif args:IsSpellID(63138) then		--Sara's Fervor
+		self:ScheduleMethod(0.1, "FervorTarget")
 		warnFervorCast:Show()
+	end
+end
+
+function mod:FervorTarget()
+	local targetname = self:GetBossTarget(33134)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnFervorCast:Show(targetname)
 	end
 end
 
@@ -232,5 +242,3 @@ function mod:UNIT_HEALTH(uId)
 		specWarnGuardianLow:Show()
 	end
 end
-
-
