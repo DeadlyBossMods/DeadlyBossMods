@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("LordMarrowgar")
 
 L:SetGeneralLocalization{
-	name = "Lord Marrowgar"
+	name = "Seigneur Gargamoelle"
 }
 
 L:SetTimerLocalization{
@@ -36,7 +36,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Deathwhisper")
 
 L:SetGeneralLocalization{
-	name = "Lady Deathwhisper"
+	name = "Dame Murmemort"
 }
 
 L:SetTimerLocalization{
@@ -46,7 +46,7 @@ L:SetWarningLocalization{
 	WarnReanimating					= "Les adds revivent",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s sur >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay				= "Mort et décomposition - BOUGEZ",
-	SpecWarnCurseTorpor				= "Curse of Torpor sur VOUS",
+	SpecWarnCurseTorpor				= "Malédiction de Torpeur sur VOUS",
 	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
 	WarnAddsSoon					= "Nouveaux add bientôt"
 }
@@ -57,8 +57,8 @@ L:SetOptionLocalization{
 	WarnReanimating					= "Montre une alerte quand les add vont revenir a la vie",								-- Reanimated Adherent/Fanatic spawning
 	SpecWarnTouchInsignificance		= "Montre une alerte spéciale quand vous avez 3 stack de Touch of Insignificance",
 	SpecWarnDeathDecay				= "Montre une alerte spéciale quand vous subissez des dégats provenant de Mort et décomposition",
-	SpecWarnCurseTorpor				= "Montre une alerte spéciale quand vous êtes affecter par Curse of Torpor",
-	SetIconOnDominateMind			= "Met une icone sur Dominate Mind"
+	SpecWarnCurseTorpor				= "Montre une alerte spéciale quand vous êtes affecter par la Malédiction de Torpeur",
+	SetIconOnDominateMind			= "Met une icone sur Domination mentale"
 }
 
 L:SetMiscLocalization{
@@ -71,7 +71,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
-	name = "The Deathbringer"
+	name = "Porte-Mort Saurcroc"
 }
 
 L:SetWarningLocalization{
@@ -86,7 +86,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization{
-	name = "Gunship Battle"
+	name = "La Bataille aérienne en Canonnière"
 }
 
 L:SetWarningLocalization{
@@ -101,7 +101,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Festergut")
 
 L:SetGeneralLocalization{
-	name = "Festergut"
+	name = "Pulentraille"
 }
 
 L:SetWarningLocalization{
@@ -116,13 +116,13 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Rotface")
 
 L:SetGeneralLocalization{
-	name = "Rotface"
+	name = "Trognepus"
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze			= "Sticky Ooze - BOUGEZ PLUS LOIN",
-	SpecWarnRadiatingOoze		= "Radiating Ooze",
-	SpecWarnMutatedInfection 	= "Mutated Infection sur vous"
+	SpecWarnStickyOoze			= "Limon collant - BOUGEZ PLUS LOIN",
+	SpecWarnRadiatingOoze		= "Limon rayonnant",
+	SpecWarnMutatedInfection 	= "Infection mutée sur vous"
 }
 
 L:SetTimerLocalization{
@@ -130,11 +130,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze			= "Montre une alerte spéciale pour Sticky Ooze",
-	SpecWarnRadiatingOoze		= "Montre une alerte spéciale pour Radiating Ooze",
+	SpecWarnStickyOoze			= "Montre une alerte spéciale pour les Limon collant",
+	SpecWarnRadiatingOoze		= "Montre une alerte spéciale pour les Limon rayonnant",
 	NextPoisonSlimePipes		= "Montre le timer pour le prochain distributeur de poison",
-	SpecWarnMutatedInfection 	= "Montre une alerte spéciale quand vous êtes affecter par Mutated Infection",
-	InfectionIcon				= "Met des icones sur la cible de Mutated Infection",
+	SpecWarnMutatedInfection 	= "Montre une alerte spéciale quand vous êtes affecter par Infection mutée",
+	InfectionIcon				= "Met des icones sur la cible de l'Infection mutée",
 	WarnOozeSpawn				= "Montre une alerte pour l'arriver des Little Ooze"
 }
 
@@ -148,7 +148,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Putricide")
 
 L:SetGeneralLocalization{
-	name = "Professor Putricide"
+	name = "Professeur Putricide"
 }
 
 L:SetWarningLocalization{
@@ -167,13 +167,13 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization{
-	name = "Blood Prince Council"
+	name = "Princes de Sang"
 }
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "Changement de cible sur : %s",	-- Ugh, no nice spellname/id to use for general localization :(
 	WarnTargetSwitchSoon	= "Changement de cible bientôt",	-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
-	SpecWarnResonance		= "Shadow Resonance - BOUGEZ"
+	SpecWarnResonance		= "Résonance d'Ombre - BOUGEZ"
 }
 
 L:SetTimerLocalization{
@@ -199,7 +199,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Lanathel")
 
 L:SetGeneralLocalization{
-	name = "Blood Queen Lanathel"
+	name = "Reine de sang Lana'thel"
 }
 
 L:SetWarningLocalization{
@@ -216,7 +216,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Valithria")
 
 L:SetGeneralLocalization{
-	name = "Valithria Dreamwalker"
+	name = "Valithria Marcherêve"
 }
 
 L:SetWarningLocalization{
@@ -241,20 +241,20 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "Phase dans les airs",
-	SpecWarnBlisteringCold	= "Blistering Cold - COUREZ PLUS LOIN",
-	SpecWarnFrostBeacon		= "Frost Beacon sur vous",
-	WarnGroundphaseSoon		= "Sindragosa landing bientôt",
-	SpecWarnUnchainedMagic	= "Unchained Magic sur vous"
+	SpecWarnBlisteringCold	= "Froid Caustique - COUREZ PLUS LOIN",
+	SpecWarnFrostBeacon		= "Marque de Givre sur vous",
+	WarnGroundphaseSoon		= "Sindragosa atterie bientôt",
+	SpecWarnUnchainedMagic	= "Magie déchaînée sur vous"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "Annonce la phase dans les airs",
-	SpecWarnBlisteringCold	= "Montre une alerte spéciale pour Blistering Cold",
-	SpecWarnFrostBeacon		= "Montre une alerte spéciale quand vous êtes affecter par Frost Beacon",
+	SpecWarnBlisteringCold	= "Montre une alerte spéciale pour Froid Caustique",
+	SpecWarnFrostBeacon		= "Montre une alerte spéciale quand vous êtes affecter par Marque de Givre",
 	WarnGroundphaseSoon		= "Montre une pré-alerte pour la phase au sol",
 	TimerNextAirphase		= "Montre un timer pour la prochaine phase dans les airs",
 	TimerNextGroundphase	= "Montre une timer pour la prochaine phase au sol",
-	SpecWarnUnchainedMagic	= "Montre une alerte spéciale quand vous êtes affecter par Unchained Magic"
+	SpecWarnUnchainedMagic	= "Montre une alerte spéciale quand vous êtes affecter par Magie déchaînée"
 }
 
 L:SetMiscLocalization{
@@ -268,7 +268,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("LichKing")
 
 L:SetGeneralLocalization{
-	name = "The Lich King"
+	name = "Le Roi Liche"
 }
 
 L:SetWarningLocalization{
