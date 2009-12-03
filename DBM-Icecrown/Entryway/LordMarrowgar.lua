@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36612)
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -40,7 +40,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69057, 70826) then				-- Bone Spike Graveyard
 		warnBoneSpike:Show()
 		timerBoneSpike:Start()
-		self:ClearIcons()
+		self:ClearIcons() --nuke all icons each time new impale is cast until find better way to cancel icons individually on people as they are freed.
 	end
 end
 
