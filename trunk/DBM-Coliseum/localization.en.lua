@@ -144,7 +144,7 @@ L:SetMiscLocalization{
 	Broln              = "S - Broln Stouthorn",				-- 34455
 	Harkzog            = "WL - Harkzog",					-- 34450
 	Narrhok            = "W - Narrhok Steelbreaker",		-- 34453
-	AllianceVictory    = "Glory to the Alliance!",
+	AllianceVictory    = "GLORY TO THE ALLIANCE!",
 	HordeVictory       = "That was just a taste of what the future brings. FOR THE HORDE!",
 	YellKill           = "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death."
 } 
