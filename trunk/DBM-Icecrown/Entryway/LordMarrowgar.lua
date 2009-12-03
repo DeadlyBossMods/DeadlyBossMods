@@ -8,7 +8,6 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
 	"SPELL_PERIODIC_DAMAGE",
 	"SPELL_SUMMON",
 	"SPELL_AURA_APPLIED"
@@ -41,17 +40,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(69076) then						-- Whirlwind
-		specWarnWhirlwind:Show()
-		timerWhirlwindCD:Start()
-		preWarnWhirlwind:Schedule(85)
-		if self.Options.PlaySoundOnWhirlwind then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
-	end
-end
-
 do 
 	local lastColdflame = 0
 	function mod:SPELL_PERIODIC_DAMAGE(args)
@@ -79,11 +67,17 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69076) then						-- Whirlwind Begins
-        if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-            timerWhirlwind:Show(40)						-- 40seconds (ish) on heroic
-        else
-            timerWhirlwind:Show()						-- 20-25seconds (ish) on normal.
-        end
+	if args:IsSpellID(69076) then						-- Bone Storm (Whirlwind)
+		specWarnWhirlwind:Show()
+		timerWhirlwindCD:Start()
+		preWarnWhirlwind:Schedule(85)
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerWhirlwind:Show(40)						-- 40seconds (ish) on heroic
+		else
+			timerWhirlwind:Show()						-- 20-25seconds (ish) on normal.
+		end
+		if self.Options.PlaySoundOnWhirlwind then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
 	end
 end
