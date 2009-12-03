@@ -528,8 +528,8 @@ L:SetWarningLocalization{
 	SpecWarnMadnessOutNow			= "Wahnsinn hervorrufen - LAUF RAUS",
 	WarnBrainPortalSoon				= "Portal in 3 sec",	
 	WarnSqueeze 					= "Quetschen: >%s<",
-	WarnFavor						= "Saras Eifer auf >%s<",
-	SpecWarnFavor					= "Saras Eifer auf dir!"
+	WarnFervor						= "Saras Eifer auf >%s<",
+	SpecWarnFervor					= "Saras Eifer auf dir!"
 }
 
 L:SetOptionLocalization{
@@ -542,8 +542,8 @@ L:SetOptionLocalization{
 	SpecWarnGuardianLow				= "Spezialwarnung bei Wächter (P1) ist kurz vor dem Tot (für DDs)",
 	WarnMadness						= "Warnung für Wahnsinn hervorrufen",
 	SpecWarnMadnessOutNow			= "Spezialwarnung kurz vor Ende von Wahnsinn hervorrufen",
-	SpecWarnFavor					= "Spezialwarnung für Saras Eifer",
-	WarnFavor						= "Warnung für Saras Eifer",
+	SpecWarnFervor					= "Spezialwarnung für Saras Eifer",
+	WarnFervor						= "Warnung für Saras Eifer",
 	WarnSqueeze						= "Warnung für Quetschen",
 	WarnBrainPortalSoon				= "Warnung für Portale",
 	specWarnBrainPortalSoon			= "Warnung für Brain Portal in Kürze",
