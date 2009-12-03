@@ -20,7 +20,7 @@ local warnShadowCrash			= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
 local warnLeechLife				= mod:NewAnnounce("WarningLeechLife", 3, 63276)
 
 local specWarnShadowCrash		= mod:NewSpecialWarning("SpecialWarningShadowCrash")
-local specWarnShadowCrashNear	= mod:NewSpecialWarning("SpecialWarningShadowCrashNear", false)
+local specWarnShadowCrashNear	= mod:NewSpecialWarning("SpecialWarningShadowCrashNear")
 local specWarnSurgeDarkness		= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
 local specWarnLifeLeechYou		= mod:NewSpecialWarning("SpecialWarningLLYou")
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
