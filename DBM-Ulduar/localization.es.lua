@@ -263,7 +263,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
 	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",
-	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."
+	PullCheck				= "Tiempo hasta que Algalon transmita la señal= (%d+) min."
 
 }
 
