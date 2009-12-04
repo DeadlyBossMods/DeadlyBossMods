@@ -300,10 +300,14 @@ L:SetMiscLocalization({
 	BgStart60		= "The battle will begin in 60 seconds.",
 	BgStart30		= "The battle will begin in 30 seconds.",
 	BgStart15		= "The battle will begin in 15 seconds.",
-	GoblinStart		= "Yell when he starts building after capture",
-	GoblinBroken		= "Yell when he starts building after the previous one got destroyed",
-	GoblinHalfwayAlliance	= "Yell when he is halfway building (Alliance)",
-	GoblinHalfwayHorde	= "Yell when he is halfway building (Horde)",
-	GoblinFinish		= "Yell when he is finished"
+	SiegeEngine		= "Siege Engine",
+	GoblinStartAlliance	= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
+	GoblinStartHorde	= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
+	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
+	GoblinHalfwayHorde	= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
+	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
+	GoblinFinishedHorde	= "The siege engine is ready to roll!",
+	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
+	GoblinBrokenHorde	= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
 })
 
