@@ -283,24 +283,37 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnSiegeEngine		= "Siege Engine ready!",
+	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "La bataille commence dans", 
-	TimerPOI		= "%s",
+	TimerStart			= "La bataille commence dans", 
+	TimerPOI			= "%s",
+	TimerSiegeEngine	= "Siege Engine ready"
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Montre le timer avant le début de la partie", 
-	TimerPOI		= "Montre le timer pour les captures",
+	TimerStart			= "Montre le timer avant le début de la partie", 
+	TimerPOI			= "Montre le timer pour les captures",
+	TimerSiegeEngine	= "Show a timer for Siege Engine building",
+	WarnSiegeEngine		= "Warn when the Siege Engine is ready",
+	WarnSiegeEngineSoon	= "Warn when the Siege Engine is almost ready"
 })
 
 L:SetMiscLocalization({
-	ZoneName		= "Île des Conquérants",
-	BgStart60		= "La bataille commance dans 60 secondes.",
-	BgStart30		= "La bataille commance dans 30 secondes.",
-	BgStart15		= "La bataille commance dans 15 secondes.",
+	ZoneName				= "Île des Conquérants",
+	BgStart60				= "La bataille commance dans 60 secondes.",
+	BgStart30				= "La bataille commance dans 30 secondes.",
+	BgStart15				= "La bataille commance dans 15 secondes.",
+	SiegeEngine				= "Siege Engine",
+	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
+	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
+	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
+	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
+	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
+	GoblinFinishedHorde		= "The siege engine is ready to roll!",
+	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
+	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
 })
-
-
 
