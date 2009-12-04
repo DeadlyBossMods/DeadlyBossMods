@@ -55,5 +55,3 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	end
 end
-
-

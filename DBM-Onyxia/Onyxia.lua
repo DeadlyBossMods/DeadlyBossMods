@@ -50,14 +50,6 @@ function mod:OnCombatStart(delay)
 	sndFunny:Play("Interface\\AddOns\\DBM-Onyxia\\sounds\\dps-very-very-slowly.mp3")
 	sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
 	sndFunny:Schedule(30, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
-end 
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellP2 or msg:find(L.YellP2) then
-		self:SendSync("Phase2")
-	elseif msg == L.YellP3 or msg:find(L.YellP3) then
-		self:SendSync("Phase3")
-	end
 end
 
 function mod:Whelps()
@@ -71,29 +63,11 @@ function mod:Whelps()
 	end
 end
 
-function mod:OnSync(msg)
-	if msg == "Phase2" then
-		phase = 2
-		warnPhase2:Show()
---		preWarnDeepBreath:Schedule(72)	-- Pre-Warn Deep Breath
-		timerNextDeepBreath:Start(77)
-		timerAchieveWhelps:Start()
-		timerNextFlameBreath:Cancel()
-		self:ScheduleMethod(5, "Whelps")
-		sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
-		sndFunny:Schedule(17, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
-	elseif msg == "Phase3" then
-		phase = 3
-		warnPhase3:Show()
-		self:UnscheduleMethod("Whelps")
-		timerWhelps:Stop()
-		timerNextDeepBreath:Stop()
-		warnWhelpsSoon:Cancel()
---		preWarnDeepBreath:Cancel()
-		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
-   		sndFunny:Schedule(35, "Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
-		sndFunny:Schedule(50, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
-		sndFunny:Schedule(65, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.YellP2 or msg:find(L.YellP2) then
+		self:SendSync("Phase2")
+	elseif msg == L.YellP3 or msg:find(L.YellP3) then
+		self:SendSync("Phase3")
 	end
 end
 
@@ -135,3 +109,28 @@ function mod:UNIT_HEALTH(uId)
 	end
 end
 
+function mod:OnSync(msg)
+	if msg == "Phase2" then
+		phase = 2
+		warnPhase2:Show()
+--		preWarnDeepBreath:Schedule(72)	-- Pre-Warn Deep Breath
+		timerNextDeepBreath:Start(77)
+		timerAchieveWhelps:Start()
+		timerNextFlameBreath:Cancel()
+		self:ScheduleMethod(5, "Whelps")
+		sndFunny:Schedule(10, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
+		sndFunny:Schedule(17, "Interface\\AddOns\\DBM-Onyxia\\sounds\\whelps-left-side-even-side-handle-it.mp3")
+	elseif msg == "Phase3" then
+		phase = 3
+		warnPhase3:Show()
+		self:UnscheduleMethod("Whelps")
+		timerWhelps:Stop()
+		timerNextDeepBreath:Stop()
+		warnWhelpsSoon:Cancel()
+--		preWarnDeepBreath:Cancel()
+		sndFunny:Schedule(20, "Interface\\AddOns\\DBM-Onyxia\\sounds\\now-hit-it-very-hard-and-fast.mp3")
+   		sndFunny:Schedule(35, "Interface\\AddOns\\DBM-Onyxia\\sounds\\i-dont-see-enough-dots.mp3")
+		sndFunny:Schedule(50, "Interface\\AddOns\\DBM-Onyxia\\sounds\\hit-it-like-you-mean-it.mp3")
+		sndFunny:Schedule(65, "Interface\\AddOns\\DBM-Onyxia\\sounds\\throw-more-dots.mp3")
+	end
+end

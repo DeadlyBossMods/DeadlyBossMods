@@ -17,7 +17,7 @@ local warnWellofSouls			= mod:NewSpellAnnounce(68820)
 local warnMirroredSoul			= mod:NewTargetAnnounce(69051)
 local timerMirroredSoul			= mod:NewTargetTimer(8, 69051)
 local timerUnleashedSouls		= mod:NewBuffActiveTimer(5, 68939)
-local specwarnMirroredSoul      = mod:NewSpecialWarning("specwarnMirroredSoul")
+local specwarnMirroredSoul		= mod:NewSpecialWarning("specwarnMirroredSoul")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68820) then							-- Well of Souls
@@ -34,8 +34,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMirroredSoul:Show(args.destName)
 		timerMirroredSoul:Show(args.destName)
 		specwarnMirroredSoul:Show()
-    elseif args:IsSpellID(68939) then						-- Unleashed Souls
-        timerUnleashedSouls:Start()
+	elseif args:IsSpellID(68939) then						-- Unleashed Souls
+		timerUnleashedSouls:Start()
 	end
 end
-
