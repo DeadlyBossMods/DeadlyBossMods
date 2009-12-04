@@ -32,10 +32,10 @@ localization.tw.lua
 localization.cn.lua
 localization.fr.lua
 localization.es.lua
-Entryway\LordMarrowgar.lua
-Entryway\Deathwhisper.lua
-Entryway\Deathbringer.lua
-Entryway\GunshipBattle.lua
+TheLowerSpire\LordMarrowgar.lua
+TheLowerSpire\Deathwhisper.lua
+TheLowerSpire\Deathbringer.lua
+TheLowerSpire\GunshipBattle.lua
 ThePlagueworks\Festergut.lua
 ThePlagueworks\Rotface.lua
 ThePlagueworks\Putricide.lua
