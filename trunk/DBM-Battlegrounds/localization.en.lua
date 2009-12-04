@@ -282,32 +282,32 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "Game starts", 
-	TimerPOI		= "%s",
+	TimerStart			= "Game starts", 
+	TimerPOI			= "%s",
 	TimerSiegeEngine	= "Siege Engine ready"
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Show start timer", 
-	TimerPOI		= "Show capture timer",
+	TimerStart			= "Show start timer", 
+	TimerPOI			= "Show capture timer",
 	TimerSiegeEngine	= "Show a timer for Siege Engine building",
 	WarnSiegeEngine		= "Warn when the Siege Engine is ready",
 	WarnSiegeEngineSoon	= "Warn when the Siege Engine is almost ready"
 })
 
 L:SetMiscLocalization({
-	ZoneName		= "Isle of Conquest",
-	BgStart60		= "The battle will begin in 60 seconds.",
-	BgStart30		= "The battle will begin in 30 seconds.",
-	BgStart15		= "The battle will begin in 15 seconds.",
-	SiegeEngine		= "Siege Engine",
-	GoblinStartAlliance	= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
-	GoblinStartHorde	= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
+	ZoneName				= "Isle of Conquest",
+	BgStart60				= "The battle will begin in 60 seconds.",
+	BgStart30				= "The battle will begin in 30 seconds.",
+	BgStart15				= "The battle will begin in 15 seconds.",
+	SiegeEngine				= "Siege Engine",
+	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
+	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
 	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
-	GoblinHalfwayHorde	= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
+	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
 	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
-	GoblinFinishedHorde	= "The siege engine is ready to roll!",
+	GoblinFinishedHorde		= "The siege engine is ready to roll!",
 	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
-	GoblinBrokenHorde	= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
+	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
 })
 
