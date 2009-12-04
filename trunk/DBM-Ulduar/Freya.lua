@@ -11,11 +11,10 @@ mod:SetUsedIcons(6, 7, 8)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
 )
 
 -- Trash: 33430 Guardian Lasher (flower)
@@ -44,8 +43,11 @@ local timerTremorCD 		= mod:NewCDTimer(28, 62859)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("PlaySoundOnFury")
 
-local adds					= {}
-
+local adds		= {}
+local rootedPlayers 	= {}
+local altIcon 		= true
+local killTime		= 0
+local iconId		= 6
 
 function mod:OnCombatStart(delay)
 	enrage:Start()
@@ -61,11 +63,9 @@ function mod:OnCombatEnd(wipe)
 	end
 end
 
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args.spellId == 62519 then
-		warnPhase2:Show()
-	end
+local function showRootWarning()
+	warnRoots:Show(table.concat(rootedPlayers, "< >"))
+	table.wipe(rootedPlayers)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -75,8 +75,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end 
 
-
-local altIcon = true
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(62678) then -- Summon Allies of Nature
 		timerAlliesOfNature:Start()
@@ -94,6 +92,32 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(62861, 62438) then
+		iconId = iconId - 1
+		self:SetIcon(args.destName, iconId, 15)
+		table.insert(rootedPlayers, args.destName)
+		self:Unschedule(showRootWarning)
+		if #rootedPlayers >= 3 then
+			showRootWarning()
+		else
+			self:Schedule(0.5, showRootWarning)
+		end
+
+	elseif args:IsSpellID(62451, 62865) and args:IsPlayer() then
+		specWarnBeam:Show()
+	end 
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args.spellId == 62519 then
+		warnPhase2:Show()
+	elseif args:IsSpellID(62861, 62438) then
+		self:RemoveIcon(args.destName)
+		iconId = iconId + 1
+	end
+end
+
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SpawnYell then
 		if self.Options.HealthFrame then
@@ -107,7 +131,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-local killTime = 0
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 33202 or cid == 32916 or cid == 32919 then
@@ -130,38 +153,3 @@ function mod:UNIT_DIED(args)
 	end
 
 end
-
-
-local rootedPlayers = {}
-local function showRootWarning()
-	warnRoots:Show(table.concat(rootedPlayers, "< >"))
-	table.wipe(rootedPlayers)
-end
-
-local iconId = 6
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(62861, 62438) then
-		iconId = iconId - 1
-		self:SetIcon(args.destName, iconId, 15)
-		table.insert(rootedPlayers, args.destName)
-		self:Unschedule(showRootWarning)
-		if #rootedPlayers >= 3 then
-			showRootWarning()
-		else
-			self:Schedule(0.5, showRootWarning)
-		end
-
-	elseif args:IsSpellID(62451, 62865) and args:IsPlayer() then
-		specWarnBeam:Show()
-	end 
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(62861, 62438) then
-		self:RemoveIcon(args.destName)
-		iconId = iconId + 1
-	end
-end
-
-
-

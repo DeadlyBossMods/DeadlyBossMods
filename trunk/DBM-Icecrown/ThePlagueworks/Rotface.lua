@@ -108,4 +108,3 @@ function mod:OnSync(msg, arg)
 		self:WallSlime()
 	end
 end
-

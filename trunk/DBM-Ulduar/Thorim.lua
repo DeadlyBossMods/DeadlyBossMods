@@ -122,6 +122,3 @@ function mod:OnSync(event, arg)
 		enrageTimer:Start(300)
 	end
 end
-
-
-

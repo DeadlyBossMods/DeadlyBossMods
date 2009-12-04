@@ -132,5 +132,3 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
 		timerSaroniteVapors:Start()
 	end
 end
-
-

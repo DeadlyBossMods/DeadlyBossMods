@@ -217,7 +217,3 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
-
-
-

@@ -299,4 +299,3 @@ function mod:OnSync(event, args)
 		self:NextPhase()
 	end
 end
-
