@@ -19,7 +19,10 @@ local hordeTowerIcon = "Interface\\AddOns\\DBM-Battlegrounds\\Textures\\OrcTower
 local hordeColor = {r = 1, g = 0, b = 0}
 
 local startTimer = IsleOfConquest:NewTimer(62, "TimerStart")
-local POITimer = IsleOfConquest:NewTimer(61, "TimerPOI")	-- point of interest 
+local POITimer = IsleOfConquest:NewTimer(61, "TimerPOI")	-- point of interest
+local timerSiegeEngine = IsleOfConquest:NewTimer(180, "TimerSiegeEngine")
+local warnSiegeEngine = IsleOfConquest:NewAnnounce("WarnSiegeEngine", 3)
+local warnSiegeEngineSoon = IsleOfConquest:NewAnnounce("WarnSiegeEngineSoon", 2) 
 
 local function isInArgs(val, ...)	-- search for val in all args (...)
 	for i=1, select("#", ...), 1 do
@@ -150,7 +153,10 @@ local function checkForUpdates()
 					POITimer:SetColor(hordeColor, name)
 					POITimer:UpdateIcon(hordeTowerIcon, name)
 				end
-				
+				if k >= 135 and k <= 139 then			-- Workshop under attack, Siege Engine building interrupted
+					warnSiegeEngineSoon:Cancel()
+					timerSiegeEngine:Cancel()
+				end
 			elseif getPoiState(textureIndex) <= 2 then
 				-- poi is now longer in conflict, remove the bars
 				POITimer:Stop(name)
@@ -164,12 +170,34 @@ function scheduleCheck(self)
 	self:Schedule(1, checkForUpdates)
 end
 
+function IsleOfConquest:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.GoblinStart or msg == L.GoblinBroken then
+		self:SendSync("SEStart")
+	elseif msg == L.GoblinHalfwayAlliance or msg == L.GoblinHalfwayHorde then
+		self:SendSync("SEHalfway")
+	elseif msg == L.GoblinFinished then
+		self:SendSync("SEFinish")
+	else
+		scheduleCheck(self)
+	end
+end
 
-IsleOfConquest.CHAT_MSG_MONSTER_YELL = scheduleCheck
 IsleOfConquest.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
 IsleOfConquest.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
 
-
-
+function IsleOfConquest:OnSync(msg, arg)
+	if msg == "SEStart" then
+		timerSiegeEngine:Start(180)
+		warnSiegeEngineSoon:Schedule(170)
+	elseif msg == "SEHalfway" then
+		warnSiegeEngineSoon:Cancel()
+		timerSiegeEngine:Start(90)
+		warnSiegeEngineSoon:Schedule(80)
+	elseif msg == "SEFinish" then
+		warnSiegeEngineSoon:Cancel()
+		timerSiegeEngine:Cancel()
+		warnSiegeEngine:Show()
+	end
+end
 
 
