@@ -10,7 +10,8 @@ IsleOfConquest:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
-	"CHAT_MSG_BG_SYSTEM_NEUTRAL"
+	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+	"UNIT_DIED"
 )
 
 local allyTowerIcon = "Interface\\AddOns\\DBM-Battlegrounds\\Textures\\GuardTower"
@@ -153,7 +154,7 @@ local function checkForUpdates()
 					POITimer:SetColor(hordeColor, name)
 					POITimer:UpdateIcon(hordeTowerIcon, name)
 				end
-				if k >= 135 and k <= 139 then			-- Workshop under attack, Siege Engine building interrupted
+				if v >= 135 and v <= 139 then			-- Workshop under attack, Siege Engine building interrupted
 					warnSiegeEngineSoon:Cancel()
 					timerSiegeEngine:Cancel()
 				end
@@ -171,14 +172,29 @@ function scheduleCheck(self)
 end
 
 function IsleOfConquest:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.GoblinStart or msg == L.GoblinBroken then
-		self:SendSync("SEStart")
-	elseif msg == L.GoblinHalfwayAlliance or msg == L.GoblinHalfwayHorde then
-		self:SendSync("SEHalfway")
-	elseif msg == L.GoblinFinished then
-		self:SendSync("SEFinish")
+	if msg == L.GoblinStartAlliance or msg == L.GoblinBrokenAlliance then
+		self:SendSync("SEStart", "Alliance")
+	elseif msg == L.GoblinStartHorde or msg == L.GoblinBrokenHorde then
+		self:SendSync("SEStart", "Horde")
+	elseif msg == L.GoblinHalfwayAlliance then
+		self:SendSync("SEHalfway", "Alliance")
+	elseif msg == L.GoblinHalfwayHorde then
+		self:SendSync("SEHalfway", "Horde")
+	elseif msg == L.GoblinFinishedAlliance then
+		self:SendSync("SEFinish", "Alliance")
+	elseif msg == L.GoblinFinishedHorde then
+		self:SendSync("SEFinish", "Horde")
 	else
-		scheduleCheck(self)
+		checkForUpdates()
+	end
+end
+
+function IsleOfConquest:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 34476 then
+		self:SendSync("SEBroken", "Alliance")
+	elseif cid == 35069 then
+		self:SendSync("SEBroken", "Horde")	
 	end
 end
 
@@ -187,12 +203,22 @@ IsleOfConquest.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
 
 function IsleOfConquest:OnSync(msg, arg)
 	if msg == "SEStart" then
-		timerSiegeEngine:Start(180)
-		warnSiegeEngineSoon:Schedule(170)
+		timerSiegeEngine:Start(178)
+		warnSiegeEngineSoon:Schedule(168)
+		if arg == "Alliance" then
+			timerSiegeEngine:SetColor(allyColor)
+		elseif arg == "Horde" then
+			timerSiegeEngine:SetColor(hordeColor)
+		end
 	elseif msg == "SEHalfway" then
 		warnSiegeEngineSoon:Cancel()
-		timerSiegeEngine:Start(90)
-		warnSiegeEngineSoon:Schedule(80)
+		timerSiegeEngine:Start(89)
+		warnSiegeEngineSoon:Schedule(79)
+		if arg == "Alliance" then
+			timerSiegeEngine:SetColor(allyColor)
+		elseif arg == "Horde" then
+			timerSiegeEngine:SetColor(hordeColor)
+		end
 	elseif msg == "SEFinish" then
 		warnSiegeEngineSoon:Cancel()
 		timerSiegeEngine:Cancel()
