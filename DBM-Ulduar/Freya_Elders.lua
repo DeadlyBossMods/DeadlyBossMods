@@ -52,4 +52,3 @@ function mod:UNIT_DIED(args)
 		end
 	end
 end
-

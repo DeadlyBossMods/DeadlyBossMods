@@ -85,4 +85,3 @@ function mod:OnSync(msg, arg)
 		warnGroundphaseSoon:Schedule(40)
 	end
 end
-		

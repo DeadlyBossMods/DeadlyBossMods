@@ -132,4 +132,3 @@ function mod:CastFlame(target)
 	end
 	self:SetIcon(target, 8, 9)
 end 
-

@@ -110,6 +110,3 @@ function mod:SPELL_DAMAGE(args)
 		specWarnVoid:Show()
 	end
 end
-		
-		
-

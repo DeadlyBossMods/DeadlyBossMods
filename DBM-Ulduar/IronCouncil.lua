@@ -62,13 +62,21 @@ mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 
 local enrageTimer				= mod:NewEnrageTimer(900)
 
+local disruptTargets = {}
+
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)	
 end
+
 function mod:OnCombatEnd()
 --	if DBM.RangeCheck:IsShown() then
 --		DBM.RangeCheck:Hide()
 --	end
+end
+
+function mod:DisruptAnnounce()
+	warnStaticDisruption:Show(table.concat(disruptTargets, "<, >"))
+	table.wipe(disruptTargets)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -132,12 +140,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-
-local disruptTargets = {}
-function mod:DisruptAnnounce()
-	warnStaticDisruption:Show(table.concat(disruptTargets, "<, >"))
-	table.wipe(disruptTargets)
-end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(61903, 63493) then		-- Fusion Punch
 		timerFusionPunchActive:Start(args.destName)
@@ -172,6 +174,3 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:ScheduleMethod(0.15, "DisruptAnnounce")
 	end
 end
-
-
-
