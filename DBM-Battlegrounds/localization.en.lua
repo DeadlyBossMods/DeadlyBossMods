@@ -277,16 +277,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnSiegeEngine		= "Siege Engine ready!",
+	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
 })
 
 L:SetTimerLocalization({
 	TimerStart		= "Game starts", 
 	TimerPOI		= "%s",
+	TimerSiegeEngine	= "Siege Engine ready"
 })
 
 L:SetOptionLocalization({
 	TimerStart		= "Show start timer", 
 	TimerPOI		= "Show capture timer",
+	TimerSiegeEngine	= "Show a timer for Siege Engine building",
+	WarnSiegeEngine		= "Warn when the Siege Engine is ready",
+	WarnSiegeEngineSoon	= "Warn when the Siege Engine is almost ready"
 })
 
 L:SetMiscLocalization({
@@ -294,5 +300,10 @@ L:SetMiscLocalization({
 	BgStart60		= "The battle will begin in 60 seconds.",
 	BgStart30		= "The battle will begin in 30 seconds.",
 	BgStart15		= "The battle will begin in 15 seconds.",
+	GoblinStart		= "Yell when he starts building after capture",
+	GoblinBroken		= "Yell when he starts building after the previous one got destroyed",
+	GoblinHalfwayAlliance	= "Yell when he is halfway building (Alliance)",
+	GoblinHalfwayHorde	= "Yell when he is halfway building (Horde)",
+	GoblinFinish		= "Yell when he is finished"
 })
 
