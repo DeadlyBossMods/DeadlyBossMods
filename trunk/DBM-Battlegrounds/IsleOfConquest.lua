@@ -172,17 +172,17 @@ function scheduleCheck(self)
 end
 
 function IsleOfConquest:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.GoblinStartAlliance or msg == L.GoblinBrokenAlliance then
+	if msg == L.GoblinStartAlliance or msg == L.GoblinBrokenAlliance or msg:find(L.GoblinStartAlliance) or msg:find(L.GoblinBrokenAlliance) then
 		self:SendSync("SEStart", "Alliance")
-	elseif msg == L.GoblinStartHorde or msg == L.GoblinBrokenHorde then
+	elseif msg == L.GoblinStartHorde or msg == L.GoblinBrokenHorde or msg:find(L.GoblinStartHorde) or msg:find(L.GoblinBrokenHorde) then
 		self:SendSync("SEStart", "Horde")
-	elseif msg == L.GoblinHalfwayAlliance then
+	elseif msg == L.GoblinHalfwayAlliance or msg:find(L.GoblinHalfwayAlliance) then
 		self:SendSync("SEHalfway", "Alliance")
-	elseif msg == L.GoblinHalfwayHorde then
+	elseif msg == L.GoblinHalfwayHorde or msg:find(L.GoblinHalfwayHorde) then
 		self:SendSync("SEHalfway", "Horde")
-	elseif msg == L.GoblinFinishedAlliance then
+	elseif msg == L.GoblinFinishedAlliance or msg:find(L.GoblinFinishedAlliance) then
 		self:SendSync("SEFinish", "Alliance")
-	elseif msg == L.GoblinFinishedHorde then
+	elseif msg == L.GoblinFinishedHorde or msg:find(L.GoblinFinishedHorde) then
 		self:SendSync("SEFinish", "Horde")
 	else
 		checkForUpdates()
