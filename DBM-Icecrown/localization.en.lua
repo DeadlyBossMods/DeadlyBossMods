@@ -20,12 +20,12 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale				= "Announce Impale targets",
+	WarnImpale				= "Announce impaled targets",
 	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
-	SpecWarnColdflame		= "Show special warning when you take damage from Coldflame",
+	SpecWarnColdflame		= "Show special warning when you are affected by Coldflame",
 	PlaySoundOnWhirlwind	= "Play sound on Whirlwind",
-	achievementBoned		= "Show timer for Boned Achievement",
-	SetIconOnImpale			= "Set icons on Impale"
+	achievementBoned		= "Show timer for Boned achievement",
+	SetIconOnImpale			= "Set icons on impaled targets"
 }
 
 -------------------------
@@ -52,11 +52,11 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAddsSoon					= "Show pre-warning for adds spawning",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Show warning when an add is getting revived",								-- Reanimated Adherent/Fanatic spawning
+	WarnReanimating					= "Show warning when an add is getting revived",											-- Reanimated Adherent/Fanatic spawning
 	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
 	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
 	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor",
-	SetIconOnDominateMind			= "Set icons on Dominate Mind"
+	SetIconOnDominateMind			= "Set icons on Dominate Mind targets"
 }
 
 L:SetMiscLocalization{

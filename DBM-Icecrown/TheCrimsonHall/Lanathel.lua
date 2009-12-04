@@ -10,9 +10,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnPactDarkfallen	= mod:NewTargetAnnounce(71340, 3)
+local warnPactDarkfallen		= mod:NewTargetAnnounce(71340, 3)
 
-local timerPactDarkfallen	= mod:NewNextTimer(30, 71340)
+local timerPactDarkfallen		= mod:NewNextTimer(30, 71340)
 
 local specWarnPactDarkfallen	= mod:NewSpecialWarning("SpecWarnPactDarkfallen")
 
