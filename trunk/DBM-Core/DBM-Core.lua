@@ -1273,7 +1273,7 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 			DBM:Schedule(3, DBM.LoadMod, DBM, v)
 		end
 	end
-	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("Alterac") then
+	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
 		for i, v in ipairs(DBM.AddOns) do
 			if v.modId == "DBM-Battlegrounds" then
 				DBM:LoadMod(v)
@@ -1845,6 +1845,9 @@ do
 end
 
 function DBM:SendTimers(target)
+	if UnitInBattleground("player") then
+		DBM:SendBGTimers(target)
+	end
 	if #inCombat < 1 then return end
 	local mod
 	for i, v in ipairs(inCombat) do
@@ -1853,6 +1856,13 @@ function DBM:SendTimers(target)
 	mod = mod or inCombat[1]
 	self:SendCombatInfo(mod, target)
 	self:SendTimerInfo(mod, target)
+end
+
+function DBM:SendBGTimers(target)
+	local zone = GetRealZoneText()
+	mod = zone:gsub(" ", "")
+	self:SendCombatInfo(mod, target)
+	self:SendTimerInfo(mod,target)
 end
 
 function DBM:SendCombatInfo(mod, target)

@@ -1,7 +1,7 @@
 -- Alterac mod v3.0
 -- rewrite by Nitram and Tandanu
 
-local Alterac	= DBM:NewMod("Alterac", "DBM-Battlegrounds")
+local Alterac	= DBM:NewMod("AlteracValley", "DBM-Battlegrounds")
 local L			= Alterac:GetLocalizedStrings()
 
 Alterac:SetZone(DBM_DISABLE_ZONE_DETECTION)

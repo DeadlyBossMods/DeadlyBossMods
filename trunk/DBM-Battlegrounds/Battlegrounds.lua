@@ -28,14 +28,14 @@ function mod:ZONE_CHANGED_NEW_AREA()
 		inviteTimer:Stop()
 		SetMapToCurrentZone() -- for GetMapLandmarkInfo()
 	end
-	for i, v in ipairs(DBM:GetModByName("Alterac").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("AlteracValley").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("EyeOfTheStorm").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("Warsong").timers) do v:Stop() end
-	for i, v in ipairs(DBM:GetModByName("Arathi").timers) do v:Stop() end
-	DBM:GetModByName("Alterac"):Unschedule()
+	for i, v in ipairs(DBM:GetModByName("WarsongGulch").timers) do v:Stop() end
+	for i, v in ipairs(DBM:GetModByName("ArathiBasin").timers) do v:Stop() end
+	DBM:GetModByName("AlteracValley"):Unschedule()
 	DBM:GetModByName("EyeOfTheStorm"):Unschedule()
-	DBM:GetModByName("Warsong"):Unschedule()
-	DBM:GetModByName("Arathi"):Unschedule()
+	DBM:GetModByName("WarsongGulch"):Unschedule()
+	DBM:GetModByName("ArathiBasin"):Unschedule()
 end
 mod.PLAYER_ENTERING_WORLD = mod.ZONE_CHANGED_NEW_AREA
 mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA

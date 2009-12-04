@@ -4,7 +4,7 @@
 -- thanks to LeoLeal, DiabloHu and Са°ЧТВ
 
 
-local Warsong	= DBM:NewMod("Warsong", "DBM-Battlegrounds")
+local Warsong	= DBM:NewMod("WarsongGulch", "DBM-Battlegrounds")
 local L			= Warsong:GetLocalizedStrings()
 
 Warsong:RemoveOption("HealthFrame")
