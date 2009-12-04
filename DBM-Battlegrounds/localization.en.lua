@@ -51,7 +51,7 @@ L:SetMiscLocalization({
 ----------------------
 --  Alterac Valley  --
 ----------------------
-L = DBM:GetModLocalization("Alterac")
+L = DBM:GetModLocalization("AlteracValley")
 
 L:SetGeneralLocalization({
 	name = "Alterac Valley"
@@ -79,7 +79,7 @@ L:SetOptionLocalization({
 --------------------
 --  Arathi Basin  --
 --------------------
-L = DBM:GetModLocalization("Arathi")
+L = DBM:GetModLocalization("ArathiBasin")
 
 L:SetGeneralLocalization({
 	name = "Arathi Basin"
@@ -149,7 +149,7 @@ L:SetOptionLocalization({
 ---------------------
 --  Warsong Gulch  --
 ---------------------
-L = DBM:GetModLocalization("Warsong")
+L = DBM:GetModLocalization("WarsongGulch")
 
 L:SetGeneralLocalization({
 	name = "Warsong Gulch"
