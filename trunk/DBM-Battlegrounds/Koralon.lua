@@ -8,32 +8,40 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE"
 )
 
+local warnBreath			= mod:NewSpellAnnounce(67328)
+local timerBreath			= mod:NewBuffActiveTimer(4.5, 67328)
+local timerBreathCD			= mod:NewCDTimer(45, 67328)--Seems to variate, but 45sec cooldown looks like a good testing number to start.
 
-local enrageTimer	= mod:NewEnrageTimer(300)
+local warnMeteor			= mod:NewSpellAnnounce(67333, 3)
+local warnMeteorSoon		= mod:NewPreWarnAnnounce(68161, 5, 1)
+local timerNextMeteor		= mod:NewNextTimer(47, 68161)
 
-local warnBreath	= mod:NewSpellAnnounce(66665)
-local timerBreath	= mod:NewBuffActiveTimer(4.5, 66665)
+local WarnBurningFury		= mod:NewSpellAnnounce(66721, 3)
+local timerNextBurningFury	= mod:NewNextTimer(20, 66721)
 
-local warnMeteor		= mod:NewSpellAnnounce(67331, 3, 66809)
-local warnMeteorSoon	= mod:NewPreWarnAnnounce(67331, 5, 1, 66809)
-local timerNextMeteor	= mod:NewNextTimer(47, 66725, nil, nil, nil, 66809)
+local specWarnCinder		= mod:NewSpecialWarning("SpecWarnCinder")
 
-local specWarnCinder	= mod:NewSpecialWarning("SpecWarnCinder")
+local enrageTimer			= mod:NewEnrageTimer(300)
+
 mod:AddBoolOption("PlaySoundOnCinder")
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	timerNextMeteor:Start(-delay)
-	warnMeteorSoon:Schedule(42 - delay)
+	timerBreathCD:Start(12-delay)
+	warnMeteorSoon:Schedule(42-delay)
+	timerNextBurningFury:Start()
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(67328, 66665) then
 		warnBreath:Show()
 		timerBreath:Start()
+		timerBreathCD:Start()
 	elseif args:IsSpellID(66725, 68161) and self:IsInCombat() then
 		warnMeteor:Show()
 		timerNextMeteor:Start()
@@ -47,5 +55,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.PlaySoundOnCinder then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
+	elseif args:IsSpellID(66721) then
+		WarnBurningFury:Show()
+		timerNextBurningFury:Start()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(66721) then		-- Burning Fury
+		WarnBurningFury:Show(args.amount)
+		timerNextBurningFury:Start()
 	end
 end
