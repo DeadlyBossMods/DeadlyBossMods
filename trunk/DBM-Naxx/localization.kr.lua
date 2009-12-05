@@ -386,17 +386,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhase2				= "2 페이즈 타이머 보기",
-	specwarnP2Soon			= "2 페이즈 시작하기 전 특수 경고 보기",
-	ShowRange				= "2 페이즈가 시작되면 거리 프레임 보기",	
+	TimerPhase2			= "2 페이즈 타이머 보기",
+	specwarnP2Soon		= "2 페이즈 시작하기 전 특수 경고 보기",
+	warnAddsSoon		= "얼음왕관의 수호자 등장 사전 경고 보기",
+	ShowRange			= "2 페이즈가 시작되면 거리 프레임 보기"
 })
 
 L:SetMiscLocalization({
-	Yell = "어둠의 문지기와 하수인, 그리고 병사들이여! 나 켈투자드가 부르니 명을 받들라!"
+	Yell 				= "어둠의 문지기와 하수인, 그리고 병사들이여! 나 켈투자드가 부르니 명을 받들라!"
 })
 
 L:SetWarningLocalization({
-	specwarnP2Soon		= "10초 후 2 페이즈"	
+	specwarnP2Soon		= "10초 후 2 페이즈",
+	warnAddsSoon		= "곧 얼음왕관의 수호자 등장"
 })
 
 L:SetTimerLocalization({
