@@ -251,7 +251,7 @@ L:SetWarningLocalization{
 	SpecWarnCinder			= "燃焰餘燼 - 快跑開",
 	BurningFury			= "燃燒烈怒 >%d<"
 }
-}
+
 
 L:SetTimerLocalization{
 }
