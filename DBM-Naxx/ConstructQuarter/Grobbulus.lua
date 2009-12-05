@@ -9,14 +9,21 @@ mod:RegisterCombat("combat")
 mod:EnableModel()
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_CAST_SUCCESS"
 )
 
 local warnInjection		= mod:NewTargetAnnounce(28169, 2)
+local warnCloud			= mod:NewSpellAnnounce(28240, 2)
 
 local specWarnInjection	= mod:NewSpecialWarning("SpecialWarningInjection")
 
 local timerInjection	= mod:NewTargetTimer(10, 28169)
+local enrageTimer		= mod:NewEnrageTimer(720)
+
+function mod:OnCombatStart(delay)
+	enrageTimer:Start(-delay)
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(28169) then
@@ -29,3 +36,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	end	
 end
 
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(28240) then
+		warnCloud:Show()
+	end	
+end
