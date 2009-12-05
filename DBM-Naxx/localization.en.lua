@@ -366,7 +366,8 @@ L:SetGeneralLocalization({
 L:SetOptionLocalization({
 	TimerPhase2				= "Show timer for Phase 2",
 	specwarnP2Soon			= "Show special warning 10 seconds before Kel'Thuzad engages",
-	ShowRange				= "Show range frame when Phase 2 starts",
+	warnAddsSoon			= "Show pre-warning for Guardians of Icecrown",
+	ShowRange				= "Show range frame when Phase 2 starts"
 })
 
 L:SetMiscLocalization({
@@ -374,7 +375,8 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnP2Soon			= "Kel'Thuzad engages in 10 Seconds"
+	specwarnP2Soon			= "Kel'Thuzad engages in 10 Seconds",
+	warnAddsSoon			= "Guardians of Icecrown incoming soon"
 })
 
 L:SetTimerLocalization({
