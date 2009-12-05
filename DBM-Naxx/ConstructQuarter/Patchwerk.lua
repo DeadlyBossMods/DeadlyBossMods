@@ -15,7 +15,8 @@ mod:RegisterEvents(
 
 mod:AddBoolOption("WarningHateful", false, "announce")
 
-local enrageTimer = mod:NewEnrageTimer(360)
+local enrageTimer	= mod:NewEnrageTimer(360)
+local timerAchieve	= mod:NewAchievementTimer(180, 1857, "TimerSpeedKill")
 
 local function announceStrike(target, damage)
 	SendChatMessage(L.HatefulStrike:format(target, damage), "RAID")
@@ -23,6 +24,7 @@ end
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start()
+	timerAchieve:Start(-delay)
 end
 
 function mod:SPELL_DAMAGE(args)
