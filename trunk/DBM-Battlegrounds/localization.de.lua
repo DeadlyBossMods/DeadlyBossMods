@@ -216,11 +216,14 @@ L:SetMiscLocalization({
 	BgStart60		= "Die Schlacht beginnt in 60 Sekunden.",
 	BgStart30		= "Die Schlacht beginnt in 30 Sekunden.",
 	BgStart15		= "Die Schlacht beginnt in 15 Sekunden.",
-	GoblinStart		= "Ich arbeite an der Belagerungsmaschine. Haltet mir einfach nur den Rücken frei. Benutzt diese Zephyriumbomben an den Toren, solltet Ihr sie brauchen!",
-	GoblinBroken 		= "Schon wieder kaputt?! Ich werde es richten... Ihr solltet allerdings nicht davon ausgehen, dass das noch unter die Garantie fällt.",
+	GoblinStartAlliance	= "Seht Ihr diese Zephyriumbomben? Benutzt sie an den Toren, während ich die Belagerungsmaschine repariere!",
+	GoblinStartHorde	= "Ich arbeite an der Belagerungsmaschine. Haltet mir einfach nur den Rücken frei. Benutzt diese Zephyriumbomben an den Toren, solltet Ihr sie brauchen!",
 	GoblinHalfwayAlliance	= "Ich hab's gleich! Haltet die Horde von hier fern. Kämpfen stand in der Ingenieursschule nicht auf dem Lehrplan!",
 	GoblinHalfwayHorde	= "Ich hab's gleich! Haltet mir die Allianz vom Leib. Kämpfen steht nicht in meinem Vertrag!",
-	GoblinFinish		= "Die Belagerungsmaschine ist bereit, loszurollen!"
+	GoblinFinishedAlliance	= "Meine beste Arbeit bisher! Diese Belagerungsmaschine ist bereit, ein bisschen Aktion zu sehen!",
+	GoblinFinishedHorde	= "Die Belagerungsmaschine ist bereit, loszurollen!",
+	GoblinBrokenAlliance	= "unknown !"	-- needs a translation
+	GoblinBrokenHorde	= "Schon wieder kaputt?! Ich werde es richten... Ihr solltet allerdings nicht davon ausgehen, dass das noch unter die Garantie fällt."
 })
 
 
