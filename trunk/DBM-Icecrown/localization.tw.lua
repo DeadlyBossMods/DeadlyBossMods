@@ -22,12 +22,12 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale			= "提示刺穿的目標",
+	WarnImpale			= "提示被刺穿的目標",
 	SpecWarnWhirlwind		= "為旋風斬顯示特別警告",
-	SpecWarnColdflame		= "當你受到冷焰的傷害時顯示特別警告",
+	SpecWarnColdflame		= "當你中了冷焰時顯示特別警告",
 	PlaySoundOnWhirlwind		= "為旋風斬播放音效",
-	achievementBoned		= "為Boned成就顯示計時器",
-	SetIconOnImpale			= "為刺穿設置標記"
+	achievementBoned		= "為去骨成就顯示計時器",
+	SetIconOnImpale			= "為被刺穿的目標設置標記"
 }
 
 -------------------------
@@ -58,6 +58,7 @@ L:SetOptionLocalization{
 	SpecWarnTouchInsignificance	= "當你中了3層無脅之觸時顯示特別警告",
 	SpecWarnDeathDecay		= "當你中了死亡凋零時顯示特別警告",
 	SpecWarnCurseTorpor		= "當你中了魯鈍詛咒時顯示特別警告",
+	SetIconOnDominateMind		= "為支配心智的目標設置標記"
 }
 
 L:SetMiscLocalization{
