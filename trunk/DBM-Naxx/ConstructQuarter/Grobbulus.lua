@@ -19,6 +19,7 @@ local warnCloud			= mod:NewSpellAnnounce(28240, 2)
 local specWarnInjection	= mod:NewSpecialWarning("SpecialWarningInjection")
 
 local timerInjection	= mod:NewTargetTimer(10, 28169)
+local timerCloud		= mod:NewNextTimer(15, 28240)
 local enrageTimer		= mod:NewEnrageTimer(720)
 
 function mod:OnCombatStart(delay)
@@ -39,5 +40,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(28240) then
 		warnCloud:Show()
+		timerCloud:Start()
 	end	
 end
