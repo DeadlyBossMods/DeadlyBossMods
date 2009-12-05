@@ -278,16 +278,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnSiegeEngine			= "攻城機具準備好了!",
+	WarnSiegeEngineSoon		= "10秒後 攻城機具"
 })
 
 L:SetTimerLocalization({
 	TimerStart			= "戰鬥開始", 
 	TimerPOI			= "%s",
+	TimerSiegeEngine		= "攻城機具準備好了"
 })
 
 L:SetOptionLocalization({
 	TimerStart			= "顯示開始計時器", 
 	TimerPOI			= "顯示奪取計時器",
+	TimerSiegeEngine		= "為攻城機具的修復顯示計時器",
+	WarnSiegeEngine			= "當攻城機具準備好時警告",
+	WarnSiegeEngineSoon		= "當攻城機具接近準備好時警告"
 })
 
 L:SetMiscLocalization({
@@ -295,4 +301,13 @@ L:SetMiscLocalization({
 	BgStart60			= "戰鬥在1分鐘內開始!",
 	BgStart30			= "戰鬥在30秒內開始!",
 	BgStart15			= "戰鬥在15秒內開始!",
+	SiegeEngine			= "攻城機具",
+	GoblinStartAlliance		= "看到那些爆鹽炸彈了嗎?當我維修攻城機具的時候用它們來轟破大門!",
+	GoblinStartHorde		= "修理攻城機具的工作就交給我，幫我看著點就夠了。如果你想要轟破大門的話，儘管把那些爆鹽炸彈拿去用吧!",
+	GoblinHalfwayAlliance		= "我已經修好一半了!別讓部落靠近。工程學院可沒有教我們如何作戰喔!",
+	GoblinHalfwayHorde		= "我已經修好一半了!別讓聯盟靠近 - 我的合約裡可沒有作戰這一條!",
+	GoblinFinishedAlliance		= "我有史以來最得意的作品!這台攻城機具已經可以上場囉!",
+	GoblinFinishedHorde		= "這台攻城機具已經可以上場啦!",
+	GoblinBrokenAlliance		= "這麼快就壞啦?!別擔心，再壞的情況我都可以修得好。",
+	GoblinBrokenHorde		= "又壞掉了嗎?!讓我來修理吧…但別指望產品的保固會幫你支付這一切。"
 })
