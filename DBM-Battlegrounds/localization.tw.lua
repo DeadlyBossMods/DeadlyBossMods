@@ -195,12 +195,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShards			= "岩石裂片: >%s<",
 	WarningGrab			= "亞夏梵擒握 >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerShards 			= "岩石裂片: %s"
 })
 
 L:SetMiscLocalization({
@@ -208,8 +206,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShards 			= "為岩石裂片顯示計時器",
-	WarningShards 			= "提示岩石裂片的目標",
 	WarningGrab 			= "提示擒握坦克的目標"
 })
 
@@ -252,7 +248,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder			= "燃焰餘燼 - 快跑開"
+	SpecWarnCinder			= "燃焰餘燼 - 快跑開",
+	BurningFury			= "燃燒烈怒 >%d<"
+}
 }
 
 L:SetTimerLocalization{
@@ -261,6 +259,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecWarnCinder			= "當你中了燃焰餘燼時顯示特別警告",
 	PlaySoundOnCinder		= "當你中了燃焰餘燼時播放音效",
+	BurningFury			= "為燃燒烈怒顯示警告"
 }
 
 L:SetMiscLocalization{
