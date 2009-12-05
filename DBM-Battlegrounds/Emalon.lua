@@ -14,13 +14,14 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local timerNova				= mod:NewCastTimer(64216)
-local timerOvercharge		= mod:NewNextTimer(45, 64218)
-local timerMobOvercharge	= mod:NewTimer(20, "timerMobOvercharge", 64217)
-
 local specWarnNova			= mod:NewSpecialWarning("specWarnNova")
 local warnNova				= mod:NewAnnounce("warnNova", 3)
 local warnOverCharge		= mod:NewAnnounce("warnOverCharge", 2)
+
+local timerNova				= mod:NewCastTimer(65279)
+local timerNovaCD			= mod:NewCDTimer(45, 65279)--Varies, 45-60seconds in between nova's
+local timerOvercharge		= mod:NewNextTimer(45, 64218)
+local timerMobOvercharge	= mod:NewTimer(20, "timerMobOvercharge", 64217)
 
 local enrageTimer			= mod:NewEnrageTimer(360)
 
@@ -32,6 +33,7 @@ local overchargedMob
 function mod:OnCombatStart(delay)
 	overchargedMob = nil
 	timerOvercharge:Start(-delay)
+	timerNovaCD:Start(20-delay)
 	enrageTimer:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
@@ -47,6 +49,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args.spellId == 64216 or args.spellId == 65279 then
 		timerNova:Start()
+		timerNovaCD:Start()
 		warnNova:Show()
 		specWarnNova:Show()
 		if self.Options.NovaSound then
