@@ -252,7 +252,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnCinder	= "Flaming Cinder - Move away",
-	BurningFury		= "Show warning for Burning Fury"
+	BurningFury		= "Burning Fury >%d<"
 }
 
 L:SetTimerLocalization{
@@ -261,7 +261,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecWarnCinder		= "Show special warning when you are affected by Flaming Cinder",
 	PlaySoundOnCinder	= "Play sound when you are affected by Flaming Cinder",
-	BurningFury			= "Burning Fury >%d<"
+	BurningFury			= "Show warning for Burning Fury"
 }
 
 L:SetMiscLocalization{
