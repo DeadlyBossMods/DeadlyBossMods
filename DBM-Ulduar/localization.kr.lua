@@ -285,7 +285,7 @@ L:SetMiscLocalization{
 	Health_Body				= "콜로간 몸통",
 	Health_Right_Arm		= "오른쪽 팔",
 	Health_Left_Arm			= "왼쪽 팔",
-	FocusedEyebeam			= "%s 당신에게 안광을 집중합니다!"	
+	FocusedEyebeam			= "%s이 당신에게 안광을 집중합니다!"	
 }
 
 --------------
