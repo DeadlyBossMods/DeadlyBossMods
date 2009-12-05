@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 -- Trash: 33430 Guardian Lasher (flower)
