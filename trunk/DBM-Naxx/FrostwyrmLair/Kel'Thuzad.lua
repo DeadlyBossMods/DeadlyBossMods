@@ -11,9 +11,11 @@ mod:EnableModel()
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_HEALTH"
 )
 
+local warnAddsSoon			= mod:NewAnnounce("warnAddsSoon", 1)
 local warnPhase2			= mod:NewPhaseAnnounce(2, 3)
 local warnBlastTargets		= mod:NewTargetAnnounce(27808, 2)
 local warnFissure			= mod:NewSpellAnnounce(27810, 3)
@@ -27,10 +29,13 @@ local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 
 mod:AddBoolOption("ShowRange", true)
 
+local warnedAdds = false
+
 function mod:OnCombatStart(delay)
 	if self.Options.ShowRange then
 		self:ScheduleMethod(215-delay, "RangeToggle", true)
-	end	
+	end
+	warnedAdds = false
 	specwarnP2Soon:Schedule(215-delay)
 	timerPhase2:Start()
 	warnPhase2:Schedule(225)
@@ -81,6 +86,13 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(27810) then
 		warnFissure:Show()
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if not warnedAdds and self:GetUnitCreatureId(uId) == 15990 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.48 then
+		warnedAdds = true
+		warnAddsSoon:Show()
 	end
 end
 
