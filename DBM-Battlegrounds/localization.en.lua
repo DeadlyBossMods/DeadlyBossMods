@@ -193,12 +193,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShards	= "Rock Shards on >%s<",
 	WarningGrab		= "Archavon grabbed >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerShards 	= "Rock Shards: %s"
 })
 
 L:SetMiscLocalization({
@@ -206,8 +204,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShards 	= "Show timer for Rock Shards",
-	WarningShards 	= "Announce Rock Shards targets",
 	WarningGrab 	= "Announce grab targets"
 })
 
