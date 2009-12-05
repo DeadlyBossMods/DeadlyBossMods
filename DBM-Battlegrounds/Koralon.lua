@@ -19,8 +19,7 @@ local timerBreathCD			= mod:NewCDTimer(45, 67328)--Seems to variate, but 45sec c
 local warnMeteor			= mod:NewSpellAnnounce(67333, 3)
 local warnMeteorSoon		= mod:NewPreWarnAnnounce(68161, 5, 1)
 local timerNextMeteor		= mod:NewNextTimer(47, 68161)
-
-local WarnBurningFury		= mod:NewSpellAnnounce(66721, 3)
+local WarnBurningFury		= mod:NewAnnounce("BurningFury", 3)
 local timerNextBurningFury	= mod:NewNextTimer(20, 66721)
 
 local specWarnCinder		= mod:NewSpecialWarning("SpecWarnCinder")
@@ -56,7 +55,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	elseif args:IsSpellID(66721) then
-		WarnBurningFury:Show()
+		WarnBurningFury:Show(args.amount)
 		timerNextBurningFury:Start()
 	end
 end
