@@ -23,7 +23,7 @@ local function announceStrike(target, damage)
 end
 
 function mod:OnCombatStart(delay)
-	enrageTimer:Start()
+	enrageTimer:Start(-delay)
 	timerAchieve:Start(-delay)
 end
 
