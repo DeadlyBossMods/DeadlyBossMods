@@ -184,7 +184,6 @@ L:SetTimerLocalization{
 	NextCollapsingStar		= "Next Collapsing Star",
 	PossibleNextCosmicSmash	= "Next possible Cosmic Smash",
 	TimerCombatStart		= "Combat starts"
-
 }
 
 L:SetWarningLocalization{

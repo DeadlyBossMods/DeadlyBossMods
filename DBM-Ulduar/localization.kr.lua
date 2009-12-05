@@ -11,9 +11,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPursued			= "추적: %s",
-	timerFlameVents			= "화염 분출",
-	timerSystemOverload		= "시스템 과부화"
 }
 	
 L:SetMiscLocalization{
@@ -31,9 +28,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	timerSystemOverload		= "시스템 과부화 타이머 보기",
-	timerFlameVents			= "화염 분출 타이머 보기",
-	timerPursued			= "추적 타이머 보기",
 	SystemOverload			= "시스템 과부화 특수 경고 보기",
 	SpecialPursueWarnYou	= "추적자 특수 경고 보기",
 	PursueWarn				= "추적 플레이어 레이드 경고로 보기",
@@ -41,7 +35,6 @@ L:SetOptionLocalization{
 	warnWardofLife			= "생명지기 덩굴손 등장 특수 경고 보기",
 	warnWrithingLasher		= "고뇌의 덩굴손 등장 특수 경고 보기"	
 }
-
 
 -------------
 --  Ignis  --
@@ -53,11 +46,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerFlameJetsCast		= "화염 분출",
-	TimerFlameJetsCooldown	= "다음 화염 분출",
-	TimerScorch				= "다음 불태우기",
-	TimerScorchCast			= "불태우기",
-	TimerSlagPot			= "용암재 단지 : %s"
 }
 
 L:SetWarningLocalization{
@@ -67,12 +55,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnJetsCast		= "화염 분출 시전의 특수 경고 보기",
-	TimerFlameJetsCast		= "화염 분출 시전 타이머 보기",
-	TimerFlameJetsCooldown	= "화염 분출 쿨다운 타이머 보기",
-	TimerScorch				= "불태우기 쿨다운 타이머 보기",
-	TimerScorchCast			= "불태우기 시전 타이머 보기",
 	WarningSlagPot			= "용암재 단지 대상 알리기",
-	TimerSlagPot			= "용암재 단지 타이머 보기",
 	SlagPotIcon				= "용암재 단지 대상 공격대 아이콘 설정"	
 }
 
@@ -90,43 +73,38 @@ L:SetWarningLocalization{
 	SpecWarnDevouringFlameCast	= "당신에게 파멸의 불길!",
 	WarnDevouringFlameCast		= "파멸의 불길 : >%s<", 	
 	warnTurretsReadySoon		= "마지막 포탑 20초 전",
-	warnTurretsReady			= "마지막 포탑 준비"
-	
+	warnTurretsReady			= "마지막 포탑 준비"	
 }
 
 L:SetTimerLocalization{
-	timerAllTurretsReady	= "포탑",
 	timerTurret1			= "1 번째 포탑",
 	timerTurret2			= "2 번째 포탑",
 	timerTurret3			= "3 번째 포탑",
 	timerTurret4			= "4 번째 포탑",
-	timerGrounded		= "지상 착지",	
+	timerGrounded			= "지상 착지",	
 }
 
 L:SetOptionLocalization{
 	SpecWarnDevouringFlame		= "파멸의 불길 대상 특수 경고 보기",
 	SpecWarnDevouringFlameCast	= "파멸의 불길 대상이 되었을 때 특수 경고 보기",	
 	PlaySoundOnDevouringFlame	= "파멸의 불길 데미지를 받을 때 사운드 재생",
-	timerAllTurretsReady		= "포탑 타이머 보기",
 	warnTurretsReadySoon		= "포탑 사전 경고 보기",
 	warnTurretsReady			= "포탑 경고 보기",
-	WarnDevouringFlameCast      = "파멸의 불길 시전 경고 보기",
 	timerTurret1				= "첫번째 포탑 타이머 보기",
 	timerTurret2				= "두번째 포탑 타이머 보기",
 	timerTurret3				= "세번째 포탑 타이머 보기(25인)",
 	timerTurret4				= "네번째 포탑 타이머 보기(25인)", 
-	timerGrounded			= "지상 착지 유지 시간 보기",
+	timerGrounded				= "지상 착지 유지 시간 보기",
 	OptionDevouringFlame		= "파멸의 불길 대상 알리기 (부정확함)"
 }
 
 L:SetMiscLocalization{
 	YellAir 			= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
 	YellAir2			= "불꽃이 꺼졌어요! 포탑을 재설치합시다!",	
-	YellGround		= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
+	YellGround			= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
 	EmotePhase2			= "%%s이 완전히 땅에 내려앉았습니다!",	
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
-
 
 -------------
 --  XT002  --
@@ -141,17 +119,15 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb	 	= "당신에게 타오르는 빛",
-	SpecialWarningGravityBomb	= "당신에게 중력 폭탄",
-	specWarnConsumption			= "공허의 지대! - 이동하세요!"
+	SpecialWarningLightBomb	 		= "당신에게 타오르는 빛",
+	SpecialWarningGravityBomb		= "당신에게 중력 폭탄",
+	specWarnConsumption				= "공허의 지대! - 이동하세요!"
 }
 
 L:SetOptionLocalization{
 	SpecialWarningLightBomb			= "당신이 타오르는 빛의 영향을 받을 때 특수 경고 보기",
 	SpecialWarningGravityBomb		= "당신이 중력 폭탄의 영향을 받을 때 특수 경고 보기",
 	specWarnConsumption				= "공허의 지대로부터 데미지를 받을 경우 특수 경고 보기",	
-	PlaySoundOnGravityBomb			= "당신이 중력 폭탄일 때 특수 사운드 재생",
-	PlaySoundOnTympanicTantrum		= "당신이 타오르는 빛일 때 특수 사운드 재생",	
 	SetIconOnLightBombTarget		= "타오르는 빛 대상에게 공격대 아이콘 표시",
 	SetIconOnGravityBombTarget		= "중력 폭탄 대상에게 공격대 아이콘 표시",
 }
@@ -167,11 +143,10 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge			= "전기 충전 시전",
-	WarningStaticDisruption		= ">%s< 에게 전자기 붕괴!",
 	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
 	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",
 	Overload					= "과부하 - 이동!",
-	RuneofPower        			= "힘의 룬 : >%s<"	
+	RuneofPower        			= "마력의 룬 : >%s<"	
 }
 
 L:SetTimerLocalization{
@@ -182,13 +157,13 @@ L:SetOptionLocalization{
 	RuneofDeath						= "죽음의 룬 특수 경고 보기",
 	Overload						= "과부하 일 때 특수 경고 보기",
 	WarningSupercharge				= "전기 충전 시전 경고 보기",
-	WarningStaticDisruption			= "전자기 붕괴 알리기",	
 	AlwaysWarnOnOverload			= "과부하 일 때 지속적인 경고 알리기(타겟일 경우만)",
 	PlaySoundOnOverload				= "과부화 일 때 소리 재생",	
 	PlaySoundLightningTendrils		= "번개 덩굴일 때 소리 재생",
 	PlaySoundDeathRune				= "죽음의 룬일 때 소리 재생",
 	SetIconOnOverwhelmingPower		= "압도적인 힘 대상 아이콘 설정",
 	SetIconOnStaticDisruption		= "전자기 붕괴 대상 타겟 아이콘 설정하기(하드 모드)",
+	RuneofPower        				= "보스가 마력의 룬의 영향을 받을 경우 특수 경고 보기"	
 }
 
 L:SetMiscLocalization{
@@ -196,7 +171,6 @@ L:SetMiscLocalization{
 	RunemasterMolgeim 		= "룬술사 몰가임",
 	StormcallerBrundir 		= "폭풍소환사 브룬디르",
 }
-
 
 ---------------
 --  Algalon  --
@@ -210,8 +184,9 @@ L:SetGeneralLocalization{
 L:SetTimerLocalization{
 	NextCollapsingStar		= "다음 붕괴의 별",
 	PossibleNextCosmicSmash	= "다음 우주의 강타",
-	TimerCombatStart		= "곧 전투 시작"
+	TimerCombatStart		= "전투 시작"
 }
+
 L:SetWarningLocalization{
 	WarningPhasePunch		= "위상의 주먹 : >%s< - %d 중첩",
 	WarningBlackHole		= "블랙홀 폭발",
@@ -241,7 +216,6 @@ L:SetMiscLocalization{
 	PullCheck				= "(%d+)분 후에 알갈론이 신호 전송을 시작합니다."	
 }
 
-
 ----------------
 --  Kologarn  --
 ----------------
@@ -254,13 +228,11 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "당신에게 안광 - 빠르게 이동!",
 	WarningEyebeam			= ">%s< 에게 안광 집중",
-	WarnGrip				= ">%s< 에게 바위 손아귀"
+	WarnGrip				= ">%s< 에게 바위 손아귀",
+	SpecWarnCrunchArmor2	= "방어구 씹기 중첩 : >%d<"	
 }
 
 L:SetTimerLocalization{
-	timerEyebeam			= "안광 : %s",
-	timerPetrifyingBreath	= "석화 숨결",
-	timerNextShockwave		= "다음 충격파",	
 	timerLeftArm			= "왼쪽 팔 재생성",
 	timerRightArm			= "오른쪽 팔 재생성",
 	achievementDisarmed		= "무장해제 업적"	
@@ -268,10 +240,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "당신에게 안광 집중이 될 때 특수 경고 보기",
+	SpecWarnCrunchArmor2	= "방어구 씹기 특수 경고 보기(2중첩 이상)",	
 	WarningEyeBeam			= "안광 집중 대상 알리기",
-	timerEyebeam			= "안광 집중 타이머 보기",
-	timerPetrifyingBreath	= "석화 숨결 타이머 보기",
-	timerNextShockwave		= "충격파 타이머 보기",	
 	timerLeftArm			= "왼쪽 팔 재생성 타이머 보기",
 	timerRightArm			= "오른쪽 팔 재생성 타이머 보기",	
 	WarnGrip				= "바위 손아귀 대상 알리기",
@@ -298,14 +268,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender = "수호 야수 (%d)",
-	YellPull = "Some things are better left alone!"
+	Defender 		= "수호 야수 (%d)",
+	YellPull 		= "Some things are better left alone!"
 }
 
 L:SetTimerLocalization{
 	timerDefender	= "수호 야수 활성"
 }
-
 
 L:SetWarningLocalization{
 	SpecWarnBlast 		= "수호 야수 폭발 - 차단!",
@@ -320,9 +289,9 @@ L:SetOptionLocalization{
 	SpecWarnVoid		= "공허의 지대에 서있을 경우 특수 경고 보기",	
 	WarnFearSoon		= "공포의 비명소리 사전 경고 보기",
 	WarnCatDied 		= "수호 야수의 남은 부활 횟수 경고 보기",
-	WarnCatDiedOne 		= "마지막 수호 야수 경고 보기(1 번 남음)",		
+	WarnCatDiedOne 		= "마지막 수호 야수 경고 보기(1 번 남음)",
+	timerDefender       = "다음 수호 야수 활성 타이머 보기"	
 }
-
 
 -------------
 --  호디르  --
@@ -335,25 +304,24 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze		= "순간 빙결",
+	specWarnBitingCold		= "매서운 추위 - 이동!!"	
 }
 
 L:SetTimerLocalization{
-	TimerFlashFreeze		= "다음 순간 빙결",
 }
 
 L:SetOptionLocalization{
-	TimerFlashFreeze		= "순간 빙결 시전 타이머 보기",
 	WarningFlashFreeze		= "순간 빙결 경고 보기",
  	PlaySoundOnFlashFreeze	= "순간 빙결 경고 소리 듣기",	
 	YellOnStormCloud		= "폭풍 구름을 얻을 경우 외치기",
-	SetIconOnStormCloud		= "폭풍 구름 대상 아이콘 설정 하기"
+	SetIconOnStormCloud		= "폭풍 구름 대상 아이콘 설정 하기",
+	specWarnBitingCold		= "매서운 추위의 영향을 받을 경우 특수 경고 보기"	
 }
 
 L:SetMiscLocalization{
 	YellKill			= "드디어... 드디어 그의 손아귀를... 벗어나는구나.",
 	YellCloud			= "폭풍 구름! 비벼요!!"
 }
-
 
 --------------
 --  토림  --
@@ -380,13 +348,12 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPhase1		= "침입자라니! 감히 내 취미 생활을 방해하는 놈들은 쓴맛을 단단히... 잠깐... 너는...",
-	YellPhase2		= "건방진 젖먹이 같으니... 감히 여기까지 기어올라와 내게 도전해? 내 손으로 쓸어버리겠다!",
-	YellKill		= "무기를 거둬라! 내가 졌다!",
-	ChargeOn		= "번개 충전: %s",
-	Charge			= "번개 충전 실패 (현재 트라이): %s"
+	YellPhase1				= "침입자라니! 감히 내 취미 생활을 방해하는 놈들은 쓴맛을 단단히... 잠깐... 너는...",
+	YellPhase2				= "건방진 젖먹이 같으니... 감히 여기까지 기어올라와 내게 도전해? 내 손으로 쓸어버리겠다!",
+	YellKill				= "무기를 거둬라! 내가 졌다!",
+	ChargeOn				= "번개 충전: %s",
+	Charge					= "번개 충전 실패 (현재 트라이): %s"
 }
-
 
 -------------
 --  Freya  --
@@ -398,16 +365,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell		= "얘들아, 날 도와라!",
-	WaterSpirit		= "고대 물의 정령",
-	Snaplasher 		= "악어덩굴손",
-	StormLasher 	= "폭풍덩굴손",
-	YellKill		= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다.",
-	TrashRespawnTimer		= "프레이야 지역 리젠타임"
+	SpawnYell			= "얘들아, 날 도와라!",
+	WaterSpirit			= "고대 물의 정령",
+	Snaplasher 			= "악어덩굴손",
+	StormLasher 		= "폭풍덩굴손",
+	YellKill			= "내게서 그의 지배력이 걷혔다. 다시 온전한 정신을 찾았도다. 영웅들이여, 고맙다.",
+	TrashRespawnTimer	= "프레이야 지역 리젠타임"
 }
 
 L:SetWarningLocalization{
-	WarnSimulKill		= "첫번째 소환 죽음 - 12초 후 부활",
+	WarnSimulKill		= "첫번째 소환수 죽음 - 12초 후 부활",
 	SpecWarnFury 		= "당신에게 자연의 격노!",
 	WarningTremor   	= "지진! - 시전 중지!",
 	WarnRoots 			= "무쇠 뿌리! : >%s<"	,
@@ -415,13 +382,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerUnstableSunBeam 	= "태양 광선: %s",
-	TimerSimulKill 			= "소환수 부활",
-	TimerFuryYou			= "당신에게 자연의 격노"
+	TimerSimulKill 			= "소환수 부활"
 }
 
 L:SetOptionLocalization{
-	WarnSimulKill			= "첫번째 소환 제거 알리기",
+	WarnSimulKill			= "첫번째 소환수 죽음 알리기",
 	WarnRoots 				= "무쇠뿌리 대상 알리기",	
 	SpecWarnFury 			= "당신이 자연의 격노일 경우 특수 경고 보기",
 	PlaySoundOnFury			= "자연의 격노 특수 사운드 재생",
@@ -430,12 +395,15 @@ L:SetOptionLocalization{
 	UnstableEnergy			= "당신이 불안정한 힘에게 영향을 받을 때 특수 경고 보기"	
 }
 
--- Elders
+----------------------
+--  Freya's Elders  --
+----------------------
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
 	name = "프레이야의 장로"
 }
+
 L:SetWarningLocalization{
 	SpecWarnFistOfStone 	= "돌덩이 주먹",
 	SpecWarnGroundTremor  	= "지진 - 시전 중지!"
@@ -452,9 +420,9 @@ L:SetOptionLocalization{
 	TrashRespawnTimer		= "프레이야 지역 리젠 타이머 보기"
 }
 
--------------------
+---------------
 --  Mimiron  --
--------------------
+---------------
 L = DBM:GetModLocalization("Mimiron")
 
 L:SetGeneralLocalization{
@@ -465,17 +433,15 @@ L:SetWarningLocalization{
 	DarkGlare				= "레이저 탄막",
 	MagneticCore			= "자기 증폭기 획득 : >%s<",
 	WarningShockBlast		= "충격파 - 움직이세요!",
-	WarnBombSpawn			= "폭탄 로봇 생성!",
+	WarnBombSpawn			= "폭탄 로봇 생성!"
 }
 
 L:SetTimerLocalization{
 	TimerHardmode			= "하드 모드 - 자폭장치 가동",
 	TimeToPhase2			= "2 페이즈",
 	TimeToPhase3			= "3 페이즈",
-	TimeToPhase4			= "4 페이즈",
-	TimerNewFlames			= "새로운 불길"
+	TimeToPhase4			= "4 페이즈"
 }
-
 
 L:SetOptionLocalization{
 	DarkGlare 				= "레이저 탄막 특수 경고 알리기",
@@ -505,7 +471,6 @@ L:SetMiscLocalization{
 	YellPhase4		= "예비 시험은 이걸로 끝이다. 자 이제부터가 진짜라고!",	
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
-
 
 --------------------
 --  GeneralVezax  --
@@ -553,7 +518,6 @@ L:SetMiscLocalization{
 	YellCrash				= "저에게 어둠 붕괴! 피하세요!"
 }
 
-
 -----------------
 --  YoggSaron  --
 -----------------
@@ -579,14 +543,14 @@ L:SetWarningLocalization{
 	WarningSanity 					= "> %d < 이성이 낮습니다.",
 	SpecWarnSanity 					= ">> %d << 이성이 매우 낮습니다. 채우세요!",
 	SpecWarnGuardianLow 			= "수호자 딜 주의하세요! - 공격 주의!",
-	WarnMadness 					= "광기 유발을 시전합니다.",
 	SpecWarnMadnessOutNow			= "광기 유발이 끝났습니다. - 밖으로 이동!",
 	WarnBrainPortalSoon				= "3 초 후 내부 포탈이 열립니다.",
-	specWarnBrainPortalSoon			= "곧 내부 포탈이 열립니다!",	
 	SpecWarnFervor					= "당신에게 사라의 열정",
+	SpecWarnFervorCast				= "당신에게 사라의 열정을 시전했습니다.",	
 	WarnEmpowerSoon					= "곧 어둠의 봉화!",
 	SpecWarnMaladyNear				= ">%s< 의 주변에 병든 정신",
-	SpecWarnDeafeningRoar			= "귀청이 터질듯한 포효"
+	SpecWarnDeafeningRoar			= "귀청이 터질듯한 포효",
+	specWarnBrainPortalSoon			= "곧 내부 포탈이 열립니다!",		
 }
 
 L:SetTimerLocalization{
@@ -599,13 +563,12 @@ L:SetOptionLocalization{
 	WarningBrainLink				= "두뇌의 고리 알리기",
 	SpecWarnBrainLink				= "두뇌의 고리 특수 경고 보기",
 	WhisperBrainLink 				= "두뇌의 고리 특수 경고 알리기(귓속말)",	
-	WarningSanity					= "이성(Sanity)이 낮은 경우 경고 보기",
-	SpecWarnSanity					= "이성(Sanity)이 매우 낮은 경우 특수 경고 보기",
+	WarningSanity					= "이성이 낮은 경우 경고 보기",
+	SpecWarnSanity					= "이성이 매우 낮은 경우 특수 경고 보기",
 	SpecWarnGuardianLow				= "수호자의 생명력이 낮을 때 특수 경고 보기(1페이즈 / 딜러)",
 	NextPortal						= "다음 내부 차원문 알리기",	
 	WarnBrainPortalSoon				= "내부 차원문 알리기",
 	specWarnBrainPortalSoon			= "내부 차원문 특수 경고 알리기",	
-	WarnMadness						= "광기 유발 경고 보기",
 	SpecWarnMadnessOutNow			= "광기 유발이 끝나기 전 특수 경고 알리기",
 	WarningSqueeze					= "압착의 촉수의 대상이 됏을 경우 외치기",
 	SetIconOnFearTarget				= "병든 정신 타겟 아이콘 설정하기",
@@ -613,6 +576,7 @@ L:SetOptionLocalization{
 	SetIconOnMCTarget				= "정신 지배에 걸린 플레이어 타겟 아이콘 설정하기",	
 	ShowSaraHealth					= "사라 체력 보기",
 	SpecWarnFervor					= "사라의 열정 특수 경고 보기",
+	SpecWarnFervorCast				= "당신에게 사라의 열정을 시전 할 때 특수 경고 보기(사라 대상/주시 일 경우)",	
 	WarnEmpowerSoon					= "어둠의 봉화 경고 보기",
 	SpecWarnMaladyNear				= "병든 정신이 걸린 플레이어가 근처에 있을 경우 특수 경고 알리기(병든 정신 종료 후)",
 	SpecWarnDeafeningRoar			= "귀청이 터질듯한 포효 시전을 할 경우 특수 경고 보기 (침묵 그리고 레전드리를 위하여!!)",

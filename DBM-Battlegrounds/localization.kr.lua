@@ -197,21 +197,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShards	= "바위 조각 대상 : >%s<",
 	WarningGrab		= "분쇄의 도약 : >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerShards		 = "바위 조각: %s"
+
 })
 
 L:SetMiscLocalization({
-	TankSwitch 		= "%%s 이 (%S+) 으로 탱커 전환!"
+	TankSwitch 		= "%%s이 (%S+) 으로 탱커 전환!"
 })
 
 L:SetOptionLocalization({
-	TimerShards		= "바위 조각 타이머 보기",
-	WarningShards 	= "바위 조각 경고 보기",
 	WarningGrab 	= "분쇄의 도약 경고 보기"
 })
 
@@ -255,7 +252,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder		= "당신은 불타는 잿더미에 있습니다! 뛰세요!!"
+	SpecWarnCinder		= "당신은 불타는 잿더미에 있습니다! 뛰세요!!",
+	BurningFury			= "불타는 격노 : >%d<"
 }
 
 L:SetTimerLocalization{
@@ -264,6 +262,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecWarnCinder		= "불타는 잿더미 위에 서있을 경우 특수 경고 보기",
 	PlaySoundOnCinder	= "불타는 잿더미 위에 서있을 경우 소리 재생하기",
+	BurningFury			= "불타는 격노 경고 보기",
 }
 
 L:SetMiscLocalization{
@@ -282,16 +281,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnSiegeEngine		= "Siege Engine ready!",
+	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
 })
 
 L:SetTimerLocalization({
 	TimerStart		= "게임 시작", 
 	TimerPOI		= "%s",
+	TimerSiegeEngine	= "Siege Engine ready"	
 })
 
 L:SetOptionLocalization({
 	TimerStart		= "게임 시작 타이머 보기", 
 	TimerPOI		= "획득 타이머 보기",
+	TimerSiegeEngine	= "Show a timer for Siege Engine building",
+	WarnSiegeEngine		= "Warn when the Siege Engine is ready",
+	WarnSiegeEngineSoon	= "Warn when the Siege Engine is almost ready"	
 })
 
 L:SetMiscLocalization({
@@ -299,5 +304,14 @@ L:SetMiscLocalization({
 	BgStart60		= "60초 후 전투가 시작됩니다.",
 	BgStart30		= "30초 후 전투가 시작됩니다.",
 	BgStart15		= "15초 후 전투가 시작됩니다.",
+	SiegeEngine				= "Siege Engine",
+	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
+	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
+	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
+	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
+	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
+	GoblinFinishedHorde		= "The siege engine is ready to roll!",
+	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
+	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"	
 })
 
