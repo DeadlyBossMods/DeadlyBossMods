@@ -285,7 +285,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerStart			= "戰鬥開始", 
 	TimerPOI			= "%s",
-	TimerSiegeEngine		= "攻城機具準備好了"
+	TimerSiegeEngine		= "攻城機具修復"
 })
 
 L:SetOptionLocalization({
