@@ -1340,7 +1340,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Bronjahm")
 
 L:SetGeneralLocalization({
-	name = "『眾魂教父』布朗吉姆"
+	name = "布朗吉姆"
 })
 
 L:SetWarningLocalization({
@@ -1357,7 +1357,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DevourerofSouls")
 
 L:SetGeneralLocalization({
-	name = "眾魂監督者"
+	name = "眾魂吞噬者"
 })
 
 L:SetWarningLocalization({
