@@ -14,6 +14,7 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge				= "%%s怒視著(%S+)，並發出震耳的咆哮!",
 	CombatStart			= "來自風暴群山最深邃，最黑暗的洞穴。歡迎『穿刺者』戈莫克!戰鬥吧，英雄們!",
+	Phase2				= "準備面對酸喉和懼鱗的雙重夢魘吧，英雄們，快就定位!",
 	Phase3				= "下一場參賽者的出場連空氣都會為之凝結:冰嚎!戰個你死我活吧，勇士們!",
 	Gormok				= "『穿刺者』戈莫克",
 	Acidmaw				= "酸喉",
@@ -40,7 +41,8 @@ L:SetOptionLocalization{
 	TimerNextBoss			= "為下一隻王到來顯示計時器",
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	TimerEmerge			= "為持續鑽地顯示計時器",
-	TimerSubmerge			= "為下一次 鑽地顯示計時器"
+	TimerSubmerge			= "為下一次 鑽地顯示計時器",
+	RangeFrame                  	= "在第2階段顯示距離框"
 }
 
 L:SetTimerLocalization{
@@ -248,8 +250,8 @@ L:SetMiscLocalization{
 	YellPull			= "這裡將會是你們的墳墓!",
 	Emerge				= "從地底鑽出!",
 	Burrow				= "鑽進地裡!",
-	PcoldIconSet			= "透骨之寒 {rt%d} 已標記在 %s",
-	PcoldIconRemoved		= "%s的透骨之寒標記已移除"
+	PcoldIconSet			= "透骨之寒{rt%d}: %s",
+	PcoldIconRemoved		= "移除標記: %s"
 }
 
 L:SetOptionLocalization{
