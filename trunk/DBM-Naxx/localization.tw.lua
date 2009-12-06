@@ -369,6 +369,7 @@ L:SetGeneralLocalization({
 L:SetOptionLocalization({
 	TimerPhase2			= "為第二階段顯示計時器",
 	specwarnP2Soon			= "為科爾蘇加德攻擊前10秒顯示特別警告",
+	warnAddsSoon			= "為寒冰皇冠守護者顯示預先警告",
 	ShowRange			= "當第二階段開始時顯示距離監視框"
 })
 
@@ -377,7 +378,8 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnP2Soon			= "10秒後科爾蘇加德開始攻擊"
+	specwarnP2Soon			= "10秒後科爾蘇加德開始攻擊",
+	warnAddsSoon			= "寒冰皇冠守護者即將出現"
 })
 
 L:SetTimerLocalization({
