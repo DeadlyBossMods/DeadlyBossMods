@@ -1861,7 +1861,7 @@ end
 function DBM:SendBGTimers(target)
 	local zone = GetRealZoneText()
 	mod = zone:gsub(" ", "")
-	self:SendCombatInfo(mod, target)
+--	self:SendCombatInfo(mod, target)
 	self:SendTimerInfo(mod,target)
 end
 
