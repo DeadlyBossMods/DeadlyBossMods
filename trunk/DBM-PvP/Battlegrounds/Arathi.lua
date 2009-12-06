@@ -3,7 +3,7 @@
 --
 -- thanks to DiabloH
 
-local Arathi	= DBM:NewMod("ArathiBasin", "DBM-PvP", 1)
+local Arathi	= DBM:NewMod("ArathiBasin", "DBM-PvP", 2)
 local L			= Arathi:GetLocalizedStrings()
 
 Arathi:SetZone(DBM_DISABLE_ZONE_DETECTION)
