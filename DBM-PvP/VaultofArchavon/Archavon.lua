@@ -16,19 +16,19 @@ mod:RegisterEvents(
 --11/19 19:20:12.949  SPELL_AURA_APPLIED,0xF150007995000007,"Archavon the Stone Watcher",0xa48,0xF140544DF3000002,"Teufelssaurier",0x1114,58678,"Rock Shards",0x1,DEBUFF
 --11/19 19:20:16.527  SPELL_AURA_REMOVED,0xF150007995000007,"Archavon the Stone Watcher",0xa48,0xF140544DF3000002,"Teufelssaurier",0x1114,58678,"Rock Shards",0x1,DEBUFF
 
-local warnShards		= mod:NewTargetAnnounce(58678, 2)
-local warnGrab			= mod:NewAnnounce("WarningGrab", 2, 53041)
-local timerShards		= mod:NewBuffActiveTimer(4, 58678)
+local warnShards			= mod:NewTargetAnnounce(58678, 2)
+local warnGrab				= mod:NewAnnounce("WarningGrab", 2, 53041)
+local timerShards			= mod:NewBuffActiveTimer(4, 58678)
 
-local warnLeap			= mod:NewSpellAnnounce(60894, 3)
-local warnStomp			= mod:NewSpellAnnounce(60880, 3)
-local warnStompSoon		= mod:NewPreWarnAnnounce(60880, 5, 1)
-local timerNextStomp	= mod:NewNextTimer(45, 60880)
+local warnLeap				= mod:NewSpellAnnounce(60894, 3)
+local warnStomp				= mod:NewSpellAnnounce(60880, 3)
+local warnStompSoon			= mod:NewPreWarnAnnounce(60880, 5, 1)
+local timerNextStomp		= mod:NewNextTimer(45, 60880)
 
-local enrageTimer		= mod:NewEnrageTimer(300)
+local timerArchavonEnrage	= mod:NewTimer(300, "ArchavonEnrage", 26662)
 
 function mod:OnCombatStart(delay)
-	enrageTimer:Start()
+	timerArchavonEnrage:Start()
 	timerNextStomp:Start(-delay)
 	warnStompSoon:Schedule(40-delay)
 end

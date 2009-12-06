@@ -23,7 +23,7 @@ local timerNovaCD			= mod:NewCDTimer(45, 65279)--Varies, 45-60seconds in between
 local timerOvercharge		= mod:NewNextTimer(45, 64218)
 local timerMobOvercharge	= mod:NewTimer(20, "timerMobOvercharge", 64217)
 
-local enrageTimer			= mod:NewEnrageTimer(360)
+local timerEmalonEnrage		= mod:NewTimer(360, "EmalonEnrage", 26662)
 
 mod:AddBoolOption("NovaSound")
 mod:AddBoolOption("RangeFrame")
@@ -34,7 +34,7 @@ function mod:OnCombatStart(delay)
 	overchargedMob = nil
 	timerOvercharge:Start(-delay)
 	timerNovaCD:Start(20-delay)
-	enrageTimer:Start(-delay)
+	timerEmalonEnrage:Start(-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
