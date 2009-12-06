@@ -196,6 +196,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	ArchavonEnrage	= "Archavon Enrage"
 })
 
 L:SetMiscLocalization({
@@ -203,7 +204,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningGrab	= "Announce grab targets"
+	WarningGrab		= "Announce grab targets",
+	ArchavonEnrage	= "Show timer for Enrage"
 })
 
 --------------------------------
@@ -222,7 +224,8 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerMobOvercharge	= "Overcharge explosion"
+	timerMobOvercharge	= "Overcharge explosion",
+	EmalonEnrage		= "Emalon Enrage"
 }
 
 L:SetOptionLocalization{
@@ -231,6 +234,7 @@ L:SetOptionLocalization{
 	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
 	NovaSound			= "Play sound on Lightning Nova",
 	timerMobOvercharge	= "Show timer for Overcharged mob (stacking debuff)",
+	EmalonEnrage		= "Show timer for Enrage",
 	RangeFrame			= "Show range frame"
 }
 
@@ -249,12 +253,14 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	KoralonEnrage		= "Koralon Enrage"
 }
 
 L:SetOptionLocalization{
 	SpecWarnCinder		= "Show special warning when you are affected by Flaming Cinder",
 	PlaySoundOnCinder	= "Play sound when you are affected by Flaming Cinder",
-	BurningFury			= "Show warning for Burning Fury"
+	BurningFury			= "Show warning for Burning Fury",
+	KoralonEnrage		= "Show timer for Enrage"
 }
 
 L:SetMiscLocalization{
