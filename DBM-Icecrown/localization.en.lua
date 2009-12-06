@@ -10,13 +10,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	achievementBoned		= "Time to free"
+	achievementBoned	= "Time to free"
 }
 
 L:SetWarningLocalization{
-	WarnImpale				= ">%s< is impaled",
-	SpecWarnWhirlwind		= "Whirlwind - Run away",
-	SpecWarnColdflame		= "Coldflame - Move away"
+	WarnImpale			= ">%s< is impaled",
+	SpecWarnWhirlwind	= "Whirlwind - Run away",
+	SpecWarnColdflame	= "Coldflame - Move away"
 }
 
 L:SetOptionLocalization{
@@ -60,8 +60,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull						= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic			= "Arise, and exult in your pure form!",
+	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
+	YellReanimatedFanatic	= "Arise, and exult in your pure form!",
 }
 ------------------------
 --  The Deathbringer  --
@@ -120,11 +120,11 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecWarnStickyOoze			= "Sticky Ooze - Move out",
 	SpecWarnRadiatingOoze		= "Radiating Ooze",
-	SpecWarnMutatedInfection 	= "Mutated Infection on you"
+	SpecWarnMutatedInfection	= "Mutated Infection on you"
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes		= "Next Poison Slime Pipes"
+	NextPoisonSlimePipes	= "Next Poison Slime Pipes"
 }
 
 L:SetOptionLocalization{
@@ -137,7 +137,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes				= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes	= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
 }
 
 ---------------------------
@@ -175,7 +175,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "Possible target switch"
+	TimerTargetSwitch	= "Possible target switch"
 }
 
 L:SetOptionLocalization{
@@ -186,9 +186,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Keleseth				= "Prince Keleseth",
-	Taldaram				= "Prince Taldaram",
-	Valanar					= "Prince Valanar"
+	Keleseth	= "Prince Keleseth",
+	Taldaram	= "Prince Taldaram",
+	Valanar		= "Prince Valanar"
 }
 
 -----------------------
@@ -256,8 +256,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAirphase			= "Your incursion ends here! None shall survive!",
-	YellPull				= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase	= "Your incursion ends here! None shall survive!",
+	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
 ---------------------
