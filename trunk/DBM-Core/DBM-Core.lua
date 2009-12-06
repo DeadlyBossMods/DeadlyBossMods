@@ -1859,10 +1859,16 @@ function DBM:SendTimers(target)
 end
 
 function DBM:SendBGTimers(target)
-	local zone = GetRealZoneText()
-	zone = zone:gsub(" ", "")
-	local mod = self:GetModByName(zone)
-	self:SendTimerInfo(mod, target)
+	local mod
+	if IsActiveBattlefieldArena() then
+		mod = self:GetModByName("Arenas")		
+	else
+		local zone = GetRealZoneText():gsub(" ", "")
+		mod = self:GetModByName(zone)
+	end
+	if mod and mod.timers then
+		self:SendTimerInfo(mod, target)
+	end
 end
 
 function DBM:SendCombatInfo(mod, target)

@@ -115,7 +115,7 @@ L:SetOptionLocalization({
 ------------------------
 --  Eye of the Storm  --
 ------------------------
-L = DBM:GetModLocalization("EyeOfTheStorm")
+L = DBM:GetModLocalization("EyeoftheStorm")
 
 L:SetGeneralLocalization({
 	name 				= "暴風之眼"
@@ -271,7 +271,7 @@ L:SetMiscLocalization{
 --  Isle of Conquest  --
 ------------------------
 
-L = DBM:GetModLocalization("IsleOfConquest")
+L = DBM:GetModLocalization("IsleofConquest")
 
 L:SetGeneralLocalization({
 	name 				= "征服之島"

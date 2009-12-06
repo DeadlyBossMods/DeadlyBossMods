@@ -1,4 +1,4 @@
-local IsleOfConquest	= DBM:NewMod("IsleOfConquest", "DBM-PvP", 1)
+local IsleOfConquest	= DBM:NewMod("IsleofConquest", "DBM-PvP", 1)
 local L					= IsleOfConquest:GetLocalizedStrings()
 
 IsleOfConquest:RemoveOption("HealthFrame")
