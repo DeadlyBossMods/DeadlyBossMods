@@ -1275,7 +1275,7 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 	end
 	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
 		for i, v in ipairs(DBM.AddOns) do
-			if v.modId == "DBM-Battlegrounds" then
+			if v.modId == "DBM-PvP" then
 				DBM:LoadMod(v)
 				break
 			end
@@ -1316,14 +1316,14 @@ function DBM:LoadMod(mod)
 end
 
 do
-	if select(4, GetAddOnInfo("DBM-Battlegrounds")) and select(5, GetAddOnInfo("DBM-Battlegrounds")) then
+	if select(4, GetAddOnInfo("DBM-PvP")) and select(5, GetAddOnInfo("DBM-PvP")) then
 		local checkBG
 		function checkBG()
-			if not DBM:GetModByName("Alterac") and MAX_BATTLEFIELD_QUEUES then
+			if not DBM:GetModByName("AlteracValley") and MAX_BATTLEFIELD_QUEUES then
 				for i = 1, MAX_BATTLEFIELD_QUEUES do
 					if GetBattlefieldStatus(i) == "confirm" then
 						for i, v in ipairs(DBM.AddOns) do
-							if v.modId == "DBM-Battlegrounds" then
+							if v.modId == "DBM-PvP" then
 								DBM:LoadMod(v)
 								return
 							end
