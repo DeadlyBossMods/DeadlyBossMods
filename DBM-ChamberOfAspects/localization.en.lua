@@ -43,7 +43,7 @@ L:SetWarningLocalization({
 	WarningFireWall			= "Fire Wall",
 	WarningVesperonPortal	= "Vesperon's portal",
 	WarningTenebronPortal	= "Tenebron's portal",
-	WarningShadronPortal	= "Shadron's portal",
+	WarningShadronPortal	= "Shadron's portal"
 })
 
 L:SetTimerLocalization({
@@ -64,7 +64,7 @@ L:SetOptionLocalization({
 	WarningVesperon			= "Announce Vesperon incoming",
 	WarningTenebronPortal	= "Show special warning for Tenebron's portal",
 	WarningShadronPortal	= "Show special warning for Shadron's portal",
-	WarningVesperonPortal	= "Show special warning for Vesperon's portal",
+	WarningVesperonPortal	= "Show special warning for Vesperon's portal"
 })
 
 L:SetMiscLocalization({
@@ -76,6 +76,6 @@ L:SetMiscLocalization({
 	FireWallOn		= "Fire Wall: %s",
 	VoidZoneOn		= "Shadow Fissure: %s",
 	VoidZones		= "Shadow Fissure fails (this try): %s",
-	FireWalls		= "Fire Wall fails (this try): %s",
+	FireWalls		= "Fire Wall fails (this try): %s"
 })
 
