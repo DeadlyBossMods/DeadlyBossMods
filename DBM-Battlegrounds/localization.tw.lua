@@ -234,7 +234,8 @@ L:SetOptionLocalization{
 	warnNova			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64216, "閃電新星"),
 	warnOverCharge			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64218, "超載"),
 	NovaSound			= "當施放閃電新星時播放音效",
-	timerMobOvercharge		= "為超載的小兵顯示計時器(減益疊加)"
+	timerMobOvercharge		= "為超載的小兵顯示計時器(減益疊加)",
+	RangeFrame			= "顯示距離框"
 }
 
 ---------------------------------
