@@ -3,7 +3,7 @@
 --
 -- thanks to LeoLeal and DiabloHu
 
-local mod	= DBM:NewMod("Battlegrounds", "DBM-PvP", 1)
+local mod	= DBM:NewMod("Battlegrounds", "DBM-PvP", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
