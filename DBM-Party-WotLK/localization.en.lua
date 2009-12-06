@@ -2,14 +2,14 @@ local L
 
 local spell				= "%s"				
 local debuff			= "%s: >%s<"			
-local spellCD			= "%s cooldown"			-- translate
-local spellSoon			= "%s soon"			-- translate
-local optionWarning		= "Show warning for %s"		-- translate
-local optionPreWarning	= "Show pre-warning for %s"	-- translate
+local spellCD			= "%s cooldown"					-- translate
+local spellSoon			= "%s soon"						-- translate
+local optionWarning		= "Show warning for %s"			-- translate
+local optionPreWarning	= "Show pre-warning for %s"		-- translate
 local optionSpecWarning	= "Show special warning for %s"	-- translate
 local optionTimerCD		= "Show timer for %s cooldown"	-- translate
 local optionTimerDur	= "Show timer for %s duration"	-- translate
-local optionTimerCast	= "Show timer for %s cast"	-- translate
+local optionTimerCast	= "Show timer for %s cast"		-- translate
 
 ----------------------------------
 --  Ahn'Kahet: The Old Kingdom  --
@@ -243,16 +243,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWaveNow	= "Wave %d: %s spawned",
+	WarningWaveNow = "Wave %d: %s spawned"
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn		= "Next wave (6)", 
+	TimerWaveIn	= "Next wave (6)"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("new wave"),
-	TimerWaveIn		= "Show timer for next set of waves (after wave 5 boss)",
+	TimerWaveIn		= "Show timer for next set of waves (after wave 5 boss)"
 })
 
 L:SetMiscLocalization({
@@ -395,16 +395,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningElemental	= "Elemental phase",		-- translate :)
-	WarningStone		= "Colossus phase"		-- translate :)
+	WarningElemental	= "Elemental phase",	-- translate
+	WarningStone		= "Colossus phase"		-- translate
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningElemental	= "Show warning for Elemental phase",	-- translate ;)
-	WarningStone		= "Show warning for Colossus phase"		-- translate :)
+	WarningElemental	= "Show warning for Elemental phase",	-- translate
+	WarningStone		= "Show warning for Colossus phase"		-- translate
 })
 
 -----------------
@@ -491,7 +491,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningStomp 	= spell
+	WarningStomp	= spell
 })
 
 L:SetTimerLocalization({
@@ -499,8 +499,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningStomp 	= optionWarning:format(GetSpellInfo(52237)),
-	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
+	WarningStomp	= optionWarning:format(GetSpellInfo(52237)),
+	TimerStompCD	= optionTimerCD:format(GetSpellInfo(52237))
 })
 
 --------------
@@ -734,11 +734,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	MakeitCountTimer		= "Show timer for Make it Count (achievement)"
+	MakeitCountTimer	= "Show timer for Make It Count (achievement)"
 })
 
 L:SetMiscLocalization({
-	MakeitCountTimer			= "Make it Count"
+	MakeitCountTimer	= "Make It Count"
 })
 
 ----------------------
@@ -808,7 +808,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	MakeitCountTimer			= "Make it Count"
+	MakeitCountTimer	= "Make It Count"
 })
 
 --------------------
@@ -1120,8 +1120,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration		= "Desecration - Move away",
-	warnExplode				= "Ghoul Explode - Run away"
+	specWarnDesecration	= "Desecration - Move away",
+	warnExplode			= "Ghoul Explode - Run away"
 })
 
 L:SetOptionLocalization({
@@ -1131,7 +1131,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+	YellCombatEnd	= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
 })
 
 -----------------------
@@ -1144,17 +1144,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste			= "Haste on %s - Dispel now",
-	specWarnPoison			= "Poison Bottle - Move away",
+	specWarnHaste	= "Haste on %s - Dispel now",
+	specWarnPoison	= "Poison Bottle - Move away"
 })
 
 L:SetOptionLocalization({
-	specWarnHaste			= "Show special warning when the Mage gains Haste (to dispel/steal)",
-	specWarnPoison			= "Show special warning when you are affected by Poison Bottle"
+	specWarnHaste	= "Show special warning when the Mage gains Haste (to dispel/steal)",
+	specWarnPoison	= "Show special warning when you are affected by Poison Bottle"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+	YellCombatEnd	= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
 })
 
 ----------------------------------
@@ -1167,15 +1167,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-    specwarnRenew			= "Renew on %s - Dispel now"
+    specwarnRenew	= "Renew on %s - Dispel now"
 })
 
 L:SetOptionLocalization({
-    specwarnRenew			= "Show special warning for Renew targets (to dispel/steal)"
+    specwarnRenew	= "Show special warning for Renew targets (to dispel/steal)"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "Excellent work!"
+	YellCombatEnd	= "Excellent work!"
 })
 
 -----------------------
@@ -1188,18 +1188,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice		= "Hammer of Justice on %s - Dispel now",
-	specwarnRadiance			= "Radiance - Look away"
+	specwarnHammerofJustice	= "Hammer of Justice on %s - Dispel now",
+	specwarnRadiance		= "Radiance - Look away"
 })
 
 L:SetOptionLocalization({
-	specwarnHammerofJustice		= "Show special warning for Hammer of Justice (to dispel)",
-	specwarnRadiance			= "Show special warning for Radiance",
-	SetIconOnHammerTarget		= "Set icons on Hammer of Justice targets"
+	specwarnHammerofJustice	= "Show special warning for Hammer of Justice (to dispel)",
+	specwarnRadiance		= "Show special warning for Radiance",
+	SetIconOnHammerTarget	= "Set icons on Hammer of Justice targets"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "I yield! I submit. Excellent work. May I run away now?"
+	YellCombatEnd	= "I yield! I submit. Excellent work. May I run away now?"
 })
 
 --------------------
@@ -1214,23 +1214,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel				= "Barrel on >%s<", 
-	specwarnDisarm			= "Disarm - Move away",
-	specWarnBrew			= "Get rid of the brew before she tosses you another one!",
-	specWarnBrewStun		= "HINT: You were bonked, remember to drink the brew next time!"
+	warnBarrel			= "Barrel on >%s<", 
+	specwarnDisarm		= "Disarm - Move away",
+	specWarnBrew		= "Get rid of the brew before she tosses you another one!",
+	specWarnBrewStun	= "HINT: You were bonked, remember to drink the brew next time!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel				= "Announce Barrel targets",
-	DisarmWarning			= "Show special warning for Disarm",
-	specWarnBrew			= "Show special warning for Dark Brewmaiden's Brew",
-	specWarnBrewStun		= "Show special warning for Dark Brewmaiden's Stun",
-	PlaySoundOnDisarm		= "Play sound on Disarm",
-	YellOnBarrel			= "Yell on Barrel"
+	warnBarrel			= "Announce Barrel targets",
+	DisarmWarning		= "Show special warning for Disarm",
+	specWarnBrew		= "Show special warning for Dark Brewmaiden's Brew",
+	specWarnBrewStun	= "Show special warning for Dark Brewmaiden's Stun",
+	PlaySoundOnDisarm	= "Play sound on Disarm",
+	YellOnBarrel		= "Yell on Barrel"
 })
 
 L:SetMiscLocalization({
-	YellBarrel				= "Barrel on me!"
+	YellBarrel	= "Barrel on me!"
 })
 
 -------------------------
@@ -1253,9 +1253,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HorsemanHead			= "Get over here, you idiot!",
-	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
-	SayCombatEnd			= "This end have I reached before.  What new adventure lies in store?"
+	HorsemanHead		= "Get over here, you idiot!",
+	HorsemanSoldiers	= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
+	SayCombatEnd		= "This end have I reached before.  What new adventure lies in store?"
 })
 
 --------------------
@@ -1270,19 +1270,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnToxic		= "Toxic Waste - Move away",
-	specWarnPursuit		= "You are being pursued - Run away"
+	specWarnToxic	= "Toxic Waste - Move away",
+	specWarnPursuit	= "You are being pursued - Run away"
 })
 
 L:SetOptionLocalization({
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued",
-	PlaySoundOnPursuit		= "Play sound on Pursuit",
+	PlaySoundOnPursuit		= "Play sound on Pursuit"
 --	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
 
 L:SetMiscLocalization({
-	IckPursuit			= "%s is chasing you!"
+	IckPursuit	= "%s is chasing you!"
 })
 ----------------------------
 --  Forgemaster Garfrost  --
@@ -1307,7 +1307,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow		= "%s hurls a massive saronite boulder at you!"
+	SaroniteRockThrow	= "%s hurls a massive saronite boulder at you!"
 })
 
 ----------------------------
@@ -1320,10 +1320,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "Scourgelord Tyrannus is coming down - Get ready",
-	specWarnIcyBlast			= "Icy Blast - Move away",
-	specWarnHoarfrost			= "Hoarfrost on you",
-	specWarnHoarfrostNear		= "Hoarfrost near you - Move"
+	specTyrannusEngaged		= "Scourgelord Tyrannus is coming down - Get ready",
+	specWarnIcyBlast		= "Icy Blast - Move away",
+	specWarnHoarfrost		= "Hoarfrost on you",
+	specWarnHoarfrostNear	= "Hoarfrost near you - Move"
 })
 
 L:SetOptionLocalization({
@@ -1334,8 +1334,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	TyrannusYell		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget		= "^%%s gazes at (%S+) and readies an icy attack!"
+	TyrannusYell	= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	HoarfrostTarget	= "^%%s gazes at (%S+) and readies an icy attack!"
 })
 
 ----------------------
@@ -1350,11 +1350,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnSoulstorm		= "Soulstorm - Move in"
+	specwarnSoulstorm	= "Soulstorm - Move in"
 })
 
 L:SetOptionLocalization({
-	specwarnSoulstorm		= "Show special warning when Soulstorm is cast (to move in)"
+	specwarnSoulstorm	= "Show special warning when Soulstorm is cast (to move in)"
 })
 
 -------------------------
@@ -1367,11 +1367,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "Stop damage"
+	specwarnMirroredSoul	= "Stop damage"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "Show special warning to stop damage on Mirrored Soul"
+	specwarnMirroredSoul	= "Show special warning to stop damage on Mirrored Soul"
 })
 
 
@@ -1387,20 +1387,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnNewWaveSoon		= "New wave soon",
-	WarnNewWave			= "%s incoming"
+	WarnNewWaveSoon	= "New wave soon",
+	WarnNewWave		= "%s incoming"
 })
 
 L:SetTimerLocalization({
-	TimerNextWave		= "Next wave"
+	TimerNextWave	= "Next wave"
 })
 
 L:SetOptionLocalization({
-	WarnNewWave				= "Show warning for boss incoming",
-	WarnNewWaveSoon			= "Show pre-warning for new wave",
-	ShowAllWaveWarnings		= "Show pre-warnings for all waves",	--Is this a warning or a pre-warning?
-	TimerNextWave			= "Show timer for next set of waves (after wave 5 boss)",
-	ShowAllWaveTimers		= "Show timers for all waves"
+	WarnNewWave			= "Show warning for boss incoming",
+	WarnNewWaveSoon		= "Show pre-warning for new wave",
+	ShowAllWaveWarnings	= "Show pre-warnings and warnings for all waves",	--Is this a warning or a pre-warning?
+	TimerNextWave		= "Show timer for next set of waves (after wave 5 boss)",
+	ShowAllWaveTimers	= "Show timers for all waves"
 })
 
 L:SetMiscLocalization({
