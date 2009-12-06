@@ -1418,7 +1418,6 @@ do
 	end
 
 	whisperSyncHandlers["DBMv4-RequestTimers"] = function(msg, channel, sender)
-DBM:AddMsg(sender.." is requesting timers")
 		DBM:SendTimers(sender)
 	end
 
