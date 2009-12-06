@@ -148,17 +148,16 @@ local function checkForUpdates()
 			if getPoiState(v) <= 3 and getPoiState(textureIndex) > 3 then
 				-- poi is now in conflict, we have to start a bar :)
 				POITimer:Start(nil, name)
-
+				if k == 13 then			-- Workshop is under attack, Siege Engine building is cancelled
+					timerSiegeEngine:Cancel()
+					warnSiegeEngineSoon:Cancel()
+				end
 				if getPoiState(textureIndex) == 4 then		-- alliance takes
 					POITimer:SetColor(allyColor, name)
 					POITimer:UpdateIcon(allyTowerIcon, name)
 				else
 					POITimer:SetColor(hordeColor, name)
 					POITimer:UpdateIcon(hordeTowerIcon, name)
-				end
-				if v >= 135 and v <= 139 then			-- Workshop under attack, Siege Engine building interrupted
-					warnSiegeEngineSoon:Cancel()
-					timerSiegeEngine:Cancel()
 				end
 			elseif getPoiState(textureIndex) <= 2 then
 				-- poi is now longer in conflict, remove the bars
