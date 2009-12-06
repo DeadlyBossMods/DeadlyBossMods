@@ -38,14 +38,14 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Show start timer",
-	TimerShadow 	= "Show timer for Shadow Sight"
+	TimerStart	= "Show start timer",
+	TimerShadow = "Show timer for Shadow Sight"
 })
 
 L:SetMiscLocalization({
-	Start60		= "One minute until the Arena battle begins!",
-	Start30		= "Thirty seconds until the Arena battle begins!",
-	Start15		= "Fifteen seconds until the Arena battle begins!"
+	Start60	= "One minute until the Arena battle begins!",
+	Start30	= "Thirty seconds until the Arena battle begins!",
+	Start15	= "Fifteen seconds until the Arena battle begins!"
 })
 
 ----------------------
@@ -58,22 +58,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "Game starts", 
-	TimerTower		= "%s",
-	TimerGY			= "%s",
+	TimerStart	= "Game starts", 
+	TimerTower	= "%s",
+	TimerGY		= "%s"
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "1 minute until the battle for Alterac Valley begins.",
-	BgStart30		= "30 seconds until the battle for Alterac Valley begins.",
-	ZoneName		= "Alterac Valley",
+	BgStart60	= "1 minute until the battle for Alterac Valley begins.",
+	BgStart30	= "30 seconds until the battle for Alterac Valley begins.",
+	ZoneName	= "Alterac Valley"
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Show start timer",
-	TimerTower		= "Show tower capture timer",
-	TimerGY			= "Show graveyard capture timer",
-	AutoTurnIn		= "Automatically turn-in quests"
+	TimerStart	= "Show start timer",
+	TimerTower	= "Show tower capture timer",
+	TimerGY		= "Show graveyard capture timer",
+	AutoTurnIn	= "Automatically turn-in quests"
 })
 
 --------------------
@@ -86,20 +86,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "The Battle for Arathi Basin will begin in 1 minute.",
-	BgStart30		= "The Battle for Arathi Basin will begin in 30 seconds.",
-	ZoneName 		= "Arathi Basin",
-	ScoreExpr 		= "(%d+)/1600",
-	Alliance 		= "Alliance",
-	Horde 			= "Horde",
-	WinBarText 		= "%s wins",
-	BasesToWin 		= "Bases to win: %d",
-	Flag 			= "Flag"
+	BgStart60	= "The Battle for Arathi Basin will begin in 1 minute.",
+	BgStart30	= "The Battle for Arathi Basin will begin in 30 seconds.",
+	ZoneName	= "Arathi Basin",
+	ScoreExpr	= "(%d+)/1600",
+	Alliance	= "Alliance",
+	Horde		= "Horde",
+	WinBarText	= "%s wins",
+	BasesToWin	= "Bases to win: %d",
+	Flag		= "Flag"
 })
 
 L:SetTimerLocalization({
-	TimerStart 		= "Game starts", 
-	TimerCap 		= "%s",
+	TimerStart	= "Game starts", 
+	TimerCap	= "%s"
 })
 
 L:SetOptionLocalization({
@@ -130,20 +130,20 @@ L:SetMiscLocalization({
 	FlagReset 		= "The flag has been reset!",
 	FlagTaken 		= "(.+) has taken the flag!",
 	FlagCaptured	= "The .+ ha%w+ captured the flag!",
-	FlagDropped		= "The flag has been dropped!",
+	FlagDropped		= "The flag has been dropped!"
 
 })
 
 L:SetTimerLocalization({
-	TimerStart 		= "Game starts", 
-	TimerFlag 		= "Flag respawn",
+	TimerStart	= "Game starts", 
+	TimerFlag	= "Flag respawn"
 })
 
 L:SetOptionLocalization({
 	TimerStart		= "Show start timer",
 	TimerWin 		= "Show win timer",
 	TimerFlag 		= "Show flag respawn timer",
-	ShowPointFrame	= "Show flag carrier and estimated points",
+	ShowPointFrame	= "Show flag carrier and estimated points"
 })
 
 ---------------------
@@ -167,25 +167,24 @@ L:SetMiscLocalization({
 	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
 	FlagAlliance		= "Alliance Flag: ",
 	FlagHorde			= "Horde Flag: ",
-	FlagBase			= "Base",
+	FlagBase			= "Base"
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "Game starts", 
-	TimerFlag 			= "Flag respawn",
+	TimerStart	= "Game starts", 
+	TimerFlag	= "Flag respawn"
 })
 
 L:SetOptionLocalization({
 	TimerStart					= "Show start timer",
 	TimerFlag					= "Show flag respawn timer",
 	ShowFlagCarrier				= "Show flag carrier",
-	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat",
+	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
 })
 
 ----------------------------------
 --  Archavon the Stone Watcher  --
 ----------------------------------
-
 L = DBM:GetModLocalization("Archavon")
 
 L:SetGeneralLocalization({
@@ -193,24 +192,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningGrab		= "Archavon grabbed >%s<"
+	WarningGrab	= "Archavon grabbed >%s<"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	TankSwitch		= "%%s lunges for (%S+)!"
+	TankSwitch	= "%%s lunges for (%S+)!"
 })
 
 L:SetOptionLocalization({
-	WarningGrab 	= "Announce grab targets"
+	WarningGrab	= "Announce grab targets"
 })
 
 --------------------------------
 --  Emalon the Storm Watcher  --
 --------------------------------
-
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
@@ -239,7 +237,6 @@ L:SetOptionLocalization{
 ---------------------------------
 --  Koralon the Flame Watcher  --
 ---------------------------------
-
 L = DBM:GetModLocalization("Koralon")
 
 L:SetGeneralLocalization{
@@ -267,7 +264,6 @@ L:SetMiscLocalization{
 ------------------------
 --  Isle of Conquest  --
 ------------------------
-
 L = DBM:GetModLocalization("IsleOfConquest")
 
 L:SetGeneralLocalization({
@@ -288,9 +284,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	TimerStart			= "Show start timer", 
 	TimerPOI			= "Show capture timer",
-	TimerSiegeEngine	= "Show a timer for Siege Engine building",
-	WarnSiegeEngine		= "Warn when the Siege Engine is ready",
-	WarnSiegeEngineSoon	= "Warn when the Siege Engine is almost ready"
+	TimerSiegeEngine	= "Show timer for Siege Engine construction",
+	WarnSiegeEngine		= "Show warning when Siege Engine is ready",
+	WarnSiegeEngineSoon	= "Show warning when Siege Engine is almost ready"
 })
 
 L:SetMiscLocalization({
