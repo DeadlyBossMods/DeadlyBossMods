@@ -48,14 +48,14 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot			= "Slag Pot on >%s<",
-	SpecWarnJetsCast		= "Flame Jets - Stop casting"
+	WarningSlagPot		= "Slag Pot on >%s<",
+	SpecWarnJetsCast	= "Flame Jets - Stop casting"
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast		= "Show special warning for Flame Jets cast",
-	WarningSlagPot			= "Announce Slag Pot targets",
-	SlagPotIcon				= "Set icons on Slag Pot targets"
+	SpecWarnJetsCast	= "Show special warning for Flame Jets cast",
+	WarningSlagPot		= "Announce Slag Pot targets",
+	SlagPotIcon			= "Set icons on Slag Pot targets"
 }
 
 ------------------
@@ -76,11 +76,11 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerTurret1				= "Turret 1",
-	timerTurret2				= "Turret 2",
-	timerTurret3				= "Turret 3",
-	timerTurret4				= "Turret 4",
-	timerGrounded               = "On the ground"
+	timerTurret1	= "Turret 1",
+	timerTurret2	= "Turret 2",
+	timerTurret3	= "Turret 3",
+	timerTurret4	= "Turret 4",
+	timerGrounded	= "On the ground"
 }
 
 L:SetOptionLocalization{
@@ -98,11 +98,11 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAir						= "Give us a moment to prepare to build the turrets.",
-	YellAir2					= "Fires out! Let's rebuild those turrets!",
-	YellGround				    = "Move quickly! She won't remain grounded for long!",
-	EmotePhase2					= "%%s grounded permanently!",
-	FlamecastUnknown			= DBM_CORE_UNKNOWN
+	YellAir				= "Give us a moment to prepare to build the turrets.",
+	YellAir2			= "Fires out! Let's rebuild those turrets!",
+	YellGround			= "Move quickly! She won't remain grounded for long!",
+	EmotePhase2			= "%%s grounded permanently!",
+	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
 
 ----------------------------
@@ -141,11 +141,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge			= "Supercharge incoming",
-	RuneofDeath					= "Rune of Death - Move away",
-	LightningTendrils			= "Lightning Tendrils - Run away",
-	Overload					= "Overload - Run away",
-	RuneofPower        			= "Rune of Power on >%s<"
+	WarningSupercharge	= "Supercharge incoming",
+	RuneofDeath			= "Rune of Death - Move away",
+	LightningTendrils	= "Lightning Tendrils - Run away",
+	Overload			= "Overload - Run away",
+	RuneofPower			= "Rune of Power on >%s<"
 }
 
 L:SetTimerLocalization{
@@ -168,7 +168,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	Steelbreaker		= "Steelbreaker",
 	RunemasterMolgeim	= "Runemaster Molgeim",
-	StormcallerBrundir 	= "Stormcaller Brundir",
+	StormcallerBrundir 	= "Stormcaller Brundir"
 }
 
 ----------------------------
@@ -232,9 +232,9 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerLeftArm			= "Left Arm respawn",
-	timerRightArm			= "Right Arm respawn",
-	achievementDisarmed		= "Timer for Disarm"
+	timerLeftArm		= "Left Arm respawn",
+	timerRightArm		= "Right Arm respawn",
+	achievementDisarmed	= "Timer for Disarm"
 }
 
 L:SetOptionLocalization{
@@ -276,20 +276,20 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast		= "Sentinel Blast - Interrupt now",
-	SpecWarnVoid		= "Seeping Feral Essence - Move away",
-	WarnCatDied 		= "Feral Defender down (%d lives remaining)",
-	WarnCatDiedOne 		= "Feral Defender down (1 life remaining)",
-	WarnFearSoon 		= "Next Terrifying Screech soon",
+	SpecWarnBlast	= "Sentinel Blast - Interrupt now",
+	SpecWarnVoid	= "Seeping Feral Essence - Move away",
+	WarnCatDied		= "Feral Defender down (%d lives remaining)",
+	WarnCatDiedOne	= "Feral Defender down (1 life remaining)",
+	WarnFearSoon	= "Next Terrifying Screech soon"
 }
 
 L:SetOptionLocalization{
-	SpecWarnBlast		= "Show special warning for Sentinel Blast (to interrupt)",
-	SpecWarnVoid		= "Show special warning when you are affected by Seeping Feral Essence",
-	WarnFearSoon		= "Show pre-warning for Terrifying Screech",
-	WarnCatDied			= "Show warning when Feral Defender dies",
-	WarnCatDiedOne		= "Show warning when Feral Defender has 1 life remaining",
-	timerDefender       = "Show timer for when Feral Defender is activated"
+	SpecWarnBlast	= "Show special warning for Sentinel Blast (to interrupt)",
+	SpecWarnVoid	= "Show special warning when you are affected by Seeping Feral Essence",
+	WarnFearSoon	= "Show pre-warning for Terrifying Screech",
+	WarnCatDied		= "Show warning when Feral Defender dies",
+	WarnCatDiedOne	= "Show warning when Feral Defender has 1 life remaining",
+	timerDefender	= "Show timer for when Feral Defender is activated"
 }
 
 -------------
@@ -332,7 +332,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	LightningOrb			= "Lightning Shock - Move away"
+	LightningOrb	= "Lightning Shock - Move away"
 }
 
 L:SetTimerLocalization{
@@ -340,18 +340,18 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerHardmode			= "Show timer for hard mode",
-	RangeFrame				= "Show range frame",
-	AnnounceFails			= "Post player fails for Lightning Charge to raid chat\n(requires announce to be enabled and leader/promoted status)",
-	LightningOrb			= "Show special warning for Lightning Shock"
+	TimerHardmode	= "Show timer for hard mode",
+	RangeFrame		= "Show range frame",
+	AnnounceFails	= "Post player fails for Lightning Charge to raid chat\n(requires announce to be enabled and leader/promoted status)",
+	LightningOrb	= "Show special warning for Lightning Shock"
 }
 
 L:SetMiscLocalization{
-	YellPhase1		= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
-	YellPhase2		= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
-	YellKill		= "Stay your arms! I yield!",
-	ChargeOn		= "Lightning Charge: %s",
-	Charge			= "Lightning Charge fails (this try): %s" 
+	YellPhase1	= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
+	YellPhase2	= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
+	YellKill	= "Stay your arms! I yield!",
+	ChargeOn	= "Lightning Charge: %s",
+	Charge		= "Lightning Charge fails (this try): %s" 
 }
 
 -------------
@@ -436,10 +436,10 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerHardmode		= "Hard mode - Self-destruct",
-	TimeToPhase2		= "Phase 2",
-	TimeToPhase3		= "Phase 3",
-	TimeToPhase4		= "Phase 4"
+	TimerHardmode	= "Hard mode - Self-destruct",
+	TimeToPhase2	= "Phase 2",
+	TimeToPhase3	= "Phase 3",
+	TimeToPhase4	= "Phase 4"
 }
 
 L:SetOptionLocalization{

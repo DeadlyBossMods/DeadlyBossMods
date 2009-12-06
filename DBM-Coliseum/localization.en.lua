@@ -10,14 +10,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge			= "^%%s glares at (%S+) and lets out",
-	CombatStart		= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!",
-	Phase2			= "Steel yourselves, heroes, for the twin terrors, Acidmaw and Dreadscale, enter the arena!",
-	Phase3			= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!",
-	Gormok			= "Gormok the Impaler",
-	Acidmaw			= "Acidmaw",
-	Dreadscale		= "Dreadscale",
-	Icehowl			= "Icehowl"
+	Charge		= "^%%s glares at (%S+) and lets out",
+	CombatStart	= "Hailing from the deepest, darkest caverns of the Storm Peaks, Gormok the Impaler! Battle on, heroes!",
+	Phase2		= "Steel yourselves, heroes, for the twin terrors, Acidmaw and Dreadscale, enter the arena!",
+	Phase3		= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!",
+	Gormok		= "Gormok the Impaler",
+	Acidmaw		= "Acidmaw",
+	Dreadscale	= "Dreadscale",
+	Icehowl		= "Icehowl"
 }
 
 L:SetOptionLocalization{
@@ -44,10 +44,10 @@ L:SetOptionLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss				= "Next boss",
-	TimerCombatStart			= "Combat starts",
-	TimerEmerge					= "Emerge",
-	TimerSubmerge				= "Submerge"
+	TimerNextBoss		= "Next boss",
+	TimerCombatStart	= "Combat starts",
+	TimerEmerge			= "Emerge",
+	TimerSubmerge		= "Submerge"
 }
 
 L:SetWarningLocalization{
@@ -87,8 +87,8 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	WhisperFlame				= "Legion Flame on you",
-	IncinerateTarget			= "Incinerate Flesh: %s"
+	WhisperFlame		= "Legion Flame on you",
+	IncinerateTarget	= "Incinerate Flesh: %s"
 }
 
 L:SetOptionLocalization{
@@ -183,8 +183,8 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 	= "In the name of our dark master. For the Lich King. You. Will. Die.",
-	Fjola 		= "Fjola Lightbane",
+	YellPull	= "In the name of our dark master. For the Lich King. You. Will. Die.",
+	Fjola		= "Fjola Lightbane",
 	Eydis		= "Eydis Darkbane"
 }
 
@@ -230,11 +230,11 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull				= "This place will serve as your tomb!",
-	Emerge					= "emerges from the ground!",
-	Burrow					= "burrows into the ground!",
-	PcoldIconSet			= "PCold icon {rt%d} set on %s",
-	PcoldIconRemoved		= "PCold icon removed from %s"
+	YellPull			= "This place will serve as your tomb!",
+	Emerge				= "emerges from the ground!",
+	Burrow				= "burrows into the ground!",
+	PcoldIconSet		= "PCold icon {rt%d} set on %s",
+	PcoldIconRemoved	= "PCold icon removed from %s"
 }
 
 L:SetOptionLocalization{
