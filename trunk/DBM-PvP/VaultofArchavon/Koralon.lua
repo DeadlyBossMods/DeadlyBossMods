@@ -24,12 +24,12 @@ local timerNextBurningFury	= mod:NewNextTimer(20, 66721)
 
 local specWarnCinder		= mod:NewSpecialWarning("SpecWarnCinder")
 
-local enrageTimer			= mod:NewEnrageTimer(300)
+local timerKoralonEnrage	= mod:NewTimer(300, "KoralonEnrage", 26662)
 
 mod:AddBoolOption("PlaySoundOnCinder")
 
 function mod:OnCombatStart(delay)
-	enrageTimer:Start(-delay)
+	timerKoralonEnrage:Start(-delay)
 	timerNextMeteor:Start(-delay)
 	timerBreathCD:Start(12-delay)
 	warnMeteorSoon:Schedule(42-delay)
