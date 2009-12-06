@@ -11,7 +11,7 @@
 ## SavedVariablesPerCharacter: DBMPvP_SavedVars
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
-## X-DBM-Mod-SubCategories: Arenas,Battlegrounds,Vault of Archavon
+## X-DBM-Mod-SubCategories: Arena,Battlegrounds,Vault of Archavon
 ## X-DBM-Mod-Name: PvP
 ## X-DBM-Mod-Name-frFR: Champs de bataille
 ## X-DBM-Mod-Name-ruRU: Поля Боя
