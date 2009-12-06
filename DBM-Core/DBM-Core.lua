@@ -1861,9 +1861,9 @@ end
 
 function DBM:SendBGTimers(target)
 	local zone = GetRealZoneText()
-	mod = zone:gsub(" ", "")
---	self:SendCombatInfo(mod, target)
---	self:SendTimerInfo(mod,target)
+	zone = zone:gsub(" ", "")
+	local mod = self:GetModByName(zone)
+	self:SendTimerInfo(mod, target)
 end
 
 function DBM:SendCombatInfo(mod, target)
@@ -1871,7 +1871,6 @@ function DBM:SendCombatInfo(mod, target)
 end
 
 function DBM:SendTimerInfo(mod, target)
-DBM:AddMsg("trying to send "..mod.." timers")
 	for i, v in ipairs(mod.timers) do
 		for _, uId in ipairs(v.startedTimers) do
 			local elapsed, totalTime, timeLeft
