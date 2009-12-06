@@ -30,12 +30,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningEmbraceExpire	= "Widow's Embrace ends in 5 seconds",
-	WarningEmbraceExpired	= "Widow's Embrace faded",
+	WarningEmbraceExpired	= "Widow's Embrace faded"
 })
 
 L:SetOptionLocalization({
 	WarningEmbraceExpire	= "Show pre-warning for Widow's Embrace fade",
-	WarningEmbraceExpired	= "Show warning for Widow's Embrace fade",
+	WarningEmbraceExpired	= "Show warning for Widow's Embrace fade"
 })
 
 ---------------
@@ -53,7 +53,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSpider			= "Next Maexxna Spiderlings"
+	TimerSpider	= "Next Maexxna Spiderlings"
 })
 
 L:SetOptionLocalization({
@@ -63,7 +63,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "I'm wrapped! Help me!"
+	YellWebWrap	= "I'm wrapped! Help me!"
 })
 
 ------------------------------
@@ -76,20 +76,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow		= "Teleported",
-	WarningTeleportSoon		= "Teleport in 20 seconds",
+	WarningTeleportNow	= "Teleported",
+	WarningTeleportSoon	= "Teleport in 20 seconds"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport			= "Teleport",
-	TimerTeleportBack		= "Teleport back"
+	TimerTeleport		= "Teleport",
+	TimerTeleportBack	= "Teleport back"
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "Show warning for Teleport",
-	WarningTeleportSoon		= "Show pre-warning for Teleport",
-	TimerTeleport			= "Show timer for Teleport",
-	TimerTeleportBack		= "Show timer for Teleport back"
+	WarningTeleportNow	= "Show warning for Teleport",
+	WarningTeleportSoon	= "Show pre-warning for Teleport",
+	TimerTeleport		= "Show timer for Teleport",
+	TimerTeleportBack	= "Show timer for Teleport back"
 })
 
 --------------------------
@@ -102,18 +102,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTeleportNow		= "Teleported",
-	WarningTeleportSoon		= "Teleport in %d seconds",
+	WarningTeleportNow	= "Teleported",
+	WarningTeleportSoon	= "Teleport in %d seconds"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport			= "Teleport",
+	TimerTeleport	= "Teleport"
 })
 
 L:SetOptionLocalization({
-	WarningTeleportNow		= "Show warning for Teleport",
-	WarningTeleportSoon		= "Show pre-warning for Teleport",
-	TimerTeleport			= "Show timer for Teleport",
+	WarningTeleportNow	= "Show warning for Teleport",
+	WarningTeleportSoon	= "Show pre-warning for Teleport",
+	TimerTeleport		= "Show timer for Teleport"
 })
 
 ---------------
@@ -126,13 +126,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningHealSoon		= "Healing possible in 3 seconds",
-	WarningHealNow		= "Heal now"
+	WarningHealSoon	= "Healing possible in 3 seconds",
+	WarningHealNow	= "Heal now"
 })
 
 L:SetOptionLocalization({
-	WarningHealSoon		= "Show pre-warning for 3-second healing window",
-	WarningHealNow		= "Show warning for 3-second healing window",
+	WarningHealSoon	= "Show pre-warning for 3-second healing window",
+	WarningHealNow	= "Show warning for 3-second healing window"
 })
 
 -----------------
@@ -199,7 +199,7 @@ L:SetMiscLocalization({
 	Boss1	= "Feugen",
 	Boss2	= "Stalagg",
 	Charge1 = "negative",
-	Charge2 = "positive",
+	Charge2 = "positive"
 })
 
 L:SetOptionLocalization({
@@ -207,16 +207,16 @@ L:SetOptionLocalization({
 	WarningChargeNotChanged	= "Show special warning when your polarity did not change",
 	ArrowsEnabled			= "Show arrows (normal \"2 camp\" strategy)",
 	ArrowsRightLeft			= "Show left/right arrows for the \"4 camp\" strategy (show left arrow if polarity changed, right if not)",
-	ArrowsInverse			= "Inverse \"4 camp\" strategy (show right arrow if polarity changed, left if not)",
+	ArrowsInverse			= "Inverse \"4 camp\" strategy (show right arrow if polarity changed, left if not)"
 })
 
 L:SetWarningLocalization({
 	WarningChargeChanged	= "Polarity changed to %s",
-	WarningChargeNotChanged	= "Polarity did not change",
+	WarningChargeNotChanged	= "Polarity did not change"
 })
 
 L:SetOptionCatLocalization({
-	Arrows	= "Arrows",
+	Arrows	= "Arrows"
 })
 
 ----------------------------
@@ -236,7 +236,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShieldWallSoon	= "Show pre-warning for Shield Wall ending",
+	WarningShieldWallSoon	= "Show pre-warning for Shield Wall ending"
 })
 
 L:SetWarningLocalization({
@@ -281,7 +281,7 @@ L:SetMiscLocalization({
 	WarningWave3	= "%d %s, %d %s and %d %s",
 	Trainee			= "Trainees",
 	Knight			= "Knights",
-	Rider			= "Riders",
+	Rider			= "Riders"
 })
 
 ---------------------
@@ -305,14 +305,14 @@ L:SetTimerLocalization({
 L:SetWarningLocalization({
 	WarningMarkSoon				= "Mark %d in 3 seconds",
 	WarningMarkNow				= "Mark %d",
-	SpecialWarningMarkOnPlayer	= "%s: %s",
+	SpecialWarningMarkOnPlayer	= "%s: %s"
 })
 
 L:SetMiscLocalization({
 	Korthazz	= "Thane Korth'azz",
 	Rivendare	= "Baron Rivendare",
 	Blaumeux	= "Lady Blaumeux",
-	Zeliek		= "Sir Zeliek",
+	Zeliek		= "Sir Zeliek"
 })
 
 -----------------
@@ -325,32 +325,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningAirPhaseSoon		= "Show pre-warning for air phase",
-	WarningAirPhaseNow		= "Announce air phase",
-	WarningLanded			= "Announce ground phase",
-	TimerAir				= "Show timer for air phase",
-	TimerLanding			= "Show timer for landing",
-	TimerIceBlast			= "Show timer for Frost Breath",
-	WarningDeepBreath		= "Show special warning for Frost Breath",
-	WarningIceblock			= "Yell on Ice Block"
+	WarningAirPhaseSoon	= "Show pre-warning for air phase",
+	WarningAirPhaseNow	= "Announce air phase",
+	WarningLanded		= "Announce ground phase",
+	TimerAir			= "Show timer for air phase",
+	TimerLanding		= "Show timer for landing",
+	TimerIceBlast		= "Show timer for Frost Breath",
+	WarningDeepBreath	= "Show special warning for Frost Breath",
+	WarningIceblock		= "Yell on Ice Block"
 })
 
 L:SetMiscLocalization({
-	EmoteBreath				= "%s takes a deep breath.",
-	WarningYellIceblock		= "I'm an Ice Block!"
+	EmoteBreath			= "%s takes a deep breath.",
+	WarningYellIceblock	= "I'm an Ice Block!"
 })
 
 L:SetWarningLocalization({
-	WarningAirPhaseSoon		= "Air phase in 10 seconds",
-	WarningAirPhaseNow		= "Air phase",
-	WarningLanded			= "Sapphiron landed",
-	WarningDeepBreath		= "Frost Breath"
+	WarningAirPhaseSoon	= "Air phase in 10 seconds",
+	WarningAirPhaseNow	= "Air phase",
+	WarningLanded		= "Sapphiron landed",
+	WarningDeepBreath	= "Frost Breath"
 })
 
 L:SetTimerLocalization({
-	TimerAir				= "Air phase",
-	TimerLanding			= "Landing",
-	TimerIceBlast			= "Frost Breath"	
+	TimerAir		= "Air phase",
+	TimerLanding	= "Landing",
+	TimerIceBlast	= "Frost Breath"	
 })
 
 ------------------
@@ -364,10 +364,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhase2				= "Show timer for Phase 2",
-	specwarnP2Soon			= "Show special warning 10 seconds before Kel'Thuzad engages",
-	warnAddsSoon			= "Show pre-warning for Guardians of Icecrown",
-	ShowRange				= "Show range frame when Phase 2 starts"
+	TimerPhase2		= "Show timer for Phase 2",
+	specwarnP2Soon	= "Show special warning 10 seconds before Kel'Thuzad engages",
+	warnAddsSoon	= "Show pre-warning for Guardians of Icecrown",
+	ShowRange		= "Show range frame when Phase 2 starts"
 })
 
 L:SetMiscLocalization({
@@ -375,12 +375,12 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnP2Soon			= "Kel'Thuzad engages in 10 Seconds",
-	warnAddsSoon			= "Guardians of Icecrown incoming soon"
+	specwarnP2Soon	= "Kel'Thuzad engages in 10 Seconds",
+	warnAddsSoon	= "Guardians of Icecrown incoming soon"
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "Phase 2",
-	BlastTimer			= "Heal now"
+	TimerPhase2	= "Phase 2",
+	BlastTimer	= "Heal now"
 })
 
