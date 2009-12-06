@@ -1418,6 +1418,7 @@ do
 	end
 
 	whisperSyncHandlers["DBMv4-RequestTimers"] = function(msg, channel, sender)
+DBM:AddMsg(sender.." is requesting timers")
 		DBM:SendTimers(sender)
 	end
 
@@ -1862,7 +1863,7 @@ function DBM:SendBGTimers(target)
 	local zone = GetRealZoneText()
 	mod = zone:gsub(" ", "")
 --	self:SendCombatInfo(mod, target)
-	self:SendTimerInfo(mod,target)
+--	self:SendTimerInfo(mod,target)
 end
 
 function DBM:SendCombatInfo(mod, target)
@@ -1870,6 +1871,7 @@ function DBM:SendCombatInfo(mod, target)
 end
 
 function DBM:SendTimerInfo(mod, target)
+DBM:AddMsg("trying to send "..mod.." timers")
 	for i, v in ipairs(mod.timers) do
 		for _, uId in ipairs(v.startedTimers) do
 			local elapsed, totalTime, timeLeft
