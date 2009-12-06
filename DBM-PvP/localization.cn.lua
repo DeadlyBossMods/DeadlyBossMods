@@ -118,7 +118,7 @@ L:SetOptionLocalization({
 -----------------------
 --  Eye of the Storm --
 -----------------------
-L = DBM:GetModLocalization("EyeOfTheStorm")
+L = DBM:GetModLocalization("EyeoftheStorm")
 
 L:SetGeneralLocalization({
 	name = "风暴之眼"
