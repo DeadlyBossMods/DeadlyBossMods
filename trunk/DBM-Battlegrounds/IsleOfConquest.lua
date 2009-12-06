@@ -19,11 +19,13 @@ local allyColor = {r = 0, g = 0, b = 1}
 local hordeTowerIcon = "Interface\\AddOns\\DBM-Battlegrounds\\Textures\\OrcTower"
 local hordeColor = {r = 1, g = 0, b = 0}
 
+local warnSiegeEngine = IsleOfConquest:NewAnnounce("WarnSiegeEngine", 3)
+local warnSiegeEngineSoon = IsleOfConquest:NewAnnounce("WarnSiegeEngineSoon", 2) 
+
 local startTimer = IsleOfConquest:NewTimer(62, "TimerStart")
 local POITimer = IsleOfConquest:NewTimer(61, "TimerPOI")	-- point of interest
 local timerSiegeEngine = IsleOfConquest:NewTimer(180, "TimerSiegeEngine")
-local warnSiegeEngine = IsleOfConquest:NewAnnounce("WarnSiegeEngine", 3)
-local warnSiegeEngineSoon = IsleOfConquest:NewAnnounce("WarnSiegeEngineSoon", 2) 
+
 
 local function isInArgs(val, ...)	-- search for val in all args (...)
 	for i=1, select("#", ...), 1 do
