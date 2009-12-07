@@ -74,6 +74,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm unlock：顯示一個可移動的計時條，可通過對它來移動所有DBM計時條的位置（也可使用：move）",
 	"/dbm timer <x> <文本>：開始一個以<文本>為名稱的時間為<x>秒的倒計時",
 	"/dbm broadcast timer <x> <文本>：向團隊廣播一個以<文本>為名稱的時間為<x>秒的倒計時（需要團隊隊長或助理權限）",
+	"/dbm break <分鐘>: 開始一個以<分鐘>的休息。將向所有有安裝DBM的團隊成員發送休息定時器。",
 	"/dbm help：顯示該説明資訊",
 }
 
@@ -85,6 +86,10 @@ DBM_CORE_ALLIANCE				= "聯盟"
 DBM_CORE_HORDE					= "部落"
 
 DBM_CORE_UNKNOWN				= "未知"
+
+DBM_CORE_BREAK_START				= "現在開始休息 -- 你有 %s 分鐘!"
+DBM_CORE_BREAK_MIN				= "休息將在 %s 分鐘後結束!"
+DBM_CORE_BREAK_SEC				= "休息將在 %s 秒後結束!"
 
 DBM_CORE_TIMER_PULL				= "戰鬥準備"
 DBM_CORE_ANNOUNCE_PULL				= "%d秒後拉怪"

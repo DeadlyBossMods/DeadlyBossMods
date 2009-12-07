@@ -74,14 +74,14 @@ L:SetWarningLocalization{
 	warnTurretsReadySoon		= "20秒後 最後一座砲塔完成",
 	warnTurretsReady		= "最後一座砲塔已完成",
 	SpecWarnDevouringFlameCast	= "你中了吞噬烈焰",
-	WarnDevouringFlameCast		= "吞噬烈焰: >%s<", 
+	WarnDevouringFlameCast		= "吞噬烈焰: >%s<"
 }
 L:SetTimerLocalization{
 	timerTurret1			= "砲塔1",
 	timerTurret2			= "砲塔2",
 	timerTurret3			= "砲塔3",
 	timerTurret4			= "砲塔4",
-	timerGrounded			= "地上階段",
+	timerGrounded			= "地上階段"
 }
 L:SetOptionLocalization{
 	SpecWarnDevouringFlame		= "當你中了吞噬烈焰時顯示特別警告",
@@ -315,7 +315,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellKill			= "我…我終於從他的掌控中…解脫了。",
-	YellCloud			= "我中了風暴雷雲 快接近我!",
+	YellCloud			= "我中了風暴雷雲 快接近我!"
 }
 
 --------------
@@ -526,7 +526,7 @@ L:SetMiscLocalization{
 	YellPhase2			= "我是清醒的夢境。",
 	Sara 				= "薩拉",
 	WhisperBrainLink 		= "你中了腦波連結 - 跑向 %s",
-	WarningYellSqueeze		= "我被觸手抓住了 - 快救我",
+	WarningYellSqueeze		= "我被觸手抓住了 - 快救我"
 }
 
 L:SetWarningLocalization{
