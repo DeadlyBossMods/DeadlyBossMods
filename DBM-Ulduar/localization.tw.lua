@@ -451,7 +451,8 @@ L:SetOptionLocalization{
 	PlaySoundOnShockBlast		= "當震爆施放時播放音效",
 	PlaySoundOnDarkGlare		= "當P3Wx2雷射彈幕施放前播放音效",
 	ShockBlastWarningInP1		= "為第1階段的震爆顯示特別警告",
-	ShockBlastWarningInP4		= "為第4階段的震爆顯示特別警告"
+	ShockBlastWarningInP4		= "為第4階段的震爆顯示特別警告",
+	RangeFrame			= "在第1階段顯示距離框"
 }
 
 L:SetMiscLocalization{
@@ -498,7 +499,7 @@ L:SetOptionLocalization{
 	SpecialWarningShadowCrashNear	= "當你附近的人中了暗影暴擊時顯示特別警告",
 	SpecialWarningLLYou		= "當你中了無面者印記時顯示特別警告",
 	SpecialWarningLLNear		= "當你附近的人中了無面者印記時顯示特別警告",
-	CrashWhisper			= "密語提示暗影暴擊的目標",
+	CrashWhisper			= "密語提示暗影暴擊的目標 (必須有最少一名團隊成員設置王為目標或專注目標)",
 	YellOnLifeLeech			= "當你中了無面者印記時大喊",
 	YellOnShadowCrash		= "當你中了暗影暴擊時大喊",
 	WarningLeechLife		= "提示無面者印記的目標",
