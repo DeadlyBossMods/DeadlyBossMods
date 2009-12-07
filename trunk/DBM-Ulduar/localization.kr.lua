@@ -193,7 +193,9 @@ L:SetWarningLocalization{
 	SpecWarnBigBang			= "대 폭발!",
 	PreWarningBigBang		= "대 폭발 10초 전!",
 	WarningCosmicSmash 		= "우주의 강타 - 폭발 4초 전",
-	SpecWarnCosmicSmash 	= "우주의 강타"
+	SpecWarnCosmicSmash 	= "우주의 강타",
+	WarnPhase2Soon			= "곧 2 페이즈",
+	warnStarLow				= "붕괴의 별 체력 낮음"
 }
 
 L:SetOptionLocalization{
@@ -206,13 +208,16 @@ L:SetOptionLocalization{
 	PossibleNextCosmicSmash		= "다음 우주의 강타 시전 타이머 보기",	
 	WarningCosmicSmash 			= "우주의 강타 알리기",
 	SpecWarnCosmicSmash 		= "우주의 강타 특수 경고 보기",
-	TimerCombatStart			= "전투 시작 타이머 보기"
+	TimerCombatStart			= "전투 시작 타이머 보기",
+	WarnPhase2Soon				= "2 페이즈 사전 경고 보기(23% 이하)",
+	warnStarLow					= "붕괴의 별 체력이 낮을 경우 경고 보기(25% 이하)"
 }
 
 L:SetMiscLocalization{
 	YellPull				= "너희 행동은 비논리적이다. 이 전투에서 가능한 결말은 모두 계산되었다. 결과와 상관없이 판테온은 관찰자의 전갈을 받을 것이다.",
 --	YellKill				= "나는 창조주의 불길이 씻어내린 세상을 보았다. 모두 변변히 저항도 못하고 사그라졌지. 너희 필멸자의 심장이 단 한번 뛸 시간에 전 행성계가 탄생하고 무너졌다. 그러나 그 모든 시간 동안, 나는 공감이란 감정을... 몰랐다. 나는, 아무것도, 느끼지, 못했다. 무수한, 무수한 생명이 꺼졌다. 그들이 모두 너희처럼 강인했더냐? 그들이 모두 너희처럼 삶을 사랑했단 말이냐?",	
 	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
+	Phase2					= "Beware!",	
 	PullCheck				= "(%d+)분 후에 알갈론이 신호 전송을 시작합니다."	
 }
 
@@ -500,7 +505,7 @@ L:SetOptionLocalization{
 	SetIconOnShadowCrash			= "어둠 붕괴 대상 공격대 아이콘 설정하기(해골)",
 	SetIconOnLifeLeach				= "얼굴 없는 자의 징표 대상 공격대 아이콘 설정하기(엑스)",
 	SpecialWarningSurgeDarkness		= "어둠 쇄도 특수 경고 보기",
-	SpecialWarningShadowCrash		= "어둠 붕괴 특수 경고 보기",
+	SpecialWarningShadowCrash		= "어둠 붕괴 특수 경고 보기(공대원 중 베작스 대상/주시 일 경우)",
 	SpecialWarningShadowCrashNear	= "주변에 어둠 붕괴일 때 특수 경고 보기",	
 	SpecialWarningLLYou				= "얼굴 없는 자의 징표 특수 경고 보기",
 	SpecialWarningLLNear			= "생명력 흡수 주변 특수 경고 보기",	
@@ -574,7 +579,7 @@ L:SetOptionLocalization{
 	SetIconOnFearTarget				= "병든 정신 타겟 아이콘 설정하기",
 	SetIconOnFervorTarget			= "사라의 열정 타겟 아이콘 설정하기",
 	SetIconOnMCTarget				= "정신 지배에 걸린 플레이어 타겟 아이콘 설정하기",	
-	ShowSaraHealth					= "사라 체력 보기",
+	ShowSaraHealth					= "사라 체력 보기(공대원 중 사라 대상/주시 일 경우)",
 	SpecWarnFervor					= "사라의 열정 특수 경고 보기",
 	SpecWarnFervorCast				= "당신에게 사라의 열정을 시전 할 때 특수 경고 보기(사라 대상/주시 일 경우)",	
 	WarnEmpowerSoon					= "어둠의 봉화 경고 보기",

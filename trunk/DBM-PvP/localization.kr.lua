@@ -274,6 +274,30 @@ L:SetMiscLocalization{
 	Meteor	= "%s이 유성 주먹을 시전합니다!"
 }
 
+-------------------------------
+--  Toravon the Ice Watcher  --
+-------------------------------
+L = DBM:GetModLocalization("Toravon")
+
+L:SetGeneralLocalization{
+	name = "Toravon the Ice Watcher"
+}
+
+L:SetWarningLocalization{
+	Frostbite		= "Frostbite >%d<"
+}
+
+L:SetTimerLocalization{
+	ToravonEnrage	= "Toravon enrages"
+}
+
+L:SetOptionLocalization{
+	Frostbite		= "Show warning for Frostbite",
+}
+
+L:SetMiscLocalization{
+	ToravonEnrage	= "Show timer for enrage"
+}
 
 ------------------------
 --  Isle of Conquest  --
