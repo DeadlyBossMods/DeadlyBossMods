@@ -33,7 +33,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-    for i,j in ipairs(mutateIcons)
+    for i,j in ipairs(mutateIcons) do
        self:SetIcon(j, 0)
     end
 end
@@ -62,14 +62,14 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:addIcon()
-	for i,j in ipairs(mutateIcons)
+	for i,j in ipairs(mutateIcons) do
 		local icon = 9 - i
 		self:SetIcon(j, icon)
 	end
 end
 
 function mod:removeIcon(target)
-	for i,j in ipairs(mutateIcons)
+	for i,j in ipairs(mutateIcons) do
 		if j == target then
 			table.remove(mutateIcons, i)
 			self:SetIcon(target, 0)
