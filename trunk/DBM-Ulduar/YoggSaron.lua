@@ -56,7 +56,6 @@ local timerNextDeafeningRoar		= mod:NewNextTimer(30, 64189)
 local timerAchieve					= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 
 mod:AddBoolOption("ShowSaraHealth")
-mod:AddBoolOption("WhisperBrainLink", false)
 mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFervorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")
@@ -131,8 +130,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(63802) then		-- Brain Link
 		self:UnscheduleMethod("warnBrainLink")
 		brainLinkTargets[#brainLinkTargets + 1] = args.destName
-		self:SetIcon(args.destName, brainLinkIcon, 30)
-		brainLinkIcon = brainLinkIcon - 1
+		if self.Options.SetIconOnBrainLinkTarget then
+			self:SetIcon(args.destName, brainLinkIcon, 30)
+			brainLinkIcon = brainLinkIcon - 1
+		end
 		if args:IsPlayer() then
 			specBrainLink:Show()
 		end

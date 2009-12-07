@@ -535,14 +535,12 @@ L:SetMiscLocalization{
 	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
 	YellPhase2	 		= "I am the lucid dream.",
 	Sara 				= "Sara",
-	WhisperBrainLink 	= "Brain Link on you - Run to %s",
 	WarningYellSqueeze	= "Squeeze on me! Help me!"
 }
 
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Guardian spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle spawned",
-	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
 	SpecWarnBrainLink 				= "Brain Link on you and %s",
 	WarningSanity 					= "%d Sanity debuffs remaining",
 	SpecWarnSanity 					= "%d Sanity debuffs remaining",
@@ -577,7 +575,6 @@ L:SetOptionLocalization{
 	specWarnBrainPortalSoon			= "Show special warning for next Brain Portal",
 	WarningSqueeze					= "Yell on Squeeze",
 	NextPortal						= "Show timer for next Brain Portal",
-	WhisperBrainLink				= "Send whisper to Brain Link targets",
 	SetIconOnFervorTarget			= "Set icons on Sara's Fervor targets",
 	SetIconOnMCTarget				= "Set icons on mind-controlled targets",
 	ShowSaraHealth					= "Show health frame for Sara in Phase 1 (must be targeted or focused by at least one raid member)",
