@@ -177,7 +177,7 @@ L:SetOptionLocalization{
 ---------------------
 --  Val'kyr Twins  --
 ---------------------
-L = DBM:GetModLocalization("Twins")
+L = DBM:GetModLocalization("ValkTwins")
 
 L:SetGeneralLocalization{
 	name = "華爾琪雙子"
