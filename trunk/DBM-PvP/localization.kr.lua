@@ -201,7 +201,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-
+	ArchavonEnrage	= "아카본 광폭화"
 })
 
 L:SetMiscLocalization({
@@ -209,7 +209,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningGrab 	= "분쇄의 도약 경고 보기"
+	WarningGrab 	= "분쇄의 도약 대상 알리기",
+	ArchavonEnrage	= "광폭화 타이머 보기"
 })
 
 --------------
@@ -229,7 +230,8 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerMobOvercharge	= "과충전 폭발"
+	timerMobOvercharge	= "과충전 폭발",
+	EmalonEnrage		= "에말론 광폭화"
 }
 
 L:SetOptionLocalization{
@@ -238,6 +240,7 @@ L:SetOptionLocalization{
 	warnOverCharge 		= ("공격대 경고 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "과충전"),
 	NovaSound			= "번개 회오리 특수 사운드 재생",		
 	timerMobOvercharge	= "과충전 된 몹의 시간 보기(디버프 중첩)",
+	EmalonEnrage		= "광폭화 타이머 보기",
 	RangeFrame			= "거리 프레임 보기"
 }
 
@@ -257,12 +260,14 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
+	KoralonEnrage		= "코랄론 광폭화"
 }
 
 L:SetOptionLocalization{
 	SpecWarnCinder		= "불타는 잿더미 위에 서있을 경우 특수 경고 보기",
 	PlaySoundOnCinder	= "불타는 잿더미 위에 서있을 경우 소리 재생하기",
 	BurningFury			= "불타는 격노 경고 보기",
+	KoralonEnrage		= "광폭화 타이머 보기"
 }
 
 L:SetMiscLocalization{
