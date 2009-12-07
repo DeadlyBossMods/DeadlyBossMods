@@ -162,7 +162,7 @@ L:SetOptionLocalization{
 ------------------
 -- Valkyr Twins --
 ------------------
-L = DBM:GetModLocalization("Twins")
+L = DBM:GetModLocalization("ValkTwins")
 
 L:SetGeneralLocalization{
 	name = "Soeurs Val'kyr"
