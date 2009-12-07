@@ -196,7 +196,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	ArchavonEnrage	= "Archavon Enrage"
+	ArchavonEnrage	= "Archavon enrages"
 })
 
 L:SetMiscLocalization({
@@ -205,7 +205,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarningGrab		= "Announce grab targets",
-	ArchavonEnrage	= "Show timer for Enrage"
+	ArchavonEnrage	= "Show timer for enrage"
 })
 
 --------------------------------
@@ -225,7 +225,7 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	timerMobOvercharge	= "Overcharge explosion",
-	EmalonEnrage		= "Emalon Enrage"
+	EmalonEnrage		= "Emalon enrages"
 }
 
 L:SetOptionLocalization{
@@ -234,7 +234,7 @@ L:SetOptionLocalization{
 	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
 	NovaSound			= "Play sound on Lightning Nova",
 	timerMobOvercharge	= "Show timer for Overcharged mob (stacking debuff)",
-	EmalonEnrage		= "Show timer for Enrage",
+	EmalonEnrage		= "Show timer for enrage",
 	RangeFrame			= "Show range frame"
 }
 
@@ -253,14 +253,14 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	KoralonEnrage		= "Koralon Enrage"
+	KoralonEnrage	= "Koralon enrages"
 }
 
 L:SetOptionLocalization{
 	SpecWarnCinder		= "Show special warning when you are affected by Flaming Cinder",
 	PlaySoundOnCinder	= "Play sound when you are affected by Flaming Cinder",
 	BurningFury			= "Show warning for Burning Fury",
-	KoralonEnrage		= "Show timer for Enrage"
+	KoralonEnrage		= "Show timer for enrage"
 }
 
 L:SetMiscLocalization{
@@ -277,19 +277,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	Frostbite		= "Frostbite >%d<"
+	Frostbite	= "Frostbite >%d<"
 }
 
 L:SetTimerLocalization{
-	ToravonEnrage		= "Toravon Enrage"
+	ToravonEnrage	= "Toravon enrages"
 }
 
 L:SetOptionLocalization{
-	Frostbite			= "Show warning for Frostbite",
+	Frostbite	= "Show warning for Frostbite",
 }
 
 L:SetMiscLocalization{
-	ToravonEnrage		= "Show timer for Enrage"
+	ToravonEnrage	= "Show timer for enrage"
 }
 
 ------------------------
