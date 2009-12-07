@@ -48,14 +48,14 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72098, 72004) then		-- Frostbite (tanks only debuff)
-		WarnFrostbite:Show(args.amount)
+		WarnFrostbite:Show(args.destName, args.amount)
 --		timerNextFrostbite:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(72098, 72004) then		-- Frostbite (tanks only debuff)
-		WarnFrostbite:Show(args.amount)
+		WarnFrostbite:Show(args.destName, args.amount)
 --		timerNextFrostbite:Start()
 	end
 end
