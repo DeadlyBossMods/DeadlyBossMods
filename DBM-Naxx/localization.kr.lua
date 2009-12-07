@@ -142,6 +142,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarningHealSoon		= "힐 시전 사전 경고 보기",
 	WarningHealNow		= "힐 가능 경고 보기",
+	SporeDamageAlert	= "포자에게 데미지를 주는 공격대원에게 귓속말 보내기 및 알리기\n(공대장 및 경보 권한이 있을 경우)"
 })
 
 -----------------
@@ -176,11 +177,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningInjection	= "돌연변이 유발 특수 경고 보기"
+	SpecialWarningInjection		= "돌연변이 유발 특수 경고 보기",
+	SetIconOnInjectionTarget	= "돌연변이 유발 대상 공격대 아이콘 설정"
 })
 
 L:SetWarningLocalization({
-	SpecialWarningInjection	= "당신에게 돌연변이 유발!!"
+	SpecialWarningInjection		= "당신에게 돌연변이 유발!!"
 })
 
 L:SetTimerLocalization({
@@ -389,6 +391,7 @@ L:SetOptionLocalization({
 	TimerPhase2			= "2 페이즈 타이머 보기",
 	specwarnP2Soon		= "2 페이즈 시작하기 전 특수 경고 보기",
 	warnAddsSoon		= "얼음왕관의 수호자 등장 사전 경고 보기",
+	BlastAlarm			= "냉기 작렬를 시전할 경우 경고 소리 재생",
 	ShowRange			= "2 페이즈가 시작되면 거리 프레임 보기"
 })
 
@@ -402,6 +405,5 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "2 페이즈",
-	BlastTimer			= "지금 힐!!"
+	TimerPhase2			= "2 페이즈"
 })
