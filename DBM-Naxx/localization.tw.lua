@@ -105,11 +105,11 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningTeleportNow		= "傳送",
-	WarningTeleportSoon		= "%d秒後 傳送",
+	WarningTeleportSoon		= "%d秒後 傳送"
 })
 
 L:SetTimerLocalization({
-	TimerTeleport			= "傳送",
+	TimerTeleport			= "傳送"
 })
 
 L:SetOptionLocalization({
@@ -202,7 +202,7 @@ L:SetMiscLocalization({
 	Boss1 				= "伏晨",
 	Boss2 				= "斯塔拉格",
 	Charge1 			= "負極",
-	Charge2 			= "正極",
+	Charge2 			= "正極"
 })
 
 L:SetOptionLocalization({
@@ -215,11 +215,11 @@ L:SetOptionLocalization({
 
 L:SetWarningLocalization({
 	WarningChargeChanged		= "極性變為%s",
-	WarningChargeNotChanged		= "極性沒有改變",
+	WarningChargeNotChanged		= "極性沒有改變"
 })
 
 L:SetOptionCatLocalization({
-	Arrows				= "箭頭",
+	Arrows				= "箭頭"
 })
 
 ----------------------------
@@ -284,7 +284,7 @@ L:SetMiscLocalization({
 	WarningWave3			= "%d %s, %d %s 和 %d %s",
 	Trainee				= "受訓員",
 	Knight				= "死亡騎士",
-	Rider				= "騎兵",
+	Rider				= "騎兵"
 })
 
 ---------------------
@@ -308,14 +308,14 @@ L:SetTimerLocalization({
 L:SetWarningLocalization({
 	WarningMarkSoon			= "3秒後 印記 %d",
 	WarningMarkNow			= "印記 #%d",
-	SpecialWarningMarkOnPlayer	= "%s: %s",
+	SpecialWarningMarkOnPlayer	= "%s: %s"
 })
 
 L:SetMiscLocalization({
 	Korthazz			= "寇斯艾茲族長",
 	Rivendare			= "瑞文戴爾男爵",
 	Blaumeux			= "布洛莫斯女士",
-	Zeliek				= "札里克爵士",
+	Zeliek				= "札里克爵士"
 })
 
 -----------------
@@ -347,7 +347,7 @@ L:SetWarningLocalization({
 	WarningAirPhaseSoon		= "10秒後 空中階段",
 	WarningAirPhaseNow		= "空中階段",
 	WarningLanded			= "薩菲隆降落了",
-	WarningDeepBreath		= "冰息術",
+	WarningDeepBreath		= "冰息術"
 })
 
 L:SetTimerLocalization({
@@ -370,6 +370,7 @@ L:SetOptionLocalization({
 	TimerPhase2			= "為第二階段顯示計時器",
 	specwarnP2Soon			= "為科爾蘇加德攻擊前10秒顯示特別警告",
 	warnAddsSoon			= "為寒冰皇冠守護者顯示預先警告",
+	BlastAlarm			= "當冰霜衝擊正在施放時播放自定義警報聲",
 	ShowRange			= "當第二階段開始時顯示距離監視框"
 })
 
@@ -383,6 +384,5 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhase2			= "第二階段",
-	BlastTimer			= "現在治療"
+	TimerPhase2			= "第二階段"
 })
