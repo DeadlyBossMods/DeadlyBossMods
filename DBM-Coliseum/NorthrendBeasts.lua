@@ -65,9 +65,9 @@ local timerParalyticBiteCD	= mod:NewCDTimer(25, 66824)
 local timerBurningBiteCD	= mod:NewCDTimer(15, 66879)
 
 mod:AddBoolOption("PingCharge")
-mod:AddBoolOption("SetIconOnChargeTarget", true, "announce")
-mod:AddBoolOption("SetIconOnBileTarget", true, "announce")
-mod:AddBoolOption("ClearIconsOnIceHowl", true, "announce")
+mod:AddBoolOption("SetIconOnChargeTarget", true)
+mod:AddBoolOption("SetIconOnBileTarget", true)
+mod:AddBoolOption("ClearIconsOnIceHowl", true)
 mod:AddBoolOption("RangeFrame")
 
 local bileTargets			= {}
