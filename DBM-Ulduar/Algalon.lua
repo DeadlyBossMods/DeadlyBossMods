@@ -27,7 +27,7 @@ mod:RegisterEvents(
 local announceBigBang			= mod:NewSpellAnnounce(64584, 3)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon			= mod:NewAnnounce("WarnPhase2Soon", 2)
-local warnStarLow				= mod:NewAnnounce("warnStarLow", 2, false)
+local warnStarLow				= mod:NewAnnounce("warnStarLow", 2, nil, false)
 local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
