@@ -75,6 +75,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm unlock: 상태 바 타이머를 움직일 수 있도록 보여줍니다.(줄임말: move)",
 	"/dbm timer <숫자> <글자>: <숫자> 초만큼 진행되는 <글자>바가 생성 됨.",
 	"/dbm broadcast timer <숫자> <글자>: <숫자> 초만큼 진행되는 <글자>바를 공격대에 알립니다.(공격대 권한이 있을 경우만 작동)",
+	"/dbm break <min>: <min>분 동안 타이머를 작동합니다.  모든 공격대원에게 DBM이 발송하는 쉬는 시간 타이머를 보냅니다.",	
 	"/dbm help: 현재 보고 있는 도움말.",
 }
 
@@ -86,6 +87,10 @@ DBM_CORE_ALLIANCE					= "얼라이언스"
 DBM_CORE_HORDE						= "호드"
 
 DBM_CORE_UNKNOWN					= "알 수 없음"
+
+DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s 분 남았습니다!"
+DBM_CORE_BREAK_MIN					= "%s 분 후 쉬는 시간이 끝납니다!"
+DBM_CORE_BREAK_SEC					= "%s 초 후 쉬는 시간이 끝납니다!"
 
 DBM_CORE_TIMER_PULL					= "풀링 중 입니다."
 DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 풀링 합니다."
