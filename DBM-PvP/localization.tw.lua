@@ -62,13 +62,13 @@ L:SetGeneralLocalization({
 L:SetTimerLocalization({
 	TimerStart			= "戰鬥開始", 
 	TimerTower			= "%s",
-	TimerGY				= "%s",
+	TimerGY				= "%s"
 })
 
 L:SetMiscLocalization({
 	BgStart60			= "奧特蘭克山谷一分鐘後開始戰鬥。",
 	BgStart30			= "奧特蘭克山谷30秒後開始戰鬥。",
-	ZoneName			= "奧特蘭克山谷",
+	ZoneName			= "奧特蘭克山谷"
 })
 
 L:SetOptionLocalization({
@@ -101,7 +101,7 @@ L:SetMiscLocalization({
 
 L:SetTimerLocalization({
 	TimerStart 			= "戰鬥開始", 
-	TimerCap 			= "%s",
+	TimerCap 			= "%s"
 })
 
 L:SetOptionLocalization({
@@ -132,20 +132,19 @@ L:SetMiscLocalization({
 	FlagReset 			= "旗幟已重置!",
 	FlagTaken 			= "(.+)已經奪走了旗幟!",
 	FlagCaptured			= "(.+)已奪得旗幟!",
-	FlagDropped			= "旗幟已經掉落!",
-
+	FlagDropped			= "旗幟已經掉落!"
 })
 
 L:SetTimerLocalization({
 	TimerStart 			= "戰鬥開始", 
-	TimerFlag 			= "旗幟重生",
+	TimerFlag 			= "旗幟重生"
 })
 
 L:SetOptionLocalization({
 	TimerStart			= "顯示開始計時器",
 	TimerWin 			= "顯示勝利計時器",
 	TimerFlag 			= "顯示旗幟重生計時器",
-	ShowPointFrame			= "顯示旗幟攜帶者和預計勝利方",
+	ShowPointFrame			= "顯示旗幟攜帶者和預計勝利方"
 })
 
 ---------------------
@@ -169,19 +168,19 @@ L:SetMiscLocalization({
 	ExprFlagReturn			= "(.+)的旗幟被(.+)還到了它的基地",
 	FlagAlliance			= "聯盟旗幟: ",
 	FlagHorde			= "部落旗幟: ",
-	FlagBase			= "基地",
+	FlagBase			= "基地"
 })
 
 L:SetTimerLocalization({
 	TimerStart 			= "戰鬥開始", 
-	TimerFlag 			= "旗幟重生",
+	TimerFlag 			= "旗幟重生"
 })
 
 L:SetOptionLocalization({
 	TimerStart			= "顯示開始計時器",
 	TimerFlag			= "顯示旗幟重生計時器",
 	ShowFlagCarrier			= "顯示旗幟攜帶者",
-	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。",
+	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。"
 })
 
 ----------------------------------
@@ -255,12 +254,14 @@ L:SetWarningLocalization{
 
 
 L:SetTimerLocalization{
+	KoralonEnrage			= "寇拉隆狂怒"
 }
 
 L:SetOptionLocalization{
 	SpecWarnCinder			= "當你中了燃焰餘燼時顯示特別警告",
 	PlaySoundOnCinder		= "當你中了燃焰餘燼時播放音效",
-	BurningFury			= "為燃燒烈怒顯示警告"
+	BurningFury			= "為燃燒烈怒顯示警告",
+	KoralonEnrage			= "為狂怒顯示計時器"
 }
 
 L:SetMiscLocalization{
@@ -292,8 +293,8 @@ L:SetOptionLocalization({
 	TimerStart			= "顯示開始計時器", 
 	TimerPOI			= "顯示奪取計時器",
 	TimerSiegeEngine		= "為攻城機具的修復顯示計時器",
-	WarnSiegeEngine			= "當攻城機具準備好時警告",
-	WarnSiegeEngineSoon		= "當攻城機具接近準備好時警告"
+	WarnSiegeEngine			= "當攻城機具準備好時顯示警告",
+	WarnSiegeEngineSoon		= "當攻城機具接近準備好時顯示警告"
 })
 
 L:SetMiscLocalization({
