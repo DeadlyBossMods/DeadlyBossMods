@@ -133,7 +133,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarningHealSoon		= "Show pre-warning for 3-second healing window",
 	WarningHealNow		= "Show warning for 3-second healing window",
-	SporeDamageAlert	= "Announce to raid and send whisper to players who damage spores\n(requires announce to be enabled and leader/promoted status)"
+	SporeDamageAlert	= "Send whisper to and announce to raid players who damage spores\n(requires announce to be enabled and leader/promoted status)"
 })
 
 -----------------
