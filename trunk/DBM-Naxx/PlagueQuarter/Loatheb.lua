@@ -66,14 +66,14 @@ end
 --Spore loser function. Credits to Forte guild and their old discontinued dbm plugins. Sad to see that guild disband, best of luck to them!
 function mod:SPELL_DAMAGE(args)
 	if self.Options.SporeDamageAlert and args.destName == "Spore" and args.spellId ~= 62124 and self:IsInCombat() then
-		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "RAID_WARNING")
-		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "WHISPER", nil, args.sourceName)
+		SendChatMessage(args.sourceName..", You are damaging a Spore!!! ("..args.amount.." damage)", "RAID_WARNING")
+		SendChatMessage(args.sourceName..", You are damaging a Spore!!! ("..args.amount.." damage)", "WHISPER", nil, args.sourceName)
 	end
 end
 
 function mod:SWING_DAMAGE(args)
 	if self.Options.SporeDamageAlert and args.destName == "Spore" and self:IsInCombat() then
-		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "RAID_WARNING")
-		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "WHISPER", nil, args.sourceName)
+		SendChatMessage(args.sourceName..", You are damaging a Spore!!! ("..args.amount.." damage)", "RAID_WARNING")
+		SendChatMessage(args.sourceName..", You are damaging a Spore!!! ("..args.amount.." damage)", "WHISPER", nil, args.sourceName)
 	end
 end
