@@ -267,6 +267,27 @@ L:SetMiscLocalization{
 	Meteor	= "%s casts Meteor Fists!"
 }
 
+-------------------------------
+--  Toravon the Ice Watcher  --
+-------------------------------
+L = DBM:GetModLocalization("Toravon")
+
+L:SetGeneralLocalization{
+	name = "Toravon the Ice Watcher"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------

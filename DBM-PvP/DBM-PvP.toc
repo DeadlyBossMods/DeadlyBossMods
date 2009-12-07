@@ -44,5 +44,6 @@ Battlegrounds\Warsong.lua
 VaultofArchavon\Archavon.lua
 VaultofArchavon\Emalon.lua
 VaultofArchavon\Koralon.lua
+VaultofArchavon\Toravon.lua
 Arenas\Arenas.lua
 
