@@ -536,14 +536,12 @@ L:SetMiscLocalization{
 	YellPull 				= "짐승의 대장을 칠 때가 곧 다가올 거예요! 놈의 졸개들에게 노여움과 미움을 쏟아부으세요!",
 	YellPhase2 				= "나는, 살아 있는 꿈이다.",
 	Sara 					= "사라",
-	WhisperBrainLink 		= "당신에게 두뇌의 고리! %s 에게 뛰세요!",
 	WarningYellSqueeze		= "압착의 촉수에 붙잡혔어요! 살려주세요!"	
 }
 
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "요그사론의 수호자 소환!",
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수가 생성되었습니다!",	
-	WarningBrainLink 				= ">%s< 그리고 >%s< 두뇌의 고리",
 	SpecWarnBrainLink				= "당신 그리고 %s 에게 두뇌의 고리!",
 	WarningSanity 					= "> %d < 이성이 낮습니다.",
 	SpecWarnSanity 					= ">> %d << 이성이 매우 낮습니다. 채우세요!",
@@ -567,7 +565,6 @@ L:SetOptionLocalization{
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수 생성 알리기",	
 	WarningBrainLink				= "두뇌의 고리 알리기",
 	SpecWarnBrainLink				= "두뇌의 고리 특수 경고 보기",
-	WhisperBrainLink 				= "두뇌의 고리 특수 경고 알리기(귓속말)",	
 	WarningSanity					= "이성이 낮은 경우 경고 보기",
 	SpecWarnSanity					= "이성이 매우 낮은 경우 특수 경고 보기",
 	SpecWarnGuardianLow				= "수호자의 생명력이 낮을 때 특수 경고 보기(1페이즈 / 딜러)",
