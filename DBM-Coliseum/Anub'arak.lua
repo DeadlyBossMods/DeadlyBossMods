@@ -27,6 +27,8 @@ local Burrowed				= false
 -- Pursue
 local warnPursue			= mod:NewTargetAnnounce(67574, 2)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
+local warnHoP				= mod:NewTargetAnnounce(10278, 2, nil, false)--Heroic strat revolves around kiting pursue and using Hand of Protection.
+local timerHoP				= mod:NewBuffActiveTimer(10, 10278, nil, false)--So we will track bops to make this easier.
 mod:AddBoolOption("PlaySoundOnPursue")
 mod:AddBoolOption("PursueIcon")
 
@@ -142,7 +144,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8, 15)
 		end
 		warnPursue:Show(args.destName)
-
 	elseif args:IsSpellID(66013, 67700, 68509, 68510) then		-- Penetrating Cold
 		if args:IsPlayer() then
 			specWarnPCold:Show()
@@ -155,6 +156,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(66012) then							-- Freezing Slash
 		warnFreezingSlash:Show(args.destName)
 		timerFreezingSlash:Start()
+	elseif args:IsSpellID(10278) and self:IsInCombat() then		-- Hand of Protection
+		warnHoP:Show(args.destName)
+		timerHoP:Start(args.destName)
 	end
 end
 
