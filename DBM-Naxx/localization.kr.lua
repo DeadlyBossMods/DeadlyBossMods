@@ -360,7 +360,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	EmoteBreath				= "%s이 숨을 깊게 들이마십니다.",
+--	EmoteBreath				= "%s이 숨을 깊게 들이마십니다.",
+	EmoteBreath				= "숨을 깊게 들이마십니다.",
 	WarningYellIceblock		= "저 얼음 방패! 제 뒤에 숨으세요!!"
 })
 
