@@ -168,6 +168,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.AnnouncePColdIcons and DBM:GetRaidRank() >= 1 then
 			SendChatMessage(L.PcoldIconRemoved:format(args.destName), "RAID")
 		end
+	elseif args:IsSpellID(10278) and self:IsInCombat() then		-- Hand of Protection
+		timerHoP:Cancel(args.destName)
 	end
 end
 
