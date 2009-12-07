@@ -73,8 +73,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Wall			= "%s를 둘러싼 용암이 끓어오릅니다!",
-	Portal			= "%s이 황혼의 차원문을 엽니다!!",
+--	Wall			= "%s를 둘러싼 용암이 끓어오릅니다!",
+--	Portal			= "%s이 황혼의 차원문을 엽니다!!",
+	Wall			= "둘러싼 용암이 끓어오릅니다!",
+	Portal			= "황혼의 차원문을 엽니다!!",
 	NameTenebron	= "테네브론",
 	NameShadron		= "샤드론",
 	NameVesperon	= "베스페론",
