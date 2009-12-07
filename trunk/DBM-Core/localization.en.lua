@@ -73,6 +73,7 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm unlock: shows a movable status bar timer (alias: move)",
 	"/dbm timer <x> <text>: Starts a <x> second Pizza Timer with the name <text>",
 	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second Pizza Timer with the name <text> to the raid (required promoted or leader)",
+	"/dbm break <min>: Starts a break for <min> minutes.  Will give all raid members with DBM a break timer.",
 	"/dbm help: shows this help",
 }
 
@@ -84,6 +85,10 @@ DBM_CORE_ALLIANCE					= "Alliance"
 DBM_CORE_HORDE						= "Horde"
 
 DBM_CORE_UNKNOWN					= "unknown"
+
+DBM_CORE_BREAK_START				= "Break starting now -- you have %s minute(s)!"
+DBM_CORE_BREAK_MIN					= "Break ends in %s minutes!"
+DBM_CORE_BREAK_SEC					= "Break ends in %s seconds!"
 
 DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d sec"
