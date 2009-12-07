@@ -102,7 +102,8 @@ L:SetMiscLocalization{
 	YellAir 			= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
 	YellAir2			= "불꽃이 꺼졌습니다! 포탑을 재설치합시다!",	
 	YellGround			= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
-	EmotePhase2			= "%%s이 완전히 땅에 내려앉았습니다!",	
+--	EmotePhase2			= "%%s이 완전히 땅에 내려앉았습니다!",	
+	EmotePhase2			= "완전히 땅에 내려앉았습니다!",	
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
 }
 
@@ -216,7 +217,8 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull				= "너희 행동은 비논리적이다. 이 전투에서 가능한 결말은 모두 계산되었다. 결과와 상관없이 판테온은 관찰자의 전갈을 받을 것이다.",
 --	YellKill				= "나는 창조주의 불길이 씻어내린 세상을 보았다. 모두 변변히 저항도 못하고 사그라졌지. 너희 필멸자의 심장이 단 한번 뛸 시간에 전 행성계가 탄생하고 무너졌다. 그러나 그 모든 시간 동안, 나는 공감이란 감정을... 몰랐다. 나는, 아무것도, 느끼지, 못했다. 무수한, 무수한 생명이 꺼졌다. 그들이 모두 너희처럼 강인했더냐? 그들이 모두 너희처럼 삶을 사랑했단 말이냐?",	
-	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
+--	Emote_CollapsingStar	= "%s에게 붕괴의 별을 시전 합니다!",
+	Emote_CollapsingStar	= "붕괴의 별을 시전 합니다!",
 	Phase2					= "Beware!",	
 	PullCheck				= "(%d+)분 후에 알갈론이 신호 전송을 시작합니다."	
 }
@@ -260,7 +262,8 @@ L:SetMiscLocalization{
 	Health_Body				= "콜로간 몸통",
 	Health_Right_Arm		= "오른쪽 팔",
 	Health_Left_Arm			= "왼쪽 팔",
-	FocusedEyebeam			= "%s이 당신에게 안광을 집중합니다!"	
+--	FocusedEyebeam			= "%s이 당신에게 안광을 집중합니다!"
+	FocusedEyebeam			= "당신에게 안광을 집중합니다!"
 }
 
 --------------
