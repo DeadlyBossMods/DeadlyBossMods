@@ -192,7 +192,9 @@ L:SetWarningLocalization{
 	SpecWarnBigBang			= "Big Bang",
 	PreWarningBigBang		= "Big Bang in ~10 seconds",
 	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",
-	SpecWarnCosmicSmash 	= "Cosmic Smash"
+	SpecWarnCosmicSmash 	= "Cosmic Smash",
+	WarnPhase2Soon			= "Phase 2 soon",
+	warnStarLow				= "Collapsing Star is low (at ~25%)"
 }
 
 L:SetOptionLocalization{
@@ -205,13 +207,16 @@ L:SetOptionLocalization{
 	WarningCosmicSmash 		= "Show warning for Cosmic Smash",
 	SpecWarnCosmicSmash 	= "Show special warning for Cosmic Smash",
 	PossibleNextCosmicSmash	= "Show timer for next possible Cosmic Smash",
-    TimerCombatStart		= "Show timer for start of combat"
+	TimerCombatStart		= "Show timer for start of combat",
+	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~23%)",
+	warnStarLow				= "Show warning when Collapsing Star is low (at ~25%)"
 }
 
 L:SetMiscLocalization{
 	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
 --	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",
 	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",
+	Phase2					= "Beware!",
 	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."
 }
 
