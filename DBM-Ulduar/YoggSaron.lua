@@ -44,7 +44,7 @@ local specWarnFervor				= mod:NewSpecialWarning("SpecWarnFervor")
 local specWarnFervorCast			= mod:NewSpecialWarning("SpecWarnFervorCast", false)
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
-mod:AddBoolOption("WarningSqueeze", false, "announce")
+mod:AddBoolOption("WarningSqueeze", true, "announce")
 
 local enrageTimer					= mod:NewEnrageTimer(900)
 local brainportal					= mod:NewTimer(20, "NextPortal")

@@ -42,11 +42,11 @@ local specWarnFelInferno		= mod:NewSpecialWarning("SpecWarnFelInferno")
 local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", false)
 local SpecWarnFelFireballDispel	= mod:NewSpecialWarning("SpecWarnFelFireballDispel", isMagicDispeller)
 
-mod:AddBoolOption("LegionFlameRunSound", true, "announce")
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
-mod:AddBoolOption("LegionFlameIcon", true, "announce")
-mod:AddBoolOption("IncinerateFleshIcon", true, "announce")
-mod:AddBoolOption("TouchJaraxxusIcon", true, "announce")
+mod:AddBoolOption("LegionFlameRunSound", true)
+mod:AddBoolOption("LegionFlameIcon", true)
+mod:AddBoolOption("IncinerateFleshIcon", true)
+mod:AddBoolOption("TouchJaraxxusIcon", true)
 
 local enrageTimer				= mod:NewEnrageTimer(600)
 local timerFlame 				= mod:NewTargetTimer(8, 68123)--There are 8 debuff Ids. Since we detect first to warn, use an 8sec timer to cover duration of trigger spell and damage debuff.

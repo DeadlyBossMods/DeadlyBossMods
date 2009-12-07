@@ -39,8 +39,8 @@ local timerLightTouch				= mod:NewTargetTimer(20, 67298)
 local timerDarkTouch				= mod:NewTargetTimer(20, 67283)
 local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 
-mod:AddBoolOption("SetIconOnDebuffTarget", true, "announce")
 mod:AddBoolOption("SpecialWarnOnDebuff", false, "announce")
+mod:AddBoolOption("SetIconOnDebuffTarget", true)
 
 
 local debuffTargets					= {}

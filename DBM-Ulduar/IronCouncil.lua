@@ -32,8 +32,8 @@ local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  --
 local timerLightningTendrils	= mod:NewBuffActiveTimer(27, 63486)
 local specwarnOverload			= mod:NewSpecialWarning("Overload") 
 mod:AddBoolOption("AlwaysWarnOnOverload", false, "announce")
-mod:AddBoolOption("PlaySoundOnOverload", true, "announce")
-mod:AddBoolOption("PlaySoundLightningTendrils", true, "announce")
+mod:AddBoolOption("PlaySoundOnOverload", true)
+mod:AddBoolOption("PlaySoundLightningTendrils", true)
 
 -- Steelbreaker
 -- High Voltage ... don't know what to show here - 63498
