@@ -165,7 +165,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningInjection	= "Show special warning when you are affected by Mutating Injection"
+	SpecialWarningInjection		= "Show special warning when you are affected by Mutating Injection",
+	SetIconOnInjectionTarget	= "Set icons on Mutating Injection targets\n(The marks will scroll to the next in line after the Skull explodes)"
 })
 
 L:SetWarningLocalization({
