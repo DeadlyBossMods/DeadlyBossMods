@@ -131,8 +131,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHealSoon	= "Show pre-warning for 3-second healing window",
-	WarningHealNow	= "Show warning for 3-second healing window"
+	WarningHealSoon		= "Show pre-warning for 3-second healing window",
+	WarningHealNow		= "Show warning for 3-second healing window",
+	SporeDamageAlert	= "AchieveAssist: Raid Warn and Whisper offenders who damage Spores"
 })
 
 -----------------

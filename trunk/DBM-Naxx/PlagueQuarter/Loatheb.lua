@@ -9,7 +9,9 @@ mod:RegisterCombat("combat")
 mod:EnableModel()
 
 mod:RegisterEvents(
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
+	"SWING_DAMAGE"
 )
 
 local warnSporeNow	= mod:NewSpellAnnounce(32329, 2)
@@ -22,6 +24,8 @@ local warnHealNow	= mod:NewAnnounce("WarningHealNow", 1, 48071, false)
 local timerSpore	= mod:NewNextTimer(36, 32329)
 local timerDoom		= mod:NewNextTimer(180, 29204)
 local timerAura		= mod:NewBuffActiveTimer(17, 55593)
+
+mod:AddBoolOption("SporeDamageAlert", false)
 
 local doomCounter	= 0
 local sporeTimer	= 36
@@ -59,4 +63,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--Spore loser function. Credits to Forte guild and their old discontinued dbm plugins. Sad to see that guild disband, best of luck to them!
+function mod:SPELL_DAMAGE(args)
+	if self.Options.SporeDamageAlert and args.destName == "Spore" and args.spellId ~= 62124 and self:IsInCombat() then
+		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "RAID_WARNING")
+		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "WHISPER", nil, args.sourceName)
+	end
+end
 
+function mod:SWING_DAMAGE(args)
+	if self.Options.SporeDamageAlert and args.destName == "Spore" and self:IsInCombat() then
+		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "RAID_WARNING")
+		SendChatMessage(args.sourceName..", YOU are damaging a Spore!!! ("..args.amount.." damage)", "WHISPER", nil, args.sourceName)
+	end
+end
