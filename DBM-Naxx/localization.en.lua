@@ -133,7 +133,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarningHealSoon		= "Show pre-warning for 3-second healing window",
 	WarningHealNow		= "Show warning for 3-second healing window",
-	SporeDamageAlert	= "AchieveAssist: Raid Warn and Whisper offenders who damage Spores"
+	SporeDamageAlert	= "Announce to raid and send whisper to players who damage spores\n(requires announce to be enabled and leader/promoted status)"
 })
 
 -----------------
@@ -368,7 +368,7 @@ L:SetOptionLocalization({
 	TimerPhase2		= "Show timer for Phase 2",
 	specwarnP2Soon	= "Show special warning 10 seconds before Kel'Thuzad engages",
 	warnAddsSoon	= "Show pre-warning for Guardians of Icecrown",
-	BlastAlarm		= "Frost Blast Alarm: Siren sounds when Frost Blast is cast",
+	BlastAlarm		= "Play custom siren sound when Frost Blast is being cast",
 	ShowRange		= "Show range frame when Phase 2 starts"
 })
 
