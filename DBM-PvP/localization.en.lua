@@ -277,15 +277,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	Frostbite		= "Frostbite >%d<"
 }
 
 L:SetTimerLocalization{
+	ToravonEnrage		= "Toravon Enrage"
 }
 
 L:SetOptionLocalization{
+	Frostbite			= "Show warning for Frostbite",
 }
 
 L:SetMiscLocalization{
+	ToravonEnrage		= "Show timer for Enrage"
 }
 
 ------------------------
