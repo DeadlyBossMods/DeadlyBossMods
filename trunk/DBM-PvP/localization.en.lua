@@ -277,7 +277,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	Frostbite	= "Frostbite >%d<"
+	Frostbite	= "Frostbite on >%s< (%d)"
 }
 
 L:SetTimerLocalization{
