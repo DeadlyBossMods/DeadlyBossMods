@@ -10,6 +10,7 @@ mod:EnableModel()
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS"
 )
 
@@ -22,8 +23,19 @@ local timerInjection	= mod:NewTargetTimer(10, 28169)
 local timerCloud		= mod:NewNextTimer(15, 28240)
 local enrageTimer		= mod:NewEnrageTimer(720)
 
+mod:AddBoolOption("SetIconOnInjectionTarget", true)
+
+local mutateIcons = {}
+
 function mod:OnCombatStart(delay)
+	table.wipe(mutateIcons)
 	enrageTimer:Start(-delay)
+end
+
+function mod:OnCombatEnd()
+    for i,j in ipairs(mutateIcons)
+       self:SetIcon(j, 0)
+    end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -33,8 +45,37 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnInjection:Show()
 		end
-		self:SetIcon(args.destName, 8, 9)
+		if mod.Options.SetIconOnInjectionTarget then
+			table.insert(mutateIcons, args.destName)
+			addIcon()
+		end
 	end	
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(28169) then
+		timerInjection:Cancel(args.destName)--Cancel timer if someone is dumb and dispels it.
+		if mod.Options.SetIconOnInjectionTarget then
+			removeIcon(args.destName)
+		end
+	end
+end
+
+function mod:addIcon()
+	for i,j in ipairs(mutateIcons)
+		local icon = 9 - i
+		self:SetIcon(j, icon)
+	end
+end
+
+function mod:removeIcon(target)
+	for i,j in ipairs(mutateIcons)
+		if j == target then
+			table.remove(mutateIcons, i)
+			self:SetIcon(target, 0)
+		end
+	end
+	addIcon()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
