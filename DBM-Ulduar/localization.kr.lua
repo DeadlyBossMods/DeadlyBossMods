@@ -100,7 +100,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAir 			= "저희에게 잠깐 포탑을 설치할 시간을 주세요.",
-	YellAir2			= "불꽃이 꺼졌어요! 포탑을 재설치합시다!",	
+	YellAir2			= "불꽃이 꺼졌습니다! 포탑을 재설치합시다!",	
 	YellGround			= "움직이세요! 오래 붙잡아둘 순 없을 겁니다!",
 	EmotePhase2			= "%%s이 완전히 땅에 내려앉았습니다!",	
 	FlamecastUnknown	= DBM_CORE_UNKNOWN
@@ -269,7 +269,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Defender 		= "수호 야수 (%d)",
-	YellPull 		= "Some things are better left alone!"
+	YellPull 		= "내버려두는 편이 나았을 텐데!"
 }
 
 L:SetTimerLocalization{
@@ -465,7 +465,7 @@ L:SetMiscLocalization{
 	MobPhase2 		= "VX-001",
 	MobPhase3 		= "공중지휘기",
 	YellPull		= "시간이 없어, 친구들! 내가 최근에 만든 기막힌 발명품을 시험하게 도와 주겠지? 자, 마음 바꿀 생각은 말라고. XT-002를 그 꼬락서니로 만들었으니, 너흰 나한테 빚진 셈이란 걸 잊지 마!",	
-	YellHardPull	= "아니 대체 왜 그런짓을 한게지? \"누르지 마시오\"라고 쓰여진 경고문구 못봤나? 자폭장치를 활성화 해 놓으면 도대체 어떻게 발명품을 시험하지?",	
+	YellHardPull	= "아니, 대체 왜 그런 짓을 한 게지? \"누르지 마시오.\"라고 쓰인 경고 문구 못 봤나? 자폭 장치를 활성화해 놓으면, 도대체 어떻게 발명품을 시험하지?",	
 	YellPhase2		= "멋지군! 참으로 경이적인 결과야! 차체 내구도 98.9 퍼센트라! 손상이라고 보기도 어렵지! 계속하자고.",
 	YellPhase3		= "고맙다, 친구들! 너희 덕분에 멋진 자료를 좀 얻었어! 자, 그걸 어디 뒀더라... 아, 여기 있군.",
 	YellPhase4		= "예비 시험은 이걸로 끝이다. 자 이제부터가 진짜라고!",	
