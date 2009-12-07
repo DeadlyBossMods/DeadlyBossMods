@@ -25,11 +25,11 @@ local specWarnSurgeDarkness		= mod:NewSpecialWarning("SpecialWarningSurgeDarknes
 local specWarnLifeLeechYou		= mod:NewSpecialWarning("SpecialWarningLLYou")
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
 
-mod:AddBoolOption("SetIconOnShadowCrash", true, "announce")
-mod:AddBoolOption("SetIconOnLifeLeach", true, "announce")
 mod:AddBoolOption("CrashWhisper", false, "announce")
 mod:AddBoolOption("YellOnLifeLeech", true, "announce")
 mod:AddBoolOption("YellOnShadowCrash", true, "announce")
+mod:AddBoolOption("SetIconOnShadowCrash", true)
+mod:AddBoolOption("SetIconOnLifeLeach", true)
 
 local timerEnrage				= mod:NewEnrageTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
