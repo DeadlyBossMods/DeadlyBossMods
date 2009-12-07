@@ -19,10 +19,15 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_HEALTH"
 )
 
 local announceBigBang			= mod:NewSpellAnnounce(64584, 3)
+local warnPhase2				= mod:NewPhaseAnnounce(2)
+local warnPhase2Soon			= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnStarLow				= mod:NewAnnounce("warnStarLow", 2, false)
 local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
@@ -42,7 +47,12 @@ local timerCastCosmicSmash		= mod:NewCastTimer(4.5, 62311)
 local timerPhasePunch			= mod:NewBuffActiveTimer(45, 64412)
 local timerNextPhasePunch		= mod:NewNextTimer(16, 64412)
 
+local warned_preP2 = false
+local warned_star = false
+
 function mod:OnCombatStart(delay)
+	warned_preP2 = false
+	warned_star = false
 	local text = select(3, GetWorldStateUIInfo(1)) 
 	local _, _, time = string.find(text, L.PullCheck)
 	if not time then 
@@ -79,6 +89,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(65108, 64122) then 	-- Black Hole Explosion
 		announceBlackHole:Show()
+		warned_star = false
 	elseif args:IsSpellID(64598, 62301) then	-- Cosmic Smash
 		timerCastCosmicSmash:Start()
 		timerCDCosmicSmash:Start()
@@ -104,5 +115,22 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Emote_CollapsingStar or msg:find(L.Emote_CollapsingStar) then
 		timerNextCollapsingStar:Start()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Phase2 or msg:find(L.Phase2) then
+		timerNextCollapsingStar:Cancel()
+		warnPhase2:Show()
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if not warned_preP2 and self:GetUnitCreatureId(uId) == 32871 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.23 then
+		warned_preP2 = true
+		warnPhase2Soon:Show()
+	elseif not warned_star and self:GetUnitCreatureId(uId) == 32955 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.25 then
+		warned_star = true
+		warnStarLow:Show()
 	end
 end
