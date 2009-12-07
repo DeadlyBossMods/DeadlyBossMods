@@ -63,13 +63,13 @@ L:SetMiscLocalization{
 	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
 	YellReanimatedFanatic	= "Arise, and exult in your pure form!",
 }
-------------------------
---  The Deathbringer  --
-------------------------
+-----------------------------
+--  Deathbringer Saurfang  --
+-----------------------------
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
-	name = "The Deathbringer"
+	name = "Deathbringer Saurfang"
 }
 
 L:SetWarningLocalization{
@@ -191,13 +191,13 @@ L:SetMiscLocalization{
 	Valanar		= "Prince Valanar"
 }
 
------------------------
---  Queen Lana'thel  --
------------------------
+-----------------------------
+--  Blood-Queen Lana'thel  --
+-----------------------------
 L = DBM:GetModLocalization("Lanathel")
 
 L:SetGeneralLocalization{
-	name = "Blood Queen Lanathel"
+	name = "Blood-Queen Lana'thel"
 }
 
 L:SetWarningLocalization{
