@@ -89,9 +89,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnBattleFury	= "%s (%d)"
 }
 
 L:SetOptionLocalization{
+	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury")
 }
 
 -----------------
