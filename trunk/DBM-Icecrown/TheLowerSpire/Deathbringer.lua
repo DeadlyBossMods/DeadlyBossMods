@@ -12,20 +12,28 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
+local isRanged = select(2, UnitClass("player")) == "MAGE"
+              or select(2, UnitClass("player")) == "HUNTER"
+              or select(2, UnitClass("player")) == "WARLOCK"
+
 local warnBloodNova			= mod:NewSpellAnnounce(73058)
+local warnFrenzy			= mod:NewSpellAnnounce(72737)
 local warnMark				= mod:NewTargetAnnounce(72444)
+local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
+local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
+local timerRuneofBlood		= mod:NewTargetTimer(30, 72410)
+--local timerBoilingBlood	= mod:NewTargetTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
-local timerNextMark			= mod:NewCDTimer(35, 72444)--Unsure if this is next or CD, so using CD for now.
 local timerCallBloodBeast	= mod:NewNextTimer(30, 72173)
 
-mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("RangeFrame", isRanged)
 
 function mod:OnCombatStart(delay)
 	timerCallBloodBeast:Start(-delay)
 	timerNextMark:Start(50-delay)
 	timerBloodNova:Start(-delay)
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(10)
+		DBM.RangeCheck:Show(15)
 	end
 end
 
@@ -49,14 +57,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(72255, 72444, 72445, 72446) then	-- Mark of the Fallen Champion
+	if args:IsSpellID(72255, 72444, 72445, 72446) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
-		timerNextMark:Start()
+	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
+		warnBoilingBlood:Show(args.destName)
+--		timerBoilingBlood:Start(args.destName)				-- This can be on as many as 6 people at once during overlap. Kind of spammy to use bar like this.
+	elseif args:IsSpellID(72410) then						-- Rune of Blood
+		warnRuneofBlood:Show(args.destName)
+		timerRuneofBlood:Start(args.destName)
+	elseif args:IsSpellID(72737) then						-- Frenzy
+		warnFrenzy:Show()
 	end
 end
-
---[[function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(72255, 72444, 72445, 72446) then	-- Mark of the Fallen Champion
-		mod:SetIcon(args.destName, 0)
-	end
-end--]]
