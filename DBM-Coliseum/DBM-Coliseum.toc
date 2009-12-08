@@ -1,4 +1,4 @@
-## Interface: 30200
+## Interface: 30300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Crusaders' Coliseum|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0십자군의 시험장|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Kolosseum der Kreuzfahrer|r
