@@ -55,7 +55,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
 	elseif args:IsSpellID(66721) then
-		WarnBurningFury:Show(args.amount)
+		WarnBurningFury:Show(1)
 		timerNextBurningFury:Start()
 	end
 end
