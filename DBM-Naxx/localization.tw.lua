@@ -128,14 +128,19 @@ L:SetGeneralLocalization({
 	name 				= "憎恨者"
 })
 
+L:SetMiscLocalization({
+	LoathebSpore			= "孢子"
+})
 L:SetWarningLocalization({
 	WarningHealSoon			= "3秒後可以治療",
-	WarningHealNow			= "現在治療"
+	WarningHealNow			= "現在治療",
+	KillSpore			= "你殺死了一個孢子!!!"
 })
 
 L:SetOptionLocalization({
 	WarningHealSoon			= "為3秒後可以治療顯示預先警告",
-	WarningHealNow			= "為現在治療顯示警告"
+	WarningHealNow			= "為現在治療顯示警告",
+	SporeDamageAlert		= "在團隊中提示誰殺死了孢子並發送密語給兇手\n(需要團隊隊長或助理權限)"
 })
 
 -----------------
