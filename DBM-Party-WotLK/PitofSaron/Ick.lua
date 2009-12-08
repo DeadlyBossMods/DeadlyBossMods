@@ -22,8 +22,7 @@ local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
 
 mod:AddBoolOption("PlaySoundOnPursuit", true)
-
---mod:AddBoolOption("SetIconOnPursuitTarget", true) --Needs syncing implimentation to be added.
+mod:AddBoolOption("SetIconOnPursuitTarget", true)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68987) then							-- Pursuit
@@ -31,14 +30,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-	if msg == L.IckPursuit then
-		specWarnPursuit:Show()
-		if self.Options.PlaySoundOnPursuit then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
-	end
-end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69029, 70850) then							-- Pursuit Confusion
@@ -56,5 +47,33 @@ do
 			specWarnToxic:Show()
 			lasttoxic = time()
 		end
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+	if msg == L.IckPursuit then
+		specWarnPursuit:Show()
+		if self.Options.PlaySoundOnPursuit then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+	local target = msg and msg:match(L.IckPursuit)
+	if target then
+		self:SendSync("Pursuit: "..target)
+	end
+end
+
+function mod:OnSync(msg, target)
+	if target == UnitName("player") then
+		specWarnPursuit:Show()
+		if self.Options.PlaySoundOnPursuit then
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+		end
+	end
+	if self.Options.SetIconOnPursuitTarget then
+		self:SetIcon(target, 8, 12)
 	end
 end
