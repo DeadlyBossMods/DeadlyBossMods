@@ -27,6 +27,7 @@ local timerSpark		= mod:NewTimer(30, "TimerSpark", 59381)
 local timerVortex		= mod:NewCastTimer(11, 56105)
 local timerVortexCD		= mod:NewNextTimer(60, 56105)
 local timerBreath		= mod:NewTimer(59, "TimerBreath", 60071)
+local timerAchieve      = mod:NewAchievementTimer(360, 1875, "TimerSpeedKill")
 
 local guids = {}
 local surgeTargets = {}
@@ -39,6 +40,7 @@ end
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
+	timerAchieve:Start(-delay)
 	table.wipe(guids)
 end
 
