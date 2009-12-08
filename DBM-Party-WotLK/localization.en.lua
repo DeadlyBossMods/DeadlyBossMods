@@ -1278,7 +1278,7 @@ L:SetOptionLocalization({
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued",
 	PlaySoundOnPursuit		= "Play sound on Pursuit"
---	SetIconOnPursuitTarget	= "Set icons on pursued targets"
+	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
 
 L:SetMiscLocalization({
@@ -1294,16 +1294,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "Saronite Rock created - Line of sight now",
-	specWarnSaroniteRock	= "Saronite Throw on you - Move",
-	specWarnPermafrost		= "%s: %s"
+	warnSaroniteRock			= "Saronite Rock created - Line of sight now",
+	specWarnSaroniteRock		= "Saronite Throw on you - Move",
+	specWarnSaroniteRockNear	= "Saronite Throw near you - Move",
+	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "Show warning for Saronite Rock (to clear Permafrost)",
-	specWarnSaroniteRock		= "Show special warning when you are affected by Saronite Throw",
+	specWarnSaroniteRock		= "Show special warning when you are targeted by Saronite Throw",
+	specWarnSaroniteRockNear	= "Show special warning when you are near Saronite Throw target",
 	specWarnPermafrost			= "Show special warning when Permafrost stacks get too high (value not set in stone)"
---	SetIconOnSaroniteRockTarget	= "Set icons on Saronite Rock targets"
+	SetIconOnSaroniteRockTarget	= "Set icons on Saronite Rock targets"
 })
 
 L:SetMiscLocalization({
