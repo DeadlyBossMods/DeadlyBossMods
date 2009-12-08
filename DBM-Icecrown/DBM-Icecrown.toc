@@ -35,8 +35,8 @@ localization.fr.lua
 localization.es.lua
 TheLowerSpire\LordMarrowgar.lua
 TheLowerSpire\Deathwhisper.lua
-TheLowerSpire\Deathbringer.lua
 TheLowerSpire\GunshipBattle.lua
+TheLowerSpire\Deathbringer.lua
 ThePlagueworks\Festergut.lua
 ThePlagueworks\Rotface.lua
 ThePlagueworks\Putricide.lua
