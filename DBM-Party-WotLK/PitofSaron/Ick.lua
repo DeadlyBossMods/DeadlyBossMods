@@ -62,18 +62,20 @@ end
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	local target = msg and msg:match(L.IckPursuit)
 	if target then
-		self:SendSync("Pursuit: "..target)
+		self:SendSync("Pursuit", target)
 	end
 end
 
 function mod:OnSync(msg, target)
-	if target == UnitName("player") then
-		specWarnPursuit:Show()
-		if self.Options.PlaySoundOnPursuit then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+	if msg == "Pursuit" then
+		if target == UnitName("player") then
+			specWarnPursuit:Show()
+			if self.Options.PlaySoundOnPursuit then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
 		end
-	end
-	if self.Options.SetIconOnPursuitTarget then
-		self:SetIcon(target, 8, 12)
+		if self.Options.SetIconOnPursuitTarget then
+			self:SetIcon(target, 8, 12)
+		end
 	end
 end
