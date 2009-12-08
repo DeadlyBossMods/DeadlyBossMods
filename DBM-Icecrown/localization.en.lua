@@ -76,6 +76,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	RangeFrame	= "Show range frame"
 }
 
 ----------------------
