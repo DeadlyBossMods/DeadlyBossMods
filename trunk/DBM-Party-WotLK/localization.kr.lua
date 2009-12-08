@@ -254,7 +254,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("새로운 웨이브"),
-	TimerWaveIn			= "다음 웨이브 타이머 보기 (웨이브 6만 보기)",
+	TimerWaveIn			= "다음 웨이브 타이머 보기 (5번째 보스 웨이브 이후)",
 })
 
 L:SetMiscLocalization({
@@ -736,6 +736,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	MakeitCountTimer		= "Show timer for Make it Count (achievement)"
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer		= "Make it Count"
 })
 
 --------------------
@@ -802,6 +807,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." 종료") 	-- translate the word 'ending'
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer			= "Make it Count"
 })
 
 ------------------
@@ -1168,6 +1177,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCombatEnd			= "Excellent work!"
 })
 
 ---------------------
@@ -1191,6 +1201,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCombatEnd				= "I yield! I submit. Excellent work. May I run away now?"
 })
 
 --------------------
@@ -1271,7 +1282,7 @@ L:SetOptionLocalization({
 	specWarnToxic			= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit			= "당신을 추격 하게 될 경우 특수 경고 보기",
 	PlaySoundOnPursuit		= "당신이 추격당할 경우 특수 소리 재생",	
---	SetIconOnPursuitTarget	= "Set icon on Pursuit target"	
+	SetIconOnPursuitTarget	= "추격 대상에게 공격대 아이콘 설정"	
 })
 
 L:SetMiscLocalization({
@@ -1290,14 +1301,16 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnSaroniteRock			= "Saronite Rock created - Line of sight now",
 	specWarnSaroniteRock		= "당신에게 사로나이트를 던집니다. 이동!",
+	specWarnSaroniteRockNear	= "당신 주변에 사오나이트를 던집니다. 주의하세요!",	
 	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "Saronite Rock의 경고 보기 (to clear Permafrost)",
-	specWarnSaroniteRock		= "Saronite Throw의 영향을 받을 경우 특수 경고 보기",
-	specWarnPermafrost			= "Permafrost 의 중첩이 많을 경우 특수 경고 보기(value not set in stone)"
---	SetIconOnSaroniteRockTarget	= "Set icon on Pursuit target"	
+	warnSaroniteRock			= "사로나이트 Rock의 경고 보기 (to clear Permafrost)",
+	specWarnSaroniteRock		= "사로나이트 던지기의 대상이 될 경우 특수 경고 보기",
+	specWarnSaroniteRockNear	= "당신 주변에 사로나이트 던지기 대상이 있을 경우 특수 경고 보기",	
+	specWarnPermafrost			= "Permafrost 의 중첩이 많을 경우 특수 경고 보기(value not set in stone)",
+	SetIconOnSaroniteRockTarget	= "사로나이트 Rock 대상 공격대 아이콘 설정"
 })
 
 L:SetMiscLocalization({
@@ -1330,7 +1343,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	TyrannusYell				= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "^%%s가 (%S+) 노려보며 얼음 공격을 준비합니다!"
+	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!"
 })
 
 --------------------
@@ -1378,24 +1391,24 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("HoRWaveTimer")
 
 L:SetGeneralLocalization({
-	name = "Wave Timers"
+	name = "웨이브 타이머"
 })
 
 L:SetWarningLocalization({
-	WarnNewWaveSoon		= "New wave soon",
+	WarnNewWaveSoon		= "곧 새로운 웨이브",
 	WarnNewWave			= "%s incoming"
 })
 
 L:SetTimerLocalization({
-	TimerNextWave		= "Next wave"
+	TimerNextWave		= "다음 웨이브"
 })
 
 L:SetOptionLocalization({
-	WarnNewWave			= "Show warning when a boss is incoming (wave 5 + 10)",
-	WarnNewWaveSoon		= "Show pre-warning for when a boss is incoming",
-	ShowAllWaveWarnings	= "Show (pre-)warning for every new wave",
-	TimerNextWave		= "Show a timer for next wave after a boss is defeated",
-	ShowAllWaveTimers	= "Show a timer for every next wave"
+	WarnNewWave				= "Show warning for boss incoming",
+	WarnNewWaveSoon			= "Show pre-warning for new wave",
+	ShowAllWaveWarnings		= "Show pre-warnings for all waves",	--Is this a warning or a pre-warning?
+	TimerNextWave			= "Show timer for next set of waves (after wave 5 boss)",
+	ShowAllWaveTimers		= "Show timers for all waves"
 })
 
 L:SetMiscLocalization({
@@ -1441,7 +1454,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "Show special warning when you stand in Well of Corruption"
+	SpecWarnWellCorruption	= "Show special warning when you are affected by Well of Corruption"
 })
 
 L:SetMiscLocalization({
