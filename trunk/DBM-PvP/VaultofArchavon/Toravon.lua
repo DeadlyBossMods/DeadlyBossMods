@@ -41,21 +41,16 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-  if args:IsSpellID(72104, 72090) then			-- Freezing Ground (no idea?)
-    warnFreezingGround:Show()
+	if args:IsSpellID(72104, 72090) then			-- Freezing Ground (no idea?)
+		warnFreezingGround:Show()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72098, 72004) then		-- Frostbite (tanks only debuff)
-		WarnFrostbite:Show(args.destName, args.amount)
+		WarnFrostbite:Show(args.destName, args.amount or 1)
 --		timerNextFrostbite:Start()
 	end
 end
 
-function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(72098, 72004) then		-- Frostbite (tanks only debuff)
-		WarnFrostbite:Show(args.destName, args.amount)
---		timerNextFrostbite:Start()
-	end
-end
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
