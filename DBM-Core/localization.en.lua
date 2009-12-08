@@ -73,8 +73,8 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
 	"/dbm timer <x> <text>: Starts a <x> second Pizza Timer with the name <text>.",
 	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second Pizza Timer with the name <text> to the raid (requires leader/promoted status).",
-	"/dbm break <min>: Starts a break timer for <min> minutes. Will give all raid members with DBM a break timer.",
-	"/dbm help: Shows this slash command description",
+	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
+	"/dbm help: Shows slash command descriptions",
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
