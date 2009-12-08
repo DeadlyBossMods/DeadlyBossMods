@@ -26,8 +26,7 @@ L:SetOptionLocalization{
 	SpecWarnWhirlwind		= "소용돌이 특수 경고 보기",
 	SpecWarnColdflame		= "냉기화염에 영향을 받을 경우 특수 경고 보기",
 	PlaySoundOnWhirlwind	= "소용돌이 특수 경고 소리 듣기",
-	achievementBoned		= "Show timer for Boned Achievement",
-	SetIconOnImpale			= "Set icons on impaled targets"
+	SetIconOnImpale			= "꿰뚫기 대상 공격대 아이콘 설정"
 }
 
 -------------------------
@@ -45,19 +44,20 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating					= "Add reviving",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "Death and Decay - Move away",
-	SpecWarnCurseTorpor				= "Curse of Torpor on you",
-	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
-	WarnAddsSoon					= "New adds soon"
+	SpecWarnDeathDecay				= "죽음과 부패 - 이동!!",
+	SpecWarnCurseTorpor				= "당신에게 무감각의 저주",
+	SpecWarnTouchInsignificance		= "무의미함의 손길 (3)",
+	WarnAddsSoon					= "곧 새로운 이교도 추가"
 }
 
 L:SetOptionLocalization{
-	WarnAddsSoon					= "Show pre-warning for adds spawning",
+	WarnAddsSoon					= "이교도 추가 사전 경고 보기",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "Show warning when an add is getting revived",								-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
-	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
-	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor"
+	SpecWarnTouchInsignificance		= "무의미함의 손길이 3중첩이 됐을 경우 특수 경고 보기",
+	SpecWarnDeathDecay				= "죽음과 부패에 영향을 받을 경우 특수 경고 보기",
+	SpecWarnCurseTorpor				= "무감각의 저주에 영향을 받을 경우 특수 경고 보기",
+	SetIconOnDominateMind			= "정신 지배 대상 공격대 아이콘 설정"	
 }
 
 L:SetMiscLocalization{
@@ -71,13 +71,14 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
-	name = "The Deathbringer"
+	name = "죽음의 인도자"
 }
 
 L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	RangeFrame	= "거리 프레임 보기"
 }
 
 ----------------------
@@ -86,13 +87,15 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization{
-	name = "Gunship Battle"
+	name = "비행포격선 전투"
 }
 
 L:SetWarningLocalization{
+	WarnBattleFury	= "%s (%d)"
 }
 
 L:SetOptionLocalization{
+	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "전투 격노")
 }
 
 -----------------
@@ -101,7 +104,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Festergut")
 
 L:SetGeneralLocalization{
-	name = "Festergut"
+	name = "구린속"
 }
 
 L:SetWarningLocalization{
@@ -116,7 +119,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Rotface")
 
 L:SetGeneralLocalization{
-	name = "Rotface"
+	name = "썩은얼굴"
 }
 
 L:SetWarningLocalization{
@@ -167,7 +170,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization{
-	name = "Blood Prince Council"
+	name = "피의 의회"
 }
 
 L:SetWarningLocalization{
