@@ -47,23 +47,25 @@ end
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	local target = msg and msg:match(L.SaroniteRockThrow)
 	if target then
-		self:SendSync("SaroniteRock: "..target)
+		self:SendSync("SaroniteRock", target)
 	end
 end
 
 function mod:OnSync(msg, target)
-	if target == UnitName("player") then
-		specWarnSaroniteRock:Show()
-	elseif target then
-		local uId = DBM:GetRaidUnitID(target)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnSaroniteRockNear:Show()
+	if msg == "SaroniteRock" then
+		if target == UnitName("player") then
+			specWarnSaroniteRock:Show()
+		elseif target then
+			local uId = DBM:GetRaidUnitID(target)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
+					specWarnSaroniteRockNear:Show()
+				end
 			end
 		end
-	end
-	if self.Options.SetIconOnSaroniteRockTarget then
-		self:SetIcon(target, 8, 5)
+		if self.Options.SetIconOnSaroniteRockTarget then
+			self:SetIcon(target, 8, 5)
+		end
 	end
 end
