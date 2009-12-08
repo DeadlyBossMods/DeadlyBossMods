@@ -26,7 +26,7 @@ mod:AddBoolOption("PlaySoundOnWhirlwind", true, "announce")
 
 local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
 local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)
-local timerWhirlwind		= mod:NewBuffActiveTimer(25, 69076)
+local timerWhirlwind		= mod:NewBuffActiveTimer(20, 69076)
 local timerBoned            = mod:NewAchievementTimer(8, 4610, "achievementBoned") --Iffy, still not sure what combat event blizz actually checks for bonespikes.
 
 mod:AddBoolOption("SetIconOnImpale", true)
@@ -82,9 +82,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerWhirlwindCD:Start()
 		preWarnWhirlwind:Schedule(85)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerWhirlwind:Show(40)						-- 40seconds (ish) on heroic
+			timerWhirlwind:Show(40)						-- 40seconds on heroic
 		else
-			timerWhirlwind:Show()						-- 20-25seconds (ish) on normal.
+			timerWhirlwind:Show()						-- 20seconds on normal.
 		end
 		if self.Options.PlaySoundOnWhirlwind then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
