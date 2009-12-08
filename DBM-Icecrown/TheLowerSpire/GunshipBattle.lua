@@ -20,10 +20,10 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnBelowZero		= mod:NewSpellAnnounce(69705, 3)
+local warnBelowZero			= mod:NewSpellAnnounce(69705, 3)
 local warnExperienced		= mod:NewTargetAnnounce(71188, 1, nil, false)		-- might be spammy
-local warnVeteran		= mod:NewTargetAnnounce(71193, 2, nil, false)		-- might be spammy
-local warnElite			= mod:NewTargetAnnounce(71195, 3, nil, false)		-- might be spammy
+local warnVeteran			= mod:NewTargetAnnounce(71193, 2, nil, false)		-- might be spammy
+local warnElite				= mod:NewTargetAnnounce(71195, 3, nil, false)		-- might be spammy
 local warnBattleFury		= mod:NewAnnounce("WarnBattleFury", 3, nil, false)	-- might be spammy
 local warnBladestorm		= mod:NewSpellAnnounce(69652, 2, nil, false)		-- might be spammy
 local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 3)
