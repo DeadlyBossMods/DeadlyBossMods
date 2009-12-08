@@ -202,12 +202,15 @@ L:SetOptionLocalization{
 	SpecWarnCosmicSmash 		= "為宇宙潰擊顯示特別警告",
 	PossibleNextCosmicSmash		= "為下一次 宇宙潰擊顯示計時器",
 	TimerCombatStart		= "為戰鬥開始顯示計時器"
+	WarnPhase2Soon			= "為第2階段顯示預先警告 (大約23%)",
+	warnStarLow			= "當崩陷之星血量低 (大約25%)時顯示警告"
 }
 
 L:SetMiscLocalization{
 	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
 --	YellKill			= "我曾經看過塵世沉浸在造物者的烈焰之中，眾生連一聲悲泣都無法呼出，就此凋零。整個星系在彈指之間歷經了毀滅與重生。然而在這段歷程之中，我的心卻無法感受到絲毫的…惻隱之念。我‧感‧受‧不‧到。成千上萬的生命就這麼消逝。他們是否擁有與你同樣堅韌的生命?他們是否與你同樣熱愛生命?",
 	Emote_CollapsingStar		= "%s開始召喚崩陷之星!",
+	Phase2				= "當心!",
 	PullCheck			= "艾爾加隆開始上傳滅世訊息的剩餘時間= (%d+)分鐘。"
 }
 
@@ -568,7 +571,6 @@ L:SetOptionLocalization{
 	specWarnBrainPortalSoon		= "為下一次 腦部傳送門顯示特別警告",
 	WarningSqueeze			= "當你中了壓榨 (觸手綁人)時大喊",
 	NextPortal			= "為下一次 傳送門顯示計時器",
-	WhisperBrainLink		= "密語提示腦波連結的目標",
 	SetIconOnFervorTarget		= "為薩拉的熱誠的目標設置標記 (三角)",
 	SetIconOnMCTarget		= "為支配心靈的目標設置標記 (三角)",
 	ShowSaraHealth			= "顯示薩拉在第1階段的血量 (必須有最少一名團隊成員設置目標或專注目標)",

@@ -74,8 +74,8 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm unlock：顯示一個可移動的計時條，可通過對它來移動所有DBM計時條的位置（也可使用：move）",
 	"/dbm timer <x> <文本>：開始一個以<文本>為名稱的時間為<x>秒的倒計時",
 	"/dbm broadcast timer <x> <文本>：向團隊廣播一個以<文本>為名稱的時間為<x>秒的倒計時（需要團隊隊長或助理權限）",
-	"/dbm break <分鐘>: 開始一個以<分鐘>的休息。將向所有有安裝DBM的團隊成員發送休息定時器。",
-	"/dbm help：顯示該説明資訊",
+	"/dbm break <分鐘>: 開始一個以<分鐘>的休息。向所有有安裝DBM的團隊成員發送休息定時器。",
+	"/dbm help：顯示可用命令描述",
 }
 
 DBM_ERROR_NO_PERMISSION				= "無權進行該操作。"
