@@ -268,6 +268,31 @@ L:SetMiscLocalization{
 	Meteor				= "%s施展隕石之拳!"
 }
 
+-------------------------------
+--  Toravon the Ice Watcher  --
+-------------------------------
+L = DBM:GetModLocalization("Toravon")
+
+L:SetGeneralLocalization{
+	name 				= "『寒冰看守者』拓拉梵"
+}
+
+L:SetWarningLocalization{
+	Frostbite			= "霜寒刺骨: >%s< (%d)"
+}
+
+L:SetTimerLocalization{
+	ToravonEnrage			= "拓拉梵狂怒"
+}
+
+L:SetOptionLocalization{
+	Frostbite			= "為霜寒刺骨顯示警告",
+}
+
+L:SetMiscLocalization{
+	ToravonEnrage			= "為狂怒顯示計時器"
+}
+
 ------------------------
 --  Isle of Conquest  --
 ------------------------

@@ -79,6 +79,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	RangeFrame			= "顯示距離框"
 }
 
 ----------------------
