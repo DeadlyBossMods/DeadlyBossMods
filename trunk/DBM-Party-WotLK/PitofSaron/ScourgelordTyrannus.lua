@@ -67,23 +67,25 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg and msg:match(L.HoarfrostTarget)
 	if target then
-		self:SendSync("Hoarfrost: "..target)
+		self:SendSync("Hoarfrost", target)
 	end
 end
 
 function mod:OnSync(msg, target)
-	if target == UnitName("player") then
-		specWarnHoarfrost:Show()
-	elseif target then
-		local uId = DBM:GetRaidUnitID(target)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnHoarfrostNear:Show()
+	if msg == "Hoarfrost" then
+		if target == UnitName("player") then
+			specWarnHoarfrost:Show()
+		elseif target then
+			local uId = DBM:GetRaidUnitID(target)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
+					specWarnHoarfrostNear:Show()
+				end
 			end
 		end
-	end
-	if self.Options.SetIconOnHoarfrostTarget then
-		self:SetIcon(target, 8, 5)
+		if self.Options.SetIconOnHoarfrostTarget then
+			self:SetIcon(target, 8, 5)
+		end
 	end
 end
