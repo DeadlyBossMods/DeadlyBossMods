@@ -68,13 +68,13 @@ DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 DBM_CORE_RANGECHECK_LOCK			= "Lock frame"
 
 DBM_CORE_SLASHCMD_HELP				= {
-	"Available Slash Commands:",
-	"/dbm version: performs a raid-wide version check (alias: ver)",
-	"/dbm unlock: shows a movable status bar timer (alias: move)",
-	"/dbm timer <x> <text>: Starts a <x> second Pizza Timer with the name <text>",
-	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second Pizza Timer with the name <text> to the raid (required promoted or leader)",
-	"/dbm break <min>: Starts a break for <min> minutes.  Will give all raid members with DBM a break timer.",
-	"/dbm help: shows this help",
+	"Available slash commands:",
+	"/dbm version: Performs a raid-wide version check (alias: ver).",
+	"/dbm unlock: Shows a movable status bar timer (alias: move).",
+	"/dbm timer <x> <text>: Starts a <x> second Pizza Timer with the name <text>.",
+	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second Pizza Timer with the name <text> to the raid (requires leader/promoted status).",
+	"/dbm break <min>: Starts a break timer for <min> minutes. Will give all raid members with DBM a break timer.",
+	"/dbm help: Shows this slash command description",
 }
 
 DBM_ERROR_NO_PERMISSION				= "You don't have the required permission to do this."
