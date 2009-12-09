@@ -265,19 +265,11 @@ do
 	end
 
 	function argsMT.__index:GetSrcCreatureID()
-		if wowVersion >= 30300 then
-			return tonumber(self.sourceGUID:sub(7, 10), 16) or 0
-		else
-			return tonumber(self.sourceGUID:sub(9, 12), 16) or 0
-		end
+		return tonumber(self.sourceGUID:sub(9, 12), 16) or 0
 	end
 	
 	function argsMT.__index:GetDestCreatureID()
-		if wowVersion >= 30300 then
-			return tonumber(self.destGUID:sub(7, 10), 16) or 0
-		else
-			return tonumber(self.destGUID:sub(9, 12), 16) or 0
-		end
+		return tonumber(self.destGUID:sub(9, 12), 16) or 0
 	end
 	
 	local function handleEvent(self, event, ...)
@@ -1556,12 +1548,7 @@ do
 			local id = (i == 0 and "target") or uId..i.."target"
 			local guid = UnitGUID(id)
 			if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
-				local cId
-				if wowVersion >= 30300 then
-					cId = tonumber(guid:sub(7, 10), 16)
-				else
-					cId = tonumber(guid:sub(9, 12), 16)
-				end
+				local cId = tonumber(guid:sub(9, 12), 16)
 				targetList[cId] = id
 			end
 		end
@@ -1804,11 +1791,7 @@ end
 
 function DBM:UNIT_DIED(args)
 	if bit.band(args.destGUID:sub(1, 5), 0x00F) == 3 or bit.band(args.destGUID:sub(1, 5), 0x00F) == 5  then
-		if wowVersion >= 30300 then
-			self:OnMobKill(tonumber(args.destGUID:sub(7, 10), 16))
-		else
-			self:OnMobKill(tonumber(args.destGUID:sub(9, 12), 16))
-		end
+		self:OnMobKill(tonumber(args.destGUID:sub(9, 12), 16))
 	end
 end
 DBM.UNIT_DESTROYED = DBM.UNIT_DIED
@@ -2220,19 +2203,11 @@ end
 
 function bossModPrototype:GetUnitCreatureId(uId)
 	local guid = UnitGUID(uId)
-	if wowVersion >= 30300 then
-		return (guid and tonumber(guid:sub(7, 10), 16)) or 0
-	else
-		return (guid and tonumber(guid:sub(9, 12), 16)) or 0
-	end
+	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
 end
 
 function bossModPrototype:GetCIDFromGUID(guid)
-	if wowVersion >= 30300 then
-		return (guid and tonumber(guid:sub(7, 10), 16)) or 0
-	else
-		return (guid and tonumber(guid:sub(9, 12), 16)) or 0
-	end
+	return (guid and tonumber(guid:sub(9, 12), 16)) or 0
 end
 
 function bossModPrototype:GetBossTarget(cid)
@@ -3102,14 +3077,8 @@ function bossModPrototype:GetBossHPString(cId)
 	for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
 		local unitId = ((i == 0) and "target") or idType..i.."target"
 		local guid = UnitGUID(unitId)
-		if wowVersion >= 30300 then
-			if guid and tonumber(guid:sub(7, 10), 16) == cId then
-				return math.floor(UnitHealth(unitId)/UnitHealthMax(unitId) * 100).."%"
-			end
-		else
-			if guid and tonumber(guid:sub(9, 12), 16) == cId then
-				return math.floor(UnitHealth(unitId)/UnitHealthMax(unitId) * 100).."%"
-			end
+		if guid and tonumber(guid:sub(9, 12), 16) == cId then
+			return math.floor(UnitHealth(unitId)/UnitHealthMax(unitId) * 100).."%"
 		end
 	end
 	return DBM_CORE_UNKNOWN
