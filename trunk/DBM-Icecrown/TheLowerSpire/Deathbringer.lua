@@ -43,7 +43,6 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(boilingTargets)
 	timerCallBloodBeast:Start(-delay)
-	timerNextMark:Start(50-delay)
 	timerBloodNova:Start(-delay)
 	warned_preFrenzy = false
 	if self.Options.RangeFrame then
