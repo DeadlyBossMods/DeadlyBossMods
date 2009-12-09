@@ -26,6 +26,7 @@ L:SetOptionLocalization{
 	SpecWarnWhirlwind		= "소용돌이 특수 경고 보기",
 	SpecWarnColdflame		= "냉기화염에 영향을 받을 경우 특수 경고 보기",
 	PlaySoundOnWhirlwind	= "소용돌이 특수 경고 소리 듣기",
+	achievementBoned		= "Show timer for Boned achievement",	
 	SetIconOnImpale			= "꿰뚫기 대상 공격대 아이콘 설정"
 }
 
@@ -42,8 +43,8 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnReanimating					= "Add reviving",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnReanimating					= "이교도 부활",			-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance			= "%s : >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay				= "죽음과 부패 - 이동!!",
 	SpecWarnCurseTorpor				= "당신에게 무감각의 저주",
 	SpecWarnTouchInsignificance		= "무의미함의 손길 (3)",
@@ -53,7 +54,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAddsSoon					= "이교도 추가 사전 경고 보기",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Show warning when an add is getting revived",								-- Reanimated Adherent/Fanatic spawning
+	WarnReanimating					= "이교도를 부활 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
 	SpecWarnTouchInsignificance		= "무의미함의 손길이 3중첩이 됐을 경우 특수 경고 보기",
 	SpecWarnDeathDecay				= "죽음과 부패에 영향을 받을 경우 특수 경고 보기",
 	SpecWarnCurseTorpor				= "무감각의 저주에 영향을 받을 경우 특수 경고 보기",
@@ -71,13 +72,15 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
-	name = "죽음의 인도자"
+	name = "죽음의 인도자 사울팽"
 }
 
 L:SetWarningLocalization{
+	warnFrenzySoon	= "Frenzy soon"
 }
 
 L:SetOptionLocalization{
+	warnFrenzySoon	= "Show pre-warning for Frenzy (at ~33%)",
 	RangeFrame	= "거리 프레임 보기"
 }
 
@@ -87,7 +90,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization{
-	name = "비행포격선 전투"
+	name = "얼음왕관 비행선 전투"
 }
 
 L:SetWarningLocalization{
@@ -170,12 +173,12 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization{
-	name = "피의 의회"
+	name = "피의 공작 의회"
 }
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "Switch target to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "Target switch soon",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	WarnTargetSwitchSoon	= "곧 대상 전환",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
 	SpecWarnResonance		= "Shadow Resonance - Move"
 }
 
@@ -184,16 +187,16 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Show warning to switch targets",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",							-- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown",
+	WarnTargetSwitch		= "대상 전환 경고 보기",								-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",							-- Every ~31 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기wn",
 	SpecWarnResonance		= "Show special warning when a Dark Nucleus is following you"	-- If it follows you, you have to move to the tank
 }
 
 L:SetMiscLocalization{
-	Keleseth				= "Prince Keleseth",
-	Taldaram				= "Prince Taldaram",
-	Valanar					= "Prince Valanar"
+	Keleseth				= "공작 켈레세스",
+	Taldaram				= "공작 탈다람",
+	Valanar					= "공작 발라나르"
 }
 
 -----------------------
