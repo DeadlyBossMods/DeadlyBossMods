@@ -59,9 +59,8 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72255, 72444, 72445, 72446) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
-	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
+	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood (3 people on heroic, can be spammy, needs a table)
 		warnBoilingBlood:Show(args.destName)
---		timerBoilingBlood:Start(args.destName)				-- This can be on as many as 6 people at once during overlap. Kind of spammy to use bar like this.
 	elseif args:IsSpellID(72410) then						-- Rune of Blood
 		warnRuneofBlood:Show(args.destName)
 		timerRuneofBlood:Start(args.destName)

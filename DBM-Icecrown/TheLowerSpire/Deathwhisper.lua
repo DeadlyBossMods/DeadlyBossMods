@@ -30,7 +30,7 @@ local specWarnDeathDecay			= mod:NewSpecialWarning("SpecWarnDeathDecay")
 local specWarnTouchInsignificance	= mod:NewSpecialWarning("SpecWarnTouchInsignificance")
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
-local timerDominateMind				= mod:NewTargetTimer(20, 71289)
+local timerDominateMind				= mod:NewBuffActiveTimer(20, 71289)
 local timerDominateMindCD			= mod:NewCDTimer(40, 71289)
 local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
