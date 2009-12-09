@@ -201,7 +201,7 @@ L:SetOptionLocalization{
 	WarningCosmicSmash 		= "為宇宙潰擊顯示警告",
 	SpecWarnCosmicSmash 		= "為宇宙潰擊顯示特別警告",
 	PossibleNextCosmicSmash		= "為下一次 宇宙潰擊顯示計時器",
-	TimerCombatStart		= "為戰鬥開始顯示計時器"
+	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	WarnPhase2Soon			= "為第2階段顯示預先警告 (大約23%)",
 	warnStarLow			= "當崩陷之星血量低 (大約25%)時顯示警告"
 }
