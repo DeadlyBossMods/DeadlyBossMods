@@ -1244,32 +1244,6 @@ do
 	end
 end
 
--- Remove this in 4.30
-local checkZone
-do
-	local zoneName
-	if GetLocale() == "koKR" then
-		zoneName = "얼음 왕관"
-	elseif GetLocale() == "ruRU" then
-		zoneName = "Цитадель Ледяная Корона"
-	elseif GetLocale() == "zhTW" then
-		zoneName = "冰冠城塞"
-	elseif GetLocale() == "deDE" then
-		zoneName = "Eiskronenzitadelle"
-	else
-		zoneName = "Icecrown Citadel"
-	end
-	-- It's not really worth translating this message as it will be removed in the next version
-	local msg = string.format("Your version of Deadly Boss Mods does not support '%s', please visit http://www.deadlybossmods.com to obtain the latest version.", zoneName)
-	local warningShown
-	function checkZone()
-		if not warningShown and GetRealZoneText() == zoneName then
-			warningShown = true
-			DBM:AddMsg(msg)
-		end
-	end
-end
-
 --------------------------------
 --  Load Boss Mods on Demand  --
 --------------------------------
