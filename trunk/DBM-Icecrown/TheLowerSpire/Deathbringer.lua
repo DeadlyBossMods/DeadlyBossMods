@@ -74,8 +74,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMark:Show(args.destName)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingTargets[#boilingTargets + 1] = args.destName
-		self:UnscheduleMethod("warnBoilingTargets")
-		if #boilingTargets >= 3 then
+		self:Unschedule(warnBoilingTargets)
+		if not mod:IsDifficulty("heroic25") or #boilingTargets >= 3 then	-- only on 25man heroic = 3 targets?
 			warnBoilingTargets()
 		else
 			self:Schedule(0.3, warnBoilingTargets)
