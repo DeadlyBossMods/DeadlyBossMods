@@ -260,12 +260,7 @@ end
 
 function Alterac:GOSSIP_SHOW()
 	if not bgzone or not self.Options.AutoTurnIn then return end
-	local quest
-	if select(4, GetBuildInfo()) >= 30300 then
-		quest = quests[tonumber((UnitGUID("target") or ""):sub(7, 10), 16) or 0]
-	else
-		quest = quests[tonumber((UnitGUID("target") or ""):sub(9, 12), 16) or 0]
-	end
+	local quest = quests[tonumber((UnitGUID("target") or ""):sub(9, 12), 16) or 0]
 	if quest and type(quest[1]) == "table" then
 		for i, v in ipairs(quest) do
 			if checkItems(v[2], v[3] or 1) then
