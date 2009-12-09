@@ -6,6 +6,7 @@ mod:SetCreatureID(23980, 23954)
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.YellCombatEnd)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
