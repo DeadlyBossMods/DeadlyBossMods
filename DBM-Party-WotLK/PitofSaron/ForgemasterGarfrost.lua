@@ -18,22 +18,26 @@ local warnDeepFreeze			= mod:NewTargetAnnounce(70384)
 local warnSaroniteRock			= mod:NewAnnounce("warnSaroniteRock")
 local specWarnSaroniteRock		= mod:NewSpecialWarning("specWarnSaroniteRock")
 local specWarnSaroniteRockNear	= mod:NewSpecialWarning("specWarnSaroniteRockNear")
-local specWarnPermafrost		= mod:NewSpecialWarning("specWarnPermafrost", false)
+local specWarnPermafrost		= mod:NewSpecialWarning("specWarnPermafrost")
+local timerDeepFreeze			= mod:NewTargetTimer(14, 70381)
 
 mod:AddBoolOption("SetIconOnSaroniteRockTarget", true)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70380, 70384) then						-- Deep Freeze
 		warnDeepFreeze:Show(args.destName)
+		timerDeepFreeze:Start(args.destName)
 	elseif args:IsSpellID(68785, 70335) then					-- Forge Frostborn Mace
 		warnForgeWeapon:Show()
 	end
 end
 
+local spam = 0
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(68786, 70336) and args:IsPlayer() then
-		if args.amount >= 11 then --11 stacks is what's needed for achievement I believe.
+		if args.amount >= 11 and GetTime() - spam > 5 then --11 stacks is what's needed for achievement I believe.
 			specWarnPermafrost:Show(args.spellName, args.amount)
+			spam = GetTime()
 		end
 	end
 end

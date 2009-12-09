@@ -7,7 +7,8 @@ mod:SetCreatureID(38112)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
 local warnImpendingDespair		= mod:NewTargetAnnounce(72426, 3)
@@ -24,5 +25,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72426) then
 		timerImpendingDespair:Show(args.destName)
 		warnImpendingDespair:Show(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(72422, 72453) then
+		timerQuiveringStrike:Cancel(args.destName)
+	elseif args:IsSpellID(72426) then
+		timerImpendingDespair:Cancel(args.destName)
 	end
 end
