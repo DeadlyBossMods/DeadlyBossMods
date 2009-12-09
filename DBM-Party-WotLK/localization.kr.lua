@@ -1268,17 +1268,15 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Ick")
 
 L:SetGeneralLocalization({
-	name = "이크"
+	name = "이크 그리고 크리크"
 })
 
 L:SetWarningLocalization({
-	warnPursuit			= "추격 5 초 전",
 	specWarnToxic		= "독성 폐기물! 이동하세요!",
 	specWarnPursuit		= "당신을 곧 추격. 뛰세요!"
 })
 
 L:SetOptionLocalization({
-	warnPursuit				= "추격일 경우 사전 경고 보기",
 	specWarnToxic			= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit			= "당신을 추격 하게 될 경우 특수 경고 보기",
 	PlaySoundOnPursuit		= "당신이 추격당할 경우 특수 소리 재생",	
@@ -1327,14 +1325,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
+	specTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
 	specWarnIcyBlast			= "얼음 작렬! 이동하세요!",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
 })
 
 L:SetOptionLocalization({
-	warnTyrannusEngaged			= "스컬지군주 티라누스 격노 경고 보기",
+	specTyrannusEngaged			= "스컬지군주 티라누스 착지 특수 경고 보기",
 	specWarnIcyBlast			= "얼음 작렬로부터 데미지를 받을 경우 특수 경고 보기",
 	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
@@ -1342,7 +1340,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	TyrannusYell				= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	CombatStart					= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!"
 })
 
