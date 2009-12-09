@@ -38,7 +38,7 @@ mod:AddBoolOption("SetIconOnDominateMind", true)
 
 local enrageTimer				= mod:NewEnrageTimer(600)
 
-local function warnDominateMind()
+local function showDominateMindWarning()
 	warnDominateMind:Show(table.concat(MCTargets, "<, >"))
 	timerDominateMind:Start()
 	timerDominateMindCD:Start()
