@@ -42,8 +42,8 @@
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
 	Version = "4.31",
-	DisplayVersion = "4.32 alpha",
-	ReleaseRevision = 2630
+	DisplayVersion = "4.32 alpha", -- the string that is shown as version
+	ReleaseRevision = 2630 -- the revision of the latest stable version that is available (for /dbm ver2)
 }
 
 DBM_SavedOptions = {}
@@ -96,7 +96,7 @@ DBM.DefaultOptions = {
 	HealthFrameGrowUp = false,
 	HealthFrameLocked = false,
 	HealthFrameWidth = 200,
-	-- next overall global values to change DBM behavior
+	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
 	DontSendBossAnnounces = false,
 	DontSendBossWhispers = false,
@@ -134,6 +134,10 @@ local loadModOptions
 local checkWipe
 local fireEvent
 local wowVersion = select(4, GetBuildInfo())
+
+local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
+	"DBM-Battlegrounds",
+}
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --
@@ -600,7 +604,7 @@ do
 		end
 		
 		-- clean up sync spam timers and auto respond spam blockers
-		-- TODO: optimize (but how?); using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than a few entries...
+		-- TODO: optimize (but how?); using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than one or two entries...
 		local k, v = next(modSyncSpam, nil)
 		if v and (time - v > 2.5) then
 			modSyncSpam[k] = nil
@@ -754,7 +758,7 @@ do
 		for i, v in ipairs(sortMe) do
 			if v.displayVersion then
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
-				if notify and (v.displayVersion ~= DBM.Version and v.revision < DBM.ReleaseRevision) then
+				if notify and v.displayVersion ~= DBM.Version and v.revision < DBM.ReleaseRevision then
 					SendChatMessage(chatPrefixShort..DBM_CORE_YOUR_VERSION_OUTDATED, "WHISPER", nil, v.name)
 				end
 			else
@@ -1205,7 +1209,7 @@ do
 			if not DBM.Options.ShowMinimapButton then DBM:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do
-				if GetAddOnMetadata(i, "X-DBM-Mod") then
+				if GetAddOnMetadata(i, "X-DBM-Mod") and not checkEntry(bannedMods, GetAddOnInfo(i)) then
 					table.insert(self.AddOns, {
 						sort		= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Sort") or math.huge) or math.huge,
 						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
@@ -2247,8 +2251,8 @@ end
 --  Announce Object  --
 -----------------------
 do
-	local textureCode = " |T%s:24:24|t "
-	local textureExp = " |T(%S+):24:24|t "
+	local textureCode = " |T%s:12:12|t "
+	local textureExp = " |T(%S+):12:12|t "
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
 	
@@ -2257,9 +2261,9 @@ do
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
 			if (self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces) and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
-				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), "RAID_WARNING")
+				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
 			end
-			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the Announces if Spamfiltered
+			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
 			local text = ("%s%s%s|r%s"):format(
 				(DBM.Options.WarningIconLeft and self.icon and textureCode:format(self.icon)) or "",
@@ -2281,7 +2285,7 @@ do
 			text = text:gsub(">%S+<", cachedColorFunctions[self.color])
 			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this)
 			if DBM.Options.ShowWarningsInChat then
-				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font
+				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size
 				if DBM.Options.ShowFakedRaidWarnings then
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))

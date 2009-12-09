@@ -249,7 +249,7 @@ L:SetOptionLocalization{
 	TimerSubmerge			= "Show timer for submerge",
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
 	PursueIcon				= "Set icons on pursued targets",
-	SpecWarnShadowStrike	= "Show special warning for Shadow Strike (to interrupt)",
+	SpecWarnShadowStrike	= "Show special warning for $spell:66134 (to interrupt)",
 	SpecWarnPCold			= "Show special warning when you are affected by Penetrating Cold",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
 	SetIconsOnPCold         = "Set icons on Penetrating Cold targets",

@@ -267,15 +267,27 @@ do
 		end
 	end
 	
+	local function replaceSpellLinks(id)
+		local spellId = tonumber(id)
+		local spellName = GetSpellInfo(spellId)
+		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
+	end
+	
 	function PanelPrototype:CreateCheckButton(name, autoplace, textleft, dbmvar, dbtvar)
+		if not name then
+			return
+		end
+		if type(name) == "number" then
+			return DBM:AddMsg("CreateCheckButt6613on: error: expected string, received number. You probably called mod:NewTimer(optionId) with a spell id.")
+		end
 		local button = CreateFrame('CheckButton', FrameTitle..self:GetNewID(), self.frame, 'OptionsCheckButtonTemplate')
 		button.myheight = 25
 		button.mytype = "checkbutton"
-		-- font strings do not support hyperlinks, so check if we need one
-		if name and type(name) == "number" then
-			DBM:AddMsg("You failed at coding! - try to use the correct functions NewTimer for example can't get a SpellID.")
-		elseif name and name:find("|H") then
-			-- and replace it with a SimpleHTML frame
+		-- font strings do not support hyperlinks, so check if we need one...
+		if name:find("%$spell:") then
+			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
+		end
+		if name and name:find("|H") then -- ...and replace it with a SimpleHTML frame
 			setglobal(button:GetName().."Text", CreateFrame("SimpleHTML", button:GetName().."Text", button))
 			local html = getglobal(button:GetName().."Text")
 			html:SetHeight(12)
