@@ -29,7 +29,7 @@ local warnBladestorm		= mod:NewSpellAnnounce(69652, 2, nil, false)		-- might be 
 local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 3)
 
 local timerBelowZeroCD		= mod:NewCDTimer(35, 69705)
-local timerBattleFuryActive	= mod:NewBuffActiveTimer(20, 69638)
+local timerBattleFuryActive	= mod:NewBuffActiveTimer(20, 72306)
 
 function mod:OnCombatStart(delay)
 end
@@ -45,10 +45,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBladestorm:Show()			
 	elseif args:IsSpellID(69651) then
 		warnWoundingStrike:Show(args.destName)
-
 -- if opposite leader gets BattleFury then
-	elseif args:IsSpellID(69638) and ((UnitFactionGroup("player") == "Alliance" and mod:GetCIDFromGUID(args.destGUID) == 37187) or (UnitFactionGroup("player") == "Horde" and mod:GetCIDFromGUID(args.destGUID) == 37200)) then
-		warnBattleFury:Show(GetSpellInfo(69638), args.amount)
+	elseif args:IsSpellID(72306) and ((UnitFactionGroup("player") == "Alliance" and mod:GetCIDFromGUID(args.destGUID) == 37187) or (UnitFactionGroup("player") == "Horde" and mod:GetCIDFromGUID(args.destGUID) == 37200)) then
+		warnBattleFury:Show(GetSpellInfo(72306), args.amount)
 		timerBattleFuryActive:Start()
 	end
 end
