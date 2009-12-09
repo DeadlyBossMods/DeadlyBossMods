@@ -28,7 +28,6 @@ local timerRuneofBlood		= mod:NewTargetTimer(30, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
 local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
-local timerNextMark			= mod:NewNextTimer(10, 72444)
 
 mod:AddBoolOption("RangeFrame", isRanged)
 
@@ -72,9 +71,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(72255, 72444, 72445, 72293) then		-- Mark of the Fallen Champion
+	if args:IsSpellID(72293) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
-		timerNextMark:Start()
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingTargets[#boilingTargets + 1] = args.destName
 		self:Unschedule(warnBoilingTargets)
