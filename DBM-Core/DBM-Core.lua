@@ -1262,7 +1262,6 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 			end
 		end
 	end
-	checkZone()
 end
 
 function DBM:LoadMod(mod)
