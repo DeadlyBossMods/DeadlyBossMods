@@ -1376,11 +1376,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul	= "Stop damage"
+	specwarnMirroredSoul	= "Stop damage",
+	specwarnPhantomBlast	= "Interupt!"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul	= "Show special warning to stop damage on Mirrored Soul"
+	specwarnMirroredSoul	= "Show special warning to stop damage on Mirrored Soul",
+	specwarnPhantomBlast	= "Show special warning when Phantom Blast is cast (to interupt)"
 })
 
 

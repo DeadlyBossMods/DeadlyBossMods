@@ -11,6 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
+local warnPhantomBlast			= mod:NewSpellAnnounce(68982)
 local warnUnleashedSouls		= mod:NewSpellAnnounce(68939)
 local warnWailingSouls			= mod:NewSpellAnnounce(68899)
 local warnWellofSouls			= mod:NewSpellAnnounce(68820)
@@ -18,9 +19,13 @@ local warnMirroredSoul			= mod:NewTargetAnnounce(69051)
 local timerMirroredSoul			= mod:NewTargetTimer(8, 69051)
 local timerUnleashedSouls		= mod:NewBuffActiveTimer(5, 68939)
 local specwarnMirroredSoul		= mod:NewSpecialWarning("specwarnMirroredSoul")
+local specwarnPhantomBlast		= mod:NewSpecialWarning("specwarnPhantomBlast", false)
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(68820) then								-- Well of Souls
+	if args:IsSpellID(68982, 70322) then						-- Phantom Blast
+		warnPhantomBlast:Show()
+		specwarnPhantomBlast:Show()
+	elseif args:IsSpellID(68820) then							-- Well of Souls
 		warnWellofSouls:Show()
 	elseif args:IsSpellID(68939) then							-- Unleashed Souls
 		warnUnleashedSouls:Show()
