@@ -1297,18 +1297,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock			= "Saronite Rock created - Line of sight now",
+	warnSaroniteRock			= "사로나이트 암석을 제작했습니다. - 시선 보세요.",
 	specWarnSaroniteRock		= "당신에게 사로나이트를 던집니다. 이동!",
 	specWarnSaroniteRockNear	= "당신 주변에 사오나이트를 던집니다. 주의하세요!",	
-	specWarnPermafrost			= "%s: %s"
+	specWarnPermafrost			= "%s : %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "사로나이트 Rock의 경고 보기 (to clear Permafrost)",
+	warnSaroniteRock			= "사로나이트 암석의 경고 보기 (영구 결빙을 없애기 위해)",
 	specWarnSaroniteRock		= "사로나이트 던지기의 대상이 될 경우 특수 경고 보기",
 	specWarnSaroniteRockNear	= "당신 주변에 사로나이트 던지기 대상이 있을 경우 특수 경고 보기",	
-	specWarnPermafrost			= "Permafrost 의 중첩이 많을 경우 특수 경고 보기(value not set in stone)",
-	SetIconOnSaroniteRockTarget	= "사로나이트 Rock 대상 공격대 아이콘 설정"
+	specWarnPermafrost			= "영구 결빙  중첩이 많을 경우 특수 경고 보기(돌에 숨지 않았을 경우)",
+	SetIconOnSaroniteRockTarget	= "사로나이트 암석 대상 공격대 아이콘 설정"
 })
 
 L:SetMiscLocalization({
@@ -1341,7 +1341,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart					= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!"
+	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
+	YellCombatEnd				= "Impossible! Rimefang...Warn..."
 })
 
 --------------------
@@ -1357,10 +1358,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnSoulstormSoon		= "곧 영혼폭풍!",
 	specwarnSoulstorm		= "영혼폭풍! 들어가세요!"
 })
 
 L:SetOptionLocalization({
+	warnSoulstormSoon		= "영혼폭풍 사전 경고 보기(38%이하 일 때)",
 	specwarnSoulstorm		= "영혼폭풍을 시전 할 경우 특수 경고 보기(이동경고)"
 })
 
@@ -1374,11 +1377,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "비춰진 영혼! 딜 중지!"
+	specwarnMirroredSoul		= "비춰진 영혼! 딜 중지!",
+	specwarnPhantomBlast		= "차단!"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기"
+	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기",
+	specwarnPhantomBlast		= "Show special warning when Phantom Blast is cast (to interupt)"
 })
 
 -------------------------
@@ -1394,7 +1399,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnNewWaveSoon		= "곧 새로운 웨이브",
-	WarnNewWave			= "%s incoming"
+	WarnNewWave			= "%s 시작"
 })
 
 L:SetTimerLocalization({
@@ -1402,16 +1407,16 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnNewWave				= "Show warning for boss incoming",
-	WarnNewWaveSoon			= "Show pre-warning for new wave",
-	ShowAllWaveWarnings		= "Show pre-warnings for all waves",	--Is this a warning or a pre-warning?
-	TimerNextWave			= "Show timer for next set of waves (after wave 5 boss)",
-	ShowAllWaveTimers		= "Show timers for all waves"
+	WarnNewWave				= "새로운 보스가 올 때 경고 보기",
+	WarnNewWaveSoon			= "새로운 웨이브 사전 경고 보기",
+	ShowAllWaveWarnings		= "모든 웨이브 사전 경고 보기",	--Is this a warning or a pre-warning?
+	TimerNextWave			= "다음 웨이브 타이머 보기(5번째 보스 웨이브 이후)",
+	ShowAllWaveTimers		= "모든 웨이브의 타이머 보기"
 })
 
 L:SetMiscLocalization({
-	Falric				= "Falric",
-	WaveCheck			= "Spirit Wave = (%d+)/10"
+	Falric				= "팔릭",
+	WaveCheck			= "영혼 공격 = (%d+)/10"
 })
 
 ------------
@@ -1420,7 +1425,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Falric")
 
 L:SetGeneralLocalization({
-	name = "Falric"
+	name = "팔릭"
 })
 
 L:SetWarningLocalization({
@@ -1464,7 +1469,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("LichKingEvent")
 
 L:SetGeneralLocalization({
-	name = "Lich King event"
+	name = "리치 왕 이벤트"
 })
 
 L:SetWarningLocalization({
