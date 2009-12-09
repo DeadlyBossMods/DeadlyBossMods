@@ -24,15 +24,17 @@ local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
 local timerRuneofBlood		= mod:NewTargetTimer(30, 72410)
---local timerBoilingBlood	= mod:NewTargetTimer(24, 72441)
+local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
 local timerCallBloodBeast	= mod:NewNextTimer(30, 72173)
 
 mod:AddBoolOption("RangeFrame", isRanged)
 
 local warned_preFrenzy = false
+local boilingTargets = {}
 
 function mod:OnCombatStart(delay)
+	table.wipe(boilingTargets)
 	timerCallBloodBeast:Start(-delay)
 	timerNextMark:Start(50-delay)
 	timerBloodNova:Start(-delay)
@@ -61,11 +63,19 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:warnBoilingTargets()
+	warnBoilingBlood:Show(table.concat(boilingTargets, "<, >"))
+	table.wipe(boilingTargets)
+    timerBoilingBlood:Start()
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72255, 72444, 72445, 72446) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
-	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood (3 people on heroic, can be spammy, needs a table)
-		warnBoilingBlood:Show(args.destName)
+	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
+		self:UnscheduleMethod("warnBoilingTargets")
+		boilingTargets[#boilingTargets + 1] = args.destName
+		self:ScheduleMethod(0.3, "warnBoilingTargets")
 	elseif args:IsSpellID(72410) then						-- Rune of Blood
 		warnRuneofBlood:Show(args.destName)
 		timerRuneofBlood:Start(args.destName)
