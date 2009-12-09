@@ -38,6 +38,13 @@ mod:AddBoolOption("SetIconOnDominateMind", true)
 
 local enrageTimer				= mod:NewEnrageTimer(600)
 
+local function warnDominateMind()
+	warnDominateMind:Show(table.concat(MCTargets, "<, >"))
+	timerDominateMind:Start()
+	timerDominateMindCD:Start()
+	table.wipe(MCTargets)
+	MCIcon = 7
+end
 
 local lastDD	= 0
 local MCTargets	={}
@@ -49,14 +56,6 @@ function mod:addsTimer()
 	timerAdds:Start()
 	warnAddsSoon:Schedule(55)	-- 5 secs prewarning
 	self:ScheduleMethod(60, "addsTimer")
-end
-
-function mod:warnDominateMind()
-	warnDominateMind:Show(table.concat(MCTargets, "<, >"))
-	timerDominateMind:Start()
-	timerDominateMindCD:Start()
-	table.wipe(MCTargets)
-	MCIcon = 7
 end
 
 function mod:OnCombatStart(delay)
@@ -71,13 +70,17 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71289) then
-		self:UnscheduleMethod("warnDominateMind")
 		MCTargets[#MCTargets + 1] = args.destName
 		if self.Options.SetIconOnDominateMind then
 			self:SetIcon(args.destName, MCIcon, 20)
 			MCIcon = MCIcon - 1
 		end
-		self:ScheduleMethod(0.3, "warnDominateMind")
+		self:Unschedule(warnDominateMind)
+		if not mod:IsDifficulty("heroic25") or #MCTargets >= 3 then
+			warnDominateMind()
+		else
+			self:Schedule(0.3, warnDominateMind)
+		end
 	elseif args:IsSpellID(72108, 71001) then
 		if args:IsPlayer() then
 			specWarnDeathDecay:Show()
