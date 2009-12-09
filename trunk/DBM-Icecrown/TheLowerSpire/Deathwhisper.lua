@@ -75,11 +75,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, MCIcon, 20)
 			MCIcon = MCIcon - 1
 		end
-		self:Unschedule(warnDominateMind)
+		self:Unschedule(showDominateMindWarning)
 		if not mod:IsDifficulty("heroic25") or #MCTargets >= 3 then
-			warnDominateMind()
+			showDominateMindWarning()
 		else
-			self:Schedule(0.3, warnDominateMind)
+			self:Schedule(0.3, showDominateMindWarning)
 		end
 	elseif args:IsSpellID(72108, 71001) then
 		if args:IsPlayer() then
