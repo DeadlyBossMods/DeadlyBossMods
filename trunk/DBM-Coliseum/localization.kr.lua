@@ -273,7 +273,7 @@ L:SetOptionLocalization{
 	PursueIcon				= "추격 대상자 공격대 아이콘 설정하기",
 	SpecWarnPCold			= "냉기 관통 특수 경고 보기",
 	SetIconsOnPCold			= "냉기 관통 대상자 공격대 아이콘 설정하기",
-	SpecWarnShadowStrike	= "어둠의 일격 특수 경고 보기(차단 관련)",
+	SpecWarnShadowStrike	= "$spell:66134 특수 경고 보기(차단 관련)",
 	RemoveHealthBuffsInP3	= "3 페이즈를 시작할 때 HP 버프 지우기",
 	AnnouncePColdIcons		= "냉기 관통 대상자 및 공격대 아이콘 설정을 공격대 채팅창으로 알리기"	
 }
