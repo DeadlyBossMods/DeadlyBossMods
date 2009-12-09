@@ -1336,8 +1336,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	TyrannusYell	= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget	= "^%%s gazes at (%S+) and readies an icy attack!"
+	CombatStart	= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.",
+	HoarfrostTarget	= "The frostwyrm Rimefang gazes at (%S+) and readies an icy attack!"
 })
 
 ----------------------
