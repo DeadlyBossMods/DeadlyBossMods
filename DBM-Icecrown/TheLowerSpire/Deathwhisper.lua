@@ -53,7 +53,7 @@ end
 
 function mod:warnDominateMind()
 	warnDominateMind:Show(table.concat(MCTargets, "<, >"))
-	timerDominateMind:Start(args.destName)
+	timerDominateMind:Start()
 	timerDominateMindCD:Start()
 	table.wipe(MCTargets)
 	MCIcon = 7
