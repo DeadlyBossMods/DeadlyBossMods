@@ -131,6 +131,6 @@ function mod:OnSync(msg, arg)
 	if msg == "DeformedFanatic" then
 		warnDeformedFanatic:Show()
 	elseif msg == "ReanimatedFanatic" then
-		warnReanimatedFanatic:Show()
+		warnReanimating:Show()
 	end
 end
