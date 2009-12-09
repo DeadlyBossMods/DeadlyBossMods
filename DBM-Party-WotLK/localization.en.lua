@@ -870,6 +870,10 @@ L:SetOptionLocalization({
 	SpecialWarningSpelllock	= "Show special warning for spell lock"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd	= "No! I can do... better! I can..."
+})
+
 ------------------------
 --  Utgarde Pinnacle  --
 --------------------------
