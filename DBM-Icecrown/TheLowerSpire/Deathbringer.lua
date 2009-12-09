@@ -9,15 +9,17 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"UNIT_HEALTH"
 )
 
 local isRanged = select(2, UnitClass("player")) == "MAGE"
               or select(2, UnitClass("player")) == "HUNTER"
               or select(2, UnitClass("player")) == "WARLOCK"
 
-local warnBloodNova			= mod:NewSpellAnnounce(73058)
+local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737)
 local warnFrenzy			= mod:NewSpellAnnounce(72737)
+local warnBloodNova			= mod:NewSpellAnnounce(73058)
 local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
@@ -28,10 +30,13 @@ local timerCallBloodBeast	= mod:NewNextTimer(30, 72173)
 
 mod:AddBoolOption("RangeFrame", isRanged)
 
+local warned_preFrenzy = false
+
 function mod:OnCombatStart(delay)
 	timerCallBloodBeast:Start(-delay)
 	timerNextMark:Start(50-delay)
 	timerBloodNova:Start(-delay)
+	warned_preFrenzy = false
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(15)
 	end
@@ -51,7 +56,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(72173) then
+	if args:IsSpellID(72173, 72356, 72357, 72358) then
 		timerCallBloodBeast:Start()
 	end
 end
@@ -66,5 +71,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRuneofBlood:Start(args.destName)
 	elseif args:IsSpellID(72737) then						-- Frenzy
 		warnFrenzy:Show()
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if not warned_preFrenzy and self:GetUnitCreatureId(uId) == 37813 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.33 then
+		warned_preFrenzy = true
+		warnFrenzySoon:Show()	
 	end
 end
