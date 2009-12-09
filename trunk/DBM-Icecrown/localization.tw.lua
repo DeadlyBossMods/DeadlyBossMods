@@ -40,6 +40,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerAdds			= "新的小怪"
 }
 
 L:SetWarningLocalization{
@@ -58,6 +59,7 @@ L:SetOptionLocalization{
 	SpecWarnTouchInsignificance	= "當你中了3層無脅之觸時顯示特別警告",
 	SpecWarnDeathDecay		= "當你中了死亡凋零時顯示特別警告",
 	SpecWarnCurseTorpor		= "當你中了魯鈍詛咒時顯示特別警告",
+	TimerAdds			= "為新的小怪顯示計時器",
 	SetIconOnDominateMind		= "為支配心智的目標設置標記"
 }
 
@@ -76,9 +78,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnFrenzySoon			= "狂亂 即將到來"
 }
 
 L:SetOptionLocalization{
+	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
 	RangeFrame			= "顯示距離框"
 }
 

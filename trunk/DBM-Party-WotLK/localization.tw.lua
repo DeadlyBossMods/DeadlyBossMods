@@ -863,6 +863,10 @@ L:SetOptionLocalization({
 	SpecialWarningSpelllock	= "為法術封鎖顯示特別警告"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd	= "不!不!我還可以…做得更好……"
+})
+
 ------------------------
 --  Utgarde Pinnacle  --
 --------------------------
@@ -1271,7 +1275,7 @@ L:SetOptionLocalization({
 	specWarnToxic			= "當你中了毒性廢料時顯示特別警告",
 	specWarnPursuit			= "當你被獵殺時顯示特別警告",
 	PlaySoundOnPursuit		= "為獵殺播放音效",
---	SetIconOnPursuitTarget	= "為獵殺的目標設置標記"
+	SetIconOnPursuitTarget	= "為獵殺的目標設置標記"
 })
 
 L:SetMiscLocalization({
@@ -1289,12 +1293,14 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnSaroniteRock		= "產生薩鋼岩 - 現在離開視線",
 	specWarnSaroniteRock	= "你中了投擲薩鋼 - 快跑",
+	specWarnSaroniteRockNear	= "Saronite Throw near you - Move",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "為薩鋼岩顯示警告 (清除極寒冰霜用)",
 	specWarnSaroniteRock		= "當你中了投擲薩鋼時顯示特別警告",
+	specWarnSaroniteRockNear	= "Show special warning when you are near Saronite Throw target",
 	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (數值並非一成不變)",
 --	SetIconOnSaroniteRockTarget	= "為薩鋼岩的目標設置標記"
 })
@@ -1328,8 +1334,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	TyrannusYell		= "終於，勇敢、勇敢的冒險者，你的干擾終到盡頭。你聽見了身後隧道中的金屬與骨頭敲擊聲嗎?這就是你即將面對的死亡之聲。", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget		= "^%%s凝視著(%S+)，準備發動寒冰攻擊!"
+	CombatStart		= "終於，勇敢、勇敢的冒險者，你的干擾終到盡頭。你聽見了身後隧道中的金屬與骨頭敲擊聲嗎?這就是你即將面對的死亡之聲。", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	HoarfrostTarget		= "冰霜巨龍霜牙凝視著(%S+)，準備發動寒冰攻擊!"
 })
 
 ----------------------
