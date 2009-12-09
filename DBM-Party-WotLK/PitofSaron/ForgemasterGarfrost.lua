@@ -56,7 +56,7 @@ function mod:OnSync(msg, target)
 		if target == UnitName("player") then
 			specWarnSaroniteRock:Show()
 		elseif target then
-			local uId = DBM:GetRaidUnitID(target)
+			local uId = DBM:GetRaidUnitId(target)
 			if uId then
 				local inRange = CheckInteractDistance(uId, 2)
 				if inRange then
