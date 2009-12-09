@@ -1341,7 +1341,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart	= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.",
-	HoarfrostTarget	= "The frostwyrm Rimefang gazes at (%S+) and readies an icy attack!"
+	HoarfrostTarget	= "The frostwyrm Rimefang gazes at (%S+) and readies an icy attack!",
+	YellCombatEnd	= "Impossible! Rimefang...Warn..."
 })
 
 ----------------------

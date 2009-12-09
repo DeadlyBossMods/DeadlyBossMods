@@ -6,6 +6,7 @@ mod:SetCreatureID(36658, 36661)
 mod:SetUsedIcons(8)
 
 mod:RegisterCombat("yell", L.CombatStart)
+mod:RegisterKill("yell", L.YellCombatEnd)
 mod:SetMinCombatTime(10)
 
 mod:RegisterEvents(
