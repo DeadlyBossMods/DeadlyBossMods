@@ -5,9 +5,11 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36658, 36661)
 mod:SetUsedIcons(8)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.CombatStart)
+mod:SetMinCombatTime(10)
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL",
@@ -15,25 +17,32 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_DAMAGE"
 )
 
+local warnUnholyPower			= mod:NewSpellAnnounce(69629)
 local warnForcefulSmash			= mod:NewSpellAnnounce(69627)
 local warnOverlordsBrand		= mod:NewTargetAnnounce(69172)
 local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
-local warnTyrannusEngaged		= mod:NewAnnounce("warnTyrannusEngaged", false)
 local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
 
 local warnHoarfrost				= mod:NewSpellAnnounce(69246)
 local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
 
-local timerForcefulSmash		= mod:NewCDTimer(40, 69627) --Experimental, Timer may not be exact.
+local timerUnholyPowerCD		= mod:NewCDTimer(40, 69629) --40-45seconds between casts
 local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
+local timerForcefulSmash		= mod:NewCDTimer(40, 69627) --40-45seconds between casts
 
 mod:AddBoolOption("SetIconOnHoarfrostTarget", true)
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.TyrannusYell then		-- Tyrannus Jumps down from drake. Phase 2 so to speak.
-		timerForcefulSmash:Start()  --Experimental support for possible next Forceful smash after he's been engaged.
-		warnTyrannusEngaged:Show()
+function mod:OnCombatStart(delay)
+	timerUnholyPowerCD:Start(-delay)
+	timerForcefulSmash:Start(-delay)
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(69629, 69167) then					-- Unholy Power
+        warnUnholyPower:Show()
+		timerUnholyPower:Start()
+		timerUnholyPowerCD:Start()
 	end
 end
 
@@ -55,10 +64,7 @@ do
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69629, 69167) then						-- Unholy Power
-        warnUnholyPower:Show()
-		timerUnholyPower:Show(args.destName)
-	elseif args:IsSpellID(69172) then							-- Overlord's Brand
+	if args:IsSpellID(69172) then							-- Overlord's Brand
 		warnOverlordsBrand:Show(args.destName)
 		timerOverlordsBrand:Show(args.destName)
 	end
