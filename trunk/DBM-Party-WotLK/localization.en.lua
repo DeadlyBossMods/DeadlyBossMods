@@ -1362,7 +1362,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "Show pre-warning for Soulstorm (at ~33%)",
+	warnSoulstormSoon	= "Show pre-warning for Soulstorm (at ~38%)",
 	specwarnSoulstorm	= "Show special warning when Soulstorm is cast (to move in)"
 })
 
