@@ -70,7 +70,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(72255, 72444, 72445, 72446) then		-- Mark of the Fallen Champion
+	if args:IsSpellID(72255, 72444, 72445, 72293) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingTargets[#boilingTargets + 1] = args.destName
