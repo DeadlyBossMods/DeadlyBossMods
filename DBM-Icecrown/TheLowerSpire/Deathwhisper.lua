@@ -73,9 +73,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71289) then
 		self:UnscheduleMethod("warnDominateMind")
 		MCTargets[#MCTargets + 1] = args.destName
+		if self.Options.SetIconOnDominateMind then
+			self:SetIcon(args.destName, MCIcon, 20)
+			MCIcon = MCIcon - 1
+		end
 		self:ScheduleMethod(0.3, "warnDominateMind")
-		mod:SetIcon(args.destName, MCIcon, 20)
-		MCIcon = MCIcon - 1
 	elseif args:IsSpellID(72108, 71001) then
 		if args:IsPlayer() then
 			specWarnDeathDecay:Show()
