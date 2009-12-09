@@ -38,6 +38,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerAdds				= "New Adds"
 }
 
 L:SetWarningLocalization{
@@ -56,6 +57,7 @@ L:SetOptionLocalization{
 	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
 	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
 	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor",
+	TimerAdds						= "Show timer for new adds",
 	SetIconOnDominateMind			= "Set icons on Dominate Mind targets"
 }
 
