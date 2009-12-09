@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnWellCorruption		= mod:NewCastAnnounce(72362,3)
+local warnWellCorruption		= mod:NewSpellAnnounce(72362,3)
 local warnCorruptedFlesh		= mod:NewSpellAnnounce(72436, 3)
 
 local timerWellCorruptionCD		= mod:NewCDTimer(13, 72362)
