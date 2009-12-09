@@ -1819,18 +1819,25 @@ do
 	end
 end
 
-function DBM:SendTimers(target)
-	if UnitInBattleground("player") then
-		DBM:SendBGTimers(target)
+do
+	local spamProtection = 0
+	function DBM:SendTimers(target)
+		if GetTime() - spamProtection < 0.4 then
+			return
+		end
+		spamProtection = GetTime()
+		if UnitInBattleground("player") then
+			DBM:SendBGTimers(target)
+		end
+		if #inCombat < 1 then return end
+		local mod
+		for i, v in ipairs(inCombat) do
+			mod = not v.isCustomMod and v
+		end
+		mod = mod or inCombat[1]
+		self:SendCombatInfo(mod, target)
+		self:SendTimerInfo(mod, target)
 	end
-	if #inCombat < 1 then return end
-	local mod
-	for i, v in ipairs(inCombat) do
-		mod = not v.isCustomMod and v
-	end
-	mod = mod or inCombat[1]
-	self:SendCombatInfo(mod, target)
-	self:SendTimerInfo(mod, target)
 end
 
 function DBM:SendBGTimers(target)
