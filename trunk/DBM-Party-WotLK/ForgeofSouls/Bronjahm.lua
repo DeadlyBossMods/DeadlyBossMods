@@ -9,17 +9,18 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"UNIT_HEALTH"
 )
 
+local warnSoulstormSoon		= mod:NewAnnounce("warnSoulstormSoon", 2, 68872)
 local warnCorruptSoul		= mod:NewTargetAnnounce(68839)
 local specwarnSoulstorm		= mod:NewSpecialWarning("specwarnSoulstorm")
---local timerSoulstorm		= mod:NewBuffActiveTimer(12, 68872)
 local timerSoulstormCast	= mod:NewCastTimer(4, 68872)
-local timerNextSoulstorm	= mod:NewNextTimer(30, 68872) --Experimental, Timer may not be right
+
+local warned_preStorm = false
 
 function mod:OnCombatStart(delay)
-    timerNextSoulstorm:Start(-delay)
+	warned_preStorm = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -32,5 +33,12 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(68839) then							-- Corrupt Soul
 		warnCorruptSoul:Show(args.destName)
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if not warned_preStorm and self:GetUnitCreatureId(uId) == 36497 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.33 then
+		warned_preStorm = true
+		warnSoulstormSoon:Show()	
 	end
 end
