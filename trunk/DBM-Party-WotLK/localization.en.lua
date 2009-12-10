@@ -1274,13 +1274,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnToxic	= "Toxic Waste - Move away",
-	specWarnPursuit	= "You are being pursued - Run away"
+	specWarnToxic		= "Toxic Waste - Move away",
+	specWarnPursuit		= "You are being pursued - Run away",
+	specWarnPoisonNova	= "Poison Nova - Run away"
 })
 
 L:SetOptionLocalization({
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued",
+	specWarnPoisonNova		= "Show special warning when Poison Nova is cast (to move away)"
+	PlaySoundOnPoisonNova	= "Play sound on Poison Nova",
 	PlaySoundOnPursuit		= "Play sound on Pursuit",
 	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
@@ -1332,10 +1335,15 @@ L:SetWarningLocalization({
 	specWarnHoarfrostNear	= "Hoarfrost near you - Move"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "Combat starts"
+}
+
 L:SetOptionLocalization({
 	specWarnIcyBlast			= "Show special warning when you take damage from Icy Blast",
 	specWarnHoarfrost			= "Show special warning when you are affected by Hoarfrost",
 	specWarnHoarfrostNear		= "Show special warning for Hoarfrost near you",
+	TimerCombatStart			= "Show timer for start of combat",
 	SetIconOnHoarfrostTarget	= "Set icons on Hoarfrost targets"
 })
 
