@@ -26,6 +26,7 @@ local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
 local warnPustulantFlesh		= mod:NewTargetAnnounce(69581)
 local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
 local timerPoisonNova			= mod:NewCastTimer(5, 68989)
+local warnPursuit				= mod:NewAnnounce("warnPursuit")
 local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
 local specWarnMines				= mod:NewSpecialWarning("specWarnMines")
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
@@ -79,23 +80,23 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-	local target = msg and msg:match(L.IckPursuit)
-	if target then
-		self:SendSync("Pursuit", target)
-	end
-end
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg) 
+	if msg == L.IckPursuit or msg:match(L.IckPursuit) then 
+		self:SendSync("Pursuit", UnitName("player"))
+	end 
+end 
 
-function mod:OnSync(msg, target)
-	if msg == "Pursuit" then
-		if target == UnitName("player") then
-			specWarnPursuit:Show()
-			if self.Options.PlaySoundOnPursuit then
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-			end
-		end
-		if self.Options.SetIconOnPursuitTarget then
-			self:SetIcon(target, 8, 12)
-		end
-	end
-end
+function mod:OnSync(msg, target) 
+	if msg == "Pursuit" then 
+		warnPursuit:Show(target)
+	if target == UnitName("player") then 
+		specWarnPursuit:Show() 
+		if self.Options.PlaySoundOnPursuit then 
+			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav") 
+		end 
+	end 
+		if self.Options.SetIconOnPursuitTarget then 
+			self:SetIcon(target, 8, 12) 
+		end 
+	end 
+end 

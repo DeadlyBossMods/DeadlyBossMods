@@ -1274,6 +1274,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnPursuit			= "Pursuit on >%s<",
 	specWarnToxic		= "Toxic Waste - Move away",
 	specWarnPursuit		= "You are being pursued - Run away",
 	specWarnPoisonNova	= "Poison Nova - Run away",
@@ -1281,6 +1282,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	warnPursuit				= "Announce Pursuit targets",
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued",
 	specWarnPoisonNova		= "Show special warning when Poison Nova is cast (to move away)",
