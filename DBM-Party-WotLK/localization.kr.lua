@@ -1284,7 +1284,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	IckPursuit			= "%s is chasing you!"
+	IckPursuit			= "%s1|이;가; 당신을 쫓습니다!"
 })
 
 --------------------------
@@ -1297,22 +1297,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock			= "사로나이트 암석을 제작했습니다. - 시선 보세요.",
+	warnSaroniteRock			= "사로나이트 덩어리를 던졌습니다. - 위치 확인",
 	specWarnSaroniteRock		= "당신에게 사로나이트를 던집니다. 이동!",
-	specWarnSaroniteRockNear	= "당신 주변에 사오나이트를 던집니다. 주의하세요!",	
+	specWarnSaroniteRockNear	= "당신 주변에 사로나이트를 던집니다. 주의하세요!",	
 	specWarnPermafrost			= "%s : %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "사로나이트 암석의 경고 보기 (영구 결빙을 없애기 위해)",
+	warnSaroniteRock			= "사로나이트 덩어리 경고 보기 (영구 결빙을 없애기 위해)",
 	specWarnSaroniteRock		= "사로나이트 던지기의 대상이 될 경우 특수 경고 보기",
 	specWarnSaroniteRockNear	= "당신 주변에 사로나이트 던지기 대상이 있을 경우 특수 경고 보기",	
-	specWarnPermafrost			= "영구 결빙  중첩이 많을 경우 특수 경고 보기(돌에 숨지 않았을 경우)",
-	SetIconOnSaroniteRockTarget	= "사로나이트 암석 대상 공격대 아이콘 설정"
+	specWarnPermafrost			= "영구 결빙 중첩이 많을 경우 특수 경고 보기(돌에 숨지 않았을 경우)",
+	SetIconOnSaroniteRockTarget	= "사로나이트 덩어리 대상 공격대 아이콘 설정"
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow			= "%s hurls a massive saronite boulder at you!"
+	SaroniteRockThrow			= "%s1|이;가; 거대한 사로나이트 덩어리를 당신에게 던집니다!"
 })
 
 -------------------
@@ -1342,7 +1342,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	CombatStart					= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
-	YellCombatEnd				= "Impossible! Rimefang...Warn..."
+	YellCombatEnd				= "말도 안되... 서릿발송곳니... 경고를..."
 })
 
 --------------------
@@ -1383,7 +1383,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기",
-	specwarnPhantomBlast		= "Show special warning when Phantom Blast is cast (to interupt)"
+	specwarnPhantomBlast		= "환영 폭발을 시전할 경우 특수 경고 보기(차단을 위해)"
 })
 
 -------------------------
@@ -1450,14 +1450,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "Well of Corruption - move"
+	SpecWarnWellCorruption	= "부패의 샘!! 이동!!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "Show special warning when you are affected by Well of Corruption"
+	SpecWarnWellCorruption	= "부패의 샘으로부터 영향을 받을 경우 특수 경고 보기"
 })
 
 L:SetMiscLocalization({
