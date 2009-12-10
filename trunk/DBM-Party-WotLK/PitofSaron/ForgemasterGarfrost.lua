@@ -9,7 +9,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_CREATE",
 	"CHAT_MSG_RAID_BOSS_WHISPER"
 )
 
@@ -35,7 +34,7 @@ end
 local spam = 0
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(68786, 70336) and args:IsPlayer() then
-		if args.amount >= 11 and GetTime() - spam > 5 then --11 stacks is what's needed for achievement I believe.
+		if args.amount >= 11 and GetTime() - spam > 5 then --11 stacks is what's needed for achievement
 			specWarnPermafrost:Show(args.spellName, args.amount)
 			spam = GetTime()
 		end
@@ -63,6 +62,7 @@ end
 
 function mod:OnSync(msg, target)
 	if msg == "SaroniteRock" then
+		warnSaroniteRock:Show(target)
 		if target == UnitName("player") then
 			specWarnSaroniteRock:Show()
 		elseif target then
