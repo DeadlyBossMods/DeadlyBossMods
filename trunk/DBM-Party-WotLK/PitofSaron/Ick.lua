@@ -11,8 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"SPELL_PERIODIC_DAMAGE"
 )
 
@@ -73,16 +73,16 @@ do
 	end
 end
 
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Barrage then
+		specWarnMines:Show()
+	end
+end
+
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	local target = msg and msg:match(L.IckPursuit)
 	if target then
 		self:SendSync("Pursuit", target)
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.Barrage then
-		specWarnMines:Show()
 	end
 end
 
