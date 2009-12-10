@@ -55,6 +55,12 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	end
 end
 
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg) 
+	if msg == L.SaroniteRockThrow or msg:match(L.SaroniteRockThrow) then 
+		self:SendSync("SaroniteRock", UnitName("player"))
+	end 
+end 
+
 function mod:OnSync(msg, target)
 	if msg == "SaroniteRock" then
 		if target == UnitName("player") then
