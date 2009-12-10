@@ -1307,14 +1307,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock			= "Saronite Rock created - Line of sight now",
+	warnSaroniteRock			= "Saronite Rock on >%s<",
 	specWarnSaroniteRock		= "Saronite Throw on you - Move",
 	specWarnSaroniteRockNear	= "Saronite Throw near you - Move",
 	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "Show warning for Saronite Rock (to clear Permafrost)",
+	warnSaroniteRock			= "Announce Saronite Throw targets",
 	specWarnSaroniteRock		= "Show special warning when you are targeted by Saronite Throw",
 	specWarnSaroniteRockNear	= "Show special warning when you are near Saronite Throw target",
 	specWarnPermafrost			= "Show special warning when Permafrost stacks get too high (value not set in stone)",
