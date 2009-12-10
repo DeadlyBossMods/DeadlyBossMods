@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"CHAT_MSG_RAID_BOSS_WHISPER",
+	"CHAT_MSG_MONSTER_WHISPER",
 	"SPELL_PERIODIC_DAMAGE"
 )
 
@@ -80,7 +80,7 @@ do
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+function mod:CHAT_MSG_MONSTER_WHISPER(msg)
 	local target = msg and msg:match(L.IckPursuit)
 	if target then
 		self:SendSync("Pursuit", target)

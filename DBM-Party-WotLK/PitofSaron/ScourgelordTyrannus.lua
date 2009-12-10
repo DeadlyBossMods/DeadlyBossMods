@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"CHAT_MSG_MONSTER_WHISPER",
 	"SPELL_PERIODIC_DAMAGE"
 )
 
@@ -73,7 +73,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+function mod:CHAT_MSG_MONSTER_WHISPER(msg)
 	local target = msg and msg:match(L.HoarfrostTarget)
 	if target then
 		self:SendSync("Hoarfrost", target)
