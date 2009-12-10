@@ -1273,12 +1273,15 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnToxic		= "독성 폐기물! 이동하세요!",
-	specWarnPursuit		= "당신을 곧 추격. 뛰세요!"
+	specWarnPursuit		= "곧 당신을 추격합니다. 뛰세요!",
+	specWarnPoisonNova	= "독 회오리! 뛰세요!"
 })
 
 L:SetOptionLocalization({
 	specWarnToxic			= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit			= "당신을 추격 하게 될 경우 특수 경고 보기",
+	specWarnPoisonNova		= "독 회오리를 시전 할 경우 특수 경고 보기(이동 관련)",
+	PlaySoundOnPoisonNova	= "독 회오리 특수 소리 재생",	
 	PlaySoundOnPursuit		= "당신이 추격당할 경우 특수 소리 재생",	
 	SetIconOnPursuitTarget	= "추격 대상에게 공격대 아이콘 설정"	
 })
@@ -1331,11 +1334,16 @@ L:SetWarningLocalization({
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart			= "전투 시작"
+}
+
 L:SetOptionLocalization({
 	specTyrannusEngaged			= "스컬지군주 티라누스 착지 특수 경고 보기",
 	specWarnIcyBlast			= "얼음 작렬로부터 데미지를 받을 경우 특수 경고 보기",
 	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
+	TimerCombatStart			= "전투 시작 타이머 보기",	
 	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
 })
 
