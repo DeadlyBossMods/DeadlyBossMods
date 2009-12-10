@@ -1276,20 +1276,24 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnToxic		= "Toxic Waste - Move away",
 	specWarnPursuit		= "You are being pursued - Run away",
-	specWarnPoisonNova	= "Poison Nova - Run away"
+	specWarnPoisonNova	= "Poison Nova - Run away",
+	specWarnMines		= "Explosive Barrage - Move away"
 })
 
 L:SetOptionLocalization({
 	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued",
 	specWarnPoisonNova		= "Show special warning when Poison Nova is cast (to move away)",
+	specWarnMines			= "Show special warning when Explosive Barrage is cast (to move away)",
 	PlaySoundOnPoisonNova	= "Play sound on Poison Nova",
 	PlaySoundOnPursuit		= "Play sound on Pursuit",
 	SetIconOnPursuitTarget	= "Set icons on pursued targets"
 })
 
 L:SetMiscLocalization({
-	IckPursuit	= "%s is chasing you!"
+	IckPursuit	= "%s is chasing you!",
+	Barrage	= "%s begins rapidly conjuring explosive mines!",
+--	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.
 })
 ----------------------------
 --  Forgemaster Garfrost  --
@@ -1350,7 +1354,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	CombatStart	= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.",
 	HoarfrostTarget	= "The frostwyrm Rimefang gazes at (%S+) and readies an icy attack!",
-	YellCombatEnd	= "Impossible! Rimefang...Warn..."
+	YellCombatEnd	= "Impossible.... Rimefang.... warn...."
 })
 
 ----------------------

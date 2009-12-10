@@ -2,17 +2,17 @@ local mod	= DBM:NewMod("Ick", "DBM-Party-WotLK", 15)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(36476, 36477)
+mod:SetCreatureID(36476)
 --mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"CHAT_MSG_MONSTER_WHISPER",
+	"CHAT_MSG_RAID_BOSS_WHISPER",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"SPELL_PERIODIC_DAMAGE"
 )
 
@@ -22,12 +22,12 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 
 local warnPursuitCast			= mod:NewCastAnnounce(68987)
 local warnPoisonNova			= mod:NewCastAnnounce(68989)
-local warnExplosiveBarrage		= mod:NewSpellAnnounce(69015)
 local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
 local warnPustulantFlesh		= mod:NewTargetAnnounce(69581)
 local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
 local timerPoisonNova			= mod:NewCastTimer(5, 68989)
 local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
+local specWarnMines				= mod:NewSpecialWarning("specWarnMines")
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
 local specWarnPoisonNova		= mod:NewSpecialWarning("specWarnPoisonNova", isMelee)
 
@@ -47,13 +47,6 @@ function mod:SPELL_CAST_START(args)
 		end
 	end
 end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(69015) then							-- Explosive Barrage
-		warnExplosiveBarrage:Show()
-	end
-end
-
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69029, 70850) then							-- Pursuit Confusion
@@ -80,10 +73,16 @@ do
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_WHISPER(msg)
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	local target = msg and msg:match(L.IckPursuit)
 	if target then
 		self:SendSync("Pursuit", target)
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Barrage then
+		specWarnMines:Show()
 	end
 end
 
