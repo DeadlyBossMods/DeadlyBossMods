@@ -1274,20 +1274,25 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnToxic		= "독성 폐기물! 이동하세요!",
 	specWarnPursuit		= "곧 당신을 추격합니다. 뛰세요!",
-	specWarnPoisonNova	= "독 회오리! 뛰세요!"
+	specWarnPoisonNova	= "독 회오리! 뛰세요!",
+	specWarnMines		= "Explosive Barrage - Move away"	
 })
 
 L:SetOptionLocalization({
+	warnPursuit				= "추격 대상 알리기",
 	specWarnToxic			= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit			= "당신을 추격 하게 될 경우 특수 경고 보기",
 	specWarnPoisonNova		= "독 회오리를 시전 할 경우 특수 경고 보기(이동 관련)",
+	specWarnMines			= "Show special warning when Explosive Barrage is cast (to move away)",	
 	PlaySoundOnPoisonNova	= "독 회오리 특수 소리 재생",	
 	PlaySoundOnPursuit		= "당신이 추격당할 경우 특수 소리 재생",	
 	SetIconOnPursuitTarget	= "추격 대상에게 공격대 아이콘 설정"	
 })
 
 L:SetMiscLocalization({
-	IckPursuit			= "%s1|이;가; 당신을 쫓습니다!"
+	IckPursuit		= "%s1|이;가; 당신을 쫓습니다!",
+	Barrage			= "%s begins rapidly conjuring explosive mines!",
+--	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.	
 })
 
 --------------------------
