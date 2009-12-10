@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	achievementBoned	= "Time to free"
+	achievementBoned	= "탈출 시간"
 }
 
 L:SetWarningLocalization{
@@ -26,7 +26,7 @@ L:SetOptionLocalization{
 	SpecWarnWhirlwind		= "소용돌이 특수 경고 보기",
 	SpecWarnColdflame		= "냉기화염에 영향을 받을 경우 특수 경고 보기",
 	PlaySoundOnWhirlwind	= "소용돌이 특수 경고 소리 듣기",
-	achievementBoned		= "Show timer for Boned achievement",	
+	achievementBoned		= "뼈도 못 추릴라 업적 타이머 보기",	
 	SetIconOnImpale			= "꿰뚫기 대상 공격대 아이콘 설정"
 }
 
@@ -62,8 +62,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull						= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic			= "Arise, and exult in your pure form!",
+	YellPull						= "이게 무슨 소란이지? 감히 이 신성한 땅을 지나가려 해? 여기가 마지막 숨을 거둘 곳이 되리라!",
+	YellReanimatedFanatic			= "일어나라, 순수한 모습을 기뻐하라!",
 }
 
 ------------------------
@@ -76,12 +76,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon	= "Frenzy soon"
+	warnFrenzySoon	= "곧 광기"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon	= "Show pre-warning for Frenzy (at ~33%)",
-	RangeFrame	= "거리 프레임 보기"
+	warnFrenzySoon	= "광기 사전 경고 보기 (33% 이하)",
+	RangeFrame		= "거리 프레임 보기"
 }
 
 ----------------------
