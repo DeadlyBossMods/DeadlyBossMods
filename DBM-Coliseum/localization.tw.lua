@@ -266,7 +266,7 @@ L:SetOptionLocalization{
 	TimerSubmerge			= "為下一次 鑽地顯示計時器",
 	PlaySoundOnPursue		= "當你開始被追擊時播放音效",
 	PursueIcon			= "為被追擊的目標設置標記 (頭顱)",
-	SpecWarnShadowStrike		= "為暗影打擊顯示特別警告 (斷法用)",
+	SpecWarnShadowStrike		= "為$spell:66134顯示特別警告 (斷法用)",
 	SpecWarnPCold			= "當你中了透骨之寒時顯示特別警告",
 	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
 	SetIconsOnPCold			= "為透骨之寒的目標設置標記",
