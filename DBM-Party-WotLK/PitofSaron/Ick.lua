@@ -89,8 +89,8 @@ end
 function mod:OnSync(msg, target) 
 	if msg == "Pursuit" then 
 		warnPursuit:Show(target)
-	if target == UnitName("player") then 
-		specWarnPursuit:Show() 
+		if target == UnitName("player") then 
+			specWarnPursuit:Show() 
 		if self.Options.PlaySoundOnPursuit then 
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav") 
 		end 

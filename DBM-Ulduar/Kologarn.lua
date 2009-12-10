@@ -68,15 +68,15 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-	if msg == L.FocusedEyebeam then
+	if msg == L.FocusedEyebeam or msg:match(L.FocusedEyebeam) then
 		self:SendSync("EyeBeamOn", UnitName("player"))
 		specWarnEyebeam:Show()
 	end
 end
 
-function mod:OnSync(event, arg)
-	if event == "EyeBeamOn" and arg and DBM:GetRaidUnitId(arg) ~= "none" then
-		warnFocusedEyebeam:Show(arg)
+function mod:OnSync(msg, target)
+	if msg == "EyeBeamOn" then
+		warnFocusedEyebeam:Show(target)
 	end
 end
 
