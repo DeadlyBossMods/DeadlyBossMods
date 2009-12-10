@@ -1268,7 +1268,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Ick")
 
 L:SetGeneralLocalization({
-	name = "이크 그리고 크리크"
+	name = "이크와 크리크"
 })
 
 L:SetWarningLocalization({
@@ -1446,7 +1446,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Marwyn")
 
 L:SetGeneralLocalization({
-	name = "Marwyn"
+	name = "마윈"
 })
 
 L:SetWarningLocalization({
