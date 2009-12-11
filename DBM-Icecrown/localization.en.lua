@@ -20,7 +20,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale				= "Announce impaled targets",
+	WarnImpale				= "Announce $spell:69062 targets",
 	SpecWarnWhirlwind		= "Show special warning for $spell:69076",
 	SpecWarnColdflame		= "Show special warning when you are affected by $spell:70825",
 	PlaySoundOnWhirlwind	= "Play sound on $spell:69076",
@@ -54,11 +54,11 @@ L:SetOptionLocalization{
 	WarnAddsSoon					= "Show pre-warning for adds spawning",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "Show warning when an add is getting revived",											-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of Touch of Insignificance",
-	SpecWarnDeathDecay				= "Show special warning when you are affected by Death and Decay",
-	SpecWarnCurseTorpor				= "Show special warning when you are affected by Curse of Torpor",
+	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of $spell:71204",
+	SpecWarnDeathDecay				= "Show special warning when you are affected by $spell:72108",
+	SpecWarnCurseTorpor				= "Show special warning when you are affected by $spell:71237",
 	TimerAdds						= "Show timer for new adds",
-	SetIconOnDominateMind			= "Set icons on Dominate Mind targets"
+	SetIconOnDominateMind			= "Set icons on $spell:71289 targets"
 }
 
 L:SetMiscLocalization{
