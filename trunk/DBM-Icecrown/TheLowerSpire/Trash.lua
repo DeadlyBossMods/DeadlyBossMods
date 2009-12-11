@@ -8,12 +8,14 @@ mod:RegisterEvents(
 )
 
 local warnDisruptingShout		= mod:NewSpellAnnounce(71022, 2)
-local specWarnDeathDecay		= mod:NewSpecialWarning("SpecWarnDisruptingShout")
+local specWarnDisruptingShout	= mod:NewSpecialWarning("SpecWarnDisruptingShout")
+local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 
 function mod:SPELL_CAST_START(args)
 	if args:SpellID(71022) then
 		warnDisruptingShout:Show()
-		specWarnDeathDecay:Show()
+		specWarnDisruptingShout:Show()
+		timerDisruptingShout:Start()
 	end
 end
 
