@@ -37,7 +37,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if not warned_preStorm and self:GetUnitCreatureId(uId) == 36497 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.38 then
+	if not warned_preStorm and self:GetUnitCreatureId(uId) == 36497 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.40 then
 		warned_preStorm = true
 		warnSoulstormSoon:Show()	
 	end
