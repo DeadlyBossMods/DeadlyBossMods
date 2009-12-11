@@ -28,7 +28,7 @@ local warnHoarfrost				= mod:NewSpellAnnounce(69246)
 local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
 
---local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart")--when I get the exact timing of rollplay, I will uncomment this.
+local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart")--when I get the exact timing of rollplay, I will uncomment this.
 local timerUnholyPowerCD		= mod:NewCDTimer(40, 69629) --40-45seconds between casts
 local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
 local timerForcefulSmash		= mod:NewCDTimer(40, 69627) --40-45seconds between casts
@@ -36,7 +36,7 @@ local timerForcefulSmash		= mod:NewCDTimer(40, 69627) --40-45seconds between cas
 mod:AddBoolOption("SetIconOnHoarfrostTarget", true)
 
 function mod:OnCombatStart(delay)
---	timerCombatStart:Start(-delay)
+	timerCombatStart:Start(-delay)
 	timerUnholyPowerCD:Start(-delay)
 	timerForcefulSmash:Start(-delay)
 end
