@@ -250,9 +250,9 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
 	PursueIcon				= "Set icons on pursued targets",
 	SpecWarnShadowStrike	= "Show special warning for $spell:66134 (to interrupt)",
-	SpecWarnPCold			= "Show special warning when you are affected by Penetrating Cold",
+	SpecWarnPCold			= "Show special warning when you are affected by $spell:68510",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
-	SetIconsOnPCold         = "Set icons on Penetrating Cold targets",
-	AnnouncePColdIcons		= "Post icons for Penetrating Cold targets to raid chat\n(requires announce to be enabled and leader/promoted status)"
+	SetIconsOnPCold         = "Set icons on $spell:68510 targets",
+	AnnouncePColdIcons		= "Post icons for $spell:68510 targets to raid chat\n(requires announce to be enabled and leader/promoted status)"
 }
 
