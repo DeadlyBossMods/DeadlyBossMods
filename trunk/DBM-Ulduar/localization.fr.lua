@@ -23,9 +23,9 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	PursueWarn				= "Poursuit >%s<!",
 	warnNextPursueSoon		= "Changement de cible dans 5 Sec",
-	SpecialPursueWarnYou	= "Vous êtes poursuivit!",
+	SpecialPursueWarnYou	= "Vous êtes poursuivi !",
 	SystemOverload			= "Extinction des systèmes !",
-	warnWardofLife			= "Gardien de Vie viens d'arriver",
+	warnWardofLife			= "Gardien de Vie vient d'arriver",
 	warnWrithingLasher		= "Flagellant frémissant viens d'arriver"
 }
 

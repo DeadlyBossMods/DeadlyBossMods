@@ -12,22 +12,22 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	achievementBoned		= "Time to free"
+	achievementBoned		= "Temps pour libérer"
 }
 
 L:SetWarningLocalization{
-	WarnImpale				= ">%s< est Empaler",
+	WarnImpale				= ">%s< est empalé(e)",
 	SpecWarnWhirlwind		= "Tourbillon d'os - COUREZ !",
 	SpecWarnColdflame		= "Flamme froide - BOUGEZ !"
 }
 
 L:SetOptionLocalization{
-	WarnImpale				= "Annonce les cibles d'Empaler",
-	SpecWarnWhirlwind		= "Montre une alerte spéciale pour le Tourbillon d'os",
-	SpecWarnColdflame		= "Montre une alerte spéciale quand vous subissez des dégats provenant des Flamme froide",
-	PlaySoundOnWhirlwind	= "Joue un sons pour le Tourbillon d'os",
-	achievementBoned		= "Montre le timer pour le haut-Fait Boned",
-	SetIconOnImpale			= "Met une icone sur la cible d'Empaler"
+	WarnImpale				= "Annonce les cibles de $spell:69062",
+	SpecWarnWhirlwind		= "Montre une alerte spéciale pour le $spell:69076",
+	SpecWarnColdflame		= "Montre une alerte spéciale quand vous subissez des dégats provenant de $spell:70825",
+	PlaySoundOnWhirlwind	= "Joue un son pour le $spell:69076",
+	achievementBoned		= "Montre le timer pour le haut-fait Dans l'os",
+	SetIconOnImpale			= "Met des icônes sur les cibles de $spell:69062"
 }
 
 -------------------------
@@ -40,6 +40,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerAdds				= "Nouveaux Adds"
 }
 
 L:SetWarningLocalization{
@@ -48,26 +49,27 @@ L:SetWarningLocalization{
 	SpecWarnDeathDecay				= "Mort et décomposition - BOUGEZ",
 	SpecWarnCurseTorpor				= "Malédiction de Torpeur sur VOUS",
 	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
-	WarnAddsSoon					= "Nouveaux add bientôt"
+	WarnAddsSoon					= "Nouveaux adds bientôt"
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon					= "Montre une pré-alerte avant que les adds arrivent",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Montre une alerte quand les add vont revenir a la vie",								-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Montre une alerte spéciale quand vous avez 3 stack de Touch of Insignificance",
-	SpecWarnDeathDecay				= "Montre une alerte spéciale quand vous subissez des dégats provenant de Mort et décomposition",
-	SpecWarnCurseTorpor				= "Montre une alerte spéciale quand vous êtes affecter par la Malédiction de Torpeur",
-	SetIconOnDominateMind			= "Met une icone sur Domination mentale"
+	WarnReanimating					= "Montre une alerte quand les adds vont revenir a la vie",								-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance		= "Montre une alerte spéciale quand vous avez 3 stack de $spell:71204",
+	SpecWarnDeathDecay				= "Montre une alerte spéciale quand vous subissez des dégats provenant de $spell:72108",
+	SpecWarnCurseTorpor				= "Montre une alerte spéciale quand vous êtes affecté par la $spell:71237",
+	TimerAdds						= "Montre le timer pour les nouveaux adds",
+	SetIconOnDominateMind			= "Met des icônes sur les cibles de $spell:71289"
 }
 
 L:SetMiscLocalization{
 	YellPull						= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
 	YellReanimatedFanatic			= "Arise, and exult in your pure form!"
 }
-------------------------
---  The Deathbringer  --
-------------------------
+-----------------------------
+--  Deathbringer S	aurfang  --
+-----------------------------
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
@@ -75,9 +77,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnFrenzySoon	= "Frénésie bientôt"
 }
 
 L:SetOptionLocalization{
+	warnFrenzySoon	= "Montre une pré-alerte pour la Frénésie (à ~33%)",
+	RangeFrame		= "Montre la fenêtre de proximité"
 }
 
 ----------------------
@@ -90,9 +95,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnBattleFury	= "%s (%d)"
 }
 
 L:SetOptionLocalization{
+	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury")
 }
 
 -----------------
@@ -133,9 +140,9 @@ L:SetOptionLocalization{
 	SpecWarnStickyOoze			= "Montre une alerte spéciale pour les Limon collant",
 	SpecWarnRadiatingOoze		= "Montre une alerte spéciale pour les Limon rayonnant",
 	NextPoisonSlimePipes		= "Montre le timer pour le prochain distributeur de poison",
-	SpecWarnMutatedInfection 	= "Montre une alerte spéciale quand vous êtes affecter par Infection mutée",
+	SpecWarnMutatedInfection 	= "Montre une alerte spéciale quand vous êtes affecté par Infection mutée",
 	InfectionIcon				= "Met des icones sur la cible de l'Infection mutée",
-	WarnOozeSpawn				= "Montre une alerte pour l'arriver des Little Ooze"
+	WarnOozeSpawn				= "Montre une alerte pour l'arrivée des Little Ooze"
 }
 
 L:SetMiscLocalization{
@@ -183,8 +190,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "Montre l'alerte pour le changement de cible",								-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Montre une pré-alerte pour le changement de cible",							-- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown",
-	SpecWarnResonance		= "Montre une alerte spéciale quand Dark Nucleus vous suis"	-- If it follows you, you have to move to the tank
+	TimerTargetSwitch		= "Montre un timer pour le changement de cible",
+	SpecWarnResonance		= "Montre une alerte spéciale quand Dark Nucleus vous suit"	-- If it follows you, you have to move to the tank
 }
 
 L:SetMiscLocalization{
@@ -207,7 +214,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Montre une alerte spéciale quand vous êtes affecter par Pact of the Darkfallen"
+	SpecWarnPactDarkfallen	= "Montre une alerte spéciale quand vous êtes affecté par Pact of the Darkfallen"
 }
 
 -----------------------------
@@ -250,11 +257,11 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAirphase			= "Annonce la phase dans les airs",
 	SpecWarnBlisteringCold	= "Montre une alerte spéciale pour Froid Caustique",
-	SpecWarnFrostBeacon		= "Montre une alerte spéciale quand vous êtes affecter par Marque de Givre",
+	SpecWarnFrostBeacon		= "Montre une alerte spéciale quand vous êtes affecté par Marque de Givre",
 	WarnGroundphaseSoon		= "Montre une pré-alerte pour la phase au sol",
 	TimerNextAirphase		= "Montre un timer pour la prochaine phase dans les airs",
-	TimerNextGroundphase	= "Montre une timer pour la prochaine phase au sol",
-	SpecWarnUnchainedMagic	= "Montre une alerte spéciale quand vous êtes affecter par Magie déchaînée"
+	TimerNextGroundphase	= "Montre un timer pour la prochaine phase au sol",
+	SpecWarnUnchainedMagic	= "Montre une alerte spéciale quand vous êtes affecté par Magie déchaînée"
 }
 
 L:SetMiscLocalization{

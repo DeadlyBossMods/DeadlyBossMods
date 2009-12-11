@@ -1379,6 +1379,7 @@ L:SetMiscLocalization({
 	TyrannusYell				= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "^%%s fixe (%S+) du regard et prépare une attaque de glace !"
 })
+
 ---------------------
 -- Forge of Souls --
 ---------------------
@@ -1391,16 +1392,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnSoulstorm		= "Tempête d'âme ! Allez au centre !"
+	warnSoulstormSoon	= "Tempête d'âme bientôt",
+	specwarnSoulstorm	= "Tempête d'âme ! Allez au centre !"
 })
 
 L:SetOptionLocalization({
-	specwarnSoulstorm		= "Montre une alerte spéciale lorsque Tempête d'âme est lancé (pour aller au centre)"
-})
-
-L:SetMiscLocalization({
---	YellPull				= "De nouvelles âmes pour alimenter le moteur !"
---	YellCombatEnd			= "Mon âme vous appartient, maître."
+	warnSoulstormSoon	= "Montre une pré-alerte pour la Tempête d'âme (à ~40%)",
+	specwarnSoulstorm	= "Montre une alerte spéciale lorsque Tempête d'âme est lancée (pour aller au centre)"
 })
 
 -------------------
@@ -1413,9 +1411,110 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "Âme réfléchie ! Stop DPS !"
+	specwarnMirroredSoul	= "Âme réfléchie ! Stop DPS !"
+	specwarnPhantomBlast	= "Interrompez !"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "Montre une alerte spéciale pour arrêter le DPS lorsque vous êtes la cible d'Âme réfléchie"
+	specwarnMirroredSoul	= "Montre une alerte spéciale pour arrêter le DPS lorsque vous êtes la cible d'Âme réfléchie"
+	specwarnPhantomBlast	= "Montre une alerte spéciale lorsque Phantom Blast est incanté (pour l'interrompre)"
+})
+
+
+---------------------------
+--  Halls of Reflection  --
+---------------------------
+--  Wave Timers  --
+-------------------
+L = DBM:GetModLocalization("HoRWaveTimer")
+
+L:SetGeneralLocalization({
+	name = "Wave Timers"
+})
+
+L:SetWarningLocalization({
+	WarnNewWaveSoon	= "New wave soon",
+	WarnNewWave		= "%s incoming"
+})
+
+L:SetTimerLocalization({
+	TimerNextWave	= "Next wave"
+})
+
+L:SetOptionLocalization({
+	WarnNewWave			= "Show warning for boss incoming",
+	WarnNewWaveSoon		= "Show pre-warning for new wave",
+	ShowAllWaveWarnings	= "Show pre-warnings and warnings for all waves",	--Is this a warning or a pre-warning?
+	TimerNextWave		= "Show timer for next set of waves (after wave 5 boss)",
+	ShowAllWaveTimers	= "Show timers for all waves"
+})
+
+L:SetMiscLocalization({
+	Falric		= "Falric",
+	WaveCheck	= "Spirit Wave = (%d+)/10"
+})
+
+--------------
+--  Falric  --
+--------------
+L = DBM:GetModLocalization("Falric")
+
+L:SetGeneralLocalization({
+	name = "Falric"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+--------------
+--  Marwyn  --
+--------------
+L = DBM:GetModLocalization("Marwyn")
+
+L:SetGeneralLocalization({
+	name = "Marwyn"
+})
+
+L:SetWarningLocalization({
+	SpecWarnWellCorruption	= "Well of Corruption - Move"
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	SpecWarnWellCorruption	= "Show special warning when you are affected by Well of Corruption"
+})
+
+L:SetMiscLocalization({
+})
+
+-----------------------
+--  Lich King Event  --
+-----------------------
+L = DBM:GetModLocalization("LichKingEvent")
+
+L:SetGeneralLocalization({
+	name = "Lich King event"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
