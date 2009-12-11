@@ -22,12 +22,12 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale				= "꿰뚫기 대상 알리기",
-	SpecWarnWhirlwind		= "소용돌이 특수 경고 보기",
-	SpecWarnColdflame		= "냉기화염에 영향을 받을 경우 특수 경고 보기",
-	PlaySoundOnWhirlwind	= "소용돌이 특수 경고 소리 듣기",
+	WarnImpale				= "$spell:69062 대상 알리기",
+	SpecWarnWhirlwind		= "$spell:69076 특수 경고 보기",
+	SpecWarnColdflame		= "$spell:70825 에 영향을 받을 경우 특수 경고 보기",
+	PlaySoundOnWhirlwind	= "$spell:69076 특수 경고 소리 듣기",
 	achievementBoned		= "뼈도 못 추릴라 업적 타이머 보기",	
-	SetIconOnImpale			= "꿰뚫기 대상 공격대 아이콘 설정"
+	SetIconOnImpale			= "$spell:69062 대상 공격대 아이콘 설정"
 }
 
 -------------------------
@@ -55,10 +55,11 @@ L:SetOptionLocalization{
 	WarnAddsSoon					= "이교도 추가 사전 경고 보기",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "이교도를 부활 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "무의미함의 손길이 3중첩이 됐을 경우 특수 경고 보기",
-	SpecWarnDeathDecay				= "죽음과 부패에 영향을 받을 경우 특수 경고 보기",
-	SpecWarnCurseTorpor				= "무감각의 저주에 영향을 받을 경우 특수 경고 보기",
-	SetIconOnDominateMind			= "정신 지배 대상 공격대 아이콘 설정"	
+	SpecWarnTouchInsignificance		= "$spell:71204 이 3중첩이 됐을 경우 특수 경고 보기",
+	SpecWarnDeathDecay				= "$spell:72108 에 영향을 받을 경우 특수 경고 보기",
+	SpecWarnCurseTorpor				= "$spell:71237 에 영향을 받을 경우 특수 경고 보기",
+	TimerAdds						= "새로운 이교도 추가 타이머 보기",	
+	SetIconOnDominateMind			= "$spell:71289 대상 공격대 아이콘 설정"	
 }
 
 L:SetMiscLocalization{
