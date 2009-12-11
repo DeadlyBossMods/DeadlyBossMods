@@ -13,7 +13,7 @@ L:SetWarningLocalization{
 	SpecWarnDisruptingShout			= "Disrupting Shout - Stop Casting",
 }
 
-SetOptionLocalization{
+L:SetOptionLocalization{
 	SpecWarnDisruptingShout			= "Show special warning for $spell:71022",	
 }
 
