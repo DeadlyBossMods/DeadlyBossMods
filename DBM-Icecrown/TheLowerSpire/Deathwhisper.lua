@@ -47,7 +47,7 @@ local function showDominateMindWarning()
 end
 
 local lastDD	= 0
-local MCTargets	={}
+local MCTargets	= {}
 local MCIcon = 7
 
 function mod:addsTimer()
@@ -76,7 +76,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			MCIcon = MCIcon - 1
 		end
 		self:Unschedule(showDominateMindWarning)
-		if not mod:IsDifficulty("heroic25") or #MCTargets >= 3 then
+		if not mod:IsDifficulty("normal25") or #MCTargets >= 3 then
 			showDominateMindWarning()
 		else
 			self:Schedule(0.3, showDominateMindWarning)
