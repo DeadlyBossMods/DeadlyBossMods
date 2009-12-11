@@ -1,5 +1,23 @@
 local L
 
+---------------------------
+--  Trash - Lower Spire  --
+---------------------------
+L = DBM:GetModLocalization("LowerSpireTrash")
+
+L:SetGeneralLocalization{
+	name = "Trashmobs"
+}
+
+L:SetWarningLocalization{
+	SpecWarnDisruptingShout			= "Disrupting Shout - Stop Casting",
+}
+
+SetOptionLocalization{
+	SpecWarnDisruptingShout			= "Show special warning for $spell:71022",	
+}
+
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
