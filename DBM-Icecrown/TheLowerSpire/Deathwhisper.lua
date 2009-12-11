@@ -34,9 +34,13 @@ local timerDominateMind				= mod:NewBuffActiveTimer(20, 71289)
 local timerDominateMindCD			= mod:NewCDTimer(40, 71289)
 local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
+local enrageTimer					= mod:NewEnrageTimer(600)
+
 mod:AddBoolOption("SetIconOnDominateMind", true)
 
-local enrageTimer				= mod:NewEnrageTimer(600)
+local lastDD	= 0
+local MCTargets	= {}
+local MCIcon = 7
 
 local function showDominateMindWarning()
 	warnDominateMind:Show(table.concat(MCTargets, "<, >"))
@@ -45,10 +49,6 @@ local function showDominateMindWarning()
 	table.wipe(MCTargets)
 	MCIcon = 7
 end
-
-local lastDD	= 0
-local MCTargets	= {}
-local MCIcon = 7
 
 function mod:addsTimer()
 	timerAdds:Cancel()
@@ -76,7 +76,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			MCIcon = MCIcon - 1
 		end
 		self:Unschedule(showDominateMindWarning)
-		if not mod:IsDifficulty("normal25") or #MCTargets >= 3 then
+		if not mod:IsDifficulty("heroic25") or #MCTargets >= 3 then
 			showDominateMindWarning()
 		else
 			self:Schedule(0.3, showDominateMindWarning)
