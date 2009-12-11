@@ -245,16 +245,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningWaveNow	= "第%d波: %s 出現了",
+	WarningWaveNow	= "第%d波: %s 出現了"
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn		= "下一波(6)", 
+	TimerWaveIn	= "下一波(6)"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("新一波"),
-	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)",
+	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)"
 })
 
 L:SetMiscLocalization({
@@ -493,7 +493,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningStomp 	= spell
+	WarningStomp	= spell
 })
 
 L:SetTimerLocalization({
@@ -501,8 +501,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningStomp 	= optionWarning:format(GetSpellInfo(52237)),
-	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
+	WarningStomp	= optionWarning:format(GetSpellInfo(52237)),
+	TimerStompCD	= optionTimerCD:format(GetSpellInfo(52237))
 })
 
 --------------
@@ -736,6 +736,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	MakeitCountTimer	= "為成就:倒數吧顯示計時器"
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer	= "倒數吧"
 })
 
 ----------------------
@@ -802,6 +807,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).."結束"),
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer	= "倒數吧"
 })
 
 --------------------
@@ -1117,8 +1126,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration		= "褻瀆 - 快跑開",
-	warnExplode				= "食屍鬼爆炸 - 快跑開"
+	specWarnDesecration	= "褻瀆 - 快跑開",
+	warnExplode			= "食屍鬼爆炸 - 快跑開"
 })
 
 L:SetOptionLocalization({
@@ -1128,7 +1137,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "恭喜你，勇士們。儘管試煉隱藏著許多不安的變數，但你們仍然通過了考驗。"	-- can also be "No! I must not fail... again ..."
+	YellCombatEnd	= "恭喜你，勇士們。儘管試煉隱藏著許多不安的變數，但你們仍然通過了考驗。"	-- can also be "No! I must not fail... again ..."
 })
 
 -----------------------
@@ -1141,17 +1150,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste			= "加速: %s - 快驅散",
-	specWarnPoison			= "毒藥瓶 - 快跑開",
+	specWarnHaste	= "加速: %s - 快驅散",
+	specWarnPoison	= "毒藥瓶 - 快跑開",
 })
 
 L:SetOptionLocalization({
-	specWarnHaste			= "當法師獲得加速時特別警告 (驅散/竊取用)",
-	specWarnPoison			= "當你中了毒藥瓶時顯示特別警告"
+	specWarnHaste	= "當法師獲得加速時特別警告 (驅散/竊取用)",
+	specWarnPoison	= "當你中了毒藥瓶時顯示特別警告"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "精采的戰鬥!你的下一個挑戰者是從十字軍中挑選出來的英勇鬥士。你將會親身面對他們超卓實力的考驗。"
+	YellCombatEnd	= "精采的戰鬥!你的下一個挑戰者是從十字軍中挑選出來的英勇鬥士。你將會親身面對他們超卓實力的考驗。"
 })
 
 ----------------------------------
@@ -1164,15 +1173,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "恢復: %s - 快驅散"
+	specwarnRenew	= "恢復: %s - 快驅散"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew			= "為恢復的目標顯示特別警告 (驅散/竊取用)"
+	specwarnRenew	= "為恢復的目標顯示特別警告 (驅散/竊取用)"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "你們做得很好!"
+	YellCombatEnd	= "你們做得很好!"
 })
 
 -----------------------
@@ -1185,18 +1194,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice		= "制裁之錘: %s - 快驅散",
-	specwarnRadiance			= "烈光 - 背對王"
+	specwarnHammerofJustice	= "制裁之錘: %s - 快驅散",
+	specwarnRadiance		= "烈光 - 背對王"
 })
 
 L:SetOptionLocalization({
-	specwarnHammerofJustice		= "為制裁之錘顯示特別警告 (驅散用)",
-	specwarnRadiance			= "為烈光顯示特別警告",
-	SetIconOnHammerTarget		= "為制裁之錘的目標設置標記"
+	specwarnHammerofJustice	= "為制裁之錘顯示特別警告 (驅散用)",
+	specwarnRadiance		= "為烈光顯示特別警告",
+	SetIconOnHammerTarget	= "為制裁之錘的目標設置標記"
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "我認輸了!我投降。幹得好。我現在可以離場了嗎?"
+	YellCombatEnd	= "我認輸了!我投降。幹得好。我現在可以離場了嗎?"
 })
 
 --------------------
@@ -1211,23 +1220,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel				= "空桶(暈): >%s<", 
-	specwarnDisarm			= "繳械 - 快跑開",
-	specWarnBrew			= "在他再丟你一個前喝掉酒!",
-	specWarnBrewStun		= "提示:你瘋狂了,記得下一次喝啤酒!"
+	warnBarrel			= "空桶(暈): >%s<", 
+	specwarnDisarm		= "繳械 - 快跑開",
+	specWarnBrew		= "在他再丟你一個前喝掉酒!",
+	specWarnBrewStun	= "提示:你瘋狂了,記得下一次喝啤酒!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel				= "提示空桶(暈)的目標",
-	specwarnDisarm			= "為繳械顯示特別警告",
-	specWarnBrew			= "為黑鐵啤酒辣妹的啤酒顯示特別警告",
-	specWarnBrewStun		= "為黑鐵啤酒辣妹昏迷顯示特別警告",
-	PlaySoundOnDisarm		= "當繳械時播放音效",
-	YellOnBarrel			= "當你中了空桶(暈)時大喊"
+	warnBarrel			= "提示空桶(暈)的目標",
+	specwarnDisarm		= "為繳械顯示特別警告",
+	specWarnBrew		= "為黑鐵啤酒辣妹的啤酒顯示特別警告",
+	specWarnBrewStun	= "為黑鐵啤酒辣妹昏迷顯示特別警告",
+	PlaySoundOnDisarm	= "當繳械時播放音效",
+	YellOnBarrel		= "當你中了空桶(暈)時大喊"
 })
 
 L:SetMiscLocalization({
-	YellBarrel				= "我中了空桶(暈)"
+	YellBarrel		= "我中了空桶(暈)"
 })
 
 -------------------------
@@ -1250,9 +1259,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HorsemanHead			= "過來這裡，你這白痴!",
-	HorsemanSoldiers		= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!",
-	SayCombatEnd			= "我也曾面對過這樣的末路。還有什麼新的冒險在等著呢?"
+	HorsemanHead		= "過來這裡，你這白痴!",
+	HorsemanSoldiers	= "士兵們起立，挺身奮戰!讓這個位死去的騎士得到最後的勝利!",
+	SayCombatEnd		= "我也曾面對過這樣的末路。還有什麼新的冒險在等著呢?"
 })
 
 --------------------
@@ -1267,19 +1276,28 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnPursuit			= "追擊: >%s<",
 	specWarnToxic		= "毒性廢料 - 快跑開",
-	specWarnPursuit		= "你中了獵殺 - 快跑"
+	specWarnPursuit		= "你中了獵殺 - 快跑",
+	specWarnPoisonNova	= "劇毒新星 - 快跑開",
+	specWarnMines		= "爆裂彈幕 - 快跑開"
 })
 
 L:SetOptionLocalization({
+	warnPursuit				= "提示追擊的目標",
 	specWarnToxic			= "當你中了毒性廢料時顯示特別警告",
-	specWarnPursuit			= "當你被獵殺時顯示特別警告",
-	PlaySoundOnPursuit		= "為獵殺播放音效",
-	SetIconOnPursuitTarget	= "為獵殺的目標設置標記"
+	specWarnPursuit			= "當你被追擊時顯示特別警告",
+	specWarnPoisonNova		= "當劇毒新星施放時顯示特別警告 (跑開用)",
+	specWarnMines			= "當爆裂彈幕施放時顯示特別警告 (跑開用)",
+	PlaySoundOnPoisonNova	= "為劇毒新星播放音效",
+	PlaySoundOnPursuit		= "為追擊播放音效",
+	SetIconOnPursuitTarget	= "為追擊的目標設置標記"
 })
 
 L:SetMiscLocalization({
-	IckPursuit			= "%s正在追擊著你!"
+	IckPursuit		= "%s正在追擊著你!"
+	Barrage			= "%s開始迅速地召喚爆裂地雷!",
+--	YellCombatEnd	= "等等!停!別殺我，拜託!我什麼都告訴你!"--in case removing kricks creatureid doesn't fix it thinking we wipe.
 })
 ----------------------------
 --  Forgemaster Garfrost  --
@@ -1291,22 +1309,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "產生薩鋼岩 - 現在離開視線",
-	specWarnSaroniteRock	= "你中了投擲薩鋼 - 快跑",
-	specWarnSaroniteRockNear	= "Saronite Throw near you - Move",
+	warnSaroniteRock		= "薩鋼岩: >%s<",
+	specWarnSaroniteRock	= "你中了投擲薩鋼 - 快跑開",
+	specWarnSaroniteRockNear	= "你附近有人中了投擲薩鋼 - 快跑開",
 	specWarnPermafrost		= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "為薩鋼岩顯示警告 (清除極寒冰霜用)",
+	warnSaroniteRock			= "提示薩鋼岩的目標",
 	specWarnSaroniteRock		= "當你中了投擲薩鋼時顯示特別警告",
-	specWarnSaroniteRockNear	= "Show special warning when you are near Saronite Throw target",
+	specWarnSaroniteRockNear	= "當你附近有人中了投擲薩鋼時顯示特別警告",
 	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (數值並非一成不變)",
---	SetIconOnSaroniteRockTarget	= "為薩鋼岩的目標設置標記"
+	SetIconOnSaroniteRockTarget	= "為薩鋼岩的目標設置標記"
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow		= "%s對你丟出一大塊薩鋼巨石!"
+	SaroniteRockThrow	= "%s對你丟出一大塊薩鋼巨石!"
 })
 
 ----------------------------
@@ -1319,23 +1337,29 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTyrannusEngaged			= "天譴領主提朗紐斯正在降落 - 做好準備",
-	specWarnIcyBlast			= "冰結衝擊 - 快跑開",
-	specWarnHoarfrost			= "你中了白霜 - 快跑開",
-	specWarnHoarfrostNear		= "你附近有人中了白霜 - 快跑開"
+	warnTyrannusEngaged		= "天譴領主提朗紐斯正在降落 - 做好準備",
+	specWarnIcyBlast		= "冰結衝擊 - 快跑開",
+	specWarnHoarfrost		= "你中了白霜 - 快跑開",
+	specWarnHoarfrostNear	= "你附近有人中了白霜 - 快跑開"
 })
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "戰鬥開始"
+}
 
 L:SetOptionLocalization({
 	warnTyrannusEngaged			= "為天譴領主提朗紐斯正在降落顯示特別警告",
 	specWarnIcyBlast			= "當你受到冰結衝擊的傷害時顯示特別警告",
 	specWarnHoarfrost			= "當你中了白霜時顯示特別警告",
+	TimerCombatStart			= "為戰鬥開始顯示計時器",
 	specWarnHoarfrostNear		= "你附近有人中了白霜時顯示特別警告",
 	SetIconOnHoarfrostTarget	= "為白霜的目標設置標記"
 })
 
 L:SetMiscLocalization({
 	CombatStart		= "終於，勇敢、勇敢的冒險者，你的干擾終到盡頭。你聽見了身後隧道中的金屬與骨頭敲擊聲嗎?這就是你即將面對的死亡之聲。", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget		= "冰霜巨龍霜牙凝視著(%S+)，準備發動寒冰攻擊!"
+	HoarfrostTarget	= "冰霜巨龍霜牙凝視著(%S+)，準備發動寒冰攻擊!",
+	YellCombatEnd	= "不可能…霜牙…警告……"
 })
 
 ----------------------
@@ -1350,11 +1374,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnSoulstorm		= "靈魂風暴 - 快跑進去"
+	warnSoulstormSoon	= "靈魂風暴 即將到來",
+	specwarnSoulstorm	= "靈魂風暴 - 快跑到王身邊"
 })
 
 L:SetOptionLocalization({
-	specwarnSoulstorm		= "當靈魂風暴施放時顯示特別警告 (進駐用)"
+	warnSoulstormSoon	= "為靈魂風暴顯示預先警告 (大約38%)",
+	specwarnSoulstorm	= "當靈魂風暴施放時顯示特別警告 (進駐用)"
 })
 
 -------------------------
@@ -1367,11 +1393,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul		= "停止攻擊"
+	specwarnMirroredSoul	= "停止攻擊",
+	specwarnPhantomBlast	= "斷法!"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "為鏡像之魂需要停止攻擊時顯示特別警告"
+	specwarnMirroredSoul	= "為鏡像之魂需要停止攻擊時顯示特別警告",
+	specwarnPhantomBlast	= "當魅影衝擊施放時顯示特別警告 (斷法用)"
 })
 
 
@@ -1387,20 +1415,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnNewWaveSoon		= "新一波 即將到來",
-	WarnNewWave			= "%s 到來"
+	WarnNewWaveSoon	= "新一波 即將到來",
+	WarnNewWave		= "新一波 到來"
 })
 
 L:SetTimerLocalization({
-	TimerNextWave		= "下一波"
+	TimerNextWave	= "下一波"
 })
 
 L:SetOptionLocalization({
-	WarnNewWave				= "當首領到來時顯示警告",
-	WarnNewWaveSoon			= "為新一波顯示預先警告",
-	ShowAllWaveWarnings		= "為所有波數顯示預先警告",
-	TimerNextWave			= "為下一波顯示計時器 (擊敗首領後)",
-	ShowAllWaveTimers		= "為所有波數顯示計時器"
+	WarnNewWave			= "當首領到來時顯示警告",
+	WarnNewWaveSoon		= "為新一波顯示預先警告",
+	ShowAllWaveWarnings	= "為所有波數顯示警告及預先警告",
+	TimerNextWave		= "為下一波顯示計時器 (擊敗首領後)",
+	ShowAllWaveTimers	= "為所有波數顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -1458,7 +1486,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("LichKingEvent")
 
 L:SetGeneralLocalization({
-	name = "巫妖王事件"
+	name = "逃離巫妖王事件"
 })
 
 L:SetWarningLocalization({
