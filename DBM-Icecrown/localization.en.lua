@@ -21,11 +21,11 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale				= "Announce impaled targets",
-	SpecWarnWhirlwind		= "Show special warning for Whirlwind",
-	SpecWarnColdflame		= "Show special warning when you are affected by Coldflame",
-	PlaySoundOnWhirlwind	= "Play sound on Whirlwind",
+	SpecWarnWhirlwind		= "Show special warning for $spell:69076",
+	SpecWarnColdflame		= "Show special warning when you are affected by $spell:70825",
+	PlaySoundOnWhirlwind	= "Play sound on $spell:69076",
 	achievementBoned		= "Show timer for Boned achievement",
-	SetIconOnImpale			= "Set icons on impaled targets"
+	SetIconOnImpale			= "Set icons on $spell:69062 targets"
 }
 
 -------------------------
