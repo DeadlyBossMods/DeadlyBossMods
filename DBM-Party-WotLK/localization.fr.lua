@@ -1411,12 +1411,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnMirroredSoul	= "Âme réfléchie ! Stop DPS !"
+	specwarnMirroredSoul	= "Âme réfléchie ! Stop DPS !",
 	specwarnPhantomBlast	= "Interrompez !"
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul	= "Montre une alerte spéciale pour arrêter le DPS lorsque vous êtes la cible d'Âme réfléchie"
+	specwarnMirroredSoul	= "Montre une alerte spéciale pour arrêter le DPS lorsque vous êtes la cible d'Âme réfléchie",
 	specwarnPhantomBlast	= "Montre une alerte spéciale lorsque Phantom Blast est incanté (pour l'interrompre)"
 })
 
