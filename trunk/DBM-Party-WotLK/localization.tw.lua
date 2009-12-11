@@ -1295,10 +1295,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	IckPursuit		= "%s正在追擊著你!"
+	IckPursuit		= "%s正在追擊著你!",
 	Barrage			= "%s開始迅速地召喚爆裂地雷!",
 --	YellCombatEnd	= "等等!停!別殺我，拜託!我什麼都告訴你!"--in case removing kricks creatureid doesn't fix it thinking we wipe.
 })
+
 ----------------------------
 --  Forgemaster Garfrost  --
 ----------------------------
@@ -1379,7 +1380,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "為靈魂風暴顯示預先警告 (大約38%)",
+	warnSoulstormSoon	= "為靈魂風暴顯示預先警告 (大約40%)",
 	specwarnSoulstorm	= "當靈魂風暴施放時顯示特別警告 (進駐用)"
 })
 
