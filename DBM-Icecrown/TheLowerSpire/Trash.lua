@@ -12,7 +12,7 @@ local specWarnDisruptingShout	= mod:NewSpecialWarning("SpecWarnDisruptingShout")
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 
 function mod:SPELL_CAST_START(args)
-	if args:SpellID(71022) then
+	if args:IsSpellID(71022) then
 		warnDisruptingShout:Show()
 		specWarnDisruptingShout:Show()
 		timerDisruptingShout:Start()
