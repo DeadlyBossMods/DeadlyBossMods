@@ -22,12 +22,12 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale			= "提示被刺穿的目標",
-	SpecWarnWhirlwind		= "為旋風斬顯示特別警告",
-	SpecWarnColdflame		= "當你中了冷焰時顯示特別警告",
-	PlaySoundOnWhirlwind		= "為旋風斬播放音效",
+	WarnImpale			= "提示$spell:69062的目標",
+	SpecWarnWhirlwind		= "為$spell:69076顯示特別警告",
+	SpecWarnColdflame		= "當你中了$spell:70825時顯示特別警告",
+	PlaySoundOnWhirlwind		= "為$spell:69076斬播放音效",
 	achievementBoned		= "為去骨成就顯示計時器",
-	SetIconOnImpale			= "為被刺穿的目標設置標記"
+	SetIconOnImpale			= "為$spell:69062的目標設置標記"
 }
 
 -------------------------
@@ -54,13 +54,13 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
-	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "無脅之觸"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating			= "當小怪再活化時顯示警告",	-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance	= "當你中了3層無脅之觸時顯示特別警告",
-	SpecWarnDeathDecay		= "當你中了死亡凋零時顯示特別警告",
-	SpecWarnCurseTorpor		= "當你中了魯鈍詛咒時顯示特別警告",
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknow"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	WarnReanimating			= "當小怪再活化時顯示警告",
+	SpecWarnTouchInsignificance	= "當你中了3層$spell:71204時顯示特別警告",
+	SpecWarnDeathDecay		= "當你中了$spell:72108時顯示特別警告",
+	SpecWarnCurseTorpor		= "當你中了$spell:71237時顯示特別警告",
 	TimerAdds			= "為新的小怪顯示計時器",
-	SetIconOnDominateMind		= "為支配心智的目標設置標記"
+	SetIconOnDominateMind		= "為$spell:71289的目標設置標記"
 }
 
 L:SetMiscLocalization{
