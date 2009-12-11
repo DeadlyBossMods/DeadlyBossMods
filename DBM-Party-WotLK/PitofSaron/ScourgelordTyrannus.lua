@@ -21,7 +21,6 @@ mod:RegisterEvents(
 local warnUnholyPower			= mod:NewSpellAnnounce(69629)
 local warnForcefulSmash			= mod:NewSpellAnnounce(69627)
 local warnOverlordsBrand		= mod:NewTargetAnnounce(69172)
-local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
 local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
 
 local warnHoarfrost				= mod:NewSpellAnnounce(69246)
@@ -29,6 +28,7 @@ local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
 
 local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart")--when I get the exact timing of rollplay, I will uncomment this.
+local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
 local timerUnholyPowerCD		= mod:NewCDTimer(40, 69629) --40-45seconds between casts
 local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
 local timerForcefulSmash		= mod:NewCDTimer(40, 69627) --40-45seconds between casts
