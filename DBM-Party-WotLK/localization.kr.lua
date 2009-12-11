@@ -1376,7 +1376,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon		= "영혼폭풍 사전 경고 보기(38%이하 일 때)",
+	warnSoulstormSoon		= "영혼폭풍 사전 경고 보기(40%이하 일 때)",
 	specwarnSoulstorm		= "영혼폭풍을 시전 할 경우 특수 경고 보기(이동경고)"
 })
 

@@ -2,6 +2,23 @@ if GetLocale() ~= "koKR" then return end
 
 local L
 
+---------------------------
+--  Trash - Lower Spire  --
+---------------------------
+L = DBM:GetModLocalization("LowerSpireTrash")
+
+L:SetGeneralLocalization{
+	name = "일반몹"
+}
+
+L:SetWarningLocalization{
+	SpecWarnDisruptingShout			= "분열의 외침 - 시전 중지!!!",
+}
+
+L:SetOptionLocalization{
+	SpecWarnDisruptingShout			= "$spell:71022 특수 경고 보기",	
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
