@@ -136,7 +136,12 @@ local fireEvent
 local wowVersion = select(4, GetBuildInfo())
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
-	"DBM-Battlegrounds",
+	"DBM-Battlegrounds",--replaced by DBM-PvP
+	"DBM_Auchindoun",--replaced by DBM-Party-BC
+	"DBM_Coilfang",--replaced by DBM-Party-BC
+	"DBM_CoT",--replaced by DBM-Party-BC
+	"DBM_TempestKeep",--replaced by DBM-Party-BC
+	"DBM_Terrace",--replaced by DBM-Party-BC
 }
 
 --------------------------------------------------------
