@@ -33,7 +33,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnImpale			= ">%s< is impaled",
-	SpecWarnWhirlwind	= "Whirlwind - Run away",
+	SpecWarnWhirlwind	= "Bone Storm - Run away",
 	SpecWarnColdflame	= "Coldflame - Move away"
 }
 
@@ -79,31 +79,12 @@ L:SetOptionLocalization{
 	TimerAdds						= "Show timer for new adds",
 	SetIconOnDominateMind			= "Set icons on $spell:71289 targets",
 	SpecWarnDarkReckoning			= "Show special warning when you are affected by $spell:69483",
-	PlaySoundOnDarkReckoning		= "Play Sound on Dark Reckoning"
+	PlaySoundOnDarkReckoning		= "Play Sound on $spell:69483"
 }
 
 L:SetMiscLocalization{
 	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
 	YellReanimatedFanatic	= "Arise, and exult in your pure form!",
-}
------------------------------
---  Deathbringer Saurfang  --
------------------------------
-L = DBM:GetModLocalization("Deathbringer")
-
-L:SetGeneralLocalization{
-	name = "Deathbringer Saurfang"
-}
-
-L:SetWarningLocalization{
-	warnFrenzySoon		= "Frenzy soon",
-	specwarnRuneofBlood	= "Rune of Blood on you"
-}
-
-L:SetOptionLocalization{
-	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
-	specwarnRuneofBlood	= "Show special warning when you are affected by $spell:72410",
-	RangeFrame			= "Show range frame"
 }
 
 ----------------------
@@ -121,6 +102,26 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury")
+}
+
+-----------------------------
+--  Deathbringer Saurfang  --
+-----------------------------
+L = DBM:GetModLocalization("Deathbringer")
+
+L:SetGeneralLocalization{
+	name = "Deathbringer Saurfang"
+}
+
+L:SetWarningLocalization{
+	warnFrenzySoon		= "Frenzy soon",
+	specwarnRuneofBlood	= "Rune of Blood on you"
+}
+
+L:SetOptionLocalization{
+	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
+	specwarnRuneofBlood	= "Show special warning when you are affected by $spell:72410",
+	RangeFrame			= "Show range frame (11)"
 }
 
 -----------------
