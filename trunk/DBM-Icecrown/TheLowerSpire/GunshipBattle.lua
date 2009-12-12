@@ -12,8 +12,6 @@ else
 	mod:SetCreatureID(37540)	-- The Skybreaker
 end
 
---mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
-
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
@@ -35,7 +33,9 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(71195) then
+	if args:IsSpellID(69705) then
+		warnBelowZero:Show(args.destName)
+	elseif args:IsSpellID(71195) then
 		warnElite:Show(args.destName)
 	elseif args:IsSpellID(71193) then
 		warnVeteran:Show(args.destName)
