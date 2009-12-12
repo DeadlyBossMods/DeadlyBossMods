@@ -1319,7 +1319,7 @@ L:SetOptionLocalization({
 	warnSaroniteRock			= "Montre une alerte pour le Rocher de Saronite (pour effacer Gel prolongé)",
 	specWarnSaroniteRock		= "Montre une alerte spéciale lorsque le Lancer de Saronite est sur vous",
 	specWarnSaroniteRockNear	= "Montre une alerte spéciale lorsque le Lancer de Saronite est près de vous",
-	specWarnPermafrost			= "Montre une alerte spéciale lorsque le nombre de charge de Gel prolongé est grand (valeur non fixée)"
+	specWarnPermafrost			= "Montre une alerte spéciale lorsque le nombre de charge de Gel prolongé est grand (valeur non fixée)",
 	SetIconOnSaroniteRockTarget	= "Met une icône sur la cible du Rocher de Saronite"
 })
 
@@ -1357,7 +1357,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", 
-	HoarfrostTarget	= "^%%s fixe (%S+) du regard et prépare une attaque de glace !"
+	HoarfrostTarget	= "^%%s fixe (%S+) du regard et prépare une attaque de glace !",
 	YellCombatEnd	= "Impossible.... Rimefang.... avertis...."
 })
 
