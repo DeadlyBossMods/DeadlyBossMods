@@ -28,6 +28,7 @@ local warnDarkReckoning				= mod:NewTargetAnnounce(69483, 3)
 local specWarnCurseTorpor			= mod:NewSpecialWarning("SpecWarnCurseTorpor")
 local specWarnDeathDecay			= mod:NewSpecialWarning("SpecWarnDeathDecay")
 local specWarnTouchInsignificance	= mod:NewSpecialWarning("SpecWarnTouchInsignificance")
+local specWarnDarkReckoning			= mod:NewSpecialWarning("SpecWarnDarkReckoning")
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
 local timerDominateMind				= mod:NewBuffActiveTimer(20, 71289)
@@ -37,6 +38,7 @@ local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 local enrageTimer					= mod:NewEnrageTimer(600)
 
 mod:AddBoolOption("SetIconOnDominateMind", true)
+mod:AddBoolOption("PlaySoundOnDarkReckoning", true)
 
 local lastDD	= 0
 local MCTargets	= {}
@@ -93,6 +95,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnCurseTorpor:Show()
 	elseif args:IsSpellID(69483) then
 		warnDarkReckoning:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnDarkReckoning:Show()
+			if self.Options.PlaySoundOnDarkReckoning then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
+		end
 	elseif args:IsSpellID(71204) then
 		warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
 		if args:IsPlayer() and (args.amount or 1) >= 3 then

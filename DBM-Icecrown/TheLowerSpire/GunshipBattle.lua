@@ -46,7 +46,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(69651) then
 		warnWoundingStrike:Show(args.destName)
 -- if opposite leader gets BattleFury then
-	elseif args:IsSpellID(72306, 69638) and ((UnitFactionGroup("player") == "Alliance" and mod:GetCIDFromGUID(args.destGUID) == 37187) or (UnitFactionGroup("player") == "Horde" and mod:GetCIDFromGUID(args.destGUID) == 37200)) then
+	elseif args:IsSpellID(72306, 69638) and ((UnitFactionGroup("player") == "Alliance" and mod:GetCIDFromGUID(args.destGUID) == 36939) or (UnitFactionGroup("player") == "Horde" and mod:GetCIDFromGUID(args.destGUID) == 37200)) then
 		warnBattleFury:Show(GetSpellInfo(72306), args.amount)
 		timerBattleFuryActive:Start()
 	end
