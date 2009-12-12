@@ -11,7 +11,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Ahn'Kahet,Azjol-Nerub,CoT: Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold,Trial of the Champion,The Forge of Souls,Pit of Saron,Halls of Reflection,World Events
-## X-DBM-Mod-SubCategories-frFR: Ahn'Kahet,Azjol-Nérub,GT: L'Épuration de Stratholme,Drak'Tharon,Gundrak,Salles de foudre,Salles de pierre,Le Nexus,L'Occulus,Donjon d'Utgarde,Cime d'Utgarde,Fort Pourpre,L'épreuve du champion,La Forge des âmes,La Fosse de Saron,Halls of Reflection,Evènements mondiaux
+## X-DBM-Mod-SubCategories-frFR: Ahn'Kahet,Azjol-Nérub,GT: L'Épuration de Stratholme,Drak'Tharon,Gundrak,Salles de foudre,Salles de pierre,Le Nexus,L'Occulus,Donjon d'Utgarde,Cime d'Utgarde,Fort Pourpre,L'épreuve du champion,La Forge des âmes,La Fosse de Saron,Salles des Reflets,Evènements mondiaux
 ## X-DBM-Mod-SubCategories-deDE: Ahn'kahet,Azjol-Nerub,HdZ: Stratholme,Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
 ## X-DBM-Mod-SubCategories-ruRU: Ан'кахет,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость,Испытание чемпиона,Кузня Душ,Яма Сарона,Залы Отражений,Игровые события
 ## X-DBM-Mod-SubCategories-zhTW: 安卡罕特,阿茲歐-奈幽,舊斯坦索姆,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡,勇士試煉,眾魂熔爐,薩倫之淵,倒影大廳,世界事件
@@ -25,7 +25,7 @@
 ## X-DBM-Mod-Name-koKR: 5인 던전 모드
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold,Trial of the Champion,Blackrock Depths,Scarlet Monastery,Pit of Saron,The Forge of Souls,Halls of Reflection
-## X-DBM-Mod-LoadZone-frFR: Ahn'kahet : l'Ancien royaume,Azjol -Nérub,L'Épuration de Stratholme,Donjon de Drak'Tharon,Gundrak,Les salles de Foudre,Les salles de Pierre,Le Nexus,L'Oculus,Donjon d'Utgarde,Cime d'Utgarde,Le fort Pourpre,L'épreuve du champion,Profondeurs de Rochenoire,Monastère écarlate,Fosse de Saron,La Forge des âmes
+## X-DBM-Mod-LoadZone-frFR: Ahn'kahet : l'Ancien royaume,Azjol -Nérub,L'Épuration de Stratholme,Donjon de Drak'Tharon,Gundrak,Les salles de Foudre,Les salles de Pierre,Le Nexus,L'Oculus,Donjon d'Utgarde,Cime d'Utgarde,Le fort Pourpre,L'épreuve du champion,Profondeurs de Rochenoire,Monastère écarlate,Fosse de Saron,La Forge des âmes,Salles des Reflets
 ## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
 ## X-DBM-Mod-LoadZone-ruRU: Ан'кахет: Старое Королевство,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость,Испытание чемпиона,Глубины Черной горы,Монастырь Алого ордена,Яма Сарона,Кузня Душ
 ## X-DBM-Mod-LoadZone-zhTW: 安卡罕特:古王國,阿茲歐-奈幽,斯坦索姆的抉擇,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡,勇士試煉,黑石深淵,血色修道院,薩倫之淵,眾魂熔爐,倒影大廳
