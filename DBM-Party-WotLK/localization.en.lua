@@ -1335,10 +1335,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged		= "Scourgelord Tyrannus is coming down - Get ready",
 	specWarnIcyBlast		= "Icy Blast - Move away",
 	specWarnHoarfrost		= "Hoarfrost on you",
-	specWarnHoarfrostNear	= "Hoarfrost near you - Move"
+	specWarnHoarfrostNear	= "Hoarfrost near you - Move",
+	specWarnOverlordsBrand	= "Overlords Brand on you"
 })
 
 L:SetTimerLocalization{
@@ -1349,6 +1349,7 @@ L:SetOptionLocalization({
 	specWarnIcyBlast			= "Show special warning when you take damage from Icy Blast",
 	specWarnHoarfrost			= "Show special warning when you are affected by Hoarfrost",
 	specWarnHoarfrostNear		= "Show special warning for Hoarfrost near you",
+	specWarnOverlordsBrand		= "Show special warning when you are affected by Overlords Brand",
 	TimerCombatStart			= "Show timer for start of combat",
 	SetIconOnHoarfrostTarget	= "Set icons on Hoarfrost targets"
 })
