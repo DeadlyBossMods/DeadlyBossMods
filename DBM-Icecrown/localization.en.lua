@@ -101,7 +101,19 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury")
+	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
+	TimerCombatStart	= "Show time for start of combat"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "Combat starts"
+}
+
+L:SetMiscLocalization{
+	PullAlliance	= "Fire up the engines! We got a meetin' with destiny, lads!",
+	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!"
+	PullHorde	= "unknown",
+	KillHorde	= "unknown"
 }
 
 -----------------------------
