@@ -1339,7 +1339,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnIcyBlast		= "Déflagration glaciale ! Bougez !",
 	specWarnHoarfrost		= "Gelée blanche sur vous !",
-	specWarnHoarfrostNear	= "Gelée blanche proche de vous ! Bougez !"
+	specWarnHoarfrostNear	= "Gelée blanche proche de vous ! Bougez !",
 	specWarnOverlordsBrand	= "Overlords Brand sur vous"
 })
 
