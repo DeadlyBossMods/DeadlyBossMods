@@ -12,11 +12,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout			= "분열의 외침 - 시전 중지!!!",
+	SpecWarnDisruptingShout		= "분열의 외침 - 시전 중지!!!",
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout			= "$spell:71022 특수 경고 보기",	
+	SpecWarnDisruptingShout		= "$spell:71022 특수 경고 보기",	
 }
 
 ----------------------
@@ -65,7 +65,8 @@ L:SetWarningLocalization{
 	SpecWarnDeathDecay				= "죽음과 부패 - 이동!!",
 	SpecWarnCurseTorpor				= "당신에게 무감각의 저주",
 	SpecWarnTouchInsignificance		= "무의미함의 손길 (3)",
-	WarnAddsSoon					= "곧 새로운 이교도 추가"
+	WarnAddsSoon					= "곧 새로운 이교도 추가",
+	SpecWarnDarkReckoning			= "어둠의 징벌 - 이동!!!"
 }
 
 L:SetOptionLocalization{
@@ -76,7 +77,9 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay				= "$spell:72108 에 영향을 받을 경우 특수 경고 보기",
 	SpecWarnCurseTorpor				= "$spell:71237 에 영향을 받을 경우 특수 경고 보기",
 	TimerAdds						= "새로운 이교도 추가 타이머 보기",	
-	SetIconOnDominateMind			= "$spell:71289 대상 공격대 아이콘 설정"	
+	SetIconOnDominateMind			= "$spell:71289 대상 공격대 아이콘 설정",
+	SpecWarnDarkReckoning			= "$spell:69483에 영향을 받을 경우 특수 경고 보기",
+	PlaySoundOnDarkReckoning		= "어둠의 징벌에 영향을 받을 경우 특수 소리 재생"	
 }
 
 L:SetMiscLocalization{
@@ -94,12 +97,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon	= "곧 광기"
+	warnFrenzySoon			= "곧 광기",
+	specwarnRuneofBlood		= "당신에게 피의 룬!!"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon	= "광기 사전 경고 보기 (33% 이하)",
-	RangeFrame		= "거리 프레임 보기"
+	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
+	specwarnRuneofBlood		= "$spell:72410의 영향을 받을 경우 특수 경고 보기",
+	RangeFrame				= "거리 프레임 보기"
 }
 
 ----------------------
