@@ -12,7 +12,7 @@ else
 	mod:RegisterKill("yell", L.KillHorde)
 	mod:SetCreatureID(37540)	-- The Skybreaker
 end
-mod:SetMinCombatTime(75)	-- not sure exactly how long it takes before entering ;)
+mod:SetMinCombatTime(50)	
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -29,7 +29,7 @@ local warnBattleFury		= mod:NewAnnounce("WarnBattleFury", 3, nil, false)	-- migh
 local warnBladestorm		= mod:NewSpellAnnounce(69652, 2, nil, false)		-- might be spammy
 local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 3)
 
-local timerCombatStart		= mod:NewTimer(70, "TimerCombatStart")			-- Check accuracy
+local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart")			-- Check accuracy
 local timerBelowZeroCD		= mod:NewCDTimer(35, 69705)
 local timerBattleFuryActive	= mod:NewBuffActiveTimer(20, 72306)
 
