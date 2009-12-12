@@ -17,7 +17,8 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnDisruptingShout			= "Show special warning for $spell:71022",
 	SpecWarnDarkReckoning			= "Show special warning when you are affected by $spell:69483",
-	PlaySoundOnDarkReckoning		= "Play Sound on $spell:69483"	
+	PlaySoundOnDarkReckoning		= "Play Sound on $spell:69483",
+	SetIconOnDominateMind			= "Set icons on $spell:69483 targets"
 }
 
 
