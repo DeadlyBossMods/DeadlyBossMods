@@ -18,7 +18,8 @@ mod:SetMinCombatTime(75)	-- not sure exactly how long it takes before entering ;
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_SUCCESS"
 )
 
 local warnBelowZero			= mod:NewSpellAnnounce(69705, 3)
@@ -38,9 +39,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(69705) then
-		warnBelowZero:Show(args.destName)
-	elseif args:IsSpellID(71195) then
+	if args:IsSpellID(71195) then
 		warnElite:Show(args.destName)
 	elseif args:IsSpellID(71193) then
 		warnVeteran:Show(args.destName)
@@ -62,5 +61,11 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69705) then
 		timerBelowZeroCD:Start()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(69705) then
+		warnBelowZero:Show(args.destName)
 	end
 end
