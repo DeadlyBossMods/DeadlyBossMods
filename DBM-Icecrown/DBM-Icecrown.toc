@@ -13,6 +13,7 @@
 ## X-DBM-Mod-SubCategories-frFR: L'entrée de la Citadelle,L'Atelier de la Peste,La Salle Cramoisie,Les salles de l'Aile de Glace,Le trône de Glace
 ## X-DBM-Mod-SubCategories-zhTW: 城塞大門,瘟疫工坊,赤紅大廳,霜翼大廳,冰封王座
 ## X-DBM-Mod-SubCategories-koKR: 성채 하층부,역병작업장,진홍빛 전당,서리날개 전당,얼어붙은 왕좌
+## X-DBM-Mod-SubCategories-ruRU: Шпиль,Чумодельня,Багровый зал,Зал Ледокрылых,Ледяной Трон
 ## X-DBM-Mod-Name: Icecrown Citadel
 ## X-DBM-Mod-Name-deDE: Eiskronenzitadelle
 ## X-DBM-Mod-Name-frFR: Citadelle de la Couronne de Glace
