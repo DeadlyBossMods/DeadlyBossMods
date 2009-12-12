@@ -8,9 +8,8 @@ if UnitFactionGroup("player") == "Alliance" then
 	mod:RegisterKill("yell", L.KillAlliance)
 	mod:SetCreatureID(37215)	-- Orgrim's Hammer
 else
---	mod:RegisterCombat("yell", L.PullHorde)
---	mod:RegisterKill("yell", L.KillHorde)
-	mod:RegisterCombat("combat")
+	mod:RegisterCombat("yell", L.PullHorde)
+	mod:RegisterKill("yell", L.KillHorde)
 	mod:SetCreatureID(37540)	-- The Skybreaker
 end
 mod:SetMinCombatTime(75)	-- not sure exactly how long it takes before entering ;)
