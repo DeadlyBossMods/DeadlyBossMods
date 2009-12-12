@@ -47,7 +47,7 @@ end
 function mod:OnCombatStart(delay)
     preWarnWhirlwind:Schedule(40-delay)
 	timerWhirlwindCD:Start(45-delay)
-	timerBoneSpike:Start(-delay)
+	timerBoneSpike:Start(15-delay)
 end
 
 function mod:warnImpale()
@@ -78,6 +78,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69076) then						-- Bone Storm (Whirlwind)
+		timerBoneSpike:Cancel()							-- He doesn't do Bone Spike Graveyard during Bone Storm
 		specWarnWhirlwind:Show()
 		timerWhirlwindCD:Start()
 		preWarnWhirlwind:Schedule(85)
@@ -93,7 +94,9 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(69065) then           -- Impaled
+	if args:IsSpellID(69065) then			-- Impaled
 		mod:SetIcon(args.destName, 0)
+	elseif args:IsSpellID(69076) then
+		timerBoneSpike:Start(15)			-- He will do Bone Spike Graveyard 15 seconds after whirlwind ends
 	end
 end
