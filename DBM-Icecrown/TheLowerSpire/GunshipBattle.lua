@@ -28,13 +28,24 @@ local warnElite				= mod:NewTargetAnnounce(71195, 3, nil, false)		-- might be sp
 local warnBattleFury		= mod:NewAnnounce("WarnBattleFury", 3, nil, false)	-- might be spammy
 local warnBladestorm		= mod:NewSpellAnnounce(69652, 2, nil, false)		-- might be spammy
 local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 3)
+local warnAddsSoon		= mod:NewAnnounce("WarnAddsSoon")
 
-local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart")			-- Check accuracy
+local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart")
 local timerBelowZeroCD		= mod:NewCDTimer(35, 69705)
 local timerBattleFuryActive	= mod:NewBuffActiveTimer(20, 72306)
+local timerAdds			= mod:NewTimer(60, "TimerAdds")
+
+local function adds()
+	timerAdds:Start()
+	warnAddsSoon:Schedule(55)
+	self:Schedule(60, adds)
+end
 
 function mod:OnCombatStart(delay)
 	timerCombatStart:Show(-delay)
+	timerAdds:Start(73-delay)
+	warnAddsSoon:Schedule(68)
+	self:Schedule(73, adds)
 end
 
 function mod:SPELL_AURA_APPLIED(args)

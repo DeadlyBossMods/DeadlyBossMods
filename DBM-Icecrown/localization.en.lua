@@ -98,16 +98,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBattleFury	= "%s (%d)"
+	WarnBattleFury		= "%s (%d)",
+	WarnAddsSoon		= "New adds soon"
 }
 
 L:SetOptionLocalization{
 	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
-	TimerCombatStart	= "Show time for start of combat"
+	TimerCombatStart	= "Show time for start of combat",
+	WarnAddsSoon		= "Show pre-warning for adds spawning",
+	TimerAdds		= "Show timer for new adds"
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "Combat starts"
+	TimerCombatStart	= "Combat starts",
+	TimerAdds		= "New adds"
 }
 
 L:SetMiscLocalization{
