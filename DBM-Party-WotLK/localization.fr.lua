@@ -6,13 +6,12 @@ local spell				= "%s"
 local debuff			= "%s: >%s<"			
 local spellCD			= "%s cooldown"
 local spellSoon			= "%s bientôt"
-local optionWarning		= "Activer l'annonce: %s"
-local optionPreWarning		= "Activer la pré-annonce: %s"
-local optionSpecWarning		= "Activer l'avertissement spécial: %s"
-local optionTimerCD		= "Afficher le timer pour le cooldown pour: %s"
-local optionTimerDur		= "Afficher le timer de durée pour: %s"
-local optionTimerCast		= "Afficher le timer pour le cast de: %s"
-
+local optionWarning		= "Activer l'alerte : %s"
+local optionPreWarning	= "Activer la pré-alerte : %s"
+local optionSpecWarning	= "Activer l'alerte spéciale : %s"
+local optionTimerCD		= "Afficher le timer pour le cooldown pour : %s"
+local optionTimerDur	= "Afficher le timer de durée pour : %s"
+local optionTimerCast	= "Afficher le timer pour le cast de : %s"
 
 --------------------------------
 -- Ahn'Kahet: The Old Kingdom --
@@ -34,7 +33,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------
 -- Elder Nadox --
 -----------------
@@ -52,7 +50,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------------
 -- Jedoga Shadowseeker --
@@ -72,7 +69,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------
 -- Herald Volazj --
 -------------------
@@ -91,7 +87,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------
 -- Amanitar --
 --------------
@@ -109,7 +104,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------
 -- Azjol-Nerub --
@@ -131,7 +125,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------
 -- Hadronox --
 --------------
@@ -150,7 +143,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------------------
 --  Anub'arak (Party)  --
 -------------------------
@@ -168,7 +160,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------------------------------
 -- Caverns of Time - Old Stratholme --
@@ -190,7 +181,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------------------------
 -- Salramm the Fleshcrafter --
 ------------------------------
@@ -209,7 +199,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------------
 -- Chrono-Lord Epoch --
 -----------------------
@@ -227,7 +216,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 -- Mal'Ganis --
@@ -269,7 +257,6 @@ L:SetOptionLocalization({
 	TimerWaveIn		= "Montre le timer \"Prochaine vague\" (vague 6 seulement)",
 })
 
-
 L:SetMiscLocalization({
 	Meathook	= "Grancrochet",
 	Salramm		= "Salramm le Façonneur de chair",
@@ -287,7 +274,6 @@ L:SetMiscLocalization({
 	WaveBoss	= "%s",
 	WaveCheck	= "Vagues du Fléau = %d/10"
 })
-
 
 ----------------------
 -- Drak'Tharon Keep --
@@ -309,7 +295,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------------------
 -- Novos the Summoner --
 ------------------------
@@ -327,7 +312,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------
 -- King Dred --
@@ -347,7 +331,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------------------
 -- The Prophet Tharon'ja --
 ---------------------------
@@ -365,7 +348,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------
 -- Gun'Drak --
@@ -387,7 +369,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------
 -- Moorabi --
 -------------
@@ -405,7 +386,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------------
 -- Drakkari Colossus --		
@@ -428,7 +408,6 @@ L:SetOptionLocalization({
 	WarningElemental	= "Activer l'annonce de la phase Elémentaire",
 	WarningStone		= "Activer l'annonce de la phase Colosse"
 })
-
 
 ---------------
 -- Gal'darah --
@@ -466,7 +445,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------------------
 -- Halls of Lightning --
 ------------------------
@@ -487,7 +465,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------
 -- Ionar --
 -----------
@@ -506,12 +483,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -------------
 -- Volkhan --
 -------------
 L = DBM:GetModLocalization("Volkhan")
-
 
 L:SetGeneralLocalization({
 	name = "Volkhan"
@@ -530,7 +505,6 @@ L:SetOptionLocalization({
 	TimerStompCD 	= optionTimerCD:format(GetSpellInfo(52237))
 })
 
-
 ------------
 -- Kronus --
 ------------
@@ -548,7 +522,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------------
 -- Halls of Stone --
@@ -570,11 +543,11 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ----------------
 -- Krystallus --
 ----------------
 L = DBM:GetModLocalization("Krystallus")
+
 L:SetGeneralLocalization({
 	name = "Krystallus"
 })
@@ -591,7 +564,6 @@ L:SetOptionLocalization({
 	WarningShatter	= optionWarning:format(GetSpellInfo(50810)),
 	TimerShatterCD	= optionTimerCD:format(GetSpellInfo(50810))
 })
-
 
 ----------------------------
 -- Sjonnir the Ironshaper --
@@ -611,14 +583,13 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------------------------------
 -- Brann Bronzebeard Escort Event --
 ------------------------------------
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
-	name = "Tribunal des ages"
+	name = "Tribunal des âges"
 })
 
 L:SetWarningLocalization({
@@ -656,7 +627,6 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------------------
 -- Ormorok the Tree-Shaper --
 -----------------------------
@@ -675,7 +645,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 --------------------------
 -- Grand Magus Telestra --
 --------------------------
@@ -686,6 +655,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningSplitSoon	= "Séparation bientôt",
+	WarningSplitNow		= "Séparation",
 	WarningMerge		= "Rassemblement"
 })
 
@@ -693,7 +664,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningMerge		= optionWarning:format("Rassemblement")
+	WarningSplitSoon	= "Montre une alerte lorsque la Séparation est proche",
+	WarningSplitNow		= "Montre une alerte lors de la Séparation",
+	WarningMerge		= "Montre une alerte lors du Rassemblement"
 })
 
 L:SetMiscLocalization({
@@ -701,7 +674,6 @@ L:SetMiscLocalization({
 	SplitTrigger2 	= "Vous allez être trop bien servis !",
 	MergeTrigger 	= "Et maintenant finissons le travail !"
 })
-
 
 -----------------
 -- Keristrasza --
@@ -720,7 +692,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------------------------
 -- Commander Kolurg/Stoutbeard --
@@ -747,7 +718,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ----------------
 -- The Oculus --
 -----------------------------
@@ -756,7 +726,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DrakosTheInterrogator")
 
 L:SetGeneralLocalization({
-	name = " Drakos l'Interrogateur"
+	name = "Drakos l'Interrogateur"
 })
 
 L:SetWarningLocalization({
@@ -766,6 +736,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	MakeitCountTimer	= "Montre le timer pour le haut-fait Comptez là-dessus"
+})
+
+L:SetMiscLocalization({
+	MakeitCountTimer	= "Comptez là-dessus"
 })
 
 --------------------
@@ -796,7 +771,6 @@ L:SetOptionLocalization({
 	SpecWarnBombYou 	= optionSpecWarning:format(GetSpellInfo(51121))
 })
 
-
 ------------------------
 -- Varos Cloudstrider --
 ------------------------
@@ -814,7 +788,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------------------
 -- Ley-Guardian Eregos --
@@ -836,7 +809,9 @@ L:SetOptionLocalization({
 	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." terminé")
 })
 
-
+L:SetMiscLocalization({
+	MakeitCountTimer	= "Comptez là-dessus"
+})
 
 ------------------
 -- Utgarde Keep --
@@ -858,7 +833,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------------------------
 -- Skarvald the Constructor --
 -- & Dalronn the Controller --
@@ -877,7 +851,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 --------------------------
 -- Ingvar the Plunderer --
@@ -899,6 +872,9 @@ L:SetOptionLocalization({
 	SpecialWarningSpelllock	= "Montre une alerte spéciale pour spell lock"
 })
 
+L:SetMiscLocalization({
+	YellCombatEnd	= "Non ! Je peux faire... mieux ! Je peux..."
+})
 
 ----------------------
 -- Utgarde Pinnacle --
@@ -938,7 +914,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 -----------------------
 -- Svala Sorrowgrave --
 -----------------------
@@ -957,7 +932,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------------
 -- Gortok Palehoof --
 ---------------------
@@ -975,7 +949,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ---------------------
 -- The Violet Hold --
@@ -997,7 +970,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------
 -- Erekem --
 ------------
@@ -1015,7 +987,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -------------
 -- Ichoron --
@@ -1035,7 +1006,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ---------------
 -- Lavanthor --
 ---------------
@@ -1053,7 +1023,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 ------------
 -- Moragg --
@@ -1073,7 +1042,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-
 ------------
 -- Xevoss --
 ------------
@@ -1091,7 +1059,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 -----------------------------
 -- Zuramat the Obliterator --
@@ -1115,7 +1082,6 @@ L:SetOptionLocalization({
 	SpecialShroudofDarkness		= optionSpecWarning:format(GetSpellInfo(59745))
 })
 
-
 -------------------
 -- Portal Timers --
 -------------------
@@ -1128,7 +1094,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningPortalSoon	= "Portail imminent",
 	WarningPortalNow	= "Portail #%d",
-	WarningBossNow		= "Arrivé d'un boss"
+	WarningBossNow		= "Arrivée d'un boss"
 })
 
 L:SetTimerLocalization({
@@ -1138,23 +1104,21 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningPortalNow		= optionWarning:format("Portail"),
 	WarningPortalSoon		= optionPreWarning:format("Portail imminent"),
-	WarningBossNow			= optionWarning:format("Arrivé d'un boss"),
+	WarningBossNow			= optionWarning:format("Arrivée d'un boss"),
 	TimerPortalIn			= "Afficher le timer des portails",
 	ShowAllPortalWarnings	= "Activer les annonces pour toutes les vagues"
 })
 
-
 L:SetMiscLocalization({
-	yell1 = "Gardes, nous partons ! Ces aventuriers vont se charger de la suite ! Allez, en route !",
+	yell1 		= "Gardes, nous partons ! Ces aventuriers vont se charger de la suite ! Allez, en route !",
+	WavePortal	= "Portails Ouverts : (%d+)/18"
 })
 
-
----------------------
--- Trial of the Champion --
----------------------
--------------------
--- The Black Knight --
--------------------
+-----------------------------
+--  Trial of the Champion  --
+-----------------------------
+--  The Black Knight  --
+------------------------
 L = DBM:GetModLocalization("BlackKnight")
 
 L:SetGeneralLocalization({
@@ -1209,7 +1173,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "Paletress incante une rénovation sur >%s<. Dispell Maintenant !"
+	specwarnRenew			= "Rénovation sur >%s<. Dispell Maintenant !"
 })
 
 L:SetOptionLocalization({
@@ -1217,6 +1181,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCombatEnd	= "Bon travail !"
 })
 
 -------------------
@@ -1311,24 +1276,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnPursuit				= "Poursuite dans 5 secondes",
-	specWarnToxic			= "Déchets toxiques ! Bougez !",
-	specWarnPursuit			= "Vous êtes poursuivi ! Courrez !"
+	warnPursuit			= "Poursuite dans 5 secondes",
+	specWarnToxic		= "Déchets toxiques ! Bougez !",
+	specWarnPursuit		= "Vous êtes poursuivi ! Courrez !"
+	specWarnPoisonNova	= "Nova de Poison - Courrez !",
+	specWarnMines		= "Barrage Explosif  - Bougez"
 })
 
 L:SetOptionLocalization({
 	warnPursuit				= "Montre une alerte lorsque la Poursuite est pour bientôt",
 	specWarnToxic			= "Montre une alerte spéciale lorsque vous prenez des dégâts des Déchets toxiques",
 	specWarnPursuit			= "Montre une alerte spéciale lorsque vous êtes poursuivi"
---	SetIconOnPursuitTarget	= "Met une icône sur la cible de la Poursuite"
+	specWarnPoisonNova		= "Montre une alerte spéciale lorsque la Nova de Poison est incantée (pour s'écarter)",
+	specWarnMines			= "Montre une alerte spéciale lorsque le Barrage Explosif est incanté (pour bouger)",
+	PlaySoundOnPoisonNova	= "Joue un son lors de la Nova de Poison",
+	PlaySoundOnPursuit		= "Joue un son lors de la Poursuite",
+	SetIconOnPursuitTarget	= "Met des icônes sur les cibles de la Poursuite"
 })
 
 L:SetMiscLocalization({
-	IckPursuit				= "%s is chasing you!"
+	IckPursuit	= "%s vous poursuit !",
+	Barrage		= "%s commence à incanter des mines explosives !",
+--	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.
 })
--------------------
--- Forgemaster Garfrost --
--------------------
+----------------------------
+--  Forgemaster Garfrost  --
+----------------------------
 L = DBM:GetModLocalization("ForgemasterGarfrost")
 
 L:SetGeneralLocalization({
@@ -1338,23 +1311,25 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnSaroniteRock			= "Rocher de Saronite ! Ligne de Vue maintenant !",
 	specWarnSaroniteRock		= "Lancer de Saronite sur vous ! Bougez !",
+	specWarnSaroniteRockNear	= "Lancer de Saronite près de vous - Bougez",
 	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "Montre une alerte pour le Rocher de Saronite (pour effacer Gel prolongé)",
 	specWarnSaroniteRock		= "Montre une alerte spéciale lorsque le Lancer de Saronite est sur vous",
+	specWarnSaroniteRockNear	= "Montre une alerte spéciale lorsque le Lancer de Saronite est près de vous",
 	specWarnPermafrost			= "Montre une alerte spéciale lorsque le nombre de charge de Gel prolongé est grand (valeur non fixée)"
---	SetIconOnSaroniteRockTarget	= "Met une icône sur la cible du Rocher de Saronite"
+	SetIconOnSaroniteRockTarget	= "Met une icône sur la cible du Rocher de Saronite"
 })
 
 L:SetMiscLocalization({
 	SaroniteRockThrow			= "%s hurls a massive saronite boulder at you!"
 })
 
--------------------
--- Scourgelord Tyrannus --
--------------------
+----------------------------
+--  Scourgelord Tyrannus  --
+----------------------------
 L = DBM:GetModLocalization("ScourgelordTyrannus")
 
 L:SetGeneralLocalization({
@@ -1362,22 +1337,28 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "Seigneur du Fléau Tyrannus descend. Préparez-vous !",
-	specWarnIcyBlast			= "Déflagration glaciale ! Bougez !",
-	specWarnHoarfrost			= "Gelée blanche sur vous !",
-	specWarnHoarfrostNear		= "Gelée blanche proche de vous ! Bougez !"
+	specTyrannusEngaged		= "Seigneur du Fléau Tyrannus descend. Préparez-vous !",
+	specWarnIcyBlast		= "Déflagration glaciale ! Bougez !",
+	specWarnHoarfrost		= "Gelée blanche sur vous !",
+	specWarnHoarfrostNear	= "Gelée blanche proche de vous ! Bougez !"
 })
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "Le combat commence"
+}
 
 L:SetOptionLocalization({
 	specWarnIcyBlast			= "Montre une alerte spéciale lorsque vous subissez des dégâts de la Déflagration glaciale ",
 	specWarnHoarfrost			= "Montre une alerte spéciale lorsque la Gelée blanche est sur vous",
 	specWarnHoarfrostNear		= "Montre une alerte spéciale lorsque la Gelée blanche est proche de vous",
+	TimerCombatStart			= "Affiche un timer pour le début du combat",
 	SetIconOnHoarfrostTarget	= "Met une icône sur la cible de la Gelée blanche"
 })
 
 L:SetMiscLocalization({
-	TyrannusYell				= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "^%%s fixe (%S+) du regard et prépare une attaque de glace !"
+	CombatStart		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", 
+	HoarfrostTarget	= "^%%s fixe (%S+) du regard et prépare une attaque de glace !"
+	YellCombatEnd	= "Impossible.... Rimefang.... avertis...."
 })
 
 ---------------------
