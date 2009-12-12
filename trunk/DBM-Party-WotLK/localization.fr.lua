@@ -1278,7 +1278,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnPursuit			= "Poursuite dans 5 secondes",
 	specWarnToxic		= "Déchets toxiques ! Bougez !",
-	specWarnPursuit		= "Vous êtes poursuivi ! Courrez !"
+	specWarnPursuit		= "Vous êtes poursuivi ! Courrez !",
 	specWarnPoisonNova	= "Nova de Poison - Courrez !",
 	specWarnMines		= "Barrage Explosif  - Bougez"
 })
@@ -1286,7 +1286,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnPursuit				= "Montre une alerte lorsque la Poursuite est pour bientôt",
 	specWarnToxic			= "Montre une alerte spéciale lorsque vous prenez des dégâts des Déchets toxiques",
-	specWarnPursuit			= "Montre une alerte spéciale lorsque vous êtes poursuivi"
+	specWarnPursuit			= "Montre une alerte spéciale lorsque vous êtes poursuivi",
 	specWarnPoisonNova		= "Montre une alerte spéciale lorsque la Nova de Poison est incantée (pour s'écarter)",
 	specWarnMines			= "Montre une alerte spéciale lorsque le Barrage Explosif est incanté (pour bouger)",
 	PlaySoundOnPoisonNova	= "Joue un son lors de la Nova de Poison",
