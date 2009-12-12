@@ -873,7 +873,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd	= "Non ! Je peux faire... mieux ! Je peux..."
+	YellCombatEnd	= "Non ! Je peux faire... mieux, je peux..."
 })
 
 ----------------------
@@ -1296,7 +1296,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	IckPursuit	= "%s vous poursuit !",
-	Barrage		= "%s commence à incanter des mines explosives !",
+	Barrage		= "%s commence à invoquer rapidement des mines explosives !",
 --	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.
 })
 ----------------------------
@@ -1337,10 +1337,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged		= "Seigneur du Fléau Tyrannus descend. Préparez-vous !",
 	specWarnIcyBlast		= "Déflagration glaciale ! Bougez !",
 	specWarnHoarfrost		= "Gelée blanche sur vous !",
 	specWarnHoarfrostNear	= "Gelée blanche proche de vous ! Bougez !"
+	specWarnOverlordsBrand	= "Overlords Brand sur vous"
 })
 
 L:SetTimerLocalization{
@@ -1351,14 +1351,15 @@ L:SetOptionLocalization({
 	specWarnIcyBlast			= "Montre une alerte spéciale lorsque vous subissez des dégâts de la Déflagration glaciale ",
 	specWarnHoarfrost			= "Montre une alerte spéciale lorsque la Gelée blanche est sur vous",
 	specWarnHoarfrostNear		= "Montre une alerte spéciale lorsque la Gelée blanche est proche de vous",
+	specWarnOverlordsBrand		= "Montre une alerte spéciale lorsque vous êts affecté par Overlords Brand",
 	TimerCombatStart			= "Affiche un timer pour le début du combat",
 	SetIconOnHoarfrostTarget	= "Met une icône sur la cible de la Gelée blanche"
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.", 
+	CombatStart		= "Hélas, mes très, très braves aventuriers, votre intrusion touche à sa fin. Entendez-vous le claquement de l'acier sur les os qui monte du tunnel, derrière vous ? C'est le son de votre mort imminente.",
 	HoarfrostTarget	= "^%%s fixe (%S+) du regard et prépare une attaque de glace !",
-	YellCombatEnd	= "Impossible.... Rimefang.... avertis...."
+	YellCombatEnd	= "Impossible.... Frigecroc.... avertis...."
 })
 
 ---------------------
@@ -1410,29 +1411,29 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("HoRWaveTimer")
 
 L:SetGeneralLocalization({
-	name = "Wave Timers"
+	name = "Timers des vagues"
 })
 
 L:SetWarningLocalization({
-	WarnNewWaveSoon	= "New wave soon",
-	WarnNewWave		= "%s incoming"
+	WarnNewWaveSoon	= "Prochaine vague bientôt",
+	WarnNewWave		= "Arrivée de %s"
 })
 
 L:SetTimerLocalization({
-	TimerNextWave	= "Next wave"
+	TimerNextWave	= "Prochaine vague"
 })
 
 L:SetOptionLocalization({
-	WarnNewWave			= "Show warning for boss incoming",
-	WarnNewWaveSoon		= "Show pre-warning for new wave",
-	ShowAllWaveWarnings	= "Show pre-warnings and warnings for all waves",	--Is this a warning or a pre-warning?
-	TimerNextWave		= "Show timer for next set of waves (after wave 5 boss)",
-	ShowAllWaveTimers	= "Show timers for all waves"
+	WarnNewWave			= "Montre une alerte pour l'arrivée d'un boss",
+	WarnNewWaveSoon		= "Montre une pré-alerte pour la prochaine vague",
+	ShowAllWaveWarnings	= "Montre des alertes et pré-alertes pour toutes les vagues",	--Is this a warning or a pre-warning?
+	TimerNextWave		= "Affiche un timer pour le prochain ensemble de vague (après le boss de la vague 5)",
+	ShowAllWaveTimers	= "Affiche un timer pour toutes les vagues"
 })
 
 L:SetMiscLocalization({
 	Falric		= "Falric",
-	WaveCheck	= "Spirit Wave = (%d+)/10"
+	WaveCheck	= "Vague d'esprit = (%d+)/10"
 })
 
 --------------
@@ -1466,14 +1467,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "Well of Corruption - Move"
+	SpecWarnWellCorruption	= "Puits de Corruption - Bougez"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "Show special warning when you are affected by Well of Corruption"
+	SpecWarnWellCorruption	= "Montre une alerte spéciale lorsque vous êtes affecté par le Puits de Corruption"
 })
 
 L:SetMiscLocalization({
@@ -1485,7 +1486,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("LichKingEvent")
 
 L:SetGeneralLocalization({
-	name = "Lich King event"
+	name = "Epreuve du Roi-Liche"
 })
 
 L:SetWarningLocalization({
