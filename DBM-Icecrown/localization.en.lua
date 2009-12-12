@@ -111,7 +111,7 @@ L:SetTimerLocalization{
 
 L:SetMiscLocalization{
 	PullAlliance	= "Fire up the engines! We got a meetin' with destiny, lads!",
-	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!"
+	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
 	PullHorde	= "unknown",
 	KillHorde	= "unknown"
 }
