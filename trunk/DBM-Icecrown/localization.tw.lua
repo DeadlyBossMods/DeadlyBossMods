@@ -2,6 +2,23 @@
 
 local L
 
+---------------------------
+--  Trash - Lower Spire  --
+---------------------------
+L = DBM:GetModLocalization("LowerSpireTrash")
+
+L:SetGeneralLocalization{
+	name 				= "小怪模組"
+}
+
+L:SetWarningLocalization{
+	SpecWarnDisruptingShout		= "混亂怒吼 - 停止施法",
+}
+
+L:SetOptionLocalization{
+	SpecWarnDisruptingShout		= "為$spell:71022顯示特別警告",	
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -49,7 +66,8 @@ L:SetWarningLocalization{
 	SpecWarnDeathDecay		= "死亡凋零 - 快跑開",
 	SpecWarnCurseTorpor		= "你中了魯鈍詛咒",
 	SpecWarnTouchInsignificance	= "無脅之觸 (3)",
-	WarnAddsSoon			= "新的小怪即將出現"
+	WarnAddsSoon			= "新的小怪即將出現",
+	SpecWarnDarkReckoning		= "黑暗清算 - 快跑開"
 }
 
 L:SetOptionLocalization{
@@ -60,7 +78,9 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay		= "當你中了$spell:72108時顯示特別警告",
 	SpecWarnCurseTorpor		= "當你中了$spell:71237時顯示特別警告",
 	TimerAdds			= "為新的小怪顯示計時器",
-	SetIconOnDominateMind		= "為$spell:71289的目標設置標記"
+	SetIconOnDominateMind		= "為$spell:71289的目標設置標記",
+	SpecWarnDarkReckoning		= "當你中了$spell:69483時顯示特別警告",
+	PlaySoundOnDarkReckoning	= "為黑暗清算播放音效"
 }
 
 L:SetMiscLocalization{
