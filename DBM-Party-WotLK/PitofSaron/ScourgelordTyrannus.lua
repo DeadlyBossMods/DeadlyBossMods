@@ -21,31 +21,29 @@ mod:RegisterEvents(
 local warnUnholyPower			= mod:NewSpellAnnounce(69629)
 local warnForcefulSmash			= mod:NewSpellAnnounce(69627)
 local warnOverlordsBrand		= mod:NewTargetAnnounce(69172)
-local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
-
 local warnHoarfrost				= mod:NewSpellAnnounce(69246)
+
 local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
+local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
+local specWarnOverlordsBrand	= mod:NewSpecialWarning("specWarnOverlordsBrand")
 
 local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart")--when I get the exact timing of rollplay, I will uncomment this.
 local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
-local timerUnholyPowerCD		= mod:NewCDTimer(40, 69629) --40-45seconds between casts
 local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
-local timerForcefulSmash		= mod:NewCDTimer(40, 69627) --40-45seconds between casts
+local timerForcefulSmash		= mod:NewCDTimer(50, 69627) --hotfixed? new combat logs show it every 50 seconds on dot now.
 
 mod:AddBoolOption("SetIconOnHoarfrostTarget", true)
 
 function mod:OnCombatStart(delay)
 	timerCombatStart:Start(-delay)
-	timerUnholyPowerCD:Start(-delay)
-	timerForcefulSmash:Start(-delay)
+	timerForcefulSmash:Start(40-delay)
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69629, 69167) then					-- Unholy Power
         warnUnholyPower:Show()
 		timerUnholyPower:Start()
-		timerUnholyPowerCD:Start()
 	end
 end
 
@@ -70,6 +68,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69172) then							-- Overlord's Brand
 		warnOverlordsBrand:Show(args.destName)
 		timerOverlordsBrand:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnOverlordsBrand:Show()
+		end
 	end
 end
 
