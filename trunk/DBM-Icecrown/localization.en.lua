@@ -65,7 +65,8 @@ L:SetWarningLocalization{
 	SpecWarnDeathDecay				= "Death and Decay - Move away",
 	SpecWarnCurseTorpor				= "Curse of Torpor on you",
 	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
-	WarnAddsSoon					= "New adds soon"
+	WarnAddsSoon					= "New adds soon",
+	SpecWarnDarkReckoning			= "Dark Reckoning - Move away"
 }
 
 L:SetOptionLocalization{
@@ -76,7 +77,9 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay				= "Show special warning when you are affected by $spell:72108",
 	SpecWarnCurseTorpor				= "Show special warning when you are affected by $spell:71237",
 	TimerAdds						= "Show timer for new adds",
-	SetIconOnDominateMind			= "Set icons on $spell:71289 targets"
+	SetIconOnDominateMind			= "Set icons on $spell:71289 targets",
+	SpecWarnDarkReckoning			= "Show special warning when you are affected by $spell:69483",
+	PlaySoundOnDarkReckoning		= "Play Sound on Dark Reckoning"
 }
 
 L:SetMiscLocalization{
