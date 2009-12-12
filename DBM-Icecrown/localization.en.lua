@@ -113,7 +113,7 @@ L:SetMiscLocalization{
 	PullAlliance	= "Fire up the engines! We got a meetin' with destiny, lads!",
 	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
 	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
-	KillHorde		= "The Alliance falter!"
+	KillHorde		= "The Alliance falter. Onward to the Lich King!"
 }
 
 -----------------------------
