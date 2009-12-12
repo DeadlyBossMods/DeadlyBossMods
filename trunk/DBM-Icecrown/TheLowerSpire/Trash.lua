@@ -2,6 +2,8 @@ local mod	= DBM:NewMod("LowerSpireTrash", "DBM-Icecrown", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
+mod:SetUsedIcons(8)
+
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -18,7 +20,7 @@ local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(15, 69483)
 
 mod:AddBoolOption("PlaySoundOnDarkReckoning", true)
-
+mod:AddBoolOption("SetIconOnDarkReckoning", true)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69483) then
@@ -29,6 +31,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.PlaySoundOnDarkReckoning then
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 			end
+		end
+		if self.Options.SetIconOnDarkReckoning then
+			self:SetIcon(args.destName, 8, 15)
 		end
 	end
 end
