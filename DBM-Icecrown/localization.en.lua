@@ -11,10 +11,13 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnDisruptingShout			= "Disrupting Shout - Stop Casting",
+	SpecWarnDarkReckoning			= "Dark Reckoning - Move away"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout			= "Show special warning for $spell:71022",	
+	SpecWarnDisruptingShout			= "Show special warning for $spell:71022",
+	SpecWarnDarkReckoning			= "Show special warning when you are affected by $spell:69483",
+	PlaySoundOnDarkReckoning		= "Play Sound on $spell:69483"	
 }
 
 
@@ -65,8 +68,7 @@ L:SetWarningLocalization{
 	SpecWarnDeathDecay				= "Death and Decay - Move away",
 	SpecWarnCurseTorpor				= "Curse of Torpor on you",
 	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
-	WarnAddsSoon					= "New adds soon",
-	SpecWarnDarkReckoning			= "Dark Reckoning - Move away"
+	WarnAddsSoon					= "New adds soon"
 }
 
 L:SetOptionLocalization{
@@ -77,9 +79,7 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay				= "Show special warning when you are affected by $spell:72108",
 	SpecWarnCurseTorpor				= "Show special warning when you are affected by $spell:71237",
 	TimerAdds						= "Show timer for new adds",
-	SetIconOnDominateMind			= "Set icons on $spell:71289 targets",
-	SpecWarnDarkReckoning			= "Show special warning when you are affected by $spell:69483",
-	PlaySoundOnDarkReckoning		= "Play Sound on $spell:69483"
+	SetIconOnDominateMind			= "Set icons on $spell:71289 targets"
 }
 
 L:SetMiscLocalization{
