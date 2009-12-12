@@ -24,6 +24,8 @@ local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
 
+local specwarnRuneofBlood	= mod:NewSpecialWarning("specwarnRuneofBlood")
+
 local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
@@ -46,7 +48,7 @@ function mod:OnCombatStart(delay)
 	timerBloodNova:Start(-delay)
 	warned_preFrenzy = false
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(15)
+		DBM.RangeCheck:Show(11)
 	end
 end
 
@@ -83,6 +85,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72410) then						-- Rune of Blood
 		warnRuneofBlood:Show(args.destName)
 		timerRuneofBlood:Start(args.destName)
+		if args:IsPlayer() then
+			specwarnRuneofBlood:Show()
+		end
 	elseif args:IsSpellID(72737) then						-- Frenzy
 		warnFrenzy:Show()
 	end
