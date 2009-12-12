@@ -96,12 +96,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon	= "Frenzy soon"
+	warnFrenzySoon		= "Frenzy soon",
+	specwarnRuneofBlood	= "Rune of Blood on you"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon	= "Show pre-warning for Frenzy (at ~33%)",
-	RangeFrame		= "Show range frame"
+	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
+	specwarnRuneofBlood	= "Show special warning when you are affected by $spell:72410",
+	RangeFrame			= "Show range frame"
 }
 
 ----------------------
