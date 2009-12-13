@@ -44,16 +44,16 @@ do
 	end
 end
 
+local function showImpaleWarning()
+	warnImpale:Show(table.concat(impaleTargets, "<, >"))
+	table.wipe(impaleTargets)
+	impaleIcon = 8
+end
+
 function mod:OnCombatStart(delay)
     preWarnWhirlwind:Schedule(40-delay)
 	timerWhirlwindCD:Start(45-delay)
 	timerBoneSpike:Start(15-delay)
-end
-
-function mod:warnImpale()
-	warnImpale:Show(table.concat(impaleTargets, "<, >"))
-	table.wipe(impaleTargets)
-	impaleIcon = 8
 end
 
 function mod:SPELL_CAST_START(args)
@@ -65,13 +65,17 @@ end
 
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(69062, 72669) then						-- Impale
-		self:UnscheduleMethod("warnImpale")
 		impaleTargets[#impaleTargets + 1] = args.sourceName
-		mod:ScheduleMethod(0.2, "warnImpale")
 		timerBoned:Start()
 		if mod.Options.SetIconOnImpale and impaleIcon > 0 then
 			mod:SetIcon(args.sourceName, impaleIcon)
 			impaleIcon = impaleIcon - 1
+		end
+		self:Unschedule(showImpaleWarning)
+		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #impaleTargets >= 3) then
+			showImpaleTargets()
+		else
+			self:Schedule(0.3, showImpaleWarning)
 		end
 	end
 end
