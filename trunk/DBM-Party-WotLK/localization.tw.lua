@@ -21,7 +21,7 @@ local optionTimerCast	= "為%s顯示施法計時器"
 L = DBM:GetModLocalization("Taldaram")
 
 L:SetGeneralLocalization({
-	name = "泰爾達朗王子"
+	name = "泰爾達朗親王"
 })
 
 L:SetWarningLocalization({
@@ -821,7 +821,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Keleseth")
 
 L:SetGeneralLocalization({
-	name = "凱雷希斯王子"
+	name = "凱雷希斯親王"
 })
 
 L:SetWarningLocalization({
@@ -1278,7 +1278,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	warnPursuit			= "追擊: >%s<",
 	specWarnToxic		= "毒性廢料 - 快跑開",
-	specWarnPursuit		= "你中了獵殺 - 快跑",
+	specWarnPursuit		= "你中了追擊 - 快跑",
 	specWarnPoisonNova	= "劇毒新星 - 快跑開",
 	specWarnMines		= "爆裂彈幕 - 快跑開"
 })
@@ -1338,10 +1338,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnTyrannusEngaged		= "天譴領主提朗紐斯正在降落 - 做好準備",
 	specWarnIcyBlast		= "冰結衝擊 - 快跑開",
 	specWarnHoarfrost		= "你中了白霜 - 快跑開",
-	specWarnHoarfrostNear	= "你附近有人中了白霜 - 快跑開"
+	specWarnHoarfrostNear	= "你附近有人中了白霜 - 快跑開",
+	specWarnOverlordsBrand	= "你中了霸主的烙紋"
 })
 
 L:SetTimerLocalization{
@@ -1349,11 +1349,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	warnTyrannusEngaged			= "為天譴領主提朗紐斯正在降落顯示特別警告",
 	specWarnIcyBlast			= "當你受到冰結衝擊的傷害時顯示特別警告",
 	specWarnHoarfrost			= "當你中了白霜時顯示特別警告",
-	TimerCombatStart			= "為戰鬥開始顯示計時器",
 	specWarnHoarfrostNear		= "你附近有人中了白霜時顯示特別警告",
+	specWarnOverlordsBrand		= "當你中了霸主的烙紋時顯示特別警告",
+	TimerCombatStart			= "為戰鬥開始顯示計時器",
 	SetIconOnHoarfrostTarget	= "為白霜的目標設置標記"
 })
 
@@ -1381,7 +1381,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnSoulstormSoon	= "為靈魂風暴顯示預先警告 (大約40%)",
-	specwarnSoulstorm	= "當靈魂風暴施放時顯示特別警告 (進駐用)"
+	specwarnSoulstorm	= "當靈魂風暴施放時顯示特別警告 (靠近用)"
 })
 
 -------------------------
@@ -1395,11 +1395,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul	= "停止攻擊",
+	specwarnWailingSouls	= "哀嚎之魂 - 快跑到王背後",
 	specwarnPhantomBlast	= "斷法!"
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul	= "為鏡像之魂需要停止攻擊時顯示特別警告",
+	specwarnWailingSouls	= "當哀嚎之魂施放時顯示特別警告",
 	specwarnPhantomBlast	= "當魅影衝擊施放時顯示特別警告 (斷法用)"
 })
 
@@ -1500,4 +1502,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	CombatStart		= "他太強大了!我們必須立刻離開這裡!我的魔法只能困住他一小段時間。快來吧，英雄們!",
+	YellCombatEnd	= "開火!開火!"
 })
