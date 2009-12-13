@@ -39,15 +39,15 @@ local enrageTimer					= mod:NewEnrageTimer(600)
 mod:AddBoolOption("SetIconOnDominateMind", true)
 
 local lastDD	= 0
-local DominateMindTargets	= {}
-local MCIcon = 7
+local dominateMindTargets	= {}
+local dominateMindIcon = 7
 
 local function showDominateMindWarning()
-	warnDominateMind:Show(table.concat(DominateMindTargets, "<, >"))
+	warnDominateMind:Show(table.concat(dominateMindTargets, "<, >"))
 	timerDominateMind:Start()
 	timerDominateMindCD:Start()
-	table.wipe(DominateMindTargets)
-	MCIcon = 7
+	table.wipe(dominateMindTargets)
+	dominateMindIcon = 7
 end
 
 function mod:addsTimer()
@@ -64,19 +64,19 @@ function mod:OnCombatStart(delay)
 	warnAddsSoon:Schedule(4)	-- 3sec pre-warning on start
 	self:ScheduleMethod(7, "addsTimer")
 	timerDominateMindCD:Start(30)	-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
-	table.wipe(DominateMindTargets)
-	MCIcon = 7
+	table.wipe(dominateMindTargets)
+	dominateMindIcon = 7
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71289) then
-		DominateMindTargets[#DominateMindTargets + 1] = args.destName
+		dominateMindTargets[#dominateMindTargets + 1] = args.destName
 		if self.Options.SetIconOnDominateMind then
-			self:SetIcon(args.destName, MCIcon, 20)
-			MCIcon = MCIcon - 1
+			self:SetIcon(args.destName, dominateMindIcon, 20)
+			dominateMindIcon = dominateMindIcon - 1
 		end
 		self:Unschedule(showDominateMindWarning)
-		if mod:IsDifficulty("normal25") and #DominateMindTargets >= 3 then
+		if mod:IsDifficulty("normal25") and #dominateMindTargets >= 3 then
 			showDominateMindWarning()
 		else
 			self:Schedule(0.3, showDominateMindWarning)
