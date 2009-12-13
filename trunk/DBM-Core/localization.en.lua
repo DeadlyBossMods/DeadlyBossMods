@@ -104,7 +104,6 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cd = "%s CD",
 	next = "Next %s",
 	achievement = "%s",
-	combatstart = "Combat starts",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
@@ -114,7 +113,6 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 	cd = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
 	next = "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Show timer for %s",
-	combatstart = "Show timer for start of combat",
 }
 
 -- Auto-generated Warning Localizations
