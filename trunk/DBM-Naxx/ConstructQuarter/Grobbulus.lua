@@ -28,6 +28,23 @@ mod:AddBoolOption("SetIconOnInjectionTarget", true)
 
 local mutateIcons = {}
 
+function mod:addIcon()
+	for i,j in ipairs(mutateIcons) do
+		local icon = 9 - i
+		self:SetIcon(j, icon)
+	end
+end
+
+function mod:removeIcon(target)
+	for i,j in ipairs(mutateIcons) do
+		if j == target then
+			table.remove(mutateIcons, i)
+			self:SetIcon(target, 0)
+		end
+	end
+	addIcon()
+end
+
 function mod:OnCombatStart(delay)
 	table.wipe(mutateIcons)
 	enrageTimer:Start(-delay)
@@ -60,23 +77,6 @@ function mod:SPELL_AURA_REMOVED(args)
 			removeIcon(args.destName)
 		end
 	end
-end
-
-function mod:addIcon()
-	for i,j in ipairs(mutateIcons) do
-		local icon = 9 - i
-		self:SetIcon(j, icon)
-	end
-end
-
-function mod:removeIcon(target)
-	for i,j in ipairs(mutateIcons) do
-		if j == target then
-			table.remove(mutateIcons, i)
-			self:SetIcon(target, 0)
-		end
-	end
-	addIcon()
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
