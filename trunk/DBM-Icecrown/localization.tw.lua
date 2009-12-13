@@ -119,8 +119,8 @@ L:SetTimerLocalization{
 L:SetMiscLocalization{
 	PullAlliance			= "發動引擎!小夥子們，我們即將面對命運啦!",
 	KillAlliance			= "別說我沒警告過你，無賴!兄弟姊妹們，向前衝!",
-	PullHorde			= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
-	KillHorde			= "The Alliance falter. Onward to the Lich King!"
+	PullHorde			= "起來吧，部落的子女!今天我們要和最可恨的敵人作戰!為了部落!",
+	KillHorde			= "聯盟已經動搖了。向巫妖王前進!"
 }
 
 -----------------------------
