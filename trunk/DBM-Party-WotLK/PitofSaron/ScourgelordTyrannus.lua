@@ -28,7 +28,7 @@ local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
 local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
 local specWarnOverlordsBrand	= mod:NewSpecialWarning("specWarnOverlordsBrand")
 
-local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart")--when I get the exact timing of rollplay, I will uncomment this.
+local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart", 2457)
 local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
 local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
 local timerForcefulSmash		= mod:NewCDTimer(50, 69627) --hotfixed? new combat logs show it every 50 seconds on dot now.
