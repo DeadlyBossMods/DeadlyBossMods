@@ -13,10 +13,14 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnDisruptingShout			= "Разрушительный крик - остановите чтение заклинаний",
+	SpecWarnDarkReckoning			= "Мрачный итог - отбегите!"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout			= "Спец-предупреждение для заклинания $spell:71022",	
+	SpecWarnDisruptingShout			= "Спец-предупреждение для заклинания $spell:71022",
+	SpecWarnDarkReckoning			= "Спец-предупреждение, когда на вас $spell:69483",
+	PlaySoundOnDarkReckoning		= "Звуковой сигнал, при $spell:69483",
+	SetIconOnDominateMind			= "Устанавливать метки на игроков, взятых под $spell:71289"
 }
 
 
@@ -63,12 +67,11 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnReanimating					= "Помощник трансформируется",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s на >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnTouchInsignificance			= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay				= "Смерть и разложение - бегите!",
 	SpecWarnCurseTorpor				= "Проклятие оцепенения на вас!",
 	SpecWarnTouchInsignificance		= "Прикосновение незначительности (3 стака)",
-	WarnAddsSoon					= "Скоро призыв помощников",
-	SpecWarnDarkReckoning			= "Мрачный итог - бегите!"
+	WarnAddsSoon					= "Скоро призыв помощников"
 }
 
 L:SetOptionLocalization{
@@ -79,15 +82,14 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay				= "Спец-предупреждение, когда вы стоите в луже $spell:72108",
 	SpecWarnCurseTorpor				= "Спец-предупреждение, когда на вас $spell:71237",
 	TimerAdds						= "Отсчет времени до призыва помощников",
-	SetIconOnDominateMind			= "Устанавливать метки на игроков, взятых под $spell:71289",
-	SpecWarnDarkReckoning			= "Спец-предупреждение, когда на вас $spell:69483",
-	PlaySoundOnDarkReckoning		= "Звуковой сигнал, при $spell:69483"
+	SetIconOnDominateMind			= "Устанавливать метки на игроков, взятых под $spell:71289"
 }
 
 L:SetMiscLocalization{
 	YellPull				= "Как вы смеете ступать в эти священные покои? Это место станет вашей могилой!",
 	YellReanimatedFanatic	= "Восстань и обрети истинную форму!",
 }
+
 ----------------------
 --  Gunship Battle  --
 ----------------------
@@ -98,11 +100,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBattleFury	= "%s (%d)"
+	WarnBattleFury		= "%s (%d)",
+	WarnAddsSoon		= "New adds soon"
 }
 
 L:SetOptionLocalization{
-	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury")
+	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
+	TimerCombatStart	= "Show time for start of combat",
+	WarnAddsSoon		= "Show pre-warning for adds spawning",
+	TimerAdds		= "Show timer for new adds"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "Combat starts",
+	TimerAdds		= "New adds"
+}
+
+L:SetMiscLocalization{
+	PullAlliance	= "Fire up the engines! We got a meetin' with destiny, lads!",
+	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
+	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
+	KillHorde		= "The Alliance falter. Onward to the Lich King!"
 }
 
 -----------------------------
@@ -115,15 +133,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon	= "Скоро Бешенство",
+	warnFrenzySoon		= "Скоро Бешенство",
 	specwarnRuneofBlood	= "Руна крови на вас"
-
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon	= "Предупреждать о скором Бешенстве (на ~33%)",
+	warnFrenzySoon		= "Предупреждать о скором Бешенстве (на ~33%)",
 	specwarnRuneofBlood	= "Спец-предупреждение, когда на вас накладывается $spell:72410",
-	RangeFrame		= "Показывать окно допустимой дистанции"
+	RangeFrame			= "Показывать окно допустимой дистанции"
 }
 
 -----------------
