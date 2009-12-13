@@ -28,14 +28,14 @@ mod:AddBoolOption("SetIconOnInjectionTarget", true)
 
 local mutateIcons = {}
 
-function mod:addIcon()
+local function addIcon()
 	for i,j in ipairs(mutateIcons) do
 		local icon = 9 - i
 		self:SetIcon(j, icon)
 	end
 end
 
-function mod:removeIcon(target)
+local function removeIcon(target)
 	for i,j in ipairs(mutateIcons) do
 		if j == target then
 			table.remove(mutateIcons, i)
