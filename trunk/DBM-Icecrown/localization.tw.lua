@@ -22,7 +22,6 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkReckoning	= "為$spell:69483播放音效",
 	SetIconOnDominateMind		= "為$spell:69483的目標設置標記"
 }
-}
 
 ----------------------
 --  Lord Marrowgar  --
