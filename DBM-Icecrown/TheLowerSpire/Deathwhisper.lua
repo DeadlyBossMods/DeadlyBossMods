@@ -76,7 +76,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			dominateMindIcon = dominateMindIcon - 1
 		end
 		self:Unschedule(showDominateMindWarning)
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("normal25") or (mod:IsDifficulty("heroic25) and #dominateMindTargets >= 3) then
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("normal25") or (mod:IsDifficulty("heroic25") and #dominateMindTargets >= 3) then
 			showDominateMindWarning()
 		else
 			self:Schedule(0.3, showDominateMindWarning)
