@@ -2818,8 +2818,8 @@ do
 		return newTimer(self, "active", ...)
 	end
 	
-	function bossModPrototype:NewCombatTimer(...)
-		return newTimer(self, "combatstart", ...)
+	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
+		return newTimer(timer, "combatstart", barIcon or 2457, nil, "combatstart")
 	end
 
 	function bossModPrototype:NewCastTimer(timer, ...)
