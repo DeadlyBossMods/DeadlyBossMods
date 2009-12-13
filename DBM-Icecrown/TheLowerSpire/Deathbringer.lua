@@ -34,16 +34,16 @@ local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
 mod:AddBoolOption("RangeFrame", isRanged)
 
 local warned_preFrenzy = false
-local boilingTargets = {}
+local boilingBloodTargets = {}
 
-local function warnBoilingTargets()
-	warnBoilingBlood:Show(table.concat(boilingTargets, "<, >"))
-	table.wipe(boilingTargets)
+local function warnBoilingBloodTargets()
+	warnBoilingBlood:Show(table.concat(boilingBloodTargets, "<, >"))
+	table.wipe(boilingBloodTargets)
 	timerBoilingBlood:Start()
 end
 
 function mod:OnCombatStart(delay)
-	table.wipe(boilingTargets)
+	table.wipe(boilingBloodTargets)
 	timerCallBloodBeast:Start(-delay)
 	timerBloodNova:Start(-delay)
 	warned_preFrenzy = false
@@ -75,12 +75,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72293) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
-		boilingTargets[#boilingTargets + 1] = args.destName
-		self:Unschedule(warnBoilingTargets)
-		if #boilingTargets >= 3 then	-- Boiling Blood
-			warnBoilingTargets()
+		boilingBloodTargets[#boilingBloodTargets + 1] = args.destName
+		self:Unschedule(warnBoilingBloodTargets)
+		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #boilingBloodTargets >= 3) then	-- Boiling Blood
+			warnBoilingBloodTargets()
 		else
-			self:Schedule(0.3, warnBoilingTargets)
+			self:Schedule(0.3, warnBoilingBloodTargets)
 		end
 	elseif args:IsSpellID(72410) then						-- Rune of Blood
 		warnRuneofBlood:Show(args.destName)
