@@ -2,8 +2,7 @@ local mod = DBM:NewMod("LichKingEvent", "DBM-Party-WotLK", 16)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 2153 $"):sub(12, -3))
-mod:SetCreatureID(90000) 		-- correct this
---mod:SetUsedIcons(8)
+mod:SetCreatureID(37226, 36954)--Both creature Ids used in Halls of Reflection
 
 mod:RegisterCombat("combat")
 
