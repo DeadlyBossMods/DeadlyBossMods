@@ -13,10 +13,14 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnDisruptingShout		= "분열의 외침 - 시전 중지!!!",
+	SpecWarnDarkReckoning		= "어둠의 징벌 - 이동!!!"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout		= "$spell:71022 특수 경고 보기",	
+	SpecWarnDisruptingShout		= "$spell:71022 특수 경고 보기",
+	SpecWarnDarkReckoning		= "$spell:69483에 영향을 받을 경우 특수 경고 보기",
+	PlaySoundOnDarkReckoning	= "$spell:69483에 영향을 받을 경우 특수 소리 재생",
+	SetIconOnDominateMind		= "$spell:69483 대상 공격대 아이콘 설정"	
 }
 
 ----------------------
@@ -41,7 +45,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnImpale				= "$spell:69062 대상 알리기",
 	SpecWarnWhirlwind		= "$spell:69076 특수 경고 보기",
-	SpecWarnColdflame		= "$spell:70825 에 영향을 받을 경우 특수 경고 보기",
+	SpecWarnColdflame		= "$spell:70825에 영향을 받을 경우 특수 경고 보기",
 	PlaySoundOnWhirlwind	= "$spell:69076 특수 경고 소리 듣기",
 	achievementBoned		= "뼈도 못 추릴라 업적 타이머 보기",	
 	SetIconOnImpale			= "$spell:69062 대상 공격대 아이콘 설정"
@@ -65,26 +69,57 @@ L:SetWarningLocalization{
 	SpecWarnDeathDecay				= "죽음과 부패 - 이동!!",
 	SpecWarnCurseTorpor				= "당신에게 무감각의 저주",
 	SpecWarnTouchInsignificance		= "무의미함의 손길 (3)",
-	WarnAddsSoon					= "곧 새로운 이교도 추가",
-	SpecWarnDarkReckoning			= "어둠의 징벌 - 이동!!!"
+	WarnAddsSoon					= "곧 새로운 이교도 추가"
+
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon					= "이교도 추가 사전 경고 보기",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "이교도를 부활 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "$spell:71204 이 3중첩이 됐을 경우 특수 경고 보기",
-	SpecWarnDeathDecay				= "$spell:72108 에 영향을 받을 경우 특수 경고 보기",
-	SpecWarnCurseTorpor				= "$spell:71237 에 영향을 받을 경우 특수 경고 보기",
+	SpecWarnTouchInsignificance		= "$spell:71204이 3중첩이 됐을 경우 특수 경고 보기",
+	SpecWarnDeathDecay				= "$spell:72108에 영향을 받을 경우 특수 경고 보기",
+	SpecWarnCurseTorpor				= "$spell:71237에 영향을 받을 경우 특수 경고 보기",
 	TimerAdds						= "새로운 이교도 추가 타이머 보기",	
 	SetIconOnDominateMind			= "$spell:71289 대상 공격대 아이콘 설정",
-	SpecWarnDarkReckoning			= "$spell:69483에 영향을 받을 경우 특수 경고 보기",
-	PlaySoundOnDarkReckoning		= "어둠의 징벌에 영향을 받을 경우 특수 소리 재생"	
 }
 
 L:SetMiscLocalization{
 	YellPull						= "이게 무슨 소란이지? 감히 이 신성한 땅을 지나가려 해? 여기가 마지막 숨을 거둘 곳이 되리라!",
 	YellReanimatedFanatic			= "일어나라, 순수한 모습을 기뻐하라!",
+}
+
+----------------------
+--  Gunship Battle  --
+----------------------
+L = DBM:GetModLocalization("GunshipBattle")
+
+L:SetGeneralLocalization{
+	name = "얼음왕관 비행선 전투"
+}
+
+L:SetWarningLocalization{
+	WarnBattleFury		= "%s (%d)",
+	WarnAddsSoon		= "곧 추가 몹"
+}
+
+L:SetOptionLocalization{
+	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "전투 격노"),
+	TimerCombatStart	= "전투 시작 타이머 보기",
+	WarnAddsSoon		= "몹 생성 사전 경고 보기",
+	TimerAdds			= "추가 몹 타이머 보기"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "전투 시작",
+	TimerAdds			= "추가 몹"
+}
+
+L:SetMiscLocalization{
+	PullAlliance		= "Fire up the engines! We got a meetin' with destiny, lads!",
+	KillAlliance		= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
+	PullHorde			= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
+	KillHorde			= "The Alliance falter. Onward to the Lich King!"
 }
 
 ------------------------
@@ -104,24 +139,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	specwarnRuneofBlood		= "$spell:72410의 영향을 받을 경우 특수 경고 보기",
-	RangeFrame				= "거리 프레임 보기"
-}
-
-----------------------
---  Gunship Battle  --
-----------------------
-L = DBM:GetModLocalization("GunshipBattle")
-
-L:SetGeneralLocalization{
-	name = "얼음왕관 비행선 전투"
-}
-
-L:SetWarningLocalization{
-	WarnBattleFury	= "%s (%d)"
-}
-
-L:SetOptionLocalization{
-	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "전투 격노")
+	RangeFrame				= "거리 프레임 보기 (11 미터)"
 }
 
 -----------------

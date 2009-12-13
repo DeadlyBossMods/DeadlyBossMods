@@ -1272,6 +1272,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnPursuit			= "Pursuit on >%s<",
 	specWarnToxic		= "독성 폐기물! 이동하세요!",
 	specWarnPursuit		= "곧 당신을 추격합니다. 뛰세요!",
 	specWarnPoisonNova	= "독 회오리! 뛰세요!",
@@ -1333,10 +1334,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
+--	specTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
 	specWarnIcyBlast			= "얼음 작렬! 이동하세요!",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
-	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!"
+	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!",
+	specWarnOverlordsBrand	= "Overlords Brand on you"
 })
 
 L:SetTimerLocalization{
@@ -1344,10 +1346,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specTyrannusEngaged			= "스컬지군주 티라누스 착지 특수 경고 보기",
+--	specTyrannusEngaged			= "스컬지군주 티라누스 착지 특수 경고 보기",
 	specWarnIcyBlast			= "얼음 작렬로부터 데미지를 받을 경우 특수 경고 보기",
 	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
+	specWarnOverlordsBrand		= "Show special warning when you are affected by Overlords Brand",	
 	TimerCombatStart			= "전투 시작 타이머 보기",	
 	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
 })
@@ -1391,11 +1394,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼! 딜 중지!",
+	specwarnWailingSouls		= "Wailing Souls - Get behind",	
 	specwarnPhantomBlast		= "차단!"
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기",
+	specwarnWailingSouls		= "Show special warning when Wailing Souls is cast",	
 	specwarnPhantomBlast		= "환영 폭발을 시전할 경우 특수 경고 보기(차단을 위해)"
 })
 
@@ -1495,4 +1500,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	CombatStart		= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	YellCombatEnd	= "FIRE! FIRE!"
 })
