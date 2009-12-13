@@ -19,6 +19,7 @@ local warnMirroredSoul			= mod:NewTargetAnnounce(69051)
 local timerMirroredSoul			= mod:NewTargetTimer(8, 69051)
 local timerUnleashedSouls		= mod:NewBuffActiveTimer(5, 68939)
 local specwarnMirroredSoul		= mod:NewSpecialWarning("specwarnMirroredSoul")
+local specwarnWailingSouls		= mod:NewSpecialWarning("specwarnWailingSouls")
 local specwarnPhantomBlast		= mod:NewSpecialWarning("specwarnPhantomBlast", false)
 
 function mod:SPELL_CAST_START(args)
@@ -31,6 +32,7 @@ function mod:SPELL_CAST_START(args)
 		warnUnleashedSouls:Show()
 	elseif args:IsSpellID(68899, 70324) then					-- Wailing Souls
 		warnWailingSouls:Show()
+		specwarnWailingSouls:Show()
 	end
 end
 
