@@ -195,7 +195,8 @@ L:SetWarningLocalization{
 	PreWarningBigBang		= "Суровый удар через ~10 секунд",
 	WarningCosmicSmash 		= "Кара небесная - взрыв через 4 секунды",
 	SpecWarnCosmicSmash 	= "Кара небесная",
-	WarnPhase2Soon			= "Скоро фаза 2"
+	WarnPhase2Soon			= "Скоро фаза 2",
+	warnStarLow				= "Collapsing Star is low (at ~25%)"
 }
 
 L:SetOptionLocalization{
@@ -209,7 +210,7 @@ L:SetOptionLocalization{
 	SpecWarnCosmicSmash 	= "Спец-предупреждение для Кары небесной",
 	PossibleNextCosmicSmash	= "Отсчет времени до Кара небесная",
 	TimerCombatStart		= "Отсчет времени до начала битвы",
-	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~23%)",
+	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~23%)",
 	warnStarLow				= "Show warning when Collapsing Star is low (at ~25%)"
 }
 
@@ -233,7 +234,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "Сосредоточенный взгляд на вас - бегите",
 	WarningEyeBeam			= "Сосредоточенный взгляд на |3-5(>%s<)",
-	WarnGrip				= "Каменная хватка на |3-5(>%s<)"
+	WarnGrip				= "Каменная хватка на |3-5(>%s<)",
+	SpecWarnCrunchArmor2	= "Хруст доспеха >%d< на вас"
 }
 
 L:SetTimerLocalization{
@@ -244,7 +246,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "Спец-предупреждение, когда Сосредоточенный взгляд на вас",
-	SpecWarnCrunchArmor2	= "Show special warning for Crunch Armor (>=2 stacks)",
+	SpecWarnCrunchArmor2	= "Спец-предупреждение для Хруста доспеха (>=2 стаков)",
 	WarningEyeBeam			= "Объявлять цель под воздействием Сосредоточенный взгляд",
 	timerLeftArm			= "Отсчет времени до Возрождения левой руки",
 	timerRightArm			= "Отсчет времени до Возрождения правой руки",
@@ -277,7 +279,7 @@ L:SetMiscLocalization{
 }
 
 L:SetTimerLocalization{
-	timerDefender	= "Feral Defender activates"
+	timerDefender	= "Возрождение Дикого защитника"
 }
 
 L:SetWarningLocalization{
@@ -294,7 +296,7 @@ L:SetOptionLocalization{
 	WarnFearSoon	= "Предупреждение о следующем Ужасающем вопле",
 	WarnCatDied		= "Предупреждение, когда Дикий защитник погибает",
 	WarnCatDiedOne	= "Предупреждение, когда у Дикого защитника остается 1 жизнь",
-	timerDefender	= "Show timer for when Feral Defender is activated"
+	timerDefender	= "Отсчет времени до возрождения Дикого защитника"
 }
 
 -------------
@@ -308,7 +310,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningFlashFreeze	= "Мгновенная заморозка",
-	specWarnBitingCold	= "Biting Cold - Move"
+	specWarnBitingCold	= "Трескучий мороз - двигайтесь"
 }
 
 L:SetTimerLocalization{
@@ -319,7 +321,7 @@ L:SetOptionLocalization{
 	PlaySoundOnFlashFreeze	= "Звуковой сигнал при Мгновенной заморозке",
 	YellOnStormCloud		= "Крикнуть, когда Грозовой туче активны",
 	SetIconOnStormCloud		= "Установить метку на цель под Грозовой тучей",
-	specWarnBitingCold		= "Show special warning when you are affected by Biting Cold"
+	specWarnBitingCold		= "Спец-предупреждение, когда на вас Трескучий мороз"
 }
 
 L:SetMiscLocalization{
@@ -347,8 +349,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerHardmode	= "Отсчет времени для высокой сложности",
 	RangeFrame		= "Отображать окно допустимой дистанции",
-	AnnounceFails	= "Объявлять игрока под разрядом молнии в рейд-чат (требуются права лидера или помощника)",
-	LightningOrb	= "Спец-предупреждение для Поражения громом" 
+	AnnounceFails	= "Объявлять игроков, потерпевших неудачу от Разряда молнии, в рейд-чат\n(требуются права лидера или помощника)",
+	LightningOrb	= "Спец-предупреждение для Поражения громом"
 }
 
 L:SetMiscLocalization{
@@ -356,7 +358,7 @@ L:SetMiscLocalization{
 	YellPhase2	= "Бесстыжие выскочки, вы решили бросить вызов мне лично? Я сокрушу вас всех!",
 	YellKill	= "Придержите мечи! Я сдаюсь.",
 	ChargeOn	= "Разряд молнии: %s",
-	Charge		= "Разряд не достал (в этот раз): %s" 
+	Charge		= "Потерпели неудачу от Разряда молнии (за эту попытку): %s" 
 }
 
 -------------
@@ -435,7 +437,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	DarkGlare			= "Лазерное заграждение",
-	MagneticCore		= ">%s< под воздействием Магнитного ядра",
+	MagneticCore		= "Магнитное ядро у |3-1(>%s<)",
 	WarningShockBlast	= "Шоковый удар - бегите",
 	WarnBombSpawn		= "Бомбот"
 }
@@ -460,8 +462,8 @@ L:SetOptionLocalization{
 	PlaySoundOnShockBlast	= "Звуковой сигнал при Взрыве плазмы",
 	PlaySoundOnDarkGlare	= "Звуковой сигнал при Лазерном заграждении",
 	ShockBlastWarningInP1	= "Спец-предупреждение для Взрыва плазмы в фазе 1",
-	ShockBlastWarningInP4	= "Спец-предупреждение для Взрыва плазмы в фазе 2",
-	RangeFrame				= "Show range frame in Phase 1"
+	ShockBlastWarningInP4	= "Спец-предупреждение для Взрыва плазмы в фазе 4",
+	RangeFrame				= "Показывать окно допустимой дистанции в фазе 1"
 }
 
 L:SetMiscLocalization{
@@ -486,15 +488,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	hardmodeSpawn = "Саронитовые враги"
+	hardmodeSpawn = "Саронитовый враг"
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash		= "Темное сокрушение на вас - бегите",
+	SpecialWarningShadowCrash		= "Темное сокрушение на вас - отбегите",
 	SpecialWarningSurgeDarkness		= "Наплыв Тьмы",
-	WarningShadowCrash				= ">%s< под воздействием Темного сокрушения",
+	WarningShadowCrash				= "Темное сокрушение на |3-5(>%s<)",
 	SpecialWarningShadowCrashNear	= "Темное сокрушение около вас - бегите",
-	WarningLeechLife				= ">%s< под воздействием Вытягивание жизни",
+	WarningLeechLife				= "Вытягивание жизни на |3-5(>%s<)",
 	SpecialWarningLLYou				= "Вытягивание жизни на вас",
 	SpecialWarningLLNear			= "%s около вас, под воздействием Вытягивание жизни"
 }
@@ -504,15 +506,15 @@ L:SetOptionLocalization{
 	SetIconOnShadowCrash			= "Установить метку на цель под Темным сокрушением (череп)",
 	SetIconOnLifeLeach				= "Установить метку на цель под Вытягиванием жизни (крест)",
 	SpecialWarningSurgeDarkness		= "Спец-предупреждение для Наплыва Тьмы",
-	SpecialWarningShadowCrash		= "Спец-предупреждение для Темное сокрушение",
-	SpecialWarningShadowCrashNear	= "Спец-предупреждение о Темном сокрушении, около вас",
+	SpecialWarningShadowCrash		= "Спец-предупреждение для Темного сокрушения",
+	SpecialWarningShadowCrashNear	= "Спец-предупреждение о Темном сокрушении около вас",
 	SpecialWarningLLYou				= "Спец-предупреждение, когда вы под воздействием эффекта Вытягивание жизни",
 	SpecialWarningLLNear			= "Спец-предупреждение о Вытягивании жизни, около вас",
 	CrashWhisper					= "Сообщить цели, под воздействием Темного сокрушения",
 	YellOnLifeLeech					= "Крикнуть о воздействии Вытягивания жизни",
 	YellOnShadowCrash				= "Крикнуть о воздействии Темного сокрушения",
 	WarningLeechLife				= "Объявлять цель под воздействием Вытягивание жизни",
-	hardmodeSpawn					= "Отсчет времени до появления Саронитовых врагов (высокая сложность)"
+	hardmodeSpawn					= "Отсчет времени до появления Саронитового врага (высокая сложность)"
 }
 
 L:SetMiscLocalization{
@@ -547,8 +549,8 @@ L:SetWarningLocalization{
 	SpecWarnGuardianLow				= "Прекратить нападение на Стражей!",
 	SpecWarnMadnessOutNow			= "Помешательство заканчивается - бегите",
 	WarnBrainPortalSoon				= "Портал через 3 секунды",
-	SpecWarnFervor					= "Рвение Сары на вас!",
-	SpecWarnFervorCast				= "Sara's Fervor is being cast on you",
+	SpecWarnFervor					= "Рвение Сары на вас",
+	SpecWarnFervorCast				= "Рвение Сары накладывается на вас",
 	WarnEmpowerSoon					= "Приближается Сгущение тьмы!",
 	SpecWarnMaladyNear				= "Душевная болезнь около вас, на >%s<",
 	SpecWarnDeafeningRoar			= "Оглушающий рев",
@@ -566,18 +568,18 @@ L:SetOptionLocalization{
 	SpecWarnBrainLink				= "Спец-предупреждение для Схожего мышления",
 	WarningSanity					= "Предупреждение, когда Здравомыслие ослаблено",
 	SpecWarnSanity					= "Спец-предупреждение, когда Здравомыслие очень ослаблено",
-	SpecWarnGuardianLow				= "Спец-предупреждение, когда страж (Ф1) ослаблен (Для ДД)",
+	SpecWarnGuardianLow				= "Спец-предупреждение, когда Страж (фаза 1) ослаблен (для бойцов)",
 	WarnBrainPortalSoon				= "Объявлять о Портале разума",
 	SpecWarnMadnessOutNow			= "Спец-предупреждение до окончания Доведения до помешательства",
 	SetIconOnFearTarget				= "Установить метку на цель под воздействием болезни",
 	SpecWarnFervor					= "Спец-предупреждение для Рвения Сары",
-	SpecWarnFervorCast				= "Show special warning when Sara's Fervor is being cast on you (must be targeted or focused by at least one raid member)",
+	SpecWarnFervorCast				= "Спец-предупреждение, когда Рвение Сары накладывается на вас (должна быть в цели или фокусе хотя бы у одного члена рейда)",
 	specWarnBrainPortalSoon			= "Объявлять Портал",
-	WarningSqueeze					= "Объявлять цели Выдавливание",
+	WarningSqueeze					= "Кричать при Выдавливании",
 	NextPortal						= "Отсчет времени до следующего портала",
 	SetIconOnFervorTarget			= "Установить метку на цель под воздействием Рвения Сары",
 	SetIconOnMCTarget				= "Установить метку на цель под контролем над разумом",
-	ShowSaraHealth					= "Показать здоровье Сары в фазе 1 (должна быть под прицелом)",
+	ShowSaraHealth					= "Показать здоровье Сары в фазе 1 (должна быть в цели или фокусе хотя бы у одного члена рейда)",
 	WarnEmpowerSoon					= "Предупреждать о приближении Сгущения тьмы",
 	SpecWarnMaladyNear				= "Спец-предупреждение если кто-либо около вас получает Душевную болезнь",
 	SpecWarnDeafeningRoar			= "Спец-предупреждение, когда применяется Оглушающий рев",
