@@ -1316,7 +1316,7 @@ L:SetOptionLocalization({
 	warnSaroniteRock			= "사로나이트 덩어리 경고 보기 (영구 결빙을 없애기 위해)",
 	specWarnSaroniteRock		= "사로나이트 던지기의 대상이 될 경우 특수 경고 보기",
 	specWarnSaroniteRockNear	= "당신 주변에 사로나이트 던지기 대상이 있을 경우 특수 경고 보기",	
-	specWarnPermafrost			= "영구 결빙 중첩이 많을 경우 특수 경고 보기(돌에 숨지 않았을 경우)",
+	specWarnPermafrost			= "영구 결빙 중첩이 많을 경우 특수 경고 보기(11 중첩)",
 	SetIconOnSaroniteRockTarget	= "사로나이트 덩어리 대상 공격대 아이콘 설정"
 })
 
@@ -1501,5 +1501,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart		= "그는... 너무 강하다. 영웅들이여, 어서... 이쪽으로 오라! 즉시 이곳을 떠나야 한다! 도망치는 동안 그를 잡아놓을 수 있도록 조치를 취하겠다.",
-	YellCombatEnd	= "FIRE! FIRE!"
+	YellCombatEnd	= "발사! 발사!"
 })
