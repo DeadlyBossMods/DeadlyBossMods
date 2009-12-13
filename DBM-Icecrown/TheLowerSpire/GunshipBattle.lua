@@ -30,7 +30,7 @@ local warnBladestorm		= mod:NewSpellAnnounce(69652, 2, nil, false)		-- might be 
 local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 3)
 local warnAddsSoon		= mod:NewAnnounce("WarnAddsSoon")
 
-local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart")
+local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart", 2457)
 local timerBelowZeroCD		= mod:NewCDTimer(35, 69705)
 local timerBattleFuryActive	= mod:NewBuffActiveTimer(20, 72306)
 local timerAdds			= mod:NewTimer(60, "TimerAdds")
