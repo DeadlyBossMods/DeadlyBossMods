@@ -101,24 +101,24 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnBattleFury		= "%s (%d)",
-	WarnAddsSoon		= "New adds soon"
+	WarnAddsSoon		= "Скоро призыв помощников"
 }
 
 L:SetOptionLocalization{
 	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
-	TimerCombatStart	= "Show time for start of combat",
-	WarnAddsSoon		= "Show pre-warning for adds spawning",
-	TimerAdds		= "Show timer for new adds"
+	TimerCombatStart	= "Отсчет времени до начала боя",
+	WarnAddsSoon		= "Заранее предупреждать о призыве помощников",
+	TimerAdds		= "Отсчет времени до новых помощников"
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "Combat starts",
-	TimerAdds		= "New adds"
+	TimerCombatStart	= "Начало боя",
+	TimerAdds		= "Призыв помощников"
 }
 
 L:SetMiscLocalization{
-	PullAlliance	= "Fire up the engines! We got a meetin' with destiny, lads!",
-	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
+	PullAlliance	= "Запускайте двигатели! Летим навстречу судьбе.",
+	KillAlliance	= "Ну не говорите потом, что я не предупреждал. В атаку, братья и сестры!",
 	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
 	KillHorde		= "The Alliance falter. Onward to the Lich King!"
 }
