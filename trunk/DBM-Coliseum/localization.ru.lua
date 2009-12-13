@@ -12,50 +12,58 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge				= "^%%s глядит на (%S+) и испускает гортанный вой!",
-	CombatStart			= "Из самых глубоких и темных пещер Грозовой Гряды был призван Гормок Пронзающий Бивень! В бой, герои!",
-	Phase3				= "В воздухе повеяло ледяным дыханием следующего бойца: на арену выходит Ледяной Рев! Сражайтесь или погибните, чемпионы!",
-	Gormok				= "Гормок Пронзающий Бивень",
-	Acidmaw				= "Кислотная Утроба",
-	Dreadscale			= "Жуткая Чешуя",
-	Icehowl				= "Ледяной Рев"
+	Charge		= "^%%s глядит на (%S+) и испускает гортанный вой!",
+	CombatStart	= "Из самых глубоких и темных пещер Грозовой Гряды был призван Гормок Пронзающий Бивень! В бой, герои!",
+	Phase2		= "Приготовьтесь к схватке с близнецами-чудовищами, Кислотной Утробой и Жуткой Чешуей!",
+	Phase3		= "В воздухе повеяло ледяным дыханием следующего бойца: на арену выходит Ледяной Рев! Сражайтесь или погибните, чемпионы!",
+	Gormok		= "Гормок Пронзающий Бивень",
+	Acidmaw		= "Кислотная Утроба",
+	Dreadscale	= "Жуткая Чешуя",
+	Icehowl		= "Ледяной Рев"
 }
 
 L:SetOptionLocalization{
-	WarningSnobold			= "Предупреждение о призыве Снобольда-вассала",
-	SpecialWarningImpale3		= "Спец-предупреждение для Прокалывания (>= 3 стека)",
-	SpecialWarningAnger3		= "Спец-предупреждение для Вскипающего гнева (>=3 стека)",
+	WarningSnobold				= "Предупреждение о призыве Снобольда-вассала",
+	SpecialWarningImpale3		= "Спец-предупреждение для Прокалывания (>= 3 стаков)",
+	SpecialWarningAnger3		= "Спец-предупреждение для Вскипающего гнева (>=3 стаков)",
 	SpecialWarningFireBomb		= "Спец-предупреждение если на вас Зажигательная бомба",
 	SpecialWarningSlimePool		= "Спец-предупреждение, если под вами Лужа жижи",
 	SpecialWarningSilence		= "Спец-предупреждение для Сотрясающего топота (безмолвие)",
-	SpecialWarningToxin		= "Спец-предупреждение, если на вас Паралитический токсин",
-	SpecialWarningBile		= "Спец-предупреждение, когда на вас Горящея Желчь",
-	SpecialWarningCharge		= "Спец-предупреждение, если Ледяной Рев хочет вас Растаптать",
-	SpecialWarningTranq		= "Спец-предупреждение, когда Ледяной Рев набирает Вскипающий гнев (Усмиряющий выстрел)",
-	PingCharge			= "Показать на миникарте место, куда попадает Ледяной Рев, если он избрал вас целью",
+	SpecialWarningToxin			= "Спец-предупреждение, если на вас Паралитический токсин",
+	SpecialWarningBile			= "Спец-предупреждение, когда на вас Горящая Желчь",
+	SpecialWarningCharge		= "Спец-предупреждение, если Ледяной Рев хочет вас Растоптать",
+	SpecialWarningTranq			= "Спец-предупреждение, когда Ледяной Рев получает Кипящую ярость (для усмирения)",
+	PingCharge					= "Показать на миникарте место, куда попадает Ледяной Рев, если он избрал вас целью",
 	SpecialWarningChargeNear	= "Спец-предупреждение, когда Ледяной Рев готовится сделать рывок на цель рядом с вами",
-	SetIconOnChargeTarget		= "Установить метку на цель под воздействием Топота (череп)",
-	SetIconOnBileTarget		= "Установить метку на игроков под воздействием Горящей Желчи",
-	ClearIconsOnIceHowl		= "Снимать все иконки перед Топотом",
-	TimerNextBoss			= "Отсчет времени до появления следующего противника"
+	SetIconOnChargeTarget		= "Установить метку на цель Топота (череп)",
+	SetIconOnBileTarget			= "Установить метку на игроков под воздействием Горящей Желчи",
+	ClearIconsOnIceHowl			= "Снимать все иконки перед Топотом",
+	TimerNextBoss				= "Отсчет времени до появления следующего противника",
+	TimerCombatStart			= "Отсчет времени до начала битвы",
+	TimerEmerge					= "Show timer for emerge",
+	TimerSubmerge				= "Show timer for submerge",
+	RangeFrame                  = "Show range frame in Phase 2"
 }
 
 L:SetTimerLocalization{
-	TimerNextBoss			= "Прибытие следующего босса"
+	TimerNextBoss		= "Прибытие следующего босса",
+	TimerCombatStart	= "Битва начнется через",
+	TimerEmerge			= "Emerge",
+	TimerSubmerge		= "Submerge"
 }
 
 L:SetWarningLocalization{
-	WarningSnobold			= "Призыв %s",
+	WarningSnobold				= "Призыв снобольда-вассала",
 	SpecialWarningImpale3		= "Прокалывание >%d< на вас",
 	SpecialWarningAnger3		= "Вскипающий гнев >%d<",
 	SpecialWarningFireBomb		= "Зажигательная бомба на вас",
-	SpecialWarningSlimePool		= "Кислотная Жижа - бегите",
-	SpecialWarningSilence		= "Безмолвие через 1.5 секунды!",
-	SpecialWarningToxin		= "Паралитический токсин на вас - бегите",
+	SpecialWarningSlimePool		= "Кислотная Жижа - отбегите",
+	SpecialWarningSilence		= "Безмолвие через ~1.5 секунды!",
+	SpecialWarningToxin			= "Паралитический токсин на вас - бегите",
 	SpecialWarningCharge		= "Рывок к вам - бегите",
 	SpecialWarningChargeNear	= "Рывок около вас - бегите",
-	SpecialWarningBile		= "Горящая Желчь на вас",
-	SpecialWarningTranq		= "Вскипающий гнев - Усмиряющий выстрел"
+	SpecialWarningBile			= "Горящая Желчь на вас",
+	SpecialWarningTranq			= "Кипящая ярость - усмирите"
 }
 
 ---------------------
@@ -68,39 +76,39 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnNetherPower			= "Сила Пустоты на Лорде Джараксусе - рассейте заклинание",
-	SpecWarnFlesh			= "Испепеление плоти на вас",
-	SpecWarnTouch			= "Касание Джараксуса на вас",
-	SpecWarnKiss			= "Поцелуй Госпожи",
-	SpecWarnTouchNear		= ">%s<, около вас, отмечен Касанием Джараксуса",
-	SpecWarnFlame			= "Пламя Легиона - бегите",
-	SpecWarnNetherPower		= "Рассейте заклинание",
-	SpecWarnFelInferno		= "Геенна скверны - бегите",
-	SpecWarnFelFireball		= "Огненный шар Скверны - Прерывание",
+	WarnNetherPower				= "Сила Пустоты на Лорде Джараксусе - рассейте заклинание",
+	SpecWarnFlesh				= "Испепеление плоти на вас",
+	SpecWarnTouch				= "Касание Джараксуса на вас",
+	SpecWarnKiss				= "Поцелуй Госпожи",
+	SpecWarnTouchNear			= "Касание Джараксуса на |3-5(%s) около вас",
+	SpecWarnFlame				= "Пламя Легиона - бегите",
+	SpecWarnNetherPower			= "Рассейте заклинание",
+	SpecWarnFelInferno			= "Геенна скверны - бегите",
+	SpecWarnFelFireball			= "Огненный шар Скверны - прерывание",
 	SpecWarnFelFireballDispel	= "Огненный шар Скверны на %s - рассейте заклинание"
 }
 
 L:SetMiscLocalization{
-	WhisperFlame			= "Пламя Легиона на вас",
-	IncinerateTarget		= "Испепеление плоти: %s"
+	WhisperFlame		= "Пламя Легиона на вас",
+	IncinerateTarget	= "Испепеление плоти: %s"
 }
 
 L:SetOptionLocalization{
-	WarnNetherPower			= "Предупреждение, когда Джараксус получает Силу пустоты",
-	SpecWarnFlame			= "Спец-предупреждение, когда на вас Пламя легиона",
-	SpecWarnFlesh			= "Спец-предупреждение, когда на вас Испепеление плоти",
-	SpecWarnTouch			= "Спец-предупреждение, когда на вас Касание Джараксуса",
-	SpecWarnTouchNear		= "Спец-предупреждение, когда рядом с вами Касание Джараксуса",
-	SpecWarnKiss			= "Спец-предупреждение, когда на вас Поцелуй Госпожи",
-	SpecWarnNetherPower		= "Спец-предупреждение (для рассеивания) о Силе пустоты",
-	SpecWarnFelInferno		= "Спец-предупреждение, если около вас Геена скверны",
-	SpecWarnFelFireball		= "Спец-предупреждение для Огненного шара Скверны (для прерывания)",
+	WarnNetherPower				= "Предупреждение, когда Джараксус получает Силу пустоты",
+	SpecWarnFlame				= "Спец-предупреждение, когда на вас Пламя легиона",
+	SpecWarnFlesh				= "Спец-предупреждение, когда на вас Испепеление плоти",
+	SpecWarnTouch				= "Спец-предупреждение, когда на вас Касание Джараксуса",
+	SpecWarnTouchNear			= "Спец-предупреждение, когда рядом с вами Касание Джараксуса",
+	SpecWarnKiss				= "Спец-предупреждение, когда на вас Поцелуй Госпожи",
+	SpecWarnNetherPower			= "Спец-предупреждение (для рассеивания) о Силе пустоты",
+	SpecWarnFelInferno			= "Спец-предупреждение, если около вас Геена скверны",
+	SpecWarnFelFireball			= "Спец-предупреждение для Огненного шара Скверны (для прерывания)",
 	SpecWarnFelFireballDispel	= "Спец-предупреждение, когда Огненный шар Скверны (для рассеивания)",
-	TouchJaraxxusIcon		= "Установить метку на цель с Касанием Джараксуса (крест)",
-	IncinerateFleshIcon		= "Установить метку на игрока с Испепелением плоти (череп)",
-	LegionFlameIcon			= "Установить метку на игрока с Пламенем легиона (квадрат)",
-	LegionFlameWhisper		= "Сообщить цели, под воздействием Пламени легиона",
-	LegionFlameRunSound		= "Звуковой сигнал, когда Пламя Легиона",
+	TouchJaraxxusIcon			= "Установить метку на цель с Касанием Джараксуса (крест)",
+	IncinerateFleshIcon			= "Установить метку на игрока с Испепелением плоти (череп)",
+	LegionFlameIcon				= "Установить метку на игрока с Пламенем легиона (квадрат)",
+	LegionFlameWhisper			= "Сообщить цели, под воздействием Пламени легиона",
+	LegionFlameRunSound			= "Звуковой сигнал при Пламени легиона",
 	IncinerateShieldFrame		= "Показать здоровье босса с индикатором здоровья для Испепеления плоти"
 }
 
@@ -118,9 +126,9 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnHellfire		= "Адское Пламя - бегите",
-	SpecWarnHandofProt		= "Длань защиты на >%s<",
-	SpecWarnDivineShield		= "Божественный щит на >%s<",
-	specWarnIceBlock       		= "Ледяная глыба на %s"
+	SpecWarnHandofProt		= "Длань защиты на %s",
+	SpecWarnDivineShield	= "Божественный щит на %s",
+	specWarnIceBlock       	= "Ледяная глыба на %s"
 }
 
 L:SetMiscLocalization{
@@ -152,14 +160,17 @@ L:SetMiscLocalization{
  	Shaabad				= "Шаабад <Шаман>", 				-- 34463, Allience
  	Serissa				= "Серисса Мрачная Кропильщица <Чернокнижница>",-- 34474, Allience
  	Shocuul				= "Шокул <Воин>",				-- 34475, Allience
+	AllianceVictory		= "СЛАВА АЛЬЯНСУ!",
+	HordeVictory		= "That was just a taste of what the future brings. FOR THE HORDE!",
 	YellKill			= "Пустая и горькая победа. После сегодняшних потерь мы стали слабее как целое. Кто еще, кроме Короля-лича, выиграет от подобной глупости? Пали великие воины. И ради чего? Истинная опасность еще впереди – нас ждет битва с  Королем-личом."
 } 
 
 L:SetOptionLocalization{
 	SpecWarnHellfire		= "Спец-предупреждение, когда вы получаете урон от Адского пламени",
 	SpecWarnHandofProt		= "Спец-предупреждение, когда Паладин использует Длань защиты",
-	SpecWarnDivineShield		= "Спец-предупреждение, когда Паладин использует Божественный щит",
-	specWarnIceBlock       		= "Спец-предупреждение, когда маг читает заклинание Ледяная глыба (для рассеивания)"
+	SpecWarnDivineShield	= "Спец-предупреждение, когда Паладин использует Божественный щит",
+	specWarnIceBlock		= "Спец-предупреждение, когда маг читает заклинание Ледяная глыба (для рассеивания)",
+	PlaySoundOnBladestorm	= "Play sound on Bladestorm"
 }
 
 ---------------------
@@ -172,38 +183,38 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerSpecialSpell		= "Следующая спец-способность"	
+	TimerSpecialSpell	= "Следующая спец-способность"	
 }
 
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "Скоро спец-способность",
-	SpecWarnSpecial			= "Смена цвета",
+	SpecWarnSpecial				= "Смена цвета",
 	SpecWarnEmpoweredDarkness	= "Могущественная Тьма",
 	SpecWarnEmpoweredLight		= "Могущественный Свет",
 	SpecWarnSwitchTarget		= "Смена цели",
-	SpecWarnKickNow			= "Прерывание",
-	WarningTouchDebuff		= ">%s< под воздействем отрицательного эффекта",
-	WarningPoweroftheTwins		= "Сила близнецов, больше исцеления на >%s<",
+	SpecWarnKickNow				= "Прерывание",
+	WarningTouchDebuff			= "Отрицательный эффект на |3-5(>%s<)",
+	WarningPoweroftheTwins		= "Сила близнецов - больше исцеления на |3-3(>%s<)",
 	SpecWarnPoweroftheTwins		= "Сила близнецов"
 }
 
 L:SetMiscLocalization{
-	YellPull 			= "Во имя темного повелителя. Во имя Короля-лича. Вы. Умрете.",
-	Fjola 				= "Фьола Погибель Света",
-	Eydis				= "Эйдис Погибель Тьмы"
+	YellPull	= "Во имя темного повелителя. Во имя Короля-лича. Вы. Умрете.",
+	Fjola		= "Фьола Погибель Света",
+	Eydis		= "Эйдис Погибель Тьмы"
 }
 
 L:SetOptionLocalization{
-	TimerSpecialSpell		= "Отсчет времени до перезарядки спец-способности",
+	TimerSpecialSpell			= "Отсчет времени до перезарядки спец-способности",
 	WarnSpecialSpellSoon		= "Предупреждение о следующуюей спец-способность",
-	SpecWarnSpecial			= "Спец-предупреждение для смены цветов",
+	SpecWarnSpecial				= "Спец-предупреждение для смены цветов",
 	SpecWarnEmpoweredDarkness	= "Спец-предупреждение, когда на вас Могущественная тьма",
 	SpecWarnEmpoweredLight		= "Спец-предупреждение, когда на вас Могущественный свет",
 	SpecWarnSwitchTarget		= "Спец-предупреждение для других, когда босс читает заклинание",
-	SpecWarnKickNow			= "Спец-предупреждение, когда вы должы прервать заклинание",
-	SpecialWarnOnDebuff		= "Спец-предупреждение, когда отрицательный эфект",
+	SpecWarnKickNow				= "Спец-предупреждение, когда вы должы прервать заклинание",
+	SpecialWarnOnDebuff			= "Спец-предупреждение, когда отрицательный эффект",
 	SetIconOnDebuffTarget		= "Установить метку на получившего отрицательный эффект (героический режим)",
-	WarningTouchDebuff		= "Объявлять цели получившей отрицательный эффект",
+	WarningTouchDebuff			= "Объявлять цели, получившие отрицательный эффект",
 	WarningPoweroftheTwins		= "Объявлять цель под воздействем Силы близнецов",
 	SpecWarnPoweroftheTwins		= "Спец-предупреждение, когда на вас Сила близнецов"
 }
@@ -218,46 +229,46 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerEmerge			= "Появление через",
-	TimerSubmerge			= "Погружение через",
-	timerAdds			= "Призыв помощников через"
+	TimerEmerge				= "Появление через",
+	TimerSubmerge			= "Зарывание через",
+	timerAdds				= "Призыв помощников через"
 }
 
 L:SetWarningLocalization{
-	WarnEmerge			= "Ануб'арак погружается",
+	WarnEmerge				= "Ануб'арак появляется",
 	WarnEmergeSoon			= "Появление через 10 сек",
-	WarnSubmerge			= "Появляется Ануб'арак",
-	WarnSubmergeSoon		= "Погружение через 10 сек",
-	SpecWarnPursue			= "Вас приследуют",
-	warnAdds			= "Помощники",
-	SpecWarnShadowStrike		= "Теневой удар - прерывание",
+	WarnSubmerge			= "Ануб'арак зарывается",
+	WarnSubmergeSoon		= "Зарывание через 10 сек",
+	SpecWarnPursue			= "Вас преследуют - бегите",
+	warnAdds				= "Помощники",
+	SpecWarnShadowStrike	= "Теневой удар - прерывание",
 	SpecWarnPCold			= "Пронизывающий холод на вас"	
 }
 
 L:SetMiscLocalization{
 	YellPull			= "Это место станет вашей могилой!",
 	Emerge				= "вылезает на поверхность!",
-	Burrow				= "зарывается под землю!",
-	PcoldIconSet			= "Метка холода {rt%d} установленна на %s",
-	PcoldIconRemoved		= "Метка холода снята с %s"
+	Burrow				= "зарывается в землю!",
+	PcoldIconSet		= "Метка холода {rt%d} установлена на |3-1(%s)",
+	PcoldIconRemoved	= "Метка холода снята с |3-1(%s)"
 }
 
 L:SetOptionLocalization{
-	WarnEmerge			= "Предупреждение о появлении",
+	WarnEmerge				= "Предупреждение о появлении",
 	WarnEmergeSoon			= "Предупреждать заранее о появлении",
 	WarnSubmerge			= "Предупреждение о погружении",
 	WarnSubmergeSoon		= "Предупреждать заранее о погружении",
 	SpecWarnPursue			= "Спец-предупреждение, когда вас преследуют",
-	warnAdds			= "Предупреждение о призыве помощников",
-	timerAdds			= "Отсчет времени до призыва помощников",
-	TimerEmerge			= "Отсчет времени до появления",
+	warnAdds				= "Предупреждение о призыве помощников",
+	timerAdds				= "Отсчет времени до призыва помощников",
+	TimerEmerge				= "Отсчет времени до появления",
 	TimerSubmerge			= "Отсчет времени до погружения",
 	PlaySoundOnPursue		= "Звуковой сигнал, если вас преследуют",
-	PursueIcon			= "Установить метку на преследуемого",
-	SpecWarnShadowStrike		= "Спец-предупреждение, когда Теневой удар (для прерывания)",
+	PursueIcon				= "Установить метку на преследуемого",
+	SpecWarnShadowStrike	= "Спец-предупреждение, когда Теневой удар (для прерывания)",
 	SpecWarnPCold			= "Спец-предупреждение, когда на вас Пронизывающий холод",
-	RemoveHealthBuffsInP3		= "Удалить усиления здоровья в начале фазы 3",
-	SetIconsOnPCold         	= "Установить метки на цели под воздействем Пронизывающего холода",
-	AnnouncePColdIcons		= "Объявлять в рейд-чат цели под воздействем Пронизывающего холода (требуются права лидера или помощника)"
+	RemoveHealthBuffsInP3	= "Удалить усиления здоровья в начале фазы 3", 
+	SetIconsOnPCold         = "Установить метки на цели под воздействием Пронизывающего холода",
+	AnnouncePColdIcons		= "Объявлять в рейд-чат цели под воздействием Пронизывающего холода (требуются права лидера или помощника)"
 }
 
