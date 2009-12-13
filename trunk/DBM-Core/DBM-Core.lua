@@ -2819,7 +2819,7 @@ do
 	end
 	
 	function bossModPrototype:NewCombatTimer(timer, text, barText, barIcon)
-		return newTimer(timer, "combatstart", barIcon or 2457, nil, "combatstart")
+		return newTimer(self, "combatstart", barIcon or 2457, nil, "combatstart")
 	end
 
 	function bossModPrototype:NewCastTimer(timer, ...)
