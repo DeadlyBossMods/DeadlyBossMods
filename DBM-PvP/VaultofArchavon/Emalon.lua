@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_HEAL",
-	"RAID_TARGET_UPDATE",
+	"UNIT_TARGET",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
 )
@@ -59,7 +59,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:RAID_TARGET_UPDATE(args)
+function mod:UNIT_TARGET()
 	if overchargedMob then
 		self:TrySetTarget(overchargedMob)
 	end
