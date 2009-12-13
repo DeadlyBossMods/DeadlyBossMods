@@ -1272,11 +1272,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnPursuit			= "Pursuit on >%s<",
+	warnPursuit			= "추격 : >%s<",
 	specWarnToxic		= "독성 폐기물! 이동하세요!",
 	specWarnPursuit		= "곧 당신을 추격합니다. 뛰세요!",
 	specWarnPoisonNova	= "독 회오리! 뛰세요!",
-	specWarnMines		= "Explosive Barrage - Move away"	
+	specWarnMines		= "폭발 탄막 - 이동하세요"	
 })
 
 L:SetOptionLocalization({
@@ -1284,7 +1284,7 @@ L:SetOptionLocalization({
 	specWarnToxic			= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit			= "당신을 추격 하게 될 경우 특수 경고 보기",
 	specWarnPoisonNova		= "독 회오리를 시전 할 경우 특수 경고 보기(이동 관련)",
-	specWarnMines			= "Show special warning when Explosive Barrage is cast (to move away)",	
+	specWarnMines			= "폭발 탄막을 시전 할 경우 특수 경고 보기(이동 관련)",	
 	PlaySoundOnPoisonNova	= "독 회오리 특수 소리 재생",	
 	PlaySoundOnPursuit		= "당신이 추격당할 경우 특수 소리 재생",	
 	SetIconOnPursuitTarget	= "추격 대상에게 공격대 아이콘 설정"	
@@ -1292,7 +1292,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	IckPursuit		= "%s1|이;가; 당신을 쫓습니다!",
-	Barrage			= "%s begins rapidly conjuring explosive mines!",
+	Barrage			= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!",
 --	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.	
 })
 
@@ -1338,7 +1338,7 @@ L:SetWarningLocalization({
 	specWarnIcyBlast			= "얼음 작렬! 이동하세요!",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!",
-	specWarnOverlordsBrand	= "Overlords Brand on you"
+	specWarnOverlordsBrand		= "당신에게 대군주의 낙인"
 })
 
 L:SetTimerLocalization{
@@ -1350,7 +1350,7 @@ L:SetOptionLocalization({
 	specWarnIcyBlast			= "얼음 작렬로부터 데미지를 받을 경우 특수 경고 보기",
 	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
-	specWarnOverlordsBrand		= "Show special warning when you are affected by Overlords Brand",	
+	specWarnOverlordsBrand		= "대군주의 낙인에 영향을 받을 경우 특수 경고 보기",	
 	TimerCombatStart			= "전투 시작 타이머 보기",	
 	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
 })
@@ -1394,13 +1394,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼! 딜 중지!",
-	specwarnWailingSouls		= "Wailing Souls - Get behind",	
+	specwarnWailingSouls		= "울부짖는 영혼",	-- Get behind
 	specwarnPhantomBlast		= "차단!"
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기",
-	specwarnWailingSouls		= "Show special warning when Wailing Souls is cast",	
+	specwarnWailingSouls		= "울부짖는 영혼을 시전 할 경우 특수 경고 보기",	
 	specwarnPhantomBlast		= "환영 폭발을 시전할 경우 특수 경고 보기(차단을 위해)"
 })
 
@@ -1500,6 +1500,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	CombatStart		= "그는... 너무 강하다. 영웅들이여, 어서... 이쪽으로 오라! 즉시 이곳을 떠나야 한다! 도망치는 동안 그를 잡아놓을 수 있도록 조치를 취하겠다.",
 	YellCombatEnd	= "FIRE! FIRE!"
 })
