@@ -20,7 +20,7 @@ L:SetOptionLocalization{
 	SpecWarnDisruptingShout		= "$spell:71022 특수 경고 보기",
 	SpecWarnDarkReckoning		= "$spell:69483에 영향을 받을 경우 특수 경고 보기",
 	PlaySoundOnDarkReckoning	= "$spell:69483에 영향을 받을 경우 특수 소리 재생",
-	SetIconOnDominateMind		= "$spell:69483 대상 공격대 아이콘 설정"	
+	SetIconOnDarkReckoning		= "$spell:69483 대상 공격대 아이콘 설정"
 }
 
 ----------------------
