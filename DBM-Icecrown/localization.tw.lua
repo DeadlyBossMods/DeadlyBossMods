@@ -13,10 +13,15 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnDisruptingShout		= "混亂怒吼 - 停止施法",
+	SpecWarnDarkReckoning		= "黑暗清算 - 快跑開"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout		= "為$spell:71022顯示特別警告",	
+	SpecWarnDisruptingShout		= "為$spell:71022顯示特別警告",
+	SpecWarnDarkReckoning		= "當你中了$spell:69483時顯示特別警告",
+	PlaySoundOnDarkReckoning	= "為$spell:69483播放音效",
+	SetIconOnDominateMind		= "為$spell:69483的目標設置標記"
+}
 }
 
 ----------------------
@@ -34,7 +39,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnImpale			= ">%s< 被刺穿了",
-	SpecWarnWhirlwind		= "旋風斬 - 快跑開",
+	SpecWarnWhirlwind		= "骸骨風暴 - 快跑開",
 	SpecWarnColdflame		= "冷焰 - 快跑開"
 }
 
@@ -42,7 +47,7 @@ L:SetOptionLocalization{
 	WarnImpale			= "提示$spell:69062的目標",
 	SpecWarnWhirlwind		= "為$spell:69076顯示特別警告",
 	SpecWarnColdflame		= "當你中了$spell:70825時顯示特別警告",
-	PlaySoundOnWhirlwind		= "為$spell:69076斬播放音效",
+	PlaySoundOnWhirlwind		= "為$spell:69076播放音效",
 	achievementBoned		= "為去骨成就顯示計時器",
 	SetIconOnImpale			= "為$spell:69062的目標設置標記"
 }
@@ -66,8 +71,7 @@ L:SetWarningLocalization{
 	SpecWarnDeathDecay		= "死亡凋零 - 快跑開",
 	SpecWarnCurseTorpor		= "你中了魯鈍詛咒",
 	SpecWarnTouchInsignificance	= "無脅之觸 (3)",
-	WarnAddsSoon			= "新的小怪即將出現",
-	SpecWarnDarkReckoning		= "黑暗清算 - 快跑開"
+	WarnAddsSoon			= "新的小怪 即將到來"
 }
 
 L:SetOptionLocalization{
@@ -78,32 +82,12 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay		= "當你中了$spell:72108時顯示特別警告",
 	SpecWarnCurseTorpor		= "當你中了$spell:71237時顯示特別警告",
 	TimerAdds			= "為新的小怪顯示計時器",
-	SetIconOnDominateMind		= "為$spell:71289的目標設置標記",
-	SpecWarnDarkReckoning		= "當你中了$spell:69483時顯示特別警告",
-	PlaySoundOnDarkReckoning	= "為黑暗清算播放音效"
+	SetIconOnDominateMind		= "為$spell:71289的目標設置標記"
 }
 
 L:SetMiscLocalization{
 	YellPull			= "這騷動是怎麼回事?你竟敢擅闖聖地?這裡將是你的最終之地!",
 	YellReanimatedFanatic		= "起來，在純粹的形態中感受狂喜!"
-}
-
------------------------------
---  Deathbringer Saurfang  --
------------------------------
-L = DBM:GetModLocalization("Deathbringer")
-
-L:SetGeneralLocalization{
-	name 				= "死亡使者薩魯法爾"
-}
-
-L:SetWarningLocalization{
-	warnFrenzySoon			= "狂亂 即將到來"
-}
-
-L:SetOptionLocalization{
-	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
-	RangeFrame			= "顯示距離框"
 }
 
 ----------------------
@@ -116,13 +100,48 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBattleFury			= "%s (%d)"
+	WarnBattleFury			= "%s (%d)",
+	WarnAddsSoon			= "新的小怪 即將到來"
 }
 
 L:SetOptionLocalization{
-	WarnBattleFury			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "戰鬥烈怒")
+	WarnBattleFury			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "戰鬥烈怒"),
+	TimerCombatStart		= "為戰鬥開始顯示計時器",
+	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
+	TimerAdds			= "為新的小怪顯示計時器"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "戰鬥開始",
+	TimerAdds			= "新的小怪"
+}
+
+L:SetMiscLocalization{
+	PullAlliance			= "發動引擎!小夥子們，我們即將面對命運啦!",
+	KillAlliance			= "別說我沒警告過你，無賴!兄弟姊妹們，向前衝!",
+	PullHorde			= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
+	KillHorde			= "The Alliance falter. Onward to the Lich King!"
+}
+
+-----------------------------
+--  Deathbringer Saurfang  --
+-----------------------------
+L = DBM:GetModLocalization("Deathbringer")
+
+L:SetGeneralLocalization{
+	name 				= "死亡使者薩魯法爾"
+}
+
+L:SetWarningLocalization{
+	warnFrenzySoon			= "狂亂 即將到來",
+	specwarnRuneofBlood		= "你中了血魄符文"
+}
+
+L:SetOptionLocalization{
+	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
+	specwarnRuneofBlood		= "當你中了$spell:72410時顯示特別警告",
+	RangeFrame			= "顯示距離框 (11)"
+}
 
 -----------------
 --  Festergut  --
