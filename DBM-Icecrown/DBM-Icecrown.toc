@@ -2,7 +2,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Icecrown Citadel|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Citadelle de la Couronne de Glace|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0얼음왕관 성채|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Цитадель Ледяная Корона|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Цитадель Ледяной Короны|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0冰冠城塞|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -18,14 +18,14 @@
 ## X-DBM-Mod-Name-deDE: Eiskronenzitadelle
 ## X-DBM-Mod-Name-frFR: Citadelle de la Couronne de Glace
 ## X-DBM-Mod-Name-koKR: 얼음왕관 성채
-## X-DBM-Mod-Name-ruRU: Цитадель Ледяная Корона
+## X-DBM-Mod-Name-ruRU: Цитадель Ледяной Короны
 ## X-DBM-Mod-Name-zhTW: 冰冠城塞
 ## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Icecrown Citadel
 ## X-DBM-Mod-LoadZone-deDE: Eiskronenzitadelle
 ## X-DBM-Mod-LoadZone-frFR: Citadelle de la Couronne de Glace
 ## X-DBM-Mod-LoadZone-koKR: 얼음왕관 성채
-## X-DBM-Mod-LoadZone-ruRU: Цитадель Ледяная Корона
+## X-DBM-Mod-LoadZone-ruRU: Цитадель Ледяной Короны
 ## X-DBM-Mod-LoadZone-zhTW: 冰冠城塞
 localization.en.lua
 localization.de.lua

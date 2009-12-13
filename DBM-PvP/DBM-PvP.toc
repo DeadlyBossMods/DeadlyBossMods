@@ -23,7 +23,7 @@
 ## X-DBM-Mod-LoadZone-deDE: Arathibecken,Kriegshymnenschlucht,Alteractal,Auge des Sturms,Archavons Kammer,Strand der Uralten,Insel der Eroberung
 ## X-DBM-Mod-LoadZone-frFR: Bassin d'Arathi,Goulet des Chanteguerres,Vallée d'Alterac,L'Œil du cyclone,Caveau d'Archavon,Rivage des anciens,Île des Conquérants
 ## X-DBM-Mod-LoadZone-esES: Cuenca de Arathi,Garganta Grito de Guerra,Valle de Alterac,Ojo de la Tormenta,La Cámara de Archavon,Isla de la Conquista
-## X-DBM-Mod-LoadZone-ruRU: Низина Арати,Ущелье Песни Войны,Альтеракская долина,Око Бури,Склеп Аркавона
+## X-DBM-Mod-LoadZone-ruRU: Низина Арати,Ущелье Песни Войны,Альтеракская долина,Око Бури,Склеп Аркавона,Остров Завоеваний
 ## X-DBM-Mod-LoadZone-zhTW: 阿拉希盆地,戰歌峽谷,奧特蘭克山谷,暴風之眼,亞夏梵穹殿
 ## X-DBM-Mod-LoadZone-zhCN: 阿拉希盆地,战歌峡谷,奥特兰克山谷,风暴之眼,远古海滩
 ## X-DBM-Mod-LoadZone-koKR: 아라시 분지,전쟁노래 협곡,알터랙 계곡,폭풍의 눈,아카본 석실,정복의 섬
