@@ -4,7 +4,7 @@
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0얼음왕관 성채|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Цитадель Ледяной Короны|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0冰冠城塞|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Icecrown Citadel|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ciudadela de la Corona de Hielo|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMIcecrown_SavedVars, DBMIcecrown_SavedStats
@@ -30,7 +30,7 @@
 ## X-DBM-Mod-LoadZone-koKR: 얼음왕관 성채
 ## X-DBM-Mod-LoadZone-ruRU: Цитадель Ледяной Короны
 ## X-DBM-Mod-LoadZone-zhTW: 冰冠城塞
-## X-DBM-Mod-LoadZone-esES: Icecrown Citadel
+## X-DBM-Mod-LoadZone-esES: Ciudadela de la Corona de Hielo
 localization.en.lua
 localization.de.lua
 localization.kr.lua
