@@ -196,22 +196,22 @@ L:SetWarningLocalization{
 	WarningCosmicSmash 		= "Кара небесная - взрыв через 4 секунды",
 	SpecWarnCosmicSmash 	= "Кара небесная",
 	WarnPhase2Soon			= "Скоро фаза 2",
-	warnStarLow				= "Collapsing Star is low (at ~25%)"
+	warnStarLow				= "У Вспыхивающей звезды мало здоровья (~25%)"
 }
 
 L:SetOptionLocalization{
 	SpecWarnPhasePunch		= "Спец-предупреждение, когда Фазовый удар на вас",
 	PreWarningBigBang		= "Объявлять Суровый удар",
 	SpecWarnBigBang			= "Спец-предупреждение для Сурового удара",
-	WarningPhasePunch		= "Объявлять цель под воздействием Фазовый удар",
+	WarningPhasePunch		= "Объявлять цель под воздействием Фазового удара",
 	WarningBlackHole		= "Объявлять Черную дыру",
-	NextCollapsingStar		= "Отсчет времени до Свернувшейся звезды",
+	NextCollapsingStar		= "Отсчет времени до появления Вспыхивающей звезды",
 	WarningCosmicSmash 		= "Объявлять цель под воздействием Кары небесной",
 	SpecWarnCosmicSmash 	= "Спец-предупреждение для Кары небесной",
 	PossibleNextCosmicSmash	= "Отсчет времени до Кара небесная",
 	TimerCombatStart		= "Отсчет времени до начала битвы",
 	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~23%)",
-	warnStarLow				= "Show warning when Collapsing Star is low (at ~25%)"
+	warnStarLow				= "Предупреждать, когда у Вспыхивающей звезды мало здоровья (на ~25%)"
 }
 
 L:SetMiscLocalization{
@@ -543,16 +543,16 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Страж",
 	WarningCrusherTentacleSpawned	= "Тяжелое щупальце",
-	SpecWarnBrainLink 				= "Вы и %s под воздействием Схожего мышления!",
+	SpecWarnBrainLink 				= "Схожее мышление на вас и |3-5(%s)",
 	WarningSanity 					= "Эффект Здравомыслия: %d",
 	SpecWarnSanity 					= "Эффект Здравомыслия: %d",
-	SpecWarnGuardianLow				= "Прекратить нападение на Стражей!",
-	SpecWarnMadnessOutNow			= "Помешательство заканчивается - бегите",
+	SpecWarnGuardianLow				= "Прекратите атаковать этого Стража",
+	SpecWarnMadnessOutNow			= "Доведение до помешательства заканчивается - выбегайте",
 	WarnBrainPortalSoon				= "Портал через 3 секунды",
 	SpecWarnFervor					= "Рвение Сары на вас",
 	SpecWarnFervorCast				= "Рвение Сары накладывается на вас",
 	WarnEmpowerSoon					= "Приближается Сгущение тьмы!",
-	SpecWarnMaladyNear				= "Душевная болезнь около вас, на >%s<",
+	SpecWarnMaladyNear				= "Душевная болезнь на |3-5(%s) около вас",
 	SpecWarnDeafeningRoar			= "Оглушающий рев",
 	specWarnBrainPortalSoon			= "Скоро Портал"
 }
@@ -562,13 +562,13 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningGuardianSpawned			= "Объявлять появление стражей",
+	WarningGuardianSpawned			= "Объявлять появление Стража",
 	WarningCrusherTentacleSpawned	= "Объявлять появление Тяжелого щупальца",
 	WarningBrainLink				= "Объявлять Схожее мышление",
 	SpecWarnBrainLink				= "Спец-предупреждение для Схожего мышления",
-	WarningSanity					= "Предупреждение, когда Здравомыслие ослаблено",
-	SpecWarnSanity					= "Спец-предупреждение, когда Здравомыслие очень ослаблено",
-	SpecWarnGuardianLow				= "Спец-предупреждение, когда Страж (фаза 1) ослаблен (для бойцов)",
+	WarningSanity					= "Предупреждение, когда у вас мало Здравомыслия",
+	SpecWarnSanity					= "Спец-предупреждение, когда у вас очень мало Здравомыслия",
+	SpecWarnGuardianLow				= "Спец-предупреждение, когда у Стража (в фазе 1) мало здоровья (для бойцов)",
 	WarnBrainPortalSoon				= "Объявлять о Портале разума",
 	SpecWarnMadnessOutNow			= "Спец-предупреждение до окончания Доведения до помешательства",
 	SetIconOnFearTarget				= "Установить метку на цель под воздействием болезни",
