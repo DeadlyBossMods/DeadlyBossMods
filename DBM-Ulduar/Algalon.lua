@@ -32,7 +32,7 @@ local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
 local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
 
-local warnStarLow				= mod:NewSpecialWarning("warnStarLow", false)
+local specwarnStarLow			= mod:NewSpecialWarning("warnStarLow", false)
 local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
 local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
 local specWarnCosmicSmash		= mod:NewSpecialWarning("SpecWarnCosmicSmash")
@@ -131,6 +131,6 @@ function mod:UNIT_HEALTH(uId)
 		warnPhase2Soon:Show()
 	elseif not warned_star and self:GetUnitCreatureId(uId) == 32955 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.25 then
 		warned_star = true
-		warnStarLow:Show()
+		specwarnStarLow:Show()
 	end
 end
