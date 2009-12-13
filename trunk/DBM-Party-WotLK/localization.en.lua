@@ -1497,4 +1497,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	CombatStart		= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	YellCombatEnd	= "FIRE! FIRE!"
 })
