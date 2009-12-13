@@ -22,15 +22,18 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 
 local warnPursuitCast			= mod:NewCastAnnounce(68987)
 local warnPoisonNova			= mod:NewCastAnnounce(68989)
-local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
 local warnPustulantFlesh		= mod:NewTargetAnnounce(69581)
-local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
-local timerPoisonNova			= mod:NewCastTimer(5, 68989)
 local warnPursuit				= mod:NewAnnounce("warnPursuit")
+
 local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
 local specWarnMines				= mod:NewSpecialWarning("specWarnMines")
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
 local specWarnPoisonNova		= mod:NewSpecialWarning("specWarnPoisonNova", isMelee)
+
+local timerPursuitCast			= mod:NewCastTimer(5, 68987)
+local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
+local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
+local timerPoisonNova			= mod:NewCastTimer(5, 68989)
 
 mod:AddBoolOption("PlaySoundOnPoisonNova", isMelee)
 mod:AddBoolOption("PlaySoundOnPursuit", true)
@@ -39,6 +42,7 @@ mod:AddBoolOption("SetIconOnPursuitTarget", true)
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68987) then							-- Pursuit
 		warnPursuitCast:Show()
+		timerPursuitCast:Start()
 	elseif args:IsSpellID(68989, 70434) then				-- Poison Nova
 		warnPoisonNova:Show()
 		timerPoisonNova:Start()
