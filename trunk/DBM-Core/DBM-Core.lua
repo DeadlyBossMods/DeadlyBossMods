@@ -761,6 +761,7 @@ do
 		table.sort(sortMe, sort)
 		self:AddMsg(DBM_CORE_VERSIONCHECK_HEADER)
 		for i, v in ipairs(sortMe) do
+
 			if v.displayVersion then
 				self:AddMsg(DBM_CORE_VERSIONCHECK_ENTRY:format(v.name, v.displayVersion, v.revision))
 				if notify and v.displayVersion ~= DBM.Version and v.revision < DBM.ReleaseRevision then
@@ -1069,7 +1070,11 @@ do
 				else
 					id = "party"..i
 				end
-				local name, rank, _, fileName = UnitName(id), UnitIsPartyLeader(id), UnitClass(id)
+				local name, server = UnitName(id)
+				local rank, _, fileName = UnitIsPartyLeader(id), UnitClass(id)
+				if server and server ~= ""  then
+					name = name.."-"..server
+				end
 				if name then
 					raid[name] = raid[name] or {}
 					raid[name].name = name
