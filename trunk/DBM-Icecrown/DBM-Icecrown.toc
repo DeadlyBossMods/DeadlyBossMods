@@ -10,19 +10,19 @@
 ## SavedVariablesPerCharacter: DBMIcecrown_SavedVars, DBMIcecrown_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
-## X-DBM-Mod-SubCategories: The Lower Spire,The Plagueworks,The Crimson Hall,Frostwing Halls,The Frozen Throne
-## X-DBM-Mod-SubCategories-frFR: L'entrée de la Citadelle,L'Atelier de la Peste,La Salle Cramoisie,Les salles de l'Aile de Glace,Le trône de Glace
-## X-DBM-Mod-SubCategories-zhTW: 城塞大門,瘟疫工坊,赤紅大廳,霜翼大廳,冰封王座
-## X-DBM-Mod-SubCategories-koKR: 성채 하층부,역병작업장,진홍빛 전당,서리날개 전당,얼어붙은 왕좌
-## X-DBM-Mod-SubCategories-ruRU: Шпиль,Чумодельня,Багровый зал,Зал Ледокрылых,Ледяной Трон
-## X-DBM-Mod-SubCategories-esES: The Lower Spire,Los Talleres de la Peste ,La Sala Carmesí,Las Cámaras de Alaescarcha,El Trono Helado
+## X-DBM-Mod-SubCategories: The Lower Spire, The Plagueworks, The Crimson Hall, Frostwing Halls, The Frozen Throne
+## X-DBM-Mod-SubCategories-frFR: L'entrée de la Citadelle, L'Atelier de la Peste, La Salle Cramoisie, Les salles de l'Aile de Glace, Le trône de Glace
+## X-DBM-Mod-SubCategories-zhTW: 城塞大門,瘟疫工坊, 赤紅大廳,霜翼大廳, 冰封王座
+## X-DBM-Mod-SubCategories-koKR: 성채 하층부, 역병작업장, 진홍빛 전당, 서리날개 전당, 얼어붙은 왕좌
+## X-DBM-Mod-SubCategories-ruRU: Шпиль, Чумодельня, Багровый зал, Зал Ледокрылых, Ледяной Трон
+## X-DBM-Mod-SubCategories-esES: La Ciudadela Inferior, Los Talleres de la Peste, La Sala Carmesí, Las Cámaras de Alaescarcha, El Trono Helado
 ## X-DBM-Mod-Name: Icecrown Citadel
 ## X-DBM-Mod-Name-deDE: Eiskronenzitadelle
 ## X-DBM-Mod-Name-frFR: Citadelle de la Couronne de Glace
 ## X-DBM-Mod-Name-koKR: 얼음왕관 성채
 ## X-DBM-Mod-Name-ruRU: Цитадель Ледяной Короны
 ## X-DBM-Mod-Name-zhTW: 冰冠城塞
-## X-DBM-Mod-Name-esES: Icecrown Citadel
+## X-DBM-Mod-Name-esES: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Icecrown Citadel
 ## X-DBM-Mod-LoadZone-deDE: Eiskronenzitadelle
