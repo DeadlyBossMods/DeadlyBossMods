@@ -113,6 +113,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "|cff71d5ff|Hspell:%d|h%s|h|r 쿨다운 타�
 DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "%s 위한 타이머 보기"
 
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
+
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target 	= "%s : >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell 		= "%s"
