@@ -135,7 +135,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			brainLinkIcon = brainLinkIcon - 1
 		end
 		if args:IsPlayer() then
-			specBrainLink:Show()
+			specWarnBrainLink:Show()
 		end
 		mod:ScheduleMethod(0.2, "warnBrainLink")
 	elseif args:IsSpellID(63830, 63881) then   -- Malady of the Mind (Fear) 
