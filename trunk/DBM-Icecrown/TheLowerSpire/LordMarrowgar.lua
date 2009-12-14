@@ -29,6 +29,7 @@ local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)
 local timerWhirlwind		= mod:NewBuffActiveTimer(20, 69076)
 local timerBoned            = mod:NewAchievementTimer(8, 4610, "achievementBoned") --Iffy, still not sure what combat event blizz actually checks for bonespikes.
 
+local soundWhirlwind = mod:NewSound(69076)
 mod:AddBoolOption("SetIconOnImpale", true)
 
 local impaleTargets = {}
@@ -51,7 +52,7 @@ local function showImpaleWarning()
 end
 
 function mod:OnCombatStart(delay)
-    preWarnWhirlwind:Schedule(40-delay)
+	preWarnWhirlwind:Schedule(40-delay)
 	timerWhirlwindCD:Start(45-delay)
 	timerBoneSpike:Start(15-delay)
 end
@@ -91,9 +92,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerWhirlwind:Show()						-- 20seconds on normal.
 		end
-		if self.Options.PlaySoundOnWhirlwind then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
+		soundWhirlwind:Play()
 	end
 end
 
