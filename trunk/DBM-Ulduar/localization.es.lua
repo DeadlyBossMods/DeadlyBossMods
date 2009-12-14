@@ -617,7 +617,7 @@ L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Guardian spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle Spawned",
 	WarningBrainLink 				= "Brain Link on >%s< and >%s<",
-	SpecWarnBrainLink 				= "Brain Link on you and %s!",
+	SpecWarnBrainLink 				= "Brain Link on you!",
 	WarningSanity 					= "%d Sanity debuffs remaining",
 	SpecWarnSanity 					= "%d Sanity debuffs remaining",
 	SpecWarnGuardianLow				= "Stop attacking this Guardian!",

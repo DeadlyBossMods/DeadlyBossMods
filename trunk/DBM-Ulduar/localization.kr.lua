@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 local L
 
 ----------------------
@@ -545,7 +545,7 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "요그사론의 수호자 소환!",
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수가 생성되었습니다!",	
-	SpecWarnBrainLink				= "당신 그리고 %s 에게 두뇌의 고리!",
+	SpecWarnBrainLink				= "당신 그리고  에게 두뇌의 고리!",
 	WarningSanity 					= "> %d < 이성이 낮습니다.",
 	SpecWarnSanity 					= ">> %d << 이성이 매우 낮습니다. 채우세요!",
 	SpecWarnGuardianLow 			= "수호자 딜 주의하세요! - 공격 주의!",

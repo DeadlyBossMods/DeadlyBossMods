@@ -543,7 +543,7 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Страж",
 	WarningCrusherTentacleSpawned	= "Тяжелое щупальце",
-	SpecWarnBrainLink 				= "Схожее мышление на вас и |3-5(%s)",
+	SpecWarnBrainLink 				= "Схожее мышление на вас",
 	WarningSanity 					= "Эффект Здравомыслия: %d",
 	SpecWarnSanity 					= "Эффект Здравомыслия: %d",
 	SpecWarnGuardianLow				= "Прекратите атаковать этого Стража",
