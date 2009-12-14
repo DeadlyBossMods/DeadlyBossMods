@@ -1980,6 +1980,7 @@ do
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterRaidWarning)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", filterRaidWarning)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", filterRaidWarning)
 end
 
 
