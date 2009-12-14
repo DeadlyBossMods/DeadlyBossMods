@@ -1,6 +1,28 @@
-﻿if GetLocale() ~= "frFR" then return end
+if GetLocale() ~= "frFR" then return end
 
 local L
+
+---------------------------
+--  Trash - Lower Spire  --
+---------------------------
+L = DBM:GetModLocalization("LowerSpireTrash")
+
+L:SetGeneralLocalization{
+	name = "Trashmobs"
+}
+
+L:SetWarningLocalization{
+	SpecWarnDisruptingShout			= "Cri perturbant - Stop Casting",
+	SpecWarnDarkReckoning			= "Dark Reckoning - Bougez"
+}
+
+L:SetOptionLocalization{
+	SpecWarnDisruptingShout			= "Montre une alerte spéciale pour $spell:71022",
+	SpecWarnDarkReckoning			= "Montre une alerte spéciale lorsque vous êtes affecté par $spell:69483",
+	PlaySoundOnDarkReckoning		= "Joue un son lors de $spell:69483",
+	SetIconOnDominateMind			= "Met des icônes sur les cibles de $spell:69483"
+}
+
 
 ----------------------
 --  Lord Marrowgar  --
@@ -23,8 +45,9 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale				= "Annonce les cibles de $spell:69062",
-	SpecWarnWhirlwind		= "Montre une alerte spéciale pour le $spell:69076",
-	SpecWarnColdflame		= "Montre une alerte spéciale quand vous subissez des dégats provenant de $spell:70825",
+	SpecWarnWhirlwind		= "Montre une alerte spéciale pour la $spell:69076",
+	SpecWarnColdflame		= "Montre une alerte spéciale quand vous subissez des dégâts provenant de $spell:70825",
+	PlaySoundOnWhirlwind	= "Joue un son pour la $spell:69076",
 	achievementBoned		= "Montre le timer pour le haut-fait Dans l'os",
 	SetIconOnImpale			= "Met des icônes sur les cibles de $spell:69062"
 }
