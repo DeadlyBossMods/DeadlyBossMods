@@ -1394,11 +1394,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul	= "Âme réfléchie ! Stop DPS !",
+	specwarnWailingSouls	= "Âmes gémissantes - Allez derrière",
 	specwarnPhantomBlast	= "Interrompez !"
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul	= "Montre une alerte spéciale pour arrêter le DPS lorsque vous êtes la cible d'Âme réfléchie",
+	specwarnWailingSouls	= "Montre une alerte spéciale lorsque le sort Âmes gémissantes est incanté",
 	specwarnPhantomBlast	= "Montre une alerte spéciale lorsque Phantom Blast est incanté (pour l'interrompre)"
 })
 
@@ -1499,4 +1501,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	CombatStart		= "Il est trop fort. Il faut vite partir d'ici ! Ma magie ne pourra le retenir qu'un court instant. Venez vite, héros !",
+	YellCombatEnd	= "FEU ! FEU !"
 })
