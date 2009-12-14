@@ -2420,7 +2420,7 @@ do
 		self.numSounds = self.numSounds and self.numSounds + 1 or 1
 		local obj = setmetatable(
 			{
-				option = optionName or "Sound"..spellId..self.numSounds,
+				option = optionName or DBM_CORE_AUTO_SOUND_OPTION_TEXT:format(spellId),
 				mod = self,
 			},
 			mt
