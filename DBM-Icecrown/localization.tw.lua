@@ -19,7 +19,6 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnDisruptingShout		= "為$spell:71022顯示特別警告",
 	SpecWarnDarkReckoning		= "當你中了$spell:69483時顯示特別警告",
-	PlaySoundOnDarkReckoning	= "為$spell:69483播放音效",
 	SetIconOnDominateMind		= "為$spell:69483的目標設置標記"
 }
 
@@ -46,7 +45,6 @@ L:SetOptionLocalization{
 	WarnImpale			= "提示$spell:69062的目標",
 	SpecWarnWhirlwind		= "為$spell:69076顯示特別警告",
 	SpecWarnColdflame		= "當你中了$spell:70825時顯示特別警告",
-	PlaySoundOnWhirlwind		= "為$spell:69076播放音效",
 	achievementBoned		= "為去骨成就顯示計時器",
 	SetIconOnImpale			= "為$spell:69062的目標設置標記"
 }

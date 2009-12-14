@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -25,7 +25,6 @@ L:SetOptionLocalization{
 	WarnImpale				= "Annonce les cibles de $spell:69062",
 	SpecWarnWhirlwind		= "Montre une alerte spéciale pour le $spell:69076",
 	SpecWarnColdflame		= "Montre une alerte spéciale quand vous subissez des dégats provenant de $spell:70825",
-	PlaySoundOnWhirlwind	= "Joue un son pour le $spell:69076",
 	achievementBoned		= "Montre le timer pour le haut-fait Dans l'os",
 	SetIconOnImpale			= "Met des icônes sur les cibles de $spell:69062"
 }
