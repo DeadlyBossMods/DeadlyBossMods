@@ -21,6 +21,7 @@ local timerDarkReckoning		= mod:NewTargetTimer(15, 69483)
 
 local soundDarkReckoning = mod:NewSound(69483)
 mod:AddBoolOption("SetIconOnDarkReckoning", true)
+mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69483) then
