@@ -218,9 +218,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova	= "Lightning Nova - Run away",
-	warnNova 		= "Lightning Nova",
-	warnOverCharge	= "Overcharge"
+	specWarnNova	= "Lightning Nova - Run away"
 }
 
 L:SetTimerLocalization{
@@ -229,10 +227,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova		= ("Show special warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnNova			= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Lightning Nova"),
-	warnOverCharge 		= ("Show warning for |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Overcharge"),
-	NovaSound			= "Play sound on Lightning Nova",
+	specWarnNova		= "Show special warning for $spell:65279,
+	NovaSound			= "Play sound on $spell:65279",
 	timerMobOvercharge	= "Show timer for Overcharged mob (stacking debuff)",
 	EmalonEnrage		= "Show timer for enrage",
 	RangeFrame			= "Show range frame"
@@ -257,9 +253,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "Show special warning when you are affected by Flaming Cinder",
-	PlaySoundOnCinder	= "Play sound when you are affected by Flaming Cinder",
-	BurningFury			= "Show warning for Burning Fury",
+	SpecWarnCinder		= "Show special warning when you are affected by $spell:67332",
+	PlaySoundOnCinder	= "Play sound when you are affected by $spell:67332",
+	BurningFury			= "Show warning for $spell:66721",
 	KoralonEnrage		= "Show timer for enrage"
 }
 
@@ -285,7 +281,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	Frostbite	= "Show warning for Frostbite",
+	Frostbite	= "Show warning for $spell:72098",
 }
 
 L:SetMiscLocalization{
