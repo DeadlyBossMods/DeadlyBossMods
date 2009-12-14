@@ -19,7 +19,6 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnDisruptingShout			= "Спец-предупреждение для заклинания $spell:71022",
 	SpecWarnDarkReckoning			= "Спец-предупреждение, когда на вас $spell:69483",
-	PlaySoundOnDarkReckoning		= "Звуковой сигнал, при $spell:69483",
 	SetIconOnDarkReckoning			= "Устанавливать метки на цели заклинания $spell:69483"
 }
 
@@ -47,7 +46,6 @@ L:SetOptionLocalization{
 	WarnImpale				= "Анонсировать проткнутые цели",
 	SpecWarnWhirlwind		= "Спец-предупреждение для $spell:69076",
 	SpecWarnColdflame		= "Спец-предупреждение, при получении урона от $spell:70825",
-	PlaySoundOnWhirlwind	= "Звуковой сигнал при $spell:69076",
 	achievementBoned		= "Показывать для достижения Косточка попалась",
 	SetIconOnImpale			= "Маркировать игроков, насаженных на шип"
 }

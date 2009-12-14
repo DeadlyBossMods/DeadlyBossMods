@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 
 local L
 
@@ -19,7 +19,6 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnDisruptingShout		= "$spell:71022 특수 경고 보기",
 	SpecWarnDarkReckoning		= "$spell:69483에 영향을 받을 경우 특수 경고 보기",
-	PlaySoundOnDarkReckoning	= "$spell:69483에 영향을 받을 경우 특수 소리 재생",
 	SetIconOnDarkReckoning		= "$spell:69483 대상 공격대 아이콘 설정"
 }
 
@@ -46,7 +45,6 @@ L:SetOptionLocalization{
 	WarnImpale				= "$spell:69062 대상 알리기",
 	SpecWarnWhirlwind		= "$spell:69076 특수 경고 보기",
 	SpecWarnColdflame		= "$spell:70825에 영향을 받을 경우 특수 경고 보기",
-	PlaySoundOnWhirlwind	= "$spell:69076 특수 경고 소리 듣기",
 	achievementBoned		= "뼈도 못 추릴라 업적 타이머 보기",	
 	SetIconOnImpale			= "$spell:69062 대상 공격대 아이콘 설정"
 }
