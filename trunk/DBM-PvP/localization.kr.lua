@@ -205,7 +205,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	TankSwitch 		= "%%s이 (%S+) 으로 탱커 전환!"
+	TankSwitch 		= "(%S+)에게 돌진합니다!"
 })
 
 L:SetOptionLocalization({
@@ -225,8 +225,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	specWarnNova 		= "번개 회오리 - 피하세요!",
-	warnNova 			= "번개 회오리",
-	warnOverCharge		= "과충전"
 }
 
 L:SetTimerLocalization{
@@ -235,10 +233,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= ("특수 경보로 볼 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "번개 회오리"),
-	warnNova 			= ("공격대 경고 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "번개 회오리"),
-	warnOverCharge 		= ("공격대 경고 |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "과충전"),
-	NovaSound			= "번개 회오리 특수 사운드 재생",		
+	specWarnNova 		= "$spell:65279의 특수 경고 보기",
+	NovaSound			= "$spell:65279의 특수 소리 재생",	
 	timerMobOvercharge	= "과충전 된 몹의 시간 보기(디버프 중첩)",
 	EmalonEnrage		= "광폭화 타이머 보기",
 	RangeFrame			= "거리 프레임 보기"
@@ -264,9 +260,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "불타는 잿더미 위에 서있을 경우 특수 경고 보기",
-	PlaySoundOnCinder	= "불타는 잿더미 위에 서있을 경우 소리 재생하기",
-	BurningFury			= "불타는 격노 경고 보기",
+	SpecWarnCinder		= "$spell:67332의 영향을 받을 경우 특수 경고 보기",
+	PlaySoundOnCinder	= "$spell:67332의 영향을 받을 경우 특수 소리 재생하기",
+	BurningFury			= "$spell:66721 경고 보기",
 	KoralonEnrage		= "광폭화 타이머 보기"
 }
 
@@ -285,7 +281,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	Frostbite		= "Frostbite >%d<"
+	Frostbite		= "Frostbite on >%s< (%d)"
 }
 
 L:SetTimerLocalization{
@@ -293,7 +289,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	Frostbite		= "Show warning for Frostbite",
+	Frostbite		= "Show warning for $spell:72098",
 }
 
 L:SetMiscLocalization{

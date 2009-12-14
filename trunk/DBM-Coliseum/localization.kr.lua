@@ -7,7 +7,7 @@ local L
 L = DBM:GetModLocalization("NorthrendBeasts")
 
 L:SetGeneralLocalization{
-	name = "노스랜드의 야수"
+	name = "노스렌드의 야수"
 }
 
 L:SetMiscLocalization{

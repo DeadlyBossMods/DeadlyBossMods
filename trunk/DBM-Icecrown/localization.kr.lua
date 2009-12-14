@@ -82,6 +82,8 @@ L:SetOptionLocalization{
 	SpecWarnCurseTorpor				= "$spell:71237에 영향을 받을 경우 특수 경고 보기",
 	TimerAdds						= "새로운 이교도 추가 타이머 보기",	
 	SetIconOnDominateMind			= "$spell:71289 대상 공격대 아이콘 설정",
+	SetIconOnDeformedFanatic		= "$spell:70900 대상 공격대 아이콘 설정(해골)",
+	SetIconOnEmpoweredAdherent		= "$spell:70901 대상 공격대 아이콘 설정(엑스)"
 }
 
 L:SetMiscLocalization{

@@ -227,7 +227,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova		= "Show special warning for $spell:65279,
+	specWarnNova		= "Show special warning for $spell:65279",
 	NovaSound			= "Play sound on $spell:65279",
 	timerMobOvercharge	= "Show timer for Overcharged mob (stacking debuff)",
 	EmalonEnrage		= "Show timer for enrage",

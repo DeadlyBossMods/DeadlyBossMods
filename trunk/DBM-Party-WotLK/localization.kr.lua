@@ -397,7 +397,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warningElemental	= "드라카리 정령 페이즈",		-- translate :)
+	WarningElemental	= "드라카리 정령 페이즈",		-- translate :)
 	WarningStone		= "드라카리 거대골렘 페이즈"		-- translate :)
 })
 
