@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(36855)
-mod:SetUsedIcons(5, 6, 7)
+mod:SetUsedIcons(4, 5, 6, 7, 8)
 mod:RegisterCombat("yell", L.YellPull)
 
 mod:RegisterEvents(
@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_TARGET"
 )
 
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
@@ -37,17 +38,21 @@ local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 local enrageTimer					= mod:NewEnrageTimer(600)
 
 mod:AddBoolOption("SetIconOnDominateMind", true)
+mod:AddBoolOption("SetIconOnDeformedFanatic", true)
+mod:AddBoolOption("SetIconOnEmpoweredAdherent", true)
 
 local lastDD	= 0
 local dominateMindTargets	= {}
-local dominateMindIcon = 7
+local dominateMindIcon 	= 6
+local deformedFanatic
+local empoweredAdherent
 
 local function showDominateMindWarning()
 	warnDominateMind:Show(table.concat(dominateMindTargets, "<, >"))
 	timerDominateMind:Start()
 	timerDominateMindCD:Start()
 	table.wipe(dominateMindTargets)
-	dominateMindIcon = 7
+	dominateMindIcon = 6
 end
 
 function mod:addsTimer()
@@ -66,6 +71,25 @@ function mod:OnCombatStart(delay)
 	timerDominateMindCD:Start(30)	-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
 	table.wipe(dominateMindTargets)
 	dominateMindIcon = 7
+	deformedFanatic = nil
+	empoweredAdherent = nil
+end
+
+function mod:TrySetTarget()
+	if DBM:GetRaidRank() >= 1 then
+		for i = 1, GetNumRaidMembers() do
+			if UnitGUID("raid"..i.."target") == deformedFanatic then
+				deformedFanatic = nil
+				SetRaidTarget("raid"..i.."target", 8)
+			elseif UnitGUID("raid"..i.."target") == empoweredAdherent then
+				empoweredAdherent = nil
+				SetRaidTarget("raid"..i.."target", 7)
+			end
+			if not (deformedFanatic or empoweredAdherent) then
+				break
+			end
+		end
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -116,8 +140,16 @@ function mod:SPELL_CAST_START(args)
 		warnFrostbolt:Show()
 	elseif args:IsSpellID(70900) then
 		warnDarkTransformation:Show()
+		if self.Options.SetIconOnDeformedFanatic then
+			deformedFanatic = args.GUID
+			self:TrySetTarget()
+		end
 	elseif args:IsSpellID(70901) then
 		warnDarkEmpowerment:Show()
+		if self.Options.SetIconOnEmpoweredAdherent then
+			empoweredAdherent = args.GUID
+			self:TrySetTarget()
+		end
 	end
 end
 
@@ -127,6 +159,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self:SendSync("ReanimatedFanatic")
 	elseif msg == L.YellDeformedFanatic or msg:find(L.YellDeformedFanatic) then
 		self:SendSync("DeformedFanatic")
+	end
+end
+
+function mod:UNIT_TARGET()
+	if empoweredAdherent or deformedFanatic then
+		self:TrySetTarget()
 	end
 end
 

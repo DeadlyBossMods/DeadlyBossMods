@@ -80,7 +80,9 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay				= "Show special warning when you are affected by $spell:72108",
 	SpecWarnCurseTorpor				= "Show special warning when you are affected by $spell:71237",
 	TimerAdds						= "Show timer for new adds",
-	SetIconOnDominateMind			= "Set icons on $spell:71289 targets"
+	SetIconOnDominateMind			= "Set icons on $spell:71289 targets",
+	SetIconOnDeformedFanatic		= "Set icons on $spell:70900 targets (skull)",
+	SetIconOnEmpoweredAdherent		= "Set icons on $spell:70901 targets (cross)"
 }
 
 L:SetMiscLocalization{
