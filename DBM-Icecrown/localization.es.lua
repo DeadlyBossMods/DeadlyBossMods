@@ -1,4 +1,4 @@
-if GetLocale() ~= "esES" then return end
+﻿if GetLocale() ~= "esES" then return end
 
 local L
 
@@ -29,7 +29,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("LordMarrowgar")
 
 L:SetGeneralLocalization{
-	name = "Lord Marrowgar"
+	name = "Lord Tuetano"
 }
 
 L:SetTimerLocalization{
@@ -37,17 +37,19 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale			= ">%s< is impaled",
-	SpecWarnWhirlwind	= "Bone Storm - Run away",
-	SpecWarnColdflame	= "Coldflame - Move away"
+	WarnImpale			= ">%s< es empalado!",
+	SpecWarnWhirlwind	= "Torbellino - Corre lejos",
+--	SpecWarnColdflame	= "Llama Fria - Mu�vete!" -- bad encoding
 }
 
+
 L:SetOptionLocalization{
-	WarnImpale				= "Announce $spell:69062 targets",
-	SpecWarnWhirlwind		= "Show special warning for $spell:69076",
-	SpecWarnColdflame		= "Show special warning when you are affected by $spell:70825",
-	achievementBoned		= "Show timer for Boned achievement",
-	SetIconOnImpale			= "Set icons on $spell:69062 targets"
+	WarnImpale				= "Anuncia los jugadores empalados",
+	SpecWarnWhirlwind		= "Mostrar aviso especial para Torbellino",
+--	SpecWarnColdflame		= "Mostrar aviso especial cuando est�s afectado por Llama Fr�a", -- bad encoding
+	PlaySoundOnWhirlwind	= "Reproducir sonido de Torbellino",
+	achievementBoned		= "Mostrar tiempo para el logro Deshuesado",
+	SetIconOnImpale			= "Poner icono a los jugadores empalados"
 }
 
 -------------------------
@@ -56,38 +58,39 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Deathwhisper")
 
 L:SetGeneralLocalization{
-	name = "Lady Deathwhisper"
+	name = "Lady Susurramuerte"
 }
 
 L:SetTimerLocalization{
-	TimerAdds				= "New Adds"
+	TimerAdds				= "Nuevos Adds"
 }
+
 
 L:SetWarningLocalization{
-	WarnReanimating					= "Add reviving",			-- Reanimating an adherent or fanatic
+	WarnReanimating					= "Resurreccion de Add",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "Death and Decay - Move away",
-	SpecWarnCurseTorpor				= "Curse of Torpor on you",
-	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
-	WarnAddsSoon					= "New adds soon"
+	SpecWarnDeathDecay				= "Muerte y descomposicion - Muevete lejos!",
+	SpecWarnCurseTorpor				= "Maldicion de sopor",
+	SpecWarnTouchInsignificance		= "Toque de insignificancia (3)",
+	WarnAddsSoon					= "Nuevos adds pronto"
 }
 
+
+
 L:SetOptionLocalization{
-	WarnAddsSoon					= "Show pre-warning for adds spawning",
+	WarnAddsSoon					= "Mostrar un pre-aviso cuando vengan nuevos adds ",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Show warning when an add is getting revived",											-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of $spell:71204",
-	SpecWarnDeathDecay				= "Show special warning when you are affected by $spell:72108",
-	SpecWarnCurseTorpor				= "Show special warning when you are affected by $spell:71237",
-	TimerAdds						= "Show timer for new adds",
-	SetIconOnDominateMind			= "Set icons on $spell:71289 targets",
-	SetIconOnDeformedFanatic		= "Set icons on $spell:70900 targets (skull)",
-	SetIconOnEmpoweredAdherent		= "Set icons on $spell:70901 targets (cross)"
+	WarnReanimating					= "Mostrar un aviso cuando un add es resucitado",											-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance		= "Mostrar aviso especial cuando tienes 3 marcas de Toque de insignificancia",
+	SpecWarnDeathDecay				= "Mostrar un aviso especial cuando estas afectado por muerte y descomposicion",
+	SpecWarnCurseTorpor				= "Mostrar un aviso especial cuando sufres Maldicion de sopor",
+	TimerAdds						= "Mostrar tiempo para nuevos adds",
+	SetIconOnDominateMind			= "Poner iconos a los objetivos de Control Mental"
 }
 
 L:SetMiscLocalization{
-	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic	= "Arise, and exult in your pure form!",
+--	YellPull				= "ÀQuŽ es este alboroto? ÀOs‡is entrar en suelo sagrado? ÁEste ser‡ vuestro lugar de reposo final!", -- bad encoding
+--	YellReanimatedFanatic	= "Áçlzate y goza de tu verdadera forma!", -- bad encoding
 }
 
 ----------------------
@@ -96,7 +99,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization{
-	name = "Gunship Battle"
+	name = "Batalla de naves de guerra"
 }
 
 L:SetWarningLocalization{
@@ -129,19 +132,18 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
-	name = "Deathbringer Saurfang"
+	name = "Libramorte Saurfang"
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon		= "Frenzy soon",
-	specwarnRuneofBlood	= "Rune of Blood on you"
+	warnFrenzySoon	= "Frenesi pronto"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
-	specwarnRuneofBlood	= "Show special warning when you are affected by $spell:72410",
-	RangeFrame			= "Show range frame (11)"
+	warnFrenzySoon	= "Mostrar preaviso para el Frenes’ (at ~33%)",
+	RangeFrame		= "Show range frame"
 }
+
 
 -----------------
 --  Festergut  --
@@ -149,7 +151,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Festergut")
 
 L:SetGeneralLocalization{
-	name = "Festergut"
+	name = "Panzachancro"
 }
 
 L:SetWarningLocalization{
@@ -164,7 +166,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Rotface")
 
 L:SetGeneralLocalization{
-	name = "Rotface"
+	name = "Caraputrea"
 }
 
 L:SetWarningLocalization{
@@ -215,7 +217,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization{
-	name = "Blood Prince Council"
+	name = "Consejo de Sangre"
 }
 
 L:SetWarningLocalization{
@@ -247,7 +249,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Lanathel")
 
 L:SetGeneralLocalization{
-	name = "Blood-Queen Lana'thel"
+	name = "Reina de Sangre Lana'thel"
 }
 
 L:SetWarningLocalization{
@@ -264,7 +266,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Valithria")
 
 L:SetGeneralLocalization{
-	name = "Valithria Dreamwalker"
+	name = "Valithria Caminasuenos"
 }
 
 L:SetWarningLocalization{
