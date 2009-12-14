@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -541,7 +541,7 @@ L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Un gardien vient d'arriver",
 	WarningCrusherTentacleSpawned	= "Une Tentacule écraseur vient d'arriver",
 	WarningBrainLink 				= "Cerveaux liés sur >%s< et >%s<",
-	SpecWarnBrainLink 				= "Cerveaux liés sur Vous et sur %s !",
+	SpecWarnBrainLink 				= "Cerveaux liés sur Vous!",
 	WarningSanity 					= "%d de Santé mentale restant",
 	SpecWarnSanity 					= "%d de Santé mentale restant",
 	SpecWarnGuardianLow				= "Arretez d'attaquer ce gardien !",

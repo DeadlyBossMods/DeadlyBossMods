@@ -520,7 +520,7 @@ L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "neuer Wächter",
 	WarningCrusherTentacleSpawned	= "neues Mörderischen Schlammling",
 	WarningBrainLink 				= "Gehirnverbindung auf >%s< und >%s<",
-	SpecWarnBrainLink 				= "Gehirnverbindung zwischen dir and %s!",
+	SpecWarnBrainLink 				= "Gehirnverbindung zwischen dir!",
 	WarningSanity 					= "%d Geistige Gesundheit übrig",
 	SpecWarnSanity 					= "%d Geistige Gesundheit übrig",
 	SpecWarnGuardianLow 			= "Wächter nicht mehr angreifen!",
