@@ -12,16 +12,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout			= "Разрушительный крик - остановите чтение заклинаний",
-	SpecWarnDarkReckoning			= "Мрачный итог - отбегите!"
+	SpecWarnDisruptingShout	= "Разрушительный крик - остановите чтение заклинаний",
+	SpecWarnDarkReckoning	= "Мрачный итог - отбегите!"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout			= "Спец-предупреждение для заклинания $spell:71022",
-	SpecWarnDarkReckoning			= "Спец-предупреждение, когда на вас $spell:69483",
-	SetIconOnDarkReckoning			= "Устанавливать метки на цели заклинания $spell:69483"
+	SpecWarnDisruptingShout	= "Спец-предупреждение для заклинания $spell:71022",
+	SpecWarnDarkReckoning	= "Спец-предупреждение, когда на вас $spell:69483",
+	SetIconOnDarkReckoning	= "Устанавливать метки на цели заклинания $spell:69483"
 }
-
 
 ----------------------
 --  Lord Marrowgar  --
@@ -43,11 +42,11 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale				= "Анонсировать проткнутые цели",
-	SpecWarnWhirlwind		= "Спец-предупреждение для $spell:69076",
-	SpecWarnColdflame		= "Спец-предупреждение, при получении урона от $spell:70825",
-	achievementBoned		= "Показывать для достижения Косточка попалась",
-	SetIconOnImpale			= "Маркировать игроков, насаженных на шип"
+	WarnImpale			= "Анонсировать проткнутые цели",
+	SpecWarnWhirlwind	= "Спец-предупреждение для $spell:69076",
+	SpecWarnColdflame	= "Спец-предупреждение, при получении урона от $spell:70825",
+	achievementBoned	= "Отсчет времени для достижения Косточка попалась",
+	SetIconOnImpale		= "Маркировать игроков, насаженных на шип"
 }
 
 -------------------------
@@ -60,34 +59,34 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerAdds				= "Призыв помощников"
+	TimerAdds	= "Призыв помощников"
 }
 
 L:SetWarningLocalization{
-	WarnReanimating					= "Помощник трансформируется",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "Смерть и разложение - бегите!",
-	SpecWarnCurseTorpor				= "Проклятие оцепенения на вас!",
-	SpecWarnTouchInsignificance		= "Прикосновение незначительности (3 стака)",
-	WarnAddsSoon					= "Скоро призыв помощников"
+	WarnReanimating				= "Помощник трансформируется",			-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	SpecWarnDeathDecay			= "Смерть и разложение - бегите!",
+	SpecWarnCurseTorpor			= "Проклятие оцепенения на вас!",
+	SpecWarnTouchInsignificance	= "Прикосновение незначительности (3)",
+	WarnAddsSoon				= "Скоро призыв помощников"
 }
 
 L:SetOptionLocalization{
-	WarnAddsSoon					= "Предупреждать заранее о призыве помощников",
-	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Предупреждать, при трансформации помощника",											-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Спец-предупреждение, когда на вас 3 стака $spell:71204",
-	SpecWarnDeathDecay				= "Спец-предупреждение, когда вы стоите в луже $spell:72108",
-	SpecWarnCurseTorpor				= "Спец-предупреждение, когда на вас $spell:71237",
-	TimerAdds						= "Отсчет времени до призыва помощников",
-	SetIconOnDominateMind			= "Устанавливать метки на игроков, взятых под $spell:71289",
-	SetIconOnDeformedFanatic		= "Устанавливать метки на цели заклинания $spell:70900 \n(череп)",
-	SetIconOnEmpoweredAdherent		= "Устанавливать метки на цели заклинания $spell:70901 \n(крест)"
+	WarnAddsSoon				= "Предупреждать заранее о призыве помощников",
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	WarnReanimating				= "Предупреждать, при трансформации помощника",											-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance	= "Спец-предупреждение, когда на вас 3 стака $spell:71204",
+	SpecWarnDeathDecay			= "Спец-предупреждение, когда вы стоите в луже $spell:72108",
+	SpecWarnCurseTorpor			= "Спец-предупреждение, когда на вас $spell:71237",
+	TimerAdds					= "Отсчет времени до призыва помощников",
+	SetIconOnDominateMind		= "Устанавливать метки на игроков, взятых под $spell:71289",
+	SetIconOnDeformedFanatic	= "Устанавливать метки на цели заклинания $spell:70900 \n(череп)",
+	SetIconOnEmpoweredAdherent	= "Устанавливать метки на цели заклинания $spell:70901 \n(крест)"
 }
 
 L:SetMiscLocalization{
 	YellPull				= "Как вы смеете ступать в эти священные покои? Это место станет вашей могилой!",
-	YellReanimatedFanatic	= "Восстань и обрети истинную форму!",
+	YellReanimatedFanatic	= "Восстань и обрети истинную форму!"
 }
 
 ----------------------
@@ -100,20 +99,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBattleFury		= "%s (%d)",
-	WarnAddsSoon		= "Скоро призыв помощников"
+	WarnBattleFury	= "%s (%d)",
+	WarnAddsSoon	= "Скоро призыв помощников"
 }
 
 L:SetOptionLocalization{
 	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
 	TimerCombatStart	= "Отсчет времени до начала боя",
 	WarnAddsSoon		= "Заранее предупреждать о призыве помощников",
-	TimerAdds		= "Отсчет времени до новых помощников"
+	TimerAdds			= "Отсчет времени до новых помощников"
 }
 
 L:SetTimerLocalization{
 	TimerCombatStart	= "Начало боя",
-	TimerAdds		= "Призыв помощников"
+	TimerAdds			= "Призыв помощников"
 }
 
 L:SetMiscLocalization{
@@ -140,7 +139,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Предупреждать о скором Бешенстве (на ~33%)",
 	specwarnRuneofBlood	= "Спец-предупреждение, когда на вас накладывается $spell:72410",
-	RangeFrame			= "Показывать окно допустимой дистанции"
+	RangeFrame			= "Показывать окно допустимой дистанции (11 м)"
 }
 
 -----------------

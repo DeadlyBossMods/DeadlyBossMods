@@ -190,7 +190,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Archavon")
 
 L:SetGeneralLocalization({
-	name = "Склеп Аркавона"
+	name = "Аркавон Страж Камня"
 })
 
 L:SetWarningLocalization({
@@ -216,28 +216,24 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Emalon")
 
 L:SetGeneralLocalization{
-	name = "Эмалон Созерцатель Бури"
+	name = "Эмалон Страж Бури"
 }
 
 L:SetWarningLocalization{
-	specWarnNova	= "Вспышка молнии - бегите",
-	warnNova 		= "Вспышка молнии",
-	warnOverCharge	= "Перезарядка"
+	specWarnNova	= "Вспышка молнии - бегите"
 }
 
 L:SetTimerLocalization{
-	timerMobOvercharge	= "Взрыв избыточного заряда",
+	timerMobOvercharge	= "Взрыв в результате перегрузки",
 	EmalonEnrage		= "Emalon enrages"
 }
 
 L:SetOptionLocalization{
-	specWarnNova		= ("Спец-предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышка молнии"),
-	warnNova			= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Вспышка молнии"),
-	warnOverCharge 		= ("Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Перезарядка"),
-	NovaSound			= "Звуковой сигнал при Вспышке молнии",
-	timerMobOvercharge	= "Отсчет времени для Избыточного заряда (суммирующийся отрицательный эффект)",
+	specWarnNova		= "Спец-предупреждение для $spell:65279",
+	NovaSound			= "Звуковой сигнал при $spell:65279",
+	timerMobOvercharge	= "Отсчет времени для Перегрузки (суммирующийся отрицательный эффект)",
 	EmalonEnrage		= "Show timer for enrage",
-	RangeFrame			= "Show range frame"
+	RangeFrame			= "Показывать окно допустимой дистанции"
 }
 
 ---------------------------------
@@ -259,14 +255,14 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "Спец-предупреждение, когда вы в Пылающей головне",
-	PlaySoundOnCinder	= "Звуковое уведомление, когда вы в Пылающей головне",
-	BurningFury			= "Show warning for Burning Fury",
+	SpecWarnCinder		= "Спец-предупреждение, когда под вами $spell:67332",
+	PlaySoundOnCinder	= "Звуковой сигнал, когда под вами $spell:67332",
+	BurningFury			= "Предупреждение для $spell:66721",
 	KoralonEnrage		= "Show timer for enrage"
 }
 
 L:SetMiscLocalization{
-	Meteor	= "%s бросает Кулаки-метеоры!"
+	Meteor	= "%s применяет заклинание \"Кулаки-метеоры\"!"
 }
 
 -------------------------------
@@ -275,11 +271,11 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Toravon")
 
 L:SetGeneralLocalization{
-	name = "Toravon the Ice Watcher"
+	name = "Торавон Страж Льда"
 }
 
 L:SetWarningLocalization{
-	Frostbite	= "Frostbite on >%s< (%d)"
+	Frostbite	= "Обморожение на |3-5(>%s<) (%d)"
 }
 
 L:SetTimerLocalization{
@@ -287,7 +283,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	Frostbite	= "Show warning for Frostbite",
+	Frostbite	= "Предупреждение для $spell:72098",
 }
 
 L:SetMiscLocalization{

@@ -12,9 +12,10 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Arena,Battlegrounds,Vault of Archavon
+## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя,Склеп Аркавона
 ## X-DBM-Mod-Name: PvP
 ## X-DBM-Mod-Name-frFR: Champs de bataille
-## X-DBM-Mod-Name-ruRU: Поля Боя
+## X-DBM-Mod-Name-ruRU: Игрок против игрока
 ## X-DBM-Mod-Name-zhTW: 戰埸
 ## X-DBM-Mod-Name-koKR: 전장
 ## X-DBM-Mod-Name-esES: Campos de Batallas
