@@ -1320,7 +1320,7 @@ L:SetOptionLocalization({
 	warnSaroniteRock			= "提示薩鋼岩的目標",
 	specWarnSaroniteRock		= "當你中了投擲薩鋼時顯示特別警告",
 	specWarnSaroniteRockNear	= "當你附近有人中了投擲薩鋼時顯示特別警告",
-	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (數值並非一成不變)",
+	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (11層)",
 	SetIconOnSaroniteRockTarget	= "為薩鋼岩的目標設置標記"
 })
 
