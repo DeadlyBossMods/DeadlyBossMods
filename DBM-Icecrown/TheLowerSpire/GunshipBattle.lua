@@ -35,6 +35,8 @@ local timerBelowZeroCD		= mod:NewCDTimer(35, 69705)
 local timerBattleFuryActive	= mod:NewBuffActiveTimer(20, 72306)
 local timerAdds			= mod:NewTimer(60, "TimerAdds")
 
+mod:RemoveOption("HealthFrame")
+
 local function adds()
 	timerAdds:Start()
 	warnAddsSoon:Schedule(55)
@@ -42,6 +44,7 @@ local function adds()
 end
 
 function mod:OnCombatStart(delay)
+	DBM.BossHealth:Clear()
 	timerCombatStart:Show(-delay)
 	timerAdds:Start(73-delay)
 	warnAddsSoon:Schedule(68)
