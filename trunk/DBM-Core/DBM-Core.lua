@@ -1228,6 +1228,14 @@ do
 						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
 						modId		= GetAddOnInfo(i),
 					})
+					for k, v in ipairs(self.AddOns[#self.AddOns].zone) do
+						self.AddOns[#self.AddOns].zone[k] = (self.AddOns[#self.AddOns].zone[k]):trim()
+					end
+					if self.AddOns[#self.AddOns].subTabs then
+						for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
+							self.AddOns[#self.AddOns].subTabs[k] = (self.AddOns[#self.AddOns].subTabs[k]):trim()
+						end
+					end
 				end
 			end
 			table.sort(self.AddOns, function(v1, v2) return v1.sort < v2.sort end)
@@ -2278,7 +2286,7 @@ do
 
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
-			if (self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces) and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
+			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
 				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
 			end
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
@@ -2290,7 +2298,7 @@ do
 				(DBM.Options.WarningIconRight and self.icon and textureCode:format(self.icon)) or ""
 			)
 			if not cachedColorFunctions[self.color] then
-				local color = self.color -- upvalue for the function to colorize names
+				local color = self.color -- upvalue for the function to colorize names, accessing self in the colorize closure is not safe as the color of the announce object might change (it would also prevent the announce from being garbage-collected but announce objects are never destroyed)
 				cachedColorFunctions[color] = function(cap)
 					cap = cap:sub(2, -2)
 					if DBM:GetRaidClass(cap) then
