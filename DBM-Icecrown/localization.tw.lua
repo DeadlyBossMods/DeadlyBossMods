@@ -81,7 +81,9 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay		= "當你中了$spell:72108時顯示特別警告",
 	SpecWarnCurseTorpor		= "當你中了$spell:71237時顯示特別警告",
 	TimerAdds			= "為新的小怪顯示計時器",
-	SetIconOnDominateMind		= "為$spell:71289的目標設置標記"
+	SetIconOnDominateMind		= "為$spell:71289的目標設置標記",
+	SetIconOnDeformedFanatic	= "為$spell:70900的目標設置標記 (頭顱)",
+	SetIconOnEmpoweredAdherent	= "為$spell:70901的目標設置標記 (十字)"
 }
 
 L:SetMiscLocalization{
