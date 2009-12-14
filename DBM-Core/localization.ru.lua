@@ -121,17 +121,19 @@ DBM_CORE_AUTO_TIMER_OPTIONS = {
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	target = "%s на |3-5(>%%s<)",
 	spell = "%s",
-	cast = "Чтение заклинания %s: %.1f сек",
+	cast = "Применение заклинания %s: %.1f сек",
 	soon = "Скоро %s",
 	prewarn = "%s через %s",
 	phase = "Фаза %d",
 }
 
+DBM_CORE_AUTO_SOUND_OPTION_TEXT	= "Звуковой сигнал при $spell:%d"
+
 local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Объявлять цель, под воздействием |cff71d5ff|Hspell:%d|h%s|h|r",
+	target = "Объявлять цели заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Предупреждение о прочтении заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast = "Предупреждать о применении заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
 	phase = "Объявлять фазу %d"

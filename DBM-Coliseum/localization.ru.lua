@@ -42,7 +42,7 @@ L:SetOptionLocalization{
 	TimerCombatStart			= "Отсчет времени до начала битвы",
 	TimerEmerge					= "Show timer for emerge",
 	TimerSubmerge				= "Show timer for submerge",
-	RangeFrame                  = "Show range frame in Phase 2"
+	RangeFrame                  = "Показывать окно допустимой дистанции в фазе 2"
 }
 
 L:SetTimerLocalization{
@@ -170,7 +170,7 @@ L:SetOptionLocalization{
 	SpecWarnHandofProt		= "Спец-предупреждение, когда Паладин использует Длань защиты",
 	SpecWarnDivineShield	= "Спец-предупреждение, когда Паладин использует Божественный щит",
 	specWarnIceBlock		= "Спец-предупреждение, когда маг читает заклинание Ледяная глыба (для рассеивания)",
-	PlaySoundOnBladestorm	= "Play sound on Bladestorm"
+	PlaySoundOnBladestorm	= "Звуковой сигнал при Вихре клинков"
 }
 
 ---------------------
