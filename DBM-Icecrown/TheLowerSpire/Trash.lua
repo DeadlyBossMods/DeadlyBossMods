@@ -19,7 +19,7 @@ local specWarnDarkReckoning		= mod:NewSpecialWarning("SpecWarnDarkReckoning")
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(15, 69483)
 
-mod:AddBoolOption("PlaySoundOnDarkReckoning", true)
+local soundDarkReckoning = mod:NewSound(69483)
 mod:AddBoolOption("SetIconOnDarkReckoning", true)
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -28,9 +28,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDarkReckoning:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnDarkReckoning:Show()
-			if self.Options.PlaySoundOnDarkReckoning then
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-			end
+			soundDarkReckoning:Play()
 		end
 		if self.Options.SetIconOnDarkReckoning then
 			self:SetIcon(args.destName, 8, 15)
