@@ -44,7 +44,6 @@ L:SetOptionLocalization{
 	WarnImpale				= "Announce $spell:69062 targets",
 	SpecWarnWhirlwind		= "Show special warning for $spell:69076",
 	SpecWarnColdflame		= "Show special warning when you are affected by $spell:70825",
-	PlaySoundOnWhirlwind	= "Play sound on $spell:69076",
 	achievementBoned		= "Show timer for Boned achievement",
 	SetIconOnImpale			= "Set icons on $spell:69062 targets"
 }
