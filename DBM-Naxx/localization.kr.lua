@@ -15,14 +15,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialLocust		= "메뚜기 때 시작!!",
-	WarningLocustFaded	= "메뚜기 때가 사라졌습니다!!"
+	SpecialLocust		= "메뚜기 떼 시작!!",
+	WarningLocustFaded	= "메뚜기 떼가 사라졌습니다!!"
 })
 
 L:SetOptionLocalization({
-	SpecialLocust		= "메뚜기 때 특수 경고 보기",
-	WarningLocustFaded	= "메뚜기 때 사라짐 경고 보기",
-	TimerLocustFade 	= "메뚜기 때 사라짐 타이머 보기"
+	SpecialLocust		= "메뚜기 떼 특수 경고 보기",
+	WarningLocustFaded	= "메뚜기 떼 사라짐 경고 보기",
+	TimerLocustFade 	= "메뚜기 떼 사라짐 타이머 보기"
 })
 
 ---------------------
@@ -221,8 +221,8 @@ L:SetOptionLocalization({
 	WarningChargeNotChanged	= "현재 전하가 바뀌지 않았는지 경고 보기",
 	TimerShiftCast			= "극성 변환 타이머 보기",
 	ArrowsEnabled			= "화살표 보기 (일반 \"2 지역\" 공략)",
-	ArrowsRightLeft			= "\"4 지역\" 공략을 위한 오른쪽/왼쪽 화살표 보기\n(만약 극성 변환시엔 왼쪽 화살표를 보여주며, 극성이 변환되지 않았다면 보여주지 않는다.)",
-	ArrowsInverse			= "\"4 지역\" 공략을 위한 오른쪽/왼쪽 화살표를 거꾸로 보기\n(만약 극성 변환시엔 오른쪽 화살표를 보여주며, 극성이 변환되지 않았다면 보여주지 않는다.",
+	ArrowsRightLeft			= "\"4 지역\" 공략을 위한 오른쪽/왼쪽 화살표 보기",
+	ArrowsInverse			= "\"4 지역\" 공략을 위한 오른쪽/왼쪽 화살표를 거꾸로 보기",
 })
 
 L:SetWarningLocalization({
