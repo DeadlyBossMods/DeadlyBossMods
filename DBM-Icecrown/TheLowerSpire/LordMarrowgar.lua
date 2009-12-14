@@ -73,7 +73,7 @@ function mod:SPELL_SUMMON(args)
 		end
 		self:Unschedule(showImpaleWarning)
 		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #impaleTargets >= 3) then
-			showImpaleTargets()
+			showImpaleWarning()
 		else
 			self:Schedule(0.3, showImpaleWarning)
 		end
