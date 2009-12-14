@@ -6,20 +6,19 @@ local L
 L = DBM:GetModLocalization("LowerSpireTrash")
 
 L:SetGeneralLocalization{
-	name = "Trashmobs"
+	name = "Lower Spire trash"
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout			= "Disrupting Shout - Stop Casting",
-	SpecWarnDarkReckoning			= "Dark Reckoning - Move away"
+	SpecWarnDisruptingShout	= "Disrupting Shout - Stop casting",
+	SpecWarnDarkReckoning	= "Dark Reckoning - Move away"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout			= "Show special warning for $spell:71022",
-	SpecWarnDarkReckoning			= "Show special warning when you are affected by $spell:69483",
-	SetIconOnDarkReckoning			= "Set icons on $spell:69483 targets"
+	SpecWarnDisruptingShout	= "Show special warning for $spell:71022",
+	SpecWarnDarkReckoning	= "Show special warning when you are affected by $spell:69483",
+	SetIconOnDarkReckoning	= "Set icons on $spell:69483 targets"
 }
-
 
 ----------------------
 --  Lord Marrowgar  --
@@ -41,11 +40,11 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale				= "Announce $spell:69062 targets",
-	SpecWarnWhirlwind		= "Show special warning for $spell:69076",
-	SpecWarnColdflame		= "Show special warning when you are affected by $spell:70825",
-	achievementBoned		= "Show timer for Boned achievement",
-	SetIconOnImpale			= "Set icons on $spell:69062 targets"
+	WarnImpale			= "Announce $spell:69062 targets",
+	SpecWarnWhirlwind	= "Show special warning for $spell:69076",
+	SpecWarnColdflame	= "Show special warning when you are affected by $spell:70825",
+	achievementBoned	= "Show timer for Boned achievement",
+	SetIconOnImpale		= "Set icons on $spell:69062 targets"
 }
 
 -------------------------
@@ -58,34 +57,34 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerAdds				= "New Adds"
+	TimerAdds	= "New Adds"
 }
 
 L:SetWarningLocalization{
-	WarnReanimating					= "Add reviving",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "Death and Decay - Move away",
-	SpecWarnCurseTorpor				= "Curse of Torpor on you",
-	SpecWarnTouchInsignificance		= "Touch of Insignificance (3)",
-	WarnAddsSoon					= "New adds soon"
+	WarnReanimating				= "Add reviving",			-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance		= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	SpecWarnDeathDecay			= "Death and Decay - Move away",
+	SpecWarnCurseTorpor			= "Curse of Torpor on you",
+	SpecWarnTouchInsignificance	= "Touch of Insignificance (3)",
+	WarnAddsSoon				= "New adds soon"
 }
 
 L:SetOptionLocalization{
-	WarnAddsSoon					= "Show pre-warning for adds spawning",
-	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Show warning when an add is getting revived",											-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Show special warning when you have 3 stacks of $spell:71204",
-	SpecWarnDeathDecay				= "Show special warning when you are affected by $spell:72108",
-	SpecWarnCurseTorpor				= "Show special warning when you are affected by $spell:71237",
-	TimerAdds						= "Show timer for new adds",
-	SetIconOnDominateMind			= "Set icons on $spell:71289 targets",
-	SetIconOnDeformedFanatic		= "Set icons on $spell:70900 targets (skull)",
-	SetIconOnEmpoweredAdherent		= "Set icons on $spell:70901 targets (cross)"
+	WarnAddsSoon				= "Show pre-warning for adds spawning",
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	-- Warning isn't default (it has a count number), option is default (no need for translation this way)
+	WarnReanimating				= "Show warning when an add is besing revived",											-- Reanimated Adherent/Fanatic spawning
+	SpecWarnTouchInsignificance	= "Show special warning when you have 3 stacks of $spell:71204",
+	SpecWarnDeathDecay			= "Show special warning when you are affected by $spell:72108",
+	SpecWarnCurseTorpor			= "Show special warning when you are affected by $spell:71237",
+	TimerAdds					= "Show timer for new adds",
+	SetIconOnDominateMind		= "Set icons on $spell:71289 targets",
+	SetIconOnDeformedFanatic	= "Set icons on $spell:70900 targets (skull)",
+	SetIconOnEmpoweredAdherent	= "Set icons on $spell:70901 targets (cross)"
 }
 
 L:SetMiscLocalization{
 	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic	= "Arise, and exult in your pure form!",
+	YellReanimatedFanatic	= "Arise, and exult in your pure form!"
 }
 
 ----------------------
@@ -98,20 +97,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBattleFury		= "%s (%d)",
-	WarnAddsSoon		= "New adds soon"
+	WarnBattleFury	= "%s (%d)",
+	WarnAddsSoon	= "New adds soon"
 }
 
 L:SetOptionLocalization{
 	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
 	TimerCombatStart	= "Show time for start of combat",
 	WarnAddsSoon		= "Show pre-warning for adds spawning",
-	TimerAdds		= "Show timer for new adds"
+	TimerAdds			= "Show timer for new adds"
 }
 
 L:SetTimerLocalization{
 	TimerCombatStart	= "Combat starts",
-	TimerAdds		= "New adds"
+	TimerAdds			= "New adds"
 }
 
 L:SetMiscLocalization{
@@ -138,7 +137,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
 	specwarnRuneofBlood	= "Show special warning when you are affected by $spell:72410",
-	RangeFrame			= "Show range frame (11)"
+	RangeFrame			= "Show range frame (11 yards)"
 }
 
 -----------------
