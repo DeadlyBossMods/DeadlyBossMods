@@ -20,7 +20,7 @@ L:SetOptionLocalization{
 	SpecWarnDisruptingShout			= "Спец-предупреждение для заклинания $spell:71022",
 	SpecWarnDarkReckoning			= "Спец-предупреждение, когда на вас $spell:69483",
 	PlaySoundOnDarkReckoning		= "Звуковой сигнал, при $spell:69483",
-	SetIconOnDominateMind			= "Устанавливать метки на игроков, взятых под $spell:71289"
+	SetIconOnDarkReckoning			= "Устанавливать метки на цели заклинания $spell:69483"
 }
 
 
@@ -82,7 +82,9 @@ L:SetOptionLocalization{
 	SpecWarnDeathDecay				= "Спец-предупреждение, когда вы стоите в луже $spell:72108",
 	SpecWarnCurseTorpor				= "Спец-предупреждение, когда на вас $spell:71237",
 	TimerAdds						= "Отсчет времени до призыва помощников",
-	SetIconOnDominateMind			= "Устанавливать метки на игроков, взятых под $spell:71289"
+	SetIconOnDominateMind			= "Устанавливать метки на игроков, взятых под $spell:71289",
+	SetIconOnDeformedFanatic		= "Устанавливать метки на цели заклинания $spell:70900 \n(череп)",
+	SetIconOnEmpoweredAdherent		= "Устанавливать метки на цели заклинания $spell:70901 \n(крест)"
 }
 
 L:SetMiscLocalization{
