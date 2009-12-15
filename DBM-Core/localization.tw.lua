@@ -128,6 +128,8 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase 					= "第%d階段",
 }
 
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "為$spell:%d播放音效"
+
 local prewarnOption 				= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target 					= "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
