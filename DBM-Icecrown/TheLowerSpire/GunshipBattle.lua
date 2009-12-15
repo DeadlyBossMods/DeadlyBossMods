@@ -37,10 +37,10 @@ local timerAdds			= mod:NewTimer(60, "TimerAdds")
 
 mod:RemoveOption("HealthFrame")
 
-local function adds()
+function mod:Adds()
 	timerAdds:Start()
 	warnAddsSoon:Schedule(55)
-	self:Schedule(60, adds)
+	self:ScheduleMethod(60, "Adds")
 end
 
 function mod:OnCombatStart(delay)
@@ -48,7 +48,7 @@ function mod:OnCombatStart(delay)
 	timerCombatStart:Show(-delay)
 	timerAdds:Start(73-delay)
 	warnAddsSoon:Schedule(68)
-	self:Schedule(73, adds)
+	self:ScheduleMethod(73, "Adds")
 end
 
 function mod:SPELL_AURA_APPLIED(args)
