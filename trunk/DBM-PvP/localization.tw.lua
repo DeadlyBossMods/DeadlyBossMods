@@ -198,6 +198,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	ArchavonEnrage			= "亞夏梵狂怒"
 })
 
 L:SetMiscLocalization({
@@ -205,7 +206,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningGrab 			= "提示擒握坦克的目標"
+	WarningGrab 			= "提示擒握坦克的目標",
+	EmalonEnrage			= "為狂怒顯示計時器"
 })
 
 --------------------------------
@@ -220,8 +222,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	specWarnNova			= "閃電新星 - 快跑開",
-	warnNova 			= "閃電新星",
-	warnOverCharge			= "超載 - 速殺小兵"
+	EmalonEnrage			= "艾瑪隆狂怒"
 }
 
 L:SetTimerLocalization{
@@ -229,11 +230,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示特別警告"):format(64216, "閃電新星"),
-	warnNova			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64216, "閃電新星"),
-	warnOverCharge			= ("為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告"):format(64218, "超載"),
-	NovaSound			= "當施放閃電新星時播放音效",
+	specWarnNova			= "為$spell:65279顯示特別警告",
+	NovaSound			= "為$spell:65279播放音效",
 	timerMobOvercharge		= "為超載的小兵顯示計時器(減益疊加)",
+	EmalonEnrage			= "為狂怒顯示計時器",
 	RangeFrame			= "顯示距離框"
 }
 
@@ -258,9 +258,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder			= "當你中了燃焰餘燼時顯示特別警告",
-	PlaySoundOnCinder		= "當你中了燃焰餘燼時播放音效",
-	BurningFury			= "為燃燒烈怒顯示警告",
+	SpecWarnCinder			= "當你中了$spell:67332時顯示特別警告",
+	PlaySoundOnCinder		= "當你中了$spell:67332時播放音效",
+	BurningFury			= "為$spell:67332顯示警告",
 	KoralonEnrage			= "為狂怒顯示計時器"
 }
 
@@ -286,7 +286,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	Frostbite			= "為霜寒刺骨顯示警告",
+	Frostbite			= "為$spell:72098顯示警告",
 }
 
 L:SetMiscLocalization{
