@@ -537,7 +537,7 @@ L:SetWarningLocalization{
 	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
 	WarningCrusherTentacleSpawned	= "粉碎觸手 出現了",
 	WarningBrainLink 		= "腦波連結: >%s< 和 >%s<",
-	SpecWarnBrainLink 		= "你和%s中了腦波連結",
+	SpecWarnBrainLink 		= "你中了腦波連結",
 	WarningSanity 			= "剩下 %d 理智",
 	SpecWarnSanity 			= "剩下 %d 理智",
 	SpecWarnGuardianLow		= "停止攻擊這隻守護者",

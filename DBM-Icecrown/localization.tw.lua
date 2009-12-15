@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("LowerSpireTrash")
 
 L:SetGeneralLocalization{
-	name 				= "小怪模組"
+	name 				= "城塞大門小怪"
 }
 
 L:SetWarningLocalization{
@@ -19,7 +19,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnDisruptingShout		= "為$spell:71022顯示特別警告",
 	SpecWarnDarkReckoning		= "當你中了$spell:69483時顯示特別警告",
-	SetIconOnDominateMind		= "為$spell:69483的目標設置標記"
+	SetIconOnDarkReckoning		= "為$spell:69483的目標設置標記"
 }
 
 ----------------------
