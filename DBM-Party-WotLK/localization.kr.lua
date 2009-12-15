@@ -1291,8 +1291,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	IckPursuit		= "%s1|이;가; 당신을 쫓습니다!",
-	Barrage			= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!",
+--	IckPursuit		= "%s1|이;가; 당신을 쫓습니다!",
+--	Barrage			= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!",
+	IckPursuit		= "당신을 쫓습니다!",
+	Barrage			= "빠른 속도로 지뢰를 만들어냅니다!",	
 --	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.	
 })
 
@@ -1321,7 +1323,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow			= "%s1|이;가; 거대한 사로나이트 덩어리를 당신에게 던집니다!"
+--	SaroniteRockThrow			= "%s1|이;가; 거대한 사로나이트 덩어리를 당신에게 던집니다!"
+	SaroniteRockThrow			= "거대한 사로나이트 덩어리를 당신에게 던집니다!"	
 })
 
 -------------------
@@ -1358,7 +1361,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	CombatStart					= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
-	YellCombatEnd				= "말도 안되... 서릿발송곳니... 경고를..."
+	YellCombatEnd				= "말도 안돼... 서릿발송곳니... 경고를..."
 })
 
 --------------------
