@@ -2308,7 +2308,7 @@ do
 					return cap
 				end
 			end
-			text = text:gsub(">%S+<", cachedColorFunctions[self.color])
+			text = text:gsub(">.-<", cachedColorFunctions[self.color])
 			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this)
 			if DBM.Options.ShowWarningsInChat then
 				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size
