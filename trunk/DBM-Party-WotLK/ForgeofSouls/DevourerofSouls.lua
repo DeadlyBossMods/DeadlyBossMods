@@ -22,6 +22,8 @@ local specwarnMirroredSoul		= mod:NewSpecialWarning("specwarnMirroredSoul")
 local specwarnWailingSouls		= mod:NewSpecialWarning("specwarnWailingSouls")
 local specwarnPhantomBlast		= mod:NewSpecialWarning("specwarnPhantomBlast", false)
 
+mod:AddBoolOption("SetIconOnMirroredTarget", true)
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68982, 70322) then						-- Phantom Blast
 		warnPhantomBlast:Show()
@@ -41,6 +43,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMirroredSoul:Show(args.destName)
 		timerMirroredSoul:Show(args.destName)
 		specwarnMirroredSoul:Show()
+		if self.Options.SetIconOnMirroredTarget then 
+			self:SetIcon(target, 8, 8) 
+		end 
 	elseif args:IsSpellID(68939) then							-- Unleashed Souls
 		timerUnleashedSouls:Start()
 	end
