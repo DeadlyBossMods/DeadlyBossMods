@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32930)
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(5, 6, 7, 8)
 
 mod:RegisterCombat("combat", 32930, 32933, 32934)
 
@@ -40,6 +40,8 @@ local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC /
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnGripTarget", true)
+mod:AddBoolOption("PlaySoundOnEyebeam", true)
+mod:AddBoolOption("SetIconOnEyebeamTarget", true)
 
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 32934 then 		-- right arm
@@ -68,15 +70,23 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-	if msg == L.FocusedEyebeam or msg:match(L.FocusedEyebeam) then
+	if msg:find(L.FocusedEyebeam) then
 		self:SendSync("EyeBeamOn", UnitName("player"))
-		specWarnEyebeam:Show()
 	end
 end
 
 function mod:OnSync(msg, target)
 	if msg == "EyeBeamOn" then
 		warnFocusedEyebeam:Show(target)
+		if target == UnitName("player") then
+			specWarnEyebeam:Show()
+			if self.Options.PlaySoundOnEyebeam then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav") 
+			end
+		end 
+		if self.Options.SetIconOnEyebeamTarget then
+			self:SetIcon(target, 5, 8) 
+		end
 	end
 end
 
