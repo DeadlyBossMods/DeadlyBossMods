@@ -250,7 +250,9 @@ L:SetOptionLocalization{
 	timerRightArm			= "Show timer for Right Arm respawn",
 	achievementDisarmed		= "Show timer for Disarm achievement",
 	WarnGrip				= "Announce Grip targets",
-	SetIconOnGripTarget		= "Set icons on Grip targets"
+	SetIconOnGripTarget		= "Set icons on Grip targets",
+	SetIconOnEyebeamTarget	= "Set icons on Focused Eyebeam targets",
+	PlaySoundOnEyebeam		= "Play sound on Focused Eyebeam"
 }
 
 L:SetMiscLocalization{
@@ -259,7 +261,7 @@ L:SetMiscLocalization{
 	Health_Body				= "Kologarn Body",
 	Health_Right_Arm		= "Right Arm",
 	Health_Left_Arm			= "Left Arm",
-	FocusedEyebeam			= "%s focuses his eyes on you!"
+	FocusedEyebeam			= "his eyes on you"
 }
 
 ---------------
