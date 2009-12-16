@@ -24,12 +24,13 @@ local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
 
-local specwarnRuneofBlood	= mod:NewSpecialWarning("specwarnRuneofBlood")
+local specwarnRuneofBlood	= mod:NewSpecialWarning("specwarnRuneofBlood", false)
 
 local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
 local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
+local timerNextRuneofBlood	= mod:NewNextTimer(25, 72410)
 
 mod:AddBoolOption("RangeFrame", isRanged)
 
@@ -68,6 +69,8 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(72173, 72356, 72357, 72358) then
 		timerCallBloodBeast:Start()
+	elseif args:IsSpellID(72410) then
+		timerNextRuneofBlood:Start()
 	end
 end
 
@@ -85,9 +88,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72410) then						-- Rune of Blood
 		warnRuneofBlood:Show(args.destName)
 		timerRuneofBlood:Start(args.destName)
-		if args:IsPlayer() then
-			specwarnRuneofBlood:Show()
-		end
+		specwarnRuneofBlood:Show(args.destName)
 	elseif args:IsSpellID(72737) then						-- Frenzy
 		warnFrenzy:Show()
 	end
