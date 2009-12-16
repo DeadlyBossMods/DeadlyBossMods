@@ -31,7 +31,7 @@ local mutateIcons = {}
 local function addIcon()
 	for i,j in ipairs(mutateIcons) do
 		local icon = 9 - i
-		self:SetIcon(j, icon)
+		mod:SetIcon(j, icon)
 	end
 end
 
@@ -39,7 +39,7 @@ local function removeIcon(target)
 	for i,j in ipairs(mutateIcons) do
 		if j == target then
 			table.remove(mutateIcons, i)
-			self:SetIcon(target, 0)
+			mod:SetIcon(target, 0)
 		end
 	end
 	addIcon()
@@ -52,7 +52,7 @@ end
 
 function mod:OnCombatEnd()
     for i,j in ipairs(mutateIcons) do
-       self:SetIcon(j, 0)
+       mod:SetIcon(j, 0)
     end
 end
 
