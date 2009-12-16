@@ -141,13 +141,13 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(70900) then
 		warnDarkTransformation:Show()
 		if self.Options.SetIconOnDeformedFanatic then
-			deformedFanatic = args.GUID
+			deformedFanatic = args.sourceGUID
 			self:TrySetTarget()
 		end
 	elseif args:IsSpellID(70901) then
 		warnDarkEmpowerment:Show()
 		if self.Options.SetIconOnEmpoweredAdherent then
-			empoweredAdherent = args.GUID
+			empoweredAdherent = args.sourceGUID
 			self:TrySetTarget()
 		end
 	end
