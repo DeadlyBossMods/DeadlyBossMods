@@ -101,6 +101,6 @@ function mod:OnSync(msg, target)
 	end 
 		if self.Options.SetIconOnPursuitTarget then 
 			self:SetIcon(target, 8, 12) 
-		end 
+		end
 	end 
 end 

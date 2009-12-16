@@ -1346,12 +1346,12 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "Show special warning when you take damage from Icy Blast",
-	specWarnHoarfrost			= "Show special warning when you are affected by Hoarfrost",
-	specWarnHoarfrostNear		= "Show special warning for Hoarfrost near you",
-	specWarnOverlordsBrand		= "Show special warning when you are affected by Overlords Brand",
+	specWarnIcyBlast			= "Show special warning when you take damage from $spell:69628",
+	specWarnHoarfrost			= "Show special warning when you are affected by $spell:69246",
+	specWarnHoarfrostNear		= "Show special warning for $spell:69246 near you",
+	specWarnOverlordsBrand		= "Show special warning when you are affected by $spell:69172",
 	TimerCombatStart			= "Show timer for start of combat",
-	SetIconOnHoarfrostTarget	= "Set icons on Hoarfrost targets"
+	SetIconOnHoarfrostTarget	= "Set icons on $spell:69246 targets"
 })
 
 L:SetMiscLocalization({
@@ -1377,8 +1377,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "Show pre-warning for Soulstorm (at ~40%)",
-	specwarnSoulstorm	= "Show special warning when Soulstorm is cast (to move in)"
+	warnSoulstormSoon	= "Show pre-warning for $spell:68872 (at ~40%)",
+	specwarnSoulstorm	= "Show special warning when $spell:68872 is cast (to move in)"
 })
 
 -------------------------
@@ -1397,9 +1397,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul	= "Show special warning to stop damage on Mirrored Soul",
-	specwarnWailingSouls	= "Show special warning when Wailing Souls is cast",
-	specwarnPhantomBlast	= "Show special warning when Phantom Blast is cast (to interupt)"
+	specwarnMirroredSoul	= "Show special warning to stop damage on $spell:69051",
+	specwarnWailingSouls	= "Show special warning when $spell:68899 is cast",
+	specwarnPhantomBlast	= "Show special warning when $spell:68982 is cast (to interupt)",
+	SetIconOnMirroredTarget	= "Set icons on $spell:69051 targets"
 })
 
 
