@@ -118,7 +118,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(71204) then
 		warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
 		if args:IsPlayer() and (args.amount or 1) >= 3 then
-			specWarnTouchInsignificance:Show()
+			specWarnTouchInsignificance:Show(args.amount)
 		end
 		timerTouchInsignificance:Start(args.destName)
 	end

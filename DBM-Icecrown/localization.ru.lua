@@ -67,7 +67,7 @@ L:SetWarningLocalization{
 	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay			= "Смерть и разложение - бегите!",
 	SpecWarnCurseTorpor			= "Проклятие оцепенения на вас!",
-	SpecWarnTouchInsignificance	= "Прикосновение незначительности (3)",
+	SpecWarnTouchInsignificance	= "Прикосновение незначительности (%d)",
 	WarnAddsSoon				= "Скоро призыв помощников"
 }
 
