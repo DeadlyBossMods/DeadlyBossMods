@@ -740,7 +740,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	MakeitCountTimer	= "Показывать таймер для Вам всем зачтется (достижение)"
+	MakeitCountTimer	= "Отсчет времени для Вам всем зачтется (достижение)"
 })
 
 L:SetMiscLocalization({
@@ -1352,12 +1352,12 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "Спец-предупреждение, когда вы получаете урон от Ледяного вихря",
-	specWarnHoarfrost			= "Спец-предупреждение, когда глыба Седого мороза падает на вас",
-	specWarnHoarfrostNear		= "Спец-предупреждение, когда глыба Седого мороза падает около вас",
-	specWarnOverlordsBrand		= "Спец-предупреждение, когда на вас кастуется $spell:69172",
+	specWarnIcyBlast			= "Спец-предупреждение, когда вы получаете урон от $spell:69628",
+	specWarnHoarfrost			= "Спец-предупреждение, когда на вас $spell:69246",
+	specWarnHoarfrostNear		= "Спец-предупреждение, когда около вас $spell:69246",
+	specWarnOverlordsBrand		= "Спец-предупреждение, когда на вас $spell:69172",
 	TimerCombatStart			= "Отсчет времени до начала боя",
-	SetIconOnHoarfrostTarget	= "Установить метку на цель под воздействием Седого мороза"
+	SetIconOnHoarfrostTarget	= "Устанавливать метки на цели заклинания $spell:69246"
 })
 
 L:SetMiscLocalization({
@@ -1383,7 +1383,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "Предупреждать о Буре душ заранее (на ~40%)",
+	warnSoulstormSoon	= "Предупреждать заранее о $spell:68872 (на ~40%)",
 	specwarnSoulstorm	= "Спец-предупреждение о $spell:68872 (подбежать ближе)"
 })
 
@@ -1403,9 +1403,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul	= "Спец-предупреждение о прекращении атаки, при Отраженная душа",
-	specwarnWailingSouls	= "Спец-предупреждение о заклинании Стенающие души",
-	specwarnPhantomBlast	= "Спец-предупреждение о заклинании Призрачный взрыв (для прерывания)"
+	specwarnMirroredSoul	= "Спец-предупреждение о прекращении атаки, при $spell:69051",
+	specwarnWailingSouls	= "Спец-предупреждение о заклинании $spell:68899",
+	specwarnPhantomBlast	= "Спец-предупреждение о заклинании $spell:68982 (для прерывания)",
+	SetIconOnMirroredTarget	= "Устанавливать метки на цели заклинания $spell:69051"
 })
 
 
@@ -1421,7 +1422,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnNewWaveSoon	= "Новая волна скоро!",
+	WarnNewWaveSoon	= "Скоро новая волна",
 	WarnNewWave		= "%s вступает в бой"
 })
 

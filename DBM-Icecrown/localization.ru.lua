@@ -133,12 +133,12 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnFrenzySoon		= "Скоро Бешенство",
-	specwarnRuneofBlood	= "Руна крови на вас"
+	specwarnRuneofBlood	= "Руна крови на |3-5(%s)"
 }
 
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Предупреждать о скором Бешенстве (на ~33%)",
-	specwarnRuneofBlood	= "Спец-предупреждение, когда на вас накладывается $spell:72410",
+	specwarnRuneofBlood	= "Спец-предупреждение для $spell:72410",
 	RangeFrame			= "Показывать окно допустимой дистанции (11 м)"
 }
 
