@@ -71,7 +71,7 @@ L:SetWarningLocalization{
 	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay				= "Muerte y descomposicion - Muevete lejos!",
 	SpecWarnCurseTorpor				= "Maldicion de sopor",
-	SpecWarnTouchInsignificance		= "Toque de insignificancia (3)",
+	SpecWarnTouchInsignificance		= "Toque de insignificancia (%d)",
 	WarnAddsSoon					= "Nuevos adds pronto"
 }
 

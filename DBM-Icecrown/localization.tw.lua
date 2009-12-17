@@ -67,7 +67,7 @@ L:SetWarningLocalization{
 	WarnTouchInsignificance		= "%s: >%s< (%s)",	-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay		= "死亡凋零 - 快跑開",
 	SpecWarnCurseTorpor		= "你中了魯鈍詛咒",
-	SpecWarnTouchInsignificance	= "無脅之觸 (3)",
+	SpecWarnTouchInsignificance	= "無脅之觸 (%d)",
 	WarnAddsSoon			= "新的小怪 即將到來"
 }
 

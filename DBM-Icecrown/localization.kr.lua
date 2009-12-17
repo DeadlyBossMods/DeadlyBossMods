@@ -66,7 +66,7 @@ L:SetWarningLocalization{
 	WarnTouchInsignificance			= "%s : >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	SpecWarnDeathDecay				= "죽음과 부패 - 이동!!",
 	SpecWarnCurseTorpor				= "당신에게 무감각의 저주",
-	SpecWarnTouchInsignificance		= "무의미함의 손길 (3)",
+	SpecWarnTouchInsignificance		= "무의미함의 손길 (%d)",
 	WarnAddsSoon					= "곧 새로운 이교도 추가"
 
 }
