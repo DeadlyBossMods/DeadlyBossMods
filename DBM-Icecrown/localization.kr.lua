@@ -133,12 +133,12 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnFrenzySoon			= "곧 광기",
-	specwarnRuneofBlood		= "당신에게 피의 룬!!"
+	specwarnRuneofBlood		= "피의 룬 : >%s<"
 }
 
 L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
-	specwarnRuneofBlood		= "$spell:72410의 영향을 받을 경우 특수 경고 보기",
+	specwarnRuneofBlood		= "$spell:72410의 특수 경고 보기",
 	RangeFrame				= "거리 프레임 보기 (11 미터)"
 }
 

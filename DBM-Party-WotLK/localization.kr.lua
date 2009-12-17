@@ -235,6 +235,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	Outro	= "Your journey has just begun, young prince. Gather your forces, and meet me in the arctic land of Northrend. It is there we shall settle the score between us. It is there that your true destiny will unfold."
+})
+
 -----------------
 -- Wave Timers --
 -----------------
@@ -736,11 +740,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	MakeitCountTimer		= "Show timer for Make it Count (achievement)"
+	MakeitCountTimer		= "매 순간을 소중히 업적 타이머 보기"
 })
 
 L:SetMiscLocalization({
-	MakeitCountTimer		= "Make it Count"
+	MakeitCountTimer		= "매 순간을 소중히"
 })
 
 --------------------
@@ -810,7 +814,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	MakeitCountTimer			= "Make it Count"
+	MakeitCountTimer			= "매 순간을 소중히"
 })
 
 ------------------
@@ -1177,7 +1181,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd			= "Excellent work!"
+	YellCombatEnd			= "훌륭히 해내셨군요!"
 })
 
 ---------------------
@@ -1201,7 +1205,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd				= "I yield! I submit. Excellent work. May I run away now?"
+	YellCombatEnd				= "항복! 제가 졌습니다. 훌륭한 솜씨군요. 이제 집에 가도 되겠습니까?"
 })
 
 --------------------
@@ -1350,12 +1354,12 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 --	specTyrannusEngaged			= "스컬지군주 티라누스 착지 특수 경고 보기",
-	specWarnIcyBlast			= "얼음 작렬로부터 데미지를 받을 경우 특수 경고 보기",
-	specWarnHoarfrost			= "당신이 흰 서리의 대상이 될 경우 특수 경고 보기",
-	specWarnHoarfrostNear		= "당신의 주변에 흰 서리 대상이 있을 경우 특수 경고 보기",
-	specWarnOverlordsBrand		= "대군주의 낙인에 영향을 받을 경우 특수 경고 보기",	
+	specWarnIcyBlast			= "$spell:69628로부터 데미지를 받을 경우 특수 경고 보기",
+	specWarnHoarfrost			= "$spell:69246의 대상이 될 경우 특수 경고 보기",
+	specWarnHoarfrostNear		= "주변에 $spell:69246 대상이 있을 경우 특수 경고 보기",
+	specWarnOverlordsBrand		= "$spell:69172에 영향을 받을 경우 특수 경고 보기",	
 	TimerCombatStart			= "전투 시작 타이머 보기",	
-	SetIconOnHoarfrostTarget	= "흰서리 대상에게 공격대 아이콘 설정"
+	SetIconOnHoarfrostTarget	= "$spell:69246 대상에게 공격대 아이콘 설정"
 })
 
 L:SetMiscLocalization({
@@ -1382,8 +1386,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon		= "영혼폭풍 사전 경고 보기(40%이하 일 때)",
-	specwarnSoulstorm		= "영혼폭풍을 시전 할 경우 특수 경고 보기(이동경고)"
+	warnSoulstormSoon		= "$spell:68872 사전 경고 보기(40%이하 일 때)",
+	specwarnSoulstorm		= "$spell:68872을 시전 할 경우 특수 경고 보기(이동경고)"
 })
 
 -------------------
@@ -1402,9 +1406,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul		= "비춰진 영혼에 대한 딜 중지 특수 경고 보기",
-	specwarnWailingSouls		= "울부짖는 영혼을 시전 할 경우 특수 경고 보기",	
-	specwarnPhantomBlast		= "환영 폭발을 시전할 경우 특수 경고 보기(차단을 위해)"
+	specwarnMirroredSoul		= "$spell:69051 딜 중지 특수 경고 보기",
+	specwarnWailingSouls		= "$spell:68899을 시전 할 경우 특수 경고 보기",	
+	specwarnPhantomBlast		= "$spell:68982을 시전할 경우 특수 경고 보기(차단 관련)",
+	SetIconOnMirroredTarget		= "$spell:69051 대상 공격대 아이콘 설정"	
 })
 
 -------------------------
