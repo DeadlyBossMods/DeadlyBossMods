@@ -133,12 +133,12 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnFrenzySoon			= "狂亂 即將到來",
-	specwarnRuneofBlood		= "你中了血魄符文"
+	specwarnRuneofBlood		= "%s 中了血魄符文"
 }
 
 L:SetOptionLocalization{
 	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
-	specwarnRuneofBlood		= "當你中了$spell:72410時顯示特別警告",
+	specwarnRuneofBlood		= "為$spell:72410顯示特別警告",
 	RangeFrame			= "顯示距離框 (11)"
 }
 

@@ -244,7 +244,9 @@ L:SetOptionLocalization{
 	timerRightArm			= "為右臂重生顯示計時器",
 	achievementDisarmed		= "為成就:卸除手臂顯示計時器",
 	WarnGrip			= "提示堅石之握的目標",
-	SetIconOnGripTarget		= "為堅石之握的目標設置標記"
+	SetIconOnGripTarget		= "為堅石之握的目標設置標記",
+	SetIconOnEyebeamTarget		= "為集束目光的目標設置標記 (正方)",
+	PlaySoundOnEyebeam		= "為集束目光播放音效"
 }
 
 L:SetMiscLocalization{
@@ -253,7 +255,7 @@ L:SetMiscLocalization{
 	Health_Body			= "柯洛剛恩身體",
 	Health_Right_Arm		= "右臂",
 	Health_Left_Arm			= "左臂",
-	FocusedEyebeam			= "%s正在注視著你!"
+	FocusedEyebeam			= "正在注視著你"
 }
 
 ---------------
