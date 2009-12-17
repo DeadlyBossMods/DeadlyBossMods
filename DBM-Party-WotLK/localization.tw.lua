@@ -1349,12 +1349,12 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "當你受到冰結衝擊的傷害時顯示特別警告",
-	specWarnHoarfrost			= "當你中了白霜時顯示特別警告",
-	specWarnHoarfrostNear		= "你附近有人中了白霜時顯示特別警告",
-	specWarnOverlordsBrand		= "當你中了霸主的烙紋時顯示特別警告",
+	specWarnIcyBlast			= "當你受到$spell:69628的傷害時顯示特別警告",
+	specWarnHoarfrost			= "當你中了$spell:69246時顯示特別警告",
+	specWarnHoarfrostNear		= "你附近有人中了$spell:69246時顯示特別警告",
+	specWarnOverlordsBrand		= "當你中了$spell:69172時顯示特別警告",
 	TimerCombatStart			= "為戰鬥開始顯示計時器",
-	SetIconOnHoarfrostTarget	= "為白霜的目標設置標記"
+	SetIconOnHoarfrostTarget	= "為$spell:69246的目標設置標記"
 })
 
 L:SetMiscLocalization({
@@ -1380,8 +1380,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "為靈魂風暴顯示預先警告 (大約40%)",
-	specwarnSoulstorm	= "當靈魂風暴施放時顯示特別警告 (靠近用)"
+	warnSoulstormSoon	= "為$spell:68872顯示預先警告 (大約40%)",
+	specwarnSoulstorm	= "當$spell:68872施放時顯示特別警告 (靠近用)"
 })
 
 -------------------------
@@ -1400,9 +1400,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul	= "為鏡像之魂需要停止攻擊時顯示特別警告",
-	specwarnWailingSouls	= "當哀嚎之魂施放時顯示特別警告",
-	specwarnPhantomBlast	= "當魅影衝擊施放時顯示特別警告 (斷法用)"
+	specwarnMirroredSoul	= "為$spell:69051需要停止攻擊時顯示特別警告",
+	specwarnWailingSouls	= "當$spell:68899施放時顯示特別警告",
+	specwarnPhantomBlast	= "當$spell:68982施放時顯示特別警告 (斷法用)",
+	SetIconOnMirroredTarget	= "為$spell:69051的目標設置標記"
 })
 
 
