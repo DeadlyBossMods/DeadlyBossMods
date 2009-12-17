@@ -15,9 +15,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout	= "Show special warning for $spell:71022",
-	SpecWarnDarkReckoning	= "Show special warning when you are affected by $spell:69483",
-	SetIconOnDarkReckoning	= "Set icons on $spell:69483 targets"
+	SpecWarnDisruptingShout	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71022),
+	SpecWarnDarkReckoning	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69483),
+	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)"
 }
 
 ----------------------
@@ -40,11 +40,11 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale			= "Announce $spell:69062 targets",
-	SpecWarnWhirlwind	= "Show special warning for $spell:69076",
-	SpecWarnColdflame	= "Show special warning when you are affected by $spell:70825",
+	WarnImpale		= "Announce $spell:69062 targets",
 	achievementBoned	= "Show timer for Boned achievement",
-	SetIconOnImpale		= "Set icons on $spell:69062 targets"
+	SpecWarnWhirlwind	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69076),
+	SpecWarnColdflame	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(70825),
+	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
 -------------------------
@@ -71,15 +71,15 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Show pre-warning for adds spawning",
-	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	-- Warning isn't default (it has a count number), option is default (no need for translation this way)
 	WarnReanimating				= "Show warning when an add is besing revived",											-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance	= "Show special warning when you have 3 stacks of $spell:71204",
-	SpecWarnDeathDecay			= "Show special warning when you are affected by $spell:72108",
-	SpecWarnCurseTorpor			= "Show special warning when you are affected by $spell:71237",
-	TimerAdds					= "Show timer for new adds",
-	SetIconOnDominateMind		= "Set icons on $spell:71289 targets",
-	SetIconOnDeformedFanatic	= "Set icons on $spell:70900 targets (skull)",
-	SetIconOnEmpoweredAdherent	= "Set icons on $spell:70901 targets (cross)"
+	TimerAdds			= "Show timer for new adds",
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
+	SpecWarnTouchInsignificance	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71204),
+	SpecWarnDeathDecay		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72108),
+	SpecWarnCurseTorpor		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71237),
+	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
+	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
+	SetIconOnEmpoweredAdherent	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
 }
 
 L:SetMiscLocalization{
@@ -136,8 +136,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
-	specwarnRuneofBlood	= "Show special warning for $spell:72410",
-	RangeFrame			= "Show range frame (11 yards)"
+	RangeFrame			= "Show range frame (11 yards)",
+	SpecWarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)
 }
 
 -----------------

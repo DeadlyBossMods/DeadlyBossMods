@@ -125,7 +125,9 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase = "Phase %d",
 }
 
-DBM_CORE_AUTO_SOUND_OPTION_TEXT	= "Play sound on $spell:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Play sound on $spell:%d"
+DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT 	= "Show special warning when you are affected by $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Set icons on $spell:%d targets"
 
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
