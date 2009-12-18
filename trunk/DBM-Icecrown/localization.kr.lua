@@ -12,13 +12,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout		= "분열의 외침 - 시전 중지!!!",
-	SpecWarnDarkReckoning		= "어둠의 징벌 - 이동!!!"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71022),
-	SpecWarnDarkReckoning		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69483),
 	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
@@ -36,16 +32,12 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale				= "꿰뚫기 : >%s<",
-	SpecWarnWhirlwind		= "소용돌이 - 뛰세요!",
-	SpecWarnColdflame		= "냉기화염 - 뛰세요!"
+	WarnImpale				= "꿰뚫기 : >%s<"
 }
 
 L:SetOptionLocalization{
 	WarnImpale				= "$spell:69062 대상 알리기",
 	achievementBoned		= "뼈도 못 추릴라 업적 타이머 보기",	
-	SpecWarnWhirlwind		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69076),
-	SpecWarnColdflame		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(70825),
 	SetIconOnImpale			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -64,11 +56,7 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating					= "이교도 부활",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s : >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "죽음과 부패 - 이동!!",
-	SpecWarnCurseTorpor				= "당신에게 무감각의 저주",
-	SpecWarnTouchInsignificance		= "무의미함의 손길 (%d)",
 	WarnAddsSoon					= "곧 새로운 이교도 추가"
-
 }
 
 L:SetOptionLocalization{
@@ -76,9 +64,6 @@ L:SetOptionLocalization{
 	WarnReanimating					= "이교도를 부활 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
 	TimerAdds						= "새로운 이교도 추가 타이머 보기",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	SpecWarnTouchInsignificance		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71204),
-	SpecWarnDeathDecay				= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72108),
-	SpecWarnCurseTorpor				= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71237),
 	SetIconOnDominateMind			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
 	SetIconOnEmpoweredAdherent		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
@@ -132,14 +117,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon			= "곧 광기",
-	specwarnRuneofBlood		= "피의 룬 : >%s<"
+	warnFrenzySoon			= "곧 광기"
 }
 
 L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
-	RangeFrame				= "거리 프레임 보기 (11 미터)",
-	specwarnRuneofBlood		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)	
+	RangeFrame				= "거리 프레임 보기 (11 미터)"	
 }
 
 -----------------

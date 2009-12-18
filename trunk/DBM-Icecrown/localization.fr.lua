@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -12,14 +12,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout			= "Cri perturbant - Stop Casting",
-	SpecWarnDarkReckoning			= "Dark Reckoning - Bougez"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout			= "Montre une alerte spéciale pour $spell:71022",
-	SpecWarnDarkReckoning			= "Montre une alerte spéciale lorsque vous êtes affecté par $spell:69483",
-	PlaySoundOnDarkReckoning		= "Joue un son lors de $spell:69483",
 	SetIconOnDominateMind			= "Met des icônes sur les cibles de $spell:69483"
 }
 
@@ -38,15 +33,11 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale				= ">%s< est empalé(e)",
-	SpecWarnWhirlwind		= "Tourbillon d'os - COUREZ !",
-	SpecWarnColdflame		= "Flamme froide - BOUGEZ !"
+	WarnImpale				= ">%s< est empalé(e)"
 }
 
 L:SetOptionLocalization{
 	WarnImpale				= "Annonce les cibles de $spell:69062",
-	SpecWarnWhirlwind		= "Montre une alerte spéciale pour la $spell:69076",
-	SpecWarnColdflame		= "Montre une alerte spéciale quand vous subissez des dégâts provenant de $spell:70825",
 	PlaySoundOnWhirlwind	= "Joue un son pour la $spell:69076",
 	achievementBoned		= "Montre le timer pour le haut-fait Dans l'os",
 	SetIconOnImpale			= "Met des icônes sur les cibles de $spell:69062"
@@ -68,9 +59,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating					= "Les adds revivent",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s sur >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "Mort et décomposition - BOUGEZ",
-	SpecWarnCurseTorpor				= "Malédiction de Torpeur sur VOUS",
-	SpecWarnTouchInsignificance		= "Touch of Insignificance (%d)",
 	WarnAddsSoon					= "Nouveaux adds bientôt"
 }
 
@@ -78,9 +66,6 @@ L:SetOptionLocalization{
 	WarnAddsSoon					= "Montre une pré-alerte avant que les adds arrivent",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "Montre une alerte quand les adds vont revenir a la vie",								-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Montre une alerte spéciale quand vous avez 3 stack de $spell:71204",
-	SpecWarnDeathDecay				= "Montre une alerte spéciale quand vous subissez des dégats provenant de $spell:72108",
-	SpecWarnCurseTorpor				= "Montre une alerte spéciale quand vous êtes affecté par la $spell:71237",
 	TimerAdds						= "Montre le timer pour les nouveaux adds",
 	SetIconOnDominateMind			= "Met des icônes sur les cibles de $spell:71289"
 }
@@ -90,7 +75,7 @@ L:SetMiscLocalization{
 	YellReanimatedFanatic			= "Arise, and exult in your pure form!"
 }
 -----------------------------
---  Deathbringer S	aurfang  --
+--  Deathbringer Saurfang  --
 -----------------------------
 L = DBM:GetModLocalization("Deathbringer")
 
