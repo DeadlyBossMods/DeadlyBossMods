@@ -139,7 +139,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	RangeFrame				= "거리 프레임 보기 (11 미터)",
-	SpecWarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)	
+	specwarnRuneofBlood		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)	
 }
 
 -----------------
