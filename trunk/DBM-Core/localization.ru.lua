@@ -127,10 +127,6 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase = "Фаза %d",
 }
 
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал при $spell:%d"
-DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT 	= "Спец-предупреждение для $spell:%d"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Устанавливать метки на цели заклинания $spell:%d"
-
 local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target = "Объявлять цели заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
@@ -140,6 +136,33 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	prewarn = prewarnOption,
 	phase = "Объявлять фазу %d"
 }
+
+
+-- Auto-generated Special Warning Localizations
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
+	you 	= "Спец-предупреждение, когда на вас \n $spell:%d",
+	other 	= "Спец-предупреждение, когда на ком-то \n $spell:%d",
+	close 	= "Спец-предупреждение, когда на ком-то рядом с вами \n $spell:%d",
+	move 	= "Спец-предупреждение для $spell:%d",
+	run 	= "Спец-предупреждение для $spell:%d",
+	cast 	= "Спец-предупреждение для $spell:%d",
+	stack 	= "Спец-предупреждение, когда на вас >=%d стаков \n $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	you = "%s на вас",
+	other = "%s на |3-5(%%s)",
+	close = "%s на |3-5(%%s) около вас",
+	move = "%s - отбегите",
+	run = "%s - бегите",
+	cast = "%s - прекратите чтение заклинаний",
+	stack = "%s (%%d)"
+}
+
+
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Устанавливать метки на цели заклинания $spell:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал при $spell:%d"
+
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Индикатор спец-предупреждения"
