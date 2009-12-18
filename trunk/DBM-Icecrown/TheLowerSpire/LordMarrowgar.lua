@@ -19,8 +19,8 @@ local preWarnWhirlwind   	= mod:NewSoonAnnounce(69076, 2)
 local warnBoneSpike			= mod:NewCastAnnounce(69057)
 local warnImpale			= mod:NewAnnounce("WarnImpale")
 
-local specWarnColdflame		= mod:NewSpecialWarning("SpecWarnColdflame")
-local specWarnWhirlwind		= mod:NewSpecialWarning("SpecWarnWhirlwind")
+local specWarnColdflame		= mod:NewSpecialWarningMove(70825)
+local specWarnWhirlwind		= mod:NewSpecialWarningRun(69076)
 
 local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
 local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)

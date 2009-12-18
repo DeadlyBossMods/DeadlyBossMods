@@ -10,13 +10,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout	= "Disrupting Shout - Stop casting",
-	SpecWarnDarkReckoning	= "Dark Reckoning - Move away"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71022),
-	SpecWarnDarkReckoning	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69483),
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
@@ -42,8 +38,6 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnImpale		= "Announce $spell:69062 targets",
 	achievementBoned	= "Show timer for Boned achievement",
-	SpecWarnWhirlwind	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69076),
-	SpecWarnColdflame	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(70825),
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -74,9 +68,6 @@ L:SetOptionLocalization{
 	WarnReanimating				= "Show warning when an add is besing revived",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds			= "Show timer for new adds",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
-	SpecWarnTouchInsignificance	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71204),
-	SpecWarnDeathDecay		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72108),
-	SpecWarnCurseTorpor		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71237),
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
 	SetIconOnEmpoweredAdherent	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
@@ -136,8 +127,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
-	RangeFrame			= "Show range frame (11 yards)",
-	specwarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)
+	RangeFrame			= "Show range frame (11 yards)"
 }
 
 -----------------
