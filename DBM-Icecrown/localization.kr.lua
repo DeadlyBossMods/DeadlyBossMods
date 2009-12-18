@@ -17,9 +17,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout		= "$spell:71022 특수 경고 보기",
-	SpecWarnDarkReckoning		= "$spell:69483에 영향을 받을 경우 특수 경고 보기",
-	SetIconOnDarkReckoning		= "$spell:69483 대상 공격대 아이콘 설정"
+	SpecWarnDisruptingShout		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71022),
+	SpecWarnDarkReckoning		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69483),
+	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 ----------------------
@@ -43,10 +43,10 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale				= "$spell:69062 대상 알리기",
-	SpecWarnWhirlwind		= "$spell:69076 특수 경고 보기",
-	SpecWarnColdflame		= "$spell:70825에 영향을 받을 경우 특수 경고 보기",
 	achievementBoned		= "뼈도 못 추릴라 업적 타이머 보기",	
-	SetIconOnImpale			= "$spell:69062 대상 공격대 아이콘 설정"
+	SpecWarnWhirlwind		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69076),
+	SpecWarnColdflame		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(70825),
+	SetIconOnImpale			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
 -------------------------
@@ -73,15 +73,15 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAddsSoon					= "이교도 추가 사전 경고 보기",
-	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "이교도를 부활 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "$spell:71204이 3중첩이 됐을 경우 특수 경고 보기",
-	SpecWarnDeathDecay				= "$spell:72108에 영향을 받을 경우 특수 경고 보기",
-	SpecWarnCurseTorpor				= "$spell:71237에 영향을 받을 경우 특수 경고 보기",
-	TimerAdds						= "새로운 이교도 추가 타이머 보기",	
-	SetIconOnDominateMind			= "$spell:71289 대상 공격대 아이콘 설정",
-	SetIconOnDeformedFanatic		= "$spell:70900 대상 공격대 아이콘 설정(해골)",
-	SetIconOnEmpoweredAdherent		= "$spell:70901 대상 공격대 아이콘 설정(엑스)"
+	TimerAdds						= "새로운 이교도 추가 타이머 보기",
+	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	SpecWarnTouchInsignificance		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71204),
+	SpecWarnDeathDecay				= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72108),
+	SpecWarnCurseTorpor				= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71237),
+	SetIconOnDominateMind			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
+	SetIconOnDeformedFanatic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
+	SetIconOnEmpoweredAdherent		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
 }
 
 L:SetMiscLocalization{
@@ -138,8 +138,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
-	specwarnRuneofBlood		= "$spell:72410의 특수 경고 보기",
-	RangeFrame				= "거리 프레임 보기 (11 미터)"
+	RangeFrame				= "거리 프레임 보기 (11 미터)",
+	SpecWarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)	
 }
 
 -----------------
