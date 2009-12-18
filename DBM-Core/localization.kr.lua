@@ -114,6 +114,8 @@ DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "%s 위한 타이머 보기"
 
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
+DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 아이콘 설정"
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target 	= "%s : >%%s<"
