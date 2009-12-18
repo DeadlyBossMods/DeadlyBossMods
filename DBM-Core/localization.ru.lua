@@ -127,7 +127,9 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase = "Фаза %d",
 }
 
-DBM_CORE_AUTO_SOUND_OPTION_TEXT	= "Звуковой сигнал при $spell:%d"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал при $spell:%d"
+DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT 	= "Спец-предупреждение для $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Устанавливать метки на цели заклинания $spell:%d"
 
 local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
