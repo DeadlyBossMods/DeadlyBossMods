@@ -43,10 +43,11 @@ TheLowerSpire\LordMarrowgar.lua
 TheLowerSpire\Deathwhisper.lua
 TheLowerSpire\GunshipBattle.lua
 TheLowerSpire\Deathbringer.lua
-TheLowerSpire\Trash.lua
+TheLowerSpire\LowerSpireTrash.lua
 ThePlagueworks\Festergut.lua
 ThePlagueworks\Rotface.lua
 ThePlagueworks\Putricide.lua
+ThePlagueworks\PlagueworksTrash.lua
 TheCrimsonHall\BPCouncil.lua
 TheCrimsonHall\Lanathel.lua
 FrostwingHalls\Valithria.lua
