@@ -12,13 +12,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout			= "Disrupting Shout - Stop Casting",
-	SpecWarnDarkReckoning			= "Dark Reckoning - Move away"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout			= "Show special warning for $spell:71022",
-	SpecWarnDarkReckoning			= "Show special warning when you are affected by $spell:69483",
 	SetIconOnDarkReckoning			= "Set icons on $spell:69483 targets"
 }
 
@@ -37,16 +33,12 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale			= ">%s< es empalado!",
-	SpecWarnWhirlwind	= "Torbellino - Corre lejos",
---	SpecWarnColdflame	= "Llama Fria - MuŽvete!" -- bad encoding
+	WarnImpale			= ">%s< es empalado!"
 }
 
 
 L:SetOptionLocalization{
 	WarnImpale				= "Anuncia los jugadores empalados",
-	SpecWarnWhirlwind		= "Mostrar aviso especial para Torbellino",
---	SpecWarnColdflame		= "Mostrar aviso especial cuando est‡s afectado por Llama Fr’a", -- bad encoding
 	PlaySoundOnWhirlwind	= "Reproducir sonido de Torbellino",
 	achievementBoned		= "Mostrar tiempo para el logro Deshuesado",
 	SetIconOnImpale			= "Poner icono a los jugadores empalados"
@@ -69,9 +61,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating					= "Resurreccion de Add",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay				= "Muerte y descomposicion - Muevete lejos!",
-	SpecWarnCurseTorpor				= "Maldicion de sopor",
-	SpecWarnTouchInsignificance		= "Toque de insignificancia (%d)",
 	WarnAddsSoon					= "Nuevos adds pronto"
 }
 
@@ -81,9 +70,6 @@ L:SetOptionLocalization{
 	WarnAddsSoon					= "Mostrar un pre-aviso cuando vengan nuevos adds ",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating					= "Mostrar un aviso cuando un add es resucitado",											-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance		= "Mostrar aviso especial cuando tienes 3 marcas de Toque de insignificancia",
-	SpecWarnDeathDecay				= "Mostrar un aviso especial cuando estas afectado por muerte y descomposicion",
-	SpecWarnCurseTorpor				= "Mostrar un aviso especial cuando sufres Maldicion de sopor",
 	TimerAdds						= "Mostrar tiempo para nuevos adds",
 	SetIconOnDominateMind			= "Poner iconos a los objetivos de Control Mental"
 }
