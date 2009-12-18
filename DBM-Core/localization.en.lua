@@ -125,10 +125,6 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase = "Phase %d",
 }
 
-DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Play sound on $spell:%d"
-DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT 	= "Show special warning when you are affected by $spell:%d"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Set icons on $spell:%d targets"
-
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target = "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
@@ -138,6 +134,33 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	prewarn = prewarnOption,
 	phase = "Announce Phase %d"
 }
+
+
+-- Auto-generated Special Warning Localizations
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
+	you 	= "Show special warning when you are affected by \n $spell:%d",
+	other 	= "Show special warning when someone is affected by \n $spell:%d",
+	close 	= "Show special warning when someone close to you is \n affected by $spell:%d",
+	move 	= "Show special warning when you are affected by \n $spell:%d",
+	run 	= "Show special warning when you are affected by \n $spell:%d",
+	cast 	= "Show special warning when you are affected by \n $spell:%d",
+	stack 	= "Show special warning when you have >=%d stacks of \n $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	you = "%s on you",
+	other = "%s on %%s",
+	close = "%s on %%s near you",
+	move = "%s - move away",
+	run = "%s - run away",
+	cast = "%s - stop casting",
+	stack = "%s (%%d)"
+}
+
+
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Set icons on $spell:%d targets"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Play sound on $spell:%d"
+
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Special warning movable"

@@ -26,9 +26,9 @@ local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
 local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 3)
 
 
-local specWarnCurseTorpor			= mod:NewSpecialWarning("SpecWarnCurseTorpor")
-local specWarnDeathDecay			= mod:NewSpecialWarning("SpecWarnDeathDecay")
-local specWarnTouchInsignificance	= mod:NewSpecialWarning("SpecWarnTouchInsignificance")
+local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)
+local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
+local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
 local timerDominateMind				= mod:NewBuffActiveTimer(20, 71289)

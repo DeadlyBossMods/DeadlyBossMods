@@ -24,7 +24,7 @@ local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
 
-local specwarnRuneofBlood	= mod:NewSpecialWarning("specwarnRuneofBlood", false)
+local specwarnRuneofBlood	= mod:NewSpecialWarningOther(72410, false)
 
 local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
