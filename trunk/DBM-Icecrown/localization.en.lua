@@ -137,7 +137,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
 	RangeFrame			= "Show range frame (11 yards)",
-	SpecWarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)
+	specwarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)
 }
 
 -----------------
