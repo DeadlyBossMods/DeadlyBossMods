@@ -12,13 +12,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout		= "混亂怒吼 - 停止施法",
-	SpecWarnDarkReckoning		= "黑暗清算 - 快跑開"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout		= "為$spell:71022顯示特別警告",
-	SpecWarnDarkReckoning		= "當你中了$spell:69483時顯示特別警告",
 	SetIconOnDarkReckoning		= "為$spell:69483的目標設置標記"
 }
 
@@ -36,15 +32,11 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale			= ">%s< 被刺穿了",
-	SpecWarnWhirlwind		= "骸骨風暴 - 快跑開",
-	SpecWarnColdflame		= "冷焰 - 快跑開"
+	WarnImpale			= ">%s< 被刺穿了"
 }
 
 L:SetOptionLocalization{
 	WarnImpale			= "提示$spell:69062的目標",
-	SpecWarnWhirlwind		= "為$spell:69076顯示特別警告",
-	SpecWarnColdflame		= "當你中了$spell:70825時顯示特別警告",
 	achievementBoned		= "為去骨成就顯示計時器",
 	SetIconOnImpale			= "為$spell:69062的目標設置標記"
 }
@@ -65,9 +57,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating			= "小怪再活化",		-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s: >%s< (%s)",	-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay		= "死亡凋零 - 快跑開",
-	SpecWarnCurseTorpor		= "你中了魯鈍詛咒",
-	SpecWarnTouchInsignificance	= "無脅之觸 (%d)",
 	WarnAddsSoon			= "新的小怪 即將到來"
 }
 
@@ -75,9 +64,6 @@ L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknow"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating			= "當小怪再活化時顯示警告",
-	SpecWarnTouchInsignificance	= "當你中了3層$spell:71204時顯示特別警告",
-	SpecWarnDeathDecay		= "當你中了$spell:72108時顯示特別警告",
-	SpecWarnCurseTorpor		= "當你中了$spell:71237時顯示特別警告",
 	TimerAdds			= "為新的小怪顯示計時器",
 	SetIconOnDominateMind		= "為$spell:71289的目標設置標記",
 	SetIconOnDeformedFanatic	= "為$spell:70900的目標設置標記 (頭顱)",
@@ -133,12 +119,10 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnFrenzySoon			= "狂亂 即將到來",
-	specwarnRuneofBlood		= "%s 中了血魄符文"
 }
 
 L:SetOptionLocalization{
 	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
-	specwarnRuneofBlood		= "為$spell:72410顯示特別警告",
 	RangeFrame			= "顯示距離框 (11)"
 }
 

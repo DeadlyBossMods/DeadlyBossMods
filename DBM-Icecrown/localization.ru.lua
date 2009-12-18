@@ -32,9 +32,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale			= "Прокалывание: >%s<",
-	SpecWarnWhirlwind	= "Вихрь - бегите",
-	SpecWarnColdflame	= "Холодное пламя - отбегите"
+	WarnImpale			= "Прокалывание: >%s<"
 }
 
 L:SetOptionLocalization{
@@ -59,9 +57,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating				= "Помощник трансформируется",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay			= "Смерть и разложение - отбегите",
-	SpecWarnCurseTorpor			= "Проклятие оцепенения на вас",
-	SpecWarnTouchInsignificance	= "Прикосновение незначительности (%d)",
 	WarnAddsSoon				= "Скоро призыв помощников"
 }
 
@@ -123,8 +118,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon		= "Скоро Бешенство",
-	specwarnRuneofBlood	= "Руна крови на |3-5(%s)"
+	warnFrenzySoon		= "Скоро Бешенство"
 }
 
 L:SetOptionLocalization{
