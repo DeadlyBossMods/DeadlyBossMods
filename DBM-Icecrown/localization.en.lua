@@ -17,7 +17,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnDisruptingShout	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71022),
 	SpecWarnDarkReckoning	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69483),
-	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)"
+	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 ----------------------
