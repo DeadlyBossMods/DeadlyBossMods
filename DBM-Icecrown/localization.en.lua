@@ -16,6 +16,21 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
+---------------------------
+--  Trash - Plagueworks  --
+---------------------------
+L = DBM:GetModLocalization("PlagueworksTrash")
+
+L:SetGeneralLocalization{
+	name = "Plagueworks trash"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -34,7 +49,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale		= "Announce $spell:69062 targets",
+	WarnImpale			= "Announce $spell:69062 targets",
 	achievementBoned	= "Show timer for Boned achievement",
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
@@ -61,7 +76,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Show pre-warning for adds spawning",
 	WarnReanimating				= "Show warning when an add is besing revived",											-- Reanimated Adherent/Fanatic spawning
-	TimerAdds			= "Show timer for new adds",
+	TimerAdds					= "Show timer for new adds",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
