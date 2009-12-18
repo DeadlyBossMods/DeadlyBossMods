@@ -30,7 +30,7 @@ local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
 local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
-local timerNextRuneofBlood	= mod:NewNextTimer(25, 72410)
+local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410)
 
 mod:AddBoolOption("RangeFrame", isRanged)
 
