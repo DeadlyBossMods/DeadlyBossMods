@@ -2545,7 +2545,62 @@ do
 		table.insert(self.announces, obj)
 		return obj
 	end
-	
+
+	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
+		spellName = GetSpellInfo(spellId) or "unknown"
+		local text = DBM_CORE_AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName) 
+		local obj = setmetatable( -- todo: fix duplicate code
+			{
+				text = text,
+				announceType = announceType,
+				option = optionName or text,
+				mod = self,
+				sound = not noSound,
+			},
+			mt
+		)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(optionName or text, optionDefault, "announce")
+		end
+		table.insert(self.announces, obj)
+		if announceType == "stack" then
+			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
+		else
+			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId)
+		end
+		return obj
+	end
+
+	function bossModPrototype:NewSpecialWarningYou(text, optionDefault, ...)
+		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningOther(text, optionDefault, ...)
+		return newSpecialWarning(self, "other", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningClose(text, optionDefault, ...)
+		return newSpecialWarning(self, "close", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningMove(text, optionDefault, ...)
+		return newSpecialWarning(self, "move", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningRun(text, optionDefault, ...)
+		return newSpecialWarning(self, "run", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningCast(text, optionDefault, ...)
+		return newSpecialWarning(self, "cast", text, nil, optionDefault, ...)
+	end
+
+	function bossModPrototype:NewSpecialWarningStack(text, optionDefault, stacks, ...)
+		return newSpecialWarning(self, "stack", text, stacks, optionDefault, ...)
+	end
+
 	do
 		local anchorFrame
 		local function moveEnd()

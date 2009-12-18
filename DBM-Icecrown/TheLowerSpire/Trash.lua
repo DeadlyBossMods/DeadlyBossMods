@@ -13,8 +13,8 @@ mod:RegisterEvents(
 local warnDisruptingShout		= mod:NewSpellAnnounce(71022, 2)
 local warnDarkReckoning			= mod:NewTargetAnnounce(69483, 3)
 
-local specWarnDisruptingShout	= mod:NewSpecialWarning("SpecWarnDisruptingShout")
-local specWarnDarkReckoning		= mod:NewSpecialWarning("SpecWarnDarkReckoning")
+local specWarnDisruptingShout		= mod:NewSpecialWarningCast(71022)
+local specWarnDarkReckoning		= mod:NewSpecialWarningMove(69483)
 
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(15, 69483)
