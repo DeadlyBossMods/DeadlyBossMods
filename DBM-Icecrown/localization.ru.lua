@@ -12,13 +12,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnDisruptingShout	= "Разрушительный крик - остановите чтение заклинаний",
-	SpecWarnDarkReckoning	= "Мрачный итог - отбегите"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71022),
-	SpecWarnDarkReckoning	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69483),
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
@@ -44,8 +40,6 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnImpale		= "Объявлять цели заклинания $spell:69062",
 	achievementBoned	= "Отсчет времени для достижения Косточка попалась",
-	SpecWarnWhirlwind	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69076),
-	SpecWarnColdflame	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(70825),
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -76,9 +70,6 @@ L:SetOptionLocalization{
 	WarnReanimating				= "Предупреждать, при трансформации помощника",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds			= "Отсчет времени до призыва помощников",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
-	SpecWarnTouchInsignificance	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71204),
-	SpecWarnDeathDecay		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72108),
-	SpecWarnCurseTorpor		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71237),
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
 	SetIconOnEmpoweredAdherent	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
@@ -138,8 +129,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Предупреждать о скором Бешенстве (на ~33%)",
-	RangeFrame			= "Показывать окно допустимой дистанции (11 м)",
-	specwarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)
+	RangeFrame			= "Показывать окно допустимой дистанции (11 м)"
 }
 
 -----------------
