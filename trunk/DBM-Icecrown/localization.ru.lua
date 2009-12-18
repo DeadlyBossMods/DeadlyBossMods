@@ -8,18 +8,18 @@ local L
 L = DBM:GetModLocalization("LowerSpireTrash")
 
 L:SetGeneralLocalization{
-	name = "Треш-мобы"
+	name = "Треш-мобы Шпиля"
 }
 
 L:SetWarningLocalization{
 	SpecWarnDisruptingShout	= "Разрушительный крик - остановите чтение заклинаний",
-	SpecWarnDarkReckoning	= "Мрачный итог - отбегите!"
+	SpecWarnDarkReckoning	= "Мрачный итог - отбегите"
 }
 
 L:SetOptionLocalization{
-	SpecWarnDisruptingShout	= "Спец-предупреждение для заклинания $spell:71022",
-	SpecWarnDarkReckoning	= "Спец-предупреждение, когда на вас $spell:69483",
-	SetIconOnDarkReckoning	= "Устанавливать метки на цели заклинания $spell:69483"
+	SpecWarnDisruptingShout	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71022),
+	SpecWarnDarkReckoning	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69483),
+	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 ----------------------
@@ -42,11 +42,11 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale			= "Анонсировать проткнутые цели",
-	SpecWarnWhirlwind	= "Спец-предупреждение для $spell:69076",
-	SpecWarnColdflame	= "Спец-предупреждение, при получении урона от $spell:70825",
+	WarnImpale		= "Объявлять цели заклинания $spell:69062",
 	achievementBoned	= "Отсчет времени для достижения Косточка попалась",
-	SetIconOnImpale		= "Маркировать игроков, насаженных на шип"
+	SpecWarnWhirlwind	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(69076),
+	SpecWarnColdflame	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(70825),
+	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
 -------------------------
@@ -65,23 +65,23 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating				= "Помощник трансформируется",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	SpecWarnDeathDecay			= "Смерть и разложение - бегите!",
-	SpecWarnCurseTorpor			= "Проклятие оцепенения на вас!",
+	SpecWarnDeathDecay			= "Смерть и разложение - отбегите",
+	SpecWarnCurseTorpor			= "Проклятие оцепенения на вас",
 	SpecWarnTouchInsignificance	= "Прикосновение незначительности (%d)",
 	WarnAddsSoon				= "Скоро призыв помощников"
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Предупреждать заранее о призыве помощников",
-	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating				= "Предупреждать, при трансформации помощника",											-- Reanimated Adherent/Fanatic spawning
-	SpecWarnTouchInsignificance	= "Спец-предупреждение, когда на вас 3 стака $spell:71204",
-	SpecWarnDeathDecay			= "Спец-предупреждение, когда вы стоите в луже $spell:72108",
-	SpecWarnCurseTorpor			= "Спец-предупреждение, когда на вас $spell:71237",
-	TimerAdds					= "Отсчет времени до призыва помощников",
-	SetIconOnDominateMind		= "Устанавливать метки на игроков, взятых под $spell:71289",
-	SetIconOnDeformedFanatic	= "Устанавливать метки на цели заклинания $spell:70900 \n(череп)",
-	SetIconOnEmpoweredAdherent	= "Устанавливать метки на цели заклинания $spell:70901 \n(крест)"
+	TimerAdds			= "Отсчет времени до призыва помощников",
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
+	SpecWarnTouchInsignificance	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71204),
+	SpecWarnDeathDecay		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72108),
+	SpecWarnCurseTorpor		= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(71237),
+	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
+	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
+	SetIconOnEmpoweredAdherent	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
 }
 
 L:SetMiscLocalization{
@@ -118,7 +118,7 @@ L:SetTimerLocalization{
 L:SetMiscLocalization{
 	PullAlliance	= "Запускайте двигатели! Летим навстречу судьбе.",
 	KillAlliance	= "Ну не говорите потом, что я не предупреждал. В атаку, братья и сестры!",
-	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
+	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!",
 	KillHorde		= "The Alliance falter. Onward to the Lich King!"
 }
 
@@ -138,8 +138,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnFrenzySoon		= "Предупреждать о скором Бешенстве (на ~33%)",
-	specwarnRuneofBlood	= "Спец-предупреждение для $spell:72410",
-	RangeFrame			= "Показывать окно допустимой дистанции (11 м)"
+	RangeFrame			= "Показывать окно допустимой дистанции (11 м)",
+	specwarnRuneofBlood	= DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT:format(72410)
 }
 
 -----------------
