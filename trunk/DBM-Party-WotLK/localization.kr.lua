@@ -236,7 +236,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Outro	= "Your journey has just begun, young prince. Gather your forces, and meet me in the arctic land of Northrend. It is there we shall settle the score between us. It is there that your true destiny will unfold."
+	Outro	= "너의 여정은 이제 막 시작이다, 젊은 왕자여. 병사들을 모아 극한의 땅, 노스렌드로 나를 찾아와라. 그곳에서 모든 일이 결판날 것이다. 네 진정한 운명도 그곳에서 시작되지."
 })
 
 -----------------
@@ -276,7 +276,7 @@ L:SetMiscLocalization({
 	Wave3			= "%d %s, %d %s 그리고 %d %s",
 	Wave4			= "%d %s, %d %s, %d %s 그리고 %d %s",
 	WaveBoss		= "%s",
-	WaveCheck		= "남은 웨이브 = %d/10"
+	WaveCheck		= "스컬지 공격 = %d/10"
 })
 
 -------------------
