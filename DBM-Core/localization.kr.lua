@@ -137,7 +137,9 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(이동)",
 	run 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(빠른이동)",
 	cast 	= "$spell:%d의 시전 영향을 받을 경우 특수 경고 보기",
-	stack 	= "$spell:%d의 %d 중첩 이상 쌓일 경우 특수 경고 보기"
+--	stack 	= "Show special warning when you have >=%d stacks of \n $spell:%d"
+--	stack 	= "$spell:%d의 중첩이 %d 이상 쌓일 경우 특수 경고 보기"
+	stack 	= "%d 중첩 이상 쌓일 경우 특수 경고 보기 $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
