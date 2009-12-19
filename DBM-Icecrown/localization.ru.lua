@@ -18,6 +18,21 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
+---------------------------
+--  Trash - Plagueworks  --
+---------------------------
+L = DBM:GetModLocalization("PlagueworksTrash")
+
+L:SetGeneralLocalization{
+	name = "Треш-мобы Чумодельни"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -63,7 +78,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Предупреждать заранее о призыве помощников",
 	WarnReanimating				= "Предупреждать, при трансформации помощника",											-- Reanimated Adherent/Fanatic spawning
-	TimerAdds			= "Отсчет времени до призыва помощников",
+	TimerAdds					= "Отсчет времени до призыва помощников",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
@@ -92,7 +107,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
 	TimerCombatStart	= "Отсчет времени до начала боя",
-	WarnAddsSoon		= "Заранее предупреждать о призыве помощников",
+	WarnAddsSoon		= "Предупреждать заранее о призыве помощников",
 	TimerAdds			= "Отсчет времени до новых помощников"
 }
 
