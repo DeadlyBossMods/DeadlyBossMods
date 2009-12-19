@@ -18,6 +18,21 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
+---------------------------
+--  Trash - Plagueworks  --
+---------------------------
+L = DBM:GetModLocalization("PlagueworksTrash")
+
+L:SetGeneralLocalization{
+	name = "Plagueworks trash"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------

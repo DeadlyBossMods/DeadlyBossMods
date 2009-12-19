@@ -113,10 +113,6 @@ DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "|cff71d5ff|Hspell:%d|h%s|h|r 쿨다운 타�
 DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "%s 위한 타이머 보기"
 
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
-DBM_CORE_AUTO_SPEC_WARN_OPTION_TEXT 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기"
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 아이콘 설정"
-
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target 	= "%s : >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell 		= "%s"
@@ -131,6 +127,31 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast 	= "|cff71d5ff|Hspell:%d|h%s|h|r 시전을 �
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(soon)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(prewarn)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "페이즈 %d 의 경고 보기"
+
+
+-- Auto-generated Special Warning Localizations
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
+	you 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기",
+	other 	= "$spell:%d의 영향을 누군가 받을 경우 특수 경고 보기",
+	close 	= "$spell:%d의 영향을 가까운 공대원으로부터 받을 경우 특수 경고 보기",
+	move 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(이동)",
+	run 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(빠른이동)",
+	cast 	= "$spell:%d의 시전 영향을 받을 경우 특수 경고 보기",
+	stack 	= "$spell:%d의 %d 중첩 이상 쌓일 경우 특수 경고 보기"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	you 	= "당신에게 %s",
+	other 	= "%s : %%s",
+	close 	= "%%s에게 가까운 당신에게 %s 시전",
+	move 	= "%s - 이동하세요!",
+	run 	= "%s - 뛰세요!",
+	cast 	= "%s - 시전 중지",
+	stack 	= "%s (%%d)"
+}
+
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 아이콘 설정"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "특수 경고 움직이기"
