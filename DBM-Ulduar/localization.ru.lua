@@ -211,7 +211,7 @@ L:SetOptionLocalization{
 	PossibleNextCosmicSmash	= "Отсчет времени до Кара небесная",
 	TimerCombatStart		= "Отсчет времени до начала битвы",
 	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~23%)",
-	warnStarLow				= "Предупреждать, когда у Вспыхивающей звезды мало здоровья (на ~25%)"
+	warnStarLow				= "Спец-предупреждение, когда у Вспыхивающей звезды мало здоровья (на ~25%)"
 }
 
 L:SetMiscLocalization{
