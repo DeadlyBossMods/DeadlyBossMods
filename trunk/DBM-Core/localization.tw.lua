@@ -128,8 +128,6 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	phase 					= "第%d階段",
 }
 
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "為$spell:%d播放音效"
-
 local prewarnOption 				= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target 					= "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
@@ -139,6 +137,30 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	prewarn 				= prewarnOption,
 	phase 					= "提示第%d階段",
 }
+
+-- Auto-generated Special Warning Localizations
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
+	you 					= "當你中了$spell:%d時顯示特別警告",
+	other 					= "為中了$spell:%d的人顯示特別警告",
+	close 					= "當中了$spell:%d的人在你附近時顯示特別警告",
+	move 					= "當你中了$spell:%d時顯示特別警告",
+	run 					= "當你中了$spell:%d時顯示特別警告",
+	cast 					= "當你中了$spell:%d時顯示特別警告",
+	stack 					= "當你中了$spell:%d(>=%d層)時顯示特別警告"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	you 					= "你中了%s",
+	other 					= "%%s中了%s",
+	close 					= "你附近的%%s中了%s",
+	move 					= "%s - 快跑開",
+	run 					= "%s - 快跑開",
+	cast 					= "%s - 停止施法",
+	stack 					= "%s (%%d)"
+}
+
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%d的目標設置標記"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "為$spell:%d播放音效"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖動的特別警告"

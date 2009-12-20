@@ -18,6 +18,21 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning		= "為$spell:69483的目標設置標記"
 }
 
+---------------------------
+--  Trash - Plagueworks  --
+---------------------------
+L = DBM:GetModLocalization("PlagueworksTrash")
+
+L:SetGeneralLocalization{
+	name 				= "瘟疫工坊小怪"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -38,7 +53,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnImpale			= "提示$spell:69062的目標",
 	achievementBoned		= "為去骨成就顯示計時器",
-	SetIconOnImpale			= "為$spell:69062的目標設置標記"
+	SetIconOnImpale			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
 -------------------------
@@ -62,12 +77,12 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
-	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknow"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	WarnReanimating			= "當小怪再活化時顯示警告",
 	TimerAdds			= "為新的小怪顯示計時器",
-	SetIconOnDominateMind		= "為$spell:71289的目標設置標記",
-	SetIconOnDeformedFanatic	= "為$spell:70900的目標設置標記 (頭顱)",
-	SetIconOnEmpoweredAdherent	= "為$spell:70901的目標設置標記 (十字)"
+	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
+	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
+	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
+	SetIconOnEmpoweredAdherent	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
 }
 
 L:SetMiscLocalization{

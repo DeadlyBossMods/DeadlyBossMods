@@ -221,12 +221,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova			= "閃電新星 - 快跑開",
-	EmalonEnrage			= "艾瑪隆狂怒"
+	specWarnNova			= "閃電新星 - 快跑開"
 }
 
 L:SetTimerLocalization{
-	timerMobOvercharge		= "超載爆炸"
+	timerMobOvercharge		= "超載爆炸",
+	EmalonEnrage			= "艾瑪隆狂怒"
 }
 
 L:SetOptionLocalization{
@@ -260,7 +260,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecWarnCinder			= "當你中了$spell:67332時顯示特別警告",
 	PlaySoundOnCinder		= "當你中了$spell:67332時播放音效",
-	BurningFury			= "為$spell:67332顯示警告",
+	BurningFury			= "為$spell:66721顯示警告",
 	KoralonEnrage			= "為狂怒顯示計時器"
 }
 
