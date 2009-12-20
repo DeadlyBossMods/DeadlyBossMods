@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("NorthrendBeasts")
 
 L:SetGeneralLocalization{
-	name = "Нордскольские Звери"
+	name = "Чудовища Нордскола"
 }
 
 L:SetMiscLocalization{
