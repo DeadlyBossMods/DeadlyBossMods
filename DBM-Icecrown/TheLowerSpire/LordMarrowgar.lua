@@ -63,7 +63,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(69062, 72669) then						-- Impale
+	if args:IsSpellID(69062, 72669, 72670) then						-- Impale
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		timerBoned:Start()
 		if mod.Options.SetIconOnImpale and impaleIcon > 0 then
