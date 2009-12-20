@@ -773,6 +773,10 @@ L:SetOptionLocalization({
 	SpecWarnBombYou		= "Show special warning when you are affected by Time Bomb"
 })
 
+L:SetMiscLocalization({
+	CombatStart		= "Poor blind fools!"
+})
+
 --------------------------
 --  Varos Cloudstrider  --
 --------------------------
