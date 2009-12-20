@@ -59,7 +59,7 @@ local timerSweepCD			= mod:NewCDTimer(17, 66794)
 local timerSlimePoolCD		= mod:NewCDTimer(12, 66883)
 local timerAcidicSpewCD		= mod:NewCDTimer(21, 66819)
 local timerMoltenSpewCD		= mod:NewCDTimer(21, 66820)
-local timerParalyticSprayCD	= mod:NewCDTimer(17, 66901)
+local timerParalyticSprayCD	= mod:NewCDTimer(21, 66901)
 local timerBurningSprayCD	= mod:NewCDTimer(21, 66902)
 local timerParalyticBiteCD	= mod:NewCDTimer(25, 66824)
 local timerBurningBiteCD	= mod:NewCDTimer(15, 66879)
@@ -135,7 +135,7 @@ function mod:WormsEmerge()
 	if not AcidmawDead then
 		if DreadscaleActive then
 			timerSweepCD:Start(16)
-			timerParalyticSprayCD:Start(10)			
+			timerParalyticSprayCD:Start(9)			
 		else
 			timerSlimePoolCD:Start(14)
 			timerParalyticBiteCD:Start(5)			
@@ -149,7 +149,7 @@ function mod:WormsEmerge()
 			timerBurningBiteCD:Start(5)
 		else
 			timerSweepCD:Start(16)
-			timerBurningSprayCD:Start(16)
+			timerBurningSprayCD:Start(17)
 		end
 	end	
 	self:ScheduleMethod(45, "WormsSubmerge")
