@@ -96,7 +96,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization{
-	name = "Воздушный бой"
+	name = "Боевой корабль Ледяной Короны"
 }
 
 L:SetWarningLocalization{
@@ -213,7 +213,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization{
-	name = "Совет Кровавых принцев"
+	name = "Кровавый Совет"
 }
 
 L:SetWarningLocalization{
@@ -245,7 +245,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Lanathel")
 
 L:SetGeneralLocalization{
-	name = "Кровавая королева Лана'тель"
+	name = "Королева Лана'тель"
 }
 
 L:SetWarningLocalization{
