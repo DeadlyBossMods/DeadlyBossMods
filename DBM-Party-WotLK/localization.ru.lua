@@ -775,6 +775,10 @@ L:SetOptionLocalization({
 	SpecWarnBombYou		= "Спец-предупреждение, когда Часовая бомба на вас"
 })
 
+L:SetMiscLocalization({
+	CombatStart		= "Несчастные слепые глупцы!"
+})
+
 --------------------------
 --  Varos Cloudstrider  --
 --------------------------
