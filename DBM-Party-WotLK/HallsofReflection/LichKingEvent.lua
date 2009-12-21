@@ -44,7 +44,9 @@ end
 
 function mod:OnSync(msg, arg)
 	if msg == "Wave1" then
-		timerEscape:Start()
+		if mod:IsDifficulty("heroic5") then
+			timerEscape:Start()
+		end
 		if self.Options.ShowWaves then
 			WarnWave1:Show()
 		end
