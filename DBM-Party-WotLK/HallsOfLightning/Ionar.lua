@@ -7,14 +7,22 @@ mod:SetZone()
 
 mod:RegisterCombat("combat")
 
-local warningOverload	= mod:NewTargetAnnounce(52658, 2)
-local warningSplit		= mod:NewSpellAnnounce(52770, 3)
-local timerOverload		= mod:NewTargetTimer(10, 52658)
+local warningDisperseSoon	= mod:NewSoonAnnounce(52770, 2)
+local warningOverload		= mod:NewTargetAnnounce(52658, 2)
+local warningDisperse		= mod:NewSpellAnnounce(52770, 3)
+local timerOverload			= mod:NewTargetTimer(10, 52658)
+
+local warnedDisperse		= false
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"UNIT_HEALTH"
 )
+
+function mod:OnCombatStart()
+	warnedDisperse = false
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(52658, 59795) then
@@ -25,6 +33,13 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(52770) then
-		warningSplit:Show()
+		warningDisperse:Show()
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if not warnedDisperse and self:GetUnitCreatureId(uId) == 28546 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
+		warnedDisperse = true
+		warningDisperseSoon:Show()
 	end
 end
