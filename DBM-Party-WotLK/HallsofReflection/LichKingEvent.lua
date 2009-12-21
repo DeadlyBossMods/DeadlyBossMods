@@ -11,8 +11,8 @@ else
 end
 
 mod:RegisterKill("yell", L.YellCombatEnd)
-mod:SetMinCombatTime(480)-- if you wipe, pull yell happens as soon as you zone back in despite the event not actually being started until you tell jaina you're ready to try again. This is only way to hack around this so mod doesn't wipe you for not being in combat after yell.
---The above also makes an achievement timer not possible. It would be right first pull but any pull after a wipe there is no way at all to detect when real event is started
+mod:SetMinCombatTime(120)--Dirty Hack to engage mod after a wipe on zonein and keep it engaged. if you wipe, pull yell happens as soon as you zone back in despite the event not actually being started until you tell jaina/sylvanas you're ready to try again. This is only way to hack around this so mod doesn't wipe you for not being in combat after yell.
+--The above also makes an achievement timer not possible on pull.
 mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
