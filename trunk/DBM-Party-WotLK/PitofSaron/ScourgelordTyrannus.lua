@@ -31,7 +31,7 @@ local specWarnOverlordsBrand	= mod:NewSpecialWarning("specWarnOverlordsBrand")
 local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart", 2457)
 local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)
 local timerUnholyPower			= mod:NewBuffActiveTimer(10, 69629)
-local timerForcefulSmash		= mod:NewCDTimer(50, 69627) --hotfixed? new combat logs show it every 50 seconds on dot now.
+local timerForcefulSmash		= mod:NewCDTimer(50, 69627) --hotfixed? new combat logs show it every 50 seconds'ish.
 
 mod:AddBoolOption("SetIconOnHoarfrostTarget", true)
 
@@ -57,7 +57,7 @@ end
 do 
 	local lasticyblast = 0
 	function mod:SPELL_PERIODIC_DAMAGE(args)
-		if args:IsSpellID(69238, 69628) and args:IsPlayer() and time() - lasticyblast > 2 then		-- Icy Blast, MOVE!
+		if args:IsSpellID(69238, 69628) and args:IsPlayer() and time() - lasticyblast > 3 then		-- Icy Blast, MOVE!
 			specWarnIcyBlast:Show()
 			lasticyblast = time()
 		end
