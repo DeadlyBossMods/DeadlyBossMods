@@ -1512,7 +1512,7 @@ L:SetMiscLocalization({
 	Abom			= "笨拙憎惡體",--creature id 37069
 	WitchDoctor		= "復活的巫醫",--creature id 36941
 	ACombatStart		= "他太強大了!我們必須立刻離開這裡!我的魔法只能困住他一小段時間。快來吧，英雄們!",
-	HCombatStart		= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",
+	HCombatStart		= "他…太強大了。英雄們，快點…到我這裡來!我們要立刻離開這裡!我會盡可能地在我們逃走時把他困住。",
 	Wave1			= "無處可逃!",
 	Wave2			= "屈服於墓地的酷寒之下吧!",
 	Wave3			= "又是死路一條!",
