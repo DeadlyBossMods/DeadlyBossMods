@@ -1513,13 +1513,14 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Ghoul		= "Raging Ghoul",--creature id 36940
-	Abom		= "Lumbering Abomination",--creature id 37069
-	WitchDoctor	= "Risen Witch Doctor",--creature id 36941
-	CombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
-	Wave1		= "There is no escape!",
-	Wave2		= "Succumb to the chill of the grave.",
-	Wave3		= "Another dead end.",
-	Wave4		= "How long can you fight it?",
+	Ghoul			= "Raging Ghoul",--creature id 36940
+	Abom			= "Lumbering Abomination",--creature id 37069
+	WitchDoctor		= "Risen Witch Doctor",--creature id 36941
+	ACombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	HCombatStart	= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",
+	Wave1			= "There is no escape!",
+	Wave2			= "Succumb to the chill of the grave.",
+	Wave3			= "Another dead end.",
+	Wave4			= "How long can you fight it?",
 	YellCombatEnd	= "FIRE! FIRE!"
 })
