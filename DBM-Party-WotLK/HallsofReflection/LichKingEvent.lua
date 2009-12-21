@@ -47,4 +47,5 @@ function mod:OnSync(msg, arg)
 		if self.Options.ShowWaves then
 			WarnWave4:Show()
 		end
+	end
 end
