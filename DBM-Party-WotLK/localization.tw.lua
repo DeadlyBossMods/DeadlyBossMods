@@ -1494,15 +1494,28 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnWave1		= "下一波 即將到來",--Work in Progress, will list actual mobs/count for waves when finalized (kind of like hyjal)
+	WarnWave2		= "下一波 即將到來",--Work in Progress
+	WarnWave3		= "下一波 即將到來",--Work in Progress
+	WarnWave4		= "下一波 即將到來"--Work in Progress
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShowWaves		= "為即將到來的下一波顯示警告"
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "他太強大了!我們必須立刻離開這裡!我的魔法只能困住他一小段時間。快來吧，英雄們!",
-	YellCombatEnd	= "開火!開火!"
+	Ghoul			= "狂怒食屍鬼",--creature id 36940
+	Abom			= "笨拙憎惡體",--creature id 37069
+	WitchDoctor		= "復活的巫醫",--creature id 36941
+	ACombatStart		= "他太強大了!我們必須立刻離開這裡!我的魔法只能困住他一小段時間。快來吧，英雄們!",
+	HCombatStart		= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",
+	Wave1			= "無處可逃!",
+	Wave2			= "屈服於墓地的酷寒之下吧!",
+	Wave3			= "又是死路一條!",
+	Wave4			= "你還能支持多久?",
+	YellCombatEnd		= "開火!開火!"
 })
