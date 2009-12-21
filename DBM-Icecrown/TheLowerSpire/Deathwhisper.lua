@@ -41,18 +41,51 @@ mod:AddBoolOption("SetIconOnDominateMind", true)
 mod:AddBoolOption("SetIconOnDeformedFanatic", true)
 mod:AddBoolOption("SetIconOnEmpoweredAdherent", true)
 
+mod:RemoveOption("HealthFrame")
+mod:AddBoolOption("ShieldHealthFrame", true, "misc")
+
 local lastDD	= 0
 local dominateMindTargets	= {}
 local dominateMindIcon 	= 6
 local deformedFanatic
 local empoweredAdherent
 
-local function showDominateMindWarning()
-	warnDominateMind:Show(table.concat(dominateMindTargets, "<, >"))
-	timerDominateMind:Start()
-	timerDominateMindCD:Start()
+function mod:OnCombatStart(delay)
+	if self.Options.ShieldHealthFrame then
+		DBM.BossHealth:Show(L.name)
+		DBM.BossHealth:AddBoss(36855, L.name)
+		self:ScheduleMethod(0.5, "CreateShildHPFrame")
+	end		
+	enrageTimer:Start(-delay)
+	timerAdds:Start(7)
+	warnAddsSoon:Schedule(4)			-- 3sec pre-warning on start
+	self:ScheduleMethod(7, "addsTimer")
+	timerDominateMindCD:Start(30)		-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
 	table.wipe(dominateMindTargets)
-	dominateMindIcon = 6
+	dominateMindIcon = 7
+	deformedFanatic = nil
+	empoweredAdherent = nil
+end
+
+function mod:OnCombatEnd()
+	DBM.BossHealth:Clear()
+end
+
+do	-- add the additional Shield Bar
+	local last = 100
+	local function getShieldPercent()
+		for i = 0, GetNumRaidMembers(), 1 do
+			local unitId = ((i == 0) and "target") or "raid"..i.."target"
+			local guid = UnitGUID(unitId)
+			if guid and tonumber(guid:sub(9, 12), 16) == 36855 then
+				return math.floor(UnitMana(unitId)/UnitManaMax(unitId) * 100)
+			end
+		end
+		return last
+	end
+	function mod:CreateShildHPFrame()
+		DBM.BossHealth:AddBoss(getShieldPercent, L.ShieldPercent)
+	end
 end
 
 function mod:addsTimer()
@@ -61,18 +94,6 @@ function mod:addsTimer()
 	timerAdds:Start()
 	warnAddsSoon:Schedule(55)	-- 5 secs prewarning
 	self:ScheduleMethod(60, "addsTimer")
-end
-
-function mod:OnCombatStart(delay)
-	enrageTimer:Start(-delay)
-	timerAdds:Start(7)
-	warnAddsSoon:Schedule(4)	-- 3sec pre-warning on start
-	self:ScheduleMethod(7, "addsTimer")
-	timerDominateMindCD:Start(30)	-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
-	table.wipe(dominateMindTargets)
-	dominateMindIcon = 7
-	deformedFanatic = nil
-	empoweredAdherent = nil
 end
 
 function mod:TrySetTarget()
@@ -92,39 +113,48 @@ function mod:TrySetTarget()
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(71289) then
-		dominateMindTargets[#dominateMindTargets + 1] = args.destName
-		if self.Options.SetIconOnDominateMind then
-			self:SetIcon(args.destName, dominateMindIcon, 20)
-			dominateMindIcon = dominateMindIcon - 1
-		end
-		self:Unschedule(showDominateMindWarning)
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("normal25") or (mod:IsDifficulty("heroic25") and #dominateMindTargets >= 3) then
-			showDominateMindWarning()
-		else
-			self:Schedule(0.3, showDominateMindWarning)
-		end
-	elseif args:IsSpellID(72108, 71001) then
-		if args:IsPlayer() then
-			specWarnDeathDecay:Show()
-		end
-		if (GetTime() - lastDD > 5) then
-			warnDeathDecay:Show()
-			lastDD = GetTime()
-		end
-	elseif args:IsSpellID(71237) and args:IsPlayer() then
-		specWarnCurseTorpor:Show()
-	elseif args:IsSpellID(71204) then
-		warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
-			specWarnTouchInsignificance:Show(args.amount)
-		end
-		timerTouchInsignificance:Start(args.destName)
+do
+	local function showDominateMindWarning()
+		warnDominateMind:Show(table.concat(dominateMindTargets, "<, >"))
+		timerDominateMind:Start()
+		timerDominateMindCD:Start()
+		table.wipe(dominateMindTargets)
+		dominateMindIcon = 6
 	end
+	
+	function mod:SPELL_AURA_APPLIED(args)
+		if args:IsSpellID(71289) then
+			dominateMindTargets[#dominateMindTargets + 1] = args.destName
+			if self.Options.SetIconOnDominateMind then
+				self:SetIcon(args.destName, dominateMindIcon, 20)
+				dominateMindIcon = dominateMindIcon - 1
+			end
+			self:Unschedule(showDominateMindWarning)
+			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("normal25") or (mod:IsDifficulty("heroic25") and #dominateMindTargets >= 3) then
+				showDominateMindWarning()
+			else
+				self:Schedule(0.3, showDominateMindWarning)
+			end
+		elseif args:IsSpellID(72108, 71001) then
+			if args:IsPlayer() then
+				specWarnDeathDecay:Show()
+			end
+			if (GetTime() - lastDD > 5) then
+				warnDeathDecay:Show()
+				lastDD = GetTime()
+			end
+		elseif args:IsSpellID(71237) and args:IsPlayer() then
+			specWarnCurseTorpor:Show()
+		elseif args:IsSpellID(71204) then
+			warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
+			if args:IsPlayer() and (args.amount or 1) >= 3 then
+				specWarnTouchInsignificance:Show(args.amount)
+			end
+			timerTouchInsignificance:Start(args.destName)
+		end
+	end
+	mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 end
-
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70842) then
@@ -175,3 +205,4 @@ function mod:OnSync(msg, arg)
 		warnReanimating:Show()
 	end
 end
+
