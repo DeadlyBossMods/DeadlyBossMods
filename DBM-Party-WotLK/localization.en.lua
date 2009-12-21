@@ -1499,15 +1499,27 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnWave1		= "Wave incoming",--Work in Progress, will list actual mobs/count for waves when finalized (kind of like hyjal)
+	WarnWave2		= "Wave incoming",--Work in Progress
+	WarnWave3		= "Wave incoming",--Work in Progress
+	WarnWave4		= "Wave incoming"--Work in Progress
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShowWaves	= "Show warning for incoming waves"
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	Ghoul		= "Raging Ghoul",--creature id 36940
+	Abom		= "Lumbering Abomination",--creature id 37069
+	WitchDoctor	= "Risen Witch Doctor",--creature id 36941
+	CombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	Wave1		= "There is no escape!",
+	Wave2		= "Succumb to the chill of the grave.",
+	Wave3		= "Another dead end.",
+	Wave4		= "How long can you fight it?",
 	YellCombatEnd	= "FIRE! FIRE!"
 })
