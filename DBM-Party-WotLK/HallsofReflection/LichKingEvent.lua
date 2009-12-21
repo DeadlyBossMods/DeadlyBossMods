@@ -12,10 +12,10 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local WarnWave1	= mod:NewAnnounce("WarnWave1", 2, nil, nil)
-local WarnWave2	= mod:NewAnnounce("WarnWave2", 2, nil, nil)
-local WarnWave3	= mod:NewAnnounce("WarnWave3", 2, nil, nil)
-local WarnWave4	= mod:NewAnnounce("WarnWave4", 2, nil, nil)
+local WarnWave1	= mod:NewAnnounce("WarnWave1", 2, nil, nil, false)
+local WarnWave2	= mod:NewAnnounce("WarnWave2", 2, nil, nil, false)
+local WarnWave3	= mod:NewAnnounce("WarnWave3", 2, nil, nil, false)
+local WarnWave4	= mod:NewAnnounce("WarnWave4", 2, nil, nil, false)
 mod:AddBoolOption("ShowWaves", true, "announce")
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
