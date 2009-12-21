@@ -25,7 +25,7 @@ local specWarnWhirlwind		= mod:NewSpecialWarningRun(69076)
 local timerBoneSpike		= mod:NewCDTimer(18, 69057) --Roughly 18-23 second delay between casts, using an 18 sec cooldown timer.
 local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)
 local timerWhirlwind		= mod:NewBuffActiveTimer(20, 69076)
-local timerBoned            = mod:NewAchievementTimer(8, 4610, "achievementBoned") --Iffy, still not sure what combat event blizz actually checks for bonespikes.
+local timerBoned			= mod:NewAchievementTimer(8, 4610, "achievementBoned") --Iffy, still not sure what combat event blizz actually checks for bonespikes.
 
 local soundWhirlwind = mod:NewSound(69076)
 mod:AddBoolOption("SetIconOnImpale", true)

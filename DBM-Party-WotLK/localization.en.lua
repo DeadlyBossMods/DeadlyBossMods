@@ -1506,6 +1506,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	achievementEscape	= "Time to escape"
 })
 
 L:SetOptionLocalization({
