@@ -775,6 +775,10 @@ L:SetOptionLocalization({
 	SpecWarnBombYou		= "당신이 시한 폭탄에 걸렸을 경우 특수 경고 보기"
 })
 
+L:SetMiscLocalization({
+	CombatStart		= "Poor blind fools!"
+})
+
 ------------------------
 -- 바로스 클라우드스트라이더 --
 ------------------------
@@ -1111,7 +1115,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
-	WavePortal		= "포탈 열린 수: (%d+)/18"
+	WavePortal		= "차원문 열림: (%d+)/18"
 })
 
 ---------------------------
@@ -1499,15 +1503,28 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnWave1		= "Wave incoming",--Work in Progress, will list actual mobs/count for waves when finalized (kind of like hyjal)
+	WarnWave2		= "Wave incoming",--Work in Progress
+	WarnWave3		= "Wave incoming",--Work in Progress
+	WarnWave4		= "Wave incoming"--Work in Progress
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShowWaves		= "웨이브 시작전 경고 보기"
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "그는... 너무 강하다. 영웅들이여, 어서... 이쪽으로 오라! 즉시 이곳을 떠나야 한다! 도망치는 동안 그를 잡아놓을 수 있도록 조치를 취하겠다.",
+	ACombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	HCombatStart	= "그는... 너무 강하다. 영웅들이여, 어서... 이쪽으로 오라! 즉시 이곳을 떠나야 한다! 도망치는 동안 그를 잡아놓을 수 있도록 조치를 취하겠다.",
+	Ghoul			= "Raging Ghoul",--creature id 36940
+	Abom			= "Lumbering Abomination",--creature id 37069
+	WitchDoctor		= "Risen Witch Doctor",--creature id 36941	
+	Wave1			= "도망칠 방법은 없다!",
+	Wave2			= "무덤의 한기에 굴복하라.",
+	Wave3			= "또 막다른 곳이다.",
+	Wave4			= "얼마나 더 싸울 수 있겠느냐?",	
 	YellCombatEnd	= "발사! 발사!"
 })
