@@ -80,7 +80,6 @@ L:SetOptionLocalization{
 	WarnReanimating			= "當小怪再活化時顯示警告",
 	TimerAdds			= "為新的小怪顯示計時器",
 	ShieldHealthFrame		= "為$spell:70842顯示首領血量框架",
-
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
@@ -89,7 +88,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull			= "這騷動是怎麼回事?你竟敢擅闖聖地?這裡將是你的最終之地!",
-	YellReanimatedFanatic		= "起來，在純粹的形態中感受狂喜!"
+	YellReanimatedFanatic		= "起來，在純粹的形態中感受狂喜!",
+	ShieldPercent			= "法力屏障"
 }
 
 ----------------------
