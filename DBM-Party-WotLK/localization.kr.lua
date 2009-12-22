@@ -1503,13 +1503,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnWave1		= "Wave incoming",--Work in Progress, will list actual mobs/count for waves when finalized (kind of like hyjal)
-	WarnWave2		= "Wave incoming",--Work in Progress
-	WarnWave3		= "Wave incoming",--Work in Progress
-	WarnWave4		= "Wave incoming"--Work in Progress
+	WarnWave1		= "6 Raging Ghoul, 1 Risen Witch Doctor incoming",--6 Ghoul, 1 WitchDocter
+	WarnWave2		= "6 Raging Ghoul, 2 Risen Witch Doctor, 1 Lumbering Abomination incoming",--6 Ghoul, 2 WitchDocter, 1 Abom
+	WarnWave3		= "6 Raging Ghoul, 2 Risen Witch Doctor, 2 Lumbering Abomination incoming",--6 Ghoul, 2 WitchDocter, 2 Abom
+	WarnWave4		= "12 Raging Ghoul, 3 Risen Witch Doctor, 3 Lumbering Abomination incoming"--12 Ghoul, 3 WitchDocter, 3 Abom
 })
 
 L:SetTimerLocalization({
+	achievementEscape	= "탈출 시간"
 })
 
 L:SetOptionLocalization({
@@ -1519,7 +1520,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	ACombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
 	HCombatStart	= "그는... 너무 강하다. 영웅들이여, 어서... 이쪽으로 오라! 즉시 이곳을 떠나야 한다! 도망치는 동안 그를 잡아놓을 수 있도록 조치를 취하겠다.",
-	Ghoul			= "Raging Ghoul",--creature id 36940
+	Ghoul			= "Raging Ghoul",--creature id 36940. Not sure how to use these in function above to simplify locals though. :\
 	Abom			= "Lumbering Abomination",--creature id 37069
 	WitchDoctor		= "Risen Witch Doctor",--creature id 36941	
 	Wave1			= "도망칠 방법은 없다!",
