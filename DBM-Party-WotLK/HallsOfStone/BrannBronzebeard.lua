@@ -7,7 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("yell", L.Pull)
 mod:RegisterKill("yell", L.Kill)
-mod:SetWipeTime(25)
+mod:SetWipeTime(40)
 
 mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
