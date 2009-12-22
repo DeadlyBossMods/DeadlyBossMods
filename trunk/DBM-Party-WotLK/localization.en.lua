@@ -1502,7 +1502,7 @@ L:SetWarningLocalization({
 	WarnWave1		= "6 Raging Ghoul, 1 Risen Witch Doctor incoming",--6 Ghoul, 1 WitchDocter
 	WarnWave2		= "6 Raging Ghoul, 2 Risen Witch Doctor, 1 Lumbering Abomination incoming",--6 Ghoul, 2 WitchDocter, 1 Abom
 	WarnWave3		= "6 Raging Ghoul, 2 Risen Witch Doctor, 2 Lumbering Abomination incoming",--6 Ghoul, 2 WitchDocter, 2 Abom
-	WarnWave4		= "12 Raging Ghoul, 3 Risen Witch Doctor, 3 Lumbering Abomination incoming"--12 Ghoul, 3 WitchDocter, 3 Abom
+	WarnWave4		= "12 Raging Ghoul, 4 Risen Witch Doctor, 3 Lumbering Abomination incoming"--12 Ghoul, 3 WitchDocter, 3 Abom
 })
 
 L:SetTimerLocalization({
