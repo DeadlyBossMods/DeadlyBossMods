@@ -10,7 +10,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"SPELL_PERIODIC_DAMAGE"
@@ -22,7 +21,6 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 
 local warnPursuitCast			= mod:NewCastAnnounce(68987)
 local warnPoisonNova			= mod:NewCastAnnounce(68989)
-local warnPustulantFlesh		= mod:NewTargetAnnounce(69581)
 local warnPursuit				= mod:NewAnnounce("warnPursuit")
 
 local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
@@ -32,7 +30,6 @@ local specWarnPoisonNova		= mod:NewSpecialWarning("specWarnPoisonNova", isMelee)
 
 local timerPursuitCast			= mod:NewCastTimer(5, 68987)
 local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
-local timerPustulantFlesh		= mod:NewTargetTimer(10, 69581)
 local timerPoisonNova			= mod:NewCastTimer(5, 68989)
 
 mod:AddBoolOption("PlaySoundOnPoisonNova", isMelee)
@@ -56,15 +53,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69029, 70850) then							-- Pursuit Confusion
 		timerPursuitConfusion:Show(args.destName)
-	elseif args:IsSpellID(69581, 70273) and self:IsInCombat() then	-- Pustulant Flesh
-		warnPustulantFlesh:Show(args.destName)
-		timerPustulantFlesh:Show(args.destName)
-	end
-end
-
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(69581, 70273) and self:IsInCombat() then		-- Pustulant Flesh
-		timerPustulantFlesh:Cancel(args.destName)
 	end
 end
 
