@@ -34,8 +34,8 @@ local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
 
 local specwarnStarLow			= mod:NewSpecialWarning("warnStarLow", false)
 local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
-local specWarnBigBang			= mod:NewSpecialWarning("SpecWarnBigBang")
-local specWarnCosmicSmash		= mod:NewSpecialWarning("SpecWarnCosmicSmash")
+local specWarnBigBang			= mod:NewSpecialWarningSpell(64584)
+local specWarnCosmicSmash		= mod:NewSpecialWarningSpell(64598)
 
 local timerCombatStart		    = mod:NewTimer(7, "TimerCombatStart", 2457)
 local enrageTimer				= mod:NewEnrageTimer(360)
