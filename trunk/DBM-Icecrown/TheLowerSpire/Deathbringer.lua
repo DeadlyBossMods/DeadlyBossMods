@@ -24,7 +24,8 @@ local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
 
-local specwarnRuneofBlood	= mod:NewSpecialWarningOther(72410, false)
+local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
+local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, false)
 
 local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
@@ -79,6 +80,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72293) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
+		specwarnMark:Show(args.destName)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingBloodTargets[#boilingBloodTargets + 1] = args.destName
 		self:Unschedule(warnBoilingBloodTargets)

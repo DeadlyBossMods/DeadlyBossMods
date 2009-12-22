@@ -2577,8 +2577,8 @@ do
 		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)
 	end
 
-	function bossModPrototype:NewSpecialWarningOther(text, optionDefault, ...)
-		return newSpecialWarning(self, "other", text, nil, optionDefault, ...)
+	function bossModPrototype:NewSpecialWarningTarget(text, optionDefault, ...)
+		return newSpecialWarning(self, "target", text, nil, optionDefault, ...)
 	end
 
 	function bossModPrototype:NewSpecialWarningClose(text, optionDefault, ...)

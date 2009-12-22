@@ -139,7 +139,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	you 	= "Show special warning when you are affected by \n $spell:%d",
-	other 	= "Show special warning when someone is affected by \n $spell:%d",
+	target 	= "Show special warning when someone is affected by \n $spell:%d",
 	close 	= "Show special warning when someone close to you is \n affected by $spell:%d",
 	move 	= "Show special warning when you are affected by \n $spell:%d",
 	run 	= "Show special warning when you are affected by \n $spell:%d",
@@ -149,7 +149,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	you = "%s on you",
-	other = "%s on %%s",
+	target = "%s on %%s",
 	close = "%s on %%s near you",
 	move = "%s - move away",
 	run = "%s - run away",
