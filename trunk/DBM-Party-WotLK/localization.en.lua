@@ -599,17 +599,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerEvent	= "Time remaining"
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("phase number")
+	WarningPhase	= optionWarning:format("phase number"),
+	timerEvent		= "Show timer for event duration"
 })
 
 L:SetMiscLocalization({
-	Pull	= "Time to get some answers! Let's get this show on the road!",
-	Phase1	= "xxx anti error xxx",
-	Phase2	= "xxx anti error xxx",
-	Phase3	= "xxx anti error xxx"
+	Pull	= "Now keep an eye out! I'll have this licked in two shakes of a--",
+	Phase1	= "Security breach in progress. Analysis of historical archives transferred to lower-priority queue. Countermeasures engaged.",
+	Phase2	= "Threat index threshold exceeded.  Celestial archive aborted. Security level heightened.",
+	Phase3	= "Critical threat index. Void analysis diverted. Initiating sanitization protocol.",
+	Kill	= "System online. Life form pattern recognized.  Welcome, Branbronzan.  Query?"
 })
 
 -----------------
