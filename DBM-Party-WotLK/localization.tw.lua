@@ -1494,13 +1494,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnWave1		= "下一波 即將到來",--Work in Progress, will list actual mobs/count for waves when finalized (kind of like hyjal)
-	WarnWave2		= "下一波 即將到來",--Work in Progress
-	WarnWave3		= "下一波 即將到來",--Work in Progress
-	WarnWave4		= "下一波 即將到來"--Work in Progress
+	WarnWave1		= "6 狂怒食屍鬼, 1 復活的巫醫 即將到來",--6 Ghoul, 1 WitchDocter
+	WarnWave2		= "6 狂怒食屍鬼, 2 復活的巫醫, 1 笨拙憎惡體 即將到來",--6 Ghoul, 2 WitchDocter, 1 Abom
+	WarnWave3		= "6 狂怒食屍鬼, 2 復活的巫醫, 2 笨拙憎惡體 即將到來",--6 Ghoul, 2 WitchDocter, 2 Abom
+	WarnWave4		= "12 狂怒食屍鬼, 4 復活的巫醫, 3 笨拙憎惡體 即將到來"--12 Ghoul, 3 WitchDocter, 3 Abom
 })
 
 L:SetTimerLocalization({
+	achievementEscape	= "逃離計時"
 })
 
 L:SetOptionLocalization({

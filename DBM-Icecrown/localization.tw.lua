@@ -79,6 +79,8 @@ L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
 	WarnReanimating			= "當小怪再活化時顯示警告",
 	TimerAdds			= "為新的小怪顯示計時器",
+	ShieldHealthFrame		= "為$spell:70842顯示首領血量框架",
+
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
