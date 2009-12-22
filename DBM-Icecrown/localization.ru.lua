@@ -51,7 +51,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale		= "Объявлять цели заклинания $spell:69062",
+	WarnImpale			= "Объявлять цели заклинания $spell:69062",
 	achievementBoned	= "Отсчет времени для достижения Косточка попалась",
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
@@ -79,6 +79,7 @@ L:SetOptionLocalization{
 	WarnAddsSoon				= "Предупреждать заранее о призыве помощников",
 	WarnReanimating				= "Предупреждать, при трансформации помощника",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds					= "Отсчет времени до призыва помощников",
+	ShieldHealthFrame			= "Показывать здоровье босса с индикатором здоровья для $spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
