@@ -132,7 +132,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "페이즈 %d 의 경고 보기"
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	you 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기",
-	other 	= "$spell:%d의 영향을 누군가 받을 경우 특수 경고 보기",
+	target 	= "$spell:%d의 영향을 누군가 받을 경우 특수 경고 보기",
 	close 	= "$spell:%d의 영향을 가까운 공대원으로부터 받을 경우 특수 경고 보기",
 	move 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(이동)",
 	run 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(빠른이동)",
@@ -144,7 +144,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	you 	= "당신에게 %s",
-	other 	= "%s : %%s",
+	target 	= "%s : %%s",
 	close 	= "%%s에게 가까운 당신에게 %s 시전",
 	move 	= "%s - 이동하세요!",
 	run 	= "%s - 뛰세요!",

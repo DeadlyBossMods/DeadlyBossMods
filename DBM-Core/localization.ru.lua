@@ -141,7 +141,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	you 	= "Спец-предупреждение, когда на вас \n $spell:%d",
-	other 	= "Спец-предупреждение, когда на ком-то \n $spell:%d",
+	target 	= "Спец-предупреждение, когда на ком-то \n $spell:%d",
 	close 	= "Спец-предупреждение, когда на ком-то рядом с вами \n $spell:%d",
 	move 	= "Спец-предупреждение для $spell:%d",
 	run 	= "Спец-предупреждение для $spell:%d",
@@ -151,7 +151,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	you = "%s на вас",
-	other = "%s на |3-5(%%s)",
+	target = "%s на |3-5(%%s)",
 	close = "%s на |3-5(%%s) около вас",
 	move = "%s - отбегите",
 	run = "%s - бегите",

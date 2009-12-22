@@ -141,7 +141,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	you 					= "當你中了$spell:%d時顯示特別警告",
-	other 					= "為中了$spell:%d的人顯示特別警告",
+	target 					= "為中了$spell:%d的人顯示特別警告",
 	close 					= "當中了$spell:%d的人在你附近時顯示特別警告",
 	move 					= "當你中了$spell:%d時顯示特別警告",
 	run 					= "當你中了$spell:%d時顯示特別警告",
@@ -151,7 +151,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	you 					= "你中了%s",
-	other 					= "%%s中了%s",
+	target 					= "%%s中了%s",
 	close 					= "你附近的%%s中了%s",
 	move 					= "%s - 快跑開",
 	run 					= "%s - 快跑開",
