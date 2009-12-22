@@ -1346,8 +1346,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnIcyBlast		= "Ледяной вихрь - отбегите",
-	specWarnHoarfrost		= "Глыба падает на вас!",
-	specWarnHoarfrostNear	= "Глыба падает около вас - бегите",
+	specWarnHoarfrost		= "Глыба падает на вас",
+	specWarnHoarfrostNear	= "Глыба падает около вас - отбегите",
 	specWarnOverlordsBrand	= "Клеймо верховного лорда на вас"
 })
 
@@ -1501,26 +1501,27 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnWave1		= "Wave incoming",--Work in Progress, will list actual mobs/count for waves when finalized (kind of like hyjal)
-	WarnWave2		= "Wave incoming",--Work in Progress
-	WarnWave3		= "Wave incoming",--Work in Progress
-	WarnWave4		= "Wave incoming"--Work in Progress
+	WarnWave1		= "6 Гневных вурдалаков, 1 Воскрешенный ведьмак вступают в бой",--6 Ghoul, 1 WitchDocter
+	WarnWave2		= "6 Гневных вурдалаков, 2 Воскрешенных ведьмака, 1 Неуклюжее поганище вступают в бой",--6 Ghoul, 2 WitchDocter, 1 Abom
+	WarnWave3		= "6 Гневных вурдалаков, 2 Воскрешенных ведьмака, 2 Неуклюжих поганища вступают в бой",--6 Ghoul, 2 WitchDocter, 2 Abom
+	WarnWave4		= "12 Гневных вурдалаков, 4 Воскрешенных ведьмака, 3 Неуклюжих поганища вступают в бой"--12 Ghoul, 3 WitchDocter, 3 Abom
 })
 
 L:SetTimerLocalization({
+	achievementEscape	= "Время для побега"
 })
 
 L:SetOptionLocalization({
-	ShowWaves	= "Show warning for incoming waves"
+	ShowWaves	= "Предупреждение для волн"
 })
 
 L:SetMiscLocalization({
-	Ghoul			= "Raging Ghoul",--creature id 36940
-	Abom			= "Lumbering Abomination",--creature id 37069
-	WitchDoctor		= "Risen Witch Doctor",--creature id 36941
+	Ghoul			= "Гневный вурдалак",--creature id 36940
+	Abom			= "Неуклюжее поганище",--creature id 37069
+	WitchDoctor		= "Воскрешенный ведьмак",--creature id 36941
 	ACombatStart	= "Он слишком силен. Мы должны выбраться отсюда как можно скорее. Моя магия задержит его, но не надолго. Быстрее, герои!",
 	HCombatStart	= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",
-	Wave1			= "Бежать некуда.",
+	Wave1			= "Бежать некуда.$",
 	Wave2			= "Покоритесь леденящей смерти!",
 	Wave3			= "Вы в ловушке!",
 	Wave4			= "Как долго вы сможете сопротивляться?",
