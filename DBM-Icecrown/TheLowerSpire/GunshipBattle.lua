@@ -46,9 +46,9 @@ end
 function mod:OnCombatStart(delay)
 	DBM.BossHealth:Clear()
 	timerCombatStart:Show(-delay)
-	timerAdds:Start(63-delay)
-	warnAddsSoon:Schedule(58)
-	self:ScheduleMethod(63, "Adds")
+	timerAdds:Start(62-delay)
+	warnAddsSoon:Schedule(57)
+	self:ScheduleMethod(62, "Adds")
 	timerBelowZeroCD:Start(75-delay)
 end
 
