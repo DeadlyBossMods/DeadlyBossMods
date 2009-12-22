@@ -1656,7 +1656,11 @@ function checkWipe(confirm)
 				DBM:EndCombat(inCombat[i], true)
 			end
 		else
-			DBM:Schedule(5, checkWipe, true)
+			local maxDelayTime = 5
+			for i, v in ipairs(inCombat) do
+				maxDelayTime = v.combatInfo and v.combatInfo.wipeTimer and v.combatInfo.wipeTimer > maxDelayTime and v.combatInfo.wipeTimer or maxDelayTime
+			end
+			DBM:Schedule(maxDelayTime, checkWipe, true)
 		end
 	end
 end
@@ -3128,6 +3132,11 @@ end
 
 function bossModPrototype:SetMinCombatTime(t)
 	self.minCombatTime = t
+end
+
+-- needs to be called after RegisterCombat
+function bossModPrototype:SetWipeTime(t)
+	self.combatInfo.wipeTimer = t
 end
 
 function bossModPrototype:GetBossHPString(cId)
