@@ -138,16 +138,18 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
+	spell 	= "Show special warning for \n $spell:%d",
 	you 	= "Show special warning when you are affected by \n $spell:%d",
 	target 	= "Show special warning when someone is affected by \n $spell:%d",
 	close 	= "Show special warning when someone close to you is \n affected by $spell:%d",
 	move 	= "Show special warning when you are affected by \n $spell:%d",
-	run 	= "Show special warning when you are affected by \n $spell:%d",
-	cast 	= "Show special warning when you are affected by \n $spell:%d",
+	run 	= "Show special warning for \n $spell:%d",
+	cast 	= "Show special warning for \n $spell:%d cast",
 	stack 	= "Show special warning when you have >=%d stacks of \n $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	spell = "%s",
 	you = "%s on you",
 	target = "%s on %%s",
 	close = "%s on %%s near you",

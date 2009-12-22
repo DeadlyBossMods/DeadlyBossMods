@@ -2573,6 +2573,10 @@ do
 		return obj
 	end
 
+	function bossModPrototype:NewSpecialWarningSpell(text, optionDefault, ...)
+		return newSpecialWarning(self, "spell", text, nil, optionDefault, ...)
+	end
+
 	function bossModPrototype:NewSpecialWarningYou(text, optionDefault, ...)
 		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)
 	end
