@@ -1506,7 +1506,7 @@ L:SetWarningLocalization({
 	WarnWave1		= "분노한 구울 6, 되살아난 의술사 1 등장",--6 Ghoul, 1 WitchDocter
 	WarnWave2		= "분노한 구울 6, 되살아난 의술사 2, 육중한 누더기골렘 1 등장",--6 Ghoul, 2 WitchDocter, 1 Abom
 	WarnWave3		= "분노한 구울 6, 되살아난 의술사 2, 육중한 누더기골렘 2 등장",--6 Ghoul, 2 WitchDocter, 2 Abom
-	WarnWave4		= "분노한 구울 12, 되살아난 의술사 3, 육중한 누더기골렘 3 등장"--12 Ghoul, 3 WitchDocter, 3 Abom
+	WarnWave4		= "분노한 구울 12, 되살아난 의술사 4, 육중한 누더기골렘 3 등장"--12 Ghoul, 3 WitchDocter, 3 Abom
 })
 
 L:SetTimerLocalization({
