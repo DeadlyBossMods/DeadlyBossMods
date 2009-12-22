@@ -19,6 +19,7 @@ mod:RegisterKill("yell", L.YellCombatEnd)--Combat does not end for another 8 or 
 mod:SetMinCombatTime(120)--Dirty Hack to engage mod after a wipe on zonein and keep it engaged. if you wipe, pull yell happens as soon as you zone back in despite the event not actually being started until you tell jaina/sylvanas you're ready to try again. This is only way to hack around this so mod doesn't wipe you for not being in combat after yell.
 --The above also makes an achievement timer not possible on pull.
 mod:RegisterEvents(
+	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -28,7 +29,15 @@ local WarnWave3	= mod:NewAnnounce("WarnWave3", 2, nil, nil, false)
 local WarnWave4	= mod:NewAnnounce("WarnWave4", 2, nil, nil, false)
 mod:AddBoolOption("ShowWaves", true, "announce")
 
-local timerEscape	= mod:NewAchievementTimer(344, 4526, "achievementEscape")--Time adjusted as it cannot be started on pull detection has to be started with first add wave.
+local timerEscape	= mod:NewAchievementTimer(360, 4526, "achievementEscape")
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(69708) then					--Lich King has broken out of his iceblock, this starts actual event
+		if mod:IsDifficulty("heroic5") then
+			timerEscape:Start()
+		end
+	end
+end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Wave1 or msg:find(L.Wave1) then
@@ -44,9 +53,6 @@ end
 
 function mod:OnSync(msg, arg)
 	if msg == "Wave1" then
-		if mod:IsDifficulty("heroic5") then
-			timerEscape:Start()
-		end
 		if self.Options.ShowWaves then
 			WarnWave1:Show()
 		end
