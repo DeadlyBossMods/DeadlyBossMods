@@ -591,7 +591,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
-	name = "Escort Event"
+	name = "Brann Escort Event"
 })
 
 L:SetWarningLocalization({
