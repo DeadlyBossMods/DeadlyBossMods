@@ -140,16 +140,18 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
-	you 	= "Спец-предупреждение, когда на вас \n $spell:%d",
-	target 	= "Спец-предупреждение, когда на ком-то \n $spell:%d",
-	close 	= "Спец-предупреждение, когда на ком-то рядом с вами \n $spell:%d",
+	spell 	= "Спец-предупреждение для $spell:%d",
+	you 	= "Спец-предупреждение, когда на вас $spell:%d",
+	target 	= "Спец-предупреждение, когда на ком-то $spell:%d",
+	close 	= "Спец-предупреждение, когда на ком-то рядом с вами \n$spell:%d",
 	move 	= "Спец-предупреждение для $spell:%d",
 	run 	= "Спец-предупреждение для $spell:%d",
-	cast 	= "Спец-предупреждение для $spell:%d",
-	stack 	= "Спец-предупреждение, когда на вас >=%d стаков \n $spell:%d"
+	cast 	= "Спец-предупреждение о применении заклинания \n$spell:%d",
+	stack 	= "Спец-предупреждение, когда на вас >=%d стаков \n$spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	spell = "%s",
 	you = "%s на вас",
 	target = "%s на |3-5(%%s)",
 	close = "%s на |3-5(%%s) около вас",
