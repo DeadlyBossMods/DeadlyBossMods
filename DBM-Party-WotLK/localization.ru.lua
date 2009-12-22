@@ -1497,7 +1497,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("LichKingEvent")
 
 L:SetGeneralLocalization({
-	name = "Побег от Короля-лича"
+	name = "Побег от Артаса"
 })
 
 L:SetWarningLocalization({
