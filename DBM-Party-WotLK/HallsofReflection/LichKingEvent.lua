@@ -17,7 +17,7 @@ mod:RegisterKill("yell", L.YellCombatEnd)--Combat does not end for another 8 or 
 				"<482.1> [REGEN_ENABLED]  -- < Regen Enabled : Leaving combat! -- < ", -- [9226]--]]
 
 mod:SetMinCombatTime(120)--Dirty Hack to engage mod after a wipe on zonein and keep it engaged. if you wipe, pull yell happens as soon as you zone back in despite the event not actually being started until you tell jaina/sylvanas you're ready to try again. This is only way to hack around this so mod doesn't wipe you for not being in combat after yell.
---The above also makes an achievement timer not possible on pull.
+
 mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL"
