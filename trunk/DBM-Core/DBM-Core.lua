@@ -2572,7 +2572,7 @@ do
 		if announceType == "stack" then
 			if GetLocale() == "zhTW" then
 				self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId, stacks or 3)
-			then
+			else
 				self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
 			end
 		else
