@@ -114,9 +114,9 @@ L:SetOptionLocalization{
 	SpecWarnKiss			= "Aviso especial si tienes Beso de la maestra",
 	SpecWarnNetherPower		= "Aviso especial para Poder abisal(para dispelear a jaraxxus)",
 	SpecWarnFelInferno		= "Aviso especial si estas cerca de Inferno vil",
-	TouchJaraxxusIcon		= "Poner icono quien tenga Toque de Jaraxxus(X)",
-	IncinerateFleshIcon		= "Poner icono quien tenga Carne (calavera)",
-	LegionFlameIcon			= "Poner icono quien tenga Llama de la Legion(cuadrado)",
+	TouchJaraxxusIcon		= "Poner icono quien tenga Toque de Jaraxxus",
+	IncinerateFleshIcon		= "Poner icono quien tenga Carne",
+	LegionFlameIcon			= "Poner icono quien tenga Llama de la Legion",
 	LegionFlameWhisper		= "Susurrar a quien tenga la llama de la legion",
 	IncinerateShieldFrame	= "Mostrar la vida del boss con la barra de incinerar carne"
 }

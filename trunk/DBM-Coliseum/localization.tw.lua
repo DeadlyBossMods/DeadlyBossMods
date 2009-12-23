@@ -105,12 +105,12 @@ L:SetOptionLocalization{
 	SpecWarnFelInferno		= "當你在魔化煉獄附近時顯示特別警告",
 	SpecWarnFelFireball		= "為魔化火球顯示特別警告 (斷法用)",
 	SpecWarnFelFireballDispel	= "為魔化火球顯示特別警告 (驅散用)",
-	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記 (十字)",
-	IncinerateFleshIcon		= "為焚化血肉的目標設置標記 (頭顱)",
-	LegionFlameIcon			= "為軍團烈焰的目標設置標記 (正方)",
+	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記",
+	IncinerateFleshIcon		= "為焚化血肉的目標設置標記",
+	LegionFlameIcon			= "為軍團烈焰的目標設置標記",
 	LegionFlameWhisper		= "密語提示軍團烈焰的目標",
 	LegionFlameRunSound		= "為軍團烈焰播放音效",
-	IncinerateShieldFrame		= "在首領血量裡顯示焚化血肉的血量"
+	IncinerateShieldFrame	= "在首領血量裡顯示焚化血肉的血量"
 }
 
 -------------------------
