@@ -218,7 +218,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova	= "Lightning Nova - Run away"
 }
 
 L:SetTimerLocalization{
@@ -227,7 +226,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova		= "Show special warning for $spell:65279",
 	NovaSound			= "Play sound on $spell:65279",
 	timerMobOvercharge	= "Show timer for Overcharged mob (stacking debuff)",
 	EmalonEnrage		= "Show timer for $spell:26662",
@@ -244,7 +242,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder	= "Flaming Cinder - Move away",
 	BurningFury		= "Burning Fury >%d<"
 }
 
@@ -253,7 +250,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "Show special warning when you are affected by $spell:67332",
 	PlaySoundOnCinder	= "Play sound when you are affected by $spell:67332",
 	BurningFury			= "Show warning for $spell:66721",
 	KoralonEnrage		= "Show timer for $spell:26662"
