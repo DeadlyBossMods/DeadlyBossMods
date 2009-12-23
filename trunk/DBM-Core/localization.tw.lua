@@ -141,6 +141,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell 					= "為$spell:%d顯示特別警告",
+	dispel 					= "Show special warning to dispel/spellsteal \n $spell:%d",
 	you 					= "當你中了$spell:%d時顯示特別警告",
 	target 					= "為中了$spell:%d的人顯示特別警告",
 	close 					= "當中了$spell:%d的人在你附近時顯示特別警告",
@@ -152,6 +153,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell 					= "%s",
+	dispel 					= "%%s中了%s - 現在驅散",
 	you 					= "你中了%s",
 	target 					= "%%s中了%s",
 	close 					= "你附近的%%s中了%s",
