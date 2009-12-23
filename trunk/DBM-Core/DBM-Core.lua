@@ -2581,6 +2581,10 @@ do
 		return newSpecialWarning(self, "spell", text, nil, optionDefault, ...)
 	end
 
+	function bossModPrototype:NewSpecialWarningDispel(text, optionDefault, ...)
+		return newSpecialWarning(self, "dispel", text, nil, optionDefault, ...)
+	end
+
 	function bossModPrototype:NewSpecialWarningYou(text, optionDefault, ...)
 		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)
 	end
