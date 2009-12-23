@@ -196,7 +196,7 @@ L:SetWarningLocalization{
 	WarningCosmicSmash 		= "Кара небесная - взрыв через 4 секунды",
 	SpecWarnCosmicSmash 	= "Кара небесная",
 	WarnPhase2Soon			= "Скоро фаза 2",
-	warnStarLow				= "У Вспыхивающей звезды мало здоровья (~25%)"
+	warnStarLow				= "У Вспыхивающей звезды мало здоровья"
 }
 
 L:SetOptionLocalization{
