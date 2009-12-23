@@ -107,9 +107,9 @@ L:SetOptionLocalization({
 
 -----------------
 -- 아졸네룹    --
--------------------------------
--- 문지기 크릭시르           --
--------------------------------
+---------------------
+-- 문지기 크릭시르 --
+---------------------
 L = DBM:GetModLocalization("Krikthir")
 
 L:SetGeneralLocalization({
@@ -125,9 +125,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
---------------
+----------------
 -- 하드로녹스 --
---------------
+----------------
 L = DBM:GetModLocalization("Hadronox")
 
 L:SetGeneralLocalization({
@@ -143,9 +143,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
----------------
+--------------
 -- 아눕아락 --
----------------
+--------------
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
@@ -161,11 +161,11 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
---------------------------------------
+---------------------------------
 -- 시간의 동굴 : 옛 스트라솔름 --
---------------------------------------
+---------------------------------
 -- 살덩이갈고리 --
---------------
+------------------
 L = DBM:GetModLocalization("Meathook")
 
 L:SetGeneralLocalization({
@@ -181,9 +181,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-------------------------------
+-----------------------
 -- 살덩이창조자 살람 --
-------------------------------
+-----------------------
 L = DBM:GetModLocalization("SalrammTheFleshcrafter")
 
 L:SetGeneralLocalization({
@@ -1098,13 +1098,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPortalSoon	= "곧 새로운 포탈이 열립니다.",
-	WarningPortalNow	= "포탈 #%d",
-	WarningBossNow		= "곧 보스 등장"
+	WarningPortalSoon		= "곧 새로운 포탈이 열립니다.",
+	WarningPortalNow		= "포탈 #%d",
+	WarningBossNow			= "곧 보스 등장"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "포탈 #%d" , 
+	TimerPortalIn			= "포탈 #%d" , 
 })
 
 L:SetOptionLocalization({
@@ -1227,7 +1227,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnBarrel				= "맥주통 : >%s<", 
-	specwarnDisarm			= "무장 해제. Move Away!",
+	specwarnDisarm			= "무장 해제!",
 	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 마셔버리세요!",
 	specWarnBrewStun		= "힌트: 맥주를 들고있네요.흑맥주요정의 맥주가 오기전에 마셔버리면 됩니다!"
 })
@@ -1242,7 +1242,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	YellBarrel		= "저에게 맥주통!"
+	YellBarrel				= "저에게 맥주통!"
 }
 
 -------------------
@@ -1301,11 +1301,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	IckPursuit		= "%s1|이;가; 당신을 쫓습니다!",
---	Barrage			= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!",
-	IckPursuit		= "당신을 쫓습니다!",
-	Barrage			= "빠른 속도로 지뢰를 만들어냅니다!",	
---	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.	
+--	IckPursuit			= "%s1|이;가; 당신을 쫓습니다!",
+	Barrage				= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!",
+	IckPursuit			= "당신을 쫓습니다!",
+--	YellCombatEnd		= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.	
 })
 
 --------------------------
@@ -1369,7 +1368,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CombatStart					= "아아. 용감하고, 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤의 굴에서 뼈와 칼이 내는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
+	CombatStart					= "아아. 용감하고 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤에 있는 굴에서 뼈와 칼이 부딪치는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
 	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
 	YellCombatEnd				= "말도 안돼... 서릿발송곳니... 경고를..."
 })
@@ -1414,7 +1413,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specwarnMirroredSoul		= "$spell:69051 딜 중지 특수 경고 보기",
 	specwarnWailingSouls		= "$spell:68899을 시전 할 경우 특수 경고 보기",	
-	specwarnPhantomBlast		= "$spell:68982을 시전할 경우 특수 경고 보기(차단 관련)",
+	specwarnPhantomBlast		= "$spell:68982을 시전 할 경우 특수 경고 보기(차단 관련)",
 	SetIconOnMirroredTarget		= "$spell:69051 대상 공격대 아이콘 설정"	
 })
 
