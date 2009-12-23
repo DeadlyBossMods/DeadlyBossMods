@@ -21,9 +21,9 @@ DBM_CORE_SEC_FMT					= "%d сек"
 DBM_CORE_DEAD						= "мертв"
 DBM_CORE_OK							= "ОК"
 
-DBM_CORE_GENERIC_WARNING_ENRAGE		= "Исступление через %s %s"
-DBM_CORE_GENERIC_TIMER_ENRAGE		= "Исступление"
-DBM_CORE_OPTION_TIMER_ENRAGE		= "Отсчет времени до Исступления"
+DBM_CORE_GENERIC_WARNING_BERSERK	= "Исступление через %s %s"
+DBM_CORE_GENERIC_TIMER_BERSERK		= "Исступление"
+DBM_CORE_OPTION_TIMER_BERSERK		= "Отсчет времени до Исступления"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Отображать здоровье босса"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Индикаторы"

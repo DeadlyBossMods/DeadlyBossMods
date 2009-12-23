@@ -21,9 +21,9 @@ DBM_CORE_SEC_FMT					= "%d Sek"
 DBM_CORE_DEAD						= "Tot"
 DBM_CORE_OK							= "Okay"
 
-DBM_CORE_GENERIC_WARNING_ENRAGE		= "Enrage in %s %s"
-DBM_CORE_GENERIC_TIMER_ENRAGE		= "Enrage"
-DBM_CORE_OPTION_TIMER_ENRAGE		= "Enrage-Timer anzeigen"
+DBM_CORE_GENERIC_WARNING_BERSERK	= "Enrage in %s %s"
+DBM_CORE_GENERIC_TIMER_BERSERK		= "Enrage"
+DBM_CORE_OPTION_TIMER_BERSERK		= "Enrage-Timer anzeigen"
 DBM_CORE_OPTION_HEALTH_FRAME		= "BossHealth-Frame anzeigen"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Timer"
