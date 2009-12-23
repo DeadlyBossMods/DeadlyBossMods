@@ -47,7 +47,7 @@ local warnPhase3			= mod:NewPhaseAnnounce(3)
 local enrageTimer			= mod:NewBerserkTimer(570)	-- 9:30 ? hmpf (no enrage while submerged... this sucks)
 
 -- Penetrating Cold
-local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)
+local specWarnPCold			= mod:NewSpecialWarningYou(68510, false)
 local timerPCold			= mod:NewBuffActiveTimer(15, 68509)
 mod:AddBoolOption("SetIconsOnPCold", true)
 mod:AddBoolOption("AnnouncePColdIcons", false)

@@ -83,10 +83,10 @@ local timerShadowstepCD		= mod:NewCDTimer(30, 66178)
 local timerDeathgripCD		= mod:NewCDTimer(35, 66017)
 local timerBladestormCD		= mod:NewCDTimer(90, 65947)
 
-local specWarnHellfire		= mod:NewSpecialWarning("SpecWarnHellfire")
-local specWarnHandofProt	= mod:NewSpecialWarning("SpecWarnHandofProt", isDispeller)
-local specWarnDivineShield	= mod:NewSpecialWarning("SpecWarnDivineShield", isDispeller) 
-local specWarnIceBlock		= mod:NewSpecialWarning("specWarnIceBlock", isDispeller)
+local specWarnHellfire		= mod:NewSpecialWarningMove(68147)
+local specWarnHandofProt	= mod:NewSpecialWarningDispel(66009, isDispeller)
+local specWarnDivineShield	= mod:NewSpecialWarningDispel(66010, isDispeller) 
+local specWarnIceBlock		= mod:NewSpecialWarningDispel(65802, isDispeller)
 
 mod:AddBoolOption("PlaySoundOnBladestorm", isMelee)
 

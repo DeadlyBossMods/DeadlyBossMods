@@ -24,11 +24,7 @@ L:SetOptionLocalization{
 	WarningSnobold				= "Show warning for Snobold Vassal spawns",
 	SpecialWarningImpale3		= "Show special warning for Impale (>=3 stacks)",
 	SpecialWarningAnger3		= "Show special warning for Rising Anger (>=3 stacks)",
-	SpecialWarningFireBomb		= "Show special warning for Fire Bomb on you",
-	SpecialWarningSlimePool		= "Show special warning when you are affected by Slime Pool",
 	SpecialWarningSilence		= "Show special warning for Staggering Stomp (silence)",
-	SpecialWarningToxin			= "Show special warning when you are affected by Paralytic Toxin",
-	SpecialWarningBile			= "Show special warning when you are affected by Burning Bile",
 	SpecialWarningCharge		= "Show special warning when Icehowl is about to charge you",
 	SpecialWarningTranq			= "Show special warning when Icehowl gains Frothing Rage (to tranq)",
 	PingCharge					= "Ping the minimap when Icehowl is about to charge you",
@@ -54,13 +50,9 @@ L:SetWarningLocalization{
 	WarningSnobold				= "Snobold Vassal spawned",
 	SpecialWarningImpale3		= "Impale >%d< on you",
 	SpecialWarningAnger3		= "Rising Anger >%d<",
-	SpecialWarningFireBomb		= "Fire Bomb on you",
-	SpecialWarningSlimePool		= "Slime Pool - Move away",
 	SpecialWarningSilence		= "Silence in ~1.5 seconds",
-	SpecialWarningToxin			= "Paralytic Toxin on you - Move",
 	SpecialWarningCharge		= "Charge on you - Run away",
 	SpecialWarningChargeNear	= "Charge near you - Run away",
-	SpecialWarningBile			= "Burning Bile on you",
 	SpecialWarningTranq			= "Frothing Rage - Tranq now"
 }
 
@@ -75,15 +67,10 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnNetherPower				= "Nether Power on Lord Jaraxxus - Dispel now",
-	SpecWarnFlesh				= "Incinerate Flesh on you",
 	SpecWarnTouch				= "Touch of Jaraxxus on you",
-	SpecWarnKiss				= "Mistress' Kiss on you",
 	SpecWarnTouchNear			= "Touch of Jaraxxus on %s near you",
-	SpecWarnFlame				= "Legion Flame on you - Run away",
 	SpecWarnNetherPower			= "Dispel now",
-	SpecWarnFelInferno			= "Fel Inferno - Run away",
-	SpecWarnFelFireball			= "Fel Fireball - Interrupt now",
-	SpecWarnFelFireballDispel	= "Fel Fireball on %s - Dispel"
+	SpecWarnFelFireball			= "Fel Fireball - Interrupt now"
 }
 
 L:SetMiscLocalization{
@@ -93,15 +80,10 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	WarnNetherPower				= "Show warning when Lord Jaraxxus gains Nether Power (to dispel/steal)",
-	SpecWarnFlame				= "Show special warning when you are affected by Legion Flame",
-	SpecWarnFlesh				= "Show special warning when you are affected by Incinerate Flesh",
 	SpecWarnTouch				= "Show special warning when you are affected by Touch of Jaraxxus",
 	SpecWarnTouchNear			= "Show special warning for Touch of Jaraxxus near you",
-	SpecWarnKiss				= "Show special warning when you are affected by Mistress' Kiss",
 	SpecWarnNetherPower			= "Show special warning for Nether Power (to dispel/steal)",
-	SpecWarnFelInferno			= "Show special warning when you are near a Fel Inferno",
 	SpecWarnFelFireball			= "Show special warning for Fel Fireball (to interrupt)",
-	SpecWarnFelFireballDispel	= "Show special warning for Fel Fireball (to dispel)",
 	TouchJaraxxusIcon			= "Set icons on Touch of Jaraxxus targets",
 	IncinerateFleshIcon			= "Set icons on Incinerate Flesh targets",
 	LegionFlameIcon				= "Set icons on Legion Flame targets",
@@ -123,10 +105,6 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnHellfire		= "Hellfire - Run away",
-	SpecWarnHandofProt		= "Hand of Protection on %s",
-	SpecWarnDivineShield	= "Divine Shield on %s",
-	specWarnIceBlock       	= "Ice Block on %s"
 }
 
 L:SetMiscLocalization{
@@ -150,10 +128,6 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	SpecWarnHellfire		= "Show special warning when you are affected by Hellfire",
-	SpecWarnHandofProt		= "Show special warning when the Paladin casts Hand of Protection (to dispel)",
-	SpecWarnDivineShield	= "Show special warning when the Paladin casts Divine Shield (to dispel)",
-	specWarnIceBlock		= "Show special warning when the Mage casts Ice Block (to dispel)",
 	PlaySoundOnBladestorm	= "Play sound on Bladestorm"
 }
 
@@ -173,8 +147,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "Special ability soon",
 	SpecWarnSpecial				= "Change color",
-	SpecWarnEmpoweredDarkness	= "Empowered Darkness on you",
-	SpecWarnEmpoweredLight		= "Empowered Light on you",
 	SpecWarnSwitchTarget		= "Switch target",
 	SpecWarnKickNow				= "Interrupt now",
 	WarningTouchDebuff			= "Debuff on >%s<",
@@ -192,8 +164,6 @@ L:SetOptionLocalization{
 	TimerSpecialSpell			= "Show timer for next special ability",
 	WarnSpecialSpellSoon		= "Show pre-warning for next special ability",
 	SpecWarnSpecial				= "Show special warning when you have to change color",
-	SpecWarnEmpoweredDarkness	= "Show special warning you are affected by Empowered Darkness",
-	SpecWarnEmpoweredLight		= "Show special warning you are affected by Empowered Light",
 	SpecWarnSwitchTarget		= "Show special warning when the other Twin is casting",
 	SpecWarnKickNow				= "Show special warning when you have to interrupt",
 	SpecialWarnOnDebuff			= "Show special warning when debuffed (to switch debuff)",
@@ -225,8 +195,7 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "Submerge in 10 seconds",
 	SpecWarnPursue			= "You are being pursued - Run away",
 	warnAdds				= "New adds",
-	SpecWarnShadowStrike	= "Shadow Strike - Interrupt now",
-	SpecWarnPCold			= "Penetrating Cold on you"
+	SpecWarnShadowStrike	= "Shadow Strike - Interrupt now"
 }
 
 L:SetMiscLocalization{
@@ -250,7 +219,6 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "Play sound when you are being pursued",
 	PursueIcon				= "Set icons on pursued targets",
 	SpecWarnShadowStrike	= "Show special warning for $spell:66134 (to interrupt)",
-	SpecWarnPCold			= "Show special warning when you are affected by $spell:68510",
 	RemoveHealthBuffsInP3	= "Remove HP buffs at start of Phase 3", 
 	SetIconsOnPCold         = "Set icons on $spell:68510 targets",
 	AnnouncePColdIcons		= "Post icons for $spell:68510 targets to raid chat\n(requires announce to be enabled and leader/promoted status)"
