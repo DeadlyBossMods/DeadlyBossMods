@@ -13,7 +13,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "깊은 숨",
-	SpecWarnBlastNova	= "파멸의 회오리!! 피하세요!!!",--http://www.wowhead.com/?npc=36561
 	WarnWhelpsSoon		= "곧 새끼용 등장",
 	WarnPhase2Soon		= "곧 2 페이즈",	
 	WarnPhase3Soon		= "곧 3 페이즈"	
@@ -25,7 +24,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "깊은 숨의 특수 경고 보기",
-	SpecWarnBlastNova		= "파멸의 회오리 특수 경고 보기",	
 	TimerWhelps				= "새끼용 등장 타이머 보기",
 	WarnWhelpsSoon			= "새끼용 등장의 사전 경고 보기",
 	SoundBreath				= "깊은 숨의 경고 소리 재생",
