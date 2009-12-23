@@ -198,7 +198,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	ArchavonEnrage	= "Archavon enrages"
+	ArchavonEnrage	= "Берсерк Аркавона"
 })
 
 L:SetMiscLocalization({
@@ -207,7 +207,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarningGrab		= "Объявлять о захвате цели",
-	ArchavonEnrage	= "Show timer for enrage"
+	ArchavonEnrage	= "Отсчет времени до $spell:26662"
 })
 
 --------------------------------
@@ -220,19 +220,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova	= "Вспышка молнии - бегите"
 }
 
 L:SetTimerLocalization{
 	timerMobOvercharge	= "Взрыв в результате перегрузки",
-	EmalonEnrage		= "Emalon enrages"
+	EmalonEnrage		= "Берсерк Эмалона"
 }
 
 L:SetOptionLocalization{
-	specWarnNova		= "Спец-предупреждение для $spell:65279",
 	NovaSound			= "Звуковой сигнал при $spell:65279",
 	timerMobOvercharge	= "Отсчет времени для Перегрузки (суммирующийся отрицательный эффект)",
-	EmalonEnrage		= "Show timer for enrage",
+	EmalonEnrage		= "Отсчет времени до $spell:26662",
 	RangeFrame			= "Показывать окно допустимой дистанции"
 }
 
@@ -246,19 +244,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder	= "Пылающая головня - отбегите",
 	BurningFury		= "Пылающая ярость >%d<"
 }
 
 L:SetTimerLocalization{
-	KoralonEnrage	= "Koralon enrages"
+	KoralonEnrage	= "Берсерк Коралона"
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "Спец-предупреждение, когда под вами $spell:67332",
 	PlaySoundOnCinder	= "Звуковой сигнал, когда под вами $spell:67332",
 	BurningFury			= "Предупреждение для $spell:66721",
-	KoralonEnrage		= "Show timer for enrage"
+	KoralonEnrage		= "Отсчет времени до $spell:26662"
 }
 
 L:SetMiscLocalization{
@@ -279,7 +275,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	ToravonEnrage	= "Toravon enrages"
+	ToravonEnrage	= "Берсерк Торавона"
 }
 
 L:SetOptionLocalization{
@@ -287,7 +283,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	ToravonEnrage	= "Show timer for enrage"
+	ToravonEnrage	= "Отсчет времени до $spell:26662"
 }
 
 ------------------------
