@@ -80,7 +80,7 @@ do	-- add the additional Shield Bar
 	local function getShieldPercent()
 		local guid = UnitGUID("focus")
 		if guid and tonumber(guid:sub(9, 12), 16) == 36855 then 
-			last = math.floor(UnitMana(unitId)/UnitManaMax(unitId) * 100)
+			last = math.floor(UnitMana("focus")/UnitManaMax("focus") * 100)
 			return last
 		end
 		for i = 0, GetNumRaidMembers(), 1 do
