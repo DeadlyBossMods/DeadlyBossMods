@@ -11,7 +11,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "Deep Breath",
-	SpecWarnBlastNova	= "Blast Nova - Run away",
 	WarnWhelpsSoon		= "Onyxian Whelps soon",
 	WarnPhase2Soon		= "Phase 2 soon",
 	WarnPhase3Soon		= "Phase 3 soon"
@@ -23,7 +22,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "Show special warning for Deep Breath",
-	SpecWarnBlastNova		= "Show special warning for Blast Nova",
 	TimerWhelps				= "Show timer for Onyxian Whelps",
 	WarnWhelpsSoon			= "Show pre-warning for Onyxian Whelps",
 	SoundBreath				= "Play sound on Deep Breath",

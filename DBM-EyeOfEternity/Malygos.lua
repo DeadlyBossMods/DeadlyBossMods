@@ -20,7 +20,7 @@ local warnBreathInc		= mod:NewAnnounce("WarningBreathSoon", 3, 60071)
 local warnBreath		= mod:NewAnnounce("WarningBreath", 4, 60071)
 local warnSurge			= mod:NewTargetAnnounce(60936, 2)
 
-local specWarnSurge		= mod:NewSpecialWarning("WarningSurgeYou")
+local specWarnSurge		= mod:NewSpecialWarningYou(60936)
 
 local enrageTimer		= mod:NewBerserkTimer(615)
 local timerSpark		= mod:NewTimer(30, "TimerSpark", 59381)

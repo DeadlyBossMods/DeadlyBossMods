@@ -27,7 +27,7 @@ local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
 --local preWarnDeepBreath     = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
 local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
-local specWarnBlastNova		= mod:NewSpecialWarning("SpecWarnBlastNova", isMelee)
+local specWarnBlastNova		= mod:NewSpecialWarningRun(68958, isMelee)
 mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
 local timerNextFlameBreath	= mod:NewCDTimer(20, 68970)--Breath she does on ground in frontal cone.
