@@ -106,9 +106,9 @@ L:SetOptionLocalization{
 	SpecWarnFelInferno			= "당신 주변에 군단 불꽃이 있을 경우 특수 경고 알리기(바닥)",
 	SpecWarnFelFireball			= "지옥 화염구의 특수 경고 보기(차단 관련)",
 	SpecWarnFelFireballDispel	= "지옥 화염구의 특수 경고 보기(해제 관련)",	
-	TouchJaraxxusIcon			= "자락서스의 손길 대상 공격대 아이콘 설정 (엑스)",
-	IncinerateFleshIcon			= "살점 소각의 공격대 대상 아이콘 설정 (해골)",
-	LegionFlameIcon				= "군단의 불꽃의 공격대 대상 아이콘 설정 (네모)",
+	TouchJaraxxusIcon			= "자락서스의 손길 대상 공격대 아이콘 설정",
+	IncinerateFleshIcon			= "살점 소각의 공격대 대상 아이콘 설정",
+	LegionFlameIcon				= "군단의 불꽃의 공격대 대상 아이콘 설정",
 	LegionFlameWhisper			= "군단의 불꽃 대상에게 귓속말 보내기",
 	LegionFlameRunSound			= "군단의 불꽃 일 경우 소리 듣기",	
 	IncinerateShieldFrame		= "보스 체력 프레임과 함께 살점 소각 대상자 체력바 보기"
