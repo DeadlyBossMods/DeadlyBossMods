@@ -94,11 +94,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		specwarnMark:Show(args.destName)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingBloodTargets[#boilingBloodTargets + 1] = args.destName
-		self:Unschedule(warnBoilingBloodTargets)
 		if self.Options.SetIconOnBoilingBlood then
 			self:SetIcon(args.destName, boilingBloodIcon, 24)
 			boilingBloodIcon = boilingBloodIcon - 1
 		end
+		self:Unschedule(warnBoilingBloodTargets)
 		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #boilingBloodTargets >= 3) then	-- Boiling Blood
 			warnBoilingBloodTargets()
 		else
