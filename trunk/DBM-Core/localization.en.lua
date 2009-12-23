@@ -151,9 +151,9 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s",
-	dispel = "%s - dispel now",
+	dispel = "%s on >%%s< - dispel now",
 	you = "%s on you",
-	target = "%s on %%s",
+	target = "%s on >%%s<",
 	close = "%s on %%s near you",
 	move = "%s - move away",
 	run = "%s - run away",
