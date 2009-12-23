@@ -72,10 +72,14 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+local spam = 0
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(72173, 72356, 72357, 72358) then
 		timerCallBloodBeast:Start()
-		warnAddsSoon:Schedule(35)
+		if GetTime() - spam > 5 then
+			warnAddsSoon:Schedule(35)
+			spam = GetTime()
+		end
 	elseif args:IsSpellID(72410) then
 		timerNextRuneofBlood:Start()
 	end
