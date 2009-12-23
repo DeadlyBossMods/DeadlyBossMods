@@ -194,7 +194,7 @@ L:SetWarningLocalization{
 	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",
 	SpecWarnCosmicSmash 	= "Cosmic Smash",
 	WarnPhase2Soon			= "Phase 2 soon",
-	warnStarLow				= "Collapsing Star is low (at ~25%)"
+	warnStarLow				= "Collapsing Star is low"
 }
 
 L:SetOptionLocalization{
