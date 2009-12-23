@@ -21,9 +21,9 @@ DBM_CORE_SEC_FMT					= "%d sec"
 DBM_CORE_DEAD						= "mort"
 DBM_CORE_OK							= "Okay"
 
-DBM_CORE_GENERIC_WARNING_ENRAGE		= "Frénésie dans %s %s"
-DBM_CORE_GENERIC_TIMER_ENRAGE		= "Frénésie"
-DBM_CORE_OPTION_TIMER_ENRAGE		= "Afficher le timer pour la Frénésie"
+DBM_CORE_GENERIC_WARNING_BERSERK	= "Frénésie dans %s %s"
+DBM_CORE_GENERIC_TIMER_BERSERK		= "Frénésie"
+DBM_CORE_OPTION_TIMER_BERSERK		= "Afficher le timer pour la Frénésie"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Afficher la fenêtre de vie du Boss"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Barres"
