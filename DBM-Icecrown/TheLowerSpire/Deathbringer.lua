@@ -18,6 +18,7 @@ local isRanged = select(2, UnitClass("player")) == "MAGE"
               or select(2, UnitClass("player")) == "WARLOCK"
 
 local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737)
+local warnAddsSoon			= mod:NewSoonAnnounce(72173, 3)
 local warnFrenzy			= mod:NewSpellAnnounce(72737)
 local warnBloodNova			= mod:NewSpellAnnounce(73058)
 local warnMark				= mod:NewTargetAnnounce(72444)
@@ -50,6 +51,7 @@ function mod:OnCombatStart(delay)
 	enrageTimer:Start()
 	table.wipe(boilingBloodTargets)
 	timerCallBloodBeast:Start(-delay)
+	warnAddsSoon:Schedule(35)
 	timerBloodNova:Start(-delay)
 	warned_preFrenzy = false
 	if self.Options.RangeFrame then
@@ -73,6 +75,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(72173, 72356, 72357, 72358) then
 		timerCallBloodBeast:Start()
+		warnAddsSoon:Schedule(35)
 	elseif args:IsSpellID(72410) then
 		timerNextRuneofBlood:Start()
 	end
