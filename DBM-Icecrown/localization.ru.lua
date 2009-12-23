@@ -88,7 +88,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "Как вы смеете ступать в эти священные покои? Это место станет вашей могилой!",
-	YellReanimatedFanatic	= "Восстань и обрети истинную форму!"
+	YellReanimatedFanatic	= "Восстань и обрети истинную форму!",
+	ShieldPercent			= "Барьер маны"--Translate Spell id 70842
 }
 
 ----------------------
@@ -134,12 +135,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon		= "Скоро Бешенство"
+	warnFrenzySoon	= "Скоро Бешенство"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon		= "Предупреждать о скором Бешенстве (на ~33%)",
-	RangeFrame			= "Показывать окно допустимой дистанции (11 м)"
+	warnFrenzySoon	= "Предупреждать о скором Бешенстве (на ~33%)",
+	RangeFrame		= "Показывать окно допустимой дистанции (11 м)"
 }
 
 -----------------

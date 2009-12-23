@@ -141,6 +141,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell 	= "Спец-предупреждение для $spell:%d",
+	dispel 	= "Спец-предупреждение для рассеивания/похищения заклинания \n$spell:%d",
 	you 	= "Спец-предупреждение, когда на вас $spell:%d",
 	target 	= "Спец-предупреждение, когда на ком-то $spell:%d",
 	close 	= "Спец-предупреждение, когда на ком-то рядом с вами \n$spell:%d",
@@ -152,6 +153,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s",
+	dispel = "%s - рассейте заклинание",
 	you = "%s на вас",
 	target = "%s на |3-5(%%s)",
 	close = "%s на |3-5(%%s) около вас",
