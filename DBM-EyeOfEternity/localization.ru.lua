@@ -14,8 +14,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningSpark		= "Искра мощи",
 	WarningBreathSoon	= "Скоро Дыхание чар",
-	WarningBreath		= "Дыхание чар!",
-	WarningSurgeYou		= "На вас аура Прилива мощи!"
+	WarningBreath		= "Дыхание чар"
 })
 
 L:SetTimerLocalization({
@@ -29,7 +28,6 @@ L:SetOptionLocalization({
 	WarningBreath		= "Объявлять Дыхание чар",
 	TimerSpark			= "Отображать отсчет времени до призыва Искры мощи",
 	TimerBreath			= "Отображать отсчет времени до Дыхания чар",
-	WarningSurgeYou		= "Отображать спец-предупреждение для Прилива мощи"
 })
 
 L:SetMiscLocalization({

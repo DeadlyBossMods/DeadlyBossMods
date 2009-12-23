@@ -13,7 +13,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBreath		= "Глубокий вдох",
-	SpecWarnBlastNova	= "Вспышка Огненной звезды - бегите",
 	WarnWhelpsSoon		= "Скоро дракончики Ониксии",
 	WarnPhase2Soon		= "Скоро фаза 2",
 	WarnPhase3Soon		= "Скоро фаза 3"
@@ -25,7 +24,6 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SpecWarnBreath			= "Спец-предупреждение для Глубокого вдоха",
-	SpecWarnBlastNova		= "Спец-предупреждение для Вспышки Огненной звезды",
 	TimerWhelps				= "Отсчет времени до дракончиков Ониксии",
 	WarnWhelpsSoon			= "Предупредить зарание о дракончиках Ониксии",
 	SoundBreath				= "Звуковой сигнал, когда Глубокий вдох",
