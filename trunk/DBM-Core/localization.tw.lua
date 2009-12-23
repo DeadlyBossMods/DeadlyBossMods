@@ -148,7 +148,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 					= "當你中了$spell:%d時顯示特別警告",
 	run 					= "為$spell:%d顯示特別警告",
 	cast 					= "當$spell:%d施放時顯示特別警告",
-	stack 					= "當你中了$spell:%d(>=%d層)時顯示特別警告"
+	stack 					= "當你中了$spell:%2$d(>=%1$d層)時顯示特別警告"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
