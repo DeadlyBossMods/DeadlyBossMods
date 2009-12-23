@@ -60,7 +60,7 @@ local timerRuneofPower			= mod:NewCDTimer(30, 61974)
 local timerRuneofDeath			= mod:NewCDTimer(30, 63490)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 
-local enrageTimer				= mod:NewEnrageTimer(900)
+local enrageTimer				= mod:NewBerserkTimer(900)
 
 local disruptTargets = {}
 

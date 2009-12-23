@@ -22,7 +22,7 @@ local specWarnInjection	= mod:NewSpecialWarning("SpecialWarningInjection")
 
 local timerInjection	= mod:NewTargetTimer(10, 28169)
 local timerCloud		= mod:NewNextTimer(15, 28240)
-local enrageTimer		= mod:NewEnrageTimer(720)
+local enrageTimer		= mod:NewBerserkTimer(720)
 
 mod:AddBoolOption("SetIconOnInjectionTarget", true)
 

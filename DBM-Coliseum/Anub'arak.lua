@@ -44,7 +44,7 @@ local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DB
 
 -- Phases
 local warnPhase3			= mod:NewPhaseAnnounce(3)
-local enrageTimer			= mod:NewEnrageTimer(570)	-- 9:30 ? hmpf (no enrage while submerged... this sucks)
+local enrageTimer			= mod:NewBerserkTimer(570)	-- 9:30 ? hmpf (no enrage while submerged... this sucks)
 
 -- Penetrating Cold
 local specWarnPCold			= mod:NewSpecialWarning("SpecWarnPCold", false)

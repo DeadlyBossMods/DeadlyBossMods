@@ -32,7 +32,7 @@ local specWarnPoweroftheTwins		= mod:NewSpecialWarning("SpecWarnPoweroftheTwins"
 local specWarnEmpoweredDarkness		= mod:NewSpecialWarning("SpecWarnEmpoweredDarkness")
 local specWarnEmpoweredLight		= mod:NewSpecialWarning("SpecWarnEmpoweredLight")
 
-local enrageTimer					= mod:NewEnrageTimer(360)
+local enrageTimer					= mod:NewBerserkTimer(360)
 local timerSpecial					= mod:NewTimer(45, "TimerSpecialSpell")
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local timerLightTouch				= mod:NewTargetTimer(20, 67298)

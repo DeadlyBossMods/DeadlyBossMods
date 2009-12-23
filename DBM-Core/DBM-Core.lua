@@ -2962,7 +2962,7 @@ do
 	end
 	enragePrototype.Stop = enragePrototype.Cancel
 
-	function bossModPrototype:NewEnrageTimer(timer, text, barText, barIcon)
+	function bossModPrototype:NewBerserkTimer(timer, text, barText, barIcon)
 		timer = timer or 600
 		local warning1 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_BERSERK, 1, nil, "warning_berserk", false)
 		local warning2 = self:NewAnnounce(text or DBM_CORE_GENERIC_WARNING_BERSERK, 4, nil, "warning_berserk", false)
