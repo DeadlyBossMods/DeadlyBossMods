@@ -14,8 +14,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarningSpark		= "力量火花 出現了",
 	WarningBreathSoon	= "秘法之息 即將到來",
-	WarningBreath		= "秘法之息",
-	WarningSurgeYou		= "你中了力量奔騰!"
+	WarningBreath		= "秘法之息"
 })
 
 L:SetTimerLocalization({
@@ -28,8 +27,7 @@ L:SetOptionLocalization({
 	WarningBreathSoon	= "為秘法之息顯示預先警告",
 	WarningBreath		= "為秘法之息顯示警告",
 	TimerSpark		= "為下一次 力量火花顯示計時器",
-	TimerBreath		= "為下一次 秘法之息顯示計時器",
-	WarningSurgeYou		= "當你中了力量奔騰時顯示特別警告"
+	TimerBreath		= "為下一次 秘法之息顯示計時器"
 })
 
 L:SetMiscLocalization({
