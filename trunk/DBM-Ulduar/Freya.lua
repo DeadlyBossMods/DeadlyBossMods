@@ -34,7 +34,7 @@ local specWarnFury			= mod:NewSpecialWarning("SpecWarnFury")
 local specWarnTremor		= mod:NewSpecialWarning("WarningTremor")	-- Hard mode
 local specWarnBeam			= mod:NewSpecialWarning("UnstableEnergy")	-- Hard mode
 
-local enrage 				= mod:NewEnrageTimer(600)
+local enrage 				= mod:NewBerserkTimer(600)
 local timerAlliesOfNature	= mod:NewNextTimer(60, 62678)
 local timerSimulKill		= mod:NewTimer(12, "TimerSimulKill")
 local timerFury				= mod:NewTargetTimer(10, 63571)

@@ -33,7 +33,7 @@ local warnSonic			= mod:NewSpellAnnounce(64688, 2)
 local specWarnBlast		= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local specWarnVoid 		= mod:NewSpecialWarning("SpecWarnVoid")
 
-local enrageTimer		= mod:NewEnrageTimer(600)
+local enrageTimer		= mod:NewBerserkTimer(600)
 local timerDefender 	= mod:NewTimer(35, "timerDefender")--this i need to check for consistency
 local timerFear			= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)

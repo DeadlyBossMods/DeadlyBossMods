@@ -89,7 +89,7 @@ do
 		mod.warning3 = mod:NewAnnounce("%s", 3, nil, nil, false)
 		mod.warning4 = mod:NewAnnounce("%s", 4, nil, nil, false)
 		mod.specWarning = mod:NewSpecialWarning("%s", nil, false)
-		mod.enrage = mod:NewEnrageTimer(600)
+		mod.enrage = mod:NewBerserkTimer(600)
 		DBM:GetModLocalization(customMod.BossName):SetGeneralLocalization({
 			name = customMod.BossName
 		})

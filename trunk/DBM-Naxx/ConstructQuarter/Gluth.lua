@@ -16,7 +16,7 @@ mod:RegisterEvents(
 local warnDecimateSoon	= mod:NewSoonAnnounce(54426, 2)
 local warnDecimateNow	= mod:NewSpellAnnounce(54426, 3)
 
-local enrageTimer		= mod:NewEnrageTimer(420)
+local enrageTimer		= mod:NewBerserkTimer(420)
 local timerDecimate		= mod:NewCDTimer(104, 54426)
 
 function mod:OnCombatStart(delay)

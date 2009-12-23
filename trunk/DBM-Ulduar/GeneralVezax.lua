@@ -31,7 +31,7 @@ mod:AddBoolOption("YellOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnShadowCrash", true)
 mod:AddBoolOption("SetIconOnLifeLeach", true)
 
-local timerEnrage				= mod:NewEnrageTimer(600)
+local timerEnrage				= mod:NewBerserkTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
 local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 62662)
 local timerSaroniteVapors		= mod:NewNextTimer(30, 63322)
