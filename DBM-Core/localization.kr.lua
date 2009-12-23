@@ -131,18 +131,20 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "페이즈 %d 의 경고 보기"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
+	spell 	= "$spell:%d의 특수 경고 보기",
 	you 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기",
 	target 	= "$spell:%d의 영향을 누군가 받을 경우 특수 경고 보기",
 	close 	= "$spell:%d의 영향을 가까운 공대원으로부터 받을 경우 특수 경고 보기",
 	move 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(이동)",
-	run 	= "$spell:%d의 영향을 받을 경우 특수 경고 보기(빠른이동)",
-	cast 	= "$spell:%d의 시전 영향을 받을 경우 특수 경고 보기",
+	run 	= "$spell:%d의 특수 경고 보기(빠른이동)",
+	cast 	= "$spell:%d의 시전 특수 경고 보기",
 --	stack 	= "Show special warning when you have >=%d stacks of \n $spell:%d"
 --	stack 	= "$spell:%d의 중첩이 %d 이상 쌓일 경우 특수 경고 보기"
 	stack 	= "%d 중첩 이상 쌓일 경우 특수 경고 보기 $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	spell 	= "%s",
 	you 	= "당신에게 %s",
 	target 	= "%s : %%s",
 	close 	= "%%s에게 가까운 당신에게 %s 시전",
