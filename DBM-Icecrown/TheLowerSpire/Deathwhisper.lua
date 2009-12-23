@@ -15,6 +15,9 @@ mod:RegisterEvents(
 	"UNIT_TARGET"
 )
 
+local canPurge = select(2, UnitClass("player")) == "MAGE"
+			or select(2, UnitClass("player")) == "SHAMAN"
+
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
 local warnDeathDecay				= mod:NewSpellAnnounce(72108, 2)
@@ -25,7 +28,7 @@ local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
 local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
 local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 3)
 
-
+local specWarnVampricMight			= mod:NewSpecialWarningSpell(70674, canPurge)
 local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)
 local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
 local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
@@ -151,6 +154,8 @@ do
 			end
 		elseif args:IsSpellID(71237) and args:IsPlayer() then
 			specWarnCurseTorpor:Show()
+		elseif args:IsSpellID(70674) and (args:GetSrcCreatureID() == 37890 or args:GetSrcCreatureID() == 38009) then
+			specWarnVampricMight:Show()
 		elseif args:IsSpellID(71204) then
 			warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
 			if args:IsPlayer() and (args.amount or 1) >= 3 then
