@@ -131,7 +131,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast	= "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r",
-	soon	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r"",
+	soon	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	prewarn	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	phase	= "Mostrar aviso para fase %d",
 }
