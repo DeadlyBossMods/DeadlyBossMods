@@ -12,7 +12,8 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(32871)
 
 mod:RegisterCombat("yell", L.YellPull)
---mod:RegisterKill("yell", L.YellKill)
+mod:RegisterKill("yell", L.YellKill)
+mod:SetWipeTime(20)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
