@@ -86,7 +86,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic	= "Arise, and exult in your pure form!"
+	YellReanimatedFanatic	= "Arise, and exult in your pure form!",
+	ShieldPercent			= "Mana Barrier"
 }
 
 ----------------------
