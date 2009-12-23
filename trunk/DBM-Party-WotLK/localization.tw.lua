@@ -589,7 +589,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
-	name = "護衛事件"
+	name = "布萊恩護衛事件"
 })
 
 L:SetWarningLocalization({
@@ -605,9 +605,10 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Pull	= "幫我看著外頭!我只要三兩下就可以搞定這玩意--",
-	Phase1	= "xxx anti error xxx",
-	Phase2	= "xxx anti error xxx",
-	Phase3	= "xxx anti error xxx"
+	Phase1	= "安全機制突破中，史實資料分析已調至低優先佇列，啟動反制程序。",
+	Phase2	= "已超出威脅指數標準。天界資料庫已中止。安全等級已提昇。",
+	Phase3	= "威脅指數過高。已轉移無效的分析。啟動清潔處理協定。",
+	Kill	= "系統登入。生命體樣式已確認。歡迎，布萊恩布朗贊。是否查詢?"
 })
 
 -----------------
