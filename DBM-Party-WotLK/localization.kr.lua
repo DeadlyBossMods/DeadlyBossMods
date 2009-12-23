@@ -609,11 +609,11 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 --	Pull		= "해답을 찾을 시간입니다! 이제 가보자고요!",
-	Pull		= "Now keep an eye out! I'll have this licked in two shakes of a--",
-	Phase1		= "Security breach in progress. Analysis of historical archives transferred to lower-priority queue. Countermeasures engaged.",
-	Phase2		= "Threat index threshold exceeded.  Celestial archive aborted. Security level heightened.",
-	Phase3		= "Critical threat index. Void analysis diverted. Initiating sanitization protocol.",
-	Kill		= "System online. Life form pattern recognized.  Welcome, Branbronzan.  Query?"
+	Pull		= "이제 잘 보시라고요! 제가 눈 깜짝할 사이에 정보를...",
+	Phase1		= "보안 경보를 발령합니다. 출처 불명의 역사 자료 분석은 하위 등급 대기열로 이전됩니다. 방어 작업을 시작합니다.",
+	Phase2		= "위협 지수가 임계점을 돌파했습니다. 천체 기록을 중단합니다. 보안 수준이 상승했습니다.",
+	Phase3		= "위협 지수가 높습니다. 공허 분석을 종료합니다. 안전성 검증을 시작합니다.",
+	Kill		= "정상 작동 중입니다. 생명체가 식별되었습니다. 환영합니다, 브란브론짱 님. 질문은?"
 })
 
 ---------------
