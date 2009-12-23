@@ -26,11 +26,7 @@ L:SetOptionLocalization{
 	WarningSnobold			= "為極地狗頭人奴僕出現顯示警告",
 	SpecialWarningImpale3		= "為刺穿 (大於3層)顯示特別警告",
 	SpecialWarningAnger3		= "為怒氣高漲 (大於3層)顯示特別警告",
-	SpecialWarningFireBomb		= "當你中了燃燒彈時顯示特別警告",
-	SpecialWarningSlimePool		= "當你受到泥漿池的傷害時顯示特別警告",
 	SpecialWarningSilence		= "為驚恐踐踏顯示特別警告",
-	SpecialWarningToxin		= "當你中了痲痺劇毒時顯示特別警告",
-	SpecialWarningBile		= "當你中了燃燒膽汁時顯示特別警告",
 	SpecialWarningCharge		= "當冰嚎即將衝鋒你時顯示特別警告",
 	SpecialWarningTranq		= "當冰嚎獲得泡沫之怒時顯示特別警告 (消狂怒用)",
 	PingCharge			= "當冰嚎即將衝鋒你時自動點擊小地圖",
@@ -56,13 +52,9 @@ L:SetWarningLocalization{
 	WarningSnobold			= "極地狗頭人奴僕 出現了",
 	SpecialWarningImpale3		= "你中了刺穿>%d<",
 	SpecialWarningAnger3		= "怒氣高漲: >%d<",
-	SpecialWarningFireBomb		= "你中了燃燒彈",
-	SpecialWarningSlimePool		= "泥漿池 - 快跑開",
 	SpecialWarningSilence		= "1.5秒後 驚恐踐踏",
-	SpecialWarningToxin		= "痲痺劇毒 - 快跑開",
 	SpecialWarningCharge		= "你被衝鋒了 - 快跑開",
 	SpecialWarningChargeNear	= "你附近有人被衝鋒 - 快跑開",
-	SpecialWarningBile		= "你中了燃燒膽汁",
 	SpecialWarningTranq		= "泡沫之怒 - 現在消除"
 }
 
@@ -77,15 +69,10 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnNetherPower			= "賈拉克瑟斯領主擁有虛空威能 - 快驅散",
-	SpecWarnFlesh			= "你中了焚化血肉",
 	SpecWarnTouch			= "你中了賈拉克瑟斯之觸",
-	SpecWarnKiss			= "你中了仕女之吻",
 	SpecWarnTouchNear		= "你附近的%s中了賈拉克瑟斯之觸",
-	SpecWarnFlame			= "軍團烈焰 - 快跑開",
 	SpecWarnNetherPower		= "現在驅散",
-	SpecWarnFelInferno		= "魔化煉獄 - 快跑開",
-	SpecWarnFelFireball		= "魔化火球 - 現在斷法",
-	SpecWarnFelFireballDispel	= "魔化火球: %s - 快驅散"
+	SpecWarnFelFireball		= "魔化火球 - 現在斷法"
 
 }
 
@@ -96,21 +83,16 @@ L:SetMiscLocalization{
 
 L:SetOptionLocalization{
 	WarnNetherPower			= "當賈拉克瑟斯領主擁有虛空威能時顯示警告 (驅散/竊取用)",
-	SpecWarnFlame			= "當你中了軍團烈焰時顯示特別警告",
-	SpecWarnFlesh			= "當你中了焚化血肉時顯示特別警告",
 	SpecWarnTouch			= "當你中了賈拉克瑟斯之觸時顯示特別警告",
 	SpecWarnTouchNear		= "當你附近的人中了賈拉克瑟斯之觸時顯示特別警告",
-	SpecWarnKiss			= "當你中了仕女之吻時顯示特別警告",
 	SpecWarnNetherPower		= "為虛空威能顯示特別警告 (驅散/竊取用)",
-	SpecWarnFelInferno		= "當你在魔化煉獄附近時顯示特別警告",
 	SpecWarnFelFireball		= "為魔化火球顯示特別警告 (斷法用)",
-	SpecWarnFelFireballDispel	= "為魔化火球顯示特別警告 (驅散用)",
 	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記",
 	IncinerateFleshIcon		= "為焚化血肉的目標設置標記",
 	LegionFlameIcon			= "為軍團烈焰的目標設置標記",
 	LegionFlameWhisper		= "密語提示軍團烈焰的目標",
 	LegionFlameRunSound		= "為軍團烈焰播放音效",
-	IncinerateShieldFrame	= "在首領血量裡顯示焚化血肉的血量"
+	IncinerateShieldFrame		= "在首領血量裡顯示焚化血肉的血量"
 }
 
 -------------------------
@@ -126,10 +108,6 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnHellfire		= "地獄烈焰 - 快跑開",
-	SpecWarnHandofProt		= "保護聖禦: %s - 快驅散",
-	SpecWarnDivineShield		= "聖盾術: %s - 快驅散",
-	specWarnIceBlock       		= "寒冰屏障: %s - 快驅散"
 }
 
 L:SetMiscLocalization{
@@ -167,10 +145,6 @@ L:SetMiscLocalization{
 } 
 
 L:SetOptionLocalization{
-	SpecWarnHellfire		= "當你中了地獄烈焰時顯示特別警告",
-	SpecWarnHandofProt		= "當聖騎士施放保護聖禦時顯示特別警告",
-	SpecWarnDivineShield		= "當聖騎士施放聖盾術時顯示特別警告",
-	specWarnIceBlock       		= "當法師施放寒冰屏障時顯示特別警告",
 	PlaySoundOnBladestorm		= "為劍刃風暴播放音效"
 }
 
@@ -190,8 +164,6 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnSpecialSpellSoon		= "特別技能 即將到來",
 	SpecWarnSpecial			= "快變換顏色",
-	SpecWarnEmpoweredDarkness	= "強力黑暗 - 傷害加倍",
-	SpecWarnEmpoweredLight		= "強力光明 - 傷害加倍",
 	SpecWarnSwitchTarget		= "快換目標打雙子契印",
 	SpecWarnKickNow			= "現在斷法",
 	WarningTouchDebuff		= "光明或黑暗之觸: >%s<",
@@ -209,8 +181,6 @@ L:SetOptionLocalization{
 	TimerSpecialSpell		= "為下一次 特別技能顯示計時器",
 	WarnSpecialSpellSoon		= "為下一次 特別技能顯示預先警告",
 	SpecWarnSpecial			= "當你需要變換顏色時顯示特別警告",
-	SpecWarnEmpoweredDarkness	= "當你中了強力黑暗時顯示特別警告",
-	SpecWarnEmpoweredLight		= "當你中了強力光明時顯示特別警告",
 	SpecWarnSwitchTarget		= "當另一個首領施放雙子契印時顯示特別警告",
 	SpecWarnKickNow			= "當你可以斷法時顯示特別警告",
 	SpecialWarnOnDebuff		= "當你中了光明或黑暗之觸時顯示特別警告 (需切換顏色)",
@@ -242,8 +212,7 @@ L:SetWarningLocalization{
 	WarnSubmergeSoon		= "10秒後 鑽進地裡",
 	SpecWarnPursue			= "你被追擊了 - 快跑",
 	warnAdds			= "奈幽掘洞者 出現了",
-	SpecWarnShadowStrike		= "暗影打擊 - 現在斷法",
-	SpecWarnPCold			= "你中了透骨之寒"
+	SpecWarnShadowStrike		= "暗影打擊 - 現在斷法"
 }
 
 L:SetMiscLocalization{
@@ -267,7 +236,6 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "當你開始被追擊時播放音效",
 	PursueIcon			= "為被追擊的目標設置標記 (頭顱)",
 	SpecWarnShadowStrike		= "為$spell:66134顯示特別警告 (斷法用)",
-	SpecWarnPCold			= "當你中了透骨之寒時顯示特別警告",
 	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
 	SetIconsOnPCold			= "為透骨之寒的目標設置標記",
 	AnnouncePColdIcons		= "公佈透骨之寒目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)"
