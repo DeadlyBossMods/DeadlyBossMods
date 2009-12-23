@@ -156,7 +156,7 @@ do
 		elseif args:IsSpellID(71237) and args:IsPlayer() then
 			specWarnCurseTorpor:Show()
 		elseif args:IsSpellID(70674) and (args:GetSrcCreatureID() == 37890 or args:GetSrcCreatureID() == 38009) then
-			specWarnVampricMight:Show()
+			specWarnVampricMight:Show(args.destName)
 		elseif args:IsSpellID(71204) then
 			warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
 			if args:IsPlayer() and (args.amount or 1) >= 3 then
