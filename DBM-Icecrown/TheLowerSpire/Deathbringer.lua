@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(37813)
 mod:RegisterCombat("combat")
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -36,10 +37,12 @@ local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410)
 
 local enrageTimer			= mod:NewBerserkTimer(480)
 
+mod:AddBoolOption("SetIconOnBoilingBlood", true)
 mod:AddBoolOption("RangeFrame", isRanged)
 
 local warned_preFrenzy = false
 local boilingBloodTargets = {}
+local boilingBloodIcon 	= 8
 
 local function warnBoilingBloodTargets()
 	warnBoilingBlood:Show(table.concat(boilingBloodTargets, "<, >"))
@@ -92,6 +95,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingBloodTargets[#boilingBloodTargets + 1] = args.destName
 		self:Unschedule(warnBoilingBloodTargets)
+		if self.Options.SetIconOnBoilingBlood then
+			self:SetIcon(args.destName, boilingBloodIcon, 24)
+			boilingBloodIcon = boilingBloodIcon - 1
+		end
 		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #boilingBloodTargets >= 3) then	-- Boiling Blood
 			warnBoilingBloodTargets()
 		else
