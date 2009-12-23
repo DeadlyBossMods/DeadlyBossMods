@@ -133,12 +133,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon		= "Frenzy soon"
+	warnFrenzySoon	= "Frenzy soon"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon		= "Show pre-warning for Frenzy (at ~33%)",
-	RangeFrame			= "Show range frame (11 yards)"
+	warnFrenzySoon	= "Show pre-warning for Frenzy (at ~33%)",
+	RangeFrame		= "Show range frame (11 yards)"
 }
 
 -----------------
