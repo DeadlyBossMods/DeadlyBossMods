@@ -608,10 +608,12 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull		= "해답을 찾을 시간입니다! 이제 가보자고요!",
-	Phase1		= "xxx anti error xxx",
-	Phase2		= "xxx anti error xxx",
-	Phase3		= "xxx anti error xxx"
+--	Pull		= "해답을 찾을 시간입니다! 이제 가보자고요!",
+	Pull		= "Now keep an eye out! I'll have this licked in two shakes of a--",
+	Phase1		= "Security breach in progress. Analysis of historical archives transferred to lower-priority queue. Countermeasures engaged.",
+	Phase2		= "Threat index threshold exceeded.  Celestial archive aborted. Security level heightened.",
+	Phase3		= "Critical threat index. Void analysis diverted. Initiating sanitization protocol.",
+	Kill		= "System online. Life form pattern recognized.  Welcome, Branbronzan.  Query?"
 })
 
 ---------------
@@ -1506,7 +1508,7 @@ L:SetWarningLocalization({
 	WarnWave1		= "분노한 구울 6, 되살아난 의술사 1 등장",--6 Ghoul, 1 WitchDocter
 	WarnWave2		= "분노한 구울 6, 되살아난 의술사 2, 육중한 누더기골렘 1 등장",--6 Ghoul, 2 WitchDocter, 1 Abom
 	WarnWave3		= "분노한 구울 6, 되살아난 의술사 2, 육중한 누더기골렘 2 등장",--6 Ghoul, 2 WitchDocter, 2 Abom
-	WarnWave4		= "분노한 구울 12, 되살아난 의술사 4, 육중한 누더기골렘 3 등장"--12 Ghoul, 3 WitchDocter, 3 Abom
+	WarnWave4		= "분노한 구울 12, 되살아난 의술사 4, 육중한 누더기골렘 3 등장"--12 Ghoul, 4 WitchDocter, 3 Abom
 })
 
 L:SetTimerLocalization({
