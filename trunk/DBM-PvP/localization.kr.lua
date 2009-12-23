@@ -210,7 +210,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarningGrab 	= "분쇄의 도약 대상 알리기",
-	ArchavonEnrage	= "광폭화 타이머 보기"
+	ArchavonEnrage	= "$spell:26662 타이머 보기"
 })
 
 --------------
@@ -236,7 +236,7 @@ L:SetOptionLocalization{
 	specWarnNova 		= "$spell:65279의 특수 경고 보기",
 	NovaSound			= "$spell:65279의 특수 소리 재생",	
 	timerMobOvercharge	= "과충전 된 몹의 시간 보기(디버프 중첩)",
-	EmalonEnrage		= "광폭화 타이머 보기",
+	EmalonEnrage		= "$spell:26662 타이머 보기",
 	RangeFrame			= "거리 프레임 보기"
 }
 
@@ -263,7 +263,7 @@ L:SetOptionLocalization{
 	SpecWarnCinder		= "$spell:67332의 영향을 받을 경우 특수 경고 보기",
 	PlaySoundOnCinder	= "$spell:67332의 영향을 받을 경우 특수 소리 재생하기",
 	BurningFury			= "$spell:66721 경고 보기",
-	KoralonEnrage		= "광폭화 타이머 보기"
+	KoralonEnrage		= "$spell:26662 타이머 보기"
 }
 
 L:SetMiscLocalization{
@@ -277,7 +277,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Toravon")
 
 L:SetGeneralLocalization{
-	name = "Toravon the Ice Watcher"
+	name = "얼음 감시자 토라본"
 }
 
 L:SetWarningLocalization{
@@ -285,7 +285,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	ToravonEnrage	= "Toravon enrages"
+	ToravonEnrage	= "토라본 광폭화"
 }
 
 L:SetOptionLocalization{
@@ -293,7 +293,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	ToravonEnrage	= "Show timer for enrage"
+	ToravonEnrage	= "$spell:26662 타이머 보기"
 }
 
 ------------------------
