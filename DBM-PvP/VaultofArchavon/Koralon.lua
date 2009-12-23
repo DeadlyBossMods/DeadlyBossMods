@@ -22,7 +22,7 @@ local timerNextMeteor		= mod:NewNextTimer(47, 68161)
 local WarnBurningFury		= mod:NewAnnounce("BurningFury", 3)
 local timerNextBurningFury	= mod:NewNextTimer(20, 66721)
 
-local specWarnCinder		= mod:NewSpecialWarning("SpecWarnCinder")
+local specWarnCinder		= mod:NewSpecialWarningMove(67332)
 
 local timerKoralonEnrage	= mod:NewTimer(300, "KoralonEnrage", 26662)
 

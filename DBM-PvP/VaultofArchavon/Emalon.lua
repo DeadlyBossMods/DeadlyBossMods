@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local specWarnNova			= mod:NewSpecialWarning("specWarnNova")
+local specWarnNova			= mod:NewSpecialWarningRun(65279)
 local warnNova				= mod:NewSpellAnnounce(65279, 3)
 local warnOverCharge		= mod:NewSpellAnnounce(64218, 2)
 
