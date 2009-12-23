@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34780)
 mod:SetMinCombatTime(30)
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -29,13 +29,13 @@ local warnFelFireball			= mod:NewCastAnnounce(66532, 2)
 local warnPortalSoon			= mod:NewSoonAnnounce(67900, 2)
 local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 2)
 local warnFlame					= mod:NewTargetAnnounce(68123, 3)
-local warnTouch					= mod:NewTargetAnnounce(66209, 3)
+--local warnTouch					= mod:NewTargetAnnounce(66209, 3)
 local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4)
 
 local specWarnFlame				= mod:NewSpecialWarning("SpecWarnFlame")
 local specWarnFlesh				= mod:NewSpecialWarning("SpecWarnFlesh")
-local specWarnTouch				= mod:NewSpecialWarning("SpecWarnTouch")
-local specWarnTouchNear			= mod:NewSpecialWarning("SpecWarnTouchNear", false)
+--local specWarnTouch				= mod:NewSpecialWarning("SpecWarnTouch")
+--local specWarnTouchNear			= mod:NewSpecialWarning("SpecWarnTouchNear", false)
 local specWarnKiss				= mod:NewSpecialWarning("SpecWarnKiss", false)
 local specWarnNetherPower		= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno		= mod:NewSpecialWarning("SpecWarnFelInferno")
@@ -46,7 +46,7 @@ mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameRunSound", true)
 mod:AddBoolOption("LegionFlameIcon", true)
 mod:AddBoolOption("IncinerateFleshIcon", true)
-mod:AddBoolOption("TouchJaraxxusIcon", true)
+--mod:AddBoolOption("TouchJaraxxusIcon", true)
 
 local enrageTimer				= mod:NewBerserkTimer(600)
 local timerFlame 				= mod:NewTargetTimer(8, 68123)--There are 8 debuff Ids. Since we detect first to warn, use an 8sec timer to cover duration of trigger spell and damage debuff.
@@ -158,13 +158,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end		
 		if self.Options.LegionFlameIcon then
-			self:SetIcon(args.destName, 6, 8)
+			self:SetIcon(args.destName, 7, 8)
 		end
 		if DBM:GetRaidRank() >= 1 and self.Options.LegionFlameWhisper then
 			self:SendWhisper(L.WhisperFlame, targetname)
 		end
 
-	elseif args:IsSpellID(66209) then					-- Touch of Jaraxxus		causes Curse of the Nether ID:66210
+--[[	elseif args:IsSpellID(66209) then					-- Touch of Jaraxxus		causes Curse of the Nether ID:66210
 		-- timerTouchCD:Start()
 		warnTouch:Show(args.destName)
 		local uId = DBM:GetRaidUnitId(args.destName)
@@ -172,14 +172,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnTouch:Show()
 		end
 		if self.Options.TouchJaraxxusIcon then
-			self:SetIcon(args.destName, 7, 12)
+			self:SetIcon(args.destName, 6, 12)
 		end
 		if uId then 
 			local inRange = CheckInteractDistance(uId, 2) 
 			if inRange then 
 				specWarnTouchNear:Show(args.destName) 
 			end 
-		end
+		end--]]
 
 	elseif args:IsSpellID(66334, 67905, 67906, 67907) and args:IsPlayer() then
 		specWarnKiss:Show()
