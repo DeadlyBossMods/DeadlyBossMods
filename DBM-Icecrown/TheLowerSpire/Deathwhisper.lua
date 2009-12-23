@@ -17,6 +17,7 @@ mod:RegisterEvents(
 
 local canPurge = select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "SHAMAN"
+			or select(2, UnitClass("player")) == "PRIEST"
 
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
