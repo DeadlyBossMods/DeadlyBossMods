@@ -35,7 +35,7 @@ local timerDominateMind				= mod:NewBuffActiveTimer(20, 71289)
 local timerDominateMindCD			= mod:NewCDTimer(40, 71289)
 local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
-local enrageTimer					= mod:NewEnrageTimer(600)
+local enrageTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnDominateMind", true)
 mod:AddBoolOption("SetIconOnDeformedFanatic", true)

@@ -44,7 +44,7 @@ local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
 mod:AddBoolOption("WarningSqueeze", true, "announce")
 
-local enrageTimer					= mod:NewEnrageTimer(900)
+local enrageTimer					= mod:NewBerserkTimer(900)
 local brainportal					= mod:NewTimer(20, "NextPortal")
 local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
 local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)

@@ -48,7 +48,7 @@ mod:AddBoolOption("LegionFlameIcon", true)
 mod:AddBoolOption("IncinerateFleshIcon", true)
 mod:AddBoolOption("TouchJaraxxusIcon", true)
 
-local enrageTimer				= mod:NewEnrageTimer(600)
+local enrageTimer				= mod:NewBerserkTimer(600)
 local timerFlame 				= mod:NewTargetTimer(8, 68123)--There are 8 debuff Ids. Since we detect first to warn, use an 8sec timer to cover duration of trigger spell and damage debuff.
 local timerFlameCD				= mod:NewCDTimer(30, 68125) 
 local timerFlesh				= mod:NewTargetTimer(12, 67049)

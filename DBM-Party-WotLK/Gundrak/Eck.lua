@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 )
 
-local enrageTimer	= mod:NewEnrageTimer(120)
+local enrageTimer	= mod:NewBerserkTimer(120)
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(120 - delay)

@@ -22,7 +22,7 @@ local warnSurge			= mod:NewTargetAnnounce(60936, 2)
 
 local specWarnSurge		= mod:NewSpecialWarning("WarningSurgeYou")
 
-local enrageTimer		= mod:NewEnrageTimer(615)
+local enrageTimer		= mod:NewBerserkTimer(615)
 local timerSpark		= mod:NewTimer(30, "TimerSpark", 59381)
 local timerVortex		= mod:NewCastTimer(11, 56105)
 local timerVortexCD		= mod:NewNextTimer(60, 56105)

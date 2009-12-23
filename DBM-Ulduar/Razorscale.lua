@@ -23,7 +23,7 @@ local warnDevouringFlameCast		= mod:NewAnnounce("WarnDevouringFlameCast", 2, 647
 local specWarnDevouringFlame		= mod:NewSpecialWarning("SpecWarnDevouringFlame")
 local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlameCast")
 
-local enrageTimer					= mod:NewEnrageTimer(900) -- uhm?
+local enrageTimer					= mod:NewBerserkTimer(900) -- uhm?
 local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
 local timerDeepBreathCast			= mod:NewCastTimer(2.5, 64021)
 local timerTurret1					= mod:NewTimer(55, "timerTurret1")
