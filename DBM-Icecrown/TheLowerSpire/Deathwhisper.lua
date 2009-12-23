@@ -29,7 +29,7 @@ local warnPhase2					= mod:NewPhaseAnnounce(2, 3)
 local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
 local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 3)
 
-local specWarnVampricMight			= mod:NewSpecialWarningSpell(70674, canPurge)
+local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
 local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)
 local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
 local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
