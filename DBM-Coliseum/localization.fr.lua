@@ -104,9 +104,9 @@ L:SetOptionLocalization{
 	SpecWarnFelInferno			= "Montre une alerte spéciale quand vous êtes près d'un Inferno gangrené",
 	SpecWarnFelFireball			= "Montre une alerte spéciale pour la boule de feu gangrené (Pour casser)",
 	SpecWarnFelFireballDispel	= "Montre une alerte spécale pour la boule de feu gangrené (Pour dispel)",
-	TouchJaraxxusIcon			= "Met une icône sur la cible du Toucher de Jaraxxus (Croix)",
-	IncinerateFleshIcon			= "Met une icône sur la cible d'Incinérer la chair (Tête de mort)",
-	LegionFlameIcon				= "Met une icône sur la cible des Flammes de la Légion (Carré)",
+	TouchJaraxxusIcon			= "Met une icône sur la cible du Toucher de Jaraxxus",
+	IncinerateFleshIcon			= "Met une icône sur la cible d'Incinérer la chair",
+	LegionFlameIcon				= "Met une icône sur la cible des Flammes de la Légion",
 	LegionFlameWhisper			= "Chuchote à la cible des Flammes de la Légion pour la prévenir",
 	LegionFlameRunSound			= "Joue une sons pour les Flammes de la légion",
 	IncinerateShieldFrame		= "Montre la vie du Boss avec une barre de vie pour Incinérer la chair"

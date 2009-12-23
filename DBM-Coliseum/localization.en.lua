@@ -102,9 +102,9 @@ L:SetOptionLocalization{
 	SpecWarnFelInferno			= "Show special warning when you are near a Fel Inferno",
 	SpecWarnFelFireball			= "Show special warning for Fel Fireball (to interrupt)",
 	SpecWarnFelFireballDispel	= "Show special warning for Fel Fireball (to dispel)",
-	TouchJaraxxusIcon			= "Set icons on Touch of Jaraxxus targets (cross)",
-	IncinerateFleshIcon			= "Set icons on Incinerate Flesh targets (skull)",
-	LegionFlameIcon				= "Set icons on Legion Flame targets (square)",
+	TouchJaraxxusIcon			= "Set icons on Touch of Jaraxxus targets",
+	IncinerateFleshIcon			= "Set icons on Incinerate Flesh targets",
+	LegionFlameIcon				= "Set icons on Legion Flame targets",
 	LegionFlameWhisper			= "Send whisper to Legion Flame targets",
 	LegionFlameRunSound			= "Play sound on Legion Flame",
 	IncinerateShieldFrame		= "Show boss health with a health bar for Incinerate Flesh"
