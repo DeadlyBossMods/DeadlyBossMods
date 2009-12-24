@@ -39,6 +39,8 @@ local enrageTimer			= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("SetIconOnBoilingBlood", true)
 mod:AddBoolOption("RangeFrame", isRanged)
+mod:RemoveOption("HealthFrame")
+mod:AddBoolOption("RunePowerFrame", true, "misc")
 
 local warned_preFrenzy = false
 local boilingBloodTargets = {}
@@ -52,6 +54,11 @@ local function warnBoilingBloodTargets()
 end
 
 function mod:OnCombatStart(delay)
+	if self.Options.RunePowerFrame then
+		DBM.BossHealth:Show(L.name)
+		DBM.BossHealth:AddBoss(37813, L.name)
+		self:ScheduleMethod(0.5, "CreateBossRPFrame")
+	end
 	enrageTimer:Start()
 	table.wipe(boilingBloodTargets)
 	timerCallBloodBeast:Start(-delay)
@@ -67,6 +74,29 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+end
+
+do	-- add the additional Rune Power Bar
+	local last = 0
+	local function getRunePowerPercent()
+		local guid = UnitGUID("focus")
+		if guid and tonumber(guid:sub(9, 12), 16) == 37813 then 
+			last = math.floor(UnitPower("focus")/UnitPowerMax("focus") * 100)
+			return last
+		end
+		for i = 0, GetNumRaidMembers(), 1 do
+			local unitId = ((i == 0) and "target") or "raid"..i.."target"
+			local guid = UnitGUID(unitId)
+			if guid and tonumber(guid:sub(9, 12), 16) == 37813 then
+				last = math.floor(UnitPower(unitId)/UnitPowerMax(unitId) * 100)
+				return last
+			end
+		end
+		return last
+	end
+	function mod:CreateBossRPFrame()
+		DBM.BossHealth:AddBoss(getRunePowerPercent, L.RunePower)
 	end
 end
 
