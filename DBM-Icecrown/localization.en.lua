@@ -139,7 +139,8 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon			= "Show pre-warning for Frenzy (at ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	RangeFrame				= "Show range frame (11 yards)"
+	RangeFrame				= "Show range frame (11 yards)",
+	RunePowerFrame		= "Show Boss Health + Rune Power bar"
 }
 
 L:SetMiscLocalization{
