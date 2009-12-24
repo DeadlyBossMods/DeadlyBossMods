@@ -139,6 +139,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
+	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	RangeFrame				= "거리 프레임 보기 (11 미터)"	
 }
 
