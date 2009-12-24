@@ -1237,7 +1237,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnBarrel			= "Announce Barrel targets",
-	DisarmWarning		= "Show special warning for Disarm",
+	specwarnDisarm		= "Show special warning for Disarm",
 	specWarnBrew		= "Show special warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun	= "Show special warning for Dark Brewmaiden's Stun",
 	PlaySoundOnDisarm	= "Play sound on Disarm",
