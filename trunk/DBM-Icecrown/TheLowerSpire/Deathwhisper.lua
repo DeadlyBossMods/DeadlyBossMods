@@ -66,7 +66,7 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(7, "addsTimer")
 	timerDominateMindCD:Start(30)		-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
 	table.wipe(dominateMindTargets)
-	dominateMindIcon = 7
+	dominateMindIcon = 6
 	deformedFanatic = nil
 	empoweredAdherent = nil
 end
