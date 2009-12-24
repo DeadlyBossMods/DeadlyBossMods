@@ -7,7 +7,7 @@ mod:SetUsedIcons(8)
 
 mod:RegisterCombat("yell", L.CombatStart)
 mod:RegisterKill("yell", L.YellCombatEnd)
-mod:SetMinCombatTime(20)
+mod:SetMinCombatTime(40)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
