@@ -1,4 +1,4 @@
-## Interface: 30300
+﻿## Interface: 30300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Groupe|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍|r
@@ -26,7 +26,7 @@
 ## X-DBM-Mod-Sort: 100
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold,Trial of the Champion,Blackrock Depths,Scarlet Monastery,Pit of Saron,The Forge of Souls,Halls of Reflection
 ## X-DBM-Mod-LoadZone-frFR: Ahn'kahet : l'Ancien royaume,Azjol -Nérub,L'Épuration de Stratholme,Donjon de Drak'Tharon,Gundrak,Les salles de Foudre,Les salles de Pierre,Le Nexus,L'Oculus,Donjon d'Utgarde,Cime d'Utgarde,Le fort Pourpre,L'épreuve du champion,Profondeurs de Rochenoire,Monastère écarlate,Fosse de Saron,La Forge des âmes,Salles des Reflets
-## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung
+## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung,Die Seelenschmiede,Grube von Saron,Hallen der Reflexion
 ## X-DBM-Mod-LoadZone-ruRU: Ан'кахет: Старое Королевство,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость,Испытание чемпиона,Глубины Черной горы,Монастырь Алого ордена,Яма Сарона,Кузня Душ,Залы Отражений
 ## X-DBM-Mod-LoadZone-zhTW: 安卡罕特:古王國,阿茲歐-奈幽,斯坦索姆的抉擇,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡,勇士試煉,黑石深淵,血色修道院,薩倫之淵,眾魂熔爐,倒影大廳
 ## X-DBM-Mod-LoadZone-koKR: 안카헤트: 고대 왕국,아졸네룹,옛 스트라솔름,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보랏빛 요새,용사의 시험장,검은바위 나락,붉은십자군 수도원,사론의 구덩이,영혼의 제련소,투영의 전당
