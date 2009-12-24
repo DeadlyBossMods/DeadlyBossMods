@@ -98,7 +98,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization{
-	name = "Боевой корабль Ледяной Короны"
+	name = "Боевой корабль"
 }
 
 L:SetWarningLocalization{
@@ -141,7 +141,12 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	RangeFrame				= "Показывать окно допустимой дистанции (11 м)"
+	RangeFrame				= "Показывать окно допустимой дистанции (11 м)",
+	RunePowerFrame		= "Показывать здоровье босса и индикатор силы крови"
+}
+
+L:SetMiscLocalization{
+	RunePower	= "Сила крови"
 }
 
 -----------------
