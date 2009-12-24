@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(37813)
 mod:RegisterCombat("combat")
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -48,6 +48,7 @@ local function warnBoilingBloodTargets()
 	warnBoilingBlood:Show(table.concat(boilingBloodTargets, "<, >"))
 	table.wipe(boilingBloodTargets)
 	timerBoilingBlood:Start()
+	boilingBloodIcon = 8
 end
 
 function mod:OnCombatStart(delay)
@@ -57,6 +58,7 @@ function mod:OnCombatStart(delay)
 	warnAddsSoon:Schedule(35)
 	timerBloodNova:Start(-delay)
 	warned_preFrenzy = false
+	boilingBloodIcon = 8
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(11)
 	end
