@@ -142,6 +142,10 @@ L:SetOptionLocalization{
 	RangeFrame				= "Show range frame (11 yards)"
 }
 
+L:SetMiscLocalization{
+	RunePower	= "Rune Power"
+}
+
 -----------------
 --  Festergut  --
 -----------------
