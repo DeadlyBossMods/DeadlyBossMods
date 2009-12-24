@@ -1099,7 +1099,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("PortalTimers")
 
 L:SetGeneralLocalization({
-	name = "Портал Времени"
+	name = "Таймеры порталов"
 })
 
 L:SetWarningLocalization({
@@ -1231,7 +1231,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel			= "Бочка на |3-5(>%s<)",
+	warnBarrel			= "Бочка на |3-5(>%s<)", 
 	specwarnDisarm		= "Обезвреживание Зловещего Варева - отбегите",
 	specWarnBrew		= "Избавьтесь от варева прежде, чем она бросит вам другое!",
 	specWarnBrewStun	= "СОВЕТ: Вы получили удар, не забудьте выпить варево в следующий раз!"
@@ -1425,7 +1425,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("HoRWaveTimer")
 
 L:SetGeneralLocalization({
-	name = "Wave Timers"
+	name = "Таймеры волн"
 })
 
 L:SetWarningLocalization({
@@ -1500,7 +1500,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("LichKingEvent")
 
 L:SetGeneralLocalization({
-	name = "Побег от Артаса"
+	name = "Побег от Короля-лича"
 })
 
 L:SetWarningLocalization({
