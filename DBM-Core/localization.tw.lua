@@ -152,7 +152,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell 					= "%s",
+	spell 					= "%s!",
 	dispel 					= "%%s中了%s - 現在驅散",
 	you 					= "你中了%s",
 	target 					= "%%s中了%s",

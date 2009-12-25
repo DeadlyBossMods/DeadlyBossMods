@@ -151,7 +151,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell = "%s",
+	spell = "%s!",
 	dispel = "%s on %%s - dispel now",
 	interupt = "%s - interupt now",
 	you = "%s on you",

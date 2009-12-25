@@ -145,7 +145,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell 	= "%s",
+	spell 	= "%s!",
 	dispel 	= "%s : %%s - 해제!",	
 	you 	= "당신에게 %s",
 	target 	= "%s : %%s",
