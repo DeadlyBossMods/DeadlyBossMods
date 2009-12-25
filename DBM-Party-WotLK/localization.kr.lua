@@ -759,26 +759,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTimeBomb		= debuff,
-	WarningExplosion 	= spell,
-	SpecWarnBombYou 	= "당신에게 시한 폭탄"
 })
 
 L:SetTimerLocalization({
-	TimerTimeBomb = debuff,
-	TimerExplosion = spell
 })
 
 L:SetOptionLocalization({
-	WarningTimeBomb 	= optionWarning:format(GetSpellInfo(51121)),
-	WarningExplosion 	= optionWarning:format(GetSpellInfo(51110)),
-	TimerTimeBomb 		= optionTimerDur:format(GetSpellInfo(51121)),
-	TimerExplosion 		= optionTimerDur:format(GetSpellInfo(51110)),
-	SpecWarnBombYou		= "당신이 시한 폭탄에 걸렸을 경우 특수 경고 보기"
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "Poor blind fools!"
+	CombatStart		= "어리석은 족속들!"
 })
 
 ------------------------
@@ -872,14 +862,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialWarningSpelllock 	= "침묵!! - 캐스팅 중지!!"  -- translate
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningSpelllock		= "주문 잠금 특수 경고 보기"	
 })
 
 -------------------
@@ -1132,14 +1120,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration		= "모독! 이동하세요!",
 	warnExplode				= "구울 폭발을 시전합니다. 이동하세요!"
 })
 
 L:SetOptionLocalization({
-	specWarnDesecration		= "모독으로부터 타격을 받을 경우 특수 경보 알리기",
 	warnExplode				= "구울 폭발을 시전할 경우 경고 알리기",
-	SetIconOnMarkedTarget	= "죽음 대상에 공격대 아이콘 설정"
+	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
@@ -1156,13 +1142,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste		= ">%s< 가속!! 지금 해제!",
-	specWarnPoison		= "독액! 이동하세요!",
 })
 
 L:SetOptionLocalization({
-	specWarnHaste		= "마법사가 가속을 얻었을 경우 특수 경고 알리기(해제/훔치기)",
-	specWarnPoison		= "독병에 의해 타격을 받을 경우 특수 경고 알리기"
 })
 
 L:SetMiscLocalization({
@@ -1179,11 +1161,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew			= "고해사제 소생 시전 : >%s<, 지금 해제!"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew			= "고해사제의 소생 대상 특수 경고 알리기(해제/훔치기)"
 })
 
 L:SetMiscLocalization({
@@ -1200,14 +1180,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice		= "심판의 망치 : >%s<. 지금 해제!",
 	specwarnRadiance			= "광휘! 뒤돌아보세요!"
 })
 
 L:SetOptionLocalization({
-	specwarnHammerofJustice		= "심판의 망치 특수 경고 보기(해제 관련)",
-	specwarnRadiance			= "광휘의 특수 경고 보기.",
-	SetIconOnHammerTarget		= "심판의 망치 대상자 공격대 아이콘 설정하기"	
+	specwarnRadiance			= "$spell:66935의 특수 경고 보기.",
+	SetIconOnHammerTarget		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(66940)
 })
 
 L:SetMiscLocalization({
@@ -1226,18 +1204,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel				= "맥주통 : >%s<", 
-	specwarnDisarm			= "무장 해제!",
 	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 마셔버리세요!",
 	specWarnBrewStun		= "힌트: 맥주를 들고있네요.흑맥주요정의 맥주가 오기전에 마셔버리면 됩니다!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel				= "맥주통의 대상 알리기",
-	specwarnDisarm			= "무장해제의 특수 경고 보기",
 	specWarnBrew			= "흑맥주요정의 맥주 특수 경고 보기",
 	specWarnBrewStun		= "흑맥주요정의 기절 특수 경고 보기",
-	PlaySoundOnDisarm		= "무장 해제의 소리 재생",
 	YellOnBarrel			= "맥주통을 가지게 될 경우 외치기"
 })
 
@@ -1283,27 +1256,18 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnPursuit			= "추격 : >%s<",
-	specWarnToxic		= "독성 폐기물! 이동하세요!",
-	specWarnPursuit		= "곧 당신을 추격합니다. 뛰세요!",
-	specWarnPoisonNova	= "독 회오리! 뛰세요!",
-	specWarnMines		= "폭발 탄막 - 이동하세요"	
 })
 
 L:SetOptionLocalization({
 	warnPursuit				= "추격 대상 알리기",
-	specWarnToxic			= "독성 폐기물로부터 영향을 받을 경우 특수 경고 보기",
 	specWarnPursuit			= "당신을 추격 하게 될 경우 특수 경고 보기",
-	specWarnPoisonNova		= "독 회오리를 시전 할 경우 특수 경고 보기(이동 관련)",
-	specWarnMines			= "폭발 탄막을 시전 할 경우 특수 경고 보기(이동 관련)",	
-	PlaySoundOnPoisonNova	= "독 회오리 특수 소리 재생",	
-	PlaySoundOnPursuit		= "당신이 추격당할 경우 특수 소리 재생",	
-	SetIconOnPursuitTarget	= "추격 대상에게 공격대 아이콘 설정"	
+	SetIconOnPursuitTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(68987)
 })
 
 L:SetMiscLocalization({
 --	IckPursuit			= "%s1|이;가; 당신을 쫓습니다!",
-	Barrage				= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!",
 	IckPursuit			= "당신을 쫓습니다!",
+	Barrage				= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!"
 --	YellCombatEnd		= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.	
 })
 
@@ -1324,11 +1288,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "사로나이트 덩어리 경고 보기 (영구 결빙을 없애기 위해)",
-	specWarnSaroniteRock		= "사로나이트 던지기의 대상이 될 경우 특수 경고 보기",
-	specWarnSaroniteRockNear	= "당신 주변에 사로나이트 던지기 대상이 있을 경우 특수 경고 보기",	
-	specWarnPermafrost			= "영구 결빙 중첩이 많을 경우 특수 경고 보기(11 중첩)",
-	SetIconOnSaroniteRockTarget	= "사로나이트 덩어리 대상 공격대 아이콘 설정"
+	warnSaroniteRock			= "$spell:70851 대상 알리기",
+	specWarnSaroniteRock		= "$spell:70851의 대상이 될 경우 특수 경고 보기",
+	specWarnSaroniteRockNear	= "당신 주변에 $spell:70851 대상이 있을 경우 특수 경고 보기",	
+	specWarnPermafrost			= "$spell:70336 중첩이 많을 경우 특수 경고 보기(11 중첩)",
+	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
@@ -1347,10 +1311,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 --	specTyrannusEngaged			= "스컬지군주 티라누스가 곧 내려옵니다. - 준비하세요.",
-	specWarnIcyBlast			= "얼음 작렬! 이동하세요!",
 	specWarnHoarfrost			= "당신에게 흰 서리!",
 	specWarnHoarfrostNear		= "당신 주변에 흰 서리! 이동하세요!",
-	specWarnOverlordsBrand		= "당신에게 대군주의 낙인"
 })
 
 L:SetTimerLocalization{
@@ -1359,12 +1321,10 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 --	specTyrannusEngaged			= "스컬지군주 티라누스 착지 특수 경고 보기",
-	specWarnIcyBlast			= "$spell:69628로부터 데미지를 받을 경우 특수 경고 보기",
 	specWarnHoarfrost			= "$spell:69246의 대상이 될 경우 특수 경고 보기",
 	specWarnHoarfrostNear		= "주변에 $spell:69246 대상이 있을 경우 특수 경고 보기",
-	specWarnOverlordsBrand		= "$spell:69172에 영향을 받을 경우 특수 경고 보기",	
 	TimerCombatStart			= "전투 시작 타이머 보기",	
-	SetIconOnHoarfrostTarget	= "$spell:69246 대상에게 공격대 아이콘 설정"
+	SetIconOnHoarfrostTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69246)
 })
 
 L:SetMiscLocalization({
@@ -1386,12 +1346,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSoulstormSoon		= "곧 영혼폭풍!",
 	specwarnSoulstorm		= "영혼폭풍! 들어가세요!"
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon		= "$spell:68872 사전 경고 보기(40%이하 일 때)",
 	specwarnSoulstorm		= "$spell:68872을 시전 할 경우 특수 경고 보기(이동경고)"
 })
 
@@ -1406,14 +1364,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul		= "비춰진 영혼! 딜 중지!",
-	specwarnWailingSouls		= "울부짖는 영혼",	-- Get behind
-	specwarnPhantomBlast		= "차단!"
+	specwarnWailingSouls		= "울부짖는 영혼"	-- Get behind
+
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul		= "$spell:69051 딜 중지 특수 경고 보기",
 	specwarnWailingSouls		= "$spell:68899을 시전 할 경우 특수 경고 보기",	
-	specwarnPhantomBlast		= "$spell:68982을 시전 할 경우 특수 경고 보기(차단 관련)",
 	SetIconOnMirroredTarget		= "$spell:69051 대상 공격대 아이콘 설정"	
 })
 
@@ -1477,7 +1434,6 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Marwyn")
 
 L:SetGeneralLocalization({
-	name = "마윈"
 })
 
 L:SetWarningLocalization({
@@ -1488,7 +1444,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "부패의 샘으로부터 영향을 받을 경우 특수 경고 보기"
 })
 
 L:SetMiscLocalization({
