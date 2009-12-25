@@ -151,7 +151,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell = "%s",
+	spell = "%s!",
 	dispel = "%s en %%s - dispelea ahora",
 	you = "%s en ti",
 	target = "%s en %%s",
