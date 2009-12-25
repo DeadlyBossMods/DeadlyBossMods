@@ -1434,6 +1434,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Marwyn")
 
 L:SetGeneralLocalization({
+	name = "마윈"
 })
 
 L:SetWarningLocalization({
