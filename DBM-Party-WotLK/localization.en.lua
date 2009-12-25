@@ -1187,8 +1187,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnRadiance		= "Show special warning for Radiance",
-	SetIconOnHammerTarget	= "Set icons on Hammer of Justice targets"
+	specwarnRadiance		= "Show special warning for $spell:66935",
+	SetIconOnHammerTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(66940)
 })
 
 L:SetMiscLocalization({
@@ -1289,10 +1289,10 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "Announce Saronite Throw targets",
-	specWarnSaroniteRock		= "Show special warning when you are targeted by Saronite Throw",
-	specWarnSaroniteRockNear	= "Show special warning when you are near Saronite Throw target",
-	specWarnPermafrost			= "Show special warning when Permafrost stacks get too high (11 stacks)",
+	warnSaroniteRock			= "Announce $spell:70851 targets",
+	specWarnSaroniteRock		= "Show special warning when you are targeted by $spell:70851",
+	specWarnSaroniteRockNear	= "Show special warning when you are near $spell:70851 target",
+	specWarnPermafrost			= "Show special warning when $spell:70336 stacks get too high (11 stacks)",
 	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
