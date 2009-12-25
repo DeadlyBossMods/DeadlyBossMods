@@ -1259,12 +1259,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "Pulsing Pumpkin spawning",
-	specWarnHorsemanHead	= "Head spawned - Switch to the head"
+	specWarnHorsemanHead	= "Whirlwind - Switch to the head"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers	= "Show warning for Pulsing Pumpkin spawn",
-	specWarnHorsemanHead	= "Show special warning for Head of the Horseman spawn (2nd and later)"
+	specWarnHorsemanHead	= "Show special warning for Whirlwind (2nd and later head spawn)"
 })
 
 L:SetMiscLocalization({
