@@ -758,22 +758,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTimeBomb		= debuff,
-	WarningExplosion	= spell,
-	SpecWarnBombYou 	= "Time Bomb on you"
 })
 
 L:SetTimerLocalization({
-	TimerTimeBomb	= debuff,
-	TimerExplosion	= spell
 })
 
 L:SetOptionLocalization({
-	WarningTimeBomb 	= optionWarning:format(GetSpellInfo(51121)),
-	WarningExplosion 	= optionWarning:format(GetSpellInfo(51110)),
-	TimerTimeBomb 		= optionTimerDur:format(GetSpellInfo(51121)),
-	TimerExplosion 		= optionTimerDur:format(GetSpellInfo(51110)),
-	SpecWarnBombYou		= "Show special warning when you are affected by Time Bomb"
 })
 
 L:SetMiscLocalization({
@@ -871,14 +861,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialWarningSpelllock = "Spell lock - Stop casting"  -- translate
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningSpelllock	= "Show special warning for spell lock"
 })
 
 L:SetMiscLocalization({
@@ -1135,14 +1123,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration	= "Desecration - Move away",
 	warnExplode			= "Ghoul Explode - Run away"
 })
 
 L:SetOptionLocalization({
-	specWarnDesecration		= "Show special warning when you are affected by Desecration",
 	warnExplode				= "Show warning when Ghoul Minion is about to explode",
-	SetIconOnMarkedTarget	= "Set icons on Marked For Death targets"
+	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
@@ -1159,13 +1145,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste	= "Haste on %s - Dispel now",
-	specWarnPoison	= "Poison Bottle - Move away"
 })
 
 L:SetOptionLocalization({
-	specWarnHaste	= "Show special warning when the Mage gains Haste (to dispel/steal)",
-	specWarnPoison	= "Show special warning when you are affected by Poison Bottle"
 })
 
 L:SetMiscLocalization({
@@ -1182,11 +1164,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-    specwarnRenew	= "Renew on %s - Dispel now"
 })
 
 L:SetOptionLocalization({
-    specwarnRenew	= "Show special warning for Renew targets (to dispel/steal)"
 })
 
 L:SetMiscLocalization({
@@ -1203,12 +1183,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice	= "Hammer of Justice on %s - Dispel now",
 	specwarnRadiance		= "Radiance - Look away"
 })
 
 L:SetOptionLocalization({
-	specwarnHammerofJustice	= "Show special warning for Hammer of Justice (to dispel)",
 	specwarnRadiance		= "Show special warning for Radiance",
 	SetIconOnHammerTarget	= "Set icons on Hammer of Justice targets"
 })
@@ -1229,18 +1207,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel			= "Barrel on >%s<", 
-	specwarnDisarm		= "Disarm - Move away",
 	specWarnBrew		= "Get rid of the brew before she tosses you another one!",
 	specWarnBrewStun	= "HINT: You were bonked, remember to drink the brew next time!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel			= "Announce Barrel targets",
-	specwarnDisarm		= "Show special warning for Disarm",
 	specWarnBrew		= "Show special warning for Dark Brewmaiden's Brew",
 	specWarnBrewStun	= "Show special warning for Dark Brewmaiden's Stun",
-	PlaySoundOnDisarm	= "Play sound on Disarm",
 	YellOnBarrel		= "Yell on Barrel"
 })
 
@@ -1286,27 +1259,18 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnPursuit			= "Pursuit on >%s<",
-	specWarnToxic		= "Toxic Waste - Move away",
-	specWarnPursuit		= "You are being pursued - Run away",
-	specWarnPoisonNova	= "Poison Nova - Run away",
-	specWarnMines		= "Explosive Barrage - Move away"
+	specWarnPursuit		= "You are being pursued - Run away"
 })
 
 L:SetOptionLocalization({
 	warnPursuit				= "Announce Pursuit targets",
-	specWarnToxic			= "Show special warning when you take damage from Toxic Waste",
 	specWarnPursuit			= "Show special warning when you are being pursued",
-	specWarnPoisonNova		= "Show special warning when Poison Nova is cast (to move away)",
-	specWarnMines			= "Show special warning when Explosive Barrage is cast (to move away)",
-	PlaySoundOnPoisonNova	= "Play sound on Poison Nova",
-	PlaySoundOnPursuit		= "Play sound on Pursuit",
-	SetIconOnPursuitTarget	= "Set icons on pursued targets"
+	SetIconOnPursuitTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(68987)
 })
 
 L:SetMiscLocalization({
 	IckPursuit	= "%s is chasing you!",
-	Barrage	= "%s begins rapidly conjuring explosive mines!",
---	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.
+	Barrage	= "%s begins rapidly conjuring explosive mines!"
 })
 ----------------------------
 --  Forgemaster Garfrost  --
@@ -1329,7 +1293,7 @@ L:SetOptionLocalization({
 	specWarnSaroniteRock		= "Show special warning when you are targeted by Saronite Throw",
 	specWarnSaroniteRockNear	= "Show special warning when you are near Saronite Throw target",
 	specWarnPermafrost			= "Show special warning when Permafrost stacks get too high (11 stacks)",
-	SetIconOnSaroniteRockTarget	= "Set icons on Saronite Rock targets"
+	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
@@ -1346,10 +1310,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnIcyBlast		= "Icy Blast - Move away",
 	specWarnHoarfrost		= "Hoarfrost on you",
-	specWarnHoarfrostNear	= "Hoarfrost near you - Move",
-	specWarnOverlordsBrand	= "Overlords Brand on you"
+	specWarnHoarfrostNear	= "Hoarfrost near you - Move"
 })
 
 L:SetTimerLocalization{
@@ -1357,12 +1319,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "Show special warning when you take damage from $spell:69628",
 	specWarnHoarfrost			= "Show special warning when you are affected by $spell:69246",
 	specWarnHoarfrostNear		= "Show special warning for $spell:69246 near you",
-	specWarnOverlordsBrand		= "Show special warning when you are affected by $spell:69172",
 	TimerCombatStart			= "Show timer for start of combat",
-	SetIconOnHoarfrostTarget	= "Set icons on $spell:69246 targets"
+	SetIconOnHoarfrostTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69246)
 })
 
 L:SetMiscLocalization({
@@ -1383,12 +1343,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSoulstormSoon	= "Soulstorm soon",
 	specwarnSoulstorm	= "Soulstorm - Move in"
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "Show pre-warning for $spell:68872 (at ~40%)",
 	specwarnSoulstorm	= "Show special warning when $spell:68872 is cast (to move in)"
 })
 
@@ -1403,14 +1361,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul	= "Stop damage",
-	specwarnWailingSouls	= "Wailing Souls - Get behind",
-	specwarnPhantomBlast	= "Interupt!"
+	specwarnWailingSouls	= "Wailing Souls - Get behind"
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul	= "Show special warning to stop damage on $spell:69051",
 	specwarnWailingSouls	= "Show special warning when $spell:68899 is cast",
-	specwarnPhantomBlast	= "Show special warning when $spell:68982 is cast (to interupt)",
 	SetIconOnMirroredTarget	= "Set icons on $spell:69051 targets"
 })
 
@@ -1479,14 +1435,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "Well of Corruption - Move"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "Show special warning when you are affected by Well of Corruption"
 })
 
 L:SetMiscLocalization({

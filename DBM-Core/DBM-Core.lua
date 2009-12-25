@@ -2584,6 +2584,10 @@ do
 	function bossModPrototype:NewSpecialWarningDispel(text, optionDefault, ...)
 		return newSpecialWarning(self, "dispel", text, nil, optionDefault, ...)
 	end
+	
+	function bossModPrototype:NewSpecialWarningInterupt(text, optionDefault, ...)
+		return newSpecialWarning(self, "interupt", text, nil, optionDefault, ...)
+	end
 
 	function bossModPrototype:NewSpecialWarningYou(text, optionDefault, ...)
 		return newSpecialWarning(self, "you", text, nil, optionDefault, ...)

@@ -20,7 +20,7 @@ local timerMirroredSoul			= mod:NewTargetTimer(8, 69051)
 local timerUnleashedSouls		= mod:NewBuffActiveTimer(5, 68939)
 local specwarnMirroredSoul		= mod:NewSpecialWarning("specwarnMirroredSoul")
 local specwarnWailingSouls		= mod:NewSpecialWarning("specwarnWailingSouls")
-local specwarnPhantomBlast		= mod:NewSpecialWarning("specwarnPhantomBlast", false)
+local specwarnPhantomBlast		= mod:NewSpecialWarningInterupt(68982, false)
 
 mod:AddBoolOption("SetIconOnMirroredTarget", true)
 

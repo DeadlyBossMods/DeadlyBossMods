@@ -22,7 +22,7 @@ local warnVengeance             = mod:NewSpellAnnounce(66889)
 local warnHammerofJustice		= mod:NewTargetAnnounce(66940)
 local timerVengeance			= mod:NewBuffActiveTimer(6, 66889)
 local specwarnRadiance			= mod:NewSpecialWarning("specwarnRadiance")
-local specwarnHammerofJustice	= mod:NewSpecialWarning("specwarnHammerofJustice", isDispeller)
+local specwarnHammerofJustice	= mod:NewSpecialWarningDispel(66940, isDispeller)
 
 mod:AddBoolOption("SetIconOnHammerTarget", true)
 
