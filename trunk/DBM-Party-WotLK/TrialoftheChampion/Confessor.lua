@@ -25,7 +25,7 @@ local warnHolyFire			= mod:NewTargetAnnounce(67676)
 local timerHolyFire			= mod:NewTargetTimer(8, 67676)
 local warnShadows			= mod:NewTargetAnnounce(67678)
 local timerShadows          = mod:NewTargetTimer(5, 67678)
-local specwarnRenew			= mod:NewSpecialWarning("specwarnRenew", isDispeller)
+local specwarnRenew			= mod:NewSpecialWarningDispel(66537, isDispeller)
 
 local shielded				= false
 

@@ -16,7 +16,7 @@ local warningTimeBomb		= mod:NewTargetAnnounce(51121, 2)
 local warningExplosion		= mod:NewCastAnnounce(51110, 3)
 local timerTimeBomb			= mod:NewTargetTimer(6, 51121)
 local timerExplosion		= mod:NewTargetTimer(8, 51110)
-local specWarnBombYou		= mod:NewSpecialWarning("SpecWarnBombYou")
+local specWarnBombYou		= mod:NewSpecialWarningYou(51121)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(51110, 59377) then

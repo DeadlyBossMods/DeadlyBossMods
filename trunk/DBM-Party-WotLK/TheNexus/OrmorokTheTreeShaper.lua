@@ -14,10 +14,16 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
+local isCaster = select(2, UnitClass("player")) == "MAGE"
+              or select(2, UnitClass("player")) == "WARLOCK"
+
 local warningSpikes			= mod:NewSpellAnnounce(47958, 2)
 local warningFrenzy			= mod:NewSpellAnnounce(48017, 3)
 local warningReflection		= mod:NewSpellAnnounce(47981, 4)
 local warningAdd			= mod:NewSpellAnnounce(61564, 1)
+
+local specWarnReflection	= mod:NewSpecialWarningSpell(47981, isCaster)
+
 local timerReflection		= mod:NewBuffActiveTimer(15, 47981)
 local timerReflectionCD		= mod:NewCDTimer(30, 47981)
 
@@ -33,6 +39,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(47981) then
 		timerReflection:Start()
 		warningReflection:Show()
+		specWarnReflection:Show()
 		timerReflectionCD:Start()
 	end
 end

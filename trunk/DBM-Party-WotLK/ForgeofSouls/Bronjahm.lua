@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnSoulstormSoon		= mod:NewAnnounce("warnSoulstormSoon", 2, 68872)
+local warnSoulstormSoon		= mod:NewSoonAnnounce(68872, 2)
 local warnCorruptSoul		= mod:NewTargetAnnounce(68839)
 local specwarnSoulstorm		= mod:NewSpecialWarning("specwarnSoulstorm")
 local timerSoulstormCast	= mod:NewCastTimer(4, 68872)

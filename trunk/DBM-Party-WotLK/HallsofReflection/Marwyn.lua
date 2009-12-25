@@ -11,14 +11,14 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnWellCorruption		= mod:NewSpellAnnounce(72362,3)
+local warnWellCorruption		= mod:NewSpellAnnounce(72362, 3)
 local warnCorruptedFlesh		= mod:NewSpellAnnounce(72436, 3)
 
 local timerWellCorruptionCD		= mod:NewCDTimer(13, 72362)
 local timerCorruptedFlesh		= mod:NewBuffActiveTimer(8, 72436)
 local timerCorruptedFleshCD		= mod:NewCDTimer(20, 72436)
 
-local specWarnWellCorruption	= mod:NewSpecialWarning("SpecWarnWellCorruption")
+local specWarnWellCorruption	= mod:NewSpecialWarningMove(72362)
 
 local spam = 0
 

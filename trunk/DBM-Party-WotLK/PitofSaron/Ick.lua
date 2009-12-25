@@ -23,17 +23,17 @@ local warnPursuitCast			= mod:NewCastAnnounce(68987)
 local warnPoisonNova			= mod:NewCastAnnounce(68989)
 local warnPursuit				= mod:NewAnnounce("warnPursuit")
 
-local specWarnToxic				= mod:NewSpecialWarning("specWarnToxic")
-local specWarnMines				= mod:NewSpecialWarning("specWarnMines")
+local specWarnToxic				= mod:NewSpecialWarningMove(70436)
+local specWarnMines				= mod:NewSpecialWarningMove(69015)
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
-local specWarnPoisonNova		= mod:NewSpecialWarning("specWarnPoisonNova", isMelee)
+local specWarnPoisonNova		= mod:NewSpecialWarningRun(68989, isMelee)
 
 local timerPursuitCast			= mod:NewCastTimer(5, 68987)
 local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
 local timerPoisonNova			= mod:NewCastTimer(5, 68989)
 
-mod:AddBoolOption("PlaySoundOnPoisonNova", isMelee)
-mod:AddBoolOption("PlaySoundOnPursuit", true)
+local soundPoisonNova	= mod:NewSound(68989, nil, isMelee)
+local soundPursuit		= mod:NewSound(68987)
 mod:AddBoolOption("SetIconOnPursuitTarget", true)
 
 function mod:SPELL_CAST_START(args)
@@ -44,9 +44,7 @@ function mod:SPELL_CAST_START(args)
 		warnPoisonNova:Show()
 		timerPoisonNova:Start()
 		specWarnPoisonNova:Show()
-		if self.Options.PlaySoundOnPoisonNova then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
+		soundPoisonNova:Play()
 	end
 end
 
@@ -83,9 +81,7 @@ function mod:OnSync(msg, target)
 		warnPursuit:Show(target)
 		if target == UnitName("player") then 
 			specWarnPursuit:Show() 
-			if self.Options.PlaySoundOnPursuit then 
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav") 
-			end 
+			soundPursuit:Play()
 		end 
 		if self.Options.SetIconOnPursuitTarget then 
 			self:SetIcon(target, 8, 12) 
