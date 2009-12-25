@@ -25,8 +25,8 @@ local warnHoarfrost				= mod:NewSpellAnnounce(69246)
 
 local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
-local specWarnIcyBlast			= mod:NewSpecialWarning("specWarnIcyBlast")
-local specWarnOverlordsBrand	= mod:NewSpecialWarning("specWarnOverlordsBrand")
+local specWarnIcyBlast			= mod:NewSpecialWarningMove(69628)
+local specWarnOverlordsBrand	= mod:NewSpecialWarningYou(69172)
 
 local timerCombatStart			= mod:NewTimer(31, "TimerCombatStart", 2457)
 local timerOverlordsBrand		= mod:NewTargetTimer(8, 69172)

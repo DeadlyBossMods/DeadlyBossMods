@@ -22,8 +22,8 @@ local warnHealingWave		= mod:NewSpellAnnounce(68318)
 local warnHaste				= mod:NewTargetAnnounce(66045)
 local warnPolymorph			= mod:NewTargetAnnounce(66043)
 local warnHexOfMending		= mod:NewTargetAnnounce(67534)
-local specWarnPoison		= mod:NewSpecialWarning("specWarnPoison")
-local specWarnHaste			= mod:NewSpecialWarning("specWarnHaste", isDispeller)
+local specWarnPoison		= mod:NewSpecialWarningMove(68316)
+local specWarnHaste			= mod:NewSpecialWarningDispel(66045, isDispeller)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68318, 67528) then								-- Healing Wave

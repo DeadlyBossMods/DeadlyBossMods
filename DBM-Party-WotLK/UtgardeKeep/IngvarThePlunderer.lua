@@ -20,7 +20,7 @@ local warningWoeStrike	= mod:NewTargetAnnounce(42730, 2)
 local timerSmash		= mod:NewCastTimer(3, 42723)
 local timerWoeStrike	= mod:NewTargetTimer(10, 42723)
 
-local specWarnSpelllock	= mod:NewSpecialWarning("SpecialWarningSpelllock")
+local specWarnSpelllock	= mod:NewSpecialWarningCast(42729)
 
 
 function mod:SPELL_CAST_START(args)

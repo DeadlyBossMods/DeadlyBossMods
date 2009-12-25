@@ -19,7 +19,7 @@ local warnGhoulExplode		= mod:NewTargetAnnounce(67751)
 local warnMarked			= mod:NewTargetAnnounce(67823)
 local timerMarked			= mod:NewTargetTimer(10, 67823)
 local timerExplode			= mod:NewCastTimer(4, 67886)
-local specWarnDesecration	= mod:NewSpecialWarning("specWarnDesecration")
+local specWarnDesecration	= mod:NewSpecialWarningMove(67876)
 
 mod:AddBoolOption("SetIconOnMarkedTarget", true)
 
