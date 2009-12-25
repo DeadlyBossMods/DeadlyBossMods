@@ -257,8 +257,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningWaveNow	= optionWarning:format("Новая волна"),
-	TimerWaveIn		= "Отсчет времени до cледующей волны (после босса из волны 5)",
+	WarningWaveNow	= optionWarning:format("новой волны"),
+	TimerWaveIn		= "Отсчет времени до cледующей волны (после босса 5-ой волны)",
 })
 
 L:SetMiscLocalization({
@@ -593,7 +593,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
-	name = "Бранн Бронзобород"
+	name = "Эскорт Бранна Бронзоборода"
 })
 
 L:SetWarningLocalization({
@@ -605,7 +605,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("Фаза"),
+	WarningPhase	= optionWarning:format("фазе"),
 	timerEvent		= "Отсчет времени продолжительности события"
 })
 
@@ -760,22 +760,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTimeBomb		= debuff,
-	WarningExplosion	= spell,
-	SpecWarnBombYou 	= "Часовая бомба на вас"
 })
 
 L:SetTimerLocalization({
-	TimerTimeBomb	= debuff,
-	TimerExplosion	= spell
 })
 
 L:SetOptionLocalization({
-	WarningTimeBomb 	= optionWarning:format(GetSpellInfo(51121)),
-	WarningExplosion 	= optionWarning:format(GetSpellInfo(51110)),
-	TimerTimeBomb 		= optionTimerDur:format(GetSpellInfo(51121)),
-	TimerExplosion 		= optionTimerDur:format(GetSpellInfo(51110)),
-	SpecWarnBombYou		= "Спец-предупреждение, когда Часовая бомба на вас"
 })
 
 L:SetMiscLocalization({
@@ -817,7 +807,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." заканчивается"), 	-- translate the word 'ending'
+	WarningShiftEnd	= optionWarning:format("окончания "..GetSpellInfo(51162)),
 })
 
 L:SetMiscLocalization({
@@ -873,14 +863,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialWarningSpelllock = "Запрет чар - прекратите чтение заклинаний"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningSpelllock	= "Спец-предупреждение для запрета чар"
 })
 
 L:SetMiscLocalization({
@@ -1113,9 +1101,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPortalNow		= optionWarning:format("Новый портал"),
-	WarningPortalSoon		= optionPreWarning:format("Новый портал"),
-	WarningBossNow			= optionWarning:format("Босс"),
+	WarningPortalNow		= optionWarning:format("нового портала"),
+	WarningPortalSoon		= optionPreWarning:format("новом портале"),
+	WarningBossNow			= optionWarning:format("прибытии босса"),
 	TimerPortalIn			= "Отсчет времени до портала",
 	ShowAllPortalWarnings	= "Предупреждение для всех порталов"
 })
@@ -1137,14 +1125,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration	= "Осквернение - отбегите",
 	warnExplode			= "Взрывание вурдалака-прислужника - бегите"
 })
 
 L:SetOptionLocalization({
-	specWarnDesecration		= "Спец-предупреждение, когда на вас Осквернение",
 	warnExplode				= "Предупреждение, когда все вурдалаки-прислужники готовятся к Взрыванию.",
-	SetIconOnMarkedTarget	= "Установить метку на цель под воздействием Метка смерти"
+	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
@@ -1161,13 +1147,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste	= "Ускорение на %s - рассейте заклинание",
-	specWarnPoison	= "Бутыль яда - отбегите"
 })
 
 L:SetOptionLocalization({
-	specWarnHaste	= "Спец-предупреждение, когда маг читает Ускорение (для рассеивания/кражи)",
-	specWarnPoison	= "Спец-предупреждение, когда вы получаете урон от Бутыли яда"
 })
 
 L:SetMiscLocalization({
@@ -1184,11 +1166,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-    specwarnRenew	= "Обновление на %s - рассейте заклинание"
 })
 
 L:SetOptionLocalization({
-    specwarnRenew	= "Спец-предупреждение, когда на цели Обновление (для рассеивания/кражи)"
 })
 
 L:SetMiscLocalization({
@@ -1205,14 +1185,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice	= "Молот правосудия на |3-5(%s) - рассейте заклинание",
 	specwarnRadiance		= "Сияние - отвернитесь"
 })
 
 L:SetOptionLocalization({
-	specwarnHammerofJustice	= "Спец-предупреждение для Молота правосудия (для рассеивания)",
-	specwarnRadiance		= "Спец-предупреждение для Сияния",
-	SetIconOnHammerTarget	= "Установить метку на цель под воздействием Молота правосудия"
+	specwarnRadiance		= "Спец-предупреждение для $spell:66935",
+	SetIconOnHammerTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(66940)
 })
 
 L:SetMiscLocalization({
@@ -1231,18 +1209,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel			= "Бочка на |3-5(>%s<)", 
-	specwarnDisarm		= "Обезвреживание Зловещего Варева - отбегите",
 	specWarnBrew		= "Избавьтесь от варева прежде, чем она бросит вам другое!",
 	specWarnBrewStun	= "СОВЕТ: Вы получили удар, не забудьте выпить варево в следующий раз!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel			= "Сообщить цели, под воздействием Бочка",
-	specwarnDisarm		= "Спец-предупреждение для разоружения",
 	specWarnBrew		= "Спец-предупреждение для Пива темной официантки",
 	specWarnBrewStun	= "Спец-предупреждение для Оглушения темным пивом официантки",
-	PlaySoundOnDisarm	= "Звуковой сигнал, когда разоружение",
 	YellOnBarrel		= "Крикнуть, когда на вас Бочка"
 })
 
@@ -1261,12 +1234,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "Призыв Пульсирующих тыкв",
-	specWarnHorsemanHead	= "Призыв Головы Всадника - переключитесь на голову"
+	specWarnHorsemanHead	= "Вихрь - переключитесь на голову"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers	= "Предупреждать о призыве Пульсирующих тыкв",
-	specWarnHorsemanHead	= "Спец-предупреждение о призыве Головы Всадника"
+	specWarnHorsemanHead	= "Спец-предупреждение для Вихря (призыв 2ой и следующей головы)"
 })
 
 L:SetMiscLocalization({
@@ -1287,28 +1260,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnPursuit			= "Преследование на >%s<",
-	specWarnToxic		= "Токсический выброс - отбегите",
-	specWarnPursuit		= "Вас преследуют - бегите",
-	specWarnPoisonNova	= "Ядовитая звезда - отбегите!",
-	specWarnMines		= "Минометный обстрел - двигайтесь!"
+	warnPursuit			= "Преследование за |3-4(>%s<)",
+	specWarnPursuit		= "Вас преследуют - бегите"
 })
 
 L:SetOptionLocalization({
-	warnPursuit				= "Объявлять преследуемые цели",
-	specWarnToxic			= "Спец-предупреждение, когда вы получаете урон от Токсического выброса",
+	warnPursuit				= "Объявлять цели Преследования",
 	specWarnPursuit			= "Спец-предупреждение, когда вас преследуют",
-	specWarnPoisonNova		= "Спец-предупреждение о $spell:68989 (отбежать)",
-	specWarnMines			= "Спец-предупреждение о $spell:69015 (разбежаться)",
-	PlaySoundOnPoisonNova	= "Звуковой сигнал при $spell:68989",
-	PlaySoundOnPursuit		= "Звуковой сигнал при преследовании",
-	SetIconOnPursuitTarget	= "Установить метку на преследуемую цель"
+	SetIconOnPursuitTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(68987)
 })
 
 L:SetMiscLocalization({
 	IckPursuit	= "%s преследует вас!",
-	Barrage	= "%s начинает быстро создавать взрывающиеся снаряды.",
---	YellCombatEnd	= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.
+	Barrage	= "%s начинает быстро создавать взрывающиеся снаряды."
 })
 ----------------------------
 --  Forgemaster Garfrost  --
@@ -1320,18 +1284,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock			= "Саронитовая глыба на >%s<",
-	specWarnSaroniteRock		= "Саронитовый бросок на вас - отбегите",
-	specWarnSaroniteRockNear	= "Саронитовый бросок около вас - отбегите",
+	warnSaroniteRock			= "Бросок саронита на |3-3(>%s<)",
+	specWarnSaroniteRock		= "Бросок саронита на вас - отбегите",
+	specWarnSaroniteRockNear	= "Бросок саронита около вас - отбегите",
 	specWarnPermafrost			= "%s: %s"
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "Объявлять цели Броска саронита",
-	specWarnSaroniteRock		= "Спец-предупреждение, когда Саронитовый бросок на вас",
-	specWarnSaroniteRockNear	= "Спец-предупреждение, когда вы стоите рядом с целью Саронитового броска",
-	specWarnPermafrost			= "Спец-предупреждение, когда превышено суммарное количество эффектов Вечной мерзлоты",
-	SetIconOnSaroniteRockTarget	= "Установить метку на цель под воздействием Саронитовой скалы"
+	warnSaroniteRock			= "Объявлять цели заклинания $spell:70851",
+	specWarnSaroniteRock		= "Спец-предупреждение, когда вас выбрали целью заклинания $spell:70851",
+	specWarnSaroniteRockNear	= "Спец-предупреждение, когда вы около цели заклинания $spell:70851",
+	specWarnPermafrost			= "Спец-предупреждение при слишком большом количестве стаков заклинания $spell:70336 (11 стаков)",
+	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
@@ -1348,10 +1312,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnIcyBlast		= "Ледяной вихрь - отбегите",
-	specWarnHoarfrost		= "Глыба падает на вас",
-	specWarnHoarfrostNear	= "Глыба падает около вас - отбегите",
-	specWarnOverlordsBrand	= "Клеймо верховного лорда на вас"
+	specWarnHoarfrost		= "Седой мороз на вас",
+	specWarnHoarfrostNear	= "Седой мороз около вас - отбегите"
 })
 
 L:SetTimerLocalization{
@@ -1359,12 +1321,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "Спец-предупреждение, когда вы получаете урон от $spell:69628",
 	specWarnHoarfrost			= "Спец-предупреждение, когда на вас $spell:69246",
 	specWarnHoarfrostNear		= "Спец-предупреждение, когда около вас $spell:69246",
-	specWarnOverlordsBrand		= "Спец-предупреждение, когда на вас $spell:69172",
 	TimerCombatStart			= "Отсчет времени до начала боя",
-	SetIconOnHoarfrostTarget	= "Устанавливать метки на цели заклинания $spell:69246"
+	SetIconOnHoarfrostTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69246)
 })
 
 L:SetMiscLocalization({
@@ -1385,13 +1345,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSoulstormSoon	= "Буря душ скоро",
 	specwarnSoulstorm	= "Буря душ - приблизьтесь"
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "Предупреждать заранее о $spell:68872 (на ~40%)",
-	specwarnSoulstorm	= "Спец-предупреждение о $spell:68872 (подбежать ближе)"
+	specwarnSoulstorm	= "Спец-предупреждение о применении заклинания $spell:68872 (чтобы приблизиться)"
 })
 
 -------------------------
@@ -1405,14 +1363,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul	= "Прекратите атаку",
-	specwarnWailingSouls	= "Стенающие души - отбегите",
-	specwarnPhantomBlast	= "Прерывание!"
+	specwarnWailingSouls	= "Стенающие души - отбегите"
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul	= "Спец-предупреждение о прекращении атаки, при $spell:69051",
 	specwarnWailingSouls	= "Спец-предупреждение о заклинании $spell:68899",
-	specwarnPhantomBlast	= "Спец-предупреждение о заклинании $spell:68982 (для прерывания)",
 	SetIconOnMirroredTarget	= "Устанавливать метки на цели заклинания $spell:69051"
 })
 
@@ -1481,14 +1437,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "Колодец скверны - бегите!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "Спец-предупреждение, когда вы стоите в Колодце скверны"
 })
 
 L:SetMiscLocalization({
@@ -1515,16 +1469,16 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShowWaves	= "Предупреждение для волн"
+	ShowWaves	= "Предупреждение для прибывающих волн"
 })
 
 L:SetMiscLocalization({
-	Ghoul			= "Гневный вурдалак",--creature id 36940
+	Ghoul			= "Гневный вурдалак",--creature id 36940. Not sure how to use these in function above to simplify locals though. :\
 	Abom			= "Неуклюжее поганище",--creature id 37069
 	WitchDoctor		= "Воскрешенный ведьмак",--creature id 36941
 	ACombatStart	= "Он слишком силен. Мы должны выбраться отсюда как можно скорее. Моя магия задержит его, но не надолго. Быстрее, герои!",
 	HCombatStart	= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",
-	Wave1			= "Бежать некуда.$",
+	Wave1			= "^Бежать некуда.$",
 	Wave2			= "Покоритесь леденящей смерти!",
 	Wave3			= "Вы в ловушке!",
 	Wave4			= "Как долго вы сможете сопротивляться?",
