@@ -593,7 +593,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("BrannBronzebeard")
 
 L:SetGeneralLocalization({
-	name = "Эскорт Бранна Бронзоборода"
+	name = "Эскорт Бранна"
 })
 
 L:SetWarningLocalization({
@@ -671,9 +671,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Предупредить заранее о Разделении",
-	WarningSplitNow		= "Предупредить о Разделении",
-	WarningMerge		= "Предупредить о Слиянии"
+	WarningSplitSoon	= "Предупреждать заранее о Разделении",
+	WarningSplitNow		= "Предупреждать о Разделении",
+	WarningMerge		= "Предупреждать о Слиянии"
 })
 
 L:SetMiscLocalization({
@@ -1292,9 +1292,9 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "Объявлять цели заклинания $spell:70851",
-	specWarnSaroniteRock		= "Спец-предупреждение, когда вас выбрали целью заклинания $spell:70851",
-	specWarnSaroniteRockNear	= "Спец-предупреждение, когда вы около цели заклинания $spell:70851",
-	specWarnPermafrost			= "Спец-предупреждение при слишком большом количестве стаков заклинания $spell:70336 (11 стаков)",
+	specWarnSaroniteRock		= "Спец-предупреждение, когда вас выбрали целью заклинания \n$spell:70851",
+	specWarnSaroniteRockNear	= "Спец-предупреждение, когда вы около цели заклинания \n$spell:70851",
+	specWarnPermafrost			= "Спец-предупреждение при слишком большом количестве стаков \nзаклинания $spell:70336 (11 стаков)",
 	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
@@ -1349,7 +1349,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnSoulstorm	= "Спец-предупреждение о применении заклинания $spell:68872 (чтобы приблизиться)"
+	specwarnSoulstorm	= "Спец-предупреждение о применении заклинания $spell:68872 \n(для приближения)"
 })
 
 -------------------------
@@ -1367,7 +1367,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specwarnMirroredSoul	= "Спец-предупреждение о прекращении атаки, при $spell:69051",
+	specwarnMirroredSoul	= "Спец-предупреждение для прекращения атаки при \n$spell:69051",
 	specwarnWailingSouls	= "Спец-предупреждение о заклинании $spell:68899",
 	SetIconOnMirroredTarget	= "Устанавливать метки на цели заклинания $spell:69051"
 })
