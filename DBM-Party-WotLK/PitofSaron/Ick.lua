@@ -24,7 +24,7 @@ local warnPoisonNova			= mod:NewCastAnnounce(68989)
 local warnPursuit				= mod:NewAnnounce("warnPursuit")
 
 local specWarnToxic				= mod:NewSpecialWarningMove(70436)
-local specWarnMines				= mod:NewSpecialWarningMove(69015)
+local specWarnMines				= mod:NewSpecialWarningRun(69015)
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
 local specWarnPoisonNova		= mod:NewSpecialWarningRun(68989, isMelee)
 
