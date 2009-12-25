@@ -2118,6 +2118,7 @@ do
 				categorySort = {},
 				id = name,
 				announces = {},
+				specwarns = {},
 				timers = {},
 				modId = modId,
 				revision = 0,
@@ -2546,7 +2547,7 @@ do
 		else
 			self:AddBoolOption(optionName or text, optionDefault, "announce")		
 		end
-		table.insert(self.announces, obj)
+		table.insert(self.specwarns, obj)
 		return obj
 	end
 
@@ -2566,13 +2567,13 @@ do
 		if optionName == false then
 			obj.option = nil
 		else
-			self:AddBoolOption(optionName or text, optionDefault, "announce")
+			self:AddBoolOption(optionName or "specwarn"..text, optionDefault, "announce")		-- todo cleanup core code from that indexing type using options[text] is very bad!!! ;)
 		end
-		table.insert(self.announces, obj)
+		table.insert(self.specwarns, obj)
 		if announceType == "stack" then
-			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
+			self.localization.options["specwarn"..text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(stacks or 3, spellId)
 		else
-			self.localization.options[text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId)
+			self.localization.options["specwarn"..text] = DBM_CORE_AUTO_SPEC_WARN_OPTIONS[announceType]:format(spellId)
 		end
 		return obj
 	end
