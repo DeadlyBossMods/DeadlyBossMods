@@ -8,7 +8,6 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED"
 )
 
