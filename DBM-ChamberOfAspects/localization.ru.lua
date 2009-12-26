@@ -55,15 +55,15 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	PlaySoundOnFireWall		= "Звуковой сигнал для волны из Огненной стены",
+	PlaySoundOnFireWall		= "Звуковой сигнал при Огненной стене",
 	AnnounceFails			= "Объявлять игроков, потерпевших неудачу в Огненной стене и Расщелине тьмы\n(требуются права лидера или помощника)",
 	TimerTenebron			= "Отсчет времени до прибытия Тенеброна",
 	TimerShadron			= "Отсчет времени до прибытия Шадрона",
 	TimerVesperon			= "Отсчет времени до прибытия Весперона",
 	WarningFireWall			= "Cпец-предупреждение для Огненной стены",
-	WarningTenebron			= "Предупредить о призыве Тенеброна",
-	WarningShadron			= "Объявлять о призыве Шадрона",
-	WarningVesperon			= "Объявлять о призыве Весперона",
+	WarningTenebron			= "Объявлять прибытие Тенеброна",
+	WarningShadron			= "Объявлять прибытие Шадрона",
+	WarningVesperon			= "Объявлять прибытие Весперона",
 	WarningTenebronPortal	= "Cпец-предупреждение для порталов Тенеброна",
 	WarningShadronPortal	= "Cпец-предупреждение для порталов Шадрона",
 	WarningVesperonPortal	= "Cпец-предупреждение для порталов Весперона"

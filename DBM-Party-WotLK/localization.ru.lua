@@ -4,14 +4,14 @@ local L
 
 local spell				= "%s"				
 local debuff			= "%s: >%s<"			
-local spellCD			= "Восстановление: %s"
+local spellCD			= "Восстановление %s"
 local spellSoon			= "Скоро %s"
 local optionWarning		= "Предупреждение для %s"
 local optionPreWarning	= "Предупреждать заранее о %s"
 local optionSpecWarning	= "Спец-предупреждение для %s"
 local optionTimerCD		= "Отсчет времени до восстановления %s"
-local optionTimerDur	= "Отсчет времени до %s"
-local optionTimerCast	= "Время чтения заклинания %s"
+local optionTimerDur	= "Отсчет времени для %s"
+local optionTimerCast	= "Отсчет времени применения заклинания %s"
 
 ----------------------------------
 --  Ahn'Kahet: The Old Kingdom  --
@@ -149,7 +149,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Anubarak")
 
 L:SetGeneralLocalization({
-	name = "Ануб'арак (Группа)"
+	name = "Ануб'арак (группа)"
 })
 
 L:SetWarningLocalization({
