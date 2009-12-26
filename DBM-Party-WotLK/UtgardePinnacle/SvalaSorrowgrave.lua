@@ -12,15 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warningSword		= mod:NewSpellAnnounce(48276, 2)
 local warningSacrifice	= mod:NewTargetAnnounce(48267, 2)
 local timerSacrifice	= mod:NewBuffActiveTimer(25, 48276)
-
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(48276) then
-		warningSword:Show()
-	end
-end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(48267) then
