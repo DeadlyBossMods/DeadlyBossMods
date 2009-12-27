@@ -19,16 +19,16 @@ local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the s
 local warnSlimeSpray			= mod:NewSpellAnnounce(69508)
 local warnMutatedInfection		= mod:NewTargetAnnounce(71224)
 local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
-local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn")
-local nextStickyOoze			= mod:NewNextTimer(16, 69774)
+local warnOozeSpawn			= mod:NewAnnounce("WarnOozeSpawn")
 local warnStickyOoze			= mod:NewSpellAnnounce(69774)
 
-local specWarnMutatedInfection	= mod:NewSpecialWarning("SpecWarnMutatedInfection")
+local specWarnMutatedInfection		= mod:NewSpecialWarning("SpecWarnMutatedInfection")
 local specWarnStickyOoze		= mod:NewSpecialWarning("SpecWarnStickyOoze")
 local specWarnRadiatingOoze		= mod:NewSpecialWarning("SpecWarnRadiatingOoze", false)--Some strats purposely run to this so option is defaulted to off
 
-local nextWallSlime				= mod:NewTimer(20, "NextPoisonSlimePipes")
-local nextSlimeSpray			= mod:NewNextTimer(21, 69508)
+local timerStickyOoze			= mod:NewNextTimer(16, 69774)
+local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
+local timerSlimeSpray			= mod:NewNextTimer(21, 69508)
 local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
 
 local soundStickyOoze			= mod:NewSound(71208)
@@ -42,7 +42,7 @@ end
 
 function mod:WallSlime()
 	if self:IsInCombat() then
-		nextWallSlime:Start()
+		timerWallSlime:Start()
 		self:UnscheduleMethod("WallSlime")
 		self:ScheduleMethod(20, "WallSlime")
 	end
@@ -50,10 +50,10 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69508) then
-		nextSlimeSpray:Start()
+		timerSlimeSpray:Start()
 		warnSlimeSpray:Show()
 	elseif args:IsSpellID(69774) then
-		nextStickyOoze:Start()
+		timerStickyOoze:Start()
 		warnStickyOoze:Show()
 	end
 end
