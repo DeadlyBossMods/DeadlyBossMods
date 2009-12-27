@@ -157,9 +157,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	InhaledBlight		= "Inhaled Blight >%d<"
 }
 
 L:SetOptionLocalization{
+	InhaledBlight		= "Show warning for $spell:71912",
+	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
 ---------------
@@ -178,7 +181,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes	= "Next Poison Slime Pipes"
+	NextPoisonSlimePipes		= "Next Poison Slime Pipes"
 }
 
 L:SetOptionLocalization{
