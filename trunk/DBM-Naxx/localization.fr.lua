@@ -22,6 +22,10 @@ L:SetOptionLocalization({
 	TimerLocustFade 	= "Afficher le timer pour la fin de la Nuée de sauterelles"
 })
 
+L:SetMiscLocalization({
+	ArachnophobiaTimer	= "Arachnophobia"
+})
+
 ----------------------------
 --  Grand Widow Faerlina  --
 ----------------------------
@@ -66,7 +70,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "Je suis dans un cocon! Aidez-moi!"
+	YellWebWrap			= "Je suis dans un cocon! Aidez-moi!",
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ------------------------------

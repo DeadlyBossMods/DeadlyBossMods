@@ -25,6 +25,10 @@ L:SetOptionLocalization({
 	TimerLocustFade 	= "메뚜기 떼 사라짐 타이머 보기"
 })
 
+L:SetMiscLocalization({
+	ArachnophobiaTimer	= "Arachnophobia"
+})
+
 ---------------------
 --  귀부인 펠리나  --
 ---------------------
@@ -69,7 +73,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "저 거미줄에 걸렸어요!! 살려주세요!!"
+	YellWebWrap			= "저 거미줄에 걸렸어요!! 살려주세요!!",
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ---------------
