@@ -883,6 +883,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	MakeitCountTimer	= "Make It Count"
+})
+
 --------------------
 -- Mage-Lord Urom --
 --------------------
@@ -960,7 +964,9 @@ L:SetOptionLocalization({
 	TimerEnrage	= optionTimerDur:format(GetSpellInfo(51170))
 })
 
-
+L:SetMiscLocalization({
+	MakeitCountTimer	= "Make It Count"
+})
 
 ------------------
 -- Utgarde Keep --
