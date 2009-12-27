@@ -30,6 +30,14 @@ function mod:OnCombatStart(delay)
 	timerSpider:Start(30 - delay)
 end
 
+function mod:OnCombatEnd(wipe)
+	if not wipe then
+		if DBM.Bars:GetBar(L.ArachnophobiaTimer) then
+			DBM.Bars:CancelBar(L.ArachnophobiaTimer) 
+		end	
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(28622) then -- Web Wrap
 		warnWebWrap:Show(args.destName)

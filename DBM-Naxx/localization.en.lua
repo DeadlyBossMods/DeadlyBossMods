@@ -16,7 +16,12 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecialLocust		= "Show special warning for Locust Swarm",
-	WarningLocustFaded	= "Show warning for Locust Swarm fade"
+	WarningLocustFaded	= "Show warning for Locust Swarm fade",
+	ArachnophobiaTimer	= "Show timer for Arachnophobia (achievement)"
+})
+
+L:SetMiscLocalization({
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ----------------------------
@@ -63,7 +68,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap	= "I'm wrapped! Help me!"
+	YellWebWrap	= "I'm wrapped! Help me!",
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ------------------------------
