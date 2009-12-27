@@ -1127,14 +1127,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnDesecration	= "褻瀆 - 快跑開",
 	warnExplode			= "食屍鬼爆炸 - 快跑開"
 })
 
 L:SetOptionLocalization({
-	specWarnDesecration		= "當你中了褻瀆時顯示特別警告",
 	warnExplode				= "當食屍鬼爪牙即將自我爆炸時警告",
-	SetIconOnMarkedTarget	= "為死亡標記的目標設置標記"
+	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
@@ -1151,13 +1149,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHaste	= "加速: %s - 快驅散",
-	specWarnPoison	= "毒藥瓶 - 快跑開",
 })
 
 L:SetOptionLocalization({
-	specWarnHaste	= "當法師獲得加速時特別警告 (驅散/竊取用)",
-	specWarnPoison	= "當你中了毒藥瓶時顯示特別警告"
 })
 
 L:SetMiscLocalization({
@@ -1174,11 +1168,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnRenew	= "恢復: %s - 快驅散"
 })
 
 L:SetOptionLocalization({
-	specwarnRenew	= "為恢復的目標顯示特別警告 (驅散/竊取用)"
 })
 
 L:SetMiscLocalization({
@@ -1195,14 +1187,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnHammerofJustice	= "制裁之錘: %s - 快驅散",
 	specwarnRadiance		= "烈光 - 背對王"
 })
 
 L:SetOptionLocalization({
-	specwarnHammerofJustice	= "為制裁之錘顯示特別警告 (驅散用)",
-	specwarnRadiance		= "為烈光顯示特別警告",
-	SetIconOnHammerTarget	= "為制裁之錘的目標設置標記"
+	specwarnRadiance		= "為$spell:66935顯示特別警告",
+	SetIconOnHammerTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(66940)
 })
 
 L:SetMiscLocalization({
@@ -1221,18 +1211,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel			= "空桶(暈): >%s<", 
-	specwarnDisarm		= "繳械 - 快跑開",
 	specWarnBrew		= "在他再丟你一個前喝掉酒!",
 	specWarnBrewStun	= "提示:你瘋狂了,記得下一次喝啤酒!"
 })
 
 L:SetOptionLocalization({
-	warnBarrel			= "提示空桶(暈)的目標",
-	specwarnDisarm		= "為繳械顯示特別警告",
 	specWarnBrew		= "為黑鐵啤酒辣妹的啤酒顯示特別警告",
 	specWarnBrewStun	= "為黑鐵啤酒辣妹昏迷顯示特別警告",
-	PlaySoundOnDisarm	= "當繳械時播放音效",
 	YellOnBarrel		= "當你中了空桶(暈)時大喊"
 })
 
@@ -1251,12 +1236,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "跳動的南瓜出現了!",
-	specWarnHorsemanHead	= "頭顱出現了! 轉換目標!"
+	specWarnHorsemanHead	= "旋風斬! 轉換目標!"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers	= "為跳動的南瓜出現顯示警告",
-	specWarnHorsemanHead	= "為無頭騎士之頭出現顯示警告 (第二次以後的)"
+	specWarnHorsemanHead	= "為旋風斬顯示特別警告 (第二次及最後的頭顱出現)"
 })
 
 L:SetMiscLocalization({
@@ -1276,29 +1261,20 @@ L:SetGeneralLocalization({
 	name = "艾克及克瑞克"
 })
 
-L:SetWarningLocalization({
+L:SetWarningLocalization({	
 	warnPursuit			= "追擊: >%s<",
-	specWarnToxic		= "毒性廢料 - 快跑開",
-	specWarnPursuit		= "你中了追擊 - 快跑",
-	specWarnPoisonNova	= "劇毒新星 - 快跑開",
-	specWarnMines		= "爆裂彈幕 - 快跑開"
+	specWarnPursuit		= "你中了追擊 - 快跑"
 })
 
 L:SetOptionLocalization({
 	warnPursuit				= "提示追擊的目標",
-	specWarnToxic			= "當你中了毒性廢料時顯示特別警告",
 	specWarnPursuit			= "當你被追擊時顯示特別警告",
-	specWarnPoisonNova		= "當劇毒新星施放時顯示特別警告 (跑開用)",
-	specWarnMines			= "當爆裂彈幕施放時顯示特別警告 (跑開用)",
-	PlaySoundOnPoisonNova	= "為劇毒新星播放音效",
-	PlaySoundOnPursuit		= "為追擊播放音效",
 	SetIconOnPursuitTarget	= "為追擊的目標設置標記"
 })
 
 L:SetMiscLocalization({
 	IckPursuit		= "%s正在追擊著你!",
 	Barrage			= "%s開始迅速地召喚爆裂地雷!",
---	YellCombatEnd	= "等等!停!別殺我，拜託!我什麼都告訴你!"--in case removing kricks creatureid doesn't fix it thinking we wipe.
 })
 
 ----------------------------
@@ -1318,11 +1294,11 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSaroniteRock			= "提示薩鋼岩的目標",
-	specWarnSaroniteRock		= "當你中了投擲薩鋼時顯示特別警告",
-	specWarnSaroniteRockNear	= "當你附近有人中了投擲薩鋼時顯示特別警告",
-	specWarnPermafrost			= "當極寒冰霜堆疊太高時顯示特別警告 (11層)",
-	SetIconOnSaroniteRockTarget	= "為薩鋼岩的目標設置標記"
+	warnSaroniteRock			= "提示$spell:70851的目標",
+	specWarnSaroniteRock		= "當你中了$spell:70851時顯示特別警告",
+	specWarnSaroniteRockNear	= "當你附近有人中了$spell:70851時顯示特別警告",
+	specWarnPermafrost			= "當$spell:70336堆疊太高時顯示特別警告 (11層)",
+	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
@@ -1339,10 +1315,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnIcyBlast		= "冰結衝擊 - 快跑開",
 	specWarnHoarfrost		= "你中了白霜 - 快跑開",
-	specWarnHoarfrostNear	= "你附近有人中了白霜 - 快跑開",
-	specWarnOverlordsBrand	= "你中了霸主的烙紋"
+	specWarnHoarfrostNear	= "你附近有人中了白霜 - 快跑開"
 })
 
 L:SetTimerLocalization{
@@ -1350,12 +1324,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization({
-	specWarnIcyBlast			= "當你受到$spell:69628的傷害時顯示特別警告",
 	specWarnHoarfrost			= "當你中了$spell:69246時顯示特別警告",
 	specWarnHoarfrostNear		= "你附近有人中了$spell:69246時顯示特別警告",
-	specWarnOverlordsBrand		= "當你中了$spell:69172時顯示特別警告",
 	TimerCombatStart			= "為戰鬥開始顯示計時器",
-	SetIconOnHoarfrostTarget	= "為$spell:69246的目標設置標記"
+	SetIconOnHoarfrostTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69246)
 })
 
 L:SetMiscLocalization({
@@ -1376,12 +1348,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSoulstormSoon	= "靈魂風暴 即將到來",
 	specwarnSoulstorm	= "靈魂風暴 - 快跑到王身邊"
 })
 
 L:SetOptionLocalization({
-	warnSoulstormSoon	= "為$spell:68872顯示預先警告 (大約40%)",
 	specwarnSoulstorm	= "當$spell:68872施放時顯示特別警告 (靠近用)"
 })
 
@@ -1396,14 +1366,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specwarnMirroredSoul	= "停止攻擊",
-	specwarnWailingSouls	= "哀嚎之魂 - 快跑到王背後",
-	specwarnPhantomBlast	= "斷法!"
+	specwarnWailingSouls	= "哀嚎之魂 - 快跑到王背後"
 })
 
 L:SetOptionLocalization({
 	specwarnMirroredSoul	= "為$spell:69051需要停止攻擊時顯示特別警告",
 	specwarnWailingSouls	= "當$spell:68899施放時顯示特別警告",
-	specwarnPhantomBlast	= "當$spell:68982施放時顯示特別警告 (斷法用)",
 	SetIconOnMirroredTarget	= "為$spell:69051的目標設置標記"
 })
 
@@ -1472,14 +1440,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "腐化之井 - 快跑開"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnWellCorruption	= "當你中了腐化之井時顯示特別警告"
 })
 
 L:SetMiscLocalization({
