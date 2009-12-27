@@ -21,6 +21,10 @@ L:SetOptionLocalization({
 	WarningLocustFaded		= "當蝗蟲風暴結束時顯示警告"
 })
 
+L:SetMiscLocalization({
+	ArachnophobiaTimer	= "Arachnophobia"
+})
+
 ----------------------------
 --  Grand Widow Faerlina  --
 ----------------------------
@@ -65,7 +69,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "我被纏繞住了! 救我!"
+	YellWebWrap			= "我被纏繞住了! 救我!",
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ------------------------------

@@ -32,6 +32,10 @@ L:SetOptionLocalization({
 	TimerLocustFade 	= "Mostrar tiempo para cuando Enjambre de Langostas desaparece"
 })
 
+L:SetMiscLocalization({
+	ArachnophobiaTimer	= "Arachnophobia"
+})
+
 
 ----------------------------
 --  Grand Widow Faerlina  --
@@ -96,7 +100,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap			= "¡Estoy en capullo!¡Ayuda!"
+	YellWebWrap			= "¡Estoy en capullo!¡Ayuda!",
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ------------------------------
