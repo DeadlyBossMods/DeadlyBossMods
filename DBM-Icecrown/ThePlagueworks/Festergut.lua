@@ -19,7 +19,7 @@ local warnVileGas			= mod:NewSpellAnnounce(73020)
 
 local specwarnPungentBlight	= mod:NewSpecialWarningSpell(71219)
 local specwarnGasSpore		= mod:NewSpecialWarningYou(69279)
-local specWarnInhaled2		= mod:NewSpecialWarningStack(71912, nil, 2)
+local specWarnInhaled2		= mod:NewSpecialWarningStack(71912, false, 2)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
 local timerPungentBlight	= mod:NewNextTimer(136, 71219)--136 seconds'ish, subject to adjustments
@@ -84,9 +84,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnInhaledBlight:Show(args.amount or 1)
 		timerInhaledBlight:Start()
 		if (args.amount or 1) >= 2 then	--No idea if i should use 2 here or 3, depends how hard he hits with 2 stacks.
-			if args:IsPlayer() then
-				specWarnInhaled2:Show(args.amount)
-			end
+			specWarnInhaled2:Show(args.amount)
 		end
 	end
 end
