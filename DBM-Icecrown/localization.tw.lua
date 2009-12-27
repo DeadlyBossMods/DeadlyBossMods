@@ -140,7 +140,13 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
-	RangeFrame			= "顯示距離框 (11)"
+	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	RangeFrame			= "顯示距離框 (11)",
+	RunePowerFrame			= "顯示首領血量+$spell:72371條"
+}
+
+L:SetMiscLocalization{
+	RunePower			= "血魄威能"
 }
 
 -----------------
@@ -153,9 +159,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	InhaledBlight			= "吸納荒疫 >%d<"
 }
 
 L:SetOptionLocalization{
+	InhaledBlight			= "為$spell:71912顯示警告",
+	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
 ---------------
