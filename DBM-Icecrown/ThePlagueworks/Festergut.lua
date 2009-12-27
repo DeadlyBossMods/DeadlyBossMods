@@ -82,9 +82,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(69166, 71912) then	-- Inhaled Blight
 		warnInhaledBlight:Show(args.amount or 1)
-		timerInhaledBlight:Start()
 		if (args.amount or 1) >= 2 then	--No idea if i should use 2 here or 3, depends how hard he hits with 2 stacks.
 			specWarnInhaled2:Show(args.amount)
+		end
+		if (args.amount or 1) <= 2 then	--Prevent timer from starting after 3rd stack since he won't cast it a 4th time, he does Pungent instead.
+			timerInhaledBlight:Start()
 		end
 	end
 end
