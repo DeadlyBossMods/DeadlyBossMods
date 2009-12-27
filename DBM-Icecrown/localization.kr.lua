@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("LowerSpireTrash")
 
 L:SetGeneralLocalization{
-	name = "일반몹"
+	name = "성채 하층부 일반몹"
 }
 
 L:SetWarningLocalization{
@@ -24,7 +24,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name = "Plagueworks trash"
+	name = "역병작업장 일반몹"
 }
 
 L:SetWarningLocalization{
@@ -141,11 +141,11 @@ L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	RangeFrame				= "거리 프레임 보기 (11 미터)",
-	RunePowerFrame			= "보스 체력 바와 함께 룬 마력 바 보기"	
+	RunePowerFrame			= "보스 체력 바와 함께 $spell:72371 바 보기"	
 }
 
 L:SetMiscLocalization{
-	RunePower	= "룬 마력"
+	RunePower	= "피 마력"
 }
 
 -----------------
@@ -158,9 +158,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	InhaledBlight		= "Inhaled Blight >%d<"
 }
 
 L:SetOptionLocalization{
+	InhaledBlight		= "$spell:71912 경고 보기",
+	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
 ---------------
