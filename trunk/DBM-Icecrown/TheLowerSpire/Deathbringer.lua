@@ -39,12 +39,13 @@ local enrageTimer			= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("SetIconOnBoilingBlood", true)
 mod:AddBoolOption("RangeFrame", isRanged)
-mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("RunePowerFrame", true, "misc")
+mod:RemoveOption("HealthFrame")
 
 local warned_preFrenzy = false
 local boilingBloodTargets = {}
 local boilingBloodIcon 	= 8
+local spamBloodBeast = 0
 
 local function warnBoilingBloodTargets()
 	warnBoilingBlood:Show(table.concat(boilingBloodTargets, "<, >"))
@@ -75,6 +76,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	DBM.BossHealth:Clear()
 end
 
 do	-- add the additional Rune Power Bar
@@ -107,13 +109,12 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-local spam = 0
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(72173, 72356, 72357, 72358) then
 		timerCallBloodBeast:Start()
-		if GetTime() - spam > 5 then
+		if GetTime() - spamBloodBeast > 5 then
 			warnAddsSoon:Schedule(35)
-			spam = GetTime()
+			spamBloodBeast = GetTime()
 		end
 	elseif args:IsSpellID(72410) then
 		timerNextRuneofBlood:Start()
@@ -142,6 +143,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		specwarnRuneofBlood:Show(args.destName)
 	elseif args:IsSpellID(72737) then						-- Frenzy
 		warnFrenzy:Show()
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(72385, 72441, 72442, 72443) then
+		self:SetIcon(args.destName, 0)
 	end
 end
 
