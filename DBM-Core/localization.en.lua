@@ -147,7 +147,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Show special warning when you are affected by \n $spell:%d",
 	run 		= "Show special warning for $spell:%d",
 	cast 		= "Show special warning for $spell:%d cast",
-	stack 		= "Show special warning when you have >=%d stacks of \n $spell:%d"
+	stack 		= "Show special warning for >=%d stacks of \n $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
