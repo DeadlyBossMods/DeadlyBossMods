@@ -31,7 +31,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name = "투기장"
+	name = "기본 투기장 기능"
 })
 
 L:SetTimerLocalization({
@@ -281,7 +281,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	Frostbite		= "Frostbite on >%s< (%d)"
+	Frostbite		= "동상 : >%s< (%d)"
 }
 
 L:SetTimerLocalization{
@@ -289,7 +289,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	Frostbite		= "Show warning for $spell:72098",
+	Frostbite		= "$spell:72098의 경고 보기",
 }
 
 L:SetMiscLocalization{
