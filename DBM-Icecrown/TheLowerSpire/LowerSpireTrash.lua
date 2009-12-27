@@ -44,6 +44,3 @@ function mod:SPELL_CAST_START(args)
 		timerDisruptingShout:Start()
 	end
 end
-
-
-

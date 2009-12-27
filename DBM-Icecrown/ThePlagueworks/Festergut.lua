@@ -17,8 +17,8 @@ local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight")
 local warnGasSpore			= mod:NewTargetAnnounce(69279)
 local warnVileGas			= mod:NewSpellAnnounce(73020)
 
-local specwarnPungentBlight	= mod:NewSpecialWarningSpell(71219)
-local specwarnGasSpore		= mod:NewSpecialWarningYou(69279)
+local specWarnPungentBlight	= mod:NewSpecialWarningSpell(71219)
+local specWarnGasSpore		= mod:NewSpecialWarningYou(69279)
 local specWarnInhaled2		= mod:NewSpecialWarningStack(71912, false, 2)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
@@ -30,52 +30,52 @@ local enrageTimer			= mod:NewBerserkTimer(300)
 
 mod:AddBoolOption("SetIconOnGasSpore", true)
 
-local GasSporeTargets	= {}
-local GasSporeIcon 	= 8
+local gasSporeTargets	= {}
+local gasSporeIcon 	= 8
+local spamVileGas = 0
 
 local function warnGasSporeTargets()
-	warnGasSpore:Show(table.concat(GasSporeTargets, "<, >"))
-	table.wipe(GasSporeTargets)
+	warnGasSpore:Show(table.concat(gasSporeTargets, "<, >"))
+	table.wipe(gasSporeTargets)
 	timerGasSpore:Start()
-	GasSporeIcon = 8
+	gasSporeIcon = 8
 end
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	timerInhaledBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
 	timerPungentBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
-	table.wipe(GasSporeTargets)
-	GasSporeIcon = 8
+	table.wipe(gasSporeTargets)
+	gasSporeIcon = 8
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69195, 71219, 73031, 73032) then	-- Pungent Blight
-		specwarnPungentBlight:Show()
+		specWarnPungentBlight:Show()
 		timerPungentBlight:Start()
 	end
 end
 
-local spam = 0
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(73019, 73020, 72272, 72273) and GetTime() - spam > 3 then	-- Vile Gas(Spellids drycoded, may not be correct)
+	if args:IsSpellID(73019, 73020, 72272, 72273) and GetTime() - spamVileGas > 3 then	-- Vile Gas(Spellids drycoded, may not be correct)
 		warnVileGas:Show()
 		timerVileGas:Start()
-		spam = GetTime()
+		spamVileGas = GetTime()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69279) then	-- Gas Spore
-		GasSporeTargets[#GasSporeTargets + 1] = args.destName
+		gasSporeTargets[#gasSporeTargets + 1] = args.destName
 		if args:IsPlayer() then
-			specwarnGasSpore:Show()
+			specWarnGasSpore:Show()
 		end
 		if self.Options.SetIconOnGasSpore then
-			self:SetIcon(args.destName, GasSporeIcon, 12)
-			GasSporeIcon = GasSporeIcon - 1
+			self:SetIcon(args.destName, gasSporeIcon, 12)
+			gasSporeIcon = gasSporeIcon - 1
 		end
 		self:Unschedule(warnGasSporeTargets)
-		if #GasSporeTargets >= 2 then
+		if #gasSporeTargets >= 2 then
 			warnGasSporeTargets()
 		else
 			self:Schedule(0.3, warnGasSporeTargets)

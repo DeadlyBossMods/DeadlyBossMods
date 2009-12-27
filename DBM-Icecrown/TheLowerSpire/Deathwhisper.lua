@@ -44,9 +44,9 @@ local enrageTimer					= mod:NewBerserkTimer(600)
 mod:AddBoolOption("SetIconOnDominateMind", true)
 mod:AddBoolOption("SetIconOnDeformedFanatic", true)
 mod:AddBoolOption("SetIconOnEmpoweredAdherent", true)
-
-mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("ShieldHealthFrame", true, "misc")
+mod:RemoveOption("HealthFrame")
+
 
 local lastDD	= 0
 local dominateMindTargets	= {}
@@ -217,4 +217,3 @@ function mod:OnSync(msg, arg)
 		warnReanimating:Show()
 	end
 end
-
