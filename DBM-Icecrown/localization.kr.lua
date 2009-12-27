@@ -158,7 +158,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight		= "Inhaled Blight >%d<"
+	InhaledBlight		= "파멸의 역병 들이마심 : >%d<"
 }
 
 L:SetOptionLocalization{
