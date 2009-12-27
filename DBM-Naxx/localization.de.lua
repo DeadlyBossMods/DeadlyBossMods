@@ -32,6 +32,10 @@ L:SetOptionLocalization({
    TimerLocustFade    = "Timer für Auslaufen des Heuschreckenschwarms anzeigen"
 })
 
+L:SetMiscLocalization({
+	ArachnophobiaTimer	= "Arachnophobia"
+})
+
 
 ----------------------------
 --  Grand Widow Faerlina  --
@@ -96,7 +100,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-   YellWebWrap         = "Ich bin eingenetzt! Hilfe!"
+	YellWebWrap         = "Ich bin eingenetzt! Hilfe!",
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ------------------------------

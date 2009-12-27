@@ -21,6 +21,10 @@ L:SetOptionLocalization({
 	WarningLocustFaded	= "Предупреждение для исчезновения Жуков-трупоедов"
 })
 
+L:SetMiscLocalization({
+	ArachnophobiaTimer	= "Arachnophobia"
+})
+
 ----------------------------
 --  Grand Widow Faerlina  --
 ----------------------------
@@ -65,7 +69,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellWebWrap	= "Я в коконе! Помогите!"
+	YellWebWrap	= "Я в коконе! Помогите!",
+	ArachnophobiaTimer	= "Arachnophobia"
 })
 
 ------------------------------
