@@ -142,20 +142,20 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	cast 		= "$spell:%d의 시전 특수 경고 보기",
 --	stack 		= "Show special warning when you have >=%d stacks of \n $spell:%d"
 --	stack 		= "$spell:%d의 중첩이 %d 이상 쌓일 경우 특수 경고 보기"
-	stack 		= "%d 중첩 이상 쌓일 경우 특수 경고 보기 $spell:%d"
+	stack 		= "%d 중첩 이상 쌓일 경우 $spell:%d의 특수 경고 보기"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell 	= "%s!",
-	dispel 	= "%s : %%s - 해제!",
-	interupt = "%s - 차단!",	
-	you 	= "당신에게 %s",
-	target 	= "%s : %%s",
-	close 	= "%%s에게 가까운 당신에게 %s 시전",
-	move 	= "%s - 이동하세요!",
-	run 	= "%s - 뛰세요!",
-	cast 	= "%s - 시전 중지",
-	stack 	= "%s (%%d)"
+	spell 		= "%s!",
+	dispel 		= "%s : %%s - 해제!",
+	interupt 	= "%s - 차단!",	
+	you 		= "당신에게 %s",
+	target 		= "%s : %%s",
+	close 		= "%%s에게 가까운 당신에게 %s 시전",
+	move 		= "%s - 이동하세요!",
+	run 		= "%s - 뛰세요!",
+	cast 		= "%s - 시전 중지",
+	stack 		= "%s (%%d)"
 }
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 아이콘 설정"
