@@ -149,7 +149,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "Спец-предупреждение для $spell:%d",
 	run 		= "Спец-предупреждение для $spell:%d",
 	cast 		= "Спец-предупреждение о применении заклинания \n$spell:%d",
-	stack 		= "Спец-предупреждение, когда на вас >=%d стаков \n$spell:%d"
+	stack 		= "Спец-предупреждение для >=%d стаков $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
