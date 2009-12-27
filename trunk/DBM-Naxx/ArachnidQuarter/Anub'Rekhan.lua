@@ -10,7 +10,8 @@ mod:EnableModel()
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"UNIT_DIED"
 )
 
 local warningLocustSoon		= mod:NewSoonAnnounce(28785, 2)
@@ -21,6 +22,8 @@ local specialWarningLocust	= mod:NewSpecialWarning("SpecialLocust")
 
 local timerLocustIn			= mod:NewCDTimer(80, 28785)
 local timerLocustFade 		= mod:NewBuffActiveTimer(26, 28785)
+
+mod:AddBoolOption("ArachnophobiaTimer", true, "timer")
 
 
 function mod:OnCombatStart(delay)
@@ -55,3 +58,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
+function mod:UNIT_DIED(args)
+	if self.Options.ArachnophobiaTimer and not DBM.Bars:GetBar(L.ArachnophobiaTimer) then
+		local guid = tonumber(args.destGUID:sub(9, 12), 16)
+		if guid == 15956 then		-- Anub'Rekhan
+			DBM.Bars:CreateBar(1200, L.ArachnophobiaTimer)
+		end
+	end
+end
