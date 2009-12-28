@@ -1103,13 +1103,14 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningPortalNow		= optionWarning:format("нового портала"),
 	WarningPortalSoon		= optionPreWarning:format("новом портале"),
-	WarningBossNow			= optionWarning:format("прибытии босса"),
+	WarningBossNow			= optionWarning:format("прибытия босса"),
 	TimerPortalIn			= "Отсчет времени до портала",
 	ShowAllPortalWarnings	= "Предупреждение для всех порталов"
 })
 
 L:SetMiscLocalization({
-	yell1		= "Тюремные охранники, уходим! Этих искателей приключений возьму на себя! Уходите быстрей!",
+	yell1		= "Эй, стражи! Уходим! Славные герои обо всем позаботятся. За мной!",
+	Sealbroken	= "Мы прорвались через тюремные ворота! Дорога в Даларан открыта! Теперь мы наконец прекратим войну Нексуса!",
 	WavePortal	= "Открыто порталов: (%d+)/18"
 })
 
