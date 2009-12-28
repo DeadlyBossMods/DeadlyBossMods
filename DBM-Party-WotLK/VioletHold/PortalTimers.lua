@@ -39,6 +39,7 @@ function mod:UPDATE_WORLD_STATES(args)
 		elseif self.Options.ShowAllPortalWarnings then
 			timerPortalIn:Start(122, wave + 1)
 			warningPortalNow:Show(wave)
+			warningPortalSoon:Schedule(112)
 		end
 		lastwave = wave
 	elseif wave < lastwave then
