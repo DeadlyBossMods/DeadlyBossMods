@@ -18,11 +18,12 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecialLocust			= "為蝗蟲風暴顯示特別警告",
-	WarningLocustFaded		= "當蝗蟲風暴結束時顯示警告"
+	WarningLocustFaded		= "當蝗蟲風暴結束時顯示警告",
+	ArachnophobiaTimer		= "為蜘蛛恐懼症 (成就)顯示計時器"
 })
 
 L:SetMiscLocalization({
-	ArachnophobiaTimer	= "Arachnophobia"
+	ArachnophobiaTimer		= "蜘蛛恐懼症"
 })
 
 ----------------------------
@@ -70,7 +71,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellWebWrap			= "我被纏繞住了! 救我!",
-	ArachnophobiaTimer	= "Arachnophobia"
+	ArachnophobiaTimer		= "蜘蛛恐懼症"
 })
 
 ------------------------------
