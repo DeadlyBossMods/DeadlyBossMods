@@ -18,11 +18,12 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	SpecialLocust		= "Cпец-предупреждение для Жуков-трупоедов",
-	WarningLocustFaded	= "Предупреждение для исчезновения Жуков-трупоедов"
+	WarningLocustFaded	= "Предупреждение для исчезновения Жуков-трупоедов",
+	ArachnophobiaTimer	= "Отсчет времени для Арахнофобия (достижение)"
 })
 
 L:SetMiscLocalization({
-	ArachnophobiaTimer	= "Arachnophobia"
+	ArachnophobiaTimer	= "Арахнофобия"
 })
 
 ----------------------------
@@ -70,7 +71,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellWebWrap	= "Я в коконе! Помогите!",
-	ArachnophobiaTimer	= "Arachnophobia"
+	ArachnophobiaTimer	= "Арахнофобия"
 })
 
 ------------------------------
