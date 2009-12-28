@@ -1112,6 +1112,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1		= "監獄守衛，我們要離開了!這些冒險者會接手!動作快!",
+	Sealbroken	= "我們攻破了監獄大門!通往達拉然的通道已經暢通了!現在我們終於可以終結奧核戰爭了!",
 	WavePortal	= "傳送門開啟:(%d+)/18"
 })
 
