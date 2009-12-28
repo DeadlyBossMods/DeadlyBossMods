@@ -7,14 +7,15 @@ mod:SetZone()
 
 mod:RegisterEvents(
 	"UPDATE_WORLD_STATES",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warningPortalNow	= mod:NewAnnounce("WarningPortalNow", 2, 57687)
 local warningPortalSoon	= mod:NewAnnounce("WarningPortalSoon", 1, 57687)
 local warningBossNow	= mod:NewAnnounce("WarningBossNow", 4, 33341)
 
-local timerPortalIn	= mod:NewTimer(97, "TimerPortalIn", 57687)
+local timerPortalIn	= mod:NewTimer(122, "TimerPortalIn", 57687)
 
 mod:AddBoolOption("ShowAllPortalWarnings", false, "announce")
 
@@ -30,19 +31,18 @@ function mod:UPDATE_WORLD_STATES(args)
 		wave = 0
 	end
 	wave = tonumber(wave)
-	if wave > lastwave or wave == 1 then
+	if wave > lastwave then
 		warningPortalSoon:Cancel()
 		timerPortalIn:Cancel()
 		if wave == 6 or wave == 12 or wave == 18 then
 			warningBossNow:Show()
 		elseif self.Options.ShowAllPortalWarnings then
-			timerPortalIn:Start(95, wave + 1)
+			timerPortalIn:Start(122, wave + 1)
 			warningPortalNow:Show(wave)
 		end
 		lastwave = wave
-	elseif wave == 0 then
-		timerPortalIn:Cancel()
-		warningPortalSoon:Cancel()
+	elseif wave < lastwave then
+		lastwave = 0
 	end
 end
 
@@ -54,5 +54,18 @@ function mod:UNIT_DIED(args)
 			timerPortalIn:Start(97, wave + 1)
 			warningPortalSoon:Schedule(87)
 		end
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Sealbroken or msg:find(L.Sealbroken) then
+		self:SendSync("Wipe")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "Wipe" then
+		warningPortalSoon:Cancel()
+		timerPortalIn:Cancel()
 	end
 end
