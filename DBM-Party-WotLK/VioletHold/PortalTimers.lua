@@ -31,6 +31,7 @@ function mod:UPDATE_WORLD_STATES(args)
 		wave = 0
 	end
 	wave = tonumber(wave)
+	lastWave = tonumber(lastWave)
 	if wave > lastwave then
 		warningPortalSoon:Cancel()
 		timerPortalIn:Cancel()
