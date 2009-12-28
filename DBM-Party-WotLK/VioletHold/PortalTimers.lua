@@ -30,14 +30,13 @@ function mod:UPDATE_WORLD_STATES(args)
 		wave = 0
 	end
 	wave = tonumber(wave)
-	lastwave = tonumber(lastwave)
 	if wave > lastwave or wave == 1 then
 		warningPortalSoon:Cancel()
 		timerPortalIn:Cancel()
 		if wave == 6 or wave == 12 or wave == 18 then
 			warningBossNow:Show()
 		elseif self.Options.ShowAllPortalWarnings then
-			timerPortalIn:Start(95, lastwave + 1)
+			timerPortalIn:Start(95, wave + 1)
 			warningPortalNow:Show(wave)
 		end
 		lastwave = wave
@@ -52,7 +51,7 @@ function mod:UNIT_DIED(args)
 		local z = tonumber(args.destGUID:sub(9, 12), 16)
 		if z == 29266 or z == 29312 or z == 29313 or z == 29314 or z == 29315 or z == 29316  		-- bosses
 		or z == 32226 or z == 32230 or z == 32231 or z == 32234 or z == 32235 or z == 32237 then 	-- boss spirits (in case you wipe)
-			timerPortalIn:Start(97, lastwave + 1)
+			timerPortalIn:Start(97, wave + 1)
 			warningPortalSoon:Schedule(87)
 		end
 	end
