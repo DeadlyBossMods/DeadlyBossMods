@@ -22,11 +22,12 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	SpecialLocust		= "메뚜기 떼 특수 경고 보기",
 	WarningLocustFaded	= "메뚜기 떼 사라짐 경고 보기",
-	TimerLocustFade 	= "메뚜기 떼 사라짐 타이머 보기"
+	TimerLocustFade 	= "메뚜기 떼 사라짐 타이머 보기",
+	ArachnophobiaTimer	= "거미의 공포 업적 타이머 보기"
 })
 
 L:SetMiscLocalization({
-	ArachnophobiaTimer	= "Arachnophobia"
+	ArachnophobiaTimer	= "거미의 공포"
 })
 
 ---------------------
@@ -74,7 +75,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	YellWebWrap			= "저 거미줄에 걸렸어요!! 살려주세요!!",
-	ArachnophobiaTimer	= "Arachnophobia"
+	ArachnophobiaTimer	= "거미의 공포"
 })
 
 ---------------
