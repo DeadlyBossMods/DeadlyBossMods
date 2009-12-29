@@ -40,6 +40,7 @@ local timerEmerge			= mod:NewTimer(65, "TimerEmerge", "Interface\\AddOns\\DBM-Co
 -- Submerge
 local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnSubmergeSoon		= mod:NewAnnounce("WarnSubmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local specWarnSubmergeSoon	= mod:NewSpecialWarning("specWarnSubmergeSoon", false)
 local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 
 -- Phases
@@ -68,6 +69,7 @@ function mod:OnCombatStart(delay)
 	warnAdds:Schedule(10-delay) 
 	self:ScheduleMethod(10-delay, "Adds")
 	warnSubmergeSoon:Schedule(70-delay)
+	specWarnSubmergeSoon:Schedule(70-delay)
 	timerSubmerge:Start(80-delay)
 	enrageTimer:Start(-delay)
 	timerFreezingSlash:Start(-delay)
@@ -178,6 +180,7 @@ function mod:SPELL_CAST_START(args)
 		warnPhase3:Show()
 		warnEmergeSoon:Cancel()
 		warnSubmergeSoon:Cancel()
+		specWarnSubmergeSoon:Cancel()
 		timerEmerge:Stop()
 		timerSubmerge:Stop()
 		if self.Options.RemoveHealthBuffsInP3 then
@@ -226,6 +229,7 @@ function mod:OnSync(msg, arg)
 	elseif msg == "Emerge" then
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(65)
+		specWarnSubmergeSoon:Schedule(95)
 		timerSubmerge:Start()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerShadowStrike:Stop()
