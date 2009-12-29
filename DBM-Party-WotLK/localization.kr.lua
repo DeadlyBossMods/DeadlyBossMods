@@ -1100,7 +1100,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("새로운 포탈"),
 	WarningBossNow			= optionWarning:format("보스 등장"),
 	TimerPortalIn			= "포탈 갯수의 타이머 보기",
-	ShowAllPortalWarnings	= "모든 웨이브 경고 보기"
+	ShowAllPortalTimers		= "모든 웨이브 경고 보기"
 })
 
 L:SetMiscLocalization({
