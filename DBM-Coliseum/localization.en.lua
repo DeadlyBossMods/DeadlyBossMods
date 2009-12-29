@@ -193,6 +193,7 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "Emerge in 10 seconds",
 	WarnSubmerge			= "Anub'arak submerges",
 	WarnSubmergeSoon		= "Submerge in 10 seconds",
+	specWarnSubmergeSoon	= "Submerge in 10 seconds!",
 	SpecWarnPursue			= "You are being pursued - Run away",
 	warnAdds				= "New adds",
 	SpecWarnShadowStrike	= "Shadow Strike - Interrupt now"
@@ -211,6 +212,7 @@ L:SetOptionLocalization{
 	WarnEmergeSoon			= "Show pre-warning for emerge",
 	WarnSubmerge			= "Show warning for submerge",
 	WarnSubmergeSoon		= "Show pre-warning for submerge",
+	specWarnSubmergeSoon	= "Show special warning for submerge soon",
 	SpecWarnPursue			= "Show special warning when you are being pursued",
 	warnAdds				= "Announce new adds",
 	timerAdds				= "Show timer for new adds",
