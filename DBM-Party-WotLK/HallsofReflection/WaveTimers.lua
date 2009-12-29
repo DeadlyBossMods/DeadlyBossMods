@@ -14,7 +14,7 @@ local warnNewWaveSoon	= mod:NewAnnounce("WarnNewWaveSoon", 2)
 local warnNewWave	= mod:NewAnnounce("WarnNewWave", 3)
 local timerNextWave	= mod:NewTimer(150, "TimerNextWave")
 
-mod:AddBoolOption("ShowAllWaveWarnings", false, "announce")
+mod:AddBoolOption("ShowAllWaveWarnings", true, "announce")
 mod:AddBoolOption("ShowAllWaveTimers", false, "timer")
 
 mod:RemoveOption("HealthFrame")
@@ -38,10 +38,10 @@ function mod:UPDATE_WORLD_STATES(args)
 		elseif wave > 0 then
 			if self.Options.ShowAllWaveWarnings then
 				warnNewWave:Show("Wave")
-				warnNewWaveSoon:Schedule(140)
 			end
 			if self.Options.ShowAllWaveTimers then
 				timerNextWave:Start()
+				warnNewWaveSoon:Schedule(140)
 			end
 		end
 	elseif wave == 0 then
