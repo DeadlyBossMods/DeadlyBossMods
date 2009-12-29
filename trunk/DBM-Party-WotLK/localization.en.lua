@@ -1394,10 +1394,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnNewWave			= "Show warning for boss incoming",
-	WarnNewWaveSoon		= "Show pre-warning for new wave",
-	ShowAllWaveWarnings	= "Show pre-warnings and warnings for all waves",	--Is this a warning or a pre-warning?
+	WarnNewWaveSoon		= "Show pre-warning for new wave (after wave 5 boss)",
+	ShowAllWaveWarnings	= "Show warnings for all waves",
 	TimerNextWave		= "Show timer for next set of waves (after wave 5 boss)",
-	ShowAllWaveTimers	= "Show timers for all waves"
+	ShowAllWaveTimers	= "Show pre-warning and timers for all waves (Inaccurate)"
 })
 
 L:SetMiscLocalization({
