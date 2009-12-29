@@ -1107,7 +1107,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("新傳送門"),
 	WarningBossNow			= optionWarning:format("首領即將到來"),
 	TimerPortalIn			= "為傳送門數顯示計時器",
-	ShowAllPortalWarnings	= "為所有傳送門顯示警告"
+	ShowAllPortalTimers		= "為所有傳送門顯示警告"
 })
 
 L:SetMiscLocalization({

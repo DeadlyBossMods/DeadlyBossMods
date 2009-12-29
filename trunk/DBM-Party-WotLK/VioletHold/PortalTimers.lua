@@ -17,7 +17,7 @@ local warningBossNow	= mod:NewAnnounce("WarningBossNow", 4, 33341)
 
 local timerPortalIn	= mod:NewTimer(122, "TimerPortalIn", 57687)
 
-mod:AddBoolOption("ShowAllPortalWarnings", false, "announce")
+mod:AddBoolOption("ShowAllPortalTimers", false, "timer")--rate they spawn seems to accelerate slowly over time. thus making timers inaccurate by end of fight
 
 mod:RemoveOption("HealthFrame")
 
@@ -37,10 +37,12 @@ function mod:UPDATE_WORLD_STATES(args)
 		timerPortalIn:Cancel()
 		if wave == 6 or wave == 12 or wave == 18 then
 			warningBossNow:Show()
-		elseif self.Options.ShowAllPortalWarnings then
-			timerPortalIn:Start(122, wave + 1)
+		else
 			warningPortalNow:Show(wave)
-			warningPortalSoon:Schedule(112)
+			if self.Options.ShowAllPortalTimers then
+				timerPortalIn:Start(122, wave + 1)
+				warningPortalSoon:Schedule(112)
+			end
 		end
 		lastwave = wave
 	elseif wave < lastwave then
@@ -53,8 +55,8 @@ function mod:UNIT_DIED(args)
 		local z = tonumber(args.destGUID:sub(9, 12), 16)
 		if z == 29266 or z == 29312 or z == 29313 or z == 29314 or z == 29315 or z == 29316  		-- bosses
 		or z == 32226 or z == 32230 or z == 32231 or z == 32234 or z == 32235 or z == 32237 then 	-- boss spirits (in case you wipe)
-			timerPortalIn:Start(97, lastwave + 1)
-			warningPortalSoon:Schedule(87)
+			timerPortalIn:Start(94, lastwave + 1)
+			warningPortalSoon:Schedule(84)
 		end
 	end
 end
