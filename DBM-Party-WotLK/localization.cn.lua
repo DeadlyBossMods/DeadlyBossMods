@@ -1324,7 +1324,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("New Portal"),
 	WarningBossNow			= optionWarning:format("Boss Now"),
 	TimerPortalIn			= "Show \"Portal: #\" timer",
-	ShowAllPortalWarnings		= "Show warnings for all waves"
+	ShowAllPortalTimers		= "Show timers for all waves"
 })
 
 

@@ -1368,7 +1368,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("Nuevo portal"),
 	WarningBossNow			= optionWarning:format("Toca boss"),
 	TimerPortalIn			= "Activar/Desactivar tiempo para \"Portal: Nº\" ",
-	ShowAllPortalWarnings		= "Activar/Desactivar aviso para todos los portales"
+	ShowAllPortalTimers		= "Activar/Desactivar aviso para todos los portales"
 })
 
 

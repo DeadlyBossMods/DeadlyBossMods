@@ -1106,7 +1106,7 @@ L:SetOptionLocalization({
 	WarningPortalSoon		= optionPreWarning:format("Portail imminent"),
 	WarningBossNow			= optionWarning:format("Arrivée d'un boss"),
 	TimerPortalIn			= "Afficher le timer des portails",
-	ShowAllPortalWarnings	= "Activer les annonces pour toutes les vagues"
+	ShowAllPortalTimers		= "Activer les annonces pour toutes les vagues"
 })
 
 L:SetMiscLocalization({
