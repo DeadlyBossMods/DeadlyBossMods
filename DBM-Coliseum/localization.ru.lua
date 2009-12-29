@@ -209,6 +209,7 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "Появление через 10 сек",
 	WarnSubmerge			= "Ануб'арак зарывается",
 	WarnSubmergeSoon		= "Зарывание через 10 сек",
+	specWarnSubmergeSoon	= "Зарывание через 10 сек!",
 	SpecWarnPursue			= "Вас преследуют - бегите",
 	warnAdds				= "Помощники",
 	SpecWarnShadowStrike	= "Теневой удар - прерывание"
@@ -225,8 +226,9 @@ L:SetMiscLocalization{
 L:SetOptionLocalization{
 	WarnEmerge				= "Предупреждение о появлении",
 	WarnEmergeSoon			= "Предупреждать заранее о появлении",
-	WarnSubmerge			= "Предупреждение о погружении",
-	WarnSubmergeSoon		= "Предупреждать заранее о погружении",
+	WarnSubmerge			= "Предупреждение о зарывании",
+	WarnSubmergeSoon		= "Предупреждать заранее о зарывании",
+	specWarnSubmergeSoon	= "Спец-предупреждение о скором зарывании",
 	SpecWarnPursue			= "Спец-предупреждение, когда вас преследуют",
 	warnAdds				= "Предупреждение о призыве помощников",
 	timerAdds				= "Отсчет времени до призыва помощников",

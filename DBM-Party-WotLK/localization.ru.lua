@@ -1092,20 +1092,20 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningPortalSoon	= "Скоро новый портал",
-	WarningPortalNow	= "Портал %d",
+	WarningPortalNow	= "Портал #%d",
 	WarningBossNow		= "Прибытие Босса"
 })
 
 L:SetTimerLocalization({
-	TimerPortalIn	= "Портал %d" , 
+	TimerPortalIn	= "Портал #%d" , 
 })
 
 L:SetOptionLocalization({
 	WarningPortalNow		= optionWarning:format("нового портала"),
 	WarningPortalSoon		= optionPreWarning:format("новом портале"),
 	WarningBossNow			= optionWarning:format("прибытия босса"),
-	TimerPortalIn			= "Отсчет времени до портала",
-	ShowAllPortalTimers		= "Предупреждение для всех порталов"
+	TimerPortalIn			= "Отсчет времени до следующего портала (после босса)",
+	ShowAllPortalTimers		= "Отсчет времени для всех порталов (неточный)"
 })
 
 L:SetMiscLocalization({
@@ -1395,11 +1395,11 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnNewWave			= "Предупреждать о вступлении босса в бой",
-	WarnNewWaveSoon		= "Заранее предупреждать о новой волне",
-	ShowAllWaveWarnings	= "Показывать все предупреждения для всех волн",	--Is this a warning or a pre-warning?
+	WarnNewWave			= "Предупреждение о вступлении босса в бой",
+	WarnNewWaveSoon		= "Предупреждать заранее о новой волне (после босса 5-ой волны)",
+	ShowAllWaveWarnings	= "Предупреждения для всех волн",
 	TimerNextWave		= "Отсчет времени до следующей волны (после босса 5-ой волны)",
-	ShowAllWaveTimers	= "Отсчет времени для всех волн"
+	ShowAllWaveTimers	= "Предупреждения и отсчет времени для всех волн (неточный)"
 })
 
 L:SetMiscLocalization({
