@@ -1396,10 +1396,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnNewWave				= "새로운 보스가 올 때 경고 보기",
-	WarnNewWaveSoon			= "새로운 웨이브 사전 경고 보기",
+	WarnNewWaveSoon			= "새로운 웨이브 사전 경고 보기(5 웨이브 보스 이후)",
 	ShowAllWaveWarnings		= "모든 웨이브 사전 경고 보기",	--Is this a warning or a pre-warning?
-	TimerNextWave			= "다음 웨이브 타이머 보기(5번째 보스 웨이브 이후)",
-	ShowAllWaveTimers		= "모든 웨이브의 타이머 보기"
+	TimerNextWave			= "다음 웨이브 타이머 보기(5 웨이브 보스 이후)",
+	ShowAllWaveTimers		= "모든 웨이브의 사전 경고 및 타이머 보기(부정확)"
 })
 
 L:SetMiscLocalization({
