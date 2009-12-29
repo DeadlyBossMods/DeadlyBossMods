@@ -210,6 +210,7 @@ L:SetWarningLocalization{
 	WarnEmergeSoon			= "10秒後 鑽出地面",
 	WarnSubmerge			= "阿努巴拉克鑽進地裡了",
 	WarnSubmergeSoon		= "10秒後 鑽進地裡",
+	specWarnSubmergeSoon		= "10秒後 鑽進地裡!",
 	SpecWarnPursue			= "你被追擊了 - 快跑",
 	warnAdds			= "奈幽掘洞者 出現了",
 	SpecWarnShadowStrike		= "暗影打擊 - 現在斷法"
@@ -228,6 +229,7 @@ L:SetOptionLocalization{
 	WarnEmergeSoon			= "為鑽出地面顯示預先警告",
 	WarnSubmerge			= "為鑽進地裡顯示警告",
 	WarnSubmergeSoon		= "為鑽進地裡顯示預先警告",
+	specWarnSubmergeSoon		= "為即將鑽進地裡顯示特別警告",
 	SpecWarnPursue			= "當你被追擊時顯示特別警告",
 	warnAdds			= "提示奈幽掘洞者出現",
 	timerAdds			= "為下一次 奈幽掘洞者出現顯示計時器",

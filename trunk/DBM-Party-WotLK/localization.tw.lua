@@ -1106,8 +1106,8 @@ L:SetOptionLocalization({
 	WarningPortalNow		= optionWarning:format("新傳送門"),
 	WarningPortalSoon		= optionPreWarning:format("新傳送門"),
 	WarningBossNow			= optionWarning:format("首領即將到來"),
-	TimerPortalIn			= "為傳送門數顯示計時器",
-	ShowAllPortalTimers		= "為所有傳送門顯示警告"
+	TimerPortalIn			= "為下一次傳送門 (擊敗首領後)顯示計時器",
+	ShowAllPortalTimers		= "為所有傳送門顯示計時器 (不準確)"
 })
 
 L:SetMiscLocalization({
@@ -1399,10 +1399,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnNewWave			= "當首領到來時顯示警告",
-	WarnNewWaveSoon		= "為新一波顯示預先警告",
-	ShowAllWaveWarnings	= "為所有波數顯示警告及預先警告",
+	WarnNewWaveSoon		= "為新一波 (擊敗首領後)顯示預先警告",
+	ShowAllWaveWarnings	= "為所有波數顯示警告",
 	TimerNextWave		= "為下一波顯示計時器 (擊敗首領後)",
-	ShowAllWaveTimers	= "為所有波數顯示計時器"
+	ShowAllWaveTimers	= "為所有波數顯示計時器及預先警告 (不準確)"
 })
 
 L:SetMiscLocalization({
