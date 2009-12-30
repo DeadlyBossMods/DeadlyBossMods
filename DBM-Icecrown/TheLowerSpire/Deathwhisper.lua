@@ -145,7 +145,7 @@ do
 			else
 				self:Schedule(0.3, showDominateMindWarning)
 			end
-		elseif args:IsSpellID(72108, 71001) then
+		elseif args:IsSpellID(71001, 72108, 72109, 72110) then
 			if args:IsPlayer() then
 				specWarnDeathDecay:Show()
 			end
