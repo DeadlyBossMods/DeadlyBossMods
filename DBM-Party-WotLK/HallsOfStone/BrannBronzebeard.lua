@@ -15,7 +15,7 @@ mod:RegisterEvents(
 )
 
 local warningPhase	= mod:NewAnnounce("WarningPhase", 3)
-local timerEvent	= mod:NewTimer(312, "timerEvent")
+local timerEvent	= mod:NewTimer(302, "timerEvent")
 
 function mod:OnCombatStart(delay)
 	timerEvent:Start(-delay)
