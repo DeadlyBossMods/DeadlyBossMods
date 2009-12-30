@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(28546)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
@@ -11,6 +12,8 @@ local warningDisperseSoon	= mod:NewSoonAnnounce(52770, 2)
 local warningDisperse		= mod:NewSpellAnnounce(52770, 3)
 local warningOverload		= mod:NewTargetAnnounce(52658, 2)
 local timerOverload			= mod:NewTargetTimer(10, 52658)
+
+mod:AddBoolOption("SetIconOnOverloadTarget", true)
 
 local warnedDisperse		= false
 
@@ -28,6 +31,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(52658, 59795) then
 		warningOverload:Show(args.destName)
 		timerOverload:Start(args.destName)
+		if self.Options.SetIconOnOverloadTarget then
+				self:SetIcon(args.destName, 8, 10)
+		end
 	end
 end
 
