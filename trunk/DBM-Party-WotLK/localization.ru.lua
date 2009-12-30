@@ -485,6 +485,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnOverloadTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(52658)
 })
 
 ---------------
