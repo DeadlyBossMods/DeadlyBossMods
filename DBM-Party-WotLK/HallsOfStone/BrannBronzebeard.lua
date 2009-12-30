@@ -7,7 +7,7 @@ mod:SetZone()
 
 mod:RegisterCombat("yell", L.Pull)
 mod:RegisterKill("yell", L.Kill)
-mod:SetMinCombatTime(60)
+mod:SetMinCombatTime(50)
 mod:SetWipeTime(25)
 
 mod:RegisterEvents(
