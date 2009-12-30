@@ -613,7 +613,7 @@ L:SetMiscLocalization({
 	Phase1	= "Security breach in progress. Analysis of historical archives transferred to lower-priority queue. Countermeasures engaged.",
 	Phase2	= "Threat index threshold exceeded.  Celestial archive aborted. Security level heightened.",
 	Phase3	= "Critical threat index. Void analysis diverted. Initiating sanitization protocol.",
-	Kill	= "System online. Life form pattern recognized.  Welcome, Branbronzan.  Query?"
+	Kill	= "security fail-safes deactivated. Beginning memory purge and... "
 })
 
 -----------------
