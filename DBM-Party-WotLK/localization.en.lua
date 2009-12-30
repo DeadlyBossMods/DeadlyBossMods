@@ -894,6 +894,12 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers! A feast for the one that brings me their heads!",
+	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!",
+	YellCombatEnd	= "ARGH! You call that... an attack? I'll... show... aghhhh..."
+})
+
 -------------------
 --  King Ymiron  --
 -------------------
