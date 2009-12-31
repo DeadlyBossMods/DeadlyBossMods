@@ -191,9 +191,9 @@ end
 local function sendSync(prefix, msg)
 	if select(2, IsInInstance()) == "pvp" then
 		SendAddonMessage(prefix, msg, "BATTLEGROUND")
-	elseif GetNumRaidMembers() > 0 then
+	elseif GetRealNumRaidMembers() > 0 then
 		SendAddonMessage(prefix, msg, "RAID")
-	else
+	elseif GetRealNumPartyMembers() > 0 then
 		SendAddonMessage(prefix, msg, "PARTY")
 	end
 end
