@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(37813)
 mod:RegisterCombat("combat")
-mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -26,6 +26,7 @@ local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
 
+local specWarnMarkCast		= mod:NewSpecialWarningYou(72444)--Experimental
 local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
 local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, false)
 
@@ -38,20 +39,21 @@ local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410)
 local enrageTimer			= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("SetIconOnBoilingBlood", true)
+mod:AddBoolOption("SetIconOnMarkCast", true)
 mod:AddBoolOption("RangeFrame", isRanged)
 mod:AddBoolOption("RunePowerFrame", true, "misc")
 mod:RemoveOption("HealthFrame")
 
 local warned_preFrenzy = false
 local boilingBloodTargets = {}
-local boilingBloodIcon 	= 8
+local boilingBloodIcon 	= 7
 local spamBloodBeast = 0
 
 local function warnBoilingBloodTargets()
 	warnBoilingBlood:Show(table.concat(boilingBloodTargets, "<, >"))
 	table.wipe(boilingBloodTargets)
 	timerBoilingBlood:Start()
-	boilingBloodIcon = 8
+	boilingBloodIcon = 7
 end
 
 function mod:OnCombatStart(delay)
@@ -66,7 +68,7 @@ function mod:OnCombatStart(delay)
 	warnAddsSoon:Schedule(35)
 	timerBloodNova:Start(-delay)
 	warned_preFrenzy = false
-	boilingBloodIcon = 8
+	boilingBloodIcon = 7
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(11)
 	end
@@ -77,6 +79,17 @@ function mod:OnCombatEnd()
 		DBM.RangeCheck:Hide()
 	end
 	DBM.BossHealth:Clear()
+end
+
+function mod:MarkTarget()
+	local targetname = self:GetBossTarget(37813)
+	if not targetname then return end
+	if self.Options.SetIconOnMarkCast then
+		self:SetIcon(targetname, 8, 1.5)
+	end
+	if targetname == UnitName("player") then
+		specWarnMarkCast:Show(targetname)
+	end
 end
 
 do	-- add the additional Rune Power Bar
@@ -106,6 +119,8 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(73058, 72378) then	-- Blood Nova (only 2 cast IDs, 4 spell damage IDs, and one dummy)
 		warnBloodNova:Show()
 		timerBloodNova:Start()
+	elseif args:IsSpellID(72293) then		-- Mark of the Fallen Champion
+		self:ScheduleMethod(0.1, "MarkTarget")
 	end
 end
 
