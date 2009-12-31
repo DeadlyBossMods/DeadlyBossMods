@@ -87,7 +87,7 @@ DBM_CORE_HORDE						= "Horde"
 DBM_CORE_UNKNOWN					= "unknown"
 
 DBM_CORE_BREAK_START				= "Break starting now -- you have %s minute(s)!"
-DBM_CORE_BREAK_MIN					= "Break ends in %s minutes!"
+DBM_CORE_BREAK_MIN					= "Break ends in %s minute(s)!"
 DBM_CORE_BREAK_SEC					= "Break ends in %s seconds!"
 
 DBM_CORE_TIMER_PULL					= "Pull in"
