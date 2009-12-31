@@ -229,7 +229,7 @@ function mod:OnSync(msg, arg)
 	elseif msg == "Emerge" then
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(65)
-		specWarnSubmergeSoon:Schedule(95)
+		specWarnSubmergeSoon:Schedule(65)
 		timerSubmerge:Start()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerShadowStrike:Stop()
