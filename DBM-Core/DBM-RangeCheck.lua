@@ -281,6 +281,22 @@ end
 checkFuncs[11] = function(uId)
 	return CheckInteractDistance(uId, 2)
 end
+--[[
+do
+	checkFuncs[12] = function(uId)
+		local list = MapDimensions[GetMapInfo()]
+		if not list then return false end
+	
+		local level = GetCurrentMapDungeonLevel()
+		local dims = list[level] 
+		
+	
+		local pX, pY = GetPlayerMapPosition("player")
+		local uX, uY = GetPlayerMapPosition(uId)
+		local map = GetMapInfo();
+	end
+end
+--]]
 
 checkFuncs[10] = function(uId)
 	return CheckInteractDistance(uId, 3)
@@ -325,3 +341,4 @@ end
 function rangeCheck:IsShown()
 	return frame and frame:IsShown()
 end
+
