@@ -140,6 +140,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	SetIconOnMarkCast		= "$spell:72444 대상에게 공격대 아이콘 설정",	
 	RangeFrame				= "거리 프레임 보기 (11 미터)",
 	RunePowerFrame			= "보스 체력 바와 함께 $spell:72371 바 보기"	
 }
@@ -191,7 +192,7 @@ L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	SpecWarnMutatedInfection 	= "돌연변이 전염병에 영향을 받을 경우 특수 경고 보기",
 	InfectionIcon				= "돌연변이 전염병 대상 공격대 아이콘 설정",
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
+	WarnOozeSpawn				= "작은 수액괴물 생성 경고 보기"
 }
 
 L:SetMiscLocalization{
@@ -214,7 +215,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+	YellPull		= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
 }
 
 ----------------------------
