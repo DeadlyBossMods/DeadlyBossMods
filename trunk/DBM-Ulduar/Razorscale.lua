@@ -77,9 +77,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
-	if msg == L.YellAir or msg == L.YellAir2 and GetTime() - combattime > 30 then
-		warnTurretsReadySoon:Cancel()
-		warnTurretsReady:Cancel()
+	if (msg == L.YellAir or msg == L.YellAir2) and GetTime() - combattime > 30 then
 		if mod:IsDifficulty("heroic10") then -- not sure?
 			warnTurretsReadySoon:Schedule(23)
 			warnTurretsReady:Schedule(43)
