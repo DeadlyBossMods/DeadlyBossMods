@@ -141,6 +141,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
 	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	SetIconOnMarkCast		= "設置標記在$spell:72444施放時的目標",
 	RangeFrame			= "顯示距離框 (11)",
 	RunePowerFrame			= "顯示首領血量+$spell:72371條"
 }
