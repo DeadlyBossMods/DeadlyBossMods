@@ -26,10 +26,10 @@ local specWarnDevouringFlameCast	= mod:NewSpecialWarning("SpecWarnDevouringFlame
 local enrageTimer					= mod:NewBerserkTimer(900) -- uhm?
 local timerDeepBreathCooldown		= mod:NewCDTimer(21, 64021)
 local timerDeepBreathCast			= mod:NewCastTimer(2.5, 64021)
-local timerTurret1					= mod:NewTimer(55, "timerTurret1")
-local timerTurret2					= mod:NewTimer(75, "timerTurret2")
-local timerTurret3					= mod:NewTimer(95, "timerTurret3")
-local timerTurret4					= mod:NewTimer(115, "timerTurret4")
+local timerTurret1					= mod:NewTimer(53, "timerTurret1")
+local timerTurret2					= mod:NewTimer(73, "timerTurret2")
+local timerTurret3					= mod:NewTimer(93, "timerTurret3")
+local timerTurret4					= mod:NewTimer(113, "timerTurret4")
 local timerGrounded                 = mod:NewTimer(45, "timerGrounded")
 
 mod:AddBoolOption("PlaySoundOnDevouringFlame", false)
@@ -41,14 +41,14 @@ function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	combattime = GetTime()
 	if mod:IsDifficulty("heroic10") then
-		warnTurretsReadySoon:Schedule(65 - delay - 27)
-		warnTurretsReady:Schedule(75 - delay - 27)
-		timerTurret1:Start(-delay - 27)
-		timerTurret2:Start(-delay - 27)
+		warnTurretsReadySoon:Schedule(53-delay)
+		warnTurretsReady:Schedule(73-delay)
+		timerTurret1:Start(-delay)
+		timerTurret2:Start(-delay)
 	else
-		warnTurretsReadySoon:Schedule(95-delay)
-		warnTurretsReady:Schedule(115-delay)
-		timerTurret1:Start(-delay) -- 55sec
+		warnTurretsReadySoon:Schedule(93-delay)
+		warnTurretsReady:Schedule(113-delay)
+		timerTurret1:Start(-delay) -- 53sec
 		timerTurret2:Start(-delay) -- +20
 		timerTurret3:Start(-delay) -- +20
 		timerTurret4:Start(-delay) -- +20
@@ -81,13 +81,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 		warnTurretsReadySoon:Cancel()
 		warnTurretsReady:Cancel()
 		if mod:IsDifficulty("heroic10") then -- not sure?
-			warnTurretsReadySoon:Schedule(65 - 27)
-			warnTurretsReady:Schedule(75 - 27)
-			timerTurret1:Start(-27)
-			timerTurret2:Start(-27)
+			warnTurretsReadySoon:Schedule(23)
+			warnTurretsReady:Schedule(43)
+			timerTurret1:Start(23)
+			timerTurret2:Start(43)
 		else
-			warnTurretsReadySoon:Schedule(95)
-			warnTurretsReady:Schedule(115)
+			warnTurretsReadySoon:Schedule(93)
+			warnTurretsReady:Schedule(113)
 			timerTurret1:Start()
 			timerTurret2:Start()
 			timerTurret3:Start()
