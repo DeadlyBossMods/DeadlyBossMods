@@ -235,6 +235,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	Outro	= "你的旅途才剛開始，年輕的王子。召集你的軍隊，到北裂境的嚴寒之地來見我。在那裡，我們可以算算我們之間的新仇舊恨。你將在那裡理解你真正的命運。"
+})
+
 -------------------
 --  Wave Timers  --
 -------------------
@@ -481,6 +485,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	SetIconOnOverloadTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(52658)
 })
 
 ---------------
@@ -593,14 +598,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPhase	= "階段 %d"
+	WarningPhase	= "第%d階段"
 })
 
 L:SetTimerLocalization({
+	timerEvent	= "剩餘時間"
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("階段數")
+	WarningPhase	= optionWarning:format("階段數"),
+	timerEvent		= "為事件的持續時間顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -608,7 +615,7 @@ L:SetMiscLocalization({
 	Phase1	= "安全機制突破中，史實資料分析已調至低優先佇列，啟動反制程序。",
 	Phase2	= "已超出威脅指數標準。天界資料庫已中止。安全等級已提昇。",
 	Phase3	= "威脅指數過高。已轉移無效的分析。啟動清潔處理協定。",
-	Kill	= "系統登入。生命體樣式已確認。歡迎，布萊恩布朗贊。是否查詢?"
+	Kill	= "警告:安全性系統自動修復裝置已被關閉。開始記憶體內容消除與…"
 })
 
 -----------------
@@ -754,22 +761,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningTimeBomb		= debuff,
-	WarningExplosion	= spell,
-	SpecWarnBombYou 	= "你中了時間炸彈"
 })
 
 L:SetTimerLocalization({
-	TimerTimeBomb	= debuff,
-	TimerExplosion	= spell
 })
 
 L:SetOptionLocalization({
-	WarningTimeBomb 	= optionWarning:format(GetSpellInfo(51121)),
-	WarningExplosion 	= optionWarning:format(GetSpellInfo(51110)),
-	TimerTimeBomb 		= optionTimerDur:format(GetSpellInfo(51121)),
-	TimerExplosion 		= optionTimerDur:format(GetSpellInfo(51110)),
-	SpecWarnBombYou		= "當你中了時間炸彈時顯示特別警告"
+})
+
+L:SetMiscLocalization({
+	CombatStart		= "可憐而無知的蠢貨!"
 })
 
 --------------------------
@@ -863,14 +864,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialWarningSpelllock = "法術封鎖 - 停止施法!"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningSpelllock	= "為法術封鎖顯示特別警告"
 })
 
 L:SetMiscLocalization({
@@ -895,6 +894,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	CombatStart		= "哪來的蠢狗敢入侵此地?打起精神來，我的兄弟們!誰能把他們的頭顱帶來，我會好好的犒賞一番!",
+	Phase2			= "你們這些沒教養的垃圾!你們的屍體剛好拿來當龍的點心!",
+	YellCombatEnd	= "啊啊!你把這叫做…攻擊?我會讓你…瞧瞧…啊…"
 })
 
 -------------------
@@ -1093,9 +1098,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningPortalSoon	= "新傳送門即將開啟",
+	WarningPortalSoon	= "新傳送門即將到來",
 	WarningPortalNow	= "傳送門 #%d",
-	WarningBossNow		= "首領即將到來",
+	WarningBossNow		= "首領到來",
 })
 
 L:SetTimerLocalization({
@@ -1105,9 +1110,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningPortalNow		= optionWarning:format("新傳送門"),
 	WarningPortalSoon		= optionPreWarning:format("新傳送門"),
-	WarningBossNow			= optionWarning:format("首領即將到來"),
-	TimerPortalIn			= "為下一次傳送門 (擊敗首領後)顯示計時器",
-	ShowAllPortalTimers		= "為所有傳送門顯示計時器 (不準確)"
+	WarningBossNow			= optionWarning:format("首領到來"),
+	TimerPortalIn			= "為下一次 傳送門顯示計時器 (擊敗首領後)",
+	ShowAllPortalTimers		= "為所有傳送門顯示警告 (不準確)"
 })
 
 L:SetMiscLocalization({
@@ -1237,7 +1242,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "跳動的南瓜出現了!",
-	specWarnHorsemanHead	= "旋風斬! 轉換目標!"
+	specWarnHorsemanHead	= "旋風斬 - 轉換目標!"
 })
 
 L:SetOptionLocalization({
@@ -1262,7 +1267,7 @@ L:SetGeneralLocalization({
 	name = "艾克及克瑞克"
 })
 
-L:SetWarningLocalization({	
+L:SetWarningLocalization({
 	warnPursuit			= "追擊: >%s<",
 	specWarnPursuit		= "你中了追擊 - 快跑"
 })
@@ -1270,12 +1275,12 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	warnPursuit				= "提示追擊的目標",
 	specWarnPursuit			= "當你被追擊時顯示特別警告",
-	SetIconOnPursuitTarget	= "為追擊的目標設置標記"
+	SetIconOnPursuitTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(68987)
 })
 
 L:SetMiscLocalization({
 	IckPursuit		= "%s正在追擊著你!",
-	Barrage			= "%s開始迅速地召喚爆裂地雷!",
+	Barrage			= "%s開始迅速地召喚爆裂地雷!"
 })
 
 ----------------------------
@@ -1288,7 +1293,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSaroniteRock		= "薩鋼岩: >%s<",
+	warnSaroniteRock		= "投擲薩鋼: >%s<",
 	specWarnSaroniteRock	= "你中了投擲薩鋼 - 快跑開",
 	specWarnSaroniteRockNear	= "你附近有人中了投擲薩鋼 - 快跑開",
 	specWarnPermafrost		= "%s: %s"
@@ -1390,7 +1395,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnNewWaveSoon	= "新一波 即將到來",
-	WarnNewWave		= "新一波 到來"
+	WarnNewWave		= "%s 到來"
 })
 
 L:SetTimerLocalization({
@@ -1399,7 +1404,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnNewWave			= "當首領到來時顯示警告",
-	WarnNewWaveSoon		= "為新一波 (擊敗首領後)顯示預先警告",
+	WarnNewWaveSoon		= "為新一波顯示預先警告 (擊敗首領後)",
 	ShowAllWaveWarnings	= "為所有波數顯示警告",
 	TimerNextWave		= "為下一波顯示計時器 (擊敗首領後)",
 	ShowAllWaveTimers	= "為所有波數顯示計時器及預先警告 (不準確)"
@@ -1462,10 +1467,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnWave1		= "6 狂怒食屍鬼, 1 復活的巫醫 即將到來",--6 Ghoul, 1 WitchDocter
-	WarnWave2		= "6 狂怒食屍鬼, 2 復活的巫醫, 1 笨拙憎惡體 即將到來",--6 Ghoul, 2 WitchDocter, 1 Abom
-	WarnWave3		= "6 狂怒食屍鬼, 2 復活的巫醫, 2 笨拙憎惡體 即將到來",--6 Ghoul, 2 WitchDocter, 2 Abom
-	WarnWave4		= "12 狂怒食屍鬼, 4 復活的巫醫, 3 笨拙憎惡體 即將到來"--12 Ghoul, 3 WitchDocter, 3 Abom
+	WarnWave1		= "狂怒食屍鬼(6)復活的巫醫(1) 即將到來",
+	WarnWave2		= "狂怒食屍鬼(6)復活的巫醫(2)笨拙憎惡體(1) 即將到來",
+	WarnWave3		= "狂怒食屍鬼(6)復活的巫醫(2)笨拙憎惡體(2) 即將到來",
+	WarnWave4		= "狂怒食屍鬼(12)復活的巫醫(4)笨拙憎惡體(3) 即將到來"
 })
 
 L:SetTimerLocalization({
@@ -1473,18 +1478,18 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShowWaves		= "為即將到來的下一波顯示警告"
+	ShowWaves		= "為下一波 即將到來顯示警告"
 })
 
 L:SetMiscLocalization({
-	Ghoul			= "狂怒食屍鬼",--creature id 36940
-	Abom			= "笨拙憎惡體",--creature id 37069
-	WitchDoctor		= "復活的巫醫",--creature id 36941
-	ACombatStart		= "他太強大了!我們必須立刻離開這裡!我的魔法只能困住他一小段時間。快來吧，英雄們!",
-	HCombatStart		= "他…太強大了。英雄們，快點…到我這裡來!我們要立刻離開這裡!我會盡可能地在我們逃走時把他困住。",
+	Ghoul			= "狂怒食屍鬼",
+	Abom			= "笨拙憎惡體",
+	WitchDoctor		= "復活的巫醫",
+	ACombatStart	= "他太強大了!我們必須立刻離開這裡!我的魔法只能困住他一小段時間。快來吧，英雄們!",
+	HCombatStart	= "他…太強大了。英雄們，快點…到我這裡來!我們要立刻離開這裡!我會盡可能地在我們逃走時把他困住。",
 	Wave1			= "無處可逃!",
 	Wave2			= "屈服於墓地的酷寒之下吧!",
 	Wave3			= "又是死路一條!",
 	Wave4			= "你還能支持多久?",
-	YellCombatEnd		= "開火!開火!"
+	YellCombatEnd	= "開火!開火!"
 })
