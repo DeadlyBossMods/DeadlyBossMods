@@ -26,7 +26,7 @@ local warnMark				= mod:NewTargetAnnounce(72444)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
 
-local specWarnMarkCast		= mod:NewSpecialWarningYou(72444)--Experimental
+local specWarnMarkCast		= mod:NewSpecialWarningYou(72444, false)--Experimental
 local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
 local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, false)
 
@@ -120,7 +120,7 @@ function mod:SPELL_CAST_START(args)
 		warnBloodNova:Show()
 		timerBloodNova:Start()
 	elseif args:IsSpellID(72293) then		-- Mark of the Fallen Champion
-		self:ScheduleMethod(0.1, "MarkTarget")
+		self:ScheduleMethod(0.2, "MarkTarget")
 	end
 end
 
