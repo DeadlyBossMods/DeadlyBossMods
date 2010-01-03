@@ -71,10 +71,10 @@ function mod:OnCombatStart(delay)
 	end
 	if GetLocale() ~= "zhCN" and GetLocale() ~= "deDE" and GetLocale() ~= "esES" and GetLocale() ~= "frFR" and GetLocale() ~= "koKR" and GetLocale() ~= "zhTW" then--remove your local here if you add your yell
 		timerCombatStart:Show(-delay)
-		timerCallBloodBeast:Start(-delay + 48)
-		warnAddsSoon:Schedule(35 + 48)
-		timerBloodNova:Start(-delay + 48)
-		enrageTimer:Start(-delay + 48)
+		timerCallBloodBeast:Start(88-delay)
+		warnAddsSoon:Schedule(83)
+		timerBloodNova:Start(68-delay)
+		enrageTimer:Start(528-delay)
 	else
 		timerCallBloodBeast:Start(-delay)
 		warnAddsSoon:Schedule(35)
