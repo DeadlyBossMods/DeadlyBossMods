@@ -15,7 +15,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_HEAL",
-	"SPELL_PERIODIC_HEAL"
+	"SPELL_PERIODIC_HEAL",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local isDispeller = select(2, UnitClass("player")) == "MAGE"
@@ -42,12 +43,7 @@ local specWarnFelInferno		= mod:NewSpecialWarningMove(68718)
 local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", false)
 local SpecWarnFelFireballDispel	= mod:NewSpecialWarningDispel(66965, isMagicDispeller)
 
-mod:AddBoolOption("LegionFlameWhisper", false, "announce")
-mod:AddBoolOption("LegionFlameRunSound", true)
-mod:AddBoolOption("LegionFlameIcon", true)
-mod:AddBoolOption("IncinerateFleshIcon", true)
---mod:AddBoolOption("TouchJaraxxusIcon", true)
-
+--local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
 local enrageTimer				= mod:NewBerserkTimer(600)
 local timerFlame 				= mod:NewTargetTimer(8, 68123)--There are 8 debuff Ids. Since we detect first to warn, use an 8sec timer to cover duration of trigger spell and damage debuff.
 local timerFlameCD				= mod:NewCDTimer(30, 68125) 
@@ -56,6 +52,12 @@ local timerFleshCD				= mod:NewCDTimer(23, 67051)
 local timerPortalCD				= mod:NewCDTimer(120, 67900)
 local timerVolcanoCD			= mod:NewCDTimer(120, 67901)
 --local timerTouchCD			= mod:NewCDTimer(999, 12345)	-- cooldown?
+
+mod:AddBoolOption("LegionFlameWhisper", false, "announce")
+mod:AddBoolOption("LegionFlameRunSound", true)
+mod:AddBoolOption("LegionFlameIcon", true)
+mod:AddBoolOption("IncinerateFleshIcon", true)
+--mod:AddBoolOption("TouchJaraxxusIcon", true)
 
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("IncinerateShieldFrame", true, "misc")
@@ -221,4 +223,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+--[[function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.FirstPull or msg:find(L.FirstPull) then
+		self:SendSync("FirstPull")
+	end
+end
 
+function mod:OnSync(msg, arg)
+	if msg == "FirstPull" then
+		timerCombatStart:Start()
+	end
+end--]]
