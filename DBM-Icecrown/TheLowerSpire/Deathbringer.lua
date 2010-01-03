@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(37813)
 
-if GetLocale() ~= "zhCN" and GetLocale() ~= "deDE" and GetLocale() ~= "esES" and GetLocale() ~= "frFR" and GetLocale() ~= "koKR" and GetLocale() ~= "ruRU" and GetLocale() ~= "zhTW" then
+if GetLocale() ~= "zhCN" and GetLocale() ~= "deDE" and GetLocale() ~= "esES" and GetLocale() ~= "frFR" and GetLocale() ~= "koKR" and GetLocale() ~= "zhTW" then
 	mod:RegisterCombat("yell", L.Pull)--yell pull detection so combat start timer can be used. delete your local from above once you add appropriate yell to your locals. Don't forget to remove local for combat start as well.
 	mod:SetMinCombatTime(50)
 else
@@ -69,7 +69,7 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:AddBoss(37813, L.name)
 		self:ScheduleMethod(0.5, "CreateBossRPFrame")
 	end
-	if GetLocale() ~= "zhCN" and GetLocale() ~= "deDE" and GetLocale() ~= "esES" and GetLocale() ~= "frFR" and GetLocale() ~= "koKR" and GetLocale() ~= "ruRU" and GetLocale() ~= "zhTW" then--remove your local here if you add your yell
+	if GetLocale() ~= "zhCN" and GetLocale() ~= "deDE" and GetLocale() ~= "esES" and GetLocale() ~= "frFR" and GetLocale() ~= "koKR" and GetLocale() ~= "zhTW" then--remove your local here if you add your yell
 		timerCombatStart:Show(-delay)
 		timerCallBloodBeast:Start(-delay + 48)
 		warnAddsSoon:Schedule(35 + 48)
