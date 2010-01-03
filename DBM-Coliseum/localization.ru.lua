@@ -75,12 +75,17 @@ L:SetWarningLocalization{
 	SpecWarnFelFireball			= "Огненный шар Скверны - прерывание"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "Начало боя"
+}
+
 L:SetMiscLocalization{
 	WhisperFlame		= "Пламя Легиона на вас",
 	IncinerateTarget	= "Испепеление плоти: %s"
 }
 
 L:SetOptionLocalization{
+	TimerCombatStart			= "Отсчет времени до начала боя",
 	WarnNetherPower				= "Предупреждение, когда Джараксус получает Силу пустоты",
 	SpecWarnTouch				= "Спец-предупреждение, когда на вас Касание Джараксуса",
 	SpecWarnTouchNear			= "Спец-предупреждение, когда рядом с вами Касание Джараксуса",
@@ -92,6 +97,10 @@ L:SetOptionLocalization{
 	LegionFlameWhisper			= "Сообщить цели, под воздействием Пламени легиона",
 	LegionFlameRunSound			= "Звуковой сигнал при Пламени легиона",
 	IncinerateShieldFrame		= "Показать здоровье босса с индикатором здоровья для Испепеления плоти"
+}
+
+L:SetMiscLocalization{
+	FirstPull	= "Сейчас великий чернокнижник Вилфред Непопамс призовет вашего нового противника. Готовьтесь к бою!"
 }
 
 -------------------------
