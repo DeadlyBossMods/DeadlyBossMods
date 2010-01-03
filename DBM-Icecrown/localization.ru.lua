@@ -143,10 +143,6 @@ L:SetWarningLocalization{
 	warnFrenzySoon	= "Скоро Бешенство"
 }
 
-L:SetTimerLocalization{
-	TimerCombatStart		= "Начало боя"
-}
-
 L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
@@ -157,8 +153,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	RunePower	= "Сила крови",
-	Pull		= "Все павшие воины Орды, все дохлые псы Альянса – все пополнят армию Короля-лича. Даже сейчас валь'киры воскрешают ваших покойников, чтобы те стали частью Плети!"
+	RunePower			= "Сила крови",
+	TimerCombatStart	= "Начало боя",
+	Pull				= "Все павшие воины Орды, все дохлые псы Альянса – все пополнят армию Короля-лича. Даже сейчас валь'киры воскрешают ваших покойников, чтобы те стали частью Плети!"
 }
 
 -----------------
