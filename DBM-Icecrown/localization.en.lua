@@ -136,7 +136,12 @@ L:SetWarningLocalization{
 	warnFrenzySoon	= "Frenzy soon"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "Combat starts"
+}
+
 L:SetOptionLocalization{
+	TimerCombatStart		= "Show time for start of combat",
 	warnFrenzySoon			= "Show pre-warning for Frenzy (at ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "Set icon on $spell:72444 targets during cast",
@@ -145,7 +150,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	RunePower	= "Blood Power"
+	RunePower	= "Blood Power",
+	Pull		= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
 }
 
 -----------------
