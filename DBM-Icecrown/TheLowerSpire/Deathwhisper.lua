@@ -64,7 +64,9 @@ function mod:OnCombatStart(delay)
 	timerAdds:Start(7)
 	warnAddsSoon:Schedule(4)			-- 3sec pre-warning on start
 	self:ScheduleMethod(7, "addsTimer")
-	timerDominateMindCD:Start(30)		-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
+	if not mod:IsDifficulty("normal10") then
+		timerDominateMindCD:Start(30)		-- Sometimes 1 fails at the start, then the next will be applied 70 secs after start ?? :S
+	end
 	table.wipe(dominateMindTargets)
 	dominateMindIcon = 6
 	deformedFanatic = nil
