@@ -73,12 +73,17 @@ L:SetWarningLocalization{
 	SpecWarnFelFireball			= "Fel Fireball - Interrupt now"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "Combat starts"
+}
+
 L:SetMiscLocalization{
 	WhisperFlame		= "Legion Flame on you",
 	IncinerateTarget	= "Incinerate Flesh: %s"
 }
 
 L:SetOptionLocalization{
+	TimerCombatStart			= "Show time for start of combat",
 	WarnNetherPower				= "Show warning when Lord Jaraxxus gains Nether Power (to dispel/steal)",
 	SpecWarnTouch				= "Show special warning when you are affected by Touch of Jaraxxus",
 	SpecWarnTouchNear			= "Show special warning for Touch of Jaraxxus near you",
@@ -90,6 +95,10 @@ L:SetOptionLocalization{
 	LegionFlameWhisper			= "Send whisper to Legion Flame targets",
 	LegionFlameRunSound			= "Play sound on Legion Flame",
 	IncinerateShieldFrame		= "Show boss health with a health bar for Incinerate Flesh"
+}
+
+L:SetMiscLocalization{
+	FirstPull	= "Grand Warlock Wilfred Fizzlebang will summon forth your next challenge. Stand by for his entry!"
 }
 
 -------------------------
