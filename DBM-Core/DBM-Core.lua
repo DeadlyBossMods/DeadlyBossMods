@@ -1257,7 +1257,9 @@ do
 				"CHAT_MSG_MONSTER_SAY",
 				"CHAT_MSG_RAID_BOSS_EMOTE",
 				"PLAYER_ENTERING_WORLD",
-				"LFG_PROPOSAL_SHOW"
+				"LFG_PROPOSAL_SHOW",
+				"LFG_PROPOSAL_FAILED",
+				"LFG_UPDATE"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
@@ -1269,15 +1271,18 @@ do
 	end
 end
 
-do
-	local testMod
-	local testTimer
-	function DBM:LFG_PROPOSAL_SHOW()
-		if not testMod then
-			testMod = DBM:NewMod("TestModLfg")
-			testTimer = testMod:NewTimer(40, "%s")	
-		end
-		testTimer:Start(40, DBM_LFG_INVITE)
+function DBM:LFG_PROPOSAL_SHOW()
+	DBM.Bars:CreateBar(40, DBM_LFG_INVITE)
+end
+
+function DBM:LFG_PROPOSAL_FAILED()
+	DBM.Bars:CancelBar(DBM_LFG_INVITE)
+end
+
+function DBM:LFG_UPDATE()
+	local _, joined = GetLFGInfoServer()
+	if not joined then
+		DBM.Bars:CancelBar(DBM_LFG_INVITE)
 	end
 end
 
@@ -1927,6 +1932,7 @@ do
 		if #inCombat == 0 then
 			DBM:Schedule(0, requestTimers)
 		end
+		self:LFG_UPDATE()
 	end
 end
 
