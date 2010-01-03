@@ -67,6 +67,8 @@ DBM_CORE_RANGECHECK_HIDE			= "Hide"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 DBM_CORE_RANGECHECK_LOCK			= "Lock frame"
 
+DBM_LFG_INVITE						= "LFG Invite"
+
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
 	"/dbm version: Performs a raid-wide version check (alias: ver).",

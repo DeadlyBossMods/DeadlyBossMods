@@ -1256,7 +1256,8 @@ do
 				"CHAT_MSG_MONSTER_EMOTE",
 				"CHAT_MSG_MONSTER_SAY",
 				"CHAT_MSG_RAID_BOSS_EMOTE",
-				"PLAYER_ENTERING_WORLD"
+				"PLAYER_ENTERING_WORLD",
+				"LFG_PROPOSAL_SHOW"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
@@ -1265,6 +1266,18 @@ do
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
 		end
+	end
+end
+
+do
+	local testMod
+	local testTimer
+	function DBM:LFG_PROPOSAL_SHOW()
+		if not testMod then
+			testMod = DBM:NewMod("TestModLfg")
+			testTimer = testMod:NewTimer(40, "%s")	
+		end
+		testTimer:Start(40, DBM_LFG_INVITE)
 	end
 end
 
