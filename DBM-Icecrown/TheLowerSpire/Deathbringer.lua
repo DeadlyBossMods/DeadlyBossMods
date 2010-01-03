@@ -3,13 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(37813)
-
-if GetLocale() ~= "zhCN" and GetLocale() ~= "deDE" and GetLocale() ~= "esES" and GetLocale() ~= "frFR" and GetLocale() ~= "koKR" and GetLocale() ~= "zhTW" then
-	mod:RegisterCombat("yell", L.Pull)--yell pull detection so combat start timer can be used. delete your local from above once you add appropriate yell to your locals. Don't forget to remove local for combat start as well.
-	mod:SetMinCombatTime(50)
-else
-	mod:RegisterCombat("combat")--For unlocalized yell pulls to still function normally until their pull yell is added.
-end
+mod:RegisterCombat("combat")
 mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -17,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local isRanged = select(2, UnitClass("player")) == "MAGE"
@@ -69,18 +64,10 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:AddBoss(37813, L.name)
 		self:ScheduleMethod(0.5, "CreateBossRPFrame")
 	end
-	if GetLocale() ~= "zhCN" and GetLocale() ~= "deDE" and GetLocale() ~= "esES" and GetLocale() ~= "frFR" and GetLocale() ~= "koKR" and GetLocale() ~= "zhTW" then--remove your local here if you add your yell
-		timerCombatStart:Show(-delay)
-		timerCallBloodBeast:Start(88-delay)
-		warnAddsSoon:Schedule(83-delay)
-		timerBloodNova:Start(68-delay)
-		enrageTimer:Start(528-delay)
-	else
-		timerCallBloodBeast:Start(-delay)
-		warnAddsSoon:Schedule(35-delay)
-		timerBloodNova:Start(-delay)
-		enrageTimer:Start(-delay)
-	end
+	timerCallBloodBeast:Start(-delay)
+	warnAddsSoon:Schedule(35-delay)
+	timerBloodNova:Start(-delay)
+	enrageTimer:Start(-delay)
 	table.wipe(boilingBloodTargets)
 	warned_preFrenzy = false
 	boilingBloodIcon = 7
@@ -186,5 +173,17 @@ function mod:UNIT_HEALTH(uId)
 	if not warned_preFrenzy and self:GetUnitCreatureId(uId) == 37813 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.33 then
 		warned_preFrenzy = true
 		warnFrenzySoon:Show()	
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Pull or msg:find(L.Pull) then
+		self:SendSync("Pull")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "Pull" then
+		timerCombatStart:Start()
 	end
 end
