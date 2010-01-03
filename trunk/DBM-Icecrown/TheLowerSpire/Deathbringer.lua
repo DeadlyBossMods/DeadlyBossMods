@@ -31,7 +31,6 @@ local specWarnMarkCast		= mod:NewSpecialWarningYou(72444, false)--Experimental
 local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
 local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, false)
 
-local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
 local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
@@ -40,6 +39,7 @@ local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410)
 
 local enrageTimer			= mod:NewBerserkTimer(480)
 
+mod:AddBoolOption("TimerCombatStart", true, "timer")
 mod:AddBoolOption("SetIconOnBoilingBlood", true)
 mod:AddBoolOption("SetIconOnMarkCast", false)
 mod:AddBoolOption("RangeFrame", isRanged)
@@ -184,6 +184,8 @@ end
 
 function mod:OnSync(msg, arg)
 	if msg == "Pull" then
-		timerCombatStart:Start()
+		if self.Options.TimerCombatStart and not DBM.Bars:GetBar(L.TimerCombatStart) then
+			DBM.Bars:CreateBar(48, L.TimerCombatStart)
+		end
 	end
 end
