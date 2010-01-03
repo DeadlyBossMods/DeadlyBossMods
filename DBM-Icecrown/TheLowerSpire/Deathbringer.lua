@@ -3,7 +3,13 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
 mod:SetCreatureID(37813)
-mod:RegisterCombat("combat")
+
+if GetLocale() ~= "zhCN" or GetLocale() ~= "deDE" or GetLocale() ~= "esES" or GetLocale() ~= "frFR" or GetLocale() ~= "koKR" or GetLocale() ~= "ruRU" or GetLocale() ~= "zhTW" then
+	mod:RegisterCombat("yell", L.Pull)--yell pull detection so combat start timer can be used. delete your local from above once you add appropriate yell to your locals. Don't forget to remove local for combat start as well.
+	mod:SetMinCombatTime(50)
+else
+	mod:RegisterCombat("combat")--For unlocalized yell pulls to still function normally until their pull yell is added.
+end
 mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -30,6 +36,7 @@ local specWarnMarkCast		= mod:NewSpecialWarningYou(72444, false)--Experimental
 local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
 local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, false)
 
+local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
 local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
 local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
@@ -61,6 +68,9 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:Show(L.name)
 		DBM.BossHealth:AddBoss(37813, L.name)
 		self:ScheduleMethod(0.5, "CreateBossRPFrame")
+	end
+	if GetLocale() ~= "zhCN" or GetLocale() ~= "deDE" or GetLocale() ~= "esES" or GetLocale() ~= "frFR" or GetLocale() ~= "koKR" or GetLocale() ~= "ruRU" or GetLocale() ~= "zhTW" then--remove your local here if you add your yell
+		timerCombatStart:Show(-delay)
 	end
 	enrageTimer:Start()
 	table.wipe(boilingBloodTargets)
