@@ -18,6 +18,11 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
+L:SetMiscLocalization{
+	WarderTrap1		= "Кто... идет?",
+	WarderTrap2		= "Я пробудился..."
+}
+
 ---------------------------
 --  Trash - Plagueworks  --
 ---------------------------
@@ -138,15 +143,22 @@ L:SetWarningLocalization{
 	warnFrenzySoon	= "Скоро Бешенство"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "Начало боя"
+}
+
 L:SetOptionLocalization{
+	TimerCombatStart		= "Отсчет времени до начала боя",
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	SetIconOnMarkCast		= "Устанавливать метки на цели заклинания $spell:72444 \n во время его применения",
 	RangeFrame				= "Показывать окно допустимой дистанции (11 м)",
 	RunePowerFrame			= "Показывать здоровье босса + индикатор для $spell:72371"
 }
 
 L:SetMiscLocalization{
-	RunePower	= "Сила крови"
+	RunePower	= "Сила крови",
+	Pull		= "Все павшие воины Орды, все дохлые псы Альянса – все пополнят армию Короля-лича. Даже сейчас валь'киры воскрешают ваших покойников, чтобы те стали частью Плети!"
 }
 
 -----------------
