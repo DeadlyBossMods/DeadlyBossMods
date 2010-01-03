@@ -146,10 +146,10 @@ end
 ------------------
 --  Bar Update  --
 ------------------
-function updateBar(bar, percent)
+function updateBar(bar, percent, dontShowDead)
 	local bartimer = _G[bar:GetName().."BarTimer"]
 	local barbar = _G[bar:GetName().."Bar"]
-	bartimer:SetText((percent > 0) and math.floor(percent).."%" or DBM_CORE_DEAD)
+	bartimer:SetText((percent > 0 or dontShowDead) and math.floor(percent).."%" or DBM_CORE_DEAD)
 	barbar:SetValue(percent)
 	barbar:SetStatusBarColor((100 - percent) / 100, percent/100, 0)
 	bar.value = percent
@@ -219,7 +219,7 @@ do
 						updateBar(v, ((UnitHealth(id)) / (UnitHealthMax(id)) * 100 or 100))
 					end
 				elseif type(v.id) == "function" then -- generic bars
-					updateBar(v, v.id())
+					updateBar(v, v.id(), true)
 				end
 			end
 		end
