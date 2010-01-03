@@ -16,6 +16,11 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
+L:SetMiscLocalization{
+	WarderTrap1		= "Who... goes there...?",
+	WarderTrap2		= "I... awaken!"
+}
+
 ---------------------------
 --  Trash - Plagueworks  --
 ---------------------------
