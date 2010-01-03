@@ -71,12 +71,17 @@ function mod:OnCombatStart(delay)
 	end
 	if GetLocale() ~= "zhCN" or GetLocale() ~= "deDE" or GetLocale() ~= "esES" or GetLocale() ~= "frFR" or GetLocale() ~= "koKR" or GetLocale() ~= "ruRU" or GetLocale() ~= "zhTW" then--remove your local here if you add your yell
 		timerCombatStart:Show(-delay)
+		timerCallBloodBeast:Start(-delay + 48)
+		warnAddsSoon:Schedule(35 + 48)
+		timerBloodNova:Start(-delay + 48)
+		enrageTimer:Start(-delay + 48)
+	else
+		timerCallBloodBeast:Start(-delay)
+		warnAddsSoon:Schedule(35)
+		timerBloodNova:Start(-delay)
+		enrageTimer:Start(-delay)
 	end
-	enrageTimer:Start()
 	table.wipe(boilingBloodTargets)
-	timerCallBloodBeast:Start(-delay)
-	warnAddsSoon:Schedule(35)
-	timerBloodNova:Start(-delay)
 	warned_preFrenzy = false
 	boilingBloodIcon = 7
 	if self.Options.RangeFrame then
