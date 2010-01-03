@@ -32,7 +32,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warningOverload:Show(args.destName)
 		timerOverload:Start(args.destName)
 		if self.Options.SetIconOnOverloadTarget then
-				self:SetIcon(args.destName, 8, 10)
+			self:SetIcon(args.destName, 8, 10)
 		end
 	end
 end
