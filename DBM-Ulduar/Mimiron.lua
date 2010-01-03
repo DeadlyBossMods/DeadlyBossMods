@@ -49,6 +49,7 @@ local timerPlasmaBlastCD		= mod:NewCDTimer(30, 64529)
 local timerShell				= mod:NewTargetTimer(6, 63666)
 local timerFlameSuppressant		= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
+local timerNextFlames			= mod:NewNextTimer(30, 64566)
 local timerNextFrostBomb        = mod:NewNextTimer(30, 64623)
 local timerBombExplosion		= mod:NewCastTimer(15, 65333)
 
@@ -93,6 +94,11 @@ function mod:OnCombatEnd()
 			SetLootMethod(lootmethod)
 		end
 	end
+end
+
+function mod:Flames()
+	timerNextFlames:Start()
+	self:ScheduleMethod(30, "Flames")
 end
 
 function mod:SPELL_SUMMON(args)
@@ -280,6 +286,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerFlameSuppressant:Start()
 		enrage:Stop()
 		hardmode = true
+		timerNextFlames:Start(15)
+		self:ScheduleMethod(15, "Flames")
 	end
 end
 
