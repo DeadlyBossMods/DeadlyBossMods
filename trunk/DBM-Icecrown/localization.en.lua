@@ -141,6 +141,10 @@ L:SetWarningLocalization{
 	warnFrenzySoon	= "Frenzy soon"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "Combat starts"
+}
+
 L:SetOptionLocalization{
 	TimerCombatStart		= "Show time for start of combat",
 	warnFrenzySoon			= "Show pre-warning for Frenzy (at ~33%)",
@@ -152,7 +156,6 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	RunePower			= "Blood Power",
-	TimerCombatStart	= "Combat starts",
 	Pull				= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
 }
 
