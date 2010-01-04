@@ -71,6 +71,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerAdds						= "이교도 추가"
 }
 
 L:SetWarningLocalization{
