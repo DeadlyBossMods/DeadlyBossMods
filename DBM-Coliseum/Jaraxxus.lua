@@ -43,7 +43,7 @@ local specWarnFelInferno		= mod:NewSpecialWarningMove(68718)
 local SpecWarnFelFireball		= mod:NewSpecialWarning("SpecWarnFelFireball", false)
 local SpecWarnFelFireballDispel	= mod:NewSpecialWarningDispel(66965, isMagicDispeller)
 
---local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
+local timerCombatStart			= mod:NewTimer(84, "TimerCombatStart", 2457)--rollplay for first pull
 local enrageTimer				= mod:NewBerserkTimer(600)
 local timerFlame 				= mod:NewTargetTimer(8, 68123)--There are 8 debuff Ids. Since we detect first to warn, use an 8sec timer to cover duration of trigger spell and damage debuff.
 local timerFlameCD				= mod:NewCDTimer(30, 68125) 
@@ -223,7 +223,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[function mod:CHAT_MSG_MONSTER_YELL(msg)
+function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.FirstPull or msg:find(L.FirstPull) then
 		self:SendSync("FirstPull")
 	end
@@ -233,4 +233,4 @@ function mod:OnSync(msg, arg)
 	if msg == "FirstPull" then
 		timerCombatStart:Start()
 	end
-end--]]
+end

@@ -98,7 +98,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	FirstPull	= "Grand Warlock Wilfred Fizzlebang will summon forth your next challenge. Stand by for his entry!"
+	FirstPull	= "Grand Warlock Wilfred Fizzlebang will summon forth your next challenge. Stand by for his entry."
 }
 
 -------------------------
