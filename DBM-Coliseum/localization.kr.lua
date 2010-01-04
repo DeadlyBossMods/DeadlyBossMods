@@ -102,7 +102,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	FirstPull					= "Grand Warlock Wilfred Fizzlebang will summon forth your next challenge. Stand by for his entry!"
+	FirstPull					= "대흑마법사 윌프레드 피즐뱅이 다음 상대를 소환할 걸세. 기다리고 있게나."
 }
 
 -----------------------
