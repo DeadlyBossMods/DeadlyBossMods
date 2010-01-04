@@ -17,6 +17,7 @@ local warningBossNow	= mod:NewAnnounce("WarningBossNow", 4, 33341)
 
 local timerPortalIn	= mod:NewTimer(122, "TimerPortalIn", 57687)
 
+mod:AddBoolOption("ShowAllPortalWarnings", true, "announce")
 mod:AddBoolOption("ShowAllPortalTimers", false, "timer")--rate they spawn seems to accelerate slowly over time. thus making timers inaccurate by end of fight
 
 mod:RemoveOption("HealthFrame")
@@ -38,7 +39,9 @@ function mod:UPDATE_WORLD_STATES(args)
 		if wave == 6 or wave == 12 or wave == 18 then
 			warningBossNow:Show()
 		else
-			warningPortalNow:Show(wave)
+			if self.Options.ShowAllPortalWarnings then
+				warningPortalNow:Show(wave)
+			end
 			if self.Options.ShowAllPortalTimers then
 				timerPortalIn:Start(122, wave + 1)
 				warningPortalSoon:Schedule(112)
