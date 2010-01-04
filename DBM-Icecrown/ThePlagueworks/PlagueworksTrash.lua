@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("PlagueworksTrash", "DBM-Icecrown", 2)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 1799 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 --mod:SetCreatureID(37025, 37217)
 --mod:RegisterCombat("combat")
 
