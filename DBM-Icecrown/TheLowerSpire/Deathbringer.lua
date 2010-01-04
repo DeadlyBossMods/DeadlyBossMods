@@ -177,7 +177,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Pull or msg:find(L.Pull) then
+	if msg == L.Pull or msg:find(L.Pull, 1, true) then
 		self:SendSync("Pull")
 	end
 end
