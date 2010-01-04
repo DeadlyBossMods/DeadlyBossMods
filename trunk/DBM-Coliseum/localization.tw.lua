@@ -76,12 +76,17 @@ L:SetWarningLocalization{
 
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "戰鬥開始"
+}
+
 L:SetMiscLocalization{
 	WhisperFlame			= "你中了軍團烈焰 - 快跑開",
 	IncinerateTarget		= "焚化血肉: %s"
 }
 
 L:SetOptionLocalization{
+	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	WarnNetherPower			= "當賈拉克瑟斯領主擁有虛空威能時顯示警告 (驅散/竊取用)",
 	SpecWarnTouch			= "當你中了賈拉克瑟斯之觸時顯示特別警告",
 	SpecWarnTouchNear		= "當你附近的人中了賈拉克瑟斯之觸時顯示特別警告",
@@ -93,6 +98,10 @@ L:SetOptionLocalization{
 	LegionFlameWhisper		= "密語提示軍團烈焰的目標",
 	LegionFlameRunSound		= "為軍團烈焰播放音效",
 	IncinerateShieldFrame		= "在首領血量裡顯示焚化血肉的血量"
+}
+
+L:SetMiscLocalization{
+	FirstPull			= "大術士威爾弗雷德·菲斯巴恩將會召喚你們的下一個挑戰者。等待他的豋場吧。"
 }
 
 -------------------------

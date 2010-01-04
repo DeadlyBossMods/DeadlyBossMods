@@ -68,6 +68,8 @@ DBM_CORE_RANGECHECK_HIDE			= "隱藏"
 DBM_CORE_RANGECHECK_SETRANGE_TO			= "%d碼"
 DBM_CORE_RANGECHECK_LOCK			= "鎖定框架"
 
+DBM_LFG_INVITE					= "尋求組隊邀請"
+
 DBM_CORE_SLASHCMD_HELP				= {
 	"可用命令：",
 	"/dbm version：進行團隊範圍內的版本檢測（也可使用：ver）",
