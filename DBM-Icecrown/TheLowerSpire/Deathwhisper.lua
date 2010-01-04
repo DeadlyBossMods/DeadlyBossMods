@@ -35,7 +35,7 @@ local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
 local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
-local timerDominateMind				= mod:NewBuffActiveTimer(20, 71289)
+local timerDominateMind				= mod:NewBuffActiveTimer(12, 71289)
 local timerDominateMindCD			= mod:NewCDTimer(40, 71289)
 local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
@@ -138,7 +138,7 @@ do
 		if args:IsSpellID(71289) then
 			dominateMindTargets[#dominateMindTargets + 1] = args.destName
 			if self.Options.SetIconOnDominateMind then
-				self:SetIcon(args.destName, dominateMindIcon, 20)
+				self:SetIcon(args.destName, dominateMindIcon, 12)
 				dominateMindIcon = dominateMindIcon - 1
 			end
 			self:Unschedule(showDominateMindWarning)
