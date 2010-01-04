@@ -17,7 +17,7 @@ local specWarnDisruptingShout	= mod:NewSpecialWarningCast(71022)
 local specWarnDarkReckoning		= mod:NewSpecialWarningMove(69483)
 
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
-local timerDarkReckoning		= mod:NewTargetTimer(15, 69483)
+local timerDarkReckoning		= mod:NewTargetTimer(8, 69483)
 
 local soundDarkReckoning = mod:NewSound(69483)
 mod:AddBoolOption("SetIconOnDarkReckoning", true)
@@ -32,7 +32,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			soundDarkReckoning:Play()
 		end
 		if self.Options.SetIconOnDarkReckoning then
-			self:SetIcon(args.destName, 8, 15)
+			self:SetIcon(args.destName, 8, 8)
 		end
 	end
 end
