@@ -18,6 +18,12 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning		= "為$spell:69483的目標設置標記"
 }
 
+L:SetMiscLocalization{
+	WarderTrap1			= "誰…在那兒…?",
+	WarderTrap2			= "我…甦醒了!",
+	WarderTrap3			= "主人的聖所受到了打擾!"
+}
+
 ---------------------------
 --  Trash - Plagueworks  --
 ---------------------------
@@ -138,7 +144,12 @@ L:SetWarningLocalization{
 	warnFrenzySoon			= "狂亂 即將到來",
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "戰鬥開始"
+}
+
 L:SetOptionLocalization{
+	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
 	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "設置標記在$spell:72444施放時的目標",
@@ -147,7 +158,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	RunePower			= "血魄威能"
+	RunePower			= "血魄威能",
+	Pull				= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
 }
 
 -----------------
