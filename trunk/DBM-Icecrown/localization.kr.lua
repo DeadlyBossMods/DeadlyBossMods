@@ -19,8 +19,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	WarderTrap1		= "Who... goes there...?",
-	WarderTrap2		= "I... awaken!"
+	WarderTrap1		= "거기... 누구냐?",
+	WarderTrap2		= "주인님의 성소를 어지럽혔구나!"
 }
 
 ---------------------------
