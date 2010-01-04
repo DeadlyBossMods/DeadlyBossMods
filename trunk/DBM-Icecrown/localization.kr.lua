@@ -18,6 +18,11 @@ L:SetOptionLocalization{
 	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
+L:SetMiscLocalization{
+	WarderTrap1		= "Who... goes there...?",
+	WarderTrap2		= "I... awaken!"
+}
+
 ---------------------------
 --  Trash - Plagueworks  --
 ---------------------------
@@ -124,9 +129,9 @@ L:SetMiscLocalization{
 	KillHorde			= "얼라이언스는 기가 꺾였다. 리치 왕을 향해 전진하라!"
 }
 
-------------------------
---  The Deathbringer  --
-------------------------
+-----------------------------
+--  Deathbringer Saurfang  --
+-----------------------------
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
@@ -137,7 +142,12 @@ L:SetWarningLocalization{
 	warnFrenzySoon			= "곧 광기"
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "전투 시작"
+}
+
 L:SetOptionLocalization{
+	TimerCombatStart		= "전투 시작 타이머 보기",
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "$spell:72444 대상에게 공격대 아이콘 설정",	
@@ -146,7 +156,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	RunePower	= "피 마력"
+	RunePower				= "피 마력",
+	Pull					= "코르크론, 출발하라! 용사들이여, 뒤를 조심하게. 스컬지는..."
 }
 
 -----------------

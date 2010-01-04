@@ -77,12 +77,17 @@ L:SetWarningLocalization{
 	SpecWarnFelFireball			= "지옥 화염구 - 차단!",
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart			= "전투 시작"
+}
+
 L:SetMiscLocalization{
-	WhisperFlame			= "당신에게 군단의 불꽃!",
-	IncinerateTarget		= "살점 소각: %s"
+	WhisperFlame				= "당신에게 군단의 불꽃!",
+	IncinerateTarget			= "살점 소각: %s"
 }
 
 L:SetOptionLocalization{
+	TimerCombatStart			= "전투 시작 타이머 보기",
 	WarnNetherPower				= "자락서스가 황천의 힘을 얻었을 경우 경고 하기 (해제를 위한 경고)",
 	SpecWarnFelFireball			= "지옥 화염구의 특수 경고 보기(차단 관련)",	
 	SpecWarnTouch				= "당신이 자락서스의 손길에 걸렸을 경우 특수 경고 알리기",
@@ -96,6 +101,9 @@ L:SetOptionLocalization{
 	IncinerateShieldFrame		= "보스 체력 프레임과 함께 살점 소각 대상자 체력바 보기"
 }
 
+L:SetMiscLocalization{
+	FirstPull					= "Grand Warlock Wilfred Fizzlebang will summon forth your next challenge. Stand by for his entry!"
+}
 
 -----------------------
 -- Faction Champions --
@@ -113,33 +121,33 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	Gorgrim				= "죽기 - 고르그림 섀도클리브",			-- 34458, Horde
+--	Gorgrim				= "죽기 - 고르그림 섀도클리브",			-- 34458, Horde
 	Tyrius				= "죽기 - 티리우스 더스크블레이드",		-- 34461, Allience
-	Birana 				= "조드 - 비라나 스톰후프",				-- 34451, Horde
-	Erin				= "회드 - 에린 미스트후프",				-- 34459, Horde
+--	Birana 				= "조드 - 비라나 스톰후프",				-- 34451, Horde
+--	Erin				= "회드 - 에린 미스트후프",				-- 34459, Horde
 	Kavina				= "조드 - 카비나 그로브송",				-- 34460, Allience
 	Melador				= "회드 - 멜라도르 베일스트라이더",		-- 34469, Allience
-	Rujkah				= "사냥꾼 - 루즈카",					-- 34448, Horde
+--	Rujkah				= "사냥꾼 - 루즈카",					-- 34448, Horde
 	Alyssia 			= "사냥꾼 - 알리시아 문스토커",			-- 34467, Allience
-	Ginselle			= "마법사 - 진셀 블라이트슬링어",		-- 34449, Horde
+--	Ginselle			= "마법사 - 진셀 블라이트슬링어",		-- 34449, Horde
 	Noozle				= "마법사 - 누즐 위즐스틱",				-- 34468, Allience
-	Liandra				= "신성 - 리안드라 선콜러",				-- 34445, Horde
-	Malithas			= "징벌 - 말리타스 브라이트블레이드",	-- 34456, Horde
+--	Liandra				= "신성 - 리안드라 선콜러",				-- 34445, Horde
+--	Malithas			= "징벌 - 말리타스 브라이트블레이드",	-- 34456, Horde
 	Baelnor 			= "징벌 - 벨노르 라이트베이러",			-- 34471, Allience
 	Velanaa				= "신성 - 벨라나", 						-- 34465, Allience
-	Caiphus				= "수양 - 준엄한 카이푸스",				-- 34447, Horde
-	Vivienne			= "암흑 - 비비안 블랙위스퍼",			-- 34441, Horde
+--	Caiphus				= "수양 - 준엄한 카이푸스",				-- 34447, Horde
+--	Vivienne			= "암흑 - 비비안 블랙위스퍼",			-- 34441, Horde
 	Anthar				= "수양 - 안타르 포지멘더",				-- 34466, Allience
 	Brienna				= "암흑 - 브리에나 나이트펠",			-- 34473, Allience
-	Mazdinah			= "도적 - 마즈디나",					-- 34454, Horde
+--	Mazdinah			= "도적 - 마즈디나",					-- 34454, Horde
 	Irieth				= "도적 - 이리에스 섀도스텝",			-- 34472, Allience
-	Thrakgar			= "정기 - 스락가르",					-- 34444, Horde
-	Broln				= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
+--	Thrakgar			= "정기 - 스락가르",					-- 34444, Horde
+--	Broln				= "고양 - 브롤른 스타우트혼",			-- 34455, Horde
 	Saamul				= "정기 - 사아물", 						-- 34470, Allience
 	Shaabad				= "고양 - 샤베드", 						-- 34463, Allience
-	Harkzog				= "흑마법사 - 하크조그",				-- 34450, Horde
+--	Harkzog				= "흑마법사 - 하크조그",				-- 34450, Horde
 	Serissa				= "흑마법사 - 세리사 그림대블러",		-- 34474, Allience
-	Narrhok				= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
+--	Narrhok				= "전사 - 나르호크 스틸브레이커",		-- 34453, Horde
 	Shocuul				= "전사 - 쇼쿨",						-- 34475, Allience
 	AllianceVictory 	= "Glory to the Alliance!",
 	HordeVictory		= "앞으로 일어날 일의 맛보기일 뿐이다. 호드를 위하여!",	
