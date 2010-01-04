@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision: 2998 $"):sub(12, -3))
 mod:SetCreatureID(37813)
 mod:RegisterCombat("combat")
-mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -33,7 +33,7 @@ local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, false)
 
 local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
 local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
-local timerBoilingBlood		= mod:NewBuffActiveTimer(24, 72441)
+local timerBoilingBlood		= mod:NewBuffActiveTimer(15, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
 local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
 local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410)
@@ -145,7 +145,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingBloodTargets[#boilingBloodTargets + 1] = args.destName
 		if self.Options.SetIconOnBoilingBlood then
-			self:SetIcon(args.destName, boilingBloodIcon, 24)
+			self:SetIcon(args.destName, boilingBloodIcon, 15)
 			boilingBloodIcon = boilingBloodIcon - 1
 		end
 		self:Unschedule(warnBoilingBloodTargets)
