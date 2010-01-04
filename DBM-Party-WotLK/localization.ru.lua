@@ -276,7 +276,7 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s и %d %s",
 	Wave4		= "%d %s, %d %s, %d %s и %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Волна плети = %d/10"
+	WaveCheck	= "Атаки Плети = %d/10"
 })
 
 ------------------------
