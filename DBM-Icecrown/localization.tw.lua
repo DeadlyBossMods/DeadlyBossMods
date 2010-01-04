@@ -159,7 +159,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	RunePower			= "血魄威能",
-	Pull				= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
+	Pull				= "每個你殺死的部落士兵 -- 每條死去的聯盟狗，都讓巫妖王的軍隊隨之增長。此時此刻華爾琪都還在把你們倒下的同伴復活成天譴軍。"
 }
 
 -----------------
