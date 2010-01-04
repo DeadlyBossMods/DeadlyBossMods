@@ -12,7 +12,7 @@
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: Ahn'Kahet,Azjol-Nerub,CoT: Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold,Trial of the Champion,The Forge of Souls,Pit of Saron,Halls of Reflection,World Events
 ## X-DBM-Mod-SubCategories-frFR: Ahn'Kahet,Azjol-Nérub,GT: L'Épuration de Stratholme,Drak'Tharon,Gundrak,Salles de foudre,Salles de pierre,Le Nexus,L'Occulus,Donjon d'Utgarde,Cime d'Utgarde,Fort Pourpre,L'épreuve du champion,La Forge des âmes,La Fosse de Saron,Salles des Reflets,Evènements mondiaux
-## X-DBM-Mod-SubCategories-deDE: Ahn'kahet,Azjol-Nerub,HdZ: Stratholme,Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung,Die Seelenschmiede,Grube von Saron,Hallen der Reflexion
+## X-DBM-Mod-SubCategories-deDE: Ahn'kahet,Azjol-Nerub,HdZ: Stratholme,Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung,Trial of the Champion,Die Seelenschmiede,Grube von Saron,Hallen der Reflexion,World Events
 ## X-DBM-Mod-SubCategories-ruRU: Ан'кахет,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость,Испытание чемпиона,Кузня Душ,Яма Сарона,Залы Отражений,Игровые события
 ## X-DBM-Mod-SubCategories-zhTW: 安卡罕特,阿茲歐-奈幽,舊斯坦索姆,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡,勇士試煉,眾魂熔爐,薩倫之淵,倒影大廳,世界事件
 ## X-DBM-Mod-SubCategories-koKR: 안카헤트: 고대 왕국,아졸네룹,시간의 동굴: 옛 스트라솔름,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보랏빛 요새,용사의 시험장,영혼의 제련소,사론의 구덩이,투영의 전당,이벤트 던전
