@@ -69,6 +69,8 @@ DBM_CORE_RANGECHECK_HIDE			= "숨기기"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_LOCK			= "프레임 잠금"
 
+DBM_LFG_INVITE						= "던전 입장"
+
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능한 명령어:",
 	"/dbm version: 공격대 전체 버전 체크 (줄임말: ver)",

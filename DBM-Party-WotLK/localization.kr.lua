@@ -853,6 +853,12 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetMiscLocalization({
+	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers! A feast for the one that brings me their heads!",
+	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!",
+	YellCombatEnd	= "ARGH! You call that... an attack? I'll... show... aghhhh..."
+})
+
 ---------------------
 -- 약탈자 잉그바르 --
 ---------------------
@@ -889,6 +895,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+})
+
+
+L:SetMiscLocalization({
+	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers!  A feast for the one that brings me their heads!",
+	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!",
+	YellCombatEnd	= "ARGH! You call that... an attack? I'll... show... aghhhh..."
 })
 
 ------------
@@ -1330,8 +1343,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart					= "아아. 용감하고 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤에 있는 굴에서 뼈와 칼이 부딪치는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
-	YellCombatEnd				= "말도 안돼... 서릿발송곳니... 경고를..."
+	HoarfrostTarget				= "(%S+)1|을;를; 노려보며 얼음 공격을 준비합니다!",
+	YellCombatEnd				= "말도 안 돼... 서릿발송곳니... 경고를..."
 })
 
 --------------------
