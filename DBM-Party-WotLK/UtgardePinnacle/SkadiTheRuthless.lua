@@ -8,7 +8,7 @@ mod:SetCreatureID(26693)
 mod:RegisterCombat("yell", L.CombatStart)
 mod:RegisterKill("yell", L.YellCombatEnd)
 mod:SetMinCombatTime(30)
-mod:SetWipeTime(25)
+mod:SetWipeTime(30)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
