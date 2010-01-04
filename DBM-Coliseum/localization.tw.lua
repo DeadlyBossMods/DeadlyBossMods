@@ -101,7 +101,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	FirstPull			= "大術士威爾弗雷德·菲斯巴恩將會召喚你們的下一個挑戰者。等待他的豋場吧。"
+	FirstPull			= "大術士威爾弗雷德·菲斯巴恩將會召喚你們的下一個挑戰者。等待他的登場吧。"
 }
 
 -------------------------
