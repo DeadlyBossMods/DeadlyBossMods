@@ -253,12 +253,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn	= "Следующая волна (6)", 
+	TimerWaveIn		= "Следующая волна (6)",
+	TimerRollplay	= "Вступительная ролевая игра"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("новой волны"),
 	TimerWaveIn		= "Отсчет времени до cледующей волны (после босса 5-ой волны)",
+	TimerRollplay	= "Отсчет времени для вступительной ролевой игры"
 })
 
 L:SetMiscLocalization({
@@ -276,7 +278,8 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s и %d %s",
 	Wave4		= "%d %s, %d %s, %d %s и %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Атаки Плети = %d/10"
+	WaveCheck	= "Атаки Плети = %d/10",
+	Rollplay	= "Я рад, что ты пришел, Утер!"
 })
 
 ------------------------
