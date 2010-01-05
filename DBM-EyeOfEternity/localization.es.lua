@@ -13,33 +13,21 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarningSpark		= "Aparece Chispazo",
-	WarningVortex		= "Vórtice",
 	WarningBreathSoon	= "Respira hondo pronto",
-	WarningBreath		= "Respira Hondo!",
-	WarningSurge		= "Oleada en >%s<",
-	WarningVortexSoon	= "Vórtice pronto",
-	WarningSurgeYou		= "Oleada de poder en ti!"
+	WarningBreath		= "Respira Hondo!"
 })
 
 L:SetTimerLocalization({
-	TimerSpark		= "Chizpazo en",
-	TimerVortex		= "Vórtice",
-	TimerBreath		= "Respira Hondo",
-	TimerVortexCD	= "Vórtice CD"
+	TimerSpark		= "Chispazo en",
+	TimerBreath		= "Respira Hondo"
 })
 
 L:SetOptionLocalization({
 	WarningSpark		= "Mostrar aviso de Chizpaso",
-	WarningVortex		= "Mostrar aviso de Vórtice",
 	WarningBreathSoon	= "Mostrar aviso antes de Respira Hondo",
 	WarningBreath		= "Mostrar aviso de Respira Hondo",
-	WarningSurge		= "Mostrar aviso de Oleada de poder",
-	TimerSpark			= "Mostrar tiempo para Chizpazo",
-	TimerVortex			= "Mostrar tiempo para Vórtice",
-	TimerBreath			= "Mostrar tiempo para Respira Hondo",
-	TimerVortexCD		= "Mostrar tiempo de cd de Vórtice",
-	WarningVortexSoon	= "Mostrar aviso de Vórtice pronto",
-	WarningSurgeYou		= "Mostrar aviso especial si te afecta Oleada de poder"
+	TimerSpark			= "Mostrar tiempo para Chispazo",
+	TimerBreath			= "Mostrar tiempo para Respira Hondo"
 })
 
 L:SetMiscLocalization({
