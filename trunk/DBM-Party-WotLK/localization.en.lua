@@ -251,12 +251,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn	= "Next wave (6)"
+	TimerWaveIn		= "Next wave (6)",
+	TimerRollplay	= "Opening rollplay"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("new wave"),
-	TimerWaveIn		= "Show timer for next set of waves (after wave 5 boss)"
+	TimerWaveIn		= "Show timer for next set of waves (after wave 5 boss)",
+	TimerRollplay	= "Show timer for opening rollplay event."
 })
 
 L:SetMiscLocalization({
@@ -274,7 +276,8 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s and %d %s",
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Scourge Wave = %d/10"
+	WaveCheck	= "Scourge Wave = %d/10",
+	Rollplay	= "Glad you could make it, Uther."
 })
 
 ------------------------
