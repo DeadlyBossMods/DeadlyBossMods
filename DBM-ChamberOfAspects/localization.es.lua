@@ -48,11 +48,10 @@ L:SetWarningLocalization({
 	WarningFireWall			= "Muro de Fuego!",
 	WarningVesperonPortal	= "Portal de Vesperon!",
 	WarningTenebronPortal	= "Portal de Tenebron!",
-	WarningShadronPortal	= "Portal de Shadron!",
+	WarningShadronPortal	= "Portal de Shadron!"
 })
 
 L:SetTimerLocalization({
-	TimerWall	= "Muro de Fuego cd",
 	TimerTenebron	= "Tenebron viene",
 	TimerShadron	= "Shadron  viene",
 	TimerVesperon	= "Vesperon viene"
@@ -61,20 +60,16 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Reproducir sonido para \"Muro de Fuego\"",
 	AnnounceFails		= "Spamear en la raid la gente que falle Muro de Fuego y Zona de Vacio (require ayudante/lider)",
-
-	TimerWall		= "Mostrar tiempo para \"Muro de Fuego\"",
 	TimerTenebron		= "Mostrar tiempo para Tenebron",
 	TimerShadron		= "Mostrar tiempo para Shadron",
 	TimerVesperon		= "Mostrar tiempo para Vesperon",
-
 	WarningFireWall		= "Mostrar aviso especial para \"Muro de Fuego\" ",
 	WarningTenebron		= "Mostrar tiempo para que Tenebron venga",
 	WarningShadron		= "Mostrar tiempo para que Shadron venga",
 	WarningVesperon		= "Mostrar tiempo para que Vesperon venga",
-
 	WarningTenebronPortal	= "Mostrar aviso especial para los portales de Tenebron",
 	WarningShadronPortal	= "Mostrar aviso especial para los portales de Shadron",
-	WarningVesperonPortal	= "Mostrar aviso especial para los portales de Vesperon",
+	WarningVesperonPortal	= "Mostrar aviso especial para los portales de Vesperon"
 })
 
 L:SetMiscLocalization({
@@ -86,12 +81,7 @@ L:SetMiscLocalization({
 	FireWallOn		= "Muro de Fuego: %s",
 	VoidZoneOn		= "Zona de vacio: %s",
 	VoidZones		= "Zona de vacio fallos (est raid): %s",
-	FireWalls		= "Muro de Fuego fallos (esta raid): %s",
-	--[[ not in use; don't translate.
-	Vesperon	= "Vesperon, the clutch is in danger! Assist me!",
-	Shadron		= "Shadron! Come to me! All is at risk!",
-	Tenebron	= "Tenebron! The eggs are yours to protect as well!"
-	--]]
+	FireWalls		= "Muro de Fuego fallos (esta raid): %s"
 })
 
 
