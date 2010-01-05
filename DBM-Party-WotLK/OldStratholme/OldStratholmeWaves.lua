@@ -5,11 +5,13 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 
 mod:RegisterEvents(
 	"UPDATE_WORLD_STATES",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"MONSTER_SAY"
 )
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
 local timerWaveIn		= mod:NewTimer(60, "TimerWaveIn")
+local timerRollplay		= mod:NewTimer(160, "TimerRollplay")
 
 local wavesNormal = {
 	{2, L.Devouring},
@@ -82,5 +84,17 @@ function mod:UNIT_DIED(args)
 		if z == 26529 then
 			timerWaveIn:Start()
 		end
+	end
+end
+
+function mod:MONSTER_SAY(msg)
+	if msg == L.Rollplay or msg:find(L.Rollplay) then
+		self:SendSync("Rollplay")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "Rollplay" then
+		timerRollplay:Start()
 	end
 end
