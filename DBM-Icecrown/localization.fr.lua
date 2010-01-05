@@ -71,8 +71,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull						= "What is this disturbance? You dare trespass upon this hallowed ground? This shall be your final resting place!",
-	YellReanimatedFanatic			= "Arise, and exult in your pure form!"
+	YellPull						= "Quelle est cette perturbation ?",--Incomplete
+	YellReanimatedFanatic			= ""
 }
 -----------------------------
 --  Deathbringer Saurfang  --
@@ -107,6 +107,13 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury")
+}
+
+L:SetMiscLocalization{
+	PullAlliance	= "Faites chauffer les moteurs ! On a rencart avec le destin, les gars !",
+	KillAlliance	= "Vous direz pas que j'vous avais pas prévenus, canailles ! Mes frères et sœurs, en avant !",
+	PullHorde		= "Levez-vous, fils et filles de la Horde ! Aujourd’hui, nous affrontons le plus haï de nos ennemis ! LOK’TAR OGAR !",
+	KillHorde		= "L'Alliance baisse pavillon. Sus au roi-liche !"
 }
 
 -----------------

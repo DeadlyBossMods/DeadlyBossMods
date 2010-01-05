@@ -124,8 +124,8 @@ L:SetTimerLocalization{
 }
 
 L:SetMiscLocalization{
-	PullAlliance		= "Fire up the engines! We got a meetin' with destiny, lads!",
-	KillAlliance		= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
+	PullAlliance		= "속도를 올려라! 제군들, 곧 운명과 마주할 것이다!",
+	KillAlliance		= "악당 놈들, 분명히 경고했다! 형제자매여, 전진!",
 	PullHorde			= "호드의 아들딸이여, 일어나라! 오늘 우리는 증오하던 적과 전투를 벌이리라! 록타르 오가르!",
 	KillHorde			= "얼라이언스는 기가 꺾였다. 리치 왕을 향해 전진하라!"
 }
