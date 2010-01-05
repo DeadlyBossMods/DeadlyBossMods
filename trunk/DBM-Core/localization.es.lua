@@ -69,6 +69,8 @@ DBM_CORE_RANGECHECK_HIDE			= "Esconder"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 DBM_CORE_RANGECHECK_LOCK			= "Bloquear ventana"
 
+DBM_LFG_INVITE						= "LFG Invite"
+
 DBM_CORE_SLASHCMD_HELP				= {
 	"Comandos disponibles:",
 	"/dbm version: comprueba la versión de DBM de toda la raid (alias: ver)",
@@ -126,14 +128,15 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	prewarn = "%s en %s",
 	phase = "Fase %d",
 }
+
 local prewarnOption = "Mostrar una pre-alerta para |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast	= "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r",
-	soon	= prewarnOption,
-	prewarn	= prewarnOption,
-	phase	= "Mostrar aviso para fase %d"
+	soon	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
+	prewarn	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
+	phase	= "Mostrar aviso para fase %d",
 }
 
 
@@ -141,18 +144,20 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell 	= "Mostrar aviso especial para $spell:%d",
 	dispel 	= "Mostrar aviso especial para dispelear/robar hechizo \n $spell:%d",
+	interupt	= "Mostrar aviso especial para interrumpir $spell:%d",
 	you 	= "Mostrar aviso especial cuando te afecta \n $spell:%d",
 	target 	= "Mostrar aviso especial cuando a alguien le afecta \n $spell:%d",
 	close 	= "Mostrar aviso especial cuando a alguien cerca de ti \n le afecta $spell:%d",
 	move 	= "Mostrar aviso especial cuando te afecta \n $spell:%d",
 	run 	= "Mostrar aviso especial para $spell:%d",
 	cast 	= "Mostrar aviso especial para casteo de $spell:%d",
-	stack 	= "Mostrar aviso especial cuando tienes >=%d ticks de \n $spell:%d"
+	stack 	= "Mostrar aviso especial cuando tienes >=%d marcas de \n $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
-	spell = "%s!",
-	dispel = "%s en %%s - dispelea ahora",
+	spell = "%s",
+	dispel = "%s - dispelea ahora",
+	interupt = "%s - interrumpe ahora",
 	you = "%s en ti",
 	target = "%s en %%s",
 	close = "%s en %%s cerca de ti",
