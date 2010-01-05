@@ -8,14 +8,34 @@ local L
 L = DBM:GetModLocalization("LowerSpireTrash")
 
 L:SetGeneralLocalization{
-	name = "Trashmobs"
+	name = "Trash de la Ciudadela Inferior"
 }
 
 L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkReckoning			= "Set icons on $spell:69483 targets"
+	SetIconOnDarkReckoning			= "Poner iconos en los objetivos de $spell:69483"
+}
+
+L:SetMiscLocalization{
+	WarderTrap1		= "¿Quién... anda ahí?",
+	WarderTrap2		= "Estoy despierto..."
+}
+
+---------------------------
+--  Trash - Plagueworks  --
+---------------------------
+L = DBM:GetModLocalization("PlagueworksTrash")
+
+L:SetGeneralLocalization{
+	name = "Trash de Los Talleres de la Peste"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
 }
 
 
@@ -39,7 +59,6 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale				= "Anuncia los jugadores empalados",
-	PlaySoundOnWhirlwind	= "Reproducir sonido de Torbellino",
 	achievementBoned		= "Mostrar tiempo para el logro Deshuesado",
 	SetIconOnImpale			= "Poner icono a los jugadores empalados"
 }
@@ -68,15 +87,20 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnAddsSoon					= "Mostrar un pre-aviso cuando vengan nuevos adds ",
-	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
-	WarnReanimating					= "Mostrar un aviso cuando un add es resucitado",											-- Reanimated Adherent/Fanatic spawning
+	WarnReanimating					= "Mostrar un aviso cuando un add sea resucitado",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds						= "Mostrar tiempo para nuevos adds",
-	SetIconOnDominateMind			= "Poner iconos a los objetivos de Control Mental"
+	ShieldHealthFrame				= "Mostrar barra de vida del boss con una barra de vida para $spell:70842",
+	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	SetIconOnDominateMind			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
+	SetIconOnDeformedFanatic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
+	SetIconOnEmpoweredAdherent		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
+
 }
 
 L:SetMiscLocalization{
---	YellPull				= "ÀQuŽ es este alboroto? ÀOs‡is entrar en suelo sagrado? ÁEste ser‡ vuestro lugar de reposo final!", -- bad encoding
---	YellReanimatedFanatic	= "Áçlzate y goza de tu verdadera forma!", -- bad encoding
+	YellPull				= "¿Qué es este alboroto? ¿Osáis entrar en suelo sagrado? ¡Este será vuestro lugar de reposo final!",
+	YellReanimatedFanatic	= "¡Álzate y goza de tu verdadera forma!",
+	ShieldPercent			= "Barrera de maná"
 }
 
 ----------------------
@@ -90,23 +114,23 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnBattleFury		= "%s (%d)",
-	WarnAddsSoon		= "New adds soon"
+	WarnAddsSoon		= "Nuevos adds pronto"
 }
 
 L:SetOptionLocalization{
 	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
-	TimerCombatStart	= "Show time for start of combat",
-	WarnAddsSoon		= "Show pre-warning for adds spawning",
-	TimerAdds		= "Show timer for new adds"
+	TimerCombatStart	= "Mostrar tiempo para el inicio del combate",
+	WarnAddsSoon		= "Mostrar pre-aviso para la salida de nuevos adds",
+	TimerAdds		= "Mostrar tiempo para nuevos adds"
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "Combat starts",
-	TimerAdds		= "New adds"
+	TimerCombatStart	= "Empieza el combate",
+	TimerAdds		= "Nuevos adds"
 }
 
 L:SetMiscLocalization{
-	PullAlliance	= "Fire up the engines! We got a meetin' with destiny, lads!",
+	PullAlliance	= "¡Arrancad motores! ¡Tenemos una cita con el destino, muchachos!",
 	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
 	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
 	KillHorde		= "The Alliance falter. Onward to the Lich King!"
@@ -118,16 +142,29 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Deathbringer")
 
 L:SetGeneralLocalization{
-	name = "Libramorte Saurfang"
+	name = "Libramorte Colmillosauro"
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon	= "Frenesi pronto"
+	warnFrenzySoon	= "Frenesí pronto"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart		= "Empieza el combate"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon	= "Mostrar preaviso para el Frenes’ (at ~33%)",
-	RangeFrame		= "Show range frame"
+	TimerCombatStart		= "Mostrar tiempo para inicio del combate",
+	warnFrenzySoon	= "Mostrar preaviso para el Frenesí (at ~33%)",
+	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	SetIconOnMarkCast		= "Poner iconos en los objetivos de $spell:72444 durante el casteo",
+	RangeFrame		= "Mostrar distancia",
+	RunePowerFrame			= "Mostrar barra de vida + barra de $spell:72371"
+}
+
+L:SetMiscLocalization{
+	RunePower			= "Blood Power",
+	Pull				= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
 }
 
 
@@ -141,9 +178,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	InhaledBlight		= "Inhalar añublo >%d<"
 }
 
 L:SetOptionLocalization{
+	InhaledBlight		= "Mostrar aviso para $spell:71912",
+	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
 ---------------
@@ -156,9 +196,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze			= "Sticky Ooze - Move out",
-	SpecWarnRadiatingOoze		= "Radiating Ooze",
-	SpecWarnMutatedInfection	= "Mutated Infection on you"
+	SpecWarnStickyOoze			= "Moco pegajoso! Muévete!",
+	SpecWarnRadiatingOoze		= "Moco emanador",
+	SpecWarnMutatedInfection	= "Infección mutada en ti"
 }
 
 L:SetTimerLocalization{
@@ -166,10 +206,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze			= "Show special warning for Sticky Ooze",
-	SpecWarnRadiatingOoze		= "Show special warning for Radiating Ooze",
+	SpecWarnStickyOoze			= "Mostrar aviso especial para Moco pegajoso",
+	SpecWarnRadiatingOoze		= "Mostrar aviso especial para Moco emanador",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Show special warning when you are affected by Mutated Infection",
+	SpecWarnMutatedInfection 	= "Mostrar aviso especial cuando te afecte Infección mutada",
 	InfectionIcon				= "Set icons on Mutated Infection targets",
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 }
