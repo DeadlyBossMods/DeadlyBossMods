@@ -1325,6 +1325,323 @@ L:SetOptionLocalization({
 
 
 L:SetMiscLocalization({
-	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
+--	yell1 = "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
 })
 
+-----------------------------
+--  Trial of the Champion  --
+-----------------------------
+--  The Black Knight  --
+------------------------
+L = DBM:GetModLocalization("BlackKnight")
+
+L:SetGeneralLocalization({
+	name = "The Black Knight"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
+})
+
+L:SetMiscLocalization({
+--	YellCombatEnd	= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+})
+
+-----------------------
+--  Grand Champions  --
+-----------------------
+L = DBM:GetModLocalization("GrandChampions")
+
+L:SetGeneralLocalization({
+	name = "Grand Champions"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+--	YellCombatEnd	= "Well fought! Your next challenge comes from the Crusade's own ranks. You will be tested against their considerable prowess."
+})
+
+----------------------------------
+--  Argent Confessor Paletress  --
+----------------------------------
+L = DBM:GetModLocalization("Confessor")
+
+L:SetGeneralLocalization({
+	name = "Argent Confessor Paletress"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	YellCombatEnd	= "Exzellente Arbeit!"
+})
+
+-----------------------
+--  Eadric the Pure  --
+-----------------------
+L = DBM:GetModLocalization("EadricthePure")
+
+L:SetGeneralLocalization({
+	name = "Eadric the Pure"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+	SetIconOnHammerTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(66940)
+})
+
+L:SetMiscLocalization({
+	YellCombatEnd	= "Ich ergebe mich! Exzellente Arbeit. Darf ich jetzt wegrennen?"
+})
+
+--------------------
+--  World Events  --
+----------------------
+--  Coren Direbrew  --
+----------------------
+L = DBM:GetModLocalization("CorenDirebrew")
+
+L:SetGeneralLocalization({
+	name = "Coren Direbrew"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+--	YellBarrel	= "Barrel on me!"
+})
+
+-------------------------
+--  Headless Horseman  --
+-------------------------
+L = DBM:GetModLocalization("HeadlessHorseman")
+
+L:SetGeneralLocalization({
+	name = "Headless Horseman"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+--	HorsemanHead		= "Get over here, you idiot!",
+--	HorsemanSoldiers	= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
+--	SayCombatEnd		= "This end have I reached before.  What new adventure lies in store?"
+})
+
+--------------------
+--  Pit of Saron  --
+---------------------
+--  Ick and Krick  --
+---------------------
+L = DBM:GetModLocalization("Ick")
+
+L:SetGeneralLocalization({
+	name = "Ick and Krick"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+	SetIconOnPursuitTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(68987)
+})
+
+L:SetMiscLocalization({
+--	IckPursuit	= "%s is chasing you!",
+--	Barrage	= "%s begins rapidly conjuring explosive mines!"
+})
+----------------------------
+--  Forgemaster Garfrost  --
+----------------------------
+L = DBM:GetModLocalization("ForgemasterGarfrost")
+
+L:SetGeneralLocalization({
+	name = "Forgemaster Garfrost"
+})
+
+L:SetWarningLocalization({
+	specWarnPermafrost			= "%s: %s"
+})
+
+L:SetOptionLocalization({
+	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
+})
+
+L:SetMiscLocalization({
+--	SaroniteRockThrow	= "%s hurls a massive saronite boulder at you!"
+})
+
+----------------------------
+--  Scourgelord Tyrannus  --
+----------------------------
+L = DBM:GetModLocalization("ScourgelordTyrannus")
+
+L:SetGeneralLocalization({
+	name = "Scourgelord Tyrannus"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization({
+	SetIconOnHoarfrostTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69246)
+})
+
+L:SetMiscLocalization({
+--	CombatStart	= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.",
+--	HoarfrostTarget	= "The frostwyrm Rimefang gazes at (%S+) and readies an icy attack!",
+--	YellCombatEnd	= "Impossible.... Rimefang.... warn...."
+})
+
+----------------------
+--  Forge of Souls  --
+----------------------
+--  Bronjahm  --
+----------------
+L = DBM:GetModLocalization("Bronjahm")
+
+L:SetGeneralLocalization({
+	name = "Bronjahm"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+-------------------------
+--  Devourer of Souls  --
+-------------------------
+L = DBM:GetModLocalization("DevourerofSouls")
+
+L:SetGeneralLocalization({
+	name = "Devourer of Souls"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+
+---------------------------
+--  Halls of Reflection  --
+---------------------------
+--  Wave Timers  --
+-------------------
+L = DBM:GetModLocalization("HoRWaveTimer")
+
+L:SetGeneralLocalization({
+	name = "Wave Timers"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+--	Falric		= "Falric",
+--	WaveCheck	= "Spirit Wave = (%d+)/10"
+})
+
+--------------
+--  Falric  --
+--------------
+L = DBM:GetModLocalization("Falric")
+
+L:SetGeneralLocalization({
+	name = "Falric"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+--------------
+--  Marwyn  --
+--------------
+L = DBM:GetModLocalization("Marwyn")
+
+L:SetGeneralLocalization({
+	name = "Marwyn"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+-----------------------
+--  Lich King Event  --
+-----------------------
+L = DBM:GetModLocalization("LichKingEvent")
+
+L:SetGeneralLocalization({
+	name = "Lich King event"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+--	ACombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+--	HCombatStart	= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",
+--	Wave1			= "There is no escape!",
+--	Wave2			= "Succumb to the chill of the grave.",
+--	Wave3			= "Another dead end.",
+--	Wave4			= "How long can you fight it?",
+--	YellCombatEnd	= "FIRE! FIRE!"
+})
