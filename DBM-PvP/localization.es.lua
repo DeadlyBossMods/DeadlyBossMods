@@ -47,7 +47,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
     Start60     = "¡Un minuto hasta que comience la batalla en la arena!",
-	Start45     = "¡Cuarenta y cinco segundos hasta que comience la batalla en la arena!",
 	Start30		= "¡Treinta segundos hasta que comience la batalla en arena!",
 	Start15		= "¡Quince segundos hasta que comience la batalla en arena!"
 })
@@ -181,7 +180,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart  			= "Mostrar tiempo para que comienze la Batalla.",
-	TimerWin 			= "Mostrar tiempo para que una faccion Gane la Batalla.",
 	TimerFlag			= "Mostrar tiempo que tarda en restablecer la Bandera.",
 	ShowFlagCarrier			= "Mostrar por donde va la bandera",
 	ShowFlagCarrierErrorNote 	= "Mostrar error de por donde va la bandera",
@@ -200,12 +198,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShards	= "Fragmentos de roca en >%s<",
 	WarningGrab	= "Archavon agarró >%s<"
 })
 
 L:SetTimerLocalization({
-	TimerShards 	= "Fragmentos de roca: %s"
+	ArchavonEnrage	= "Enrage"
 })
 
 L:SetMiscLocalization({
@@ -213,9 +210,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerShards 	= "Mostrar tiempo para fragmentos de roca",
-	WarningShards 	= "Mostrar aviso para fragmentos de roca",
-	WarningGrab 	= "Mostrar aviso para cambiar tank"
+	WarningGrab 	= "Mostrar aviso para cambiar tank",
+	ArchavonEnrage	= "Mostrar tiempo para $spell:26662"
 })
 
 --------------
@@ -229,20 +225,18 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova		= "Nova de relámpagos",
-	warnNova 		= "Nova de relámpagos",
-	warnOverCharge		= "Sobrecarga"
 }
 
 L:SetTimerLocalization{
-	timerMobOvercharge	= "Sobrecarga"
+	timerMobOvercharge	= "Sobrecarga",
+	EmalonEnrage		= "Enrage"
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= ("Mostrar aviso especial para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Nova de relámpagos"),
-	warnNova 		= ("Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64216, "Nova de relámpagos"),
-	warnOverCharge 		= ("Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r"):format(64218, "Sobrecarga"),
-	timerMobOvercharge	= "Mostrar tiempo para que un Mob se haga grande."
+	NovaSound			= "Reproducir sonido en $spell:65279",
+	timerMobOvercharge	= "Mostrar tiempo para que un Mob se haga grande.",
+	EmalonEnrage		= "Mostrar tiempo para $spell:26662",
+	RangeFrame			= "Mostrar distancia"
 }
 
 ---------------
@@ -256,21 +250,47 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder	= "Estas en Ceniza flamígera! Corre!"
+	BurningFury		= "Burning Fury >%d<"
 }
 
 L:SetTimerLocalization{
+	KoralonEnrage	= "Enrage"
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "Mostrar aviso especial cuando estas en Ceniza flamigera",
 	PlaySoundOnCinder	= "Reproducir sonido si estas en Ceniza flamigera",
+	BurningFury			= "Mostrar aviso para $spell:66721",
+	KoralonEnrage		= "Mostrar tiempo para $spell:26662"
 }
 
 L:SetMiscLocalization{
 	Meteor	= "%s castea Meteorito!"
 }
 
+-------------------------------
+--  Toravon the Ice Watcher  --
+-------------------------------
+L = DBM:GetModLocalization("Toravon")
+
+L:SetGeneralLocalization{
+	name = "Toravon"
+}
+
+L:SetWarningLocalization{
+	Frostbite	= "Frostbite en >%s< (%d)"
+}
+
+L:SetTimerLocalization{
+	ToravonEnrage	= "Enrage"
+}
+
+L:SetOptionLocalization{
+	Frostbite	= "Mostrar aviso para $spell:72098",
+}
+
+L:SetMiscLocalization{
+	ToravonEnrage	= "Mostrar tiempo para enrage"
+}
 
 ------------------------
 --  Isle of Conquest  --
@@ -283,16 +303,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnSiegeEngine		= "Siege Engine ready!",
+	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
 })
 
 L:SetTimerLocalization({
 	TimerStart		= "¡La batalla va comenzar!", 
 	TimerPOI		= "%s",
+	TimerSiegeEngine	= "Siege Engine ready"
 })
 
 L:SetOptionLocalization({
 	TimerStart		= "Mostrar tiempo para que comienze la Batalla.", 
 	TimerPOI		= "Mostrar tiempo para las Capturas",
+	TimerSiegeEngine	= "Show timer for Siege Engine construction",
+	WarnSiegeEngine		= "Show warning when Siege Engine is ready",
+	WarnSiegeEngineSoon	= "Show warning when Siege Engine is almost ready"
 })
 
 L:SetMiscLocalization({
@@ -300,8 +326,14 @@ L:SetMiscLocalization({
 	BgStart60		= "La batalla comenzará en 60 segundos.",
 	BgStart30		= "La batalla comenzará en 30 segundos.",
 	BgStart15		= "La batalla comenzará en 15 segundos.",
+	SiegeEngine				= "Siege Engine",
+	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
+	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
+	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
+	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
+	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
+	GoblinFinishedHorde		= "The siege engine is ready to roll!",
+	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
+	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
 })
-
-
-
 
