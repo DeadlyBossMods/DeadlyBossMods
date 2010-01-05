@@ -11,7 +11,7 @@ L.TabCategory_Options 	= "Opciones"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
 L.TabCategory_BC 	= "The Burning Crusade"
 L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
-L.TabCategory_OTHER     = "Other Boss Mods"
+L.TabCategory_OTHER     = "Otros Boss Mods"
 
 L.BossModLoaded 	= "%s estadisticas"
 L.BossModLoad_now 	= [[Este modulo no esta cargado. 
@@ -63,6 +63,7 @@ L.PizzaTimer_BroadCast	= "Anunciar a Raid"
 
 -- Tab: Raidwarning
 L.Tab_RaidWarning 	= "Avisos a raid"
+L.RaidWarning_Header= "Opciones de aviso de raid"
 L.RaidWarnColors 	= "Colores de Avisos a raid"
 L.RaidWarnColor_1 	= "Color 1"
 L.RaidWarnColor_2 	= "Color 2"
@@ -86,7 +87,8 @@ L.BarTexture = "Textura de barra"
 L.BarStartColor = "Empieza con color"
 L.BarEndColor = "Termina con color"
 L.ExpandUpwards		= "Ampliar las barras hacia arriba"
-
+L.Bar_Font			= "Fuente de las barras"
+L.Bar_FontSize		= "Tamaño de la fuente"
 L.Slider_BarOffSetX 	= "Desplazamiento X: %d"
 L.Slider_BarOffSetY 	= "Desplazamiento Y: %d"
 L.Slider_BarWidth 	= "Ancho de barra: %d"
@@ -100,14 +102,38 @@ L.EnableHugeBar 	= "Habilitar barra del medio (Bar 2)"
 L.FillUpBars		= "Llénese Barras"
 L.ClickThrough		= "Desabilitar acciones de raton ( si pulsas en las barras )"
 
+-- Tab: Spec Warn Frame
+L.Panel_SpecWarnFrame		= "Avisos Especiales"
+L.Area_SpecWarn				= "Opciones de Avisos Especiales"
+L.SpecWarn_Enabled			= "Mostrar Avisos Especiales para habilidades de los jefes"
+L.SpecWarn_Font				= "Fuente usada para Avisos Especiales"
+L.SpecWarn_DemoButton		= "Ver ejemplo"
+L.SpecWarn_MoveMe			= "Definir posición"
+L.SpecWarn_FontSize			= "Tamaño de fuente"
+L.SpecWarn_FontColor		= "Color de fuente"
+L.SpecWarn_FontType			= "Selecciona una fuente"
+L.SpecWarn_ResetMe			= "Reiniciar con los valores por defecto"
+
+-- Tab: HealthFrame
+L.Panel_HPFrame				= "Barra de vida"
+L.Area_HPFrame				= "Opciones de la barra de vida"
+L.HP_Enabled				= "Siempre ver la barra de vida (Sobreescribe la opción de bosses específicos)"
+L.HP_GrowUpwards			= "Expand health frame upward"
+L.HP_ShowDemo				= "Ver barra de vida"
+L.BarWidth					= "Ancho de la barra: %d"
+
 -- Tab: Spam Filter
 L.Panel_SpamFilter		= "Filtro de Spam"
 L.Area_SpamFilter		= "Opciones de spam"
 L.HideBossEmoteFrame		= "Esconder lo que dice el boss"
 L.SpamBlockRaidWarning		= "Filtrar anuncios de otros Boss Mods" 
-L.SpamBlockBossWhispers		= "Avisar por susurros spam de cada boss <DBM> "
+L.SpamBlockBossWhispers		= "Avisar por susurros spam de cada boss <DBM>"
 L.BlockVersionUpdatePopup	= "Desabilitar actualizaciones"
-
-
 L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
+
+L.Area_SpamFilter_Outgoing		= "Global Filter Options"
+L.SpamBlockNoShowAnnounce		= "Do not show announces or play warning sounds"
+L.SpamBlockNoSendAnnounce		= "Do not send announces to raid chat"
+L.SpamBlockNoSendWhisper		= "Do not send whispers to other players"
+L.SpamBlockNoSetIcon			= "Do not set icons on targets"
 
