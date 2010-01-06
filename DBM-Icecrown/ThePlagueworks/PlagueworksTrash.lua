@@ -26,18 +26,18 @@ mod:RemoveOption("HealthFrame")
 
 local spamZombies = 0
 
-function mod:OnCombatStart(delay)		-- guessed timers
+--[[function mod:OnCombatStart(delay)		-- guessed timers
 	warnDecimateSoon:Schedule(28-delay)
 	timerDecimate:Start(-delay)
 	timerZombies:Start(-delay)
-end
+end--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71127) then
 		warnMortalWound:Show(args.destName)
 		timerMortalWound:Start(args.destName)
 		if args:IsPlayer() and (args.amount or 1) >= 5 then
-			specWarnMortalWound:Show(args.destName)
+			specWarnMortalWound:Show(args.amount)
 		end
 	end
 end

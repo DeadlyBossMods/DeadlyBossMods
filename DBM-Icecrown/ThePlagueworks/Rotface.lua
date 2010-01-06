@@ -17,6 +17,7 @@ mod:RegisterEvents(
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
 local warnSlimeSpray			= mod:NewSpellAnnounce(69508)
+local warnOozeExplosion			= mod:NewSpellAnnounce(69760)
 local warnMutatedInfection		= mod:NewTargetAnnounce(71224)
 local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
 local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn")
@@ -25,6 +26,7 @@ local warnStickyOoze			= mod:NewSpellAnnounce(69774)
 local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
 local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)--Some strats purposely run to this so option is defaulted to off
+local specWarnOozeExplosion		= mod:NewSpecialWarningSpell(69760)
 
 local timerStickyOoze			= mod:NewNextTimer(16, 69774)
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
@@ -33,6 +35,8 @@ local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
 
 local soundStickyOoze			= mod:NewSound(71208)
 mod:AddBoolOption("InfectionIcon")
+
+local spamExplosion = 0
 
 function mod:OnCombatStart(delay)
 	timerWallSlime:Start(25-delay)
@@ -54,7 +58,13 @@ function mod:SPELL_CAST_START(args)
 		warnSlimeSpray:Show()
 	elseif args:IsSpellID(69774) then
 		timerStickyOoze:Start()
-		warnStickyOoze:Show()
+		warnStickyOoze:Show69839
+	elseif args:IsSpellID(69774) then
+		warnOozeExplosion:Show()
+		if GetTime() - spamExplosion > 5 --Special warn only first cast, reg warn the rest. This reduces spam from special warnings
+			specWarnOozeExplosion:Show()
+			spamExplosion = GetTime()
+		end
 	end
 end
 
