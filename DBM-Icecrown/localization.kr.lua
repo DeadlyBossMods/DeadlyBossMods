@@ -177,7 +177,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	InhaledBlight		= "$spell:71912 경고 보기",
-	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
+	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
@@ -191,7 +191,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn				= "작은 수액괴물 생성"
+	WarnOozeSpawn				= "작은 수액괴물 생성",
+	WarnUnstableOoze			= "%s : >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
 }
 
 L:SetTimerLocalization{
@@ -200,12 +201,15 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "다음 수액 홍수 타이머 보기",
-	WarnOozeSpawn				= "작은 수액괴물 생성 경고 보기",	
-	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
+	WarnOozeSpawn				= "작은 수액괴물 생성 경고 보기",
+	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "알 수 없음"),	
+	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
+	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
 }
 
 L:SetMiscLocalization{
 	YellSlimePipes1				= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes2				= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide	
 }
 
 ---------------------------
