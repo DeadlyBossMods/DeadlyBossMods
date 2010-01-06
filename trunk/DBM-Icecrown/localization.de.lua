@@ -124,3 +124,68 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 }
+
+-----------------
+--  Festergut  --
+-----------------
+L = DBM:GetModLocalization("Festergut")
+
+L:SetGeneralLocalization{
+	name = "Fauldarm"
+}
+
+L:SetWarningLocalization{
+	InhaledBlight		= "Eingeatmeter Seuchennebel >%d<",
+	WarnGastricBloat	= "%s on >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+}
+
+L:SetOptionLocalization{
+	InhaledBlight		= "Zeige Warnung fŸr $spell:71912",
+	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
+	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
+}
+
+---------------
+--  Rotface  --
+---------------
+L = DBM:GetModLocalization("Rotface")
+
+L:SetGeneralLocalization{
+	name = "Rotface"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
+	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
+	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
+}
+
+L:SetMiscLocalization{
+--	YellSlimePipes1	= "Good news, everyone! I've fixed the poison slime pipes!",	-- Professor Putricide
+--	YellSlimePipes2	= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
+}
+
+---------------------------
+--  Professor Putricide  --
+---------------------------
+L = DBM:GetModLocalization("Putricide")
+
+L:SetGeneralLocalization{
+	name = "Professor Putricide"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+--	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+}
