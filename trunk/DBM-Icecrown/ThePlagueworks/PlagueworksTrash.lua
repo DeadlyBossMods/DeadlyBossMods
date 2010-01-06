@@ -16,6 +16,7 @@ local warnZombies		= mod:NewSpellAnnounce(71159)
 local warnMortalWound	= mod:NewTargetAnnounce(71127, false)
 local warnDecimateSoon	= mod:NewSoonAnnounce(71123)
 
+local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)
 local specWarnMortalWound	= mod:NewSpecialWarningStack(71127, nil, 5)
 
 local timerZombies		= mod:NewNextTimer(20, 71159)
@@ -54,6 +55,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(71123) then
+		specWarnDecimate:Show()
 		warnDecimateSoon:Cancel()	-- in case the first 1 is inaccurate, you wont have an invalid soon warning
 		warnDecimateSoon:Schedule(28)
 		timerDecimate:Start()
