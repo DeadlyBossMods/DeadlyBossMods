@@ -25,8 +25,9 @@ local warnStickyOoze			= mod:NewSpellAnnounce(69774)
 
 local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
+local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
+local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
 local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)--Some strats purposely run to this so option is defaulted to off
-local specWarnOozeExplosion		= mod:NewSpecialWarningSpell(69839)
 
 local timerStickyOoze			= mod:NewNextTimer(16, 69774)
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
@@ -56,12 +57,13 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69508) then
 		timerSlimeSpray:Start()
 		warnSlimeSpray:Show()
+		specWarnSlimeSpray:Show()
 	elseif args:IsSpellID(69774) then
 		timerStickyOoze:Start()
 		warnStickyOoze:Show()
 	elseif args:IsSpellID(69839) then
 		warnOozeExplosion:Show()
-		if GetTime() - spamExplosion > 5 then--Special warn only first cast, reg warn the rest. This reduces spam from special warnings
+		if GetTime() - spamExplosion > 8 then--Special warn only first cast, reg warn the rest. This reduces spam from special warnings
 			specWarnOozeExplosion:Show()
 			spamExplosion = GetTime()
 		end
@@ -108,7 +110,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellSlimePipes or msg:find(L.YellSlimePipes) then
+	if (msg == L.YellSlimePipes1 or msg:find(L.YellSlimePipes1)) or (msg == L.YellSlimePipes2 or msg:find(L.YellSlimePipes2)) then
 		self:SendSync("PoisonSlimePipes")
 	end
 end
