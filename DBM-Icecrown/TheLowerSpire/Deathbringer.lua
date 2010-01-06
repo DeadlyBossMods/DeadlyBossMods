@@ -122,7 +122,7 @@ function mod:SPELL_CAST_START(args)
 		warnBloodNova:Show()
 		timerBloodNova:Start()
 	elseif args:IsSpellID(72293) then		-- Mark of the Fallen Champion
-		self:ScheduleMethod(0.2, "MarkTarget")
+		self:ScheduleMethod(0.3, "MarkTarget")
 	end
 end
 
