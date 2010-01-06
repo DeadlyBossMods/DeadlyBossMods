@@ -171,11 +171,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight		= "파멸의 역병 들이마심 : >%d<"
+	InhaledBlight		= "파멸의 역병 들이마심 : >%d<",
+	WarnGastricBloat	= "%s : >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
 	InhaledBlight		= "$spell:71912 경고 보기",
+	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
@@ -189,6 +191,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnOozeSpawn				= "작은 수액괴물 생성"
 }
 
 L:SetTimerLocalization{
