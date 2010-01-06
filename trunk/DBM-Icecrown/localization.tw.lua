@@ -30,7 +30,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name 				= "瘟疫工坊小怪"
+	name 				= "Precious & Stinky"
 }
 
 L:SetWarningLocalization{
@@ -172,11 +172,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight			= "吸納荒疫 >%d<"
+	InhaledBlight			= "吸納荒疫 >%d<",
+	WarnGastricBloat		= "%s: >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+
 }
 
 L:SetOptionLocalization{
 	InhaledBlight			= "為$spell:71912顯示警告",
+	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
@@ -190,9 +193,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze		= "粘稠軟泥 - 快跑開",
-	SpecWarnRadiatingOoze		= "輻射軟泥",
-	SpecWarnMutatedInfection 	= "你中了突變感染"
+	WarnOozeSpawn			= "小軟泥出現了"
 }
 
 L:SetTimerLocalization{
@@ -200,16 +201,14 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze		= "為粘稠軟泥顯示特別警告",
-	SpecWarnRadiatingOoze		= "為輻射軟泥顯示特別警告",
-	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
-	SpecWarnMutatedInfection 	= "為突變感染顯示特別警告",
-	InfectionIcon			= "為突變感染的目標設置標記",
-	WarnOozeSpawn			= "為小軟泥怪出現顯示警告"
+	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
+	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器"
+	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1			= "大夥聽著，好消息!我修好了劇毒軟泥管!"	-- Professor Putricide
+	YellSlimePipes1			= "大夥聽著，好消息!我修好了劇毒軟泥管!",	-- Professor Putricide
+	YellSlimePipes2			= "大夥聽著，好消息! The slime is flowing again!"	-- Professor Putricide
 }
 
 ---------------------------
