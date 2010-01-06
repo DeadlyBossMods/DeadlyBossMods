@@ -29,7 +29,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name = "Треш-мобы Чумодельни"
+	name = "Precious & Stinky"
 }
 
 L:SetWarningLocalization{
@@ -144,7 +144,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "Начало боя"
+	TimerCombatStart		= "Начало боя"
 }
 
 L:SetOptionLocalization{
@@ -171,11 +171,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight		= "Гнилостные испарения в легких >%d<"
+	InhaledBlight		= "Гнилостные испарения в легких >%d<",
+	WarnGastricBloat	= "%s на |3-5(>%s<) (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
 	InhaledBlight		= "Предупреждение для $spell:71912",
+	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
@@ -189,9 +191,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze			= "Липкая жижа - бегите",
-	SpecWarnRadiatingOoze		= "Radiating Ooze",
-	SpecWarnMutatedInfection	= "Mutated Infection on you"
+	WarnOozeSpawn				= "Little Ooze spawning"
 }
 
 L:SetTimerLocalization{
@@ -199,16 +199,14 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze			= "Спец-предупреждение для Липкой жижи",
-	SpecWarnRadiatingOoze		= "Show special warning for Radiating Ooze",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Show special warning when you are affected by Mutated Infection",
-	InfectionIcon				= "Set icons on Mutated Infection targets",
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
+	WarnOozeSpawn				= "Show warning for Little Ooze spawning",
+	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1	= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes1	= "Good news, everyone! I've fixed the poison slime pipes!",	-- Professor Putricide
+	YellSlimePipes2	= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
 }
 
 ---------------------------
