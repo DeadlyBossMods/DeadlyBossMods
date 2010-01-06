@@ -29,7 +29,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name = "Precious & Stinky"
+	name = "Прелесть & Вонючка"
 }
 
 L:SetWarningLocalization{
@@ -191,22 +191,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn				= "Little Ooze spawning"
+	WarnOozeSpawn				= "Появляется Малый слизнюк",
+	WarnUnstableOoze			= "%s на |3-5(>%s<) (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes		= "Next Poison Slime Pipes"
+	NextPoisonSlimePipes		= "След. трубы для подачи ядовитой слизи"
 }
 
 L:SetOptionLocalization{
-	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning",
-	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
+	NextPoisonSlimePipes		= "Отсчет времени до следующих труб для подачи ядовитой слизи",
+	WarnOozeSpawn				= "Предупреждение при появлении Малого слизнюка",
+	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
+	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
+	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1	= "Good news, everyone! I've fixed the poison slime pipes!",	-- Professor Putricide
-	YellSlimePipes2	= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
+	YellSlimePipes1	= "Отличные новости, народ! Я починил трубы для подачи ядовитой слизи!",	-- Professor Putricide
+	YellSlimePipes2	= "Отличные новости, народ! Слизь снова потекла!"	-- Professor Putricide
 }
 
 ---------------------------
