@@ -253,30 +253,33 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn	= "下一波(6)"
+	TimerWaveIn	= "下一波(6)",
+	TimerRollplay	= "角色扮演開始"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("新一波"),
-	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)"
+	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)",
+	TimerRollplay	= "為角色扮演事件開始顯示計時器"
 })
 
 L:SetMiscLocalization({
-	Meathook	= "Meathook",
-	Salramm		= "Salramm the Fleshcrafter",
-	Devouring	= "Devouring Ghoul",
-	Enraged		= "Enraged Ghoul",
-	Necro		= "Necromancer",
-	Friend		= "Crypt Friend",
-	Tomb		= "Tomb Stalker",
-	Abom		= "Patchwork Construct",
-	Acolyte		= "Acolyte",
+	Meathook	= "肉鉤",
+	Salramm		= "『血肉工匠』塞歐朗姆",
+	Devouring	= "吞噬食屍鬼",
+	Enraged		= "狂怒食屍鬼",
+	Necro		= "死靈大法師",
+	Friend		= "地穴惡魔",
+	Tomb		= "墓穴巡者",
+	Abom		= "縫補傀儡",
+	Acolyte		= "侍僧",
 	Wave1		= "%d %s",
 	Wave2		= "%d %s and %d %s",
 	Wave3		= "%d %s, %d %s and %d %s",
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Scourge Wave = %d/10"
+	WaveCheck	= "天譴軍波數 = %d/10",
+	Rollplay	= "真高興你趕到了，烏瑟。"
 })
 
 ------------------------
