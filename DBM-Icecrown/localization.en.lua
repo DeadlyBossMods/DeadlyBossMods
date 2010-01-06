@@ -187,6 +187,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnOozeSpawn				= "Little Ooze spawning"
 }
 
 L:SetTimerLocalization{
