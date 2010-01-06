@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36627)
-mod:SetUsedIcons(6, 7)
+mod:SetUsedIcons(6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -38,6 +38,7 @@ local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
 
 local soundStickyOoze			= mod:NewSound(71208)
 mod:AddBoolOption("InfectionIcon")
+mod:AddBoolOption("ExplosionIcon")
 
 function mod:OnCombatStart(delay)
 	timerWallSlime:Start(25-delay)
@@ -75,6 +76,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRadiatingOoze:Show()
 	elseif args:IsSpellID(69558) then
 		warnUnstableOoze:Show(args.spellName, args.destName, args.amount or 1)
+		if (args.amount or 1) >= 5 then	--It's about to blow
+			if self.Options.ExplosionIcon then
+				mod:SetIcon(args.destName, 8, 8)
+			end
+		end
+		end
 	elseif args:IsSpellID(69674, 71224) then
 		warnMutatedInfection:Show(args.destName)
 		timerMutatedInfection:Start(args.destName)
