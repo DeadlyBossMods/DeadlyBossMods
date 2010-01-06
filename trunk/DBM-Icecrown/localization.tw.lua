@@ -202,7 +202,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
-	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器"
+	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
 	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
 }
 
