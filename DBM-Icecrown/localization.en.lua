@@ -195,8 +195,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
+	WarnOozeSpawn				= "Show warning for Little Ooze spawning",
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 }
 
 L:SetMiscLocalization{
