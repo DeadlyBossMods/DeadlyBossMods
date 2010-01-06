@@ -37,8 +37,6 @@ local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
 local soundStickyOoze			= mod:NewSound(71208)
 mod:AddBoolOption("InfectionIcon")
 
-local spamExplosion = 0
-
 function mod:OnCombatStart(delay)
 	timerWallSlime:Start(25-delay)
 	self:ScheduleMethod(25-delay, "WallSlime")
@@ -63,10 +61,7 @@ function mod:SPELL_CAST_START(args)
 		warnStickyOoze:Show()
 	elseif args:IsSpellID(69839) then
 		warnOozeExplosion:Show()
-		if GetTime() - spamExplosion > 8 then--Special warn only first cast, reg warn the rest. This reduces spam from special warnings
-			specWarnOozeExplosion:Show()
-			spamExplosion = GetTime()
-		end
+		specWarnOozeExplosion:Show()
 	end
 end
 
