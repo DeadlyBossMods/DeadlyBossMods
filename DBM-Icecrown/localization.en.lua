@@ -189,7 +189,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn				= "Little Ooze spawning"
+	WarnOozeSpawn				= "Little Ooze spawning",
+	WarnUnstableOoze			= "%s on >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
 }
 
 L:SetTimerLocalization{
@@ -199,6 +200,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning",
+	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
 }
 

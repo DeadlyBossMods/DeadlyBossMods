@@ -22,6 +22,7 @@ local warnMutatedInfection		= mod:NewTargetAnnounce(71224)
 local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
 local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn")
 local warnStickyOoze			= mod:NewSpellAnnounce(69774)
+local warnUnstableOoze			= mod:NewAnnounce("WarnUnstableOoze")
 
 local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
@@ -71,6 +72,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		soundStickyOoze:Play()
 	elseif args:IsSpellID(69760) then
 		warnRadiatingOoze:Show()
+	elseif args:IsSpellID(69558) then
+		warnUnstableOoze:Show(args.spellName, args.destName, args.amount or 1)
 	elseif args:IsSpellID(69674, 71224) then
 		warnMutatedInfection:Show(args.destName)
 		timerMutatedInfection:Start(args.destName)
