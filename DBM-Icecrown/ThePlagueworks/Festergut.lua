@@ -14,18 +14,21 @@ mod:RegisterEvents(
 )
 
 local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight")
+local warnGastricBloat		= mod:NewAnnounce("WarnGastricBloat", 3)
 local warnGasSpore			= mod:NewTargetAnnounce(69279)
 local warnVileGas			= mod:NewTargetAnnounce(73020)
 
 local specWarnPungentBlight	= mod:NewSpecialWarningSpell(71219)
 local specWarnGasSpore		= mod:NewSpecialWarningYou(69279)
 local specWarnVileGas		= mod:NewSpecialWarningYou(71218)
+local specWarnGastricBloat	= mod:NewSpecialWarningStack(72551, nil, 9)
 local specWarnInhaled3		= mod:NewSpecialWarningStack(71912, false, 3)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
 local timerPungentBlight	= mod:NewNextTimer(132, 71219)--132 seconds'ish, subject to adjustments
 local timerInhaledBlight	= mod:NewNextTimer(34, 71912)--34 seconds'ish (4 of these add up to Pungent Blight)
 local timerVileGas			= mod:NewBuffActiveTimer(6, 71219)
+local timerGastricBloat		= mod:NewTargetTimer(100, 72551)
 
 local enrageTimer			= mod:NewBerserkTimer(300)
 
@@ -101,6 +104,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if (args.amount or 1) <= 2 then	--Prevent timer from starting after 3rd stack since he won't cast it a 4th time, he does Pungent instead.
 			timerInhaledBlight:Start()
+		end
+	elseif args:IsSpellID(72219, 72551, 72552, 72553) then	-- Gastric Bloat
+		warnGastricBloat:Show(args.spellName, args.destName, args.amount or 1)
+		timerGastricBloat:Start(args.destName)
+		if args:IsPlayer() and (args.amount or 1) >= 9 then
+			specWarnGastricBloat:Show(args.amount)
 		end
 	end
 end
