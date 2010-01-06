@@ -189,22 +189,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze			= "끈적이는 수액괴물 - 이동하세요!",
-	SpecWarnRadiatingOoze		= "방사능 수액괴물",
-	SpecWarnMutatedInfection 	= "당신에게 돌연변이 전염병!"
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes		= "Next Poison Slime Pipes"
+	NextPoisonSlimePipes		= "다음 수액 홍수"
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze			= "끈적이는 수액괴물 특수 경고 보기",
-	SpecWarnRadiatingOoze		= "방사능 수액괴물 특수 경고 보기",
-	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "돌연변이 전염병에 영향을 받을 경우 특수 경고 보기",
-	InfectionIcon				= "돌연변이 전염병 대상 공격대 아이콘 설정",
-	WarnOozeSpawn				= "작은 수액괴물 생성 경고 보기"
+	NextPoisonSlimePipes		= "다음 수액 홍수 타이머 보기",
+	WarnOozeSpawn				= "작은 수액괴물 생성 경고 보기",	
+	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
 }
 
 L:SetMiscLocalization{

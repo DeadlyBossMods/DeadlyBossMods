@@ -253,12 +253,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn			= "다음 웨이브 (6)", 
+	TimerWaveIn			= "다음 웨이브 (6)",
+	TimerRollplay		= "시작 이야기"	
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("새로운 웨이브"),
 	TimerWaveIn			= "다음 웨이브 타이머 보기 (5번째 보스 웨이브 이후)",
+	TimerRollplay		= "시작 이벤트 타이머 보기"
 })
 
 L:SetMiscLocalization({
@@ -276,7 +278,8 @@ L:SetMiscLocalization({
 	Wave3			= "%d %s, %d %s 그리고 %d %s",
 	Wave4			= "%d %s, %d %s, %d %s 그리고 %d %s",
 	WaveBoss		= "%s",
-	WaveCheck		= "스컬지 공격 = %d/10"
+	WaveCheck		= "스컬지 공격 = %d/10",
+	Rollplay		= "Glad you could make it, Uther."
 })
 
 -------------------
@@ -493,7 +496,6 @@ L:SetOptionLocalization({
 ----------
 L = DBM:GetModLocalization("Volkhan")
 
-
 L:SetGeneralLocalization({
 	name = "볼칸"
 })
@@ -602,10 +604,12 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerEvent		= "이벤트"
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("# 페이즈")
+	WarningPhase	= optionWarning:format("# 페이즈"),
+	timerEvent		= "이벤트 타이머 보기"
 })
 
 L:SetMiscLocalization({
@@ -850,9 +854,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetOptionLocalization({
-})
-
 L:SetMiscLocalization({
 	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers! A feast for the one that brings me their heads!",
 	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!",
@@ -877,6 +878,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
+L:SetOptionLocalization({
+	YellCombatEnd	= "No! I can do... better! I can..."
+})
+
 -------------------
 -- 우트가드 첨탑 --
 -------------------
@@ -896,7 +901,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 })
-
 
 L:SetMiscLocalization({
 	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers!  A feast for the one that brings me their heads!",
@@ -1119,6 +1123,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
+	Sealbroken	= "We've broken through the prison gate! The way into Dalaran is clear! Now we finally put an end to the Nexus War!",	
 	WavePortal		= "차원문 열림: (%d+)/18"
 })
 
@@ -1270,6 +1275,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnPursuit			= "추격 : >%s<",
+	specWarnPursuit		= "당신을 추격합니다. - 뛰세요!"
 })
 
 L:SetOptionLocalization({
@@ -1279,9 +1285,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	IckPursuit			= "%s1|이;가; 당신을 쫓습니다!",
+--	IckPursuit			= "%s|1이;가; 당신을 쫓습니다!",
 	IckPursuit			= "당신을 쫓습니다!",
-	Barrage				= "%s1|이;가; 빠른 속도로 지뢰를 만들어냅니다!"
+	Barrage				= "%s|1이;가; 빠른 속도로 지뢰를 만들어냅니다!"
 --	YellCombatEnd		= ""--in case removing kricks creatureid doesn't fix it thinking we wipe.	
 })
 
@@ -1310,7 +1316,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	SaroniteRockThrow			= "%s1|이;가; 거대한 사로나이트 덩어리를 당신에게 던집니다!"
+--	SaroniteRockThrow			= "%s|1이;가; 거대한 사로나이트 덩어리를 당신에게 던집니다!"
 	SaroniteRockThrow			= "거대한 사로나이트 덩어리를 당신에게 던집니다!"	
 })
 
@@ -1343,7 +1349,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart					= "아아. 용감하고 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤에 있는 굴에서 뼈와 칼이 부딪치는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "(%S+)1|을;를; 노려보며 얼음 공격을 준비합니다!",
+	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
 	YellCombatEnd				= "말도 안 돼... 서릿발송곳니... 경고를..."
 })
 
@@ -1452,7 +1458,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnWellCorruption	= "부패의 샘!! 이동!!"
 })
 
 L:SetTimerLocalization({
