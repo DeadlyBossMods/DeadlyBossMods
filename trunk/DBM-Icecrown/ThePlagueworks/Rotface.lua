@@ -58,8 +58,8 @@ function mod:SPELL_CAST_START(args)
 		warnSlimeSpray:Show()
 	elseif args:IsSpellID(69774) then
 		timerStickyOoze:Start()
-		warnStickyOoze:Show69839
-	elseif args:IsSpellID(69774) then
+		warnStickyOoze:Show()
+	elseif args:IsSpellID(69839) then
 		warnOozeExplosion:Show()
 		if GetTime() - spamExplosion > 5 then--Special warn only first cast, reg warn the rest. This reduces spam from special warnings
 			specWarnOozeExplosion:Show()
