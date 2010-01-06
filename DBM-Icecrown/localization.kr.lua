@@ -208,7 +208,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1				= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes1				= "Good news, everyone! I've fixed the poison slime pipes!",	-- Professor Putricide
 	YellSlimePipes2				= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide	
 }
 
