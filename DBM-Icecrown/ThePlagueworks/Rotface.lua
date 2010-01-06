@@ -19,12 +19,12 @@ local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the s
 local warnSlimeSpray			= mod:NewSpellAnnounce(69508)
 local warnMutatedInfection		= mod:NewTargetAnnounce(71224)
 local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
-local warnOozeSpawn			= mod:NewAnnounce("WarnOozeSpawn")
+local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn")
 local warnStickyOoze			= mod:NewSpellAnnounce(69774)
 
-local specWarnMutatedInfection		= mod:NewSpecialWarning("SpecWarnMutatedInfection")
-local specWarnStickyOoze		= mod:NewSpecialWarning("SpecWarnStickyOoze")
-local specWarnRadiatingOoze		= mod:NewSpecialWarning("SpecWarnRadiatingOoze", false)--Some strats purposely run to this so option is defaulted to off
+local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
+local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
+local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)--Some strats purposely run to this so option is defaulted to off
 
 local timerStickyOoze			= mod:NewNextTimer(16, 69774)
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
@@ -35,7 +35,7 @@ local soundStickyOoze			= mod:NewSound(71208)
 mod:AddBoolOption("InfectionIcon")
 
 function mod:OnCombatStart(delay)
-	nextWallSlime:Start(25-delay)
+	timerWallSlime:Start(25-delay)
 	self:ScheduleMethod(25-delay, "WallSlime")
 	InfectionIcon = 7
 end
