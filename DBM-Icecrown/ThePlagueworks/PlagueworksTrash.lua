@@ -24,7 +24,7 @@ local timerDecimate	= mod:NewNextTimer(33, 71123)
 
 mod:RemoveOption("HealthFrame")
 
-local spamZombies
+local spamZombies = 0
 
 function mod:OnCombatStart(delay)		-- guessed timers
 	warnDecimateSoon:Schedule(28-delay)
