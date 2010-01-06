@@ -187,9 +187,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze			= "Sticky Ooze - Move out",
-	SpecWarnRadiatingOoze		= "Radiating Ooze",
-	SpecWarnMutatedInfection	= "Mutated Infection on you"
 }
 
 L:SetTimerLocalization{
@@ -197,11 +194,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze			= "Show special warning for Sticky Ooze",
-	SpecWarnRadiatingOoze		= "Show special warning for Radiating Ooze",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Show special warning when you are affected by Mutated Infection",
-	InfectionIcon				= "Set icons on Mutated Infection targets",
+	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
 }
 
