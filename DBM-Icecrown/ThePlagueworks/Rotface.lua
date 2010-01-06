@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
@@ -118,3 +119,5 @@ function mod:OnSync(msg, arg)
 		self:WallSlime()
 	end
 end
+
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
