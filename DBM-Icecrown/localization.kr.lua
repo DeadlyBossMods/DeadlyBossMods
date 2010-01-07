@@ -208,8 +208,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1				= "Good news, everyone! I've fixed the poison slime pipes!",	-- Professor Putricide
-	YellSlimePipes2				= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide	
+	YellSlimePipes1				= "좋은 소식이에요, 여러분! 독성 수액 배출관을 고쳤어요!",	-- Professor Putricide
+	YellSlimePipes2				= "끝내 주는 소식이에요, 여러분! 수액이 다시 나오는군요!"	-- Professor Putricide	
 }
 
 ---------------------------
@@ -236,7 +236,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+	YellPull		= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!"
 }
 
 ----------------------------
