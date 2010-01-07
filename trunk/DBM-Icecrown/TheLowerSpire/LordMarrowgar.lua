@@ -27,7 +27,7 @@ local timerWhirlwindCD		= mod:NewCDTimer(90, 69076)
 local timerWhirlwind		= mod:NewBuffActiveTimer(20, 69076)
 local timerBoned			= mod:NewAchievementTimer(8, 4610, "achievementBoned")
 
-local enrageTimer			= mod:NewBerserkTimer(600)
+local berserkTimer			= mod:NewBerserkTimer(600)
 
 local soundWhirlwind = mod:NewSound(69076)
 mod:AddBoolOption("SetIconOnImpale", true)
@@ -55,7 +55,7 @@ function mod:OnCombatStart(delay)
 	preWarnWhirlwind:Schedule(40-delay)
 	timerWhirlwindCD:Start(45-delay)
 	timerBoneSpike:Start(15-delay)
-	enrageTimer:Start(-delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
