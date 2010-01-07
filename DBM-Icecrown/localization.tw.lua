@@ -30,7 +30,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name 				= "Precious & Stinky"
+	name 				= "大寶及臭皮"
 }
 
 L:SetWarningLocalization{
@@ -211,7 +211,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellSlimePipes1			= "大夥聽著，好消息!我修好了劇毒軟泥管!",	-- Professor Putricide
-	YellSlimePipes2			= "大夥聽著，好消息! The slime is flowing again!"	-- Professor Putricide
+	YellSlimePipes2			= "大夥聽著，超級好消息!軟泥又開始流動了!"	-- Professor Putricide
 }
 
 ---------------------------
