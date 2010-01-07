@@ -37,7 +37,7 @@ local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
 local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps") 
 
-local sndFunny				= mod:NewSound(nil, "SoundWTF")
+local sndFunny				= mod:NewSound(nil, "SoundWTF", false)
 
 local warned_preP2 = false
 local warned_preP3 = false
