@@ -222,9 +222,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon		= "곧 2 페이즈",
+	WarnPhase3Soon		= "곧 3 페이즈",
+	WarnMutatedPlague	= "%s : >%s< (%s)"			-- Mutated Plague on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	WarnPhase2Soon			= "2 페이즈 사전 경고 보기(83% 이하)",
+	WarnPhase3Soon			= "3 페이즈 사전 경고 보기(38% 이하)",
+	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
