@@ -222,15 +222,21 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon		= "Скоро фаза 2",
+	WarnPhase3Soon		= "Скоро фаза 3",
+	WarnMutatedPlague	= "%s на |3-5(>%s<) (%s)"			-- Mutated Plague on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~83%)",
+	WarnPhase3Soon			= "Предупреждать заранее о фазе 3 (на ~38%)",
+	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+	YellPull	= "Отличные новости, народ! Я усовершенствовал штамм чумы, которая уничтожит весь Азерот!"
 }
 
 ----------------------------
