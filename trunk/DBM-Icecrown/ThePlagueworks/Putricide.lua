@@ -4,11 +4,13 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36678, 38216)
 mod:RegisterCombat("yell", L.YellPull)
+mod:SetUsedIcons(7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED"
 )
 
 local warnSlimePuddle				= mod:NewSpellAnnounce(70341, 3)
@@ -25,6 +27,9 @@ local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
 local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)	-- guessed timer atm
 local timerUnstableExperimentCD		= mod:NewNextTimer(35, 70351)
 local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
+
+mod:AddBoolOption("OozeAdhesiveIcon")
+mod:AddBoolOption("GaseousBloatIcon")
 
 
 function mod:OnCombatStart(delay)
@@ -52,17 +57,35 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70447) then
+	if args:IsSpellID(70447, 72836, 72837, 72838) then
 		warnVolatileOozeAdhesive:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnVolatileOozeAdhesive:Show()
+		end
+		if self.Options.OozeAdhesiveIcon then
+				mod:SetIcon(args.destName, 8, 8)
 		end
 	elseif args:IsSpellID(70672) then
 		warnGaseousBloat:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnGaseousBloat:Show()
 		end
+		if self.Options.GaseousBloatIcon then
+			mod:SetIcon(args.destName, 7, 20)
+		end
 	elseif args:IsSpellID(71615, 71618) then--normal and heroic? one is immune to damage and stunned, other is just a stun
 		timerTearGas:Start()
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(70447, 72836, 72837, 72838) then
+		if self.Options.OozeAdhesiveIcon then
+			mod:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(70672) then
+		if self.Options.GaseousBloatIcon then
+			mod:SetIcon(args.destName, 0)
+		end
 	end
 end
