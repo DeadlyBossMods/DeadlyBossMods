@@ -23,7 +23,7 @@ local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnTearGas					= mod:NewSpellAnnounce(71617)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 3)--Phase 2 ability
-local warnChokingGasBomb			= mod:NewSpellAnnounce(70351, 3)--Phase 2 ability
+local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)--Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnGuzzlePotions				= mod:NewSpellAnnounce(71893)
 local warnPhase3					= mod:NewPhaseAnnounce(3)
@@ -33,13 +33,13 @@ local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
 local specWarnMutatedPlague			= mod:NewSpecialWarningStack(72451, nil, 5)--Minimum number of stacks needed to clear other tanks debuff with 2 tanks
 
-local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)	-- Approx
+local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341-- Approx
 local timerUnstableExperimentCD		= mod:NewNextTimer(35, 70351)
 local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
 --local timerCreateConcoction			= mod:NewBuffActiveTimer(15, 71621)--Commented out til i know for sure if it's 15 seconds or 4 seconds. 15 makes more sense with duration of tear gas but tooltip says 4 :\
 local timerGuzzlePotions			= mod:NewBuffActiveTimer(12, 71893)--4seconds cast plus 8 seconds for transformation
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
-local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451) 		-- 10 to 11
+local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -63,7 +63,7 @@ function mod:SPELL_CAST_START(args)
 		warnUnstableExperiment:Show()
 	elseif args:IsSpellID(71617) then
 		warnTearGas:Show()--This lasts 15 more seconds atfer Create Concoction is cast start which leads me to suspect the tooltip is wrong or something is wonky.
-	elseif args:IsSpellID(71621) then--Create Concoction, used after Tear Gas
+	elseif args:IsSpellID(71621) then--Create Concoction, used after Tear Gas is cast
 --		timerCreateConcoction:Start()
 	end
 end
@@ -76,7 +76,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnChokingGasBomb:Show()
 	elseif args:IsSpellID(72295, 72615, 72295, 72296) then
 		warnMalleableGoo:Show()
-	elseif args:IsSpellID(73120, 71893) then--Guzzle Potions, used after just before phase 3 to mutate
+	elseif args:IsSpellID(73120, 71893) then--Guzzle Potions, used just before phase 3 to mutate
 		warnGuzzlePotions:Show()
 		timerGuzzlePotions:Start()
 	end
