@@ -30,7 +30,7 @@ local timerVileGas			= mod:NewBuffActiveTimer(6, 71219)
 local timerGastricBloat		= mod:NewTargetTimer(100, 72551)	-- 100 Seconds until expired
 local timerGastricBloatCD	= mod:NewCDTimer(11, 72551) 		-- 10 to 14 seconds
 
-local enrageTimer			= mod:NewBerserkTimer(300)
+local berserkTimer			= mod:NewBerserkTimer(300)
 
 mod:AddBoolOption("SetIconOnGasSpore", true)
 
@@ -52,7 +52,7 @@ local function warnVileGasTargets()
 end
 
 function mod:OnCombatStart(delay)
-	enrageTimer:Start(-delay)
+	berserkTimer:Start(-delay)
 	timerInhaledBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
 	timerPungentBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
 	table.wipe(gasSporeTargets)
