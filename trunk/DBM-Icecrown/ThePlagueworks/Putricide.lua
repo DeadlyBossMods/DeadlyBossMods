@@ -51,7 +51,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSlimePuddleCD:Start()
 	elseif args:IsSpellID(71255) then
 		warnChokingGasBomb:Show()
-	elseif args:IsSpellID(72295) then--too many spellids to drycode other spellids without logs.
+	elseif args:IsSpellID(72295, 72615, 72295, 72296) then
 		warnMalleableGoo:Show()
 	end
 end
@@ -73,7 +73,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.GaseousBloatIcon then
 			mod:SetIcon(args.destName, 7, 20)
 		end
-	elseif args:IsSpellID(71615, 71618) then--normal and heroic? one is immune to damage and stunned, other is just a stun
+	elseif args:IsSpellID(71615, 71618) then--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
 		timerTearGas:Start()
 	end
 end
