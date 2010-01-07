@@ -10,7 +10,7 @@ L.TranslationBy 			= "Nightkiller@日落沼澤(kc10577)"
 L.TabCategory_Options			= "綜合設置"
 L.TabCategory_WOTLK 			= "巫妖王之怒"
 L.TabCategory_BC 			= "燃燒的遠征"
-L.TabCategory_CLASSIC			= "舊世界"
+L.TabCategory_CLASSIC			= "舊世界首領"
 L.TabCategory_OTHER			= "其它"
 
 L.BossModLoaded				= "%s狀態"

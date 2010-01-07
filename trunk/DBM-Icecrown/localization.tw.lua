@@ -193,7 +193,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn			= "小軟泥出現了"
+	WarnOozeSpawn			= "小軟泥出現了",
+	WarnUnstableOoze		= "%s: >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
 }
 
 L:SetTimerLocalization{
@@ -203,7 +204,9 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
 	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
-	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224)
+	WarnUnstableOoze		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
+	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
+	ExplosionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
 }
 
 L:SetMiscLocalization{
@@ -221,9 +224,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon			= "第2階段 即將來臨",
+	WarnPhase3Soon			= "第3階段 即將來臨",
+	WarnMutatedPlague		= "%s: >%s< (%s)"	-- Mutated Plague on >args.destName< (args.amount)
+
 }
 
 L:SetOptionLocalization{
+	WarnPhase2Soon			= "為第2階段 (大約83%)顯示特別警告",
+	WarnPhase3Soon			= "為第3階段 (大約38%)顯示特別警告",
+	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
+	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+
 }
 
 L:SetMiscLocalization{
