@@ -18,7 +18,7 @@ mod:RegisterEvents(
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
 local warnSlimeSpray			= mod:NewSpellAnnounce(69508)
-local warnOozeExplosion			= mod:NewSpellAnnounce(69839)
+local warnOozeExplosionCast		= mod:NewCastAnnounce(69839)
 local warnMutatedInfection		= mod:NewTargetAnnounce(71224)
 local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
 local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn")
@@ -64,8 +64,8 @@ function mod:SPELL_CAST_START(args)
 		timerStickyOoze:Start()
 		warnStickyOoze:Show()
 	elseif args:IsSpellID(69839) then
-		warnOozeExplosion:Show()
-		specWarnOozeExplosion:Show()
+		warnOozeExplosionCast:Show()
+		specWarnOozeExplosion::Schedule(4)
 		timerOozeExplosion:Start()
 	end
 end
