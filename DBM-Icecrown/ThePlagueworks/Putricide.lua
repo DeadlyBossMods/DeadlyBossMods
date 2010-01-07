@@ -33,10 +33,11 @@ local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
 local specWarnMutatedPlague			= mod:NewSpecialWarningStack(72451, nil, 5)--Minimum number of stacks needed to clear other tanks debuff with 2 tanks
 
+local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)--Duration of debuff
 local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)-- Approx
 local timerUnstableExperimentCD		= mod:NewNextTimer(35, 70351)
 local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
---local timerCreateConcoction			= mod:NewBuffActiveTimer(15, 71621)--Commented out til i know for sure if it's 15 seconds or 4 seconds. 15 makes more sense with duration of tear gas but tooltip says 4 :\
+--local timerCreateConcoction		= mod:NewBuffActiveTimer(15, 71621)--Commented out til i know for sure if it's 15 seconds or 4 seconds. 15 makes more sense with duration of tear gas but tooltip says 4 :\
 local timerGuzzlePotions			= mod:NewBuffActiveTimer(12, 71893)--4seconds cast plus 8 seconds for transformation
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
@@ -90,7 +91,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70447, 72836, 72837, 72838) then
+	if args:IsSpellID(70447, 72836, 72837, 72838) then--Green Slime
 		warnVolatileOozeAdhesive:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnVolatileOozeAdhesive:Show()
@@ -98,8 +99,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.OozeAdhesiveIcon then
 				mod:SetIcon(args.destName, 8, 8)
 		end
-	elseif args:IsSpellID(70672) then
+	elseif args:IsSpellID(70672, 72455) then--Red Slime (70672 seems used in both normal modes, i suspect 72455 is heroic)
 		warnGaseousBloat:Show(args.destName)
+		timerGaseousBloat:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnGaseousBloat:Show()
 		end
@@ -131,7 +133,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.OozeAdhesiveIcon then
 			mod:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(70672) then
+	elseif args:IsSpellID(70672, 72455) then
+		timerGaseousBloat:Cancel(args.destName)
 		if self.Options.GaseousBloatIcon then
 			mod:SetIcon(args.destName, 0)
 		end
