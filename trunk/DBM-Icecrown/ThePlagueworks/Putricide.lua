@@ -16,13 +16,13 @@ mod:RegisterEvents(
 )
 
 local warnSlimePuddle				= mod:NewSpellAnnounce(70341, 3)
-local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 3)
+local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 3)
 local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 4)
 local warnGaseousBloat				= mod:NewTargetAnnounce(70672, 4)
 local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnTearGas					= mod:NewSpellAnnounce(71617)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
-local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 3)--Phase 2 ability
+local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 3)--Phase 2 ability
 local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)--Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnGuzzlePotions				= mod:NewSpellAnnounce(71893)
@@ -103,7 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(71615, 71618) then--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
 		timerTearGas:Start()
 	elseif args:IsSpellID(71603) then--Mutated Strength
-		warnPhase3:Show
+		warnPhase3:Show()
 	elseif args:IsSpellID(72451) then	-- Mutated Plague
 		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
 		timerMutatedPlague:Start(args.destName)
