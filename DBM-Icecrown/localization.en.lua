@@ -220,9 +220,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon		= "Phase 2 soon",
+	WarnPhase3Soon		= "Phase 3 soon",
+	warnMutatedPlague	= "%s on >%s< (%s)"			-- Mutated Plague on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~83%)",
+	WarnPhase3Soon			= "Show pre-warning for Phase 3 (at ~38%)",
+	warnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
