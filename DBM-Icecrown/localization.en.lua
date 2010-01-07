@@ -223,6 +223,8 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
 
 L:SetMiscLocalization{
