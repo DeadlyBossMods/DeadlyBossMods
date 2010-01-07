@@ -35,6 +35,7 @@ local timerStickyOoze			= mod:NewNextTimer(16, 69774)
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
 local timerSlimeSpray			= mod:NewNextTimer(21, 69508)
 local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
+local timerOozeExplosion		= mod:NewCastTimer(4, 69839)
 
 local soundStickyOoze			= mod:NewSound(71208)
 mod:AddBoolOption("InfectionIcon")
@@ -65,6 +66,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(69839) then
 		warnOozeExplosion:Show()
 		specWarnOozeExplosion:Show()
+		timerOozeExplosion:Start()
 	end
 end
 
