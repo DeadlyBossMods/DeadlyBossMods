@@ -191,7 +191,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn				= "Появляется Малый слизнюк",
+	WarnOozeSpawn				= "Малый слизнюк",
 	WarnUnstableOoze			= "%s на |3-5(>%s<) (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
 }
 
@@ -225,6 +225,8 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
 
 L:SetMiscLocalization{

@@ -458,7 +458,7 @@ L:SetOptionLocalization{
 	TimeToPhase4			= "Отсчет времени для фазы 4",
 	MagneticCore			= "Объявлять Магнитное ядро",
 	HealthFramePhase4		= "Отображать индикатор здоровъя в фазе 4",
-	AutoChangeLootToFFA		= "Автоподсветка добычи доступной для всех в фазе 3",
+	AutoChangeLootToFFA		= "Смена режима добычи на Каждый за себя в фазе 3",
 	WarnBombSpawn			= "Объявлять Бомботов",
 	TimerHardmode			= "Отсчет времени для высокой сложности",
 	PlaySoundOnShockBlast	= "Звуковой сигнал при Взрыве плазмы",
