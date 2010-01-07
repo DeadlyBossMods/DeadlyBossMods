@@ -41,6 +41,10 @@ local timerGuzzlePotions			= mod:NewBuffActiveTimer(12, 71893)--4seconds cast pl
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
 
+-- buffs from "Drink Me"
+local timerMutatedSlash				= mod:NewBuffActiveTimer(20, 70542)
+local timerRegurgitatedOoze			= mod:NewBuffActiveTimer(20, 70539)
+
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("OozeAdhesiveIcon")
@@ -49,6 +53,7 @@ mod:AddBoolOption("GaseousBloatIcon")
 local warned_preP2 = false
 local warned_preP3 = false
 local spamPuddle = 0
+local phase = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -56,6 +61,7 @@ function mod:OnCombatStart(delay)
 	timerUnstableExperimentCD:Start(30-delay)
 	warned_preP2 = false
 	warned_preP3 = false
+	phase = 1
 end
 
 function mod:SPELL_CAST_START(args)
@@ -102,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(71615, 71618) then--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
 		timerTearGas:Start()
-	elseif args:IsSpellID(71603) then--Mutated Strength
+	elseif args:IsSpellID(71603) then	-- Mutated Strength
 		warnPhase3:Show()
 	elseif args:IsSpellID(72451) then	-- Mutated Plague
 		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
@@ -111,6 +117,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and (args.amount or 1) >= 5 then
 			specWarnMutatedPlague:Show(args.amount)
 		end
+	elseif args:IsSpellID(70542) then
+		timerMutatedSlash:Show()
+	elseif args:IsSpellID(70539) then
+		timerRegurgitatedOoze:Show()
 	end
 end
 
@@ -125,7 +135,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.GaseousBloatIcon then
 			mod:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(71615, 71618) then--Either this is start of phase 2 or the end of Create Concoction is. Need more information
+	elseif args:IsSpellID(71615, 71618) and phase == 1 then	-- only show one time
+		phase = 2
 		warnPhase2:Show()
 	end
 end
@@ -140,3 +151,4 @@ function mod:UNIT_HEALTH(uId)
 		warnPhase3Soon:Show()	
 	end
 end
+
