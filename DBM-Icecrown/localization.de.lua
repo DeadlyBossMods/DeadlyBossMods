@@ -75,7 +75,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull				= "Was soll die Stšrung? Ihr wagt es, heiligen Boden zu betreten? Dies wird der Ort Eurer letzten Ruhe sein!",
+	YellPull				= "Was soll die Störung? Ihr wagt es, heiligen Boden zu betreten? Dies wird der Ort Eurer letzten Ruhe sein!",
 	YellReanimatedFanatic	= "Erhebt Euch und frohlocket ob Eurer reinen Form"
 }
 
@@ -101,9 +101,9 @@ L:SetTimerLocalization{
 
 L:SetMiscLocalization{
 	PullAlliance	= "Alle Maschinen auf Volldampf! Unser Schicksal erwartet uns",
-	KillAlliance	= "Sagt nicht, ich hŠtte Euch nicht gewarnt, Ihr Schurken! VorwŠrts, BrŸder und Schwestern!",
-	PullHorde		= "Erhebt Euch, Sšhne und Tšchter der Horde! Wir ziehen gegen einen verhassten Feind in die Schlacht! LOK'TAR OGAR!",
-	KillHorde		= "Die Allianz wankt. VorwŠrts zum Lichkšnig!"
+	KillAlliance	= "Sagt nicht, ich hätte Euch nicht gewarnt, Ihr Schurken! Vorwärts, Brüder und Schwestern!",
+	PullHorde		= "Erhebt Euch, Söhne und Töchter der Horde! Wir ziehen gegen einen verhassten Feind in die Schlacht! LOK'TAR OGAR!",
+	KillHorde		= "Die Allianz wankt. Vorwärts zum Lichkönig!"
 }
 
 -----------------------------
@@ -140,7 +140,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	InhaledBlight		= "Zeige Warnung fŸr $spell:71912",
+	InhaledBlight		= "Zeige Warnung für $spell:71912",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
