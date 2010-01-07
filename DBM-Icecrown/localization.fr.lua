@@ -71,8 +71,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull						= "Quelle est cette perturbation ?",--Incomplete
-	YellReanimatedFanatic			= ""
+	YellPull						= "Quelle est cette perturbation ? Vous osez profaner cette terre sacrée ? Elle deviendra votre sépulture !",--Incomplete
+	YellReanimatedFanatic			= "Lève-toi, dans l'exultation de cette nouvelle pureté !"
 }
 -----------------------------
 --  Deathbringer Saurfang  --
