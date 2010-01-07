@@ -39,7 +39,7 @@ local timerDominateMind				= mod:NewBuffActiveTimer(12, 71289)
 local timerDominateMindCD			= mod:NewCDTimer(40, 71289)
 local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
 
-local enrageTimer					= mod:NewBerserkTimer(600)
+local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnDominateMind", true)
 mod:AddBoolOption("SetIconOnDeformedFanatic", true)
@@ -60,7 +60,7 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:AddBoss(36855, L.name)
 		self:ScheduleMethod(0.5, "CreateShildHPFrame")
 	end		
-	enrageTimer:Start(-delay)
+	berserkTimer:Start(-delay)
 	timerAdds:Start(7)
 	warnAddsSoon:Schedule(4)			-- 3sec pre-warning on start
 	self:ScheduleMethod(7, "addsTimer")

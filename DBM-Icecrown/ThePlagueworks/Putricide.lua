@@ -28,11 +28,14 @@ local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)	-- guessed timer atm
 local timerUnstableExperimentCD		= mod:NewNextTimer(35, 70351)
 local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
 
+local berserkTimer					= mod:NewBerserkTimer(600)
+
 mod:AddBoolOption("OozeAdhesiveIcon")
 mod:AddBoolOption("GaseousBloatIcon")
 
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	timerSlimePuddleCD:Start(10-delay)
 	timerUnstableExperimentCD:Start(30-delay)
 end
