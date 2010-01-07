@@ -15,7 +15,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkReckoning			= "Poner iconos en los objetivos de $spell:69483"
+	SetIconOnDarkReckoning			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 L:SetMiscLocalization{
@@ -60,7 +60,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnImpale				= "Anuncia los jugadores empalados",
 	achievementBoned		= "Mostrar tiempo para el logro Deshuesado",
-	SetIconOnImpale			= "Poner icono a los jugadores empalados"
+	SetIconOnImpale			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
 -------------------------
@@ -79,7 +79,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnReanimating					= "Resurreccion de Add",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnTouchInsignificance			= "%s en >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon					= "Nuevos adds pronto"
 }
 
@@ -178,11 +178,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight		= "Inhalar añublo >%d<"
+	InhaledBlight		= "Inhalar añublo >%d<",
+	WarnGastricBloat	= "%s en >%s< (%s)"
 }
 
 L:SetOptionLocalization{
 	InhaledBlight		= "Mostrar aviso para $spell:71912",
+	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
@@ -196,9 +198,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnStickyOoze			= "Moco pegajoso! Muévete!",
-	SpecWarnRadiatingOoze		= "Moco emanador",
-	SpecWarnMutatedInfection	= "Infección mutada en ti"
+	WarnOozeSpawn				= "Salen mocos pequeños",
+	WarnUnstableOoze			= "%s en >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
 }
 
 L:SetTimerLocalization{
@@ -206,16 +207,16 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnStickyOoze			= "Mostrar aviso especial para Moco pegajoso",
-	SpecWarnRadiatingOoze		= "Mostrar aviso especial para Moco emanador",
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
-	SpecWarnMutatedInfection 	= "Mostrar aviso especial cuando te afecte Infección mutada",
-	InfectionIcon				= "Set icons on Mutated Infection targets",
-	WarnOozeSpawn				= "Show warning for Little Ooze spawning"
+	WarnOozeSpawn				= "Mostrar aviso cuando salgan mocos pequeños",
+	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
+	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
+	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
 }
 
 L:SetMiscLocalization{
 	YellSlimePipes1	= "Good news, everyone! I've fixed the poison slime pipes!"	-- Professor Putricide
+	YellSlimePipes2	= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
 }
 
 ---------------------------
@@ -228,9 +229,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon		= "Fase 2 pronto",
+	WarnPhase3Soon		= "Fase 3 pronto",
+	WarnMutatedPlague	= "%s en >%s< (%s)"			-- Mutated Plague on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~83%)",
+	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~38%)",
+	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
+	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
 
 L:SetMiscLocalization{
