@@ -65,7 +65,7 @@ function mod:SPELL_CAST_START(args)
 		warnStickyOoze:Show()
 	elseif args:IsSpellID(69839) then
 		warnOozeExplosionCast:Show()
-		specWarnOozeExplosion::Schedule(4)
+		specWarnOozeExplosion:Schedule(4)
 		timerOozeExplosion:Start()
 	end
 end
