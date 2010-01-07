@@ -33,7 +33,7 @@ local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
 local specWarnMutatedPlague			= mod:NewSpecialWarningStack(72451, nil, 5)--Minimum number of stacks needed to clear other tanks debuff with 2 tanks
 
-local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341-- Approx
+local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)-- Approx
 local timerUnstableExperimentCD		= mod:NewNextTimer(35, 70351)
 local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
 --local timerCreateConcoction			= mod:NewBuffActiveTimer(15, 71621)--Commented out til i know for sure if it's 15 seconds or 4 seconds. 15 makes more sense with duration of tear gas but tooltip says 4 :\
@@ -48,7 +48,7 @@ mod:AddBoolOption("GaseousBloatIcon")
 
 local warned_preP2 = false
 local warned_preP3 = false
-
+local spamPuddle = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -69,9 +69,10 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(70341) then
+	if args:IsSpellID(70341) and GetTime() - spamPuddle > 5 then
 		warnSlimePuddle:Show()
 		timerSlimePuddleCD:Start()
+		spamPuddle = GetTime()
 	elseif args:IsSpellID(71255) then
 		warnChokingGasBomb:Show()
 	elseif args:IsSpellID(72295, 72615, 72295, 72296) then
