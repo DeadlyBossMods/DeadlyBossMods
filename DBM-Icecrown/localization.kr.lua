@@ -160,7 +160,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	RunePower				= "피 마력",
-	PullAlliance			= "코르크론, 출발하라! 용사들이여, 뒤를 조심하게. 스컬지는..."
+	PullHorde				= "코르크론, 출발하라! 용사들이여, 뒤를 조심하게. 스컬지는...",
+	PullAlliance			= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.",
 }
 
 -----------------
@@ -238,7 +239,8 @@ L:SetOptionLocalization{
 	specWarnMalleableGooNear	= "주변의 유연한 끈적이 특수 경고 보기\n(첫 대상 근처에 있을 경우)",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
-	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
+	MalleableGooIcon			= "$spell:72295 대상 공격대 아이콘 설정하기"	
 }
 
 L:SetMiscLocalization{
