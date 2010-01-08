@@ -177,13 +177,17 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Pull or msg:find(L.Pull, 1, true) then
-		self:SendSync("Pull")
+	if msg == L.PullAlliance or msg:find(L.PullAlliance, 1, true) then
+		self:SendSync("PullAlliance")
+	elseif msg == L.PullHorde or msg:find(L.PullHorde, 1, true) then
+		self:SendSync("PullHorde")
 	end
 end
 
 function mod:OnSync(msg, arg)
-	if msg == "Pull" then
+	if msg == "PullAlliance" then
 		timerCombatStart:Start()
+	elseif msg == "PullHorde" then
+		timerCombatStart:Start(99)
 	end
 end
