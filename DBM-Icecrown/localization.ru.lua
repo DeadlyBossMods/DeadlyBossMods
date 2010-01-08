@@ -33,9 +33,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnMortalWound	= "%s на |3-5(>%s<) (%s)"		-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
 ----------------------
@@ -151,14 +153,15 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "Устанавливать метки на цели заклинания $spell:72444 \n во время его применения",
+	SetIconOnMarkCast		= "Устанавливать метки на цели заклинания $spell:72444\nво время его применения (экспериментально, может по ошибке\nпомечать танка)",
 	RangeFrame				= "Показывать окно допустимой дистанции (11 м)",
 	RunePowerFrame			= "Показывать здоровье босса + индикатор для $spell:72371"
 }
 
 L:SetMiscLocalization{
 	RunePower			= "Сила крови",
-	PullAlliance		= "Все павшие воины Орды, все дохлые псы Альянса – все пополнят армию Короля-лича. Даже сейчас валь'киры воскрешают ваших покойников, чтобы те стали частью Плети!"
+	PullAlliance		= "Все павшие воины Орды, все дохлые псы Альянса – все пополнят армию Короля-лича. Даже сейчас валь'киры воскрешают ваших покойников, чтобы те стали частью Плети!",
+	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."
 }
 
 -----------------
@@ -222,17 +225,22 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon		= "Скоро фаза 2",
-	WarnPhase3Soon		= "Скоро фаза 3",
-	WarnMutatedPlague	= "%s на |3-5(>%s<) (%s)"			-- Mutated Plague on >args.destName< (args.amount)
+	WarnPhase2Soon				= "Скоро фаза 2",
+	WarnPhase3Soon				= "Скоро фаза 3",
+	WarnMutatedPlague			= "%s на |3-5(>%s<) (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	specWarnMalleableGoo		= "Вязкая гадость на вас - отбегите",
+	specWarnMalleableGooNear	= "Вязкая гадость около вас - остерегайтесь"
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~83%)",
-	WarnPhase3Soon			= "Предупреждать заранее о фазе 3 (на ~38%)",
-	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
-	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
-	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+	WarnPhase2Soon				= "Предупреждать заранее о фазе 2 (на ~83%)",
+	WarnPhase3Soon				= "Предупреждать заранее о фазе 3 (на ~38%)",
+	specWarnMalleableGoo		= "Спец-предупреждение, когда Вязкая гадость на вас\n(работает только если вы - первая цель)",
+	specWarnMalleableGooNear	= "Спец-предупреждение, когда Вязкая гадость около вас\n(работает только если вы около первой цели)",
+	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
+	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
+	MalleableGooIcon			= "Устанавливать метку на первую цель заклинания $spell:72295"
 }
 
 L:SetMiscLocalization{
