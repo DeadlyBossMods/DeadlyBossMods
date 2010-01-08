@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods - Español"
 
-L.TranslationBy 	= "Interplay"
+L.TranslationBy 	= "Interplay, Snamor"
 
 L.TabCategory_Options 	= "Opciones"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
@@ -118,7 +118,7 @@ L.SpecWarn_ResetMe			= "Reiniciar con los valores por defecto"
 L.Panel_HPFrame				= "Barra de vida"
 L.Area_HPFrame				= "Opciones de la barra de vida"
 L.HP_Enabled				= "Siempre ver la barra de vida (Sobreescribe la opción de bosses específicos)"
-L.HP_GrowUpwards			= "Expand health frame upward"
+L.HP_GrowUpwards			= "Mover la barra de vida arriba"
 L.HP_ShowDemo				= "Ver barra de vida"
 L.BarWidth					= "Ancho de la barra: %d"
 
@@ -129,11 +129,11 @@ L.HideBossEmoteFrame		= "Esconder lo que dice el boss"
 L.SpamBlockRaidWarning		= "Filtrar anuncios de otros Boss Mods" 
 L.SpamBlockBossWhispers		= "Avisar por susurros spam de cada boss <DBM>"
 L.BlockVersionUpdatePopup	= "Desabilitar actualizaciones"
-L.ShowBigBrotherOnCombatStart	= "Perform Big Brother buff check on combat start"
+L.ShowBigBrotherOnCombatStart	= "Comprobar los bufos con Big Brother al inicio del combate"
 
-L.Area_SpamFilter_Outgoing		= "Global Filter Options"
-L.SpamBlockNoShowAnnounce		= "Do not show announces or play warning sounds"
-L.SpamBlockNoSendAnnounce		= "Do not send announces to raid chat"
-L.SpamBlockNoSendWhisper		= "Do not send whispers to other players"
-L.SpamBlockNoSetIcon			= "Do not set icons on targets"
+L.Area_SpamFilter_Outgoing		= "Opciones de Filtro Global"
+L.SpamBlockNoShowAnnounce		= "No mostrar avisos o reproducir sonidos"
+L.SpamBlockNoSendAnnounce		= "No poner mensajes en el chat de raid"
+L.SpamBlockNoSendWhisper		= "No enviar susurros a otros jugadores"
+L.SpamBlockNoSetIcon			= "No poner iconos en objetivos"
 
