@@ -52,6 +52,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("OozeAdhesiveIcon")
 mod:AddBoolOption("GaseousBloatIcon")
+mod:AddBoolOption("MalleableGooIcon")
 
 local warned_preP2 = false
 local warned_preP3 = false
@@ -70,7 +71,9 @@ end
 function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2 people in 25 man
 	local targetname = self:GetBossTarget(36678)
 	if not targetname then return end
-		self:SetIcon(targetname, 6, 10)
+		if self.Options.MalleableGooIcon then
+			self:SetIcon(targetname, 6, 10)
+		end
 	if targetname == UnitName("player") then
 		specWarnMalleableGoo:Show()
 	elseif targetname then
@@ -117,7 +120,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVolatileOozeAdhesive:Show()
 		end
 		if self.Options.OozeAdhesiveIcon then
-				mod:SetIcon(args.destName, 8, 8)
+			self:SetIcon(args.destName, 8, 8)
 		end
 	elseif args:IsSpellID(70672, 72455) then--Red Slime (70672 seems used in both normal modes, i suspect 72455 is heroic)
 		warnGaseousBloat:Show(args.destName)
@@ -126,7 +129,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGaseousBloat:Show()
 		end
 		if self.Options.GaseousBloatIcon then
-			mod:SetIcon(args.destName, 7, 20)
+			self:SetIcon(args.destName, 7, 20)
 		end
 	elseif args:IsSpellID(71615, 71618) then--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
 		timerTearGas:Start()
