@@ -33,9 +33,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnMortalWound	= "%s en >%s< (%s)"		-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
 
@@ -131,7 +133,7 @@ L:SetTimerLocalization{
 
 L:SetMiscLocalization{
 	PullAlliance	= "¡Arrancad motores! ¡Tenemos una cita con el destino, muchachos!",
-	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
+	KillAlliance	= "¡No digáis que no lo avisé, sinvergüenzas! Adelante, hermanos.",
 	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
 	KillHorde		= "The Alliance falter. Onward to the Lich King!"
 }
@@ -164,7 +166,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	RunePower			= "Blood Power",
-	PullAlliance		= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge."
+	PullAlliance		= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.",
+	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."
 }
 
 
@@ -231,15 +234,20 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon		= "Fase 2 pronto",
 	WarnPhase3Soon		= "Fase 3 pronto",
-	WarnMutatedPlague	= "%s en >%s< (%s)"			-- Mutated Plague on >args.destName< (args.amount)
+	WarnMutatedPlague	= "%s en >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	specWarnMalleableGoo		= "Moco maleable en ti ¡Muévete!",
+	specWarnMalleableGooNear	= "Moco maleable cerca de ti ¡Ten cuidado!"
 }
 
 L:SetOptionLocalization{
 	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~83%)",
-	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~38%)",
+	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~38%)",	
+	specWarnMalleableGoo		= "Mostrar aviso especial para Moco maleable en ti\n(Sólo funciona en el primer objetivo)",
+	specWarnMalleableGooNear	= "Mostrar aviso especial para Moco maleable cerca de ti\n(Sólo funciona si estás cerca del primer objetivo)",
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
-	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
+	MalleableGooIcon			= "Poner icono en el primero objetivo de $spell:72295"
 }
 
 L:SetMiscLocalization{
