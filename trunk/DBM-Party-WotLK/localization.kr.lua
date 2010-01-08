@@ -879,7 +879,7 @@ L:SetOptionLocalization({
 })
 
 L:SetOptionLocalization({
-	YellCombatEnd	= "No! I can do... better! I can..."
+	YellCombatEnd	= "안 돼! 난 더 잘할 수... 있는데..."
 })
 
 -------------------
