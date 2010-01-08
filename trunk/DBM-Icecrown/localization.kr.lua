@@ -12,15 +12,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnMortalWound				= "%s : >%s< (%s)"		-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnMortalWound				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "알 수 없음"),
 	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 L:SetMiscLocalization{
-	WarderTrap1		= "거기... 누구냐?",
-	WarderTrap2		= "주인님의 성소를 어지럽혔구나!"
+	WarderTrap1					= "거기... 누구냐?",
+	WarderTrap2					= "주인님의 성소를 어지럽혔구나!"
 }
 
 ---------------------------
@@ -222,17 +224,21 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon		= "곧 2 페이즈",
-	WarnPhase3Soon		= "곧 3 페이즈",
-	WarnMutatedPlague	= "%s : >%s< (%s)"			-- Mutated Plague on >args.destName< (args.amount)
+	WarnPhase2Soon				= "곧 2 페이즈",
+	WarnPhase3Soon				= "곧 3 페이즈",
+	WarnMutatedPlague			= "%s : >%s< (%s)",			-- Mutated Plague on >args.destName< (args.amount)
+	specWarnMalleableGoo		= "당신에게 유연한 끈적이 - 이동하세요!",
+	specWarnMalleableGooNear	= "당신 주변에 유연한 끈적이 - 벗어나세요!"	
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon			= "2 페이즈 사전 경고 보기(83% 이하)",
-	WarnPhase3Soon			= "3 페이즈 사전 경고 보기(38% 이하)",
-	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
-	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
-	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+	WarnPhase2Soon				= "2 페이즈 사전 경고 보기(80% 이하)",
+	WarnPhase3Soon				= "3 페이즈 사전 경고 보기(35% 이하)",
+	specWarnMalleableGoo		= "유연한 끈적이 특수 경고 보기\n(첫 대상일 경우)",
+	specWarnMalleableGooNear	= "주변의 유연한 끈적이 특수 경고 보기\n(첫 대상 근처에 있을 경우)",
+	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
+	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
 
 L:SetMiscLocalization{
