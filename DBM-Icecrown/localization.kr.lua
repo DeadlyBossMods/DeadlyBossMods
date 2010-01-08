@@ -160,7 +160,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	RunePower				= "피 마력",
-	Pull					= "코르크론, 출발하라! 용사들이여, 뒤를 조심하게. 스컬지는..."
+	PullAlliance			= "코르크론, 출발하라! 용사들이여, 뒤를 조심하게. 스컬지는..."
 }
 
 -----------------
