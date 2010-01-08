@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36678)
 mod:RegisterCombat("yell", L.YellPull)
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -32,6 +32,8 @@ local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3)--Phase 3 ab
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
 local specWarnMutatedPlague			= mod:NewSpecialWarningStack(72451, nil, 5)--Minimum number of stacks needed to clear other tanks debuff with 2 tanks
+local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
+local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
 
 local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)--Duration of debuff
 local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)-- Approx
@@ -65,6 +67,23 @@ function mod:OnCombatStart(delay)
 	phase = 1
 end
 
+function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2 people in 25 man
+	local targetname = self:GetBossTarget(36678)
+	if not targetname then return end
+		self:SetIcon(targetname, 6, 10)
+	if targetname == UnitName("player") then
+		specWarnMalleableGoo:Show()
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			if inRange then
+				specWarnMalleableGooNear:Show()
+			end
+		end
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70351, 71966) then
 		warnUnstableExperiment:Show()
@@ -84,6 +103,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnChokingGasBomb:Show()
 	elseif args:IsSpellID(72295, 72615, 72295, 72296) then
 		warnMalleableGoo:Show()
+		self:ScheduleMethod(0.1, "MalleableGooTarget")
 	elseif args:IsSpellID(73120, 71893) then--Guzzle Potions, used just before phase 3 to mutate
 		warnGuzzlePotions:Show()
 		timerGuzzlePotions:Start()
