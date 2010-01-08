@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warnZombies		= mod:NewSpellAnnounce(71159)
-local warnMortalWound	= mod:NewTargetAnnounce(71127, 2, nil, false)
+local warnMortalWound	= mod:NewAnnounce("warnMortalWound", 2, nil, false)
 local warnDecimateSoon	= mod:NewSoonAnnounce(71123)
 
 local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)
@@ -35,7 +35,7 @@ end--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71127) then
-		warnMortalWound:Show(args.destName)
+		warnMortalWound:Show(args.spellName, args.destName, args.amount or 1)
 		timerMortalWound:Start(args.destName)
 		if args:IsPlayer() and (args.amount or 1) >= 5 then
 			specWarnMortalWound:Show(args.amount)
