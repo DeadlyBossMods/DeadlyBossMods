@@ -4,11 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(26693)
 
---mod:RegisterCombat("combat")
-mod:RegisterCombat("yell", L.CombatStart)
-mod:RegisterKill("yell", L.YellCombatEnd)
-mod:SetMinCombatTime(30)
-mod:SetWipeTime(30)
+mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -32,12 +28,6 @@ local timerAchieve		= mod:NewAchievementTimer(180, 1873, "TimerSpeedKill")
 
 local soundWhirlwind	= mod:NewSound(59322, nil, isMelee)
 
-function mod:OnCombatStart(delay)
-	if mod:IsDifficulty("heroic5") then
-		timerAchieve:Start(-delay)
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(59331, 50255) then
 		warningPoison:Show(args.destName)
@@ -59,11 +49,17 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase2 or msg:find(L.Phase2) then
 		self:SendSync("Phase2")
+	elseif msg == L.CombatStart or msg:find(L.CombatStart) then
+		self:SendSync("CombatStart")
 	end
 end
 
 function mod:OnSync(msg, arg)
 	if msg == "Phase2" then
 		warnPhase2:Show()
+	elseif msg == "CombatStart" then
+		if mod:IsDifficulty("heroic5") then
+			timerAchieve:Start(-delay)
+		end
 	end
 end
