@@ -10,9 +10,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnMortalWound	= "%s on >%s< (%s)"		-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown"),
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
