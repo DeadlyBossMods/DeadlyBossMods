@@ -265,12 +265,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerWaveIn	= 	"Siguiente oleada (6)", 
+	TimerWaveIn	= 	"Siguiente oleada (6)",
+	TimerRollplay	= "Dialogo inicial"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("Nueva oleada"),
-	TimerWaveIn		= "Mostrar la \"Siguiente oleada\" ",
+	TimerWaveIn		= "Mostrar tiempo para próximas oleadas (despues del boss de la 5a oleada)",
+	TimerRollplay	= "Mostrar tiempo de diálogo inicial"
 })
 
 
@@ -289,7 +291,8 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s and %d %s",
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Oleada de la Plaga = %d/10"
+	WaveCheck	= "Oleada de la Plaga = %d/10",
+	Rollplay	= "Me alegro de que lo consiguieras, Uther."
 })
 
 
@@ -635,7 +638,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("phase number"),
+	WarningPhase	= optionWarning:format("Fase numero"),
 	timerEvent		= "Mostrar tiempo restante del evento"
 })
 
@@ -1541,11 +1544,11 @@ L:SetMiscLocalization({
 	Ghoul			= "Necrófago enfurecido",--creature id 36940. Not sure how to use these in function above to simplify locals though. :\
 	Abom			= "Abominación torpe",--creature id 37069
 	WitchDoctor		= "Médico brujo resucitado",--creature id 36941
-	ACombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",
+	ACombatStart	= "Es demasiado poderoso. ¡Debemos abandonar este lugar ahora mismo! Mi magia podrá inmovilizarlo brevemente. ¡Vamos rápido, héroes!",
 	HCombatStart	= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",
-	Wave1			= "There is no escape!",
-	Wave2			= "Succumb to the chill of the grave.",
-	Wave3			= "Another dead end.",
-	Wave4			= "How long can you fight it?",
-	YellCombatEnd	= "FUEGO! FUEGO!"
+	Wave1			= "¡No hay escapatoria!",
+	Wave2			= "Sucumbe al frío de la tumba.",
+	Wave3			= "Otro callejón sin salida.",
+	Wave4			= "¿Cuánto tiempo podrás resistir?",
+	YellCombatEnd	= "¡FUEGO! ¡FUEGO!"
 })
