@@ -236,7 +236,8 @@ L:SetOptionLocalization{
 	specWarnMalleableGooNear	= "Show special warning for Malleable Goo near you\n(Only works if you are near first target)",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
-	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
+	MalleableGooIcon			= "Set icon on first $spell:72295 target"
 }
 
 L:SetMiscLocalization{
