@@ -40,10 +40,10 @@ local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410)
 
 local enrageTimer			= mod:NewBerserkTimer(480)
 
-mod:AddBoolOption("SetIconOnBoilingBlood", true)
-mod:AddBoolOption("SetIconOnMarkCast", false)
 mod:AddBoolOption("RangeFrame", isRanged)
 mod:AddBoolOption("RunePowerFrame", true, "misc")
+mod:AddBoolOption("SetIconOnBoilingBlood", true)
+mod:AddBoolOption("SetIconOnMarkCast", false)
 mod:RemoveOption("HealthFrame")
 
 local warned_preFrenzy = false
