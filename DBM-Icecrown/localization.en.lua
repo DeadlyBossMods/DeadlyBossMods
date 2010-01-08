@@ -222,17 +222,21 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon		= "Phase 2 soon",
-	WarnPhase3Soon		= "Phase 3 soon",
-	WarnMutatedPlague	= "%s on >%s< (%s)"			-- Mutated Plague on >args.destName< (args.amount)
+	WarnPhase2Soon				= "Phase 2 soon",
+	WarnPhase3Soon				= "Phase 3 soon",
+	WarnMutatedPlague			= "%s on >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	specWarnMalleableGoo		= "Malleable Goo on you - Move away",
+	specWarnMalleableGooNear	= "Malleable Goo near you - Watch out"
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~83%)",
-	WarnPhase3Soon			= "Show pre-warning for Phase 3 (at ~38%)",
-	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
-	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
-	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+	WarnPhase2Soon				= "Show pre-warning for Phase 2 (at ~83%)",
+	WarnPhase3Soon				= "Show pre-warning for Phase 3 (at ~38%)",
+	specWarnMalleableGoo		= "Show special warning for Malleable Goo on you\n(Only works if you are first target)",
+	specWarnMalleableGooNear	= "Show special warning for Malleable Goo near you\n(Only works if you are near first target)",
+	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
+	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
 }
 
 L:SetMiscLocalization{
