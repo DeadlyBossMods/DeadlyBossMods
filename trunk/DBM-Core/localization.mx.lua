@@ -1,4 +1,5 @@
-﻿if GetLocale() ~= "esMX" then return end
+﻿--file is really just a copy and paste of esES but probably closer to accurate than just using english for mx
+if GetLocale() ~= "esMX" then return end
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error al cargar modulo %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Cargado modulo de '%s' !"
@@ -21,9 +22,9 @@ DBM_CORE_SEC_FMT					= "%d sec"
 DBM_CORE_DEAD						= "muerto"
 DBM_CORE_OK							= "Aceptar"
 
-DBM_CORE_GENERIC_WARNING_BERSERK	= "Enrage en %s %s"
-DBM_CORE_GENERIC_TIMER_BERSERK		= "Enrage"
-DBM_CORE_OPTION_TIMER_BERSERK		= "Mostrar tiempo para Enrage"
+DBM_CORE_GENERIC_WARNING_BERSERK	= "Berserk en %s %s"
+DBM_CORE_GENERIC_TIMER_BERSERK		= "Berserk"
+DBM_CORE_OPTION_TIMER_BERSERK		= "Mostrar tiempo para Berserk"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Mostrar barra de vida del boss"
 
 DBM_CORE_OPTION_CATEGORY_TIMERS		= "Barras"
@@ -141,7 +142,7 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	spell 	= "Mostrar aviso especial para $spell:%d",
 	dispel 	= "Mostrar aviso especial para dispelear/robar hechizo \n $spell:%d",
-	interupt= "Show special warning to interupt $spell:%d",
+	interupt= "Mostrar aviso especial para interrumpir $spell:%d",
 	you 	= "Mostrar aviso especial cuando te afecta \n $spell:%d",
 	target 	= "Mostrar aviso especial cuando a alguien le afecta \n $spell:%d",
 	close 	= "Mostrar aviso especial cuando a alguien cerca de ti \n le afecta $spell:%d",
@@ -154,7 +155,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s!",
 	dispel = "%s en %%s - dispelea ahora",
-	interupt = "%s - interupt now",
+	interupt = "%s - interrumpe ahora",
 	you = "%s en ti",
 	target = "%s en %%s",
 	close = "%s en %%s cerca de ti",
