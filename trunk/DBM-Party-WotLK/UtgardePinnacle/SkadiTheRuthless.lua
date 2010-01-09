@@ -59,7 +59,7 @@ function mod:OnSync(msg, arg)
 		warnPhase2:Show()
 	elseif msg == "CombatStart" then
 		if mod:IsDifficulty("heroic5") then
-			timerAchieve:Start(-delay)
+			timerAchieve:Start()
 		end
 	end
 end
