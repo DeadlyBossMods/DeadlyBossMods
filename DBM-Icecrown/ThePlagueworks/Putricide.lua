@@ -36,8 +36,10 @@ local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
 local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
 
 local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)--Duration of debuff
-local timerSlimePuddleCD			= mod:NewNextTimer(35, 70341)-- Approx
-local timerUnstableExperimentCD		= mod:NewNextTimer(35, 70351)
+local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)-- Approx
+local timerUnstableExperimentCD		= mod:NewCDTimer(35, 70351)
+local timerChokingGasBombCD			= mod:NewCDTimer(35, 71255)
+local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
 --local timerCreateConcoction		= mod:NewBuffActiveTimer(15, 71621)--Commented out til i know for sure if it's 15 seconds or 4 seconds. 15 makes more sense with duration of tear gas but tooltip says 4 :\
 local timerGuzzlePotions			= mod:NewBuffActiveTimer(12, 71893)--4seconds cast plus 8 seconds for transformation
@@ -104,8 +106,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		spamPuddle = GetTime()
 	elseif args:IsSpellID(71255) then
 		warnChokingGasBomb:Show()
+		timerChokingGasBombCD:Start()
 	elseif args:IsSpellID(72295, 72615, 72295, 72296) then
 		warnMalleableGoo:Show()
+		timerMalleableGooCD:Start()
 		self:ScheduleMethod(0.1, "MalleableGooTarget")
 	elseif args:IsSpellID(73120, 71893) then--Guzzle Potions, used just before phase 3 to mutate
 		warnGuzzlePotions:Show()
