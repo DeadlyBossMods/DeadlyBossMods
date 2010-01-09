@@ -56,6 +56,7 @@ function mod:OnCombatStart(delay)
 	timerWhirlwindCD:Start(45-delay)
 	timerBoneSpike:Start(15-delay)
 	berserkTimer:Start(-delay)
+	table.wipe(impaleTargets)
 end
 
 function mod:SPELL_CAST_START(args)

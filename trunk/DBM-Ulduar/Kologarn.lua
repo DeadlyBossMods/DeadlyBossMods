@@ -10,6 +10,7 @@ mod:RegisterCombat("combat", 32930, 32933, 32934)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 --	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_WHISPER",
@@ -124,4 +125,10 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
             end
 		end
 	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(64290, 64292) then
+		self:SetIcon(args.destName, 0)
+    end
 end
