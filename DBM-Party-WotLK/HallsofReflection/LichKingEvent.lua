@@ -2,22 +2,18 @@ local mod = DBM:NewMod("LichKingEvent", "DBM-Party-WotLK", 16)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 2153 $"):sub(12, -3))
-mod:SetCreatureID(37226, 36954)--Both creature Ids used in Halls of Reflection
+--mod:SetCreatureID(37226, 36954)--Both creature Ids used in Halls of Reflection
 
-if UnitFactionGroup("player") == "Alliance" then
+--[[if UnitFactionGroup("player") == "Alliance" then
 	mod:RegisterCombat("yell", L.ACombatStart)
 else
 	mod:RegisterCombat("yell", L.HCombatStart)
 end
 
 mod:RegisterKill("yell", L.YellCombatEnd)--Combat does not end for another 8 or so seconds after this yell (for achievement credit). Not sure how to go about fixing this yet.
---[[			"<473.2> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL:FIRE! FIRE!:High Captain Justin Bartlett:::::0:0::0:2277::", -- [9219]
-				"<481.6> [CAST_SUCCEEDED] The Lich King:Achievement Check::0:", -- [9224]
-				"<481.7> [WORLD_STATE] |0:0:Spirit Wave = 0/10:::Number of Spirit waves encountered.:::0:0:0:", -- [9225]
-				"<482.1> [REGEN_ENABLED]  -- < Regen Enabled : Leaving combat! -- < ", -- [9226]--]]
 
 mod:SetMinCombatTime(120)--Dirty Hack to engage mod after a wipe on zonein and keep it engaged. if you wipe, pull yell happens as soon as you zone back in despite the event not actually being started until you tell jaina/sylvanas you're ready to try again. This is only way to hack around this so mod doesn't wipe you for not being in combat after yell.
-
+--]]
 mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL"
