@@ -96,7 +96,10 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull						= "이게 무슨 소란이지? 감히 이 신성한 땅을 지나가려 해? 여기가 마지막 숨을 거둘 곳이 되리라!",
 	YellReanimatedFanatic			= "일어나라, 순수한 모습을 기뻐하라!",
-	ShieldPercent					= "마나 방벽"
+	ShieldPercent					= "마나 방벽",
+	Fanatic1						= "Cult Fanatic",
+	Fanatic2						= "Deformed Fanatic",
+	Fanatic3						= "Reanimated Fanatic"
 }
 
 ----------------------

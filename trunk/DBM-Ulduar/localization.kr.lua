@@ -23,8 +23,8 @@ L:SetWarningLocalization{
 	warnNextPursueSoon		= "추적 전환 5 초전",
 	SpecialPursueWarnYou	= "거대 화염전차가 당신을 추적합니다!",	
 	SystemOverload			= "시스템 과부화",
-	warnWardofLife			= "생명지기 덩굴손 등장",
-	warnWrithingLasher		= "고뇌의 덩굴손 등장"	
+	warnWardofLife			= "생명지기 덩굴손 등장"
+--	warnWrithingLasher		= "고뇌의 덩굴손 등장"	
 }
 
 L:SetOptionLocalization{
@@ -32,8 +32,8 @@ L:SetOptionLocalization{
 	SpecialPursueWarnYou	= "추적자 특수 경고 보기",
 	PursueWarn				= "추적 플레이어 레이드 경고로 보기",
 	warnNextPursueSoon		= "다음 추적 경고 보기",
-	warnWardofLife			= "생명지기 덩굴손 등장 특수 경고 보기",
-	warnWrithingLasher		= "고뇌의 덩굴손 등장 특수 경고 보기"	
+	warnWardofLife			= "생명지기 덩굴손 등장 특수 경고 보기"
+--	warnWrithingLasher		= "고뇌의 덩굴손 등장 특수 경고 보기"	
 }
 
 -------------
@@ -144,9 +144,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge			= "전기 충전 시전",
-	RuneofDeath					= "죽음의 룬 - 이동! 이동! 이동!",
-	LightningTendrils			= "번개 덩굴 - 느리면 푹!찍! 이동!",
-	Overload					= "과부하 - 이동!",
 	RuneofPower        			= "마력의 룬 : >%s<"	
 }
 
@@ -154,9 +151,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	LightningTendrils				= "번개 덩굴 특수 경고 보기",
-	RuneofDeath						= "죽음의 룬 특수 경고 보기",
-	Overload						= "과부하 일 때 특수 경고 보기",
 	WarningSupercharge				= "전기 충전 시전 경고 보기",
 	AlwaysWarnOnOverload			= "과부하 일 때 지속적인 경고 알리기(타겟일 경우만)",
 	PlaySoundOnOverload				= "과부화 일 때 소리 재생",	
