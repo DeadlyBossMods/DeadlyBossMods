@@ -128,9 +128,6 @@ function mod:SPELL_CAST_START(args)
 		if phase == 1 and self.Options.ShockBlastWarningInP1 or phase == 4 and self.Options.ShockBlastWarningInP4 then
 			warnShockBlast:Show()
 		end
-		if( GetLocale() == "frFR") then
-			warnShockBlast:Show()
-		end
 		timerShockBlast:Start()
 		timerNextShockblast:Start()
 		if self.Options.PlaySoundOnShockBlast then
