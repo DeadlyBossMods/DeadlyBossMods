@@ -30,7 +30,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(42708, 42729, 59708, 59734) then
 		warningGrowl:Show()
 	end
-	if args:IsSpellID(42729) then
+	if args:IsSpellID(42729, 59734) then
 		specWarnSpelllock:Show()
 	end
 end
