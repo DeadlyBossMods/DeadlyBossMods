@@ -24,8 +24,7 @@ L:SetWarningLocalization{
 	warnNextPursueSoon		= "Смена цели через 5 секунд",
 	SpecialPursueWarnYou	= "Преследует вас - бегите",
 	SystemOverload			= "Отключение системы",
-	warnWardofLife			= "Призыв Защитника жизни",
-	warnWrithingLasher		= "Призыв Змеящегося плеточника"
+	warnWardofLife			= "Призыв Защитника жизни"
 }
 
 L:SetOptionLocalization{
@@ -33,8 +32,7 @@ L:SetOptionLocalization{
 	SpecialPursueWarnYou	= "Спец-предупреждение для Преследования",
 	PursueWarn				= "Объявлять преследуемого игрока",
 	warnNextPursueSoon		= "Предупреждать перед следующим преследованием",
-	warnWardofLife			= "Спец-предупреждение для призыва Защитника жизни",
-	warnWrithingLasher		= "Спец-предупреждение для призыва Змеящегося плеточника"
+	warnWardofLife			= "Спец-предупреждение для призыва Защитника жизни"
 }
 
 --------------------------------
@@ -144,10 +142,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge	= "Суперзаряд",
-	RuneofDeath			= "Руна смерти - бегите",
-	LightningTendrils	= "Светящиеся придатки - бегите",
-	Overload			= "Перегрузка - бегите",
-	RuneofPower			= "Руна силы на >%s<"
+	RuneofPower			= "Руна силы на |3-5(>%s<)"
 }
 
 L:SetTimerLocalization{
@@ -155,12 +150,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarningSupercharge			= "Предупреждение для заклинания Суперзаряд",
-	LightningTendrils			= "Спец-предупреждение для Светящихся придатков",
 	PlaySoundLightningTendrils	= "Звуковой сигнал при Светящихся придатках",
 	SetIconOnOverwhelmingPower	= "Установить метку на цель под Переполняющей энергией",
-	RuneofDeath					= "Спец-предупреждение для Руны смерти",
 	SetIconOnStaticDisruption	= "Установить метку на цель под Статическим сбоем",
-	Overload					= "Спец-предупреждение для Перегрузки",
 	AlwaysWarnOnOverload		= "Объявлять когда Перегрузка (иначе, когда нацеливание)",
 	PlaySoundOnOverload			= "Звуковой сигнал при Перегрузке",
 	PlaySoundDeathRune			= "Звуковой сигнал при Рунах смерти",
