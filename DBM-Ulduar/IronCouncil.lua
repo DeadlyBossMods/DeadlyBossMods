@@ -28,9 +28,9 @@ local warnSupercharge			= mod:NewAnnounce("WarningSupercharge", 3, 61920)
 local warnChainlight			= mod:NewSpellAnnounce(64215, 1)
 local timerOverload				= mod:NewCastTimer(6, 63481)
 local timerLightningWhirl		= mod:NewCastTimer(5, 63483)
-local specwarnLightningTendrils	= mod:NewSpecialWarning("LightningTendrils")  -- 63486
+local specwarnLightningTendrils	= mod:NewSpecialWarningRun(63486)
 local timerLightningTendrils	= mod:NewBuffActiveTimer(27, 63486)
-local specwarnOverload			= mod:NewSpecialWarning("Overload") 
+local specwarnOverload			= mod:NewSpecialWarningRun(63481) 
 mod:AddBoolOption("AlwaysWarnOnOverload", false, "announce")
 mod:AddBoolOption("PlaySoundOnOverload", true)
 mod:AddBoolOption("PlaySoundLightningTendrils", true)
@@ -53,7 +53,7 @@ local warnRuneofPower			= mod:NewSpellAnnounce(64320, 1)
 local warnRuneofDeath			= mod:NewSpellAnnounce(63490, 2)
 local warnShieldofRunes			= mod:NewSpellAnnounce(63489, 2)
 local warnRuneofSummoning		= mod:NewSpellAnnounce(62273, 3)
-local specwarnRuneofDeath		= mod:NewSpecialWarning("RuneofDeath")
+local specwarnRuneofDeath		= mod:NewSpecialWarningMove(63490)
 local specwarnRuneofPower		= mod:NewSpecialWarning("RuneofPower", false)
 local timerRuneofDeathDura		= mod:NewNextTimer(30, 63490)
 local timerRuneofPower			= mod:NewCDTimer(30, 61974)
@@ -63,35 +63,75 @@ mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 local enrageTimer				= mod:NewBerserkTimer(900)
 
 local disruptTargets = {}
+local disruptIcon = 7
 
 function mod:OnCombatStart(delay)
-	enrageTimer:Start(-delay)	
+	enrageTimer:Start(-delay)
+	table.wipe(disruptTargets)
+	disruptIcon = 7
 end
 
-function mod:OnCombatEnd()
---	if DBM.RangeCheck:IsShown() then
---		DBM.RangeCheck:Hide()
---	end
-end
+--[[function mod:OnCombatEnd()
+	if DBM.RangeCheck:IsShown() then
+		DBM.RangeCheck:Hide()
+	end
+end--]]
 
-function mod:DisruptAnnounce()
+local function warnStaticDisruptionTargets()
 	warnStaticDisruption:Show(table.concat(disruptTargets, "<, >"))
 	table.wipe(disruptTargets)
+	disruptIcon = 7
 end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(61920) then -- Supercharge - Unleashes one last burst of energy as the caster dies, increasing all allies damage by 25% and granting them an additional ability.	
 		warnSupercharge:Show()
-
 	elseif args:IsSpellID(63479, 61879) then	-- Chain light
 		warnChainlight:Show()
-
 	elseif args:IsSpellID(63483, 61915) then	-- LightningWhirl
 		timerLightningWhirl:Start()
-
 	elseif args:IsSpellID(61903, 63493) then	-- Fusion Punch
 		warnFusionPunch:Show()
 		timerFusionPunchCast:Start()
+	elseif args:IsSpellID(62274, 63489) then		-- Shield of Runes
+		warnShieldofRunes:Show()
+	elseif args:IsSpellID(62273) then				-- Rune of Summoning
+		warnRuneofSummoning:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(63490, 62269) then		-- Rune of Death
+		warnRuneofDeath:Show()
+		timerRuneofDeathDura:Start()
+	elseif args:IsSpellID(64321, 61974) then	-- Rune of Power
+		warnRuneofPower:Show()
+		timerRuneofPower:Start()
+	elseif args:IsSpellID(61869, 63481) then	-- Overload
+		timerOverload:Start()
+		if self.Options.AlwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
+			specwarnOverload:Show()
+			if self.Options.PlaySoundOnOverload then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
+		end
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(61903, 63493) then		-- Fusion Punch
+		timerFusionPunchActive:Start(args.destName)
+	elseif args:IsSpellID(64320) and not args:IsDestTypePlayer() then	-- Rune of Power
+		specwarnRuneofPower:Show(args.destName)
+	elseif args:IsSpellID(62269, 63490) then	-- Rune of Death - move away from it
+		if args:IsPlayer() then
+			specwarnRuneofDeath:Show()
+			if self.Options.PlaySoundDeathRune then
+				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
+		end
+	elseif args:IsSpellID(62277, 63967) and not args:IsDestTypePlayer() then		-- Shield of Runes
+		timerShieldofRunes:Start()		
 	elseif args:IsSpellID(64637, 61888) then	-- Overwhelming Power
 		warnOverwhelmingPower:Show(args.destName)
 		if mod:IsDifficulty("heroic10") then
@@ -106,71 +146,24 @@ function mod:SPELL_CAST_START(args)
 				mod:SetIcon(args.destName, 8, 30) -- skull for 30 seconds (until meltdown)
 			end
 		end
---		if args:IsPlayer() then
---			if self.Options.RangeFrame then
---				DBM.RangeCheck:Show(30)
---			end
---		end
-
-	elseif args:IsSpellID(62274, 63489) then		-- Shield of Runes
-		warnShieldofRunes:Show()
-	elseif args:IsSpellID(62273) then				-- Rune of Summoning
-		warnRuneofSummoning:Show()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(63490, 62269) then		-- Rune of Death
-		warnRuneofDeath:Show()
-		timerRuneofDeathDura:Start()
-
-	elseif args:IsSpellID(64321, 61974) then	-- Rune of Power
-		warnRuneofPower:Show()
-		timerRuneofPower:Start()
-
-	elseif args:IsSpellID(61869, 63481) then	-- Overload
-		timerOverload:Start()
-
-		if self.Options.AlwaysWarnOnOverload or UnitName("target") == L.StormcallerBrundir then
-			specwarnOverload:Show()
-			if self.Options.PlaySoundOnOverload then
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+--[[	if args:IsPlayer() then
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(30)
 			end
-		end
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(61903, 63493) then		-- Fusion Punch
-		timerFusionPunchActive:Start(args.destName)
-
-	elseif args:IsSpellID(64320) and not args:IsDestTypePlayer() then	-- Rune of Power
-		specwarnRuneofPower:Show(args.destName)
-
-	elseif args:IsSpellID(62269, 63490) then	-- Rune of Death - move away from it
-		if args:IsPlayer() then
-			specwarnRuneofDeath:Show()
-			if self.Options.PlaySoundDeathRune then
-				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-			end
-		end
-		
-	elseif args:IsSpellID(62277, 63967) and not args:IsDestTypePlayer() then		-- Shield of Runes
-		timerShieldofRunes:Start()		
-
+		end--]]
 	elseif args:IsSpellID(63486, 61887) then	-- Lightning Tendrils
 		timerLightningTendrils:Start()
 		specwarnLightningTendrils:Show()
 		if self.Options.PlaySoundLightningTendrils then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
-
 	elseif args:IsSpellID(61912, 63494) then	-- Static Disruption (Hard Mode)
+		disruptTargets[#disruptTargets + 1] = args.destName
 		if self.Options.SetIconOnStaticDisruption then 
-			self:SetIcon(args.destName, 8 - #disruptTargets, 20)
+			self:SetIcon(args.destName, disruptIcon, 20)
+			disruptIcon = disruptIcon - 1
 		end
-		table.insert(disruptTargets, args.destName)
-		self:UnscheduleMethod("DisruptAnnounce")
-		self:ScheduleMethod(0.15, "DisruptAnnounce")
+		self:Unschedule(warnStaticDisruptionTargets)
+		self:Schedule(0.3, warnStaticDisruptionTargets)
 	end
 end

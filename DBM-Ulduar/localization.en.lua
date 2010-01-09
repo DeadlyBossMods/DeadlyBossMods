@@ -22,8 +22,7 @@ L:SetWarningLocalization{
 	warnNextPursueSoon		= "Target change in 5 seconds",
 	SpecialPursueWarnYou	= "You are being pursued - Run away",
 	SystemOverload			= "System Overload",
-	warnWardofLife			= "Ward of Life spawned",
-	warnWrithingLasher		= "Writhing Lashers spawned"
+	warnWardofLife			= "Ward of Life spawned"
 }
 
 L:SetOptionLocalization{
@@ -31,8 +30,7 @@ L:SetOptionLocalization{
 	SpecialPursueWarnYou	= "Show special warning when you are being pursued",
 	PursueWarn				= "Announce pursued targets",
 	warnNextPursueSoon		= "Show pre-warning for next pursue",
-	warnWardofLife			= "Show special warning for Ward of Life spawn",
-	warnWrithingLasher		= "Show special warning for Writhing Lasher spawn"
+	warnWardofLife			= "Show special warning for Ward of Life spawn"
 }
 
 --------------------------------
@@ -142,9 +140,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge	= "Supercharge incoming",
-	RuneofDeath			= "Rune of Death - Move away",
-	LightningTendrils	= "Lightning Tendrils - Run away",
-	Overload			= "Overload - Run away",
 	RuneofPower			= "Rune of Power on >%s<"
 }
 
@@ -153,12 +148,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarningSupercharge			= "Show warning when Supercharge is being cast",
-	LightningTendrils			= "Show special warning for Lightning Tendrils",
 	PlaySoundLightningTendrils	= "Play sound on Lightning Tendrils",
 	SetIconOnOverwhelmingPower	= "Set icons on Overwhelming Power targets",
-	RuneofDeath					= "Show special warning for Rune of Death",
 	SetIconOnStaticDisruption	= "Set icons on Static Disruption targets",
-	Overload					= "Show special warning for Overload",
 	AlwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
 	PlaySoundOnOverload			= "Play sound on Overload",
 	PlaySoundDeathRune			= "Play sound on Rune of Death",
