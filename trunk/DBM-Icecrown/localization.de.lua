@@ -28,9 +28,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnMortalWound	= "%s auf >%s< (%s)"		-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
 ----------------------
@@ -136,7 +138,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	InhaledBlight		= "Eingeatmeter Seuchennebel >%d<",
-	WarnGastricBloat	= "%s on >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+	WarnGastricBloat	= "%s auf >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
@@ -151,24 +153,29 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Rotface")
 
 L:SetGeneralLocalization{
-	name = "Rotface"
+	name = "Modermiene"
 }
 
 L:SetWarningLocalization{
+	WarnOozeSpawn		= "Kleiner Schleim spawnt",
+	WarnUnstableOoze	= "%s auf >%s< (%s)"	 -- Unstable Ooze on >args.destName< (args.amount)
 }
 
 L:SetTimerLocalization{
+	NextPoisonSlimePipes	 = "Nächste Giftschleim-Rohre"
 }
 
 L:SetOptionLocalization{
+	NextPoisonSlimePipes		= "Zeige Timer für nächsten Giftschleim-Rohre",
+	WarnOozeSpawn				= "Zeige Warnung für Kleiner Schleim spawn",
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
 }
 
 L:SetMiscLocalization{
---	YellSlimePipes1	= "Good news, everyone! I've fixed the poison slime pipes!",	-- Professor Putricide
---	YellSlimePipes2	= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
+	YellSlimePipes1	= "Gute Nachricht, Freunde! Die Giftschleim-Rohre sind repariert!",	-- Professor Putricide
+	YellSlimePipes2	= "Gute Nachricht, Freunde! Der Schleim fließt wieder!"	-- Professor Putricide
 }
 
 ---------------------------
