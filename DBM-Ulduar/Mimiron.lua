@@ -47,7 +47,7 @@ local timerNextDarkGlare		= mod:NewNextTimer(41, 63274)
 local timerNextShockblast		= mod:NewNextTimer(34, 63631)
 local timerPlasmaBlastCD		= mod:NewCDTimer(30, 64529)
 local timerShell				= mod:NewTargetTimer(6, 63666)
-local timerFlameSuppressant		= mod:NewCastTimer(59, 64570)
+local timerFlameSuppressant		= mod:NewCastTimer(63, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
 local timerNextFlames			= mod:NewNextTimer(30, 64566)
 local timerNextFrostBomb        = mod:NewNextTimer(30, 64623)
@@ -283,8 +283,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerFlameSuppressant:Start()
 		enrage:Stop()
 		hardmode = true
-		timerNextFlames:Start(15)
-		self:ScheduleMethod(15, "Flames")
+		timerNextFlames:Start(5)
+		self:ScheduleMethod(5, "Flames")
 	end
 end
 
