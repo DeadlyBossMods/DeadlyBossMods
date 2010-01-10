@@ -52,6 +52,8 @@ local timerRegurgitatedOoze			= mod:NewBuffActiveTimer(20, 70539)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
+local soundGaseousBloat = mod:NewSound(72455)
+
 mod:AddBoolOption("OozeAdhesiveIcon")
 mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
@@ -126,16 +128,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.OozeAdhesiveIcon then
 			self:SetIcon(args.destName, 8, 8)
 		end
-	elseif args:IsSpellID(70672, 72455) then--Red Slime (70672 seems used in both normal modes, i suspect 72455 is heroic)
+	elseif args:IsSpellID(70672, 72455) then	--Red Slime
 		warnGaseousBloat:Show(args.destName)
 		timerGaseousBloat:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnGaseousBloat:Show()
+			soundGaseousBloat:Play()
 		end
 		if self.Options.GaseousBloatIcon then
 			self:SetIcon(args.destName, 7, 20)
 		end
-	elseif args:IsSpellID(71615, 71618) then--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
+	elseif args:IsSpellID(71615, 71618) then	--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
 		timerTearGas:Start()
 	elseif args:IsSpellID(71603) then	-- Mutated Strength
 		warnPhase3:Show()
