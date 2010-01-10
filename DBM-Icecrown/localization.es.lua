@@ -166,7 +166,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	RunePower			= "Blood Power",
-	PullAlliance		= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.",
+	PullAlliance		= "Por cada soldado de la Horda que matasteis... Por cada perro de la Alianza que cayó, el ejército del Rey Exánime creció. Ahora, hasta las Val'kyr alzan a los caídos para la Plaga.",
 	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."
 }
 
@@ -206,7 +206,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes	= "Next Poison Slime Pipes"
+	NextPoisonSlimePipes	= "Siguientes tuberías de babosas venenosas"
 }
 
 L:SetOptionLocalization{
@@ -218,8 +218,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1	= "Good news, everyone! I've fixed the poison slime pipes!",	-- Professor Putricide
-	YellSlimePipes2	= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
+	YellSlimePipes1	= "¡Buenas noticias, amigos! He arreglado las tuberías de babosas venenosas.",	-- Professor Putricide
+	YellSlimePipes2	= "¡Grandes noticias, amigos! Las babosas vuelven a fluir."	-- Professor Putricide
 }
 
 ---------------------------
