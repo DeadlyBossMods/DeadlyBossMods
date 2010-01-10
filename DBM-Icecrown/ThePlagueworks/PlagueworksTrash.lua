@@ -66,7 +66,6 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 37025 then
-		timerShadowstepCD:Cancel()
 		warnDecimateSoon:Cancel()
 		timerDecimate:Cancel()
 	elseif cid == 37217 then
