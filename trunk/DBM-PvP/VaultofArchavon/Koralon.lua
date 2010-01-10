@@ -41,7 +41,7 @@ function mod:SPELL_CAST_START(args)
 		warnBreath:Show()
 		timerBreath:Start()
 		timerBreathCD:Start()
-	elseif args:IsSpellID(66725, 68161) and self:IsInCombat() then
+	elseif args:IsSpellID(66725, 68161) then
 		warnMeteor:Show()
 		timerNextMeteor:Start()
 		warnMeteorSoon:Schedule(42)
