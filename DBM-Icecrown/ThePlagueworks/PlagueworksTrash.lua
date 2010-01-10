@@ -9,7 +9,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_SUMMON",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"UNIT_DIED"
 )
 
 local warnZombies		= mod:NewSpellAnnounce(71159)
@@ -59,5 +60,18 @@ function mod:SPELL_CAST_START(args)
 		warnDecimateSoon:Cancel()	-- in case the first 1 is inaccurate, you wont have an invalid soon warning
 		warnDecimateSoon:Schedule(28)
 		timerDecimate:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 37025 then
+		timerShadowstepCD:Cancel()
+		warnDecimateSoon:Cancel()
+		timerDecimate:Cancel()
+	elseif cid == 37217 then
+		timerZombies:Cancel()
+		warnDecimateSoon:Cancel()
+		timerDecimate:Cancel()
 	end
 end
