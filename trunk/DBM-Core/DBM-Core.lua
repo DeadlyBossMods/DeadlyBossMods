@@ -1059,6 +1059,7 @@ do
 				inRaid = true
 				sendSync("DBMv4-Ver", "Hi!")
 				self:Schedule(2, DBM.RequestTimers, DBM)
+				fireEvent("partyJoin", UnitName("player"))
 			end
 			for i = 0, GetNumPartyMembers() do
 				local id
@@ -1071,6 +1072,9 @@ do
 				local rank, _, fileName = UnitIsPartyLeader(id), UnitClass(id)
 				if server and server ~= ""  then
 					name = name.."-"..server
+				end
+				if (not raid[name]) and inRaid then
+					fireEvent("partyJoin", name)
 				end
 				if name then
 					raid[name] = raid[name] or {}
@@ -1088,6 +1092,7 @@ do
 			for i, v in pairs(raid) do
 				if not v.updated then
 					raid[i] = nil
+					fireEvent("partyLeave", i)
 				else
 					v.updated = nil
 				end
