@@ -37,7 +37,7 @@ local timerSlimeSpray			= mod:NewNextTimer(21, 69508)
 local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
 local timerOozeExplosion		= mod:NewCastTimer(4, 69839)
 
-local soundStickyOoze			= mod:NewSound(71208)
+local soundMutatedInfection			= mod:NewSound(71224)
 mod:AddBoolOption("InfectionIcon")
 mod:AddBoolOption("ExplosionIcon")
 
@@ -73,7 +73,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsPlayer() and args:IsSpellID(71208) then
 		specWarnStickyOoze:Show()
-		soundStickyOoze:Play()
 	elseif args:IsSpellID(69760) then
 		warnRadiatingOoze:Show()
 	elseif args:IsSpellID(69558) then
@@ -86,6 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(69674, 71224) then
 		warnMutatedInfection:Show(args.destName)
 		timerMutatedInfection:Start(args.destName)
+		soundMutatedInfection:Play()
 		if args:IsPlayer() then
 			specWarnMutatedInfection:Show()
 		end
