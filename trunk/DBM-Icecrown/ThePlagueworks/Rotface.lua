@@ -85,9 +85,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(69674, 71224) then
 		warnMutatedInfection:Show(args.destName)
 		timerMutatedInfection:Start(args.destName)
-		soundMutatedInfection:Play()
 		if args:IsPlayer() then
 			specWarnMutatedInfection:Show()
+			soundMutatedInfection:Play()
 		end
 		if self.Options.InfectionIcon then
 			mod:SetIcon(args.destName, InfectionIcon, 12)
