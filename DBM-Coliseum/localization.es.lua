@@ -86,6 +86,7 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
+	TimerCombatStart		= "Mostrar tiempo para inicio del combate",
 	WarnNetherPower			= "Avisar si Jaraxxus tiene Poder abisar (para dsipelear)",
 	SpecWarnTouch			= "Aviso especial si tienes Toque de Jaraxxus",
 	SpecWarnTouchNear		= "Aviso especial si tienes Toque de Jaraxxus cerca",
@@ -116,35 +117,29 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	--SpecWarnHellfire		= "Llamas infernales! Vete lejos!",
-	--SpecWarnHandofProt		= "Mano de proteccion en >%s<",
-	--SpecWarnDivineShield	= "Escudo divino en >%s<"
 }
 
 L:SetMiscLocalization{
-	Gorgrim		= "DK - Gorgrim Shadowcleave",		-- 34458
-	Birana 		= "D - Birana Stormhoof",			-- 34451
-	Erin		= "D - Erin Misthoof",				-- 34459
+	Gorgrim		= "DK - Gorgrim Rajasombra",		-- 34458
+	Birana 		= "D - Birana Pezuña Tempestuosa",	-- 34451
+	Erin		= "D - Erin Pezuña de Niebla",		-- 34459
 	Rujkah		= "H - Ruj'kah",					-- 34448
-	Ginselle	= "M - Ginselle Blightslinger",		-- 34449
-	Liandra		= "P - Liandra Suncaller",			-- 34445
-	Malithas	= "P - Malithas Brightblade",		-- 34456
-	Caiphus		= "PR - Caiphus the Stern",			-- 34447
-	Vivienne	= "PR - Vivienne Blackwhisper",		-- 34441
+	Ginselle	= "M - Ginselle Lanzaañublo",		-- 34449
+	Liandra		= "P - Liandra Clamasol",			-- 34445
+	Malithas	= "P - Malithas Hoja Brillante",	-- 34456
+	Caiphus		= "PR - Caiphus el Austero",		-- 34447
+	Vivienne	= "PR - Vivienne Susurro Oscuro",	-- 34441
 	Mazdinah	= "R - Maz'dinah",					-- 34454
 	Thrakgar	= "S - Thrakgar",					-- 34444
-	Broln		= "S - Broln Stouthorn",			-- 34455
+	Broln		= "S - Broln Cuernorrecio",			-- 34455
 	Harkzog		= "WL - Harkzog",					-- 34450
-	Narrhok		= "W - Narrhok Steelbreaker",		-- 34453
+	Narrhok		= "W - Narrhok Rompeacero",		-- 34453
 	AllianceVictory    = "GLORY TO THE ALLIANCE!",
 	HordeVictory       = "That was just a taste of what the future brings. FOR THE HORDE!",
 	YellKill	= "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death."
 } 
 
 L:SetOptionLocalization{
-	--SpecWarnHellfire		= "Aviso especial si te hacen daño las llamas infernales",
-	--SpecWarnHandofProt		= "Aviso especial si el paladin pone Mano de proteccion a alguien",
-	--SpecWarnDivineShield	= "Aviso especial si el paladin se pone Escudo divino"
 	PlaySoundOnBladestorm	= "Reproducir sonido en Filotormenta"
 }
 

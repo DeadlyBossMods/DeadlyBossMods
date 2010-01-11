@@ -943,8 +943,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart		= "¿Qué chuchos son los que se atreven a irrumpir aquí? ¡Adelante, hermanos! ¡Un festín para quien me traiga sus cabezas!",
-	Phase2			= "¡Bastardos malnacidos! ¡Vuestros cadáveres serán un buen bocado para mis nuevos dracos!",
-	YellCombatEnd	= "¡ARGH! ¿ Y llamas ataque... a eso? Te voy a enseñar... aghhh..."
+	Phase2			= "¡Bastardos malnacidos! ¡Vuestros cadáveres serán un buen bocado para mis nuevos dracos!"
+	---YellCombatEnd	= "¡ARGH! ¿ Y llamas ataque... a eso? Te voy a enseñar... aghhh..."
 })
 
 
