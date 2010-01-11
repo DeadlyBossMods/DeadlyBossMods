@@ -16,6 +16,7 @@ mod:RegisterEvents(
 )
 
 local warnSlimePuddle				= mod:NewSpellAnnounce(70341, 3)
+local warnUnstableExperimentSoon	= mod:NewSoonAnnounce(70351, 3)
 local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 3)
 local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 4)
 local warnGaseousBloat				= mod:NewTargetAnnounce(70672, 4)
@@ -63,6 +64,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerSlimePuddleCD:Start(10-delay)
 	timerUnstableExperimentCD:Start(30-delay)
+	warnUnstableExperimentSoon:Schedule(25-delay)
 	warned_preP2 = false
 	warned_preP3 = false
 	phase = 1
@@ -91,13 +93,16 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70351, 71966) then
 		warnUnstableExperiment:Show()
 		timerUnstableExperimentCD:Start()
+		warnUnstableExperimentSoon:Schedule(33)
 	elseif args:IsSpellID(71617) then
 		warnTearGas:Show()
 		if phase == 1 then
 			timerUnstableExperimentCD:Start(43)--Casting tear gas also resets experiment cooldown
+			warnUnstableExperimentSoon:Schedule(38)
 		end
 		if phase == 2 then
 			timerUnstableExperimentCD:Cancel()--Casting tear gas second time before phase 3 which means no more experiments
+			warnUnstableExperimentSoon:Cancel()
 		end
 	end
 end
