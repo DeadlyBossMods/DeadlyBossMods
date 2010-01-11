@@ -190,7 +190,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch		= "Show special warning when you are affected by Phase Punch",
 	PreWarningBigBang		= "Show pre-warning for Big Bang",
 	SpecWarnBigBang			= "Show special warning for Big Bang",
 	WarningPhasePunch		= "Announce Phase Punch targets",
