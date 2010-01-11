@@ -30,8 +30,6 @@ local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3)--Phase 3 ab
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
-local specWarnMutatedPlague3		= mod:NewSpecialWarningStack(72451, false, 3)--Minimum number of stacks needed to clear other tanks debuff with 3 tanks
-local specWarnMutatedPlague5		= mod:NewSpecialWarningStack(72451, false, 5)--Minimum number of stacks needed to clear other tanks debuff with 2 tanks
 local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
 local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
 
@@ -146,12 +144,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
 		timerMutatedPlague:Start(args.destName)
 		timerMutatedPlagueCD:Start()
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
-			specWarnMutatedPlague3:Show(args.amount)
-		end
-		if args:IsPlayer() and (args.amount or 1) >= 5 then
-			specWarnMutatedPlague5:Show(args.amount)
-		end
 	elseif args:IsSpellID(70542) then
 		timerMutatedSlash:Show(args.destName)
 	elseif args:IsSpellID(70539) then
