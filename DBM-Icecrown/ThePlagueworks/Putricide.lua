@@ -25,30 +25,28 @@ local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 3)--Phase 2 ability
 local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)--Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
-local warnGuzzlePotions				= mod:NewSpellAnnounce(71893)
 local warnPhase3					= mod:NewPhaseAnnounce(3)
 local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3)--Phase 3 ability
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
-local specWarnMutatedPlague			= mod:NewSpecialWarningStack(72451, nil, 5)--Minimum number of stacks needed to clear other tanks debuff with 2 tanks
+local specWarnMutatedPlague3		= mod:NewSpecialWarningStack(72451, false, 3)--Minimum number of stacks needed to clear other tanks debuff with 3 tanks
+local specWarnMutatedPlague5		= mod:NewSpecialWarningStack(72451, false, 5)--Minimum number of stacks needed to clear other tanks debuff with 2 tanks
 local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
 local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
 
 local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)--Duration of debuff
 local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)-- Approx
-local timerUnstableExperimentCD		= mod:NewCDTimer(35, 70351)
+local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)--Used every 38 seconds exactly except after tear gas, it resets then it's 42-44seconds later (so using 43sec timer for there)
 local timerChokingGasBombCD			= mod:NewCDTimer(35, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
---local timerCreateConcoction		= mod:NewBuffActiveTimer(15, 71621)--Commented out til i know for sure if it's 15 seconds or 4 seconds. 15 makes more sense with duration of tear gas but tooltip says 4 :\
-local timerGuzzlePotions			= mod:NewBuffActiveTimer(12, 71893)--4seconds cast plus 8 seconds for transformation
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
 
 -- buffs from "Drink Me"
-local timerMutatedSlash				= mod:NewBuffActiveTimer(20, 70542)
-local timerRegurgitatedOoze			= mod:NewBuffActiveTimer(20, 70539)
+local timerMutatedSlash				= mod:NewTargetTimer(20, 70542)
+local timerRegurgitatedOoze			= mod:NewTargetTimer(20, 70539)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -94,10 +92,15 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70351, 71966) then
 		warnUnstableExperiment:Show()
+		timerUnstableExperimentCD:Start()
 	elseif args:IsSpellID(71617) then
-		warnTearGas:Show()--This lasts 15 more seconds atfer Create Concoction is cast start which leads me to suspect the tooltip is wrong or something is wonky.
-	elseif args:IsSpellID(71621) then--Create Concoction, used after Tear Gas is cast
---		timerCreateConcoction:Start()
+		warnTearGas:Show()
+		if phase == 1 then
+			timerUnstableExperimentCD:Start(43)--Casting tear gas also resets experiment cooldown
+		end
+		if phase == 2 then
+			timerUnstableExperimentCD:Cancel()--Casting tear gas second time before phase 3 which means no more experiments
+		end
 	end
 end
 
@@ -113,9 +116,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnMalleableGoo:Show()
 		timerMalleableGooCD:Start()
 		self:ScheduleMethod(0.1, "MalleableGooTarget")
-	elseif args:IsSpellID(73120, 71893) then--Guzzle Potions, used just before phase 3 to mutate
-		warnGuzzlePotions:Show()
-		timerGuzzlePotions:Start()
 	end
 end
 
@@ -146,13 +146,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
 		timerMutatedPlague:Start(args.destName)
 		timerMutatedPlagueCD:Start()
+		if args:IsPlayer() and (args.amount or 1) >= 3 then
+			specWarnMutatedPlague3:Show(args.amount)
+		end
 		if args:IsPlayer() and (args.amount or 1) >= 5 then
-			specWarnMutatedPlague:Show(args.amount)
+			specWarnMutatedPlague5:Show(args.amount)
 		end
 	elseif args:IsSpellID(70542) then
-		timerMutatedSlash:Show()
+		timerMutatedSlash:Show(args.destName)
 	elseif args:IsSpellID(70539) then
-		timerRegurgitatedOoze:Show()
+		timerRegurgitatedOoze:Show(args.destName)
 	end
 end
 
