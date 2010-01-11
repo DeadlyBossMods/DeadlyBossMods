@@ -78,7 +78,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "Was soll die Störung? Ihr wagt es, heiligen Boden zu betreten? Dies wird der Ort Eurer letzten Ruhe sein!",
-	YellReanimatedFanatic	= "Erhebt Euch und frohlocket ob Eurer reinen Form"
+	YellReanimatedFanatic	= "Erhebt Euch und frohlocket ob Eurer reinen Form!"
 }
 
 ----------------------
@@ -102,7 +102,7 @@ L:SetTimerLocalization{
 }
 
 L:SetMiscLocalization{
-	PullAlliance	= "Alle Maschinen auf Volldampf! Unser Schicksal erwartet uns",
+	PullAlliance	= "Alle Maschinen auf Volldampf! Unser Schicksal erwartet uns!",
 	KillAlliance	= "Sagt nicht, ich hätte Euch nicht gewarnt, Ihr Schurken! Vorwärts, Brüder und Schwestern!",
 	PullHorde		= "Erhebt Euch, Söhne und Töchter der Horde! Wir ziehen gegen einen verhassten Feind in die Schlacht! LOK'TAR OGAR!",
 	KillHorde		= "Die Allianz wankt. Vorwärts zum Lichkönig!"
