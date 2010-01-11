@@ -34,7 +34,7 @@ local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
 local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
 
 local specwarnStarLow			= mod:NewSpecialWarning("warnStarLow", false)
-local specWarnPhasePunch		= mod:NewSpecialWarning("SpecWarnPhasePunch")
+local specWarnPhasePunch		= mod:NewSpecialWarningStack(64412, nil, 4)
 local specWarnBigBang			= mod:NewSpecialWarningSpell(64584)
 local specWarnCosmicSmash		= mod:NewSpecialWarningSpell(64598)
 
