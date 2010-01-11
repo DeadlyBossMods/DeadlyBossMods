@@ -102,7 +102,10 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull				= "¿Qué es este alboroto? ¿Osáis entrar en suelo sagrado? ¡Este será vuestro lugar de reposo final!",
 	YellReanimatedFanatic	= "¡Álzate y goza de tu verdadera forma!",
-	ShieldPercent			= "Barrera de maná"
+	ShieldPercent			= "Barrera de maná",
+	Fanatic1				= "Fanático del Culto",
+	Fanatic2				= "Fanático deformado",
+	Fanatic3				= "Fanático reanimado"
 }
 
 ----------------------
@@ -361,7 +364,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("LichKing")
 
 L:SetGeneralLocalization{
-	name = "The Lich King"
+	name = "El Rey Exánime"
 }
 
 L:SetWarningLocalization{
