@@ -204,7 +204,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn				= "Salen mocos pequeños",
+	WarnOozeSpawn				= "Sale moco pequeño",
 	WarnUnstableOoze			= "%s en >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
 }
 
@@ -213,7 +213,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
+	NextPoisonSlimePipes		= "Mostrar tiempo para siguientes tuberías de babosas venenosas",
 	WarnOozeSpawn				= "Mostrar aviso cuando salgan mocos pequeños",
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
