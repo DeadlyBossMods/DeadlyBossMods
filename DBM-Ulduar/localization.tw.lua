@@ -24,8 +24,7 @@ L:SetWarningLocalization{
 	warnNextPursueSoon		= "5秒後 獵殺轉換",
 	SpecialPursueWarnYou		= "你中了獵殺 - 快跑",
 	SystemOverload			= "電路超載",
-	warnWardofLife			= "生命結界 出現",
-	warnWrithingLasher		= "盤繞鞭笞者 出現"
+	warnWardofLife			= "生命結界 出現"
 }
 
 L:SetOptionLocalization{
@@ -33,8 +32,7 @@ L:SetOptionLocalization{
 	SpecialPursueWarnYou		= "當你中了獵殺時顯示特別警告",
 	PursueWarn			= "提示獵殺的目標",
 	warnNextPursueSoon		= "為下一次 獵殺顯示預先警告",
-	warnWardofLife			= "為生命結界 出現顯示特別警告",
-	warnWrithingLasher		= "為盤繞鞭笞者 出現顯示特別警告"
+	warnWardofLife			= "為生命結界 出現顯示特別警告"
 }
 
 --------------------------------
@@ -139,9 +137,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge		= "超級充能 即將到來",
-	RuneofDeath			= "死亡符文 - 快跑開",
-	LightningTendrils		= "閃電觸鬚 - 快跑開",
-	Overload			= "超載 - 快跑開",
 	RuneofPower        		= "力之符文: >%s<"
 }
 
@@ -150,12 +145,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarningSupercharge		= "當超級充能開始施放時顯示警告",
-	LightningTendrils		= "為閃電觸鬚顯示特別警告",
 	PlaySoundLightningTendrils	= "為閃電觸鬚播放音效",
 	SetIconOnOverwhelmingPower	= "為極限威能的目標設置標記",
-	RuneofDeath			= "為死亡符文顯示特別警告",
 	SetIconOnStaticDisruption	= "為靜電崩裂的目標設置標記",
-	Overload			= "為超載顯示特別警告",
 	AlwaysWarnOnOverload		= "總是對超載顯示警告(否則只有當目標是風暴召喚者的時候顯示)",
 	PlaySoundOnOverload		= "當超載施放時播放音效",
 	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
@@ -192,7 +184,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch		= "當你中了相位拳擊時顯示特別警告",
 	PreWarningBigBang		= "為大霹靂顯示預先警告",
 	SpecWarnBigBang			= "為大霹靂顯示特別警告",
 	WarningPhasePunch		= "提示相位拳擊的目標",
@@ -210,7 +201,7 @@ L:SetMiscLocalization{
 	YellPull			= "你的行為毫無意義。這場衝突的結果早已計算出來了。不論結局為何，萬神殿仍將收到觀察者的訊息。",
 --	YellKill			= "我曾經看過塵世沉浸在造物者的烈焰之中，眾生連一聲悲泣都無法呼出，就此凋零。整個星系在彈指之間歷經了毀滅與重生。然而在這段歷程之中，我的心卻無法感受到絲毫的…惻隱之念。我‧感‧受‧不‧到。成千上萬的生命就這麼消逝。他們是否擁有與你同樣堅韌的生命?他們是否與你同樣熱愛生命?",
 	Emote_CollapsingStar		= "%s開始召喚崩陷之星!",
-	Phase2				= "當心!",
+	Phase2				= "瞧瞧泰坦造物的能耐吧!",
 	PullCheck			= "艾爾加隆開始上傳滅世訊息的剩餘時間= (%d+)分鐘。"
 }
 
