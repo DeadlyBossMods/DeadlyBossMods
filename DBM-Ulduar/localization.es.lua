@@ -24,14 +24,16 @@ L:SetWarningLocalization{
 	PursueWarn	    = "Persigue a >%s<!",
 	warnNextPursueSoon	    = "Cambiara de objetivo en 5 seg",
 	SpecialPursueWarnYou	= "Te persigue a ti!",
-	SystemOverload			= "Desconexion de sistemas"
+	SystemOverload			= "Desconexion de sistemas",
+	warnWardofLife			= "Sale un Guarda de Vida"
 }
 
 L:SetOptionLocalization{
 	SystemOverload			= "Mostrar aviso especial para Desconexión de sistemas.",
 	SpecialPursueWarnYou	= "Mostrar aviso especial cuando te persiga a ti.",
 	PursueWarn				= "Mostrar aviso a quien persigue.",
-	warnNextPursueSoon		= "Mostrar cuando va cambiar de objetivo."
+	warnNextPursueSoon		= "Mostrar cuando va cambiar de objetivo.",
+	warnWardofLife			= "Mostrar aviso cuando salga un Guarda de Vida"
 }
 
 
@@ -118,12 +120,14 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningLightBomb 	= "Bomba de luz en Ti!",
-	SpecialWarningGravityBomb	= "Bomba de Gravedad en Ti"
+	SpecialWarningGravityBomb	= "Bomba de Gravedad en Ti",
+	specWarnConsumption			= "Consumo! Muevete!"
 }
 
 L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "Mostrar aviso especial si Bomba de luz te afecta a ti.",
 	SpecialWarningGravityBomb	= "Mostrar aviso especial si Bomba de Gravedad te afecta.",
+	specWarnConsumption			= "Mostrar aviso especial cuando te afecte Consumo",
 	SetIconOnLightBombTarget	= "Mostrar icono a quien pone Bomba de Luz",
 	SetIconOnGravityBombTarget	= "Mostrar icono a quien pone Bomba de Gravedad",
 }
@@ -139,9 +143,6 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarningSupercharge			= "Supercarga",
-	RuneofDeath				= "Runa de muerte - MUEVETE",
-	LightningTendrils			= "Zarcillos de relámpagos - MUEVETE",
-	Overload				= "Sobrecarga - VETE LEJOS",
 	RuneofPower			= "Runa de Poder en >%s<"
 }
 
@@ -150,12 +151,9 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarningSupercharge			= "Mostrar aviso si se castea Supercarga",
-	LightningTendrils			= "Mostrar aviso especial para Zarcillos de relampagos",
 	PlaySoundLightningTendrils		= "Sonido para Zarcillos de relampagos",
 	SetIconOnOverwhelmingPower		= "Poner icono a la persona con Poder sobrecargador",
-	RuneofDeath				= "Mostrar aviso especial para Runa de muerte",
 	SetIconOnStaticDisruption		= "Poner icono para el objetivo de Perturbación estática",
-	Overload				= "Mostrar aviso especial para Sobrecarga",
 	AlwaysWarnOnOverload			= "Siempre avisar Sobrecarga",
 	PlaySoundOnOverload			= "Reproducir sonido para Sobrecarga",
 	PlaySoundDeathRune			= "Reproducir sonido para Runa de muerte",
@@ -196,7 +194,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch		= "Show special warning when you are affected by Phase Punch",
 	PreWarningBigBang		= "Show pre-warning for Big Bang",
 	SpecWarnBigBang			= "Show special warning for Big Bang",
 	WarningPhasePunch		= "Announce Phase Punch targets",
@@ -214,7 +211,7 @@ L:SetMiscLocalization{
 	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
 	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",
 	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",
-	Phase2					= "Cuidao!",
+	Phase2					= "Behold the tools of creation",
 	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."
 }
 
@@ -230,7 +227,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningEyebeam	= "Estas en el Rayo - MUEVETE",
-	WarningEyebeam			= "Haz ocular en >%s<",
+	WarningEyeBeam			= "Haz ocular en >%s<",
 	WarnGrip				= "Agarra a >%s<",
 	SpecWarnCrunchArmor2	= "Hender armadura >%d< en ti"
 }
@@ -273,7 +270,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender = "Defensor feral (%d)"
+	Defender = "Defensor feral (%d)",
+	YellPull = "Some things are better left alone!"
 }
 
 L:SetTimerLocalization{
