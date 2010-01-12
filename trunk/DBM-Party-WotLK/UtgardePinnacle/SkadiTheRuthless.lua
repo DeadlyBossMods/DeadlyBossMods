@@ -12,21 +12,17 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local isMelee = select(2, UnitClass("player")) == "ROGUE"
-			or select(2, UnitClass("player")) == "WARRIOR"
-			or select(2, UnitClass("player")) == "DEATHKNIGHT"
-
 local warnPhase2		= mod:NewPhaseAnnounce(2)
 local warningPoison		= mod:NewTargetAnnounce(59331, 2)
 local warningWhirlwind	= mod:NewSpellAnnounce(59322, 3)
 local timerPoison		= mod:NewTargetTimer(12, 59331)
 local timerWhirlwindCD	= mod:NewCDTimer(23, 59322)
 
-local specWarnWhirlwind	= mod:NewSpecialWarningRun(59322, isMelee)
+local specWarnWhirlwind	= mod:NewSpecialWarningRun(59322)
 
 local timerAchieve		= mod:NewAchievementTimer(180, 1873, "TimerSpeedKill")
 
-local soundWhirlwind	= mod:NewSound(59322, nil, isMelee)
+local soundWhirlwind	= mod:NewSound(59322)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(59331, 50255) then
