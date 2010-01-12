@@ -34,9 +34,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnMortalWound			= "%s: >%s< (%s)"	-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnMortalWound			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
 ----------------------
@@ -95,7 +97,10 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull			= "這騷動是怎麼回事?你竟敢擅闖聖地?這裡將是你的最終之地!",
 	YellReanimatedFanatic		= "起來，在純粹的形態中感受狂喜!",
-	ShieldPercent			= "法力屏障"
+	ShieldPercent			= "法力屏障",
+	Fanatic1			= "神教狂熱者",
+	Fanatic2			= "畸形的狂熱者",
+	Fanatic3			= "再活化的狂熱者"
 }
 
 ----------------------
@@ -152,14 +157,15 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
 	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "設置標記在$spell:72444施放時的目標",
+	SetIconOnMarkCast		= "設置標記在$spell:72444施放時的目標\n(試驗中，可能會錯誤地標記坦克)",
 	RangeFrame			= "顯示距離框 (11)",
 	RunePowerFrame			= "顯示首領血量+$spell:72371條"
 }
 
 L:SetMiscLocalization{
 	RunePower			= "血魄威能",
-	PullAlliance		= "每個你殺死的部落士兵 -- 每條死去的聯盟狗，都讓巫妖王的軍隊隨之增長。此時此刻華爾琪都還在把你們倒下的同伴復活成天譴軍。"
+	PullAlliance			= "每個你殺死的部落士兵 -- 每條死去的聯盟狗，都讓巫妖王的軍隊隨之增長。此時此刻華爾琪都還在把你們倒下的同伴復活成天譴軍。",
+	PullHorde			= "柯爾克隆，前進!勇士們，要當心，天譴軍團已經……"
 }
 
 -----------------
@@ -226,16 +232,20 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon			= "第2階段 即將來臨",
 	WarnPhase3Soon			= "第3階段 即將來臨",
-	WarnMutatedPlague		= "%s: >%s< (%s)"	-- Mutated Plague on >args.destName< (args.amount)
-
+	WarnMutatedPlague		= "%s: >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	specWarnMalleableGoo		= "你中了延展黏液 - 快離開",
+	specWarnMalleableGooNear	= "你附近有人中了延展黏液 - 小心"
 }
 
 L:SetOptionLocalization{
 	WarnPhase2Soon			= "為第2階段 (大約83%)顯示特別警告",
 	WarnPhase3Soon			= "為第3階段 (大約38%)顯示特別警告",
+	specWarnMalleableGoo		= "當你中了延展黏液時顯示特別警告\n(只在你是第一個目標時有用)",
+	specWarnMalleableGooNear	= "當你附近有人中了延展黏液時顯示特別警告\n(只在你附近的人是第一個目標時有用)",
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
-	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672)
+	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
+	MalleableGooIcon		= "為第一個中$spell:72295的目標設置標記"
 
 }
 
