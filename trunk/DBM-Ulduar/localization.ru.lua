@@ -192,7 +192,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPhasePunch		= "Спец-предупреждение, когда Фазовый удар на вас",
 	PreWarningBigBang		= "Объявлять Суровый удар",
 	SpecWarnBigBang			= "Спец-предупреждение для Сурового удара",
 	WarningPhasePunch		= "Объявлять цель под воздействием Фазового удара",
