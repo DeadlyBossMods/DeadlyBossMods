@@ -81,7 +81,7 @@ L:SetTimerLocalization{
 	timerTurret2			    = "Torreta 2",
 	timerTurret3			    = "Torreta 3",
 	timerTurret4			    = "Torreta 4",
-	timerGrounded		    = "sobre el suelo"
+	timerGrounded		    = "En el suelo"
 }
 L:SetOptionLocalization{
 	SpecWarnDevouringFlame		= "Mostrar aviso especial para Llama devoradora.",
@@ -306,24 +306,24 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "Flash Freeze",
-	specWarnBitingCold	= "Biting Cold - Move"
+	WarningFlashFreeze	= "Congelación apresurada",
+	specWarnBitingCold	= "Frío cortante! Muévete!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningFlashFreeze		= "Show special warning for Flash Freeze",
-	PlaySoundOnFlashFreeze	= "Play sound on Flash Freeze cast",
-	YellOnStormCloud		= "Yell on Storm Cloud",
-	SetIconOnStormCloud		= "Set icons on Storm Cloud targets",
-	specWarnBitingCold		= "Show special warning when you are affected by Biting Cold"
+	WarningFlashFreeze		= "Mostrar aviso especial para Congelación apresurada",
+	PlaySoundOnFlashFreeze	= "Reproducir sonido cuando castee Congelación apresurada",
+	YellOnStormCloud		= "Gritar cuando tengas Nube tormentosa",
+	SetIconOnStormCloud		= "Poner iconos en los objetivos de Nube tormentosa",
+	specWarnBitingCold		= "Mostrar aviso especial cuando te afecte Frío cortante"
 }
 
 L:SetMiscLocalization{
 	YellKill	= "I... I am released from his grasp... at last.",
-	YellCloud	= "Storm Cloud on me!"
+	YellCloud	= "Nube tormentosa en mi!"
 }
 
 --------------
@@ -336,7 +336,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	LightningOrb	= "Lightning Shock - Move away"
+	LightningOrb	= "Choque de relámpagos! Muévete!"
 }
 
 L:SetTimerLocalization{
@@ -344,18 +344,18 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerHardmode	= "Show timer for hard mode",
-	RangeFrame		= "Show range frame",
-	AnnounceFails	= "Post player fails for Lightning Charge to raid chat\n(requires announce to be enabled and leader/promoted status)",
-	LightningOrb	= "Show special warning for Lightning Shock"
+	TimerHardmode	= "Mostrar tiempo para hard mode",
+	RangeFrame		= "Mostrar distancia",
+	AnnounceFails	= "Anunciar los fallos de Cargar relámpago en el chat de raid\n(require 'anunciar' habilitado y líder o ayudante de banda)",
+	LightningOrb	= "Mostrar aviso especial para Choque de relámpagos"
 }
 
 L:SetMiscLocalization{
 	YellPhase1	= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
 	YellPhase2	= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
 	YellKill	= "Stay your arms! I yield!",
-	ChargeOn	= "Lightning Charge: %s",
-	Charge		= "Lightning Charge fails (this try): %s" 
+	ChargeOn	= "Cargar relámpago: %s",
+	Charge		= "Fallos de Cargar relámpago (este try): %s" 
 }
 
 -------------
@@ -369,40 +369,40 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	SpawnYell	= "Children, assist me!",
-	WaterSpirit	= "Ancient Water Spirit",
-	Snaplasher	= "Snaplasher",
-	StormLasher	= "Storm Lasher",
+	WaterSpirit	= "Espíritu de agua antiguo",
+	Snaplasher	= "Quiebrazotador",
+	StormLasher	= "Azotador de tormenta",
 	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes.",
 	TrashRespawnTimer	= "Reaparicion de Adds de Freya"
 }
 
 L:SetWarningLocalization{
-	WarnSimulKill	= "First add down - Resurrection in ~12 sec",
-	SpecWarnFury	= "Nature's Fury on You!",
-	WarningTremor   = "Ground Tremor - Stop Casting!",
-	WarnRoots	= "Roots on >%s<",
-	UnstableEnergy	= "Unstable Energy - MOVE"
+	WarnSimulKill	= "Primer add muerto - Resurrección en ~12 seg",
+	SpecWarnFury	= "Furia de la naturaleza en ti!",
+	WarningTremor   = "Tremor terrenal! Para de castear!",
+	WarnRoots	= "Raices en >%s<",
+	UnstableEnergy	= "Energía inestable! Muévete!"
 }
 
 L:SetTimerLocalization{
-	TimerSimulKill		= "Resurrection",
+	TimerSimulKill		= "Resurrección",
 }
 
 L:SetOptionLocalization{
 	WarnSimulKill		= "Anunciar primer mob muerto",
-	WarnRoots			= "Anunciar objetivos de Iron Roots",
-	SpecWarnFury		= "Mostrar aviso especial para Nature's Fury",
-	WarningTremor		= "Mostrar aviso especial para Ground Tremor (hard mode)",
-	PlaySoundOnFury 	= "Reproducir sonido cuando te afecte Nature's Fury",
+	WarnRoots			= "Anunciar objetivos de raíces férreas",
+	SpecWarnFury		= "Mostrar aviso especial para Furia de la naturaleza",
+	WarningTremor		= "Mostrar aviso especial para Tremor terrenal (hard mode)",
+	PlaySoundOnFury 	= "Reproducir sonido cuando te afecte Furia de la naturaleza",
 	TimerSimulKill		= "Mostrar resureccion de los mobs",
-	UnstableEnergy		= "Mostrar aviso especial para Unstable Energy"
+	UnstableEnergy		= "Mostrar aviso especial para Energía inestable"
 }
 
 -- Elders
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
-	name = "Freya's Elders"
+	name = "Ancestros de Freya"
 }
 
 L:SetMiscLocalization{
@@ -410,15 +410,15 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnGroundTremor	= "Ground Tremor - Para de castear!",
-	SpecWarnFistOfStone		= "Fists of Stone"
+	SpecWarnGroundTremor	= "Tremor terrenal! Para de castear!",
+	SpecWarnFistOfStone		= "Puños de piedra"
 }
 
 L:SetOptionLocalization{
-	SpecWarnFistOfStone	= "Mostrar aviso especial para Fist of Stone",
-	SpecWarnGroundTremor	= "Mostrar aviso especial para Ground Tremor",
-	PlaySoundOnFistOfStone	= "Play Sound on Fist of Stone cast",
-	TrashRespawnTimer	= "Mostrar reaoarucib de adds de freya"
+	SpecWarnFistOfStone	= "Mostrar aviso especial para Puños de piedra",
+	SpecWarnGroundTremor	= "Mostrar aviso especial para Tremor terrenal",
+	PlaySoundOnFistOfStone	= "Reproducir sonido cuando castee Puños de piedra",
+	TrashRespawnTimer	= "Mostrar tiempo para reaparición de adds"
 }
 
 
