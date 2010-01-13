@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(26693)
 mod:SetMinSyncRevision(3108)
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.Phase2)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
