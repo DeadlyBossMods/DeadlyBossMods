@@ -136,7 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(70672, 72455) then	--Red Slime
 		warnGaseousBloat:Show(args.destName)
-		specWarnGaseousBloat:Show(args.destName)
+		specWarnGaseousBloatOther:Show(args.destName)
 		timerGaseousBloat:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnGaseousBloat:Show()
