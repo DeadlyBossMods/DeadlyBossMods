@@ -31,6 +31,8 @@ local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3)--Phase 3 ab
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
+local specWarnVolatileOozeOther		= mod:NewSpecialWarningTarget(70447, false)
+local specWarnGaseousBloatOther		= mod:NewSpecialWarningTarget(70672, false)
 local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
 local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
 
@@ -125,6 +127,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70447, 72836, 72837, 72838) then--Green Slime
 		warnVolatileOozeAdhesive:Show(args.destName)
+		specWarnVolatileOozeOther:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnVolatileOozeAdhesive:Show()
 		end
@@ -133,6 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(70672, 72455) then	--Red Slime
 		warnGaseousBloat:Show(args.destName)
+		specWarnGaseousBloat:Show(args.destName)
 		timerGaseousBloat:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnGaseousBloat:Show()
