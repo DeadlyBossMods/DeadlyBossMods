@@ -1272,7 +1272,8 @@ do
 end
 
 function DBM:LFG_PROPOSAL_SHOW()
-	DBM.Bars:CreateBar(40, DBM_LFG_INVITE)
+	
+	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 end
 
 function DBM:LFG_PROPOSAL_FAILED()
