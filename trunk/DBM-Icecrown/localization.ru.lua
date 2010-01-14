@@ -12,6 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	specWarnTrap		= "Ловушка активирована! - Заклятый страж освобожден"--creatureid 37007
 }
 
 L:SetOptionLocalization{
@@ -20,7 +21,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	WarderTrap1		= "Кто... идет?",
-	WarderTrap2		= "Я пробудился..."
+	WarderTrap2		= "Я пробудился...",
+	WarderTrap3		= "В покои господина проникли!"
 }
 
 ---------------------------
@@ -33,11 +35,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnMortalWound	= "%s на |3-5(>%s<) (%s)"		-- Mortal Wound on >args.destName< (args.amount)
+	warnMortalWound	= "%s на |3-5(>%s<) (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	specWarnTrap	= "Ловушка активирована! - приближаются Мстительные свежеватели"--creatureid 37038
 }
 
 L:SetOptionLocalization{
 	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
+}
+
+L:SetMiscLocalization{
+	FleshreaperTrap1		= "Скорей, нападем на них сзади!",
+	FleshreaperTrap2		= "Вам не уйти от нас."
 }
 
 ----------------------
@@ -260,20 +268,18 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "Switch target to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "Target switch soon",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
-	SpecWarnResonance		= "Теневой резонанс - бегите"
+	WarnTargetSwitch		= "Смените цель на: %s",
+	WarnTargetSwitchSoon	= "Скоро смена цели",
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch	= "Possible target switch"
+	TimerTargetSwitch		= "Возможная смена цели"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Show warning to switch targets",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",							-- Every ~31 secs, you have to dps a different Prince
+	WarnTargetSwitch		= "Предупреждение о смене цели",                        -- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Предупреждать заранее о смене цели",                     -- Every ~31 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Show timer for target switch cooldown",
-	SpecWarnResonance		= "Show special warning when a Dark Nucleus is following you"	-- If it follows you, you have to move to the tank
 }
 
 L:SetMiscLocalization{
@@ -337,10 +343,10 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnAirphase			= "Предупреждать о воздушной фазе",
+	WarnAirphase			= "Объявлять воздушную фазу",
 	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
 	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
-	WarnGroundphaseSoon		= "Заранее предупреждать о наземной фазе",
+	WarnGroundphaseSoon		= "Предупреждать заранее о наземной фазе",
 	TimerNextAirphase		= "Отсчет времени до воздушной фазы",
 	TimerNextGroundphase	= "Отсчет времени до наземной фазы",
 	SpecWarnUnchainedMagic	= "Show special warning when you are affected by Unchained Magic"
