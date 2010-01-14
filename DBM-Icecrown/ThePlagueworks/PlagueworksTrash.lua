@@ -78,7 +78,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3 then
+	if msg == L.FleshreaperTrap1 or msg == L.FleshreaperTrap2 then
 		self:SendSync("WarderTrap")
 	end
 end
