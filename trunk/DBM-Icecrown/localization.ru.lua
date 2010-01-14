@@ -302,7 +302,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Спец-предупреждение, когда Пакт Омраченных на вас"
+	SpecWarnPactDarkfallen	= "Спец-предупреждение, когда на вас Пакт Омраченных"
 }
 
 -----------------------------
