@@ -10,6 +10,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	specWarnTrap		= "Trap Activated! - Deathbound Ward released"--creatureid 37007
 }
 
 L:SetOptionLocalization{
@@ -18,7 +19,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	WarderTrap1		= "Who... goes there...?",
-	WarderTrap2		= "I... awaken!"
+	WarderTrap2		= "I... awaken!",
+	WarderTrap3		= "The master's sanctum has been disturbed!"
 }
 
 ---------------------------
@@ -31,11 +33,17 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnMortalWound	= "%s on >%s< (%s)"		-- Mortal Wound on >args.destName< (args.amount)
+	warnMortalWound	= "%s on >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	specWarnTrap	= "Trap Activated! - Vengeful Fleshreaper incoming"--creatureid 37038
 }
 
 L:SetOptionLocalization{
 	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
+}
+
+L:SetMiscLocalization{
+	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
+	FleshreaperTrap2		= "You... cannot escape us!"
 }
 
 ----------------------

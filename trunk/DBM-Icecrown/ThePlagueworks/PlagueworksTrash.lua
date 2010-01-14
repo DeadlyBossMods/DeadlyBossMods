@@ -10,7 +10,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_SUMMON",
 	"SPELL_CAST_START",
-	"UNIT_DIED"
+	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnZombies		= mod:NewSpellAnnounce(71159)
@@ -19,6 +20,7 @@ local warnDecimateSoon	= mod:NewSoonAnnounce(71123)
 
 local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)
 local specWarnMortalWound	= mod:NewSpecialWarningStack(71127, nil, 5)
+local specWarnTrap			= mod:NewSpecialWarning("specWarnTrap")
 
 local timerZombies		= mod:NewNextTimer(20, 71159)
 local timerMortalWound	= mod:NewTargetTimer(15, 71127)
@@ -72,5 +74,17 @@ function mod:UNIT_DIED(args)
 		timerZombies:Cancel()
 		warnDecimateSoon:Cancel()
 		timerDecimate:Cancel()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3 then
+		self:SendSync("WarderTrap")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "WarderTrap" then
+		specWarnTrap:Show()
 	end
 end
