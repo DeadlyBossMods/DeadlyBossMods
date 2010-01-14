@@ -336,7 +336,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "Воздушная фаза",
-	SpecWarnBlisteringCold	= "Обжигающий холод - отбегите",
+	SpecWarnBlisteringCold	= "Обжигающий холод - бегите",
 	SpecWarnFrostBeacon		= "Ледяная метка на вас",
 	WarnGroundphaseSoon		= "Синдрагоса приземляется",
 	SpecWarnUnchainedMagic	= "Освобожденная магия на вас"
