@@ -855,9 +855,6 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers! A feast for the one that brings me their heads!",
-	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!",
-	YellCombatEnd	= "ARGH! You call that... an attack? I'll... show... aghhhh..."
 })
 
 ---------------------
@@ -904,8 +901,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers!  A feast for the one that brings me their heads!",
-	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!",
-	YellCombatEnd	= "ARGH! You call that... an attack? I'll... show... aghhhh..."
+	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!"
 })
 
 ------------
@@ -1123,7 +1119,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
-	Sealbroken	= "We've broken through the prison gate! The way into Dalaran is clear! Now we finally put an end to the Nexus War!",	
+	Sealbroken		= "We've broken through the prison gate! The way into Dalaran is clear! Now we finally put an end to the Nexus War!",	
 	WavePortal		= "차원문 열림: (%d+)/18"
 })
 
