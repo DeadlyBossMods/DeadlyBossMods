@@ -296,11 +296,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnPactDarkfallen	= "Pact of the Darkfallen on you"
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Show special warning when you are affected by Pact of the Darkfallen"
 }
 
 -----------------------------
@@ -334,20 +332,14 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "Air phase",
-	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
-	SpecWarnFrostBeacon		= "Frost Beacon on you",
-	WarnGroundphaseSoon		= "Sindragosa landing soon",
-	SpecWarnUnchainedMagic	= "Unchained Magic on you"
+	WarnGroundphaseSoon		= "Sindragosa landing soon"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "Announce air phase",
-	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
 	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
 	TimerNextAirphase		= "Show timer for next air phase",
-	TimerNextGroundphase	= "Show timer for next ground phase",
-	SpecWarnUnchainedMagic	= "Show special warning when you are affected by Unchained Magic"
+	TimerNextGroundphase	= "Show timer for next ground phase"
 }
 
 L:SetMiscLocalization{

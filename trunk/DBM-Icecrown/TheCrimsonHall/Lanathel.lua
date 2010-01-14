@@ -13,7 +13,7 @@ local warnPactDarkfallen		= mod:NewTargetAnnounce(71340, 3)
 
 local timerPactDarkfallen		= mod:NewNextTimer(30, 71340)
 
-local specWarnPactDarkfallen	= mod:NewSpecialWarning("SpecWarnPactDarkfallen")
+local specWarnPactDarkfallen	= mod:NewSpecialWarningYou(71340)
 
 local pactTargets = {}
 
