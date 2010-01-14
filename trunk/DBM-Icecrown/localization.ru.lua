@@ -279,7 +279,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "Предупреждение о смене цели",                        -- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Предупреждать заранее о смене цели",                     -- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown",
+	TimerTargetSwitch		= "Отсчет времени до смены цели",
 }
 
 L:SetMiscLocalization{
@@ -298,11 +298,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnPactDarkfallen	= "Pact of the Darkfallen on you"
+	SpecWarnPactDarkfallen	= "Пакт Омраченных на вас"
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Show special warning when you are affected by Pact of the Darkfallen"
+	SpecWarnPactDarkfallen	= "Спец-предупреждение, когда Пакт Омраченных на вас"
 }
 
 -----------------------------
@@ -336,20 +336,20 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "Воздушная фаза",
-	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
-	SpecWarnFrostBeacon		= "Frost Beacon on you",
+	SpecWarnBlisteringCold	= "Обжигающий холод - отбегите",
+	SpecWarnFrostBeacon		= "Ледяная метка на вас",
 	WarnGroundphaseSoon		= "Синдрагоса приземляется",
-	SpecWarnUnchainedMagic	= "Unchained Magic on you"
+	SpecWarnUnchainedMagic	= "Освобожденная магия на вас"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "Объявлять воздушную фазу",
-	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
+	SpecWarnBlisteringCold	= "Спец-предупреждение для Обжигающего холода",
+	SpecWarnFrostBeacon		= "Спец-предупреждение, когда на вас Ледяная метка",
 	WarnGroundphaseSoon		= "Предупреждать заранее о наземной фазе",
 	TimerNextAirphase		= "Отсчет времени до воздушной фазы",
 	TimerNextGroundphase	= "Отсчет времени до наземной фазы",
-	SpecWarnUnchainedMagic	= "Show special warning when you are affected by Unchained Magic"
+	SpecWarnUnchainedMagic	= "Спец-предупреждение, когда на вас Освобождённая магия"
 }
 
 L:SetMiscLocalization{
