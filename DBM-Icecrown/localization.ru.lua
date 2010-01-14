@@ -298,11 +298,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnPactDarkfallen	= "Пакт Омраченных на вас"
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Спец-предупреждение, когда на вас Пакт Омраченных"
 }
 
 -----------------------------
@@ -336,20 +334,14 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "Воздушная фаза",
-	SpecWarnBlisteringCold	= "Обжигающий холод - бегите",
-	SpecWarnFrostBeacon		= "Ледяная метка на вас",
-	WarnGroundphaseSoon		= "Синдрагоса приземляется",
-	SpecWarnUnchainedMagic	= "Освобожденная магия на вас"
+	WarnGroundphaseSoon		= "Синдрагоса приземляется"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "Объявлять воздушную фазу",
-	SpecWarnBlisteringCold	= "Спец-предупреждение для Обжигающего холода",
-	SpecWarnFrostBeacon		= "Спец-предупреждение, когда на вас Ледяная метка",
 	WarnGroundphaseSoon		= "Предупреждать заранее о наземной фазе",
 	TimerNextAirphase		= "Отсчет времени до воздушной фазы",
-	TimerNextGroundphase	= "Отсчет времени до наземной фазы",
-	SpecWarnUnchainedMagic	= "Спец-предупреждение, когда на вас Освобождённая магия"
+	TimerNextGroundphase	= "Отсчет времени до наземной фазы"
 }
 
 L:SetMiscLocalization{
