@@ -99,6 +99,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(71617) then
 		warnTearGas:Show()
 		if phase == 1 then
+			warnUnstableExperimentSoon:Cancel()
 			timerUnstableExperimentCD:Start(43)--Casting tear gas also resets experiment cooldown
 			warnUnstableExperimentSoon:Schedule(38)
 		end
