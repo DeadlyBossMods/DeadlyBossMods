@@ -7,7 +7,8 @@ mod:SetUsedIcons(8)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnDisruptingShout		= mod:NewSpellAnnounce(71022, 2)
@@ -15,6 +16,7 @@ local warnDarkReckoning			= mod:NewTargetAnnounce(69483, 3)
 
 local specWarnDisruptingShout	= mod:NewSpecialWarningCast(71022)
 local specWarnDarkReckoning		= mod:NewSpecialWarningMove(69483)
+local specWarnTrap				= mod:NewSpecialWarning("specWarnTrap")
 
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(8, 69483)
@@ -42,5 +44,17 @@ function mod:SPELL_CAST_START(args)
 		warnDisruptingShout:Show()
 		specWarnDisruptingShout:Show()
 		timerDisruptingShout:Start()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3 then
+		self:SendSync("WarderTrap")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "WarderTrap" then
+		specWarnTrap:Show()
 	end
 end
