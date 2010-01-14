@@ -21,10 +21,12 @@ local warnDecimateSoon	= mod:NewSoonAnnounce(71123)
 local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)
 local specWarnMortalWound	= mod:NewSpecialWarningStack(71127, nil, 5)
 local specWarnTrap			= mod:NewSpecialWarning("specWarnTrap")
+local specWarnBlightBomb	= mod:NewSpecialWarningSpell(71088)
 
 local timerZombies		= mod:NewNextTimer(20, 71159)
 local timerMortalWound	= mod:NewTargetTimer(15, 71127)
 local timerDecimate		= mod:NewNextTimer(33, 71123)
+local timerBlightBomb	= mod:NewCastTimer(5, 71088)
 
 mod:RemoveOption("HealthFrame")
 
@@ -62,6 +64,9 @@ function mod:SPELL_CAST_START(args)
 		warnDecimateSoon:Cancel()	-- in case the first 1 is inaccurate, you wont have an invalid soon warning
 		warnDecimateSoon:Schedule(28)
 		timerDecimate:Start()
+	elseif args:IsSpellID(71088) then
+		specWarnBlightBomb:Show()
+		timerBlightBomb:Start()
 	end
 end
 
