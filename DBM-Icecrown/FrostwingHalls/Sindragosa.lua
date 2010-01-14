@@ -13,7 +13,7 @@ mod:RegisterEvents(
     
 -- Frost Beacon
 local warnFrostBeacon			= mod:NewTargetAnnounce(70126)
-local specWarnFrostBeacon		= mod:NewSpecialWarning("SpecWarnFrostBeacon")
+local specWarnFrostBeacon		= mod:NewSpecialWarningYou(70126)
 
 -- Airphase
 local warnAirphase				= mod:NewAnnounce("WarnAirphase")
@@ -24,16 +24,16 @@ local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase")
 local warnGroundphaseSoon		= mod:NewAnnounce("WarnGroundphaseSoon", 2)
 
 -- Blistering Cold
-local warnBlisteringCold		= mod:NewCastAnnounce(70117, 3)
-local specWarnBlisteringCold	= mod:NewSpecialWarning("SpecWarnBlisteringCold", false)
-local timerBlisteringCold		= mod:NewCastTimer(5, 70117)
+local warnBlisteringCold		= mod:NewCastAnnounce(70123, 3)
+local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123, false)
+local timerBlisteringCold		= mod:NewCastTimer(5, 70123)
 
 -- Frostbomb
 --local warnFrostbomb			= mod:NewTargetAnnounce(69846)  -- no idea what Event is fired for this :(
 
 -- Unchained Magic
 local warnUnchainedMagic		= mod:NewTargetAnnounce(69762)
-local specWarnUnchainedMagic	= mod:NewSpecialWarning("SpecWarnUnchainedMagic")
+local specWarnUnchainedMagic	= mod:NewSpecialWarningYou(69762)
 
 local beaconTargets				= {}
 
