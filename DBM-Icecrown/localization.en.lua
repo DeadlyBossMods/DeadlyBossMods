@@ -267,7 +267,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "Switch target to: %s",
-	WarnTargetSwitchSoon	= "Target switch soon",
+	WarnTargetSwitchSoon	= "Target switch soon"
 }
 
 L:SetTimerLocalization{
@@ -277,7 +277,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "Show warning to switch targets",                        -- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",                     -- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown",
+	TimerTargetSwitch		= "Show timer for target switch cooldown"
 }
 
 L:SetMiscLocalization{
@@ -299,6 +299,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
 }
 
 -----------------------------
