@@ -12,6 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	specWarnTrap			= "陷阱激活! - 亡縛守衛釋放了"--creatureid 37007
 }
 
 L:SetOptionLocalization{
@@ -263,8 +264,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "轉換目標到: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon		= "即將轉換目標",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	WarnTargetSwitch		= "轉換目標到: %s",
+	WarnTargetSwitchSoon		= "即將轉換目標",
 	SpecWarnResonance		= "暗影共鳴 - 跑開"
 }
 
@@ -273,10 +274,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "為轉換目標顯示警告",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",							-- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "為目標轉換冷卻顯示計時器",
-	SpecWarnResonance		= "當黑暗晶核跟隨你時顯示特別警告"	-- If it follows you, you have to move to the tank
+	WarnTargetSwitch		= "為轉換目標顯示警告",
+	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",
+	TimerTargetSwitch		= "為目標轉換冷卻顯示計時器"
 }
 
 L:SetMiscLocalization{
@@ -295,11 +295,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnPactDarkfallen		= "你中了暗殞契印"
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen		= "當你中了暗殞契印時顯示特別警告"
+	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
 }
 
 -----------------------------
@@ -333,20 +332,14 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "空中階段",
-	SpecWarnBlisteringCold		= "極凍之寒 - 快跑開",
-	SpecWarnFrostBeacon		= "你中了冰霜信標",
-	WarnGroundphaseSoon		= "辛德拉苟莎 即將著陸",
-	SpecWarnUnchainedMagic		= "你中了無束魔法"
+	WarnGroundphaseSoon		= "辛德拉苟莎 即將著陸"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "提示空中階段",
-	SpecWarnBlisteringCold		= "為極凍之寒顯示特別警告",
-	SpecWarnFrostBeacon		= "為冰霜信標顯示特別警告",
 	WarnGroundphaseSoon		= "為地上階段顯示預先警告",
 	TimerNextAirphase		= "為下一次 空中階段顯示計時器",
-	TimerNextGroundphase		= "為下一次 地上階段顯示計時器",
-	SpecWarnUnchainedMagic		= "為無束魔法顯示特別警告"
+	TimerNextGroundphase		= "為下一次 地上階段顯示計時器"
 }
 
 L:SetMiscLocalization{
