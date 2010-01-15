@@ -45,7 +45,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	FleshreaperTrap1		= "Скорей, нападем на них сзади!",
-	FleshreaperTrap2		= "Вам не уйти от нас."
+	FleshreaperTrap2		= "Вам не уйти от нас.",
+	FleshreaperTrap3		= "Живые? Здесь?!"
 }
 
 ----------------------
@@ -301,6 +302,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
 }
 
 -----------------------------
