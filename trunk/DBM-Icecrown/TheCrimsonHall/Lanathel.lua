@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warnPactDarkfallen		= mod:NewTargetAnnounce(71340, 3)
-local warnBloodMirror			= mod:NewTargetAnnounce(70821, 3)
+local warnBloodMirror			= mod:NewTargetAnnounce(71510, 3)
 
 local specWarnPactDarkfallen	= mod:NewSpecialWarningYou(71340)
 local specWarnBloodthirst		= mod:NewSpecialWarningYou(70877)
