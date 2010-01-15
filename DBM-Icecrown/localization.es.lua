@@ -22,7 +22,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	WarderTrap1		= "¿Quién... anda ahí?",
 	WarderTrap2		= "Estoy despierto...",
-	WarderTrap3		= "The master's sanctum has been disturbed!"
+	WarderTrap3		= "El sagrario del maestro ha sido perturbado."
 }
 
 ---------------------------
@@ -45,7 +45,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
-	FleshreaperTrap2		= "You... cannot escape us!"
+	FleshreaperTrap2		= "You... cannot escape us!",
+	FleshreaperTrap3		= "The living... here?!"
 }
 
 
@@ -276,8 +277,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "Switch target to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "Target switch soon",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
-	SpecWarnResonance		= "Shadow Resonance - Move"
+	WarnTargetSwitchSoon	= "Target switch soon"			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
 }
 
 L:SetTimerLocalization{
@@ -287,8 +287,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "Show warning to switch targets",								-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",							-- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown",
-	SpecWarnResonance		= "Show special warning when a Dark Nucleus is following you"	-- If it follows you, you have to move to the tank
+	TimerTargetSwitch		= "Show timer for target switch cooldown"
 }
 
 L:SetMiscLocalization{
@@ -307,11 +306,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnPactDarkfallen	= "Pact of the Darkfallen on you"
+
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Show special warning when you are affected by Pact of the Darkfallen"
+	SetIconOnDarkFallen	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
 }
 
 -----------------------------
@@ -345,20 +344,14 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "Air phase",
-	SpecWarnBlisteringCold	= "Blistering Cold - Run away",
-	SpecWarnFrostBeacon		= "Frost Beacon on you",
-	WarnGroundphaseSoon		= "Sindragosa landing soon",
-	SpecWarnUnchainedMagic	= "Unchained Magic on you"
+	WarnGroundphaseSoon		= "Sindragosa landing soon"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "Announce air phase",
-	SpecWarnBlisteringCold	= "Show special warning for Blistering Cold",
-	SpecWarnFrostBeacon		= "Show special warning when you are affected by Frost Beacon",
 	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
 	TimerNextAirphase		= "Show timer for next air phase",
-	TimerNextGroundphase	= "Show timer for next ground phase",
-	SpecWarnUnchainedMagic	= "Show special warning when you are affected by Unchained Magic"
+	TimerNextGroundphase	= "Show timer for next ground phase"
 }
 
 L:SetMiscLocalization{
