@@ -16,6 +16,7 @@ local warnPactDarkfallen		= mod:NewTargetAnnounce(71340, 3)
 local warnBloodMirror			= mod:NewTargetAnnounce(70821, 3)
 
 local specWarnPactDarkfallen	= mod:NewSpecialWarningYou(71340)
+local specWarnBloodthirst		= mod:NewSpecialWarningYou(70877)
 local specWarnBloodMirror		= mod:NewSpecialWarningTarget(71510, false)
 
 local timerNextPactDarkfallen	= mod:NewNextTimer(30, 71340)
@@ -58,6 +59,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBloodMirror:Show(args.destName)
 		timerBloodMirror:Start(args.destName)
 		specWarnBloodMirror:Show(args.destName)
+	elseif args:IsSpellID(70877, 71474) then--Spellids drycoded from wowhead will verify on release
+		specWarnBloodthirst:Show()
 	end
 end
 
