@@ -41,7 +41,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnTrap		= "Спец-предупреждение для активации ловушки",
+	specWarnTrap	= "Спец-предупреждение для активации ловушки",
 	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
@@ -88,14 +88,14 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnReanimating				= "Помощник трансформируется",			-- Reanimating an adherent or fanatic
+	WarnReanimating				= "Помощник воскрешается",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon				= "Скоро призыв помощников"
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Предупреждать заранее о призыве помощников",
-	WarnReanimating				= "Предупреждать, при трансформации помощника",											-- Reanimated Adherent/Fanatic spawning
+	WarnReanimating				= "Предупреждение при воскрешении помощников",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds					= "Отсчет времени до призыва помощников",
 	ShieldHealthFrame			= "Показывать здоровье босса с индикатором здоровья для \n$spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
