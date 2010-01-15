@@ -14,6 +14,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	specWarnTrap		= "Show special warning for trap activation",
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
@@ -34,10 +35,11 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnMortalWound	= "%s on >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
-	specWarnTrap	= "Trap Activated! - Vengeful Fleshreaper incoming"--creatureid 37038
+	specWarnTrap	= "Trap Activated! - Vengeful Fleshreapers incoming"--creatureid 37038
 }
 
 L:SetOptionLocalization{
+	specWarnTrap	= "Show special warning for trap activation",
 	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
