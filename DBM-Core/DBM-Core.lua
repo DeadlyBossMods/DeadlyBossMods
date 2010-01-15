@@ -1379,11 +1379,12 @@ do
 
 	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
 		if select(2, IsInInstance()) == "pvp" then return end
-		local delay, mod = strsplit("\t", msg)
+		local delay, mod, revision = strsplit("\t", msg)
 		local lag = select(3, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
+		revision = tonumber(revision or 0) or 0
 		mod = DBM:GetModByName(mod or "")
-		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText())) then
+		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText())) and (not mod.minSyncRevision or revision >= mod.minSyncRevision)) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
@@ -1713,7 +1714,7 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if not synced then
-			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id)
+			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
 		end
 		fireEvent("pull", mod, delay, synced)
 		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
@@ -3208,11 +3209,11 @@ end
 function bossModPrototype:SendSync(event, arg)
 	event = event or ""
 	arg = arg or ""
-	local str = ("%s\t%s\t%s\t%s"):format(self.id, self.revision, event, arg)
+	local str = ("%s\t%s\t%s\t%s"):format(self.id, self.revision or 0, event, arg)
 	local spamId = self.id..event..arg
 	local time = GetTime()
 	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5 then
-		self:ReceiveSync(event, arg, nil, self.revision)
+		self:ReceiveSync(event, arg, nil, self.revision or 0)
 		sendSync("DBMv4-Mod", str)
 	end
 end
