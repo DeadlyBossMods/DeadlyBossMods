@@ -184,15 +184,25 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Putricide")
 
 L:SetGeneralLocalization{
-	name = "Professor Putricide"
+	name = "Professor Seuchenmord"
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon				= "Phase 2 bald",
+	WarnPhase3Soon				= "Phase 3 bald",
+	WarnMutatedPlague			= "%s auf >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	specWarnMalleableGoo		= "Formbarer Schleim auf Dir - Lauf",
+	specWarnMalleableGooNear	= "Formbarer Schleim in Deiner Nähe - Aufpassen"
 }
 
 L:SetOptionLocalization{
+	WarnPhase2Soon				= "Zeige Vorwarnung für Phase 2 (bei ~83%)",
+	WarnPhase3Soon				= "Zeige Vorwarnung für Phase 3 (bei ~38%)",
+	specWarnMalleableGoo		= "Zeige spezielle Warnung für Formbarer Schleim auf Dir\n(Funktioniert nur, wenn Du das erste Ziel bist)",
+	specWarnMalleableGooNear	= "Zeige spezielle Warnung für Formbarer Schleim in Deiner Nähe\n(Funktioniert nur, wenn Du in der Nähe des ersten Zieles bist)",
+	MalleableGooIcon			= "Setze Zeichen auf erstes $spell:72295 Ziel"
 }
 
 L:SetMiscLocalization{
---	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+	YellPull	= "Gute Nachricht Freunde! Ich habe eine Seuche perfektioniert, die alles Leben Azeroths auslöscht!"
 }
