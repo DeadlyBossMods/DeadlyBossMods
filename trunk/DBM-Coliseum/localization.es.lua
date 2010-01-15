@@ -101,7 +101,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	FirstPull	= "Grand Warlock Wilfred Fizzlebang will summon forth your next challenge. Stand by for his entry."
+	FirstPull	= "El gran brujo Wilfred Chispobang invocará al siguiente contrincante. Esperad a que aparezca."
 }
 
 -----------------------
@@ -134,9 +134,9 @@ L:SetMiscLocalization{
 	Broln		= "S - Broln Cuernorrecio",			-- 34455
 	Harkzog		= "WL - Harkzog",					-- 34450
 	Narrhok		= "W - Narrhok Rompeacero",		-- 34453
-	AllianceVictory    = "GLORY TO THE ALLIANCE!",
+	AllianceVictory    = "¡GLORIA A LA ALIANZA!",
 	HordeVictory       = "That was just a taste of what the future brings. FOR THE HORDE!",
-	YellKill	= "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death."
+	YellKill	= "Una victoria trágica y fútil. Hoy somos menos por las pérdidas que hemos sufrido. ¿Quién podría beneficiarse de tal insensatez además del Rey Exánime? Grandes guerreros han perdido la vida. ¿Y para qué? La verdad"
 } 
 
 L:SetOptionLocalization{
