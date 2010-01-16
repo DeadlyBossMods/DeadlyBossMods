@@ -16,6 +16,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	specWarnTrap		= "Mostrar aviso especial cuando se active trampa",
 	SetIconOnDarkReckoning			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
@@ -31,7 +32,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name = "Trash de Los Talleres de la Peste"
+	name = "Precioso y Apestoso"
 }
 
 L:SetWarningLocalization{
@@ -40,13 +41,14 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	specWarnTrap		= "Mostrar aviso especial cuando se active trampa",
 	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
 L:SetMiscLocalization{
 	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
 	FleshreaperTrap2		= "You... cannot escape us!",
-	FleshreaperTrap3		= "The living... here?!"
+	FleshreaperTrap3		= "¿Los vivos? ¿¡Aquí!?"
 }
 
 
