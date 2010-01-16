@@ -104,7 +104,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerNextPhasePunch:Start()
 		local amount = args.amount or 1
 		if args:IsPlayer() and amount >= 4 then
-			specWarnPhasePunch:Show()
+			specWarnPhasePunch:Show(args.destName)
 		end
 		timerPhasePunch:Start(args.destName)
 		announcePhasePunch:Show(args.destName, amount)
