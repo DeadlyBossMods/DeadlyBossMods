@@ -12,15 +12,18 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	specWarnTrap				= "트랩 활성화! - 죽음에 속박된 감시자!"--creatureid 37007
 }
 
 L:SetOptionLocalization{
+	specWarnTrap				= "트랩 활성화 특수 경고 보기",
 	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 L:SetMiscLocalization{
 	WarderTrap1					= "거기... 누구냐?",
-	WarderTrap2					= "주인님의 성소를 어지럽혔구나!"
+	WarderTrap2					= "내가... 깨어난다!",	
+	WarderTrap3					= "주인님의 성소를 어지럽혔구나!"
 }
 
 ---------------------------
@@ -33,13 +36,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnMortalWound				= "%s : >%s< (%s)"		-- Mortal Wound on >args.destName< (args.amount)
+	warnMortalWound				= "%s : >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	specWarnTrap				= "트랩 활성화! - 복수의 육신해체자!"--creatureid 37038
 }
 
 L:SetOptionLocalization{
+	specWarnTrap 				= "트랩 활성화 특수 경고 보기",
 	warnMortalWound				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "알 수 없음")
 }
 
+L:SetMiscLocalization{
+	FleshreaperTrap1			= "서둘러! 저놈들 뒤에서 습격하자!",
+	FleshreaperTrap2			= "You... cannot escape us!",
+	FleshreaperTrap3			= "The living... here?!"
+}
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -260,9 +270,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "Switch target to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "곧 대상 전환",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
-	SpecWarnResonance		= "Shadow Resonance - Move"
+	WarnTargetSwitch		= "대상 전환 : %s",		-- Ugh, no nice spellname/id to use for general localization :(
+	WarnTargetSwitchSoon	= "곧 대상 전환"			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
 }
 
 L:SetTimerLocalization{
@@ -272,8 +281,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "대상 전환 경고 보기",								-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",							-- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기wn",
-	SpecWarnResonance		= "Show special warning when a Dark Nucleus is following you"	-- If it follows you, you have to move to the tank
+	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기"
 }
 
 L:SetMiscLocalization{
@@ -292,11 +300,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnPactDarkfallen	= "Pact of the Darkfallen on you"
 }
 
 L:SetOptionLocalization{
-	SpecWarnPactDarkfallen	= "Show special warning when you are affected by Pact of the Darkfallen"
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
 }
 
 -----------------------------
@@ -330,20 +337,14 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "공중 페이즈",
-	SpecWarnBlisteringCold	= "얼음 손아귀! 뛰세요!",
-	SpecWarnFrostBeacon		= "당신에게 냉기 봉화",
 	WarnGroundphaseSoon		= "곧 신드라고사 착륙",
-	SpecWarnUnchainedMagic	= "당신에게 해방된 마법"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "공중 페이즈 알리기",
-	SpecWarnBlisteringCold	= "얼음 손아귀 특수 경고 보기",
-	SpecWarnFrostBeacon		= "냉기 봉화에 영향을 받을 경우 특수 경고 보기",
 	WarnGroundphaseSoon		= "지상 페이즈 사전 경고 보기",
 	TimerNextAirphase		= "다음 공중 페이즈 타이머 보기",
-	TimerNextGroundphase	= "다음 지상 페이즈 타이머 보기",
-	SpecWarnUnchainedMagic	= "해방된 마법의 영향을 받을 경우 특수 경고 보기"
+	TimerNextGroundphase	= "다음 지상 페이즈 타이머 보기"
 }
 
 L:SetMiscLocalization{
