@@ -185,7 +185,8 @@ end
 
 -- automatically sends an addon message to the appropriate channel (BATTLEGROUND, RAID or PARTY)
 local function sendSync(prefix, msg)
-	if select(2, IsInInstance()) == "pvp" then
+	local zoneType = select(2, IsInInstance())
+	if zoneType == "pvp" or zoneType == "arena" then
 		SendAddonMessage(prefix, msg, "BATTLEGROUND")
 	elseif GetRealNumRaidMembers() > 0 then
 		SendAddonMessage(prefix, msg, "RAID")
