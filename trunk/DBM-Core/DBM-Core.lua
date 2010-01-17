@@ -611,11 +611,6 @@ do
 		if v and (time - v > 2.5) then
 			modSyncSpam[k] = nil
 		end
-		for k, v in pairs(autoRespondSpam) do
-			if v and (time - v > 60) then
-				autoRespondSpam[k] = nil
-			end
-		end
 	end)
 
 	function schedule(t, f, mod, ...)
@@ -1977,7 +1972,7 @@ do
 				SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)), "WHISPER", nil, sender)
 				self:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
-			autoRespondSpam[sender] = GetTime()
+			autoRespondSpam[sender] = true
 		end
 	end
 end
