@@ -21,7 +21,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	WarderTrap1		= "wer... ist da?",
+	WarderTrap1		= "Wer... ist da?",
 	WarderTrap2		= "Ich... erwache!",
 	WarderTrap3		= "Das Sanktum des Meisters wurde entweiht!"
 }
@@ -48,7 +48,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 --	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
 --	FleshreaperTrap2		= "You... cannot escape us!",
---	FleshreaperTrap3		= "The living... here?!"
+	FleshreaperTrap3		= "Die Lebenden? Hier?!"
 }
 
 ----------------------
@@ -94,6 +94,10 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	WarnAddsSoon				= "Zeige Vorwarnung für erscheinende Adds",
+	WarnReanimating				= "Zeige Warnung, wenn ein Add wiederbelebt wird",											-- Reanimated Adherent/Fanatic spawning
+	TimerAdds					= "Zeige Timer für neue Adds",
+	ShieldHealthFrame			= "Zeige Bossleben mit einer Leiste für $spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
@@ -102,7 +106,11 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "Was soll die Störung? Ihr wagt es, heiligen Boden zu betreten? Dies wird der Ort Eurer letzten Ruhe sein!",
-	YellReanimatedFanatic	= "Erhebt Euch und frohlocket ob Eurer reinen Form!"
+	YellReanimatedFanatic	= "Erhebt Euch und frohlocket ob Eurer reinen Form!",
+	ShieldPercent			= "Manabarriere", --Translate Spell id 70842
+	Fanatic1				= "Fanatischer Kultist",
+	Fanatic2				= "Deformierter Fanatiker",
+	Fanatic3				= "Wiederbelebter Fanatiker"
 }
 
 ----------------------
@@ -150,6 +158,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	warnFrenzySoon	= "Wahnsinn bald"
 }
+
 L:SetTimerLocalization{
 	TimerCombatStart		= "Kampf beginnt"
 }
@@ -160,7 +169,7 @@ L:SetOptionLocalization{
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "Setze Zeichen auf $spell:72444 Ziele während Zauber\n(Experimentell, kann den Tank fälschlicher Weise markieren)",
 	RangeFrame				= "Zeige Enfernungsmesser (11 Meter)",
-	RunePowerFrame			= "Zeige Boss Leben + $spell:72371 Leiste"
+	RunePowerFrame			= "Zeige Boss Leben und Leiste für $spell:72371"
 }
 
 L:SetMiscLocalization{
