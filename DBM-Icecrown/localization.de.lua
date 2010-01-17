@@ -12,10 +12,18 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	specWarnTrap		= "Falle aktiviert! - Todesgeweihter Wächter freigesetzt" --creatureid 37007
 }
 
 L:SetOptionLocalization{
+	specWarnTrap		= "Zeige spezielle Warnung fur Fallenaktivierung",
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
+}
+
+L:SetMiscLocalization{
+	WarderTrap1		= "wer... ist da?",
+	WarderTrap2		= "Ich... erwache!",
+	WarderTrap3		= "Das Sanktum des Meisters wurde entweiht!"
 }
 
 ---------------------------
@@ -24,15 +32,23 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name = "Plagueworks trash"
+	name = "Schatz & Stinki"
 }
 
 L:SetWarningLocalization{
-	warnMortalWound	= "%s auf >%s< (%s)"		-- Mortal Wound on >args.destName< (args.amount)
+	warnMortalWound	= "%s auf >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	specWarnTrap	= "Falle aktiviert! - Rachsüchtige Fleischernter kommen" --creatureid 37038
 }
 
 L:SetOptionLocalization{
+	specWarnTrap	= "Zeige spezielle Warnung fur Fallenaktivierung",
 	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
+}
+
+L:SetMiscLocalization{
+--	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
+--	FleshreaperTrap2		= "You... cannot escape us!",
+--	FleshreaperTrap3		= "The living... here?!"
 }
 
 ----------------------
@@ -41,16 +57,20 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("LordMarrowgar")
 
 L:SetGeneralLocalization{
-	name = "Lord Marrowgar"
+	name = "Lord Mark'Gar"
 }
 
 L:SetTimerLocalization{
+	achievementBoned	= "Zeit zum befreien"
 }
 
 L:SetWarningLocalization{
+	WarnImpale			= ">%s< ist aufgespießt"
 }
 
 L:SetOptionLocalization{
+	WarnImpale			= "Verkünde $spell:69062 Ziele",
+	achievementBoned	= "Zeige Timer für Entknöchert Erfolg",
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -64,9 +84,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
+	TimerAdds	= "Neue Adds"
 }
 
 L:SetWarningLocalization{
+	WarnReanimating				= "Add Wiederbelebung",			-- Reanimating an adherent or fanatic
+	WarnTouchInsignificance		= "%s auf >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnAddsSoon				= "Neue Adds bald"
 }
 
 L:SetOptionLocalization{
@@ -91,14 +115,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBattleFury	= "%s (%d)"
+	WarnBattleFury	= "%s (%d)",
+	WarnAddsSoon	= "Neue Adds bald"
 }
 
 L:SetOptionLocalization{
-	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury")
+	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
+	TimerCombatStart	= "Zeige Zeit bis zum Beginn des Kampfes",
+	WarnAddsSoon		= "Zeige Vorwarnung für erscheinende Adds",
+	TimerAdds			= "Zeige Timer für neue Adds"
 }
 
 L:SetTimerLocalization{
+	TimerCombatStart	= "Kampf beginnt",
+	TimerAdds			= "Neue Adds"
 }
 
 L:SetMiscLocalization{
@@ -118,13 +148,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnFrenzySoon	= "Wahnsinn bald"
+}
+L:SetTimerLocalization{
+	TimerCombatStart		= "Kampf beginnt"
 }
 
 L:SetOptionLocalization{
+	TimerCombatStart		= "Zeige Zeit bis Kampfbeginn",
+	warnFrenzySoon			= "Zeige Vorwarnung für Wahnsinn (bei ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	SetIconOnMarkCast		= "Setze Zeichen auf $spell:72444 Ziele während Zauber\n(Experimentell, kann den Tank fälschlicher Weise markieren)",
+	RangeFrame				= "Zeige Enfernungsmesser (11 Meter)",
+	RunePowerFrame			= "Zeige Boss Leben + $spell:72371 Leiste"
 }
 
 L:SetMiscLocalization{
+	RunePower			= "Blutmacht",
+	PullAlliance		= "Mit jedem Krieger der Horde, den Ihr getötet habt, mit jedem dieser Allianzhunde, der fiel, wuchsen die Armeen des Lichkönigs. Selbst in diesem Moment erwecken die Val'kyr Eure Gefallenen als Diener der Geißel.",
+--	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."
 }
 
 -----------------
@@ -157,7 +199,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn		= "Kleiner Schleim spawnt",
+	WarnOozeSpawn		= "Kleiner Schleim erscheint",
 	WarnUnstableOoze	= "%s auf >%s< (%s)"	 -- Unstable Ooze on >args.destName< (args.amount)
 }
 
@@ -200,9 +242,119 @@ L:SetOptionLocalization{
 	WarnPhase3Soon				= "Zeige Vorwarnung für Phase 3 (bei ~38%)",
 	specWarnMalleableGoo		= "Zeige spezielle Warnung für Formbarer Schleim auf Dir\n(Funktioniert nur, wenn Du das erste Ziel bist)",
 	specWarnMalleableGooNear	= "Zeige spezielle Warnung für Formbarer Schleim in Deiner Nähe\n(Funktioniert nur, wenn Du in der Nähe des ersten Zieles bist)",
+	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
+	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
+	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	MalleableGooIcon			= "Setze Zeichen auf erstes $spell:72295 Ziel"
 }
 
 L:SetMiscLocalization{
 	YellPull	= "Gute Nachricht Freunde! Ich habe eine Seuche perfektioniert, die alles Leben Azeroths auslöscht!"
+}
+
+----------------------------
+--  Blood Prince Council  --
+----------------------------
+L = DBM:GetModLocalization("BPCouncil")
+
+L:SetGeneralLocalization{
+	name = "Blood Prince Council"
+}
+
+L:SetWarningLocalization{
+	WarnTargetSwitch		= "Switch target to: %s",
+	WarnTargetSwitchSoon	= "Target switch soon"
+}
+
+L:SetTimerLocalization{
+	TimerTargetSwitch		= "Possible target switch"
+}
+
+L:SetOptionLocalization{
+	WarnTargetSwitch		= "Show warning to switch targets",                        -- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",                     -- Every ~31 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "Show timer for target switch cooldown"
+}
+
+L:SetMiscLocalization{
+	Keleseth	= "Prince Keleseth",
+	Taldaram	= "Prince Taldaram",
+	Valanar		= "Prince Valanar"
+}
+
+-----------------------------
+--  Blood-Queen Lana'thel  --
+-----------------------------
+L = DBM:GetModLocalization("Lanathel")
+
+L:SetGeneralLocalization{
+	name = "Blood-Queen Lana'thel"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
+}
+
+-----------------------------
+--  Valithria Dreamwalker  --
+-----------------------------
+L = DBM:GetModLocalization("Valithria")
+
+L:SetGeneralLocalization{
+	name = "Valithria Dreamwalker"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+------------------
+--  Sindragosa  --
+------------------
+L = DBM:GetModLocalization("Sindragosa")
+
+L:SetGeneralLocalization{
+	name = "Sindragosa"
+}
+
+L:SetTimerLocalization{
+	TimerNextAirphase		= "Next air phase",
+	TimerNextGroundphase	= "Next ground phase"
+}
+
+L:SetWarningLocalization{
+	WarnAirphase			= "Air phase",
+	WarnGroundphaseSoon		= "Sindragosa landing soon"
+}
+
+L:SetOptionLocalization{
+	WarnAirphase			= "Announce air phase",
+	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
+	TimerNextAirphase		= "Show timer for next air phase",
+	TimerNextGroundphase	= "Show timer for next ground phase"
+}
+
+L:SetMiscLocalization{
+	YellAirphase	= "Your incursion ends here! None shall survive!",
+	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+}
+
+---------------------
+--  The Lich King  --
+---------------------
+L = DBM:GetModLocalization("LichKing")
+
+L:SetGeneralLocalization{
+	name = "The Lich King"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
 }
