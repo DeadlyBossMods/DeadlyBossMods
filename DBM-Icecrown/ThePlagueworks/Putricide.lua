@@ -41,7 +41,7 @@ local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)-- Approx
 local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)--Used every 38 seconds exactly except after tear gas, it resets then it's 42-44seconds later (so using 43sec timer for there)
 local timerChokingGasBombCD			= mod:NewCDTimer(35, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
-local timerTearGas					= mod:NewBuffActiveTimer(20, 71615)
+local timerTearGas					= mod:NewBuffActiveTimer(17, 71615)
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
 
@@ -189,4 +189,5 @@ function mod:UNIT_HEALTH(uId)
 		warnPhase3Soon:Show()	
 	end
 end
+
 
