@@ -16,6 +16,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	specWarnTrap			= "為陷阱激活顯示預先警告",
 	SetIconOnDarkReckoning		= "為$spell:69483的目標設置標記"
 }
 
@@ -35,10 +36,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnMortalWound			= "%s: >%s< (%s)"	-- Mortal Wound on >args.destName< (args.amount)
+	warnMortalWound			= "%s: >%s< (%s)",	-- Mortal Wound on >args.destName< (args.amount)
+	specWarnTrap			= "陷阱激活! - 復仇的血肉收割者即將到來"--creatureid 37038
 }
 
 L:SetOptionLocalization{
+	specWarnTrap			= "為陷阱激活顯示預先警告",
 	warnMortalWound			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
