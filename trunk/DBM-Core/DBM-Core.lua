@@ -736,7 +736,7 @@ SlashCmdList["DBMRANGE"] = function(msg)
 		DBM.RangeCheck:Hide()
 	else
 		local r = tonumber(msg)
-		if r and (r == 10 or r == 11 or r == 15 or r == 28) then
+		if r and (r == 10 or r == 11 or r == 15 or r == 28 or r == 12) then
 			DBM.RangeCheck:Show(r)
 		else
 			DBM.RangeCheck:Show(10)
