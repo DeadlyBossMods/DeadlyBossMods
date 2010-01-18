@@ -137,7 +137,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if mod:IsDifficulty("heroic10") then
 			timerOverwhelmingPower:Start(60, args.destName)
 		else
-			timerOverwhelmingPower:Start(30, args.destName)
+			timerOverwhelmingPower:Start(35, args.destName)
 		end
 		if self.Options.SetIconOnOverwhelmingPower then
 			if mod:IsDifficulty("heroic10") then
