@@ -128,6 +128,13 @@ do
 				UIDropDownMenu_AddButton(info, 2)
 				
 				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(12)
+				info.func = setRange
+				info.arg1 = 12
+				info.checked = (frame.range == 12)
+				UIDropDownMenu_AddButton(info, 2)
+				
+				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(15)
 				info.func = setRange
 				info.arg1 = 15
@@ -259,7 +266,7 @@ function onUpdate(self, elapsed)
 	self:ClearLines()
 	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range or 10), 1, 1, 1)
 	for i = 1, GetNumRaidMembers() do
-		if (not UnitIsUnit("raid"..i, "player")) and (not UnitIsDeadOrGhost("raid"..i)) and self.checkFunc("raid"..i) then
+		if (not UnitIsUnit("raid"..i, "player")) and (not UnitIsDeadOrGhost("raid"..i)) and self.checkFunc("raid"..i, self.range) then
 			j = j + 1
 			color = RAID_CLASS_COLORS[select(2, UnitClass("raid"..i))] or NORMAL_FONT_COLOR
 			self:AddLine(UnitName("raid"..i), color.r, color.g, color.b)
@@ -281,22 +288,7 @@ end
 checkFuncs[11] = function(uId)
 	return CheckInteractDistance(uId, 2)
 end
---[[
-do
-	checkFuncs[12] = function(uId)
-		local list = MapDimensions[GetMapInfo()]
-		if not list then return false end
-	
-		local level = GetCurrentMapDungeonLevel()
-		local dims = list[level] 
-		
-	
-		local pX, pY = GetPlayerMapPosition("player")
-		local uX, uY = GetPlayerMapPosition(uId)
-		local map = GetMapInfo();
-	end
-end
---]]
+
 
 checkFuncs[10] = function(uId)
 	return CheckInteractDistance(uId, 3)
@@ -304,6 +296,82 @@ end
 
 checkFuncs[28] = function(uId)
 	return CheckInteractDistance(uId, 4)
+end
+
+do
+	-- the map size data is copied from Deus Vox Encounters (http://wow.curse.com/downloads/wow-addons/details/deus-vox-encounters.aspx)
+	local mapDimensions = {
+		Ulduar = {
+			[1] = {w = 3064.9614761023, h = 2039.5413309668},	-- Expedition Base Camp
+			[2] = {w = 624.19069622949, h = 415.89374357805},	-- Antechamber of Ulduar
+			[3] = {w = 1238.37427179,	h = 823.90183235628},	-- Conservatory of Life
+			[4] = {w = 848.38069183829, h = 564.6688835337},	-- Prison of Yogg-Saron
+			[5] = {w = 1460.4694647684, h = 974.65312886234},	-- Spark of Imagination
+			[6] = {w = 576.71549337896, h = 384.46653291368},	-- The Mind's Eye (Under Yogg)
+		},
+		Naxxramas = {
+			[1] = {w = 1018.3655494957, h = 679.40523953718},	-- Construct
+			[2] = {w = 1019.1310739251, h = 679.18864376555},	-- Arachnid
+			[3] = {w = 1118.1083638787, h = 744.57895516418},	-- Military
+			[4] = {w = 1117.0809918236, h = 745.97398439776},	-- Plague
+			[5] = {w = 1927.3190541014, h = 1284.6530841959},	-- Entrance
+			[6] = {w = 610.62737087301, h = 407.3875157986},	-- KT/Sapphiron
+		},
+		TheObsidianSanctum = {
+			[0] = {w = 1081.6334214432, h = 721.79860069158},
+		},
+		TheEyeofEternity = {
+			[1] = {w = 400.728405332355, h = 267.09113174487},
+		},
+		TheArgentColiseum = {
+			[1] = {w = 344.20785972537, h = 229.57961178118},
+			[2] = {w = 688.60679691348, h = 458.95801567569},
+		},
+		VaultofArchavon = {
+			[1] = {w = 842.2254908359, h = 561.59878021123},
+		},
+		IcecrownCitadel = {
+			[1] = {w = 1262.8025621533, h = 841.91669450207},	-- The Lower Citadel
+			[2] = {w = 993.25701607873, h = 662.58829476644},	-- The Rampart of Skulls
+			[3] = {w = 181.83564716405, h = 121.29684810833},	-- Deathbringer's Rise
+			[4] = {w = 720.60965618252, h = 481.1621506613},	-- The Frost Queen's Lair
+			[5] = {w = 1069.6156745738, h = 713.83371679543},	-- The Upper Reaches
+			[6] = {w = 348.05218433541, h = 232.05964286208},	-- Royal Quarters
+			-- [7] = {w = 0, h = 0}, -- The Frozen Throne
+		},
+	}
+   
+	local function mapRangeCheck(uId, range)
+		local pX, pY = GetPlayerMapPosition("player")
+		if pX == 0 and pY == 0 then
+			SetMapToCurrentZone()
+			pX, pY = GetPlayerMapPosition("player")
+		end
+		local uX, uY = GetPlayerMapPosition(uId)
+		local list = mapDimensions[GetMapInfo()]
+		if not list then
+			return
+		end
+		local dims = list[GetCurrentMapDungeonLevel()]
+		if not dims and list and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
+			SetMapToCurrentZone() -- fixes the dungeon level
+			dims = list[GetCurrentMapDungeonLevel()] -- try again
+			if not dims then -- there is actually a level 0 in this zone but we don't know about it...too bad :(
+				return
+			end
+		elseif not dims then
+			return
+		end
+		local dX = (pX - uX) * dims.w
+		local dY = (pY - uY) * dims.y
+		return math.sqrt(dX*dX + dY*dY) < range
+	end
+	
+	setmetatable(checkFuncs, {
+		__index = function(t, k)
+			return mapRangeCheck
+		end
+	})
 end
 
 do
