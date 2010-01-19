@@ -47,8 +47,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	FleshreaperTrap1			= "서둘러! 저놈들 뒤에서 습격하자!",
-	FleshreaperTrap2			= "You... cannot escape us!",
-	FleshreaperTrap3			= "The living... here?!"
+	FleshreaperTrap2			= "우리에게서... 벗어날 수 없다!",
+	FleshreaperTrap3			= "살아있는 놈이... 여기에?!"
 }
 ----------------------
 --  Lord Marrowgar  --
@@ -97,7 +97,7 @@ L:SetOptionLocalization{
 	WarnReanimating					= "이교도를 부활 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
 	TimerAdds						= "새로운 이교도 추가 타이머 보기",
 	ShieldHealthFrame				= "$spell:70842의 방어막 바와 보스 체력바를 함께 보기",	
-	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
+	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "알 수 없음"),	-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	SetIconOnDominateMind			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
 	SetIconOnDeformedFanatic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
 	SetIconOnEmpoweredAdherent		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
@@ -167,7 +167,7 @@ L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "$spell:72444 대상에게 공격대 아이콘 설정",	
-	RangeFrame				= "거리 프레임 보기 (11 미터)",
+	RangeFrame				= "거리 프레임 보기 (12 미터)",
 	RunePowerFrame			= "보스 체력 바와 함께 $spell:72371 바 보기"	
 }
 
@@ -257,7 +257,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!"
+	YellPull				= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!"
 }
 
 ----------------------------
