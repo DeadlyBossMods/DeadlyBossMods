@@ -90,13 +90,15 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating				= "Помощник воскрешается",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	WarnAddsSoon				= "Скоро призыв помощников"
+	WarnAddsSoon				= "Скоро призыв помощников",
+	specWarnVengefulShade		= "Мстительный дух атакует вас - бегите"--creatureid 38222
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Предупреждать заранее о призыве помощников",
 	WarnReanimating				= "Предупреждение при воскрешении помощников",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds					= "Отсчет времени до призыва помощников",
+	specWarnVengefulShade		= "Спец-предупреждение, когда Мстительный дух атакует вас",--creatureid 38222
 	ShieldHealthFrame			= "Показывать здоровье босса с индикатором здоровья для \n$spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -168,7 +170,7 @@ L:SetOptionLocalization{
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "Устанавливать метки на цели заклинания $spell:72444\nво время его применения (экспериментально, может по ошибке\nпомечать танка)",
-	RangeFrame				= "Показывать окно допустимой дистанции (11 м)",
+	RangeFrame				= "Показывать окно допустимой дистанции (12 м)",
 	RunePowerFrame			= "Показывать здоровье босса + индикатор для $spell:72371"
 }
 
@@ -209,7 +211,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Малый слизнюк",
-	WarnUnstableOoze			= "%s на |3-5(>%s<) (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s на |3-5(>%s<) (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	specWarnLittleOoze			= "Малый слизнюк атакует вас - бегите"--creatureid 36897
 }
 
 L:SetTimerLocalization{
@@ -219,6 +222,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Отсчет времени до следующих труб для подачи ядовитой слизи",
 	WarnOozeSpawn				= "Предупреждение при появлении Малого слизнюка",
+	specWarnLittleOoze			= "Спец-предупреждение, когда Малый слизнюк атакует вас",--creatureid 36897
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
