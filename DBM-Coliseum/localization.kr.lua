@@ -238,20 +238,21 @@ L:SetMiscLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnEmerge				= "출현 경고 보기",
-	WarnEmergeSoon			= "출현의 사전 경고 보기",
-	WarnSubmerge			= "숨기 경고 보기",
-	WarnSubmergeSoon		= "숨기의 사전 경고 보기",
-	specWarnSubmergeSoon	= "숨기 10초전 특수 경고 보기",	
-	SpecWarnPursue			= "당신을 추격하기 시작할 때 특수 경고 알리기",
-	warnAdds				= "새로운 네루비안 땅무지가 추가 될 때 경고 보기",
-	timerAdds				= "새로운 네루비안 땅무지 추가 타이머 보기",	
-	TimerEmerge				= "출현 타이머 보기",
-	TimerSubmerge			= "숨기 타이머 보기",
-	PlaySoundOnPursue		= "당신을 추격하기 시작할 때 특수 소리 재생",
-	PursueIcon				= "추격 대상자 공격대 아이콘 설정하기",
-	SetIconsOnPCold			= "$spell:68510 대상자 공격대 아이콘 설정하기",
-	SpecWarnShadowStrike	= "$spell:66134 특수 경고 보기(차단 관련)",
-	RemoveHealthBuffsInP3	= "3 페이즈를 시작할 때 HP 버프 지우기",
-	AnnouncePColdIcons		= "$spell:68510 대상자 및 공격대 아이콘 설정을 공격대 채팅창으로 알리기"	
+	WarnEmerge					= "출현 경고 보기",
+	WarnEmergeSoon				= "출현의 사전 경고 보기",
+	WarnSubmerge				= "숨기 경고 보기",
+	WarnSubmergeSoon			= "숨기의 사전 경고 보기",
+	specWarnSubmergeSoon		= "숨기 10초전 특수 경고 보기",	
+	SpecWarnPursue				= "당신을 추격하기 시작할 때 특수 경고 알리기",
+	warnAdds					= "새로운 네루비안 땅무지가 추가 될 때 경고 보기",
+	timerAdds					= "새로운 네루비안 땅무지 추가 타이머 보기",	
+	TimerEmerge					= "출현 타이머 보기",
+	TimerSubmerge				= "숨기 타이머 보기",
+	PlaySoundOnPursue			= "당신을 추격하기 시작할 때 특수 소리 재생",
+	PursueIcon					= "추격 대상자 공격대 아이콘 설정하기",
+	SetIconsOnPCold				= "$spell:68510 대상자 공격대 아이콘 설정하기",
+	SpecWarnShadowStrike		= "$spell:66134 특수 경고 보기(차단 관련)",
+	RemoveHealthBuffsInP3		= "3 페이즈를 시작할 때 HP 버프 지우기",
+	AnnouncePColdIcons			= "$spell:68510 대상자 및 공격대 아이콘 설정을 공격대 채팅창으로 알리기",
+	AnnouncePColdIconsRemoved	= "$spell:68510의 공격대 아이콘이 언제 사라지는지 알리기 \n(위의 옵션을 포함해야 함)"	
 }
