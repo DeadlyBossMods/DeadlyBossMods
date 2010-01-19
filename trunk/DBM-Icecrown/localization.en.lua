@@ -88,13 +88,15 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating				= "Add reviving",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	WarnAddsSoon				= "New adds soon"
+	WarnAddsSoon				= "New adds soon",
+	specWarnVengefulShade		= "Vengeful Shade attacking you - Run Away"--creatureid 38222
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Show pre-warning for adds spawning",
-	WarnReanimating				= "Show warning when an add is besing revived",											-- Reanimated Adherent/Fanatic spawning
+	WarnReanimating				= "Show warning when an add is being revived",	-- Reanimated Adherent/Fanatic spawning
 	TimerAdds					= "Show timer for new adds",
+	specWarnVengefulShade		= "Show special warning when you are attacked by Vengeful Shade",--creatureid 38222
 	ShieldHealthFrame			= "Show boss health with a health bar for $spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -207,7 +209,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Little Ooze spawning",
-	WarnUnstableOoze			= "%s on >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s on >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	specWarnLittleOoze			= "Little Ooze attacking you - Run Away"--creatureid 36897
 }
 
 L:SetTimerLocalization{
@@ -217,6 +220,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning",
+	specWarnLittleOoze			= "Show special warning when you are attacked by Little Ooze",--creatureid 36897
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
