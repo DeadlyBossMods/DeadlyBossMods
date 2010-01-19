@@ -98,7 +98,7 @@ L:SetOptionLocalization{
 	WarnAddsSoon				= "Предупреждать заранее о призыве помощников",
 	WarnReanimating				= "Предупреждение при воскрешении помощников",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds					= "Отсчет времени до призыва помощников",
-	specWarnVengefulShade		= "Спец-предупреждение, когда Мстительный дух атакует вас",--creatureid 38222
+	specWarnVengefulShade		= "Спец-предупреждение, когда вас атакует Мстительный дух",--creatureid 38222
 	ShieldHealthFrame			= "Показывать здоровье босса с индикатором здоровья для \n$spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -222,7 +222,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Отсчет времени до следующих труб для подачи ядовитой слизи",
 	WarnOozeSpawn				= "Предупреждение при появлении Малого слизнюка",
-	specWarnLittleOoze			= "Спец-предупреждение, когда Малый слизнюк атакует вас",--creatureid 36897
+	specWarnLittleOoze			= "Спец-предупреждение, когда вас атакует Малый слизнюк",--creatureid 36897
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
@@ -287,6 +287,7 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "Предупреждение о смене цели",                        -- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Предупреждать заранее о смене цели",                     -- Every ~31 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Отсчет времени до смены цели",
+	ShadowResonance			= "Спец-предупреждение, когда на вас $spell:71822"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
 }
 
 L:SetMiscLocalization{
