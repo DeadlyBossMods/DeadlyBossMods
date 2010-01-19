@@ -237,5 +237,6 @@ L:SetOptionLocalization{
 	SpecWarnShadowStrike	= "Mostrar aviso especial para Golpe de sombras ( para cortar )",
 	RemoveHealthBuffsInP3	= "Quitar bufos de vida al inicio de la fase 3", 
 	SetIconsOnPCold         = "Poner iconos en los objetivos de $spell:68510",
-	AnnouncePColdIcons		= "Anunciar iconos para los ojetivos de $spell:68510 en el chat de raid\n(Requiere 'anunciar' habilitado y lider o ayudante)"
+	AnnouncePColdIcons		= "Anunciar iconos para los ojetivos de $spell:68510 en el chat de raid\n(Requiere 'anunciar' habilitado y lider o ayudante)",
+	AnnouncePColdIconsRemoved	= "También anunciar cuando se eliminen los iconos de los objetivos $spell:68510\n(Necesita la opción anterior)"
 }
