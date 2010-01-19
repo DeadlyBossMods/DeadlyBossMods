@@ -52,6 +52,7 @@ local specWarnPCold			= mod:NewSpecialWarningYou(68510, false)
 local timerPCold			= mod:NewBuffActiveTimer(15, 68509)
 mod:AddBoolOption("SetIconsOnPCold", true)
 mod:AddBoolOption("AnnouncePColdIcons", false)
+mod:AddBoolOption("AnnouncePColdIconsRemoved", false)
 
 -- Freezing Slash
 local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
@@ -167,7 +168,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(66013, 67700, 68509, 68510) then			-- Penetrating Cold
 		mod:SetIcon(args.destName, 0)
-		if self.Options.AnnouncePColdIcons and DBM:GetRaidRank() >= 1 then
+		if (self.Options.AnnouncePColdIcons and self.Options.AnnouncePColdIconsRemoved) and DBM:GetRaidRank() >= 1 then
 			SendChatMessage(L.PcoldIconRemoved:format(args.destName), "RAID")
 		end
 	elseif args:IsSpellID(10278) and self:IsInCombat() then		-- Hand of Protection
