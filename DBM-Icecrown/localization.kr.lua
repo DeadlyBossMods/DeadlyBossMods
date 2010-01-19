@@ -89,13 +89,15 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating					= "이교도 부활",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s : >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	WarnAddsSoon					= "곧 새로운 이교도 추가"
+	WarnAddsSoon					= "곧 새로운 이교도 추가",
+	specWarnVengefulShade			= "복수의 망령 공격 - 피하세요!"--creatureid 38222
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon					= "이교도 추가 사전 경고 보기",
-	WarnReanimating					= "이교도를 부활 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
+	WarnReanimating					= "이교도를 부활을 시작 할 경우 경고 보기",								-- Reanimated Adherent/Fanatic spawning
 	TimerAdds						= "새로운 이교도 추가 타이머 보기",
+	specWarnVengefulShade			= "복수의 망령으로부터 공격을 받을 경우 특수 경고 보기",--creatureid 38222	
 	ShieldHealthFrame				= "$spell:70842의 방어막 바와 보스 체력바를 함께 보기",	
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "알 수 없음"),	-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	SetIconOnDominateMind			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -208,7 +210,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "작은 수액괴물 생성",
-	WarnUnstableOoze			= "%s : >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s : >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	specWarnLittleOoze			= "작은 수액괴물의 공격! - 뛰세요!"--creatureid 36897	
 }
 
 L:SetTimerLocalization{
@@ -218,6 +221,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "다음 수액 홍수 타이머 보기",
 	WarnOozeSpawn				= "작은 수액괴물 생성 경고 보기",
+	specWarnLittleOoze			= "작은 수액괴물로부터 공격을 받을 경우 특수 경고 보기",--creatureid 36897	
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "알 수 없음"),	
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
@@ -257,7 +261,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull				= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!"
+	YellPull					= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!"
 }
 
 ----------------------------
@@ -271,7 +275,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "대상 전환 : %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "곧 대상 전환"			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	WarnTargetSwitchSoon	= "곧 대상 전환",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	ShadowResonance			= "$spell:71822"
 }
 
 L:SetTimerLocalization{
@@ -281,7 +286,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "대상 전환 경고 보기",								-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",							-- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기"
+	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기",
+	ShadowResonance			= "$spell:71822의 영향을 받을 경우 특수 경고 보기"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
 }
 
 L:SetMiscLocalization{
