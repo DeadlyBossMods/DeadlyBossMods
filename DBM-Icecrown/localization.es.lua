@@ -93,7 +93,8 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating					= "Resurreccion de Add",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s en >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	WarnAddsSoon					= "Nuevos adds pronto"
+	WarnAddsSoon					= "Nuevos adds pronto",
+	specWarnVengefulShade		= "Sombra vengativa te ataca! Corre!"--creatureid 38222
 }
 
 
@@ -102,6 +103,7 @@ L:SetOptionLocalization{
 	WarnAddsSoon					= "Mostrar un pre-aviso cuando vengan nuevos adds ",
 	WarnReanimating					= "Mostrar un aviso cuando un add sea resucitado",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds						= "Mostrar tiempo para nuevos adds",
+	specWarnVengefulShade			= "Mostrar aviso especial cuando te ataque una Sombra vengativa",--creatureid 38222
 	ShieldHealthFrame				= "Mostrar barra de vida del boss con una barra de vida para $spell:70842",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),		-- Warning isnt default (it has a count number), option is default tho (no need for translation this way)
 	SetIconOnDominateMind			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -216,16 +218,18 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Sale moco pequeño",
-	WarnUnstableOoze			= "%s en >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s en >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	specWarnLittleOoze			= "Moco pequeño te ataca! Corre!" --creatureid 36897
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes	= "Siguientes tuberías de babosas venenosas"
+	NextPoisonSlimePipes	= "Siguientes tuberías de babosas"
 }
 
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Mostrar tiempo para siguientes tuberías de babosas venenosas",
 	WarnOozeSpawn				= "Mostrar aviso cuando salgan mocos pequeños",
+	specWarnLittleOoze			= "Mostrar aviso especial cuando te ataque un Moco pequeño",--creatureid 36897
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
@@ -278,24 +282,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "Switch target to: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "Target switch soon"			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	WarnTargetSwitch		= "Cambiar objetivo a: %s",		-- Ugh, no nice spellname/id to use for general localization :(
+	WarnTargetSwitchSoon	= "Cambiar de objetivo pronto"			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch	= "Possible target switch"
+	TimerTargetSwitch	= "Posible cambio de objetivo"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Show warning to switch targets",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",							-- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown"
+	WarnTargetSwitch		= "Mostrar aviso para cambiar de objetivos",								-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Mostrar pre-aviso para cambiar de objetivos",							-- Every ~31 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "Mostrar tiempo para siguiente cambio de objetivo",
+	ShadowResonance			= "Mostrar aviso especial cuando te afecte \n $spell:71822"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
 }
 
 L:SetMiscLocalization{
-	Keleseth	= "Prince Keleseth",
-	Taldaram	= "Prince Taldaram",
-	Valanar		= "Prince Valanar"
+	Keleseth	= "Príncipe Keleseth",
+	Taldaram	= "Príncipe Taldaram",
+	Valanar		= "Príncipe Valanar"
 }
 
 -----------------------------
