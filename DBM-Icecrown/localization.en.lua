@@ -284,7 +284,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "Show warning to switch targets",                        -- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",                     -- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown"
+	TimerTargetSwitch		= "Show timer for target switch cooldown",
+	ShadowResonance			= "Show special warning when you are affected by \n $spell:71822"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
 }
 
 L:SetMiscLocalization{

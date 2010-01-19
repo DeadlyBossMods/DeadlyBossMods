@@ -11,7 +11,7 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
-local isTank	= UnitHealth("player") > 40000			-- check if player is a tank based on HP
+local notTank	= UnitHealth("player") < 40000			-- check if player is a tank based on HP
 
 local warnTargetSwitch		= mod:NewAnnounce("WarnTargetSwitch", 3)
 local warnTargetSwitchSoon	= mod:NewAnnounce("WarnTargetSwitchSoon", 2)
@@ -20,7 +20,7 @@ local warnKineticBomb		= mod:NewSpellAnnounce(72053)
 local warnDarkNucleus		= mod:NewSpellAnnounce(71943)			-- instant cast
 local warnShockVortex		= mod:NewCastAnnounce(72037)			-- 1,5sec cast
 
-local specWarnShadResonance	= mod:NewSpecialWarningMove(71822, not isTank)
+local specWarnShadResonance	= mod:NewSpecialWarningMove(71822, notTank, "ShadowResonance")
 
 local timerTargetSwitch		= mod:NewTimer(35, "TimerTargetSwitch")
 local timerDarkNucleus		= mod:NewNextTimer(15, 71943)			-- Seen a range from 14,9 - 16,8
