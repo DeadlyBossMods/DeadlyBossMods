@@ -20,7 +20,7 @@ local warnKineticBomb		= mod:NewSpellAnnounce(72053)
 local warnDarkNucleus		= mod:NewSpellAnnounce(71943)			-- instant cast
 local warnShockVortex		= mod:NewCastAnnounce(72037)			-- 1,5sec cast
 
-local specWarnResonance		= mod:NewSpecialWarningMove(71822, isTank)
+local specWarnShadResonance	= mod:NewSpecialWarningMove(71822, not isTank)
 
 local timerTargetSwitch		= mod:NewTimer(35, "TimerTargetSwitch")
 local timerDarkNucleus		= mod:NewNextTimer(15, 71943)			-- Seen a range from 14,9 - 16,8
@@ -62,7 +62,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTargetSwitchSoon:Schedule(30)
 		timerTargetSwitch:Start()
 	elseif args:IsSpellID(71822) and args:IsPlayer() then		-- Shadow Resonance
-		specWarnResonance:Show()
+		specWarnShadResonance:Show()
 	end
 end
 
