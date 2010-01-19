@@ -31,7 +31,7 @@ local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
 local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
 local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
 local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)--Some strats purposely run to this so option is defaulted to off
-local specWarnLittleOoze		= mod:NewSpecialWarning("specWarnLittleOoze", false)
+local specWarnLittleOoze		= mod:NewSpecialWarning("specWarnLittleOoze")
 
 local timerStickyOoze			= mod:NewNextTimer(16, 69774)
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
