@@ -11,6 +11,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SWING_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_TARGET"
 )
@@ -33,6 +34,7 @@ local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
 local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)
 local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
 local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
+local specWarnVengefulShade			= mod:NewSpecialWarning("specWarnVengefulShade", false)
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
 local timerDominateMind				= mod:NewBuffActiveTimer(12, 71289)
@@ -197,6 +199,11 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+function mod:SWING_DAMAGE(args)
+	if args:IsPlayer() and args:GetSrcCreatureID() == 38222 then
+		specWarnVengefulShade:Show()
+	end
+end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellReanimatedFanatic or msg:find(L.YellReanimatedFanatic) then

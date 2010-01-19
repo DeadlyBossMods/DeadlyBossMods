@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
+	"SWING_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -30,6 +31,7 @@ local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
 local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
 local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
 local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)--Some strats purposely run to this so option is defaulted to off
+local specWarnLittleOoze		= mod:NewSpecialWarning("specWarnLittleOoze", false)
 
 local timerStickyOoze			= mod:NewNextTimer(16, 69774)
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
@@ -113,6 +115,12 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(69761, 71212) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
+	end
+end
+
+function mod:SWING_DAMAGE(args)
+	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then
+		specWarnLittleOoze:Show()
 	end
 end
 
