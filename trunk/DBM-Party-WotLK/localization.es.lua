@@ -292,7 +292,7 @@ L:SetMiscLocalization({
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
 	WaveCheck	= "Oleada de la Plaga = %d/10",
-	Rollplay	= "Me alegro de que lo consiguieras, Uther."
+	Rollplay	= "Me alegra que lo consiguieras, Uther."
 })
 
 
