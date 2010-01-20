@@ -27,7 +27,7 @@ local warnKineticBomb			= mod:NewSpellAnnounce(72053)
 local warnDarkNucleus			= mod:NewSpellAnnounce(71943)			-- instant cast
 
 local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
-local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(73037)
+local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(72039)
 
 local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch")	-- every 46-47seconds
 local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943)				-- usually every 10 seconds but sometimes more
@@ -36,7 +36,7 @@ local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16
 
 local soundEmpoweredFlames		= mod:NewSound(72040)
 mod:AddBoolOption("EmpoweredFlameIcon", true)
-mod:AddBoolOption("ActivePrinceIcon", false)
+mod:AddBoolOption("ActivePrinceIcon", true)
 
 local activePrince
 function mod:OnCombatStart(delay)
@@ -50,7 +50,7 @@ function mod:TrySetTarget()
 		for i = 1, GetNumRaidMembers() do
 			if UnitGUID("raid"..i.."target") == activePrince then
 				activePrince = nil
-				SetRaidTarget("raid"..i.."target", 7)
+				SetRaidTarget("raid"..i.."target", 8)
 			end
 			if not (activePrince) then
 				break
@@ -67,7 +67,7 @@ function mod:SPELL_CAST_START(args)
 		warnEmpoweredShockVortex:Show()
 		specWarnEmpoweredShockV:Show()
 		timerShockVortex:Start()
-	elseif args:IsSpellID(71718) then	-- Conjure (Inferno) Flames
+	elseif args:IsSpellID(71718) then	-- Conjure Flames
 		warnConjureFlames:Show()
 		timerConjureFlamesCD:Start()
 	elseif args:IsSpellID(72040) then	-- Conjure Empowered Flames
@@ -124,7 +124,7 @@ function mod:OnSync(msg, target)
 			soundEmpoweredFlames:Play()
 		end
 		if self.Options.EmpoweredFlameIcon then
-			self:SetIcon(target, 8, 10)
+			self:SetIcon(target, 7, 10)
 		end
 	end
 end
