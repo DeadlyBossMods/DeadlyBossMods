@@ -3,15 +3,17 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(37970, 37972, 37973)
-mod:SetUsedIcons(8)
+mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_SUMMON",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_TARGET"
 )
 
 local warnTargetSwitch			= mod:NewAnnounce("WarnTargetSwitch", 3)
@@ -33,10 +35,27 @@ local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16
 
 local soundEmpoweredFlames		= mod:NewSound(72040)
 mod:AddBoolOption("EmpoweredFlameIcon", true)
+mod:AddBoolOption("ActivePrinceIcon", false)
 
+local activePrince
 function mod:OnCombatStart(delay)
 	warnTargetSwitchSoon:Schedule(42-delay)
 	timerTargetSwitch:Start(-delay)
+	activePrince = nil
+end
+
+function mod:TrySetTarget()
+	if DBM:GetRaidRank() >= 1 then
+		for i = 1, GetNumRaidMembers() do
+			if UnitGUID("raid"..i.."target") == activePrince then
+				activePrince = nil
+				SetRaidTarget("raid"..i.."target", 7)
+			end
+			if not (activePrince) then
+				break
+			end
+		end
+	end
 end
 
 function mod:SPELL_CAST_START(args)
@@ -62,14 +81,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTargetSwitch:Show(L.Valanar)
 		warnTargetSwitchSoon:Schedule(42)
 		timerTargetSwitch:Start()
+		activePrince = args.destGUID
 	elseif args:IsSpellID(70981) then
 		warnTargetSwitch:Show(L.Keleseth)
 		warnTargetSwitchSoon:Schedule(42)
 		timerTargetSwitch:Start()
+		activePrince = args.destGUID
 	elseif args:IsSpellID(70982) then
 		warnTargetSwitch:Show(L.Taldaram)
 		warnTargetSwitchSoon:Schedule(42)
 		timerTargetSwitch:Start()
+		activePrince = args.destGUID
 	end
 end
 
@@ -84,6 +106,12 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg and msg:match(L.EmpoweredFlames)
 	if target then
 		self:SendSync("EmpoweredFlame", target)
+	end
+end
+
+function mod:UNIT_TARGET()
+	if activePrince then
+		self:TrySetTarget()
 	end
 end
 
