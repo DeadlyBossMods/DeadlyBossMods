@@ -84,13 +84,15 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	WarnReanimating			= "小怪再活化",		-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s: >%s< (%s)",	-- Touch of Insignificance on >args.destName< (args.amount)
-	WarnAddsSoon			= "新的小怪 即將到來"
+	WarnAddsSoon			= "新的小怪 即將到來",
+	specWarnVengefulShade		= "你被復仇的暗影盯上了 - 快跑開"
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
 	WarnReanimating			= "當小怪再活化時顯示警告",
 	TimerAdds			= "為新的小怪顯示計時器",
+	specWarnVengefulShade		= "當你被復仇的暗影盯上時顯示特別警告",
 	ShieldHealthFrame		= "為$spell:70842顯示首領血量框架",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -162,7 +164,7 @@ L:SetOptionLocalization{
 	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
 	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "設置標記在$spell:72444施放時的目標\n(試驗中，可能會錯誤地標記坦克)",
-	RangeFrame			= "顯示距離框 (11)",
+	RangeFrame			= "顯示距離框 (12碼)",
 	RunePowerFrame			= "顯示首領血量+$spell:72371條"
 }
 
@@ -204,7 +206,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn			= "小軟泥出現了",
-	WarnUnstableOoze		= "%s: >%s< (%s)"			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze		= "%s: >%s< (%s)",
+	specWarnLittleOoze		= "你被小軟泥怪盯上了 - 快跑開"
 }
 
 L:SetTimerLocalization{
@@ -214,6 +217,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
 	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
+	specWarnLittleOoze		= "當你被小軟泥怪盯上時顯示特別警告",
 	WarnUnstableOoze		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
@@ -268,24 +272,26 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "轉換目標到: %s",
-	WarnTargetSwitchSoon		= "即將轉換目標",
-	SpecWarnResonance		= "暗影共鳴 - 跑開"
+	WarnTargetSwitchSoon		= "即將轉換目標"
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "可能的轉換目標"
+	TimerTargetSwitch		= "轉換目標"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "為轉換目標顯示警告",
-	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",
-	TimerTargetSwitch		= "為目標轉換冷卻顯示計時器"
+	WarnTargetSwitch		= "為轉換目標顯示警告",-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",-- Every ~47 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "為目標轉換冷卻顯示計時器",
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
+	ActivePrinceIcon		= "設置標記在強力的親王身上 (十字)"
 }
 
 L:SetMiscLocalization{
 	Keleseth			= "凱雷希斯親王",
 	Taldaram			= "泰爾達朗親王",
-	Valanar				= "瓦拉納爾親王"
+	Valanar				= "瓦拉納爾親王",
+	EmpoweredFlames			= "Inferno Flames speed toward (%S+)!"
 }
 
 -----------------------
