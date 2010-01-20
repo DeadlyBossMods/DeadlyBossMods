@@ -286,7 +286,8 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "대상 전환 경고 보기", -- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기",
-	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040)	
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
+	ActivePrinceIcon		= "변형된 공작에게 공격대 아이콘 설정하기 (엑스)"
 }
 
 L:SetMiscLocalization{
