@@ -278,20 +278,21 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "Possible target switch"
+	TimerTargetSwitch		= "Target switch"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Show warning to switch targets",                        -- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",                     -- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown",
-	ShadowResonance			= "Show special warning when you are affected by \n $spell:71822"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
+	WarnTargetSwitch		= "Show warning to switch targets",-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",-- Every ~47 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "Show timer for target switch cooldown"
 }
 
 L:SetMiscLocalization{
-	Keleseth	= "Prince Keleseth",
-	Taldaram	= "Prince Taldaram",
-	Valanar		= "Prince Valanar"
+	Keleseth			= "Prince Keleseth",
+	Taldaram			= "Prince Taldaram",
+	Valanar				= "Prince Valanar",
+	EmpoweredFlames		= "Inferno Flames speed toward (%S+)!",
+	EmpoweredFlameIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040)
 }
 
 -----------------------------
