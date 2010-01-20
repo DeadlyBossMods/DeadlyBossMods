@@ -27,10 +27,11 @@ local warnKineticBomb			= mod:NewSpellAnnounce(72053)
 local warnDarkNucleus			= mod:NewSpellAnnounce(71943)			-- instant cast
 
 local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
+local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(73037)
 
-local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch")--every 46-47seconds
-local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943)--usually every 10 seconds but sometimes more
-local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)--every 20-30 seconds but never more often than every 20sec
+local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch")	-- every 46-47seconds
+local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943)				-- usually every 10 seconds but sometimes more
+local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)				-- every 20-30 seconds but never more often than every 20sec
 local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6
 
 local soundEmpoweredFlames		= mod:NewSound(72040)
@@ -64,6 +65,7 @@ function mod:SPELL_CAST_START(args)
 		timerShockVortex:Start()
 	elseif args:IsSpellID(72039, 73037, 73038, 73039) then	-- Empowered Shock Vortex(73037, 73038, 73039 drycoded from wowhead)
 		warnEmpoweredShockVortex:Show()
+		specWarnEmpoweredShockV:Show()
 		timerShockVortex:Start()
 	elseif args:IsSpellID(71718) then	-- Conjure (Inferno) Flames
 		warnConjureFlames:Show()
