@@ -284,15 +284,15 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "Show warning to switch targets",-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",-- Every ~47 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown"
+	TimerTargetSwitch		= "Show timer for target switch cooldown",
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040)
 }
 
 L:SetMiscLocalization{
 	Keleseth			= "Prince Keleseth",
 	Taldaram			= "Prince Taldaram",
 	Valanar				= "Prince Valanar",
-	EmpoweredFlames		= "Inferno Flames speed toward (%S+)!",
-	EmpoweredFlameIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040)
+	EmpoweredFlames		= "Inferno Flames speed toward (%S+)!"
 }
 
 -----------------------------
