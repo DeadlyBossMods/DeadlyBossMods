@@ -294,13 +294,14 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "Mostrar aviso para cambiar de objetivos",								-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Mostrar pre-aviso para cambiar de objetivos",							-- Every ~31 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Mostrar tiempo para siguiente cambio de objetivo",
-	ShadowResonance			= "Mostrar aviso especial cuando te afecte \n $spell:71822"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040)
 }
 
 L:SetMiscLocalization{
 	Keleseth	= "Príncipe Keleseth",
 	Taldaram	= "Príncipe Taldaram",
-	Valanar		= "Príncipe Valanar"
+	Valanar		= "Príncipe Valanar",
+	EmpoweredFlames		= "Llamas infernales van hacia (%S+)!"
 }
 
 -----------------------------
