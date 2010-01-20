@@ -248,6 +248,7 @@ L:SetOptionLocalization{
 	PursueIcon			= "為被追擊的目標設置標記 (頭顱)",
 	SpecWarnShadowStrike		= "為$spell:66134顯示特別警告 (斷法用)",
 	RemoveHealthBuffsInP3		= "當進入第3階段時移除耐力的增益",
-	SetIconsOnPCold			= "為透骨之寒的目標設置標記",
-	AnnouncePColdIcons		= "公佈透骨之寒目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)"
+	SetIconsOnPCold			= "為$spell:68510的目標設置標記",
+	AnnouncePColdIcons		= "公佈$spell:68510目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)",
+	AnnouncePColdIconsRemoved	= "當移除$spell:68510的標記時也提示\n(需要上述選項)"
 }
