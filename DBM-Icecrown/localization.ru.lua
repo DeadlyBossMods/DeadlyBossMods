@@ -280,20 +280,21 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "Возможная смена цели"
+	TimerTargetSwitch		= "Смена цели"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Предупреждение о смене цели",                        -- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Предупреждать заранее о смене цели",                     -- Every ~31 secs, you have to dps a different Prince
+	WarnTargetSwitch		= "Предупреждение о смене цели",-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Предупреждать заранее о смене цели",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Отсчет времени до смены цели",
-	ShadowResonance			= "Спец-предупреждение, когда на вас $spell:71822"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
+	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (крест)"
 }
-
 L:SetMiscLocalization{
-	Keleseth	= "Принц Келесет",
-	Taldaram	= "Принц Талдарам",
-	Valanar		= "Принц Валанар"
+	Keleseth			= "Принц Келесет",
+	Taldaram			= "Принц Талдарам",
+	Valanar				= "Принц Валанар",
+	EmpoweredFlames		= "Inferno Flames speed toward (%S+)!"
 }
 
 -----------------------------
