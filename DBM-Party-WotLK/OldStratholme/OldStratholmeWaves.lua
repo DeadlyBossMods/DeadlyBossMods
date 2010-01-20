@@ -6,7 +6,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:RegisterEvents(
 	"UPDATE_WORLD_STATES",
 	"UNIT_DIED",
-	"MONSTER_SAY"
+	"CHAT_MSG_MONSTER_SAY"
 )
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
@@ -87,7 +87,7 @@ function mod:UNIT_DIED(args)
 	end
 end
 
-function mod:MONSTER_SAY(msg)
+function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.Rollplay or msg:find(L.Rollplay) then
 		self:SendSync("Rollplay")
 	end
