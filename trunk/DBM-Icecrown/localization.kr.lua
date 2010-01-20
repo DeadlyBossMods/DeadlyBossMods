@@ -276,24 +276,24 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "대상 전환 : %s",		-- Ugh, no nice spellname/id to use for general localization :(
 	WarnTargetSwitchSoon	= "곧 대상 전환",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
-	ShadowResonance			= "$spell:71822"
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "Possible target switch"
+	TimerTargetSwitch		= "대상 전환"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "대상 전환 경고 보기",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",							-- Every ~31 secs, you have to dps a different Prince
+	WarnTargetSwitch		= "대상 전환 경고 보기", -- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기",
-	ShadowResonance			= "$spell:71822의 영향을 받을 경우 특수 경고 보기"--hack to work around arta's bug localize a generic so we can force update the defaults by using an different option name
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040)	
 }
 
 L:SetMiscLocalization{
 	Keleseth				= "공작 켈레세스",
 	Taldaram				= "공작 탈다람",
-	Valanar					= "공작 발라나르"
+	Valanar					= "공작 발라나르",
+	EmpoweredFlames			= "Inferno Flames speed toward (%S+)!"
 }
 
 -----------------------
