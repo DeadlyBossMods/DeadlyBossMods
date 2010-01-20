@@ -52,7 +52,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(72040) then	-- Conjure Empowered Flames
 		warnEmpoweredFlamesCast:Show()
 		timerConjureFlamesCD:Start()
-	elseif args:IsSpellID(72053) then
+	elseif args:IsSpellID(72053, 72080) then
 		warnKineticBomb:Show()
 	end
 end
