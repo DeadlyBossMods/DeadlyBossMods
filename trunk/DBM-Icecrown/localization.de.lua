@@ -16,13 +16,13 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnTrap		= "Zeige spezielle Warnung fur Fallenaktivierung",
+	specWarnTrap		= "Zeige spezielle Warnung für Fallenaktivierung",
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 L:SetMiscLocalization{
 	WarderTrap1		= "Wer... ist da?",
-	WarderTrap2		= "Ich... erwache!",
+	WarderTrap2		= "Ich erwache...",
 	WarderTrap3		= "Das Sanktum des Meisters wurde entweiht!"
 }
 
