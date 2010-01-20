@@ -104,9 +104,8 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	local target = msg and msg:match(L.EmpoweredFlames)
-	if target then
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
+	if msg:match(L.EmpoweredFlames) then
 		self:SendSync("EmpoweredFlame", target)
 	end
 end
