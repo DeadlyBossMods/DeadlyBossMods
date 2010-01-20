@@ -22,6 +22,8 @@ local specWarnBloodMirror		= mod:NewSpecialWarningTarget(71510, false)
 local timerNextPactDarkfallen	= mod:NewNextTimer(30, 71340)
 local timerBloodMirror			= mod:NewTargetTimer(30, 71510)
 
+local berserkTimer				= mod:NewBerserkTimer(320)
+
 mod:AddBoolOption("SetIconOnDarkFallen", true)
 
 local pactTargets = {}
@@ -35,6 +37,7 @@ local function warnPactTargets()
 end
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	table.wipe(pactTargets)
 	pactIcons = 8
 end
