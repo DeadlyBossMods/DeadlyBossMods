@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(37955)
-mod:SetUsedIcons(5, 6, 7, 8)
+mod:SetUsedIcons(4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -35,17 +35,18 @@ local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(50, 71473)
 
 local berserkTimer					= mod:NewBerserkTimer(320)
 
+mod:AddBoolOption("BloodMirrorIcon", true)
 mod:AddBoolOption("SwarmingShadowsIcon", true)
 mod:AddBoolOption("SetIconOnDarkFallen", true)
 
 local pactTargets = {}
-local pactIcons = 7
+local pactIcons = 6
 
 local function warnPactTargets()
 	warnPactDarkfallen:Show(table.concat(pactTargets, "<, >"))
 	table.wipe(pactTargets)
 	timerNextPactDarkfallen:Start(30)
-	pactIcons = 7
+	pactIcons = 6
 end
 
 function mod:OnCombatStart(delay)
@@ -53,7 +54,7 @@ function mod:OnCombatStart(delay)
 	timerNextPactDarkfallen:Start(15-delay)
 	timerNextSwarmingShadows:Start(-delay)
 	table.wipe(pactTargets)
-	pactIcons = 7
+	pactIcons = 6
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -76,6 +77,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBloodMirror:Show(args.destName)
 		timerBloodMirror:Start(args.destName)
 		specWarnBloodMirror:Show(args.destName)
+		if self.Options.BloodMirrorIcon then
+			self:SetIcon(target, 7, 30)
+		end
 	elseif args:IsSpellID(70877, 71474) then
 		warnBloodthirst:Show(args.destName)
 		if args:IsPlayer() then
@@ -102,6 +106,8 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(71340) then		--Pact of the Darkfallen
 		self:SetIcon(args.destName, 0)	--Clear icon once you got to where you are supposed to be
+	elseif args:IsSpellID(71510, 70838) then
+		self:SetIcon(args.destName, 0)
 	end
 end
 

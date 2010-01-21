@@ -2,8 +2,6 @@ local mod	= DBM:NewMod("PlagueworksTrash", "DBM-Icecrown", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
---mod:SetCreatureID(37025, 37217)
---mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -31,12 +29,6 @@ local timerBlightBomb	= mod:NewCastTimer(5, 71088)
 mod:RemoveOption("HealthFrame")
 
 local spamZombies = 0
-
---[[function mod:OnCombatStart(delay)		-- guessed timers
-	warnDecimateSoon:Schedule(28-delay)
-	timerDecimate:Start(-delay)
-	timerZombies:Start(-delay)
-end--]]
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71127) then
