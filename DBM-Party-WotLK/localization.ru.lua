@@ -935,9 +935,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerRollplay		= "Svala Sorrowgrave active"
 })
 
 L:SetOptionLocalization({
+	timerRollplay		= "Show timer for rollplay before Svala Sorrowgrave becomes active"
+})
+
+L:SetMiscLocalization({
+	SvalaRollplayStart	= "Мой господин! Я сделала, как вы велели, и теперь молю вас о благословении!"
 })
 
 -----------------------
