@@ -302,42 +302,41 @@ do
 	-- the map size data is copied from Deus Vox Encounters (http://wow.curse.com/downloads/wow-addons/details/deus-vox-encounters.aspx)
 	local mapDimensions = {
 		Ulduar = {
-			[1] = {3064.9614761023, 2039.5413309668},	-- Expedition Base Camp
-			[2] = {624.19069622949, 415.89374357805},	-- Antechamber of Ulduar
-			[3] = {1238.37427179,	823.90183235628},	-- Conservatory of Life
-			[4] = {848.38069183829, 564.6688835337},	-- Prison of Yogg-Saron
-			[5] = {1460.4694647684, 974.65312886234},	-- Spark of Imagination
-			[6] = {576.71549337896, 384.46653291368},	-- The Mind's Eye (Under Yogg)
+			[1] = {3064.9614761023, 2039.5413309668},	-- Expedition Base Camp			-- CONFIRM
+			[2] = {624.19069622949, 415.89374357805},	-- Antechamber of Ulduar		-- CONFIRM
+			[3] = {1238.37427179,	823.90183235628},	-- Conservatory of Life			-- CONFIRM
+			[4] = {848.38069183829, 564.6688835337},	-- Prison of Yogg-Saron			-- CONFIRM
+			[5] = {1460.4694647684, 974.65312886234},	-- Spark of Imagination			-- CONFIRM
+			[6] = {576.71549337896, 384.46653291368},	-- The Mind's Eye (Under Yogg)	-- CONFIRM
 		},
 		Naxxramas = {
-			[1] = {1018.3655494957, 679.40523953718},	-- Construct
-			[2] = {1019.1310739251, 679.18864376555},	-- Arachnid
-			[3] = {1118.1083638787, 744.57895516418},	-- Military
-			[4] = {1117.0809918236, 745.97398439776},	-- Plague
-			[5] = {1927.3190541014, 1284.6530841959},	-- Entrance
-			[6] = {610.62737087301, 407.3875157986},	-- KT/Sapphiron
+			[1] = {1018.3655494957, 679.40523953718},	-- Construct	-- CONFIRM
+			[2] = {1019.1310739251, 679.18864376555},	-- Arachnid		-- CONFIRM
+			[3] = {1118.1083638787, 744.57895516418},	-- Military		-- CONFIRM
+			[4] = {1117.0809918236, 745.97398439776},	-- Plague		-- CONFIRM
+			[5] = {1927.3190541014, 1284.6530841959},	-- Entrance		-- CONFIRM
+			[6] = {610.62737087301, 407.3875157986},	-- KT/Sapphiron	-- CONFIRM
 		},
 		TheObsidianSanctum = {
-			[0] = {1081.6334214432, 721.79860069158},
+			[0] = {1081.6334214432, 721.79860069158},	-- CONFIRM
 		},
 		TheEyeofEternity = {
-			[1] = {400.728405332355, 267.09113174487},
+			[1] = {400.728405332355, 267.09113174487},	-- CONFIRM
 		},
 		TheArgentColiseum = {
-			[1] = {344.20785972537, 229.57961178118},
-			[2] = {688.60679691348, 458.95801567569},
+			[1] = {344.20785972537, 229.57961178118},	-- CONFIRM
+			[2] = {688.60679691348, 458.95801567569},	-- CONFIRM
 		},
 		VaultofArchavon = {
-			[1] = {842.2254908359, 561.59878021123},
+			[1] = {842.2254908359, 561.59878021123},	-- CONFIRM
 		},
 		IcecrownCitadel = {
-			[1] = {1262.8025621533, 841.91669450207},	-- The Lower Citadel
-			[2] = {993.25701607873, 662.58829476644},	-- The Rampart of Skulls
-			[3] = {181.83564716405, 121.29684810833},	-- Deathbringer's Rise
-			[4] = {720.60965618252, 481.1621506613},	-- The Frost Queen's Lair
-			[5] = {1069.6156745738, 713.83371679543},	-- The Upper Reaches
-			[6] = {348.05218433541, 232.05964286208},	-- Royal Quarters
-			-- [7] = {0, 0}, -- The Frozen Throne
+			[1] = {1262.8025621533, 841.91669450207},	-- The Lower Citadel		-- CONFIRM
+			[2] = {993.25701607873, 662.58829476644},	-- The Rampart of Skulls	-- CONFIRM
+			[3] = {181.83564716405, 121.29684810833},	-- Deathbringer's Rise		-- CONFIRM
+			[4] = {720.60965618252, 481.1621506613},	-- The Frost Queen's Lair	-- CONFIRM
+			[5] = {1069.6156745738, 713.83371679543},	-- The Upper Reaches		-- CONFIRM
+			[6] = {348.05218433541, 232.05964286208},	-- Royal Quarters			-- CONFIRM
 		},
 	}
    
