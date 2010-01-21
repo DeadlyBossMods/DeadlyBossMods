@@ -935,9 +935,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerRollplay		= "스발라 소로우그레이브 활성"
 })
 
 L:SetOptionLocalization({
+	timerRollplay		= "스발라 소로우그레이브 활성 타이머 보기"
+})
+
+L:SetMiscLocalization({
+	SvalaRollplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
 })
 
 ---------------------
