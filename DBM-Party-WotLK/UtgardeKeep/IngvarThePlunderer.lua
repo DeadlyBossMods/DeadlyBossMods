@@ -46,5 +46,6 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(42730, 59735) then
 		timerWoeStrike:Cancel()
+		mod:SetIcon(args.destName, 0)
 	end
 end
