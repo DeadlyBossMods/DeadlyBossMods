@@ -14,23 +14,26 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnPactDarkfallen		= mod:NewTargetAnnounce(71340, 3)
-local warnBloodMirror			= mod:NewTargetAnnounce(71510, 3)
-local warnBloodthirst			= mod:NewTargetAnnounce(71474)
-local warnSwarmingShadows		= mod:NewTargetAnnounce(71266)
-local warnVampricBite			= mod:NewTargetAnnounce(71727)
+local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 3)
+local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)
+local warnSwarmingShadows			= mod:NewTargetAnnounce(71266)
+local warnVampricBite				= mod:NewTargetAnnounce(71727)
+local warnBloodthirst				= mod:NewTargetAnnounce(71474, 2, nil, false)
+local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 2, nil, false)
 
-local specWarnPactDarkfallen	= mod:NewSpecialWarningYou(71340)
-local specWarnBloodthirst		= mod:NewSpecialWarningYou(71474)
-local specWarnSwarmingShadows	= mod:NewSpecialWarningYou(71266)
-local specWarnBloodMirror		= mod:NewSpecialWarningTarget(71510, false)
+local specWarnPactDarkfallen		= mod:NewSpecialWarningYou(71340)
+local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(71473)
+local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
+local specWarnSwarmingShadows		= mod:NewSpecialWarningYou(71266)
+local specWarnBloodMirror			= mod:NewSpecialWarningTarget(71510, false)
 
-local timerNextPactDarkfallen	= mod:NewNextTimer(30, 71340)
-local timerNextSwarmingShadows	= mod:NewNextTimer(30, 71266)
-local timerBloodMirror			= mod:NewTargetTimer(30, 71510)
-local timerBloodThirst			= mod:NewBuffActiveTimer(10, 71474)
+local timerNextPactDarkfallen		= mod:NewNextTimer(30, 71340)
+local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
+local timerBloodMirror				= mod:NewTargetTimer(30, 71510)
+local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
+local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(50, 71473)
 
-local berserkTimer				= mod:NewBerserkTimer(320)
+local berserkTimer					= mod:NewBerserkTimer(320)
 
 mod:AddBoolOption("SwarmingShadowsIcon", true)
 mod:AddBoolOption("SetIconOnDarkFallen", true)
@@ -69,11 +72,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnPactTargets)
 		end
-	elseif args:IsSpellID(71510, 70838, 70451) then--Spellids drycoded from wowhead will verify on release
+	elseif args:IsSpellID(71510, 70838) then
 		warnBloodMirror:Show(args.destName)
 		timerBloodMirror:Start(args.destName)
 		specWarnBloodMirror:Show(args.destName)
-	elseif args:IsSpellID(70877, 71474) then--Spellids drycoded from wowhead will verify on release
+	elseif args:IsSpellID(70877, 71474) then
 		warnBloodthirst:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBloodthirst:Show()
@@ -83,12 +86,22 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerBloodThirst:Start()--10 seconds on 25 man
 			end
 		end
+	elseif args:IsSpellID(71473) then	--Essence of the Blood Queen (missing 10 man spellid and heroic spellids, too many on wowhead to guess)
+		warnEssenceoftheBloodQueen:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnEssenceoftheBloodQueen:Show()
+			if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
+				timerEssenceoftheBloodQueen:Start()--50 seconds on 25 man
+			else
+				timerEssenceoftheBloodQueen:Start(60)--60 seconds on 10 man?
+			end
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(71340) then		-- Pact of the Darkfallen
-		self:SetIcon(args.destName, 0)--Clear icon once you got to where you are supposed to be
+	if args:IsSpellID(71340) then		--Pact of the Darkfallen
+		self:SetIcon(args.destName, 0)	--Clear icon once you got to where you are supposed to be
 	end
 end
 
