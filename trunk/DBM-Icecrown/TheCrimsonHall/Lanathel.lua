@@ -18,6 +18,7 @@ local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 3)
 local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)
 local warnSwarmingShadows			= mod:NewTargetAnnounce(71266)
 local warnVampricBite				= mod:NewTargetAnnounce(71727)
+local warnMindControlled			= mod:NewTargetAnnounce(70923)
 local warnBloodthirst				= mod:NewTargetAnnounce(71474, 2, nil, false)
 local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 2, nil, false)
 
@@ -25,6 +26,7 @@ local specWarnPactDarkfallen		= mod:NewSpecialWarningYou(71340)
 local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(71473)
 local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
 local specWarnSwarmingShadows		= mod:NewSpecialWarningYou(71266)
+local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
 local specWarnBloodMirror			= mod:NewSpecialWarningTarget(71510, false)
 
 local timerNextPactDarkfallen		= mod:NewNextTimer(30, 71340)
@@ -90,16 +92,19 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerBloodThirst:Start()--10 seconds on 25 man
 			end
 		end
-	elseif args:IsSpellID(71473) then	--Essence of the Blood Queen (missing 10 man spellid and heroic spellids, too many on wowhead to guess)
+	elseif args:IsSpellID(70867, 71473) then	--Essence of the Blood Queen
 		warnEssenceoftheBloodQueen:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnEssenceoftheBloodQueen:Show()
 			if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
 				timerEssenceoftheBloodQueen:Start()--50 seconds on 25 man
 			else
-				timerEssenceoftheBloodQueen:Start(60)--60 seconds on 10 man?
+				timerEssenceoftheBloodQueen:Start(60)--60 seconds on 10 man
 			end
 		end
+	elseif args:IsSpellID(70923) then
+		warnMindControlled:Show(args.destName)
+		specWarnMindConrolled:Show(args.destName)
 	end
 end
 
