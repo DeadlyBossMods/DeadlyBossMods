@@ -287,14 +287,14 @@ L:SetOptionLocalization{
 	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "변형된 공작에게 공격대 아이콘 설정하기 (엑스)"
+	ActivePrinceIcon		= "활성화 된 공작에게 공격대 아이콘 설정하기 (엑스)"
 }
 
 L:SetMiscLocalization{
 	Keleseth				= "공작 켈레세스",
 	Taldaram				= "공작 탈다람",
 	Valanar					= "공작 발라나르",
-	EmpoweredFlames			= "Inferno Flames speed toward (%S+)!"
+	EmpoweredFlames			= "(%S+) 쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
 }
 
 -----------------------
