@@ -935,9 +935,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerRollplay		= "絲瓦拉·悲傷亡墓 活動"
 })
 
 L:SetOptionLocalization({
+	timerRollplay		= "為絲瓦拉·悲傷亡墓能夠活動前的角色扮演顯示計時器"
+})
+
+L:SetMiscLocalization({
+	SvalaRollplayStart	= "陛下!我已完成您的要求，如今懇求您的祝福!"
 })
 
 -----------------------
