@@ -291,7 +291,7 @@ L:SetMiscLocalization{
 	Keleseth			= "凱雷希斯親王",
 	Taldaram			= "泰爾達朗親王",
 	Valanar				= "瓦拉納爾親王",
-	EmpoweredFlames			= "血魄祈願跳到(%S+)身上!"
+	EmpoweredFlames			= "煉獄烈焰加速靠近(%S+)!"
 }
 
 -----------------------
