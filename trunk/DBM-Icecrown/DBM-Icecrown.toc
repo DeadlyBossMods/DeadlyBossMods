@@ -50,6 +50,7 @@ ThePlagueworks\Putricide.lua
 ThePlagueworks\PlagueworksTrash.lua
 TheCrimsonHall\BPCouncil.lua
 TheCrimsonHall\Lanathel.lua
+TheCrimsonHall\CrimsonHallTrash.lua
 FrostwingHalls\Valithria.lua
 FrostwingHalls\Sindragosa.lua
 TheFrozenThrone\LichKing.lua
