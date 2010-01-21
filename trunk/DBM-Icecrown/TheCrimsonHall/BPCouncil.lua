@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_SUMMON",
@@ -79,7 +80,13 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(72040) then	-- Conjure Empowered Flames
 		warnEmpoweredFlamesCast:Show()
 		timerConjureFlamesCD:Start()
-	elseif args:IsSpellID(72053, 72080) then
+--	elseif args:IsSpellID(72053, 72080) then--Currently not working. The casts aren't shown i the combat log. This fight is really buggy for combat logs
+--		warnKineticBomb:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(72052, 72800, 72801, 72802) then--This does show in combat log (explosion when kinetic bomb hits the ground)
 		warnKineticBomb:Show()
 	end
 end
