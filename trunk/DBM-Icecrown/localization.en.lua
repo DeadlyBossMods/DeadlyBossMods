@@ -286,8 +286,9 @@ L:SetOptionLocalization{
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Show timer for target switch cooldown",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Set icon cross on the empowered Prince (cross)"
+	ActivePrinceIcon		= "Set icon cross on the empowered Prince (skull)"
 }
+
 L:SetMiscLocalization{
 	Keleseth			= "Prince Keleseth",
 	Taldaram			= "Prince Taldaram",
@@ -308,7 +309,12 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266)
+}
+
+L:SetMiscLocalization{
+	SwarmingShadows			= "Shadows amass and swarm around (%S+)!"
 }
 
 -----------------------------
