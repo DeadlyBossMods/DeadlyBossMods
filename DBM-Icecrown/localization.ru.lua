@@ -288,8 +288,9 @@ L:SetOptionLocalization{
 	WarnTargetSwitchSoon	= "Предупреждать заранее о смене цели",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Отсчет времени до смены цели",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (крест)"
+	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (череп)"
 }
+
 L:SetMiscLocalization{
 	Keleseth			= "Принц Келесет",
 	Taldaram			= "Принц Талдарам",
@@ -310,7 +311,12 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266)
+}
+
+L:SetMiscLocalization{
+	SwarmingShadows			= "Shadows amass and swarm around (%S+)!"
 }
 
 -----------------------------
