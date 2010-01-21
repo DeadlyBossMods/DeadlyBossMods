@@ -34,6 +34,8 @@ local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943)				-- usually every 10 sec
 local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)				-- every 20-30 seconds but never more often than every 20sec
 local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 local soundEmpoweredFlames		= mod:NewSound(72040)
 mod:AddBoolOption("EmpoweredFlameIcon", true)
 mod:AddBoolOption("ActivePrinceIcon", true)
@@ -57,6 +59,10 @@ function mod:TrySetTarget()
 			end
 		end
 	end
+end
+
+function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
