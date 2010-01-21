@@ -294,7 +294,8 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "Mostrar aviso para cambiar de objetivos",								-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Mostrar pre-aviso para cambiar de objetivos",							-- Every ~31 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Mostrar tiempo para siguiente cambio de objetivo",
-	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040)
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
+	ActivePrinceIcon		= "Poner un icono en el príncipe con Invocación (Cruz)"
 }
 
 L:SetMiscLocalization{

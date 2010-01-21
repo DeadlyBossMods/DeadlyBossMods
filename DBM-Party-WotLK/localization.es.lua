@@ -980,9 +980,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerRollplay		= "Svala Sorrowgrave ataca"
 })
 
 L:SetOptionLocalization({
+	timerRollplay		= "Mostrar tiempo de diálogo antes de que Svala ataque"
+})
+
+L:SetMiscLocalization({
+	SvalaRollplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
 })
 
 
