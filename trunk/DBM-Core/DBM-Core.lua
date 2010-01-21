@@ -943,7 +943,7 @@ do
 			local x, y = GetCursorPosition()
 			x, y = x / self:GetEffectiveScale() - centerX, y / self:GetEffectiveScale() - centerY
 			centerX, centerY = math.abs(x), math.abs(y)
-			centerX, centerY = (centerX / math.sqrt(centerX^2 + centerY^2)) * 76, (centerY / sqrt(centerX^2 + centerY^2)) * 76
+			centerX, centerY = (centerX / math.sqrt(centerX^2 + centerY^2)) * 80, (centerY / sqrt(centerX^2 + centerY^2)) * 80
 			centerX = x < 0 and -centerX or centerX
 			centerY = y < 0 and -centerY or centerY
 			self:ClearAllPoints()
