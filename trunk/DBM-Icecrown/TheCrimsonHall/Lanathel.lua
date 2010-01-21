@@ -14,6 +14,7 @@ mod:RegisterEvents(
 
 local warnPactDarkfallen		= mod:NewTargetAnnounce(71340, 3)
 local warnBloodMirror			= mod:NewTargetAnnounce(71510, 3)
+local warnBloodthirst			= mod:NewTargetAnnounce(70877)
 
 local specWarnPactDarkfallen	= mod:NewSpecialWarningYou(71340)
 local specWarnBloodthirst		= mod:NewSpecialWarningYou(70877)
@@ -21,6 +22,7 @@ local specWarnBloodMirror		= mod:NewSpecialWarningTarget(71510, false)
 
 local timerNextPactDarkfallen	= mod:NewNextTimer(30, 71340)
 local timerBloodMirror			= mod:NewTargetTimer(30, 71510)
+local timerBloodThirst			= mod:NewBuffActiveTimer(15, 70877)
 
 local berserkTimer				= mod:NewBerserkTimer(320)
 
@@ -53,7 +55,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			pactIcons = pactIcons - 1--then it's probably a wipe anyways
 		end
 		self:Unschedule(warnPactTargets)
-		if #pactTargets >= 5 then
+		if #pactTargets >= 3 then
 			warnPactTargets()
 		else
 			self:Schedule(0.3, warnPactTargets)
@@ -63,7 +65,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBloodMirror:Start(args.destName)
 		specWarnBloodMirror:Show(args.destName)
 	elseif args:IsSpellID(70877, 71474) then--Spellids drycoded from wowhead will verify on release
-		specWarnBloodthirst:Show()
+		warnBloodthirst:Show(args.destName)
+		if args:IsPlayer() then
+			timerBloodThirst:Start()--Only show timer for yours, timers for entire raid could be spammy in 25
+			specWarnBloodthirst:Show()
+		end
 	end
 end
 
