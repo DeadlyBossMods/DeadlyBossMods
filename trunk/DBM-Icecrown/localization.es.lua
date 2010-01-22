@@ -51,6 +51,24 @@ L:SetMiscLocalization{
 	FleshreaperTrap3		= "¿Los vivos? ¿¡Aquí!?"
 }
 
+---------------------------
+--  Trash - Crimson Hall  --
+---------------------------
+L = DBM:GetModLocalization("CrimsonHallTrash")
+
+L:SetGeneralLocalization{
+	name = "Trash de La Sala Carmsesí"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+	BloodMirrorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70451)
+}
+
+L:SetMiscLocalization{
+}
 
 ----------------------
 --  Lord Marrowgar  --
@@ -315,11 +333,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
+	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+}
+
+L:SetMiscLocalization{
+	SwarmingShadows			= "Una Masa de sombras sale (%S+)!"
 }
 
 -----------------------------
