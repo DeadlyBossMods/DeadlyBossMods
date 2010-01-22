@@ -278,7 +278,7 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	SpecWarnBlast	= "Удар часового - прерывание",
 	SpecWarnVoid	= "Портал бездны - отбегите",
-	WarnCatDied		= "Дикий эащитник погибает (осталось %d |4жизнь:жизни:жизней;)",
+	WarnCatDied		= "Дикий эащитник погибает (осталось %d жизней)",
 	WarnCatDiedOne	= "Дикий эащитник погибает (осталась 1 жизнь)",
 	WarnFearSoon	= "Скоро следующий Ужасающий вопль"
 }
