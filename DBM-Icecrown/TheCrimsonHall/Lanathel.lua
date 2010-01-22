@@ -11,11 +11,12 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
+	"SPELL_PERIODIC_DAMAGE",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 3)
-local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)
+local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)--this is bugging for some reason but shouldn't be
 local warnSwarmingShadows			= mod:NewTargetAnnounce(71266)
 local warnVampricBite				= mod:NewTargetAnnounce(71727)
 local warnMindControlled			= mod:NewTargetAnnounce(70923)
@@ -25,7 +26,7 @@ local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 2, nil, false)
 local specWarnPactDarkfallen		= mod:NewSpecialWarningYou(71340)
 local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(71473)
 local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
-local specWarnSwarmingShadows		= mod:NewSpecialWarningYou(71266)
+local specWarnSwarmingShadows		= mod:NewSpecialWarningMove(71266)
 local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
 local specWarnBloodMirror			= mod:NewSpecialWarningTarget(71510, false)
 
@@ -36,6 +37,8 @@ local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
 local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(50, 71473)
 
 local berserkTimer					= mod:NewBerserkTimer(320)
+
+local soundSwarmingShadows = mod:NewSound(71266)
 
 mod:AddBoolOption("BloodMirrorIcon", true)
 mod:AddBoolOption("SwarmingShadowsIcon", true)
@@ -75,12 +78,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnPactTargets)
 		end
+--			"<79.8> [CLEU] SPELL_AURA_APPLIED:0x04000000035FAB24:Omegal:67110161:0x0400000003A16958:Alandrek:1298:70838:Blood Mirror:32:DEBUFF:", -- [435]
+--Blood mirror is bugging for some reason but shoudln't be. it should only announce target, yet for whatever reason with ONE line above it's saying "blood mirror on" for both target and source as two seperate warnings wtf?
 	elseif args:IsSpellID(71510, 70838) then
 		warnBloodMirror:Show(args.destName)
 		timerBloodMirror:Start(args.destName)
 		specWarnBloodMirror:Show(args.destName)
 		if self.Options.BloodMirrorIcon then
-			self:SetIcon(target, 7, 30)
+			self:SetIcon(args.destName, 7, 30)
 		end
 	elseif args:IsSpellID(70877, 71474) then
 		warnBloodthirst:Show(args.destName)
@@ -122,6 +127,18 @@ function mod:SPELL_DAMAGE(args)
 	end
 end
 
+do
+	local lastswarm = 0
+	function mod:SPELL_PERIODIC_DAMAGE(args)
+		if args:IsPlayer() and args:IsSpellID(71277, 72638, 72639, 72640) then		--Swarn of Shadows (spell damage, you're standing in it.)
+			if GetTime() - 3 > lastswarm then
+				specWarnSwarmingShadows:Show()
+				lastswarm = GetTime()
+			end
+		end
+	end
+end
+
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 	if msg:match(L.SwarmingShadows) then
 		self:SendSync("SwarmingShadows", target)
@@ -134,6 +151,7 @@ function mod:OnSync(msg, target)
 		timerNextSwarmingShadows:Start()
 		if target == UnitName("player") then
 			specWarnSwarmingShadows:Show()
+			soundSwarmingShadows:Play()
 		end
 		if self.Options.SwarmingShadowsIcon then
 			self:SetIcon(target, 8, 6)
