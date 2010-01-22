@@ -50,6 +50,26 @@ L:SetMiscLocalization{
 	FleshreaperTrap2			= "우리에게서... 벗어날 수 없다!",
 	FleshreaperTrap3			= "살아있는 놈이... 여기에?!"
 }
+
+---------------------------
+--  Trash - Crimson Hall  --
+---------------------------
+L = DBM:GetModLocalization("CrimsonHallTrash")
+
+L:SetGeneralLocalization{
+	name = "진홍빛 성당 일반몹"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+	BloodMirrorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70451)
+}
+
+L:SetMiscLocalization{
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
