@@ -196,7 +196,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	RunePower				= "피 마력",
 	PullHorde				= "코르크론, 출발하라! 용사들이여, 뒤를 조심하게. 스컬지는...",
-	PullAlliance			= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.",
+	PullAlliance			= "그러면 이동하자! 이동...",
 }
 
 -----------------
