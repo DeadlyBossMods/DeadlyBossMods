@@ -363,7 +363,7 @@ do
 		end
 		local dX = (pX - uX) * dims[1]
 		local dY = (pY - uY) * dims[2]
-		return math.sqrt(dX * dX + dY * dY) < range
+		return math.sqrt(dX * dX + dY * dY) < range * 1.005
 	end
 	
 	setmetatable(checkFuncs, {
