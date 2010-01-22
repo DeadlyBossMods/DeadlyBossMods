@@ -47,7 +47,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
-	FleshreaperTrap2		= "You... cannot escape us!",
+	FleshreaperTrap2		= "¡No… puedes escapar!",
 	FleshreaperTrap3		= "¿Los vivos? ¿¡Aquí!?"
 }
 
