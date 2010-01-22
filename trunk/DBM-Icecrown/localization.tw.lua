@@ -45,6 +45,25 @@ L:SetOptionLocalization{
 	warnMortalWound			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
+---------------------------
+--  Trash - Crimson Hall  --
+---------------------------
+L = DBM:GetModLocalization("CrimsonHallTrash")
+
+L:SetGeneralLocalization{
+	name 				= "赤紅大廳小怪"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70451)
+}
+
+L:SetMiscLocalization{
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -284,7 +303,7 @@ L:SetOptionLocalization{
 	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "為目標轉換冷卻顯示計時器",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "設置標記在強力的親王身上 (十字)"
+	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)"
 }
 
 L:SetMiscLocalization{
@@ -307,7 +326,13 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
+	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
+	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+}
+
+L:SetMiscLocalization{
+	SwarmingShadows			= "暗影聚集在(%S+)的腳下!"
 }
 
 -----------------------------
