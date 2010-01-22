@@ -39,7 +39,7 @@ local berserkTimer					= mod:NewBerserkTimer(320)
 
 local soundSwarmingShadows = mod:NewSound(71266)
 
-mod:AddBoolOption("BloodMirrorIcon", true)
+mod:AddBoolOption("BloodMirrorIcon", false)
 mod:AddBoolOption("SwarmingShadowsIcon", true)
 mod:AddBoolOption("SetIconOnDarkFallen", true)
 
