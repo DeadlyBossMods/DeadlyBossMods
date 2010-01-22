@@ -16,7 +16,7 @@ mod:RegisterEvents(
 )
 
 local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 3)
-local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)--this is bugging for some reason but shouldn't be
+local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)
 local warnSwarmingShadows			= mod:NewTargetAnnounce(71266)
 local warnVampricBite				= mod:NewTargetAnnounce(71727)
 local warnMindControlled			= mod:NewTargetAnnounce(70923)
@@ -28,11 +28,9 @@ local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(71473)
 local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
 local specWarnSwarmingShadows		= mod:NewSpecialWarningMove(71266)
 local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
-local specWarnBloodMirror			= mod:NewSpecialWarningTarget(71510, false)
 
 local timerNextPactDarkfallen		= mod:NewNextTimer(30, 71340)
 local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
-local timerBloodMirror				= mod:NewTargetTimer(30, 71510)
 local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
 local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(60, 71473)
 
@@ -78,14 +76,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnPactTargets)
 		end
---			"<79.8> [CLEU] SPELL_AURA_APPLIED:0x04000000035FAB24:Omegal:67110161:0x0400000003A16958:Alandrek:1298:70838:Blood Mirror:32:DEBUFF:", -- [435]
---Blood mirror is bugging for some reason but shoudln't be. it should only announce target, yet for whatever reason with ONE line above it's saying "blood mirror on" for both target and source as two seperate warnings wtf?
 	elseif args:IsSpellID(71510, 70838) then
 		warnBloodMirror:Show(args.destName)
-		timerBloodMirror:Start(args.destName)
-		specWarnBloodMirror:Show(args.destName)
 		if self.Options.BloodMirrorIcon then
-			self:SetIcon(args.destName, 7, 30)
+			self:SetIcon(args.destName, 7)
 		end
 	elseif args:IsSpellID(70877, 71474) then
 		warnBloodthirst:Show(args.destName)
@@ -101,10 +95,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEssenceoftheBloodQueen:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnEssenceoftheBloodQueen:Show()
-			if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
-				timerEssenceoftheBloodQueen:Start()--60 seconds on 25 man
-			else
+			if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
 				timerEssenceoftheBloodQueen:Start(75)--70 seconds on 10 man
+			else
+				timerEssenceoftheBloodQueen:Start()--60 seconds on 25 man
 			end
 		end
 	elseif args:IsSpellID(70923) then
@@ -114,9 +108,9 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(71340) then		--Pact of the Darkfallen
-		self:SetIcon(args.destName, 0)	--Clear icon once you got to where you are supposed to be
-	elseif args:IsSpellID(71510, 70838) then
+	if args:IsSpellID(71340) then				--Pact of the Darkfallen
+		self:SetIcon(args.destName, 0)			--Clear icon once you got to where you are supposed to be
+	elseif args:IsSpellID(71510, 70838) then	--Blood Mirror
 		self:SetIcon(args.destName, 0)
 	end
 end
