@@ -332,7 +332,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "暗影聚集在(%S+)的腳下!"
+	SwarmingShadows			= "暗影聚集並旋繞在(%S+)四周!"
 }
 
 -----------------------------
