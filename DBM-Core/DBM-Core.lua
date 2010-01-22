@@ -2313,7 +2313,9 @@ do
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
 			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (DBM:GetRaidRank() > 0 or (GetNumRaidMembers() == 0 and GetNumPartyMembers() >= 1)) then
-				SendChatMessage(("*** %s ***"):format(pformat(self.text, ...)), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
+				local message = pformat(self.text, ...)
+				message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
+				SendChatMessage(("*** %s ***"):format(message), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
 			end
 			if DBM.Options.DontShowBossAnnounces then return end	-- don't show the announces if the spam filter option is set
 			local colorCode = ("|cff%.2x%.2x%.2x"):format(self.color.r * 255, self.color.g * 255, self.color.b * 255)
