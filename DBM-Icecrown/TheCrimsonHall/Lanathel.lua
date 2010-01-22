@@ -29,6 +29,7 @@ local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
 local specWarnSwarmingShadows		= mod:NewSpecialWarningMove(71266)
 local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
 
+local timerFirstBite				= mod:NewCastTimer(15, 71727)
 local timerNextPactDarkfallen		= mod:NewNextTimer(30, 71340)
 local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
 local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
@@ -54,6 +55,7 @@ end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
+	timerFirstBite:Start(-delay)
 	timerNextPactDarkfallen:Start(15-delay)
 	timerNextSwarmingShadows:Start(-delay)
 	table.wipe(pactTargets)
