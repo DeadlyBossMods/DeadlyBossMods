@@ -57,7 +57,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("CrimsonHallTrash")
 
 L:SetGeneralLocalization{
-	name = "진홍빛 성당 일반몹"
+	name = "진홍빛 전당 일반몹"
 }
 
 L:SetWarningLocalization{
