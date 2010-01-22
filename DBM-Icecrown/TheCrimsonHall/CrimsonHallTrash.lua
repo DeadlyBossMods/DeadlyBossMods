@@ -25,7 +25,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBloodMirror:Show(args.destName)
 		timerBloodMirror:Start(args.destName)
 		if self.Options.BloodMirrorIcon then
-			self:SetIcon(target, 7, 30)
+			self:SetIcon(args.destName, 7, 30)
 		end
 		if args:IsPlayer() then
 			specWarnBloodMirror:Show()
