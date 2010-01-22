@@ -34,7 +34,7 @@ local timerNextPactDarkfallen		= mod:NewNextTimer(30, 71340)
 local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
 local timerBloodMirror				= mod:NewTargetTimer(30, 71510)
 local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
-local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(50, 71473)
+local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(60, 71473)
 
 local berserkTimer					= mod:NewBerserkTimer(320)
 
@@ -102,9 +102,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnEssenceoftheBloodQueen:Show()
 			if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
-				timerEssenceoftheBloodQueen:Start()--50 seconds on 25 man
+				timerEssenceoftheBloodQueen:Start()--60 seconds on 25 man
 			else
-				timerEssenceoftheBloodQueen:Start(60)--60 seconds on 10 man
+				timerEssenceoftheBloodQueen:Start(75)--70 seconds on 10 man
 			end
 		end
 	elseif args:IsSpellID(70923) then
