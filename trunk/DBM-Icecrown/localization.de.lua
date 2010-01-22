@@ -46,8 +46,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
---	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
---	FleshreaperTrap2		= "You... cannot escape us!",
+	FleshreaperTrap1		= "Schnell, überfallen wir sie von hinten!",
+	FleshreaperTrap2		= "Ihr könnt uns nicht entkommen.",
 	FleshreaperTrap3		= "Die Lebenden? Hier?!"
 }
 
@@ -267,28 +267,31 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization{
-	name = "Blood Prince Council"
+	name = "Der Rat des Blutes"
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "Switch target to: %s",
-	WarnTargetSwitchSoon	= "Target switch soon"
+	WarnTargetSwitch		= "Ziel wechseln auf: %s",
+	WarnTargetSwitchSoon	= "Zielwechsel bald"
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "Possible target switch"
+	TimerTargetSwitch		= "Zielwechsel"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Show warning to switch targets",                        -- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",                     -- Every ~31 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Show timer for target switch cooldown"
+	WarnTargetSwitch		= "Zeige Warnung für den Zielwechsel",-- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon	= "Zeige Vorwarnung für den Zielwechsel",-- Every ~47 secs, you have to dps a different Prince
+	TimerTargetSwitch		= "Zeige Timer für Zielwechsel Cooldown",
+	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
+	ActivePrinceIcon		= "Setze Symbol auf den Machterfüllten Prinzen (Totenkopf)"
 }
 
 L:SetMiscLocalization{
-	Keleseth	= "Prince Keleseth",
-	Taldaram	= "Prince Taldaram",
-	Valanar		= "Prince Valanar"
+	Keleseth			= "Prinz Keleseth",
+	Taldaram			= "Prinz Taldaram",
+	Valanar				= "Prinz Valanar",
+	EmpoweredFlames		= "Inferno Flamme fliegt zu (%S+)!"
 }
 
 -----------------------------
@@ -297,14 +300,20 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Lanathel")
 
 L:SetGeneralLocalization{
-	name = "Blood-Queen Lana'thel"
+	name = "Blutkönigin Lana'thel"
 }
 
 L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
+	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+}
+
+L:SetMiscLocalization{
+	SwarmingShadows			= "Shadows amass and swarm around (%S+)!"
 }
 
 -----------------------------
