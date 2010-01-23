@@ -12,12 +12,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnTrap			= "陷阱激活! - 亡縛守衛釋放了"--creatureid 37007
+	specWarnTrap			= "陷阱激活! - 亡縛守衛釋放了"
 }
 
 L:SetOptionLocalization{
 	specWarnTrap			= "為陷阱激活顯示預先警告",
-	SetIconOnDarkReckoning		= "為$spell:69483的目標設置標記"
+	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
 }
 
 L:SetMiscLocalization{
@@ -36,13 +36,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnMortalWound			= "%s: >%s< (%s)",	-- Mortal Wound on >args.destName< (args.amount)
-	specWarnTrap			= "陷阱激活! - 復仇的血肉收割者即將到來"--creatureid 37038
+	warnMortalWound			= "%s: >%s< (%s)",
+	specWarnTrap			= "陷阱激活! - 復仇的血肉收割者即將到來"
 }
 
 L:SetOptionLocalization{
 	specWarnTrap			= "為陷阱激活顯示預先警告",
 	warnMortalWound			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
+}
+
+L:SetMiscLocalization{
+	FleshreaperTrap1		= "快，我們要從後面奇襲他們!",
+	FleshreaperTrap2		= "你無法逃避我們!",
+	FleshreaperTrap3		= "The living? Here?!"
 }
 
 ---------------------------
@@ -74,7 +80,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	achievementBoned		= "自由時間"
+	achievementBoned		= "去骨計時"
 }
 
 L:SetWarningLocalization{
@@ -83,7 +89,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale			= "提示$spell:69062的目標",
-	achievementBoned		= "為去骨成就顯示計時器",
+	achievementBoned		= "為成就:去骨顯示計時器",
 	SetIconOnImpale			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -101,8 +107,8 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnReanimating			= "小怪再活化",		-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance		= "%s: >%s< (%s)",	-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnReanimating			= "小怪再活化",
+	WarnTouchInsignificance		= "%s: >%s< (%s)",
 	WarnAddsSoon			= "新的小怪 即將到來",
 	specWarnVengefulShade		= "你被復仇的暗影盯上了 - 快跑開"
 }
@@ -180,11 +186,11 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
-	warnFrenzySoon			= "為狂亂(大約33%)顯然預先警告",
+	warnFrenzySoon			= "為狂亂顯然預先警告 (大約33%)",
 	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "設置標記在$spell:72444施放時的目標\n(試驗中，可能會錯誤地標記坦克)",
+	SetIconOnMarkCast		= "為施放$spell:72444時的目標設置標記\n(試驗中，可能會錯誤地標記坦克)",
 	RangeFrame			= "顯示距離框 (12碼)",
-	RunePowerFrame			= "顯示首領血量+$spell:72371條"
+	RunePowerFrame			= "顯示首領血量及$spell:72371條"
 }
 
 L:SetMiscLocalization{
@@ -203,8 +209,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight			= "吸納荒疫 >%d<",
-	WarnGastricBloat		= "%s: >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+	InhaledBlight			= "吸納荒疫: >%d<",
+	WarnGastricBloat		= "%s: >%s< (%s)"
 
 }
 
@@ -224,7 +230,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn			= "小軟泥出現了",
+	WarnOozeSpawn			= "小軟泥怪 出現了",
 	WarnUnstableOoze		= "%s: >%s< (%s)",
 	specWarnLittleOoze		= "你被小軟泥怪盯上了 - 快跑開"
 }
@@ -234,8 +240,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
 	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
+	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
 	specWarnLittleOoze		= "當你被小軟泥怪盯上時顯示特別警告",
 	WarnUnstableOoze		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
@@ -243,8 +249,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1			= "大夥聽著，好消息!我修好了劇毒軟泥管!",	-- Professor Putricide
-	YellSlimePipes2			= "大夥聽著，超級好消息!軟泥又開始流動了!"	-- Professor Putricide
+	YellSlimePipes1			= "大夥聽著，好消息!我修好了劇毒軟泥管!",
+	YellSlimePipes2			= "大夥聽著，超級好消息!軟泥又開始流動了!"
 }
 
 ---------------------------
@@ -257,16 +263,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon			= "第2階段 即將來臨",
-	WarnPhase3Soon			= "第3階段 即將來臨",
-	WarnMutatedPlague		= "%s: >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	WarnPhase2Soon			= "第2階段 即將到來",
+	WarnPhase3Soon			= "第3階段 即將到來",
+	WarnMutatedPlague		= "%s: >%s< (%s)",
 	specWarnMalleableGoo		= "你中了延展黏液 - 快離開",
 	specWarnMalleableGooNear	= "你附近有人中了延展黏液 - 小心"
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon			= "為第2階段 (大約83%)顯示特別警告",
-	WarnPhase3Soon			= "為第3階段 (大約38%)顯示特別警告",
+	WarnPhase2Soon			= "為第2階段顯示預先警告 (大約83%)",
+	WarnPhase3Soon			= "為第3階段顯示預先警告 (大約38%)",
 	specWarnMalleableGoo		= "當你中了延展黏液時顯示特別警告\n(只在你是第一個目標時有用)",
 	specWarnMalleableGooNear	= "當你附近有人中了延展黏液時顯示特別警告\n(只在你附近的人是第一個目標時有用)",
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
@@ -291,7 +297,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "轉換目標到: %s",
-	WarnTargetSwitchSoon		= "即將轉換目標"
+	WarnTargetSwitchSoon		= "轉換目標 即將到來"
 }
 
 L:SetTimerLocalization{
@@ -299,9 +305,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "為轉換目標顯示警告",-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",-- Every ~47 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "為目標轉換冷卻顯示計時器",
+	WarnTargetSwitch		= "為轉換目標顯示警告",
+	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",
+	TimerTargetSwitch		= "為轉換目標顯示冷卻計時器",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)"
 }
@@ -313,9 +319,9 @@ L:SetMiscLocalization{
 	EmpoweredFlames			= "煉獄烈焰加速靠近(%S+)!"
 }
 
------------------------
---  Queen Lana'thel  --
------------------------
+-----------------------------
+--  Blood-Queen Lana'thel  --
+-----------------------------
 L = DBM:GetModLocalization("Lanathel")
 
 L:SetGeneralLocalization{
