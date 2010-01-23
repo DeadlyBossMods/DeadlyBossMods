@@ -207,7 +207,7 @@ function mod:NextPhase()
 			DBM.RangeCheck:Hide()
 		end
 		if hardmode then
-            timerNextFrostBomb:Start(45)
+            timerNextFrostBomb:Start(114)
         end
 
 	elseif phase == 3 then
@@ -239,7 +239,7 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 		end
 		if hardmode then
-            timerNextFrostBomb:Start()
+            timerNextFrostBomb:Start(73)
         end
 	end
 end
