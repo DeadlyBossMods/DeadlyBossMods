@@ -336,7 +336,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Shadows amass and swarm around (%S+)!"
+	SwarmingShadows			= "Тени собираются и окружают (%S+)!"
 }
 
 -----------------------------

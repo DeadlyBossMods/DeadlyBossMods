@@ -228,8 +228,8 @@ L:SetMiscLocalization{
 	YellPull			= "Это место станет вашей могилой!",
 	Emerge				= "вылезает на поверхность!",
 	Burrow				= "зарывается в землю!",
-	PcoldIconSet		= "Метка холода {rt%d} установлена: %s",
-	PcoldIconRemoved	= "Метка холода снята: %s"
+	PcoldIconSet		= "Метка холода {rt%d} установлена на: %s",
+	PcoldIconRemoved	= "Метка холода снята с: %s"
 }
 
 L:SetOptionLocalization{
