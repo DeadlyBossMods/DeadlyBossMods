@@ -23,6 +23,7 @@ localization.mx.lua
 DBT-Template.xml
 DBT.lua
 DBM-Core.lua
+DBM-Arrow.lua
 DBM-RangeCheck.lua
 DBM-BossHealth.lua
 DBM-BossHealth.xml
