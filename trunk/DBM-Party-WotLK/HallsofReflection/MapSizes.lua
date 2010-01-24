@@ -1,2 +1,1 @@
--- todo: find map size
---DBM:RegisterMapSize("ZoneName")
+DBM:RegisterMapSize("HallsofReflection", 1, 879.0100608731, 586.0067139184)
