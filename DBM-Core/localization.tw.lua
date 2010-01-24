@@ -173,3 +173,5 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "為$spell:%d播放音效"
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖動的特別警告"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特別警告"
+
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED		= "在此區域中不支援%d碼的距離檢查。\n已支援的距離有10，11，15及28碼。"
