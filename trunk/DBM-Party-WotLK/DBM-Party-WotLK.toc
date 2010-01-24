@@ -110,7 +110,6 @@ VioletHold\Xevoss.lua
 VioletHold\Zuramat.lua
 VioletHold\Cyanigosa.lua
 VioletHold\PortalTimers.lua
-TrialoftheChampion\MapSizes.lua
 TrialoftheChampion\Champions.lua
 TrialoftheChampion\Eadric_the_Pure.lua
 TrialoftheChampion\Confessor.lua
