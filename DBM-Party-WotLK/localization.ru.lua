@@ -254,13 +254,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerWaveIn		= "Следующая волна (6)",
-	TimerRollplay	= "Вступительная ролевая игра"
+	TimerRollplay	= "Вступительное представление"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("новой волны"),
 	TimerWaveIn		= "Отсчет времени до cледующей волны (после босса 5-ой волны)",
-	TimerRollplay	= "Отсчет времени для вступительной ролевой игры"
+	TimerRollplay	= "Отсчет времени для вступительного представления"
 })
 
 L:SetMiscLocalization({
@@ -935,11 +935,11 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerRollplay		= "Svala Sorrowgrave active"
+	timerRollplay		= "Начало боя"
 })
 
 L:SetOptionLocalization({
-	timerRollplay		= "Show timer for rollplay before Svala Sorrowgrave becomes active"
+	timerRollplay		= "Отсчет времени для представления перед началом боя"
 })
 
 L:SetMiscLocalization({
