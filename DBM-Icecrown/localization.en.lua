@@ -305,7 +305,7 @@ L:SetOptionLocalization{
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Show timer for target switch cooldown",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Set icon cross on the empowered Prince (skull)"
+	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)"
 }
 
 L:SetMiscLocalization{
