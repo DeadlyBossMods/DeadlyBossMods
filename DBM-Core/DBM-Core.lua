@@ -2112,6 +2112,23 @@ DBM.Bars:SetAnnounceHook(function(bar)
 	end
 end)
 
+-----------------
+--  Map Sizes  --
+-----------------
+DBM.MapSizes = {}
+	
+function DBM:RegisterMapSize(zone, ...)
+	if not DBM.MapSizes[zone] then
+		DBM.MapSizes[zone] = {}
+	end
+	local zone = DBM.MapSizes[zone]
+	for i = 1, select("#", ...), 3 do
+		local level, width, height = select(i, ...)
+		zone[level] = {width, height}
+	end
+end
+
+
 --------------------------
 --  Boss Mod Prototype  --
 --------------------------
