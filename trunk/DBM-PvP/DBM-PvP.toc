@@ -37,6 +37,7 @@ localization.es.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua
+MapSizes.lua
 Battlegrounds\Battlegrounds.lua
 Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua

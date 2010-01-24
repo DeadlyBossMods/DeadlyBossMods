@@ -51,7 +51,8 @@ local frame
 local createFrame
 local onUpdate
 local dropdownFrame
-local initialize
+local initializeDropdown
+local initRangeCheck -- initializes the range check for a specific range (if necessary), returns false if the initialization failed (because of a map range check in an unknown zone)
 
 -- for Phanx' Class Colors
 local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
@@ -80,7 +81,7 @@ do
 		DBM.Options.RangeFrameLocked = not DBM.Options.RangeFrameLocked
 	end
 	
-	function initialize(dropdownFrame, level, menu)
+	function initializeDropdown(dropdownFrame, level, menu)
 		local info
 		if level == 1 then
 			info = UIDropDownMenu_CreateInfo()
@@ -135,12 +136,14 @@ do
 				info.checked = (frame.range == 11)
 				UIDropDownMenu_AddButton(info, 2)
 				
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(12)
-				info.func = setRange
-				info.arg1 = 12
-				info.checked = (frame.range == 12)
-				UIDropDownMenu_AddButton(info, 2)
+				if initRangeCheck() then
+					info = UIDropDownMenu_CreateInfo()
+					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(12)
+					info.func = setRange
+					info.arg1 = 12
+					info.checked = (frame.range == 12)
+					UIDropDownMenu_AddButton(info, 2)
+				end
 				
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(15)
@@ -256,7 +259,7 @@ function createFrame()
 	end)
 	frame:SetScript("OnMouseDown", function(self, button)
 		if button == "RightButton" then
-			UIDropDownMenu_Initialize(dropdownFrame, initialize, "MENU")
+			UIDropDownMenu_Initialize(dropdownFrame, initializeDropdown, "MENU")
 			ToggleDropDownMenu(1, nil, dropdownFrame, "cursor", 5, -10)
 		end
 	end)
@@ -272,14 +275,18 @@ function onUpdate(self, elapsed)
 	local color
 	local j = 0
 	self:ClearLines()
-	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range or 10), 1, 1, 1)
-	for i = 1, GetNumRaidMembers() do
-		if (not UnitIsUnit("raid"..i, "player")) and (not UnitIsDeadOrGhost("raid"..i)) and self.checkFunc("raid"..i, self.range) then
-			j = j + 1
-			color = RAID_CLASS_COLORS[select(2, UnitClass("raid"..i))] or NORMAL_FONT_COLOR
-			self:AddLine(UnitName("raid"..i), color.r, color.g, color.b)
-			if j >= 5 then break end
+	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range), 1, 1, 1)
+	if initRangeCheck(self.range) then
+		for i = 1, GetNumRaidMembers() do
+			if (not UnitIsUnit("raid"..i, "player")) and (not UnitIsDeadOrGhost("raid"..i)) and self.checkFunc("raid"..i, self.range) then
+				j = j + 1
+				color = RAID_CLASS_COLORS[select(2, UnitClass("raid"..i))] or NORMAL_FONT_COLOR
+				self:AddLine(UnitName("raid"..i), color.r, color.g, color.b)
+				if j >= 5 then break end
+			end
 		end
+	else
+		self:AddLine(DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED:format(self.range))
 	end
 	soundUpdate = soundUpdate + elapsed
 	if soundUpdate >= 5 and j > 0 then
@@ -308,70 +315,45 @@ end
 
 do
 	-- the map size data is copied from Deus Vox Encounters (http://wow.curse.com/downloads/wow-addons/details/deus-vox-encounters.aspx)
-	local mapDimensions = {
-		Ulduar = {
-			[1] = {3064.9614761023, 2039.5413309668},	-- Expedition Base Camp			-- CONFIRM
-			[2] = {624.19069622949, 415.89374357805},	-- Antechamber of Ulduar		-- CONFIRM
-			[3] = {1238.37427179,	823.90183235628},	-- Conservatory of Life			-- CONFIRM
-			[4] = {848.38069183829, 564.6688835337},	-- Prison of Yogg-Saron			-- CONFIRM
-			[5] = {1460.4694647684, 974.65312886234},	-- Spark of Imagination			-- CONFIRM
-			[6] = {576.71549337896, 384.46653291368},	-- The Mind's Eye (Under Yogg)	-- CONFIRM
-		},
-		Naxxramas = {
-			[1] = {1018.3655494957, 679.40523953718},	-- Construct	-- CONFIRM
-			[2] = {1019.1310739251, 679.18864376555},	-- Arachnid		-- CONFIRM
-			[3] = {1118.1083638787, 744.57895516418},	-- Military		-- CONFIRM
-			[4] = {1117.0809918236, 745.97398439776},	-- Plague		-- CONFIRM
-			[5] = {1927.3190541014, 1284.6530841959},	-- Entrance		-- CONFIRM
-			[6] = {610.62737087301, 407.3875157986},	-- KT/Sapphiron	-- CONFIRM
-		},
-		TheObsidianSanctum = {
-			[0] = {1081.6334214432, 721.79860069158},	-- CONFIRM
-		},
-		TheEyeofEternity = {
-			[1] = {400.728405332355, 267.09113174487},	-- CONFIRM
-		},
-		TheArgentColiseum = {
-			[1] = {344.20785972537, 229.57961178118},	-- CONFIRM
-			[2] = {688.60679691348, 458.95801567569},	-- CONFIRM
-		},
-		VaultofArchavon = {
-			[1] = {842.2254908359, 561.59878021123},	-- CONFIRM
-		},
-		IcecrownCitadel = {
-			[1] = {1262.8025621533, 841.91669450207},	-- The Lower Citadel		-- CONFIRM
-			[2] = {993.25701607873, 662.58829476644},	-- The Rampart of Skulls	-- CONFIRM
-			[3] = {181.83564716405, 121.29684810833},	-- Deathbringer's Rise		-- CONFIRM
-			[4] = {720.60965618252, 481.1621506613},	-- The Frost Queen's Lair	-- CONFIRM
-			[5] = {1069.6156745738, 713.83371679543},	-- The Upper Reaches		-- CONFIRM
-			[6] = {348.05218433541, 232.05964286208},	-- Royal Quarters			-- CONFIRM
-		},
-	}
+	local mapSizes = DBM.MapSizes
    
 	local function mapRangeCheck(uId, range)
+		local pX, pY = GetPlayerMapPosition("player")
+		local uX, uY = GetPlayerMapPosition(uId)
+		local mapName = GetMapInfo()
+		local dims  = mapSizes[mapName] and mapSizes[mapName][GetCurrentMapDungeonLevel()]
+		if not dims then
+			return
+		end
+		local dX = (pX - uX) * dims[1]
+		local dY = (pY - uY) * dims[2]
+		return math.sqrt(dX * dX + dY * dY) < range * 1.0005
+	end
+	
+	function initRangeCheck(range)
+		if checkFuncs[range] ~= mapRangeCheck then
+			return true
+		end
 		local pX, pY = GetPlayerMapPosition("player")
 		if pX == 0 and pY == 0 then
 			SetMapToCurrentZone()
 			pX, pY = GetPlayerMapPosition("player")
 		end
-		local uX, uY = GetPlayerMapPosition(uId)
-		local list = mapDimensions[GetMapInfo()]
-		if not list then
-			return
+		local levels = mapSizes[GetMapInfo()]
+		if not levels then
+			return false
 		end
-		local dims = list[GetCurrentMapDungeonLevel()]
-		if not dims and list and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
+		local dims = levels[GetCurrentMapDungeonLevel()]
+		if not dims and levels and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
 			SetMapToCurrentZone() -- fixes the dungeon level
-			dims = list[GetCurrentMapDungeonLevel()] -- try again
+			dims = levels[GetCurrentMapDungeonLevel()] -- try again
 			if not dims then -- there is actually a level 0 in this zone but we don't know about it...too bad :(
-				return
+				return false
 			end
 		elseif not dims then
-			return
+			return false
 		end
-		local dX = (pX - uX) * dims[1]
-		local dY = (pY - uY) * dims[2]
-		return math.sqrt(dX * dX + dY * dY) < range * 1.005
+		return true -- everything ok!
 	end
 	
 	setmetatable(checkFuncs, {
