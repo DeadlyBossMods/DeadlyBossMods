@@ -33,4 +33,5 @@ localization.ru.lua
 localization.tw.lua
 localization.kr.lua
 localization.es.lua
+MapSizes.lua
 Malygos.lua

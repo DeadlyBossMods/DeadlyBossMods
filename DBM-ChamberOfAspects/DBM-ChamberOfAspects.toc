@@ -32,6 +32,7 @@ localization.tw.lua
 localization.kr.lua
 localization.fr.lua
 localization.es.lua
+MapSizes.lua
 Shadron.lua
 Tenebron.lua
 Vesperon.lua
