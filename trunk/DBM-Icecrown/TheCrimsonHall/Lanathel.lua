@@ -23,12 +23,15 @@ local warnMindControlled			= mod:NewTargetAnnounce(70923)
 local warnBloodthirst				= mod:NewTargetAnnounce(71474, 2, nil, false)
 local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 2, nil, false)
 
+local specWarnAirphase				= mod:NewSpecialWarning("AirPhaseWarning")
 local specWarnPactDarkfallen		= mod:NewSpecialWarningYou(71340)
 local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(71473)
 local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
 local specWarnSwarmingShadows		= mod:NewSpecialWarningMove(71266)
 local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
 
+local timerAirPhase					= mod:NewTimer(10, "AirPhase", 71772)--Timer is more of a guess than anything may be adjusted
+local timerNextAirPhase				= mod:NewTimer(100, "NextAirphase", 71772)--Seen conflicting timers on this and conflicting logs as well so may be off.
 local timerFirstBite				= mod:NewCastTimer(15, 71727)
 local timerNextPactDarkfallen		= mod:NewNextTimer(30, 71340)
 local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
@@ -37,7 +40,7 @@ local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(60, 71473)
 
 local berserkTimer					= mod:NewBerserkTimer(320)
 
-local soundSwarmingShadows = mod:NewSound(71266)
+local soundSwarmingShadows			= mod:NewSound(71266)
 
 mod:AddBoolOption("BloodMirrorIcon", false)
 mod:AddBoolOption("SwarmingShadowsIcon", true)
@@ -58,6 +61,7 @@ function mod:OnCombatStart(delay)
 	timerFirstBite:Start(-delay)
 	timerNextPactDarkfallen:Start(15-delay)
 	timerNextSwarmingShadows:Start(-delay)
+	timerNextAirPhase:Start(142-delay)
 	table.wipe(pactTargets)
 	pactIcons = 6
 end
@@ -106,6 +110,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(70923) then
 		warnMindControlled:Show(args.destName)
 		specWarnMindConrolled:Show(args.destName)
+	elseif args:IsSpellID(71772) then
+		specWarnAirphase:Show()
+		timerAirPhase:Start()
+		timerNextAirPhase:Start()
 	end
 end
 
