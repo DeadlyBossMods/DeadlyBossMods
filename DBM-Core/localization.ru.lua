@@ -176,3 +176,5 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Звуковой сигнал при $spell:
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Индикатор спец-предупреждения"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Специальное предупреждение"
 
+
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Проверка дистанции %d м. недоступна в этой зоне.\nДоступные дистанции - 10, 11, 15 и 28 м."
