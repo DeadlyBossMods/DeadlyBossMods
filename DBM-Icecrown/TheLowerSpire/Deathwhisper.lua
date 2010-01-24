@@ -208,8 +208,6 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellReanimatedFanatic or msg:find(L.YellReanimatedFanatic) then
 		self:SendSync("ReanimatedFanatic")
-	elseif msg == L.YellDeformedFanatic or msg:find(L.YellDeformedFanatic) then
-		self:SendSync("DeformedFanatic")
 	end
 end
 
@@ -220,9 +218,7 @@ function mod:UNIT_TARGET()
 end
 
 function mod:OnSync(msg, arg)
-	if msg == "DeformedFanatic" then
-		warnDeformedFanatic:Show()
-	elseif msg == "ReanimatedFanatic" then
+	if msg == "ReanimatedFanatic" then
 		warnReanimating:Show()
 	end
 end
