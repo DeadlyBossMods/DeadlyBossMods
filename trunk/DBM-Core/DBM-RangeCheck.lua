@@ -113,6 +113,14 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 		elseif level == 2 then
 			if menu == "range" then
+				
+				info = UIDropDownMenu_CreateInfo()
+				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
+				info.func = setRange
+				info.arg1 = 6
+				info.checked = (frame.range == 6)
+				UIDropDownMenu_AddButton(info, 2)
+			
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(10)
 				info.func = setRange
