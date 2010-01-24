@@ -115,27 +115,38 @@ do
 		elseif level == 2 then
 			if menu == "range" then
 				
-				info = UIDropDownMenu_CreateInfo()
-				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
-				info.func = setRange
-				info.arg1 = 6
-				info.checked = (frame.range == 6)
-				UIDropDownMenu_AddButton(info, 2)
-			
+				if initRangeCheck() then
+					info = UIDropDownMenu_CreateInfo()
+					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
+					info.func = setRange
+					info.arg1 = 6
+					info.checked = (frame.range == 6)
+					UIDropDownMenu_AddButton(info, 2)
+				end
+
+				if initRangeCheck() then
+					info = UIDropDownMenu_CreateInfo()
+					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(8)
+					info.func = setRange
+					info.arg1 = 8
+					info.checked = (frame.range == 8)
+					UIDropDownMenu_AddButton(info, 2)
+				end
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(10)
 				info.func = setRange
 				info.arg1 = 10
 				info.checked = (frame.range == 10)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(11)
 				info.func = setRange
 				info.arg1 = 11
 				info.checked = (frame.range == 11)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				if initRangeCheck() then
 					info = UIDropDownMenu_CreateInfo()
 					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(12)
@@ -144,14 +155,14 @@ do
 					info.checked = (frame.range == 12)
 					UIDropDownMenu_AddButton(info, 2)
 				end
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(15)
 				info.func = setRange
 				info.arg1 = 15
 				info.checked = (frame.range == 15)
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(28)
 				info.func = setRange
@@ -165,7 +176,7 @@ do
 				info.hasArrow = true
 				info.menuList = "RangeFrameSound1"
 				UIDropDownMenu_AddButton(info, 2)
-				
+
 				info = UIDropDownMenu_CreateInfo()
 				info.text = DBM_CORE_RANGECHECK_SOUND_OPTION_2
 				info.notCheckable = true
