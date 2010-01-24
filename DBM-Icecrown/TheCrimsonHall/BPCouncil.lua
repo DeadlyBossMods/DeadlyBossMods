@@ -39,7 +39,7 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 
 local soundEmpoweredFlames		= mod:NewSound(72040)
 mod:AddBoolOption("EmpoweredFlameIcon", true)
-mod:AddBoolOption("ActivePrinceIcon", true)
+mod:AddBoolOption("ActivePrinceIcon", false)
 
 local activePrince
 function mod:OnCombatStart(delay)
