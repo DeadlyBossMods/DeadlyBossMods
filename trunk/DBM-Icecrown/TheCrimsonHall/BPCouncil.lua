@@ -24,7 +24,7 @@ local warnEmpoweredFlamesCast	= mod:NewCastAnnounce(72040)
 local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040)
 local warnShockVortex			= mod:NewCastAnnounce(72037)			-- 1,5sec cast
 local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039)			-- 4,5sec cast
-local warnKineticBomb			= mod:NewSpellAnnounce(72053)
+--local warnKineticBomb			= mod:NewSpellAnnounce(72053)
 local warnDarkNucleus			= mod:NewSpellAnnounce(71943)			-- instant cast
 
 local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
