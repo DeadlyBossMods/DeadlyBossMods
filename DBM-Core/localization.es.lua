@@ -176,3 +176,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Reproducir sonido en $spell:%d"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Aviso especial desplazable"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
 
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "La comprobación de rango de %d yardas no está disponible en esta zona.\nLos rangos disponibles son 10, 11, 15 y 28 yardas."
+
+DBM_ARROW_MOVABLE					= "Flecha movible"
+
