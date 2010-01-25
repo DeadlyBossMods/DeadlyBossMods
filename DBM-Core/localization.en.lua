@@ -176,3 +176,5 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Special Warning"
 
 
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "A %d yard range check is not supported in this zone.\nSupported ranges are 10, 11, 15 and 28 yard."
+
+DBM_ARROW_MOVABLE					= "Arrow movable"
