@@ -329,26 +329,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	AirPhaseWarning			= "空中階段 - 散開"
 }
 
 L:SetTimerLocalization{
-	AirPhase			= "在空中",
-	NextAirphase			= "下一次 空中階段"
 }
 
 L:SetOptionLocalization{
-	AirPhaseWarning			= "為空中階段顯示特別警告",
-	AirPhase			= "為空中階段顯示持續時間計時器",
-	NextAirphase			= "為下一次空中階段顯示計時器",
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "暗影聚集並旋繞在(%S+)四周!",
-	AirYell				= "接招……"
+	SwarmingShadows			= "暗影聚集並旋繞在(%S+)四周!"
 }
 
 -----------------------------
