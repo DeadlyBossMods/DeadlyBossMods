@@ -1269,7 +1269,6 @@ do
 end
 
 function DBM:LFG_PROPOSAL_SHOW()
-	
 	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 end
 
@@ -1774,6 +1773,7 @@ function DBM:EndCombat(mod, wipe)
 		table.wipe(autoRespondSpam)
 		if mod.OnCombatEnd then mod:OnCombatEnd(wipe) end
 		DBM.BossHealth:Hide()
+		DBM.Arrow:Hide(true)
 	end
 end
 
