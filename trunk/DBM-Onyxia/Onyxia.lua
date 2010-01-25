@@ -19,24 +19,24 @@ local isMelee = select(2, UnitClass("player")) == "ROGUE"
 	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
 
 local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
-local sndBreath				= mod:NewRunAwaySound(nil, "SoundBreath")
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 
 --local preWarnDeepBreath     = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
-local specWarnBreath		= mod:NewSpecialWarning("SpecWarnBreath")
+local specWarnBreath		= mod:NewSpecialWarningRun(17086)
 local specWarnBlastNova		= mod:NewSpecialWarningRun(68958, isMelee)
-mod:AddBoolOption("PlaySoundOnBlastNova", isMelee)
 
 local timerNextFlameBreath	= mod:NewCDTimer(20, 68970)--Breath she does on ground in frontal cone.
-local timerNextDeepBreath	= mod:NewCDTimer(35, 17086)--Experimental, her casts aren't perfectly consistent. Need more data.
+local timerNextDeepBreath	= mod:NewCDTimer(35, 17086)--Range from 35-60seconds in between based on where she moves to.
 local timerBreath			= mod:NewCastTimer(8, 17086)
 local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
 local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps") 
 
+local soundBlastNova		= mod:NewSound(68958, nil, isMelee)
+local soundDeepBreath 		= mod:NewSound(17086)
 local sndFunny				= mod:NewSound(nil, "SoundWTF", false)
 
 local warned_preP2 = false
@@ -73,12 +73,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68958) then
-        	specWarnBlastNova:Show()
-		if self.Options.PlaySoundOnBlastNova then
-			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end
-	elseif args:IsSpellID(17086, 18351, 18564, 18576) or args:IsSpellID(18584, 18596, 18609, 18617) then		-- 1 ID for each direction
+        specWarnBlastNova:Show()
+		soundBlastNova:Play()
+	elseif args:IsSpellID(17086, 18351, 18564, 18576) or args:IsSpellID(18584, 18596, 18609, 18617) then	-- 1 ID for each direction
 		specWarnBreath:Show()
+		soundDeepBreath:Play()
 		timerBreath:Start()
 		timerNextDeepBreath:Start()
 --		preWarnDeepBreath:Schedule(35)              -- Pre-Warn Deep Breath
