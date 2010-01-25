@@ -23,15 +23,15 @@ local warnMindControlled			= mod:NewTargetAnnounce(70923)
 local warnBloodthirst				= mod:NewTargetAnnounce(71474, 2, nil, false)
 local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 2, nil, false)
 
-local specWarnAirphase				= mod:NewSpecialWarning("AirPhaseWarning")
+local specWarnBloodBolt				= mod:NewSpecialWarningSpell(71772)
 local specWarnPactDarkfallen		= mod:NewSpecialWarningYou(71340)
 local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(71473)
 local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
 local specWarnSwarmingShadows		= mod:NewSpecialWarningMove(71266)
 local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
 
-local timerAirPhase					= mod:NewTimer(10, "AirPhase", 71772)--Timer is more of a guess than anything may be adjusted
-local timerNextAirPhase				= mod:NewTimer(100, "NextAirphase", 71772)--Seen conflicting timers on this and conflicting logs as well so may be off.
+local timerBloodBolt				= mod:NewCastTimer(6, 71772)
+local timerNextBloodBolt			= mod:NewTimer(100, 71772)
 local timerFirstBite				= mod:NewCastTimer(15, 71727)
 local timerNextPactDarkfallen		= mod:NewNextTimer(30, 71340)
 local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
@@ -61,9 +61,13 @@ function mod:OnCombatStart(delay)
 	timerFirstBite:Start(-delay)
 	timerNextPactDarkfallen:Start(15-delay)
 	timerNextSwarmingShadows:Start(-delay)
-	timerNextAirPhase:Start(142-delay)
 	table.wipe(pactTargets)
 	pactIcons = 6
+	if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
+		timerNextBloodBolt:Start(132-delay)--This is a guess, not sure entirely but the timer for 10 man was different pretty sure it's 10 seconds sooner.
+	else
+		timerNextBloodBolt:Start(142-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -111,9 +115,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnMindControlled:Show(args.destName)
 		specWarnMindConrolled:Show(args.destName)
 	elseif args:IsSpellID(71772) then
-		specWarnAirphase:Show()
-		timerAirPhase:Start()
-		timerNextAirPhase:Start()
+		specWarnBloodBolt:Show()
+		timerBloodBolt:Start()
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
+			timerNextBloodBolt:Start(80)--80 seconds in between on 10 man
+		else
+			timerNextBloodBolt:Start()--100 seconds in between on 25 man
+		end
 	end
 end
 
