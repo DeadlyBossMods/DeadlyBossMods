@@ -327,26 +327,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	AirPhaseWarning				= "Воздушная фаза - разбегитесь"
 }
 
 L:SetTimerLocalization{
-	AirPhase		= "В воздухе",
-	NextAirphase	= "След. воздушная фаза"
 }
 
 L:SetOptionLocalization{
-	AirPhaseWarning				= "Спец-предупреждение для воздушной фазы",
-	AirPhase					= "Отсчет времени продолжительности воздушной фазы",
-	NextAirphase				= "Отсчет времени до следующей воздушной фазы",
 	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Тени собираются и окружают (%S+)!",
-	AirYell					= "Here it comes..."--unused right now but you never know
+	SwarmingShadows			= "Тени собираются и окружают (%S+)!"
 }
 
 -----------------------------
