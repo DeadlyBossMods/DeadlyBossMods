@@ -32,13 +32,13 @@ local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
 local specWarnSwarmingShadows		= mod:NewSpecialWarningMove(71266)
 local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
 
-local timerBloodBolt				= mod:NewCastTimer(6, 71772)
-local timerNextBloodBolt			= mod:NewTimer(100, 71772)
+local timerNextInciteTerror			= mod:NewNextTimer(100, 73070)
 local timerFirstBite				= mod:NewCastTimer(15, 71727)
 local timerNextPactDarkfallen		= mod:NewCDTimer(30, 71340)
 local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
-local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
 local timerInciteTerror				= mod:NewBuffActiveTimer(4, 73070)
+local timerBloodBolt				= mod:NewBuffActiveTimer(6, 71772)
+local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
 local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(60, 71473)
 
 local berserkTimer					= mod:NewBerserkTimer(320)
@@ -67,9 +67,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(pactTargets)
 	pactIcons = 6
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
-		timerNextBloodBolt:Start(131-delay)
+		timerNextInciteTerror:Start(124-delay)
 	else
-		timerNextBloodBolt:Start(142-delay)
+		timerNextInciteTerror:Start(137-delay)
 	end
 end
 
@@ -120,11 +120,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(71772) then
 		specWarnBloodBolt:Show()
 		timerBloodBolt:Start()
-		if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
-			timerNextBloodBolt:Start(120)--120 seconds in between first and second on 10 man
-		else
-			timerNextBloodBolt:Start()--100 seconds in between first and second on 25 man
-		end
 	end
 end
 
@@ -140,6 +135,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(73070) then				--Incite Terror (fear before air phase)
 		warnInciteTerror:Show()
 		timerInciteTerror:Start()
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
+			timerNextInciteTerror:Start(120)--120 seconds in between first and second on 10 man
+		else
+			timerNextInciteTerror:Start()--100 seconds in between first and second on 25 man
+		end
 	end
 end
 
