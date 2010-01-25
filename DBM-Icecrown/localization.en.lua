@@ -325,26 +325,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	AirPhaseWarning				= "Air phase - spread out"
 }
 
 L:SetTimerLocalization{
-	AirPhase		= "In the air",
-	NextAirphase	= "Next air phase"
 }
 
 L:SetOptionLocalization{
-	AirPhaseWarning				= "Show special warning for air phase",
-	AirPhase					= "Show timer for air phase duration",
-	NextAirphase				= "Show timer for next air phase",
 	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Shadows amass and swarm around (%S+)!",
-	AirYell					= "Here it comes..."--unused right now but you never know
+	SwarmingShadows			= "Shadows amass and swarm around (%S+)!"
 }
 
 -----------------------------
