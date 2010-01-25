@@ -307,7 +307,7 @@ L:SetOptionLocalization{
 	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "활성화 된 공작에게 공격대 아이콘 설정하기 (엑스)"
+	ActivePrinceIcon		= "활성화 된 공작에게 공격대 아이콘 설정하기 (해골)"
 }
 
 L:SetMiscLocalization{
@@ -329,8 +329,17 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 }
 
+L:SetTimerLocalization{
+}
+
 L:SetOptionLocalization{
-	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340)
+	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
+	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+}
+
+L:SetMiscLocalization{
+	SwarmingShadows				= "Shadows amass and swarm around (%S+)!",
 }
 
 -----------------------------
