@@ -41,7 +41,7 @@ local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)-- Approx
 local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)--Used every 38 seconds exactly except after tear gas, it resets then it's 42-44seconds later (so using 43sec timer for there)
 local timerChokingGasBombCD			= mod:NewCDTimer(35, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
-local timerTearGas					= mod:NewBuffActiveTimer(17, 71615)
+local timerTearGas					= mod:NewBuffActiveTimer(19, 71615)
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
 
@@ -93,6 +93,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70351, 71966) then
+		warnUnstableExperimentSoon:Cancel()
 		warnUnstableExperiment:Show()
 		timerUnstableExperimentCD:Start()
 		warnUnstableExperimentSoon:Schedule(33)
@@ -101,11 +102,13 @@ function mod:SPELL_CAST_START(args)
 		if phase == 1 then
 			warnUnstableExperimentSoon:Cancel()
 			timerUnstableExperimentCD:Start(43)--Casting tear gas also resets experiment cooldown
+			timerSlimePuddleCD:Start()--Casting tear gas resets slime puddle CD too
 			warnUnstableExperimentSoon:Schedule(38)
 		end
 		if phase == 2 then
 			timerUnstableExperimentCD:Cancel()--Casting tear gas second time before phase 3 which means no more experiments
 			warnUnstableExperimentSoon:Cancel()
+			timerSlimePuddleCD:Start()
 		end
 	end
 end
