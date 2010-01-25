@@ -1,0 +1,125 @@
+﻿## Interface: 30300
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Groupe|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Групповые подземелья|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05인던전 모드|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mazmorras|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMPartyWotLK_SavedVars, DBMPartyWotLK_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-SubCategories: Ahn'Kahet,Azjol-Nerub,CoT: Old Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,Violet Hold,Trial of the Champion,The Forge of Souls,Pit of Saron,Halls of Reflection,World Events
+## X-DBM-Mod-SubCategories-frFR: Ahn'Kahet,Azjol-Nérub,GT: L'Épuration de Stratholme,Drak'Tharon,Gundrak,Salles de foudre,Salles de pierre,Le Nexus,L'Occulus,Donjon d'Utgarde,Cime d'Utgarde,Fort Pourpre,L'épreuve du champion,La Forge des âmes,La Fosse de Saron,Salles des Reflets,Evènements mondiaux
+## X-DBM-Mod-SubCategories-deDE: Ahn'kahet,Azjol-Nerub,HdZ: Stratholme,Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung,Prüfung des Champions,Die Seelenschmiede,Grube von Saron,Hallen der Reflexion,Weltereignisse
+## X-DBM-Mod-SubCategories-ruRU: Ан'кахет,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость,Испытание чемпиона,Кузня Душ,Яма Сарона,Залы Отражений,Игровые события
+## X-DBM-Mod-SubCategories-zhTW: 安卡罕特,阿茲歐-奈幽,舊斯坦索姆,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡,勇士試煉,眾魂熔爐,薩倫之淵,倒影大廳,世界事件
+## X-DBM-Mod-SubCategories-koKR: 안카헤트: 고대 왕국,아졸네룹,시간의 동굴: 옛 스트라솔름,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보랏빛 요새,용사의 시험장,영혼의 제련소,사론의 구덩이,투영의 전당,이벤트 던전
+## X-DBM-Mod-SubCategories-esES: Ahn'Kahlet,Azjol-Nerub,CoT: La Matanza de Stratholme,Fortaleza de Drak'Tharon,Gundrak,Camaras de Relampagos,Camaras de Piedra,El Nexo,El Oculus,Fortaleza de Utgarde,Pinaculo de Utgarde,Bastion Violeta,Prueba del Campeón,La Forja de Almas,Foso de Saron,Cámaras de Reflexión,Eventos del mundo
+## X-DBM-Mod-Name: Party
+## X-DBM-Mod-Name-frFR: Groupe
+## X-DBM-Mod-Name-ruRU: Групповые подземелья
+## X-DBM-Mod-Name-zhTW: 隊伍首領模組
+## X-DBM-Mod-Name-esES: Mazmorras
+## X-DBM-Mod-Name-koKR: 5인 던전 모드
+## X-DBM-Mod-Sort: 100
+## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold,Trial of the Champion,Blackrock Depths,Scarlet Monastery,Pit of Saron,The Forge of Souls,Halls of Reflection
+## X-DBM-Mod-LoadZone-frFR: Ahn'kahet : l'Ancien royaume,Azjol -Nérub,L'Épuration de Stratholme,Donjon de Drak'Tharon,Gundrak,Les salles de Foudre,Les salles de Pierre,Le Nexus,L'Oculus,Donjon d'Utgarde,Cime d'Utgarde,Le fort Pourpre,L'épreuve du champion,Profondeurs de Rochenoire,Monastère écarlate,Fosse de Saron,La Forge des âmes,Salles des Reflets
+## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung,Prüfung des Champions,Schwarzfelstiefen,Das Scharlachrote Kloster,Die Seelenschmiede,Grube von Saron,Hallen der Reflexion
+## X-DBM-Mod-LoadZone-ruRU: Ан'кахет: Старое Королевство,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость,Испытание чемпиона,Глубины Черной горы,Монастырь Алого ордена,Яма Сарона,Кузня Душ,Залы Отражений
+## X-DBM-Mod-LoadZone-zhTW: 安卡罕特:古王國,阿茲歐-奈幽,斯坦索姆的抉擇,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡,勇士試煉,黑石深淵,血色修道院,薩倫之淵,眾魂熔爐,倒影大廳
+## X-DBM-Mod-LoadZone-koKR: 안카헤트: 고대 왕국,아졸네룹,옛 스트라솔름,드락타론 성채,군드락,번개의 전당,돌의 전당,마력의 탑,마력의 눈,우트가드 성채,우트가드 첨탑,보랏빛 요새,용사의 시험장,검은바위 나락,붉은십자군 수도원,사론의 구덩이,영혼의 제련소,투영의 전당
+## X-DBM-Mod-LoadZone-esES: Ahn'kahet: El Antiguo Reino,Azjol-Nerub,La Matanza de Stratholme,Fortaleza de Drak'Tharon,Gundrak,Cámaras de Relampagos,Cámaras de Piedra,El Nexo,El Oculus,Fortaleza de Utgarde,Pináculo de Utgarde,El Bastión Violeta,Prueba del Campeón,Profundidades de Roca Negra,Monasterio Escarlata,Foso de Saron,La Forja de Almas,Cámaras de Reflexión
+localization.en.lua
+localization.cn.lua
+localization.ru.lua
+localization.fr.lua
+localization.tw.lua
+localization.kr.lua
+localization.de.lua
+localization.es.lua
+AhnKahet\MapSizes.lua
+AhnKahet\Taldaram.lua
+AhnKahet\Nadox.lua
+AhnKahet\JedogaShadowseeker.lua
+AhnKahet\Volazj.lua
+AhnKahet\Amanitar.lua
+AzjolNerub\MapSizes.lua
+AzjolNerub\Krikthir.lua
+AzjolNerub\Hadronox.lua
+AzjolNerub\Anubarak.lua
+OldStratholme\MapSizes.lua
+OldStratholme\Meathook.lua
+OldStratholme\SalrammTheFleshcrafter.lua
+OldStratholme\ChronoLordEpoch.lua
+OldStratholme\MalGanis.lua
+OldStratholme\OldStratholmeWaves.lua
+DrakTharon\MapSizes.lua
+DrakTharon\Trollgore.lua
+DrakTharon\NovosTheSummoner.lua
+DrakTharon\Dred.lua
+DrakTharon\ProphetTharonja.lua
+Gundrak\MapSizes.lua
+Gundrak\Sladran.lua
+Gundrak\Moorabi.lua
+Gundrak\BloodstoneAnnihilator.lua
+Gundrak\Galdarah.lua
+Gundrak\Eck.lua
+HallsOfLightning\MapSizes.lua
+HallsOfLightning\Gjarngrin.lua
+HallsOfLightning\Volkhan.lua
+HallsOfLightning\Ionar.lua
+HallsOfLightning\Kronus.lua
+HallsOfReflection\MapSizes.lua
+HallsOfReflection\WaveTimers.lua
+HallsOfReflection\Falric.lua
+HallsOfReflection\Marwyn.lua
+HallsOfReflection\LichKingEvent.lua
+HallsOfStone\MapSizes.lua
+HallsOfStone\MaidenOfGrief.lua
+HallsOfStone\Krystallus.lua
+HallsOfStone\BrannBronzebeard.lua
+HallsOfStone\SjonnirTheIronshaper.lua
+TheNexus\MapSizes.lua
+TheNexus\Commander.lua
+TheNexus\GrandMagusTelestra.lua
+TheNexus\Anomalus.lua
+TheNexus\OrmorokTheTreeShaper.lua
+TheNexus\Keristrasza.lua
+TheOculus\MapSizes.lua
+TheOculus\DrakosTheInterrogator.lua
+TheOculus\MageLordUrom.lua
+TheOculus\VarosCloudstrider.lua
+TheOculus\LeyGuardianEregos.lua
+UtgardeKeep\MapSizes.lua
+UtgardeKeep\Keleseth.lua
+UtgardeKeep\ConstructorAndController.lua
+UtgardeKeep\IngvarThePlunderer.lua
+UtgardePinnacle\MapSizes.lua
+UtgardePinnacle\SvalaSorrowgrave.lua
+UtgardePinnacle\GortokPalehoof.lua
+UtgardePinnacle\SkadiTheRuthless.lua
+UtgardePinnacle\Ymiron.lua
+VioletHold\MapSizes.lua
+VioletHold\Erekem.lua
+VioletHold\Ichoron.lua
+VioletHold\Lavanthor.lua
+VioletHold\Moragg.lua
+VioletHold\Xevoss.lua
+VioletHold\Zuramat.lua
+VioletHold\Cyanigosa.lua
+VioletHold\PortalTimers.lua
+TrialoftheChampion\Champions.lua
+TrialoftheChampion\Eadric_the_Pure.lua
+TrialoftheChampion\Confessor.lua
+TrialoftheChampion\Black_Knight.lua
+ForgeofSouls\MapSizes.lua
+ForgeofSouls\Bronjahm.lua
+ForgeofSouls\DevourerofSouls.lua
+PitofSaron\MapSizes.lua
+PitofSaron\Ick.lua
+PitofSaron\ForgemasterGarfrost.lua
+PitofSaron\ScourgelordTyrannus.lua
+WorldEvents\CorenDirebrew.lua
+WorldEvents\HeadlessHorseman.lua

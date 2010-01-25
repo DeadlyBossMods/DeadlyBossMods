@@ -1,0 +1,87 @@
+local mod	= DBM:NewMod("PlagueworksTrash", "DBM-Icecrown", 2)
+local L		= mod:GetLocalizedStrings()
+
+mod:SetRevision(("$Revision$"):sub(12, -3))
+
+mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_SUMMON",
+	"SPELL_CAST_START",
+	"UNIT_DIED",
+	"CHAT_MSG_MONSTER_YELL"
+)
+
+local warnZombies		= mod:NewSpellAnnounce(71159)
+local warnMortalWound	= mod:NewAnnounce("warnMortalWound", 2, nil, false)
+local warnDecimateSoon	= mod:NewSoonAnnounce(71123)
+
+local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)
+local specWarnMortalWound	= mod:NewSpecialWarningStack(71127, nil, 5)
+local specWarnTrap			= mod:NewSpecialWarning("specWarnTrap")
+local specWarnBlightBomb	= mod:NewSpecialWarningSpell(71088)
+
+local timerZombies		= mod:NewNextTimer(20, 71159)
+local timerMortalWound	= mod:NewTargetTimer(15, 71127)
+local timerDecimate		= mod:NewNextTimer(33, 71123)
+local timerBlightBomb	= mod:NewCastTimer(5, 71088)
+
+mod:RemoveOption("HealthFrame")
+
+local spamZombies = 0
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(71127) then
+		warnMortalWound:Show(args.spellName, args.destName, args.amount or 1)
+		timerMortalWound:Start(args.destName)
+		if args:IsPlayer() and (args.amount or 1) >= 5 then
+			specWarnMortalWound:Show(args.amount)
+		end
+	end
+end
+
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(71159) and GetTime() - spamZombies > 5 then
+		warnZombies:Show()
+		timerZombies:Start()
+		spamZombies = GetTime()
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(71123) then
+		specWarnDecimate:Show()
+		warnDecimateSoon:Cancel()	-- in case the first 1 is inaccurate, you wont have an invalid soon warning
+		warnDecimateSoon:Schedule(28)
+		timerDecimate:Start()
+	elseif args:IsSpellID(71088) then
+		specWarnBlightBomb:Show()
+		timerBlightBomb:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 37025 then
+		warnDecimateSoon:Cancel()
+		timerDecimate:Cancel()
+	elseif cid == 37217 then
+		timerZombies:Cancel()
+		warnDecimateSoon:Cancel()
+		timerDecimate:Cancel()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.FleshreaperTrap1 or msg == L.FleshreaperTrap2 or msg == L.FleshreaperTrap3 then
+		self:SendSync("FleshreaperTrap")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "FleshreaperTrap" then
+		specWarnTrap:Show()
+	end
+end
