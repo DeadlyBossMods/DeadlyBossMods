@@ -12,7 +12,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBreath		= "깊은 숨",
 	WarnWhelpsSoon		= "곧 새끼용 등장",
 	WarnPhase2Soon		= "곧 2 페이즈",	
 	WarnPhase3Soon		= "곧 3 페이즈"	
@@ -23,11 +22,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath			= "깊은 숨의 특수 경고 보기",
 	TimerWhelps				= "새끼용 등장 타이머 보기",
 	WarnWhelpsSoon			= "새끼용 등장의 사전 경고 보기",
-	SoundBreath				= "깊은 숨의 경고 소리 재생",
-	PlaySoundOnBlastNova	= "파멸의 회오리 경고 소리 재생",	
 	SoundWTF				= "독특한 레이드를 즐기기위한 웃긴 소리 재생.(가급적 안하시길 권장)",
 	WarnPhase2Soon			= "2 페이즈 사전 경고 보기(67% 이하가 될 경우)",	
 	WarnPhase3Soon			= "3 페이즈 사전 경고 보기(41% 이하가 될 경우)"	
