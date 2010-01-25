@@ -23,11 +23,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath	= "Mostrar aviso especial para Aliento Profundo ( Echa fuego )",
 	TimerWhelps		= "Mostrar tiempo para las crias",
 	WarnWhelpsSoon	= "Mostrar pre-aviso para las crias",
-	SoundBreath		= "Sonido si estas en el area del fuego",
-	PlaySoundOnBlastNova	= "Reproducir sonido en Nova Explosiva",
 	SoundWTF				= "Reproducir sonidos divertidos de una raid legendaria de Onyxia classico",
 	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~67%)",
 	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~41%)"
