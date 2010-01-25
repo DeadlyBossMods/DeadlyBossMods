@@ -118,9 +118,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnBloodBolt:Show()
 		timerBloodBolt:Start()
 		if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
-			timerNextBloodBolt:Start(80)--80 seconds in between on 10 man
+			timerNextBloodBolt:Start(120)--120 seconds in between first and second on 10 man
 		else
-			timerNextBloodBolt:Start()--100 seconds in between on 25 man
+			timerNextBloodBolt:Start()--100 seconds in between first and second on 25 man
 		end
 	end
 end
