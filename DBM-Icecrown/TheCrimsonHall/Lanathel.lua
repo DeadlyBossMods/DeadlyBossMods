@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_PERIODIC_DAMAGE",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
@@ -18,6 +19,7 @@ mod:RegisterEvents(
 local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 3)
 local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)
 local warnSwarmingShadows			= mod:NewTargetAnnounce(71266)
+local warnInciteTerror				= mod:NewSpellAnnounce(73070)
 local warnVampricBite				= mod:NewTargetAnnounce(71727)
 local warnMindControlled			= mod:NewTargetAnnounce(70923)
 local warnBloodthirst				= mod:NewTargetAnnounce(71474, 2, nil, false)
@@ -36,6 +38,7 @@ local timerFirstBite				= mod:NewCastTimer(15, 71727)
 local timerNextPactDarkfallen		= mod:NewCDTimer(30, 71340)
 local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
 local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
+local timerInciteTerror				= mod:NewBuffActiveTimer(4, 73070)
 local timerEssenceoftheBloodQueen	= mod:NewBuffActiveTimer(60, 71473)
 
 local berserkTimer					= mod:NewBerserkTimer(320)
@@ -64,7 +67,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(pactTargets)
 	pactIcons = 6
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
-		timerNextBloodBolt:Start(132-delay)--This is a guess, not sure entirely but the timer for 10 man was different pretty sure it's 10 seconds sooner.
+		timerNextBloodBolt:Start(131-delay)--This is a guess, not sure entirely but the timer for 10 man was different pretty sure it's 10 seconds sooner.
 	else
 		timerNextBloodBolt:Start(142-delay)
 	end
@@ -130,6 +133,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)			--Clear icon once you got to where you are supposed to be
 	elseif args:IsSpellID(71510, 70838) then	--Blood Mirror
 		self:SetIcon(args.destName, 0)
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(73070) then				--Incite Terror (fear before air phase)
+		warnInciteTerror:Show()
+		timerInciteTerror:Start()
 	end
 end
 
