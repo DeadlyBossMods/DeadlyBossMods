@@ -67,7 +67,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(pactTargets)
 	pactIcons = 6
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
-		timerNextBloodBolt:Start(131-delay)--This is a guess, not sure entirely but the timer for 10 man was different pretty sure it's 10 seconds sooner.
+		timerNextBloodBolt:Start(131-delay)
 	else
 		timerNextBloodBolt:Start(142-delay)
 	end
@@ -81,7 +81,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnDarkFallen then--Debuff doesn't actually last 30 seconds
 			self:SetIcon(args.destName, pactIcons, 30)--it lasts forever, but if you still have it after 30 seconds
-			pactIcons = pactIcons - 1--then it's probably a wipe anyways
+			pactIcons = pactIcons - 1--then you're probably dead anyways
 		end
 		self:Unschedule(warnPactTargets)
 		if #pactTargets >= 3 then
@@ -109,7 +109,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnEssenceoftheBloodQueen:Show()
 			if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
-				timerEssenceoftheBloodQueen:Start(75)--70 seconds on 10 man
+				timerEssenceoftheBloodQueen:Start(75)--75 seconds on 10 man
 			else
 				timerEssenceoftheBloodQueen:Start()--60 seconds on 25 man
 			end
