@@ -233,7 +233,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnNova 		= "$spell:65279의 특수 경고 보기",
 	NovaSound			= "$spell:65279의 특수 소리 재생",	
 	timerMobOvercharge	= "과충전 된 몹의 시간 보기(디버프 중첩)",
 	EmalonEnrage		= "$spell:26662 타이머 보기",
@@ -251,7 +250,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder		= "당신은 불타는 잿더미에 있습니다! 뛰세요!!",
 	BurningFury			= "불타는 격노 : >%d<"
 }
 
@@ -260,7 +258,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder		= "$spell:67332의 영향을 받을 경우 특수 경고 보기",
 	PlaySoundOnCinder	= "$spell:67332의 영향을 받을 경우 특수 소리 재생하기",
 	BurningFury			= "$spell:66721 경고 보기",
 	KoralonEnrage		= "$spell:26662 타이머 보기"
@@ -307,29 +304,29 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSiegeEngine		= "Siege Engine ready!",
-	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
+	WarnSiegeEngine			= "Siege Engine ready!",
+	WarnSiegeEngineSoon		= "Siege Engine in ~10 sec"
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "게임 시작", 
-	TimerPOI		= "%s",
-	TimerSiegeEngine	= "Siege Engine ready"	
+	TimerStart				= "게임 시작", 
+	TimerPOI				= "%s",
+	TimerSiegeEngine		= "Siege Engine ready"	
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "게임 시작 타이머 보기", 
-	TimerPOI		= "획득 타이머 보기",
-	TimerSiegeEngine	= "Show a timer for Siege Engine building",
-	WarnSiegeEngine		= "Warn when the Siege Engine is ready",
-	WarnSiegeEngineSoon	= "Warn when the Siege Engine is almost ready"	
+	TimerStart				= "게임 시작 타이머 보기", 
+	TimerPOI				= "획득 타이머 보기",
+	TimerSiegeEngine		= "Show a timer for Siege Engine building",
+	WarnSiegeEngine			= "Warn when the Siege Engine is ready",
+	WarnSiegeEngineSoon		= "Warn when the Siege Engine is almost ready"	
 })
 
 L:SetMiscLocalization({
-	ZoneName		= "정복의 섬",
-	BgStart60		= "60초 후 전투가 시작됩니다.",
-	BgStart30		= "30초 후 전투가 시작됩니다.",
-	BgStart15		= "15초 후 전투가 시작됩니다.",
+	ZoneName				= "정복의 섬",
+	BgStart60				= "60초 후 전투가 시작됩니다.",
+	BgStart30				= "30초 후 전투가 시작됩니다.",
+	BgStart15				= "15초 후 전투가 시작됩니다.",
 	SiegeEngine				= "Siege Engine",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
 	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",

@@ -164,7 +164,11 @@ DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 아이콘 설정
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
 
 -- New special warnings
-DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "특수 경고 움직이기"
-DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "특수 경고"
+DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"
+DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
+
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= " %dm 거리 체크를 지원하지 않는 지역입니다. 10, 11, 15 그리고 28m를 지원합니다."
+
+DBM_ARROW_MOVABLE						= "화살표 움직이기"
 
 end
