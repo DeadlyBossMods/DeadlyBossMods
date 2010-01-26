@@ -12,8 +12,8 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBreath		= "深呼吸",
 	WarnWhelpsSoon		= "奧妮克希亞幼龍 即將出現",
+	WarnPhase2Soon		= "第2階段 即將到來",
 	WarnPhase3Soon		= "第3階段 即將到來"
 }
 
@@ -22,11 +22,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath		= "為深呼吸顯示特別警告",
 	TimerWhelps		= "為奧妮克希亞幼龍顯示計時器",
 	WarnWhelpsSoon		= "為奧妮克希亞幼龍顯示預先警告",
-	SoundBreath		= "為深呼吸播放音效",
-	PlaySoundOnBlastNova	= "為衝擊新星播放音效",
 	SoundWTF		= "為經典傳奇式奧妮克希亞副本播放一些有趣的音效",
 	WarnPhase2Soon		= "為第2階段顯示預先警告 (大約在67%)",
 	WarnPhase3Soon		= "為第3階段顯示預先警告 (大約在41%)"
