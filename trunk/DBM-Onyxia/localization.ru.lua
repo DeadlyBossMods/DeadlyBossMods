@@ -12,7 +12,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBreath		= "Глубокий вдох",
 	WarnWhelpsSoon		= "Скоро дракончики Ониксии",
 	WarnPhase2Soon		= "Скоро фаза 2",
 	WarnPhase3Soon		= "Скоро фаза 3"
@@ -23,11 +22,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnBreath			= "Спец-предупреждение для Глубокого вдоха",
 	TimerWhelps				= "Отсчет времени до дракончиков Ониксии",
 	WarnWhelpsSoon			= "Предупреждать заранее о дракончиках Ониксии",
-	SoundBreath				= "Звуковой сигнал при Глубоком вдохе",
-	PlaySoundOnBlastNova	= "Звуковой сигнал при Вспышке Огненной звезды",
 	SoundWTF				= "Воспроизводить забавное озвучивание легендарного классического рейда на Ониксию (англ.)",
 	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~67%)",
 	WarnPhase3Soon			= "Предупреждать заранее о фазе 3 (на ~41%)"
