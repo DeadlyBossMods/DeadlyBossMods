@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "esES" then return end
+﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error al cargar modulo %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Cargado modulo de '%s' !"
