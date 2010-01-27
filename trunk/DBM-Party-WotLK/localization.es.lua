@@ -272,7 +272,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("Nueva oleada"),
 	TimerWaveIn		= "Mostrar tiempo para próximas oleadas (despues del boss de la 5a oleada)",
-	TimerRollplay	= "Mostrar tiempo de diálogo inicial"
+	TimerRoleplay	= "Mostrar tiempo de diálogo inicial"
 })
 
 
@@ -292,7 +292,7 @@ L:SetMiscLocalization({
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
 	WaveCheck	= "Oleada de la Plaga = %d/10",
-	Rollplay	= "Me alegra que lo consiguieras, Uther."
+	Roleplay	= "Me alegra que lo consiguieras, Uther."
 })
 
 
@@ -980,15 +980,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerRollplay		= "Svala Sorrowgrave ataca"
+	timerRoleplay		= "Svala Sorrowgrave ataca"
 })
 
 L:SetOptionLocalization({
-	timerRollplay		= "Mostrar tiempo de diálogo antes de que Svala ataque"
+	timerRoleplay		= "Mostrar tiempo de diálogo antes de que Svala ataque"
 })
 
 L:SetMiscLocalization({
-	SvalaRollplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
+	SvalaRoleplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
 })
 
 

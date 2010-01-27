@@ -258,7 +258,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("new wave"),
 	TimerWaveIn		= "Show timer for next set of waves (after wave 5 boss)",
-	TimerRollplay	= "Show timer for opening rollplay event."
+	TimerRoleplay	= "Show timer for opening roleplay event."
 })
 
 L:SetMiscLocalization({
@@ -277,7 +277,7 @@ L:SetMiscLocalization({
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
 	WaveCheck	= "Scourge Wave = %d/10",
-	Rollplay	= "Glad you could make it, Uther."
+	Roleplay	= "Glad you could make it, Uther."
 })
 
 ------------------------
@@ -933,15 +933,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerRollplay		= "Svala Sorrowgrave active"
+	timerRoleplay		= "Svala Sorrowgrave active"
 })
 
 L:SetOptionLocalization({
-	timerRollplay		= "Show timer for rollplay before Svala Sorrowgrave becomes active"
+	timerRoleplay		= "Show timer for roleplay before Svala Sorrowgrave becomes active"
 })
 
 L:SetMiscLocalization({
-	SvalaRollplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
+	SvalaRoleplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
 })
 
 -----------------------
