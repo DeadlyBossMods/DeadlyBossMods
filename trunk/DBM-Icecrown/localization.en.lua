@@ -213,6 +213,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	InhaledBlight		= "Show warning for $spell:71912",
+	RangeFrame			= "Show range frame (8 yards)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
