@@ -17,22 +17,31 @@ local specWarnBloodMirror	= mod:NewSpecialWarningYou(70451)
 local timerBloodMirror		= mod:NewTargetTimer(30, 70451)
 local timerBloodSap			= mod:NewTargetTimer(8, 70432)
 
+local BloodMirrorTargets = {}
 local BloodMirrorIcons = 8	-- alternating between 2 icons (2 debuffs can be up at the same time on one pull)
 
 mod:AddBoolOption("BloodMirrorIcon", true)
 mod:RemoveOption("HealthFrame")
 
+local function warnBloodMirrorTargets()
+	warnBloodMirror:Show(table.concat(BloodMirrorTargets, "<, >"))
+	table.wipe(BloodMirrorTargets)
+	timerBloodMirror:Start(args.destName)
+	BloodMirrorIcons = 8
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70451) then
-		warnBloodMirror:Show(args.destName)
-		timerBloodMirror:Start(args.destName)
+		BloodMirrorTargets[#BloodMirrorTargets + 1] = args.destName
 		if self.Options.BloodMirrorIcon then
 			self:SetIcon(args.destName, BloodMirrorIcons, 30)
-			if BloodMirrorIcons == 8 then
-				BloodMirrorIcons = 7
-			else
-				BloodMirrorIcons = 8
-			end
+			BloodMirrorIcons = BloodMirrorIcons - 1
+		end
+		self:Unschedule(warnBloodMirrorTargets)
+		if #BloodMirrorTargets >= 2 then
+			warnBloodMirrorTargets()
+		else
+			self:Schedule(0.3, warnBloodMirrorTargets)
 		end
 		if args:IsPlayer() then
 			specWarnBloodMirror:Show()
