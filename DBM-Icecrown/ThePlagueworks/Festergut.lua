@@ -97,7 +97,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and (args.amount or 1) >= 9 then
 			specWarnGastricBloat:Show(args.amount)
 		end
-	elseif args:IsSpellID(69240, 71218, 73020, 73019) then	-- Vile Gas(Heroic Spellids drycoded, may not be correct)
+	elseif args:IsSpellID(69240, 71218, 73020, 73019) and args.destName ~= "" then	-- Vile Gas(Heroic Spellids drycoded, may not be correct)
 		vileGasTargets[#vileGasTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnVileGas:Show()
