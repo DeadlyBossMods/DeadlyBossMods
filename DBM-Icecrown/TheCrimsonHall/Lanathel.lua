@@ -34,8 +34,8 @@ local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
 
 local timerNextInciteTerror			= mod:NewNextTimer(100, 73070)
 local timerFirstBite				= mod:NewCastTimer(15, 71727)
-local timerNextPactDarkfallen		= mod:NewCDTimer(30, 71340)
-local timerNextSwarmingShadows		= mod:NewNextTimer(30, 71266)
+local timerNextPactDarkfallen		= mod:NewNextTimer(30.5, 71340)
+local timerNextSwarmingShadows		= mod:NewNextTimer(30.5, 71266)
 local timerInciteTerror				= mod:NewBuffActiveTimer(4, 73070)
 local timerBloodBolt				= mod:NewBuffActiveTimer(6, 71772)
 local timerBloodThirst				= mod:NewBuffActiveTimer(10, 71474)
@@ -135,6 +135,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(73070) then				--Incite Terror (fear before air phase)
 		warnInciteTerror:Show()
 		timerInciteTerror:Start()
+		timerNextSwarmingShadows:Start()--This resets the swarming shadows timer
+		timerNextPactDarkfallen:Start(25)--and the Pact timer also reset -5 seconds
 		if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
 			timerNextInciteTerror:Start(120)--120 seconds in between first and second on 10 man
 		else
