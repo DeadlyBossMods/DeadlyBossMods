@@ -12,6 +12,10 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
+local isRanged = select(2, UnitClass("player")) == "MAGE"
+              or select(2, UnitClass("player")) == "HUNTER"
+              or select(2, UnitClass("player")) == "WARLOCK"
+
 local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight")
 local warnGastricBloat		= mod:NewAnnounce("WarnGastricBloat", 3)
 local warnGasSpore			= mod:NewTargetAnnounce(69279)
@@ -32,6 +36,7 @@ local timerGastricBloatCD	= mod:NewCDTimer(11, 72551) 		-- 10 to 14 seconds
 
 local berserkTimer			= mod:NewBerserkTimer(300)
 
+mod:AddBoolOption("RangeFrame", isRanged)
 mod:AddBoolOption("SetIconOnGasSpore", true)
 
 local gasSporeTargets	= {}
@@ -57,6 +62,15 @@ function mod:OnCombatStart(delay)
 	timerPungentBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
 	table.wipe(gasSporeTargets)
 	gasSporeIcon = 8
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(8)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_CAST_START(args)
