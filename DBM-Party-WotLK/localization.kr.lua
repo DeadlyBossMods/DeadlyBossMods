@@ -254,13 +254,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerWaveIn			= "다음 웨이브 (6)",
-	TimerRollplay		= "시작 이야기"	
+	TimerRoleplay		= "시작 이야기"	
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow		= optionWarning:format("새로운 웨이브"),
 	TimerWaveIn			= "다음 웨이브 타이머 보기 (5번째 보스 웨이브 이후)",
-	TimerRollplay		= "시작 이벤트 타이머 보기"
+	TimerRoleplay		= "시작 이벤트 타이머 보기"
 })
 
 L:SetMiscLocalization({
@@ -279,7 +279,7 @@ L:SetMiscLocalization({
 	Wave4			= "%d %s, %d %s, %d %s 그리고 %d %s",
 	WaveBoss		= "%s",
 	WaveCheck		= "스컬지 공격 = %d/10",
-	Rollplay		= "Glad you could make it, Uther."
+	Roleplay		= "Glad you could make it, Uther."
 })
 
 -------------------
@@ -935,15 +935,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerRollplay		= "스발라 소로우그레이브 활성"
+	timerRoleplay		= "스발라 소로우그레이브 활성"
 })
 
 L:SetOptionLocalization({
-	timerRollplay		= "스발라 소로우그레이브 활성 타이머 보기"
+	timerRoleplay		= "스발라 소로우그레이브 활성 타이머 보기"
 })
 
 L:SetMiscLocalization({
-	SvalaRollplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
+	SvalaRoleplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
 })
 
 ---------------------

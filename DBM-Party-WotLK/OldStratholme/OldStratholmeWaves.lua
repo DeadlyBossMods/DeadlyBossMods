@@ -11,7 +11,7 @@ mod:RegisterEvents(
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
 local timerWaveIn		= mod:NewTimer(60, "TimerWaveIn")
-local timerRoleplay		= mod:NewTimer(160, "TimerRollplay")
+local timerRoleplay		= mod:NewTimer(160, "TimerRoleplay")
 
 local wavesNormal = {
 	{2, L.Devouring},
@@ -88,7 +88,7 @@ function mod:UNIT_DIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
-	if msg == L.Rollplay or msg:find(L.Rollplay) then
+	if msg == L.Roleplay or msg:find(L.Roleplay) then
 		self:SendSync("Roleplay")
 	end
 end

@@ -254,13 +254,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerWaveIn		= "下一波(6)",
-	TimerRollplay	= "角色扮演計時"
+	TimerRoleplay	= "角色扮演計時"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("新一波"),
 	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)",
-	TimerRollplay	= "為角色扮演事件顯示計時器"
+	TimerRoleplay	= "為角色扮演事件顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -279,7 +279,7 @@ L:SetMiscLocalization({
 	Wave4		= "%d %s，%d %s，%d %s 及 %d %s",
 	WaveBoss	= "%s",
 	WaveCheck	= "天譴軍波數 = %d/10",
-	Rollplay	= "真高興你趕到了，烏瑟。"
+	Roleplay	= "真高興你趕到了，烏瑟。"
 })
 
 ------------------------
@@ -932,15 +932,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	timerRollplay		= "絲瓦拉·悲傷亡墓 活動"
+	timerRoleplay		= "絲瓦拉·悲傷亡墓 活動"
 })
 
 L:SetTimerLocalization({
-	timerRollplay		= "為絲瓦拉·悲傷亡墓能夠活動前的角色扮演顯示計時器"
+	timerRoleplay		= "為絲瓦拉·悲傷亡墓能夠活動前的角色扮演顯示計時器"
 })
 
 L:SetOptionLocalization({
-	SvalaRollplayStart	= "陛下!我已完成您的要求，如今懇求您的祝福!"
+	SvalaRoleplayStart	= "陛下!我已完成您的要求，如今懇求您的祝福!"
 })
 
 -----------------------

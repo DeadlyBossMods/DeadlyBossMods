@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 local warningSacrifice	= mod:NewTargetAnnounce(48267, 2)
 local timerSacrifice	= mod:NewBuffActiveTimer(25, 48276)
-local timerRollplay		= mod:NewTimer(67, "timerRollplay")--rollplay for boss is active
+local timerRoleplay		= mod:NewTimer(67, "timerRoleplay")--roleplay for boss is active
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(48267) then
@@ -25,13 +25,13 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.SvalaRollplayStart or msg:find(L.SvalaRollplayStart) then
-		self:SendSync("SvalaRollplay")
+	if msg == L.SvalaRoleplayStart or msg:find(L.SvalaRoleplayStart) then
+		self:SendSync("SvalaRoleplay")
 	end
 end
 
 function mod:OnSync(msg, arg)
-	if msg == "SvalaRollplay" then
-		timerRollplay:Start()
+	if msg == "SvalaRoleplay" then
+		timerRoleplay:Start()
 	end
 end
