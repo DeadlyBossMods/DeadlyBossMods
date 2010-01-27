@@ -26,13 +26,13 @@ mod:RemoveOption("HealthFrame")
 local function warnBloodMirrorTargets()
 	warnBloodMirror:Show(table.concat(BloodMirrorTargets, "<, >"))
 	table.wipe(BloodMirrorTargets)
-	timerBloodMirror:Start(args.destName)
 	BloodMirrorIcons = 8
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70451) then
 		BloodMirrorTargets[#BloodMirrorTargets + 1] = args.destName
+		timerBloodMirror:Start(args.destName)
 		if self.Options.BloodMirrorIcon then
 			self:SetIcon(args.destName, BloodMirrorIcons, 30)
 			BloodMirrorIcons = BloodMirrorIcons - 1
