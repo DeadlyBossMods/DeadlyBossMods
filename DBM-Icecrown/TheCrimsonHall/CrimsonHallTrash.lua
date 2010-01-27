@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("CrimsonHallTrash", "DBM-Icecrown", 3)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 3185 $"):sub(12, -3))
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(1, 2)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -18,7 +18,7 @@ local timerBloodMirror		= mod:NewTargetTimer(30, 70451)
 local timerBloodSap			= mod:NewTargetTimer(8, 70432)
 
 local BloodMirrorTargets = {}
-local BloodMirrorIcons = 8	-- alternating between 2 icons (2 debuffs can be up at the same time on one pull)
+local BloodMirrorIcons = 2
 
 mod:AddBoolOption("BloodMirrorIcon", true)
 mod:RemoveOption("HealthFrame")
@@ -26,7 +26,7 @@ mod:RemoveOption("HealthFrame")
 local function warnBloodMirrorTargets()
 	warnBloodMirror:Show(table.concat(BloodMirrorTargets, "<, >"))
 	table.wipe(BloodMirrorTargets)
-	BloodMirrorIcons = 8
+	BloodMirrorIcons = 2
 end
 
 function mod:SPELL_AURA_APPLIED(args)
