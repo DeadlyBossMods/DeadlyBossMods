@@ -254,7 +254,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerWaveIn		= "Следующая волна (6)",
-	TimerRollplay	= "Вступительное представление"
+	TimerRoleplay	= "Вступительное представление"
 })
 
 L:SetOptionLocalization({
