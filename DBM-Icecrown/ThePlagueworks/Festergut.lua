@@ -106,7 +106,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #vileGasTargets >= 3 then
 			warnVileGasTargets()
 		else
-			self:Schedule(0.3, warnVileGasTargets)
+			self:Schedule(0.8, warnVileGasTargets)
 		end
 	end
 end
