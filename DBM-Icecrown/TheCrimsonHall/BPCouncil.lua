@@ -5,6 +5,12 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(37970, 37972, 37973)
 mod:SetUsedIcons(7, 8)
 
+mod:SetBossHealthInfo(
+	37972, L.Keleseth,
+	37970, L.Valanar,
+	37973, L.Taldaram
+)
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
