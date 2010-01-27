@@ -103,11 +103,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnVileGas:Show()
 		end
 		self:Unschedule(warnVileGasTargets)
-		if #vileGasTargets >= 3 then
-			warnVileGasTargets()
-		else
-			self:Schedule(0.8, warnVileGasTargets)
-		end
+		self:Schedule(0.8, warnVileGasTargets)
 	end
 end
 
