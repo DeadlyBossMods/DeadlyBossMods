@@ -39,7 +39,7 @@ local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNea
 local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)--Duration of debuff
 local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)-- Approx
 local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)--Used every 38 seconds exactly except after tear gas, it resets then it's 42-44seconds later (so using 43sec timer for there)
-local timerChokingGasBombCD			= mod:NewCDTimer(35, 71255)
+local timerChokingGasBombCD			= mod:NewNextTimer(35.5, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(19, 71615)
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
@@ -104,11 +104,21 @@ function mod:SPELL_CAST_START(args)
 			timerUnstableExperimentCD:Start(43)--Casting tear gas also resets experiment cooldown
 			timerSlimePuddleCD:Start()--Casting tear gas resets slime puddle CD too
 			warnUnstableExperimentSoon:Schedule(38)
+			if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
+				timerChokingGasBombCD:Start()--normal 35-36 seconds
+			else
+				timerChokingGasBombCD:Start(37)--37 seconds on 10 man
+			end
 		end
 		if phase == 2 then
 			timerUnstableExperimentCD:Cancel()--Casting tear gas second time before phase 3 which means no more experiments
 			warnUnstableExperimentSoon:Cancel()
 			timerSlimePuddleCD:Start()
+			if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
+				timerChokingGasBombCD:Start(40)--40 seconds after second tear gas on 25 man
+			else
+				timerChokingGasBombCD:Start(30)--30 seconds after second tear gas on 10 man
+			end
 		end
 	end
 end
