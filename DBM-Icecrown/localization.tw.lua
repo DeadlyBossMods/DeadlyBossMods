@@ -216,6 +216,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	InhaledBlight			= "為$spell:71912顯示警告",
+	RangeFrame			= "顯示距離框 (8碼)",
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
