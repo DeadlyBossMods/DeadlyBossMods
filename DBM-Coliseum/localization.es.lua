@@ -168,7 +168,7 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 	= "En el nombre de nuestro maestro oscuro. Para el Rey Exánime. Tú. Voluntad. Morir.",
+	YellPull 	= "En el nombre de nuestro oscuro maestro. Por el Rey Exánime. Morirás.",
 	Fjola 		= "Fjola Penívea",
 	Eydis		= "Eydis Penalumbra"
 }
