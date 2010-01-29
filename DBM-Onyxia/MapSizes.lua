@@ -1,2 +1,0 @@
--- todo: add map sizes
---DBM:RegisterMapSize("Onyxia")

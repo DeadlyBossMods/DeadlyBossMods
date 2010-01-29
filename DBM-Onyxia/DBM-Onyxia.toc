@@ -33,5 +33,4 @@ localization.tw.lua
 localization.kr.lua
 localization.tw.lua
 localization.es.lua
-MapSizes.lua
 Onyxia.lua
