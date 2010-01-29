@@ -1,2 +1,1 @@
--- todo: find map size
---DBM:RegisterMapSize("ZoneName")
+DBM:RegisterMapSize("TheNexus", 1, 1215.555363177, 680.59832722542)
