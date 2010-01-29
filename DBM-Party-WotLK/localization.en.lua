@@ -252,7 +252,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerWaveIn		= "Next wave (6)",
-	TimerRoleplay	= "Opening roleplay"
+	TimerRoleplay	= "Arthas roleplay"
 })
 
 L:SetOptionLocalization({
@@ -277,7 +277,8 @@ L:SetMiscLocalization({
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
 	WaveCheck	= "Scourge Wave = %d/10",
-	Roleplay	= "Glad you could make it, Uther."
+	Roleplay	= "Glad you could make it, Uther.",
+	Roleplay2	= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go."
 })
 
 ------------------------
