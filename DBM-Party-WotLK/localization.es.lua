@@ -292,7 +292,8 @@ L:SetMiscLocalization({
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
 	WaveCheck	= "Oleada de la Plaga = %d/10",
-	Roleplay	= "Me alegra que lo consiguieras, Uther."
+	Roleplay	= "Me alegra que lo consiguieras, Uther.",
+	Roleplay2	= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go."
 })
 
 
@@ -706,9 +707,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= optionPreWarning:format("Dividir pronto"),	-- translate
-	WarningSplitNow		= optionWarning:format("Se divide"),	-- translate
-	WarningMerge		= optionWarning:format("Se une"),	-- translate
+	WarningSplitSoon	= "Mostrar aviso para Dividir pronto",	-- translate
+	WarningSplitNow		= "Mostrar aviso para División",			-- translate
+	WarningMerge		= "Mostrar aviso para Unión"			-- translate
 })
 
 L:SetMiscLocalization({
