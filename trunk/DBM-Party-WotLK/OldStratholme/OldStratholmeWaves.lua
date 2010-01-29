@@ -11,7 +11,7 @@ mod:RegisterEvents(
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
 local timerWaveIn		= mod:NewTimer(60, "TimerWaveIn")
-local timerRoleplay		= mod:NewTimer(160, "TimerRoleplay")
+local timerRoleplay		= mod:NewTimer(165, "TimerRoleplay")
 
 local wavesNormal = {
 	{2, L.Devouring},
@@ -90,11 +90,15 @@ end
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.Roleplay or msg:find(L.Roleplay) then
 		self:SendSync("Roleplay")
+	elseif msg == L.Roleplay2 or msg:find(L.Roleplay2) then
+		self:SendSync("Roleplay2")
 	end
 end
 
 function mod:OnSync(msg, arg)
 	if msg == "Roleplay" then
-		timerRoleplay:Start()
+		timerRoleplay:Start()--Arthas preaches to uther and jaina
+	elseif msg == "Roleplay2" then
+		timerRoleplay:Start(109)--Arthas prances around blabbing with malganis
 	end
 end
