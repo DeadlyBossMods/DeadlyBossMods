@@ -1,5 +1,5 @@
 DBM:RegisterMapSize("AzjolNerub",
-	3, 367.50033034529, 245.00084955382,	-- The Gilded Gate
-	2, 292.97446500284, 195.31506198937,	-- Hadronox's Lair
-	1, 753.00604240622, 501.98354738306		-- The Brood Pit
+	1, 752.973999023, 501.983001709,	-- The Brood Pit
+	2, 292.973999023, 195.31597900,		-- Hadronox's Lair
+	3, 367.5, 245						-- The Gilded Gate
 )

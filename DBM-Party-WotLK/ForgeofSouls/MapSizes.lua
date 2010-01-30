@@ -1,1 +1,1 @@
-DBM:RegisterMapSize("TheForgeofSouls", 1, 1448.1635163116, 965.39379289759)
+DBM:RegisterMapSize("TheForgeofSouls", 1, 1448.09985351, 965.40039062)
