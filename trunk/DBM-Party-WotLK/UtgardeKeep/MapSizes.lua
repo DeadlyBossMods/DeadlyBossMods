@@ -1,6 +1,5 @@
---missing areas 2 3
 DBM:RegisterMapSize("UtgardeKeep",
-	1, 734.58317959397, 489.72000603807		-- Norndir Preperation
---
---
+	1, 734.580993652, 489.7215003964,		-- Norndir Preperation
+	2, 481.081008911, 320.7202930448,		-- Area 2
+	3, 736.581008911, 491.0545120241		-- Area 3
 )

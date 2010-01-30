@@ -1,1 +1,1 @@
-DBM:RegisterMapSize("HallsofReflection", 1, 879.0100608731, 586.0067139184)
+DBM:RegisterMapSize("HallsofReflection", 1, 879.02001954, 586.01953124)

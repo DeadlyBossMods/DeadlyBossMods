@@ -1,5 +1,4 @@
---needs area 1
 DBM:RegisterMapSize("UtgardePinnacle",
---
-	2, 756.19668984222, 504.12106240865	-- Upper Pinnacle
+	1, 548.936019897, 365.957015991,	-- Lower Pinnacle
+	2, 756.17994308428, 504.119003295	-- Upper Pinnacle
 )
