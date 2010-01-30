@@ -1,1 +1,1 @@
-DBM:RegisterMapSize("TheNexus", 1, 1215.555363177, 680.59832722542)
+DBM:RegisterMapSize("TheNexus", 1, 1101.280975342, 734.1874999997)
