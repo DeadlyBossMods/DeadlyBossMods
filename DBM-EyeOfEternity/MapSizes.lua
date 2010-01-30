@@ -1,1 +1,1 @@
-DBM:RegisterMapSize("TheEyeofEternity", 1, 430.069271828, 286.71245576858)
+DBM:RegisterMapSize("TheEyeofEternity", 1, 430.07006836, 286.713012695)
