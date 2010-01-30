@@ -34,6 +34,7 @@ mod:AddBoolOption("SetIconOnLifeLeach", true)
 local timerEnrage				= mod:NewBerserkTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
 local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 62662)
+local timerNextSurgeofDarkness	= mod:NewBuffActiveTimer(60, 62662)
 local timerSaroniteVapors		= mod:NewNextTimer(30, 63322)
 local timerLifeLeech			= mod:NewTargetTimer(10, 63276)
 local timerHardmode				= mod:NewTimer(189, "hardmodeSpawn")
@@ -42,6 +43,7 @@ local timerHardmode				= mod:NewTimer(189, "hardmodeSpawn")
 function mod:OnCombatStart(delay)
 	timerEnrage:Start(-delay)
 	timerHardmode:Start(-delay)
+	timerNextSurgeofDarkness:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -50,6 +52,7 @@ function mod:SPELL_CAST_START(args)
 
 	elseif args:IsSpellID(62662) then 
 		specWarnSurgeDarkness:Show()
+		timerNextSurgeofDarkness:Start()
 		if self.Options.SpecialWarningSurgeDarkness then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
 		end
