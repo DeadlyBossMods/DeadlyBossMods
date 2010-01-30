@@ -9,12 +9,18 @@ mod:SetRevision(("$Revision: 1192 $"):sub(12, -3))
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
+	"SPELL_AURA_APPLIED",
 	"UNIT_DIED"
 )
 
-mod:AddBoolOption("PlaySoundOnFistOfStone", false)
+local warnImpale			= mod:NewSpellAnnounce(62928)
+
+local timerImpale			= mod:NewTargetTimer(5, 62928)
+
 local specWarnFistofStone	= mod:NewSpecialWarning("SpecWarnFistOfStone", false)
 local specWarnGroundTremor	= mod:NewSpecialWarning("SpecWarnGroundTremor", true)
+
+mod:AddBoolOption("PlaySoundOnFistOfStone", false)
 mod:AddBoolOption("TrashRespawnTimer", true, "timer")
 
 --
@@ -32,7 +38,7 @@ mod:AddBoolOption("TrashRespawnTimer", true, "timer")
 --
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(62344) then 						-- Fists of Stone
+	if args:IsSpellID(62344) then 					-- Fists of Stone
 		specWarnFistofStone:Show()
 		if self.Options.PlaySoundOnFistOfStone then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
@@ -40,8 +46,13 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(62325, 62932) then		-- Ground Tremor
 		specWarnGroundTremor:Show()
 	end
-		-- Petrified Bark (not required)
+end
 
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(62310, 62928) then 			-- Impale
+		warnImpale:Show(args.destName)
+		timerImpale:Start(args.destName)
+	end
 end
 
 function mod:UNIT_DIED(args)
