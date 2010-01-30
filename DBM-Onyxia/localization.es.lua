@@ -1,4 +1,4 @@
-if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
+ï»¿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
 local L
 
@@ -31,6 +31,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellP2 = "Este ejercicio sin sentido me aburre. ¡Os inceneraré a todos desde arriba!",
-	YellP3 = "¡Parece ser que vais a necesitar otra lección, mortales!"
+	YellP2 = "Este ejercicio sin sentido me aburre. Â¡Os incenerarÃ© a todos desde arriba!",
+	YellP3 = "Â¡Parece ser que vais a necesitar otra lecciÃ³n, mortales!"
 }
