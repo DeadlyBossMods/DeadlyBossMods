@@ -9,9 +9,9 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"UNIT_DIED"
 )
 
 local canInterrupt
@@ -79,30 +79,35 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-function mod:SPELL_AURA_REMOVED_DOSE(args)
-	if args:IsSpellID(64455) then -- Feral Essence
-		if args.amount == 1 then
-			warnCatDiedOne:Show()
-		else
-			warnCatDied:Show(args.amount)
-            timerDefender:Start()
-		end
-		if self.Options.HealthFrame then
-			DBM.BossHealth:RemoveBoss(34035)
-			DBM.BossHealth:AddBoss(34035, L.Defender:format(args.amount))
-		end
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(64386) and args:IsPlayer() then
+		isFeared = false	
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(64455) then -- Feral Essence
-		if self.Options.HealthFrame then
-			DBM.BossHealth:RemoveBoss(34035)
+local catLives = 9
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 34035 then
+		catLives = catLives - 1
+		if catLives > 0 then
+			if catLives == 1 then
+				warnCatDiedOne:Show()
+				timerDefender:Start()
+			else
+				warnCatDied:Show(catLives)
+				timerDefender:Start()
+         	end
+			if self.Options.HealthFrame then
+				DBM.BossHealth:RemoveBoss(34035)
+				DBM.BossHealth:AddBoss(34035, L.Defender:format(catLives))
+			end
+		else
+			if self.Options.HealthFrame then
+				DBM.BossHealth:RemoveBoss(34035)
+			end
 		end
-	elseif args:IsSpellID(64386) and args:IsPlayer() then
-		isFeared = false	
 	end
-	
 end
 
 function mod:SPELL_DAMAGE(args)
