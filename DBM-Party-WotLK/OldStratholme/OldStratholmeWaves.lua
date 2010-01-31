@@ -11,7 +11,7 @@ mod:RegisterEvents(
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
 local timerWaveIn		= mod:NewTimer(60, "TimerWaveIn")
-local timerRoleplay		= mod:NewTimer(165, "TimerRoleplay")
+local timerRoleplay		= mod:NewTimer(162, "TimerRoleplay")
 
 local wavesNormal = {
 	{2, L.Devouring},
@@ -99,6 +99,6 @@ function mod:OnSync(msg, arg)
 	if msg == "Roleplay" then
 		timerRoleplay:Start()--Arthas preaches to uther and jaina
 	elseif msg == "Roleplay2" then
-		timerRoleplay:Start(109)--Arthas prances around blabbing with malganis
+		timerRoleplay:Start(106)--Arthas prances around blabbing with malganis
 	end
 end
