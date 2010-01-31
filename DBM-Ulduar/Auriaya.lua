@@ -34,7 +34,7 @@ local specWarnBlast		= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
 local specWarnVoid 		= mod:NewSpecialWarning("SpecWarnVoid")
 
 local enrageTimer		= mod:NewBerserkTimer(600)
-local timerDefender 	= mod:NewTimer(35, "timerDefender")--this i need to check for consistency
+local timerDefender 	= mod:NewTimer(35, "timerDefender")
 local timerFear			= mod:NewCastTimer(64386)
 local timerNextFear 	= mod:NewNextTimer(35.5, 64386)
 local timerNextSwarm 	= mod:NewNextTimer(36, 64396)
@@ -47,8 +47,8 @@ local isFeared			= false
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
-	timerNextFear:Start(40-delay)--this i need to check for consistency
-	timerNextSonic:Start(60-delay)--this i need to check for consistency
+	timerNextFear:Start(40-delay)
+	timerNextSonic:Start(60-delay)
 	timerDefender:Start(60-delay)
 end
 
@@ -64,7 +64,6 @@ function mod:SPELL_CAST_START(args)
 		warnSonic:Show()
 		timerSonic:Start()
 		timerNextSonic:Start()
-		-- What about adding a "soon" timer. It seems to be 25-35 seconds between Sonic Screeches
 	end
 end
 
