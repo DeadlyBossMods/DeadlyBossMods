@@ -209,14 +209,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight		= "파멸의 역병 들이마심 : >%d<",
-	WarnGastricBloat	= "%s : >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+	InhaledBlight			= "파멸의 역병 들이마심 : >%d<",
+	WarnGastricBloat		= "%s : >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
-	InhaledBlight		= "$spell:71912 경고 보기",
-	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
-	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
+	InhaledBlight			= "$spell:71912 경고 보기",
+	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
+	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
 
 ---------------
@@ -272,8 +272,8 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnPhase2Soon				= "2 페이즈 사전 경고 보기(80% 이하)",
 	WarnPhase3Soon				= "3 페이즈 사전 경고 보기(35% 이하)",
-	specWarnMalleableGoo		= "유연한 끈적이 특수 경고 보기\n(첫 대상일 경우)",
-	specWarnMalleableGooNear	= "주변의 유연한 끈적이 특수 경고 보기\n(첫 대상 근처에 있을 경우)",
+	specWarnMalleableGoo		= "유연한 끈적이 특수 경고 보기(첫 대상일 경우)",
+	specWarnMalleableGooNear	= "주변의 유연한 끈적이 특수 경고 보기(첫 대상 근처에 있을 경우)",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
@@ -294,27 +294,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "대상 전환 : %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "곧 대상 전환",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	WarnTargetSwitch			= "대상 전환 : %s",		-- Ugh, no nice spellname/id to use for general localization :(
+	WarnTargetSwitchSoon		= "곧 대상 전환",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch		= "대상 전환"
+	TimerTargetSwitch			= "대상 전환"
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "대상 전환 경고 보기", -- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "대상 전환 사전 경고 보기",-- Every ~47 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "대상 전환 쿨다운 타이머 보기",
-	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "활성화 된 공작에게 공격대 아이콘 설정하기 (해골)"
+	WarnTargetSwitch			= "대상 전환 경고 보기", -- Warn when another Prince needs to be damaged
+	WarnTargetSwitchSoon		= "대상 전환 사전 경고 보기",-- Every ~47 secs, you have to dps a different Prince
+	TimerTargetSwitch			= "대상 전환 쿨다운 타이머 보기",
+	EmpoweredFlameIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
+	ActivePrinceIcon			= "활성화 된 공작에게 공격대 아이콘 설정하기 (해골)"
 }
 
 L:SetMiscLocalization{
-	Keleseth				= "공작 켈레세스",
-	Taldaram				= "공작 탈다람",
-	Valanar					= "공작 발라나르",
-	EmpoweredFlames			= "(%S+) 쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
+	Keleseth					= "공작 켈레세스",
+	Taldaram					= "공작 탈다람",
+	Valanar						= "공작 발라나르",
+	EmpoweredFlames				= "(%S+) 쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
 }
 
 -----------------------
@@ -339,7 +339,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows				= "Shadows amass and swarm around (%S+)!",
+--	SwarmingShadows				= "어둠이 쌓이더니 (%S+)에게 몰려듭니다!", --"Shadows amass and swarm around (%S+)!"
+	SwarmingShadows				= "에게 몰려듭니다!",
 }
 
 -----------------------------
