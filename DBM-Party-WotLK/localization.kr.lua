@@ -313,12 +313,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnCrystalHandler	= "Crystal Handler spawned (%d remaining)"
 })
 
 L:SetTimerLocalization({
+	timerCrystalHandler	= "Crystal Handler spawns"
 })
 
 L:SetOptionLocalization({
+	WarnCrystalHandler	= "Show warning when Crystal Handler spawns",
+	timerCrystalHandler	= "Show timer for next Crystal Handler spawn"
+})
+
+L:SetMiscLocalization({
+	HandlerEmote	= "%s calls for assistance!"
 })
 
 ---------------------
