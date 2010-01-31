@@ -28,7 +28,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if not warnedDecay and self:GetUnitCreatureId(uId) == 26632 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
+	if not warnedDecay and self:GetUnitCreatureId(uId) == 26632 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.58 then
 		warnedDecay = true
 		warningDecayFleshSoon:Show()
 	end
