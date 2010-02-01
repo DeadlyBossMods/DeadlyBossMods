@@ -279,7 +279,7 @@ L:SetMiscLocalization({
 	Wave4			= "%d %s, %d %s, %d %s 그리고 %d %s",
 	WaveBoss		= "%s",
 	WaveCheck		= "스컬지 공격 = %d/10",
-	Roleplay		= "Glad you could make it, Uther.",
+	Roleplay		= "드디어 나타나셨군, 우서",
 	Roleplay2		= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go."	
 })
 
@@ -884,7 +884,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 })
 
-L:SetOptionLocalization({
+L:SetMiscLocalization({
 	YellCombatEnd	= "안 돼! 난 더 잘할 수... 있는데..."
 })
 
@@ -909,8 +909,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers!  A feast for the one that brings me their heads!",
-	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!"
+	CombatStart		= "웬 놈들이 감히 여길? 정신 차려라, 형제들아! 녀석들을 처치하면 거하게 한 상 차려 주마!",
+	Phase2			= "피도 눈물도 없는 것들아! 불쌍한 비룡을 괴롭히다니, 가만두지 않겠다!"
 })
 
 ------------
@@ -952,7 +952,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SvalaRoleplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
+	SvalaRoleplayStart	= "주인님! 당신께서 주신 일을 행했습니다. 이제, 축복을 내려 주소서!"
 })
 
 ---------------------
@@ -1134,7 +1134,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
-	Sealbroken		= "We've broken through the prison gate! The way into Dalaran is clear! Now we finally put an end to the Nexus War!",	
+	Sealbroken		= "문을 부쉈다! 달라란으로 가는 길이 열렸다! 이제 마력 전쟁의 끝을 내자!",	
 	WavePortal		= "차원문 열림: (%d+)/18"
 })
 
