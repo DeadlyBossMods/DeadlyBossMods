@@ -454,7 +454,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare	= "Play sound on Laser Barrage",
 	ShockBlastWarningInP1	= "Show special warning for Shock Blast in Phase 1",
 	ShockBlastWarningInP4	= "Show special warning for Shock Blast in Phase 4",
-	RangeFrame				= "Show range frame in Phase 1"
+	RangeFrame				= "Show range frame in Phase 1 (6 yards)"
 }
 
 L:SetMiscLocalization{
@@ -532,7 +532,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 			= "Guardian spawned",
+	WarningGuardianSpawned 			= "Guardian %d spawned",
 	WarningCrusherTentacleSpawned	= "Crusher Tentacle spawned",
 	SpecWarnBrainLink 				= "Brain Link on you",
 	WarningSanity 					= "%d Sanity debuffs remaining",
