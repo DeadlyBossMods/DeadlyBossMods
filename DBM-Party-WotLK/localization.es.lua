@@ -266,7 +266,7 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerWaveIn	= 	"Siguiente oleada (6)",
-	TimerRoleplay	= "Dialogo inicial"
+	TimerRoleplay	= "Diálogo"
 })
 
 L:SetOptionLocalization({
@@ -293,7 +293,7 @@ L:SetMiscLocalization({
 	WaveBoss	= "%s",
 	WaveCheck	= "Oleada de la Plaga = %d/10",
 	Roleplay	= "Me alegra que lo consiguieras, Uther.",
-	Roleplay2	= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go." --translate
+	Roleplay2	= "Parece que todo el mundo está listo. Recordad, esta gente está infectada por la peste y pronto morirá. Debemos purgar Stratholme para proteger de la Plaga lo que queda de Lordaeron. Vamos."
 })
 
 
