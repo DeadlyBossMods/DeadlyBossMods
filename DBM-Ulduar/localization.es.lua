@@ -177,42 +177,42 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	NextCollapsingStar		= "Next Collapsing Star",--translate
-	PossibleNextCosmicSmash	= "Next possible Cosmic Smash",--translate
+	NextCollapsingStar		= "Siguiente Estrella en colapso",
+	PossibleNextCosmicSmash	= "Posible siguiente Machaque cósmico",
 	TimerCombatStart		= "Empieza el combate"
 }
 
 L:SetWarningLocalization{
-	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",--translate
-	WarningBlackHole		= "Black Hole",--translate
-	SpecWarnBigBang			= "Big Bang",--translate
-	PreWarningBigBang		= "Big Bang in ~10 seconds",--translate
-	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",--translate
-	SpecWarnCosmicSmash 	= "Cosmic Smash",--translate
-	WarnPhase2Soon			= "Phase 2 soon",--translate
-	warnStarLow				= "Collapsing Star is low"--translate
+	WarningPhasePunch		= "Cambiar de fase en >%s< - Stack %d",
+	WarningBlackHole		= "Agujero negro",
+	SpecWarnBigBang			= "Big Bang",
+	PreWarningBigBang		= "Big Bang en ~10 segundos",
+	WarningCosmicSmash 		= "Machaque cósmico - Explosion en 4 segundos",
+	SpecWarnCosmicSmash 	= "Machaque cósmico",
+	WarnPhase2Soon			= "Fase 2 pronto",
+	warnStarLow				= "Estrella en colapso a punto de morir"
 }
 
 L:SetOptionLocalization{
-	PreWarningBigBang		= "Show pre-warning for Big Bang",--translate
-	SpecWarnBigBang			= "Show special warning for Big Bang",--translate
-	WarningPhasePunch		= "Announce Phase Punch targets",--translate
-	WarningBlackHole		= "Show warning for Black Hole",--translate
-	NextCollapsingStar		= "Show timer for next Collapsing Star",--translate
-	WarningCosmicSmash 		= "Show warning for Cosmic Smash",--translate
-	SpecWarnCosmicSmash 	= "Show special warning for Cosmic Smash",--translate
-	PossibleNextCosmicSmash	= "Show timer for next possible Cosmic Smash",--translate
-	TimerCombatStart		= "Show timer for start of combat",--translate
-	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~23%)",--translate
-	warnStarLow				= "Show special warning when Collapsing Star is low (at ~25%)"--translate
+	PreWarningBigBang		= "Mostrar pre-aviso para Big Bang",
+	SpecWarnBigBang			= "Mostrar aviso especial para Big Bang",
+	WarningPhasePunch		= "Anunciar objetivos de Cambiar de fase",
+	WarningBlackHole		= "Mostrar aviso para Agujero negro",
+	NextCollapsingStar		= "Mostrar tiempo para siguiente Estrella en colapso",
+	WarningCosmicSmash 		= "Mostrar aviso para Machaque cósmico",
+	SpecWarnCosmicSmash 	= "Mostrar aviso especial para Machaque cósmico",
+	PossibleNextCosmicSmash	= "Mostrar tiempo para posible siguiente Machaque cósmico",
+	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
+	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~23%)",
+	warnStarLow				= "Mostrar aviso especial cuando una Estrella en colapso esté a punto de morir (al ~25%)"
 }
 
 L:SetMiscLocalization{
 	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",--translate
 	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",--translate
-	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",--translate
+	Emote_CollapsingStar	= "¡%s empieza a invocar Estrellas en colapso!",
 	Phase2					= "Behold the tools of creation",--translate
-	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."--translate
+	PullCheck				= "Tiempo hasta que Algalon transmita la señal de auxilio= (%d+) min."
 }
 
 
@@ -458,8 +458,8 @@ L:SetOptionLocalization{
 	PlaySoundOnShockBlast	= "Reproducir sonido en Explosión de choque",
 	PlaySoundOnDarkGlare	= "Reproducir sonido en Tromba de láseres",
 	ShockBlastWarningInP1	= "Mostrar aviso especial para Explosión de choque en Fase 1",
-	ShockBlastWarningInP4	= "Mostrar aviso especial para Explosión de choque en Fase 4",--translate
-	RangeFrame				= "Mostrar distáncia en Fase 1 (6 yardas)"--translate
+	ShockBlastWarningInP4	= "Mostrar aviso especial para Explosión de choque en Fase 4",
+	RangeFrame				= "Mostrar distáncia en Fase 1 (6 yardas)"
 }
 
 L:SetMiscLocalization{
