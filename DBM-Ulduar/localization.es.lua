@@ -173,46 +173,46 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Algalon")
 
 L:SetGeneralLocalization{
-	name = "Algalon the Observer"
+	name = "Algalon el Observador"
 }
 
 L:SetTimerLocalization{
-	NextCollapsingStar		= "Next Collapsing Star",
-	PossibleNextCosmicSmash	= "Next possible Cosmic Smash",
+	NextCollapsingStar		= "Next Collapsing Star",--translate
+	PossibleNextCosmicSmash	= "Next possible Cosmic Smash",--translate
 	TimerCombatStart		= "Empieza el combate"
 }
 
 L:SetWarningLocalization{
-	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",
-	WarningBlackHole		= "Black Hole",
-	SpecWarnBigBang			= "Big Bang",
-	PreWarningBigBang		= "Big Bang in ~10 seconds",
-	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",
-	SpecWarnCosmicSmash 	= "Cosmic Smash",
-	WarnPhase2Soon			= "Phase 2 soon",
-	warnStarLow				= "Collapsing Star is low"
+	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",--translate
+	WarningBlackHole		= "Black Hole",--translate
+	SpecWarnBigBang			= "Big Bang",--translate
+	PreWarningBigBang		= "Big Bang in ~10 seconds",--translate
+	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",--translate
+	SpecWarnCosmicSmash 	= "Cosmic Smash",--translate
+	WarnPhase2Soon			= "Phase 2 soon",--translate
+	warnStarLow				= "Collapsing Star is low"--translate
 }
 
 L:SetOptionLocalization{
-	PreWarningBigBang		= "Show pre-warning for Big Bang",
-	SpecWarnBigBang			= "Show special warning for Big Bang",
-	WarningPhasePunch		= "Announce Phase Punch targets",
-	WarningBlackHole		= "Show warning for Black Hole",
-	NextCollapsingStar		= "Show timer for next Collapsing Star",
-	WarningCosmicSmash 		= "Show warning for Cosmic Smash",
-	SpecWarnCosmicSmash 	= "Show special warning for Cosmic Smash",
-	PossibleNextCosmicSmash	= "Show timer for next possible Cosmic Smash",
-	TimerCombatStart		= "Show timer for start of combat",
-	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~23%)",
-	warnStarLow				= "Show special warning when Collapsing Star is low (at ~25%)"
+	PreWarningBigBang		= "Show pre-warning for Big Bang",--translate
+	SpecWarnBigBang			= "Show special warning for Big Bang",--translate
+	WarningPhasePunch		= "Announce Phase Punch targets",--translate
+	WarningBlackHole		= "Show warning for Black Hole",--translate
+	NextCollapsingStar		= "Show timer for next Collapsing Star",--translate
+	WarningCosmicSmash 		= "Show warning for Cosmic Smash",--translate
+	SpecWarnCosmicSmash 	= "Show special warning for Cosmic Smash",--translate
+	PossibleNextCosmicSmash	= "Show timer for next possible Cosmic Smash",--translate
+	TimerCombatStart		= "Show timer for start of combat",--translate
+	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~23%)",--translate
+	warnStarLow				= "Show special warning when Collapsing Star is low (at ~25%)"--translate
 }
 
 L:SetMiscLocalization{
-	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",
-	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",
-	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",
-	Phase2					= "Behold the tools of creation",
-	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."
+	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",--translate
+	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",--translate
+	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",--translate
+	Phase2					= "Behold the tools of creation",--translate
+	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."--translate
 }
 
 
@@ -432,45 +432,45 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DarkGlare			= "Laser Barrage",
-	MagneticCore		= ">%s< got Magnetic Core",
-	WarningShockBlast	= "Shock Blast - MOVE AWAY",
-	WarnBombSpawn		= "Bomb Bot spawned"
+	DarkGlare			= "Tromba de láseres",
+	MagneticCore		= ">%s< tiene Núcleo magnético",
+	WarningShockBlast	= "Explosión de choque! Muévete!",
+	WarnBombSpawn		= "Robot bum sale"
 }
 
 L:SetTimerLocalization{
-	TimerHardmode		= "Hard Mode - Self-Destruct",
-	TimeToPhase2		= "Phase 2",
-	TimeToPhase3		= "Phase 3",
-	TimeToPhase4		= "Phase 4"
+	TimerHardmode		= "Modo Difícil - Autodestrucción",
+	TimeToPhase2		= "Fase 2",
+	TimeToPhase3		= "Fase 3",
+	TimeToPhase4		= "Fase 4"
 }
 
 L:SetOptionLocalization{
-	DarkGlare				= "Show special warning for Laser Barrage",
-	TimeToPhase2			= "Show timer for Phase 2",
-	TimeToPhase3			= "Show timer for Phase 3",
-	TimeToPhase4			= "Show timer for Phase 4",
-	MagneticCore			= "Announce Magnetic Core looters",
-	HealthFramePhase4		= "Show health frame in Phase 4",
-	AutoChangeLootToFFA		= "Switch loot mode to Free for All in Phase 3",
-	WarnBombSpawn			= "Show warning for Bomb Bots",
-	TimerHardmode			= "Show timer for hard mode",
-	PlaySoundOnShockBlast	= "Play sound on Shock Blast",
-	PlaySoundOnDarkGlare	= "Play sound on Laser Barrage",
-	ShockBlastWarningInP1	= "Show special warning for Shock Blast in Phase 1",
-	ShockBlastWarningInP4	= "Show special warning for Shock Blast in Phase 4",
-	RangeFrame				= "Show range frame in Phase 1"
+	DarkGlare				= "Mostrar aviso especial para Tromba de láseres",
+	TimeToPhase2			= "Mostrar tiempo para Fase 2",
+	TimeToPhase3			= "Mostrar tiempo para Fase 3",
+	TimeToPhase4			= "Mostrar tiempo para Fase 4",
+	MagneticCore			= "Anunciar quen lootea Núcleo magnético",
+	HealthFramePhase4		= "Mostrar barra de vida en la fase 4",
+	AutoChangeLootToFFA		= "Canviar el loot a Botín Libre en la fase 3",
+	WarnBombSpawn			= "Mostrar aviso para Robot bum",
+	TimerHardmode			= "Mostrar tiempo para Modo Difícil",
+	PlaySoundOnShockBlast	= "Reproducir sonido en Explosión de choque",
+	PlaySoundOnDarkGlare	= "Reproducir sonido en Tromba de láseres",
+	ShockBlastWarningInP1	= "Mostrar aviso especial para Explosión de choque en Fase 1",
+	ShockBlastWarningInP4	= "Mostrar aviso especial para Explosión de choque en Fase 4",--translate
+	RangeFrame				= "Mostrar distáncia en Fase 1 (6 yardas)"--translate
 }
 
 L:SetMiscLocalization{
-	MobPhase1		= "Leviathan Mk II",
+	MobPhase1		= "Mk II de leviatán",
 	MobPhase2		= "VX-001",
-	MobPhase3		= "Aerial Command Unit",
-	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",	
-	YellHardPull	= "Now, why would you go and do something like that? Didn't you see the sign that said, \"DO NOT PUSH THIS BUTTON!\"? How will we finish testing with the self-destruct mechanism active?",
-	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9 percent! Barely a dent! Moving right along.",
-	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",
-	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",
+	MobPhase3		= "Unidad de mando aérea",
+	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",--translate
+	YellHardPull	= "Now, why would you go and do something like that? Didn't you see the sign that said, \"DO NOT PUSH THIS BUTTON!\"? How will we finish testing with the self-destruct mechanism active?",--translate
+	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9 percent! Barely a dent! Moving right along.",--translate
+	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",--translate
+	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",--translate
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
@@ -484,40 +484,40 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	hardmodeSpawn = "Saronite Animus spawn"
+	hardmodeSpawn = "Animus de saronita sale"
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash		= "Shadow Crash on you - Move away",
-	SpecialWarningSurgeDarkness		= "Surge of Darkness",
-	WarningShadowCrash				= "Shadow Crash on >%s<",
-	SpecialWarningShadowCrashNear	= "Shadow Crash near you - Watch out",
-	WarningLeechLife				= "Life Leech on >%s<",
-	SpecialWarningLLYou				= "Life Leech on you",
-	SpecialWarningLLNear			= "Life Leech on %s near you"
+	SpecialWarningShadowCrash		= "Fragor de sombra en ti! Muévete!",
+	SpecialWarningSurgeDarkness		= "Oleada de oscuridad",
+	WarningShadowCrash				= "Fragor de sombra en >%s<",
+	SpecialWarningShadowCrashNear	= "Fragor de sombra cerca de ti!",
+	WarningLeechLife				= "Drenar vida en >%s<",
+	SpecialWarningLLYou				= "Drenar vida en ti!",
+	SpecialWarningLLNear			= "Drenar vida en %s cerca de ti"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash				= "Announce Shadow Crash targets",
-	SetIconOnShadowCrash			= "Set icons on Shadow Crash targets (skull)",
-	SetIconOnLifeLeach				= "Set icons on Life Leech targets (cross)",
-	SpecialWarningSurgeDarkness		= "Show special warning for Surge of Darkness",
-	SpecialWarningShadowCrash		= "Show special warning for Shadow Crash (must be targeted or focused by at least one raid member)",
-	SpecialWarningShadowCrashNear	= "Show special warning for Shadow Crash near you",
-	SpecialWarningLLYou				= "Show special warning when you are affected by Life Leech",
-	SpecialWarningLLNear			= "Show special warning for Life Leech near you",
-	CrashWhisper					= "Send whisper to Shadow Crash targets",
-	YellOnLifeLeech					= "Yell on Life Leech",
-	YellOnShadowCrash				= "Yell on Shadow Crash",
-	WarningLeechLife				= "Announce Life Leech targets",
-	hardmodeSpawn					= "Show timer for Saronite Animus spawn (hard mode)"
+	WarningShadowCrash				= "Anunciar objetivos de Fragor de sombra",
+	SetIconOnShadowCrash			= "Poner iconos en los objetivos de Fragor de sombra (calavera)",
+	SetIconOnLifeLeach				= "Poner iconos en los objetivos de Drenar vida (cruz)",
+	SpecialWarningSurgeDarkness		= "Mostrar aviso especial para Oleada de oscuridad",
+	SpecialWarningShadowCrash		= "Mostrar aviso especial para Fragor de sombra",
+	SpecialWarningShadowCrashNear	= "Mostrar aviso especial para Fragor de sombra cerca de ti",
+	SpecialWarningLLYou				= "Mostrar aviso especial si te afecta Drenar vida ",
+	SpecialWarningLLNear			= "Mostrar aviso especial para Drenar vida cerca de ti",
+	CrashWhisper					= "Enviar susurro a los objetivos de Fragor de sombra",
+	YellOnLifeLeech					= "Gritar si tienes Drenar vida",
+	YellOnShadowCrash				= "Gritar si eres objetivo de Fragor de sombra",
+	WarningLeechLife				= "Anunciar los objetivos de Drenar vida",
+	hardmodeSpawn					= "Mostrar tiempo para salida de Animus de saronita (Modo Difícil)"
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors	= "A cloud of saronite vapors coalesces nearby!",
-	CrashWhisper		= "Shadow Crash on you - Run away",
-	YellLeech			= "Life Leech on me!",
-	YellCrash			= "Shadow Crash on me!"
+	EmoteSaroniteVapors	= "Sale una nuve de vapor de saronita!",
+	CrashWhisper		= "Fragor de sombra en ti! Muévete!",
+	YellLeech			= "Drenar vida en mi!",
+	YellCrash			= "Fragor de sombra en mi!"
 }
 
 ------------------
@@ -530,54 +530,54 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",
-	YellPhase2	 		= "I am the lucid dream.",
+	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",--translate
+	YellPhase2	 		= "I am the lucid dream.",--translate
 	Sara 				= "Sara",
-	WarningYellSqueeze	= "Squeeze on me! Help me!"
+	WarningYellSqueeze	= "Exprimir en mi! Ayudadme!"
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 			= "Guardian spawned",
-	WarningCrusherTentacleSpawned	= "Crusher Tentacle spawned",
-	SpecWarnBrainLink 				= "Brain Link on you",
-	WarningSanity 					= "%d Sanity debuffs remaining",
-	SpecWarnSanity 					= "%d Sanity debuffs remaining",
-	SpecWarnGuardianLow				= "Stop attacking this Guardian",
-	SpecWarnMadnessOutNow			= "Induce Madness ending - Move out",
-	WarnBrainPortalSoon				= "Brain Portal in 3 seconds",	
-	SpecWarnFervor					= "Sara's Fervor on you",
-	SpecWarnFervorCast				= "Sara's Fervor is being cast on you",
-	WarnEmpowerSoon					= "Empowering Shadows soon",
-	SpecWarnMaladyNear				= "Malady of the Mind on %s near you",
-	SpecWarnDeafeningRoar			= "Deafening Roar",
-	specWarnBrainPortalSoon			= "Brain Portal soon"
+	WarningGuardianSpawned 			= "Guardián %d sale",
+	WarningCrusherTentacleSpawned	= "Tentáculo triturador sale",
+	SpecWarnBrainLink 				= "Vínculo cerebral en ti!",
+	WarningSanity 					= "%d Cordura restante",
+	SpecWarnSanity 					= "%d Cordura restante",
+	SpecWarnGuardianLow				= "Deja de atacar a este Guardián",
+	SpecWarnMadnessOutNow			= "Inducir a la locura terminando. Muévete!",
+	WarnBrainPortalSoon				= "Portal cerebral en 3 segundos",
+	SpecWarnFervor					= "Fervor de Sara en ti",
+	SpecWarnFervorCast				= "Fervor de Sara esta siendo casteado en ti",
+	WarnEmpowerSoon					= "Sombras potenciadas pronto",
+	SpecWarnMaladyNear				= "Mal de la mente en %s cerca de ti",
+	SpecWarnDeafeningRoar			= "Rugido ensordecedor",
+	specWarnBrainPortalSoon			= "Portal cerebral pronto"
 }
 
 L:SetTimerLocalization{
-	NextPortal	= "Brain Portal"
+	NextPortal	= "Portal cerebral"
 }
 
 L:SetOptionLocalization{
-	WarningGuardianSpawned			= "Show warning for Guardian spawns",
-	WarningCrusherTentacleSpawned	= "Show warning for Crusher Tentacle spawns",
-	WarningBrainLink				= "Announce Brain Link targets",
-	SpecWarnBrainLink				= "Show special warning when you are affected by Brain Link",
-	WarningSanity					= "Show warning when Sanity is low",
-	SpecWarnSanity					= "Show special warning when Sanity is very low",
-	SpecWarnGuardianLow				= "Show special warning when Guardian (Phase 1) is low (for DDs)",
-	WarnBrainPortalSoon				= "Show pre-warning for Brain Portal",
-	SpecWarnMadnessOutNow			= "Show special warning shortly before Induce Madness ends",
-	SetIconOnFearTarget				= "Set icons on Malady of the Mind targets",
-	SpecWarnFervor					= "Show special warning when you are affected by Sara's Fervor",
-	SpecWarnFervorCast				= "Show special warning when Sara's Fervor is being cast on you (must be targeted or focused by at least one raid member)",
-	specWarnBrainPortalSoon			= "Show special warning for next Brain Portal",
-	WarningSqueeze					= "Yell on Squeeze",
-	NextPortal						= "Show timer for next Brain Portal",
-	SetIconOnFervorTarget			= "Set icons on Sara's Fervor targets",
-	SetIconOnMCTarget				= "Set icons on mind-controlled targets",
-	ShowSaraHealth					= "Show health frame for Sara in Phase 1 (must be targeted or focused by at least one raid member)",
-	WarnEmpowerSoon					= "Show pre-warning for Empowering Shadows",
-	SpecWarnMaladyNear				= "Show special warning for Malady of the Mind near you",
-	SpecWarnDeafeningRoar			= "Show special warning when casting Deafening Roar (silence and for legendary)",
-	SetIconOnBrainLinkTarget		= "Set icons on Brain Link targets"
+	WarningGuardianSpawned			= "Mostrar aviso cuando salga Guardián",
+	WarningCrusherTentacleSpawned	= "Mostrar aviso cuando salga Tentáculo triturador",
+	WarningBrainLink				= "Anunciar objetivos de Vínculo cerebral",
+	SpecWarnBrainLink				= "Mostrar aviso especial cuando te afecte Vínculo cerebral",
+	WarningSanity					= "Mostrar aviso cuando tengas poca Cordura",
+	SpecWarnSanity					= "Mostrar aviso especial cuando tengas muy poca Cordura",
+	SpecWarnGuardianLow				= "Mostrar aviso especial cuando el Guardián esté a punto de morir (Fase 1)",
+	WarnBrainPortalSoon				= "Mostrar pre-aviso para Portal cerebral",
+	SpecWarnMadnessOutNow			= "Mostrar aviso especial poco antes de que Inducir a la locura termine",
+	SetIconOnFearTarget				= "Poner iconos en los objetivos de Mal de la mente",
+	SpecWarnFervor					= "Mostrar aviso especial cuando te afecte Fervor de Sara",
+	SpecWarnFervorCast				= "Mostrar aviso especial cuando Fervor de Sara esté siendo casteado en ti",
+	specWarnBrainPortalSoon			= "Mostrar aviso especial para siguiente Portal cerebral",
+	WarningSqueeze					= "Gritar si te afecta Exprimir",
+	NextPortal						= "Mostrar tiempo para siguiente Portal cerebral",
+	SetIconOnFervorTarget			= "Poner iconos en los objetivos de Fervor de Sara",
+	SetIconOnMCTarget				= "Poner iconos en los objetivos con control mental",
+	ShowSaraHealth					= "Mostrar barra de vida de Sara en Fase 1",
+	WarnEmpowerSoon					= "Mostrar pre-aviso para Sombras potenciadas",
+	SpecWarnMaladyNear				= "Mostrar aviso especial para Mal de la mente cerca de ti",
+	SpecWarnDeafeningRoar			= "Mostrar aviso especial cuando castee Rugido ensordecedor (para silenciar y legendaria)",
+	SetIconOnBrainLinkTarget		= "Poner iconos en los objetivos de Vínculo cerebral"
 }

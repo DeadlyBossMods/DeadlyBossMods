@@ -168,8 +168,8 @@ L:SetTimerLocalization{
 L:SetMiscLocalization{
 	PullAlliance	= "¡Arrancad motores! ¡Tenemos una cita con el destino, muchachos!",
 	KillAlliance	= "¡No digáis que no lo avisé, sinvergüenzas! Adelante, hermanos.",
-	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",
-	KillHorde		= "The Alliance falter. Onward to the Lich King!"
+	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",--translate
+	KillHorde		= "The Alliance falter. Onward to the Lich King!"--translate
 }
 
 -----------------------------
@@ -201,7 +201,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	RunePower			= "Blood Power",
 	PullAlliance		= "Por cada soldado de la Horda que matasteis... Por cada perro de la Alianza que cayó, el ejército del Rey Exánime creció. Ahora, hasta las Val'kyr alzan a los caídos para la Plaga.",
-	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."
+	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."--translate
 }
 
 
@@ -288,7 +288,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"--translate
 }
 
 ----------------------------
