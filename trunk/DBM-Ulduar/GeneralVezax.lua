@@ -34,7 +34,7 @@ mod:AddBoolOption("SetIconOnLifeLeach", true)
 local timerEnrage				= mod:NewBerserkTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
 local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 62662)
-local timerNextSurgeofDarkness	= mod:NewBuffActiveTimer(60, 62662)
+local timerNextSurgeofDarkness	= mod:NewBuffActiveTimer(62, 62662)
 local timerSaroniteVapors		= mod:NewNextTimer(30, 63322)
 local timerLifeLeech			= mod:NewTargetTimer(10, 63276)
 local timerHardmode				= mod:NewTimer(189, "hardmodeSpawn")
@@ -49,7 +49,6 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(62661) then	-- Searing Flames
 		timerSearingFlamesCast:Start()
-
 	elseif args:IsSpellID(62662) then 
 		specWarnSurgeDarkness:Show()
 		timerNextSurgeofDarkness:Start()
