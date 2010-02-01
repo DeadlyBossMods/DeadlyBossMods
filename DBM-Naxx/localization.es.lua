@@ -246,10 +246,10 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell1 = "Show them no mercy!",
+	Yell1 = "Show them no mercy!",--translate
 	Yell2 = "¡El tiempo de practivar ha pasado! ¡Quiero ver lo que habéis aprendido!",
-	Yell3 = "Do as I taught you!",
-	Yell4 = "Sweep the leg... Do you have a problem with that?"
+	Yell3 = "Do as I taught you!",--translate
+	Yell4 = "Sweep the leg... Do you have a problem with that?"--translate
 })
 
 L:SetOptionLocalization({
@@ -292,7 +292,7 @@ L:SetWarningLocalization({
 })
 
 L:SetMiscLocalization({
-	yell			= "Foolishly you have sought your own demise.",
+	yell			= "Foolishly you have sought your own demise.",--translate
 	WarningWave1	= "%d %s",
 	WarningWave2	= "%d %s y %d %s",
 	WarningWave3	= "%d %s, %d %s y %d %s",
