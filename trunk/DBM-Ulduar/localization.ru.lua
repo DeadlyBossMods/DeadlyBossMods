@@ -456,7 +456,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare	= "Звуковой сигнал при Лазерном заграждении",
 	ShockBlastWarningInP1	= "Спец-предупреждение для Взрыва плазмы в фазе 1",
 	ShockBlastWarningInP4	= "Спец-предупреждение для Взрыва плазмы в фазе 4",
-	RangeFrame				= "Показывать окно допустимой дистанции в фазе 1"
+	RangeFrame				= "Показывать окно допустимой дистанции в фазе 1 (6 м)"
 }
 
 L:SetMiscLocalization{
@@ -534,7 +534,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 			= "Страж",
+	WarningGuardianSpawned 			= "Страж %d",
 	WarningCrusherTentacleSpawned	= "Тяжелое щупальце",
 	SpecWarnBrainLink 				= "Схожее мышление на вас",
 	WarningSanity 					= "Эффект Здравомыслия: %d",
