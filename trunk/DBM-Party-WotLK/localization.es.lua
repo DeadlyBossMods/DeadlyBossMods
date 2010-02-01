@@ -293,7 +293,7 @@ L:SetMiscLocalization({
 	WaveBoss	= "%s",
 	WaveCheck	= "Oleada de la Plaga = %d/10",
 	Roleplay	= "Me alegra que lo consiguieras, Uther.",
-	Roleplay2	= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go."
+	Roleplay2	= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go." --translate
 })
 
 
@@ -706,24 +706,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Dividir pronto",		-- translate
-	WarningSplitNow		= "Se divide",		-- translate
-	WarningMerge		= "Se une"		-- translate
+	WarningSplitSoon	= "Dividir pronto",	
+	WarningSplitNow		= "Se divide",
+	WarningMerge		= "Se une"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Mostrar aviso para Dividir pronto",	-- translate
-	WarningSplitNow		= "Mostrar aviso para División",			-- translate
-	WarningMerge		= "Mostrar aviso para Unión"			-- translate
+	WarningSplitSoon	= "Mostrar aviso para Dividir pronto",
+	WarningSplitNow		= "Mostrar aviso para División",
+	WarningMerge		= "Mostrar aviso para Unión"
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "'Tendréis más de lo que podéis soportar!",		-- translate
-	SplitTrigger2 = "¡Tendréis más de lo que podéis soportar!",	-- translate
-	MergeTrigger = "Ahora, ¡a terminar el trabajo!"				-- translate
+	SplitTrigger1 = "¡Tendréis más de lo que podéis soportar!",	--translate
+	SplitTrigger2 = "¡Tendréis más de lo que podéis soportar!",	--translate
+	MergeTrigger = "Ahora, ¡a terminar el trabajo!" --translate
 })
 
 
@@ -997,7 +997,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SvalaRoleplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"
+	SvalaRoleplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!" --translate
 })
 
 
@@ -1216,7 +1216,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd	= "¡No! No debo fallar... otra vez..."	-- can also be "No! I must not fail... again ..."
+	YellCombatEnd	= "¡No! No debo fallar... otra vez..."
 })
 
 
