@@ -328,12 +328,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnCrystalHandler	= "Sale un Manipulador de cristal (quedan %d)"
 })
 
 L:SetTimerLocalization({
+	timerCrystalHandler	= "Sale Manipulador de cristal"
 })
 
 L:SetOptionLocalization({
+	WarnCrystalHandler	= "Mostrar aviso cuando sale Manipulador de cristal",
+	timerCrystalHandler	= "Mostrar tiempo para próximo Manipulador de cristal"
+})
+
+L:SetMiscLocalization({
+	HandlerEmote	= "%s gritos de ayuda!"
 })
 
 
