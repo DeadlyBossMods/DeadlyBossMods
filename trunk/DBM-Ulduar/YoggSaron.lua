@@ -119,10 +119,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-
+local Guardians = 0
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(62979) then
-		warnGuardianSpawned:Show()
+		Guardians = Guardians + 1
+		warnGuardianSpawned:Show(Guardians)
 	end
 end
 
@@ -138,7 +139,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBrainLink:Show()
 		end
 		mod:ScheduleMethod(0.2, "warnBrainLink")
-	elseif args:IsSpellID(63830, 63881) then   -- Malady of the Mind (Fear) 
+	elseif args:IsSpellID(63830, 63881) then   -- Malady of the Mind (Death Coil) 
 		if self.Options.SetIconOnFearTarget then
 			self:SetIcon(args.destName, 8, 30) 
 		end
@@ -152,7 +153,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(63042) and self.Options.SetIconOnMCTarget then	-- MC
 		self:SetIcon(args.destName, 8, 30)
 	elseif args:IsSpellID(64126, 64125) then	-- Squeeze		
-		warnSqueeze:Show(args.destName)		
+		warnSqueeze:Show(args.destName)
 		if args:IsPlayer() and self.Options.WarningSqueeze then			
 			SendChatMessage(L.WarningYellSqueeze, "YELL")			
 		end	
