@@ -527,7 +527,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 		= "尤格薩倫守護者 出現了",
+	WarningGuardianSpawned 		= "尤格薩倫守護者 %d 出現了",
 	WarningCrusherTentacleSpawned	= "粉碎觸手 出現了",
 	WarningBrainLink 		= "腦波連結: >%s< 和 >%s<",
 	SpecWarnBrainLink 		= "你中了腦波連結",
