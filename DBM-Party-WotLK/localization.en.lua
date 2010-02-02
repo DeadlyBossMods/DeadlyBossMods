@@ -986,9 +986,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart		= "Combat starts"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart		= "Show timer for start of combat"
+})
+
+L:SetMiscLocalization({
+	CyanArrived	= "A valiant defense, but this city must be razed. I will fulfill Malygos's wishes myself!"
 })
 
 --------------
