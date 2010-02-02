@@ -721,9 +721,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "¡Tendréis más de lo que podéis soportar!",	--translate
-	SplitTrigger2 = "¡Tendréis más de lo que podéis soportar!",	--translate
-	MergeTrigger = "Ahora, ¡a terminar el trabajo!" --translate
+	SplitTrigger1 = "¡Tendréis más de lo que podéis soportar!",
+	SplitTrigger2 = "¡Tendréis más de lo que podéis soportar!",
+	MergeTrigger = "Ahora, ¡a terminar el trabajo!"
 })
 
 
