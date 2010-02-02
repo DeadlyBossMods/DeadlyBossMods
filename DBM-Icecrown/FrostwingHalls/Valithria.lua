@@ -25,7 +25,14 @@ local warnPortal		= mod:NewSpellAnnounce(71987)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283)
 local timerCorrosion	= mod:NewTargetTimer(6, 70751)
 
+local berserkTimer					= mod:NewBerserkTimer(420)
+
 local spamPortals = 0
+
+function mod:OnCombatStart(delay)
+--	timerNextPortal:Start(-delay)
+	berserkTimer:Start(-delay)
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69325, 71730) then--Lay Waste (spellids drycoded, will confirm later)
