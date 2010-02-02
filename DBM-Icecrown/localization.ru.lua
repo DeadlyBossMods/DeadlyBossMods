@@ -353,9 +353,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnCorrosion	= "%s на >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 ------------------
