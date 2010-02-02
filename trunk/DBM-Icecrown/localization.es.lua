@@ -46,7 +46,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",
+	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",--translate
 	FleshreaperTrap2		= "¡No… puedes escapar!",
 	FleshreaperTrap3		= "¿Los vivos? ¿¡Aquí!?"
 }
@@ -359,9 +359,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	warnCorrosion	= "%s en >%s< (%s)"
 }
 
 L:SetOptionLocalization{
+	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 ------------------
@@ -408,5 +410,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SpiritBurstIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73808)
 }
 
