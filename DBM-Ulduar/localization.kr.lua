@@ -460,7 +460,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare 	= "레이저 탄막 대상 특수 사운드 경고 재생",
 	ShockBlastWarningInP1	= "1 페이즈 충격파의 특수 경고 보기(근접 딜러)",
 	ShockBlastWarningInP4	= "4 페이즈 충격파의 특수 경고 보기(근접 딜러)",
-	RangeFrame				= "1 페이즈에서 거리 프레임 보기"
+	RangeFrame				= "1 페이즈에서 거리 프레임 보기(6 미터)"
 }
 
 L:SetMiscLocalization{
@@ -538,7 +538,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningGuardianSpawned 			= "요그사론의 수호자 소환!",
+	WarningGuardianSpawned 			= "요그사론의 수호자 %d 소환!",
 	WarningCrusherTentacleSpawned	= "분쇄의 촉수가 생성되었습니다!",	
 	SpecWarnBrainLink				= "당신에게 두뇌의 고리!",
 	WarningSanity 					= "> %d < 이성이 낮습니다.",
