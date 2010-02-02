@@ -254,13 +254,13 @@ L:SetWarningLocalization({
 
 L:SetTimerLocalization({
 	TimerWaveIn		= "下一波(6)",
-	TimerRoleplay	= "阿薩斯角色扮演"
+	TimerRoleplay	= "角色扮演阿薩斯計時"
 })
 
 L:SetOptionLocalization({
 	WarningWaveNow	= optionWarning:format("新一波"),
 	TimerWaveIn		= "為下一波顯示計時器 (之後5隻小兵波數)",
-	TimerRoleplay	= "為開始角色扮演事件顯示計時器"
+	TimerRoleplay	= "為角色扮演事件顯示計時器"
 })
 
 L:SetMiscLocalization({
@@ -280,7 +280,6 @@ L:SetMiscLocalization({
 	WaveBoss	= "%s",
 	WaveCheck	= "天譴軍波數 = %d/10",
 	Roleplay	= "真高興你趕到了，烏瑟。",
-
 	Roleplay2	= "大家看來都準備好了。記得，這些人受到恐怖瘟疫所感染，不久人世。我們得淨化斯坦索姆以保護其他百姓免受天譴軍的威脅。出發吧。"
 })
 
@@ -314,12 +313,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnCrystalHandler	= "水晶處理者 出現了 (剩餘%d)"
 })
 
 L:SetTimerLocalization({
+	timerCrystalHandler	= "水晶處理者 出現"
 })
 
 L:SetOptionLocalization({
+	WarnCrystalHandler	= "當水晶處理者出現時顯示警告",
+	timerCrystalHandler	= "為下一次 水晶處理者出現顯示計時器"
+})
+
+L:SetMiscLocalization({
+	HandlerEmote	= "%s呼喊協助!"
 })
 
 -----------------
