@@ -313,12 +313,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnCrystalHandler	= "Хрустальный укротитель (%d осталось)"
 })
 
 L:SetTimerLocalization({
+	timerCrystalHandler	= "Хрустальный укротитель"
 })
 
 L:SetOptionLocalization({
+	WarnCrystalHandler	= "Предупреждение при появлении Хрустального укротителя",
+	timerCrystalHandler	= "Отсчет времени до появления следующего Хрустального укротителя"
+})
+
+L:SetMiscLocalization({
+	HandlerEmote	= "%s просит о помощи!"
 })
 
 -----------------
