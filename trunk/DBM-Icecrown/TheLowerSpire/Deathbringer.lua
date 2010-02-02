@@ -43,7 +43,7 @@ local enrageTimer			= mod:NewBerserkTimer(480)
 mod:AddBoolOption("RangeFrame", isRanged)
 mod:AddBoolOption("RunePowerFrame", true, "misc")
 mod:AddBoolOption("SetIconOnBoilingBlood", true)
-mod:AddBoolOption("SetIconOnMarkCast", false)
+mod:AddBoolOption("SetIconOnMarkCast", true)
 mod:RemoveOption("HealthFrame")
 
 local warned_preFrenzy = false
@@ -87,7 +87,7 @@ function mod:MarkTarget()
 	local targetname = self:GetBossTarget(37813)
 	if not targetname then return end
 	if self.Options.SetIconOnMarkCast then
-		self:SetIcon(targetname, 8, 1.5)
+		self:SetIcon(targetname, 8, 1.2)
 	end
 	if targetname == UnitName("player") then
 		specWarnMarkCast:Show(targetname)
