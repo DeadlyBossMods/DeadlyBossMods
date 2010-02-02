@@ -55,8 +55,8 @@ function mod:UNIT_DIED(args)
 		local z = tonumber(args.destGUID:sub(9, 12), 16)
 		if z == 29266 or z == 29312 or z == 29313 or z == 29314 or z == 29315 or z == 29316  		-- bosses
 		or z == 32226 or z == 32230 or z == 32231 or z == 32234 or z == 32235 or z == 32237 then 	-- boss spirits (in case you wipe)
-			timerPortalIn:Start(94, lastwave + 1)
-			warningPortalSoon:Schedule(84)
+			timerPortalIn:Start(35, lastwave + 1)
+			warningPortalSoon:Schedule(30)
 		end
 	end
 end

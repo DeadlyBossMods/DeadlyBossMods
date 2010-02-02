@@ -12,11 +12,13 @@ local warningBlizzard	= mod:NewSpellAnnounce(58693, 3)
 local warningMana		= mod:NewTargetAnnounce(59374, 2)
 local timerVacuumCD		= mod:NewCDTimer(35, 58694)
 local timerMana			= mod:NewTargetTimer(8, 59374)
+local timerCombat		= mod:NewTimer(16, "TimerCombatStart", 2457)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 function mod:OnCombatStart(delay)
@@ -43,5 +45,17 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(59374) then
 		timerMana:Cancel()
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.CyanArrived then
+		self:SendSync("CyanArrived")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "CyanArrived" then
+		timerCombat:Start()
 	end
 end
