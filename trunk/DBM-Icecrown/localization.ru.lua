@@ -353,7 +353,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s на >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
+	warnCorrosion	= "%s на |3-5(>%s<) (%s)"		-- Corrosion on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
@@ -404,5 +404,6 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SpiritBurstIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73808)
 }
 
