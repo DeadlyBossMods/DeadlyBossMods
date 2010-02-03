@@ -15,7 +15,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	specWarnTrap		= "Show special warning for trap activation",
-	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
+	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
+	SetIconOnDeathPlague	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
 
 L:SetMiscLocalization{
