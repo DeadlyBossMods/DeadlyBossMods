@@ -215,6 +215,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	InhaledBlight			= "$spell:71912 경고 보기",
+	RangeFrame				= "거리 프레임 보기(8 미터)",	
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
@@ -270,8 +271,8 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon				= "2 페이즈 사전 경고 보기(80% 이하)",
-	WarnPhase3Soon				= "3 페이즈 사전 경고 보기(35% 이하)",
+	WarnPhase2Soon				= "2 페이즈 사전 경고 보기(83% 이하)",
+	WarnPhase3Soon				= "3 페이즈 사전 경고 보기(38% 이하)",
 	specWarnMalleableGoo		= "유연한 끈적이 특수 경고 보기(첫 대상일 경우)",
 	specWarnMalleableGooNear	= "주변의 유연한 끈적이 특수 경고 보기(첫 대상 근처에 있을 경우)",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
