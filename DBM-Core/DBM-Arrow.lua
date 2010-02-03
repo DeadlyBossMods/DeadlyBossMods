@@ -159,6 +159,9 @@ do
 			targetX = x + cos(rotateState)
 			targetY = y + sin(rotateState)
 		end
+		if not targetX or not targetY then
+			return
+		end
 		local angle = atan2(x - targetX, targetY - y)
 		if angle <= 0 then -- -pi < angle < pi but we need/want a value between 0 and 2 pi
 			if runAwayArrow then
