@@ -17,7 +17,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	specWarnTrap		= "Mostrar aviso especial cuando se active trampa",
-	SetIconOnDarkReckoning			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
+	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
+	SetIconOnDeathPlague	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
 
 L:SetMiscLocalization{
@@ -366,6 +367,13 @@ L:SetOptionLocalization{
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
+L:SetMiscLocalization{
+	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",--translate
+	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",--translate
+	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",--translate
+	YellPhase2		= "My strength is returning. Press on, heroes!"--translate
+}
+
 ------------------
 --  Sindragosa  --
 ------------------
@@ -412,4 +420,3 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpiritBurstIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73808)
 }
-
