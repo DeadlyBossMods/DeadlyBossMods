@@ -985,9 +985,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart		= "戰鬥開始"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart		= "為戰鬥開始顯示計時器"
+})
+
+L:SetMiscLocalization({
+	CyanArrived	= "真是一群英勇的衛兵，但這座城市必須被夷平。我必須親自執行瑪里苟斯大人的指令!"
 })
 
 --------------
