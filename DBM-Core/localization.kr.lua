@@ -171,4 +171,12 @@ DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= " %dm 거리 체크를 지원하지 않�
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
 
+DBM_ARROW_ERROR_USAGE	= {
+	"DBM-Arrow 사용법:",
+	"/dbm arrow <x> <y>  특정 좌표(X/Y)에 화살표를 만듭니다.(0 < x/y < 100)",
+	"/dbm arrow <player>  당신이 속한 파티 또는 공격대의 특정 플레이어를 가르키는 화살표를 만듭니다.",
+	"/dbm arrow hide  화살표를 숨깁니다.",
+	"/dbm arrow move  화살표를 움직이도록 합니다.",
+}
+
 end
