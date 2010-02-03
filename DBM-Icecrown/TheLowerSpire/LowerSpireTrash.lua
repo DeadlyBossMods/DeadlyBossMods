@@ -13,16 +13,20 @@ mod:RegisterEvents(
 
 local warnDisruptingShout		= mod:NewSpellAnnounce(71022, 2)
 local warnDarkReckoning			= mod:NewTargetAnnounce(69483, 3)
+local warnDeathPlague			= mod:NewTargetAnnounce(72865, 3)
 
 local specWarnDisruptingShout	= mod:NewSpecialWarningCast(71022)
 local specWarnDarkReckoning		= mod:NewSpecialWarningMove(69483)
+local specWarnDeathPlague		= mod:NewSpecialWarningYou(72865)
 local specWarnTrap				= mod:NewSpecialWarning("specWarnTrap")
 
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(8, 69483)
+local timerDeathPlague			= mod:NewTargetTimer(15, 72865)
 
 local soundDarkReckoning = mod:NewSound(69483)
 mod:AddBoolOption("SetIconOnDarkReckoning", true)
+mod:AddBoolOption("SetIconOnDeathPlague", true)
 mod:RemoveOption("HealthFrame")
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -35,6 +39,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnDarkReckoning then
 			self:SetIcon(args.destName, 8, 8)
+		end
+	elseif args:IsSpellID(72865) then
+		warnDeathPlague:Show(args.destName)
+		timerDeathPlague:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnDeathPlague:Show()
+		end
+		if self.Options.SetIconOnDeathPlague then
+			self:SetIcon(args.destName, 8, 15)
 		end
 	end
 end
