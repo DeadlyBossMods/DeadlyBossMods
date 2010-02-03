@@ -724,6 +724,30 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if timer > 2 then DBM:Schedule(timer - 2, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(2), channel) end
 		if timer > 1 then DBM:Schedule(timer - 1, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(1), channel) end
 		DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_PULL_NOW, channel)
+	elseif cmd:sub(1, 5) == "arrow" then
+		local x, y = string.split(" ", cmd:sub(6):trim())
+		xNum, yNum = tonumber(x or ""), tonumber(y or "")
+		local success
+		if xNum and yNum then
+			DBM.Arrow:ShowRunTo(xNum / 100, yNum / 100)
+			success = true
+		elseif type(x) == "string" and x:trim() ~= "" then
+			if x:upper() == "HIDE" then
+				DBM.Arrow:Hide()
+				success = true
+			elseif x:upper() == "MOVE" then
+				DBM.Arrow:Move()
+				success = true
+			elseif DBM:GetRaidUnitId(x) ~= "none" then
+				DBM.Arrow:ShowRunTo(x)
+				success = true
+			end
+		end
+		if not success then
+			for i, v in ipairs(DBM_ARROW_ERROR_USAGE) do
+				DBM:AddMsg(v)
+			end
+		end
 	else
 		DBM:LoadGUI()
 	end
