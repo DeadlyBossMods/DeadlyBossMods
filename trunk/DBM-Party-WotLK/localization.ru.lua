@@ -988,9 +988,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart		= "Начало боя"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart		= "Отсчет времени до начала боя"
+})
+
+L:SetMiscLocalization({
+	CyanArrived	= "Вы доблестно обороняетесь, но этот город должен быть стерт с лица земли, и я лично исполню волю Малигоса!"
 })
 
 --------------
