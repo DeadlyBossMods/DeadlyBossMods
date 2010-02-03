@@ -11,11 +11,12 @@ local runAwayArrow
 local targetType
 local targetPlayer
 local targetX, targetY
+local hideTime, hideDistance
 
 -- cached variables
 local pi, pi2 = math.pi, math.pi * 2
 local floor = math.floor
-local sin, cos, atan2, sqrt = math.sin, math.cos, math.atan2, math.sqrt
+local sin, cos, atan2, sqrt, min = math.sin, math.cos, math.atan2, math.sqrt, math.min
 local GetPlayerMapPosition = GetPlayerMapPosition
 
 --------------------
@@ -68,7 +69,7 @@ do
 			SetMapToCurrentZone() -- fixes the dungeon level (if it was wrong for some reason)
 			dims = levels[GetCurrentMapDungeonLevel()] -- try again
 			if not dims then -- there is actually a level 0 in this zone but we don't know about it...too bad :(
-				return false
+				return
 			end
 		end
 		local dX = (x1 - x2) * dims[1]
@@ -96,6 +97,27 @@ do
 			local yEnd = ((row + 1) * 42) / 512
 			arrow:SetTexCoord(xStart, xEnd, yStart, yEnd)
 		end
+		if distance then
+			if runAwayArrow then
+				local perc = distance / hideDistance
+				arrow:SetVertexColor(1 - perc, perc, 0)
+				if distance >= hideDistance then
+					frame:Hide()
+				end
+			elseif not runAwayArrow then
+				local perc = min(distance, 100) / 100
+				arrow:SetVertexColor(0, 1 - perc, perc)
+				if distance >= hideDistance then
+					frame:Hide()
+				end
+			end
+		else
+			if runAwayArrow then
+				arrow:SetVertexColor(1, 0.3, 0)
+			else
+				arrow:SetVertexColor(0, 0.3, 1)
+			end
+		end
 	end
 end
 
@@ -104,15 +126,18 @@ end
 ------------------------
 do
 	local rotateState = 0
-	local skipFrame
+--	local skipFrame -- todo: skipping frames makes the arrow laggy, maybe skip frames if frame rate >= 45
 	frame:SetScript("OnUpdate", function(self, elapsed)
 		if WorldMapFrame:IsShown() then -- it doesn't work while the world map frame is shown
 			arrow:Hide()
 			return
 		end
-		skipFrame = not skipFrame
-		if skipFrame then
-			return
+--		skipFrame = not skipFrame
+--		if skipFrame then
+--			return
+--		end
+		if hideTime and GetTime() > hideTime then
+			frame:Hide()
 		end
 		arrow:Show()
 		local x, y = GetPlayerMapPosition("player")
@@ -126,6 +151,9 @@ do
 		end
 		if targetType == "player" then
 			targetX, targetY = GetPlayerMapPosition(targetPlayer)
+			if targetX == 0 and targetY == 0 then
+				self:Hide() -- hide the player if the target doesn't exist. TODO: just hide the texture and add a timeout
+			end
 		elseif targetType == "rotate" then
 			rotateState = rotateState + elapsed
 			targetX = x + cos(rotateState)
@@ -136,17 +164,16 @@ do
 			if runAwayArrow then
 				angle = -angle -- 0 < angle < pi
 			else
-				angle = pi2 + angle -- pi < angle < 2pi
+				angle = pi - angle -- pi < angle < 2pi
 			end
 		else
 			if runAwayArrow then
 				angle = pi2 - angle -- pi < angle < 2pi
---			else
---				angle = angle  -- 0 < angle < pi
+			else
+				angle = pi - angle  -- 0 < angle < pi
 			end
 		end
-		-- /run DBM.Arrow:Show(nil, 0.204778417, 0.79239803552628)
-		updateArrow(angle - GetPlayerFacing(), getDistance(x, y, targetX, targetY))
+		updateArrow(angle - GetPlayerFacing(), calculateDistance(x, y, targetX, targetY))
 	end)
 end
 
@@ -154,18 +181,34 @@ end
 ----------------------
 --  Public Methods  --
 ----------------------
-function DBM.Arrow:Show(color, ...)
-	local numArgs = select("#", ...)
-	if numArgs > 0 then
-		frame:Show()
+local function show(runAway, x, y, distance, time)
+	local player
+	if type(x) == "string" then
+		player, hideDistance, hideTime = x, y, hideDistance
 	end
-	if numArgs == 1 then
+	frame:Show()
+	runAwayArrow = runAway
+	hideDistance = distance or runAway and 100 or 3
+	if time then
+		hideTime = time + GetTime()
+	else
+		hideTime = nil
+	end
+	if player then
 		targetType = "player"
-		targetPlayer = ...
-	elseif numArgs >= 2 then
+		targetPlayer = player
+	else
 		targetType = "fixed"
-		targetX, targetY = ...
+		targetX, targetY = x, y
 	end
+end
+
+function DBM.Arrow:ShowRunTo(...)
+	return show(false, ...)
+end
+
+function DBM.Arrow:ShowRunAway(...)
+	return show(true, ...)
 end
 
 function DBM.Arrow:Hide(autoHide)
