@@ -1027,19 +1027,20 @@ L:SetOptionLocalization({
 ---------------
 L = DBM:GetModLocalization("Cyanigosa")
 
-L:SetGeneralLocalization({
-	name = "Cianigosa"
-})
-
 L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart		= "Inicio del combate"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart		= "Mostrar tiempo para inicio del combate"
 })
 
+L:SetMiscLocalization({
+	CyanArrived	= "A valiant defense, but this city must be razed. I will fulfill Malygos's wishes myself!" --translate
+})
 
 ------------
 -- Erekem --
