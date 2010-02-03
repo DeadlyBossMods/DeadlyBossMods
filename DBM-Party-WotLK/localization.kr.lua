@@ -813,18 +813,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningShiftEnd	= "차원 이동 종료"		-- translate
+	WarningShiftEnd		= "차원 이동 종료"		-- translate
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningShiftEnd	= optionWarning:format(GetSpellInfo(51162).." 종료") 	-- translate the word 'ending'
+	WarningShiftEnd		= optionWarning:format(GetSpellInfo(51162).." 종료") 	-- translate the word 'ending'
 })
 
 L:SetMiscLocalization({
-	MakeitCountTimer			= "매 순간을 소중히"
+	MakeitCountTimer	= "매 순간을 소중히"
 })
 
 ------------------
@@ -988,9 +988,15 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	TimerCombatStart	= "전투 시작"
 })
 
 L:SetOptionLocalization({
+	TimerCombatStart	= "전투 시작 타이머 보기"
+})
+
+L:SetMiscLocalization({
+	CyanArrived			= "A valiant defense, but this city must be razed. I will fulfill Malygos's wishes myself!"
 })
 
 ------------
@@ -1360,7 +1366,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart					= "아아. 용감하고 용감한 모험가들아, 참견도 이제 끝이다. 네놈들 뒤에 있는 굴에서 뼈와 칼이 부딪치는 소리가 들리는가? 네놈들에게 곧 닥칠 죽음의 소리다.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
+--	HoarfrostTarget				= "(%S+)|1을;를; 노려보며 얼음 공격을 준비합니다!",
+	HoarfrostTarget				= "노려보며 얼음 공격을 준비합니다!",
 	YellCombatEnd				= "말도 안 돼... 서릿발송곳니... 경고를..."
 })
 
