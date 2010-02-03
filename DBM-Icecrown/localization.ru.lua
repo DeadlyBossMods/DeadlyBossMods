@@ -17,7 +17,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	specWarnTrap		= "Спец-предупреждение для активации ловушки",
-	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
+	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
+	SetIconOnDeathPlague	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
 
 L:SetMiscLocalization{
@@ -358,6 +359,13 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
+}
+
+L:SetMiscLocalization{
+	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",
+	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",
+	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",
+	YellPhase2		= "My strength is returning. Press on, heroes!"--Need to confirm this is when adds spawn faster (phase 2) before used in mod
 }
 
 ------------------
