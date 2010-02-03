@@ -325,7 +325,6 @@ checkFuncs[28] = function(uId)
 end
 
 do
-	-- the map size data is copied from Deus Vox Encounters (http://wow.curse.com/downloads/wow-addons/details/deus-vox-encounters.aspx)
 	local mapSizes = DBM.MapSizes
    
 	local function mapRangeCheck(uId, range)
