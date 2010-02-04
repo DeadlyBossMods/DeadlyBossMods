@@ -246,7 +246,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	Yell1 = "Show them no mercy!",--translate
+	Yell1 = "¡No tengáis piedad!",
 	Yell2 = "¡El tiempo de practivar ha pasado! ¡Quiero ver lo que habéis aprendido!",
 	Yell3 = "Do as I taught you!",--translate
 	Yell4 = "Sweep the leg... Do you have a problem with that?"--translate

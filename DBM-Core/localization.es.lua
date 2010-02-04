@@ -180,3 +180,11 @@ DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "La comprobación de rango de %d yardas 
 
 DBM_ARROW_MOVABLE					= "Flecha movible"
 
+DBM_ARROW_ERROR_USAGE	= {
+	"Uso de DBM-Arrow:",
+	"/dbm arrow <x> <y>: Crea una flecha que apunta a una dirección específica (0 < x/y < 100)",
+	"/dbm arrow <jugador>: Crea una flecha que apunta a un miembro específico de la raid",
+	"/dbm arrow hide: Oculta la flecha",
+	"/dbm arrow move: Hace la flecha movible",
+}
+

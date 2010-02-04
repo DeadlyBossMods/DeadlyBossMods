@@ -384,25 +384,33 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerNextAirphase		= "Next air phase",
-	TimerNextGroundphase	= "Next ground phase"
+	TimerNextAirphase		= "Siguiente fase aerea",
+	TimerNextGroundphase	= "Siguiente fase en el suelo"
 }
 
 L:SetWarningLocalization{
-	WarnAirphase			= "Air phase",
-	WarnGroundphaseSoon		= "Sindragosa landing soon"
+	warnFirstAirphase		= "Fase aerea pronto",
+	WarnAirphase			= "Fase aerea",
+	WarnGroundphaseSoon		= "Sindragosa aterriza pronto",
+	warnInstability			= "Inestabilidad >%d<",
+	warnChilledtotheBone	= "Helado hasta los huesos >%d<",
+	warnMysticBuffet		= "Sacudida mística >%d<"
 }
 
 L:SetOptionLocalization{
-	WarnAirphase			= "Announce air phase",
-	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
-	TimerNextAirphase		= "Show timer for next air phase",
-	TimerNextGroundphase	= "Show timer for next ground phase"
+	warnFirstAirphase		= "Mostrar pre-aviso para fase aerea (al ~88%)",
+	WarnAirphase			= "Anunciar fase aerea",
+	WarnGroundphaseSoon		= "Mostrar pre-aviso para fase en el suelo",
+	TimerNextAirphase		= "Mostrar tiempo para siguiente fase aerea",
+	TimerNextGroundphase	= "Mostrar tiempo para siguiente fase en el suelo",
+	warnInstability			= "Mostrar aviso de tus marcas de $spell:69766",
+	warnChilledtotheBone	= "Mostrar aviso de tus marcas de $spell:70106",
+	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
-	YellAirphase	= "Your incursion ends here! None shall survive!",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase	= "Your incursion ends here! None shall survive!",--translate
+	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"--translate
 }
 
 ---------------------
