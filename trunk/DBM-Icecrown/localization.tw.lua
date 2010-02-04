@@ -364,10 +364,10 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull			= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",
-	YellKill			= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",
-	YellPortals			= "I have opened a portal into the Dream. Your salvation lies within, heroes...",
-	YellPhase2			= "My strength is returning. Press on, heroes!"--Need to confirm this is when adds spawn faster (phase 2) before used in mod
+	YellPull			= "入侵者已經突破了內部聖所。加快摧毀綠龍的速度!只要留下骨頭和肌腱來復活!",
+	YellKill			= "我重生了!伊瑟拉賦予我讓那些邪惡生物安眠的力量!",
+	YellPortals			= "我打開了一道傳送門通往夢境。你們的救贖就在其中，英雄們……",
+	YellPhase2			= "我的力量正在恢復。加把勁，英雄們!"
 }
 
 ------------------
