@@ -24,7 +24,7 @@ local warnFrostBeacon			= mod:NewTargetAnnounce(70126)
 local warnBlisteringCold		= mod:NewCastAnnounce(70123, 3)
 local warnUnchainedMagic		= mod:NewTargetAnnounce(69762)
 
-local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123, false)
+local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123)
 local specWarnUnchainedMagic	= mod:NewSpecialWarningYou(69762)
 local specWarnFrostBeacon		= mod:NewSpecialWarningYou(70126)
 local specWarnInstability		= mod:NewSpecialWarningStack(69766, nil, 4)
@@ -41,6 +41,7 @@ local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
 
 local beaconTargets				= {}
+local unchainedTargets			= {}
 local beaconIcons = 8
 local warned_air = false
 
@@ -55,6 +56,11 @@ local function warnBeaconTargets()
 	beaconIcons = 8
 end
 
+local function warnUnchainedTargets()
+	warnUnchainedMagic:Show(table.concat(unchainedTargets, "<, >"))
+	table.wipe(unchainedTargets)
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70126) then
 		beaconTargets[#beaconTargets + 1] = args.destName
@@ -67,14 +73,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnBeaconTargets)
 		if #beaconTargets >= 5 then
-			warnBeacon()
+			warnBeaconTargets()
 		else
 			self:Schedule(0.3, warnBeaconTargets)
 		end
 	elseif args:IsSpellID(69762) then
-		warnUnchainedMagic:Show()
+		unchainedTargets[#unchainedTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnUnchainedMagic:Show()
+		end
+		self:Unschedule(warnUnchainedTargets)
+		if #unchainedTargets >= 5 then
+			warnUnchainedTargets()
+		else
+			self:Schedule(0.3, warnUnchainedTargets)
 		end
 	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
 		if args:IsPlayer() then
