@@ -385,15 +385,24 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	warnFirstAirphase		= "空中階段 即將到來",
 	WarnAirphase			= "空中階段",
-	WarnGroundphaseSoon		= "辛德拉苟莎 即將著陸"
+	WarnGroundphaseSoon		= "辛德拉苟莎 即將著陸",
+	warnInstability			= "不穩定: >%d<",
+	warnChilledtotheBone		= "徹骨之寒: >%d<",
+	warnMysticBuffet		= "秘能連擊: >%d<"
 }
 
 L:SetOptionLocalization{
+	warnFirstAirphase		= "為第一次空中階段顯示預先警告 (大約88%)",
 	WarnAirphase			= "提示空中階段",
 	WarnGroundphaseSoon		= "為地上階段顯示預先警告",
 	TimerNextAirphase		= "為下一次 空中階段顯示計時器",
-	TimerNextGroundphase		= "為下一次 地上階段顯示計時器"
+	TimerNextGroundphase		= "為下一次 地上階段顯示計時器",
+	warnInstability			= "為你的$spell:69766堆疊顯示警告",
+	warnChilledtotheBone		= "為你的$spell:70106堆疊顯示警告",
+	warnMysticBuffet		= "為你的$spell:70128堆疊顯示警告",
+	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{

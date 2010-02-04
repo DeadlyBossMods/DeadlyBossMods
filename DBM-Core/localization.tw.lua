@@ -176,4 +176,12 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "特別警告"
 
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED		= "在此區域中不支援%d碼的距離檢查。\n已支援的距離有10，11，15及28碼。"
 
-DBM_ARROW_MOVABLE				= "箭頭可移動"
+DBM_ARROW_MOVABLE				= "可移動箭頭"
+
+DBM_ARROW_ERROR_USAGE	= {
+	"DBM-Arrow 用法:",
+	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(0 < x/y < 100)",
+	"/dbm arrow <玩家>  建立並箭頭指向你的隊伍或團隊中特定的玩家",
+	"/dbm arrow hide  隱藏箭頭",
+	"/dbm arrow move  制造可移動箭頭",
+}
