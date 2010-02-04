@@ -383,15 +383,24 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	warnFirstAirphase		= "Скоро воздушная фаза",
 	WarnAirphase			= "Воздушная фаза",
-	WarnGroundphaseSoon		= "Синдрагоса приземляется"
+	WarnGroundphaseSoon		= "Синдрагоса приземляется",
+	warnInstability			= "Неустойчивость >%d<",
+	warnChilledtotheBone	= "Обморожение >%d<",
+	warnMysticBuffet		= "Таинственная энергия >%d<"
 }
 
 L:SetOptionLocalization{
+	warnFirstAirphase		= "Спец-предупреждение о первой воздушной фазе (на ~88%)",
 	WarnAirphase			= "Объявлять воздушную фазу",
 	WarnGroundphaseSoon		= "Предупреждать заранее о наземной фазе",
 	TimerNextAirphase		= "Отсчет времени до воздушной фазы",
-	TimerNextGroundphase	= "Отсчет времени до наземной фазы"
+	TimerNextGroundphase	= "Отсчет времени до наземной фазы",
+	warnInstability			= "Предупреждение о ваших стаках $spell:69766",
+	warnChilledtotheBone	= "Предупреждение о ваших стаках $spell:70106",
+	warnMysticBuffet		= "Предупреждение о ваших стаках $spell:70128",
+	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
