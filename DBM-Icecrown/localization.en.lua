@@ -397,6 +397,7 @@ L:SetOptionLocalization{
 	TimerNextGroundphase	= "Show timer for next ground phase",
 	warnInstability			= "Show warning for your $spell:69766 stacks",
 	warnChilledtotheBone	= "Show warning for your $spell:70106 stacks",
+	warnMysticBuffet		= "Show warning for your $spell:70128 stacks",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
