@@ -69,7 +69,7 @@ function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
 		timerNextInciteTerror:Start(124-delay)
 	else
-		timerNextInciteTerror:Start(137-delay)
+		timerNextInciteTerror:Start(127-delay)
 	end
 end
 
