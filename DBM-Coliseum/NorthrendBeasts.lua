@@ -272,13 +272,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 			self:ClearIcons()
 		end
 		if target == UnitName("player") then
-			local x, y = GetPlayerMapPosition(target)
+--[[			local x, y = GetPlayerMapPosition(target)
 			if x == 0 and y == 0 then
 				SetMapToCurrentZone()
 				x, y = GetPlayerMapPosition(target)
-			end
+			end--]]
 			specWarnCharge:Show()
-			DBM.Arrow:ShowRunAway(x, y, 12, 5)
+--			DBM.Arrow:ShowRunAway(x, y, 12, 5)
 			if self.Options.PingCharge then
 				Minimap:PingLocation()
 			end
