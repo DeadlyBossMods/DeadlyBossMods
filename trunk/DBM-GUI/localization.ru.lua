@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "Deadly Boss Mods"
 
-L.TranslationBy 			= "Игорь Бутвин & Vampik"
+L.TranslationBy 			= "Игорь Бутвин & Vampik & Swix"
 
 L.TabCategory_Options	 	= "Общие параметры"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
