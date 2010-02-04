@@ -381,15 +381,23 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	warnFirstAirphase		= "Air phase soon",
 	WarnAirphase			= "Air phase",
-	WarnGroundphaseSoon		= "Sindragosa landing soon"
+	WarnGroundphaseSoon		= "Sindragosa landing soon",
+	warnInstability			= "Instability >%d<",
+	warnChilledtotheBone	= "Chilled to the Bone >%d<",
+	warnMysticBuffet		= "Mystic Buffet >%d<"
 }
 
 L:SetOptionLocalization{
+	warnFirstAirphase		= "Show pre-warning for first air phase (at ~88%)",
 	WarnAirphase			= "Announce air phase",
 	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
 	TimerNextAirphase		= "Show timer for next air phase",
-	TimerNextGroundphase	= "Show timer for next ground phase"
+	TimerNextGroundphase	= "Show timer for next ground phase",
+	warnInstability			= "Show warning for your $spell:69766 stacks",
+	warnChilledtotheBone	= "Show warning for your $spell:70106 stacks",
+	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
