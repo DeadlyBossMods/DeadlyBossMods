@@ -264,16 +264,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon				= "곧 2 페이즈",
-	WarnPhase3Soon				= "곧 3 페이즈",
+	WarnPhase2Soon				= "곧 2 단계",
+	WarnPhase3Soon				= "곧 3 단계",
 	WarnMutatedPlague			= "%s : >%s< (%s)",			-- Mutated Plague on >args.destName< (args.amount)
 	specWarnMalleableGoo		= "당신에게 유연한 끈적이 - 이동하세요!",
 	specWarnMalleableGooNear	= "당신 주변에 유연한 끈적이 - 벗어나세요!"	
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon				= "2 페이즈 사전 경고 보기(83% 이하)",
-	WarnPhase3Soon				= "3 페이즈 사전 경고 보기(38% 이하)",
+	WarnPhase2Soon				= "2 단계 사전 경고 보기(83% 이하)",
+	WarnPhase3Soon				= "3 단계 사전 경고 보기(38% 이하)",
 	specWarnMalleableGoo		= "유연한 끈적이 특수 경고 보기(첫 대상일 경우)",
 	specWarnMalleableGooNear	= "주변의 유연한 끈적이 특수 경고 보기(첫 대상 근처에 있을 경우)",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
@@ -363,10 +363,10 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",
-	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",
-	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",
-	YellPhase2		= "My strength is returning. Press on, heroes!"--Need to confirm this is when adds spawn faster (phase 2) before used in mod
+	YellPull		= "침입자들이 내부 성소로 들어왔다. 서둘러 녹색용을 파멸시켜라! 되살려 낼 때 쓸 뼈와 힘줄만 남겨라!",
+	YellKill		= "다시 힘을 얻었다! 이세라여, 더러운 생명들에 안식을 내릴 수 있도록 은혜를 베푸소서!",
+	YellPortals		= "에메랄드의 꿈으로 가는 차원문을 열어두었다. 너희의 구원은 그 안에 있다...",
+	YellPhase2		= "힘이 돌아오고 있다. 영웅들이여, 계속 싸워라!"--Need to confirm this is when adds spawn faster (phase 2) before used in mod
 }
 
 ------------------
@@ -379,20 +379,30 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerNextAirphase		= "다음 공중 페이즈",
-	TimerNextGroundphase	= "다음 지상 페이즈"
+	TimerNextAirphase		= "다음 공중 단계",
+	TimerNextGroundphase	= "다음 지상 단계"
 }
 
 L:SetWarningLocalization{
-	WarnAirphase			= "공중 페이즈",
+	warnFirstAirphase		= "곧 공중 단계",
+	WarnAirphase			= "공중 단계",
 	WarnGroundphaseSoon		= "곧 신드라고사 착륙",
+	warnInstability			= "불안정 : >%d<",
+	warnChilledtotheBone	= "사무치는 한기 : >%d<",
+	warnMysticBuffet		= "신비한 강타 : >%d<"	
 }
 
 L:SetOptionLocalization{
-	WarnAirphase			= "공중 페이즈 알리기",
-	WarnGroundphaseSoon		= "지상 페이즈 사전 경고 보기",
-	TimerNextAirphase		= "다음 공중 페이즈 타이머 보기",
-	TimerNextGroundphase	= "다음 지상 페이즈 타이머 보기"
+	warnFirstAirphase		= "첫번째 공중 단계 사전 경고 보기(88% 이하)",
+	WarnAirphase			= "공중 단계 알리기",
+	WarnGroundphaseSoon		= "지상 단계 사전 경고 보기",
+	TimerNextAirphase		= "다음 공중 단계 타이머 보기",
+	TimerNextGroundphase	= "다음 지상 단계 타이머 보기",
+	warnInstability			= "당신의 $spell:69766 중첩 경고 보기",
+	warnChilledtotheBone	= "당신의 $spell:70106 중첩 경고 보기",
+	warnMysticBuffet		= "당신의 $spell:70128 중첩 경고 보기",	
+	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+
 }
 
 L:SetMiscLocalization{
