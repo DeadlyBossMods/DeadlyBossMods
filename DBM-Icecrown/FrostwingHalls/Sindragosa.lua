@@ -29,7 +29,7 @@ local specWarnUnchainedMagic	= mod:NewSpecialWarningYou(69762)
 local specWarnFrostBeacon		= mod:NewSpecialWarningYou(70126)
 local specWarnInstability		= mod:NewSpecialWarningStack(69766, nil, 4)
 local specWarnChilledtotheBone	= mod:NewSpecialWarningStack(70106, nil, 4)
-local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70106, false, 4)
+local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 4)
 
 local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase")
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase")
