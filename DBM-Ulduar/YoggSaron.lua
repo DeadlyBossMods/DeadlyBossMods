@@ -65,8 +65,10 @@ local phase							= 1
 local targetWarningsShown			= {}
 local brainLinkTargets = {}
 local brainLinkIcon = 7
+local Guardians = 0
 
 function mod:OnCombatStart(delay)
+	Guardians = 0
 	phase = 1
 	enrageTimer:Start()
 	timerAchieve:Start()
@@ -119,7 +121,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-local Guardians = 0
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(62979) then
 		Guardians = Guardians + 1
