@@ -44,8 +44,10 @@ local timerSonic		= mod:NewCastTimer(64688)
 mod:AddBoolOption("HealthFrame", true)
 
 local isFeared			= false
+local catLives = 9
 
 function mod:OnCombatStart(delay)
+	catLives = 9
 	enrageTimer:Start(-delay)
 	timerNextFear:Start(40-delay)
 	timerNextSonic:Start(60-delay)
@@ -84,7 +86,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-local catLives = 9
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 34035 then
