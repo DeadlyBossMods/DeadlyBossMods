@@ -17,6 +17,7 @@ mod:RegisterEvents(
 local warnFirstAirphase			= mod:NewAnnounce("warnFirstAirphase")
 local warnAirphase				= mod:NewAnnounce("WarnAirphase")
 local warnGroundphaseSoon		= mod:NewAnnounce("WarnGroundphaseSoon", 2)
+local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnInstability			= mod:NewAnnounce("warnInstability", 2, nil, false)
 local warnChilledtotheBone		= mod:NewAnnounce("warnChilledtotheBone", 2, nil, false)
 local warnMysticBuffet			= mod:NewAnnounce("warnMysticBuffet", 2, nil, false)
@@ -40,8 +41,8 @@ local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
 
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
 
-local beaconTargets				= {}
-local unchainedTargets			= {}
+local beaconTargets		= {}
+local unchainedTargets	= {}
 local beaconIcons = 8
 local warned_air = false
 
@@ -135,6 +136,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellAirphase or msg:find(L.YellAirphase) then
 		self:SendSync("Airphase")
+	elseif msg == L.YellPhase2 or msg:find(L.YellPhase2) then
+		self:SendSync("Phase2")
 	end
 end
 
@@ -144,5 +147,10 @@ function mod:OnSync(msg, arg)
 		timerNextAirphase:Start()
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
+	elseif msg == "Phase2" then
+		warnPhase2:Show()
+		timerNextAirphase:Cancel()
+		timerNextGroundphase:Cancel()
+		warnGroundphaseSoon:Cancel()
 	end
 end
