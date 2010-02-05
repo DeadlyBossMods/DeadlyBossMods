@@ -39,6 +39,8 @@ local timerInstability			= mod:NewBuffActiveTimer(8, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
 local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
 
+local berserkTimer				= mod:NewBerserkTimer(600)
+
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
 
 local beaconTargets		= {}
@@ -47,6 +49,7 @@ local beaconIcons = 8
 local warned_air = false
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	beaconIcons = 8
 	warned_air = false
 end
