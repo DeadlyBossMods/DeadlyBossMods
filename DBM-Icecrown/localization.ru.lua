@@ -404,9 +404,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAirphase	= "Your incursion ends here! None shall survive!",
-	YellPhase2		= "Now, feel my master's limitless power and despair!",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase	= "Здесь ваше вторжение и окончится! Никто не уцелеет.",
+	YellPhase2		= "А теперь почувствуйте всю мощь господина и погрузитесь в отчаяние!",
+	YellPull		= "Глупцы, зачем вы сюда явились! Ледяные ветра Нордскола унесут ваши души!"
 }
 
 ---------------------
