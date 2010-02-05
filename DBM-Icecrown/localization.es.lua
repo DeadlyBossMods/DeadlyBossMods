@@ -398,18 +398,20 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	warnFirstAirphase		= "Mostrar pre-aviso para fase aerea (al ~88%)",
 	WarnAirphase			= "Anunciar fase aerea",
 	WarnGroundphaseSoon		= "Mostrar pre-aviso para fase en el suelo",
+	warnPhase2soon			= "Mostrar pre-aviso para Fase 2 (al ~33%)",
 	TimerNextAirphase		= "Mostrar tiempo para siguiente fase aerea",
 	TimerNextGroundphase	= "Mostrar tiempo para siguiente fase en el suelo",
 	warnInstability			= "Mostrar aviso de tus marcas de $spell:69766",
 	warnChilledtotheBone	= "Mostrar aviso de tus marcas de $spell:70106",
+	warnMysticBuffet		= "Mostrar aviso de tus marcas de $spell:70128",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
 	YellAirphase	= "Your incursion ends here! None shall survive!",--translate
+	YellPhase2		= "Now, feel my master's limitless power and despair!",--translate
 	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"--translate
 }
 
