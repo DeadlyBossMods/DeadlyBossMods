@@ -394,9 +394,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	warnFirstAirphase		= "為第一次空中階段顯示預先警告 (大約88%)",
 	WarnAirphase			= "提示空中階段",
 	WarnGroundphaseSoon		= "為地上階段顯示預先警告",
+	warnPhase2soon			= "為第二階段顯示預先警告 (大約33%)",
 	TimerNextAirphase		= "為下一次 空中階段顯示計時器",
 	TimerNextGroundphase		= "為下一次 地上階段顯示計時器",
 	warnInstability			= "為你的$spell:69766堆疊顯示警告",
@@ -407,6 +407,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase			= "你們的入侵將在此終止!誰也別想存活!",
+	YellPhase2			= "Now, feel my master's limitless power and despair!",
 	YellPull			= "你們真是夠蠢了才會來到此地。北裂境的冰冷寒風將吞噬你們的靈魂!"
 }
 
