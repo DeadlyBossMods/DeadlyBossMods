@@ -14,9 +14,9 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnFirstAirphase			= mod:NewAnnounce("warnFirstAirphase")
 local warnAirphase				= mod:NewAnnounce("WarnAirphase")
 local warnGroundphaseSoon		= mod:NewAnnounce("WarnGroundphaseSoon", 2)
+local warnPhase2soon			= mod:NewAnnounce("warnPhase2soon")
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnInstability			= mod:NewAnnounce("warnInstability", 2, nil, false)
 local warnChilledtotheBone		= mod:NewAnnounce("warnChilledtotheBone", 2, nil, false)
@@ -46,12 +46,13 @@ mod:AddBoolOption("SetIconOnFrostBeacon", true)
 local beaconTargets		= {}
 local unchainedTargets	= {}
 local beaconIcons = 8
-local warned_air = false
+local warned_P2 = false
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
+	timerNextAirphase:Start(50-delay)
 	beaconIcons = 8
-	warned_air = false
+	warned_P2 = false
 end
 
 local function warnBeaconTargets()
@@ -130,9 +131,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 end	
 
 function mod:UNIT_HEALTH(uId)
-	if not warned_air and self:GetUnitCreatureId(uId) == 36853 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.88 then
-		warned_air = true
-		warnFirstAirphase:Show()	
+	if not warned_P2 and self:GetUnitCreatureId(uId) == 36853 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.33 then
+		warned_P2 = true
+		warnPhase2soon:Show()	
 	end
 end
 

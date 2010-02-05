@@ -390,9 +390,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	warnFirstAirphase		= "Show pre-warning for first air phase (at ~88%)",
 	WarnAirphase			= "Announce air phase",
 	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
+	warnPhase2soon			= "Show pre-warning for Phase 2 (at ~33%)",
 	TimerNextAirphase		= "Show timer for next air phase",
 	TimerNextGroundphase	= "Show timer for next ground phase",
 	warnInstability			= "Show warning for your $spell:69766 stacks",
