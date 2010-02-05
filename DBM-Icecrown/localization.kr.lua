@@ -393,9 +393,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	warnFirstAirphase		= "첫번째 공중 단계 사전 경고 보기(88% 이하)",
 	WarnAirphase			= "공중 단계 알리기",
 	WarnGroundphaseSoon		= "지상 단계 사전 경고 보기",
+	warnPhase2soon			= "2 단계 사전 경고 보기(33% 이하)",	
 	TimerNextAirphase		= "다음 공중 단계 타이머 보기",
 	TimerNextGroundphase	= "다음 지상 단계 타이머 보기",
 	warnInstability			= "당신의 $spell:69766 중첩 경고 보기",
