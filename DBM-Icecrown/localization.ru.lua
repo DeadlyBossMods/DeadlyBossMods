@@ -392,9 +392,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	warnFirstAirphase		= "Предупреждать заранее о первой воздушной фазе (на ~88%)",
 	WarnAirphase			= "Объявлять воздушную фазу",
 	WarnGroundphaseSoon		= "Предупреждать заранее о наземной фазе",
+	warnPhase2soon			= "Предупреждать заранее о фазе 2 (на ~33%)",
 	TimerNextAirphase		= "Отсчет времени до воздушной фазы",
 	TimerNextGroundphase	= "Отсчет времени до наземной фазы",
 	warnInstability			= "Предупреждение о ваших стаках $spell:69766",
@@ -405,6 +405,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase	= "Your incursion ends here! None shall survive!",
+	YellPhase2		= "Now, feel my master's limitless power and despair!",
 	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
