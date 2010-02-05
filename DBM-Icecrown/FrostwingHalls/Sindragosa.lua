@@ -22,7 +22,7 @@ local warnInstability			= mod:NewAnnounce("warnInstability", 2, nil, false)
 local warnChilledtotheBone		= mod:NewAnnounce("warnChilledtotheBone", 2, nil, false)
 local warnMysticBuffet			= mod:NewAnnounce("warnMysticBuffet", 2, nil, false)
 local warnFrostBeacon			= mod:NewTargetAnnounce(70126)
-local warnBlisteringCold		= mod:NewCastAnnounce(70123, 3)
+local warnBlisteringCold		= mod:NewSpellAnnounce(70123, 3)
 local warnUnchainedMagic		= mod:NewTargetAnnounce(69762)
 
 local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123)
