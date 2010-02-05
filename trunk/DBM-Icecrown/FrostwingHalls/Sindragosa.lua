@@ -38,6 +38,7 @@ local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
 local timerInstability			= mod:NewBuffActiveTimer(8, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
 local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
+local timerNextMysticBuffet		= mod:NewNextTimer(5, 70128)--every 4.8-5.2 seconds alternating. (pretty crafty blizzard)
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -113,6 +114,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			warnMysticBuffet:Show(args.amount or 1)
 			timerMysticBuffet:Start()
+			timerNextMysticBuffet:Start()
 			if (args.amount or 1) >= 4 then
 				specWarnMysticBuffet:Show(args.amount)
 			end
