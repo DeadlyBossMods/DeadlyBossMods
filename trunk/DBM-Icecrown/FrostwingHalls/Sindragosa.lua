@@ -9,7 +9,7 @@ mod:SetUsedIcons(4, 5, 6, 7, 8)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"UNIT_HEALTH",
 	"CHAT_MSG_MONSTER_YELL"
 )
@@ -34,7 +34,7 @@ local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 4)
 
 local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase")
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase")
-local timerBlisteringCold		= mod:NewCastTimer(5, 70123)
+local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
 local timerInstability			= mod:NewBuffActiveTimer(8, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
 local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
@@ -121,8 +121,8 @@ end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(70117) then
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(70117) then--Icy Grip Cast, not blistering cold, but adds an extra 1sec to the warning
 		warnBlisteringCold:Show()
 		specWarnBlisteringCold:Show()
 		timerBlisteringCold:Start()
