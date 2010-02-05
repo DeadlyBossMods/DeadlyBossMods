@@ -406,9 +406,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAirphase			= "Your incursion ends here! None shall survive!",
-	YellPhase2				= "Now, feel my master's limitless power and despair!",	
-	YellPull				= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase			= "여기가 끝이다! 아무도 살아남지 못하리라!",
+	YellPhase2				= "자, 주인님의 무한한",--Now, feel my master's limitless power and despair!",	
+	YellPull				= "여기까지 오다니"--You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
 ---------------------
