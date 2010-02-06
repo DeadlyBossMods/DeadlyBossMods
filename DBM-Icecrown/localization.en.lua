@@ -419,7 +419,12 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 }
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "Combat starts"
+}
+
 L:SetOptionLocalization{
+	TimerCombatStart	= "Show time for start of combat"
 }
 
 L:SetMiscLocalization{

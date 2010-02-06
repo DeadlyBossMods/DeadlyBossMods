@@ -17,31 +17,31 @@ mod:RegisterEvents(
 local isDiseaseDispeller = select(2, UnitClass("player")) == "PALADIN"
 	    		 or select(2, UnitClass("player")) == "PRIEST"
 
-local warnRemorselessWinter = mod:NewSpellAnnounce(68981)--Phase Transition Start Ability
+local warnRemorselessWinter = mod:NewSpellAnnounce(74270)--Phase Transition Start Ability
 local warnQuake				= mod:NewSpellAnnounce(72262)--Phase Transition End Ability
 local warnRagingSpirit		= mod:NewTargetAnnounce(69200)--Transition Add
 local warnShamblingHorror	= mod:NewSpellAnnounce(70372)--Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358)--Phase 1 Add
-local warnNecroticPlague	= mod:NewTargetAnnounce(70337)--Phase 1+ Ability
-local warnInfest			= mod:NewSpellAnnounce(70541)--Phase 1+ Ability
-local warnSoulreaper		= mod:NewSpellAnnounce(69409)--Phase 1+ Ability
+local warnNecroticPlague	= mod:NewTargetAnnounce(73912)--Phase 1+ Ability
+local warnInfest			= mod:NewSpellAnnounce(73779)--Phase 1+ Ability
+local warnSoulreaper		= mod:NewSpellAnnounce(73797)--Phase 1+ Ability
 local warnSummonValkyr		= mod:NewSpellAnnounce(69037)--Phase 2 Add
 local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498)--Phase 3 Add
-local warnHarvestSoul		= mod:NewTargetAnnounce(68980)--Phase 3 Ability
+local warnHarvestSoul		= mod:NewTargetAnnounce(74325)--Phase 3 Ability
 
-local specWarnSoulreaper	= mod:NewSpecialWarningYou(69409)--Phase 1+ Ability
-local specWarnDefileCast	= mod:NewSpecialWarningSpell(72762)--Phase 2+ Ability
-local specWarnDefile		= mod:NewSpecialWarningMove(72754)--Phase 2+ Ability
-local specWarnHarvestSoul	= mod:NewSpecialWarningYou(68980)--Phase 1+ Ability
-local specWarnInfest		= mod:NewSpecialWarningSpell(70541, false)--Phase 1+ Ability
+local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797)--Phase 1+ Ability
+local specWarnDefileCast	= mod:NewSpecialWarningSpell(73779)--Phase 2+ Ability
+local specWarnDefile		= mod:NewSpecialWarningMove(73708)--Phase 2+ Ability
+local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325)--Phase 1+ Ability
+local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningDispel(70337, isDiseaseDispeller)--Phase 1+ Ability
 
 local timerCombatStart		= mod:NewTimer(56, "TimerCombatStart", 2457)
-local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 70372)
-local timerHarvestSoul	 	= mod:NewTargetTimer(6, 68980)
-local timerInfestCD			= mod:NewCDTimer(30, 70541)
-local timerNecroticPlagueCD	= mod:NewCDTimer(30, 70337)
-local timerDefileCD			= mod:NewCDTimer(30, 72762)
+local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
+local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
+local timerInfestCD			= mod:NewCDTimer(30, 73779)
+local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
+local timerDefileCD			= mod:NewCDTimer(30, 73779)
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerSummonValkyr 	= mod:NewNextTimer(50, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
