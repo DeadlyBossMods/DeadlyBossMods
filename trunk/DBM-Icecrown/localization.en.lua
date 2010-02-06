@@ -381,7 +381,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFirstAirphase		= "Air phase soon",
+	warnPhase2soon			= "Phase 2 soon",
 	WarnAirphase			= "Air phase",
 	WarnGroundphaseSoon		= "Sindragosa landing soon",
 	warnInstability			= "Instability >%d<",
@@ -417,6 +417,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon			= "Phase 2 transition soon",
+	WarnPhase3Soon			= "Phase 3 transition soon",
+	specWarnDefileCast		= "Defile on you - Move away",
+	specWarnDefileCastNear	= "Defile near you - Watch out"
 }
 
 L:SetTimerLocalization{
@@ -424,7 +428,13 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	TimerCombatStart	= "Show time for start of combat"
+	TimerCombatStart		= "Show time for start of combat",
+	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
+	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
+	specWarnDefileCast		= "Show special warning for $spell:73779 on you",
+	specWarnDefileCastNear	= "Show special warning for $spell:73779 near you",
+	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
 
 L:SetMiscLocalization{
