@@ -41,7 +41,7 @@ local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
 local timerInfestCD			= mod:NewCDTimer(30, 73779)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
-local timerDefileCD			= mod:NewCDTimer(30, 73779)
+local timerDefileCD			= mod:NewCDTimer(30, 72762)
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerSummonValkyr 	= mod:NewNextTimer(50, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
@@ -117,7 +117,7 @@ function mod:SPELL_CAST_START(args)
 		warnInfest:Show()
 		specWarnInfest:Show()
 		timerInfestCD:Start()
-	elseif args:IsSpellID(72762, 73779, 73780, 73781) then -- Defile
+	elseif args:IsSpellID(72762) then -- Defile
 		self:ScheduleMethod(0.1, "DefileTarget")
 		timerDefileCD:Start()
 	end
