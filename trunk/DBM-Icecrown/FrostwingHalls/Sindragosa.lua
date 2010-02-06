@@ -7,6 +7,7 @@ mod:RegisterCombat("YELL", L.YellPull)
 mod:SetUsedIcons(4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_SUCCESS",
@@ -23,6 +24,7 @@ local warnChilledtotheBone		= mod:NewAnnounce("warnChilledtotheBone", 2, nil, fa
 local warnMysticBuffet			= mod:NewAnnounce("warnMysticBuffet", 2, nil, false)
 local warnFrostBeacon			= mod:NewTargetAnnounce(70126)
 local warnBlisteringCold		= mod:NewSpellAnnounce(70123, 3)
+local warnFrostBreath			= mod:NewSpellAnnounce(71056, 3)
 local warnUnchainedMagic		= mod:NewTargetAnnounce(69762)
 
 local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123)
@@ -34,6 +36,7 @@ local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 4)
 
 local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase")
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase")
+local timerNextFrostBreath		= mod:NewNextTimer(22, 71056)
 local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
 local timerInstability			= mod:NewBuffActiveTimer(8, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
@@ -66,6 +69,13 @@ local function warnUnchainedTargets()
 	warnUnchainedMagic:Show(table.concat(unchainedTargets, "<, >"))
 	table.wipe(unchainedTargets)
 end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(69649, 71056, 71057, 71058) then--Frost Breath
+		warnFrostBreath:Show()
+		timerNextFrostBreath:Start()
+	end
+end	
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70126) then
@@ -150,6 +160,7 @@ end
 function mod:OnSync(msg, arg)
 	if msg == "Airphase" then
 		warnAirphase:Show()
+		timerNextFrostBreath:Cancel()
 		timerNextAirphase:Start()
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
