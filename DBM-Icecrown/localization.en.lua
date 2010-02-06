@@ -431,8 +431,8 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Show time for start of combat",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
-	specWarnDefileCast		= "Show special warning for $spell:73779 on you",
-	specWarnDefileCastNear	= "Show special warning for $spell:73779 near you",
+	specWarnDefileCast		= "Show special warning for $spell:73708 on you",
+	specWarnDefileCastNear	= "Show special warning for $spell:73708 near you",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
