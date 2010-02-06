@@ -148,7 +148,7 @@ end)
 
 local startTimer = Arathi:NewTimer(62, "TimerStart")
 local winTimer = Arathi:NewTimer(30, "TimerWin")
-local capTimer = Arathi:NewTimer(64, "TimerCap")
+local capTimer = Arathi:NewTimer(63, "TimerCap")
 
 local function obj_state(id)
 	if id == 18 or id == 23 or id == 28 or id == 33 or id == 38 then	
