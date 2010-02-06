@@ -384,7 +384,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFirstAirphase		= "곧 공중 단계",
+	warnPhase2soon			= "곧 2 단계",
 	WarnAirphase			= "공중 단계",
 	WarnGroundphaseSoon		= "곧 신드라고사 착륙",
 	warnInstability			= "불안정 : >%d<",
@@ -421,15 +421,25 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon			= "곧 2 단계 전환",
+	WarnPhase3Soon			= "곧 3 단계 전환",
+	specWarnDefileCast		= "당신에게 파멸! - 이동!",
+	specWarnDefileCastNear	= "당신 주변에 파멸! - 이동!"
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "전투 시작"
+	TimerCombatStart		= "전투 시작"
 }
 
 L:SetOptionLocalization{
-	TimerCombatStart	= "전투 시작 타이머 보기"
+	TimerCombatStart		= "전투 시작 타이머 보기",
+	WarnPhase2Soon			= "2 단계 전환 사전 경고 보기(73% 이하)",
+	WarnPhase3Soon			= "3 단계 전환 사전 경고 보기(43% 이하)",
+	specWarnDefileCast		= "당신에게 $spell:73708이 시전된 경우 특수 경고 보기",
+	specWarnDefileCastNear	= "당신 주변에 $spell:73708이 시전된 경우 특수 경고 보기",
+	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)	
 }
 L:SetMiscLocalization{
-	YellPull			= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"
+	YellPull				= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"
 }
