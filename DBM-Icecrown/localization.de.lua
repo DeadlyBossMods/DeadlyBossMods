@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("LowerSpireTrash")
 
 L:SetGeneralLocalization{
-	name = "Lower Spire trash"
+	name = "Trash der unteren Spitze"
 }
 
 L:SetWarningLocalization{
@@ -17,7 +17,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	specWarnTrap		= "Zeige spezielle Warnung für Fallenaktivierung",
-	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483)
+	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
+	SetIconOnDeathPlague	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
 
 L:SetMiscLocalization{
@@ -51,6 +52,25 @@ L:SetMiscLocalization{
 	FleshreaperTrap3		= "Die Lebenden? Hier?!"
 }
 
+---------------------------
+--  Trash - Crimson Hall  --
+---------------------------
+L = DBM:GetModLocalization("CrimsonHallTrash")
+
+L:SetGeneralLocalization{
+	name = "Trash der Blutroten Halle"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetOptionLocalization{
+	BloodMirrorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70451)
+}
+
+L:SetMiscLocalization{
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -61,7 +81,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	achievementBoned	= "Zeit zum befreien"
+	achievementBoned	= "Zeit zum Befreien"
 }
 
 L:SetWarningLocalization{
@@ -69,8 +89,8 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale			= "Verkünde $spell:69062 Ziele",
-	achievementBoned	= "Zeige Timer für Entknöchert Erfolg",
+	WarnImpale			= "Verkünde $spell:69062-Ziele",
+	achievementBoned	= "Zeige Timer für Entknöchert-Erfolg",
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -88,15 +108,17 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnReanimating				= "Add Wiederbelebung",			-- Reanimating an adherent or fanatic
+	WarnReanimating				= "Add-Wiederbelebung",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s auf >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
-	WarnAddsSoon				= "Neue Adds bald"
+	WarnAddsSoon				= "Neue Adds bald",
+	specWarnVengefulShade		= "Rachsüchtiger Schatten greift dich an - Lauf"--creatureid 38222
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Zeige Vorwarnung für erscheinende Adds",
 	WarnReanimating				= "Zeige Warnung, wenn ein Add wiederbelebt wird",											-- Reanimated Adherent/Fanatic spawning
 	TimerAdds					= "Zeige Timer für neue Adds",
+	specWarnVengefulShade		= "Zeige Spezialwarnung, wenn du von Rachsüchtigen Schatten angegriffen wirst",--creatureid 38222
 	ShieldHealthFrame			= "Zeige Bossleben mit einer Leiste für $spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -119,7 +141,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("GunshipBattle")
 
 L:SetGeneralLocalization{
-	name = "Luftschiff Kampf"
+	name = "Luftschiffkampf"
 }
 
 L:SetWarningLocalization{
@@ -167,9 +189,9 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Zeige Zeit bis Kampfbeginn",
 	warnFrenzySoon			= "Zeige Vorwarnung für Wahnsinn (bei ~33%)",
 	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "Setze Zeichen auf $spell:72444 Ziele während Zauber\n(Experimentell, kann den Tank fälschlicher Weise markieren)",
-	RangeFrame				= "Zeige Enfernungsmesser (11 Meter)",
-	RunePowerFrame			= "Zeige Boss Leben und Leiste für $spell:72371"
+	SetIconOnMarkCast		= "Setze Zeichen auf $spell:72444-Ziele während Zauber\n(Experimentell, kann den Tank fälschlicher Weise markieren)",
+	RangeFrame				= "Zeige Abstandsfenster (12 m)",
+	RunePowerFrame			= "Zeige Boss-Leben und Leiste für $spell:72371"
 }
 
 L:SetMiscLocalization{
@@ -194,6 +216,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	InhaledBlight		= "Zeige Warnung für $spell:71912",
+	RangeFrame			= "Zeige Abstandsfenster (8 m)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
@@ -208,17 +231,19 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn		= "Kleiner Schleim erscheint",
-	WarnUnstableOoze	= "%s auf >%s< (%s)"	 -- Unstable Ooze on >args.destName< (args.amount)
+	WarnOozeSpawn				= "Kleiner Brühschlammer erscheint",
+	WarnUnstableOoze			= "%s auf >%s< (%s)",	 -- Unstable Ooze on >args.destName< (args.amount)
+	specWarnLittleOoze			= "Kleiner Brühschlammer greift dich an - Lauf"--creatureid 36897
 }
 
 L:SetTimerLocalization{
-	NextPoisonSlimePipes	 = "Nächste Giftschleim-Rohre"
+	NextPoisonSlimePipes	 	= "Nächster Giftschleim"
 }
 
 L:SetOptionLocalization{
-	NextPoisonSlimePipes		= "Zeige Timer für nächsten Giftschleim-Rohre",
-	WarnOozeSpawn				= "Zeige Warnung für Kleiner Schleim spawn",
+	NextPoisonSlimePipes		= "Zeige Timer für nächsten Giftschleim-Auslauf",
+	WarnOozeSpawn				= "Zeige Warnung für Spawn von Kleinen Brühschlammern",
+	specWarnLittleOoze			= "Zeige Spezialwarnung, wenn du von Kleinen Brühschlammern angegriffen wirst",--creatureid 36897
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
@@ -254,7 +279,7 @@ L:SetOptionLocalization{
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
-	MalleableGooIcon			= "Setze Zeichen auf erstes $spell:72295 Ziel"
+	MalleableGooIcon			= "Setze Zeichen auf Ziel erstes $spell:72295-Ziel"
 }
 
 L:SetMiscLocalization{
@@ -282,9 +307,9 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarnTargetSwitch		= "Zeige Warnung für den Zielwechsel",-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Zeige Vorwarnung für den Zielwechsel",-- Every ~47 secs, you have to dps a different Prince
-	TimerTargetSwitch		= "Zeige Timer für Zielwechsel Cooldown",
+	TimerTargetSwitch		= "Zeige Timer für Zielwechsel-Cooldown",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Setze Symbol auf den Machterfüllten Prinzen (Totenkopf)"
+	ActivePrinceIcon		= "Setze Symbol auf den machterfüllten Prinzen (Totenkopf)"
 }
 
 L:SetMiscLocalization{
@@ -306,6 +331,9 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 }
 
+L:SetTimerLocalization{
+}
+
 L:SetOptionLocalization{
 	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
@@ -322,13 +350,22 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Valithria")
 
 L:SetGeneralLocalization{
-	name = "Valithria Dreamwalker"
+	name = "Valithria Traumwandler"
 }
 
 L:SetWarningLocalization{
+	warnCorrosion	= "%s auf >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
+	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
+}
+
+L:SetMiscLocalization{
+	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",
+	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",
+	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",
+	YellPhase2		= "My strength is returning. Press on, heroes!"--Need to confirm this is when adds spawn faster (phase 2) before used in mod
 }
 
 ------------------
@@ -341,25 +378,31 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerNextAirphase		= "Next air phase",
-	TimerNextGroundphase	= "Next ground phase"
+	TimerNextAirphase		= "Nächste Luftphase",
+	TimerNextGroundphase	= "Nächste Bodenphase"
 }
 
 L:SetWarningLocalization{
-	WarnAirphase			= "Air phase",
-	WarnGroundphaseSoon		= "Sindragosa landing soon"
+	WarnAirphase			= "Luftphase",
+	WarnGroundphaseSoon		= "Sindragosa landet bald"
 }
 
 L:SetOptionLocalization{
-	WarnAirphase			= "Announce air phase",
-	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
-	TimerNextAirphase		= "Show timer for next air phase",
-	TimerNextGroundphase	= "Show timer for next ground phase"
+	WarnAirphase			= "Kündige Luftphase an",
+	WarnGroundphaseSoon		= "Zeige Vorwarnung für Bodenphase",
+	warnPhase2soon			= "Zeige Vorwarnung für Phase 2 (bei ~33%)",
+	TimerNextAirphase		= "Zeige Timer für nächste Luftphase",
+	TimerNextGroundphase	= "Zeige Timer für nächste Bodenphase",
+	warnInstability			= "Zeige Warnung für deine $spell:69766-Stacks",
+	warnChilledtotheBone	= "Zeige Warnung für deine $spell:70106-Stacks",
+	warnMysticBuffet		= "Zeige Warnung für deine $spell:70128-Stacks",
+	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
-	YellAirphase	= "Your incursion ends here! None shall survive!",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
+	YellAirphase	= "Euer Vormarsch endet hier! Keiner wird überleben!",
+	YellPhase2		= "Now, feel my master's limitless power and despair!",	--to be translated
+	YellPull		= "Ihr seid Narren, euch hierher zu wagen. Der eisige Wind Nordends wird eure Seelen verschlingen!"
 }
 
 ---------------------
@@ -368,11 +411,30 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("LichKing")
 
 L:SetGeneralLocalization{
-	name = "The Lich King"
+	name = "Der Lichkönig"
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon			= "Übergang in Phase 2 bald",
+	WarnPhase3Soon			= "Übergang in Phase 3 bald",
+	specWarnDefileCast		= "Entweihen auf dir - Lauf weg",
+	specWarnDefileCastNear	= "Entweihen in deiner Nähe - Aufpassen"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart		= "Kampf beginnt"
 }
 
 L:SetOptionLocalization{
+	TimerCombatStart		= "Zeige Timer für Kampfbeginn",
+	WarnPhase2Soon			= "Zeige Vorwarnung für Übergang in Phase 2 (bei ~73%)",
+	WarnPhase3Soon			= "Zeige Vorwarnung für Übergang in Phase 3 (bei ~43%)",
+	specWarnDefileCast		= "Zeige Spezialwarnung für $spell:72762 auf dir",
+	specWarnDefileCastNear	= "Zeige Spezialwarnung für $spell:72762 in deiner Nähe",
+	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
+}
+
+L:SetMiscLocalization{
+	YellPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"	--to be translated
 }
