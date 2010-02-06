@@ -385,7 +385,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFirstAirphase		= "空中階段 即將到來",
+	warnPhase2soon			= "第2階段 即將到來",
 	WarnAirphase			= "空中階段",
 	WarnGroundphaseSoon		= "辛德拉苟莎 即將著陸",
 	warnInstability			= "不穩定: >%d<",
@@ -396,7 +396,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAirphase			= "提示空中階段",
 	WarnGroundphaseSoon		= "為地上階段顯示預先警告",
-	warnPhase2soon			= "為第二階段顯示預先警告 (大約33%)",
+	warnPhase2soon			= "為第2階段顯示預先警告 (大約33%)",
 	TimerNextAirphase		= "為下一次 空中階段顯示計時器",
 	TimerNextGroundphase		= "為下一次 地上階段顯示計時器",
 	warnInstability			= "為你的$spell:69766堆疊顯示警告",
@@ -421,9 +421,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon			= "第2階段轉換 即將到來",
+	WarnPhase3Soon			= "第3階段轉換 即將到來",
+	specWarnDefileCast		= "你中了汙染 - 快跑開",
+	specWarnDefileCastNear		= "你附近的人中了汙染 - 小心"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart		= "戰鬥開始"
 }
 
 L:SetOptionLocalization{
-	SpiritBurstIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73808)
+	TimerCombatStart		= "為戰鬥開始顯示計時器",
+	WarnPhase2Soon			= "為第2階段轉換顯示預先警告 (大約73%)",
+	WarnPhase3Soon			= "為第3階段轉換顯示預先警告 (大約43%)",
+	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
+	specWarnDefileCastNear		= "當你附近的人中了$spell:72762時顯示特別警告",
+	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
 
+L:SetMiscLocalization{
+	YellPull			= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"
+}
