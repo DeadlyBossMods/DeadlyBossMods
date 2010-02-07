@@ -1276,6 +1276,32 @@ L:SetMiscLocalization({
 	SayCombatEnd		= "我也曾面對過這樣的末路。還有什麼新的冒險在等著呢?"
 })
 
+-----------------------
+--  Apothecary Trio  --
+-----------------------
+L = DBM:GetModLocalization("ApothecaryTrio")
+
+L:SetGeneralLocalization({
+	name = "藥劑師三重奏"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization{
+	HummelActive	= "胡默爾 開始活動",
+	BaxterActive	= "巴克斯特 開始活動",
+	FryeActive		= "弗萊伊 開始活動"
+}
+
+L:SetOptionLocalization({
+	TrioActiveTimer		= "為藥劑師三重奏開始活動顯示計時器"
+})
+
+L:SetMiscLocalization({
+	SayCombatStart		= "他們有告訴你我是誰還有我為什麼這麼做嗎?"
+})
+
 --------------------
 --  Pit of Saron  --
 ---------------------
