@@ -24,7 +24,7 @@
 ## X-DBM-Mod-Name-esES: Mazmorras
 ## X-DBM-Mod-Name-koKR: 5인 던전 모드
 ## X-DBM-Mod-Sort: 100
-## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold,Trial of the Champion,Blackrock Depths,Scarlet Monastery,Pit of Saron,The Forge of Souls,Halls of Reflection
+## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold,Trial of the Champion,Blackrock Depths,Scarlet Monastery,Pit of Saron,The Forge of Souls,Halls of Reflection,Shadowfang Keep
 ## X-DBM-Mod-LoadZone-frFR: Ahn'kahet : l'Ancien royaume,Azjol -Nérub,L'Épuration de Stratholme,Donjon de Drak'Tharon,Gundrak,Les salles de Foudre,Les salles de Pierre,Le Nexus,L'Oculus,Donjon d'Utgarde,Cime d'Utgarde,Le fort Pourpre,L'épreuve du champion,Profondeurs de Rochenoire,Monastère écarlate,Fosse de Saron,La Forge des âmes,Salles des Reflets
 ## X-DBM-Mod-LoadZone-deDE: Ahn'kahet: Das Alte Königreich,Azjol-Nerub,Das Ausmerzen von Stratholme,Feste Drak'Tharon,Gundrak,Die Hallen der Blitze,Die Hallen des Steins,Der Nexus,Das Oculus,Burg Utgarde,Turm Utgarde,Die Violette Festung,Prüfung des Champions,Schwarzfelstiefen,Das Scharlachrote Kloster,Die Seelenschmiede,Grube von Saron,Hallen der Reflexion
 ## X-DBM-Mod-LoadZone-ruRU: Ан'кахет: Старое Королевство,Азжол-Неруб,Очищение Стратхольма,Крепость Драк'Тарон,Гундрак,Чертоги Молний,Чертоги Камня,Нексус,Окулус,Крепость Утгард,Вершина Утгард,Аметистовая крепость,Испытание чемпиона,Глубины Черной горы,Монастырь Алого ордена,Яма Сарона,Кузня Душ,Залы Отражений
@@ -123,3 +123,4 @@ PitofSaron\ForgemasterGarfrost.lua
 PitofSaron\ScourgelordTyrannus.lua
 WorldEvents\CorenDirebrew.lua
 WorldEvents\HeadlessHorseman.lua
+WorldEvents\ApothecaryTrio.lua
