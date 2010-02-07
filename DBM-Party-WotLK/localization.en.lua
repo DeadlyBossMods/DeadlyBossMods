@@ -1277,6 +1277,24 @@ L:SetMiscLocalization({
 	SayCombatEnd		= "This end have I reached before.  What new adventure lies in store?"
 })
 
+-----------------------
+--  Apothecary Trio  --
+-----------------------
+L = DBM:GetModLocalization("ApothecaryTrio")
+
+L:SetGeneralLocalization({
+	name = "Apothecary Trio"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
 --------------------
 --  Pit of Saron  --
 ---------------------
