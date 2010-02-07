@@ -1279,6 +1279,33 @@ L:SetMiscLocalization({
 	SayCombatEnd				= "죽음은 이미 겪어 보았노라. 이제 어떤 모험이 날 기다리는가?"
 })
 
+-----------------------
+--  Apothecary Trio  --
+-----------------------
+L = DBM:GetModLocalization("ApothecaryTrio")
+
+L:SetGeneralLocalization({
+	name = "Apothecary Trio"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization{
+	HummelActive	= "Hummel becomes active",
+	BaxterActive	= "Baxter becomes active",
+	FryeActive		= "Frye becomes active"
+}
+
+L:SetOptionLocalization({
+	TrioActiveTimer		= "Show timers for when Apothecary Trio becomes active"
+})
+
+L:SetMiscLocalization({
+	SayCombatStart		= "Did they bother to tell you who I am and why I am doing this?"
+})
+
+
 ------------------
 -- Pit of Saron --
 -------------------
