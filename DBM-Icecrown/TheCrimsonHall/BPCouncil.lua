@@ -48,10 +48,11 @@ mod:AddBoolOption("EmpoweredFlameIcon", true)
 mod:AddBoolOption("ActivePrinceIcon", false)
 
 local activePrince
+
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	warnTargetSwitchSoon:Schedule(42-delay)
 	timerTargetSwitch:Start(-delay)
-	warnTargetSwitchSoon:Schedule(42-delay)
 	activePrince = nil
 end
 
@@ -67,11 +68,6 @@ function mod:TrySetTarget()
 			end
 		end
 	end
-end
-
-function mod:OnCombatStart(delay)
-	berserkTimer:Start(-delay)
-	timerTargetSwitch:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
