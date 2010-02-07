@@ -1279,6 +1279,24 @@ L:SetMiscLocalization({
 	SayCombatEnd		= "Со смертью мы давно уже друзья...Что ждет теперь на пустоши меня?"
 })
 
+-----------------------
+--  Apothecary Trio  --
+-----------------------
+L = DBM:GetModLocalization("ApothecaryTrio")
+
+L:SetGeneralLocalization({
+	name = "Трое аптекарей"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
 --------------------
 --  Pit of Saron  --
 ---------------------
