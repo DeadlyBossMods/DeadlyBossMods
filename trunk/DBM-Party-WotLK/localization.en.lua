@@ -1289,10 +1289,18 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 })
 
+L:SetTimerLocalization{
+	HummelActive	= "Hummel becomes active",
+	BaxterActive	= "Baxter becomes active",
+	FryeActive		= "Frye becomes active"
+}
+
 L:SetOptionLocalization({
+	TrioActiveTimer		= "Show timers for when Apothecary Trio becomes active"
 })
 
 L:SetMiscLocalization({
+	SayCombatStart		= "Did they bother to tell you who I am and why I am doing this?"
 })
 
 --------------------
