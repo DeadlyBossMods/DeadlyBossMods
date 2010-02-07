@@ -11,6 +11,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: The Lower Spire, The Plagueworks, The Crimson Hall, Frostwing Halls, The Frozen Throne
+## X-DBM-Mod-SubCategories-deDE: Die untere Spitze, Die Seuchenwerke, Die Blutrote Halle, Hallen der Frostschwingen, Der Gefrorene Thron
 ## X-DBM-Mod-SubCategories-frFR: La Flèche Inférieure, L'Atelier de la Peste, La Salle Cramoisie, Les salles de l'Aile de Glace, Le trône de Glace
 ## X-DBM-Mod-SubCategories-zhTW: 城塞大門,瘟疫工坊, 赤紅大廳,霜翼大廳, 冰封王座
 ## X-DBM-Mod-SubCategories-koKR: 성채 하층부, 역병작업장, 진홍빛 전당, 서리날개 전당, 얼어붙은 왕좌
