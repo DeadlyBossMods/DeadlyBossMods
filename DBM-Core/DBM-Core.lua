@@ -3153,6 +3153,9 @@ end
 --  Combat  --
 --------------
 function bossModPrototype:RegisterCombat(cType, ...)
+	if cType then
+		cType = cType:lower()
+	end
 	local info = {
 		type = cType,
 		mob = self.creatureId,
@@ -3188,6 +3191,9 @@ end
 
 -- needs to be called _AFTER_ RegisterCombat
 function bossModPrototype:RegisterKill(msgType, ...)
+	if cType then
+		cType = cType:lower()
+	end
 	if not self.combatInfo then
 		return
 	end
