@@ -13,9 +13,9 @@ mod:RegisterEvents(
 
 local warnChainReaction			= mod:NewCastAnnounce(68821)
 
-local timerHummel				= mod:NewTimer(11, "HummelActive", nil, nil)
-local timerBaxter				= mod:NewTimer(19, "BaxterActive", nil, nil)
-local timerFrye					= mod:NewTimer(27, "FryeActive", nil, nil)
+local timerHummel				= mod:NewTimer(11, "HummelActive", nil, nil, false)
+local timerBaxter				= mod:NewTimer(19, "BaxterActive", nil, nil, false)
+local timerFrye					= mod:NewTimer(27, "FryeActive", nil, nil, false)
 mod:AddBoolOption("TrioActiveTimer", true, "timer")
 local timerChainReaction		= mod:NewCastTimer(3, 68821)
 
