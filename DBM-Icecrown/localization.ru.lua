@@ -378,14 +378,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerNextAirphase		= "Воздушная фаза",
-	TimerNextGroundphase	= "Наземная фаза"
+	TimerNextAirphase		= "След. воздушная фаза",
+	TimerNextGroundphase	= "След. наземная фаза"
 }
 
 L:SetWarningLocalization{
 	warnPhase2soon			= "Скоро фаза 2",
 	WarnAirphase			= "Воздушная фаза",
-	WarnGroundphaseSoon		= "Синдрагоса приземляется",
+	WarnGroundphaseSoon		= "Синдрагоса скоро приземлится",
 	warnInstability			= "Неустойчивость >%d<",
 	warnChilledtotheBone	= "Обморожение >%d<",
 	warnMysticBuffet		= "Таинственная энергия >%d<"
@@ -395,8 +395,8 @@ L:SetOptionLocalization{
 	WarnAirphase			= "Объявлять воздушную фазу",
 	WarnGroundphaseSoon		= "Предупреждать заранее о наземной фазе",
 	warnPhase2soon			= "Предупреждать заранее о фазе 2 (на ~33%)",
-	TimerNextAirphase		= "Отсчет времени до воздушной фазы",
-	TimerNextGroundphase	= "Отсчет времени до наземной фазы",
+	TimerNextAirphase		= "Отсчет времени до следующей воздушной фазы",
+	TimerNextGroundphase	= "Отсчет времени до следующей наземной фазы",
 	warnInstability			= "Предупреждение о ваших стаках $spell:69766",
 	warnChilledtotheBone	= "Предупреждение о ваших стаках $spell:70106",
 	warnMysticBuffet		= "Предупреждение о ваших стаках $spell:70128",
