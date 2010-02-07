@@ -407,7 +407,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase			= "你們的入侵將在此終止!誰也別想存活!",
-	YellPhase2			= "Now, feel my master's limitless power and despair!",
+	YellPhase2			= "現在，絕望地感受我主無限的力量吧!",
 	YellPull			= "你們真是夠蠢了才會來到此地。北裂境的冰冷寒風將吞噬你們的靈魂!"
 }
 
