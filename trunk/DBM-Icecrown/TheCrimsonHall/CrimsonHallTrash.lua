@@ -14,14 +14,14 @@ local warnBloodSap			= mod:NewTargetAnnounce(70432)
 
 local specWarnBloodMirror	= mod:NewSpecialWarningYou(70451)
 
-local timerBloodMirror		= mod:NewTargetTimer(30, 70451)
+local timerBloodMirror		= mod:NewBuffActiveTimer(30, 70451)
 local timerBloodSap			= mod:NewTargetTimer(8, 70432)
-
-local BloodMirrorTargets = {}
-local BloodMirrorIcons = 2
 
 mod:AddBoolOption("BloodMirrorIcon", true)
 mod:RemoveOption("HealthFrame")
+
+local BloodMirrorTargets = {}
+local BloodMirrorIcons = 2
 
 local function warnBloodMirrorTargets()
 	warnBloodMirror:Show(table.concat(BloodMirrorTargets, "<, >"))
@@ -32,7 +32,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70451) then
 		BloodMirrorTargets[#BloodMirrorTargets + 1] = args.destName
-		timerBloodMirror:Start(args.destName)
+		timerBloodMirror:Start()
 		if self.Options.BloodMirrorIcon then
 			self:SetIcon(args.destName, BloodMirrorIcons, 30)
 			BloodMirrorIcons = BloodMirrorIcons - 1

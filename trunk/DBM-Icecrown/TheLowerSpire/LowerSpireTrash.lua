@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("LowerSpireTrash", "DBM-Icecrown", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetUsedIcons(8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 
 mod:RegisterEvents(
@@ -22,12 +22,21 @@ local specWarnTrap				= mod:NewSpecialWarning("specWarnTrap")
 
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(8, 69483)
-local timerDeathPlague			= mod:NewTargetTimer(15, 72865)
+local timerDeathPlague			= mod:NewBuffActiveTimer(15, 72865)
 
 local soundDarkReckoning = mod:NewSound(69483)
 mod:AddBoolOption("SetIconOnDarkReckoning", true)
 mod:AddBoolOption("SetIconOnDeathPlague", true)
 mod:RemoveOption("HealthFrame")
+
+local DeathPlagueTargets = {}
+local DeathPlagueIcons = 8
+
+local function warnPlagueTargetsTargets()
+	warnDeathPlague:Show(table.concat(DeathPlagueTargets, "<, >"))
+	table.wipe(DeathPlagueTargets)
+	DeathPlagueIcons = 8
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69483) then
@@ -41,14 +50,17 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8, 8)
 		end
 	elseif args:IsSpellID(72865) then
-		warnDeathPlague:Show(args.destName)
-		timerDeathPlague:Start(args.destName)
+		DeathPlagueTargets[#DeathPlagueTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnDeathPlague:Show()
+			timerDeathPlague:Start()
 		end
 		if self.Options.SetIconOnDeathPlague then
-			self:SetIcon(args.destName, 8, 15)
+			self:SetIcon(args.destName, DeathPlagueIcons, 15)
+			DeathPlagueIcons = DeathPlagueIcons - 1
 		end
+		self:Unschedule(warnPlagueTargetsTargets)
+		self:Schedule(0.3, warnPlagueTargetsTargets)
 	end
 end
 
