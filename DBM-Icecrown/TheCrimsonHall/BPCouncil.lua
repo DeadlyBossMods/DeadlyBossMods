@@ -51,6 +51,7 @@ local activePrince
 function mod:OnCombatStart(delay)
 	warnTargetSwitchSoon:Schedule(42-delay)
 	timerTargetSwitch:Start(-delay)
+	warnTargetSwitchSoon:Schedule(42-delay)
 	activePrince = nil
 end
 
@@ -70,6 +71,7 @@ end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
+	timerTargetSwitch:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
