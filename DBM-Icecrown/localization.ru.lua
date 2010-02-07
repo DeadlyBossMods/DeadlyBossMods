@@ -316,7 +316,7 @@ L:SetMiscLocalization{
 	Keleseth			= "Принц Келесет",
 	Taldaram			= "Принц Талдарам",
 	Valanar				= "Принц Валанар",
-	EmpoweredFlames		= "Пламя преисподней тянется к (%S+)!"
+	EmpoweredFlames		= "Жаркое пламя тянется к (%S+)!"
 }
 
 -----------------------------
