@@ -15,7 +15,7 @@ local optionTimerCast	= "Show %s Zauber timer"
 
 
 --------------------------------
--- Ahn�Kahet: The Old Kingdom --
+-- Ahn’Kahet: The Old Kingdom --
 --------------------------------
 -- Prince Taldaram --
 ---------------------
@@ -1416,17 +1416,22 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("CorenDirebrew")
 
 L:SetGeneralLocalization({
-	name = "Coren Direbrew"
+	name = "Coren Düsterbräu"
 })
 
 L:SetWarningLocalization({
+	specWarnBrew		= "Get rid of the brew before she tosses you another one!",	--to be translated
+	specWarnBrewStun	= "HINT: You were bonked, remember to drink the brew next time!"	--to be translated
 })
 
 L:SetOptionLocalization({
+	specWarnBrew		= "Zeige Spezialwarnung für Bier der dunklen Schankmaid",
+	specWarnBrewStun	= "Zeige Spezialwarnung für Betäubung der dunklen Schankmaid",
+	YellOnBarrel		= "Schreie bei Fass"
 })
 
 L:SetMiscLocalization({
---	YellBarrel	= "Barrel on me!"
+	YellBarrel	= "Fass auf mir!"
 })
 
 -------------------------
@@ -1435,7 +1440,32 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("HeadlessHorseman")
 
 L:SetGeneralLocalization({
-	name = "Headless Horseman"
+	name = "Der kopflose Reiter"
+})
+
+L:SetWarningLocalization({
+	warnHorsemanSoldiers	= "neuer Pulsierender Kürbis",
+	specWarnHorsemanHead	= "Wirbelwind - Wechsel auf den Kopf"
+})
+
+L:SetOptionLocalization({
+	warnHorsemanSoldiers	= "Zeige Warnung wenn Pulsierender Kürbnis erscheint",
+	specWarnHorsemanHead	= "Zeige Spezialwarnung für Wirbelwind (ab der zweiten Kopfphase)"
+})
+
+L:SetMiscLocalization({
+	HorsemanHead		= "Get over here, you idiot!",	--to be translated
+	HorsemanSoldiers	= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",	--to be translated
+	SayCombatEnd		= "This end have I reached before.  What new adventure lies in store?"	--to be translated
+})
+
+-----------------------
+--  Apothecary Trio  --
+-----------------------
+L = DBM:GetModLocalization("ApothecaryTrio")
+
+L:SetGeneralLocalization({
+	name = "Apotheker-Trio"
 })
 
 L:SetWarningLocalization({
@@ -1445,9 +1475,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
---	HorsemanHead		= "Get over here, you idiot!",
---	HorsemanSoldiers	= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
---	SayCombatEnd		= "This end have I reached before.  What new adventure lies in store?"
 })
 
 --------------------

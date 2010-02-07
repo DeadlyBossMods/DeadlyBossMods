@@ -1,5 +1,6 @@
 ## Interface: 30300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chamber of Aspects|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Kammer der Aspekte|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Обсидиановое святилище|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑曜聖所|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0흑요석 성소|r
@@ -12,6 +13,7 @@
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Chamber of Aspects
+## X-DBM-Mod-Name-deDE: Kammer der Aspekte
 ## X-DBM-Mod-Name-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-Name-zhTW: 黑曜聖所
 ## X-DBM-Mod-Name-koKR: 흑요석 성소
