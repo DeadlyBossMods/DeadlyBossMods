@@ -394,7 +394,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAirphase			= "Объявлять воздушную фазу",
 	WarnGroundphaseSoon		= "Предупреждать заранее о наземной фазе",
-	warnPhase2soon			= "Предупреждать заранее о фазе 2 (на ~33%)",
+	warnPhase2soon			= "Предупреждать заранее о фазе 2 (на ~38%)",
 	TimerNextAirphase		= "Отсчет времени до следующей воздушной фазы",
 	TimerNextGroundphase	= "Отсчет времени до следующей наземной фазы",
 	warnInstability			= "Предупреждение о ваших стаках $spell:69766",
