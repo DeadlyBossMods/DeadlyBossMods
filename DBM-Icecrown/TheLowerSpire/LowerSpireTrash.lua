@@ -22,7 +22,7 @@ local specWarnTrap				= mod:NewSpecialWarning("specWarnTrap")
 
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(8, 69483)
-local timerDeathPlague			= mod:NewBuffActiveTimer(15, 72865)
+local timerDeathPlague			= mod:NewTargetTimer(15, 72865)
 
 local soundDarkReckoning = mod:NewSound(69483)
 mod:AddBoolOption("SetIconOnDarkReckoning", true)
@@ -51,9 +51,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(72865) then
 		DeathPlagueTargets[#DeathPlagueTargets + 1] = args.destName
+		timerDeathPlague:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnDeathPlague:Show()
-			timerDeathPlague:Start()
 		end
 		if self.Options.SetIconOnDeathPlague then
 			self:SetIcon(args.destName, DeathPlagueIcons, 15)

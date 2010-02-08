@@ -356,6 +356,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SetIconOnBlazingSkeleton		= "Set icon on Blazing Skeleton (skull)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
