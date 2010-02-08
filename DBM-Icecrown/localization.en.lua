@@ -424,11 +424,13 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "Combat starts"
+	TimerCombatStart	= "Combat starts",
+	PhaseTransition		= "Phase transition"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Show time for start of combat",
+	PhaseTransition			= "Show time for phase transitions",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
 	specWarnDefileCast		= "Show special warning for $spell:72762 on you",
