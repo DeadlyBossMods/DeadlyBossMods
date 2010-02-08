@@ -316,7 +316,8 @@ L:SetMiscLocalization{
 	Keleseth					= "공작 켈레세스",
 	Taldaram					= "공작 탈다람",
 	Valanar						= "공작 발라나르",
-	EmpoweredFlames				= "(%S+) 쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
+--	EmpoweredFlames				= "(%S+) 쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
+	EmpoweredFlames				= "쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
 }
 
 -----------------------
@@ -395,7 +396,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAirphase			= "공중 단계 알리기",
 	WarnGroundphaseSoon		= "지상 단계 사전 경고 보기",
-	warnPhase2soon			= "2 단계 사전 경고 보기(33% 이하)",	
+	warnPhase2soon			= "2 단계 사전 경고 보기(38% 이하)",	
 	TimerNextAirphase		= "다음 공중 단계 타이머 보기",
 	TimerNextGroundphase	= "다음 지상 단계 타이머 보기",
 	warnInstability			= "당신의 $spell:69766 중첩 경고 보기",
