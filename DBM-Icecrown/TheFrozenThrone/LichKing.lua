@@ -52,6 +52,7 @@ local berserkTimer			= mod:NewBerserkTimer(956)--May require tuning based on pul
 
 mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
+mod:AddBoolOption("YellOnDefile", true, "announce")
 
 local phase	= 0
 local warned_preP2 = false
@@ -84,6 +85,9 @@ function mod:DefileTarget()--totally untested
 		end
 	if targetname == UnitName("player") then
 		specWarnDefileCast:Show()
+		if self.Options.YellOnDefile then
+			SendChatMessage(L.YellDefile, "YELL")
+		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
