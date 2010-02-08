@@ -35,6 +35,7 @@ local specWarnDefileCastNear= mod:NewSpecialWarning("specWarnDefileCastNear")--P
 local specWarnDefile		= mod:NewSpecialWarningMove(73708)--Phase 2+ Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325)--Phase 1+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Ability
+local specWarnNecroticPlague	= mod:NewSpecialWarningYou(73912)
 
 local timerCombatStart		= mod:NewTimer(56, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(60, "PhaseTransition")
@@ -132,6 +133,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, NecroticPlagueIcon, 15)
 			NecroticPlagueIcon = NecroticPlagueIcon - 1
+		end
+		if args:IsPlayer() then
+			specWarnNecroticPlague:Show()
 		end
 		self:Unschedule(showNecroticPlagueWarning)
 		self:Schedule(0.3, showNecroticPlagueWarning)
