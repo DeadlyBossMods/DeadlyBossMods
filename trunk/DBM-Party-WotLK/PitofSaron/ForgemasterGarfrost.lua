@@ -24,7 +24,7 @@ local timerDeepFreeze			= mod:NewTargetTimer(14, 70381)
 mod:AddBoolOption("SetIconOnSaroniteRockTarget", true)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70380, 70384) then						-- Deep Freeze
+	if args:IsSpellID(70381, 72930) then						-- Deep Freeze
 		warnDeepFreeze:Show(args.destName)
 		timerDeepFreeze:Start(args.destName)
 	elseif args:IsSpellID(68785, 70335) then					-- Forge Frostborn Mace
