@@ -434,10 +434,12 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Zeige Vorwarnung für Übergang in Phase 3 (bei ~43%)",
 	specWarnDefileCast		= "Zeige Spezialwarnung für $spell:72762 auf dir",
 	specWarnDefileCastNear	= "Zeige Spezialwarnung für $spell:72762 in deiner Nähe",
+	YellOnDefile			= "Schreie bei $spell:72762",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
 
 L:SetMiscLocalization{
-	YellPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"	--to be translated
+	YellPull				= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",	--to be translated
+	YellDefile				= "Entweihen auf mir!"
 }
