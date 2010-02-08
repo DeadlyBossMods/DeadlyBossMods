@@ -37,6 +37,7 @@ local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325)--Phase 1+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Ability
 
 local timerCombatStart		= mod:NewTimer(56, "TimerCombatStart", 2457)
+local timerPhaseTransition	= mod:NewTimer(60, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
 local timerInfestCD			= mod:NewCDTimer(30, 73779)
@@ -96,6 +97,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68981, 74270, 74271, 74272) then -- Remorseless Winter (phase transition start)
 		warnRemorselessWinter:Show()
+		timerPhaseTransition:Start()
 		timerShamblingHorror:Cancel()
 		timerSummonValkyr:Cancel()
 		timerInfestCD:Cancel()--Do these reset on phase transition? Assuming so for time being
