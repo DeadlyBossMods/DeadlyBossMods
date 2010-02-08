@@ -426,11 +426,13 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "Начало боя"
+	TimerCombatStart	= "Начало боя",
+	PhaseTransition		= "Переходная фаза"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
+	PhaseTransition			= "Отсчет времени для переходной фазы",
 	WarnPhase2Soon			= "Предупреждать заранее о переходе в фазу 2 (на ~73%)",
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
