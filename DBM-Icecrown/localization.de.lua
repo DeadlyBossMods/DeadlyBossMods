@@ -89,7 +89,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnImpale			= "Verkünde $spell:69062-Ziele",
+	WarnImpale			= "Verkünde Ziele von $spell:69062",
 	achievementBoned	= "Zeige Timer für Entknöchert-Erfolg",
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
@@ -358,14 +358,15 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SetIconOnBlazingSkeleton		= "Setze Symbole auf Loderndes Skelett (Totenkopf)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",
-	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",
-	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",
-	YellPhase2		= "My strength is returning. Press on, heroes!"--Need to confirm this is when adds spawn faster (phase 2) before used in mod
+	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",	--to be translated
+	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",	--to be translated
+	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",	--to be translated
+	YellPhase2		= "My strength is returning. Press on, heroes!"	--to be translated	--Need to confirm this is when adds spawn faster (phase 2) before used in mod
 }
 
 ------------------
@@ -390,7 +391,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnAirphase			= "Kündige Luftphase an",
 	WarnGroundphaseSoon		= "Zeige Vorwarnung für Bodenphase",
-	warnPhase2soon			= "Zeige Vorwarnung für Phase 2 (bei ~33%)",
+	warnPhase2soon			= "Zeige Vorwarnung für Phase 2 (bei ~38%)",
 	TimerNextAirphase		= "Zeige Timer für nächste Luftphase",
 	TimerNextGroundphase	= "Zeige Timer für nächste Bodenphase",
 	warnInstability			= "Zeige Warnung für deine $spell:69766-Stacks",
@@ -422,11 +423,13 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart		= "Kampf beginnt"
+	TimerCombatStart		= "Kampf beginnt",
+	PhaseTransition			= "Phasenübergang"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Zeige Timer für Kampfbeginn",
+	PhaseTransition			= "Zeige Timer für Phasenübergänge",
 	WarnPhase2Soon			= "Zeige Vorwarnung für Übergang in Phase 2 (bei ~73%)",
 	WarnPhase3Soon			= "Zeige Vorwarnung für Übergang in Phase 3 (bei ~43%)",
 	specWarnDefileCast		= "Zeige Spezialwarnung für $spell:72762 auf dir",
