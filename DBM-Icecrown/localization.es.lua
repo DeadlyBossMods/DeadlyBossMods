@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnTrap		= "Trampa activada! Sale un Depositario!"
+	specWarnTrap		= "¡Trampa activada! ¡Sale un Depositario!"
 }
 
 L:SetOptionLocalization{
@@ -38,7 +38,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnMortalWound	= "%s en >%s< (%s)",
-	specWarnTrap	= "Trampa activada! Sale un Siegacarne vengativo!"--creatureid 37038
+	specWarnTrap	= "¡Trampa activada! ¡Sale un Siegacarne vengativo!"--creatureid 37038
 }
 
 L:SetOptionLocalization{
@@ -85,7 +85,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnImpale			= ">%s< es empalado!"
+	WarnImpale			= "¡>%s< es empalado!"
 }
 
 
@@ -113,7 +113,7 @@ L:SetWarningLocalization{
 	WarnReanimating					= "Resurreccion de Add",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance			= "%s en >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon					= "Nuevos adds pronto",
-	specWarnVengefulShade		= "Sombra vengativa te ataca! Corre!"--creatureid 38222
+	specWarnVengefulShade		= "¡Sombra vengativa te ataca! ¡Corre!"--creatureid 38222
 }
 
 
@@ -239,7 +239,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Sale moco pequeño",
 	WarnUnstableOoze			= "%s en >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
-	specWarnLittleOoze			= "Moco pequeño te ataca! Corre!" --creatureid 36897
+	specWarnLittleOoze			= "¡Moco pequeño te ataca! ¡Corre!" --creatureid 36897
 }
 
 L:SetTimerLocalization{
@@ -322,7 +322,7 @@ L:SetMiscLocalization{
 	Keleseth	= "Príncipe Keleseth",
 	Taldaram	= "Príncipe Taldaram",
 	Valanar		= "Príncipe Valanar",
-	EmpoweredFlames		= "Llamas infernales van hacia (%S+)!"
+	EmpoweredFlames		= "¡Llamas infernales van hacia (%S+)!"
 }
 
 -----------------------------
@@ -347,7 +347,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Una Masa de sombras sale (%S+)!"
+	SwarmingShadows			= "¡Una Masa de sombras sale (%S+)!"
 }
 
 -----------------------------
@@ -389,7 +389,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFirstAirphase		= "Fase aerea pronto",
+	warnPhase2soon			= "Fase 2 pronto",
 	WarnAirphase			= "Fase aerea",
 	WarnGroundphaseSoon		= "Sindragosa aterriza pronto",
 	warnInstability			= "Inestabilidad >%d<",
@@ -425,8 +425,29 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	WarnPhase2Soon			= "Transición a la Fase 2 pronto",
+	WarnPhase3Soon			= "Transición a la Fase 3 pronto",
+	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
+	specWarnDefileCastNear	= "Profanar cerca de ti ¡Ten cuidado!"
+}
+
+L:SetTimerLocalization{
+	TimerCombatStart	= "Empieza el combate",
+	PhaseTransition		= "Transición de fase"
 }
 
 L:SetOptionLocalization{
-	SpiritBurstIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73808)
+	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
+	PhaseTransition			= "Mostrar tiempo para las transiciones de fase",
+	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
+	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
+	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
+	specWarnDefileCastNear	= "Mostrar aviso especial para $spell:72762 cerca de ti",
+	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
+
+L:SetMiscLocalization{
+	YellPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"--translate
+}
+
