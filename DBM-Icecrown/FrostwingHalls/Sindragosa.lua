@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36853)
 mod:RegisterCombat("yell", L.YellPull)
+mod:SetMinCombatTime(25)
 mod:SetUsedIcons(4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -143,7 +144,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end	
 
 function mod:UNIT_HEALTH(uId)
-	if not warned_P2 and self:GetUnitCreatureId(uId) == 36853 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.33 then
+	if not warned_P2 and self:GetUnitCreatureId(uId) == 36853 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.38 then
 		warned_P2 = true
 		warnPhase2soon:Show()	
 	end
