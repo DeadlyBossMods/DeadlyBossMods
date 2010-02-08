@@ -1282,20 +1282,20 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ApothecaryTrio")
 
 L:SetGeneralLocalization({
-	name = "藥劑師三重奏"
+	name = "藥劑師三人組"
 })
 
 L:SetWarningLocalization({
 })
 
-L:SetTimerLocalization{
+L:SetTimerLocalization({
 	HummelActive	= "胡默爾 開始活動",
 	BaxterActive	= "巴克斯特 開始活動",
 	FryeActive		= "弗萊伊 開始活動"
-}
+})
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "為藥劑師三重奏開始活動顯示計時器"
+	TrioActiveTimer		= "為藥劑師三人組開始活動顯示計時器"
 })
 
 L:SetMiscLocalization({
