@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("LichKing", "DBM-Icecrown", 5)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(29983)
+mod:SetCreatureID(36597)
 mod:RegisterCombat("yell", L.YellPull)--I will probably change pull method to "combat" if possible.
 mod:SetMinCombatTime(60)--But logs don't show me when combat_regen_disabled event fire so for moment i have to use what i know
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
