@@ -1,5 +1,18 @@
 if GetLocale() ~= "deDE" then return end
 
+-- fehlende Übersetzungen:
+-- HdZ4: Mal'Ganis
+-- Feste Drak'Tharon: Novos der Beschwörer
+-- HdS: Brann-Eskorte
+-- Nexus: Großmagistrix Telestra
+-- Oculus: Magierlord Urom
+-- Burg: Ingvar der Brandschatzer
+-- Turm: Svala Grabesleid, Skadi der Skrupellose
+-- VF: Portaltimer, Cyanigosa
+-- PdC: Großchampions, Der Schwarze Ritter
+-- Grube: Schmiedemeister Garfrost, Ick und Krick, Geißelfürst Tyrannus
+-- HdR: Wellentimer, Lichkönig-Event
+
 local L
 
 local spell		= "%s"				
@@ -278,9 +291,9 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s und %d %s",
 	Wave4		= "%d %s, %d %s, %d %s und %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Geißelwelle = %d/10",	-- translation to be checked
-	Roleplay	= "Glad you could make it, Uther.",	-- to be translated
-	Roleplay2	= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go."	-- to be translated
+	WaveCheck	= "Angreiferwelle = %d/10",
+	Roleplay	= "Wie schön, dass Ihr es geschafft habt, Uther.",
+	Roleplay2	= "Alle sind bereit. Vergesst nicht, diese Leute sind alle infiziert und werden bald sterben. Wir müssen Stratholme säubern, um den Rest Lordaerons vor der Geißel zu schützen. Los jetzt."
 })
 
 ------------------------
