@@ -4,14 +4,14 @@ local L
 
 local spell		= "%s"				
 local debuff		= "%s: >%s<"			
-local spellCD		= "%s CD"			-- translate
-local spellSoon		= "%s Pronto"			-- translate
-local optionWarning	= "Mostrar cuadno haga %s "		-- translate
-local optionPreWarning	= "Mostrar pre-aviso de %s "	-- translate
-local optionSpecWarning	= "Mostrar aviso especial de %s "	-- translate
-local optionTimerCD	= "Mostrar barra de CD de %s "	-- translate
-local optionTimerDur	= "Mostrar duracion de %s "	-- translate
-local optionTimerCast	= "Mostrar tiempo de casteo %s "	-- translate
+local spellCD		= "%s CD"
+local spellSoon		= "%s Pronto"
+local optionWarning	= "Mostrar cuadno haga %s "
+local optionPreWarning	= "Mostrar pre-aviso de %s "
+local optionSpecWarning	= "Mostrar aviso especial de %s "
+local optionTimerCD	= "Mostrar barra de CD de %s "
+local optionTimerDur	= "Mostrar duracion de %s "
+local optionTimerCast	= "Mostrar tiempo de casteo %s "
 
 
 --------------------------------
@@ -433,16 +433,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningElemental	= "Fase Elemental",		-- translate :)
-	WarningStone		= "Fase Coloso"		-- translate :)
+	WarningElemental	= "Fase Elemental",
+	WarningStone		= "Fase Coloso"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningElemental	= "Activar/Desactivar fase Elemental",	-- translate ;)
-	WarningStone		= "Activar/Desactivar fase Coloso"		-- translate :)
+	WarningElemental	= "Mostrar aviso para fase Elemental",
+	WarningStone		= "Mostrar aviso para fase Coloso"
 })
 
 
@@ -1332,6 +1332,32 @@ L:SetMiscLocalization({
 	HorsemanHead				= "¡Ven aquí, idiota!",  -- Attention, espace avant la virgule
 	HorsemanSoldiers			= "¡Soldados alzáos soldados, tomad vuestro acero! Dad la victoria a este deshonrado caballero!",
 	SayCombatEnd				= "Este final a mí me suena. Veamos qué nueva me espera."
+})
+
+-----------------------
+--  Apothecary Trio  --
+-----------------------
+L = DBM:GetModLocalization("ApothecaryTrio")
+
+L:SetGeneralLocalization({
+	name = "Los Tres Boticarios"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization{
+	HummelActive	= "Hummel se activa",
+	BaxterActive	= "Baxter se activa",
+	FryeActive		= "Frye se activa"
+}
+
+L:SetOptionLocalization({
+	TrioActiveTimer		= "Mostrar tiempo para que los Boticarios se activen"
+})
+
+L:SetMiscLocalization({
+	SayCombatStart		= "Did they bother to tell you who I am and why I am doing this?" --translate
 })
 
 ---------------------
