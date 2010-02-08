@@ -360,7 +360,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnBlazingSkeleton	= "設置標記在熾熱骷髏身上 (頭顱)",
+	SetIconOnBlazingSkeleton	= "為熾熱骷髏設置標記 (頭顱)",
 	warnCorrosion			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -422,22 +422,22 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon			= "第2階段轉換 即將到來",
-	WarnPhase3Soon			= "第3階段轉換 即將到來",
-	specWarnDefileCast		= "你中了汙染 - 快跑開",
+	WarnPhase2Soon			= "轉換第2階段 即將到來",
+	WarnPhase3Soon			= "轉換第3階段 即將到來",
+	specWarnDefileCast		= "你中了汙染 - 快離開",
 	specWarnDefileCastNear		= "你附近的人中了汙染 - 小心"
 }
 
 L:SetTimerLocalization{
 	TimerCombatStart		= "戰鬥開始",
-	PhaseTransition			= "階段轉換"
+	PhaseTransition			= "轉換階段"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
-	PhaseTransition			= "為階段轉換顯示計時器",
-	WarnPhase2Soon			= "為第2階段轉換顯示預先警告 (大約73%)",
-	WarnPhase3Soon			= "為第3階段轉換顯示預先警告 (大約43%)",
+	PhaseTransition			= "為轉換階段顯示計時器",
+	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
+	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
 	specWarnDefileCastNear		= "當你附近的人中了$spell:72762時顯示特別警告",
 	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
