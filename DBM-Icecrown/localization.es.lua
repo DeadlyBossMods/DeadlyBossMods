@@ -364,6 +364,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SetIconOnBlazingSkeleton	= "Poner icono en Esqueleto llameante (calavera)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -443,11 +444,13 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
 	specWarnDefileCastNear	= "Mostrar aviso especial para $spell:72762 cerca de ti",
+	YellOnDefile			= "Gritar cuando tengas $spell:72762",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
 
 L:SetMiscLocalization{
-	YellPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"--translate
+	YellPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",--translate
+	YellDefile		= "Profanar en mi!"
 }
 
