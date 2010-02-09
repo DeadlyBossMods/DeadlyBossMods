@@ -402,6 +402,9 @@ end
 --  Methods  --
 ---------------
 function rangeCheck:Show(range, filter)
+	if type(range) == "function" then -- the first argument is optional
+		return self:Show(nil, range)
+	end
 	range = range or 10
 	frame = frame or createFrame()
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
