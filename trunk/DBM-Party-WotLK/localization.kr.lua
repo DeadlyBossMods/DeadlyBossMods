@@ -313,20 +313,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnCrystalHandler	= "Crystal Handler spawned (%d remaining)"
+	WarnCrystalHandler		= "Crystal Handler spawned (%d remaining)"
 })
 
 L:SetTimerLocalization({
-	timerCrystalHandler	= "Crystal Handler spawns"
+	timerCrystalHandler		= "Crystal Handler spawns"
 })
 
 L:SetOptionLocalization({
-	WarnCrystalHandler	= "Show warning when Crystal Handler spawns",
-	timerCrystalHandler	= "Show timer for next Crystal Handler spawn"
+	WarnCrystalHandler		= "Show warning when Crystal Handler spawns",
+	timerCrystalHandler		= "Show timer for next Crystal Handler spawn"
 })
 
 L:SetMiscLocalization({
-	HandlerEmote	= "%s calls for assistance!"
+	HandlerEmote			= "%s calls for assistance!"
 })
 
 ---------------------
@@ -996,7 +996,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CyanArrived			= "A valiant defense, but this city must be razed. I will fulfill Malygos's wishes myself!"
+	CyanArrived			= "훌륭한 방어였다만, 도시를 지키게 둘 수는 없지! 직접 말리고스 님의 의지를 실현하리라!"
 })
 
 ------------
