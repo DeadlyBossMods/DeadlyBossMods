@@ -3,8 +3,8 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
-mod:RegisterCombat("yell", L.YellPull)--I will probably change pull method to "combat" if possible.
-mod:SetMinCombatTime(60)--But logs don't show me when combat_regen_disabled event fire so for moment i have to use what i know
+mod:RegisterCombat("combat")
+mod:SetMinSyncRevision(3489)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -12,7 +12,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnRemorselessWinter = mod:NewSpellAnnounce(74270)--Phase Transition Start Ability
@@ -35,9 +36,9 @@ local specWarnDefileCastNear= mod:NewSpecialWarning("specWarnDefileCastNear")--P
 local specWarnDefile		= mod:NewSpecialWarningMove(73708)--Phase 2+ Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325)--Phase 1+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Ability
-local specWarnNecroticPlague	= mod:NewSpecialWarningYou(73912)
+local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912)
 
-local timerCombatStart		= mod:NewTimer(56, "TimerCombatStart", 2457)
+local timerCombatStart		= mod:NewTimer(53, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(60, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
@@ -45,10 +46,11 @@ local timerInfestCD			= mod:NewCDTimer(30, 73779)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
 local timerDefileCD			= mod:NewCDTimer(30, 72762)
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
+local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
 local timerSummonValkyr 	= mod:NewNextTimer(50, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
 
-local berserkTimer			= mod:NewBerserkTimer(956)--May require tuning based on pull detection
+local berserkTimer			= mod:NewBerserkTimer(900)
 
 mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
@@ -65,8 +67,7 @@ function mod:OnCombatStart(delay)
 	phase = 0
 	warned_preP2 = false
 	warned_preP3 = false
-	timerCombatStart:Start(-delay)
-	self:ScheduleMethod(56, "NextPhase")
+	self:NextPhase()
 	table.wipe(NecroticPlagueTargets)
 	NecroticPlagueIcon 	= 7
 end
@@ -104,6 +105,7 @@ function mod:SPELL_CAST_START(args)
 		warnRemorselessWinter:Show()
 		timerPhaseTransition:Start()
 		timerShamblingHorror:Cancel()
+		timerDrudgeGhouls:Cancel()
 		timerSummonValkyr:Cancel()
 		timerInfestCD:Cancel()--Do these reset on phase transition? Assuming so for time being
 		timerNecroticPlagueCD:Cancel()--Do these reset on phase transition? Assuming so for time being
@@ -115,8 +117,8 @@ function mod:SPELL_CAST_START(args)
 		warnShamblingHorror:Show()
 		timerShamblingHorror:Start()
 	elseif args:IsSpellID(70358) then -- Drudge Ghouls
-		warnShamblingHorror:Show()
-		timerShamblingHorror:Start()
+		warnDrudgeGhouls:Show()
+		timerDrudgeGhouls:Start()
 	elseif args:IsSpellID(70498) then -- Vile Spirits
 		warnSummonVileSpirit:Show()
 		timerVileSpirit:Start()
@@ -160,10 +162,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(69037) then -- Summon Val'kyr
-		warnSummonValkyr:Show()
-		timerSummonValkyr:Start()
+do
+	local lastValk = 0
+	function mod:SPELL_SUMMON(args)
+		if args:IsSpellID(69037) and time() - lastValk > 2 then -- Summon Val'kyr
+			warnSummonValkyr:Show()
+			timerSummonValkyr:Start()
+			lastValk = time()
+		end
 	end
 end
 
@@ -178,10 +184,10 @@ do
 end
 
 function mod:UNIT_HEALTH(uId)
-	if phase == 1 and not warned_preP2 and self:GetUnitCreatureId(uId) == 29983 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.73 then
+	if phase == 1 and not warned_preP2 and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.73 then
 		warned_preP2 = true
 		warnPhase2Soon:Show()	
-	elseif phase == 2 and not warned_preP3 and self:GetUnitCreatureId(uId) == 29983 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.43 then
+	elseif phase == 2 and not warned_preP3 and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.43 then
 		warned_preP3 = true
 		warnPhase3Soon:Show()	
 	end
@@ -190,11 +196,24 @@ end
 function mod:NextPhase()--Might need some tweaks or may even replace it with monster yell instead but will avoid using locals if possible
 	phase = phase + 1
 	if phase == 1 then
-		timerShamblingHorror:Start(20)--First add of phase timing might be off
+		timerShamblingHorror:Start(20)
+		timerDrudgeGhouls:Start(10)
 		timerNecroticPlagueCD:Start()
 	elseif phase == 2 then
 		timerSummonValkyr:Start(22)--First add of phase timing might be off
 	elseif phase == 3 then
 		timerVileSpirit:Start(20)--First add of phase timing might be off
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.YellPull or msg:find(L.YellPull) then
+		self:SendSync("LKPull")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "LKPull" then
+		timerCombatStart:Start()
 	end
 end
