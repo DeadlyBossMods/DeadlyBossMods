@@ -98,6 +98,9 @@ DBM.DefaultOptions = {
 	HealthFrameGrowUp = false,
 	HealthFrameLocked = false,
 	HealthFrameWidth = 200,
+	ArrowPosX = 0,
+	ArrowPosY = -150,
+	ArrowPoint = "TOP",
 	-- global boss mod settings (overrides mod-specific settings for some options)
 	DontShowBossAnnounces = false,
 	DontSendBossAnnounces = false,
@@ -1240,6 +1243,7 @@ do
 		if modname == "DBM-Core" then
 			loadOptions()
 			DBM.Bars:LoadOptions("DBM")
+			DBM.Arrow:LoadPosition()
 			if not DBM.Options.ShowMinimapButton then DBM:HideMinimapButton() end
 			self.AddOns = {}
 			for i = 1, GetNumAddOns() do

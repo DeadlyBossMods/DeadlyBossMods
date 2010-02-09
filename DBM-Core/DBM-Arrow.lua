@@ -27,7 +27,6 @@ frame:Hide()
 frame:SetFrameStrata("HIGH")
 frame:SetWidth(56)
 frame:SetHeight(42)
-frame:SetPoint("TOP", 0, -150)
 frame:SetMovable(true)
 frame:EnableMouse(false)
 frame:RegisterForDrag("LeftButton", "RightButton")
@@ -36,6 +35,10 @@ frame:SetScript("OnDragStart", function(self)
 end)
 frame:SetScript("OnDragStop", function(self)
 	self:StopMovingOrSizing()
+	local point, _, _, x, y = self:GetPoint(1)
+	DBM.Options.ArrowPoint = point
+	DBM.Options.ArrowPosX = x
+	DBM.Options.ArrowPosY = y
 end)
 local arrow = frame:CreateTexture(nil, "OVERLAY")
 arrow:SetTexture("Interface\\AddOns\\DBM-Core\\textures\\arrows\\Arrow.blp")
@@ -232,4 +235,8 @@ function DBM.Arrow:Move()
 	DBM.Bars:CreateBar(25, DBM_ARROW_MOVABLE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 	DBM:Unschedule(endMove)
 	DBM:Schedule(25, endMove)
+end
+
+function DBM.Arrow:LoadPosition()
+	frame:SetPoint(DBM.Options.ArrowPoint, DBM.Options.ArrowPosX, DBM.Options.ArrowPosY)
 end
