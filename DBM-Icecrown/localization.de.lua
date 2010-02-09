@@ -447,6 +447,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull				= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",	--to be translated
+	YellPull				= "Der vielgerühmte Streiter des Lichts ist endlich hier? Soll ich Frostgram niederlegen und mich Eurer Gnade ausliefern, Fordring?",
 	YellDefile				= "Entweihen auf mir!"
 }
