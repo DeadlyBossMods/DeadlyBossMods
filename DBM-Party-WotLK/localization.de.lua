@@ -3,7 +3,6 @@ if GetLocale() ~= "deDE" then return end
 -- fehlende Übersetzungen:
 --
 -- HdZ4: WaveCheck überprüfen
--- Feste Drak'Tharon: Novos der Beschwörer
 -- HdS: Brann-Eskorte
 -- Nexus: Großmagistrix Telestra
 -- Oculus: Magierlord Urom
@@ -16,16 +15,16 @@ if GetLocale() ~= "deDE" then return end
 
 local L
 
-local spell		= "%s"				
-local debuff		= "%s: >%s<"			
-local spellCD		= "%s cooldown"			
-local spellSoon		= "%s bald"			
-local optionWarning	= "Zeige Warnung für %s"		
+local spell		= "%s"
+local debuff		= "%s: >%s<"
+local spellCD		= "Cooldown von %s"
+local spellSoon		= "%s bald"
+local optionWarning	= "Zeige Warnung für %s"
 local optionPreWarning	= "Zeige Vorwarnung für %s"
 local optionSpecWarning	= "Zeige Spezialwarnung für %s"
-local optionTimerCD	= "Zeige Timer für Cooldown von %s"	
-local optionTimerDur	= "Zeige Timer für Dauer von %s"	
-local optionTimerCast	= "Zeige Timer für Zaubern von %s"	
+local optionTimerCD	= "Zeige Timer für Cooldown von %s"
+local optionTimerDur	= "Zeige Timer für Dauer von %s"
+local optionTimerCast	= "Zeige Timer für Zaubern von %s"
 
 ----------------------------------
 --  Ahn'Kahet: The Old Kingdom  --
@@ -340,7 +339,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HandlerEmote	= "%s calls for assistance!"	-- to be translated
+	HandlerEmote	= "%s ruft um Hilfe!"
 })
 
 -----------------
