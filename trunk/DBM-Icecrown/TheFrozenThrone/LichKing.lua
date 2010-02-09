@@ -209,7 +209,7 @@ function mod:NextPhase()--Might need some tweaks or may even replace it with mon
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPull or msg:find(L.YellPull) then
+	if msg == L.LKPull or msg:find(L.LKPull) then
 		self:SendSync("LKPull")
 	end
 end
