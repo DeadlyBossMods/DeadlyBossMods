@@ -438,7 +438,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "3 단계 전환 사전 경고 보기(43% 이하)",
 	specWarnDefileCast		= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnDefileCastNear	= "당신 주변에 $spell:72762이 시전된 경우 특수 경고 보기",
-	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)	
 }
 L:SetMiscLocalization{

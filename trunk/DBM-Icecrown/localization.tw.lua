@@ -440,7 +440,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
 	specWarnDefileCastNear		= "當你附近的人中了$spell:72762時顯示特別警告",
-	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
 
