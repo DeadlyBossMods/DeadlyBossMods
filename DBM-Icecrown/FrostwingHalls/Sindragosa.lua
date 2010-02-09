@@ -42,7 +42,7 @@ local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
 local timerInstability			= mod:NewBuffActiveTimer(8, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
 local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
-local timerNextMysticBuffet		= mod:NewNextTimer(5, 70128)--every 4.8-5.2 seconds alternating. (pretty crafty blizzard)
+local timerNextMysticBuffet		= mod:NewNextTimer(6, 70128)
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
