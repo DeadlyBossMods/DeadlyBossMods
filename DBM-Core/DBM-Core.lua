@@ -729,17 +729,18 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		xNum, yNum = tonumber(x or ""), tonumber(y or "")
 		local success
 		if xNum and yNum then
-			DBM.Arrow:ShowRunTo(xNum / 100, yNum / 100)
+			DBM.Arrow:ShowRunTo(xNum / 100, yNum / 100, 0)
 			success = true
 		elseif type(x) == "string" and x:trim() ~= "" then
-			if x:upper() == "HIDE" then
+			local subCmd = x:trim()
+			if subCmd:upper() == "HIDE" then
 				DBM.Arrow:Hide()
 				success = true
-			elseif x:upper() == "MOVE" then
+			elseif subCmd:upper() == "MOVE" then
 				DBM.Arrow:Move()
 				success = true
-			elseif DBM:GetRaidUnitId(x) ~= "none" then
-				DBM.Arrow:ShowRunTo(x)
+			elseif DBM:GetRaidUnitId(DBM:Capitalize(subCmd)) ~= "none" then
+				DBM.Arrow:ShowRunTo(DBM:Capitalize(subCmd), 0)
 				success = true
 			end
 		end
@@ -2135,6 +2136,19 @@ DBM.Bars:SetAnnounceHook(function(bar)
 		return ("%s: %s  %d:%02d"):format(prefix, _G[bar.frame:GetName().."BarName"]:GetText(), math.floor(bar.timer / 60), bar.timer % 60)
 	end
 end)
+
+function DBM:Capitalize(str)
+	local firstByte = str:byte(1, 1)
+	local numBytes = 1
+	if firstByte >= 0xF0 then -- firstByte & 0b11110000
+		numBytes = 4
+	elseif firstByte >= 0xE0 then -- firstByte & 0b11100000
+		numBytes = 3
+	elseif firstByte >= 0xC0 then  -- firstByte & 0b11000000
+		numBytes = 2
+	end
+	return str:sub(1, numBytes):upper()..str:sub(numBytes + 1):lower()
+end
 
 -----------------
 --  Map Sizes  --

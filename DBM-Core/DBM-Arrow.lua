@@ -68,9 +68,9 @@ do
 		if not dims and levels and GetCurrentMapDungeonLevel() == 0 then -- we are in a known zone but the dungeon level seems to be wrong
 			SetMapToCurrentZone() -- fixes the dungeon level (if it was wrong for some reason)
 			dims = levels[GetCurrentMapDungeonLevel()] -- try again
-			if not dims then -- there is actually a level 0 in this zone but we don't know about it...too bad :(
-				return
-			end
+		end
+		if not dims then -- we are in an unknown dungeon :(
+			return
 		end
 		local dX = (x1 - x2) * dims[1]
 		local dY = (y1 - y2) * dims[2]
@@ -104,10 +104,10 @@ do
 				if distance >= hideDistance then
 					frame:Hide()
 				end
-			elseif not runAwayArrow then
+			else
 				local perc = min(distance, 100) / 100
-				arrow:SetVertexColor(0, 1 - perc, perc)
-				if distance >= hideDistance then
+				arrow:SetVertexColor(1, 1 - perc, 0)
+				if distance <= hideDistance then
 					frame:Hide()
 				end
 			end
@@ -115,7 +115,7 @@ do
 			if runAwayArrow then
 				arrow:SetVertexColor(1, 0.3, 0)
 			else
-				arrow:SetVertexColor(0, 0.3, 1)
+				arrow:SetVertexColor(1, 1, 0)
 			end
 		end
 	end
@@ -225,6 +225,8 @@ end
 
 function DBM.Arrow:Move()
 	targetType = "rotate"
+	runAwayArrow = false
+	hideDistance = 5
 	frame:EnableMouse(true)
 	frame:Show()
 	DBM.Bars:CreateBar(25, DBM_ARROW_MOVABLE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
