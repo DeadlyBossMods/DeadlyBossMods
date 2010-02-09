@@ -369,9 +369,9 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",--translate
+	YellPull		= "Han entrado intrusos en el Sagrario Interior. Apresuraos en acabar con el dragón verde. ¡Dejad solo huesos y tendones para la reanimación!",
 	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",--translate
-	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",--translate
+	YellPortals		= "He abierto un portal al Sueño. Vuestra salvación está dentro, héroes...",
 	YellPhase2		= "My strength is returning. Press on, heroes!"--translate
 }
 
@@ -434,11 +434,13 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart	= "Empieza el combate",
-	PhaseTransition		= "Transición de fase"
+	PhaseTransition		= "Transición de fase",
+	TimerNecroticPlagueCleanse = "Purgar Peste necrótica"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
+	TimerNecroticPlagueCleanse	= "Mostrar tiempo para purgar Peste necrótica\nantes de la primera marca",
 	PhaseTransition			= "Mostrar tiempo para las transiciones de fase",
 	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
