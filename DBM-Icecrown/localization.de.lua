@@ -3,7 +3,6 @@ if GetLocale() ~= "deDE" then return end
 -- fehlende Übersetzungen:
 --
 -- Valithria Traumwandler
--- Sindragosa
 -- Der Lichkönig
 
 local L
@@ -408,7 +407,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase	= "Euer Vormarsch endet hier! Keiner wird überleben!",
-	YellPhase2		= "Now, feel my master's limitless power and despair!",	--to be translated
+	YellPhase2		= "Fühlt die grenzenlose Macht meines Meisters, und verzweifelt!",
 	YellPull		= "Ihr seid Narren, euch hierher zu wagen. Der eisige Wind Nordends wird eure Seelen verschlingen!"
 }
 
