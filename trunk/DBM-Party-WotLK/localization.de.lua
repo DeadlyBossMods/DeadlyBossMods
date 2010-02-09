@@ -1,7 +1,8 @@
 if GetLocale() ~= "deDE" then return end
 
 -- fehlende Übersetzungen:
--- HdZ4: Mal'Ganis
+--
+-- HdZ4: WaveCheck überprüfen
 -- Feste Drak'Tharon: Novos der Beschwörer
 -- HdS: Brann-Eskorte
 -- Nexus: Großmagistrix Telestra
@@ -249,7 +250,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Outro	= "Your journey has just begun, young prince. Gather your forces and meet me in the arctic land of Northrend. It is there that we shall settle the score between us. It is there that your true destiny will unfold."	-- to be translated
+	Outro	= "Eure Reise hat erst begonnen, junger Prinz. Sammelt Eure Streitmacht und folgt mir in das arktische Land Nordend. Dort werden wir unsere Rechnung begleichen. Dort wird sich Euer wahres Schicksal offenbaren."
 })
 
 -------------------
@@ -291,7 +292,7 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s und %d %s",
 	Wave4		= "%d %s, %d %s, %d %s und %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Angreiferwelle = %d/10",
+	WaveCheck	= "Angreiferwelle = %d/10",	-- does not work ... why?
 	Roleplay	= "Wie schön, dass Ihr es geschafft habt, Uther.",
 	Roleplay2	= "Alle sind bereit. Vergesst nicht, diese Leute sind alle infiziert und werden bald sterben. Wir müssen Stratholme säubern, um den Rest Lordaerons vor der Geißel zu schützen. Los jetzt."
 })

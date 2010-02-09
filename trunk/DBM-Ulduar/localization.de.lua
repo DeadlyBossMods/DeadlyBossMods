@@ -1,5 +1,12 @@
 ﻿if GetLocale() ~= "deDE" then return end
 
+-- fehlende Übersetzungen:
+--
+-- Auriaya
+-- General Vezax (Hard Mode)
+-- Yogg-Saron
+-- Algalon
+
 local L
 
 ----------------------
