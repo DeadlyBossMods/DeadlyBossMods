@@ -446,6 +446,6 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)	
 }
 L:SetMiscLocalization{
-	YellPull				= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",
+	YellPull				= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
 	YellDefile				= "저에게 파멸!!!"	
 }
