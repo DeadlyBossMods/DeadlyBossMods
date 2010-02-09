@@ -446,6 +446,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull			= "聖光所謂的正義終於來了嗎?我是否該把雙之哀傷放下,祈求你的寬恕呢,弗丁?",
+	YellPull			= "聖光所謂的正義終於來了嗎？我是否該把霜之哀傷放下，祈求你的寬恕呢，弗丁？",
 	YellDefile			= "我中了汙染!"
 }
