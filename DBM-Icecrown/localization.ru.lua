@@ -437,7 +437,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileCastNear	= "Спец-предупреждение, когда $spell:72762 около вас",
-	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73779),
+	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
 
