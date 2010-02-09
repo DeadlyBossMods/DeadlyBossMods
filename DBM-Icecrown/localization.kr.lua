@@ -356,11 +356,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s : >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
+	warnCorrosion				= "%s : >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
-	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "알 수 없음")
+	SetIconOnBlazingSkeleton	= "타오르는 해골에게 공격대 아이콘 설정(해골)",
+	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "알 수 없음")
 }
 
 L:SetMiscLocalization{
@@ -429,18 +430,22 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart		= "전투 시작"
+	TimerCombatStart		= "전투 시작",
+	PhaseTransition			= "다음 단계 전환"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "전투 시작 타이머 보기",
+	PhaseTransition			= "다음 단계 전환 타이머 보기",	
 	WarnPhase2Soon			= "2 단계 전환 사전 경고 보기(73% 이하)",
 	WarnPhase3Soon			= "3 단계 전환 사전 경고 보기(43% 이하)",
 	specWarnDefileCast		= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnDefileCastNear	= "당신 주변에 $spell:72762이 시전된 경우 특수 경고 보기",
+	YellOnDefile			= "$spell:72762의 대상이 됐을 때 외치기",	
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)	
 }
 L:SetMiscLocalization{
-	YellPull				= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"
+	YellPull				= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",
+	YellDefile				= "저에게 파멸!!!"	
 }
