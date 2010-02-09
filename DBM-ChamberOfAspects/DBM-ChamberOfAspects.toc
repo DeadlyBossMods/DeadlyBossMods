@@ -19,6 +19,7 @@
 ## X-DBM-Mod-Name-koKR: 흑요석 성소
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
 ## X-DBM-Mod-Name-esES: El Sagrario Obsidiana
+## X-DBM-Mod-Name-esMX: El Sagrario Obsidiana
 ## X-DBM-Mod-Sort: 5
 ## X-DBM-Mod-LoadZone: The Obsidian Sanctum
 ## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum
@@ -27,6 +28,7 @@
 ## X-DBM-Mod-LoadZone-koKR: 흑요석 성소
 ## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien
 ## X-DBM-Mod-LoadZone-esES: El Sagrario Obsidiana
+## X-DBM-Mod-LoadZone-esMX: El Sagrario Obsidiana
 localization.en.lua
 localization.de.lua
 localization.ru.lua
