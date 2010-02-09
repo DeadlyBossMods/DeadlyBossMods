@@ -43,6 +43,7 @@ local timerPhaseTransition	= mod:NewTimer(60, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
 local timerInfestCD			= mod:NewCDTimer(30, 73779)
+local timerNecroticPlagueCleanse = mod:NewTimee(5, "TimerNecroticPlagueCleanse", 73912, false)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
 local timerDefileCD			= mod:NewCDTimer(30, 72762)
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
@@ -136,6 +137,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague
 		NecroticPlagueTargets[#NecroticPlagueTargets + 1] = args.destName
 		timerNecroticPlagueCD:Start()
+		timerNecroticPlagueCleanse:Start()
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, NecroticPlagueIcon, 15)
 			NecroticPlagueIcon = NecroticPlagueIcon - 1

@@ -426,11 +426,13 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart	= "Combat starts",
-	PhaseTransition		= "Phase transition"
+	PhaseTransition		= "Phase transition",
+	TimerNecroticPlagueCleanse = "Cleanse Necrotic Plague"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Show time for start of combat",
+	TimerNecroticPlagueCleanse	= "Show timer to cleanse Necrotic Plague before\nthe first tick",
 	PhaseTransition			= "Show time for phase transitions",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
