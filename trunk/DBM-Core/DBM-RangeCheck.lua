@@ -289,11 +289,16 @@ function onUpdate(self, elapsed)
 	self:SetText(DBM_CORE_RANGECHECK_HEADER:format(self.range), 1, 1, 1)
 	if initRangeCheck(self.range) then
 		for i = 1, GetNumRaidMembers() do
-			if (not UnitIsUnit("raid"..i, "player")) and (not UnitIsDeadOrGhost("raid"..i)) and self.checkFunc("raid"..i, self.range) then
+			local uId = "raid"..i
+			if not UnitIsUnit(uId, "player") and not UnitIsDeadOrGhost(uId) and self.checkFunc(uId, self.range) and (not self.filter or self.filter(uId)) then
 				j = j + 1
-				color = RAID_CLASS_COLORS[select(2, UnitClass("raid"..i))] or NORMAL_FONT_COLOR
-				self:AddLine(UnitName("raid"..i), color.r, color.g, color.b)
-				if j >= 5 then break end
+				color = RAID_CLASS_COLORS[select(2, UnitClass(uId))] or NORMAL_FONT_COLOR
+				local icon = GetRaidTargetIndex(uId)
+				local text = icon and ("{rt%d} %s"):format(icon, UnitName(uId)) or UnitName(uId)
+				self:AddLine(text, color.r, color.g, color.b)
+				if j >= 5 then
+					break
+				end
 			end
 		end
 	else
@@ -324,20 +329,25 @@ checkFuncs[28] = function(uId)
 	return CheckInteractDistance(uId, 4)
 end
 
+
+local getDistanceBetween
 do
 	local mapSizes = DBM.MapSizes
-   
-	local function mapRangeCheck(uId, range)
-		local pX, pY = GetPlayerMapPosition("player")
-		local uX, uY = GetPlayerMapPosition(uId)
+	
+	function getDistanceBetween(player, x, y)
+		local startX, startY = GetPlayerMapPosition("player")
 		local mapName = GetMapInfo()
 		local dims  = mapSizes[mapName] and mapSizes[mapName][GetCurrentMapDungeonLevel()]
 		if not dims then
 			return
 		end
-		local dX = (pX - uX) * dims[1]
-		local dY = (pY - uY) * dims[2]
-		return math.sqrt(dX * dX + dY * dY) < range * 1.0005
+		local dX = (startX - x) * dims[1]
+		local dY = (startY - y) * dims[2]
+		return math.sqrt(dX * dX + dY * dY)
+	end
+
+	local function mapRangeCheck(uId, range)
+		return getDistanceBetween(uId, GetPlayerMapPosition("player")) < range
 	end
 	
 	function initRangeCheck(range)
@@ -391,11 +401,12 @@ end
 ---------------
 --  Methods  --
 ---------------
-function rangeCheck:Show(range)
+function rangeCheck:Show(range, filter)
 	range = range or 10
 	frame = frame or createFrame()
 	frame.checkFunc = checkFuncs[range] or error(("Range \"%d yd\" is not supported."):format(range), 2)
 	frame.range = range
+	frame.filter = filter
 	frame:Show()
 	frame:SetOwner(UIParent, "ANCHOR_PRESERVE")
 	onUpdate(frame, 0)
@@ -407,5 +418,11 @@ end
 
 function rangeCheck:IsShown()
 	return frame and frame:IsShown()
+end
+
+function rangeCheck:GetDistance(...)
+	if initRangeCheck() then
+		return getDistanceBetween(...)
+	end
 end
 
