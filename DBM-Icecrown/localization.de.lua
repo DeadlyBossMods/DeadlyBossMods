@@ -1,5 +1,11 @@
 if GetLocale() ~= "deDE" then return end
 
+-- fehlende Übersetzungen:
+--
+-- Valithria Traumwandler
+-- Sindragosa
+-- Der Lichkönig
+
 local L
 
 ---------------------------
@@ -90,7 +96,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale			= "Verkünde Ziele von $spell:69062",
-	achievementBoned	= "Zeige Timer für Entknöchert-Erfolg",
+	achievementBoned	= "Zeige Timer für Erfolg 'Entknöchert'",
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
