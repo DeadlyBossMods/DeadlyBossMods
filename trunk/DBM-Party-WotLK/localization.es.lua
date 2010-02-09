@@ -1039,7 +1039,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CyanArrived	= "A valiant defense, but this city must be razed. I will fulfill Malygos's wishes myself!" --translate
+	CyanArrived	= "Una defensa valiente, pero esta ciudad debe ser arrasada. ¡Yo misma cumpliré los deseos de Malygos!"
 })
 
 ------------
@@ -1357,7 +1357,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SayCombatStart		= "Did they bother to tell you who I am and why I am doing this?" --translate
+	SayCombatStart		= "¿Se han molestado en decirte quién soy y por qué estoy haciendo esto?"
 })
 
 ---------------------
