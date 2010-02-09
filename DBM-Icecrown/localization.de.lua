@@ -22,7 +22,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnTrap		= "Zeige spezielle Warnung für Fallenaktivierung",
+	specWarnTrap		= "Zeige Spezialwarnung für Fallenaktivierung",
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
 	SetIconOnDeathPlague	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
@@ -48,7 +48,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnTrap	= "Zeige spezielle Warnung fur Fallenaktivierung",
+	specWarnTrap	= "Zeige Spezialwarnung fur Fallenaktivierung",
 	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
@@ -280,8 +280,8 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnPhase2Soon				= "Zeige Vorwarnung für Phase 2 (bei ~83%)",
 	WarnPhase3Soon				= "Zeige Vorwarnung für Phase 3 (bei ~38%)",
-	specWarnMalleableGoo		= "Zeige spezielle Warnung für Formbarer Schleim auf Dir\n(Funktioniert nur, wenn Du das erste Ziel bist)",
-	specWarnMalleableGooNear	= "Zeige spezielle Warnung für Formbarer Schleim in Deiner Nähe\n(Funktioniert nur, wenn Du in der Nähe des ersten Zieles bist)",
+	specWarnMalleableGoo		= "Zeige Spezialwarnung für Formbarer Schleim auf Dir\n(Funktioniert nur, wenn Du das erste Ziel bist)",
+	specWarnMalleableGooNear	= "Zeige Spezialwarnung für Formbarer Schleim in Deiner Nähe\n(Funktioniert nur, wenn Du in der Nähe des ersten Zieles bist)",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
