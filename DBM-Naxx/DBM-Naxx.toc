@@ -18,6 +18,7 @@
 ## X-DBM-Mod-SubCategories-koKR: 거미 지구,피조물 지구,역병 지구,군사 지구,서리고룡 둥지
 ## X-DBM-Mod-SubCategories-frFR: Quartier des Arachnides,Quartier des Assemblages,Quartier de la Peste,Quartier Militaire,Aile de glace
 ## X-DBM-Mod-SubCategories-esES: El Arrabal Arácnido,El Arrabal de los Ensamblajes,El Arrabal de la Plaga,El Arrabal Militar,Guarida Helada
+## X-DBM-Mod-SubCategories-esMX: El Arrabal Arácnido,El Arrabal de los Ensamblajes,El Arrabal de la Plaga,El Arrabal Militar,Guarida Helada
 ## X-DBM-Mod-Name: Naxxramas
 ## X-DBM-Mod-Name-ruRU: Наксрамас
 ## X-DBM-Mod-Name-zhTW: 納克薩瑪斯
@@ -30,6 +31,7 @@
 ## X-DBM-Mod-LoadZone-zhTW: 納克薩瑪斯
 ## X-DBM-Mod-LoadZone-koKR: 낙스라마스
 ## X-DBM-Mod-LoadZone-esES: Naxxramas
+## X-DBM-Mod-LoadZone-esMX: Naxxramas
 localization.en.lua
 localization.de.lua
 localization.fr.lua
