@@ -17,6 +17,7 @@
 ## X-DBM-Mod-Name-ruRU: Колизей Авангарда
 ## X-DBM-Mod-Name-zhTW: 十字軍試煉
 ## X-DBM-Mod-Name-esES: Coliseo de los Cruzados
+## X-DBM-Mod-Name-esMX: Coliseo de los Cruzados
 ## X-DBM-Mod-Sort: 1
 ## X-DBM-Mod-LoadZone: Trial of the Crusader
 ## X-DBM-Mod-LoadZone-koKR: 십자군의 시험장
@@ -25,6 +26,7 @@
 ## X-DBM-Mod-LoadZone-ruRU: Испытание крестоносца
 ## X-DBM-Mod-LoadZone-zhTW: 十字軍試煉
 ## X-DBM-Mod-LoadZone-esES: Prueba del Cruzado
+## X-DBM-Mod-LoadZone-esMX: Prueba del Cruzado
 localization.en.lua
 localization.de.lua
 localization.fr.lua

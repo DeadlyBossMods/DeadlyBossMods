@@ -79,7 +79,7 @@ local function showNecroticPlagueWarning()
 	NecroticPlagueIcon 	= 7
 end
 
-function mod:DefileTarget()--totally untested
+function mod:DefileTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
 		if self.Options.DefileIcon then
