@@ -292,7 +292,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("IsleofConquest")
 
 L:SetGeneralLocalization({
-	name = "Isle of Conquest"
+	name = "Insel der Eroberung"
 })
 
 L:SetWarningLocalization({
