@@ -9,7 +9,6 @@ if GetLocale() ~= "deDE" then return end
 -- Burg: Ingvar der Brandschatzer
 -- VF: Portaltimer, Cyanigosa
 -- PdC: Großchampions, Der Schwarze Ritter
--- Grube: Schmiedemeister Garfrost, Ick und Krick, Geißelfürst Tyrannus
 -- HdR: Wellentimer, Lichkönig-Event
 
 local L
@@ -1340,8 +1339,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	IckPursuit	= "%s is chasing you!",	-- to be translated
-	Barrage	= "%s begins rapidly conjuring explosive mines!"	-- to be translated
+	IckPursuit	= "%s jagt Euch!",
+	Barrage	= "%s fängt an, schnell explosive Minen herbeizuzaubern!"
 })
 ----------------------------
 --  Forgemaster Garfrost  --
@@ -1368,7 +1367,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow	= "%s hurls a massive saronite boulder at you!"	-- to be translated
+	SaroniteRockThrow	= "%s schleudert Euch einen massiven Saronitstein entgegen!"
 })
 
 ----------------------------
@@ -1397,9 +1396,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CombatStart	= "Alas, brave, brave adventurers, your meddling has reached its end. Do you hear the clatter of bone and steel coming up the tunnel behind you? That is the sound of your impending demise.",	-- to be translated
-	HoarfrostTarget	= "The frostwyrm Rimefang gazes at (%S+) and readies an icy attack!",	-- to be translated
-	YellCombatEnd	= "Impossible.... Rimefang.... warn...."	-- to be translated
+	CombatStart	= "Ach, Ihr tapferen, tapferen Helden, Euer kleiner Aufstand endet hier. Hört Ihr das Geklapper von Stahl und Knochen aus dem Tunnel hinter Euch? Das ist das Geräusch Eures Todes.",
+	HoarfrostTarget	= "Der Frostwyrm Raufang wendet sich (%S+) zu und bereitet einen eisigen Angriff vor!",
+	YellCombatEnd	= "Unmöglich... Raufang... warne..."
 })
 
 ----------------------
