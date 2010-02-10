@@ -427,20 +427,24 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart	= "Начало боя",
-	PhaseTransition		= "Переходная фаза"
+	PhaseTransition		= "Переходная фаза",
+	TimerNecroticPlagueCleanse = "Очищение Мертвящей чумы"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
+	TimerNecroticPlagueCleanse	= "Отсчет времени до первого тика Метвящей чумы (для очищения)",
 	PhaseTransition			= "Отсчет времени для переходной фазы",
 	WarnPhase2Soon			= "Предупреждать заранее о переходе в фазу 2 (на ~73%)",
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileCastNear	= "Спец-предупреждение, когда $spell:72762 около вас",
+	YellOnDefile			= "Кричать, когда $spell:72762 на вас",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
 }
 
 L:SetMiscLocalization{
-	LKPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?"
+	LKPull		= "Неужели прибыли наконец хваленые силы Света? Мне бросить Ледяную Скорбь и сдаться на твою милость, Фордринг?",
+	YellDefile		= "Осквернение на мне!"
 }
