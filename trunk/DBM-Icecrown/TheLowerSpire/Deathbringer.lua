@@ -67,7 +67,11 @@ function mod:OnCombatStart(delay)
 	timerCallBloodBeast:Start(-delay)
 	warnAddsSoon:Schedule(35-delay)
 	timerBloodNova:Start(-delay)
-	enrageTimer:Start(-delay)
+	if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
+		enrageTimer:Start(-delay)
+	else
+		enrageTimer:Start(360-delay)
+	end
 	table.wipe(boilingBloodTargets)
 	warned_preFrenzy = false
 	boilingBloodIcon = 7
