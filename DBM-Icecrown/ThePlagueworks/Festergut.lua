@@ -43,10 +43,46 @@ local gasSporeTargets	= {}
 local vileGasTargets	= {}
 local gasSporeIcon 	= 8
 
+local mRange = { }
+local mPoints = { 
+	[0] = { 0.19828705489635, 0.653256416320 },
+	[1] = { 0.21672140061855, 0.63018447160721 },
+	[2] = { 0.21968087553978, 0.6705778837204 }
+}
+local noCheck = true
+
+local function findMin(a)
+	local index = 1
+	local value = a[index]
+	for i, val in ipairs(a) do
+		if val < value then
+			index = i
+			value = val
+		end
+	end
+	return value, index
+end
+
 local function warnGasSporeTargets()
 	warnGasSpore:Show(table.concat(gasSporeTargets, "<, >"))
-	table.wipe(gasSporeTargets)
 	timerGasSpore:Start()
+
+	if not noCheck then
+		for _, point in ipairs(mPoints) do 
+			for i, v in ipairs(gasSporeTargets) do
+				mRange[i] = DBM.RangeCheck:GetDistance(DBM:GetRaidUnitId(v), point[1], point[2])
+			end
+			local value, index = findMin(mRange)
+			if gasSporeTargets[index] == UnitName("player") then	-- found my shortest way
+				DBM.Arrow:ShowRunTo(point[1], point[2])
+			end
+			table.remove(gasSporeTargets, index)
+			table.wipe(mRange)
+		end
+	end
+	noCheck = true
+
+	table.wipe(gasSporeTargets)
 	gasSporeIcon = 8
 end
 
@@ -62,6 +98,7 @@ function mod:OnCombatStart(delay)
 	timerPungentBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
 	table.wipe(gasSporeTargets)
 	gasSporeIcon = 8
+	noCheck = true
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -84,6 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69279) then	-- Gas Spore
 		gasSporeTargets[#gasSporeTargets + 1] = args.destName
 		if args:IsPlayer() then
+			noCheck = false	-- check for distance and show the arrow
 			specWarnGasSpore:Show()
 		end
 		if self.Options.SetIconOnGasSpore then
@@ -122,3 +160,5 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+
