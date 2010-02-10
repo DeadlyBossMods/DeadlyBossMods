@@ -7,7 +7,6 @@ if GetLocale() ~= "deDE" then return end
 -- Nexus: Großmagistrix Telestra
 -- Oculus: Magierlord Urom
 -- Burg: Ingvar der Brandschatzer
--- Turm: Svala Grabesleid, Skadi der Skrupellose
 -- VF: Portaltimer, Cyanigosa
 -- PdC: Großchampions, Der Schwarze Ritter
 -- Grube: Schmiedemeister Garfrost, Ick und Krick, Geißelfürst Tyrannus
@@ -922,8 +921,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "What mongrels dare intrude here? Look alive, my brothers!  A feast for the one that brings me their heads!",	-- to be translated
-	Phase2			= "You motherless knaves! Your corpses will make fine morsels for my new drake!"	-- to be translated
+	CombatStart		= "Welche Hunde wagen es, hier einzudringen? Auf sie, meine Brüder! Ein Fest für den, der mir ihre Köpfe bringt!",
+	Phase2			= "Ihr räudigen Halunken! Eure Leichen werden feine Appetithappen für meinen neuen Drachen abgeben!"
 })
 
 -------------------
@@ -965,7 +964,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SvalaRoleplayStart	= "My liege! I have done as you asked, and now beseech you for your blessing!"	-- to be translated
+	SvalaRoleplayStart	= "Mein Meister! Ich tat, was Ihr verlangtet, und ersuche Euch um Euren Segen!"
 })
 
 -----------------------
