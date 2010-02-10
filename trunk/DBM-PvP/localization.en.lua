@@ -229,7 +229,7 @@ L:SetOptionLocalization{
 	NovaSound			= "Play sound on $spell:65279",
 	timerMobOvercharge	= "Show timer for Overcharged mob (stacking debuff)",
 	EmalonEnrage		= "Show timer for $spell:26662",
-	RangeFrame			= "Show range frame"
+	RangeFrame			= "Show range frame (10 m)"
 }
 
 ---------------------------------
@@ -273,7 +273,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	ToravonEnrage	= "Toravon enrages"
+	ToravonEnrage	= "Toravon berserk"
 }
 
 L:SetOptionLocalization{
