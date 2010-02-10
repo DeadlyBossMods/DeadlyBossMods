@@ -430,11 +430,13 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart		= "戰鬥開始",
-	PhaseTransition			= "轉換階段"
+	PhaseTransition			= "轉換階段",
+	TimerNecroticPlagueCleanse 	= "淨化亡域瘟疫"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
+	TimerNecroticPlagueCleanse	= "為淨化第一次疊加前的亡域瘟疫顯示計時器",
 	PhaseTransition			= "為轉換階段顯示計時器",
 	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
@@ -446,6 +448,6 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	LKPull			= "聖光所謂的正義終於來了嗎？我是否該把霜之哀傷放下，祈求你的寬恕呢，弗丁？",
+	LKPull				= "聖光所謂的正義終於來了嗎？我是否該把霜之哀傷放下，祈求你的寬恕呢，弗丁？",
 	YellDefile			= "我中了汙染!"
 }
