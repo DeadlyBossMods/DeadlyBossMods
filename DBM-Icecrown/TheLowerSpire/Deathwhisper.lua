@@ -175,9 +175,11 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70842) then
 		warnPhase2:Show()
-		timerAdds:Cancel()
-		warnAddsSoon:Cancel()
-		self:UnscheduleMethod("addsTimer")
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
+			timerAdds:Cancel()
+			warnAddsSoon:Cancel()
+			self:UnscheduleMethod("addsTimer")
+		end
 	end
 end
 
