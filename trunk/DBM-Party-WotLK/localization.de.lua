@@ -424,7 +424,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warningElemental	= "Elementarphase",
+	WarningElemental	= "Elementarphase",
 	WarningStone		= "Kolossphase"
 })
 
