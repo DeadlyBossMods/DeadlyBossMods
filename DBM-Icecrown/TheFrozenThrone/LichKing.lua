@@ -23,8 +23,8 @@ local warnShamblingHorror	= mod:NewSpellAnnounce(70372)--Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358)--Phase 1 Add
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912)--Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779)--Phase 1+ Ability
-local warnSoulreaper		= mod:NewSpellAnnounce(73797)--Phase 1+ Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnSoulreaper		= mod:NewSpellAnnounce(73797)--Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetAnnounce(72762)--Phase 2+ Ability
 local warnSummonValkyr		= mod:NewSpellAnnounce(69037)--Phase 2 Add
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
@@ -42,6 +42,7 @@ local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Abili
 local timerCombatStart		= mod:NewTimer(54, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(60, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
+local timerSoulreaperCD	 	= mod:NewCDTimer(30, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
 local timerInfestCD			= mod:NewCDTimer(30, 73779)
 local timerNecroticPlagueCleanse = mod:NewTimer(5, "TimerNecroticPlagueCleanse", 73912, false)
@@ -152,6 +153,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(69409, 73797, 73798, 73799) then -- Soul reaper (MT debuff)
 		warnSoulreaper:Show(args.destName)
 		timerSoulreaper:Start(args.destName)
+		timerSoulreaperCD:Start()
 		if args:IsPlayer() then
 			specWarnSoulreaper:Show()
 		end
@@ -205,6 +207,7 @@ function mod:NextPhase()--Might need some tweaks or may even replace it with mon
 		timerNecroticPlagueCD:Start()
 	elseif phase == 2 then
 		timerSummonValkyr:Start(22)--First add of phase timing might be off
+		timerSoulreaperCD:Start(40)
 	elseif phase == 3 then
 		timerVileSpirit:Start(20)--First add of phase timing might be off
 	end
