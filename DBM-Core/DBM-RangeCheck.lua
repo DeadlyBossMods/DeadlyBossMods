@@ -334,8 +334,8 @@ local getDistanceBetween
 do
 	local mapSizes = DBM.MapSizes
 	
-	function getDistanceBetween(player, x, y)
-		local startX, startY = GetPlayerMapPosition("player")
+	function getDistanceBetween(uId, x, y)
+		local startX, startY = GetPlayerMapPosition(uId)
 		local mapName = GetMapInfo()
 		local dims  = mapSizes[mapName] and mapSizes[mapName][GetCurrentMapDungeonLevel()]
 		if not dims then
