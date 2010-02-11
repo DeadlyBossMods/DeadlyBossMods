@@ -210,6 +210,7 @@ function mod:NextPhase()--Might need some tweaks or may even replace it with mon
 		timerSoulreaperCD:Start(40)
 	elseif phase == 3 then
 		timerVileSpirit:Start(20)--First add of phase timing might be off
+		timerSoulreaperCD:Start(40)
 	end
 end
 
