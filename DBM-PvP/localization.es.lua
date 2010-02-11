@@ -250,7 +250,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	BurningFury		= "Burning Fury >%d<"
+	BurningFury		= "Furia ardiente >%d<"
 }
 
 L:SetTimerLocalization{
@@ -277,7 +277,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	Frostbite	= "Frostbite en >%s< (%d)"
+	Frostbite	= "Mordedura de Escarcha en >%s< (%d)"
 }
 
 L:SetTimerLocalization{
@@ -303,22 +303,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSiegeEngine		= "Siege Engine ready!",
-	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
+	WarnSiegeEngine		= "Máquina de asedio Lista!",
+	WarnSiegeEngineSoon	= "Máquina de asedio en ~10 seg"
 })
 
 L:SetTimerLocalization({
 	TimerStart		= "¡La batalla va comenzar!", 
 	TimerPOI		= "%s",
-	TimerSiegeEngine	= "Siege Engine ready"
+	TimerSiegeEngine	= "Máquina de asedio Lista"
 })
 
 L:SetOptionLocalization({
 	TimerStart		= "Mostrar tiempo para que comienze la Batalla.", 
 	TimerPOI		= "Mostrar tiempo para las Capturas",
-	TimerSiegeEngine	= "Show timer for Siege Engine construction",
-	WarnSiegeEngine		= "Show warning when Siege Engine is ready",
-	WarnSiegeEngineSoon	= "Show warning when Siege Engine is almost ready"
+	TimerSiegeEngine	= "Mostrar tiempo para la construcción de Máquina de asedio",
+	WarnSiegeEngine		= "Mostrar aviso cuando Máquina de asedio esté lista",
+	WarnSiegeEngineSoon	= "Mostrar aviso cuando Máquina de asedio esté casi lista"
 })
 
 L:SetMiscLocalization({
@@ -326,14 +326,14 @@ L:SetMiscLocalization({
 	BgStart60		= "La batalla comenzará en 60 segundos.",
 	BgStart30		= "La batalla comenzará en 30 segundos.",
 	BgStart15		= "La batalla comenzará en 15 segundos.",
-	SiegeEngine				= "Siege Engine",
-	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
-	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
-	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
-	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
-	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
-	GoblinFinishedHorde		= "The siege engine is ready to roll!",
-	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
-	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
+	SiegeEngine				= "Máquina de asedio",
+	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",--translate
+	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",--translate
+	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",--translate
+	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",--translate
+	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",--translate
+	GoblinFinishedHorde		= "The siege engine is ready to roll!",--translate
+	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",--translate
+	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"--translate
 })
 
