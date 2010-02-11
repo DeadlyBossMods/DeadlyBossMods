@@ -745,6 +745,9 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			elseif DBM:GetRaidUnitId(DBM:Capitalize(subCmd)) ~= "none" then
 				DBM.Arrow:ShowRunTo(DBM:Capitalize(subCmd), 0)
 				success = true
+			elseif subCmd:upper() == "TARGET" and UnitName("target") then
+				DBM.Arrow:ShowRunTo(UnitName("target"), 0)
+				success = true
 			end
 		end
 		if not success then
