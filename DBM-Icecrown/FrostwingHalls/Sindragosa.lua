@@ -164,6 +164,7 @@ function mod:OnSync(msg, arg)
 	if msg == "Airphase" then
 		warnAirphase:Show()
 		timerNextFrostBreath:Cancel()
+		timerNextBlisteringCold:Cancel()
 		timerNextAirphase:Start()
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
