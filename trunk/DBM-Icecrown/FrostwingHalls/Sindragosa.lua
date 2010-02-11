@@ -38,6 +38,7 @@ local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 4)
 local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase")
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase")
 local timerNextFrostBreath		= mod:NewNextTimer(22, 71056)
+local timerNextBlisteringCold	= mod:NewCDTimer(70, 70123)
 local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
 local timerInstability			= mod:NewBuffActiveTimer(8, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
@@ -55,7 +56,7 @@ local warned_P2 = false
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
-	timerNextAirphase:Start(50-delay)
+	timerNextAirphase:Start(62-delay)
 	beaconIcons = 8
 	warned_P2 = false
 end
@@ -140,6 +141,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnBlisteringCold:Show()
 		specWarnBlisteringCold:Show()
 		timerBlisteringCold:Start()
+		timerNextBlisteringCold:Start()
 	end
 end	
 
