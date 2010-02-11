@@ -25,6 +25,7 @@ local warnNecroticPlague	= mod:NewTargetAnnounce(73912)--Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779)--Phase 1+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797)--Phase 1+ Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnDefileCast		= mod:NewTargetAnnounce(72762)--Phase 2+ Ability
 local warnSummonValkyr		= mod:NewSpellAnnounce(69037)--Phase 2 Add
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498)--Phase 3 Add
@@ -33,7 +34,7 @@ local warnHarvestSoul		= mod:NewTargetAnnounce(74325)--Phase 3 Ability
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797)--Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912)--Phase 1+ Ability
 local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast")--Phase 2+ Ability
-local specWarnDefileCastNear= mod:NewSpecialWarning("specWarnDefileCastNear")--Phase 2+ Ability
+local specWarnDefileCastNear= mod:NewSpecialWarning("specWarnDefileCastNear", false)--Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708)--Phase 2+ Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325)--Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Ability
@@ -82,6 +83,7 @@ end
 function mod:DefileTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
+		warnDefileCast:Show(targetname)
 		if self.Options.DefileIcon then
 			self:SetIcon(targetname, 8, 10)
 		end
