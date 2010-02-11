@@ -208,9 +208,11 @@ function mod:NextPhase()--Might need some tweaks or may even replace it with mon
 	elseif phase == 2 then
 		timerSummonValkyr:Start(22)--First add of phase timing might be off
 		timerSoulreaperCD:Start(40)
+		timerDefileCD:Start(38)
 	elseif phase == 3 then
 		timerVileSpirit:Start(20)--First add of phase timing might be off
 		timerSoulreaperCD:Start(40)
+		timerDefileCD:Start(38)
 	end
 end
 
