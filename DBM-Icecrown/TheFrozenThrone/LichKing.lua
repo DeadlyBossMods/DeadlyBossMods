@@ -116,7 +116,7 @@ function mod:SPELL_CAST_START(args)
 		timerDefileCD:Cancel()--Do these reset on phase transition? Assuming so for time being
 	elseif args:IsSpellID(72262) then -- Quake (phase transition end)
 		warnQuake:Show()
-		self:ScheduleMethod(1.5, "NextPhase")--Might need some tweaks
+		self:NextPhase()
 	elseif args:IsSpellID(70372) then -- Shambling Horror
 		warnShamblingHorror:Show()
 		timerShamblingHorror:Start()
@@ -206,7 +206,7 @@ function mod:NextPhase()--Might need some tweaks or may even replace it with mon
 		timerDrudgeGhouls:Start(10)
 		timerNecroticPlagueCD:Start()
 	elseif phase == 2 then
-		timerSummonValkyr:Start(22)--First add of phase timing might be off
+		timerSummonValkyr:Start(20)--First add of phase timing might be off
 		timerSoulreaperCD:Start(40)
 		timerDefileCD:Start(38)
 	elseif phase == 3 then
