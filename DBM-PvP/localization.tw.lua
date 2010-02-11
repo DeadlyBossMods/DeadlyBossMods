@@ -206,8 +206,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningGrab 			= "提示擒握坦克的目標",
-	EmalonEnrage			= "為$spell:26662顯示計時器"
+	WarningGrab 			= "提示擒握的目標",
+	ArchavonEnrage			= "為$spell:26662顯示計時器"
 })
 
 --------------------------------
@@ -232,7 +232,7 @@ L:SetOptionLocalization{
 	NovaSound			= "為$spell:65279播放音效",
 	timerMobOvercharge		= "為超載的小兵顯示計時器(減益疊加)",
 	EmalonEnrage			= "為$spell:26662顯示計時器",
-	RangeFrame			= "顯示距離框"
+	RangeFrame			= "顯示距離框 (10碼)"
 }
 
 ---------------------------------
@@ -246,7 +246,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnCinder			= "燃焰餘燼 - 快跑開",
 	BurningFury			= "燃燒烈怒 >%d<"
 }
 
@@ -256,7 +255,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecWarnCinder			= "當你中了$spell:67332時顯示特別警告",
 	PlaySoundOnCinder		= "當你中了$spell:67332時播放音效",
 	BurningFury			= "為$spell:66721顯示警告",
 	KoralonEnrage			= "為$spell:26662顯示計時器"
