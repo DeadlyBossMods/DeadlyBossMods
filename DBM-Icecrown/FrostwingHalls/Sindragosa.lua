@@ -101,7 +101,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUnchainedMagic:Show()
 		end
 		self:Unschedule(warnUnchainedTargets)
-		if #unchainedTargets >= 5 then
+		if #unchainedTargets >= 6 then
 			warnUnchainedTargets()
 		else
 			self:Schedule(0.3, warnUnchainedTargets)
