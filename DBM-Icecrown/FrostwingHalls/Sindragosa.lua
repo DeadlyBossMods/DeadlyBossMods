@@ -51,6 +51,7 @@ mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
 
 local beaconTargets		= {}
+local beaconIconTargets	= {}
 local unchainedTargets	= {}
 local beaconIcons = 8
 local warned_P2 = false
@@ -62,6 +63,7 @@ function mod:OnCombatStart(delay)
 	beaconIcons = 8
 	warned_P2 = false
 	table.wipe(beaconTargets)
+	table.wipe(beaconIconTargets)
 	table.wipe(unchainedTargets)
 end
 
@@ -71,16 +73,16 @@ do
 	end
 	function mod:SetBeaconIcons()
 		if DBM:GetRaidRank() > 0 then
-			table.sort(beaconTargets, sort_by_group)
+			table.sort(beaconIconTargets, sort_by_group)
 			local beaconIcons = 8
-			for i, v in ipairs(beaconTargets) do
+			for i, v in ipairs(beaconIconTargets) do
 				if self.Options.AnnounceFrostBeaconIcons then
 					SendChatMessage(L.BeaconIconSet:format(BeaconIcon, UnitName(v)), "RAID")
 				end
 				mod:SetIcon(UnitName(v), BeaconIcon)
 				beaconIcons = beaconIcons - 1
 			end
---			table.wipe(beaconTargets)
+			table.wipe(beaconIconTargets)
 		end
 	end
 end
@@ -104,18 +106,19 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70126) then
+		beaconTargets[#beaconTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
 		end
 		if self.Options.SetIconOnFrostBeacon then
-			table.insert(beaconTargets, DBM:GetRaidUnitId(args.destName))
-			mod:ScheduleMethod(0.1, "SetBeaconIcons")
+			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
+			mod:ScheduleMethod(0.3, "SetBeaconIcons")
 		end
 		self:Unschedule(warnBeaconTargets)
 		if #beaconTargets >= 5 then
 			warnBeaconTargets()
 		else
-			self:Schedule(0.2, warnBeaconTargets)
+			self:Schedule(0.3, warnBeaconTargets)
 		end
 	elseif args:IsSpellID(69762) then
 		unchainedTargets[#unchainedTargets + 1] = args.destName
@@ -126,7 +129,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #unchainedTargets >= 6 then
 			warnUnchainedTargets()
 		else
-			self:Schedule(0.2, warnUnchainedTargets)
+			self:Schedule(0.3, warnUnchainedTargets)
 		end
 	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
 		if args:IsPlayer() then
