@@ -358,6 +358,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
+	SetIconOnBlazingSkeleton		= "Устанавливать метку на Исторгающего пламя скелета (череп)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -400,12 +401,14 @@ L:SetOptionLocalization{
 	warnInstability			= "Предупреждение о ваших стаках $spell:69766",
 	warnChilledtotheBone	= "Предупреждение о ваших стаках $spell:70106",
 	warnMysticBuffet		= "Предупреждение о ваших стаках $spell:70128",
+	AnnounceFrostBeaconIcons= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права лидера или помощника)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
 	YellAirphase	= "Здесь ваше вторжение и окончится! Никто не уцелеет.",
 	YellPhase2		= "А теперь почувствуйте всю мощь господина и погрузитесь в отчаяние!",
+	BeaconIconSet	= "Ледяная метка {rt%d} установлена на: %s",
 	YellPull		= "Глупцы, зачем вы сюда явились! Ледяные ветра Нордскола унесут ваши души!"
 }
 
@@ -441,7 +444,8 @@ L:SetOptionLocalization{
 	specWarnDefileCastNear	= "Спец-предупреждение, когда $spell:72762 около вас",
 	YellOnDefile			= "Кричать, когда $spell:72762 на вас",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
-	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
+	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200)
 }
 
 L:SetMiscLocalization{
