@@ -5,7 +5,6 @@ if GetLocale() ~= "deDE" then return end
 -- HdZ4: WaveCheck überprüfen
 -- HdS: Brann-Eskorte
 -- Nexus: Großmagistrix Telestra
--- Oculus: Magierlord Urom
 -- Burg: Ingvar der Brandschatzer
 -- VF: Portaltimer, Cyanigosa
 -- PdC: Großchampions, Der Schwarze Ritter
@@ -793,7 +792,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CombatStart		= "Poor blind fools!"	-- to be translated
+	CombatStart		= "Arme, blinde Narren!"
 })
 
 --------------------------
