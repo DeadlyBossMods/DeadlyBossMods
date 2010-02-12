@@ -369,7 +369,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull		= "Eindringlinge im Inneren Sanktum! Beschleunigt die Vernichtung des grünen Drachen! Bewahrt nur Knochen und Sehnen für die Wiederbelebung auf!",
-	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",	--to be translated
+	YellKill		= "ICH BIN GEHEILT! Ysera, erlaubt mir diese üblen Kreaturen zu beseitigen!",
 	YellPortals		= "Ich habe ein Portal in den Traum geöffnet. Darin liegt Eure Erlösung, Helden...",
 	YellPhase2		= "Meine Kraft kehrt zurück. Macht weiter, Helden!",
 }
