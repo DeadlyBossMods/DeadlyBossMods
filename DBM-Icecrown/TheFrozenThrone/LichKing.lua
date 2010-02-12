@@ -10,6 +10,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_REMOVED",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
@@ -44,7 +45,7 @@ local timerPhaseTransition	= mod:NewTimer(60, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
 local timerSoulreaperCD	 	= mod:NewCDTimer(30, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
-local timerInfestCD			= mod:NewCDTimer(30, 73779)
+local timerInfestCD			= mod:NewCDTimer(22, 73779)
 local timerNecroticPlagueCleanse = mod:NewTimer(5, "TimerNecroticPlagueCleanse", 73912, false)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
 local timerDefileCD			= mod:NewCDTimer(30, 72762)
@@ -57,6 +58,7 @@ local berserkTimer			= mod:NewBerserkTimer(900)
 
 mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
+mod:AddBoolOption("RagingSpiritIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 
 local phase	= 0
@@ -159,12 +161,21 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(69200) then -- Raging Spirit
 		warnRagingSpirit:Show(args.destName)
+		if self.Options.RagingSpiritIcon then
+			self:SetIcon(args.destName, 8, 5)
+		end
 	elseif args:IsSpellID(68980, 74325, 74326, 74327) then -- Harvest Soul (not sure if this is right event for this, combat logs i saw never made it to phase 3)
 		warnHarvestSoul:Show(args.destName)
 		timerHarvestSoul:Start(args.destName)
 		if args:IsPlayer() then
 			specWarnHarvestSoul:Show()
 		end
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague
+		self:SetIcon(args.destName, 0)
 	end
 end
 
