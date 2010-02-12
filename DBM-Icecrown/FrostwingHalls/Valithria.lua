@@ -48,6 +48,7 @@ function mod:OnCombatStart(delay)
 	timerNextPortal:Start(-delay)
 	berserkTimer:Start(-delay)
 	BlazingSkeleton = nil
+	table.wipe(GutSprayTargets)
 end
 
 function mod:TrySetTarget()
