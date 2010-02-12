@@ -1285,24 +1285,24 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ApothecaryTrio")
 
 L:SetGeneralLocalization({
-	name = "Apothecary Trio"
+	name = "화학회사 삼인방"
 })
 
 L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	HummelActive	= "Hummel becomes active",
-	BaxterActive	= "Baxter becomes active",
-	FryeActive		= "Frye becomes active"
+	HummelActive	= "훔멜 활성화",
+	BaxterActive	= "벡스터 활성화",
+	FryeActive		= "프라이 활성화"
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "Show timers for when Apothecary Trio becomes active"
+	TrioActiveTimer		= "화학회사 삼인방 활성화 타이머 보기"
 })
 
 L:SetMiscLocalization({
-	SayCombatStart		= "Did they bother to tell you who I am and why I am doing this?"
+	SayCombatStart		= "저들이 내가 누군지와 왜 이 일을 하는지 말해주려고 귀찮게 하든가?"
 })
 
 
