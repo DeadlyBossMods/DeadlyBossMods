@@ -1,10 +1,5 @@
 if GetLocale() ~= "deDE" then return end
 
--- fehlende Übersetzungen:
---
--- Valithria Traumwandler
--- Der Lichkönig
-
 local L
 
 ---------------------------
@@ -371,7 +366,7 @@ L:SetMiscLocalization{
 	YellPull		= "Eindringlinge im Inneren Sanktum! Beschleunigt die Vernichtung des grünen Drachen! Bewahrt nur Knochen und Sehnen für die Wiederbelebung auf!",
 	YellKill		= "ICH BIN GEHEILT! Ysera, erlaubt mir diese üblen Kreaturen zu beseitigen!",
 	YellPortals		= "Ich habe ein Portal in den Traum geöffnet. Darin liegt Eure Erlösung, Helden...",
-	YellPhase2		= "Meine Kraft kehrt zurück. Macht weiter, Helden!",
+	YellPhase2		= "Meine Kraft kehrt zurück. Macht weiter, Helden!"
 }
 
 ------------------
@@ -402,7 +397,8 @@ L:SetOptionLocalization{
 	warnInstability			= "Zeige Warnung für deine $spell:69766-Stacks",
 	warnChilledtotheBone	= "Zeige Warnung für deine $spell:70106-Stacks",
 	warnMysticBuffet		= "Zeige Warnung für deine $spell:70128-Stacks",
-	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+	BeaconIconSet			= "Frostleuchtfeuer-Symbol {rt%d} auf %s gesetzt",
+ 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
@@ -443,7 +439,8 @@ L:SetOptionLocalization{
 	specWarnDefileCastNear	= "Zeige Spezialwarnung für $spell:72762 in deiner Nähe",
 	YellOnDefile			= "Schreie bei $spell:72762",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
-	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
+	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200)
 }
 
 L:SetMiscLocalization{
