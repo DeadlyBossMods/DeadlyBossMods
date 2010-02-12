@@ -346,7 +346,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Shadows amass and swarm around (%S+)!"
+	SwarmingShadows			= "Schatten sammeln sich und schwärmen um (%S+)!"
 }
 
 -----------------------------
@@ -371,7 +371,7 @@ L:SetMiscLocalization{
 	YellPull		= "Eindringlinge im Inneren Sanktum! Beschleunigt die Vernichtung des grünen Drachen! Bewahrt nur Knochen und Sehnen für die Wiederbelebung auf!",
 	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",	--to be translated
 	YellPortals		= "Ich habe ein Portal in den Traum geöffnet. Darin liegt Eure Erlösung, Helden...",
-	YellPhase2		= "My strength is returning. Press on, heroes!"	--to be translated	--Need to confirm this is when adds spawn faster (phase 2) before used in mod
+	YellPhase2		= "Meine Kraft kehrt zurück. Macht weiter, Helden!",
 }
 
 ------------------
