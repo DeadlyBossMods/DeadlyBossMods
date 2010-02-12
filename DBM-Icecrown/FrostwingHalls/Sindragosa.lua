@@ -53,14 +53,12 @@ mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
 local beaconTargets		= {}
 local beaconIconTargets	= {}
 local unchainedTargets	= {}
-local beaconIcons = 8
 local warned_P2 = false
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerNextAirphase:Start(62-delay)
 	timerNextBlisteringCold:Start(44-delay)
-	beaconIcons = 8
 	warned_P2 = false
 	table.wipe(beaconTargets)
 	table.wipe(beaconIconTargets)
@@ -77,9 +75,9 @@ do
 			local beaconIcons = 8
 			for i, v in ipairs(beaconIconTargets) do
 				if self.Options.AnnounceFrostBeaconIcons then
-					SendChatMessage(L.BeaconIconSet:format(BeaconIcon, UnitName(v)), "RAID")
+					SendChatMessage(L.BeaconIconSet:format(beaconIcons, UnitName(v)), "RAID")
 				end
-				mod:SetIcon(UnitName(v), BeaconIcon)
+				mod:SetIcon(UnitName(v), beaconIcons)
 				beaconIcons = beaconIcons - 1
 			end
 			table.wipe(beaconIconTargets)
