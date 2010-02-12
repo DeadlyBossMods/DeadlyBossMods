@@ -47,6 +47,7 @@ local timerNextMysticBuffet		= mod:NewNextTimer(6, 70128)
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
+local soundBlisteringCold = mod:NewSound(70123)
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
 
@@ -165,6 +166,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnBlisteringCold:Show()
 		timerBlisteringCold:Start()
 		timerNextBlisteringCold:Start()
+		soundBlisteringCold:Play()
 	end
 end	
 
