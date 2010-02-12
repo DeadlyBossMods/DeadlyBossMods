@@ -407,12 +407,14 @@ L:SetOptionLocalization{
 	warnInstability			= "Mostrar aviso de tus marcas de $spell:69766",
 	warnChilledtotheBone	= "Mostrar aviso de tus marcas de $spell:70106",
 	warnMysticBuffet		= "Mostrar aviso de tus marcas de $spell:70128",
+	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de raid\n(Requiere 'anunciar' activado y líder/ayudante)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
 	YellAirphase	= "Your incursion ends here! None shall survive!",--translate
 	YellPhase2		= "Now, feel my master's limitless power and despair!",--translate
+	BeaconIconSet	= "Señal de Escarcha, icono {rt%d} en %s",
 	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"--translate
 }
 
@@ -448,7 +450,8 @@ L:SetOptionLocalization{
 	specWarnDefileCastNear	= "Mostrar aviso especial para $spell:72762 cerca de ti",
 	YellOnDefile			= "Gritar cuando tengas $spell:72762",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
-	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
+	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200)
 }
 
 L:SetMiscLocalization{
