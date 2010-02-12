@@ -50,7 +50,7 @@ local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
 local timerDefileCD			= mod:NewCDTimer(30, 72762)
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
-local timerSummonValkyr 	= mod:NewNextTimer(45, 69037)
+local timerSummonValkyr 	= mod:NewCDTimer(47, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
 
 local berserkTimer			= mod:NewBerserkTimer(900)
