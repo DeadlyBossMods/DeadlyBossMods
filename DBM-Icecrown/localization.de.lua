@@ -384,8 +384,12 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
+	warnPhase2soon			= "Phase 2 bald",
 	WarnAirphase			= "Luftphase",
-	WarnGroundphaseSoon		= "Sindragosa landet bald"
+	WarnGroundphaseSoon		= "Sindragosa landet bald",
+	warnInstability			= "Instablität >%d<",
+	warnChilledtotheBone	= "Durchgefroren >%d<",
+	warnMysticBuffet		= "Mystischer Puffer >%d<"
 }
 
 L:SetOptionLocalization{
@@ -397,13 +401,14 @@ L:SetOptionLocalization{
 	warnInstability			= "Zeige Warnung für deine $spell:69766-Stacks",
 	warnChilledtotheBone	= "Zeige Warnung für deine $spell:70106-Stacks",
 	warnMysticBuffet		= "Zeige Warnung für deine $spell:70128-Stacks",
-	BeaconIconSet			= "Frostleuchtfeuer-Symbol {rt%d} auf %s gesetzt",
+	AnnounceFrostBeaconIcons= "Poste Symbole für Ziele von $spell:70126 in Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)",
  	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
 	YellAirphase	= "Euer Vormarsch endet hier! Keiner wird überleben!",
 	YellPhase2		= "Fühlt die grenzenlose Macht meines Meisters, und verzweifelt!",
+	BeaconIconSet			= "Frostleuchtfeuer-Symbol {rt%d} auf %s gesetzt",
 	YellPull		= "Ihr seid Narren, euch hierher zu wagen. Der eisige Wind Nordends wird eure Seelen verschlingen!"
 }
 
