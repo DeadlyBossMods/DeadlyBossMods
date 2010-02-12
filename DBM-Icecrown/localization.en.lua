@@ -399,12 +399,14 @@ L:SetOptionLocalization{
 	warnInstability			= "Show warning for your $spell:69766 stacks",
 	warnChilledtotheBone	= "Show warning for your $spell:70106 stacks",
 	warnMysticBuffet		= "Show warning for your $spell:70128 stacks",
+	AnnounceFrostBeaconIcons= "Announce icons for $spell:70126 targets to raid chat\n(requires announce to be enabled and leader/promoted status)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
 	YellAirphase	= "Your incursion ends here! None shall survive!",
 	YellPhase2		= "Now, feel my master's limitless power and despair!",
+	BeaconIconSet	= "Frost Beacon icon {rt%d} set on %s",
 	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
