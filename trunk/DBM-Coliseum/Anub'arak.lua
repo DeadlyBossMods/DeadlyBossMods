@@ -107,7 +107,7 @@ do
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
 	end
 	function mod:SetPcoldIcons()
-		if self.Options.SetIconsOnPCold and DBM:GetRaidRank() > 0 then
+		if DBM:GetRaidRank() > 0 then
 			table.sort(PColdTargets, sort_by_group)
 			local PColdIcon = 7
 			for i, v in ipairs(PColdTargets) do

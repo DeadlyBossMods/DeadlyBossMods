@@ -48,6 +48,7 @@ local timerNextMysticBuffet		= mod:NewNextTimer(6, 70128)
 local berserkTimer				= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
+mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
 
 local beaconTargets		= {}
 local unchainedTargets	= {}
@@ -62,10 +63,28 @@ function mod:OnCombatStart(delay)
 	warned_P2 = false
 end
 
+do
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
+	end
+	function mod:SetBeaconIcons()
+		if DBM:GetRaidRank() > 0 then
+			table.sort(beaconTargets, sort_by_group)
+			local beaconIcons = 8
+			for i, v in ipairs(beaconTargets) do
+				if self.Options.AnnounceFrostBeaconIcons then
+					SendChatMessage(L.BeaconIconSet:format(BeaconIcon, UnitName(v)), "RAID")
+				end
+				mod:SetIcon(UnitName(v), BeaconIcon)
+				BeaconIcon = BeaconIcon - 1
+			end
+			table.wipe(beaconTargets)
+		end
+	end
+end
+
 local function warnBeaconTargets()
 	warnFrostBeacon:Show(table.concat(beaconTargets, "<, >"))
-	table.wipe(beaconTargets)
-	beaconIcons = 8
 end
 
 local function warnUnchainedTargets()
@@ -82,19 +101,18 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70126) then
-		beaconTargets[#beaconTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
 		end
 		if self.Options.SetIconOnFrostBeacon then
-			self:SetIcon(args.destName, beaconIcons, 7)
-			beaconIcons = beaconIcons - 1
+			table.insert(beaconTargets, DBM:GetRaidUnitId(args.destName))
+			mod:ScheduleMethod(0.1, "SetBeaconIcons")
 		end
 		self:Unschedule(warnBeaconTargets)
 		if #beaconTargets >= 5 then
 			warnBeaconTargets()
 		else
-			self:Schedule(0.3, warnBeaconTargets)
+			self:Schedule(0.2, warnBeaconTargets)
 		end
 	elseif args:IsSpellID(69762) then
 		unchainedTargets[#unchainedTargets + 1] = args.destName
@@ -105,7 +123,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if #unchainedTargets >= 6 then
 			warnUnchainedTargets()
 		else
-			self:Schedule(0.3, warnUnchainedTargets)
+			self:Schedule(0.2, warnUnchainedTargets)
 		end
 	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
 		if args:IsPlayer() then
