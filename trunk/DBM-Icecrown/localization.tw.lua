@@ -424,8 +424,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon			= "轉換第2階段 即將到來",
 	WarnPhase3Soon			= "轉換第3階段 即將到來",
-	specWarnDefileCast		= "你中了汙染 - 快離開",
-	specWarnDefileCastNear		= "你附近的人中了汙染 - 小心"
+	specWarnDefileCast		= "你中了汙染 - 快離開"
 }
 
 L:SetTimerLocalization{
@@ -441,7 +440,6 @@ L:SetOptionLocalization{
 	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
-	specWarnDefileCastNear		= "當你附近的人中了$spell:72762時顯示特別警告",
 	YellOnDefile			= "當你中了$spell:72762時大喊",
 	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
