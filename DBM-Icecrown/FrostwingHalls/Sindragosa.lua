@@ -76,15 +76,16 @@ do
 					SendChatMessage(L.BeaconIconSet:format(BeaconIcon, UnitName(v)), "RAID")
 				end
 				mod:SetIcon(UnitName(v), BeaconIcon)
-				BeaconIcon = BeaconIcon - 1
+				beaconIcons = beaconIcons - 1
 			end
-			table.wipe(beaconTargets)
+--			table.wipe(beaconTargets)
 		end
 	end
 end
 
 local function warnBeaconTargets()
 	warnFrostBeacon:Show(table.concat(beaconTargets, "<, >"))
+	table.wipe(beaconTargets)
 end
 
 local function warnUnchainedTargets()
