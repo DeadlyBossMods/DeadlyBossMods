@@ -215,7 +215,7 @@ function mod:NextPhase()--Might need some tweaks or may even replace it with mon
 	if phase == 1 then
 		timerShamblingHorror:Start(20)
 		timerDrudgeGhouls:Start(10)
-		timerNecroticPlagueCD:Start()
+		timerNecroticPlagueCD:Start(27)
 	elseif phase == 2 then
 		timerSummonValkyr:Start(20)--First add of phase timing might be off
 		timerSoulreaperCD:Start(40)
