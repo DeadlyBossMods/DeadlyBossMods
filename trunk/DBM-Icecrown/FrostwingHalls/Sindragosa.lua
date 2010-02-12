@@ -61,6 +61,8 @@ function mod:OnCombatStart(delay)
 	timerNextBlisteringCold:Start(44-delay)
 	beaconIcons = 8
 	warned_P2 = false
+	table.wipe(beaconTargets)
+	table.wipe(unchainedTargets)
 end
 
 do
