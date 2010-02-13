@@ -42,7 +42,7 @@ mod:AddBoolOption("SetIconOnGasSpore", true)
 local gasSporeTargets	= {}
 local vileGasTargets	= {}
 local gasSporeIcon 	= 8
-
+--[[
 local mRange = { }
 local mPoints = { 
 	[0] = { 0.19828705489635, 0.653256416320 },
@@ -62,11 +62,11 @@ local function findMin(a)
 	end
 	return value, index
 end
-
+--]]
 local function warnGasSporeTargets()
 	warnGasSpore:Show(table.concat(gasSporeTargets, "<, >"))
 	timerGasSpore:Start()
-
+--[[
 	if not noCheck then
 		for _, point in ipairs(mPoints) do 
 			for i, v in ipairs(gasSporeTargets) do
@@ -81,7 +81,7 @@ local function warnGasSporeTargets()
 		end
 	end
 	noCheck = true
-
+--]]
 	table.wipe(gasSporeTargets)
 	gasSporeIcon = 8
 end
@@ -98,7 +98,7 @@ function mod:OnCombatStart(delay)
 	timerPungentBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
 	table.wipe(gasSporeTargets)
 	gasSporeIcon = 8
-	noCheck = true
+--	noCheck = true
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -121,7 +121,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69279) then	-- Gas Spore
 		gasSporeTargets[#gasSporeTargets + 1] = args.destName
 		if args:IsPlayer() then
-			noCheck = false	-- check for distance and show the arrow
+--			noCheck = false	-- check for distance and show the arrow
 			specWarnGasSpore:Show()
 		end
 		if self.Options.SetIconOnGasSpore then
