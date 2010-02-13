@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("combat")
 mod:SetMinSyncRevision(3489)
+mod:SetWipeTime(160)
 mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
