@@ -23,7 +23,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:find(L.HandlerEmote) then
+	if msg == L.HandlerEmote then
 		self:SendSync("HandlerSpawned")
 	end
 end
