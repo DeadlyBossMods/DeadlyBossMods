@@ -35,11 +35,13 @@ local warnDarkNucleus			= mod:NewSpellAnnounce(71943)			-- instant cast
 
 local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
 local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(72039)
+local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 10)
 
 local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch")	-- every 46-47seconds
 local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943)				-- usually every 10 seconds but sometimes more
 local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)				-- every 20-30 seconds but never more often than every 20sec
 local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6
+local timerShadowPrison			= mod:NewBuffActiveTimer(10, 72999)		--Hard mode debuff
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -111,8 +113,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTargetSwitchSoon:Schedule(42)
 		timerTargetSwitch:Start()
 		activePrince = args.destGUID
+	elseif args:IsSpellID(72999) then	--Shadow Prison (hard mode)
+		if args:IsPlayer() then
+			timerShadowPrison:Start()
+			if (args.amount or 1) >= 10 then	--Placeholder right now, might use a different value
+				specWarnShadowPrison:Show(args.amount)
+			end
+		end
 	end
 end
+
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(71943) then
