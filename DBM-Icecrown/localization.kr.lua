@@ -395,21 +395,23 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnAirphase			= "공중 단계 알리기",
-	WarnGroundphaseSoon		= "지상 단계 사전 경고 보기",
-	warnPhase2soon			= "2 단계 사전 경고 보기(38% 이하)",	
-	TimerNextAirphase		= "다음 공중 단계 타이머 보기",
-	TimerNextGroundphase	= "다음 지상 단계 타이머 보기",
-	warnInstability			= "당신의 $spell:69766 중첩 경고 보기",
-	warnChilledtotheBone	= "당신의 $spell:70106 중첩 경고 보기",
-	warnMysticBuffet		= "당신의 $spell:70128 중첩 경고 보기",	
-	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+	WarnAirphase				= "공중 단계 알리기",
+	WarnGroundphaseSoon			= "지상 단계 사전 경고 보기",
+	warnPhase2soon				= "2 단계 사전 경고 보기(38% 이하)",	
+	TimerNextAirphase			= "다음 공중 단계 타이머 보기",
+	TimerNextGroundphase		= "다음 지상 단계 타이머 보기",
+	warnInstability				= "당신의 $spell:69766 중첩 경고 보기",
+	warnChilledtotheBone		= "당신의 $spell:70106 중첩 경고 보기",
+	warnMysticBuffet			= "당신의 $spell:70128 중첩 경고 보기",
+	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 아이콘을 채팅으로 알리기(공대장 혹은 부공대장 권한이 있을 경우)",	
+	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 
 }
 
 L:SetMiscLocalization{
 	YellAirphase			= "여기가 끝이다! 아무도 살아남지 못하리라!",
 	YellPhase2				= "자, 주인님의 무한한 힘을 느끼고 절망에 빠져보아라!",--Now, feel my master's limitless power and despair!",	
+	BeaconIconSet			= "Frost Beacon icon {rt%d} set on %s",	
 	YellPull				= "여기까지 오다니 너무나 어리석구나. 노스렌드의 얼음 바람이 영혼까지 삼키리라!"--You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
@@ -443,7 +445,8 @@ L:SetOptionLocalization{
 	specWarnDefileCast			= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
 	YellOnDefile				= "$spell:72762의 대상이 됐을 때 외치기",	
 	DefileIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
-	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)	
+	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
+	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200)	
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
