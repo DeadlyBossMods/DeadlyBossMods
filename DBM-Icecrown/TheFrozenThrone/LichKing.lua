@@ -40,7 +40,7 @@ local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325)--Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Ability
 
 local timerCombatStart		= mod:NewTimer(54, "TimerCombatStart", 2457)
-local timerPhaseTransition	= mod:NewTimer(60, "PhaseTransition")
+local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
 local timerSoulreaperCD	 	= mod:NewCDTimer(30, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
