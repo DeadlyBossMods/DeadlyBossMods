@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36853)
 mod:RegisterCombat("yell", L.YellPull)
 mod:SetMinCombatTime(25)
-mod:SetUsedIcons(4, 5, 6, 7, 8)
+mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -114,7 +114,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			mod:ScheduleMethod(0.3, "SetBeaconIcons")
 		end
 		self:Unschedule(warnBeaconTargets)
-		if #beaconTargets >= 5 then
+		if #beaconTargets >= 6 then
 			warnBeaconTargets()
 		else
 			self:Schedule(0.3, warnBeaconTargets)
