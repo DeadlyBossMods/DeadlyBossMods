@@ -6,7 +6,6 @@ if GetLocale() ~= "deDE" then return end
 -- HdS: Brann-Eskorte
 -- Nexus: Großmagistrix Telestra
 -- Burg: Ingvar der Brandschatzer
--- VF: Portaltimer, Cyanigosa
 -- PdC: Großchampions, Der Schwarze Ritter
 -- HdR: Wellentimer, Lichkönig-Event
 
@@ -1006,7 +1005,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	CyanArrived	= "A valiant defense, but this city must be razed. I will fulfill Malygos's wishes myself!"	-- to be translated
+	CyanArrived	= "Eine beherzte Verteidigung, aber diese Stadt muss dem Erdboden gleichgemacht werden. Ich werde Malygos' Befehle persönlich ausführen!"
 })
 
 --------------
@@ -1149,9 +1148,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yell1		= "Prison guards, we are leaving! These adventurers are taking over! Go go go!",	-- to be translated
-	Sealbroken	= "We've broken through the prison gate! The way into Dalaran is clear! Now we finally put an end to the Nexus War!",	-- to be translated
-	WavePortal	= "Portale geöffnet: (%d+)/18"	-- to be checked
+	yell1		= "Gefängniswärter, wir brechen auf! Diese Abenteurer übernehmen! Na los, na los, na los!",
+	Sealbroken	= "Wir haben das Gefängnistor durchbrochen! Der Weg nach Dalaran ist frei! Jetzt können wir den Nexuskrieg endlich beenden!",
+	WavePortal	= "Portale geöffnet: (%d+)/18"
 })
 
 -----------------------------
