@@ -85,7 +85,6 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69076) then						-- Bone Storm (Whirlwind)
-		timerBoneSpike:Cancel()							-- He doesn't do Bone Spike Graveyard during Bone Storm
 		specWarnWhirlwind:Show()
 		timerWhirlwindCD:Start()
 		preWarnWhirlwind:Schedule(85)
@@ -93,6 +92,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerWhirlwind:Show(40)						-- 40seconds on heroic
 		else
 			timerWhirlwind:Show()						-- 20seconds on normal.
+			timerBoneSpike:Cancel()						-- He doesn't do Bone Spike Graveyard during Bone Storm on normal
 		end
 		soundWhirlwind:Play()
 	end
@@ -102,6 +102,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69065) then			-- Impaled
 		mod:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(69076) then
-		timerBoneSpike:Start(15)			-- He will do Bone Spike Graveyard 15 seconds after whirlwind ends
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
+			timerBoneSpike:Start(15)			-- He will do Bone Spike Graveyard 15 seconds after whirlwind ends on normal
+		end
 	end
 end
