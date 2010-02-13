@@ -403,7 +403,7 @@ L:SetOptionLocalization{
 	warnInstability				= "당신의 $spell:69766 중첩 경고 보기",
 	warnChilledtotheBone		= "당신의 $spell:70106 중첩 경고 보기",
 	warnMysticBuffet			= "당신의 $spell:70128 중첩 경고 보기",
-	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 아이콘을 채팅으로 알리기(공대장 혹은 부공대장 권한이 있을 경우)",	
+	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 아이콘을 채팅으로 알리기\n(공대장 혹은 부공대장 권한이 있을 경우)",	
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 
 }
@@ -411,7 +411,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAirphase			= "여기가 끝이다! 아무도 살아남지 못하리라!",
 	YellPhase2				= "자, 주인님의 무한한 힘을 느끼고 절망에 빠져보아라!",--Now, feel my master's limitless power and despair!",	
-	BeaconIconSet			= "Frost Beacon icon {rt%d} set on %s",	
+	BeaconIconSet			= "냉기 봉화 아이콘{rt%d} : %s",	
 	YellPull				= "여기까지 오다니 너무나 어리석구나. 노스렌드의 얼음 바람이 영혼까지 삼키리라!"--You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
