@@ -28,6 +28,9 @@ local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)--Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnPhase3					= mod:NewPhaseAnnounce(3)
 local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3)--Phase 3 ability
+local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 4)
+local warnOozeVariable				= mod:NewTargetAnnounce(70352)--Heroic Ability
+local warnGasVariable				= mod:NewTargetAnnounce(70353)--Heroic Ability
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
@@ -35,6 +38,8 @@ local specWarnVolatileOozeOther		= mod:NewSpecialWarningTarget(70447, false)
 local specWarnGaseousBloatOther		= mod:NewSpecialWarningTarget(70672, false)
 local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
 local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
+local specWarnOozeVariable			= mod:NewSpecialWarningYou(70352)--Heroic Ability
+local specWarnGasVariable			= mod:NewSpecialWarningYou(70353)--Heroic Ability
 
 local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)--Duration of debuff
 local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)-- Approx
@@ -61,6 +66,18 @@ local warned_preP2 = false
 local warned_preP3 = false
 local spamPuddle = 0
 local phase = 0
+local oozeVariableTargets	= {}
+local gasVariableTargets	= {}
+
+local function warnOozeVariableTargets()
+	warnOozeVariable:Show(table.concat(oozeVariableTargets, "<, >"))
+	table.wipe(oozeVariableTargets)
+end
+
+local function warnGasVariableTargets()
+	warnGasVariable:Show(table.concat(gasVariableTargets, "<, >"))
+	table.wipe(gasVariableTargets)
+end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -171,6 +188,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMutatedSlash:Show(args.destName)
 	elseif args:IsSpellID(70539) then
 		timerRegurgitatedOoze:Show(args.destName)
+	elseif args:IsSpellID(70352, 74118) then	--Ooze Variable
+		oozeVariableTargets[#oozeVariableTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnOozeVariable:Show()
+		end
+		self:Unschedule(warnOozeVariableTargets)
+		self:Schedule(0.3, warnOozeVariableTargets)
+	elseif args:IsSpellID(70353, 74119) then	--Gas Variable
+		gasVariableTargets[#gasVariableTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnGasVariable:Show()
+		end
+		self:Unschedule(warnGasVariableTargets)
+		self:Schedule(0.3, warnGasVariableTargets)
 	end
 end
 
