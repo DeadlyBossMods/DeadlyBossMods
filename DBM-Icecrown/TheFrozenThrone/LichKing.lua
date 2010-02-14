@@ -36,6 +36,7 @@ local warnHarvestSoul		= mod:NewTargetAnnounce(74325) --Phase 3 Ability
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
 local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
+local specWarnDefileNear	= mod:NewSpecialWarning("specWarnDefileNear", false) --Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
@@ -94,6 +95,14 @@ function mod:DefileTarget()
 		specWarnDefileCast:Show()
 		if self.Options.YellOnDefile then
 			SendChatMessage(L.YellDefile, "YELL")
+		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			if inRange then
+				specWarnDefileNear:Show()
+			end
 		end
 	end
 end
