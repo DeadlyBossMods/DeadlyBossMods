@@ -424,7 +424,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon			= "Übergang in Phase 2 bald",
 	WarnPhase3Soon			= "Übergang in Phase 3 bald",
-	specWarnDefileCast		= "Entweihen auf dir - Lauf weg"
+	specWarnDefileCast		= "Entweihen auf dir - Lauf weg",
+	specWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen"
 }
 
 L:SetTimerLocalization{
@@ -440,6 +441,7 @@ L:SetOptionLocalization{
 	WarnPhase2Soon			= "Zeige Vorwarnung für Übergang in Phase 2 (bei ~73%)",
 	WarnPhase3Soon			= "Zeige Vorwarnung für Übergang in Phase 3 (bei ~43%)",
 	specWarnDefileCast		= "Zeige Spezialwarnung für $spell:72762 auf dir",
+	specWarnDefileNear		= "Zeige Spezialwarnung für $spell:72762 in deiner Nähe",
 	YellOnDefile			= "Schreie bei $spell:72762",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),

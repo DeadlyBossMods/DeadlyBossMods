@@ -430,7 +430,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon			= "Transición a la Fase 2 pronto",
 	WarnPhase3Soon			= "Transición a la Fase 3 pronto",
-	specWarnDefileCast		= "Profanar en ti ¡Muévete!"
+	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
+	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!"
 }
 
 L:SetTimerLocalization{
@@ -446,6 +447,7 @@ L:SetOptionLocalization{
 	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
+	specWarnDefileNear		= "Mostrar aviso especial para $spell:72762 cerca de ti",
 	YellOnDefile			= "Gritar cuando tengas $spell:72762",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
