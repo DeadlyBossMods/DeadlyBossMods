@@ -18,27 +18,27 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnRemorselessWinter = mod:NewSpellAnnounce(74270)--Phase Transition Start Ability
-local warnQuake				= mod:NewSpellAnnounce(72262)--Phase Transition End Ability
-local warnRagingSpirit		= mod:NewTargetAnnounce(69200)--Transition Add
-local warnShamblingHorror	= mod:NewSpellAnnounce(70372)--Phase 1 Add
-local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358)--Phase 1 Add
-local warnNecroticPlague	= mod:NewTargetAnnounce(73912)--Phase 1+ Ability
-local warnInfest			= mod:NewSpellAnnounce(73779)--Phase 1+ Ability
+local warnRemorselessWinter = mod:NewSpellAnnounce(74270) --Phase Transition Start Ability
+local warnQuake				= mod:NewSpellAnnounce(72262) --Phase Transition End Ability
+local warnRagingSpirit		= mod:NewTargetAnnounce(69200) --Transition Add
+local warnShamblingHorror	= mod:NewSpellAnnounce(70372) --Phase 1 Add
+local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358) --Phase 1 Add
+local warnNecroticPlague	= mod:NewTargetAnnounce(73912) --Phase 1+ Ability
+local warnInfest			= mod:NewSpellAnnounce(73779) --Phase 1+ Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
-local warnSoulreaper		= mod:NewSpellAnnounce(73797)--Phase 2+ Ability
-local warnDefileCast		= mod:NewTargetAnnounce(72762)--Phase 2+ Ability
-local warnSummonValkyr		= mod:NewSpellAnnounce(69037)--Phase 2 Add
+local warnSoulreaper		= mod:NewSpellAnnounce(73797) --Phase 2+ Ability
+local warnDefileCast		= mod:NewTargetAnnounce(72762) --Phase 2+ Ability
+local warnSummonValkyr		= mod:NewSpellAnnounce(69037) --Phase 2 Add
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
-local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498)--Phase 3 Add
-local warnHarvestSoul		= mod:NewTargetAnnounce(74325)--Phase 3 Ability
+local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498) --Phase 3 Add
+local warnHarvestSoul		= mod:NewTargetAnnounce(74325) --Phase 3 Ability
 
-local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797)--Phase 1+ Ability
-local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912)--Phase 1+ Ability
-local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast")--Phase 2+ Ability
-local specWarnDefile		= mod:NewSpecialWarningMove(73708)--Phase 2+ Ability
-local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325)--Phase 3+ Ability
-local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false)--Phase 1+ Ability
+local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
+local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
+local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
+local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
+local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
+local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
 
 local timerCombatStart		= mod:NewTimer(54, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
@@ -172,14 +172,42 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 do
+	local valkIcons = {}
+	local currentIcon = 2
+	local iconsSet = 0
+	local function resetValkIconState()
+		table.wipe(valkIcons)
+		currentIcon = 2
+		iconsSet = 0
+	end
+	
 	local lastValk = 0
 	function mod:SPELL_SUMMON(args)
-		if args:IsSpellID(69037) and time() - lastValk > 2 then -- Summon Val'kyr
-			warnSummonValkyr:Show()
-			timerSummonValkyr:Start()
-			lastValk = time()
+		if args:IsSpellID(69037) then -- Summon Val'kyr
+			if time() - lastValk > 4 then -- show the warning and timer just once for all three summon events
+				warnSummonValkyr:Show()
+				timerSummonValkyr:Start()
+				lastValk = time()
+				self:Schedule(40, resetValkIconState)
+			end
+			valkIcons[args.destGUID] = currentIcon
+			currentIcon = currentIcon + 1
 		end
 	end
+	
+	mod:RegisterOnUpdateHandler(function(self)
+		if self:GetRaidRank() > 0 and not (iconsSet == 3 and self:IsDifficulty("normal25", "heroic25") or iconsSet == 1 and self:IsDifficulty("normal10", "heroic10")) then
+			for i = 1, GetNumRaidMembers() do
+				local uId = "raid"..i.."target"
+				local guid = UnitGUID(uId)
+				if valkIcons[guid] then
+					SetRaidTarget(uId, valkIcons[guid])
+					iconsSet = iconsSet + 1
+					valkIcons[guid] = nil
+				end
+			end
+		end
+	end, 1)
 end
 
 do 
