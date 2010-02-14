@@ -11,7 +11,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_REMOVED",
+	"SPELL_DISPEL",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
@@ -174,7 +174,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_AURA_REMOVED(args)
+function mod:SPELL_DISPEL(args)
 	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague
 		self:SetIcon(args.destName, 0)
 	end
