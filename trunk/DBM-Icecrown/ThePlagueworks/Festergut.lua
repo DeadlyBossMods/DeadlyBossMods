@@ -28,8 +28,8 @@ local specWarnGastricBloat	= mod:NewSpecialWarningStack(72551, nil, 9)
 local specWarnInhaled3		= mod:NewSpecialWarningStack(71912, false, 3)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
-local timerPungentBlight	= mod:NewNextTimer(132, 71219)		-- 132 seconds'ish, subject to adjustments
-local timerInhaledBlight	= mod:NewNextTimer(34, 71912)		-- 34 seconds'ish (4 of these add up to Pungent Blight)
+local timerPungentBlight	= mod:NewNextTimer(33, 71219)		-- 33 seconds after 3rd stack of inhaled
+local timerInhaledBlight	= mod:NewNextTimer(34, 71912)		-- 34 seconds'ish
 local timerVileGas			= mod:NewBuffActiveTimer(6, 71219)
 local timerGastricBloat		= mod:NewTargetTimer(100, 72551)	-- 100 Seconds until expired
 local timerGastricBloatCD	= mod:NewCDTimer(11, 72551) 		-- 10 to 14 seconds
@@ -94,8 +94,7 @@ end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
-	timerInhaledBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
-	timerPungentBlight:Start(-delay)--unsure of first one since logs didn't have an exact pull, subject to adjustments
+	timerInhaledBlight:Start(-delay)
 	table.wipe(gasSporeTargets)
 	gasSporeIcon = 8
 --	noCheck = true
@@ -113,7 +112,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69195, 71219, 73031, 73032) then	-- Pungent Blight
 		specWarnPungentBlight:Show()
-		timerPungentBlight:Start()
+		timerInhaledBlight:Start(38)
 	end
 end
 
@@ -138,6 +137,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnInhaledBlight:Show(args.amount or 1)
 		if (args.amount or 1) >= 3 then
 			specWarnInhaled3:Show(args.amount)
+			timerPungentBlight:Start()
 		end
 		if (args.amount or 1) <= 2 then	--Prevent timer from starting after 3rd stack since he won't cast it a 4th time, he does Pungent instead.
 			timerInhaledBlight:Start()
