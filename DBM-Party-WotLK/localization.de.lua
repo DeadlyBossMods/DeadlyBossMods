@@ -4,7 +4,6 @@ if GetLocale() ~= "deDE" then return end
 --
 -- HdZ4: WaveCheck überprüfen
 -- HdS: Brann-Eskorte
--- Nexus: Großmagistrix Telestra
 -- Burg: Ingvar der Brandschatzer
 -- PdC: Großchampions, Der Schwarze Ritter
 -- HdR: Wellentimer, Lichkönig-Event
@@ -699,9 +698,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger1 = "There's plenty of me to go around.",		-- to be translated
-	SplitTrigger2 = "I'll give you more than you can handle.",	-- to be translated
-	MergeTrigger = "Now to finish the job!"				-- to be translated
+	SplitTrigger1 = "Es ist genug von mir für alle da.",
+	SplitTrigger2 = "Ich teile mehr aus, als ihr verkraften könnt!",
+	MergeTrigger = "Nun bringen wir's zu Ende!"
 })
 
 -------------------
