@@ -68,6 +68,19 @@ local warned_preP3 = false
 local NecroticPlagueTargets	= {}
 local NecroticPlagueIcon 	= 7
 
+local function isunitdebuffed(spellID)
+	local name = GetSpellInfo(spellID)
+	if not name then return false end
+
+	for i=1, 40, 1 do
+		local debuffname = UnitDebuff("player", i, "HARMFUL")
+		if debuffname == name then
+			return true
+		end
+	end
+	return false
+end
+
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	phase = 0
@@ -148,7 +161,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SetIcon(args.destName, NecroticPlagueIcon, 15)
 			NecroticPlagueIcon = NecroticPlagueIcon - 1
 		end
-		if args:IsPlayer() then
+		if (isunitdebuffed(70337) or isunitdebuffed(73912) or isunitdebuffed(73913) or isunitdebuffed(73914)) then
 			specWarnNecroticPlague:Show()
 		end
 		self:Unschedule(showNecroticPlagueWarning)
