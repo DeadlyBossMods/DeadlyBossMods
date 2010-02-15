@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague
+	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague (SPELL_AURA_APPLIED is not fired for this spell, there is no way to detect jumps to other players.)
 		NecroticPlagueTargets[#NecroticPlagueTargets + 1] = args.destName
 		timerNecroticPlagueCD:Start()
 		timerNecroticPlagueCleanse:Start()
