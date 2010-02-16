@@ -341,7 +341,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HandlerEmote	= "%s gritos de ayuda!"
+	YellPull		= "¡El frío que sentís es el presagio de vuestro sino!",
+	HandlerYell		= "¡Refuerza mis defensas! ¡Deprisa, maldito!!",
+	Phase2			= "¡Seguro que ahora veis la inutilidad de todo ello!",
+	YellKill		= "Vuestros esfuerzos... son en vano."
 })
 
 
@@ -1189,7 +1192,6 @@ L:SetOptionLocalization({
 
 
 L:SetMiscLocalization({
-	yell1 = "¡Guardias de la prisión, nos largamos! ¡Esos aventureros están dominando el cotarro! ¡Vamos, vamos!",
 	Sealbroken	= "¡Hemos atravesado la puerta de la prisión! ¡El camino hacia Dalaran está despejado! ¡Por fin hemos puesto punto y final a la guerra de El Nexo!",
 	WavePortal		= "Portales abiertos: (%d+)/18"
 })
