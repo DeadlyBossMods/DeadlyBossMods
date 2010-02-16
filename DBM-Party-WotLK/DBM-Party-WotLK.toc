@@ -23,7 +23,7 @@
 ## X-DBM-Mod-Name-frFR: Groupe
 ## X-DBM-Mod-Name-deDE: Gruppe
 ## X-DBM-Mod-Name-ruRU: Групповые подземелья
-## X-DBM-Mod-Name-zhTW: 隊伍首領模組
+## X-DBM-Mod-Name-zhTW: 隊伍首領
 ## X-DBM-Mod-Name-esES: Mazmorras
 ## X-DBM-Mod-Name-koKR: 5인 던전 모드
 ## X-DBM-Mod-Name-esMX: Mazmorras
