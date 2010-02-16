@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36678)
 mod:RegisterCombat("yell", L.YellPull)
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -49,6 +49,7 @@ local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(19, 71615)
 local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
+local timerUnboundPlague			= mod:NewBuffActiveTimer(60, 72856)
 
 -- buffs from "Drink Me"
 local timerMutatedSlash				= mod:NewTargetTimer(20, 70542)
@@ -61,6 +62,7 @@ local soundGaseousBloat = mod:NewSound(72455)
 mod:AddBoolOption("OozeAdhesiveIcon")
 mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
+mod:AddBoolOption("UnboundPlagueIcon")
 
 local warned_preP2 = false
 local warned_preP3 = false
@@ -195,13 +197,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnOozeVariableTargets)
 		self:Schedule(0.3, warnOozeVariableTargets)
-	elseif args:IsSpellID(70353, 74119) then	--Gas Variable
+	elseif args:IsSpellID(70353, 74119) then	-- Gas Variable
 		gasVariableTargets[#gasVariableTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnGasVariable:Show()
 		end
 		self:Unschedule(warnGasVariableTargets)
 		self:Schedule(0.3, warnGasVariableTargets)
+	elseif args:IsSpellID(72856) then			 -- Unbound Plague
+		timerUnboundPlague:Start(args.destName)
+		if self.Options.UnboundPlagueIcon then
+			self:SetIcon(args.destName, 5, 20)
+		end
 	end
 end
 
@@ -220,6 +227,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(71615, 71618) and phase == 1 then	-- only show one time
 		phase = 2
 		warnPhase2:Show()
+	elseif args:IsSpellID(72856) then 						-- Unbound Plague
+		timerUnboundPlague:Stop(args.destName)
+		if self.Options.UnboundPlagueIcon then
+			mod:SetIcon(args.destName, 0)
+		end
 	end
 end
 
