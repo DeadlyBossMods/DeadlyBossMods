@@ -326,7 +326,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HandlerEmote			= "%s calls for assistance!"
+	YellPull				= "The chill you feel is the herald of your doom!",
+	HandlerYell				= "Bolster my defenses! Hurry, curse you!",
+	Phase2					= "Surely you can see the futility of it all!",
+	YellKill				= "Your efforts... are in vain."
 })
 
 ---------------------
@@ -1139,7 +1142,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
+--	yell1 			= "요새 경비병들이여, 이제 이곳을 떠난다! 여기 모험가들이 맡아 줄 테니 어서 후퇴하라!",
 	Sealbroken		= "문을 부쉈다! 달라란으로 가는 길이 열렸다! 이제 마력 전쟁의 끝을 내자!",	
 	WavePortal		= "차원문 열림: (%d+)/18"
 })
