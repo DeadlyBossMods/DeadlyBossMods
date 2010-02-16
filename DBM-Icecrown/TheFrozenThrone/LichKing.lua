@@ -69,7 +69,7 @@ local phase	= 0
 local warned_preP2 = false
 local warned_preP3 = false
 
-local function isunitdebuffed(spellID)
+--[[local function isunitdebuffed(spellID)
 	local name = GetSpellInfo(spellID)
 	if not name then return false end
 
@@ -80,7 +80,7 @@ local function isunitdebuffed(spellID)
 		end
 	end
 	return false
-end
+end--]]
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -88,12 +88,6 @@ function mod:OnCombatStart(delay)
 	warned_preP2 = false
 	warned_preP3 = false
 	self:NextPhase()
-	table.wipe(NecroticPlagueTargets)
-end
-
-local function showNecroticPlagueWarning()
-	warnNecroticPlague:Show(table.concat(NecroticPlagueTargets, "<, >"))
-	table.wipe(NecroticPlagueTargets)
 end
 
 function mod:DefileTarget()
@@ -159,9 +153,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, 7, 5)
 		end
-		if (isunitdebuffed(70338) or isunitdebuffed(73785) or isunitdebuffed(73786) or isunitdebuffed(73787) or isunitdebuffed(70337) or isunitdebuffed(73912) or isunitdebuffed(73913) or isunitdebuffed(73914)) then
+		if args:IsPlayer() then
 			specWarnNecroticPlague:Show()
 		end
+--[[		if (isunitdebuffed(70338) or isunitdebuffed(73785) or isunitdebuffed(73786) or isunitdebuffed(73787) or isunitdebuffed(70337) or isunitdebuffed(73912) or isunitdebuffed(73913) or isunitdebuffed(73914)) then
+			specWarnNecroticPlague:Show()
+		end--]]
 	elseif args:IsSpellID(69409, 73797, 73798, 73799) then -- Soul reaper (MT debuff)
 		warnSoulreaper:Show(args.destName)
 		timerSoulreaper:Start(args.destName)
