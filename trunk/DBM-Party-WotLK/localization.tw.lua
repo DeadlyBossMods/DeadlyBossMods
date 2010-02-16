@@ -326,7 +326,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HandlerEmote	= "%s呼喊協助!"
+	YellPull		= "籠罩你的寒氣就是厄運的先兆。",
+	HandlerYell		= "協助防禦!快點，廢物們!",
+	Phase2			= "你一定看得出來，這一切都只是徒勞無功罷了!",
+	YellKill		= "你的努力…全是白費。"
 })
 
 -----------------
@@ -1136,7 +1139,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yell1		= "監獄守衛，我們要離開了!這些冒險者會接手!動作快!",
 	Sealbroken	= "我們攻破了監獄大門!通往達拉然的通道已經暢通了!現在我們終於可以終結奧核戰爭了!",
 	WavePortal	= "傳送門開啟:(%d+)/18"
 })

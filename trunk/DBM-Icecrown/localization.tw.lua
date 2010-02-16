@@ -403,12 +403,14 @@ L:SetOptionLocalization{
 	warnInstability			= "為你的$spell:69766堆疊顯示警告",
 	warnChilledtotheBone		= "為你的$spell:70106堆疊顯示警告",
 	warnMysticBuffet		= "為你的$spell:70128堆疊顯示警告",
+	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)",
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
 	YellAirphase			= "你們的入侵將在此終止!誰也別想存活!",
 	YellPhase2			= "現在，絕望地感受我主無限的力量吧!",
+	BeaconIconSet			= "冰霜信標{rt%d}: %s",
 	YellPull			= "你們真是夠蠢了才會來到此地。北裂境的冰冷寒風將吞噬你們的靈魂!"
 }
 
