@@ -31,7 +31,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name 				= "競技場"
+	name 				= "競技場 "
 })
 
 L:SetTimerLocalization({
