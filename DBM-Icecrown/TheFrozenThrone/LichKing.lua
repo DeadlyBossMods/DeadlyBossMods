@@ -11,6 +11,7 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED",
 	"SPELL_DISPEL",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
@@ -23,6 +24,7 @@ local warnQuake				= mod:NewSpellAnnounce(72262) --Phase Transition End Ability
 local warnRagingSpirit		= mod:NewTargetAnnounce(69200) --Transition Add
 local warnShamblingHorror	= mod:NewSpellAnnounce(70372) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358) --Phase 1 Add
+local warnShamblingEnrage	= mod:NewTargetAnnounce(72143) --Phase 1 Add Ability
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779) --Phase 1+ Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
@@ -185,6 +187,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayer() then
 			specWarnHarvestSoul:Show()
 		end
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(72143, 72146) then -- Shambling Horror enrage effect.
+		warnShamblingEnrage:Show(args.destName)
 	end
 end
 
