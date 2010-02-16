@@ -45,16 +45,8 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase2 or msg:find(L.Phase2) then
-		self:SendSync("Phase2")
-	elseif msg == L.CombatStart or msg:find(L.CombatStart) then
-		self:SendSync("CombatStart")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "Phase2" then
 		warnPhase2:Show()
-	elseif msg == "CombatStart" then
+	elseif msg == L.CombatStart or msg:find(L.CombatStart) then
 		if mod:IsDifficulty("heroic5") then
 			timerAchieve:Start()
 		end

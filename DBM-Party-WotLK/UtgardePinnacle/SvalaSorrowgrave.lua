@@ -26,12 +26,6 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SvalaRoleplayStart or msg:find(L.SvalaRoleplayStart) then
-		self:SendSync("SvalaRoleplay")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "SvalaRoleplay" then
 		timerRoleplay:Start()
 	end
 end

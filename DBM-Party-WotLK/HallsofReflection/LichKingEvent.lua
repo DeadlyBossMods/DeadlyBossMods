@@ -37,30 +37,18 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Wave1 or msg:find(L.Wave1) then
-		self:SendSync("Wave1")
-	elseif msg == L.Wave2 or msg:find(L.Wave2) then
-		self:SendSync("Wave2")
-	elseif msg == L.Wave3 or msg:find(L.Wave3) then
-		self:SendSync("Wave3")
-	elseif msg == L.Wave4 or msg:find(L.Wave4) then
-		self:SendSync("Wave4")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "Wave1" then
 		if self.Options.ShowWaves then
 			WarnWave1:Show()
 		end
-	elseif msg == "Wave2" then
+	elseif msg == L.Wave2 or msg:find(L.Wave2) then
 		if self.Options.ShowWaves then
 			WarnWave2:Show()
 		end
-	elseif msg == "Wave3" then
+	elseif msg == L.Wave3 or msg:find(L.Wave3) then
 		if self.Options.ShowWaves then
 			WarnWave3:Show()
 		end
-	elseif msg == "Wave4" then
+	elseif msg == L.Wave4 or msg:find(L.Wave4) then
 		if self.Options.ShowWaves then
 			WarnWave4:Show()
 		end

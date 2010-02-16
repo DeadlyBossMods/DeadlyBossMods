@@ -324,7 +324,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HandlerEmote	= "%s calls for assistance!"
+	YellPull		= "The chill you feel is the herald of your doom!",
+	HandlerYell		= "Bolster my defenses! Hurry, curse you!",
+	Phase2			= "Surely you can see the futility of it all!",
+	YellKill		= "Your efforts... are in vain."
 })
 
 -----------------
@@ -1137,7 +1140,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yell1		= "Prison guards, we are leaving! These adventurers are taking over! Go go go!",
 	Sealbroken	= "We've broken through the prison gate! The way into Dalaran is clear! Now we finally put an end to the Nexus War!",
 	WavePortal	= "Portals Opened: (%d+)/18"
 })
