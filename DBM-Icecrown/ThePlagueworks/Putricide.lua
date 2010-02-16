@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36678)
 mod:RegisterCombat("yell", L.YellPull)
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -176,7 +176,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			soundGaseousBloat:Play()
 		end
 		if self.Options.GaseousBloatIcon then
-			self:SetIcon(args.destName, 8, 20)
+			self:SetIcon(args.destName, 7, 20)
 		end
 	elseif args:IsSpellID(71615, 71618) then	--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
 		timerTearGas:Start()
@@ -207,7 +207,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72856) then			 -- Unbound Plague
 		timerUnboundPlague:Start(args.destName)
 		if self.Options.UnboundPlagueIcon then
-			self:SetIcon(args.destName, 7, 20)
+			self:SetIcon(args.destName, 5, 20)
 		end
 	end
 end
