@@ -68,8 +68,6 @@ mod:AddBoolOption("YellOnDefile", true, "announce")
 local phase	= 0
 local warned_preP2 = false
 local warned_preP3 = false
-local NecroticPlagueTargets	= {}
-local NecroticPlagueIcon 	= 7
 
 local function isunitdebuffed(spellID)
 	local name = GetSpellInfo(spellID)
@@ -91,13 +89,11 @@ function mod:OnCombatStart(delay)
 	warned_preP3 = false
 	self:NextPhase()
 	table.wipe(NecroticPlagueTargets)
-	NecroticPlagueIcon 	= 7
 end
 
 local function showNecroticPlagueWarning()
 	warnNecroticPlague:Show(table.concat(NecroticPlagueTargets, "<, >"))
 	table.wipe(NecroticPlagueTargets)
-	NecroticPlagueIcon 	= 7
 end
 
 function mod:DefileTarget()
@@ -157,18 +153,15 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague (SPELL_AURA_APPLIED is not fired for this spell, there is no way to detect jumps to other players.)
-		NecroticPlagueTargets[#NecroticPlagueTargets + 1] = args.destName
+		warnNecroticPlague:Show(args.destName)
 		timerNecroticPlagueCD:Start()
 		timerNecroticPlagueCleanse:Start()
 		if self.Options.NecroticPlagueIcon then
-			self:SetIcon(args.destName, NecroticPlagueIcon, 15)
-			NecroticPlagueIcon = NecroticPlagueIcon - 1
+			self:SetIcon(args.destName, 7, 5)
 		end
-		if (isunitdebuffed(70337) or isunitdebuffed(73912) or isunitdebuffed(73913) or isunitdebuffed(73914)) then
+		if (isunitdebuffed(70338) or isunitdebuffed(73785) or isunitdebuffed(73786) or isunitdebuffed(73787) or isunitdebuffed(70337) or isunitdebuffed(73912) or isunitdebuffed(73913) or isunitdebuffed(73914)) then
 			specWarnNecroticPlague:Show()
 		end
-		self:Unschedule(showNecroticPlagueWarning)
-		self:Schedule(0.3, showNecroticPlagueWarning)
 	elseif args:IsSpellID(69409, 73797, 73798, 73799) then -- Soul reaper (MT debuff)
 		warnSoulreaper:Show(args.destName)
 		timerSoulreaper:Start(args.destName)
@@ -195,13 +188,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShamblingEnrage:Show(args.destName)
 	end
 end
-
+--[[
 function mod:SPELL_DISPEL(args)
-	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague
+	if args:IsSpellID(70337, 73912, 73913, 73914, 70338, 73785, 73786, 73787) then -- Necrotic Plague
 		self:SetIcon(args.destName, 0)
 	end
 end
-
+--]]
 do
 	local valkIcons = {}
 	local currentIcon = 2
