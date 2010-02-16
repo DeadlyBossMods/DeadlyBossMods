@@ -101,16 +101,16 @@ function mod:DefileTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
 		warnDefileCast:Show(targetname)
-		if self.Options.DefileIcon then
-			self:SetIcon(targetname, 8, 10)
-		end
+	if self.Options.DefileIcon then
+		self:SetIcon(targetname, 8, 10)
+	end
 	if targetname == UnitName("player") then
 		specWarnDefileCast:Show()
 		if self.Options.YellOnDefile then
 			SendChatMessage(L.YellDefile, "YELL")
 		end
-	elseif targetname then
-		local uId = DBM:GetRaidUnitId(targetname)
+	else
+      local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
 			if inRange then
