@@ -38,6 +38,7 @@ local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
 local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
 local specWarnDefileNear	= mod:NewSpecialWarning("specWarnDefileNear", false) --Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
+local specWarnWinter		= mod:NewSpecialWarningMove(73791) --Transition Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
 
@@ -235,9 +236,19 @@ end
 do 
 	local lastDefile = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(72754, 73708, 73709, 73710) and args:IsPlayer() and time() - lastDefile > 2 then		-- Defile, MOVE!
+		if args:IsSpellID(72754, 73708, 73709, 73710) and args:IsPlayer() and time() - lastDefile > 2 then		-- Defile Damage
 			specWarnDefile:Show()
 			lastDefile = time()
+		end
+	end
+end
+
+do 
+	local lastWinter = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(68983, 73791, 73792, 73793) and args:IsPlayer() and time() - lastWinter > 2 then		-- Remorseless Winter
+			specWarnWinter:Show()
+			lastWinter = time()
 		end
 	end
 end
