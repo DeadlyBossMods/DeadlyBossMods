@@ -77,12 +77,6 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg and msg:match(L.HoarfrostTarget)
 	if target then
-		self:SendSync("Hoarfrost", target)
-	end
-end
-
-function mod:OnSync(msg, target)
-	if msg == "Hoarfrost" then
 		if target == UnitName("player") then
 			specWarnHoarfrost:Show()
 		elseif target then

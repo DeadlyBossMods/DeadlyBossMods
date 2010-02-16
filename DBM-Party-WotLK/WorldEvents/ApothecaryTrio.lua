@@ -46,12 +46,6 @@ end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.SayCombatStart or msg:find(L.SayCombatStart) then
-		self:SendSync("CombatStart")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "CombatStart" then
 		if self.Options.TrioActiveTimer then
 			timerHummel:Start()
 			timerBaxter:Start()
