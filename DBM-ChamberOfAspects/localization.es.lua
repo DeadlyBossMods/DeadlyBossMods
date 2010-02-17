@@ -74,7 +74,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Wall			= "¡La lava se arremolina alrededor de %s!",
-	Portal			= "¡%s comienza a abrir Portales Crepusculares!",
+	Portal			= "%s comienza a abrir un Portal Crepuscular",
 	NameTenebron	= "Tenebron",
 	NameShadron		= "Shadron",
 	NameVesperon	= "Vesperon",
