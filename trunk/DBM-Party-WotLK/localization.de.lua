@@ -7,6 +7,7 @@ if GetLocale() ~= "deDE" then return end
 -- Burg: Ingvar der Brandschatzer
 -- PdC: Großchampions, Der Schwarze Ritter
 -- HdR: Wellentimer, Lichkönig-Event
+-- Feste Drak'Tharon: Novos der Beschwörer
 
 local L
 
@@ -334,7 +335,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HandlerEmote	= "%s ruft um Hilfe!"
+	YellPull		= "The chill you feel is the herald of your doom!",	-- to be translated
+	HandlerYell		= "Bolster my defenses! Hurry, curse you!",	-- to be translated
+	Phase2			= "Surely you can see the futility of it all!",	-- to be translated
+	YellKill		= "Your efforts... are in vain."	-- to be translated
 })
 
 -----------------
@@ -1147,7 +1151,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	yell1		= "Gefängniswärter, wir brechen auf! Diese Abenteurer übernehmen! Na los, na los, na los!",
 	Sealbroken	= "Wir haben das Gefängnistor durchbrochen! Der Weg nach Dalaran ist frei! Jetzt können wir den Nexuskrieg endlich beenden!",
 	WavePortal	= "Portale geöffnet: (%d+)/18"
 })
