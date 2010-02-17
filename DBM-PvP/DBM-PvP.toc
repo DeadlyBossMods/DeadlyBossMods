@@ -6,6 +6,7 @@
 ## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0战场|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0전장|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -17,6 +18,8 @@
 ## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя,Склеп Аркавона
 ## X-DBM-Mod-SubCategories-koKR: 투기장,전장,아카본 석실
 ## X-DBM-Mod-SubCategories-zhTW: 競技場,戰場,亞夏梵穹殿
+## X-DBM-Mod-SubCategories-esES: Arena,Campos de Batallas,La Cámara de Archavon
+## X-DBM-Mod-SubCategories-esMX: Arena,Campos de Batallas,La Cámara de Archavon
 ## X-DBM-Mod-Name: PvP
 ## X-DBM-Mod-Name-deDE: PvP
 ## X-DBM-Mod-Name-frFR: Champs de bataille
@@ -40,6 +43,7 @@ localization.de.lua
 localization.tw.lua
 localization.cn.lua
 localization.es.lua
+localization.mx.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua
