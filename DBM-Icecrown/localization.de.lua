@@ -268,7 +268,9 @@ L:SetWarningLocalization{
 	WarnPhase3Soon				= "Phase 3 bald",
 	WarnMutatedPlague			= "%s auf >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
 	specWarnMalleableGoo		= "Formbarer Schleim auf Dir - Lauf",
-	specWarnMalleableGooNear	= "Formbarer Schleim in Deiner Nähe - Aufpassen"
+	specWarnMalleableGooNear	= "Formbarer Schleim in Deiner Nähe - Aufpassen",
+	specWarnUnboundPlague		= "Lege Entfesselte Seuche ab",
+	specWarnNextPlageSelf		= "Entfesselte Seuche bald, bereite dich vor!"
 }
 
 L:SetOptionLocalization{
@@ -279,11 +281,16 @@ L:SetOptionLocalization{
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
-	MalleableGooIcon			= "Setze Zeichen auf Ziel erstes $spell:72295-Ziel"
+	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
+	MalleableGooIcon			= "Setze Zeichen auf Ziel erstes $spell:72295-Ziel",
+	YellOnMalleableGoo			= "Schreie bei $spell:72295",	
+	specWarnUnboundPlague		= "Zeige Spezialwarnung für Übertragung von $spell:72856",
+	specWarnNextPlageSelf		= "Zeige Spezialwarnung wenn du in der Nähe des Ziels von $spell:72856 bist"
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Gute Nachricht Freunde! Ich habe eine Seuche perfektioniert, die alles Leben Azeroths auslöscht!"
+	YellPull	= "Gute Nachricht Freunde! Ich habe eine Seuche perfektioniert, die alles Leben Azeroths auslöscht!",
+	YellMalleable	= "Formbarer Schleim auf mir!"
 }
 
 ----------------------------
