@@ -106,7 +106,7 @@ function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of
 	if targetname == UnitName("player") then
 		specWarnMalleableGoo:Show()
 		if self.Options.YellOnMalleableGoo then
-			SendChatMessage(L.YellMalleableGoo, "YELL")
+			SendChatMessage(L.YellMalleable, "YELL")
 		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
