@@ -127,8 +127,8 @@ L:SetMiscLocalization({
 	BgStart30		= "¡La batalla comienza en treinta segundos!",
 	ZoneName		= "Ojo de la Tormenta",
 	ScoreExpr		= "(%d+)/1600",
-	Alliance 		= "La Alianza",
-	Horde 			= "La Horda",
+	Alliance 		= "Alianza",
+	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
 	FlagReset 		= "La bandera se ha restablecido.",
 	FlagTaken 		= "¡ (.+) ha tomado la bandera!",
@@ -264,7 +264,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Meteor	= "%s castea Meteorito!"
+	Meteor	= "¡%s lanza Puños meteóricos!"
 }
 
 -------------------------------

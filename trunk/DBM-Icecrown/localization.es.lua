@@ -274,7 +274,9 @@ L:SetWarningLocalization{
 	WarnPhase3Soon		= "Fase 3 pronto",
 	WarnMutatedPlague	= "%s en >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
 	specWarnMalleableGoo		= "Moco maleable en ti ¡Muévete!",
-	specWarnMalleableGooNear	= "Moco maleable cerca de ti ¡Ten cuidado!"
+	specWarnMalleableGooNear	= "Moco maleable cerca de ti ¡Ten cuidado!",
+	specWarnUnboundPlague		= "¡Transfiere la Peste desatada!",
+	specWarnNextPlageSelf		= "¡Peste desatada pronto, prepárate!"
 }
 
 L:SetOptionLocalization{
@@ -285,11 +287,16 @@ L:SetOptionLocalization{
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
-	MalleableGooIcon			= "Poner icono en el primero objetivo de $spell:72295"
+	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
+	MalleableGooIcon			= "Poner icono en el primero objetivo de $spell:72295",
+	YellOnMalleableGoo			= "Gritar cuando tengas $spell:72295",	
+	specWarnUnboundPlague		= "Mostrar aviso especial para transferencia de $spell:72856",
+	specWarnNextPlageSelf		= "Mostrar aviso especial cuando seas el próximo objetivo de $spell:72856",
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"--translate
+	YellPull	= "¡Buenas noticias, amigos! Creo que he perfeccionado una plaga que destruirá toda la vida en Azeroth.",
+	YellMalleable	= "¡Tengo Moco maleable!"
 }
 
 ----------------------------
@@ -347,7 +354,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "¡Una Masa de sombras sale (%S+)!"
+	SwarmingShadows			= "¡Las sombras se acumulan alrededor de (%S+)!"
 }
 
 -----------------------------
@@ -370,9 +377,9 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull		= "Han entrado intrusos en el Sagrario Interior. Apresuraos en acabar con el dragón verde. ¡Dejad solo huesos y tendones para la reanimación!",
-	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",--translate
+	YellKill		= "¡ESTOY RENOVADA! Ysera haz que estas asquerosas criaturas descansen",
 	YellPortals		= "He abierto un portal al Sueño. Vuestra salvación está dentro, héroes...",
-	YellPhase2		= "My strength is returning. Press on, heroes!"--translate
+	YellPhase2		= "Mi fuerza vuelve. ¡Continuad, héroes!"
 }
 
 ------------------
