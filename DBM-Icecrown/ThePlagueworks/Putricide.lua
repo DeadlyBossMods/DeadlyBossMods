@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36678)
 mod:RegisterCombat("yell", L.YellPull)
-mod:SetUsedIcons(5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -23,14 +23,14 @@ local warnGaseousBloat				= mod:NewTargetAnnounce(70672, 4)
 local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnTearGas					= mod:NewSpellAnnounce(71617)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
-local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 3)--Phase 2 ability
-local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)--Phase 2 ability
+local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 3)		-- Phase 2 ability
+local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)		-- Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnPhase3					= mod:NewPhaseAnnounce(3)
-local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3)--Phase 3 ability
+local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3) -- Phase 3 ability
 local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 4)
-local warnOozeVariable				= mod:NewTargetAnnounce(70352)--Heroic Ability
-local warnGasVariable				= mod:NewTargetAnnounce(70353)--Heroic Ability
+local warnOozeVariable				= mod:NewTargetAnnounce(70352)			-- Heroic Ability
+local warnGasVariable				= mod:NewTargetAnnounce(70353)			-- Heroic Ability
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
@@ -38,18 +38,20 @@ local specWarnVolatileOozeOther		= mod:NewSpecialWarningTarget(70447, false)
 local specWarnGaseousBloatOther		= mod:NewSpecialWarningTarget(70672, false)
 local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
 local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
-local specWarnOozeVariable			= mod:NewSpecialWarningYou(70352)--Heroic Ability
-local specWarnGasVariable			= mod:NewSpecialWarningYou(70353)--Heroic Ability
+local specWarnOozeVariable			= mod:NewSpecialWarningYou(70352)		-- Heroic Ability
+local specWarnGasVariable			= mod:NewSpecialWarningYou(70353)		-- Heroic Ability
+local specWarnUnboundPlague			= mod:NewSpecialWarning("specWarnUnboundPlague") -- you have to drop the debuff by staying very close to an other player
+local specWarnNextUnboundPlageSelf	= mod:NewSpecialWarning("specWarnNextPlageSelf") -- you are the aquired target for the Plague, prepare yourself!
 
-local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)--Duration of debuff
-local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)-- Approx
-local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)--Used every 38 seconds exactly except after tear gas, it resets then it's 42-44seconds later (so using 43sec timer for there)
+local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)			-- Duration of debuff
+local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)				-- Approx
+local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)			-- Used every 38 seconds exactly except after tear gas, it resets then it's 42-44seconds later (so using 43sec timer for there)
 local timerChokingGasBombCD			= mod:NewNextTimer(35.5, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(19, 71615)
-local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)	-- 60 Seconds until expired
-local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)-- 10 to 11
-local timerUnboundPlague			= mod:NewBuffActiveTimer(60, 72856)
+local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)			-- 60 Seconds until expired
+local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)				-- 10 to 11
+local timerUnboundPlague			= mod:NewBuffActiveTimer(10, 72856)		-- Heroic Ability: we can't keep the debuff 60 seconds, so we have to switch at 10 seconds. Otherwise the debuff does to much damage!
 
 -- buffs from "Drink Me"
 local timerMutatedSlash				= mod:NewTargetTimer(20, 70542)
@@ -62,7 +64,11 @@ local soundGaseousBloat = mod:NewSound(72455)
 mod:AddBoolOption("OozeAdhesiveIcon")
 mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
-mod:AddBoolOption("UnboundPlagueIcon")
+
+mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buff
+mod:AddBoolOption("NextUnboundPlagueTargetIcon")		-- icon on the aquired target (will be requested via Sync)
+
+mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 
 local warned_preP2 = false
 local warned_preP3 = false
@@ -99,12 +105,65 @@ function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of
 		end
 	if targetname == UnitName("player") then
 		specWarnMalleableGoo:Show()
+		if self.Options.YellOnMalleableGoo then
+			SendChatMessage(L.YellMalleableGoo, "YELL")
+		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
 			if inRange then
 				specWarnMalleableGooNear:Show()
+			end
+		end
+	end
+end
+
+local function isDebuffed(unitId)
+	for i=1, 15 do	-- don't think we have to check for 40 debuffs,.. (correct me if i'm wrong, but want to save some cpu)
+		local spellId = select(11, UnitDebuff(unitId, i))
+		if spellId == 73117 or 		-- Plague Sickness
+		   spellId == 72838 or		-- Volatile Ooze Adhesive (Green Slime)
+		   spellId == 72833 then	-- Gaseous Bloat (Red Slime)
+			return true
+		end
+	end
+	return false
+end
+
+function mod:AquireTargetForUnboundPlague()
+	local myX, myY = GetPlayerMapPosition("player")
+	local mytarget = "player"
+	local mydistance = 0
+	local temprange = 0
+	for i=1, GetNumRaidMembers(), 1 do
+		if not UnitIsUnit("player", "raid"..i) then
+			temprange = DBM.RangeCheck:GetDistance("raid"..i, myX, myY)
+			if temprange > 0 and temprange < 30 and temprange < mydistance then
+				if not isDebuffed("raid"..i) then	-- don't aquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
+					mytarget = "raid"..i
+					mydistance = temprange
+				end
+			end
+		end
+	end
+	DBM.Arrow:ShowRunTo(mytarget)
+	self:SendSync("IconUnboundPlagueNext", UnitName(mytarget))
+	self:ScheduleMethod(1, "AquireTargetForUnboundPlague")
+end
+
+do 
+	local lastsyncself = 0
+	function mod:OnSync(msg, arg)
+		if msg == "IconUnboundPlagueNext" then
+			if self.Options.NextUnboundPlagueTargetIcon then
+				self:SetIcon(arg, 1, 20)
+			end
+			if arg and arg == UnitName("player") then		-- you are the next target for Unbound Plague 
+				if GetTime() - 10 > lastsyncself then
+					lastsyncself = GetTime()
+					specWarnNextUnboundPlageSelf:Show()
+				end
 			end
 		end
 	end
@@ -167,7 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.OozeAdhesiveIcon then
 			self:SetIcon(args.destName, 8, 8)
 		end
-	elseif args:IsSpellID(70672, 72455) then	--Red Slime
+	elseif args:IsSpellID(70672, 72455, 72833) then	--Red Slime
 		warnGaseousBloat:Show(args.destName)
 		specWarnGaseousBloatOther:Show(args.destName)
 		timerGaseousBloat:Start(args.destName)
@@ -207,7 +266,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72856) then			 -- Unbound Plague
 		timerUnboundPlague:Start(args.destName)
 		if self.Options.UnboundPlagueIcon then
-			self:SetIcon(args.destName, 5, 20)
+			self:SetIcon(args.destName, 2, 20)
+		end
+		if args:IsPlayer() then
+			specWarnUnboundPlague:Schedule(10)
+			self:ScheduleMethod(3, "AquireTargetForUnboundPlague")		-- we aquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
 		end
 	end
 end
@@ -229,6 +292,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		warnPhase2:Show()
 	elseif args:IsSpellID(72856) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
+		if args:IsPlayer() then
+			specWarnUnboundPlague:UnSchedule()
+			self:UnScheduleMethod("AquireTargetForUnboundPlague")
+		end
 		if self.Options.UnboundPlagueIcon then
 			mod:SetIcon(args.destName, 0)
 		end
@@ -245,5 +312,6 @@ function mod:UNIT_HEALTH(uId)
 		warnPhase3Soon:Show()	
 	end
 end
+
 
 
