@@ -268,7 +268,9 @@ L:SetWarningLocalization{
 	WarnPhase3Soon				= "Скоро фаза 3",
 	WarnMutatedPlague			= "%s на |3-5(>%s<) (%s)",	-- Mutated Plague on >args.destName< (args.amount)
 	specWarnMalleableGoo		= "Вязкая гадость на вас - отбегите",
-	specWarnMalleableGooNear	= "Вязкая гадость около вас - остерегайтесь"
+	specWarnMalleableGooNear	= "Вязкая гадость около вас - остерегайтесь",
+	specWarnUnboundPlague		= "Передайте Безудержную чуму",
+	specWarnNextPlageSelf		= "Скоро Безудержная чума, приготовьтесь!"
 }
 
 L:SetOptionLocalization{
@@ -279,11 +281,16 @@ L:SetOptionLocalization{
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
-	MalleableGooIcon			= "Устанавливать метку на первую цель заклинания $spell:72295"
+	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
+	MalleableGooIcon			= "Устанавливать метку на первую цель заклинания $spell:72295",
+	YellOnMalleableGoo			= "Кричать, когда на вас $spell:72295",	
+	specWarnUnboundPlague		= "Спец-предупреждение для передачи заклинания $spell:72856",
+	specWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью заклинания $spell:72856",
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Отличные новости, народ! Я усовершенствовал штамм чумы, которая уничтожит весь Азерот!"
+	YellPull		= "Отличные новости, народ! Я усовершенствовал штамм чумы, которая уничтожит весь Азерот!",
+	YellMalleable	= "Вязкая гадость на мне!"
 }
 
 ----------------------------
