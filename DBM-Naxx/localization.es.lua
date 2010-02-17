@@ -210,8 +210,8 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization({
 	Yell	= "¡Stalagg aplasta!",
-	Emote	= "%s se sobrecarga!", -- ?
-	Emote2	= "¡Espiral Tesla se sobrecarga!", -- ?
+	Emote	= "¡%s se sobrecarga!",
+	Emote2	= "¡Espiral Tesla se sobrecarga!",
 	Boss1 = "Feugen",
 	Boss2 = "Stalagg",
 	Charge1 = "negativo",

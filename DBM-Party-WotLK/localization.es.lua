@@ -1385,8 +1385,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	IckPursuit				= "%s te atrapa!",
-	Barrage					= "%s empieza a lanzar rápidamente Tromba explosiva!",
+	IckPursuit				= "¡%s te atrapa!",
+	Barrage					= "%s comienza a invocar minas explosivas!",
 })
 -------------------
 -- Forgemaster Garfrost --
@@ -1413,7 +1413,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow			= "%s te lanza una roca de saronita enorme!"
+	SaroniteRockThrow			= "¡%s te lanza un pedrusco de saronita enorme!"
 })
 
 -------------------
@@ -1422,7 +1422,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ScourgelordTyrannus")
 
 L:SetGeneralLocalization({
-	name = "Señor de Plaga Tyrannus"
+	name = "Señor de la Plaga Tyrannus"
 })
 
 L:SetWarningLocalization({

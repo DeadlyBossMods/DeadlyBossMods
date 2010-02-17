@@ -101,7 +101,7 @@ L:SetMiscLocalization{
 	YellAir				        = "Danos un momento para que nos preparemos para construir las torretas.",
 	YellAir2			        = "Listos para salir, ¡impedid que esos enanos se peguen a nuestra espalda!!",
 	YellGround			    = "¡Moveros! ¡No seguira mucho mas en el suelo!",
-	EmotePhase2			        = "%%s ha aterrizado permanentemente!",
+	EmotePhase2			        = "¡%%s ha aterrizado permanentemente!",
 	FlamecastUnknown		    = DBM_CORE_UNKNOWN
 }
 
@@ -257,7 +257,7 @@ L:SetMiscLocalization{
 	Health_Body				= "Kologarn",
 	Health_Right_Arm		= "Brazo derecho",
 	Health_Left_Arm			= "Brazo izquierdo",
-	FocusedEyebeam			= "¡%s fija sus ojos en ti, MUEVETE!"
+	FocusedEyebeam			= "sus ojos en ti"
 }
 
 ---------------
@@ -514,7 +514,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	EmoteSaroniteVapors	= "Sale una nuve de vapor de saronita!",
+	EmoteSaroniteVapors	= "¡Cerca se forma una nube de vapores de saronita!",
 	CrashWhisper		= "Fragor de sombra en ti! Muévete!",
 	YellLeech			= "Drenar vida en mi!",
 	YellCrash			= "Fragor de sombra en mi!"
@@ -530,10 +530,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull 			= "The time to strike at the head of the beast will soon be upon us! Focus your anger and hatred on his minions!",--translate
-	YellPhase2	 		= "I am the lucid dream.",--translate
+	YellPull 			= "¡Pronto llegará la hora de golpear la cabeza del monstruo! ¡Centrad vuestra ira y odio en sus esbirros!",
+	YellPhase2	 		= "Soy un sueño lúcido.",
 	Sara 				= "Sara",
-	WarningYellSqueeze	= "Exprimir en mi! Ayudadme!"
+	WarningYellSqueeze	= "¡Exprimir en mi! ¡Ayudadme!"
 }
 
 L:SetWarningLocalization{
