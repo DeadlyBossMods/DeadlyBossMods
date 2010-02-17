@@ -5,6 +5,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Колизей Авангарда|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0十字軍試煉|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Coliseo de los Cruzados|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Coliseo de los Cruzados|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMColiseum_SavedVars, DBMColiseum_SavedStats
@@ -35,6 +36,7 @@ localization.tw.lua
 localization.kr.lua
 localization.tw.lua
 localization.es.lua
+localization.mx.lua
 MapSizes.lua
 NorthrendBeasts.lua
 Jaraxxus.lua
