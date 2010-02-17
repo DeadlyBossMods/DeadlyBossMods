@@ -20,13 +20,13 @@ local warnCorrosion		= mod:NewAnnounce("warnCorrosion", 2, nil, false)
 local warnGutSpray		= mod:NewTargetAnnounce(71283)
 local warnManaVoid		= mod:NewSpellAnnounce(71741)
 local warnSupression	= mod:NewSpellAnnounce(70588)
-local warnPortalSoon	= mod:NewSoonAnnounce(71987)
-local warnPortal		= mod:NewSpellAnnounce(71987)
+local warnPortalSoon	= mod:NewSoonAnnounce(72483)
+local warnPortal		= mod:NewSpellAnnounce(72483)
 
 local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
 
 local timerLayWaste		= mod:NewBuffActiveTimer(12, 69325)
-local timerNextPortal	= mod:NewCDTimer(46, 71987)
+local timerNextPortal	= mod:NewCDTimer(46, 72483)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283)
 local timerCorrosion	= mod:NewTargetTimer(6, 70751)
 
