@@ -281,6 +281,7 @@ L:SetOptionLocalization{
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
 	MalleableGooIcon			= "Set icon on first $spell:72295 target",
+	NextUnboundPlagueTargetIcon	= "Set icon on next $spell:72856 target",
 	YellOnMalleableGoo			= "Yell on $spell:72295",	
 	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
 	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
