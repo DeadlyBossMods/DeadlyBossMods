@@ -266,7 +266,9 @@ L:SetWarningLocalization{
 	WarnPhase3Soon				= "Phase 3 soon",
 	WarnMutatedPlague			= "%s on >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
 	specWarnMalleableGoo		= "Malleable Goo on you - Move away",
-	specWarnMalleableGooNear	= "Malleable Goo near you - Watch out"
+	specWarnMalleableGooNear	= "Malleable Goo near you - Watch out",
+	specWarnUnboundPlague		= "Drop off the Unbound Plague",
+	specWarnNextPlageSelf		= "Unbound Plage soon, get prepared!"
 }
 
 L:SetOptionLocalization{
@@ -278,11 +280,15 @@ L:SetOptionLocalization{
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
-	MalleableGooIcon			= "Set icon on first $spell:72295 target"
+	MalleableGooIcon			= "Set icon on first $spell:72295 target",
+	YellOnMalleableGoo			= "Yell on $spell:72295",	
+	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
+	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
 }
 
 L:SetMiscLocalization{
-	YellPull	= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!"
+	YellPull		= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!",
+	YellMalleable	= "Malleable Goo on me!"
 }
 
 ----------------------------
