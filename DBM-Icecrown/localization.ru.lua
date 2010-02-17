@@ -285,7 +285,7 @@ L:SetOptionLocalization{
 	MalleableGooIcon			= "Устанавливать метку на первую цель заклинания $spell:72295",
 	YellOnMalleableGoo			= "Кричать, когда на вас $spell:72295",	
 	specWarnUnboundPlague		= "Спец-предупреждение для передачи заклинания $spell:72856",
-	specWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью заклинания $spell:72856",
+	specWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью\nзаклинания $spell:72856",
 }
 
 L:SetMiscLocalization{
