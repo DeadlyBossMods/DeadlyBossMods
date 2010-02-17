@@ -5,6 +5,7 @@
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Цитадель Ледяной Короны|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0冰冠城塞|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ciudadela de la Corona de Hielo|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ciudadela de la Corona de Hielo|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMIcecrown_SavedVars, DBMIcecrown_SavedStats
@@ -17,6 +18,7 @@
 ## X-DBM-Mod-SubCategories-koKR: 성채 하층부, 역병작업장, 진홍빛 전당, 서리날개 전당, 얼어붙은 왕좌
 ## X-DBM-Mod-SubCategories-ruRU: Шпиль, Чумодельня, Багровый зал, Зал Ледокрылых, Ледяной Трон
 ## X-DBM-Mod-SubCategories-esES: La Ciudadela Inferior, Los Talleres de la Peste, La Sala Carmesí, Las Cámaras de Alaescarcha, El Trono Helado
+## X-DBM-Mod-SubCategories-esMX: La Ciudadela Inferior, Los Talleres de la Peste, La Sala Carmesí, Las Cámaras de Alaescarcha, El Trono Helado
 ## X-DBM-Mod-Name: Icecrown Citadel
 ## X-DBM-Mod-Name-deDE: Eiskronenzitadelle
 ## X-DBM-Mod-Name-frFR: Citadelle de la Couronne de glace
@@ -24,6 +26,7 @@
 ## X-DBM-Mod-Name-ruRU: Цитадель Ледяной Короны
 ## X-DBM-Mod-Name-zhTW: 冰冠城塞
 ## X-DBM-Mod-Name-esES: Ciudadela de la Corona de Hielo
+## X-DBM-Mod-Name-esMX: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Sort: 0
 ## X-DBM-Mod-LoadZone: Icecrown Citadel
 ## X-DBM-Mod-LoadZone-deDE: Eiskronenzitadelle
@@ -32,6 +35,7 @@
 ## X-DBM-Mod-LoadZone-ruRU: Цитадель Ледяной Короны
 ## X-DBM-Mod-LoadZone-zhTW: 冰冠城塞
 ## X-DBM-Mod-LoadZone-esES: Ciudadela de la Corona de Hielo
+## X-DBM-Mod-LoadZone-esMX: Ciudadela de la Corona de Hielo
 localization.en.lua
 localization.de.lua
 localization.kr.lua
@@ -40,6 +44,7 @@ localization.tw.lua
 localization.cn.lua
 localization.fr.lua
 localization.es.lua
+localization.mx.lua
 MapSizes.lua
 TheLowerSpire\LordMarrowgar.lua
 TheLowerSpire\Deathwhisper.lua
