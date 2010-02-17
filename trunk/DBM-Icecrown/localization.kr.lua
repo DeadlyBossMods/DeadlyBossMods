@@ -268,7 +268,9 @@ L:SetWarningLocalization{
 	WarnPhase3Soon				= "곧 3 단계",
 	WarnMutatedPlague			= "%s : >%s< (%s)",			-- Mutated Plague on >args.destName< (args.amount)
 	specWarnMalleableGoo		= "당신에게 유연한 끈적이 - 이동하세요!",
-	specWarnMalleableGooNear	= "당신 주변에 유연한 끈적이 - 벗어나세요!"	
+	specWarnMalleableGooNear	= "당신 주변에 유연한 끈적이 - 벗어나세요!",
+	specWarnUnboundPlague		= "고삐 풀린 역병 전달",
+	specWarnNextPlageSelf		= "곧 고삐 풀린 역병, 준비하세요!"
 }
 
 L:SetOptionLocalization{
@@ -280,11 +282,15 @@ L:SetOptionLocalization{
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),	
-	MalleableGooIcon			= "$spell:72295 대상 공격대 아이콘 설정하기"	
+	MalleableGooIcon			= "$spell:72295 대상 공격대 아이콘 설정하기",
+	YellOnMalleableGoo			= "$spell:72295 외치기",	
+	specWarnUnboundPlague		= "$spell:72856 전달자 특수 경고 보기",
+	specWarnNextPlageSelf		= "당신이 다음 $spell:72856 대상이 될 때 특수 경고 보기",	
 }
 
 L:SetMiscLocalization{
-	YellPull					= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!"
+	YellPull					= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!",
+	YellMalleable				= "나에게 통통이~!"	
 }
 
 ----------------------------
