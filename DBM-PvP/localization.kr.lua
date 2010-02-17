@@ -311,15 +311,15 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerStart				= "게임 시작", 
 	TimerPOI				= "%s",
-	TimerSiegeEngine		= "Siege Engine ready"	
+	TimerSiegeEngine		= "공성 전차 준비"	
 })
 
 L:SetOptionLocalization({
 	TimerStart				= "게임 시작 타이머 보기", 
 	TimerPOI				= "획득 타이머 보기",
-	TimerSiegeEngine		= "Show a timer for Siege Engine building",
-	WarnSiegeEngine			= "Warn when the Siege Engine is ready",
-	WarnSiegeEngineSoon		= "Warn when the Siege Engine is almost ready"	
+	TimerSiegeEngine		= "공성 전차 제작 타이머 보기",
+	WarnSiegeEngine			= "공성 전차가 준비되었을 때 경고 알리기",
+	WarnSiegeEngineSoon		= "공성 전차가 곧 준비 될 때 경고 알리기"	
 })
 
 L:SetMiscLocalization({
@@ -329,11 +329,11 @@ L:SetMiscLocalization({
 	BgStart15				= "15초 후 전투가 시작됩니다.",
 	SiegeEngine				= "Siege Engine",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
-	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
+	GoblinStartHorde		= "공성 전차를 수리하는 동안 날 좀 지켜 달라고. 필요하면 저기 있는 시포리움 폭약을 관문에 사용해!",
 	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
-	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
+	GoblinHalfwayHorde		= "반쯤 됏다고! 얼라이언스 놈들이 가까이 못오게 해줘. 계약서에 전투 얘긴 없었다고!",
 	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
-	GoblinFinishedHorde		= "The siege engine is ready to roll!",
+	GoblinFinishedHorde		= "이제 이 공성 전차를 끌고 나가도 좋아!",
 	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
 	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"	
 })
