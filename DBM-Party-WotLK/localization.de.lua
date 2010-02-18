@@ -4,7 +4,6 @@ if GetLocale() ~= "deDE" then return end
 --
 -- HdZ4: WaveCheck überprüfen
 -- HdS: Brann-Eskorte
--- Burg: Ingvar der Brandschatzer
 -- PdC: Großchampions, Der Schwarze Ritter
 -- HdR: Lichkönig-Event (Horde)
 
@@ -896,7 +895,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCombatEnd	= "No! I can do... better! I can..."	-- to be translated
+	YellCombatEnd	= "Nein! Ich bin... besser, Ich bin..."
 })
 
 ------------------------
