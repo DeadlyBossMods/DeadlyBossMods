@@ -9,9 +9,9 @@
 
 local L
 
-----------------------
--- FlameLeviathan --
-----------------------
+-----------------------
+--  Flame Leviathan  --
+-----------------------
 L = DBM:GetModLocalization("FlameLeviathan")
 
 L:SetGeneralLocalization{
@@ -42,9 +42,9 @@ L:SetOptionLocalization{
 	warnWardofLife			= "Zeige Spezialwarnung für Erscheinen von Zauberschutz des Lebens"
 }
 
--------------
--- Ignis --
--------------
+--------------------------------
+--  Ignis the Furnace Master  --
+--------------------------------
 L = DBM:GetModLocalization("Ignis")
 
 L:SetGeneralLocalization{
@@ -62,11 +62,11 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SpecWarnJetsCast		= "Zeige Spezialwarnung für Flammenstrahlen-Zauber",
 	WarningSlagPot			= "Verkünde Schlackentopf-Ziele",
-	SlagPotIcon			= "Setze Symbole auf Schlackentopf-Ziele"
+	SlagPotIcon			= "Setze Zeichen auf Schlackentopf-Ziele"
 }
 
 ------------------
--- Razorscale --
+--  Razorscale  --
 ------------------
 L = DBM:GetModLocalization("Razorscale")
 
@@ -134,13 +134,13 @@ L:SetOptionLocalization{
 	SpecialWarningLightBomb		= "Zeige Spezialwarnung bei Lichtbombe auf dir",
 	SpecialWarningGravityBomb	= "Zeige Spezialwarnung bei Graviationsbombe auf dir",
 	specWarnConsumption			= "Zeige Spezialwarnung, wenn du von Verzehrung betroffen bist",
-	SetIconOnLightBombTarget	= "Setze Symbol auf Ziel der Lichtbombe",
-	SetIconOnGravityBombTarget	= "Setze Symbol auf Ziel der Graviationsbombe",
+	SetIconOnLightBombTarget	= "Setze Zeichen auf Ziel der Lichtbombe",
+	SetIconOnGravityBombTarget	= "Setze Zeichen auf Ziel der Graviationsbombe",
 }
 
--------------------
--- IronCouncil --
--------------------
+--------------------
+--  Iron Council  --
+--------------------
 L = DBM:GetModLocalization("IronCouncil")
 
 L:SetGeneralLocalization{
@@ -158,8 +158,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningSupercharge			= "Zeige Warnung wenn Superladung",
 	PlaySoundLightningTendrils		= "Spiele Sound bei Blitzranken",
-	SetIconOnOverwhelmingPower		= "Setze Symbol auf Ziel von Überwältigende Kraft",
-	SetIconOnStaticDisruption		= "Setze Symbol auf Ziel von Statische Störung",
+	SetIconOnOverwhelmingPower		= "Setze Zeichen auf Ziel von Überwältigende Kraft",
+	SetIconOnStaticDisruption		= "Setze Zeichen auf Ziel von Statische Störung",
 	AlwaysWarnOnOverload			= "Warne immer bei Überladen (ansonsten nur wenn Boss im Ziel)",
 	PlaySoundOnOverload			= "Spiele Sound bei Überladen",
 	PlaySoundDeathRune			= "Spiele Sound bei Rune des Todes",
@@ -221,7 +221,7 @@ L:SetMiscLocalization{
 }
 
 ----------------
--- Kologarn --
+--  Kologarn  --
 ----------------
 L = DBM:GetModLocalization("Kologarn")
 
@@ -250,8 +250,8 @@ L:SetOptionLocalization{
 	timerRightArm			= "Zeige Timer für Arm-Nachwachsen (rechts)",
 	achievementDisarmed		= "Zeige Timer für Erfolg 'Arm dran, weil Arm ab'",
 	WarnGrip				= "Verkünde Ziele von Steinerner Griff",
-	SetIconOnGripTarget		= "Setze Symbole auf Steinerner-Griff-Ziele",
-	SetIconOnEyebeamTarget	= "Setze Symbole auf Ziele von Fokussierter Augenstrahl (Quadrat)",
+	SetIconOnGripTarget		= "Setze Zeichen auf Steinerner-Griff-Ziele",
+	SetIconOnEyebeamTarget	= "Setze Zeichen auf Ziele von Fokussierter Augenstrahl (Quadrat)",
 	PlaySoundOnEyebeam		= "Spiele Sound bei Fokussiertem Augenstrahl"
 }
 
@@ -265,7 +265,7 @@ L:SetMiscLocalization{
 }
 
 ---------------
--- Auriaya --
+--  Auriaya  --
 ---------------
 L = DBM:GetModLocalization("Auriaya")
 
@@ -300,7 +300,7 @@ L:SetOptionLocalization{
 }
 
 -------------
--- Hodir --
+--  Hodir  --
 -------------
 L = DBM:GetModLocalization("Hodir")
 
@@ -320,7 +320,7 @@ L:SetOptionLocalization{
 	WarningFlashFreeze	= "Zeige Spezialwarnung für Blitzeis",
 	PlaySoundOnFlashFreeze	= "Spiele Sound bei Blitzeis-Zauber",
 	YellOnStormCloud	= "Schreie bei Sturmwolke auf dir",
-	SetIconOnStormCloud	= "Setze Symbole auf Spieler mit Sturmwolke",
+	SetIconOnStormCloud	= "Setze Zeichen auf Spieler mit Sturmwolke",
 	specWarnBitingCold		= "Zeige Spezialwarnung wenn du von Beißende Kälte betroffen bist"
 }
 
@@ -330,7 +330,7 @@ L:SetMiscLocalization{
 }
 
 --------------
--- Thorim --
+--  Thorim  --
 --------------
 L = DBM:GetModLocalization("Thorim")
 
@@ -362,7 +362,7 @@ L:SetMiscLocalization{
 }
 
 -------------
--- Freya --
+--  Freya  --
 -------------
 L = DBM:GetModLocalization("Freya")
 
@@ -426,9 +426,9 @@ L:SetOptionLocalization{
 	TrashRespawnTimer		= "Zeige Timer für Trash-Respawn"
 }
 
--------------------
--- Mimiron --
--------------------
+---------------
+--  Mimiron  --
+---------------
 L = DBM:GetModLocalization("Mimiron")
 
 L:SetGeneralLocalization{
@@ -503,8 +503,8 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarningShadowCrash		= "Verkünde Ziele von Schattengeschoss",
-	SetIconOnShadowCrash		= "Setze Symbole auf Ziele von Schattengeschoss (Totenkopf)",
-	SetIconOnLifeLeach		= "Setze Symbol auf Ziele von Mal der Gesichtslosen (Lebensentzug) (Kreuz)",
+	SetIconOnShadowCrash		= "Setze Zeichen auf Ziele von Schattengeschoss (Totenkopf)",
+	SetIconOnLifeLeach		= "Setze Zeichen auf Ziele von Mal der Gesichtslosen (Lebensentzug) (Kreuz)",
 	SpecialWarningSurgeDarkness	= "Zeige Spezialwarnung für Sog der Dunkelheit",
 	SpecialWarningShadowCrash	= "Zeige Spezialwarnung für Schattengeschoss (muss anvisiert oder im Fokus eines Schlachtzugsmitglieds sein)",
 	SpecialWarningShadowCrashNear	= "Zeige Spezialwarnung bei Schattengeschoss in deiner Nähe",
@@ -571,20 +571,18 @@ L:SetOptionLocalization{
 	SpecWarnGuardianLow				= "Zeige Spezialwarnung wenn Wächter (P1) fast tot ist (für DDs)",
 	WarnBrainPortalSoon				= "Zeige Vorwarnung für Gehirnportale",
 	SpecWarnMadnessOutNow			= "Zeige Spezialwarnung kurz vor Ende von Wahnsinn hervorrufen",
-	SetIconOnFearTarget				= "Setze Symbole auf Ziele von Geisteskrankheit",
+	SetIconOnFearTarget				= "Setze Zeichen auf Ziele von Geisteskrankheit",
 	SpecWarnFervor					= "Zeige Spezialwarnung wenn du von Saras Eifer betroffen bist",
 	SpecWarnFervorCast				= "Zeige Spezialwarnung wenn Saras Eifer auf dich gezaubert wird (muss anvisiert oder im Fokus eines Schlachtzugsmitglieds sein)",
 	specWarnBrainPortalSoon			= "Zeige Spezialwarnung für nächste Gehirnportale",
 	WarningSqueeze					= "Schreie bei Quetschen",
 	NextPortal						= "Zeige Timer für nächste Gehirnportale",
-	SetIconOnFervorTarget			= "Setze Symbole auf Spieler mit Saras Eifer",
-	SetIconOnMCTarget				= "Setze Symbole auf Spieler mit Gedanken beherrschen",
+	SetIconOnFervorTarget			= "Setze Zeichen auf Spieler mit Saras Eifer",
+	SetIconOnMCTarget				= "Setze Zeichen auf Spieler mit Gedanken beherrschen",
 	ShowSaraHealth					= "Zeige Lebensanzeige für Sara in Phase 1 (muss anvisiert oder im Fokus eines Schlachtzugsmitglieds sein)",
 	WarnEmpowerSoon					= "Zeige Vorwarnung für Machtvolle Schatten",
 	SpecWarnMaladyNear				= "Zeige Spezialwarnung für Geisteskrankheit in deiner Nähe",
 	SpecWarnDeafeningRoar			= "Zeige Spezialwarnung wenn Ohrenbetäubendes Gebrüll gezaubert wird (Stille und für Vala'nyr)",
-	SetIconOnBrainLinkTarget		= "Setze Symbole auf Ziele von Gehirnverbindung"
+	SetIconOnBrainLinkTarget		= "Setze Zeichen auf Ziele von Gehirnverbindung"
 }
-
-
 
