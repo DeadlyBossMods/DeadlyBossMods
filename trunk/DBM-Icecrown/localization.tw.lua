@@ -269,7 +269,9 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "第3階段 即將到來",
 	WarnMutatedPlague		= "%s: >%s< (%s)",
 	specWarnMalleableGoo		= "你中了延展黏液 - 快離開",
-	specWarnMalleableGooNear	= "你附近有人中了延展黏液 - 小心"
+	specWarnMalleableGooNear	= "你附近有人中了延展黏液 - 小心",
+	specWarnUnboundPlague		= "轉移肆虐瘟疫",
+	specWarnNextPlageSelf		= "肆虐瘟疫 即將發動, 準備好!"
 }
 
 L:SetOptionLocalization{
@@ -280,12 +282,19 @@ L:SetOptionLocalization{
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
-	MalleableGooIcon		= "為第一個中$spell:72295的目標設置標記"
+	UnboundPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
+	MalleableGooIcon		= "為第一個中$spell:72295的目標設置標記",
+	NextUnboundPlagueTargetIcon	= "為下一個$spell:72856的目標設置標記",
+	YellOnMalleableGoo		= "當你中了$spell:72295時大喊",	
+	specWarnUnboundPlague		= "為$spell:72856的轉移顯示特別警告",
+	specWarnNextPlageSelf		= "當你是下一個$spell:72856的目標時顯示特別警告",
+	
 
 }
 
 L:SetMiscLocalization{
-	YellPull			= "大夥聽著，好消息!我想我研發出一種瘟疫足以毀滅艾澤拉斯上所有的生命!"
+	YellPull			= "大夥聽著，好消息!我想我研發出一種瘟疫足以毀滅艾澤拉斯上所有的生命!",
+	YellMalleable			= "我中了延展黏液!"
 }
 
 ----------------------------
