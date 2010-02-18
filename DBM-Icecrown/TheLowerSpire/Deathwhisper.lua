@@ -20,6 +20,13 @@ local canPurge = select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "SHAMAN"
 			or select(2, UnitClass("player")) == "PRIEST"
 
+local isMelee = select(2, UnitClass("player")) == "ROGUE"
+        	or select(2, UnitClass("player")) == "WARRIOR"
+		or select(2, UnitClass("player")) == "DEATH KNIGHT"
+		or (select(2, UnitClass("player")) == "PALADIN" and UnitMaxMana("player") <= 20000)
+		or (select(2, UnitClass("player")) == "SHAMAN" and UnitMaxMana("player") <= 20000)
+		or (select(2, UnitClass("player")) == "DRUID" and UnitPowerType("player") > 0)
+
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
 local warnDeathDecay				= mod:NewSpellAnnounce(72108, 2)
@@ -29,12 +36,14 @@ local warnDarkEmpowerment			= mod:NewSpellAnnounce(70901, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 3)	
 local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
 local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 3)
+local warnDarkMartyrdom		= mod:NewSpellAnnounce(72499, 3)
 
 local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
 local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)
 local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
 local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
 local specWarnVengefulShade			= mod:NewSpecialWarning("specWarnVengefulShade", false)
+local specWarnDarkMartyrdom		= mod:NewSpecialWarningMove(72499, isMelee)
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
 local timerDominateMind				= mod:NewBuffActiveTimer(12, 71289)
@@ -204,6 +213,9 @@ function mod:SPELL_CAST_START(args)
 			empoweredAdherent = args.sourceGUID
 			self:TrySetTarget()
 		end
+	elseif args:IsSpellID(72499, 72500, 72497, 72496) then
+		warnDarkMartyrdom:Show()
+		specWarnDarkMartyrdom:Show()
 	end
 end
 
