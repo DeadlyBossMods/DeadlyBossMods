@@ -12,41 +12,30 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-   WarningSpark      = "Energiefunke da!",
-   WarningVortex      = "Vortex",
+   WarningSpark      = "Energiefunke",
    WarningBreathSoon   = "Tiefer Atem bald",
-   WarningBreath      = "Tiefer Atem!",
-   WarningSurge      = "Kraftsog auf >%s<",
-   WarningVortexSoon   = "Vortex bald",
-   WarningSurgeYou      = "Kraftsog auf dir!"
+   WarningBreath      = "Tiefer Atem"
 })
 
 L:SetTimerLocalization({
-   TimerSpark      = "Energiefunke",
-   TimerVortex      = "Vortex",
-   TimerBreath      = "Tiefer Atem",
-   TimerVortexCD   = "Vortex Cooldown"
+   TimerSpark      = "NÃ¤chster Energiefunke",
+   TimerBreath      = "NÃ¤chster Tiefer Atem"
 })
 
 L:SetOptionLocalization({
-   WarningSpark      = "Warnung für Energiefunke anzeigen",
-   WarningVortex      = "Warnung für Vortex anzeigen",
-   WarningBreathSoon   = "Vorwarnung für Tiefen Atem anzeigen",
-   WarningBreath      = "Warnung für Tiefen Atem anzeigen",
-   WarningSurge      = "Warnung für Kraftsog anzeigen",
-   TimerSpark         = "Timer für Energiefunke anzeigen",
-   TimerVortex         = "Timer für Vortex anzeigen",
-   TimerBreath         = "Timer für Tiefen Atem anzeigen",
-   TimerVortexCD      = "Timer für Vortex Cooldown anzeigen (ungenau)",
-   WarningVortexSoon   = "Vorwarnung für Vortex anzeigen (ungenau)",
-   WarningSurgeYou      = "Spezial Warnung anzeigen, wenn du von Kraftsog betroffen bist"
+   WarningSpark      = "Zeige Warnung fÃ¼r Energiefunke",
+   WarningBreathSoon   = "Zeige Vorwarnung fÃ¼r Tiefen Atem",
+   WarningBreath      = "Zeige Warnung fÃ¼r Tiefen Atem",
+   TimerSpark         = "Zeige Timer fÃ¼r nÃ¤chsten Energiefunken",
+   TimerBreath         = "Zeige Timer fÃ¼r nÃ¤chsten Tiefen Atem"
 })
 
 L:SetMiscLocalization({
    YellPull      = "Meine Geduld ist am Ende. Ich werde mich eurer entledigen!",
    EmoteSpark      = "Ein Energiefunke bildet sich aus einem nahegelegenen Graben!",
-   YellPhase2      = "Ich hatte gehofft, eure Leben schnell zu beenden, doch ihr zeigt euch... hartnäckiger als erwartet.",
+   YellPhase2      = "Ich hatte gehofft, eure Leben schnell zu beenden, doch ihr zeigt euch... hartnÃ¤ckiger als erwartet.",
    EmoteBreath      = "%s holt tief Luft.",
    YellBreath      = "Solange ich atme, werdet ihr nicht obsiegen!",
-   YellPhase3      = "Eure Wohltäter sind eingetroffen, doch sie kommen zu spät! Die hier gespeicherten Energien reichen aus, die Welt zehnmal zu zerstören. Was, denkt ihr, werden sie mit euch machen?"
+   YellPhase3      = "Eure WohltÃ¤ter sind eingetroffen, doch sie kommen zu spÃ¤t! Die hier gespeicherten Energien reichen aus, die Welt zehnmal zu zerstÃ¶ren. Was, denkt ihr, werden sie mit euch machen?"
 })
+

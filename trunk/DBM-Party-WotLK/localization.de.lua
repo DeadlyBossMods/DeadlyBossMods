@@ -7,7 +7,6 @@ if GetLocale() ~= "deDE" then return end
 -- Burg: Ingvar der Brandschatzer
 -- PdC: Großchampions, Der Schwarze Ritter
 -- HdR: Wellentimer, Lichkönig-Event
--- Feste Drak'Tharon: Novos der Beschwörer
 
 local L
 
@@ -335,10 +334,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPull		= "The chill you feel is the herald of your doom!",	-- to be translated
-	HandlerYell		= "Bolster my defenses! Hurry, curse you!",	-- to be translated
-	Phase2			= "Surely you can see the futility of it all!",	-- to be translated
-	YellKill		= "Your efforts... are in vain."	-- to be translated
+	YellPull		= "Was ihr spürt, ist euer Ende, das naht.",
+	HandlerYell		= "Verstärkt meine Verteidigung! Schnell, verdammt!",
+	Phase2			= "Sicher seht ihr, dass alles vergebens ist!",
+	YellKill		= "Eure Mühen... sind umsonst."
 })
 
 -----------------
@@ -1437,7 +1436,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	specwarnMirroredSoul	= "Zeige Spezialwarnung für Schadensstop bei $spell:69051",
 	specwarnWailingSouls	= "Zeige Spezialwarnung wenn $spell:68899 gezaubert wird",
-	SetIconOnMirroredTarget	= "Setze Symbole auf Ziele von $spell:69051"
+	SetIconOnMirroredTarget	= "Setze Zeichen auf Ziele von $spell:69051"
 })
 
 

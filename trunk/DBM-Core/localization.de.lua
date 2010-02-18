@@ -166,7 +166,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Setze Symbole auf Ziele von $spell:%d"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Setze Zeichen auf Ziele von $spell:%d"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Spiele Sound bei $spell:%d"
 
 

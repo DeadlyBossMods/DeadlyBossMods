@@ -282,7 +282,8 @@ L:SetOptionLocalization{
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
-	MalleableGooIcon			= "Setze Zeichen auf Ziel erstes $spell:72295-Ziel",
+	MalleableGooIcon			= "Setze Zeichen auf erstes Ziel von $spell:72295",
+	NextUnboundPlagueTargetIcon	= "Setze Zeichen auf nächstes Ziel von $spell:72856",
 	YellOnMalleableGoo			= "Schreie bei $spell:72295",	
 	specWarnUnboundPlague		= "Zeige Spezialwarnung für Übertragung von $spell:72856",
 	specWarnNextPlageSelf		= "Zeige Spezialwarnung wenn du in der Nähe des Ziels von $spell:72856 bist"
@@ -316,7 +317,7 @@ L:SetOptionLocalization{
 	WarnTargetSwitchSoon	= "Zeige Vorwarnung für den Zielwechsel",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Zeige Timer für Zielwechsel-Cooldown",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Setze Symbol auf den machterfüllten Prinzen (Totenkopf)"
+	ActivePrinceIcon		= "Setze Zeichen auf den machterfüllten Prinzen (Totenkopf)"
 }
 
 L:SetMiscLocalization{
@@ -365,7 +366,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnBlazingSkeleton		= "Setze Symbole auf Loderndes Skelett (Totenkopf)",
+	SetIconOnBlazingSkeleton		= "Setze Zeichen auf Loderndes Skelett (Totenkopf)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -408,14 +409,14 @@ L:SetOptionLocalization{
 	warnInstability			= "Zeige Warnung für deine $spell:69766-Stacks",
 	warnChilledtotheBone	= "Zeige Warnung für deine $spell:70106-Stacks",
 	warnMysticBuffet		= "Zeige Warnung für deine $spell:70128-Stacks",
-	AnnounceFrostBeaconIcons= "Poste Symbole für Ziele von $spell:70126 in Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)",
+	AnnounceFrostBeaconIcons= "Poste Zeichen für Ziele von $spell:70126 in Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)",
  	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
 }
 
 L:SetMiscLocalization{
 	YellAirphase	= "Euer Vormarsch endet hier! Keiner wird überleben!",
 	YellPhase2		= "Fühlt die grenzenlose Macht meines Meisters, und verzweifelt!",
-	BeaconIconSet			= "Frostleuchtfeuer-Symbol {rt%d} auf %s gesetzt",
+	BeaconIconSet			= "Frostleuchtfeuer-Zeichen {rt%d} auf %s gesetzt",
 	YellPull		= "Ihr seid Narren, euch hierher zu wagen. Der eisige Wind Nordends wird eure Seelen verschlingen!"
 }
 
