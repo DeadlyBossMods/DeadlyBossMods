@@ -278,7 +278,7 @@ L:SetMiscLocalization({
 	Wave3			= "%d %s, %d %s 그리고 %d %s",
 	Wave4			= "%d %s, %d %s, %d %s 그리고 %d %s",
 	WaveBoss		= "%s",
-	WaveCheck		= "스컬지 공격 = %d/10",
+	WaveCheck		= "스컬지 공격 = (%d+)/10",
 	Roleplay		= "드디어 나타나셨군, 우서",
 	Roleplay2		= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go."	
 })
