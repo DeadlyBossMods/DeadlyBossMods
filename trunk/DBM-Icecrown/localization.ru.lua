@@ -283,6 +283,7 @@ L:SetOptionLocalization{
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
 	MalleableGooIcon			= "Устанавливать метку на первую цель заклинания $spell:72295",
+	NextUnboundPlagueTargetIcon	= "Устанавливать метку на следующую цель заклинания $spell:72856",
 	YellOnMalleableGoo			= "Кричать, когда на вас $spell:72295",	
 	specWarnUnboundPlague		= "Спец-предупреждение для передачи заклинания $spell:72856",
 	specWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью\nзаклинания $spell:72856",
