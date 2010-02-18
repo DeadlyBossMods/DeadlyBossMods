@@ -263,7 +263,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnGasVariableTargets)
 		self:Schedule(0.3, warnGasVariableTargets)
-	elseif args:IsSpellID(72856) then			 -- Unbound Plague
+	elseif args:IsSpellID(72855, 72856) then			 -- Unbound Plague
 		timerUnboundPlague:Start(args.destName)
 		if self.Options.UnboundPlagueIcon then
 			self:SetIcon(args.destName, 2, 20)
@@ -290,7 +290,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(71615, 71618) and phase == 1 then	-- only show one time
 		phase = 2
 		warnPhase2:Show()
-	elseif args:IsSpellID(72856) then 						-- Unbound Plague
+	elseif args:IsSpellID(72855, 72856) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
 		if args:IsPlayer() then
 			specWarnUnboundPlague:UnSchedule()
