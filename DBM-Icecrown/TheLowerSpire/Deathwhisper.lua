@@ -153,7 +153,7 @@ do
 			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("normal25") or (mod:IsDifficulty("heroic25") and #dominateMindTargets >= 3) then
 				showDominateMindWarning()
 			else
-				self:Schedule(0.7, showDominateMindWarning)
+				self:Schedule(0.9, showDominateMindWarning)
 			end
 		elseif args:IsSpellID(71001, 72108, 72109, 72110) then
 			if args:IsPlayer() then
