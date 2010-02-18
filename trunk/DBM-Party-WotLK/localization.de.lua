@@ -285,7 +285,7 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s und %d %s",
 	Wave4		= "%d %s, %d %s, %d %s und %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Angreiferwelle = %d/10",	-- does not work ... why?
+	WaveCheck	= "Angreiferwelle = (%d+)/10",
 	Roleplay	= "Wie schön, dass Ihr es geschafft habt, Uther.",
 	Roleplay2	= "Alle sind bereit. Vergesst nicht, diese Leute sind alle infiziert und werden bald sterben. Wir müssen Stratholme säubern, um den Rest Lordaerons vor der Geißel zu schützen. Los jetzt."
 })
