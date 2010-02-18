@@ -272,7 +272,7 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s et %d %s",
 	Wave4		= "%d %s, %d %s, %d %s et %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Vagues du Fléau = %d/10"
+	WaveCheck	= "Vagues du Fléau = (%d+)/10"
 })
 
 ----------------------

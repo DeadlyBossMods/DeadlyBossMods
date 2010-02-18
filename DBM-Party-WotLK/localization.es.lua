@@ -291,7 +291,7 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s, %d %s and %d %s",
 	Wave4		= "%d %s, %d %s, %d %s and %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "Oleada de la Plaga = %d/10",
+	WaveCheck	= "Oleada de la Plaga = (%d+)/10",
 	Roleplay	= "Me alegra que lo consiguieras, Uther.",
 	Roleplay2	= "Parece que todo el mundo está listo. Recordad, esta gente está infectada por la peste y pronto morirá. Debemos purgar Stratholme para proteger de la Plaga lo que queda de Lordaeron. Vamos."
 })

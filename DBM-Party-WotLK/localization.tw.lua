@@ -278,7 +278,7 @@ L:SetMiscLocalization({
 	Wave3		= "%d %s，%d %s 及 %d %s",
 	Wave4		= "%d %s，%d %s，%d %s 及 %d %s",
 	WaveBoss	= "%s",
-	WaveCheck	= "天譴軍波數 = %d/10",
+	WaveCheck	= "天譴軍波數 = (%d+)/10",
 	Roleplay	= "真高興你趕到了，烏瑟。",
 	Roleplay2	= "大家看來都準備好了。記得，這些人受到恐怖瘟疫所感染，不久人世。我們得淨化斯坦索姆以保護其他百姓免受天譴軍的威脅。出發吧。"
 })
