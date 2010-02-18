@@ -33,7 +33,7 @@ L.Disable		= "deaktiviere"
 
 L.NoSound		= "Kein Sound"
 
-L.IconsInUse				= "Von diesem Mod benutzte Symbole"
+L.IconsInUse				= "Von diesem Mod benutzte Zeichen"
 
 -- Tab: Boss Statistics
 L.BossStatistics	= "Boss-Statistiken"
@@ -135,4 +135,4 @@ L.Area_SpamFilter_Outgoing		= "Global Filter-Optionen"
 L.SpamBlockNoShowAnnounce		= "Zeige keine Verkündungen und spiele keine Warnungssounds"
 L.SpamBlockNoSendAnnounce		= "Sende keine Verkündungen an den Raidchat"
 L.SpamBlockNoSendWhisper		= "Sende keine Flüstermitteilungen an andere Spieler"
-L.SpamBlockNoSetIcon			= "Setze keine Symbole auf Ziele"
+L.SpamBlockNoSetIcon			= "Setze keine Zeichen auf Ziele"
