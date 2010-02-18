@@ -10,7 +10,7 @@ mod:RegisterKill("yell", L.YellKill)
 mod:SetWipeTime(25)
 
 mod:RegisterEvents(
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local WarnCrystalHandler 	= mod:NewAnnounce("WarnCrystalHandler")
