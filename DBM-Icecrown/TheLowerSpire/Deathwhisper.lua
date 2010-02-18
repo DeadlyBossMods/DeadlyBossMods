@@ -105,13 +105,14 @@ end
 function mod:addsTimer()
 	timerAdds:Cancel()
 	warnAddsSoon:Cancel()
-	timerAdds:Start()
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
 		warnAddsSoon:Schedule(55)	-- 5 secs prewarning
 		self:ScheduleMethod(60, "addsTimer")
+		timerAdds:Start()
 	else
 		warnAddsSoon:Schedule(40)	-- 5 secs prewarning
 		self:ScheduleMethod(45, "addsTimer")
+		timerAdds:Start(45)
 	end
 end
 
