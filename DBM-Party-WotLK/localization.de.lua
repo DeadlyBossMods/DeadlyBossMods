@@ -6,7 +6,7 @@ if GetLocale() ~= "deDE" then return end
 -- HdS: Brann-Eskorte
 -- Burg: Ingvar der Brandschatzer
 -- PdC: Großchampions, Der Schwarze Ritter
--- HdR: Wellentimer, Lichkönig-Event
+-- HdR: Lichkönig-Event (Horde)
 
 local L
 
@@ -1470,7 +1470,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	Falric		= "Falric",
-	WaveCheck	= "Geisterwelle = (%d+)/10"	-- to be checked
+	WaveCheck	= "Geisterwelle = (%d+)/10"
 })
 
 --------------
@@ -1543,11 +1543,11 @@ L:SetMiscLocalization({
 	Ghoul			= "Tobender Ghul",--creature id 36940. Not sure how to use these in function above to simplify locals though. :\
 	Abom			= "Schwerfällige Monstrosität",--creature id 37069
 	WitchDoctor		= "Auferstandener Hexendoktor",--creature id 36941
-	ACombatStart	= "He is too powerful. We must leave this place at once! My magic can hold him in place for only a short time. Come quickly, heroes!",	-- to be translated
+	ACombatStart	= "Seine Macht ist zu groß. Wir müssen diesen Ort sofort verlassen! Meine Magie kann ihn nur kurze Zeit halten. Beeilt Euch, Helden!",
 	HCombatStart	= "He's... too powerful. Heroes, quickly... come to me! We must leave this place at once! I will do what I can to hold him in place while we flee.",	-- to be translated
-	Wave1			= "There is no escape!",	-- to be translated
-	Wave2			= "Succumb to the chill of the grave.",	-- to be translated
-	Wave3			= "Another dead end.",	-- to be translated
-	Wave4			= "How long can you fight it?",	-- to be translated
-	YellCombatEnd	= "FIRE! FIRE!"	-- to be translated
+	Wave1			= "Es gibt kein Entkommen!",
+	Wave2			= "Ergebt Euch der Grabeskälte!",
+	Wave3			= "Eine weitere Sackgasse!",
+	Wave4			= "Wie lange könnt Ihr Euch noch wehren?",
+	YellCombatEnd	= "FEUER! FEUER!"
 })
