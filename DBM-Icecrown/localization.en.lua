@@ -456,5 +456,6 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	LKPull			= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",
-	YellDefile		= "Defile on me!"
+	YellDefile		= "Defile on me!",
+	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury..."
 }
