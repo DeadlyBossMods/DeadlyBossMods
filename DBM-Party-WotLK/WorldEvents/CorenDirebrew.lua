@@ -15,8 +15,8 @@ mod:RegisterEvents(
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
         	or select(2, UnitClass("player")) == "WARRIOR"
 		or select(2, UnitClass("player")) == "DEATH KNIGHT"
-		or (select(2, UnitClass("player")) == "PALADIN" and UnitManaMax("player") <= 20000)
-		or (select(2, UnitClass("player")) == "SHAMAN" and UnitManaMax("player") <= 20000)
+		or (select(2, UnitClass("player")) == "PALADIN" and UnitManaMax("player") <= 12000)
+		or (select(2, UnitClass("player")) == "SHAMAN" and UnitManaMax("player") <= 18000)
 		or (select(2, UnitClass("player")) == "DRUID" and UnitPowerType("player") > 0)
 
 local warnBarrel			= mod:NewTargetAnnounce(51413)
