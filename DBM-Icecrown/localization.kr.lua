@@ -460,5 +460,6 @@ L:SetOptionLocalization{
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
-	YellDefile				= "저에게 파멸!!!"	
+	YellDefile				= "저에게 파멸!!!",
+	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury..."	
 }
