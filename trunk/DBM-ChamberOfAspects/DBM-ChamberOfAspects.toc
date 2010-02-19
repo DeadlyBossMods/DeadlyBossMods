@@ -11,7 +11,7 @@
 ## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
-## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-SubCategories: The Obsidian Sanctum, The Ruby Sanctum
 ## X-DBM-Mod-Name: Chamber of Aspects
 ## X-DBM-Mod-Name-deDE: Kammer der Aspekte
 ## X-DBM-Mod-Name-ruRU: Обсидиановое святилище
@@ -21,7 +21,7 @@
 ## X-DBM-Mod-Name-esES: El Sagrario Obsidiana
 ## X-DBM-Mod-Name-esMX: El Sagrario Obsidiana
 ## X-DBM-Mod-Sort: 5
-## X-DBM-Mod-LoadZone: The Obsidian Sanctum
+## X-DBM-Mod-LoadZone: The Obsidian Sanctum,The Ruby Sanctum
 ## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所
@@ -36,8 +36,11 @@ localization.tw.lua
 localization.kr.lua
 localization.fr.lua
 localization.es.lua
-MapSizes.lua
-Shadron.lua
-Tenebron.lua
-Vesperon.lua
-Sartharion.lua
+Obsidian\MapSizes.lua
+Obsidian\Shadron.lua
+Obsidian\Tenebron.lua
+Obsidian\Vesperon.lua
+Obsidian\Sartharion.lua
+Ruby\MapSizes.lua
+Ruby\Zarithrian.lua
+Ruby\Halion.lua
