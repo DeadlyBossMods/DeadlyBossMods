@@ -2,7 +2,6 @@ if GetLocale() ~= "deDE" then return end
 
 -- fehlende Übersetzungen:
 --
--- Bestien von Nordend
 -- Lord Jaraxxus
 -- Fraktionschampions
 -- Zwillingsval'kyr
@@ -21,8 +20,8 @@ L:SetGeneralLocalization{
 L:SetMiscLocalization{
 	Charge			= "%%s sieht (%S+) zornig an und lässt einen gewaltigen Schrei ertönen!",
 	CombatStart		= "Er kommt aus den tiefsten, dunkelsten Höhlen der Sturmgipfel - Gormok der Pfähler! Voran, Helden!",
-	Phase2		= "Steel yourselves, heroes, for the twin terrors, Acidmaw and Dreadscale, enter the arena!",	-- to be translated
-	Phase3		= "The air itself freezes with the introduction of our next combatant, Icehowl! Kill or be killed, champions!",	-- to be translated
+	Phase2		= "Stählt Euch, Helden, denn die Zwillingsschrecken Ätzschlund und Schreckensmaul erscheinen in der Arena!",
+	Phase3		= "Mit der Ankündigung unseres nächsten Kämpfers gefriert die Luft selbst: Eisheuler! Tötet oder werdet getötet, Champions!",
 	Gormok		= "Gormok der Pfähler",
 	Acidmaw		= "Ätzschlund",
 	Dreadscale	= "Schreckensmaul",
