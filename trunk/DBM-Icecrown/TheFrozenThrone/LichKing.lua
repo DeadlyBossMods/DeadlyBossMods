@@ -4,9 +4,9 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.YellKill)
 mod:SetMinSyncRevision(3489)
---mod:SetWipeTime(160)
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(2, 3, 4, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -28,6 +28,7 @@ local warnShamblingEnrage	= mod:NewTargetAnnounce(72143) --Phase 1 Add Ability
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779) --Phase 1+ Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnDefileSoon		= mod:NewSoonAnnounce(73708)	--Phase 2+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797) --Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetAnnounce(72762) --Phase 2+ Ability
 local warnSummonValkyr		= mod:NewSpellAnnounce(69037) --Phase 2 Add
@@ -43,12 +44,14 @@ local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
 local specWarnWinter		= mod:NewSpecialWarningMove(73791) --Transition Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
+local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, false) --phase 2+
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797)
 local timerSoulreaperCD	 	= mod:NewCDTimer(30, 73797)
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
+local timerHarvestSoulCD	= mod:NewCDTimer(75, 74325)
 local timerInfestCD			= mod:NewCDTimer(22, 73779)
 local timerNecroticPlagueCleanse = mod:NewTimer(5, "TimerNecroticPlagueCleanse", 73912, false)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
@@ -141,6 +144,7 @@ function mod:SPELL_CAST_START(args)
 		timerInfestCD:Start()
 	elseif args:IsSpellID(72762) then -- Defile
 		self:ScheduleMethod(0.1, "DefileTarget")
+		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
 	end
 end
@@ -161,6 +165,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end--]]
 	elseif args:IsSpellID(69409, 73797, 73798, 73799) then -- Soul reaper (MT debuff)
 		warnSoulreaper:Show(args.destName)
+		specwarnSoulreaper:Show(args.destName)
 		timerSoulreaper:Start(args.destName)
 		timerSoulreaperCD:Start()
 		if args:IsPlayer() then
@@ -171,9 +176,10 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.RagingSpiritIcon then
 			self:SetIcon(args.destName, 8, 5)
 		end
-	elseif args:IsSpellID(68980, 74325, 74326, 74327) then -- Harvest Soul (not sure if this is right event for this, combat logs i saw never made it to phase 3)
+	elseif args:IsSpellID(68980, 74325, 74326, 74327) then -- Harvest Soul
 		warnHarvestSoul:Show(args.destName)
 		timerHarvestSoul:Start(args.destName)
+		timerHarvestSoulCD:Start()
 		if args:IsPlayer() then
 			specWarnHarvestSoul:Show()
 		end
@@ -271,10 +277,12 @@ function mod:NextPhase()--Might need some tweaks or may even replace it with mon
 		timerSummonValkyr:Start(20)--First add of phase timing might be off
 		timerSoulreaperCD:Start(40)
 		timerDefileCD:Start(38)
+		warnDefileSoon:Schedule(33)
 	elseif phase == 3 then
 		timerVileSpirit:Start(20)--First add of phase timing might be off
 		timerSoulreaperCD:Start(40)
 		timerDefileCD:Start(38)
+		timerHarvestSoulCD:Start(14)
 	end
 end
 
