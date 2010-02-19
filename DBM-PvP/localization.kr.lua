@@ -62,13 +62,13 @@ L:SetGeneralLocalization({
 L:SetTimerLocalization({
 	TimerStart 	= "게임 시작", 
 	TimerTower	= "%s",
-	TimerGY 	= "%s",
+	TimerGY 	= "%s"
 })
 
 L:SetMiscLocalization({
 	BgStart60 	= "알터랙 계곡 전투 개시 1분 전...",
 	BgStart30 	= "알터랙 계곡 전투 개시 30초 전...",
-	ZoneName 	= "알터랙 계곡",
+	ZoneName 	= "알터랙 계곡"
 })
 
 L:SetOptionLocalization({
@@ -101,7 +101,7 @@ L:SetMiscLocalization({
 
 L:SetTimerLocalization({
 	TimerStart 				= "게임 시작", 
-	TimerCap 				= "%s",
+	TimerCap 				= "%s"
 })
 
 L:SetOptionLocalization({
@@ -132,20 +132,20 @@ L:SetMiscLocalization({
 	FlagReset 		= "깃발이 제자리로 돌아갔습니다.!",
 	FlagTaken 		= "^(.+)|1이;가; 깃발을 차지했습니다!",
 	FlagCaptured 	= "(.+)|1이;가; 깃발을 차지했습니다!",
-	FlagDropped 	= "깃발을 떨어뜨렸습니다!",
+	FlagDropped 	= "깃발을 떨어뜨렸습니다!"
 
 })
 
 L:SetTimerLocalization({
 	TimerStart 		= "게임 시작", 
-	TimerFlag		= "깃발 재생성",
+	TimerFlag		= "깃발 재생성"
 })
 
 L:SetOptionLocalization({
 	TimerStart 		= "시작 타이머 보기",
 	TimerWin 		= "점령 타이머 보기",
 	TimerFlag 		= "깃발 재생성 타이머 보기",
-	ShowPointFrame 	= "깃발 운반 및 필요 예상 포인트 보기",
+	ShowPointFrame 	= "깃발 운반 및 필요 예상 포인트 보기"
 })
 
 --------------------
@@ -169,7 +169,7 @@ L:SetMiscLocalization({
 	ExprFlagReturn 		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
 	FlagAlliance 		= "얼라이언스 깃발 :",
 	FlagHorde 			= "호드 깃발 :",
-	FlagBase 			= "기지",
+	FlagBase 			= "기지"
 })
 
 L:SetTimerLocalization({
@@ -181,7 +181,7 @@ L:SetOptionLocalization({
 	TimerStart  			 	= "시작 타이머 보기",
 	TimerFlag 					= "깃발 재생성 타이머 보기",
 	ShowFlagCarrier 	 	 	= "깃발 운반자 보기",
-	ShowFlagCarrierErrorNote	= "전투중 깃발 운반자 에러 메세지 보기",
+	ShowFlagCarrierErrorNote	= "전투중 깃발 운반자 에러 메세지 보기"
 })
 
 
@@ -224,7 +224,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnNova 		= "번개 회오리 - 피하세요!",
+--	specWarnNova 		= "번개 회오리 - 피하세요!",
 }
 
 L:SetTimerLocalization{
@@ -304,8 +304,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSiegeEngine			= "Siege Engine ready!",
-	WarnSiegeEngineSoon		= "Siege Engine in ~10 sec"
+	WarnSiegeEngine			= "공성 전차 준비!",
+	WarnSiegeEngineSoon		= "공성 전차 완료 10초 전"
 })
 
 L:SetTimerLocalization({
