@@ -60,6 +60,7 @@ local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
 local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
+local timerRoleplay			= mod:NewTimer(129, "TimerRoleplay")	--may need tweaking
 
 local berserkTimer			= mod:NewBerserkTimer(900)
 
@@ -123,9 +124,9 @@ function mod:SPELL_CAST_START(args)
 		timerShamblingHorror:Cancel()
 		timerDrudgeGhouls:Cancel()
 		timerSummonValkyr:Cancel()
-		timerInfestCD:Cancel()--Do these reset on phase transition? Assuming so for time being
-		timerNecroticPlagueCD:Cancel()--Do these reset on phase transition? Assuming so for time being
-		timerDefileCD:Cancel()--Do these reset on phase transition? Assuming so for time being
+		timerInfestCD:Cancel()
+		timerNecroticPlagueCD:Cancel()
+		timerDefileCD:Cancel()
 	elseif args:IsSpellID(72262) then -- Quake (phase transition end)
 		warnQuake:Show()
 		self:NextPhase()
@@ -289,11 +290,15 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.LKPull or msg:find(L.LKPull) then
 		self:SendSync("LKPull")
+	elseif msg == L.LKRoleplay or msg:find(L.LKRoleplay) then
+		self:SendSync("LKRoleplay")
 	end
 end
 
 function mod:OnSync(msg, arg)
 	if msg == "LKPull" then
 		timerCombatStart:Start()
+	elseif msg == "LKRoleplay" then
+		timerRoleplay:Start()
 	end
 end
