@@ -23,9 +23,9 @@ local canPurge = select(2, UnitClass("player")) == "MAGE"
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
         	or select(2, UnitClass("player")) == "WARRIOR"
 		or select(2, UnitClass("player")) == "DEATH KNIGHT"
---[[		or (select(2, UnitClass("player")) == "PALADIN" and UnitMaxMana("player") <= 20000)
-		or (select(2, UnitClass("player")) == "SHAMAN" and UnitMaxMana("player") <= 20000)
-		or (select(2, UnitClass("player")) == "DRUID" and UnitPowerType("player") > 0)--]]
+		or (select(2, UnitClass("player")) == "PALADIN" and UnitManaMax("player") <= 20000)
+		or (select(2, UnitClass("player")) == "SHAMAN" and UnitManaMax("player") <= 20000)
+		or (select(2, UnitClass("player")) == "DRUID" and UnitPowerType("player") > 0)
 
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
