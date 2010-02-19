@@ -122,9 +122,9 @@ end
 local function isDebuffed(unitId)
 	for i=1, 15 do	-- don't think we have to check for 40 debuffs,.. (correct me if i'm wrong, but want to save some cpu)
 		local spellId = select(11, UnitDebuff(unitId, i))
-		if spellId == 73117 or 		-- Plague Sickness
-		   spellId == 72838 or		-- Volatile Ooze Adhesive (Green Slime)
-		   spellId == 72833 then	-- Gaseous Bloat (Red Slime)
+		if spellId == 73117 or spellId == 70953 or		-- Plague Sickness
+		   spellId == 72838 or spellId == 72837 or 		-- Volatile Ooze Adhesive (Green Slime)
+		   spellId == 72833 or spellId == 72859 then	-- Gaseous Bloat (Red Slime)
 			return true
 		end
 	end
@@ -140,7 +140,7 @@ function mod:AquireTargetForUnboundPlague()
 		if not UnitIsUnit("player", "raid"..i) then
 			temprange = DBM.RangeCheck:GetDistance("raid"..i, myX, myY)
 			if temprange > 0 and temprange < 30 and temprange < mydistance then
-				if not isDebuffed("raid"..i) then	-- don't aquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
+				if UnitHealth("raid"..i) > 5000 and not isDebuffed("raid"..i) then	-- don't aquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
 					mytarget = "raid"..i
 					mydistance = temprange
 				end
