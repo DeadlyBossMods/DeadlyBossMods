@@ -208,8 +208,8 @@ L:SetMiscLocalization({
 	Emote2	= "Катушка Теслы теряет связь!",
 	Boss1	= "Фойген",
 	Boss2	= "Сталагг",
-	Charge1 = "Отрицательный",
-	Charge2 = "Положительный"
+	Charge1 = "отрицательную",
+	Charge2 = "положительную"
 })
 
 L:SetOptionLocalization({
@@ -221,7 +221,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningChargeChanged	= "%s - полярность изменена",
+	WarningChargeChanged	= "Полярность изменена на %s",
 	WarningChargeNotChanged	= "Полярность не изменена"
 })
 
@@ -342,7 +342,7 @@ L:SetOptionLocalization({
 	TimerLanding		= "Отсчет времени до приземления",
 	TimerIceBlast		= "Отсчет времени до Ледяного дыхания",
 	WarningDeepBreath	= "Специальное объявление Ледяного Дыхания",
-	WarningIceblock		= "Прелупредить о Ледяной глыбе"
+	WarningIceblock		= "Кричать, когда вы в Ледяной глыбе"
 })
 
 L:SetMiscLocalization({
@@ -374,8 +374,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhase2		= "Отсчет времени до второй фазы",
-	specwarnP2Soon	= "Спец-предупреждение за 10 секунд до начала фазы Кел'Тузад",
+	TimerPhase2		= "Отсчет времени до фазы 2",
+	specwarnP2Soon	= "Спец-предупреждение за 10 секунд до вступления Кел'Тузада в бой",
 	warnAddsSoon	= "Предупреждать заранее о Стражах Ледяной Короны",
 	BlastAlarm		= "Воспроизводить специальный звук сирены при применении Ледяного взрыва",
 	ShowRange		= "Показывать окно допустимой дистанции в фазе 2"
@@ -386,7 +386,7 @@ L:SetMiscLocalization({
 })
 
 L:SetWarningLocalization({
-	specwarnP2Soon	= "Кел'Тузад через 10 секунд",
+	specwarnP2Soon	= "Кел'Тузад вступает в бой через 10 секунд",
 	warnAddsSoon	= "Скоро прибытие Стражей Ледяной Короны"
 })
 
