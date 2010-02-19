@@ -310,8 +310,10 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnTargetSwitch		= "Cambiar objetivo a: %s",		-- Ugh, no nice spellname/id to use for general localization :(
-	WarnTargetSwitchSoon	= "Cambiar de objetivo pronto"			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	WarnTargetSwitch		= "Cambiar objetivo a: %s",	
+	WarnTargetSwitchSoon	= "Cambiar de objetivo pronto",	
+	specWarnVortex			= "Vórtice de choque en ti ¡Muévete!",
+	specWarnVortexNear		= "Vórtice de choque cerca de ti ¡Ten cuidado!"
 }
 
 L:SetTimerLocalization{
@@ -319,9 +321,11 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Mostrar aviso para cambiar de objetivos",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Mostrar pre-aviso para cambiar de objetivos",							-- Every ~31 secs, you have to dps a different Prince
+	WarnTargetSwitch		= "Mostrar aviso para cambiar de objetivos",
+	WarnTargetSwitchSoon	= "Mostrar pre-aviso para cambiar de objetivos",
 	TimerTargetSwitch		= "Mostrar tiempo para siguiente cambio de objetivo",
+	specWarnVortex			= "Mostrar aviso especial para $spell:72037 en ti",
+	specWarnVortexNear		= "Mostrar aviso especial para $spell:72037 cerca de ti",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Poner un icono en el príncipe con Invocación (Cruz)"
 }
@@ -444,12 +448,14 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart	= "Empieza el combate",
+	TimerRoleplay		= "Diálogo",
 	PhaseTransition		= "Transición de fase",
 	TimerNecroticPlagueCleanse = "Purgar Peste necrótica"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
+	TimerRoleplay			= "Mostrar tiempo para Diálogo",
 	TimerNecroticPlagueCleanse	= "Mostrar tiempo para purgar Peste necrótica\nantes de la primera marca",
 	PhaseTransition			= "Mostrar tiempo para las transiciones de fase",
 	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
@@ -464,6 +470,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	LKPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",--translate
-	YellDefile		= "Profanar en mi!"
+	YellDefile		= "Profanar en mi!",
+	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury..."
 }
 
