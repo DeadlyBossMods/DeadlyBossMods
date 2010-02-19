@@ -28,13 +28,15 @@ local warnTargetSwitchSoon		= mod:NewAnnounce("WarnTargetSwitchSoon", 2)
 local warnConjureFlames			= mod:NewCastAnnounce(71718)
 local warnEmpoweredFlamesCast	= mod:NewCastAnnounce(72040)
 local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040)
-local warnShockVortex			= mod:NewCastAnnounce(72037)			-- 1,5sec cast
+local warnShockVortex			= mod:NewTargetAnnounce(72037)			-- 1,5sec cast
 local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039)			-- 4,5sec cast
 local warnKineticBomb			= mod:NewSpellAnnounce(72053)
 local warnDarkNucleus			= mod:NewSpellAnnounce(71943)			-- instant cast
 
-local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
+local specWarnVortex			= mod:NewSpecialWarning("specWarnVortex")
+local specWarnVortexNear		= mod:NewSpecialWarning("specWarnVortexNear")
 local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(72039)
+local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
 local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 10)
 
 local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch")	-- every 46-47seconds
@@ -58,6 +60,23 @@ function mod:OnCombatStart(delay)
 	activePrince = nil
 end
 
+function mod:ShockVortexTarget()	--not yet tested.
+	local targetname = self:GetBossTarget(37970)
+	if not targetname then return end
+		warnShockVortex:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnVortex:Show()
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			if inRange then
+				specWarnVortexNear:Show()
+			end
+		end
+	end
+end
+
 function mod:TrySetTarget()
 	if DBM:GetRaidRank() >= 1 then
 		for i = 1, GetNumRaidMembers() do
@@ -74,7 +93,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(72037) then		-- Shock Vortex
-		warnShockVortex:Show()
+		self:ScheduleMethod(0.1, "ShockVortexTarget")
 		timerShockVortex:Start()
 	elseif args:IsSpellID(72039, 73037, 73038, 73039) then	-- Empowered Shock Vortex(73037, 73038, 73039 drycoded from wowhead)
 		warnEmpoweredShockVortex:Show()
