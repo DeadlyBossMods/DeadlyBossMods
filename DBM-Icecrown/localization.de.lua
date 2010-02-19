@@ -309,7 +309,9 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "Ziel wechseln auf: %s",
-	WarnTargetSwitchSoon	= "Zielwechsel bald"
+	WarnTargetSwitchSoon	= "Zielwechsel bald",
+	specWarnVortex			= "Schockvortex auf dir - Lauf weg",
+	specWarnVortexNear		= "Schockvortex in deiner Nähe - Pass auf"
 }
 
 L:SetTimerLocalization{
@@ -320,6 +322,8 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "Zeige Warnung für den Zielwechsel",-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Zeige Vorwarnung für den Zielwechsel",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Zeige Timer für Zielwechsel-Cooldown",
+	specWarnVortex			= "Zeige Spezialwarnung für $spell:72037 auf dich",
+	specWarnVortexNear		= "Zeige Spezialwarnung für $spell:72037 in deiner Nähe",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Setze Zeichen auf den machterfüllten Prinzen (Totenkopf)"
 }
