@@ -1,5 +1,9 @@
 if GetLocale() ~= "deDE" then return end
 
+-- fehlende Übersetzungen:
+--
+-- Der Lichkönig
+
 local L
 
 ---------------------------
@@ -458,5 +462,6 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	LKPull					= "Der vielgerühmte Streiter des Lichts ist endlich hier? Soll ich Frostgram niederlegen und mich Eurer Gnade ausliefern, Fordring?",
-	YellDefile				= "Entweihen auf mir!"
+	YellDefile				= "Entweihen auf mir!",
+	YellKill				= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury..."	-- to be translated
 }
