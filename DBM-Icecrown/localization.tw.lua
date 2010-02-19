@@ -308,7 +308,9 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "轉換目標到: %s",
-	WarnTargetSwitchSoon		= "轉換目標 即將到來"
+	WarnTargetSwitchSoon		= "轉換目標 即將到來",
+	specWarnVortex			= "你中了震擊漩渦 - 快離開",
+	specWarnVortexNear		= "你附近的人中了震擊漩渦 - 小心"
 }
 
 L:SetTimerLocalization{
@@ -319,6 +321,8 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "為轉換目標顯示警告",
 	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",
 	TimerTargetSwitch		= "為轉換目標顯示冷卻計時器",
+	specWarnVortex			= "當你中了$spell:72037時顯示特別警告",
+	specWarnVortexNear		= "當你附近的人中了$spell:72037時顯示特別警告",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)"
 }
@@ -441,12 +445,14 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart		= "戰鬥開始",
+	TimerRoleplay			= "角色扮演",
 	PhaseTransition			= "轉換階段",
 	TimerNecroticPlagueCleanse 	= "淨化亡域瘟疫"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
+	TimerRoleplay			= "為角色扮演事件顯示計時器",
 	TimerNecroticPlagueCleanse	= "為淨化第一次疊加前的亡域瘟疫顯示計時器",
 	PhaseTransition			= "為轉換階段顯示計時器",
 	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
@@ -460,5 +466,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	LKPull				= "聖光所謂的正義終於來了嗎？我是否該把霜之哀傷放下，祈求你的寬恕呢，弗丁？",
-	YellDefile			= "我中了汙染!"
+	YellDefile			= "我中了汙染!",
+	YellKill			= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
+	LKRoleplay			= "Is it truly righteousness that drives you? I wonder..."
 }
