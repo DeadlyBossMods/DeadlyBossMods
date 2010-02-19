@@ -49,12 +49,15 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 
 local soundBlisteringCold = mod:NewSound(70123)
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
+mod:AddBoolOption("SetIconOnUnchainedMagic", true)
+mod:AddBoolOption("ClearIconsOnAirphase", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
 
 local beaconTargets		= {}
 local beaconIconTargets	= {}
 local unchainedTargets	= {}
 local warned_P2 = false
+local unchainedIcons = 8
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -64,6 +67,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(beaconTargets)
 	table.wipe(beaconIconTargets)
 	table.wipe(unchainedTargets)
+	unchainedIcons = 8
 end
 
 do
@@ -94,6 +98,7 @@ end
 local function warnUnchainedTargets()
 	warnUnchainedMagic:Show(table.concat(unchainedTargets, "<, >"))
 	table.wipe(unchainedTargets)
+	unchainedIcons = 8
 end
 
 function mod:SPELL_CAST_START(args)
@@ -123,6 +128,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		unchainedTargets[#unchainedTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnUnchainedMagic:Show()
+		end
+		if self.Options.SetIconOnUnchainedMagic then
+			self:SetIcon(args.destName, unchainedIcons, 30)
+			unchainedIcons = unchainedIcons - 1
 		end
 		self:Unschedule(warnUnchainedTargets)
 		if #unchainedTargets >= 6 then
@@ -193,6 +202,9 @@ function mod:OnSync(msg, arg)
 		timerNextAirphase:Start()
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
+		if self.Options.ClearIconsOnAirphase then
+			self:ClearIcons()
+		end
 	elseif msg == "Phase2" then
 		warnPhase2:Show()
 		timerNextAirphase:Cancel()
