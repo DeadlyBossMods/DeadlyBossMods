@@ -458,5 +458,6 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	LKPull			= "Неужели прибыли наконец хваленые силы Света? Мне бросить Ледяную Скорбь и сдаться на твою милость, Фордринг?",
-	YellDefile		= "Осквернение на мне!"
+	YellDefile		= "Осквернение на мне!",
+	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury..."
 }
