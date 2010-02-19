@@ -156,14 +156,14 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s",
-	dispel = "%s - dispelea ahora",
-	interupt = "%s - interrumpe ahora",
-	you = "%s en ti",
+	dispel = "%s ¡dispelea ahora!",
+	interupt = "%s ¡interrumpe ahora!",
+	you = "%s en ti!",
 	target = "%s en %%s",
 	close = "%s en %%s cerca de ti",
-	move = "%s - muévete",
-	run = "%s - corre",
-	cast = "%s - para de castear",
+	move = "%s ¡muévete!",
+	run = "%s ¡corre!",
+	cast = "%s ¡para de castear!",
 	stack = "%s (%%d)"
 }
 
