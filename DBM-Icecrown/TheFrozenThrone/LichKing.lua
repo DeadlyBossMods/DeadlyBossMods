@@ -38,6 +38,7 @@ local warnHarvestSoul		= mod:NewTargetAnnounce(74325) --Phase 3 Ability
 
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
+local specWarnRagingSpirit	= mod:NewSpecialWarningYou(69200) --Transition Add
 local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
 local specWarnDefileNear	= mod:NewSpecialWarning("specWarnDefileNear", false) --Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
@@ -174,6 +175,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(69200) then -- Raging Spirit
 		warnRagingSpirit:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnRagingSpirit:Show()
+		end
 		if self.Options.RagingSpiritIcon then
 			self:SetIcon(args.destName, 8, 5)
 		end
