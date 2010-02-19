@@ -2,7 +2,6 @@ if GetLocale() ~= "deDE" then return end
 
 -- fehlende Übersetzungen:
 --
--- HdZ4: WaveCheck überprüfen
 -- HdS: Brann-Eskorte
 -- PdC: Großchampions, Der Schwarze Ritter
 -- HdR: Lichkönig-Event (Horde)
