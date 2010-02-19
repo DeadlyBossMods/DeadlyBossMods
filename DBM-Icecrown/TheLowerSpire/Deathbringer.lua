@@ -16,8 +16,10 @@ mod:RegisterEvents(
 )
 
 local isRanged = select(2, UnitClass("player")) == "MAGE"
-              or select(2, UnitClass("player")) == "HUNTER"
-              or select(2, UnitClass("player")) == "WARLOCK"
+				or select(2, UnitClass("player")) == "HUNTER"
+				or select(2, UnitClass("player")) == "WARLOCK"
+				or (select(2, UnitClass("player")) == "PALADIN" and UnitManaMax("player") >= 20000)
+				or (select(2, UnitClass("player")) == "SHAMAN" and UnitManaMax("player") >= 20000)
 
 local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737)
 local warnAddsSoon			= mod:NewSoonAnnounce(72173, 3)
