@@ -1,8 +1,8 @@
-local mod	= DBM:NewMod("Shadron", "DBM-ChamberOfAspects")
+local mod	= DBM:NewMod("Tenebron", "DBM-ChamberOfAspects", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(30451)
+mod:SetRevision(("$Revision: 2317 $"):sub(12, -3))
+mod:SetCreatureID(30452)
 mod:SetZone()
 
 mod:RegisterCombat("combat")

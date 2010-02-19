@@ -1,6 +1,8 @@
 local L
 
----------------
+----------------------------
+--  The Obsidian Sanctum  --
+----------------------------
 --  Shadron  --
 ---------------
 L = DBM:GetModLocalization("Shadron")
@@ -77,5 +79,25 @@ L:SetMiscLocalization({
 	VoidZoneOn		= "Shadow Fissure: %s",
 	VoidZones		= "Shadow Fissure fails (this try): %s",
 	FireWalls		= "Fire Wall fails (this try): %s"
+})
+
+------------------------
+--  The Ruby Sanctum  --
+------------------------
+--  General Zarithrian  --
+--------------------------
+L = DBM:GetModLocalization("Zarithrian")
+
+L:SetGeneralLocalization({
+	name = "General Zarithrian"
+})
+
+-------------------------------------
+--  Halion the Twilight Destroyer  --
+-------------------------------------
+L = DBM:GetModLocalization("Halion")
+
+L:SetGeneralLocalization({
+	name = "Halion the Twilight Destroyer"
 })
 
