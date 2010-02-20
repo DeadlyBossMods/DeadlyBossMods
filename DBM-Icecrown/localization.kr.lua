@@ -306,6 +306,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnTargetSwitch			= "대상 전환 : %s",		-- Ugh, no nice spellname/id to use for general localization :(
 	WarnTargetSwitchSoon		= "곧 대상 전환",			-- Spellname = Invocation of Blood   or   Spellname = Invocation of Blood (X) Move  (server side script where X indicates the first letter of the Prince name
+	specWarnVortex				= "당신에게 충격의 소용돌이 - 이동!",
+	specWarnVortexNear			= "당신 근처에 충격의 소용돌이 - 확인!"	
 }
 
 L:SetTimerLocalization{
@@ -316,6 +318,8 @@ L:SetOptionLocalization{
 	WarnTargetSwitch			= "대상 전환 경고 보기", -- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon		= "대상 전환 사전 경고 보기",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch			= "대상 전환 쿨다운 타이머 보기",
+	specWarnVortex				= "당신이 $spell:72037에 해당 될 경우 특수 경고 보기",
+	specWarnVortexNear			= "당신 주변에 $spell:72037가 있을 경우 특수 경고 보기",	
 	EmpoweredFlameIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon			= "활성화 된 공작에게 공격대 아이콘 설정하기 (해골)"
 }
@@ -412,7 +416,9 @@ L:SetOptionLocalization{
 	warnChilledtotheBone		= "당신의 $spell:70106 중첩 경고 보기",
 	warnMysticBuffet			= "당신의 $spell:70128 중첩 경고 보기",
 	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 아이콘을 채팅으로 알리기\n(공대장 혹은 부공대장 권한이 있을 경우)",	
-	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
+	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 아이콘 제거"
 
 }
 
@@ -441,12 +447,14 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart			= "전투 시작",
+	TimerRoleplay				= "이벤트",
 	PhaseTransition				= "다음 단계 전환",
 	TimerNecroticPlagueCleanse 	= "괴저 역병"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart			= "전투 시작 타이머 보기",
+	TimerRoleplay				= "이벤트 타이머 보기",	
 	TimerNecroticPlagueCleanse	= "$spell:73912의 첫 번째 틱 이후 지속 타이머 보기",	
 	PhaseTransition				= "다음 단계 전환 타이머 보기",	
 	WarnPhase2Soon				= "2 단계 전환 사전 경고 보기(73% 이하)",
@@ -461,5 +469,6 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
 	YellDefile				= "저에게 파멸!!!",
-	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury..."	
+	YellKill				= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
+	LKRoleplay				= "Is it truly righteousness that drives you? I wonder..."	
 }
