@@ -414,7 +414,9 @@ L:SetOptionLocalization{
 	warnChilledtotheBone	= "Предупреждение о ваших стаках $spell:70106",
 	warnMysticBuffet		= "Предупреждение о ваших стаках $spell:70128",
 	AnnounceFrostBeaconIcons= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права лидера или помощника)",
-	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
+	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой"
 }
 
 L:SetMiscLocalization{
@@ -442,12 +444,14 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	TimerCombatStart	= "Начало боя",
+	TimerRoleplay		= "Представление",
 	PhaseTransition		= "Переходная фаза",
 	TimerNecroticPlagueCleanse = "Очищение Мертвящей чумы"
 }
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
+	TimerRoleplay			= "Отсчет времени для представления",
 	TimerNecroticPlagueCleanse	= "Отсчет времени до первого тика Мертвящей чумы (для очищения)",
 	PhaseTransition			= "Отсчет времени для переходной фазы",
 	WarnPhase2Soon			= "Предупреждать заранее о переходе в фазу 2 (на ~73%)",
@@ -463,5 +467,6 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	LKPull			= "Неужели прибыли наконец хваленые силы Света? Мне бросить Ледяную Скорбь и сдаться на твою милость, Фордринг?",
 	YellDefile		= "Осквернение на мне!",
-	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости..."
+	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости...",
+	LKRoleplay		= "Is it truly righteousness that drives you? I wonder..."
 }

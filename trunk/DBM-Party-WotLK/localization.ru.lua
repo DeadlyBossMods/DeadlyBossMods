@@ -1295,13 +1295,13 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	HummelActive	= "Hummel becomes active",
-	BaxterActive	= "Baxter becomes active",
-	FryeActive		= "Frye becomes active"
+	HummelActive	= "Хаммел вступает в бой",
+	BaxterActive	= "Бакстер вступает в бой",
+	FryeActive		= "Фрай вступает в бой"
 }
 
 L:SetOptionLocalization({
-	TrioActiveTimer		= "Show timers for when Apothecary Trio becomes active"
+	TrioActiveTimer		= "Отсчет времени до вступления Троих аптекарей в бой"
 })
 
 L:SetMiscLocalization({
