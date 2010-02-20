@@ -30,6 +30,9 @@ function mod:UPDATE_WORLD_STATES(args)
 	end
 	wave = tonumber(wave)
 	lastWave = tonumber(lastWave)
+	if wave < lastWave then
+		lastWave = 0
+	end
 	if wave > lastWave then
 		warnNewWaveSoon:Cancel()
 		timerNextWave:Cancel()
