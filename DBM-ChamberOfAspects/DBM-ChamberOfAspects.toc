@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Name-deDE: Kammer der Aspekte
 ## X-DBM-Mod-Name-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-Name-zhTW: 黑曜聖所
-## X-DBM-Mod-Name-koKR: 흑요석 성소
+## X-DBM-Mod-Name-koKR: 흑요석 성소, 루비 성소
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
 ## X-DBM-Mod-Name-esES: El Sagrario Obsidiana
 ## X-DBM-Mod-Name-esMX: El Sagrario Obsidiana
@@ -25,7 +25,7 @@
 ## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所
-## X-DBM-Mod-LoadZone-koKR: 흑요석 성소
+## X-DBM-Mod-LoadZone-koKR: 흑요석 성소,루비 성소
 ## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien
 ## X-DBM-Mod-LoadZone-esES: El Sagrario Obsidiana
 ## X-DBM-Mod-LoadZone-esMX: El Sagrario Obsidiana
