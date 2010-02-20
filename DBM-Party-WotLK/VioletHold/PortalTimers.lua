@@ -21,7 +21,7 @@ mod:AddBoolOption("ShowAllPortalTimers", false, "timer")--rate they spawn seems 
 
 mod:RemoveOption("HealthFrame")
 
-local lastwave = 0
+local lastWave = 0
 
 function mod:UPDATE_WORLD_STATES(args)
 	local text = select(3, GetWorldStateUIInfo(2))
@@ -32,7 +32,10 @@ function mod:UPDATE_WORLD_STATES(args)
 	end
 	wave = tonumber(wave)
 	lastWave = tonumber(lastWave)
-	if wave > lastwave then
+	if wave < lastWave then
+		lastWave = 0
+	end
+	if wave > lastWave then
 		warningPortalSoon:Cancel()
 		timerPortalIn:Cancel()
 		if wave == 6 or wave == 12 or wave == 18 then
@@ -44,9 +47,7 @@ function mod:UPDATE_WORLD_STATES(args)
 				warningPortalSoon:Schedule(112)
 			end
 		end
-		lastwave = wave
-	elseif wave < lastwave then
-		lastwave = 0
+		lastWave = wave
 	end
 end
 
@@ -55,7 +56,7 @@ function mod:UNIT_DIED(args)
 		local z = tonumber(args.destGUID:sub(9, 12), 16)
 		if z == 29266 or z == 29312 or z == 29313 or z == 29314 or z == 29315 or z == 29316  		-- bosses
 		or z == 32226 or z == 32230 or z == 32231 or z == 32234 or z == 32235 or z == 32237 then 	-- boss spirits (in case you wipe)
-			timerPortalIn:Start(35, lastwave + 1)
+			timerPortalIn:Start(35, lastWave + 1)
 			warningPortalSoon:Schedule(30)
 		end
 	end

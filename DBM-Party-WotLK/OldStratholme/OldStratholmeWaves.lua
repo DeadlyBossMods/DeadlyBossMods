@@ -29,19 +29,18 @@ local wavesNormal = {
 local wavesHeroic = {
 	{3, L.Devouring},
 	{1, L.Devouring, 1, L.Enraged, 1, L.Necro},
-	{1, L.Devouring, 1, L.Enraged, 1, L.Necro, 1, L.Friend},
-	{1, L.Necro, 3, L.Acolyte, 1, L.Friend},
+	{1, L.Devouring, 1, L.Enraged, 1, L.Necro, 1, L.Fiend},
+	{1, L.Necro, 4, L.Acolyte, 1, L.Fiend},
 	{L.Meathook},
-	{1, L.Devouring, 1, L.Necro, 1, Friend, 1, L.Stalker},
+	{1, L.Devouring, 1, L.Necro, 1, L.Fiend, 1, L.Stalker},
 	{1, L.Devouring, 2, L.Enraged, 1, L.Abom},
 	{1, L.Devouring, 1, L.Enraged, 1, L.Necro, 1, L.Abom},
-	{1, L.Devouring, 1, L.Necro, 1, L.Friend, 1, L.Abom},
+	{1, L.Devouring, 1, L.Necro, 1, L.Fiend, 1, L.Abom},
 	{L.Salramm},
 }
 
 local waves		= wavesNormal
-local lastwave	= 0
-local wave
+local lastWave	= 0
 
 local function getWaveString(wave)
 	local waveInfo = waves[wave]
@@ -64,17 +63,20 @@ function mod:UPDATE_WORLD_STATES(args)
 	else 
 		waves = wavesNormal 
 	end
-	local text = select(3, GetWorldStateUIInfo(3))
+	local text = select(3, GetWorldStateUIInfo(2))
 	if not text then return end
 	local _, _, wave = string.find(text, L.WaveCheck)
 	if not wave then
 		wave = 0
 	end
 	wave = tonumber(wave)
-	lastwave = tonumber(lastwave)
-	if wave > lastwave or wave == 1 then
+	lastWave = tonumber(lastWave)
+	if wave < lastWave then
+		lastWave = 0
+	end
+	if wave > lastWave then
 		warningWaveNow:Show(wave, getWaveString(wave))
-		lastwave = wave
+		lastWave = wave
 	end
 end
 
