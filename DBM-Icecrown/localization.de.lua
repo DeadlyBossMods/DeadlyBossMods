@@ -418,7 +418,9 @@ L:SetOptionLocalization{
 	warnChilledtotheBone	= "Zeige Warnung für deine $spell:70106-Stacks",
 	warnMysticBuffet		= "Zeige Warnung für deine $spell:70128-Stacks",
 	AnnounceFrostBeaconIcons= "Poste Zeichen für Ziele von $spell:70126 in Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)",
- 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+ 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
+	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	ClearIconsOnAirphase	= "Entferne alle Zeichen vor der Luftphase"
 }
 
 L:SetMiscLocalization{
