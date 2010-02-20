@@ -12,11 +12,12 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-SubCategories: The Obsidian Sanctum, The Ruby Sanctum
+## X-DBM-Mod-SubCategories-koKR: 흑요석 성소, 루비 성소
 ## X-DBM-Mod-Name: Chamber of Aspects
 ## X-DBM-Mod-Name-deDE: Kammer der Aspekte
 ## X-DBM-Mod-Name-ruRU: Обсидиановое святилище
 ## X-DBM-Mod-Name-zhTW: 黑曜聖所
-## X-DBM-Mod-Name-koKR: 흑요석 성소, 루비 성소
+## X-DBM-Mod-Name-koKR: 고룡쉼터 사원
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
 ## X-DBM-Mod-Name-esES: El Sagrario Obsidiana
 ## X-DBM-Mod-Name-esMX: El Sagrario Obsidiana
