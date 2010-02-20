@@ -120,13 +120,16 @@ function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of
 end
 
 local function isDebuffed(unitId)
-	for i=1, 15 do	-- don't think we have to check for 40 debuffs,.. (correct me if i'm wrong, but want to save some cpu)
-		local spellId = select(11, UnitDebuff(unitId, i))
+	local i = 1
+	local spellId = select(11, UnitDebuff(unitId, i))
+	while spellId do
 		if spellId == 73117 or spellId == 70953 or		-- Plague Sickness
 		   spellId == 72838 or spellId == 72837 or 		-- Volatile Ooze Adhesive (Green Slime)
 		   spellId == 72833 or spellId == 72859 then	-- Gaseous Bloat (Red Slime)
 			return true
 		end
+		i = i + 1
+		spellId = select(11, UnitDebuff(unitId, i))
 	end
 	return false
 end
@@ -293,8 +296,8 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(72855, 72856) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
 		if args:IsPlayer() then
-			specWarnUnboundPlague:UnSchedule()
-			self:UnScheduleMethod("AquireTargetForUnboundPlague")
+			specWarnUnboundPlague:Unschedule()
+			self:UnscheduleMethod("AquireTargetForUnboundPlague")
 		end
 		if self.Options.UnboundPlagueIcon then
 			mod:SetIcon(args.destName, 0)
