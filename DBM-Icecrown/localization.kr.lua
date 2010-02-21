@@ -329,7 +329,7 @@ L:SetMiscLocalization{
 	Taldaram					= "공작 탈다람",
 	Valanar						= "공작 발라나르",
 --	EmpoweredFlames				= "(%S+) 쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
-	EmpoweredFlames				= "쪽으로 질주합니다!" -- Inferno Flames speed toward (%S+)!
+	EmpoweredFlames				= "강력한 불꽃이 (%S+)" -- Inferno Flames speed toward (%S+)!
 }
 
 -----------------------
@@ -355,7 +355,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 --	SwarmingShadows				= "어둠이 쌓이더니 (%S+)에게 몰려듭니다!", --"Shadows amass and swarm around (%S+)!"
-	SwarmingShadows				= "에게 몰려듭니다!",
+	SwarmingShadows				= "어둠이 쌓이더니 (%S+)",
 }
 
 -----------------------------
