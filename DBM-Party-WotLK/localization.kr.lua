@@ -280,7 +280,7 @@ L:SetMiscLocalization({
 	WaveBoss		= "%s",
 	WaveCheck		= "스컬지 공격 = (%d+)/10",
 	Roleplay		= "드디어 나타나셨군, 우서",
-	Roleplay2		= "Everyone looks ready. Remember, these people are all infected with the plague and will die soon. We must purge Stratholme to protect the remainder of Lordaeron from the Scourge. Let's go."	
+	Roleplay2		= "준비가 된 것 같군. 명심해라. 이들은 끔찍한 역병에 걸렸고, 어차피 죽을 것이다. 스컬지의 손아귀에서 로데론을 지키려면 스트라솔름을 정화해야 한다. 가자."
 })
 
 -------------------
