@@ -2,7 +2,6 @@ if GetLocale() ~= "deDE" then return end
 
 -- fehlende Übersetzungen:
 --
--- HdS: Brann-Eskorte
 -- PdC: Großchampions, Der Schwarze Ritter
 -- HdR: Lichkönig-Event (Horde)
 
@@ -632,11 +631,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull	= "Now keep an eye out! I'll have this licked in two shakes of a--",	-- to be translated
-	Phase1	= "Security breach in progress. Analysis of historical archives transferred to lower-priority queue. Countermeasures engaged.",	-- to be translated
-	Phase2	= "Threat index threshold exceeded.  Celestial archive aborted. Security level heightened.",	-- to be translated
-	Phase3	= "Critical threat index. Void analysis diverted. Initiating sanitization protocol.",	-- to be translated
-	Kill	= "Alert: security fail-safes deactivated. Beginning memory purge and... "	-- to be translated
+	Pull	= "Haltet jetzt die Augen offen! Ich werde die Sache hier im Handumdrehen...",
+	Phase1	= "Sicherheitsverletzung. Setze Analyse historischer Archive auf niedrige Priorität. Leite Gegenmaßnahmen ein.",
+	Phase2	= "Bedrohungsindexgrenze überschritten. Himmelsarchiv abgebrochen. Alarmstufe erhöht.",
+	Phase3	= "Kritischer Bedrohungsindex. Leerenanalyse umgeleitet. Initialisiere Säuberungsprotokoll.",
+	Kill	= "Alarm: Sicherungssysteme deaktiviert. Beginne Speichersäuberung und..."
 })
 
 -----------------
