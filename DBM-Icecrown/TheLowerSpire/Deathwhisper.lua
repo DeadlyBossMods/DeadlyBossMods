@@ -21,11 +21,11 @@ local canPurge = select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "PRIEST"
 
 local isMelee = select(2, UnitClass("player")) == "ROGUE"
-        	or select(2, UnitClass("player")) == "WARRIOR"
-		or select(2, UnitClass("player")) == "DEATH KNIGHT"
-		or (select(2, UnitClass("player")) == "PALADIN" and UnitManaMax("player") <= 12000)
-		or (select(2, UnitClass("player")) == "SHAMAN" and UnitManaMax("player") <= 18000)
-		or (select(2, UnitClass("player")) == "DRUID" and UnitPowerType("player") > 0)
+				or select(2, UnitClass("player")) == "WARRIOR"
+				or select(2, UnitClass("player")) == "DEATH KNIGHT"
+				or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 51)
+     			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 51)
+				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
 
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
