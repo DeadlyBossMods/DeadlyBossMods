@@ -417,7 +417,9 @@ L:SetOptionLocalization{
 	warnChilledtotheBone		= "為你的$spell:70106堆疊顯示警告",
 	warnMysticBuffet		= "為你的$spell:70128堆疊顯示警告",
 	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)",
-	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
+	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	ClearIconsOnAirphase		= "空中階段前消除所有標記"
 }
 
 L:SetMiscLocalization{
