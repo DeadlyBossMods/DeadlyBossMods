@@ -20,12 +20,7 @@ local canPurge = select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "SHAMAN"
 			or select(2, UnitClass("player")) == "PRIEST"
 
-local isMelee = select(2, UnitClass("player")) == "ROGUE"
-				or select(2, UnitClass("player")) == "WARRIOR"
-				or select(2, UnitClass("player")) == "DEATHKNIGHT"
-				or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 51)
-     			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 51)
-				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
+local isMelee = mod:GetIsMelee()
 
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
@@ -92,14 +87,14 @@ do	-- add the additional Shield Bar
 	local last = 100
 	local function getShieldPercent()
 		local guid = UnitGUID("focus")
-		if guid and tonumber(guid:sub(9, 12), 16) == 36855 then 
+		if mod:GetCIDFromGUID(guid) == 36855 then 
 			last = math.floor(UnitMana("focus")/UnitManaMax("focus") * 100)
 			return last
 		end
 		for i = 0, GetNumRaidMembers(), 1 do
 			local unitId = ((i == 0) and "target") or "raid"..i.."target"
 			local guid = UnitGUID(unitId)
-			if guid and tonumber(guid:sub(9, 12), 16) == 36855 then
+			if mod:GetCIDFromGUID(guid) == 36855 then
 				last = math.floor(UnitMana(unitId)/UnitManaMax(unitId) * 100)
 				return last
 			end

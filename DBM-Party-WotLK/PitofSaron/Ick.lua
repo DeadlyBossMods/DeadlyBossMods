@@ -15,12 +15,7 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local isMelee = select(2, UnitClass("player")) == "ROGUE"
-				or select(2, UnitClass("player")) == "WARRIOR"
-				or select(2, UnitClass("player")) == "DEATHKNIGHT"
-				or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 51)
-     			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 51)
-				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
+local isMelee = mod:GetIsMelee()
 
 local warnPursuitCast			= mod:NewCastAnnounce(68987)
 local warnPoisonNova			= mod:NewCastAnnounce(68989)

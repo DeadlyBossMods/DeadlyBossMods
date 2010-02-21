@@ -56,12 +56,7 @@ else
 	)
 end
 
-local isMelee = select(2, UnitClass("player")) == "ROGUE"
-				or select(2, UnitClass("player")) == "WARRIOR"
-				or select(2, UnitClass("player")) == "DEATHKNIGHT"
-				or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 51)
-     			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 51)
-				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
+local isMelee = mod:GetIsMelee()
 
 local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
 				or select(2, UnitClass("player")) == "PRIEST"

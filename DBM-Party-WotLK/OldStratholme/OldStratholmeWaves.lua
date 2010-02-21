@@ -82,7 +82,7 @@ end
 
 function mod:UNIT_DIED(args)
 	if bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
-		local z = tonumber(args.destGUID:sub(9, 12), 16)
+		local z = mod:GetCIDFromGUID(args.destGUID)
 		if z == 26529 then
 			timerWaveIn:Start()
 		end

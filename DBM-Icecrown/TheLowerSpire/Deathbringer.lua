@@ -105,14 +105,14 @@ do	-- add the additional Rune Power Bar
 	local last = 0
 	local function getRunePowerPercent()
 		local guid = UnitGUID("focus")
-		if guid and tonumber(guid:sub(9, 12), 16) == 37813 then 
+		if mod:GetCIDFromGUID(guid) == 37813 then 
 			last = math.floor(UnitPower("focus")/UnitPowerMax("focus") * 100)
 			return last
 		end
 		for i = 0, GetNumRaidMembers(), 1 do
 			local unitId = ((i == 0) and "target") or "raid"..i.."target"
 			local guid = UnitGUID(unitId)
-			if guid and tonumber(guid:sub(9, 12), 16) == 37813 then
+			if mod:GetCIDFromGUID(guid) == 37813 then
 				last = math.floor(UnitPower(unitId)/UnitPowerMax(unitId) * 100)
 				return last
 			end
