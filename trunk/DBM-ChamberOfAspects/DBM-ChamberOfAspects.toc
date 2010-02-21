@@ -1,4 +1,4 @@
-## Interface: 30300
+﻿## Interface: 30300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chamber of Aspects|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Kammer der Aspekte|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Палата Аспектов|r
@@ -14,6 +14,7 @@
 ## X-DBM-Mod-SubCategories: The Obsidian Sanctum, The Ruby Sanctum
 ## X-DBM-Mod-SubCategories-deDE: Das Obsidiansanktum, Das Rubinsanktum
 ## X-DBM-Mod-SubCategories-ruRU: Обсидиановое святилище, Рубиновое святилище
+## X-DBM-Mod-SubCategories-zhTW: 黑曜聖所, 晶紅聖所
 ## X-DBM-Mod-SubCategories-koKR: 흑요석 성소, 루비 성소
 ## X-DBM-Mod-Name: Chamber of Aspects
 ## X-DBM-Mod-Name-deDE: Kammer der Aspekte
@@ -27,7 +28,7 @@
 ## X-DBM-Mod-LoadZone: The Obsidian Sanctum,The Ruby Sanctum
 ## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum,Das Rubinsanktum
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище,Рубиновое святилище
-## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所
+## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所, 晶紅聖所
 ## X-DBM-Mod-LoadZone-koKR: 흑요석 성소,루비 성소
 ## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien
 ## X-DBM-Mod-LoadZone-esES: El Sagrario Obsidiana
