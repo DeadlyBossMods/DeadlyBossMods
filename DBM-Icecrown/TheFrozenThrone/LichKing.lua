@@ -26,7 +26,7 @@ local warnShamblingHorror	= mod:NewSpellAnnounce(70372) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358) --Phase 1 Add
 local warnShamblingEnrage	= mod:NewTargetAnnounce(72143) --Phase 1 Add Ability
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912) --Phase 1+ Ability
-local warnInfest			= mod:NewSpellAnnounce(73779) --Phase 1+ Ability
+local warnInfest			= mod:NewSpellAnnounce(73779) --Phase 1 & 2 Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnDefileSoon		= mod:NewSoonAnnounce(73708)	--Phase 2+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797) --Phase 2+ Ability
@@ -35,6 +35,7 @@ local warnSummonValkyr		= mod:NewSpellAnnounce(69037) --Phase 2 Add
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498) --Phase 3 Add
 local warnHarvestSoul		= mod:NewTargetAnnounce(74325) --Phase 3 Ability
+local warnTrapCast			= mod:NewTargetAnnounce(73539) --Phase 2+ Ability
 
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
@@ -46,6 +47,7 @@ local specWarnWinter		= mod:NewSpecialWarningMove(73791) --Transition Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
 local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, false) --phase 2+
+local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
@@ -61,6 +63,7 @@ local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
 local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
+local timerTrapCD		 	= mod:NewCDTimer(16, 73539)
 local timerRoleplay			= mod:NewTimer(129, "TimerRoleplay")	--may need tweaking
 
 local berserkTimer			= mod:NewBerserkTimer(900)
@@ -68,7 +71,9 @@ local berserkTimer			= mod:NewBerserkTimer(900)
 mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
 mod:AddBoolOption("RagingSpiritIcon")
+mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
+mod:AddBoolOption("YellOnTrap", true, "announce")
 
 local phase	= 0
 local warned_preP2 = false
@@ -118,6 +123,21 @@ function mod:DefileTarget()
 	end
 end
 
+function mod:TrapTarget()
+	local targetname = self:GetBossTarget(36597)
+	if not targetname then return end
+		warnTrapCast:Show(targetname)
+		if self.Options.TrapIcon then
+			self:SetIcon(targetname, 6, 10)
+		end
+	if targetname == UnitName("player") then
+		specWarnTrap:Show()
+		if self.Options.YellOnTrap then
+			SendChatMessage(L.YellTrap, "YELL")
+		end
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68981, 74270, 74271, 74272) then -- Remorseless Winter (phase transition start)
 		warnRemorselessWinter:Show()
@@ -128,6 +148,8 @@ function mod:SPELL_CAST_START(args)
 		timerInfestCD:Cancel()
 		timerNecroticPlagueCD:Cancel()
 		timerDefileCD:Cancel()
+		timerTrapCD:Cancel()
+		warnDefileSoon:Cancel()
 	elseif args:IsSpellID(72262) then -- Quake (phase transition end)
 		warnQuake:Show()
 		self:NextPhase()
@@ -148,6 +170,9 @@ function mod:SPELL_CAST_START(args)
 		self:ScheduleMethod(0.1, "DefileTarget")
 		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
+	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
+		self:ScheduleMethod(0.1, "TrapTarget")
+		timerTrapCD:Start()
 	end
 end
 
@@ -272,22 +297,24 @@ function mod:UNIT_HEALTH(uId)
 	end
 end
 
-function mod:NextPhase()--Might need some tweaks or may even replace it with monster yell instead but will avoid using locals if possible
+function mod:NextPhase()
 	phase = phase + 1
 	if phase == 1 then
 		timerShamblingHorror:Start(20)
 		timerDrudgeGhouls:Start(10)
 		timerNecroticPlagueCD:Start(27)
 	elseif phase == 2 then
-		timerSummonValkyr:Start(20)--First add of phase timing might be off
+		timerSummonValkyr:Start(20)
 		timerSoulreaperCD:Start(40)
 		timerDefileCD:Start(38)
+		timerInfestCD:Start(13)
 		warnDefileSoon:Schedule(33)
 	elseif phase == 3 then
-		timerVileSpirit:Start(20)--First add of phase timing might be off
+		timerVileSpirit:Start(20)
 		timerSoulreaperCD:Start(40)
 		timerDefileCD:Start(38)
 		timerHarvestSoulCD:Start(14)
+		warnDefileSoon:Schedule(33)
 	end
 end
 
