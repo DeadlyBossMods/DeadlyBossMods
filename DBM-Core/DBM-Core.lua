@@ -2361,7 +2361,7 @@ function bossModPrototype:SetUsedIcons(...)
 	end
 end
 
-function bossModPrototype:GetIsMelee()
+function bossModPrototype:IsMelee()
 	return select(2, UnitClass("player")) == "ROGUE"
 			or select(2, UnitClass("player")) == "WARRIOR"
 			or select(2, UnitClass("player")) == "DEATHKNIGHT"
@@ -2370,8 +2370,8 @@ function bossModPrototype:GetIsMelee()
 			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
 end
 
-function bossModPrototype:GetIsPhysical()
-	return GetIsMelee() or select(2, UnitClass("player")) == "HUNTER"
+function bossModPrototype:IsPhysical()
+	return self:IsMelee() or select(2, UnitClass("player")) == "HUNTER"
 end
 
 

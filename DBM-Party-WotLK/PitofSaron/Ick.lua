@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local isMelee = mod:GetIsMelee()
+local isMelee = mod:IsMelee()
 
 local warnPursuitCast			= mod:NewCastAnnounce(68987)
 local warnPoisonNova			= mod:NewCastAnnounce(68989)
