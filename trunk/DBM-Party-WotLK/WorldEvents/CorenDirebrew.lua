@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local isMelee = mod:GetIsMelee()
+local isMelee = mod:IsMelee()
 
 local warnBarrel			= mod:NewTargetAnnounce(51413)
 local timerBarrel			= mod:NewTargetTimer(8, 51413)
