@@ -33,7 +33,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name = "Прелесть & Вонючка"
+	name = "Треш-мобы Чумодельни"
 }
 
 L:SetWarningLocalization{
@@ -459,14 +459,17 @@ L:SetOptionLocalization{
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileNear		= "Спец-предупреждение, когда $spell:72762 около вас",
 	YellOnDefile			= "Кричать, когда $spell:72762 на вас",
+	YellOnTrap				= "Кричать, когда $spell:73539 на вас",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
-	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200)
+	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
+	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539)
 }
 
 L:SetMiscLocalization{
 	LKPull			= "Неужели прибыли наконец хваленые силы Света? Мне бросить Ледяную Скорбь и сдаться на твою милость, Фордринг?",
 	YellDefile		= "Осквернение на мне!",
+	YellTrap		= "Теневая ловушка на мне!",
 	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости...",
 	LKRoleplay		= "Is it truly righteousness that drives you? I wonder..."
 }
