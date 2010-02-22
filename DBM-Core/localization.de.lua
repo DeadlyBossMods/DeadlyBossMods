@@ -91,6 +91,8 @@ DBM_CORE_UNKNOWN					= "unbekannt"
 DBM_CORE_BREAK_START				= "Pause startet jetzt -- du hast %s Minute(n)!"
 DBM_CORE_BREAK_MIN					= "Pause endet in %s Minute(n)!"
 DBM_CORE_BREAK_SEC					= "Pause endet in %s Sekunden!"
+DBM_CORE_TIMER_BREAK				= "Pause"
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "Pause vorbei"
 
 DBM_CORE_TIMER_PULL					= "Pull in"
 DBM_CORE_ANNOUNCE_PULL				= "Pull in %d Sek"
