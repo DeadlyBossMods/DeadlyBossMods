@@ -303,7 +303,7 @@ function onUpdate(self, elapsed)
 				j = j + 1
 				color = RAID_CLASS_COLORS[select(2, UnitClass(uId))] or NORMAL_FONT_COLOR
 				local icon = GetRaidTargetIndex(uId)
-				local text = icon and ("{rt%d} %s"):format(icon, UnitName(uId)) or UnitName(uId)
+				local text = icon and ("|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%d:0|t %s"):format(icon, UnitName(uId)) or UnitName(uId)
 				self:AddLine(text, color.r, color.g, color.b)
 				if j >= 5 then
 					break

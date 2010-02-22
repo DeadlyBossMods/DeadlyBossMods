@@ -742,7 +742,7 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 			elseif subCmd:upper() == "MOVE" then
 				DBM.Arrow:Move()
 				success = true
-			elseif DBM:GetRaidUnitId(DBM:Capitalize(subCmd)) ~= "none" then
+			elseif subCmd == "target" or subCmd == "focus" or DBM:GetRaidUnitId(DBM:Capitalize(subCmd)) ~= "none" then
 				DBM.Arrow:ShowRunTo(DBM:Capitalize(subCmd), 0)
 				success = true
 			elseif subCmd:upper() == "TARGET" and UnitName("target") then
