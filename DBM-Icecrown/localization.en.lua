@@ -31,7 +31,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("PlagueworksTrash")
 
 L:SetGeneralLocalization{
-	name = "Precious & Stinky"
+	name = "Plagueworks Trash"
 }
 
 L:SetWarningLocalization{
