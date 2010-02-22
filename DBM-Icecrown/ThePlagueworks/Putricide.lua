@@ -41,7 +41,7 @@ local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNea
 local specWarnOozeVariable			= mod:NewSpecialWarningYou(70352)		-- Heroic Ability
 local specWarnGasVariable			= mod:NewSpecialWarningYou(70353)		-- Heroic Ability
 local specWarnUnboundPlague			= mod:NewSpecialWarning("specWarnUnboundPlague") -- you have to drop the debuff by staying very close to an other player
-local specWarnNextUnboundPlageSelf	= mod:NewSpecialWarning("specWarnNextPlageSelf") -- you are the aquired target for the Plague, prepare yourself!
+local specWarnNextUnboundPlageSelf	= mod:NewSpecialWarning("specWarnNextPlageSelf") -- you are the acquired target for the Plague, prepare yourself!
 
 local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)			-- Duration of debuff
 local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)				-- Approx
@@ -66,7 +66,7 @@ mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
 
 mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buff
-mod:AddBoolOption("NextUnboundPlagueTargetIcon")		-- icon on the aquired target (will be requested via Sync)
+mod:AddBoolOption("NextUnboundPlagueTargetIcon")		-- icon on the acquired target (will be requested via Sync)
 
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 
@@ -134,7 +134,7 @@ local function isDebuffed(unitId)
 	return false
 end
 
-function mod:AquireTargetForUnboundPlague()
+function mod:AcquireTargetForUnboundPlague()
 	local myX, myY = GetPlayerMapPosition("player")
 	local mytarget = "player"
 	local mydistance = 0
@@ -143,7 +143,7 @@ function mod:AquireTargetForUnboundPlague()
 		if not UnitIsUnit("player", "raid"..i) then
 			temprange = DBM.RangeCheck:GetDistance("raid"..i, myX, myY)
 			if temprange > 0 and temprange < 30 and temprange < mydistance then
-				if UnitHealth("raid"..i) > 5000 and not isDebuffed("raid"..i) then	-- don't aquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
+				if UnitHealth("raid"..i) > 5000 and not isDebuffed("raid"..i) then	-- don't acquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
 					mytarget = "raid"..i
 					mydistance = temprange
 				end
@@ -152,7 +152,7 @@ function mod:AquireTargetForUnboundPlague()
 	end
 	DBM.Arrow:ShowRunTo(mytarget)
 	self:SendSync("IconUnboundPlagueNext", UnitName(mytarget))
-	self:ScheduleMethod(1, "AquireTargetForUnboundPlague")
+	self:ScheduleMethod(1, "AcquireTargetForUnboundPlague")
 end
 
 do 
@@ -273,7 +273,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnUnboundPlague:Schedule(10)
-			self:ScheduleMethod(3, "AquireTargetForUnboundPlague")		-- we aquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
+			self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")		-- we acquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
 		end
 	end
 end
@@ -297,7 +297,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerUnboundPlague:Stop(args.destName)
 		if args:IsPlayer() then
 			specWarnUnboundPlague:Unschedule()
-			self:UnscheduleMethod("AquireTargetForUnboundPlague")
+			self:UnscheduleMethod("AcquireTargetForUnboundPlague")
 		end
 		if self.Options.UnboundPlagueIcon then
 			mod:SetIcon(args.destName, 0)

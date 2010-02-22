@@ -56,7 +56,7 @@ else
 	)
 end
 
-local isMelee = mod:GetIsMelee()
+local isMelee = mod:IsMelee()
 
 local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
 				or select(2, UnitClass("player")) == "PRIEST"
