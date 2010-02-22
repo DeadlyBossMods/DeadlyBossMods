@@ -90,9 +90,11 @@ DBM_CORE_HORDE						= "Орда"
 
 DBM_CORE_UNKNOWN					= "неизвестно"
 
-DBM_CORE_BREAK_START				= "Отдых начинается -- у вас есть %s мин.!"
-DBM_CORE_BREAK_MIN					= "Отдых заканчивается через %s мин.!"
-DBM_CORE_BREAK_SEC					= "Отдых заканчивается через %s сек.!"
+DBM_CORE_BREAK_START				= "Перерыв начинается -- у вас есть %s мин.!"
+DBM_CORE_BREAK_MIN					= "Перерыв заканчивается через %s мин.!"
+DBM_CORE_BREAK_SEC					= "Перерыв заканчивается через %s сек.!"
+DBM_CORE_TIMER_BREAK				= "Перерыв!"
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "Перерыв закончился"
 
 DBM_CORE_TIMER_PULL					= "Атака"
 DBM_CORE_ANNOUNCE_PULL				= "Атака через %d сек."
