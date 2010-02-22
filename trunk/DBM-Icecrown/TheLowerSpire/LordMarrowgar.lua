@@ -89,7 +89,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerWhirlwindCD:Start()
 		preWarnWhirlwind:Schedule(85)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerWhirlwind:Show(40)						-- 40seconds on heroic
+			timerWhirlwind:Show(35)						-- 35seconds on heroic
 		else
 			timerWhirlwind:Show()						-- 20seconds on normal.
 			timerBoneSpike:Cancel()						-- He doesn't do Bone Spike Graveyard during Bone Storm on normal
