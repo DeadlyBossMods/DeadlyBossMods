@@ -1386,7 +1386,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	IckPursuit				= "¡%s te atrapa!",
-	Barrage					= "%s comienza a invocar minas explosivas!",
+	Barrage					= "¡%s comienza a invocar minas explosivas!",
 })
 -------------------
 -- Forgemaster Garfrost --
@@ -1426,8 +1426,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnHoarfrost			= "Triza de Escarcha en ti!",
-	specWarnHoarfrostNear		= "Triza de Escarcha cerca de ti! Muévete!"
+	specWarnHoarfrost			= "¡Triza de Escarcha en ti!",
+	specWarnHoarfrostNear		= "¡Triza de Escarcha cerca de ti! Muévete!"
 })
 
 L:SetTimerLocalization{
@@ -1443,7 +1443,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart					= "¡Ay! Valientes aventureros, vuestra intromisión ha llegado a su fin. ¿Oís el ruido de huesos y acero acercándose por ese túnel? Es el sonido de vuestra inminente muerte.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "Dientefrío se fija en (%S+) y prepara una Explosión Helada!",
+	HoarfrostTarget				= "¡La vermis de escarcha Dientrefrío mira a % y prepara un helado ataque!",
 	YellCombatEnd				= "Imposible... Dientefrío... Avisa..."
 })
 ---------------------

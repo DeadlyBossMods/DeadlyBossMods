@@ -47,7 +47,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	FleshreaperTrap1		= "Quickly! We'll ambush them from behind!",--translate
+	FleshreaperTrap1		= "Rápido, ¡atacaremos por la espalda!",
 	FleshreaperTrap2		= "¡No… puedes escapar!",
 	FleshreaperTrap3		= "¿Los vivos? ¿¡Aquí!?"
 }
@@ -420,7 +420,9 @@ L:SetOptionLocalization{
 	warnChilledtotheBone	= "Mostrar aviso de tus marcas de $spell:70106",
 	warnMysticBuffet		= "Mostrar aviso de tus marcas de $spell:70128",
 	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de raid\n(Requiere 'anunciar' activado y líder/ayudante)",
-	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126)
+	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
+	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	ClearIconsOnAirphase	= "Eliminar todos los iconos antes de la fase aerea"
 }
 
 L:SetMiscLocalization{
@@ -471,6 +473,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	LKPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",--translate
 	YellDefile		= "Profanar en mi!",
-	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury..."
+	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",--translate
+	LKRoleplay		= "Is it truly righteousness that drives you? I wonder..."--translate
 }
 
