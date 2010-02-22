@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Shadron", "DBM-ChamberOfAspects", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision: 2317 $"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(30451)
 mod:SetZone()
 
