@@ -236,7 +236,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.OozeAdhesiveIcon then
 			self:SetIcon(args.destName, 8, 8)
 		end
-	elseif args:IsSpellID(70672, 72455, 72833) then	--Red Slime
+	elseif args:IsSpellID(70672, 72455, 72832, 72833) then	--Red Slime
 		warnGaseousBloat:Show(args.destName)
 		specWarnGaseousBloatOther:Show(args.destName)
 		timerGaseousBloat:Start(args.destName)
@@ -247,7 +247,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.GaseousBloatIcon then
 			self:SetIcon(args.destName, 7, 20)
 		end
-	elseif args:IsSpellID(71615, 71618) then	--71615 used in 10 and 25 normal, 71618 heroic ID maybe?(this id doesn't make immune, only stuns)
+	elseif args:IsSpellID(71615, 71618) then	--71615 used in 10 and 25 normal, 71618?
 		timerTearGas:Start()
 	elseif args:IsSpellID(72451) then	-- Mutated Plague
 		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
