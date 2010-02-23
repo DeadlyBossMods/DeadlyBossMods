@@ -219,7 +219,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(71255) then
 		warnChokingGasBomb:Show()
 		timerChokingGasBombCD:Start()
-	elseif args:IsSpellID(72295, 72615, 72295, 72296) then
+	elseif args:IsSpellID(72615, 72295, 74280, 74281) then
 		warnMalleableGoo:Show()
 		timerMalleableGooCD:Start()
 		self:ScheduleMethod(0.1, "MalleableGooTarget")
