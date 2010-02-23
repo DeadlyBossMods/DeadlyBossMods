@@ -1443,7 +1443,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	CombatStart					= "¡Ay! Valientes aventureros, vuestra intromisión ha llegado a su fin. ¿Oís el ruido de huesos y acero acercándose por ese túnel? Es el sonido de vuestra inminente muerte.", --Cannot promise just yet if this is right emote, it may be the second emote after this, will need to do more testing.
-	HoarfrostTarget				= "¡La vermis de escarcha Dientrefrío mira a % y prepara un helado ataque!",
+	HoarfrostTarget				= "¡La vermis de escarcha Dientrefrío mira a (%S+) y prepara un helado ataque!",
 	YellCombatEnd				= "Imposible... Dientefrío... Avisa..."
 })
 ---------------------

@@ -465,14 +465,17 @@ L:SetOptionLocalization{
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
 	specWarnDefileNear		= "Mostrar aviso especial para $spell:72762 cerca de ti",
 	YellOnDefile			= "Gritar cuando tengas $spell:72762",
+	YellOnTrap				= "Gritar cuando tengas $spell:73539",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
-	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200)
+	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
+	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539)
 }
 
 L:SetMiscLocalization{
 	LKPull		= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",--translate
-	YellDefile		= "Profanar en mi!",
+	YellDefile		= "¡Profanar en mi!",
+	YellTrap		= "¡Trampa de sombras en mi!",
 	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",--translate
 	LKRoleplay		= "Is it truly righteousness that drives you? I wonder..."--translate
 }
