@@ -84,4 +84,23 @@ L:SetMiscLocalization({
 	FireWalls		= "Muro de Fuego fallos (esta raid): %s"
 })
 
+------------------------
+--  The Ruby Sanctum  --
+------------------------
+--  General Zarithrian  --
+--------------------------
+L = DBM:GetModLocalization("Zarithrian")
+
+L:SetGeneralLocalization({
+	name = "General Zarithrian"
+})
+
+-------------------------------------
+--  Halion the Twilight Destroyer  --
+-------------------------------------
+L = DBM:GetModLocalization("Halion")
+
+L:SetGeneralLocalization({
+	name = "Halion el Destructor Crepuscular"
+})
 

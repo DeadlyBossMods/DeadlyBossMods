@@ -90,9 +90,11 @@ DBM_CORE_HORDE						= "Horda"
 
 DBM_CORE_UNKNOWN					= "desconocido"
 
-DBM_CORE_BREAK_START				= "El descanso empieza ahora -- tienes %s minuto(s)!"
-DBM_CORE_BREAK_MIN					= "El descanso acaba en %s minuto(s)!"
-DBM_CORE_BREAK_SEC					= "El descanso acaba en %s segundos!"
+DBM_CORE_BREAK_START				= "¡El descanso empieza ahora -- tienes %s minuto(s)!"
+DBM_CORE_BREAK_MIN					= "¡El descanso acaba en %s minuto(s)!"
+DBM_CORE_BREAK_SEC					= "¡El descanso acaba en %s segundos!"
+DBM_CORE_TIMER_BREAK				= "¡Descanso!"
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "El descanso terminó"
 
 DBM_CORE_TIMER_PULL					= "Pull en"
 DBM_CORE_ANNOUNCE_PULL				= "Pull en %d seg"
