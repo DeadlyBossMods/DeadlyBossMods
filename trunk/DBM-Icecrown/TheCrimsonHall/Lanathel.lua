@@ -80,7 +80,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnPactDarkfallen:Show()
 		end
 		if self.Options.SetIconOnDarkFallen then--Debuff doesn't actually last 30 seconds
-			self:SetIcon(args.destName, pactIcons, 30)--it lasts forever, but if you still have it after 30 seconds
+			self:SetIcon(args.destName, pactIcons, 28)--it lasts forever, but if you still have it after 28 seconds
 			pactIcons = pactIcons - 1--then you're probably dead anyways
 		end
 		self:Unschedule(warnPactTargets)
