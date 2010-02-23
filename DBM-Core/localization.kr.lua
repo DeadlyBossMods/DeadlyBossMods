@@ -93,6 +93,8 @@ DBM_CORE_UNKNOWN					= "알 수 없음"
 DBM_CORE_BREAK_START				= "쉬는 시간 시작 -- %s 분 남았습니다!"
 DBM_CORE_BREAK_MIN					= "%s 분 후 쉬는 시간이 끝납니다!"
 DBM_CORE_BREAK_SEC					= "%s 초 후 쉬는 시간이 끝납니다!"
+DBM_CORE_TIMER_BREAK				= "쉬는 시간!"
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "쉬는 시간이 종료되었습니다."
 
 DBM_CORE_TIMER_PULL					= "풀링 중 입니다."
 DBM_CORE_ANNOUNCE_PULL				= "%d 초 뒤 풀링 합니다."
@@ -121,14 +123,14 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell 		= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast 		= "주문시전 %s : %.1f 초"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon 		= "곧 %s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s : %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 		= "페이즈 %d"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 		= "%d 단계"
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast 	= "|cff71d5ff|Hspell:%d|h%s|h|r 시전을 시작할 경우 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(soon)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(prewarn)"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "페이즈 %d 의 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "%d 단계 경고 보기"
 
 
 -- Auto-generated Special Warning Localizations
@@ -142,9 +144,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	move 		= "$spell:%d의 영향을 받을 경우 특수 경고 보기(이동)",
 	run 		= "$spell:%d의 특수 경고 보기(빠른이동)",
 	cast 		= "$spell:%d의 시전 특수 경고 보기",
---	stack 		= "Show special warning when you have >=%d stacks of \n $spell:%d"
---	stack 		= "$spell:%d의 중첩이 %d 이상 쌓일 경우 특수 경고 보기"
-	stack 		= "%d 중첩 이상 쌓일 경우 $spell:%d의 특수 경고 보기"
+	stack 		= "%d 중첩 이상 쌓일 경우 $spell:%d의 특수 경고 보기"--	stack 		= "Show special warning when you have >=%d stacks of \n $spell:%d"
 }
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
