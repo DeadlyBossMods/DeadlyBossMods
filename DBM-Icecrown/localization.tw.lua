@@ -187,7 +187,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
-	warnFrenzySoon			= "為狂亂顯然預先警告 (大約33%)",
+	warnFrenzySoon			= "為狂亂顯示預先警告 (大約33%)",
 	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	SetIconOnMarkCast		= "為施放$spell:72444時的目標設置標記\n(試驗中，可能會錯誤地標記坦克)",
 	RangeFrame			= "顯示距離框 (12碼)",
@@ -419,7 +419,7 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)",
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase		= "空中階段前消除所有標記"
+	ClearIconsOnAirphase		= "空中階段前清除所有標記"
 }
 
 L:SetMiscLocalization{
@@ -455,20 +455,24 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	TimerRoleplay			= "為角色扮演事件顯示計時器",
-	TimerNecroticPlagueCleanse	= "為淨化第一次疊加前的亡域瘟疫顯示計時器",
+	TimerNecroticPlagueCleanse	= "為淨化第一次堆疊前的亡域瘟疫顯示計時器",
 	PhaseTransition			= "為轉換階段顯示計時器",
 	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
 	specWarnDefileNear		= "當你附近的人中了$spell:72762時顯示特別警告",
 	YellOnDefile			= "當你中了$spell:72762時大喊",
+	YellOnTrap			= "當你中了$spell:73539時大喊",
 	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
-	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912)
+	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
+	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
+	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539)
 }
 
 L:SetMiscLocalization{
 	LKPull				= "聖光所謂的正義終於來了嗎？我是否該把霜之哀傷放下，祈求你的寬恕呢，弗丁？",
 	YellDefile			= "我中了汙染!",
+	YellTrap			= "我中了暗影陷阱!",
 	YellKill			= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
 	LKRoleplay			= "Is it truly righteousness that drives you? I wonder..."
 }
