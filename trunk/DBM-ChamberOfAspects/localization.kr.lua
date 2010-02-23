@@ -101,7 +101,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Zarithrian")
 
 L:SetGeneralLocalization({
-	name = "General Zarithrian"
+	name = "장군 자리스리안"
 })
 
 -------------------------------------
@@ -110,5 +110,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Halion")
 
 L:SetGeneralLocalization({
-	name = "Halion the Twilight Destroyer"
+	name = "황혼의 파괴자 할리온"
 })

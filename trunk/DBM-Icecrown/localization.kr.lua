@@ -461,14 +461,17 @@ L:SetOptionLocalization{
 	WarnPhase3Soon				= "3 단계 전환 사전 경고 보기(43% 이하)",
 	specWarnDefileCast			= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnDefileNear			= "당신 주변에 $spell:72762이 시전된 경우 특수 경고 보기",
-	YellOnDefile				= "$spell:72762의 대상이 됐을 때 외치기",	
+	YellOnDefile				= "$spell:72762의 대상이 됐을 때 외치기",
+	YellOnTrap					= "$spell:73539 외치기",	
 	DefileIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
-	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200)	
+	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
+	TrapIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539)
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
 	YellDefile				= "저에게 파멸!!!",
-	YellKill				= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
-	LKRoleplay				= "Is it truly righteousness that drives you? I wonder..."	
+	YellTrap				= "나에게 암흑의 덫!!!",	
+	YellKill				= "어떤 의문도 남지 않았다. 어떤 의심도 없다. 너희는 아제로스의 가장 위대한 용사들이다. 너희 앞에 놓아둔 모든 도전을 극복해 내었다. 가장 강력한 종들이 너희의 무자비한 살육 앞에 쓰러졌지... 너희가 억눌렀던 분노 앞에 말이다...",
+	LKRoleplay				= "진정으로 정의에 이끌렸단 말이냐? 궁금하구나..."
 }
