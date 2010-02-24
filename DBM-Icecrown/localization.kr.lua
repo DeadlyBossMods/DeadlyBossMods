@@ -368,11 +368,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion				= "%s : >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
+	warnCorrosion				= "%s : >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
+	warnPortalOpen				= "포탈 열림"	
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "타오르는 해골에게 공격대 아이콘 설정(해골)",
+	warnPortalOpen				= "$spell:72483 열림 경고 보기",	
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "알 수 없음")
 }
 
