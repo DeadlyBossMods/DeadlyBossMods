@@ -2364,6 +2364,19 @@ function bossModPrototype:SetUsedIcons(...)
 	end
 end
 
+local function getTalentpointsSpent(spellID)
+	local spellName = GetSpellInfo(spellID)
+	for tabIndex=1, GetNumTalentTabs() do
+		for talentID=1, GetNumTalents(tabIndex) do
+			local name, _, _, _, spent = GetTalentInfo(tabIndex, talentID)
+			if(name == spellName) then
+				return spent
+			end
+		end
+	end
+	return 0
+end
+
 function bossModPrototype:IsMelee()
 	return select(2, UnitClass("player")) == "ROGUE"
 			or select(2, UnitClass("player")) == "WARRIOR"
@@ -2375,6 +2388,41 @@ end
 
 function bossModPrototype:IsPhysical()
 	return self:IsMelee() or select(2, UnitClass("player")) == "HUNTER"
+end
+
+function bossModPrototype:CanRemoveEnrage()
+	return select(2, UnitClass("player")) == "HUNTER" or select(2, UnitClass("player")) == "ROGUE"
+end
+
+local function IsDeathKnightTank()
+	-- idea taken from addon 'ElitistJerks'
+	local tankTalents = (getTalentpointsSpent(16271) >= 5 and 1 or 0) +		-- Anticipation
+	                    (getTalentpointsSpent(49042) >= 5 and 1 or 0) +		-- Toughness
+						(getTalentpointsSpent(55225) >= 5 and 1 or 0)		-- Blade Barrier
+	return tankTalents >= 3
+end
+
+local function IsDruidTank()
+	-- idea taken from addon 'ElitistJerks'
+	local tankTalents = (getTalentpointsSpent(57881) >= 2 and 1 or 0) +		-- Natural Reaction
+	                    (getTalentpointsSpent(16929) >= 3 and 1 or 0) +		-- Thick Hide
+						(getTalentpointsSpent(61336) >= 1 and 1 or 0) +		-- Survival Instincts
+						(getTalentpointsSpent(57877) >= 3 and 1 or 0)		-- Protector of the Pack
+	return tankTalents >= 3
+end
+
+function bossModPrototype:IsTank()
+	return (select(2, UnitClass("player")) == "WARRIOR" and select(3, GetTalentTabInfo(3)) >= 51)
+     		or (select(2, UnitClass("player")) == "DEATHKNIGHT" and IsDeathKnightTank())
+			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(2)) >= 51)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51 and IsDruidTank())
+end
+
+function bossModPrototype:IsHealer()
+	return (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(3)) >= 51)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(3)) >= 51)
+			or (select(2, UnitClass("player")) == "PRIEST" and select(3, GetTalentTabInfo(3)) < 51)
 end
 
 
