@@ -22,15 +22,17 @@ local warnManaVoid		= mod:NewSpellAnnounce(71741)
 local warnSupression	= mod:NewSpellAnnounce(70588)
 local warnPortalSoon	= mod:NewSoonAnnounce(72483)
 local warnPortal		= mod:NewSpellAnnounce(72483)
+local warnPortalOpen	= mod:NewAnnounce("warnPortalOpen")
 
 local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
 
 local timerLayWaste		= mod:NewBuffActiveTimer(12, 69325)
 local timerNextPortal	= mod:NewCDTimer(46, 72483)
+local timerPortalsOpen	= mod:NewBuffActiveTimer(10, 72483)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283)
 local timerCorrosion	= mod:NewTargetTimer(6, 70751)
 
-local berserkTimer	= mod:NewBerserkTimer(420)--Seems to exist just kinda funny, the adds just blow you up, not her
+local berserkTimer		= mod:NewBerserkTimer(420)--Seems to exist just kinda funny, the adds spawn rapid fast.
 
 mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 
@@ -121,6 +123,8 @@ end
 function mod:OnSync(msg, arg)
 	if msg == "NightmarePortal" then
 		warnPortal:Show()
+		warnPortalOpen:Schedule(15)
+		timerPortalsOpen:Schedule(15)
 		warnPortalSoon:Schedule(41)
 		timerNextPortal:Start()
 	end
