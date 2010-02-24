@@ -366,12 +366,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s на |3-5(>%s<) (%s)"		-- Corrosion on >args.destName< (args.amount)
+	warnCorrosion	= "%s на |3-5(>%s<) (%s)",		-- Corrosion on >args.destName< (args.amount)
+	warnPortalOpen	= "Открытие порталов"
 }
 
 L:SetOptionLocalization{
-	SetIconOnBlazingSkeleton		= "Устанавливать метку на Исторгающего пламя скелета (череп)",
-	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
+	SetIconOnBlazingSkeleton	= "Устанавливать метку на Исторгающего пламя скелета (череп)",
+	warnPortalOpen				= "Предупреждение об открытии порталов",
+	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 L:SetMiscLocalization{
