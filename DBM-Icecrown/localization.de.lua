@@ -370,11 +370,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s auf >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
+	warnCorrosion	= "%s auf >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
+	warnPortalOpen	= "Portale offen"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton		= "Setze Zeichen auf Loderndes Skelett (Totenkopf)",
+	warnPortalOpen				= "Zeige Warnung bei $spell:72483",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
