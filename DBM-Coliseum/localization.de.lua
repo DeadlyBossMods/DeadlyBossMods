@@ -2,7 +2,6 @@ if GetLocale() ~= "deDE" then return end
 
 -- fehlende Übersetzungen:
 --
--- Lord Jaraxxus
 -- Fraktionschampions
 -- Zwillingsval'kyr
 
@@ -106,7 +105,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	FirstPull	= "Grand Warlock Wilfred Fizzlebang will summon forth your next challenge. Stand by for his entry."	-- to be translated
+	FirstPull	= "Großhexenmeister Wilfred Zischknall wird Eure nächste Herausforderung beschwören. Harrt seiner Ankunft."
 }
 
 -------------------------
