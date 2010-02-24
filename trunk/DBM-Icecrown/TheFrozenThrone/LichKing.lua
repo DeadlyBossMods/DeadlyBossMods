@@ -19,8 +19,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnRemorselessWinter = mod:NewSpellAnnounce(74270, false) --Phase Transition Start Ability
-local warnQuake				= mod:NewSpellAnnounce(72262, false) --Phase Transition End Ability
+local warnRemorselessWinter = mod:NewSpellAnnounce(74270) --Phase Transition Start Ability
+local warnQuake				= mod:NewSpellAnnounce(72262) --Phase Transition End Ability
 local warnRagingSpirit		= mod:NewTargetAnnounce(69200) --Transition Add
 local warnShamblingHorror	= mod:NewSpellAnnounce(70372) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358) --Phase 1 Add
