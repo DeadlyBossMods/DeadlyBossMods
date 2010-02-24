@@ -364,12 +364,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s on >%s< (%s)"		-- Corrosion on >args.destName< (args.amount)
+	warnCorrosion	= "%s on >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
+	warnPortalOpen	= "Portals open"
 }
 
 L:SetOptionLocalization{
-	SetIconOnBlazingSkeleton		= "Set icon on Blazing Skeleton (skull)",
-	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
+	SetIconOnBlazingSkeleton	= "Set icon on Blazing Skeleton (skull)",
+	warnPortalOpen				= "Show warning when $spell:72483 are opened up",
+	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 L:SetMiscLocalization{
