@@ -197,7 +197,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	RunePower			= "Сила крови",
 	PullAlliance		= "Все павшие воины Орды, все дохлые псы Альянса – все пополнят армию Короля-лича. Даже сейчас валь'киры воскрешают ваших покойников, чтобы те стали частью Плети!",
-	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."
+	PullHorde			= "Кор'крон, выдвигайтесь! Герои, будьте начеку. Плеть только что..."
 }
 
 -----------------
@@ -473,5 +473,5 @@ L:SetMiscLocalization{
 	YellDefile		= "Осквернение на мне!",
 	YellTrap		= "Теневая ловушка на мне!",
 	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости...",
-	LKRoleplay		= "Is it truly righteousness that drives you? I wonder..."
+	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю..."	--Need to confirm
 }
