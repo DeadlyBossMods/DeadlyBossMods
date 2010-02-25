@@ -369,11 +369,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion			= "%s: >%s< (%s)"
+	warnCorrosion			= "%s: >%s< (%s)",
+	warnPortalOpen			= "傳送門開啟"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "為熾熱骷髏設置標記 (頭顱)",
+	warnPortalOpen			= "當$spell:72483開啟時顯示警告",
 	warnCorrosion			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
