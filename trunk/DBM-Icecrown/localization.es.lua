@@ -372,11 +372,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s en >%s< (%s)"
+	warnCorrosion	= "%s en >%s< (%s)",
+	warnPortalOpen	= "Se abren los portales"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Poner icono en Esqueleto llameante (calavera)",
+	warnPortalOpen				= "Mostrar aviso cuando $spell:72483 se abren",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
