@@ -68,7 +68,7 @@ function mod:OnCombatStart(delay)
 		self:ScheduleMethod(0.5, "CreateBossRPFrame")
 	end
 	timerCallBloodBeast:Start(-delay)
-	warnAddsSoon:Schedule(35-delay)
+	warnAddsSoon:Schedule(30-delay)
 	timerBloodNova:Start(-delay)
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
 		enrageTimer:Start(-delay)
@@ -137,7 +137,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(72173, 72356, 72357, 72358) then
 		timerCallBloodBeast:Start()
 		if GetTime() - spamBloodBeast > 5 then
-			warnAddsSoon:Schedule(35)
+			warnAddsSoon:Schedule(30)
 			spamBloodBeast = GetTime()
 		end
 	elseif args:IsSpellID(72410) then
