@@ -23,7 +23,7 @@ local isRanged = select(2, UnitClass("player")) == "MAGE"
 				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
 
 local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737)
-local warnAddsSoon			= mod:NewSoonAnnounce(72173, 3)
+local warnAddsSoon			= mod:NewPreWarnAnnounce(72173, 10, 3)
 local warnFrenzy			= mod:NewSpellAnnounce(72737)
 local warnBloodNova			= mod:NewSpellAnnounce(73058)
 local warnMark				= mod:NewTargetAnnounce(72444)
