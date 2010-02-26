@@ -475,6 +475,6 @@ L:SetMiscLocalization{
 	LKPull				= "聖光所謂的正義終於來了嗎？我是否該把霜之哀傷放下，祈求你的寬恕呢，弗丁？",
 	YellDefile			= "我中了汙染!",
 	YellTrap			= "我中了暗影陷阱!",
-	YellKill			= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
-	LKRoleplay			= "Is it truly righteousness that drives you? I wonder..."
+	YellKill			= "沒有問題尚未解答。沒有任何懷疑。你們就是艾澤拉斯最偉大的勇士。你們克服了每一個我所設下的考驗。我最強大的僕人們都在你們不屈不撓的猛攻中倒下…在你們奔放的怒火之中…",
+	LKRoleplay			= "你們的原動力真的是正義感嗎？我很懷疑……"
 }
