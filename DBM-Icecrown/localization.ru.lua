@@ -164,8 +164,8 @@ L:SetTimerLocalization{
 L:SetMiscLocalization{
 	PullAlliance	= "Запускайте двигатели! Летим навстречу судьбе.",
 	KillAlliance	= "Ну не говорите потом, что я не предупреждал. В атаку, братья и сестры!",
-	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!",
-	KillHorde		= "The Alliance falter. Onward to the Lich King!"
+	PullHorde		= "Воспряньте, сыны и дочери Орды! Сегодня мы будем биться со смертельным врагом! ЛОК'ТАР ОГАР!",
+	KillHorde		= "Альянс повержен. Вперед, к Королю-личу!"
 }
 
 -----------------------------
