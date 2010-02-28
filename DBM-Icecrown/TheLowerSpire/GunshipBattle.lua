@@ -21,18 +21,20 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnBelowZero			= mod:NewSpellAnnounce(69705, 3)
+local isMelee = mod:IsMelee()
+
+local warnBelowZero			= mod:NewSpellAnnounce(69705, 4)
 local warnExperienced		= mod:NewTargetAnnounce(71188, 1, nil, false)		-- might be spammy
 local warnVeteran			= mod:NewTargetAnnounce(71193, 2, nil, false)		-- might be spammy
 local warnElite				= mod:NewTargetAnnounce(71195, 3, nil, false)		-- might be spammy
-local warnBattleFury		= mod:NewAnnounce("WarnBattleFury", 3, nil, false)	-- might be spammy
-local warnBladestorm		= mod:NewSpellAnnounce(69652, 2, nil, false)		-- might be spammy
-local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 3)
-local warnAddsSoon			= mod:NewAnnounce("WarnAddsSoon")
+local warnBattleFury		= mod:NewAnnounce("WarnBattleFury", 2, nil, mod:IsTank())
+local warnBladestorm		= mod:NewSpellAnnounce(69652, 3, nil, isMelee)
+local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 2)
+local warnAddsSoon			= mod:NewAnnounce("WarnAddsSoon", 2)
 
 local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart", 2457)
 local timerBelowZeroCD		= mod:NewNextTimer(35, 69705)
-local timerBattleFuryActive	= mod:NewBuffActiveTimer(17, 72306)
+local timerBattleFuryActive	= mod:NewBuffActiveTimer(17, 72306, nil, mod:IsTank() or mod:IsHealer())
 local timerAdds				= mod:NewTimer(60, "TimerAdds")
 
 mod:RemoveOption("HealthFrame")

@@ -18,13 +18,13 @@ mod:RegisterEvents(
 
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
-local warnSlimeSpray			= mod:NewSpellAnnounce(69508)
-local warnOozeExplosionCast		= mod:NewCastAnnounce(69839)
-local warnMutatedInfection		= mod:NewTargetAnnounce(71224)
-local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, false)--Some strats purposely run to this so option is defaulted to off
-local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn")
-local warnStickyOoze			= mod:NewSpellAnnounce(69774)
-local warnUnstableOoze			= mod:NewAnnounce("WarnUnstableOoze")
+local warnSlimeSpray			= mod:NewSpellAnnounce(69508, 2)
+local warnOozeExplosionCast		= mod:NewCastAnnounce(69839, 3)
+local warnMutatedInfection		= mod:NewTargetAnnounce(71224, 4)
+local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, 2)
+local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn", 1)
+local warnStickyOoze			= mod:NewSpellAnnounce(69774, 1)
+local warnUnstableOoze			= mod:NewAnnounce("WarnUnstableOoze", 2)
 
 local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)

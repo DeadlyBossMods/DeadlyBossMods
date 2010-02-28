@@ -16,14 +16,14 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 3)
+local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 4)
 local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)
-local warnSwarmingShadows			= mod:NewTargetAnnounce(71266)
-local warnInciteTerror				= mod:NewSpellAnnounce(73070)
-local warnVampricBite				= mod:NewTargetAnnounce(71727)
-local warnMindControlled			= mod:NewTargetAnnounce(70923)
-local warnBloodthirst				= mod:NewTargetAnnounce(71474, 2, nil, false)
-local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 2, nil, false)
+local warnSwarmingShadows			= mod:NewTargetAnnounce(71266, 4)
+local warnInciteTerror				= mod:NewSpellAnnounce(73070, 3)
+local warnVampricBite				= mod:NewTargetAnnounce(71727, 2)
+local warnMindControlled			= mod:NewTargetAnnounce(70923, 4)
+local warnBloodthirst				= mod:NewTargetAnnounce(71474, 3, nil, false)
+local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 3, nil, false)
 
 local specWarnBloodBolt				= mod:NewSpecialWarningSpell(71772)
 local specWarnPactDarkfallen		= mod:NewSpecialWarningYou(71340)
