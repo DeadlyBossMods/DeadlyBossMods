@@ -12,9 +12,9 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnZombies		= mod:NewSpellAnnounce(71159)
+local warnZombies		= mod:NewSpellAnnounce(71159, 2)
 local warnMortalWound	= mod:NewAnnounce("warnMortalWound", 2, nil, false)
-local warnDecimateSoon	= mod:NewSoonAnnounce(71123)
+local warnDecimateSoon	= mod:NewSoonAnnounce(71123, 3)
 
 local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)
 local specWarnMortalWound	= mod:NewSpecialWarningStack(71127, nil, 5)

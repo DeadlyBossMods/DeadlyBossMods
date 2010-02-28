@@ -15,21 +15,20 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnSlimePuddle				= mod:NewSpellAnnounce(70341, 3)
-local warnUnstableExperimentSoon	= mod:NewSoonAnnounce(70351, 3)
-local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 3)
-local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 4)
-local warnGaseousBloat				= mod:NewTargetAnnounce(70672, 4)
-local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
-local warnTearGas					= mod:NewSpellAnnounce(71617)			-- Phase transition normal
-local warnVolatileExperiment		= mod:NewSpellAnnounce(72840)			-- Phase transition heroic
-local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 3)		-- Phase 2 ability
+local warnSlimePuddle				= mod:NewSpellAnnounce(70341, 2)
+local warnUnstableExperimentSoon	= mod:NewSoonAnnounce(70351, 2)
+local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 4)
+local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 3)
+local warnGaseousBloat				= mod:NewTargetAnnounce(70672, 3)
+local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 1)
+local warnTearGas					= mod:NewSpellAnnounce(71617, 2)		-- Phase transition normal
+local warnVolatileExperiment		= mod:NewSpellAnnounce(72840, 4)		-- Phase transition heroic
+local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 2)		-- Phase 2 ability
 local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)		-- Phase 2 ability
-local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
-local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 3) -- Phase 3 ability
-local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 4)
-local warnOozeVariable				= mod:NewTargetAnnounce(70352)			-- Heroic Ability
-local warnGasVariable				= mod:NewTargetAnnounce(70353)			-- Heroic Ability
+local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 1)
+local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2) -- Phase 3 ability
+local warnOozeVariable				= mod:NewTargetAnnounce(70352, 2)			-- Heroic Ability
+local warnGasVariable				= mod:NewTargetAnnounce(70353, 2)			-- Heroic Ability
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
@@ -221,7 +220,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChokingGasBombCD:Start()
 	elseif args:IsSpellID(72615, 72295, 74280, 74281) then
 		warnMalleableGoo:Show()
-		timerMalleableGooCD:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerMalleableGooCD:Start(20)
+		else
+			timerMalleableGooCD:Start()
+		end
 		self:ScheduleMethod(0.1, "MalleableGooTarget")
 	end
 end

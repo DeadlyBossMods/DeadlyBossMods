@@ -19,23 +19,23 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnRemorselessWinter = mod:NewSpellAnnounce(74270) --Phase Transition Start Ability
-local warnQuake				= mod:NewSpellAnnounce(72262) --Phase Transition End Ability
-local warnRagingSpirit		= mod:NewTargetAnnounce(69200) --Transition Add
-local warnShamblingHorror	= mod:NewSpellAnnounce(70372) --Phase 1 Add
-local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358) --Phase 1 Add
-local warnShamblingEnrage	= mod:NewTargetAnnounce(72143) --Phase 1 Add Ability
-local warnNecroticPlague	= mod:NewTargetAnnounce(73912) --Phase 1+ Ability
-local warnInfest			= mod:NewSpellAnnounce(73779, mod:IsHealer()) --Phase 1 & 2 Ability
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
-local warnDefileSoon		= mod:NewSoonAnnounce(73708)	--Phase 2+ Ability
-local warnSoulreaper		= mod:NewSpellAnnounce(73797, mod:IsTank() or mod:IsHealer()) --Phase 2+ Ability
-local warnDefileCast		= mod:NewTargetAnnounce(72762) --Phase 2+ Ability
-local warnSummonValkyr		= mod:NewSpellAnnounce(69037) --Phase 2 Add
-local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
-local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498) --Phase 3 Add
-local warnHarvestSoul		= mod:NewTargetAnnounce(74325) --Phase 3 Ability
-local warnTrapCast			= mod:NewTargetAnnounce(73539) --Phase 2+ Ability
+local warnRemorselessWinter = mod:NewSpellAnnounce(74270, 2) --Phase Transition Start Ability
+local warnQuake				= mod:NewSpellAnnounce(72262, 3) --Phase Transition End Ability
+local warnRagingSpirit		= mod:NewTargetAnnounce(69200, 3) --Transition Add
+local warnShamblingHorror	= mod:NewSpellAnnounce(70372, 3) --Phase 1 Add
+local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358, 2) --Phase 1 Add
+local warnShamblingEnrage	= mod:NewTargetAnnounce(72143, 3) --Phase 1 Add Ability
+local warnNecroticPlague	= mod:NewTargetAnnounce(73912, 4) --Phase 1+ Ability
+local warnInfest			= mod:NewSpellAnnounce(73779, 3, nil, mod:IsHealer()) --Phase 1 & 2 Ability
+local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
+local warnDefileSoon		= mod:NewSoonAnnounce(73708, 3)	--Phase 2+ Ability
+local warnSoulreaper		= mod:NewSpellAnnounce(73797, 4, nil, mod:IsTank() or mod:IsHealer()) --Phase 2+ Ability
+local warnDefileCast		= mod:NewTargetAnnounce(72762, 4) --Phase 2+ Ability
+local warnSummonValkyr		= mod:NewSpellAnnounce(69037, 3) --Phase 2 Add
+local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 1)
+local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498, 2) --Phase 3 Add
+local warnHarvestSoul		= mod:NewTargetAnnounce(74325, 4) --Phase 3 Ability
+local warnTrapCast			= mod:NewTargetAnnounce(73539, 3) --Phase 2+ Ability
 
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
@@ -46,16 +46,16 @@ local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
 local specWarnWinter		= mod:NewSpecialWarningMove(73791) --Transition Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
-local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank() or mod:IsHealer()) --phase 2+
+local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, false) --phase 2+
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
-local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797, mod:IsTank() or mod:IsHealer())
-local timerSoulreaperCD	 	= mod:NewCDTimer(30, 73797, mod:IsTank() or mod:IsHealer())
+local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797, nil, mod:IsTank() or mod:IsHealer())
+local timerSoulreaperCD	 	= mod:NewCDTimer(30, 73797, nil, mod:IsTank() or mod:IsHealer())
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
 local timerHarvestSoulCD	= mod:NewCDTimer(75, 74325)
-local timerInfestCD			= mod:NewCDTimer(22, 73779, mod:IsHealer())
+local timerInfestCD			= mod:NewCDTimer(22, 73779, nil, mod:IsHealer())
 local timerNecroticPlagueCleanse = mod:NewTimer(5, "TimerNecroticPlagueCleanse", 73912, false)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
 local timerDefileCD			= mod:NewCDTimer(32, 72762)

@@ -22,16 +22,16 @@ local canPurge = select(2, UnitClass("player")) == "MAGE"
 
 local isMelee = mod:IsMelee()
 
-local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 3)
+local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 2)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
 local warnDeathDecay				= mod:NewSpellAnnounce(72108, 2)
 local warnReanimating				= mod:NewAnnounce("WarnReanimating", 3)
 local warnDarkTransformation		= mod:NewSpellAnnounce(70900, 4)
 local warnDarkEmpowerment			= mod:NewSpellAnnounce(70901, 4)
-local warnPhase2					= mod:NewPhaseAnnounce(2, 3)	
+local warnPhase2					= mod:NewPhaseAnnounce(2, 1)	
 local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
-local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 3)
-local warnDarkMartyrdom				= mod:NewSpellAnnounce(72499, 3)
+local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 2)
+local warnDarkMartyrdom				= mod:NewSpellAnnounce(72499, 4)
 
 local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
 local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)

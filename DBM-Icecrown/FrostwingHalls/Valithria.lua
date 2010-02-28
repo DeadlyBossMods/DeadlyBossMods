@@ -17,12 +17,12 @@ mod:RegisterEvents(
 )
 
 local warnCorrosion		= mod:NewAnnounce("warnCorrosion", 2, nil, false)
-local warnGutSpray		= mod:NewTargetAnnounce(71283)
-local warnManaVoid		= mod:NewSpellAnnounce(71741)
-local warnSupression	= mod:NewSpellAnnounce(70588)
-local warnPortalSoon	= mod:NewSoonAnnounce(72483)
-local warnPortal		= mod:NewSpellAnnounce(72483)
-local warnPortalOpen	= mod:NewAnnounce("warnPortalOpen")
+local warnGutSpray		= mod:NewTargetAnnounce(71283, 3)
+local warnManaVoid		= mod:NewSpellAnnounce(71741, 2)
+local warnSupression	= mod:NewSpellAnnounce(70588, 3)
+local warnPortalSoon	= mod:NewSoonAnnounce(72483, 2)
+local warnPortal		= mod:NewSpellAnnounce(72483, 3)
+local warnPortalOpen	= mod:NewAnnounce("warnPortalOpen", 4)
 
 local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
 
