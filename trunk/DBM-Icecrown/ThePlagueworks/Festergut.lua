@@ -19,10 +19,10 @@ local isRanged = select(2, UnitClass("player")) == "MAGE"
      			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 51)
 				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
 
-local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight")
-local warnGastricBloat		= mod:NewAnnounce("WarnGastricBloat", 3)
-local warnGasSpore			= mod:NewTargetAnnounce(69279)
-local warnVileGas			= mod:NewTargetAnnounce(73020)
+local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight", 3)
+local warnGastricBloat		= mod:NewAnnounce("WarnGastricBloat", 2, nil, mod:IsTank() or mod:IsHealer())
+local warnGasSpore			= mod:NewTargetAnnounce(69279, 4)
+local warnVileGas			= mod:NewTargetAnnounce(73020, 3)
 
 local specWarnPungentBlight	= mod:NewSpecialWarningSpell(71219)
 local specWarnGasSpore		= mod:NewSpecialWarningYou(69279)
@@ -31,11 +31,12 @@ local specWarnGastricBloat	= mod:NewSpecialWarningStack(72551, nil, 9)
 local specWarnInhaled3		= mod:NewSpecialWarningStack(71912, false, 3)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
+local timerVileGas			= mod:NewBuffActiveTimer(6, 71219)
+local timerGasSporeCD		= mod:NewNextTimer(40, 69279)
 local timerPungentBlight	= mod:NewNextTimer(33, 71219)		-- 33 seconds after 3rd stack of inhaled
 local timerInhaledBlight	= mod:NewNextTimer(34, 71912)		-- 34 seconds'ish
-local timerVileGas			= mod:NewBuffActiveTimer(6, 71219)
-local timerGastricBloat		= mod:NewTargetTimer(100, 72551)	-- 100 Seconds until expired
-local timerGastricBloatCD	= mod:NewCDTimer(11, 72551) 		-- 10 to 14 seconds
+local timerGastricBloat		= mod:NewTargetTimer(100, 72551, nil, mod:IsTank() or mod:IsHealer())	-- 100 Seconds until expired
+local timerGastricBloatCD	= mod:NewCDTimer(11, 72551, nil, mod:IsTank() or mod:IsHealer()) 		-- 10 to 14 seconds
 
 local berserkTimer			= mod:NewBerserkTimer(300)
 
@@ -45,6 +46,7 @@ mod:AddBoolOption("SetIconOnGasSpore", true)
 local gasSporeTargets	= {}
 local vileGasTargets	= {}
 local gasSporeIcon 	= 8
+local gasSporeCast 	= 0
 --[[
 local mRange = { }
 local mPoints = { 
@@ -98,8 +100,10 @@ end
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerInhaledBlight:Start(-delay)
+	timerGasSporeCD:Start(20-delay)--This may need tweaking
 	table.wipe(gasSporeTargets)
 	gasSporeIcon = 8
+	gasSporeCast = 0
 --	noCheck = true
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
@@ -122,6 +126,13 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(69279) then	-- Gas Spore
 		gasSporeTargets[#gasSporeTargets + 1] = args.destName
+		gasSporeCast = gasSporeCast + 1
+		if (gasSporeCast < 9 and (mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25"))) or (gasSporeCast < 6 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10"))) then
+			timerGasSporeCD:Start()
+		elseif (gasSporeCast >= 9 and (mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25"))) or (gasSporeCast >= 6 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10"))) then
+			timerGasSporeCD:Start(50)--Basically, the third time spores are placed on raid, it'll be an extra 10 seconds before he applies first set of spores again.
+			gasSporeCast = 0
+		end
 		if args:IsPlayer() then
 --			noCheck = false	-- check for distance and show the arrow
 			specWarnGasSpore:Show()

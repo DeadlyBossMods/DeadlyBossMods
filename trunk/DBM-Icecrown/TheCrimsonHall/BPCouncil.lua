@@ -25,13 +25,13 @@ mod:RegisterEvents(
 
 local warnTargetSwitch			= mod:NewAnnounce("WarnTargetSwitch", 3)
 local warnTargetSwitchSoon		= mod:NewAnnounce("WarnTargetSwitchSoon", 2)
-local warnConjureFlames			= mod:NewCastAnnounce(71718)
-local warnEmpoweredFlamesCast	= mod:NewCastAnnounce(72040)
-local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040)
-local warnShockVortex			= mod:NewTargetAnnounce(72037)			-- 1,5sec cast
-local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039)			-- 4,5sec cast
-local warnKineticBomb			= mod:NewSpellAnnounce(72053)
-local warnDarkNucleus			= mod:NewSpellAnnounce(71943)			-- instant cast
+local warnConjureFlames			= mod:NewCastAnnounce(71718, 2)
+local warnEmpoweredFlamesCast	= mod:NewCastAnnounce(72040, 3)
+local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040, 4)
+local warnShockVortex			= mod:NewTargetAnnounce(72037, 3)		-- 1,5sec cast
+local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039, 4)			-- 4,5sec cast
+local warnKineticBomb			= mod:NewSpellAnnounce(72053, 2)
+local warnDarkNucleus			= mod:NewSpellAnnounce(71943, 1)		-- instant cast
 
 local specWarnVortex			= mod:NewSpecialWarning("specWarnVortex")
 local specWarnVortexNear		= mod:NewSpecialWarning("specWarnVortexNear")

@@ -13,7 +13,7 @@ mod:RegisterEvents(
 
 local warnDisruptingShout		= mod:NewSpellAnnounce(71022, 2)
 local warnDarkReckoning			= mod:NewTargetAnnounce(69483, 3)
-local warnDeathPlague			= mod:NewTargetAnnounce(72865, 3)
+local warnDeathPlague			= mod:NewTargetAnnounce(72865, 4)
 
 local specWarnDisruptingShout	= mod:NewSpecialWarningCast(71022)
 local specWarnDarkReckoning		= mod:NewSpecialWarningMove(69483)

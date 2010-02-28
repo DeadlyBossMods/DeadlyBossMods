@@ -17,17 +17,17 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnAirphase				= mod:NewAnnounce("WarnAirphase")
+local warnAirphase				= mod:NewAnnounce("WarnAirphase", 2)
 local warnGroundphaseSoon		= mod:NewAnnounce("WarnGroundphaseSoon", 2)
-local warnPhase2soon			= mod:NewAnnounce("warnPhase2soon")
-local warnPhase2				= mod:NewPhaseAnnounce(2)
+local warnPhase2soon			= mod:NewAnnounce("warnPhase2soon", 1)
+local warnPhase2				= mod:NewPhaseAnnounce(2, 1)
 local warnInstability			= mod:NewAnnounce("warnInstability", 2, nil, false)
 local warnChilledtotheBone		= mod:NewAnnounce("warnChilledtotheBone", 2, nil, false)
 local warnMysticBuffet			= mod:NewAnnounce("warnMysticBuffet", 2, nil, false)
-local warnFrostBeacon			= mod:NewTargetAnnounce(70126)
+local warnFrostBeacon			= mod:NewTargetAnnounce(70126, 4)
 local warnBlisteringCold		= mod:NewSpellAnnounce(70123, 3)
-local warnFrostBreath			= mod:NewSpellAnnounce(71056, 3)
-local warnUnchainedMagic		= mod:NewTargetAnnounce(69762)
+local warnFrostBreath			= mod:NewSpellAnnounce(71056, 2)
+local warnUnchainedMagic		= mod:NewTargetAnnounce(69762, 2)
 
 local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123)
 local specWarnUnchainedMagic	= mod:NewSpecialWarningYou(69762)

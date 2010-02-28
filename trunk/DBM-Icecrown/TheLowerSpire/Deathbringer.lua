@@ -22,13 +22,13 @@ local isRanged = select(2, UnitClass("player")) == "MAGE"
      			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 51)
 				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
 
-local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737)
+local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 1, 72737)
 local warnAddsSoon			= mod:NewPreWarnAnnounce(72173, 10, 3)
-local warnFrenzy			= mod:NewSpellAnnounce(72737)
-local warnBloodNova			= mod:NewSpellAnnounce(73058)
-local warnMark				= mod:NewTargetAnnounce(72444)
-local warnBoilingBlood		= mod:NewTargetAnnounce(72441)
-local warnRuneofBlood		= mod:NewTargetAnnounce(72410)
+local warnFrenzy			= mod:NewSpellAnnounce(72737, 2)
+local warnBloodNova			= mod:NewSpellAnnounce(73058, 2)
+local warnMark				= mod:NewTargetAnnounce(72444, 4)
+local warnBoilingBlood		= mod:NewTargetAnnounce(72441, 2)
+local warnRuneofBlood		= mod:NewTargetAnnounce(72410, 3)
 
 local specWarnMarkCast		= mod:NewSpecialWarningYou(72444, false)--Experimental
 local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)

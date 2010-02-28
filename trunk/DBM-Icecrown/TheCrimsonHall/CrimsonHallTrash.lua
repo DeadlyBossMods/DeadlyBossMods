@@ -9,8 +9,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnBloodMirror		= mod:NewTargetAnnounce(70451)
-local warnBloodSap			= mod:NewTargetAnnounce(70432)
+local warnBloodMirror		= mod:NewTargetAnnounce(70451, 3)
+local warnBloodSap			= mod:NewTargetAnnounce(70432, 4)
 
 local specWarnBloodMirror	= mod:NewSpecialWarningYou(70451)
 

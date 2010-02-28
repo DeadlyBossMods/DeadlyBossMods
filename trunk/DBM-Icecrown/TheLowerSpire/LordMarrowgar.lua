@@ -15,9 +15,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local preWarnWhirlwind   	= mod:NewSoonAnnounce(69076, 2)
-local warnBoneSpike			= mod:NewCastAnnounce(69057)
-local warnImpale			= mod:NewAnnounce("WarnImpale")
+local preWarnWhirlwind   	= mod:NewSoonAnnounce(69076, 3)
+local warnBoneSpike			= mod:NewCastAnnounce(69057, 2)
+local warnImpale			= mod:NewAnnounce("WarnImpale", 4)
 
 local specWarnColdflame		= mod:NewSpecialWarningMove(70825)
 local specWarnWhirlwind		= mod:NewSpecialWarningRun(69076)
