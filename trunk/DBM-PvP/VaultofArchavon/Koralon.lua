@@ -12,14 +12,14 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local warnBreath			= mod:NewSpellAnnounce(67328)
+local warnBreath			= mod:NewSpellAnnounce(67328, 3)
 local timerBreath			= mod:NewBuffActiveTimer(4.5, 67328)
 local timerBreathCD			= mod:NewCDTimer(45, 67328)--Seems to variate, but 45sec cooldown looks like a good testing number to start.
 
 local warnMeteor			= mod:NewSpellAnnounce(67333, 3)
-local warnMeteorSoon		= mod:NewPreWarnAnnounce(68161, 5, 1)
+local warnMeteorSoon		= mod:NewPreWarnAnnounce(68161, 5, 2)
 local timerNextMeteor		= mod:NewNextTimer(47, 68161)
-local WarnBurningFury		= mod:NewAnnounce("BurningFury", 3)
+local WarnBurningFury		= mod:NewAnnounce("BurningFury", 2)
 local timerNextBurningFury	= mod:NewNextTimer(20, 66721)
 
 local specWarnCinder		= mod:NewSpecialWarningMove(67332)

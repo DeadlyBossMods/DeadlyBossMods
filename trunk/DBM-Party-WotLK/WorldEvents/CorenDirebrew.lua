@@ -12,11 +12,9 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local isMelee = mod:IsMelee()
-
-local warnBarrel			= mod:NewTargetAnnounce(51413)
+local warnBarrel			= mod:NewTargetAnnounce(51413, 4)
 local timerBarrel			= mod:NewTargetTimer(8, 51413)
-local specWarnDisarm		= mod:NewSpecialWarningRun(47310, isMelee)
+local specWarnDisarm		= mod:NewSpecialWarningRun(47310, mod:IsMelee())
 local specWarnBrew			= mod:NewSpecialWarning("specWarnBrew")
 local timerBrew				= mod:NewTargetTimer(10, 47376)
 local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")

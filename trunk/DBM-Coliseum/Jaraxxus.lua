@@ -27,9 +27,9 @@ local isMagicDispeller = select(2, UnitClass("player")) == "PALADIN"
 	    		 or select(2, UnitClass("player")) == "PRIEST"
 
 local warnFelFireball			= mod:NewCastAnnounce(66532, 2)
-local warnPortalSoon			= mod:NewSoonAnnounce(67900, 2)
-local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 2)
-local warnFlame					= mod:NewTargetAnnounce(68123, 3)
+local warnPortalSoon			= mod:NewSoonAnnounce(67900, 3)
+local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 3)
+local warnFlame					= mod:NewTargetAnnounce(68123, 4)
 --local warnTouch				= mod:NewTargetAnnounce(66209, 3)
 local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4)
 

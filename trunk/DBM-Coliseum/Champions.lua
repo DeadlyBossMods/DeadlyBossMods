@@ -56,25 +56,23 @@ else
 	)
 end
 
-local isMelee = mod:IsMelee()
-
 local isDispeller = select(2, UnitClass("player")) == "WARRIOR"
 				or select(2, UnitClass("player")) == "PRIEST"
 				or select(2, UnitClass("player")) == "SHAMAN"
 
-local warnHellfire			= mod:NewSpellAnnounce(68147, 1)
-local preWarnBladestorm 	= mod:NewSoonAnnounce(65947, 2)
-local warnBladestorm		= mod:NewSpellAnnounce(65947, 1)
-local warnHeroism			= mod:NewSpellAnnounce(65983, 2)
-local warnBloodlust			= mod:NewSpellAnnounce(65980, 2)
+local warnHellfire			= mod:NewSpellAnnounce(68147, 4)
+local preWarnBladestorm 	= mod:NewSoonAnnounce(65947, 3)
+local warnBladestorm		= mod:NewSpellAnnounce(65947, 4)
+local warnHeroism			= mod:NewSpellAnnounce(65983, 3)
+local warnBloodlust			= mod:NewSpellAnnounce(65980, 3)
 local warnHandofFreedom		= mod:NewTargetAnnounce(68758, 2)
-local warnHandofProt		= mod:NewTargetAnnounce(66009, 2)
-local warnDivineShield		= mod:NewSpellAnnounce(66010, 2)
-local warnIceBlock			= mod:NewSpellAnnounce(65802, 2)
+local warnHandofProt		= mod:NewTargetAnnounce(66009, 3)
+local warnDivineShield		= mod:NewSpellAnnounce(66010, 3)
+local warnIceBlock			= mod:NewSpellAnnounce(65802, 3)
 local warnShadowstep		= mod:NewSpellAnnounce(66178, 2)
 local warnDeathgrip			= mod:NewTargetAnnounce(66017, 2)
-local warnCyclone			= mod:NewTargetAnnounce(65859, 2, false)
-local warnSheep				= mod:NewTargetAnnounce(65801, 2, false)
+local warnCyclone			= mod:NewTargetAnnounce(65859, 1, nil, false)
+local warnSheep				= mod:NewTargetAnnounce(65801, 1, nil, false)
 
 local timerBladestorm		= mod:NewBuffActiveTimer(8, 65947)
 local timerShadowstepCD		= mod:NewCDTimer(30, 66178)
@@ -86,7 +84,7 @@ local specWarnHandofProt	= mod:NewSpecialWarningDispel(66009, isDispeller)
 local specWarnDivineShield	= mod:NewSpecialWarningDispel(66010, isDispeller) 
 local specWarnIceBlock		= mod:NewSpecialWarningDispel(65802, isDispeller)
 
-mod:AddBoolOption("PlaySoundOnBladestorm", isMelee)
+mod:AddBoolOption("PlaySoundOnBladestorm", mod:IsMelee())
 
 
 function mod:OnCombatStart(delay)
