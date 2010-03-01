@@ -139,7 +139,7 @@ function mod:AcquireTargetForUnboundPlague()
 	for i=1, GetNumRaidMembers(), 1 do
 		if not UnitIsUnit("player", "raid"..i) then
 			temprange = DBM.RangeCheck:GetDistance("raid"..i, myX, myY)
-			if temprange and temprange < 30 and (temprange < mydistance or mydistance == 0)then
+			if temprange and temprange < 30 and (temprange < mydistance or mydistance == 0) then
 				if UnitHealth("raid"..i) > 5000 and not isDebuffed("raid"..i) then	-- don't acquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
 					mytarget = "raid"..i
 					mydistance = temprange
