@@ -241,15 +241,17 @@ do
 	
 	local lastValk = 0
 	function mod:SPELL_SUMMON(args)
-		if args:IsSpellID(69037) and self.Options.ValkyrIcon then -- Summon Val'kyr
+		if args:IsSpellID(69037) then -- Summon Val'kyr
 			if time() - lastValk > 15 then -- show the warning and timer just once for all three summon events
 				warnSummonValkyr:Show()
 				timerSummonValkyr:Start()
 				lastValk = time()
 				resetValkIconState()
 			end
-			valkIcons[args.destGUID] = currentIcon
-			currentIcon = currentIcon + 1
+			if self.Options.ValkyrIcon then
+				valkIcons[args.destGUID] = currentIcon
+				currentIcon = currentIcon + 1
+			end
 		end
 	end
 	
