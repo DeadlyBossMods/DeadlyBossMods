@@ -30,10 +30,10 @@ local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
 local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
 local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
-local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)--Some strats purposely run to this so option is defaulted to off
+local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)
 local specWarnLittleOoze		= mod:NewSpecialWarning("specWarnLittleOoze")
 
-local timerStickyOoze			= mod:NewNextTimer(16, 69774)
+local timerStickyOoze			= mod:NewNextTimer(16, 69774, nil, mod:IsTank())
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes")
 local timerSlimeSpray			= mod:NewNextTimer(21, 69508)
 local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
