@@ -139,7 +139,7 @@ function mod:AcquireTargetForUnboundPlague()
 	for i=1, GetNumRaidMembers(), 1 do
 		if not UnitIsUnit("player", "raid"..i) then
 			temprange = DBM.RangeCheck:GetDistance("raid"..i, myX, myY)
-			if temprange > 0 and temprange < 30 and temprange < mydistance then
+			if temprange and temprange < 30 and (temprange < mydistance or mydistance == 0)then
 				if UnitHealth("raid"..i) > 5000 and not isDebuffed("raid"..i) then	-- don't acquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
 					mytarget = "raid"..i
 					mydistance = temprange
@@ -299,7 +299,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(72855, 72856) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
 		if args:IsPlayer() then
-			specWarnUnboundPlague:Unschedule()
+			specWarnUnboundPlague:Cancel()
 			self:UnscheduleMethod("AcquireTargetForUnboundPlague")
 		end
 		if self.Options.UnboundPlagueIcon then
