@@ -74,6 +74,7 @@ mod:AddBoolOption("RagingSpiritIcon")
 mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
+mod:AddBoolOption("ValkyrIcon")
 
 local phase	= 0
 local warned_preP2 = false
@@ -240,7 +241,7 @@ do
 	
 	local lastValk = 0
 	function mod:SPELL_SUMMON(args)
-		if args:IsSpellID(69037) then -- Summon Val'kyr
+		if args:IsSpellID(69037) and self.Options.ValkyrIcon then -- Summon Val'kyr
 			if time() - lastValk > 15 then -- show the warning and timer just once for all three summon events
 				warnSummonValkyr:Show()
 				timerSummonValkyr:Start()
