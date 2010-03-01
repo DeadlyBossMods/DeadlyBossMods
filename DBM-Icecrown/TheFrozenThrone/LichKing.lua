@@ -246,7 +246,9 @@ do
 				warnSummonValkyr:Show()
 				timerSummonValkyr:Start()
 				lastValk = time()
-				resetValkIconState()
+				if self.Options.ValkyrIcon then
+					resetValkIconState()
+				end
 			end
 			if self.Options.ValkyrIcon then
 				valkIcons[args.destGUID] = currentIcon
@@ -256,7 +258,7 @@ do
 	end
 	
 	mod:RegisterOnUpdateHandler(function(self)
-		if DBM:GetRaidRank() > 0 and not (iconsSet == 3 and self:IsDifficulty("normal25", "heroic25") or iconsSet == 1 and self:IsDifficulty("normal10", "heroic10")) then
+		if self.Options.ValkyrIcon and (DBM:GetRaidRank() > 0 and not (iconsSet == 3 and self:IsDifficulty("normal25", "heroic25") or iconsSet == 1 and self:IsDifficulty("normal10", "heroic10"))) then
 			for i = 1, GetNumRaidMembers() do
 				local uId = "raid"..i.."target"
 				local guid = UnitGUID(uId)
