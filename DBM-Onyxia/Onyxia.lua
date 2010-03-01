@@ -14,19 +14,15 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local isMelee = select(2, UnitClass("player")) == "ROGUE"
-	     or select(2, UnitClass("player")) == "WARRIOR"
-	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
-
 local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
-local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 2)
+local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
+local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 1)
 
 --local preWarnDeepBreath     = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
 local specWarnBreath		= mod:NewSpecialWarningRun(17086)
-local specWarnBlastNova		= mod:NewSpecialWarningRun(68958, isMelee)
+local specWarnBlastNova		= mod:NewSpecialWarningRun(68958, mod:IsMelee())
 
 local timerNextFlameBreath	= mod:NewCDTimer(20, 68970)--Breath she does on ground in frontal cone.
 local timerNextDeepBreath	= mod:NewCDTimer(35, 17086)--Range from 35-60seconds in between based on where she moves to.
@@ -35,7 +31,7 @@ local timerWhelps			= mod:NewTimer(105, "TimerWhelps", 10697)
 local timerAchieve			= mod:NewAchievementTimer(300, 4405, "TimerSpeedKill") 
 local timerAchieveWhelps	= mod:NewAchievementTimer(10, 4406, "TimerWhelps") 
 
-local soundBlastNova		= mod:NewSound(68958, nil, isMelee)
+local soundBlastNova		= mod:NewSound(68958, nil, mod:IsMelee())
 local soundDeepBreath 		= mod:NewSound(17086)
 local sndFunny				= mod:NewSound(nil, "SoundWTF", false)
 

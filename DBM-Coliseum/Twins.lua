@@ -22,7 +22,7 @@ mod:SetBossHealthInfo(
 
 mod:AddBoolOption("HealthFrame", true)
 
-local warnSpecial					= mod:NewAnnounce("WarnSpecialSpellSoon", 2)
+local warnSpecial					= mod:NewAnnounce("WarnSpecialSpellSoon", 3)
 local warnTouchDebuff				= mod:NewAnnounce("WarningTouchDebuff", 2, 66823)
 local warnPoweroftheTwins			= mod:NewAnnounce("WarningPoweroftheTwins", 4)		
 local specWarnSpecial				= mod:NewSpecialWarning("SpecWarnSpecial")

@@ -25,7 +25,7 @@ local timerAdds				= mod:NewTimer(45, "timerAdds")
 local Burrowed				= false 
 
 -- Pursue
-local warnPursue			= mod:NewTargetAnnounce(67574, 2)
+local warnPursue			= mod:NewTargetAnnounce(67574, 4)
 local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
 local warnHoP				= mod:NewTargetAnnounce(10278, 2, nil, false)--Heroic strat revolves around kiting pursue and using Hand of Protection.
 local timerHoP				= mod:NewBuffActiveTimer(10, 10278, nil, false)--So we will track bops to make this easier.
@@ -40,7 +40,7 @@ local timerEmerge			= mod:NewTimer(65, "TimerEmerge", "Interface\\AddOns\\DBM-Co
 -- Submerge
 local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnSubmergeSoon		= mod:NewAnnounce("WarnSubmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-local specWarnSubmergeSoon	= mod:NewSpecialWarning("specWarnSubmergeSoon", false)
+local specWarnSubmergeSoon	= mod:NewSpecialWarning("specWarnSubmergeSoon", mod:IsTank())
 local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 
 -- Phases
@@ -55,14 +55,14 @@ mod:AddBoolOption("AnnouncePColdIcons", false)
 mod:AddBoolOption("AnnouncePColdIconsRemoved", false)
 
 -- Freezing Slash
-local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2)
-local timerFreezingSlash	= mod:NewCDTimer(20, 66012)
+local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2, nil, mod:IsHealer() or mod:IsTank())
+local timerFreezingSlash	= mod:NewCDTimer(20, 66012, nil, mod:IsHealer() or mod:IsTank())
 
 -- Shadow Strike
 local timerShadowStrike		= mod:NewNextTimer(30.5, 66134)
 local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
 local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
-local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", false)
+local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", mod:IsTank())
 
 function mod:OnCombatStart(delay)
 	Burrowed = false 

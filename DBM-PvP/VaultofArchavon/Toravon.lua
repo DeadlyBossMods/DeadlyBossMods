@@ -13,13 +13,13 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local warnFreezingGround	= mod:NewSpellAnnounce(72104)
-local warnWhiteout			= mod:NewSpellAnnounce(72096)
-local warnOrb				= mod:NewSpellAnnounce(72095)
-local WarnFrostbite			= mod:NewAnnounce("Frostbite", 3)
+local warnFreezingGround	= mod:NewSpellAnnounce(72104, 1)
+local warnWhiteout			= mod:NewSpellAnnounce(72096, 3)
+local warnOrb				= mod:NewSpellAnnounce(72095, 4)
+local WarnFrostbite			= mod:NewAnnounce("Frostbite", 2, nil, mod:IsHealer() or mod:IsTank())
 
-local timerNextFrostbite	= mod:NewNextTimer(5, 72098, nil, false)
-local timerFrostbite		= mod:NewTargetTimer(20, 72098)
+local timerNextFrostbite	= mod:NewNextTimer(5, 72098, nil, mod:IsTank())
+local timerFrostbite		= mod:NewTargetTimer(20, 72098, nil, mod:IsHealer() or mod:IsTank())
 local timerWhiteout			= mod:NewNextTimer(38, 72096)
 local timerNextOrb			= mod:NewNextTimer(32, 72095)
 

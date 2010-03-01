@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warnSoulstormSoon		= mod:NewSoonAnnounce(68872, 2)
-local warnCorruptSoul		= mod:NewTargetAnnounce(68839)
+local warnCorruptSoul		= mod:NewTargetAnnounce(68839, 3)
 local specwarnSoulstorm		= mod:NewSpecialWarning("specwarnSoulstorm")
 local timerSoulstormCast	= mod:NewCastTimer(4, 68872)
 

@@ -13,12 +13,12 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnSpark			= mod:NewAnnounce("WarningSpark", 1, 59381)
+local warnSpark			= mod:NewAnnounce("WarningSpark", 2, 59381)
 local warnVortex		= mod:NewSpellAnnounce(56105, 3)
 local warnVortexSoon	= mod:NewSoonAnnounce(56105, 2)
-local warnBreathInc		= mod:NewAnnounce("WarningBreathSoon", 3, 60071)
-local warnBreath		= mod:NewAnnounce("WarningBreath", 4, 60071)
-local warnSurge			= mod:NewTargetAnnounce(60936, 2)
+local warnBreathInc		= mod:NewAnnounce("WarningBreathSoon", 3, 60072)
+local warnBreath		= mod:NewAnnounce("WarningBreath", 4, 60072)
+local warnSurge			= mod:NewTargetAnnounce(60936, 3)
 
 local specWarnSurge		= mod:NewSpecialWarningYou(60936)
 
@@ -26,7 +26,7 @@ local enrageTimer		= mod:NewBerserkTimer(615)
 local timerSpark		= mod:NewTimer(30, "TimerSpark", 59381)
 local timerVortex		= mod:NewCastTimer(11, 56105)
 local timerVortexCD		= mod:NewNextTimer(60, 56105)
-local timerBreath		= mod:NewTimer(59, "TimerBreath", 60071)
+local timerBreath		= mod:NewTimer(59, "TimerBreath", 60072)
 local timerAchieve      = mod:NewAchievementTimer(360, 1875, "TimerSpeedKill")
 
 local guids = {}

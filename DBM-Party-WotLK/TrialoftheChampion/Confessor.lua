@@ -17,13 +17,13 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
              or select(2, UnitClass("player")) == "PRIEST"
              or select(2, UnitClass("player")) == "SHAMAN"
 
-local warnReflectiveShield	= mod:NewTargetAnnounce(66515)
-local warnRenew				= mod:NewTargetAnnounce(66537)
-local warnOldWounds			= mod:NewTargetAnnounce(67679)
+local warnReflectiveShield	= mod:NewTargetAnnounce(66515, 2)
+local warnRenew				= mod:NewTargetAnnounce(66537, 2)
+local warnOldWounds			= mod:NewTargetAnnounce(67679, 3)
 local timerOldWounds		= mod:NewTargetTimer(12, 67679)
-local warnHolyFire			= mod:NewTargetAnnounce(67676)
+local warnHolyFire			= mod:NewTargetAnnounce(67676, 3)
 local timerHolyFire			= mod:NewTargetTimer(8, 67676)
-local warnShadows			= mod:NewTargetAnnounce(67678)
+local warnShadows			= mod:NewTargetAnnounce(67678, 2)
 local timerShadows          = mod:NewTargetTimer(5, 67678)
 local specwarnRenew			= mod:NewSpecialWarningDispel(66537, isDispeller)
 

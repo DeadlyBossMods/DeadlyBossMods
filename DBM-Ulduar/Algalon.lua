@@ -25,15 +25,15 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local announceBigBang			= mod:NewSpellAnnounce(64584, 3)
+local announceBigBang			= mod:NewSpellAnnounce(64584, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon			= mod:NewAnnounce("WarnPhase2Soon", 2)
 local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
 local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
-local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108)
+local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108, mod:IsHealer() or mod:IsTank())
 
-local specwarnStarLow			= mod:NewSpecialWarning("warnStarLow", false)
+local specwarnStarLow			= mod:NewSpecialWarning("warnStarLow", mod:IsHealer())
 local specWarnPhasePunch		= mod:NewSpecialWarningStack(64412, nil, 4)
 local specWarnBigBang			= mod:NewSpecialWarningSpell(64584)
 local specWarnCosmicSmash		= mod:NewSpecialWarningSpell(64598)

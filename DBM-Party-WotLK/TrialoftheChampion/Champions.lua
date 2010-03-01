@@ -18,10 +18,10 @@ local isDispeller = select(2, UnitClass("player")) == "MAGE"
 				 or select(2, UnitClass("player")) == "PRIEST"
 				 or select(2, UnitClass("player")) == "SHAMAN"
 
-local warnHealingWave		= mod:NewSpellAnnounce(68318)
-local warnHaste				= mod:NewTargetAnnounce(66045)
-local warnPolymorph			= mod:NewTargetAnnounce(66043)
-local warnHexOfMending		= mod:NewTargetAnnounce(67534)
+local warnHealingWave		= mod:NewSpellAnnounce(68318, 2)
+local warnHaste				= mod:NewTargetAnnounce(66045, 2)
+local warnPolymorph			= mod:NewTargetAnnounce(66043, 1)
+local warnHexOfMending		= mod:NewTargetAnnounce(67534, 1)
 local specWarnPoison		= mod:NewSpecialWarningMove(68316)
 local specWarnHaste			= mod:NewSpecialWarningDispel(66045, isDispeller)
 
