@@ -21,14 +21,12 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local isMelee = mod:IsMelee()
-
 local warnBelowZero			= mod:NewSpellAnnounce(69705, 4)
 local warnExperienced		= mod:NewTargetAnnounce(71188, 1, nil, false)		-- might be spammy
 local warnVeteran			= mod:NewTargetAnnounce(71193, 2, nil, false)		-- might be spammy
 local warnElite				= mod:NewTargetAnnounce(71195, 3, nil, false)		-- might be spammy
 local warnBattleFury		= mod:NewAnnounce("WarnBattleFury", 2, nil, mod:IsTank())
-local warnBladestorm		= mod:NewSpellAnnounce(69652, 3, nil, isMelee)
+local warnBladestorm		= mod:NewSpellAnnounce(69652, 3, nil, mod:IsMelee())
 local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 2)
 local warnAddsSoon			= mod:NewAnnounce("WarnAddsSoon", 2)
 

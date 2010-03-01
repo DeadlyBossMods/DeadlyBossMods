@@ -15,12 +15,12 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 1, 72737, mod:IsTank() or mod:IsHealer())
+local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737, mod:IsTank() or mod:IsHealer())
 local warnAddsSoon			= mod:NewPreWarnAnnounce(72173, 10, 3)
 local warnFrenzy			= mod:NewSpellAnnounce(72737, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnBloodNova			= mod:NewSpellAnnounce(73058, 2)
 local warnMark				= mod:NewTargetAnnounce(72444, 4)
-local warnBoilingBlood		= mod:NewTargetAnnounce(72441, 2)
+local warnBoilingBlood		= mod:NewTargetAnnounce(72441, 2, nil, mod:IsHealer())
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410, 3, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnMarkCast		= mod:NewSpecialWarningYou(72444, false)--Experimental

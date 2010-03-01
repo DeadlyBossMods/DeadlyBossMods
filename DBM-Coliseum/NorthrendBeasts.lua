@@ -21,10 +21,10 @@ mod:RegisterEvents(
 
 local warnImpaleOn			= mod:NewTargetAnnounce(67478, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnFireBomb			= mod:NewSpellAnnounce(66317, 3, nil, false)
-local warnBreath			= mod:NewSpellAnnounce(67650, 1)
+local warnBreath			= mod:NewSpellAnnounce(67650, 2)
 local warnRage				= mod:NewSpellAnnounce(67657, 3)
 local warnSlimePool			= mod:NewSpellAnnounce(67643, 2, nil, mod:IsMelee())
-local warnToxin				= mod:NewTargetAnnounce(66823, 2)
+local warnToxin				= mod:NewTargetAnnounce(66823, 3)
 local warnBile				= mod:NewTargetAnnounce(66869, 3)
 local WarningSnobold		= mod:NewAnnounce("WarningSnobold", 4)
 local warnEnrageWorm		= mod:NewSpellAnnounce(68335, 3)
