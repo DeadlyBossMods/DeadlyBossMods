@@ -18,10 +18,10 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local warnUnholyPower			= mod:NewSpellAnnounce(69629)
-local warnForcefulSmash			= mod:NewSpellAnnounce(69627)
-local warnOverlordsBrand		= mod:NewTargetAnnounce(69172)
-local warnHoarfrost				= mod:NewSpellAnnounce(69246)
+local warnUnholyPower			= mod:NewSpellAnnounce(69629, 3)
+local warnForcefulSmash			= mod:NewSpellAnnounce(69627, 2)
+local warnOverlordsBrand		= mod:NewTargetAnnounce(69172, 4)
+local warnHoarfrost				= mod:NewSpellAnnounce(69246, 2)
 
 local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")

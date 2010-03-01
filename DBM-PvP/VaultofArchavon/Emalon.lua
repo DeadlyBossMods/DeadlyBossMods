@@ -15,9 +15,10 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local specWarnNova			= mod:NewSpecialWarningRun(65279)
 local warnNova				= mod:NewSpellAnnounce(65279, 3)
 local warnOverCharge		= mod:NewSpellAnnounce(64218, 2)
+
+local specWarnNova			= mod:NewSpecialWarningRun(65279)
 
 local timerNova				= mod:NewCastTimer(65279)
 local timerNovaCD			= mod:NewCDTimer(45, 65279)--Varies, 45-60seconds in between nova's

@@ -15,22 +15,20 @@ mod:RegisterEvents(
 	"SPELL_PERIODIC_DAMAGE"
 )
 
-local isMelee = mod:IsMelee()
-
-local warnPursuitCast			= mod:NewCastAnnounce(68987)
-local warnPoisonNova			= mod:NewCastAnnounce(68989)
-local warnPursuit				= mod:NewAnnounce("warnPursuit")
+local warnPursuitCast			= mod:NewCastAnnounce(68987, 3)
+local warnPoisonNova			= mod:NewCastAnnounce(68989, 3)
+local warnPursuit				= mod:NewAnnounce("warnPursuit", 4)
 
 local specWarnToxic				= mod:NewSpecialWarningMove(70436)
 local specWarnMines				= mod:NewSpecialWarningRun(69015)
 local specWarnPursuit			= mod:NewSpecialWarning("specWarnPursuit")
-local specWarnPoisonNova		= mod:NewSpecialWarningRun(68989, isMelee)
+local specWarnPoisonNova		= mod:NewSpecialWarningRun(68989, mod:IsMelee())
 
 local timerPursuitCast			= mod:NewCastTimer(5, 68987)
 local timerPursuitConfusion		= mod:NewBuffActiveTimer(12, 69029)
 local timerPoisonNova			= mod:NewCastTimer(5, 68989)
 
-local soundPoisonNova	= mod:NewSound(68989, nil, isMelee)
+local soundPoisonNova	= mod:NewSound(68989, nil, mod:IsMelee())
 local soundPursuit		= mod:NewSound(68987)
 mod:AddBoolOption("SetIconOnPursuitTarget", true)
 

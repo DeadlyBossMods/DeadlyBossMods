@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_SAY"
 )
 
-local warnChainReaction			= mod:NewCastAnnounce(68821)
+local warnChainReaction			= mod:NewCastAnnounce(68821, 3)
 
 local specWarnPerfumeSpill		= mod:NewSpecialWarningMove(68927)
 local specWarnCologneSpill		= mod:NewSpecialWarningMove(68934)

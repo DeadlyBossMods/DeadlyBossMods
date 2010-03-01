@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warningPhase	= mod:NewAnnounce("WarningPhase", 3)
+local warningPhase	= mod:NewAnnounce("WarningPhase", 2)
 local timerEvent	= mod:NewTimer(302, "timerEvent")
 
 function mod:OnCombatStart(delay)

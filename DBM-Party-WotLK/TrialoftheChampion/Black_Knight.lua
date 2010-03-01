@@ -14,9 +14,9 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local warnExplode			= mod:NewAnnounce("warnExplode")
-local warnGhoulExplode		= mod:NewTargetAnnounce(67751)
-local warnMarked			= mod:NewTargetAnnounce(67823)
+local warnExplode			= mod:NewAnnounce("warnExplode", 4)
+local warnGhoulExplode		= mod:NewTargetAnnounce(67751, 4)
+local warnMarked			= mod:NewTargetAnnounce(67823, 3)
 local timerMarked			= mod:NewTargetTimer(10, 67823)
 local timerExplode			= mod:NewCastTimer(4, 67886)
 local specWarnDesecration	= mod:NewSpecialWarningMove(67876)
