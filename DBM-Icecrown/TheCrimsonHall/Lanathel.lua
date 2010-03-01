@@ -17,7 +17,7 @@ mod:RegisterEvents(
 )
 
 local warnPactDarkfallen			= mod:NewTargetAnnounce(71340, 4)
-local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3)
+local warnBloodMirror				= mod:NewTargetAnnounce(71510, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnSwarmingShadows			= mod:NewTargetAnnounce(71266, 4)
 local warnInciteTerror				= mod:NewSpellAnnounce(73070, 3)
 local warnVampricBite				= mod:NewTargetAnnounce(71727, 2)

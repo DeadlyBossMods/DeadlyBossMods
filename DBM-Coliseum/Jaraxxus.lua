@@ -30,6 +30,7 @@ local warnFelFireball			= mod:NewCastAnnounce(66532, 2)
 local warnPortalSoon			= mod:NewSoonAnnounce(67900, 3)
 local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 3)
 local warnFlame					= mod:NewTargetAnnounce(68123, 4)
+local warnFlesh					= mod:NewTargetAnnounce(66237, 4, nil, mod:IsHealer())
 --local warnTouch				= mod:NewTargetAnnounce(66209, 3)
 local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4)
 
@@ -138,6 +139,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(67051, 67050, 67049, 66237) then			-- Incinerate Flesh
+		warnFlesh:Show(args.destName)
 		timerFlesh:Start(args.destName)
 		timerFleshCD:Start()
 		if self.Options.IncinerateFleshIcon then
