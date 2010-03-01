@@ -33,7 +33,7 @@ local timerGastricBloatCD	= mod:NewCDTimer(11, 72551, nil, mod:IsTank() or mod:I
 
 local berserkTimer			= mod:NewBerserkTimer(300)
 
-mod:AddBoolOption("RangeFrame", mod:isRanged())
+mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
 
 local gasSporeTargets	= {}

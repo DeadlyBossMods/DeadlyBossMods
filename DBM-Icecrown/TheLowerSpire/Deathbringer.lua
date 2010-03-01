@@ -36,7 +36,7 @@ local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410, nil, mod:IsTank() or mod:
 
 local enrageTimer			= mod:NewBerserkTimer(480)
 
-mod:AddBoolOption("RangeFrame", mod:isRanged())
+mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("RunePowerFrame", true, "misc")
 mod:AddBoolOption("SetIconOnBoilingBlood", false)
 mod:AddBoolOption("SetIconOnMarkCast", false)
