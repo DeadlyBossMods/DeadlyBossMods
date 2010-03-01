@@ -15,38 +15,31 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local isRanged = select(2, UnitClass("player")) == "MAGE"
-				or select(2, UnitClass("player")) == "HUNTER"
-				or select(2, UnitClass("player")) == "WARLOCK"
-				or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
-     			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 51)
-				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
-
-local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 1, 72737)
+local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 1, 72737, mod:IsTank() or mod:IsHealer())
 local warnAddsSoon			= mod:NewPreWarnAnnounce(72173, 10, 3)
-local warnFrenzy			= mod:NewSpellAnnounce(72737, 2)
+local warnFrenzy			= mod:NewSpellAnnounce(72737, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnBloodNova			= mod:NewSpellAnnounce(73058, 2)
 local warnMark				= mod:NewTargetAnnounce(72444, 4)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441, 2)
-local warnRuneofBlood		= mod:NewTargetAnnounce(72410, 3)
+local warnRuneofBlood		= mod:NewTargetAnnounce(72410, 3, nil, mod:IsTank() or mod:IsHealer())
 
 local specWarnMarkCast		= mod:NewSpecialWarningYou(72444, false)--Experimental
 local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
-local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, false)
+local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, mod:IsTank())
 
 local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
-local timerRuneofBlood		= mod:NewTargetTimer(20, 72410)
+local timerRuneofBlood		= mod:NewTargetTimer(20, 72410, nil, mod:IsTank())
 local timerBoilingBlood		= mod:NewBuffActiveTimer(15, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
 local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
-local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410)
+local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410, nil, mod:IsTank() or mod:IsHealer())
 
 local enrageTimer			= mod:NewBerserkTimer(480)
 
-mod:AddBoolOption("RangeFrame", isRanged)
+mod:AddBoolOption("RangeFrame", mod:isRanged())
 mod:AddBoolOption("RunePowerFrame", true, "misc")
-mod:AddBoolOption("SetIconOnBoilingBlood", true)
-mod:AddBoolOption("SetIconOnMarkCast", true)
+mod:AddBoolOption("SetIconOnBoilingBlood", false)
+mod:AddBoolOption("SetIconOnMarkCast", false)
 mod:RemoveOption("HealthFrame")
 
 local warned_preFrenzy = false

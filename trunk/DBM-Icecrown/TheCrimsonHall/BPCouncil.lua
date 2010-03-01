@@ -23,15 +23,15 @@ mod:RegisterEvents(
 	"UNIT_TARGET"
 )
 
-local warnTargetSwitch			= mod:NewAnnounce("WarnTargetSwitch", 3)
-local warnTargetSwitchSoon		= mod:NewAnnounce("WarnTargetSwitchSoon", 2)
+local warnTargetSwitch			= mod:NewAnnounce("WarnTargetSwitch", 2)
+local warnTargetSwitchSoon		= mod:NewAnnounce("WarnTargetSwitchSoon", 1)
 local warnConjureFlames			= mod:NewCastAnnounce(71718, 2)
 local warnEmpoweredFlamesCast	= mod:NewCastAnnounce(72040, 3)
 local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040, 4)
-local warnShockVortex			= mod:NewTargetAnnounce(72037, 3)		-- 1,5sec cast
-local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039, 4)			-- 4,5sec cast
-local warnKineticBomb			= mod:NewSpellAnnounce(72053, 2)
-local warnDarkNucleus			= mod:NewSpellAnnounce(71943, 1)		-- instant cast
+local warnShockVortex			= mod:NewTargetAnnounce(72037, 3)				-- 1,5sec cast
+local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039, 4)					-- 4,5sec cast
+local warnKineticBomb			= mod:NewSpellAnnounce(72053, 3)
+local warnDarkNucleus			= mod:NewSpellAnnounce(71943, 1, nil, false)	-- instant cast
 
 local specWarnVortex			= mod:NewSpecialWarning("specWarnVortex")
 local specWarnVortexNear		= mod:NewSpecialWarning("specWarnVortexNear")
@@ -40,7 +40,7 @@ local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
 local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 10)
 
 local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch")	-- every 46-47seconds
-local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943)				-- usually every 10 seconds but sometimes more
+local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943, nil, false)	-- usually every 10 seconds but sometimes more
 local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)				-- every 20-30 seconds but never more often than every 20sec
 local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6
 local timerShadowPrison			= mod:NewBuffActiveTimer(10, 72999)		--Hard mode debuff

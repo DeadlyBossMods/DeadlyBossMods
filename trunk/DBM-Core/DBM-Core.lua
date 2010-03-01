@@ -2386,6 +2386,15 @@ function bossModPrototype:IsMelee()
 			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
 end
 
+function bossModPrototype:isRanged()
+	return select(2, UnitClass("player")) == "MAGE"
+			or select(2, UnitClass("player")) == "HUNTER"
+			or select(2, UnitClass("player")) == "WARLOCK"
+			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 51)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
+end
+
 function bossModPrototype:IsPhysical()
 	return self:IsMelee() or select(2, UnitClass("player")) == "HUNTER"
 end
