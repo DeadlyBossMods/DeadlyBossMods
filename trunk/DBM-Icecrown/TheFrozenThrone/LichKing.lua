@@ -72,9 +72,9 @@ mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
 mod:AddBoolOption("RagingSpiritIcon")
 mod:AddBoolOption("TrapIcon")
+mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
-mod:AddBoolOption("ValkyrIcon")
 
 local phase	= 0
 local warned_preP2 = false
