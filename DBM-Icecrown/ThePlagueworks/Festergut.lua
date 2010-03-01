@@ -12,13 +12,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local isRanged = select(2, UnitClass("player")) == "MAGE"
-				or select(2, UnitClass("player")) == "HUNTER"
-				or select(2, UnitClass("player")) == "WARLOCK"
-				or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
-     			or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 51)
-				or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
-
 local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight", 3)
 local warnGastricBloat		= mod:NewAnnounce("WarnGastricBloat", 2, nil, mod:IsTank() or mod:IsHealer())
 local warnGasSpore			= mod:NewTargetAnnounce(69279, 4)
@@ -32,7 +25,7 @@ local specWarnInhaled3		= mod:NewSpecialWarningStack(71912, false, 3)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
 local timerVileGas			= mod:NewBuffActiveTimer(6, 71219)
-local timerGasSporeCD		= mod:NewNextTimer(40, 69279)
+local timerGasSporeCD		= mod:NewNextTimer(40, 69279)		-- Every 40 seconds except after 3rd and 6th cast, then it's 50sec CD
 local timerPungentBlight	= mod:NewNextTimer(33, 71219)		-- 33 seconds after 3rd stack of inhaled
 local timerInhaledBlight	= mod:NewNextTimer(34, 71912)		-- 34 seconds'ish
 local timerGastricBloat		= mod:NewTargetTimer(100, 72551, nil, mod:IsTank() or mod:IsHealer())	-- 100 Seconds until expired
@@ -40,7 +33,7 @@ local timerGastricBloatCD	= mod:NewCDTimer(11, 72551, nil, mod:IsTank() or mod:I
 
 local berserkTimer			= mod:NewBerserkTimer(300)
 
-mod:AddBoolOption("RangeFrame", isRanged)
+mod:AddBoolOption("RangeFrame", mod:isRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
 
 local gasSporeTargets	= {}

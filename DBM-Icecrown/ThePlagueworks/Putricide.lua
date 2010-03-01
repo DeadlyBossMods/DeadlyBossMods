@@ -16,7 +16,7 @@ mod:RegisterEvents(
 )
 
 local warnSlimePuddle				= mod:NewSpellAnnounce(70341, 2)
-local warnUnstableExperimentSoon	= mod:NewSoonAnnounce(70351, 2)
+local warnUnstableExperimentSoon	= mod:NewSoonAnnounce(70351, 3)
 local warnUnstableExperiment		= mod:NewSpellAnnounce(70351, 4)
 local warnVolatileOozeAdhesive		= mod:NewTargetAnnounce(70447, 3)
 local warnGaseousBloat				= mod:NewTargetAnnounce(70672, 3)
@@ -26,7 +26,7 @@ local warnVolatileExperiment		= mod:NewSpellAnnounce(72840, 4)		-- Phase transit
 local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 2)		-- Phase 2 ability
 local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)		-- Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 1)
-local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2) -- Phase 3 ability
+local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2, nil, mod:IsTank() or mod:IsHealer()) -- Phase 3 ability
 local warnOozeVariable				= mod:NewTargetAnnounce(70352, 2)			-- Heroic Ability
 local warnGasVariable				= mod:NewTargetAnnounce(70353, 2)			-- Heroic Ability
 
@@ -47,7 +47,6 @@ local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)			-- Used every 3
 local timerChokingGasBombCD			= mod:NewNextTimer(35.5, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(19, 71615)
-local timerMutatedPlague			= mod:NewTargetTimer(60, 72451)			-- 60 Seconds until expired
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)				-- 10 to 11
 local timerUnboundPlague			= mod:NewBuffActiveTimer(10, 72856)		-- Heroic Ability: we can't keep the debuff 60 seconds, so we have to switch at 10 seconds. Otherwise the debuff does to much damage!
 
@@ -254,7 +253,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTearGas:Start()
 	elseif args:IsSpellID(72451, 72463, 72671, 72672) then	-- Mutated Plague
 		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
-		timerMutatedPlague:Start(args.destName)
 		timerMutatedPlagueCD:Start()
 	elseif args:IsSpellID(70542) then
 		timerMutatedSlash:Show(args.destName)

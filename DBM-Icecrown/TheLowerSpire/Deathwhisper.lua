@@ -20,8 +20,6 @@ local canPurge = select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "SHAMAN"
 			or select(2, UnitClass("player")) == "PRIEST"
 
-local isMelee = mod:IsMelee()
-
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 2)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
 local warnDeathDecay				= mod:NewSpellAnnounce(72108, 2)
@@ -30,15 +28,15 @@ local warnDarkTransformation		= mod:NewSpellAnnounce(70900, 4)
 local warnDarkEmpowerment			= mod:NewSpellAnnounce(70901, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 1)	
 local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
-local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 2)
+local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 2, nil, mod:IsTank() or mod:IsHealer())
 local warnDarkMartyrdom				= mod:NewSpellAnnounce(72499, 4)
 
 local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
 local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)
 local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
 local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
-local specWarnDarkMartyrdom			= mod:NewSpecialWarningMove(72499, isMelee)
-local specWarnVengefulShade			= mod:NewSpecialWarning("specWarnVengefulShade", false)
+local specWarnDarkMartyrdom			= mod:NewSpecialWarningMove(72499, mod:IsMelee())
+local specWarnVengefulShade			= mod:NewSpecialWarning("specWarnVengefulShade", not mod:IsTank())
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
 local timerDominateMind				= mod:NewBuffActiveTimer(12, 71289)
