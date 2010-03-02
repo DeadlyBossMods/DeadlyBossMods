@@ -143,8 +143,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge			= "전기 충전 시전",
-	RuneofPower        			= "마력의 룬 : >%s<"	
+	WarningSupercharge			= "전기 충전 시전"
 }
 
 L:SetTimerLocalization{
@@ -157,8 +156,7 @@ L:SetOptionLocalization{
 	PlaySoundLightningTendrils		= "번개 덩굴일 때 소리 재생",
 	PlaySoundDeathRune				= "죽음의 룬일 때 소리 재생",
 	SetIconOnOverwhelmingPower		= "압도적인 힘 대상 아이콘 설정",
-	SetIconOnStaticDisruption		= "전자기 붕괴 대상 타겟 아이콘 설정하기(하드 모드)",
-	RuneofPower        				= "보스가 마력의 룬의 영향을 받을 경우 특수 경고 보기"	
+	SetIconOnStaticDisruption		= "전자기 붕괴 대상 타겟 아이콘 설정하기(하드 모드)"	
 }
 
 L:SetMiscLocalization{

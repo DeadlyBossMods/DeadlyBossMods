@@ -141,8 +141,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge	= "Суперзаряд",
-	RuneofPower			= "Руна силы на |3-5(>%s<)"
+	WarningSupercharge	= "Суперзаряд"
 }
 
 L:SetTimerLocalization{
@@ -155,8 +154,7 @@ L:SetOptionLocalization{
 	SetIconOnStaticDisruption	= "Устанавливать метки на цели заклинания Статический сбой",
 	AlwaysWarnOnOverload		= "Всегда предупреждать при Перегрузке (иначе, только когда босс в цели)",
 	PlaySoundOnOverload			= "Звуковой сигнал при Перегрузке",
-	PlaySoundDeathRune			= "Звуковой сигнал при Рунах смерти",
-	RuneofPower        			= "Спец-предупреждение, когда босс под воздействием Руны силы"
+	PlaySoundDeathRune			= "Звуковой сигнал при Рунах смерти"
 }
 
 L:SetMiscLocalization{
