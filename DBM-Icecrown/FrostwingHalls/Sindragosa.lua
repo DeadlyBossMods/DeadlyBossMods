@@ -26,7 +26,7 @@ local warnChilledtotheBone		= mod:NewAnnounce("warnChilledtotheBone", 2, nil, fa
 local warnMysticBuffet			= mod:NewAnnounce("warnMysticBuffet", 2, nil, false)
 local warnFrostBeacon			= mod:NewTargetAnnounce(70126, 4)
 local warnBlisteringCold		= mod:NewSpellAnnounce(70123, 3)
-local warnFrostBreath			= mod:NewSpellAnnounce(71056, 2, mod:IsTank() or mod:IsHealer())
+local warnFrostBreath			= mod:NewSpellAnnounce(71056, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnUnchainedMagic		= mod:NewTargetAnnounce(69762, 2, nil, not mod:IsMelee())
 
 local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123)
