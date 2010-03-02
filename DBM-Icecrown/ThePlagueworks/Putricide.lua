@@ -26,7 +26,7 @@ local warnVolatileExperiment		= mod:NewSpellAnnounce(72840, 4)		-- Phase transit
 local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 2)		-- Phase 2 ability
 local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)		-- Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
-local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2, nil, mod:IsTank() or mod:IsHealer()) -- Phase 3 ability
+local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2, 72451, mod:IsTank() or mod:IsHealer()) -- Phase 3 ability
 local warnOozeVariable				= mod:NewTargetAnnounce(70352, 2)			-- Heroic Ability
 local warnGasVariable				= mod:NewTargetAnnounce(70353, 2)			-- Heroic Ability
 

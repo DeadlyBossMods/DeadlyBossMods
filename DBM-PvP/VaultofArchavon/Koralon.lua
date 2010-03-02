@@ -19,7 +19,7 @@ local timerBreathCD			= mod:NewCDTimer(45, 67328)--Seems to variate, but 45sec c
 local warnMeteor			= mod:NewSpellAnnounce(67333, 3)
 local warnMeteorSoon		= mod:NewPreWarnAnnounce(68161, 5, 2)
 local timerNextMeteor		= mod:NewNextTimer(47, 68161)
-local WarnBurningFury		= mod:NewAnnounce("BurningFury", 2)
+local WarnBurningFury		= mod:NewAnnounce("BurningFury", 2, 66721)
 local timerNextBurningFury	= mod:NewNextTimer(20, 66721)
 
 local specWarnCinder		= mod:NewSpecialWarningMove(67332)

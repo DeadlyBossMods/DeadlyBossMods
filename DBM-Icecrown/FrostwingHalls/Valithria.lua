@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"UNIT_TARGET"
 )
 
-local warnCorrosion		= mod:NewAnnounce("warnCorrosion", 2, nil, false)
+local warnCorrosion		= mod:NewAnnounce("warnCorrosion", 2, 70751, false)
 local warnGutSpray		= mod:NewTargetAnnounce(71283, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnManaVoid		= mod:NewSpellAnnounce(71741, 2, nil, not mod:IsMelee())
 local warnSupression	= mod:NewSpellAnnounce(70588, 3)
@@ -91,7 +91,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGutSpray:Start(args.destName)
 		self:Unschedule(warnGutSprayTargets)
 		self:Schedule(0.3, warnGutSprayTargets)
-	elseif args:IsSpellID(70751) then--Corrosion (spellids drycoded, will confirm later)
+	elseif args:IsSpellID(70751, 71738, 72022, 72023) then--Corrosion (spellids drycoded, will confirm later)
 		warnCorrosion:Show(args.spellName, args.destName, args.amount or 1)
 		timerCorrosion:Start(args.destName)
 	elseif args:IsSpellID(69325, 71730) then--Lay Waste (spellids drycoded, will confirm later)

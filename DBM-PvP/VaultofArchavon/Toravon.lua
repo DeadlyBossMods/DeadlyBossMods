@@ -14,9 +14,9 @@ mod:RegisterEvents(
 )
 
 local warnFreezingGround	= mod:NewSpellAnnounce(72104, 1)
-local warnWhiteout			= mod:NewSpellAnnounce(72096, 3)
-local warnOrb				= mod:NewSpellAnnounce(72095, 4)
-local WarnFrostbite			= mod:NewAnnounce("Frostbite", 2, nil, mod:IsHealer() or mod:IsTank())
+local warnWhiteout			= mod:NewSpellAnnounce(72096, 2)
+local warnOrb				= mod:NewSpellAnnounce(72095, 3)
+local WarnFrostbite			= mod:NewAnnounce("Frostbite", 2, 72098, mod:IsHealer() or mod:IsTank())
 
 local timerNextFrostbite	= mod:NewNextTimer(5, 72098, nil, mod:IsTank())
 local timerFrostbite		= mod:NewTargetTimer(20, 72098, nil, mod:IsHealer() or mod:IsTank())

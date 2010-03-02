@@ -20,8 +20,6 @@ mod:SetBossHealthInfo(
 	34496, L.Eydis
 )
 
-mod:AddBoolOption("HealthFrame", true)
-
 local warnSpecial					= mod:NewAnnounce("WarnSpecialSpellSoon", 3)
 local warnTouchDebuff				= mod:NewAnnounce("WarningTouchDebuff", 2, 66823)
 local warnPoweroftheTwins			= mod:NewAnnounce("WarningPoweroftheTwins", 4)		
@@ -41,6 +39,7 @@ local timerAchieve					= mod:NewAchievementTimer(180, 3815, "TimerSpeedKill")
 
 mod:AddBoolOption("SpecialWarnOnDebuff", false, "announce")
 mod:AddBoolOption("SetIconOnDebuffTarget", true)
+mod:AddBoolOption("HealthFrame", true)
 
 
 local debuffTargets					= {}
