@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warnZombies		= mod:NewSpellAnnounce(71159, 2)
-local warnMortalWound	= mod:NewAnnounce("warnMortalWound", 2, nil, false)
+local warnMortalWound	= mod:NewAnnounce("warnMortalWound", 2, 71127, false)
 local warnDecimateSoon	= mod:NewSoonAnnounce(71123, 3)
 
 local specWarnDecimate		= mod:NewSpecialWarningSpell(71123)

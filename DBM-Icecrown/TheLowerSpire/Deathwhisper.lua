@@ -28,7 +28,7 @@ local warnDarkTransformation		= mod:NewSpellAnnounce(70900, 4)
 local warnDarkEmpowerment			= mod:NewSpellAnnounce(70901, 4)
 local warnPhase2					= mod:NewPhaseAnnounce(2, 1)	
 local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
-local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 2, nil, mod:IsTank() or mod:IsHealer())
+local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 2, 71204, mod:IsTank() or mod:IsHealer())
 local warnDarkMartyrdom				= mod:NewSpellAnnounce(72499, 4)
 
 local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)

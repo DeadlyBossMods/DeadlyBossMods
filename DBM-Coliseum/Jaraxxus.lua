@@ -32,7 +32,7 @@ local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 3)
 local warnFlame					= mod:NewTargetAnnounce(68123, 4)
 local warnFlesh					= mod:NewTargetAnnounce(66237, 4, nil, mod:IsHealer())
 --local warnTouch				= mod:NewTargetAnnounce(66209, 3)
-local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4)
+local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4, 67009)
 
 local specWarnFlame				= mod:NewSpecialWarningRun(67072)
 local specWarnFlesh				= mod:NewSpecialWarningYou(66237)
