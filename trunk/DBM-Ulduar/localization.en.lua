@@ -139,8 +139,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge	= "Supercharge incoming",
-	RuneofPower			= "Rune of Power on >%s<"
+	WarningSupercharge	= "Supercharge incoming"
 }
 
 L:SetTimerLocalization{
@@ -153,8 +152,7 @@ L:SetOptionLocalization{
 	SetIconOnStaticDisruption	= "Set icons on Static Disruption targets",
 	AlwaysWarnOnOverload		= "Always warn on Overload (otherwise, only when targeted)",
 	PlaySoundOnOverload			= "Play sound on Overload",
-	PlaySoundDeathRune			= "Play sound on Rune of Death",
-	RuneofPower        			= "Show special warning when Boss is affected by Rune of Power"
+	PlaySoundDeathRune			= "Play sound on Rune of Death"
 }
 
 L:SetMiscLocalization{
