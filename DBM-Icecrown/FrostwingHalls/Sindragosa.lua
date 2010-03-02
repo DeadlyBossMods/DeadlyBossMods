@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_HEALTH",
 	"CHAT_MSG_MONSTER_YELL"
@@ -50,7 +51,7 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 
 local soundBlisteringCold = mod:NewSound(70123)
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
-mod:AddBoolOption("SetIconOnUnchainedMagic", true)
+mod:AddBoolOption("SetIconOnUnchainedMagic", false)
 mod:AddBoolOption("ClearIconsOnAirphase", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
 
@@ -58,7 +59,7 @@ local beaconTargets		= {}
 local beaconIconTargets	= {}
 local unchainedTargets	= {}
 local warned_P2 = false
-local unchainedIcons = 8
+local unchainedIcons = 7
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -68,7 +69,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(beaconTargets)
 	table.wipe(beaconIconTargets)
 	table.wipe(unchainedTargets)
-	unchainedIcons = 8
+	unchainedIcons = 7
 end
 
 do
@@ -99,7 +100,7 @@ end
 local function warnUnchainedTargets()
 	warnUnchainedMagic:Show(table.concat(unchainedTargets, "<, >"))
 	table.wipe(unchainedTargets)
-	unchainedIcons = 8
+	unchainedIcons = 7
 end
 
 function mod:SPELL_CAST_START(args)
@@ -131,7 +132,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUnchainedMagic:Show()
 		end
 		if self.Options.SetIconOnUnchainedMagic then
-			self:SetIcon(args.destName, unchainedIcons, 30)
+			self:SetIcon(args.destName, unchainedIcons)
 			unchainedIcons = unchainedIcons - 1
 		end
 		self:Unschedule(warnUnchainedTargets)
@@ -179,6 +180,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		soundBlisteringCold:Play()
 	end
 end	
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(69762) then
+		if self.Options.SetIconOnUnchainedMagic then
+			self:SetIcon(args.destName, 0)
+		end
+	end
+end
 
 function mod:UNIT_HEALTH(uId)
 	if not warned_P2 and self:GetUnitCreatureId(uId) == 36853 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.38 then
