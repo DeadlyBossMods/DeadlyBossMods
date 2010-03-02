@@ -136,8 +136,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge		= "超級充能 即將到來",
-	RuneofPower        		= "力之符文: >%s<"
+	WarningSupercharge		= "超級充能 即將到來"
 }
 
 L:SetTimerLocalization{
@@ -150,8 +149,7 @@ L:SetOptionLocalization{
 	SetIconOnStaticDisruption	= "為靜電崩裂的目標設置標記",
 	AlwaysWarnOnOverload		= "總是對超載顯示警告(否則只有當目標是風暴召喚者的時候顯示)",
 	PlaySoundOnOverload		= "當超載施放時播放音效",
-	PlaySoundDeathRune		= "當死亡符文施放時播放音效",
-	RuneofPower        		= "當首領獲得力之符文時顯示特別警告"
+	PlaySoundDeathRune		= "當死亡符文施放時播放音效"
 }
 
 L:SetMiscLocalization{

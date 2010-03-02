@@ -49,12 +49,11 @@ mod:AddBoolOption("SetIconOnStaticDisruption")
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
 local timerShieldofRunes		= mod:NewBuffActiveTimer(15, 63967)
-local warnRuneofPower			= mod:NewSpellAnnounce(64320, 1)
+local warnRuneofPower			= mod:NewTargetAnnounce(64320, 2)
 local warnRuneofDeath			= mod:NewSpellAnnounce(63490, 2)
 local warnShieldofRunes			= mod:NewSpellAnnounce(63489, 2)
 local warnRuneofSummoning		= mod:NewSpellAnnounce(62273, 3)
 local specwarnRuneofDeath		= mod:NewSpecialWarningMove(63490)
-local specwarnRuneofPower		= mod:NewSpecialWarning("RuneofPower", false)
 local timerRuneofDeathDura		= mod:NewNextTimer(30, 63490)
 local timerRuneofPower			= mod:NewCDTimer(30, 61974)
 local timerRuneofDeath			= mod:NewCDTimer(30, 63490)
@@ -71,11 +70,11 @@ function mod:OnCombatStart(delay)
 	disruptIcon = 7
 end
 
---[[function mod:OnCombatEnd()
-	if DBM.RangeCheck:IsShown() then
-		DBM.RangeCheck:Hide()
-	end
-end--]]
+function mod:RuneTarget()
+	local targetname = self:GetBossTarget(32927)
+	if not targetname then return end
+		warnRuneofPower:Show(targetname)
+end
 
 local function warnStaticDisruptionTargets()
 	warnStaticDisruption:Show(table.concat(disruptTargets, "<, >"))
@@ -105,7 +104,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnRuneofDeath:Show()
 		timerRuneofDeathDura:Start()
 	elseif args:IsSpellID(64321, 61974) then	-- Rune of Power
-		warnRuneofPower:Show()
+		self:ScheduleMethod(0.1, "RuneTarget")
 		timerRuneofPower:Start()
 	elseif args:IsSpellID(61869, 63481) then	-- Overload
 		timerOverload:Start()
@@ -121,8 +120,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(61903, 63493) then		-- Fusion Punch
 		timerFusionPunchActive:Start(args.destName)
-	elseif args:IsSpellID(64320) and not args:IsDestTypePlayer() then	-- Rune of Power
-		specwarnRuneofPower:Show(args.destName)
 	elseif args:IsSpellID(62269, 63490) then	-- Rune of Death - move away from it
 		if args:IsPlayer() then
 			specwarnRuneofDeath:Show()
@@ -143,14 +140,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if mod:IsDifficulty("heroic10") then
 				mod:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
 			else
-				mod:SetIcon(args.destName, 8, 30) -- skull for 30 seconds (until meltdown)
+				mod:SetIcon(args.destName, 8, 35) -- skull for 35 seconds (until meltdown)
 			end
 		end
---[[	if args:IsPlayer() then
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(30)
-			end
-		end--]]
 	elseif args:IsSpellID(63486, 61887) then	-- Lightning Tendrils
 		timerLightningTendrils:Start()
 		specwarnLightningTendrils:Show()

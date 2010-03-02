@@ -147,8 +147,7 @@ L:SetWarningLocalization{
 	WarningSupercharge			= "Supercharge imminente",
 	RuneofDeath					= "Rune de mort - BOUGEZ",
 	LightningTendrils			= "Vrilles de foudre - COURREZ",
-	Overload					= "Surchage - BOUGEZ",
-	RuneofPower        			= "Rune de puissance sur >%s<"
+	Overload					= "Surchage - BOUGEZ"
 }
 
 L:SetTimerLocalization{
@@ -164,8 +163,7 @@ L:SetOptionLocalization{
 	Overload					= "Montre une alerte spéciale pour la Surcharge",
 	AlwaysWarnOnOverload		= "Toujours alerter pour la surcharge (sinon seulement quand ciblé)",
 	PlaySoundOnOverload			= "Joue un son à la surcharge",
-	PlaySoundDeathRune			= "Joue un son pour les runes de mort",
-	RuneofPower        			= "Montre une alerte spéciale quand le boss est affecter par la Rune de puissance"
+	PlaySoundDeathRune			= "Joue un son pour les runes de mort"
 }
 
 L:SetMiscLocalization{
