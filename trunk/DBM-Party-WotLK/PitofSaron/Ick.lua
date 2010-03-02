@@ -17,7 +17,7 @@ mod:RegisterEvents(
 
 local warnPursuitCast			= mod:NewCastAnnounce(68987, 3)
 local warnPoisonNova			= mod:NewCastAnnounce(68989, 3)
-local warnPursuit				= mod:NewAnnounce("warnPursuit", 4)
+local warnPursuit				= mod:NewAnnounce("warnPursuit", 4, 68987)
 
 local specWarnToxic				= mod:NewSpecialWarningMove(70436)
 local specWarnMines				= mod:NewSpecialWarningRun(69015)

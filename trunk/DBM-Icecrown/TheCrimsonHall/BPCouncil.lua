@@ -23,8 +23,8 @@ mod:RegisterEvents(
 	"UNIT_TARGET"
 )
 
-local warnTargetSwitch			= mod:NewAnnounce("WarnTargetSwitch", 2)
-local warnTargetSwitchSoon		= mod:NewAnnounce("WarnTargetSwitchSoon", 1)
+local warnTargetSwitch			= mod:NewAnnounce("WarnTargetSwitch", 3, 70952)
+local warnTargetSwitchSoon		= mod:NewAnnounce("WarnTargetSwitchSoon", 2, 70952)
 local warnConjureFlames			= mod:NewCastAnnounce(71718, 2)
 local warnEmpoweredFlamesCast	= mod:NewCastAnnounce(72040, 3)
 local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040, 4)
@@ -39,7 +39,7 @@ local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(72039)
 local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
 local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 10)
 
-local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch")	-- every 46-47seconds
+local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch", 70952)	-- every 46-47seconds
 local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943, nil, false)	-- usually every 10 seconds but sometimes more
 local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)				-- every 20-30 seconds but never more often than every 20sec
 local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6

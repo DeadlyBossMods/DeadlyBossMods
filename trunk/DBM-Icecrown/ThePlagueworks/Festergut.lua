@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE"
 )
 
-local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight", 3)
-local warnGastricBloat		= mod:NewAnnounce("WarnGastricBloat", 2, nil, mod:IsTank() or mod:IsHealer())
+local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight", 3, 71912)
+local warnGastricBloat		= mod:NewAnnounce("WarnGastricBloat", 2, 72551, mod:IsTank() or mod:IsHealer())
 local warnGasSpore			= mod:NewTargetAnnounce(69279, 4)
 local warnVileGas			= mod:NewTargetAnnounce(73020, 3)
 
