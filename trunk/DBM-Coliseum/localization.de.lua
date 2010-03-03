@@ -1,10 +1,5 @@
 if GetLocale() ~= "deDE" then return end
 
--- fehlende Übersetzungen:
---
--- Fraktionschampions
--- Zwillingsval'kyr
-
 local L
 
 ------------------------
@@ -138,9 +133,9 @@ L:SetMiscLocalization{
 	Broln              = "Scha - Broln Starkhorn",			-- 34455
 	Harkzog            = "Hex - Harkzog",					-- 34450
 	Narrhok            = "Kri - Narrhok Stahlbrecher",		-- 34453
-	AllianceVictory    = "GLORY TO THE ALLIANCE!",	-- to be translated
+	AllianceVictory    = "EHRE DER ALLIANZ!",
 	HordeVictory       = "That was just a taste of what the future brings. FOR THE HORDE!",	-- to be translated
-	YellKill           = "A shallow and tragic victory. We are weaker as a whole from the losses suffered today. Who but the Lich King could benefit from such foolishness? Great warriors have lost their lives. And for what? The true threat looms ahead - the Lich King awaits us all in death."	-- to be translated
+	YellKill           = "Ein tragischer Sieg. Wir wurden schwächer durch die heutigen Verluste. Wer außer dem Lichkönig profitiert von solchen Torheiten? Große Krieger gaben ihr Leben. Und wofür? Die wahre Bedrohung erwartet uns noch - der Lichkönig erwartet uns alle im Tod."
 } 
 
 L:SetOptionLocalization{
@@ -171,7 +166,7 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull	= "In the name of our dark master. For the Lich King. You. Will. Die.",	-- to be translated
+	YellPull	= "Im Namen unseres dunklen Meisters. Für den Lichkönig. Ihr. Werdet. Sterben.",
 	Fjola		= "Fjola Lichtbann",
 	Eydis		= "Eydis Nachtbann"
 }
