@@ -468,7 +468,8 @@ L:SetOptionLocalization{
 	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
-	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539)
+	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
+	ValkyrIcon			= "為華爾琪設置標記"
 }
 
 L:SetMiscLocalization{
