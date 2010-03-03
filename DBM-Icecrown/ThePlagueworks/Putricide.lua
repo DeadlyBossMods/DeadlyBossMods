@@ -286,7 +286,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(72451, 72463, 72671, 72672) then	-- Mutated Plague
+		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
+		timerMutatedPlagueCD:Start()
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70447, 72836, 72837, 72838) then
