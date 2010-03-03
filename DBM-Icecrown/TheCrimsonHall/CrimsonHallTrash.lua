@@ -56,5 +56,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70451) then
 		timerBloodMirror:Cancel(args.destName)
 		self:SetIcon(args.destName, 0)
+	elseif args:IsSpellID(70432) then
+		timerBloodSap:Cancel(args.destName)
 	end
 end
