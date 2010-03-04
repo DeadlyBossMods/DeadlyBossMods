@@ -208,7 +208,7 @@ function mod:OnSync(msg, arg)
 	if msg == "Airphase" then
 		warnAirphase:Show()
 		timerNextFrostBreath:Cancel()
-		timerNextBlisteringCold:Start(89)--Not exact anywhere from 90-110seconds after airphase begin
+		timerNextBlisteringCold:Start(84)--Not exact anywhere from 85-110seconds after airphase begin
 		timerNextAirphase:Start()
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
