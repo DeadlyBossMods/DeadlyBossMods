@@ -368,9 +368,14 @@ L:SetWarningLocalization{
 	warnPortalOpen	= "Portals open"
 }
 
+L:SetTimerLocalization{
+	timerPortalsOpen	= "Portals open"
+}
+
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Set icon on Blazing Skeleton (skull)",
-	warnPortalOpen				= "Show warning when $spell:72483 are opened up",
+	warnPortalOpen				= "Show warning when Nightmare Portals are opened up",
+	timerPortalsOpen			= "Show timer when Nightmare Portals are opened up",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -439,7 +444,8 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "Phase 2 transition soon",
 	WarnPhase3Soon			= "Phase 3 transition soon",
 	specWarnDefileCast		= "Defile on you - Move away",
-	specWarnDefileNear		= "Defile near you - Watch out"
+	specWarnDefileNear		= "Defile near you - Watch out",
+	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<"
 }
 
 L:SetTimerLocalization{
@@ -452,6 +458,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Show timer for start of combat",
 	TimerRoleplay			= "Show timer for roleplay event",
+	warnNecroticPlagueJump	= "Announce $spell:73912 jump targets",
 	TimerNecroticPlagueCleanse	= "Show timer to cleanse Necrotic Plague before\nthe first tick",
 	PhaseTransition			= "Show time for phase transitions",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
@@ -464,7 +471,7 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
-	ValkyrIcon			= "Set icons on Valkyrs"
+	ValkyrIcon				= "Set icons on Valkyrs"
 }
 
 L:SetMiscLocalization{
