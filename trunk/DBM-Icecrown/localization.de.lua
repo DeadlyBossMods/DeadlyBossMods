@@ -479,5 +479,5 @@ L:SetMiscLocalization{
 	YellTrap				= "Schattenfalle auf mir!",
 	YellKill				= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",	-- to be translated
 	LKRoleplay				= "Is it truly righteousness that drives you? I wonder...",	-- to be translated
-	PlagueWhisper			= "Seuche"	-- untested (boss whisper!)
+	PlagueWhisper			= "You have been infected by"	-- yes, it is really whispered in English
 }
