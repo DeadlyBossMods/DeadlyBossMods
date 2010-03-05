@@ -95,6 +95,7 @@ function mod:OnCombatStart(delay)
 	timerInhaledBlight:Start(-delay)
 	timerGasSporeCD:Start(20-delay)--This may need tweaking
 	table.wipe(gasSporeTargets)
+	table.wipe(vileGasTargets)
 	gasSporeIcon = 8
 	gasSporeCast = 0
 --	noCheck = true

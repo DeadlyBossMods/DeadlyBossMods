@@ -472,5 +472,6 @@ L:SetMiscLocalization{
 	YellDefile		= "Defile on me!",
 	YellTrap		= "Shadow Trap on me!",
 	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
-	LKRoleplay		= "Is it truly righteousness that drives you? I wonder..."
+	LKRoleplay		= "Is it truly righteousness that drives you? I wonder...",
+	PlagueWhisper	= "You have been infected by"
 }
