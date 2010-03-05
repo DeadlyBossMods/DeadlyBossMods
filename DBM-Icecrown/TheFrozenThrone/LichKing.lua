@@ -16,7 +16,8 @@ mod:RegisterEvents(
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_WHISPER"
 )
 
 local warnRemorselessWinter = mod:NewSpellAnnounce(74270, 3) --Phase Transition Start Ability
@@ -79,19 +80,7 @@ mod:AddBoolOption("YellOnTrap", true, "announce")
 local phase	= 0
 local warned_preP2 = false
 local warned_preP3 = false
-
---[[local function isunitdebuffed(spellID)
-	local name = GetSpellInfo(spellID)
-	if not name then return false end
-
-	for i=1, 40, 1 do
-		local debuffname = UnitDebuff("player", i, "HARMFUL")
-		if debuffname == name then
-			return true
-		end
-	end
-	return false
-end--]]
+local lastPlagueCast = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -178,19 +167,17 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague (SPELL_AURA_APPLIED is not fired for this spell, there is no way to detect jumps to other players.)
+	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague (SPELL_AURA_APPLIED is not fired for this spell)
 		warnNecroticPlague:Show(args.destName)
 		timerNecroticPlagueCD:Start()
 		timerNecroticPlagueCleanse:Start()
+		lastPlagueCast = time()
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, 7, 5)
 		end
 		if args:IsPlayer() then
 			specWarnNecroticPlague:Show()
 		end
---[[		if (isunitdebuffed(70338) or isunitdebuffed(73785) or isunitdebuffed(73786) or isunitdebuffed(73787) or isunitdebuffed(70337) or isunitdebuffed(73912) or isunitdebuffed(73913) or isunitdebuffed(73914)) then
-			specWarnNecroticPlague:Show()
-		end--]]
 	elseif args:IsSpellID(69409, 73797, 73798, 73799) then -- Soul reaper (MT debuff)
 		warnSoulreaper:Show(args.destName)
 		specwarnSoulreaper:Show(args.destName)
@@ -331,10 +318,27 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+	if msg:find(L.PlagueWhisper) then
+		self:SendSync("PlagueOn", UnitName("player"))
+	end
+end
+
 function mod:OnSync(msg, arg)
 	if msg == "LKPull" then
 		timerCombatStart:Start()
 	elseif msg == "LKRoleplay" then
 		timerRoleplay:Start()
+	elseif msg == "PlagueOn" then
+		if time() - lastPlagueCast > 2 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
+			warnNecroticPlague:Show(target)	--We only want this function to work when it jumps from target to target.
+			timerNecroticPlagueCleanse:Start()
+			if target == UnitName("player") then
+				specWarnNecroticPlague:Show()
+			end 
+			if self.Options.NecroticPlagueIcon then
+				self:SetIcon(target, 7, 5)
+			end
+		end
 	end
 end

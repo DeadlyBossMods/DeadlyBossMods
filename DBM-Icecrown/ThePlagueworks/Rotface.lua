@@ -25,6 +25,7 @@ local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, 3)
 local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn", 1)
 local warnStickyOoze			= mod:NewSpellAnnounce(69774, 1)
 local warnUnstableOoze			= mod:NewAnnounce("WarnUnstableOoze", 2, 69558)
+local warnVileGas				= mod:NewTargetAnnounce(72272, 3)
 
 local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
@@ -32,21 +33,34 @@ local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
 local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
 local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)
 local specWarnLittleOoze		= mod:NewSpecialWarning("specWarnLittleOoze")
+local specWarnVileGas			= mod:NewSpecialWarningYou(72272)
 
 local timerStickyOoze			= mod:NewNextTimer(16, 69774, nil, mod:IsTank())
 local timerWallSlime			= mod:NewTimer(20, "NextPoisonSlimePipes", 69789)
 local timerSlimeSpray			= mod:NewNextTimer(21, 69508)
 local timerMutatedInfection		= mod:NewTargetTimer(12, 71224)
 local timerOozeExplosion		= mod:NewCastTimer(4, 69839)
+local timerVileGasCD			= mod:NewNextTimer(30, 72272)
 
 local soundMutatedInfection		= mod:NewSound(71224)
 mod:AddBoolOption("InfectionIcon", true)
 mod:AddBoolOption("ExplosionIcon", false)
 
+local RFVileGasTargets	= {}
+
+local function warnRFVileGasTargets()
+	warnVileGas:Show(table.concat(RFVileGasTargets, "<, >"))
+	table.wipe(RFVileGasTargets)
+	timerVileGas:Start()
+end
+
 function mod:OnCombatStart(delay)
 	timerWallSlime:Start(25-delay)
 	self:ScheduleMethod(25-delay, "WallSlime")
 	InfectionIcon = 7
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerVileGasCD:Start(25-delay)
+	end
 end
 
 function mod:WallSlime()
@@ -98,7 +112,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				InfectionIcon = 7
 			end
-		end	
+		end
+	elseif args:IsSpellID(72272) then	-- Vile Gas(Heroic Rotface only, 25 man spellid the same as 10?)
+		RFVileGasTargets[#RFVileGasTargets + 1] = args.destName
+		timerVileGasCD:Start()
+		if args:IsPlayer() then
+			specWarnVileGas:Show()
+		end
+		self:Unschedule(warnRFVileGasTargets)
+		self:Schedule(0.8, warnRFVileGasTargets)
 	end
 end
 
