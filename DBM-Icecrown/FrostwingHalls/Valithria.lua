@@ -28,7 +28,7 @@ local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
 
 local timerLayWaste		= mod:NewBuffActiveTimer(12, 69325)
 local timerNextPortal	= mod:NewCDTimer(46, 72483, nil, mod:IsHealer())
-local timerPortalsOpen	= mod:NewBuffActiveTimer(10, 72483, nil, mod:IsHealer())
+local timerPortalsOpen	= mod:NewBuffActiveTimer(10, "timerPortalsOpen", 72483, mod:IsHealer())
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
 

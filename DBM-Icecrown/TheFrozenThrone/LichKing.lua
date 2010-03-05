@@ -27,6 +27,7 @@ local warnShamblingHorror	= mod:NewSpellAnnounce(70372, 3) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358, 2) --Phase 1 Add
 local warnShamblingEnrage	= mod:NewTargetAnnounce(72143, 3, nil, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage()) --Phase 1 Add Ability
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912, 4) --Phase 1+ Ability
+local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779, 3, nil, mod:IsHealer()) --Phase 1 & 2 Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
 local warnDefileSoon		= mod:NewSoonAnnounce(73708, 3)	--Phase 2+ Ability
@@ -331,7 +332,7 @@ function mod:OnSync(msg, arg)
 		timerRoleplay:Start()
 	elseif msg == "PlagueOn" then
 		if time() - lastPlagueCast > 2 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
-			warnNecroticPlague:Show(target)	--We only want this function to work when it jumps from target to target.
+			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
 			timerNecroticPlagueCleanse:Start()
 			if target == UnitName("player") then
 				specWarnNecroticPlague:Show()
