@@ -374,9 +374,14 @@ L:SetWarningLocalization{
 	warnPortalOpen	= "Portale offen"
 }
 
+L:SetTimerLocalization{
+	timerPortalsOpen	= "Portale offen"
+}
+
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton		= "Setze Zeichen auf Loderndes Skelett (Totenkopf)",
-	warnPortalOpen				= "Zeige Warnung bei $spell:72483",
+	warnPortalOpen				= "Zeige Warnung wenn Alptraumportale geöffnet sind",
+	timerPortalsOpen			= "Zeige Timer wenn Alptraumportale geöffnet sind",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -445,7 +450,8 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "Übergang in Phase 2 bald",
 	WarnPhase3Soon			= "Übergang in Phase 3 bald",
 	specWarnDefileCast		= "Entweihen auf dir - Lauf weg",
-	specWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen"
+	specWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen",
+	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen"
 }
 
 L:SetTimerLocalization{
@@ -458,6 +464,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Zeige Timer für Kampfbeginn",
 	TimerRoleplay			= "Zeige Timer für Rollenspiel",
+	warnNecroticPlagueJump	= "Verkünde Sprungziele von $spell:73912",
 	TimerNecroticPlagueCleanse	= "Zeige Timer um Nekrotische Seuche vor dem ersten Tick zu reinigen",
 	PhaseTransition			= "Zeige Timer für Phasenübergänge",
 	WarnPhase2Soon			= "Zeige Vorwarnung für Übergang in Phase 2 (bei ~73%)",
