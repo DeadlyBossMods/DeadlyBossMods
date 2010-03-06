@@ -313,9 +313,9 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.LKPull or msg:find(L.LKPull) then
-		self:SendSync("LKPull")
+		timerCombatStart:Start()
 	elseif msg == L.LKRoleplay or msg:find(L.LKRoleplay) then
-		self:SendSync("LKRoleplay")
+		timerRoleplay:Start()
 	end
 end
 
@@ -326,11 +326,7 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:OnSync(msg, target)
-	if msg == "LKPull" then
-		timerCombatStart:Start()
-	elseif msg == "LKRoleplay" then
-		timerRoleplay:Start()
-	elseif msg == "PlagueOn" then
+	if msg == "PlagueOn" then
 		if time() - lastPlagueCast > 2 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
 			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
 			timerNecroticPlagueCleanse:Start()
