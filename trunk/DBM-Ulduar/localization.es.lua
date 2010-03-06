@@ -351,7 +351,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPhase1	= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
 	YellPhase2	= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
-	YellKill	= "Stay your arms! I yield!",
+	YellKill	= "¡Guardad las armas! ¡Me rindo!",
 	ChargeOn	= "Cargar relámpago: %s",
 	Charge		= "Fallos de Cargar relámpago (este try): %s" 
 }
