@@ -325,7 +325,7 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	end
 end
 
-function mod:OnSync(msg, arg)
+function mod:OnSync(msg, target)
 	if msg == "LKPull" then
 		timerCombatStart:Start()
 	elseif msg == "LKRoleplay" then
