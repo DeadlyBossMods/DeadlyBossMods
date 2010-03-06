@@ -403,7 +403,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerNextAirphase		= "Nächste Luftphase",
-	TimerNextGroundphase	= "Nächste Bodenphase"
+	TimerNextGroundphase	= "Nächste Bodenphase",
+	achievementMystic		= "Ablaufzeit für Mystischer Puffer"
 }
 
 L:SetWarningLocalization{
