@@ -457,6 +457,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	TimerRoleplay			= "為角色扮演事件顯示計時器",
+	warnNecroticPlagueJump		= "提示$spell:73912跳躍後的目標",
 	TimerNecroticPlagueCleanse	= "為淨化第一次堆疊前的亡域瘟疫顯示計時器",
 	PhaseTransition			= "為轉換階段顯示計時器",
 	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
