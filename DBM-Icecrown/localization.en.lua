@@ -397,7 +397,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerNextAirphase		= "Next air phase",
-	TimerNextGroundphase	= "Next ground phase"
+	TimerNextGroundphase	= "Next ground phase",
+	achievementMystic		= "Time to clear Mystic stacks"
 }
 
 L:SetWarningLocalization{

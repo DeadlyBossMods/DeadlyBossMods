@@ -46,6 +46,7 @@ local timerInstability			= mod:NewBuffActiveTimer(5, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
 local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
 local timerNextMysticBuffet		= mod:NewNextTimer(6, 70128)
+local timerMysticAchieve		= mod:NewAchievementTimer(24, 4620, "achievementMystic")--May need tweaks, will also need modifying for 3.3.3 nerf to achievement
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -165,6 +166,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			if (args.amount or 1) >= 4 then
 				specWarnMysticBuffet:Show(args.amount)
 			end
+			if (args.amount or 1) < 2 then
+				timerMysticAchieve:Start()
+			end
 		end
 	end
 end
@@ -185,6 +189,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69762) then
 		if self.Options.SetIconOnUnchainedMagic then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(70127, 72528, 72529, 72530) then
+		if args:IsPlayer() then
+			timerMysticAchieve:Cancel()
 		end
 	end
 end

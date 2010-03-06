@@ -178,16 +178,8 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.PullAlliance or msg:find(L.PullAlliance, 1, true) then
-		self:SendSync("PullAlliance")
-	elseif msg == L.PullHorde or msg:find(L.PullHorde, 1, true) then
-		self:SendSync("PullHorde")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "PullAlliance" then
 		timerCombatStart:Start()
-	elseif msg == "PullHorde" then
+	elseif msg == L.PullHorde or msg:find(L.PullHorde, 1, true) then
 		timerCombatStart:Start(99)
 	end
 end
