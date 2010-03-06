@@ -69,6 +69,8 @@ DBM_CORE_RANGECHECK_HIDE			= "Cacher"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_LOCK			= "Verrouiller la fenêtre"
 
+DBM_LFG_INVITE						= "LFG Invite"
+
 DBM_CORE_SLASHCMD_HELP				= {
 	"Commandes slash disponible:",
 	"/dbm version: Vérifie la version du raid (alias: ver)",
@@ -91,6 +93,8 @@ DBM_CORE_UNKNOWN					= "Inconnu"
 DBM_CORE_BREAK_START				= "La pause démarre maintenant -- vous avez %s minute(s)!"
 DBM_CORE_BREAK_MIN					= "La pause finit dans %s minutes!"
 DBM_CORE_BREAK_SEC					= "La pause finit dans %s secondes!"
+DBM_CORE_TIMER_BREAK				= "Break time!"-----
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "Break time is over"-----
 
 DBM_CORE_TIMER_PULL					= "Pull dans"
 DBM_CORE_ANNOUNCE_PULL				= "Pull dans %d sec"
@@ -133,13 +137,58 @@ local prewarnOption = "Montre une pré-alerte pour |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	target	= "Annonce la cible de |cff71d5ff|Hspell:%d|h%s|h|r",
 	spell	= "Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast	= "Montre une alerte quand |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	cast	= "Montre une alerte quand |cff71d5ff|Hspell:%d|h%s|h|r est en cours de cast",
 	soon	= "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r",
 	prewarn	= "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r",
 	phase	= "Montre une alerte pour la phase %d",
 }
 
+-- Auto-generated Special Warning Localizations
+DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
+	spell 		= "Afficher l’alerte spéciale pour $spell:%d",
+	dispel 		= "Afficher l’alerte spéciale à dispel/spellsteal \n $spell:%d",
+	interupt	= "Afficher l’alerte spéciale interrompre $spell:%d",
+	you 		= "Afficher l’alerte spéciale lorsque vous êtes affecté par $spell:%d",
+	target 		= "Afficher l’alerte spéciale quand quelqu'un est touché par $spell:%d",
+	close 		= "Afficher l’alerte spéciale quand quelqu'un est proche de vous \n affected by $spell:%d",
+	move 		= "Afficher l’alerte spéciale lorsque vous êtes affecté par $spell:%d",
+	run 		= "Afficher l’alerte spéciale pour $spell:%d",
+	cast 		= "Afficher l’alerte spéciale pour $spell:%d cast",
+	stack 		= "Afficher l’alerte spéciale pour >=%d des piles de \n $spell:%d"
+}
+
+DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
+	spell = "%s!",
+	dispel = "%s on %%s - dispel maintenant",
+	interupt = "%s - interrompre maintenant",
+	you = "%s sur toi",
+	target = "%s sur %%s",
+	close = "%s sur %%s près de vous",
+	move = "%s - bouge vite",
+	run = "%s - éloigne toi",
+	cast = "%s - stop cast",
+	stack = "%s (%%d)"
+}
+
+
+DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Set d'icônes sur $spell:%d en targets"
+DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "jouer un son sur $spell:%d"
+
+
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Alerte spéciale déplaçable"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
+
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Une %d vérification de distance n'est pas supporté dans cette zone.\nLes distances autorisés est 10, 11, 15 et 28 yard."
+
+DBM_ARROW_MOVABLE					= "Bouger la Flèche"
+
+DBM_ARROW_ERROR_USAGE	= {
+	"DBM-flèche usage:",
+	"/dbm flèche <x> <y> crée une flèche qui pointe vers une locataion spécifiques (0 < x/y < 100)",
+	"/dbm flèche <player> crée une flèche qui pointe vers un joueur précis dans votre groupe ou raid",
+	"/dbm flèche cache la flèche",
+	"/dbm flèche fait déplacer",
+}
+
 
