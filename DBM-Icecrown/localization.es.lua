@@ -376,9 +376,14 @@ L:SetWarningLocalization{
 	warnPortalOpen	= "Se abren los portales"
 }
 
+L:SetTimerLocalization{
+	timerPortalsOpen	= "Se abren los portales"
+}
+
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Poner icono en Esqueleto llameante (calavera)",
 	warnPortalOpen				= "Mostrar aviso cuando $spell:72483 se abren",
+	timerPortalsOpen			= "Mostrar tiempo para la apertura de Portal Pesadilla",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -447,7 +452,8 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "Transición a la Fase 2 pronto",
 	WarnPhase3Soon			= "Transición a la Fase 3 pronto",
 	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
-	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!"
+	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!",
+	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<"
 }
 
 L:SetTimerLocalization{
@@ -460,6 +466,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
 	TimerRoleplay			= "Mostrar tiempo para Diálogo",
+	warnNecroticPlagueJump	= "Anunciar los objetivos donde $spell:73912 ha saltado",
 	TimerNecroticPlagueCleanse	= "Mostrar tiempo para purgar Peste necrótica\nantes de la primera marca",
 	PhaseTransition			= "Mostrar tiempo para las transiciones de fase",
 	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
