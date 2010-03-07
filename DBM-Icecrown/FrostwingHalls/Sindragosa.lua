@@ -74,9 +74,9 @@ function mod:OnCombatStart(delay)
 	unchainedIcons = 7
 	if self.Options.RangeFrame then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			DBM.RangeCheck:Show(GetRaidTargetIndex, 20)
+			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
 		else
-			DBM.RangeCheck:Show(GetRaidTargetIndex, 10)
+			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
 		end
 	end
 end
