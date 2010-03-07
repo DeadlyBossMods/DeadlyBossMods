@@ -81,7 +81,7 @@ mod:AddBoolOption("YellOnTrap", true, "announce")
 local phase	= 0
 local warned_preP2 = false
 local warned_preP3 = false
---local lastPlagueCast = 0
+local lastPlagueCast = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -89,7 +89,7 @@ function mod:OnCombatStart(delay)
 	warned_preP2 = false
 	warned_preP3 = false
 	self:NextPhase()
---	lastPlagueCast = 0
+	lastPlagueCast = 0
 end
 
 function mod:DefileTarget()
@@ -173,7 +173,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnNecroticPlague:Show(args.destName)
 		timerNecroticPlagueCD:Start()
 		timerNecroticPlagueCleanse:Start()
---		lastPlagueCast = GetTime()
+		lastPlagueCast = GetTime()
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, 7, 5)
 		end
@@ -328,7 +328,7 @@ end
 
 function mod:OnSync(msg, target)
 	if msg == "PlagueOn" then
---		if GetTime() - lastPlagueCast > 1 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
+		if GetTime() - lastPlagueCast > 1 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
 			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
 			timerNecroticPlagueCleanse:Start()
 			if target == UnitName("player") then
@@ -337,6 +337,6 @@ function mod:OnSync(msg, target)
 			if self.Options.NecroticPlagueIcon then
 				self:SetIcon(target, 7, 5)
 			end
---		end
+		end
 	end
 end
