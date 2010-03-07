@@ -240,7 +240,7 @@ L:SetOptionLocalization{
 	achievementDisarmed		= "Show timer for Disarm achievement",
 	WarnGrip				= "Announce Grip targets",
 	SetIconOnGripTarget		= "Set icons on Grip targets",
-	SetIconOnEyebeamTarget	= "Set icons on Focused Eyebeam targets (square)",
+	SetIconOnEyebeamTarget	= "Set icons on Focused Eyebeam targets (moon)",
 	PlaySoundOnEyebeam		= "Play sound on Focused Eyebeam"
 }
 
