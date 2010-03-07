@@ -302,9 +302,24 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase2 or msg:find(L.Phase2) then
-		self:SendSync("Phase2")
+		self:ScheduleMethod(17, "WormsEmerge")
+		timerCombatStart:Show(15)
+		updateHealthFrame(2)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)
+		end
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
-		self:SendSync("Phase3")
+		updateHealthFrame(3)
+		if self:IsDifficulty("heroic10", "heroic25") then
+			enrageTimer:Start()
+		end
+		self:UnscheduleMethod("WormsSubmerge")
+		timerNextCrash:Start(45)
+		timerNextBoss:Cancel()
+		timerSubmerge:Cancel()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
 
@@ -342,29 +357,6 @@ function mod:UNIT_DIED(args)
 		if AcidmawDead then
 			DBM.BossHealth:RemoveBoss(35144)
 			DBM.BossHealth:RemoveBoss(34799)
-		end
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "Phase2" then
-		self:ScheduleMethod(17, "WormsEmerge")
-		timerCombatStart:Show(15)
-		updateHealthFrame(2)
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(10)
-		end
-	elseif msg == "Phase3" then
-		updateHealthFrame(3)
-		if self:IsDifficulty("heroic10", "heroic25") then
-			enrageTimer:Start()
-		end
-		self:UnscheduleMethod("WormsSubmerge")
-		timerNextCrash:Start(45)
-		timerNextBoss:Cancel()
-		timerSubmerge:Cancel()
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
 		end
 	end
 end

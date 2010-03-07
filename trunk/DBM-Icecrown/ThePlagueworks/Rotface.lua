@@ -124,6 +124,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69674, 71224, 73022, 73023) then
 		timerMutatedInfection:Cancel(args.destName)
@@ -148,14 +150,6 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.YellSlimePipes1 or msg:find(L.YellSlimePipes1)) or (msg == L.YellSlimePipes2 or msg:find(L.YellSlimePipes2)) then
-		self:SendSync("PoisonSlimePipes")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "PoisonSlimePipes" then
 		self:WallSlime()
 	end
 end
-
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
