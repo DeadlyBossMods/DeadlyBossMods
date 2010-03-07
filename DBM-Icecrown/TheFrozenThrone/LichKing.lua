@@ -89,6 +89,7 @@ function mod:OnCombatStart(delay)
 	warned_preP2 = false
 	warned_preP3 = false
 	self:NextPhase()
+	lastPlagueCast = 0
 end
 
 function mod:DefileTarget()
@@ -172,7 +173,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnNecroticPlague:Show(args.destName)
 		timerNecroticPlagueCD:Start()
 		timerNecroticPlagueCleanse:Start()
-		lastPlagueCast = time()
+		lastPlagueCast = GetTime()
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, 7, 5)
 		end
@@ -327,7 +328,7 @@ end
 
 function mod:OnSync(msg, target)
 	if msg == "PlagueOn" then
-		if time() - lastPlagueCast > 2 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
+		if GetTime() - lastPlagueCast > 2 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
 			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
 			timerNecroticPlagueCleanse:Start()
 			if target == UnitName("player") then
