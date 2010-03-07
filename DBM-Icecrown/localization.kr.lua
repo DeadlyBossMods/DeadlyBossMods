@@ -464,7 +464,8 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerCombatStart			= "전투 시작 타이머 보기",
-	TimerRoleplay				= "이벤트 타이머 보기",	
+	TimerRoleplay				= "이벤트 타이머 보기",
+	warnNecroticPlagueJump		= "$spell:73912 이동 대상 알리기",	
 	TimerNecroticPlagueCleanse	= "$spell:73912의 첫 번째 틱 이후 지속 타이머 보기",	
 	PhaseTransition				= "다음 단계 전환 타이머 보기",	
 	WarnPhase2Soon				= "2 단계 전환 사전 경고 보기(73% 이하)",
@@ -485,5 +486,5 @@ L:SetMiscLocalization{
 	YellTrap				= "나에게 암흑의 덫!!!",	
 	YellKill				= "어떤 의문도 남지 않았다. 어떤 의심도 없다. 너희는 아제로스의 가장 위대한 용사들이다. 너희 앞에 놓아둔 모든 도전을 극복해 내었다. 가장 강력한 종들이 너희의 무자비한 살육 앞에 쓰러졌지... 너희가 억눌렀던 분노 앞에 말이다...",
 	LKRoleplay				= "진정으로 정의에 이끌렸단 말이냐? 궁금하구나...",
-	PlagueWhisper			= "역병 전이 :"
+	PlagueWhisper			= "You have been infected by" --역병 전이 : 
 }
