@@ -9,7 +9,8 @@ mod:SetUsedIcons(6, 7, 8)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE"
+	"SPELL_AURA_APPLIED_DOSE",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnInhaledBlight		= mod:NewAnnounce("InhaledBlight", 3, 71912)
@@ -33,6 +34,8 @@ local timerGastricBloatCD	= mod:NewCDTimer(11, 72551, nil, mod:IsTank() or mod:I
 
 local berserkTimer			= mod:NewBerserkTimer(300)
 
+local warnGoo				= mod:NewSpellAnnounce(72458, 4)
+
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
 
@@ -50,15 +53,15 @@ local mPoints = {
 local noCheck = true
 
 local function findMin(a)
+	local min = a[1]
 	local index = 1
-	local value = a[index]
-	for i, val in ipairs(a) do
-		if val < value then
+	for i, v in ipairs(a) do
+		if v < min then
 			index = i
-			value = val
+			min = v
 		end
 	end
-	return value, index
+	return min, index
 end
 --]]
 local function warnGasSporeTargets()
@@ -114,6 +117,22 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69195, 71219, 73031, 73032) then	-- Pungent Blight
 		specWarnPungentBlight:Show()
 		timerInhaledBlight:Start(38)
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(72299) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
+		uId = uId or "none" -- TODO: confirm that we have a valid unit id here
+		self:SendSync("Goo", UnitName(uId.."target"))
+	end
+end
+
+function mod:OnSync(event, arg)
+	if event == "Goo" then
+		if GetRaidUnitId(arg) ~= "none" then -- TODO: confirm that the spell actually targets a player and no an area or a dummy (like the Void Reaver orb did)
+			self:AddMsg(("DBM-Debug: Malleable Goo on %s?"):format(arg))
+		end
+		warnGoo:Show()
 	end
 end
 
