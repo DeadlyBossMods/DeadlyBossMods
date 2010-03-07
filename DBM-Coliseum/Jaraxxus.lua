@@ -227,12 +227,6 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.FirstPull or msg:find(L.FirstPull) then
-		self:SendSync("FirstPull")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "FirstPull" then
 		timerCombatStart:Start()
 	end
 end

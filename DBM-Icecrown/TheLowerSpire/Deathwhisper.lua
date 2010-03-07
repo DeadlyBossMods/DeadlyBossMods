@@ -220,18 +220,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellReanimatedFanatic or msg:find(L.YellReanimatedFanatic) then
-		self:SendSync("ReanimatedFanatic")
+		warnReanimating:Show()
 	end
 end
 
 function mod:UNIT_TARGET()
 	if empoweredAdherent or deformedFanatic then
 		self:TrySetTarget()
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "ReanimatedFanatic" then
-		warnReanimating:Show()
 	end
 end
