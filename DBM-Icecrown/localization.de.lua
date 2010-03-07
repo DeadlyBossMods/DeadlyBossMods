@@ -428,14 +428,15 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons= "Poste Zeichen für Ziele von $spell:70126 in Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)",
  	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase	= "Entferne alle Zeichen vor der Luftphase"
+	ClearIconsOnAirphase	= "Entferne alle Zeichen vor der Luftphase",
+	RangeFrame				= "Zeige Abstandsfenster (10 m normal, 20 m heroisch)\n(zeigt nur Spieler mit Raidzeichen an)"
 }
 
 L:SetMiscLocalization{
 	YellAirphase	= "Euer Vormarsch endet hier! Keiner wird überleben!",
 	YellPhase2		= "Fühlt die grenzenlose Macht meines Meisters, und verzweifelt!",
 	BeaconIconSet			= "Frostleuchtfeuer-Zeichen {rt%d} auf %s gesetzt",
-	YellPull		= "Ihr seid Narren, euch hierher zu wagen. Der eisige Wind Nordends wird eure Seelen verschlingen!"
+	YellPull		= "Ihr seid Narren, euch hierher zu wagen. Der eisige Wind Nordends wird eure Seelen verschlingen!"	-- momentan nicht verwendet
 }
 
 ---------------------
