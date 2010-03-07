@@ -369,12 +369,17 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnCorrosion				= "%s : >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
-	warnPortalOpen				= "포탈 열림"	
+	warnPortalOpen				= "차원문 열림"	
+}
+
+L:SetTimerLocalization{
+	timerPortalsOpen			= "차원문 열림"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "타오르는 해골에게 공격대 아이콘 설정(해골)",
 	warnPortalOpen				= "$spell:72483 열림 경고 보기",	
+	timerPortalsOpen			= "악몽의 차원문이 열릴 때 타이머 보기",	
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "알 수 없음")
 }
 
@@ -396,7 +401,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerNextAirphase		= "다음 공중 단계",
-	TimerNextGroundphase	= "다음 지상 단계"
+	TimerNextGroundphase	= "다음 지상 단계",
+	achievementMystic		= "신비한 아픔 업적 타이머"	
 }
 
 L:SetWarningLocalization{
@@ -420,7 +426,8 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 아이콘을 채팅으로 알리기\n(공대장 혹은 부공대장 권한이 있을 경우)",	
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 아이콘 제거"
+	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 아이콘 제거",
+	RangeFrame					= "거리 프레임 보기(일반 10m, 영웅 20m)\n(공격대 아이콘 설정된 플레이어만 보임)"
 
 }
 
@@ -441,10 +448,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon			= "곧 2 단계 전환",
-	WarnPhase3Soon			= "곧 3 단계 전환",
-	specWarnDefileCast		= "당신에게 파멸! - 이동!",
-	specWarnDefileNear		= "당신 주변에 파멸! - 이동!"
+	WarnPhase2Soon				= "곧 2 단계 전환",
+	WarnPhase3Soon				= "곧 3 단계 전환",
+	specWarnDefileCast			= "당신에게 파멸! - 이동!",
+	specWarnDefileNear			= "당신 주변에 파멸! - 이동!",
+	warnNecroticPlagueJump		= "괴저 역병 전이 : >%s<"	
 }
 
 L:SetTimerLocalization{
