@@ -397,7 +397,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerNextAirphase		= "下一次 空中階段",
-	TimerNextGroundphase		= "下一次 地上階段"
+	TimerNextGroundphase		= "下一次 地上階段",
+	achievementMystic		= "清除秘能連擊疊加"
 }
 
 L:SetWarningLocalization{
@@ -421,7 +422,8 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)",
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase		= "空中階段前清除所有標記"
+	ClearIconsOnAirphase		= "空中階段前清除所有標記",
+	RangeFrame			= "顯示距離框 (普通10碼, 困難20碼)\n(只會顯示已標記的玩家)"
 }
 
 L:SetMiscLocalization{
