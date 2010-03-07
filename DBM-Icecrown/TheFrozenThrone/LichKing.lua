@@ -328,7 +328,7 @@ end
 
 function mod:OnSync(msg, target)
 	if msg == "PlagueOn" then
-		if GetTime() - lastPlagueCast > 2 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
+		if GetTime() - lastPlagueCast > 1 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
 			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
 			timerNecroticPlagueCleanse:Start()
 			if target == UnitName("player") then
