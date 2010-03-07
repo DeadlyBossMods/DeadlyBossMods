@@ -33,7 +33,7 @@ local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
 local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108, mod:IsHealer() or mod:IsTank())
 
-local specwarnStarLow			= mod:NewSpecialWarning("warnStarLow", mod:IsHealer())
+local specwarnStarLow			= mod:NewSpecialWarning("warnStarLow", mod:IsHealer() or mod:IsTank())
 local specWarnPhasePunch		= mod:NewSpecialWarningStack(64412, nil, 4)
 local specWarnBigBang			= mod:NewSpecialWarningSpell(64584)
 local specWarnCosmicSmash		= mod:NewSpecialWarningSpell(64598)

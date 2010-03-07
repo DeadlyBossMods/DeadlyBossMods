@@ -220,14 +220,6 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellAirphase or msg:find(L.YellAirphase) then
-		self:SendSync("Airphase")
-	elseif msg == L.YellPhase2 or msg:find(L.YellPhase2) then
-		self:SendSync("Phase2")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "Airphase" then
 		warnAirphase:Show()
 		timerNextFrostBreath:Cancel()
 		timerNextBlisteringCold:Start(84)--Not exact anywhere from 85-110seconds after airphase begin
@@ -237,7 +229,7 @@ function mod:OnSync(msg, arg)
 		if self.Options.ClearIconsOnAirphase then
 			self:ClearIcons()
 		end
-	elseif msg == "Phase2" then
+	elseif msg == L.YellPhase2 or msg:find(L.YellPhase2) then
 		warnPhase2:Show()
 		timerNextAirphase:Cancel()
 		timerNextGroundphase:Cancel()

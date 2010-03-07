@@ -204,30 +204,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		Burrowed = true
 		timerAdds:Cancel()
 		warnAdds:Cancel()
-		self:SendSync("Burrow")
+		warnSubmerge:Show()
+		warnEmergeSoon:Schedule(55)
+		timerEmerge:Start()
+		timerFreezingSlash:Stop()
 	elseif msg and msg:find(L.Emerge) then
 		Burrowed = false
 		timerAdds:Start(5)
 		warnAdds:Schedule(5)
 		self:ScheduleMethod(5, "Adds")
-		self:SendSync("Emerge")
-	end
-end
-
-function mod:RemoveBuffs()
-	CancelUnitBuff("player", (GetSpellInfo(47440)))		-- Commanding Shout
-	CancelUnitBuff("player", (GetSpellInfo(48161)))		-- Power Word: Fortitude
-	CancelUnitBuff("player", (GetSpellInfo(48162)))		-- Prayer of Fortitude
-	CancelUnitBuff("player", (GetSpellInfo(69377)))		-- Runescroll of Fortitude
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "Burrow" then
-		warnSubmerge:Show()
-		warnEmergeSoon:Schedule(55)
-		timerEmerge:Start()
-		timerFreezingSlash:Stop()
-	elseif msg == "Emerge" then
 		warnEmerge:Show()
 		warnSubmergeSoon:Schedule(65)
 		specWarnSubmergeSoon:Schedule(65)
@@ -239,5 +224,12 @@ function mod:OnSync(msg, arg)
 			self:ScheduleMethod(5.5, "ShadowStrike")  -- 35-36sec after Emerge next ShadowStrike
 		end
 	end
+end
+
+function mod:RemoveBuffs()
+	CancelUnitBuff("player", (GetSpellInfo(47440)))		-- Commanding Shout
+	CancelUnitBuff("player", (GetSpellInfo(48161)))		-- Power Word: Fortitude
+	CancelUnitBuff("player", (GetSpellInfo(48162)))		-- Prayer of Fortitude
+	CancelUnitBuff("player", (GetSpellInfo(69377)))		-- Runescroll of Fortitude
 end
 
