@@ -1404,6 +1404,7 @@ do
 		local mod, revision, event, arg = strsplit("\t", msg)
 		mod = DBM:GetModByName(mod or "")
 		if mod and event and arg and revision then
+			revision = tonumber(revision) or 0
 			mod:ReceiveSync(event, arg, sender, revision)
 		end
 	end
