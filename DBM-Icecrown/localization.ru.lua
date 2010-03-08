@@ -370,9 +370,14 @@ L:SetWarningLocalization{
 	warnPortalOpen	= "Открытие порталов"
 }
 
+L:SetTimerLocalization{
+	timerPortalsOpen	= "Открытие порталов"
+}
+
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Устанавливать метку на Исторгающего пламя скелета (череп)",
 	warnPortalOpen				= "Предупреждение об открытии порталов",
+	timerPortalsOpen			= "Отсчет времени для открытия порталов",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -394,7 +399,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerNextAirphase		= "След. воздушная фаза",
-	TimerNextGroundphase	= "След. наземная фаза"
+	TimerNextGroundphase	= "След. наземная фаза",
+	achievementMystic		= "Время для устранения Таинственной энергии"
 }
 
 L:SetWarningLocalization{
@@ -418,7 +424,8 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права лидера или помощника)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой"
+	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой",
+	RangeFrame				= "Показывать окно допустимой дистанции (10 нормале, 20 героик)\n(показывает только игроков с метками)"
 }
 
 L:SetMiscLocalization{
@@ -441,7 +448,8 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "Скоро переход в фазу 2",
 	WarnPhase3Soon			= "Скоро переход в фазу 3",
 	specWarnDefileCast		= "Осквернение на вас - отбегите",
-	specWarnDefileNear		= "Осквернение около вас - остерегайтесь"
+	specWarnDefileNear		= "Осквернение около вас - остерегайтесь",
+	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)"
 }
 
 L:SetTimerLocalization{
@@ -454,7 +462,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
 	TimerRoleplay			= "Отсчет времени для представления",
-	TimerNecroticPlagueCleanse	= "Отсчет времени до первого тика Мертвящей чумы (для очищения)",
+	warnNecroticPlagueJump	= "Объявлять цели прыжков $spell:73912",
+	TimerNecroticPlagueCleanse	= "Отсчет времени для очищения Мертвящей чумы до первого тика",
 	PhaseTransition			= "Отсчет времени для переходной фазы",
 	WarnPhase2Soon			= "Предупреждать заранее о переходе в фазу 2 (на ~73%)",
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
@@ -466,7 +475,7 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
-	ValkyrIcon			= "Устанавливать метки на Валь'кир"
+	ValkyrIcon				= "Устанавливать метки на Валь'кир"
 }
 
 L:SetMiscLocalization{
@@ -474,5 +483,6 @@ L:SetMiscLocalization{
 	YellDefile		= "Осквернение на мне!",
 	YellTrap		= "Теневая ловушка на мне!",
 	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости...",
-	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю..."	--Need to confirm
+	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю...",	--Need to confirm
+	PlagueWhisper	= "You have been infected by"
 }
