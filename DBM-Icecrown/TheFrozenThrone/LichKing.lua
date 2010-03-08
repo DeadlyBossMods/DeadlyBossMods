@@ -33,7 +33,7 @@ local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
 local warnDefileSoon		= mod:NewSoonAnnounce(73708, 3)	--Phase 2+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797, 4, nil, mod:IsTank() or mod:IsHealer()) --Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetAnnounce(72762, 4) --Phase 2+ Ability
-local warnSummonValkyr		= mod:NewSpellAnnounce(69037, 3) --Phase 2 Add
+local warnSummonValkyr		= mod:NewAnnounce("WarningValkyrSpawned", 3, 69037) --Phase 2 Add
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 1)
 local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498, 2) --Phase 3 Add
 local warnHarvestSoul		= mod:NewTargetAnnounce(74325, 4) --Phase 3 Ability
@@ -48,7 +48,7 @@ local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
 local specWarnWinter		= mod:NewSpecialWarningMove(73791) --Transition Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
-local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, false) --phase 2+
+local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank()) --phase 2+
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
@@ -82,6 +82,7 @@ local phase	= 0
 local warned_preP2 = false
 local warned_preP3 = false
 local lastPlagueCast = 0
+local Valkset = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -90,6 +91,7 @@ function mod:OnCombatStart(delay)
 	warned_preP3 = false
 	self:NextPhase()
 	lastPlagueCast = 0
+	Valkset = 0
 end
 
 function mod:DefileTarget()
@@ -232,7 +234,8 @@ do
 	function mod:SPELL_SUMMON(args)
 		if args:IsSpellID(69037) then -- Summon Val'kyr
 			if time() - lastValk > 15 then -- show the warning and timer just once for all three summon events
-				warnSummonValkyr:Show()
+				Valkset = Valkset + 1
+				warnSummonValkyr:Show(Valkset)
 				timerSummonValkyr:Start()
 				lastValk = time()
 				if self.Options.ValkyrIcon then
@@ -301,7 +304,7 @@ function mod:NextPhase()
 		timerSummonValkyr:Start(20)
 		timerSoulreaperCD:Start(40)
 		timerDefileCD:Start(38)
-		timerInfestCD:Start(13)
+		timerInfestCD:Start(14)
 		warnDefileSoon:Schedule(33)
 	elseif phase == 3 then
 		timerVileSpirit:Start(20)

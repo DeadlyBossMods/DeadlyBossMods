@@ -34,8 +34,8 @@ local timerGastricBloatCD	= mod:NewCDTimer(11, 72551, nil, mod:IsTank() or mod:I
 
 local berserkTimer			= mod:NewBerserkTimer(300)
 
-local warnGoo				= mod:NewSpellAnnounce(72458, 4)
-local timerGooCD			= mod:NewCDTimer(10, 72458)
+local warnGoo				= mod:NewSpellAnnounce(72549, 4)
+local timerGooCD			= mod:NewCDTimer(10, 72549)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
