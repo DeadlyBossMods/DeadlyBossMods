@@ -51,7 +51,7 @@ local RFVileGasTargets	= {}
 local function warnRFVileGasTargets()
 	warnVileGas:Show(table.concat(RFVileGasTargets, "<, >"))
 	table.wipe(RFVileGasTargets)
-	timerVileGas:Start()
+	timerVileGasCD:Start()
 end
 
 function mod:OnCombatStart(delay)
