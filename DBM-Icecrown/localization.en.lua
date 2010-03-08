@@ -447,7 +447,8 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Phase 3 transition soon",
 	specWarnDefileCast		= "Defile on you - Move away",
 	specWarnDefileNear		= "Defile near you - Watch out",
-	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<"
+	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<",
+	WarningValkyrSpawned 	= "Val'kyr Shadowguard spawn (%d)"
 }
 
 L:SetTimerLocalization{
@@ -464,6 +465,7 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Show timer to cleanse Necrotic Plague before\nthe first tick",
 	PhaseTransition			= "Show time for phase transitions",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
+	WarningValkyrSpawned	= "Show warning for Val'kyr Shadowguard spawns",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
 	specWarnDefileCast		= "Show special warning for $spell:72762 on you",
 	specWarnDefileNear		= "Show special warning for $spell:72762 near you",
