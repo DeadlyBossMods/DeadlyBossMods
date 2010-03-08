@@ -249,7 +249,7 @@ L:SetOptionLocalization{
 	achievementDisarmed		= "Zeige Timer für Erfolg 'Arm dran, weil Arm ab'",
 	WarnGrip				= "Verkünde Ziele von Steinerner Griff",
 	SetIconOnGripTarget		= "Setze Zeichen auf Steinerner-Griff-Ziele",
-	SetIconOnEyebeamTarget	= "Setze Zeichen auf Ziele von Fokussierter Augenstrahl (Quadrat)",
+	SetIconOnEyebeamTarget	= "Setze Zeichen auf Ziele von Fokussierter Augenstrahl (Mond)",
 	PlaySoundOnEyebeam		= "Spiele Sound bei Fokussiertem Augenstrahl"
 }
 
