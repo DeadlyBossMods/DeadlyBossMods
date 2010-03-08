@@ -2,7 +2,6 @@
 
 -- fehlende Übersetzungen:
 --
--- Auriaya
 -- General Vezax (Hard Mode)
 -- Yogg-Saron
 -- Algalon
@@ -273,7 +272,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Defender 		= "Wilder Verteidiger (%d)",
-	YellPull = "Some things are better left alone!"	--to be translated
+	YellPull = "In manche Dinge mischt man sich besser nicht ein!"
 }
 
 L:SetTimerLocalization{
