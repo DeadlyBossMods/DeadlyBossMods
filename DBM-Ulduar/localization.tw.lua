@@ -234,7 +234,7 @@ L:SetOptionLocalization{
 	achievementDisarmed		= "為成就:卸除手臂顯示計時器",
 	WarnGrip			= "提示堅石之握的目標",
 	SetIconOnGripTarget		= "為堅石之握的目標設置標記",
-	SetIconOnEyebeamTarget		= "為集束目光的目標設置標記 (正方)",
+	SetIconOnEyebeamTarget		= "為集束目光的目標設置標記 (月亮)",
 	PlaySoundOnEyebeam		= "為集束目光播放音效"
 }
 
