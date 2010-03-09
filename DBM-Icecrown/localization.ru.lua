@@ -449,7 +449,8 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Скоро переход в фазу 3",
 	specWarnDefileCast		= "Осквернение на вас - отбегите",
 	specWarnDefileNear		= "Осквернение около вас - остерегайтесь",
-	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)"
+	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)",
+	WarningValkyrSpawned 	= "Валь'кира - страж Тьмы (%d)"
 }
 
 L:SetTimerLocalization{
@@ -466,6 +467,7 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Отсчет времени для очищения Мертвящей чумы до первого тика",
 	PhaseTransition			= "Отсчет времени для переходной фазы",
 	WarnPhase2Soon			= "Предупреждать заранее о переходе в фазу 2 (на ~73%)",
+	WarningValkyrSpawned	= "Предупреждение о появлении Валь'киры - стража Тьмы",
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileNear		= "Спец-предупреждение, когда $spell:72762 около вас",
