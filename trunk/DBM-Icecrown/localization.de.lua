@@ -453,7 +453,8 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Übergang in Phase 3 bald",
 	specWarnDefileCast		= "Entweihen auf dir - Lauf weg",
 	specWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen",
-	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen"
+	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen",
+	WarningValkyrSpawned 	= "Neue Schattenwächterin der Val'kyr (%d)"
 }
 
 L:SetTimerLocalization{
@@ -470,6 +471,7 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Zeige Timer um Nekrotische Seuche vor dem ersten Tick zu reinigen",
 	PhaseTransition			= "Zeige Timer für Phasenübergänge",
 	WarnPhase2Soon			= "Zeige Vorwarnung für Übergang in Phase 2 (bei ~73%)",
+	WarningValkyrSpawned	= "Zeige Warnung für neue Schattenwächterin der Val'kyr",
 	WarnPhase3Soon			= "Zeige Vorwarnung für Übergang in Phase 3 (bei ~43%)",
 	specWarnDefileCast		= "Zeige Spezialwarnung für $spell:72762 auf dir",
 	specWarnDefileNear		= "Zeige Spezialwarnung für $spell:72762 in deiner Nähe",
