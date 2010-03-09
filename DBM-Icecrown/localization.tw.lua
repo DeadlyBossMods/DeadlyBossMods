@@ -446,7 +446,8 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "轉換第2階段 即將到來",
 	WarnPhase3Soon			= "轉換第3階段 即將到來",
 	specWarnDefileCast		= "你中了汙染 - 快離開",
-	specWarnDefileNear		= "你附近的人中了汙染 - 小心"
+	specWarnDefileNear		= "你附近的人中了汙染 - 小心",
+	WarningValkyrSpawned 		= "華爾琪影衛出現 (%d)"
 }
 
 L:SetTimerLocalization{
@@ -463,6 +464,7 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "為淨化第一次堆疊前的亡域瘟疫顯示計時器",
 	PhaseTransition			= "為轉換階段顯示計時器",
 	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
+	WarningValkyrSpawned		= "為華爾琪影衛的出現顯示警告",
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
 	specWarnDefileNear		= "當你附近的人中了$spell:72762時顯示特別警告",
@@ -472,7 +474,7 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
-	ValkyrIcon			= "為華爾琪設置標記"
+	ValkyrIcon			= "為華爾琪影衛設置標記"
 }
 
 L:SetMiscLocalization{
