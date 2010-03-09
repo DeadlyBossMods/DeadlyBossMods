@@ -452,7 +452,8 @@ L:SetWarningLocalization{
 	WarnPhase3Soon				= "곧 3 단계 전환",
 	specWarnDefileCast			= "당신에게 파멸! - 이동!",
 	specWarnDefileNear			= "당신 주변에 파멸! - 이동!",
-	warnNecroticPlagueJump		= "괴저 역병 전이 : >%s<"	
+	warnNecroticPlagueJump		= "괴저 역병 전이 : >%s<",
+	WarningValkyrSpawned 		= "발키르 어둠수호병 소환 (%d)"
 }
 
 L:SetTimerLocalization{
@@ -468,6 +469,7 @@ L:SetOptionLocalization{
 	warnNecroticPlagueJump		= "$spell:73912 이동 대상 알리기",	
 	TimerNecroticPlagueCleanse	= "$spell:73912의 첫 번째 틱 이후 지속 타이머 보기",	
 	PhaseTransition				= "다음 단계 전환 타이머 보기",	
+	WarningValkyrSpawned		= "발키르 어둠수호병 소환 경고 보기",	
 	WarnPhase2Soon				= "2 단계 전환 사전 경고 보기(73% 이하)",
 	WarnPhase3Soon				= "3 단계 전환 사전 경고 보기(43% 이하)",
 	specWarnDefileCast			= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
