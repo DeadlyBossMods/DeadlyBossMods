@@ -133,7 +133,7 @@ function mod:TrapTarget()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(68981, 74270, 74271, 74272) then -- Remorseless Winter (phase transition start)
+	if args:IsSpellID(68981, 74270, 74271, 74272) or args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start) Set1 is first cast, set2 is second cast
 		warnRemorselessWinter:Show()
 		timerPhaseTransition:Start()
 		timerShamblingHorror:Cancel()
@@ -209,17 +209,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(72143, 72146) then -- Shambling Horror enrage effect.
+	if args:IsSpellID(72143, 72146, 72147, 72148) then -- Shambling Horror enrage effect.
 		warnShamblingEnrage:Show(args.destName)
 	end
 end
---[[
-function mod:SPELL_DISPEL(args)
-	if args:IsSpellID(70337, 73912, 73913, 73914, 70338, 73785, 73786, 73787) then -- Necrotic Plague
-		self:SetIcon(args.destName, 0)
-	end
-end
---]]
+
 do
 	local valkIcons = {}
 	local currentIcon = 2
