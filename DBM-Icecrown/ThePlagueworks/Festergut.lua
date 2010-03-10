@@ -130,7 +130,7 @@ end
 
 function mod:OnSync(event, arg)
 	if event == "Goo" then
-		if GetRaidUnitId(arg) ~= "none" then -- TODO: confirm that the spell actually targets a player and no an area or a dummy (like the Void Reaver orb did)
+		if DBM:GetRaidUnitId(arg) ~= "none" then -- TODO: confirm that the spell actually targets a player and no an area or a dummy (like the Void Reaver orb did)
 			self:AddMsg(("DBM-Debug: Malleable Goo on %s?"):format(arg))
 		end
 		warnGoo:Show()
