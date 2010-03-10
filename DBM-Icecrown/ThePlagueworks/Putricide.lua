@@ -171,7 +171,7 @@ do
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(70351, 71966) then
+	if args:IsSpellID(70351, 71966, 71967, 71968) then
 		warnUnstableExperimentSoon:Cancel()
 		warnUnstableExperiment:Show()
 		timerUnstableExperimentCD:Start()
