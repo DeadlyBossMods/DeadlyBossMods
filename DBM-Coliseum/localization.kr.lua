@@ -39,7 +39,8 @@ L:SetOptionLocalization{
 	TimerCombatStart			= "전투 시작 타이머 보기",
 	TimerEmerge					= "출현 타이머 보기",
 	TimerSubmerge				= "숨기 타이머 보기",
-	RangeFrame                  = "2 페이즈에서 거리 프레임 보기"
+	RangeFrame                  = "2 페이즈에서 거리 프레임 보기",
+	IcehowlArrow				= "얼음울음이 당신 주변으로 돌진할 경우 DBM 화살표 보기"
 }
 
 L:SetTimerLocalization{

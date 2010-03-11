@@ -245,7 +245,7 @@ L:SetOptionLocalization{
 	WarnGrip				= "바위 손아귀 대상 알리기",
 	SetIconOnGripTarget		= "바위 손아귀 대상 아이콘 설정",
 	achievementDisarmed		= "무장해제 타이머 보기",
-	SetIconOnEyebeamTarget	= "안광 집중 대상 공격대 아이콘 설정(네모)",
+	SetIconOnEyebeamTarget	= "안광 집중 대상 공격대 아이콘 설정(달)",
 	PlaySoundOnEyebeam		= "안광 집중 특수 소리 재생"	
 }
 
