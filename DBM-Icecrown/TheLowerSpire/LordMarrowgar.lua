@@ -60,7 +60,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(69057, 70826) then				-- Bone Spike Graveyard
+	if args:IsSpellID(69057, 70826, 72088, 72089) then				-- Bone Spike Graveyard
 		warnBoneSpike:Show()
 		timerBoneSpike:Start()
 	end
