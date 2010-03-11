@@ -66,6 +66,7 @@ mod:AddBoolOption("SetIconOnChargeTarget", true)
 mod:AddBoolOption("SetIconOnBileTarget", true)
 mod:AddBoolOption("ClearIconsOnIceHowl", true)
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("IcehowlArrow")
 
 local bileTargets			= {}
 local toxinTargets			= {}
@@ -290,7 +291,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
 				end
 				if inRange then
 					specWarnChargeNear:Show()
-					DBM.Arrow:ShowRunAway(x, y, 12, 5)
+					if self.Options.IcehowlArrow then
+						DBM.Arrow:ShowRunAway(x, y, 12, 5)
+					end
 				end
 			end
 		end
