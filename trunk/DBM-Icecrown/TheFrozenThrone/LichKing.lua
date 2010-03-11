@@ -63,6 +63,7 @@ local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
 local timerDefileCD			= mod:NewCDTimer(32, 72762)
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
+local timerRagingSpiritCD	= mod:NewNextTimer(17, 69200)
 local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
 local timerTrapCD		 	= mod:NewCDTimer(16, 73539)
@@ -133,9 +134,22 @@ function mod:TrapTarget()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(68981, 74270, 74271, 74272) or args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start) Set1 is first cast, set2 is second cast
+	if args:IsSpellID(68981, 74270, 74271, 74272) or args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start) first cast
 		warnRemorselessWinter:Show()
 		timerPhaseTransition:Start()
+		timerRagingSpiritCD:Start()
+		timerShamblingHorror:Cancel()
+		timerDrudgeGhouls:Cancel()
+		timerSummonValkyr:Cancel()
+		timerInfestCD:Cancel()
+		timerNecroticPlagueCD:Cancel()
+		timerDefileCD:Cancel()
+		timerTrapCD:Cancel()
+		warnDefileSoon:Cancel()
+	elseif args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start) second cast of fight
+		warnRemorselessWinter:Show()
+		timerPhaseTransition:Start()
+		timerRagingSpiritCD:Start(6) --we use a seperate event for second remorseless winter since it has a different raging spirit timer.
 		timerShamblingHorror:Cancel()
 		timerDrudgeGhouls:Cancel()
 		timerSummonValkyr:Cancel()
@@ -146,6 +160,7 @@ function mod:SPELL_CAST_START(args)
 		warnDefileSoon:Cancel()
 	elseif args:IsSpellID(72262) then -- Quake (phase transition end)
 		warnQuake:Show()
+		timerRagingSpiritCD:Cancel()
 		self:NextPhase()
 	elseif args:IsSpellID(70372) then -- Shambling Horror
 		warnShamblingHorror:Show()
@@ -192,6 +207,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(69200) then -- Raging Spirit
 		warnRagingSpirit:Show(args.destName)
+		timerRagingSpiritCD:Start()
 		if args:IsPlayer() then
 			specWarnRagingSpirit:Show()
 		end
