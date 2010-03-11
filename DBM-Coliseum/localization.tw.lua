@@ -38,7 +38,8 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	TimerEmerge			= "為持續鑽地顯示計時器",
 	TimerSubmerge			= "為下一次 鑽地顯示計時器",
-	RangeFrame                  	= "在第2階段顯示距離框"
+	RangeFrame                  	= "在第2階段顯示距離框",
+	IcehowlArrow			= "當冰嚎即將衝鋒在你附近時顯示DBM箭頭"
 }
 
 L:SetTimerLocalization{

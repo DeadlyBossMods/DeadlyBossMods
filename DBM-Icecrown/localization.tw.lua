@@ -474,7 +474,8 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
-	ValkyrIcon			= "為華爾琪影衛設置標記"
+	ValkyrIcon			= "為華爾琪影衛設置標記",
+	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭"
 }
 
 L:SetMiscLocalization{
