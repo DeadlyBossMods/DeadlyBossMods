@@ -143,7 +143,7 @@ function mod:TrapTarget()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(68981, 74270, 74271, 74272) or args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start) first cast
+	if args:IsSpellID(68981, 74270, 74271, 74272) then -- Remorseless Winter (phase transition start) first cast
 		warnRemorselessWinter:Show()
 		timerPhaseTransition:Start()
 		timerRagingSpiritCD:Start()
