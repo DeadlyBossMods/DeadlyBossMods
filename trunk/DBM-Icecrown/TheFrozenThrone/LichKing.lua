@@ -41,7 +41,7 @@ local warnTrapCast			= mod:NewTargetAnnounce(73539, 3) --Phase 2+ Ability
 
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
-local specWarnRagingSpirit	= mod:NewSpecialWarningYou(69200, false) --Transition Add
+local specWarnRagingSpirit	= mod:NewSpecialWarningYou(69200) --Transition Add
 local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
 local specWarnDefileNear	= mod:NewSpecialWarning("specWarnDefileNear", false) --Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
@@ -78,6 +78,7 @@ mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
+mod:AddBoolOption("DefileArrow")
 
 local phase	= 0
 local warned_preP2 = false
@@ -111,8 +112,16 @@ function mod:DefileTarget()
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
 			if inRange then
 				specWarnDefileNear:Show()
+				if self.Options.DefileArrow then
+					DBM.Arrow:ShowRunAway(x, y, 15, 5)
+				end
 			end
 		end
 	end
