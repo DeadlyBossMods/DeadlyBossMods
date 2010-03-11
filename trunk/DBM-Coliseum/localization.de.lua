@@ -38,7 +38,8 @@ L:SetOptionLocalization{
 	TimerCombatStart			= "Zeige Timer für Kampfbeginn",
 	TimerEmerge					= "Zeige Timer für Auftauchen",
 	TimerSubmerge				= "Zeige Timer für Untertauchen",
-	RangeFrame                  = "Zeige Abstandsfenster in Phase 2"
+	RangeFrame                  = "Zeige Abstandsfenster in Phase 2",
+	IcehowlArrow				= "Zeige Pfeil wenn Eisheuler ein Ziel in deiner Nähe niedertrampeln will"
 }
 
 L:SetTimerLocalization{
