@@ -36,7 +36,8 @@ L:SetOptionLocalization{
 	TimerCombatStart			= "Show timer for start of combat",
 	TimerEmerge					= "Show timer for emerge",
 	TimerSubmerge				= "Show timer for submerge",
-	RangeFrame                  = "Show range frame in Phase 2"
+	RangeFrame                  = "Show range frame in Phase 2",
+	IcehowlArrow				= "Show DBM arrow when Icehowl is about to charge near you"
 }
 
 L:SetTimerLocalization{
