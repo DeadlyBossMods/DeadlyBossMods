@@ -427,7 +427,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 아이콘 제거",
-	RangeFrame					= "거리 프레임 보기(일반 10m, 영웅 20m)\n(공격대 아이콘 설정된 플레이어만 보임)"
+	RangeFrame					= "거리 프레임 보기(일반 10m, 영웅 20m) (해당 플레이어만 보임)"
 
 }
 
@@ -480,7 +480,8 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
-	ValkyrIcon					= "발키리에 공격대 아이콘 설정"
+	ValkyrIcon					= "발키리에 공격대 아이콘 설정",
+	DefileArrow					= "$spell:72762이 당신 주변에 생성되면 DBM 화살표 보기"
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
