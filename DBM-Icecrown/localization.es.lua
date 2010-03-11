@@ -405,7 +405,8 @@ L:SetGeneralLocalization{
 
 L:SetTimerLocalization{
 	TimerNextAirphase		= "Siguiente fase aerea",
-	TimerNextGroundphase	= "Siguiente fase en el suelo"
+	TimerNextGroundphase	= "Siguiente fase en el suelo",
+	achievementMystic		= "Tiempo para limpiar Sacudida Mística"
 }
 
 L:SetWarningLocalization{
@@ -429,7 +430,8 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de raid\n(Requiere 'anunciar' activado y líder/ayudante)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase	= "Eliminar todos los iconos antes de la fase aerea"
+	ClearIconsOnAirphase	= "Eliminar todos los iconos antes de la fase aerea",
+	RangeFrame				= "Mostrar distancia (10 normal, 20 heroico)\n(Solo mostrará los jugadores marcados)"
 }
 
 L:SetMiscLocalization{
@@ -453,7 +455,8 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Transición a la Fase 3 pronto",
 	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
 	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!",
-	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<"
+	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<",
+	WarningValkyrSpawned 	= "Guardia de las Sombras Val'kyr sale (%d)"
 }
 
 L:SetTimerLocalization{
@@ -470,6 +473,7 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Mostrar tiempo para purgar Peste necrótica\nantes de la primera marca",
 	PhaseTransition			= "Mostrar tiempo para las transiciones de fase",
 	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
+	WarningValkyrSpawned	= "Mostrar aviso cuando salga Guardia de las Sombras Val'kyr",
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
 	specWarnDefileNear		= "Mostrar aviso especial para $spell:72762 cerca de ti",
@@ -478,7 +482,9 @@ L:SetOptionLocalization{
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
-	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539)
+	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
+	ValkyrIcon				= "Poner iconos en las Valkyr",
+	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti"
 }
 
 L:SetMiscLocalization{
@@ -486,6 +492,7 @@ L:SetMiscLocalization{
 	YellDefile		= "¡Profanar en mi!",
 	YellTrap		= "¡Trampa de sombras en mi!",
 	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",--translate
-	LKRoleplay		= "Is it truly righteousness that drives you? I wonder..."--translate
+	LKRoleplay		= "Is it truly righteousness that drives you? I wonder...",--translate
+	PlagueWhisper	= "Has sido infectado por"
 }
 

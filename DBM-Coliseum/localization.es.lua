@@ -38,7 +38,8 @@ L:SetOptionLocalization{
 	TimerCombatStart			= "Mostrar tiempo para el inicio del combate",
 	TimerEmerge					= "Mostrar tiempo para emerger",
 	TimerSubmerge				= "Mostrar tiempo para sumergir",
-	RangeFrame                  = "Mostrar distancia en fase 2"
+	RangeFrame                  = "Mostrar distancia en fase 2",
+	IcehowlArrow				= "Mostrar flecha cuando Aullahielo está a punto de cargar cerca de ti"
 }
 
 L:SetTimerLocalization{

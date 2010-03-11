@@ -245,7 +245,7 @@ L:SetOptionLocalization{
 	achievementDisarmed		= "Mostrar tiempo para el logro Desarmar",
 	WarnGrip				= "Anunciar objetivos que Agarrara",
 	SetIconOnGripTarget		= "Poner icono a los objetivos de Agarrar",
-	SetIconOnEyebeamTarget	= "Poner iconos en objetivos de Haz ocular (cuadrado)",
+	SetIconOnEyebeamTarget	= "Poner iconos en objetivos de Haz ocular (luna)",
 	PlaySoundOnEyebeam		= "Reproducir sonido al ser ojetivo de Haz ocular"
 }
 
