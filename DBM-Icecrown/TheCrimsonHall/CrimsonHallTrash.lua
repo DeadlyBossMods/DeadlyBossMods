@@ -9,13 +9,14 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnBloodMirror		= mod:NewTargetAnnounce(70451, 3)
+local warnBloodMirror		= mod:NewTargetAnnounce(70451, 3, nil, mod:IsHealer())
 local warnBloodSap			= mod:NewTargetAnnounce(70432, 4)
+local warnChainsofShadow	= mod:NewTargetAnnounce(70645, 3)
 
-local specWarnBloodMirror	= mod:NewSpecialWarningYou(70451)
-
-local timerBloodMirror		= mod:NewTargetTimer(30, 70451)
+local timerBloodMirror		= mod:NewTargetTimer(30, 70451, nil, mod:IsHealer())
+local timerRendFlesh		= mod:NewTargetTimer(30, 71154, nil, mod:IsTank() or mod:IsHealer())
 local timerBloodSap			= mod:NewTargetTimer(8, 70432)
+local timerChainsofShadow	= mod:NewTargetTimer(10, 70645)
 
 mod:AddBoolOption("BloodMirrorIcon", true)
 mod:RemoveOption("HealthFrame")
@@ -43,12 +44,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, warnBloodMirrorTargets)
 		end
-		if args:IsPlayer() then
-			specWarnBloodMirror:Show()
-		end
 	elseif args:IsSpellID(70432) then
 		warnBloodSap:Show(args.destName)
 		timerBloodSap:Start(args.destName)
+	elseif args:IsSpellID(70645) then
+		warnChainsofShadow:Show(args.destName)
+		timerChainsofShadow:Start(args.destName)
+	elseif args:IsSpellID(70435, 71154) then
+		timerRendFlesh:Start(args.destName)
 	end
 end
 
@@ -58,5 +61,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		self:SetIcon(args.destName, 0)
 	elseif args:IsSpellID(70432) then
 		timerBloodSap:Cancel(args.destName)
+	elseif args:IsSpellID(70645) then
+		timerChainsofShadow:Cancel(args.destName)
+	elseif args:IsSpellID(70435, 71154) then
+		timerRendFlesh:Cancel(args.destName)
 	end
 end
