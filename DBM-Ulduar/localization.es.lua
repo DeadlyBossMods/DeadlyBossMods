@@ -269,7 +269,7 @@ L:SetGeneralLocalization{
 
 L:SetMiscLocalization{
 	Defender = "Defensor feral (%d)",
-	YellPull = "Some things are better left alone!"
+	YellPull = "¡Es mejor dejar ciertas cosas tal como están!"
 }
 
 L:SetTimerLocalization{
@@ -320,7 +320,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellKill	= "I... I am released from his grasp... at last.",
+	YellKill	= "Estoy... estoy libre de sus garras... al fin.",
 	YellCloud	= "Nube tormentosa en mi!"
 }
 
@@ -349,8 +349,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPhase1	= "Interlopers! You mortals who dare to interfere with my sport will pay.... Wait--you...",
-	YellPhase2	= "Impertinent whelps, you dare challenge me atop my pedestal? I will crush you myself!",
+	YellPhase1	= "¡Intrusos! Vosotros, mortales que osáis interferir en mi diversión, pagareis... Un momento...",
+	YellPhase2	= "Gusanos impertinentes, ¿cómo osáis desafiarme en mi pedestal? ¡Os machacaré con mis propias manos!",
 	YellKill	= "¡Guardad las armas! ¡Me rindo!",
 	ChargeOn	= "Cargar relámpago: %s",
 	Charge		= "Fallos de Cargar relámpago (este try): %s" 
@@ -366,11 +366,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell	= "Children, assist me!",
+	SpawnYell	= "Children, assist me!",--translate
 	WaterSpirit	= "Espíritu de agua antiguo",
 	Snaplasher	= "Quiebrazotador",
 	StormLasher	= "Azotador de tormenta",
-	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes.",
+	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes.",--translate
 	TrashRespawnTimer	= "Reaparicion de Adds de Freya"
 }
 
