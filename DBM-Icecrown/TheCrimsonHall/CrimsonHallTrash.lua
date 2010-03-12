@@ -18,7 +18,7 @@ local timerRendFlesh		= mod:NewTargetTimer(30, 71154, nil, mod:IsTank() or mod:I
 local timerBloodSap			= mod:NewTargetTimer(8, 70432)
 local timerChainsofShadow	= mod:NewTargetTimer(10, 70645)
 
-mod:AddBoolOption("BloodMirrorIcon", true)
+mod:AddBoolOption("BloodMirrorIcon", false)
 mod:RemoveOption("HealthFrame")
 
 local BloodMirrorTargets = {}
