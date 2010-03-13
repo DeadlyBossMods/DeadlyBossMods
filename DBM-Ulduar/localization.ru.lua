@@ -180,23 +180,15 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarningPhasePunch		= "Фазовый удар на |3-5(>%s<) - cтак %d",
-	WarningBlackHole		= "Черная дыра",
-	SpecWarnBigBang			= "Суровый удар",
-	PreWarningBigBang		= "Суровый удар через ~10 секунд",
 	WarningCosmicSmash 		= "Кара небесная - взрыв через 4 секунды",
-	SpecWarnCosmicSmash 	= "Кара небесная",
 	WarnPhase2Soon			= "Скоро фаза 2",
 	warnStarLow				= "У Вспыхивающей звезды мало здоровья"
 }
 
 L:SetOptionLocalization{
-	PreWarningBigBang		= "Предупреждать заранее о Суровом ударе",
-	SpecWarnBigBang			= "Спец-предупреждение для Сурового удара",
 	WarningPhasePunch		= "Объявлять цели заклинания Фазовый удар",
-	WarningBlackHole		= "Предупреждение для Черной дыры",
 	NextCollapsingStar		= "Отсчет времени до появления Вспыхивающей звезды",
 	WarningCosmicSmash 		= "Предупреждение для Кары небесной",
-	SpecWarnCosmicSmash 	= "Спец-предупреждение для Кары небесной",
 	PossibleNextCosmicSmash	= "Отсчет времени до следующей Кары небесной",
 	TimerCombatStart		= "Отсчет времени до начала боя",
 	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~23%)",
