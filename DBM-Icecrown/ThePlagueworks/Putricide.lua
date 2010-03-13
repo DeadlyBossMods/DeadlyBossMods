@@ -123,7 +123,8 @@ local function isDebuffed(unitId)
 	while spellId do
 		if spellId == 73117 or spellId == 70953 or		-- Plague Sickness
 		   spellId == 72838 or spellId == 72837 or 		-- Volatile Ooze Adhesive (Green Slime)
-		   spellId == 72833 or spellId == 72859 then	-- Gaseous Bloat (Red Slime)
+		   spellId == 72833 or spellId == 72859 or		-- Gaseous Bloat (Red Slime)
+		   spellId == 70308 then						-- Mutated Transformation (Abomination)
 			return true
 		end
 		i = i + 1
