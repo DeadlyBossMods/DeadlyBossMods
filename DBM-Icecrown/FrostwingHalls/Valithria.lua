@@ -27,7 +27,7 @@ local warnPortalOpen	= mod:NewAnnounce("warnPortalOpen", 4, 72483, mod:IsHealer(
 local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
 
 local timerLayWaste		= mod:NewBuffActiveTimer(12, 69325)
-local timerNextPortal	= mod:NewCDTimer(46, 72483, nil, mod:IsHealer())
+local timerNextPortal	= mod:NewCDTimer(46.5, 72483, nil, mod:IsHealer())
 local timerPortalsOpen	= mod:NewTimer(10, "timerPortalsOpen", 72483, mod:IsHealer())
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
@@ -46,11 +46,19 @@ local function warnGutSprayTargets()
 end
 
 function mod:OnCombatStart(delay)
-	warnPortalSoon:Schedule(41-delay)
-	timerNextPortal:Start(-delay)
-	berserkTimer:Start(-delay)
+	self:Portals()
 	BlazingSkeleton = nil
 	table.wipe(GutSprayTargets)
+end
+
+function mod:Portals()
+	warnPortal:Show()
+	warnPortalOpen:Schedule(15)
+	timerPortalsOpen:Schedule(15)
+	warnPortalSoon:Schedule(41)
+	timerNextPortal:Start()
+	self:UnscheduleMethod("Portals")
+	self:ScheduleMethod(46.5, "Portals")
 end
 
 function mod:TrySetTarget()
@@ -122,11 +130,7 @@ end
 
 function mod:OnSync(msg, arg)
 	if msg == "NightmarePortal" then
-		warnPortal:Show()
-		warnPortalOpen:Schedule(15)
-		timerPortalsOpen:Schedule(15)
-		warnPortalSoon:Schedule(41)
-		timerNextPortal:Start()
+		self:Portals()
 	end
 end
 
