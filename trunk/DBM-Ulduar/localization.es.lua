@@ -320,7 +320,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellKill	= "Estoy... estoy libre de sus garras... al fin.",
+	YellKill	= "Estoy... estoy libre de sus garras… al fin.",
 	YellCloud	= "Nube tormentosa en mi!"
 }
 
@@ -366,7 +366,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	SpawnYell	= "Children, assist me!",--translate
+	SpawnYell	= "¡Hijos, ayudadme!",
 	WaterSpirit	= "Espíritu de agua antiguo",
 	Snaplasher	= "Quiebrazotador",
 	StormLasher	= "Azotador de tormenta",
