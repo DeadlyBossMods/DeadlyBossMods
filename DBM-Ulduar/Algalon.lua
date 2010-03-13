@@ -28,8 +28,8 @@ mod:RegisterEvents(
 local announceBigBang			= mod:NewSpellAnnounce(64584, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon			= mod:NewAnnounce("WarnPhase2Soon", 2)
-local announcePreBigBang		= mod:NewAnnounce("PreWarningBigBang", 3, 64584)
-local announceBlackHole			= mod:NewAnnounce("WarningBlackHole", 2, 65108)
+local announcePreBigBang		= mod:NewPreWarnAnnounce(64584, 10, 3)
+local announceBlackHole			= mod:NewSpellAnnounce(65108, 2)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
 local announcePhasePunch		= mod:NewAnnounce("WarningPhasePunch", 4, 65108, mod:IsHealer() or mod:IsTank())
 
