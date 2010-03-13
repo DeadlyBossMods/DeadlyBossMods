@@ -106,6 +106,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
+	timerGooCD:Start(13-delay)
 end
 
 function mod:OnCombatEnd()
@@ -125,6 +126,7 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(72299) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
 		uId = uId or "none" -- TODO: confirm that we have a valid unit id here
 		self:SendSync("Goo", UnitName(uId.."target"))
+		DBM:AddMsg("Goo on: "..uId);
 	end
 end
 
