@@ -23,7 +23,7 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	PursueWarn	    = "Persigue a >%s<!",
 	warnNextPursueSoon	    = "Cambiara de objetivo en 5 seg",
-	SpecialPursueWarnYou	= "Te persigue a ti!",
+	SpecialPursueWarnYou	= "¡Te persigue a ti!",
 	SystemOverload			= "Desconexion de sistemas",
 	warnWardofLife			= "Sale un Guarda de Vida"
 }
@@ -121,7 +121,7 @@ L:SetTimerLocalization{
 L:SetWarningLocalization{
 	SpecialWarningLightBomb 	= "Bomba de luz en Ti!",
 	SpecialWarningGravityBomb	= "Bomba de Gravedad en Ti",
-	specWarnConsumption			= "Consumo! Muevete!"
+	specWarnConsumption			= "¡Consumo! ¡Muevete!"
 }
 
 L:SetOptionLocalization{
@@ -278,7 +278,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast		= "Explosión de centinela - Interrumpe!",
-	SpecWarnVoid		= "Zona de vacio - MUEVETE!",
+	SpecWarnVoid		= "Zona de vacio ¡MUEVETE!",
 	WarnCatDied 		= "Defensor feral muerto (Le quedan %d vidas)",
 	WarnCatDiedOne 		= "Defensor feral muerto (Le queda 1 vida)",
 	WarnFearSoon 		= "Siguiente miedo pronto"
@@ -320,7 +320,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellKill	= "Estoy... estoy libre de sus garras… al fin.",
+	YellKill	= "Estoy... estoy libre de sus garras... al fin.",
 	YellCloud	= "Nube tormentosa en mi!"
 }
 
@@ -370,7 +370,7 @@ L:SetMiscLocalization{
 	WaterSpirit	= "Espíritu de agua antiguo",
 	Snaplasher	= "Quiebrazotador",
 	StormLasher	= "Azotador de tormenta",
-	YellKill	= "His hold on me dissipates. I can see clearly once more. Thank you, heroes.",--translate
+	YellKill	= "Su control sobre mí se disipa. Vuelvo a ver con claridad. Gracias, héroes.",
 	TrashRespawnTimer	= "Reaparicion de Adds de Freya"
 }
 
@@ -432,7 +432,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	DarkGlare			= "Tromba de láseres",
 	MagneticCore		= ">%s< tiene Núcleo magnético",
-	WarningShockBlast	= "Explosión de choque! Muévete!",
+	WarningShockBlast	= "¡Explosión de choque! ¡Muévete!",
 	WarnBombSpawn		= "Robot bum sale"
 }
 
@@ -486,7 +486,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash		= "Fragor de sombra en ti! Muévete!",
+	SpecialWarningShadowCrash		= "¡Fragor de sombra en ti! ¡Muévete!",
 	SpecialWarningSurgeDarkness		= "Oleada de oscuridad",
 	WarningShadowCrash				= "Fragor de sombra en >%s<",
 	SpecialWarningShadowCrashNear	= "Fragor de sombra cerca de ti!",
@@ -513,9 +513,9 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors	= "¡Cerca se forma una nube de vapores de saronita!",
-	CrashWhisper		= "Fragor de sombra en ti! Muévete!",
-	YellLeech			= "Drenar vida en mi!",
-	YellCrash			= "Fragor de sombra en mi!"
+	CrashWhisper		= "¡Fragor de sombra en ti! ¡Muévete!",
+	YellLeech			= "¡Drenar vida en mi!",
+	YellCrash			= "¡Fragor de sombra en mi!"
 }
 
 ------------------
