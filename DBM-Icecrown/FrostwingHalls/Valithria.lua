@@ -46,6 +46,7 @@ local function warnGutSprayTargets()
 end
 
 function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
 	self:Portals()
 	BlazingSkeleton = nil
 	table.wipe(GutSprayTargets)
