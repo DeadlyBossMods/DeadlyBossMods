@@ -29,6 +29,7 @@ local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2, 72451, mod:IsTank() or mod:IsHealer()) -- Phase 3 ability
 local warnOozeVariable				= mod:NewTargetAnnounce(70352, 2)			-- Heroic Ability
 local warnGasVariable				= mod:NewTargetAnnounce(70353, 2)			-- Heroic Ability
+local warnUnboundPlague				= mod:NewTargetAnnounce(72856, 3)			-- Heroic Ability
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
 local specWarnGaseousBloat			= mod:NewSpecialWarningYou(70672)
@@ -123,7 +124,7 @@ local function isDebuffed(unitId)
 	while spellId do
 		if spellId == 73117 or spellId == 70953 or		-- Plague Sickness
 		   spellId == 72838 or spellId == 72837 or 		-- Volatile Ooze Adhesive (Green Slime)
-		   spellId == 72833 or spellId == 72859 or		-- Gaseous Bloat (Red Slime)
+		   spellId == 72833 or spellId == 72832 or		-- Gaseous Bloat (Red Slime)
 		   spellId == 70308 then						-- Mutated Transformation (Abomination)
 			return true
 		end
@@ -276,6 +277,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(warnGasVariableTargets)
 		self:Schedule(0.3, warnGasVariableTargets)
 	elseif args:IsSpellID(72855, 72856) then			 -- Unbound Plague
+		warnUnboundPlague:Show(args.destName)
 		timerUnboundPlague:Start(args.destName)
 		if self.Options.UnboundPlagueIcon then
 			self:SetIcon(args.destName, 2, 20)
