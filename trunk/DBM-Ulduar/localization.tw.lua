@@ -174,21 +174,15 @@ L:SetTimerLocalization{
 }
 L:SetWarningLocalization{
 	WarningPhasePunch		= "相位拳擊: >%s< - 第%d層",
-	WarningBlackHole		= "黑洞爆炸",
-	SpecWarnBigBang			= "大霹靂",
-	PreWarningBigBang		= "約10秒後 大霹靂",
 	WarningCosmicSmash 		= "宇宙潰擊 - 約4秒後爆炸",
-	SpecWarnCosmicSmash 		= "宇宙潰擊"
+	WarnPhase2Soon			= "第2階段 即將到來",
+	warnStarLow			= "崩陷之星血量低"
 }
 
 L:SetOptionLocalization{
-	PreWarningBigBang		= "為大霹靂顯示預先警告",
-	SpecWarnBigBang			= "為大霹靂顯示特別警告",
 	WarningPhasePunch		= "提示相位拳擊的目標",
-	WarningBlackHole		= "為黑洞爆炸顯示警告",
 	NextCollapsingStar		= "為下一次 崩陷之星顯示計時器",
 	WarningCosmicSmash 		= "為宇宙潰擊顯示警告",
-	SpecWarnCosmicSmash 		= "為宇宙潰擊顯示特別警告",
 	PossibleNextCosmicSmash		= "為下一次 宇宙潰擊顯示計時器",
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	WarnPhase2Soon			= "為第2階段顯示預先警告 (大約23%)",
