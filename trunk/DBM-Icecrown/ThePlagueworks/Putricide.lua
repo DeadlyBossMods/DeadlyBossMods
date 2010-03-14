@@ -151,7 +151,7 @@ function mod:AcquireTargetForUnboundPlague()
 	end
 	DBM.Arrow:ShowRunTo(mytarget)
 	self:SendSync("IconUnboundPlagueNext", UnitName(mytarget))
-	self:ScheduleMethod(1, "AcquireTargetForUnboundPlague")
+	self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")
 end
 
 do 
