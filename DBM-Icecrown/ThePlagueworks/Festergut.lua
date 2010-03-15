@@ -35,7 +35,7 @@ local timerGastricBloatCD	= mod:NewCDTimer(11, 72551, nil, mod:IsTank() or mod:I
 local berserkTimer			= mod:NewBerserkTimer(300)
 
 local warnGoo				= mod:NewSpellAnnounce(72549, 4)
-local timerGooCD			= mod:NewCDTimer(10, 72549)
+local timerGooCD			= mod:NewNextTimer(10, 72549)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
@@ -126,7 +126,6 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(72299) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
 		uId = uId or "none" -- TODO: confirm that we have a valid unit id here
 		self:SendSync("Goo", UnitName(uId.."target"))
-		DBM:AddMsg("Goo on: "..uId);
 	end
 end
 
@@ -136,7 +135,11 @@ function mod:OnSync(event, arg)
 			self:AddMsg(("DBM-Debug: Malleable Goo on %s?"):format(arg))
 		end
 		warnGoo:Show()
-		timerGooCD:Start()
+		if mod:IsDifficulty("heroic25") then
+			timerGooCD:Start()
+		else
+			timerGooCD:Start(30)--30 seconds in between goos on 10 man heroic
+		end
 	end
 end
 
