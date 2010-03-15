@@ -83,6 +83,7 @@ mod:AddBoolOption("DefileArrow")
 local phase	= 0
 local warned_preP2 = false
 local warned_preP3 = false
+local LKDead = false
 local lastPlagueCast = 0
 local Valkset = 0
 
@@ -91,6 +92,7 @@ function mod:OnCombatStart(delay)
 	phase = 0
 	warned_preP2 = false
 	warned_preP3 = false
+	LKDead = false
 	self:NextPhase()
 	lastPlagueCast = 0
 	Valkset = 0
@@ -306,10 +308,16 @@ end
 function mod:UNIT_HEALTH(uId)
 	if phase == 1 and not warned_preP2 and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.73 then
 		warned_preP2 = true
-		warnPhase2Soon:Show()	
+		warnPhase2Soon:Show()
 	elseif phase == 2 and not warned_preP3 and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.43 then
 		warned_preP3 = true
-		warnPhase3Soon:Show()	
+		warnPhase3Soon:Show()
+	elseif not LKDead and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.10 then
+		LKDead = true
+		timerShamblingHorror:Cancel()
+		timerDrudgeGhouls:Cancel()
+		timerNecroticPlagueCD:Cancel()
+		berserkTimer:Cancel()
 	end
 end
 
