@@ -40,6 +40,7 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s(r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM		= "%s：尚未安裝DBM"
 DBM_CORE_VERSIONCHECK_FOOTER			= "團隊中有%d名成員正在使用Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED			= "你的 Deadly Boss Mod 已經過期! 請到 www.deadlybossmods.com 下載最新版本。"
+DBM_CORE_DISABLED_ICON_FUNCTION			= "你的模組因為已經過期而不會再設置標記。請盡快更新以重新啟動標記功能。"
 
 DBM_CORE_UPDATEREMINDER_HEADER			= "你的 Deadly Boss Mod 已經過期!\n你可以在此網址下載到新版本%s(r%d)："
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Ctrl-C：複製下載網址到剪貼簿。"
