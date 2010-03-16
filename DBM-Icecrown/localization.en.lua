@@ -268,7 +268,7 @@ L:SetWarningLocalization{
 	specWarnMalleableGoo		= "Malleable Goo on you - Move away",
 	specWarnMalleableGooNear	= "Malleable Goo near you - Watch out",
 	specWarnUnboundPlague		= "Drop off the Unbound Plague",
-	specWarnNextPlageSelf		= "Unbound Plage soon, get prepared!"
+	specWarnNextPlageSelf		= "Unbound Plage to you next, get prepared!"
 }
 
 L:SetOptionLocalization{
