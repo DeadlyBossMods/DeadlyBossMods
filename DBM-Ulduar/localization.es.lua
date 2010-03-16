@@ -182,23 +182,15 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarningPhasePunch		= "Cambiar de fase en >%s< - Stack %d",
-	WarningBlackHole		= "Agujero negro",
-	SpecWarnBigBang			= "Big Bang",
-	PreWarningBigBang		= "Big Bang en ~10 segundos",
 	WarningCosmicSmash 		= "Machaque cósmico - Explosion en 4 segundos",
-	SpecWarnCosmicSmash 	= "Machaque cósmico",
 	WarnPhase2Soon			= "Fase 2 pronto",
 	warnStarLow				= "Estrella en colapso a punto de morir"
 }
 
 L:SetOptionLocalization{
-	PreWarningBigBang		= "Mostrar pre-aviso para Big Bang",
-	SpecWarnBigBang			= "Mostrar aviso especial para Big Bang",
 	WarningPhasePunch		= "Anunciar objetivos de Cambiar de fase",
-	WarningBlackHole		= "Mostrar aviso para Agujero negro",
 	NextCollapsingStar		= "Mostrar tiempo para siguiente Estrella en colapso",
 	WarningCosmicSmash 		= "Mostrar aviso para Machaque cósmico",
-	SpecWarnCosmicSmash 	= "Mostrar aviso especial para Machaque cósmico",
 	PossibleNextCosmicSmash	= "Mostrar tiempo para posible siguiente Machaque cósmico",
 	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
 	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~23%)",
