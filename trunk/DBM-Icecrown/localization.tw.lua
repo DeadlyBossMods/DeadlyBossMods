@@ -271,7 +271,7 @@ L:SetWarningLocalization{
 	specWarnMalleableGoo		= "你中了延展黏液 - 快離開",
 	specWarnMalleableGooNear	= "你附近有人中了延展黏液 - 小心",
 	specWarnUnboundPlague		= "轉移肆虐瘟疫",
-	specWarnNextPlageSelf		= "肆虐瘟疫 即將發動, 準備好!"
+	specWarnNextPlageSelf		= "肆虐瘟疫下次轉移到你身上，準備好!"
 }
 
 L:SetOptionLocalization{
