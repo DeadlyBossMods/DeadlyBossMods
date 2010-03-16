@@ -38,7 +38,8 @@ L:SetOptionLocalization{
 	TimerCombatStart			= "Отсчет времени до начала битвы",
 	TimerEmerge					= "Отсчет времени до появления",
 	TimerSubmerge				= "Отсчет времени до зарывания",
-	RangeFrame                  = "Показывать окно допустимой дистанции в фазе 2"
+	RangeFrame                  = "Показывать окно допустимой дистанции в фазе 2",
+	IcehowlArrow				= "Показывать стрелку, когда Ледяной Рев готовится сделать рывок на цель рядом с вами"
 }
 
 L:SetTimerLocalization{
