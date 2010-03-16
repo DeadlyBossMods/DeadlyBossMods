@@ -274,7 +274,7 @@ L:SetWarningLocalization{
 	specWarnMalleableGoo		= "Formbarer Schleim auf Dir - Lauf",
 	specWarnMalleableGooNear	= "Formbarer Schleim in Deiner Nähe - Aufpassen",
 	specWarnUnboundPlague		= "Lege Entfesselte Seuche ab",
-	specWarnNextPlageSelf		= "Entfesselte Seuche bald, bereite dich vor!"
+	specWarnNextPlageSelf		= "Entfesselte Seuche als nächstes auf dir, bereite dich vor!"
 }
 
 L:SetOptionLocalization{
