@@ -50,6 +50,7 @@ local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
 local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank()) --phase 2+
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
+local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear", false) --Heroic Ability
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
@@ -79,6 +80,7 @@ mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
 mod:AddBoolOption("DefileArrow")
+mod:AddBoolOption("TrapArrow")
 
 local phase	= 0
 local warned_preP2 = false
@@ -141,6 +143,22 @@ function mod:TrapTarget()
 		if self.Options.YellOnTrap then
 			SendChatMessage(L.YellTrap, "YELL")
 		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			if inRange then
+				specWarnTrapNear:Show()
+				if self.Options.TrapArrow then
+					DBM.Arrow:ShowRunAway(x, y, 10, 5)
+				end
+			end
+		end
 	end
 end
 
@@ -191,7 +209,7 @@ function mod:SPELL_CAST_START(args)
 		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
-		self:ScheduleMethod(0.1, "TrapTarget")
+		self:ScheduleMethod(0.05, "TrapTarget")
 		timerTrapCD:Start()
 	end
 end
