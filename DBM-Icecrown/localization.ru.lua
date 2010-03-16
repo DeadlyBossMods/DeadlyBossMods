@@ -477,7 +477,8 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
-	ValkyrIcon				= "Устанавливать метки на Валь'кир"
+	ValkyrIcon				= "Устанавливать метки на Валь'кир",
+	DefileArrow				= "Показывать стрелку, когда $spell:72762 около вас"
 }
 
 L:SetMiscLocalization{
