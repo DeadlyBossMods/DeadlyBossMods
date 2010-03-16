@@ -297,7 +297,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull	= "¡Buenas noticias, amigos! Creo que he perfeccionado una plaga que destruirá toda la vida en Azeroth.",
-	YellMalleable	= "¡Tengo Moco maleable!"
+	YellMalleable	= "¡Moco maleable va hacia mi!"
 }
 
 ----------------------------
