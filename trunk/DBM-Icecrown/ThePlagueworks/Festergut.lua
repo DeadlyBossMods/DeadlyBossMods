@@ -124,16 +124,12 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(72299) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
-		uId = uId or "none" -- TODO: confirm that we have a valid unit id here
-		self:SendSync("Goo", UnitName(uId.."target"))
+		self:SendSync("Goo")
 	end
 end
 
 function mod:OnSync(event, arg)
 	if event == "Goo" then
-		if DBM:GetRaidUnitId(arg) ~= "none" then -- TODO: confirm that the spell actually targets a player and no an area or a dummy (like the Void Reaver orb did)
-			self:AddMsg(("DBM-Debug: Malleable Goo on %s?"):format(arg))
-		end
 		warnGoo:Show()
 		if mod:IsDifficulty("heroic25") then
 			timerGooCD:Start()
