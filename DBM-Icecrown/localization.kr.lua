@@ -270,7 +270,7 @@ L:SetWarningLocalization{
 	specWarnMalleableGoo		= "당신에게 유연한 끈적이 - 이동하세요!",
 	specWarnMalleableGooNear	= "당신 주변에 유연한 끈적이 - 벗어나세요!",
 	specWarnUnboundPlague		= "고삐 풀린 역병 전달",
-	specWarnNextPlageSelf		= "곧 고삐 풀린 역병, 준비하세요!"
+	specWarnNextPlageSelf		= "당신이 다음 고삐 풀린 역병, 준비하세요!"
 }
 
 L:SetOptionLocalization{
