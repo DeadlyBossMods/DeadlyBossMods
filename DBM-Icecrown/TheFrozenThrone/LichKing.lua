@@ -62,9 +62,10 @@ local timerInfestCD			= mod:NewCDTimer(22, 73779, nil, mod:IsHealer())
 local timerNecroticPlagueCleanse = mod:NewTimer(5, "TimerNecroticPlagueCleanse", 73912, false)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
 local timerDefileCD			= mod:NewCDTimer(32, 72762)
+local timerEnrageCD			= mod:NewCDTimer(20, 72143, nil, mod:IsTank() or mod:CanRemoveEnrage())
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
-local timerRagingSpiritCD	= mod:NewNextTimer(17, 69200)
+local timerRagingSpiritCD	= mod:NewCDTimer(17, 69200)
 local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
 local timerTrapCD		 	= mod:NewCDTimer(16, 73539)
@@ -256,6 +257,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72143, 72146, 72147, 72148) then -- Shambling Horror enrage effect.
 		warnShamblingEnrage:Show(args.destName)
+		timerEnrageCD:Start()
 	end
 end
 
