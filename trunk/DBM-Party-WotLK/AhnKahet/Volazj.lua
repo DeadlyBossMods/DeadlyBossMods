@@ -8,7 +8,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"UNIT_SPELLCAST_SUCCEEDED"
+	"UNIT_SPELLCAST_START"
 )
 
 local warningInsanity	= mod:NewCastAnnounce(57496, 3)--Not currently working, no CLEU for it
@@ -28,7 +28,7 @@ end
 	end
 end]]--
 
-function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+function mod:UNIT_SPELLCAST_START(uId, spellName)
    if spellName == GetSpellInfo(57496) then -- Insanity
 		warningInsanity:Show()
 		timerInsanity:Start()
