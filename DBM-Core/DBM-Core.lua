@@ -1455,6 +1455,10 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision))
 						end
+						if not DBM.Options.DontSetBossIcons then			-- we dont want outdated clients to set any icons, they suck and suckers dont have rights :p
+							DBM.Options.DontSetBossIcons = true
+							DBM:AddMsg(DBM_CORE_DISABLED_ICON_FUNCTION)
+						end
 					end
 				end
 			end
