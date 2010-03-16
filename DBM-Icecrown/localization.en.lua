@@ -447,6 +447,7 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Phase 3 transition soon",
 	specWarnDefileCast		= "Defile on you - Move away",
 	specWarnDefileNear		= "Defile near you - Watch out",
+	specWarnTrapNear		= "Shadow Trap near you - Watch out",
 	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<",
 	WarningValkyrSpawned 	= "Val'kyr Shadowguard spawn (%d)"
 }
@@ -469,6 +470,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
 	specWarnDefileCast		= "Show special warning for $spell:72762 on you",
 	specWarnDefileNear		= "Show special warning for $spell:72762 near you",
+	specWarnTrapNear		= "Show special warning for $spell:73539 near you",
 	YellOnDefile			= "Yell on $spell:72762",
 	YellOnTrap				= "Yell on $spell:73539",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
@@ -476,7 +478,8 @@ L:SetOptionLocalization{
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Set icons on Valkyrs",
-	DefileArrow				= "Show DBM arrow when $spell:72762 is near you"
+	DefileArrow				= "Show DBM arrow when $spell:72762 is near you",
+	TrapArrow				= "Show DBM arrow when $spell:73539 is near you"
 }
 
 L:SetMiscLocalization{
