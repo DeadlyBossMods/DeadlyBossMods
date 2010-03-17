@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "frFR" then return end
+if GetLocale() ~= "frFR" then return end
 
 DBM_CORE_LOAD_MOD_ERROR				= "Erreur durant le chargement du boss mod pour %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss mod pour '%s' chargé!"
@@ -41,6 +41,7 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM non installé"
 DBM_CORE_VERSIONCHECK_FOOTER		= "a trouvé %d joueurs avec Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Votre version de Deadly Boss Mods est périmé! Merci de visiter www.deadlybossmods.com pour avoir la dernière version."
+DBM_CORE_DISABLED_ICON_FUNCTION		= "Votre version ne peut pas mettre les icones, car votre version est périmé. Merci de la mettre a jour dès que possible et réactiver la fonction icone."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\n Version %s (r%d) disponible ici:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copier le lien votre presse-papier."
@@ -179,6 +180,7 @@ DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "jouer un son sur $spell:%d"
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Alerte spéciale déplaçable"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
 
+
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Une %d vérification de distance n'est pas supporté dans cette zone.\nLes distances autorisés est 10, 11, 15 et 28 yard."
 
 DBM_ARROW_MOVABLE					= "Bouger la Flèche"
@@ -190,5 +192,3 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm flèche cache la flèche",
 	"/dbm flèche fait déplacer",
 }
-
-
