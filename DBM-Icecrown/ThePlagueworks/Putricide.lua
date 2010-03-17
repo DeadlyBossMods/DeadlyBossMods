@@ -126,7 +126,8 @@ local function isDebuffed(unitId)
 		if spellId == 73117 or spellId == 70953 or		-- Plague Sickness
 		   spellId == 72838 or spellId == 72837 or 		-- Volatile Ooze Adhesive (Green Slime)
 		   spellId == 72833 or spellId == 72832 or		-- Gaseous Bloat (Red Slime)
-		   spellId == 70308 then						-- Mutated Transformation (Abomination)
+		   spellId == 70308 or							-- Mutated Transformation (Changing into Abom)
+		   spellId == 71503 or spellId == 70311 then	-- Abomination
 			return true
 		end
 		i = i + 1
