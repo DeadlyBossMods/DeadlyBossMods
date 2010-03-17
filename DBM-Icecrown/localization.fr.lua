@@ -286,7 +286,7 @@ L:SetOptionLocalization{
 	NextUnboundPlagueTargetIcon	= "Set icon on next $spell:72856 target",
 	YellOnMalleableGoo			= "Yell on $spell:72295",	
 	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
-	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
+	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target"
 }
 
 L:SetMiscLocalization{
@@ -485,7 +485,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	LKPull			= "Voici donc qu’arrive la fameuse justice de la Lumière ?",
+	LKPull			= "la fameuse justice de la Lumière",
 	YellDefile		= "Profanation sur MOI !",
 	YellTrap		= "Piège d'ombre sur MOI !",
 	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
