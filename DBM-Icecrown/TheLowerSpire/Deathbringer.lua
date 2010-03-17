@@ -4,11 +4,12 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(37813)
 mod:RegisterCombat("combat")
-mod:SetUsedIcons(5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_SUMMON",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"UNIT_HEALTH",
@@ -38,20 +39,21 @@ local enrageTimer			= mod:NewBerserkTimer(480)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("RunePowerFrame", true, "misc")
-mod:AddBoolOption("SetIconOnBoilingBlood", false)
-mod:AddBoolOption("SetIconOnMarkCast", false)
+mod:AddBoolOption("BeastIcons", true)
+mod:AddBoolOption("BoilingBloodIcons", false)
+mod:AddBoolOption("MarkCastIcon", false)
 mod:RemoveOption("HealthFrame")
 
 local warned_preFrenzy = false
 local boilingBloodTargets = {}
-local boilingBloodIcon 	= 7
+local boilingBloodIcon 	= 8
 local spamBloodBeast = 0
 
 local function warnBoilingBloodTargets()
 	warnBoilingBlood:Show(table.concat(boilingBloodTargets, "<, >"))
 	table.wipe(boilingBloodTargets)
 	timerBoilingBlood:Start()
-	boilingBloodIcon = 7
+	boilingBloodIcon = 8
 end
 
 function mod:OnCombatStart(delay)
@@ -70,7 +72,7 @@ function mod:OnCombatStart(delay)
 	end
 	table.wipe(boilingBloodTargets)
 	warned_preFrenzy = false
-	boilingBloodIcon = 7
+	boilingBloodIcon = 8
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(12)
 	end
@@ -86,7 +88,7 @@ end
 function mod:MarkTarget()
 	local targetname = self:GetBossTarget(37813)
 	if not targetname then return end
-	if self.Options.SetIconOnMarkCast then
+	if self.Options.MarkCastIcon then
 		self:SetIcon(targetname, 8, 1.2)
 	end
 	if targetname == UnitName("player") then
@@ -138,13 +140,54 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+do
+	local beastIcon = {}
+	local currentIcon = 1
+	local iconsSet = 0
+	local function resetBeastIconState()
+		table.wipe(beastIcons)
+		currentIcon = 1
+		iconsSet = 0
+	end
+	
+	local lastBeast = 0
+	function mod:SPELL_SUMMON(args)
+		if args:IsSpellID(72358) then -- Summon Val'kyr
+			if time() - lastBeast > 15 then
+				lastBeast = time()
+				if self.Options.BeastIcons then
+					resetBeastIconState()
+				end
+			end
+			if self.Options.BeastIcons then
+				beastIcon[args.destGUID] = currentIcon
+				currentIcon = currentIcon + 1
+			end
+		end
+	end
+	
+	mod:RegisterOnUpdateHandler(function(self)
+		if self.Options.BeastIcons and (DBM:GetRaidRank() > 0 and not (iconsSet == 5 and self:IsDifficulty("normal25", "heroic25") or iconsSet == 2 and self:IsDifficulty("normal10", "heroic10"))) then
+			for i = 1, GetNumRaidMembers() do
+				local uId = "raid"..i.."target"
+				local guid = UnitGUID(uId)
+				if beastIcon[guid] then
+					SetRaidTarget(uId, beastIcon[guid])
+					iconsSet = iconsSet + 1
+					beastIcon[guid] = nil
+				end
+			end
+		end
+	end, 1)
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72293) then		-- Mark of the Fallen Champion
 		warnMark:Show(args.destName)
 		specwarnMark:Show(args.destName)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingBloodTargets[#boilingBloodTargets + 1] = args.destName
-		if self.Options.SetIconOnBoilingBlood then
+		if self.Options.BoilingBloodIcons then
 			self:SetIcon(args.destName, boilingBloodIcon, 15)
 			boilingBloodIcon = boilingBloodIcon - 1
 		end
