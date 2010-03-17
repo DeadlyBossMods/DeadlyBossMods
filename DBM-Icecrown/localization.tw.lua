@@ -189,9 +189,10 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	warnFrenzySoon			= "為狂亂顯示預先警告 (大約33%)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon		= "為施放$spell:72444時的目標設置標記\n(試驗中，可能會錯誤地標記坦克)",
+	MarkCastIcon			= "為施放$spell:72444時的目標設置標記\n(試驗中，可能會錯誤地標記坦克)",
 	RangeFrame			= "顯示距離框 (12碼)",
-	RunePowerFrame			= "顯示首領血量及$spell:72371條"
+	RunePowerFrame			= "顯示首領血量及$spell:72371條",
+	BeastIcons			= "為血獸設置標記"
 }
 
 L:SetMiscLocalization{
@@ -447,6 +448,7 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "轉換第3階段 即將到來",
 	specWarnDefileCast		= "你中了汙染 - 快離開",
 	specWarnDefileNear		= "你附近的人中了汙染 - 小心",
+	specWarnTrapNear		= "你附近的人中了暗影陷阱 - 小心",
 	WarningValkyrSpawned 		= "華爾琪影衛出現 (%d)"
 }
 
@@ -468,6 +470,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
 	specWarnDefileNear		= "當你附近的人中了$spell:72762時顯示特別警告",
+	specWarnTrapNear		= "當你附近的人中了$spell:73539時顯示特別警告",
 	YellOnDefile			= "當你中了$spell:72762時大喊",
 	YellOnTrap			= "當你中了$spell:73539時大喊",
 	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
@@ -475,7 +478,8 @@ L:SetOptionLocalization{
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon			= "為華爾琪影衛設置標記",
-	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭"
+	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭",
+	TrapArrow			= "當你附近的人中了$spell:73539時顯示DBM箭頭"
 }
 
 L:SetMiscLocalization{
@@ -484,5 +488,5 @@ L:SetMiscLocalization{
 	YellTrap			= "我中了暗影陷阱!",
 	YellKill			= "沒有問題尚未解答。沒有任何懷疑。你們就是艾澤拉斯最偉大的勇士。你們克服了每一個我所設下的考驗。我最強大的僕人們都在你們不屈不撓的猛攻中倒下…在你們奔放的怒火之中…",
 	LKRoleplay			= "你們的原動力真的是正義感嗎？我很懷疑……",
-	PlagueWhisper			= "You have been infected by"
+	PlagueWhisper			= "你已經感染"
 }
