@@ -196,7 +196,8 @@ L:SetOptionLocalization{
 	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	MarkCastIcon		= "Poner iconos en los objetivos de $spell:72444 durante el casteo",
 	RangeFrame		= "Mostrar distancia",
-	RunePowerFrame			= "Mostrar barra de vida + barra de $spell:72371"
+	RunePowerFrame			= "Mostrar barra de vida + barra de $spell:72371",
+	BeastIcons				= "Poner iconos en las Bestias de Sangre"
 }
 
 L:SetMiscLocalization{
@@ -276,7 +277,7 @@ L:SetWarningLocalization{
 	specWarnMalleableGoo		= "Moco maleable en ti ¡Muévete!",
 	specWarnMalleableGooNear	= "Moco maleable cerca de ti ¡Ten cuidado!",
 	specWarnUnboundPlague		= "¡Transfiere la Peste desatada!",
-	specWarnNextPlageSelf		= "¡Peste desatada pronto, prepárate!"
+	specWarnNextPlageSelf		= "¡Peste desatada pronto en ti pronto, prepárate!"
 }
 
 L:SetOptionLocalization{
@@ -455,6 +456,7 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Transición a la Fase 3 pronto",
 	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
 	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!",
+	specWarnTrapNear		= "Trampa de las Sombras cerca de ti ¡Ten cuidado!",
 	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<",
 	WarningValkyrSpawned 	= "Guardia de las Sombras Val'kyr sale (%d)"
 }
@@ -477,6 +479,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
 	specWarnDefileNear		= "Mostrar aviso especial para $spell:72762 cerca de ti",
+	specWarnTrapNear		= "Mostrar aviso especial para $spell:73539 cerca de ti",
 	YellOnDefile			= "Gritar cuando tengas $spell:72762",
 	YellOnTrap				= "Gritar cuando tengas $spell:73539",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
@@ -484,7 +487,8 @@ L:SetOptionLocalization{
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Poner iconos en las Valkyr",
-	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti"
+	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti",
+	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti"
 }
 
 L:SetMiscLocalization{
