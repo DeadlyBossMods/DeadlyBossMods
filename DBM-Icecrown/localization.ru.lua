@@ -449,6 +449,7 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Скоро переход в фазу 3",
 	specWarnDefileCast		= "Осквернение на вас - отбегите",
 	specWarnDefileNear		= "Осквернение около вас - остерегайтесь",
+	specWarnTrapNear		= "Теневая ловушка около вас - остерегайтесь",
 	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)",
 	WarningValkyrSpawned 	= "Валь'кира - страж Тьмы (%d)"
 }
@@ -471,6 +472,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileNear		= "Спец-предупреждение, когда $spell:72762 около вас",
+	specWarnTrapNear		= "Спец-предупреждение, когда $spell:73539 около вас",
 	YellOnDefile			= "Кричать, когда $spell:72762 на вас",
 	YellOnTrap				= "Кричать, когда $spell:73539 на вас",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
@@ -478,7 +480,8 @@ L:SetOptionLocalization{
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Устанавливать метки на Валь'кир",
-	DefileArrow				= "Показывать стрелку, когда $spell:72762 около вас"
+	DefileArrow				= "Показывать стрелку, когда $spell:72762 около вас",
+	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас"
 }
 
 L:SetMiscLocalization{
