@@ -193,9 +193,10 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Zeige Zeit bis Kampfbeginn",
 	warnFrenzySoon			= "Zeige Vorwarnung für Wahnsinn (bei ~33%)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon		= "Setze Zeichen auf $spell:72444-Ziele während Zauber\n(Experimentell, kann den Tank fälschlicher Weise markieren)",
+	MarkCastIcon		= "Setze Zeichen auf $spell:72444-Ziele während Zauber\n(Experimentell, kann den Tank fälschlicherweise markieren)",
 	RangeFrame				= "Zeige Abstandsfenster (12 m)",
-	RunePowerFrame			= "Zeige Boss-Leben und Leiste für $spell:72371"
+	RunePowerFrame			= "Zeige Boss-Leben und Leiste für $spell:72371",
+	BeastIcons				= "Zeiche Zeichen auf Blutbestien"
 }
 
 L:SetMiscLocalization{
@@ -453,6 +454,7 @@ L:SetWarningLocalization{
 	WarnPhase3Soon			= "Übergang in Phase 3 bald",
 	specWarnDefileCast		= "Entweihen auf dir - Lauf weg",
 	specWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen",
+	specWarnTrapNear		= "Schattenfalle in deiner Nähe - Aufpassen",
 	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen",
 	WarningValkyrSpawned 	= "Neue Schattenwächterin der Val'kyr (%d)"
 }
@@ -475,6 +477,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Zeige Vorwarnung für Übergang in Phase 3 (bei ~43%)",
 	specWarnDefileCast		= "Zeige Spezialwarnung für $spell:72762 auf dir",
 	specWarnDefileNear		= "Zeige Spezialwarnung für $spell:72762 in deiner Nähe",
+	specWarnTrapNear		= "Zeige Spezialwarnung für $spell:73539 in deiner Nähe",
 	YellOnDefile			= "Schreie bei $spell:72762",
 	YellOnTrap				= "Schreie bei $spell:73539",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
@@ -482,7 +485,8 @@ L:SetOptionLocalization{
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Setze Zeichen auf Valkyren",
-	DefileArrow				= "Zeige Pfeil wenn $spell:72762 in deiner Nähe ist"
+	DefileArrow				= "Zeige Pfeil wenn $spell:72762 in deiner Nähe ist",
+	TrapArrow				= "Zeige Pfeil wenn $spell:73539 in deiner Nähe ist"
 }
 
 L:SetMiscLocalization{
