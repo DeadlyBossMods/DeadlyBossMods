@@ -196,7 +196,7 @@ L:SetOptionLocalization{
 	MarkCastIcon		= "Setze Zeichen auf $spell:72444-Ziele während Zauber\n(Experimentell, kann den Tank fälschlicherweise markieren)",
 	RangeFrame				= "Zeige Abstandsfenster (12 m)",
 	RunePowerFrame			= "Zeige Boss-Leben und Leiste für $spell:72371",
-	BeastIcons				= "Zeiche Zeichen auf Blutbestien"
+	BeastIcons				= "Setze Zeichen auf Blutbestien"
 }
 
 L:SetMiscLocalization{
