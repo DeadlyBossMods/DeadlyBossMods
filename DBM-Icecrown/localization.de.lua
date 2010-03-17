@@ -192,8 +192,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Zeige Zeit bis Kampfbeginn",
 	warnFrenzySoon			= "Zeige Vorwarnung für Wahnsinn (bei ~33%)",
-	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "Setze Zeichen auf $spell:72444-Ziele während Zauber\n(Experimentell, kann den Tank fälschlicher Weise markieren)",
+	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	MarkCastIcon		= "Setze Zeichen auf $spell:72444-Ziele während Zauber\n(Experimentell, kann den Tank fälschlicher Weise markieren)",
 	RangeFrame				= "Zeige Abstandsfenster (12 m)",
 	RunePowerFrame			= "Zeige Boss-Leben und Leiste für $spell:72371"
 }

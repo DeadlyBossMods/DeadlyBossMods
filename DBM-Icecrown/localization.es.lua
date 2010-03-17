@@ -193,8 +193,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Mostrar tiempo para inicio del combate",
 	warnFrenzySoon	= "Mostrar preaviso para el Frenesí (at ~33%)",
-	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "Poner iconos en los objetivos de $spell:72444 durante el casteo",
+	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	MarkCastIcon		= "Poner iconos en los objetivos de $spell:72444 durante el casteo",
 	RangeFrame		= "Mostrar distancia",
 	RunePowerFrame			= "Mostrar barra de vida + barra de $spell:72371"
 }

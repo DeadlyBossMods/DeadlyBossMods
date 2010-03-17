@@ -188,8 +188,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
-	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "Устанавливать метки на цели заклинания $spell:72444\nво время его применения (экспериментально, может по ошибке\nпомечать танка)",
+	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	MarkCastIcon		= "Устанавливать метки на цели заклинания $spell:72444\nво время его применения (экспериментально, может по ошибке\nпомечать танка)",
 	RangeFrame				= "Показывать окно допустимой дистанции (12 м)",
 	RunePowerFrame			= "Показывать здоровье босса + индикатор для $spell:72371"
 }
