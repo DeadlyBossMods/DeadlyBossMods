@@ -139,7 +139,7 @@ do
 	local currentIcon = 1
 	local iconsSet = 0
 	local function resetBeastIconState()
-		table.wipe(beastIcons)
+		table.wipe(beastIcon)
 		currentIcon = 1
 		iconsSet = 0
 	end
