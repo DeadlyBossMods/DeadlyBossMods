@@ -188,8 +188,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "전투 시작 타이머 보기",
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
-	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "$spell:72444 대상에게 공격대 아이콘 설정",	
+	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	MarkCastIcon		= "$spell:72444 대상에게 공격대 아이콘 설정",	
 	RangeFrame				= "거리 프레임 보기 (12 미터)",
 	RunePowerFrame			= "보스 체력 바와 함께 $spell:72371 바 보기"	
 }

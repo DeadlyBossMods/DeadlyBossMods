@@ -156,8 +156,8 @@ L:SetOptionLocalization{
 	warnFrenzySoon	= "Montre une pré-alerte pour la Frénésie (à ~33%)",
 	RangeFrame		= "Montre la fenêtre de proximité",
 	TimerCombatStart		= "Show time for start of combat",
-	SetIconOnBoilingBlood	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "Set icon on $spell:72444 targets during cast\n(Experimental, may mark tank incorrectly)",
+	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	MarkCastIcon		= "Set icon on $spell:72444 targets during cast\n(Experimental, may mark tank incorrectly)",
 	RunePowerFrame			= "Show Boss Health + $spell:72371 bar"
 }
 

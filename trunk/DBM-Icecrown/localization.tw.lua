@@ -188,8 +188,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	warnFrenzySoon			= "為狂亂顯示預先警告 (大約33%)",
-	SetIconOnBoilingBlood		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	SetIconOnMarkCast		= "為施放$spell:72444時的目標設置標記\n(試驗中，可能會錯誤地標記坦克)",
+	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
+	MarkCastIcon		= "為施放$spell:72444時的目標設置標記\n(試驗中，可能會錯誤地標記坦克)",
 	RangeFrame			= "顯示距離框 (12碼)",
 	RunePowerFrame			= "顯示首領血量及$spell:72371條"
 }
