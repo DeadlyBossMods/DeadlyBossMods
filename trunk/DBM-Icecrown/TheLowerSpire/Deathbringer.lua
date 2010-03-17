@@ -129,13 +129,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(72173, 72356, 72357, 72358) then
-		timerCallBloodBeast:Start()
-		if GetTime() - spamBloodBeast > 5 then
-			warnAddsSoon:Schedule(30)
-			spamBloodBeast = GetTime()
-		end
-	elseif args:IsSpellID(72410) then
+	if args:IsSpellID(72410) then
 		timerNextRuneofBlood:Start()
 	end
 end
@@ -152,8 +146,9 @@ do
 	
 	local lastBeast = 0
 	function mod:SPELL_SUMMON(args)
-		if args:IsSpellID(72358) then -- Summon Val'kyr
-			if time() - lastBeast > 15 then
+		if args:IsSpellID(72172, 72173) or args:IsSpellID(72356, 72357, 72358) then -- Summon Blood Beasts
+			if time() - lastBeast > 5 then
+				warnAddsSoon:Schedule(30)
 				lastBeast = time()
 				if self.Options.BeastIcons then
 					resetBeastIconState()
