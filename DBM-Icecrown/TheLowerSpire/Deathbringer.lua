@@ -149,6 +149,7 @@ do
 		if args:IsSpellID(72172, 72173) or args:IsSpellID(72356, 72357, 72358) then -- Summon Blood Beasts
 			if time() - lastBeast > 5 then
 				warnAddsSoon:Schedule(30)
+				timerCallBloodBeast:Start()
 				lastBeast = time()
 				if self.Options.BeastIcons then
 					resetBeastIconState()
