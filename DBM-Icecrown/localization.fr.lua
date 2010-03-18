@@ -104,35 +104,35 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerAdds				= "Nouveaux Adds"
+	TimerAdds						= "Nouveaux Adds"
 }
 
 L:SetWarningLocalization{
-	WarnReanimating					= "Les adds revivent",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s sur >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnReanimating					= "Les adds revivent",
+	WarnTouchInsignificance			= "%s sur >%s< (%s)",
 	WarnAddsSoon					= "Nouveaux adds bientôt",
-	specWarnVengefulShade		= "Vengeful Shade attacking you - Run Away"--creatureid 38222
+	specWarnVengefulShade			= "Ombre vengeresse vous attaque - COUREZ"
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon					= "Montre une pré-alerte avant que les adds arrivent",
 	WarnTouchInsignificance			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),
-	WarnReanimating					= "Montre une alerte quand les adds vont revenir a la vie",								-- Reanimated Adherent/Fanatic spawning
+	WarnReanimating					= "Montre une alerte quand les adds vont revenir a la vie",
 	TimerAdds						= "Montre le timer pour les nouveaux adds",
-	specWarnVengefulShade		= "Show special warning when you are attacked by Vengeful Shade",--creatureid 38222
-	ShieldHealthFrame			= "Show boss health with a health bar for $spell:70842",
-	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
-	SetIconOnDeformedFanatic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
-	SetIconOnEmpoweredAdherent	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
+	specWarnVengefulShade			= "Montre une alerte spéciale quand vous êtes attaquer par une Ombre vengeresse",
+	ShieldHealthFrame				= "Montre la vie du boss avec une barre de vie pour la $spell:70842",
+	SetIconOnDominateMind			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
+	SetIconOnDeformedFanatic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70900),
+	SetIconOnEmpoweredAdherent		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70901)
 }
 
 L:SetMiscLocalization{
-	YellPull						= "Quelle est cette perturbation ? Vous osez profaner cette terre sacrée ? Elle deviendra votre sépulture !",--Incomplete
-	YellReanimatedFanatic			= "Lève-toi, dans l'exultation de cette nouvelle pureté !",
-	ShieldPercent					= "Mana Barrier",--Translate Spell id 70842
-	Fanatic1						= "Cult Fanatic",
-	Fanatic2						= "Deformed Fanatic",
-	Fanatic3						= "Reanimated Fanatic"
+	YellPull						= "Quelle est cette perturbation",
+	YellReanimatedFanatic			= "Lève-toi, dans l'exultation de cette nouvelle pureté",
+	ShieldPercent					= "Barrière de mana",
+	Fanatic1						= "Membres du culte",
+	Fanatic2						= "Fanatique déformé",
+	Fanatic3						= "Fanatique réanimé"
 }
 
 -----------------------------
@@ -145,26 +145,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon	= "Frénésie bientôt"
+	warnFrenzySoon		= "Frénésie bientôt"
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart		= "Combat starts"
+	TimerCombatStart	= "Début du combat"
 }
 
 L:SetOptionLocalization{
-	warnFrenzySoon	= "Montre une pré-alerte pour la Frénésie (à ~33%)",
-	RangeFrame		= "Montre la fenêtre de proximité",
-	TimerCombatStart		= "Show time for start of combat",
+	warnFrenzySoon		= "Montre une pré-alerte pour la Frénésie (à ~33%)",
+	RangeFrame			= "Montre la fenêtre de proximité",
+	TimerCombatStart	= "Montre le timer pour le début du combat",
 	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon		= "Set icon on $spell:72444 targets during cast\n(Experimental, may mark tank incorrectly)",
-	RunePowerFrame			= "Show Boss Health + $spell:72371 bar"
+	MarkCastIcon		= "Met des icones sur les cibles de $spell:72444 durant l'incantation (Experimental)",
+	RunePowerFrame		= "Montre la barre de vie du boss + la barre de $spell:72371"
 }
 
 L:SetMiscLocalization{
-	RunePower			= "Blood Power",
-	PullAlliance		= "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.",
-	PullHorde			= "Kor'kron, move out! Champions, watch your backs. The Scourge have been..."
+	RunePower			= "Bêtes de sang",
+	PullAlliance		= "Bon allez, on se bouge",
+	PullHorde			= "surveillez bien vos arrières"
 }
 
 ----------------------
@@ -177,27 +177,27 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBattleFury	= "%s (%d)",
-	WarnAddsSoon	= "New adds soon"
+	WarnBattleFury		= "%s (%d)",
+	WarnAddsSoon		= "Nouveaux Add Bientôt"
 }
 
 L:SetOptionLocalization{
-	WarnBattleFury	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
-	TimerCombatStart	= "Show time for start of combat",
-	WarnAddsSoon		= "Show pre-warning for adds spawning",
-	TimerAdds			= "Show timer for new adds"
+	WarnBattleFury		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69638, GetSpellInfo(69638) or "Battle Fury"),
+	TimerCombatStart	= "Montre le timer pour le début du combat",
+	WarnAddsSoon		= "Montre une alerte avant que les adds arrivent",
+	TimerAdds			= "Montre le timer pour les nouveaux adds"
 }
 
 L:SetTimerLocalization{
-	TimerCombatStart	= "Combat starts",
-	TimerAdds			= "New adds"
+	TimerCombatStart	= "Le combat débute",
+	TimerAdds			= "Nouveaux Adds"
 }
 
 L:SetMiscLocalization{
-	PullAlliance	= "Faites chauffer les moteurs ! On a rencart avec le destin, les gars !",
-	KillAlliance	= "Vous direz pas que j'vous avais pas prévenus, canailles ! Mes frères et sœurs, en avant !",
-	PullHorde		= "Levez-vous, fils et filles de la Horde ! Aujourd’hui, nous affrontons le plus haï de nos ennemis ! LOK’TAR OGAR !",
-	KillHorde		= "L'Alliance baisse pavillon. Sus au roi-liche !"
+	PullAlliance		= "Faites chauffer les moteurs",
+	KillAlliance		= "Vous direz pas que j'vous avais pas prévenus",
+	PullHorde			= "nous affrontons le plus haï de nos ennemis",
+	KillHorde			= "L'Alliance baisse pavillon"
 }
 
 -----------------
@@ -210,13 +210,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	InhaledBlight		= "Inhaled Blight >%d<",
-	WarnGastricBloat	= "%s on >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+	InhaledBlight		= "Prochain Chancre >%d<",
+	WarnGastricBloat	= "%s sur >%s< (%s)"
 }
 
 L:SetOptionLocalization{
-	InhaledBlight		= "Show warning for $spell:71912",
-	RangeFrame			= "Show range frame (8 yards)",
+	InhaledBlight		= "Montre une alerte pour le $spell:71912",
+	RangeFrame			= "Montre la fenêtre de portée (8 Mètres)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
@@ -231,9 +231,9 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnOozeSpawn				= "Little Ooze spawning",
-	WarnUnstableOoze			= "%s on >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
-	specWarnLittleOoze			= "Little Ooze attacking you - Run Away"--creatureid 36897
+	WarnOozeSpawn				= "Les Limons sont arrivées",
+	WarnUnstableOoze			= "%s sur >%s< (%s)",
+	specWarnLittleOoze			= "Les Limons vous attaque - COUREZ"
 }
 
 L:SetTimerLocalization{
@@ -244,14 +244,14 @@ L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Montre le timer pour le prochain distributeur de poison",
 	SpecWarnMutatedInfection 	= "Montre une alerte spéciale quand vous êtes affecté par Infection mutée",
 	InfectionIcon				= "Met des icones sur la cible de l'Infection mutée",
-	WarnOozeSpawn				= "Montre une alerte pour l'arrivée des Little Ooze",
-	specWarnLittleOoze			= "Show special warning when you are attacked by Little Ooze",--creatureid 36897
+	WarnOozeSpawn				= "Montre une alerte pour l'arrivée des Limons",
+	specWarnLittleOoze			= "Montre une alerte spéciale quand vous êtes attaquer par des Limons",
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown")
 }
 
 L:SetMiscLocalization{
-	YellSlimePipes1				= "Grande nouvelle, mes amis ! J'ai réparé le distributeur de poison !",	-- Professor Putricide
-	YellSlimePipes2	= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
+	YellSlimePipes1				= "réparé le distributeur de poison",	-- Professor Putricide
+	YellSlimePipes2				= "Great news, everyone! The slime is flowing again!"	-- Professor Putricide
 }
 
 ---------------------------
@@ -264,34 +264,34 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnPhase2Soon				= "Phase 2 soon",
-	WarnPhase3Soon				= "Phase 3 soon",
-	WarnMutatedPlague			= "%s on >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
-	specWarnMalleableGoo		= "Malleable Goo on you - Move away",
-	specWarnMalleableGooNear	= "Malleable Goo near you - Watch out",
-	specWarnUnboundPlague		= "Drop off the Unbound Plague",
-	specWarnNextPlageSelf		= "Unbound Plage to you next, get prepared!"
+	WarnPhase2Soon				= "Phase 2 bientôt",
+	WarnPhase3Soon				= "Phase 3 bientôt",
+	WarnMutatedPlague			= "%s sur >%s< (%s)",
+	specWarnMalleableGoo		= "Gelée malléable sur Vous - BOUGEZ",
+	specWarnMalleableGooNear	= "Gelée malléable à coter de Vous - Regardez",
+	specWarnUnboundPlague		= "Perdez la Peste déliée",
+	specWarnNextPlageSelf		= "Vous êtes le prochain pour la Peste déliée - Soyez pret"
 }
 
 L:SetOptionLocalization{
-	WarnPhase2Soon				= "Show pre-warning for Phase 2 (at ~83%)",
-	WarnPhase3Soon				= "Show pre-warning for Phase 3 (at ~38%)",
-	specWarnMalleableGoo		= "Show special warning for Malleable Goo on you\n(Only works if you are first target)",
-	specWarnMalleableGooNear	= "Show special warning for Malleable Goo near you\n(Only works if you are near first target)",
+	WarnPhase2Soon				= "Montre une alerte avant la Phase 2 (at ~83%)",
+	WarnPhase3Soon				= "Montre une alerte avant la 3 (at ~38%)",
+	specWarnMalleableGoo		= "Montre une alerte spéciale si la Gelée malléable va sur vous (Marche seulement si vous êtes la première cible)",
+	specWarnMalleableGooNear	= "Montre une alerte spéciale si la Gelée malléable va sur un joueur a coter de vous (Marche seulement si le joueur a coter de vous est la première cible)",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
-	MalleableGooIcon			= "Set icon on first $spell:72295 target",
-	NextUnboundPlagueTargetIcon	= "Set icon on next $spell:72856 target",
-	YellOnMalleableGoo			= "Yell on $spell:72295",	
-	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
-	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target"
+	MalleableGooIcon			= "Met une icone sur la première cible de $spell:72295",
+	NextUnboundPlagueTargetIcon	= "Met une icone sur la prochaine cible de $spell:72856",
+	YellOnMalleableGoo			= "Crie pour $spell:72295",	
+	specWarnUnboundPlague		= "Montre une alerte spéciale pour le transfert de $spell:72856",
+	specWarnNextPlageSelf		= "Montre une alerte spéciale si vous êtes la cible suivante de $spell:72856"
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!",
-	YellMalleable	= "Malleable Goo on me!"
+	YellPull		= "mis au point une peste qui va",
+	YellMalleable	= "Gelée malléable sur MOI !"
 }
 
 ----------------------------
@@ -306,8 +306,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "Changement de cible sur : %s",
 	WarnTargetSwitchSoon	= "Changement de cible bientôt",
-	specWarnVortex			= "Shock Vortex on you - Move away",
-	specWarnVortexNear		= "Shock Vortex near you - Watch out"
+	specWarnVortex			= "Vortex de choc sur VOUS - BOUGEZ",
+	specWarnVortexNear		= "Vortex de choc à coter de Vous - REGARDEZ"
 }
 
 L:SetTimerLocalization{
@@ -315,20 +315,20 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnTargetSwitch		= "Montre l'alerte pour le changement de cible",								-- Warn when another Prince needs to be damaged
-	WarnTargetSwitchSoon	= "Montre une pré-alerte pour le changement de cible",							-- Every ~31 secs, you have to dps a different Prince
+	WarnTargetSwitch		= "Montre l'alerte pour le changement de cible",
+	WarnTargetSwitchSoon	= "Montre une pré-alerte pour le changement de cible",
 	TimerTargetSwitch		= "Montre un timer pour le changement de cible",
-	specWarnVortex			= "Show special warning for $spell:72037 on you",
-	specWarnVortexNear		= "Show special warning for $spell:72037 near you",
+	specWarnVortex			= "Montre une alerte spéciale pour le $spell:72037 sur vous",
+	specWarnVortexNear		= "Montre une alerte spéciale pour le $spell:72037 à coter de vous",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)"
+	ActivePrinceIcon		= "Place l'icône de raid principale sur le prince de sang actuellement surpuissant (nécessite d'être assistant ou mieux)."
 }
 
 L:SetMiscLocalization{
 	Keleseth				= "Prince Keleseth",
 	Taldaram				= "Prince Taldaram",
 	Valanar					= "Prince Valanar",
-	EmpoweredFlames			= "Empowered Flames speed toward (%S+)!"
+	EmpoweredFlames			= "L'Embrasement surpuissant (%S+)!"
 }
 
 -----------------------------
@@ -366,26 +366,26 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s on >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
-	warnPortalOpen	= "Portals open"
+	warnCorrosion	= "%s sur >%s< (%s)",
+	warnPortalOpen	= "Portails actifs !"
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen	= "Portals open"
+	timerPortalsOpen	= "Arrivée des portails"
 }
 
 L:SetOptionLocalization{
-	SetIconOnBlazingSkeleton	= "Set icon on Blazing Skeleton (skull)",
-	warnPortalOpen				= "Show warning when Nightmare Portals are opened up",
-	timerPortalsOpen			= "Show timer when Nightmare Portals are opened up",
+	SetIconOnBlazingSkeleton	= "Met une icone sur le Squelette flamboyant (Tête de mort)",
+	warnPortalOpen				= "Prévient via une alerte quand Valithria ouvre des portails.",
+	timerPortalsOpen			= "Montre une timer pour voir quand Valithria ouvre des portails.",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 L:SetMiscLocalization{
-	YellPull		= "Intruders have breached the inner sanctum. Hasten the destruction of the green dragon! Leave only bones and sinew for the reanimation!",
-	YellKill		= "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!",
-	YellPortals		= "I have opened a portal into the Dream. Your salvation lies within, heroes...",
-	YellPhase2		= "My strength is returning. Press on, heroes!"--Need to confirm this is when adds spawn faster (phase 2) before used in mod
+	YellPull		= "Ne gardez que les os et les tendons",
+	YellKill		= "JE REVIS",
+	YellPortals		= "Vous y trouverez votre salut",
+	YellPhase2		= "My strength is returning. Press on, heroes!"
 }
 
 ------------------
@@ -413,26 +413,26 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnAirphase			= "Annonce la phase dans les airs",
-	WarnGroundphaseSoon		= "Montre une pré-alerte pour la phase au sol",
-	TimerNextAirphase		= "Montre un timer pour la prochaine phase dans les airs",
-	TimerNextGroundphase	= "Montre un timer pour la prochaine phase au sol",
-	warnPhase2soon			= "Montre une alerte pour la phase 2 (at ~38%)",
-	warnInstability			= "Montre une alerte pour les stacks de $spell:69766",
-	warnChilledtotheBone	= "Montre une alerte pour les stacks de $spell:70106",
-	warnMysticBuffet		= "Montre une alerte pour les stacks de $spell:70128",
-	AnnounceFrostBeaconIcons= "Annonce les icones pour les cibles de $spell:70126 dans le chat de raid (requires announce to be enabled and leader/promoted status)",
-	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
-	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase	= "Clear all icons before air phase",
-	RangeFrame				= "Show range frame (10 normal, 20 heroic)\n(will only show raid icon marked players)"
+	WarnAirphase				= "Annonce la phase dans les airs",
+	WarnGroundphaseSoon			= "Montre une pré-alerte pour la phase au sol",
+	TimerNextAirphase			= "Montre un timer pour la prochaine phase dans les airs",
+	TimerNextGroundphase		= "Montre un timer pour la prochaine phase au sol",
+	warnPhase2soon				= "Montre une alerte pour la phase 2 (at ~38%)",
+	warnInstability				= "Montre une alerte pour les stacks de $spell:69766",
+	warnChilledtotheBone		= "Montre une alerte pour les stacks de $spell:70106",
+	warnMysticBuffet			= "Montre une alerte pour les stacks de $spell:70128",
+	AnnounceFrostBeaconIcons	= "Annonce les icones pour les cibles de $spell:70126 dans le chat de raid (requires announce to be enabled and leader/promoted status)",
+	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
+	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	ClearIconsOnAirphase		= "Retire toutes les icones avant la phase d'envol",
+	RangeFrame					= "Montre la fenêtre de portée (10 normal, 20 heroic) (Montre uniquement les icones marquer sur les joueurs)"
 }
 
 L:SetMiscLocalization{
-	YellAirphase	= "Your incursion ends here! None shall survive!",
-	YellPhase2		= "Now, feel my master's limitless power and despair!",
-	BeaconIconSet	= "Frost Beacon icon {rt%d} set on %s",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"--Not currently in use.
+	YellAirphase	= "Votre incursion s'arrête ici",
+	YellPhase2		= "Sentez maintenant le pouvoir infini de mon",
+	BeaconIconSet	= "Icone de Guide de givre {rt%d} mis sur %s",
+	YellPull		= "est stupide d'être venus ici"
 }
 
 ---------------------
