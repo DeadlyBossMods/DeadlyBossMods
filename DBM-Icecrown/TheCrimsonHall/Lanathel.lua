@@ -125,9 +125,13 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(71340) then				--Pact of the Darkfallen
-		self:SetIcon(args.destName, 0)			--Clear icon once you got to where you are supposed to be
+		if self.Options.SetIconOnDarkFallen then
+			self:SetIcon(args.destName, 0)		--Clear icon once you got to where you are supposed to be
+		end
 	elseif args:IsSpellID(71510, 70838) then	--Blood Mirror
-		self:SetIcon(args.destName, 0)
+		if self.Options.BloodMirrorIcon then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
