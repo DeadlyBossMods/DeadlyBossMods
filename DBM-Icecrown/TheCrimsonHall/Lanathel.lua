@@ -30,7 +30,7 @@ local specWarnPactDarkfallen		= mod:NewSpecialWarningYou(71340)
 local specWarnEssenceoftheBloodQueen= mod:NewSpecialWarningYou(71473)
 local specWarnBloodthirst			= mod:NewSpecialWarningYou(71474)
 local specWarnSwarmingShadows		= mod:NewSpecialWarningMove(71266)
-local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, false)
+local specWarnMindConrolled			= mod:NewSpecialWarningTarget(70923, mod:IsTank())
 
 local timerNextInciteTerror			= mod:NewNextTimer(100, 73070)
 local timerFirstBite				= mod:NewCastTimer(15, 71727)
