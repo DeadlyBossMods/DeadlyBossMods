@@ -29,11 +29,10 @@ local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
 local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, mod:IsTank())
 
 local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
-local timerRuneofBlood		= mod:NewTargetTimer(20, 72410, nil, mod:IsTank())
+local timerRuneofBlood		= mod:NewTargetTimer(20, 72410, nil, mod:IsTank() or mod:IsHealer())
 local timerBoilingBlood		= mod:NewBuffActiveTimer(15, 72441)
 local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
 local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
-local timerNextRuneofBlood	= mod:NewCDTimer(25, 72410, nil, mod:IsTank() or mod:IsHealer())
 
 local enrageTimer			= mod:NewBerserkTimer(480)
 
@@ -130,7 +129,8 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(72410) then
-		timerNextRuneofBlood:Start()
+		warnRuneofBlood:Show(args.destName)
+		specwarnRuneofBlood:Show(args.destName)
 	end
 end
 
@@ -193,9 +193,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.3, warnBoilingBloodTargets)
 		end
 	elseif args:IsSpellID(72410) then						-- Rune of Blood
-		warnRuneofBlood:Show(args.destName)
 		timerRuneofBlood:Start(args.destName)
-		specwarnRuneofBlood:Show(args.destName)
 	elseif args:IsSpellID(72737) then						-- Frenzy
 		warnFrenzy:Show()
 	end
