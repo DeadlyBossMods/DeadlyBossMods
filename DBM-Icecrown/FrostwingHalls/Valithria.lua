@@ -32,7 +32,7 @@ local timerPortalsOpen	= mod:NewTimer(10, "timerPortalsOpen", 72483, mod:IsHeale
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
 
-local berserkTimer		= mod:NewBerserkTimer(420)--Seems to exist just kinda funny, the adds spawn rapid fast.
+local berserkTimer		= mod:NewBerserkTimer(360)--Seems to exist just kinda funny, the adds spawn rapid fast.
 
 mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 
