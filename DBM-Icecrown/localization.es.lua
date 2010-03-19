@@ -267,7 +267,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Putricide")
 
 L:SetGeneralLocalization{
-	name = "Professor Putricide"
+	name = "Professor Putricidio"
 }
 
 L:SetWarningLocalization{
@@ -307,7 +307,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("BPCouncil")
 
 L:SetGeneralLocalization{
-	name = "Consejo de Sangre"
+	name = "Concilio de los Príncipes de Sangre"
 }
 
 L:SetWarningLocalization{
@@ -369,7 +369,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Valithria")
 
 L:SetGeneralLocalization{
-	name = "Valithria Caminasuenos"
+	name = "Valithria Caminasueños"
 }
 
 L:SetWarningLocalization{
