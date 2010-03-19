@@ -29,6 +29,7 @@ local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
 local timerLayWaste		= mod:NewBuffActiveTimer(12, 69325)
 local timerNextPortal	= mod:NewCDTimer(46.5, 72483, nil, mod:IsHealer())
 local timerPortalsOpen	= mod:NewTimer(10, "timerPortalsOpen", 72483, mod:IsHealer())
+local timerHealerBuff	= mod:NewBuffActiveTimer(40, 70873)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
 
@@ -109,6 +110,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnBlazingSkeleton then
 			BlazingSkeleton = args.sourceGUID
 			self:TrySetTarget()
+		end
+	elseif args:IsSpellID(70873, 71941) then	--Emerald Vigor/Twisted Nightmares (portal healers)
+		if args:IsPlayer() then
+			timerHealerBuff:Start()
 		end
 	end
 end
