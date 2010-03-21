@@ -390,7 +390,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull		= "Han entrado intrusos en el Sagrario Interior. Apresuraos en acabar con el dragón verde. ¡Dejad solo huesos y tendones para la reanimación!",
-	YellKill		= "¡ESTOY RENOVADA! Ysera haz que estas asquerosas criaturas descansen",
+	YellKill		= "¡ESTOY RENOVADA! Ysera, haz que estas asquerosas criaturas descansen.",
 	YellPortals		= "He abierto un portal al Sueño. Vuestra salvación está dentro, héroes...",
 	YellPhase2		= "Mi fuerza vuelve. ¡Continuad, héroes!"
 }
