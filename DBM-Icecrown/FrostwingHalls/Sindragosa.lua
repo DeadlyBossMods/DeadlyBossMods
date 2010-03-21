@@ -73,7 +73,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(beaconIconTargets)
 	table.wipe(unchainedTargets)
 	unchainedIcons = 7
-	activeBeacons	= false
+	activeBeacons = false
 	if self.Options.RangeFrame then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
@@ -130,7 +130,6 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70126) then
 		beaconTargets[#beaconTargets + 1] = args.destName
-		activeBeacons = true
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
 		end
@@ -231,6 +230,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNextAirphase:Start()
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
+		activeBeacons = true
 		if self.Options.ClearIconsOnAirphase then
 			self:ClearIcons()
 		end
