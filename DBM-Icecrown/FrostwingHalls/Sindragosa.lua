@@ -62,6 +62,7 @@ local beaconIconTargets	= {}
 local unchainedTargets	= {}
 local warned_P2 = false
 local unchainedIcons = 7
+local activeBeacons	= false
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -72,6 +73,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(beaconIconTargets)
 	table.wipe(unchainedTargets)
 	unchainedIcons = 7
+	activeBeacons	= false
 	if self.Options.RangeFrame then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
@@ -128,6 +130,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70126) then
 		beaconTargets[#beaconTargets + 1] = args.destName
+		activeBeacons = true
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
 		end
@@ -201,9 +204,11 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69762) then
-		if self.Options.SetIconOnUnchainedMagic then
+		if self.Options.SetIconOnUnchainedMagic and not activeBeacons then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args:IsSpellID(70126) then
+		activeBeacons = false
 	elseif args:IsSpellID(70127, 72528, 72529, 72530) then
 		if args:IsPlayer() then
 			timerMysticAchieve:Cancel()
