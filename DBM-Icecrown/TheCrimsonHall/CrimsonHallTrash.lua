@@ -6,6 +6,7 @@ mod:SetUsedIcons(1, 2)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED"
 )
 
@@ -54,6 +55,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerRendFlesh:Start(args.destName)
 	end
 end
+
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70451) then
