@@ -104,7 +104,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				timerBloodThirst:Start()--10 seconds on 25 man
 			end
 		end
-	elseif args:IsSpellID(70867, 71473) then	--Essence of the Blood Queen
+	elseif args:IsSpellID(70867, 70879, 71473, 71525) or args:IsSpellID(71530, 71531, 71532, 71533) then	--Essence of the Blood Queen
 		warnEssenceoftheBloodQueen:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnEssenceoftheBloodQueen:Show()
