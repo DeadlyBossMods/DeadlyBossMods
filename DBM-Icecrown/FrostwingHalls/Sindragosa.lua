@@ -120,7 +120,7 @@ local function warnUnchainedTargets()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(69649, 71056, 71057, 71058) then--Frost Breath
+	if args:IsSpellID(69649, 71056, 71057, 71058) or args:IsSpellID(73061, 73062, 73063, 73064) then--Frost Breath
 		warnFrostBreath:Show()
 		timerNextFrostBreath:Start()
 	end
