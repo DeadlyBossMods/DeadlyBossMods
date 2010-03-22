@@ -106,7 +106,9 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
-	timerGooCD:Start(13-delay)
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerGooCD:Start(13-delay)
+	end
 end
 
 function mod:OnCombatEnd()
