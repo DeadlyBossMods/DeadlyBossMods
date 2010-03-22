@@ -25,7 +25,7 @@ local specWarnGastricBloat	= mod:NewSpecialWarningStack(72551, nil, 9)
 local specWarnInhaled3		= mod:NewSpecialWarningStack(71912, mod:IsTank(), 3)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
-local timerVileGas			= mod:NewBuffActiveTimer(6, 71219, nil, mod:IsRanged())
+local timerVileGas			= mod:NewBuffActiveTimer(6, 71218, nil, mod:IsRanged())
 local timerGasSporeCD		= mod:NewNextTimer(40, 69279)		-- Every 40 seconds except after 3rd and 6th cast, then it's 50sec CD
 local timerPungentBlight	= mod:NewNextTimer(33, 71219)		-- 33 seconds after 3rd stack of inhaled
 local timerInhaledBlight	= mod:NewNextTimer(34, 71912)		-- 34 seconds'ish
