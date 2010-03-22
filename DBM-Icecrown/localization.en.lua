@@ -370,13 +370,15 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen	= "Portals open"
+	timerPortalsOpen	= "Portals open",
+	timerSoftEnrage		= "Rapid Adds"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Set icon on Blazing Skeleton (skull)",
 	warnPortalOpen				= "Show warning when Nightmare Portals are opened up",
 	timerPortalsOpen			= "Show timer when Nightmare Portals are opened up",
+	timerSoftEnrage				= "Show timer for soft berserk (rapid adds)",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 

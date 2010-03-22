@@ -33,7 +33,8 @@ local timerHealerBuff	= mod:NewBuffActiveTimer(40, 70873)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
 
-local berserkTimer		= mod:NewBerserkTimer(360)--Seems to exist just kinda funny, the adds spawn rapid fast.
+local timerSoftEnrage	= mod:NewTimer(360, "timerSoftEnrage", 28131)
+local berserkTimer		= mod:NewBerserkTimer(420)
 
 mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 
@@ -47,7 +48,10 @@ local function warnGutSprayTargets()
 end
 
 function mod:OnCombatStart(delay)
-	berserkTimer:Start(-delay)
+	timerSoftEnrage:Start(-delay)
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		berserkTimer:Start(-delay)
+	end
 	self:Portals()
 	BlazingSkeleton = nil
 	table.wipe(GutSprayTargets)
