@@ -4,7 +4,6 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36853)
 mod:RegisterCombat("combat")
-mod:SetMinCombatTime(25)
 mod:SetMinSyncRevision(3712)
 mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
@@ -74,20 +73,20 @@ function mod:OnCombatStart(delay)
 	table.wipe(unchainedTargets)
 	unchainedIcons = 7
 	activeBeacons = false
-	if self.Options.RangeFrame then
+--[[	if self.Options.RangeFrame then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
 		else
 			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
 		end
-	end
+	end--]]
 end
 
-function mod:OnCombatEnd()
+--[[function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-end
+end--]]
 
 do
 	local function sort_by_group(v1, v2)
