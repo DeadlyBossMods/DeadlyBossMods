@@ -54,7 +54,7 @@ mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("SetIconOnUnchainedMagic", true)
 mod:AddBoolOption("ClearIconsOnAirphase", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
-mod:AddBoolOption("RangeFrame")
+--mod:AddBoolOption("RangeFrame")
 
 local beaconTargets		= {}
 local beaconIconTargets	= {}
