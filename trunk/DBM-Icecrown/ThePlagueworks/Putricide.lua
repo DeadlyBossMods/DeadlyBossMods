@@ -41,8 +41,9 @@ local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNea
 local specWarnChokingGasBomb		= mod:NewSpecialWarningSpell(71255, mod:IsTank())
 local specWarnOozeVariable			= mod:NewSpecialWarningYou(70352)		-- Heroic Ability
 local specWarnGasVariable			= mod:NewSpecialWarningYou(70353)		-- Heroic Ability
-local specWarnUnboundPlague			= mod:NewSpecialWarning("specWarnUnboundPlague") -- you have to drop the debuff by staying very close to an other player
-local specWarnNextUnboundPlageSelf	= mod:NewSpecialWarning("specWarnNextPlageSelf") -- you are the acquired target for the Plague, prepare yourself!
+local specWarnUnboundPlague			= mod:NewSpecialWarningYou(72856)--automation feature refuses to work so put generic crap in for this
+--local specWarnUnboundPlague			= mod:NewSpecialWarning("specWarnUnboundPlague") -- you have to drop the debuff by staying very close to an other player
+--local specWarnNextUnboundPlageSelf	= mod:NewSpecialWarning("specWarnNextPlageSelf", false) -- you are the acquired target for the Plague, prepare yourself!
 
 local timerGaseousBloat				= mod:NewTargetTimer(20, 70672)			-- Duration of debuff
 local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)				-- Approx
@@ -66,7 +67,7 @@ mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
 
 mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buff
-mod:AddBoolOption("NextUnboundPlagueTargetIcon")		-- icon on the acquired target (will be requested via Sync)
+mod:AddBoolOption("NextUnboundPlagueTargetIcon", false)		-- icon on the acquired target (will be requested via Sync)
 
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 
@@ -97,7 +98,7 @@ function mod:OnCombatStart(delay)
 	phase = 1
 end
 
-function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2 people in 25 man
+function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2/3 people in 25 man
 	local targetname = self:GetBossTarget(36678)
 	if not targetname then return end
 		if self.Options.MalleableGooIcon then
@@ -119,7 +120,7 @@ function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of
 	end
 end
 
-local function isDebuffed(unitId)
+--[[local function isDebuffed(unitId)
 	local i = 1
 	local spellId = select(11, UnitDebuff(unitId, i))
 	while spellId do
@@ -172,7 +173,7 @@ do
 			end
 		end
 	end
-end
+end--]]
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70351, 71966, 71967, 71968) then
@@ -285,8 +286,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 2, 20)
 		end
 		if args:IsPlayer() then
-			specWarnUnboundPlague:Schedule(10)
-			self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")		-- we acquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
+			specWarnUnboundPlague:Show()
+			--specWarnUnboundPlague:Schedule(10)
+			--self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")		-- we acquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
 		end
 	end
 end
@@ -310,10 +312,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(72855, 72856) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
-		if args:IsPlayer() then
+		--[[if args:IsPlayer() then
 			specWarnUnboundPlague:Cancel()
 			self:UnscheduleMethod("AcquireTargetForUnboundPlague")
-		end
+		end--]]
 		if self.Options.UnboundPlagueIcon then
 			mod:SetIcon(args.destName, 0)
 		end
