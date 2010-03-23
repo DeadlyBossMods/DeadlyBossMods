@@ -45,7 +45,7 @@ local timerInstability			= mod:NewBuffActiveTimer(5, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
 local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
 local timerNextMysticBuffet		= mod:NewNextTimer(6, 70128)
-local timerMysticAchieve		= mod:NewAchievementTimer(24, 4620, "achievementMystic")--May need tweaks, will also need modifying for 3.3.3 nerf to achievement
+local timerMysticAchieve		= mod:NewAchievementTimer(30, 4620, "achievementMystic")
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
