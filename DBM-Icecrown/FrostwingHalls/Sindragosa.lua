@@ -54,7 +54,7 @@ mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("SetIconOnUnchainedMagic", true)
 mod:AddBoolOption("ClearIconsOnAirphase", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
---mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("RangeFrame")
 
 local beaconTargets		= {}
 local beaconIconTargets	= {}
@@ -73,20 +73,20 @@ function mod:OnCombatStart(delay)
 	table.wipe(unchainedTargets)
 	unchainedIcons = 7
 	activeBeacons = false
---[[	if self.Options.RangeFrame then
+	if self.Options.RangeFrame then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
 		else
 			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
 		end
-	end--]]
+	end
 end
 
---[[function mod:OnCombatEnd()
+function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-end--]]
+end
 
 do
 	local function sort_by_group(v1, v2)
