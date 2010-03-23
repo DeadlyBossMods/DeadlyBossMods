@@ -376,13 +376,15 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen	= "Portale offen"
+	timerPortalsOpen	= "Portale offen",
+	timerSoftEnrage		= "Schnelle Adds"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton		= "Setze Zeichen auf Loderndes Skelett (Totenkopf)",
 	warnPortalOpen				= "Zeige Warnung wenn Alptraumportale geöffnet sind",
 	timerPortalsOpen			= "Zeige Timer wenn Alptraumportale geöffnet sind",
+	timerSoftEnrage				= "Zeige Timer für Softberserker (schnelle Adds)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
