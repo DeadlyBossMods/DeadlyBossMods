@@ -374,7 +374,8 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnCorrosion	= "%s en >%s< (%s)",
-	warnPortalOpen	= "Se abren los portales"
+	warnPortalOpen	= "Se abren los portales",
+	timerSoftEnrage		= "Salen adds más rapido"
 }
 
 L:SetTimerLocalization{
@@ -385,6 +386,7 @@ L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Poner icono en Esqueleto llameante (calavera)",
 	warnPortalOpen				= "Mostrar aviso cuando $spell:72483 se abren",
 	timerPortalsOpen			= "Mostrar tiempo para la apertura de Portal Pesadilla",
+	timerSoftEnrage				= "Mostrar tiempo para soft enrage (salen adds más rápido)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -436,10 +438,10 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAirphase	= "Your incursion ends here! None shall survive!",--translate
-	YellPhase2		= "Now, feel my master's limitless power and despair!",--translate
+	YellAirphase	= "¡Aquí termina vuestra incursión! ¡Nadie sobrevivirá!",
+	YellPhase2		= "¡Ahora sentid el poder sin fin de mi maestro y desapareced!",
 	BeaconIconSet	= "Señal de Escarcha, icono {rt%d} en %s",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"--translate
+	YellPull		= "¡Estáis locos por haber venido aquí! Los vientos helados de Rasganorte consumirán vuestras almas"
 }
 
 ---------------------
