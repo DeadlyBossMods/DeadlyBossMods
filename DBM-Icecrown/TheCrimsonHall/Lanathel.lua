@@ -22,6 +22,7 @@ local warnSwarmingShadows			= mod:NewTargetAnnounce(71266, 4)
 local warnInciteTerror				= mod:NewSpellAnnounce(73070, 3)
 local warnVampricBite				= mod:NewTargetAnnounce(71727, 2)
 local warnMindControlled			= mod:NewTargetAnnounce(70923, 4)
+local warnBloodthirstSoon			= mod:NewSoonAnnounce(71474, 2)
 local warnBloodthirst				= mod:NewTargetAnnounce(71474, 3, nil, false)
 local warnEssenceoftheBloodQueen	= mod:NewTargetAnnounce(71473, 3, nil, false)
 
@@ -110,8 +111,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnEssenceoftheBloodQueen:Show()
 			if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
 				timerEssenceoftheBloodQueen:Start(75)--75 seconds on 10 man
+				warnBloodthirstSoon:Schedule(70)
 			else
 				timerEssenceoftheBloodQueen:Start()--60 seconds on 25 man
+				warnBloodthirstSoon:Schedule(55)
 			end
 		end
 	elseif args:IsSpellID(70923) then
