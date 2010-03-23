@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36678)
 mod:RegisterCombat("yell", L.YellPull)
-mod:SetMinSyncRevision(3837)
+mod:SetMinSyncRevision(3860)
 mod:SetUsedIcons(1, 2, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -67,7 +67,7 @@ mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
 
 mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buff
-mod:AddBoolOption("NextUnboundPlagueTargetIcon", false)		-- icon on the acquired target (will be requested via Sync)
+--mod:AddBoolOption("NextUnboundPlagueTargetIcon")		-- icon on the acquired target (will be requested via Sync)
 
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 
