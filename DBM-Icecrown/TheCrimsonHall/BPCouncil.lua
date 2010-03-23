@@ -78,7 +78,7 @@ function mod:ShockVortexTarget()	--not yet tested.
 end
 
 function mod:TrySetTarget()
-	if DBM:GetRaidRank() >= 1 then
+	if DBM:GetRaidRank() >= 1 and self.Options.ActivePrinceIcon then
 		for i = 1, GetNumRaidMembers() do
 			if UnitGUID("raid"..i.."target") == activePrince then
 				activePrince = nil
