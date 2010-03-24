@@ -320,7 +320,8 @@ L:SetOptionLocalization{
 	specWarnVortex			= "Show special warning for $spell:72037 on you",
 	specWarnVortexNear		= "Show special warning for $spell:72037 near you",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)"
+	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)",
+	RangeFrame				= "Show range frame (12 yards)"
 }
 
 L:SetMiscLocalization{
@@ -346,9 +347,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
-	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
-	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
+	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
+	RangeFrame				= "Show range frame (8 yards)"
 }
 
 L:SetMiscLocalization{

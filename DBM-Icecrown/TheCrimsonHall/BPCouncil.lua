@@ -37,7 +37,7 @@ local specWarnVortex			= mod:NewSpecialWarning("specWarnVortex")
 local specWarnVortexNear		= mod:NewSpecialWarning("specWarnVortexNear")
 local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(72039)
 local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
-local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 10)
+local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 6)
 
 local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch", 70952)	-- every 46-47seconds
 local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943, nil, false)	-- usually every 10 seconds but sometimes more
@@ -50,6 +50,7 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 local soundEmpoweredFlames		= mod:NewSound(72040)
 mod:AddBoolOption("EmpoweredFlameIcon", true)
 mod:AddBoolOption("ActivePrinceIcon", false)
+mod:AddBoolOption("RangeFrame", true)
 
 local activePrince
 
@@ -58,6 +59,15 @@ function mod:OnCombatStart(delay)
 	warnTargetSwitchSoon:Schedule(42-delay)
 	timerTargetSwitch:Start(-delay)
 	activePrince = nil
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(12)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:ShockVortexTarget()	--not yet tested.
@@ -135,7 +145,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72999) then	--Shadow Prison (hard mode)
 		if args:IsPlayer() then
 			timerShadowPrison:Start()
-			if (args.amount or 1) >= 10 then	--Placeholder right now, might use a different value
+			if (args.amount or 1) >= 6 then	--Placeholder right now, might use a different value
 				specWarnShadowPrison:Show(args.amount)
 			end
 		end
