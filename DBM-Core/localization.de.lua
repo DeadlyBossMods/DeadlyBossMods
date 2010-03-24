@@ -181,7 +181,7 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Spezialwarnung"
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Eine %d-m-Abstacksprüfung wird in dieser Zone nicht unterstützt.\nUnterstützte Abstände sind 10, 11, 15 und 28 m."
 
 DBM_ARROW_MOVABLE					= "Pfeil beweglich"
-
+DBM_ARROW_NO_RAIDGROUP				= "Diese Funktion steht nur in Schlachtzügen und innerhalb von Instanzen zu Verfügung." 
 DBM_ARROW_ERROR_USAGE	= {
 	"Benutzung von DBM-Arrow:",
 	"/dbm arrow <x> <y>  erzeugt einen Pfeil, der auf bestimmte Koordinaten zeigt (0 < x/y < 100)",
