@@ -728,6 +728,10 @@ SlashCmdList["DEADLYBOSSMODS"] = function(msg)
 		if timer > 1 then DBM:Schedule(timer - 1, SendChatMessage, DBM_CORE_ANNOUNCE_PULL:format(1), channel) end
 		DBM:Schedule(timer, SendChatMessage, DBM_CORE_ANNOUNCE_PULL_NOW, channel)
 	elseif cmd:sub(1, 5) == "arrow" then
+		if not DBM:IsInRaid() then
+			DBM:AddMsg(DBM_ARROW_NO_RAIDGROUP)
+			return false
+		end
 		local x, y = string.split(" ", cmd:sub(6):trim())
 		xNum, yNum = tonumber(x or ""), tonumber(y or "")
 		local success
