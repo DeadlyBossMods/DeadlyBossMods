@@ -181,7 +181,7 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Special Warning"
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "A %d yard range check is not supported in this zone.\nSupported ranges are 10, 11, 15 and 28 yard."
 
 DBM_ARROW_MOVABLE					= "Arrow movable"
-
+DBM_ARROW_NO_RAIDGROUP				= "This function only works in raid groups and within raid instances."
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow usage:",
 	"/dbm arrow <x> <y>  creates an arrow that points to a specific locataion (0 < x/y < 100)",
@@ -189,3 +189,5 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow hide  hides the arrow",
 	"/dbm arrow move  makes the arrow movable",
 }
+
+
