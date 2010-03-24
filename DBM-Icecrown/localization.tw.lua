@@ -325,7 +325,8 @@ L:SetOptionLocalization{
 	specWarnVortex			= "當你中了$spell:72037時顯示特別警告",
 	specWarnVortexNear		= "當你附近的人中了$spell:72037時顯示特別警告",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)"
+	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)",
+	RangeFrame			= "顯示距離框 (12碼)"
 }
 
 L:SetMiscLocalization{
@@ -353,7 +354,8 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
-	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
+	RangeFrame			= "顯示距離框 (8碼)"
 }
 
 L:SetMiscLocalization{
