@@ -322,7 +322,8 @@ L:SetOptionLocalization{
 	specWarnVortex			= "Спец-предупреждение, когда $spell:72037 на вас",
 	specWarnVortexNear		= "Спец-предупреждение, когда $spell:72037 около вас",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (череп)"
+	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (череп)",
+	RangeFrame				= "Показывать окно допустимой дистанции (12 м)"
 }
 
 L:SetMiscLocalization{
@@ -348,9 +349,10 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
-	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
-	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
+	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
+	RangeFrame				= "Показывать окно допустимой дистанции (8 м)"
 }
 
 L:SetMiscLocalization{
@@ -372,13 +374,15 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen	= "Открытие порталов"
+	timerPortalsOpen	= "Открытие порталов",
+	timerSoftEnrage		= "Мягкий берсерк"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Устанавливать метку на Исторгающего пламя скелета (череп)",
 	warnPortalOpen				= "Предупреждение об открытии порталов",
 	timerPortalsOpen			= "Отсчет времени для открытия порталов",
+	timerSoftEnrage				= "Отсчет времени до мягкого берсерка",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
