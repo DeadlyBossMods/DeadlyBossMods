@@ -190,7 +190,7 @@ L:SetOptionLocalization{
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	MarkCastIcon			= "$spell:72444 대상에게 공격대 아이콘 설정",	
-	RangeFrame				= "거리 프레임 보기 (12 미터)",
+	RangeFrame				= "거리 창 보기 (12 미터)",
 	RunePowerFrame			= "보스 체력 바와 함께 $spell:72371 바 보기",
 	BeastIcons				= "피의 괴물 공격대 아이콘 설정"	
 }
@@ -217,7 +217,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	InhaledBlight			= "$spell:71912 경고 보기",
-	RangeFrame				= "거리 프레임 보기(8 미터)",	
+	RangeFrame				= "거리 창 보기(8 미터)",	
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
 }
@@ -322,7 +322,8 @@ L:SetOptionLocalization{
 	specWarnVortex				= "당신이 $spell:72037에 해당 될 경우 특수 경고 보기",
 	specWarnVortexNear			= "당신 주변에 $spell:72037가 있을 경우 특수 경고 보기",	
 	EmpoweredFlameIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon			= "활성화 된 공작에게 공격대 아이콘 설정하기 (해골)"
+	ActivePrinceIcon			= "활성화 된 공작에게 공격대 아이콘 설정하기 (해골)",
+	RangeFrame					= "거리 창 보기 (12 m)"
 }
 
 L:SetMiscLocalization{
@@ -349,14 +350,15 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
-	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
-	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838)
+	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
+	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
+	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
+	RangeFrame				= "거리 창 보기 (8 m)"
 }
 
 L:SetMiscLocalization{
---	SwarmingShadows				= "어둠이 쌓이더니 (%S+)에게 몰려듭니다!", --"Shadows amass and swarm around (%S+)!"
-	SwarmingShadows				= "어둠이 쌓이더니 (%S+)",
+--	SwarmingShadows			= "어둠이 쌓이더니 (%S+)에게 몰려듭니다!", --"Shadows amass and swarm around (%S+)!"
+	SwarmingShadows			= "어둠이 쌓이더니 (%S+)",
 }
 
 -----------------------------
@@ -430,7 +432,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 아이콘 제거",
-	RangeFrame					= "거리 프레임 보기(일반 10m, 영웅 20m) (해당 플레이어만 보임)"
+	RangeFrame					= "거리 창 보기(일반 10m, 영웅 20m) (해당 플레이어만 보임)"
 
 }
 
