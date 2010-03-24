@@ -24,7 +24,6 @@ local warnMark				= mod:NewTargetAnnounce(72444, 4)
 local warnBoilingBlood		= mod:NewTargetAnnounce(72441, 2, nil, mod:IsHealer())
 local warnRuneofBlood		= mod:NewTargetAnnounce(72410, 3, nil, mod:IsTank() or mod:IsHealer())
 
-local specWarnMarkCast		= mod:NewSpecialWarningYou(72444, false)--Experimental
 local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
 local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, mod:IsTank())
 
@@ -40,7 +39,6 @@ mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("RunePowerFrame", true, "misc")
 mod:AddBoolOption("BeastIcons", true)
 mod:AddBoolOption("BoilingBloodIcons", false)
-mod:AddBoolOption("MarkCastIcon", false)
 mod:RemoveOption("HealthFrame")
 
 local warned_preFrenzy = false
@@ -84,17 +82,6 @@ function mod:OnCombatEnd()
 	DBM.BossHealth:Clear()
 end
 
-function mod:MarkTarget()
-	local targetname = self:GetBossTarget(37813)
-	if not targetname then return end
-	if self.Options.MarkCastIcon then
-		self:SetIcon(targetname, 8, 1.2)
-	end
-	if targetname == UnitName("player") then
-		specWarnMarkCast:Show(targetname)
-	end
-end
-
 do	-- add the additional Rune Power Bar
 	local last = 0
 	local function getRunePowerPercent()
@@ -122,8 +109,6 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(73058, 72378) then	-- Blood Nova (only 2 cast IDs, 4 spell damage IDs, and one dummy)
 		warnBloodNova:Show()
 		timerBloodNova:Start()
-	elseif args:IsSpellID(72293) then		-- Mark of the Fallen Champion
-		self:ScheduleMethod(0.3, "MarkTarget")
 	end
 end
 
