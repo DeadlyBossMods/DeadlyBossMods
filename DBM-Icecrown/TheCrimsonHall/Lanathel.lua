@@ -49,6 +49,7 @@ local soundSwarmingShadows			= mod:NewSound(71266)
 mod:AddBoolOption("BloodMirrorIcon", false)
 mod:AddBoolOption("SwarmingShadowsIcon", true)
 mod:AddBoolOption("SetIconOnDarkFallen", true)
+mod:AddBoolOption("RangeFrame", true)
 
 local pactTargets = {}
 local pactIcons = 6
@@ -67,10 +68,19 @@ function mod:OnCombatStart(delay)
 	timerNextSwarmingShadows:Start(-delay)
 	table.wipe(pactTargets)
 	pactIcons = 6
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(8)
+	end
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
 		timerNextInciteTerror:Start(124-delay)
 	else
 		timerNextInciteTerror:Start(127-delay)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 
