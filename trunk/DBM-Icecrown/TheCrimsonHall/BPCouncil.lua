@@ -28,6 +28,7 @@ local warnTargetSwitchSoon		= mod:NewAnnounce("WarnTargetSwitchSoon", 2, 70952)
 local warnConjureFlames			= mod:NewCastAnnounce(71718, 2)
 local warnEmpoweredFlamesCast	= mod:NewCastAnnounce(72040, 3)
 local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040, 4)
+local warnGliteringSparks		= mod:NewTargetAnnounce(72798, 2)
 local warnShockVortex			= mod:NewTargetAnnounce(72037, 3)				-- 1,5sec cast
 local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039, 4)					-- 4,5sec cast
 local warnKineticBomb			= mod:NewSpellAnnounce(72053, 3)
@@ -42,8 +43,9 @@ local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 6)
 local timerTargetSwitch			= mod:NewTimer(47, "TimerTargetSwitch", 70952)	-- every 46-47seconds
 local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943, nil, false)	-- usually every 10 seconds but sometimes more
 local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)				-- every 20-30 seconds but never more often than every 20sec
+local timerGlitteringSparksCD	= mod:NewCDTimer(20, 72798)				-- This is pretty nasty on heroic
 local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6
-local timerShadowPrison			= mod:NewBuffActiveTimer(10, 72999)		--Hard mode debuff
+local timerShadowPrison			= mod:NewBuffActiveTimer(10, 72999)		-- Hard mode debuff
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
@@ -53,12 +55,20 @@ mod:AddBoolOption("ActivePrinceIcon", false)
 mod:AddBoolOption("RangeFrame", true)
 
 local activePrince
+local glitteringSparksTargets	= {}
+
+local function warnGlitteringSparksTargets()
+	warnGliteringSparks:Show(table.concat(glitteringSparksTargets, "<, >"))
+	table.wipe(glitteringSparksTargets)
+	timerGlitteringSparksCD:Start()
+end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	warnTargetSwitchSoon:Schedule(42-delay)
 	timerTargetSwitch:Start(-delay)
 	activePrince = nil
+	table.wipe(glitteringSparksTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(12)
 	end
@@ -149,6 +159,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnShadowPrison:Show(args.amount)
 			end
 		end
+	elseif args:IsSpellID(71807, 72796, 72797, 72798) then	-- Glittering Sparks(Dot/slow, dangerous on heroic during valanaar)
+		glitteringSparksTargets[#glitteringSparksTargets + 1] = args.destName
+		self:Unschedule(warnGlitteringSparksTargets)
+		self:Schedule(0.3, warnGlitteringSparksTargets)
 	end
 end
 
