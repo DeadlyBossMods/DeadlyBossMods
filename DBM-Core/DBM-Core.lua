@@ -610,7 +610,7 @@ do
 		end
 		
 		-- clean up sync spam timers and auto respond spam blockers
-		-- TODO: optimize (but how?); using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than one or two entries...
+		-- TODO: optimize this; using next(t, k) all the time on nearly empty hash tables is not a good idea...doesn't really matter here as modSyncSpam only very rarely contains more than 4 entries...
 		local k, v = next(modSyncSpam, nil)
 		if v and (time - v > 2.5) then
 			modSyncSpam[k] = nil
