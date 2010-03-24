@@ -291,14 +291,16 @@ L:SetOptionLocalization{
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
 	MalleableGooIcon			= "Poner icono en el primero objetivo de $spell:72295",
 	NextUnboundPlagueTargetIcon	= "Poner icono en el siguiente objetivo de $spell:72856",
-	YellOnMalleableGoo			= "Gritar cuando tengas $spell:72295",	
+	YellOnMalleableGoo			= "Gritar cuando tengas $spell:72295",
+	YellOnUnbound				= "Gritar cuando tengas $spell:72856",	
 	specWarnUnboundPlague		= "Mostrar aviso especial para transferencia de $spell:72856",
 	specWarnNextPlageSelf		= "Mostrar aviso especial cuando seas el próximo objetivo de $spell:72856",
 }
 
 L:SetMiscLocalization{
 	YellPull	= "¡Buenas noticias, amigos! Creo que he perfeccionado una plaga que destruirá toda la vida en Azeroth.",
-	YellMalleable	= "¡Moco maleable va hacia mi!"
+	YellMalleable	= "¡Moco maleable va hacia mi!",
+	YellUnbound		= "¡Peste desatada en mi!"
 }
 
 ----------------------------
@@ -358,11 +360,13 @@ L:SetOptionLocalization{
 	SetIconOnDarkFallen			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
-	RangeFrame					= "Mostrar distancia (8 yardas)"
+	RangeFrame					= "Mostrar distancia (8 yardas)",
+	YellOnFrenzy				= "Gritar cuando tengas $spell:71474"
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "¡Las sombras se acumulan alrededor de (%S+)!"
+	SwarmingShadows			= "¡Las sombras se acumulan alrededor de (%S+)!",
+	YellFrenzy				= "¡Tengo hambre!"
 }
 
 -----------------------------
