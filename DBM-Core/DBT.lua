@@ -934,7 +934,9 @@ do
 		local tex2 = frame.tex2
 		tex1:SetTexture(self.owner.options.Texture)
 		tex2:SetTexture(self.owner.options.Texture)
-		tex1:SetTexCoordModifiesRect(true)
+		-- tex1:SetTexCoordModifiesRect(true)  
+		tex1:SetHorizTile(true)
+		tex1:SetVertTile(true)
 		tex1:SetTexCoord(0, 0.5, 0, 1)
 	end
 end
