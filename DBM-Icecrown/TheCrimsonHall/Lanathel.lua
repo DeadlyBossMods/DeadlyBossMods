@@ -50,6 +50,7 @@ mod:AddBoolOption("BloodMirrorIcon", false)
 mod:AddBoolOption("SwarmingShadowsIcon", true)
 mod:AddBoolOption("SetIconOnDarkFallen", true)
 mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("YellOnFrenzy", false, "announce")
 
 local pactTargets = {}
 local pactIcons = 6
@@ -109,6 +110,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBloodthirst:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBloodthirst:Show()
+			if self.Options.YellOnFrenzy then
+				SendChatMessage(L.YellFrenzy, "SAY")
+			end
 			if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
 				timerBloodThirst:Start(15)--15 seconds on 10 man
 			else

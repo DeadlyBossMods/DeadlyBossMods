@@ -70,6 +70,7 @@ mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buf
 --mod:AddBoolOption("NextUnboundPlagueTargetIcon")		-- icon on the acquired target (will be requested via Sync)
 
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
+mod:AddBoolOption("YellOnUnbound", true, "announce")
 
 local warned_preP2 = false
 local warned_preP3 = false
@@ -107,7 +108,7 @@ function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of
 	if targetname == UnitName("player") then
 		specWarnMalleableGoo:Show()
 		if self.Options.YellOnMalleableGoo then
-			SendChatMessage(L.YellMalleable, "YELL")
+			SendChatMessage(L.YellMalleable, "SAY")
 		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
@@ -289,6 +290,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnUnboundPlague:Show()
 			--specWarnUnboundPlague:Schedule(10)
 			--self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")		-- we acquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
+			if self.Options.YellOnUnbound then
+				SendChatMessage(L.YellUnbound, "SAY")
+			end
 		end
 	end
 end
