@@ -283,14 +283,16 @@ L:SetOptionLocalization{
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
 	MalleableGooIcon			= "Set icon on first $spell:72295 target",
 	NextUnboundPlagueTargetIcon	= "Set icon on next $spell:72856 target",
-	YellOnMalleableGoo			= "Yell on $spell:72295",	
+	YellOnMalleableGoo			= "Yell on $spell:72295",
+	YellOnUnbound				= "Yell on $spell:72856",
 	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
 	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
 }
 
 L:SetMiscLocalization{
 	YellPull		= "Good news, everyone! I think I've perfected a plague that will destroy all life on Azeroth!",
-	YellMalleable	= "Malleable Goo on me!"
+	YellMalleable	= "Malleable Goo on me!",
+	YellUnbound		= "Unbound Plague on me!"
 }
 
 ----------------------------
@@ -350,11 +352,13 @@ L:SetOptionLocalization{
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
-	RangeFrame				= "Show range frame (8 yards)"
+	RangeFrame				= "Show range frame (8 yards)",
+	YellOnFrenzy			= "Yell on $spell:71474"
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Shadows amass and swarm around (%S+)!"
+	SwarmingShadows			= "Shadows amass and swarm around (%S+)!",
+	YellFrenzy				= "I'm hungry!"
 }
 
 -----------------------------

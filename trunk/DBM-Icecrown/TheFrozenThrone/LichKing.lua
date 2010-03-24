@@ -111,7 +111,7 @@ function mod:DefileTarget()
 	if targetname == UnitName("player") then
 		specWarnDefileCast:Show()
 		if self.Options.YellOnDefile then
-			SendChatMessage(L.YellDefile, "YELL")
+			SendChatMessage(L.YellDefile, "SAY")
 		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
@@ -142,7 +142,7 @@ function mod:TrapTarget()
 	if targetname == UnitName("player") then
 		specWarnTrap:Show()
 		if self.Options.YellOnTrap then
-			SendChatMessage(L.YellTrap, "YELL")
+			SendChatMessage(L.YellTrap, "SAY")
 		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
