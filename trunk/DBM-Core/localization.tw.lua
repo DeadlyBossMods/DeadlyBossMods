@@ -179,6 +179,7 @@ DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED		= "在此區域中不支援%d碼的距離
 
 DBM_ARROW_MOVABLE				= "可移動箭頭"
 
+DBM_ARROW_NO_RAIDGROUP				= "此功能只能作用於團隊及處身團隊副本中。"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 用法:",
 	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(0 < x/y < 100)",
