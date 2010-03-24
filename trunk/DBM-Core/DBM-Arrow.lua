@@ -81,6 +81,14 @@ do
 	end
 end
 
+-- GetPlayerFacing seems to return values between -pi and pi instead of 0 - 2pi sometimes since 3.3.3
+local GetPlayerFacing = function(...)
+	local result = GetPlayerFacing(...)
+	if result < 0 then
+		result = result + pi2
+	end
+	return result
+end
 
 ------------------------
 --  Update the arrow  --
