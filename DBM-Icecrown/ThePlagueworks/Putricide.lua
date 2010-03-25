@@ -52,6 +52,7 @@ local timerChokingGasBombCD			= mod:NewNextTimer(35.5, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(19, 71615)
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)				-- 10 to 11
+local timerUnboundPlagueCD			= mod:NewNextTimer(60, 72856)
 local timerUnboundPlague			= mod:NewBuffActiveTimer(10, 72856)		-- Heroic Ability: we can't keep the debuff 60 seconds, so we have to switch at 10 seconds. Otherwise the debuff does to much damage!
 
 -- buffs from "Drink Me"
@@ -97,6 +98,9 @@ function mod:OnCombatStart(delay)
 	warned_preP2 = false
 	warned_preP3 = false
 	phase = 1
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerUnboundPlagueCD:Start(10-delay)
+	end
 end
 
 function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2/3 people in 25 man
@@ -225,6 +229,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnChokingGasBomb:Show()
 		specWarnChokingGasBomb:Show()
 		timerChokingGasBombCD:Start()
+	elseif args:IsSpellID(72855, 72856) then
+		timerUnboundPlagueCD:Start()
 	elseif args:IsSpellID(72615, 72295, 74280, 74281) then
 		warnMalleableGoo:Show()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
@@ -282,7 +288,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, warnGasVariableTargets)
 	elseif args:IsSpellID(72855, 72856) then			 -- Unbound Plague
 		warnUnboundPlague:Show(args.destName)
-		timerUnboundPlague:Start(args.destName)
+		timerUnboundPlague:Start()
 		if self.Options.UnboundPlagueIcon then
 			self:SetIcon(args.destName, 2, 20)
 		end
