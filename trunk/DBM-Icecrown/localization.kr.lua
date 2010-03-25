@@ -294,7 +294,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellPull					= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!",
 	YellMalleable				= "나에게 통통이~!",
-	YellUnbound					= "나에게 통통이~! 도망!"	
+	YellUnbound					= "나에게 역병~! 이리오삼~!"	
 }
 
 ----------------------------
