@@ -363,7 +363,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	SwarmingShadows			= "Schatten sammeln sich und schwärmen um (%S+)!",
-	YellFrenzy				= "I'm hungry!"	-- to be translated
+	YellFrenzy				= "Ich bin hungrig!"
 }
 
 -----------------------------
