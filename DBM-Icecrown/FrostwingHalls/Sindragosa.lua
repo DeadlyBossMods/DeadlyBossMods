@@ -41,6 +41,7 @@ local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase", 43810)
 local timerNextFrostBreath		= mod:NewNextTimer(22, 71056, nil, mod:IsTank() or mod:IsHealer())
 local timerNextBlisteringCold	= mod:NewCDTimer(69, 70123)
 local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
+local timerUnchainedMagic		= mod:NewBuffActiveTimer(30, 69762)
 local timerInstability			= mod:NewBuffActiveTimer(5, 69766)
 local timerChilledtotheBone		= mod:NewBuffActiveTimer(8, 70106)
 local timerMysticBuffet			= mod:NewBuffActiveTimer(8, 70128)
@@ -115,6 +116,7 @@ end
 
 local function warnUnchainedTargets()
 	warnUnchainedMagic:Show(table.concat(unchainedTargets, "<, >"))
+	timerUnchainedMagic:Start()
 	table.wipe(unchainedTargets)
 	unchainedIcons = 7
 end
