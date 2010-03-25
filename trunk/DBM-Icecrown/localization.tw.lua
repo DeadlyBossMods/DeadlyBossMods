@@ -189,7 +189,6 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	warnFrenzySoon			= "為狂亂顯示預先警告 (大約33%)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon			= "為施放$spell:72444時的目標設置標記\n(試驗中，可能會錯誤地標記坦克)",
 	RangeFrame			= "顯示距離框 (12碼)",
 	RunePowerFrame			= "顯示首領血量及$spell:72371條",
 	BeastIcons			= "為血獸設置標記"
@@ -286,7 +285,8 @@ L:SetOptionLocalization{
 	UnboundPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
 	MalleableGooIcon		= "為第一個中$spell:72295的目標設置標記",
 	NextUnboundPlagueTargetIcon	= "為下一個$spell:72856的目標設置標記",
-	YellOnMalleableGoo		= "當你中了$spell:72295時大喊",	
+	YellOnMalleableGoo		= "當你中了$spell:72295時大喊",
+	YellOnUnbound			= "當你中了$spell:72856時大喊",
 	specWarnUnboundPlague		= "為$spell:72856的轉移顯示特別警告",
 	specWarnNextPlageSelf		= "當你是下一個$spell:72856的目標時顯示特別警告",
 	
@@ -295,7 +295,8 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull			= "大夥聽著，好消息!我想我研發出一種瘟疫足以毀滅艾澤拉斯上所有的生命!",
-	YellMalleable			= "我中了延展黏液!"
+	YellMalleable			= "我中了延展黏液!",
+	YellUnbound			= "我中了肆虐瘟疫!"
 }
 
 ----------------------------
@@ -355,11 +356,13 @@ L:SetOptionLocalization{
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
-	RangeFrame			= "顯示距離框 (8碼)"
+	RangeFrame			= "顯示距離框 (8碼)",
+	YellOnFrenzy			= "當你$spell:71474時大喊"
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "暗影聚集並旋繞在(%S+)四周!"
+	SwarmingShadows			= "暗影聚集並旋繞在(%S+)四周!",
+	YellFrenzy			= "我餓了!"
 }
 
 -----------------------------
