@@ -193,7 +193,6 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Zeige Zeit bis Kampfbeginn",
 	warnFrenzySoon			= "Zeige Vorwarnung für Wahnsinn (bei ~33%)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon		= "Setze Zeichen auf $spell:72444-Ziele während Zauber\n(Experimentell, kann den Tank fälschlicherweise markieren)",
 	RangeFrame				= "Zeige Abstandsfenster (12 m)",
 	RunePowerFrame			= "Zeige Boss-Leben und Leiste für $spell:72371",
 	BeastIcons				= "Setze Zeichen auf Blutbestien"
@@ -290,13 +289,15 @@ L:SetOptionLocalization{
 	MalleableGooIcon			= "Setze Zeichen auf erstes Ziel von $spell:72295",
 	NextUnboundPlagueTargetIcon	= "Setze Zeichen auf nächstes Ziel von $spell:72856",
 	YellOnMalleableGoo			= "Schreie bei $spell:72295",	
+	YellOnUnbound				= "Schreie bei $spell:72856",
 	specWarnUnboundPlague		= "Zeige Spezialwarnung für Übertragung von $spell:72856",
 	specWarnNextPlageSelf		= "Zeige Spezialwarnung wenn du in der Nähe des Ziels von $spell:72856 bist"
 }
 
 L:SetMiscLocalization{
 	YellPull	= "Gute Nachricht Freunde! Ich habe eine Seuche perfektioniert, die alles Leben Azeroths auslöscht!",
-	YellMalleable	= "Formbarer Schleim auf mir!"
+	YellMalleable	= "Formbarer Schleim auf mir!",
+	YellUnbound		= "Entfesselte Seuche auf mir!"
 }
 
 ----------------------------
@@ -356,11 +357,13 @@ L:SetOptionLocalization{
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
-	RangeFrame				= "Zeige Abstandsfenster (8 m)"
+	RangeFrame				= "Zeige Abstandsfenster (8 m)",
+	YellOnFrenzy			= "Schreie bei $spell:71474"
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Schatten sammeln sich und schwärmen um (%S+)!"
+	SwarmingShadows			= "Schatten sammeln sich und schwärmen um (%S+)!",
+	YellFrenzy				= "I'm hungry!"	-- to be translated
 }
 
 -----------------------------
