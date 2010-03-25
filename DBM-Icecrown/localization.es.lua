@@ -194,7 +194,6 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Mostrar tiempo para inicio del combate",
 	warnFrenzySoon	= "Mostrar preaviso para el Frenesí (at ~33%)",
 	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon		= "Poner iconos en los objetivos de $spell:72444 durante el casteo",
 	RangeFrame		= "Mostrar distancia",
 	RunePowerFrame			= "Mostrar barra de vida + barra de $spell:72371",
 	BeastIcons				= "Poner iconos en las Bestias de Sangre"
@@ -380,8 +379,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnCorrosion	= "%s en >%s< (%s)",
-	warnPortalOpen	= "Se abren los portales",
-	timerSoftEnrage		= "Salen adds más rapido"
+	warnPortalOpen	= "Se abren los portales"
 }
 
 L:SetTimerLocalization{
