@@ -189,7 +189,7 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "전투 시작 타이머 보기",
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon			= "$spell:72444 대상에게 공격대 아이콘 설정",	
+--	MarkCastIcon			= "$spell:72444 대상에게 공격대 아이콘 설정",	
 	RangeFrame				= "거리 창 보기 (12 미터)",
 	RunePowerFrame			= "보스 체력 바와 함께 $spell:72371 바 보기",
 	BeastIcons				= "피의 괴물 공격대 아이콘 설정"	
@@ -285,14 +285,16 @@ L:SetOptionLocalization{
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
 	NextUnboundPlagueTargetIcon	= "$spell:72856의 다음 대상 공격대 아이콘 설정하기",
 	MalleableGooIcon			= "$spell:72295 대상 공격대 아이콘 설정하기",
-	YellOnMalleableGoo			= "$spell:72295 외치기",	
+	YellOnMalleableGoo			= "$spell:72295 외치기",
+	YellOnUnbound				= "$spell:72856 말하기",	
 	specWarnUnboundPlague		= "$spell:72856 전달자 특수 경고 보기",
 	specWarnNextPlageSelf		= "당신이 다음 $spell:72856 대상이 될 때 특수 경고 보기",	
 }
 
 L:SetMiscLocalization{
 	YellPull					= "좋은 소식이에요, 여러분! 아제로스의 모든 생명체를 파괴할 역병을 완성했어요!",
-	YellMalleable				= "나에게 통통이~!"	
+	YellMalleable				= "나에게 통통이~!",
+	YellUnbound					= "나에게 통통이~! 도망!"	
 }
 
 ----------------------------
@@ -353,12 +355,14 @@ L:SetOptionLocalization{
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
-	RangeFrame				= "거리 창 보기 (8 m)"
+	RangeFrame				= "거리 창 보기 (8 m)",
+	YellOnFrenzy			= "$spell:71474 말하기"
 }
 
 L:SetMiscLocalization{
 --	SwarmingShadows			= "어둠이 쌓이더니 (%S+)에게 몰려듭니다!", --"Shadows amass and swarm around (%S+)!"
 	SwarmingShadows			= "어둠이 쌓이더니 (%S+)",
+	YellFrenzy				= "피가 모잘라~! 앙~"
 }
 
 -----------------------------
@@ -481,8 +485,8 @@ L:SetOptionLocalization{
 	specWarnDefileCast			= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnDefileNear			= "당신 주변에 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnTrapNear			= "주변에 $spell:73539을 하면 특수 경고 보기",	
-	YellOnDefile				= "$spell:72762의 대상이 됐을 때 외치기",
-	YellOnTrap					= "$spell:73539 외치기",	
+	YellOnDefile				= "$spell:72762의 대상이 됐을 때 말하기",
+	YellOnTrap					= "$spell:73539 말하기",	
 	DefileIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
