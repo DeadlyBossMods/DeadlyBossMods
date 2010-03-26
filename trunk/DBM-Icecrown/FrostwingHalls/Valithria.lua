@@ -52,7 +52,8 @@ function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end
-	self:Portals()
+	timerNextPortal:Start()
+	self:ScheduleMethod(46.5, "Portals")
 	BlazingSkeleton = nil
 	table.wipe(GutSprayTargets)
 end
