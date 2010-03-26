@@ -1,9 +1,5 @@
 if GetLocale() ~= "deDE" then return end
 
--- fehlende Übersetzungen:
---
--- Der Lichkönig
-
 local L
 
 ---------------------------
@@ -363,7 +359,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	SwarmingShadows			= "Schatten sammeln sich und schwärmen um (%S+)!",
-	YellFrenzy				= "Ich bin hungrig!"
+	YellFrenzy				= "Ich habe Durst!"
 }
 
 -----------------------------
@@ -500,7 +496,7 @@ L:SetMiscLocalization{
 	LKPull					= "Der vielgerühmte Streiter des Lichts ist endlich hier? Soll ich Frostgram niederlegen und mich Eurer Gnade ausliefern, Fordring?",
 	YellDefile				= "Entweihen auf mir!",
 	YellTrap				= "Schattenfalle auf mir!",
-	YellKill				= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",	-- to be translated
-	LKRoleplay				= "Is it truly righteousness that drives you? I wonder...",	-- to be translated
-	PlagueWhisper			= "You have been infected by"	-- yes, it is really whispered in English
+	YellKill				= "Keine Fragen, keine Zweifel mehr - Ihr SEID Azeroths größte Champions. Ihr habt jede meiner Herausforderungen gemeistert. Meine mächtigsten Diener fielen unter Eurem unnachgiebigen Ansturm... Eurer grenzenlosen Wut...",
+	LKRoleplay				= "Ist es wirklich Rechtschaffenheit, die Euch treibt? Ich bin mir nicht sicher…",
+	PlagueWhisper			= "Ihr wurdet von der"
 }
