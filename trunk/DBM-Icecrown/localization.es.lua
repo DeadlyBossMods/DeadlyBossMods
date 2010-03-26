@@ -444,9 +444,9 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase	= "¡Aquí termina vuestra incursión! ¡Nadie sobrevivirá!",
-	YellPhase2		= "¡Ahora sentid el poder sin fin de mi maestro y desapareced!",
+	YellPhase2		= "¡Ahora sentid el poder sin fin de mi maestro y desesperad!",
 	BeaconIconSet	= "Señal de Escarcha, icono {rt%d} en %s",
-	YellPull		= "¡Estáis locos por haber venido aquí! Los vientos helados de Rasganorte consumirán vuestras almas"
+	YellPull		= "¡Estáis locos por haber venido aquí! Los vientos helados de Rasganorte consumirán vuestras almas."
 }
 
 ---------------------
