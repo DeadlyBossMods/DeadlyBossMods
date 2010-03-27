@@ -456,11 +456,11 @@ L:SetMiscLocalization{
 	MobPhase1		= "Mk II de leviatán",
 	MobPhase2		= "VX-001",
 	MobPhase3		= "Unidad de mando aérea",
-	YellPull		= "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",--translate
-	YellHardPull	= "Now, why would you go and do something like that? Didn't you see the sign that said, \"DO NOT PUSH THIS BUTTON!\"? How will we finish testing with the self-destruct mechanism active?",--translate
-	YellPhase2		= "WONDERFUL! Positively marvelous results! Hull integrity at 98.9 percent! Barely a dent! Moving right along.",--translate
-	YellPhase3		= "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is.",--translate
-	YellPhase4		= "Preliminary testing phase complete. Now comes the true test!",--translate
+	YellPull		= "¡No tenemos mucho tiempo, amigos! Vais a ayudarme a probar mi última y mayor creación. Ahora, antes de que cambiéis de parecer, recordad que en cierta forma, me lo debéis después del desastre que causasteis con el XA-002.",
+	YellHardPull	= "Veamos, ¿cómo se os ocurre hacer algo así? ¿No habéis visto la señal que dice \"NO PULSAR ESTE BOTÓN\"? ¿Cómo vamos a acabar la prueba con el mecanismo de autodestrucción activado?",
+	YellPhase2		= "¡Contemplad el cañón de asalto antipersonal VX-001! Puede que queráis poneros a cubierto.",
+	YellPhase3		= "¡Gracias amigos! ¡Vuestros esfuerzos me han proporcionado unos datos fantásticos! Veamos, ¿dónde puse?...ah, ahí está.",
+	YellPhase4		= "Fase de prueba preliminar completada. ¡Ahora comienza la verdadera prueba!",
 	LootMsg			= "([^%s]+).*Hitem:(%d+)"
 }
 
