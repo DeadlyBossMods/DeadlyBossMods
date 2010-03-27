@@ -15,12 +15,12 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_SUMMON",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_TARGET"
+	"UNIT_TARGET",
+	"UNIT_SPELLCAST_SUCCEEDED"
 )
 
 local warnTargetSwitch			= mod:NewAnnounce("WarnTargetSwitch", 3, 70952)
@@ -31,7 +31,7 @@ local warnEmpoweredFlames		= mod:NewTargetAnnounce(72040, 4)
 local warnGliteringSparks		= mod:NewTargetAnnounce(72798, 2)
 local warnShockVortex			= mod:NewTargetAnnounce(72037, 3)				-- 1,5sec cast
 local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039, 4)					-- 4,5sec cast
-local warnKineticBomb			= mod:NewSpellAnnounce(72053, 3)
+local warnKineticBomb			= mod:NewSpellAnnounce(72053, 3, nil, mod:IsRanged())
 local warnDarkNucleus			= mod:NewSpellAnnounce(71943, 1, nil, false)	-- instant cast
 
 local specWarnVortex			= mod:NewSpecialWarning("specWarnVortex")
@@ -45,6 +45,7 @@ local timerDarkNucleusCD		= mod:NewCDTimer(10, 71943, nil, false)	-- usually eve
 local timerConjureFlamesCD		= mod:NewCDTimer(20, 71718)				-- every 20-30 seconds but never more often than every 20sec
 local timerGlitteringSparksCD	= mod:NewCDTimer(20, 72798)				-- This is pretty nasty on heroic
 local timerShockVortex			= mod:NewCDTimer(16.5, 72037)			-- Seen a range from 16,8 - 21,6
+local timerKineticBombCD		= mod:NewCDTimer(18, 72053, nil, mod:IsRanged())				-- Might need tweaking
 local timerShadowPrison			= mod:NewBuffActiveTimer(10, 72999)		-- Hard mode debuff
 
 local berserkTimer				= mod:NewBerserkTimer(600)
@@ -125,14 +126,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(72040) then	-- Conjure Empowered Flames
 		warnEmpoweredFlamesCast:Show()
 		timerConjureFlamesCD:Start()
---	elseif args:IsSpellID(72053, 72080) then--Currently not working. The casts aren't shown i the combat log. This fight is really buggy for combat logs
---		warnKineticBomb:Show()
-	end
-end
-
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(72052, 72800, 72801, 72802) then--This does show in combat log (explosion when kinetic bomb hits the ground)
-		warnKineticBomb:Show()
 	end
 end
 
@@ -184,6 +177,13 @@ end
 function mod:UNIT_TARGET()
 	if activePrince then
 		self:TrySetTarget()
+	end
+end
+
+function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
+	if spellName == GetSpellInfo(72080) then
+		warnKineticBomb:Show()
+		timerKineticBombCD:Start()
 	end
 end
 
