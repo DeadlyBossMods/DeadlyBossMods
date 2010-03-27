@@ -101,7 +101,7 @@ do
 				if self.Options.AnnounceFrostBeaconIcons then
 					SendChatMessage(L.BeaconIconSet:format(beaconIcons, UnitName(v)), "RAID")
 				end
-				mod:SetIcon(UnitName(v), beaconIcons)
+				mod:SetIcon(UnitName(v), beaconIcons, 8)
 				beaconIcons = beaconIcons - 1
 			end
 			table.wipe(beaconIconTargets)
@@ -209,10 +209,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(70126) then
 		activeBeacons = false
-	elseif args:IsSpellID(70157) then
-		if self.Options.SetIconOnFrostBeacon then
-			self:SetIcon(args.destName, 0)
-		end
 	elseif args:IsSpellID(70127, 72528, 72529, 72530) then
 		if args:IsPlayer() then
 			timerMysticAchieve:Cancel()
