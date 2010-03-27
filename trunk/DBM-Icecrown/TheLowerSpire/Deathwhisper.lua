@@ -11,6 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SPELL_INTERRUPT",
+	"SPELL_SUMMON",
 	"SWING_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_TARGET"
@@ -23,6 +25,7 @@ local canPurge = select(2, UnitClass("player")) == "MAGE"
 local warnAddsSoon					= mod:NewAnnounce("WarnAddsSoon", 2)
 local warnDominateMind				= mod:NewTargetAnnounce(71289, 3)
 local warnDeathDecay				= mod:NewSpellAnnounce(72108, 2)
+local warnSummonSpirit				= mod:NewSpellAnnounce(71426, 2)
 local warnReanimating				= mod:NewAnnounce("WarnReanimating", 3)
 local warnDarkTransformation		= mod:NewSpellAnnounce(70900, 4)
 local warnDarkEmpowerment			= mod:NewSpellAnnounce(70901, 4)
@@ -31,17 +34,20 @@ local warnFrostbolt					= mod:NewCastAnnounce(72007, 2)
 local warnTouchInsignificance		= mod:NewAnnounce("WarnTouchInsignificance", 2, 71204, mod:IsTank() or mod:IsHealer())
 local warnDarkMartyrdom				= mod:NewSpellAnnounce(72499, 4)
 
-local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
 local specWarnCurseTorpor			= mod:NewSpecialWarningYou(71237)
 local specWarnDeathDecay			= mod:NewSpecialWarningMove(72108)
 local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
+local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
+local specWarnFrostbolt				= mod:NewSpecialWarningInterupt(72007, false)
 local specWarnDarkMartyrdom			= mod:NewSpecialWarningMove(72499, mod:IsMelee())
 local specWarnVengefulShade			= mod:NewSpecialWarning("specWarnVengefulShade", not mod:IsTank())
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds")
 local timerDominateMind				= mod:NewBuffActiveTimer(12, 71289)
 local timerDominateMindCD			= mod:NewCDTimer(40, 71289)
-local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204)
+local timerSummonSpiritCD			= mod:NewCDTimer(10, 71426, nil, false)
+local timerFrostboltCast			= mod:NewCastTimer(4, 72007)
+local timerTouchInsignificance		= mod:NewTargetTimer(30, 71204, nil, mod:IsTank() or mod:IsHealer())
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -171,7 +177,7 @@ do
 			specWarnVampricMight:Show(args.destName)
 		elseif args:IsSpellID(71204) then
 			warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
-			if args:IsPlayer() and (args.amount or 1) >= 3 then
+			if args:IsPlayer() and (args.amount or 1) >= 3 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25")) then
 				specWarnTouchInsignificance:Show(args.amount)
 			end
 			timerTouchInsignificance:Start(args.destName)
@@ -192,8 +198,9 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(72007) then
+	if args:IsSpellID(71420, 72007, 72501, 72502) then
 		warnFrostbolt:Show()
+		timerFrostboltCast:Start()
 	elseif args:IsSpellID(70900) then
 		warnDarkTransformation:Show()
 		if self.Options.SetIconOnDeformedFanatic then
@@ -209,6 +216,23 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(72499, 72500, 72497, 72496) then
 		warnDarkMartyrdom:Show()
 		specWarnDarkMartyrdom:Show()
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if args:IsSpellID(71420, 72007, 72501, 72502) then
+		timerFrostboltCast:Cancel()
+	end
+end
+
+local lastSpirit = 0
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(71426) then -- Summon Vengeful Shade
+		if time() - lastSpirit > 5 then
+			warnSummonSpirit:Show()
+			timerSummonSpiritCD:Start()
+			lastSpirit = time()
+		end
 	end
 end
 

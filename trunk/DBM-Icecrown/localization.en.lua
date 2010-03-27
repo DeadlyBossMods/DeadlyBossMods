@@ -163,7 +163,9 @@ L:SetMiscLocalization{
 	PullAlliance	= "Fire up the engines! We got a meetin' with destiny, lads!",
 	KillAlliance	= "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!",
 	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy of the Horde! LOK'TAR OGAR!",
-	KillHorde		= "The Alliance falter. Onward to the Lich King!"
+	KillHorde		= "The Alliance falter. Onward to the Lich King!",
+	AddsAlliance	= "Reavers, Sergeants, attack",
+	AddsHorde		= "Marines, Sergeants, attack"
 }
 
 -----------------------------
@@ -456,8 +458,7 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Defile on you - Move away",
 	specWarnDefileNear		= "Defile near you - Watch out",
 	specWarnTrapNear		= "Shadow Trap near you - Watch out",
-	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<",
-	WarningValkyrSpawned 	= "Val'kyr Shadowguard spawn (%d)"
+	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<"
 }
 
 L:SetTimerLocalization{
@@ -474,7 +475,6 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Show timer to cleanse Necrotic Plague before\nthe first tick",
 	PhaseTransition			= "Show time for phase transitions",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
-	WarningValkyrSpawned	= "Show warning for Val'kyr Shadowguard spawns",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
 	specWarnDefileCast		= "Show special warning for $spell:72762 on you",
 	specWarnDefileNear		= "Show special warning for $spell:72762 near you",

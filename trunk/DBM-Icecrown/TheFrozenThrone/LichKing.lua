@@ -33,7 +33,7 @@ local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
 local warnDefileSoon		= mod:NewSoonAnnounce(73708, 3)	--Phase 2+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797, 4, nil, mod:IsTank() or mod:IsHealer()) --Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetAnnounce(72762, 4) --Phase 2+ Ability
-local warnSummonValkyr		= mod:NewAnnounce("WarningValkyrSpawned", 3, 71844) --Phase 2 Add
+local warnSummonValkyr		= mod:NewAnnounce(69037, 3, 71844) --Phase 2 Add
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 1)
 local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498, 2) --Phase 3 Add
 local warnHarvestSoul		= mod:NewTargetAnnounce(74325, 4) --Phase 3 Ability
@@ -88,7 +88,6 @@ local warned_preP2 = false
 local warned_preP3 = false
 local LKDead = false
 local lastPlagueCast = 0
-local Valkset = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -275,8 +274,7 @@ do
 	function mod:SPELL_SUMMON(args)
 		if args:IsSpellID(69037) then -- Summon Val'kyr
 			if time() - lastValk > 15 then -- show the warning and timer just once for all three summon events
-				Valkset = Valkset + 1
-				warnSummonValkyr:Show(Valkset)
+				warnSummonValkyr:Show()
 				timerSummonValkyr:Start()
 				lastValk = time()
 				if self.Options.ValkyrIcon then

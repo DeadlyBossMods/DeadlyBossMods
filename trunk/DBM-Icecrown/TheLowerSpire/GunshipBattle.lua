@@ -18,7 +18,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnBelowZero			= mod:NewSpellAnnounce(69705, 4)
@@ -39,7 +40,9 @@ mod:RemoveOption("HealthFrame")
 
 function mod:Adds()
 	timerAdds:Start()
+	warnAddsSoon:Cancel()
 	warnAddsSoon:Schedule(55)
+	self:UnscheduleMethod("Adds")
 	self:ScheduleMethod(60, "Adds")
 end
 
@@ -86,5 +89,11 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(69705) then
 		warnBelowZero:Show(args.destName)
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg:find(L.AddsAlliance) or msg:find(L.AddsHorde) then
+		self:Adds()
 	end
 end
