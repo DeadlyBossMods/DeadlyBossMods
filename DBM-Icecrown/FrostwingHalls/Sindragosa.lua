@@ -209,9 +209,18 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(70126) then
 		activeBeacons = false
+	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
+		if args:IsPlayer() then
+			timerChilledtotheBone:Cancel()
+		end
+	elseif args:IsSpellID(69766) then	--Instability (casters)
+		if args:IsPlayer() then
+			timerInstability:Cancel()
+		end
 	elseif args:IsSpellID(70127, 72528, 72529, 72530) then
 		if args:IsPlayer() then
 			timerMysticAchieve:Cancel()
+			timerMysticBuffet:Cancel()
 		end
 	end
 end

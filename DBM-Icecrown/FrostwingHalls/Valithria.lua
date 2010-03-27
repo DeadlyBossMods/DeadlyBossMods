@@ -60,6 +60,9 @@ end
 
 function mod:Portals()
 	warnPortal:Show()
+	warnPortalOpen:Cancel()
+	timerPortalsOpen:Cancel()
+	warnPortalSoon:Cancel()
 	warnPortalOpen:Schedule(15)
 	timerPortalsOpen:Schedule(15)
 	warnPortalSoon:Schedule(41)

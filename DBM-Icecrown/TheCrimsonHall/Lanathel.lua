@@ -149,6 +149,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.BloodMirrorIcon then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args:IsSpellID(70877, 71474) then
+		if args:IsPlayer() then
+			timerBloodThirst:Cancel()
+		end
 	end
 end
 
