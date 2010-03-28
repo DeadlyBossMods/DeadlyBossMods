@@ -165,7 +165,9 @@ L:SetMiscLocalization{
 	PullAlliance	= "Запускайте двигатели! Летим навстречу судьбе.",
 	KillAlliance	= "Ну не говорите потом, что я не предупреждал. В атаку, братья и сестры!",
 	PullHorde		= "Воспряньте, сыны и дочери Орды! Сегодня мы будем биться со смертельным врагом! ЛОК'ТАР ОГАР!",
-	KillHorde		= "Альянс повержен. Вперед, к Королю-личу!"
+	KillHorde		= "Альянс повержен. Вперед, к Королю-личу!",
+	AddsAlliance	= "Разрушители, сержанты, в бой!",
+	AddsHorde		= "Marines, Sergeants, attack"
 }
 
 -----------------------------
@@ -189,7 +191,6 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
 	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	MarkCastIcon		= "Устанавливать метки на цели заклинания $spell:72444\nво время его применения (экспериментально, может по ошибке\nпомечать танка)",
 	RangeFrame				= "Показывать окно допустимой дистанции (12 м)",
 	RunePowerFrame			= "Показывать здоровье босса + индикатор для $spell:72371",
 	BeastIcons				= "Устанавливать метки на Кровавые чудовища"
@@ -286,13 +287,15 @@ L:SetOptionLocalization{
 	MalleableGooIcon			= "Устанавливать метку на первую цель заклинания $spell:72295",
 	NextUnboundPlagueTargetIcon	= "Устанавливать метку на следующую цель заклинания $spell:72856",
 	YellOnMalleableGoo			= "Кричать, когда на вас $spell:72295",	
+	YellOnUnbound				= "Кричать, когда на вас $spell:72856",
 	specWarnUnboundPlague		= "Спец-предупреждение для передачи заклинания $spell:72856",
 	specWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью\nзаклинания $spell:72856",
 }
 
 L:SetMiscLocalization{
 	YellPull		= "Отличные новости, народ! Я усовершенствовал штамм чумы, которая уничтожит весь Азерот!",
-	YellMalleable	= "Вязкая гадость на мне!"
+	YellMalleable	= "Вязкая гадость на мне!",
+	YellUnbound		= "Безудержная чума на мне!"
 }
 
 ----------------------------
@@ -352,11 +355,13 @@ L:SetOptionLocalization{
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
-	RangeFrame				= "Показывать окно допустимой дистанции (8 м)"
+	RangeFrame				= "Показывать окно допустимой дистанции (8 м)",
+	YellOnFrenzy			= "Кричать, когда на вас $spell:71474"
 }
 
 L:SetMiscLocalization{
-	SwarmingShadows			= "Тени собираются и окружают (%S+)!"
+	SwarmingShadows			= "Тени собираются и окружают (%S+)!",
+	YellFrenzy				= "Я голоден!"
 }
 
 -----------------------------
@@ -455,8 +460,7 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Осквернение на вас - отбегите",
 	specWarnDefileNear		= "Осквернение около вас - остерегайтесь",
 	specWarnTrapNear		= "Теневая ловушка около вас - остерегайтесь",
-	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)",
-	WarningValkyrSpawned 	= "Валь'кира - страж Тьмы (%d)"
+	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)"
 }
 
 L:SetTimerLocalization{
@@ -473,7 +477,6 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Отсчет времени для очищения Мертвящей чумы до первого тика",
 	PhaseTransition			= "Отсчет времени для переходной фазы",
 	WarnPhase2Soon			= "Предупреждать заранее о переходе в фазу 2 (на ~73%)",
-	WarningValkyrSpawned	= "Предупреждение о появлении Валь'киры - стража Тьмы",
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileNear		= "Спец-предупреждение, когда $spell:72762 около вас",
