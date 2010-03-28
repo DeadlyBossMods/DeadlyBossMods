@@ -165,7 +165,9 @@ L:SetMiscLocalization{
 	PullAlliance		= "속도를 올려라! 제군들, 곧 운명과 마주할 것이다!",
 	KillAlliance		= "악당 놈들, 분명히 경고했다! 형제자매여, 전진!",
 	PullHorde			= "호드의 아들딸이여, 일어나라! 오늘 우리는 증오하던 적과 전투를 벌이리라! 록타르 오가르!",
-	KillHorde			= "얼라이언스는 기가 꺾였다. 리치 왕을 향해 전진하라!"
+	KillHorde			= "얼라이언스는 기가 꺾였다. 리치 왕을 향해 전진하라!",
+	AddsAlliance		= "Reavers, Sergeants, attack",
+	AddsHorde			= "Marines, Sergeants, attack"
 }
 
 -----------------------------
@@ -462,8 +464,7 @@ L:SetWarningLocalization{
 	specWarnDefileCast			= "당신에게 파멸! - 이동!",
 	specWarnDefileNear			= "당신 주변에 파멸! - 이동!",
 	specWarnTrapNear			= "당신 주변에 암흑의 덫 - 확인!",
-	warnNecroticPlagueJump		= "괴저 역병 전이 : >%s<",
-	WarningValkyrSpawned 		= "발키르 어둠수호병 소환 (%d)"
+	warnNecroticPlagueJump		= "괴저 역병 전이 : >%s<"
 }
 
 L:SetTimerLocalization{
@@ -479,7 +480,6 @@ L:SetOptionLocalization{
 	warnNecroticPlagueJump		= "$spell:73912 이동 대상 알리기",	
 	TimerNecroticPlagueCleanse	= "$spell:73912의 첫 번째 틱 이후 지속 타이머 보기",	
 	PhaseTransition				= "다음 단계 전환 타이머 보기",	
-	WarningValkyrSpawned		= "발키르 어둠수호병 소환 경고 보기",	
 	WarnPhase2Soon				= "2 단계 전환 사전 경고 보기(73% 이하)",
 	WarnPhase3Soon				= "3 단계 전환 사전 경고 보기(43% 이하)",
 	specWarnDefileCast			= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
