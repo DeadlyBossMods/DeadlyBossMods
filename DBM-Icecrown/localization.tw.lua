@@ -165,7 +165,9 @@ L:SetMiscLocalization{
 	PullAlliance			= "發動引擎!小夥子們，我們即將面對命運啦!",
 	KillAlliance			= "別說我沒警告過你，無賴!兄弟姊妹們，向前衝!",
 	PullHorde			= "起來吧，部落的子女!今天我們要和最可恨的敵人作戰!為了部落!",
-	KillHorde			= "聯盟已經動搖了。向巫妖王前進!"
+	KillHorde			= "聯盟已經動搖了。向巫妖王前進!",
+	AddsAlliance			= "劫奪者，士官們，攻擊!",
+	AddsHorde			= "海員們，士官們，攻擊!"
 }
 
 -----------------------------
@@ -461,8 +463,7 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "你中了汙染 - 快離開",
 	specWarnDefileNear		= "你附近的人中了汙染 - 小心",
 	specWarnTrapNear		= "你附近的人中了暗影陷阱 - 小心",
-	warnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上",
-	WarningValkyrSpawned 		= "華爾琪影衛出現 (%d)"
+	warnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上"
 }
 
 L:SetTimerLocalization{
