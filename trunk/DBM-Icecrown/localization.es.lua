@@ -170,7 +170,10 @@ L:SetMiscLocalization{
 	PullAlliance	= "¡Arrancad motores! ¡Tenemos una cita con el destino, muchachos!",
 	KillAlliance	= "¡No digáis que no lo avisé, sinvergüenzas! Adelante, hermanos.",
 	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy! LOK'TAR OGAR!!",--translate
-	KillHorde		= "The Alliance falter. Onward to the Lich King!"--translate
+	KillHorde		= "The Alliance falter. Onward to the Lich King!",--translate
+	AddsAlliance	= "¡Atracadores, Sargentos, atacad!",
+	AddsHorde		= "¡Atracadores, Marinos, atacad!"
+
 }
 
 -----------------------------
@@ -482,7 +485,6 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Mostrar tiempo para purgar Peste necrótica\nantes de la primera marca",
 	PhaseTransition			= "Mostrar tiempo para las transiciones de fase",
 	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
-	WarningValkyrSpawned	= "Mostrar aviso cuando salga Guardia de las Sombras Val'kyr",
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
 	specWarnDefileNear		= "Mostrar aviso especial para $spell:72762 cerca de ti",
