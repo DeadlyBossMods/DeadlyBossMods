@@ -1,5 +1,9 @@
 if GetLocale() ~= "deDE" then return end
 
+-- fehlende Übersetzungen:
+--
+-- Luftschiffkampf (Horde)
+
 local L
 
 ---------------------------
@@ -165,7 +169,9 @@ L:SetMiscLocalization{
 	PullAlliance	= "Alle Maschinen auf Volldampf! Unser Schicksal erwartet uns!",
 	KillAlliance	= "Sagt nicht, ich hätte Euch nicht gewarnt, Ihr Schurken! Vorwärts, Brüder und Schwestern!",
 	PullHorde		= "Erhebt Euch, Söhne und Töchter der Horde! Wir ziehen gegen einen verhassten Feind in die Schlacht! LOK'TAR OGAR!",
-	KillHorde		= "Die Allianz wankt. Vorwärts zum Lichkönig!"
+	KillHorde		= "Die Allianz wankt. Vorwärts zum Lichkönig!",
+	AddsAlliance	= "Häscher, Unteroffiziere, Angriff!",
+	AddsHorde		= "Marines, Sergeants, attack"		-- to be translated
 }
 
 -----------------------------
@@ -458,8 +464,7 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Entweihen auf dir - Lauf weg",
 	specWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen",
 	specWarnTrapNear		= "Schattenfalle in deiner Nähe - Aufpassen",
-	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen",
-	WarningValkyrSpawned 	= "Neue Schattenwächterin der Val'kyr (%d)"
+	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen"
 }
 
 L:SetTimerLocalization{
@@ -476,7 +481,6 @@ L:SetOptionLocalization{
 	TimerNecroticPlagueCleanse	= "Zeige Timer um Nekrotische Seuche vor dem ersten Tick zu reinigen",
 	PhaseTransition			= "Zeige Timer für Phasenübergänge",
 	WarnPhase2Soon			= "Zeige Vorwarnung für Übergang in Phase 2 (bei ~73%)",
-	WarningValkyrSpawned	= "Zeige Warnung für neue Schattenwächterin der Val'kyr",
 	WarnPhase3Soon			= "Zeige Vorwarnung für Übergang in Phase 3 (bei ~43%)",
 	specWarnDefileCast		= "Zeige Spezialwarnung für $spell:72762 auf dir",
 	specWarnDefileNear		= "Zeige Spezialwarnung für $spell:72762 in deiner Nähe",
