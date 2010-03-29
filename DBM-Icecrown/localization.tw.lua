@@ -279,7 +279,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnPhase2Soon			= "為第2階段顯示預先警告 (大約83%)",
 	WarnPhase3Soon			= "為第3階段顯示預先警告 (大約38%)",
-	specWarnMalleableGoo		= "當你中了延展黏液時顯示特別警告\n(只在你是第一個目標時有用)",
+	specWarnMalleableGoo		= "當你中了延展黏液時顯示特別警告(只在你是第一個目標時有用)",
 	specWarnMalleableGooNear	= "當你附近有人中了延展黏液時顯示特別警告\n(只在你附近的人是第一個目標時有用)",
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
@@ -438,7 +438,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase		= "空中階段前清除所有標記",
-	RangeFrame			= "顯示距離框 (普通10碼, 困難20碼)\n(只會顯示已標記的玩家)"
+	RangeFrame			= "顯示距離框 (普通10碼, 困難20碼) (只會顯示已標記的玩家)"
 }
 
 L:SetMiscLocalization{
