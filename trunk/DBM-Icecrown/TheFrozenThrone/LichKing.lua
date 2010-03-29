@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("yell", L.LKPull)
 mod:RegisterKill("yell", L.YellKill)
-mod:SetMinSyncRevision(3489)
+mod:SetMinSyncRevision(3911)
 mod:SetUsedIcons(2, 3, 4, 6, 7, 8)
 
 mod:RegisterEvents(
