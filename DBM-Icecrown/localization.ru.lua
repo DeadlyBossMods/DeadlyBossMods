@@ -435,7 +435,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой",
-	RangeFrame				= "Показывать окно допустимой дистанции (10 нормале, 20 героик)\n(показывает только игроков с метками)"
+	RangeFrame				= "Показывать окно допустимой дистанции (10 норм., 20 гер.)\n(показывает только игроков с метками)"
 }
 
 L:SetMiscLocalization{
