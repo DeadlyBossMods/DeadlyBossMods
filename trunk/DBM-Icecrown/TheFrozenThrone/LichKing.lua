@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
-mod:RegisterCombat("combat")
+mod:RegisterCombat("yell", L.LKPull)
 mod:RegisterKill("yell", L.YellKill)
 mod:SetMinSyncRevision(3489)
 mod:SetUsedIcons(2, 3, 4, 6, 7, 8)
@@ -12,11 +12,9 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"SPELL_DISPEL",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
-	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_WHISPER"
 )
 
@@ -69,7 +67,7 @@ local timerRagingSpiritCD	= mod:NewCDTimer(17, 69200)
 local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
 local timerTrapCD		 	= mod:NewCDTimer(16, 73539)
-local timerRoleplay			= mod:NewTimer(129, "TimerRoleplay")	--may need tweaking
+local timerRoleplay			= mod:NewTimer(157, "TimerRoleplay")	--Needs tweaking to new placement.
 
 local berserkTimer			= mod:NewBerserkTimer(900)
 
@@ -86,16 +84,14 @@ mod:AddBoolOption("TrapArrow")
 local phase	= 0
 local warned_preP2 = false
 local warned_preP3 = false
-local LKDead = false
 local lastPlagueCast = 0
 
 function mod:OnCombatStart(delay)
-	berserkTimer:Start(-delay)
+	timerCombatStart:Start()
 	phase = 0
 	warned_preP2 = false
 	warned_preP3 = false
-	LKDead = false
-	self:NextPhase()
+	self:ScheduleMethod(54.5, "NextPhase")
 	lastPlagueCast = 0
 	Valkset = 0
 end
@@ -169,21 +165,15 @@ function mod:SPELL_CAST_START(args)
 		timerRagingSpiritCD:Start()
 		timerShamblingHorror:Cancel()
 		timerDrudgeGhouls:Cancel()
-		timerSummonValkyr:Cancel()
 		timerInfestCD:Cancel()
 		timerNecroticPlagueCD:Cancel()
-		timerDefileCD:Cancel()
 		timerTrapCD:Cancel()
-		warnDefileSoon:Cancel()
 	elseif args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start) second cast of fight
 		warnRemorselessWinter:Show()
 		timerPhaseTransition:Start()
 		timerRagingSpiritCD:Start(6) --we use a seperate event for second remorseless winter since it has a different raging spirit timer.
-		timerShamblingHorror:Cancel()
-		timerDrudgeGhouls:Cancel()
 		timerSummonValkyr:Cancel()
 		timerInfestCD:Cancel()
-		timerNecroticPlagueCD:Cancel()
 		timerDefileCD:Cancel()
 		timerTrapCD:Cancel()
 		warnDefileSoon:Cancel()
@@ -211,6 +201,15 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
 		self:ScheduleMethod(0.05, "TrapTarget")
 		timerTrapCD:Start()
+	elseif args:IsSpellID(72350) then -- Fury of Frostmourne
+		mod:SetWipeTime(160)--Change min wipe time mid battle to force dbm to keep module loaded for this long out of combat roleplay, hopefully without breaking mod.
+		timerRoleplay:Start()
+		timerVileSpirit:Cancel()
+		timerSoulreaperCD:Cancel()
+		timerDefileCD:Cancel()
+		timerHarvestSoulCD:Cancel()
+		berserkTimer:Cancel()
+		warnDefileSoon:Cancel()
 	end
 end
 
@@ -253,10 +252,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+local lastDefile = 0
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72143, 72146, 72147, 72148) then -- Shambling Horror enrage effect.
 		warnShamblingEnrage:Show(args.destName)
 		timerEnrageCD:Start()
+	elseif args:IsSpellID(72754, 73708, 73709, 73710) and args:IsPlayer() and time() - lastDefile > 2 then		-- Defile Damage
+		specWarnDefile:Show()
+		lastDefile = time()
 	end
 end
 
@@ -304,16 +307,6 @@ do
 end
 
 do 
-	local lastDefile = 0
-	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(72754, 73708, 73709, 73710) and args:IsPlayer() and time() - lastDefile > 2 then		-- Defile Damage
-			specWarnDefile:Show()
-			lastDefile = time()
-		end
-	end
-end
-
-do 
 	local lastWinter = 0
 	function mod:SPELL_DAMAGE(args)
 		if args:IsSpellID(68983, 73791, 73792, 73793) and args:IsPlayer() and time() - lastWinter > 2 then		-- Remorseless Winter
@@ -330,18 +323,13 @@ function mod:UNIT_HEALTH(uId)
 	elseif phase == 2 and not warned_preP3 and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.43 then
 		warned_preP3 = true
 		warnPhase3Soon:Show()
-	elseif not LKDead and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.10 then
-		LKDead = true
-		timerShamblingHorror:Cancel()
-		timerDrudgeGhouls:Cancel()
-		timerNecroticPlagueCD:Cancel()
-		berserkTimer:Cancel()
 	end
 end
 
 function mod:NextPhase()
 	phase = phase + 1
 	if phase == 1 then
+		berserkTimer:Start()
 		timerShamblingHorror:Start(20)
 		timerDrudgeGhouls:Start(10)
 		timerNecroticPlagueCD:Start(27)
@@ -357,14 +345,6 @@ function mod:NextPhase()
 		timerDefileCD:Start(38)
 		timerHarvestSoulCD:Start(14)
 		warnDefileSoon:Schedule(33)
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.LKPull or msg:find(L.LKPull) then
-		timerCombatStart:Start()
-	elseif msg == L.LKRoleplay or msg:find(L.LKRoleplay) then
-		timerRoleplay:Start()
 	end
 end
 
