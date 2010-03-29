@@ -12,6 +12,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_TARGET"
 )
@@ -25,6 +27,7 @@ local warnPortal		= mod:NewSpellAnnounce(72483, 3, nil, mod:IsHealer())
 local warnPortalOpen	= mod:NewAnnounce("warnPortalOpen", 4, 72483, mod:IsHealer())
 
 local specWarnLayWaste	= mod:NewSpecialWarningSpell(71730)
+local specWarnManaVoid	= mod:NewSpecialWarningMove(71741)
 
 local timerLayWaste		= mod:NewBuffActiveTimer(12, 69325)
 local timerNextPortal	= mod:NewCDTimer(46.5, 72483, nil, mod:IsHealer())
@@ -95,7 +98,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(71741) then--Mana Void (spellids drycoded, will confirm later)
+	if args:IsSpellID(71741) then--Mana Void
 		warnManaVoid:Show()
 	elseif args:IsSpellID(70588) and GetTime() - spamSupression > 5 then--Supression
 		warnSupression:Show(args.destName)
@@ -104,15 +107,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70633, 71283, 72025, 72026) then--Gut Spray (spellids drycoded, will confirm later)
+	if args:IsSpellID(70633, 71283, 72025, 72026) then--Gut Spray
 		GutSprayTargets[#GutSprayTargets + 1] = args.destName
 		timerGutSpray:Start(args.destName)
 		self:Unschedule(warnGutSprayTargets)
 		self:Schedule(0.3, warnGutSprayTargets)
-	elseif args:IsSpellID(70751, 71738, 72022, 72023) then--Corrosion (spellids drycoded, will confirm later)
+	elseif args:IsSpellID(70751, 71738, 72022, 72023) then--Corrosion
 		warnCorrosion:Show(args.spellName, args.destName, args.amount or 1)
 		timerCorrosion:Start(args.destName)
-	elseif args:IsSpellID(69325, 71730) then--Lay Waste (spellids drycoded, will confirm later)
+	elseif args:IsSpellID(69325, 71730) then--Lay Waste
 		specWarnLayWaste:Show()
 		timerLayWaste:Start()
 		if self.Options.SetIconOnBlazingSkeleton then
@@ -129,10 +132,27 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(70633, 71283, 72025, 72026) then--Gut Spray (spellids drycoded, will confirm later)
+	if args:IsSpellID(70633, 71283, 72025, 72026) then--Gut Spray
 		timerGutSpray:Cancel(args.destName)
-	elseif args:IsSpellID(69325, 71730) then--Lay Waste (spellids drycoded, will confirm later)
+	elseif args:IsSpellID(69325, 71730) then--Lay Waste
 		timerLayWaste:Cancel()
+	end
+end
+
+do 
+	local lastVoid = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(71086, 71743, 72029, 72030) and args:IsPlayer() and time() - lastVoid > 2 then		-- Mana Void
+			specWarnManaVoid:Show()
+			lastVoid = time()
+		end
+	end
+
+	function mod:SPELL_MISSED(args)
+		if args:IsSpellID(71086, 71743, 72029, 72030) and args:IsPlayer() and time() - lastVoid > 2 then		-- Mana Void
+			specWarnManaVoid:Show()
+			lastVoid = time()
+		end
 	end
 end
 

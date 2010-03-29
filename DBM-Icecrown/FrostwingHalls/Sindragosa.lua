@@ -39,7 +39,7 @@ local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 4)
 local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase", 43810)
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase", 43810)
 local timerNextFrostBreath		= mod:NewNextTimer(22, 71056, nil, mod:IsTank() or mod:IsHealer())
-local timerNextBlisteringCold	= mod:NewCDTimer(69, 70123)
+local timerNextBlisteringCold	= mod:NewCDTimer(67, 70123)
 local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
 local timerUnchainedMagic		= mod:NewBuffActiveTimer(30, 69762)
 local timerInstability			= mod:NewBuffActiveTimer(5, 69766)
@@ -67,7 +67,7 @@ local activeBeacons	= false
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerNextAirphase:Start(50-delay)
-	timerNextBlisteringCold:Start(35-delay)
+	timerNextBlisteringCold:Start(33-delay)
 	warned_P2 = false
 	table.wipe(beaconTargets)
 	table.wipe(beaconIconTargets)
@@ -249,6 +249,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNextAirphase:Cancel()
 		timerNextGroundphase:Cancel()
 		warnGroundphaseSoon:Cancel()
+--		timerNextBlisteringCold:Start(33)
 	end
 end
 
