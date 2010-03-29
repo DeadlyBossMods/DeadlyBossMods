@@ -6,7 +6,7 @@ mod:SetCreatureID(36597)
 --mod:RegisterCombat("yell", L.LKPull)
 --mod:RegisterKill("yell", L.YellKill)
 mod:RegisterCombat("combat")
-mod:SetMinSyncRevision(3911)
+mod:SetMinSyncRevision(3913)
 mod:SetUsedIcons(2, 3, 4, 6, 7, 8)
 
 mod:RegisterEvents(
