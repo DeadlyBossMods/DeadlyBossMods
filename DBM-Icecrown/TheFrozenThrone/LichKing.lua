@@ -3,8 +3,9 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
-mod:RegisterCombat("yell", L.LKPull)
-mod:RegisterKill("yell", L.YellKill)
+--mod:RegisterCombat("yell", L.LKPull)
+--mod:RegisterKill("yell", L.YellKill)
+mod:RegisterCombat("combat")
 mod:SetMinSyncRevision(3911)
 mod:SetUsedIcons(2, 3, 4, 6, 7, 8)
 
@@ -15,6 +16,7 @@ mod:RegisterEvents(
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
+	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_WHISPER"
 )
 
@@ -82,18 +84,16 @@ mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
 
 local phase	= 0
+local lastPlagueCast = 0
 local warned_preP2 = false
 local warned_preP3 = false
-local lastPlagueCast = 0
 
 function mod:OnCombatStart(delay)
-	timerCombatStart:Start()
 	phase = 0
+	lastPlagueCast = 0
 	warned_preP2 = false
 	warned_preP3 = false
-	self:ScheduleMethod(54.5, "NextPhase")
-	lastPlagueCast = 0
-	Valkset = 0
+	self:NextPhase()
 end
 
 function mod:DefileTarget()
@@ -252,14 +252,16 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-local lastDefile = 0
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(72143, 72146, 72147, 72148) then -- Shambling Horror enrage effect.
-		warnShamblingEnrage:Show(args.destName)
-		timerEnrageCD:Start()
-	elseif args:IsSpellID(72754, 73708, 73709, 73710) and args:IsPlayer() and time() - lastDefile > 2 then		-- Defile Damage
-		specWarnDefile:Show()
-		lastDefile = time()
+do
+	local lastDefile = 0
+	function mod:SPELL_AURA_APPLIED(args)
+		if args:IsSpellID(72143, 72146, 72147, 72148) then -- Shambling Horror enrage effect.
+			warnShamblingEnrage:Show(args.destName)
+			timerEnrageCD:Start()
+		elseif args:IsSpellID(72754, 73708, 73709, 73710) and args:IsPlayer() and time() - lastDefile > 2 then		-- Defile Damage
+			specWarnDefile:Show()
+			lastDefile = time()
+		end
 	end
 end
 
@@ -345,6 +347,12 @@ function mod:NextPhase()
 		timerDefileCD:Start(38)
 		timerHarvestSoulCD:Start(14)
 		warnDefileSoon:Schedule(33)
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.LKPull or msg:find(L.LKPull) then
+		timerCombatStart:Start()
 	end
 end
 
