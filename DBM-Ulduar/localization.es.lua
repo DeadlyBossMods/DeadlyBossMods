@@ -231,7 +231,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	SpecialWarningEyebeam	= "Mostrar aviso especial si Haz ocular te mira",
 	SpecWarnCrunchArmor2	= "Mostrar aviso especial para Hender armadura (>=2 marcas)",
-	WarningEyebeam			= "Anunciar objetivo de Haz ocular",
+	WarningEyeBeam			= "Anunciar objetivo de Haz ocular",
 	timerLeftArm			= "Mostrar tiempo para Brazo izquierdo",
 	timerRightArm			= "Mostrar tiempo para Brazo derecho",
 	achievementDisarmed		= "Mostrar tiempo para el logro Desarmar",
@@ -569,5 +569,6 @@ L:SetOptionLocalization{
 	WarnEmpowerSoon					= "Mostrar pre-aviso para Sombras potenciadas",
 	SpecWarnMaladyNear				= "Mostrar aviso especial para Mal de la mente cerca de ti",
 	SpecWarnDeafeningRoar			= "Mostrar aviso especial cuando castee Rugido ensordecedor (para silenciar y legendaria)",
-	SetIconOnBrainLinkTarget		= "Poner iconos en los objetivos de Vínculo cerebral"
+	SetIconOnBrainLinkTarget		= "Poner iconos en los objetivos de Vínculo cerebral",
+	MaladyArrow						= "Mostrar flecha cuando $spell:63881 está cerca de ti"
 }
