@@ -564,6 +564,7 @@ L:SetOptionLocalization{
 	WarnEmpowerSoon					= "Show pre-warning for Empowering Shadows",
 	SpecWarnMaladyNear				= "Show special warning for Malady of the Mind near you",
 	SpecWarnDeafeningRoar			= "Show special warning when casting Deafening Roar (silence and for legendary)",
-	SetIconOnBrainLinkTarget		= "Set icons on Brain Link targets"
+	SetIconOnBrainLinkTarget		= "Set icons on Brain Link targets",
+	MaladyArrow						= "Show DBM arrow when $spell:63881 is near you"
 }
 

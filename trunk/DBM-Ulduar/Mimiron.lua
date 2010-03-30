@@ -49,7 +49,7 @@ local timerPlasmaBlastCD		= mod:NewCDTimer(30, 64529)
 local timerShell				= mod:NewTargetTimer(6, 63666)
 local timerFlameSuppressant		= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
-local timerNextFlames			= mod:NewNextTimer(27.7, 64566)
+local timerNextFlames			= mod:NewNextTimer(27.6, 64566)
 local timerNextFrostBomb        = mod:NewNextTimer(30, 64623)
 local timerBombExplosion		= mod:NewCastTimer(15, 65333)
 
@@ -97,8 +97,13 @@ function mod:OnCombatEnd()
 end
 
 function mod:Flames()
-	timerNextFlames:Start()
-	self:ScheduleMethod(27.7, "Flames")
+	if phase == 4 then
+		timerNextFlames:Start(18)
+		self:ScheduleMethod(18, "Flames")
+	else
+		timerNextFlames:Start()
+		self:ScheduleMethod(27.6, "Flames")
+	end
 end
 
 function mod:SPELL_SUMMON(args)
