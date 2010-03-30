@@ -60,6 +60,7 @@ mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFervorTarget")
 mod:AddBoolOption("SetIconOnMCTarget")
 mod:AddBoolOption("SetIconOnBrainLinkTarget")
+mod:AddBoolOption("MaladyArrow")
 
 local phase							= 1
 local targetWarningsShown			= {}
@@ -146,9 +147,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		local uId = DBM:GetRaidUnitId(args.destName) 
 		if uId then 
-			local inRange = CheckInteractDistance(uId, 2) 
+			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
 			if inRange then 
-				specWarnMaladyNear:Show(args.destName) 
+				specWarnMaladyNear:Show(args.destName)
+				if self.Options.MaladyArrow then
+					DBM.Arrow:ShowRunAway(x, y, 12, 5)
+				end
 			end 
 		end 
 	elseif args:IsSpellID(63042) and self.Options.SetIconOnMCTarget then	-- MC
