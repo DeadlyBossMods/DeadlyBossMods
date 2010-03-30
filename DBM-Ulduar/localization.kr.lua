@@ -578,5 +578,6 @@ L:SetOptionLocalization{
 	WarnEmpowerSoon					= "어둠의 봉화 경고 보기",
 	SpecWarnMaladyNear				= "병든 정신이 걸린 플레이어가 근처에 있을 경우 특수 경고 알리기(병든 정신 종료 후)",
 	SpecWarnDeafeningRoar			= "귀청이 터질듯한 포효 시전을 할 경우 특수 경고 보기 (침묵 그리고 레전드리를 위하여!!)",
-	SetIconOnBrainLinkTarget		= "두뇌 연결 대상 공격대 아이콘 설정"	
+	SetIconOnBrainLinkTarget		= "두뇌 연결 대상 공격대 아이콘 설정",
+	MaladyArrow						= "$spell:63881 걸린 공대원이 주변에 있을 경우 화살표 보기"	
 }
