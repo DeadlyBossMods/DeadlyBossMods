@@ -562,5 +562,6 @@ L:SetOptionLocalization{
 	WarnEmpowerSoon			= "為暗影信標顯示預先警告",
 	SpecWarnMaladyNear		= "當你附近的人中了心靈缺陷時顯示特別警告",
 	SpecWarnDeafeningRoar		= "當施放震耳咆哮時顯示特別警告 (沉默和橘錘用!)",
-	SetIconOnBrainLinkTarget	= "為腦波連結的目標設置標記"
+	SetIconOnBrainLinkTarget	= "為腦波連結的目標設置標記",
+	MaladyArrow			= "當你附近的人中了$spell:63881時顯示DBM箭頭"
 }
