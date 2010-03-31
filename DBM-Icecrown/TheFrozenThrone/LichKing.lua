@@ -175,7 +175,6 @@ function mod:SPELL_CAST_START(args)
 		timerSummonValkyr:Cancel()
 		timerInfestCD:Cancel()
 		timerDefileCD:Cancel()
-		timerTrapCD:Cancel()
 		warnDefileSoon:Cancel()
 	elseif args:IsSpellID(72262) then -- Quake (phase transition end)
 		warnQuake:Show()
@@ -335,6 +334,9 @@ function mod:NextPhase()
 		timerShamblingHorror:Start(20)
 		timerDrudgeGhouls:Start(10)
 		timerNecroticPlagueCD:Start(27)
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerTrapCD:Start(15)
+		end
 	elseif phase == 2 then
 		timerSummonValkyr:Start(20)
 		timerSoulreaperCD:Start(40)

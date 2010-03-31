@@ -40,6 +40,7 @@ local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase", 43810)
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase", 43810)
 local timerNextFrostBreath		= mod:NewNextTimer(22, 71056, nil, mod:IsTank() or mod:IsHealer())
 local timerNextBlisteringCold	= mod:NewCDTimer(67, 70123)
+local timerNextBeacon			= mod:NewNextTimer(16, 70126)
 local timerBlisteringCold		= mod:NewCastTimer(6, 70123)
 local timerUnchainedMagic		= mod:NewBuffActiveTimer(30, 69762)
 local timerInstability			= mod:NewBuffActiveTimer(5, 69766)
@@ -61,6 +62,7 @@ local beaconTargets		= {}
 local beaconIconTargets	= {}
 local unchainedTargets	= {}
 local warned_P2 = false
+local phase = 0
 local unchainedIcons = 7
 local activeBeacons	= false
 
@@ -73,6 +75,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(beaconIconTargets)
 	table.wipe(unchainedTargets)
 	unchainedIcons = 7
+	phase = 1
 	activeBeacons = false
 	if self.Options.RangeFrame then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
@@ -133,6 +136,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		beaconTargets[#beaconTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
+		end
+		if phase == 2 then
+			timerNextBeacon:Start()
 		end
 		if self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
@@ -245,7 +251,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			self:ClearIcons()
 		end
 	elseif msg == L.YellPhase2 or msg:find(L.YellPhase2) then
+		phase = 2
 		warnPhase2:Show()
+		timerNextBeacon:Start(5)
 		timerNextAirphase:Cancel()
 		timerNextGroundphase:Cancel()
 		warnGroundphaseSoon:Cancel()
