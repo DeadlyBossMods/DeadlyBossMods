@@ -502,5 +502,5 @@ L:SetMiscLocalization{
 	YellTrap			= "我中了暗影陷阱!",
 	YellKill			= "沒有問題尚未解答。沒有任何懷疑。你們就是艾澤拉斯最偉大的勇士。你們克服了每一個我所設下的考驗。我最強大的僕人們都在你們不屈不撓的猛攻中倒下…在你們奔放的怒火之中…",
 	LKRoleplay			= "你們的原動力真的是正義感嗎？我很懷疑……",
-	PlagueWhisper			= "You have been infected by"
+	PlagueWhisper			= "你染上了"
 }
