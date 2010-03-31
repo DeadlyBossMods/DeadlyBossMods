@@ -39,6 +39,7 @@ local specWarnGaseousBloatOther		= mod:NewSpecialWarningTarget(70672, false)
 local specWarnMalleableGoo			= mod:NewSpecialWarning("specWarnMalleableGoo")
 local specWarnMalleableGooNear		= mod:NewSpecialWarning("specWarnMalleableGooNear")
 local specWarnChokingGasBomb		= mod:NewSpecialWarningSpell(71255, mod:IsTank())
+local specWarnMalleableGooCast		= mod:NewSpecialWarningSpell(72295, false)
 local specWarnOozeVariable			= mod:NewSpecialWarningYou(70352)		-- Heroic Ability
 local specWarnGasVariable			= mod:NewSpecialWarningYou(70353)		-- Heroic Ability
 local specWarnUnboundPlague			= mod:NewSpecialWarningYou(72856)--automation feature refuses to work so put generic crap in for this
@@ -233,6 +234,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerUnboundPlagueCD:Start()
 	elseif args:IsSpellID(72615, 72295, 74280, 74281) then
 		warnMalleableGoo:Show()
+		specWarnMalleableGooCast:Show()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerMalleableGooCD:Start(20)
 		else
