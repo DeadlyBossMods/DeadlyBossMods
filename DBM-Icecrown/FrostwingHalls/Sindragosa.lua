@@ -66,32 +66,6 @@ local phase = 0
 local unchainedIcons = 7
 local activeBeacons	= false
 
-function mod:OnCombatStart(delay)
-	berserkTimer:Start(-delay)
-	timerNextAirphase:Start(50-delay)
-	timerNextBlisteringCold:Start(33-delay)
-	warned_P2 = false
-	table.wipe(beaconTargets)
-	table.wipe(beaconIconTargets)
-	table.wipe(unchainedTargets)
-	unchainedIcons = 7
-	phase = 1
-	activeBeacons = false
-	if self.Options.RangeFrame then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
-		else
-			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
-		end
-	end
-end
-
-function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
-end
-
 do
 	local function sort_by_group(v1, v2)
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
@@ -124,6 +98,32 @@ local function warnUnchainedTargets()
 	unchainedIcons = 7
 end
 
+function mod:OnCombatStart(delay)
+	berserkTimer:Start(-delay)
+	timerNextAirphase:Start(50-delay)
+	timerNextBlisteringCold:Start(33-delay)
+	warned_P2 = false
+	table.wipe(beaconTargets)
+	table.wipe(beaconIconTargets)
+	table.wipe(unchainedTargets)
+	unchainedIcons = 7
+	phase = 1
+	activeBeacons = false
+	if self.Options.RangeFrame then
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
+		else
+			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
+		end
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69649, 71056, 71057, 71058) or args:IsSpellID(73061, 73062, 73063, 73064) then--Frost Breath
 		warnFrostBreath:Show()
@@ -142,10 +142,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
-			mod:ScheduleMethod(0.3, "SetBeaconIcons")
+			if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or (mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") and #beaconTargets >= 2) then
+				self:SetBeaconIcons()
+			else
+				self:ScheduleMethod(0.3, "SetBeaconIcons")
+			end
 		end
 		self:Unschedule(warnBeaconTargets)
-		if #beaconTargets >= 6 then
+		if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or (mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") and #beaconTargets >= 2) then
 			warnBeaconTargets()
 		else
 			self:Schedule(0.3, warnBeaconTargets)
