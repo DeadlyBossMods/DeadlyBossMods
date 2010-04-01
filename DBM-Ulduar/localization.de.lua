@@ -572,6 +572,7 @@ L:SetOptionLocalization{
 	WarnEmpowerSoon					= "Zeige Vorwarnung für Machtvolle Schatten",
 	SpecWarnMaladyNear				= "Zeige Spezialwarnung für Geisteskrankheit in deiner Nähe",
 	SpecWarnDeafeningRoar			= "Zeige Spezialwarnung wenn Ohrenbetäubendes Gebrüll gezaubert wird (Stille und für Vala'nyr)",
-	SetIconOnBrainLinkTarget		= "Setze Zeichen auf Ziele von Gehirnverbindung"
+	SetIconOnBrainLinkTarget		= "Setze Zeichen auf Ziele von Gehirnverbindung",
+	MaladyArrow						= "Zeige Pfeil wenn $spell:63881 in deiner Nähe ist"
 }
 
