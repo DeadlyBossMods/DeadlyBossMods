@@ -34,7 +34,7 @@ local specWarnUnchainedMagic	= mod:NewSpecialWarningYou(69762)
 local specWarnFrostBeacon		= mod:NewSpecialWarningYou(70126)
 local specWarnInstability		= mod:NewSpecialWarningStack(69766, nil, 4)
 local specWarnChilledtotheBone	= mod:NewSpecialWarningStack(70106, nil, 4)
-local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 4)
+local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 5)
 
 local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase", 43810)
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase", 43810)
@@ -190,7 +190,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnMysticBuffet:Show(args.amount or 1)
 			timerMysticBuffet:Start()
 			timerNextMysticBuffet:Start()
-			if (args.amount or 1) >= 4 then
+			if (args.amount or 1) >= 5 then
 				specWarnMysticBuffet:Show(args.amount)
 			end
 			if (args.amount or 1) < 2 then
