@@ -203,9 +203,12 @@ end
 function mod:NextPhase()
 	phase = phase + 1
 	if phase == 2 then
-		timerUnstableExperimentCD:Start(43)--Casting tear gas also resets experiment cooldown
+		timerUnstableExperimentCD:Start(43)--Phase change also resets experiment cooldown
 		timerSlimePuddleCD:Start()--Casting tear gas resets slime puddle CD too
 		warnUnstableExperimentSoon:Schedule(38)
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerUnboundPlagueCD:Start(75)
+		end
 		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
 			timerChokingGasBombCD:Start()--35-36 seconds on 25 man normal
 		else
@@ -213,6 +216,9 @@ function mod:NextPhase()
 		end
 	elseif phase == 3 then
 		timerSlimePuddleCD:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerUnboundPlagueCD:Start(75)
+		end
 		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
 			timerChokingGasBombCD:Start(40)--40 seconds after second tear gas on 25 man normal
 		else
