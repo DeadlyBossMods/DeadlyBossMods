@@ -77,6 +77,7 @@ mod:AddBoolOption("YellOnUnbound", true, "announce")
 local warned_preP2 = false
 local warned_preP3 = false
 local spamPuddle = 0
+local spamGas = 0
 local phase = 0
 local oozeVariableTargets	= {}
 local gasVariableTargets	= {}
@@ -351,8 +352,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.UnboundPlagueIcon then
 			mod:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(71615) then 								-- Tear Gas Removal
+	elseif args:IsSpellID(71615) and GetTime() - spamGas > 5 then 								-- Tear Gas Removal
 		self:NextPhase()
+		spamGas = GetTime()
 	end
 end
 
