@@ -52,6 +52,7 @@ local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)			-- Used every 3
 local timerChokingGasBombCD			= mod:NewNextTimer(35.5, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
 local timerTearGas					= mod:NewBuffActiveTimer(16, 71615)
+local timerPotions					= mod:NewBuffActiveTimer(30, 73122)
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)				-- 10 to 11
 local timerUnboundPlagueCD			= mod:NewNextTimer(60, 72856)
 local timerUnboundPlague			= mod:NewBuffActiveTimer(10, 72856)		-- Heroic Ability: we can't keep the debuff 60 seconds, so we have to switch at 10 seconds. Otherwise the debuff does to much damage!
@@ -207,8 +208,10 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(72851, 72852, 73121, 73122) then	--Potions (Heroic phase change end)
 		if mod:IsDifficulty("heroic10") then
 			self:ScheduleMethod(40, "NextPhase")	--May need slight tweaking +- a second or two
+			timerPotions:Start()
 		elseif mod:IsDifficulty("heroic25") then
 			self:ScheduleMethod(30, "NextPhase")
+			timerPotions:Start(20)
 		end
 	end
 end
