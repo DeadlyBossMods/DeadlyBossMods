@@ -213,7 +213,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:NextPhase()
+function mod:NextPhase()--Timers from DXE, will need confirming/adjusting upon testing.
 	phase = phase + 1
 	if phase == 2 then
 		warnUnstableExperimentSoon:Schedule(15)
