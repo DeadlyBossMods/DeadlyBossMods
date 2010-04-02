@@ -51,7 +51,7 @@ local timerSlimePuddleCD			= mod:NewCDTimer(35, 70341)				-- Approx
 local timerUnstableExperimentCD		= mod:NewNextTimer(38, 70351)			-- Used every 38 seconds exactly except after tear gas, it resets then it's 42-44seconds later (so using 43sec timer for there)
 local timerChokingGasBombCD			= mod:NewNextTimer(35.5, 71255)
 local timerMalleableGooCD			= mod:NewCDTimer(25, 72295)
-local timerTearGas					= mod:NewBuffActiveTimer(19, 71615)
+local timerTearGas					= mod:NewBuffActiveTimer(16, 71615)
 local timerMutatedPlagueCD			= mod:NewCDTimer(10, 72451)				-- 10 to 11
 local timerUnboundPlagueCD			= mod:NewNextTimer(60, 72856)
 local timerUnboundPlague			= mod:NewBuffActiveTimer(10, 72856)		-- Heroic Ability: we can't keep the debuff 60 seconds, so we have to switch at 10 seconds. Otherwise the debuff does to much damage!
@@ -189,40 +189,50 @@ function mod:SPELL_CAST_START(args)
 		warnUnstableExperimentSoon:Schedule(33)
 	elseif args:IsSpellID(71617) then	--Tear Gas, normal phase change trigger
 		warnTearGas:Show()
-		timerUnstableExperimentCD:Cancel()
 		warnUnstableExperimentSoon:Cancel()
-		self:NextPhase()
-	elseif args:IsSpellID(72840, 72841, 72842, 72843) then	--Volatile Experiment, heroic phase change trigger
+		timerUnstableExperimentCD:Cancel()
+		timerMalleableGooCD:Cancel()
+		timerSlimePuddleCD:Cancel()
+		timerChokingGasBombCD:Cancel()
+		timerUnboundPlagueCD:Cancel()
+	elseif args:IsSpellID(72842, 72843) then	--Volatile Experiment (heroic phase change begin)
 		warnVolatileExperiment:Show()
-		timerUnstableExperimentCD:Cancel()
 		warnUnstableExperimentSoon:Cancel()
-		self:ScheduleMethod(22, "NextPhase")	--May need slight tweaking +- a second or two
+		timerUnstableExperimentCD:Cancel()
+		timerMalleableGooCD:Cancel()
+		timerSlimePuddleCD:Cancel()
+		timerChokingGasBombCD:Cancel()
+		timerUnboundPlagueCD:Cancel()
+	elseif args:IsSpellID(72851, 72852, 73121, 73122) then	--Potions (Heroic phase change end)
+		if mod:IsDifficulty("heroic10") then
+			self:ScheduleMethod(40, "NextPhase")	--May need slight tweaking +- a second or two
+		elseif mod:IsDifficulty("heroic25") then
+			self:ScheduleMethod(30, "NextPhase")
+		end
 	end
 end
 
 function mod:NextPhase()
 	phase = phase + 1
 	if phase == 2 then
-		timerUnstableExperimentCD:Start(43)--Phase change also resets experiment cooldown
-		timerSlimePuddleCD:Start()--Casting tear gas resets slime puddle CD too
-		warnUnstableExperimentSoon:Schedule(38)
+		warnUnstableExperimentSoon:Schedule(15)
+		timerUnstableExperimentCD:Start(20)
+		timerSlimePuddleCD:Start(10)
+		timerMalleableGooCD:Start(6)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerUnboundPlagueCD:Start(75)
-		end
-		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
-			timerChokingGasBombCD:Start()--35-36 seconds on 25 man normal
+			timerUnboundPlagueCD:Start(50)
+			timerChokingGasBombCD:Start(11)
 		else
-			timerChokingGasBombCD:Start(37)--37 seconds on 10 man normal
+			timerChokingGasBombCD:Start(16)
 		end
 	elseif phase == 3 then
-		timerSlimePuddleCD:Start()
+		timerSlimePuddleCD:Start(15)
+		timerMalleableGooCD:Start(6)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerUnboundPlagueCD:Start(75)
-		end
-		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
-			timerChokingGasBombCD:Start(40)--40 seconds after second tear gas on 25 man normal
+			timerUnboundPlagueCD:Start(50)
+			timerChokingGasBombCD:Start(11)
 		else
-			timerChokingGasBombCD:Start(30)--30 seconds after second tear gas on 10 man normal
+			timerChokingGasBombCD:Start(16)
 		end
 	end
 end
@@ -230,7 +240,11 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(70341) and GetTime() - spamPuddle > 5 then
 		warnSlimePuddle:Show()
-		timerSlimePuddleCD:Start()
+		if phase == 3 then
+			timerSlimePuddleCD:Start(20)--In phase 3 it's faster
+		else
+			timerSlimePuddleCD:Start()
+		end
 		spamPuddle = GetTime()
 	elseif args:IsSpellID(71255) then
 		warnChokingGasBomb:Show()
@@ -337,6 +351,8 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.UnboundPlagueIcon then
 			mod:SetIcon(args.destName, 0)
 		end
+	elseif args:IsSpellID(71615) then 								-- Tear Gas Removal
+		self:NextPhase()
 	end
 end
 
