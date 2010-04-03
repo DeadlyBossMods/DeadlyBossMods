@@ -216,27 +216,23 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:NextPhase()--Timers from DXE, will need confirming/adjusting upon testing.
+function mod:NextPhase()
 	phase = phase + 1
 	if phase == 2 then
 		warnUnstableExperimentSoon:Schedule(15)
 		timerUnstableExperimentCD:Start(20)
 		timerSlimePuddleCD:Start(10)
-		timerMalleableGooCD:Start(6)
+		timerMalleableGooCD:Start(5)
+		timerChokingGasBombCD:Start(16)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerUnboundPlagueCD:Start(50)
-			timerChokingGasBombCD:Start(11)
-		else
-			timerChokingGasBombCD:Start(16)
 		end
 	elseif phase == 3 then
 		timerSlimePuddleCD:Start(15)
-		timerMalleableGooCD:Start(6)
+		timerMalleableGooCD:Start(7)
+		timerChokingGasBombCD:Start(13)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerUnboundPlagueCD:Start(50)
-			timerChokingGasBombCD:Start(11)
-		else
-			timerChokingGasBombCD:Start(16)
 		end
 	end
 end
