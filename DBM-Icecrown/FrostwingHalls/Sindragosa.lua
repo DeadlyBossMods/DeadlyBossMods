@@ -246,6 +246,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellAirphase or msg:find(L.YellAirphase) then
 		warnAirphase:Show()
 		timerNextFrostBreath:Cancel()
+		timerUnchainedMagic:Start(55)
 		timerNextBlisteringCold:Start(84)--Not exact anywhere from 85-110seconds after airphase begin
 		timerNextAirphase:Start()
 		timerNextGroundphase:Start()
@@ -261,7 +262,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNextAirphase:Cancel()
 		timerNextGroundphase:Cancel()
 		warnGroundphaseSoon:Cancel()
---		timerNextBlisteringCold:Start(33)
+		timerNextBlisteringCold:Start(33)
 	end
 end
 
