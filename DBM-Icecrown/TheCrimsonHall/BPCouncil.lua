@@ -155,7 +155,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(71807, 72796, 72797, 72798) then	-- Glittering Sparks(Dot/slow, dangerous on heroic during valanaar)
 		glitteringSparksTargets[#glitteringSparksTargets + 1] = args.destName
 		self:Unschedule(warnGlitteringSparksTargets)
-		self:Schedule(0.3, warnGlitteringSparksTargets)
+		self:Schedule(0.9, warnGlitteringSparksTargets)
 	end
 end
 
