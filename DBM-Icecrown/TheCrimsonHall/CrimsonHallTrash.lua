@@ -6,7 +6,6 @@ mod:SetUsedIcons(1, 2)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED"
 )
 
@@ -15,7 +14,6 @@ local warnBloodSap			= mod:NewTargetAnnounce(70432, 4)
 local warnChainsofShadow	= mod:NewTargetAnnounce(70645, 3)
 
 local timerBloodMirror		= mod:NewTargetTimer(30, 70451, nil, mod:IsHealer())
-local timerRendFlesh		= mod:NewTargetTimer(30, 71154, nil, mod:IsTank() or mod:IsHealer())
 local timerBloodSap			= mod:NewTargetTimer(8, 70432)
 local timerChainsofShadow	= mod:NewTargetTimer(10, 70645)
 
@@ -51,12 +49,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(70645) then
 		warnChainsofShadow:Show(args.destName)
 		timerChainsofShadow:Start(args.destName)
-	elseif args:IsSpellID(70435, 71154) then
-		timerRendFlesh:Start(args.destName)
 	end
 end
-
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70451) then
@@ -66,7 +60,5 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBloodSap:Cancel(args.destName)
 	elseif args:IsSpellID(70645) then
 		timerChainsofShadow:Cancel(args.destName)
-	elseif args:IsSpellID(70435, 71154) then
-		timerRendFlesh:Cancel(args.destName)
 	end
 end
