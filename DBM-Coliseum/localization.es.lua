@@ -12,7 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Charge			= "¡^%%s mira a (%S+) y emite un bramido!",
+	Charge			= "¡%%s mira a (%S+) y emite un bramido!",
 	CombatStart		= "Desde las cavernas más oscuras y profundas de Las Cumbres Tormentosas: ¡Gormok el Empalador! ¡A luchar, héroes!",
 	Phase2			= "Preparaos, héroes, para los temibles gemelos: ¡Fauceácida y Aterraescama! ¡A la arena!",
 	Phase3			= "El propio aire se congela al presentar a nuestro siguiente combatiente: ¡Aullahielo! ¡Matad o morid, campeones!",
@@ -204,20 +204,20 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnEmerge				= "Anub'arak emergido",
+	WarnEmerge				= "Anub'arak emerge",
 	WarnEmergeSoon			= "Emerger en 10 seg",
-	WarnSubmerge			= "Anub'arak sumergido",
+	WarnSubmerge			= "Anub'arak se sumerge",
 	WarnSubmergeSoon		= "Sumersion en 10 seg",
 	specWarnSubmergeSoon	= "Sumersion en 10 segundos!",
-	SpecWarnPursue			= "Te persigue a ti!",
+	SpecWarnPursue			= "¡Te persigue a ti!",
 	warnAdds				= "Nuevos adds",
-	SpecWarnShadowStrike	= "Golpe de sombras! Corta ahora!"
+	SpecWarnShadowStrike	= "¡Golpe de sombras! ¡Corta ahora!"
 }
 
 L:SetMiscLocalization{
-	YellPull				= "Éste lugar será vuestra tumba!",
-	Emerge					= "Emerge!",
-	Burrow					= "Se sumerge!",
+	YellPull				= "¡Este lugar será vuestra tumba!",
+	Emerge					= "emerge",
+	Burrow					= "entierra",
 	PcoldIconSet			= "Icono FrioP {rt%d} puesto en %s",
 	PcoldIconRemoved		= "Icono FrioP eliminado de %s"
 }
