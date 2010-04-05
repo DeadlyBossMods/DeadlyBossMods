@@ -179,6 +179,8 @@ do
 			warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
 			if args:IsPlayer() and (args.amount or 1) >= 3 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25")) then
 				specWarnTouchInsignificance:Show(args.amount)
+			elseif args:IsPlayer() and (args.amount or 1) >= 5 and (mod:IsDifficulty("herioc10") or mod:IsDifficulty("herioc25")) then
+				specWarnTouchInsignificance:Show(args.amount)
 			end
 			timerTouchInsignificance:Start(args.destName)
 		end
