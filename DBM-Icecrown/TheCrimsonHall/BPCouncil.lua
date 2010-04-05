@@ -182,8 +182,7 @@ end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 	if spellName == GetSpellInfo(72080) then
-		warnKineticBomb:Show()
-		timerKineticBombCD:Start()
+		self:SendSync("KineticBomb")
 	end
 end
 
@@ -197,5 +196,8 @@ function mod:OnSync(msg, target)
 		if self.Options.EmpoweredFlameIcon then
 			self:SetIcon(target, 7, 10)
 		end
+	elseif msg == "KineticBomb" then
+		warnKineticBomb:Show()
+		timerKineticBombCD:Start()
 	end
 end
