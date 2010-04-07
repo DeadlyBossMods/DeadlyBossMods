@@ -107,12 +107,12 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70633, 71283, 72025, 72026) then--Gut Spray
+	if args:IsSpellID(70633, 71283, 72025, 72026) and args:IsDestTypePlayer() then--Gut Spray
 		GutSprayTargets[#GutSprayTargets + 1] = args.destName
 		timerGutSpray:Start(args.destName)
 		self:Unschedule(warnGutSprayTargets)
 		self:Schedule(0.3, warnGutSprayTargets)
-	elseif args:IsSpellID(70751, 71738, 72022, 72023) then--Corrosion
+	elseif args:IsSpellID(70751, 71738, 72022, 72023) and args:IsDestTypePlayer() then--Corrosion
 		warnCorrosion:Show(args.spellName, args.destName, args.amount or 1)
 		timerCorrosion:Start(args.destName)
 	elseif args:IsSpellID(69325, 71730) then--Lay Waste

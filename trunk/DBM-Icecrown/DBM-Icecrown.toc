@@ -60,4 +60,5 @@ TheCrimsonHall\Lanathel.lua
 TheCrimsonHall\CrimsonHallTrash.lua
 FrostwingHalls\Valithria.lua
 FrostwingHalls\Sindragosa.lua
+FrostwingHalls\FrostwingHallTrash.lua
 TheFrozenThrone\LichKing.lua
