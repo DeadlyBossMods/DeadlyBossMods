@@ -129,6 +129,7 @@ function mod:SPELL_AURA_REFRESH(args)
 		end
 		if self.Options.SetIconsOnPCold then
 			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetPcoldIcons")
 			mod:ScheduleMethod(0.1, "SetPcoldIcons")	-- this might cause problems when client is below 10 Fps but don't know for sure (and longer time will be bad too)
 		end
 		timerPCold:Show() 
@@ -153,6 +154,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconsOnPCold then
 			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetPcoldIcons")
 			mod:ScheduleMethod(0.1, "SetPcoldIcons")
 		end
 		timerPCold:Show() 
