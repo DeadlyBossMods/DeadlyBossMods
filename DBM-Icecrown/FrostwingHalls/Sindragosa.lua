@@ -256,7 +256,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			self:ClearIcons()
 		end
 	elseif msg == L.YellPhase2 or msg:find(L.YellPhase2) then
-		phase = 2
+		phase = phase + 1
 		warnPhase2:Show()
 		timerNextBeacon:Start(5)
 		timerNextAirphase:Cancel()
