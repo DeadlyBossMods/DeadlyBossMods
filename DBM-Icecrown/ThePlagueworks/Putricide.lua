@@ -28,8 +28,6 @@ local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 2)		-- Phase 2 ability
 local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)		-- Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2, 72451, mod:IsTank() or mod:IsHealer()) -- Phase 3 ability
-local warnOozeVariable				= mod:NewTargetAnnounce(70352, 2)			-- Heroic Ability
-local warnGasVariable				= mod:NewTargetAnnounce(70353, 2)			-- Heroic Ability
 local warnUnboundPlague				= mod:NewTargetAnnounce(72856, 3)			-- Heroic Ability
 
 local specWarnVolatileOozeAdhesive	= mod:NewSpecialWarningYou(70447)
@@ -80,18 +78,6 @@ local warned_preP3 = false
 local spamPuddle = 0
 local spamGas = 0
 local phase = 0
-local oozeVariableTargets	= {}
-local gasVariableTargets	= {}
-
-local function warnOozeVariableTargets()
-	warnOozeVariable:Show(table.concat(oozeVariableTargets, "<, >"))
-	table.wipe(oozeVariableTargets)
-end
-
-local function warnGasVariableTargets()
-	warnGasVariable:Show(table.concat(gasVariableTargets, "<, >"))
-	table.wipe(gasVariableTargets)
-end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -189,7 +175,7 @@ function mod:SPELL_CAST_START(args)
 		warnUnstableExperiment:Show()
 		timerUnstableExperimentCD:Start()
 		warnUnstableExperimentSoon:Schedule(33)
-	elseif args:IsSpellID(71617) then	--Tear Gas, normal phase change trigger
+	elseif args:IsSpellID(71617) then				--Tear Gas, normal phase change trigger
 		warnTearGas:Show()
 		warnUnstableExperimentSoon:Cancel()
 		timerUnstableExperimentCD:Cancel()
@@ -197,7 +183,7 @@ function mod:SPELL_CAST_START(args)
 		timerSlimePuddleCD:Cancel()
 		timerChokingGasBombCD:Cancel()
 		timerUnboundPlagueCD:Cancel()
-	elseif args:IsSpellID(72842, 72843) then	--Volatile Experiment (heroic phase change begin)
+	elseif args:IsSpellID(72842, 72843) then		--Volatile Experiment (heroic phase change begin)
 		warnVolatileExperiment:Show()
 		warnUnstableExperimentSoon:Cancel()
 		timerUnstableExperimentCD:Cancel()
@@ -205,7 +191,12 @@ function mod:SPELL_CAST_START(args)
 		timerSlimePuddleCD:Cancel()
 		timerChokingGasBombCD:Cancel()
 		timerUnboundPlagueCD:Cancel()
-	elseif args:IsSpellID(72851, 72852, 73121, 73122) then	--Potions (Heroic phase change end)
+	elseif args:IsSpellID(72851, 72852) then		--Create Concoction (Heroic phase change end)
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			self:ScheduleMethod(40, "NextPhase")	--May need slight tweaking +- a second or two
+			timerPotions:Start()
+		end
+	elseif args:IsSpellID(73121, 73122) then		--Guzzle Potions (Heroic phase change end)
 		if mod:IsDifficulty("heroic10") then
 			self:ScheduleMethod(40, "NextPhase")	--May need slight tweaking +- a second or two
 			timerPotions:Start()
@@ -223,14 +214,14 @@ function mod:NextPhase()
 		timerUnstableExperimentCD:Start(20)
 		timerSlimePuddleCD:Start(10)
 		timerMalleableGooCD:Start(5)
-		timerChokingGasBombCD:Start(16)
+		timerChokingGasBombCD:Start(15)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerUnboundPlagueCD:Start(50)
 		end
 	elseif phase == 3 then
 		timerSlimePuddleCD:Start(15)
-		timerMalleableGooCD:Start(7)
-		timerChokingGasBombCD:Start(13)
+		timerMalleableGooCD:Start(9)
+		timerChokingGasBombCD:Start(12)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerUnboundPlagueCD:Start(50)
 		end
@@ -292,22 +283,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerMutatedPlagueCD:Start()
 	elseif args:IsSpellID(70542) then
 		timerMutatedSlash:Show(args.destName)
-	elseif args:IsSpellID(70539) then
+	elseif args:IsSpellID(70539, 72457, 72875, 72876) then
 		timerRegurgitatedOoze:Show(args.destName)
 	elseif args:IsSpellID(70352, 74118) then	--Ooze Variable
-		oozeVariableTargets[#oozeVariableTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnOozeVariable:Show()
 		end
-		self:Unschedule(warnOozeVariableTargets)
-		self:Schedule(0.3, warnOozeVariableTargets)
 	elseif args:IsSpellID(70353, 74119) then	-- Gas Variable
-		gasVariableTargets[#gasVariableTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnGasVariable:Show()
 		end
-		self:Unschedule(warnGasVariableTargets)
-		self:Schedule(0.3, warnGasVariableTargets)
 	elseif args:IsSpellID(72855, 72856) then			 -- Unbound Plague
 		warnUnboundPlague:Show(args.destName)
 		timerUnboundPlague:Start()
