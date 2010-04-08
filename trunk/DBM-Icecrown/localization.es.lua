@@ -71,6 +71,33 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
+---------------------------
+--  Trash - Frostwing Hall  --
+---------------------------
+L = DBM:GetModLocalization("FrostwingHallTrash")
+
+L:SetGeneralLocalization{
+	name = "Trash de Las Cámaras de Alaescarcha"
+}
+
+L:SetWarningLocalization{
+	specWarnGosaEvent	= "¡Pasillo hacia Sindragosa ha empezado!"
+}
+
+L:SetTimerLocalization{
+	GosaTimer			= "Tiempo restante"
+}
+
+L:SetOptionLocalization{
+	specWarnGosaEvent	= "Mostrar aviso especial para el evento del Pasillo hacia Sindragosa",
+	GosaTimer			= "Mostrar tiempo para el evento del Pasillo hacia Sindragosa"
+}
+
+L:SetMiscLocalization{
+	SindragosaEvent		= "You must not approach the Frost Queen. Quickly, stop them!"
+}
+
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
