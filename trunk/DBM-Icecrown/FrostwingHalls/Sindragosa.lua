@@ -145,14 +145,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
 				self:SetBeaconIcons()
 			else
-				self:ScheduleMethod(0.8, "SetBeaconIcons")
+				self:ScheduleMethod(0.2, "SetBeaconIcons")
 			end
 		end
 		self:Unschedule(warnBeaconTargets)
 		if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
 			warnBeaconTargets()
 		else
-			self:Schedule(0.8, warnBeaconTargets)
+			self:Schedule(0.2, warnBeaconTargets)
 		end
 	elseif args:IsSpellID(69762) then
 		unchainedTargets[#unchainedTargets + 1] = args.destName
