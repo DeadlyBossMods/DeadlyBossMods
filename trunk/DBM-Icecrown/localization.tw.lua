@@ -71,6 +71,32 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
+---------------------------
+--  Trash - Frostwing Hall  --
+---------------------------
+L = DBM:GetModLocalization("FrostwingHallTrash")
+
+L:SetGeneralLocalization{
+	name 				= "霜翼大廳小怪"
+}
+
+L:SetWarningLocalization{
+	specWarnGosaEvent		= "辛德拉苟莎夾道攻擊開始!"
+}
+
+L:SetTimerLocalization{
+	GosaTimer			= "時間剩餘"
+}
+
+L:SetOptionLocalization{
+	specWarnGosaEvent		= "為辛德拉苟莎夾道攻擊顯示特別提示",
+	GosaTimer			= "為辛德拉苟莎夾道攻擊顯示持續時間計時器"
+}
+
+L:SetMiscLocalization{
+	SindragosaEvent			= "You must not approach the Frost Queen. Quickly, stop them!"
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
