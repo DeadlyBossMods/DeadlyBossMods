@@ -81,7 +81,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnGosaEvent	= "¡Pasillo hacia Sindragosa ha empezado!"
+	specWarnGosaEvent	= "¡Guantelete de Sindragosa ha empezado!"
 }
 
 L:SetTimerLocalization{
@@ -89,8 +89,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnGosaEvent	= "Mostrar aviso especial para el evento del Pasillo hacia Sindragosa",
-	GosaTimer			= "Mostrar tiempo para el evento del Pasillo hacia Sindragosa"
+	specWarnGosaEvent	= "Mostrar aviso especial para el guantelete de Sindragosa",
+	GosaTimer			= "Mostrar tiempo para el evento del guantelete de Sindragosa"
 }
 
 L:SetMiscLocalization{
