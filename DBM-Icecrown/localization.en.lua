@@ -79,12 +79,20 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
+	specWarnGosaEvent	= "Sindragosa gauntlet started!"
+}
+
+L:SetTimerLocalization{
+	GosaTimer			= "Time remaining"
 }
 
 L:SetOptionLocalization{
+	specWarnGosaEvent	= "Show special warning for Sindragosa gauntlet event",
+	GosaTimer			= "Show timer for Sindragosa gauntlet event duration"
 }
 
 L:SetMiscLocalization{
+	SindragosaEvent		= "You must not approach the Frost Queen. Quickly, stop them!"
 }
 
 ----------------------
