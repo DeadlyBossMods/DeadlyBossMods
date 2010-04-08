@@ -10,6 +10,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SWING_DAMAGE",
@@ -47,11 +48,13 @@ mod:AddBoolOption("InfectionIcon", true)
 mod:AddBoolOption("ExplosionIcon", false)
 
 local RFVileGasTargets	= {}
+local lastGas = 0
 
 local function warnRFVileGasTargets()
 	warnVileGas:Show(table.concat(RFVileGasTargets, "<, >"))
 	table.wipe(RFVileGasTargets)
 	timerVileGasCD:Start()
+	lastGas = 0
 end
 
 function mod:OnCombatStart(delay)
@@ -59,7 +62,7 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(25-delay, "WallSlime")
 	InfectionIcon = 7
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-		timerVileGasCD:Start(25-delay)
+		timerVileGasCD:Start(22-delay)
 	end
 end
 
@@ -115,16 +118,21 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(72272, 72273) then	-- Vile Gas(Heroic Rotface only, 25 man spellid the same as 10?)
 		RFVileGasTargets[#RFVileGasTargets + 1] = args.destName
-		timerVileGasCD:Start()
 		if args:IsPlayer() then
 			specWarnVileGas:Show()
 		end
 		self:Unschedule(warnRFVileGasTargets)
-		self:Schedule(0.8, warnRFVileGasTargets)
+		self:Schedule(2.5, warnRFVileGasTargets) -- Yes it does take this long to travel to all 3 targets sometimes, qq.
 	end
 end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(72272, 72273) then
+		timerVileGasCD:Start()
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69674, 71224, 73022, 73023) then
