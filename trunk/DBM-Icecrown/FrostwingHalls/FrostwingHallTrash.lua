@@ -13,11 +13,11 @@ mod:RegisterEvents(
 local warnConflag		= mod:NewTargetAnnounce(71785, 4)
 local warnBanish		= mod:NewTargetAnnounce(71298, 3)
 
---local specWarnGosaEvent	= mod:NewSpecialWarning("specWarnGosaEvent")
+local specWarnGosaEvent	= mod:NewSpecialWarning("specWarnGosaEvent")
 
 local timerConflag		= mod:NewTargetTimer(10, 71785)
 local timerBanish		= mod:NewTargetTimer(6, 71298)
---local timerGosa			= mod:NewTimer(300, "GosaTimer")
+local timerGosa			= mod:NewTimer(300, "GosaTimer")--timer may need work.
 
 mod:RemoveOption("HealthFrame")
 
@@ -39,9 +39,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---[[function mod:CHAT_MSG_MONSTER_YELL(msg)
+function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SindragosaEvent then
 		specWarnGosaEvent:Show()
 		timerGosa:Start()
 	end
-end--]]
+end
