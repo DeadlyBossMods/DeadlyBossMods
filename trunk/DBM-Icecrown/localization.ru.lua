@@ -71,6 +71,32 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
+---------------------------
+--  Trash - Frostwing Hall  --
+---------------------------
+L = DBM:GetModLocalization("FrostwingHallTrash")
+
+L:SetGeneralLocalization{
+	name = "Треш-мобы Зала Ледокрылых"
+}
+
+L:SetWarningLocalization{
+	specWarnGosaEvent	= "Приближаются защитники Синдрагосы!"
+}
+
+L:SetTimerLocalization{
+	GosaTimer			= "Открытие ворот"
+}
+
+L:SetOptionLocalization{
+	specWarnGosaEvent	= "Спец-предупреждение для активации защитников Синдрагосы",
+	GosaTimer			= "Отсчет времени до последней волны треш-мобов"
+}
+
+L:SetMiscLocalization{
+	SindragosaEvent		= "Они не должны прорваться к Синдрагосе! Скорее, остановите их!"
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
