@@ -75,6 +75,32 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
+---------------------------
+--  Trash - Frostwing Hall  --
+---------------------------
+L = DBM:GetModLocalization("FrostwingHallTrash")
+
+L:SetGeneralLocalization{
+	name = "Trash der Frostschwingenhallen"
+}
+
+L:SetWarningLocalization{
+	specWarnGosaEvent	= "Sindragosa-Spießrutenlaut gestartet!"
+}
+
+L:SetTimerLocalization{
+	GosaTimer			= "Zeit verbleibend"
+}
+
+L:SetOptionLocalization{
+	specWarnGosaEvent	= "Zeige Spezialwarnung für Sindragosa-Spießrutenlauf",
+	GosaTimer			= "Zeige Timer für die Dauer des Sindragosa-Spießrutenlaufs"
+}
+
+L:SetMiscLocalization{
+	SindragosaEvent		= "Ihr dürft Euch der Frostkönigin nicht nähern! Schnell, haltet sie auf!"
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
