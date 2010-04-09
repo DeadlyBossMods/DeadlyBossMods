@@ -18,7 +18,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_SUCCESS",
+	"SPELL_CAST_START",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -49,10 +49,17 @@ end
 function mod:OnCombatStart(delay)
 	DBM.BossHealth:Clear()
 	timerCombatStart:Show(-delay)
-	timerAdds:Start(62-delay)
-	warnAddsSoon:Schedule(57)
-	self:ScheduleMethod(62, "Adds")
-	timerBelowZeroCD:Start(75-delay)
+	if UnitFactionGroup("player") == "Alliance" then
+		timerAdds:Start(62-delay)
+		warnAddsSoon:Schedule(57)
+		self:ScheduleMethod(62, "Adds")
+		timerBelowZeroCD:Start(75-delay)
+	else
+		timerAdds:Start(57-delay)
+		warnAddsSoon:Schedule(52)
+		self:ScheduleMethod(57, "Adds")
+		timerBelowZeroCD:Start(80-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -86,9 +93,9 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
+function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69705) then
-		warnBelowZero:Show(args.destName)
+		warnBelowZero:Show()
 	end
 end
 
