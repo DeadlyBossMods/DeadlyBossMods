@@ -44,6 +44,7 @@ local gasSporeTargets	= {}
 local vileGasTargets	= {}
 local gasSporeIcon 	= 8
 local gasSporeCast 	= 0
+local lastGoo = 0
 --[[
 local mRange = { }
 local mPoints = { 
@@ -102,6 +103,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(vileGasTargets)
 	gasSporeIcon = 8
 	gasSporeCast = 0
+	lastGoo = 0
 --	noCheck = true
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
@@ -132,11 +134,14 @@ end
 
 function mod:OnSync(event, arg)
 	if event == "Goo" then
-		warnGoo:Show()
-		if mod:IsDifficulty("heroic25") then
-			timerGooCD:Start()
-		else
-			timerGooCD:Start(30)--30 seconds in between goos on 10 man heroic
+		if time() - lastGoo > 5 then
+			warnGoo:Show()
+			if mod:IsDifficulty("heroic25") then
+				timerGooCD:Start()
+			else
+				timerGooCD:Start(30)--30 seconds in between goos on 10 man heroic
+			end
+			lastGoo = time()
 		end
 	end
 end
