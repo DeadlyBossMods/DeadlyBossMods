@@ -23,6 +23,7 @@ mod:RegisterEvents(
 local warnRemorselessWinter = mod:NewSpellAnnounce(74270, 3) --Phase Transition Start Ability
 local warnQuake				= mod:NewSpellAnnounce(72262, 4) --Phase Transition End Ability
 local warnRagingSpirit		= mod:NewTargetAnnounce(69200, 3) --Transition Add
+local warnShamblingSoon		= mod:NewSoonAnnounce(70372, 2) --Phase 1 Add
 local warnShamblingHorror	= mod:NewSpellAnnounce(70372, 3) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358, 2) --Phase 1 Add
 local warnShamblingEnrage	= mod:NewTargetAnnounce(72143, 3, nil, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage()) --Phase 1 Add Ability
@@ -163,6 +164,7 @@ function mod:SPELL_CAST_START(args)
 		warnRemorselessWinter:Show()
 		timerPhaseTransition:Start()
 		timerRagingSpiritCD:Start()
+		warnShamblingSoon:Cancel()
 		timerShamblingHorror:Cancel()
 		timerDrudgeGhouls:Cancel()
 		timerInfestCD:Cancel()
@@ -181,7 +183,9 @@ function mod:SPELL_CAST_START(args)
 		timerRagingSpiritCD:Cancel()
 		self:NextPhase()
 	elseif args:IsSpellID(70372) then -- Shambling Horror
+		warnShamblingSoon:Cancel()
 		warnShamblingHorror:Show()
+		warnShamblingSoon:Schedule(55)
 		timerShamblingHorror:Start()
 	elseif args:IsSpellID(70358) then -- Drudge Ghouls
 		warnDrudgeGhouls:Show()
@@ -195,6 +199,7 @@ function mod:SPELL_CAST_START(args)
 		timerInfestCD:Start()
 	elseif args:IsSpellID(72762) then -- Defile
 		self:ScheduleMethod(0.1, "DefileTarget")
+		warnDefileSoon:Cancel()
 		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
@@ -331,6 +336,7 @@ function mod:NextPhase()
 	phase = phase + 1
 	if phase == 1 then
 		berserkTimer:Start()
+		warnShamblingSoon:Schedule(15)
 		timerShamblingHorror:Start(20)
 		timerDrudgeGhouls:Start(10)
 		timerNecroticPlagueCD:Start(27)
