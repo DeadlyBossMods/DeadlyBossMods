@@ -293,7 +293,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGasVariable:Show()
 		end
-	elseif args:IsSpellID(72855, 72856) then			 -- Unbound Plague
+	elseif args:IsSpellID(72855, 72856) then	 -- Unbound Plague
 		warnUnboundPlague:Show(args.destName)
 		timerUnboundPlague:Start()
 		if self.Options.UnboundPlagueIcon then
@@ -314,6 +314,8 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(72451, 72463, 72671, 72672) then	-- Mutated Plague
 		warnMutatedPlague:Show(args.spellName, args.destName, args.amount or 1)
 		timerMutatedPlagueCD:Start()
+	elseif args:IsSpellID(70542) then
+		timerMutatedSlash:Show(args.destName)
 	end
 end
 
@@ -322,7 +324,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.OozeAdhesiveIcon then
 			mod:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(70672, 72455) then
+	elseif args:IsSpellID(70672, 72455, 72832, 72833) then
 		timerGaseousBloat:Cancel(args.destName)
 		if self.Options.GaseousBloatIcon then
 			mod:SetIcon(args.destName, 0)
@@ -336,9 +338,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.UnboundPlagueIcon then
 			mod:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(71615) and GetTime() - spamGas > 5 then 								-- Tear Gas Removal
+	elseif args:IsSpellID(71615) and GetTime() - spamGas > 5 then 	-- Tear Gas Removal
 		self:NextPhase()
 		spamGas = GetTime()
+	elseif args:IsSpellID(70539, 72457, 72875, 72876) then
+		timerRegurgitatedOoze:Cancel(args.destName)
 	end
 end
 
@@ -352,6 +356,3 @@ function mod:UNIT_HEALTH(uId)
 		warnPhase3Soon:Show()	
 	end
 end
-
-
-
