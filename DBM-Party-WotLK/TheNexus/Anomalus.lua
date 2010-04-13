@@ -36,7 +36,7 @@ function mod:UNIT_HEALTH(arg1)
 		end
 		if not warnedRift then
 			if (h < 80 and h > 77) or (h < 55 and h > 52) or (h < 30 and h > 27) then
-				WarningRiftSoon:Show()
+				warningRiftSoon:Show()
 				warnedRift = true
 			end
 		end
