@@ -46,6 +46,7 @@ local timerVileGasCD			= mod:NewNextTimer(30, 72272)
 local soundMutatedInfection		= mod:NewSound(71224)
 mod:AddBoolOption("InfectionIcon", true)
 mod:AddBoolOption("ExplosionIcon", false)
+mod:AddBoolOption("TankArrow")
 
 local RFVileGasTargets	= {}
 local lastGas = 0
@@ -147,12 +148,24 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(69761, 71212, 73026, 73027) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == mod:IsTank() then --Tank attacking big ooze
+		if not args:IsPlayer() then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
+			end
+		end
 	end
 end
 
 function mod:SWING_DAMAGE(args)
-	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then
+	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
 		specWarnLittleOoze:Show()
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == mod:IsTank() then --Tank attacking big ooze
+		if not args:IsPlayer() then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
+			end
+		end
 	end
 end
 
