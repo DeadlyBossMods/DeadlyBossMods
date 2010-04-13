@@ -2418,7 +2418,7 @@ local function IsDeathKnightTank()
 	local tankTalents = (getTalentpointsSpent(16271) >= 5 and 1 or 0) +		-- Anticipation
 	                    (getTalentpointsSpent(49042) >= 5 and 1 or 0) +		-- Toughness
 						(getTalentpointsSpent(55225) >= 5 and 1 or 0)		-- Blade Barrier
-	return tankTalents >= 3
+	return tankTalents >= 2
 end
 
 local function IsDruidTank()
