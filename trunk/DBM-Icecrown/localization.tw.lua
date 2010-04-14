@@ -275,7 +275,8 @@ L:SetOptionLocalization{
 	specWarnLittleOoze		= "當你被小軟泥怪盯上時顯示特別警告",
 	WarnUnstableOoze		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
-	ExplosionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
+	ExplosionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
+	TankArrow			= "為大軟泥怪副坦顯示DBM箭頭 (測試中)"
 }
 
 L:SetMiscLocalization{
