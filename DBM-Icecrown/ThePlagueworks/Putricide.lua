@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SWING_DAMAGE",
 	"UNIT_HEALTH"
@@ -319,6 +320,12 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		timerMutatedPlagueCD:Start()
 	elseif args:IsSpellID(70542) then
 		timerMutatedSlash:Show(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REFRESH(args)
+	if args:IsSpellID(70539, 72457, 72875, 72876) then
+		timerRegurgitatedOoze:Show(args.destName)
 	end
 end
 
