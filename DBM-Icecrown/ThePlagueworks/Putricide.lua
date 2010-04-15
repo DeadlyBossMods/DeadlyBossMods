@@ -326,6 +326,8 @@ end
 function mod:SPELL_AURA_REFRESH(args)
 	if args:IsSpellID(70539, 72457, 72875, 72876) then
 		timerRegurgitatedOoze:Show(args.destName)
+	elseif args:IsSpellID(70542) then
+		timerMutatedSlash:Show(args.destName)
 	end
 end
 
