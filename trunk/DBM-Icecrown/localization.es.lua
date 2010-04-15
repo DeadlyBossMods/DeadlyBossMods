@@ -94,7 +94,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SindragosaEvent		= "You must not approach the Frost Queen. Quickly, stop them!"
+	SindragosaEvent		= "No debéis acercaros a la Reina de Escarcha. ¡Detenedlos, rápido!"
 }
 
 
