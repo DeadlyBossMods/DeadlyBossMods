@@ -282,7 +282,8 @@ L:SetOptionLocalization{
 	specWarnLittleOoze			= "Mostrar aviso especial cuando te ataque un Moco pequeño",--creatureid 36897
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
-	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
+	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
+	TankArrow					= "Mostrar flecha hacia el tanque del Moco grande (Experimental)"
 }
 
 L:SetMiscLocalization{
