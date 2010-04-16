@@ -17,6 +17,9 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
+local isKiter = select(2, UnitClass("player")) == "HUNTER"
+	    		 or mod:IsTank()
+
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
 local warnSlimeSpray			= mod:NewSpellAnnounce(69508, 2)
@@ -148,7 +151,7 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(69761, 71212, 73026, 73027) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == mod:IsTank() then --Tank attacking big ooze
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == isKiter then --Tank/Hunter attacking big ooze
 		if not args:IsPlayer() then
 			if self.Options.TankArrow then
 				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
@@ -160,7 +163,7 @@ end
 function mod:SWING_DAMAGE(args)
 	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
 		specWarnLittleOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == mod:IsTank() then --Tank attacking big ooze
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == isKiter then --Tank/Hunter attacking big ooze
 		if not args:IsPlayer() then
 			if self.Options.TankArrow then
 				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
