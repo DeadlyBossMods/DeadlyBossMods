@@ -55,7 +55,7 @@ end
 function mod:StartBlazingSkeletonTimer()
 	timerBlazingSkeletonTimer:Start(BlazingSkeletonTimer)
 	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
-	self:ScheduleMethod(BlazingSkeletonTimer, StartBlazingSkeletonTimer)
+	self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
 end
 
 function mod:OnCombatStart(delay)
@@ -67,7 +67,7 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(46.5, "Portals")
 	BlazingSkeleton = nil
 	BlazingSkeletonTimer = 60
-	self:ScheduleMethod(50-delay, StartBlazingSkeletonTimer)
+	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
 	timerBlazingSkeleton:Start(-delay)
 	table.wipe(GutSprayTargets)
 end
