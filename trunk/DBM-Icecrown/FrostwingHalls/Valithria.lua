@@ -35,6 +35,7 @@ local timerPortalsOpen	= mod:NewTimer(10, "timerPortalsOpen", 72483, mod:IsHeale
 local timerHealerBuff	= mod:NewBuffActiveTimer(40, 70873)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
+local timerBlazingSkeleton	= mod:NewTimer(50, "TimerBlazingSkeleton")
 
 local timerSoftEnrage	= mod:NewTimer(360, "timerSoftEnrage", 28131)
 local berserkTimer		= mod:NewBerserkTimer(420)
@@ -44,10 +45,17 @@ mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 local GutSprayTargets = {}
 local spamSupression = 0
 local BlazingSkeleton
+local BlazingSkeletonTimer = 60
 
 local function warnGutSprayTargets()
 	warnGutSpray:Show(table.concat(GutSprayTargets, "<, >"))
 	table.wipe(GutSprayTargets)
+end
+
+function mod:StartBlazingSkeletonTimer()
+	timerBlazingSkeletonTimer:Start(BlazingSkeletonTimer)
+	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
+	self:ScheduleMethod(BlazingSkeletonTimer, StartBlazingSkeletonTimer)
 end
 
 function mod:OnCombatStart(delay)
@@ -58,6 +66,9 @@ function mod:OnCombatStart(delay)
 	timerNextPortal:Start()
 	self:ScheduleMethod(46.5, "Portals")
 	BlazingSkeleton = nil
+	BlazingSkeletonTimer = 60
+	self:ScheduleMethod(50-delay, StartBlazingSkeletonTimer)
+	timerBlazingSkeleton:Start(-delay)
 	table.wipe(GutSprayTargets)
 end
 
