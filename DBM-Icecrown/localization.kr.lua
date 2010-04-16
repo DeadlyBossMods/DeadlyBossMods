@@ -71,6 +71,32 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
+---------------------------
+--  Trash - Frostwing Hall  --
+---------------------------
+L = DBM:GetModLocalization("FrostwingHallTrash")
+
+L:SetGeneralLocalization{
+	name = "Frostwing Hall Trash"
+}
+
+L:SetWarningLocalization{
+	specWarnGosaEvent	= "Sindragosa gauntlet started!"
+}
+
+L:SetTimerLocalization{
+	GosaTimer			= "Time remaining"
+}
+
+L:SetOptionLocalization{
+	specWarnGosaEvent	= "Show special warning for Sindragosa gauntlet event",
+	GosaTimer			= "Show timer for Sindragosa gauntlet event duration"
+}
+
+L:SetMiscLocalization{
+	SindragosaEvent		= "You must not approach the Frost Queen. Quickly, stop them!"
+}
+
 ----------------------
 --  Lord Marrowgar  --
 ----------------------
@@ -249,7 +275,8 @@ L:SetOptionLocalization{
 	specWarnLittleOoze			= "작은 수액괴물로부터 공격을 받을 경우 특수 경고 보기",--creatureid 36897	
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "알 수 없음"),	
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
-	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839)
+	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
+	TankArrow					= "큰 수액괴물 탱커 방향 DBM 화살표 보기(테스트)"
 }
 
 L:SetMiscLocalization{
@@ -501,5 +528,5 @@ L:SetMiscLocalization{
 	YellTrap				= "나에게 암흑의 덫!!!",	
 	YellKill				= "어떤 의문도 남지 않았다. 어떤 의심도 없다. 너희는 아제로스의 가장 위대한 용사들이다. 너희 앞에 놓아둔 모든 도전을 극복해 내었다. 가장 강력한 종들이 너희의 무자비한 살육 앞에 쓰러졌지... 너희가 억눌렀던 분노 앞에 말이다...",
 	LKRoleplay				= "진정으로 정의에 이끌렸단 말이냐? 궁금하구나...",
-	PlagueWhisper			= "You have been infected by" --역병 전이 : 
+	PlagueWhisper			= "에 감염되었습니다!" --역병 전이 : You have been infected by
 }
