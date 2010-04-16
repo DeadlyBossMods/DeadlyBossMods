@@ -53,7 +53,7 @@ local function warnGutSprayTargets()
 end
 
 function mod:StartBlazingSkeletonTimer()
-	timerBlazingSkeletonTimer:Start(BlazingSkeletonTimer)
+	timerBlazingSkeleton:Start(BlazingSkeletonTimer)
 	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 	self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
 end
