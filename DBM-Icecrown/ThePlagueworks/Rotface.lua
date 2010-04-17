@@ -173,7 +173,7 @@ function mod:SWING_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if (msg == L.YellSlimePipes1 or msg:find(L.YellSlimePipes1)) or (msg == L.YellSlimePipes2 or msg:find(L.YellSlimePipes2)) then
+	if msg:find(L.YellSlimePipes1) or msg:find(L.YellSlimePipes2) then
 		self:WallSlime()
 	end
 end
