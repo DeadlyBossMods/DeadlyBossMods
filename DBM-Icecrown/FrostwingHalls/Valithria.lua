@@ -168,7 +168,7 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPortals or msg:find(L.YellPortals) then
+	if msg:find(L.YellPortals) then
 		self:SendSync("NightmarePortal")
 	end
 end
