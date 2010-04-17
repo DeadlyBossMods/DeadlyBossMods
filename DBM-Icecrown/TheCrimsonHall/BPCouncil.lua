@@ -70,9 +70,6 @@ function mod:OnCombatStart(delay)
 	timerTargetSwitch:Start(-delay)
 	activePrince = nil
 	table.wipe(glitteringSparksTargets)
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(12)
-	end
 end
 
 function mod:OnCombatEnd()
@@ -135,16 +132,25 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTargetSwitchSoon:Schedule(42)
 		timerTargetSwitch:Start()
 		activePrince = args.destGUID
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(12)
+		end
 	elseif args:IsSpellID(70981) and self:IsInCombat() then
 		warnTargetSwitch:Show(L.Keleseth)
 		warnTargetSwitchSoon:Schedule(42)
 		timerTargetSwitch:Start()
 		activePrince = args.destGUID
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif args:IsSpellID(70982) and self:IsInCombat() then
 		warnTargetSwitch:Show(L.Taldaram)
 		warnTargetSwitchSoon:Schedule(42)
 		timerTargetSwitch:Start()
 		activePrince = args.destGUID
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif args:IsSpellID(72999) then	--Shadow Prison (hard mode)
 		if args:IsPlayer() then
 			timerShadowPrison:Start()
@@ -155,7 +161,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(71807, 72796, 72797, 72798) and args:IsDestTypePlayer() then	-- Glittering Sparks(Dot/slow, dangerous on heroic during valanaar)
 		glitteringSparksTargets[#glitteringSparksTargets + 1] = args.destName
 		self:Unschedule(warnGlitteringSparksTargets)
-		self:Schedule(0.9, warnGlitteringSparksTargets)
+		self:Schedule(1, warnGlitteringSparksTargets)
 	end
 end
 
