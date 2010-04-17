@@ -247,7 +247,8 @@ L:SetOptionLocalization{
 	InhaledBlight			= "為$spell:71912顯示警告",
 	RangeFrame			= "顯示距離框 (8碼)",
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),
-	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
+	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
+	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需要開啟警告及團隊隊長或助理權限)"
 }
 
 ---------------
