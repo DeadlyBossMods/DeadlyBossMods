@@ -1,5 +1,8 @@
+
+DBM_CORE_NEED_SUPPORT				= "Hey, are u a programmer or good with languages? If yes, the DBM Team realy need your help to keep DBM the best BossMod in WoW, so join the Team by clicking on www.deadlybossmods.com or send a message to tandanu@deadlybossmods.com or nitram@deadlybossmods.com."
+
 DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' boss mods!"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' boss mods, for more options type /dbm in your chat!"
 DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s engaged. Good luck and have fun! :)";
