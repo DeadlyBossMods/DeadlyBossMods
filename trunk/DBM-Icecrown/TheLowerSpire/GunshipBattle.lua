@@ -101,6 +101,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:find(L.AddsAlliance) or msg:find(L.AddsHorde) then
+		self:SendSync("GunshipAdds")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "GunshipAdds" then
 		self:Adds()
 	end
 end

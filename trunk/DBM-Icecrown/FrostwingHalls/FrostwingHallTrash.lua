@@ -16,7 +16,6 @@ local specWarnGosaEvent	= mod:NewSpecialWarning("specWarnGosaEvent")
 
 local timerConflag		= mod:NewTargetTimer(10, 71785)
 local timerBanish		= mod:NewTargetTimer(6, 71298)
---local timerGosa			= mod:NewTimer(200, "GosaTimer")--timer may need work.
 
 mod:RemoveOption("HealthFrame")
 
@@ -40,7 +39,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SindragosaEvent then
+		self:SendSync("GauntletStart")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "GauntletStart" then
 		specWarnGosaEvent:Show()
---		timerGosa:Start()
 	end
 end

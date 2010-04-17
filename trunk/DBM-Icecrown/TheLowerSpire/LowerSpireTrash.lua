@@ -74,6 +74,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3 then
+		self:SendSync("WarderTrap")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "WarderTrap" then
 		specWarnTrap:Show()
 	end
 end
