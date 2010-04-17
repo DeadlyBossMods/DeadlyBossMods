@@ -244,7 +244,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellAirphase or msg:find(L.YellAirphase) then
+	if msg:find(L.YellAirphase) then
 		warnAirphase:Show()
 		timerNextFrostBreath:Cancel()
 		timerUnchainedMagic:Start(55)
@@ -256,7 +256,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if self.Options.ClearIconsOnAirphase then
 			self:ClearIcons()
 		end
-	elseif msg == L.YellPhase2 or msg:find(L.YellPhase2) then
+	elseif msg:find(L.YellPhase2) then
 		phase = phase + 1
 		warnPhase2:Show()
 		timerNextBeacon:Start(5)
