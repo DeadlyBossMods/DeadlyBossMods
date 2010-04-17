@@ -177,12 +177,12 @@ do
 			specWarnVampricMight:Show(args.destName)
 		elseif args:IsSpellID(71204) then
 			warnTouchInsignificance:Show(args.spellName, args.destName, args.amount or 1)
+			timerTouchInsignificance:Start(args.destName)
 			if args:IsPlayer() and (args.amount or 1) >= 3 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25")) then
 				specWarnTouchInsignificance:Show(args.amount)
 			elseif args:IsPlayer() and (args.amount or 1) >= 5 and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
 				specWarnTouchInsignificance:Show(args.amount)
 			end
-			timerTouchInsignificance:Start(args.destName)
 		end
 	end
 	mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
@@ -222,7 +222,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_INTERRUPT(args)
-	if args:IsSpellID(71420, 72007, 72501, 72502) then
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 71420 or args.extraSpellId == 72007 or args.extraSpellId == 72501 or args.extraSpellId == 72502) then
 		timerFrostboltCast:Cancel()
 	end
 end
