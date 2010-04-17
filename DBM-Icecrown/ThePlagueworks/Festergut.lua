@@ -39,12 +39,14 @@ local timerGooCD			= mod:NewNextTimer(10, 72549)
 
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
+mod:AddBoolOption("AnnounceSporeIcons", false)
 
 local gasSporeTargets	= {}
+local gasSporeIconTargets	= {}
 local vileGasTargets	= {}
-local gasSporeIcon 	= 8
 local gasSporeCast 	= 0
 local lastGoo = 0
+
 --[[
 local mRange = { }
 local mPoints = { 
@@ -66,6 +68,27 @@ local function findMin(a)
 	return min, index
 end
 --]]
+
+do
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
+	end
+	function mod:SetSporeIcons()
+		if DBM:GetRaidRank() > 0 then
+			table.sort(gasSporeIconTargets, sort_by_group)
+			local gasSporeIcon = 8
+			for i, v in ipairs(gasSporeIconTargets) do
+				if self.Options.AnnounceSporeIcons then
+					SendChatMessage(L.SporeSet:format(gasSporeIcon, UnitName(v)), "RAID")
+				end
+				mod:SetIcon(UnitName(v), gasSporeIcon, 12)
+				gasSporeIcon = gasSporeIcon - 1
+			end
+			table.wipe(gasSporeIconTargets)
+		end
+	end
+end
+
 local function warnGasSporeTargets()
 	warnGasSpore:Show(table.concat(gasSporeTargets, "<, >"))
 	timerGasSpore:Start()
@@ -86,7 +109,6 @@ local function warnGasSporeTargets()
 	noCheck = true
 --]]
 	table.wipe(gasSporeTargets)
-	gasSporeIcon = 8
 end
 
 local function warnVileGasTargets()
@@ -161,8 +183,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGasSpore:Show()
 		end
 		if self.Options.SetIconOnGasSpore then
-			self:SetIcon(args.destName, gasSporeIcon, 12)
-			gasSporeIcon = gasSporeIcon - 1
+			table.insert(gasSporeIconTargets, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetSporeIcons")
+			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #gasSporeIconTargets >= 3) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #gasSporeIconTargets >= 2) then
+				self:SetSporeIcons()
+			else
+				self:ScheduleMethod(0.2, "SetSporeIcons")
+			end
 		end
 		self:Unschedule(warnGasSporeTargets)
 		if #gasSporeTargets >= 3 then
