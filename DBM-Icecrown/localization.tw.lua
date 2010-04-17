@@ -410,7 +410,8 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	timerPortalsOpen		= "傳送門開啟",
-	timerSoftEnrage			= "小怪急劇增加"
+	timerSoftEnrage			= "小怪急劇增加",
+	TimerBlazingSkeleton		= "熾熱骷髏"
 }
 
 L:SetOptionLocalization{
@@ -418,6 +419,7 @@ L:SetOptionLocalization{
 	warnPortalOpen			= "當夢魘之門開啟時顯示警告",
 	timerPortalsOpen		= "當夢魘之門開啟時顯示計時器",
 	timerSoftEnrage			= "為軟狂暴(小怪急劇增加)顯示計時器",
+	TimerBlazingSkeleton		= "為熾熱骷髏出現顯示計時器",
 	warnCorrosion			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
