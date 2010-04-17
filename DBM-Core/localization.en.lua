@@ -1,5 +1,5 @@
 
-DBM_CORE_NEED_SUPPORT				= "Hey, are u a programmer or good with languages? If yes, the DBM Team realy need your help to keep DBM the best BossMod in WoW. So join the Team by clicking on www.deadlybossmods.com or send a message to tandanu@deadlybossmods.com or nitram@deadlybossmods.com."
+DBM_CORE_NEED_SUPPORT				= "Hey, are u a programmer or good with languages? If yes, the DBM Team realy need your help to keep DBM the best BossMod in WoW. Join the Team by clicking on www.deadlybossmods.com or send a message to tandanu@deadlybossmods.com or nitram@deadlybossmods.com."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' boss mods, for more options type /dbm in your chat!"
@@ -50,8 +50,8 @@ DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Show popup when a new version is available"
 
 DBM_CORE_MOVABLE_BAR				= "Drag me!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a pizza timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
-DBM_PIZZA_CONFIRM_IGNORE			= "Do you really want to ignore pizza timers from %s for this session?"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h sent you a DBM timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancel this timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignore timers from %1$s]|r|h"
+DBM_PIZZA_CONFIRM_IGNORE			= "Do you really want to ignore DBM timers from %s for this session?"
 DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods is running twice because you have DBMv3 and DBMv4 installed and enabled!\nClick \"Okay\" to disable DBMv3 and reload your interface.\nYou should also clean up your AddOns folder by deleting the old DBMv3 folders."
@@ -77,8 +77,8 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
 	"/dbm version: Performs a raid-wide version check (alias: ver).",
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
-	"/dbm timer <x> <text>: Starts a <x> second Pizza Timer with the name <text>.",
-	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second Pizza Timer with the name <text> to the raid (requires leader/promoted status).",
+	"/dbm timer <x> <text>: Starts a <x> second DBM Timer with the name <text>.",
+	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second DBM Timer with the name <text> to the raid (requires leader/promoted status).",
 	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
 	"/dbm help: Shows slash command descriptions",
 }
