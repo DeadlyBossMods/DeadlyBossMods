@@ -1976,6 +1976,7 @@ do
 			DBM:Schedule(0, requestTimers)
 		end
 		self:LFG_UPDATE()
+		self:Schedule(10, function() DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end)
 	end
 end
 
