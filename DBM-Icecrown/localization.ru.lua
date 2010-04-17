@@ -407,7 +407,8 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	timerPortalsOpen	= "Открытие порталов",
-	timerSoftEnrage		= "Мягкий берсерк"
+	timerSoftEnrage		= "Мягкий берсерк",
+	TimerBlazingSkeleton	= "Исторгающий пламя скелет"
 }
 
 L:SetOptionLocalization{
@@ -415,6 +416,7 @@ L:SetOptionLocalization{
 	warnPortalOpen				= "Предупреждение об открытии порталов",
 	timerPortalsOpen			= "Отсчет времени для открытия порталов",
 	timerSoftEnrage				= "Отсчет времени до мягкого берсерка",
+	TimerBlazingSkeleton			= "Отсчет времени до Исторгающего пламя скелета",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
