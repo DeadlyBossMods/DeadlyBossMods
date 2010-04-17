@@ -299,12 +299,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(72855, 72856) then	 -- Unbound Plague
 		warnUnboundPlague:Show(args.destName)
-		timerUnboundPlague:Start()
 		if self.Options.UnboundPlagueIcon then
 			self:SetIcon(args.destName, 2, 20)
 		end
 		if args:IsPlayer() then
 			specWarnUnboundPlague:Show()
+			timerUnboundPlague:Start()
 			--specWarnUnboundPlague:Schedule(10)
 			--self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")		-- we acquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
 			if self.Options.YellOnUnbound then
