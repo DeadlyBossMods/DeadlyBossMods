@@ -1,5 +1,7 @@
 ﻿if GetLocale() ~= "esES" then return end
 
+DBM_CORE_NEED_SUPPORT				= "¡Ey! ¿Eres un programador o eres bueno con los idiomas? Si es así, el Equipo DBM necesita tu ayuda para mantener el DBM como el mejor BossMod del WoW. Únete al equipo haciendo click en www.deadlybossmods.com o enviando un mensaje a tandanu@deadlybossmods.com o nitram@deadlybossmods.com."
+
 DBM_CORE_LOAD_MOD_ERROR				= "Error al cargar modulo %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Cargado modulo de '%s' !"
 DBM_CORE_LOAD_GUI_ERROR				= "No se puede cargar la GUI: %s"

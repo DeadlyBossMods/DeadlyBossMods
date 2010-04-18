@@ -48,7 +48,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	FleshreaperTrap1		= "Rápido, ¡atacaremos por la espalda!",
-	FleshreaperTrap2		= "¡No… puedes escapar!",
+	FleshreaperTrap2		= "¡No... puedes escapar!",
 	FleshreaperTrap3		= "¿Los vivos? ¿¡Aquí!?"
 }
 
@@ -254,7 +254,8 @@ L:SetOptionLocalization{
 	InhaledBlight		= "Mostrar aviso para $spell:71912",
 	RangeFrame			= "Mostrar distancia (8 yardas)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
-	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
+	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
+	AnnounceSporeIcons	= "Anunciar los iconos de los objetivos de $spell:69279 en el chat de raid\n(Necesita Anunciar habilitado y ayudante/líder de banda)"
 }
 
 ---------------
@@ -497,8 +498,7 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
 	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!",
 	specWarnTrapNear		= "Trampa de las Sombras cerca de ti ¡Ten cuidado!",
-	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<",
-	WarningValkyrSpawned 	= "Guardia de las Sombras Val'kyr sale (%d)"
+	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<"
 }
 
 L:SetTimerLocalization{
