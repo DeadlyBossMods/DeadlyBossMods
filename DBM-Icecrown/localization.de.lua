@@ -250,7 +250,8 @@ L:SetOptionLocalization{
 	InhaledBlight		= "Zeige Warnung für $spell:71912",
 	RangeFrame			= "Zeige Abstandsfenster (8 m)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
-	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
+	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
+	AnnounceSporeIcons	= "Verkünde Symbole für Ziele von $spell:69279 im Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)"
 }
 
 ---------------
