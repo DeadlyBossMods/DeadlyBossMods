@@ -1,7 +1,9 @@
 if GetLocale() ~= "deDE" then return end
 
+DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Sprachen? Falls ja, benötigt das DBM-Team deine Hilfe, damit DBM das beste BossMod in WoW bleibt. Trete dem Team auf www.deadlybossmods.com bei oder sende eine E-Mail an tandanu@deadlybossmods.com oder nitram@deadlybossmods.com."
+
 DBM_CORE_LOAD_MOD_ERROR				= "Fehler beim Laden von Boss Mods für %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen!"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen, für weitere Optionen gib /dbm in deinem Chatfenster ein!"
 DBM_CORE_LOAD_GUI_ERROR				= "Konnte das GUI nicht laden: %s"
 
 DBM_CORE_COMBAT_STARTED				= "Kampf gegen %s hat begonnen. Viel Glück! :)";
@@ -49,9 +51,9 @@ DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Zeige Popup wenn eine neue Version verfügba
 
 DBM_CORE_MOVABLE_BAR				= "Zieh mich!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h hat dir einen Pizza-Timer geschickt: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Diesen Timer abbrechen]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Pizza-Timer von %1$s ignorieren]|r|h"
-DBM_PIZZA_CONFIRM_IGNORE			= "Willst du wirklich Pizza-Timer von %s für diese Session ignorieren?"
-DBM_PIZZA_ERROR_USAGE				= "Benutzung: /dbm [broadcast] timer <time> <text>"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h hat dir einen DBM-Timer geschickt: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Diesen Timer abbrechen]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Pizza-Timer von %1$s ignorieren]|r|h"
+DBM_PIZZA_CONFIRM_IGNORE			= "Willst du wirklich DBM-Timer von %s für diese Session ignorieren?"
+DBM_PIZZA_ERROR_USAGE				= "Benutzung: /dbm [broadcast] timer <Sekunden> <text>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods läuft doppelt, da du DBMv3 und DBMv4 installiert und aktiviert hast!\nKlick auf \"Okay\" um DBMv3 zu deaktivieren und dein Interface neu zu laden.\nAußerdem solltest du deinen AddOn-Ordner aufräumen, indem du alle DBMv3 Mods löschst."
 
@@ -74,8 +76,8 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"Verfügbare Slash-Commands:",
 	"/dbm version: führt einen raidweiten Versionscheck durch (alias: ver)",
 	"/dbm unlock: zeigt einen bewegbaren Timer an (alias: move)",
-	"/dbm timer <x> <text>: startet einen <x> Sekunden langen Pizza-Timer mit dem Namen <text>",
-	"/dbm broadcast timer <x> <text>: schickt einen <x> Sekunden langen Pizza-Timer mit dem Namen <text> an den Raid (benötigt (A) oder (L))",
+	"/dbm timer <x> <text>: startet einen <x> Sekunden langen DBM-Timer mit dem Namen <text>",
+	"/dbm broadcast timer <x> <text>: schickt einen <x> Sekunden langen DBM-Timer mit dem Namen <text> an den Raid (benötigt (A) oder (L))",
 	"/dbm break <min>: startet einen Pause-Timer für <min> Minuten. Schickt allen Raidmitgliedern mit DBM einen Pause-Timer (benötigt (A) oder (L)).",
 	"/dbm help: zeigt diese Hilfe",
 }
