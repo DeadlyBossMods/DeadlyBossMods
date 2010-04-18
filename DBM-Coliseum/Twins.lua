@@ -11,7 +11,8 @@ mod:RegisterCombat("yell", L.YellPull)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"SPELL_INTERRUPT"
 )
 
 mod:SetBossHealthInfo(
@@ -213,5 +214,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnDebuffTarget then
 			self:SetIcon(args.destName, 0)
 		end
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 65875 or args.extraSpellId == 67303 or args.extraSpellId == 67304 or args.extraSpellId == 67305 or args.extraSpellId == 65876 or args.extraSpellId == 67306 or args.extraSpellId == 67307 or args.extraSpellId == 67308) then
+		timerHeal:Cancel()
 	end
 end
