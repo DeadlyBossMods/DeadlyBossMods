@@ -1,6 +1,9 @@
 ﻿if GetLocale() ~= "zhTW" then return end
+
+DBM_CORE_NEED_SUPPORT				= "嘿, 你是否一個程式開發者或擁有良好的語言能力? 如果是的話, DBM團隊真的需要你的幫助以保持成為WOW入面最佳的首領模組。點擊 www.deadlybossmods.com 或發送郵件到 tandanu@deadlybossmods.com 或 nitram@deadlybossmods.com 來加入團隊。"
+
 DBM_CORE_LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組!"
+DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組, 輸入/dbm有更多選項!"
 DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)";
