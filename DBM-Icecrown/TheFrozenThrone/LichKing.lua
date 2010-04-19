@@ -81,7 +81,7 @@ mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
-mod:AddBoolOption("DefileArrow")
+--mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
 
 local phase	= 0
@@ -120,9 +120,9 @@ function mod:DefileTarget()
 			end
 			if inRange then
 				specWarnDefileNear:Show()
-				if self.Options.DefileArrow then
-					DBM.Arrow:ShowRunAway(x, y, 15, 5)
-				end
+--				if self.Options.DefileArrow then
+--					DBM.Arrow:ShowRunAway(x, y, 15, 5)
+--				end
 			end
 		end
 	end
