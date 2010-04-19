@@ -81,7 +81,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnGosaEvent	= "신드라고사 신비한 강타 시작!"
+	specWarnGosaEvent	= "신드라고사 웨이브"
 }
 
 L:SetTimerLocalization{
@@ -89,7 +89,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnGosaEvent	= "신드라고사 신비한 아픔 업적 특수 경고 보기",
+	specWarnGosaEvent	= "신드라고사 웨이브 특수 경고 보기",
 	GosaTimer			= "신드라고사 신비한 강타 유지 타이머 보기"
 }
 
@@ -217,10 +217,10 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "전투 시작 타이머 보기",
 	warnFrenzySoon			= "광기 사전 경고 보기 (33% 이하)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
---	MarkCastIcon			= "$spell:72444 대상에게 공격대 아이콘 설정",	
+--	MarkCastIcon			= "$spell:72444 대상에게 공격대 징표 설정",	
 	RangeFrame				= "거리 창 보기 (12 미터)",
 	RunePowerFrame			= "보스 체력 바와 함께 $spell:72371 바 보기",
-	BeastIcons				= "피의 괴물 공격대 아이콘 설정"	
+	BeastIcons				= "피의 괴물 공격대 징표 설정"	
 }
 
 L:SetMiscLocalization{
@@ -247,7 +247,8 @@ L:SetOptionLocalization{
 	InhaledBlight			= "$spell:71912 경고 보기",
 	RangeFrame				= "거리 창 보기(8 미터)",	
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
-	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279)
+	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
+	AnnounceSporeIcons		= "$spell:69279 대상 공격대 징표 채팅으로 알리기\n(공대장 혹은 권한을 가진 사람만 사용 가능)"
 }
 
 ---------------
@@ -312,8 +313,8 @@ L:SetOptionLocalization{
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
-	NextUnboundPlagueTargetIcon	= "$spell:72856의 다음 대상 공격대 아이콘 설정하기",
-	MalleableGooIcon			= "$spell:72295 대상 공격대 아이콘 설정하기",
+	NextUnboundPlagueTargetIcon	= "$spell:72856의 다음 대상 공격대 징표 설정하기",
+	MalleableGooIcon			= "$spell:72295 대상 공격대 징표 설정하기",
 	YellOnMalleableGoo			= "$spell:72295 외치기",
 	YellOnUnbound				= "$spell:72856 말하기",	
 	specWarnUnboundPlague		= "$spell:72856 전달자 특수 경고 보기",
@@ -353,7 +354,7 @@ L:SetOptionLocalization{
 	specWarnVortex				= "당신이 $spell:72037에 해당 될 경우 특수 경고 보기",
 	specWarnVortexNear			= "당신 주변에 $spell:72037가 있을 경우 특수 경고 보기",	
 	EmpoweredFlameIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
-	ActivePrinceIcon			= "활성화 된 공작에게 공격대 아이콘 설정하기 (해골)",
+	ActivePrinceIcon			= "활성화 된 공작에게 공격대 징표 설정하기 (해골)",
 	RangeFrame					= "거리 창 보기 (12 m)"
 }
 
@@ -415,7 +416,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnBlazingSkeleton	= "타오르는 해골에게 공격대 아이콘 설정(해골)",
+	SetIconOnBlazingSkeleton	= "타오르는 해골에게 공격대 징표 설정(해골)",
 	warnPortalOpen				= "$spell:72483 열림 경고 보기",	
 	timerPortalsOpen			= "악몽의 차원문이 열릴 때 타이머 보기",
 	timerSoftEnrage				= "1차 광폭화 타이머 보기(빠른 몹 추가)",
@@ -463,10 +464,10 @@ L:SetOptionLocalization{
 	warnInstability				= "당신의 $spell:69766 중첩 경고 보기",
 	warnChilledtotheBone		= "당신의 $spell:70106 중첩 경고 보기",
 	warnMysticBuffet			= "당신의 $spell:70128 중첩 경고 보기",
-	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 아이콘을 채팅으로 알리기\n(공대장 혹은 부공대장 권한이 있을 경우)",	
+	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 징표을 채팅으로 알리기\n(공대장 혹은 부공대장 권한이 있을 경우)",	
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 아이콘 제거",
+	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 징표 제거",
 	RangeFrame					= "거리 창 보기(일반 10m, 영웅 20m) (해당 플레이어만 보임)"
 
 }
@@ -474,7 +475,7 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAirphase			= "여기가 끝이다! 아무도 살아남지 못하리라!",
 	YellPhase2				= "자, 주인님의 무한한 힘을 느끼고 절망에 빠져보아라!",--Now, feel my master's limitless power and despair!",	
-	BeaconIconSet			= "냉기 봉화 아이콘{rt%d} : %s",	
+	BeaconIconSet			= "냉기 봉화 징표{rt%d} : %s",	
 	YellPull				= "여기까지 오다니 너무나 어리석구나. 노스렌드의 얼음 바람이 영혼까지 삼키리라!"--You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
@@ -520,7 +521,7 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
-	ValkyrIcon					= "발키리에 공격대 아이콘 설정",
+	ValkyrIcon					= "발키리에 공격대 징표 설정",
 	DefileArrow					= "$spell:72762이 당신 주변에 생성되면 DBM 화살표 보기",
 	TrapArrow					= "주변에 $spell:73539을 할 경우 DBM 화살표 보기"
 }
