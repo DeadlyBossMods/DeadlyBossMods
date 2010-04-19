@@ -1,6 +1,6 @@
 if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_SUPPORT				= "Hey, are u a programmer or good with languages? If yes, the DBM Team realy need your help to keep DBM the best BossMod in WoW. Join the Team by clicking on www.deadlybossmods.com or send a message to tandanu@deadlybossmods.com or nitram@deadlybossmods.com."
+DBM_CORE_NEED_SUPPORT				= "안녕하세요. DBM Team입니다. 만약 프로그래밍 또는 언어에 대해 잘 아신다면, DBM Team에 어떤 도움이든 주실 수 있습니다. 만약, 한글화 혹은 코드 수정에 관해 건의/수정 사항이 있다면 wow.somegate.com 또는 bluenyx@gmail.com 에 연락바랍니다. DBM BossMods Team에 참가하고 싶다면 www.deadlybossmods.com 또는 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com에 연락 바랍니다. 물론, 영어를 매우 잘하셔야겠죠?"
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 보스 모드 로딩중 에러 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 보스 모드가 로드되었습니다.!"
