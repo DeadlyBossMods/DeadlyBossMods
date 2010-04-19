@@ -70,7 +70,7 @@ local timerRagingSpiritCD	= mod:NewCDTimer(17, 69200)
 local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
 local timerTrapCD		 	= mod:NewCDTimer(16, 73539)
-local timerRoleplay			= mod:NewTimer(157, "TimerRoleplay")	--Needs tweaking to new placement.
+local timerRoleplay			= mod:NewTimer(160, "TimerRoleplay", 72350)	--Needs tweaking to new placement.
 
 local berserkTimer			= mod:NewBerserkTimer(900)
 
