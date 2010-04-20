@@ -57,13 +57,16 @@ local objectives = {
 	[4] = 6,	-- Mage
 	[5] = 45	-- Flag
 }
-local function is_flag(id)
+
+local function isFlag(id)
 	return id == 45 or id == 44 or id ==43
 end
-local function is_tower(id)
+
+local function isTower(id)
 	return id == 6 or id == 10 or id == 11
 end
-local function get_basecount()
+
+local function getBasecount()
 	local alliance = 0 
 	local horde = 0
 	for k,v in pairs(objectives) do
@@ -75,22 +78,25 @@ local function get_basecount()
 	end
 	return alliance, horde
 end
-local function get_score()
-	if not bgzone then return 0,0 end
-	local AllyScore		= tonumber(string.match((select(3, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
-	local HordeScore	= tonumber(string.match((select(3, GetWorldStateUIInfo(3)) or ""), L.ScoreExpr)) or 0
-	return AllyScore, HordeScore
+
+local function getScore()
+	if not bgzone then
+		return 0, 0
+	end
+	local allyScore	= tonumber(string.match((select(3, GetWorldStateUIInfo(2)) or ""), L.ScoreExpr)) or 0
+	local hordeScore = tonumber(string.match((select(3, GetWorldStateUIInfo(3)) or ""), L.ScoreExpr)) or 0
+	return allyScore, hordeScore
 end
 
 
-local get_gametime
-local update_gametime
+local getGametime
+local updateGametime
 do
 	local gametime = 0
-	function update_gametime()
+	function updateGametime()
 		gametime = time()
 	end
-	function get_gametime()
+	function getGametime()
 		local systime = GetBattlefieldInstanceRunTime()
 		if systime > 0 then
 			return systime / 1000
@@ -101,14 +107,14 @@ do
 end
 
 do
-	local function AB_Initialize()
+	local function initialize()
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
-			update_gametime()
+			updateGametime()
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
-					if is_tower(textureIndex) or is_flag(textureIndex) then
+					if isTower(textureIndex) or isFlag(textureIndex) then
 						objectives[i] = textureIndex
 					end
 				end
@@ -124,17 +130,19 @@ do
 			end
 		end
 	end
-	EyeOfTheStorm.OnInitialize = AB_Initialize
-	EyeOfTheStorm.ZONE_CHANGED_NEW_AREA = AB_Initialize
+	EyeOfTheStorm.OnInitialize = initialize
+	EyeOfTheStorm.ZONE_CHANGED_NEW_AREA = initialize
 end
 
 do
-	local function check_for_updates()
-		if not bgzone then return end
-		for i=1, GetNumMapLandmarks(), 1 do
+	local function checkForUpdates()
+		if not bgzone then
+			return
+		end
+		for i = 1, GetNumMapLandmarks() do
 			local name, _, textureIndex = GetMapLandmarkInfo(i)
 			if name and textureIndex then
-				if is_tower(textureIndex) or is_flag(textureIndex) then
+				if isTower(textureIndex) or isFlag(textureIndex) then
 					objectives[i] = textureIndex
 				end
 			end
@@ -142,8 +150,8 @@ do
 		EyeOfTheStorm:UPDATE_WORLD_STATES()
 	end
 	
-	local function schedule_check(self)
-		self:Schedule(1, check_for_updates)
+	local function scheduleCheck(self)
+		self:Schedule(1, checkForUpdates)
 	end
 
 	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_ALLIANCE(arg1)
@@ -168,7 +176,7 @@ do
 				self:UpdateFlagDisplay()
 			end
 		end
-		schedule_check(self)
+		scheduleCheck(self)
 	end
 
 	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_HORDE(arg1)
@@ -193,11 +201,13 @@ do
 				self:UpdateFlagDisplay()
 			end
 		end
-		schedule_check(self)
+		scheduleCheck(self)
 	end
 
 	function EyeOfTheStorm:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
-		if not bgzone then return end
+		if not bgzone then
+			return
+		end
 
 		if arg1 == L.BgStart60 then
 			startTimer:Start()
@@ -210,7 +220,7 @@ do
 			EyeOfTheStorm.HordeFlag = nil
 			EyeOfTheStorm:UpdateFlagDisplay()
 		end
-		schedule_check(self)
+		scheduleCheck(self)
 	end	
 end
 
@@ -218,8 +228,8 @@ end
 function EyeOfTheStorm:UPDATE_WORLD_STATES()
 	if not bgzone then return end
 
-	local last_alliance_bases, last_horde_bases = get_basecount()
-	local last_alliance_score, last_horde_score = get_score()
+	local last_alliance_bases, last_horde_bases = getBasecount()
+	local last_alliance_score, last_horde_score = getScore()
 
 	-- calculate new times
 	local AllyTime = (1600 - last_alliance_score) / ResPerSec[last_alliance_bases]
@@ -238,7 +248,7 @@ function EyeOfTheStorm:UPDATE_WORLD_STATES()
 		
 	elseif AllyTime > HordeTime then -- Horde wins
 		winner_is = 2
-		winTimer:Update(get_gametime(), get_gametime()+HordeTime)
+		winTimer:Update(getGametime(), getGametime()+HordeTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(L.Horde))
 		winTimer:SetColor(hordeColor)
@@ -252,7 +262,7 @@ function EyeOfTheStorm:UPDATE_WORLD_STATES()
 
 	elseif HordeTime > AllyTime then -- Alliance wins
 		winner_is = 1
-		winTimer:Update(get_gametime(), get_gametime()+AllyTime)
+		winTimer:Update(getGametime(), getGametime()+AllyTime)
 		winTimer:DisableEnlarge()
 		winTimer:UpdateName(L.WinBarText:format(L.Alliance))
 		winTimer:SetColor(allyColor)
