@@ -38,7 +38,7 @@ end)
 Warsong:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
 do
-	local function WSG_Initialize()
+	local function initialize()
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
 			if Warsong.Options.ShowFlagCarrier then
@@ -58,8 +58,8 @@ do
 			end
 		end
 	end
-	Warsong.OnInitialize = WSG_Initialize
-	Warsong.ZONE_CHANGED_NEW_AREA = WSG_Initialize
+	Warsong.OnInitialize = initialize
+	Warsong.ZONE_CHANGED_NEW_AREA = initialize
 end
 
 function Warsong:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
@@ -68,6 +68,21 @@ function Warsong:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 		startTimer:Start()
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
+	end
+end
+
+local function secureButtonOnUpdate(self)
+	if not UnitAffectingCombat("player") then
+		local anchorFrame = self == Warsong.FlagCarrierFrame1Button and AlwaysUpFrame2 or AlwaysUpFrame3
+		if not anchorFrame then
+			return
+		end
+		local point, relFrame, relPoint x, y = anchorFrame:GetPoint(1)
+		self:SetPoint(point, relFrame, relPoint, x + 28, y + 4)
+		if anchorFrame.requestHide then
+			anchorFrame.requestHide = false
+			anchorFrame:Hide()
+		end
 	end
 end
 
@@ -80,6 +95,7 @@ function Warsong:ShowFlagCarrier()
 			self.FlagCarrierFrame1:SetHeight(10)
 			self.FlagCarrierFrame1:SetWidth(100)
 			self.FlagCarrierFrame1:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
+			self.FlagCarrierFrame1:SetScript("OnHide", flagCarrierOnHide)
 			self.FlagCarrierFrame1Text = self.FlagCarrierFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.FlagCarrierFrame1Text:SetAllPoints(self.FlagCarrierFrame1)
 			self.FlagCarrierFrame1Text:SetJustifyH("LEFT")
@@ -89,11 +105,12 @@ function Warsong:ShowFlagCarrier()
 			self.FlagCarrierFrame2:SetHeight(10)
 			self.FlagCarrierFrame2:SetWidth(100)
 			self.FlagCarrierFrame2:SetPoint("LEFT", "AlwaysUpFrame3DynamicIconButton", "RIGHT", 4, 0)
+			self.FlagCarrierFrame2:SetScript("OnHide", flagCarrierOnHide)
 			self.FlagCarrierFrame2Text= self.FlagCarrierFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.FlagCarrierFrame2Text:SetAllPoints(self.FlagCarrierFrame2)
 			self.FlagCarrierFrame2Text:SetJustifyH("LEFT")
 		end
-		self.FlagCarrierFrame1:Show()		
+		self.FlagCarrierFrame1:Show()
 		self.FlagCarrierFrame2:Show()
 	end
 end
@@ -105,14 +122,14 @@ function Warsong:CreateFlagCarrierButton()
 		self.FlagCarrierFrame1Button:SetHeight(15)
 		self.FlagCarrierFrame1Button:SetWidth(150)
 		self.FlagCarrierFrame1Button:SetAttribute("type", "macro")
-		self.FlagCarrierFrame1Button:SetPoint("LEFT", "AlwaysUpFrame2", "RIGHT", 28, 4)
+		self.FlagCarrierFrame1Button:SetScript("OnUpdate", secureButtonOnUpdate)
 	end
 	if not self.FlagCarrierFrame2Button then
 		self.FlagCarrierFrame2Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
 		self.FlagCarrierFrame2Button:SetHeight(15)
 		self.FlagCarrierFrame2Button:SetWidth(150)
 		self.FlagCarrierFrame2Button:SetAttribute("type", "macro")
-		self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame3", "RIGHT", 28, 4)
+		self.FlagCarrierFrame2Button:SetScript("OnUpdate", secureButtonOnUpdate)
 	end
 	self.FlagCarrierFrame1Button:Show()		
 	self.FlagCarrierFrame2Button:Show()
@@ -122,6 +139,8 @@ function Warsong:HideFlagCarrier()
 	if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
 		self.FlagCarrierFrame1:Hide()
 		self.FlagCarrierFrame2:Hide()
+		self.FlagCarrierFrame1Button.requestHide = true
+		self.FlagCarrierFrame2Button.requestHide = true
 		FlagCarrier[1] = nil
 		FlagCarrier[2] = nil
 	end
