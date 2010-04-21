@@ -356,7 +356,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(70539, 72457, 72875, 72876) then
 		timerRegurgitatedOoze:Cancel(args.destName)
 	elseif args:IsSpellID(70542) then
-		timerMutatedSlash:Show(args.destName)
+		timerMutatedSlash:Cancel(args.destName)
 	end
 end
 
