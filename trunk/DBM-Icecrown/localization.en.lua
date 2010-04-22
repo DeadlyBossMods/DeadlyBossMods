@@ -248,6 +248,10 @@ L:SetOptionLocalization{
 	AnnounceSporeIcons	= "Announce icons for $spell:69279 targets to raid chat\n(requires announce to be enabled and leader/promoted status)"
 }
 
+L:SetMiscLocalization{
+	SporeSet	= "Gas Spore icon {rt%d} set on %s"
+}
+
 ---------------
 --  Rotface  --
 ---------------
