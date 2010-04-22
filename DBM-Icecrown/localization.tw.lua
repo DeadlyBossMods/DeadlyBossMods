@@ -251,6 +251,10 @@ L:SetOptionLocalization{
 	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需要開啟警告及團隊隊長或助理權限)"
 }
 
+L:SetMiscLocalization{
+	SporeSet			= "氣體孢子{rt%d}: %s"
+}
+
 ---------------
 --  Rotface  --
 ---------------
