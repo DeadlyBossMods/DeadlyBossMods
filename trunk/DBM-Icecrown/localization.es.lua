@@ -258,6 +258,11 @@ L:SetOptionLocalization{
 	AnnounceSporeIcons	= "Anunciar los iconos de los objetivos de $spell:69279 en el chat de raid\n(Necesita Anunciar habilitado y ayudante/líder de banda)"
 }
 
+L:SetMiscLocalization{
+	SporeSet	= "Icono {rt%d} de espora de gas en %s"
+}
+
+
 ---------------
 --  Rotface  --
 ---------------
