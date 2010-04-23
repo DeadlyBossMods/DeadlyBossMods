@@ -254,6 +254,10 @@ L:SetOptionLocalization{
 	AnnounceSporeIcons	= "Verkünde Symbole für Ziele von $spell:69279 im Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)"
 }
 
+L:SetMiscLocalization{
+	SporeSet	= "Gassporensymbol {rt%d} auf %s gesetzt"
+}
+
 ---------------
 --  Rotface  --
 ---------------
