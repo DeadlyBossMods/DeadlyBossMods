@@ -247,11 +247,11 @@ L:SetOptionLocalization{
 	RangeFrame			= "Показывать окно допустимой дистанции (8 м)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Объявлять метки персонажей с $spell:69279 в рейд-чат\n(требуются права лидера или помощника)"
+	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права лидера или помощника)"
 }
 
 L:SetMiscLocalization{
-	SporeSet	= "%s со спорой отмечен(а) {rt%d}"
+	SporeSet	= "Метка Газообразных спор {rt%d} установлена на: %s"
 }
 
 ---------------
