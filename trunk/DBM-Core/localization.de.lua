@@ -1,6 +1,6 @@
 if GetLocale() ~= "deDE" then return end
 
-DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Sprachen? Falls ja, benötigt das DBM-Team deine Hilfe, damit DBM das beste BossMod in WoW bleibt. Trete dem Team auf www.deadlybossmods.com bei oder sende eine E-Mail an tandanu@deadlybossmods.com oder nitram@deadlybossmods.com."
+DBM_CORE_NEED_SUPPORT				= "Hey, bist du ein Programmierer oder gut in Fremdsprachen? Falls ja, benötigt das DBM-Team deine Hilfe, damit DBM das beste BossMod in WoW bleibt. Trete dem Team auf www.deadlybossmods.com bei oder sende eine E-Mail an tandanu@deadlybossmods.com oder nitram@deadlybossmods.com."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Fehler beim Laden von Boss Mods für %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss Mods für '%s' geladen, für weitere Optionen gib /dbm in deinem Chatfenster ein!"
