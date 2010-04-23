@@ -252,7 +252,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	SporeSet		= "Gas Spore icon {rt%d} set on %s"
+	SporeSet				= "가스 포자 징표{rt%d} : %s"
 }
 
 ---------------
