@@ -1,9 +1,9 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 
-DBM_CORE_NEED_SUPPORT				= "Команда разработчиков DBM ищет программистов, заинтересованных в развитии аддона! Присоединяйтесь к нам! Отправьте письмо на e-mail tandanu@deadlybossmods.com или nitram@deadlybossmods.com, либо зайдите на форум www.deadlybossmods.com."
+DBM_CORE_NEED_SUPPORT				= "Вы - программист или хороший переводчик? Команда разработчиков DBM нуждается в вашей помощи. Присоединяйтесь к нам -  зайдите на www.deadlybossmods.com или отправьте сообщение на tandanu@deadlybossmods.com или nitram@deadlybossmods.com."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Ошибка при загрузке DBM для %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для \"%s\"! Введите /dbm для вызова настроек."
+DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для \"%s\", введите /dbm для вызова настроек!"
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)";
