@@ -1,7 +1,9 @@
 ﻿if GetLocale() ~= "ruRU" then return end
 
+DBM_CORE_NEED_SUPPORT				= "Команда разработчиков DBM ищет программистов, заинтересованных в развитии аддона! Присоединяйтесь к нам! Отправьте письмо на e-mail tandanu@deadlybossmods.com или nitram@deadlybossmods.com, либо зайдите на форум www.deadlybossmods.com."
+
 DBM_CORE_LOAD_MOD_ERROR				= "Ошибка при загрузке DBM для %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для \"%s\"!"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Загружен DBM для \"%s\"! Введите /dbm для вызова настроек."
 DBM_CORE_LOAD_GUI_ERROR				= "Не удалось загрузить GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s вступает в бой. Удачи! :)";
@@ -49,8 +51,8 @@ DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Всплывающее сообщение п
 
 DBM_CORE_MOVABLE_BAR				= "Перетащите!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h транслирует Pizza Timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Отменить этот Pizza Timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Игнорировать Pizza Timer от %1$s]|r|h"
-DBM_PIZZA_CONFIRM_IGNORE			= "Вы действительно хотите проигнорировать Pizza Timer данного сеанса от %s?"
+DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h транслирует DBM Timer: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Отменить этот DBM Timer]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Игнорировать DBM Timer от %1$s]|r|h"
+DBM_PIZZA_CONFIRM_IGNORE			= "Вы действительно хотите проигнорировать DBM Timer данного сеанса от %s?"
 DBM_PIZZA_ERROR_USAGE				= "Использование: /dbm [broadcast] timer <time> <text>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods запущен дважды, поскольку установлены DBMv3 и DBMv4 и включены!\nНажмите кнопку \"ОК\" для отключения DBMv3 и перезагрузки интерфейса.\nНаведите порядок в вашей папке AddOns, удалите старые папки DBMv3."
