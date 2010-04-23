@@ -79,8 +79,6 @@ local function secureButtonOnUpdate(self)
 			return
 		end
 		local point, relFrame, relPoint x, y = anchorFrame:GetPoint(1)
-		x=tonumber(x)
-		y=tonumber(y)
 		self:SetPoint(point, relFrame, relPoint, x + 28, y + 4)
 		if anchorFrame.requestHide then
 			anchorFrame.requestHide = false
