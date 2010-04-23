@@ -78,11 +78,15 @@ local function secureButtonOnUpdate(self)
 		if not anchorFrame then
 			return
 		end
-		local point, relFrame, relPoint x, y = anchorFrame:GetPoint(1)
-		self:SetPoint(point, relFrame, relPoint, x + 28, y + 4)
-		if anchorFrame.requestHide then
-			anchorFrame.requestHide = false
-			anchorFrame:Hide()
+		-- HACK: this will break if the AlwaysUpFrame has an effective scale not equal to the effective scale of the button (which is not the case at the moment)
+		local x = anchorFrame:GetLeft()
+		local y = anchorFrame:GetBottom()
+		if x and y then
+			self:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
+		end
+		if self.requestHide then
+			self.requestHide = false
+			self:Hide()
 		end
 	end
 end
@@ -122,14 +126,14 @@ do
 	function Warsong:CreateFlagCarrierButton()
 		if not Warsong.Options.ShowFlagCarrier then return end
 		if not self.FlagCarrierFrame1Button then
-			self.FlagCarrierFrame1Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
+			self.FlagCarrierFrame1Button = CreateFrame("Button", nil, UIParent, "SecureActionButtonTemplate")
 			self.FlagCarrierFrame1Button:SetHeight(15)
 			self.FlagCarrierFrame1Button:SetWidth(150)
 			self.FlagCarrierFrame1Button:SetAttribute("type", "macro")
 			self.FlagCarrierFrame1Button:SetScript("OnUpdate", secureButtonOnUpdate)
 		end
 		if not self.FlagCarrierFrame2Button then
-			self.FlagCarrierFrame2Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
+			self.FlagCarrierFrame2Button = CreateFrame("Button", nil, UIParent, "SecureActionButtonTemplate")
 			self.FlagCarrierFrame2Button:SetHeight(15)
 			self.FlagCarrierFrame2Button:SetWidth(150)
 			self.FlagCarrierFrame2Button:SetAttribute("type", "macro")
