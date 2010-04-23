@@ -251,6 +251,10 @@ L:SetOptionLocalization{
 	AnnounceSporeIcons		= "$spell:69279 대상 공격대 징표 채팅으로 알리기\n(공대장 혹은 권한을 가진 사람만 사용 가능)"
 }
 
+L:SetMiscLocalization{
+	SporeSet		= "Gas Spore icon {rt%d} set on %s"
+}
+
 ---------------
 --  Rotface  --
 ---------------
