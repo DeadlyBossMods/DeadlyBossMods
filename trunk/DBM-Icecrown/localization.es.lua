@@ -38,7 +38,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnMortalWound	= "%s en >%s< (%s)",
-	specWarnTrap	= "¡Trampa activada! ¡Sale un Siegacarne vengativo!"--creatureid 37038
+	specWarnTrap	= "¡Trampa activada! ¡Salen Siegacarnes vengativos!"--creatureid 37038
 }
 
 L:SetOptionLocalization{
