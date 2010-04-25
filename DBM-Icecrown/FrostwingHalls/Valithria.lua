@@ -44,7 +44,6 @@ mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 
 local GutSprayTargets = {}
 local spamSupression = 0
-local BlazingSkeleton
 local BlazingSkeletonTimer = 60
 
 local function warnGutSprayTargets()
@@ -65,7 +64,6 @@ function mod:OnCombatStart(delay)
 	end
 	timerNextPortal:Start()
 	self:ScheduleMethod(46.5, "Portals")
-	BlazingSkeleton = nil
 	BlazingSkeletonTimer = 60
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
 	timerBlazingSkeleton:Start(-delay)
@@ -85,25 +83,10 @@ function mod:Portals()
 	self:ScheduleMethod(46.5, "Portals")
 end
 
-function mod:TrySetTarget()
-	if DBM:GetRaidRank() >= 1 then
-		for i = 1, GetNumRaidMembers() do
-			if UnitGUID("raid"..i.."target") == BlazingSkeleton then
-				BlazingSkeleton = nil
-				SetRaidTarget("raid"..i.."target", 8)
-			end
-			if not BlazingSkeleton then
-				break
-			end
-		end
-	end
-end
-
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's usually cast upon spawning)
+	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's cast upon spawning)
 		if self.Options.SetIconOnBlazingSkeleton then
-			BlazingSkeleton = args.sourceGUID
-			self:TrySetTarget()
+			self:SetIcon(args.sourceName, 8)
 		end
 	end
 end
@@ -129,10 +112,6 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(69325, 71730) then--Lay Waste
 		specWarnLayWaste:Show()
 		timerLayWaste:Start()
-		if self.Options.SetIconOnBlazingSkeleton then
-			BlazingSkeleton = args.sourceGUID
-			self:TrySetTarget()
-		end
 	elseif args:IsSpellID(70873, 71941) then	--Emerald Vigor/Twisted Nightmares (portal healers)
 		if args:IsPlayer() then
 			timerHealerBuff:Start()
@@ -176,11 +155,5 @@ end
 function mod:OnSync(msg, arg)
 	if msg == "NightmarePortal" then
 		self:Portals()
-	end
-end
-
-function mod:UNIT_TARGET()
-	if BlazingSkeleton then
-		self:TrySetTarget()
 	end
 end
