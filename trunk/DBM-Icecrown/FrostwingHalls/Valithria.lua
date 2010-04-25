@@ -100,7 +100,7 @@ function mod:TrySetTarget()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(70754, 71748) then--Fireball (its the first spell Blazing SKeleton's usually cast upon spawning)
+	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's usually cast upon spawning)
 		if self.Options.SetIconOnBlazingSkeleton then
 			BlazingSkeleton = args.sourceGUID
 			self:TrySetTarget()
