@@ -14,8 +14,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_TARGET"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnCorrosion		= mod:NewAnnounce("warnCorrosion", 2, 70751, false)
