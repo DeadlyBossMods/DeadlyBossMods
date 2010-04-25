@@ -54,8 +54,8 @@ end
 
 function mod:StartBlazingSkeletonTimer()
 	timerBlazingSkeleton:Start(BlazingSkeletonTimer)
-	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 	self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
+	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 end
 
 function mod:OnCombatStart(delay)
