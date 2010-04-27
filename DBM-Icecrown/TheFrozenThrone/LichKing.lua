@@ -38,7 +38,8 @@ local warnSummonValkyr		= mod:NewSpellAnnounce(69037, 3, 71844) --Phase 2 Add
 local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 1)
 local warnSummonVileSpirit	= mod:NewSpellAnnounce(70498, 2) --Phase 3 Add
 local warnHarvestSoul		= mod:NewTargetAnnounce(74325, 4) --Phase 3 Ability
-local warnTrapCast			= mod:NewTargetAnnounce(73539, 3) --Phase 2+ Ability
+local warnTrapCast			= mod:NewTargetAnnounce(73539, 3) --Phase 1 Heroic Ability
+local warnRestoreSoul		= mod:NewCastAnnounce(73650, 2) --Phase 3 Heroic
 
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
@@ -52,24 +53,26 @@ local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Abil
 local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank()) --phase 2+
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
 local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear", false) --Heroic Ability
+local specWarnHarvestSouls	= mod:NewSpecialWarningSpell(74297) --Heroic Ability
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797, nil, mod:IsTank() or mod:IsHealer())
-local timerSoulreaperCD	 	= mod:NewCDTimer(30, 73797, nil, mod:IsTank() or mod:IsHealer())
+local timerSoulreaperCD	 	= mod:NewCDTimer(30.5, 73797, nil, mod:IsTank() or mod:IsHealer())
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
 local timerHarvestSoulCD	= mod:NewCDTimer(75, 74325)
-local timerInfestCD			= mod:NewCDTimer(22, 73779, nil, mod:IsHealer())
+local timerInfestCD			= mod:NewCDTimer(22.5, 73779, nil, mod:IsHealer())
 local timerNecroticPlagueCleanse = mod:NewTimer(5, "TimerNecroticPlagueCleanse", 73912, false)
 local timerNecroticPlagueCD	= mod:NewCDTimer(30, 73912)
-local timerDefileCD			= mod:NewCDTimer(32, 72762)
+local timerDefileCD			= mod:NewCDTimer(32.5, 72762)
 local timerEnrageCD			= mod:NewCDTimer(20, 72143, nil, mod:IsTank() or mod:CanRemoveEnrage())
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
-local timerRagingSpiritCD	= mod:NewCDTimer(17, 69200)
+local timerRagingSpiritCD	= mod:NewCDTimer(22, 69200)
 local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
-local timerVileSpirit 		= mod:NewNextTimer(30, 70498)
-local timerTrapCD		 	= mod:NewCDTimer(16, 73539)
+local timerVileSpirit 		= mod:NewNextTimer(30.5, 70498)
+local timerTrapCD		 	= mod:NewCDTimer(15.5, 73539)
+local timerRestoreSoul 		= mod:NewCastTimer(40, 73650)
 local timerRoleplay			= mod:NewTimer(160, "TimerRoleplay", 72350)	--Needs tweaking to new placement.
 
 local berserkTimer			= mod:NewBerserkTimer(900)
@@ -160,22 +163,17 @@ function mod:TrapTarget()
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(68981, 74270, 74271, 74272) then -- Remorseless Winter (phase transition start) first cast
+	if args:IsSpellID(68981, 74270, 74271, 74272) or args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start)
 		warnRemorselessWinter:Show()
 		timerPhaseTransition:Start()
-		timerRagingSpiritCD:Start()
+		timerRagingSpiritCD:Start(6)
 		warnShamblingSoon:Cancel()
 		timerShamblingHorror:Cancel()
 		timerDrudgeGhouls:Cancel()
+		timerSummonValkyr:Cancel()
 		timerInfestCD:Cancel()
 		timerNecroticPlagueCD:Cancel()
 		timerTrapCD:Cancel()
-	elseif args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start) second cast of fight
-		warnRemorselessWinter:Show()
-		timerPhaseTransition:Start()
-		timerRagingSpiritCD:Start(6) --we use a seperate event for second remorseless winter since it has a different raging spirit timer.
-		timerSummonValkyr:Cancel()
-		timerInfestCD:Cancel()
 		timerDefileCD:Cancel()
 		warnDefileSoon:Cancel()
 	elseif args:IsSpellID(72262) then -- Quake (phase transition end)
@@ -205,6 +203,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
 		self:ScheduleMethod(0.05, "TrapTarget")
 		timerTrapCD:Start()
+	elseif args:IsSpellID(73650) then -- Restore Soul (Heroic)
+		warnRestoreSoul:Show()
+		timerRestoreSoul:Start()
 	elseif args:IsSpellID(72350) then -- Fury of Frostmourne
 		mod:SetWipeTime(160)--Change min wipe time mid battle to force dbm to keep module loaded for this long out of combat roleplay, hopefully without breaking mod.
 		timerRoleplay:Start()
@@ -239,9 +240,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(69200) then -- Raging Spirit
 		warnRagingSpirit:Show(args.destName)
-		timerRagingSpiritCD:Start()
 		if args:IsPlayer() then
 			specWarnRagingSpirit:Show()
+		end
+		if phase == 1 then
+			timerRagingSpiritCD:Start()
+		else
+			timerRagingSpiritCD:Start(17)
 		end
 		if self.Options.RagingSpiritIcon then
 			self:SetIcon(args.destName, 8, 5)
@@ -253,11 +258,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayer() then
 			specWarnHarvestSoul:Show()
 		end
+	elseif args:IsSpellID(73654, 74295, 74296, 74297) then -- Harvest Souls (Heroic)
+		specWarnHarvestSouls:Show()
+		timerVileSpirit:Cancel()
+		timerSoulreaperCD:Cancel()
+		timerDefileCD:Cancel()
 	end
 end
 
 do
 	local lastDefile = 0
+	local lastRestore = 0
 	function mod:SPELL_AURA_APPLIED(args)
 		if args:IsSpellID(72143, 72146, 72147, 72148) then -- Shambling Horror enrage effect.
 			warnShamblingEnrage:Show(args.destName)
@@ -265,6 +276,12 @@ do
 		elseif args:IsSpellID(72754, 73708, 73709, 73710) and args:IsPlayer() and time() - lastDefile > 2 then		-- Defile Damage
 			specWarnDefile:Show()
 			lastDefile = time()
+		elseif args:IsSpellID(73650) and time() - lastRestore > 3 then		-- Restore Soul (Heroic)
+			lastRestore = time()
+			timerHarvestSoulCD:Start(60)
+--			timerVileSpirit:Start()--Need more info on what times to give these
+--			timerSoulreaperCD:Start()
+--			timerDefileCD:Start(5)
 		end
 	end
 end
@@ -341,7 +358,7 @@ function mod:NextPhase()
 		timerDrudgeGhouls:Start(10)
 		timerNecroticPlagueCD:Start(27)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerTrapCD:Start(15)
+			timerTrapCD:Start()
 		end
 	elseif phase == 2 then
 		timerSummonValkyr:Start(20)
