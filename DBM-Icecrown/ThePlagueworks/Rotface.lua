@@ -52,13 +52,11 @@ mod:AddBoolOption("ExplosionIcon", false)
 mod:AddBoolOption("TankArrow")
 
 local RFVileGasTargets	= {}
-local lastGas = 0
 
 local function warnRFVileGasTargets()
 	warnVileGas:Show(table.concat(RFVileGasTargets, "<, >"))
 	table.wipe(RFVileGasTargets)
 	timerVileGasCD:Start()
-	lastGas = 0
 end
 
 function mod:OnCombatStart(delay)
@@ -88,6 +86,7 @@ function mod:SPELL_CAST_START(args)
 		warnStickyOoze:Show()
 	elseif args:IsSpellID(69839) then
 		warnOozeExplosionCast:Show()
+		specWarnOozeExplosion:Cancel()
 		specWarnOozeExplosion:Schedule(4)
 		timerOozeExplosion:Start()
 	end
