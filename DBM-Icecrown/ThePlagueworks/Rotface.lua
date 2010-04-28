@@ -64,6 +64,7 @@ function mod:OnCombatStart(delay)
 	timerWallSlime:Start(25-delay)
 	self:ScheduleMethod(25-delay, "WallSlime")
 	InfectionIcon = 7
+	spamOoze = 0
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerVileGasCD:Start(22-delay)
 	end
@@ -93,8 +94,10 @@ function mod:SPELL_CAST_START(args)
 		timerStickyOoze:Start()
 		warnStickyOoze:Show()
 	elseif args:IsSpellID(69839) then
-		warnOozeExplosionCast:Show()
-		timerOozeExplosion:Start()
+		if GetTime() - spamOoze > 5 then
+			warnOozeExplosionCast:Show()
+			timerOozeExplosion:Start()
+		end
 		self:UnscheduleMethod("BigOozeHack")
 		self:ScheduleMethod(4, "BigOozeHack")
 	end
