@@ -52,6 +52,7 @@ mod:AddBoolOption("ExplosionIcon", false)
 mod:AddBoolOption("TankArrow")
 
 local RFVileGasTargets	= {}
+local spamOoze = 0
 
 local function warnRFVileGasTargets()
 	warnVileGas:Show(table.concat(RFVileGasTargets, "<, >"))
@@ -76,6 +77,13 @@ function mod:WallSlime()
 	end
 end
 
+function mod:BigOozeHack()
+	if GetTime() - spamOoze > 5 then
+		specWarnOozeExplosion:Show()
+		spamOoze = GetTime()
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69508) then
 		timerSlimeSpray:Start()
@@ -86,9 +94,9 @@ function mod:SPELL_CAST_START(args)
 		warnStickyOoze:Show()
 	elseif args:IsSpellID(69839) then
 		warnOozeExplosionCast:Show()
-		specWarnOozeExplosion:Cancel()
-		specWarnOozeExplosion:Schedule(4)
 		timerOozeExplosion:Start()
+		self:UnscheduleMethod("BigOozeHack")
+		self:ScheduleMethod(4, "BigOozeHack")
 	end
 end
 
