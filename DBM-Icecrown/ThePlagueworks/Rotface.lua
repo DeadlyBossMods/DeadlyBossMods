@@ -23,7 +23,6 @@ local isKiter = select(2, UnitClass("player")) == "HUNTER"
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
 local warnSlimeSpray			= mod:NewSpellAnnounce(69508, 2)
-local warnOozeExplosionCast		= mod:NewCastAnnounce(69839, 3)
 local warnMutatedInfection		= mod:NewTargetAnnounce(71224, 4)
 local warnRadiatingOoze			= mod:NewSpellAnnounce(69760, 3)
 local warnOozeSpawn				= mod:NewAnnounce("WarnOozeSpawn", 1)
@@ -78,13 +77,6 @@ function mod:WallSlime()
 	end
 end
 
-function mod:BigOozeHack()
-	if GetTime() - spamOoze > 5 then
-		specWarnOozeExplosion:Show()
-		spamOoze = GetTime()
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(69508) then
 		timerSlimeSpray:Start()
@@ -93,13 +85,15 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(69774) then
 		timerStickyOoze:Start()
 		warnStickyOoze:Show()
-	elseif args:IsSpellID(69839) then
-		if GetTime() - spamOoze > 5 then
-			warnOozeExplosionCast:Show()
-			timerOozeExplosion:Start()
+	elseif args:IsSpellID(69839) then --Unstable Ooze Explosion (Big Ooze)
+		if GetTime() - spamOoze < 4 then --This will prevent spam but breaks if there are 2 oozes. GUID work is required
+			specWarnOozeExplosion:Cancel()
 		end
-		self:UnscheduleMethod("BigOozeHack")
-		self:ScheduleMethod(4, "BigOozeHack")
+		if GetTime() - spamOoze < 4 or GetTime() - spamOoze > 5 then --Attempt to ignore a cast that may fire as an ooze is already exploding.
+			timerOozeExplosion:Start()
+			specWarnOozeExplosion:Schedule(4)
+		end
+		spamOoze = GetTime()
 	end
 end
 
