@@ -10,6 +10,7 @@ mod:SetUsedIcons(2, 3, 4, 6, 7, 8)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_DISPEL",
 	"SPELL_AURA_APPLIED",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
@@ -223,7 +224,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerNecroticPlagueCleanse:Start()
 		lastPlagueCast = GetTime()
 		if self.Options.NecroticPlagueIcon then
-			self:SetIcon(args.destName, 7, 5)
+			self:SetIcon(args.destName, 7)
 		end
 		if args:IsPlayer() then
 			specWarnNecroticPlague:Show()
@@ -261,6 +262,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerVileSpirit:Cancel()
 		timerSoulreaperCD:Cancel()
 		timerDefileCD:Cancel()
+	end
+end
+
+function mod:SPELL_DISPEL(args)
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 70337 or args.extraSpellId == 73912 or args.extraSpellId == 73913 or args.extraSpellId == 73914 or args.extraSpellId == 70338 or args.extraSpellId == 73785 or args.extraSpellId == 73786 or args.extraSpellId == 73787) then
+		if self.Options.NecroticPlagueIcon then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -394,7 +403,7 @@ function mod:OnSync(msg, target)
 				specWarnNecroticPlague:Show()
 			end 
 			if self.Options.NecroticPlagueIcon then
-				self:SetIcon(target, 7, 5)
+				self:SetIcon(target, 7)
 			end
 		end
 	end
