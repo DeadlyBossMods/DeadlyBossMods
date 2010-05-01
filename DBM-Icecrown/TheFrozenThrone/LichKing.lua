@@ -224,7 +224,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerNecroticPlagueCleanse:Start()
 		lastPlagueCast = GetTime()
 		if self.Options.NecroticPlagueIcon then
-			self:SetIcon(args.destName, 7)
+			self:SetIcon(args.destName, 7, 5)
 		end
 		if args:IsPlayer() then
 			specWarnNecroticPlague:Show()
@@ -403,7 +403,7 @@ function mod:OnSync(msg, target)
 				specWarnNecroticPlague:Show()
 			end 
 			if self.Options.NecroticPlagueIcon then
-				self:SetIcon(target, 7)
+				self:SetIcon(target, 7, 5)
 			end
 		end
 	end
