@@ -106,6 +106,7 @@ DBM.DefaultOptions = {
 	DontSendBossAnnounces = false,
 	DontSendBossWhispers = false,
 	DontSetBossIcons = false,
+	HelpMessageShown = false
 }
 
 DBM.Bars = DBT:New()
@@ -1976,7 +1977,7 @@ do
 			DBM:Schedule(0, requestTimers)
 		end
 		self:LFG_UPDATE()
-		self:Schedule(10, function() if not DBM_MESSAGE_SHOWN then DBM_MESSAGE_SHOWN = true; DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 	end
 end
 
