@@ -247,7 +247,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "Показывать окно допустимой дистанции (8 м)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права лидера или помощника)"
+	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:69279 в рейд-чат\n(требуются права лидера или помощника)"
 }
 
 L:SetMiscLocalization{
@@ -531,6 +531,6 @@ L:SetMiscLocalization{
 	YellDefile		= "Осквернение на мне!",
 	YellTrap		= "Теневая ловушка на мне!",
 	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости...",
-	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю...",	--Need to confirm
+	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю...",
 	PlagueWhisper	= "Вы заражены"
 }
