@@ -133,20 +133,27 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(70126) then
-		beaconTargets[#beaconTargets + 1] = args.destName
+		if self.Options.SetIconOnFrostBeacon then
+			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetBeaconIcons")
+			if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
+				self:SetBeaconIcons()
+			else
+				self:ScheduleMethod(0.1, "SetBeaconIcons")
+			end
+		end
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
+		end
+		beaconTargets[#beaconTargets + 1] = args.destName
+		if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
+			warnBeaconTargets()
+		else
+			self:Schedule(0.3, warnBeaconTargets)
 		end
 		if phase == 2 then
 			timerNextBeacon:Start()
 		end
-		if self.Options.SetIconOnFrostBeacon then
-			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
-			self:UnscheduleMethod("SetBeaconIcons")
-			self:ScheduleMethod(0.1, "SetBeaconIcons")
-		end
-		self:Unschedule(warnBeaconTargets)
-		self:Schedule(0.1, warnBeaconTargets)
 	elseif args:IsSpellID(69762) then
 		unchainedTargets[#unchainedTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -157,7 +164,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			unchainedIcons = unchainedIcons - 1
 		end
 		self:Unschedule(warnUnchainedTargets)
-		self:Schedule(0.2, warnUnchainedTargets)
+		if #unchainedTargets >= 6 then
+			warnUnchainedTargets()
+		else
+			self:Schedule(0.3, warnUnchainedTargets)
+		end
 	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
 		if args:IsPlayer() then
 			warnChilledtotheBone:Show(args.amount or 1)
@@ -233,6 +244,9 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:find(L.YellAirphase) then
+		if self.Options.ClearIconsOnAirphase then
+			self:ClearIcons()
+		end
 		warnAirphase:Show()
 		timerNextFrostBreath:Cancel()
 		timerUnchainedMagic:Start(55)
@@ -241,9 +255,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
 		activeBeacons = true
-		if self.Options.ClearIconsOnAirphase then
-			self:ClearIcons()
-		end
 	elseif msg:find(L.YellPhase2) then
 		phase = phase + 1
 		warnPhase2:Show()
@@ -254,55 +265,3 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNextBlisteringCold:Start(35)
 	end
 end
-
-
---[[
--- Middle
-[02:06:50]Dump: value=GetPlayerMapPosition"player"
-[02:06:50][1]=0.36565238237381,
-[02:06:50][2]=0.23331482708454
-
--- right side
-[02:08:23]Dump: value=GetPlayerMapPosition"player"
-[02:08:23][1]=0.37875413894653,
-[02:08:23][2]=0.23325897753239
-
--- front side
-[02:09:07]Dump: value=GetPlayerMapPosition"player"
-[02:09:07][1]=0.36571484804153,
-[02:09:07][2]=0.25335687398911
-
--- left side
-[02:09:49]Dump: value=GetPlayerMapPosition"player"
-[02:09:49][1]=0.35263139009476,
-[02:09:49][2]=0.23302799463272
-
--- back side
-[02:11:19]Dump: value=GetPlayerMapPosition"player"
-[02:11:19][1]=0.36497965455055,
-[02:11:19][2]=0.21286574006081
-
-
--- 10er front
-[02:13:25]Dump: value=GetPlayerMapPosition"player"
-[02:13:25][1]=0.37788701057434,
-[02:13:25][2]=0.22191077470779
--- back
-[02:13:42]Dump: value=GetPlayerMapPosition"player"
-[02:13:42][1]=0.3777784705162,
-[02:13:42][2]=0.24382147192955
-
-
--- Phase2 Position @ 10er
-[02:15:58]Dump: value=GetPlayerMapPosition"player"
-[02:15:58][1]=0.39305117726326,
-[02:15:58][2]=0.1760238558054
-
--- additional @ 25er
-[02:16:42]Dump: value=GetPlayerMapPosition"player"
-[02:16:42][1]=0.39389464259148,
-[02:16:42][2]=0.24755308032036
---]]
-
-
-
