@@ -157,7 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			unchainedIcons = unchainedIcons - 1
 		end
 		self:Unschedule(warnUnchainedTargets)
-		self:Schedule(0.1, warnUnchainedTargets)
+		self:Schedule(0.2, warnUnchainedTargets)
 	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
 		if args:IsPlayer() then
 			warnChilledtotheBone:Show(args.amount or 1)
