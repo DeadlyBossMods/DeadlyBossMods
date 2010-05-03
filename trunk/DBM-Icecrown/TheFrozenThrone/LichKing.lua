@@ -286,9 +286,9 @@ do
 		elseif args:IsSpellID(73650) and time() - lastRestore > 3 then		-- Restore Soul (Heroic)
 			lastRestore = time()
 			timerHarvestSoulCD:Start(60)
---			timerVileSpirit:Start()--Need more info on what times to give these
---			timerSoulreaperCD:Start()
---			timerDefileCD:Start(5)
+			timerVileSpirit:Start(10)--May be wrong too but we'll see, didn't have enough log for this one.
+--			timerSoulreaperCD:Start(2)--seems random anywheres from 2-10seconds after
+--			timerDefileCD:Start(2)--seems random anywheres from 2-10seconds after
 		end
 	end
 end
