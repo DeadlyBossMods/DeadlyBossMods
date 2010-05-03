@@ -389,7 +389,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-	if msg:find(L.PlagueWhisper) then
+	if msg:find(L.PlagueWhisper) and self:IsInCombat() then
 		self:SendSync("PlagueOn", UnitName("player"))
 	end
 end
