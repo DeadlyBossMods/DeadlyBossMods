@@ -144,18 +144,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetBeaconIcons")
 			self:ScheduleMethod(0.1, "SetBeaconIcons")
---[[			if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
-				self:SetBeaconIcons()
-			else
-				self:ScheduleMethod(0.1, "SetBeaconIcons")
-			end--]]
 		end
 		self:Unschedule(warnBeaconTargets)
-		if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
-			warnBeaconTargets()
-		else
-			self:Schedule(0.3, warnBeaconTargets)
-		end
+		self:Schedule(0.1, warnBeaconTargets)
 	elseif args:IsSpellID(69762) then
 		unchainedTargets[#unchainedTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -166,11 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			unchainedIcons = unchainedIcons - 1
 		end
 		self:Unschedule(warnUnchainedTargets)
-		if #unchainedTargets >= 6 then
-			warnUnchainedTargets()
-		else
-			self:Schedule(0.3, warnUnchainedTargets)
-		end
+		self:Schedule(0.1, warnUnchainedTargets)
 	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
 		if args:IsPlayer() then
 			warnChilledtotheBone:Show(args.amount or 1)
