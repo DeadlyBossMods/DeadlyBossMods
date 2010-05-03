@@ -197,7 +197,7 @@ L:SetMiscLocalization{
 	PullHorde		= "Erhebt Euch, Söhne und Töchter der Horde! Wir ziehen gegen einen verhassten Feind in die Schlacht! LOK'TAR OGAR!",
 	KillHorde		= "Die Allianz wankt. Vorwärts zum Lichkönig!",
 	AddsAlliance	= "Häscher, Unteroffiziere, Angriff!",
-	AddsHorde		= "Marines, Sergeants, attack"		-- to be translated
+	AddsHorde		= "Soldaten! Zum Angriff!"
 }
 
 -----------------------------
