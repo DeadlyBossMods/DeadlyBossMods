@@ -34,9 +34,8 @@ local timerPortalsOpen	= mod:NewTimer(10, "timerPortalsOpen", 72483, mod:IsHeale
 local timerHealerBuff	= mod:NewBuffActiveTimer(40, 70873)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
-local timerBlazingSkeleton	= mod:NewTimer(50, "TimerBlazingSkeleton")
+local timerBlazingSkeleton	= mod:NewTimer(50, "TimerBlazingSkeleton", 17204)
 
-local timerSoftEnrage	= mod:NewTimer(360, "timerSoftEnrage", 28131)
 local berserkTimer		= mod:NewBerserkTimer(420)
 
 mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
@@ -59,7 +58,6 @@ function mod:StartBlazingSkeletonTimer()
 end
 
 function mod:OnCombatStart(delay)
-	timerSoftEnrage:Start(-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end

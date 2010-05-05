@@ -415,7 +415,6 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	timerPortalsOpen			= "차원문 열림",
-	timerSoftEnrage				= "빠른 몹 추가(1차 광폭)",
 	TimerBlazingSkeleton		= "타오르는 해골"
 }
 
@@ -423,7 +422,6 @@ L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "타오르는 해골에게 공격대 징표 설정(해골)",
 	warnPortalOpen				= "$spell:72483 열림 경고 보기",	
 	timerPortalsOpen			= "악몽의 차원문이 열릴 때 타이머 보기",
-	timerSoftEnrage				= "1차 광폭화 타이머 보기(빠른 몹 추가)",
 	TimerBlazingSkeleton		= "타오르는 해골 다음 생성 타이머 보기",	
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "알 수 없음")
 }
