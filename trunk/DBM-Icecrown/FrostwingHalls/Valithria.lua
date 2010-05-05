@@ -152,7 +152,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:OnSync(msg, arg)
-	if msg == "NightmarePortal" then
+	if msg == "NightmarePortal" and self:IsInCombat() then
 		self:Portals()
 	end
 end
