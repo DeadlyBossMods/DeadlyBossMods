@@ -53,7 +53,9 @@ end
 function mod:StartBlazingSkeletonTimer()
 	timerBlazingSkeleton:Start(BlazingSkeletonTimer)
 	self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
-	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
+	if BlazingSkeletonTimer >= 10 then--Keep it from dropping below 5, once it's at 5 -5 repeating should stop
+		BlazingSkeletonTimer = BlazingSkeletonTimer - 5
+	end
 end
 
 function mod:OnCombatStart(delay)
