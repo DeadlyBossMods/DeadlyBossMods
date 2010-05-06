@@ -136,7 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetBeaconIcons")
-			if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
+			if phase == 2 or (mod:IsDifficulty("normal25") and #beaconIcons >= 5) or (mod:IsDifficulty("heroic25") and #beaconIcons >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconIcons >= 2) then
 				self:SetBeaconIcons()
 			else
 				self:ScheduleMethod(0.1, "SetBeaconIcons")
