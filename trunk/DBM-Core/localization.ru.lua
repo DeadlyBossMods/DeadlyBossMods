@@ -43,7 +43,7 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM не установлен"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Найдено %d |4игрок:игрока:игроков; с установленным Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Ваша версия Deadly Boss Mods устарела! Пожалуйста, посетите www.deadlybossmods.com для загрузки последней версии."
-DBM_CORE_DISABLED_ICON_FUNCTION		= "Ваш DBM больше не устанавливает метки по причине устаревшей версии. Пожалуйста, обновитесь как можно скорее и заново включите функцию установки меток."
+DBM_CORE_DISABLED_ICON_FUNCTION		= "Ваш DBM устарел. Метки рейда не будут устанавливаться во избежание возможных конфликтов. Пожалуйста, обновите DBM как можно скорее для восстановления функции установки меток."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Ваша версия Deadly Boss Mods устарела.\n Версия %s (r%d) доступна для загрузки здесь:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Нажмите CTRL+C, чтобы скопировать ссылку загрузки в буфер обмена."
