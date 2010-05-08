@@ -105,8 +105,9 @@ DBM.DefaultOptions = {
 	DontShowBossAnnounces = false,
 	DontSendBossAnnounces = false,
 	DontSendBossWhispers = false,
-	DontSetBossIcons = false,
-	HelpMessageShown = false
+	DontSetIcons = false,
+	HelpMessageShown = false,
+	OldVersion = false
 }
 
 DBM.Bars = DBT:New()
@@ -1460,10 +1461,12 @@ do
 							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
 							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision))
 						end
-						if not DBM.Options.DontSetBossIcons then			-- we dont want outdated clients to set any icons, they suck and suckers dont have rights :p
-							DBM.Options.DontSetBossIcons = true
+						if not DBM.Options.OldVersion then			-- we dont want outdated clients to set any icons, they suck and suckers dont have rights :p
+							DBM.Options.OldVersion = true
 							DBM:AddMsg(DBM_CORE_DISABLED_ICON_FUNCTION)
 						end
+					else
+						DBM.Options.OldVersion = false
 					end
 				end
 			end
@@ -3425,7 +3428,8 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 function bossModPrototype:SetIcon(target, icon, timer)
-	if DBM.Options.DontSetBossIcons then return end
+	if DBM.Options.DontSetIcons then return end
+	if DBM.Options.OldVersion then return end
 	if DBM:GetRaidRank() == 0 then return end
 	icon = (icon and icon >= 0 and icon <= 8 and icon) or 8
 	local oldIcon = self:GetIcon(target) or 0
