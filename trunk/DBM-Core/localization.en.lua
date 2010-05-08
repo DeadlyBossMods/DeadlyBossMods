@@ -1,14 +1,14 @@
 
-DBM_CORE_NEED_SUPPORT				= "Hey, are u a programmer or good with languages? If yes, the DBM Team realy need your help to keep DBM the best BossMod in WoW. Join the Team by clicking on www.deadlybossmods.com or send a message to tandanu@deadlybossmods.com or nitram@deadlybossmods.com."
+DBM_CORE_NEED_SUPPORT				= "Are you good with programming or languages? If yes, the DBM team needs your help to keep DBM the best boss mod for WoW. Join the team by visiting www.deadlybossmods.com or sending a message to tandanu@deadlybossmods.com or nitram@deadlybossmods.com."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error while loading boss mods for %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' boss mods, for more options type /dbm in your chat!"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Loaded '%s' boss mods. For more options, type /dbm in your chat."
 DBM_CORE_LOAD_GUI_ERROR				= "Could not load GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s engaged. Good luck and have fun! :)";
 DBM_CORE_BOSS_DOWN					= "%s down after %s!"
 DBM_CORE_BOSS_DOWN_LONG				= "%s down after %s! Your last kill took %s and your fastest kill took %s."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s down after %s! This is a new record! (old record was %s)"
+DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s down after %s! This is a new record! (Old record was %s)"
 DBM_CORE_COMBAT_ENDED				= "Combat against %s ended after %s."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4second:seconds;"
@@ -41,10 +41,10 @@ DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM not installed"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d players with Deadly Boss Mods"
-DBM_CORE_YOUR_VERSION_OUTDATED      = "Your version of Deadly Boss Mods is out of date! Please visit www.deadlybossmods.com to get the latest version."
-DBM_CORE_DISABLED_ICON_FUNCTION		= "Your mod is out of date. It will not set raid icons to prevent potential icon conflicts. Please update as soon as possible to restore icon function."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "Your version of Deadly Boss Mods is out-of-date. Please visit www.deadlybossmods.com to get the latest version."
+DBM_CORE_DISABLED_ICON_FUNCTION		= "Your version of Deadly Boss Mods is out-of-date. It will no longer set raid icons to prevent potential conflicts. Please update as soon as possible to restore icon function."
 
-DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is outdated.\n Version %s (r%d) is available for download here:"
+DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is out-of-date.\n Version %s (r%d) is available for download here:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Press Ctrl-C to copy the download link to your clipboard."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Show popup when a new version is available"
 
