@@ -42,7 +42,7 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM not installed"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Found %d players with Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Your version of Deadly Boss Mods is out of date! Please visit www.deadlybossmods.com to get the latest version."
-DBM_CORE_DISABLED_ICON_FUNCTION		= "Your Mod no longer set raid icons, because of the outdated Version, to prevent potential icon conflicts. Please update as soon as possible to restore icon funcion."
+DBM_CORE_DISABLED_ICON_FUNCTION		= "Your mod is out of date. It will not set raid icons to prevent potential icon conflicts. Please update as soon as possible to restore icon funcion."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Your version of Deadly Boss Mods is outdated.\n Version %s (r%d) is available for download here:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Press Ctrl-C to copy the download link to your clipboard."
