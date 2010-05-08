@@ -1466,7 +1466,9 @@ do
 							DBM:AddMsg(DBM_CORE_DISABLED_ICON_FUNCTION)
 						end
 					else
-						DBM.Options.OldVersion = false
+						if DBM.Options.OldVersion then			-- we turn icons back on since user updated.
+							DBM.Options.OldVersion = false
+						end
 					end
 				end
 			end
