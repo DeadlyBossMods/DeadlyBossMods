@@ -143,7 +143,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScheduleMethod(0.1, "SetBeaconIcons")
 		end
 		self:Unschedule(warnBeaconTargets)
-		if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or (mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") and #beaconTargets >= 2) then
+		if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
 			warnBeaconTargets()
 		else
 			self:Schedule(0.3, warnBeaconTargets)
