@@ -107,7 +107,6 @@ DBM.DefaultOptions = {
 	DontSendBossWhispers = false,
 	DontSetIcons = false,
 	HelpMessageShown = false,
-	OldVersion = false
 }
 
 DBM.Bars = DBT:New()
@@ -141,6 +140,8 @@ local loadModOptions
 local checkWipe
 local fireEvent
 local wowVersion = select(4, GetBuildInfo())
+
+local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
@@ -1051,24 +1052,27 @@ end
 do
 	local inRaid = false
 	local playerRank = 0
-
+	
 	function DBM:RAID_ROSTER_UPDATE()
 		if GetNumRaidMembers() >= 1 then
+			local playerWithHigherVersionPromoted = false
 			for i = 1, GetNumRaidMembers() do
 				local name, rank, subgroup, _, _, fileName = GetRaidRosterInfo(i)
 				if (not raid[name]) and inRaid then
 					fireEvent("raidJoin", name)
 				end
-				if name then
-					raid[name] = raid[name] or {}
-					raid[name].name = name
-					raid[name].rank = rank
-					raid[name].subgroup = subgroup
-					raid[name].class = fileName
-					raid[name].id = "raid"..i
-					raid[name].updated = true
+				raid[name] = raid[name] or {}
+				raid[name].name = name
+				raid[name].rank = rank
+				raid[name].subgroup = subgroup
+				raid[name].class = fileName
+				raid[name].id = "raid"..i
+				raid[name].updated = true
+				if not playerWithHigherVersionPromoted and rank >= 1 and raid[name].version and raid[name].version > tonumber(DBM.Version) then
+					playerWithHigherVersionPromoted = true
 				end
 			end
+			enableIcons = not playerWithHigherVersionPromoted
 			if not inRaid then
 				inRaid = true
 				sendSync("DBMv4-Ver", "Hi!")
@@ -1085,6 +1089,7 @@ do
 			end
 		else
 			inRaid = false
+			enableIcons = true
 			fireEvent("raidLeave", UnitName("player"))
 		end
 	end
@@ -1113,18 +1118,16 @@ do
 				if (not raid[name]) and inRaid then
 					fireEvent("partyJoin", name)
 				end
-				if name then
-					raid[name] = raid[name] or {}
-					raid[name].name = name
-					if rank then
-						raid[name].rank = 2
-					else
-						raid[name].rank = 0
-					end
-					raid[name].class = fileName
-					raid[name].id = id
-					raid[name].updated = true
+				raid[name] = raid[name] or {}
+				raid[name].name = name
+				if rank then
+					raid[name].rank = 2
+				else
+					raid[name].rank = 0
 				end
+				raid[name].class = fileName
+				raid[name].id = id
+				raid[name].updated = true
 			end
 			for i, v in pairs(raid) do
 				if not v.updated then
@@ -1136,6 +1139,7 @@ do
 			end
 		else
 			inRaid = false
+			enableIcons = true
 		end
 	end
 
@@ -1444,30 +1448,27 @@ do
 				raid[sender].version = version
 				raid[sender].displayVersion = displayVersion
 				raid[sender].locale = locale
-				if version > tonumber(DBM.Version) and not showedUpdateReminder then
-					local found = false
-					for i, v in pairs(raid) do
-						if v.version == version and v ~= raid[sender] then
-							found = true
-							break
-						end
+				if version > tonumber(DBM.Version) then
+					if raid[sender].rank >= 1 then
+						enableIcons = false
 					end
-					if found then
-						showedUpdateReminder = true
-						if not DBM.Options.BlockVersionUpdatePopup then
-							DBM:ShowUpdateReminder(displayVersion, revision)
-						else 
-							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
-							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
-							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision))
+					if not showedUpdateReminder then
+						local found = false
+						for i, v in pairs(raid) do
+							if v.version == version and v ~= raid[sender] then
+								found = true
+								break
+							end
 						end
-						if not DBM.Options.OldVersion then			-- we dont want outdated clients to set any icons, they suck and suckers dont have rights :p
-							DBM.Options.OldVersion = true
-							DBM:AddMsg(DBM_CORE_DISABLED_ICON_FUNCTION)
-						end
-					else
-						if DBM.Options.OldVersion then			-- we turn icons back on since user updated.
-							DBM.Options.OldVersion = false
+						if found then
+							showedUpdateReminder = true
+							if not DBM.Options.BlockVersionUpdatePopup then
+								DBM:ShowUpdateReminder(displayVersion, revision)
+							else 
+								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
+								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
+								DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision))
+							end
 						end
 					end
 				end
@@ -3430,10 +3431,10 @@ bossModPrototype.UnscheduleEvent = bossModPrototype.UnscheduleMethod
 --  Icons  --
 -------------
 function bossModPrototype:SetIcon(target, icon, timer)
-	if DBM.Options.DontSetIcons then return end
-	if DBM.Options.OldVersion then return end
-	if DBM:GetRaidRank() == 0 then return end
-	icon = (icon and icon >= 0 and icon <= 8 and icon) or 8
+	if DBM.Options.DontSetIcons or not enableIcons or DBM:GetRaidRank() == 0 then
+		return
+	end
+	icon = icon and icon >= 0 and icon <= 8 and icon or 8
 	local oldIcon = self:GetIcon(target) or 0
 	SetRaidTarget(DBM:GetRaidUnitId(target), icon)
 	self:UnscheduleMethod("SetIcon", target)
