@@ -137,19 +137,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
 		end
-		if self.Options.SetIconOnFrostBeacon then
+		if phase == 1 and self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetBeaconIcons")
 			self:ScheduleMethod(0.1, "SetBeaconIcons")
+		end
+		if phase == 2 then
+			timerNextBeacon:Start()
+			if self.Options.SetIconOnFrostBeacon then
+				self:SetIcon(args.destName, 8)
+			end
 		end
 		self:Unschedule(warnBeaconTargets)
 		if phase == 2 or (mod:IsDifficulty("normal25") and #beaconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconTargets >= 2) then
 			warnBeaconTargets()
 		else
 			self:Schedule(0.3, warnBeaconTargets)
-		end
-		if phase == 2 then
-			timerNextBeacon:Start()
 		end
 	elseif args:IsSpellID(69762) then
 		unchainedTargets[#unchainedTargets + 1] = args.destName
