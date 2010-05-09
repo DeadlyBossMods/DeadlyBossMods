@@ -1,9 +1,9 @@
 ﻿if GetLocale() ~= "zhTW" then return end
 
-DBM_CORE_NEED_SUPPORT				= "嘿, 你是否一個程式開發者或擁有良好的語言能力? 如果是的話, DBM團隊真的需要你的幫助以保持成為WOW入面最佳的首領模組。點擊 www.deadlybossmods.com 或發送郵件到 tandanu@deadlybossmods.com 或 nitram@deadlybossmods.com 來加入團隊。"
+DBM_CORE_NEED_SUPPORT				= "嘿, 你是否擁有良好的程式開發或語言能力? 如果是的話, DBM團隊真的需要你的幫助以保持成為WOW入面最佳的首領模組。觀看 www.deadlybossmods.com 或發送郵件到 tandanu@deadlybossmods.com 或 nitram@deadlybossmods.com 來加入團隊。"
 
 DBM_CORE_LOAD_MOD_ERROR				= "載入%s模組時發生錯誤：%s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組, 輸入/dbm有更多選項!"
+DBM_CORE_LOAD_MOD_SUCCESS			= "成功載入%s模組。輸入/dbm有更多選項。"
 DBM_CORE_LOAD_GUI_ERROR				= "無法載入圖形介面：%s"
 
 DBM_CORE_COMBAT_STARTED				= "%s開戰。祝好運與盡興! :)";
@@ -42,10 +42,10 @@ DBM_CORE_VERSIONCHECK_HEADER			= "Deadly Boss Mods - 版本檢測"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s：%s(r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM		= "%s：尚未安裝DBM"
 DBM_CORE_VERSIONCHECK_FOOTER			= "團隊中有%d名成員正在使用Deadly Boss Mods"
-DBM_CORE_YOUR_VERSION_OUTDATED			= "你的 Deadly Boss Mod 已經過期! 請到 www.deadlybossmods.com 下載最新版本。"
-DBM_CORE_DISABLED_ICON_FUNCTION			= "你的模組因為已經過期而不會再設置標記。請盡快更新以重新啟動標記功能。"
+DBM_CORE_YOUR_VERSION_OUTDATED			= "你的 Deadly Boss Mod 已經過期。請到 www.deadlybossmods.com 下載最新版本。"
+DBM_CORE_DISABLED_ICON_FUNCTION			= "你的 Deadly Boss Mod 已經過期。為防止潛在的衝突它將不會再設置標記。請盡快更新以恢復標記功能。"
 
-DBM_CORE_UPDATEREMINDER_HEADER			= "你的 Deadly Boss Mod 已經過期!\n你可以在此網址下載到新版本%s(r%d)："
+DBM_CORE_UPDATEREMINDER_HEADER			= "你的 Deadly Boss Mod 已經過期。\n你可以在此網址下載到新版本%s(r%d)："
 DBM_CORE_UPDATEREMINDER_FOOTER			= "Ctrl-C：複製下載網址到剪貼簿。"
 DBM_CORE_UPDATEREMINDER_NOTAGAIN		= "當有新版本時顯示彈出提示"
 
