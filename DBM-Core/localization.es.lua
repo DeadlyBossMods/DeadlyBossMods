@@ -43,16 +43,15 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM no instalado"
 DBM_CORE_VERSIONCHECK_FOOTER		= "Encontrados %d jugadores con Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "¡Tu versión de Deadly Boss Mods es antigua! Por favor, visita www.deadlybossmods.com para bajarte la última versión."
-DBM_CORE_DISABLED_ICON_FUNCTION		= "Tu Mod no pone más iconos automáticamente, porque tienes una versión antigua. Por favor, actualízalo para que se vuelva a habilitar la función de poner iconos."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "La version de tu Deadly Boss Mods es antigua.\n Version %s (r%d) disponible para descargar aqui:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Presiona Contro+C para copiar el link de la descarga."
 DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Mostrar popup si hay nueva version de Deadly Boss Mods"
 
-DBM_CORE_MOVABLE_BAR				= "Muéveme!"
+DBM_CORE_MOVABLE_BAR				= "¡Muéveme!"
 
 DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h envia tu tiempo: '%2$s'\n|HDBM:cancel:%2$s:nil|h|cff3588ff[Cancelar este tiempo]|r|h  |HDBM:ignore:%2$s:%1$s|h|cff3588ff[Ignorar tiempos de %1$s]|r|h"
-DBM_PIZZA_CONFIRM_IGNORE			= "De verdad quieres ignorar los tiempos de %s para esta sesion?"
+DBM_PIZZA_CONFIRM_IGNORE			= "¿De verdad quieres ignorar los tiempos de %s para esta sesion?"
 DBM_PIZZA_ERROR_USAGE				= "Usa: /dbm [broadcast] timer <time> <text>"
 
 DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods is running twice because you have DBMv3 and DBMv4 installed and enabled!\nClick \"Okay\" to disable DBMv3 and reload your interface.\nYou should also clean up your AddOns folder by deleting the old DBMv3 folders."
