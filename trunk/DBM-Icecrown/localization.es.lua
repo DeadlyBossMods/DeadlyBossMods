@@ -537,8 +537,8 @@ L:SetMiscLocalization{
 	LKPull		= "¿Así que por fin ha llegado la elogiada justicia de la Luz? ¿Debería deponer la Agonía de Escarcha y confiar en tu piedad, Vadín?",
 	YellDefile		= "¡Profanar en mi!",
 	YellTrap		= "¡Trampa de sombras en mi!",
-	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",--translate
-	LKRoleplay		= "Is it truly righteousness that drives you? I wonder...",--translate
+	YellKill		= "No quedan preguntas sin respuesta. No quedan dudas. SOIS los mejores campeones de Azeroth. Superasteis todos los retos que os puse. Mis más poderosos sirvientes han caído ante vuestra implacable ofensiva... vuestra furia desatada...",
+	LKRoleplay		= "¿Me pregunto si de verdad os mueve la... rectitud?",
 	PlagueWhisper	= "Has sido infectado por"
 }
 
