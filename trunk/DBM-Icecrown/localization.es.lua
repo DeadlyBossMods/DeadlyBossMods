@@ -224,13 +224,13 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Mostrar tiempo para inicio del combate",
 	warnFrenzySoon	= "Mostrar preaviso para el Frenesí (at ~33%)",
 	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	RangeFrame		= "Mostrar distancia",
+	RangeFrame		= "Mostrar distancia (12 yardas)",
 	RunePowerFrame			= "Mostrar barra de vida + barra de $spell:72371",
 	BeastIcons				= "Poner iconos en las Bestias de Sangre"
 }
 
 L:SetMiscLocalization{
-	RunePower			= "Blood Power",
+	RunePower			= "Poder de sangre",
 	PullAlliance		= "Por cada soldado de la Horda que matasteis... Por cada perro de la Alianza que cayó, el ejército del Rey Exánime creció. Ahora, hasta las Val'kyr alzan a los caídos para la Plaga.",
 	PullHorde			= "Kor'kron, move out! Champions, watch your backs! The Scourge have been..."--translate
 }
@@ -356,7 +356,7 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerTargetSwitch	= "Posible cambio de objetivo"
+	TimerTargetSwitch	= "Cambio de objetivo"
 }
 
 L:SetOptionLocalization{
@@ -367,7 +367,7 @@ L:SetOptionLocalization{
 	specWarnVortexNear		= "Mostrar aviso especial para $spell:72037 cerca de ti",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Poner un icono en el príncipe con Invocación (Cruz)",
-	RangeFrame				= "Mostrar distancia (12 yards)"
+	RangeFrame				= "Mostrar distancia (12 yardas)"
 }
 
 L:SetMiscLocalization{
@@ -402,7 +402,7 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	SwarmingShadows			= "¡Las sombras se acumulan alrededor de (%S+)!",
-	YellFrenzy				= "¡Tengo hambre!"
+	YellFrenzy				= "¡Conoced mi hambre!"
 }
 
 -----------------------------
