@@ -146,6 +146,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerNextBeacon:Start()
 			if self.Options.SetIconOnFrostBeacon then
 				self:SetIcon(args.destName, 8)
+				if self.Options.AnnounceFrostBeaconIcons then
+					SendChatMessage(L.BeaconIconSet:format(8, args.destName), "RAID")
+				end
 			end
 		end
 		self:Unschedule(warnBeaconTargets)
