@@ -46,5 +46,7 @@ Obsidian\Tenebron.lua
 Obsidian\Vesperon.lua
 Obsidian\Sartharion.lua
 Ruby\MapSizes.lua
+Ruby\Baltharus.lua
+Ruby\Saviana.lua
 Ruby\Zarithrian.lua
 Ruby\Halion.lua

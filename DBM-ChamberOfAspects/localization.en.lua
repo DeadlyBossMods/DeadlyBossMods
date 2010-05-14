@@ -84,6 +84,24 @@ L:SetMiscLocalization({
 ------------------------
 --  The Ruby Sanctum  --
 ------------------------
+--  Baltharus the Warborn  --
+-----------------------------
+L = DBM:GetModLocalization("Baltharus")
+
+L:SetGeneralLocalization({
+	name = "Baltharus the Warborn"
+})
+
+-------------------------
+--  Saviana Ragefire  --
+-------------------------
+L = DBM:GetModLocalization("Saviana")
+
+L:SetGeneralLocalization({
+	name = "Saviana Ragefire"
+})
+
+--------------------------
 --  General Zarithrian  --
 --------------------------
 L = DBM:GetModLocalization("Zarithrian")

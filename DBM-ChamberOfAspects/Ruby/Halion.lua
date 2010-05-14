@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("Halion", "DBM-ChamberOfAspects", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID()
+mod:SetCreatureID(39863)
 
 mod:RegisterCombat("combat")
 
