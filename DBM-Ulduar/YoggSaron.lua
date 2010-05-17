@@ -39,7 +39,7 @@ local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
 local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
 local specWarnFervor				= mod:NewSpecialWarning("SpecWarnFervor")
-local specWarnFervorCast			= mod:NewSpecialWarning("SpecWarnFervorCast", false)
+local specWarnFervorCast			= mod:NewSpecialWarning("SpecWarnFervorCast", mod:IsMelee())
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
 mod:AddBoolOption("WarningSqueeze", true, "announce")
