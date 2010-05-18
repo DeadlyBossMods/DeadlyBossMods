@@ -86,6 +86,34 @@ L:SetMiscLocalization({
 ------------------------
 --  The Ruby Sanctum  --
 ------------------------
+--  Baltharus the Warborn  --
+-----------------------------
+L = DBM:GetModLocalization("Baltharus")
+
+L:SetGeneralLocalization({
+	name = "Baltharus der Kriegsjünger"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+	SplitTrigger		= "Doppelter Schmerz, halb soviel Spaß."
+})
+
+-------------------------
+--  Saviana Ragefire  --
+-------------------------
+L = DBM:GetModLocalization("Saviana")
+
+L:SetGeneralLocalization({
+	name = "Saviana Flammenschlund"
+})
+
+--------------------------
 --  General Zarithrian  --
 --------------------------
 L = DBM:GetModLocalization("Zarithrian")
