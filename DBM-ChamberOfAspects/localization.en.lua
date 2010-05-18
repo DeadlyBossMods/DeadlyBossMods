@@ -92,6 +92,20 @@ L:SetGeneralLocalization({
 	name = "Baltharus the Warborn"
 })
 
+L:SetWarningLocalization({
+	WarningSplitSoon	= "Split soon",
+	WarningSplitNow		= "Split"
+})
+
+L:SetOptionLocalization({
+	WarningSplitSoon	= "Show pre-warning for Split (54%)",
+	WarningSplitNow		= "Show warning for Split"
+})
+
+L:SetMiscLocalization({
+	SplitTrigger		= ""
+})
+
 -------------------------
 --  Saviana Ragefire  --
 -------------------------
