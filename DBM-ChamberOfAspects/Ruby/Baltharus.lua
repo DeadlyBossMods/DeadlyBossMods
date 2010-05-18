@@ -53,6 +53,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.SplitTrigger then
+		self:SendSync("Split")
+	end
+end
+
+function mod:OnSync(msg, arg)
+	if msg == "Split" then
 		warningSplitNow:Show()
 	end
 end
