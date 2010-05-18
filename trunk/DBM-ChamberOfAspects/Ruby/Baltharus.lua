@@ -18,14 +18,14 @@ local warningSplitSoon		= mod:NewAnnounce("WarningSplitSoon", 2)
 local warningSplitNow		= mod:NewAnnounce("WarningSplitNow", 3)
 local warningWarnBrand		= mod:NewTargetAnnounce(74505)
 
-local specWarnWhirlwind		= mod:NewSpecialWarningRun(75127, mod:IsMelee())
+local specWarnWhirlwind		= mod:NewSpecialWarningRun(75125, mod:IsMelee())
 local specWarnBrand			= mod:NewSpecialWarningYou(74505)
 
-local timerWhirlwindCD		= mod:NewCDTimer(22, 75127)
-local timerWhirlwind		= mod:NewBuffActiveTimer(4, 75127)
+local timerWhirlwindCD		= mod:NewCDTimer(22, 75125)
+local timerWhirlwind		= mod:NewBuffActiveTimer(4, 75125)
 local timerBrand			= mod:NewTargetTimer(10, 74505)
 
-local soundWhirlwind 		= mod:NewSound(75127, nil, mod:IsMelee())
+local soundWhirlwind 		= mod:NewSound(75125, nil, mod:IsMelee())
 mod:AddBoolOption("SetIconOnBrand", true)
 mod:AddBoolOption("RangeFrame")
 
@@ -71,7 +71,7 @@ end
 end--]]
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75127, 75125) and args:GetSrcCreatureID() == 39751 then --(Ignore bladestorm from the clone. Only show from original since clone will SHOULD be pulled out.)
+	if args:IsSpellID(75125) and args:GetSrcCreatureID() == 39751 then --(Ignore bladestorm from the clone. Only show from original since clone will SHOULD be pulled out.)
 		specWarnWhirlwind:Show()
 		timerWhirlwindCD:Start()
 		timerWhirlwind:Show()

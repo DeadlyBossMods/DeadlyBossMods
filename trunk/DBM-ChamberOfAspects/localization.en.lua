@@ -100,7 +100,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarningSplitSoon	= "Show pre-warning for Split (54%)",
 	WarningSplitNow		= "Show warning for Split",
-	RangeFrame			= "Show range frame (12 yards)"
+	RangeFrame			= "Show range frame (12 yards)",
+	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
 L:SetMiscLocalization({
