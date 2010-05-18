@@ -27,6 +27,7 @@ local timerBrand			= mod:NewTargetTimer(10, 74505)
 
 local soundWhirlwind 		= mod:NewSound(75127, nil, mod:IsMelee())
 mod:AddBoolOption("SetIconOnBrand", true)
+mod:AddBoolOption("RangeFrame")
 
 local warnedSplit		= false
 local brandTargets = {}
@@ -42,6 +43,15 @@ function mod:OnCombatStart(delay)
 	warnedSplit = false
 	table.wipe(brandTargets)
 	brandIcon = 8
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(12)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 --[[function mod:SPELL_CAST_SUCCESS(args)--Use spell cast success if aura apply is bad from hoping.

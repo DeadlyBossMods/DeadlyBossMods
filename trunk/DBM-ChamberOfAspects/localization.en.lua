@@ -99,7 +99,8 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarningSplitSoon	= "Show pre-warning for Split (54%)",
-	WarningSplitNow		= "Show warning for Split"
+	WarningSplitNow		= "Show warning for Split",
+	RangeFrame			= "Show range frame (12 yards)"
 })
 
 L:SetMiscLocalization({
