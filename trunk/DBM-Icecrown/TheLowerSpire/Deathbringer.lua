@@ -28,9 +28,9 @@ local specwarnMark			= mod:NewSpecialWarningTarget(72444, false)
 local specwarnRuneofBlood	= mod:NewSpecialWarningTarget(72410, mod:IsTank())
 
 local timerCombatStart		= mod:NewTimer(48, "TimerCombatStart", 2457)
-local timerRuneofBlood		= mod:NewTargetTimer(20, 72410, nil, mod:IsTank() or mod:IsHealer())
-local timerBoilingBlood		= mod:NewBuffActiveTimer(15, 72441)
-local timerBloodNova		= mod:NewCDTimer(20, 73058)--20-25sec cooldown?
+local timerRuneofBlood		= mod:NewNextTimer(20, 72410, nil, mod:IsTank() or mod:IsHealer())
+local timerBoilingBlood		= mod:NewNextTimer(15.5, 72441)
+local timerBloodNova		= mod:NewNextTimer(20, 73058)
 local timerCallBloodBeast	= mod:NewNextTimer(40, 72173)
 
 local enrageTimer			= mod:NewBerserkTimer(480)
@@ -49,7 +49,6 @@ local spamBloodBeast = 0
 local function warnBoilingBloodTargets()
 	warnBoilingBlood:Show(table.concat(boilingBloodTargets, "<, >"))
 	table.wipe(boilingBloodTargets)
-	timerBoilingBlood:Start()
 	boilingBloodIcon = 8
 end
 
@@ -59,14 +58,16 @@ function mod:OnCombatStart(delay)
 		DBM.BossHealth:AddBoss(37813, L.name)
 		self:ScheduleMethod(0.5, "CreateBossRPFrame")
 	end
-	timerCallBloodBeast:Start(-delay)
-	warnAddsSoon:Schedule(30-delay)
-	timerBloodNova:Start(-delay)
 	if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
 		enrageTimer:Start(-delay)
 	else
 		enrageTimer:Start(360-delay)
 	end
+	timerCallBloodBeast:Start(-delay)
+	warnAddsSoon:Schedule(30-delay)
+	timerBloodNova:Start(-delay)
+	timerRuneofBlood:Start(-delay)
+	timerBoilingBlood:Start(19-delay)
 	table.wipe(boilingBloodTargets)
 	warned_preFrenzy = false
 	boilingBloodIcon = 8
@@ -116,6 +117,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(72410) then
 		warnRuneofBlood:Show(args.destName)
 		specwarnRuneofBlood:Show(args.destName)
+		timerRuneofBlood:Start()
 	end
 end
 
@@ -168,18 +170,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		specwarnMark:Show(args.destName)
 	elseif args:IsSpellID(72385, 72441, 72442, 72443) then	-- Boiling Blood
 		boilingBloodTargets[#boilingBloodTargets + 1] = args.destName
+		timerBoilingBlood:Start()
 		if self.Options.BoilingBloodIcons then
 			self:SetIcon(args.destName, boilingBloodIcon, 15)
 			boilingBloodIcon = boilingBloodIcon - 1
 		end
 		self:Unschedule(warnBoilingBloodTargets)
-		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #boilingBloodTargets >= 3) then	-- Boiling Blood
+		if (mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) or ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #boilingBloodTargets >= 3) then	-- Boiling Blood
 			warnBoilingBloodTargets()
 		else
 			self:Schedule(0.3, warnBoilingBloodTargets)
 		end
-	elseif args:IsSpellID(72410) then						-- Rune of Blood
-		timerRuneofBlood:Start(args.destName)
 	elseif args:IsSpellID(72737) then						-- Frenzy
 		warnFrenzy:Show()
 	end
