@@ -343,4 +343,3 @@ function EyeOfTheStorm:HideEstimatedPoints()
 		self.ScoreFrame2Text:SetText("")
 	end
 end
-
