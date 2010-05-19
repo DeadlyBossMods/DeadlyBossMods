@@ -237,9 +237,9 @@ local function isQuestAutoTurnInQuest(name)
 end
 
 local function acceptQuestByName(name)
-	for i = 1, select("#", GetGossipAvailableQuests()), 3 do
+	for i = 1, select("#", GetGossipAvailableQuests()), 5 do
 		if select(i, GetGossipAvailableQuests()) == name then
-			SelectGossipAvailableQuest(math.ceil(i/3))
+			SelectGossipAvailableQuest(math.ceil(i/5))
 			break
 		end
 	end
