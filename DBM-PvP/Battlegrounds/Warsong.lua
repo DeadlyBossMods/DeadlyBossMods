@@ -31,7 +31,6 @@ local flagTimer = Warsong:NewTimer(23, "TimerFlag", "Interface\\Icons\\INV_Banne
 Warsong:AddBoolOption("ShowFlagCarrier", true, nil, function()
 	if Warsong.Options.ShowFlagCarrier and bgzone then
 		Warsong:ShowFlagCarrier()
-		Warsong:CreateFlagCarrierButton()
 	else
 		Warsong:HideFlagCarrier()
 	end	
@@ -39,7 +38,7 @@ end)
 Warsong:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
 do
-	local function initialize()
+	local function WSG_Initialize()
 		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
 			bgzone = true
 			if Warsong.Options.ShowFlagCarrier then
@@ -59,8 +58,8 @@ do
 			end
 		end
 	end
-	Warsong.OnInitialize = initialize
-	Warsong.ZONE_CHANGED_NEW_AREA = initialize
+	Warsong.OnInitialize = WSG_Initialize
+	Warsong.ZONE_CHANGED_NEW_AREA = WSG_Initialize
 end
 
 function Warsong:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
@@ -69,25 +68,6 @@ function Warsong:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 		startTimer:Start()
 	elseif arg1 == L.BgStart30  then		
 		startTimer:Update(31, 62)
-	end
-end
-
-local function secureButtonOnUpdate(self)
-	if not UnitAffectingCombat("player") then
-		local anchorFrame = self == Warsong.FlagCarrierFrame1Button and AlwaysUpFrame2 or AlwaysUpFrame3
-		if not anchorFrame then
-			return
-		end
-		-- HACK: this will break if the AlwaysUpFrame has an effective scale not equal to the effective scale of the button (which is not the case at the moment)
-		local x = anchorFrame:GetLeft()
-		local y = anchorFrame:GetBottom()
-		if x and y then
-			self:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", x, y)
-		end
-		if self.requestHide then
-			self.requestHide = false
-			self:Hide()
-		end
 	end
 end
 
@@ -100,7 +80,6 @@ function Warsong:ShowFlagCarrier()
 			self.FlagCarrierFrame1:SetHeight(10)
 			self.FlagCarrierFrame1:SetWidth(100)
 			self.FlagCarrierFrame1:SetPoint("LEFT", "AlwaysUpFrame2DynamicIconButton", "RIGHT", 4, 0)
-			self.FlagCarrierFrame1:SetScript("OnHide", flagCarrierOnHide)
 			self.FlagCarrierFrame1Text = self.FlagCarrierFrame1:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.FlagCarrierFrame1Text:SetAllPoints(self.FlagCarrierFrame1)
 			self.FlagCarrierFrame1Text:SetJustifyH("LEFT")
@@ -110,60 +89,39 @@ function Warsong:ShowFlagCarrier()
 			self.FlagCarrierFrame2:SetHeight(10)
 			self.FlagCarrierFrame2:SetWidth(100)
 			self.FlagCarrierFrame2:SetPoint("LEFT", "AlwaysUpFrame3DynamicIconButton", "RIGHT", 4, 0)
-			self.FlagCarrierFrame2:SetScript("OnHide", flagCarrierOnHide)
 			self.FlagCarrierFrame2Text= self.FlagCarrierFrame2:CreateFontString(nil, nil, "GameFontNormalSmall")
 			self.FlagCarrierFrame2Text:SetAllPoints(self.FlagCarrierFrame2)
 			self.FlagCarrierFrame2Text:SetJustifyH("LEFT")
 		end
-		self.FlagCarrierFrame1:Show()
+		self.FlagCarrierFrame1:Show()		
 		self.FlagCarrierFrame2:Show()
 	end
 end
 
-do
-	local deferredShowFrame
-	
-	function Warsong:CreateFlagCarrierButton()
-		if not Warsong.Options.ShowFlagCarrier then return end
-		if not self.FlagCarrierFrame1Button then
-			self.FlagCarrierFrame1Button = CreateFrame("Button", nil, UIParent, "SecureActionButtonTemplate")
-			self.FlagCarrierFrame1Button:SetHeight(15)
-			self.FlagCarrierFrame1Button:SetWidth(150)
-			self.FlagCarrierFrame1Button:SetAttribute("type", "macro")
-			self.FlagCarrierFrame1Button:SetScript("OnUpdate", secureButtonOnUpdate)
-		end
-		if not self.FlagCarrierFrame2Button then
-			self.FlagCarrierFrame2Button = CreateFrame("Button", nil, UIParent, "SecureActionButtonTemplate")
-			self.FlagCarrierFrame2Button:SetHeight(15)
-			self.FlagCarrierFrame2Button:SetWidth(150)
-			self.FlagCarrierFrame2Button:SetAttribute("type", "macro")
-			self.FlagCarrierFrame2Button:SetScript("OnUpdate", secureButtonOnUpdate)
-		end
-		if UnitAffectingCombat("player") then
-			-- when toggling the "show flag carrier" option during combat or reloading the UI in combat
-			-- this shouldn't happen often (who toggles options or reloads the UI in combat?) so a "busy wait" on the combat state is suitable here
-			deferredShowFrame = deferredShowFrame or CreateFrame("Frame")
-			deferredShowFrame:Show()
-			deferredShowFrame:SetScript("OnUpdate", function()
-				if not UnitAffectingCombat("player") then
-					self.FlagCarrierFrame1Button:Show()
-					self.FlagCarrierFrame2Button:Show()
-					deferredShowFrame:Hide()
-				end
-			end)
-		else
-			self.FlagCarrierFrame1Button:Show()
-			self.FlagCarrierFrame2Button:Show()
-		end
+function Warsong:CreateFlagCarrierButton()
+	if not Warsong.Options.ShowFlagCarrier then return end
+	if not self.FlagCarrierFrame1Button then
+		self.FlagCarrierFrame1Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
+		self.FlagCarrierFrame1Button:SetHeight(15)
+		self.FlagCarrierFrame1Button:SetWidth(150)
+		self.FlagCarrierFrame1Button:SetAttribute("type", "macro")
+		self.FlagCarrierFrame1Button:SetPoint("LEFT", "AlwaysUpFrame2", "RIGHT", 28, 4)
 	end
+	if not self.FlagCarrierFrame2Button then
+		self.FlagCarrierFrame2Button = CreateFrame("Button", nil, nil, "SecureActionButtonTemplate")
+		self.FlagCarrierFrame2Button:SetHeight(15)
+		self.FlagCarrierFrame2Button:SetWidth(150)
+		self.FlagCarrierFrame2Button:SetAttribute("type", "macro")
+		self.FlagCarrierFrame2Button:SetPoint("LEFT", "AlwaysUpFrame3", "RIGHT", 28, 4)
+	end
+	self.FlagCarrierFrame1Button:Show()		
+	self.FlagCarrierFrame2Button:Show()
 end
 
 function Warsong:HideFlagCarrier()
 	if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
 		self.FlagCarrierFrame1:Hide()
 		self.FlagCarrierFrame2:Hide()
-		self.FlagCarrierFrame1Button.requestHide = true
-		self.FlagCarrierFrame2Button.requestHide = true
 		FlagCarrier[1] = nil
 		FlagCarrier[2] = nil
 	end
