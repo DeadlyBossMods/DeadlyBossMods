@@ -244,6 +244,8 @@ function mod:NextPhase()
 			DBM.BossHealth:AddBoss(33432, L.MobPhase1)
 		end
 		if hardmode then
+			self:UnscheduleMethod("Flames")
+			self:Flames()
             timerNextFrostBomb:Start(73)
         end
 	end
