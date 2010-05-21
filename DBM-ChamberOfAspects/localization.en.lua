@@ -135,3 +135,12 @@ L:SetGeneralLocalization({
 	name = "Halion the Twilight Destroyer"
 })
 
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+	SetIconOnConsumption		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74792)
+})
+
+L:SetMiscLocalization({
+})
