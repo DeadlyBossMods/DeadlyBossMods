@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39863)
+mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -15,30 +16,39 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_EMOTE"
 )
 
-local warningConsumption		= mod:NewTargetAnnounce(74792)
+local warningShadowConsumption	= mod:NewTargetAnnounce(74792)
+local warningFieryConsumption	= mod:NewTargetAnnounce(74562)
 local warningMeteor				= mod:NewSpellAnnounce(74648)
 local warningShadowBreath		= mod:NewSpellAnnounce(75954)
+local warningFieryBreath		= mod:NewSpellAnnounce(74526)
 local warningTwilightCutter		= mod:NewSpellAnnounce(77844)
 
-local specWarnConsumption		= mod:NewSpecialWarningRun(74792)
+local specWarnShadowConsumption		= mod:NewSpecialWarningRun(74792)
+local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
 
---local timerConsumptionCD			= mod:NewCDTimer(22, 74792)
+--local timerShadowConsumptionCD	= mod:NewCDTimer(22, 74792)--may not need both of these
+--local timerFieryConsumptionCD		= mod:NewCDTimer(22, 74792)--if they are on same CD.
 --local timerMeteorCD				= mod:NewCDTimer(22, 74648)
 --local timerTwilightCutterCD		= mod:NewCDTimer(22, 77844)
---local timerShadowBreathCD			= mod:NewCDTimer(22, 75954)
+--local timerShadowBreathCD			= mod:NewCDTimer(22, 75954)--may not need both of these
+--local timerFieryBreathCD			= mod:NewCDTimer(22, 74526)--if they are on same CD.
 
-local soundConsumption 			= mod:NewSound(74792)
+local soundConsumption 			= mod:NewSound(74562)
 mod:AddBoolOption("SetIconOnConsumption", true)
 
 function mod:OnCombatStart(delay)
 --		timerMeteorCD:Start(-delay)
---		timerConsumptionCD:Start(-delay)
+--		timerFieryConsumptionCD:Start(-delay)
+--		timerFieryBreathCD:Start(-delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(74806, 75954, 75955, 75956) then--not sure if we need all 4 spellids or the cast dummy will suffice. Need logs. Not even sure if it uses SPELL_CAST_SUCCESS
+	if args:IsSpellID(74806, 75954, 75955, 75956) then
 		warningShadowBreath:Show()
 --		timerShadowBreathCD:Start()
+	elseif args:IsSpellID(74525, 74526, 74527, 74528) then
+		warningFieryBreath:Show()
+--		timerFieryBreathCD:Start()
 	end
 end
 
@@ -54,20 +64,34 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(74792) then
-		warningConsumption:Show(args.destName)
---		timerConsumptionCD:Start()
+		warningShadowConsumption:Show(args.destName)
+--		timerShadowConsumptionCD:Start()
 		if args:IsPlayer() then
-			specWarnConsumption:Show()
+			specWarnShadowConsumption:Show()
 			soundConsumption:Play()
 		end
 		if self.Options.SetIconOnConsumption then
-			self:SetIcon(args.destName, 8, 10)
+			self:SetIcon(args.destName, 8)
+		end
+	elseif args:IsSpellID(74562) then
+		warningFieryConsumption:Show(args.destName)
+--		timerFieryConsumptionCD:Start()
+		if args:IsPlayer() then
+			specWarnFieryConsumption:Show()
+			soundConsumption:Play()
+		end
+		if self.Options.SetIconOnConsumption then
+			self:SetIcon(args.destName, 7)
 		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(74792) then
+		if self.Options.SetIconOnConsumption then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(74562) then
 		if self.Options.SetIconOnConsumption then
 			self:SetIcon(args.destName, 0)
 		end

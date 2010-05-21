@@ -139,7 +139,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SetIconOnConsumption		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74792)
+	SetIconOnConsumption		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74562)
 })
 
 L:SetMiscLocalization({
