@@ -124,7 +124,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	specWarnConflagNear		= "Show special warning for $spell:74452 near you",
-	SpecialWarningTranq		= "Show special warning for $spell:78722 (to tranq)",
+	SpecialWarningTranq		= "Show special warning for Enrage (to tranq)",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
 	YellOnConflag			= "Yell on $spell:74452",
 	RangeFrame				= "Show range frame (10 yards)",
 	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
