@@ -86,12 +86,46 @@ L:SetMiscLocalization({
 ------------------------
 --  The Ruby Sanctum  --
 ------------------------
+--  Baltharus the Warborn  --
+-----------------------------
+L = DBM:GetModLocalization("Baltharus")
+
+L:SetGeneralLocalization({
+	name = "Балтар Рожденный в Битве"
+})
+
+L:SetWarningLocalization({
+	WarningSplitSoon	= "Split soon",
+	WarningSplitNow		= "Split"
+})
+
+L:SetOptionLocalization({
+	WarningSplitSoon	= "Show pre-warning for Split (54%)",
+	WarningSplitNow		= "Show warning for Split",
+	RangeFrame			= "Показывать окно допустимой дистанции (12 м)",
+	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
+})
+
+L:SetMiscLocalization({
+	SplitTrigger		= ""
+})
+
+-------------------------
+--  Saviana Ragefire  --
+-------------------------
+L = DBM:GetModLocalization("Saviana")
+
+L:SetGeneralLocalization({
+	name = "Савиана Огненная Пропасть"
+})
+
+--------------------------
 --  General Zarithrian  --
 --------------------------
 L = DBM:GetModLocalization("Zarithrian")
 
 L:SetGeneralLocalization({
-	name = "General Zarithrian"
+	name = "Генерал Заритриан"
 })
 
 -------------------------------------
@@ -100,6 +134,16 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Halion")
 
 L:SetGeneralLocalization({
-	name = "Halion the Twilight Destroyer"
+	name = "Халион Сумеречный Разрушитель"
 })
 
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+	SoundOnConsumption			= "Play sound on Combustion",--We use localized text for these functions
+	SetIconOnConsumption		= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
+})
+
+L:SetMiscLocalization({
+})
