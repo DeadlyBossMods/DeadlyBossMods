@@ -139,7 +139,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SetIconOnConsumption		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74562)
+	SoundOnConsumption			= "Play sound on Combustion",--We use localized text for these functions
+	SetIconOnConsumption		= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
 })
 
 L:SetMiscLocalization({
