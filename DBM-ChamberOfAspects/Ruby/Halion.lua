@@ -33,7 +33,7 @@ local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
 --local timerShadowBreathCD			= mod:NewCDTimer(22, 75954)--may not need both of these
 --local timerFieryBreathCD			= mod:NewCDTimer(22, 74526)--if they are on same CD.
 
-local soundConsumption 			= mod:NewSound(74562)
+local soundConsumption 			= mod:NewSound(74562, "SoundOnConsumption")
 mod:AddBoolOption("SetIconOnConsumption", true)
 
 function mod:OnCombatStart(delay)
