@@ -14,7 +14,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
-	"SWING_DAMAGE",
 	"UNIT_HEALTH"
 )
 
@@ -75,7 +74,6 @@ mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buf
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 mod:AddBoolOption("YellOnUnbound", true, "announce")
 
-local putricideTankTarget	= {}
 local warned_preP2 = false
 local warned_preP3 = false
 local spamPuddle = 0
@@ -98,7 +96,6 @@ end
 function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2/3 people in 25 man
 	local targetname = self:GetBossTarget(36678)
 	if not targetname then return end
-	if targetname == putricideTankTarget then return end
 		if self.Options.MalleableGooIcon then
 			self:SetIcon(targetname, 6, 10)
 		end
@@ -357,12 +354,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerRegurgitatedOoze:Cancel(args.destName)
 	elseif args:IsSpellID(70542) then
 		timerMutatedSlash:Cancel(args.destName)
-	end
-end
-
-function mod:SWING_DAMAGE(args)
-	if args:GetSrcCreatureID() == 36678 then
-		putricideTankTarget = args.destName
 	end
 end
 
