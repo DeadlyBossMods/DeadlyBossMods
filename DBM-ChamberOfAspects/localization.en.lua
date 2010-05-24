@@ -144,6 +144,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase2Soon		= "Phase 2 soon",
+	WarnPhase3Soon		= "Phase 3 soon"
 })
 
 L:SetOptionLocalization({
@@ -162,6 +164,8 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~79%)",
+	WarnPhase3Soon			= "Show pre-warning for Phase 3 (at ~54%)",
 	SoundOnConsumption			= "Play sound on Combustion",--We use localized text for these functions
 	SetIconOnConsumption		= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
 })
