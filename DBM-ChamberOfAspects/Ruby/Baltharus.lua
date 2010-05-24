@@ -16,7 +16,7 @@ mod:RegisterEvents(
 
 local warningSplitSoon		= mod:NewAnnounce("WarningSplitSoon", 2)
 local warningSplitNow		= mod:NewAnnounce("WarningSplitNow", 3)
-local warningWarnBrand		= mod:NewTargetAnnounce(74505)
+local warningWarnBrand		= mod:NewTargetAnnounce(74505, 4)
 
 local specWarnWhirlwind		= mod:NewSpecialWarningRun(75125, mod:IsMelee())
 local specWarnBrand			= mod:NewSpecialWarningYou(74505)

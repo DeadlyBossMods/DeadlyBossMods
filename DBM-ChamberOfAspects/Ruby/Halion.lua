@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("Halion", "DBM-ChamberOfAspects", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(39863)
+mod:SetCreatureID(39863)--40141 (twilight form)
 mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
@@ -13,15 +13,18 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"CHAT_MSG_MONSTER_EMOTE"
+	"CHAT_MSG_MONSTER_EMOTE",
+	"UNIT_HEALTH"
 )
 
-local warningShadowConsumption	= mod:NewTargetAnnounce(74792)
-local warningFieryConsumption	= mod:NewTargetAnnounce(74562)
-local warningMeteor				= mod:NewSpellAnnounce(74648)
-local warningShadowBreath		= mod:NewSpellAnnounce(75954)
-local warningFieryBreath		= mod:NewSpellAnnounce(74526)
-local warningTwilightCutter		= mod:NewSpellAnnounce(77844)
+local warnPhase2Soon			= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnPhase3Soon			= mod:NewAnnounce("WarnPhase3Soon", 2)
+local warningShadowConsumption	= mod:NewTargetAnnounce(74792, 4)
+local warningFieryConsumption	= mod:NewTargetAnnounce(74562, 4)
+local warningMeteor				= mod:NewSpellAnnounce(74648, 3)
+local warningShadowBreath		= mod:NewSpellAnnounce(75954, 2)
+local warningFieryBreath		= mod:NewSpellAnnounce(74526, 2)
+local warningTwilightCutter		= mod:NewSpellAnnounce(77844, 3)
 
 local specWarnShadowConsumption		= mod:NewSpecialWarningRun(74792)
 local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
@@ -36,10 +39,15 @@ local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
 local soundConsumption 			= mod:NewSound(74562, "SoundOnConsumption")
 mod:AddBoolOption("SetIconOnConsumption", true)
 
+local warned_preP2 = false
+local warned_preP3 = false
+
 function mod:OnCombatStart(delay)
 --		timerMeteorCD:Start(-delay)
 --		timerFieryConsumptionCD:Start(-delay)
 --		timerFieryBreathCD:Start(-delay)
+	warned_preP2 = false
+	warned_preP3 = false
 end
 
 function mod:SPELL_CAST_START(args)
@@ -95,5 +103,15 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnConsumption then
 			self:SetIcon(args.destName, 0)
 		end
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if not warned_preP2 and self:GetUnitCreatureId(uId) == 39863 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
+		warned_preP2 = true
+		warnPhase2Soon:Show()	
+	elseif not warned_preP3 and self:GetUnitCreatureId(uId) == 40141 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
+		warned_preP3 = true
+		warnPhase3Soon:Show()	
 	end
 end
