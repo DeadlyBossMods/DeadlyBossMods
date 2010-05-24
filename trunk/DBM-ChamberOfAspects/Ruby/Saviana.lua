@@ -14,8 +14,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningWarnConflag	= mod:NewSpellAnnounce(74452)--Will change to a target announce if possible. need to do encounter
-local warningWarnEnrage		= mod:NewTargetAnnounce(78722)
+local warningWarnConflag	= mod:NewSpellAnnounce(74452, 3)--Will change to a target announce if possible. need to do encounter
+local warningWarnEnrage		= mod:NewTargetAnnounce(78722, 3)
 
 local specWarnConflag		= mod:NewSpecialWarningYou(74452)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
 local specWarnConflagNear	= mod:NewSpecialWarning("specWarnConflagNear")--Same as above, may not work. Need to do encounter to test.
