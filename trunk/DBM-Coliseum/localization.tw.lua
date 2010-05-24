@@ -121,34 +121,36 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
-	Gorgrim				= "死騎 - 高葛林·影斬",		-- 34458, Horde
-	Birana 				= "小德 - 碧菈娜·風暴之蹄",	-- 34451, Horde
-	Erin				= "小德 - 艾琳·霧蹄",		-- 34459, Horde
-	Rujkah				= "獵人 - 茹卡",		-- 34448, Horde
-	Ginselle			= "法師 - 金賽兒·凋擲",		-- 34449, Horde
-	Liandra				= "聖騎 - 黎安卓·喚日",		-- 34445, Horde
-	Malithas			= "聖騎 - 瑪力薩·亮刃",		-- 34456, Horde
-	Caiphus				= "牧師 - 嚴厲的凱普司",	-- 34447, Horde
-	Vivienne			= "牧師 - 薇薇安·黑語",		-- 34441, Horde
-	Mazdinah			= "盜賊 - 馬茲迪娜",		-- 34454, Horde
-	Thrakgar			= "薩滿 - 瑟瑞克加爾",		-- 34444, Horde
-	Broln				= "薩滿 - 伯洛連·頑角",		-- 34455, Horde
-	Harkzog				= "術士 - 哈克佐格",		-- 34450, Horde
-	Narrhok				= "戰士 - 納霍克·破鋼者",	-- 34453, Horde
-	Tyrius				= "死騎 - 提瑞斯·暮刃",		-- 34461, Allience
- 	Kavina				= "小德 - 卡薇娜·林地之歌",	-- 34460, Allience
- 	Melador				= "小德 - 梅拉朵·谷行者",	-- 34469, Allience
- 	Alyssia 			= "獵人 - 愛莉希雅·月巡者",	-- 34467, Allience
- 	Noozle				= "法師 - 諾佐·嘯棍",		-- 34468, Allience
- 	Baelnor 			= "聖騎 - 貝爾諾·攜光者",	-- 34471, Allience
- 	Velanaa				= "聖騎 - 維蘭娜", 		-- 34465, Allience
- 	Anthar				= "牧師 - 安薩·修爐匠",		-- 34466, Allience
- 	Brienna				= "牧師 - 布芮娜·夜墜",		-- 34473, Allience
- 	Irieth				= "盜賊 - 艾芮絲·影步",		-- 34472, Allience
- 	Saamul				= "薩滿 - 薩繆爾", 		-- 34470, Allience
- 	Shaabad				= "薩滿 - 夏巴德", 		-- 34463, Allience
- 	Serissa				= "術士 - 瑟芮莎·厲濺",		-- 34474, Allience
- 	Shocuul				= "戰士 - 修庫爾",		-- 34475, Allience
+	--Horde NPCS
+	Gorgrim				= "死騎 - 高葛林·影斬",		-- 34458
+	Birana 				= "小德 - 碧菈娜·風暴之蹄",	-- 34451
+	Erin				= "小德 - 艾琳·霧蹄",		-- 34459
+	Rujkah				= "獵人 - 茹卡",		-- 34448
+	Ginselle			= "法師 - 金賽兒·凋擲",		-- 34449
+	Liandra				= "聖騎 - 黎安卓·喚日",		-- 34445
+	Malithas			= "聖騎 - 瑪力薩·亮刃",		-- 34456
+	Caiphus				= "牧師 - 嚴厲的凱普司",	-- 34447
+	Vivienne			= "牧師 - 薇薇安·黑語",		-- 34441
+	Mazdinah			= "盜賊 - 馬茲迪娜",		-- 34454
+	Thrakgar			= "薩滿 - 瑟瑞克加爾",		-- 34444
+	Broln				= "薩滿 - 伯洛連·頑角",		-- 34455
+	Harkzog				= "術士 - 哈克佐格",		-- 34450
+	Narrhok				= "戰士 - 納霍克·破鋼者",	-- 34453
+	--Alliance NPCS
+	Tyrius				= "死騎 - 提瑞斯·暮刃",		-- 34461
+ 	Kavina				= "小德 - 卡薇娜·林地之歌",	-- 34460
+ 	Melador				= "小德 - 梅拉朵·谷行者",	-- 34469
+ 	Alyssia 			= "獵人 - 愛莉希雅·月巡者",	-- 34467
+ 	Noozle				= "法師 - 諾佐·嘯棍",		-- 34468
+ 	Baelnor 			= "聖騎 - 貝爾諾·攜光者",	-- 34471
+ 	Velanaa				= "聖騎 - 維蘭娜", 		-- 34465
+ 	Anthar				= "牧師 - 安薩·修爐匠",		-- 34466
+ 	Brienna				= "牧師 - 布芮娜·夜墜",		-- 34473
+ 	Irieth				= "盜賊 - 艾芮絲·影步",		-- 34472
+ 	Saamul				= "薩滿 - 薩繆爾", 		-- 34470
+ 	Shaabad				= "薩滿 - 夏巴德", 		-- 34463
+ 	Serissa				= "術士 - 瑟芮莎·厲濺",		-- 34474
+ 	Shocuul				= "戰士 - 修庫爾",		-- 34475
 	AllianceVictory			= "榮耀歸於聯盟!",
 	HordeVictory			= "那只是讓你們知道將來必須面對的命運。為了部落!",
 	YellKill			= "膚淺而悲痛的勝利。今天痛失的生命反而令我們更加的頹弱。除了巫妖王之外，誰還能從中獲利?偉大的戰士失去了寶貴生命。為了什麼?真正的威脅就在前方 - 巫妖王在死亡的領域中等著我們。"
