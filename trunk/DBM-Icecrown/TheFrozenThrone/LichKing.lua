@@ -55,7 +55,7 @@ local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear", false) --Her
 local specWarnHarvestSouls	= mod:NewSpecialWarningSpell(74297) --Heroic Ability
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
-local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition")
+local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition", 72262)
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797, nil, mod:IsTank() or mod:IsHealer())
 local timerSoulreaperCD	 	= mod:NewCDTimer(30.5, 73797, nil, mod:IsTank() or mod:IsHealer())
 local timerHarvestSoul	 	= mod:NewTargetTimer(6, 74325)
@@ -72,7 +72,7 @@ local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
 local timerVileSpirit 		= mod:NewNextTimer(30.5, 70498)
 local timerTrapCD		 	= mod:NewCDTimer(15.5, 73539)
 local timerRestoreSoul 		= mod:NewCastTimer(40, 73650)
-local timerRoleplay			= mod:NewTimer(160, "TimerRoleplay", 72350)	--Needs tweaking to new placement.
+local timerRoleplay			= mod:NewTimer(160, "TimerRoleplay", 72350)
 
 local berserkTimer			= mod:NewBerserkTimer(900)
 
