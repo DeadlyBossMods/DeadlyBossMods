@@ -12,6 +12,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
+	--¡Aullahielo mira a PC y emite un bramido!
 	Charge			= "¡Aullahielo mira a (%S+) y emite un bramido!",
 	CombatStart		= "Desde las cavernas más oscuras y profundas de Las Cumbres Tormentosas: ¡Gormok el Empalador! ¡A luchar, héroes!",
 	Phase2			= "Preparaos, héroes, para los temibles gemelos: ¡Fauceácida y Aterraescama! ¡A la arena!",
@@ -121,20 +122,37 @@ L:SetWarningLocalization{
 }
 
 L:SetMiscLocalization{
+	---Horde NPCS
 	Gorgrim		= "DK - Gorgrim Rajasombra",		-- 34458
 	Birana 		= "D - Birana Pezuña Tempestuosa",	-- 34451
 	Erin		= "D - Erin Pezuña de Niebla",		-- 34459
 	Rujkah		= "H - Ruj'kah",					-- 34448
 	Ginselle	= "M - Ginselle Lanzaañublo",		-- 34449
-	Liandra		= "P - Liandra Clamasol",			-- 34445
-	Malithas	= "P - Malithas Hoja Brillante",	-- 34456
+	Liandra		= "PA - Liandra Clamasol",			-- 34445
+	Malithas	= "PA - Malithas Hoja Brillante",	-- 34456
 	Caiphus		= "PR - Caiphus el Austero",		-- 34447
 	Vivienne	= "PR - Vivienne Susurro Oscuro",	-- 34441
 	Mazdinah	= "R - Maz'dinah",					-- 34454
 	Thrakgar	= "S - Thrakgar",					-- 34444
 	Broln		= "S - Broln Cuernorrecio",			-- 34455
 	Harkzog		= "WL - Harkzog",					-- 34450
-	Narrhok		= "W - Narrhok Rompeacero",		-- 34453
+	Narrhok		= "WR - Narrhok Rompeacero",		-- 34453
+	--Alliance NPCS
+	Tyrius				= "DK - Tyrius Hoja Umbría",		-- 34461
+	Kavina				= "D - Kavina Canto Arboleda",		-- 34460
+	Melador				= "D - Melador Caminavalles",		-- 34469
+	Alyssia             = "H - Alyssia Acechalunas",		-- 34467
+	Noozle				= "M - Noozle Varapalo",			-- 34468
+	Baelnor				= "PA - Baelnor Portador de la Luz",-- 34471
+	Velanaa				= "PA - Velanaa",					-- 34465
+	Anthar				= "PR - Anthar Ensalmaforja",		-- 34466
+	Brienna				= "PR - Brienna Talanoche",			-- 34473
+	Irieth				= "R - Irieth Paso Sombrío",		-- 34472
+	Saamul				= "S - Saamul",						-- 34470
+	Shaabad				= "S - Shaabad",					-- 34463
+	Serissa				= "WL - Serissa Desventura",		-- 34474
+	Shocuul				= "WR - Shocuul",					-- 34475
+	
 	AllianceVictory    = "¡GLORIA A LA ALIANZA!",
 	HordeVictory       = "That was just a taste of what the future brings. FOR THE HORDE!",--translate
 	YellKill	= "Una victoria trágica y fútil. Hoy somos menos por las pérdidas que hemos sufrido. ¿Quién podría beneficiarse de tal insensatez además del Rey Exánime? Grandes guerreros han perdido la vida. ¿Y para qué? La verdad"
