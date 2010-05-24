@@ -21,7 +21,7 @@ mod:AddBoolOption("RemoveHealthBuffsInP3", false)
 
 -- Adds
 local warnAdds				= mod:NewAnnounce("warnAdds", 3)
-local timerAdds				= mod:NewTimer(45, "timerAdds")
+local timerAdds				= mod:NewTimer(45, "timerAdds", 45419)
 local Burrowed				= false 
 
 -- Pursue
