@@ -7,12 +7,14 @@ if UnitFactionGroup("player") == "Alliance" then
 	mod:RegisterCombat("yell", L.PullAlliance)
 	mod:RegisterKill("yell", L.KillAlliance)
 	mod:SetCreatureID(37215)	-- Orgrim's Hammer
+	local AddsIcon = 23334
 else
 	mod:RegisterCombat("yell", L.PullHorde)
 	mod:RegisterKill("yell", L.KillHorde)
 	mod:SetCreatureID(37540)	-- The Skybreaker
+	local AddsIcon = 23336
 end
-mod:SetMinCombatTime(50)	
+mod:SetMinCombatTime(50)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -29,12 +31,12 @@ local warnElite				= mod:NewTargetAnnounce(71195, 3, nil, false)		-- might be sp
 local warnBattleFury		= mod:NewAnnounce("WarnBattleFury", 2, 72306, mod:IsTank())
 local warnBladestorm		= mod:NewSpellAnnounce(69652, 3, nil, mod:IsMelee())
 local warnWoundingStrike	= mod:NewTargetAnnounce(69651, 2)
-local warnAddsSoon			= mod:NewAnnounce("WarnAddsSoon", 2)
+local warnAddsSoon			= mod:NewAnnounce("WarnAddsSoon", 2, AddsIcon)
 
 local timerCombatStart		= mod:NewTimer(45, "TimerCombatStart", 2457)
 local timerBelowZeroCD		= mod:NewNextTimer(35, 69705)
 local timerBattleFuryActive	= mod:NewBuffActiveTimer(17, 72306, nil, mod:IsTank() or mod:IsHealer())
-local timerAdds				= mod:NewTimer(60, "TimerAdds")
+local timerAdds				= mod:NewTimer(60, "TimerAdds", AddsIcon)
 
 mod:RemoveOption("HealthFrame")
 
