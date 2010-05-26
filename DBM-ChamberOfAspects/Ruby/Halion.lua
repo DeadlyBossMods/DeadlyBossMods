@@ -31,7 +31,8 @@ local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
 --local timerShadowConsumptionCD	= mod:NewCDTimer(22, 74792)--may not need both of these
 --local timerFieryConsumptionCD		= mod:NewCDTimer(22, 74792)--if they are on same CD.
 --local timerMeteorCD				= mod:NewCDTimer(22, 74648)
---local timerTwilightCutterCD		= mod:NewCDTimer(22, 77844)
+local timerTwilightCutter			= mod:NewBuffActiveTimer(10, 77844)
+local timerTwilightCutterCD			= mod:NewCDTimer(20, 77844)
 --local timerShadowBreathCD			= mod:NewCDTimer(22, 75954)--may not need both of these
 --local timerFieryBreathCD			= mod:NewCDTimer(22, 74526)--if they are on same CD.
 
@@ -65,7 +66,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 --		timerMeteorCD:Start()
 	elseif args:IsSpellID(74768) or args:IsSpellID(74769, 77844, 77845, 77846) then--not sure if we need all 4 spellids or the cast dummy will suffice. Need logs. Not even sure if it uses SPELL_CAST_SUCCESS
 		warningTwilightCutter:Show()
---		timerTwilightCutterCD:Start()
+		timerTwilightCutter:Start()
+		timerTwilightCutterCD:Schedule(10)
 	end
 end
 
