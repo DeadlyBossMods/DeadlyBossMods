@@ -1,8 +1,10 @@
-if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
+﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
 local L
 
----------------
+----------------------------
+--  The Obsidian Sanctum  --
+----------------------------
 --  Shadron  --
 ---------------
 L = DBM:GetModLocalization("Shadron")
@@ -45,10 +47,10 @@ L:SetWarningLocalization({
 	WarningTenebron			= "Tenebron viene",
 	WarningShadron			= "Shadron viene",
 	WarningVesperon			= "Vesperon viene",
-	WarningFireWall			= "Muro de Fuego!",
-	WarningVesperonPortal	= "Portal de Vesperon!",
-	WarningTenebronPortal	= "Portal de Tenebron!",
-	WarningShadronPortal	= "Portal de Shadron!"
+	WarningFireWall			= "¡Muro de Fuego!",
+	WarningVesperonPortal	= "¡Portal de Vesperon!",
+	WarningTenebronPortal	= "¡Portal de Tenebron!",
+	WarningShadronPortal	= "¡Portal de Shadron!"
 })
 
 L:SetTimerLocalization({
@@ -73,7 +75,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Wall			= "�La lava se arremolina alrededor de %s!",
+	Wall			= "¡La lava se arremolina alrededor de %s!",
 	Portal			= "%s comienza a abrir un Portal Crepuscular",
 	NameTenebron	= "Tenebron",
 	NameShadron		= "Shadron",
@@ -87,12 +89,72 @@ L:SetMiscLocalization({
 ------------------------
 --  The Ruby Sanctum  --
 ------------------------
+--  Baltharus the Warborn  --
+-----------------------------
+L = DBM:GetModLocalization("Baltharus")
+
+L:SetGeneralLocalization({
+	name = "Baltharus el Batallante"
+})
+
+L:SetWarningLocalization({
+	WarningSplitSoon	= "Separación pronto",
+	WarningSplitNow		= "Separación"
+})
+
+L:SetOptionLocalization({
+	WarningSplitSoon	= "Mostrar pre-aviso para Separación (54%)",
+	WarningSplitNow		= "Mostrar aviso para Separación",
+	RangeFrame			= "Mostrar distancia (12 yardas)",
+	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
+})
+
+L:SetMiscLocalization({
+	SplitTrigger		= ""
+})
+
+-------------------------
+--  Saviana Ragefire  --
+-------------------------
+L = DBM:GetModLocalization("Saviana")
+
+L:SetGeneralLocalization({
+	name = "Saviana Furia Ardiente"
+})
+
+L:SetWarningLocalization({
+	specWarnConflagNear		= "Conflagración cerca de ti ¡Cuidado!",
+	SpecialWarningTranq		= "Enrage ¡Tranquilizadlo!"
+})
+
+L:SetOptionLocalization({
+	specWarnConflagNear		= "Mostrar aviso especial para $spell:74452 cerca de ti",
+	SpecialWarningTranq		= "Mostrar aviso especial para Enrage (para tranquilizar)",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
+	YellOnConflag			= "Gritar cuando tengas $spell:74452",
+	RangeFrame				= "Mostrar distancia (10 yardas)",
+	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
+})
+
+L:SetMiscLocalization{
+	YellConflag	= "¡Conflagración en mi!"
+}
+
+
+--------------------------
 --  General Zarithrian  --
 --------------------------
 L = DBM:GetModLocalization("Zarithrian")
 
 L:SetGeneralLocalization({
 	name = "General Zarithrian"
+})
+
+L:SetWarningLocalization({
+	WarnPhase2Soon		= "Fase 2 pronto",
+	WarnPhase3Soon		= "Fase 3 pronto"
+})
+
+L:SetOptionLocalization({
 })
 
 -------------------------------------
@@ -104,3 +166,16 @@ L:SetGeneralLocalization({
 	name = "Halion el Destructor Crepuscular"
 })
 
+L:SetWarningLocalization({
+})
+
+L:SetOptionLocalization({
+	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~79%)",
+	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~54%)",
+	SoundOnConsumption			= "Reproducir sonido en Combustión",
+	SetIconOnConsumption		= "Poner iconos en los objetivos de Combustión"
+})
+
+L:SetMiscLocalization({
+	twilightcutter			= "The orbiting spheres pulse with dark energy!"--Translate
+})
