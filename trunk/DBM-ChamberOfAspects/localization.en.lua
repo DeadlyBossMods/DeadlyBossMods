@@ -141,9 +141,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAdds	= "New adds"
+})
+
+L:SetTimerLocalization({
+	TimerAdds	= "New adds"
 })
 
 L:SetOptionLocalization({
+	WarnAdds		= "Announce new adds",
+	TimerAdds		= "Show timer for new adds"
+})
+
+L:SetMiscLocalization({
+	SummonMinions	= "Turn them to ash, minions!"
 })
 
 -------------------------------------
@@ -168,5 +179,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	twilightcutter			= "The orbiting spheres pulse with dark energy!"--Might not even use this, but having it standby just in case.
+	twilightcutter			= "The orbiting spheres pulse with dark energy!"
 })
