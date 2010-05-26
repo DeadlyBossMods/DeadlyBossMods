@@ -8,14 +8,14 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_HEALTH"
 )
 
 local warningSplitSoon		= mod:NewAnnounce("WarningSplitSoon", 2)
-local warningSplitNow		= mod:NewAnnounce("WarningSplitNow", 3)
+local warningRepellingWave	= mod:NewSpellAnnounce(74509, 3)
 local warningWarnBrand		= mod:NewTargetAnnounce(74505, 4)
 
 local specWarnWhirlwind		= mod:NewSpecialWarningRun(75125, mod:IsMelee())
@@ -23,13 +23,16 @@ local specWarnBrand			= mod:NewSpecialWarningYou(74505)
 
 local timerWhirlwindCD		= mod:NewCDTimer(22, 75125)
 local timerWhirlwind		= mod:NewBuffActiveTimer(4, 75125)
+local timerRepellingWave	= mod:NewBuffActiveTimer(4, 74509)--1 second cast + 3 second stun
 local timerBrand			= mod:NewTargetTimer(10, 74505)
 
 local soundWhirlwind 		= mod:NewSound(75125, nil, mod:IsMelee())
 mod:AddBoolOption("SetIconOnBrand", true)
 mod:AddBoolOption("RangeFrame")
 
-local warnedSplit		= false
+local warnedSplit1	= false
+local warnedSplit2	= false
+local warnedSplit3	= false
 local brandTargets = {}
 local brandIcon	= 8
 
@@ -40,7 +43,9 @@ end
 
 function mod:OnCombatStart(delay)
 	timerWhirlwindCD:Start(15.5-delay)
-	warnedSplit = false
+	warnedSplit1 = false
+	warnedSplit2 = false
+	warnedSplit3 = false
 	table.wipe(brandTargets)
 	brandIcon = 8
 	if self.Options.RangeFrame then
@@ -51,6 +56,13 @@ end
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(74509) then
+		warningRepellingWave:Show()
+		timerRepellingWave:Show()
 	end
 end
 
@@ -71,7 +83,7 @@ end
 end--]]
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75125) and args:GetSrcCreatureID() == 39751 then --(Ignore bladestorm from the clone. Only show from original since clone will SHOULD be pulled out.)
+	if args:IsSpellID(75125) and args:GetSrcCreatureID() == 39751 then --(Ignore bladestorm from the clone. Only show from original since clone SHOULD be pulled out.)
 		specWarnWhirlwind:Show()
 		timerWhirlwindCD:Start()
 		timerWhirlwind:Show()
@@ -95,20 +107,16 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if not warnedSplit and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
-		warnedSplit = true
+	if not warnedSplit2 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
+		warnedSplit2 = true
 		warningSplitSoon:Show()
-	end
-end
-
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.SplitTrigger then
-		self:SendSync("Split")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "Split" then
-		warningSplitNow:Show()
+	elseif (mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) then
+		if not warnedSplit1 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
+			warnedSplit1 = true
+			warningSplitSoon:Show()
+		elseif not warnedSplit3 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.29 then
+			warnedSplit3 = true
+			warningSplitSoon:Show()
+		end
 	end
 end
