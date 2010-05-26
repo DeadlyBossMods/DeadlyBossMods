@@ -14,7 +14,7 @@ mod:RegisterEvents(
 local warningAdds					= mod:NewAnnounce("WarnAdds", 3)
 local warningFear					= mod:NewSpellAnnounce(74384, 3)
 
-local timerAddsCD					= mod:NewNextTimer(45.5, "TimerAdds")
+local timerAddsCD					= mod:NewTimer(45.5, "TimerAdds")
 local timerFearCD					= mod:NewNextTimer(35, 74384)
 
 function mod:OnCombatStart(delay)
