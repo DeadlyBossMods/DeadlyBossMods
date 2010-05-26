@@ -9,29 +9,29 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED"
 )
 
 local warningWarnConflag	= mod:NewSpellAnnounce(74452, 3)--Will change to a target announce if possible. need to do encounter
-local warningWarnEnrage		= mod:NewTargetAnnounce(78722, 3)
+local warningWarnEnrage		= mod:NewSpellAnnounce(78722, 3)
+local warningWarnBreath		= mod:NewSpellAnnounce(74404, 3)
 
 local specWarnConflag		= mod:NewSpecialWarningYou(74452)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
 local specWarnConflagNear	= mod:NewSpecialWarning("specWarnConflagNear")--Same as above, may not work. Need to do encounter to test.
 local specWarnTranq			= mod:NewSpecialWarning("SpecialWarningTranq", mod:CanRemoveEnrage())
 
-local timerConflagCD			= mod:NewCDTimer(35, 74452)
---local timerEnrageCD			= mod:NewCDTimer(35, 78722)--Need more logs to confirm this even has a CD and not a random effect
-local timerEnrage				= mod:NewBuffActiveTimer(10, 78722)
+local timerConflagCD		= mod:NewNextTimer(35, 74452)
+local timerBreath			= mod:NewNextTimer(35, 74404)
+local timerEnrage			= mod:NewBuffActiveTimer(10, 78722)
 
 mod:AddBoolOption("YellOnConflag", true, "announce")
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("ConflagIcon")
 
 function mod:OnCombatStart(delay)
-	timerConflagCD:Start(33-delay)--May need adjusting, chat/combat logs were not english that i got and pull is a guess
---	timerEnrageCD:Start(33-delay)--May need adjusting, chat/combat logs were not english that i got and pull is a guess
+	timerConflagCD:Start(33-delay)
+	timerBreath:Start(45-delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
@@ -70,20 +70,22 @@ function mod:SPELL_CAST_START(args)
 		warningWarnConflag:Show()
 		timerConflagCD:Start()
 		self:ScheduleMethod(0.1, "ConflagTarget")
+	elseif args:IsSpellID(74403, 74404) then
+		warningWarnBreath:Show()
+		timerBreath:Start()
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(78722) then
-		warningWarnEnrage:Show(args.destName)
+		warningWarnEnrage:Show()
 		specWarnTranq:Show()
-		timerEnrage:Start(args.destName)
---		timerEnrageCD:Start()
+		timerEnrage:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(78722) then
-		timerEnrage:Cancel(args.destName)
+		timerEnrage:Cancel()
 	end
 end
