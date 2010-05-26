@@ -104,6 +104,20 @@ L:SetGeneralLocalization({
 	name = "Baltharus the Warborn"
 })
 
+L:SetWarningLocalization({
+	WarningSplitSoon	= "Split soon"
+})
+
+L:SetOptionLocalization({
+	WarningSplitSoon	= "Show pre-warning for Split",
+	RangeFrame			= "Show range frame (12 yards)",
+	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
+})
+
+L:SetMiscLocalization({
+})
+
+
 -------------------------
 --  Saviana Ragefire  --
 -------------------------
@@ -112,6 +126,23 @@ L = DBM:GetModLocalization("Saviana")
 L:SetGeneralLocalization({
 	name = "Saviana Ragefire"
 })
+
+L:SetWarningLocalization({
+	specWarnConflagNear		= "Conflagration near you - Watch out",
+	SpecialWarningTranq		= "Enrage - Tranq now"
+})
+
+L:SetOptionLocalization({
+	specWarnConflagNear		= "Show special warning for $spell:74452 near you",
+	SpecialWarningTranq		= "Show special warning for Enrage (to tranq)", -- $spell:78722
+	YellOnConflag			= "Yell on $spell:74452",
+	RangeFrame				= "Show range frame (10 yards)",
+	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
+})
+
+L:SetMiscLocalization{
+	YellConflag			= "불이야!!!!!"
+}
 
 --------------------------
 --  General Zarithrian  --
@@ -122,6 +153,22 @@ L:SetGeneralLocalization({
 	name = "장군 자리스리안"
 })
 
+L:SetWarningLocalization({
+	WarnAdds	= "새로운 몹"
+})
+
+L:SetTimerLocalization({
+	TimerAdds	= "새로운 몹"
+})
+
+L:SetOptionLocalization({
+	WarnAdds		= "새로운 추가몹 알리기",
+	TimerAdds		= "새로운 추가몹 타이머 보기"
+})
+
+L:SetMiscLocalization({
+	SummonMinions	= "Turn them to ash, minions!"
+})
 -------------------------------------
 --  Halion the Twilight Destroyer  --
 -------------------------------------
@@ -129,4 +176,20 @@ L = DBM:GetModLocalization("Halion")
 
 L:SetGeneralLocalization({
 	name = "황혼의 파괴자 할리온"
+})
+
+L:SetWarningLocalization({
+	WarnPhase2Soon		= "곧 2 단계",
+	WarnPhase3Soon		= "곧 3 단계"
+})
+
+L:SetOptionLocalization({
+	WarnPhase2Soon			= "2 단계 사전 경고 보기 (79% 전)",
+	WarnPhase3Soon			= "3단계 사전 경고 보기 (54% 전)",
+	SoundOnConsumption		= "Play sound on Combustion",--We use localized text for these functions
+	SetIconOnConsumption	= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
+})
+
+L:SetMiscLocalization({
+	twilightcutter			= "The orbiting spheres pulse with dark energy!"
 })
