@@ -98,19 +98,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Separación pronto",
-	WarningSplitNow		= "Separación"
+	WarningSplitSoon	= "Separación pronto"
 })
 
 L:SetOptionLocalization({
 	WarningSplitSoon	= "Mostrar pre-aviso para Separación (54%)",
-	WarningSplitNow		= "Mostrar aviso para Separación",
 	RangeFrame			= "Mostrar distancia (12 yardas)",
 	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= ""
 })
 
 -------------------------
@@ -150,12 +147,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon		= "Fase 2 pronto",
-	WarnPhase3Soon		= "Fase 3 pronto"
+	WarnAdds	= "Nuevos adds"
+})
+
+L:SetTimerLocalization({
+	TimerAdds	= "Nuevos adds"
 })
 
 L:SetOptionLocalization({
+	WarnAdds		= "Anunciar nuevos adds",
+	TimerAdds		= "Mostrar tiempo para nuevos adds"
 })
+
+L:SetMiscLocalization({
+	SummonMinions	= "Turn them to ash, minions!"--translate
+})
+
 
 -------------------------------------
 --  Halion the Twilight Destroyer  --
@@ -167,6 +174,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase2Soon		= "Fase 2 pronto",
+	WarnPhase3Soon		= "Fase 3 pronto"
 })
 
 L:SetOptionLocalization({
@@ -177,5 +186,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	twilightcutter			= "The orbiting spheres pulse with dark energy!"--Translate
+	twilightcutter			= "The orbiting spheres pulse with dark energy!"--translate
 })
