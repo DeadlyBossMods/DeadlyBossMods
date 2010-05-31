@@ -122,7 +122,7 @@ end
 function mod:OnSync(msg)
 	if msg == "TwilightCutter" then
 		warningTwilightCutter:Show()
-		timerTwilightCutter:Start()
+		timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 		timerTwilightCutterCD:Schedule(10)
 	end
 end
