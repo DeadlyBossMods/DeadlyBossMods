@@ -32,7 +32,7 @@ local timerShadowConsumptionCD		= mod:NewCDTimer(20, 74792)--may not need both o
 local timerFieryConsumptionCD		= mod:NewCDTimer(20, 74562)--if they are on same CD.
 local timerMeteorCD					= mod:NewNextTimer(35, 74648)
 local timerTwilightCutter			= mod:NewBuffActiveTimer(10, 77844)
-local timerTwilightCutterCD			= mod:NewNextTimer(20, 77844)
+local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
 local timerShadowBreathCD			= mod:NewCDTimer(8, 75954, nil, mod:IsTank() or mod:IsHealer())--may not need both of these
 local timerFieryBreathCD			= mod:NewCDTimer(8, 74526, nil, mod:IsTank() or mod:IsHealer())--if they are on same CD.
 
@@ -123,6 +123,6 @@ function mod:OnSync(msg)
 	if msg == "TwilightCutter" then
 		warningTwilightCutter:Show()
 		timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
-		timerTwilightCutterCD:Schedule(10)
+		timerTwilightCutterCD:Schedule(15)
 	end
 end
