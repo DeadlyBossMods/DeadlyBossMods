@@ -95,10 +95,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarningSplitSoon	= "Aufspaltung bald"
 })
 
 L:SetOptionLocalization({
+	WarningSplitSoon	= "Zeige Vorwarnun für Aufspaltung",
+	RangeFrame			= "Zeige Abstandsfenster (12 m)",
+	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
+
 
 L:SetMiscLocalization({
 	SplitTrigger		= "Doppelter Schmerz, halb soviel Spaß."
@@ -113,6 +118,23 @@ L:SetGeneralLocalization({
 	name = "Saviana Flammenschlund"
 })
 
+L:SetWarningLocalization({
+	specWarnConflagNear		= "Großbrand in deiner Nähe - Aufpassen",
+	SpecialWarningTranq		= "Wutanfall - Einlullen/Beruhigen"
+})
+
+L:SetOptionLocalization({
+	specWarnConflagNear		= "Zeige Spezialwarnung für $spell:74452 in deiner Nähe",	
+	SpecialWarningTranq		= "Zeige Spezialwarnung für Wutanfall",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
+	YellOnConflag			= "Schreie bei $spell:74452",
+	RangeFrame				= "Zeige Abstandsfenster (10 m)",
+	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
+})
+
+L:SetMiscLocalization{
+	YellConflag	= "Conflagration on me!"
+}
+
 --------------------------
 --  General Zarithrian  --
 --------------------------
@@ -120,6 +142,23 @@ L = DBM:GetModLocalization("Zarithrian")
 
 L:SetGeneralLocalization({
 	name = "General Zarithrian"
+})
+
+L:SetWarningLocalization({
+	WarnAdds	= "Neue Adds"
+})
+
+L:SetTimerLocalization({
+	TimerAdds	= "Neue Adds"
+})
+
+L:SetOptionLocalization({
+	WarnAdds		= "Verkünde neue Adds",
+	TimerAdds		= "Zeige Timer für neue Adds"
+})
+
+L:SetMiscLocalization({
+	SummonMinions	= "Äschert sie ein, Lakaien!"
 })
 
 -------------------------------------
@@ -131,3 +170,18 @@ L:SetGeneralLocalization({
 	name = "Halion der Zwielichtzerstörer"
 })
 
+L:SetWarningLocalization({
+	WarnPhase2Soon		= "Phase 2 bald",
+	WarnPhase3Soon		= "Phase 3 bald"
+})
+
+L:SetOptionLocalization({
+	WarnPhase2Soon			= "Zeige Vorwarnung für Phase 2 (bei ~79%)",	
+	WarnPhase3Soon			= "Zeige Vorwarnung für Phase 3 (bei ~54%)",
+	SoundOnConsumption		= "Spiele Sound bei Einäschern",--We use localized text for these functions
+	SetIconOnConsumption	= "Setze Zeichen auf Ziele von Einäschern"--So we can use single functions for both versions of spell."--So we can use single functions for both versions of spell.
+})
+
+L:SetMiscLocalization({
+	twilightcutter			= "Die kreisenden Sphären pulsieren vor dunkler Energie!"
+})
