@@ -50,7 +50,7 @@ end
 
 function mod:OnCombatStart(delay)
 	DBM.BossHealth:Clear()
-	timerCombatStart:Show(-delay)
+--[[	timerCombatStart:Show(-delay)
 	if UnitFactionGroup("player") == "Alliance" then
 		timerAdds:Start(62-delay)
 		warnAddsSoon:Schedule(57)
@@ -61,7 +61,7 @@ function mod:OnCombatStart(delay)
 		warnAddsSoon:Schedule(52)
 		self:ScheduleMethod(57, "Adds")
 		timerBelowZeroCD:Start(80-delay)
-	end
+	end--]]
 end
 
 function mod:SPELL_AURA_APPLIED(args)
