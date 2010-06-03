@@ -16,7 +16,8 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_WHISPER"
+	"CHAT_MSG_RAID_BOSS_WHISPER",
+	"SWING_DAMAGE"
 )
 
 local warnRemorselessWinter = mod:NewSpellAnnounce(74270, 3) --Phase Transition Start Ability
@@ -90,12 +91,14 @@ local phase	= 0
 local lastPlagueCast = 0
 local warned_preP2 = false
 local warned_preP3 = false
+local LKTank
 
 function mod:OnCombatStart(delay)
 	phase = 0
 	lastPlagueCast = 0
 	warned_preP2 = false
 	warned_preP3 = false
+	LKTank = nil
 	self:NextPhase()
 end
 
@@ -130,19 +133,53 @@ function mod:DefileTarget()
 	end
 end
 
-function mod:TrapTarget()
-	local targetname = self:GetBossTarget(36597)
-	if not targetname then return end
-		warnTrapCast:Show(targetname)
-		if self.Options.TrapIcon then
-			self:SetIcon(targetname, 6, 10)
-		end
-	if targetname == UnitName("player") then
+function mod:TankTrap()
+	warnTrapCast:Show(LKTank)
+	if self.Options.TrapIcon then
+		self:SetIcon(LKTank, 6, 10)
+	end
+	if LKTank == UnitName("player") then
 		specWarnTrap:Show()
 		if self.Options.YellOnTrap then
 			SendChatMessage(L.YellTrap, "SAY")
 		end
-	elseif targetname then
+	end
+	local uId = DBM:GetRaidUnitId(LKTank)
+	if uId then
+		local inRange = CheckInteractDistance(uId, 2)
+		local x, y = GetPlayerMapPosition(uId)
+		if x == 0 and y == 0 then
+			SetMapToCurrentZone()
+			x, y = GetPlayerMapPosition(uId)
+		end
+		if inRange then
+			specWarnTrapNear:Show()
+			if self.Options.TrapArrow then
+				DBM.Arrow:ShowRunAway(x, y, 10, 5)
+			end
+		end
+	end
+end
+
+function mod:TrapTarget()
+	local targetname = self:GetBossTarget(36597)
+	if not targetname then return end
+	if targetname and not LKTank then--If scan doesn't return tank abort other scans and do other warnings.
+		self:UnscheduleMethod("TrapTarget")
+		self:UnscheduleMethod("TrapTarget")
+		self:UnscheduleMethod("TrapTarget")
+		self:UnscheduleMethod("TrapTarget")
+		self:UnscheduleMethod("TankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
+		warnTrapCast:Show(targetname)
+		if self.Options.TrapIcon then
+			self:SetIcon(targetname, 6, 10)
+		end
+		if targetname == UnitName("player") then
+			specWarnTrap:Show()
+			if self.Options.YellOnTrap then
+				SendChatMessage(L.YellTrap, "SAY")
+			end
+		end
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
@@ -158,6 +195,9 @@ function mod:TrapTarget()
 				end
 			end
 		end
+	else
+		self:UnscheduleMethod("TankTrap")
+		self:ScheduleMethod(0.1, TankTrap)--If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
 	end
 end
 
@@ -200,7 +240,11 @@ function mod:SPELL_CAST_START(args)
 		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
+		self:ScheduleMethod(0.01, "TrapTarget")
+		self:ScheduleMethod(0.02, "TrapTarget")
+		self:ScheduleMethod(0.03, "TrapTarget")
 		self:ScheduleMethod(0.04, "TrapTarget")
+		self:ScheduleMethod(0.05, "TrapTarget")
 		timerTrapCD:Start()
 	elseif args:IsSpellID(73650) then -- Restore Soul (Heroic)
 		warnRestoreSoul:Show()
@@ -391,6 +435,12 @@ end
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find(L.PlagueWhisper) and self:IsInCombat() then
 		self:SendSync("PlagueOn", UnitName("player"))
+	end
+end
+
+function mod:SWING_DAMAGE(args)
+	if args:GetSrcCreatureID() == 36597 then--Lich king Tank
+		LKTank = args.destName
 	end
 end
 
