@@ -124,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				InfectionIcon = 7
 			end
 		end
-	elseif args:IsSpellID(72272, 72273) then	-- Vile Gas(Heroic Rotface only, 25 man spellid the same as 10?)
+	elseif args:IsSpellID(72272, 72273) and args:IsDestTypePlayer() then	-- Vile Gas(Heroic Rotface only, 25 man spellid the same as 10?)
 		RFVileGasTargets[#RFVileGasTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnVileGas:Show()
