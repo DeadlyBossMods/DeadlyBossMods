@@ -95,19 +95,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Split soon",
-	WarningSplitNow		= "Split"
+	WarningSplitSoon	= "Split soon"
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show pre-warning for Split (54%)",
-	WarningSplitNow		= "Show warning for Split",
+	WarningSplitSoon	= "Show pre-warning for Split",
 	RangeFrame			= "Показывать окно допустимой дистанции (12 м)",
 	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= ""
 })
 
 -------------------------
@@ -125,9 +122,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnConflagNear		= "Show special warning for $spell:74452 near you",
+	specWarnConflagNear		= "Спец-предупреждение, когда $spell:74452 около вас",
 	SpecialWarningTranq		= "Show special warning for Enrage (to tranq)",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
-	YellOnConflag			= "Yell on $spell:74452",
+	YellOnConflag			= "Кричать, когда $spell:74452 на вас",
 	RangeFrame				= "Показывать окно допустимой дистанции (10 м)",
 	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
 })
@@ -146,9 +143,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAdds	= "New adds"
+})
+
+L:SetTimerLocalization({
+	TimerAdds	= "New adds"
 })
 
 L:SetOptionLocalization({
+	WarnAdds		= "Announce new adds",
+	TimerAdds		= "Show timer for new adds"
+})
+
+L:SetMiscLocalization({
+	SummonMinions	= "Turn them to ash, minions!"
 })
 
 -------------------------------------
@@ -161,12 +169,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase2Soon		= "Скоро фаза 2",
+	WarnPhase3Soon		= "Скоро фаза 3"
 })
 
 L:SetOptionLocalization({
-	SoundOnConsumption			= "Play sound on Combustion",--We use localized text for these functions
-	SetIconOnConsumption		= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
+	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~79%)",
+	WarnPhase3Soon			= "Предупреждать заранее о фазе 3 (на ~54%)",
+	SoundOnConsumption		= "Play sound on Combustion",--We use localized text for these functions
+	SetIconOnConsumption	= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
 })
 
 L:SetMiscLocalization({
+	twilightcutter			= "The orbiting spheres pulse with dark energy!"
 })
