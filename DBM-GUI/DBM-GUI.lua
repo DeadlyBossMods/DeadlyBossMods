@@ -1207,7 +1207,7 @@ local function CreateOptionsMenu()
 		end)
 	
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -5)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -25)
 		bmrange:SetScript("OnClick", function(self) 
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
@@ -1217,7 +1217,7 @@ local function CreateOptionsMenu()
 		end)
 
 		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars)
-		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 20, 0)
+		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 20)
 		bmtestmode:SetScript("OnClick", function(self) DBM:DemoMode() end)
 
 		-- Pizza Timer (create your own timer menu)
