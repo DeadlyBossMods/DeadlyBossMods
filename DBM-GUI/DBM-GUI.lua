@@ -1217,7 +1217,7 @@ local function CreateOptionsMenu()
 		end)
 
 		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars)
-		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 20)
+		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 0)
 		bmtestmode:SetScript("OnClick", function(self) DBM:DemoMode() end)
 
 		-- Pizza Timer (create your own timer menu)
