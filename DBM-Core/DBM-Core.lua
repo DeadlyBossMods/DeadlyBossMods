@@ -75,6 +75,7 @@ DBM.DefaultOptions = {
 	SpamBlockRaidWarning = true,
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
+	FixCLEUOnCombatStart = false,
 	BlockVersionUpdatePopup = true,
 	ShowSpecialWarnings = true,
 	AlwaysShowHealthFrame = false,
@@ -1767,7 +1768,10 @@ function DBM:StartCombat(mod, delay, synced)
 		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
 		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
 			BigBrother:ConsumableCheck("SELF")
-		end		
+		end	
+		if DBM.Options.FixCLEUOnCombatStart then
+			CombatLogClearEntries()
+		end
 	end
 end
 
