@@ -95,19 +95,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Split soon",
-	WarningSplitNow		= "Split"
+	WarningSplitSoon	= "Split soon"
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show pre-warning for Split (54%)",
-	WarningSplitNow		= "Show warning for Split",
+	WarningSplitSoon	= "Show pre-warning for Split",
 	RangeFrame			= "Show range frame (12 yards)",
 	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= ""
+	SplitTrigger		= "Twice the Pain and half the fun."
 })
 
 -------------------------
@@ -146,11 +144,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon		= "Phase 2 soon",
-	WarnPhase3Soon		= "Phase 3 soon"
+	WarnAdds	= "New adds"
+})
+
+L:SetTimerLocalization({
+	TimerAdds	= "New adds"
 })
 
 L:SetOptionLocalization({
+	WarnAdds		= "Announce new adds",
+	TimerAdds		= "Show timer for new adds"
+})
+
+L:SetMiscLocalization({
+	SummonMinions	= "Turn them to ash, minions!"
 })
 
 -------------------------------------
@@ -163,6 +170,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase2Soon		= "Phase 2 soon",
+	WarnPhase3Soon		= "Phase 3 soon"
 })
 
 L:SetOptionLocalization({
@@ -173,5 +182,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	twilightcutter			= "The orbiting spheres pulse with dark energy!"--Might not even use this, but having it standby just in case.
+	twilightcutter			= "The orbiting spheres pulse with dark energy!"
 })

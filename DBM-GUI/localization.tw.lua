@@ -49,6 +49,7 @@ L.EnableDBM 				= "啟用DBM"
 L.EnableStatus 				= "回復“status”密語"
 L.AutoRespond 				= "啟用戰鬥中自動密語回復"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
+L.FixCLEUOnCombatStart			= "當戰鬥開始時嘗試修復戰鬥記錄"
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
 L.Button_TestBars			= "測試計時條"
