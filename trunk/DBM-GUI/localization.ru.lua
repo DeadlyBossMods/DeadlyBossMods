@@ -49,6 +49,7 @@ L.EnableDBM 				= "Включить DBM"
 L.EnableStatus 				= "Отвечать на запрос статуса боя шепотом"
 L.AutoRespond 				= "Включить авто-ответ в бою"
 L.EnableMiniMapIcon			= "Отображать кнопку на мини-карте"
+L.FixCLEUOnCombatStart		= "Исправление журнала боя в начале боя"
 
 L.Button_RangeFrame			= "Окно допустимой дистанции"
 L.Button_TestBars			= "Запустить проверку"
