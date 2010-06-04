@@ -52,7 +52,7 @@ local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
 local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank()) --phase 2+
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
-local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear", false) --Heroic Ability
+local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear") --Heroic Ability
 local specWarnHarvestSouls	= mod:NewSpecialWarningSpell(74297) --Heroic Ability
 
 local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
