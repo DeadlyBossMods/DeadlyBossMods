@@ -48,6 +48,7 @@ L.EnableDBM 				= "Enable DBM"
 L.EnableStatus 				= "Reply to 'status' whispers"
 L.AutoRespond 				= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon			= "Show minimap button"
+L.FixCLEUOnCombatStart		= "Attempt Combat log fix on combat start"
 
 L.Button_RangeFrame			= "Show/hide range frame"
 L.Button_TestBars			= "Start test bars"
