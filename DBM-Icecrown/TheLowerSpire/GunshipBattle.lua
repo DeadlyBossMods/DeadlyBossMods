@@ -2,17 +2,17 @@ local mod	= DBM:NewMod("GunshipBattle", "DBM-Icecrown", 1)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-
+local AddsIcon
 if UnitFactionGroup("player") == "Alliance" then
 	mod:RegisterCombat("yell", L.PullAlliance)
 	mod:RegisterKill("yell", L.KillAlliance)
 	mod:SetCreatureID(37215)	-- Orgrim's Hammer
-	local AddsIcon = 23334
+	AddsIcon = 23334
 else
 	mod:RegisterCombat("yell", L.PullHorde)
 	mod:RegisterKill("yell", L.KillHorde)
 	mod:SetCreatureID(37540)	-- The Skybreaker
-	local AddsIcon = 23336
+	AddsIcon = 23336
 end
 mod:SetMinCombatTime(50)
 

@@ -31,6 +31,7 @@ local warnNecroticPlague	= mod:NewTargetAnnounce(73912, 4) --Phase 1+ Ability
 local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779, 3, nil, mod:IsHealer()) --Phase 1 & 2 Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
+local ValkyrWarning			= mod:NewAnnounce("ValkyrWarning", 3)--Phase 2 Ability
 local warnDefileSoon		= mod:NewSoonAnnounce(73708, 3)	--Phase 2+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797, 4, nil, mod:IsTank() or mod:IsHealer()) --Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetAnnounce(72762, 4) --Phase 2+ Ability
@@ -44,6 +45,7 @@ local warnRestoreSoul		= mod:NewCastAnnounce(73650, 2) --Phase 3 Heroic
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
 local specWarnRagingSpirit	= mod:NewSpecialWarningYou(69200) --Transition Add
+local specWarnYouAreValkd	= mod:NewSpecialWarning("specWarnYouAreValkd") --Phase 2+ Ability
 local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
 local specWarnDefileNear	= mod:NewSpecialWarning("specWarnDefileNear", false) --Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
@@ -339,6 +341,7 @@ end
 
 do
 	local valkIcons = {}
+	local valkyrTargets = {}
 	local currentIcon = 2
 	local iconsSet = 0
 	local function resetValkIconState()
@@ -346,6 +349,22 @@ do
 		currentIcon = 2
 		iconsSet = 0
 	end
+	local function scanValkyrTargets()
+		if (time() - lastValk) < 6 then    -- scan for like 6secs
+			for i=0, GetNumRaidMembers() do        -- for every raid member check ..
+			if UnitInVehicle("raid"..i) and not valkyrTargets[i] then      -- if person #i is in a vehicle and not already announced 
+				ValkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
+				valkyrTargets[i] = true          -- this person has been announced
+				if UnitName("raid"..i) == UnitName("player") then      
+					specWarnYouAreValkd:Show()
+				end
+			end
+		end
+		mod:Schedule("scanValkyrTargets", 0.5)      -- check for more targets in a few
+		else
+			wipe(valkyrTargets)       -- no more valkyrs this round, so lets clear the table
+		end
+	end  
 	
 	local lastValk = 0
 	function mod:SPELL_SUMMON(args)
@@ -354,6 +373,7 @@ do
 				warnSummonValkyr:Show()
 				timerSummonValkyr:Start()
 				lastValk = time()
+				scanValkyrTargets()
 				if self.Options.ValkyrIcon then
 					resetValkIconState()
 				end
