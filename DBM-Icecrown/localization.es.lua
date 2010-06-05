@@ -498,6 +498,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon			= "Transición a la Fase 2 pronto",
 	WarnPhase3Soon			= "Transición a la Fase 3 pronto",
+	ValkyrWarning			= "¡>%s< ha sido agarrado!",
+	specWarnYouAreValkd		= "¡Te agarra una Valkyr!",
 	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
 	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!",
 	specWarnTrapNear		= "Trampa de las Sombras cerca de ti ¡Ten cuidado!",
@@ -519,6 +521,8 @@ L:SetOptionLocalization{
 	PhaseTransition			= "Mostrar tiempo para las transiciones de fase",
 	WarnPhase2Soon			= "Mostrar pre-aviso para transición a la Fase 2 (al ~73%)",
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
+	ValkyrWarning			= "Anunciar quien ha sido agarrado por las Valkyr",
+	specWarnYouAreValkd		= "Mostrar aviso especial cuando seas agarrado por una Valkyr",
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
 	specWarnDefileNear		= "Mostrar aviso especial para $spell:72762 cerca de ti",
 	specWarnTrapNear		= "Mostrar aviso especial para $spell:73539 cerca de ti",
