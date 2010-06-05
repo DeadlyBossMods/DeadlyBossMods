@@ -108,6 +108,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	SplitTrigger		= "Twice the Pain and half the fun."--translate
 })
 
 -------------------------
