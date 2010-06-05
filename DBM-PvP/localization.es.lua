@@ -69,7 +69,7 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	BgStart60		= "1 minuto para que dé comienzo la batalla por el Valle de Alterac.",
 	BgStart30		= "30 segundos para que dé comienzo la batalla por el Valle de Alterac.",
-	ZoneName		= "Valle de Alterac",
+	ZoneName		= "Valle de Alterac"
 })
 
 L:SetOptionLocalization({
@@ -327,13 +327,12 @@ L:SetMiscLocalization({
 	BgStart30		= "La batalla comenzará en 30 segundos.",
 	BgStart15		= "La batalla comenzará en 15 segundos.",
 	SiegeEngine				= "Máquina de asedio",
-	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",--translate
+	GoblinStartAlliance		= "¿Ves esas bombas de seforio? Úsalas en las puertas mientras reparo la máquina de asedio.",
 	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",--translate
-	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",--translate
-	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",--translate
+	GoblinHalfwayAlliance	= "¡Estoy a medias! Mantén a la Horda alejada de aquí. ¡En la escuela de ingeniería no enseñan a luchar!",
+	GoblinHalfwayHorde		= "¡Ya casi estoy! Mantén a la Alianza alejada... ¡Luchar no entra en mi contrato!",
 	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",--translate
-	GoblinFinishedHorde		= "The siege engine is ready to roll!",--translate
+	GoblinFinishedHorde		= "¡La máquina de asedio está lista para la acción!",
 	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",--translate
-	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"--translate
+	GoblinBrokenHorde		= "¿Está estropeada otra vez? La arreglaré... pero no esperes que la garantía cubra esto."
 })
-
