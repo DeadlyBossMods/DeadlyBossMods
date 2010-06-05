@@ -49,6 +49,7 @@ L.EnableDBM 			= "DBM 사용"
 L.EnableStatus 			= "귓속말 대상자에게 'status' 답변 보내기 사용"
 L.AutoRespond 			= "자동 부활 사용 - 무덤 이동"
 L.EnableMiniMapIcon		= "Minimap 버튼 사용"
+L.FixCLEUOnCombatStart	= "전투 시작 할 때 전투 로그 수정"
 
 L.Button_RangeFrame		= "거리-프레임 켜기/끄기"
 L.Button_TestBars		= "테스트 바 시작"

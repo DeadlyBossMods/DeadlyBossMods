@@ -493,6 +493,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon				= "곧 2 단계 전환",
 	WarnPhase3Soon				= "곧 3 단계 전환",
+	ValkyrWarning				= "발키리 : >%s<",
+	specWarnYouAreValkd			= "발키리가 납치 중!",	
 	specWarnDefileCast			= "당신에게 파멸! - 이동!",
 	specWarnDefileNear			= "당신 주변에 파멸! - 이동!",
 	specWarnTrapNear			= "당신 주변에 암흑의 덫 - 확인!",
@@ -514,6 +516,8 @@ L:SetOptionLocalization{
 	PhaseTransition				= "다음 단계 전환 타이머 보기",	
 	WarnPhase2Soon				= "2 단계 전환 사전 경고 보기(73% 이하)",
 	WarnPhase3Soon				= "3 단계 전환 사전 경고 보기(43% 이하)",
+	ValkyrWarning				= "발키리에게 붙잡힌 사람 알리기",
+	specWarnYouAreValkd			= "발키리에게 붙잡혔을 때 특수 경고 보기",	
 	specWarnDefileCast			= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnDefileNear			= "당신 주변에 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnTrapNear			= "주변에 $spell:73539을 하면 특수 경고 보기",	
