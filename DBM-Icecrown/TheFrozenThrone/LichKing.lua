@@ -199,7 +199,7 @@ function mod:TrapTarget()
 		end
 	else
 		self:UnscheduleMethod("TankTrap")
-		self:ScheduleMethod(0.1, TankTrap)--If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
+		self:ScheduleMethod(0.1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
 	end
 end
 
