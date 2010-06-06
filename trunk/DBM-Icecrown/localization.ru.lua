@@ -419,7 +419,7 @@ L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Устанавливать метку на Исторгающего пламя скелета (череп)",
 	warnPortalOpen				= "Предупреждение об открытии порталов",
 	timerPortalsOpen			= "Отсчет времени для открытия порталов",
-	TimerBlazingSkeleton			= "Отсчет времени до Исторгающего пламя скелета",
+	TimerBlazingSkeleton		= "Отсчет времени до Исторгающего пламя скелета",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -489,6 +489,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon			= "Скоро переход в фазу 2",
 	WarnPhase3Soon			= "Скоро переход в фазу 3",
+	ValkyrWarning			= "|3-3(>%s<) схватили!",
+	specWarnYouAreValkd		= "Вас схватили",
 	specWarnDefileCast		= "Осквернение на вас - отбегите",
 	specWarnDefileNear		= "Осквернение около вас - остерегайтесь",
 	specWarnTrapNear		= "Теневая ловушка около вас - остерегайтесь",
@@ -510,6 +512,8 @@ L:SetOptionLocalization{
 	PhaseTransition			= "Отсчет времени для переходной фазы",
 	WarnPhase2Soon			= "Предупреждать заранее о переходе в фазу 2 (на ~73%)",
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
+	ValkyrWarning			= "Объявлять, кого схватили Валь'киры",
+	specWarnYouAreValkd		= "Спец-предупреждение, когда вас схватила Валь'кира",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileNear		= "Спец-предупреждение, когда $spell:72762 около вас",
 	specWarnTrapNear		= "Спец-предупреждение, когда $spell:73539 около вас",
