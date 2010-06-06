@@ -344,11 +344,14 @@ do
 	local valkyrTargets = {}
 	local currentIcon = 2
 	local iconsSet = 0
+	local lastValk = 0
+	
 	local function resetValkIconState()
 		table.wipe(valkIcons)
 		currentIcon = 2
 		iconsSet = 0
 	end
+	
 	local function scanValkyrTargets()
 		if (time() - lastValk) < 6 then    -- scan for like 6secs
 			for i=0, GetNumRaidMembers() do        -- for every raid member check ..
@@ -366,7 +369,7 @@ do
 		end
 	end  
 	
-	local lastValk = 0
+	
 	function mod:SPELL_SUMMON(args)
 		if args:IsSpellID(69037) then -- Summon Val'kyr
 			if time() - lastValk > 15 then -- show the warning and timer just once for all three summon events
