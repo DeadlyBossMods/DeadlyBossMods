@@ -147,7 +147,7 @@ function mod:TankTrap()
 		end
 	end
 	local uId = DBM:GetRaidUnitId(LKTank)
-	if uId then
+	if uId ~= "none" then
 		local inRange = CheckInteractDistance(uId, 2)
 		local x, y = GetPlayerMapPosition(uId)
 		if x == 0 and y == 0 then
@@ -355,15 +355,15 @@ do
 	local function scanValkyrTargets()
 		if (time() - lastValk) < 6 then    -- scan for like 6secs
 			for i=0, GetNumRaidMembers() do        -- for every raid member check ..
-			if UnitInVehicle("raid"..i) and not valkyrTargets[i] then      -- if person #i is in a vehicle and not already announced 
-				ValkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
-				valkyrTargets[i] = true          -- this person has been announced
-				if UnitName("raid"..i) == UnitName("player") then      
-					specWarnYouAreValkd:Show()
+				if UnitInVehicle("raid"..i) and not valkyrTargets[i] then      -- if person #i is in a vehicle and not already announced 
+					ValkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
+					valkyrTargets[i] = true          -- this person has been announced
+					if UnitName("raid"..i) == UnitName("player") then      
+						specWarnYouAreValkd:Show()
+					end
 				end
 			end
-		end
-		mod:Schedule("scanValkyrTargets", 0.5)      -- check for more targets in a few
+			mod:ScheduleMethod(0.5, "scanValkyrTargets")  -- check for more targets in a few
 		else
 			wipe(valkyrTargets)       -- no more valkyrs this round, so lets clear the table
 		end
