@@ -168,9 +168,6 @@ function mod:TrapTarget()
 	if not targetname then return end
 	if targetname and not LKTank then--If scan doesn't return tank abort other scans and do other warnings.
 		self:UnscheduleMethod("TrapTarget")
-		self:UnscheduleMethod("TrapTarget")
-		self:UnscheduleMethod("TrapTarget")
-		self:UnscheduleMethod("TrapTarget")
 		self:UnscheduleMethod("TankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
 		warnTrapCast:Show(targetname)
 		if self.Options.TrapIcon then
@@ -363,7 +360,7 @@ do
 					end
 				end
 			end
-			mod:ScheduleMethod(0.5, "scanValkyrTargets")  -- check for more targets in a few
+			mod:Schedule(0.5, scanValkyrTargets)  -- check for more targets in a few
 		else
 			wipe(valkyrTargets)       -- no more valkyrs this round, so lets clear the table
 		end
