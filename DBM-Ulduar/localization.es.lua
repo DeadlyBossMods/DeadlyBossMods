@@ -24,12 +24,10 @@ L:SetWarningLocalization{
 	PursueWarn	    = "Persigue a >%s<!",
 	warnNextPursueSoon	    = "Cambiara de objetivo en 5 seg",
 	SpecialPursueWarnYou	= "¡Te persigue a ti!",
-	SystemOverload			= "Desconexion de sistemas",
 	warnWardofLife			= "Sale un Guarda de Vida"
 }
 
 L:SetOptionLocalization{
-	SystemOverload			= "Mostrar aviso especial para Desconexión de sistemas.",
 	SpecialPursueWarnYou	= "Mostrar aviso especial cuando te persiga a ti.",
 	PursueWarn				= "Mostrar aviso a quien persigue.",
 	warnNextPursueSoon		= "Mostrar cuando va cambiar de objetivo.",
@@ -50,13 +48,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSlagPot			= "Agarrar en >%s<",
-	SpecWarnJetsCast		= "Caños de llamas - Para de castear"
 }
 
 L:SetOptionLocalization{
-	SpecWarnJetsCast		= "Mostrar aviso especial para Caños de llamas (corta casteos).",
-	WarningSlagPot			= "Mostrar aviso a quien va agarrar.",
 	SlagPotIcon				= "Mostrar icono a quien agarró"
 }
 
@@ -70,7 +64,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{	
-	SpecWarnDevouringFlame		= "Llama devoradora - MUEVETE",
 	warnTurretsReadySoon		= "La torreta estara lista en 20 segundos",
 	warnTurretsReady		    = "La torreta esta LISTA",
 	SpecWarnDevouringFlameCast	= "Llava devoradora en Ti",
@@ -84,7 +77,6 @@ L:SetTimerLocalization{
 	timerGrounded		    = "En el suelo"
 }
 L:SetOptionLocalization{
-	SpecWarnDevouringFlame		= "Mostrar aviso especial para Llama devoradora.",
 	PlaySoundOnDevouringFlame	= "Mostrar aviso por sonido si pisas la Llama devoradora.",
 	warnTurretsReadySoon		= "Mostrar aviso antes de que las torretas esten listas",
 	warnTurretsReady		    = "Mostrar aviso si estan listas las torretas.",
@@ -119,15 +111,9 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningLightBomb 	= "Bomba de luz en Ti!",
-	SpecialWarningGravityBomb	= "Bomba de Gravedad en Ti",
-	specWarnConsumption			= "¡Consumo! ¡Muevete!"
 }
 
 L:SetOptionLocalization{
-	SpecialWarningLightBomb		= "Mostrar aviso especial si Bomba de luz te afecta a ti.",
-	SpecialWarningGravityBomb	= "Mostrar aviso especial si Bomba de Gravedad te afecta.",
-	specWarnConsumption			= "Mostrar aviso especial cuando te afecte Consumo",
 	SetIconOnLightBombTarget	= "Mostrar icono a quien pone Bomba de Luz",
 	SetIconOnGravityBombTarget	= "Mostrar icono a quien pone Bomba de Gravedad",
 }
@@ -142,14 +128,12 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningSupercharge			= "Supercarga"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningSupercharge			= "Mostrar aviso si se castea Supercarga",
 	PlaySoundLightningTendrils		= "Sonido para Zarcillos de relampagos",
 	SetIconOnOverwhelmingPower		= "Poner icono a la persona con Poder sobrecargador",
 	SetIconOnStaticDisruption		= "Poner icono para el objetivo de Perturbación estática",
@@ -216,10 +200,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningEyebeam	= "Estas en el Rayo - MUEVETE",
-	WarningEyeBeam			= "Haz ocular en >%s<",
-	WarnGrip				= "Agarra a >%s<",
-	SpecWarnCrunchArmor2	= "Hender armadura >%d< en ti"
 }
 
 L:SetTimerLocalization{
@@ -229,16 +209,13 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialWarningEyebeam	= "Mostrar aviso especial si Haz ocular te mira",
-	SpecWarnCrunchArmor2	= "Mostrar aviso especial para Hender armadura (>=2 marcas)",
-	WarningEyeBeam			= "Anunciar objetivo de Haz ocular",
 	timerLeftArm			= "Mostrar tiempo para Brazo izquierdo",
 	timerRightArm			= "Mostrar tiempo para Brazo derecho",
 	achievementDisarmed		= "Mostrar tiempo para el logro Desarmar",
-	WarnGrip				= "Anunciar objetivos que Agarrara",
 	SetIconOnGripTarget		= "Poner icono a los objetivos de Agarrar",
 	SetIconOnEyebeamTarget	= "Poner iconos en objetivos de Haz ocular (luna)",
-	PlaySoundOnEyebeam		= "Reproducir sonido al ser ojetivo de Haz ocular"
+	PlaySoundOnEyebeam		= "Reproducir sonido al ser ojetivo de Haz ocular",
+	YellOnBeam				= "Gritar cuando tengas $spell:63346",
 }
 
 L:SetMiscLocalization{
@@ -247,7 +224,8 @@ L:SetMiscLocalization{
 	Health_Body				= "Kologarn",
 	Health_Right_Arm		= "Brazo derecho",
 	Health_Left_Arm			= "Brazo izquierdo",
-	FocusedEyebeam			= "sus ojos en ti"
+	FocusedEyebeam			= "sus ojos en ti",
+	YellBeam				= "¡Haz ocular enfocado en mi!"
 }
 
 ---------------
@@ -270,16 +248,12 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecWarnBlast		= "Explosión de centinela - Interrumpe!",
-	SpecWarnVoid		= "Zona de vacio ¡MUEVETE!",
 	WarnCatDied 		= "Defensor feral muerto (Le quedan %d vidas)",
-	WarnCatDiedOne 		= "Defensor feral muerto (Le queda 1 vida)",
-	WarnFearSoon 		= "Siguiente miedo pronto"
+	WarnCatDiedOne 		= "Defensor feral muerto (Le queda 1 vida)"
 }
 
 L:SetOptionLocalization{
 	SpecWarnBlast		= "Mostrar aviso especial para Explosión de centinela",
-	SpecWarnVoid		= "Mostrar aviso especial cuando estas en Zona de vacio",
-	WarnFearSoon		= "Mostrar aviso para Miedo pronto",
 	WarnCatDied			= "Mostrar aviso cuando Defensor Feral muere",
 	WarnCatDiedOne		= "Mostrar aviso cuando Defensor Feral muere",
 	timerDefender		= "Mostrar tiempo para activación de Defensor feral"
@@ -296,19 +270,15 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningFlashFreeze	= "Congelación apresurada",
-	specWarnBitingCold	= "Frío cortante! Muévete!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarningFlashFreeze		= "Mostrar aviso especial para Congelación apresurada",
 	PlaySoundOnFlashFreeze	= "Reproducir sonido cuando castee Congelación apresurada",
 	YellOnStormCloud		= "Gritar cuando tengas Nube tormentosa",
-	SetIconOnStormCloud		= "Poner iconos en los objetivos de Nube tormentosa",
-	specWarnBitingCold		= "Mostrar aviso especial cuando te afecte Frío cortante"
+	SetIconOnStormCloud		= "Poner iconos en los objetivos de Nube tormentosa"
 }
 
 L:SetMiscLocalization{
@@ -326,7 +296,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	LightningOrb	= "Choque de relámpagos! Muévete!"
 }
 
 L:SetTimerLocalization{
@@ -336,8 +305,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerHardmode	= "Mostrar tiempo para hard mode",
 	RangeFrame		= "Mostrar distancia",
-	AnnounceFails	= "Anunciar los fallos de Cargar relámpago en el chat de raid\n(require 'anunciar' habilitado y líder o ayudante de banda)",
-	LightningOrb	= "Mostrar aviso especial para Choque de relámpagos"
+	AnnounceFails	= "Anunciar los fallos de Cargar relámpago en el chat de raid\n(require 'anunciar' habilitado y líder o ayudante de banda)"
 }
 
 L:SetMiscLocalization{
@@ -367,11 +335,7 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnSimulKill	= "Primer add muerto - Resurrección en ~12 seg",
-	SpecWarnFury	= "Furia de la naturaleza en ti!",
-	WarningTremor   = "Tremor terrenal! Para de castear!",
-	WarnRoots	= "Raices en >%s<",
-	UnstableEnergy	= "Energía inestable! Muévete!"
+	WarnSimulKill	= "Primer add muerto - Resurrección en ~12 seg"
 }
 
 L:SetTimerLocalization{
@@ -380,15 +344,14 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnSimulKill		= "Anunciar primer mob muerto",
-	WarnRoots			= "Anunciar objetivos de raíces férreas",
-	SpecWarnFury		= "Mostrar aviso especial para Furia de la naturaleza",
-	WarningTremor		= "Mostrar aviso especial para Tremor terrenal (hard mode)",
 	PlaySoundOnFury 	= "Reproducir sonido cuando te afecte Furia de la naturaleza",
-	TimerSimulKill		= "Mostrar resureccion de los mobs",
-	UnstableEnergy		= "Mostrar aviso especial para Energía inestable"
+	TimerSimulKill		= "Mostrar resureccion de los mobs"
 }
 
--- Elders
+----------------------
+--  Freya's Elders  --
+----------------------
+
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
@@ -400,13 +363,9 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnGroundTremor	= "Tremor terrenal! Para de castear!",
-	SpecWarnFistOfStone		= "Puños de piedra"
 }
 
 L:SetOptionLocalization{
-	SpecWarnFistOfStone	= "Mostrar aviso especial para Puños de piedra",
-	SpecWarnGroundTremor	= "Mostrar aviso especial para Tremor terrenal",
 	PlaySoundOnFistOfStone	= "Reproducir sonido cuando castee Puños de piedra",
 	TrashRespawnTimer	= "Mostrar tiempo para reaparición de adds"
 }
@@ -422,7 +381,6 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	DarkGlare			= "Tromba de láseres",
 	MagneticCore		= ">%s< tiene Núcleo magnético",
 	WarningShockBlast	= "¡Explosión de choque! ¡Muévete!",
 	WarnBombSpawn		= "Robot bum sale"
@@ -436,7 +394,6 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	DarkGlare				= "Mostrar aviso especial para Tromba de láseres",
 	TimeToPhase2			= "Mostrar tiempo para Fase 2",
 	TimeToPhase3			= "Mostrar tiempo para Fase 3",
 	TimeToPhase4			= "Mostrar tiempo para Fase 4",
@@ -479,33 +436,23 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	SpecialWarningShadowCrash		= "¡Fragor de sombra en ti! ¡Muévete!",
-	SpecialWarningSurgeDarkness		= "Oleada de oscuridad",
-	WarningShadowCrash				= "Fragor de sombra en >%s<",
 	SpecialWarningShadowCrashNear	= "Fragor de sombra cerca de ti!",
-	WarningLeechLife				= "Drenar vida en >%s<",
-	SpecialWarningLLYou				= "Drenar vida en ti!",
 	SpecialWarningLLNear			= "Drenar vida en %s cerca de ti"
 }
 
 L:SetOptionLocalization{
-	WarningShadowCrash				= "Anunciar objetivos de Fragor de sombra",
 	SetIconOnShadowCrash			= "Poner iconos en los objetivos de Fragor de sombra (calavera)",
 	SetIconOnLifeLeach				= "Poner iconos en los objetivos de Drenar vida (cruz)",
-	SpecialWarningSurgeDarkness		= "Mostrar aviso especial para Oleada de oscuridad",
 	SpecialWarningShadowCrash		= "Mostrar aviso especial para Fragor de sombra",
 	SpecialWarningShadowCrashNear	= "Mostrar aviso especial para Fragor de sombra cerca de ti",
-	SpecialWarningLLYou				= "Mostrar aviso especial si te afecta Drenar vida ",
 	SpecialWarningLLNear			= "Mostrar aviso especial para Drenar vida cerca de ti",
-	CrashWhisper					= "Enviar susurro a los objetivos de Fragor de sombra",
 	YellOnLifeLeech					= "Gritar si tienes Drenar vida",
 	YellOnShadowCrash				= "Gritar si eres objetivo de Fragor de sombra",
-	WarningLeechLife				= "Anunciar los objetivos de Drenar vida",
 	hardmodeSpawn					= "Mostrar tiempo para salida de Animus de saronita (Modo Difícil)"
 }
 
 L:SetMiscLocalization{
 	EmoteSaroniteVapors	= "¡Cerca se forma una nube de vapores de saronita!",
-	CrashWhisper		= "¡Fragor de sombra en ti! ¡Muévete!",
 	YellLeech			= "¡Drenar vida en mi!",
 	YellCrash			= "¡Fragor de sombra en mi!"
 }
@@ -529,7 +476,6 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 			= "Guardián %d sale",
 	WarningCrusherTentacleSpawned	= "Tentáculo triturador sale",
-	SpecWarnBrainLink 				= "Vínculo cerebral en ti!",
 	WarningSanity 					= "%d Cordura restante",
 	SpecWarnSanity 					= "%d Cordura restante",
 	SpecWarnGuardianLow				= "Deja de atacar a este Guardián",
@@ -537,9 +483,7 @@ L:SetWarningLocalization{
 	WarnBrainPortalSoon				= "Portal cerebral en 3 segundos",
 	SpecWarnFervor					= "Fervor de Sara en ti",
 	SpecWarnFervorCast				= "Fervor de Sara esta siendo casteado en ti",
-	WarnEmpowerSoon					= "Sombras potenciadas pronto",
 	SpecWarnMaladyNear				= "Mal de la mente en %s cerca de ti",
-	SpecWarnDeafeningRoar			= "Rugido ensordecedor",
 	specWarnBrainPortalSoon			= "Portal cerebral pronto"
 }
 
@@ -550,25 +494,20 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "Mostrar aviso cuando salga Guardián",
 	WarningCrusherTentacleSpawned	= "Mostrar aviso cuando salga Tentáculo triturador",
-	WarningBrainLink				= "Anunciar objetivos de Vínculo cerebral",
-	SpecWarnBrainLink				= "Mostrar aviso especial cuando te afecte Vínculo cerebral",
 	WarningSanity					= "Mostrar aviso cuando tengas poca Cordura",
 	SpecWarnSanity					= "Mostrar aviso especial cuando tengas muy poca Cordura",
 	SpecWarnGuardianLow				= "Mostrar aviso especial cuando el Guardián esté a punto de morir (Fase 1)",
 	WarnBrainPortalSoon				= "Mostrar pre-aviso para Portal cerebral",
 	SpecWarnMadnessOutNow			= "Mostrar aviso especial poco antes de que Inducir a la locura termine",
 	SetIconOnFearTarget				= "Poner iconos en los objetivos de Mal de la mente",
-	SpecWarnFervor					= "Mostrar aviso especial cuando te afecte Fervor de Sara",
 	SpecWarnFervorCast				= "Mostrar aviso especial cuando Fervor de Sara esté siendo casteado en ti",
 	specWarnBrainPortalSoon			= "Mostrar aviso especial para siguiente Portal cerebral",
 	WarningSqueeze					= "Gritar si te afecta Exprimir",
 	NextPortal						= "Mostrar tiempo para siguiente Portal cerebral",
 	SetIconOnFervorTarget			= "Poner iconos en los objetivos de Fervor de Sara",
-	SetIconOnMCTarget				= "Poner iconos en los objetivos con control mental",
 	ShowSaraHealth					= "Mostrar barra de vida de Sara en Fase 1",
-	WarnEmpowerSoon					= "Mostrar pre-aviso para Sombras potenciadas",
 	SpecWarnMaladyNear				= "Mostrar aviso especial para Mal de la mente cerca de ti",
-	SpecWarnDeafeningRoar			= "Mostrar aviso especial cuando castee Rugido ensordecedor (para silenciar y legendaria)",
 	SetIconOnBrainLinkTarget		= "Poner iconos en los objetivos de Vínculo cerebral",
 	MaladyArrow						= "Mostrar flecha cuando $spell:63881 está cerca de ti"
 }
+
