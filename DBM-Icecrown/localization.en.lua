@@ -510,13 +510,14 @@ L:SetOptionLocalization{
 	PhaseTransition			= "Show time for phase transitions",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
-	ValkyrWarning			= "Announce who has been grabbed by Valkyrs",
-	specWarnYouAreValkd		= "Show special warning when you have been grabbed by a Valkyr",
+	ValkyrWarning			= "Announce who has been grabbed by Val'kyr Shadowguards",
+	specWarnYouAreValkd		= "Show special warning when you have been grabbed by a Val'kyr Shadowguard",--npc36609
 	specWarnDefileCast		= "Show special warning for $spell:72762 on you",
 	specWarnDefileNear		= "Show special warning for $spell:72762 near you",
 	specWarnTrapNear		= "Show special warning for $spell:73539 near you",
 	YellOnDefile			= "Yell on $spell:72762",
 	YellOnTrap				= "Yell on $spell:73539",
+	YellOnValk				= "Yell on $spell:69037",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
@@ -530,7 +531,7 @@ L:SetMiscLocalization{
 	LKPull			= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",
 	YellDefile		= "Defile on me!",
 	YellTrap		= "Shadow Trap on me!",
-	YellKill		= "No questions remain unanswered. No doubts linger. You ARE Azeroth's greatest champions. You overcame every challenge I laid before you. My mightiest servants have fallen before your relentless onslaught... your unbridled fury...",
+	YellValk		= "I've been grabbed!",
 	LKRoleplay		= "Is it truly righteousness that drives you? I wonder...",
 	PlagueWhisper	= "You have been infected by"
 }
