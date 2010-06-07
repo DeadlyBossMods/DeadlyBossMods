@@ -13,9 +13,9 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local announceSlagPot			= mod:NewAnnounce("WarningSlagPot", 3, 63477)
+local announceSlagPot			= mod:NewTargetAnnounce(63477, 3)
 
-local warnFlameJetsCast			= mod:NewSpecialWarning("SpecWarnJetsCast")
+local warnFlameJetsCast			= mod:NewSpecialWarningCast(63472)
 
 local timerFlameJetsCast		= mod:NewCastTimer(2.7, 63472)
 local timerFlameJetsCooldown	= mod:NewCDTimer(35, 63472)

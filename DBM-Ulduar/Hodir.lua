@@ -18,8 +18,8 @@ mod:RegisterEvents(
 
 local warnStormCloud		= mod:NewTargetAnnounce(65123)
 
-local warnFlashFreeze		= mod:NewSpecialWarning("WarningFlashFreeze")
-local specWarnBitingCold	= mod:NewSpecialWarning("specWarnBitingCold", false)--False until more testing can be done
+local warnFlashFreeze		= mod:NewSpecialWarningSpell(61968)
+local specWarnBitingCold	= mod:NewSpecialWarningMove(62188, false)
 
 mod:AddBoolOption("PlaySoundOnFlashFreeze", true, "announce")
 mod:AddBoolOption("YellOnStormCloud", true, "announce")
@@ -55,7 +55,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(65123, 65133) then
 		warnStormCloud:Show(args.destName)
 		if self.Options.YellOnStormCloud and args:IsPlayer() then
-			SendChatMessage(L.YellCloud, "YELL")
+			SendChatMessage(L.YellCloud, "SAY")
 		end
 		if self.Options.SetIconOnStormCloud then 
 			mod:SetIcon(args.destName, 8, 6)

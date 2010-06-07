@@ -25,13 +25,13 @@ end
 
 local warnSwarm 		= mod:NewTargetAnnounce(64396, 2)
 local warnFear 			= mod:NewSpellAnnounce(64386, 3)
-local warnFearSoon	 	= mod:NewAnnounce("WarnFearSoon", 1, 64386)
+local warnFearSoon	 	= mod:NewSoonAnnounce(64386, 1)
 local warnCatDied 		= mod:NewAnnounce("WarnCatDied", 3, 64455)
 local warnCatDiedOne	= mod:NewAnnounce("WarnCatDiedOne", 3, 64455)
 local warnSonic			= mod:NewSpellAnnounce(64688, 2)
 
 local specWarnBlast		= mod:NewSpecialWarning("SpecWarnBlast", canInterrupt)
-local specWarnVoid 		= mod:NewSpecialWarning("SpecWarnVoid")
+local specWarnVoid 		= mod:NewSpecialWarningMove(64675)
 
 local enrageTimer		= mod:NewBerserkTimer(600)
 local timerDefender 	= mod:NewTimer(35, "timerDefender")

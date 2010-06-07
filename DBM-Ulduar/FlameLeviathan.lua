@@ -14,10 +14,10 @@ mod:RegisterEvents(
 )
 
 local warnHodirsFury		= mod:NewTargetAnnounce(62297)
-local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2)
-local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3)
+local pursueTargetWarn		= mod:NewAnnounce("PursueWarn", 2, 62374)
+local warnNextPursueSoon	= mod:NewAnnounce("warnNextPursueSoon", 3, 62374)
 
-local warnSystemOverload	= mod:NewSpecialWarning("SystemOverload")
+local warnSystemOverload	= mod:NewSpecialWarningSpell(62475)
 local pursueSpecWarn		= mod:NewSpecialWarning("SpecialPursueWarnYou")
 local warnWardofLife		= mod:NewSpecialWarning("warnWardofLife")
 
@@ -56,7 +56,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnNextPursueSoon:Schedule(25)
 		timerPursued:Start(player)
 		pursueTargetWarn:Show(player)
-
 		if player == UnitName("player") then
 			pursueSpecWarn:Show()
 		end

@@ -19,10 +19,6 @@ mod:RegisterEvents(
 	"SPELL_SUMMON"
 )
 
-local isMelee = select(2, UnitClass("player")) == "ROGUE"
-	     or select(2, UnitClass("player")) == "WARRIOR"
-	     or select(2, UnitClass("player")) == "DEATHKNIGHT"
-
 local blastWarn					= mod:NewTargetAnnounce(64529, 4)
 local shellWarn					= mod:NewTargetAnnounce(63666, 2)
 local lootannounce				= mod:NewAnnounce("MagneticCore", 1)
@@ -30,9 +26,9 @@ local warnBombSpawn				= mod:NewAnnounce("WarnBombSpawn", 3)
 local warnFrostBomb				= mod:NewSpellAnnounce(64623, 3)
 
 local warnShockBlast			= mod:NewSpecialWarning("WarningShockBlast", nil, false)
-mod:AddBoolOption("ShockBlastWarningInP1", isMelee, "announce")
-mod:AddBoolOption("ShockBlastWarningInP4", isMelee, "announce")
-local warnDarkGlare				= mod:NewSpecialWarning("DarkGlare")
+mod:AddBoolOption("ShockBlastWarningInP1", mod:IsMelee(), "announce")
+mod:AddBoolOption("ShockBlastWarningInP4", mod:IsMelee(), "announce")
+local warnDarkGlare				= mod:NewSpecialWarningSpell(63293)
 
 local enrage 					= mod:NewBerserkTimer(900)
 local timerHardmode				= mod:NewTimer(607, "TimerHardmode", 64582)
