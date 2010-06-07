@@ -26,8 +26,8 @@ local warnFocusedEyebeam		= mod:NewTargetAnnounce(63346, 3)
 local warnGrip					= mod:NewTargetAnnounce(64292, 2)
 local warnCrunchArmor			= mod:NewTargetAnnounce(64002, 2)
 
-local specWarnEyebeam			= mod:NewSpecialWarningYou(63346)
 local specWarnCrunchArmor2		= mod:NewSpecialWarningStack(64002, false, 2)
+local specWarnEyebeam			= mod:NewSpecialWarningYou(63346)
 
 local timerCrunch10             = mod:NewTargetTimer(6, 63355)
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
