@@ -31,7 +31,7 @@ local warnNecroticPlague	= mod:NewTargetAnnounce(73912, 4) --Phase 1+ Ability
 local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779, 3, nil, mod:IsHealer()) --Phase 1 & 2 Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
-local ValkyrWarning			= mod:NewAnnounce("ValkyrWarning", 3, 69037)--Phase 2 Ability
+local ValkyrWarning			= mod:NewAnnounce("ValkyrWarning", 3, 71844)--Phase 2 Ability
 local warnDefileSoon		= mod:NewSoonAnnounce(73708, 3)	--Phase 2+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797, 4, nil, mod:IsTank() or mod:IsHealer()) --Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetAnnounce(72762, 4) --Phase 2+ Ability
@@ -71,7 +71,7 @@ local timerEnrageCD			= mod:NewCDTimer(20, 72143, nil, mod:IsTank() or mod:CanRe
 local timerShamblingHorror 	= mod:NewNextTimer(60, 70372)
 local timerDrudgeGhouls 	= mod:NewNextTimer(20, 70358)
 local timerRagingSpiritCD	= mod:NewCDTimer(22, 69200)
-local timerSummonValkyr 	= mod:NewCDTimer(45, 69037)
+local timerSummonValkyr 	= mod:NewCDTimer(45, 71844)
 local timerVileSpirit 		= mod:NewNextTimer(30.5, 70498)
 local timerTrapCD		 	= mod:NewCDTimer(15.5, 73539)
 local timerRestoreSoul 		= mod:NewCastTimer(40, 73650)
@@ -86,6 +86,7 @@ mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
+mod:AddBoolOption("YellOnValk", true, "announce")
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
 
@@ -357,6 +358,9 @@ do
 					valkyrTargets[i] = true          -- this person has been announced
 					if UnitName("raid"..i) == UnitName("player") then      
 						specWarnYouAreValkd:Show()
+						if self.Options.YellOnValk then
+							SendChatMessage(L.YellValk, "SAY")
+						end
 					end
 				end
 			end
