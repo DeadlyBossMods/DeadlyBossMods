@@ -136,7 +136,7 @@ L:SetOptionLocalization{
 	PlaySoundLightningTendrils	= "Звуковой сигнал при $spell:63486",
 	SetIconOnOverwhelmingPower	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(61888),
 	SetIconOnStaticDisruption	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(61912),
-	AlwaysWarnOnOverload		= "Всегда предупреждать при $spell:63481 (иначе, только когда босс в цели)",
+	AlwaysWarnOnOverload		= "Всегда предупреждать при $spell:63481\n(иначе, только когда босс в цели)",
 	PlaySoundOnOverload			= "Звуковой сигнал при $spell:63481",
 	PlaySoundDeathRune			= "Звуковой сигнал при $spell:63490"
 }
@@ -437,7 +437,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SetIconOnShadowCrash			= "Устанавливать метки на цели заклинания $spell:62660 (череп)",
 	SetIconOnLifeLeach				= "Устанавливать метки на цели заклинания $spell:63276 (крест)",
-	SpecialWarningShadowCrash		= "Спец-предупреждение для $spell:62660 (должен быть в цели или фокусе хотя бы у одного члена рейда)",
+	SpecialWarningShadowCrash		= "Спец-предупреждение для $spell:62660\n(должен быть в цели или фокусе хотя бы у одного члена рейда)",
 	SpecialWarningShadowCrashNear	= "Спец-предупреждение о $spell:62660 около вас",
 	SpecialWarningLLNear			= "Спец-предупреждение о $spell:63276 около вас",
 	YellOnLifeLeech					= "Кричать, когда на вас $spell:63276",
@@ -494,7 +494,7 @@ L:SetOptionLocalization{
 	WarnBrainPortalSoon				= "Предупреждать заранее о Провале Безумия",
 	SpecWarnMadnessOutNow			= "Спец-предупреждение незадолго до окончания $spell:64059",
 	SetIconOnFearTarget				= "Устанавливать метки на цели заклинания $spell:63881",
-	SpecWarnFervorCast				= "Спец-предупреждение, когда на вас накладывается $spell:63138 (должна быть в цели или фокусе хотя бы у одного члена рейда)",
+	SpecWarnFervorCast				= "Спец-предупреждение, когда на вас накладывается $spell:63138\n(должна быть в цели или фокусе хотя бы у одного члена рейда)",
 	specWarnBrainPortalSoon			= "Спец-предупреждение о следующем Провале Безумия",
 	WarningSqueeze					= "Кричать, когда на вас Выдавливание",
 	NextPortal						= "Отсчет времени до следующего Провала Безумия",
