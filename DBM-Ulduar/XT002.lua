@@ -16,9 +16,9 @@ mod:RegisterEvents(
 local warnLightBomb					= mod:NewTargetAnnounce(65121, 3)
 local warnGravityBomb				= mod:NewTargetAnnounce(64234, 3)
 
-local specWarnLightBomb				= mod:NewSpecialWarning("SpecialWarningLightBomb")
-local specWarnGravityBomb			= mod:NewSpecialWarning("SpecialWarningGravityBomb")
-local specWarnConsumption			= mod:NewSpecialWarning("specWarnConsumption")--Hard mode void zone dropped by Gravity Bomb
+local specWarnLightBomb				= mod:NewSpecialWarningYou(65121)
+local specWarnGravityBomb			= mod:NewSpecialWarningYou(64234)
+local specWarnConsumption			= mod:NewSpecialWarningMove(64206)--Hard mode void zone dropped by Gravity Bomb
 
 local enrageTimer					= mod:NewBerserkTimer(600)
 local timerTympanicTantrumCast		= mod:NewCastTimer(62776)

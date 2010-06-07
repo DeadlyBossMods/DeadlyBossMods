@@ -22,12 +22,12 @@ mod:SetBossHealthInfo(
 	32933, L.Health_Left_Arm
 )
 
-local warnFocusedEyebeam		= mod:NewAnnounce("WarningEyeBeam", 3)
-local warnGrip					= mod:NewAnnounce("WarnGrip", 2)
+local warnFocusedEyebeam		= mod:NewTargetAnnounce(63346, 3)
+local warnGrip					= mod:NewTargetAnnounce(64292, 2)
 local warnCrunchArmor			= mod:NewTargetAnnounce(64002, 2)
 
-local specWarnEyebeam			= mod:NewSpecialWarning("SpecialWarningEyebeam")
-local specWarnCrunchArmor2		= mod:NewSpecialWarning("SpecWarnCrunchArmor2", false)
+local specWarnEyebeam			= mod:NewSpecialWarningYou(63346)
+local specWarnCrunchArmor2		= mod:NewSpecialWarningStack(64002, false, 2)
 
 local timerCrunch10             = mod:NewTargetTimer(6, 63355)
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
@@ -42,6 +42,7 @@ mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnGripTarget", true)
 mod:AddBoolOption("PlaySoundOnEyebeam", true)
 mod:AddBoolOption("SetIconOnEyebeamTarget", true)
+mod:AddBoolOption("YellOnBeam", true, "announce")
 
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 32934 then 		-- right arm
@@ -82,6 +83,9 @@ function mod:OnSync(msg, target)
 			specWarnEyebeam:Show()
 			if self.Options.PlaySoundOnEyebeam then
 				PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav") 
+			end
+			if self.Options.YellOnBeam then
+				SendChatMessage(L.YellBeam, "SAY")
 			end
 		end 
 		if self.Options.SetIconOnEyebeamTarget then

@@ -16,16 +16,15 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnShadowCrash			= mod:NewAnnounce("WarningShadowCrash", 4, 62660)
-local warnLeechLife				= mod:NewAnnounce("WarningLeechLife", 3, 63276)
+local warnShadowCrash			= mod:NewTargetAnnounce(62660, 4)
+local warnLeechLife				= mod:NewTargetAnnounce(63276, 3)
 
 local specWarnShadowCrash		= mod:NewSpecialWarning("SpecialWarningShadowCrash")
 local specWarnShadowCrashNear	= mod:NewSpecialWarning("SpecialWarningShadowCrashNear")
-local specWarnSurgeDarkness		= mod:NewSpecialWarning("SpecialWarningSurgeDarkness", false)
-local specWarnLifeLeechYou		= mod:NewSpecialWarning("SpecialWarningLLYou")
+local specWarnSurgeDarkness		= mod:NewSpecialWarningSpell(62662, mod:IsTank() or mod:IsHealer())
+local specWarnLifeLeechYou		= mod:NewSpecialWarningYou(63276)
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
 
-mod:AddBoolOption("CrashWhisper", false, "announce")
 mod:AddBoolOption("YellOnLifeLeech", true, "announce")
 mod:AddBoolOption("YellOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnShadowCrash", true)
@@ -82,15 +81,11 @@ function mod:ShadowCrashTarget()
 	if self.Options.SetIconOnShadowCrash then
 		self:SetIcon(targetname, 8, 10)
 	end
-	
-	if DBM:GetRaidRank() >= 1 and self.Options.CrashWhisper then
-		self:SendWhisper(L.CrashWhisper, targetname)
-	end
 	warnShadowCrash:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnShadowCrash:Show(targetname)
 		if self.Options.YellOnShadowCrash then
-			SendChatMessage(L.YellCrash, "YELL")
+			SendChatMessage(L.YellCrash, "SAY")
 		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
@@ -115,7 +110,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if args:IsPlayer() then
 			specWarnLifeLeechYou:Show()
 			if self.Options.YellOnLifeLeech then
-				SendChatMessage(L.YellLeech, "YELL")
+				SendChatMessage(L.YellLeech, "SAY")
 			end
 		else
 			local uId = DBM:GetRaidUnitId(args.destName)

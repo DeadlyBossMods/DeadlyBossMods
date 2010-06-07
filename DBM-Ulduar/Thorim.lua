@@ -21,7 +21,7 @@ local warnLightningCharge		= mod:NewSpellAnnounce(62466, 2)
 local warnUnbalancingStrike		= mod:NewTargetAnnounce(62130, 4)	-- nice blizzard, very new stuff, hmm or not? ^^ aq40 4tw :)
 local warningBomb				= mod:NewTargetAnnounce(62526, 4)
 
-local specWarnOrb				= mod:NewSpecialWarning("LightningOrb")
+local specWarnOrb				= mod:NewSpecialWarningMove(62017)
 
 mod:AddBoolOption("AnnounceFails", false, "announce")
 

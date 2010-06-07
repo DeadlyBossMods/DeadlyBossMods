@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(7, 8)
 
 local warnMadness 					= mod:NewCastAnnounce(64059, 2)
 local warnFervorCast 				= mod:NewCastAnnounce(63138, 3)
@@ -27,18 +27,18 @@ local warnGuardianSpawned 			= mod:NewAnnounce("WarningGuardianSpawned", 3, 6297
 local warnCrusherTentacleSpawned	= mod:NewAnnounce("WarningCrusherTentacleSpawned", 2)
 local warnP2 						= mod:NewPhaseAnnounce(2, 2)
 local warnP3 						= mod:NewPhaseAnnounce(3, 2)
-local warnSanity 					= mod:NewAnnounce("WarningSanity", 3)
+local warnSanity 					= mod:NewAnnounce("WarningSanity", 3, 63050)
 local warnBrainLink 				= mod:NewTargetAnnounce(63802, 3)
 local warnBrainPortalSoon			= mod:NewAnnounce("WarnBrainPortalSoon", 2)
-local warnEmpowerSoon				= mod:NewAnnounce("WarnEmpowerSoon", 4)
+local warnEmpowerSoon				= mod:NewSoonAnnounce(64486, 4)
 
 local specWarnGuardianLow 			= mod:NewSpecialWarning("SpecWarnGuardianLow", false)
-local specWarnBrainLink 			= mod:NewSpecialWarning("SpecWarnBrainLink")
+local specWarnBrainLink 			= mod:NewSpecialWarningYou(63802)
 local specWarnSanity 				= mod:NewSpecialWarning("SpecWarnSanity")
 local specWarnMadnessOutNow			= mod:NewSpecialWarning("SpecWarnMadnessOutNow")
 local specWarnBrainPortalSoon		= mod:NewSpecialWarning("specWarnBrainPortalSoon", false)
-local specWarnDeafeningRoar			= mod:NewSpecialWarning("SpecWarnDeafeningRoar", false)
-local specWarnFervor				= mod:NewSpecialWarning("SpecWarnFervor")
+local specWarnDeafeningRoar			= mod:NewSpecialWarningSpell(64189)
+local specWarnFervor				= mod:NewSpecialWarningYou(63138)
 local specWarnFervorCast			= mod:NewSpecialWarning("SpecWarnFervorCast", mod:IsMelee())
 local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 
@@ -58,7 +58,6 @@ local timerAchieve					= mod:NewAchievementTimer(420, 3012, "TimerSpeedKill")
 mod:AddBoolOption("ShowSaraHealth")
 mod:AddBoolOption("SetIconOnFearTarget")
 mod:AddBoolOption("SetIconOnFervorTarget")
-mod:AddBoolOption("SetIconOnMCTarget")
 mod:AddBoolOption("SetIconOnBrainLinkTarget")
 mod:AddBoolOption("MaladyArrow")
 
@@ -160,12 +159,10 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end 
 		end 
-	elseif args:IsSpellID(63042) and self.Options.SetIconOnMCTarget then	-- MC
-		self:SetIcon(args.destName, 8, 30)
 	elseif args:IsSpellID(64126, 64125) then	-- Squeeze		
 		warnSqueeze:Show(args.destName)
 		if args:IsPlayer() and self.Options.WarningSqueeze then			
-			SendChatMessage(L.WarningYellSqueeze, "YELL")			
+			SendChatMessage(L.WarningYellSqueeze, "SAY")			
 		end	
 	elseif args:IsSpellID(63138) then	-- Sara's Fervor
 		warnFervor:Show(args.destName)

@@ -21,7 +21,7 @@ mod:SetBossHealthInfo(
 	32857, L.StormcallerBrundir
 )
 
-local warnSupercharge			= mod:NewAnnounce("WarningSupercharge", 3, 61920)
+local warnSupercharge			= mod:NewSpellAnnounce(61920, 3)
 
 -- Stormcaller Brundir
 -- High Voltage ... 63498
