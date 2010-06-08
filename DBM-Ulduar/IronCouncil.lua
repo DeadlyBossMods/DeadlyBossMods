@@ -138,9 +138,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnOverwhelmingPower then
 			if mod:IsDifficulty("heroic10") then
-				mod:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
+				self:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
 			else
-				mod:SetIcon(args.destName, 8, 35) -- skull for 35 seconds (until meltdown)
+				self:SetIcon(args.destName, 8, 35) -- skull for 35 seconds (until meltdown)
 			end
 		end
 	elseif args:IsSpellID(63486, 61887) then	-- Lightning Tendrils

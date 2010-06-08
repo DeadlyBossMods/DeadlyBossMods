@@ -63,7 +63,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnInjection:Show()
 		end
-		if mod.Options.SetIconOnInjectionTarget then
+		if self.Options.SetIconOnInjectionTarget then
 			table.insert(mutateIcons, args.destName)
 			addIcon()
 		end
@@ -73,7 +73,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(28169) then
 		timerInjection:Cancel(args.destName)--Cancel timer if someone is dumb and dispels it.
-		if mod.Options.SetIconOnInjectionTarget then
+		if self.Options.SetIconOnInjectionTarget then
 			removeIcon(args.destName)
 		end
 	end

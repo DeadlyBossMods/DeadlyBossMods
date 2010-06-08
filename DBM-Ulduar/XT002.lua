@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE"
 )
 
@@ -74,6 +75,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerGravityBomb:Start(args.destName)
 	elseif args:IsSpellID(63849) then
 		timerHeart:Start()
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(63018, 65121) then 	-- Light Bomb
+		if self.Options.SetIconOnLightBombTarget then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(63024, 64234) then		-- Gravity Bomb
+		if self.Options.SetIconOnGravityBombTarget then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 

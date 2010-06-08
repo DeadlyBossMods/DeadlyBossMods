@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(33432)
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("yell", L.YellPull)
 mod:RegisterCombat("yell", L.YellHardPull)
@@ -42,7 +42,7 @@ local timerDarkGlareCast		= mod:NewCastTimer(10, 63274)
 local timerNextDarkGlare		= mod:NewNextTimer(41, 63274)
 local timerNextShockblast		= mod:NewNextTimer(34, 63631)
 local timerPlasmaBlastCD		= mod:NewCDTimer(30, 64529)
-local timerShell				= mod:NewTargetTimer(6, 63666)
+local timerShell				= mod:NewBuffActiveTimer(6, 63666)
 local timerFlameSuppressant		= mod:NewCastTimer(59, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
 local timerNextFlames			= mod:NewNextTimer(27.6, 64566)
@@ -53,6 +53,8 @@ mod:AddBoolOption("PlaySoundOnShockBlast", isMelee)
 mod:AddBoolOption("PlaySoundOnDarkGlare", true)
 mod:AddBoolOption("HealthFramePhase4", true)
 mod:AddBoolOption("AutoChangeLootToFFA", true)
+mod:AddBoolOption("SetIconOnNapalm", true)
+mod:AddBoolOption("SetIconOnPlasmaBlast", true)
 mod:AddBoolOption("RangeFrame")
 
 local hardmode = false
@@ -62,12 +64,22 @@ local lootmethod, masterlooterRaidID
 local spinningUp				= GetSpellInfo(63414)
 local lastSpinUp				= 0
 local is_spinningUp				= false
+local napalmShellTargets = {}
+local napalmShellIcon 	= 7
+
+local function warnNapalmShellTargets()
+	shellWarn:Show(table.concat(napalmShellTargets, "<, >"))
+	table.wipe(napalmShellTargets)
+	napalmShellIcon = 7
+end
 
 function mod:OnCombatStart(delay)
     hardmode = false
 	enrage:Start(-delay)
 	phase = 0
 	is_spinningUp = false
+	napalmShellIcon = 7
+	table.wipe(napalmShellTargets)
 	self:NextPhase()
 	timerPlasmaBlastCD:Start(20-delay)
 	if DBM:GetRaidRank() == 2 then
@@ -148,16 +160,21 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-local spamShell = 0
 function mod:SPELL_AURA_APPLIED(args)
-	if GetTime() - spamShell > 5 and args:IsSpellID(63666, 65026) then -- Napalm Shell
-		spamShell = GetTime()
-		timerShell:Start(args.destName)
-		shellWarn:Show(args.destName)
-		self:SetIcon(args.destName, 7, 6)
+	if args:IsSpellID(63666, 65026) then -- Napalm Shell
+		napalmShellTargets[#napalmShellTargets + 1] = args.destName
+		timerShell:Start()
+		if self.Options.SetIconOnNapalm then
+			self:SetIcon(args.destName, napalmShellIcon, 6)
+			napalmShellIcon = napalmShellIcon - 1
+		end
+		self:Unschedule(warnNapalmShellTargets)
+		self:Schedule(0.3, warnNapalmShellTargets)
 	elseif args:IsSpellID(64529, 62997) then -- Plasma Blast
 		blastWarn:Show(args.destName)
-		self:SetIcon(args.destName, 8, 6)
+		if self.Options.SetIconOnPlasmaBlast then
+			self:SetIcon(args.destName, 8, 6)
+		end
 	end
 end
 
@@ -264,6 +281,10 @@ do
 				count = 1
 			end
 			last = args.timestamp
+		elseif args:IsSpellID(63666, 65026) then -- Napalm Shell
+			if self.Options.SetIconOnNapalm then
+				self:SetIcon(args.destName, 0)
+			end
 		end
 	end
 end

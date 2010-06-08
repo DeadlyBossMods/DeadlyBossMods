@@ -58,7 +58,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			SendChatMessage(L.YellCloud, "SAY")
 		end
 		if self.Options.SetIconOnStormCloud then 
-			mod:SetIcon(args.destName, 8, 6)
+			self:SetIcon(args.destName, 8, 6)
 		end
 	end
 end

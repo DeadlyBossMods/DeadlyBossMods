@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(6, 7, 8)
 
 local warnMadness 					= mod:NewCastAnnounce(64059, 2)
 local warnFervorCast 				= mod:NewCastAnnounce(63138, 3)
