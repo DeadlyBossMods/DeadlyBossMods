@@ -39,13 +39,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(42730, 59735) then
 		warningWoeStrike:Show(args.destName)
 		timerWoeStrike:Start(args.destName)
-		mod:SetIcon(args.destName, 8, 10)
+		self:SetIcon(args.destName, 8, 10)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(42730, 59735) then
 		timerWoeStrike:Cancel()
-		mod:SetIcon(args.destName, 0)
+		self:SetIcon(args.destName, 0)
 	end
 end

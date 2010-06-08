@@ -103,7 +103,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:ScheduleMethod(0.1, "ShadowCrashTarget")
 	elseif args:IsSpellID(63276) then	-- Mark of the Faceless
 		if self.Options.SetIconOnLifeLeach then
-			mod:SetIcon(args.destName, 7, 10)
+			self:SetIcon(args.destName, 7, 10)
 		end
 		warnLeechLife:Show(args.destName)
 		timerLifeLeech:Start(args.destName)
