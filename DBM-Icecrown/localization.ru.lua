@@ -519,6 +519,7 @@ L:SetOptionLocalization{
 	specWarnTrapNear		= "Спец-предупреждение, когда $spell:73539 около вас",
 	YellOnDefile			= "Кричать, когда $spell:72762 на вас",
 	YellOnTrap				= "Кричать, когда $spell:73539 на вас",
+	YellOnValk				= "Кричать, когда $spell:69037 на вас",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
@@ -532,6 +533,7 @@ L:SetMiscLocalization{
 	LKPull			= "Неужели прибыли наконец хваленые силы Света? Мне бросить Ледяную Скорбь и сдаться на твою милость, Фордринг?",
 	YellDefile		= "Осквернение на мне!",
 	YellTrap		= "Теневая ловушка на мне!",
+	YellValk		= "Меня схватили!",
 	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости...",
 	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю...",
 	PlagueWhisper	= "Вы заражены"
