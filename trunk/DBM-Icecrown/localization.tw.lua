@@ -522,6 +522,7 @@ L:SetOptionLocalization{
 	specWarnTrapNear		= "當你附近的人中了$spell:73539時顯示特別警告",
 	YellOnDefile			= "當你中了$spell:72762時大喊",
 	YellOnTrap			= "當你中了$spell:73539時大喊",
+	YellOnValk			= "當你中了$spell:69037時大喊",
 	DefileIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
