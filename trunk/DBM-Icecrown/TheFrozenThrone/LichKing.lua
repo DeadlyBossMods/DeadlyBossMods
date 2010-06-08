@@ -94,14 +94,14 @@ local phase	= 0
 local lastPlagueCast = 0
 local warned_preP2 = false
 local warned_preP3 = false
-local LKTank
+local LKTank = {}
 
 function mod:OnCombatStart(delay)
 	phase = 0
 	lastPlagueCast = 0
 	warned_preP2 = false
 	warned_preP3 = false
-	LKTank = nil
+	table.wipe(LKTank)
 	self:NextPhase()
 end
 
@@ -463,7 +463,7 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:SWING_DAMAGE(args)
-	if args:GetSrcCreatureID() == 36597 then--Lich king Tank
+	if phase == 1 and args:GetSrcCreatureID() == 36597 then--Lich king Tank
 		LKTank = args.destName
 	end
 end
