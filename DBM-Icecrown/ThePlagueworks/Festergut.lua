@@ -23,6 +23,7 @@ local specWarnGasSpore		= mod:NewSpecialWarningYou(69279)
 local specWarnVileGas		= mod:NewSpecialWarningYou(71218)
 local specWarnGastricBloat	= mod:NewSpecialWarningStack(72551, nil, 9)
 local specWarnInhaled3		= mod:NewSpecialWarningStack(71912, mod:IsTank(), 3)
+local specWarnGoo			= mod:NewSpecialWarningSpell(72549)
 
 local timerGasSpore			= mod:NewBuffActiveTimer(12, 69279)
 local timerVileGas			= mod:NewBuffActiveTimer(6, 71218, nil, mod:IsRanged())
@@ -158,6 +159,7 @@ function mod:OnSync(event, arg)
 	if event == "Goo" then
 		if time() - lastGoo > 5 then
 			warnGoo:Show()
+			specWarnGoo:Show()
 			if mod:IsDifficulty("heroic25") then
 				timerGooCD:Start()
 			else
