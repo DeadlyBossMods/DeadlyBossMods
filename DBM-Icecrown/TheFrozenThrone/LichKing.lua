@@ -94,14 +94,14 @@ local phase	= 0
 local lastPlagueCast = 0
 local warned_preP2 = false
 local warned_preP3 = false
-local LKTank = {}
+local LKTank
 
 function mod:OnCombatStart(delay)
 	phase = 0
 	lastPlagueCast = 0
 	warned_preP2 = false
 	warned_preP3 = false
-	table.wipe(LKTank)
+	LKTank = nil
 	self:NextPhase()
 end
 
@@ -197,7 +197,7 @@ function mod:TrapTarget()
 		end
 	else
 		self:UnscheduleMethod("TankTrap")
-		self:ScheduleMethod(0.3, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
+		self:ScheduleMethod(1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
 	end
 end
 
