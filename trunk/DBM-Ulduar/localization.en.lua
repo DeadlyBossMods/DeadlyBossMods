@@ -398,7 +398,9 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare	= "Play sound on $spell:63414",
 	ShockBlastWarningInP1	= "Show special warning for $spell:63631 in Phase 1",
 	ShockBlastWarningInP4	= "Show special warning for $spell:63631 in Phase 4",
-	RangeFrame				= "Show range frame in Phase 1 (6 yards)"
+	RangeFrame				= "Show range frame in Phase 1 (6 yards)",
+	SetIconOnNapalm			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(65026),
+	SetIconOnPlasmaBlast	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(62997)
 }
 
 L:SetMiscLocalization{

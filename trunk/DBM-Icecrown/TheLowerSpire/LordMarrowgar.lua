@@ -70,8 +70,8 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(69062, 72669, 72670) then						-- Impale
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		timerBoned:Start()
-		if mod.Options.SetIconOnImpale and impaleIcon > 0 then
-			mod:SetIcon(args.sourceName, impaleIcon)
+		if self.Options.SetIconOnImpale and impaleIcon > 0 then
+			self:SetIcon(args.sourceName, impaleIcon)
 			impaleIcon = impaleIcon - 1
 		end
 		self:Unschedule(showImpaleWarning)
@@ -100,7 +100,9 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(69065) then			-- Impaled
-		mod:SetIcon(args.destName, 0)
+		if self.Options.SetIconOnImpale then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif args:IsSpellID(69076) then
 		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
 			timerBoneSpike:Start(15)			-- He will do Bone Spike Graveyard 15 seconds after whirlwind ends on normal

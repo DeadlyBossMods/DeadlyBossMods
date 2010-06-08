@@ -331,12 +331,12 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(70447, 72836, 72837, 72838) then
 		if self.Options.OozeAdhesiveIcon then
-			mod:SetIcon(args.destName, 0)
+			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(70672, 72455, 72832, 72833) then
 		timerGaseousBloat:Cancel(args.destName)
 		if self.Options.GaseousBloatIcon then
-			mod:SetIcon(args.destName, 0)
+			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(72855, 72856) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
@@ -345,7 +345,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:UnscheduleMethod("AcquireTargetForUnboundPlague")
 		end--]]
 		if self.Options.UnboundPlagueIcon then
-			mod:SetIcon(args.destName, 0)
+			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(71615) and GetTime() - spamGas > 5 then 	-- Tear Gas Removal
 		self:NextPhase()

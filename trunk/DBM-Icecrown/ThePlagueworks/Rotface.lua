@@ -106,7 +106,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnUnstableOoze:Show(args.spellName, args.destName, args.amount or 1)
 		if (args.amount or 1) >= 5 then	--It's about to blow
 			if self.Options.ExplosionIcon then
-				mod:SetIcon(args.destName, 8, 8)
+				self:SetIcon(args.destName, 8, 8)
 			end
 		end
 	elseif args:IsSpellID(69674, 71224, 73022, 73023) then
@@ -117,7 +117,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			soundMutatedInfection:Play()
 		end
 		if self.Options.InfectionIcon then
-			mod:SetIcon(args.destName, InfectionIcon, 12)
+			self:SetIcon(args.destName, InfectionIcon, 12)
 			if InfectionIcon == 7 then	-- After ~3mins there is a chance 2 ppl will have the debuff, so we are alternating between 2 icons
 				InfectionIcon = 6
 			else
@@ -147,7 +147,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerMutatedInfection:Cancel(args.destName)
 		warnOozeSpawn:Show()
 		if self.Options.InfectionIcon then
-			mod:SetIcon(args.destName, 0)
+			self:SetIcon(args.destName, 0)
 		end
 	end
 end
