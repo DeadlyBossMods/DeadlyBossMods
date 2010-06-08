@@ -197,7 +197,7 @@ function mod:TrapTarget()
 		end
 	else
 		self:UnscheduleMethod("TankTrap")
-		self:ScheduleMethod(0.5, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
+		self:ScheduleMethod(0.3, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
 	end
 end
 
@@ -241,10 +241,10 @@ function mod:SPELL_CAST_START(args)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
 		self:ScheduleMethod(0.01, "TrapTarget")
-		self:ScheduleMethod(0.02, "TrapTarget")
 		self:ScheduleMethod(0.03, "TrapTarget")
-		self:ScheduleMethod(0.04, "TrapTarget")
 		self:ScheduleMethod(0.05, "TrapTarget")
+		self:ScheduleMethod(0.07, "TrapTarget")
+		self:ScheduleMethod(0.1, "TrapTarget")
 		timerTrapCD:Start()
 	elseif args:IsSpellID(73650) then -- Restore Soul (Heroic)
 		warnRestoreSoul:Show()
