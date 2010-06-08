@@ -17,7 +17,8 @@ mod:RegisterEvents(
 	"UNIT_HEALTH",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_WHISPER",
-	"SWING_DAMAGE"
+	"SWING_DAMAGE",
+	"SWING_MISSED"
 )
 
 local warnRemorselessWinter = mod:NewSpellAnnounce(74270, 3) --Phase Transition Start Ability
@@ -167,7 +168,7 @@ end
 function mod:TrapTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
-	if targetname and not LKTank then--If scan doesn't return tank abort other scans and do other warnings.
+	if targetname ~= LKTank then--If scan doesn't return tank abort other scans and do other warnings.
 		self:UnscheduleMethod("TrapTarget")
 		self:UnscheduleMethod("TankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
 		warnTrapCast:Show(targetname)
@@ -468,6 +469,12 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:SWING_DAMAGE(args)
+	if phase == 1 and args:GetSrcCreatureID() == 36597 then--Lich king Tank
+		LKTank = args.destName
+	end
+end
+
+function mod:SWING_MISSED(args)
 	if phase == 1 and args:GetSrcCreatureID() == 36597 then--Lich king Tank
 		LKTank = args.destName
 	end
