@@ -406,7 +406,9 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare	= "Reproducir sonido en Tromba de láseres",
 	ShockBlastWarningInP1	= "Mostrar aviso especial para Explosión de choque en Fase 1",
 	ShockBlastWarningInP4	= "Mostrar aviso especial para Explosión de choque en Fase 4",
-	RangeFrame				= "Mostrar distáncia en Fase 1 (6 yardas)"
+	RangeFrame				= "Mostrar distáncia en Fase 1 (6 yardas)",
+	SetIconOnNapalm			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(65026),
+	SetIconOnPlasmaBlast	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(62997)
 }
 
 L:SetMiscLocalization{
