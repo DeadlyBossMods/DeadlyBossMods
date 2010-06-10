@@ -88,6 +88,7 @@ mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
 mod:AddBoolOption("YellOnValk", true, "announce")
+mod:AddBoolOption("AnnounceValkGrabs", false)
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
 
@@ -367,6 +368,9 @@ do
 						if mod.Options.YellOnValk then
 							SendChatMessage(L.YellValk, "SAY")
 						end
+					end
+					if self.Options.AnnounceValkGrabs and DBM:GetRaidRank() > 0 then
+						SendChatMessage(L.ValkGrabbed:format(currentIcon, UnitName("raid"..i)))--Untested, not sure if the icon timing will line up since i grab icon from a different function.
 					end
 				end
 			end
