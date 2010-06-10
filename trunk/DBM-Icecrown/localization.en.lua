@@ -245,7 +245,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "Show range frame (8 yards)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Announce icons for $spell:69279 targets to raid chat\n(requires announce to be enabled and leader/promoted status)"
+	AnnounceSporeIcons	= "Announce icons for $spell:69279 targets to raid chat\n(requires announce to be enabled and promoted status)"
 }
 
 L:SetMiscLocalization{
@@ -524,7 +524,8 @@ L:SetOptionLocalization{
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Set icons on Valkyrs",
 	DefileArrow				= "Show DBM arrow when $spell:72762 is near you",
-	TrapArrow				= "Show DBM arrow when $spell:73539 is near you"
+	TrapArrow				= "Show DBM arrow when $spell:73539 is near you",
+	AnnounceValkGrabs		= "Announce Val'kyr Shadowguard grab targets to raid chat\n(requires announce to be enabled and promoted status)"
 }
 
 L:SetMiscLocalization{
@@ -533,5 +534,6 @@ L:SetMiscLocalization{
 	YellTrap		= "Shadow Trap on me!",
 	YellValk		= "I've been grabbed!",
 	LKRoleplay		= "Is it truly righteousness that drives you? I wonder...",
-	PlagueWhisper	= "You have been infected by"
+	PlagueWhisper	= "You have been infected by",
+	ValkGrabbed		= "Val'kyr Shadowguard {rt%d} grabbed %s"
 }
