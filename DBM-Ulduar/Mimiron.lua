@@ -161,7 +161,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(63666, 65026) then -- Napalm Shell
+	if args:IsSpellID(63666, 65026) and args:IsDestTypePlayer() then -- Napalm Shell
 		napalmShellTargets[#napalmShellTargets + 1] = args.destName
 		timerShell:Start()
 		if self.Options.SetIconOnNapalm then
