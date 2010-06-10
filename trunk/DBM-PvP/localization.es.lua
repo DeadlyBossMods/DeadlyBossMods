@@ -333,6 +333,6 @@ L:SetMiscLocalization({
 	GoblinHalfwayHorde		= "¡Ya casi estoy! Mantén a la Alianza alejada... ¡Luchar no entra en mi contrato!",
 	GoblinFinishedAlliance	= "¡Mi mejor obra! ¡Esta máquina de asedio está lista para la acción!",
 	GoblinFinishedHorde		= "¡La máquina de asedio está lista para la acción!",
-	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",--translate
+	GoblinBrokenAlliance	= "¿Ya está rota? No pasa nada. No es nada que no pueda arreglar.",
 	GoblinBrokenHorde		= "¿Está estropeada otra vez? La arreglaré... pero no esperes que la garantía cubra esto."
 })
