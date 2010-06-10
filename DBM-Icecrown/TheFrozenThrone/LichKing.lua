@@ -369,7 +369,7 @@ do
 							SendChatMessage(L.YellValk, "SAY")
 						end
 					end
-					if self.Options.AnnounceValkGrabs and DBM:GetRaidRank() > 0 then
+					if mod.Options.AnnounceValkGrabs and DBM:GetRaidRank() > 0 then
 						SendChatMessage(L.ValkGrabbed:format(currentIcon, UnitName("raid"..i)))--Untested, not sure if the icon timing will line up since i grab icon from a different function.
 					end
 				end
