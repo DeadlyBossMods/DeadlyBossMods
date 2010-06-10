@@ -437,7 +437,7 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	SetIconOnShadowCrash			= "Set icons on $spell:62660 targets (skull)",
 	SetIconOnLifeLeach				= "Set icons on $spell:63276 targets (cross)",
-	SpecialWarningShadowCrash		= "Show special warning for $spell:62660 (must be targeted or focused by at least one raid member)",
+	SpecialWarningShadowCrash		= "Show special warning for $spell:62660\n(must be targeted or focused by at least one raid member)",
 	SpecialWarningShadowCrashNear	= "Show special warning for $spell:62660 near you",
 	SpecialWarningLLNear			= "Show special warning for $spell:63276 near you",
 	YellOnLifeLeech					= "Yell on $spell:63276",

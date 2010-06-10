@@ -278,7 +278,7 @@ L:SetOptionLocalization{
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
-	TankArrow					= "Show DBM arrow for Big Ooze offtank (Experimental)"
+	TankArrow					= "Show DBM arrow for Big Ooze kiter (Experimental)"
 }
 
 L:SetMiscLocalization{
@@ -308,8 +308,8 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnPhase2Soon				= "Show pre-warning for Phase 2 (at ~83%)",
 	WarnPhase3Soon				= "Show pre-warning for Phase 3 (at ~38%)",
-	specWarnMalleableGoo		= "Show special warning for Malleable Goo on you\n(Only works if you are first target)",
-	specWarnMalleableGooNear	= "Show special warning for Malleable Goo near you\n(Only works if you are near first target)",
+	specWarnMalleableGoo		= "Show special warning if you are first $spell:72295 target",
+	specWarnMalleableGooNear	= "Show special warning if you are near first $spell:72295 target",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
@@ -461,11 +461,11 @@ L:SetOptionLocalization{
 	warnInstability			= "Show warning for your $spell:69766 stacks",
 	warnChilledtotheBone	= "Show warning for your $spell:70106 stacks",
 	warnMysticBuffet		= "Show warning for your $spell:70128 stacks",
-	AnnounceFrostBeaconIcons= "Announce icons for $spell:70126 targets to raid chat\n(requires announce to be enabled and leader/promoted status)",
+	AnnounceFrostBeaconIcons= "Announce icons for $spell:70126 targets to raid chat\n(requires announce to be enabled and promoted status)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Clear all icons before air phase",
-	RangeFrame				= "Show range frame (10 normal, 20 heroic)\n(will only show raid icon marked players)"
+	RangeFrame				= "Show raid icon based range frame (10 normal, 20 heroic)"
 }
 
 L:SetMiscLocalization{
