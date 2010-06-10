@@ -528,21 +528,24 @@ L:SetOptionLocalization{
 	specWarnTrapNear		= "Mostrar aviso especial para $spell:73539 cerca de ti",
 	YellOnDefile			= "Gritar cuando tengas $spell:72762",
 	YellOnTrap				= "Gritar cuando tengas $spell:73539",
+	YellOnValk				= "Gritar cuando te agarre $spell:69037",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Poner iconos en las Valkyr",
 	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti",
-	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti"
+	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
+	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de raid\n(requires 'anunciar' activado y líder/ayudante)"
 }
 
 L:SetMiscLocalization{
 	LKPull		= "¿Así que por fin ha llegado la elogiada justicia de la Luz? ¿Debería deponer la Agonía de Escarcha y confiar en tu piedad, Vadín?",
 	YellDefile		= "¡Profanar en mi!",
 	YellTrap		= "¡Trampa de sombras en mi!",
-	YellKill		= "No quedan preguntas sin respuesta. No quedan dudas. SOIS los mejores campeones de Azeroth. Superasteis todos los retos que os puse. Mis más poderosos sirvientes han caído ante vuestra implacable ofensiva... vuestra furia desatada...",
+	YellValk		= "¡Me han agarrado!",
 	LKRoleplay		= "¿Me pregunto si de verdad os mueve la... rectitud?",
-	PlagueWhisper	= "Has sido infectado por"
+	PlagueWhisper	= "Has sido infectado por",
+	ValkGrabbed		= "Val'kyr {rt%d} ha agarrado a %s"
 }
 
