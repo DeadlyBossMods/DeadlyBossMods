@@ -50,18 +50,25 @@ end
 
 function mod:OnCombatStart(delay)
 	DBM.BossHealth:Clear()
---[[	timerCombatStart:Show(-delay)
+	timerCombatStart:Show(-delay)
 	if UnitFactionGroup("player") == "Alliance" then
 		timerAdds:Start(62-delay)
 		warnAddsSoon:Schedule(57)
 		self:ScheduleMethod(62, "Adds")
-		timerBelowZeroCD:Start(75-delay)
+		timerBelowZeroCD:Start(75-delay)--This doesn't make sense. Need more logs to verify
 	else
-		timerAdds:Start(57-delay)
-		warnAddsSoon:Schedule(52)
-		self:ScheduleMethod(57, "Adds")
-		timerBelowZeroCD:Start(80-delay)
-	end--]]
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerAdds:Start(63-delay)
+			warnAddsSoon:Schedule(58)
+			self:ScheduleMethod(63, "Adds")
+			timerBelowZeroCD:Start(102-delay)--This doesn't make sense. Need more logs to verify
+		else
+			timerAdds:Start(57-delay)
+			warnAddsSoon:Schedule(52)
+			self:ScheduleMethod(57, "Adds")
+			timerBelowZeroCD:Start(80-delay)--This doesn't make sense. Need more logs to verify
+		end
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
