@@ -443,13 +443,13 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnShadowCrash			= "Poner iconos en los objetivos de Fragor de sombra (calavera)",
-	SetIconOnLifeLeach				= "Poner iconos en los objetivos de Drenar vida (cruz)",
-	SpecialWarningShadowCrash		= "Mostrar aviso especial para Fragor de sombra",
-	SpecialWarningShadowCrashNear	= "Mostrar aviso especial para Fragor de sombra cerca de ti",
-	SpecialWarningLLNear			= "Mostrar aviso especial para Drenar vida cerca de ti",
-	YellOnLifeLeech					= "Gritar si tienes Drenar vida",
-	YellOnShadowCrash				= "Gritar si eres objetivo de Fragor de sombra",
+	SetIconOnShadowCrash			= "Poner iconos en los objetivos de $spell:62660 (calavera)",
+	SetIconOnLifeLeach				= "Poner iconos en los objetivos de $spell:63276 (cruz)",
+	SpecialWarningShadowCrash		= "Mostrar aviso especial para $spell:62660/n(Tiene que ser el objetivo o el foco de al menos un personaje de la banda)",
+	SpecialWarningShadowCrashNear	= "Mostrar aviso especial para $spell:62660 cerca de ti",
+	SpecialWarningLLNear			= "Mostrar aviso especial para $spell:63276 cerca de ti",
+	YellOnLifeLeech					= "Gritar si tienes $spell:63276",
+	YellOnShadowCrash				= "Gritar si eres objetivo de $spell:62660",
 	hardmodeSpawn					= "Mostrar tiempo para salida de Animus de saronita (Modo Difícil)"
 }
 
@@ -496,20 +496,20 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	WarningGuardianSpawned			= "Mostrar aviso cuando salga Guardián",
 	WarningCrusherTentacleSpawned	= "Mostrar aviso cuando salga Tentáculo triturador",
-	WarningSanity					= "Mostrar aviso cuando tengas poca Cordura",
-	SpecWarnSanity					= "Mostrar aviso especial cuando tengas muy poca Cordura",
+	WarningSanity					= "Mostrar aviso cuando tengas poca $spell:63050",
+	SpecWarnSanity					= "Mostrar aviso especial cuando tengas muy poca $spell:63050",
 	SpecWarnGuardianLow				= "Mostrar aviso especial cuando el Guardián esté a punto de morir (Fase 1)",
 	WarnBrainPortalSoon				= "Mostrar pre-aviso para Portal cerebral",
-	SpecWarnMadnessOutNow			= "Mostrar aviso especial poco antes de que Inducir a la locura termine",
-	SetIconOnFearTarget				= "Poner iconos en los objetivos de Mal de la mente",
-	SpecWarnFervorCast				= "Mostrar aviso especial cuando Fervor de Sara esté siendo casteado en ti",
+	SpecWarnMadnessOutNow			= "Mostrar aviso especial poco antes de que $spell:64059 termine",
+	SetIconOnFearTarget				= "Poner iconos en los objetivos de $spell:63881",
+	SpecWarnFervorCast				= "Mostrar aviso especial cuando $spell:63138 esté siendo casteado en ti/n(Tiene que ser el objetivo o el foco de al menos un personaje de la banda)",
 	specWarnBrainPortalSoon			= "Mostrar aviso especial para siguiente Portal cerebral",
 	WarningSqueeze					= "Gritar si te afecta Exprimir",
 	NextPortal						= "Mostrar tiempo para siguiente Portal cerebral",
-	SetIconOnFervorTarget			= "Poner iconos en los objetivos de Fervor de Sara",
+	SetIconOnFervorTarget			= "Poner iconos en los objetivos de $spell:63138",
 	ShowSaraHealth					= "Mostrar barra de vida de Sara en Fase 1",
-	SpecWarnMaladyNear				= "Mostrar aviso especial para Mal de la mente cerca de ti",
-	SetIconOnBrainLinkTarget		= "Poner iconos en los objetivos de Vínculo cerebral",
+	SpecWarnMaladyNear				= "Mostrar aviso especial para $spell:63881 cerca de ti",
+	SetIconOnBrainLinkTarget		= "Poner iconos en los objetivos de $spell:63802",
 	MaladyArrow						= "Mostrar flecha cuando $spell:63881 está cerca de ti"
 }
 
