@@ -247,7 +247,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "Показывать окно допустимой дистанции (8 м)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:69279 в рейд-чат\n(требуются права лидера или помощника)"
+	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:69279 в рейд-чат\n(требуются права помощника)"
 }
 
 L:SetMiscLocalization{
@@ -280,7 +280,7 @@ L:SetOptionLocalization{
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
-	TankArrow					= "Показывать стрелку для оффтанка Большого слизнюка (экспериментально)"
+	TankArrow					= "Показывать стрелку для кайтера Большого слизнюка (экспериментально)"
 }
 
 L:SetMiscLocalization{
@@ -310,15 +310,15 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnPhase2Soon				= "Предупреждать заранее о фазе 2 (на ~83%)",
 	WarnPhase3Soon				= "Предупреждать заранее о фазе 3 (на ~38%)",
-	specWarnMalleableGoo		= "Спец-предупреждение, когда Вязкая гадость на вас\n(работает только если вы - первая цель)",
-	specWarnMalleableGooNear	= "Спец-предупреждение, когда Вязкая гадость около вас\n(работает только если вы около первой цели)",
+	specWarnMalleableGoo		= "Спец-предупреждение, когда вы - первая цель заклинания\n$spell:72295",
+	specWarnMalleableGooNear	= "Спец-предупреждение, когда вы около первой цели заклинания\n$spell:72295",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
 	UnboundPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72856),
 	MalleableGooIcon			= "Устанавливать метку на первую цель заклинания $spell:72295",
 	NextUnboundPlagueTargetIcon	= "Устанавливать метку на следующую цель заклинания $spell:72856",
-	YellOnMalleableGoo			= "Кричать, когда на вас $spell:72295",	
+	YellOnMalleableGoo			= "Кричать, когда на вас $spell:72295",
 	YellOnUnbound				= "Кричать, когда на вас $spell:72856",
 	specWarnUnboundPlague		= "Спец-предупреждение для передачи заклинания $spell:72856",
 	specWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью\nзаклинания $spell:72856",
@@ -463,11 +463,11 @@ L:SetOptionLocalization{
 	warnInstability			= "Предупреждение о ваших стаках $spell:69766",
 	warnChilledtotheBone	= "Предупреждение о ваших стаках $spell:70106",
 	warnMysticBuffet		= "Предупреждение о ваших стаках $spell:70128",
-	AnnounceFrostBeaconIcons= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права лидера или помощника)",
+	AnnounceFrostBeaconIcons= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права помощника)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой",
-	RangeFrame				= "Показывать окно допустимой дистанции (10 норм., 20 гер.)\n(показывает только игроков с метками)"
+	RangeFrame				= "Показывать игроков с метками в окне допустимой дистанции (10 норм., 20 гер.)"
 }
 
 L:SetMiscLocalization{
@@ -526,7 +526,8 @@ L:SetOptionLocalization{
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Устанавливать метки на Валь'кир",
 	DefileArrow				= "Показывать стрелку, когда $spell:72762 около вас",
-	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас"
+	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас",
+	AnnounceValkGrabs		= "Объявлять игроков, схваченных Валь'кирами, в рейд-чат\n(требуются права помощника)"
 }
 
 L:SetMiscLocalization{
@@ -536,5 +537,6 @@ L:SetMiscLocalization{
 	YellValk		= "Меня схватили!",
 	YellKill		= "Сомнений нет: ВЫ величайшие герои Азерота. Вы преодолели все препятствия, которые я воздвиг перед вами. Сильнейшие из моих слуг пали под вашим натиском… сгорели в пламени вашей ярости...",
 	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю...",
-	PlagueWhisper	= "Вы заражены"
+	PlagueWhisper	= "Вы заражены",
+	ValkGrabbed		= "Валь'кира {rt%d} схватила %s"
 }
