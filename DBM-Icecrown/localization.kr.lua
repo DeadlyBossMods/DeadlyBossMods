@@ -311,8 +311,8 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnPhase2Soon				= "2 단계 사전 경고 보기(83% 이하)",
 	WarnPhase3Soon				= "3 단계 사전 경고 보기(38% 이하)",
-	specWarnMalleableGoo		= "유연한 끈적이 특수 경고 보기(첫 대상일 경우)",
-	specWarnMalleableGooNear	= "주변의 유연한 끈적이 특수 경고 보기(첫 대상 근처에 있을 경우)",
+	specWarnMalleableGoo		= "만약 당신이 $spell:72295의 첫번째 대상이 될 경우 특수 경고 보기",
+	specWarnMalleableGooNear	= "만약 당신의 주변에 첫번째 $spell:72295 대상이 있을 경우 특수 경고 보기",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "알 수 없음"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
@@ -522,20 +522,24 @@ L:SetOptionLocalization{
 	specWarnDefileNear			= "당신 주변에 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnTrapNear			= "주변에 $spell:73539을 하면 특수 경고 보기",	
 	YellOnDefile				= "$spell:72762의 대상이 됐을 때 말하기",
-	YellOnTrap					= "$spell:73539 말하기",	
+	YellOnTrap					= "$spell:73539 말하기",
+	YellOnValk					= "$spell:69037 외치기",	
 	DefileIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon					= "발키리에 공격대 징표 설정",
 	DefileArrow					= "$spell:72762이 당신 주변에 생성되면 DBM 화살표 보기",
-	TrapArrow					= "주변에 $spell:73539을 할 경우 DBM 화살표 보기"
+	TrapArrow					= "주변에 $spell:73539을 할 경우 DBM 화살표 보기",
+	AnnounceValkGrabs			= "발키리가 납치할 때 대상과 대상 공격대 아이콘으로 채팅 알리기\n(알림 권한이 있을 경우)"	
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
 	YellDefile				= "저에게 파멸!!!",
-	YellTrap				= "나에게 암흑의 덫!!!",	
+	YellTrap				= "나에게 암흑의 덫!!!",
+	YellValk				= "끌려 가는 중! 살려주삼!",	
 	YellKill				= "어떤 의문도 남지 않았다. 어떤 의심도 없다. 너희는 아제로스의 가장 위대한 용사들이다. 너희 앞에 놓아둔 모든 도전을 극복해 내었다. 가장 강력한 종들이 너희의 무자비한 살육 앞에 쓰러졌지... 너희가 억눌렀던 분노 앞에 말이다...",
 	LKRoleplay				= "진정으로 정의에 이끌렸단 말이냐? 궁금하구나...",
+	ValkGrabbed				= "발키리 납치 : {rt%d} %s",
 	PlagueWhisper			= "에 감염되었습니다!" --역병 전이 : You have been infected by
 }
