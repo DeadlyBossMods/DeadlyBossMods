@@ -540,6 +540,7 @@ L:SetMiscLocalization{
 	YellValk				= "끌려 가는 중! 살려주삼!",	
 	YellKill				= "어떤 의문도 남지 않았다. 어떤 의심도 없다. 너희는 아제로스의 가장 위대한 용사들이다. 너희 앞에 놓아둔 모든 도전을 극복해 내었다. 가장 강력한 종들이 너희의 무자비한 살육 앞에 쓰러졌지... 너희가 억눌렀던 분노 앞에 말이다...",
 	LKRoleplay				= "진정으로 정의에 이끌렸단 말이냐? 궁금하구나...",
-	ValkGrabbed				= "발키리 납치 : {rt%d} %s",
+	ValkGrabbedIcon			= "발키리 납치 : {rt%d} %s",
+	ValkGrabbed				= "발키리 납치 : %s",
 	PlagueWhisper			= "에 감염되었습니다!" --역병 전이 : You have been infected by
 }

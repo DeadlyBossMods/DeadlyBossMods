@@ -43,7 +43,6 @@ localization.de.lua
 localization.tw.lua
 localization.cn.lua
 localization.es.lua
-localization.mx.lua
 localization.ru.lua
 localization.fr.lua
 localization.kr.lua

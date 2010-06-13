@@ -44,7 +44,6 @@ localization.tw.lua
 localization.cn.lua
 localization.fr.lua
 localization.es.lua
-localization.mx.lua
 MapSizes.lua
 TheLowerSpire\LordMarrowgar.lua
 TheLowerSpire\Deathwhisper.lua

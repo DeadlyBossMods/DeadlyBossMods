@@ -1,4 +1,4 @@
-﻿if GetLocale() ~= "esES" then return end
+﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
 DBM_CORE_NEED_SUPPORT				= "¡Ey! ¿Eres un programador o eres bueno con los idiomas? Si es así, el Equipo DBM necesita tu ayuda para mantener el DBM como el mejor BossMod del WoW. Únete al equipo haciendo click en www.deadlybossmods.com o enviando un mensaje a tandanu@deadlybossmods.com o nitram@deadlybossmods.com."
 
