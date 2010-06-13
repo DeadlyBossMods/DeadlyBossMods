@@ -26,7 +26,6 @@ localization.fr.lua
 localization.tw.lua
 localization.kr.lua
 localization.es.lua
-localization.mx.lua
 DBM-GUI_DropDown.xml
 DBM-GUI_Templates.xml
 DBM-GUI.lua
