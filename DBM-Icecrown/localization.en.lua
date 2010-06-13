@@ -535,5 +535,6 @@ L:SetMiscLocalization{
 	YellValk		= "I've been grabbed!",
 	LKRoleplay		= "Is it truly righteousness that drives you? I wonder...",
 	PlagueWhisper	= "You have been infected by",
-	ValkGrabbed		= "Valkyr Shadowguard {rt%d} grabbed %s"
+	ValkGrabbedIcon	= "Valkyr Shadowguard {rt%d} grabbed %s",
+	ValkGrabbed		= "Valkyr Shadowguard grabbed %s"
 }

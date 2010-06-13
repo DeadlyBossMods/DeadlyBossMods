@@ -87,7 +87,7 @@ mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
-mod:AddBoolOption("YellOnValk", true, "announce")
+mod:AddBoolOption("YellOnValk", false, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
@@ -348,17 +348,19 @@ do
 	local valkIcons = {}
 	local valkyrTargets = {}
 	local currentIcon = 2
+	local grabIcon = 2
 	local iconsSet = 0
 	local lastValk = 0
 	
 	local function resetValkIconState()
 		table.wipe(valkIcons)
 		currentIcon = 2
+		grabIcon = 2
 		iconsSet = 0
 	end
 	
 	local function scanValkyrTargets()
-		if (time() - lastValk) < 5 then    -- scan for like 5secs
+		if (time() - lastValk) < 6 then    -- scan for like 6secs
 			for i=0, GetNumRaidMembers() do        -- for every raid member check ..
 				if UnitInVehicle("raid"..i) and not valkyrTargets[i] then      -- if person #i is in a vehicle and not already announced 
 					ValkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
@@ -370,11 +372,16 @@ do
 						end
 					end
 					if mod.Options.AnnounceValkGrabs and DBM:GetRaidRank() > 0 then
-						SendChatMessage(L.ValkGrabbed:format(currentIcon, UnitName("raid"..i)))--Untested, not sure if the icon timing will line up since i grab icon from a different function.
+						if mod.Options.ValkyrIcon then
+							SendChatMessage(L.ValkGrabbedIcon:format(grabIcon, UnitName("raid"..i)), "RAID")--Untested, not sure if the icon timing will line up since i grab icon from a different function.
+							grabIcon = grabIcon + 1
+						else
+							SendChatMessage(L.ValkGrabbed:format(UnitName("raid"..i)), "RAID")--Untested, not sure if the icon timing will line up since i grab icon from a different function.
+						end
 					end
 				end
 			end
-			mod:Schedule(0.3, scanValkyrTargets)  -- check for more targets in a few
+			mod:Schedule(0.5, scanValkyrTargets)  -- check for more targets in a few
 		else
 			wipe(valkyrTargets)       -- no more valkyrs this round, so lets clear the table
 		end
