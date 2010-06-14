@@ -360,7 +360,7 @@ do
 	end
 	
 	local function scanValkyrTargets()
-		if (time() - lastValk) < 6 then    -- scan for like 6secs
+		if (time() - lastValk) < 10 then    -- scan for like 10secs
 			for i=0, GetNumRaidMembers() do        -- for every raid member check ..
 				if UnitInVehicle("raid"..i) and not valkyrTargets[i] then      -- if person #i is in a vehicle and not already announced 
 					ValkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
