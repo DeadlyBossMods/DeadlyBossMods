@@ -355,7 +355,6 @@ do
 	local function resetValkIconState()
 		table.wipe(valkIcons)
 		currentIcon = 2
-		grabIcon = 2
 		iconsSet = 0
 	end
 	
@@ -384,6 +383,7 @@ do
 			mod:Schedule(0.5, scanValkyrTargets)  -- check for more targets in a few
 		else
 			wipe(valkyrTargets)       -- no more valkyrs this round, so lets clear the table
+			grabIcon = 2
 		end
 	end  
 	
