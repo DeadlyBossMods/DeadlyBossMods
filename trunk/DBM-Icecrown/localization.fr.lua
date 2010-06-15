@@ -127,7 +127,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull						= "Quelle est cette perturbation",
+	YellPull						= "Quelle est cette perturbation ? Vous osez profaner cette terre sacrée ? Elle deviendra votre sépulture !",
 	YellReanimatedFanatic			= "Lève-toi, dans l'exultation de cette nouvelle pureté",
 	ShieldPercent					= "Barrière de mana",
 	Fanatic1						= "Membres du culte",
