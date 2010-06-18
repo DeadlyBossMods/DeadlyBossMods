@@ -82,7 +82,7 @@ do
 				if self.Options.AnnounceSporeIcons then
 					SendChatMessage(L.SporeSet:format(gasSporeIcon, UnitName(v)), "RAID")
 				end
-				mod:SetIcon(UnitName(v), gasSporeIcon, 12)
+				self:SetIcon(UnitName(v), gasSporeIcon, 12)
 				gasSporeIcon = gasSporeIcon - 1
 			end
 			table.wipe(gasSporeIconTargets)
