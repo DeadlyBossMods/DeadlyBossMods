@@ -114,7 +114,7 @@ do
 				if self.Options.AnnouncePColdIcons then
 					SendChatMessage(L.PcoldIconSet:format(PColdIcon, UnitName(v)), "RAID")
 				end
-				mod:SetIcon(UnitName(v), PColdIcon)
+				self:SetIcon(UnitName(v), PColdIcon)
 				PColdIcon = PColdIcon - 1
 			end
 			table.wipe(PColdTargets)	
