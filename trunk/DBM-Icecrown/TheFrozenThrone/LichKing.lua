@@ -80,6 +80,8 @@ local timerRoleplay			= mod:NewTimer(160, "TimerRoleplay", 72350)
 
 local berserkTimer			= mod:NewBerserkTimer(900)
 
+local soundDefile			= mod:NewSound(72762)
+
 mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
 mod:AddBoolOption("RagingSpiritIcon")
@@ -116,6 +118,7 @@ function mod:DefileTarget()
 		end
 	if targetname == UnitName("player") then
 		specWarnDefileCast:Show()
+		soundDefile:Play()
 		if self.Options.YellOnDefile then
 			SendChatMessage(L.YellDefile, "SAY")
 		end
