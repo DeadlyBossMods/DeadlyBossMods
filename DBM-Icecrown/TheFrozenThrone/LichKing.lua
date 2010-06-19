@@ -110,34 +110,10 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:DefileTarget()
-	local targetname = self:GetBossTarget(36597)
-	if not targetname then return end
-		warnDefileCast:Show(targetname)
-		if self.Options.DefileIcon and mod:LatencyCheck() then
-			self:SetIcon(targetname, 8, 10)
-		end
-	if targetname == UnitName("player") then
-		specWarnDefileCast:Show()
-		soundDefile:Play()
-		if self.Options.YellOnDefile then
-			SendChatMessage(L.YellDefile, "SAY")
-		end
-	elseif targetname then
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			if inRange then
-				specWarnDefileNear:Show()
---				if self.Options.DefileArrow then
---					DBM.Arrow:ShowRunAway(x, y, 15, 5)
---				end
-			end
-		end
+	local target = self:GetBossTarget(36597)
+	if not target then return end
+	if mod:LatencyCheck() then--Only send sync defile target if you have low enough latency not to ever get wrong target.
+		self:SendSync("DefileOn", target)
 	end
 end
 
@@ -483,13 +459,13 @@ function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 end
 
 function mod:SWING_DAMAGE(args)
-	if phase == 1 and args:GetSrcCreatureID() == 36597 then--Lich king Tank
+	if args:GetSrcCreatureID() == 36597 then--Lich king Tank
 		LKTank = args.destName
 	end
 end
 
 function mod:SWING_MISSED(args)
-	if phase == 1 and args:GetSrcCreatureID() == 36597 then--Lich king Tank
+	if args:GetSrcCreatureID() == 36597 then--Lich king Tank
 		LKTank = args.destName
 	end
 end
@@ -504,6 +480,34 @@ function mod:OnSync(msg, target)
 			end 
 			if self.Options.NecroticPlagueIcon then
 				self:SetIcon(target, 7, 5)
+			end
+		end
+	elseif msg == "DefileOn" then
+		warnDefileCast:Show(target)
+		if self.Options.DefileIcon then
+			self:SetIcon(targetname, 8, 10)
+		end
+		if target == UnitName("player") then
+			specWarnDefileCast:Show()
+			soundDefile:Play()
+			if self.Options.YellOnDefile then
+				SendChatMessage(L.YellDefile, "SAY")
+			end
+		elseif target then
+			local uId = DBM:GetRaidUnitId(target)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				if inRange then
+					specWarnDefileNear:Show()
+--					if self.Options.DefileArrow then
+--						DBM.Arrow:ShowRunAway(x, y, 15, 5)
+--					end
+				end
 			end
 		end
 	end
