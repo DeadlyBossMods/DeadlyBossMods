@@ -485,7 +485,7 @@ function mod:OnSync(msg, target)
 	elseif msg == "DefileOn" then
 		warnDefileCast:Show(target)
 		if self.Options.DefileIcon then
-			self:SetIcon(targetname, 8, 10)
+			self:SetIcon(target, 8, 10)
 		end
 		if target == UnitName("player") then
 			specWarnDefileCast:Show()
