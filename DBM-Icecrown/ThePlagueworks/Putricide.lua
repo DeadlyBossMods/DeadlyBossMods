@@ -96,7 +96,7 @@ end
 function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2/3 people in 25 man
 	local targetname = self:GetBossTarget(36678)
 	if not targetname then return end
-		if self.Options.MalleableGooIcon then
+		if self.Options.MalleableGooIcon and mod:LatencyCheck() then
 			self:SetIcon(targetname, 6, 10)
 		end
 	if targetname == UnitName("player") then

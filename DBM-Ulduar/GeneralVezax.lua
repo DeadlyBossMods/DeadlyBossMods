@@ -78,7 +78,7 @@ end
 function mod:ShadowCrashTarget()
 	local targetname = self:GetBossTarget()
 	if not targetname then return end
-	if self.Options.SetIconOnShadowCrash then
+	if self.Options.SetIconOnShadowCrash and mod:LatencyCheck() then
 		self:SetIcon(targetname, 8, 10)
 	end
 	warnShadowCrash:Show(targetname)

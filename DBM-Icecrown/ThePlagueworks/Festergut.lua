@@ -150,7 +150,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(72299) then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
+	if spellName == GetSpellInfo(72299) and mod:LatencyCheck() then -- Malleable Goo Summon Trigger (10 player normal) (the other 3 spell ids are not needed here since all spells have the same name)
 		self:SendSync("Goo")
 	end
 end

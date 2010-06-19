@@ -109,7 +109,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:find(L.AddsAlliance) or msg:find(L.AddsHorde) then
+	if (msg:find(L.AddsAlliance) or msg:find(L.AddsHorde)) and mod:LatencyCheck() then
 		self:SendSync("GunshipAdds")
 	end
 end
