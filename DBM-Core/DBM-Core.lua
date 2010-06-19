@@ -107,6 +107,7 @@ DBM.DefaultOptions = {
 	DontSendBossAnnounces = false,
 	DontSendBossWhispers = false,
 	DontSetIcons = false,
+	MaxLatency = 150,
 --	HelpMessageShown = false,
 }
 
@@ -2386,7 +2387,7 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:LatencyCheck()
-	return select(3, GetNetStats()) < 150
+	return select(3, GetNetStats()) < DBM.Options.MaxLatency
 end
 
 local function getTalentpointsSpent(spellID)
