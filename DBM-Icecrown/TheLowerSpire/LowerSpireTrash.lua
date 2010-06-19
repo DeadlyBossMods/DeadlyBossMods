@@ -73,7 +73,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3 then
+	if (msg == L.WarderTrap1 or msg == L.WarderTrap2 or msg == L.WarderTrap3) and mod:LatencyCheck() then
 		self:SendSync("WarderTrap")
 	end
 end

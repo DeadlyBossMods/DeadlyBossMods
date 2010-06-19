@@ -189,7 +189,7 @@ do
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg:match(L.SwarmingShadows) then
+	if msg:match(L.SwarmingShadows) and mod:LatencyCheck() then
 		self:SendSync("SwarmingShadows", target)
 	end
 end

@@ -81,7 +81,7 @@ function mod:OnCombatEnd()
 	end
 end
 
-function mod:ShockVortexTarget()	--not yet tested.
+function mod:ShockVortexTarget()
 	local targetname = self:GetBossTarget(37970)
 	if not targetname then return end
 		warnShockVortex:Show(targetname)
@@ -178,7 +178,7 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg:match(L.EmpoweredFlames) then
+	if msg:match(L.EmpoweredFlames) and mod:LatencyCheck() then
 		self:SendSync("EmpoweredFlame", target)
 	end
 end
@@ -190,7 +190,7 @@ function mod:UNIT_TARGET()
 end
 
 function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
-	if spellName == GetSpellInfo(72080) then
+	if spellName == GetSpellInfo(72080) and mod:LatencyCheck() then
 		self:SendSync("KineticBomb")
 	end
 end
