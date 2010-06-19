@@ -113,7 +113,7 @@ function mod:DefileTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
 		warnDefileCast:Show(targetname)
-		if self.Options.DefileIcon then
+		if self.Options.DefileIcon and mod:LatencyCheck() then
 			self:SetIcon(targetname, 8, 10)
 		end
 	if targetname == UnitName("player") then
@@ -143,7 +143,7 @@ end
 
 function mod:TankTrap()
 	warnTrapCast:Show(LKTank)
-	if self.Options.TrapIcon then
+	if self.Options.TrapIcon and mod:LatencyCheck() then
 		self:SetIcon(LKTank, 6, 10)
 	end
 	if LKTank == UnitName("player") then

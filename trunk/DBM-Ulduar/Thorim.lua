@@ -94,7 +94,7 @@ end
 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase2 then		-- Bossfight (tank and spank)
+	if msg == L.YellPhase2 and mod:LatencyCheck() then		-- Bossfight (tank and spank)
 		self:SendSync("Phase2")
 	end
 end

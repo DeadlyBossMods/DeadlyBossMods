@@ -38,7 +38,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.SindragosaEvent then
+	if msg == L.SindragosaEvent and mod:LatencyCheck() then
 		self:SendSync("GauntletStart")
 	end
 end

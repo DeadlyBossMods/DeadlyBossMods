@@ -290,15 +290,15 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then
+	if (msg == L.YellPhase2 or msg:find(L.YellPhase2)) and mod:LatencyCheck() then
 		--DBM:AddMsg("ALPHA: yell detect phase2, syncing to clients")
 		self:SendSync("Phase2")	-- untested alpha! (this will result in a wrong timer)
 
-	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
+	elseif (msg == L.YellPhase3 or msg:find(L.YellPhase3)) and mod:LatencyCheck() then
 		--DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
 		self:SendSync("Phase3")	-- untested alpha! (this will result in a wrong timer)
 
-	elseif msg == L.YellPhase4 or msg:find(L.YellPhase4) then
+	elseif (msg == L.YellPhase4 or msg:find(L.YellPhase4)) and mod:LatencyCheck() then
 		--DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
 		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
 

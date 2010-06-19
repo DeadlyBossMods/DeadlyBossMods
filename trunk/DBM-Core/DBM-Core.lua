@@ -2385,6 +2385,10 @@ function bossModPrototype:SetUsedIcons(...)
 	end
 end
 
+function bossModPrototype:LatencyCheck()
+	return select(3, GetNetStats()) < 150
+end
+
 local function getTalentpointsSpent(spellID)
 	local spellName = GetSpellInfo(spellID)
 	for tabIndex=1, GetNumTalentTabs() do
