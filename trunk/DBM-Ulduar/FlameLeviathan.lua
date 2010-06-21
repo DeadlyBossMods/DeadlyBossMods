@@ -25,6 +25,8 @@ local timerSystemOverload	= mod:NewBuffActiveTimer(20, 62475)
 local timerFlameVents		= mod:NewCastTimer(10, 62396)
 local timerPursued			= mod:NewTargetTimer(30, 62374)
 
+local soundPursued = mod:NewSound(62374)
+
 local guids = {}
 local function buildGuidTable()
 	table.wipe(guids)
@@ -58,6 +60,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		pursueTargetWarn:Show(player)
 		if player == UnitName("player") then
 			pursueSpecWarn:Show()
+			soundPursued:Play()
 		end
 	elseif args:IsSpellID(62297) then		-- Hodir's Fury (Person is frozen)
 		warnHodirsFury:Show(args.destName)
