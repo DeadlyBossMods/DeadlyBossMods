@@ -22,7 +22,7 @@ localization.tw.lua
 localization.kr.lua
 localization.de.lua
 localization.es.lua
-WorldEvents\ApothecaryTrio.lua
-WorldEvents\Ahune.lua
-WorldEvents\CorenDirebrew.lua
-WorldEvents\HeadlessHorseman.lua
+ApothecaryTrio.lua
+Ahune.lua
+CorenDirebrew.lua
+HeadlessHorseman.lua
