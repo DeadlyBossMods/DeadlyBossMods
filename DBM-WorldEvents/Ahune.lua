@@ -17,9 +17,9 @@ local warnEmerged				= mod:NewAnnounce("Emerged", 2, "Interface\\AddOns\\DBM-Cor
 
 local specWarnAttack			= mod:NewSpecialWarning("specWarnAttack")
 
-local timerCombatStart			= mod:NewTimer(10, "TimerCombat", 2457)--rollplay for first pull
+local timerCombatStart			= mod:NewTimer(12, "TimerCombat", 2457)--rollplay for first pull
 local timerEmerge				= mod:NewTimer(45, "EmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local timerSubmerge				= mod:NewTimer(95, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local timerSubmerge				= mod:NewTimer(97, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 
 function mod:OnCombatStart(delay)
 	timerCombatStart:Start(-delay)
