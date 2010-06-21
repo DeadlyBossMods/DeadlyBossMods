@@ -2,9 +2,10 @@ local mod	= DBM:NewMod("Ahune", "DBM-WorldEvents")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(25740)
+mod:SetCreatureID(25740)--25740 Ahune, 25755, 25756 the two types of adds
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("say", L.Pull)
+mod:SetMinCombatTime(15)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -16,22 +17,25 @@ local warnEmerged				= mod:NewAnnounce("Emerged", 2, "Interface\\AddOns\\DBM-Cor
 
 local specWarnAttack			= mod:NewSpecialWarning("specWarnAttack")
 
-local timerSubmerge				= mod:NewTimer(40, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-local timerEmerge				= mod:NewTimer(95, "EmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local timerAttack				= mod:NewTimer(45, "AttackTimer", 2457)
+local timerCombatStart			= mod:NewTimer(10, "TimerCombat", 2457)--rollplay for first pull
+local timerEmerge				= mod:NewTimer(45, "EmergeTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerSubmerge				= mod:NewTimer(95, "SubmergTimer", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+
+function mod:OnCombatStart(delay)
+	timerCombatStart:Start(-delay)
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(45954) then				-- Ahunes Shield
 		warnEmerged:Show()
-		timerEmerge:Start()
+		timerSubmerge:Start()
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(45954) then				-- Ahunes Shield
 		warnSubmerged:Show()
-		timerSubmerge:Start()
+		timerEmerge:Start()
 		specWarnAttack:Show()
-		timerAttack:Start()
 	end
 end

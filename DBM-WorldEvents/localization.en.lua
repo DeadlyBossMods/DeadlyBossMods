@@ -93,7 +93,7 @@ L:SetWarningLocalization({
 L:SetTimerLocalization{
 	SubmergTimer	= "Submerge",
 	EmergeTimer		= "Emerge",
-	AttackTimer		= "Ahune is vulnerable"
+	TimerCombat		= "Combat starts"
 }
 
 L:SetOptionLocalization({
@@ -102,8 +102,9 @@ L:SetOptionLocalization({
 	specWarnAttack	= "Show special warning when Ahune becomes vulnerable",
 	SubmergTimer	= "Show timer for submerge",
 	EmergeTimer		= "Show timer for emerge",
-	AttackTimer		= "Show timer for period Ahune is vulnerable"
+	TimerCombat		= "Show timer for start of combat",
 })
 
 L:SetMiscLocalization({
+	Pull			= "The Ice Stone has melted!"
 })
