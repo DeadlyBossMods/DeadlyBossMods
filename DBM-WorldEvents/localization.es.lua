@@ -76,3 +76,37 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	SayCombatStart		= "¿Se han molestado en decirte quién soy y por qué estoy haciendo esto?"
 })
+
+-----------------------
+--  Lord Ahune  --
+-----------------------
+L = DBM:GetModLocalization("Ahune")
+
+L:SetGeneralLocalization({
+	name = "Ahune"
+})
+
+L:SetWarningLocalization({
+	Submerged		= "Ahune se sumerge",
+	Emerged			= "Ahune emerge",
+	specWarnAttack	= "Ahune es vulnerable ¡Ataca ahora!"
+})
+
+L:SetTimerLocalization{
+	SubmergTimer	= "Se sumerge",
+	EmergeTimer		= "Emerge",
+	TimerCombat		= "Inicio del combate"
+}
+
+L:SetOptionLocalization({
+	Submerged		= "Mostrar aviso cuando Ahune se sumerge",
+	Emerged			= "Mostrar aviso cuando Ahune emerge",
+	specWarnAttack	= "Mostrar aviso especial cuando Ahune es vulnerable",
+	SubmergTimer	= "Mostrar tiempo para sumersión",
+	EmergeTimer		= "Mostrar tiempo para emersión",
+	TimerCombat		= "Mostrar tiempo para inicio del combate",
+})
+
+L:SetMiscLocalization({
+	Pull			= "The Ice Stone has melted!"--translate
+})
