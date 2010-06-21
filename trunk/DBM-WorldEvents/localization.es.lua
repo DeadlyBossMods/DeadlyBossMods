@@ -108,5 +108,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull			= "The Ice Stone has melted!"--translate
+	Pull			= "¡La piedra de hielo se ha derretido!"
 })
