@@ -86,7 +86,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's cast upon spawning)
 		if self.Options.SetIconOnBlazingSkeleton then
-			self:SetIcon(args.destGUID, 8)
+			self:SetIcon(args.sourceGUID, 8)
 		end
 	end
 end
