@@ -820,8 +820,12 @@ function barPrototype:Announce()
 		msg = self.owner.announceHook(self)
 	end
 	msg = msg or ("%s  %d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
-	if ChatFrameEditBox:IsShown() then
+	if ChatFrameEditBox and ChatFrameEditBox:IsShown() then -- for WoW versions < 3.3.5 (and some chat mods, maybe?)
 		ChatFrameEditBox:Insert(msg)
+	elseif ChatEdit_ChooseBoxForSend then -- WoW 3.3.5
+		local editBox = ChatEdit_ChooseBoxForSend()
+		ChatEdit_ActivateChat(editBox)
+		editBox:Insert(msg)
 	else
 		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
 	end
