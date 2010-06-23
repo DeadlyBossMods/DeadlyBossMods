@@ -1575,8 +1575,15 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	editBox:SetText("http://www.deadlybossmods.com")
 	editBox:HighlightText()
 	editBox:SetScript("OnHide", function(self)
-		if ChatFrameEditBox:IsVisible() then
-			ChatFrameEditBox:SetFocus()
+		if ChatFrameEditBox then -- WoW < 3.3.5
+			if ChatFrameEditBox:IsVisible() then
+				ChatFrameEditBox:SetFocus()
+			end
+		elseif ChatEdit_ChooseBoxForSend then -- WoW >= 3.3.5
+			local editBox = ChatEdit_ChooseBoxForSend()
+			if editBox:IsVisible() then
+				editBox:SetFocus()
+			end
 		end
 	end)
 	editBox:SetScript("OnTextChanged", function(self)
