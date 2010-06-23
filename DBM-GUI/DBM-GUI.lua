@@ -243,10 +243,8 @@ do
 			local msg = link:gsub("|h(.*)|h", "|h[%1]|h")
 			if ChatFrameEditBox and ChatFrameEditBox:IsShown() then -- for WoW versions < 3.3.5 (and some chat mods, maybe?)
 				ChatFrameEditBox:Insert(msg)
-			elseif ChatEdit_ChooseBoxForSend then -- WoW >= 3.3.5
-				local editBox = ChatEdit_ChooseBoxForSend()
-				ChatEdit_ActivateChat(editBox)
-				editBox:Insert(msg)
+			elseif ChatEdit_ChooseBoxForSend and ChatEdit_ChooseBoxForSend():IsVisible() then -- WoW >= 3.3.5
+				ChatEdit_ChooseBoxForSend():Insert(msg)
 			end
 		elseif not IsShiftKeyDown() then
 			if cursorInHitBox(self:GetParent()) then
