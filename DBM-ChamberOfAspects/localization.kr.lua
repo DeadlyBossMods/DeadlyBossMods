@@ -101,7 +101,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Baltharus")
 
 L:SetGeneralLocalization({
-	name = "Baltharus the Warborn"
+	name = "전쟁의 아들 발타루스"
 })
 
 L:SetWarningLocalization({
@@ -125,7 +125,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Saviana")
 
 L:SetGeneralLocalization({
-	name = "Saviana Ragefire"
+	name = "사비아나 레이지파이어"
 })
 
 L:SetWarningLocalization({
