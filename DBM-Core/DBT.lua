@@ -823,7 +823,8 @@ function barPrototype:Announce()
 	if ChatFrameEditBox and ChatFrameEditBox:IsShown() then -- for WoW versions < 3.3.5 (and some chat mods, maybe?)
 		ChatFrameEditBox:Insert(msg)
 	elseif ChatEdit_ChooseBoxForSend and ChatEdit_ChooseBoxForSend():IsVisible() then -- WoW 3.3.5
-		ChatEdit_ChooseBoxForSend():Insert(msg)
+--		ChatEdit_ChooseBoxForSend():Insert(msg)
+		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
 	else
 		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
 	end
