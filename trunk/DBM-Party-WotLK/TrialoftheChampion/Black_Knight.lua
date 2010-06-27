@@ -11,7 +11,8 @@ mod:RegisterKill("yell", L.YellCombatEnd)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnExplode			= mod:NewAnnounce("warnExplode", 4, 67886)
@@ -20,7 +21,7 @@ local warnMarked			= mod:NewTargetAnnounce(67823, 3)
 
 local specWarnDesecration	= mod:NewSpecialWarningMove(67876)
 
-local timerCombatStart		= mod:NewTimer(37, "TimerCombatStart", 2457)
+local timerCombatStart		= mod:NewTimer(55.5, "TimerCombatStart", 2457)
 local timerMarked			= mod:NewTargetTimer(10, 67823)
 local timerExplode			= mod:NewCastTimer(4, 67886)
 
@@ -59,7 +60,7 @@ do
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_SAY(msg)
+function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:find(L.Pull) then
 		timerCombatStart:Start()
 	end

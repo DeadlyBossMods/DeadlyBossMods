@@ -1170,7 +1170,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull			= "What's that, up near the rafters?",
+	Pull			= "Well done. You have proven yourself today-",
 	YellCombatEnd	= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
 })
 
