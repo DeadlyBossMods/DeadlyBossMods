@@ -14,12 +14,15 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
-local warnExplode			= mod:NewAnnounce("warnExplode", 4)
+local warnExplode			= mod:NewAnnounce("warnExplode", 4, 67886)
 local warnGhoulExplode		= mod:NewTargetAnnounce(67751, 4)
 local warnMarked			= mod:NewTargetAnnounce(67823, 3)
+
+local specWarnDesecration	= mod:NewSpecialWarningMove(67876)
+
+local timerCombatStart		= mod:NewTimer(37, "TimerCombatStart", 2457)
 local timerMarked			= mod:NewTargetTimer(10, 67823)
 local timerExplode			= mod:NewCastTimer(4, 67886)
-local specWarnDesecration	= mod:NewSpecialWarningMove(67876)
 
 mod:AddBoolOption("SetIconOnMarkedTarget", true)
 
@@ -56,3 +59,8 @@ do
 	end
 end
 
+function mod:CHAT_MSG_MONSTER_SAY(msg)
+	if msg:find(L.Pull) then
+		timerCombatStart:Start()
+	end
+end

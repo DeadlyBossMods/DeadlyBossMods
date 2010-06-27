@@ -1159,12 +1159,18 @@ L:SetWarningLocalization({
 	warnExplode			= "Ghoul Explode - Run away"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "Combat starts"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "Show timer for start of combat",
 	warnExplode				= "Show warning when Ghoul Minion is about to explode",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
+	Pull			= "What's that, up near the rafters?",
 	YellCombatEnd	= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
 })
 
