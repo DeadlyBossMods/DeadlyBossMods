@@ -49,6 +49,7 @@ L.EnableStatus 				= "Reply to 'status' whispers"
 L.AutoRespond 				= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon			= "Show minimap button"
 L.FixCLEUOnCombatStart		= "Clear combat log cache on pull"
+L.Latency_Text				= "Set max latency sync threshold"
 
 L.Button_RangeFrame			= "Show/hide range frame"
 L.Button_TestBars			= "Start test bars"

@@ -1193,7 +1193,7 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 165, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 210, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
@@ -1224,6 +1224,11 @@ local function CreateOptionsMenu()
 		local bmtestmode  = generaloptions:CreateButton(L.Button_TestBars)
 		bmtestmode:SetPoint('TOPLEFT', bmrange, "TOPRIGHT", 0, 0)
 		bmtestmode:SetScript("OnClick", function(self) DBM:DemoMode() end)
+
+		local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 500, 5, 180)   -- (text , min_value , max_value , step , width)
+     	latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 0, -25)
+     	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.MaxLatency) end)
+		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.MaxLatency = self:GetValue() end)
 
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
