@@ -243,7 +243,7 @@ L:SetOptionLocalization{
 	warnAdds				= "Предупреждение о призыве помощников",
 	timerAdds				= "Отсчет времени до призыва помощников",
 	TimerEmerge				= "Отсчет времени до появления",
-	TimerSubmerge			= "Отсчет времени до погружения",
+	TimerSubmerge			= "Отсчет времени до зарывания",
 	PlaySoundOnPursue		= "Звуковой сигнал, если вас преследуют",
 	PursueIcon				= "Устанавливать метки на преследуемых",
 	SpecWarnShadowStrike	= "Спец-предупреждение для $spell:66134 (для прерывания)",
