@@ -37,7 +37,7 @@ end
 do 
 	local lastdesecration = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(67781, 67876) and args:IsPlayer() and time() - lastdesecration > 2 then		-- Desecration, MOVE!
+		if args:IsSpellID(67781, 67876) and args:IsPlayer() and time() - lastdesecration > 3 then		-- Desecration, MOVE!
 			specWarnDesecration:Show()
 			lastdesecration = time()
 		end
