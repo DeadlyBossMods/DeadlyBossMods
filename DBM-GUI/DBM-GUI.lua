@@ -424,7 +424,7 @@ do
 		slider.mytype = "slider"
 		slider:SetMinMaxValues(low, high)
 		slider:SetValueStep(step)
-		slider:SetWidth(famewidth or 180)
+		slider:SetWidth(framewidth or 180)
 		getglobal(FrameTitle..self:GetCurrentID()..'Text'):SetText(text)
 		slider:SetScript("OnValueChanged", onValueChanged(getglobal(FrameTitle..self:GetCurrentID()..'Text'), text))
 		self:SetLastObj(slider)
