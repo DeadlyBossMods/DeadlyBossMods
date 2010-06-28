@@ -50,6 +50,8 @@ L.EnableStatus 		= "Responder 'estado' a los que te susurren en raid"
 L.AutoRespond 		= "Habilitar auto-responder si estas en un Boss"
 L.EnableMiniMapIcon	= "Mostrar icono de DBM en el mapa"
 L.FixCLEUOnCombatStart		= "Limpiar el log de combate al pullear"
+L.Latency_Text				= "Establecer umbral de latencia máxima para sincronizaciones: %d"
+
 
 L.Button_RangeFrame	= "Mostrar/Ocultar cuadro de rango"
 L.Button_TestBars	= "Testear barras"
