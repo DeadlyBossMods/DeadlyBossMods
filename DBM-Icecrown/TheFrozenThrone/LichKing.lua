@@ -97,6 +97,7 @@ mod:AddBoolOption("TrapArrow")
 local phase	= 0
 local lastPlagueCast = 0
 local lastDefileCast = 0
+local lastTrapCast = 0
 local warned_preP2 = false
 local warned_preP3 = false
 local LKTank
@@ -105,6 +106,7 @@ function mod:OnCombatStart(delay)
 	phase = 0
 	lastPlagueCast = 0
 	lastDefileCast = 0
+	lastTrapCast = 0
 	warned_preP2 = false
 	warned_preP3 = false
 	LKTank = nil
@@ -114,12 +116,32 @@ end
 function mod:DefileTarget()
 	local target = self:GetBossTarget(36597)
 	if not target then return end
-	if mod:LatencyCheck() then--Only send sync defile target if you have low enough latency not to ever get wrong target.
+	if mod:LatencyCheck() then--Only send sync if you have low latency.
 		self:SendSync("DefileOn", target)
 	end
 end
 
 function mod:TankTrap()
+	if mod:LatencyCheck() then--Laggy people can still get wrong target 10 times, so don't send sync if you fail latency check.
+		self:SendSync("TrapOn", LKTank)
+	end
+end
+
+function mod:TrapTarget()
+	local targetname = self:GetBossTarget(36597)
+	if not targetname then return end
+	if targetname ~= LKTank then--If scan doesn't return tank abort other scans and do other warnings.
+		self:UnscheduleMethod("TrapTarget")
+		self:UnscheduleMethod("TankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
+		self:SendSync("TrapOn", targetname)--No latency check performed in this function, if you didn't grab tank then your scan was right, lagging or not.
+	else
+		self:UnscheduleMethod("TankTrap")
+		self:ScheduleMethod(1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
+	end
+end
+
+--In case new method doesn't work well with the unique trap scanning methods used, non sync method can still be uncommented and used.
+--[[function mod:TankTrap()
 	warnTrapCast:Show(LKTank)
 	if self.Options.TrapIcon and mod:LatencyCheck() then
 		self:SetIcon(LKTank, 6, 10)
@@ -182,7 +204,7 @@ function mod:TrapTarget()
 		self:UnscheduleMethod("TankTrap")
 		self:ScheduleMethod(1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
 	end
-end
+end--]]
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68981, 74270, 74271, 74272) or args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start)
@@ -486,6 +508,7 @@ function mod:OnSync(msg, target)
 		end
 	elseif msg == "DefileOn" and GetTime() - lastDefileCast > 10 then
 		warnDefileCast:Show(target)
+		lastDefileCast = GetTime()
 		if self.Options.DefileIcon then
 			self:SetIcon(target, 8, 10)
 		end
@@ -512,6 +535,32 @@ function mod:OnSync(msg, target)
 				end
 			end
 		end
-		lastDefileCast = GetTime()
+	elseif msg == "TrapOn" and GetTime() - lastTrapCast > 10 then
+		warnTrapCast:Show(target)
+		lastTrapCast = GetTime()
+		if self.Options.TrapIcon then
+			self:SetIcon(target, 6, 10)
+		end
+		if target == UnitName("player") then
+			specWarnTrap:Show()
+			if self.Options.YellOnTrap then
+				SendChatMessage(L.YellTrap, "SAY")
+			end
+		end
+		local uId = DBM:GetRaidUnitId(target)
+		if uId ~= "none" then
+			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			if inRange then
+				specWarnTrapNear:Show()
+				if self.Options.TrapArrow then
+					DBM.Arrow:ShowRunAway(x, y, 10, 5)
+				end
+			end
+		end
 	end
 end

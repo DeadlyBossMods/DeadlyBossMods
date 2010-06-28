@@ -79,6 +79,7 @@ local warned_preP3 = false
 local spamPuddle = 0
 local spamGas = 0
 local phase = 0
+local lastGooCast = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -88,6 +89,7 @@ function mod:OnCombatStart(delay)
 	warned_preP2 = false
 	warned_preP3 = false
 	phase = 1
+	lastGooCast = 0
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerUnboundPlagueCD:Start(10-delay)
 	end
@@ -96,22 +98,8 @@ end
 function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2/3 people in 25 man
 	local targetname = self:GetBossTarget(36678)
 	if not targetname then return end
-		if self.Options.MalleableGooIcon and mod:LatencyCheck() then
-			self:SetIcon(targetname, 6, 10)
-		end
-	if targetname == UnitName("player") then
-		specWarnMalleableGoo:Show()
-		if self.Options.YellOnMalleableGoo then
-			SendChatMessage(L.YellMalleable, "SAY")
-		end
-	elseif targetname then
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnMalleableGooNear:Show()
-			end
-		end
+	if mod:LatencyCheck() then--Only send sync if you have low latency.
+		self:SendSync("GooOn", targetname)
 	end
 end
 
@@ -365,5 +353,28 @@ function mod:UNIT_HEALTH(uId)
 	elseif phase == 2 and not warned_preP3 and self:GetUnitCreatureId(uId) == 36678 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.38 then
 		warned_preP3 = true
 		warnPhase3Soon:Show()	
+	end
+end
+
+function mod:OnSync(msg, target)
+	if msg == "GooOn" and GetTime() - lastGooCast > 10 then
+		lastGooCast = GetTime()
+		if self.Options.MalleableGooIcon then
+			self:SetIcon(target, 6, 10)
+		end
+		if target == UnitName("player") then
+			specWarnMalleableGoo:Show()
+			if self.Options.YellOnMalleableGoo then
+				SendChatMessage(L.YellMalleable, "SAY")
+			end
+		elseif target then
+			local uId = DBM:GetRaidUnitId(target)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
+					specWarnMalleableGooNear:Show()
+				end
+			end
+		end
 	end
 end

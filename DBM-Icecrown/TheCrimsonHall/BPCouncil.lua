@@ -57,6 +57,7 @@ mod:AddBoolOption("RangeFrame", true)
 
 local activePrince
 local glitteringSparksTargets	= {}
+local lastShockCast = 0
 
 local function warnGlitteringSparksTargets()
 	warnGliteringSparks:Show(table.concat(glitteringSparksTargets, "<, >"))
@@ -69,6 +70,7 @@ function mod:OnCombatStart(delay)
 	warnTargetSwitchSoon:Schedule(42-delay)
 	timerTargetSwitch:Start(-delay)
 	activePrince = nil
+	lastShockCast = 0
 	table.wipe(glitteringSparksTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(12)
@@ -84,17 +86,8 @@ end
 function mod:ShockVortexTarget()
 	local targetname = self:GetBossTarget(37970)
 	if not targetname then return end
-		warnShockVortex:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnVortex:Show()
-	elseif targetname then
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnVortexNear:Show()
-			end
-		end
+	if mod:LatencyCheck() then--Only send sync Shock Vortex target if you have low latency.
+		self:SendSync("ShockVortex", targetname)
 	end
 end
 
@@ -178,8 +171,15 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, _, _, _, target)
-	if msg:match(L.EmpoweredFlames) and mod:LatencyCheck() then
-		self:SendSync("EmpoweredFlame", target)
+	if msg:match(L.EmpoweredFlames) then
+		warnEmpoweredFlames:Show(target)
+		if target == UnitName("player") then
+			specWarnEmpoweredFlames:Show()
+			soundEmpoweredFlames:Play()
+		end
+		if self.Options.EmpoweredFlameIcon then
+			self:SetIcon(target, 7, 10)
+		end
 	end
 end
 
@@ -196,17 +196,22 @@ function mod:UNIT_SPELLCAST_SUCCEEDED(uId, spellName)
 end
 
 function mod:OnSync(msg, target)
-	if msg == "EmpoweredFlame" then
-		warnEmpoweredFlames:Show(target)
-		if target == UnitName("player") then
-			specWarnEmpoweredFlames:Show()
-			soundEmpoweredFlames:Play()
-		end
-		if self.Options.EmpoweredFlameIcon then
-			self:SetIcon(target, 7, 10)
-		end
-	elseif msg == "KineticBomb" then
+	if msg == "KineticBomb" then
 		warnKineticBomb:Show()
 		timerKineticBombCD:Start()
+	elseif msg == "ShockVortex" and GetTime() - lastShockCast > 10 then
+		warnShockVortex:Show(target)
+		lastShockCast = GetTime()
+		if target == UnitName("player") then
+			specWarnVortex:Show()
+		elseif targetname then
+			local uId = DBM:GetRaidUnitId(target)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				if inRange then
+					specWarnVortexNear:Show()
+				end
+			end
+		end
 	end
 end
