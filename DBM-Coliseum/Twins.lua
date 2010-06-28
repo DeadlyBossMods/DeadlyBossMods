@@ -173,7 +173,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		debuffTargets[#debuffTargets + 1] = args.destName
 		self:UnscheduleMethod("warnDebuff")
-		self:ScheduleMethod(0.75, "warnDebuff")
+		self:ScheduleMethod(0.9, "warnDebuff")
 	elseif args:IsSpellID(66001, 67281, 67282, 67283) then	-- Touch of Darkness
 		if args:IsPlayer() and self.Options.SpecialWarnOnDebuff then
 			specWarnSpecial:Show()
