@@ -75,13 +75,13 @@ L:SetMiscLocalization({
 	SayCombatStart		= "Did they bother to tell you who I am and why I am doing this?"
 })
 
------------------------
---  Lord Ahune  --
------------------------
+-------------
+--  Ahune  --
+-------------
 L = DBM:GetModLocalization("Ahune")
 
 L:SetGeneralLocalization({
-	name = "Lord Ahune"
+	name = "Ahune"
 })
 
 L:SetWarningLocalization({
