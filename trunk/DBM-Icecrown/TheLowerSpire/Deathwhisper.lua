@@ -251,13 +251,7 @@ function mod:UNIT_TARGET()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:find(L.YellReanimatedFanatic) and mod:LatencyCheck() then
-		self:SendSync("Reanimated")
-	end
-end
-
-function mod:OnSync(msg, arg)
-	if msg == "Reanimated" then
+	if msg:find(L.YellReanimatedFanatic) then
 		warnReanimating:Show()
 	end
 end
