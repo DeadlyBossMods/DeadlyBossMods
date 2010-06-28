@@ -1213,12 +1213,18 @@ L:SetWarningLocalization({
 	warnExplode		= "Explosión de necrófago. Alejate!"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "Empieza el combate"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
 	warnExplode		= "Avisar cuando un Necrofago vaya a explotar.",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
+	Pull			= "Bien hecho. Hoy has demostrado algo...",
 	YellCombatEnd	= "¡No! No debo fallar... otra vez..."
 })
 
