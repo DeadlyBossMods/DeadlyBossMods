@@ -1226,7 +1226,7 @@ local function CreateOptionsMenu()
 		bmtestmode:SetScript("OnClick", function(self) DBM:DemoMode() end)
 
 		local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 500, 5, 180)   -- (text , min_value , max_value , step , width)
-     	latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 0, -25)
+     	latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 10, -35)
      	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.MaxLatency) end)
 		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.MaxLatency = self:GetValue() end)
 
