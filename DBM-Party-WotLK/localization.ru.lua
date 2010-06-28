@@ -1162,12 +1162,18 @@ L:SetWarningLocalization({
 	warnExplode			= "Взрывание вурдалака-прислужника - бегите"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "Начало боя"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "Отсчет времени до начала боя",
 	warnExplode				= "Предупреждение, когда все вурдалаки-прислужники готовятся к Взрыванию.",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
+	Pull			= "Великолепно. Сегодня вы в честной борьбе заслужили…",
 	YellCombatEnd	= "Нет! Я не могу... снова... проиграть."
 })
 
