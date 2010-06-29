@@ -48,7 +48,6 @@ end
 local function showImpaleWarning()
 	warnImpale:Show(table.concat(impaleTargets, "<, >"))
 	table.wipe(impaleTargets)
-	impaleIcon = 8
 end
 
 function mod:OnCombatStart(delay)
@@ -70,7 +69,10 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(69062, 72669, 72670) then						-- Impale
 		impaleTargets[#impaleTargets + 1] = args.sourceName
 		timerBoned:Start()
-		if self.Options.SetIconOnImpale and impaleIcon > 0 then
+		if self.Options.SetIconOnImpale then
+			if 	impaleIcon < 1 then	--Icons are gonna be crazy on this fight if people don't control jumps, we will use ALL of them and only reset icons if we run out of them
+				impaleIcon = 8
+			end
 			self:SetIcon(args.sourceName, impaleIcon)
 			impaleIcon = impaleIcon - 1
 		end
