@@ -300,7 +300,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerHardmode	= "Отсчет времени для сложного режима",
-	RangeFrame		= "Отображать окно допустимой дистанции",
+	RangeFrame		= "Показывать окно проверки дистанции",
 	AnnounceFails	= "Объявлять игроков, попавших под $spell:62017, в рейд-чат\n(требуются права лидера или помощника)",
 }
 
@@ -400,7 +400,7 @@ L:SetOptionLocalization{
 	PlaySoundOnDarkGlare	= "Звуковой сигнал при $spell:63414",
 	ShockBlastWarningInP1	= "Спец-предупреждение для $spell:63631 в фазе 1",
 	ShockBlastWarningInP4	= "Спец-предупреждение для $spell:63631 в фазе 4",
-	RangeFrame				= "Показывать окно допустимой дистанции в фазе 1 (6 м)",
+	RangeFrame				= "Показывать окно проверки дистанции в фазе 1 (6 м)",
 	SetIconOnNapalm			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(65026),
 	SetIconOnPlasmaBlast	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(62997)
 }
