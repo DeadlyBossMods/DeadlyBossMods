@@ -286,6 +286,7 @@ L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Mostrar tiempo para siguientes tuberías de babosas venenosas",
 	WarnOozeSpawn				= "Mostrar aviso cuando salgan mocos pequeños",
 	specWarnLittleOoze			= "Mostrar aviso especial cuando te ataque un Moco pequeño",--creatureid 36897
+	RangeFrame					= "Mostrar distancia (8 yardas)",
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
