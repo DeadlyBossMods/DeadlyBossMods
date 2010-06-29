@@ -18,6 +18,7 @@ mod:RegisterEvents(
 
 local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737, mod:IsTank() or mod:IsHealer())
 local warnAddsSoon			= mod:NewPreWarnAnnounce(72173, 10, 3)
+local warnAdds				= mod:NewSpellAnnounce(72173, 4)
 local warnFrenzy			= mod:NewSpellAnnounce(72737, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnBloodNova			= mod:NewSpellAnnounce(73058, 2)
 local warnMark				= mod:NewTargetAnnounce(72444, 4)
@@ -135,6 +136,7 @@ do
 	function mod:SPELL_SUMMON(args)
 		if args:IsSpellID(72172, 72173) or args:IsSpellID(72356, 72357, 72358) then -- Summon Blood Beasts
 			if time() - lastBeast > 5 then
+				warnAdds:Show()
 				warnAddsSoon:Schedule(30)
 				timerCallBloodBeast:Start()
 				lastBeast = time()

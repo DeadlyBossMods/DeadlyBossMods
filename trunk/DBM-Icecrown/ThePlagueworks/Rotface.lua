@@ -46,6 +46,7 @@ local timerOozeExplosion		= mod:NewCastTimer(4, 69839)
 local timerVileGasCD			= mod:NewNextTimer(30, 72272)
 
 local soundMutatedInfection		= mod:NewSound(71224)
+mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("InfectionIcon", true)
 mod:AddBoolOption("ExplosionIcon", false)
 mod:AddBoolOption("TankArrow")
@@ -66,6 +67,15 @@ function mod:OnCombatStart(delay)
 	spamOoze = 0
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerVileGasCD:Start(22-delay)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(8)
+		end
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end
 

@@ -114,7 +114,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:match(L.twilightcutter) then
+	if msg:match(L.twilightcutter) and mod:LatencyCheck() then
 		self:SendSync("TwilightCutter")
 	end
 end
