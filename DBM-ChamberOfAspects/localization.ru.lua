@@ -100,7 +100,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarningSplitSoon	= "Show pre-warning for Split",
-	RangeFrame			= "Показывать окно допустимой дистанции (12 м)",
+	RangeFrame			= "Показывать окно проверки дистанции (12 м)",
 	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
@@ -125,7 +125,7 @@ L:SetOptionLocalization({
 	specWarnConflagNear		= "Спец-предупреждение, когда $spell:74452 около вас",
 	SpecialWarningTranq		= "Show special warning for Enrage (to tranq)",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
 	YellOnConflag			= "Кричать, когда $spell:74452 на вас",
-	RangeFrame				= "Показывать окно допустимой дистанции (10 м)",
+	RangeFrame				= "Показывать окно проверки дистанции (10 м)",
 	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
 })
 

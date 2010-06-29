@@ -217,7 +217,7 @@ L:SetOptionLocalization{
 	TimerCombatStart		= "Отсчет времени до начала боя",
 	warnFrenzySoon			= "Предупреждать о скором Бешенстве (на ~33%)",
 	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
-	RangeFrame				= "Показывать окно допустимой дистанции (12 м)",
+	RangeFrame				= "Показывать окно проверки дистанции (12 м)",
 	RunePowerFrame			= "Показывать здоровье босса + индикатор для $spell:72371",
 	BeastIcons				= "Устанавливать метки на Кровавые чудовища"
 }
@@ -244,7 +244,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	InhaledBlight		= "Предупреждение для $spell:71912",
-	RangeFrame			= "Показывать окно допустимой дистанции (8 м)",
+	RangeFrame			= "Показывать окно проверки дистанции (8 м)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
 	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:69279 в рейд-чат\n(требуются права помощника)"
@@ -277,6 +277,7 @@ L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Отсчет времени до следующих труб для подачи ядовитой слизи",
 	WarnOozeSpawn				= "Предупреждение при появлении Малого слизнюка",
 	specWarnLittleOoze			= "Спец-предупреждение, когда вас атакует Малый слизнюк",--creatureid 36897
+	RangeFrame					= "Показывать окно проверки дистанции (8 м)",
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
 	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
@@ -358,7 +359,7 @@ L:SetOptionLocalization{
 	specWarnVortexNear		= "Спец-предупреждение, когда $spell:72037 около вас",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (череп)",
-	RangeFrame				= "Показывать окно допустимой дистанции (12 м)"
+	RangeFrame				= "Показывать окно проверки дистанции (12 м)"
 }
 
 L:SetMiscLocalization{
@@ -387,7 +388,7 @@ L:SetOptionLocalization{
 	SetIconOnDarkFallen		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71340),
 	SwarmingShadowsIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71266),
 	BloodMirrorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70838),
-	RangeFrame				= "Показывать окно допустимой дистанции (8 м)",
+	RangeFrame				= "Показывать окно проверки дистанции (8 м)",
 	YellOnFrenzy			= "Кричать, когда на вас $spell:71474"
 }
 
@@ -467,7 +468,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой",
-	RangeFrame				= "Показывать игроков с метками в окне допустимой дистанции (10 норм., 20 гер.)"
+	RangeFrame				= "Показывать игроков с метками в окне проверки дистанции (10 норм., 20 гер.)"
 }
 
 L:SetMiscLocalization{
