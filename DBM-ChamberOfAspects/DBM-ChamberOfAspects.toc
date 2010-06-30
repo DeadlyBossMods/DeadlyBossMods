@@ -5,7 +5,7 @@
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0守護巨龍之間|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0흑요석 성소|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chambre des Aspects|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0El Sagrario Obsidiana|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Cámara de los Aspectos|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_SavedStats
@@ -16,14 +16,16 @@
 ## X-DBM-Mod-SubCategories-ruRU: Обсидиановое святилище, Рубиновое святилище
 ## X-DBM-Mod-SubCategories-zhTW: 黑曜聖所, 晶紅聖所
 ## X-DBM-Mod-SubCategories-koKR: 흑요석 성소, 루비 성소
+## X-DBM-Mod-SubCategories-esES: El Sagrario Obsidiana, El Sagrario Rubí
+## X-DBM-Mod-SubCategories-esMX: El Sagrario Obsidiana, El Sagrario Rubí
 ## X-DBM-Mod-Name: Chamber of Aspects
 ## X-DBM-Mod-Name-deDE: Kammer der Aspekte
 ## X-DBM-Mod-Name-ruRU: Палата Аспектов
 ## X-DBM-Mod-Name-zhTW: 守護巨龍之間
 ## X-DBM-Mod-Name-koKR: 고룡쉼터 사원
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
-## X-DBM-Mod-Name-esES: El Sagrario Obsidiana
-## X-DBM-Mod-Name-esMX: El Sagrario Obsidiana
+## X-DBM-Mod-Name-esES: Cámara de los Aspectos
+## X-DBM-Mod-Name-esMX: Cámara de los Aspectos
 ## X-DBM-Mod-Sort: 5
 ## X-DBM-Mod-LoadZone: The Obsidian Sanctum,The Ruby Sanctum
 ## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum,Das Rubinsanktum
@@ -31,8 +33,8 @@
 ## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所, 晶紅聖所
 ## X-DBM-Mod-LoadZone-koKR: 흑요석 성소,루비 성소
 ## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien
-## X-DBM-Mod-LoadZone-esES: El Sagrario Obsidiana
-## X-DBM-Mod-LoadZone-esMX: El Sagrario Obsidiana
+## X-DBM-Mod-LoadZone-esES: El Sagrario Obsidiana, El Sagrario Rubí
+## X-DBM-Mod-LoadZone-esMX: El Sagrario Obsidiana, El Sagrario Rubí
 localization.en.lua
 localization.de.lua
 localization.ru.lua
