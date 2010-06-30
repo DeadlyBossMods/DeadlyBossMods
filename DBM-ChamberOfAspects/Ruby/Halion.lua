@@ -61,8 +61,9 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(74648, 75877, 75878, 75879) then--Meteor Strike
-		warningMeteor:Show()
-		timerMeteorCD:Start()
+		if mod:LatencyCheck() then
+			self:SendSync("Meteor")
+		end
 	elseif args:IsSpellID(74792) then
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowTarget", args.destName)
@@ -124,6 +125,9 @@ function mod:OnSync(msg, target)
 		warningTwilightCutter:Show()
 		timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 		timerTwilightCutterCD:Schedule(15)
+	elseif msg == "Meteor" then
+		warningMeteor:Show()
+		timerMeteorCD:Start()
 	elseif msg == "ShadowTarget" then
 		warningShadowConsumption:Show(target)
 	elseif msg == "FieryTarget" then
