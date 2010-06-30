@@ -13,14 +13,14 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningWarnBeacon		= mod:NewTargetAnnounce(78722, 4)--Will change to a target announce if possible. need to do encounter
+local warningWarnBeacon		= mod:NewTargetAnnounce(74453, 4)--Will change to a target announce if possible. need to do encounter
 local warningWarnEnrage		= mod:NewSpellAnnounce(78722, 3)
 local warningWarnBreath		= mod:NewSpellAnnounce(74404, 3)
 
-local specWarnBeacon		= mod:NewSpecialWarningYou(78722)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
+local specWarnBeacon		= mod:NewSpecialWarningYou(74453)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
 local specWarnTranq			= mod:NewSpecialWarning("SpecialWarningTranq", mod:CanRemoveEnrage())
 
-local timerBeacon			= mod:NewBuffActiveTimer(5, 78722)
+local timerBeacon			= mod:NewBuffActiveTimer(5, 74453)
 local timerConflag			= mod:NewBuffActiveTimer(5, 74456)
 local timerConflagCD		= mod:NewNextTimer(35, 74452)
 local timerBreath			= mod:NewNextTimer(35, 74404)
