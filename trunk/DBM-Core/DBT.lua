@@ -814,13 +814,13 @@ options.ClickThrough.onChange = updateClickThrough
 --------------------
 --  Bar Announce  --
 --------------------
-local chatwindow = ChatEdit_GetActiveWindow and ChatEdit_GetActiveWindow() or ChatFrameEditBox
 function barPrototype:Announce()
 	local msg
 	if self.owner.announceHook then
 		msg = self.owner.announceHook(self)
 	end
 	msg = msg or ("%s  %d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
+	local chatwindow = ChatEdit_GetActiveWindow and ChatEdit_GetActiveWindow() or ChatFrameEditBox
 	if chatwindow and chatwindow:IsVisible() then
 		chatwindow:Insert(msg)
 	else

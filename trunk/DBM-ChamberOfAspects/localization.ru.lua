@@ -95,17 +95,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Split soon"
+	WarningSplitSoon	= "Скоро разделение"
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show pre-warning for Split",
+	WarningSplitSoon	= "Предупреждать заранее о разделении",
 	RangeFrame			= "Показывать окно проверки дистанции (12 м)",
 	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= "Twice the Pain and half the fun."
+	SplitTrigger		= "Вдвое сильнее страдание."
 })
 
 -------------------------
@@ -118,7 +118,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialWarningTranq		= "Enrage - Tranq now"
+	SpecialWarningTranq		= "Исступление - усмирите сейчас"
 })
 
 L:SetOptionLocalization({
@@ -153,7 +153,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SummonMinions	= "Turn them to ash, minions!"
+	SummonMinions	= "Слуги! Обратите их в пепел!"
 })
 
 -------------------------------------
@@ -178,5 +178,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	twilightcutter			= "The orbiting spheres pulse with dark energy!"
+	twilightcutter			= "Во вращающихся сферах пульсирует темная энергия!"
 })
