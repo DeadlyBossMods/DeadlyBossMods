@@ -77,13 +77,13 @@ L:SetMiscLocalization({
 	SayCombatStart		= "저들이 내가 누군지와 왜 이 일을 하는지 말해주려고 귀찮게 하든가?"
 })
 
------------------------
---  Lord Ahune  --
------------------------
+-------------
+--  Ahune  --
+-------------
 L = DBM:GetModLocalization("Ahune")
 
 L:SetGeneralLocalization({
-	name = "군주 아훈"
+	name = "아훈"
 })
 
 L:SetWarningLocalization({
@@ -108,5 +108,5 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull			= "The Ice Stone has melted!"
+	Pull			= "얼음 기둥이 녹아 내렸다!"
 })
