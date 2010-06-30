@@ -105,6 +105,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	SplitTrigger		= "Twice the Pain and half the fun."
 })
 
 -------------------------
@@ -121,7 +122,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningTranq		= "Show special warning for $spell:78722 (to tranq)",
+	SpecialWarningTranq		= "Спец-предупреждение о $spell:78722 (для усмирения)",
 	RangeFrame				= "Показывать окно проверки дистанции (10 м)",
 	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74453)
 })
@@ -139,16 +140,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "New adds"
+	WarnAdds	= "Новые помощники"
 })
 
 L:SetTimerLocalization({
-	TimerAdds	= "New adds"
+	TimerAdds	= "Новые помощники"
 })
 
 L:SetOptionLocalization({
-	WarnAdds		= "Announce new adds",
-	TimerAdds		= "Show timer for new adds"
+	WarnAdds		= "Объявлять новых помощников",
+	TimerAdds		= "Отсчет времени до новых помощников"
 })
 
 L:SetMiscLocalization({
