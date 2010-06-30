@@ -125,7 +125,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	SpecialWarningTranq		= "Zeige Spezialwarnung für $spell:78722",
 	RangeFrame				= "Zeige Abstandsfenster (10 m)",
-	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78722)
+	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74453)
 })
 
 L:SetMiscLocalization{
