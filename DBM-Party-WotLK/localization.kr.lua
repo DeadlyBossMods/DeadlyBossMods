@@ -1162,12 +1162,18 @@ L:SetWarningLocalization({
 	warnExplode				= "구울 폭발을 시전합니다. 이동하세요!"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "전투 시작"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "전투 시작 타이머 보기",
 	warnExplode				= "구울 폭발을 시전할 경우 경고 알리기",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
+	Pull					= "Well done. You have proven yourself today-",
 	YellCombatEnd			= "축하하네, 용사들이여. 예정된 시험이든 뜻밖의 시험이든, 그대들은 모두 이겨냈군."	-- can also be "No! I must not fail... again ..."
 })
 

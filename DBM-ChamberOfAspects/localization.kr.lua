@@ -105,12 +105,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "Split soon"
+	WarningSplitSoon	= "곧 분리"
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "Show pre-warning for Split",
-	RangeFrame			= "Show range frame (12 yards)",
+	WarningSplitSoon	= "분리 사전 경고 보기",
+	RangeFrame			= "거리 프레임 보기 (12 미터)",
 	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
@@ -129,12 +129,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialWarningTranq		= "Enrage - Tranq now"
+	SpecialWarningTranq		= "격노 - 지금 마취!"
 })
 
 L:SetOptionLocalization({
-	SpecialWarningTranq		= "Show special warning for $spell:78722 (to tranq)",
-	RangeFrame				= "Show range frame (10 yards)",
+	SpecialWarningTranq		= "$spell:78722의 특수 경고 보기 (마취 관련)",
+	RangeFrame				= "거리 프레임 보기 (10 미터)",
 	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74453)
 })
 
@@ -183,8 +183,8 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "2 단계 사전 경고 보기 (79% 전)",
 	WarnPhase3Soon			= "3단계 사전 경고 보기 (54% 전)",
-	SoundOnConsumption		= "Play sound on Combustion",--We use localized text for these functions
-	SetIconOnConsumption	= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
+	SoundOnConsumption		= "연소일 경우 소리 재생",--We use localized text for these functions
+	SetIconOnConsumption	= "연소 대상 공격대 아이콘 설정"--So we can use single functions for both versions of spell.
 })
 
 L:SetMiscLocalization({
