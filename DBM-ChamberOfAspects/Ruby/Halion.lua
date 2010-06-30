@@ -28,9 +28,9 @@ local warningTwilightCutter			= mod:NewSpellAnnounce(77844, 3)
 local specWarnShadowConsumption		= mod:NewSpecialWarningRun(74792)
 local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
 
-local timerShadowConsumptionCD		= mod:NewCDTimer(20, 74792)--may not need both of these
-local timerFieryConsumptionCD		= mod:NewCDTimer(20, 74562)--if they are on same CD.
-local timerMeteorCD					= mod:NewNextTimer(35, 74648)
+local timerShadowConsumptionCD		= mod:NewNextTimer(25, 74792)--may not need both of these
+local timerFieryConsumptionCD		= mod:NewNextTimer(25, 74562)--if they are on same CD.
+local timerMeteorCD					= mod:NewNextTimer(40, 74648)
 local timerTwilightCutter			= mod:NewBuffActiveTimer(10, 77844)
 local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
 local timerShadowBreathCD			= mod:NewCDTimer(8, 75954, nil, mod:IsTank() or mod:IsHealer())--may not need both of these
