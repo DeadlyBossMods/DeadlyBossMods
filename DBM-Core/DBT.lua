@@ -814,17 +814,15 @@ options.ClickThrough.onChange = updateClickThrough
 --------------------
 --  Bar Announce  --
 --------------------
+local chatwindow = ChatEdit_GetActiveWindow and ChatEdit_GetActiveWindow() or ChatFrameEditBox
 function barPrototype:Announce()
 	local msg
 	if self.owner.announceHook then
 		msg = self.owner.announceHook(self)
 	end
 	msg = msg or ("%s  %d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
-	if ChatFrameEditBox and ChatFrameEditBox:IsShown() then -- for WoW versions < 3.3.5 (and some chat mods, maybe?)
-		ChatFrameEditBox:Insert(msg)
-	elseif ChatEdit_ChooseBoxForSend and ChatEdit_ChooseBoxForSend():IsVisible() then -- WoW 3.3.5
---		ChatEdit_ChooseBoxForSend():Insert(msg)
-		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
+	if chatwindow and chatwindow:IsVisible() then
+		chatwindow:Insert(msg)
 	else
 		SendChatMessage(msg, (select(2, IsInInstance()) == "pvp" and "BATTLEGROUND") or (GetNumRaidMembers() > 0 and "RAID") or "PARTY")
 	end

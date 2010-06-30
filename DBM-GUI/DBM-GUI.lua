@@ -241,10 +241,9 @@ do
 	local function onHyperlinkClick(self, data, link)
 		if IsShiftKeyDown() then
 			local msg = link:gsub("|h(.*)|h", "|h[%1]|h")
-			if ChatFrameEditBox and ChatFrameEditBox:IsShown() then -- for WoW versions < 3.3.5 (and some chat mods, maybe?)
-				ChatFrameEditBox:Insert(msg)
-			elseif ChatEdit_ChooseBoxForSend and ChatEdit_ChooseBoxForSend():IsVisible() then -- WoW >= 3.3.5
-				ChatEdit_ChooseBoxForSend():Insert(msg)
+			local chatwindow = ChatEdit_GetActiveWindow and ChatEdit_GetActiveWindow() or ChatFrameEditBox
+			if chatwindow and chatwindow:IsVisible() then
+				chatwindow:Insert(msg)
 			end
 		elseif not IsShiftKeyDown() then
 			if cursorInHitBox(self:GetParent()) then
