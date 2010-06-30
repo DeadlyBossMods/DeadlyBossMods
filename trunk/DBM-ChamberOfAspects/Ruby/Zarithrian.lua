@@ -15,7 +15,7 @@ local warningAdds					= mod:NewAnnounce("WarnAdds", 3)
 local warningFear					= mod:NewSpellAnnounce(74384, 3)
 
 local timerAddsCD					= mod:NewTimer(45.5, "TimerAdds")
-local timerFearCD					= mod:NewNextTimer(35, 74384)
+local timerFearCD					= mod:NewCDTimer(33, 74384)--typically every 40 seconds but soemtimes earlier.
 
 function mod:OnCombatStart(delay)
 	timerFearCD:Start(15-delay)
