@@ -17,17 +17,17 @@ local warningWarnConflag	= mod:NewSpellAnnounce(74452, 3)--Will change to a targ
 local warningWarnEnrage		= mod:NewSpellAnnounce(78722, 3)
 local warningWarnBreath		= mod:NewSpellAnnounce(74404, 3)
 
-local specWarnConflag		= mod:NewSpecialWarningYou(74452)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
-local specWarnConflagNear	= mod:NewSpecialWarning("specWarnConflagNear")--Same as above, may not work. Need to do encounter to test.
+--local specWarnConflag		= mod:NewSpecialWarningYou(74452)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
+--local specWarnConflagNear	= mod:NewSpecialWarning("specWarnConflagNear")--Same as above, may not work. Need to do encounter to test.
 local specWarnTranq			= mod:NewSpecialWarning("SpecialWarningTranq", mod:CanRemoveEnrage())
 
 local timerConflagCD		= mod:NewNextTimer(35, 74452)
 local timerBreath			= mod:NewNextTimer(35, 74404)
 local timerEnrage			= mod:NewBuffActiveTimer(10, 78722)
 
-mod:AddBoolOption("YellOnConflag", true, "announce")
+--mod:AddBoolOption("YellOnConflag", true, "announce")
 mod:AddBoolOption("RangeFrame")
-mod:AddBoolOption("ConflagIcon")
+--mod:AddBoolOption("ConflagIcon")
 
 function mod:OnCombatStart(delay)
 	timerConflagCD:Start(33-delay)
@@ -43,7 +43,7 @@ function mod:OnCombatEnd()
 	end
 end
 
-function mod:ConflagTarget()--May not even work, also don't know if it's done to more than one person on 25 man, if it is, then this function would be limited
+--[[function mod:ConflagTarget()--May not even work, also don't know if it's done to more than one person on 25 man, if it is, then this function would be limited
 	local targetname = self:GetBossTarget(39747)
 	if not targetname then return end
 	if self.Options.ConflagIcon then
@@ -63,13 +63,13 @@ function mod:ConflagTarget()--May not even work, also don't know if it's done to
 			end
 		end
 	end
-end
+end--]]
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(74452) then
 		warningWarnConflag:Show()
 		timerConflagCD:Start()
-		self:ScheduleMethod(0.1, "ConflagTarget")
+--		self:ScheduleMethod(0.1, "ConflagTarget")
 	elseif args:IsSpellID(74403, 74404) then
 		warningWarnBreath:Show()
 		timerBreath:Start()
