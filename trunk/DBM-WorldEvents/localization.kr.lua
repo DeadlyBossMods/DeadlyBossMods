@@ -87,24 +87,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	Submerged		= "Ahune has submerged",
-	Emerged			= "Ahune has emerged",
-	specWarnAttack	= "Ahune is vulnerable - Attack now!"
+	Submerged		= "아훈 잠수",
+	Emerged			= "아훈 등장",
+	specWarnAttack	= "아훈이 약해졌습니다. - 딜링 고고싱!"
 })
 
 L:SetTimerLocalization{
-	SubmergTimer	= "Submerge",
-	EmergeTimer		= "Emerge",
-	TimerCombat		= "Combat starts"
+	SubmergTimer	= "잠수",
+	EmergeTimer		= "등장",
+	TimerCombat		= "전투 시작"
 }
 
 L:SetOptionLocalization({
-	Submerged		= "Show warning when Ahune submerges",
-	Emerged			= "Show warning when Ahune emerges",
-	specWarnAttack	= "Show special warning when Ahune becomes vulnerable",
-	SubmergTimer	= "Show timer for submerge",
-	EmergeTimer		= "Show timer for emerge",
-	TimerCombat		= "Show timer for start of combat",
+	Submerged		= "아훈 잠수 경고 보기",
+	Emerged			= "아훈 등장 경고 보기",
+	specWarnAttack	= "아훈이 약해 질때 공격 특수 경보 보기",
+	SubmergTimer	= "잠수 타이머 보기",
+	EmergeTimer		= "등장 타이머 보기",
+	TimerCombat		= "전투 시작 타이머 보기",
 })
 
 L:SetMiscLocalization({
