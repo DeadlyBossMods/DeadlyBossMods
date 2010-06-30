@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39747)
-mod:SetUsedIcons(8)
+mod:SetUsedIcons(8, 7, 6, 5, 4)
 
 mod:RegisterCombat("combat")
 
@@ -13,25 +13,36 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warningWarnConflag	= mod:NewSpellAnnounce(74452, 3)--Will change to a target announce if possible. need to do encounter
+local warningWarnBeacon		= mod:NewTargetAnnounce(78722, 4)--Will change to a target announce if possible. need to do encounter
 local warningWarnEnrage		= mod:NewSpellAnnounce(78722, 3)
 local warningWarnBreath		= mod:NewSpellAnnounce(74404, 3)
 
---local specWarnConflag		= mod:NewSpecialWarningYou(74452)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
---local specWarnConflagNear	= mod:NewSpecialWarning("specWarnConflagNear")--Same as above, may not work. Need to do encounter to test.
+local specWarnBeacon		= mod:NewSpecialWarningYou(78722)--Target scanning may not even work since i haven't done encounter yet it's just a guess.
 local specWarnTranq			= mod:NewSpecialWarning("SpecialWarningTranq", mod:CanRemoveEnrage())
 
+local timerBeacon			= mod:NewBuffActiveTimer(5, 78722)
+local timerConflag			= mod:NewBuffActiveTimer(5, 74456)
 local timerConflagCD		= mod:NewNextTimer(35, 74452)
 local timerBreath			= mod:NewNextTimer(35, 74404)
 local timerEnrage			= mod:NewBuffActiveTimer(10, 78722)
 
---mod:AddBoolOption("YellOnConflag", true, "announce")
 mod:AddBoolOption("RangeFrame")
---mod:AddBoolOption("ConflagIcon")
+mod:AddBoolOption("BeaconIcon")
+
+local beaconTargets = {}
+local beaconIcon 	= 8
+
+local function warnConflagTargets()
+	warningWarnBeacon:Show(table.concat(beaconTargets, "<, >"))
+	table.wipe(beaconTargets)
+	beaconIcon = 8
+end
 
 function mod:OnCombatStart(delay)
 	timerConflagCD:Start(33-delay)
 	timerBreath:Start(45-delay)
+	table.wipe(beaconTargets)
+	beaconIcon = 8
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
@@ -43,34 +54,8 @@ function mod:OnCombatEnd()
 	end
 end
 
---[[function mod:ConflagTarget()--May not even work, also don't know if it's done to more than one person on 25 man, if it is, then this function would be limited
-	local targetname = self:GetBossTarget(39747)
-	if not targetname then return end
-	if self.Options.ConflagIcon then
-		self:SetIcon(targetname, 8, 6)
-	end
-	if targetname == UnitName("player") then
-		specWarnConflag:Show()
-		if self.Options.YellOnConflag then
-			SendChatMessage(L.YellConflag, "SAY")
-		end
-	elseif targetname then
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnConflagNear:Show()
-			end
-		end
-	end
-end--]]
-
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(74452) then
-		warningWarnConflag:Show()
-		timerConflagCD:Start()
---		self:ScheduleMethod(0.1, "ConflagTarget")
-	elseif args:IsSpellID(74403, 74404) then
+	if args:IsSpellID(74403, 74404) then
 		warningWarnBreath:Show()
 		timerBreath:Start()
 	end
@@ -81,6 +66,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		warningWarnEnrage:Show()
 		specWarnTranq:Show()
 		timerEnrage:Start()
+	elseif args:IsSpellID(74453) then
+		beaconTargets[#beaconTargets + 1] = args.destName
+		timerConflagCD:Start()
+		timerBeacon:Start()
+		timerConflag:Schedule(5)
+		if args:IsPlayer() then
+			specWarnBeacon:Show()
+		end
+		if self.Options.BeaconIcon then
+			self:SetIcon(args.destName, beaconIcon, 11)
+			beaconIcon = beaconIcon - 1
+		end
+		self:Unschedule(warnConflagTargets)
+		self:Schedule(0.3, warnConflagTargets)
 	end
 end
 
