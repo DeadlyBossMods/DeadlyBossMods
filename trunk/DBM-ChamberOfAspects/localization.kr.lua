@@ -129,20 +129,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnConflagNear		= "Conflagration near you - Watch out",
 	SpecialWarningTranq		= "Enrage - Tranq now"
 })
 
 L:SetOptionLocalization({
-	specWarnConflagNear		= "Show special warning for $spell:74452 near you",
-	SpecialWarningTranq		= "Show special warning for Enrage (to tranq)", -- $spell:78722
-	YellOnConflag			= "Yell on $spell:74452",
+	SpecialWarningTranq		= "Show special warning for $spell:78722 (to tranq)",
 	RangeFrame				= "Show range frame (10 yards)",
-	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
+	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78722)
 })
 
 L:SetMiscLocalization{
-	YellConflag			= "불이야!!!!!"
 }
 
 --------------------------
