@@ -119,20 +119,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnConflagNear		= "Großbrand in deiner Nähe - Aufpassen",
 	SpecialWarningTranq		= "Wutanfall - Einlullen/Beruhigen"
 })
 
 L:SetOptionLocalization({
-	specWarnConflagNear		= "Zeige Spezialwarnung für $spell:74452 in deiner Nähe",	
-	SpecialWarningTranq		= "Zeige Spezialwarnung für Wutanfall",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
-	YellOnConflag			= "Schreie bei $spell:74452",
+	SpecialWarningTranq		= "Zeige Spezialwarnung für $spell:78722",
 	RangeFrame				= "Zeige Abstandsfenster (10 m)",
-	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
+	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78722)
 })
 
 L:SetMiscLocalization{
-	YellConflag	= "Conflagration on me!"
 }
 
 --------------------------
