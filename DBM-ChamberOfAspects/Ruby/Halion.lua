@@ -33,8 +33,8 @@ local timerFieryConsumptionCD		= mod:NewNextTimer(25, 74562)--if they are on sam
 local timerMeteorCD					= mod:NewNextTimer(40, 74648)
 local timerTwilightCutter			= mod:NewBuffActiveTimer(10, 77844)
 local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
-local timerShadowBreathCD			= mod:NewCDTimer(8, 75954, nil, mod:IsTank() or mod:IsHealer())--may not need both of these
-local timerFieryBreathCD			= mod:NewCDTimer(8, 74526, nil, mod:IsTank() or mod:IsHealer())--if they are on same CD.
+local timerShadowBreathCD			= mod:NewCDTimer(20, 75954, nil, mod:IsTank() or mod:IsHealer())--may not need both of these
+local timerFieryBreathCD			= mod:NewCDTimer(20, 74526, nil, mod:IsTank() or mod:IsHealer())--if they are on same CD.
 
 local soundConsumption 			= mod:NewSound(74562, "SoundOnConsumption")
 mod:AddBoolOption("SetIconOnConsumption", true)
@@ -42,7 +42,7 @@ mod:AddBoolOption("SetIconOnConsumption", true)
 local warned_preP2 = false
 local warned_preP3 = false
 
-function mod:OnCombatStart(delay)
+function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
 		timerMeteorCD:Start(30-delay)
 		timerFieryConsumptionCD:Start(17-delay)
 		timerFieryBreathCD:Start(5.5-delay)
