@@ -10,7 +10,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_HEALTH"
@@ -64,11 +63,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(74648, 75877, 75878, 75879) then--Meteor Strike
 		warningMeteor:Show()
 		timerMeteorCD:Start()
-	end
-end
-
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(74792) then
+	elseif args:IsSpellID(74792) then
 		warningShadowConsumption:Show(args.destName)
 		timerShadowConsumptionCD:Start()
 		if args:IsPlayer() then
