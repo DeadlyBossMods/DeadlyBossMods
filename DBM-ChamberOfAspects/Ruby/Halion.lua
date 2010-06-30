@@ -35,6 +35,7 @@ local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
 local timerShadowBreathCD			= mod:NewCDTimer(20, 75954, nil, mod:IsTank() or mod:IsHealer())--may not need both of these
 local timerFieryBreathCD			= mod:NewCDTimer(20, 74526, nil, mod:IsTank() or mod:IsHealer())--if they are on same CD.
 
+mod:AddBoolOption("AnnounceAlternatePhase", false, "announce")
 local soundConsumption 			= mod:NewSound(74562, "SoundOnConsumption")
 mod:AddBoolOption("SetIconOnConsumption", true)
 
@@ -61,15 +62,21 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(74648, 75877, 75878, 75879) then--Meteor Strike
+		if not self.Options.AnnounceAlternatePhase then
+			warningMeteor:Show()
+			timerMeteorCD:Start()
+		end
 		if mod:LatencyCheck() then
 			self:SendSync("Meteor")
 		end
 	elseif args:IsSpellID(74792) then
+		timerShadowConsumptionCD:Start()
+		if not self.Options.AnnounceAlternatePhase then
+			warningShadowConsumption:Show(args.destName)
+		end
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowTarget", args.destName)
 		end
-		warningShadowConsumption:Show(args.destName)
-		timerShadowConsumptionCD:Start()
 		if args:IsPlayer() then
 			specWarnShadowConsumption:Show()
 			soundConsumption:Play()
@@ -78,10 +85,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(74562) then
+		timerFieryConsumptionCD:Start()
+		if not self.Options.AnnounceAlternatePhase then
+			warningFieryConsumption:Show(args.destName)
+		end
 		if mod:LatencyCheck() then
 			self:SendSync("FieryTarget", args.destName)
 		end
-		timerFieryConsumptionCD:Start()
 		if args:IsPlayer() then
 			specWarnFieryConsumption:Show()
 			soundConsumption:Play()
@@ -117,20 +127,33 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:match(L.twilightcutter) and mod:LatencyCheck() then
 		self:SendSync("TwilightCutter")
+		if not self.Options.AnnounceAlternatePhase then
+			warningTwilightCutter:Show()
+			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
+			timerTwilightCutterCD:Schedule(15)
+		end
 	end
 end
 
 function mod:OnSync(msg, target)
 	if msg == "TwilightCutter" then
-		warningTwilightCutter:Show()
-		timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
-		timerTwilightCutterCD:Schedule(15)
+		if self.Options.AnnounceAlternatePhase then
+			warningTwilightCutter:Show()
+			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
+			timerTwilightCutterCD:Schedule(15)
+		end
 	elseif msg == "Meteor" then
-		warningMeteor:Show()
-		timerMeteorCD:Start()
+		if self.Options.AnnounceAlternatePhase then
+			warningMeteor:Show()
+			timerMeteorCD:Start()
+		end
 	elseif msg == "ShadowTarget" then
-		warningShadowConsumption:Show(target)
+		if self.Options.AnnounceAlternatePhase then
+			warningShadowConsumption:Show(target)
+		end
 	elseif msg == "FieryTarget" then
-		warningFieryConsumption:Show(target)
+		if self.Options.AnnounceAlternatePhase then
+			warningFieryConsumption:Show(target)
+		end
 	end
 end
