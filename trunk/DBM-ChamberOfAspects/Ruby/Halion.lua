@@ -64,6 +64,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warningMeteor:Show()
 		timerMeteorCD:Start()
 	elseif args:IsSpellID(74792) then
+		if mod:LatencyCheck() then
+			self:SendSync("ShadowTarget", args.destName)
+		end
 		warningShadowConsumption:Show(args.destName)
 		timerShadowConsumptionCD:Start()
 		if args:IsPlayer() then
@@ -74,7 +77,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(74562) then
-		warningFieryConsumption:Show(args.destName)
+		if mod:LatencyCheck() then
+			self:SendSync("FieryTarget", args.destName)
+		end
 		timerFieryConsumptionCD:Start()
 		if args:IsPlayer() then
 			specWarnFieryConsumption:Show()
@@ -114,10 +119,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
-function mod:OnSync(msg)
+function mod:OnSync(msg, target)
 	if msg == "TwilightCutter" then
 		warningTwilightCutter:Show()
 		timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 		timerTwilightCutterCD:Schedule(15)
+	elseif msg == "ShadowTarget" then
+		warningShadowConsumption:Show(target)
+	elseif msg == "FieryTarget" then
+		warningFieryConsumption:Show(target)
 	end
 end
