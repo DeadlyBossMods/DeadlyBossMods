@@ -24,7 +24,7 @@ local specWarnBrand			= mod:NewSpecialWarningYou(74505)
 local timerWhirlwindCD		= mod:NewCDTimer(22, 75125)
 local timerWhirlwind		= mod:NewBuffActiveTimer(4, 75125)
 local timerRepellingWave	= mod:NewBuffActiveTimer(4, 74509)--1 second cast + 3 second stun
-local timerBrand			= mod:NewTargetTimer(10, 74505)
+local timerBrand			= mod:NewBuffActiveTimer(10, 74505)
 
 local soundWhirlwind 		= mod:NewSound(75125, nil, mod:IsMelee())
 mod:AddBoolOption("SetIconOnBrand", true)
@@ -90,9 +90,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		soundWhirlwind:Play()
 	elseif args:IsSpellID(74505) then
 		brandTargets[#brandTargets + 1] = args.destName
-		timerBrand:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBrand:Show()
+			timerBrand:Show()
 		end
 		if self.Options.SetIconOnBrand then
 			if 	brandIcon < 1 then	--Icons are gonna be crazy on this fight if people don't control jumps, we will use ALL of them and only reset icons if we run out of them
