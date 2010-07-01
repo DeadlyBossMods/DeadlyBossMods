@@ -1296,6 +1296,7 @@ do
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
 				"CHAT_MSG_WHISPER",
+				"CHAT_MSG_BN_WHISPER",
 				"CHAT_MSG_MONSTER_YELL",
 				"CHAT_MSG_MONSTER_EMOTE",
 				"CHAT_MSG_MONSTER_SAY",
@@ -1314,6 +1315,13 @@ do
 		end
 	end
 end
+
+frame = CreateFrame("Frame")
+frame:RegisterEvent("BN_NEW_PRESENCE")
+frame:RegisterEvent("BN_CONNECTED")
+frame:SetScript("OnEvent", function(self, event, ...)
+	print(event)
+	for i = 1, select("#", ...) do print(i, (select(i, ...))) end end)
 
 function DBM:LFG_PROPOSAL_SHOW()
 	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
@@ -1795,8 +1803,14 @@ function DBM:EndCombat(mod, wipe)
 				end
 			end
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
+			local msg
 			for k, v in pairs(autoRespondSpam) do
-				SendChatMessage(chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), (mod.combatInfo.name or "")), "WHISPER", nil, k)
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), (mod.combatInfo.name or ""))
+				if type(k) == "string" then
+					SendChatMessage(msg, "WHISPER", nil, k)
+				elseif type(k) == "number" then
+					BNSendWhisper(k, msg)
+				end
 			end
 			fireEvent("wipe", mod)
 		else
@@ -2009,27 +2023,58 @@ do
 		end
 		return alive
 	end
+	
 
-	function DBM:CHAT_MSG_WHISPER(msg, sender)
-		if msg == "status" and #inCombat > 0 and self.Options.StatusEnabled then
+	local function isOnSameServer(presenceId)
+		local toonID, client = select(5, BNGetFriendInfoByID(presenceId))
+		if client ~= "WoW" then
+			return false
+		end
+		-- it's a WoW player, assume that he is on our server for now (until we figure out how to get the name of the server we are currently playing on...)
+		return true
+	end
+	
+	-- sender is a presenceId for real id messages, a character name otherwise
+	local function onWhisper(msg, sender, isRealIdMessage)
+		if msg == "status" and #inCombat > 0 and DBM.Options.StatusEnabled then
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			SendChatMessage(chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)), "WHISPER", nil, sender)
-		elseif #inCombat > 0 and self.Options.AutoRespond and self:GetRaidUnitId(sender) == "none" then
+			local msg = chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1))
+			if isRealIdMessage then
+				BNSendWhisper(sender, msg)
+			else
+				SendChatMessage(msg, "WHISPER", nil, sender)
+			end
+		elseif #inCombat > 0 and DBM.Options.AutoRespond and
+		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
 			local mod
 			for i, v in ipairs(inCombat) do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				SendChatMessage(chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)), "WHISPER", nil, sender)
-				self:AddMsg(DBM_CORE_AUTO_RESPONDED)
+				local msg = chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1))
+				if isRealIdMessage then
+					BNSendWhisper(sender, msg)
+				else
+					SendChatMessage(msg, "WHISPER", nil, sender)
+				end
+				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
 		end
+	end
+	
+	function DBM:CHAT_MSG_WHISPER(msg, name)
+		return onWhisper(msg, name, false)
+	end
+	
+	function DBM:CHAT_MSG_BN_WHISPER(msg, ...)
+		local presenceId = select(12, ...) -- srsly?
+		return onWhisper(msg, presenceId, true)
 	end
 end
 
@@ -2069,7 +2114,9 @@ do
 	end
 
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", filterOutgoing)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", filterOutgoing)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", filterIncoming)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", filterIncoming)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", filterRaidWarning)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", filterRaidWarning)
 	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", filterRaidWarning)
