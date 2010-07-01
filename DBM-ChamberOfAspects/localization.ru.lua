@@ -175,14 +175,17 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~79%)",
 	WarnPhase3Soon			= "Предупреждать заранее о фазе 3 (на ~54%)",
-	AnnounceAlternatePhase	= "Show warnings/timers for phase you aren't in as well",
-	SoundOnConsumption		= "Play sound on Combustion/Consumption",--We use localized text for these functions
-	SetIconOnConsumption	= "Set icons on Combustion/Consumption targets"--So we can use single functions for both versions of spell.
+	AnnounceAlternatePhase	= "Показывать предупреждения и таймеры для обоих миров",
+	SoundOnConsumption		= "Звуковой сигнал при $spell:74562 и $spell:74792",--We use localized text for these functions
+	SetIconOnConsumption	= "Устанавливать метки на цели заклинаний $spell:74562 и\n$spell:74792",--So we can use single functions for both versions of spell.
+	YellOnConsumption		= "Кричать, когда $spell:74562 или $spell:74792 на вас"
 })
 
 L:SetMiscLocalization({
 	MeteorCast				= "Небеса в огне!",
 	Phase2					= "В мире сумерек вы найдете лишь страдания! Входите, если посмеете!",
 	Phase3					= "Я есть свет и я есть тьма! Трепещите, ничтожные, перед посланником Смертокрыла!",
-	twilightcutter			= "Во вращающихся сферах пульсирует темная энергия!"
+	twilightcutter			= "Во вращающихся сферах пульсирует темная энергия!",
+	YellCombustion			= "Пылающий огонь на мне!",
+	YellConsumption			= "Пожирание души на мне!"
 })
