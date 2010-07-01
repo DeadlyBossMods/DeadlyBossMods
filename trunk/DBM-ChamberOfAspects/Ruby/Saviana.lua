@@ -39,8 +39,8 @@ local function warnConflagTargets()
 end
 
 function mod:OnCombatStart(delay)
-	timerConflagCD:Start(33-delay)
-	timerBreath:Start(45-delay)
+	timerConflagCD:Start(32-delay)--need more pulls to verify consistency
+	timerBreath:Start(12-delay)--need more pulls to verify consistency
 	table.wipe(beaconTargets)
 	beaconIcon = 8
 	if self.Options.RangeFrame then

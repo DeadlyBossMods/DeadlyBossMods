@@ -42,7 +42,7 @@ local function showBrandWarning()
 end
 
 function mod:OnCombatStart(delay)
-	timerWhirlwindCD:Start(15.5-delay)
+	timerWhirlwindCD:Start(15.5-delay)--need more pulls to verify consistency
 	warnedSplit1 = false
 	warnedSplit2 = false
 	warnedSplit3 = false
@@ -102,7 +102,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			brandIcon = brandIcon - 1
 		end
 		self:Unschedule(showBrandWarning)
-		self:Schedule(0.3, showBrandWarning)
+		self:Schedule(0.5, showBrandWarning)
 	end
 end
 
