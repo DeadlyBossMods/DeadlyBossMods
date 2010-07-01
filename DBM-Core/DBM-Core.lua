@@ -2030,8 +2030,7 @@ do
 		if client ~= "WoW" then
 			return false
 		end
-		-- it's a WoW player, assume that he is on our server for now (until we figure out how to get the name of the server we are currently playing on...)
-		return true
+		return GetRealmName() == select(4, BNGetToonInfo(toonID))
 	end
 	
 	-- sender is a presenceId for real id messages, a character name otherwise
