@@ -125,13 +125,13 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if not self.Options.AnnounceAlternatePhase then
+		warningTwilightCutter:Show()
+		timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
+		timerTwilightCutterCD:Schedule(15)
+	end
 	if msg:match(L.twilightcutter) and mod:LatencyCheck() then
 		self:SendSync("TwilightCutter")
-		if not self.Options.AnnounceAlternatePhase then
-			warningTwilightCutter:Show()
-			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
-			timerTwilightCutterCD:Schedule(15)
-		end
 	end
 end
 
