@@ -174,7 +174,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnChokingGasBomb:Show()
 		specWarnChokingGasBomb:Show()
 		timerChokingGasBombCD:Start()
-	elseif args:IsSpellID(72855, 72856) then
+	elseif args:IsSpellID(72855, 72856, 70911) then
 		timerUnboundPlagueCD:Start()
 	elseif args:IsSpellID(72615, 72295, 74280, 74281) then
 		warnMalleableGoo:Show()
@@ -226,7 +226,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnGasVariable:Show()
 		end
-	elseif args:IsSpellID(72855, 72856) then	 -- Unbound Plague
+	elseif args:IsSpellID(72855, 72856, 70911) then	 -- Unbound Plague
 		warnUnboundPlague:Show(args.destName)
 		if self.Options.UnboundPlagueIcon then
 			self:SetIcon(args.destName, 2, 20)
@@ -268,7 +268,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.GaseousBloatIcon then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(72855, 72856) then 						-- Unbound Plague
+	elseif args:IsSpellID(72855, 72856, 70911) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
 		if self.Options.UnboundPlagueIcon then
 			self:SetIcon(args.destName, 0)
