@@ -87,7 +87,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnShadowConsumption:Show()
 			soundConsumption:Play()
 			if self.Options.YellOnConsumption then
-				SendChatMessage(L.YellCombustion, "SAY")
+				SendChatMessage(L.YellConsumption, "SAY")
 			end
 		end
 		if self.Options.SetIconOnConsumption then
@@ -105,7 +105,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnFieryConsumption:Show()
 			soundConsumption:Play()
 			if self.Options.YellOnConsumption then
-				SendChatMessage(L.YellConsumption, "SAY")
+				SendChatMessage(L.YellCombustion, "SAY")
 			end
 		end
 		if self.Options.SetIconOnConsumption then
