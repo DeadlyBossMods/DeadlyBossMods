@@ -42,7 +42,7 @@ local timerFieryBreathCD			= mod:NewCDTimer(17, 74526, nil, mod:IsTank() or mod:
 local soundConsumption 				= mod:NewSound(74562, "SoundOnConsumption")
 
 mod:AddBoolOption("YellOnConsumption", true, "announce")
-mod:AddBoolOption("AnnounceAlternatePhase", false, "announce")
+mod:AddBoolOption("AnnounceAlternatePhase", true, "announce")
 mod:AddBoolOption("SetIconOnConsumption", true)
 
 local warned_preP2 = false
