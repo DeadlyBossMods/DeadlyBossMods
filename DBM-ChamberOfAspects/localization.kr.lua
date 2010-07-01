@@ -151,7 +151,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "새로운 몹"
+	WarnAdds	= "새로운 몹",
+	warnCleaveArmor	= "%s : >%s< (%s)"		-- Cleave Armor on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
@@ -160,7 +161,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnAdds		= "새로운 추가몹 알리기",
-	TimerAdds		= "새로운 추가몹 타이머 보기"
+	TimerAdds		= "새로운 추가몹 타이머 보기",
+	warnCleaveArmor	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(74367, GetSpellInfo(74367) or "알 수 없음")	
 })
 
 L:SetMiscLocalization({
@@ -182,11 +184,15 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "2 단계 사전 경고 보기 (79% 전)",
-	WarnPhase3Soon			= "3단계 사전 경고 보기 (54% 전)",
+	WarnPhase3Soon			= "3 단계 사전 경고 보기 (54% 전)",
+	AnnounceAlternatePhase	= "모든 단계의 경고/타이머 보기",	
 	SoundOnConsumption		= "연소일 경우 소리 재생",--We use localized text for these functions
 	SetIconOnConsumption	= "연소 대상 공격대 아이콘 설정"--So we can use single functions for both versions of spell.
 })
 
 L:SetMiscLocalization({
+	MeteorCast				= "The heavens burn!",
+	Phase2					= "You will find only suffering within the realm of twilight! Enter if you dare!",
+	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
 	twilightcutter			= "The orbiting spheres pulse with dark energy!"
 })
