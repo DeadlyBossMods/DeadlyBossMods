@@ -36,8 +36,8 @@ local timerMeteorCD					= mod:NewNextTimer(40, 74648)
 local timerMeteorCast				= mod:NewCastTimer(7.5, 74648)--7 seconds from boss yell the meteor impacts.
 local timerTwilightCutter			= mod:NewBuffActiveTimer(10, 77844)
 local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
-local timerShadowBreathCD			= mod:NewCDTimer(17, 75954, nil, mod:IsTank() or mod:IsHealer())--Same as debuff timers, same CD, can be merged into 1.
-local timerFieryBreathCD			= mod:NewCDTimer(17, 74526, nil, mod:IsTank() or mod:IsHealer())--But unique icons are nice pertaining to phase you're in ;)
+local timerShadowBreathCD			= mod:NewCDTimer(19, 75954, nil, mod:IsTank() or mod:IsHealer())--Same as debuff timers, same CD, can be merged into 1.
+local timerFieryBreathCD			= mod:NewCDTimer(19, 74526, nil, mod:IsTank() or mod:IsHealer())--But unique icons are nice pertaining to phase you're in ;)
 
 local soundConsumption 				= mod:NewSound(74562, "SoundOnConsumption")
 
@@ -51,7 +51,7 @@ local warned_preP3 = false
 function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
 		timerMeteorCD:Start(20-delay)
 		timerFieryConsumptionCD:Start(15-delay)
-		timerFieryBreathCD:Start(8-delay)
+		timerFieryBreathCD:Start(10-delay)
 	warned_preP2 = false
 	warned_preP3 = false
 end
