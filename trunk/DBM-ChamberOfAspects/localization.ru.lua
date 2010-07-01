@@ -140,7 +140,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "Новые помощники"
+	WarnAdds	= "Новые помощники",
+	warnCleaveArmor	= "%s на |3-5(>%s<) (%s)"		-- Cleave Armor on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
@@ -149,7 +150,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnAdds		= "Объявлять новых помощников",
-	TimerAdds		= "Отсчет времени до новых помощников"
+	TimerAdds		= "Отсчет времени до новых помощников",
+	warnCleaveArmor	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(74367, GetSpellInfo(74367) or "unknown")
 })
 
 L:SetMiscLocalization({
@@ -173,10 +175,14 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Предупреждать заранее о фазе 2 (на ~79%)",
 	WarnPhase3Soon			= "Предупреждать заранее о фазе 3 (на ~54%)",
-	SoundOnConsumption		= "Play sound on Combustion",--We use localized text for these functions
-	SetIconOnConsumption	= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
+	AnnounceAlternatePhase	= "Show warnings/timers for phase you aren't in as well",
+	SoundOnConsumption		= "Play sound on Combustion/Consumption",--We use localized text for these functions
+	SetIconOnConsumption	= "Set icons on Combustion/Consumption targets"--So we can use single functions for both versions of spell.
 })
 
 L:SetMiscLocalization({
+	MeteorCast				= "Небеса в огне!",
+	Phase2					= "В мире сумерек вы найдете лишь страдания! Входите, если посмеете!",
+	Phase3					= "Я есть свет и я есть тьма! Трепещите, ничтожные, перед посланником Смертокрыла!",
 	twilightcutter			= "Во вращающихся сферах пульсирует темная энергия!"
 })
