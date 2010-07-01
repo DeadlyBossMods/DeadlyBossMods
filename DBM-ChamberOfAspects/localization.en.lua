@@ -138,7 +138,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "New adds"
+	WarnAdds	= "New adds",
+	warnCleaveArmor	= "%s on >%s< (%s)"		-- Cleave Armor on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
@@ -147,7 +148,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnAdds		= "Announce new adds",
-	TimerAdds		= "Show timer for new adds"
+	TimerAdds		= "Show timer for new adds",
+	warnCleaveArmor	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(74367, GetSpellInfo(74367) or "unknown")
 })
 
 L:SetMiscLocalization({
