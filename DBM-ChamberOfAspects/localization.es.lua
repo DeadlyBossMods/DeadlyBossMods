@@ -144,7 +144,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "Nuevos adds"
+	WarnAdds	= "Nuevos adds",
+	warnCleaveArmor	= "%s en >%s< (%s)"
 })
 
 L:SetTimerLocalization({
@@ -153,7 +154,8 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnAdds		= "Anunciar nuevos adds",
-	TimerAdds		= "Mostrar tiempo para nuevos adds"
+	TimerAdds		= "Mostrar tiempo para nuevos adds",
+	warnCleaveArmor	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(74367, GetSpellInfo(74367) or "unknown")
 })
 
 L:SetMiscLocalization({
@@ -178,10 +180,14 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~79%)",
 	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~54%)",
+	AnnounceAlternatePhase	= "Mostrar también avisos/tiempos de la fase en la que no estás",
 	SoundOnConsumption			= "Reproducir sonido en Combustión",
 	SetIconOnConsumption		= "Poner iconos en los objetivos de Combustión"
 })
 
 L:SetMiscLocalization({
+	MeteorCast				= "The heavens burn!",--translate
+	Phase2					= "You will find only suffering within the realm of twilight! Enter if you dare!",--translate
+	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",--translate
 	twilightcutter			= "The orbiting spheres pulse with dark energy!"--translate
 })
