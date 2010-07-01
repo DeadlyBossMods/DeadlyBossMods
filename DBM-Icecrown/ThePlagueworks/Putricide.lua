@@ -69,7 +69,6 @@ mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
 
 mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buff
---mod:AddBoolOption("NextUnboundPlagueTargetIcon")		-- icon on the acquired target (will be requested via Sync)
 
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 mod:AddBoolOption("YellOnUnbound", true, "announce")
@@ -102,61 +101,6 @@ function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of
 		self:SendSync("GooOn", targetname)
 	end
 end
-
---[[local function isDebuffed(unitId)
-	local i = 1
-	local spellId = select(11, UnitDebuff(unitId, i))
-	while spellId do
-		if spellId == 73117 or spellId == 70953 or		-- Plague Sickness
-		   spellId == 72838 or spellId == 72837 or 		-- Volatile Ooze Adhesive (Green Slime)
-		   spellId == 72833 or spellId == 72832 or		-- Gaseous Bloat (Red Slime)
-		   spellId == 70308 or							-- Mutated Transformation (Changing into Abom)
-		   spellId == 71503 or spellId == 70311 then	-- Abomination
-			return true
-		end
-		i = i + 1
-		spellId = select(11, UnitDebuff(unitId, i))
-	end
-	return false
-end
-
-function mod:AcquireTargetForUnboundPlague()
-	local myX, myY = GetPlayerMapPosition("player")
-	local mytarget = "player"
-	local mydistance = 0
-	local temprange = 0
-	for i=1, GetNumRaidMembers(), 1 do
-		if not UnitIsUnit("player", "raid"..i) then
-			temprange = DBM.RangeCheck:GetDistance("raid"..i, myX, myY)
-			if temprange and temprange < 30 and (temprange < mydistance or mydistance == 0) then
-				if UnitHealth("raid"..i) > 5000 and not isDebuffed("raid"..i) then	-- don't acquire targets with debuffs like "Plage Sickness", Red/Green Slime,..
-					mytarget = "raid"..i
-					mydistance = temprange
-				end
-			end
-		end
-	end
-	DBM.Arrow:ShowRunTo(mytarget)
-	self:SendSync("IconUnboundPlagueNext", UnitName(mytarget))
-	self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")
-end
-
-do 
-	local lastsyncself = 0
-	function mod:OnSync(msg, arg)
-		if msg == "IconUnboundPlagueNext" then
-			if self.Options.NextUnboundPlagueTargetIcon then
-				self:SetIcon(arg, 1, 20)
-			end
-			if arg and arg == UnitName("player") then		-- you are the next target for Unbound Plague 
-				if GetTime() - 10 > lastsyncself then
-					lastsyncself = GetTime()
-					specWarnNextUnboundPlageSelf:Show()
-				end
-			end
-		end
-	end
-end--]]
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70351, 71966, 71967, 71968) then
@@ -290,8 +234,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnUnboundPlague:Show()
 			timerUnboundPlague:Start()
-			--specWarnUnboundPlague:Schedule(10)
-			--self:ScheduleMethod(3, "AcquireTargetForUnboundPlague")		-- we acquire target after 3 sec, 7 sec to get the target positioned must be enough ^^^
 			if self.Options.YellOnUnbound then
 				SendChatMessage(L.YellUnbound, "SAY")
 			end
@@ -328,10 +270,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(72855, 72856) then 						-- Unbound Plague
 		timerUnboundPlague:Stop(args.destName)
-		--[[if args:IsPlayer() then
-			specWarnUnboundPlague:Cancel()
-			self:UnscheduleMethod("AcquireTargetForUnboundPlague")
-		end--]]
 		if self.Options.UnboundPlagueIcon then
 			self:SetIcon(args.destName, 0)
 		end

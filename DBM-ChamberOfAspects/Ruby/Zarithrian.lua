@@ -14,18 +14,18 @@ mod:RegisterEvents(
 )
 
 local warningAdds				= mod:NewAnnounce("WarnAdds", 3)
-local warnCleaveArmor			= mod:NewAnnounce("warnCleaveArmor", 2, 74367)
+local warnCleaveArmor			= mod:NewAnnounce("warnCleaveArmor", 2, 74367, mod:IsTank() or mod:IsHealer())
 local warningFear				= mod:NewSpellAnnounce(74384, 3)
 
-local specWarnCleaveArmor		= mod:NewSpecialWarningStack(74367, nil, 2)
+local specWarnCleaveArmor		= mod:NewSpecialWarningStack(74367, nil, 2)--ability lasts 30 seconds, has a 15 second cd, so tanks should trade at 2 stacks.
 
 local timerAddsCD				= mod:NewTimer(45.5, "TimerAdds")
-local timerCleaveArmor			= mod:NewTimer(30, 74367)
-local timerFearCD				= mod:NewCDTimer(33, 74384)--typically every 40 seconds but soemtimes earlier.
+local timerCleaveArmor			= mod:NewTimer(30, 74367, nil, mod:IsTank() or mod:IsHealer())
+local timerFearCD				= mod:NewCDTimer(33, 74384)--anywhere from 33-40 seconds in between fears.
 
 function mod:OnCombatStart(delay)
-	timerFearCD:Start(15-delay)
-	timerAddsCD:Start(15-delay)
+	timerFearCD:Start(14-delay)--need more pulls to verify consistency
+	timerAddsCD:Start(15.5-delay)--need more pulls to verify consistency
 end
 
 function mod:SPELL_CAST_START(args)
@@ -48,13 +48,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:match(L.SummonMinions) and mod:LatencyCheck() then
-		self:SendSync("SummonMinions")
-	end
-end
-
-function mod:OnSync(msg)
-	if msg == "SummonMinions" then
+	if msg:match(L.SummonMinions) then
 		warningFear:Show()
 		timerAddsCD:Start()
 	end
