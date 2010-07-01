@@ -192,7 +192,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	MeteorCast				= "The heavens burn!",
-	Phase2					= "You will find only suffering within the realm of twilight! Enter if you dare!",
+	Phase2					= "황혼 세계에서는 고통만이 있으리라! 자신 있다면 들어와 봐라!",
 	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
 	twilightcutter			= "The orbiting spheres pulse with dark energy!"
 })
