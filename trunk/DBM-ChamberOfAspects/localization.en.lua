@@ -116,16 +116,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specWarnConflagNear		= "Conflagration near you - Watch out",
 	SpecialWarningTranq		= "Enrage - Tranq now"
 })
 
 L:SetOptionLocalization({
-	SpecialWarningTranq		= "Show special warning for $spell:78722 (to tranq)",
+	specWarnConflagNear		= "Show special warning for $spell:74452 near you",
+	SpecialWarningTranq		= "Show special warning for Enrage (to tranq)",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
+	YellOnConflag			= "Yell on $spell:74452",
 	RangeFrame				= "Show range frame (10 yards)",
-	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74453)
+	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
 })
 
 L:SetMiscLocalization{
+	YellConflag	= "Conflagration on me!"
 }
 
 --------------------------
@@ -138,8 +142,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "New adds",
-	warnCleaveArmor	= "%s on >%s< (%s)"		-- Cleave Armor on >args.destName< (args.amount)
+	WarnAdds	= "New adds"
 })
 
 L:SetTimerLocalization({
@@ -148,8 +151,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnAdds		= "Announce new adds",
-	TimerAdds		= "Show timer for new adds",
-	warnCleaveArmor	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(74367, GetSpellInfo(74367) or "unknown")
+	TimerAdds		= "Show timer for new adds"
 })
 
 L:SetMiscLocalization({
@@ -173,14 +175,16 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 (at ~79%)",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 (at ~54%)",
-	AnnounceAlternatePhase	= "Show warnings/timers for phase you aren't in as well",
-	SoundOnConsumption		= "Play sound on Combustion/Consumption",--We use localized text for these functions
-	SetIconOnConsumption	= "Set icons on Combustion/Consumption targets"--So we can use single functions for both versions of spell.
+	SoundOnConsumption		= "Play sound on Combustion",--We use localized text for these functions
+	YellOnConsumption		= "Yell on $spell:74562 or $spell:74792",
+	SetIconOnConsumption	= "Set icons on Combustion targets"--So we can use single functions for both versions of spell.
 })
 
 L:SetMiscLocalization({
-	MeteorCast				= "The heavens burn!",
-	Phase2					= "You will find only suffering within the realm of twilight! Enter if you dare!",
-	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
-	twilightcutter			= "The orbiting spheres pulse with dark energy!"
+	YellPull				= "Your world teeters on the brink of annihilation. You will ALL bear witness to the coming of a new age of DESTRUCTION!",
+	twilightcutter			= "The orbiting spheres pulse with dark energy!",
+	phase2					= "You will find only suffering within the realm of twilight! Enter if you dare!",
+	phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
+	YellCombustion			= "Combustion on me!",
+	YellConsumption			= "Consumption on me!"
 })
