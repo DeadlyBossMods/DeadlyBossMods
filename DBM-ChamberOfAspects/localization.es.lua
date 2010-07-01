@@ -108,7 +108,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= "Twice the Pain and half the fun."--translate
+	SplitTrigger		= "El doble de dolor y la mitad de diversión."
 })
 
 -------------------------
@@ -159,7 +159,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SummonMinions	= "Turn them to ash, minions!"--translate
+	SummonMinions	= "¡Reducidlos a cenizas, esbirros!"
 })
 
 
@@ -181,13 +181,16 @@ L:SetOptionLocalization({
 	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~79%)",
 	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~54%)",
 	AnnounceAlternatePhase	= "Mostrar también avisos/tiempos de la fase en la que no estás",
-	SoundOnConsumption			= "Reproducir sonido en Combustión",
-	SetIconOnConsumption		= "Poner iconos en los objetivos de Combustión"
+	SoundOnConsumption		= "Reproducir sonido en $spell:74562 y $spell:74792",
+	SetIconOnConsumption	= "Poner iconos en los objetivos de $spell:74562 y $spell:74792",
+	YellOnConsumption		= "Gritar cuando tengas $spell:74562 o $spell:74792"
 })
 
 L:SetMiscLocalization({
-	MeteorCast				= "The heavens burn!",--translate
-	Phase2					= "You will find only suffering within the realm of twilight! Enter if you dare!",--translate
-	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",--translate
-	twilightcutter			= "The orbiting spheres pulse with dark energy!"--translate
+	MeteorCast				= "¡Los cielos arden!",
+	Phase2					= "En el reino del crepúsculo solo encontraréis sufrimiento. ¡Entrad si os atrevéis!",
+	Phase3					= "¡Yo soy la luz y la oscuridad! ¡Temed, mortales, la llegada de Alamuerte!",
+	twilightcutter			= "¡Las esferas que orbitan emiten energía oscura!",
+	YellCombustion			= "¡Combustión en mi!",
+	YellConsumption			= "¡Consumo en mi!"
 })
