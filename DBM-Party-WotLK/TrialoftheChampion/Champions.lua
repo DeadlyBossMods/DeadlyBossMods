@@ -5,9 +5,9 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(34657, 34701, 34702, 34703, 34705, 35569, 35570, 35571, 35572, 35617)
 --mod:SetMinSyncRevision(4207)
 
---if not UnitInVehicle("player") then --Only fires combat if you aren't mounted in the horse vehicles, should hopefully fix combat firing for first event.
 mod:RegisterCombat("combat")
---end
+mod:SetDetectCombatInVehicle(false)
+
 mod:RegisterKill("yell", L.YellCombatEnd)
 
 mod:RegisterEvents(

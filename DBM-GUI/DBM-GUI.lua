@@ -241,9 +241,9 @@ do
 	local function onHyperlinkClick(self, data, link)
 		if IsShiftKeyDown() then
 			local msg = link:gsub("|h(.*)|h", "|h[%1]|h")
-			local chatwindow = ChatEdit_GetActiveWindow and ChatEdit_GetActiveWindow() or ChatFrameEditBox
-			if chatwindow and chatwindow:IsVisible() then
-				chatwindow:Insert(msg)
+			local chatWindow = ChatEdit_GetActiveWindow()
+			if chatWindow then
+				chatWindow:Insert(msg)
 			end
 		elseif not IsShiftKeyDown() then
 			if cursorInHitBox(self:GetParent()) then

@@ -1574,12 +1574,6 @@ function DBM:ShowUpdateReminder(newVersion, newRevision)
 	editBox:SetFocus()
 	editBox:SetText("http://www.deadlybossmods.com")
 	editBox:HighlightText()
-	editBox:SetScript("OnHide", function(self)
-	local chatwindow = ChatEdit_GetActiveWindow and ChatEdit_GetActiveWindow() or ChatFrameEditBox
-		if chatwindow and chatwindow:IsVisible() then
-			chatwindow:SetFocus()
-		end
-	end)
 	editBox:SetScript("OnTextChanged", function(self)
 		editBox:SetText("http://www.deadlybossmods.com")
 		editBox:HighlightText()
@@ -1741,6 +1735,9 @@ end
 function DBM:StartCombat(mod, delay, synced)
 	if not checkEntry(inCombat, mod) then
 		if not mod.combatInfo then return end
+		if mod.combatInfo.noCombatInVehicle and UnitInVehicle("player") then -- HACK
+			return
+		end
 		table.insert(inCombat, mod)
 		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
 		if mod:IsDifficulty("heroic5", "heroic25") then
@@ -3334,6 +3331,14 @@ function bossModPrototype:RegisterKill(msgType, ...)
 		local v = select(i, ...)
 		self.combatInfo.killMsgs[v] = true
 	end
+end
+
+-- needs to be called _AFTER_ RegisterCombat
+function bossModPrototype:SetDetectCombatInVehicle(flag)
+	if not self.combatInfo then
+		return
+	end
+	self.combatInfo.noCombatInVehicle = not flag
 end
 
 function bossModPrototype:IsInCombat()
