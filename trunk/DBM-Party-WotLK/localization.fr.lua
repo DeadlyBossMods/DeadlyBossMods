@@ -597,17 +597,20 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+   timerEvent   = "Temps restant"
 })
 
 L:SetOptionLocalization({
-	WarningPhase	= optionWarning:format("Phase #")
+	WarningPhase	= optionWarning:format("Phase #"),
+	timerEvent      = "Montrer le timer de l'event"
 })
 
 L:SetMiscLocalization({
-	Pull	= "Time to get some answers! Let's get this show on the road!",
-	Phase1	= "xxx anti error xxx",
-	Phase2	= "xxx anti error xxx",
-	Phase3	= "xxx anti error xxx"
+	Pull	= "Ouvrez l'œil ! Je vais régler ça en deux coups de cuillè -",
+	Phase1	= "Faille de sécurité détectée. Analyse des archives historiques transférée en attente de basse priorité. Contre-mesures déclenchées.",
+	Phase2	= "Seuil d'indice de menace dépassé. Archivation céleste annulée. Niveau de sécurité augmenté.",
+	Phase3	= "Indice de menace critique. Analyse du Vide détournée. Lancement des protocoles d'épuration.",
+	Kill	= "Alerte : systèmes de protection désactivés. Purge de la mémoire en cours... "
 })
 
 ---------------
