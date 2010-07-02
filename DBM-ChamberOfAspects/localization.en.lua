@@ -187,5 +187,6 @@ L:SetMiscLocalization({
 	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
 	twilightcutter			= "The orbiting spheres pulse with dark energy!",
 	YellCombustion			= "Combustion on me!",
-	YellConsumption			= "Consumption on me!"
+	YellConsumption			= "Consumption on me!",
+	Kill					= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
 })
