@@ -25,7 +25,7 @@ local warningFieryConsumption		= mod:NewTargetAnnounce(74562, 4)
 local warningMeteor					= mod:NewSpellAnnounce(74648, 3)
 local warningShadowBreath			= mod:NewSpellAnnounce(75954, 2, nil, mod:IsTank() or mod:IsHealer())
 local warningFieryBreath			= mod:NewSpellAnnounce(74526, 2, nil, mod:IsTank() or mod:IsHealer())
-local warningTwilightCutter			= mod:NewSpellAnnounce(77844, 3)
+local warningTwilightCutter			= mod:NewAnnounce("TwilightCutterCast", 4, 77844)
 
 local specWarnShadowConsumption		= mod:NewSpecialWarningRun(74792)
 local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
@@ -34,6 +34,7 @@ local timerShadowConsumptionCD		= mod:NewNextTimer(25, 74792)
 local timerFieryConsumptionCD		= mod:NewNextTimer(25, 74562)
 local timerMeteorCD					= mod:NewNextTimer(40, 74648)
 local timerMeteorCast				= mod:NewCastTimer(7.5, 74648)--7 seconds from boss yell the meteor impacts.
+local timerTwilightCutterCast		= mod:NewCastTimer(5, 77844)
 local timerTwilightCutter			= mod:NewBuffActiveTimer(10, 77844)
 local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
 local timerShadowBreathCD			= mod:NewCDTimer(19, 75954, nil, mod:IsTank() or mod:IsHealer())--Same as debuff timers, same CD, can be merged into 1.
@@ -163,6 +164,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:match(L.twilightcutter) then
 		if not self.Options.AnnounceAlternatePhase then
 			warningTwilightCutter:Show()
+			timerTwilightCutterCast:Start()
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end
@@ -176,6 +178,7 @@ function mod:OnSync(msg, target)
 	if msg == "TwilightCutter" then
 		if self.Options.AnnounceAlternatePhase then
 			warningTwilightCutter:Show()
+			timerTwilightCutterCast:Start()
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end
