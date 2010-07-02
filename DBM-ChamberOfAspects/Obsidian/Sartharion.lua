@@ -16,9 +16,9 @@ mod:RegisterEvents(
 )
 
 local warnShadowFissure	    = mod:NewSpellAnnounce(59127)
-local warnTenebron          = mod:NewAnnounce("WarningTenebron", 2, nil, false)
-local warnShadron           = mod:NewAnnounce("WarningShadron", 2, nil, false)
-local warnVesperon          = mod:NewAnnounce("WarningVesperon", 2, nil, false)
+local warnTenebron          = mod:NewAnnounce("WarningTenebron", 2, 61248, false)
+local warnShadron           = mod:NewAnnounce("WarningShadron", 2, 58105, false)
+local warnVesperon          = mod:NewAnnounce("WarningVesperon", 2, 61251, false)
 
 local warnFireWall			= mod:NewSpecialWarning("WarningFireWall", nil, nil, true)
 local warnVesperonPortal	= mod:NewSpecialWarning("WarningVesperonPortal", false)
@@ -29,9 +29,9 @@ mod:AddBoolOption("AnnounceFails", true, "announce")
 
 local timerShadowFissure    = mod:NewCastTimer(5, 59128)--Cast timer until Void Blast. it's what happens when shadow fissure explodes.
 local timerWall             = mod:NewCDTimer(30, 43113)
-local timerTenebron         = mod:NewTimer(30, "TimerTenebron")
-local timerShadron          = mod:NewTimer(80, "TimerShadron")
-local timerVesperon         = mod:NewTimer(120, "TimerVesperon")
+local timerTenebron         = mod:NewTimer(30, "TimerTenebron", 61248)
+local timerShadron          = mod:NewTimer(80, "TimerShadron", 58105)
+local timerVesperon         = mod:NewTimer(120, "TimerVesperon", 61251)
 
 mod:AddBoolOption("PlaySoundOnFireWall")
 

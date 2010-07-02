@@ -198,7 +198,11 @@ end
 function mod:OnSync(msg, target)
 	if msg == "KineticBomb" then
 		warnKineticBomb:Show()
-		timerKineticBombCD:Start()
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10") then
+			timerKineticBombCD:Start(27)
+		else
+			timerKineticBombCD:Start()
+		end
 	elseif msg == "ShockVortex" and GetTime() - lastShockCast > 10 then
 		warnShockVortex:Show(target)
 		lastShockCast = GetTime()

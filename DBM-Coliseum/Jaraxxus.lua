@@ -47,7 +47,8 @@ local SpecWarnFelFireballDispel	= mod:NewSpecialWarningDispel(66965, isMagicDisp
 local timerCombatStart			= mod:NewTimer(84, "TimerCombatStart", 2457)--rollplay for first pull
 local enrageTimer				= mod:NewBerserkTimer(600)
 local timerFlame 				= mod:NewTargetTimer(8, 68123)--There are 8 debuff Ids. Since we detect first to warn, use an 8sec timer to cover duration of trigger spell and damage debuff.
-local timerFlameCD				= mod:NewCDTimer(30, 68125) 
+local timerFlameCD				= mod:NewCDTimer(30, 68125)
+local timerNetherPowerCD		= mod:NewCDTimer(42, 67009)
 local timerFlesh				= mod:NewTargetTimer(12, 67049)
 local timerFleshCD				= mod:NewCDTimer(23, 67051) 
 local timerPortalCD				= mod:NewCDTimer(120, 67900)
@@ -210,6 +211,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(67009) then								-- Nether Power
 		warnNetherPower:Show()
+		timerNetherPowerCD:Start()
 		specWarnNetherPower:Show()
 
 	elseif args:IsSpellID(67901, 67902, 67903, 66258) then		-- Infernal Volcano
