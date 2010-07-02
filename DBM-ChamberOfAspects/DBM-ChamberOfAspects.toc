@@ -16,6 +16,7 @@
 ## X-DBM-Mod-SubCategories-ruRU: Обсидиановое святилище, Рубиновое святилище
 ## X-DBM-Mod-SubCategories-zhTW: 黑曜聖所, 晶紅聖所
 ## X-DBM-Mod-SubCategories-koKR: 흑요석 성소, 루비 성소
+## X-DBM-Mod-SubCategories-frFR: Le sanctum Obsidien,Le sanctum Rubis
 ## X-DBM-Mod-SubCategories-esES: El Sagrario Obsidiana, El Sagrario Rubí
 ## X-DBM-Mod-SubCategories-esMX: El Sagrario Obsidiana, El Sagrario Rubí
 ## X-DBM-Mod-Name: Chamber of Aspects
@@ -32,7 +33,7 @@
 ## X-DBM-Mod-LoadZone-ruRU: Обсидиановое святилище,Рубиновое святилище
 ## X-DBM-Mod-LoadZone-zhTW: 黑曜聖所, 晶紅聖所
 ## X-DBM-Mod-LoadZone-koKR: 흑요석 성소,루비 성소
-## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien
+## X-DBM-Mod-LoadZone-frFR: Le sanctum Obsidien,Le sanctum Rubis
 ## X-DBM-Mod-LoadZone-esES: El Sagrario Obsidiana,El Sagrario Rubí
 ## X-DBM-Mod-LoadZone-esMX: El Sagrario Obsidiana,El Sagrario Rubí
 localization.en.lua
