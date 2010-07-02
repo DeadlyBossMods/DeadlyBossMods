@@ -10,7 +10,7 @@
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
-## X-DBM-Mod-Sort: 2
+## X-DBM-Mod-Sort: 3
 ## X-DBM-Mod-Name: Onyxia's Lair
 ## X-DBM-Mod-Name-frFR: Repaire d'Onyxia
 ## X-DBM-Mod-Name-ruRU: Логово Ониксии

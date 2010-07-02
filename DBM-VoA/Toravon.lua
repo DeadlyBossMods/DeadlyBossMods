@@ -1,7 +1,7 @@
-local mod	= DBM:NewMod("Toravon", "DBM-PvP", 3)
+local mod	= DBM:NewMod("Toravon", "DBM-VoA")
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision$"):sub(12, -3))
+mod:SetRevision(("$Revision: 3737 $"):sub(12, -3))
 mod:SetCreatureID(38433)
 
 mod:RegisterCombat("combat")

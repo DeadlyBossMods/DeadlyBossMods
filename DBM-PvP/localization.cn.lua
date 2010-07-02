@@ -187,34 +187,3 @@ L:SetOptionLocalization({
 	ShowFlagCarrier = "显示旗帜携带者",
 	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息",
 })
-
-
-
-----------------
---  Archavon  --
-----------------
-
-L = DBM:GetModLocalization("Archavon")
-
-L:SetGeneralLocalization({
-	name = "远古海滩"
-})
-
-L:SetWarningLocalization({
-	WarningShards	= "Rock Shards on >%s<",
-	WarningGrab		= "Archavon grabbed >%s<"
-})
-
-L:SetTimerLocalization({
-	TimerShards = "Rock Shards: %s"
-})
-
-L:SetMiscLocalization({
-	TankSwitch = "%%s lunges for (%S+)!"
-})
-
-L:SetOptionLocalization({
-	TimerShards = "Show Rock Shards timer",
-	WarningShards = "Show Rock Shards warning",
-	WarningGrab = "Show Tank Grab warning"
-})
