@@ -162,14 +162,14 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:match(L.Phase2) then
 		timerFieryBreathCD:Cancel()
-		timerMeteorCD:Cancel()--This one i'm not sure if it cancels or not.
+		timerMeteorCD:Cancel()
 --		timerMeteorCast:Cancel()--This one i'm not sure if it cancels or not.
 		warnPhase2:Show()
 		timerTwilightCutterCD:Start(35)
 		timerShadowBreathCD:Start(25)
-	elseif msg:match(L.Phase3) then--This phase doesn't appear to reset the timers like previous phase change.
+	elseif msg:match(L.Phase3) then
 		warnPhase3:Show()
---		timerMeteorCD:Start()--Don't have timing for this yet, the person that sent log stayed below.
+		timerMeteorCD:Start(30)
 	elseif msg:match(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
 		if not self.Options.AnnounceAlternatePhase then
 			warningMeteor:Show()
