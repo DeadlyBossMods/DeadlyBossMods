@@ -174,12 +174,14 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnPhase2Soon		= "Fase 2 pronto",
-	WarnPhase3Soon		= "Fase 3 pronto"
+	WarnPhase3Soon		= "Fase 3 pronto",
+	TwilightCutterCast	= "Casteando Corte Crepuscular: 5 seg"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Mostrar pre-aviso para Fase 2 (al ~79%)",
 	WarnPhase3Soon			= "Mostrar pre-aviso para Fase 3 (al ~54%)",
+	TwilightCutterCast		= "Mostrar aviso cuando $spell:77844 se esté casteando",
 	AnnounceAlternatePhase	= "Mostrar también avisos/tiempos de la fase en la que no estás",
 	SoundOnConsumption		= "Reproducir sonido en $spell:74562 y $spell:74792",
 	SetIconOnConsumption	= "Poner iconos en los objetivos de $spell:74562 y $spell:74792",
@@ -192,5 +194,6 @@ L:SetMiscLocalization({
 	Phase3					= "¡Yo soy la luz y la oscuridad! ¡Temed, mortales, la llegada de Alamuerte!",
 	twilightcutter			= "¡Las esferas que orbitan emiten energía oscura!",
 	YellCombustion			= "¡Combustión en mi!",
-	YellConsumption			= "¡Consumo en mi!"
+	YellConsumption			= "¡Consumo en mi!",
+	Kill					= "Disfrutad la victoria, mortales, porque será la última. ¡Este mundo arderá cuando vuelva el maestro!"
 })
