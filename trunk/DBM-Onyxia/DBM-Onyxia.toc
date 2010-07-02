@@ -1,9 +1,13 @@
 ## Interface: 30300
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Repaire d'Onyxia|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Ониксия|r
-## Title-esES: |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
-## Title-zhTW: |cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧妮克希亞|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxia|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奧妮克希亞|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0奥妮克希亚的巢穴|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0오닉시아|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Onyxias Hort|r
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMOnyxia_SavedVars, DBMOnyxia_SavedStats
@@ -17,6 +21,7 @@
 ## X-DBM-Mod-Name-esES: Guarida de Onyxia
 ## X-DBM-Mod-Name-esMX: Guarida de Onyxia
 ## X-DBM-Mod-Name-zhTW: 奧妮克希亞的巢穴
+## X-DBM-Mod-Name-zhCN: 奥妮克希亚的巢穴
 ## X-DBM-Mod-Name-koKR: 오닉시아의 둥지
 ## X-DBM-Mod-Name-deDE: Onyxias Hort
 ## X-DBM-Mod-LoadZone: Onyxia's Lair
@@ -25,6 +30,7 @@
 ## X-DBM-Mod-LoadZone-esES: Guarida de Onyxia
 ## X-DBM-Mod-LoadZone-esMX: Guarida de Onyxia
 ## X-DBM-Mod-LoadZone-zhTW: 奧妮克希亞的巢穴
+## X-DBM-Mod-LoadZone-zhCN: 奥妮克希亚的巢穴
 ## X-DBM-Mod-LoadZone-koKR: 오닉시아의 둥지
 ## X-DBM-Mod-LoadZone-deDE: Onyxias Hort
 localization.en.lua

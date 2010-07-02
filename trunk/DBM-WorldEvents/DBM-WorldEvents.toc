@@ -13,10 +13,11 @@
 ## X-DBM-Mod-Name-ruRU: Игровые события
 ## X-DBM-Mod-Sort: 150
 ## X-DBM-Mod-LoadZone: Blackrock Depths,Scarlet Monastery,Shadowfang Keep,The Slave Pens
-## X-DBM-Mod-LoadZone-frFR: Profondeurs de Rochenoire,Monastère écarlate
+## X-DBM-Mod-LoadZone-frFR: Profondeurs de Rochenoire,Monastère écarlate,Donjon d'Ombrecroc,Les enclos aux esclaves
 ## X-DBM-Mod-LoadZone-deDE: Schwarzfelstiefen,Das Scharlachrote Kloster,Burg Schattenfang,Die Sklavenunterkünfte
 ## X-DBM-Mod-LoadZone-ruRU: Глубины Черной горы,Монастырь Алого ордена,Крепость Темного Клыка,Узилище
-## X-DBM-Mod-LoadZone-zhTW: 安卡罕特:古王國,阿茲歐-奈幽,斯坦索姆的抉擇,德拉克薩隆要塞,剛德拉克,雷光大廳,石之大廳,奧核之心,奧核之眼,俄特加德要塞,俄特加德之巔,紫羅蘭堡,勇士試煉,黑石深淵,血色修道院,薩倫之淵,眾魂熔爐,倒影大廳,影牙城堡
+## X-DBM-Mod-LoadZone-zhTW: 黑石深淵,血色修道院,影牙城堡,奴隸監獄
+## X-DBM-Mod-LoadZone-zhCN: 黑石深渊,血色修道院,影牙城堡,奴隶围栏
 ## X-DBM-Mod-LoadZone-koKR: 검은바위 나락,붉은십자군 수도원,그림자송곳니 성채, 강제노역소
 ## X-DBM-Mod-LoadZone-esES: Profundidades de Roca Negra,Monasterio Escarlata,Castillo de Colmillo Oscuro,Recinto de los Esclavos
 ## X-DBM-Mod-LoadZone-esMX: Profundidades de Roca Negra,Monasterio Escarlata,Castillo de Colmillo Oscuro,Recinto de los Esclavos
