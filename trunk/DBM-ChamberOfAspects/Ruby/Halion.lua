@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_REMOVED",
+	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_HEALTH"
@@ -30,6 +31,8 @@ local warningTwilightCutter			= mod:NewAnnounce("TwilightCutterCast", 4, 77844)
 
 local specWarnShadowConsumption		= mod:NewSpecialWarningRun(74792)
 local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
+local specWarnMeteorStrike			= mod:NewSpecialWarningMove(75952)
+local specWarnTwilightCutter		= mod:NewSpecialWarningSpell(77844, false)
 
 local timerShadowConsumptionCD		= mod:NewNextTimer(25, 74792)
 local timerFieryConsumptionCD		= mod:NewNextTimer(25, 74562)
@@ -78,7 +81,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SendSync("Meteor")
 		end--]]
 	if args:IsSpellID(74792) then
-		timerShadowConsumptionCD:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerShadowConsumptionCD:Start(20)
+		else
+			timerShadowConsumptionCD:Start()
+		end
 		if not self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(args.destName)
 		end
@@ -96,7 +103,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(74562) then
-		timerFieryConsumptionCD:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerFieryConsumptionCD:Start(20)
+		else
+			timerFieryConsumptionCD:Start()
+		end
 		if not self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(args.destName)
 		end
@@ -124,6 +135,16 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(74562) then
 		if self.Options.SetIconOnConsumption then
 			self:SetIcon(args.destName, 0)
+		end
+	end
+end
+
+do 
+	local lastflame = 0
+	function mod:SPELL_DAMAGE(args)
+		if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then		-- Coldflame, MOVE!
+			specWarnMeteorStrike:Show()
+			lastflame = time()
 		end
 	end
 end
@@ -166,6 +187,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		if not self.Options.AnnounceAlternatePhase then
 			warningTwilightCutter:Show()
 			timerTwilightCutterCast:Start()
+			specWarnTwilightCutter:Schedule(5)
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end
@@ -180,6 +202,7 @@ function mod:OnSync(msg, target)
 		if self.Options.AnnounceAlternatePhase then
 			warningTwilightCutter:Show()
 			timerTwilightCutterCast:Start()
+			specWarnTwilightCutter:Schedule(5)
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end

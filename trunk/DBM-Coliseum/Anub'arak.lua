@@ -20,7 +20,7 @@ mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 mod:AddBoolOption("RemoveHealthBuffsInP3", false)
 
 -- Adds
-local warnAdds				= mod:NewAnnounce("warnAdds", 3)
+local warnAdds				= mod:NewAnnounce("warnAdds", 3, 45419)
 local timerAdds				= mod:NewTimer(45, "timerAdds", 45419)
 local Burrowed				= false 
 
