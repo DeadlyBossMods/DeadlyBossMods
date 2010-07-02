@@ -6,6 +6,7 @@ mod:SetCreatureID(39863)--40141 (twilight form)
 mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
+--mod:RegisterKill("yell", L.Kill)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
