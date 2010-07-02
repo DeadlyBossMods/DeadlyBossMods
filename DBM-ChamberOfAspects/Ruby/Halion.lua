@@ -37,7 +37,7 @@ local specWarnTwilightCutter		= mod:NewSpecialWarningSpell(77844, false)
 local timerShadowConsumptionCD		= mod:NewNextTimer(25, 74792)
 local timerFieryConsumptionCD		= mod:NewNextTimer(25, 74562)
 local timerMeteorCD					= mod:NewNextTimer(40, 74648)
-local timerMeteorCast				= mod:NewCastTimer(7.5, 74648)--7 seconds from boss yell the meteor impacts.
+local timerMeteorCast				= mod:NewCastTimer(7, 74648)--7 seconds from boss yell the meteor impacts.
 local timerTwilightCutterCast		= mod:NewCastTimer(5, 77844)
 local timerTwilightCutter			= mod:NewBuffActiveTimer(10, 77844)
 local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
@@ -142,7 +142,7 @@ end
 do 
 	local lastflame = 0
 	function mod:SPELL_DAMAGE(args)
-		if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then		-- Coldflame, MOVE!
+		if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then
 			specWarnMeteorStrike:Show()
 			lastflame = time()
 		end
