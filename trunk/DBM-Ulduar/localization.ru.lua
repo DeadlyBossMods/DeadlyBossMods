@@ -444,7 +444,8 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear			= "Спец-предупреждение о $spell:63276 около вас",
 	YellOnLifeLeech					= "Кричать, когда на вас $spell:63276",
 	YellOnShadowCrash				= "Кричать, когда на вас $spell:62660",
-	hardmodeSpawn					= "Отсчет времени до появления Саронитового врага (сложный режим)"
+	hardmodeSpawn					= "Отсчет времени до появления Саронитового врага (сложный режим)",
+	CrashArrow						= "Показывать стрелку, когда $spell:62660 около вас"
 }
 
 L:SetMiscLocalization{
