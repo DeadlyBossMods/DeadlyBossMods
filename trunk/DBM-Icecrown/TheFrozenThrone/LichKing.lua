@@ -96,8 +96,6 @@ mod:AddBoolOption("TrapArrow")
 
 local phase	= 0
 local lastPlagueCast = 0
-local lastDefileCast = 0
-local lastTrapCast = 0
 local warned_preP2 = false
 local warned_preP3 = false
 local LKTank
@@ -105,8 +103,6 @@ local LKTank
 function mod:OnCombatStart(delay)
 	phase = 0
 	lastPlagueCast = 0
-	lastDefileCast = 0
-	lastTrapCast = 0
 	warned_preP2 = false
 	warned_preP3 = false
 	LKTank = nil
@@ -506,9 +502,8 @@ function mod:OnSync(msg, target)
 				self:SetIcon(target, 7, 5)
 			end
 		end
-	elseif msg == "DefileOn" and GetTime() - lastDefileCast > 10 then
+	elseif msg == "DefileOn" then
 		warnDefileCast:Show(target)
-		lastDefileCast = GetTime()
 		if self.Options.DefileIcon then
 			self:SetIcon(target, 8, 10)
 		end
@@ -535,9 +530,8 @@ function mod:OnSync(msg, target)
 				end
 			end
 		end
-	elseif msg == "TrapOn" and GetTime() - lastTrapCast > 10 then
+	elseif msg == "TrapOn" then
 		warnTrapCast:Show(target)
-		lastTrapCast = GetTime()
 		if self.Options.TrapIcon then
 			self:SetIcon(target, 6, 10)
 		end

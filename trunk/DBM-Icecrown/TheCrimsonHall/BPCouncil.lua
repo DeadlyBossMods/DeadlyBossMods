@@ -57,7 +57,6 @@ mod:AddBoolOption("RangeFrame", true)
 
 local activePrince
 local glitteringSparksTargets	= {}
-local lastShockCast = 0
 
 local function warnGlitteringSparksTargets()
 	warnGliteringSparks:Show(table.concat(glitteringSparksTargets, "<, >"))
@@ -70,7 +69,6 @@ function mod:OnCombatStart(delay)
 	warnTargetSwitchSoon:Schedule(42-delay)
 	timerTargetSwitch:Start(-delay)
 	activePrince = nil
-	lastShockCast = 0
 	table.wipe(glitteringSparksTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(12)
@@ -203,9 +201,8 @@ function mod:OnSync(msg, target)
 		else
 			timerKineticBombCD:Start()
 		end
-	elseif msg == "ShockVortex" and GetTime() - lastShockCast > 10 then
+	elseif msg == "ShockVortex" then
 		warnShockVortex:Show(target)
-		lastShockCast = GetTime()
 		if target == UnitName("player") then
 			specWarnVortex:Show()
 		elseif targetname then
