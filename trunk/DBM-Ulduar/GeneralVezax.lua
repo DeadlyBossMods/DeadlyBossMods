@@ -25,11 +25,6 @@ local specWarnSurgeDarkness		= mod:NewSpecialWarningSpell(62662, mod:IsTank() or
 local specWarnLifeLeechYou		= mod:NewSpecialWarningYou(63276)
 local specWarnLifeLeechNear 	= mod:NewSpecialWarning("SpecialWarningLLNear", false)
 
-mod:AddBoolOption("YellOnLifeLeech", true, "announce")
-mod:AddBoolOption("YellOnShadowCrash", true, "announce")
-mod:AddBoolOption("SetIconOnShadowCrash", true)
-mod:AddBoolOption("SetIconOnLifeLeach", true)
-
 local timerEnrage				= mod:NewBerserkTimer(600)
 local timerSearingFlamesCast	= mod:NewCastTimer(2, 62661)
 local timerSurgeofDarkness		= mod:NewBuffActiveTimer(10, 62662)
@@ -37,6 +32,12 @@ local timerNextSurgeofDarkness	= mod:NewBuffActiveTimer(62, 62662)
 local timerSaroniteVapors		= mod:NewNextTimer(30, 63322)
 local timerLifeLeech			= mod:NewTargetTimer(10, 63276)
 local timerHardmode				= mod:NewTimer(189, "hardmodeSpawn")
+
+mod:AddBoolOption("YellOnLifeLeech", true, "announce")
+mod:AddBoolOption("YellOnShadowCrash", true, "announce")
+mod:AddBoolOption("SetIconOnShadowCrash", true)
+mod:AddBoolOption("SetIconOnLifeLeach", true)
+mod:AddBoolOption("CrashArrow")
 
 
 function mod:OnCombatStart(delay)
@@ -76,25 +77,10 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:ShadowCrashTarget()
-	local targetname = self:GetBossTarget()
-	if not targetname then return end
-	if self.Options.SetIconOnShadowCrash and mod:LatencyCheck() then
-		self:SetIcon(targetname, 8, 10)
-	end
-	warnShadowCrash:Show(targetname)
-	if targetname == UnitName("player") then
-		specWarnShadowCrash:Show(targetname)
-		if self.Options.YellOnShadowCrash then
-			SendChatMessage(L.YellCrash, "SAY")
-		end
-	elseif targetname then
-		local uId = DBM:GetRaidUnitId(targetname)
-		if uId then
-			local inRange = CheckInteractDistance(uId, 2)
-			if inRange then
-				specWarnShadowCrashNear:Show()
-			end
-		end
+	local target = self:GetBossTarget(33271)
+	if not target then return end
+	if mod:LatencyCheck() then--Only send sync if you have low latency.
+		self:SendSync("CrashOn", target)
 	end
 end
 
@@ -127,5 +113,36 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(emote)
 	if emote == L.EmoteSaroniteVapors or emote:find(L.EmoteSaroniteVapors) then
 		timerSaroniteVapors:Start()
+	end
+end
+
+function mod:OnSync(msg, target)
+	if msg == "CrashOn" then
+		warnShadowCrash:Show(target)
+		if self.Options.SetIconOnShadowCrash then
+			self:SetIcon(target, 8, 10)
+		end
+		if target == UnitName("player") then
+			specWarnShadowCrash:Show()
+			if self.Options.YellOnShadowCrash then
+				SendChatMessage(L.YellCrash, "SAY")
+			end
+		elseif target then
+			local uId = DBM:GetRaidUnitId(target)
+			if uId then
+				local inRange = CheckInteractDistance(uId, 2)
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				if inRange then
+					specWarnShadowCrashNear:Show()
+					if self.Options.CrashArrow then
+						DBM.Arrow:ShowRunAway(x, y, 15, 5)
+					end
+				end
+			end
+		end
 	end
 end
