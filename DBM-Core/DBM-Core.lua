@@ -108,6 +108,7 @@ DBM.DefaultOptions = {
 	DontSendBossWhispers = false,
 	DontSetIcons = false,
 	MaxLatency = 150,
+	BigBrotherAnnounceToRaid = false,
 --	HelpMessageShown = false,
 }
 
@@ -1767,7 +1768,11 @@ function DBM:StartCombat(mod, delay, synced)
 		fireEvent("pull", mod, delay, synced)
 		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
 		if DBM.Options.ShowBigBrotherOnCombatStart and BigBrother and type(BigBrother.ConsumableCheck) == "function" then
-			BigBrother:ConsumableCheck("SELF")
+			if DBM.Options.BigBrotherAnnounceToRaid then
+				BigBrother:ConsumableCheck("RAID")
+			else
+				BigBrother:ConsumableCheck("SELF")
+			end
 		end	
 		if DBM.Options.FixCLEUOnCombatStart then
 			CombatLogClearEntries()
