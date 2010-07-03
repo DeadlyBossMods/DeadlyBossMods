@@ -1831,8 +1831,14 @@ function DBM:EndCombat(mod, wipe)
 			else
 				self:AddMsg(DBM_CORE_BOSS_DOWN_LONG:format(mod.combatInfo.name, strFromTime(thisTime), strFromTime(lastTime), strFromTime(bestTime)))
 			end
+			local msg
 			for k, v in pairs(autoRespondSpam) do
-				SendChatMessage(chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), (mod.combatInfo.name or "")), "WHISPER", nil, k)
+				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), (mod.combatInfo.name or ""))
+				if type(k) == "string" then
+					SendChatMessage(msg, "WHISPER", nil, k)
+				elseif type(k) == "number" then
+					BNSendWhisper(k, msg)
+				end
 			end
 			fireEvent("kill", mod)
 		end
