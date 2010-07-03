@@ -78,7 +78,6 @@ local warned_preP3 = false
 local spamPuddle = 0
 local spamGas = 0
 local phase = 0
-local lastGooCast = 0
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -88,7 +87,6 @@ function mod:OnCombatStart(delay)
 	warned_preP2 = false
 	warned_preP3 = false
 	phase = 1
-	lastGooCast = 0
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerUnboundPlagueCD:Start(10-delay)
 	end
@@ -295,8 +293,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:OnSync(msg, target)
-	if msg == "GooOn" and GetTime() - lastGooCast > 10 then
-		lastGooCast = GetTime()
+	if msg == "GooOn" then
 		if self.Options.MalleableGooIcon then
 			self:SetIcon(target, 6, 10)
 		end
