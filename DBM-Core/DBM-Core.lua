@@ -20,7 +20,7 @@
 --
 -- Special thanks to:
 --    * Arta (DBM-Party)
---    * Omegal @ US-Whisperwind (some patches, and DBM-Party updates)
+--    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --
 --
@@ -1315,13 +1315,6 @@ do
 		end
 	end
 end
-
-frame = CreateFrame("Frame")
-frame:RegisterEvent("BN_NEW_PRESENCE")
-frame:RegisterEvent("BN_CONNECTED")
-frame:SetScript("OnEvent", function(self, event, ...)
-	print(event)
-	for i = 1, select("#", ...) do print(i, (select(i, ...))) end end)
 
 function DBM:LFG_PROPOSAL_SHOW()
 	DBM.Bars:CreateBar(40, DBM_LFG_INVITE, "Interface\\Icons\\Spell_Holy_BorrowedTime")
