@@ -450,7 +450,8 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear			= "Mostrar aviso especial para $spell:63276 cerca de ti",
 	YellOnLifeLeech					= "Gritar si tienes $spell:63276",
 	YellOnShadowCrash				= "Gritar si eres objetivo de $spell:62660",
-	hardmodeSpawn					= "Mostrar tiempo para salida de Animus de saronita (Modo Difícil)"
+	hardmodeSpawn					= "Mostrar tiempo para salida de Animus de saronita (Modo Difícil)",
+	CrashArrow						= "Mostrar una flecha cuando $spell:62660 va a caer cerca de ti"
 }
 
 L:SetMiscLocalization{
