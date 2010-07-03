@@ -132,6 +132,7 @@ L.SpamBlockRaidWarning			= "Фильтрация предупреждений о
 L.SpamBlockBossWhispers			= "Фильтрация <DBM> предупреждений шепотом в бою"
 L.BlockVersionUpdatePopup		= "Отключить всплывающее сообщение об устаревшей версии"
 L.ShowBigBrotherOnCombatStart	= "Выполнять проверку положительных эффектов Big Brother в начале боя"
+L.BigBrotherAnnounceToRaid		= "Объявлять результаты проверки Big Brother в рейд"
 
 L.Area_SpamFilter_Outgoing		= "Параметры общего фильтра"
 L.SpamBlockNoShowAnnounce		= "Не объявлять или предупреждать звуком игрока"
