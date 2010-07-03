@@ -128,8 +128,8 @@ L.HideBossEmoteFrame		= "Schlachtzugsboss-Emote-Fenster verstecken"
 L.SpamBlockRaidWarning		= "Ansagen von anderen Boss Mods filtern" 
 L.SpamBlockBossWhispers		= "Aktiviere Filter für <DBM>-Flüstermitteilungen im Kampf"
 L.BlockVersionUpdatePopup	= "Zeige Update-Meldung im Chat statt als Popup"
-
 L.ShowBigBrotherOnCombatStart	= "Führe Big-Brother-Buffprüfung bei Kampfbeginn durch"
+L.BigBrotherAnnounceToRaid		= "Ergebnis der Big-Brother-Buffprüfung zum Raid Chat veröffentlichen"
 
 L.Area_SpamFilter_Outgoing		= "Global Filter-Optionen"
 L.SpamBlockNoShowAnnounce		= "Zeige keine Verkündungen und spiele keine Warnungssounds"
