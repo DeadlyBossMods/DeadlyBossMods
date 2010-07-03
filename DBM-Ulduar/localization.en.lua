@@ -442,7 +442,8 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear			= "Show special warning for $spell:63276 near you",
 	YellOnLifeLeech					= "Yell on $spell:63276",
 	YellOnShadowCrash				= "Yell on $spell:62660",
-	hardmodeSpawn					= "Show timer for Saronite Animus spawn (hard mode)"
+	hardmodeSpawn					= "Show timer for Saronite Animus spawn (hard mode)",
+	CrashArrow						= "Show DBM arrow when $spell:62660 is near you"
 }
 
 L:SetMiscLocalization{
