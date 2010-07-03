@@ -15,8 +15,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warningPhase	= mod:NewAnnounce("WarningPhase", 2)
-local timerEvent	= mod:NewTimer(302, "timerEvent")
+local warningPhase	= mod:NewAnnounce("WarningPhase", 2, "Interface\\Icons\\Spell_Nature_WispSplode")
+local timerEvent	= mod:NewTimer(302, "timerEvent", "Interface\\Icons\\Spell_Holy_BorrowedTime")
 
 function mod:OnCombatStart(delay)
 	timerEvent:Start(-delay)
