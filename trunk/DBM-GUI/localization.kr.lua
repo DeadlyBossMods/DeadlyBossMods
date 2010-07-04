@@ -131,7 +131,8 @@ L.HideBossEmoteFrame			= "레이드 보스가 사용하는 감정표현 숨기�
 L.SpamBlockRaidWarning			= "다른 보스 모드가 알리는 경보 감추기" 
 L.SpamBlockBossWhispers			= "전투 중 사용되는 <DBM> 경보 귓속말 감추기"
 L.BlockVersionUpdatePopup		= "업데이트 알림 창 끄기"
-L.ShowBigBrotherOnCombatStart	= "전투가 시작되면 BigBrother 버프 체크 수락"
+L.ShowBigBrotherOnCombatStart	= "전투가 시작되면 BigBrother 버프 체크 켜기"
+L.BigBrotherAnnounceToRaid		= "Big Brother 결과를 공격대에 알리기"
 
 L.Area_SpamFilter_Outgoing		= "공통 필터 옵션"
 L.SpamBlockNoShowAnnounce		= "알림 또는 경고 소리 실행하지 않기"
