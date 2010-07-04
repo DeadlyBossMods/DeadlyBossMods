@@ -180,7 +180,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnPhase2Soon		= "곧 2 단계",
 	WarnPhase3Soon		= "곧 3 단계",
-	TwilightCutterCast	= "Casting Twilight Cutter: 5 sec"
+	TwilightCutterCast	= "황혼 절단기 시전 : 5 초"
 })
 
 L:SetOptionLocalization({
@@ -198,7 +198,7 @@ L:SetMiscLocalization({
 	Phase2					= "황혼 세계에서는 고통만이 있으리라! 자신 있다면 들어와 봐라!",
 	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
 	twilightcutter			= "The orbiting spheres pulse with dark energy!",
-	YellCombustion			= "Combustion on me!",
-	YellConsumption			= "Consumption on me!",
+	YellCombustion			= "나에게 맹렬한 발화!",
+	YellConsumption			= "나에게 영혼 소진!",
 	Kill					= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
 })
