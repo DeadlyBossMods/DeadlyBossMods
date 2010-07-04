@@ -133,7 +133,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecialWarningTranq		= "$spell:78722의 특수 경고 보기 (마취 관련)",
+	SpecialWarningTranq		= "$spell:78722 특수 경고 보기(마취)",
 	RangeFrame				= "거리 프레임 보기 (10 미터)",
 	BeaconIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74453)
 })
@@ -151,8 +151,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "새로운 몹",
-	warnCleaveArmor	= "%s : >%s< (%s)"		-- Cleave Armor on >args.destName< (args.amount)
+	WarnAdds			= "새로운 몹",
+	warnCleaveArmor		= "%s : >%s< (%s)"		-- Cleave Armor on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
@@ -179,20 +179,26 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnPhase2Soon		= "곧 2 단계",
-	WarnPhase3Soon		= "곧 3 단계"
+	WarnPhase3Soon		= "곧 3 단계",
+	TwilightCutterCast	= "Casting Twilight Cutter: 5 sec"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "2 단계 사전 경고 보기 (79% 전)",
 	WarnPhase3Soon			= "3 단계 사전 경고 보기 (54% 전)",
-	AnnounceAlternatePhase	= "모든 단계의 경고/타이머 보기",	
-	SoundOnConsumption		= "연소일 경우 소리 재생",--We use localized text for these functions
-	SetIconOnConsumption	= "연소 대상 공격대 아이콘 설정"--So we can use single functions for both versions of spell.
+	TwilightCutterCast		= "$spell:77844을 시전할 때 경고 보기",	
+	AnnounceAlternatePhase	= "해당 위치에 없을 경우에도 모든 단계의 경고/타이머 보기",
+	SoundOnConsumption		= "$spell:74562 또는 $spell:74792 소리 재생",--We use localized text for these functions
+	SetIconOnConsumption	= "$spell:74562 또는 $spell:74792 대상 공격대 아이콘 설정",--So we can use single functions for both versions of spell.
+	YellOnConsumption		= "$spell:74562 또는 $spell:74792 외치기"	
 })
 
 L:SetMiscLocalization({
 	MeteorCast				= "The heavens burn!",
 	Phase2					= "황혼 세계에서는 고통만이 있으리라! 자신 있다면 들어와 봐라!",
 	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
-	twilightcutter			= "The orbiting spheres pulse with dark energy!"
+	twilightcutter			= "The orbiting spheres pulse with dark energy!",
+	YellCombustion			= "Combustion on me!",
+	YellConsumption			= "Consumption on me!",
+	Kill					= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
 })
