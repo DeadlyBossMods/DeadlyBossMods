@@ -200,5 +200,5 @@ L:SetMiscLocalization({
 	twilightcutter			= "주위를 회전하는 구슬들이 고동치며 어둠의 기운을 내뿜습니다!",
 	YellCombustion			= "나에게 맹렬한 발화!",
 	YellConsumption			= "나에게 영혼 소진!",
-	Kill					= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
+	Kill					= "필멸자들아, 승리를 만끽해라. 그것이 마지막일 테니. 주인님이 돌아오시면 이 세상은 불타버리리라!"
 })
