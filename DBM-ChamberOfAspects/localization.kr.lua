@@ -115,7 +115,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= "Twice the Pain and half the fun."
+	SplitTrigger		= "고통이 두 배면, 재미가 반이지."
 })
 
 
@@ -166,7 +166,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SummonMinions	= "Turn them to ash, minions!"
+	SummonMinions	= "저놈들을 재로 만들어버려라!"
 })
 -------------------------------------
 --  Halion the Twilight Destroyer  --
@@ -194,10 +194,10 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	MeteorCast				= "The heavens burn!",
+	MeteorCast				= "하늘이 타오른다!",
 	Phase2					= "황혼 세계에서는 고통만이 있으리라! 자신 있다면 들어와 봐라!",
-	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
-	twilightcutter			= "The orbiting spheres pulse with dark energy!",
+	Phase3					= "나는 빛이자 어둠이다! 필멸자들어, 데스윙의 사자 앞에 무릎 꿇어라!",
+	twilightcutter			= "주위를 회전하는 구슬들이 고동치며 어둠의 기운을 내뿜습니다!",
 	YellCombustion			= "나에게 맹렬한 발화!",
 	YellConsumption			= "나에게 영혼 소진!",
 	Kill					= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
