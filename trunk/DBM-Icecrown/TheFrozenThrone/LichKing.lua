@@ -118,7 +118,7 @@ function mod:DefileTarget()
 end
 
 function mod:TankTrap()
-	if mod:LatencyCheck() then--Laggy people can still get wrong target 10 times, so don't send sync if you fail latency check.
+	if mod:LatencyCheck() then
 		self:SendSync("TrapOn", LKTank)
 	end
 end
@@ -129,7 +129,9 @@ function mod:TrapTarget()
 	if targetname ~= LKTank then--If scan doesn't return tank abort other scans and do other warnings.
 		self:UnscheduleMethod("TrapTarget")
 		self:UnscheduleMethod("TankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
-		self:SendSync("TrapOn", targetname)--No latency check performed in this function, if you didn't grab tank then your scan was right, lagging or not.
+		if mod:LatencyCheck() then
+			self:SendSync("TrapOn", targetname)
+		end
 	else
 		self:UnscheduleMethod("TankTrap")
 		self:ScheduleMethod(1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
