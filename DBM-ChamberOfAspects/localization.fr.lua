@@ -183,7 +183,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	MeteorCast				= "Les cieux s'embrasent !",
 	Phase2					= "Vous ne trouverez que souffrance au royaume du crépuscule ! Entrez si vous l'osez !",
-	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",--needs translation
+	Phase3					= "Je suis la lumière et l'ombre ! Tremblez, mortels, devant le héraut d'Aile-de-mort !",--needs Verification
 	twilightcutter			= "Les sphères volantes rayonnent d'énergie noire !",
 	YellCombustion			= "Combustion on me!",--needs translation
 	YellConsumption			= "Consumption on me!",--needs translation
