@@ -78,8 +78,8 @@ DBM_CORE_SLASHCMD_HELP				= {
 	"/dbm version：進行團隊範圍內的版本檢測（也可使用：ver）。",
 	"/dbm unlock：顯示一個可移動的計時器（也可使用：move）。",
 	"/dbm timer <x> <文字>：開始一個以<文字>為名稱的時間為<x>秒的計時器。",
-	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需要團隊隊長或助理權限）。",
-	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需要團隊隊長或助理權限）。",
+	"/dbm broadcast timer <x> <文字>：向團隊廣播一個以<文字>為名稱，時間為<x>秒的計時器（需開啟團隊廣播及助理權限）。",
+	"/dbm break <分鐘>: 開始休息計時器<分鐘>。向所有團隊成員發送一個DBM休息計時器（需開啟團隊廣播及助理權限）。",
 	"/dbm help：顯示可用命令的說明。",
 }
 
@@ -181,7 +181,7 @@ DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED		= "在此區域中不支援%d碼的距離
 
 DBM_ARROW_MOVABLE				= "可移動箭頭"
 
-DBM_ARROW_NO_RAIDGROUP				= "此功能只能作用於團隊及處身團隊副本中。"
+DBM_ARROW_NO_RAIDGROUP				= "此功能僅作用於團隊副本中的團隊小隊。"
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 用法:",
 	"/dbm arrow <x> <y>  建立一個箭頭在特定的位置(0 < x/y < 100)",
