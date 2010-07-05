@@ -16,12 +16,13 @@ mod:RegisterEvents(
 
 local warningSplitSoon		= mod:NewAnnounce("WarningSplitSoon", 2)
 local warningRepellingWave	= mod:NewSpellAnnounce(74509, 3)
+local warnWhirlwind			= mod:NewSpellAnnounce(75125, 3, nil, mod:IsTank() or mod:IsHealer())
 local warningWarnBrand		= mod:NewTargetAnnounce(74505, 4)
 
 local specWarnBrand			= mod:NewSpecialWarningYou(74505)
+local specWarnRepellingWave	= mod:NewSpecialWarningSpell(74509)
 
-local timerWhirlwindCD		= mod:NewCDTimer(22, 75125)
-local timerWhirlwind		= mod:NewBuffActiveTimer(4, 75125)
+local timerWhirlwind		= mod:NewBuffActiveTimer(4, 75125, nil, mod:IsTank() or mod:IsHealer())
 local timerRepellingWave	= mod:NewBuffActiveTimer(4, 74509)--1 second cast + 3 second stun
 local timerBrand			= mod:NewBuffActiveTimer(10, 74505)
 
@@ -60,32 +61,15 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(74509) then
 		warningRepellingWave:Show()
+		specWarnRepellingWave:Show()
 		timerRepellingWave:Show()
 	end
 end
 
---[[function mod:SPELL_CAST_SUCCESS(args)--Use spell cast success if aura apply is bad from hoping.
-	if args:IsSpellID(74505) then
-		brandTargets[#brandTargets + 1] = args.destName
-		timerBrand:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnBrand:Show()
-		end
-		if self.Options.SetIconOnBrand then
-			self:SetIcon(args.destName, brandIcon, 10)
-			brandIcon = brandIcon - 1
-		end
-		self:Unschedule(showBrandWarning)
-		self:Schedule(0.3, showBrandWarning)
-	end
-end--]]
-
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75125) and args:GetSrcCreatureID() == 39751 then --(Ignore bladestorm from the clone. Only show from original since clone SHOULD be pulled out.)
-		specWarnWhirlwind:Show()
-		timerWhirlwindCD:Start()
+	if args:IsSpellID(75125) then
+		warnWhirlwind:Show()
 		timerWhirlwind:Show()
-		soundWhirlwind:Play()
 	elseif args:IsSpellID(74505) then
 		brandTargets[#brandTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -93,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerBrand:Show()
 		end
 		if self.Options.SetIconOnBrand then
-			if 	brandIcon < 1 then	--Icons are gonna be crazy on this fight if people don't control jumps, we will use ALL of them and only reset icons if we run out of them
+			if 	brandIcon < 1 then
 				brandIcon = 8
 			end
 			self:SetIcon(args.destName, brandIcon, 10)
