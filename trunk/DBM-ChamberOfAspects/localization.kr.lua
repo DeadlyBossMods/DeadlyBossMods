@@ -115,7 +115,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= "고통이 두 배면, 재미가 반이지."
 })
 
 
@@ -129,7 +128,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecialWarningTranq		= "격노 - 지금 마취!"
+	SpecialWarningTranq		= "격노 - 지금 평정!"
 })
 
 L:SetOptionLocalization({
