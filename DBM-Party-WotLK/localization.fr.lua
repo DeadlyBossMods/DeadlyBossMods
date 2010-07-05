@@ -606,11 +606,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Pull	= "Ouvrez l'œil ! Je vais régler ça en deux coups de cuillè -",
+	Pull	= "Ouvrez l'œil ! Je vais régler ça en deux coups de cuillè -",
 	Phase1	= "Faille de sécurité détectée. Analyse des archives historiques transférée en attente de basse priorité. Contre-mesures déclenchées.",
 	Phase2	= "Seuil d'indice de menace dépassé. Archivation céleste annulée. Niveau de sécurité augmenté.",
 	Phase3	= "Indice de menace critique. Analyse du Vide détournée. Lancement des protocoles d'épuration.",
-	Kill	= "Alerte : systèmes de protection désactivés. Purge de la mémoire en cours... "
+	Kill	= "Alerte : systèmes de protection désactivés. Purge de la mémoire en cours…"
 })
 
 ---------------
