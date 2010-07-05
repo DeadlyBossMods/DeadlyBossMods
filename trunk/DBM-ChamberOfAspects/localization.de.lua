@@ -179,5 +179,11 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	twilightcutter			= "Die kreisenden Sphären pulsieren vor dunkler Energie!"
+	MeteorCast				= "Die Himmel brennen!",
+	Phase2					= "Ihr werdet im Reich des Zwielichts nur Leid finden! Tretet ein, wenn ihr es wagt!",
+	Phase3					= "Ich bin das Licht und die Dunkelheit!",--partial, message find should find it though.
+	twilightcutter			= "Die kreisenden Sphären pulsieren vor dunkler Energie!",
+	YellCombustion			= "Combustion on me!",--needs translation
+	YellConsumption			= "Consumption on me!",--needs translation
+	Kill					= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"--needs translation
 })
