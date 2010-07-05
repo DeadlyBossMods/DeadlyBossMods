@@ -437,7 +437,8 @@ L:SetOptionLocalization{
 	SpecialWarningLLNear		= "當你附近的人中了$spell:63276時顯示特別警告",
 	YellOnLifeLeech			= "當你中了$spell:63276時大喊",
 	YellOnShadowCrash		= "當你中了$spell:62660時大喊",
-	hardmodeSpawn			= "為薩倫聚惡體出現顯示計時器 (困難模式)"
+	hardmodeSpawn			= "為薩倫聚惡體出現顯示計時器 (困難模式)",
+	CrashArrow			= "當你附近的人中了$spell:62660時顯示DBM箭頭"
 }
 
 L:SetMiscLocalization{

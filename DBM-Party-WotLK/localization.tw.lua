@@ -1158,12 +1158,18 @@ L:SetWarningLocalization({
 	warnExplode			= "食屍鬼爆炸 - 快跑開"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart	= "戰鬥開始"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	warnExplode				= "當食屍鬼爪牙即將自我爆炸時警告",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
+	Pull			= "幹得好。今天，你已證明了你自己-",
 	YellCombatEnd	= "恭喜你，勇士們。儘管試煉隱藏著許多不安的變數，但你們仍然通過了考驗。"	-- can also be "No! I must not fail... again ..."
 })
 
