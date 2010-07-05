@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("CorenDirebrew")
 
 L:SetGeneralLocalization({
-	name = "寇仁·恐酒"
+	name 			= "寇仁·恐酒"
 })
 
 L:SetWarningLocalization({
@@ -32,7 +32,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("HeadlessHorseman")
 
 L:SetGeneralLocalization({
-	name = "無頭騎士"
+	name 			= "無頭騎士"
 })
 
 L:SetWarningLocalization({
@@ -57,15 +57,15 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("ApothecaryTrio")
 
 L:SetGeneralLocalization({
-	name = "藥劑師三人組"
+	name 			= "藥劑師三人組"
 })
 
 L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	HummelActive	= "胡默爾 開始活動",
-	BaxterActive	= "巴克斯特 開始活動",
+	HummelActive		= "胡默爾 開始活動",
+	BaxterActive		= "巴克斯特 開始活動",
 	FryeActive		= "弗萊伊 開始活動"
 })
 
@@ -75,4 +75,38 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	SayCombatStart		= "他們有告訴你我是誰還有我為什麼這麼做嗎?"
+})
+
+-------------
+--  Ahune  --
+-------------
+L = DBM:GetModLocalization("Ahune")
+
+L:SetGeneralLocalization({
+	name 			= "艾胡恩"
+})
+
+L:SetWarningLocalization({
+	Submerged		= "艾胡恩已隱沒",
+	Emerged			= "艾胡恩已現身",
+	specWarnAttack		= "艾胡恩擁有易傷 - 現在攻擊!"
+})
+
+L:SetTimerLocalization({
+	SubmergTimer		= "隱沒",
+	EmergeTimer		= "現身",
+	TimerCombat		= "戰鬥開始"
+})
+
+L:SetOptionLocalization({
+	Submerged		= "當艾胡恩隱沒時顯示警告",
+	Emerged			= "當艾胡恩現身時顯示警告",
+	specWarnAttack		= "當艾胡恩擁有易傷時顯示特別警告",
+	SubmergTimer		= "為隱沒顯示計時器",
+	EmergeTimer		= "為現身顯示計時器",
+	TimerCombat		= "為戰鬥開始顯示計時器"
+})
+
+L:SetMiscLocalization({
+	Pull			= "冰石已經溶化了!"
 })

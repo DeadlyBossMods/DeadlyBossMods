@@ -91,16 +91,16 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Baltharus")
 
 L:SetGeneralLocalization({
-	name = "『戰爭之子』巴爾薩拉斯"
+	name 			= "『戰爭之子』巴爾薩魯斯"
 })
 
 L:SetWarningLocalization({
-	WarningSplitSoon	= "即將分裂"
+	WarningSplitSoon	= "分裂 即將到來"
 })
 
 L:SetOptionLocalization({
-	WarningSplitSoon	= "為分裂顯示預警",
-	RangeFrame			= "顯示距離框體（12碼）",
+	WarningSplitSoon	= "為分裂顯示預先警告",
+	RangeFrame		= "顯示距離框 (12碼)",
 	SetIconOnBrand		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74505)
 })
 
@@ -114,24 +114,20 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Saviana")
 
 L:SetGeneralLocalization({
-	name = "『怒火』薩維安娜"
+	name 			= "薩薇安娜‧怒焰"
 })
 
 L:SetWarningLocalization({
-	specWarnConflagNear		= "焚焰於你附近 - 注意",
-	SpecialWarningTranq		= "激怒 - 現在寧神"
+	SpecialWarningTranq	= "狂怒 - 現在寧神射擊"
 })
 
 L:SetOptionLocalization({
-	specWarnConflagNear		= "當$spell:74452在你附近時顯示特殊警報",
-	SpecialWarningTranq		= "為激怒顯示特殊警報",--$spell:78722 is not in 3.3.3 game files, it cannot be added in to local until 3.3.5
-	YellOnConflag			= "被$spell:74452時大喊",
-	RangeFrame				= "顯示距離框體（10碼）",
-	ConflagIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74452)
+	SpecialWarningTranq	= "為狂怒顯示特別警告 (寧神用)",
+	RangeFrame		= "顯示距離框 (10碼)",
+	BeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74453)
 })
 
 L:SetMiscLocalization{
-	YellConflag				= "焚焰於我！"
 }
 
 --------------------------
@@ -140,24 +136,26 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Zarithrian")
 
 L:SetGeneralLocalization({
-	name = "扎瑞斯萊恩將軍"
+	name 			= "扎里斯利安將軍"
 })
 
 L:SetWarningLocalization({
-	WarnAdds	= "新的小怪"
+	WarnAdds		= "新的小怪",
+	warnCleaveArmor		= "%s 在 >%s< (%s)"	-- Cleave Armor on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
-	TimerAdds	= "新的小怪"
+	TimerAdds		= "新的小怪"
 })
 
 L:SetOptionLocalization({
 	WarnAdds		= "提示新的小怪",
-	TimerAdds		= "為新的小怪顯示計時條"
+	TimerAdds		= "為新的小怪顯示計時器",
+	warnCleaveArmor		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(74367, GetSpellInfo(74367) or "unknown")
 })
 
 L:SetMiscLocalization({
-	SummonMinions	= "去吧，將他們挫骨揚灰！"
+	SummonMinions		= "去吧，將他們挫骨揚灰！"
 })
 
 -------------------------------------
@@ -166,27 +164,31 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Halion")
 
 L:SetGeneralLocalization({
-	name = "海萊恩"
+	name 			= "海萊恩"
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon		= "即將第二階段",
-	WarnPhase3Soon		= "即將第三階段"
+	WarnPhase2Soon		= "第二階段 即將到來",
+	WarnPhase3Soon		= "第三階段 即將到來",
+	TwilightCutterCast	= "施放暮光切割: 5秒後"
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon			= "為第二階段顯示預警（在79%時）",
-	WarnPhase3Soon			= "為第三階段顯示預警（在54%時）",
-	SoundOnConsumption		= "當$spell:74562或$spell:74792的目標為自己時播放聲音",
-	YellOnConsumption		= "當$spell:74562或$spell:74792的目標為自己時大喊",
-	SetIconOnConsumption	= "對$spell:74562和$spell:74792的目標設置團隊標記"
+	WarnPhase2Soon		= "為第二階段顯示預先警告 (大約79%)",
+	WarnPhase3Soon		= "為第三階段顯示預先警告 (大約54%)",
+	TwilightCutterCast	= "當$spell:77844開始施放時顯示警告",
+	AnnounceAlternatePhase	= "不管你進不進下一階段一樣顯示警告/計時器",
+	SoundOnConsumption	= "為$spell:74562或$spell:74792播放音效",--We use localized text for these functions
+	SetIconOnConsumption	= "為$spell:74562或$spell:74792的目標設置標記",--So we can use single functions for both versions of spell.
+	YellOnConsumption	= "當你中了$spell:74562或$spell:74792時大喊"
 })
 
 L:SetMiscLocalization({
-	YellPull				= "你們的世界在滅亡的邊緣搖搖欲墜。你們接下來全都會見證這個毀滅新紀元的來臨!",
-	twilightcutter			= "這些環繞的球體散發著黑暗能量!",
-	phase2					= "在暮光的國度只有磨難在等著你!有膽量的話就進去吧!",
-	phase3					= "我是光明亦是黑暗!凡人，匍匐在死亡之翼的信使面前吧!",
-	YellCombustion			= "熾熱燃灼於我！",
-	YellConsumption			= "靈魂耗損於我！"
+	MeteorCast		= "天堂也將燃燒!",
+	Phase2			= "在暮光的國度只有磨難在等著你!有膽量的話就進去吧!",
+	Phase3			= "我是光明亦是黑暗!凡人，匍匐在死亡之翼的信使面前吧!",
+	twilightcutter		= "這些環繞的球體散發著黑暗能量!",
+	YellCombustion		= "我中了熾熱燃灼!",
+	YellConsumption		= "我中了靈魂耗損!",
+	Kill			= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
 })
