@@ -81,13 +81,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SendSync("Meteor")
 		end--]]
 	if args:IsSpellID(74792) then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerShadowConsumptionCD:Start(20)
-		else
-			timerShadowConsumptionCD:Start()
-		end
 		if not self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(args.destName)
+			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+				timerShadowConsumptionCD:Start(20)
+			else
+				timerShadowConsumptionCD:Start()
+			end
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowTarget", args.destName)
@@ -103,13 +103,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(74562) then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerFieryConsumptionCD:Start(20)
-		else
-			timerFieryConsumptionCD:Start()
-		end
 		if not self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(args.destName)
+			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+				timerFieryConsumptionCD:Start(20)
+			else
+				timerFieryConsumptionCD:Start()
+			end
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("FieryTarget", args.destName)
@@ -215,10 +215,20 @@ function mod:OnSync(msg, target)
 	elseif msg == "ShadowTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(target)
+			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+				timerShadowConsumptionCD:Start(20)
+			else
+				timerShadowConsumptionCD:Start()
+			end
 		end
 	elseif msg == "FieryTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(target)
+			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+				timerFieryConsumptionCD:Start(20)
+			else
+				timerFieryConsumptionCD:Start()
+			end
 		end
 	end
 end
