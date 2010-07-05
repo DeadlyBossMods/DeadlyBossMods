@@ -89,6 +89,10 @@ function mod:ShockVortexTarget()
 	end
 end
 
+function mod:HideRange()
+	DBM.RangeCheck:Hide()
+end
+
 function mod:TrySetTarget()
 	if DBM:GetRaidRank() >= 1 and self.Options.ActivePrinceIcon then
 		for i = 1, GetNumRaidMembers() do
@@ -135,7 +139,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTargetSwitch:Start()
 		activePrince = args.destGUID
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			self:ScheduleMethod(4.5, "HideRange")--delay hiding range frame for a few seconds after change incase valanaar got a last second vortex cast off
 		end
 	elseif args:IsSpellID(70982) and self:IsInCombat() then
 		warnTargetSwitch:Show(L.Taldaram)
@@ -143,7 +147,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTargetSwitch:Start()
 		activePrince = args.destGUID
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Hide()
+			self:ScheduleMethod(4.5, "HideRange")--delay hiding range frame for a few seconds after change incase valanaar got a last second vortex cast off
 		end
 	elseif args:IsSpellID(72999) then	--Shadow Prison (hard mode)
 		if args:IsPlayer() then
