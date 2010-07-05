@@ -105,7 +105,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	SplitTrigger		= "Вдвое сильнее страдание."
 })
 
 -------------------------
