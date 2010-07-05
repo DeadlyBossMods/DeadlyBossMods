@@ -12,11 +12,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnTrap			= "陷阱激活! - 亡縛守衛釋放了"
+	specWarnTrap			= "觸發陷阱! - 亡縛守衛被釋放了"
 }
 
 L:SetOptionLocalization{
-	specWarnTrap			= "為陷阱激活顯示預先警告",
+	specWarnTrap			= "當觸發陷阱時顯示特別警告",
 	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
 	SetIconOnDeathPlague		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
@@ -38,11 +38,11 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	warnMortalWound			= "%s: >%s< (%s)",
-	specWarnTrap			= "陷阱激活! - 復仇的血肉收割者即將到來"
+	specWarnTrap			= "觸發陷阱! - 復仇的血肉收割者 到來"
 }
 
 L:SetOptionLocalization{
-	specWarnTrap			= "為陷阱激活顯示預先警告",
+	specWarnTrap			= "當觸發陷阱時顯示特別警告",
 	warnMortalWound			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
@@ -248,7 +248,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "顯示距離框 (8碼)",
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需要開啟警告及團隊隊長或助理權限)"
+	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需開啟團隊廣播及助理權限)"
 }
 
 L:SetMiscLocalization{
@@ -278,9 +278,9 @@ L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
 	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
 	specWarnLittleOoze		= "當你被小軟泥怪盯上時顯示特別警告",
+	RangeFrame			= "顯示距離框 (8碼)",
 	WarnUnstableOoze		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
-	ExplosionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
 	TankArrow			= "為大軟泥怪副坦顯示DBM箭頭 (測試中)"
 }
 
@@ -311,8 +311,8 @@ L:SetWarningLocalization{
 L:SetOptionLocalization{
 	WarnPhase2Soon			= "為第2階段顯示預先警告 (大約83%)",
 	WarnPhase3Soon			= "為第3階段顯示預先警告 (大約38%)",
-	specWarnMalleableGoo		= "當你中了延展黏液時顯示特別警告(只在你是第一個目標時有用)",
-	specWarnMalleableGooNear	= "當你附近有人中了延展黏液時顯示特別警告\n(只在你附近的人是第一個目標時有用)",
+	specWarnMalleableGoo		= "當你是$spell:72295第一個目標時顯示特別警告",
+	specWarnMalleableGooNear	= "當你是附近$spell:72295第一個目標時顯示特別警告",
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
@@ -466,11 +466,11 @@ L:SetOptionLocalization{
 	warnInstability			= "為你的$spell:69766堆疊顯示警告",
 	warnChilledtotheBone		= "為你的$spell:70106堆疊顯示警告",
 	warnMysticBuffet		= "為你的$spell:70128堆疊顯示警告",
-	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需要團隊隊長或助理權限)",
+	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需開啟團隊廣播及助理權限)",
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase		= "空中階段前清除所有標記",
-	RangeFrame			= "顯示距離框 (普通10碼, 困難20碼) (只會顯示已標記的玩家)"
+	RangeFrame			= "顯示距離框 (普通10碼, 困難20碼)"
 }
 
 L:SetMiscLocalization{
@@ -529,7 +529,8 @@ L:SetOptionLocalization{
 	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon			= "為華爾琪影衛設置標記",
 	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭",
-	TrapArrow			= "當你附近的人中了$spell:73539時顯示DBM箭頭"
+	TrapArrow			= "當你附近的人中了$spell:73539時顯示DBM箭頭",
+	AnnounceValkGrabs		= "提示誰被華爾琪影衛抓住到團隊頻道\n(需開啟團隊廣播及助理權限)"
 }
 
 L:SetMiscLocalization{
@@ -538,5 +539,7 @@ L:SetMiscLocalization{
 	YellTrap			= "我中了暗影陷阱!",
 	YellKill			= "沒有問題尚未解答。沒有任何懷疑。你們就是艾澤拉斯最偉大的勇士。你們克服了每一個我所設下的考驗。我最強大的僕人們都在你們不屈不撓的猛攻中倒下…在你們奔放的怒火之中…",
 	LKRoleplay			= "你們的原動力真的是正義感嗎？我很懷疑……",
-	PlagueWhisper			= "你染上了"
+	PlagueWhisper			= "你染上了",
+	ValkGrabbedIcon			= "華爾琪影衛{rt%d}抓住了 %s",
+	ValkGrabbed			= "華爾琪影衛抓住了 %s"
 }
