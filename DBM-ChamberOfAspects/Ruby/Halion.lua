@@ -160,17 +160,17 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:match(L.Phase2) then
+	if msg:find(L.Phase2) then
 		timerFieryBreathCD:Cancel()
 		timerMeteorCD:Cancel()
 --		timerMeteorCast:Cancel()--This one i'm not sure if it cancels or not.
 		warnPhase2:Show()
 		timerTwilightCutterCD:Start(35)
 		timerShadowBreathCD:Start(25)
-	elseif msg:match(L.Phase3) then
+	elseif msg:find(L.Phase3) then
 		warnPhase3:Show()
 		timerMeteorCD:Start(30)
-	elseif msg:match(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
+	elseif msg:find(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
 		if not self.Options.AnnounceAlternatePhase then
 			warningMeteor:Show()
 			timerMeteorCast:Start()--7 seconds from boss yell the meteor impacts.
@@ -183,7 +183,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg:match(L.twilightcutter) then
+	if msg:find(L.twilightcutter) then
 		if not self.Options.AnnounceAlternatePhase then
 			warningTwilightCutter:Show()
 			timerTwilightCutterCast:Start()
