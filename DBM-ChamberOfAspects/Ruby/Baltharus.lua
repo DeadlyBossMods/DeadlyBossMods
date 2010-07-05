@@ -107,15 +107,17 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if not warnedSplit2 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
-		warnedSplit2 = true
-		warningSplitSoon:Show()
-	elseif (mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) then
-		if not warnedSplit1 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
+	if (mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) then
+		if not warnedSplit1 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.70 then
 			warnedSplit1 = true
 			warningSplitSoon:Show()
-		elseif not warnedSplit3 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.29 then
+		elseif not warnedSplit3 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.37 then
 			warnedSplit3 = true
+			warningSplitSoon:Show()
+		end
+	else
+		if not warnedSplit2 and self:GetUnitCreatureId(uId) == 39751 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
+			warnedSplit2 = true
 			warningSplitSoon:Show()
 		end
 	end
