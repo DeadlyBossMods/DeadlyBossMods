@@ -41,7 +41,6 @@ local function showBrandWarning()
 end
 
 function mod:OnCombatStart(delay)
-	timerWhirlwindCD:Start(15.5-delay)--need more pulls to verify consistency
 	warnedSplit1 = false
 	warnedSplit2 = false
 	warnedSplit3 = false
