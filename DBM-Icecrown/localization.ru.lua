@@ -280,7 +280,6 @@ L:SetOptionLocalization{
 	RangeFrame					= "Показывать окно проверки дистанции (8 м)",
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
-	ExplosionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69839),
 	TankArrow					= "Показывать стрелку для кайтера Большого слизнюка (экспериментально)"
 }
 
