@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36789)
-mod:SetUsedIcons(8)
+--mod:SetUsedIcons(8)
 mod:RegisterCombat("yell", L.YellPull)
 mod:RegisterKill("yell", L.YellKill)
 
@@ -38,7 +38,7 @@ local timerBlazingSkeleton	= mod:NewTimer(50, "TimerBlazingSkeleton", 17204)
 
 local berserkTimer		= mod:NewBerserkTimer(420)
 
-mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
+--mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 
 local GutSprayTargets = {}
 local spamSupression = 0
@@ -82,14 +82,14 @@ function mod:Portals()
 	self:UnscheduleMethod("Portals")
 	self:ScheduleMethod(46.5, "Portals")
 end
-
+--[[
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's cast upon spawning)
 		if self.Options.SetIconOnBlazingSkeleton then
 			self:SetIcon(args.sourceGUID, 8)
 		end
 	end
-end
+end--]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(71741) then--Mana Void

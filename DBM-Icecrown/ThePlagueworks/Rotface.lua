@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36627)
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(6, 7)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -48,7 +48,6 @@ local timerVileGasCD			= mod:NewNextTimer(30, 72272)
 local soundMutatedInfection		= mod:NewSound(71224)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("InfectionIcon", true)
-mod:AddBoolOption("ExplosionIcon", false)
 mod:AddBoolOption("TankArrow")
 
 local RFVileGasTargets	= {}
@@ -114,11 +113,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRadiatingOoze:Show()
 	elseif args:IsSpellID(69558) then
 		warnUnstableOoze:Show(args.spellName, args.destName, args.amount or 1)
-		if (args.amount or 1) >= 5 then	--It's about to blow
-			if self.Options.ExplosionIcon then
-				self:SetIcon(args.destName, 8, 8)
-			end
-		end
 	elseif args:IsSpellID(69674, 71224, 73022, 73023) then
 		warnMutatedInfection:Show(args.destName)
 		timerMutatedInfection:Start(args.destName)
