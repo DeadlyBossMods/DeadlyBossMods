@@ -525,7 +525,7 @@ L:SetOptionLocalization{
 	ValkyrIcon				= "Set icons on Valkyrs",
 	DefileArrow				= "Show DBM arrow when $spell:72762 is near you",
 	TrapArrow				= "Show DBM arrow when $spell:73539 is near you",
-	BypassLatencyCheck		= "Don't use syncing or latency check for defile/shadow trap/n(only use this if you're having problems otherwise)",
+	BypassLatencyCheck		= "Don't use syncing or latency check for defile/shadow trap\n(only use this if you're having problems otherwise)",
 	AnnounceValkGrabs		= "Announce Val'kyr Shadowguard grab targets to raid chat\n(requires announce to be enabled and promoted status)"
 }
 
