@@ -93,6 +93,7 @@ mod:AddBoolOption("YellOnValk", false, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
+mod:AddBoolOption("BypassLatencyCheck", false)--More so for debugging than anything. To prove the problem isn't scans it's just latency check failing for some raids that simply have no one running good ping
 
 local phase	= 0
 local lastPlagueCast = 0
@@ -138,10 +139,42 @@ function mod:TrapTarget()
 	end
 end
 
---In case new method doesn't work well with the unique trap scanning methods used, non sync method can still be uncommented and used.
---[[function mod:TankTrap()
+--for those that want to avoid latency check.
+function mod:OldDefileTarget()
+	local targetname = self:GetBossTarget(36597)
+	if not targetname then return end
+		warnDefileCast:Show(targetname)
+		if self.Options.DefileIcon and mod:LatencyCheck() then
+			self:SetIcon(targetname, 8, 10)
+		end
+	if targetname == UnitName("player") then
+		specWarnDefileCast:Show()
+		soundDefile:Play()
+		if self.Options.YellOnDefile then
+			SendChatMessage(L.YellDefile, "SAY")
+		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			if inRange then
+				specWarnDefileNear:Show()
+--				if self.Options.DefileArrow then
+--					DBM.Arrow:ShowRunAway(x, y, 15, 5)
+--				end
+			end
+		end
+	end
+end
+
+function mod:OldTankTrap()
 	warnTrapCast:Show(LKTank)
-	if self.Options.TrapIcon and mod:LatencyCheck() then
+	if self.Options.TrapIcon then
 		self:SetIcon(LKTank, 6, 10)
 	end
 	if LKTank == UnitName("player") then
@@ -167,12 +200,12 @@ end
 	end
 end
 
-function mod:TrapTarget()
+function mod:OldTrapTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
 	if targetname ~= LKTank then--If scan doesn't return tank abort other scans and do other warnings.
-		self:UnscheduleMethod("TrapTarget")
-		self:UnscheduleMethod("TankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
+		self:UnscheduleMethod("OldTrapTarget")
+		self:UnscheduleMethod("OldTankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
 		warnTrapCast:Show(targetname)
 		if self.Options.TrapIcon then
 			self:SetIcon(targetname, 6, 10)
@@ -199,10 +232,10 @@ function mod:TrapTarget()
 			end
 		end
 	else
-		self:UnscheduleMethod("TankTrap")
-		self:ScheduleMethod(1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
+		self:UnscheduleMethod("OldTankTrap")
+		self:ScheduleMethod(1, "OldTankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
 	end
-end--]]
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(68981, 74270, 74271, 74272) or args:IsSpellID(72259, 74273, 74274, 74275) then -- Remorseless Winter (phase transition start)
@@ -238,22 +271,39 @@ function mod:SPELL_CAST_START(args)
 		specWarnInfest:Show()
 		timerInfestCD:Start()
 	elseif args:IsSpellID(72762) then -- Defile
-		self:ScheduleMethod(0.1, "DefileTarget")
+		if self.Options.BypassLatencyCheck then
+			self:ScheduleMethod(0.1, "OldDefileTarget")
+		else
+			self:ScheduleMethod(0.1, "DefileTarget")
+		end
 		warnDefileSoon:Cancel()
 		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
-		self:ScheduleMethod(0.01, "TrapTarget")
-		self:ScheduleMethod(0.02, "TrapTarget")
-		self:ScheduleMethod(0.03, "TrapTarget")
-		self:ScheduleMethod(0.04, "TrapTarget")
-		self:ScheduleMethod(0.05, "TrapTarget")
-		self:ScheduleMethod(0.06, "TrapTarget")
-		self:ScheduleMethod(0.07, "TrapTarget")
-		self:ScheduleMethod(0.08, "TrapTarget")
-		self:ScheduleMethod(0.09, "TrapTarget")
-		self:ScheduleMethod(0.1, "TrapTarget")
 		timerTrapCD:Start()
+		if self.Options.BypassLatencyCheck then
+			self:ScheduleMethod(0.01, "OldTrapTarget")
+			self:ScheduleMethod(0.02, "OldTrapTarget")
+			self:ScheduleMethod(0.03, "OldTrapTarget")
+			self:ScheduleMethod(0.04, "OldTrapTarget")
+			self:ScheduleMethod(0.05, "OldTrapTarget")
+			self:ScheduleMethod(0.06, "OldTrapTarget")
+			self:ScheduleMethod(0.07, "OldTrapTarget")
+			self:ScheduleMethod(0.08, "OldTrapTarget")
+			self:ScheduleMethod(0.09, "OldTrapTarget")
+			self:ScheduleMethod(0.1, "OldTrapTarget")
+		else
+			self:ScheduleMethod(0.01, "TrapTarget")
+			self:ScheduleMethod(0.02, "TrapTarget")
+			self:ScheduleMethod(0.03, "TrapTarget")
+			self:ScheduleMethod(0.04, "TrapTarget")
+			self:ScheduleMethod(0.05, "TrapTarget")
+			self:ScheduleMethod(0.06, "TrapTarget")
+			self:ScheduleMethod(0.07, "TrapTarget")
+			self:ScheduleMethod(0.08, "TrapTarget")
+			self:ScheduleMethod(0.09, "TrapTarget")
+			self:ScheduleMethod(0.1, "TrapTarget")
+		end
 	elseif args:IsSpellID(73650) then -- Restore Soul (Heroic)
 		warnRestoreSoul:Show()
 		timerRestoreSoul:Start()
@@ -505,19 +555,49 @@ function mod:OnSync(msg, target)
 			end
 		end
 	elseif msg == "DefileOn" then
-		warnDefileCast:Show(target)
-		if self.Options.DefileIcon then
-			self:SetIcon(target, 8, 10)
-		end
-		if target == UnitName("player") then
-			specWarnDefileCast:Show()
-			soundDefile:Play()
-			if self.Options.YellOnDefile then
-				SendChatMessage(L.YellDefile, "SAY")
+		if not self.Options.BypassLatencyCheck then
+			warnDefileCast:Show(target)
+			if self.Options.DefileIcon then
+				self:SetIcon(target, 8, 10)
 			end
-		elseif target then
+			if target == UnitName("player") then
+				specWarnDefileCast:Show()
+				soundDefile:Play()
+				if self.Options.YellOnDefile then
+					SendChatMessage(L.YellDefile, "SAY")
+				end
+			elseif target then
+				local uId = DBM:GetRaidUnitId(target)
+				if uId then
+					local inRange = CheckInteractDistance(uId, 2)
+					local x, y = GetPlayerMapPosition(uId)
+					if x == 0 and y == 0 then
+						SetMapToCurrentZone()
+						x, y = GetPlayerMapPosition(uId)
+					end
+					if inRange then
+						specWarnDefileNear:Show()
+--						if self.Options.DefileArrow then
+--							DBM.Arrow:ShowRunAway(x, y, 15, 5)
+--						end
+					end
+				end
+			end
+		end
+	elseif msg == "TrapOn" then
+		if not self.Options.BypassLatencyCheck then
+			warnTrapCast:Show(target)
+			if self.Options.TrapIcon then
+				self:SetIcon(target, 6, 10)
+			end
+			if target == UnitName("player") then
+				specWarnTrap:Show()
+				if self.Options.YellOnTrap then
+					SendChatMessage(L.YellTrap, "SAY")
+				end
+			end
 			local uId = DBM:GetRaidUnitId(target)
-			if uId then
+			if uId ~= "none" then
 				local inRange = CheckInteractDistance(uId, 2)
 				local x, y = GetPlayerMapPosition(uId)
 				if x == 0 and y == 0 then
@@ -525,36 +605,10 @@ function mod:OnSync(msg, target)
 					x, y = GetPlayerMapPosition(uId)
 				end
 				if inRange then
-					specWarnDefileNear:Show()
---					if self.Options.DefileArrow then
---						DBM.Arrow:ShowRunAway(x, y, 15, 5)
---					end
-				end
-			end
-		end
-	elseif msg == "TrapOn" then
-		warnTrapCast:Show(target)
-		if self.Options.TrapIcon then
-			self:SetIcon(target, 6, 10)
-		end
-		if target == UnitName("player") then
-			specWarnTrap:Show()
-			if self.Options.YellOnTrap then
-				SendChatMessage(L.YellTrap, "SAY")
-			end
-		end
-		local uId = DBM:GetRaidUnitId(target)
-		if uId ~= "none" then
-			local inRange = CheckInteractDistance(uId, 2)
-			local x, y = GetPlayerMapPosition(uId)
-			if x == 0 and y == 0 then
-				SetMapToCurrentZone()
-				x, y = GetPlayerMapPosition(uId)
-			end
-			if inRange then
-				specWarnTrapNear:Show()
-				if self.Options.TrapArrow then
-					DBM.Arrow:ShowRunAway(x, y, 10, 5)
+					specWarnTrapNear:Show()
+					if self.Options.TrapArrow then
+						DBM.Arrow:ShowRunAway(x, y, 10, 5)
+					end
 				end
 			end
 		end
