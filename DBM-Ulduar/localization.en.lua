@@ -443,7 +443,8 @@ L:SetOptionLocalization{
 	YellOnLifeLeech					= "Yell on $spell:63276",
 	YellOnShadowCrash				= "Yell on $spell:62660",
 	hardmodeSpawn					= "Show timer for Saronite Animus spawn (hard mode)",
-	CrashArrow						= "Show DBM arrow when $spell:62660 is near you"
+	CrashArrow						= "Show DBM arrow when $spell:62660 is near you",
+	BypassLatencyCheck				= "Don't use syncing or latency check for $spell:62660\n(only use this if you're having problems otherwise)"
 }
 
 L:SetMiscLocalization{
