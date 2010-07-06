@@ -54,6 +54,7 @@ local soundEmpoweredFlames		= mod:NewSound(72040)
 mod:AddBoolOption("EmpoweredFlameIcon", true)
 mod:AddBoolOption("ActivePrinceIcon", false)
 mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local activePrince
 local glitteringSparksTargets	= {}
@@ -89,6 +90,23 @@ function mod:ShockVortexTarget()
 	end
 end
 
+function mod:OldShockVortexTarget()
+	local targetname = self:GetBossTarget(37970)
+	if not targetname then return end
+		warnShockVortex:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnVortex:Show()
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			if inRange then
+				specWarnVortexNear:Show()
+			end
+		end
+	end
+end
+
 function mod:HideRange()
 	DBM.RangeCheck:Hide()
 end
@@ -109,8 +127,12 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(72037) then		-- Shock Vortex
-		self:ScheduleMethod(0.1, "ShockVortexTarget")
 		timerShockVortex:Start()
+		if self.Options.BypassLatencyCheck then
+			self:ScheduleMethod(0.1, "OldShockVortexTarget")
+		else
+			self:ScheduleMethod(0.1, "ShockVortexTarget")
+		end
 	elseif args:IsSpellID(72039, 73037, 73038, 73039) then	-- Empowered Shock Vortex(73037, 73038, 73039 drycoded from wowhead)
 		warnEmpoweredShockVortex:Show()
 		specWarnEmpoweredShockV:Show()
@@ -206,15 +228,17 @@ function mod:OnSync(msg, target)
 			timerKineticBombCD:Start()
 		end
 	elseif msg == "ShockVortex" then
-		warnShockVortex:Show(target)
-		if target == UnitName("player") then
-			specWarnVortex:Show()
-		elseif targetname then
-			local uId = DBM:GetRaidUnitId(target)
-			if uId then
-				local inRange = CheckInteractDistance(uId, 2)
-				if inRange then
-					specWarnVortexNear:Show()
+		if not self.Options.BypassLatencyCheck then
+			warnShockVortex:Show(target)
+			if target == UnitName("player") then
+				specWarnVortex:Show()
+			elseif targetname then
+				local uId = DBM:GetRaidUnitId(target)
+				if uId then
+					local inRange = CheckInteractDistance(uId, 2)
+					if inRange then
+						specWarnVortexNear:Show()
+					end
 				end
 			end
 		end
