@@ -1226,8 +1226,8 @@ local function CreateOptionsMenu()
 
 		local latencySlider = generaloptions:CreateSlider(L.Latency_Text, 50, 500, 5, 210)   -- (text , min_value , max_value , step , width)
      	latencySlider:SetPoint('BOTTOMLEFT', bmrange, "BOTTOMLEFT", 10, -35)
-     	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.MaxLatency) end)
-		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.MaxLatency = self:GetValue() end)
+     	latencySlider:HookScript("OnShow", function(self) self:SetValue(DBM.Options.LatencyThreshold) end)
+		latencySlider:HookScript("OnValueChanged", function(self) DBM.Options.LatencyThreshold = self:GetValue() end)
 
 		-- Pizza Timer (create your own timer menu)
 		local pizzaarea = DBM_GUI_Frame:CreateArea(L.PizzaTimer_Headline, nil, 85)
