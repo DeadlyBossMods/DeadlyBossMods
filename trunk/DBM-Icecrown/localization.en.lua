@@ -320,6 +320,7 @@ L:SetOptionLocalization{
 	YellOnUnbound				= "Yell on $spell:72856",
 	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
 	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
+	BypassLatencyCheck			= "Don't use syncing or latency check for $spell:72295\n(only use this if you're having problems otherwise)"
 }
 
 L:SetMiscLocalization{
@@ -356,7 +357,8 @@ L:SetOptionLocalization{
 	specWarnVortexNear		= "Show special warning for $spell:72037 near you",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)",
-	RangeFrame				= "Show range frame (12 yards)"
+	RangeFrame				= "Show range frame (12 yards)",
+	BypassLatencyCheck		= "Don't use syncing or latency check for $spell:72037\n(only use this if you're having problems otherwise)"
 }
 
 L:SetMiscLocalization{

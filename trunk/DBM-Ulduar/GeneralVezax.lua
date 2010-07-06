@@ -38,6 +38,7 @@ mod:AddBoolOption("YellOnShadowCrash", true, "announce")
 mod:AddBoolOption("SetIconOnShadowCrash", true)
 mod:AddBoolOption("SetIconOnLifeLeach", true)
 mod:AddBoolOption("CrashArrow")
+mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 
 function mod:OnCombatStart(delay)
@@ -84,9 +85,45 @@ function mod:ShadowCrashTarget()
 	end
 end
 
+function mod:OldShadowCrashTarget()
+	local targetname = self:GetBossTarget()
+	if not targetname then return end
+	if self.Options.SetIconOnShadowCrash and mod:LatencyCheck() then
+		self:SetIcon(targetname, 8, 10)
+	end
+	warnShadowCrash:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnShadowCrash:Show(targetname)
+		if self.Options.YellOnShadowCrash and mod:LatencyCheck()  then
+			SendChatMessage(L.YellCrash, "SAY")
+		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			if inRange then
+				specWarnShadowCrashNear:Show()
+				if self.Options.CrashArrow then
+					DBM.Arrow:ShowRunAway(x, y, 15, 5)
+				end
+			end
+		end
+	end
+end
+
+
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(62660) then		-- Shadow Crash
-		self:ScheduleMethod(0.1, "ShadowCrashTarget")
+		if self.Options.BypassLatencyCheck then
+			self:ScheduleMethod(0.1, "OldShadowCrashTarget")
+		else
+			self:ScheduleMethod(0.1, "ShadowCrashTarget")
+		end
 	elseif args:IsSpellID(63276) then	-- Mark of the Faceless
 		if self.Options.SetIconOnLifeLeach then
 			self:SetIcon(args.destName, 7, 10)
@@ -118,28 +155,30 @@ end
 
 function mod:OnSync(msg, target)
 	if msg == "CrashOn" then
-		warnShadowCrash:Show(target)
-		if self.Options.SetIconOnShadowCrash then
-			self:SetIcon(target, 8, 10)
-		end
-		if target == UnitName("player") then
-			specWarnShadowCrash:Show()
-			if self.Options.YellOnShadowCrash then
-				SendChatMessage(L.YellCrash, "SAY")
+		if not self.Options.BypassLatencyCheck then
+			warnShadowCrash:Show(target)
+			if self.Options.SetIconOnShadowCrash then
+				self:SetIcon(target, 8, 10)
 			end
-		elseif target then
-			local uId = DBM:GetRaidUnitId(target)
-			if uId then
-				local inRange = CheckInteractDistance(uId, 2)
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
+			if target == UnitName("player") then
+				specWarnShadowCrash:Show()
+				if self.Options.YellOnShadowCrash then
+					SendChatMessage(L.YellCrash, "SAY")
 				end
-				if inRange then
-					specWarnShadowCrashNear:Show()
-					if self.Options.CrashArrow then
-						DBM.Arrow:ShowRunAway(x, y, 15, 5)
+			elseif target then
+				local uId = DBM:GetRaidUnitId(target)
+				if uId then
+					local inRange = CheckInteractDistance(uId, 2)
+					local x, y = GetPlayerMapPosition(uId)
+					if x == 0 and y == 0 then
+						SetMapToCurrentZone()
+						x, y = GetPlayerMapPosition(uId)
+					end
+					if inRange then
+						specWarnShadowCrashNear:Show()
+						if self.Options.CrashArrow then
+							DBM.Arrow:ShowRunAway(x, y, 15, 5)
+						end
 					end
 				end
 			end

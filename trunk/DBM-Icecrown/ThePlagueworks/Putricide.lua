@@ -67,11 +67,10 @@ local soundGaseousBloat = mod:NewSound(72455)
 mod:AddBoolOption("OozeAdhesiveIcon")
 mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
-
 mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buff
-
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 mod:AddBoolOption("YellOnUnbound", true, "announce")
+mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local warned_preP2 = false
 local warned_preP3 = false
@@ -92,11 +91,33 @@ function mod:OnCombatStart(delay)
 	end
 end
 
-function mod:MalleableGooTarget()--. Great for 10 man, but only marks/warns 1 of the 2/3 people in 25 man
+function mod:MalleableGooTarget()
 	local targetname = self:GetBossTarget(36678)
 	if not targetname then return end
 	if mod:LatencyCheck() then--Only send sync if you have low latency.
 		self:SendSync("GooOn", targetname)
+	end
+end
+
+function mod:OldMalleableGooTarget()
+	local targetname = self:GetBossTarget(36678)
+	if not targetname then return end
+		if self.Options.MalleableGooIcon and mod:LatencyCheck() then
+			self:SetIcon(targetname, 6, 10)
+		end
+	if targetname == UnitName("player") then
+		specWarnMalleableGoo:Show()
+		if self.Options.YellOnMalleableGoo and mod:LatencyCheck() then
+			SendChatMessage(L.YellMalleable, "SAY")
+		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			if inRange then
+				specWarnMalleableGooNear:Show()
+			end
+		end
 	end
 end
 
@@ -182,7 +203,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		else
 			timerMalleableGooCD:Start()
 		end
-		self:ScheduleMethod(0.1, "MalleableGooTarget")
+		if self.Options.BypassLatencyCheck then
+			self:ScheduleMethod(0.1, "OldMalleableGooTarget")
+		else
+			self:ScheduleMethod(0.1, "MalleableGooTarget")
+		end
 	end
 end
 
@@ -294,20 +319,22 @@ end
 
 function mod:OnSync(msg, target)
 	if msg == "GooOn" then
-		if self.Options.MalleableGooIcon then
-			self:SetIcon(target, 6, 10)
-		end
-		if target == UnitName("player") then
-			specWarnMalleableGoo:Show()
-			if self.Options.YellOnMalleableGoo then
-				SendChatMessage(L.YellMalleable, "SAY")
+		if not self.Options.BypassLatencyCheck then
+			if self.Options.MalleableGooIcon then
+				self:SetIcon(target, 6, 10)
 			end
-		elseif target then
-			local uId = DBM:GetRaidUnitId(target)
-			if uId then
-				local inRange = CheckInteractDistance(uId, 2)
-				if inRange then
-					specWarnMalleableGooNear:Show()
+			if target == UnitName("player") then
+				specWarnMalleableGoo:Show()
+				if self.Options.YellOnMalleableGoo then
+					SendChatMessage(L.YellMalleable, "SAY")
+				end
+			elseif target then
+				local uId = DBM:GetRaidUnitId(target)
+				if uId then
+					local inRange = CheckInteractDistance(uId, 2)
+					if inRange then
+						specWarnMalleableGooNear:Show()
+					end
 				end
 			end
 		end

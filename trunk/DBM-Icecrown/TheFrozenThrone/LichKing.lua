@@ -93,7 +93,7 @@ mod:AddBoolOption("YellOnValk", false, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
-mod:AddBoolOption("BypassLatencyCheck", false)--More so for debugging than anything. To prove the problem isn't scans it's just latency check failing for some raids that simply have no one running good ping
+mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local phase	= 0
 local lastPlagueCast = 0
