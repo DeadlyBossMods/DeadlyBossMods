@@ -45,7 +45,6 @@ localization.tw.lua
 localization.kr.lua
 localization.fr.lua
 localization.es.lua
-localization.mx.lua
 Obsidian\MapSizes.lua
 Obsidian\Shadron.lua
 Obsidian\Tenebron.lua
