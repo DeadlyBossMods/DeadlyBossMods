@@ -190,5 +190,5 @@ L:SetMiscLocalization({
 	twilightcutter		= "這些環繞的球體散發著黑暗能量!",
 	YellCombustion		= "我中了熾熱燃灼!",
 	YellConsumption		= "我中了靈魂耗損!",
-	Kill			= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
+	Kill			= "享受這場勝利吧，凡人們，因為這是你們最後一次的勝利。這世界將會在主人回歸時化為火海!"
 })
