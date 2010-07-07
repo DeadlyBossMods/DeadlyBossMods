@@ -195,14 +195,9 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(63894) then		-- Shadowy Barrier removed from Yogg-Saron (start p3)
-		warnP3:Show()
-		phase = 3
-		brainportal:Stop()
-        timerEmpower:Start()
-        warnEmpowerSoon:Schedule(40)	
-		warnBrainPortalSoon:Cancel()
-		timerNextDeafeningRoar:Start(30)
-		warnDeafeningRoarSoon:Schedule(25)
+		if mod:LatencyCheck() then
+			self:SendSync("Phase3")			-- Sync this because you don't get it in your combat log if you are in brain room.
+		end
 	elseif args:IsSpellID(64167, 64163) then	-- Lunatic Gaze
 		timerNextLunaricGaze:Start()
 	end
@@ -223,5 +218,18 @@ function mod:UNIT_HEALTH(uId)
 	if phase == 1 and uId == "target" and self:GetUnitCreatureId(uId) == 33136 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.3 and not targetWarningsShown[UnitGUID(uId)] then
 		targetWarningsShown[UnitGUID(uId)] = true
 		specWarnGuardianLow:Show()
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "Phase3" then
+		warnP3:Show()
+		phase = 3
+		brainportal:Stop()
+        timerEmpower:Start()
+        warnEmpowerSoon:Schedule(40)	
+		warnBrainPortalSoon:Cancel()
+		timerNextDeafeningRoar:Start(30)
+		warnDeafeningRoarSoon:Schedule(25)
 	end
 end
