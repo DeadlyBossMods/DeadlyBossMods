@@ -163,10 +163,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:find(L.Phase2) then
 		timerFieryBreathCD:Cancel()
 		timerMeteorCD:Cancel()
+		timerFieryConsumptionCD:Cancel()
 --		timerMeteorCast:Cancel()--This one i'm not sure if it cancels or not.
 		warnPhase2:Show()
 		timerTwilightCutterCD:Start(35)
 		timerShadowBreathCD:Start(25)
+--		timerShadowConsumptionCD:Start(5)--Don't know it yet need to study logs
 	elseif msg:find(L.Phase3) then
 		warnPhase3:Show()
 		timerMeteorCD:Start(30)
