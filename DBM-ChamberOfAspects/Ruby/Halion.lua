@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
@@ -71,23 +72,36 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
---[[	if args:IsSpellID(74648, 75877, 75878, 75879) then--Meteor Strike Landed
-		if not self.Options.AnnounceAlternatePhase then
-			warningMeteor:Show()
-			timerMeteorCD:Start()
-		end
-		if mod:LatencyCheck() then
-			self:SendSync("Meteor")
-		end--]]
+function mod:SPELL_CAST_SUCCESS(args)--We use spell cast success for debuff timers in case it gets resisted by a player we still get CD timer for next one
 	if args:IsSpellID(74792) then
 		if not self.Options.AnnounceAlternatePhase then
-			warningShadowConsumption:Show(args.destName)
 			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 				timerShadowConsumptionCD:Start(20)
 			else
 				timerShadowConsumptionCD:Start()
 			end
+		end
+		if mod:LatencyCheck() then
+			self:SendSync("ShadowCD")
+		end
+	elseif args:IsSpellID(74562) then
+		if not self.Options.AnnounceAlternatePhase then
+			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+				timerFieryConsumptionCD:Start(20)
+			else
+				timerFieryConsumptionCD:Start()
+			end
+		end
+		if mod:LatencyCheck() then
+			self:SendSync("FieryCD")
+		end
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
+	if args:IsSpellID(74792) then
+		if not self.Options.AnnounceAlternatePhase then
+			warningShadowConsumption:Show(args.destName)
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowTarget", args.destName)
@@ -105,11 +119,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(74562) then
 		if not self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(args.destName)
-			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-				timerFieryConsumptionCD:Start(20)
-			else
-				timerFieryConsumptionCD:Start()
-			end
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("FieryTarget", args.destName)
@@ -166,9 +175,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerFieryConsumptionCD:Cancel()
 --		timerMeteorCast:Cancel()--This one i'm not sure if it cancels or not.
 		warnPhase2:Show()
-		timerTwilightCutterCD:Start(35)
 		timerShadowBreathCD:Start(25)
---		timerShadowConsumptionCD:Start(5)--Don't know it yet need to study logs
+--		timerShadowConsumptionCD:Start(20)--Don't know it yet need more logs, it's not showing consistency. 20-25 on normal.
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerTwilightCutterCD:Start(30)
+		else
+			timerTwilightCutterCD:Start(35)
+		end
 	elseif msg:find(L.Phase3) then
 		warnPhase3:Show()
 		timerMeteorCD:Start(30)
@@ -217,15 +230,21 @@ function mod:OnSync(msg, target)
 	elseif msg == "ShadowTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(target)
+		end
+	elseif msg == "FieryTarget" then
+		if self.Options.AnnounceAlternatePhase then
+			warningFieryConsumption:Show(target)
+		end
+	elseif msg == "ShadowCD" then
+		if self.Options.AnnounceAlternatePhase then
 			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 				timerShadowConsumptionCD:Start(20)
 			else
 				timerShadowConsumptionCD:Start()
 			end
 		end
-	elseif msg == "FieryTarget" then
+	elseif msg == "FieryCD" then
 		if self.Options.AnnounceAlternatePhase then
-			warningFieryConsumption:Show(target)
 			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 				timerFieryConsumptionCD:Start(20)
 			else
