@@ -451,7 +451,8 @@ L:SetOptionLocalization{
 	YellOnLifeLeech					= "Gritar si tienes $spell:63276",
 	YellOnShadowCrash				= "Gritar si eres objetivo de $spell:62660",
 	hardmodeSpawn					= "Mostrar tiempo para salida de Animus de saronita (Modo Difícil)",
-	CrashArrow						= "Mostrar una flecha cuando $spell:62660 va a caer cerca de ti"
+	CrashArrow						= "Mostrar una flecha cuando $spell:62660 va a caer cerca de ti",
+	BypassLatencyCheck				= "No usar sincronización o comprobación de latencia para $spell:62660\n(sólo usar esta opción si tienes problemas de otro modo)"
 }
 
 L:SetMiscLocalization{
