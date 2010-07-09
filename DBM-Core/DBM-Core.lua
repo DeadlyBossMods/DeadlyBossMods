@@ -220,9 +220,9 @@ end
 local pformat
 do
 	-- fail-safe format, replaces missing arguments with unknown
-	-- note: doesn't handle cases like %%%s correct at the moment (should become %unknown, but becomes %%s)
+	-- note: doesn't handle cases like %%%s correctly at the moment (should become %unknown, but becomes %%s)
 	-- also, the end of the format directive is not detected in all cases, but handles everything that occurs in our boss mods ;)
-	--> not suitable for general-purpose use, just for our warnings and timers (where an argument like a spell-target might be nil due to missing target information)
+	--> not suitable for general-purpose use, just for our warnings and timers (where an argument like a spell-target might be nil due to missing target information from unreliable detection methods)
 	
 	local function replace(cap1, cap2)
 		return cap1 == "%" and DBM_CORE_UNKNOWN
@@ -233,6 +233,22 @@ do
 		return ok and str or fstr:gsub("(%%+)([^%%%s<]+)", replace):gsub("%%%%", "%%")
 	end
 end
+
+-- sends a whisper to a player by his or her character name or BNet presence id
+-- returns true if the message was sent, nil otherwise
+local function sendWhisper(target, msg)
+	if type(target) == "number" then
+		if not BNIsSelf(target) then -- never send BNet whispers to ourselves
+			BNSendWhisper(target, msg)
+			return true
+		end
+	elseif type(target) == "string" then
+		-- whispering to ourselves here is okay and somewhat useful for whisper-warnings
+		SendChatMessage(msg, "WHISPER", nil, target)
+		return true
+	end
+end
+local BNSendWhisper = sendWhisper
 
 
 --------------
@@ -1804,11 +1820,7 @@ function DBM:EndCombat(mod, wipe)
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_WIPE:format(UnitName("player"), (mod.combatInfo.name or ""))
-				if type(k) == "string" then
-					SendChatMessage(msg, "WHISPER", nil, k)
-				elseif type(k) == "number" then
-					BNSendWhisper(k, msg)
-				end
+				sendWhisper(k, msg)
 			end
 			fireEvent("wipe", mod)
 		else
@@ -2045,12 +2057,7 @@ do
 				mod = not v.isCustomMod and v
 			end
 			mod = mod or inCombat[1]
-			local msg = chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1))
-			if isRealIdMessage then
-				BNSendWhisper(sender, msg)
-			else
-				SendChatMessage(msg, "WHISPER", nil, sender)
-			end
+			sendWhisper(sender, chatPrefix..DBM_CORE_STATUS_WHISPER:format((mod.combatInfo.name or ""), mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 		elseif #inCombat > 0 and DBM.Options.AutoRespond and
 		(isRealIdMessage and (not isOnSameServer(sender) or DBM:GetRaidUnitId((select(4, BNGetFriendInfoByID(sender)))) == "none") or not isRealIdMessage and DBM:GetRaidUnitId(sender) == "none") then
 			local mod
@@ -2059,12 +2066,7 @@ do
 			end
 			mod = mod or inCombat[1]
 			if not autoRespondSpam[sender] then
-				local msg = chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1))
-				if isRealIdMessage then
-					BNSendWhisper(sender, msg)
-				else
-					SendChatMessage(msg, "WHISPER", nil, sender)
-				end
+				sendWhisper(sender, chatPrefix..DBM_CORE_AUTO_RESPOND_WHISPER:format(UnitName("player"), mod.combatInfo.name or "", mod:GetHP() or "unknown", getNumAlivePlayers(), math.max(GetNumRaidMembers(), GetNumPartyMembers() + 1)))
 				DBM:AddMsg(DBM_CORE_AUTO_RESPONDED)
 			end
 			autoRespondSpam[sender] = true
@@ -2358,11 +2360,7 @@ function bossModPrototype:SetRevision(revision)
 end
 
 function bossModPrototype:SendWhisper(msg, target)
-	if not DBM.Options.DontSendBossWhispers then
-		return SendChatMessage(chatPrefixShort..msg, "WHISPER", nil, target)
-	else
-		return nil
-	end
+	return not DBM.Options.DontSendBossWhispers and sendWhisper(target, chatPrefixShort..msg)
 end
 
 function bossModPrototype:GetUnitCreatureId(uId)
