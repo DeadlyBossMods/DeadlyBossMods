@@ -11,6 +11,7 @@
 ## X-DBM-Mod-Name: World Events
 ## X-DBM-Mod-Name-esES: Eventos del Mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события
+## X-DBM-Mod-Name-zhTW: 世界事件
 ## X-DBM-Mod-Sort: 150
 ## X-DBM-Mod-LoadZone: Blackrock Depths,Scarlet Monastery,Shadowfang Keep,The Slave Pens
 ## X-DBM-Mod-LoadZone-frFR: Profondeurs de Rochenoire,Monastère écarlate,Donjon d'Ombrecroc,Les enclos aux esclaves
