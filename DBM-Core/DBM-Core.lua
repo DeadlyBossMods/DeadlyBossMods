@@ -307,7 +307,7 @@ do
 	local function handleEvent(self, event, ...)
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
-			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText())) and (not v.Options or v.Options.Enabled) then
+			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText()) or checkEntry(v.zones, GetCurrentMapAreaID())) and (not v.Options or v.Options.Enabled) then
 				v[event](v, ...)
 			end
 		end
@@ -622,7 +622,7 @@ do
 		
 		-- execute OnUpdate handlers of all modules
 		for i, v in pairs(updateFunctions) do
-			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText())) then
+			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText()) or checkEntry(i.zones, GetCurrentMapAreaID())) then
 				i.elapsed = (i.elapsed or 0) + elapsed
 				if i.elapsed >= (i.updateInterval or 0) then
 					v(i, i.elapsed)
@@ -1288,12 +1288,21 @@ do
 						category	= GetAddOnMetadata(i, "X-DBM-Mod-Category") or "Other",
 						name		= GetAddOnMetadata(i, "X-DBM-Mod-Name") or "",
 						zone		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZone") or "")},
+						zoneId		= {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-LoadZoneID") or "")},
 						subTabs		= GetAddOnMetadata(i, "X-DBM-Mod-SubCategories") and {strsplit(",", GetAddOnMetadata(i, "X-DBM-Mod-SubCategories"))},
 						hasHeroic	= tonumber(GetAddOnMetadata(i, "X-DBM-Mod-Has-Heroic-Mode") or 1) == 1,
 						modId		= GetAddOnInfo(i),
 					})
 					for k, v in ipairs(self.AddOns[#self.AddOns].zone) do
 						self.AddOns[#self.AddOns].zone[k] = (self.AddOns[#self.AddOns].zone[k]):trim()
+					end
+					for i = #self.AddOns[#self.AddOns].zoneId, 1, -1 do
+						local id = tonumber(self.AddOns[#self.AddOns].zoneId[i])
+						if id then
+							self.AddOns[#self.AddOns].zoneId[i] = id
+						else
+							table.remove(self.AddOns[#self.AddOns].zoneId, i)
+						end
 					end
 					if self.AddOns[#self.AddOns].subTabs then
 						for k, v in ipairs(self.AddOns[#self.AddOns].subTabs) do
@@ -1352,9 +1361,13 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
+	local zoneName = GetRealZoneText()
+	local zoneId = GetCurrentMapAreaID()
 	for i, v in ipairs(self.AddOns) do
-		if checkEntry(v.zone, GetRealZoneText()) and not IsAddOnLoaded(v.modId) then
-			DBM:Unschedule(DBM.LoadMod, DBM, v) -- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
+		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or checkEntry(v.zoneId, zoneId)) then
+			-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
+			-- TODO: is this still necessary? this was a WotLK beta bug
+			DBM:Unschedule(DBM.LoadMod, DBM, v)
 			DBM:Schedule(3, DBM.LoadMod, DBM, v)
 		end
 	end
@@ -1446,7 +1459,7 @@ do
 		delay = tonumber(delay or 0) or 0
 		revision = tonumber(revision or 0) or 0
 		mod = DBM:GetModByName(mod or "")
-		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText())) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
+		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText()) or checkEntry(mod.zones, GetCurrentMapAreaID())) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
@@ -1659,18 +1672,36 @@ do
 
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
-		if combatInfo[GetRealZoneText()] then
+		if combatInfo[GetRealZoneText()] or combatInfo[GetCurrentMapAreaID()] then
 			buildTargetList()
-			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
-				if v.type == "combat" then
-					if v.multiMobPullDetection then
-						for _, mob in ipairs(v.multiMobPullDetection) do
-							if checkForPull(mob, v) then
-								break
+			if combatInfo[GetRealZoneText()] then
+				for i, v in ipairs(combatInfo[GetRealZoneText()]) do
+					if v.type == "combat" then
+						if v.multiMobPullDetection then
+							for _, mob in ipairs(v.multiMobPullDetection) do
+								if checkForPull(mob, v) then
+									break
+								end
 							end
+						else
+							checkForPull(v.mob, v)
 						end
-					else
-						checkForPull(v.mob, v)
+					end
+				end
+			end
+			-- copy & paste, lol
+			if combatInfo[GetCurrentMapAreaID()] then
+				for i, v in ipairs(combatInfo[GetCurrentMapAreaID()]) do
+					if v.type == "combat" then
+						if v.multiMobPullDetection then
+							for _, mob in ipairs(v.multiMobPullDetection) do
+								if checkForPull(mob, v) then
+									break
+								end
+							end
+						else
+							checkForPull(v.mob, v)
+						end
 					end
 				end
 			end
@@ -1685,6 +1716,14 @@ do
 		-- pull detection
 		if combatInfo[GetRealZoneText()] then
 			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
+				if v.type == type and checkEntry(v.msgs, msg) then
+					DBM:StartCombat(v.mod, 0)
+				end
+			end
+		end
+		-- copy & paste, lol
+		if combatInfo[GetCurrentMapAreaID()] then
+			for i, v in ipairs(combatInfo[GetCurrentMapAreaID()]) do
 				if v.type == type and checkEntry(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0)
 				end
@@ -1970,6 +2009,7 @@ function DBM:SendBGTimers(target)
 	if IsActiveBattlefieldArena() then
 		mod = self:GetModByName("Arenas")		
 	else
+		-- FIXME: this doesn't work for non-english clients
 		local zone = GetRealZoneText():gsub(" ", "")
 		mod = self:GetModByName(zone)
 	end
@@ -2313,7 +2353,17 @@ bossModPrototype.AddMsg = DBM.AddMsg
 
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
-		self.zones = (self.addon and self.addon.zone) or {}
+		if self.addon.zone and #self.addon.zone > 0 and self.addon.zoneId and #self.addon.zoneId > 0 then
+			self.zones = {}
+			for i, v in ipairs(self.addon.zone) do
+				self.zones[#self.zones + 1] = v
+			end
+			for i, v in ipairs(self.addon.zoneId) do
+				self.zones[#self.zones + 1] = v
+			end
+		else
+			self.zones = self.addon.zone and #self.addon.zone > 0 and self.addon.zone or self.addon.zoneId and #self.addon.zoneId > 0 and self.addon.zoneId or {}
+		end
 	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then
 		self.zones = {...}
 	else -- disable zone detection
