@@ -22,6 +22,7 @@
 ## X-DBM-Mod-Name-esES: La Cámara de Archavon
 ## X-DBM-Mod-Name-esMX: La Cámara de Archavon
 ## X-DBM-Mod-Sort: 7
+--## X-DBM-Mod-LoadZoneID: 533
 ## X-DBM-Mod-LoadZone: Vault of Archavon
 ## X-DBM-Mod-LoadZone-deDE: Archavons Kammer
 ## X-DBM-Mod-LoadZone-frFR: Caveau d'Archavon
