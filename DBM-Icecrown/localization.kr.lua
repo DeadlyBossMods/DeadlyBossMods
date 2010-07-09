@@ -322,7 +322,8 @@ L:SetOptionLocalization{
 	YellOnMalleableGoo			= "$spell:72295 외치기",
 	YellOnUnbound				= "$spell:72856 말하기",	
 	specWarnUnboundPlague		= "$spell:72856 전달자 특수 경고 보기",
-	specWarnNextPlageSelf		= "당신이 다음 $spell:72856 대상이 될 때 특수 경고 보기",	
+	specWarnNextPlageSelf		= "당신이 다음 $spell:72856 대상이 될 때 특수 경고 보기",
+	BypassLatencyCheck			= "$spell:72295의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)"	
 }
 
 L:SetMiscLocalization{
@@ -359,8 +360,10 @@ L:SetOptionLocalization{
 	specWarnVortexNear			= "당신 주변에 $spell:72037가 있을 경우 특수 경고 보기",	
 	EmpoweredFlameIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon			= "활성화 된 공작에게 공격대 징표 설정하기 (해골)",
-	RangeFrame					= "거리 창 보기 (12 m)"
+	RangeFrame					= "거리 창 보기 (12 m)",
+	BypassLatencyCheck			= "$spell:72037의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)"	
 }
+
 
 L:SetMiscLocalization{
 	Keleseth					= "공작 켈레세스",
@@ -531,6 +534,7 @@ L:SetOptionLocalization{
 	ValkyrIcon					= "발키리에 공격대 징표 설정",
 	DefileArrow					= "$spell:72762이 당신 주변에 생성되면 DBM 화살표 보기",
 	TrapArrow					= "주변에 $spell:73539을 할 경우 DBM 화살표 보기",
+	BypassLatencyCheck			= "$spell:73539 또는 $spell:72762의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)",	
 	AnnounceValkGrabs			= "발키리가 납치할 때 대상과 대상 공격대 아이콘으로 채팅 알리기\n(알림 권한이 있을 경우)"	
 }
 L:SetMiscLocalization{
