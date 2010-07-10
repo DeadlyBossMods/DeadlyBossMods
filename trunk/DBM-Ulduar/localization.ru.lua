@@ -445,7 +445,8 @@ L:SetOptionLocalization{
 	YellOnLifeLeech					= "Кричать, когда на вас $spell:63276",
 	YellOnShadowCrash				= "Кричать, когда на вас $spell:62660",
 	hardmodeSpawn					= "Отсчет времени до появления Саронитового врага (сложный режим)",
-	CrashArrow						= "Показывать стрелку, когда $spell:62660 около вас"
+	CrashArrow						= "Показывать стрелку, когда $spell:62660 около вас",
+	BypassLatencyCheck				= "Отключить синхр-цию и проверку задержки для $spell:62660\n(используйте только в случае возникновения проблем)"
 }
 
 L:SetMiscLocalization{
