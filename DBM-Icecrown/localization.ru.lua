@@ -322,6 +322,7 @@ L:SetOptionLocalization{
 	YellOnUnbound				= "Кричать, когда на вас $spell:72856",
 	specWarnUnboundPlague		= "Спец-предупреждение для передачи заклинания $spell:72856",
 	specWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью\nзаклинания $spell:72856",
+	BypassLatencyCheck			= "Отключить синхр-цию и проверку задержки для $spell:72295\n(используйте только в случае возникновения проблем)"
 }
 
 L:SetMiscLocalization{
@@ -358,7 +359,8 @@ L:SetOptionLocalization{
 	specWarnVortexNear		= "Спец-предупреждение, когда $spell:72037 около вас",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (череп)",
-	RangeFrame				= "Показывать окно проверки дистанции (12 м)"
+	RangeFrame				= "Показывать окно проверки дистанции (12 м)",
+	BypassLatencyCheck		= "Отключить синхр-цию и проверку задержки для $spell:72037\n(используйте только в случае возникновения проблем)"
 }
 
 L:SetMiscLocalization{
@@ -527,6 +529,7 @@ L:SetOptionLocalization{
 	ValkyrIcon				= "Устанавливать метки на Валь'кир",
 	DefileArrow				= "Показывать стрелку, когда $spell:72762 около вас",
 	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас",
+	BypassLatencyCheck		= "Отключить синхр-цию и проверку задержки для Осквернения и Теневой ловушки\n(используйте только в случае возникновения проблем)",
 	AnnounceValkGrabs		= "Объявлять игроков, схваченных Валь'кирами, в рейд-чат\n(требуются права помощника)"
 }
 
