@@ -45,6 +45,8 @@ local timerTwilightCutterCD			= mod:NewNextTimer(15, 77844)
 local timerShadowBreathCD			= mod:NewCDTimer(19, 75954, nil, mod:IsTank() or mod:IsHealer())--Same as debuff timers, same CD, can be merged into 1.
 local timerFieryBreathCD			= mod:NewCDTimer(19, 74526, nil, mod:IsTank() or mod:IsHealer())--But unique icons are nice pertaining to phase you're in ;)
 
+local berserkTimer					= mod:NewBerserkTimer(480)
+
 local soundConsumption 				= mod:NewSound(74562, "SoundOnConsumption")
 
 mod:AddBoolOption("YellOnConsumption", true, "announce")
@@ -55,6 +57,7 @@ local warned_preP2 = false
 local warned_preP3 = false
 
 function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
+	berserkTimer:Start(-delay)
 		timerMeteorCD:Start(20-delay)
 		timerFieryConsumptionCD:Start(15-delay)
 		timerFieryBreathCD:Start(10-delay)
