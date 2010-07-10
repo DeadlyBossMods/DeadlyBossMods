@@ -320,7 +320,7 @@ L:SetOptionLocalization{
 	YellOnUnbound				= "Yell on $spell:72856",
 	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
 	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
-	BypassLatencyCheck			= "Don't use syncing or latency check for $spell:72295\n(only use this if you're having problems otherwise)"
+	BypassLatencyCheck			= "Don't use syncing for $spell:72295\n(only use this if you're having problems otherwise)"
 }
 
 L:SetMiscLocalization{
@@ -358,7 +358,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)",
 	RangeFrame				= "Show range frame (12 yards)",
-	BypassLatencyCheck		= "Don't use syncing or latency check for $spell:72037\n(only use this if you're having problems otherwise)"
+	BypassLatencyCheck		= "Don't use syncing for $spell:72037\n(only use this if you're having problems otherwise)"
 }
 
 L:SetMiscLocalization{
@@ -527,7 +527,7 @@ L:SetOptionLocalization{
 	ValkyrIcon				= "Set icons on Valkyrs",
 	DefileArrow				= "Show DBM arrow when $spell:72762 is near you",
 	TrapArrow				= "Show DBM arrow when $spell:73539 is near you",
-	BypassLatencyCheck		= "Don't use syncing or latency check for defile/shadow trap\n(only use this if you're having problems otherwise)",
+	BypassLatencyCheck		= "Don't use syncing for defile/shadow trap\n(only use this if you're having problems otherwise)",
 	AnnounceValkGrabs		= "Announce Val'kyr Shadowguard grab targets to raid chat\n(requires announce to be enabled and promoted status)"
 }
 
