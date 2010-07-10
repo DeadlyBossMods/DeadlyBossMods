@@ -331,7 +331,7 @@ L:SetOptionLocalization{
 	YellOnUnbound				= "Gritar cuando tengas $spell:72856",	
 	specWarnUnboundPlague		= "Mostrar aviso especial para transferencia de $spell:72856",
 	specWarnNextPlageSelf		= "Mostrar aviso especial cuando seas el próximo objetivo de $spell:72856",
-	BypassLatencyCheck			= "No usar sincronización o comprobación de latencia para $spell:72295\n(sólo usar esta opción si tienes problemas de otro modo)"
+	BypassLatencyCheck			= "No usar sincronización para $spell:72295\n(sólo usar esta opción si tienes problemas de otro modo)"
 }
 
 L:SetMiscLocalization{
@@ -369,7 +369,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Poner un icono en el príncipe con Invocación (Cruz)",
 	RangeFrame				= "Mostrar distancia (12 yardas)",
-	BypassLatencyCheck		= "No usar sincronización o comprobación de latencia para $spell:72037\n(sólo usar esta opción si tienes problemas de otro modo)"
+	BypassLatencyCheck		= "No usar sincronización para $spell:72037\n(sólo usar esta opción si tienes problemas de otro modo)"
 }
 
 L:SetMiscLocalization{
