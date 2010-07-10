@@ -1885,11 +1885,7 @@ function DBM:EndCombat(mod, wipe)
 			local msg
 			for k, v in pairs(autoRespondSpam) do
 				msg = msg or chatPrefixShort..DBM_CORE_WHISPER_COMBAT_END_KILL:format(UnitName("player"), (mod.combatInfo.name or ""))
-				if type(k) == "string" then
-					SendChatMessage(msg, "WHISPER", nil, k)
-				elseif type(k) == "number" then
-					BNSendWhisper(k, msg)
-				end
+				sendWhisper(k, msg)
 			end
 			fireEvent("kill", mod)
 		end
