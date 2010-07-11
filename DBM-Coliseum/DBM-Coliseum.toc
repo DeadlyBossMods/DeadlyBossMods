@@ -23,6 +23,7 @@
 ## X-DBM-Mod-Name-esMX: Coliseo de los Cruzados
 ## X-DBM-Mod-Sort: 2
 --We do not use areaID for this map because otherwise this mod would load in trial of champion 5 man as well.
+--## X-DBM-Mod-LoadZoneID: 544
 ## X-DBM-Mod-LoadZone: Trial of the Crusader
 ## X-DBM-Mod-LoadZone-koKR: 십자군의 시험장
 ## X-DBM-Mod-LoadZone-deDE: Prüfung des Kreuzfahrers
