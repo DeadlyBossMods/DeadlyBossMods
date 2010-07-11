@@ -28,7 +28,7 @@
 ## X-DBM-Mod-Name-koKR: 5인 던전 모드
 ## X-DBM-Mod-Name-esMX: Mazmorras
 ## X-DBM-Mod-Sort: 100
---## X-DBM-Mod-LoadZoneID: 523,534,522,535,531,526,527,521,529,524,525,537,603,602,604
+--## X-DBM-Mod-LoadZoneID: 523,534,522,535,531,526,527,521,529,524,525,537,603,602,604,543
 --Trial of champion will be only zone that uses localized text when areaid is working (since it shares same map with trial of crusader and we don't want to load party mods in the raid and vica versa)
 ## X-DBM-Mod-LoadZone: Ahn'kahet: The Old Kingdom,Azjol-Nerub,The Culling of Stratholme,Drak'Tharon Keep,Gundrak,Halls of Lightning,Halls of Stone,The Nexus,The Oculus,Utgarde Keep,Utgarde Pinnacle,The Violet Hold,Trial of the Champion,Pit of Saron,The Forge of Souls,Halls of Reflection
 ## X-DBM-Mod-LoadZone-frFR: Ahn'kahet : l'Ancien royaume,Azjol -Nérub,L'Épuration de Stratholme,Donjon de Drak'Tharon,Gundrak,Les salles de Foudre,Les salles de Pierre,Le Nexus,L'Oculus,Donjon d'Utgarde,Cime d'Utgarde,Le fort Pourpre,L'épreuve du champion,Fosse de Saron,La Forge des âmes,Salles des Reflets
