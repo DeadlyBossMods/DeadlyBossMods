@@ -323,7 +323,7 @@ L:SetOptionLocalization{
 	YellOnUnbound			= "當你中了$spell:72856時大喊",
 	specWarnUnboundPlague		= "為$spell:72856的轉移顯示特別警告",
 	specWarnNextPlageSelf		= "當你是下一個$spell:72856的目標時顯示特別警告",
-	BypassLatencyCheck		= "不對$spell:72295使用同步或延遲查詢\n(只有出現問題時才使用這個)"
+	BypassLatencyCheck		= "不對$spell:72295使用同步\n(只有出現問題時才使用這個)"
 	
 
 }
@@ -363,7 +363,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)",
 	RangeFrame			= "顯示距離框 (12碼)",
-	BypassLatencyCheck		= "不對$spell:72037使用同步或延遲查詢\n(只有出現問題時才使用這個)"
+	BypassLatencyCheck		= "不對$spell:72037使用同步查詢\n(只有出現問題時才使用這個)"
 }
 
 L:SetMiscLocalization{
@@ -532,7 +532,7 @@ L:SetOptionLocalization{
 	ValkyrIcon			= "為華爾琪影衛設置標記",
 	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭",
 	TrapArrow			= "當你附近的人中了$spell:73539時顯示DBM箭頭",
-	BypassLatencyCheck		= "不對汙染/暗影陷阱使用同步或延遲查詢\n(只有出現問題時才使用這個)",
+	BypassLatencyCheck		= "不對汙染/暗影陷阱使用同步\n(只有出現問題時才使用這個)",
 	AnnounceValkGrabs		= "提示誰被華爾琪影衛抓住到團隊頻道\n(需開啟團隊廣播及助理權限)"
 }
 
