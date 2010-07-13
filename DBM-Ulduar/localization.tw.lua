@@ -439,7 +439,7 @@ L:SetOptionLocalization{
 	YellOnShadowCrash		= "當你中了$spell:62660時大喊",
 	hardmodeSpawn			= "為薩倫聚惡體出現顯示計時器 (困難模式)",
 	CrashArrow			= "當你附近的人中了$spell:62660時顯示DBM箭頭",
-	BypassLatencyCheck		= "不對$spell:62660使用同步或延遲查詢\n(只有出現問題時才使用這個)"
+	BypassLatencyCheck		= "不對$spell:62660使用同步\n(只有出現問題時才使用這個)"
 }
 
 L:SetMiscLocalization{
