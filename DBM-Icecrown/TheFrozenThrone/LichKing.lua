@@ -21,6 +21,9 @@ mod:RegisterEvents(
 	"SWING_MISSED"
 )
 
+local isPAL = select(2, UnitClass("player")) == "PALADIN"
+local isPRI = select(2, UnitClass("player")) == "PRIEST"
+
 local warnRemorselessWinter = mod:NewSpellAnnounce(74270, 3) --Phase Transition Start Ability
 local warnQuake				= mod:NewSpellAnnounce(72262, 4) --Phase Transition End Ability
 local warnRagingSpirit		= mod:NewTargetAnnounce(69200, 3) --Transition Add
@@ -47,6 +50,8 @@ local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
 local specWarnRagingSpirit	= mod:NewSpecialWarningYou(69200) --Transition Add
 local specWarnYouAreValkd	= mod:NewSpecialWarning("specWarnYouAreValkd") --Phase 2+ Ability
+local specWarnPALGrabbed	= mod:NewSpecialWarning("specWarnPALGrabbed", nil, false) --Phase 2+ Ability
+local specWarnPRIGrabbed	= mod:NewSpecialWarning("specWarnPRIGrabbed", nil, false) --Phase 2+ Ability
 local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
 local specWarnDefileNear	= mod:NewSpecialWarning("specWarnDefileNear", false) --Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
@@ -82,6 +87,7 @@ local berserkTimer			= mod:NewBerserkTimer(900)
 
 local soundDefile			= mod:NewSound(72762)
 
+mod:AddBoolOption("specWarnHealerGrabbed", mod:IsTank() or mod:IsHealer(), "announce")
 mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
 mod:AddBoolOption("RagingSpiritIcon")
@@ -415,10 +421,17 @@ do
 				if UnitInVehicle("raid"..i) and not valkyrTargets[i] then      -- if person #i is in a vehicle and not already announced 
 					ValkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
 					valkyrTargets[i] = true          -- this person has been announced
-					if UnitName("raid"..i) == UnitName("player") then      
+					if UnitName("raid"..i) == UnitName("player") then
 						specWarnYouAreValkd:Show()
 						if mod.Options.YellOnValk then
 							SendChatMessage(L.YellValk, "SAY")
+						end
+					end
+					if UnitName("raid"..i) == mod:IsHealer() then
+						if isPAL and self.Options.specWarnHealerGrabbed then
+							specWarnPALGrabbed:Show(UnitName("raid"..i))
+						elseif isPRI and self.Options.specWarnHealerGrabbed then
+							specWarnPRIGrabbed:Show(UnitName("raid"..i))
 						end
 					end
 					if mod.Options.AnnounceValkGrabs and DBM:GetRaidRank() > 0 then

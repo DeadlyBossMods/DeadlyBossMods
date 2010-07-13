@@ -494,7 +494,9 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Defile on you - Move away",
 	specWarnDefileNear		= "Defile near you - Watch out",
 	specWarnTrapNear		= "Shadow Trap near you - Watch out",
-	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<"
+	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<",
+	specWarnPALGrabbed		= "Paladin Healer %s has been grabbed",
+	specWarnPRIGrabbed		= "Priest Healer %s has been grabbed"
 }
 
 L:SetTimerLocalization{
@@ -514,6 +516,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
 	ValkyrWarning			= "Announce who has been grabbed by Val'kyr Shadowguards",
 	specWarnYouAreValkd		= "Show special warning when you have been grabbed by a Val'kyr Shadowguard",--npc36609
+	specWarnHealerGrabbed	= "Show special warning when a paladin or priest healer has been grabbed",
 	specWarnDefileCast		= "Show special warning for $spell:72762 on you",
 	specWarnDefileNear		= "Show special warning for $spell:72762 near you",
 	specWarnTrapNear		= "Show special warning for $spell:73539 near you",
