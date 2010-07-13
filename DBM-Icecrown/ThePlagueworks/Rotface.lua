@@ -159,11 +159,9 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(69761, 71212, 73026, 73027) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == isKiter then --Tank/Hunter attacking big ooze
-		if not args:IsPlayer() then
-			if self.Options.TankArrow then
-				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
-			end
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == UnitName("player") then
+		if isKiter then --Tank/Hunter attacking big ooze
+			self:SendSync("OozeKiter", UnitName("player"))
 		end
 	end
 end
@@ -171,11 +169,9 @@ end
 function mod:SWING_DAMAGE(args)
 	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
 		specWarnLittleOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == isKiter then --Tank/Hunter attacking big ooze
-		if not args:IsPlayer() then
-			if self.Options.TankArrow then
-				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
-			end
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() == UnitName("player") then
+		if isKiter then --Tank/Hunter attacking big ooze
+			self:SendSync("OozeKiter", UnitName("player"))
 		end
 	end
 end
@@ -183,5 +179,13 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:find(L.YellSlimePipes1) or msg:find(L.YellSlimePipes2) then
 		self:WallSlime()
+	end
+end
+
+function mod:OnSync(msg, target)
+	if msg == "OozeKiter" then
+		if self.Options.TankArrow then
+			DBM.Arrow:ShowRunTo(target, 0, 0)
+		end
 	end
 end
