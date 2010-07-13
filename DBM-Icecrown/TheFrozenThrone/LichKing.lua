@@ -426,12 +426,12 @@ do
 						if mod.Options.YellOnValk then
 							SendChatMessage(L.YellValk, "SAY")
 						end
-					end
-					if UnitName("raid"..i) == mod:IsHealer() then
-						if isPAL and self.Options.specWarnHealerGrabbed then
-							specWarnPALGrabbed:Show(UnitName("raid"..i))
-						elseif isPRI and self.Options.specWarnHealerGrabbed then
-							specWarnPRIGrabbed:Show(UnitName("raid"..i))
+						if mod:IsHealer() then
+							if isPAL then
+								mod:SendSync("PALGrabbed", UnitName("player"))
+							elseif isPRI then
+								mod:SendSync("PRIGrabbed", UnitName("player"))
+							end
 						end
 					end
 					if mod.Options.AnnounceValkGrabs and DBM:GetRaidRank() > 0 then
@@ -566,6 +566,14 @@ function mod:OnSync(msg, target)
 			if self.Options.NecroticPlagueIcon then
 				self:SetIcon(target, 7, 5)
 			end
+		end
+	elseif msg == "PALGrabbed" then
+		if self.Options.specWarnHealerGrabbed then
+			specWarnPALGrabbed:Show(target)
+		end
+	elseif msg == "PRIGrabbed" then
+		if self.Options.specWarnHealerGrabbed then
+			specWarnPRIGrabbed:Show(target)
 		end
 	elseif msg == "DefileOn" then
 		if not self.Options.BypassLatencyCheck then
