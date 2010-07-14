@@ -85,13 +85,13 @@ end
 function mod:OldShadowCrashTarget()
 	local targetname = self:GetBossTarget()
 	if not targetname then return end
-	if self.Options.SetIconOnShadowCrash and mod:LatencyCheck() then
+	if self.Options.SetIconOnShadowCrash then
 		self:SetIcon(targetname, 8, 10)
 	end
 	warnShadowCrash:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnShadowCrash:Show(targetname)
-		if self.Options.YellOnShadowCrash and mod:LatencyCheck()  then
+		if self.Options.YellOnShadowCrash then
 			SendChatMessage(L.YellCrash, "SAY")
 		end
 	elseif targetname then

@@ -150,13 +150,13 @@ function mod:OldDefileTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
 		warnDefileCast:Show(targetname)
-		if self.Options.DefileIcon and mod:LatencyCheck() then
+		if self.Options.DefileIcon then
 			self:SetIcon(targetname, 8, 10)
 		end
 	if targetname == UnitName("player") then
 		specWarnDefileCast:Show()
 		soundDefile:Play()
-		if self.Options.YellOnDefile and mod:LatencyCheck() then
+		if self.Options.YellOnDefile then
 			SendChatMessage(L.YellDefile, "SAY")
 		end
 	elseif targetname then
@@ -180,12 +180,12 @@ end
 
 function mod:OldTankTrap()
 	warnTrapCast:Show(LKTank)
-	if self.Options.TrapIcon and mod:LatencyCheck() then
+	if self.Options.TrapIcon then
 		self:SetIcon(LKTank, 6, 10)
 	end
 	if LKTank == UnitName("player") then
 		specWarnTrap:Show()
-		if self.Options.YellOnTrap and mod:LatencyCheck() then
+		if self.Options.YellOnTrap then
 			SendChatMessage(L.YellTrap, "SAY")
 		end
 	end
