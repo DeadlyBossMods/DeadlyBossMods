@@ -102,12 +102,12 @@ end
 function mod:OldMalleableGooTarget()
 	local targetname = self:GetBossTarget(36678)
 	if not targetname then return end
-		if self.Options.MalleableGooIcon and mod:LatencyCheck() then
+		if self.Options.MalleableGooIcon then
 			self:SetIcon(targetname, 6, 10)
 		end
 	if targetname == UnitName("player") then
 		specWarnMalleableGoo:Show()
-		if self.Options.YellOnMalleableGoo and mod:LatencyCheck() then
+		if self.Options.YellOnMalleableGoo then
 			SendChatMessage(L.YellMalleable, "SAY")
 		end
 	elseif targetname then
