@@ -499,7 +499,9 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "你中了汙染 - 快離開",
 	specWarnDefileNear		= "你附近的人中了汙染 - 小心",
 	specWarnTrapNear		= "你附近的人中了暗影陷阱 - 小心",
-	warnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上"
+	warnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上",
+	specWarnPALGrabbed		= "補騎 %s 給抓住了",
+	specWarnPRIGrabbed		= "補牧 %s 給抓住了"
 }
 
 L:SetTimerLocalization{
@@ -519,6 +521,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	ValkyrWarning			= "提示誰給華爾琪影衛抓住了",
 	specWarnYouAreValkd		= "當你給華爾琪影衛抓住時顯示特別警告",
+	specWarnHealerGrabbed		= "當補騎或補牧給華爾琪影衛抓住時時顯示特別警告",
 	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
 	specWarnDefileNear		= "當你附近的人中了$spell:72762時顯示特別警告",
 	specWarnTrapNear		= "當你附近的人中了$spell:73539時顯示特別警告",
