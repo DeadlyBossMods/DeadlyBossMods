@@ -45,6 +45,7 @@ local specWarnMaladyNear			= mod:NewSpecialWarning("SpecWarnMaladyNear", true)
 mod:AddBoolOption("WarningSqueeze", true, "announce")
 
 local enrageTimer					= mod:NewBerserkTimer(900)
+local timerFervor					= mod:NewTargetTimer(15, 63138)
 local brainportal					= mod:NewTimer(20, "NextPortal")
 local timerLunaricGaze				= mod:NewCastTimer(4, 64163)
 local timerNextLunaricGaze			= mod:NewCDTimer(8.5, 64163)
@@ -86,7 +87,7 @@ function mod:FervorTarget()
 	local targetname = self:GetBossTarget(33134)
 	if not targetname then return end
 	if targetname == UnitName("player") then
-		specWarnFervorCast:Show(targetname)
+		specWarnFervorCast:Show()
 	end
 end
 
@@ -166,8 +167,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end	
 	elseif args:IsSpellID(63138) then	-- Sara's Fervor
 		warnFervor:Show(args.destName)
+		timerFervor:Start(args.destName)
 		if self.Options.SetIconOnFervorTarget then
-			self:SetIcon(args.destName, 7, 30)
+			self:SetIcon(args.destName, 7, 15)
 		end
 		if args:IsPlayer() then 
 			specWarnFervor:Show()

@@ -31,7 +31,7 @@ mod:AddBoolOption("ShockBlastWarningInP4", mod:IsMelee(), "announce")
 local warnDarkGlare				= mod:NewSpecialWarningSpell(63293)
 
 local enrage 					= mod:NewBerserkTimer(900)
-local timerHardmode				= mod:NewTimer(607, "TimerHardmode", 64582)
+local timerHardmode				= mod:NewTimer(610, "TimerHardmode", 64582)
 local timerP1toP2				= mod:NewTimer(43, "TimeToPhase2")
 local timerP2toP3				= mod:NewTimer(32, "TimeToPhase3")
 local timerP3toP4				= mod:NewTimer(25, "TimeToPhase4")
@@ -43,9 +43,9 @@ local timerNextDarkGlare		= mod:NewNextTimer(41, 63274)
 local timerNextShockblast		= mod:NewNextTimer(34, 63631)
 local timerPlasmaBlastCD		= mod:NewCDTimer(30, 64529)
 local timerShell				= mod:NewBuffActiveTimer(6, 63666)
-local timerFlameSuppressant		= mod:NewCastTimer(59, 64570)
+local timerFlameSuppressant		= mod:NewCastTimer(60, 64570)
 local timerNextFlameSuppressant	= mod:NewNextTimer(10, 65192)
-local timerNextFlames			= mod:NewNextTimer(27.6, 64566)
+local timerNextFlames			= mod:NewNextTimer(27.5, 64566)
 local timerNextFrostBomb        = mod:NewNextTimer(30, 64623)
 local timerBombExplosion		= mod:NewCastTimer(15, 65333)
 
@@ -110,7 +110,7 @@ function mod:Flames()
 		self:ScheduleMethod(18, "Flames")
 	else
 		timerNextFlames:Start()
-		self:ScheduleMethod(27.6, "Flames")
+		self:ScheduleMethod(27.5, "Flames")
 	end
 end
 
@@ -302,13 +302,13 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		--DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
 		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
 
-	elseif msg == L.YellHardPull or msg:find(L.YellHardPull) then
+	elseif msg:find(L.YellHardPull) then
 		timerHardmode:Start()
 		timerFlameSuppressant:Start()
 		enrage:Stop()
 		hardmode = true
-		timerNextFlames:Start(3)
-		self:ScheduleMethod(3, "Flames")
+		timerNextFlames:Start(6.5)
+		self:ScheduleMethod(6.5, "Flames")
 	end
 end
 
