@@ -505,7 +505,9 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Profanar en ti ¡Muévete!",
 	specWarnDefileNear		= "Profanar cerca de ti ¡Ten cuidado!",
 	specWarnTrapNear		= "Trampa de las Sombras cerca de ti ¡Ten cuidado!",
-	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<"
+	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<",
+	specWarnPALGrabbed		= "Paladin Healer %s ha sido agarrado",
+	specWarnPRIGrabbed		= "Sacerdote Healer %s ha sido agarrado"
 }
 
 L:SetTimerLocalization{
@@ -525,6 +527,7 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Mostrar pre-aviso para transición a la Fase 3 (al ~43%)",
 	ValkyrWarning			= "Anunciar quien ha sido agarrado por las Valkyr",
 	specWarnYouAreValkd		= "Mostrar aviso especial cuando seas agarrado por una Valkyr",
+	specWarnHealerGrabbed	= "Mostrar un aviso especial cuando un healer paladín o sacerdote es agarrado",
 	specWarnDefileCast		= "Mostrar aviso especial para $spell:72762 en ti",
 	specWarnDefileNear		= "Mostrar aviso especial para $spell:72762 cerca de ti",
 	specWarnTrapNear		= "Mostrar aviso especial para $spell:73539 cerca de ti",
@@ -538,6 +541,7 @@ L:SetOptionLocalization{
 	ValkyrIcon				= "Poner iconos en las Valkyr",
 	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti",
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
+	BypassLatencyCheck		= "No usar sincronización para profanar/trampa de las sombras\n(sólo usar esta opción si tienes problemas de otro modo)",
 	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de raid\n(requires 'anunciar' activado y líder/ayudante)"
 }
 
