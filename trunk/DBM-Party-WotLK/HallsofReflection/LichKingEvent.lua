@@ -2,18 +2,6 @@ local mod = DBM:NewMod("LichKingEvent", "DBM-Party-WotLK", 16)
 local L = mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision: 2153 $"):sub(12, -3))
---mod:SetCreatureID(37226, 36954)--Both creature Ids used in Halls of Reflection
-
---[[if UnitFactionGroup("player") == "Alliance" then
-	mod:RegisterCombat("yell", L.ACombatStart)
-else
-	mod:RegisterCombat("yell", L.HCombatStart)
-end
-
-mod:RegisterKill("yell", L.YellCombatEnd)--Combat does not end for another 8 or so seconds after this yell (for achievement credit). Not sure how to go about fixing this yet.
-
-mod:SetMinCombatTime(120)--Dirty Hack to engage mod after a wipe on zonein and keep it engaged. if you wipe, pull yell happens as soon as you zone back in despite the event not actually being started until you tell jaina/sylvanas you're ready to try again. This is only way to hack around this so mod doesn't wipe you for not being in combat after yell.
---]]
 mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL"
@@ -28,7 +16,7 @@ mod:AddBoolOption("ShowWaves", true, "announce")
 local timerEscape	= mod:NewAchievementTimer(360, 4526, "achievementEscape")
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(69708) then					--Lich King has broken out of his iceblock, this starts actual event
+	if args:IsSpellID(69708) then			--Lich King has broken out of his iceblock, this starts actual event
 		if mod:IsDifficulty("heroic5") then
 			timerEscape:Start()
 		end

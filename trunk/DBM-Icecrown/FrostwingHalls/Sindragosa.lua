@@ -140,9 +140,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		if phase == 1 and self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetBeaconIcons")
-			self:ScheduleMethod(0.1, "SetBeaconIcons")
+			if (mod:IsDifficulty("normal25") and #beaconIconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconIconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconIconTargets >= 2) then
+				self:SetBeaconIcons()--Sort and fire as early as possible once we have all targets.
+			end
 		end
-		if phase == 2 then
+		if phase == 2 then--Phase 2 there is only one icon/beacon, don't use sorting method if we don't have to.
 			timerNextBeacon:Start()
 			if self.Options.SetIconOnFrostBeacon then
 				self:SetIcon(args.destName, 8)

@@ -11,20 +11,25 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
+local warnFear					= mod:NewSpellAnnounce(72452, 3)
 local warnImpendingDespair		= mod:NewTargetAnnounce(72426, 3)
 local warnQuiveringStrike		= mod:NewTargetAnnounce(72453, 3)
 
+local timerFear					= mod:NewBuffActiveTimer(4, 72452)
 local timerImpendingDespair		= mod:NewTargetTimer(6, 72426)
 local timerQuiveringStrike		= mod:NewTargetTimer(5, 72453)
 
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(72422, 72453) then
-		timerQuiveringStrike:Show(args.destName)
+		timerQuiveringStrike:Start(args.destName)
 		warnQuiveringStrike:Show(args.destName)
 	elseif args:IsSpellID(72426) then
-		timerImpendingDespair:Show(args.destName)
+		timerImpendingDespair:Start(args.destName)
 		warnImpendingDespair:Show(args.destName)
+	elseif args:IsSpellID(72452, 72435) then
+		warnFear:Show()
+		timerFear:Start()
 	end
 end
 
