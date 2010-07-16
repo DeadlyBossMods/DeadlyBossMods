@@ -501,7 +501,9 @@ L:SetWarningLocalization{
 	specWarnDefileCast			= "당신에게 파멸! - 이동!",
 	specWarnDefileNear			= "당신 주변에 파멸! - 이동!",
 	specWarnTrapNear			= "당신 주변에 암흑의 덫 - 확인!",
-	warnNecroticPlagueJump		= "괴저 역병 전이 : >%s<"
+	warnNecroticPlagueJump		= "괴저 역병 전이 : >%s<",
+	specWarnPALGrabbed			= "발키리가 신기 납치 : %s",
+	specWarnPRIGrabbed			= "발키리가 사제 납치 : %s"
 }
 
 L:SetTimerLocalization{
