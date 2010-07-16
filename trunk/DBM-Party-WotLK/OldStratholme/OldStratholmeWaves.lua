@@ -10,7 +10,7 @@ mod:RegisterEvents(
 )
 
 local warningWaveNow	= mod:NewAnnounce("WarningWaveNow", 3)
-local timerWaveIn		= mod:NewTimer(25, "TimerWaveIn")
+local timerWaveIn		= mod:NewTimer(20, "TimerWaveIn")
 local timerRoleplay		= mod:NewTimer(162, "TimerRoleplay")
 
 local wavesNormal = {
