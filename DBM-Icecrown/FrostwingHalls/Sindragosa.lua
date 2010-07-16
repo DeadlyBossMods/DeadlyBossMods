@@ -139,7 +139,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if phase == 1 and self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
-			self:UnscheduleMethod("SetBeaconIcons")
 			if (mod:IsDifficulty("normal25") and #beaconIconTargets >= 5) or (mod:IsDifficulty("heroic25") and #beaconIconTargets >= 6) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #beaconIconTargets >= 2) then
 				self:SetBeaconIcons()--Sort and fire as early as possible once we have all targets.
 			end
