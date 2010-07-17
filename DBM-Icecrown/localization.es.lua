@@ -331,7 +331,7 @@ L:SetOptionLocalization{
 	YellOnUnbound				= "Gritar cuando tengas $spell:72856",	
 	specWarnUnboundPlague		= "Mostrar aviso especial para transferencia de $spell:72856",
 	specWarnNextPlageSelf		= "Mostrar aviso especial cuando seas el próximo objetivo de $spell:72856",
-	BypassLatencyCheck			= "No usar sincronización para $spell:72295\n(sólo usar esta opción si tienes problemas de otro modo)"
+	BypassLatencyCheck			= "No usar la comprobación de sincronización basada en latencia para $spell:72295\n(sólo usar esta opción si tienes problemas de otro modo)"
 }
 
 L:SetMiscLocalization{
@@ -369,7 +369,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Poner un icono en el príncipe con Invocación (Cruz)",
 	RangeFrame				= "Mostrar distancia (12 yardas)",
-	BypassLatencyCheck		= "No usar sincronización para $spell:72037\n(sólo usar esta opción si tienes problemas de otro modo)"
+	BypassLatencyCheck		= "No usar la comprobación de sincronización basada en latencia para $spell:72037\n(sólo usar esta opción si tienes problemas de otro modo)"
 }
 
 L:SetMiscLocalization{
@@ -541,7 +541,7 @@ L:SetOptionLocalization{
 	ValkyrIcon				= "Poner iconos en las Valkyr",
 	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti",
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
-	BypassLatencyCheck		= "No usar sincronización para profanar/trampa de las sombras\n(sólo usar esta opción si tienes problemas de otro modo)",
+	BypassLatencyCheck		= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(sólo usar esta opción si tienes problemas de otro modo)",
 	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de raid\n(requires 'anunciar' activado y líder/ayudante)"
 }
 
