@@ -78,7 +78,7 @@ do
 				if self.Options.AnnounceFrostBeaconIcons then
 					SendChatMessage(L.BeaconIconSet:format(beaconIcons, UnitName(v)), "RAID")
 				end
-				self:SetIcon(UnitName(v), beaconIcons, 8)
+				self:SetIcon(UnitName(v), beaconIcons)
 				beaconIcons = beaconIcons - 1
 			end
 			table.wipe(beaconIconTargets)

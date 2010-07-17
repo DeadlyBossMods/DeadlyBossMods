@@ -154,8 +154,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconsOnPCold then
 			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
-			self:UnscheduleMethod("SetPcoldIcons")
-			mod:ScheduleMethod(0.1, "SetPcoldIcons")
+			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
+				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
+			end
 		end
 		timerPCold:Show() 
 	elseif args:IsSpellID(66012) then							-- Freezing Slash
