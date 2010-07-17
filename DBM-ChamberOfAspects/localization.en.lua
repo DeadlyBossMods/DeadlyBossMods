@@ -177,7 +177,8 @@ L:SetOptionLocalization({
 	AnnounceAlternatePhase	= "Show warnings/timers for phase you aren't in as well",
 	SoundOnConsumption		= "Play sound on $spell:74562 or $spell:74792",--We use localized text for these functions
 	SetIconOnConsumption	= "Set icons on $spell:74562 or $spell:74792 targets",--So we can use single functions for both versions of spell.
-	YellOnConsumption		= "Yell on $spell:74562 or $spell:74792"
+	YellOnConsumption		= "Yell on $spell:74562 or $spell:74792",
+	WhisperOnConsumption	= "Send whisper to $spell:74562 or $spell:74792 targets"
 })
 
 L:SetMiscLocalization({
@@ -186,6 +187,8 @@ L:SetMiscLocalization({
 	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
 	twilightcutter			= "The orbiting spheres pulse with dark energy!",
 	YellCombustion			= "Combustion on me!",
+	WhisperCombustion		= "Combustion on you! Run to the wall!",
 	YellConsumption			= "Consumption on me!",
+	WhisperConsumption		= "Consumption on you! Run to the wall!",
 	Kill					= "Relish this victory, mortals, for it will be your last. This world will burn with the master's return!"
 })
