@@ -31,13 +31,10 @@ local warnPortalSoon			= mod:NewSoonAnnounce(67900, 3)
 local warnVolcanoSoon			= mod:NewSoonAnnounce(67901, 3)
 local warnFlame					= mod:NewTargetAnnounce(68123, 4)
 local warnFlesh					= mod:NewTargetAnnounce(66237, 4, nil, mod:IsHealer())
---local warnTouch				= mod:NewTargetAnnounce(66209, 3)
 local warnNetherPower			= mod:NewAnnounce("WarnNetherPower", 4, 67009)
 
 local specWarnFlame				= mod:NewSpecialWarningRun(67072)
 local specWarnFlesh				= mod:NewSpecialWarningYou(66237)
---local specWarnTouch			= mod:NewSpecialWarning("SpecWarnTouch")
---local specWarnTouchNear		= mod:NewSpecialWarning("SpecWarnTouchNear", false)
 local specWarnKiss				= mod:NewSpecialWarningYou(67907, false)
 local specWarnNetherPower		= mod:NewSpecialWarning("SpecWarnNetherPower", isDispeller)
 local specWarnFelInferno		= mod:NewSpecialWarningMove(68718)
@@ -53,13 +50,11 @@ local timerFlesh				= mod:NewTargetTimer(12, 67049)
 local timerFleshCD				= mod:NewCDTimer(23, 67051) 
 local timerPortalCD				= mod:NewCDTimer(120, 67900)
 local timerVolcanoCD			= mod:NewCDTimer(120, 67901)
---local timerTouchCD			= mod:NewCDTimer(999, 12345)	-- cooldown?
 
 mod:AddBoolOption("LegionFlameWhisper", false, "announce")
 mod:AddBoolOption("LegionFlameRunSound", true)
 mod:AddBoolOption("LegionFlameIcon", true)
 mod:AddBoolOption("IncinerateFleshIcon", true)
---mod:AddBoolOption("TouchJaraxxusIcon", true)
 
 mod:RemoveOption("HealthFrame")
 mod:AddBoolOption("IncinerateShieldFrame", true, "misc")
@@ -168,24 +163,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if DBM:GetRaidRank() >= 1 and self.Options.LegionFlameWhisper then
 			self:SendWhisper(L.WhisperFlame, targetname)
 		end
-
---[[	elseif args:IsSpellID(66209) then					-- Touch of Jaraxxus		causes Curse of the Nether ID:66210
-		-- timerTouchCD:Start()
-		warnTouch:Show(args.destName)
-		local uId = DBM:GetRaidUnitId(args.destName)
-		if args:IsPlayer() then
-			specWarnTouch:Show()
-		end
-		if self.Options.TouchJaraxxusIcon then
-			self:SetIcon(args.destName, 6, 12)
-		end
-		if uId then 
-			local inRange = CheckInteractDistance(uId, 2) 
-			if inRange then 
-				specWarnTouchNear:Show(args.destName) 
-			end 
-		end--]]
-
 	elseif args:IsSpellID(66334, 67905, 67906, 67907) and args:IsPlayer() then
 		specWarnKiss:Show()
 
