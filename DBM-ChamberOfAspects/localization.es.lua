@@ -184,7 +184,8 @@ L:SetOptionLocalization({
 	AnnounceAlternatePhase	= "Mostrar también avisos/tiempos de la fase en la que no estás",
 	SoundOnConsumption		= "Reproducir sonido en $spell:74562 y $spell:74792",
 	SetIconOnConsumption	= "Poner iconos en los objetivos de $spell:74562 y $spell:74792",
-	YellOnConsumption		= "Gritar cuando tengas $spell:74562 o $spell:74792"
+	YellOnConsumption		= "Gritar cuando tengas $spell:74562 o $spell:74792",
+	WhisperOnConsumption	= "Enviar susurro a los objetivos de $spell:74562 o $spell:74792"
 })
 
 L:SetMiscLocalization({
@@ -193,6 +194,8 @@ L:SetMiscLocalization({
 	Phase3					= "¡Yo soy la luz y la oscuridad! ¡Temed, mortales, la llegada de Alamuerte!",
 	twilightcutter			= "¡Las esferas que orbitan emiten energía oscura!",
 	YellCombustion			= "¡Combustión en mi!",
+	WhisperCombustion		= "¡Combustion en ti! ¡Corre a la pared!",
 	YellConsumption			= "¡Consumo en mi!",
+	WhisperConsumption		= "¡Consumo en ti! ¡Corre a la pared!",
 	Kill					= "Disfrutad la victoria, mortales, porque será la última. ¡Este mundo arderá cuando vuelva el maestro!"
 })
