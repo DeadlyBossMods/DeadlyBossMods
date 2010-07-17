@@ -14,6 +14,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
+	"SWING_DAMAGE",
+	"SWING_MISSED",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_HEALTH"
@@ -51,10 +54,15 @@ local soundConsumption 				= mod:NewSound(74562, "SoundOnConsumption")
 
 mod:AddBoolOption("YellOnConsumption", true, "announce")
 mod:AddBoolOption("AnnounceAlternatePhase", true, "announce")
+mod:AddBoolOption("WhisperOnConsumption", false, "announce")
 mod:AddBoolOption("SetIconOnConsumption", true)
 
 local warned_preP2 = false
 local warned_preP3 = false
+local phase2Started = 0
+local physicalAggro = false
+local twilightAggro = false
+local lastflame = 0
 
 function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
 	berserkTimer:Start(-delay)
@@ -63,6 +71,10 @@ function mod:OnCombatStart(delay)--These may still need retuning too, log i had 
 		timerFieryBreathCD:Start(10-delay)
 	warned_preP2 = false
 	warned_preP3 = false
+	phase2Started = 0
+	physicalAggro = true
+	twilightAggro = false
+	lastflame = 0
 end
 
 function mod:SPELL_CAST_START(args)
@@ -105,6 +117,9 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 	if args:IsSpellID(74792) then
 		if not self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperConsumption, "WHISPER", "COMMON", args.destName)
+			end
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowTarget", args.destName)
@@ -122,6 +137,9 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 	elseif args:IsSpellID(74562) then
 		if not self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperCombustion, "WHISPER", "COMMON", args.destName)
+			end
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("FieryTarget", args.destName)
@@ -151,15 +169,58 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-do 
-	local lastflame = 0
-	function mod:SPELL_DAMAGE(args)
-		if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then
-			specWarnMeteorStrike:Show()
-			lastflame = time()
+--Begin Phase aggro detection
+function mod:SPELL_DAMAGE(args)
+	if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then
+		specWarnMeteorStrike:Show() --Standing in meteor, not part of aggro detection.
+		lastflame = time()
+	elseif args:GetDestCreatureID() == 39863 then
+		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+			self:SendSync("PhysicalAggro")--We do now.
+		end
+	elseif args:GetDestCreatureID() == 40141 then
+		if not twilightAggro then --We don't have aggro on him yet.
+			self:SendSync("twilightAggro")--We do now.
 		end
 	end
 end
+
+function mod:SPELL_MISSED(args)
+	if args:GetDestCreatureID() == 39863 then
+		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+			self:SendSync("PhysicalAggro")--We do now.
+		end
+	elseif args:GetDestCreatureID() == 40141 then
+		if not twilightAggro then --We don't have aggro on him yet.
+			self:SendSync("twilightAggro")--We do now.
+		end
+	end
+end
+
+function mod:SWING_DAMAGE(args)
+	if args:GetDestCreatureID() == 39863 then
+		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+			self:SendSync("PhysicalAggro")--We do now.
+		end
+	elseif args:GetDestCreatureID() == 40141 then
+		if not twilightAggro then --We don't have aggro on him yet.
+			self:SendSync("twilightAggro")--We do now.
+		end
+	end
+end
+
+function mod:SWING_MISSED(args)
+	if args:GetDestCreatureID() == 39863 then
+		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+			self:SendSync("PhysicalAggro")--We do now.
+		end
+	elseif args:GetDestCreatureID() == 40141 then
+		if not twilightAggro then --We don't have aggro on him yet.
+			self:SendSync("twilightAggro")--We do now.
+		end
+	end
+end
+--End Phase aggro detection
 
 function mod:UNIT_HEALTH(uId)
 	if not warned_preP2 and self:GetUnitCreatureId(uId) == 39863 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
@@ -176,18 +237,18 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerFieryBreathCD:Cancel()
 		timerMeteorCD:Cancel()
 		timerFieryConsumptionCD:Cancel()
---		timerMeteorCast:Cancel()--This one i'm not sure if it cancels or not.
 		warnPhase2:Show()
 		timerShadowBreathCD:Start(25)
---		timerShadowConsumptionCD:Start(20)--Don't know it yet need more logs, it's not showing consistency. 20-25 on normal.
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
 			timerTwilightCutterCD:Start(30)
 		else
 			timerTwilightCutterCD:Start(35)
 		end
+		physicalAggro = false
+		phase2Started = GetTime()
 	elseif msg:find(L.Phase3) then
 		warnPhase3:Show()
-		timerMeteorCD:Start(30)
+		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
 	elseif msg:find(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
 		if not self.Options.AnnounceAlternatePhase then
 			warningMeteor:Show()
@@ -233,10 +294,16 @@ function mod:OnSync(msg, target)
 	elseif msg == "ShadowTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(target)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperConsumption, "WHISPER", "COMMON", target)
+			end
 		end
 	elseif msg == "FieryTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(target)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				SendChatMessage(L.WhisperCombustion, "WHISPER", "COMMON", target)
+			end
 		end
 	elseif msg == "ShadowCD" then
 		if self.Options.AnnounceAlternatePhase then
@@ -254,5 +321,9 @@ function mod:OnSync(msg, target)
 				timerFieryConsumptionCD:Start()
 			end
 		end
+	elseif msg == "PhysicalAggro" then
+		timerFieryConsumptionCD:Start(15)--Timer doesn't start again until aggroed again in phase 3. Timer value itself may need adjusting now that it's starting in right place
+	elseif msg == "twilightAggro" then
+		timerShadowConsumptionCD:Start(15)--Timer doesn't start until actual twilight form is aggroed. Timer value itself may need adjusting now that it's starting in right place
 	end
 end
