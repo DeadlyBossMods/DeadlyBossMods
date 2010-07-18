@@ -176,7 +176,7 @@ function mod:SPELL_DAMAGE(args)
 		specWarnMeteorStrike:Show() --Standing in meteor, not part of aggro detection.
 		lastflame = time()
 	elseif args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
 			physicalAggro = true
 			if mod:LatencyCheck() then
 				self:SendSync("PhysicalAggro")--We do now.
@@ -194,7 +194,7 @@ end
 
 function mod:SPELL_MISSED(args)
 	if args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
 			physicalAggro = true
 			if mod:LatencyCheck() then
 				self:SendSync("PhysicalAggro")--We do now.
@@ -212,7 +212,7 @@ end
 
 function mod:SWING_DAMAGE(args)
 	if args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
 			physicalAggro = true
 			if mod:LatencyCheck() then
 				self:SendSync("PhysicalAggro")--We do now.
@@ -230,7 +230,7 @@ end
 
 function mod:SWING_MISSED(args)
 	if args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
+		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
 			physicalAggro = true
 			if mod:LatencyCheck() then
 				self:SendSync("PhysicalAggro")--We do now.
