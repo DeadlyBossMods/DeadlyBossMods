@@ -37,7 +37,7 @@ local warningTwilightCutter			= mod:NewAnnounce("TwilightCutterCast", 4, 77844)
 local specWarnShadowConsumption		= mod:NewSpecialWarningRun(74792)
 local specWarnFieryConsumption		= mod:NewSpecialWarningRun(74562)
 local specWarnMeteorStrike			= mod:NewSpecialWarningMove(75952)
-local specWarnTwilightCutter		= mod:NewSpecialWarningSpell(77844, false)
+local specWarnTwilightCutter		= mod:NewSpecialWarningSpell(77844)
 
 local timerShadowConsumptionCD		= mod:NewNextTimer(25, 74792)
 local timerFieryConsumptionCD		= mod:NewNextTimer(25, 74562)
@@ -288,10 +288,10 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg:find(L.twilightcutter) then
+			specWarnTwilightCutter:Schedule(5)
 		if not self.Options.AnnounceAlternatePhase then
 			warningTwilightCutter:Show()
 			timerTwilightCutterCast:Start()
-			specWarnTwilightCutter:Schedule(5)
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end
@@ -306,7 +306,6 @@ function mod:OnSync(msg, target)
 		if self.Options.AnnounceAlternatePhase then
 			warningTwilightCutter:Show()
 			timerTwilightCutterCast:Start()
-			specWarnTwilightCutter:Schedule(5)
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
 			timerTwilightCutterCD:Schedule(15)
 		end
