@@ -3,6 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39863)--40141 (twilight form)
+mod:SetMinSyncRevision(4351)
 mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
@@ -65,16 +66,16 @@ local twilightAggro = false
 local lastflame = 0
 
 function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
-	berserkTimer:Start(-delay)
-		timerMeteorCD:Start(20-delay)
-		timerFieryConsumptionCD:Start(15-delay)
-		timerFieryBreathCD:Start(10-delay)
+	physicalAggro = true
+	twilightAggro = false
 	warned_preP2 = false
 	warned_preP3 = false
 	phase2Started = 0
-	physicalAggro = true
-	twilightAggro = false
 	lastflame = 0
+	berserkTimer:Start(-delay)
+	timerMeteorCD:Start(20-delay)
+	timerFieryConsumptionCD:Start(15-delay)
+	timerFieryBreathCD:Start(10-delay)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -132,7 +133,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			end
 		end
 		if self.Options.SetIconOnConsumption then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, 7)
 		end
 	elseif args:IsSpellID(74562) then
 		if not self.Options.AnnounceAlternatePhase then
@@ -152,7 +153,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			end
 		end
 		if self.Options.SetIconOnConsumption then
-			self:SetIcon(args.destName, 7)
+			self:SetIcon(args.destName, 8)
 		end
 	end
 end
@@ -176,13 +177,17 @@ function mod:SPELL_DAMAGE(args)
 		lastflame = time()
 	elseif args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
-			self:SendSync("PhysicalAggro")--We do now.
 			physicalAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("PhysicalAggro")--We do now.
+			end
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
-			self:SendSync("twilightAggro")--We do now.
 			twilightAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("twilightAggro")--We do now.
+			end
 		end
 	end
 end
@@ -190,13 +195,17 @@ end
 function mod:SPELL_MISSED(args)
 	if args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
-			self:SendSync("PhysicalAggro")--We do now.
 			physicalAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("PhysicalAggro")--We do now.
+			end
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
-			self:SendSync("twilightAggro")--We do now.
 			twilightAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("twilightAggro")--We do now.
+			end
 		end
 	end
 end
@@ -204,13 +213,17 @@ end
 function mod:SWING_DAMAGE(args)
 	if args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
-			self:SendSync("PhysicalAggro")--We do now.
 			physicalAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("PhysicalAggro")--We do now.
+			end
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
-			self:SendSync("twilightAggro")--We do now.
 			twilightAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("twilightAggro")--We do now.
+			end
 		end
 	end
 end
@@ -218,13 +231,17 @@ end
 function mod:SWING_MISSED(args)
 	if args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
-			self:SendSync("PhysicalAggro")--We do now.
 			physicalAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("PhysicalAggro")--We do now.
+			end
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
-			self:SendSync("twilightAggro")--We do now.
 			twilightAggro = true
+			if mod:LatencyCheck() then
+				self:SendSync("twilightAggro")--We do now.
+			end
 		end
 	end
 end
@@ -242,6 +259,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg:find(L.Phase2) then
+		phase2Started = GetTime()
 		timerFieryBreathCD:Cancel()
 		timerMeteorCD:Cancel()
 		timerFieryConsumptionCD:Cancel()
@@ -253,7 +271,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 			timerTwilightCutterCD:Start(35)
 		end
 		physicalAggro = false
-		phase2Started = GetTime()
 	elseif msg:find(L.Phase3) then
 		warnPhase3:Show()
 		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
