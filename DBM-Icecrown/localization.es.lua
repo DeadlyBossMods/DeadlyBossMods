@@ -423,7 +423,8 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	timerPortalsOpen	= "Se abren los portales",
-	TimerBlazingSkeleton	= "Esqueleto llameante"
+	TimerBlazingSkeleton	= "Siguiente Esqueleto llameante",
+	timerAbom				= "Siguiente Abominación?"
 }
 
 L:SetOptionLocalization{
@@ -431,6 +432,7 @@ L:SetOptionLocalization{
 	warnPortalOpen				= "Mostrar aviso cuando $spell:72483 se abren",
 	timerPortalsOpen			= "Mostrar tiempo para la apertura de Portal Pesadilla",
 	TimerBlazingSkeleton			= "Mostrar tiempo para la próxima salida de Esqueleto llameante",
+	timerAbom					= "Mostrar tiempo para siguiente Abominación glotona (Experimental)",
 	warnCorrosion	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
