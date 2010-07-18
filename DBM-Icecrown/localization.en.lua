@@ -411,8 +411,9 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen	= "Portals open",
-	TimerBlazingSkeleton	= "Blazing Skeleton"
+	timerPortalsOpen		= "Portals open",
+	TimerBlazingSkeleton	= "Next Blazing Skeleton",
+	timerAbom				= "Next Abomination?"
 }
 
 L:SetOptionLocalization{
@@ -420,6 +421,7 @@ L:SetOptionLocalization{
 	warnPortalOpen				= "Show warning when Nightmare Portals are opened up",
 	timerPortalsOpen			= "Show timer when Nightmare Portals are opened up",
 	TimerBlazingSkeleton		= "Show timer for next Blazing Skeleton spawn",
+	timerAbom					= "Show timer for next Gluttonous Abomination spawn (Experimental)",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 

@@ -35,6 +35,7 @@ local timerHealerBuff	= mod:NewBuffActiveTimer(40, 70873)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
 local timerBlazingSkeleton	= mod:NewTimer(50, "TimerBlazingSkeleton", 17204)
+local timerAbom				= mod:NewTimer(25, "timerAbom", 43392)--Experimental
 
 local berserkTimer		= mod:NewBerserkTimer(420)
 
@@ -43,6 +44,7 @@ local berserkTimer		= mod:NewBerserkTimer(420)
 local GutSprayTargets = {}
 local spamSupression = 0
 local BlazingSkeletonTimer = 60
+local AbomTimer = 60
 
 local function warnGutSprayTargets()
 	warnGutSpray:Show(table.concat(GutSprayTargets, "<, >"))
@@ -50,11 +52,22 @@ local function warnGutSprayTargets()
 end
 
 function mod:StartBlazingSkeletonTimer()
-	if BlazingSkeletonTimer >= 5 then--Keep it from dropping below 5, once it's at 5 disable reschedule
+	if BlazingSkeletonTimer >= 5 then--Keep it from dropping below 5
 		timerBlazingSkeleton:Start(BlazingSkeletonTimer)
 		self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
 	end
 	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
+end
+
+function mod:StartAbomTimer()
+	if AbomTimer >= 60 then--Keep it from dropping below 50
+		timerAbom:Start(AbomTimer)
+		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
+		AbomTimer = AbomTimer - 10
+	else
+		timerAbom:Start(AbomTimer)
+		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -63,10 +76,13 @@ function mod:OnCombatStart(delay)
 	end
 	timerNextPortal:Start()
 	warnPortalSoon:Schedule(41)
-	self:ScheduleMethod(46.5, "Portals")
+	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 	BlazingSkeletonTimer = 60
+	AbomTimer = 60
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
+	self:ScheduleMethod(25-delay, "StartAbomTimer")
 	timerBlazingSkeleton:Start(-delay)
+	timerAbom:Start(-delay)
 	table.wipe(GutSprayTargets)
 end
 
@@ -80,7 +96,7 @@ function mod:Portals()
 	warnPortalSoon:Schedule(41)
 	timerNextPortal:Start()
 	self:UnscheduleMethod("Portals")
-	self:ScheduleMethod(46.5, "Portals")
+	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 end
 --[[
 function mod:SPELL_CAST_START(args)
