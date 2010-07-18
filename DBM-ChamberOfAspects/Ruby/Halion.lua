@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39863)--40141 (twilight form)
-mod:SetMinSyncRevision(4351)
+mod:SetMinSyncRevision(4352)
 mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
