@@ -177,10 +177,12 @@ function mod:SPELL_DAMAGE(args)
 	elseif args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
 			self:SendSync("PhysicalAggro")--We do now.
+			physicalAggro = true
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
 			self:SendSync("twilightAggro")--We do now.
+			twilightAggro = true
 		end
 	end
 end
@@ -189,10 +191,12 @@ function mod:SPELL_MISSED(args)
 	if args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
 			self:SendSync("PhysicalAggro")--We do now.
+			physicalAggro = true
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
 			self:SendSync("twilightAggro")--We do now.
+			twilightAggro = true
 		end
 	end
 end
@@ -201,10 +205,12 @@ function mod:SWING_DAMAGE(args)
 	if args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
 			self:SendSync("PhysicalAggro")--We do now.
+			physicalAggro = true
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
 			self:SendSync("twilightAggro")--We do now.
+			twilightAggro = true
 		end
 	end
 end
@@ -213,10 +219,12 @@ function mod:SWING_MISSED(args)
 	if args:GetDestCreatureID() == 39863 then
 		if not physicalAggro and GetTime() - phase2Started > 10 then --We don't have phase 3 aggro on him yet.
 			self:SendSync("PhysicalAggro")--We do now.
+			physicalAggro = true
 		end
 	elseif args:GetDestCreatureID() == 40141 then
 		if not twilightAggro then --We don't have aggro on him yet.
 			self:SendSync("twilightAggro")--We do now.
+			twilightAggro = true
 		end
 	end
 end
