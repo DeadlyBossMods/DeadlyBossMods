@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
 	"CHAT_MSG_MONSTER_YELL",
---	"CHAT_MSG_RAID_BOSS_WHISPER",
+	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"SWING_DAMAGE",
 	"SWING_MISSED"
 )
@@ -334,9 +334,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, 7, 5)
 		end
-		if args:IsPlayer() then
-			specWarnNecroticPlague:Show()
-		end
 	elseif args:IsSpellID(69409, 73797, 73798, 73799) then -- Soul reaper (MT debuff)
 		warnSoulreaper:Show(args.destName)
 		specwarnSoulreaper:Show(args.destName)
@@ -537,11 +534,14 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
---[[function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find(L.PlagueWhisper) and self:IsInCombat() then
-		self:SendSync("PlagueOn", UnitName("player"))
+		if args:IsPlayer() then
+			specWarnNecroticPlague:Show()
+		end
+--		self:SendSync("PlagueOn", UnitName("player"))
 	end
-end--]]
+end
 
 function mod:SWING_DAMAGE(args)
 	if args:GetSrcCreatureID() == 36597 then--Lich king Tank
