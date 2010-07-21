@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36678)
 mod:RegisterCombat("yell", L.YellPull)
 mod:SetMinSyncRevision(3860)
-mod:SetUsedIcons(1, 2, 6, 7, 8)
+mod:SetUsedIcons(5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -250,7 +250,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(72855, 72856, 70911) then	 -- Unbound Plague
 		warnUnboundPlague:Show(args.destName)
 		if self.Options.UnboundPlagueIcon then
-			self:SetIcon(args.destName, 2, 20)
+			self:SetIcon(args.destName, 5, 20)
 		end
 		if args:IsPlayer() then
 			specWarnUnboundPlague:Show()
