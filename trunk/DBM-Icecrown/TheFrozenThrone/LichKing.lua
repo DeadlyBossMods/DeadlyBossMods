@@ -95,7 +95,6 @@ mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("ValkyrIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
-mod:AddBoolOption("YellOnValk", false, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
@@ -420,9 +419,6 @@ do
 					valkyrTargets[i] = true          -- this person has been announced
 					if UnitName("raid"..i) == UnitName("player") then
 						specWarnYouAreValkd:Show()
-						if mod.Options.YellOnValk then
-							SendChatMessage(L.YellValk, "SAY")
-						end
 						if mod:IsHealer() then
 							if isPAL then
 								mod:SendSync("PALGrabbed", UnitName("player"))
