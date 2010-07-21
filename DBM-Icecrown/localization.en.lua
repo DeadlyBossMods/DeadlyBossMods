@@ -528,6 +528,7 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
+	HarvestSoulIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74327),
 	ValkyrIcon				= "Set icons on Valkyrs",
 	DefileArrow				= "Show DBM arrow when $spell:72762 is near you",
 	TrapArrow				= "Show DBM arrow when $spell:73539 is near you",
