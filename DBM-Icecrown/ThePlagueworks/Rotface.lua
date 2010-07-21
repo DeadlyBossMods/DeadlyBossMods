@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36627)
-mod:SetUsedIcons(6, 7)
+mod:SetUsedIcons(7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -62,7 +62,7 @@ end
 function mod:OnCombatStart(delay)
 	timerWallSlime:Start(25-delay)
 	self:ScheduleMethod(25-delay, "WallSlime")
-	InfectionIcon = 7
+	InfectionIcon = 8
 	spamOoze = 0
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerVileGasCD:Start(22-delay)
@@ -122,10 +122,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.InfectionIcon then
 			self:SetIcon(args.destName, InfectionIcon, 12)
-			if InfectionIcon == 7 then	-- After ~3mins there is a chance 2 ppl will have the debuff, so we are alternating between 2 icons
-				InfectionIcon = 6
-			else
+			if InfectionIcon == 8 then	-- After ~3mins there is a chance 2 ppl will have the debuff, so we are alternating between 2 icons
 				InfectionIcon = 7
+			else
+				InfectionIcon = 8
 			end
 		end
 	elseif args:IsSpellID(72272, 72273) and args:IsDestTypePlayer() then	-- Vile Gas(Heroic Rotface only, 25 man spellid the same as 10?)

@@ -5,7 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("combat")
 mod:SetMinSyncRevision(4362)
-mod:SetUsedIcons(2, 3, 4, 6, 7, 8)
+mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
@@ -93,6 +93,7 @@ mod:AddBoolOption("NecroticPlagueIcon")
 mod:AddBoolOption("RagingSpiritIcon")
 mod:AddBoolOption("TrapIcon")
 mod:AddBoolOption("ValkyrIcon")
+mod:AddBoolOption("HarvestSoulIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
@@ -180,7 +181,7 @@ end
 function mod:OldTankTrap()
 	warnTrapCast:Show(LKTank)
 	if self.Options.TrapIcon then
-		self:SetIcon(LKTank, 6, 10)
+		self:SetIcon(LKTank, 8, 10)
 	end
 	if LKTank == UnitName("player") then
 		specWarnTrap:Show()
@@ -213,7 +214,7 @@ function mod:OldTrapTarget()
 		self:UnscheduleMethod("OldTankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
 		warnTrapCast:Show(targetname)
 		if self.Options.TrapIcon then
-			self:SetIcon(targetname, 6, 10)
+			self:SetIcon(targetname, 8, 10)
 		end
 		if targetname == UnitName("player") then
 			specWarnTrap:Show()
@@ -331,7 +332,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerNecroticPlagueCleanse:Start()
 		lastPlagueCast = GetTime()
 		if self.Options.NecroticPlagueIcon then
-			self:SetIcon(args.destName, 7, 5)
+			self:SetIcon(args.destName, 5, 5)
 		end
 	elseif args:IsSpellID(69409, 73797, 73798, 73799) then -- Soul reaper (MT debuff)
 		warnSoulreaper:Show(args.destName)
@@ -352,7 +353,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerRagingSpiritCD:Start(17)
 		end
 		if self.Options.RagingSpiritIcon then
-			self:SetIcon(args.destName, 8, 5)
+			self:SetIcon(args.destName, 7, 5)
 		end
 	elseif args:IsSpellID(68980, 74325, 74326, 74327) then -- Harvest Soul
 		warnHarvestSoul:Show(args.destName)
@@ -360,6 +361,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerHarvestSoulCD:Start()
 		if args:IsPlayer() then
 			specWarnHarvestSoul:Show()
+		end
+		if self.Options.HarvestSoulIcon then
+			self:SetIcon(args.destName, 5, 6)
 		end
 	elseif args:IsSpellID(73654, 74295, 74296, 74297) then -- Harvest Souls (Heroic)
 		specWarnHarvestSouls:Show()
