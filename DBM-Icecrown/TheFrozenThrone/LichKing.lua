@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("combat")
-mod:SetMinSyncRevision(3913)
+mod:SetMinSyncRevision(4362)
 mod:SetUsedIcons(2, 3, 4, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_WHISPER",
+--	"CHAT_MSG_RAID_BOSS_WHISPER",
 	"SWING_DAMAGE",
 	"SWING_MISSED"
 )
@@ -32,7 +32,7 @@ local warnShamblingHorror	= mod:NewSpellAnnounce(70372, 3) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358, 2) --Phase 1 Add
 local warnShamblingEnrage	= mod:NewTargetAnnounce(72143, 3, nil, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage()) --Phase 1 Add Ability
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912, 4) --Phase 1+ Ability
-local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
+--local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779, 3, nil, mod:IsHealer()) --Phase 1 & 2 Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
 local ValkyrWarning			= mod:NewAnnounce("ValkyrWarning", 3, 71844)--Phase 2 Ability
@@ -537,11 +537,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
+--[[function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find(L.PlagueWhisper) and self:IsInCombat() then
 		self:SendSync("PlagueOn", UnitName("player"))
 	end
-end
+end--]]
 
 function mod:SWING_DAMAGE(args)
 	if args:GetSrcCreatureID() == 36597 then--Lich king Tank
@@ -556,18 +556,7 @@ function mod:SWING_MISSED(args)
 end
 
 function mod:OnSync(msg, target)
-	if msg == "PlagueOn" and self:IsInCombat() then
-		if GetTime() - lastPlagueCast > 1 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
-			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
-			timerNecroticPlagueCleanse:Start()
-			if target == UnitName("player") then
-				specWarnNecroticPlague:Show()
-			end 
-			if self.Options.NecroticPlagueIcon then
-				self:SetIcon(target, 7, 5)
-			end
-		end
-	elseif msg == "PALGrabbed" then
+	if msg == "PALGrabbed" then
 		if self.Options.specWarnHealerGrabbed then
 			specWarnPALGrabbed:Show(target)
 		end
@@ -633,5 +622,13 @@ function mod:OnSync(msg, target)
 				end
 			end
 		end
+	--[[elseif msg == "PlagueOn" and self:IsInCombat() then
+		if GetTime() - lastPlagueCast > 1 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
+			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
+			timerNecroticPlagueCleanse:Start()
+			if self.Options.NecroticPlagueIcon then
+				self:SetIcon(target, 7, 5)
+			end
+		end--]]
 	end
 end
