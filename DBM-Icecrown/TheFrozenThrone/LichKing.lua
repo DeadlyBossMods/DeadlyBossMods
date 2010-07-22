@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("combat")
-mod:SetMinSyncRevision(4362)
+mod:SetMinSyncRevision(3913)
 mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -32,7 +32,7 @@ local warnShamblingHorror	= mod:NewSpellAnnounce(70372, 3) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358, 2) --Phase 1 Add
 local warnShamblingEnrage	= mod:NewTargetAnnounce(72143, 3, nil, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage()) --Phase 1 Add Ability
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912, 4) --Phase 1+ Ability
---local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
+local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779, 3, nil, mod:IsHealer()) --Phase 1 & 2 Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
 local ValkyrWarning			= mod:NewAnnounce("ValkyrWarning", 3, 71844)--Phase 2 Ability
@@ -331,6 +331,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerNecroticPlagueCD:Start()
 		timerNecroticPlagueCleanse:Start()
 		lastPlagueCast = GetTime()
+		if args:IsPlayer() then
+			specWarnNecroticPlague:Show()
+		end
 		if self.Options.NecroticPlagueIcon then
 			self:SetIcon(args.destName, 5, 5)
 		end
@@ -536,8 +539,9 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find(L.PlagueWhisper) and self:IsInCombat() then
-		specWarnNecroticPlague:Show()
---		self:SendSync("PlagueOn", UnitName("player"))
+		if GetTime() - lastPlagueCast > 1 then
+			self:SendSync("PlagueOn", UnitName("player"))
+		end
 	end
 end
 
@@ -596,7 +600,7 @@ function mod:OnSync(msg, target)
 		if not self.Options.BypassLatencyCheck then
 			warnTrapCast:Show(target)
 			if self.Options.TrapIcon then
-				self:SetIcon(target, 6, 10)
+				self:SetIcon(target, 8, 10)
 			end
 			if target == UnitName("player") then
 				specWarnTrap:Show()
@@ -620,13 +624,16 @@ function mod:OnSync(msg, target)
 				end
 			end
 		end
-	--[[elseif msg == "PlagueOn" and self:IsInCombat() then
+	elseif msg == "PlagueOn" and self:IsInCombat() then
 		if GetTime() - lastPlagueCast > 1 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
 			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
 			timerNecroticPlagueCleanse:Start()
+			if target == UnitName("player") then
+				specWarnNecroticPlague:Show()
+			end 
 			if self.Options.NecroticPlagueIcon then
-				self:SetIcon(target, 7, 5)
+				self:SetIcon(target, 5, 5)
 			end
-		end--]]
+		end
 	end
 end
