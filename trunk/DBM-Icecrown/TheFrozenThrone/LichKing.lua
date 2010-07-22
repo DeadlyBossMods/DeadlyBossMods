@@ -536,9 +536,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
 	if msg:find(L.PlagueWhisper) and self:IsInCombat() then
-		if args:IsPlayer() then
-			specWarnNecroticPlague:Show()
-		end
+		specWarnNecroticPlague:Show()
 --		self:SendSync("PlagueOn", UnitName("player"))
 	end
 end
