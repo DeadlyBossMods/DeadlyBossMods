@@ -557,6 +557,38 @@ function mod:SWING_MISSED(args)
 	end
 end
 
+function mod:OnSync(msg, victim)--Lets try two onsync handlers with a diff arg name to maybe work around the trap bug?
+	if msg == "TrapOn" then
+		if not self.Options.BypassLatencyCheck then
+			warnTrapCast:Show(victim)
+			if self.Options.TrapIcon then
+				self:SetIcon(player, 8, 10)
+			end
+			if victim == UnitName("player") then
+				specWarnTrap:Show()
+				if self.Options.YellOnTrap then
+					SendChatMessage(L.YellTrap, "SAY")
+				end
+			end
+			local uId = DBM:GetRaidUnitId(victim)
+			if uId ~= "none" then
+				local inRange = CheckInteractDistance(uId, 2)
+				local x, y = GetPlayerMapPosition(uId)
+				if x == 0 and y == 0 then
+					SetMapToCurrentZone()
+					x, y = GetPlayerMapPosition(uId)
+				end
+				if inRange then
+					specWarnTrapNear:Show()
+					if self.Options.TrapArrow then
+						DBM.Arrow:ShowRunAway(x, y, 10, 5)
+					end
+				end
+			end
+		end
+	end
+end
+
 function mod:OnSync(msg, target)
 	if msg == "PALGrabbed" then
 		if self.Options.specWarnHealerGrabbed then
@@ -592,34 +624,6 @@ function mod:OnSync(msg, target)
 --						if self.Options.DefileArrow then
 --							DBM.Arrow:ShowRunAway(x, y, 15, 5)
 --						end
-					end
-				end
-			end
-		end
-	elseif msg == "TrapOn" then
-		if not self.Options.BypassLatencyCheck then
-			warnTrapCast:Show(target)
-			if self.Options.TrapIcon then
-				self:SetIcon(target, 8, 10)
-			end
-			if target == UnitName("player") then
-				specWarnTrap:Show()
-				if self.Options.YellOnTrap then
-					SendChatMessage(L.YellTrap, "SAY")
-				end
-			end
-			local uId = DBM:GetRaidUnitId(target)
-			if uId ~= "none" then
-				local inRange = CheckInteractDistance(uId, 2)
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				if inRange then
-					specWarnTrapNear:Show()
-					if self.Options.TrapArrow then
-						DBM.Arrow:ShowRunAway(x, y, 10, 5)
 					end
 				end
 			end
