@@ -81,7 +81,7 @@ local timerSummonValkyr 	= mod:NewCDTimer(45, 71844)
 local timerVileSpirit 		= mod:NewNextTimer(30.5, 70498)
 local timerTrapCD		 	= mod:NewCDTimer(15.5, 73539)
 local timerRestoreSoul 		= mod:NewCastTimer(40, 73650)
-local timerRoleplay			= mod:NewTimer(160, "TimerRoleplay", 72350)
+local timerRoleplay			= mod:NewTimer(162, "TimerRoleplay", 72350)
 
 local berserkTimer			= mod:NewBerserkTimer(900)
 
@@ -426,20 +426,20 @@ do
 					valkyrTargets[i] = true          -- this person has been announced
 					if UnitName("raid"..i) == UnitName("player") then
 						specWarnYouAreValkd:Show()
-						if mod:IsHealer() then
+						if mod:IsHealer() then--Is player that's grabbed a healer
 							if isPAL then
-								mod:SendSync("PALGrabbed", UnitName("player"))
+								mod:SendSync("PALGrabbed", UnitName("player"))--They are a holy paladin
 							elseif isPRI then
-								mod:SendSync("PRIGrabbed", UnitName("player"))
+								mod:SendSync("PRIGrabbed", UnitName("player"))--They are a disc/holy priest
 							end
 						end
 					end
 					if mod.Options.AnnounceValkGrabs and DBM:GetRaidRank() > 0 then
 						if mod.Options.ValkyrIcon then
-							SendChatMessage(L.ValkGrabbedIcon:format(grabIcon, UnitName("raid"..i)), "RAID")--Untested, not sure if the icon timing will line up since i grab icon from a different function.
+							SendChatMessage(L.ValkGrabbedIcon:format(grabIcon, UnitName("raid"..i)), "RAID")
 							grabIcon = grabIcon + 1
 						else
-							SendChatMessage(L.ValkGrabbed:format(UnitName("raid"..i)), "RAID")--Untested, not sure if the icon timing will line up since i grab icon from a different function.
+							SendChatMessage(L.ValkGrabbed:format(UnitName("raid"..i)), "RAID")
 						end
 					end
 				end
@@ -532,14 +532,14 @@ function mod:NextPhase()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.LKPull or msg:find(L.LKPull) then
+	if msg:find(L.LKPull) then
 		timerCombatStart:Start()
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)
-	if msg:find(L.PlagueWhisper) and self:IsInCombat() then
-		if GetTime() - lastPlagueCast > 1 then
+function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)--We get this whisper for all plagues, ones cast by lich king and ones from dispel jumps.
+	if msg:find(L.PlagueWhisper) and self:IsInCombat() then--We do a combat check with lich king since rotface uses the same whisper message and we only want this to work on lich king.
+		if GetTime() - lastPlagueCast > 1 then--We don't want to send sync if it came from a spell cast though, so we ignore whisper unless it was at least 1 second after a cast.
 			self:SendSync("PlagueOn", UnitName("player"))
 		end
 	end
@@ -557,7 +557,7 @@ function mod:SWING_MISSED(args)
 	end
 end
 
-function mod:OnSync(msg, victim)--Lets try two onsync handlers with a diff arg name to maybe work around the trap bug?
+function mod:OnSync(msg, victim)--Lets try two onsync handlers with a diff arg name to maybe work around the trap bug if 2 syncs sent at same time
 	if msg == "TrapOn" then
 		if not self.Options.BypassLatencyCheck then
 			warnTrapCast:Show(victim)
@@ -590,11 +590,11 @@ function mod:OnSync(msg, victim)--Lets try two onsync handlers with a diff arg n
 end
 
 function mod:OnSync(msg, target)
-	if msg == "PALGrabbed" then
+	if msg == "PALGrabbed" then--Does this function fail to alert second healer if 2 different paladins are grabbed within < 2.5 seconds?
 		if self.Options.specWarnHealerGrabbed then
 			specWarnPALGrabbed:Show(target)
 		end
-	elseif msg == "PRIGrabbed" then
+	elseif msg == "PRIGrabbed" then--Does this function fail to alert second healer if 2 different priests are grabbed within < 2.5 seconds?
 		if self.Options.specWarnHealerGrabbed then
 			specWarnPRIGrabbed:Show(target)
 		end
@@ -629,8 +629,8 @@ function mod:OnSync(msg, target)
 			end
 		end
 	elseif msg == "PlagueOn" and self:IsInCombat() then
-		if GetTime() - lastPlagueCast > 1 then --Dirty hack to prevent function from doing anything for lich kings direct casts of necrotic plague.
-			warnNecroticPlagueJump:Show(target)	--We only want this function to work when it jumps from target to target.
+		if GetTime() - lastPlagueCast > 1 then --We also do same 1 second check here
+			warnNecroticPlagueJump:Show(target)
 			timerNecroticPlagueCleanse:Start()
 			if target == UnitName("player") then
 				specWarnNecroticPlague:Show()
