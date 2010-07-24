@@ -418,14 +418,16 @@ L:SetWarningLocalization{
 
 L:SetTimerLocalization{
 	timerPortalsOpen			= "차원문 열림",
-	TimerBlazingSkeleton		= "타오르는 해골"
+	TimerBlazingSkeleton		= "다음 타오르는 해골",
+	timerAbom					= "Next Abomination?"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "타오르는 해골에게 공격대 징표 설정(해골)",
 	warnPortalOpen				= "$spell:72483 열림 경고 보기",	
 	timerPortalsOpen			= "악몽의 차원문이 열릴 때 타이머 보기",
-	TimerBlazingSkeleton		= "타오르는 해골 다음 생성 타이머 보기",	
+	TimerBlazingSkeleton		= "타오르는 해골 다음 생성 타이머 보기",
+	timerAbom					= "Show timer for next Gluttonous Abomination spawn (Experimental)",	
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "알 수 없음")
 }
 
@@ -522,14 +524,15 @@ L:SetOptionLocalization{
 	WarnPhase2Soon				= "2 단계 전환 사전 경고 보기(73% 이하)",
 	WarnPhase3Soon				= "3 단계 전환 사전 경고 보기(43% 이하)",
 	ValkyrWarning				= "발키리에게 붙잡힌 사람 알리기",
-	specWarnYouAreValkd			= "발키리에게 붙잡혔을 때 특수 경고 보기",	
+	specWarnYouAreValkd			= "발키리에게 붙잡혔을 때 특수 경고 보기",
+	specWarnHealerGrabbed		= "성기사 또는 사제(힐러)가 발키리에게 붙잡히게 될 경우 특수 경고 보기\n(힐러가 DBM을 사용할 경우)",	
 	specWarnDefileCast			= "당신에게 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnDefileNear			= "당신 주변에 $spell:72762이 시전된 경우 특수 경고 보기",
 	specWarnTrapNear			= "주변에 $spell:73539을 하면 특수 경고 보기",	
 	YellOnDefile				= "$spell:72762의 대상이 됐을 때 말하기",
 	YellOnTrap					= "$spell:73539 말하기",
-	YellOnValk					= "$spell:69037 외치기",	
 	DefileIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
+	HarvestSoulIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74327),	
 	NecroticPlagueIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
