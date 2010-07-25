@@ -13,7 +13,6 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
-	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"SPELL_PERIODIC_DAMAGE"
 )
@@ -21,7 +20,7 @@ mod:RegisterEvents(
 local warnUnholyPower			= mod:NewSpellAnnounce(69629, 3)
 local warnForcefulSmash			= mod:NewSpellAnnounce(69627, 2)
 local warnOverlordsBrand		= mod:NewTargetAnnounce(69172, 4)
-local warnHoarfrost				= mod:NewSpellAnnounce(69246, 2)
+local warnHoarfrost				= mod:NewTargetAnnounce(69246, 2)
 
 local specWarnHoarfrost			= mod:NewSpecialWarning("specWarnHoarfrost")
 local specWarnHoarfrostNear		= mod:NewSpecialWarning("specWarnHoarfrostNear")
@@ -77,6 +76,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	local target = msg and msg:match(L.HoarfrostTarget)
 	if target then
+		warnHoarfrost:Show(target)
 		if target == UnitName("player") then
 			specWarnHoarfrost:Show()
 		elseif target then
