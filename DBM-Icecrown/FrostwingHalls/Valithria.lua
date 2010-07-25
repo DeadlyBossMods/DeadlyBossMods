@@ -63,7 +63,7 @@ function mod:StartAbomTimer()
 	if AbomTimer >= 60 then--Keep it from dropping below 50
 		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-		AbomTimer = AbomTimer - 10
+		AbomTimer = AbomTimer - 5
 	else
 		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
