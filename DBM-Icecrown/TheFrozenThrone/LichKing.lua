@@ -557,20 +557,28 @@ function mod:SWING_MISSED(args)
 	end
 end
 
-function mod:OnSync(msg, victim)--Lets try two onsync handlers with a diff arg name to maybe work around the trap bug if 2 syncs sent at same time
-	if msg == "TrapOn" then
+function mod:OnSync(msg, target)
+	if msg == "PALGrabbed" then--Does this function fail to alert second healer if 2 different paladins are grabbed within < 2.5 seconds?
+		if self.Options.specWarnHealerGrabbed then
+			specWarnPALGrabbed:Show(target)
+		end
+	elseif msg == "PRIGrabbed" then--Does this function fail to alert second healer if 2 different priests are grabbed within < 2.5 seconds?
+		if self.Options.specWarnHealerGrabbed then
+			specWarnPRIGrabbed:Show(target)
+		end
+	elseif msg == "TrapOn" then
 		if not self.Options.BypassLatencyCheck then
-			warnTrapCast:Show(victim)
+			warnTrapCast:Show(target)
 			if self.Options.TrapIcon then
 				self:SetIcon(player, 8, 10)
 			end
-			if victim == UnitName("player") then
+			if target == UnitName("player") then
 				specWarnTrap:Show()
 				if self.Options.YellOnTrap then
 					SendChatMessage(L.YellTrap, "SAY")
 				end
 			end
-			local uId = DBM:GetRaidUnitId(victim)
+			local uId = DBM:GetRaidUnitId(target)
 			if uId ~= "none" then
 				local inRange = CheckInteractDistance(uId, 2)
 				local x, y = GetPlayerMapPosition(uId)
@@ -585,18 +593,6 @@ function mod:OnSync(msg, victim)--Lets try two onsync handlers with a diff arg n
 					end
 				end
 			end
-		end
-	end
-end
-
-function mod:OnSync(msg, target)
-	if msg == "PALGrabbed" then--Does this function fail to alert second healer if 2 different paladins are grabbed within < 2.5 seconds?
-		if self.Options.specWarnHealerGrabbed then
-			specWarnPALGrabbed:Show(target)
-		end
-	elseif msg == "PRIGrabbed" then--Does this function fail to alert second healer if 2 different priests are grabbed within < 2.5 seconds?
-		if self.Options.specWarnHealerGrabbed then
-			specWarnPRIGrabbed:Show(target)
 		end
 	elseif msg == "DefileOn" then
 		if not self.Options.BypassLatencyCheck then
