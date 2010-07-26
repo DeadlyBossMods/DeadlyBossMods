@@ -366,7 +366,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 			specWarnHarvestSoul:Show()
 		end
 		if self.Options.HarvestSoulIcon then
-			self:SetIcon(args.destName, 5, 6)
+			self:SetIcon(args.destName, 6, 6)
 		end
 	elseif args:IsSpellID(73654, 74295, 74296, 74297) then -- Harvest Souls (Heroic)
 		specWarnHarvestSouls:Show()
@@ -532,7 +532,7 @@ function mod:NextPhase()
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:find(L.LKPull) then
+	if msg == L.LKPull or msg:find(L.LKPull) then
 		timerCombatStart:Start()
 	end
 end
