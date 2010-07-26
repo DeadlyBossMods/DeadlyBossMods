@@ -15,9 +15,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
-	"SPELL_MISSED",
-	"SWING_DAMAGE",
-	"SWING_MISSED",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_HEALTH"
@@ -61,13 +58,9 @@ mod:AddBoolOption("SetIconOnConsumption", true)
 local warned_preP2 = false
 local warned_preP3 = false
 local phase2Started = 0
-local physicalAggro = false
-local twilightAggro = false
 local lastflame = 0
 
 function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
-	physicalAggro = true
-	twilightAggro = false
 	warned_preP2 = false
 	warned_preP3 = false
 	phase2Started = 0
@@ -90,23 +83,19 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)--We use spell cast success for debuff timers in case it gets resisted by a player we still get CD timer for next one
 	if args:IsSpellID(74792) then
-		if not self.Options.AnnounceAlternatePhase then
-			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-				timerShadowConsumptionCD:Start(20)
-			else
-				timerShadowConsumptionCD:Start()
-			end
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerShadowConsumptionCD:Start(20)
+		else
+			timerShadowConsumptionCD:Start()
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowCD")
 		end
 	elseif args:IsSpellID(74562) then
-		if not self.Options.AnnounceAlternatePhase then
-			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-				timerFieryConsumptionCD:Start(20)
-			else
-				timerFieryConsumptionCD:Start()
-			end
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerFieryConsumptionCD:Start(20)
+		else
+			timerFieryConsumptionCD:Start()
 		end
 		if mod:LatencyCheck() then
 			self:SendSync("FieryCD")
@@ -170,66 +159,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---Begin Phase aggro detection
 function mod:SPELL_DAMAGE(args)
 	if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then
 		specWarnMeteorStrike:Show() --Standing in meteor, not part of aggro detection.
-		lastflame = time()
-	elseif args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
-			physicalAggro = true
-			self:SendSync("PhysicalAggro")--We do now.
-		end
-	elseif args:GetDestCreatureID() == 40141 then
-		if not twilightAggro then --We don't have aggro on him yet.
-			twilightAggro = true
-			self:SendSync("twilightAggro")--We do now.
-		end
 	end
 end
-
-function mod:SPELL_MISSED(args)
-	if args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
-			physicalAggro = true
-			self:SendSync("PhysicalAggro")--We do now.
-		end
-	elseif args:GetDestCreatureID() == 40141 then
-		if not twilightAggro then --We don't have aggro on him yet.
-			twilightAggro = true
-			self:SendSync("twilightAggro")--We do now.
-		end
-	end
-end
-
-function mod:SWING_DAMAGE(args)
-	if args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
-			physicalAggro = true
-			self:SendSync("PhysicalAggro")--We do now.
-		end
-	elseif args:GetDestCreatureID() == 40141 then
-		if not twilightAggro then --We don't have aggro on him yet.
-			twilightAggro = true
-			self:SendSync("twilightAggro")--We do now.
-		end
-	end
-end
-
-function mod:SWING_MISSED(args)
-	if args:GetDestCreatureID() == 39863 then
-		if not physicalAggro and GetTime() - phase2Started > 15 then --We don't have phase 3 aggro on him yet.
-			physicalAggro = true
-			self:SendSync("PhysicalAggro")--We do now.
-		end
-	elseif args:GetDestCreatureID() == 40141 then
-		if not twilightAggro then --We don't have aggro on him yet.
-			twilightAggro = true
-			self:SendSync("twilightAggro")--We do now.
-		end
-	end
-end
---End Phase aggro detection
 
 function mod:UNIT_HEALTH(uId)
 	if not warned_preP2 and self:GetUnitCreatureId(uId) == 39863 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
@@ -249,15 +183,14 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerFieryConsumptionCD:Cancel()
 		warnPhase2:Show()
 		timerShadowBreathCD:Start(25)
+		timerShadowConsumptionCD:Start(20)--not exact, 15 seconds from tank aggro, but easier to add 5 seconds to it as a estimate timer than trying to detect this
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
 			timerTwilightCutterCD:Start(30)
 		else
 			timerTwilightCutterCD:Start(35)
 		end
-		physicalAggro = false
 	elseif msg:find(L.Phase3) then
-		warnPhase3:Show()
-		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
+		self:SendSync("Phase3")
 	elseif msg:find(L.MeteorCast) then--There is no CLEU cast trigger for meteor, only yell
 		if not self.Options.AnnounceAlternatePhase then
 			warningMeteor:Show()
@@ -329,11 +262,9 @@ function mod:OnSync(msg, target)
 				timerFieryConsumptionCD:Start()
 			end
 		end
-	elseif msg == "PhysicalAggro" then
-		physicalAggro = true
-		timerFieryConsumptionCD:Start(15)--Timer doesn't start again until aggroed again in phase 3. Timer value itself may need adjusting now that it's starting in right place
-	elseif msg == "twilightAggro" then
-		twilightAggro = true
-		timerShadowConsumptionCD:Start(15)--Timer doesn't start until actual twilight form is aggroed. Timer value itself may need adjusting now that it's starting in right place
+	elseif msg == "Phase3" then
+		warnPhase3:Show()
+		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
+		timerFieryConsumptionCD:Start(20)--not exact, 15 seconds from tank aggro, but easier to add 5 seconds to it as a estimate timer than trying to detect this
 	end
 end
