@@ -2217,7 +2217,7 @@ do
 	local testSpecialWarning
 	function DBM:DemoMode()
 		if not testMod then
-			testMod = DBM:NewMod("TestMod")
+			testMod = DBM:NewMod("TestMod", "DBM-PvP")	-- temp fix, as it requires a modId
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
