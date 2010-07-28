@@ -275,7 +275,7 @@ do
 	
 	local function replaceSpellLinks(id)
 		local spellId = tonumber(id)
-		local spellName = GetSpellInfo(spellId)
+		local spellName = GetSpellInfo(spellId) or "unknown"
 		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
 	end
 	
