@@ -192,7 +192,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			burnIcon = burnIcon - 1
 		end
 		mod:ScheduleMethod(0.2, "warnBile")
-		updateHealthFrame(2) 
 	elseif args:IsSpellID(66758) then
 		timerStaggeredDaze:Start()
 	elseif args:IsSpellID(66636) then						-- Rising Anger
