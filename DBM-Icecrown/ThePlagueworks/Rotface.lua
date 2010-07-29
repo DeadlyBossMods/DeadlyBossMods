@@ -75,6 +75,12 @@ function mod:OnCombatEnd()
 	end
 end
 
+function mod:SlimeTank()
+	local target = self:GetThreatTarget(36897)
+	if not target then return end
+	self:SendSync("OozeTank", target)
+end
+
 function mod:WallSlime()
 	if self:IsInCombat() then
 		timerWallSlime:Start()
@@ -156,29 +162,41 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(69761, 71212, 73026, 73027) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and (UnitHealthMax(args.sourceName) > 50000 or select(2, UnitClass(args.sourceName)) == "HUNTER") then
-		if not args:IsPlayer() then
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() and not args:IsSpellID(53189, 53190, 53194, 53195) then--Any spell damage except for starfall (ranks 3 and 4)
+		self:ScheduleMethod(1, "SlimeTank")
+--[[		if args.sourceName ~= UnitName("player") then
 			if self.Options.TankArrow then
-				DBM.Arrow:ShowRunTo(target, 0, 0)
+				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
 			end
-		end
+		end]]--
 	end
 end
 
 function mod:SWING_DAMAGE(args)
 	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
 		specWarnLittleOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and (UnitHealthMax(args.sourceName) > 50000 or select(2, UnitClass(args.sourceName)) == "HUNTER") then
-		if not args:IsPlayer() then
+	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() then
+		self:ScheduleMethod(1, "SlimeTank")
+--[[		if args.sourceName ~= UnitName("player") then
 			if self.Options.TankArrow then
-				DBM.Arrow:ShowRunTo(target, 0, 0)
+				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
 			end
-		end
+		end]]--
 	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.YellSlimePipes1 or msg:find(L.YellSlimePipes1)) or (msg == L.YellSlimePipes2 or msg:find(L.YellSlimePipes2)) then
 		self:WallSlime()
+	end
+end
+
+function mod:OnSync(msg, target)
+	if msg == "OozeTank" then
+		if target ~= UnitName("player") then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(target, 0, 0)
+			end
+		end
 	end
 end
