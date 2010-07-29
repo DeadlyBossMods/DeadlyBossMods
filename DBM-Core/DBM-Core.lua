@@ -2433,6 +2433,19 @@ function bossModPrototype:GetBossTarget(cid)
 	end
 end
 
+function bossModPrototype:GetThreadTarget(cid)
+	cid = cid or self.creatureId
+	for i = 1, GetNumRaidMembers() do
+		if self:GetUnitCreatureId("raid"..i.."target") == cid then
+			for i = 1, GetNumRaidMembers() do
+				if UnitDetailedThreatSituation("raid"..i, "raid"..i.."target") == 1 then
+					return "raid"..i
+				end
+			end
+		end
+	end
+end
+
 function bossModPrototype:Stop(cid)
 	for i, v in ipairs(self.timers) do
 		v:Stop()
