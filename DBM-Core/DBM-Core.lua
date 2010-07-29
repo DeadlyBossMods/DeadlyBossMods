@@ -2433,13 +2433,13 @@ function bossModPrototype:GetBossTarget(cid)
 	end
 end
 
-function bossModPrototype:GetThreadTarget(cid)
+function bossModPrototype:GetThreatTarget(cid)
 	cid = cid or self.creatureId
 	for i = 1, GetNumRaidMembers() do
 		if self:GetUnitCreatureId("raid"..i.."target") == cid then
-			for i = 1, GetNumRaidMembers() do
-				if UnitDetailedThreatSituation("raid"..i, "raid"..i.."target") == 1 then
-					return "raid"..i
+			for x = 1, GetNumRaidMembers() do
+				if UnitDetailedThreatSituation("raid"..x, "raid"..i.."target") == 1 then
+					return "raid"..x
 				end
 			end
 		end
