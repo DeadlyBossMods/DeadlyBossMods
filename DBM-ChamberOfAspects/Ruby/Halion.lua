@@ -57,10 +57,27 @@ mod:AddBoolOption("SetIconOnConsumption", true)
 
 local warned_preP2 = false
 local warned_preP3 = false
-local phase2Started = 0
 local lastflame = 0
+local phases = {}
+
+local function updateHealthFrame(phase)
+	if phases[phase] then
+		return
+	end
+	phases[phase] = true
+	if phase == 1 then
+		DBM.BossHealth:Clear()
+		DBM.BossHealth:AddBoss(39863, L.NormalHalion)
+	elseif phase == 2 then
+		DBM.BossHealth:Clear()
+		DBM.BossHealth:AddBoss(40141, L.TwilightHalion)
+	elseif phase == 3 then
+		DBM.BossHealth:AddBoss(39863, L.NormalHalion)--Can't think of a better way to do it without unit aura scanning for dusk shroud (since it doesn't use spell_aura_applied)
+	end
+end
 
 function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
+	table.wipe(phases)
 	warned_preP2 = false
 	warned_preP3 = false
 	phase2Started = 0
@@ -69,6 +86,7 @@ function mod:OnCombatStart(delay)--These may still need retuning too, log i had 
 	timerMeteorCD:Start(20-delay)
 	timerFieryConsumptionCD:Start(15-delay)
 	timerFieryBreathCD:Start(10-delay)
+	updateHealthFrame(1)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -162,6 +180,7 @@ end
 function mod:SPELL_DAMAGE(args)
 	if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then
 		specWarnMeteorStrike:Show() --Standing in meteor, not part of aggro detection.
+		lastflame = GetTime()
 	end
 end
 
@@ -177,7 +196,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase2 or msg:find(L.Phase2) then
-		phase2Started = GetTime()
+		updateHealthFrame(2)
 		timerFieryBreathCD:Cancel()
 		timerMeteorCD:Cancel()
 		timerFieryConsumptionCD:Cancel()
@@ -263,8 +282,9 @@ function mod:OnSync(msg, target)
 			end
 		end
 	elseif msg == "Phase3" then
+		updateHealthFrame(3)
 		warnPhase3:Show()
-		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
+		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it varies as well.
 		timerFieryConsumptionCD:Start(20)--not exact, 15 seconds from tank aggro, but easier to add 5 seconds to it as a estimate timer than trying to detect this
 	end
 end
