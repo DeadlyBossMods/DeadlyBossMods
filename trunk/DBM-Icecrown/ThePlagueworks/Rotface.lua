@@ -17,8 +17,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local isKiter = select(2, UnitClass("player")) == "HUNTER"
-	    		 or mod:IsTank()
+local isKiter = select(2, UnitClass(sourceName)) == "HUNTER"
+	    		 or UnitHealthMax(sourceName) > 50000
 
 local InfectionIcon	-- alternating between 2 icons (2 debuffs can be up at the same time in 25man at least)
 
@@ -34,7 +34,7 @@ local specWarnMutatedInfection	= mod:NewSpecialWarningYou(71224)
 local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
 local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
 local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
-local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, false)
+local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, not mod:IsTank())
 local specWarnLittleOoze		= mod:NewSpecialWarning("specWarnLittleOoze")
 local specWarnVileGas			= mod:NewSpecialWarningYou(72272)
 
@@ -159,9 +159,11 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(69761, 71212, 73026, 73027) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() then
-		if isKiter then --Tank/Hunter attacking big ooze
-			self:SendSync("OozeKiter", UnitName("player"))
+	elseif args:GetDestCreatureID() == 36899 and isKiter then
+		if not args:IsPlayer() then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(target, 0, 0)
+			end
 		end
 	end
 end
@@ -169,23 +171,17 @@ end
 function mod:SWING_DAMAGE(args)
 	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
 		specWarnLittleOoze:Show()
-	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() then
-		if isKiter then --Tank/Hunter attacking big ooze
-			self:SendSync("OozeKiter", UnitName("player"))
+	elseif args:GetDestCreatureID() == 36899 and isKiter then
+		if not args:IsPlayer() then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(target, 0, 0)
+			end
 		end
 	end
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:find(L.YellSlimePipes1) or msg:find(L.YellSlimePipes2) then
+	if (msg == L.YellSlimePipes1 or msg:find(L.YellSlimePipes1)) or (msg == L.YellSlimePipes2 or msg:find(L.YellSlimePipes2)) then
 		self:WallSlime()
-	end
-end
-
-function mod:OnSync(msg, target)
-	if msg == "OozeKiter" then
-		if self.Options.TankArrow then
-			DBM.Arrow:ShowRunTo(target, 0, 0)
-		end
 	end
 end

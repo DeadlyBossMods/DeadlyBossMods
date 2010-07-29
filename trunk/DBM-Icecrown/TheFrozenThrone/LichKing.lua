@@ -63,7 +63,7 @@ local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
 local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear") --Heroic Ability
 local specWarnHarvestSouls	= mod:NewSpecialWarningSpell(74297) --Heroic Ability
 
-local timerCombatStart		= mod:NewTimer(54.5, "TimerCombatStart", 2457)
+local timerCombatStart		= mod:NewTimer(53.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition", 72262)
 local timerSoulreaper	 	= mod:NewTargetTimer(5.1, 73797, nil, mod:IsTank() or mod:IsHealer())
 local timerSoulreaperCD	 	= mod:NewCDTimer(30.5, 73797, nil, mod:IsTank() or mod:IsHealer())
@@ -540,6 +540,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(msg)--We get this whisper for all plagues, ones cast by lich king and ones from dispel jumps.
 	if msg:find(L.PlagueWhisper) and self:IsInCombat() then--We do a combat check with lich king since rotface uses the same whisper message and we only want this to work on lich king.
 		if GetTime() - lastPlagueCast > 1 then--We don't want to send sync if it came from a spell cast though, so we ignore whisper unless it was at least 1 second after a cast.
+			specWarnNecroticPlague:Show()
 			self:SendSync("PlagueOn", UnitName("player"))
 		end
 	end
@@ -628,9 +629,6 @@ function mod:OnSync(msg, target)
 		if GetTime() - lastPlagueCast > 1 then --We also do same 1 second check here
 			warnNecroticPlagueJump:Show(target)
 			timerNecroticPlagueCleanse:Start()
-			if target == UnitName("player") then
-				specWarnNecroticPlague:Show()
-			end 
 			if self.Options.NecroticPlagueIcon then
 				self:SetIcon(target, 5, 5)
 			end
