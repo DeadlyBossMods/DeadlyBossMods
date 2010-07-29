@@ -247,7 +247,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:find(L.YellAirphase) then
+	if msg == L.YellAirphase or msg:find(L.YellAirphase) then
 		if self.Options.ClearIconsOnAirphase then
 			self:ClearIcons()
 		end
