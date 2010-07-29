@@ -181,7 +181,3 @@ function mod:SPELL_DAMAGE(args)
 		SendChatMessage(L.VoidZoneOn:format(args.destName), "RAID")
 	end	
 end
-
-
-
-

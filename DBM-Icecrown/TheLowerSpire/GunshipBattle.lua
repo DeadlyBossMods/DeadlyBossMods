@@ -109,7 +109,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if (msg:find(L.AddsAlliance) or msg:find(L.AddsHorde)) and self:IsInCombat() then
+	if ((msg == L.AddsAlliance or msg:find(L.AddsAlliance)) or (msg == L.AddsHorde or msg:find(L.AddsHorde))) and self:IsInCombat() then
 		self:Adds()
 	end
 end

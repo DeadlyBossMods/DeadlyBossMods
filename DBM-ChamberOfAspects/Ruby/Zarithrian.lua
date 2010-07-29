@@ -48,7 +48,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:match(L.SummonMinions) then
+	if msg == L.SummonMinions or msg:match(L.SummonMinions) then
 		warningFear:Show()
 		timerAddsCD:Start()
 	end
