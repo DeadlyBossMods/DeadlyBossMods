@@ -58,7 +58,16 @@ mod:AddBoolOption("SetIconOnConsumption", true)
 local warned_preP2 = false
 local warned_preP3 = false
 local lastflame = 0
+local lastshroud = 0
 local phases = {}
+
+function mod:LocationChecker()
+	if GetTime() - lastshroud < 6 then
+		DBM.BossHealth:RemoveBoss(39863)--you took damage from twilight realm recently so remove the physical boss from health frame.
+	else
+		DBM.BossHealth:RemoveBoss(40141)--you have not taken damage from twilight realm so remove twilight boss health bar.
+	end
+end
 
 local function updateHealthFrame(phase)
 	if phases[phase] then
@@ -72,7 +81,8 @@ local function updateHealthFrame(phase)
 		DBM.BossHealth:Clear()
 		DBM.BossHealth:AddBoss(40141, L.TwilightHalion)
 	elseif phase == 3 then
-		DBM.BossHealth:AddBoss(39863, L.NormalHalion)--Can't think of a better way to do it without unit aura scanning for dusk shroud (since it doesn't use spell_aura_applied)
+		DBM.BossHealth:AddBoss(39863, L.NormalHalion)--Add 1st bar back on. you have two bars for time being.
+		mod:ScheduleMethod(20, "LocationChecker")--we remove the extra bar in 20 seconds depending on where you are at when check is run.
 	end
 end
 
@@ -82,6 +92,7 @@ function mod:OnCombatStart(delay)--These may still need retuning too, log i had 
 	warned_preP3 = false
 	phase2Started = 0
 	lastflame = 0
+	lastshroud = 0
 	berserkTimer:Start(-delay)
 	timerMeteorCD:Start(20-delay)
 	timerFieryConsumptionCD:Start(15-delay)
@@ -178,9 +189,11 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and time() - lastflame > 2 then
-		specWarnMeteorStrike:Show() --Standing in meteor, not part of aggro detection.
+	if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and GetTime() - lastflame > 2 then
+		specWarnMeteorStrike:Show()
 		lastflame = GetTime()
+	elseif args:IsSpellID(75483, 75484, 75485, 75486) and args:IsPlayer() then
+		lastshroud = GetTime()--keeps a time stamp for twilight realm damage to determin if you're still there or not for bosshealth frame.
 	end
 end
 
@@ -188,7 +201,7 @@ function mod:UNIT_HEALTH(uId)
 	if not warned_preP2 and self:GetUnitCreatureId(uId) == 39863 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
 		warned_preP2 = true
 		warnPhase2Soon:Show()	
-	elseif not warned_preP3 and (self:GetUnitCreatureId(uId) == 40141 or self:GetUnitCreatureId(uId) == 39863) and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
+	elseif not warned_preP3 and self:GetUnitCreatureId(uId) == 40141 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
 		warned_preP3 = true
 		warnPhase3Soon:Show()	
 	end
