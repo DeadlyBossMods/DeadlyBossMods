@@ -99,7 +99,7 @@ mod:AddBoolOption("YellOnTrap", true, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
-mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
+mod:AddBoolOption("BypassLatencyCheck", true)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local phase	= 0
 local lastPlagueCast = 0
