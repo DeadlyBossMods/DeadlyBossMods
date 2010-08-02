@@ -179,15 +179,20 @@ L:SetOptionLocalization({
 	AnnounceAlternatePhase	= "Показывать предупреждения и таймеры для обоих миров",
 	SoundOnConsumption		= "Звуковой сигнал при $spell:74562 и $spell:74792",--We use localized text for these functions
 	SetIconOnConsumption	= "Устанавливать метки на цели заклинаний $spell:74562 и\n$spell:74792",--So we can use single functions for both versions of spell.
-	YellOnConsumption		= "Кричать, когда $spell:74562 или $spell:74792 на вас"
+	YellOnConsumption		= "Кричать, когда $spell:74562 или $spell:74792 на вас",
+	WhisperOnConsumption	= "Шепот целям заклинаний $spell:74562 и $spell:74792"
 })
 
 L:SetMiscLocalization({
+	NormalHalion			= "Физический Халион",
+	TwilightHalion			= "Сумеречный Халион",
 	MeteorCast				= "Небеса в огне!",
 	Phase2					= "В мире сумерек вы найдете лишь страдания! Входите, если посмеете!",
 	Phase3					= "Я есть свет и я есть тьма! Трепещите, ничтожные, перед посланником Смертокрыла!",
 	twilightcutter			= "Во вращающихся сферах пульсирует темная энергия!",
 	YellCombustion			= "Пылающий огонь на мне!",
+	WhisperCombustion		= "Пылающий огонь на вас! Бегите к стене!",
 	YellConsumption			= "Пожирание души на мне!",
+	WhisperConsumption		= "Пожирание души на вас! Бегите к стене!",
 	Kill					= "Это ваша последняя победа. Насладитесь сполна ее вкусом. Ибо когда вернется мой господин, этот мир сгинет в огне!"
 })
