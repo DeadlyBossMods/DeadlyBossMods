@@ -413,8 +413,9 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen	= "Открытие порталов",
-	TimerBlazingSkeleton	= "Исторгающий пламя скелет"
+	timerPortalsOpen		= "Открытие порталов",
+	TimerBlazingSkeleton	= "Исторгающий пламя скелет",
+	timerAbom				= "След. поганище?"
 }
 
 L:SetOptionLocalization{
@@ -422,6 +423,7 @@ L:SetOptionLocalization{
 	warnPortalOpen				= "Предупреждение об открытии порталов",
 	timerPortalsOpen			= "Отсчет времени для открытия порталов",
 	TimerBlazingSkeleton		= "Отсчет времени до Исторгающего пламя скелета",
+	timerAbom					= "Отсчет времени до след. Прожорливого поганища (экспериментальный)",
 	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
@@ -496,7 +498,9 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Осквернение на вас - отбегите",
 	specWarnDefileNear		= "Осквернение около вас - остерегайтесь",
 	specWarnTrapNear		= "Теневая ловушка около вас - остерегайтесь",
-	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)"
+	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)",
+	specWarnPALGrabbed		= "Паладина лекаря |3-3(%s) схватили",
+	specWarnPRIGrabbed		= "Жреца лекаря |3-3(%s) схватили"
 }
 
 L:SetTimerLocalization{
@@ -516,16 +520,17 @@ L:SetOptionLocalization{
 	WarnPhase3Soon			= "Предупреждать заранее о переходе в фазу 3 (на ~43%)",
 	ValkyrWarning			= "Объявлять, кого схватили Валь'киры",
 	specWarnYouAreValkd		= "Спец-предупреждение, когда вас схватила Валь'кира",
+	specWarnHealerGrabbed	= "Спец-предупреждение, когда схватили паладина или жреца лекаря\n(требует наличия DBM у лекаря)",
 	specWarnDefileCast		= "Спец-предупреждение, когда $spell:72762 на вас",
 	specWarnDefileNear		= "Спец-предупреждение, когда $spell:72762 около вас",
 	specWarnTrapNear		= "Спец-предупреждение, когда $spell:73539 около вас",
 	YellOnDefile			= "Кричать, когда $spell:72762 на вас",
 	YellOnTrap				= "Кричать, когда $spell:73539 на вас",
-	YellOnValk				= "Кричать, когда $spell:69037 на вас",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
+	HarvestSoulIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74327),
 	ValkyrIcon				= "Устанавливать метки на Валь'кир",
 	DefileArrow				= "Показывать стрелку, когда $spell:72762 около вас",
 	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас",
