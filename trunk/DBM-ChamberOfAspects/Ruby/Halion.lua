@@ -2,7 +2,7 @@ local mod	= DBM:NewMod("Halion", "DBM-ChamberOfAspects", 2)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(39863)--40141 (twilight form)
+mod:SetCreatureID(39863)--40142 (twilight form)
 mod:SetMinSyncRevision(4358)
 mod:SetUsedIcons(7, 8)
 
@@ -65,7 +65,7 @@ function mod:LocationChecker()
 	if GetTime() - lastshroud < 6 then
 		DBM.BossHealth:RemoveBoss(39863)--you took damage from twilight realm recently so remove the physical boss from health frame.
 	else
-		DBM.BossHealth:RemoveBoss(40141)--you have not taken damage from twilight realm so remove twilight boss health bar.
+		DBM.BossHealth:RemoveBoss(40142)--you have not taken damage from twilight realm so remove twilight boss health bar.
 	end
 end
 
@@ -79,7 +79,7 @@ local function updateHealthFrame(phase)
 		DBM.BossHealth:AddBoss(39863, L.NormalHalion)
 	elseif phase == 2 then
 		DBM.BossHealth:Clear()
-		DBM.BossHealth:AddBoss(40141, L.TwilightHalion)
+		DBM.BossHealth:AddBoss(40142, L.TwilightHalion)
 	elseif phase == 3 then
 		DBM.BossHealth:AddBoss(39863, L.NormalHalion)--Add 1st bar back on. you have two bars for time being.
 		mod:ScheduleMethod(20, "LocationChecker")--we remove the extra bar in 20 seconds depending on where you are at when check is run.
@@ -201,7 +201,7 @@ function mod:UNIT_HEALTH(uId)
 	if not warned_preP2 and self:GetUnitCreatureId(uId) == 39863 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.79 then
 		warned_preP2 = true
 		warnPhase2Soon:Show()	
-	elseif not warned_preP3 and self:GetUnitCreatureId(uId) == 40141 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
+	elseif not warned_preP3 and self:GetUnitCreatureId(uId) == 40142 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.54 then
 		warned_preP3 = true
 		warnPhase3Soon:Show()	
 	end
