@@ -259,7 +259,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNextGroundphase:Start()
 		warnGroundphaseSoon:Schedule(40)
 		activeBeacons = true
-	elseif msg:find(L.YellPhase2) then
+	elseif msg == L.YellPhase2 or msg:find(L.YellPhase2) then
 		phase = phase + 1
 		warnPhase2:Show()
 		timerNextBeacon:Start(7)
