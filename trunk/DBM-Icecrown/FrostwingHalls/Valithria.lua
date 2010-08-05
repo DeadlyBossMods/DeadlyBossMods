@@ -80,9 +80,9 @@ function mod:OnCombatStart(delay)
 	BlazingSkeletonTimer = 60
 	AbomTimer = 60
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
-	self:ScheduleMethod(25-delay, "StartAbomTimer")
+	self:ScheduleMethod(23.5-delay, "StartAbomTimer")
 	timerBlazingSkeleton:Start(-delay)
-	timerAbom:Start(-delay)
+	timerAbom:Start(23.5-delay)
 	table.wipe(GutSprayTargets)
 end
 

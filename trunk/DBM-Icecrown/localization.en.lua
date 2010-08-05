@@ -413,7 +413,7 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	timerPortalsOpen		= "Portals open",
 	TimerBlazingSkeleton	= "Next Blazing Skeleton",
-	timerAbom				= "Next Abomination?"
+	timerAbom				= "Next Abomination"
 }
 
 L:SetOptionLocalization{
