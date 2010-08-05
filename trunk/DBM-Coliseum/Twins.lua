@@ -31,7 +31,7 @@ local specWarnEmpoweredDarkness		= mod:NewSpecialWarningYou(67215)
 local specWarnEmpoweredLight		= mod:NewSpecialWarningYou(67218)
 
 local enrageTimer					= mod:NewBerserkTimer(360)
-local timerSpecial					= mod:NewTimer(45, "TimerSpecialSpell")
+local timerSpecial					= mod:NewTimer(45, "TimerSpecialSpell", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
 local timerHeal						= mod:NewCastTimer(15, 65875)
 local timerLightTouch				= mod:NewTargetTimer(20, 67298)
 local timerDarkTouch				= mod:NewTargetTimer(20, 67283)
