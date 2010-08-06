@@ -424,7 +424,7 @@ L:SetWarningLocalization{
 L:SetTimerLocalization{
 	timerPortalsOpen	= "Se abren los portales",
 	TimerBlazingSkeleton	= "Siguiente Esqueleto llameante",
-	timerAbom				= "Siguiente Abominación?"
+	timerAbom				= "Siguiente Abominación"
 }
 
 L:SetOptionLocalization{
