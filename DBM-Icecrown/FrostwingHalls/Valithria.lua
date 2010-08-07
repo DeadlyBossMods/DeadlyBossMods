@@ -39,7 +39,7 @@ local timerAbom				= mod:NewTimer(25, "timerAbom", 43392)--Experimental
 
 local berserkTimer		= mod:NewBerserkTimer(420)
 
---mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
+mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 
 local GutSprayTargets = {}
 local spamSupression = 0
@@ -98,14 +98,14 @@ function mod:Portals()
 	self:UnscheduleMethod("Portals")
 	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 end
---[[
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's cast upon spawning)
 		if self.Options.SetIconOnBlazingSkeleton then
-			self:SetIcon(args.sourceGUID, 8)
+			self:SetRaidTarget(args.sourceGUID, 8)
 		end
 	end
-end--]]
+end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(71741) then--Mana Void
