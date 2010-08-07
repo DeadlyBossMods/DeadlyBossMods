@@ -537,7 +537,7 @@ L:SetOptionLocalization{
 	ValkyrIcon			= "為華爾琪影衛設置標記",
 	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭",
 	TrapArrow			= "當你附近的人中了$spell:73539時顯示DBM箭頭",
-	BypassLatencyCheck		= "不對汙染/暗影陷阱使用同步延遲查詢\n(只有出現問題時才使用這個)",
+	LKBugWorkaround		= "不對汙染/暗影陷阱使用同步延遲查詢\n(只有出現問題時才使用這個)",
 	AnnounceValkGrabs		= "提示誰被華爾琪影衛抓住到團隊頻道\n(需開啟團隊廣播及助理權限)"
 }
 
