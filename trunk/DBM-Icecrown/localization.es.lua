@@ -543,7 +543,7 @@ L:SetOptionLocalization{
 	ValkyrIcon				= "Poner iconos en las Valkyr",
 	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti",
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
-	BypassLatencyCheck		= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(Activado por defecto hasta que se arregle un bug de comprovación sincronización)",
+	LKBugWorkaround			= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(Activado por defecto hasta que se arregle un bug de comprovación sincronización)",
 	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de raid\n(necesita 'anunciar' activado y líder/ayudante)"
 }
 
