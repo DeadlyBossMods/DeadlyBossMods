@@ -99,7 +99,7 @@ mod:AddBoolOption("YellOnTrap", true, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
-mod:AddBoolOption("BypassLatencyCheck", true)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
+mod:AddBoolOption("LKBugWorkaround", true)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local phase	= 0
 local lastPlagueCast = 0
@@ -277,7 +277,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnInfest:Show()
 		timerInfestCD:Start()
 	elseif args:IsSpellID(72762) then -- Defile
-		if self.Options.BypassLatencyCheck then
+		if self.Options.LKBugWorkaround then
 			self:ScheduleMethod(0.1, "OldDefileTarget")
 		else
 			self:ScheduleMethod(0.1, "DefileTarget")
@@ -287,7 +287,7 @@ function mod:SPELL_CAST_START(args)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
 		timerTrapCD:Start()
-		if self.Options.BypassLatencyCheck then
+		if self.Options.LKBugWorkaround then
 			self:ScheduleMethod(0.01, "OldTrapTarget")
 			self:ScheduleMethod(0.02, "OldTrapTarget")
 			self:ScheduleMethod(0.03, "OldTrapTarget")
@@ -568,7 +568,7 @@ function mod:OnSync(msg, target)
 			specWarnPRIGrabbed:Show(target)
 		end
 	elseif msg == "TrapOn" then
-		if not self.Options.BypassLatencyCheck then
+		if not self.Options.LKBugWorkaround then
 			warnTrapCast:Show(target)
 			if self.Options.TrapIcon then
 				self:SetIcon(player, 8, 10)
@@ -596,7 +596,7 @@ function mod:OnSync(msg, target)
 			end
 		end
 	elseif msg == "DefileOn" then
-		if not self.Options.BypassLatencyCheck then
+		if not self.Options.LKBugWorkaround then
 			warnDefileCast:Show(target)
 			if self.Options.DefileIcon then
 				self:SetIcon(target, 8, 10)
