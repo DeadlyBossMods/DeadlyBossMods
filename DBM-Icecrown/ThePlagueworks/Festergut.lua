@@ -41,7 +41,7 @@ local timerGooCD			= mod:NewNextTimer(10, 72549)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
 mod:AddBoolOption("AnnounceSporeIcons", false)
-mod:AddBoolOption("AchievementCheck", false)
+mod:AddBoolOption("AchievementCheck", false, "announce")
 
 local gasSporeTargets	= {}
 local gasSporeIconTargets	= {}
