@@ -56,12 +56,14 @@ mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("SetIconOnUnchainedMagic", true)
 mod:AddBoolOption("ClearIconsOnAirphase", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
+mod:AddBoolOption("AchievementCheck", false)
 mod:AddBoolOption("RangeFrame")
 
 local beaconTargets		= {}
 local beaconIconTargets	= {}
 local unchainedTargets	= {}
 local warned_P2 = false
+local warnedfailed = false
 local phase = 0
 local unchainedIcons = 7
 local activeBeacons	= false
@@ -103,6 +105,7 @@ function mod:OnCombatStart(delay)
 	timerNextAirphase:Start(50-delay)
 	timerNextBlisteringCold:Start(33-delay)
 	warned_P2 = false
+	warnedfailed = false
 	table.wipe(beaconTargets)
 	table.wipe(beaconIconTargets)
 	table.wipe(unchainedTargets)
@@ -199,6 +202,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 			if (args.amount or 1) < 2 then
 				timerMysticAchieve:Start()
+			end
+		end
+		if args:IsDestTypePlayer() then
+			if self.Options.AchievementCheck and DBM:GetRaidRank() > 0 and not warnedfailed then
+				if (args.amount or 1) == 5 then
+					SendChatMessage(L.AchievementWarning:format(args.destName), "RAID")
+				elseif (args.amount or 1) > 5 then
+					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "RAID_WARNING")
+					warnedfailed = true
+				end
 			end
 		end
 	end
