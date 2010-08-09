@@ -60,12 +60,13 @@ local timerRegurgitatedOoze			= mod:NewTargetTimer(20, 70539)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
-local soundGaseousBloat = mod:NewSound(72455)
+local soundGaseousBloat 			= mod:NewSound(72455)
 
 mod:AddBoolOption("OozeAdhesiveIcon")
 mod:AddBoolOption("GaseousBloatIcon")
 mod:AddBoolOption("MalleableGooIcon")
 mod:AddBoolOption("UnboundPlagueIcon")					-- icon on the player with active buff
+mod:AddBoolOption("GooArrow")
 mod:AddBoolOption("YellOnMalleableGoo", true, "announce")
 mod:AddBoolOption("YellOnUnbound", true, "announce")
 mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
@@ -112,8 +113,16 @@ function mod:OldMalleableGooTarget()
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
 			if inRange then
 				specWarnMalleableGooNear:Show()
+				if self.Options.GooArrow then
+					DBM.Arrow:ShowRunAway(x, y, 10, 5)
+				end
 			end
 		end
 	end
@@ -330,8 +339,16 @@ function mod:OnSync(msg, target)
 				local uId = DBM:GetRaidUnitId(target)
 				if uId then
 					local inRange = CheckInteractDistance(uId, 2)
+					local x, y = GetPlayerMapPosition(uId)
+					if x == 0 and y == 0 then
+						SetMapToCurrentZone()
+						x, y = GetPlayerMapPosition(uId)
+					end
 					if inRange then
 						specWarnMalleableGooNear:Show()
+						if self.Options.GooArrow then
+							DBM.Arrow:ShowRunAway(x, y, 10, 5)
+						end
 					end
 				end
 			end
