@@ -41,34 +41,14 @@ local timerGooCD			= mod:NewNextTimer(10, 72549)
 mod:AddBoolOption("RangeFrame", mod:IsRanged())
 mod:AddBoolOption("SetIconOnGasSpore", true)
 mod:AddBoolOption("AnnounceSporeIcons", false)
+mod:AddBoolOption("AchievementCheck", false)
 
 local gasSporeTargets	= {}
 local gasSporeIconTargets	= {}
 local vileGasTargets	= {}
 local gasSporeCast 	= 0
 local lastGoo = 0
-
---[[
-local mRange = { }
-local mPoints = { 
-	[0] = { 0.19828705489635, 0.653256416320 },
-	[1] = { 0.21672140061855, 0.63018447160721 },
-	[2] = { 0.21968087553978, 0.6705778837204 }
-}
-local noCheck = true
-
-local function findMin(a)
-	local min = a[1]
-	local index = 1
-	for i, v in ipairs(a) do
-		if v < min then
-			index = i
-			min = v
-		end
-	end
-	return min, index
-end
---]]
+local warnedfailed = false
 
 do
 	local function sort_by_group(v1, v2)
@@ -93,22 +73,6 @@ end
 local function warnGasSporeTargets()
 	warnGasSpore:Show(table.concat(gasSporeTargets, "<, >"))
 	timerGasSpore:Start()
---[[
-	if not noCheck then
-		for _, point in ipairs(mPoints) do 
-			for i, v in ipairs(gasSporeTargets) do
-				mRange[i] = DBM.RangeCheck:GetDistance(DBM:GetRaidUnitId(v), point[1], point[2])
-			end
-			local value, index = findMin(mRange)
-			if gasSporeTargets[index] == UnitName("player") then	-- found my shortest way
-				DBM.Arrow:ShowRunTo(point[1], point[2])
-			end
-			table.remove(gasSporeTargets, index)
-			table.wipe(mRange)
-		end
-	end
-	noCheck = true
---]]
 	table.wipe(gasSporeTargets)
 end
 
@@ -127,7 +91,7 @@ function mod:OnCombatStart(delay)
 	gasSporeIcon = 8
 	gasSporeCast = 0
 	lastGoo = 0
---	noCheck = true
+	warnedfailed = false
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -181,7 +145,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			gasSporeCast = 0
 		end
 		if args:IsPlayer() then
---			noCheck = false	-- check for distance and show the arrow
 			specWarnGasSpore:Show()
 		end
 		if self.Options.SetIconOnGasSpore then
@@ -212,13 +175,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and (args.amount or 1) >= 9 then
 			specWarnGastricBloat:Show(args.amount)
 		end
-	elseif args:IsSpellID(69240, 71218, 73019, 73020) and args:IsDestTypePlayer() then	-- Vile Gas(Heroic Spellids drycoded, may not be correct)
+	elseif args:IsSpellID(69240, 71218, 73019, 73020) and args:IsDestTypePlayer() then	-- Vile Gas
 		vileGasTargets[#vileGasTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnVileGas:Show()
 		end
 		self:Unschedule(warnVileGasTargets)
 		self:Schedule(0.8, warnVileGasTargets)
+	elseif args:IsSpellID(69291, 72101, 72102, 72103) then	--Inoculated
+		if args:IsDestTypePlayer() then
+			if self.Options.AchievementCheck and DBM:GetRaidRank() > 0 and not warnedfailed then
+				if (args.amount or 1) == 3 then
+					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "RAID_WARNING")
+					warnedfailed = true
+				end
+			end
+		end
 	end
 end
 

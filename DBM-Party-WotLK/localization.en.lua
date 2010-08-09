@@ -1281,11 +1281,13 @@ L:SetOptionLocalization({
 	specWarnSaroniteRock		= "Show special warning when you are targeted by $spell:70851",
 	specWarnSaroniteRockNear	= "Show special warning when you are near $spell:70851 target",
 	specWarnPermafrost			= "Show special warning when $spell:70336 stacks get too high (11 stacks)",
+	AchievementCheck			= "Announce 'Doesn't Go to Eleven' achievement warnings to party chat",
 	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow	= "%s hurls a massive saronite boulder at you!"
+	SaroniteRockThrow	= "%s hurls a massive saronite boulder at you!",
+	AchievementFailed	= ">> ACHIEVEMENT FAILED: %s has %d stacks of Permafrost <<"
 })
 
 ----------------------------
