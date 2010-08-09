@@ -329,6 +329,7 @@ L:SetOptionLocalization{
 	NextUnboundPlagueTargetIcon	= "Poner icono en el siguiente objetivo de $spell:72856",
 	YellOnMalleableGoo			= "Gritar cuando tengas $spell:72295",
 	YellOnUnbound				= "Gritar cuando tengas $spell:72856",	
+	GooArrow					= "Mostrar flecha cuando $spell:72295 esté cerca de ti",
 	specWarnUnboundPlague		= "Mostrar aviso especial para transferencia de $spell:72856",
 	specWarnNextPlageSelf		= "Mostrar aviso especial cuando seas el próximo objetivo de $spell:72856",
 	BypassLatencyCheck			= "No usar la comprobación de sincronización basada en latencia para $spell:72295\n(sólo usar esta opción si tienes problemas de otro modo)"
@@ -369,6 +370,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Poner un icono en el príncipe con Invocación (Cruz)",
 	RangeFrame				= "Mostrar distancia (12 yardas)",
+	VortexArrow				= "Mostrar flecha cuando $spell:72037 esté cerca de ti",
 	BypassLatencyCheck		= "No usar la comprobación de sincronización basada en latencia para $spell:72037\n(sólo usar esta opción si tienes problemas de otro modo)"
 }
 
