@@ -246,7 +246,7 @@ L:SetOptionLocalization{
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
 	AnnounceSporeIcons	= "Announce icons for $spell:69279 targets to raid chat\n(requires announce to be enabled and promoted status)",
-	AchievementCheck	= "Announce 'Flu Shot Shortage' achievement failure to raid chat\n(requires promoted status)"
+	AchievementCheck	= "Announce 'Flu Shot Shortage' achievement failure to raid\n(requires promoted status)"
 }
 
 L:SetMiscLocalization{
@@ -473,7 +473,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Clear all icons before air phase",
-	AchievementCheck		= "Announce 'All You Can Eat' achievement warnings to raid chat\n(requires promoted status)",
+	AchievementCheck		= "Announce 'All You Can Eat' achievement warnings to raid\n(requires promoted status)",
 	RangeFrame				= "Show raid icon based range frame (10 normal, 20 heroic)"
 }
 

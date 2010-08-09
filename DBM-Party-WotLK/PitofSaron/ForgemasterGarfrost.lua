@@ -22,7 +22,7 @@ local specWarnPermafrost		= mod:NewSpecialWarning("specWarnPermafrost")
 local timerDeepFreeze			= mod:NewTargetTimer(14, 70381)
 
 mod:AddBoolOption("SetIconOnSaroniteRockTarget", true)
-mod:AddBoolOption("AchievementCheck", false)
+mod:AddBoolOption("AchievementCheck", false, "announce")
 
 local warnedfailed = false
 
@@ -41,8 +41,8 @@ end
 
 local spam = 0
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(68786, 70336) and args:IsPlayer() then
-		if args.amount >= 11 and GetTime() - spam > 5 then --11 stacks is what's needed for achievement
+	if args:IsSpellID(68786, 70336) then
+		if args.amount >= 9 and GetTime() - spam > 5 and args:IsPlayer() then --11 stacks is what's needed for achievement, 9 to give you time to clear/dispel
 			specWarnPermafrost:Show(args.spellName, args.amount)
 			spam = GetTime()
 		end

@@ -29,12 +29,12 @@ local warnBlisteringCold		= mod:NewSpellAnnounce(70123, 3)
 local warnFrostBreath			= mod:NewSpellAnnounce(71056, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnUnchainedMagic		= mod:NewTargetAnnounce(69762, 2, nil, not mod:IsMelee())
 
-local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123)
 local specWarnUnchainedMagic	= mod:NewSpecialWarningYou(69762)
 local specWarnFrostBeacon		= mod:NewSpecialWarningYou(70126)
 local specWarnInstability		= mod:NewSpecialWarningStack(69766, nil, 4)
 local specWarnChilledtotheBone	= mod:NewSpecialWarningStack(70106, nil, 4)
 local specWarnMysticBuffet		= mod:NewSpecialWarningStack(70128, false, 5)
+local specWarnBlisteringCold	= mod:NewSpecialWarningRun(70123)
 
 local timerNextAirphase			= mod:NewTimer(110, "TimerNextAirphase", 43810)
 local timerNextGroundphase		= mod:NewTimer(45, "TimerNextGroundphase", 43810)
@@ -56,7 +56,7 @@ mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("SetIconOnUnchainedMagic", true)
 mod:AddBoolOption("ClearIconsOnAirphase", true)
 mod:AddBoolOption("AnnounceFrostBeaconIcons", false)
-mod:AddBoolOption("AchievementCheck", false)
+mod:AddBoolOption("AchievementCheck", false, "announce")
 mod:AddBoolOption("RangeFrame")
 
 local beaconTargets		= {}
