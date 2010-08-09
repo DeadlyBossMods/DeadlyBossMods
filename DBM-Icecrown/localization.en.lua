@@ -471,14 +471,17 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Clear all icons before air phase",
+	AchievementCheck		= "Announce 'All You Can Eat' achievement warnings to raid chat\n(requires promoted status)",
 	RangeFrame				= "Show raid icon based range frame (10 normal, 20 heroic)"
 }
 
 L:SetMiscLocalization{
-	YellAirphase	= "Your incursion ends here! None shall survive!",
-	YellPhase2		= "Now, feel my master's limitless power and despair!",
-	BeaconIconSet	= "Frost Beacon icon {rt%d} set on %s",
-	YellPull		= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"--Not currently in use.
+	YellAirphase		= "Your incursion ends here! None shall survive!",
+	YellPhase2			= "Now, feel my master's limitless power and despair!",
+	BeaconIconSet		= "Frost Beacon icon {rt%d} set on %s",
+	AchievementWarning	= "Warning: %s has 5 stacks of Mystic Buffet",
+	AchievementFailed	= ">> ACHIEVEMENT FAILED: %s has %d stacks of Mystic Buffet <<",
+	YellPull			= "You are fools to have come to this place. The icy winds of Northrend will consume your souls!"--Not currently in use.
 }
 
 ---------------------
