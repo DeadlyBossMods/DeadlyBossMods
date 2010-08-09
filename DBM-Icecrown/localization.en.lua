@@ -318,6 +318,7 @@ L:SetOptionLocalization{
 	NextUnboundPlagueTargetIcon	= "Set icon on next $spell:72856 target",
 	YellOnMalleableGoo			= "Yell on $spell:72295",
 	YellOnUnbound				= "Yell on $spell:72856",
+	GooArrow					= "Show DBM arrow when $spell:72295 is near you",
 	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
 	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
 	BypassLatencyCheck			= "Don't use latency based sync check for $spell:72295\n(only use this if you're having problems otherwise)"
@@ -358,6 +359,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)",
 	RangeFrame				= "Show range frame (12 yards)",
+	VortexArrow				= "Show DBM arrow when $spell:72037 is near you",
 	BypassLatencyCheck		= "Don't use latency based sync check for $spell:72037\n(only use this if you're having problems otherwise)"
 }
 

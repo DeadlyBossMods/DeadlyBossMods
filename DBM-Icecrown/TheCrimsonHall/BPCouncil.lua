@@ -54,6 +54,7 @@ local soundEmpoweredFlames		= mod:NewSound(72040)
 mod:AddBoolOption("EmpoweredFlameIcon", true)
 mod:AddBoolOption("ActivePrinceIcon", false)
 mod:AddBoolOption("RangeFrame", true)
+mod:AddBoolOption("VortexArrow")
 mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local activePrince
@@ -100,8 +101,16 @@ function mod:OldShockVortexTarget()
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
 			if inRange then
 				specWarnVortexNear:Show()
+				if self.Options.VortexArrow then
+					DBM.Arrow:ShowRunAway(x, y, 10, 5)
+				end
 			end
 		end
 	end
@@ -236,8 +245,16 @@ function mod:OnSync(msg, target)
 				local uId = DBM:GetRaidUnitId(target)
 				if uId then
 					local inRange = CheckInteractDistance(uId, 2)
+					local x, y = GetPlayerMapPosition(uId)
+					if x == 0 and y == 0 then
+						SetMapToCurrentZone()
+						x, y = GetPlayerMapPosition(uId)
+					end
 					if inRange then
 						specWarnVortexNear:Show()
+						if self.Options.VortexArrow then
+							DBM.Arrow:ShowRunAway(x, y, 10, 5)
+						end
 					end
 				end
 			end
