@@ -53,7 +53,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnDominateMind", true)
 mod:AddBoolOption("SetIconOnDeformedFanatic", true)
-mod:AddBoolOption("SetIconOnEmpoweredAdherent", true)
+mod:AddBoolOption("SetIconOnEmpoweredAdherent", false)
 mod:AddBoolOption("ShieldHealthFrame", true, "misc")
 mod:RemoveOption("HealthFrame")
 
