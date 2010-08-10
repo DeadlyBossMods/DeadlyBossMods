@@ -62,7 +62,7 @@ local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank()) --ph
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
 local specWarnTrapNear		= mod:NewSpecialWarning("SpecWarnTrapNear") --Heroic Ability
 local specWarnHarvestSouls	= mod:NewSpecialWarningSpell(74297) --Heroic Ability
-local specWarnValkyrLow		= mod:NewSpecialWarning("SpecWarnValkyrLow", false)
+local specWarnValkyrLow		= mod:NewSpecialWarning("SpecWarnValkyrLow")
 
 local timerCombatStart		= mod:NewTimer(53.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition", 72262)
@@ -499,7 +499,7 @@ do
 end
 
 function mod:UNIT_HEALTH(uId)
-	if uId == "target" and self:GetUniCreatureId(uId) == 36609 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.6 and not warnedValkyrGUIDs[UnitGUID(uId)] then
+	if (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) and uId == "target" and self:GetUniCreatureId(uId) == 36609 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.55 and not warnedValkyrGUIDs[UnitGUID(uId)] then
 		warnedValkyrGUIDs[UnitGUID(uId)] = true
 		specWarnValkyrLow:Show()
 	end
