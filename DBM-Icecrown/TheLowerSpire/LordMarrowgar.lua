@@ -8,11 +8,11 @@ mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_PERIODIC_DAMAGE",
-	"SPELL_SUMMON",
-	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_SUMMON"
 )
 
 local preWarnWhirlwind   	= mod:NewSoonAnnounce(69076, 3)
@@ -34,16 +34,7 @@ mod:AddBoolOption("SetIconOnImpale", true)
 
 local impaleTargets = {}
 local impaleIcon	= 8
-
-do 
-	local lastColdflame = 0
-	function mod:SPELL_PERIODIC_DAMAGE(args)
-		if args:IsSpellID(69146, 70823, 70824, 70825) and args:IsPlayer() and GetTime() - lastColdflame > 2 then		-- Coldflame, MOVE!
-			specWarnColdflame:Show()
-			lastColdflame = GetTime()
-		end
-	end
-end
+local lastColdflame = 0
 
 local function showImpaleWarning()
 	warnImpale:Show(table.concat(impaleTargets, "<, >"))
@@ -56,33 +47,6 @@ function mod:OnCombatStart(delay)
 	timerBoneSpike:Start(15-delay)
 	berserkTimer:Start(-delay)
 	table.wipe(impaleTargets)
-end
-
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(69057, 70826, 72088, 72089) then				-- Bone Spike Graveyard
-		warnBoneSpike:Show()
-		timerBoneSpike:Start()
-	end
-end
-
-function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(69062, 72669, 72670) then						-- Impale
-		impaleTargets[#impaleTargets + 1] = args.sourceName
-		timerBoned:Start()
-		if self.Options.SetIconOnImpale then
-			if 	impaleIcon < 1 then	--Icons are gonna be crazy on this fight if people don't control jumps, we will use ALL of them and only reset icons if we run out of them
-				impaleIcon = 8
-			end
-			self:SetIcon(args.sourceName, impaleIcon)
-			impaleIcon = impaleIcon - 1
-		end
-		self:Unschedule(showImpaleWarning)
-		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #impaleTargets >= 3) then
-			showImpaleWarning()
-		else
-			self:Schedule(0.3, showImpaleWarning)
-		end
-	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -111,3 +75,38 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(69057, 70826, 72088, 72089) then				-- Bone Spike Graveyard
+		warnBoneSpike:Show()
+		timerBoneSpike:Start()
+	end
+end
+
+function mod:SPELL_PERIODIC_DAMAGE(args)
+	if args:IsSpellID(69146, 70823, 70824, 70825) and args:IsPlayer() and GetTime() - lastColdflame > 2 then		-- Coldflame, MOVE!
+		specWarnColdflame:Show()
+		lastColdflame = GetTime()
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(69062, 72669, 72670) then						-- Impale
+		impaleTargets[#impaleTargets + 1] = args.sourceName
+		timerBoned:Start()
+		if self.Options.SetIconOnImpale then
+			if 	impaleIcon < 1 then	--Icons are gonna be crazy on this fight if people don't control jumps, we will use ALL of them and only reset icons if we run out of them
+				impaleIcon = 8
+			end
+			self:SetIcon(args.sourceName, impaleIcon)
+			impaleIcon = impaleIcon - 1
+		end
+		self:Unschedule(showImpaleWarning)
+		if mod:IsDifficulty("normal10") or (mod:IsDifficulty("normal25") and #impaleTargets >= 3) then
+			showImpaleWarning()
+		else
+			self:Schedule(0.3, showImpaleWarning)
+		end
+	end
+end
+
