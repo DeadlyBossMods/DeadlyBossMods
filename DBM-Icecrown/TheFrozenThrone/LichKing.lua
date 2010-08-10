@@ -62,6 +62,7 @@ local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank()) --ph
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
 local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear") --Heroic Ability
 local specWarnHarvestSouls	= mod:NewSpecialWarningSpell(74297) --Heroic Ability
+local specWarnValkyrLow		= mod:NewSpecialWarning("SpecWarnValkyrLow", false)
 
 local timerCombatStart		= mod:NewTimer(53.5, "TimerCombatStart", 2457)
 local timerPhaseTransition	= mod:NewTimer(62, "PhaseTransition", 72262)
@@ -105,6 +106,7 @@ local phase	= 0
 local lastPlagueCast = 0
 local warned_preP2 = false
 local warned_preP3 = false
+local warnedValkyrGUIDs = {}
 local LKTank
 
 function mod:OnCombatStart(delay)
@@ -114,6 +116,7 @@ function mod:OnCombatStart(delay)
 	warned_preP3 = false
 	LKTank = nil
 	self:NextPhase()
+	table.wipe(warnedValkyrGUIDs)
 end
 
 function mod:DefileTarget()
@@ -496,6 +499,10 @@ do
 end
 
 function mod:UNIT_HEALTH(uId)
+	if uId == "target" and self:GetUniCreatureId(uId) == 36609 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.6 and not warnedValkyrGUIDs[UnitGUID(uId)] then
+		warnedValkyrGUIDs[UnitGUID(uId)] = true
+		specWarnValkyrLow:Show()
+	end
 	if phase == 1 and not warned_preP2 and self:GetUnitCreatureId(uId) == 36597 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.73 then
 		warned_preP2 = true
 		warnPhase2Soon:Show()

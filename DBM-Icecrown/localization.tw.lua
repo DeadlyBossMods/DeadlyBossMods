@@ -503,7 +503,8 @@ L:SetWarningLocalization{
 	specWarnTrapNear		= "你附近的人中了暗影陷阱 - 小心",
 	warnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上",
 	specWarnPALGrabbed		= "補騎 %s 給抓住了",
-	specWarnPRIGrabbed		= "補牧 %s 給抓住了"
+	specWarnPRIGrabbed		= "補牧 %s 給抓住了",
+	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
 L:SetTimerLocalization{
@@ -538,7 +539,8 @@ L:SetOptionLocalization{
 	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭",
 	TrapArrow			= "當你附近的人中了$spell:73539時顯示DBM箭頭",
 	LKBugWorkaround		= "不對汙染/暗影陷阱使用同步延遲查詢\n(只有出現問題時才使用這個)",
-	AnnounceValkGrabs		= "提示誰被華爾琪影衛抓住到團隊頻道\n(需開啟團隊廣播及助理權限)"
+	AnnounceValkGrabs		= "提示誰被華爾琪影衛抓住到團隊頻道\n(需開啟團隊廣播及助理權限)",
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
 }
 
 L:SetMiscLocalization{
