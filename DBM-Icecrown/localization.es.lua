@@ -517,7 +517,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump	= "Peste necrótica saltó a >%s<",
 	SpecWarnPALGrabbed		= "Paladin Healer %s ha sido agarrado",
 	SpecWarnPRIGrabbed		= "Sacerdote Healer %s ha sido agarrado",
-	SpecWarnValkyrLow		= "Valkyr below 60%"
+	SpecWarnValkyrLow		= "Valkyr con menos del 60%"
 }
 
 L:SetTimerLocalization{
@@ -553,7 +553,7 @@ L:SetOptionLocalization{
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
 	LKBugWorkaround			= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(Activado por defecto hasta que se arregle un bug de comprovación sincronización)",
 	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de banda\n(necesita 'anunciar' activado y líder/ayudante)",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
+	SpecWarnValkyrLow		= "Mostrar aviso especial cuando la Valkyr está por debajo del 60%"
 }
 
 L:SetMiscLocalization{
