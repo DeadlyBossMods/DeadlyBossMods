@@ -516,7 +516,8 @@ L:SetWarningLocalization{
 	specWarnTrapNear		= "Trampa de las Sombras cerca de ti ¡Ten cuidado!",
 	warnNecroticPlagueJump	= "Peste necrótica saltó a >%s<",
 	specWarnPALGrabbed		= "Paladin Healer %s ha sido agarrado",
-	specWarnPRIGrabbed		= "Sacerdote Healer %s ha sido agarrado"
+	specWarnPRIGrabbed		= "Sacerdote Healer %s ha sido agarrado",
+	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
 L:SetTimerLocalization{
@@ -551,7 +552,8 @@ L:SetOptionLocalization{
 	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti",
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
 	LKBugWorkaround			= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(Activado por defecto hasta que se arregle un bug de comprovación sincronización)",
-	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de banda\n(necesita 'anunciar' activado y líder/ayudante)"
+	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de banda\n(necesita 'anunciar' activado y líder/ayudante)",
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
 }
 
 L:SetMiscLocalization{

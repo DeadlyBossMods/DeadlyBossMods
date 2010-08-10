@@ -500,7 +500,8 @@ L:SetWarningLocalization{
 	specWarnTrapNear		= "Теневая ловушка около вас - остерегайтесь",
 	warnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)",
 	specWarnPALGrabbed		= "Паладина лекаря |3-3(%s) схватили",
-	specWarnPRIGrabbed		= "Жреца лекаря |3-3(%s) схватили"
+	specWarnPRIGrabbed		= "Жреца лекаря |3-3(%s) схватили",
+	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
 L:SetTimerLocalization{
@@ -535,7 +536,8 @@ L:SetOptionLocalization{
 	DefileArrow				= "Показывать стрелку, когда $spell:72762 около вас",
 	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас",
 	LKBugWorkaround			= "Отключить синхр-цию для Осквернения и Теневой ловушки\n(вкл. по умолчанию до исправления бага с синхронизацией)",
-	AnnounceValkGrabs		= "Объявлять игроков, схваченных Валь'кирами, в рейд-чат\n(требуются права помощника)"
+	AnnounceValkGrabs		= "Объявлять игроков, схваченных Валь'кирами, в рейд-чат\n(требуются права помощника)",
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
 }
 
 L:SetMiscLocalization{

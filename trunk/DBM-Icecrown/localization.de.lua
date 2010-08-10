@@ -1,4 +1,4 @@
-if GetLocale() ~= "deDE" then return end
+﻿if GetLocale() ~= "deDE" then return end
 
 -- fehlende Übersetzungen:
 --
@@ -496,7 +496,8 @@ L:SetWarningLocalization{
 	specWarnDefileCast		= "Entweihen auf dir - Lauf weg",
 	specWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen",
 	specWarnTrapNear		= "Schattenfalle in deiner Nähe - Aufpassen",
-	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen"
+	warnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen",
+	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
 L:SetTimerLocalization{
@@ -525,7 +526,8 @@ L:SetOptionLocalization{
 	TrapIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon				= "Setze Zeichen auf Valkyren",
 	DefileArrow				= "Zeige Pfeil wenn $spell:72762 in deiner Nähe ist",
-	TrapArrow				= "Zeige Pfeil wenn $spell:73539 in deiner Nähe ist"
+	TrapArrow				= "Zeige Pfeil wenn $spell:73539 in deiner Nähe ist",
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
 }
 
 L:SetMiscLocalization{
