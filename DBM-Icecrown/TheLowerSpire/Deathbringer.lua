@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnFrenzySoon		= mod:NewAnnounce("warnFrenzySoon", 2, 72737, mod:IsTank() or mod:IsHealer())
+local warnFrenzySoon		= mod:NewAnnounce("WarnFrenzySoon", 2, 72737, mod:IsTank() or mod:IsHealer())
 local warnAddsSoon			= mod:NewPreWarnAnnounce(72173, 10, 3)
 local warnAdds				= mod:NewSpellAnnounce(72173, 4)
 local warnFrenzy			= mod:NewSpellAnnounce(72737, 2, nil, mod:IsTank() or mod:IsHealer())

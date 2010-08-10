@@ -40,7 +40,7 @@ local specWarnTouchInsignificance	= mod:NewSpecialWarningStack(71204, nil, 3)
 local specWarnVampricMight			= mod:NewSpecialWarningDispel(70674, canPurge)
 local specWarnDarkMartyrdom			= mod:NewSpecialWarningMove(72499, mod:IsMelee())
 local specWarnFrostbolt				= mod:NewSpecialWarningInterupt(72007, false)
-local specWarnVengefulShade			= mod:NewSpecialWarning("specWarnVengefulShade", not mod:IsTank())
+local specWarnVengefulShade			= mod:NewSpecialWarning("SpecWarnVengefulShade", not mod:IsTank())
 
 local timerAdds						= mod:NewTimer(60, "TimerAdds", 61131)
 local timerDominateMind				= mod:NewBuffActiveTimer(12, 71289)

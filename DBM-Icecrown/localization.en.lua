@@ -10,11 +10,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnTrap		= "Trap Activated! - Deathbound Ward released"--creatureid 37007
+	SpecWarnTrap		= "Trap Activated! - Deathbound Ward released"--creatureid 37007
 }
 
 L:SetOptionLocalization{
-	specWarnTrap		= "Show special warning for trap activation",
+	SpecWarnTrap		= "Show special warning for trap activation",
 	SetIconOnDarkReckoning	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
 	SetIconOnDeathPlague	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
@@ -35,13 +35,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnMortalWound	= "%s on >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
-	specWarnTrap	= "Trap Activated! - Vengeful Fleshreapers incoming"--creatureid 37038
+	WarnMortalWound	= "%s on >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	SpecWarnTrap	= "Trap Activated! - Vengeful Fleshreapers incoming"--creatureid 37038
 }
 
 L:SetOptionLocalization{
-	specWarnTrap	= "Show special warning for trap activation",
-	warnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
+	SpecWarnTrap	= "Show special warning for trap activation",
+	WarnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
 L:SetMiscLocalization{
@@ -79,7 +79,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnGosaEvent	= "Sindragosa gauntlet started!"
+	SpecWarnGosaEvent	= "Sindragosa gauntlet started!"
 }
 
 L:SetTimerLocalization{
@@ -87,7 +87,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnGosaEvent	= "Show special warning for Sindragosa gauntlet event",
+	SpecWarnGosaEvent	= "Show special warning for Sindragosa gauntlet event",
 	GosaTimer			= "Show timer for Sindragosa gauntlet event duration"
 }
 
@@ -105,7 +105,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	achievementBoned	= "Time to free"
+	AchievementBoned	= "Time to free"
 }
 
 L:SetWarningLocalization{
@@ -114,7 +114,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale			= "Announce $spell:69062 targets",
-	achievementBoned	= "Show timer for Boned achievement",
+	AchievementBoned	= "Show timer for Boned achievement",
 	SetIconOnImpale		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -135,14 +135,14 @@ L:SetWarningLocalization{
 	WarnReanimating				= "Add reviving",			-- Reanimating an adherent or fanatic
 	WarnTouchInsignificance		= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon				= "New adds soon",
-	specWarnVengefulShade		= "Vengeful Shade attacking you - Run Away"--creatureid 38222
+	SpecWarnVengefulShade		= "Vengeful Shade attacking you - Run Away"--creatureid 38222
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon				= "Show pre-warning for adds spawning",
 	WarnReanimating				= "Show warning when an add is being revived",	-- Reanimated Adherent/Fanatic spawning
 	TimerAdds					= "Show timer for new adds",
-	specWarnVengefulShade		= "Show special warning when you are attacked by Vengeful Shade",--creatureid 38222
+	SpecWarnVengefulShade		= "Show special warning when you are attacked by Vengeful Shade",--creatureid 38222
 	ShieldHealthFrame			= "Show boss health with a health bar for $spell:70842",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -204,7 +204,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon	= "Frenzy soon"
+	WarnFrenzySoon	= "Frenzy soon"
 }
 
 L:SetTimerLocalization{
@@ -213,7 +213,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "Show time for start of combat",
-	warnFrenzySoon			= "Show pre-warning for Frenzy (at ~33%)",
+	WarnFrenzySoon			= "Show pre-warning for Frenzy (at ~33%)",
 	BoilingBloodIcons	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	RangeFrame				= "Show range frame (12 yards)",
 	RunePowerFrame			= "Show Boss Health + $spell:72371 bar",
@@ -266,7 +266,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Little Ooze spawning",
 	WarnUnstableOoze			= "%s on >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
-	specWarnLittleOoze			= "Little Ooze attacking you - Run Away"--creatureid 36897
+	SpecWarnLittleOoze			= "Little Ooze attacking you - Run Away"--creatureid 36897
 }
 
 L:SetTimerLocalization{
@@ -276,7 +276,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "Show timer for next Poison Slime Pipes",
 	WarnOozeSpawn				= "Show warning for Little Ooze spawning",
-	specWarnLittleOoze			= "Show special warning when you are attacked by Little Ooze",--creatureid 36897
+	SpecWarnLittleOoze			= "Show special warning when you are attacked by Little Ooze",--creatureid 36897
 	RangeFrame					= "Show range frame (8 yards)",
 	WarnUnstableOoze			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
@@ -301,17 +301,17 @@ L:SetWarningLocalization{
 	WarnPhase2Soon				= "Phase 2 soon",
 	WarnPhase3Soon				= "Phase 3 soon",
 	WarnMutatedPlague			= "%s on >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
-	specWarnMalleableGoo		= "Malleable Goo on you - Move away",
-	specWarnMalleableGooNear	= "Malleable Goo near you - Watch out",
-	specWarnUnboundPlague		= "Drop off the Unbound Plague",
-	specWarnNextPlageSelf		= "Unbound Plage to you next, get prepared!"
+	SpecWarnMalleableGoo		= "Malleable Goo on you - Move away",
+	SpecWarnMalleableGooNear	= "Malleable Goo near you - Watch out",
+	SpecWarnUnboundPlague		= "Drop off the Unbound Plague",
+	SpecWarnNextPlageSelf		= "Unbound Plage to you next, get prepared!"
 }
 
 L:SetOptionLocalization{
 	WarnPhase2Soon				= "Show pre-warning for Phase 2 (at ~83%)",
 	WarnPhase3Soon				= "Show pre-warning for Phase 3 (at ~38%)",
-	specWarnMalleableGoo		= "Show special warning if you are first $spell:72295 target",
-	specWarnMalleableGooNear	= "Show special warning if you are near first $spell:72295 target",
+	SpecWarnMalleableGoo		= "Show special warning if you are first $spell:72295 target",
+	SpecWarnMalleableGooNear	= "Show special warning if you are near first $spell:72295 target",
 	WarnMutatedPlague			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
@@ -321,8 +321,8 @@ L:SetOptionLocalization{
 	YellOnMalleableGoo			= "Yell on $spell:72295",
 	YellOnUnbound				= "Yell on $spell:72856",
 	GooArrow					= "Show DBM arrow when $spell:72295 is near you",
-	specWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
-	specWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
+	SpecWarnUnboundPlague		= "Show special warning for $spell:72856 transfer",
+	SpecWarnNextPlageSelf		= "Show special warning when you are the next $spell:72856 target",
 	BypassLatencyCheck			= "Don't use latency based sync check for $spell:72295\n(only use this if you're having problems otherwise)"
 }
 
@@ -344,8 +344,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "Switch target to: %s",
 	WarnTargetSwitchSoon	= "Target switch soon",
-	specWarnVortex			= "Shock Vortex on you - Move away",
-	specWarnVortexNear		= "Shock Vortex near you - Watch out"
+	SpecWarnVortex			= "Shock Vortex on you - Move away",
+	SpecWarnVortexNear		= "Shock Vortex near you - Watch out"
 }
 
 L:SetTimerLocalization{
@@ -356,8 +356,8 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "Show warning to switch targets",-- Warn when another Prince needs to be damaged
 	WarnTargetSwitchSoon	= "Show pre-warning to switch targets",-- Every ~47 secs, you have to dps a different Prince
 	TimerTargetSwitch		= "Show timer for target switch cooldown",
-	specWarnVortex			= "Show special warning for $spell:72037 on you",
-	specWarnVortexNear		= "Show special warning for $spell:72037 near you",
+	SpecWarnVortex			= "Show special warning for $spell:72037 on you",
+	SpecWarnVortexNear		= "Show special warning for $spell:72037 near you",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Set icon on the empowered Prince (skull)",
 	RangeFrame				= "Show range frame (12 yards)",
@@ -410,23 +410,23 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion	= "%s on >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
-	warnPortalOpen	= "Portals open"
+	WarnCorrosion	= "%s on >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
+	WarnPortalOpen	= "Portals open"
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen		= "Portals open",
+	TimerPortalsOpen		= "Portals open",
 	TimerBlazingSkeleton	= "Next Blazing Skeleton",
-	timerAbom				= "Next Abomination"
+	TimerAbom				= "Next Abomination"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "Set icon on Blazing Skeleton (skull)",
-	warnPortalOpen				= "Show warning when Nightmare Portals are opened up",
-	timerPortalsOpen			= "Show timer when Nightmare Portals are opened up",
+	WarnPortalOpen				= "Show warning when Nightmare Portals are opened up",
+	TimerPortalsOpen			= "Show timer when Nightmare Portals are opened up",
 	TimerBlazingSkeleton		= "Show timer for next Blazing Skeleton spawn",
-	timerAbom					= "Show timer for next Gluttonous Abomination spawn (Experimental)",
-	warnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
+	TimerAbom					= "Show timer for next Gluttonous Abomination spawn (Experimental)",
+	WarnCorrosion				= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 L:SetMiscLocalization{
@@ -448,27 +448,27 @@ L:SetGeneralLocalization{
 L:SetTimerLocalization{
 	TimerNextAirphase		= "Next air phase",
 	TimerNextGroundphase	= "Next ground phase",
-	achievementMystic		= "Time to clear Mystic stacks"
+	AchievementMystic		= "Time to clear Mystic stacks"
 }
 
 L:SetWarningLocalization{
-	warnPhase2soon			= "Phase 2 soon",
+	WarnPhase2soon			= "Phase 2 soon",
 	WarnAirphase			= "Air phase",
 	WarnGroundphaseSoon		= "Sindragosa landing soon",
-	warnInstability			= "Instability >%d<",
-	warnChilledtotheBone	= "Chilled to the Bone >%d<",
-	warnMysticBuffet		= "Mystic Buffet >%d<"
+	WarnInstability			= "Instability >%d<",
+	WarnChilledtotheBone	= "Chilled to the Bone >%d<",
+	WarnMysticBuffet		= "Mystic Buffet >%d<"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "Announce air phase",
 	WarnGroundphaseSoon		= "Show pre-warning for ground phase",
-	warnPhase2soon			= "Show pre-warning for Phase 2 (at ~38%)",
+	WarnPhase2soon			= "Show pre-warning for Phase 2 (at ~38%)",
 	TimerNextAirphase		= "Show timer for next air phase",
 	TimerNextGroundphase	= "Show timer for next ground phase",
-	warnInstability			= "Show warning for your $spell:69766 stacks",
-	warnChilledtotheBone	= "Show warning for your $spell:70106 stacks",
-	warnMysticBuffet		= "Show warning for your $spell:70128 stacks",
+	WarnInstability			= "Show warning for your $spell:69766 stacks",
+	WarnChilledtotheBone	= "Show warning for your $spell:70106 stacks",
+	WarnMysticBuffet		= "Show warning for your $spell:70128 stacks",
 	AnnounceFrostBeaconIcons= "Announce icons for $spell:70126 targets to raid chat\n(requires announce to be enabled and promoted status)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
@@ -499,13 +499,13 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "Phase 2 transition soon",
 	WarnPhase3Soon			= "Phase 3 transition soon",
 	ValkyrWarning			= ">%s< has been grabbed!",
-	specWarnYouAreValkd		= "You have been grabbed",
-	specWarnDefileCast		= "Defile on you - Move away",
-	specWarnDefileNear		= "Defile near you - Watch out",
-	specWarnTrapNear		= "Shadow Trap near you - Watch out",
-	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<",
-	specWarnPALGrabbed		= "Paladin Healer %s has been grabbed",
-	specWarnPRIGrabbed		= "Priest Healer %s has been grabbed",
+	SpecWarnYouAreValkd		= "You have been grabbed",
+	SpecWarnDefileCast		= "Defile on you - Move away",
+	SpecWarnDefileNear		= "Defile near you - Watch out",
+	SpecWarnTrapNear		= "Shadow Trap near you - Watch out",
+	WarnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<",
+	SpecWarnPALGrabbed		= "Paladin Healer %s has been grabbed",
+	SpecWarnPRIGrabbed		= "Priest Healer %s has been grabbed",
 	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
@@ -519,17 +519,17 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "Show timer for start of combat",
 	TimerRoleplay			= "Show timer for roleplay event",
-	warnNecroticPlagueJump	= "Announce $spell:73912 jump targets",
+	WarnNecroticPlagueJump	= "Announce $spell:73912 jump targets",
 	TimerNecroticPlagueCleanse	= "Show timer to cleanse Necrotic Plague before\nthe first tick",
 	PhaseTransition			= "Show time for phase transitions",
 	WarnPhase2Soon			= "Show pre-warning for Phase 2 transition (at ~73%)",
 	WarnPhase3Soon			= "Show pre-warning for Phase 3 transition (at ~43%)",
 	ValkyrWarning			= "Announce who has been grabbed by Val'kyr Shadowguards",
-	specWarnYouAreValkd		= "Show special warning when you have been grabbed by a Val'kyr Shadowguard",--npc36609
-	specWarnHealerGrabbed	= "Show special warning when a paladin or priest healer has been grabbed\n(requires that healer to be running DBM)",
-	specWarnDefileCast		= "Show special warning for $spell:72762 on you",
-	specWarnDefileNear		= "Show special warning for $spell:72762 near you",
-	specWarnTrapNear		= "Show special warning for $spell:73539 near you",
+	SpecWarnYouAreValkd		= "Show special warning when you have been grabbed by a Val'kyr Shadowguard",--npc36609
+	SpecWarnHealerGrabbed	= "Show special warning when a paladin or priest healer has been grabbed\n(requires that healer to be running DBM)",
+	SpecWarnDefileCast		= "Show special warning for $spell:72762 on you",
+	SpecWarnDefileNear		= "Show special warning for $spell:72762 near you",
+	SpecWarnTrapNear		= "Show special warning for $spell:73539 near you",
 	YellOnDefile			= "Yell on $spell:72762",
 	YellOnTrap				= "Yell on $spell:73539",
 	DefileIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72762),

@@ -12,11 +12,11 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnTrap			= "觸發陷阱! - 亡縛守衛被釋放了"
+	SpecWarnTrap			= "觸發陷阱! - 亡縛守衛被釋放了"
 }
 
 L:SetOptionLocalization{
-	specWarnTrap			= "當觸發陷阱時顯示特別警告",
+	SpecWarnTrap			= "當觸發陷阱時顯示特別警告",
 	SetIconOnDarkReckoning		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69483),
 	SetIconOnDeathPlague		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72865)
 }
@@ -37,13 +37,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnMortalWound			= "%s: >%s< (%s)",
-	specWarnTrap			= "觸發陷阱! - 復仇的血肉收割者 到來"
+	WarnMortalWound			= "%s: >%s< (%s)",
+	SpecWarnTrap			= "觸發陷阱! - 復仇的血肉收割者 到來"
 }
 
 L:SetOptionLocalization{
-	specWarnTrap			= "當觸發陷阱時顯示特別警告",
-	warnMortalWound			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
+	SpecWarnTrap			= "當觸發陷阱時顯示特別警告",
+	WarnMortalWound			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71127, GetSpellInfo(71127) or "unknown")
 }
 
 L:SetMiscLocalization{
@@ -81,7 +81,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	specWarnGosaEvent		= "辛德拉苟莎夾道攻擊開始!"
+	SpecWarnGosaEvent		= "辛德拉苟莎夾道攻擊開始!"
 }
 
 L:SetTimerLocalization{
@@ -89,7 +89,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	specWarnGosaEvent		= "為辛德拉苟莎夾道攻擊顯示特別提示",
+	SpecWarnGosaEvent		= "為辛德拉苟莎夾道攻擊顯示特別提示",
 	GosaTimer			= "為辛德拉苟莎夾道攻擊顯示持續時間計時器"
 }
 
@@ -107,7 +107,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetTimerLocalization{
-	achievementBoned		= "去骨計時"
+	AchievementBoned		= "去骨計時"
 }
 
 L:SetWarningLocalization{
@@ -116,7 +116,7 @@ L:SetWarningLocalization{
 
 L:SetOptionLocalization{
 	WarnImpale			= "提示$spell:69062的目標",
-	achievementBoned		= "為成就:去骨顯示計時器",
+	AchievementBoned		= "為成就:去骨顯示計時器",
 	SetIconOnImpale			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69062)
 }
 
@@ -137,14 +137,14 @@ L:SetWarningLocalization{
 	WarnReanimating			= "小怪再活化",
 	WarnTouchInsignificance		= "%s: >%s< (%s)",
 	WarnAddsSoon			= "新的小怪 即將到來",
-	specWarnVengefulShade		= "你被復仇的暗影盯上了 - 快跑開"
+	SpecWarnVengefulShade		= "你被復仇的暗影盯上了 - 快跑開"
 }
 
 L:SetOptionLocalization{
 	WarnAddsSoon			= "為新的小怪出現顯示預先警告",
 	WarnReanimating			= "當小怪再活化時顯示警告",
 	TimerAdds			= "為新的小怪顯示計時器",
-	specWarnVengefulShade		= "當你被復仇的暗影盯上時顯示特別警告",
+	SpecWarnVengefulShade		= "當你被復仇的暗影盯上時顯示特別警告",
 	ShieldHealthFrame		= "為$spell:70842顯示首領血量框架",
 	WarnTouchInsignificance		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(71204, GetSpellInfo(71204) or "unknown"),	
 	SetIconOnDominateMind		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71289),
@@ -206,7 +206,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnFrenzySoon			= "狂亂 即將到來",
+	WarnFrenzySoon			= "狂亂 即將到來",
 }
 
 L:SetTimerLocalization{
@@ -215,7 +215,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
-	warnFrenzySoon			= "為狂亂顯示預先警告 (大約33%)",
+	WarnFrenzySoon			= "為狂亂顯示預先警告 (大約33%)",
 	BoilingBloodIcons		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72441),
 	RangeFrame			= "顯示距離框 (12碼)",
 	RunePowerFrame			= "顯示首領血量及$spell:72371條",
@@ -267,7 +267,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnOozeSpawn			= "小軟泥怪 出現了",
 	WarnUnstableOoze		= "%s: >%s< (%s)",
-	specWarnLittleOoze		= "你被小軟泥怪盯上了 - 快跑開"
+	SpecWarnLittleOoze		= "你被小軟泥怪盯上了 - 快跑開"
 }
 
 L:SetTimerLocalization{
@@ -277,7 +277,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	NextPoisonSlimePipes		= "為下一次劇毒軟泥管顯示計時器",
 	WarnOozeSpawn			= "為小軟泥的出現顯示警告",
-	specWarnLittleOoze		= "當你被小軟泥怪盯上時顯示特別警告",
+	SpecWarnLittleOoze		= "當你被小軟泥怪盯上時顯示特別警告",
 	RangeFrame			= "顯示距離框 (8碼)",
 	WarnUnstableOoze		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(69558, GetSpellInfo(69558) or "unknown"),
 	InfectionIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(71224),
@@ -302,17 +302,17 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "第2階段 即將到來",
 	WarnPhase3Soon			= "第3階段 即將到來",
 	WarnMutatedPlague		= "%s: >%s< (%s)",
-	specWarnMalleableGoo		= "你中了延展黏液 - 快離開",
-	specWarnMalleableGooNear	= "你附近有人中了延展黏液 - 小心",
-	specWarnUnboundPlague		= "轉移肆虐瘟疫",
-	specWarnNextPlageSelf		= "肆虐瘟疫下次轉移到你身上，準備好!"
+	SpecWarnMalleableGoo		= "你中了延展黏液 - 快離開",
+	SpecWarnMalleableGooNear	= "你附近有人中了延展黏液 - 小心",
+	SpecWarnUnboundPlague		= "轉移肆虐瘟疫",
+	SpecWarnNextPlageSelf		= "肆虐瘟疫下次轉移到你身上，準備好!"
 }
 
 L:SetOptionLocalization{
 	WarnPhase2Soon			= "為第2階段顯示預先警告 (大約83%)",
 	WarnPhase3Soon			= "為第3階段顯示預先警告 (大約38%)",
-	specWarnMalleableGoo		= "當你是$spell:72295第一個目標時顯示特別警告",
-	specWarnMalleableGooNear	= "當你是附近$spell:72295第一個目標時顯示特別警告",
+	SpecWarnMalleableGoo		= "當你是$spell:72295第一個目標時顯示特別警告",
+	SpecWarnMalleableGooNear	= "當你是附近$spell:72295第一個目標時顯示特別警告",
 	WarnMutatedPlague		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72451, GetSpellInfo(72451) or "unknown"),
 	OozeAdhesiveIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70447),
 	GaseousBloatIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70672),
@@ -321,8 +321,8 @@ L:SetOptionLocalization{
 	NextUnboundPlagueTargetIcon	= "為下一個$spell:72856的目標設置標記",
 	YellOnMalleableGoo		= "當你中了$spell:72295時大喊",
 	YellOnUnbound			= "當你中了$spell:72856時大喊",
-	specWarnUnboundPlague		= "為$spell:72856的轉移顯示特別警告",
-	specWarnNextPlageSelf		= "當你是下一個$spell:72856的目標時顯示特別警告",
+	SpecWarnUnboundPlague		= "為$spell:72856的轉移顯示特別警告",
+	SpecWarnNextPlageSelf		= "當你是下一個$spell:72856的目標時顯示特別警告",
 	BypassLatencyCheck		= "不對$spell:72295使用同步延遲查詢\n(只有出現問題時才使用這個)"
 	
 
@@ -346,8 +346,8 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnTargetSwitch		= "轉換目標到: %s",
 	WarnTargetSwitchSoon		= "轉換目標 即將到來",
-	specWarnVortex			= "你中了震擊漩渦 - 快離開",
-	specWarnVortexNear		= "你附近的人中了震擊漩渦 - 小心"
+	SpecWarnVortex			= "你中了震擊漩渦 - 快離開",
+	SpecWarnVortexNear		= "你附近的人中了震擊漩渦 - 小心"
 }
 
 L:SetTimerLocalization{
@@ -358,8 +358,8 @@ L:SetOptionLocalization{
 	WarnTargetSwitch		= "為轉換目標顯示警告",
 	WarnTargetSwitchSoon		= "為轉換目標顯示預先警告",
 	TimerTargetSwitch		= "為轉換目標顯示冷卻計時器",
-	specWarnVortex			= "當你中了$spell:72037時顯示特別警告",
-	specWarnVortexNear		= "當你附近的人中了$spell:72037時顯示特別警告",
+	SpecWarnVortex			= "當你中了$spell:72037時顯示特別警告",
+	SpecWarnVortexNear		= "當你附近的人中了$spell:72037時顯示特別警告",
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)",
 	RangeFrame			= "顯示距離框 (12碼)",
@@ -411,23 +411,23 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	warnCorrosion			= "%s: >%s< (%s)",
-	warnPortalOpen			= "傳送門開啟"
+	WarnCorrosion			= "%s: >%s< (%s)",
+	WarnPortalOpen			= "傳送門開啟"
 }
 
 L:SetTimerLocalization{
-	timerPortalsOpen		= "傳送門開啟",
+	TimerPortalsOpen		= "傳送門開啟",
 	TimerBlazingSkeleton		= "下一次 熾熱骷髏",
-	timerAbom			= "下一次 憎惡體?"
+	TimerAbom			= "下一次 憎惡體?"
 }
 
 L:SetOptionLocalization{
 	SetIconOnBlazingSkeleton	= "為熾熱骷髏設置標記 (頭顱)",
-	warnPortalOpen			= "當夢魘之門開啟時顯示警告",
-	timerPortalsOpen		= "當夢魘之門開啟時顯示計時器",
+	WarnPortalOpen			= "當夢魘之門開啟時顯示警告",
+	TimerPortalsOpen		= "當夢魘之門開啟時顯示計時器",
 	TimerBlazingSkeleton		= "為下一次熾熱骷髏出現顯示計時器",
-	timerAbom			= "為下一次貪吃的憎惡體出現顯示計時器 (測試中)",
-	warnCorrosion			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
+	TimerAbom			= "為下一次貪吃的憎惡體出現顯示計時器 (測試中)",
+	WarnCorrosion			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(70751, GetSpellInfo(70751) or "unknown")
 }
 
 L:SetMiscLocalization{
@@ -449,27 +449,27 @@ L:SetGeneralLocalization{
 L:SetTimerLocalization{
 	TimerNextAirphase		= "下一次 空中階段",
 	TimerNextGroundphase		= "下一次 地上階段",
-	achievementMystic		= "清除秘能連擊疊加"
+	AchievementMystic		= "清除秘能連擊疊加"
 }
 
 L:SetWarningLocalization{
-	warnPhase2soon			= "第2階段 即將到來",
+	WarnPhase2soon			= "第2階段 即將到來",
 	WarnAirphase			= "空中階段",
 	WarnGroundphaseSoon		= "辛德拉苟莎 即將著陸",
-	warnInstability			= "不穩定: >%d<",
-	warnChilledtotheBone		= "徹骨之寒: >%d<",
-	warnMysticBuffet		= "秘能連擊: >%d<"
+	WarnInstability			= "不穩定: >%d<",
+	WarnChilledtotheBone		= "徹骨之寒: >%d<",
+	WarnMysticBuffet		= "秘能連擊: >%d<"
 }
 
 L:SetOptionLocalization{
 	WarnAirphase			= "提示空中階段",
 	WarnGroundphaseSoon		= "為地上階段顯示預先警告",
-	warnPhase2soon			= "為第2階段顯示預先警告 (大約38%)",
+	WarnPhase2soon			= "為第2階段顯示預先警告 (大約38%)",
 	TimerNextAirphase		= "為下一次 空中階段顯示計時器",
 	TimerNextGroundphase		= "為下一次 地上階段顯示計時器",
-	warnInstability			= "為你的$spell:69766堆疊顯示警告",
-	warnChilledtotheBone		= "為你的$spell:70106堆疊顯示警告",
-	warnMysticBuffet		= "為你的$spell:70128堆疊顯示警告",
+	WarnInstability			= "為你的$spell:69766堆疊顯示警告",
+	WarnChilledtotheBone		= "為你的$spell:70106堆疊顯示警告",
+	WarnMysticBuffet		= "為你的$spell:70128堆疊顯示警告",
 	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需開啟團隊廣播及助理權限)",
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
@@ -497,13 +497,13 @@ L:SetWarningLocalization{
 	WarnPhase2Soon			= "轉換第2階段 即將到來",
 	WarnPhase3Soon			= "轉換第3階段 即將到來",
 	ValkyrWarning			= ">%s< 給抓住了!",
-	specWarnYouAreValkd		= "你給抓住了",
-	specWarnDefileCast		= "你中了汙染 - 快離開",
-	specWarnDefileNear		= "你附近的人中了汙染 - 小心",
-	specWarnTrapNear		= "你附近的人中了暗影陷阱 - 小心",
-	warnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上",
-	specWarnPALGrabbed		= "補騎 %s 給抓住了",
-	specWarnPRIGrabbed		= "補牧 %s 給抓住了",
+	SpecWarnYouAreValkd		= "你給抓住了",
+	SpecWarnDefileCast		= "你中了汙染 - 快離開",
+	SpecWarnDefileNear		= "你附近的人中了汙染 - 小心",
+	SpecWarnTrapNear		= "你附近的人中了暗影陷阱 - 小心",
+	WarnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上",
+	SpecWarnPALGrabbed		= "補騎 %s 給抓住了",
+	SpecWarnPRIGrabbed		= "補牧 %s 給抓住了",
 	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
@@ -517,17 +517,17 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerCombatStart		= "為戰鬥開始顯示計時器",
 	TimerRoleplay			= "為角色扮演事件顯示計時器",
-	warnNecroticPlagueJump		= "提示$spell:73912跳躍後的目標",
+	WarnNecroticPlagueJump		= "提示$spell:73912跳躍後的目標",
 	TimerNecroticPlagueCleanse	= "為淨化第一次堆疊前的亡域瘟疫顯示計時器",
 	PhaseTransition			= "為轉換階段顯示計時器",
 	WarnPhase2Soon			= "為轉換第2階段顯示預先警告 (大約73%)",
 	WarnPhase3Soon			= "為轉換第3階段顯示預先警告 (大約43%)",
 	ValkyrWarning			= "提示誰給華爾琪影衛抓住了",
-	specWarnYouAreValkd		= "當你給華爾琪影衛抓住時顯示特別警告",
-	specWarnHealerGrabbed		= "當補騎或補牧給華爾琪影衛抓住時時顯示特別警告",
-	specWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
-	specWarnDefileNear		= "當你附近的人中了$spell:72762時顯示特別警告",
-	specWarnTrapNear		= "當你附近的人中了$spell:73539時顯示特別警告",
+	SpecWarnYouAreValkd		= "當你給華爾琪影衛抓住時顯示特別警告",
+	SpecWarnHealerGrabbed		= "當補騎或補牧給華爾琪影衛抓住時時顯示特別警告",
+	SpecWarnDefileCast		= "當你中了$spell:72762時顯示特別警告",
+	SpecWarnDefileNear		= "當你附近的人中了$spell:72762時顯示特別警告",
+	SpecWarnTrapNear		= "當你附近的人中了$spell:73539時顯示特別警告",
 	YellOnDefile			= "當你中了$spell:72762時大喊",
 	YellOnTrap			= "當你中了$spell:73539時大喊",
 	YellOnValk			= "當你中了$spell:69037時大喊",
