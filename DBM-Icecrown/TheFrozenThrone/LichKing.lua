@@ -376,6 +376,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerVileSpirit:Cancel()
 		timerSoulreaperCD:Cancel()
 		timerDefileCD:Cancel()
+		warnDefileSoon:Cancel()
 	end
 end
 
