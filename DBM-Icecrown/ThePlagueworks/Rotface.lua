@@ -32,7 +32,7 @@ local specWarnStickyOoze		= mod:NewSpecialWarningMove(69774)
 local specWarnOozeExplosion		= mod:NewSpecialWarningRun(69839)
 local specWarnSlimeSpray		= mod:NewSpecialWarningSpell(69508, false)--For people that need a bigger warning to move
 local specWarnRadiatingOoze		= mod:NewSpecialWarningSpell(69760, not mod:IsTank())
-local specWarnLittleOoze		= mod:NewSpecialWarning("specWarnLittleOoze")
+local specWarnLittleOoze		= mod:NewSpecialWarning("SpecWarnLittleOoze")
 local specWarnVileGas			= mod:NewSpecialWarningYou(72272)
 
 local timerStickyOoze			= mod:NewNextTimer(16, 69774, nil, mod:IsTank())

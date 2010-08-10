@@ -34,8 +34,8 @@ local warnEmpoweredShockVortex	= mod:NewCastAnnounce(72039, 4)					-- 4,5sec cas
 local warnKineticBomb			= mod:NewSpellAnnounce(72053, 3, nil, mod:IsRanged())
 local warnDarkNucleus			= mod:NewSpellAnnounce(71943, 1, nil, false)	-- instant cast
 
-local specWarnVortex			= mod:NewSpecialWarning("specWarnVortex")
-local specWarnVortexNear		= mod:NewSpecialWarning("specWarnVortexNear")
+local specWarnVortex			= mod:NewSpecialWarning("SpecWarnVortex")
+local specWarnVortexNear		= mod:NewSpecialWarning("SpecWarnVortexNear")
 local specWarnEmpoweredShockV	= mod:NewSpecialWarningRun(72039)
 local specWarnEmpoweredFlames	= mod:NewSpecialWarningRun(72040)
 local specWarnShadowPrison		= mod:NewSpecialWarningStack(72999, nil, 6)
