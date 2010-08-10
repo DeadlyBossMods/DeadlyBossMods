@@ -255,11 +255,13 @@ L:SetOptionLocalization{
 	RangeFrame			= "Mostrar distancia (8 yardas)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Anunciar los iconos de los objetivos de $spell:69279 en el chat de raid\n(Necesita Anunciar habilitado y ayudante/líder de banda)"
+	AnnounceSporeIcons	= "Anunciar los iconos de los objetivos de $spell:69279 en el chat de banda\n(Necesita Anunciar habilitado y ayudante/líder de banda)",
+	AchievementCheck	= "Anunciar fallo del logro 'Sin vacunas' a la banda\n(requiere líder/ayudante)"
 }
 
 L:SetMiscLocalization{
-	SporeSet	= "Icono {rt%d} de espora de gas en %s"
+	SporeSet	= "Icono {rt%d} de espora de gas en %s",
+	AchievementFailed	= ">> LOGRO FALLADO: %s tiene %d marcas de Inoculado <<"
 }
 
 
@@ -478,10 +480,11 @@ L:SetOptionLocalization{
 	warnInstability			= "Mostrar aviso de tus marcas de $spell:69766",
 	warnChilledtotheBone	= "Mostrar aviso de tus marcas de $spell:70106",
 	warnMysticBuffet		= "Mostrar aviso de tus marcas de $spell:70128",
-	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de raid\n(Requiere 'anunciar' activado y líder/ayudante)",
+	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de banda\n(Requiere 'anunciar' activado y líder/ayudante)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Eliminar todos los iconos antes de la fase aerea",
+	AchievementCheck		= "Anunciar avisos del logro 'Sacúdete' a la banda\n(Requiere líder/ayudante)",
 	RangeFrame				= "Mostrar distancia (10 normal, 20 heroico)\n(Solo mostrará los jugadores marcados)"
 }
 
@@ -489,6 +492,8 @@ L:SetMiscLocalization{
 	YellAirphase	= "¡Aquí termina vuestra incursión! ¡Nadie sobrevivirá!",
 	YellPhase2		= "¡Ahora sentid el poder sin fin de mi maestro y desesperad!",
 	BeaconIconSet	= "Señal de Escarcha, icono {rt%d} en %s",
+	AchievementWarning	= "Aviso: %s tiene 5 marcas de Sacudida mística",
+	AchievementFailed	= ">> LOGRO FALLADO: %s tiene %d marcas de Sacudida mística <<",
 	YellPull		= "¡Estáis locos por haber venido aquí! Los vientos helados de Rasganorte consumirán vuestras almas."
 }
 
@@ -546,7 +551,7 @@ L:SetOptionLocalization{
 	DefileArrow				= "Mostrar flecha cuando $spell:72762 está cerca de ti",
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
 	LKBugWorkaround			= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(Activado por defecto hasta que se arregle un bug de comprovación sincronización)",
-	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de raid\n(necesita 'anunciar' activado y líder/ayudante)"
+	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de banda\n(necesita 'anunciar' activado y líder/ayudante)"
 }
 
 L:SetMiscLocalization{
