@@ -145,7 +145,7 @@ L:SetWarningLocalization({
 L:SetOptionLocalization({
 	WarningHealSoon		= "Mostrar pre-aviso para \"Curar en 3 segudos\" ",
 	WarningHealNow		= "Mostrar aviso para \"Curar Ahora\" ",
-	SporeDamageAlert	= "Enviar susurros y avisar a la raid los jugadores que estén dañando esporas\n (necesita 'anunciar' activado y lider/ayudante)"
+	SporeDamageAlert	= "Enviar susurros y avisar a la banda de los jugadores que estén dañando esporas\n (necesita 'anunciar' activado y lider/ayudante)"
 })
 
 -----------------
@@ -158,7 +158,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	WarningHateful = "Avisar por chat de raid los Golpes de Odio (necesitas ser ayudante o lider para eso)"
+	WarningHateful = "Avisar por chat de banda los Golpes de Odio (necesitas ser ayudante o lider para eso)"
 })
 
 L:SetMiscLocalization({

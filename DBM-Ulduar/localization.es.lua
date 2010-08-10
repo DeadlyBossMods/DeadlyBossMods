@@ -83,8 +83,8 @@ L:SetOptionLocalization{
 	SpecWarnDevouringFlameCast	= "Mostrar aviso especial cuando Llama devoradora se lanze a ti.",
 	timerTurret1			    = "Mostrar aviso para Torreta 1",
 	timerTurret2			    = "Mostrar aviso para Torreta 2",
-	timerTurret3			    = "Mostrar aviso para Torreta 3 ( solo en raid 25 ).",
-	timerTurret4			    = "Mostrar aviso para Torreta 4 ( solo en raid 25 ).",
+	timerTurret3			    = "Mostrar aviso para Torreta 3 ( solo en banda 25 ).",
+	timerTurret4			    = "Mostrar aviso para Torreta 4 ( solo en banda 25 ).",
 	OptionDevouringFlame		= "Mostrar aviso a quien lanza la Llama devoradora ( poco fiable )",
 	timerGrounded		    = "Mostrar cuanto durara en el suelo."
 }
@@ -305,7 +305,7 @@ L:SetTimerLocalization{
 L:SetOptionLocalization{
 	TimerHardmode	= "Mostrar tiempo para hard mode",
 	RangeFrame		= "Mostrar distancia",
-	AnnounceFails	= "Anunciar los fallos de Cargar relámpago en el chat de raid\n(require 'anunciar' habilitado y líder o ayudante de banda)"
+	AnnounceFails	= "Anunciar los fallos de Cargar relámpago en el chat de banda\n(require 'anunciar' habilitado y líder o ayudante de banda)"
 }
 
 L:SetMiscLocalization{

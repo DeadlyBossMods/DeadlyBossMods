@@ -1334,14 +1334,16 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnSaroniteRock			= "Mostrar los objetivos de $spell:70851",
-	specWarnSaroniteRock		= "Mostrar aviso especial cuando seas objetivo de $spell:70851",
-	specWarnSaroniteRockNear	= "Mostrar aviso especial cuando estés cerca del objetivo de $spell:70851",
-	specWarnPermafrost			= "Mostrar aviso cuando tengas mucha $spell:70336 acumulada (11 marcas)",
+	specWarnSaroniteRock		= "Mostrar aviso especial cuando seas objetivo de\n $spell:70851",
+	specWarnSaroniteRockNear	= "Mostrar aviso especial cuando estés cerca del objetivo de\n $spell:70851",
+	specWarnPermafrost			= "Mostrar aviso cuando tengas mucha $spell:70336 acumulada",
+	AchievementCheck			= "Anunciar avisos del logro 'Solo once campanadas' en el chat de grupo",
 	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow			= "¡%s te lanza un pedrusco de saronita enorme!"
+	SaroniteRockThrow			= "¡%s te lanza un pedrusco de saronita enorme!",
+	AchievementFailed	= ">> LOGRO FALLADO: %s tiene %d marcas de Escarcha permanente <<"
 })
 
 -------------------

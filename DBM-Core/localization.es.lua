@@ -75,11 +75,11 @@ DBM_LFG_INVITE						= "Invitación al grupo"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Comandos disponibles:",
-	"/dbm version: comprueba la versión de DBM de toda la raid (alias: ver)",
+	"/dbm version: comprueba la versión de DBM de toda la banda (alias: ver)",
 	"/dbm unlock: muestra una barra de estado desplazable (alias: move)",
 	"/dbm timer <x> <text>: Muestra un contador de <x> segundos con el nombre <text>",
-	"/dbm broadcast timer <x> <text>: Muestra un contador de <x> segundos con el nombre <text> a la raid (requiere lider/ayudante)",
-	"/dbm break <min>: Empieza un descanso de <min> minutos. Muestra a todos los miembros de raid con DBM un contador de descanso (requiere lider/ayudante).",
+	"/dbm broadcast timer <x> <text>: Muestra un contador de <x> segundos con el nombre <text> a la banda (requiere lider/ayudante)",
+	"/dbm break <min>: Empieza un descanso de <min> minutos. Muestra a todos los miembros de banda con DBM un contador de descanso (requiere lider/ayudante).",
 	"/dbm help: muestra esta ayuda",
 }
 
@@ -183,11 +183,11 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Aviso especial"
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "La comprobación de rango de %d yardas no está disponible en esta zona.\nLos rangos disponibles son 10, 11, 15 y 28 yardas."
 
 DBM_ARROW_MOVABLE					= "Flecha movible"
-DBM_ARROW_NO_RAIDGROUP				= "Esta funcionalidad solo puede usarse en grupos de raid o en estancias de raid."
+DBM_ARROW_NO_RAIDGROUP				= "Esta funcionalidad solo puede usarse en grupos de banda o en estancias de banda."
 DBM_ARROW_ERROR_USAGE	= {
 	"Uso de DBM-Arrow:",
 	"/dbm arrow <x> <y>: Crea una flecha que apunta a una dirección específica (0 < x/y < 100)",
-	"/dbm arrow <jugador>: Crea una flecha que apunta a un miembro específico de la raid",
+	"/dbm arrow <jugador>: Crea una flecha que apunta a un miembro específico de la banda",
 	"/dbm arrow hide: Oculta la flecha",
 	"/dbm arrow move: Hace la flecha movible",
 }
