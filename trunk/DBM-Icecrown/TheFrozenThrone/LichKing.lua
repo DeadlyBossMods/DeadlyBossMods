@@ -32,10 +32,10 @@ local warnShamblingHorror	= mod:NewSpellAnnounce(70372, 3) --Phase 1 Add
 local warnDrudgeGhouls		= mod:NewSpellAnnounce(70358, 2) --Phase 1 Add
 local warnShamblingEnrage	= mod:NewTargetAnnounce(72143, 3, nil, mod:IsHealer() or mod:IsTank() or mod:CanRemoveEnrage()) --Phase 1 Add Ability
 local warnNecroticPlague	= mod:NewTargetAnnounce(73912, 4) --Phase 1+ Ability
-local warnNecroticPlagueJump= mod:NewAnnounce("warnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
+local warnNecroticPlagueJump= mod:NewAnnounce("WarnNecroticPlagueJump", 4, 73912) --Phase 1+ Ability
 local warnInfest			= mod:NewSpellAnnounce(73779, 3, nil, mod:IsHealer()) --Phase 1 & 2 Ability
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
-local ValkyrWarning			= mod:NewAnnounce("ValkyrWarning", 3, 71844)--Phase 2 Ability
+local valkyrWarning			= mod:NewAnnounce("ValkyrWarning", 3, 71844)--Phase 2 Ability
 local warnDefileSoon		= mod:NewSoonAnnounce(73708, 3)	--Phase 2+ Ability
 local warnSoulreaper		= mod:NewSpellAnnounce(73797, 4, nil, mod:IsTank() or mod:IsHealer()) --Phase 2+ Ability
 local warnDefileCast		= mod:NewTargetAnnounce(72762, 4) --Phase 2+ Ability
@@ -49,18 +49,18 @@ local warnRestoreSoul		= mod:NewCastAnnounce(73650, 2) --Phase 3 Heroic
 local specWarnSoulreaper	= mod:NewSpecialWarningYou(73797) --Phase 1+ Ability
 local specWarnNecroticPlague= mod:NewSpecialWarningYou(73912) --Phase 1+ Ability
 local specWarnRagingSpirit	= mod:NewSpecialWarningYou(69200) --Transition Add
-local specWarnYouAreValkd	= mod:NewSpecialWarning("specWarnYouAreValkd") --Phase 2+ Ability
-local specWarnPALGrabbed	= mod:NewSpecialWarning("specWarnPALGrabbed", nil, false) --Phase 2+ Ability
-local specWarnPRIGrabbed	= mod:NewSpecialWarning("specWarnPRIGrabbed", nil, false) --Phase 2+ Ability
-local specWarnDefileCast	= mod:NewSpecialWarning("specWarnDefileCast") --Phase 2+ Ability
-local specWarnDefileNear	= mod:NewSpecialWarning("specWarnDefileNear", false) --Phase 2+ Ability
+local specWarnYouAreValkd	= mod:NewSpecialWarning("SpecWarnYouAreValkd") --Phase 2+ Ability
+local specWarnPALGrabbed	= mod:NewSpecialWarning("SpecWarnPALGrabbed", nil, false) --Phase 2+ Ability
+local specWarnPRIGrabbed	= mod:NewSpecialWarning("SpecWarnPRIGrabbed", nil, false) --Phase 2+ Ability
+local specWarnDefileCast	= mod:NewSpecialWarning("SpecWarnDefileCast") --Phase 2+ Ability
+local specWarnDefileNear	= mod:NewSpecialWarning("SpecWarnDefileNear", false) --Phase 2+ Ability
 local specWarnDefile		= mod:NewSpecialWarningMove(73708) --Phase 2+ Ability
 local specWarnWinter		= mod:NewSpecialWarningMove(73791) --Transition Ability
 local specWarnHarvestSoul	= mod:NewSpecialWarningYou(74325) --Phase 3+ Ability
 local specWarnInfest		= mod:NewSpecialWarningSpell(73779, false) --Phase 1+ Ability
 local specwarnSoulreaper	= mod:NewSpecialWarningTarget(73797, mod:IsTank()) --phase 2+
 local specWarnTrap			= mod:NewSpecialWarningYou(73539) --Heroic Ability
-local specWarnTrapNear		= mod:NewSpecialWarning("specWarnTrapNear") --Heroic Ability
+local specWarnTrapNear		= mod:NewSpecialWarning("SpecWarnTrapNear") --Heroic Ability
 local specWarnHarvestSouls	= mod:NewSpecialWarningSpell(74297) --Heroic Ability
 local specWarnValkyrLow		= mod:NewSpecialWarning("SpecWarnValkyrLow", false)
 
@@ -88,7 +88,7 @@ local berserkTimer			= mod:NewBerserkTimer(900)
 
 local soundDefile			= mod:NewSound(72762)
 
-mod:AddBoolOption("specWarnHealerGrabbed", mod:IsTank() or mod:IsHealer(), "announce")
+mod:AddBoolOption("SpecWarnHealerGrabbed", mod:IsTank() or mod:IsHealer(), "announce")
 mod:AddBoolOption("DefileIcon")
 mod:AddBoolOption("NecroticPlagueIcon")
 mod:AddBoolOption("RagingSpiritIcon")
@@ -425,7 +425,7 @@ do
 		if (time() - lastValk) < 10 then    -- scan for like 10secs
 			for i=0, GetNumRaidMembers() do        -- for every raid member check ..
 				if UnitInVehicle("raid"..i) and not valkyrTargets[i] then      -- if person #i is in a vehicle and not already announced 
-					ValkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
+					valkyrWarning:Show(UnitName("raid"..i))  -- UnitName("raid"..i) returns the name of the person who got valkyred
 					valkyrTargets[i] = true          -- this person has been announced
 					if UnitName("raid"..i) == UnitName("player") then
 						specWarnYouAreValkd:Show()

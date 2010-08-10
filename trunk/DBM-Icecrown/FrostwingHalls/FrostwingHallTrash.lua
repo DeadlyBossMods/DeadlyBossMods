@@ -13,7 +13,7 @@ mod:RegisterEvents(
 local warnConflag		= mod:NewTargetAnnounce(71785, 4)
 local warnBanish		= mod:NewTargetAnnounce(71298, 3)
 
-local specWarnGosaEvent	= mod:NewSpecialWarning("specWarnGosaEvent")
+local specWarnGosaEvent	= mod:NewSpecialWarning("SpecWarnGosaEvent")
 local specWarnBlade		= mod:NewSpecialWarningMove(70305)
 
 local timerConflag		= mod:NewTargetTimer(10, 71785)

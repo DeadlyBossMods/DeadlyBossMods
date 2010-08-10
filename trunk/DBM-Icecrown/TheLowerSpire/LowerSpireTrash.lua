@@ -18,7 +18,7 @@ local warnDeathPlague			= mod:NewTargetAnnounce(72865, 4)
 local specWarnDisruptingShout	= mod:NewSpecialWarningCast(71022)
 local specWarnDarkReckoning		= mod:NewSpecialWarningMove(69483)
 local specWarnDeathPlague		= mod:NewSpecialWarningYou(72865)
-local specWarnTrap				= mod:NewSpecialWarning("specWarnTrap")
+local specWarnTrap				= mod:NewSpecialWarning("SpecWarnTrap")
 
 local timerDisruptingShout		= mod:NewCastTimer(3, 71022)
 local timerDarkReckoning		= mod:NewTargetTimer(8, 69483)
