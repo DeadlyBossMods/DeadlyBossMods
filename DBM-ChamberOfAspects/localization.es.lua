@@ -61,7 +61,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Reproducir sonido para \"Muro de Fuego\"",
-	AnnounceFails		= "Spamear en la raid la gente que falle Muro de Fuego y Zona de Vacio (require ayudante/lider)",
+	AnnounceFails		= "Spamear en la banda la gente que falle Muro de Fuego y Zona de Vacio (require ayudante/lider)",
 	TimerTenebron		= "Mostrar tiempo para Tenebron",
 	TimerShadron		= "Mostrar tiempo para Shadron",
 	TimerVesperon		= "Mostrar tiempo para Vesperon",
@@ -82,8 +82,8 @@ L:SetMiscLocalization({
 	NameVesperon	= "Vesperon",
 	FireWallOn		= "Muro de Fuego: %s",
 	VoidZoneOn		= "Zona de vacio: %s",
-	VoidZones		= "Zona de vacio fallos (est raid): %s",
-	FireWalls		= "Muro de Fuego fallos (esta raid): %s"
+	VoidZones		= "Zona de vacio fallos (este intento): %s",
+	FireWalls		= "Muro de Fuego fallos (esta intento): %s"
 })
 
 ------------------------

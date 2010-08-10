@@ -26,7 +26,7 @@ L.Button_OK 		= 'Aceptar'
 L.Button_Cancel 	= 'Cancelar'
 L.Button_LoadMod 	= 'Cargar Modulo'
 L.Mod_Enabled		= "Habilitar modulo de este boss"
-L.Mod_EnableAnnounce	= "Avisar a raid"
+L.Mod_EnableAnnounce	= "Avisar a banda"
 L.Reset 		= "resetear"
 
 L.Enable  		= "habilitar"
@@ -46,7 +46,7 @@ L.Statistic_Heroic	= "heroico"
 -- Tab: General Options
 L.General 		= "Opciones de DBM"
 L.EnableDBM 		= "Habilitar DBM"
-L.EnableStatus 		= "Responder 'estado' a los que te susurren en raid"
+L.EnableStatus 		= "Responder 'estado' a los que te susurren en banda"
 L.AutoRespond 		= "Habilitar auto-responder si estas en un Boss"
 L.EnableMiniMapIcon	= "Mostrar icono de DBM en el mapa"
 L.FixCLEUOnCombatStart		= "Limpiar el log de combate al pullear"
@@ -62,12 +62,12 @@ L.PizzaTimer_Hours 	= "Horas"
 L.PizzaTimer_Mins 	= "Min"
 L.PizzaTimer_Secs 	= "Seg"
 L.PizzaTimer_ButtonStart = "Iniciar"
-L.PizzaTimer_BroadCast	= "Anunciar a Raid"
+L.PizzaTimer_BroadCast	= "Anunciar a Banda"
 
 -- Tab: Raidwarning
-L.Tab_RaidWarning 	= "Avisos a raid"
-L.RaidWarning_Header= "Opciones de aviso de raid"
-L.RaidWarnColors 	= "Colores de Avisos a raid"
+L.Tab_RaidWarning 	= "Avisos a banda"
+L.RaidWarning_Header= "Opciones de aviso de banda"
+L.RaidWarnColors 	= "Colores de Avisos a banda"
 L.RaidWarnColor_1 	= "Color 1"
 L.RaidWarnColor_2 	= "Color 2"
 L.RaidWarnColor_3 	= "Color 3"
@@ -76,11 +76,11 @@ L.InfoRaidWarning	= [[Puedes especificar la posición y los colores del cuadro d
 Este marco se utiliza para mensajes como "El jugador X está afectado por Y"]]
 L.ColorResetted 	= "Los ajustes de color de este campo se han reiniciado"
 L.ShowWarningsInChat 	= "Mostrar avisos en el chat"
-L.ShowFakedRaidWarnings = "Mostrar avisos en el chat de raid"
+L.ShowFakedRaidWarnings = "Mostrar avisos en el chat de banda"
 L.WarningIconLeft 	= "Mostrar icono en el lado izquierdo"
 L.WarningIconRight 	= "Mostrar icono en el lado derecho"
 L.RaidWarnMessage 	= "Gracias por usar Deadly Boss Mods - Español"
-L.BarWhileMove 		= "Avisos de raid se pueden mover"
+L.BarWhileMove 		= "Avisos de banda se pueden mover"
 L.RaidWarnSound		= "Reproducir sonido para aviso-banda"
 L.SpecialWarnSound	= "Reproducir sonido para aviso-especial"
 
@@ -137,7 +137,7 @@ L.BigBrotherAnnounceToRaid		= "Anunciar los resultados de Big Brother a la banda
 
 L.Area_SpamFilter_Outgoing		= "Opciones de Filtro Global"
 L.SpamBlockNoShowAnnounce		= "No mostrar avisos o reproducir sonidos"
-L.SpamBlockNoSendAnnounce		= "No poner mensajes en el chat de raid"
+L.SpamBlockNoSendAnnounce		= "No poner mensajes en el chat de banda"
 L.SpamBlockNoSendWhisper		= "No enviar susurros a otros jugadores"
 L.SpamBlockNoSetIcon			= "No poner iconos en objetivos"
 
