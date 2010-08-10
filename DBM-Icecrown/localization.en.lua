@@ -505,7 +505,8 @@ L:SetWarningLocalization{
 	specWarnTrapNear		= "Shadow Trap near you - Watch out",
 	warnNecroticPlagueJump	= "Necrotic Plague jumped to >%s<",
 	specWarnPALGrabbed		= "Paladin Healer %s has been grabbed",
-	specWarnPRIGrabbed		= "Priest Healer %s has been grabbed"
+	specWarnPRIGrabbed		= "Priest Healer %s has been grabbed",
+	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
 L:SetTimerLocalization{
@@ -540,7 +541,8 @@ L:SetOptionLocalization{
 	DefileArrow				= "Show DBM arrow when $spell:72762 is near you",
 	TrapArrow				= "Show DBM arrow when $spell:73539 is near you",
 	LKBugWorkaround			= "Don't use latency based sync check for defile/shadow trap\n(Default on until a bug in sync check is worked out)",
-	AnnounceValkGrabs		= "Announce Val'kyr Shadowguard grab targets to raid chat\n(requires announce to be enabled and promoted status)"
+	AnnounceValkGrabs		= "Announce Val'kyr Shadowguard grab targets to raid chat\n(requires announce to be enabled and promoted status)",
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
 }
 
 L:SetMiscLocalization{

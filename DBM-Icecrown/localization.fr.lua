@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 
 local L
 
@@ -451,7 +451,8 @@ L:SetWarningLocalization{
 	specWarnDefileNear			= "Profanation à coter de VOUS - Regardez Autour",
 	specWarnTrapNear			= "Piège d'ombre à coter de VOUS - Regardez Autour",
 	warnNecroticPlagueJump		= "La Peste nécrotique a sauter sur >%s<",
-	WarningValkyrSpawned 		= "Val'kyr(s) spawn (%d)"
+	WarningValkyrSpawned 		= "Val'kyr(s) spawn (%d)",
+	SpecWarnValkyrLow		= "Valkyr below 60%"
 }
 
 L:SetTimerLocalization{
@@ -481,7 +482,8 @@ L:SetOptionLocalization{
 	TrapIcon					= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
 	ValkyrIcon					= "Met des icones sur les Valkyrs",
 	DefileArrow					= "Montre les flèches de DBM quand $spell:72762 est à coter de vous",
-	TrapArrow					= "Montre les flèches de DBM quand $spell:73539 est à coter de vous"
+	TrapArrow					= "Montre les flèches de DBM quand $spell:73539 est à coter de vous",
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
 }
 
 L:SetMiscLocalization{
