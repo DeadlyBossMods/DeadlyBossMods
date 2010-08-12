@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_TARGET"
 )
 
 local warnCorrosion		= mod:NewAnnounce("WarnCorrosion", 2, 70751, false)
@@ -45,6 +46,7 @@ local GutSprayTargets = {}
 local spamSupression = 0
 local BlazingSkeletonTimer = 60
 local AbomTimer = 60
+local blazingSkeleton = nil
 
 local function warnGutSprayTargets()
 	warnGutSpray:Show(table.concat(GutSprayTargets, "<, >"))
@@ -84,6 +86,7 @@ function mod:OnCombatStart(delay)
 	timerBlazingSkeleton:Start(-delay)
 	timerAbom:Start(23.5-delay)
 	table.wipe(GutSprayTargets)
+	blazingSkeleton = nil
 end
 
 function mod:Portals()
@@ -99,13 +102,28 @@ function mod:Portals()
 	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 end
 
---[[function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's cast upon spawning)
-		if self.Options.SetIconOnBlazingSkeleton then
-			SetRaidTarget(args.sourceGUID, 8)
+function mod:TrySetTarget()
+	if DBM:GetRaidRank() >= 1 then
+		for i = 1, GetNumRaidMembers() do
+			if UnitGUID("raid"..i.."target") == BlazingSkeleton then
+				BlazingSkeleton = nil
+				SetRaidTarget("raid"..i.."target", 8)
+			end
+			if not BlazingSkeleton then
+				break
+			end
 		end
 	end
-end--]]
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(70754, 71748, 72023, 72024) then--Fireball (its the first spell Blazing SKeleton's cast upon spawning)
+		if self.Options.SetIconOnBlazingSkeleton then
+			blazingSkeleton = args.sourceGUID
+			self:TrySetTarget()
+		end
+	end
+end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(71741) then--Mana Void
@@ -159,6 +177,12 @@ do
 			specWarnManaVoid:Show()
 			lastVoid = time()
 		end
+	end
+end
+
+function mod:UNIT_TARGET()
+	if blazingSkeleton then
+		self:TrySetTarget()
 	end
 end
 
