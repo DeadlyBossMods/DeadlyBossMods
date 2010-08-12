@@ -497,7 +497,7 @@ L:SetWarningLocalization{
 	SpecWarnDefileNear		= "Entweihen in deiner Nähe - Aufpassen",
 	SpecWarnTrapNear		= "Schattenfalle in deiner Nähe - Aufpassen",
 	WarnNecroticPlagueJump	= "Nekrotische Seuche auf >%s< gesprungen",
-	SpecWarnValkyrLow		= "Valkyr below 60%"
+	SpecWarnValkyrLow		= "Valkyr below 55%"
 }
 
 L:SetTimerLocalization{

@@ -517,7 +517,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump	= "Peste necrótica saltó a >%s<",
 	SpecWarnPALGrabbed		= "Paladin Healer %s ha sido agarrado",
 	SpecWarnPRIGrabbed		= "Sacerdote Healer %s ha sido agarrado",
-	SpecWarnValkyrLow		= "Valkyr con menos del 60%"
+	SpecWarnValkyrLow		= "Valkyr con menos del 55%"
 }
 
 L:SetTimerLocalization{

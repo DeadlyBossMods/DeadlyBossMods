@@ -501,7 +501,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)",
 	SpecWarnPALGrabbed		= "Паладина лекаря |3-3(%s) схватили",
 	SpecWarnPRIGrabbed		= "Жреца лекаря |3-3(%s) схватили",
-	SpecWarnValkyrLow		= "Valkyr below 60%"
+	SpecWarnValkyrLow		= "Valkyr below 55%"
 }
 
 L:SetTimerLocalization{
