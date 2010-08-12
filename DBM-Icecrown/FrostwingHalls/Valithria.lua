@@ -3,7 +3,7 @@ local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36789)
---mod:SetUsedIcons(8)
+mod:SetUsedIcons(8)
 mod:RegisterCombat("yell", L.YellPull)
 mod:RegisterKill("yell", L.YellKill)
 
@@ -40,7 +40,7 @@ local timerAbom				= mod:NewTimer(25, "TimerAbom", 43392)--Experimental
 
 local berserkTimer		= mod:NewBerserkTimer(420)
 
---mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
+mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 
 local GutSprayTargets = {}
 local spamSupression = 0
