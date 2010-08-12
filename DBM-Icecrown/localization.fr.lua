@@ -405,7 +405,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnAirphase			= "Phase dans les airs",
-	WarnGroundphaseSoon		= "Sindragosa atterie bientôt",
+	WarnGroundphaseSoon		= "Sindragosa atterrie bientôt",
 	WarnPhase2soon			= "Phase 2 bientôt",
 	WarnInstability			= "Instabiliter >%d<",
 	WarnChilledtotheBone	= "Transi jusqu'aux os >%d<",
