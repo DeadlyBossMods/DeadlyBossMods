@@ -105,11 +105,11 @@ end
 function mod:TrySetTarget()
 	if DBM:GetRaidRank() >= 1 then
 		for i = 1, GetNumRaidMembers() do
-			if UnitGUID("raid"..i.."target") == BlazingSkeleton then
-				BlazingSkeleton = nil
+			if UnitGUID("raid"..i.."target") == blazingSkeleton then
+				blazingSkeleton = nil
 				SetRaidTarget("raid"..i.."target", 8)
 			end
-			if not BlazingSkeleton then
+			if not blazingSkeleton then
 				break
 			end
 		end
