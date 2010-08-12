@@ -506,7 +506,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump		= "괴저 역병 전이 : >%s<",
 	SpecWarnPALGrabbed			= "발키리가 신기 납치 : %s",
 	SpecWarnPRIGrabbed			= "발키리가 사제 납치 : %s",
-	SpecWarnValkyrLow		= "Valkyr below 60%"
+	SpecWarnValkyrLow		= "Valkyr below 55%"
 }
 
 L:SetTimerLocalization{

@@ -504,7 +504,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上",
 	SpecWarnPALGrabbed		= "補騎 %s 給抓住了",
 	SpecWarnPRIGrabbed		= "補牧 %s 給抓住了",
-	SpecWarnValkyrLow		= "Valkyr below 60%"
+	SpecWarnValkyrLow		= "Valkyr below 55%"
 }
 
 L:SetTimerLocalization{
