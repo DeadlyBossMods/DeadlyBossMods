@@ -247,11 +247,13 @@ L:SetOptionLocalization{
 	RangeFrame			= "Показывать окно проверки дистанции (8 м)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:69279 в рейд-чат\n(требуются права помощника)"
+	AnnounceSporeIcons	= "Объявлять метки целей заклинания $spell:69279 в рейд-чат\n(требуются права помощника)",
+	AchievementCheck	= "Объявлять о провале достижения 'Масок нет!' в рейд-чат\n(требуются права помощника)"
 }
 
 L:SetMiscLocalization{
-	SporeSet	= "Метка Газообразных спор {rt%d} установлена на: %s"
+	SporeSet	= "Метка Газообразных спор {rt%d} установлена на: %s",
+	AchievementFailed	= ">> ДОСТИЖЕНИЕ ПРОВАЛЕНО: %s получил %d стаков Невосприимчивости к гнили <<"
 }
 
 ---------------
@@ -320,6 +322,7 @@ L:SetOptionLocalization{
 	NextUnboundPlagueTargetIcon	= "Устанавливать метку на следующую цель заклинания $spell:72856",
 	YellOnMalleableGoo			= "Кричать, когда на вас $spell:72295",
 	YellOnUnbound				= "Кричать, когда на вас $spell:72856",
+	GooArrow					= "Показывать стрелку, когда $spell:72295 около вас",
 	SpecWarnUnboundPlague		= "Спец-предупреждение для передачи заклинания $spell:72856",
 	SpecWarnNextPlageSelf		= "Спец-предупреждение, когда вы являетесь следующей целью\nзаклинания $spell:72856",
 	BypassLatencyCheck			= "Отключить синхр-цию для $spell:72295\n(используйте только в случае возникновения проблем)"
@@ -360,6 +363,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "Устанавливать метку на наполненного силой Принца (череп)",
 	RangeFrame				= "Показывать окно проверки дистанции (12 м)",
+	VortexArrow				= "Показывать стрелку, когда $spell:72037 около вас",
 	BypassLatencyCheck		= "Отключить синхр-цию для $spell:72037\n(используйте только в случае возникновения проблем)"
 }
 
@@ -471,6 +475,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой",
+	AchievementCheck		= "Объявлять предупреждения для достижения 'Таинственная дама' в рейд-чат\n(требуются права помощника)",
 	RangeFrame				= "Показывать игроков с метками в окне проверки дистанции (10 норм., 20 гер.)"
 }
 
@@ -478,6 +483,8 @@ L:SetMiscLocalization{
 	YellAirphase	= "Здесь ваше вторжение и окончится! Никто не уцелеет.",
 	YellPhase2		= "А теперь почувствуйте всю мощь господина и погрузитесь в отчаяние!",
 	BeaconIconSet	= "Ледяная метка {rt%d} установлена на: %s",
+	AchievementWarning	= "Предупреждение: %s получил 5 стаков Таинственной энергии",
+	AchievementFailed	= ">> ДОСТИЖЕНИЕ ПРОВАЛЕНО: %s получил %d стаков Таинственной энергии <<",
 	YellPull		= "Глупцы, зачем вы сюда явились! Ледяные ветра Нордскола унесут ваши души!"
 }
 
@@ -501,7 +508,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump	= "Мертвящая чума перепрыгнула на |3-3(>%s<)",
 	SpecWarnPALGrabbed		= "Паладина лекаря |3-3(%s) схватили",
 	SpecWarnPRIGrabbed		= "Жреца лекаря |3-3(%s) схватили",
-	SpecWarnValkyrLow		= "Valkyr below 55%"
+	SpecWarnValkyrLow		= "У Валь'киры меньше 55%"
 }
 
 L:SetTimerLocalization{
@@ -537,7 +544,7 @@ L:SetOptionLocalization{
 	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас",
 	LKBugWorkaround			= "Отключить синхр-цию для Осквернения и Теневой ловушки\n(вкл. по умолчанию до исправления бага с синхронизацией)",
 	AnnounceValkGrabs		= "Объявлять игроков, схваченных Валь'кирами, в рейд-чат\n(требуются права помощника)",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
+	SpecWarnValkyrLow		= "Спец-предупреждение, когда у Валь'киры меньше 60% HP"
 }
 
 L:SetMiscLocalization{
