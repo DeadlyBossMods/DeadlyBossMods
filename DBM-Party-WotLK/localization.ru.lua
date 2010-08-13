@@ -1284,11 +1284,13 @@ L:SetOptionLocalization({
 	specWarnSaroniteRock		= "Спец-предупреждение, когда вас выбрали целью заклинания \n$spell:70851",
 	specWarnSaroniteRockNear	= "Спец-предупреждение, когда вы около цели заклинания \n$spell:70851",
 	specWarnPermafrost			= "Спец-предупреждение при слишком большом количестве стаков \nзаклинания $spell:70336 (11 стаков)",
+	AchievementCheck			= "Объявлять предупреждения о достижении 'Не жди до одиннадцати!' в чат группы",
 	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow	= "%s швыряет в вас глыбой саронита!"
+	SaroniteRockThrow	= "%s швыряет в вас глыбой саронита!",
+	AchievementFailed	= ">> ДОСТИЖЕНИЕ ПРОВАЛЕНО: %s получил %d стаков Вечной мерзлоты <<"
 })
 
 ----------------------------
