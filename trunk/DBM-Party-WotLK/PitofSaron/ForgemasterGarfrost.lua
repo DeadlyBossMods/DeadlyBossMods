@@ -49,7 +49,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 		if args:IsDestTypePlayer() then
 			if self.Options.AchievementCheck and not warnedfailed then
 				if (args.amount or 1) == 9 or (args.amount or 1) == 10 then
-					SendChatMessage(L.AchievementWarning:format(args.destName), "PARTY")
+					SendChatMessage(L.AchievementWarning:format(args.destName, (args.amount or 1)), "PARTY")
 				elseif (args.amount or 1) > 11 then
 					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "PARTY")
 					warnedfailed = true
