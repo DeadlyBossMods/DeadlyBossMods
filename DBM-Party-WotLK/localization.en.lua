@@ -1166,12 +1166,14 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	TimerCombatStart		= "Show timer for start of combat",
 	warnExplode				= "Show warning when Ghoul Minion is about to explode",
+	AchievementCheck		= "Announce 'I've Had Worse' achievement failure to party",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
-	Pull			= "Well done. You have proven yourself today-",
-	YellCombatEnd	= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
+	Pull				= "Well done. You have proven yourself today-",
+	AchievementFailed	= ">> ACHIEVEMENT FAILED: %s was hit by Ghoul Explode <<",
+	YellCombatEnd		= "My congratulations, champions. Through trials both planned and unexpected, you have triumphed."	-- can also be "No! I must not fail... again ..."
 })
 
 -----------------------
@@ -1287,6 +1289,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	SaroniteRockThrow	= "%s hurls a massive saronite boulder at you!",
+	AchievementWarning	= "Warning: %s has %d stacks of Permafrost",
 	AchievementFailed	= ">> ACHIEVEMENT FAILED: %s has %d stacks of Permafrost <<"
 })
 

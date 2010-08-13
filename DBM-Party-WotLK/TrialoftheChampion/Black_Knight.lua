@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -28,6 +29,13 @@ local timerExplode			= mod:NewCastTimer(4, 67886)
 
 local soundExplode	 		= mod:NewSound(67751, nil, mod:IsMelee())
 mod:AddBoolOption("SetIconOnMarkedTarget", true)
+mod:AddBoolOption("AchievementCheck", false, "announce")
+
+local warnedfailed = false
+
+function mod:OnCombatStart(delay)
+	warnedfailed = false
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(67729, 67886) then							-- Explode (elite explodes self, not BK. Phase 2)
@@ -39,9 +47,23 @@ end
 do 
 	local lastdesecration = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(67781, 67876) and args:IsPlayer() and time() - lastdesecration > 3 then		-- Desecration, MOVE!
+		if args:IsSpellID(67781, 67876) and args:IsPlayer() and time() - lastdesecration > 3 then		-- Desecration
 			specWarnDesecration:Show()
 			lastdesecration = time()
+		elseif args:IsSpellID(67886) and args:IsDestTypePlayer() then
+			if self.Options.AchievementCheck and not warnedfailed then
+				SendChatMessage(L.AchievementFailed:format(args.destName), "PARTY")
+				warnedfailed = true
+			end
+		end
+	end
+end
+
+function mod:SPELL_MISSED(args)
+	if args:IsSpellID(67886) and args:IsDestTypePlayer() then
+		if self.Options.AchievementCheck and not warnedfailed then
+			SendChatMessage(L.AchievementFailed:format(args.destName), "PARTY")
+			warnedfailed = true
 		end
 	end
 end
@@ -65,7 +87,7 @@ do
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg:find(L.Pull) then
+	if msg == L.Pull or msg:find(L.Pull) then
 		timerCombatStart:Start()
 	end
 end
