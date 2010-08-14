@@ -1220,11 +1220,13 @@ L:SetTimerLocalization{
 L:SetOptionLocalization({
 	TimerCombatStart		= "Mostrar tiempo para el inicio del combate",
 	warnExplode		= "Avisar cuando un Necrofago vaya a explotar.",
+	AchievementCheck		= "Anunciar fallo del logro 'Podría ser peor' al grupo",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
 	Pull			= "Bien hecho. Hoy has demostrado algo...",
+	AchievementFailed	= ">> LOGRO FALLADO: %s ha sido alcanzado por Explosión de necrófago <<",
 	YellCombatEnd	= "¡No! No debo fallar... otra vez..."
 })
 
@@ -1343,6 +1345,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	SaroniteRockThrow			= "¡%s te lanza un pedrusco de saronita enorme!",
+	AchievementWarning	= "Aviso: %s tiene %d marcas de Escarcha permanente",
 	AchievementFailed	= ">> LOGRO FALLADO: %s tiene %d marcas de Escarcha permanente <<"
 })
 

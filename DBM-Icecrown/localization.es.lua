@@ -553,7 +553,7 @@ L:SetOptionLocalization{
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
 	LKBugWorkaround			= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(Activado por defecto hasta que se arregle un bug de comprovación sincronización)",
 	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de banda\n(necesita 'anunciar' activado y líder/ayudante)",
-	SpecWarnValkyrLow		= "Mostrar aviso especial cuando la Valkyr está por debajo del 60%"
+	SpecWarnValkyrLow		= "Mostrar aviso especial cuando la Valkyr está por debajo del 55%"
 }
 
 L:SetMiscLocalization{
