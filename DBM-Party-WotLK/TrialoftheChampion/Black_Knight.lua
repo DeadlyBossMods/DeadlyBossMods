@@ -50,7 +50,7 @@ do
 		if args:IsSpellID(67781, 67876) and args:IsPlayer() and time() - lastdesecration > 3 then		-- Desecration
 			specWarnDesecration:Show()
 			lastdesecration = time()
-		elseif args:IsSpellID(67886) and args:IsDestTypePlayer() then
+		elseif args:IsSpellID(67886) then
 			if self.Options.AchievementCheck and not warnedfailed then
 				SendChatMessage(L.AchievementFailed:format(args.destName), "PARTY")
 				warnedfailed = true
@@ -60,7 +60,7 @@ do
 end
 
 function mod:SPELL_MISSED(args)
-	if args:IsSpellID(67886) and args:IsDestTypePlayer() then
+	if args:IsSpellID(67886) then
 		if self.Options.AchievementCheck and not warnedfailed then
 			SendChatMessage(L.AchievementFailed:format(args.destName), "PARTY")
 			warnedfailed = true
