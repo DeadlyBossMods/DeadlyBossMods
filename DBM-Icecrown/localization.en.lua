@@ -35,7 +35,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnMortalWound	= "%s on >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	WarnMortalWound	= "%s on >%s< (%d)",		-- Mortal Wound on >args.destName< (args.amount)
 	SpecWarnTrap	= "Trap Activated! - Vengeful Fleshreapers incoming"--creatureid 37038
 }
 
@@ -133,7 +133,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnReanimating				= "Add reviving",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance		= "%s on >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnTouchInsignificance		= "%s on >%s< (%d)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon				= "New adds soon",
 	SpecWarnVengefulShade		= "Vengeful Shade attacking you - Run Away"--creatureid 38222
 }
@@ -237,7 +237,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	InhaledBlight		= "Inhaled Blight >%d<",
-	WarnGastricBloat	= "%s on >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+	WarnGastricBloat	= "%s on >%s< (%d)",		-- Gastric Bloat on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
@@ -265,7 +265,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Little Ooze spawning",
-	WarnUnstableOoze			= "%s on >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s on >%s< (%d)",			-- Unstable Ooze on >args.destName< (args.amount)
 	SpecWarnLittleOoze			= "Little Ooze attacking you - Run Away"--creatureid 36897
 }
 
@@ -300,7 +300,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon				= "Phase 2 soon",
 	WarnPhase3Soon				= "Phase 3 soon",
-	WarnMutatedPlague			= "%s on >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	WarnMutatedPlague			= "%s on >%s< (%d)",	-- Mutated Plague on >args.destName< (args.amount)
 	SpecWarnMalleableGoo		= "Malleable Goo on you - Move away",
 	SpecWarnMalleableGooNear	= "Malleable Goo near you - Watch out",
 	SpecWarnUnboundPlague		= "Drop off the Unbound Plague",
@@ -410,7 +410,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnCorrosion	= "%s on >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
+	WarnCorrosion	= "%s on >%s< (%d)",		-- Corrosion on >args.destName< (args.amount)
 	WarnPortalOpen	= "Portals open"
 }
 
@@ -542,16 +542,19 @@ L:SetOptionLocalization{
 	TrapArrow				= "Show DBM arrow when $spell:73539 is near you",
 	LKBugWorkaround			= "Don't use latency based sync check for defile/shadow trap\n(Default on until a bug in sync check is worked out)",
 	AnnounceValkGrabs		= "Announce Val'kyr Shadowguard grab targets to raid chat\n(requires announce to be enabled and promoted status)",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP",
+	AnnouncePlagueStack		= "Announce $spell:73912 stacks to raid (10 stacks, every 5 after 10)\n(requires promoted status)"
 }
 
 L:SetMiscLocalization{
-	LKPull			= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",
-	YellDefile		= "Defile on me!",
-	YellTrap		= "Shadow Trap on me!",
-	YellValk		= "I've been grabbed!",
-	LKRoleplay		= "Is it truly righteousness that drives you? I wonder...",
-	PlagueWhisper	= "You have been infected by",
-	ValkGrabbedIcon	= "Valkyr Shadowguard {rt%d} grabbed %s",
-	ValkGrabbed		= "Valkyr Shadowguard grabbed %s"
+	LKPull					= "So the Light's vaunted justice has finally arrived? Shall I lay down Frostmourne and throw myself at your mercy, Fordring?",
+	YellDefile				= "Defile on me!",
+	YellTrap				= "Shadow Trap on me!",
+	YellValk				= "I've been grabbed!",
+	LKRoleplay				= "Is it truly righteousness that drives you? I wonder...",
+	PlagueWhisper			= "You have been infected by",
+	ValkGrabbedIcon			= "Valkyr Shadowguard {rt%d} grabbed %s",
+	ValkGrabbed				= "Valkyr Shadowguard grabbed %s",
+	PlagueStackWarning		= "Warning: %s has %d stacks of Necrotic Plague",
+	AchievementCompleted	= ">> ACHIEVEMENT COMPLETE: %s has %d stacks of Necrotic Plague <<"
 }
