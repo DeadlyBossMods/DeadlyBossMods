@@ -1168,13 +1168,15 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization({
 	TimerCombatStart		= "Отсчет времени до начала боя",
-	warnExplode				= "Предупреждение, когда все вурдалаки-прислужники готовятся к Взрыванию.",
+	warnExplode				= "Предупреждение, когда все вурдалаки-прислужники готовятся к разрыву.",
+	AchievementCheck		= "Объявлять о провале достижения 'Бывало и хуже' в чат группы",
 	SetIconOnMarkedTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(67823)
 })
 
 L:SetMiscLocalization({
-	Pull			= "Великолепно. Сегодня вы в честной борьбе заслужили…",
-	YellCombatEnd	= "Нет! Я не могу... снова... проиграть."
+	Pull				= "Великолепно. Сегодня вы в честной борьбе заслужили…",
+	AchievementFailed	= ">> ДОСТИЖЕНИЕ ПРОВАЛЕНО: %s получил урон от Взрыва вурдалака <<",
+	YellCombatEnd		= "Нет! Я не могу... снова... проиграть."
 })
 
 -----------------------
@@ -1290,6 +1292,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	SaroniteRockThrow	= "%s швыряет в вас глыбой саронита!",
+	AchievementWarning	= "Предупреждение: %s получил 5 стаков Вечной мерзлоты",
 	AchievementFailed	= ">> ДОСТИЖЕНИЕ ПРОВАЛЕНО: %s получил %d стаков Вечной мерзлоты <<"
 })
 
