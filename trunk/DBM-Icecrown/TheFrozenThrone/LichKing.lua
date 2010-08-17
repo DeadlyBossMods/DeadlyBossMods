@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DISPEL",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
@@ -98,6 +99,7 @@ mod:AddBoolOption("HarvestSoulIcon")
 mod:AddBoolOption("YellOnDefile", true, "announce")
 mod:AddBoolOption("YellOnTrap", true, "announce")
 mod:AddBoolOption("AnnounceValkGrabs", false)
+mod:AddBoolOption("AnnouncePlagueStack", false, "announce")
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
 mod:AddBoolOption("LKBugWorkaround", true)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
@@ -402,11 +404,22 @@ do
 			lastRestore = time()
 			timerHarvestSoulCD:Start(60)
 			timerVileSpirit:Start(10)--May be wrong too but we'll see, didn't have enough log for this one.
---			timerSoulreaperCD:Start(2)--seems random anywheres from 2-10seconds after
---			timerDefileCD:Start(2)--seems random anywheres from 2-10seconds after
 		end
 	end
 end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(70338, 73785, 73786, 73787) then	--Necrotic Plague (hop IDs only since they DO fire for >=2 stacks, since function never announces 1 stacks anyways don't need to monitor LK casts/Boss Whispers here)
+		if self.Options.AnnouncePlagueStack and DBM:GetRaidRank() > 0 then
+			if args.amount % 10 == 0 or (args.amount >= 10 and args.amount % 5 == 0) then		-- Warn at 10th stack and every 5th stack if more than 10
+				SendChatMessage(L.PlagueStackWarning:format(args.destName, (args.amount or 1)), "RAID")
+			elseif (args.amount or 1) >= 30 and not warnedAchievement then						-- Announce achievement completed if 30 stacks is reached
+				SendChatMessage(L.AchievementCompleted:format(args.destName, (args.amount or 1)), "RAID_WARNING")
+				warnedAchievement = true
+			end
+		end
+	end
+end	
 
 do
 	local valkIcons = {}
