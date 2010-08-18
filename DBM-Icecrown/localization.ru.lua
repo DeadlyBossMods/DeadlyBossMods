@@ -475,7 +475,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой",
-	AchievementCheck		= "Объявлять предупреждения для достижения 'Таинственная дама' в рейд-чат\n(требуются права помощника)",
+	AchievementCheck		= "Объявлять предупреждения для достижения 'Таинственная дама'\nв рейд-чат (требуются права помощника)",
 	RangeFrame				= "Показывать игроков с метками в окне проверки дистанции (10 норм., 20 гер.)"
 }
 
@@ -545,7 +545,7 @@ L:SetOptionLocalization{
 	LKBugWorkaround			= "Отключить синхр-цию для Осквернения и Теневой ловушки\n(вкл. по умолчанию до исправления бага с синхронизацией)",
 	AnnounceValkGrabs		= "Объявлять игроков, схваченных Валь'кирами, в рейд-чат\n(требуются права помощника)",
 	SpecWarnValkyrLow		= "Спец-предупреждение, когда у Валь'киры меньше 55% HP",
-	AnnouncePlagueStack		= "Объявлять стаки заклинания $spell:73912 в рейд-чат (10 стаков, далее каждые 5)\n(требуются права помощника)"
+	AnnouncePlagueStack		= "Объявлять стаки заклинания $spell:73912 в рейд-чат (10\nстаков, далее каждые 5) (требуются права помощника)"
 }
 
 L:SetMiscLocalization{
