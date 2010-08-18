@@ -542,7 +542,7 @@ L:SetOptionLocalization{
 	TrapArrow					= "주변에 $spell:73539을 할 경우 DBM 화살표 보기",
 	LKBugWorkaround				= "$spell:73539 또는 $spell:72762의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)",	
 	AnnounceValkGrabs			= "발키리가 납치할 때 대상과 대상 공격대 아이콘으로 채팅 알리기\n(알림 권한이 있을 경우)",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 55% HP"
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
