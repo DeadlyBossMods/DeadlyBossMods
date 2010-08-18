@@ -527,7 +527,7 @@ L:SetOptionLocalization{
 	ValkyrIcon				= "Setze Zeichen auf Valkyren",
 	DefileArrow				= "Zeige Pfeil wenn $spell:72762 in deiner Nähe ist",
 	TrapArrow				= "Zeige Pfeil wenn $spell:73539 in deiner Nähe ist",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 55% HP"
 }
 
 L:SetMiscLocalization{
