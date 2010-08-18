@@ -452,7 +452,7 @@ L:SetWarningLocalization{
 	SpecWarnTrapNear			= "Piège d'ombre à coter de VOUS - Regardez Autour",
 	WarnNecroticPlagueJump		= "La Peste nécrotique a sauter sur >%s<",
 	WarningValkyrSpawned 		= "Val'kyr(s) spawn (%d)",
-	SpecWarnValkyrLow		= "Valkyr below 60%"
+	SpecWarnValkyrLow		= "Valkyr below 55%"
 }
 
 L:SetTimerLocalization{
@@ -483,7 +483,7 @@ L:SetOptionLocalization{
 	ValkyrIcon					= "Met des icones sur les Valkyrs",
 	DefileArrow					= "Montre les flèches de DBM quand $spell:72762 est à coter de vous",
 	TrapArrow					= "Montre les flèches de DBM quand $spell:73539 est à coter de vous",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 60% HP"
+	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 55% HP"
 }
 
 L:SetMiscLocalization{
