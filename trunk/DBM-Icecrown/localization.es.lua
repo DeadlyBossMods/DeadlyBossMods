@@ -37,7 +37,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnMortalWound	= "%s en >%s< (%s)",
+	WarnMortalWound	= "%s en >%s< (%d)",
 	SpecWarnTrap	= "¡Trampa activada! ¡Salen Siegacarnes vengativos!"--creatureid 37038
 }
 
@@ -138,7 +138,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnReanimating					= "Resurreccion de Add",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s en >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnTouchInsignificance			= "%s en >%s< (%d)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon					= "Nuevos adds pronto",
 	SpecWarnVengefulShade		= "¡Sombra vengativa te ataca! ¡Corre!"--creatureid 38222
 }
@@ -247,7 +247,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	InhaledBlight		= "Inhalar añublo >%d<",
-	WarnGastricBloat	= "%s en >%s< (%s)"
+	WarnGastricBloat	= "%s en >%s< (%d)"
 }
 
 L:SetOptionLocalization{
@@ -276,7 +276,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Sale moco pequeño",
-	WarnUnstableOoze			= "%s en >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s en >%s< (%d)",			-- Unstable Ooze on >args.destName< (args.amount)
 	SpecWarnLittleOoze			= "¡Moco pequeño te ataca! ¡Corre!" --creatureid 36897
 }
 
@@ -311,7 +311,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon		= "Fase 2 pronto",
 	WarnPhase3Soon		= "Fase 3 pronto",
-	WarnMutatedPlague	= "%s en >%s< (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	WarnMutatedPlague	= "%s en >%s< (%d)",	-- Mutated Plague on >args.destName< (args.amount)
 	SpecWarnMalleableGoo		= "Moco maleable en ti ¡Muévete!",
 	SpecWarnMalleableGooNear	= "Moco maleable cerca de ti ¡Ten cuidado!",
 	SpecWarnUnboundPlague		= "¡Transfiere la Peste desatada!",
@@ -421,7 +421,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnCorrosion	= "%s en >%s< (%s)",
+	WarnCorrosion	= "%s en >%s< (%d)",
 	WarnPortalOpen	= "Se abren los portales"
 }
 
@@ -553,7 +553,8 @@ L:SetOptionLocalization{
 	TrapArrow				= "Mostrar flecha cuando $spell:73539 está cerca de ti",
 	LKBugWorkaround			= "No usar la comprobación de sincronización basada en latencia para profanar/trampa de las sombras\n(Activado por defecto hasta que se arregle un bug de comprovación sincronización)",
 	AnnounceValkGrabs		= "Aunciar el objetivo de Guardia de las Sombras Val'kyr en el chat de banda\n(necesita 'anunciar' activado y líder/ayudante)",
-	SpecWarnValkyrLow		= "Mostrar aviso especial cuando la Valkyr está por debajo del 55%"
+	SpecWarnValkyrLow		= "Mostrar aviso especial cuando la Valkyr está por debajo del 55%",
+	AnnouncePlagueStack		= "Anunciar las marcas de $spell:73912 a la banda (10 marcas, cada 5 después)\n(requiere líder/ayudante)"
 }
 
 L:SetMiscLocalization{
@@ -564,6 +565,8 @@ L:SetMiscLocalization{
 	LKRoleplay		= "¿Me pregunto si de verdad os mueve la... rectitud?",
 	PlagueWhisper	= "Has sido infectado por",
 	ValkGrabbedIcon	= "Val'kyr {rt%d} ha agarrado a %s",
-	ValkGrabbed		= "Val'kyr ha agarrado a %s"
+	ValkGrabbed		= "Val'kyr ha agarrado a %s",
+	PlagueStackWarning		= "Aviso: %s tiene %d marcas de Peste Necrótica",
+	AchievementCompleted	= ">> LOGRO COMPLETADO: %s tiene %d marcas de Peste Necrótica <<"
 }
 
