@@ -37,7 +37,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnMortalWound	= "%s на |3-5(>%s<) (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	WarnMortalWound	= "%s на |3-5(>%s<) (%d)",		-- Mortal Wound on >args.destName< (args.amount)
 	SpecWarnTrap	= "Ловушка активирована! - приближаются Мстительные свежеватели"--creatureid 37038
 }
 
@@ -135,7 +135,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnReanimating				= "Помощник воскрешается",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnTouchInsignificance		= "%s на |3-5(>%s<) (%d)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon				= "Скоро призыв помощников",
 	SpecWarnVengefulShade		= "Мстительный дух атакует вас - бегите"--creatureid 38222
 }
@@ -239,7 +239,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	InhaledBlight		= "Гнилостные испарения в легких >%d<",
-	WarnGastricBloat	= "%s на |3-5(>%s<) (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+	WarnGastricBloat	= "%s на |3-5(>%s<) (%d)",		-- Gastric Bloat on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
@@ -267,7 +267,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "Малый слизнюк",
-	WarnUnstableOoze			= "%s на |3-5(>%s<) (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s на |3-5(>%s<) (%d)",			-- Unstable Ooze on >args.destName< (args.amount)
 	SpecWarnLittleOoze			= "Малый слизнюк атакует вас - бегите"--creatureid 36897
 }
 
@@ -302,7 +302,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon				= "Скоро фаза 2",
 	WarnPhase3Soon				= "Скоро фаза 3",
-	WarnMutatedPlague			= "%s на |3-5(>%s<) (%s)",	-- Mutated Plague on >args.destName< (args.amount)
+	WarnMutatedPlague			= "%s на |3-5(>%s<) (%d)",	-- Mutated Plague on >args.destName< (args.amount)
 	SpecWarnMalleableGoo		= "Вязкая гадость на вас - отбегите",
 	SpecWarnMalleableGooNear	= "Вязкая гадость около вас - остерегайтесь",
 	SpecWarnUnboundPlague		= "Передайте Безудержную чуму",
@@ -412,7 +412,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnCorrosion	= "%s на |3-5(>%s<) (%s)",		-- Corrosion on >args.destName< (args.amount)
+	WarnCorrosion	= "%s на |3-5(>%s<) (%d)",		-- Corrosion on >args.destName< (args.amount)
 	WarnPortalOpen	= "Открытие порталов"
 }
 
@@ -544,16 +544,19 @@ L:SetOptionLocalization{
 	TrapArrow				= "Показывать стрелку, когда $spell:73539 около вас",
 	LKBugWorkaround			= "Отключить синхр-цию для Осквернения и Теневой ловушки\n(вкл. по умолчанию до исправления бага с синхронизацией)",
 	AnnounceValkGrabs		= "Объявлять игроков, схваченных Валь'кирами, в рейд-чат\n(требуются права помощника)",
-	SpecWarnValkyrLow		= "Спец-предупреждение, когда у Валь'киры меньше 55% HP"
+	SpecWarnValkyrLow		= "Спец-предупреждение, когда у Валь'киры меньше 55% HP",
+	AnnouncePlagueStack		= "Объявлять стаки заклинания $spell:73912 в рейд-чат (10 стаков, далее каждые 5)\n(требуются права помощника)"
 }
 
 L:SetMiscLocalization{
-	LKPull			= "Неужели прибыли наконец хваленые силы Света? Мне бросить Ледяную Скорбь и сдаться на твою милость, Фордринг?",
-	YellDefile		= "Осквернение на мне!",
-	YellTrap		= "Теневая ловушка на мне!",
-	YellValk		= "Меня схватили!",
-	LKRoleplay		= "Что движет вами?.. Праведность? Не знаю...",
-	PlagueWhisper	= "Вы заражены",
-	ValkGrabbedIcon	= "Валь'кира {rt%d} схватила %s",
-	ValkGrabbed		= "Валь'кира схватила %s"
+	LKPull					= "Неужели прибыли наконец хваленые силы Света? Мне бросить Ледяную Скорбь и сдаться на твою милость, Фордринг?",
+	YellDefile				= "Осквернение на мне!",
+	YellTrap				= "Теневая ловушка на мне!",
+	YellValk				= "Меня схватили!",
+	LKRoleplay				= "Что движет вами?.. Праведность? Не знаю...",
+	PlagueWhisper			= "Вы заражены",
+	ValkGrabbedIcon			= "Валь'кира {rt%d} схватила %s",
+	ValkGrabbed				= "Валь'кира схватила %s",
+	PlagueStackWarning		= "Предупреждение: %s получил %d стаков Мертвящей чумы",
+	AchievementCompleted	= ">> ДОСТИЖЕНИЕ ВЫПОЛНЕНО: %s получил %d стаков Мертвящей чумы <<"
 }
