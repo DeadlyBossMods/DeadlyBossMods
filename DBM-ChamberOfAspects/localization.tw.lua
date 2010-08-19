@@ -184,6 +184,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	NormalHalion		= "物理 海萊恩",
+	TwilightHalion		= "暮光 海萊恩",
 	MeteorCast		= "天堂也將燃燒!",
 	Phase2			= "在暮光的國度只有磨難在等著你!有膽量的話就進去吧!",
 	Phase3			= "我是光明亦是黑暗!凡人，匍匐在死亡之翼的信使面前吧!",
