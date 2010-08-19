@@ -1281,11 +1281,13 @@ L:SetOptionLocalization({
 	specWarnSaroniteRock		= "當你中了$spell:70851時顯示特別警告",
 	specWarnSaroniteRockNear	= "當你附近有人中了$spell:70851時顯示特別警告",
 	specWarnPermafrost			= "當$spell:70336堆疊太高時顯示特別警告 (11層)",
+	AchievementCheck			= "提示 '別到十一' 的成就警告到隊伍頻道",
 	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
-	SaroniteRockThrow	= "%s對你丟出一大塊薩鋼巨石!"
+	SaroniteRockThrow	= "%s對你丟出一大塊薩鋼巨石!",
+	AchievementFailed	= ">> 成就失敗: %s 已超過 %d 層極寒冰霜 <<"
 })
 
 ----------------------------

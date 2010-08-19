@@ -248,11 +248,13 @@ L:SetOptionLocalization{
 	RangeFrame			= "顯示距離框 (8碼)",
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需開啟團隊廣播及助理權限)"
+	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需開啟團隊廣播及助理權限)",
+	AchievementCheck		= "公佈 '流感疫苗短缺' 成就失敗到團隊頻道\n(需助理權限)"
 }
 
 L:SetMiscLocalization{
-	SporeSet			= "氣體孢子{rt%d}: %s"
+	SporeSet			= "氣體孢子{rt%d}: %s",
+	AchievementFailed		= ">> 成就失敗: %s中了%d層孢子 <<"
 }
 
 ---------------
@@ -321,6 +323,7 @@ L:SetOptionLocalization{
 	NextUnboundPlagueTargetIcon	= "為下一個$spell:72856的目標設置標記",
 	YellOnMalleableGoo		= "當你中了$spell:72295時大喊",
 	YellOnUnbound			= "當你中了$spell:72856時大喊",
+	GooArrow			= "當你附近的人中了$spell:72295時顯示DBM箭頭",
 	SpecWarnUnboundPlague		= "為$spell:72856的轉移顯示特別警告",
 	SpecWarnNextPlageSelf		= "當你是下一個$spell:72856的目標時顯示特別警告",
 	BypassLatencyCheck		= "不對$spell:72295使用同步延遲查詢\n(只有出現問題時才使用這個)"
@@ -363,6 +366,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon		= "設置標記在強力的親王身上 (頭顱)",
 	RangeFrame			= "顯示距離框 (12碼)",
+	VortexArrow			= "當你附近的人中了$spell:72037時顯示DBM箭頭",
 	BypassLatencyCheck		= "不對$spell:72037使用同步延遲查詢\n(只有出現問題時才使用這個)"
 }
 
@@ -411,7 +415,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnCorrosion			= "%s: >%s< (%s)",
+	WarnCorrosion			= "%s: >%s< (%d)",
 	WarnPortalOpen			= "傳送門開啟"
 }
 
@@ -474,6 +478,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase		= "空中階段前清除所有標記",
+	AchievementCheck		= "公佈 '吃到飽' 成就警告到團隊頻道\n(需助理權限)",
 	RangeFrame			= "顯示距離框 (普通10碼, 困難20碼)"
 }
 
@@ -481,6 +486,8 @@ L:SetMiscLocalization{
 	YellAirphase			= "你們的入侵將在此終止!誰也別想存活!",
 	YellPhase2			= "現在，絕望地感受我主無限的力量吧!",
 	BeaconIconSet			= "冰霜信標{rt%d}: %s",
+	AchievementWarning		= "警告: %s中了5層秘能連擊",
+	AchievementFailed		= ">> 成就失敗: %s中了%d層秘能連擊 <<",
 	YellPull			= "你們真是夠蠢了才會來到此地。北裂境的冰冷寒風將吞噬你們的靈魂!"
 }
 
@@ -504,7 +511,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump		= "亡域瘟疫跳到>%s<身上",
 	SpecWarnPALGrabbed		= "補騎 %s 給抓住了",
 	SpecWarnPRIGrabbed		= "補牧 %s 給抓住了",
-	SpecWarnValkyrLow		= "Valkyr below 55%"
+	SpecWarnValkyrLow		= "華爾琪血量低於55%"
 }
 
 L:SetTimerLocalization{
@@ -535,12 +542,14 @@ L:SetOptionLocalization{
 	NecroticPlagueIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73912),
 	RagingSpiritIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69200),
 	TrapIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(73539),
+	HarvestSoulIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(74327),
 	ValkyrIcon			= "為華爾琪影衛設置標記",
 	DefileArrow			= "當你附近的人中了$spell:72762時顯示DBM箭頭",
 	TrapArrow			= "當你附近的人中了$spell:73539時顯示DBM箭頭",
-	LKBugWorkaround		= "不對汙染/暗影陷阱使用同步延遲查詢\n(只有出現問題時才使用這個)",
+	LKBugWorkaround			= "不對汙染/暗影陷阱使用同步延遲查詢\n(預設開啟直至一個錯誤同步發生)",
 	AnnounceValkGrabs		= "提示誰被華爾琪影衛抓住到團隊頻道\n(需開啟團隊廣播及助理權限)",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 55% HP"
+	SpecWarnValkyrLow		= "當華爾琪血量低於55%時顯示特別警告",
+	AnnouncePlagueStack		= "提示$spell:73912層數到團隊頻道 (10層, 10層後每5層提示一次)\n(需開啟助理權限)"
 }
 
 L:SetMiscLocalization{
@@ -551,5 +560,7 @@ L:SetMiscLocalization{
 	LKRoleplay			= "你們的原動力真的是正義感嗎？我很懷疑……",
 	PlagueWhisper			= "你染上了",
 	ValkGrabbedIcon			= "華爾琪影衛{rt%d}抓住了 %s",
-	ValkGrabbed			= "華爾琪影衛抓住了 %s"
+	ValkGrabbed			= "華爾琪影衛抓住了 %s",
+	PlagueStackWarning		= "警告: %s中了%d層亡域瘟疫",
+	AchievementCompleted		= ">> 成就成功: %s中了%d層亡域瘟疫 <<"
 }
