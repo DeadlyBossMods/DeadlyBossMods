@@ -45,7 +45,7 @@ mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 local GutSprayTargets = {}
 local spamSupression = 0
 local BlazingSkeletonTimer = 60
-local AbomTimer = 60
+local AbomTimer = 59.5
 local blazingSkeleton = nil
 
 local function warnGutSprayTargets()
@@ -62,7 +62,7 @@ function mod:StartBlazingSkeletonTimer()
 end
 
 function mod:StartAbomTimer()
-	if AbomTimer >= 60 then--Keep it from dropping below 50
+	if AbomTimer >= 59.5 then--Keep it from dropping below 50
 		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 		AbomTimer = AbomTimer - 5
@@ -80,11 +80,11 @@ function mod:OnCombatStart(delay)
 	warnPortalSoon:Schedule(41)
 	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 	BlazingSkeletonTimer = 60
-	AbomTimer = 60
+	AbomTimer = 59.5
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
-	self:ScheduleMethod(23.5-delay, "StartAbomTimer")
+	self:ScheduleMethod(23-delay, "StartAbomTimer")
 	timerBlazingSkeleton:Start(-delay)
-	timerAbom:Start(23.5-delay)
+	timerAbom:Start(23-delay)
 	table.wipe(GutSprayTargets)
 	blazingSkeleton = nil
 end
