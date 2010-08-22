@@ -1287,12 +1287,14 @@ L:SetOptionLocalization({
 	specWarnSaroniteRock		= "$spell:70851의 대상이 될 경우 특수 경고 보기",
 	specWarnSaroniteRockNear	= "당신 주변에 $spell:70851 대상이 있을 경우 특수 경고 보기",	
 	specWarnPermafrost			= "$spell:70336 중첩이 많을 경우 특수 경고 보기(11 중첩)",
+	AchievementCheck			= "Announce 'Doesn't Go to Eleven' achievement warnings to party chat",	
 	SetIconOnSaroniteRockTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70851)
 })
 
 L:SetMiscLocalization({
 --	SaroniteRockThrow			= "%s|1이;가; 거대한 사로나이트 덩어리를 당신에게 던집니다!"
-	SaroniteRockThrow			= "거대한 사로나이트 덩어리를 당신에게 던집니다!"	
+	SaroniteRockThrow			= "거대한 사로나이트 덩어리를 당신에게 던집니다!",
+	AchievementFailed			= ">> ACHIEVEMENT FAILED: %s has %d stacks of Permafrost <<"	
 })
 
 -------------------
