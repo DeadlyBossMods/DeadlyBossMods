@@ -37,7 +37,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnMortalWound				= "%s : >%s< (%s)",		-- Mortal Wound on >args.destName< (args.amount)
+	WarnMortalWound				= "%s : >%s< (%d)",		-- Mortal Wound on >args.destName< (args.amount)
 	SpecWarnTrap				= "트랩 활성화! - 복수의 육신해체자!"--creatureid 37038
 }
 
@@ -135,7 +135,7 @@ L:SetTimerLocalization{
 
 L:SetWarningLocalization{
 	WarnReanimating					= "이교도 부활",			-- Reanimating an adherent or fanatic
-	WarnTouchInsignificance			= "%s : >%s< (%s)",		-- Touch of Insignificance on >args.destName< (args.amount)
+	WarnTouchInsignificance			= "%s : >%s< (%d)",		-- Touch of Insignificance on >args.destName< (args.amount)
 	WarnAddsSoon					= "곧 새로운 이교도 추가",
 	SpecWarnVengefulShade			= "복수의 망령 공격 - 피하세요!"--creatureid 38222
 }
@@ -240,7 +240,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	InhaledBlight			= "파멸의 역병 들이마심 : >%d<",
-	WarnGastricBloat		= "%s : >%s< (%s)",		-- Gastric Bloat on >args.destName< (args.amount)
+	WarnGastricBloat		= "%s : >%s< (%d)",		-- Gastric Bloat on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
@@ -248,11 +248,13 @@ L:SetOptionLocalization{
 	RangeFrame				= "거리 창 보기(8 미터)",	
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons		= "$spell:69279 대상 공격대 징표 채팅으로 알리기\n(공대장 혹은 권한을 가진 사람만 사용 가능)"
+	AnnounceSporeIcons		= "$spell:69279 대상 공격대 징표 채팅으로 알리기\n(공대장 혹은 권한을 가진 사람만 사용 가능)",
+	AchievementCheck		= "Announce 'Flu Shot Shortage' achievement failure to raid chat\n(requires promoted status)"	
 }
 
 L:SetMiscLocalization{
-	SporeSet				= "가스 포자 징표{rt%d} : %s"
+	SporeSet				= "가스 포자 징표{rt%d} : %s",
+	AchievementFailed		= ">> ACHIEVEMENT FAILED: %s has %d stacks of Inoculated <<"
 }
 
 ---------------
@@ -266,7 +268,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	WarnOozeSpawn				= "작은 수액괴물 생성",
-	WarnUnstableOoze			= "%s : >%s< (%s)",			-- Unstable Ooze on >args.destName< (args.amount)
+	WarnUnstableOoze			= "%s : >%s< (%d)",			-- Unstable Ooze on >args.destName< (args.amount)
 	SpecWarnLittleOoze			= "작은 수액괴물의 공격! - 뛰세요!"--creatureid 36897	
 }
 
@@ -301,7 +303,7 @@ L:SetGeneralLocalization{
 L:SetWarningLocalization{
 	WarnPhase2Soon				= "곧 2 단계",
 	WarnPhase3Soon				= "곧 3 단계",
-	WarnMutatedPlague			= "%s : >%s< (%s)",			-- Mutated Plague on >args.destName< (args.amount)
+	WarnMutatedPlague			= "%s : >%s< (%d)",			-- Mutated Plague on >args.destName< (args.amount)
 	SpecWarnMalleableGoo		= "당신에게 유연한 끈적이 - 이동하세요!",
 	SpecWarnMalleableGooNear	= "당신 주변에 유연한 끈적이 - 벗어나세요!",
 	SpecWarnUnboundPlague		= "고삐 풀린 역병 전달",
@@ -321,6 +323,7 @@ L:SetOptionLocalization{
 	MalleableGooIcon			= "$spell:72295 대상 공격대 징표 설정하기",
 	YellOnMalleableGoo			= "$spell:72295 외치기",
 	YellOnUnbound				= "$spell:72856 말하기",	
+	GooArrow					= "당신 주변의 $spell:72295를 DBM 화살표로 표시",	
 	SpecWarnUnboundPlague		= "$spell:72856 전달자 특수 경고 보기",
 	SpecWarnNextPlageSelf		= "당신이 다음 $spell:72856 대상이 될 때 특수 경고 보기",
 	BypassLatencyCheck			= "$spell:72295의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)"	
@@ -361,6 +364,7 @@ L:SetOptionLocalization{
 	EmpoweredFlameIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(72040),
 	ActivePrinceIcon			= "활성화 된 공작에게 공격대 징표 설정하기 (해골)",
 	RangeFrame					= "거리 창 보기 (12 m)",
+	VortexArrow					= "당신 주변의 $spell:72037를 DBM 화살표로 표시",	
 	BypassLatencyCheck			= "$spell:72037의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)"	
 }
 
@@ -412,14 +416,14 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnCorrosion				= "%s : >%s< (%s)",		-- Corrosion on >args.destName< (args.amount)
+	WarnCorrosion				= "%s : >%s< (%d)",		-- Corrosion on >args.destName< (args.amount)
 	WarnPortalOpen				= "차원문 열림"	
 }
 
 L:SetTimerLocalization{
 	TimerPortalsOpen			= "차원문 열림",
 	TimerBlazingSkeleton		= "다음 타오르는 해골",
-	TimerAbom					= "Next Abomination?"
+	TimerAbom					= "Next Abomination"
 }
 
 L:SetOptionLocalization{
@@ -475,6 +479,7 @@ L:SetOptionLocalization{
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 징표 제거",
+	AchievementCheck			= "Announce 'All You Can Eat' achievement warnings to raid chat\n(requires promoted status)",	
 	RangeFrame					= "거리 창 보기(일반 10m, 영웅 20m) (해당 플레이어만 보임)"
 
 }
@@ -482,7 +487,9 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAirphase			= "여기가 끝이다! 아무도 살아남지 못하리라!",
 	YellPhase2				= "자, 주인님의 무한한 힘을 느끼고 절망에 빠져보아라!",--Now, feel my master's limitless power and despair!",	
-	BeaconIconSet			= "냉기 봉화 징표{rt%d} : %s",	
+	BeaconIconSet			= "냉기 봉화 징표{rt%d} : %s",
+	AchievementWarning		= "Warning: %s has 5 stacks of Mystic Buffet",
+	AchievementFailed		= ">> ACHIEVEMENT FAILED: %s has %d stacks of Mystic Buffet <<",	
 	YellPull				= "여기까지 오다니 너무나 어리석구나. 노스렌드의 얼음 바람이 영혼까지 삼키리라!"--You are fools to have come to this place. The icy winds of Northrend will consume your souls!"
 }
 
@@ -506,7 +513,7 @@ L:SetWarningLocalization{
 	WarnNecroticPlagueJump		= "괴저 역병 전이 : >%s<",
 	SpecWarnPALGrabbed			= "발키리가 신기 납치 : %s",
 	SpecWarnPRIGrabbed			= "발키리가 사제 납치 : %s",
-	SpecWarnValkyrLow		= "Valkyr below 55%"
+	SpecWarnValkyrLow			= "발키리 HP 55% 이하!!"
 }
 
 L:SetTimerLocalization{
@@ -542,7 +549,8 @@ L:SetOptionLocalization{
 	TrapArrow					= "주변에 $spell:73539을 할 경우 DBM 화살표 보기",
 	LKBugWorkaround				= "$spell:73539 또는 $spell:72762의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)",	
 	AnnounceValkGrabs			= "발키리가 납치할 때 대상과 대상 공격대 아이콘으로 채팅 알리기\n(알림 권한이 있을 경우)",
-	SpecWarnValkyrLow		= "Show special warning when Valkyr is below 55% HP"
+	SpecWarnValkyrLow			= "발키리의 HP가 55%이하가 될 경우 특수 경고 보기",
+	AnnouncePlagueStack			= "Announce $spell:73912 stacks to raid (10 stacks, every 5 after 10)\n(requires promoted status)"	
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
@@ -553,5 +561,7 @@ L:SetMiscLocalization{
 	LKRoleplay				= "진정으로 정의에 이끌렸단 말이냐? 궁금하구나...",
 	ValkGrabbedIcon			= "발키리 납치 : {rt%d} %s",
 	ValkGrabbed				= "발키리 납치 : %s",
+	PlagueStackWarning		= "Warning: %s has %d stacks of Necrotic Plague",
+	AchievementCompleted	= ">> ACHIEVEMENT COMPLETE: %s has %d stacks of Necrotic Plague <<",
 	PlagueWhisper			= "에 감염되었습니다!" --역병 전이 : You have been infected by
 }
