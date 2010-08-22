@@ -36,7 +36,7 @@ local timerHealerBuff	= mod:NewBuffActiveTimer(40, 70873)
 local timerGutSpray		= mod:NewTargetTimer(12, 71283, nil, mod:IsTank() or mod:IsHealer())
 local timerCorrosion	= mod:NewTargetTimer(6, 70751, nil, false)
 local timerBlazingSkeleton	= mod:NewTimer(50, "TimerBlazingSkeleton", 17204)
-local timerAbom				= mod:NewTimer(25, "TimerAbom", 43392)--Experimental
+local timerAbom				= mod:NewTimer(50, "TimerAbom", 43392)--Experimental
 
 local berserkTimer		= mod:NewBerserkTimer(420)
 
@@ -45,7 +45,7 @@ mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 local GutSprayTargets = {}
 local spamSupression = 0
 local BlazingSkeletonTimer = 60
-local AbomTimer = 59.5
+local AbomTimer = 59.8
 local blazingSkeleton = nil
 
 local function warnGutSprayTargets()
@@ -62,7 +62,7 @@ function mod:StartBlazingSkeletonTimer()
 end
 
 function mod:StartAbomTimer()
-	if AbomTimer >= 59.5 then--Keep it from dropping below 50
+	if AbomTimer >= 59.8 then--Keep it from dropping below 50
 		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 		AbomTimer = AbomTimer - 5
@@ -80,11 +80,11 @@ function mod:OnCombatStart(delay)
 	warnPortalSoon:Schedule(41)
 	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 	BlazingSkeletonTimer = 60
-	AbomTimer = 59.5
+	AbomTimer = 59.8
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
-	self:ScheduleMethod(23-delay, "StartAbomTimer")
+	self:ScheduleMethod(22.8-delay, "StartAbomTimer")
 	timerBlazingSkeleton:Start(-delay)
-	timerAbom:Start(23-delay)
+	timerAbom:Start(22.8-delay)
 	table.wipe(GutSprayTargets)
 	blazingSkeleton = nil
 end
