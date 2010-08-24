@@ -62,7 +62,7 @@ function mod:StartBlazingSkeletonTimer()
 end
 
 function mod:StartAbomTimer()
-	if AbomTimer >= 55 then--Keep it from dropping below 50
+	if AbomTimer >= 60 then--Keep it from dropping below 55
 		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 		AbomTimer = AbomTimer - 5
@@ -82,9 +82,9 @@ function mod:OnCombatStart(delay)
 	BlazingSkeletonTimer = 60
 	AbomTimer = 60
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
-	self:ScheduleMethod(22.5-delay, "StartAbomTimer")
+	self:ScheduleMethod(23-delay, "StartAbomTimer")
 	timerBlazingSkeleton:Start(-delay)
-	timerAbom:Start(22.5-delay)
+	timerAbom:Start(23-delay)
 	table.wipe(GutSprayTargets)
 	blazingSkeleton = nil
 end
