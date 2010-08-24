@@ -122,21 +122,6 @@ do
 	end
 end
 
-function mod:SPELL_AURA_REFRESH(args)
-	if args:IsSpellID(66013, 67700, 68509, 68510) then  -- Penetrating Cold
-		if args:IsPlayer() then
-			specWarnPCold:Show()
-		end
-		if self.Options.SetIconsOnPCold then
-			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
-			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
-				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
-			end
-		end
-		timerPCold:Show() 
-	end
-end
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(67574) then			-- Pursue
 		if args:IsPlayer() then
@@ -168,6 +153,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerHoP:Start(args.destName)
 	end
 end
+
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(66013, 67700, 68509, 68510) then			-- Penetrating Cold
