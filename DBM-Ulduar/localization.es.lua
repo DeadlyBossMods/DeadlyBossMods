@@ -182,10 +182,10 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellPull				= "Your actions are illogical. All possible results for this encounter have been calculated. The Pantheon will receive the Observer's message regardless of outcome.",--translate
+	YellPull				= "Vuestros actos carecen de lógica. Se ha calculado cualquier posible resultado de este encuentro. El Panteón recibirá el mensaje del Observador sean cuales sean las consecuencias.",
 	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",--translate
-	Emote_CollapsingStar	= "¡%s empieza a invocar Estrellas en colapso!",
-	Phase2					= "Behold the tools of creation",--translate
+	Emote_CollapsingStar	= "¡%s comienza a invocar estrellas en colapso!",
+	Phase2					= "¡Observad las herramientas de la creación!",
 	PullCheck				= "Tiempo hasta que Algalon transmita la señal de auxilio= (%d+) min."
 }
 
