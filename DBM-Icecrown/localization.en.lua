@@ -479,7 +479,9 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase		= "Your incursion ends here! None shall survive!",
+	YellAirphaseDem		= "Rikk zilthuras rikk zila Aman adare tiriosh ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	YellPhase2			= "Now, feel my master's limitless power and despair!",
+	YellPhase2Dem		= "Zar kiel xi romathIs zilthuras revos ruk toralar ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	BeaconIconSet		= "Frost Beacon icon {rt%d} set on %s",
 	AchievementWarning	= "Warning: %s has 5 stacks of Mystic Buffet",
 	AchievementFailed	= ">> ACHIEVEMENT FAILED: %s has %d stacks of Mystic Buffet <<",
