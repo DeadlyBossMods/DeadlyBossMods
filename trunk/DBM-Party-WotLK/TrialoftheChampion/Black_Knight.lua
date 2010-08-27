@@ -47,9 +47,9 @@ end
 do 
 	local lastdesecration = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(67781, 67876) and args:IsPlayer() and time() - lastdesecration > 3 then		-- Desecration
+		if args:IsSpellID(67781, 67876) and args:IsPlayer() and GetTime() - lastdesecration > 3 then		-- Desecration
 			specWarnDesecration:Show()
-			lastdesecration = time()
+			lastdesecration = GetTime()
 		elseif args:IsSpellID(67886) then
 			if self.Options.AchievementCheck and not warnedfailed then
 				SendChatMessage(L.AchievementFailed:format(args.destName), "PARTY")
