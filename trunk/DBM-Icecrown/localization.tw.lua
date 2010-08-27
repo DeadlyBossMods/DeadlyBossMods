@@ -484,7 +484,9 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase			= "你們的入侵將在此終止!誰也別想存活!",
+	YellAirphaseDem			= "Rikk zilthuras rikk zila Aman adare tiriosh ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	YellPhase2			= "現在，絕望地感受我主無限的力量吧!",
+	YellPhase2Dem			= "Zar kiel xi romathIs zilthuras revos ruk toralar ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	BeaconIconSet			= "冰霜信標{rt%d}: %s",
 	AchievementWarning		= "警告: %s中了5層秘能連擊",
 	AchievementFailed		= ">> 成就失敗: %s中了%d層秘能連擊 <<",
