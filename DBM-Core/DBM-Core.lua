@@ -1,4 +1,4 @@
-﻿-- *********************************************************
+-- *********************************************************
 -- **               Deadly Boss Mods - Core               **
 -- **            http://www.deadlybossmods.com            **
 -- *********************************************************
@@ -43,9 +43,9 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.51",
-	DisplayVersion = "4.51 alpha", -- the string that is shown as version
-	ReleaseRevision = 4279 -- the revision of the latest stable version that is available (for /dbm ver2)
+	Version = "4.52",
+	DisplayVersion = "4.53 alpha", -- the string that is shown as version
+	ReleaseRevision = 4401 -- the revision of the latest stable version that is available (for /dbm ver2)
 }
 
 DBM_SavedOptions = {}
