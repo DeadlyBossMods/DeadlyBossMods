@@ -75,10 +75,12 @@ DBM_LFG_INVITE						= "LFG Invite"
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
 	"/dbm version: Performs a raid-wide version check (alias: ver).",
+	"/dbm version2: Performs a raid-wide version check and whispers members who are out of date (alias: ver2).",
 	"/dbm unlock: Shows a movable status bar timer (alias: move).",
 	"/dbm timer <x> <text>: Starts a <x> second DBM Timer with the name <text>.",
 	"/dbm broadcast timer <x> <text>: Broadcasts a <x> second DBM Timer with the name <text> to the raid (requires leader/promoted status).",
 	"/dbm break <min>: Starts a break timer for <min> minutes. Gives all raid members with DBM a break timer (requires leader/promoted status).",
+	"/dbm pull <sec>: Starts a pull timer for <sec> seconds. Gives all raid members with DBM a pull timer (requires leader/promoted status).",
 	"/dbm help: Shows slash command descriptions",
 }
 
