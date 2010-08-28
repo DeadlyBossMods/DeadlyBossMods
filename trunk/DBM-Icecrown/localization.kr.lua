@@ -552,7 +552,7 @@ L:SetOptionLocalization{
 	LKBugWorkaround				= "$spell:73539 또는 $spell:72762의 동기화를 사용하지 않거나 네트워크 체크를 하지 않습니다.\n(만약 DBM 사용에 문제가 생기면 사용하세요.)",	
 	AnnounceValkGrabs			= "발키리가 납치할 때 대상과 대상 공격대 아이콘으로 채팅 알리기\n(알림 권한이 있을 경우)",
 	SpecWarnValkyrLow			= "발키리의 HP가 55%이하가 될 경우 특수 경고 보기",
-	AnnouncePlagueStack			= "Announce $spell:73912 stacks to raid (10 stacks, every 5 after 10)\n(requires promoted status)"	
+	AnnouncePlagueStack			= "$spell:73912의 중첩이 쌓일 경우 공격대에 알리기 (10 중첩, every 5 after 10)\n(공격대 알림 권한이 있을경우)"	
 }
 L:SetMiscLocalization{
 	LKPull					= "그러니까 성스러운 빛이 자랑하던 정의가 마침내 왔다 이건가? 폴드링, 서리한을 내려놓고 자비라도 애걸하라는 건가?",
@@ -563,7 +563,7 @@ L:SetMiscLocalization{
 	LKRoleplay				= "진정으로 정의에 이끌렸단 말이냐? 궁금하구나...",
 	ValkGrabbedIcon			= "발키리 납치 : {rt%d} %s",
 	ValkGrabbed				= "발키리 납치 : %s",
-	PlagueStackWarning		= "Warning: %s has %d stacks of Necrotic Plague",
+	PlagueStackWarning		= "경고: %s의 괴저역병 %d 중첩",
 	AchievementCompleted	= ">> ACHIEVEMENT COMPLETE: %s has %d stacks of Necrotic Plague <<",
 	PlagueWhisper			= "에 감염되었습니다!" --역병 전이 : You have been infected by
 }
