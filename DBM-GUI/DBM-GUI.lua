@@ -275,7 +275,7 @@ do
 	
 	local function replaceSpellLinks(id)
 		local spellId = tonumber(id)
-		local spellName = GetSpellInfo(spellId) or "unknown"
+		local spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		return ("|cff71d5ff|Hspell:%d|h%s|h|r"):format(spellId, spellName)
 	end
 	
@@ -303,7 +303,7 @@ do
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
 		end
-		getglobal(button:GetName() .. 'Text'):SetText(name or "unknown")
+		getglobal(button:GetName() .. 'Text'):SetText(name or DBM_CORE_UNKNOWN)
 		getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
 
 		if textleft then
