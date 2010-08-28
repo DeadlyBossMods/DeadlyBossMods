@@ -109,6 +109,7 @@ DBM.DefaultOptions = {
 	DontSetIcons = false,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
+	SettingsMessageShown
 --	HelpMessageShown = false,
 }
 
@@ -2053,6 +2054,7 @@ do
 		end
 		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
+		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true DBM:AddMsg(DBM_HOW_TO_USE_MOD) end end)
 	end
 end
 
