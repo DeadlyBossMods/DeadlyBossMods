@@ -2666,7 +2666,7 @@ do
 	
 	-- new constructor (auto-localized warnings and options, yay!)
 	local function newAnnounce(self, announceType, spellId, color, icon, optionDefault, optionName, castTime, preWarnTime)
-		spellName = GetSpellInfo(spellId) or "unknown"
+		spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		icon = icon or spellId
 		local text
 		if announceType == "cast" then
@@ -2855,7 +2855,7 @@ do
 	end
 
 	local function newSpecialWarning(self, announceType, spellId, stacks, optionDefault, optionName, noSound, runSound)
-		spellName = GetSpellInfo(spellId) or "unknown"
+		spellName = GetSpellInfo(spellId) or DBM_CORE_UNKNOWN
 		local text = DBM_CORE_AUTO_SPEC_WARN_TEXTS[announceType]:format(spellName) 
 		local obj = setmetatable( -- todo: fix duplicate code
 			{
