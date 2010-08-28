@@ -486,7 +486,9 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase			= "여기가 끝이다! 아무도 살아남지 못하리라!",
+	YellAirphaseDem			= "Rikk zilthuras rikk zila Aman adare tiriosh ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	YellPhase2				= "자, 주인님의 무한한 힘을 느끼고 절망에 빠져보아라!",--Now, feel my master's limitless power and despair!",	
+	YellPhase2Dem			= "Zar kiel xi romathIs zilthuras revos ruk toralar ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	BeaconIconSet			= "냉기 봉화 징표{rt%d} : %s",
 	AchievementWarning		= "Warning: %s has 5 stacks of Mystic Buffet",
 	AchievementFailed		= ">> ACHIEVEMENT FAILED: %s has %d stacks of Mystic Buffet <<",	
