@@ -490,7 +490,9 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellAirphase	= "¡Aquí termina vuestra incursión! ¡Nadie sobrevivirá!",
+	YellAirphaseDem		= "Rikk zilthuras rikk zila Aman adare tiriosh ",--translate
 	YellPhase2		= "¡Ahora sentid el poder sin fin de mi maestro y desesperad!",
+	YellPhase2Dem		= "Zar kiel xi romathIs zilthuras revos ruk toralar ",--translate
 	BeaconIconSet	= "Señal de Escarcha, icono {rt%d} en %s",
 	AchievementWarning	= "Aviso: %s tiene 5 marcas de Sacudida mística",
 	AchievementFailed	= ">> LOGRO FALLADO: %s tiene %d marcas de Sacudida mística <<",
