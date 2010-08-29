@@ -2219,7 +2219,7 @@ do
 	local testSpecialWarning
 	function DBM:DemoMode()
 		if not testMod then
-			testMod = DBM:NewMod("TestMod", "DBM-PvP")	-- temp fix, as it requires a modId
+			testMod = DBM:NewMod("TestMod")
 			testWarning1 = testMod:NewAnnounce("%s", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 			testWarning2 = testMod:NewAnnounce("%s", 2, "Interface\\Icons\\Spell_Shadow_ShadesOfDarkness")
 			testWarning3 = testMod:NewAnnounce("%s", 3, "Interface\\Icons\\Spell_Fire_SelfDestruct")
@@ -2355,7 +2355,7 @@ bossModPrototype.AddMsg = DBM.AddMsg
 
 function bossModPrototype:SetZone(...)
 	if select("#", ...) == 0 then
-		if self.addon.zone and #self.addon.zone > 0 and self.addon.zoneId and #self.addon.zoneId > 0 then
+		if self.addon and self.addon.zone and #self.addon.zone > 0 and self.addon.zoneId and #self.addon.zoneId > 0 then
 			self.zones = {}
 			for i, v in ipairs(self.addon.zone) do
 				self.zones[#self.zones + 1] = v
@@ -2364,7 +2364,7 @@ function bossModPrototype:SetZone(...)
 				self.zones[#self.zones + 1] = v
 			end
 		else
-			self.zones = self.addon.zone and #self.addon.zone > 0 and self.addon.zone or self.addon.zoneId and #self.addon.zoneId > 0 and self.addon.zoneId or {}
+			self.zones = self.addon and (self.addon.zone and #self.addon.zone > 0 and self.addon.zone or self.addon.zoneId and #self.addon.zoneId > 0 and self.addon.zoneId) or {}
 		end
 	elseif select(1, ...) ~= DBM_DISABLE_ZONE_DETECTION then
 		self.zones = {...}
