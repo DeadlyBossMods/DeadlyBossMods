@@ -216,7 +216,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		warnPhase2:Show()
 		timerShadowBreathCD:Start(25)
 		timerShadowConsumptionCD:Start(20)--not exact, 15 seconds from tank aggro, but easier to add 5 seconds to it as a estimate timer than trying to detect this
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then --These i'm not sure if they start regardless of drake aggro, or if it should be moved too.
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then --These i'm not sure if they start regardless of drake aggro, or if they are also based on actual aggro.
 			timerTwilightCutterCD:Start(30)
 		else
 			timerTwilightCutterCD:Start(35)
@@ -239,6 +239,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.twilightcutter or msg:find(L.twilightcutter) then
 			specWarnTwilightCutter:Schedule(5)
 		if not self.Options.AnnounceAlternatePhase then
+			timerTwilightCutterCD:Cancel()
 			warningTwilightCutter:Show()
 			timerTwilightCutterCast:Start()
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
@@ -253,6 +254,7 @@ end
 function mod:OnSync(msg, target)
 	if msg == "TwilightCutter" then
 		if self.Options.AnnounceAlternatePhase then
+			timerTwilightCutterCD:Cancel()
 			warningTwilightCutter:Show()
 			timerTwilightCutterCast:Start()
 			timerTwilightCutter:Schedule(5)--Delay it since it happens 5 seconds after the emote
