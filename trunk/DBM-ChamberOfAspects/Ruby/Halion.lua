@@ -137,7 +137,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		if not self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(args.destName)
 			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
-				SendChatMessage(L.WhisperConsumption, "WHISPER", "COMMON", args.destName)
+				self:SendWhisper(L.WhisperConsumption, args.destName)
 			end
 		end
 		if mod:LatencyCheck() then
@@ -157,7 +157,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		if not self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(args.destName)
 			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
-				SendChatMessage(L.WhisperCombustion, "WHISPER", "COMMON", args.destName)
+				self:SendWhisper(L.WhisperCombustion, args.destName)
 			end
 		end
 		if mod:LatencyCheck() then
@@ -266,14 +266,14 @@ function mod:OnSync(msg, target)
 		if self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(target)
 			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
-				SendChatMessage(L.WhisperConsumption, "WHISPER", "COMMON", target)
+				self:SendWhisper(L.WhisperConsumption, args.destName)
 			end
 		end
 	elseif msg == "FieryTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(target)
 			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
-				SendChatMessage(L.WhisperCombustion, "WHISPER", "COMMON", target)
+				self:SendWhisper(L.WhisperCombustion, args.destName)
 			end
 		end
 	elseif msg == "ShadowCD" then
