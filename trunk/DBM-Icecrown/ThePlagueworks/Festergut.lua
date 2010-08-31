@@ -88,6 +88,7 @@ function mod:OnCombatStart(delay)
 	timerGasSporeCD:Start(20-delay)--This may need tweaking
 	table.wipe(gasSporeTargets)
 	table.wipe(vileGasTargets)
+	table.wipe(gasSporeIconTargets)
 	gasSporeIcon = 8
 	gasSporeCast = 0
 	lastGoo = 0

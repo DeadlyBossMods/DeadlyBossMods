@@ -74,6 +74,7 @@ function mod:OnCombatStart(delay)
 	timerSubmerge:Start(80-delay)
 	enrageTimer:Start(-delay)
 	timerFreezingSlash:Start(-delay)
+	table.wipe(PColdTargets)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Schedule(25.5-delay)
@@ -135,6 +136,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		warnPursue:Show(args.destName)
 	elseif args:IsSpellID(66013, 67700, 68509, 68510) then		-- Penetrating Cold
+		timerPCold:Show()
 		if args:IsPlayer() then
 			specWarnPCold:Show()
 		end
@@ -144,7 +146,6 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
 			end
 		end
-		timerPCold:Show() 
 	elseif args:IsSpellID(66012) then							-- Freezing Slash
 		warnFreezingSlash:Show(args.destName)
 		timerFreezingSlash:Start()
