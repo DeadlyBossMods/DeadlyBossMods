@@ -2467,10 +2467,10 @@ function bossModPrototype:GetDifficulty()
 		end
 	else -- support for "old" instances
 		if GetInstanceDifficulty() == 1 then 
-			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC") and "normal5" or 
+			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "normal5" or 
 			self.hasHeroic and "normal10" or "heroic10" 
 		elseif GetInstanceDifficulty() == 2 then 
-			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC") and "heroic5" or 
+			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "heroic5" or 
 			self.hasHeroic and "normal25" or "heroic25" 
 		elseif GetInstanceDifficulty() == 3 then 
 			return "heroic10" 
