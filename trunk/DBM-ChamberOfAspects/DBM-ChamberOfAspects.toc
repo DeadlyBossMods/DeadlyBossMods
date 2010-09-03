@@ -29,7 +29,7 @@
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
 ## X-DBM-Mod-Name-esES: Cámara de los Aspectos
 ## X-DBM-Mod-Name-esMX: Cámara de los Aspectos
-## X-DBM-Mod-Sort: 1
+## X-DBM-Mod-Sort: 201
 --## X-DBM-Mod-LoadZoneID: 532,610
 ## X-DBM-Mod-LoadZone: The Obsidian Sanctum,The Ruby Sanctum
 ## X-DBM-Mod-LoadZone-deDE: Das Obsidiansanktum,Das Rubinsanktum

@@ -17,7 +17,7 @@
 ## X-DBM-Mod-Name-zhTW: 奧杜亞
 ## X-DBM-Mod-Name-zhCN: 奥杜尔
 ## X-DBM-Mod-Name-esES: Ulduar
-## X-DBM-Mod-Sort: 4
+## X-DBM-Mod-Sort: 204
 --## X-DBM-Mod-LoadZoneID: 530
 ## X-DBM-Mod-LoadZone: Ulduar
 ## X-DBM-Mod-LoadZone-frFR: Ulduar

@@ -31,7 +31,7 @@
 ## X-DBM-Mod-Name-zhCN: 冰冠堡垒
 ## X-DBM-Mod-Name-esES: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Name-esMX: Ciudadela de la Corona de Hielo
-## X-DBM-Mod-Sort: 0
+## X-DBM-Mod-Sort: 200
 --## X-DBM-Mod-LoadZoneID: 605
 ## X-DBM-Mod-LoadZone: Icecrown Citadel
 ## X-DBM-Mod-LoadZone-deDE: Eiskronenzitadelle
