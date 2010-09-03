@@ -444,7 +444,7 @@ do
 		self.flashing = nil
 		self:Update(0)
 		self.flashing = nil
-		getglobal(self.frame:GetName().."BarSpark"):SetAlpha(1)
+		_G[self.frame:GetName().."BarSpark"]:SetAlpha(1)
 	end
 	function DBT:CreateDummyBar()
 		dummyBars = dummyBars + 1
@@ -549,20 +549,20 @@ function barPrototype:SetElapsed(elapsed)
 end
 
 function barPrototype:SetText(text)
-	getglobal(self.frame:GetName().."BarName"):SetText(text)
+	_G[self.frame:GetName().."BarName"]:SetText(text)
 end
 
 function barPrototype:SetIcon(icon)
-	getglobal(self.frame:GetName().."BarIcon1"):SetTexture("")
-	getglobal(self.frame:GetName().."BarIcon1"):SetTexture(icon)
-	getglobal(self.frame:GetName().."BarIcon2"):SetTexture("")
-	getglobal(self.frame:GetName().."BarIcon2"):SetTexture(icon)
+	_G[self.frame:GetName().."BarIcon1"]:SetTexture("")
+	_G[self.frame:GetName().."BarIcon1"]:SetTexture(icon)
+	_G[self.frame:GetName().."BarIcon2"]:SetTexture("")
+	_G[self.frame:GetName().."BarIcon2"]:SetTexture(icon)
 end
 
 function barPrototype:SetColor(color)
 	self.color = color
-	getglobal(self.frame:GetName().."Bar"):SetStatusBarColor(color.r, color.g, color.b)
-	getglobal(self.frame:GetName().."BarSpark"):SetVertexColor(color.r, color.g, color.b)
+	_G[self.frame:GetName().."Bar"]:SetStatusBarColor(color.r, color.g, color.b)
+	_G[self.frame:GetName().."BarSpark"]:SetVertexColor(color.r, color.g, color.b)
 end
 
 ------------------
@@ -570,10 +570,10 @@ end
 ------------------
 function barPrototype:Update(elapsed)
 	local frame = self.frame
-	local bar = getglobal(frame:GetName().."Bar")
-	local texture = getglobal(frame:GetName().."BarTexture")
-	local spark = getglobal(frame:GetName().."BarSpark")
-	local timer = getglobal(frame:GetName().."BarTimer")
+	local bar = _G[frame:GetName().."Bar"]
+	local texture = _G[frame:GetName().."BarTexture"]
+	local spark = _G[frame:GetName().."BarSpark"]
+	local timer = _G[frame:GetName().."BarTimer"]
 	local obj = self.owner
 	self.timer = self.timer - elapsed
 	if obj.options.DynamicColor and not self.color then
@@ -748,13 +748,13 @@ end
 
 function barPrototype:ApplyStyle()
 	local frame = self.frame
-	local bar = getglobal(frame:GetName().."Bar")
-	local spark = getglobal(frame:GetName().."BarSpark")
-	local texture = getglobal(frame:GetName().."BarTexture")
-	local icon1 = getglobal(frame:GetName().."BarIcon1")
-	local icon2 = getglobal(frame:GetName().."BarIcon2")
-	local name = getglobal(frame:GetName().."BarName")
-	local timer = getglobal(frame:GetName().."BarTimer")
+	local bar = _G[frame:GetName().."Bar"]
+	local spark = _G[frame:GetName().."BarSpark"]
+	local texture = _G[frame:GetName().."BarTexture"]
+	local icon1 = _G[frame:GetName().."BarIcon1"]
+	local icon2 = _G[frame:GetName().."BarIcon2"]
+	local name = _G[frame:GetName().."BarName"]
+	local timer = _G[frame:GetName().."BarTimer"]
 	texture:SetTexture(self.owner.options.Texture)
 	if self.color then
 		bar:SetStatusBarColor(self.color.r, self.color.g, self.color.b)
@@ -819,7 +819,7 @@ function barPrototype:Announce()
 	if self.owner.announceHook then
 		msg = self.owner.announceHook(self)
 	end
-	msg = msg or ("%s  %d:%02d"):format(getglobal(self.frame:GetName().."BarName"):GetText(), math.floor(self.timer / 60), self.timer % 60)
+	msg = msg or ("%s  %d:%02d"):format(_G[self.frame:GetName().."BarName"]:GetText(), math.floor(self.timer / 60), self.timer % 60)
 	local chatWindow = ChatEdit_GetActiveWindow()
 	if chatWindow then
 		chatWindow:Insert(msg)
@@ -913,7 +913,7 @@ function barPrototype:AnimateEnlarge(elapsed)
 		self.frame:SetPoint(self.movePoint, self.moveAnchor, self.moveRelPoint, newX, newY)
 		self.frame:SetScale(newScale)
 		self.frame:SetWidth(newWidth)
-		getglobal(self.frame:GetName().."Bar"):SetWidth(newWidth)
+		_G[self.frame:GetName().."Bar"]:SetWidth(newWidth)
 	else
 		self.moving = nil
 		self.enlarged = true

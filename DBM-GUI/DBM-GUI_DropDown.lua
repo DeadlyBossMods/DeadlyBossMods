@@ -79,7 +79,7 @@ do
 		if self:GetParent().dropdown.callfunc then
 			self:GetParent().dropdown.callfunc(self.entry.value)
 		end
-		getglobal(self:GetParent().dropdown:GetName().."Text"):SetText(self.entry.text)
+		_G[self:GetParent().dropdown:GetName().."Text"]:SetText(self.entry.text)
 	end
 
 	TabFrame1.buttons = {}
@@ -181,8 +181,8 @@ do
 		dropdown.values = values
 		dropdown.callfunc = callfunc
 		dropdown:SetWidth((width or 120)+30)	-- required to fix some setpoint problems
-		getglobal(dropdown:GetName().."Middle"):SetWidth(width or 120)
-		getglobal(dropdown:GetName().."Button"):SetScript("OnClick", function(self)
+		_G[dropdown:GetName().."Middle"]:SetWidth(width or 120)
+		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
 			PlaySound("igMainMenuOptionCheckBoxOn")
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
@@ -197,7 +197,7 @@ do
 
 		for k,v in next, dropdown.values do
 			if v.value ~= nil and v.value == selected or v.text == selected then
-				getglobal(dropdown:GetName().."Text"):SetText(v.text)
+				_G[dropdown:GetName().."Text"]:SetText(v.text)
 				dropdown.value = v.value
 				dropdown.text = v.text
 			end

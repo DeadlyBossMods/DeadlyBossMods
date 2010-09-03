@@ -138,7 +138,7 @@ do
 		area.mytype = "area"
 		area:SetBackdropBorderColor(0.4, 0.4, 0.4)
 		area:SetBackdropColor(0.15, 0.15, 0.15, 0.5)
-		getglobal(FrameTitle..self:GetCurrentID()..'Title'):SetText(name)
+		_G[FrameTitle..self:GetCurrentID()..'Title']:SetText(name)
 		if width ~= nil and width < 0 then
 			area:SetWidth( self.frame:GetWidth() -12 + width)
 		else
@@ -294,8 +294,8 @@ do
 			name = name:gsub("%$spell:(%d+)", replaceSpellLinks)
 		end
 		if name and name:find("|H") then -- ...and replace it with a SimpleHTML frame
-			setglobal(button:GetName().."Text", CreateFrame("SimpleHTML", button:GetName().."Text", button))
-			local html = getglobal(button:GetName().."Text")
+			_G[button:GetName().."Text"] = CreateFrame("SimpleHTML", button:GetName().."Text", button)
+			local html = _G[button:GetName().."Text"]
 			html:SetHeight(12)
 			html:SetFontObject("GameFontNormal")
 			html:SetPoint("LEFT", button, "RIGHT", 0, 1)
@@ -303,15 +303,15 @@ do
 			html:SetScript("OnHyperlinkEnter", onHyperlinkEnter)
 			html:SetScript("OnHyperlinkLeave", onHyperlinkLeave)
 		end
-		getglobal(button:GetName() .. 'Text'):SetText(name or DBM_CORE_UNKNOWN)
-		getglobal(button:GetName() .. 'Text'):SetWidth( self.frame:GetWidth() - 50 )
+		_G[button:GetName() .. 'Text']:SetText(name or DBM_CORE_UNKNOWN)
+		_G[button:GetName() .. 'Text']:SetWidth( self.frame:GetWidth() - 50 )
 
 		if textleft then
-			getglobal(button:GetName() .. 'Text'):ClearAllPoints()
-			getglobal(button:GetName() .. 'Text'):SetPoint("RIGHT", button, "LEFT", 0, 0)
-			getglobal(button:GetName() .. 'Text'):SetJustifyH("RIGHT")
+			_G[button:GetName() .. 'Text']:ClearAllPoints()
+			_G[button:GetName() .. 'Text']:SetPoint("RIGHT", button, "LEFT", 0, 0)
+			_G[button:GetName() .. 'Text']:SetJustifyH("RIGHT")
 		else
-			getglobal(button:GetName() .. 'Text'):SetJustifyH("LEFT")
+			_G[button:GetName() .. 'Text']:SetJustifyH("LEFT")
 		end
 		
 		if dbmvar and DBM.Options[dbmvar] ~= nil then
@@ -355,7 +355,7 @@ do
 	function PanelPrototype:CreateEditBox(text, value, width, height)
 		local textbox = CreateFrame('EditBox', FrameTitle..self:GetNewID(), self.frame, 'DBM_GUI_FrameEditBoxTemplate')
 		textbox.mytype = "textbox"
-		getglobal(FrameTitle..self:GetCurrentID().."Text"):SetText(text)
+		_G[FrameTitle..self:GetCurrentID().."Text"]:SetText(text)
 		textbox:SetWidth(width or 100)
 		textbox:SetHeight(height or 20)
 		textbox:SetScript("OnEscapePressed", unfocus)
@@ -424,8 +424,8 @@ do
 		slider:SetMinMaxValues(low, high)
 		slider:SetValueStep(step)
 		slider:SetWidth(framewidth or 180)
-		getglobal(FrameTitle..self:GetCurrentID()..'Text'):SetText(text)
-		slider:SetScript("OnValueChanged", onValueChanged(getglobal(FrameTitle..self:GetCurrentID()..'Text'), text))
+		_G[FrameTitle..self:GetCurrentID()..'Text']:SetText(text)
+		slider:SetScript("OnValueChanged", onValueChanged(_G[FrameTitle..self:GetCurrentID()..'Text'], text))
 		self:SetLastObj(slider)
 		return slider
 	end
@@ -505,8 +505,8 @@ function PanelPrototype:CreateButton(title, width, height, onclick, FontObject)
 		button:SetNormalFontObject(FontObject);
 		button:SetHighlightFontObject(FontObject);		
 	end
-	if getglobal(button:GetName().."Text"):GetStringWidth() > button:GetWidth() then
-		button:SetWidth( getglobal(button:GetName().."Text"):GetStringWidth() + 25 )
+	if _G[button:GetName().."Text"]:GetStringWidth() > button:GetWidth() then
+		button:SetWidth( _G[button:GetName().."Text"]:GetStringWidth() + 25 )
 	end
 
 	self:SetLastObj(button)
@@ -713,7 +713,7 @@ end
 local UpdateAnimationFrame
 do
 	local function HideScrollBar(frame)
-		local list = getglobal(frame:GetName() .. "List");
+		local list = _G[frame:GetName() .. "List"];
 		list:Hide();
 		local listWidth = list:GetWidth();
 		for _, button in next, frame.buttons do
@@ -722,7 +722,7 @@ do
 	end
 
 	local function DisplayScrollBar(frame)
-		local list = getglobal(frame:GetName() .. "List");
+		local list = _G[frame:GetName() .. "List"];
 		list:Show();
 		local listWidth = list:GetWidth();
 		for _, button in next, frame.buttons do
@@ -737,7 +737,7 @@ do
 	-- This function is for internal use.
 	-- Function to update the left scrollframe buttons with the menu entries
 	function DBM_GUI_OptionsFrame:UpdateMenuFrame(listframe)
-		local offset = getglobal(listframe:GetName().."List").offset;
+		local offset = _G[listframe:GetName().."List"].offset;
 		local buttons = listframe.buttons;
 		local TABLE 
 
@@ -769,12 +769,12 @@ do
 		end
 	
 		if ( numAddOnCategories > numButtons ) then
-			getglobal(listframe:GetName().."List"):Show();
-			getglobal(listframe:GetName().."ListScrollBar"):SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
-			getglobal(listframe:GetName().."ListScrollBar"):SetValueStep( buttons[1]:GetHeight() )
+			_G[listframe:GetName().."List"]:Show();
+			_G[listframe:GetName().."ListScrollBar"]:SetMinMaxValues(0, (numAddOnCategories - numButtons) * buttons[1]:GetHeight());
+			_G[listframe:GetName().."ListScrollBar"]:SetValueStep( buttons[1]:GetHeight() )
 		else
-			getglobal(listframe:GetName().."ListScrollBar"):SetValue(0);
-			getglobal(listframe:GetName().."List"):Hide();
+			_G[listframe:GetName().."ListScrollBar"]:SetValue(0);
+			_G[listframe:GetName().."List"]:Hide();
 		end
 
 		local selection = DBM_GUI_OptionsFrameBossMods.selection;
@@ -860,9 +860,9 @@ do
 	function DBM_GUI_OptionsFrame:CreateButtons(frame)
 		local name = frame:GetName()
 	
-		frame.scrollBar = getglobal(name.."ListScrollBar")
+		frame.scrollBar = _G[name.."ListScrollBar"]
 		frame:SetBackdropBorderColor(0.6, 0.6, 0.6, 1)
-		getglobal(name.."Bottom"):SetVertexColor(0.66, 0.66, 0.66)
+		_G[name.."Bottom"]:SetVertexColor(0.66, 0.66, 0.66)
 	
 		local buttons = {}
 		local button = CreateFrame("BUTTON", name.."Button1", frame, "DBM_GUI_FrameButtonTemplate")
@@ -885,8 +885,8 @@ do
 		local parent = button:GetParent();
 		local buttons = parent.buttons;
 	
-		self:ClearSelection(getglobal(self:GetName().."BossMods"),   getglobal(self:GetName().."BossMods").buttons);
-		self:ClearSelection(getglobal(self:GetName().."DBMOptions"), getglobal(self:GetName().."DBMOptions").buttons);
+		self:ClearSelection(_G[self:GetName().."BossMods"],   _G[self:GetName().."BossMods"].buttons);
+		self:ClearSelection(_G[self:GetName().."DBMOptions"], _G[self:GetName().."DBMOptions"].buttons);
 		self:SelectButton(parent, button);
 
 		self:DisplayFrame(button.element);
@@ -905,7 +905,7 @@ do
 	-- This function is for internal use.
 	-- places the selected tab on the container frame
 	function DBM_GUI_OptionsFrame:DisplayFrame(frame)
-		local container = getglobal(self:GetName().."PanelContainer")
+		local container = _G[self:GetName().."PanelContainer"]
 
 		if not (type(frame) == "table" and type(frame[0]) == "userdata") or select("#", frame:GetChildren()) == 0 then
 --			DBM:AddMsg(debugstack())
@@ -923,13 +923,13 @@ do
 		if mymax <= 0 then mymax = 0 end
 
 		if mymax > 0 then
-			getglobal(container:GetName().."FOV"):Show()
-			getglobal(container:GetName().."FOV"):SetScrollChild(frame)
-			getglobal(container:GetName().."FOVScrollBar"):SetMinMaxValues(0, mymax)
+			_G[container:GetName().."FOV"]:Show()
+			_G[container:GetName().."FOV"]:SetScrollChild(frame)
+			_G[container:GetName().."FOVScrollBar"]:SetMinMaxValues(0, mymax)
 
 			if frame.isfixed then
 				frame.isfixed = nil
-				local listwidth = getglobal(container:GetName().."FOVScrollBar"):GetWidth()
+				local listwidth = _G[container:GetName().."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
@@ -938,14 +938,14 @@ do
 				end
 			end
 		else
-			getglobal(container:GetName().."FOV"):Hide()
+			_G[container:GetName().."FOV"]:Hide()
 			frame:ClearAllPoints()
 			frame:SetPoint("TOPLEFT", container ,"TOPLEFT", 5, 0)
 			frame:SetPoint("BOTTOMRIGHT", container ,"BOTTOMRIGHT", 0, 0)
 
 			if not frame.isfixed then
 				frame.isfixed = true
-				local listwidth = getglobal(container:GetName().."FOVScrollBar"):GetWidth()
+				local listwidth = _G[container:GetName().."FOVScrollBar"]:GetWidth()
 				for i=1, select("#", frame:GetChildren()), 1 do
 					local child = select(i, frame:GetChildren())
 					if child.mytype == "area" then
@@ -1443,7 +1443,7 @@ local function CreateOptionsMenu()
 				old(self, ...) 
 				self.frame:SetWidth(183)
 				self.frame:SetScale(0.9)
-				getglobal(self.frame:GetName().."Bar"):SetWidth(183)
+				_G[self.frame:GetName().."Bar"]:SetWidth(183)
 			end 
 		end
 

@@ -149,14 +149,14 @@
 				self:GetParent():SetVerticalScroll(value);
 
 				if value == select(1, self:GetMinMaxValues()) then
-					getglobal(self:GetName().."ScrollUpButton"):Disable()
+					_G[self:GetName().."ScrollUpButton"]:Disable()
 				else
-					getglobal(self:GetName().."ScrollUpButton"):Enable()
+					_G[self:GetName().."ScrollUpButton"]:Enable()
 				end
 				if value == select(2, self:GetMinMaxValues()) then
-					getglobal(self:GetName().."ScrollDownButton"):Disable()
+					_G[self:GetName().."ScrollDownButton"]:Disable()
 				else
-					getglobal(self:GetName().."ScrollDownButton"):Enable()
+					_G[self:GetName().."ScrollDownButton"]:Enable()
 				end
 			</OnValueChanged>
 		</Scripts>
@@ -280,16 +280,16 @@
 				<Scripts>
 					<OnLoad>
 						self:SetBackdropBorderColor(.6, .6, .6, .6)
-						getglobal(self:GetName().."ScrollBarScrollUpButton"):Disable()
-						getglobal(self:GetName().."ScrollBarScrollDownButton"):Disable()
+						_G[self:GetName().."ScrollBarScrollUpButton"]:Disable()
+						_G[self:GetName().."ScrollBarScrollDownButton"]:Disable()
 
-						local scrollbar = getglobal(self:GetName().."ScrollBar")
+						local scrollbar = _G[self:GetName().."ScrollBar"]
 						scrollbar:SetMinMaxValues(0, 0)
 						scrollbar:SetValue(0)
 						self.offset = 0	
 					</OnLoad>
 					<OnVerticalScroll>
-						local scrollbar = getglobal(self:GetName().."ScrollBar")
+						local scrollbar = _G[self:GetName().."ScrollBar"]
 						scrollbar:SetValue(offset)
 						self.offset = floor((offset / 18) + 0.5)
 						DBM_GUI_OptionsFrame:UpdateMenuFrame(self:GetParent())						
@@ -316,7 +316,7 @@
 		</Frames>
 		<Scripts>
 			<OnMouseWheel>
-				local scrollBar = getglobal(self:GetName() .. "ListScrollBar")
+				local scrollBar = _G[self:GetName() .. "ListScrollBar"]
 				if ( arg1 > 0 ) then
 					scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2))
 				else
@@ -540,7 +540,7 @@
 						</Frames>
 						<Scripts>
 							<OnMouseWheel>
-								local scrollBar = getglobal(self:GetName() .. "ScrollBar")
+								local scrollBar = _G[self:GetName() .. "ScrollBar"]
 								if ( arg1 > 0 ) then
 									scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2))
 								else
@@ -601,40 +601,40 @@
 				function self:ShowTab(tab)
 					self.tab = tab
 					if tab == 1 then
-						getglobal(self:GetName().."Tab1Left"):Hide()
-						getglobal(self:GetName().."Tab1Right"):Hide()
-						getglobal(self:GetName().."Tab1Middle"):Hide()
-						getglobal(self:GetName().."Tab2Left"):Show()
-						getglobal(self:GetName().."Tab2Right"):Show()
-						getglobal(self:GetName().."Tab2Middle"):Show()
+						_G[self:GetName().."Tab1Left"]:Hide()
+						_G[self:GetName().."Tab1Right"]:Hide()
+						_G[self:GetName().."Tab1Middle"]:Hide()
+						_G[self:GetName().."Tab2Left"]:Show()
+						_G[self:GetName().."Tab2Right"]:Show()
+						_G[self:GetName().."Tab2Middle"]:Show()
 
-						getglobal(self:GetName().."Tab1LeftDisabled"):Show()
-						getglobal(self:GetName().."Tab1RightDisabled"):Show()
-						getglobal(self:GetName().."Tab1MiddleDisabled"):Show()
-						getglobal(self:GetName().."Tab2LeftDisabled"):Hide()
-						getglobal(self:GetName().."Tab2RightDisabled"):Hide()
-						getglobal(self:GetName().."Tab2MiddleDisabled"):Hide()
+						_G[self:GetName().."Tab1LeftDisabled"]:Show()
+						_G[self:GetName().."Tab1RightDisabled"]:Show()
+						_G[self:GetName().."Tab1MiddleDisabled"]:Show()
+						_G[self:GetName().."Tab2LeftDisabled"]:Hide()
+						_G[self:GetName().."Tab2RightDisabled"]:Hide()
+						_G[self:GetName().."Tab2MiddleDisabled"]:Hide()
 
-						getglobal(self:GetName().."BossMods"):Show()
-						getglobal(self:GetName().."DBMOptions"):Hide()
+						_G[self:GetName().."BossMods"]:Show()
+						_G[self:GetName().."DBMOptions"]:Hide()
 
 					else 
-						getglobal(self:GetName().."Tab1Left"):Show()
-						getglobal(self:GetName().."Tab1Right"):Show()
-						getglobal(self:GetName().."Tab1Middle"):Show()
-						getglobal(self:GetName().."Tab2Left"):Hide()
-						getglobal(self:GetName().."Tab2Right"):Hide()
-						getglobal(self:GetName().."Tab2Middle"):Hide()
+						_G[self:GetName().."Tab1Left"]:Show()
+						_G[self:GetName().."Tab1Right"]:Show()
+						_G[self:GetName().."Tab1Middle"]:Show()
+						_G[self:GetName().."Tab2Left"]:Hide()
+						_G[self:GetName().."Tab2Right"]:Hide()
+						_G[self:GetName().."Tab2Middle"]:Hide()
 
-						getglobal(self:GetName().."Tab1LeftDisabled"):Hide()
-						getglobal(self:GetName().."Tab1RightDisabled"):Hide()
-						getglobal(self:GetName().."Tab1MiddleDisabled"):Hide()
-						getglobal(self:GetName().."Tab2LeftDisabled"):Show()
-						getglobal(self:GetName().."Tab2RightDisabled"):Show()
-						getglobal(self:GetName().."Tab2MiddleDisabled"):Show()
+						_G[self:GetName().."Tab1LeftDisabled"]:Hide()
+						_G[self:GetName().."Tab1RightDisabled"]:Hide()
+						_G[self:GetName().."Tab1MiddleDisabled"]:Hide()
+						_G[self:GetName().."Tab2LeftDisabled"]:Show()
+						_G[self:GetName().."Tab2RightDisabled"]:Show()
+						_G[self:GetName().."Tab2MiddleDisabled"]:Show()
 
-						getglobal(self:GetName().."BossMods"):Hide()
-						getglobal(self:GetName().."DBMOptions"):Show()
+						_G[self:GetName().."BossMods"]:Hide()
+						_G[self:GetName().."DBMOptions"]:Show()
 					end
 				end
 				self:SetMovable(true)
@@ -644,14 +644,14 @@
 			<OnShow>
 				if self.firstshow then
 					self.firstshow = false
-					self:CreateButtons( getglobal(self:GetName().."BossMods") )
-					self:CreateButtons( getglobal(self:GetName().."DBMOptions") )
-					self:UpdateMenuFrame( getglobal(self:GetName().."BossMods") )
+					self:CreateButtons( _G[self:GetName().."BossMods"] )
+					self:CreateButtons( _G[self:GetName().."DBMOptions"] )
+					self:UpdateMenuFrame( _G[self:GetName().."BossMods"] )
 				end
 				if math.random(1,2) == 1 then	-- who is first? hmm lets do it random :)
-					getglobal(self:GetName().."Authors"):SetText("DBMv4 by Nitram@EU-Azshara and Tandanu@EU-Aegwynn - visit www.deadlybossmods.com")
+					_G[self:GetName().."Authors"]:SetText("DBMv4 by Nitram@EU-Azshara and Tandanu@EU-Aegwynn - visit www.deadlybossmods.com")
 				else
-					getglobal(self:GetName().."Authors"):SetText("DBMv4 by Tandanu@EU-Aegwynn and Nitram@EU-Azshara - visit www.deadlybossmods.com")
+					_G[self:GetName().."Authors"]:SetText("DBMv4 by Tandanu@EU-Aegwynn and Nitram@EU-Azshara - visit www.deadlybossmods.com")
 				end
 			</OnShow>
 			<OnDragStart>
@@ -669,7 +669,7 @@
 		</Size>
 		<Scripts>
 			<OnLoad>
-				self.text = getglobal(self:GetName() .. "Text");
+				self.text = _G[self:GetName() .. "Text"];
 				self.highlight = self:GetHighlightTexture();
 				self.highlight:SetVertexColor(0.196, 0.388, 0.8);
 				self:RegisterForClicks("LeftButtonUp");
