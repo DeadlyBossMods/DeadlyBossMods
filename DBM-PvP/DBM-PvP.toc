@@ -29,7 +29,7 @@
 ## X-DBM-Mod-Name-koKR: 전장 및 아카본
 ## X-DBM-Mod-Name-esES: Campos de Batallas
 ## X-DBM-Mod-Name-esMX: Campos de Batallas
-## X-DBM-Mod-Sort: 200
+## X-DBM-Mod-Sort: 275
 --## X-DBM-Mod-LoadZoneID: 462,444,402,541,483
 ## X-DBM-Mod-LoadZone: Arathi Basin,Warsong Gulch,Alterac Valley,Eye of the Storm,Isle of Conquest
 ## X-DBM-Mod-LoadZone-deDE: Arathibecken,Kriegshymnenschlucht,Alteractal,Auge des Sturms,Insel der Eroberung

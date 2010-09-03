@@ -22,7 +22,7 @@
 ## X-DBM-Mod-Name-zhCN: 十字军的试炼
 ## X-DBM-Mod-Name-esES: Coliseo de los Cruzados
 ## X-DBM-Mod-Name-esMX: Coliseo de los Cruzados
-## X-DBM-Mod-Sort: 2
+## X-DBM-Mod-Sort: 202
 --We do not use areaID for this map because otherwise this mod would load in trial of champion 5 man as well.
 --## X-DBM-Mod-LoadZoneID: 544
 ## X-DBM-Mod-LoadZone: Trial of the Crusader

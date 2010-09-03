@@ -27,7 +27,7 @@
 ## X-DBM-Mod-Name-zhTW: 納克薩瑪斯
 ## X-DBM-Mod-Name-koKR: 낙스라마스
 ## X-DBM-Mod-Name-esES: Naxxramas
-## X-DBM-Mod-Sort: 6
+## X-DBM-Mod-Sort: 206
 --## X-DBM-Mod-LoadZoneID: 536
 ## X-DBM-Mod-LoadZone: Naxxramas
 ## X-DBM-Mod-LoadZone-frFR: Naxxramas
