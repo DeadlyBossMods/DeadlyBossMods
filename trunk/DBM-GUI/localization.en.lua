@@ -7,6 +7,7 @@ L.MainFrame = "Deadly Boss Mods"
 L.TranslationBy 			= "Nitram, Tandanu & Tennberg"
 
 L.TabCategory_Options	 	= "General Options"
+L.TabCategory_CATA	 		= "Cataclysm"
 L.TabCategory_WOTLK 		= "Wrath of the Lich King"
 L.TabCategory_BC 			= "The Burning Crusade"
 L.TabCategory_CLASSIC		= "WoW Classic"
