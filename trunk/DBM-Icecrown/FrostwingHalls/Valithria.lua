@@ -45,6 +45,7 @@ mod:AddBoolOption("SetIconOnBlazingSkeleton", true)
 local GutSprayTargets = {}
 local spamSupression = 0
 local BlazingSkeletonTimer = 60
+local AbomSpawn = 0
 local AbomTimer = 60
 local blazingSkeleton = nil
 
@@ -61,8 +62,28 @@ function mod:StartBlazingSkeletonTimer()
 	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 end
 
+--23, 60, 55, 55, 50, 45, 40, 35, 30, etc
 function mod:StartAbomTimer()
+	AbomSpawn = AbomSpawn + 1
 	if AbomTimer >= 60 then--Keep it from dropping below 55
+		timerAbom:Start(AbomTimer)
+		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
+		AbomTimer = AbomTimer - 5
+	else
+		if AbomSpawn < 4 then
+			timerAbom:Start(AbomTimer)
+			self:ScheduleMethod(AbomTimer, "StartAbomTimer")
+		else--after 4th abom, the timer starts subtracting again. (at least i think it's 4, guesswork, might need adjusting to 3 or 5 after an in pull test.
+			timerAbom:Start(AbomTimer)
+			self:ScheduleMethod(AbomTimer, "StartAbomTimer")
+			AbomTimer = AbomTimer - 5
+		end
+	end
+end
+
+function mod:StartAbomTimer()
+	AbomSpawn = AbomSpawn + 1
+	if AbomTimer < 60 and AbomSpawn < 5 then--Keep it from dropping below 55 until 5th abom, then it starts subtracting again.
 		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 		AbomTimer = AbomTimer - 5
@@ -81,6 +102,7 @@ function mod:OnCombatStart(delay)
 	self:ScheduleMethod(46.5, "Portals")--This will never be perfect, since it's never same. 45-48sec variations
 	BlazingSkeletonTimer = 60
 	AbomTimer = 60
+	AbomSpawn = 0
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
 	self:ScheduleMethod(23-delay, "StartAbomTimer")
 	timerBlazingSkeleton:Start(-delay)
