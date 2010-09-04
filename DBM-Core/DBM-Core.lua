@@ -143,7 +143,7 @@ local loadOptions
 local loadModOptions
 local checkWipe
 local fireEvent
-local wowVersion = select(4, GetBuildInfo())
+local is_cata = select(4, _G.GetBuildInfo()) >= 40000
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -2514,8 +2514,56 @@ local function getTalentpointsSpent(spellID)
 	return 0
 end
 
-local WowBuild = select(2, GetBuildInfo())
-if tonumber(WowBuild) < 12857 then--It's older than addon supporting beta so it's probably 3.3.5
+if is_cata then--It's Cataclysm
+	function bossModPrototype:IsMelee()
+		return select(2, UnitClass("player")) == "ROGUE"
+			or select(2, UnitClass("player")) == "WARRIOR"
+			or select(2, UnitClass("player")) == "DEATHKNIGHT"
+			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 31)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 31)
+	end
+
+	function bossModPrototype:IsRanged()
+		return select(2, UnitClass("player")) == "MAGE"
+			or select(2, UnitClass("player")) == "HUNTER"
+			or select(2, UnitClass("player")) == "WARLOCK"
+			or select(2, UnitClass("player")) == "PRIEST"
+			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 31)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 31)
+	end
+
+	local function IsDeathKnightTank()
+		-- idea taken from addon 'ElitistJerks'
+		local tankTalents = (getTalentpointsSpent(50371) >= 2 and 1 or 0) +	-- Improved Blood Presence
+	                    (getTalentpointsSpent(49787) >= 3 and 1 or 0) +		-- Toughness
+						(getTalentpointsSpent(49501) >= 3 and 1 or 0)		-- Blade Barrier
+		return tankTalents >= 2
+	end
+
+	local function IsDruidTank()
+	-- idea taken from addon 'ElitistJerks'
+		local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +	-- Natural Reaction
+	                    (getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
+						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
+		return tankTalents >= 3
+	end
+
+	function bossModPrototype:IsTank()
+		return (select(2, UnitClass("player")) == "WARRIOR" and select(3, GetTalentTabInfo(3)) >= 31)
+     		or (select(2, UnitClass("player")) == "DEATHKNIGHT" and IsDeathKnightTank())
+			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(2)) >= 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 31 and IsDruidTank())
+	end
+
+	function bossModPrototype:IsHealer()
+		return (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 31)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(3)) >= 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(3)) >= 31)
+			or (select(2, UnitClass("player")) == "PRIEST" and select(3, GetTalentTabInfo(3)) < 31)
+	end
+else--It's not cataclysm
 	function bossModPrototype:IsMelee()
 		return select(2, UnitClass("player")) == "ROGUE"
 			or select(2, UnitClass("player")) == "WARRIOR"
@@ -2566,57 +2614,7 @@ if tonumber(WowBuild) < 12857 then--It's older than addon supporting beta so it'
 			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(3)) >= 51)
 			or (select(2, UnitClass("player")) == "PRIEST" and select(3, GetTalentTabInfo(3)) < 51)
 	end
-else--It's greater than 12857 then it's a a version of 4.0 that supports addons.
-	function bossModPrototype:IsMelee()
-		return select(2, UnitClass("player")) == "ROGUE"
-			or select(2, UnitClass("player")) == "WARRIOR"
-			or select(2, UnitClass("player")) == "DEATHKNIGHT"
-			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 31)
-	end
-
-	function bossModPrototype:IsRanged()
-		return select(2, UnitClass("player")) == "MAGE"
-			or select(2, UnitClass("player")) == "HUNTER"
-			or select(2, UnitClass("player")) == "WARLOCK"
-			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 31)
-	end
-
-	local function IsDeathKnightTank()
-		-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(50371) >= 2 and 1 or 0) +	-- Improved Blood Presence
-	                    (getTalentpointsSpent(49787) >= 3 and 1 or 0) +		-- Toughness
-						(getTalentpointsSpent(49501) >= 3 and 1 or 0)		-- Blade Barrier
-		return tankTalents >= 2
-	end
-
-	local function IsDruidTank()
-	-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +	-- Natural Reaction
-	                    (getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
-						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
-		return tankTalents >= 3
-	end
-
-	function bossModPrototype:IsTank()
-		return (select(2, UnitClass("player")) == "WARRIOR" and select(3, GetTalentTabInfo(3)) >= 31)
-     		or (select(2, UnitClass("player")) == "DEATHKNIGHT" and IsDeathKnightTank())
-			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(2)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 31 and IsDruidTank())
-	end
-
-	function bossModPrototype:IsHealer()
-		return (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(3)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(3)) >= 31)
-			or (select(2, UnitClass("player")) == "PRIEST" and select(3, GetTalentTabInfo(3)) < 31)
-	end
 end
-
 --These don't matter since they don't check talents
 function bossModPrototype:IsPhysical()
 	return self:IsMelee() or select(2, UnitClass("player")) == "HUNTER"
