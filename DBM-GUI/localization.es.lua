@@ -8,6 +8,7 @@ L.MainFrame = "Deadly Boss Mods - Español"
 L.TranslationBy 	= "Interplay, Snamor"
 
 L.TabCategory_Options 	= "Opciones"
+L.TabCategory_CATA	 		= "Cataclysm"
 L.TabCategory_WOTLK 	= "Wrath of the Lich King"
 L.TabCategory_BC 	= "The Burning Crusade"
 L.TabCategory_CLASSIC 	= "WoW Classic Bosses"
@@ -21,7 +22,7 @@ Puedes pulsar en el boton para cargar el modulo manualmente.]]
 L.PosX = 'Posicion X'
 L.PosY = 'Posicion Y'
 
-L.MoveMe 		= 'mueve me'
+L.MoveMe 		= 'mueveme'
 L.Button_OK 		= 'Aceptar'
 L.Button_Cancel 	= 'Cancelar'
 L.Button_LoadMod 	= 'Cargar Modulo'
