@@ -234,6 +234,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.SetIconOnUnchainedMagic and not activeBeacons then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args:IsSpellID(70157) then
+		if self.Options.SetIconOnFrostBeacon then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif args:IsSpellID(70126) then
 		activeBeacons = false
 	elseif args:IsSpellID(70106) then	--Chilled to the bone (melee)
