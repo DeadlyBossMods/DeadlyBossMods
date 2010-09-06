@@ -65,7 +65,11 @@ local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
 local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
 local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", mod:IsTank())
 
-local missedTarget = nil
+local missedTarget1 = nil
+local missedTarget2 = nil
+local missedTarget3 = nil
+local missedTarget4 = nil
+local missedTarget5 = nil
 
 function mod:OnCombatStart(delay)
 	Burrowed = false 
@@ -78,7 +82,11 @@ function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	timerFreezingSlash:Start(-delay)
 	table.wipe(PColdTargets)
-	missedTarget = nil
+	missedTarget1 = nil
+	missedTarget2 = nil
+	missedTarget3 = nil
+	missedTarget4 = nil
+	missedTarget5 = nil
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Schedule(25.5-delay)
@@ -107,8 +115,22 @@ function mod:ShadowStrike()
 end
 
 function mod:RemovePcoldMissedIcon()
-	self:SetIcon(missedTarget, 0)
-	missedTarget = nil
+	if missedTarget1 ~= nil then
+		self:SetIcon(missedTarget1, 0)
+		missedTarget1 = nil
+	elseif missedTarget2 ~= nil then
+		self:SetIcon(missedTarget2, 0)
+		missedTarget2 = nil
+	elseif missedTarget3 ~= nil then
+		self:SetIcon(missedTarget3, 0)
+		missedTarget3 = nil
+	elseif missedTarget4 ~= nil then
+		self:SetIcon(missedTarget4, 0)
+		missedTarget4 = nil
+	elseif missedTarget5 ~= nil then
+		self:SetIcon(missedTarget5, 0)
+		missedTarget5 = nil
+	end
 end
 
 local PColdTargets = {}
@@ -186,8 +208,19 @@ function mod:SPELL_MISSED(args)--Hack so spell misses don't cause the "wait and 
 			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
 			end
-			args.destName = missedTarget
-			mod:ScheduleMethod(1, "RemovePcoldMissedIcon")
+			if missedTarget1 == nil then
+				args.destName = missedTarget1
+			elseif missedTarget1 ~= nil and missedTarget2 == nil then
+				args.destName = missedTarget2
+			elseif missedTarget2 ~= nil and missedTarget3 == nil then
+				args.destName = missedTarget3
+			elseif missedTarget3 ~= nil and missedTarget4 == nil then
+				args.destName = missedTarget4
+			elseif missedTarget4 ~= nil and missedTarget5 == nil then
+				args.destName = missedTarget5
+			end
+			mod:UnscheduleMethod("RemovePcoldMissedIcon")
+			mod:ScheduleMethod(0.5, "RemovePcoldMissedIcon")
 		end
 	end
 end
