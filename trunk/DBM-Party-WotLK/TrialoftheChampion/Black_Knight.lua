@@ -71,17 +71,17 @@ end
 do
 	local lastexplode = 0
 	function mod:SPELL_AURA_APPLIED(args)
-		if args:IsSpellID(67823, 67882) then							-- Marked For Death
+		if args:IsSpellID(67823, 67882) and args:IsDestTypePlayer() then-- Marked For Death
 			if self.Options.SetIconOnMarkedTarget then
 				self:SetIcon(args.destName, 8, 10)
 			end
 			warnMarked:Show(args.destName)
 			timerMarked:Show(args.destName)
-		elseif args:IsSpellID(67751) and time() - lastexplode > 2 then	-- Ghoul Explode (BK exlodes Army of the dead. Phase 3)
+		elseif args:IsSpellID(67751) and GetTime() - lastexplode > 2 then	-- Ghoul Explode (BK exlodes Army of the dead. Phase 3)
 			warnGhoulExplode:Show(args.destName)
 			specWarnExplode:Show()
 			soundExplode:Play()
-			lastexplode = time()
+			lastexplode = GetTime()
 		end
 	end
 end
