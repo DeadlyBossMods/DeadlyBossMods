@@ -482,6 +482,8 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAirphase	= "Здесь ваше вторжение и окончится! Никто не уцелеет.",
 	YellPhase2		= "А теперь почувствуйте всю мощь господина и погрузитесь в отчаяние!",
+	YellAirphaseDem		= "Rikk zilthuras rikk zila Aman adare tiriosh ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
+	YellPhase2Dem		= "Zar kiel xi romathIs zilthuras revos ruk toralar ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	BeaconIconSet	= "Ледяная метка {rt%d} установлена на: %s",
 	AchievementWarning	= "Предупреждение: %s получил 5 стаков Таинственной энергии",
 	AchievementFailed	= ">> ДОСТИЖЕНИЕ ПРОВАЛЕНО: %s получил %d стаков Таинственной энергии <<",

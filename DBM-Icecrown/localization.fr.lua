@@ -431,6 +431,8 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAirphase	= "Votre incursion s'arrête ici",
 	YellPhase2		= "Sentez maintenant le pouvoir infini de mon",
+	YellAirphaseDem		= "Rikk zilthuras rikk zila Aman adare tiriosh ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
+	YellPhase2Dem		= "Zar kiel xi romathIs zilthuras revos ruk toralar ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	BeaconIconSet	= "Icone de Guide de givre {rt%d} mis sur %s",
 	YellPull		= "est stupide d'être venus ici"
 }

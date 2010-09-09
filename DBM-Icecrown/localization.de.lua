@@ -477,6 +477,8 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellAirphase	= "Euer Vormarsch endet hier! Keiner wird überleben!",
 	YellPhase2		= "Fühlt die grenzenlose Macht meines Meisters, und verzweifelt!",
+	YellAirphaseDem		= "Rikk zilthuras rikk zila Aman adare tiriosh ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
+	YellPhase2Dem		= "Zar kiel xi romathIs zilthuras revos ruk toralar ",--Demonic, since curse of tonges is used by some guilds and it messes up yell detection.
 	BeaconIconSet			= "Frostleuchtfeuer-Zeichen {rt%d} auf %s gesetzt",
 	YellPull		= "Ihr seid Narren, euch hierher zu wagen. Der eisige Wind Nordends wird eure Seelen verschlingen!"	-- momentan nicht verwendet
 }
