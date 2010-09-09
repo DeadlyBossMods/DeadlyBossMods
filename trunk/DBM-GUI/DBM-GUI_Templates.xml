@@ -317,7 +317,7 @@
 		<Scripts>
 			<OnMouseWheel>
 				local scrollBar = _G[self:GetName() .. "ListScrollBar"]
-				if ( arg1 > 0 ) then
+				if ( delta > 0 ) then
 					scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2))
 				else
 					scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2))
@@ -541,7 +541,7 @@
 						<Scripts>
 							<OnMouseWheel>
 								local scrollBar = _G[self:GetName() .. "ScrollBar"]
-								if ( arg1 > 0 ) then
+								if ( delta > 0 ) then
 									scrollBar:SetValue(scrollBar:GetValue() - (scrollBar:GetHeight() / 2))
 								else
 									scrollBar:SetValue(scrollBar:GetValue() + (scrollBar:GetHeight() / 2))

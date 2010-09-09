@@ -46,8 +46,8 @@ do
 		insets={left=11, right=12, top=12, bottom=11}
 	});
 	TabFrame1:EnableMouseWheel(1)
-	TabFrame1:SetScript("OnMouseWheel", function(self, arg1) 
-		if arg1 > 0 then  -- scroll up
+	TabFrame1:SetScript("OnMouseWheel", function(self, delta) 
+		if delta > 0 then  -- scroll up
 			self.offset = self.offset - 1
 			if self.offset < 0 then
 				self.offset = 0
