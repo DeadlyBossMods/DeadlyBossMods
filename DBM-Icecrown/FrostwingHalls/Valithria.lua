@@ -65,31 +65,17 @@ end
 --23, 60, 55, 55, 50, 45, 40, 35, 30, etc
 function mod:StartAbomTimer()
 	AbomSpawn = AbomSpawn + 1
-	if AbomTimer >= 60 then--Keep it from dropping below 55
+	if AbomSpawn == 1 then
+		timerAbom:Start(AbomTimer)--Timer is 60 seconds after first early abom, it's set to 60 on combat start.
+		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
+		AbomTimer = AbomTimer - 5--Right after first abom timer starts, change it from 60 to 55.
+	elseif AbomSpawn == 2 then--Start first 55 second timer
 		timerAbom:Start(AbomTimer)
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-		AbomTimer = AbomTimer - 5
-	else
-		if AbomSpawn < 4 then
-			timerAbom:Start(AbomTimer)
-			self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-		else--after 4th abom, the timer starts subtracting again. (at least i think it's 4, guesswork, might need adjusting to 3 or 5 after an in pull test.
-			timerAbom:Start(AbomTimer)
-			self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-			AbomTimer = AbomTimer - 5
-		end
-	end
-end
-
-function mod:StartAbomTimer()
-	AbomSpawn = AbomSpawn + 1
-	if AbomTimer < 60 and AbomSpawn < 5 then--Keep it from dropping below 55 until 5th abom, then it starts subtracting again.
-		timerAbom:Start(AbomTimer)
+	elseif AbomSpawn >= 3 then--after 3th abom, the timer starts subtracting again.
+		timerAbom:Start(AbomTimer)--Start another 55 second timer at least once before subtracking from it again.
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-		AbomTimer = AbomTimer - 5
-	else
-		timerAbom:Start(AbomTimer)
-		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
+		AbomTimer = AbomTimer - 5--But after 2nd 55 second timer from there on every other timer will be 5 less.
 	end
 end
 
@@ -104,7 +90,7 @@ function mod:OnCombatStart(delay)
 	AbomTimer = 60
 	AbomSpawn = 0
 	self:ScheduleMethod(50-delay, "StartBlazingSkeletonTimer")
-	self:ScheduleMethod(23-delay, "StartAbomTimer")
+	self:ScheduleMethod(23-delay, "StartAbomTimer")--First abom is 23-25 seconds after combat start, cause of variation, it may cause slightly off timer rest of fight
 	timerBlazingSkeleton:Start(-delay)
 	timerAbom:Start(23-delay)
 	table.wipe(GutSprayTargets)
