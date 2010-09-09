@@ -134,12 +134,6 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actual debuff on >player< warnings since it has a chance to be resisted.
 	if args:IsSpellID(74792) then
-		if not self.Options.AnnounceAlternatePhase then
-			warningShadowConsumption:Show(args.destName)
-			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperConsumption, args.destName)
-			end
-		end
 		if mod:LatencyCheck() then
 			self:SendSync("ShadowTarget", args.destName)
 		end
@@ -150,16 +144,16 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 				SendChatMessage(L.YellConsumption, "SAY")
 			end
 		end
+		if not self.Options.AnnounceAlternatePhase then
+			warningShadowConsumption:Show(args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				self:SendWhisper(L.WhisperConsumption, args.destName)
+			end
+		end
 		if self.Options.SetIconOnConsumption then
 			self:SetIcon(args.destName, 7)
 		end
 	elseif args:IsSpellID(74562) then
-		if not self.Options.AnnounceAlternatePhase then
-			warningFieryConsumption:Show(args.destName)
-			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperCombustion, args.destName)
-			end
-		end
 		if mod:LatencyCheck() then
 			self:SendSync("FieryTarget", args.destName)
 		end
@@ -168,6 +162,12 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 			soundConsumption:Play()
 			if self.Options.YellOnConsumption then
 				SendChatMessage(L.YellCombustion, "SAY")
+			end
+		end
+		if not self.Options.AnnounceAlternatePhase then
+			warningFieryConsumption:Show(args.destName)
+			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+				self:SendWhisper(L.WhisperCombustion, args.destName)
 			end
 		end
 		if self.Options.SetIconOnConsumption then
