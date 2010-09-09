@@ -55,11 +55,11 @@ local function warnGutSprayTargets()
 end
 
 function mod:StartBlazingSkeletonTimer()
-	if BlazingSkeletonTimer >= 5 then--Keep it from dropping below 5
-		timerBlazingSkeleton:Start(BlazingSkeletonTimer)
-		self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
+	timerBlazingSkeleton:Start(BlazingSkeletonTimer)
+	self:ScheduleMethod(BlazingSkeletonTimer, "StartBlazingSkeletonTimer")
+	if BlazingSkeletonTimer >= 10 then--Keep it from dropping below 5
+		BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 	end
-	BlazingSkeletonTimer = BlazingSkeletonTimer - 5
 end
 
 --23, 60, 55, 55, 50, 45, 40, 35, 30, etc
@@ -75,7 +75,9 @@ function mod:StartAbomTimer()
 	elseif AbomSpawn >= 3 then--after 3th abom, the timer starts subtracting again.
 		timerAbom:Start(AbomTimer)--Start another 55 second timer at least once before subtracking from it again.
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
-		AbomTimer = AbomTimer - 5--But after 2nd 55 second timer from there on every other timer will be 5 less.
+		if AbomTimer >= 10 then--Keep it from dropping below 5
+			AbomTimer = AbomTimer - 5--But after 2nd 55 second timer from there on every other timer will be 5 less.
+		end
 	end
 end
 
