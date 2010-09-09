@@ -20,7 +20,7 @@ mod:RegisterEvents(
 
 local warnCorrosion		= mod:NewAnnounce("WarnCorrosion", 2, 70751, false)
 local warnGutSpray		= mod:NewTargetAnnounce(71283, 3, nil, mod:IsTank() or mod:IsHealer())
-local warnManaVoid		= mod:NewSpellAnnounce(71741, 2, nil, not mod:IsMelee())
+local warnManaVoid		= mod:NewSpellAnnounce(71741, 2, nil, mod:IsManaUser())
 local warnSupression	= mod:NewSpellAnnounce(70588, 3)
 local warnPortalSoon	= mod:NewSoonAnnounce(72483, 2, nil)
 local warnPortal		= mod:NewSpellAnnounce(72483, 3, nil)
