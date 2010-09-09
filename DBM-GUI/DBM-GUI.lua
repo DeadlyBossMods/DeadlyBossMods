@@ -391,10 +391,10 @@ function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, f
 	scrollframe:EnableMouseWheel(1)
 	
 	scrollframe:SetScript("OnHyperlinkClick", ChatFrame_OnHyperlinkShow)
-	scrollframe:SetScript("OnMouseWheel", function(self, arg)
-		if arg == 1 then
+	scrollframe:SetScript("OnMouseWheel", function(self, delta)
+		if delta == 1 then
 			self:ScrollUp()
-		elseif arg == -1 then 
+		elseif delta == -1 then 
 			self:ScrollDown()
 		end
 	end)
