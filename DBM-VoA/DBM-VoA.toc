@@ -19,6 +19,7 @@
 ## X-DBM-Mod-Name-frFR: Caveau d'Archavon
 ## X-DBM-Mod-Name-ruRU: Склеп Аркавона
 ## X-DBM-Mod-Name-zhTW: 亞夏梵穹殿
+## X-DBM-Mod-Name-zhCN: 阿尔卡冯的宝库
 ## X-DBM-Mod-Name-koKR: 아카본 석실
 ## X-DBM-Mod-Name-esES: La Cámara de Archavon
 ## X-DBM-Mod-Name-esMX: La Cámara de Archavon

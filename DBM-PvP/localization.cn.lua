@@ -4,13 +4,13 @@ if GetLocale() ~= "zhCN" then return end
 
 local L
 
-----------------------------
---  General BG functions  --
-----------------------------
+--------------------------
+--  General BG Options  --
+--------------------------
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "战场模块"
+	name = "常规设置"
 })
 
 L:SetTimerLocalization({
@@ -53,9 +53,9 @@ L:SetMiscLocalization({
 	Start15 = "竞技场战斗将在十五秒后开始！"
 })
 
----------------
---  Alterac  --
----------------
+----------------------
+--  Alterac Valley  --
+----------------------
 L = DBM:GetModLocalization("AlteracValley")
 
 L:SetGeneralLocalization({
@@ -81,9 +81,9 @@ L:SetOptionLocalization({
 	AutoTurnIn = "自动递交任务物品"
 })
 
----------------
---  Arathi  --
----------------
+--------------------
+--  Arathi Basin  --
+--------------------
 L = DBM:GetModLocalization("ArathiBasin")
 
 L:SetGeneralLocalization({
@@ -115,9 +115,9 @@ L:SetOptionLocalization({
 	ShowAbBasesToWin = "显示获胜需要占领的资源点"
 })
 
------------------------
---  Eye of the Storm --
------------------------
+------------------------
+--  Eye of the Storm  --
+------------------------
 L = DBM:GetModLocalization("EyeoftheStorm")
 
 L:SetGeneralLocalization({
@@ -151,9 +151,9 @@ L:SetOptionLocalization({
 	ShowPointFrame = "显示旗帜携带着和获胜计时",
 })
 
---------------------
---  Warsong Gulch --
---------------------
+---------------------
+--  Warsong Gulch  --
+---------------------
 L = DBM:GetModLocalization("WarsongGulch")
 
 L:SetGeneralLocalization({
@@ -186,4 +186,48 @@ L:SetOptionLocalization({
 	TimerFlag = "显示旗帜重置计时",
 	ShowFlagCarrier = "显示旗帜携带者",
 	ShowFlagCarrierErrorNote = "战斗中显示旗帜携带者错误信息",
+})
+
+------------------------
+--  Isle of Conquest  --
+------------------------
+L = DBM:GetModLocalization("IsleofConquest")
+
+L:SetGeneralLocalization({
+	name 				= "征服之岛"
+})
+
+L:SetWarningLocalization({
+	WarnSiegeEngine			= "攻城机具准备好了！",
+	WarnSiegeEngineSoon		= "10秒后 攻城机具就绪"
+})
+
+L:SetTimerLocalization({
+	TimerStart			= "战斗开始", 
+	TimerPOI			= "%s",
+	TimerSiegeEngine		= "攻城机具修复"
+})
+
+L:SetOptionLocalization({
+	TimerStart			= "显示开始计时", 
+	TimerPOI			= "显示夺取计时",
+	TimerSiegeEngine		= "为攻城机具的修复显示计时条",
+	WarnSiegeEngine			= "当攻城机具准备好时显示警报",
+	WarnSiegeEngineSoon		= "当攻城机具接近准备好时显示警报"
+})
+
+L:SetMiscLocalization({
+	ZoneName			= "征服之岛",
+	BgStart60			= "战斗将在1分钟后开始！",
+	BgStart30			= "战斗将在30秒后开始！",
+	BgStart15			= "战斗将在15秒后开始！",
+	SiegeEngine			= "攻城机具",
+	GoblinStartAlliance		= "看到那些爆盐炸弹了吗?当我维修攻城机具的时候用它们来轰破大门!",
+	GoblinStartHorde		= "修理攻城机具的工作就交给我，帮我看着点就够了。如果你想要轰破大门的话，尽管把那些爆盐炸弹拿去用吧!",
+	GoblinHalfwayAlliance		= "我已经修好一半了!别让部落靠近。工程学院可没有教我们如何作战喔!",
+	GoblinHalfwayHorde		= "我已经修好一半了!别让联盟靠近 - 我的合约里可没有作战这一条!",
+	GoblinFinishedAlliance		= "我有史以来最得意的作品!这台攻城机具已经可以上场啰!",
+	GoblinFinishedHorde		= "这台攻城机具已经可以上场啦!",
+	GoblinBrokenAlliance		= "这么快就坏啦?!别担心，再坏的情况我都可以修得好。",
+	GoblinBrokenHorde		= "又坏掉了吗?!让我来修理吧…但别指望产品的保固会帮你支付这一切。"
 })
