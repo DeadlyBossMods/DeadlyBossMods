@@ -13,6 +13,7 @@
 ## X-DBM-Mod-Name-esES: Eventos del Mundo
 ## X-DBM-Mod-Name-ruRU: Игровые события
 ## X-DBM-Mod-Name-zhTW: 世界事件
+## X-DBM-Mod-Name-zhCN: 世界事件
 ## X-DBM-Mod-Name-koKR: 월드 이벤트
 ## X-DBM-Mod-Sort: 250
 ## X-DBM-Mod-LoadZone: Blackrock Depths,Scarlet Monastery,Shadowfang Keep,The Slave Pens
@@ -31,6 +32,7 @@ localization.tw.lua
 localization.kr.lua
 localization.de.lua
 localization.es.lua
+localization.cn.lua
 ApothecaryTrio.lua
 Ahune.lua
 CorenDirebrew.lua
