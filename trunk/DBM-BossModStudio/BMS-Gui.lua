@@ -86,7 +86,7 @@ local function getIDfromTarget(textbox, mod)
 	return function(self)
 		local guid = UnitGUID("target")
 		if not guid then return end
-		local cId = tonumber(guid:sub(9, 12), 16)
+		local cId = is_cata and tonumber(guid:sub(7,10), 16) or tonumber(guid:sub(9, 12), 16)
 		mod.BossIDs[textbox.id] = cId
 		textbox:SetText(cId)
 	end
