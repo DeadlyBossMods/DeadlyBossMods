@@ -146,7 +146,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		end
 		if not self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(args.destName)
-			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+			if IsRaidLeader() and self.Options.WhisperOnConsumption then
 				self:SendWhisper(L.WhisperConsumption, args.destName)
 			end
 		end
@@ -166,7 +166,7 @@ function mod:SPELL_AURA_APPLIED(args)--We don't use spell cast success for actua
 		end
 		if not self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(args.destName)
-			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+			if IsRaidLeader() and self.Options.WhisperOnConsumption then
 				self:SendWhisper(L.WhisperCombustion, args.destName)
 			end
 		end
@@ -265,14 +265,14 @@ function mod:OnSync(msg, target)
 	elseif msg == "ShadowTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(target)
-			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+			if IsRaidLeader() and self.Options.WhisperOnConsumption then
 				self:SendWhisper(L.WhisperConsumption, args.destName)
 			end
 		end
 	elseif msg == "FieryTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(target)
-			if DBM:GetRaidRank() >= 1 and self.Options.WhisperOnConsumption then
+			if IsRaidLeader() and self.Options.WhisperOnConsumption then
 				self:SendWhisper(L.WhisperCombustion, args.destName)
 			end
 		end

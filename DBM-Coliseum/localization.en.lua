@@ -93,7 +93,7 @@ L:SetOptionLocalization{
 	TouchJaraxxusIcon			= "Set icons on Touch of Jaraxxus targets",
 	IncinerateFleshIcon			= "Set icons on Incinerate Flesh targets",
 	LegionFlameIcon				= "Set icons on Legion Flame targets",
-	LegionFlameWhisper			= "Send whisper to Legion Flame targets",
+	LegionFlameWhisper			= "Send whisper to Legion Flame targets (requires Raid Leader)",
 	LegionFlameRunSound			= "Play sound on Legion Flame",
 	IncinerateShieldFrame		= "Show boss health with a health bar for Incinerate Flesh"
 }

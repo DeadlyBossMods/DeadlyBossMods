@@ -178,7 +178,7 @@ L:SetOptionLocalization({
 	SoundOnConsumption		= "Play sound on $spell:74562 or $spell:74792",--We use localized text for these functions
 	SetIconOnConsumption	= "Set icons on $spell:74562 or $spell:74792 targets",--So we can use single functions for both versions of spell.
 	YellOnConsumption		= "Yell on $spell:74562 or $spell:74792",
-	WhisperOnConsumption	= "Send whisper to $spell:74562 or $spell:74792\ntargets"
+	WhisperOnConsumption	= "Send whisper to $spell:74562 or $spell:74792\ntargets (requires Raid Leader)"
 })
 
 L:SetMiscLocalization({
