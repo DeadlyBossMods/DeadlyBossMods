@@ -160,7 +160,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.LegionFlameIcon then
 			self:SetIcon(args.destName, 7, 8)
 		end
-		if DBM:GetRaidRank() >= 1 and self.Options.LegionFlameWhisper then
+		if IsRaidLeader() and self.Options.LegionFlameWhisper then
 			self:SendWhisper(L.WhisperFlame, targetname)
 		end
 	elseif args:IsSpellID(66334, 67905, 67906, 67907) and args:IsPlayer() then
