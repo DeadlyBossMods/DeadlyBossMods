@@ -25,6 +25,7 @@
 ## X-DBM-Mod-Name-deDE: Kammer der Aspekte
 ## X-DBM-Mod-Name-ruRU: Палата Аспектов
 ## X-DBM-Mod-Name-zhTW: 守護巨龍之間
+## X-DBM-Mod-Name-zhCN: 龙眠神殿
 ## X-DBM-Mod-Name-koKR: 고룡쉼터 사원
 ## X-DBM-Mod-Name-frFR : Chambre des aspects
 ## X-DBM-Mod-Name-esES: Cámara de los Aspectos
@@ -47,6 +48,7 @@ localization.tw.lua
 localization.kr.lua
 localization.fr.lua
 localization.es.lua
+localization.cn.lua
 Obsidian\MapSizes.lua
 Obsidian\Shadron.lua
 Obsidian\Tenebron.lua
