@@ -2756,7 +2756,7 @@ do
 
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
-			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() == 1 and GetNumPartyMembers() >= 1)) then
+			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumPartyMembers() >= 1)) then
 				local message = pformat(self.text, ...)
 				message = message:gsub("|3%-%d%((.-)%)", "%1") -- for |3-id(text) encoding in russian localization
 				SendChatMessage(("*** %s ***"):format(message), GetNumRaidMembers() > 0 and "RAID_WARNING" or "PARTY")
