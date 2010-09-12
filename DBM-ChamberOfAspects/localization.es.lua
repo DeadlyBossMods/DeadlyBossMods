@@ -61,7 +61,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	PlaySoundOnFireWall	= "Reproducir sonido para \"Muro de Fuego\"",
-	AnnounceFails		= "Spamear en la banda la gente que falle Muro de Fuego y Zona de Vacio (require ayudante/lider)",
+	AnnounceFails		= "Spamear en la banda la gente que falle Muro de Fuego y Zona de Vacio (Requiere 'anunciar' habilitado y lider)",
 	TimerTenebron		= "Mostrar tiempo para Tenebron",
 	TimerShadron		= "Mostrar tiempo para Shadron",
 	TimerVesperon		= "Mostrar tiempo para Vesperon",
