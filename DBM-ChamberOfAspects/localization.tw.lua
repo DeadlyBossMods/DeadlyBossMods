@@ -180,7 +180,8 @@ L:SetOptionLocalization({
 	AnnounceAlternatePhase	= "不管你進不進下一階段一樣顯示警告/計時器",
 	SoundOnConsumption	= "為$spell:74562或$spell:74792播放音效",--We use localized text for these functions
 	SetIconOnConsumption	= "為$spell:74562或$spell:74792的目標設置標記",--So we can use single functions for both versions of spell.
-	YellOnConsumption	= "當你中了$spell:74562或$spell:74792時大喊"
+	YellOnConsumption	= "當你中了$spell:74562或$spell:74792時大喊",
+	WhisperOnConsumption	= "密語提示$spell:74562或$spell:74792的目標 (需要團隊隊長)"
 })
 
 L:SetMiscLocalization({
