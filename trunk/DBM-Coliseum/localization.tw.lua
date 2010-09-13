@@ -96,7 +96,7 @@ L:SetOptionLocalization{
 	TouchJaraxxusIcon		= "為賈拉克瑟斯之觸的目標設置標記",
 	IncinerateFleshIcon		= "為焚化血肉的目標設置標記",
 	LegionFlameIcon			= "為軍團烈焰的目標設置標記",
-	LegionFlameWhisper		= "密語提示軍團烈焰的目標",
+	LegionFlameWhisper		= "密語提示軍團烈焰的目標 (需要團隊隊長)",
 	LegionFlameRunSound		= "為軍團烈焰播放音效",
 	IncinerateShieldFrame		= "在首領血量裡顯示焚化血肉的血量"
 }
