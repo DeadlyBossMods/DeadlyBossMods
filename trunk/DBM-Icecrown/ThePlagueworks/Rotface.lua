@@ -73,6 +73,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.TankArrow then
+		DBM.Arrow:Hide()
+	end
 end
 --this function seems rathor limited but not entirely hopeless. i imagine it only works if you or someone else targets the big ooze, but that pretty much means it's useless if kiter doesn't have dbm.
 --[[function mod:SlimeTank()
