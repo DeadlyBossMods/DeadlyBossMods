@@ -18,16 +18,7 @@
 ## X-DBM-Mod-Name-zhCN: 奥杜尔
 ## X-DBM-Mod-Name-esES: Ulduar
 ## X-DBM-Mod-Sort: 204
---## X-DBM-Mod-LoadZoneID: 530
-## X-DBM-Mod-LoadZone: Ulduar
-## X-DBM-Mod-LoadZone-frFR: Ulduar
-## X-DBM-Mod-LoadZone-ruRU: Ульдуар
-## X-DBM-Mod-LoadZone-koKR: 울두아르
-## X-DBM-Mod-LoadZone-zhTW: 奧杜亞
-## X-DBM-Mod-LoadZone-zhCN: 奥杜尔
-## X-DBM-Mod-LoadZone-esES: Ulduar
-## X-DBM-Mod-LoadZone-esMX: Ulduar
-## X-DBM-Mod-LoadZone-deDE: Ulduar
+## X-DBM-Mod-LoadZoneID: 530
 localization.en.lua
 localization.de.lua
 localization.fr.lua

@@ -24,16 +24,7 @@
 ## X-DBM-Mod-Name-esES: La Cámara de Archavon
 ## X-DBM-Mod-Name-esMX: La Cámara de Archavon
 ## X-DBM-Mod-Sort: 207
---## X-DBM-Mod-LoadZoneID: 533
-## X-DBM-Mod-LoadZone: Vault of Archavon
-## X-DBM-Mod-LoadZone-deDE: Archavons Kammer
-## X-DBM-Mod-LoadZone-frFR: Caveau d'Archavon
-## X-DBM-Mod-LoadZone-esES: La Cámara de Archavon
-## X-DBM-Mod-LoadZone-esMX: La Cámara de Archavon
-## X-DBM-Mod-LoadZone-ruRU: Склеп Аркавона
-## X-DBM-Mod-LoadZone-zhTW: 亞夏梵穹殿
-## X-DBM-Mod-LoadZone-zhCN: 阿尔卡冯的宝库
-## X-DBM-Mod-LoadZone-koKR: 아카본 석실
+## X-DBM-Mod-LoadZoneID: 533
 localization.en.lua
 localization.de.lua
 localization.tw.lua
