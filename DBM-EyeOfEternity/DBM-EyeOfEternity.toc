@@ -23,16 +23,7 @@
 ## X-DBM-Mod-Name-esES: El Ojo de la Eternidad
 ## X-DBM-Mod-Name-esMXS: El Ojo de la Eternidad
 ## X-DBM-Mod-Sort: 205
---## X-DBM-Mod-LoadZoneID: 528
-## X-DBM-Mod-LoadZone: The Eye of Eternity
-## X-DBM-Mod-LoadZone-frFR: L'Œil de l'éternité
-## X-DBM-Mod-LoadZone-deDE: Das Auge der Ewigkeit
-## X-DBM-Mod-LoadZone-ruRU: Око Вечности
-## X-DBM-Mod-LoadZone-zhTW: 永恆之眼
-## X-DBM-Mod-LoadZone-zhCN: 永恒之眼
-## X-DBM-Mod-LoadZone-koKR: 영원의 눈
-## X-DBM-Mod-LoadZone-esES: El Ojo de la Eternidad
-## X-DBM-Mod-LoadZone-esMX: El Ojo de la Eternidad
+## X-DBM-Mod-LoadZoneID: 528
 localization.en.lua
 localization.fr.lua
 localization.de.lua

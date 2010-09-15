@@ -32,16 +32,7 @@
 ## X-DBM-Mod-Name-esES: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Name-esMX: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Sort: 200
---## X-DBM-Mod-LoadZoneID: 605
-## X-DBM-Mod-LoadZone: Icecrown Citadel
-## X-DBM-Mod-LoadZone-deDE: Eiskronenzitadelle
-## X-DBM-Mod-LoadZone-frFR: Citadelle de la Couronne de glace
-## X-DBM-Mod-LoadZone-koKR: 얼음왕관 성채
-## X-DBM-Mod-LoadZone-ruRU: Цитадель Ледяной Короны
-## X-DBM-Mod-LoadZone-zhTW: 冰冠城塞
-## X-DBM-Mod-LoadZone-zhCN: 冰冠堡垒
-## X-DBM-Mod-LoadZone-esES: Ciudadela de la Corona de Hielo
-## X-DBM-Mod-LoadZone-esMX: Ciudadela de la Corona de Hielo
+## X-DBM-Mod-LoadZoneID: 605
 localization.en.lua
 localization.de.lua
 localization.kr.lua
