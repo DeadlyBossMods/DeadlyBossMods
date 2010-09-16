@@ -247,7 +247,6 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "Звуковой сигнал, если вас преследуют",
 	PursueIcon				= "Устанавливать метки на преследуемых",
 	SpecWarnShadowStrike	= "Спец-предупреждение для $spell:66134 (для прерывания)",
-	RemoveHealthBuffsInP3	= "Удалять усиления здоровья в начале фазы 3", 
 	SetIconsOnPCold         = "Устанавливать метки на цели заклинания $spell:68510",
 	AnnouncePColdIcons		= "Объявлять метки целей заклинания $spell:68510 в рейд-чат\n(требуются права лидера или помощника)",
 	AnnouncePColdIconsRemoved	= "Объявлять также о снятии меток с целей заклинания $spell:68510\n(требуется предыдущая опция)"

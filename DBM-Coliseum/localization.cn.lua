@@ -259,7 +259,6 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "当你开始被追击时播放音效",
 	PursueIcon			= "为被追击的目标设置标记 (骷髅)",
 	SpecWarnShadowStrike		= "为$spell:66134显示特别警报 (打断用)",
-	RemoveHealthBuffsInP3		= "当进入第3阶段时移除耐力的增益",
 	SetIconsOnPCold			= "为$spell:68510的目标设置标记",
 	AnnouncePColdIcons		= "公布$spell:68510目标设置的标记到团队频道\n(需要团长或助理权限)",
 	AnnouncePColdIconsRemoved	= "当移除$spell:68510的标记时也提示\n(需要上述选项)"
