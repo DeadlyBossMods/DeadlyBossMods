@@ -17,9 +17,6 @@ mod:RegisterEvents(
 
 mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
-
-mod:AddBoolOption("RemoveHealthBuffsInP3", false)
-
 -- Adds
 local warnAdds				= mod:NewAnnounce("warnAdds", 3, 45419)
 local timerAdds				= mod:NewTimer(45, "timerAdds", 45419)
@@ -215,9 +212,6 @@ function mod:SPELL_CAST_START(args)
 		specWarnSubmergeSoon:Cancel()
 		timerEmerge:Stop()
 		timerSubmerge:Stop()
-		if self.Options.RemoveHealthBuffsInP3 then
-			mod:ScheduleMethod(0.1, "RemoveBuffs")
-		end
 		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
 			timerAdds:Cancel() 
 			warnAdds:Cancel() 
@@ -255,12 +249,5 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			self:ScheduleMethod(5.5, "ShadowStrike")  -- 35-36sec after Emerge next ShadowStrike
 		end
 	end
-end
-
-function mod:RemoveBuffs()
-	CancelUnitBuff("player", (GetSpellInfo(47440)))		-- Commanding Shout
-	CancelUnitBuff("player", (GetSpellInfo(48161)))		-- Power Word: Fortitude
-	CancelUnitBuff("player", (GetSpellInfo(48162)))		-- Prayer of Fortitude
-	CancelUnitBuff("player", (GetSpellInfo(69377)))		-- Runescroll of Fortitude
 end
 
