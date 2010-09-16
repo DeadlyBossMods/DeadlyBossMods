@@ -2,6 +2,10 @@
 -- http://wow.gamespot.com.cn
 -- Last Update: 12/13/2008
 
+-- author: callmejames @《凤凰之翼》 一区藏宝海湾
+-- commit by: yaroot <yaroot AT gmail.com>
+-- Last Update: 9/16/2010
+
 if GetLocale() ~= "zhCN" then return end
 
 local L
