@@ -233,7 +233,6 @@ L:SetOptionLocalization{
 	PlaySoundOnPursue		= "Spiele Sound wenn du verfolgt wirst",
 	PursueIcon				= "Setze Zeichen auf verfolgte Spieler",
 	SpecWarnShadowStrike	= "Zeige Spezialwarnung für $spell:66134 (zum Unterbrechen)",
-	RemoveHealthBuffsInP3	= "Entferne lebenspunktesteigernde Buffs in Phase 3",
 	SetIconsOnPCold         = "Setze Zeichen auf Ziele von $spell:68510",
 	AnnouncePColdIcons		= "Verkünde Zeichen von Zielen von $spell:68510 in Raidchat\n(benötigt aktivierte Ankündigungen und (L)- oder (A)-Status)",
 	AnnouncePColdIconsRemoved	= "Verkünde auch, wenn Zeichen für $spell:68510 entfernt werden\n(benötigt obige Option)"

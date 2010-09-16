@@ -253,7 +253,6 @@ L:SetOptionLocalization{
 	PursueIcon				= "Met une icône sur la tête du joueur qui est suivi",
 	SpecWarnShadowStrike	= "Montre une alerte spéciale pour les Attaque d'ombre (Pour les casser)",
 	SpecWarnPCold			= "Montre une alerte spéciale pour le Froid pénétrant",
-	RemoveHealthBuffsInP3	= "Enlève les buffs de soins au début de la phase 3",
 	SetIconsOnPCold         = "Met une icone sur la cible du Froid pénétrant",
 	AnnouncePColdIcons		= "Marque les icones des cible du Froid pénétrant dans le chatt (Requiert les annonces activer et être le leader ou avoir une promot)"
 }
