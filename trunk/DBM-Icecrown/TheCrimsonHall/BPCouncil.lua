@@ -156,13 +156,15 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70952) and self:IsInCombat() then
-		warnTargetSwitch:Show(L.Valanar)
-		warnTargetSwitchSoon:Schedule(42)
-		timerTargetSwitch:Start()
+	if args:IsSpellID(70952) then
 		activePrince = args.destGUID
-		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(12)
+		if self:IsInCombat() then
+			warnTargetSwitch:Show(L.Valanar)
+			warnTargetSwitchSoon:Schedule(42)
+			timerTargetSwitch:Start()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(12)
+			end
 		end
 	elseif args:IsSpellID(70981) and self:IsInCombat() then
 		warnTargetSwitch:Show(L.Keleseth)

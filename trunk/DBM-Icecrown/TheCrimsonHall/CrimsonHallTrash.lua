@@ -30,7 +30,7 @@ local function warnBloodMirrorTargets()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(70451) then
+	if args:IsSpellID(70451) and args:IsDestTypePlayer() then
 		BloodMirrorTargets[#BloodMirrorTargets + 1] = args.destName
 		timerBloodMirror:Start(args.destName)
 		if self.Options.BloodMirrorIcon then
@@ -46,7 +46,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(70432) then
 		warnBloodSap:Show(args.destName)
 		timerBloodSap:Start(args.destName)
-	elseif args:IsSpellID(70645) then
+	elseif args:IsSpellID(70645) and args:IsDestTypePlayer() then
 		warnChainsofShadow:Show(args.destName)
 		timerChainsofShadow:Start(args.destName)
 	end
