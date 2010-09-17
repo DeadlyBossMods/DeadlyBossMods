@@ -2528,9 +2528,9 @@ if is_cata then--It's Cataclysm
 			return select(2, UnitClass("player")) == "ROGUE"
 			or select(2, UnitClass("player")) == "WARRIOR"
 			or select(2, UnitClass("player")) == "DEATHKNIGHT"
-			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) < 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 31)
+			or (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(1)) < 31)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(5, GetTalentTabInfo(2)) >= 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) >= 31)
 		else
 			return select(2, UnitClass("player")) == "ROGUE"
 			or select(2, UnitClass("player")) == "WARRIOR"
@@ -2547,9 +2547,9 @@ if is_cata then--It's Cataclysm
 			or select(2, UnitClass("player")) == "HUNTER"
 			or select(2, UnitClass("player")) == "WARLOCK"
 			or select(2, UnitClass("player")) == "PRIEST"
-			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 31)
+			or (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(1)) >= 31)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(5, GetTalentTabInfo(2)) < 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) < 31)
 		else
 			return select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "HUNTER"
@@ -2568,7 +2568,7 @@ if is_cata then--It's Cataclysm
 			or select(2, UnitClass("player")) == "PRIEST"
 			or (select(2, UnitClass("player")) == "PALADIN")
      		or (select(2, UnitClass("player")) == "SHAMAN")
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) < 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) < 31)
 		else
 			return select(2, UnitClass("player")) == "MAGE"
 			or select(2, UnitClass("player")) == "WARLOCK"
@@ -2597,10 +2597,10 @@ if is_cata then--It's Cataclysm
 
 	function bossModPrototype:IsTank()
 		if UnitLevel("player") >= 69 then
-			return (select(2, UnitClass("player")) == "WARRIOR" and select(3, GetTalentTabInfo(3)) >= 31)
+			return (select(2, UnitClass("player")) == "WARRIOR" and select(5, GetTalentTabInfo(3)) >= 31)
      		or (select(2, UnitClass("player")) == "DEATHKNIGHT" and IsDeathKnightTank())
-			or (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(2)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(2)) >= 31 and IsDruidTank())
+			or (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(2)) >= 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(2)) >= 31 and IsDruidTank())
 		else
 			return (select(2, UnitClass("player")) == "WARRIOR")
      		or (select(2, UnitClass("player")) == "DEATHKNIGHT")
@@ -2611,10 +2611,10 @@ if is_cata then--It's Cataclysm
 
 	function bossModPrototype:IsHealer()
 		if UnitLevel("player") >= 69 then
-			return (select(2, UnitClass("player")) == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 31)
-     		or (select(2, UnitClass("player")) == "SHAMAN" and select(3, GetTalentTabInfo(3)) >= 31)
-			or (select(2, UnitClass("player")) == "DRUID" and select(3, GetTalentTabInfo(3)) >= 31)
-			or (select(2, UnitClass("player")) == "PRIEST" and select(3, GetTalentTabInfo(3)) < 31)
+			return (select(2, UnitClass("player")) == "PALADIN" and select(5, GetTalentTabInfo(1)) >= 31)
+     		or (select(2, UnitClass("player")) == "SHAMAN" and select(5, GetTalentTabInfo(3)) >= 31)
+			or (select(2, UnitClass("player")) == "DRUID" and select(5, GetTalentTabInfo(3)) >= 31)
+			or (select(2, UnitClass("player")) == "PRIEST" and select(5, GetTalentTabInfo(3)) < 31)
 		else
 			return (select(2, UnitClass("player")) == "PALADIN")
      		or (select(2, UnitClass("player")) == "SHAMAN")
