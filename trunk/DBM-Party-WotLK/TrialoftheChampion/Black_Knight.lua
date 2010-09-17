@@ -38,9 +38,12 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(67729, 67886) then							-- Explode (elite explodes self, not BK. Phase 2)
+	if args:IsSpellID(67729, 67886) and GetTime() - lastexplode > 2 then
 		warnExplode:Show()
-		timerExplode:Start(args.destName)
+		specWarnExplode:Show()
+		soundExplode:Play()
+		timerExplode:Start()
+		lastexplode = GetTime()
 	end
 end
 
