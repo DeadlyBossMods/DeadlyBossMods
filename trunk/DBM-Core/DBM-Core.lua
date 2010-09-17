@@ -109,7 +109,7 @@ DBM.DefaultOptions = {
 	DontSetIcons = false,
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
-	SettingsMessageShown
+	SettingsMessageShown = false,
 --	HelpMessageShown = false,
 }
 
