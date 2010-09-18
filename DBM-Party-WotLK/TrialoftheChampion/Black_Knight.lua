@@ -32,9 +32,11 @@ mod:AddBoolOption("SetIconOnMarkedTarget", true)
 mod:AddBoolOption("AchievementCheck", false, "announce")
 
 local warnedfailed = false
+local lastexplode = 0
 
 function mod:OnCombatStart(delay)
 	warnedfailed = false
+	lastexplode = 0
 end
 
 function mod:SPELL_CAST_START(args)
@@ -71,21 +73,18 @@ function mod:SPELL_MISSED(args)
 	end
 end
 
-do
-	local lastexplode = 0
-	function mod:SPELL_AURA_APPLIED(args)
-		if args:IsSpellID(67823, 67882) and args:IsDestTypePlayer() then-- Marked For Death
-			if self.Options.SetIconOnMarkedTarget then
-				self:SetIcon(args.destName, 8, 10)
-			end
-			warnMarked:Show(args.destName)
-			timerMarked:Show(args.destName)
-		elseif args:IsSpellID(67751) and GetTime() - lastexplode > 2 then	-- Ghoul Explode (BK exlodes Army of the dead. Phase 3)
-			warnGhoulExplode:Show(args.destName)
-			specWarnExplode:Show()
-			soundExplode:Play()
-			lastexplode = GetTime()
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(67823, 67882) and args:IsDestTypePlayer() then-- Marked For Death
+		if self.Options.SetIconOnMarkedTarget then
+			self:SetIcon(args.destName, 8, 10)
 		end
+		warnMarked:Show(args.destName)
+		timerMarked:Show(args.destName)
+	elseif args:IsSpellID(67751) and GetTime() - lastexplode > 2 then	-- Ghoul Explode (BK exlodes Army of the dead. Phase 3)
+		warnGhoulExplode:Show(args.destName)
+		specWarnExplode:Show()
+		soundExplode:Play()
+		lastexplode = GetTime()
 	end
 end
 
