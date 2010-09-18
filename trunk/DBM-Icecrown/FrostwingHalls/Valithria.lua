@@ -70,7 +70,7 @@ function mod:StartAbomTimer()
 		timerAbom:Start(AbomTimer)--Timer is 60 seconds after first early abom, it's set to 60 on combat start.
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 		AbomTimer = AbomTimer - 5--Right after first abom timer starts, change it from 60 to 55.
-	elseif AbomSpawn == 2 then
+	elseif AbomSpawn == 2 or AbomSpawn == 3 then
 		timerAbom:Start(AbomTimer)--Start first 55 second timer
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 	elseif AbomSpawn >= 4 then--after 4th abom, the timer starts subtracting again.
