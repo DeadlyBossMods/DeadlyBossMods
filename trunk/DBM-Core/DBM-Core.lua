@@ -1363,6 +1363,7 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
+	SetMapToCurrentZone()
 	local zoneName = GetRealZoneText()
 	local zoneId = GetCurrentMapAreaID()
 	for i, v in ipairs(self.AddOns) do
