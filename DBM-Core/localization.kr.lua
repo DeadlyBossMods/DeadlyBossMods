@@ -1,6 +1,7 @@
 if (GetLocale() == "koKR") then
 
 DBM_CORE_NEED_SUPPORT				= "안녕하세요. DBM Team입니다. 만약 프로그래밍 또는 언어에 대해 잘 아신다면, DBM Team에 어떤 도움이든 주실 수 있습니다. 만약, 한글화 혹은 코드 수정에 관해 건의/수정 사항이 있다면 wow.somegate.com 또는 에이그윈(호드) 흑묘서희에게 연락바랍니다. DBM BossMods Team에 참가하고 싶다면 www.deadlybossmods.com 또는 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com에 연락 바랍니다. 물론, 영어를 매우 잘하셔야겠죠?"
+DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 채팅창에서 /dbm 을 입력하면 설정 화면을 볼 수 있습니다. 보스존에서 개별정인 설정을 하고 싶다면 설정화면에서 따로 설정 하시면 됩니다. DBM이 처음 실행할 때 당신의 특성을 검색할 수도 있지만, 몇몇의 경우 추가적인 옵션이 켜진 상태 일 수도 있습니다. 많은 유저들이 경고와 관련하여 요청을 하지만 대부분 기본적으로 들어있는 내용들입니다. 특히 탱킹과 관련 된 것들을 확인하시기 바랍니다."
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 보스 모드 로딩중 에러 발생: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "'%s' 보스 모드가 로드되었습니다.!"

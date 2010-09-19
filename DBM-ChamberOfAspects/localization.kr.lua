@@ -190,7 +190,7 @@ L:SetOptionLocalization({
 	SoundOnConsumption		= "$spell:74562 또는 $spell:74792 소리 재생",--We use localized text for these functions
 	SetIconOnConsumption	= "$spell:74562 또는 $spell:74792 대상 공격대 아이콘 설정",--So we can use single functions for both versions of spell.
 	YellOnConsumption		= "$spell:74562 또는 $spell:74792 외치기",
-	WhisperOnConsumption	= "$spell:74562 또는 $spell:74792의 대상에게 귓속말 보내기"	
+	WhisperOnConsumption	= "$spell:74562 또는 $spell:74792의 대상에게 귓속말 보내기(공대 경보 권한이 있을 경우)"	
 })
 
 L:SetMiscLocalization({
