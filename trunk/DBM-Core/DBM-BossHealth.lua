@@ -16,6 +16,8 @@ local updateBar
 local anchor
 local header
 local dropdownFrame
+local is_cata = select(4, _G.GetBuildInfo()) >= 40000--4.0 PTR or Beta
+local is_china = select(4, _G.GetBuildInfo()) == 30200--Chinese wow (3.2.2) No one else should be on 3.2.x, screw private servers.
 --local sortingEnabled
 
 do
@@ -173,7 +175,11 @@ do
 			return -1
 		end
 		local cType = bit.band(guid:sub(0, 5), 0x00F)
-		return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
+		if is_cata or is_china then
+			return (cType == 3 or cType == 5) and tonumber(guid:sub(7, 10), 16) or -1
+		else
+			return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
+		end
 	end
 	
 --	local function compareBars(b1, b2)
