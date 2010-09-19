@@ -63,7 +63,6 @@ function mod:StartBlazingSkeletonTimer()
 end
 
 --23, 60, 55, 55, 55, 50, 45, 40, 35, etc (at least on normal, on heroic it might be only 2 55s, need more testing)
---Can't figure out which, it's hard to pay attention to as a tank.
 function mod:StartAbomTimer()
 	AbomSpawn = AbomSpawn + 1
 	if AbomSpawn == 1 then
@@ -71,13 +70,13 @@ function mod:StartAbomTimer()
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 		AbomTimer = AbomTimer - 5--Right after first abom timer starts, change it from 60 to 55.
 	elseif AbomSpawn == 2 or AbomSpawn == 3 then
-		timerAbom:Start(AbomTimer)--Start first 55 second timer
+		timerAbom:Start(AbomTimer)--Start first and second 55 second timer
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 	elseif AbomSpawn >= 4 then--after 4th abom, the timer starts subtracting again.
-		timerAbom:Start(AbomTimer)--Start another 55 second timer at least once before subtracking from it again.
+		timerAbom:Start(AbomTimer)--Start third 55 second timer before subtracking from it again.
 		self:ScheduleMethod(AbomTimer, "StartAbomTimer")
 		if AbomTimer >= 10 then--Keep it from dropping below 5
-			AbomTimer = AbomTimer - 5--But after 2nd 55 second timer from there on every other timer will be 5 less.
+			AbomTimer = AbomTimer - 5--Rest of timers after 3rd 55 second timer will be 5 less than previous until they come every 5 seconds.
 		end
 	end
 end
