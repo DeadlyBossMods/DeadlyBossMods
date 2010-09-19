@@ -175,7 +175,7 @@ do
 			return -1
 		end
 		local cType = bit.band(guid:sub(0, 5), 0x00F)
-		if is_cata or is_china then
+		if select(4, _G.GetBuildInfo()) >= 40000 or select(4, _G.GetBuildInfo()) == 30200 then
 			return (cType == 3 or cType == 5) and tonumber(guid:sub(7, 10), 16) or -1
 		else
 			return (cType == 3 or cType == 5) and tonumber(guid:sub(9, 12), 16) or -1
