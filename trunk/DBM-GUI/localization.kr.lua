@@ -8,6 +8,7 @@ L.MainFrame = "죽이는 보스 모드"
 L.TranslationBy 		= "흑묘서희@에이그윈서버 호드진영"
 
 L.TabCategory_Options 	= "일반 옵션"
+L.TabCategory_CATA	 	= "대격변"
 L.TabCategory_WOTLK 	= "리치왕의 분노"
 L.TabCategory_BC 		= "불타는 성전"
 L.TabCategory_CLASSIC 	= "오리지널"
@@ -26,7 +27,7 @@ L.Button_OK 			= '확인'
 L.Button_Cancel 		= '취소'
 L.Button_LoadMod 		= '애드온 불러오기'
 L.Mod_Enabled			= "보스 모드 허용"
-L.Mod_EnableAnnounce	= "공격대 경보로 알리기"
+L.Mod_EnableAnnounce	= "공격대 경보로 알리기 (공격대 혹은 파티장일 경우)"
 L.Reset 				= "리셋"
 
 L.Enable  				= "켜기"
