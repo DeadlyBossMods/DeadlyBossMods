@@ -1656,10 +1656,11 @@ do
 			if guid and (bit.band(guid:sub(1, 5), 0x00F) == 3 or bit.band(guid:sub(1, 5), 0x00F) == 5) then
 				if is_cata or is_china then
 					local cId = tonumber(guid:sub(7, 10), 16)
+					targetList[cId] = id
 				else
 					local cId = tonumber(guid:sub(9, 12), 16)
+					targetList[cId] = id
 				end
-				targetList[cId] = id
 			end
 		end
 	end
