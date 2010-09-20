@@ -1361,10 +1361,13 @@ function DBM:LFG_PROPOSAL_FAILED()
 end
 
 function DBM:LFG_UPDATE()
-	local _, joined = GetLFGInfoServer()
-	if not joined then
-		DBM.Bars:CancelBar(DBM_LFG_INVITE)
-	end
+    -- simple fix for China wow
+    if(GetLFGInfoServer) then
+        local _, joined = GetLFGInfoServer()
+        if not joined then
+            DBM.Bars:CancelBar(DBM_LFG_INVITE)
+        end
+    end
 end
 
 --------------------------------
