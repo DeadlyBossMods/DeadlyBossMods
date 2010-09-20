@@ -15,9 +15,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBrew		= "Show special warning for Dark Brewmaiden's Brew",
-	specWarnBrewStun	= "Show special warning for Dark Brewmaiden's Stun",
-	YellOnBarrel		= "Yell on Barrel"
+	specWarnBrew		= "Show special warning for $spell:47376",
+	specWarnBrewStun	= "Show special warning for $spell:47340",
+	YellOnBarrel		= "Yell on $spell:51413"
 })
 
 L:SetMiscLocalization({
