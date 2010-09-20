@@ -21,7 +21,7 @@ local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")
 local timerBrew				= mod:NewTargetTimer(10, 47376)
 local timerBrewStun			= mod:NewTargetTimer(6, 47340)
 
-mod:AddBoolOption("YellOnBarrel", true, "announce")
+mod:AddBoolOption("YellOnBarrel", mod:IsTank(), "announce")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(47310) then
