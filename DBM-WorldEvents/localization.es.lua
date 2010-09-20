@@ -12,18 +12,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBrew		= "Matar a la hija antes de que lanze otra cerveza!",
-	specWarnBrewStun		= "SUGERENCIA: Bebe la cerveza si te ha lanzado!"
+	specWarnBrew		= "¡Bebete la cerveza antes de que lanze otra!",
+	specWarnBrewStun		= "SUGERENCIA: ¡Te han dado! ¡Acuerdate de beber la cerveza si te han lanzado!"
 })
 
 L:SetOptionLocalization({
-	specWarnBrew		= "Mostrar aviso especial para Dark Brewmaiden's Brew",
-	specWarnBrewStun		= "Mostrar aviso especial para Dark Brewmaiden's Stun",
-	YellOnBarrel	= "Avisar si tienes el Barril"
+	specWarnBrew		= "Mostrar aviso especial para $spell:47376",
+	specWarnBrewStun		= "Mostrar aviso especial para $spell:47340",
+	YellOnBarrel	= "Avisar si $spell:51413"
 })
 
 L:SetMiscLocalization({
-	YellBarrel		= "Tengo el Barril!"
+	YellBarrel		= "¡Tengo el Barril!"
 })
 
 -------------------
