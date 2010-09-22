@@ -11,7 +11,7 @@
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
-## SavedVariablesPerCharacter: DBMVoA_SavedVars
+## SavedVariablesPerCharacter: DBMVoA_SavedVars, DBMVoA_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: WotLK
 ## X-DBM-Mod-Has-Heroic-Mode: 0
