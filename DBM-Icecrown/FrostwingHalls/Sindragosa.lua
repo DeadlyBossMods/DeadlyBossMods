@@ -68,6 +68,10 @@ local phase = 0
 local unchainedIcons = 7
 local activeBeacons	= false
 
+local function ClearBeaconTargets()
+	table.wipe(beaconIconTargets)
+end
+
 do
 	local function sort_by_group(v1, v2)
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
@@ -83,7 +87,7 @@ do
 				self:SetIcon(UnitName(v), beaconIcons)
 				beaconIcons = beaconIcons - 1
 			end
-			table.wipe(beaconIconTargets)
+			self:Schedule(5, ClearBeaconTargets)
 		end
 	end
 end
@@ -147,7 +151,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetBeaconIcons()--Sort and fire as early as possible once we have all targets.
 			else
 				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
-					self:ScheduleMethod(1, "SetBeaconIcons")
+					self:ScheduleMethod(0.2, "SetBeaconIcons")
 				end
 			end
 		end

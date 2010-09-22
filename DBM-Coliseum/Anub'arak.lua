@@ -99,6 +99,10 @@ function mod:ShadowStrike()
 	end
 end
 
+local function ClearPcoldTargets()
+	table.wipe(PColdTargets)
+end
+
 local PColdTargets = {}
 do
 	local function sort_by_group(v1, v2)
@@ -115,7 +119,7 @@ do
 				self:SetIcon(UnitName(v), PColdIcon)
 				PColdIcon = PColdIcon - 1
 			end
-			table.wipe(PColdTargets)	
+			self:Schedule(5, ClearPcoldTargets)
 		end
 	end
 end
@@ -139,13 +143,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconsOnPCold then
 			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetPcoldIcons")
 			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
-				self:UnscheduleMethod("SetPcoldIcons")
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
 			else
 				if mod:LatencyCheck() then
-					self:UnscheduleMethod("SetPcoldIcons")
-					self:ScheduleMethod(1, "SetPcoldIcons")
+					self:ScheduleMethod(0.2, "SetPcoldIcons")
 				end
 			end
 		end
@@ -170,8 +173,8 @@ function mod:SPELL_AURA_REFRESH(args)
 			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
 			else
-				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
-					self:ScheduleMethod(0.5, "SetPcoldIcons")
+				if mod:LatencyCheck() then
+					self:ScheduleMethod(0.2, "SetPcoldIcons")
 				end
 			end
 		end
