@@ -9,7 +9,6 @@ mod:RegisterCombat("yell", L.YellPull)
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REFRESH",
-	"SPELL_MISSED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
@@ -62,7 +61,6 @@ local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
 local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
 local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", mod:IsTank())
 
-local missedTargets = {}
 function mod:OnCombatStart(delay)
 	Burrowed = false 
 	timerAdds:Start(10-delay) 
@@ -74,7 +72,6 @@ function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	timerFreezingSlash:Start(-delay)
 	table.wipe(PColdTargets)
-	table.wipe(missedTargets)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerShadowStrike:Start()
 		preWarnShadowStrike:Schedule(25.5-delay)
@@ -100,13 +97,6 @@ function mod:ShadowStrike()
 		self:UnscheduleMethod("ShadowStrike")
 		self:ScheduleMethod(30.5, "ShadowStrike")
 	end
-end
-
-function mod:RemovePcoldMissedIcon()
-	for i=0, #missedTargets do
-		self:SetIcon(missedTargets[i], 0)
-	end
-	table.wipe(missedTargets)
 end
 
 local PColdTargets = {}
@@ -150,7 +140,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.SetIconsOnPCold then
 			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
 			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
+				self:UnscheduleMethod("SetPcoldIcons")
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
+			else
+				if mod:LatencyCheck() then
+					self:UnscheduleMethod("SetPcoldIcons")
+					self:ScheduleMethod(0.5, "SetPcoldIcons")
+				end
 			end
 		end
 	elseif args:IsSpellID(66012) then							-- Freezing Slash
@@ -170,23 +166,14 @@ function mod:SPELL_AURA_REFRESH(args)
 		end
 		if self.Options.SetIconsOnPCold then
 			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetPcoldIcons")
 			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
+			else
+				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
+					self:ScheduleMethod(0.5, "SetPcoldIcons")
+				end
 			end
-		end
-	end
-end
-
-function mod:SPELL_MISSED(args)--Hack so spell misses don't cause the "wait and sort after all 5 targets" method doesn't fail with < 5 targets.
-	if args:IsSpellID(66013, 67700, 68509, 68510) then		-- Penetrating Cold
-		if self.Options.SetIconsOnPCold then
-			table.insert(PColdTargets, DBM:GetRaidUnitId(args.destName))
-			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #PColdTargets >= 5) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #PColdTargets >= 2) then
-				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
-			end
-			missedTargets[#missedTargets] = args.destName
-			mod:UnscheduleMethod("RemovePcoldMissedIcon")
-			mod:ScheduleMethod(0.5, "RemovePcoldMissedIcon")
 		end
 	end
 end
