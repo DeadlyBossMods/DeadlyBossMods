@@ -145,7 +145,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			else
 				if mod:LatencyCheck() then
 					self:UnscheduleMethod("SetPcoldIcons")
-					self:ScheduleMethod(0.5, "SetPcoldIcons")
+					self:ScheduleMethod(1, "SetPcoldIcons")
 				end
 			end
 		end
