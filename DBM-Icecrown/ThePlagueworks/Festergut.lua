@@ -150,8 +150,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.SetIconOnGasSpore then
 			table.insert(gasSporeIconTargets, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetSporeIcons")
 			if ((mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25")) and #gasSporeIconTargets >= 3) or ((mod:IsDifficulty("normal10") or mod:IsDifficulty("heroic10")) and #gasSporeIconTargets >= 2) then
 				self:SetSporeIcons()--Sort and fire as early as possible once we have all targets.
+			else
+				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
+					self:ScheduleMethod(0.5, "SetSporeIcons")
+				end
 			end
 		end
 		self:Unschedule(warnGasSporeTargets)
