@@ -148,7 +148,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
 			else
 				if mod:LatencyCheck() then
-					self:ScheduleMethod(0.2, "SetPcoldIcons")
+					self:ScheduleMethod(0.3, "SetPcoldIcons")
 				end
 			end
 		end
@@ -174,7 +174,7 @@ function mod:SPELL_AURA_REFRESH(args)
 				self:SetPcoldIcons()--Sort and fire as early as possible once we have all targets.
 			else
 				if mod:LatencyCheck() then
-					self:ScheduleMethod(0.2, "SetPcoldIcons")
+					self:ScheduleMethod(0.3, "SetPcoldIcons")
 				end
 			end
 		end
