@@ -151,7 +151,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetBeaconIcons()--Sort and fire as early as possible once we have all targets.
 			else
 				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
-					self:ScheduleMethod(0.2, "SetBeaconIcons")
+					self:ScheduleMethod(0.3, "SetBeaconIcons")
 				end
 			end
 		end

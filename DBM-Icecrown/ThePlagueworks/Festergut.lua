@@ -159,7 +159,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				self:SetSporeIcons()--Sort and fire as early as possible once we have all targets.
 			else
 				if mod:LatencyCheck() then--Icon sorting is still sensitive and should not be done by laggy members that don't have all targets.
-					self:ScheduleMethod(0.2, "SetSporeIcons")
+					self:ScheduleMethod(0.3, "SetSporeIcons")
 				end
 			end
 		end
