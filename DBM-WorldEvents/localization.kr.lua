@@ -17,9 +17,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBrew			= "흑맥주요정의 맥주 특수 경고 보기",
-	specWarnBrewStun		= "흑맥주요정의 기절 특수 경고 보기",
-	YellOnBarrel			= "맥주통을 가지게 될 경우 외치기"
+	specWarnBrew			= "$spell:47376의 특수 경고 보기",
+	specWarnBrewStun		= "$spell:47340의 특수 경고 보기",
+	YellOnBarrel			= "$spell:51413 외치기"
 })
 
 L:SetMiscLocalization{
