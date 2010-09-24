@@ -50,6 +50,7 @@ L.EnableStatus 				= "Reply to 'status' whispers"
 L.AutoRespond 				= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon			= "Show minimap button"
 L.FixCLEUOnCombatStart		= "Clear combat log cache on pull"
+L.SKT_Enabled			= "Always show speed kill timer (Overrides boss-specific option)"
 L.Latency_Text				= "Set max latency sync threshold: %d"
 
 L.Button_RangeFrame			= "Show/hide range frame"

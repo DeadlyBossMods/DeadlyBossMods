@@ -195,4 +195,5 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow move  makes the arrow movable",
 }
 
-
+DBM_SPEED_KILL_TIMER_TEXT	= "Speed Kill"
+DBM_SPEED_KILL_TIMER_OPTION	= "Show a timer to beat your fastest kill"
