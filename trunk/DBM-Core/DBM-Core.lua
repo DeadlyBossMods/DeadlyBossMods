@@ -110,6 +110,7 @@ DBM.DefaultOptions = {
 	LatencyThreshold = 250,
 	BigBrotherAnnounceToRaid = false,
 	SettingsMessageShown = false,
+	AlwaysShowSpeedKillTimer = true,
 --	HelpMessageShown = false,
 }
 
@@ -1835,6 +1836,16 @@ function DBM:StartCombat(mod, delay, synced)
 				DBM.BossHealth:AddBoss(mod.combatInfo.mob, mod.localization.general.name)
 			end
 		end
+		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
+			local bestTime = 0.01
+			if mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime then
+				bestTime = mod.stats.heroicBestTime
+			elseif mod:IsDifficulty("normal5", "heroic10") and mod.stats.bestTime then
+				bestTime = mod.stats.bestTime
+			end
+			local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT)
+			speedTimer:Start()
+		end
 		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if not synced then
 			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
@@ -2357,6 +2368,7 @@ do
 		if obj.localization.general.name == "name" then obj.localization.general.name = name end
 		table.insert(self.Mods, obj)
 		modsById[name] = obj
+		obj:AddBoolOption("SpeedKillTimer", false, "misc")
 		obj:AddBoolOption("HealthFrame", false, "misc")
 		obj:SetZone()
 		return obj
@@ -3863,7 +3875,8 @@ do
 	local defaultOptionLocalization = {
 		__index = setmetatable({
 			timer_berserk = DBM_CORE_OPTION_TIMER_BERSERK,
-			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME
+			HealthFrame = DBM_CORE_OPTION_HEALTH_FRAME,
+			SpeedKillTimer = DBM_SPEED_KILL_TIMER_OPTION
 		}, returnKey)
 	}
 	local defaultMiscLocalization = {
