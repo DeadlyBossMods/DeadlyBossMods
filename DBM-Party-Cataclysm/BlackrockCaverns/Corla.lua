@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Corla", "DBM-Party-Cataclysm", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39679)
 mod:SetZone()
 
@@ -29,10 +29,10 @@ local specWarnEvolution		= mod:NewSpecialWarningStack(75697, true, 70)
 
 local spamEvolution
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75823) then
+	if args:IsSpellID(75823, 93462) then--Heroic spellid drycoded (untested)
 		warnDarkCommand:Show(args.destName)
 		timerDarkCommand:Start(args.destName)
-	elseif args:IsSpellID(75697) and args:IsPlayer() then
+	elseif args:IsSpellID(75697, 87378) and args:IsPlayer() then--Heroic spellid drycoded (untested)
 		timerEvolution:Start()
 		if (args.amount or 1) >= 70 and GetTime() - spamEvolution > 5 then
 			specWarnEvolution:Show()
@@ -50,7 +50,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(82362) then
+	if args:IsSpellID(82362, 87374) then--Heroic spellid drycoded (untested)
 		warnShadowStrike:Show()
 		timerShadowStrike:Start()
 		specWarnShadowStrike:Show()

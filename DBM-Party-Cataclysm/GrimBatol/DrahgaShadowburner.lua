@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("DrahgaShadowburner", "DBM-Party-Cataclysm", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(40319)
 mod:SetZone()
 
@@ -21,14 +21,14 @@ local timerShredding	= mod:NewBuffActiveTimer(20, 75271)
 -- Dragon inc warning?   (Yell = "Dragon, you will do as I command! Catch me!" )
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(75321) then
+	if args:IsSpellID(75321, 90973) then
 		warnFlame:Show()
 		timerFlame:Start()
 	end
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(75271) then
+	if args:IsSpellID(75271, 90966) then
 		warnShredding:Show()
 		timerShredding:Start()
 	end
