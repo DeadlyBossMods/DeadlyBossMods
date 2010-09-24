@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Erudax", "DBM-Party-Cataclysm", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(40484)
 mod:SetZone()
 
@@ -22,17 +22,22 @@ local timerGale		= mod:NewCastTimer(5, 75664)
 local timerGaleCD	= mod:NewCDTimer(55, 75664)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75861) then
+	if args:IsSpellID(75861, 91079) then
 		warnBinding:Show(args.destName)
 		timerBinding:Start(args.destName)
-	elseif args:IsSpellID(75792) then
+	elseif args:IsSpellID(75792, 91092) then
 		warnFeeble:Show(args.destName)
-		timerFeeble:Start(args.destName)
+		if mod:IsDifficulty("heroic5") then
+			timerFeeble:Start(4, args.destName)--Correct code syntax?
+		else
+			timerFeeble:Start(args.destName)
+		end
+
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(75664) then
+	if args:IsSpellID(75664, 91086) then
 		warnGale:Show()
 		timerGale:Start()
 		timerGaleCD:Start()

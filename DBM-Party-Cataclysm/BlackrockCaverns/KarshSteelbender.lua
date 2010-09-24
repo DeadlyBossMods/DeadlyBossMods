@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("KarshSteelbender", "DBM-Party-Cataclysm", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39698)
 mod:SetZone()
 
@@ -27,7 +27,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(75842) then
 		warnObsidianArmor:Show()
-	elseif args:IsSpellID(75846) then
+	elseif args:IsSpellID(75846, 93567) then--Drycoded heroic spellid
 		timerSuperheated:Start(10, args.amount or 1)
 		if args.amount and args.amount >= 5 then
 			specWarnSuperheated:Show()

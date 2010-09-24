@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("GeneralUmbriss", "DBM-Party-Cataclysm", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39625)
 mod:SetZone()
 
@@ -42,7 +42,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBleedingWoundCD:Start()
 	elseif args:IsSpellID(74853) then
 		warnFrenzy:Show()
-	elseif args:IsSpellID(90179) then
+	elseif args:IsSpellID(74837, 90179) then
 		warnMalady:Show(args.destName)
 		timerMalady:Start(args.destName)
 	elseif args:IsSpellID(90170) then
@@ -52,7 +52,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(90179) then
+	if args:IsSpellID(74837, 90179) then
 		timerMalady:Start(args.destName)
 	end
 end
@@ -60,7 +60,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(74846, 91937) then
 		timerBleedingWound:Cancel(args.destName)
-	elseif args:IsSpellID(90179) then
+	elseif args:IsSpellID(74837, 90179) then
 		timerMalady:Cancel(args.destName)
 	end
 end

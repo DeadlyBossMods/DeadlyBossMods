@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Romogg", "DBM-Party-Cataclysm", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39665)
 mod:SetZone()
 
@@ -32,8 +32,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75571) then
+	if args:IsSpellID(75571, 93452) then--heroic drycoded
 		warnWoundingStrike:Show(args.destName)
+		if mod:IsDifficulty("heroic5") then
+			timerWoundingStrike:Start(10, args.destName)--proper way to code this? never had to put 2 args in a target timer before.
+		else
+			timerWoundingStrike:Start(args.destName)
+		end
 		timerWoundingStrike:Start(args.destName)
 	end
 end
@@ -45,8 +50,13 @@ function mod:SPELL_CAST_START(args)
 		timerQuakeCD:Start()
 	elseif args:IsSpellID(75539) then
 		warnChainsWoe:Show()
-	elseif args:IsSpellID(75543) then
+	elseif args:IsSpellID(75543, 93453) then
 		timerSkullcracker:Start()
+		if mod:IsDifficulty("heroic5") then
+			timerSkullcracker:Start(8)
+		else
+			timerSkullcracker:Start()
+		end
 	end
 end
 
