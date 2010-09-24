@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Beauty", "DBM-Party-Cataclysm", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39700)
 mod:SetZone()
 
@@ -33,8 +33,8 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(76028) then
+	if args:IsSpellID(76028, 93586) then--Heroic spellid drycoded off wowhead. not verified yet
 		warnTerrifyingRoar:Show()
-		timerTerrifyingRoar:Start()
+		timerTerrifyingRoarCD:Start()
 	end
 end

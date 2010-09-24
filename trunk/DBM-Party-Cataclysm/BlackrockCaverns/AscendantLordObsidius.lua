@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("AscendantLordObsidius", "DBM-Party-Cataclysm", 1)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(39705)
 mod:SetZone()
 mod:SetUsedIcons(8)
@@ -28,7 +28,7 @@ mod:AddBoolOption("SetIconOnBoss")
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(76200) then
 		warnTransformation:Show()
-	elseif args:IsSpellID(76188) then
+	elseif args:IsSpellID(76188, 93613) then
 		timerCorruption:Start(args.destName)
 	elseif args:IsSpellID(76189) then
 		timerVeil:Start(args.destName)

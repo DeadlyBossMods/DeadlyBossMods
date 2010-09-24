@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("ErunakStonespeaker", "DBM-Party-Cataclysm", 9)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(40825, 40788)		-- 40788 = Mindbender Ghur'sha
 mod:SetZone()
 

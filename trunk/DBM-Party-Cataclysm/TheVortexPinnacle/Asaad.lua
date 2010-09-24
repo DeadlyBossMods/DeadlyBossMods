@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("Asaad", "DBM-Party-Cataclysm", 8)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(45878)
 mod:SetZone()
 

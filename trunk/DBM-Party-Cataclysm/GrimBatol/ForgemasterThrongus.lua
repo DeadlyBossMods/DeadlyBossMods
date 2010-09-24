@@ -1,7 +1,7 @@
 local mod	= DBM:NewMod("ForgemasterThrongus", "DBM-Party-Cataclysm", 3)
 local L		= mod:GetLocalizedStrings()
 
-mod:SetRevision(("$Revision:$"):sub(12, -3))
+mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(40177)
 mod:SetZone()
 
@@ -29,13 +29,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(74981) then
 		warnDualBlades:Show()
 		timerDualBlades:Start()
-	elseif args:IsSpellID(75007) then
+	elseif args:IsSpellID(75007, 90729) then
 		warnEncumbered:Show()
 		timerEncumbered:Start()
-	elseif args:IsSpellID(74908) then
+	elseif args:IsSpellID(74908, 76481) then--drycoded heroic id
 		warnPhalanx:Show()
 		timerPhalanx:Start()
-	elseif args:IsSpellID(75056) then
+	elseif args:IsSpellID(75056, 90756) then--drycoded
 		warnImpalingSlam:Show(args.destName)
 		timerImpalingSlam:Start(args.destName)
 	end
