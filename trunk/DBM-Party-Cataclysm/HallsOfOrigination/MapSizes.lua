@@ -1,0 +1,1 @@
+-- DBM:RegisterMapSize("name", level, width, height)
