@@ -669,7 +669,7 @@
 		</Size>
 		<Scripts>
 			<OnLoad>
-				self.text = _G[self:GetName() .. "Text"];
+				self.text = self:CreateFontString(self:GetName().."Text", "ARTWORK")
 				self.highlight = self:GetHighlightTexture();
 				self.highlight:SetVertexColor(0.196, 0.388, 0.8);
 				self:RegisterForClicks("LeftButtonUp");
@@ -678,7 +678,6 @@
 				DBM_GUI_OptionsFrame:OnButtonClick(self);
 			</OnClick>
 		</Scripts>
-
 		<Frames>
 			<Button name="$parentToggle" inherits="InterfaceOptionsToggleButtonTemplate">
 				<Size>
@@ -705,15 +704,6 @@
 				<HighlightTexture name="$parentHighlightTexture" file="Interface\Buttons\UI-PlusButton-Hilight" alphaMode="ADD"/>
 			</Button>
 		</Frames>
-		<ButtonText name="$parentText" justifyH="LEFT">
-			<Anchors>
-				<Anchor point="RIGHT" relativeTo="$parentToggle" relativePoint="LEFT">
-					<Offset>
-						<AbsDimension x="-2" y="0"/>
-					</Offset>
-				</Anchor>
-			</Anchors>
-		</ButtonText>
 		<NormalFont style="GameFontNormal"/>
 		<HighlightFont style="GameFontHighlight"/>
 		<HighlightTexture file="Interface\QuestFrame\UI-QuestLogTitleHighlight" alphaMode="ADD">

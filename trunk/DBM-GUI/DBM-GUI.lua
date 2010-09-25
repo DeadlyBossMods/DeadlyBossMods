@@ -75,7 +75,7 @@ do
 	--  arg1 = Text for the UI Button
 	--  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
 	--
-	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub, sortID) 
+	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub, sortID)
 		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
@@ -384,7 +384,7 @@ function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, f
 	if not fading then
 		scrollframe:SetFading(false)
 	end
-	scrollframe:SetInsertMode(insertmode or "BOTTOM")
+	--scrollframe:SetInsertMode(insertmode or "BOTTOM")
 	scrollframe:SetFontObject(fontobject or "GameFontNormal")
 	scrollframe:SetMaxLines(2000)
 	scrollframe:EnableMouse(true)
@@ -802,7 +802,9 @@ do
 		button:Show();
 		button.element = element;
 		
+		button.text:ClearAllPoints()
 		button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2);
+		button.text:SetFontObject(GameFontNormalSmall)
 		button.toggle:ClearAllPoints()
 		button.toggle:SetPoint("LEFT", 8 * element.depth - 2, 1);
 
@@ -832,7 +834,9 @@ do
 			button.toggle:Hide();
 		end
 
+
 		button.text:SetText(element.name);
+		button.text:Show();
 	end
 
 	-- This function is for internal use.
