@@ -42,6 +42,8 @@ L.Statistic_Kills			= "Kills:"
 L.Statistic_Wipes			= "Wipes:"
 L.Statistic_BestKill		= "Best Kill:"
 L.Statistic_Heroic			= "Heroic"
+L.Statistic_10Man		= "10man raid"
+L.Statistic_25Man		= "25man raid"
 
 -- Tab: General Options
 L.General 					= "General DBM Options"
