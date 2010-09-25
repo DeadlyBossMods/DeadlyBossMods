@@ -40,7 +40,7 @@ local combattime = 0
 function mod:OnCombatStart(delay)
 	enrageTimer:Start(-delay)
 	combattime = GetTime()
-	if mod:IsDifficulty("heroic10") then
+	if mod:IsDifficulty("normal10") then
 		warnTurretsReadySoon:Schedule(53-delay)
 		warnTurretsReady:Schedule(73-delay)
 		timerTurret1:Start(-delay)
@@ -78,7 +78,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg, mob)
 	if (msg == L.YellAir or msg == L.YellAir2) and GetTime() - combattime > 30 then
-		if mod:IsDifficulty("heroic10") then -- not sure?
+		if mod:IsDifficulty("normal10") then -- not sure?
 			warnTurretsReadySoon:Schedule(23)
 			warnTurretsReady:Schedule(43)
 			timerTurret1:Start(23)
