@@ -1,29 +1,6 @@
-﻿local L
+﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
-----------------
--- PROTO TYPE --
----------------- [[--
-L = DBM:GetModLocalization("name")
-
-L:SetGeneralLocalization({
-	name = "name"
-})
-
-L:SetWarningLocalization({
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-})
-
-L:SetMiscLocalization({
-	
-})
---]]
-
-
+local L
 
 -------------------------
 --  Blackrock Caverns  --
