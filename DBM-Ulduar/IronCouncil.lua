@@ -131,13 +131,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerShieldofRunes:Start()		
 	elseif args:IsSpellID(64637, 61888) then	-- Overwhelming Power
 		warnOverwhelmingPower:Show(args.destName)
-		if mod:IsDifficulty("heroic10") then
+		if mod:IsDifficulty("normal10") then
 			timerOverwhelmingPower:Start(60, args.destName)
 		else
 			timerOverwhelmingPower:Start(35, args.destName)
 		end
 		if self.Options.SetIconOnOverwhelmingPower then
-			if mod:IsDifficulty("heroic10") then
+			if mod:IsDifficulty("normal10") then
 				self:SetIcon(args.destName, 8, 60) -- skull for 60 seconds (until meltdown)
 			else
 				self:SetIcon(args.destName, 8, 35) -- skull for 35 seconds (until meltdown)
