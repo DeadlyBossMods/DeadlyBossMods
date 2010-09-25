@@ -195,3 +195,5 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow move: Hace la flecha movible",
 }
 
+DBM_SPEED_KILL_TIMER_TEXT	= "Superar récord"
+DBM_SPEED_KILL_TIMER_OPTION	= "Mostrar tiempo para superar tu muerte más rápida"
