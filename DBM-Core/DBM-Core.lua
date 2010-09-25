@@ -1240,11 +1240,27 @@ do
 				end
 				v.Options = savedOptions[v.id] or {}
 				savedStats[v.id] = savedStats[v.id] or {
-					kills = 0,
-					pulls = 0,
+					normalKills = 0,
+					normalPulls = 0,
 					heroicKills = 0,
 					heroicPulls = 0,
+					normal25Kills = 0,
+					normal25Pulls = 0,
+					heroic25Kills = 0,
+					heroic25Pulls = 0
 				}
+				if not savedStats[v.id].normalPulls then
+					savedStats[v.id] = {
+						normalKills = 0,
+						normalPulls = 0,
+						heroicKills = 0,
+						heroicPulls = 0,
+						normal25Kills = 0,
+						normal25Pulls = 0,
+						heroic25Kills = 0,
+						heroic25Pulls = 0
+					}
+				end
 				v.stats = savedStats[v.id]
 				if v.OnInitialize then v:OnInitialize() end
 				for i, cat in ipairs(v.categorySort) do -- temporary hack
@@ -1817,10 +1833,14 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		table.insert(inCombat, mod)
 		self:AddMsg(DBM_CORE_COMBAT_STARTED:format(mod.combatInfo.name))
-		if mod:IsDifficulty("heroic5", "heroic25") then
+		if mod:IsDifficulty("normal5", "normal10") then
+			mod.stats.normalPulls = mod.stats.normalPulls + 1
+		elseif mod:IsDifficulty("heroic5", "heroic10") then
 			mod.stats.heroicPulls = mod.stats.heroicPulls + 1
-		elseif mod:IsDifficulty("normal5", "heroic10") then
-			mod.stats.pulls = mod.stats.pulls + 1
+		elseif mod:IsDifficulty("normal25") then
+			mod.stats.normal25Pulls = mod.stats.normal25Pulls + 1
+		elseif mod:IsDifficulty("heroic25") then
+			mod.stats.heroic25Pulls = mod.stats.heroic25Pulls + 1
 		end
 		mod.inCombat = true
 		mod.blockSyncs = nil
@@ -1837,14 +1857,20 @@ function DBM:StartCombat(mod, delay, synced)
 			end
 		end
 		if (DBM.Options.AlwaysShowSpeedKillTimer or mod.Options.SpeedKillTimer) and mod.Options.Enabled then
-			local bestTime = 0.01
-			if mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime then
+			local bestTime
+			if mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime then
+				bestTime = mod.stats.normalBestTime
+			elseif mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime then
 				bestTime = mod.stats.heroicBestTime
-			elseif mod:IsDifficulty("normal5", "heroic10") and mod.stats.bestTime then
-				bestTime = mod.stats.bestTime
+			elseif mod:IsDifficulty("normal25") and mod.stats.normal25BestTime then
+				bestTime = mod.stats.normal25BestTime
+			elseif mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime then
+				bestTime = mod.stats.heroic25BestTime
 			end
-			local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT)
-			speedTimer:Start()
+			if bestTime and bestTime > 0 then	-- only start if you already have a bestTime :)
+				local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT)
+				speedTimer:Start()
+			end
 		end
 		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if not synced then
@@ -1879,10 +1905,14 @@ function DBM:EndCombat(mod, wipe)
 		if wipe then
 			local thisTime = GetTime() - mod.combatInfo.pull
 			if thisTime < 30 then
-				if mod:IsDifficulty("heroic5", "heroic25") then
+				if mod:IsDifficulty("normal5", "normal10") then
+					mod.stats.normalPulls = mod.stats.normalPulls - 1
+				elseif mod:IsDifficulty("heroic5", "heroic10") then
 					mod.stats.heroicPulls = mod.stats.heroicPulls - 1
-				elseif mod:IsDifficulty("normal5", "heroic10") then
-					mod.stats.pulls = mod.stats.pulls - 1
+				elseif mod:IsDifficulty("normal25") then
+					mod.stats.normal25Pulls = mod.stats.normal25Pulls - 1
+				elseif mod:IsDifficulty("heroic25") then
+					mod.stats.heroic25Pulls = mod.stats.heroic25Pulls - 1
 				end
 			end
 			self:AddMsg(DBM_CORE_COMBAT_ENDED:format(mod.combatInfo.name, strFromTime(thisTime)))
@@ -1894,16 +1924,24 @@ function DBM:EndCombat(mod, wipe)
 			fireEvent("wipe", mod)
 		else
 			local thisTime = GetTime() - mod.combatInfo.pull
-			local lastTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicLastTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.lastTime
-			local bestTime = (mod:IsDifficulty("heroic5", "heroic25") and mod.stats.heroicBestTime) or mod:IsDifficulty("normal5", "heroic10") and mod.stats.bestTime
-			if mod:IsDifficulty("heroic5", "heroic25") then
+			local lastTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalLastTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicLastTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25LastTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25LastTime)
+			local bestTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25BestTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime)
+			if mod:IsDifficulty("normal5", "normal10") then
+				mod.stats.normalKills = mod.stats.normalKills + 1
+				mod.stats.normalLastTime = thisTime
+				mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
+			elseif mod:IsDifficulty("heroic5", "heroic10") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
 				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
-			elseif mod:IsDifficulty("normal5", "heroic10") then
-				mod.stats.kills = mod.stats.kills + 1
-				mod.stats.lastTime = thisTime
-				mod.stats.bestTime = math.min(bestTime or math.huge, thisTime)
+			elseif mod:IsDifficulty("normal25") then
+				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
+				mod.stats.normal25LastTime = thisTime
+				mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
+			elseif mod:IsDifficulty("heroic25") then
+				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
+				mod.stats.heroic25LastTime = thisTime
+				mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
 			end
 			if not lastTime then
 				self:AddMsg(DBM_CORE_BOSS_DOWN:format(mod.combatInfo.name, strFromTime(thisTime)))
@@ -2509,11 +2547,9 @@ function bossModPrototype:GetDifficulty()
 		end
 	else -- support for "old" instances
 		if GetInstanceDifficulty() == 1 then 
-			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "normal5" or 
-			self.hasHeroic and "normal10" or "heroic10" 
+			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "normal5" or "normal10"
 		elseif GetInstanceDifficulty() == 2 then 
-			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "heroic5" or 
-			self.hasHeroic and "normal25" or "heroic25" 
+			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "heroic5" or "normal25" 
 		elseif GetInstanceDifficulty() == 3 then 
 			return "heroic10" 
 		elseif GetInstanceDifficulty() == 4 then 
