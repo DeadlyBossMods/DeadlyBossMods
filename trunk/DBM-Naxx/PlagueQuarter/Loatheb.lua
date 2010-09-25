@@ -32,7 +32,7 @@ local sporeTimer	= 36
 
 function mod:OnCombatStart(delay)
 	doomCounter = 0
-	if mod:IsDifficulty("heroic25") then
+	if mod:IsDifficulty("normal25") then
 		sporeTimer = 18
 	else
 		sporeTimer = 36

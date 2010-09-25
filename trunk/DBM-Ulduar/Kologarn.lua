@@ -44,7 +44,7 @@ mod:AddBoolOption("YellOnBeam", true, "announce")
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 32934 then 		-- right arm
 		timerRespawnRightArm:Start()
-		if mod:IsDifficulty("heroic10") then
+		if mod:IsDifficulty("normal10") then
 			timerTimeForDisarmed:Start(12)
 		else
 			timerTimeForDisarmed:Start()
