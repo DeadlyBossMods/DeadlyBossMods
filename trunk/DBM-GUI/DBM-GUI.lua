@@ -75,7 +75,7 @@ do
 	--  arg1 = Text for the UI Button
 	--  arg2 = nil or ("option" or 2)  ... nil will place as a Boss Mod, otherwise as a Option Tab
 	--
-	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub, sortID)
+	function DBM_GUI:CreateNewPanel(FrameName, FrameTyp, showsub, sortID) 
 		local panel = CreateFrame('Frame', FrameTitle..self:GetNewID(), DBM_GUI_OptionsFramePanelContainer)
 		panel.mytype = "panel"
 		panel.sortID = self:GetCurrentID()
@@ -384,7 +384,7 @@ function PanelPrototype:CreateScrollingMessageFrame(width, height, insertmode, f
 	if not fading then
 		scrollframe:SetFading(false)
 	end
-	--scrollframe:SetInsertMode(insertmode or "BOTTOM")
+--	scrollframe:SetInsertMode(insertmode or "BOTTOM")
 	scrollframe:SetFontObject(fontobject or "GameFontNormal")
 	scrollframe:SetMaxLines(2000)
 	scrollframe:EnableMouse(true)
@@ -801,8 +801,8 @@ do
 	function DBM_GUI_OptionsFrame:DisplayButton(button, element)
 		button:Show();
 		button.element = element;
-		
-		button.text:ClearAllPoints()
+
+		button.text:ClearAllPoints()		
 		button.text:SetPoint("LEFT", 12 + 8 * element.depth, 2);
 		button.text:SetFontObject(GameFontNormalSmall)
 		button.toggle:ClearAllPoints()
@@ -834,9 +834,8 @@ do
 			button.toggle:Hide();
 		end
 
-
 		button.text:SetText(element.name);
-		button.text:Show();
+		button.text:Show()
 	end
 
 	-- This function is for internal use.
@@ -1840,14 +1839,25 @@ end
 DBM:RegisterOnGuiLoadCallback(CreateOptionsMenu, 1)
 
 do
-	local function OnShowGetStats(stats, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3)
+	local function OnShowGetStats(stats, party, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6)
 		return function(self)
-			bossvalue1:SetText( stats.kills )
-			bossvalue2:SetText( stats.pulls - stats.kills )
-			bossvalue3:SetText( stats.bestTime and ("%d:%02d"):format(math.floor(stats.bestTime / 60), stats.bestTime % 60) or "-" )
-			heroicvalue1:SetText( stats.heroicKills )
-			heroicvalue2:SetText( stats.heroicPulls-stats.heroicKills )
-			heroicvalue3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+			bossvalue1:SetText( stats.normalKills )
+			bossvalue2:SetText( stats.normalPulls - stats.normalKills )
+			bossvalue3:SetText( stats.normalBestTime and ("%d:%02d"):format(math.floor(stats.normalBestTime / 60), stats.normalBestTime % 60) or "-" )
+			boss25value1:SetText( stats.normal25Kills )
+			boss25value2:SetText( stats.normal25Pulls - stats.normal25Kills )
+			boss25value3:SetText( stats.normal25BestTime and ("%d:%02d"):format(math.floor(stats.normal25BestTime / 60), stats.normal25BestTime % 60) or "-" )
+			bossvalue4:SetText( stats.heroicKills )
+			bossvalue5:SetText( stats.heroicPulls-stats.heroicKills )
+			bossvalue6:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+			boss25value4:SetText( stats.heroic25Kills )
+			boss25value5:SetText( stats.heroic25Pulls-stats.heroic25Kills )
+			boss25value6:SetText( stats.heroic25BestTime and ("%d:%02d"):format(math.floor(stats.heroic25BestTime / 60), stats.heroic25BestTime % 60) or "-" )
+			if party then
+				boss25value1:SetText( stats.heroicKills )
+				boss25value2:SetText( stats.heroicPulls-stats.heroicKills )
+				boss25value3:SetText( stats.heroicBestTime and ("%d:%02d"):format(math.floor(stats.heroicBestTime / 60), stats.heroicBestTime % 60) or "-" )
+			end
 		end
 	end
 
@@ -1865,41 +1875,93 @@ do
 
 		for _, mod in ipairs(DBM.Mods) do
 			if mod.modId == addon.modId and (not subtab or subtab == mod.subTab) then
+				local party = false
 				bossstats = bossstats + 1
 				local Boss 		= area:CreateText(mod.localization.general.name, nil, nil, GameFontHighlight, "LEFT")
+				local Boss10		= area:CreateText(L.Statistic_10Man, nil, nil, GameFontHighlightSmall, "LEFT")				
 				local bossstat1		= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat2		= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
 				local bossstat3		= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
-				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
-				bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 40, -5)
+				local Heroic10		= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
+				local bossstat4	= 	area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossstat5	= 	area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossstat6	= 	area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+
+				local Heroic	 	= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
+				local Boss25		= area:CreateText(L.Statistic_25Man, nil, nil, GameFontHighlightSmall, "LEFT")
+				local boss25stat1	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat2	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat3	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+				local Heroic25		= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
+				local boss25stat4	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat5	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25stat6	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
+
+				local bossvalue1	= area:CreateText(mod.stats.normalKills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue2	= area:CreateText((mod.stats.normalPulls-mod.stats.normalKills), nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue4	= area:CreateText(mod.stats.heroicKills, nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue5	= area:CreateText((mod.stats.heroicPulls-mod.stats.normal25Kills), nil, nil, GameFontNormalSmall, "LEFT")
+				local bossvalue6	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+
+				local boss25value1	= area:CreateText(mod.stats.normal25Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value2	= area:CreateText((mod.stats.normal25Pulls-mod.stats.heroicKills), nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value4	= area:CreateText(mod.stats.heroic25Kills, nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value5	= area:CreateText((mod.stats.heroic25Pulls-mod.stats.heroic25Kills), nil, nil, GameFontNormalSmall, "LEFT")
+				local boss25value6	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+
+				Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(100*(bossstats-1)))
+				Boss10:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
+				bossstat1:SetPoint("TOPLEFT", Boss10, "BOTTOMLEFT", 20, -5)
 				bossstat2:SetPoint("TOPLEFT", bossstat1, "BOTTOMLEFT", 0, -5)
 				bossstat3:SetPoint("TOPLEFT", bossstat2, "BOTTOMLEFT", 0, -5)
-	
-				local Heroic	 	= area:CreateText(L.Statistic_Heroic, nil, nil, GameFontDisableSmall, "LEFT")
-				local Heroicstat1	= area:CreateText(L.Statistic_Kills, nil, nil, GameFontNormalSmall, "LEFT")
-				local Heroicstat2	= area:CreateText(L.Statistic_Wipes, nil, nil, GameFontNormalSmall, "LEFT")
-				local Heroicstat3	= area:CreateText(L.Statistic_BestKill, nil, nil, GameFontNormalSmall, "LEFT")
-				Heroic:SetPoint("LEFT", Boss, "LEFT", 220, 0)
-				Heroicstat1:SetPoint("LEFT", bossstat1, "LEFT", 180, 0)
-				Heroicstat2:SetPoint("LEFT", bossstat2, "LEFT", 180, 0)
-				Heroicstat3:SetPoint("LEFT", bossstat3, "LEFT", 180, 0)
 
-				local bossvalue1	= area:CreateText(mod.stats.kills, nil, nil, GameFontNormalSmall, "LEFT")
-				local bossvalue2	= area:CreateText((mod.stats.pulls-mod.stats.kills), nil, nil, GameFontNormalSmall, "LEFT")
-				local bossvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
+				Heroic:SetPoint("LEFT", Boss, "LEFT", 220, 0)
+				Boss25:SetPoint("LEFT", Boss10, "LEFT", 220, 0)
+				boss25stat1:SetPoint("LEFT", bossstat1, "LEFT", 220, 0)
+				boss25stat2:SetPoint("LEFT", bossstat2, "LEFT", 220, 0)
+				boss25stat3:SetPoint("LEFT", bossstat3, "LEFT", 220, 0)
+
 				bossvalue1:SetPoint("TOPLEFT", bossstat1, "TOPLEFT", 80, 0)
 				bossvalue2:SetPoint("TOPLEFT", bossstat2, "TOPLEFT", 80, 0)
 				bossvalue3:SetPoint("TOPLEFT", bossstat3, "TOPLEFT", 80, 0)
+				
+				boss25value1:SetPoint("TOPLEFT", boss25stat1, "TOPLEFT", 80, 0)
+				boss25value2:SetPoint("TOPLEFT", boss25stat2, "TOPLEFT", 80, 0)
+				boss25value3:SetPoint("TOPLEFT", boss25stat3, "TOPLEFT", 80, 0)
 
-				local heroicvalue1	= area:CreateText(mod.stats.heroicKills, nil, nil, GameFontNormalSmall, "LEFT")
-				local heroicvalue2	= area:CreateText((mod.stats.heroicPulls-mod.stats.heroicKills), nil, nil, GameFontNormalSmall, "LEFT")
-				local heroicvalue3	= area:CreateText("0:00:00", nil, nil, GameFontNormalSmall, "LEFT")
-				heroicvalue1:SetPoint("TOPLEFT", Heroicstat1, "TOPLEFT", 80, 0)
-				heroicvalue2:SetPoint("TOPLEFT", Heroicstat2, "TOPLEFT", 80, 0)
-				heroicvalue3:SetPoint("TOPLEFT", Heroicstat3, "TOPLEFT", 80, 0)
+				if mod.modId:sub(1,9) == "DBM-Party" or mod.modId:sub(1,9) == "DBM-World" then
+					party = true
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(80*(bossstats-1)))
+					Boss10:Hide()
+					Boss25:Hide()
+					bossstat1:SetPoint("TOPLEFT", Boss, "BOTTOMLEFT", 20, -5)
+					area.frame:SetHeight( area.frame:GetHeight() + 80 )
+				elseif not mod.hasHeroic then
+					Heroic:Hide()
+					area.frame:SetHeight( area.frame:GetHeight() + 100 ) 
+				else
+					Boss:SetPoint("TOPLEFT", area.frame, "TOPLEFT", 10, -10-(160*(bossstats-1)))
+					Heroic:Hide()
+					Heroic10:SetPoint("TOPLEFT", bossstat3, "BOTTOMLEFT", -20, -5)
+					bossstat4:SetPoint("TOPLEFT", Heroic10, "BOTTOMLEFT", 20, -5)
+					bossstat5:SetPoint("TOPLEFT", bossstat4, "BOTTOMLEFT", 0, -5)
+					bossstat6:SetPoint("TOPLEFT", bossstat5, "BOTTOMLEFT", 0, -5)
+					Heroic25:SetPoint("LEFT", Heroic10, "LEFT", 220, 0)
+					boss25stat4:SetPoint("LEFT", bossstat4, "LEFT", 220, 0)
+					boss25stat5:SetPoint("LEFT", bossstat5, "LEFT", 220, 0)
+					boss25stat6:SetPoint("LEFT", bossstat6, "LEFT", 220, 0)
+					bossvalue4:SetPoint("TOPLEFT", bossstat4, "TOPLEFT", 80, 0)
+					bossvalue5:SetPoint("TOPLEFT", bossstat5, "TOPLEFT", 80, 0)
+					bossvalue6:SetPoint("TOPLEFT", bossstat6, "TOPLEFT", 80, 0)
+					boss25value4:SetPoint("TOPLEFT", boss25stat4, "TOPLEFT", 80, 0)
+					boss25value5:SetPoint("TOPLEFT", boss25stat5, "TOPLEFT", 80, 0)
+					boss25value6:SetPoint("TOPLEFT", boss25stat6, "TOPLEFT", 80, 0)
+					area.frame:SetHeight( area.frame:GetHeight() + 160 ) 
+				end
 
-				area.frame:SetHeight( area.frame:GetHeight() + 80 ) 
-				table.insert(area.onshowcall, OnShowGetStats(mod.stats, bossvalue1, bossvalue2, bossvalue3, heroicvalue1, heroicvalue2, heroicvalue3))
+				table.insert(area.onshowcall, OnShowGetStats(mod.stats, party, bossvalue1, bossvalue2, bossvalue3, boss25value1, boss25value2, boss25value3, bossvalue4, bossvalue5, bossvalue6, boss25value4, boss25value5, boss25value6))
 			end
 		end
 		area.frame:SetScript("OnShow", function(self) 
