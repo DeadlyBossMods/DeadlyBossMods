@@ -2539,20 +2539,20 @@ end
 -- returns heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
 function bossModPrototype:GetDifficulty() 
 	local _, instanceType, difficulty, _, _, playerDifficulty, isDynamicInstance = GetInstanceInfo()
-	if instanceType == "raid" and isDynamicInstance then -- "new" instance (ICC)
+	if instanceType == "raid" and isDynamicInstance then -- "dynamic" instance (ICC)
 		if difficulty == 1 then -- 10 men
 			return playerDifficulty == 0 and "normal10" or playerDifficulty == 1 and "heroic10" or "unknown"
 		elseif difficulty == 2 then -- 25 men
 			return playerDifficulty == 0 and "normal25" or playerDifficulty == 1 and "heroic25" or "unknown"
 		end
 	else -- support for "old" instances
-		if GetInstanceDifficulty() == 1 then 
-			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "normal5" or "normal10"
-		elseif GetInstanceDifficulty() == 2 then 
-			return (self.modId == "DBM-Party-WotLK" or self.modId == "DBM-Party-BC" or self.modId == "DBM-Party-Cataclysm") and "heroic5" or "normal25" 
-		elseif GetInstanceDifficulty() == 3 then 
+		if difficulty == 1 then 
+			return instanceType == "raid" and "normal10" or "normal5"
+		elseif difficulty == 2 then 
+			return instanceType == "raid" and "normal25" or "heroic5"
+		elseif difficulty == 3 then 
 			return "heroic10" 
-		elseif GetInstanceDifficulty() == 4 then 
+		elseif difficulty == 4 then 
 			return "heroic25" 
 		end
 	end
