@@ -27,7 +27,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(74134) then
+	if args:IsSpellID(74134) then--74365?
 		warnAstralRain:Show()
 		timerAstralRain:Start()
 	elseif args:IsSpellID(74133, 90760) then
