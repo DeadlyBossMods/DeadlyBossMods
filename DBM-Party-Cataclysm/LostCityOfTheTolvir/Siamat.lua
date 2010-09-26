@@ -34,7 +34,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(84522) then
+	if args:IsSpellID(84522, 90016) then
 		warnThunderCrash:Show()
 		timerThunderCrash:Start()
 	end

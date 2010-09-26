@@ -23,10 +23,10 @@ local timerPoison	= mod:NewTargetTimer(12, 81642)
 local timerDustFlail	= mod:NewBuffActiveTimer(5, 81642)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(81690) then
+	if args:IsSpellID(81690, 89998) then
 		warnScentBlood:Show(args.destName)
 		timerScentBlood:Start(args.destName)
-	elseif args:IsSpellID(81630) then
+	elseif args:IsSpellID(81630, 90004) then
 		warnPoison:Show(args.destName)
 		timerPoison:Start(args.destName)
 	elseif args:IsSpellID(81706) then
@@ -35,9 +35,9 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(81690) then
+	if args:IsSpellID(81690, 89998) then
 		timerScentBlood:Cancel(args.destName)
-	elseif args:IsSpellID(81630) then
+	elseif args:IsSpellID(81630, 90004) then
 		timerPoison:Cancel(args.destName)
 	end
 end

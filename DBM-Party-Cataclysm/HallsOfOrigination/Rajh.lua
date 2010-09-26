@@ -29,7 +29,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(76355) and GetTime() - spamBlessing > 5 then
+	if args:IsSpellID(76355, 89879) and GetTime() - spamBlessing > 5 then
 		spamBlessing = GetTime()
 		warnBlessing:Show()
 		timerBlessing:Start()
