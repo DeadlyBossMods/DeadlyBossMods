@@ -1868,7 +1868,7 @@ function DBM:StartCombat(mod, delay, synced)
 				bestTime = mod.stats.heroic25BestTime
 			end
 			if bestTime and bestTime > 0 then	-- only start if you already have a bestTime :)
-				local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT)
+				local speedTimer = mod:NewTimer(bestTime, DBM_SPEED_KILL_TIMER_TEXT, "Interface\\Icons\\Spell_Holy_BorrowedTime")
 				speedTimer:Start()
 			end
 		end
