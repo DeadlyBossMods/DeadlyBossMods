@@ -7,24 +7,29 @@ mod:SetCreatureID(23872)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_START"
+	"SPELL_AURA_REMOVED"
 )
 
+local warnDisarm			= mod:NewSpellAnnounce(47310, 2, nil, mod:IsMelee())
 local warnBarrel			= mod:NewTargetAnnounce(51413, 4)
 local timerBarrel			= mod:NewTargetTimer(8, 51413)
 
-local specWarnDisarm		= mod:NewSpecialWarningRun(47310, mod:IsMelee())
+local specWarnDisarm		= mod:NewSpecialWarningRun(47310, false)
 local specWarnBrew			= mod:NewSpecialWarning("specWarnBrew")
 local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")
 
 local timerBrew				= mod:NewTargetTimer(10, 47376)
 local timerBrewStun			= mod:NewTargetTimer(6, 47340)
+local timerDisarm			= mod:NewCastTimer(4, 47310)
 
 mod:AddBoolOption("YellOnBarrel", mod:IsTank(), "announce")
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(47310) then
+		warnDisarm:Show()
+		timerDisarm:Start()
 		specWarnDisarm:Show()
 	end
 end
@@ -49,4 +54,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(47376) then											-- Brew
+		timerBrew:Cancel(args.destName)
+	elseif args:IsSpellID(47340) then										-- Brew Stun
+		timerBrewStun:Cancel(args.destName)
+	elseif args:IsSpellID(47442, 51413) then								-- Barreled!
+		timerBarrel:Cancel(args.destName)
+	end
+end
