@@ -16,50 +16,41 @@ mod:RegisterEvents(
 
 mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
--- Adds
 local warnAdds				= mod:NewAnnounce("warnAdds", 3, 45419)
-local timerAdds				= mod:NewTimer(45, "timerAdds", 45419)
-local Burrowed				= false 
-
--- Pursue
+local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
+local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
 local warnPursue			= mod:NewTargetAnnounce(67574, 4)
-local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
+local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2, nil, mod:IsHealer() or mod:IsTank())
 local warnHoP				= mod:NewTargetAnnounce(10278, 2, nil, false)--Heroic strat revolves around kiting pursue and using Hand of Protection.
-local timerHoP				= mod:NewBuffActiveTimer(10, 10278, nil, false)--So we will track bops to make this easier.
-mod:AddBoolOption("PlaySoundOnPursue")
-mod:AddBoolOption("PursueIcon")
-
--- Emerge
 local warnEmerge			= mod:NewAnnounce("WarnEmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnEmergeSoon		= mod:NewAnnounce("WarnEmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-local timerEmerge			= mod:NewTimer(65, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
-
--- Submerge
 local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnSubmergeSoon		= mod:NewAnnounce("WarnSubmergeSoon", 1, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-local specWarnSubmergeSoon	= mod:NewSpecialWarning("specWarnSubmergeSoon", mod:IsTank())
-local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-
--- Phases
 local warnPhase3			= mod:NewPhaseAnnounce(3)
+
+local specWarnPursue		= mod:NewSpecialWarning("SpecWarnPursue")
+local specWarnSubmergeSoon	= mod:NewSpecialWarning("specWarnSubmergeSoon", mod:IsTank())
+local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", mod:IsTank())
+local specWarnPCold			= mod:NewSpecialWarningYou(68510, false)
+
+local timerAdds				= mod:NewTimer(45, "timerAdds", 45419)
+local timerSubmerge			= mod:NewTimer(75, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local timerEmerge			= mod:NewTimer(65, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerFreezingSlash	= mod:NewCDTimer(20, 66012, nil, mod:IsHealer() or mod:IsTank())
+local timerPCold			= mod:NewBuffActiveTimer(15, 68509)
+local timerShadowStrike		= mod:NewNextTimer(30.5, 66134)
+local timerHoP				= mod:NewBuffActiveTimer(10, 10278, nil, false)--So we will track bops to make this easier.
+
 local enrageTimer			= mod:NewBerserkTimer(570)	-- 9:30 ? hmpf (no enrage while submerged... this sucks)
 
--- Penetrating Cold
-local specWarnPCold			= mod:NewSpecialWarningYou(68510, false)
-local timerPCold			= mod:NewBuffActiveTimer(15, 68509)
+mod:AddBoolOption("PlaySoundOnPursue")
+mod:AddBoolOption("PursueIcon")
 mod:AddBoolOption("SetIconsOnPCold", true)
 mod:AddBoolOption("AnnouncePColdIcons", false)
 mod:AddBoolOption("AnnouncePColdIconsRemoved", false)
 
--- Freezing Slash
-local warnFreezingSlash		= mod:NewTargetAnnounce(66012, 2, nil, mod:IsHealer() or mod:IsTank())
-local timerFreezingSlash	= mod:NewCDTimer(20, 66012, nil, mod:IsHealer() or mod:IsTank())
-
--- Shadow Strike
-local timerShadowStrike		= mod:NewNextTimer(30.5, 66134)
-local preWarnShadowStrike	= mod:NewSoonAnnounce(66134, 3)
-local warnShadowStrike		= mod:NewSpellAnnounce(66134, 4)
-local specWarnShadowStrike	= mod:NewSpecialWarning("SpecWarnShadowStrike", mod:IsTank())
+local PColdTargets = {}
+local Burrowed = false 
 
 function mod:OnCombatStart(delay)
 	Burrowed = false 
@@ -103,7 +94,6 @@ local function ClearPcoldTargets()
 	table.wipe(PColdTargets)
 end
 
-local PColdTargets = {}
 do
 	local function sort_by_group(v1, v2)
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
