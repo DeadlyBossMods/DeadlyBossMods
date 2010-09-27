@@ -192,3 +192,6 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow hide  隱藏箭頭",
 	"/dbm arrow move  可移動箭頭",
 }
+
+DBM_SPEED_KILL_TIMER_TEXT			= "記錄擊殺"
+DBM_SPEED_KILL_TIMER_OPTION			= "顯示一個計時器來打敗你上次的最快擊殺"

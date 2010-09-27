@@ -43,6 +43,8 @@ L.Statistic_Kills			= "擊殺："
 L.Statistic_Wipes			= "失敗："
 L.Statistic_BestKill			= "最快記錄："
 L.Statistic_Heroic			= "英雄模式"
+L.Statistic_10Man			= "10人團隊"
+L.Statistic_25Man			= "25人團隊"
 
 -- Tab: General Options
 L.General 				= "DBM綜合設置"
@@ -51,6 +53,7 @@ L.EnableStatus 				= "回復“status”密語"
 L.AutoRespond 				= "啟用戰鬥中自動密語回復"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
 L.FixCLEUOnCombatStart			= "清除戰鬥紀錄的快取"
+L.SKT_Enabled				= "永遠顯示快速擊殺計時器 (覆蓋首領特定的選項)"
 L.Latency_Text				= "設定最高延遲同步門檻: %d"
 
 L.Button_RangeFrame			= "顯示/隱藏距離監視器"
