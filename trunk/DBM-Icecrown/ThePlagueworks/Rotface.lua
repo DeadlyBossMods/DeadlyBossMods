@@ -77,12 +77,6 @@ function mod:OnCombatEnd()
 		DBM.Arrow:Hide()
 	end
 end
---this function seems rathor limited but not entirely hopeless. i imagine it only works if you or someone else targets the big ooze, but that pretty much means it's useless if kiter doesn't have dbm.
---[[function mod:SlimeTank()
-	local target = self:GetThreatTarget(36897)
-	if not target then return end
-	self:SendSync("OozeTank", target)
-end--]]
 
 function mod:WallSlime()
 	if self:IsInCombat() then
@@ -193,13 +187,3 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self:WallSlime()
 	end
 end
-
---[[function mod:OnSync(msg, target)
-	if msg == "OozeTank" then
-		if target ~= UnitName("player") then
-			if self.Options.TankArrow then
-				DBM.Arrow:ShowRunTo(target, 0, 0)
-			end
-		end
-	end
-end--]]

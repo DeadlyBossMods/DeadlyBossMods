@@ -191,7 +191,9 @@ L:SetMiscLocalization{
 	PullHorde		= "Rise up, sons and daughters of the Horde! Today we battle a hated enemy of the Horde! LOK'TAR OGAR!",
 	KillHorde		= "The Alliance falter. Onward to the Lich King!",
 	AddsAlliance	= "Reavers, Sergeants, attack",
-	AddsHorde		= "Marines, Sergeants, attack"
+	AddsHorde		= "Marines, Sergeants, attack",
+	MageAlliance	= "We're taking hull damage, get a battle-mage out here to shut down those cannons!",
+	MageHorde		= "We're taking hull damage, get a sorcerer out here to shut down those cannons!"
 }
 
 -----------------------------

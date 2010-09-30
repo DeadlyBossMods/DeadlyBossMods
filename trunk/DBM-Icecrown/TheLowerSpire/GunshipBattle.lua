@@ -40,6 +40,8 @@ local timerAdds				= mod:NewTimer(60, "TimerAdds", AddsIcon)
 
 mod:RemoveOption("HealthFrame")
 
+local firstMage = false
+
 function mod:Adds()
 	timerAdds:Start()
 	warnAddsSoon:Cancel()
@@ -51,24 +53,10 @@ end
 function mod:OnCombatStart(delay)
 	DBM.BossHealth:Clear()
 	timerCombatStart:Show(-delay)
-	if UnitFactionGroup("player") == "Alliance" then
-		timerAdds:Start(62-delay)
-		warnAddsSoon:Schedule(57)
-		self:ScheduleMethod(62, "Adds")
-		timerBelowZeroCD:Start(75-delay)--This doesn't make sense. Need more logs to verify
-	else
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerAdds:Start(63-delay)
-			warnAddsSoon:Schedule(58)
-			self:ScheduleMethod(63, "Adds")
-			timerBelowZeroCD:Start(102-delay)--This doesn't make sense. Need more logs to verify
-		else
-			timerAdds:Start(57-delay)
-			warnAddsSoon:Schedule(52)
-			self:ScheduleMethod(57, "Adds")
-			timerBelowZeroCD:Start(80-delay)--This doesn't make sense. Need more logs to verify
-		end
-	end
+	timerAdds:Start(60-delay)--First adds might come early or late so timer should be taken as a proximity only.
+	warnAddsSoon:Schedule(55)
+	self:ScheduleMethod(60, "Adds")
+	firstMage = false
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -111,5 +99,12 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if ((msg == L.AddsAlliance or msg:find(L.AddsAlliance)) or (msg == L.AddsHorde or msg:find(L.AddsHorde))) and self:IsInCombat() then
 		self:Adds()
+	elseif ((msg == L.MageAlliance or msg:find(L.MageAlliance)) or (msg == L.MageHorde or msg:find(L.MageHorde))) and self:IsInCombat() then
+		if not firstMage then
+			timerBelowZeroCD:Start(6)
+			firstMage = true
+		else
+			timerBelowZeroCD:Update(29, 35)--Update the below zero timer to correct it with yells since it tends to be off depending on how bad your cannon operators are.
+		end
 	end
 end
