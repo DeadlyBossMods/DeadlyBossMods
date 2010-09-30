@@ -15,7 +15,8 @@ mod:RegisterEvents(
 	"UNIT_AURA"
 )
 
-local warnShiftCasting		= mod:NewCastAnnounce(28089, 3)
+local warnShiftSoon			= mod:NewPreWarnAnnounce(28089, 5, 3)
+local warnShiftCasting		= mod:NewCastAnnounce(28089, 4)
 local warnChargeChanged		= mod:NewSpecialWarning("WarningChargeChanged")
 local warnChargeNotChanged	= mod:NewSpecialWarning("WarningChargeNotChanged", false)
 local warnThrow				= mod:NewSpellAnnounce(28338, 2)
@@ -56,6 +57,7 @@ function mod:SPELL_CAST_START(args)
 		timerNextShift:Start()
 		timerShiftCast:Start()
 		warnShiftCasting:Show()
+		warnShiftSoon:Schedule(25)
 		lastShift = GetTime()
 	end
 end

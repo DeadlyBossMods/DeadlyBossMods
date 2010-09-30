@@ -26,7 +26,8 @@ local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnTearGas					= mod:NewSpellAnnounce(71617, 2)		-- Phase transition normal
 local warnVolatileExperiment		= mod:NewSpellAnnounce(72840, 4)		-- Phase transition heroic
 local warnMalleableGoo				= mod:NewSpellAnnounce(72295, 2)		-- Phase 2 ability
-local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3)		-- Phase 2 ability
+local warnChokingGasBombSoon		= mod:NewPreWarnAnnounce(71255, 5, 3, nil, mod:IsMelee())
+local warnChokingGasBomb			= mod:NewSpellAnnounce(71255, 3, nil, mod:IsMelee())		-- Phase 2 ability
 local warnPhase3Soon				= mod:NewAnnounce("WarnPhase3Soon", 2)
 local warnMutatedPlague				= mod:NewAnnounce("WarnMutatedPlague", 2, 72451, mod:IsTank() or mod:IsHealer()) -- Phase 3 ability
 local warnUnboundPlague				= mod:NewTargetAnnounce(72856, 3)			-- Heroic Ability
@@ -137,6 +138,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(71617) then				--Tear Gas, normal phase change trigger
 		warnTearGas:Show()
 		warnUnstableExperimentSoon:Cancel()
+		warnChokingGasBombSoon:Cancel()
 		timerUnstableExperimentCD:Cancel()
 		timerMalleableGooCD:Cancel()
 		timerSlimePuddleCD:Cancel()
@@ -145,6 +147,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(72842, 72843) then		--Volatile Experiment (heroic phase change begin)
 		warnVolatileExperiment:Show()
 		warnUnstableExperimentSoon:Cancel()
+		warnChokingGasBombSoon:Cancel()
 		timerUnstableExperimentCD:Cancel()
 		timerMalleableGooCD:Cancel()
 		timerSlimePuddleCD:Cancel()
@@ -174,6 +177,7 @@ function mod:NextPhase()
 		timerSlimePuddleCD:Start(10)
 		timerMalleableGooCD:Start(5)
 		timerChokingGasBombCD:Start(15)
+		warnChokingGasBombSoon:Schedule(10)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerUnboundPlagueCD:Start(50)
 		end
@@ -181,6 +185,7 @@ function mod:NextPhase()
 		timerSlimePuddleCD:Start(15)
 		timerMalleableGooCD:Start(9)
 		timerChokingGasBombCD:Start(12)
+		warnChokingGasBombSoon:Schedule(7)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerUnboundPlagueCD:Start(50)
 		end
@@ -200,6 +205,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnChokingGasBomb:Show()
 		specWarnChokingGasBomb:Show()
 		timerChokingGasBombCD:Start()
+		warnChokingGasBombSoon:Schedule(30.5)
 	elseif args:IsSpellID(72855, 72856, 70911) then
 		timerUnboundPlagueCD:Start()
 	elseif args:IsSpellID(72615, 72295, 74280, 74281) then
