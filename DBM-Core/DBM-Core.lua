@@ -16,7 +16,7 @@
 --    * zhTW: Hman						herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
 --    * koKR: BlueNyx					bluenyx@gmail.com
---    * esES: Interplay/1nn7erpLaY      http://www.1nn7erpLaY.com
+--    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --
 -- Special thanks to:
 --    * Arta (DBM-Party-WotLK, DBM-Party-Cataclysm)
