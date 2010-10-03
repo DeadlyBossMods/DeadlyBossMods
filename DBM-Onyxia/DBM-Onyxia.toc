@@ -25,6 +25,7 @@
 ## X-DBM-Mod-Name-zhCN: 奥妮克希亚的巢穴
 ## X-DBM-Mod-Name-koKR: 오닉시아의 둥지
 ## X-DBM-Mod-Name-deDE: Onyxias Hort
+--## X-DBM-Mod-LoadZoneID: 718
 ## X-DBM-Mod-LoadZone: Onyxia's Lair
 ## X-DBM-Mod-LoadZone-frFR: Repaire d'Onyxia
 ## X-DBM-Mod-LoadZone-ruRU: Логово Ониксии
@@ -43,4 +44,5 @@ localization.kr.lua
 localization.tw.lua
 localization.es.lua
 localization.cn.lua
+MapSizes.lua
 Onyxia.lua
