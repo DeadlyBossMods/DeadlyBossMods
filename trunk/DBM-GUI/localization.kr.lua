@@ -43,6 +43,8 @@ L.Statistic_Kills		= "킬수:"
 L.Statistic_Wipes		= "전멸:"
 L.Statistic_BestKill	= "최고 기록:"
 L.Statistic_Heroic		= "영웅"
+L.Statistic_10Man		= "10인 공격대"
+L.Statistic_25Man		= "25인 공격대"
 
 -- Tab: General Options
 L.General 				= "일반 DBM 옵션"
@@ -51,6 +53,7 @@ L.EnableStatus 			= "귓속말 대상자에게 'status' 답변 보내기 사용"
 L.AutoRespond 			= "자동 부활 사용 - 무덤 이동"
 L.EnableMiniMapIcon		= "Minimap 버튼 사용"
 L.FixCLEUOnCombatStart	= "전투 시작 할 때 전투 로그 수정"
+L.SKT_Enabled			= "항상 빠르게 죽인 타이머 보기(각 보스에 포함된 특수 옵션 참고)"
 L.Latency_Text			= "최대 지연시간 설정 : %d"
 
 L.Button_RangeFrame		= "거리-프레임 켜기/끄기"
