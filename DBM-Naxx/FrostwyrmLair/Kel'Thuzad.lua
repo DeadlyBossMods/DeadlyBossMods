@@ -28,7 +28,6 @@ local specwarnP2Soon		= mod:NewSpecialWarning("specwarnP2Soon")
 local blastTimer			= mod:NewBuffActiveTimer(4, 27808)
 local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
 
-mod:AddBoolOption("BlastAlarm", true)
 mod:AddBoolOption("ShowRange", true)
 
 local warnedAdds = false
@@ -57,9 +56,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		table.insert(frostBlastTargets, args.destName)
 		self:UnscheduleMethod("AnnounceBlastTargets")
 		self:ScheduleMethod(0.5, "AnnounceBlastTargets")
-		if self.Options.BlastAlarm then
-			PlaySoundFile("Interface\\Addons\\DBM-Core\\sounds\\alarm1.wav")
-		end
 		blastTimer:Start()
 	elseif args:IsSpellID(27819) then -- Mana Bomb
 		warnMana:Show(args.destName)

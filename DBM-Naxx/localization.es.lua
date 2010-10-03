@@ -387,7 +387,6 @@ L:SetOptionLocalization({
 	TimerPhase2			= "Mostrar tiempo para Fase 2",
 	specwarnP2Soon	= "Mostrar aviso especial 10 segundos antes de que Kel'Thuzad salga",
 	warnAddsSoon	= "Mostrar pre-aviso para Guardianes de Corona de Hielo",
-	BlastAlarm		= "Reproducir sonido cuando Explosión de Escarcha es casteada",
 	ShowRange		= "Mostrar distancia cuando empieze la fase 2"
 })
 

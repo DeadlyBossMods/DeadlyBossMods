@@ -375,7 +375,6 @@ L:SetOptionLocalization({
 	TimerPhase2		= "Show timer for Phase 2",
 	specwarnP2Soon	= "Show special warning 10 seconds before Kel'Thuzad engages",
 	warnAddsSoon	= "Show pre-warning for Guardians of Icecrown",
-	BlastAlarm		= "Play custom siren sound when Frost Blast is being cast",
 	ShowRange		= "Show range frame when Phase 2 starts"
 })
 
