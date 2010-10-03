@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnDisarm			= mod:NewSpellAnnounce(47310, 2, nil, mod:IsMelee())
+local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, mod:IsMelee())
 local warnBarrel			= mod:NewTargetAnnounce(51413, 4)
 local timerBarrel			= mod:NewTargetTimer(8, 51413)
 
