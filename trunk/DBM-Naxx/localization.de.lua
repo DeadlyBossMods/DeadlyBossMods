@@ -383,7 +383,6 @@ L:SetOptionLocalization({
    TimerPhase2         = "Zeige Timer für Phase 2",
    specwarnP2Soon	= "Zeige Spezialwarnung 10 Sekunden bevor Kel'Thuzad angreift",
    warnAddsSoon	= "Zeige Vorwarnung für Wächter von Eiskrone",
-   BlastAlarm		= "Spiele Sirenensound wenn Frostschlag gezaubert wird",
    ShowRange		= "Show range frame when Phase 2 starts"
 })
 

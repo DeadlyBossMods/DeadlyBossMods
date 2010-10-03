@@ -381,7 +381,6 @@ L:SetOptionLocalization({
 	TimerPhase2			= "为第二阶段显示计时条",
 	specwarnP2Soon			= "为克尔苏加德攻击前10秒显示特别警报",
 	warnAddsSoon			= "为寒冰皇冠卫士显示提前警报",
-	BlastAlarm			= "当冰霜冲击正在施放时播放警报音效",
 	ShowRange			= "当第二阶段开始时显示距离监视框"
 })
 
