@@ -14,11 +14,11 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1)
+local warnWhelpsSoon		= mod:NewAnnounce("WarnWhelpsSoon", 1, 69004)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1)
-local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 1)
+local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
+local warnPhase3Soon		= mod:NewAnnounce("WarnPhase3Soon", 1, "Interface\\Icons\\Spell_Nature_WispSplode")
 
 --local preWarnDeepBreath     = mod:NewSoonAnnounce(17086, 2)--Experimental, if it is off please let me know.
 local specWarnBreath		= mod:NewSpecialWarningRun(17086)
