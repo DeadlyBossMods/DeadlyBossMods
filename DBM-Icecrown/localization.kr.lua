@@ -193,7 +193,9 @@ L:SetMiscLocalization{
 	PullHorde			= "호드의 아들딸이여, 일어나라! 오늘 우리는 증오하던 적과 전투를 벌이리라! 록타르 오가르!",
 	KillHorde			= "얼라이언스는 기가 꺾였다. 리치 왕을 향해 전진하라!",
 	AddsAlliance		= "Reavers, Sergeants, attack",
-	AddsHorde			= "해병, 하사관, 공격하라!"
+	AddsHorde			= "해병, 하사관, 공격하라!",
+	MageAlliance		= "We're taking hull damage, get a battle-mage out here to shut down those cannons!",
+	MageHorde			= "We're taking hull damage, get a sorcerer out here to shut down those cannons!"	
 }
 
 -----------------------------
