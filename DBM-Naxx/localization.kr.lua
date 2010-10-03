@@ -398,7 +398,6 @@ L:SetOptionLocalization({
 	TimerPhase2			= "2 페이즈 타이머 보기",
 	specwarnP2Soon		= "2 페이즈 시작하기 전 특수 경고 보기",
 	warnAddsSoon		= "얼음왕관의 수호자 등장 사전 경고 보기",
-	BlastAlarm			= "냉기 작렬를 시전할 경우 경고 소리 재생",
 	ShowRange			= "2 페이즈가 시작되면 거리 프레임 보기"
 })
 
