@@ -1,1 +1,3 @@
--- DBM:RegisterMapSize("name", level, width, height)
+DBM:RegisterMapSize("TheStonecore",
+	1, 1317.12899780273, 878.086975097656
+)

@@ -1,1 +1,4 @@
--- DBM:RegisterMapSize("name", level, width, height)
+DBM:RegisterMapSize("ThroneofTides",
+	1, 998.171936035156, 665.447998046875,
+	2, 998.171936035156, 665.447998046875
+)
