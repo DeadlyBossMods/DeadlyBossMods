@@ -16,7 +16,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnAddsSoon			= mod:NewAnnounce("warnAddsSoon", 1)
+local warnAddsSoon			= mod:NewAnnounce("warnAddsSoon", 1, 45419)
 local warnPhase2			= mod:NewPhaseAnnounce(2, 3)
 local warnBlastTargets		= mod:NewTargetAnnounce(27808, 2)
 local warnFissure			= mod:NewSpellAnnounce(27810, 3)
@@ -26,21 +26,46 @@ local warnChainsTargets		= mod:NewTargetAnnounce(28410, 2)
 local specwarnP2Soon		= mod:NewSpecialWarning("specwarnP2Soon")
 
 local blastTimer			= mod:NewBuffActiveTimer(4, 27808)
-local timerPhase2			= mod:NewTimer(225, "TimerPhase2")
+local timerMC				= mod:NewBuffActiveTimer(20, 28410)
+local timerPhase2			= mod:NewTimer(225, "TimerPhase2", "Interface\\Icons\\Spell_Nature_WispSplode")
 
+mod:AddBoolOption("SetIconOnMC", true)
+mod:AddBoolOption("SetIconOnManaBomb", true)
+mod:AddBoolOption("SetIconOnFrostTomb", true)
 mod:AddBoolOption("ShowRange", true)
 
 local warnedAdds = false
+local MCIcon = 1
+local frostBlastTargets = {}
+local chainsTargets = {}
+
+local function AnnounceChainsTargets()
+	warnChainsTargets:Show(table.concat(chainsTargets, "< >"))
+	table.wipe(chainsTargets)
+	MCIcon = 1
+end
+
+local function AnnounceBlastTargets()
+	warnBlastTargets:Show(table.concat(frostBlastTargets, "< >"))
+	if self.Options.SetIconOnFrostTomb then
+		for i = #frostBlastTargets, 1, -1 do
+			self:SetIcon(frostBlastTargets[i], 8 - i, 4.5) 
+			frostBlastTargets[i] = nil
+		end
+	end
+end
 
 function mod:OnCombatStart(delay)
-	if self.Options.ShowRange then
-		self:ScheduleMethod(215-delay, "RangeToggle", true)
-	end
+	table.wipe(chainsTargets)
+	table.wipe(frostBlastTargets)
 	warnedAdds = false
+	MCIcon = 1
 	specwarnP2Soon:Schedule(215-delay)
 	timerPhase2:Start()
 	warnPhase2:Schedule(225)
-	self:Schedule(225, DBM.RangeCheck.Show, DBM.RangeCheck, 10)
+	if self.Options.ShowRange then
+		self:ScheduleMethod(215-delay, "RangeToggle", true)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -49,38 +74,30 @@ function mod:OnCombatEnd()
 	end
 end
 
-local frostBlastTargets = {}
-local chainsTargets = {}
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(27808) then -- Frost Blast
 		table.insert(frostBlastTargets, args.destName)
-		self:UnscheduleMethod("AnnounceBlastTargets")
-		self:ScheduleMethod(0.5, "AnnounceBlastTargets")
+		self:Unschedule(AnnounceBlastTargets)
+		self:Schedule(0.5, AnnounceBlastTargets)
 		blastTimer:Start()
 	elseif args:IsSpellID(27819) then -- Mana Bomb
 		warnMana:Show(args.destName)
-		self:SetIcon(args.destName, 8, 5.5)
-	elseif args:IsSpellID(28410) then -- Chains of Kel'Thuzad
-		table.insert(chainsTargets, args.destName)
-		self:UnscheduleMethod("AnnounceChainsTargets")
-		if #chainsTargets >= 3 then
-			self:AnnounceChainsTargets()
-		else
-			self:ScheduleMethod(1.0, "AnnounceChainsTargets")
+		if self.Options.SetIconOnManaBomb then
+			self:SetIcon(args.destName, 8, 5.5)
 		end
-	end
-end
-
-function mod:AnnounceChainsTargets()
-	warnChainsTargets:Show(table.concat(chainsTargets, "< >"))
-	table.wipe(chainsTargets)
-end
-
-function mod:AnnounceBlastTargets()
-	warnBlastTargets:Show(table.concat(frostBlastTargets, "< >"))
-	for i = #frostBlastTargets, 1, -1 do
-		self:SetIcon(frostBlastTargets[i], 8 - i, 4.5) 
-		frostBlastTargets[i] = nil
+	elseif args:IsSpellID(28410) then -- Chains of Kel'Thuzad
+		chainsTargets[#chainsTargets + 1] = args.destName
+		timerMC:Start()
+		if self.Options.SetIconOnMC then
+			self:SetIcon(args.destName, MCIcon, 20)
+			MCIcon = MCIcon + 1
+		end
+		self:Unschedule(AnnounceChainsTargets)
+		if #chainsTargets >= 3 then
+			AnnounceChainsTargets()
+		else
+			self:Schedule(1.0, AnnounceChainsTargets)
+		end
 	end
 end
 
