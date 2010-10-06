@@ -28,8 +28,9 @@ local warnedPhase3
 -- Brain Spike, worth warning?
 -- ~7k damage + 1k mana drain
 -- 7/29 13:23:37.522  SPELL_CAST_START,0xF130AEAB000011BB,"Vicious Mindlasher",0xa48,0x0000000000000000,nil,0x80000000,83915,"Brain Spike",0x20
+-- heroic ID:  91497
 
--- Blight of Ozumat, stack warning?  (spell ID 83561)
+-- Blight of Ozumat, stack warning?  (spell ID 83561 .. 91495 heroic)
 -- Aura of Dread, stack warning (spell ID 83971)
 
 function mod:OnCombatStart(delay)

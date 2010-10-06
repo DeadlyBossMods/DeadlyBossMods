@@ -32,7 +32,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerCurse:Start(args.destName)
 	elseif args:IsSpellID(76100) then
 		timerEnrage:Start()
-	elseif args:IsSpellID(76026) then
+	elseif args:IsSpellID(76026, 91484) then
 		warnSqueeze:Show(args.destName)
 		timerSqueeze:Start(args.destName)
 		timerSqueezeCD:Start()

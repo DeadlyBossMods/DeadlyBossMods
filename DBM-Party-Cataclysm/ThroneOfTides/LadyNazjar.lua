@@ -29,12 +29,7 @@ local timerFungalSpores		= mod:NewTargetTimer(15, 80564)
 
 local specWarnShockBlast	= mod:NewSpecialWarningInterupt(76008)
 
--- Fungal Spores being cast every 20 secs?  (got logs with and without the spell :S)
--- Geyser being cast every ~6 secs .. no CD timer needed
--- Shock Blast being cast ever 12-23 secs?
-
 local preWarnedWaterspout = false
-
 function mod:OnCombatStart()
 	preWarnedWaterspout = false
 end
