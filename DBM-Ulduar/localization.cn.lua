@@ -1,5 +1,6 @@
 ﻿-- author: callmejames @《凤凰之翼》 一区藏宝海湾
 -- commit by: yaroot <yaroot AT gmail.com>
+-- modified by: Diablohu < 178.com / ngacn.cc / dreamgen.cn >
 
 
 if GetLocale() ~= "zhCN" then return end
@@ -24,8 +25,8 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	PursueWarn			= "追踪: >%s<",
-	warnNextPursueSoon		= "5秒后 追踪转换",
+	PursueWarn			= "追踪 -> >%s<",
+	warnNextPursueSoon		= "5秒后 更换目标",
 	SpecialPursueWarnYou		= "你被追踪 - 快跑",
 	warnWardofLife			= "生命结界 出现"
 }
@@ -71,7 +72,7 @@ L:SetWarningLocalization{
 	warnTurretsReadySoon		= "20秒后 最后一座炮塔完成",
 	warnTurretsReady		= "最后一座炮塔已完成",
 	SpecWarnDevouringFlameCast	= "你中了噬体烈焰",
-	WarnDevouringFlameCast		= "噬体烈焰: >%s<"
+	WarnDevouringFlameCast		= "噬体烈焰 -> >%s<"
 }
 
 L:SetTimerLocalization{
@@ -79,7 +80,7 @@ L:SetTimerLocalization{
 	timerTurret2			= "炮塔2",
 	timerTurret3			= "炮塔3",
 	timerTurret4			= "炮塔4",
-	timerGrounded			= "地上阶段"
+	timerGrounded			= "地面阶段"
 }
 
 L:SetOptionLocalization{
@@ -93,7 +94,7 @@ L:SetOptionLocalization{
 	timerTurret3			= "为炮塔3显示计时条 (25人)",
 	timerTurret4			= "为炮塔4显示计时条 (25人)",
 	OptionDevouringFlame		= "提示$spell:64733的目标 (不准确)",
-	timerGrounded			= "为地上阶段显示计时条"
+	timerGrounded			= "为地面阶段显示计时条"
 }
 
 L:SetMiscLocalization{
@@ -172,7 +173,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningPhasePunch		= "相位冲压: >%s< - 第%d层",
+	WarningPhasePunch		= "相位冲压 -> >%s< - 第%d层",
 	WarningCosmicSmash 		= "宇宙重击 - 约4秒后爆炸",
 	WarnPhase2Soon			= "第2阶段 即将到来",
 	warnStarLow			= "坍缩星血量低"
@@ -194,7 +195,7 @@ L:SetMiscLocalization{
 	YellKill			= "我曾经看过尘世沉浸在造物者的烈焰之中，众生连一声悲泣都无法呼出，就此凋零。整个星系在弹指之间历经了毁灭与重生。然而在这段历程之中，我的心却无法感受到丝毫的…恻隐之念。我‧感‧受‧不‧到。成千上万的生命就这么消逝。他们是否拥有与你同样坚韧的生命?他们是否与你同样热爱生命?",
 	Emote_CollapsingStar		= "%s开始召唤坍缩星！",
 	Phase2				= "瞧瞧泰坦造物的能耐吧!",
-	PullCheck			= "奥尔加隆开始上传灭世讯息的剩余时间= (%d+)分钟。"
+	PullCheck			= "奥尔加隆发送危险信号的倒计时 = (%d+)分钟。"
 }
 
 ----------------
@@ -210,9 +211,9 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	timerLeftArm			= "左臂 重生",
-	timerRightArm			= "右臂 重生",
-	achievementDisarmed		= "断其臂膀 计时条"
+	timerLeftArm			= "左臂重生",
+	timerRightArm			= "右臂重生",
+	achievementDisarmed		= "成就计时：断其臂膀"
 }
 
 L:SetOptionLocalization{
@@ -246,7 +247,7 @@ L:SetGeneralLocalization{
 }
 
 L:SetMiscLocalization{
-	Defender 			= "野性防御者 (%d)",
+	Defender 			= "野性防御者(%d)",
 	YellPull 			= "有些东西，最好永远都不去碰！"
 }
 
@@ -255,7 +256,7 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBlast			= "警戒冲击 - 快打断",
+	SpecWarnBlast			= "警戒冲击 - 立刻打断",
 	WarnCatDied 			= "野性防御者倒下(剩余%d只)",
 	WarnCatDiedOne 			= "野性防御者倒下(剩下最后一只)"
 }
@@ -322,7 +323,7 @@ L:SetMiscLocalization{
 	YellPhase1			= "入侵者！你们这些凡人竟敢坏了我的兴致，看我怎么……等等，你们……",
 	YellPhase2			= "狂妄的小崽子们，竟敢在我的地盘上挑战我？我要亲自碾碎你们！",
 	YellKill			= "住手！我认输了！",
-	ChargeOn			= "闪电充能: %s",
+	ChargeOn			= "闪电充能 -> %s",
 	Charge				= "中了闪电充能(这一次): %s" 
 }
 
@@ -346,8 +347,8 @@ L:SetMiscLocalization{
 }
 
 L:SetWarningLocalization{
-	WarningTree   		= "艾欧娜尔的礼物 - 快打",
-	WarnSimulKill			= "第一只元素死亡 - 大约12秒后复活"
+	WarningTree   		= "艾欧娜尔的礼物出现 - 立刻攻击",
+	WarnSimulKill			= "第一只元素死亡 - 约12秒后复活"
 }
 
 L:SetTimerLocalization{
@@ -368,7 +369,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Freya_Elders")
 
 L:SetGeneralLocalization{
-	name 				= "弗蕾亚的长者们"
+	name 				= "弗蕾亚的长者"
 }
 
 L:SetMiscLocalization{
@@ -395,7 +396,7 @@ L:SetGeneralLocalization{
 
 L:SetWarningLocalization{
 	MagneticCore			= ">%s< 拿到了磁核",
-	WarningShockBlast		= "震荡冲击 - 快跑开",
+	WarningShockBlast		= "震荡冲击 - 立刻跑开",
 	WarnBombSpawn			= "炸弹机器人出现了"
 }
 
@@ -451,8 +452,8 @@ L:SetTimerLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecialWarningShadowCrash	= "你中了暗影冲撞 - 快跑开",
-	SpecialWarningShadowCrashNear	= "你附近有人中暗影冲撞 - 快远离",
+	SpecialWarningShadowCrash	= "你中了暗影冲撞 - 立刻跑开",
+	SpecialWarningShadowCrashNear	= "你附近有人中暗影冲撞 - 立刻远离",
 	SpecialWarningLLNear		= "你附近的%s中了无面者的印记"
 }
 
@@ -495,15 +496,15 @@ L:SetMiscLocalization{
 L:SetWarningLocalization{
 	WarningGuardianSpawned 		= "尤格萨隆的卫士 %d 出现了",
 	WarningCrusherTentacleSpawned	= "重压触须 出现了",
-	WarningSanity 			= "剩下 %d 理智",
-	SpecWarnSanity 			= "剩下 %d 理智",
+	WarningSanity 			= "剩余理智：%d",
+	SpecWarnSanity 			= "剩余理智：%d",
 	SpecWarnGuardianLow		= "停止攻击这只守护者",
-	SpecWarnMadnessOutNow		= "疯狂诱导即将结束 - 快传送出去",
+	SpecWarnMadnessOutNow		= "疯狂诱导即将结束 - 立刻传送出去",
 	WarnBrainPortalSoon		= "3秒后 脑部传送门",
 	SpecWarnFervor			= "你中了萨拉的热情",
 	SpecWarnFervorCast		= "萨拉的热情正在对你施放",
 	SpecWarnMaladyNear		= "你附近的%s中了心灵疾病",
-	specWarnBrainPortalSoon		= "脑部传送门 即将到来"
+	specWarnBrainPortalSoon		= "脑部传送门 即将出现"
 }
 
 L:SetTimerLocalization{
