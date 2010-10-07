@@ -387,6 +387,9 @@ L:SetOptionLocalization({
 	TimerPhase2			= "Mostrar tiempo para Fase 2",
 	specwarnP2Soon	= "Mostrar aviso especial 10 segundos antes de que Kel'Thuzad salga",
 	warnAddsSoon	= "Mostrar pre-aviso para Guardianes de Corona de Hielo",
+	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(28410),
+	SetIconOnManaBomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27819),
+	SetIconOnFrostTomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27808),
 	ShowRange		= "Mostrar distancia cuando empieze la fase 2"
 })
 
