@@ -23,14 +23,14 @@
 ## X-DBM-Mod-SubCategories-esES: Ahn'Kahlet,Azjol-Nerub,CoT: La Matanza de Stratholme,Fortaleza de Drak'Tharon,Gundrak,Cámaras de Relámpagos,Camaras de Piedra,El Nexo,El Oculus,Fortaleza de Utgarde,Pinaculo de Utgarde,Bastion Violeta,Prueba del Campeón,La Forja de Almas,Foso de Saron,Cámaras de Reflexión
 ## X-DBM-Mod-SubCategories-esMX: Ahn'Kahlet,Azjol-Nerub,CoT: La Matanza de Stratholme,Fortaleza de Drak'Tharon,Gundrak,Cámaras de Relámpagos,Camaras de Piedra,El Nexo,El Oculus,Fortaleza de Utgarde,Pinaculo de Utgarde,Bastion Violeta,Prueba del Campeón,La Forja de Almas,Foso de Saron,Cámaras de Reflexión
 ## X-DBM-Mod-Name: Party-WotLK
-## X-DBM-Mod-Name-frFR: Groupe
-## X-DBM-Mod-Name-deDE: Gruppe
-## X-DBM-Mod-Name-ruRU: Групповые подземелья
-## X-DBM-Mod-Name-zhTW: 隊伍首領
-## X-DBM-Mod-Name-zhCN: 队伍首领
-## X-DBM-Mod-Name-esES: Mazmorras
-## X-DBM-Mod-Name-koKR: 5인 던전 모드
-## X-DBM-Mod-Name-esMX: Mazmorras
+## X-DBM-Mod-Name-frFR: Groupe-WotLK
+## X-DBM-Mod-Name-deDE: Gruppe-WotLK
+## X-DBM-Mod-Name-ruRU: Групповые подземелья-WotLK
+## X-DBM-Mod-Name-zhTW: 隊伍首領-WotLK
+## X-DBM-Mod-Name-zhCN: 队伍首领-WotLK
+## X-DBM-Mod-Name-esES: Mazmorras-WotLK
+## X-DBM-Mod-Name-koKR: 5인 던전 모드-WotLK
+## X-DBM-Mod-Name-esMX: Mazmorras-WotLK
 ## X-DBM-Mod-Sort: 225
 ## X-DBM-Mod-LoadZoneID: 523,534,522,535,531,526,527,521,529,524,525,537,603,602,604,543
 localization.en.lua
