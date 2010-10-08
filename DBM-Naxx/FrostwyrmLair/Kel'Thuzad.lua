@@ -47,9 +47,9 @@ end
 
 local function AnnounceBlastTargets()
 	warnBlastTargets:Show(table.concat(frostBlastTargets, "< >"))
-	if self.Options.SetIconOnFrostTomb then
+	if mod.Options.SetIconOnFrostTomb then
 		for i = #frostBlastTargets, 1, -1 do
-			self:SetIcon(frostBlastTargets[i], 8 - i, 4.5) 
+			mod:SetIcon(frostBlastTargets[i], 8 - i, 4.5) 
 			frostBlastTargets[i] = nil
 		end
 	end
