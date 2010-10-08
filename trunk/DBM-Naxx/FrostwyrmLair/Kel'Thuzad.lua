@@ -27,6 +27,7 @@ local specwarnP2Soon		= mod:NewSpecialWarning("specwarnP2Soon")
 
 local blastTimer			= mod:NewBuffActiveTimer(4, 27808)
 local timerMC				= mod:NewBuffActiveTimer(20, 28410)
+local timerMCCD				= mod:NewCDTimer(90, 28410)--actually 60 second cdish but its easier to do it this way for the first one.
 local timerPhase2			= mod:NewTimer(225, "TimerPhase2", "Interface\\Icons\\Spell_Nature_WispSplode")
 
 mod:AddBoolOption("SetIconOnMC", true)
@@ -61,6 +62,9 @@ function mod:OnCombatStart(delay)
 	warnedAdds = false
 	MCIcon = 1
 	specwarnP2Soon:Schedule(215-delay)
+	if mod:IsDifficulty("normal25") then
+		timerMCCD:Schedule(225-delay)
+	end
 	timerPhase2:Start()
 	warnPhase2:Schedule(225)
 	if self.Options.ShowRange then
@@ -88,6 +92,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(28410) then -- Chains of Kel'Thuzad
 		chainsTargets[#chainsTargets + 1] = args.destName
 		timerMC:Start()
+		timerMCCD:Start(60)--60 seconds?
 		if self.Options.SetIconOnMC then
 			self:SetIcon(args.destName, MCIcon, 20)
 			MCIcon = MCIcon + 1
