@@ -193,7 +193,9 @@ L:SetMiscLocalization{
 	PullHorde			= "起來吧，部落的子女!今天我們要和最可恨的敵人作戰!為了部落!",
 	KillHorde			= "聯盟已經動搖了。向巫妖王前進!",
 	AddsAlliance			= "劫奪者，士官們，攻擊!",
-	AddsHorde			= "海員們，士官們，攻擊!"
+	AddsHorde			= "海員們，士官們，攻擊!",
+	MageAlliance			= "We're taking hull damage, get a battle-mage out here to shut down those cannons!",
+	MageHorde			= "We're taking hull damage, get a sorcerer out here to shut down those cannons!"
 }
 
 -----------------------------
