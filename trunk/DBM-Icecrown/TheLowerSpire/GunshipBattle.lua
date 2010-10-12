@@ -101,7 +101,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self:Adds()
 	elseif ((msg == L.MageAlliance or msg:find(L.MageAlliance)) or (msg == L.MageHorde or msg:find(L.MageHorde))) and self:IsInCombat() then
 		if not firstMage then
-			timerBelowZeroCD:Start(6)
+			timerBelowZeroCD:Start(6.5)
 			firstMage = true
 		else
 			timerBelowZeroCD:Update(29, 35)--Update the below zero timer to correct it with yells since it tends to be off depending on how bad your cannon operators are.
