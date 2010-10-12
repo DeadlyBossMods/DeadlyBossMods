@@ -1,5 +1,5 @@
-﻿## Interface: 30300
-## X-Compatible-With: 40000 
+﻿## Interface: 40000
+## X-Min-Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Icecrown Citadel|r
 ## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Citadelle de la Couronne de glace|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0얼음왕관 성채|r

@@ -1,5 +1,5 @@
-﻿## Interface: 30300
-## X-Compatible-With: 40000 
+﻿## Interface: 40000
+## X-Min-Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Vault of Archavon|r
 ## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Archavons Kammer|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Склеп Аркавона|r
