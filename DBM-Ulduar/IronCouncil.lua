@@ -10,7 +10,8 @@ mod:RegisterCombat("combat", 32867, 32927, 32857)
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_DIED"
 )
 
 mod:AddBoolOption("HealthFrame", true)
@@ -54,9 +55,8 @@ local warnRuneofDeath			= mod:NewSpellAnnounce(63490, 2)
 local warnShieldofRunes			= mod:NewSpellAnnounce(63489, 2)
 local warnRuneofSummoning		= mod:NewSpellAnnounce(62273, 3)
 local specwarnRuneofDeath		= mod:NewSpecialWarningMove(63490)
-local timerRuneofDeathDura		= mod:NewNextTimer(30, 63490)
-local timerRuneofPower			= mod:NewCDTimer(30, 61974)
 local timerRuneofDeath			= mod:NewCDTimer(30, 63490)
+local timerRuneofPower			= mod:NewCDTimer(30, 61974)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
 
 local enrageTimer				= mod:NewBerserkTimer(900)
@@ -102,7 +102,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(63490, 62269) then		-- Rune of Death
 		warnRuneofDeath:Show()
-		timerRuneofDeathDura:Start()
+		timerRuneofDeath:Start()
 	elseif args:IsSpellID(64321, 61974) then	-- Rune of Power
 		self:ScheduleMethod(0.1, "RuneTarget")
 		timerRuneofPower:Start()
@@ -157,5 +157,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnStaticDisruptionTargets)
 		self:Schedule(0.3, warnStaticDisruptionTargets)
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 32867 then		--Steelbreaker
+		timerFusionPunchCast:Cancel()
+	elseif cid == 32927 then	--Runemaster
+		timerRuneofDeath:Cancel()
+		timerRuneofPower:Cancel()
+	elseif cid == 32857 then	--Stormcaller
+		timerOverload:Cancel()
+		timerLightningWhirl:Cancel()
 	end
 end
