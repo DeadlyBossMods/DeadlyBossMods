@@ -196,4 +196,5 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow move: разрешает перемещение стрелки",
 }
 
-
+DBM_SPEED_KILL_TIMER_TEXT	= "Рекордное убийство"
+DBM_SPEED_KILL_TIMER_OPTION	= "Отсчет времени вашего самого быстрого убийства"
