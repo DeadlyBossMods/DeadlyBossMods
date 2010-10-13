@@ -24,7 +24,7 @@
 ## X-DBM-Mod-Name-koKR: 5인 던전 (대격변)
 ## X-DBM-Mod-Name-esMX: Mazmorras (Cataclysm)
 ## X-DBM-Mod-Sort: 125
-## X-DBM-Mod-LoadZoneID: 747, 753, 756, 757, 759, 764, 767, 768, 769 -- 757: Grim Batol // 759: Halls // 747: Lost City // 768: Stonecore // 753: Blackrock Caverns // 767: Throne Tides // 769: Vortex Pinnacle // 756: Deadmines // 764: Shadow Fang Keep
+## X-DBM-Mod-LoadZoneID: 746, 752, 755, 756, 758, 763, 766, 767, 768
 localization.en.lua
 localization.es.lua
 localization.kr.lua
