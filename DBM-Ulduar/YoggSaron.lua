@@ -227,7 +227,7 @@ function mod:OnSync(msg)
 	if msg == "Phase3" then
 		warnP3:Show()
 		phase = 3
-		brainportal:Stop()
+		brainportal:Cancel()
         timerEmpower:Start()
         warnEmpowerSoon:Schedule(40)	
 		warnBrainPortalSoon:Cancel()
