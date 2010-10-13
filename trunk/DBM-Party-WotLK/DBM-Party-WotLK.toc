@@ -32,7 +32,7 @@
 ## X-DBM-Mod-Name-koKR: 5인 던전 모드-WotLK
 ## X-DBM-Mod-Name-esMX: Mazmorras-WotLK
 ## X-DBM-Mod-Sort: 225
-## X-DBM-Mod-LoadZoneID: 523,534,522,535,531,526,527,521,529,524,525,537,603,602,604,543
+## X-DBM-Mod-LoadZoneID: 522,533,521,534,530,525,526,520,528,523,524,536,602,601,603,542
 localization.en.lua
 localization.cn.lua
 localization.ru.lua
