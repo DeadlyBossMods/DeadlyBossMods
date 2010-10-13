@@ -17,9 +17,9 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBrew		= "Спец-предупреждение для Пива темной официантки",
-	specWarnBrewStun	= "Спец-предупреждение для Оглушения темным пивом официантки",
-	YellOnBarrel		= "Крикнуть, когда на вас Бочка"
+	specWarnBrew		= "Спец-предупреждение для $spell:47376",
+	specWarnBrewStun	= "Спец-предупреждение для $spell:47340",
+	YellOnBarrel		= "Кричать, когда на вас $spell:51413"
 })
 
 L:SetMiscLocalization({
