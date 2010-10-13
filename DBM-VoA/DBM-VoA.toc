@@ -25,7 +25,7 @@
 ## X-DBM-Mod-Name-esES: La Cámara de Archavon
 ## X-DBM-Mod-Name-esMX: La Cámara de Archavon
 ## X-DBM-Mod-Sort: 207
-## X-DBM-Mod-LoadZoneID: 533
+## X-DBM-Mod-LoadZoneID: 532
 localization.en.lua
 localization.de.lua
 localization.tw.lua

@@ -32,7 +32,7 @@
 ## X-DBM-Mod-Name-esES: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Name-esMX: Ciudadela de la Corona de Hielo
 ## X-DBM-Mod-Sort: 200
-## X-DBM-Mod-LoadZoneID: 605
+## X-DBM-Mod-LoadZoneID: 604
 localization.en.lua
 localization.de.lua
 localization.kr.lua

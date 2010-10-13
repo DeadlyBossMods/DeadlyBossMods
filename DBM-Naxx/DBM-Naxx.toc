@@ -29,7 +29,7 @@
 ## X-DBM-Mod-Name-koKR: 낙스라마스
 ## X-DBM-Mod-Name-esES: Naxxramas
 ## X-DBM-Mod-Sort: 206
-## X-DBM-Mod-LoadZoneID: 536
+## X-DBM-Mod-LoadZoneID: 535
 localization.en.lua
 localization.de.lua
 localization.fr.lua

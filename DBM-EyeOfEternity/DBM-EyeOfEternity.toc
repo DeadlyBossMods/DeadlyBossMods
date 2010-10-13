@@ -23,7 +23,7 @@
 ## X-DBM-Mod-Name-esES: El Ojo de la Eternidad
 ## X-DBM-Mod-Name-esMXS: El Ojo de la Eternidad
 ## X-DBM-Mod-Sort: 205
-## X-DBM-Mod-LoadZoneID: 528
+## X-DBM-Mod-LoadZoneID: 527
 localization.en.lua
 localization.fr.lua
 localization.de.lua
