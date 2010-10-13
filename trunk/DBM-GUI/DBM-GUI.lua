@@ -1984,11 +1984,12 @@ do
 	end
 
 	local Categories = {}
+	local WowBuild = select(2, GetBuildInfo())
 	function DBM_GUI:UpdateModList()
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
-				if select(2, _G.GetBuildInfo()) >= 13165 then--Choose default expanded catagory based on build. expands cata in cata and wotlk if not cata. Use build number instead of toc so 4.0.1 is treated as wrath too.
+				if tonumber(WowBuild) >= 13165 then--Choose default expanded catagory based on build. expands cata in cata and wotlk if not cata. Use build number instead of toc so 4.0.1 is treated as wrath too.
 					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))
 				else
 					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOTLK"))
