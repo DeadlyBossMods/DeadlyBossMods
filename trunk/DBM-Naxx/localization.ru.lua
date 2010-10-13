@@ -374,10 +374,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerPhase2		= "Отсчет времени до фазы 2",
-	specwarnP2Soon	= "Спец-предупреждение за 10 секунд до вступления Кел'Тузада в бой",
-	warnAddsSoon	= "Предупреждать заранее о Стражах Ледяной Короны",
-	ShowRange		= "Показывать окно проверки дистанции в фазе 2"
+	TimerPhase2			= "Отсчет времени до фазы 2",
+	specwarnP2Soon		= "Спец-предупреждение за 10 секунд до вступления Кел'Тузада в бой",
+	warnAddsSoon		= "Предупреждать заранее о Стражах Ледяной Короны",
+	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(28410),
+	SetIconOnManaBomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27819),
+	SetIconOnFrostTomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27808),
+	ShowRange			= "Показывать окно проверки дистанции в фазе 2"
 })
 
 L:SetMiscLocalization({
