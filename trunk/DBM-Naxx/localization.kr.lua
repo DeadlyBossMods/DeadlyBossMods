@@ -398,6 +398,9 @@ L:SetOptionLocalization({
 	TimerPhase2			= "2 페이즈 타이머 보기",
 	specwarnP2Soon		= "2 페이즈 시작하기 전 특수 경고 보기",
 	warnAddsSoon		= "얼음왕관의 수호자 등장 사전 경고 보기",
+	SetIconOnMC			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(28410),
+	SetIconOnManaBomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27819),
+	SetIconOnFrostTomb	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(27808),	
 	ShowRange			= "2 페이즈가 시작되면 거리 프레임 보기"
 })
 
