@@ -160,7 +160,6 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(69761, 71212, 73026, 73027) and args:IsPlayer() then
 		specWarnRadiatingOoze:Show()
 	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() and not (args:IsSpellID(50288) or args:IsSpellID(53189, 53190, 53194, 53195)) then--Any spell damage except for starfall
---		self:ScheduleMethod(1, "SlimeTank")
 		if args.sourceName ~= UnitName("player") then
 			if self.Options.TankArrow then
 				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
@@ -173,7 +172,6 @@ function mod:SWING_DAMAGE(args)
 	if args:IsPlayer() and args:GetSrcCreatureID() == 36897 then --Little ooze hitting you
 		specWarnLittleOoze:Show()
 	elseif args:GetDestCreatureID() == 36899 and args:IsSrcTypePlayer() then
---		self:ScheduleMethod(1, "SlimeTank")
 		if args.sourceName ~= UnitName("player") then
 			if self.Options.TankArrow then
 				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
