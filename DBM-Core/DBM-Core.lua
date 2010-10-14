@@ -146,6 +146,12 @@ local checkWipe
 local fireEvent
 local is_cata = select(4, _G.GetBuildInfo()) >= 40000--4.0 PTR or Beta
 local is_china = select(4, _G.GetBuildInfo()) == 30200--Chinese wow (3.2.2) No one else should be on 3.2.x, screw private servers.
+local GetCurrentMapID
+if is_china then
+	GetCurrentMapID = (GetCurrentMapAreaID() + 1)--US 4.0.1 changed all area ids by -1. So we add it back to continue suppporting CN wow until they get same change.
+else
+	GetCurrentMapID = GetCurrentMapAreaID()
+end
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -318,7 +324,7 @@ do
 	local function handleEvent(self, event, ...)
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
-			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText()) or checkEntry(v.zones, GetCurrentMapAreaID())) and (not v.Options or v.Options.Enabled) then
+			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText()) or checkEntry(v.zones, GetCurrentMapID)) and (not v.Options or v.Options.Enabled) then
 				v[event](v, ...)
 			end
 		end
@@ -633,7 +639,7 @@ do
 		
 		-- execute OnUpdate handlers of all modules
 		for i, v in pairs(updateFunctions) do
-			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText()) or checkEntry(i.zones, GetCurrentMapAreaID())) then
+			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText()) or checkEntry(i.zones, GetCurrentMapID)) then
 				i.elapsed = (i.elapsed or 0) + elapsed
 				if i.elapsed >= (i.updateInterval or 0) then
 					v(i, i.elapsed)
@@ -1393,7 +1399,7 @@ end
 function DBM:ZONE_CHANGED_NEW_AREA()
 	SetMapToCurrentZone()
 	local zoneName = GetRealZoneText()
-	local zoneId = GetCurrentMapAreaID()
+	local zoneId = GetCurrentMapID
 	for i, v in ipairs(self.AddOns) do
 		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or checkEntry(v.zoneId, zoneId)) then
 			-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
@@ -1490,7 +1496,7 @@ do
 		delay = tonumber(delay or 0) or 0
 		revision = tonumber(revision or 0) or 0
 		mod = DBM:GetModByName(mod or "")
-		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText()) or checkEntry(mod.zones, GetCurrentMapAreaID())) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
+		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText()) or checkEntry(mod.zones, GetCurrentMapID)) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
@@ -1708,7 +1714,7 @@ do
 
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
-		if combatInfo[GetRealZoneText()] or combatInfo[GetCurrentMapAreaID()] then
+		if combatInfo[GetRealZoneText()] or combatInfo[GetCurrentMapID] then
 			buildTargetList()
 			if combatInfo[GetRealZoneText()] then
 				for i, v in ipairs(combatInfo[GetRealZoneText()]) do
@@ -1726,8 +1732,8 @@ do
 				end
 			end
 			-- copy & paste, lol
-			if combatInfo[GetCurrentMapAreaID()] then
-				for i, v in ipairs(combatInfo[GetCurrentMapAreaID()]) do
+			if combatInfo[GetCurrentMapID] then
+				for i, v in ipairs(combatInfo[GetCurrentMapID]) do
 					if v.type == "combat" then
 						if v.multiMobPullDetection then
 							for _, mob in ipairs(v.multiMobPullDetection) do
@@ -1758,8 +1764,8 @@ do
 			end
 		end
 		-- copy & paste, lol
-		if combatInfo[GetCurrentMapAreaID()] then
-			for i, v in ipairs(combatInfo[GetCurrentMapAreaID()]) do
+		if combatInfo[GetCurrentMapID] then
+			for i, v in ipairs(combatInfo[GetCurrentMapID]) do
 				if v.type == type and checkEntry(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0)
 				end
