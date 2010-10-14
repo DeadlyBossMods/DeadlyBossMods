@@ -2539,13 +2539,13 @@ end
 -- returns heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
 function bossModPrototype:GetDifficulty() 
 	local _, instanceType, difficulty, _, _, playerDifficulty, isDynamicInstance = GetInstanceInfo()
-	if instanceType == "raid" and isDynamicInstance then -- "dynamic" instance (ICC)
+	if instanceType == "raid" and isDynamicInstance and not is_cata then -- "dynamic" instance (ICC) (3.3.5 only)
 		if difficulty == 1 then -- 10 men
 			return playerDifficulty == 0 and "normal10" or playerDifficulty == 1 and "heroic10" or "unknown"
 		elseif difficulty == 2 then -- 25 men
 			return playerDifficulty == 0 and "normal25" or playerDifficulty == 1 and "heroic25" or "unknown"
 		end
-	else -- support for "old" instances
+	else -- support for "old" instances (in 4.0 blizz switched all instances to 1-4 method)
 		if difficulty == 1 then 
 			return instanceType == "raid" and "normal10" or "normal5"
 		elseif difficulty == 2 then 
