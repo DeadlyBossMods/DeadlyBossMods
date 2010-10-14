@@ -1,0 +1,41 @@
+﻿## Interface: 40000
+## X-Min-Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Vault of Archavon|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Archavons Kammer|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Склеп Аркавона|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0亞夏梵穹殿|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0阿尔卡冯的宝库|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0아카본 석실|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0La Cámara de Archavon|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0La Cámara de Archavon|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMVoA_SavedVars, DBMVoA_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Name: Vault of Archavon
+## X-DBM-Mod-Name-deDE: Archavons Kammer
+## X-DBM-Mod-Name-frFR: Caveau d'Archavon
+## X-DBM-Mod-Name-ruRU: Склеп Аркавона
+## X-DBM-Mod-Name-zhTW: 亞夏梵穹殿
+## X-DBM-Mod-Name-zhCN: 阿尔卡冯的宝库
+## X-DBM-Mod-Name-koKR: 아카본 석실
+## X-DBM-Mod-Name-esES: La Cámara de Archavon
+## X-DBM-Mod-Name-esMX: La Cámara de Archavon
+## X-DBM-Mod-Sort: 207
+## X-DBM-Mod-LoadZoneID: 532
+localization.en.lua
+localization.de.lua
+localization.tw.lua
+localization.cn.lua
+localization.es.lua
+localization.ru.lua
+localization.fr.lua
+localization.kr.lua
+MapSizes.lua
+Archavon.lua
+Emalon.lua
+Koralon.lua
+Toravon.lua

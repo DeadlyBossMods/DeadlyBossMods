@@ -1,0 +1,56 @@
+## Interface: 40000
+## X-Min-Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Наксрамас|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0納克薩瑪斯|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0纳克萨玛斯|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0낙스라마스|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Naxxramas|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMNaxx_SavedVars, DBMNaxx_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-SubCategories: Arachnid Quarter,Construct Quarter,Plague Quarter,Military Quarter,Frostwyrm Lair
+## X-DBM-Mod-SubCategories-deDE: Arachnidenviertel,Konstruktviertel,Seuchenviertel,Militärviertel,Frostwyrmhöhle
+## X-DBM-Mod-SubCategories-ruRU: Паучий квартал,Квартал Мерзости,Чумной квартал,Военный квартал,Логово ледяного змея
+## X-DBM-Mod-SubCategories-zhTW: 蜘蛛區,傀儡區,瘟疫區,軍事區,冰霜巨龍巢穴
+## X-DBM-Mod-SubCategories-zhCN: 蜘蛛区,构造区,瘟疫区,军事区,冰霜巨龙的巢穴
+## X-DBM-Mod-SubCategories-koKR: 거미 지구,피조물 지구,역병 지구,군사 지구,서리고룡 둥지
+## X-DBM-Mod-SubCategories-frFR: Quartier des Arachnides,Quartier des Assemblages,Quartier de la Peste,Quartier Militaire,Aile de glace
+## X-DBM-Mod-SubCategories-esES: El Arrabal Arácnido,El Arrabal de los Ensamblajes,El Arrabal de la Plaga,El Arrabal Militar,Guarida Helada
+## X-DBM-Mod-SubCategories-esMX: El Arrabal Arácnido,El Arrabal de los Ensamblajes,El Arrabal de la Plaga,El Arrabal Militar,Guarida Helada
+## X-DBM-Mod-Name: Naxxramas
+## X-DBM-Mod-Name-ruRU: Наксрамас
+## X-DBM-Mod-Name-zhTW: 納克薩瑪斯
+## X-DBM-Mod-Name-zhCN: 纳克萨玛斯
+## X-DBM-Mod-Name-koKR: 낙스라마스
+## X-DBM-Mod-Name-esES: Naxxramas
+## X-DBM-Mod-Sort: 206
+## X-DBM-Mod-LoadZoneID: 535
+localization.en.lua
+localization.de.lua
+localization.fr.lua
+localization.ru.lua
+localization.tw.lua
+localization.kr.lua
+localization.es.lua
+localization.cn.lua
+MapSizes.lua
+ArachnidQuarter\Anub'Rekhan.lua
+ArachnidQuarter\Faerlina.lua
+ArachnidQuarter\Maexxna.lua
+ConstructQuarter\Patchwerk.lua
+ConstructQuarter\Grobbulus.lua
+ConstructQuarter\Gluth.lua
+ConstructQuarter\Thaddius.lua
+PlagueQuarter\Noth.lua
+PlagueQuarter\Heigan.lua
+PlagueQuarter\Loatheb.lua
+MilitaryQuarter\Razuvious.lua
+MilitaryQuarter\Gothik.lua
+MilitaryQuarter\Horsemen.lua
+FrostwyrmLair\Sapphiron.lua
+FrostwyrmLair\Kel'Thuzad.lua

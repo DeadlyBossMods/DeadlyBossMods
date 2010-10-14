@@ -1,0 +1,36 @@
+﻿## Interface: 40000
+## X-Min-Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Eye of Eternity|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Око Вечности|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0永恆之眼|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0永恒之眼|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0영원의 눈|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Malygos|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMEyeOfEternity_SavedVars, DBMEyeOfEternity_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Name: Eye of Eternity
+## X-DBM-Mod-Name-frFR: L'Œil de l'éternité
+## X-DBM-Mod-Name-deDE: Das Auge der Ewigkeit
+## X-DBM-Mod-Name-ruRU: Око Вечности
+## X-DBM-Mod-Name-zhTW: 永恆之眼
+## X-DBM-Mod-Name-zhCN: 永恒之眼
+## X-DBM-Mod-Name-koKR: 영원의 눈
+## X-DBM-Mod-Name-esES: El Ojo de la Eternidad
+## X-DBM-Mod-Name-esMXS: El Ojo de la Eternidad
+## X-DBM-Mod-Sort: 205
+## X-DBM-Mod-LoadZoneID: 527
+localization.en.lua
+localization.fr.lua
+localization.de.lua
+localization.ru.lua
+localization.tw.lua
+localization.kr.lua
+localization.es.lua
+localization.cn.lua
+MapSizes.lua
+Malygos.lua

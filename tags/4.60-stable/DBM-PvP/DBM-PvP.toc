@@ -1,0 +1,48 @@
+﻿## Interface: 40000
+## X-Min-Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Поля Боя|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0PvP|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0战场|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0전장|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
+## Title-esMX:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Batallas|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMPvP_SavedVars
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-SubCategories: Arena,Battlegrounds
+## X-DBM-Mod-SubCategories-deDE: Arena,Schlachtfelder
+## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя
+## X-DBM-Mod-SubCategories-koKR: 투기장,전장
+## X-DBM-Mod-SubCategories-zhTW: 競技場,戰場
+## X-DBM-Mod-SubCategories-esES: Arena,Campos de Batallas
+## X-DBM-Mod-SubCategories-esMX: Arena,Campos de Batallas
+## X-DBM-Mod-Name: PvP
+## X-DBM-Mod-Name-deDE: PvP
+## X-DBM-Mod-Name-frFR: Champs de bataille
+## X-DBM-Mod-Name-ruRU: Игрок против игрока
+## X-DBM-Mod-Name-zhTW: PvP
+## X-DBM-Mod-Name-koKR: 전장 및 아카본
+## X-DBM-Mod-Name-esES: Campos de Batallas
+## X-DBM-Mod-Name-esMX: Campos de Batallas
+## X-DBM-Mod-Sort: 275
+## X-DBM-Mod-LoadZoneID: 461,443,401,540,482
+localization.en.lua
+localization.de.lua
+localization.tw.lua
+localization.cn.lua
+localization.es.lua
+localization.ru.lua
+localization.fr.lua
+localization.kr.lua
+Battlegrounds\Battlegrounds.lua
+Battlegrounds\Alterac.lua
+Battlegrounds\Arathi.lua
+Battlegrounds\EyeOfTheStorm.lua
+Battlegrounds\IsleOfConquest.lua
+Battlegrounds\Warsong.lua
+Arenas\Arenas.lua

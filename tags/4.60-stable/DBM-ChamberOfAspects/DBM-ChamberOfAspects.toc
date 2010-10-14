@@ -1,0 +1,52 @@
+﻿## Interface: 40000
+## X-Min-Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chamber of Aspects|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Kammer der Aspekte|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Палата Аспектов|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0守護巨龍之間|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0흑요석 성소|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Chambre des Aspects|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Cámara de los Aspectos|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMChamberOfAspects_SavedVars, DBMChamberOfAspects_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-SubCategories: The Obsidian Sanctum, The Ruby Sanctum
+## X-DBM-Mod-SubCategories-deDE: Das Obsidiansanktum, Das Rubinsanktum
+## X-DBM-Mod-SubCategories-ruRU: Обсидиановое святилище, Рубиновое святилище
+## X-DBM-Mod-SubCategories-zhTW: 黑曜聖所, 晶紅聖所
+## X-DBM-Mod-SubCategories-zhCN: 黑曜石圣殿, The Ruby Sanctum
+## X-DBM-Mod-SubCategories-koKR: 흑요석 성소, 루비 성소
+## X-DBM-Mod-SubCategories-frFR: Le sanctum Obsidien,Le sanctum Rubis
+## X-DBM-Mod-SubCategories-esES: El Sagrario Obsidiana, El Sagrario Rubí
+## X-DBM-Mod-SubCategories-esMX: El Sagrario Obsidiana, El Sagrario Rubí
+## X-DBM-Mod-Name: Chamber of Aspects
+## X-DBM-Mod-Name-deDE: Kammer der Aspekte
+## X-DBM-Mod-Name-ruRU: Палата Аспектов
+## X-DBM-Mod-Name-zhTW: 守護巨龍之間
+## X-DBM-Mod-Name-zhCN: 龙眠神殿
+## X-DBM-Mod-Name-koKR: 고룡쉼터 사원
+## X-DBM-Mod-Name-frFR : Chambre des aspects
+## X-DBM-Mod-Name-esES: Cámara de los Aspectos
+## X-DBM-Mod-Name-esMX: Cámara de los Aspectos
+## X-DBM-Mod-Sort: 201
+## X-DBM-Mod-LoadZoneID: 531,609
+localization.en.lua
+localization.de.lua
+localization.ru.lua
+localization.tw.lua
+localization.kr.lua
+localization.fr.lua
+localization.es.lua
+localization.cn.lua
+Obsidian\MapSizes.lua
+Obsidian\Shadron.lua
+Obsidian\Tenebron.lua
+Obsidian\Vesperon.lua
+Obsidian\Sartharion.lua
+Ruby\MapSizes.lua
+Ruby\Baltharus.lua
+Ruby\Saviana.lua
+Ruby\Zarithrian.lua
+Ruby\Halion.lua
