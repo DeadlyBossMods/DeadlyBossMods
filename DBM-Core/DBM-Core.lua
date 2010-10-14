@@ -43,7 +43,7 @@
 -------------------------------
 DBM = {
 	Revision = ("$Revision$"):sub(12, -3),
-	Version = "4.52",
+	Version = "4.53",
 	DisplayVersion = "4.53 alpha", -- the string that is shown as version
 	ReleaseRevision = 4442 -- the revision of the latest stable version that is available (for /dbm ver2)
 }
