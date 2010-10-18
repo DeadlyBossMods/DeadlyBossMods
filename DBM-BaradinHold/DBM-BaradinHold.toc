@@ -1,0 +1,16 @@
+﻿## Interface: 40000
+## X-Min-Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Baradin Hold|r
+## Author: Nitram/Tandanu
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMBaradinHold_SavedVars, DBMBaradinHold_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: Cataclysm
+## X-DBM-Mod-Has-Heroic-Mode: 0
+## X-DBM-Mod-Name: Baradin Hold
+## X-DBM-Mod-Sort: 101
+## X-DBM-Mod-LoadZoneID: 752
+localization.en.lua
+MapSizes.lua
+Argaloth.lua
