@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Magmaw")
 
 L:SetGeneralLocalization({
-	name = "Magmaw"--translate
+	name = "Faucemagma"
 })
 
 L:SetWarningLocalization({
@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "Dark Iron Golem Council"--translate
+	name = "Sistema de defensa de Omnitron"
 })
 
 L:SetWarningLocalization({
@@ -50,7 +50,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Maloriak")
 
 L:SetGeneralLocalization({
-	name = "Maloriak"--translate
+	name = "Maloriak"
 })
 
 L:SetWarningLocalization({
@@ -71,7 +71,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Chimaeron")
 
 L:SetGeneralLocalization({
-	name = "Chimaeron"--translate
+	name = "Chimaeron"
 })
 
 L:SetWarningLocalization({
@@ -92,7 +92,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Atramedes")
 
 L:SetGeneralLocalization({
-	name = "Atramedes"--translate
+	name = "Atramedes"
 })
 
 L:SetWarningLocalization({
@@ -110,10 +110,10 @@ L:SetOptionLocalization({
 ----------------
 --  Nefarian  --
 ----------------
-L = DBM:GetModLocalization("Nefarian-BD")	-- No conflict with BWL version :)
+L = DBM:GetModLocalization("Nefarian-BD")
 
 L:SetGeneralLocalization({
-	name = "Nefarian"--translate
+	name = "Nefarian"
 })
 
 L:SetWarningLocalization({

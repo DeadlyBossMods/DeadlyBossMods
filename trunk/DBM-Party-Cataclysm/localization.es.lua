@@ -62,7 +62,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "Ascendant Lord Obsidius"--translate
+	name = "Ascendiente Lord Obsidius"
 })
 
 L:SetOptionLocalization({
@@ -113,7 +113,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
-	name = "\"Captain\" Cookie"--translate
+	name = "\"Capitán\" Cocinitas"
 })
 
 ------------------
@@ -151,7 +151,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Erudax")
 
 L:SetGeneralLocalization({
-	name = "Erudax"--translate
+	name = "Erudax"
 })
 
 ----------------------------
@@ -224,7 +224,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Rajh")
 
 L:SetGeneralLocalization({
-	name = "Rajh"--translate
+	name = "Rajh"
 })
 
 --------------------------------
@@ -244,7 +244,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
-	name = "Siamat"--translate
+	name = "Siamat"
 })
 
 ------------------------
@@ -329,7 +329,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighPriestessAzil")
 
 L:SetGeneralLocalization({
-	name = "High Priestess Azil"--translate
+	name = "Suma Sacerdotisa Azil"
 })
 
 ---------------------------
@@ -358,7 +358,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Asaad")
 
 L:SetGeneralLocalization({
-	name = "Asaad"--translate
+	name = "Asaad"
 })
 
 ---------------------------
@@ -396,5 +396,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozumat")
 
 L:SetGeneralLocalization({
-	name = "Ozumat"--translate
+	name = "Ozumat"
 })

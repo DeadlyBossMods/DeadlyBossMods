@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"--translate
+	name =	"Valiona y Theralion"
 })
 
 L:SetWarningLocalization({
@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("HalfusWyrmbreaker")
 
 L:SetGeneralLocalization({
-	name =	"Halfus Wyrmbreaker"--translate
+	name =	"Halfus Partevermis"
 })
 
 L:SetWarningLocalization({
@@ -50,7 +50,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("AscendantCouncil")
 
 L:SetGeneralLocalization({
-	name =	"Twilight Ascendant Council"--translate
+	name =	"Consejo de ascendientes"
 })
 
 L:SetWarningLocalization({
@@ -71,7 +71,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Chogall")
 
 L:SetGeneralLocalization({
-	name =	"Cho'gall"--translate
+	name =	"Cho'gall"
 })
 
 L:SetWarningLocalization({
