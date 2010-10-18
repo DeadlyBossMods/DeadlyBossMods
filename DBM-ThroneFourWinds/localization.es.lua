@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("AlAkir")
 
 L:SetGeneralLocalization({
-	name = "Al'Akir"--translate
+	name = "Al'Akir"
 })
 
 L:SetWarningLocalization({

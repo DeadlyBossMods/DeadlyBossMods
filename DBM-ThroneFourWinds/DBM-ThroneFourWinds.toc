@@ -1,7 +1,7 @@
 ﻿## Interface: 40000
 ## X-Min-Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Throne of the Four Winds|r
-## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Throne of the Four Winds|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Trono de los Cuatro Vientos|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -10,7 +10,7 @@
 ## X-DBM-Mod-Category: Cataclysm
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Throne of the Four Winds
-## X-DBM-Mod-Name-esES: Throne of the Four Winds
+## X-DBM-Mod-Name-esES: Trono de los Cuatro Vientos
 ## X-DBM-Mod-Sort: 104
 ## X-DBM-Mod-LoadZoneID: 773
 localization.en.lua

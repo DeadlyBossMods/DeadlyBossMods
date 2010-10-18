@@ -163,7 +163,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	yell1 = "¡Remendejo quiere jugar!",
-	yell2 = "¡Remendejo es la encarnación de Kel'Thuzad de la guerra!",
+	yell2 = "¡Remendejo es la encarnación de guerra de Kel'Thuzad!",
 	HatefulStrike = "Golpe de Odio --> %s [%s]"
 })
 
