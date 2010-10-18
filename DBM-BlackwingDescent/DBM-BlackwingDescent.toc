@@ -1,6 +1,7 @@
 ﻿## Interface: 40000
 ## X-Min-Interface: 30200
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Descent|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Descenso de Alanegra|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -9,9 +10,11 @@
 ## X-DBM-Mod-Category: Cataclysm
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Blackwing Descent
+## X-DBM-Mod-Name-esES: Descenso de Alanegra
 ## X-DBM-Mod-Sort: 103
 ## X-DBM-Mod-LoadZoneID: 754
 localization.en.lua
+localization.es.lua
 MapSizes.lua
 Magmaw.lua
 DarkIronGolemCouncil.lua
