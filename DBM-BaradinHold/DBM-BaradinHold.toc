@@ -7,7 +7,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMBaradinHold_SavedVars, DBMBaradinHold_SavedStats
 ## X-DBM-Mod: 1
-## X-DBM-Mod-Category: Cataclysm
+## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Baradin Hold
 ## X-DBM-Mod-Name-esES: Bastión Baradin
