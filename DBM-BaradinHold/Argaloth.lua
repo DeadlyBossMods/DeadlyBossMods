@@ -77,5 +77,6 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(88972) then
 		warnFirestorm:Show()
 		timerMeteorSlash:Cancel()
+		timerConsumingCD:Cancel()
 	end
 end
