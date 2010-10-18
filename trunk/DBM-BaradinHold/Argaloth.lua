@@ -24,7 +24,9 @@ local timerMeteorSlashCast	= mod:NewCastTimer(1.25, 88942)
 local timerFirestorm		= mod:NewBuffActiveTimer(15, 88972)
 local timerFirestormCast	= mod:NewCastTimer(3, 88972)
 
+local berserkTimer		= mod:NewBerserkTimer(300)
 mod:AddBoolOption("SetIconOnConsuming", true)
+
 
 local consumingTargets = {}
 local consumingIcon = 8
@@ -38,6 +40,7 @@ end
 function mod:OnCombatStart(delay)
 	table.wipe(consumingTargets)
 	consumingIcon = 8
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
