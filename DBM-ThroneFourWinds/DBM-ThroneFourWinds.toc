@@ -16,4 +16,5 @@
 localization.en.lua
 localization.es.lua
 MapSizes.lua
+Conclave.lua
 AlAkir.lua
