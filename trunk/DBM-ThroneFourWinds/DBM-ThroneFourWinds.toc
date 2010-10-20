@@ -16,4 +16,4 @@
 localization.en.lua
 localization.es.lua
 MapSizes.lua
-Argaloth.lua
+AlAkir.lua
