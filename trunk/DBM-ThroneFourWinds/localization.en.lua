@@ -1,5 +1,26 @@
 local L
 
+------------------------
+--  Conclave of Wind  --
+------------------------
+L = DBM:GetModLocalization("Conclave")
+
+L:SetGeneralLocalization({
+	name = "Conclave of Wind"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
 ---------------
 --  Al'Akir  --
 ---------------
