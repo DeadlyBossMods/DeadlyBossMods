@@ -1,5 +1,5 @@
 ﻿## Interface: 40000
-## X-Min-Interface: 30200
+## X-Min-Interface: 40000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Baradin Hold|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión Baradin|r
 ## Author: Nitram/Tandanu

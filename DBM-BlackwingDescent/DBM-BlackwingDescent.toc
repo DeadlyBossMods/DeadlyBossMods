@@ -1,5 +1,5 @@
 ﻿## Interface: 40000
-## X-Min-Interface: 30200
+## X-Min-Interface: 40000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Descent|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Descenso de Alanegra|r
 ## Author: Nitram/Tandanu
@@ -7,7 +7,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMBlackwingDescent_SavedVars, DBMBlackwingDescent_SavedStats
 ## X-DBM-Mod: 1
-## X-DBM-Mod-Category: Cataclysm
+## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Blackwing Descent
 ## X-DBM-Mod-Name-esES: Descenso de Alanegra
