@@ -274,6 +274,41 @@ L:SetGeneralLocalization({
 	name = "Baron Ashbury"
 })
 
+-----------------------
+-- Baron Silverlaine --
+-----------------------
+L = DBM:GetModLocalization("Silverlaine")
+
+L:SetGeneralLocalization({
+	name = "Baron Silverlaine"
+})
+
+--------------------------
+-- Commander Springvale --
+--------------------------
+L = DBM:GetModLocalization("Springvale")
+
+L:SetGeneralLocalization({
+	name = "Commander Springvale"
+})
+
+-----------------
+-- Lord Walden --
+-----------------
+L = DBM:GetModLocalization("Walden")
+
+L:SetGeneralLocalization({
+	name = "Lord Walden"
+})
+
+------------------
+-- Lord Godfrey --
+------------------
+L = DBM:GetModLocalization("Godfrey")
+
+L:SetGeneralLocalization({
+	name = "Lord Godfrey"
+})
 
 ---------------------
 --  The Stonecore  --
