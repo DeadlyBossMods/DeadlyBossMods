@@ -12,6 +12,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnFirestormSoon		= "Tormenta de fuego vil pronto"
 })
 
 L:SetTimerLocalization({
@@ -21,5 +22,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnFirestormSoon		= "Mostrar preaviso para $spell:88972",
 	SetIconOnConsuming		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88954)
 })
