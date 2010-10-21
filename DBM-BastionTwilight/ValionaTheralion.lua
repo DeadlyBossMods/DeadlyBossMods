@@ -16,18 +16,19 @@ mod:RegisterEvents(
 
 local warnBlackout		= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames	= mod:NewSpellAnnounce(86840, 3)
-local warnTwilightMeteorite	= mod:NewSpellAnnounce(86013, 3)	-- Also an aura on a person?
+--local warnTwilightMeteorite	= mod:NewSpellAnnounce(86013, 3)	Its being cast every 6secs .. spam :(
 local warnDeepBreath		= mod:NewSpellAnnounce(86059, 4)
 local warnEngulfingMagic	= mod:NewTargetAnnounce(86622, 3)
 
 local timerBlackout		= mod:NewTargetTimer(15, 86788)
 local timerBlackoutNext		= mod:NewNextTimer(45, 86788)		-- Cancel when in air (needs detection)
-local timerTwilightMeteorite	= mod:NewCastTimer(6, 86013)
+local timerTwilightMeteorite	= mod:NewCastTimer(6, 86013)		
 local timerEngulfingMagic	= mod:NewTargetTimer(20, 86622)
 local timerEngulfingMagicNext	= mod:NewNextTimer(37, 86622)		-- Cancel when in air (needs detection)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 
+-- combat
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -56,7 +57,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(86840, 90950) then
 		warnDevouringFlames:Show()
 	elseif args:IsSpellID(86013, 92859, 92860) then
-		warnTwilightMeteorite:Show()		-- I think there is also an aura connected to it?
+		warnTwilightMeteorite:Show()
 		timerTwilightMeteorite:Start()
 	end
 end
