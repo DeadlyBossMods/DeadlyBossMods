@@ -73,6 +73,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnBreak	= "%s on >%s< (%d)"
 })
 
 L:SetTimerLocalization({
@@ -82,6 +83,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnBreal	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown")
 })
 
 -----------------
