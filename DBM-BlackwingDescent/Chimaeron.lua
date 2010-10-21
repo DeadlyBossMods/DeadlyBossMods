@@ -33,9 +33,11 @@ local timerFeudNext		= mod:NewNextTimer(90, 88872)
 
 local specWarnBreak		= mod:NewSpecialWarningStack(82881, nil, 2)
 
+local prewarnedPhase2
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
 	timerFeudNext:Start(-delay)
+	prewarnedPhase2 = false
 end
 
 function mod:SPELL_AURA_APPLIED(args)
