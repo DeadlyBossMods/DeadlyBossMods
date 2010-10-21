@@ -73,6 +73,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase2Soon	= "Phase 2 soon",
 	WarnBreak	= "%s on >%s< (%d)"
 })
 
@@ -83,7 +84,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnBreal	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown")
+	WarnPhase2Soon	= "Show a prewarning for Phase 2",
+	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown")
 })
 
 -----------------
