@@ -10,12 +10,14 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"UNIT_HEALTH"
 )
 
 local warnConsuming		= mod:NewTargetAnnounce(88954, 3)
 local warnMeteorSlash		= mod:NewSpellAnnounce(88942, 4)
 local warnFirestorm		= mod:NewSpellAnnounce(88972, 4)
+local warnFirestormSoon		= mod:NewAnnounce(WarnFirestormSoon, 3)
 
 local timerConsuming		= mod:NewTargetTimer(15, 88954)
 local timerConsumingCD		= mod:NewCDTimer(22, 88954)
@@ -27,14 +29,15 @@ local timerFirestormCast	= mod:NewCastTimer(3, 88972)
 local berserkTimer		= mod:NewBerserkTimer(300)
 mod:AddBoolOption("SetIconOnConsuming", true)
 
-
 local consumingTargets = {}
 local consumingIcon = 8
+local prewarnedFirestorm
 
 local function showConsumingWarning()
 	warnConsuming:Show(table.concat(consumingTargets, "<, >"))
 	table.wipe(consumingTargets)
 	consumingIcon = 8
+	prewarnedFirestorm = false
 end
 
 function mod:OnCombatStart(delay)
@@ -81,5 +84,17 @@ function mod:SPELL_CAST_START(args)
 		warnFirestorm:Show()
 		timerMeteorSlash:Cancel()
 		timerConsumingCD:Cancel()
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if UnitName(uId) == L.name then
+		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		if h > 75 or h > 45 and h < 55 then
+			prewarnedFirestorm = false
+		elseif not prewarnedFirestorm and (h > 69 and h < 72 or h > 35 and h < 38) then
+			warnFirestormSoon:Show()
+			prewarnedFirestorm = true
+		end
 	end
 end
