@@ -58,7 +58,10 @@ LostCityOfTheTolvir\Lockmaw.lua
 LostCityOfTheTolvir\HighProphetBarim.lua
 LostCityOfTheTolvir\Siamat.lua
 ShadowFangKeep\Ashbury.lua
-
+ShadowFangKeep\Silverlaine.lua
+ShadowFangKeep\Springvale.lua
+ShadowFangKeep\Walden.lua
+ShadowFangKeep\Godfrey.lua
 TheVortexPinnacle\MapSizes.lua
 TheVortexPinnacle\GrandVizierErtan.lua
 TheVortexPinnacle\Altarius.lua

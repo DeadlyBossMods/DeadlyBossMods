@@ -15,6 +15,7 @@ mod:RegisterEvents(
 
 local warnPain		= mod:NewTargetAnnounce(93712, 3)
 local warnRottenFlesh	= mod:NewCastAnnounce(93713, 2)
+
 local timerAsphyxiate	= mod:NewCDTimer(40, 93710)
 
 function mod:OnCombatStart(delay)
