@@ -29,7 +29,7 @@ local timerBreak		= mod:NewTargetTimer(60, 82881)
 local timerMassacre		= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
 local timerFeud			= mod:NewBuffActiveTimer(30, 88872)
-local timerFeudNext		= mod:NewNextTimer(100, 88872)
+local timerFeudNext		= mod:NewNextTimer(90, 88872)
 
 local specWarnBreak		= mod:NewSpecialWarningStack(82881, nil, 2)
 
