@@ -147,10 +147,8 @@ local fireEvent
 local is_cata = select(4, _G.GetBuildInfo()) >= 40000--4.0 PTR or Beta
 local is_china = select(4, _G.GetBuildInfo()) == 30200--Chinese wow (3.2.2) No one else should be on 3.2.x, screw private servers.
 local GetCurrentMapID = function ()
-  local oldzone = GetCurrentMapAreaID()  -- get user's map setting
   SetMapToCurrentZone()                      -- make sure we're looking at player's zone
   local playerzone = GetCurrentMapAreaID()  -- query the areaID of player's zone
-  SetMapByID(oldzone)    -- restore user's map setting
   if is_china then
      playerzone = playerzone + 1 -- US 4.0.1 changed all area ids by -1. So we add it back to continue suppporting CN wow until they get same change.
   end
@@ -1401,7 +1399,7 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
-	SetMapToCurrentZone()
+--	SetMapToCurrentZone()
 	local zoneName = GetRealZoneText()
 	local zoneId = GetCurrentMapID()
 	for i, v in ipairs(self.AddOns) do
