@@ -324,6 +324,7 @@ do
 	local function handleEvent(self, event, ...)
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
+			SetMapToCurrentZone()
 			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText()) or checkEntry(v.zones, GetCurrentMapID())) and (not v.Options or v.Options.Enabled) then
 				v[event](v, ...)
 			end
@@ -639,6 +640,7 @@ do
 		
 		-- execute OnUpdate handlers of all modules
 		for i, v in pairs(updateFunctions) do
+			SetMapToCurrentZone()
 			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText()) or checkEntry(i.zones, GetCurrentMapID())) then
 				i.elapsed = (i.elapsed or 0) + elapsed
 				if i.elapsed >= (i.updateInterval or 0) then
@@ -1496,6 +1498,7 @@ do
 		delay = tonumber(delay or 0) or 0
 		revision = tonumber(revision or 0) or 0
 		mod = DBM:GetModByName(mod or "")
+		SetMapToCurrentZone()
 		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText()) or checkEntry(mod.zones, GetCurrentMapID())) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
@@ -1714,6 +1717,7 @@ do
 
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
+		SetMapToCurrentZone()
 		if combatInfo[GetRealZoneText()] or combatInfo[GetCurrentMapID()] then
 			buildTargetList()
 			if combatInfo[GetRealZoneText()] then
@@ -1756,6 +1760,7 @@ do
 	-- called for all mob chat events
 	local function onMonsterMessage(type, msg)
 		-- pull detection
+		SetMapToCurrentZone()
 		if combatInfo[GetRealZoneText()] then
 			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
 				if v.type == type and checkEntry(v.msgs, msg) then
