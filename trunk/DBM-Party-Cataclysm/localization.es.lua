@@ -273,7 +273,43 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ashbury")
 
 L:SetGeneralLocalization({
-	name = "Baron Ashbury"--translate
+	name = "Barón Ashbury"
+})
+
+-----------------------
+-- Baron Silverlaine --
+-----------------------
+L = DBM:GetModLocalization("Silverlaine")
+
+L:SetGeneralLocalization({
+	name = "Barón Filargenta"
+})
+
+--------------------------
+-- Commander Springvale --
+--------------------------
+L = DBM:GetModLocalization("Springvale")
+
+L:SetGeneralLocalization({
+	name = "Comandante Vallefont"
+})
+
+-----------------
+-- Lord Walden --
+-----------------
+L = DBM:GetModLocalization("Walden")
+
+L:SetGeneralLocalization({
+	name = "Lord Walden"--translate
+})
+
+------------------
+-- Lord Godfrey --
+------------------
+L = DBM:GetModLocalization("Godfrey")
+
+L:SetGeneralLocalization({
+	name = "Lord Godfrey"--translate
 })
 
 
