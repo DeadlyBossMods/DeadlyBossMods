@@ -37,12 +37,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "跳動的南瓜出現了!",
-	specWarnHorsemanHead	= "旋風斬 - 轉換目標!"
+	warnHorsemanHead	= "旋風斬 - 轉換目標!"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers	= "為跳動的南瓜出現顯示警告",
-	specWarnHorsemanHead	= "為旋風斬顯示特別警告 (第二次及最後的頭顱出現)"
+	warnHorsemanHead	= "為旋風斬顯示特別警告 (第二次及最後的頭顱出現)"
 })
 
 L:SetMiscLocalization({

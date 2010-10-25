@@ -42,12 +42,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "neuer Pulsierender Kürbis",
-	specWarnHorsemanHead	= "Wirbelwind - Wechsel auf den Kopf"
+	warnHorsemanHead	= "Wirbelwind - Wechsel auf den Kopf"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers	= "Zeige Warnung wenn Pulsierender Kürbnis erscheint",
-	specWarnHorsemanHead	= "Zeige Spezialwarnung für Wirbelwind (ab der zweiten Kopfphase)"
+	warnHorsemanHead	= "Zeige Spezialwarnung für Wirbelwind (ab der zweiten Kopfphase)"
 })
 
 L:SetMiscLocalization({

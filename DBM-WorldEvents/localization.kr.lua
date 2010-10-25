@@ -37,12 +37,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers		= "고동치는 호박 생성!",
-	specWarnHorsemanHead		= "머리 생성! 머리로 대상 전환!"
+	warnHorsemanHead		= "머리 생성! 머리로 대상 전환!"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers		= "고동치는 호박 소환 경고 보기",
-	specWarnHorsemanHead		= "저주받은 기사의 머리 대상 전환 특수 경고 보기"
+	warnHorsemanHead		= "저주받은 기사의 머리 대상 전환 특수 경고 보기"
 })
 
 L:SetMiscLocalization({

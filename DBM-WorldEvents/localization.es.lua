@@ -37,12 +37,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers		= "Vienen las Calabazas con pulso!",
-	specWarnHorsemanHead		= "Sale la cabeza - cambia de objetivo"
+	warnHorsemanHead		= "Sale la cabeza - cambia de objetivo"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers		= "Mostrar aviso a la llegada de Calabazas con pulso",
-	specWarnHorsemanHead		= "Mostrar un aviso especial cuando salga la cabeza"
+	warnHorsemanHead		= "Mostrar un aviso especial cuando salga la cabeza"
 })
 
 L:SetMiscLocalization({
