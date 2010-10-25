@@ -42,12 +42,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers		= "Arrivée des Citrouilles vibrantes !",
-	specWarnHorsemanHead		= "Tapez la Tête du Cavalier"
+	warnHorsemanHead		= "Tapez la Tête du Cavalier"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers		= "Montre une alerte pour l'arrivée des Citrouilles vibrantes",
-	specWarnHorsemanHead		= "Montre une alerte spéciale pour l'arrivée de la Tête du Cavalier"
+	warnHorsemanHead		= "Montre une alerte spéciale pour l'arrivée de la Tête du Cavalier"
 })
 
 L:SetMiscLocalization({

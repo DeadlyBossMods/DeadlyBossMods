@@ -37,12 +37,12 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "Призыв Пульсирующих тыкв",
-	specWarnHorsemanHead	= "Вихрь - переключитесь на голову"
+	warnHorsemanHead	= "Вихрь - переключитесь на голову"
 })
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers	= "Предупреждать о призыве Пульсирующих тыкв",
-	specWarnHorsemanHead	= "Спец-предупреждение для Вихря (призыв 2ой и следующей головы)"
+	warnHorsemanHead	= "Спец-предупреждение для Вихря (призыв 2ой и следующей головы)"
 })
 
 L:SetMiscLocalization({
