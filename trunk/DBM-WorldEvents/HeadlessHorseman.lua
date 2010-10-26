@@ -40,8 +40,12 @@ function mod:CHAT_MSG_MONSTER_SAY(msg)
 	end
 end
 
-function mod:CHAT_MSG_SAY(msg)
-	if msg == L.HorsemanSummon then		-- Summoned
-		timerCombatStart:Start()
+do 
+	local lastSummon = 0
+	function mod:CHAT_MSG_SAY(msg)
+		if msg == L.HorsemanSummon and GetTime() - lastSummon > 5 then		-- Summoned
+			timerCombatStart:Start()
+			lastSummon = GetTime()
+		end
 	end
 end
