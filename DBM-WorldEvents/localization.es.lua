@@ -42,7 +42,7 @@ L:SetWarningLocalization({
 
 L:SetOptionLocalization({
 	warnHorsemanSoldiers		= "Mostrar aviso a la llegada de Calabazas con pulso",
-	warnHorsemanHead		= "Mostrar un aviso especial cuando salga la cabeza"
+	warnHorsemanHead		= "Mostrar un aviso para torbellino (2ª i posteriores apariciones de cabeza)"
 })
 
 L:SetMiscLocalization({
