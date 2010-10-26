@@ -26,7 +26,7 @@ L.Button_OK 				= 'OK'
 L.Button_Cancel 			= 'Cancel'
 L.Button_LoadMod 			= 'Load AddOn'
 L.Mod_Enabled				= "Enable boss mod"
-L.Mod_EnableAnnounce		= "Announce to raid (Raid or party leader required)"
+L.Mod_EnableAnnounce		= "Announce to raid (Leader required)"
 L.Reset 					= "Reset"
 
 L.Enable  					= "Enable"
