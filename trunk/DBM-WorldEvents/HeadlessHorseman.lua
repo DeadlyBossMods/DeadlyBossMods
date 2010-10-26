@@ -14,10 +14,12 @@ mod:RegisterEvents(
 
 local warnConflag				= mod:NewTargetAnnounce(42380, 3)
 local warnSquashSoul			= mod:NewTargetAnnounce(42514, 2)
-local timerConflag				= mod:NewTargetTimer(4, 42380)
-local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
 local warnHorsemanSoldiers		= mod:NewAnnounce("warnHorsemanSoldiers")
 local warnHorsemanHead			= mod:NewAnnounce("warnHorsemanHead")
+
+local timerCombatStart			= mod:NewTimer(20, "TimerCombatStart", 2457)--rollplay for first pull
+local timerConflag				= mod:NewTargetTimer(4, 42380)
+local timerSquashSoul			= mod:NewTargetTimer(15, 42514)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(42380) then					-- Conflagration
@@ -30,10 +32,12 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
-	if msg == L.HorsemanHead then					-- No combatlog event for head spawning, Emote works iffy(head doesn't emote First time, only 2nd/3rd)
+	if msg == L.HorsemanHead then			-- No combatlog event for head spawning, Emote works iffy(head doesn't emote First time, only 2nd/3rd)
 		warnHorsemanHead:Show()
-	elseif msg == L.HorsemanSoldiers then			-- Warning for adds spawning.
+	elseif msg == L.HorsemanSoldiers then	-- Warning for adds spawning.
 		warnHorsemanSoldiers:Show()
+	elseif msg == L.HorsemanSummon then		-- Summoned
+		timerCombatStart:Start()
 	end
 end
 
