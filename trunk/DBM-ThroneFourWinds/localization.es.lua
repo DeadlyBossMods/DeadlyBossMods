@@ -1,4 +1,4 @@
-if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
+﻿if GetLocale() ~= "esES" and GetLocale() ~= "esMX" then return end
 
 local L
 
@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Conclave")
 
 L:SetGeneralLocalization({
-	name = "C�nclave del Viento"
+	name = "Cónclave del Viento"
 })
 
 L:SetWarningLocalization({
