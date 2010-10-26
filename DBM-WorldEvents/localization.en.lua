@@ -35,18 +35,24 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnHorsemanSoldiers	= "Pulsing Pumpkin spawning",
-	warnHorsemanHead	= "Whirlwind - Switch to the head"
+	warnHorsemanHead		= "Whirlwind - Switch to the head"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "Combat starts"
+}
+
 L:SetOptionLocalization({
+	TimerCombatStart		= "Show timer for start of combat",
 	warnHorsemanSoldiers	= "Show warning for Pulsing Pumpkin spawn",
-	warnHorsemanHead	= "Show special warning for Whirlwind (2nd and later head spawn)"
+	warnHorsemanHead		= "Show special warning for Whirlwind (2nd and later head spawn)"
 })
 
 L:SetMiscLocalization({
-	HorsemanHead		= "Get over here, you idiot!",
-	HorsemanSoldiers	= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
-	SayCombatEnd		= "This end have I reached before.  What new adventure lies in store?"
+	HorsemanSummon			= "Horseman rise...",
+	HorsemanHead			= "Get over here, you idiot!",
+	HorsemanSoldiers		= "Soldiers arise, stand and fight! Bring victory at last to this fallen knight!",
+	SayCombatEnd			= "This end have I reached before.  What new adventure lies in store?"
 })
 
 -----------------------
