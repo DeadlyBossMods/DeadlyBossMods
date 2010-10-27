@@ -27,7 +27,7 @@ L.Button_OK 		= 'Aceptar'
 L.Button_Cancel 	= 'Cancelar'
 L.Button_LoadMod 	= 'Cargar Modulo'
 L.Mod_Enabled		= "Habilitar modulo de este boss"
-L.Mod_EnableAnnounce	= "Avisar a banda (Se necesita ser líder de banda o grupo)"
+L.Mod_EnableAnnounce	= "Avisar a banda (Se necesita ser líder)"
 L.Reset 		= "resetear"
 
 L.Enable  		= "habilitar"
