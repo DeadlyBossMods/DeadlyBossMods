@@ -36,16 +36,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnHorsemanSoldiers		= "Vienen las Calabazas con pulso!",
-	warnHorsemanHead		= "Sale la cabeza - cambia de objetivo"
+	warnHorsemanSoldiers	= "Salen las Calabazas con pulso",
+	warnHorsemanHead		= "¡Torbellino! ¡Mata a la cabeza!"
 })
 
+L:SetTimerLocalization{
+	TimerCombatStart		= "Empieza el combate"
+}
+
 L:SetOptionLocalization({
-	warnHorsemanSoldiers		= "Mostrar aviso a la llegada de Calabazas con pulso",
+	TimerCombatStart		= "Mostrar tiempo para inicio del combate",	
+	warnHorsemanSoldiers	= "Mostrar aviso a la llegada de Calabazas con pulso",
 	warnHorsemanHead		= "Mostrar un aviso para torbellino (2ª i posteriores apariciones de cabeza)"
 })
 
 L:SetMiscLocalization({
+	HorsemanSummon				= "Jinete álzate...",
 	HorsemanHead				= "¡Ven aquí, idiota!",
 	HorsemanSoldiers			= "Soldados, alzaos y luchad, tomad vuestro acero. Dad la victoria a este deshonrado caballero.",
 	SayCombatEnd				= "Este final a mí me suena. Veamos qué nueva me espera."
