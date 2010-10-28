@@ -27,7 +27,7 @@ L.Button_OK 				= '確定'
 L.Button_Cancel 			= '取消'
 L.Button_LoadMod 			= '載入模組'
 L.Mod_Enabled				= "啟用首領模組"
-L.Mod_EnableAnnounce			= "團隊廣播 (需要團隊或隊伍隊長)"
+L.Mod_EnableAnnounce			= "團隊廣播 (需要隊長)"
 L.Reset 				= "重置"
 
 L.Enable  				= "啟用"
@@ -53,6 +53,7 @@ L.EnableStatus 				= "回復“status”密語"
 L.AutoRespond 				= "啟用戰鬥中自動密語回復"
 L.EnableMiniMapIcon			= "顯示小地圖圖示"
 L.FixCLEUOnCombatStart			= "清除戰鬥紀錄的快取"
+L.SetCurrentMapOnPull			= "設定地圖到當前區域 (確保 /range & /arrow 準確性)"
 L.SKT_Enabled				= "永遠顯示快速擊殺計時器 (覆蓋首領特定的選項)"
 L.Latency_Text				= "設定最高延遲同步門檻: %d"
 
