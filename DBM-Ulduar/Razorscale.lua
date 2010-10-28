@@ -60,7 +60,7 @@ function mod:SPELL_DAMAGE(args)
 		specWarnDevouringFlame:Show()
 		if self.Options.PlaySoundOnDevouringFlame then
 			PlaySoundFile("Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
-		end		
+		end
 	end
 end
 

@@ -52,6 +52,7 @@ local timerMysticAchieve		= mod:NewAchievementTimer(30, 4620, "AchievementMystic
 local berserkTimer				= mod:NewBerserkTimer(600)
 
 local soundBlisteringCold = mod:NewSound(70123)
+mod:AddBoolOption("PlaySoundOnFrostTomb", true)
 mod:AddBoolOption("SetIconOnFrostBeacon", true)
 mod:AddBoolOption("SetIconOnUnchainedMagic", true)
 mod:AddBoolOption("ClearIconsOnAirphase", true)
@@ -143,6 +144,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		beaconTargets[#beaconTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
+			if self.Options.PlaySoundOnFrostTomb then
+				PlaySoundFile("Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav")
+			end
 		end
 		if phase == 1 and self.Options.SetIconOnFrostBeacon then
 			table.insert(beaconIconTargets, DBM:GetRaidUnitId(args.destName))
