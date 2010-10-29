@@ -3,6 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Descent|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Descenso de Alanegra|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Descent|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Descent|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -13,11 +14,13 @@
 ## X-DBM-Mod-Name: Blackwing Descent
 ## X-DBM-Mod-Name-esES: Descenso de Alanegra
 ## X-DBM-Mod-Name-koKR: Blackwing Descent
+## X-DBM-Mod-Name-ruRU: Blackwing Descent
 ## X-DBM-Mod-Sort: 103
 ## X-DBM-Mod-LoadZoneID: 754
 localization.en.lua
 localization.es.lua
 localization.kr.lua
+localization.ru.lua
 MapSizes.lua
 Magmaw.lua
 DarkIronGolemCouncil.lua
