@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
-L.TranslationBy 		= "흑묘서희@에이그윈서버 호드진영"
+L.TranslationBy 		= "흑묘서희@에이그윈서버 호드진영/Twitter : @Nyx_Khang"
 
 L.TabCategory_Options 	= "일반 옵션"
 L.TabCategory_CATA	 	= "대격변"
@@ -53,6 +53,7 @@ L.EnableStatus 			= "귓속말 대상자에게 'status' 답변 보내기 사용"
 L.AutoRespond 			= "자동 부활 사용 - 무덤 이동"
 L.EnableMiniMapIcon		= "Minimap 버튼 사용"
 L.FixCLEUOnCombatStart	= "전투 시작 할 때 전투 로그 수정"
+L.SetCurrentMapOnPull	= "현재 맵과 지역에서 풀링 켜기(/range & /arrow의 정확성 보장)"
 L.SKT_Enabled			= "항상 빠르게 죽인 타이머 보기(각 보스에 포함된 특수 옵션 참고)"
 L.Latency_Text			= "최대 지연시간 설정 : %d"
 
