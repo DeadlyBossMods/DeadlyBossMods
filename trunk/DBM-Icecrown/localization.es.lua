@@ -484,6 +484,7 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de banda\n(Requiere 'anunciar' activado y líder/ayudante)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	PlaySoundOnFrostTomb	= "Reproducir sonido cuando tengas $spell:70126",
 	ClearIconsOnAirphase	= "Eliminar todos los iconos antes de la fase aerea",
 	AchievementCheck		= "Anunciar avisos del logro 'Sacúdete' a la banda\n(Requiere líder/ayudante)",
 	RangeFrame				= "Mostrar distancia (10 normal, 20 heroico)\n(Solo mostrará los jugadores marcados)"
