@@ -480,7 +480,7 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 징표을 채팅으로 알리기\n(공대장 혹은 부공대장 권한이 있을 경우)",	
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	PlaySoundOnFrostTomb		= "$spell:70126의 소리 듣기"	
+	PlaySoundOnFrostTomb		= "$spell:70126의 소리 듣기",
 	ClearIconsOnAirphase		= "공중 단계 전 모든 공격대 징표 제거",
 	AchievementCheck			= "'신비한 아픔' 업적 경고를 공격대 채팅으로 알리기\n(공격대 권한이 있을 경우)",	
 	RangeFrame					= "거리 창 보기(일반 10m, 영웅 20m) (해당 플레이어만 보임)"

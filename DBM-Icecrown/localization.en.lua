@@ -474,7 +474,7 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons= "Announce icons for $spell:70126 targets to raid chat\n(requires announce to be enabled and promoted status)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	PlaySoundOnFrostTomb	= "Play sound on $spell:70126"
+	PlaySoundOnFrostTomb	= "Play sound on $spell:70126",
 	ClearIconsOnAirphase	= "Clear all icons before air phase",
 	AchievementCheck		= "Announce 'All You Can Eat' achievement warnings to raid\n(requires promoted status)",
 	RangeFrame				= "Show raid icon based range frame (10 normal, 20 heroic)"
