@@ -51,7 +51,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HorsemanSummon			= "Всадник встаёт...",
+	HorsemanSummon			= "Всадник встает…",
 	HorsemanHead			= "Не надоело еще убегать?",
 	HorsemanSoldiers		= "Восстаньте слуги, устремитесь в бой! Пусть павший рыцарь обретет покой!",
 	SayCombatEnd			= "Со смертью мы давно уже друзья...Что ждет теперь на пустоши меня?"
