@@ -302,7 +302,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		--DBM:AddMsg("ALPHA: yell detect phase3, syncing to clients")
 		self:SendSync("Phase4") -- SPELL_AURA_REMOVED detection might fail in phase 3...there are simply not enough debuffs on him
 
-	elseif msg:find(L.YellHardPull) then
+	elseif msg == L.YellHardPull or msg:find(L.YellHardPull) then
 		timerHardmode:Start()
 		timerFlameSuppressant:Start()
 		enrage:Stop()
