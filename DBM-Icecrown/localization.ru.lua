@@ -476,7 +476,7 @@ L:SetOptionLocalization{
 	AnnounceFrostBeaconIcons= "Объявлять метки целей заклинания $spell:70126 в рейд-чат\n(требуются права помощника)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
-	PlaySoundOnFrostTomb	= "Звуковой сигнал при $spell:70126"
+	PlaySoundOnFrostTomb	= "Звуковой сигнал при $spell:70126",
 	ClearIconsOnAirphase	= "Снимать все метки перед воздушной фазой",
 	AchievementCheck		= "Объявлять предупреждения для достижения 'Таинственная дама'\nв рейд-чат (требуются права помощника)",
 	RangeFrame				= "Показывать игроков с метками в окне проверки дистанции (10 норм., 20 гер.)"
