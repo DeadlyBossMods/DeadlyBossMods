@@ -16,7 +16,7 @@ mod:AddBoolOption("MakeitCountTimer", true, "timer")
 function mod:UNIT_DIED(args)
 	if mod:IsDifficulty("heroic5") then
 		if self.Options.MakeitCountTimer and not DBM.Bars:GetBar(L.MakeitCountTimer) then
-			local guid = tonumber(args.destGUID:sub(9, 12), 16)
+			local guid = args:GetDestCreatureID()
 			if guid == 27654 then		-- Drakos The Interrogator
 				DBM.Bars:CreateBar(1200, L.MakeitCountTimer)
 			end
