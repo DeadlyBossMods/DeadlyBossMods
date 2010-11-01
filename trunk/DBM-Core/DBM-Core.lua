@@ -318,9 +318,9 @@ do
 	
 	function argsMT.__index:GetDestCreatureID()
 		if is_cata or is_china then
-			return tonumber(self.sourceGUID:sub(7, 10), 16) or 0
+			return tonumber(self.destGUID:sub(7, 10), 16) or 0
 		else
-			return tonumber(self.sourceGUID:sub(9, 12), 16) or 0
+			return tonumber(self.destGUID:sub(9, 12), 16) or 0
 		end
 	end
 	
