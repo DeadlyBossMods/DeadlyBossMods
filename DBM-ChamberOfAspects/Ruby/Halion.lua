@@ -266,14 +266,14 @@ function mod:OnSync(msg, target)
 		if self.Options.AnnounceAlternatePhase then
 			warningShadowConsumption:Show(target)
 			if IsRaidLeader() and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperConsumption, args.destName)
+				self:SendWhisper(L.WhisperConsumption, target)
 			end
 		end
 	elseif msg == "FieryTarget" then
 		if self.Options.AnnounceAlternatePhase then
 			warningFieryConsumption:Show(target)
 			if IsRaidLeader() and self.Options.WhisperOnConsumption then
-				self:SendWhisper(L.WhisperCombustion, args.destName)
+				self:SendWhisper(L.WhisperCombustion, target)
 			end
 		end
 	elseif msg == "ShadowCD" then
