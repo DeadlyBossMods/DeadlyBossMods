@@ -104,7 +104,7 @@ end
 
 function mod:UNIT_DIED(args)
 	if bit.band(args.destGUID:sub(0, 5), 0x00F) == 3 then
-		local guid = tonumber(args.destGUID:sub(9, 12), 16)
+		local guid = args:GetDestCreatureID()
 		if guid == 16126 then -- Unrelenting Rider
 			warnRiderDown:Show()
 		elseif guid == 16125 then -- Unrelenting Deathknight

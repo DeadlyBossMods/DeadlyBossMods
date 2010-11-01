@@ -60,7 +60,7 @@ end
 
 function mod:UNIT_DIED(args)
 	if self.Options.ArachnophobiaTimer and not DBM.Bars:GetBar(L.ArachnophobiaTimer) then
-		local guid = tonumber(args.destGUID:sub(9, 12), 16)
+		local guid = args:GetDestCreatureID()
 		if guid == 15956 then		-- Anub'Rekhan
 			DBM.Bars:CreateBar(1200, L.ArachnophobiaTimer)
 		end
