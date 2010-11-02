@@ -57,8 +57,8 @@ end
 
 function mod:UNIT_DIED(args)
 	if self.Options.TrashRespawnTimer and not DBM.Bars:GetBar(L.TrashRespawnTimer) then
-		local guid = args:GetDestCreatureID()
-		if guid == 33430 or guid == 33355 or guid == 33354 then		-- guardian lasher / nymph / tree
+		local cid = self:GetCIDFromGUID(args.destGUID)
+		if cid == 33430 or cid == 33355 or cid == 33354 then		-- guardian lasher / nymph / tree
 			DBM.Bars:CreateBar(7200, L.TrashRespawnTimer)
 		end
 	end
