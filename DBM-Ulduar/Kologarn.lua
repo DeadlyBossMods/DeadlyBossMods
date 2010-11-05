@@ -31,6 +31,8 @@ local specWarnEyebeam			= mod:NewSpecialWarningYou(63346)
 
 local timerCrunch10             = mod:NewTargetTimer(6, 63355)
 local timerNextShockwave		= mod:NewCDTimer(18, 63982)
+local timerNextEyebeam			= mod:NewCDTimer(17.5, 63346)--Experimental.
+local timerNextGrip				= mod:NewCDTimer(20, 64292)
 local timerRespawnLeftArm		= mod:NewTimer(48, "timerLeftArm")
 local timerRespawnRightArm		= mod:NewTimer(48, "timerRightArm")
 local timerTimeForDisarmed		= mod:NewTimer(10, "achievementDisarmed")	-- 10 HC / 12 nonHC
@@ -44,6 +46,7 @@ mod:AddBoolOption("YellOnBeam", true, "announce")
 function mod:UNIT_DIED(args)
 	if self:GetCIDFromGUID(args.destGUID) == 32934 then 		-- right arm
 		timerRespawnRightArm:Start()
+		timerNextGrip:Cancel()
 		if mod:IsDifficulty("normal10") then
 			timerTimeForDisarmed:Start(12)
 		else
@@ -76,6 +79,7 @@ end
 function mod:OnSync(msg, target)
 	if msg == "EyeBeamOn" then
 		warnFocusedEyebeam:Show(target)
+		timerNextEyebeam:Start()
 		if target == UnitName("player") then
 			specWarnEyebeam:Show()
 			if self.Options.PlaySoundOnEyebeam then
