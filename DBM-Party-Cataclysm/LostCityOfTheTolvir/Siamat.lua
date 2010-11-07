@@ -53,7 +53,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(84547) then
+	if args:IsSpellID(84547, 90014) then
 		warnStaticShock:Show()
 	end
 end
