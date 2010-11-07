@@ -36,11 +36,13 @@ BlackrockCaverns\Corla.lua
 BlackrockCaverns\KarshSteelBender.lua
 BlackrockCaverns\Beauty.lua
 BlackrockCaverns\AscendantLordObsidius.lua
+Deadmines\MapSizes.lua
 Deadmines\Glubtok.lua
 Deadmines\Helix.lua
 Deadmines\FoeReaper.lua
 Deadmines\Ripsnarl.lua
 Deadmines\Cookie.lua
+Deadmines\Vanessa.lua
 GrimBatol\MapSizes.lua
 GrimBatol\GeneralUmbriss.lua
 GrimBatol\ForgemasterThrongus.lua
@@ -59,6 +61,7 @@ LostCityOfTheTolvir\GeneralHusam.lua
 LostCityOfTheTolvir\Lockmaw.lua
 LostCityOfTheTolvir\HighProphetBarim.lua
 LostCityOfTheTolvir\Siamat.lua
+ShadowFangKeep\MapSizes.lua
 ShadowFangKeep\Ashbury.lua
 ShadowFangKeep\Silverlaine.lua
 ShadowFangKeep\Springvale.lua
