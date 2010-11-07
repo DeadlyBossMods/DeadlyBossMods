@@ -114,6 +114,15 @@ L:SetGeneralLocalization({
 	name = "\"Captain\" Cookie"
 })
 
+----------------------
+-- Vanessa VanCleef --
+----------------------
+L = DBM:GetModLocalization("Vanessa")
+
+L:SetGeneralLocalization({
+	name = "Vanessa VanCleef"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
