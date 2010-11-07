@@ -20,7 +20,7 @@ local timerPlagueAges		= mod:NewTargetTimer(9, 82622)
 local timerLashings		= mod:NewTargetTimer(20, 82506)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(82622) then
+	if args:IsSpellID(82622, 89997) then
 		warnPlagueAges:Show(args.destName)
 		timerPlagueAges:Start(args.destName)
 	elseif args:IsSpellID(82506) then
@@ -32,7 +32,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(82622) then
+	if args:IsSpellID(82622, 89997) then
 		timerPlagueAges:Cancel(args.destName)
 	elseif args:IsSpellID(82506) then
 		timerLashings:Cancel(args.destName)
