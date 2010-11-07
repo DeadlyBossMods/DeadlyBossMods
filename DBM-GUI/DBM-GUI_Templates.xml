@@ -329,7 +329,7 @@
 
 	<Frame name="DBM_GUI_OptionsFrame" parent="UIParent" hidden="true" enableMouse="true" frameStrata="DIALOG" movable="true">
 		<Size>
-			<AbsDimension x="720" y="500"/>
+			<AbsDimension x="800" y="500"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER"/>
