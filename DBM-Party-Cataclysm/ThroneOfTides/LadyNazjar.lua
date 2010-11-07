@@ -58,7 +58,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnShockBlast:Show()
 		if mod:IsDifficulty("heroic5") then
 			timerShockBlast:Start(2)
-			timerShockBlastCD:Start(11)
+			timerShockBlastCD:Start()	-- Seems like the CD on heroic is same as on normal, need confirmation tho
 		else
 			timerShockBlast:Start()
 			timerShockBlastCD:Start()
