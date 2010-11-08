@@ -5,13 +5,13 @@ frame:SetScript("OnEvent", function(self, event, ...)
 	local zoneId = GetCurrentMapAreaID()
 	if zoneId == 764 or	-- Deadmines
 	   zoneId == 756 or	-- Shadowfang Keep
-	   zoneId == 757 or	-- Grim Batol
-	   zoneId == 759 or	-- Halls of Originiation
-	   zoneId == 747 or	-- Lost City
 	   zoneId == 768 or	-- Stonecore
 	   zoneId == 753 or	-- Blackrock Caverns
-	   zoneId == 767 or	-- Vortex Pinnacle
-	   zoneId == 769 then	-- Throne of the Tides
+	   zoneId == 769 or	-- Throne of the Tides
+	   zoneId == 773 or	-- Throne of Four Winds
+	   zoneId == 754 or	-- Blackwing Descent
+	   zoneId == 752 or	-- Baradin Hold
+	   zoneId == 758 then	-- Bastion Twilight
 		printz(self)
 	end
 end)
