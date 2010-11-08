@@ -73,6 +73,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	"WarnPhase2Soon"	= "Phase 2 soon"
 })
 
 L:SetTimerLocalization({
@@ -82,4 +83,5 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	"WarnedPhase2Soon"	= "Show pre-warning for Phase 2"
 })
