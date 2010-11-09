@@ -39,9 +39,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Magmatron	= "Magmatron",--translate
+	Electron	= "Electron",--translate
+	Toxitron	= "Toxitron",--translate
+	Arcanotron	= "Arcanotron",--translate
+	SayBomb		= "¡Poison Bomb en mi!"--translate
 })
 
 L:SetOptionLocalization({
+	SayBombTarget	= "Gritar en el chat cuando seas el objetivo de $spell:80157"
 })
 
 ----------------
@@ -54,16 +60,31 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase		= "Fase %s",
+	WarnRemainingAdds	= "%d aberraciones restantes"
 })
 
 L:SetTimerLocalization({
+	TimerPhase		= "Siguiente fase"
 })
 
 L:SetMiscLocalization({
+	YellRed			= "Mix and stir, apply heat...",--translate
+	YellBlue		= "How well does the mortal shell handle extreme temperature change? Must find out! For science!",--translate
+	YellGreen		= "This one's a little unstable, but what's progress without failure?",--translate
+	YellDark		= "Your mixtures are weak, Maloriak! They need a bit more... kick!",--translate
+	Red				= "Roja",
+	Blue			= "Azul",
+	Green			= "Verde",
+	Dark			= "Oscura"
 })
 
 L:SetOptionLocalization({
+	WarnPhase		= "Mostrar aviso de la fase que viene",
+	WarnRemainingAdds	= "Mostrar un aviso con las aberraciones restantes",
+	TimerPhase		= "Mostrar tiempo para la siguiente fase"
 })
+
 
 -----------------
 --  Chimaeron  --
@@ -100,15 +121,27 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAirphase		= "Fase aerea",
+	WarnGroundphase		= "Fase en tierra",
+	WarnShieldsLeft		= "Ancient Dwarven Shield used - %d left"--translate
 })
 
 L:SetTimerLocalization({
+	TimerAirphase		= "Fase aerea",
+	TimerGroundphase	= "Fase en tierra"
 })
 
 L:SetMiscLocalization({
+	AncientDwarvenShield	= "Ancient Dwarven Shield",--translate
+	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"--translate
 })
 
 L:SetOptionLocalization({
+	WarnAirphase		= "Mostrar aviso cuando Atramedes levanta el vuelo",
+	WarnGroundphase		= "Mostrar aviso cuando Atramedes aterriza",
+	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",--translate
+	TimerAirphase		= "Mostrar tiempo para siguiente Fase aerea",
+	TimerGroundphase	= "Mostrar tiempo para siguiente Fase en tierra"
 })
 
 ----------------
@@ -127,6 +160,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",--translate
+	ChromaticPrototype	= "Chromatic Prototype"--translate
 })
 
 L:SetOptionLocalization({
