@@ -52,15 +52,29 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase		= "%s phase",
+	WarnRemainingAdds	= "%d aberrations remaining"
 })
 
 L:SetTimerLocalization({
+	TimerPhase		= "Next phase"
 })
 
 L:SetMiscLocalization({
+	YellRed			= "Mix and stir, apply heat...",
+	YellBlue		= "How well does the mortal shell handle extreme temperature change? Must find out! For science!",
+	YellGreen		= "This one's a little unstable, but what's progress without failure?",
+	YellDark		= "Your mixtures are weak, Maloriak! They need a bit more... kick!",
+	Red			= "Red",
+	Blue			= "Blue",
+	Green			= "Green",
+	Dark			= "Dark"
 })
 
 L:SetOptionLocalization({
+	WarnPhase		= "Show warning which phase is incoming",
+	WarnRemainingAdds	= "Show warning how many aberrations remain",
+	TimerPhase		= "Show timer for next phase"
 })
 
 -----------------
