@@ -1,3 +1,4 @@
+if GetLocale() ~= "koKR" then return end
 local L
 
 --------------
@@ -48,19 +49,33 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Maloriak")
 
 L:SetGeneralLocalization({
-	name = "Maloriak"
+	name = "말로리악"
 })
 
 L:SetWarningLocalization({
+	WarnPhase		= "%s 단계",
+	WarnRemainingAdds	= "%d aberrations remaining"
 })
 
 L:SetTimerLocalization({
+	TimerPhase		= "다음 단계"
 })
 
 L:SetMiscLocalization({
+	YellRed			= "Mix and stir, apply heat...",
+	YellBlue		= "How well does the mortal shell handle extreme temperature change? Must find out! For science!",
+	YellGreen		= "This one's a little unstable, but what's progress without failure?",
+	YellDark		= "Your mixtures are weak, Maloriak! They need a bit more... kick!",
+	Red				= "Red",
+	Blue			= "Blue",
+	Green			= "Green",
+	Dark			= "Dark"
 })
 
 L:SetOptionLocalization({
+	WarnPhase			= "다음 단계 경고 보기",
+	WarnRemainingAdds	= "얼마나 많은 Show warning how many aberrations remain",
+	TimerPhase			= "Show timer for next phase"
 })
 
 -----------------
@@ -98,15 +113,27 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAirphase		= "Airphase",
+	WarnGroundphase		= "Groundphase",
+	WarnShieldsLeft		= "Ancient Dwarven Shield used - %d left"
 })
 
 L:SetTimerLocalization({
+	TimerAirphase		= "Airphase",
+	TimerGroundphase	= "Groundphase"
 })
 
 L:SetMiscLocalization({
+	AncientDwarvenShield	= "Ancient Dwarven Shield",
+	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
 })
 
 L:SetOptionLocalization({
+	WarnAirphase		= "Show warning when Atramedes lifts off",
+	WarnGroundphase		= "Show warning when Atramedes lands",
+	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",
+	TimerAirphase		= "Show timer for next airphase",
+	TimerGroundphase	= "Show timer for next groundphase"
 })
 
 ----------------
