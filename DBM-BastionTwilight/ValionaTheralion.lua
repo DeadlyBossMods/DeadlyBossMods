@@ -16,7 +16,6 @@ mod:RegisterEvents(
 
 local warnBlackout		= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames	= mod:NewSpellAnnounce(86840, 3)
---local warnTwilightMeteorite	= mod:NewSpellAnnounce(86013, 3)	Its being cast every 6secs .. spam :(
 local warnDeepBreath		= mod:NewSpellAnnounce(86059, 4)
 local warnEngulfingMagic	= mod:NewTargetAnnounce(86622, 3)
 
@@ -26,9 +25,12 @@ local timerTwilightMeteorite	= mod:NewCastTimer(6, 86013)
 local timerEngulfingMagic	= mod:NewTargetTimer(20, 86622)
 local timerEngulfingMagicNext	= mod:NewNextTimer(37, 86622)		-- Cancel when in air (needs detection)
 
+local specWarnBlackout		= mod:NewSpecialWarningYou(86788)
+local specWarnEngulfingMagic	= mod:NewSpecialWarningYou(86622)
+
 local berserkTimer		= mod:NewBerserkTimer(600)
 
--- combat
+-- 88518 -> SpellID for Meteorite Target, SPELL_AURA_APPLIED?  or do we need to do scanning ? :(
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -41,10 +43,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerBlackout:Start(args.destName)
 		timerBlackoutNext:Start()
 		self:SetIcon(args.destName, 8)
+		if args:IsPlayer() then
+			specWarnBlackout:Show()
+		end
 	elseif args:IsSpellID(86622, 86631) then
 		warnEngulfingMagic:Show(args.destName)
 		timerEngulfingMagic:Start(args.destName)
 		timerEngulfingMaficNext:Start()
+		if args:IsPlayer() then
+			soecWarnEngulfingMagic:Show()
+		end
 	end
 end
 
