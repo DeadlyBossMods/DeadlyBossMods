@@ -10,8 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_DIED"
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnSonicBreath		= mod:NewSpellAnnounce(78075, 3)
@@ -19,7 +18,7 @@ local warnAirphase		= mod:NewAnnounce("WarnAirphase", 3)
 local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 3)
 local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 3)
 
-local timerSonicBreath		= mod:NewNextTimer(43, 78075)
+local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(50, 77840)
 local timerAirphase		= mod:NewTimer(90, "TimerAirphase")
 local timerGroundphase		= mod:NewTimer(35, "TimerGroundphase")
@@ -42,6 +41,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(78075) then
 		timerSonicBreath:Start()
 		warnSonicBreath:Show()
+	elseif args:IsSpellID(77840) then
+		warnSearingFlame:Show()
+	elseif args:IsSpellID(77611) then
+		shields = shields - 1
+		warnShieldsLeft:Show(shields)
 	end
 end
 
@@ -52,12 +56,5 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerSearingFlame:Cancel()
 		timerGroundphase:Start()
 		self:Schedule(35, groundphase())
-	end
-end
-
-function mod:UNIT_DIED(args)
-	if args.sourceName == L.AncientDwarvenShield then
-		shieldsLeft = shieldsLeft - 1
-		warnShieldsLeft:Show(shieldsLeft)
 	end
 end
