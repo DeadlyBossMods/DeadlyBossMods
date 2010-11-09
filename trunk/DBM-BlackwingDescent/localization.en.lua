@@ -98,15 +98,26 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAirphase		= "Airphase",
+	WarnGroundphase		= "Groundphase",
+	WarnShieldsLeft		= "Ancient Dwarven Shield used - %d left"
 })
 
 L:SetTimerLocalization({
+	TimerAirphase		= "Airphase",
+	TimerGroundphase	= "Groundphase"
 })
 
 L:SetMiscLocalization({
+	AncientDwarvenShield	= "Ancient Dwarven Shield"
 })
 
 L:SetOptionLocalization({
+	WarnAirphase		= "Show warning when Atramedes lifts off",
+	WarnGroundphase		= "Show warning when Atramedes lands",
+	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",
+	TimerAirphase		= "Show timer for next airphase",
+	TimerGroundphase	= "Show timer for next groundphase"
 })
 
 ----------------
