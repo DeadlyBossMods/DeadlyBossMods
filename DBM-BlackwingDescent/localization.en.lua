@@ -157,6 +157,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
+	ChromaticPrototype	= "Chromatic Prototype"
 })
 
 L:SetOptionLocalization({
