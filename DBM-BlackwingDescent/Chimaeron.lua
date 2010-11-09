@@ -50,6 +50,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(82881) then
 		warnDoubleAttack:Show()
 		-- timerDoubleAttack:Start()
+	elseif args:IsSpellID(82890) then
+		warnPhase2:Show()
 	end
 end
 
