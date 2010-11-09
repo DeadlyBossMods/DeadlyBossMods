@@ -60,8 +60,8 @@ local bossActivate = function(boss)
 		timerChemicalBomb:Start(10)
 		timerShellCD:Start()
 	elseif boss == L.Arcanotron then
-		timerGenerator:Start(
-		timerConversionCD:Start(
+		timerGenerator:Start(11)
+		timerConversionCD:Start(50)
 	end
 end
 
