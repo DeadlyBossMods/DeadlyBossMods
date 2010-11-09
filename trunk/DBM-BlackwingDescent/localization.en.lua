@@ -37,9 +37,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Magmatron	= "Magmatron",
+	Electron	= "Electron",
+	Toxitron	= "Toxitron",
+	Arcanotron	= "Arcanotron",
+	SayBomb		= "Poison Bomb on me!"
 })
 
 L:SetOptionLocalization({
+	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157"
 })
 
 ----------------
