@@ -25,13 +25,12 @@ local warnPhase2		= mod:NewPhaseAnnounce(2)
 
 --local timerCausticSlime	= mod:NewNextTimer( ?? , 82935)
 local timerBreak		= mod:NewTargetTimer(60, 82881)
---local timerDoubleAttack	= mod:NewNextTimer( ?? , 82881)
 local timerMassacre		= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
 local timerFeud			= mod:NewBuffActiveTimer(30, 88872)
 local timerFeudNext		= mod:NewNextTimer(90, 88872)
 
-local specWarnBreak		= mod:NewSpecialWarningStack(82881, nil, 2)
+local specWarnBreak		= mod:NewSpecialWarningStack(82881, nil, 3)
 
 local prewarnedPhase2
 function mod:OnCombatStart(delay)
@@ -44,7 +43,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82881) then
 		warnBreak:Show(args.spellName, args.destName, args.amount or 1)
 		timerBreak:Start(args.destName)
-		if args:IsPlayer() and (args.amount or 1) >= 2 then
+		if args:IsPlayer() and (args.amount or 1) >= 3 then
 			specWarnBreak:Show(args.amount)
 		end
 	elseif args:IsSpellID(82881) then
