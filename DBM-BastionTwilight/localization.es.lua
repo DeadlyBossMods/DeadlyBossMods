@@ -54,15 +54,28 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnGrounded	= "Get Grounded buff",
+	SpecWarnSearingWinds	= "Get Searing Winds buff"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Quake			= "The ground beneath you rumbles ominously....",--translate
+	Thundershock		= "The surrounding air crackles with energy....",--translate
+	Switch			= "We will handle them!",--translate
+	Phase3			= "BEHOLD YOUR DOOM!",--translate
+	Ignacious		= "Ignacious",--translate
+	Feludius		= "Feludius",--translate
+	Arion			= "Arion",--translate
+	Terrastra		= "Terrastra",--translate
+	Monstrosity		= "Elementium Monstrosity"--translate
 })
 
 L:SetOptionLocalization({
+	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",--translate
+	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)"--translate
 })
 
 ----------------
@@ -75,6 +88,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnPhase2Soon	= "Fase 2 pronto"
 })
 
 L:SetTimerLocalization({
@@ -84,4 +98,5 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnPhase2Soon	= "Mostrar preaviso para Fase 2"
 })

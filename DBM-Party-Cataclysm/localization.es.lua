@@ -116,6 +116,15 @@ L:SetGeneralLocalization({
 	name = "\"Capitán\" Cocinitas"
 })
 
+----------------------
+-- Vanessa VanCleef --
+----------------------
+L = DBM:GetModLocalization("Vanessa")
+
+L:SetGeneralLocalization({
+	name = "Vanessa VanCleef"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
@@ -124,7 +133,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "General Umbriss"--translate
+	name = "General Umbriss"
 })
 
 --------------------------
@@ -133,7 +142,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ForgemasterThrongus")
 
 L:SetGeneralLocalization({
-	name = "Forgemaster Throngus"--translate
+	name = "Maestro de forja Throngus"
 })
 
 -------------------------
@@ -142,7 +151,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("DrahgaShadowburner")
 
 L:SetGeneralLocalization({
-	name = "Drahga Shadowburner"--translate
+	name = "Drahga Quemasombras"
 })
 
 ------------
@@ -180,7 +189,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Anraphet")
 
 L:SetGeneralLocalization({
-	name = "Anraphet"--translate
+	name = "Anraphet"
 })
 
 ------------
@@ -189,7 +198,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Isiset")
 
 L:SetGeneralLocalization({
-	name = "Isiset"--translate
+	name = "Isiset"
 })
 
 L:SetWarningLocalization({
@@ -206,7 +215,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ammunae")
 
 L:SetGeneralLocalization({
-	name = "Ammunae"--translate
+	name = "Ammunae"
 })
 
 -------------
@@ -215,7 +224,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Setesh")
 
 L:SetGeneralLocalization({
-	name = "Setesh"--translate
+	name = "Setesh"
 })
 
 ----------
@@ -235,7 +244,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralHusam")
 
 L:SetGeneralLocalization({
-	name = "General Husam"--translate
+	name = "General Husam"
 })
 
 ------------------------------------
@@ -253,7 +262,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighProphetBarim")
 
 L:SetGeneralLocalization({
-	name = "High Prophet Barim"--translate
+	name = "Sumo Profeta Barim"
 })
 
 --------------
@@ -262,7 +271,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
-	name = "Lockmaw"--translate
+	name = "Cierrafauce"
 })
 
 -----------------------
@@ -347,7 +356,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozruk")
 
 L:SetGeneralLocalization({
-	name = "Ozruk"--translate
+	name = "Ozruk"
 })
 
 --------------
