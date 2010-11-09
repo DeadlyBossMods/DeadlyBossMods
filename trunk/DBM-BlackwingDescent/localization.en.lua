@@ -109,7 +109,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	AncientDwarvenShield	= "Ancient Dwarven Shield"
+	AncientDwarvenShield	= "Ancient Dwarven Shield",
+	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
 })
 
 L:SetOptionLocalization({
