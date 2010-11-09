@@ -1,5 +1,4 @@
 if GetLocale() ~= "koKR" then return end
-
 local L
 
 -------------------------
@@ -114,6 +113,15 @@ L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
 	name = "\"Captain\" Cookie"
+})
+
+----------------------
+-- Vanessa VanCleef --
+----------------------
+L = DBM:GetModLocalization("Vanessa")
+
+L:SetGeneralLocalization({
+	name = "Vanessa VanCleef"
 })
 
 ------------------
@@ -276,6 +284,41 @@ L:SetGeneralLocalization({
 	name = "Baron Ashbury"
 })
 
+-----------------------
+-- Baron Silverlaine --
+-----------------------
+L = DBM:GetModLocalization("Silverlaine")
+
+L:SetGeneralLocalization({
+	name = "Baron Silverlaine"
+})
+
+--------------------------
+-- Commander Springvale --
+--------------------------
+L = DBM:GetModLocalization("Springvale")
+
+L:SetGeneralLocalization({
+	name = "Commander Springvale"
+})
+
+-----------------
+-- Lord Walden --
+-----------------
+L = DBM:GetModLocalization("Walden")
+
+L:SetGeneralLocalization({
+	name = "Lord Walden"
+})
+
+------------------
+-- Lord Godfrey --
+------------------
+L = DBM:GetModLocalization("Godfrey")
+
+L:SetGeneralLocalization({
+	name = "Lord Godfrey"
+})
 
 ---------------------
 --  The Stonecore  --
