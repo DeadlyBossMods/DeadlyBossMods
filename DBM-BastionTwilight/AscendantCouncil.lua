@@ -11,7 +11,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnGlaciate		= mod:NewSpellAnnounce(82746, 3)
@@ -30,7 +32,8 @@ local warnCallWinds		= mod:NewSpellAnnounce(83491, 3)
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
 local warnDisperse		= mod:NewSpellAnnounce(83087, 3)
 local warnChainLightning	= mod:NewSpellAnnounce(83300, 2)
-local warnLightningBlast	= mod:NewCastAnnounce(83070, 4)
+local warnLightningBlast	= mod:NewCastAnnounce(83070, 3)
+local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
 
 local timerGlaciate		= mod:NewCDTimer(32, 82746)
 local timerHeartIce		= mod:NewTargetTimer(60, 82665)
@@ -41,12 +44,18 @@ local timerBurningBlood		= mod:NewTargetTimer(60, 82660)
 local timerBurningBloodCD	= mod:NewTargetTimer(30, 82660)
 local timerRisingFlames		= mod:NewCDTimer(60, 82636)
 local timerGravityWell		= mod:NewCDTimer(17, 83572)
+local timerQuake		= mod:NewNextTimer(10, 83565)		-- triggered by emote
+local timerQuakeCast		= mod:NewCastTimer(3, 83565)
 local timerCallWinds		= mod:NewCDTimer(27, 83491)
 local timerLightningRod		= mod:NewTargetTimer(15, 83099)
 local timerDisperse		= mod:NewCDTimer(30, 83087)
 local timerLightningBlast	= mod:NewCastTimer(4, 83070)
+local timerThundershock		= mod:NewNextTimer(10, 83067)		-- triggered by emote
+local timerThundershockCast	= mod:NewCastTimer(3, 83067)
 
 local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
+local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
+local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
 
 local frozenTargets = {}
 
@@ -55,7 +64,33 @@ local showFrozenWarning = function()
 	table.wipe(frozenTargets)
 end
 
+local checkGrounded = function()
+	if not UnitDebuff("player", GetSpellInfo(83581)) and not UnitIsDeadOrGhost("player") then
+		specWarnGrounded:Show()
+	end
+end
+
+local updateBossFrame = function(phase)
+	DBM.BossHealth:Clear()
+	if phase == 1 then
+		DBM.BossHealth:AddBoss(43687, L.Feludius)
+		DBM.BossHealth:AddBoss(43686, L.Ignacious)
+	elseif phase == 2 then
+		DBM.BossHealth:AddBosS(43688, L.Arion)
+		DBM.BossHealth:AddBosS(43689, L.Terrastra)
+	elseif phase == 3 then
+		DBM.BossHealth:AddBoss(43735, L.Monstrosity)
+	end
+end
+
+local checkSearingWinds = function()
+	if not UnitDebuff("player", GetSpellInfo(83500)) and not UnitIsDeadOrGhost("player") then
+		specWarnGrounded:Show()
+	end
+end
+
 function mod:OnCombatStart(delay)
+	updateBossFrame(1)
 	table.wipe(frozenTargets)
 end
 
@@ -112,6 +147,7 @@ function mod:SPELL_CAST_START(args)
 		warnHardenSkin:Show()
 	elseif args:IsSpellID(83565) then
 		warnQuake:Show()
+		timerQuakeCast:Show()
 	elseif args:IsSpellID(83491) then
 		warnCallWinds:Show()
 		timerCallWinds:Start()
@@ -121,6 +157,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(83070) then
 		warnLightningBlast:Show()
 		timerLightningBlast:Start()
+	elseif args:IsSpellID(83067) then
+		warnThundershock:Show()
+		timerThundershockCast:Show()
 	end
 end
 
@@ -131,4 +170,23 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(83572) then
 		warnGravityWell:Show()
 	end
-end		
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Switch then
+		updateBossFrame(2)
+	elseif msg == L.Phase3 then
+		updateBossFrame(3)
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Quake then
+		checkSearingWinds()
+		timerQuake:Start()
+	elseif msg == L.Thundershock then
+		checkGrounded()
+		timerThundershock:Start()
+	end
+end
+
