@@ -20,13 +20,20 @@ local warnRemainingAdds		= mod:NewAnnounce("WarnRemainingAdds", 2, nil, false)
 local warnFlashFreeze		= mod:NewTargetAnnounce(77699, 3)
 local warnBitingChill		= mod:NewTargetAnnounce(77760, 3)
 local warnRemedy		= mod:NewSpellAnnounce(77912, 4)
+local warnArcaneStorm		= mod:NewSpellAnnounce(77896, 3)
+local warnConsumingFlames	= mod:NewTargetAnnounce(77786, 3)
+local warnScorchingBlast	= mod:NewSpellAnnounce(77679, 3)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
  
 local timerPhase		= mod:NewTimer(45, "TimerPhase")
 local timerBitingChill		= mod:NewTargetTimer(10, 77760)
 local timerFlashFreeze		= mod:NewCDTimer(25, 77699)
+local timerArcaneStorm		= mod:NewBuffActiveTimer(6, 77896)
+local timerConsumingFlames	= mod:NewTargetTimer(10, 77786)
+local timerScorchingBlast	= mod:NewCDTimer(17, 77679)
 
 local specWarnBitingChill	= mod:NewSpecialWarningYou(77760)
+local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
 local adds = 18
@@ -42,12 +49,30 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:SetIcon(args.destName, 8)
 	elseif args:IsSpellID(77760) then
 		warnBitingChill:Show(args.destName)
+		timerBitingChill:Start(args.destName)
 		self:SetIcon(args.destName, 7)
 		if args:IsPlayer() then
 			specWarnBitingChill:Show()
 		end
 	elseif args:IsSpellID(77912, 92966) and args.destName == L.name then
 		warnRemedy:Show()
+	elseif args:IsSpellID(77896) then
+		warnArcaneStorm:Show()
+		timerArcaneStorm:Start()
+	elseif args:IsSpellID(77786) then
+		warnConsumingFlames:Show(args.destName)
+		timerConsumingFlames:Start(args.destName)
+		self:SetIcon(args.destName, 6)
+		if args:IsPlayer() then
+			specWarnConsumingFlames:Show()
+		end
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(77679) then
+		warnScorchingBlast:Show()
+		timerScorchingBlast:Start()
 	end
 end
 
