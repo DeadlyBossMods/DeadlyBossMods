@@ -53,15 +53,19 @@ local bossActivate = function(boss)
 	if boss == L.Magmatron then
 		timerAcquiringTarget:Start(20)
 		timerBarrierCD:Start()
+		DBM.BossHealth:AddBoss(42178, L.Magmatron)
 	elseif boss == L.Electron then
 		timerConductorCD:Start(11)
 		timerUnstableShieldCD:Start()
+		DBM.BossHealth:AddBoss(42179, L.Electron)
 	elseif boss == L.Toxitron then
 		timerChemicalBomb:Start(10)
 		timerShellCD:Start()
+		DBM.BossHealth:AddBoss(42180, L.Toxitron)
 	elseif boss == L.Arcanotron then
 		timerGenerator:Start(11)
 		timerConversionCD:Start(50)
+		DBM.BossHealth:AddBoss(42166, L.Arcanotron)
 	end
 end
 
@@ -69,15 +73,19 @@ local bossInactive = function(boss)
 	if boss == L.Magmatron then
 		timerAcquiringTarget:Cancel()
 		timerBarrierCD:Cancel()
+		DBM.BossHealth:RemoveBoss(42178)
 	elseif boss == L.Electron then
 		timerConductorCD:Cancel()
 		timerUnstableShieldCD:Cancel()
+		DBM.BossHealth:RemoveBoss(42179)
 	elseif boss == L.Toxitron then
 		timerChemicalBomb:Cancel()
 		timerShellCD:Cancel()
+		DBM.BossHealth:RemoveBoss(42180)
 	elseif boss == L.Arcanotron then
 		timerGenerator:Cancel()
 		timerConversionCD:Cancel()
+		DBM.BossHealth:RemoveBoss(42166)
 	end
 end
 
