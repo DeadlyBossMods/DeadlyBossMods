@@ -5,6 +5,7 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("combat")
 mod:SetMinSyncRevision(3913)
+mod:SetWipeTime(45)--We set a 45 sec min wipe time to keep mod from ending combat if you die while rest of raid is in frostmourn
 mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -319,7 +320,7 @@ function mod:SPELL_CAST_START(args)
 		warnRestoreSoul:Show()
 		timerRestoreSoul:Start()
 	elseif args:IsSpellID(72350) then -- Fury of Frostmourne
-		mod:SetWipeTime(190)--Change min wipe time mid battle to force dbm to keep module loaded for this long out of combat roleplay, hopefully without breaking mod.
+		mod:SetWipeTime(190)--Change min wipe time mid battle to force dbm to keep module loaded for this long out of combat roleplay
 		timerRoleplay:Start()
 		timerVileSpirit:Cancel()
 		timerSoulreaperCD:Cancel()
