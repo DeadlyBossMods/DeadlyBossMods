@@ -133,22 +133,30 @@ function mod:SPELL_CAST_START(args)
 		warnBarrier:Show()
 		timerBarrier:Start()
 		timerBarrierCD:Start()
-		specWarnBarrier:Show()
+		if self:GetUnitCreatureId("target") == 42178 then
+			specWarnBarrier:Show()
+		end
 	elseif args:IsSpellID(79900) then
 		warnUnstableShield:Show()
 		timerUnstableShield:Start()
 		timerUnstableShieldCD:Start()
-		specWarnUnstableShield:Show()
+		if self:GetUnitCreatureId("target") == 42179 then
+			specWarnUnstableShield:Show()
+		end
 	elseif args:IsSpellID(79835) then
 		warnShell:Show()
 		timerShell:Start()
 		timerShellCD:Start()
-		specWarnShell:Show()
+		if self:GetUnitCreatureId("target") == 42180 then
+			specWarnShell:Show()
+		end
 	elseif args:IsSpellID(79729) then
 		warnConversion:Show()
 		timerConversion:Start()
 		timerConversionCD:Start()
-		specWarnConversion:Show()
+		if self:GetUnitCreatureId("target") == 42166 then
+			specWarnConversion:Show()
+		end
 	end
 end
 
@@ -163,4 +171,3 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerGenerator:Start()
 	end
 end
-		
