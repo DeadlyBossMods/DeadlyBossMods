@@ -33,7 +33,8 @@ local timerHardmode				= mod:NewTimer(175, "TimerHardmode", 62042)
 
 mod:AddBoolOption("RangeFrame")
 
-local lastcharge				= {} 
+local lastcharge				= {}
+local phase2 = false
 
 function mod:OnCombatStart(delay)
 	enrageTimer:Start()
@@ -41,7 +42,8 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
-	table.wipe(lastcharge) 
+	table.wipe(lastcharge)
+	phase2 = false
 end
 
 local sortedFailsC = {}
@@ -94,7 +96,7 @@ end
 
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase2 and mod:LatencyCheck() then		-- Bossfight (tank and spank)
+	if msg == L.YellPhase2 then		-- Bossfight (tank and spank)
 		self:SendSync("Phase2")
 	end
 end
@@ -115,7 +117,8 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:OnSync(event, arg)
-	if event == "Phase2" then
+	if event == "Phase2" and not phase2 then
+		phase2 = true
 		warnPhase2:Show()
 		enrageTimer:Stop()
 		timerHardmode:Stop()
