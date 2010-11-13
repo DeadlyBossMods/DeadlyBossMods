@@ -102,7 +102,7 @@ mod:AddBoolOption("AnnounceValkGrabs", false)
 mod:AddBoolOption("AnnouncePlagueStack", false, "announce")
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
-mod:AddBoolOption("LKBugWorkaround", true)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
+--mod:AddBoolOption("LKBugWorkaround", true)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local phase	= 0
 local lastPlagueCast = 0
@@ -125,7 +125,7 @@ function mod:RestoreWipeTime()
 	mod:SetWipeTime(5)--Restore it after frostmourn room.
 end
 
-function mod:DefileTarget()
+--[[function mod:DefileTarget()
 	local target = self:GetBossTarget(36597)
 	if not target then return end
 	if mod:LatencyCheck() then--Only send sync if you have low latency.
@@ -152,9 +152,9 @@ function mod:TrapTarget()
 		self:UnscheduleMethod("TankTrap")
 		self:ScheduleMethod(1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
 	end
-end
+end--]]
 
---for those that want to avoid latency check.
+--for those that want to avoid latency check. Only option enabled right now since sync method bugs out pretty bad.
 function mod:OldDefileTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
@@ -286,17 +286,17 @@ function mod:SPELL_CAST_START(args)
 		specWarnInfest:Show()
 		timerInfestCD:Start()
 	elseif args:IsSpellID(72762) then -- Defile
-		if self.Options.LKBugWorkaround then
+--		if self.Options.LKBugWorkaround then
 			self:ScheduleMethod(0.1, "OldDefileTarget")
-		else
-			self:ScheduleMethod(0.1, "DefileTarget")
-		end
+--		else
+--			self:ScheduleMethod(0.1, "DefileTarget")
+--		end
 		warnDefileSoon:Cancel()
 		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
 		timerTrapCD:Start()
-		if self.Options.LKBugWorkaround then
+--		if self.Options.LKBugWorkaround then
 			self:ScheduleMethod(0.01, "OldTrapTarget")
 			self:ScheduleMethod(0.02, "OldTrapTarget")
 			self:ScheduleMethod(0.03, "OldTrapTarget")
@@ -307,7 +307,7 @@ function mod:SPELL_CAST_START(args)
 			self:ScheduleMethod(0.08, "OldTrapTarget")
 			self:ScheduleMethod(0.09, "OldTrapTarget")
 			self:ScheduleMethod(0.1, "OldTrapTarget")
-		else
+--[[		else
 			self:ScheduleMethod(0.01, "TrapTarget")
 			self:ScheduleMethod(0.02, "TrapTarget")
 			self:ScheduleMethod(0.03, "TrapTarget")
@@ -318,7 +318,7 @@ function mod:SPELL_CAST_START(args)
 			self:ScheduleMethod(0.08, "TrapTarget")
 			self:ScheduleMethod(0.09, "TrapTarget")
 			self:ScheduleMethod(0.1, "TrapTarget")
-		end
+		end--]]
 	elseif args:IsSpellID(73650) then -- Restore Soul (Heroic)
 		warnRestoreSoul:Show()
 		timerRestoreSoul:Start()
@@ -594,7 +594,7 @@ function mod:OnSync(msg, target)
 		if self.Options.specWarnHealerGrabbed then
 			specWarnPRIGrabbed:Show(target)
 		end
-	elseif msg == "TrapOn" then
+--[[	elseif msg == "TrapOn" then
 		if not self.Options.LKBugWorkaround then
 			warnTrapCast:Show(target)
 			if self.Options.TrapIcon then
@@ -651,7 +651,7 @@ function mod:OnSync(msg, target)
 					end
 				end
 			end
-		end
+		end--]]
 	elseif msg == "PlagueOn" and self:IsInCombat() then
 		if GetTime() - lastPlagueCast > 1 then --We also do same 1 second check here
 			warnNecroticPlagueJump:Show(target)
