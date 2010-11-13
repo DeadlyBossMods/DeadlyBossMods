@@ -182,8 +182,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NormalHalion			= "Physical Halion",
-	TwilightHalion			= "Twilight Halion",
+	Halion					= "Halion",
 	MeteorCast				= "The heavens burn!",
 	Phase2					= "You will find only suffering within the realm of twilight! Enter if you dare!",
 	Phase3					= "I am the light and the darkness! Cower, mortals, before the herald of Deathwing!",
