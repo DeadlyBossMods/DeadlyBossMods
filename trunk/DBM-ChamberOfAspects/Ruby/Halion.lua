@@ -59,33 +59,7 @@ local warned_preP2 = false
 local warned_preP3 = false
 local phasethree = false
 local lastflame = 0
-local lastshroud = 0
 local phases = {}
-
-function mod:LocationChecker()
-	if GetTime() - lastshroud < 6 then
-		DBM.BossHealth:RemoveBoss(39863)--you took damage from twilight realm recently so remove the physical boss from health frame.
-	else
-		DBM.BossHealth:RemoveBoss(40142)--you have not taken damage from twilight realm so remove twilight boss health bar.
-	end
-end
-
-local function updateHealthFrame(phase)
-	if phases[phase] then
-		return
-	end
-	phases[phase] = true
-	if phase == 1 then
-		DBM.BossHealth:Clear()
-		DBM.BossHealth:AddBoss(39863, L.NormalHalion)
-	elseif phase == 2 then
-		DBM.BossHealth:Clear()
-		DBM.BossHealth:AddBoss(40142, L.TwilightHalion)
-	elseif phase == 3 then
-		DBM.BossHealth:AddBoss(39863, L.NormalHalion)--Add 1st bar back on. you have two bars for time being.
-		mod:ScheduleMethod(20, "LocationChecker")--we remove the extra bar in 20 seconds depending on where you are at when check is run.
-	end
-end
 
 function mod:OnCombatStart(delay)--These may still need retuning too, log i had didn't have pull time though.
 	table.wipe(phases)
@@ -93,12 +67,12 @@ function mod:OnCombatStart(delay)--These may still need retuning too, log i had 
 	warned_preP3 = false
 	phasethree = false
 	lastflame = 0
-	lastshroud = 0
 	berserkTimer:Start(-delay)
 	timerMeteorCD:Start(20-delay)
 	timerFieryConsumptionCD:Start(15-delay)
 	timerFieryBreathCD:Start(10-delay)
-	updateHealthFrame(1)
+	DBM.BossHealth:Clear()
+	DBM.BossHealth:AddBoss(39863,40142, L.Halion)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -193,8 +167,6 @@ function mod:SPELL_DAMAGE(args)
 	if (args:IsSpellID(75952, 75951, 75950, 75949) or args:IsSpellID(75948, 75947)) and args:IsPlayer() and GetTime() - lastflame > 2 then
 		specWarnMeteorStrike:Show()
 		lastflame = GetTime()
-	elseif args:IsSpellID(75483, 75484, 75485, 75486) and args:IsPlayer() then
-		lastshroud = GetTime()--keeps a time stamp for twilight realm damage to determin if you're still there or not for bosshealth frame.
 	end
 end
 
@@ -210,7 +182,6 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Phase2 or msg:find(L.Phase2) then
-		updateHealthFrame(2)
 		timerFieryBreathCD:Cancel()
 		timerMeteorCD:Cancel()
 		timerFieryConsumptionCD:Cancel()
@@ -295,7 +266,6 @@ function mod:OnSync(msg, target)
 		end
 	elseif msg == "Phase3" and not phasethree then
 		phasethree = true
-		updateHealthFrame(3)
 		warnPhase3:Show()
 		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it varies as well.
 		timerFieryConsumptionCD:Start(20)--not exact, 15 seconds from tank aggro, but easier to add 5 seconds to it as a estimate timer than trying to detect this
