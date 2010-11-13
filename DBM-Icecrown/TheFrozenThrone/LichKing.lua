@@ -5,7 +5,6 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(36597)
 mod:RegisterCombat("combat")
 mod:SetMinSyncRevision(3913)
-mod:SetWipeTime(45)--We set a 45 sec min wipe time to keep mod from ending combat if you die while rest of raid is in frostmourn
 mod:SetUsedIcons(2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterEvents(
@@ -120,6 +119,10 @@ function mod:OnCombatStart(delay)
 	LKTank = nil
 	self:NextPhase()
 	table.wipe(warnedValkyrGUIDs)
+end
+
+function mod:RestoreWipeTime()
+	mod:SetWipeTime(5)--Restore it after frostmourn room.
 end
 
 function mod:DefileTarget()
@@ -380,6 +383,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSoulreaperCD:Cancel()
 		timerDefileCD:Cancel()
 		warnDefileSoon:Cancel()
+		mod:SetWipeTime(50)--We set a 45 sec min wipe time to keep mod from ending combat if you die while rest of raid is in frostmourn
+		self:ScheduleMethod(50, "RestoreWipeTime")
 	end
 end
 
