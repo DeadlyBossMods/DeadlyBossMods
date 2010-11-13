@@ -434,8 +434,8 @@ do
 			elseif event == "SPELL_AURA_STOLEN" then
 				args.extraSpellId, args.extraSpellName, args.extraSpellSchool = select(4, ...)
 				args.auraType = select(7, ...)
-			elseif event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED" then
-				args.auraType = select(4, ...)
+			elseif event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_REFRESH" then
+				args.auraType, args.remainingPoints = select(4, ...)
 				args.sourceName = args.destName
 				args.sourceGUID = args.destGUID
 				args.sourceFlags = args.destFlags
