@@ -57,6 +57,7 @@ mod:AddBoolOption("SetIconOnConsumption", true)
 
 local warned_preP2 = false
 local warned_preP3 = false
+local phasethree = false
 local lastflame = 0
 local lastshroud = 0
 local phases = {}
@@ -90,7 +91,7 @@ function mod:OnCombatStart(delay)--These may still need retuning too, log i had 
 	table.wipe(phases)
 	warned_preP2 = false
 	warned_preP3 = false
-	phase2Started = 0
+	phasethree = false
 	lastflame = 0
 	lastshroud = 0
 	berserkTimer:Start(-delay)
@@ -292,7 +293,8 @@ function mod:OnSync(msg, target)
 				timerFieryConsumptionCD:Start()
 			end
 		end
-	elseif msg == "Phase3" then
+	elseif msg == "Phase3" and not phasethree then
+		phasethree = true
 		updateHealthFrame(3)
 		warnPhase3:Show()
 		timerMeteorCD:Start(30) --These i'm not sure if they start regardless of drake aggro, or if it varies as well.
