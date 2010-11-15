@@ -22,6 +22,10 @@ mod:SetBossHealthInfo(
 	32857, L.StormcallerBrundir
 )
 
+local isDispeller = select(2, UnitClass("player")) == "MAGE"
+	    		 or select(2, UnitClass("player")) == "PRIEST"
+	    		 or select(2, UnitClass("player")) == "SHAMAN"
+
 local warnSupercharge			= mod:NewSpellAnnounce(61920, 3)
 
 -- Stormcaller Brundir
@@ -49,12 +53,13 @@ mod:AddBoolOption("SetIconOnStaticDisruption")
 
 -- Runemaster Molgeim
 -- Lightning Blast ... don't know, maybe 63491
-local timerShieldofRunes		= mod:NewBuffActiveTimer(15, 63967)
+local timerRuneofShields		= mod:NewBuffActiveTimer(15, 63967)
 local warnRuneofPower			= mod:NewTargetAnnounce(64320, 2)
 local warnRuneofDeath			= mod:NewSpellAnnounce(63490, 2)
 local warnShieldofRunes			= mod:NewSpellAnnounce(63489, 2)
 local warnRuneofSummoning		= mod:NewSpellAnnounce(62273, 3)
 local specwarnRuneofDeath		= mod:NewSpecialWarningMove(63490)
+local specWarnRuneofShields		= mod:NewSpecialWarningDispel(63967, isDispeller)
 local timerRuneofDeath			= mod:NewCDTimer(30, 63490)
 local timerRuneofPower			= mod:NewCDTimer(30, 61974)
 mod:AddBoolOption("PlaySoundDeathRune", true, "announce")
@@ -128,7 +133,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 	elseif args:IsSpellID(62277, 63967) and not args:IsDestTypePlayer() then		-- Shield of Runes
-		timerShieldofRunes:Start()		
+		specWarnRuneofShields:Show(args.destName)
+		timerRuneofShields:Start()
 	elseif args:IsSpellID(64637, 61888) then	-- Overwhelming Power
 		warnOverwhelmingPower:Show(args.destName)
 		if mod:IsDifficulty("normal10") then

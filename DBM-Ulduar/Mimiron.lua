@@ -21,8 +21,8 @@ mod:RegisterEvents(
 
 local blastWarn					= mod:NewTargetAnnounce(64529, 4)
 local shellWarn					= mod:NewTargetAnnounce(63666, 2)
-local lootannounce				= mod:NewAnnounce("MagneticCore", 1)
-local warnBombSpawn				= mod:NewAnnounce("WarnBombSpawn", 3)
+local lootannounce				= mod:NewAnnounce("MagneticCore", 1, 64444)
+local warnBombSpawn				= mod:NewAnnounce("WarnBombSpawn", 3, 63811)
 local warnFrostBomb				= mod:NewSpellAnnounce(64623, 3)
 
 local warnShockBlast			= mod:NewSpecialWarning("WarningShockBlast", nil, false)
@@ -32,9 +32,9 @@ local warnDarkGlare				= mod:NewSpecialWarningSpell(63293)
 
 local enrage 					= mod:NewBerserkTimer(900)
 local timerHardmode				= mod:NewTimer(610, "TimerHardmode", 64582)
-local timerP1toP2				= mod:NewTimer(43, "TimeToPhase2")
-local timerP2toP3				= mod:NewTimer(32, "TimeToPhase3")
-local timerP3toP4				= mod:NewTimer(25, "TimeToPhase4")
+local timerP1toP2				= mod:NewTimer(43, "TimeToPhase2", "Interface\\Icons\\Spell_Nature_WispSplode")
+local timerP2toP3				= mod:NewTimer(32, "TimeToPhase3", "Interface\\Icons\\Spell_Nature_WispSplode")
+local timerP3toP4				= mod:NewTimer(25, "TimeToPhase4", "Interface\\Icons\\Spell_Nature_WispSplode")
 local timerProximityMines		= mod:NewNextTimer(35, 63027)
 local timerShockBlast			= mod:NewCastTimer(63631)
 local timerSpinUp				= mod:NewCastTimer(4, 63414)
