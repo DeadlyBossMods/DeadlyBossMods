@@ -222,7 +222,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:OnSync(msg)
-	if msg == "Phase3" and phase = 2 then
+	if msg == "Phase3" and phase == 2 then
 		warnP3:Show()
 		phase = 3
 		brainportal:Cancel()
