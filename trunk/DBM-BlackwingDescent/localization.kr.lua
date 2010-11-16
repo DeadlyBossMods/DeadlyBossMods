@@ -1,4 +1,5 @@
 if GetLocale() ~= "koKR" then return end
+
 local L
 
 --------------
@@ -7,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Magmaw")
 
 L:SetGeneralLocalization({
-	name = "Magmaw"
+	name = "용암아귀"
 })
 
 L:SetWarningLocalization({
@@ -38,9 +39,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Magmatron	= "Magmatron",
+	Electron	= "Electron",
+	Toxitron	= "Toxitron",
+	Arcanotron	= "Arcanotron",
+	SayBomb		= "Poison Bomb on me!"
 })
 
 L:SetOptionLocalization({
+	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157"
 })
 
 ----------------
@@ -53,12 +60,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase		= "%s 단계",
+	WarnPhase		= "%s phase",
 	WarnRemainingAdds	= "%d aberrations remaining"
 })
 
 L:SetTimerLocalization({
-	TimerPhase		= "다음 단계"
+	TimerPhase		= "Next phase"
 })
 
 L:SetMiscLocalization({
@@ -73,9 +80,9 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase			= "다음 단계 경고 보기",
-	WarnRemainingAdds	= "얼마나 많은 Show warning how many aberrations remain",
-	TimerPhase			= "Show timer for next phase"
+	WarnPhase		= "Show warning which phase is incoming",
+	WarnRemainingAdds	= "Show warning how many aberrations remain",
+	TimerPhase		= "Show timer for next phase"
 })
 
 -----------------
@@ -84,7 +91,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Chimaeron")
 
 L:SetGeneralLocalization({
-	name = "Chimaeron"
+	name = "카미이론"
 })
 
 L:SetWarningLocalization({
@@ -109,7 +116,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Atramedes")
 
 L:SetGeneralLocalization({
-	name = "Atramedes"
+	name = "아트라메데스"
 })
 
 L:SetWarningLocalization({
@@ -125,7 +132,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Ancient Dwarven Shield",
-	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
+	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
 })
 
 L:SetOptionLocalization({
@@ -142,7 +149,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Nefarian-BD")	-- No conflict with BWL version :)
 
 L:SetGeneralLocalization({
-	name = "Nefarian"
+	name = "네파리안"
 })
 
 L:SetWarningLocalization({
@@ -152,6 +159,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
+	ChromaticPrototype	= "Chromatic Prototype"
 })
 
 L:SetOptionLocalization({

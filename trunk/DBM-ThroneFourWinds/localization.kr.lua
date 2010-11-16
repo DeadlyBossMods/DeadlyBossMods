@@ -1,3 +1,4 @@
+if GetLocale() ~= "koKR" then return end
 local L
 
 ------------------------
@@ -6,7 +7,7 @@ local L
 L = DBM:GetModLocalization("Conclave")
 
 L:SetGeneralLocalization({
-	name = "Conclave of Wind"
+	name = "바람의 비밀의회"
 })
 
 L:SetWarningLocalization({
@@ -27,7 +28,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("AlAkir")
 
 L:SetGeneralLocalization({
-	name = "Al'Akir"
+	name = "알아키르"
 })
 
 L:SetWarningLocalization({
