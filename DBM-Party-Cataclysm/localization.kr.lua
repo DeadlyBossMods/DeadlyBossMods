@@ -9,7 +9,7 @@ local L
 L = DBM:GetModLocalization("Romogg")
 
 L:SetGeneralLocalization({
-	name = "Rom'ogg Bonecrusher"
+	name = "롬오그 해골분쇄자"
 })
 
 -------------------------------
@@ -18,7 +18,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Corla")
 
 L:SetGeneralLocalization({
-	name = "Corla, Herald of Twilight"
+	name = "황혼의 전령 코를라"
 })
 
 L:SetWarningLocalization({
@@ -26,7 +26,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "Warn when an add looses $spell:75608 buff"
+	WarnAdd		= "$spell:75608 버프가 추가될 때 경고하기"
 })
 
 -----------------------
@@ -35,7 +35,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("KarshSteelbender")
 
 L:SetGeneralLocalization({
-	name = "Karsh Steelbender"
+	name = "카쉬 스틸벤더"
 })
 
 L:SetTimerLocalization({
@@ -43,7 +43,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSuperheated	= "Show timer for $spell:75846 duration"
+	TimerSuperheated	= "$spell:75846 지속 타이머 보기"
 })
 
 ------------
@@ -52,7 +52,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Beauty")
 
 L:SetGeneralLocalization({
-	name = "Beauty"
+	name = "아름이"
 })
 
 -----------------------------
@@ -61,11 +61,11 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "Ascendant Lord Obsidius"
+	name = "상승의 군주 옵시디우스"
 })
 
 L:SetOptionLocalization({
-	SetIconOnBoss	= "Put an icon on the boss after $spell:76200 "
+	SetIconOnBoss	= "$spell:76200 시전 후 보스에게 아이콘 표시 "
 })
 
 ---------------------
@@ -132,7 +132,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "General Umbriss"
+	name = "장군 움브리스"
 })
 
 --------------------------
@@ -159,7 +159,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Erudax")
 
 L:SetGeneralLocalization({
-	name = "Erudax"
+	name = "에루닥스"
 })
 
 ----------------------------
@@ -179,7 +179,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("EarthragerPtah")
 
 L:SetGeneralLocalization({
-	name = "Earthrager Ptah"
+	name = "대지분노자 프타"
 })
 
 --------------
@@ -197,7 +197,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Isiset")
 
 L:SetGeneralLocalization({
-	name = "Isiset"
+	name = "이시세트"
 })
 
 L:SetWarningLocalization({
@@ -214,7 +214,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ammunae")
 
 L:SetGeneralLocalization({
-	name = "Ammunae"
+	name = "아뮤나이"
 })
 
 -------------
@@ -223,7 +223,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Setesh")
 
 L:SetGeneralLocalization({
-	name = "Setesh"
+	name = "세테쉬"
 })
 
 ----------
@@ -232,7 +232,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Rajh")
 
 L:SetGeneralLocalization({
-	name = "Rajh"
+	name = "라지"
 })
 
 --------------------------------
@@ -290,7 +290,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Silverlaine")
 
 L:SetGeneralLocalization({
-	name = "Baron Silverlaine"
+	name = "남작 실버레인"
 })
 
 --------------------------
@@ -299,7 +299,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Springvale")
 
 L:SetGeneralLocalization({
-	name = "Commander Springvale"
+	name = "사령관 스프링베일"
 })
 
 -----------------
@@ -327,6 +327,10 @@ L:SetGeneralLocalization({
 -------------- 
 L = DBM:GetModLocalization("Corborus")
 
+L:SetGeneralLocalization({
+	name = "코보루스"
+})
+
 L:SetWarningLocalization({
 	WarnEmerge	= "Emerge",
 	WarnSubmerge	= "Submerge"
@@ -344,9 +348,7 @@ L:SetOptionLocalization({
 	TimerSubmerge	= "Show timer for submerge"
 })
 
-L:SetGeneralLocalization({
-	name = "Corborus"
-})
+
 
 -----------
 -- Ozruk --
@@ -354,7 +356,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozruk")
 
 L:SetGeneralLocalization({
-	name = "Ozruk"
+	name = "오즈룩"
 })
 
 --------------
@@ -363,7 +365,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Slabhide")
 
 L:SetGeneralLocalization({
-	name = "Slabhide"
+	name = "돌거죽"
 })
 
 -------------------------
@@ -372,7 +374,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighPriestessAzil")
 
 L:SetGeneralLocalization({
-	name = "High Priestess Azil"
+	name = "대여사제 아질"
 })
 
 ---------------------------
@@ -383,7 +385,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GrandVizierErtan")
 
 L:SetGeneralLocalization({
-	name = "Grand Vizier Ertan"
+	name = "대장로 에르탄"
 })
 
 --------------
@@ -392,7 +394,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Altarius")
 
 L:SetGeneralLocalization({
-	name = "Altarius"
+	name = "알타리우스"
 })
 
 -----------
@@ -412,7 +414,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("LadyNazjar")
 
 L:SetGeneralLocalization({
-	name = "Lady Naz'jar"
+	name = "여군주 나즈자르"
 })
 
 -----======-----------
@@ -421,7 +423,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("CommanderUlthok")
 
 L:SetGeneralLocalization({
-	name = "Commander Ulthok"
+	name = "사령관 울톡"
 })
 
 -------------------------
@@ -430,7 +432,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ErunakStonespeaker")
 
 L:SetGeneralLocalization({
-	name = "Erunak Stonespeaker"
+	name = "에루낙 스톤스피커"
 })
 
 ------------
@@ -439,5 +441,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozumat")
 
 L:SetGeneralLocalization({
-	name = "Ozumat"
+	name = "오주마트"
 })
