@@ -307,7 +307,7 @@ end
 function bossHealth:AddBoss(...)
 	-- copy the name to the frong of the arg list
 	-- note: name is now twice in the arg list but we can't really fix that in an efficient way (this is handled in createBar()
-	return addBoss((select(select("#", ...), ...), ...)
+	return addBoss(select(select("#", ...), ...), ...)
 end
 
 -- just pass any of the creature IDs for shared health bosses
