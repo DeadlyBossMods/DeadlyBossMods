@@ -137,7 +137,7 @@ local function createFrame(self)
 	menu[1].checked = DBM.Options.HealthFrameLocked
 end
 
-local function createBar(self, name, ...)
+local function createBar(self, name, ...) -- the vararg will also contain the name, see method AddBoss for details
 	local bar = table.remove(barCache, #barCache) or CreateFrame("Frame", "DBM_BossHealth_Bar_"..getBarId(), anchor, "DBMBossHealthBarTemplate")
 	bar:Show()
 	local bartext = _G[bar:GetName().."BarName"]
@@ -146,10 +146,11 @@ local function createBar(self, name, ...)
 	barborder:SetScript("OnMouseDown", onMouseDown)
 	barborder:SetScript("OnMouseUp", onMouseUp)
 	barborder:SetScript("OnHide", onHide)
-	if select("#", ...) == 1 then
-		bar.id = cId
+	if select("#", ...) == 2 then -- 2 as the name is in the vararg
+		bar.id = ...
 	else
 		bar.id = {...}
+		bar.id[#bar.id] = nil -- we don't want the name in here
 	end
 	bar.hidden = false
 	bar:ClearAllPoints()
@@ -289,8 +290,12 @@ function bossHealth:Hide()
 end
 
 
+
+-- HACK to support the old API cId, name. TODO: change API to name, cId and update _all_ boss mods (or: add new method AddSharedHealthBoss or something but this would also be ugly...)
+-- for now: using this ugly code
+
 -- hack to support shared health bosses
-local function addBoss(name, ...)
+local function addBoss(name, ...) -- name, cId1, cId2, ..., cIdN, name
 	if not anchor or not anchor:IsShown() then
 		return
 	end
@@ -300,7 +305,9 @@ end
 
 -- the signature of this method is (cId1, cId2, ..., cIdN, name) for compatibility reasons (used to be cId, name)
 function bossHealth:AddBoss(...)
-	return addBoss(...)
+	-- copy the name to the frong of the arg list
+	-- note: name is now twice in the arg list but we can't really fix that in an efficient way (this is handled in createBar()
+	return addBoss((select(select("#", ...), ...), ...)
 end
 
 -- just pass any of the creature IDs for shared health bosses
