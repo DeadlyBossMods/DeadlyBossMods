@@ -20,14 +20,14 @@ local timerVeilShadow	= mod:NewTargetTimer(8, 93956)
 local timerWorgenSpirit	= mod:NewCastTimer(2, 93857)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(23224) then
+	if args:IsSpellID(93956) then
 		warnVeilShadow:Show(args.destName)
 		timerVeilShadow:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(23224) then
+	if args:IsSpellID(93956) then
 		timerVeilShadow:Cancel(args.destName)
 	end
 end
