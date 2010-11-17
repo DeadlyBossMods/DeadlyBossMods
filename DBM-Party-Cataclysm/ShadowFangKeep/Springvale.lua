@@ -14,13 +14,16 @@ mod:RegisterEvents(
 
 local warnDesecration		= mod:NewSpellAnnounce(93687, 3)
 local warnMaleficStrike		= mod:NewSpellAnnounce(93685, 2)
-local warnShield		= mod:NewSpellAnnounce(93693, 4)
+local warnShield		= mod:NewSpellAnnounce(93736, 4)
+local warnWordShame		= mod:NewTargetAnnounce(93852, 3)
 
 local timerMaleficStrike	= mod:NewNextTimer(6, 93685)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(93693) then
+	if args:IsSpellID(93736) then
 		warnShield:Show()
+	elseif args:IsSpellID(93852) then
+		warnWordShame:Show(args.destName)
 	end
 end
 

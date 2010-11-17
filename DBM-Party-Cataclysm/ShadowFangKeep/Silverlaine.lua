@@ -13,10 +13,10 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warnVeilShadow	= mod:NewTargetAnnounce(23224, 3)
+local warnVeilShadow	= mod:NewTargetAnnounce(93956, 3)
 local warnWorgenSpirit	= mod:NewSpellAnnounce(93857, 3)
 
-local timerVeilShadow	= mod:NewTargetTimer(8, 23224)
+local timerVeilShadow	= mod:NewTargetTimer(8, 93956)
 local timerWorgenSpirit	= mod:NewCastTimer(2, 93857)
 
 function mod:SPELL_AURA_APPLIED(args)
