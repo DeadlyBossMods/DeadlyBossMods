@@ -554,7 +554,7 @@ L:SetOptionLocalization({
 ------------
 -- Kronus --
 ------------
-L = DBM:GetModLocalization("Loken")
+L = DBM:GetModLocalization("Kronus")
 
 L:SetGeneralLocalization({
 	name = "Loken"
