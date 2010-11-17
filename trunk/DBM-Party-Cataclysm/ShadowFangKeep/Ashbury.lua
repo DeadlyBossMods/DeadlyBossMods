@@ -14,7 +14,9 @@ mod:RegisterEvents(
 )
 
 local warnPain		= mod:NewTargetAnnounce(93712, 3)
-local warnRottenFlesh	= mod:NewCastAnnounce(93713, 2)
+local warnRottenFlesh	= mod:NewSpellAnnounce(93713, 4)
+local warnWracking	= mod:NewSpellAnnounce(93720, 2)
+local warnArchangel	= mod:NewSpellAnnounce(93757, 4)
 
 local timerAsphyxiate	= mod:NewCDTimer(40, 93710)
 
@@ -31,11 +33,15 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93713) then
 		warnRottenFlesh:Show()
+	elseif args:IsSpellID(93757) then
+		warnArchangel:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(93710) then
 		timerAsphyxiate:Start()
+	elseif args:IsSpellID(93720) then
+		warnWracking:Show()
 	end
 end

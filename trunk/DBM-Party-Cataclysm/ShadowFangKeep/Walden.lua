@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED"
 )
 
-local warnFrostMix	= mod:NewSpellAnnounce(93505, 3)
-local warnPoisonMix	= mod:NewSpellAnnounce(93697, 3)
+local warnFrostMix	= mod:NewSpellAnnounce(93702, 3)
+local warnPoisonMix	= mod:NewSpellAnnounce(93704, 3)
 local warnIceShards	= mod:NewSpellAnnounce(93527, 3)
 
 local timerIceShards	= mod:NewBuffActiveTimer(5, 93527)
@@ -26,9 +26,9 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(93505) then
+	if args:IsSpellID(93702) then
 		warnFrostMix:Show()
-	elseif args:IsSpellID(93697) then
+	elseif args:IsSpellID(93704) then
 		warnPoisonMix:Show()
 	end
 end
