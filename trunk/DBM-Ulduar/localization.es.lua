@@ -28,9 +28,9 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SpecialPursueWarnYou	= "Mostrar aviso especial cuando te persiga a ti.",
-	PursueWarn				= "Mostrar aviso a quien persigue.",
-	warnNextPursueSoon		= "Mostrar cuando va cambiar de objetivo.",
+	SpecialPursueWarnYou	= "Mostrar aviso especial cuando seas $spell:62374.",
+	PursueWarn				= "Anunciar los objetivos de $spell:62374",
+	warnNextPursueSoon		= "Mostrar cuando va cambiar de objetivo $spell:62374.",
 	warnWardofLife			= "Mostrar aviso cuando salga un Guarda de Vida"
 }
 
@@ -51,7 +51,7 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SlagPotIcon				= "Mostrar icono a quien agarró"
+	SlagPotIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(63477)
 }
 
 ------------------
@@ -77,15 +77,15 @@ L:SetTimerLocalization{
 	timerGrounded		    = "En el suelo"
 }
 L:SetOptionLocalization{
-	PlaySoundOnDevouringFlame	= "Mostrar aviso por sonido si pisas la Llama devoradora.",
+	PlaySoundOnDevouringFlame	= "Mostrar aviso por sonido si pisas $spell:64733.",
 	warnTurretsReadySoon		= "Mostrar aviso antes de que las torretas esten listas",
 	warnTurretsReady		    = "Mostrar aviso si estan listas las torretas.",
-	SpecWarnDevouringFlameCast	= "Mostrar aviso especial cuando Llama devoradora se lanze a ti.",
+	SpecWarnDevouringFlameCast	= "Mostrar aviso especial cuando $spell:64733 se lanze a ti.",
 	timerTurret1			    = "Mostrar aviso para Torreta 1",
 	timerTurret2			    = "Mostrar aviso para Torreta 2",
 	timerTurret3			    = "Mostrar aviso para Torreta 3 ( solo en banda 25 ).",
 	timerTurret4			    = "Mostrar aviso para Torreta 4 ( solo en banda 25 ).",
-	OptionDevouringFlame		= "Mostrar aviso a quien lanza la Llama devoradora ( poco fiable )",
+	OptionDevouringFlame		= "Mostrar aviso a quien lanza $spell:64733 ( poco fiable )",
 	timerGrounded		    = "Mostrar cuanto durara en el suelo."
 }
 
@@ -114,8 +114,8 @@ L:SetWarningLocalization{
 }
 
 L:SetOptionLocalization{
-	SetIconOnLightBombTarget	= "Mostrar icono a quien pone Bomba de Luz",
-	SetIconOnGravityBombTarget	= "Mostrar icono a quien pone Bomba de Gravedad",
+	SetIconOnLightBombTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(65121),
+	SetIconOnGravityBombTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(64234)
 }
 
 -------------------
@@ -134,12 +134,12 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	PlaySoundLightningTendrils		= "Sonido para Zarcillos de relampagos",
-	SetIconOnOverwhelmingPower		= "Poner icono a la persona con Poder sobrecargador",
-	SetIconOnStaticDisruption		= "Poner icono para el objetivo de Perturbación estática",
-	AlwaysWarnOnOverload			= "Siempre avisar Sobrecarga",
-	PlaySoundOnOverload			= "Reproducir sonido para Sobrecarga",
-	PlaySoundDeathRune			= "Reproducir sonido para Runa de muerte"
+	PlaySoundLightningTendrils		= "Sonido para $spell:63486",
+	SetIconOnOverwhelmingPower	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(61888),
+	SetIconOnStaticDisruption	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(61912),
+	AlwaysWarnOnOverload			= "Siempre avisar de $spell:63481 (Sino solo se avisara cuando sea objetivo)",
+	PlaySoundOnOverload			= "Reproducir sonido para $spell:63481",
+	PlaySoundDeathRune			= "Reproducir sonido para $spell:63490"
 }
 
 L:SetMiscLocalization{
@@ -212,9 +212,9 @@ L:SetOptionLocalization{
 	timerLeftArm			= "Mostrar tiempo para Brazo izquierdo",
 	timerRightArm			= "Mostrar tiempo para Brazo derecho",
 	achievementDisarmed		= "Mostrar tiempo para el logro Desarmar",
-	SetIconOnGripTarget		= "Poner icono a los objetivos de Agarrar",
-	SetIconOnEyebeamTarget	= "Poner iconos en objetivos de Haz ocular (luna)",
-	PlaySoundOnEyebeam		= "Reproducir sonido al ser ojetivo de Haz ocular",
+	SetIconOnGripTarget		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(64292),
+	SetIconOnEyebeamTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(63346),
+	PlaySoundOnEyebeam		= "Reproducir sonido al ser ojetivo de $spell:63346",
 	YellOnBeam				= "Gritar cuando tengas $spell:63346",
 }
 
@@ -276,9 +276,9 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	PlaySoundOnFlashFreeze	= "Reproducir sonido cuando castee Congelación apresurada",
-	YellOnStormCloud		= "Gritar cuando tengas Nube tormentosa",
-	SetIconOnStormCloud		= "Poner iconos en los objetivos de Nube tormentosa"
+	PlaySoundOnFlashFreeze	= "Reproducir sonido cuando castee $spell:61968",
+	YellOnStormCloud		= "Gritar cuando tengas $spell:65133",
+	SetIconOnStormCloud		= "Poner iconos en los objetivos de $spell:65133"
 }
 
 L:SetMiscLocalization{
@@ -299,13 +299,13 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerHardmode	= "Hard mode"
+	TimerHardmode	= "Modo heroico"
 }
 
 L:SetOptionLocalization{
-	TimerHardmode	= "Mostrar tiempo para hard mode",
+	TimerHardmode	= "Mostrar tiempo para modo heroico",
 	RangeFrame		= "Mostrar distancia",
-	AnnounceFails	= "Anunciar los fallos de Cargar relámpago en el chat de banda\n(require 'anunciar' habilitado y líder o ayudante de banda)"
+	AnnounceFails	= "Anunciar los fallos de $spell:62017 en el chat de banda\n(require 'anunciar' habilitado y líder o ayudante de banda)"
 }
 
 L:SetMiscLocalization{
@@ -344,7 +344,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	WarnSimulKill		= "Anunciar primer mob muerto",
-	PlaySoundOnFury 	= "Reproducir sonido cuando te afecte Furia de la naturaleza",
+	PlaySoundOnFury 	= "Reproducir sonido cuando te afecte $spell:63571",
 	TimerSimulKill		= "Mostrar resureccion de los mobs"
 }
 
@@ -402,10 +402,10 @@ L:SetOptionLocalization{
 	AutoChangeLootToFFA		= "Canviar el loot a Botín Libre en la fase 3",
 	WarnBombSpawn			= "Mostrar aviso para Robot bum",
 	TimerHardmode			= "Mostrar tiempo para Modo Difícil",
-	PlaySoundOnShockBlast	= "Reproducir sonido en Explosión de choque",
-	PlaySoundOnDarkGlare	= "Reproducir sonido en Tromba de láseres",
-	ShockBlastWarningInP1	= "Mostrar aviso especial para Explosión de choque en Fase 1",
-	ShockBlastWarningInP4	= "Mostrar aviso especial para Explosión de choque en Fase 4",
+	PlaySoundOnShockBlast	= "Reproducir sonido en $spell:63631",
+	PlaySoundOnDarkGlare	= "Reproducir sonido en $spell:63414",
+	ShockBlastWarningInP1	= "Mostrar aviso especial para $spell:63631 en Fase 1",
+	ShockBlastWarningInP4	= "Mostrar aviso especial para $spell:63631 en Fase 4",
 	RangeFrame				= "Mostrar distáncia en Fase 1 (6 yardas)",
 	SetIconOnNapalm			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(65026),
 	SetIconOnPlasmaBlast	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(62997)

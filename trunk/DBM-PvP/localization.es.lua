@@ -63,7 +63,7 @@ L:SetGeneralLocalization({
 L:SetTimerLocalization({
 	TimerStart		= "La batalla comezara en", 
 	TimerTower		= "%s",
-	TimerGY			= "%s",
+	TimerGY			= "%s"
 })
 
 L:SetMiscLocalization({
@@ -102,7 +102,7 @@ L:SetMiscLocalization({
 
 L:SetTimerLocalization({
 	TimerStart 		= "¡La batalla va Comenzar!", 
-	TimerCap 		= "%s",
+	TimerCap 		= "%s"
 })
 
 L:SetOptionLocalization({
@@ -133,20 +133,20 @@ L:SetMiscLocalization({
 	FlagReset 		= "La bandera se ha restablecido.",
 	FlagTaken 		= "¡ (.+) ha tomado la bandera!",
 	FlagCaptured 		= "¡La .+ ha%w+ ha capturado la bandera!",
-	FlagDropped 		= "¡Ha caído la bandera!",
+	FlagDropped 		= "¡Ha caído la bandera!"
 
 })
 
 L:SetTimerLocalization({
 	TimerStart 		= "¡La batalla va a Comenzar!", 
-	TimerFlag 		= "Bandera Restablecida",
+	TimerFlag 		= "Bandera Restablecida"
 })
 
 L:SetOptionLocalization({
 	TimerStart  		= "Mostrar tiempo para que comienze la Batalla.",
 	TimerWin 		= "Mostrar tiempo para que una faccion Gane la Batalla.",
 	TimerFlag 		= "Mostrar tiempo que tarda en restablecer la Bandera.",
-	ShowPointFrame 		= "Ver puntos que dara la bandera.",
+	ShowPointFrame 		= "Ver puntos que dara la bandera."
 })
 
 --------------------
@@ -170,19 +170,19 @@ L:SetMiscLocalization({
 	ExprFlagReturn 			= "¡(.+) ha devuelto la bandera de la (%w+) a su base!",
 	FlagAlliance 			= "Banderas capturadas por la Alianza: ",
 	FlagHorde			= "Banderas capturadas por la Horda: ",
-	FlagBase			= "Base",
+	FlagBase			= "Base"
 })
 
 L:SetTimerLocalization({
 	TimerStart 			= "La batalla va comenzar", 
-	TimerFlag 			= "La bandera se resetea en",
+	TimerFlag 			= "La bandera se resetea en"
 })
 
 L:SetOptionLocalization({
 	TimerStart  			= "Mostrar tiempo para que comienze la Batalla.",
 	TimerFlag			= "Mostrar tiempo que tarda en restablecer la Bandera.",
 	ShowFlagCarrier			= "Mostrar por donde va la bandera",
-	ShowFlagCarrierErrorNote 	= "Mostrar error de por donde va la bandera",
+	ShowFlagCarrierErrorNote 	= "Mostrar error de por donde va la bandera"
 })
 
 ------------------------

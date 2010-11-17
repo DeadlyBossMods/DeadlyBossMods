@@ -54,9 +54,9 @@ L.EnableStatus 		= "Responder 'estado' a los que te susurren en banda"
 L.AutoRespond 		= "Habilitar auto-responder si estas en un Boss"
 L.EnableMiniMapIcon	= "Mostrar icono de DBM en el mapa"
 L.FixCLEUOnCombatStart		= "Limpiar el log de combate al pullear"
+L.SetCurrentMapOnPull		= "Establecer mapa a la zona actual al pullear (Asegura la precisión de /distancia y /arrow)"
 L.SKT_Enabled			= "Mostrar siempre el contador para superar récord de tiempo (Sobreescribe la opción de bosses específicos)"
 L.Latency_Text				= "Umbral de latencia máxima para sincronización: %d"
-
 
 L.Button_RangeFrame	= "Mostrar/Ocultar cuadro de rango"
 L.Button_TestBars	= "Testear barras"
