@@ -12,14 +12,13 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	SpecWarnBreath	= "Aliento profundo",
 	WarnWhelpsSoon	= "Pronto saldran crias",
 	WarnPhase2Soon		= "Fase 2 pronto",
 	WarnPhase3Soon		= "Fase 3 pronto"
 }
 
 L:SetTimerLocalization{
-	TimerWhelps = "Salen crias"
+	TimerWhelps = "Crías de Onyxia"
 }
 
 L:SetOptionLocalization{
