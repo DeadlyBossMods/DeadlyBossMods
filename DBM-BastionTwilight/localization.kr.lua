@@ -7,7 +7,7 @@ local L
 L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"
+	name =	"발라리온과 텔라리온"
 })
 
 L:SetWarningLocalization({
@@ -49,7 +49,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("AscendantCouncil")
 
 L:SetGeneralLocalization({
-	name =	"Twilight Ascendant Council"
+	name =	"황혼의 승천 의회"
 })
 
 L:SetWarningLocalization({
