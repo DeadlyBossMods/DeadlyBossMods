@@ -112,7 +112,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
-	name = "\"Captain\" Cookie"
+	name = "\"Captain\" 쿠키"
 })
 
 ----------------------
@@ -141,7 +141,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ForgemasterThrongus")
 
 L:SetGeneralLocalization({
-	name = "Forgemaster Throngus"
+	name = "제련장인 트롱구스"
 })
 
 -------------------------
@@ -170,7 +170,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TempleGuardianAnhuur")
 
 L:SetGeneralLocalization({
-	name = "Temple Guardian Anhuur"
+	name = "사원 수호자 안후르"
 })
 
 ---------------------
@@ -188,7 +188,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Anraphet")
 
 L:SetGeneralLocalization({
-	name = "Anraphet"
+	name = "안라펫"
 })
 
 ------------
@@ -243,7 +243,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralHusam")
 
 L:SetGeneralLocalization({
-	name = "General Husam"
+	name = "장군 후삼"
 })
 
 ------------------------------------
@@ -252,7 +252,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
-	name = "Siamat"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
+	name = "남풍 군주 시아마트"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
 })
 
 ------------------------
@@ -261,7 +261,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighProphetBarim")
 
 L:SetGeneralLocalization({
-	name = "High Prophet Barim"
+	name = "고위 사제 바림"
 })
 
 --------------
@@ -270,7 +270,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
-	name = "Lockmaw"
+	name = "톱니아귀"
 })
 
 -----------------------
@@ -332,19 +332,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEmerge	= "Emerge",
+	WarnEmerge		= "Emerge",
 	WarnSubmerge	= "Submerge"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Emerge",
+	TimerEmerge		= "Emerge",
 	TimerSubmerge	= "Submerge"
 })
 
 L:SetOptionLocalization({
-	WarnEmerge	= "Show warning for emerge",
+	WarnEmerge		= "Show warning for emerge",
 	WarnSubmerge	= "Show warning for submerge",
-	TimerEmerge	= "Show timer for emerge",
+	TimerEmerge		= "Show timer for emerge",
 	TimerSubmerge	= "Show timer for submerge"
 })
 
