@@ -76,7 +76,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Glubtok")
 
 L:SetGeneralLocalization({
-	name = "Glubtok"
+	name = "글럽톡"
 })
 
 -----------------------
@@ -85,7 +85,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Helix")
 
 L:SetGeneralLocalization({
-	name = "Helix Gearbreaker"
+	name = "헬릭스 기어브레이커"
 })
 
 ---------------------
@@ -94,7 +94,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("FoeReaper")
 
 L:SetGeneralLocalization({
-	name = "Foe Reaper 5000"
+	name = "전투 절단기 5000"
 })
 
 ----------------------
@@ -103,7 +103,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ripsnarl")
 
 L:SetGeneralLocalization({
-	name = "Admiral Ripsnarl"
+	name = "제독 으르렁니"
 })
 
 ----------------------
@@ -112,7 +112,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
-	name = "\"Captain\" 쿠키"
+	name = "\"선장\" 쿠키"
 })
 
 ----------------------
@@ -121,7 +121,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Vanessa")
 
 L:SetGeneralLocalization({
-	name = "Vanessa VanCleef"
+	name = "바네사 밴클리프"
 })
 
 ------------------
@@ -281,7 +281,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ashbury")
 
 L:SetGeneralLocalization({
-	name = "Baron Ashbury"
+	name = "남작 애쉬버리"
 })
 
 -----------------------
@@ -317,7 +317,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Godfrey")
 
 L:SetGeneralLocalization({
-	name = "Lord Godfrey"
+	name = "고드프리 경"
 })
 
 ---------------------
