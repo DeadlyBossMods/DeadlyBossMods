@@ -13,7 +13,7 @@
 ## RequiredDeps: DBM-Core
 ## SavedVariablesPerCharacter: DBMPvP_SavedVars
 ## X-DBM-Mod: 1
-## X-DBM-Mod-Category: WotLK
+## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-SubCategories: Arena,Battlegrounds
 ## X-DBM-Mod-SubCategories-deDE: Arena,Schlachtfelder
 ## X-DBM-Mod-SubCategories-ruRU: Арена,Поля боя
@@ -29,7 +29,7 @@
 ## X-DBM-Mod-Name-koKR: 전장 및 아카본
 ## X-DBM-Mod-Name-esES: Campos de Batallas
 ## X-DBM-Mod-Name-esMX: Campos de Batallas
-## X-DBM-Mod-Sort: 275
+## X-DBM-Mod-Sort: 175
 ## X-DBM-Mod-LoadZoneID: 461,443,401,540,482
 localization.en.lua
 localization.de.lua

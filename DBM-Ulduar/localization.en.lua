@@ -164,7 +164,8 @@ L:SetWarningLocalization{
 	WarningPhasePunch		= "Phase Punch on >%s< - Stack %d",
 	WarningCosmicSmash 		= "Cosmic Smash - Explosion in 4 seconds",
 	WarnPhase2Soon			= "Phase 2 soon",
-	warnStarLow				= "Collapsing Star is low"
+	warnStarLow				= "Collapsing Star is low",
+	FirstPullNotice			= "First pull detected, auto correcting timers."
 }
 
 L:SetOptionLocalization{
@@ -182,6 +183,7 @@ L:SetMiscLocalization{
 	YellKill				= "I have seen worlds bathed in the Makers' flames, their denizens fading without as much as a whimper. Entire planetary systems born and razed in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart devoid of emotion... of empathy. I. Have. Felt. Nothing. A million-million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",
 	Emote_CollapsingStar	= "%s begins to Summon Collapsing Stars!",
 	Phase2					= "Behold the tools of creation",
+	FirstPull				= "See your world through my eyes: A universe so vast as to be immeasurable - incomprehensible even to your greatest minds.",
 	PullCheck				= "Time until Algalon transmits distress signal= (%d+) min."
 }
 

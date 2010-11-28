@@ -28,6 +28,7 @@ mod:RegisterEvents(
 local announceBigBang			= mod:NewSpellAnnounce(64584, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon			= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnFirstPull				= mod:NewAnnounce("FirstPullNotice", 2, nil, nil, false)
 local announcePreBigBang		= mod:NewPreWarnAnnounce(64584, 10, 3)
 local announceBlackHole			= mod:NewSpellAnnounce(65108, 2)
 local announceCosmicSmash		= mod:NewAnnounce("WarningCosmicSmash", 3, 62311)
@@ -54,27 +55,20 @@ local warned_star = false
 function mod:OnCombatStart(delay)
 	warned_preP2 = false
 	warned_star = false
-	local text = select(3, GetWorldStateUIInfo(1)) 
-	local _, _, time = string.find(text, L.PullCheck)
-	if not time then 
-        	time = 60 
-    	end
-	time = tonumber(time)
-	if time == 60 then
-		timerCombatStart:Start(26.5-delay)
-		self:ScheduleMethod(26.5-delay, "startTimers")	-- 26 seconds roleplaying
-	else 
-		timerCombatStart:Start(-delay)
-		self:ScheduleMethod(8-delay, "startTimers")	-- 8 seconds roleplaying
-	end 
+	enrageTimer:Start(368-delay)
+	timerNextBigBang:Start(98-delay)
+	announcePreBigBang:Schedule(88-delay)
+	timerCDCosmicSmash:Start(33-delay)
+	timerNextCollapsingStar:Start(23-delay)
+	timerCombatStart:Start(-delay)
 end
 
 function mod:startTimers()
-	enrageTimer:Start()
-	timerNextBigBang:Start()
-	announcePreBigBang:Schedule(80)
-	timerCDCosmicSmash:Start()
-	timerNextCollapsingStar:Start()
+	enrageTimer:Start(368)
+	timerNextBigBang:Start(98.5)
+	announcePreBigBang:Schedule(88)
+	timerCDCosmicSmash:Start(33)
+	timerNextCollapsingStar:Start(23)
 end
 
 function mod:SPELL_CAST_START(args)
@@ -120,7 +114,15 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.Phase2 or msg:find(L.Phase2) then
+	if msg == L.FirstPull or msg:find(L.FirstPull) then--Additional pull yell on first pull, auto correct timers. Not cleanest way to do it but only real way to do it accurately.
+		enrageTimer:Start(386.5)
+		timerNextBigBang:Start(116.5)
+		announcePreBigBang:Schedule(106.5)
+		timerCDCosmicSmash:Start(51.5)
+		timerNextCollapsingStar:Start(41.5)
+		timerCombatStart:Start(18.5)
+		warnFirstPull:Show()
+	elseif msg == L.Phase2 or msg:find(L.Phase2) then
 		timerNextCollapsingStar:Cancel()
 		warnPhase2:Show()
 	end
