@@ -188,7 +188,8 @@ L:SetWarningLocalization{
 	WarningCosmicSmash 		= "우주의 강타 - 폭발 4초 전",
 	SpecWarnCosmicSmash 	= "우주의 강타",
 	WarnPhase2Soon			= "곧 2 페이즈",
-	warnStarLow				= "붕괴의 별 체력 낮음"
+	warnStarLow				= "붕괴의 별 체력 낮음",
+	FirstPullNotice			= "첫번째 풀링 감지,  자동 타이머 수정"	
 }
 
 L:SetOptionLocalization{
