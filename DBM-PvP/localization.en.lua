@@ -86,8 +86,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60	= "The battle begins in 1 minute.",
-	BgStart30	= "The battle begins in 30 seconds.  Prepare yourselves!",
+	BgStart60	= "The battle will begin in 1 minute.",
+	BgStart30	= "The battle will begin in 30 seconds.",
 	ZoneName	= "Arathi Basin",
 	ScoreExpr	= "(%d+)/1600",
 	Alliance	= "Alliance",

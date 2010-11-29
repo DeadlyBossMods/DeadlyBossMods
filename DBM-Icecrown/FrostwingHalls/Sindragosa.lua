@@ -68,6 +68,7 @@ local warnedfailed = false
 local phase = 0
 local unchainedIcons = 7
 local activeBeacons	= false
+local lastfail
 
 local function ClearBeaconTargets()
 	table.wipe(beaconIconTargets)
@@ -82,7 +83,7 @@ do
 			table.sort(beaconIconTargets, sort_by_group)
 			local beaconIcons = 8
 			for i, v in ipairs(beaconIconTargets) do
-				if self.Options.AnnounceFrostBeaconIcons then
+				if self.Options.AnnounceFrostBeaconIcons and IsRaidLeader() then
 					SendChatMessage(L.BeaconIconSet:format(beaconIcons, UnitName(v)), "RAID")
 				end
 				self:SetIcon(UnitName(v), beaconIcons)
@@ -117,6 +118,7 @@ function mod:OnCombatStart(delay)
 	unchainedIcons = 7
 	phase = 1
 	activeBeacons = false
+	lastfail = GetTime()
 	if self.Options.RangeFrame then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
@@ -218,12 +220,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if args:IsDestTypePlayer() then
-			if self.Options.AchievementCheck and DBM:GetRaidRank() > 0 and not warnedfailed then
+			if self.Options.AchievementCheck and DBM:GetRaidRank() > 0 and not warnedfailed and GetTime() - lastfail > 3 then
+				lastfail = GetTime()
 				if (args.amount or 1) == 5 then
 					SendChatMessage(L.AchievementWarning:format(args.destName), "RAID")
 				elseif (args.amount or 1) > 5 then
-					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "RAID_WARNING")
 					warnedfailed = true
+					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "RAID_WARNING")
 				end
 			end
 		end
