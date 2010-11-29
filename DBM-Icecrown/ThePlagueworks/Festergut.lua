@@ -49,6 +49,7 @@ local vileGasTargets	= {}
 local gasSporeCast 	= 0
 local lastGoo = 0
 local warnedfailed = false
+local lastfail
 
 local function ClearSporeTargets()
 	table.wipe(gasSporeIconTargets)
@@ -63,7 +64,7 @@ do
 			table.sort(gasSporeIconTargets, sort_by_group)
 			local gasSporeIcon = 8
 			for i, v in ipairs(gasSporeIconTargets) do
-				if self.Options.AnnounceSporeIcons then
+				if self.Options.AnnounceSporeIcons and IsRaidLeader() then
 					SendChatMessage(L.SporeSet:format(gasSporeIcon, UnitName(v)), "RAID")
 				end
 				self:SetIcon(UnitName(v), gasSporeIcon, 12)
@@ -97,6 +98,7 @@ function mod:OnCombatStart(delay)
 	gasSporeCast = 0
 	lastGoo = 0
 	warnedfailed = false
+	lastfail = GetTime()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -194,10 +196,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.8, warnVileGasTargets)
 	elseif args:IsSpellID(69291, 72101, 72102, 72103) then	--Inoculated
 		if args:IsDestTypePlayer() then
-			if self.Options.AchievementCheck and DBM:GetRaidRank() > 0 and not warnedfailed then
+			if self.Options.AchievementCheck and DBM:GetRaidRank() > 0 and not warnedfailed and GetTime() - lastfail > 3 then
+				lastfail = GetTime()
 				if (args.amount or 1) == 3 then
-					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "RAID_WARNING")
 					warnedfailed = true
+					SendChatMessage(L.AchievementFailed:format(args.destName, (args.amount or 1)), "RAID_WARNING")
 				end
 			end
 		end
