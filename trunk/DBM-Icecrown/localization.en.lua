@@ -247,7 +247,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "Show range frame (8 yards)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Announce icons for $spell:69279 targets to raid chat\n(requires announce to be enabled and promoted status)",
+	AnnounceSporeIcons	= "Announce icons for $spell:69279 targets to raid chat\n(requires raid leader)",
 	AchievementCheck	= "Announce 'Flu Shot Shortage' achievement failure to raid\n(requires promoted status)"
 }
 
@@ -471,7 +471,7 @@ L:SetOptionLocalization{
 	WarnInstability			= "Show warning for your $spell:69766 stacks",
 	WarnChilledtotheBone	= "Show warning for your $spell:70106 stacks",
 	WarnMysticBuffet		= "Show warning for your $spell:70128 stacks",
-	AnnounceFrostBeaconIcons= "Announce icons for $spell:70126 targets to raid chat\n(requires announce to be enabled and promoted status)",
+	AnnounceFrostBeaconIcons= "Announce icons for $spell:70126 targets to raid chat\n(requires raid leader)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	PlaySoundOnFrostTomb	= "Play sound on $spell:70126",

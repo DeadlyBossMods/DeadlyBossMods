@@ -103,7 +103,7 @@ do
 			table.sort(PColdTargets, sort_by_group)
 			local PColdIcon = 7
 			for i, v in ipairs(PColdTargets) do
-				if self.Options.AnnouncePColdIcons then
+				if self.Options.AnnouncePColdIcons and IsRaidLeader() then
 					SendChatMessage(L.PcoldIconSet:format(PColdIcon, UnitName(v)), "RAID")
 				end
 				self:SetIcon(UnitName(v), PColdIcon)
@@ -175,7 +175,7 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(66013, 67700, 68509, 68510) then			-- Penetrating Cold
 		if self.Options.SetIconsOnPCold then
 			self:SetIcon(args.destName, 0)
-			if self.Options.AnnouncePColdIconsRemoved and DBM:GetRaidRank() >= 1 then
+			if self.Options.AnnouncePColdIconsRemoved and IsRaidLeader() then
 				SendChatMessage(L.PcoldIconRemoved:format(args.destName), "RAID")
 			end
 		end
