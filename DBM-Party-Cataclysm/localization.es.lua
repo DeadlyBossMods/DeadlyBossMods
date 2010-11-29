@@ -10,7 +10,7 @@ local L
 L = DBM:GetModLocalization("Romogg")
 
 L:SetGeneralLocalization({
-	name = "Rom'ogg Bonecrusher"--translate
+	name = "Machacahuesos Rom'ogg"
 })
 
 -------------------------------
@@ -19,7 +19,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Corla")
 
 L:SetGeneralLocalization({
-	name = "Corla, Herald of Twilight"--translate
+	name = "Corla, Heraldo del Crepúsculo"
 })
 
 L:SetWarningLocalization({
@@ -36,11 +36,11 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("KarshSteelbender")
 
 L:SetGeneralLocalization({
-	name = "Karsh Steelbender"--translate
+	name = "Karsh Doblacero"
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "$spell:75846 (%d)"	-- should work, no need for translation :)
+	TimerSuperheated 	= "$spell:75846 (%d)"
 })
 
 L:SetOptionLocalization({
@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Beauty")
 
 L:SetGeneralLocalization({
-	name = "Beauty"--translate
+	name = "Bella"
 })
 
 -----------------------------
@@ -77,7 +77,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Glubtok")
 
 L:SetGeneralLocalization({
-	name = "Glubtok"--translate
+	name = "Glubtok"
 })
 
 -----------------------
@@ -86,7 +86,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Helix")
 
 L:SetGeneralLocalization({
-	name = "Helix Gearbreaker"--translate
+	name = "Helix Rompengranajes"
 })
 
 ---------------------
@@ -95,7 +95,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("FoeReaper")
 
 L:SetGeneralLocalization({
-	name = "Foe Reaper 5000"--translate
+	name = "Siegaenemigos 5000"
 })
 
 ----------------------
@@ -104,7 +104,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ripsnarl")
 
 L:SetGeneralLocalization({
-	name = "Admiral Ripsnarl"--translate
+	name = "Almirante Rasgagruñido"
 })
 
 ----------------------
@@ -171,7 +171,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TempleGuardianAnhuur")
 
 L:SetGeneralLocalization({
-	name = "Temple Guardian Anhuur"--translate
+	name = "Guardian del templo Anhuur"
 })
 
 ---------------------
@@ -180,7 +180,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("EarthragerPtah")
 
 L:SetGeneralLocalization({
-	name = "Earthrager Ptah"--translate
+	name = "Terracundo Ptah"
 })
 
 --------------
@@ -309,7 +309,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Walden")
 
 L:SetGeneralLocalization({
-	name = "Lord Walden"--translate
+	name = "Lord Walden"
 })
 
 ------------------
@@ -318,7 +318,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Godfrey")
 
 L:SetGeneralLocalization({
-	name = "Lord Godfrey"--translate
+	name = "Lord Godfrey"
 })
 
 
@@ -347,7 +347,7 @@ L:SetOptionLocalization({
 })
 
 L:SetGeneralLocalization({
-	name = "Corborus"--translate
+	name = "Corborus"
 })
 
 -----------
@@ -365,7 +365,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Slabhide")
 
 L:SetGeneralLocalization({
-	name = "Slabhide"--translate
+	name = "Pielpétrea"
 })
 
 -------------------------
@@ -385,7 +385,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GrandVizierErtan")
 
 L:SetGeneralLocalization({
-	name = "Grand Vizier Ertan"--translate
+	name = "Gran visir Ertan"
 })
 
 --------------
@@ -394,7 +394,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Altarius")
 
 L:SetGeneralLocalization({
-	name = "Altarius"--translate
+	name = "Altarius"
 })
 
 -----------
@@ -414,7 +414,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("LadyNazjar")
 
 L:SetGeneralLocalization({
-	name = "Lady Naz'jar"--translate
+	name = "Lady Naz'jar"
 })
 
 -----======-----------
@@ -423,7 +423,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("CommanderUlthok")
 
 L:SetGeneralLocalization({
-	name = "Commander Ulthok"--translate
+	name = "Comandante Ulthok"
 })
 
 -------------------------
@@ -432,7 +432,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ErunakStonespeaker")
 
 L:SetGeneralLocalization({
-	name = "Erunak Stonespeaker"--translate
+	name = "Erunak Hablapiedra"
 })
 
 ------------
