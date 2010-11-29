@@ -81,5 +81,3 @@ ThroneOfTides\LadyNazjar.lua
 ThroneOfTides\CommanderUlthok.lua
 ThroneOfTides\ErunakStonespeaker.lua
 ThroneOfTides\Ozumat.lua
-
-help.lua
