@@ -15,18 +15,18 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnCausticSlime		= mod:NewSpellAnnounce(82935, 3)
-local warnBreak			= mod:NewAnnounce("WarnBreak", 3)
-local warnDoubleAttack		= mod:NewSpellAnnounce(88826, 4)
+local warnCausticSlime	= mod:NewSpellAnnounce(82935, 3)
+local warnBreak			= mod:NewAnnounce("WarnBreak", 3, 82881)
+local warnDoubleAttack	= mod:NewSpellAnnounce(88826, 4)
 local warnMassacre		= mod:NewSpellAnnounce(82848, 3)
 local warnFeud			= mod:NewSpellAnnounce(88872, 4)
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 3)
+local warnPhase2Soon	= mod:NewAnnounce("WarnPhase2Soon", 3)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
 
 --local timerCausticSlime	= mod:NewNextTimer( ?? , 82935)
 local timerBreak		= mod:NewTargetTimer(60, 82881)
 local timerMassacre		= mod:NewCastTimer(4, 82848)
-local timerMassacreNext		= mod:NewNextTimer(30, 82848)
+local timerMassacreNext	= mod:NewNextTimer(30, 82848)
 local timerFeud			= mod:NewBuffActiveTimer(30, 88872)
 local timerFeudNext		= mod:NewNextTimer(90, 88872)
 

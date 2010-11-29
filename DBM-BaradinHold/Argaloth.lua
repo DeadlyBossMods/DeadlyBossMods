@@ -14,10 +14,10 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnConsuming		= mod:NewTargetAnnounce(88954, 3)
+local warnConsuming			= mod:NewTargetAnnounce(88954, 3)
 local warnMeteorSlash		= mod:NewSpellAnnounce(88942, 4)
-local warnFirestorm		= mod:NewSpellAnnounce(88972, 4)
-local warnFirestormSoon		= mod:NewAnnounce("WarnFirestormSoon", 3)
+local warnFirestorm			= mod:NewSpellAnnounce(88972, 4)
+local warnFirestormSoon		= mod:NewAnnounce("WarnFirestormSoon", 3, 88972)
 
 local timerConsuming		= mod:NewTargetTimer(15, 88954)
 local timerConsumingCD		= mod:NewCDTimer(22, 88954)

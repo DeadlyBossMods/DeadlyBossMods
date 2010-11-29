@@ -14,13 +14,13 @@ mod:RegisterEvents(
 )
 
 local warnSonicBreath		= mod:NewSpellAnnounce(78075, 3)
-local warnAirphase		= mod:NewAnnounce("WarnAirphase", 3)
+local warnAirphase			= mod:NewAnnounce("WarnAirphase", 3)
 local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 3)
-local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 3)
+local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 3, 77611)
 
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(50, 77840)
-local timerAirphase		= mod:NewTimer(90, "TimerAirphase")
+local timerAirphase			= mod:NewTimer(90, "TimerAirphase")
 local timerGroundphase		= mod:NewTimer(35, "TimerGroundphase")
 
 local shieldsLeft = 10
