@@ -256,7 +256,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "Mostrar distancia (8 yardas)",
 	WarnGastricBloat	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),	
 	SetIconOnGasSpore	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons	= "Anunciar los iconos de los objetivos de $spell:69279 en el chat de banda\n(Necesita Anunciar habilitado y ayudante/líder de banda)",
+	AnnounceSporeIcons	= "Anunciar los iconos de los objetivos de $spell:69279 en el chat de banda\n(Necesitas ser líder de banda)",
 	AchievementCheck	= "Anunciar fallo del logro 'Sin vacunas' a la banda\n(requiere líder/ayudante)"
 }
 
@@ -481,7 +481,7 @@ L:SetOptionLocalization{
 	WarnInstability			= "Mostrar aviso de tus marcas de $spell:69766",
 	WarnChilledtotheBone	= "Mostrar aviso de tus marcas de $spell:70106",
 	WarnMysticBuffet		= "Mostrar aviso de tus marcas de $spell:70128",
-	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de banda\n(Requiere 'anunciar' activado y líder/ayudante)",
+	AnnounceFrostBeaconIcons= "Anunciar los iconos de los objetivos de $spell:70126 en el chat de banda\n(Necesitas ser líder de banda)",
 	SetIconOnFrostBeacon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	PlaySoundOnFrostTomb	= "Reproducir sonido cuando tengas $spell:70126",

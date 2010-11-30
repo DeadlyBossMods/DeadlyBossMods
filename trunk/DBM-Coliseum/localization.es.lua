@@ -255,6 +255,6 @@ L:SetOptionLocalization{
 	PursueIcon				= "Poner icono en jugador",
 	SpecWarnShadowStrike	= "Mostrar aviso especial para Golpe de sombras ( para cortar )",
 	SetIconsOnPCold         = "Poner iconos en los objetivos de $spell:68510",
-	AnnouncePColdIcons		= "Anunciar iconos para los ojetivos de $spell:68510 en el chat de banda\n(Requiere 'anunciar' habilitado y lider)",
+	AnnouncePColdIcons		= "Anunciar iconos para los ojetivos de $spell:68510 en el chat de banda\n(Requiere líder de banda)",
 	AnnouncePColdIconsRemoved	= "También anunciar cuando se eliminen los iconos de los objetivos $spell:68510\n(Necesita la opción anterior)"
 }
