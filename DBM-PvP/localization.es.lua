@@ -89,12 +89,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La batalla por la Cuenca de Arathi comenzará en 1 minuto.",
-	BgStart30		= "La Batalla por la Cuenca de Arathi comenzará en 30 segundos.",
+	BgStart60		= "La batalla comenzará en 1 minuto.",
+	BgStart30		= "La batalla comenzará en 30 segundos.",
 	ZoneName 		= "Cuenca de Arathi",
 	ScoreExpr 		= "(%d+)/1600",
-	Alliance 		= "La Alianza",
-	Horde 			= "La Horda",
+	Alliance 		= "Alianza",
+	Horde 			= "Horda",
 	WinBarText 		= "%s ganara en",
 	BasesToWin 		= "Bases necesarias para ganar: %d",
 	Flag 			= "Bandera"
@@ -159,8 +159,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "La batalla por la Garganta Grito de Guerra comenzará en 1 minuto.",
-	BgStart30 			= "La batalla por la Garganta Grito de Guerra comenzará en 30 segundos. ¡Preparaos!",
+	BgStart60 			= "La batalla comienza en 1 minuto.",
+	BgStart30 			= "La batalla comienza en 30 segundos. ¡Preparaos!",
 	ZoneName 			= "Garganta Grito de Guerra",
 	Alliance 			= "Alianza",
 	Horde 				= "Horda",	
