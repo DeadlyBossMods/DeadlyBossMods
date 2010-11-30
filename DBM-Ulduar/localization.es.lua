@@ -168,7 +168,8 @@ L:SetWarningLocalization{
 	WarningPhasePunch		= "Cambiar de fase en >%s< - Stack %d",
 	WarningCosmicSmash 		= "Machaque cósmico - Explosion en 4 segundos",
 	WarnPhase2Soon			= "Fase 2 pronto",
-	warnStarLow				= "Estrella en colapso a punto de morir"
+	warnStarLow				= "Estrella en colapso a punto de morir",
+	FirstPullNotice			= "Primer pull detectado, corrigiendo tiempos."
 }
 
 L:SetOptionLocalization{
@@ -183,9 +184,10 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 	YellPull				= "Vuestros actos carecen de lógica. Se ha calculado cualquier posible resultado de este encuentro. El Panteón recibirá el mensaje del Observador sean cuales sean las consecuencias.",
-	YellKill				= "I have seen worlds bathed in the Makers' flames. Their denizens fading without so much as a whimper. Entire planetary systems born and raised in the time that it takes your mortal hearts to beat once. Yet all throughout, my own heart, devoid of emotion... of empathy. I... have... felt... NOTHING! A million, million lives wasted. Had they all held within them your tenacity? Had they all loved life as you do?",--translate
+	YellKill				= "He visto mundos hundirse en las llamas de los Creadores, como se desvanecían sus habitantes sin apenas un gemido. He visto sistemas planetarios enteros crearse y ser arrasados en lo que vuestros mortales corazones laten una sola vez. Y mi corazón permaneció desprovisto de emoción... de empatía. Yo... no... sentí... nada. Millones de vidas malgastadas ¿Acaso compartían vuestra tenacidad? ¿Amaban la vida como vosotros?",
 	Emote_CollapsingStar	= "¡%s comienza a invocar estrellas en colapso!",
 	Phase2					= "¡Observad las herramientas de la creación!",
+	FirstPull				= "Mirad vuestro mundo a través de mis ojos: un universo tan vasto que es inconmensurable, incompresible incluso para vuestras grandes mentes.",
 	PullCheck				= "Tiempo hasta que Algalon transmita la señal de auxilio= (%d+) min."
 }
 
