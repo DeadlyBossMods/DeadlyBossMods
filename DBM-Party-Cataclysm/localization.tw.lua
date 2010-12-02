@@ -23,11 +23,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd		= "Add released"
+	WarnAdd		= "小怪被釋放了"
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "Warn when an add looses $spell:75608 buff"
+	WarnAdd		= "當一隻小怪丟棄$spell:75608增益時警告"
 })
 
 -----------------------
@@ -44,7 +44,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSuperheated	= "Show timer for $spell:75846 duration"
+	TimerSuperheated	= "為$spell:75846顯示持續時間計時器"
 })
 
 ------------
@@ -66,7 +66,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetIconOnBoss	= "Put an icon on the boss after $spell:76200 "
+	SetIconOnBoss	= "$spell:76200後標記首領"
 })
 
 ---------------------
@@ -202,11 +202,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSplitSoon	= "Split soon"
+	WarnSplitSoon	= "Split 即將到來"
 })
 
 L:SetOptionLocalization({
-	WarnSplitSoon	= "Show pre-warning for Split"
+	WarnSplitSoon	= "為Split顯示預先警告"
 })
 
 -------------
@@ -329,20 +329,20 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Corborus")
 
 L:SetWarningLocalization({
-	WarnEmerge	= "Emerge",
-	WarnSubmerge	= "Submerge"
+	WarnEmerge	= "鑽出地面",
+	WarnSubmerge	= "鑽進地裡"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Emerge",
-	TimerSubmerge	= "Submerge"
+	TimerEmerge	= "鑽出地面",
+	TimerSubmerge	= "鑽進地裡"
 })
 
 L:SetOptionLocalization({
-	WarnEmerge	= "Show warning for emerge",
-	WarnSubmerge	= "Show warning for submerge",
-	TimerEmerge	= "Show timer for emerge",
-	TimerSubmerge	= "Show timer for submerge"
+	WarnEmerge	= "為鑽出地面顯示警告",
+	WarnSubmerge	= "為鑽進地裡顯示警告",
+	TimerEmerge	= "為鑽出地面顯示計時器",
+	TimerSubmerge	= "為鑽進地裡顯示計時器"
 })
 
 L:SetGeneralLocalization({

@@ -43,11 +43,11 @@ L:SetMiscLocalization({
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
 	Arcanotron	= "Arcanotron",
-	SayBomb		= "Poison Bomb on me!"
+	SayBomb		= "我中了化學炸彈!"
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157"
+	SayBombTarget	= "當你是$spell:80157的目標時大喊"
 })
 
 ----------------
@@ -60,12 +60,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase		= "%s phase",
-	WarnRemainingAdds	= "%d aberrations remaining"
+	WarnPhase		= "%s階段",
+	WarnRemainingAdds	= "剩餘%d畸變"
 })
 
 L:SetTimerLocalization({
-	TimerPhase		= "Next phase"
+	TimerPhase		= "下一階段"
 })
 
 L:SetMiscLocalization({
@@ -73,16 +73,16 @@ L:SetMiscLocalization({
 	YellBlue		= "How well does the mortal shell handle extreme temperature change? Must find out! For science!",
 	YellGreen		= "This one's a little unstable, but what's progress without failure?",
 	YellDark		= "Your mixtures are weak, Maloriak! They need a bit more... kick!",
-	Red			= "Red",
-	Blue			= "Blue",
-	Green			= "Green",
-	Dark			= "Dark"
+	Red			= "紅色",
+	Blue			= "藍色",
+	Green			= "綠色",
+	Dark			= "黑色"
 })
 
 L:SetOptionLocalization({
-	WarnPhase		= "Show warning which phase is incoming",
-	WarnRemainingAdds	= "Show warning how many aberrations remain",
-	TimerPhase		= "Show timer for next phase"
+	WarnPhase		= "為那個階段即將到來顯示警告",
+	WarnRemainingAdds	= "顯示剩餘多少畸變的警告",
+	TimerPhase		= "為下一階段顯示計時器"
 })
 
 -----------------
@@ -95,8 +95,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 soon",
-	WarnBreak	= "%s on >%s< (%d)"
+	WarnPhase2Soon	= "第2階段 即將到來",
+	WarnBreak	= "%s: >%s< (%d)"
 })
 
 L:SetTimerLocalization({
@@ -106,7 +106,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Show a prewarning for Phase 2",
+	WarnPhase2Soon	= "為第2階段顯示預先警告",
 	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown")
 })
 
@@ -120,14 +120,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAirphase		= "Airphase",
-	WarnGroundphase		= "Groundphase",
-	WarnShieldsLeft		= "Ancient Dwarven Shield used - %d left"
+	WarnAirphase		= "空中階段",
+	WarnGroundphase		= "地上階段",
+	WarnShieldsLeft		= "使用了Ancient Dwarven Shield - 剩餘%d"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "Airphase",
-	TimerGroundphase	= "Groundphase"
+	TimerAirphase		= "空中階段",
+	TimerGroundphase	= "地上階段"
 })
 
 L:SetMiscLocalization({
@@ -136,11 +136,11 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAirphase		= "Show warning when Atramedes lifts off",
-	WarnGroundphase		= "Show warning when Atramedes lands",
-	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",
-	TimerAirphase		= "Show timer for next airphase",
-	TimerGroundphase	= "Show timer for next groundphase"
+	WarnAirphase		= "當Atramedes升空時顯示警告",
+	WarnGroundphase		= "當Atramedes降落時顯示警告",
+	WarnShieldsLeft		= "當Ancient Dwarven Shield使用後顯示警告",
+	TimerAirphase		= "為下一次 空中階段顯示計時器",
+	TimerGroundphase	= "為下一次 地上階段顯示計時器"
 })
 
 ----------------
@@ -149,7 +149,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Nefarian-BD")	-- No conflict with BWL version :)
 
 L:SetGeneralLocalization({
-	name = "Nefarian"
+	name = "奈法利安"
 })
 
 L:SetWarningLocalization({

@@ -12,7 +12,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnFirestormSoon		= "Fel Firestorm soon"
+	WarnFirestormSoon		= "魔化火颶 即將到來"
 })
 
 L:SetTimerLocalization({
@@ -22,6 +22,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnFirestormSoon		= "Show pre-warning for $spell:88972 ",
+	WarnFirestormSoon		= "為$spell:88972顯示預先警告",
 	SetIconOnConsuming		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88954)
 })
