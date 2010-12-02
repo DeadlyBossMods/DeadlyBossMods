@@ -182,7 +182,7 @@ do
 		function getQuestName(id)
 			tooltip:ClearLines()
 			tooltip:SetHyperlink("quest:"..id)
-			return getglobal(tooltip:GetName().."Text"):GetText()
+			return _G[tooltip:GetName().."Text"]:GetText()
 		end
 	end
 	

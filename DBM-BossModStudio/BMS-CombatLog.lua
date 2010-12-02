@@ -135,7 +135,7 @@ do
 		elseif event == "ENVIRONMENTAL_DAMAGE" then
 			args.environmentalType = select(1,...)
 			args.amount, args.overkill, args.school, args.resisted, args.blocked, args.absorbed, args.critical, args.glancing, args.crushing = select(2, ...)
-			args.spellName = getglobal("ACTION_"..event.."_"..args.environmentalType)
+			args.spellName = _G["ACTION_"..event.."_"..args.environmentalType]
 			args.spellSchool = args.school
 		elseif event == "DAMAGE_SPLIT" then
 			args.spellId, args.spellName, args.spellSchool = select(1, ...)

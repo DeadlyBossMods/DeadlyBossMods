@@ -404,7 +404,7 @@ local function create_BossMainPanel(mod, k)
 					copytable(CurrentBossSetup.triggers[trigger_id], trigger_defaults)
 					CurrentBossSetup.triggers[recover.id].name = description
 					CurrentBossSetup.triggers[recover.id].typ = triggertype
-					getglobal(recover.frame:GetName()..'Title'):SetText(recover.id..". "..description.." ("..triggertype..")")
+					_G[recover.frame:GetName()..'Title']:SetText(recover.id..". "..description.." ("..triggertype..")")
 		
 					for i=1, select("#", recover.frame:GetChildren()), 1 do
 						select(i, recover.frame:GetChildren()):Show()
