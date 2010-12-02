@@ -88,8 +88,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60			= "阿拉希盆地的戰鬥將在1分鐘後開始。",
-	BgStart30			= "阿拉希盆地的戰鬥將在30秒後開始。",
+	BgStart60			= "戰鬥將在1分鐘後開始。",
+	BgStart30			= "戰鬥將在30秒後開始。",
 	ZoneName 			= "阿拉希盆地",
 	ScoreExpr 			= "(%d+)/1600",
 	Alliance 			= "聯盟",
@@ -157,8 +157,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "戰歌峽谷戰鬥將在1分鐘內開始。",
-	BgStart30 			= "戰歌峽谷戰鬥將在30秒鐘內開始。做好準備!",
+	BgStart60 			= "戰鬥將在1分鐘內開始。",
+	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
 	ZoneName 			= "戰歌峽谷",
 	Alliance 			= "聯盟",
 	Horde 				= "部落",	

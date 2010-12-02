@@ -161,7 +161,8 @@ L:SetWarningLocalization{
 	WarningPhasePunch		= "相位拳擊: >%s< - 第%d層",
 	WarningCosmicSmash 		= "宇宙潰擊 - 約4秒後爆炸",
 	WarnPhase2Soon			= "第2階段 即將到來",
-	warnStarLow			= "崩陷之星血量低"
+	warnStarLow			= "崩陷之星血量低",
+	FirstPullNotice			= "檢測為第一次戰鬥，自動校正定時器。"
 }
 
 L:SetOptionLocalization{
@@ -179,6 +180,8 @@ L:SetMiscLocalization{
 --	YellKill			= "我曾經看過塵世沉浸在造物者的烈焰之中，眾生連一聲悲泣都無法呼出，就此凋零。整個星系在彈指之間歷經了毀滅與重生。然而在這段歷程之中，我的心卻無法感受到絲毫的…惻隱之念。我‧感‧受‧不‧到。成千上萬的生命就這麼消逝。他們是否擁有與你同樣堅韌的生命?他們是否與你同樣熱愛生命?",
 	Emote_CollapsingStar		= "%s開始召喚崩陷之星!",
 	Phase2				= "瞧瞧泰坦造物的能耐吧!",
+
+	FirstPull			= "從我的雙眼觀看你的世界:一個無邊無際的宇宙--連你們之中最具智慧者都無法想像的廣闊無垠。",
 	PullCheck			= "艾爾加隆開始上傳滅世訊息的剩餘時間= (%d+)分鐘。"
 }
 
