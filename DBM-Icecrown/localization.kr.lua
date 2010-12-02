@@ -250,7 +250,7 @@ L:SetOptionLocalization{
 	RangeFrame				= "거리 창 보기(8 미터)",	
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "알 수 없음"),	
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons		= "$spell:69279 대상 공격대 징표 채팅으로 알리기\n(공대장 혹은 권한을 가진 사람만 사용 가능)",
+	AnnounceSporeIcons		= "$spell:69279 대상 공격대 징표 채팅으로 알리기\n(공대장 권한을 가진 사람만 사용 가능)",
 	AchievementCheck		= "Announce 'Flu Shot Shortage' achievement failure to raid chat\n(requires promoted status)"	
 }
 
@@ -477,7 +477,7 @@ L:SetOptionLocalization{
 	WarnInstability				= "당신의 $spell:69766 중첩 경고 보기",
 	WarnChilledtotheBone		= "당신의 $spell:70106 중첩 경고 보기",
 	WarnMysticBuffet			= "당신의 $spell:70128 중첩 경고 보기",
-	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 징표을 채팅으로 알리기\n(공대장 혹은 부공대장 권한이 있을 경우)",	
+	AnnounceFrostBeaconIcons	= "$spell:70126 대상 공격대 징표을 채팅으로 알리기\n(공대장 권한이 있을 경우)",	
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
 	PlaySoundOnFrostTomb		= "$spell:70126의 소리 듣기",

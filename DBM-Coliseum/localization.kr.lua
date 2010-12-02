@@ -253,6 +253,6 @@ L:SetOptionLocalization{
 	PursueIcon					= "추격 대상자 공격대 아이콘 설정하기",
 	SetIconsOnPCold				= "$spell:68510 대상자 공격대 아이콘 설정하기",
 	SpecWarnShadowStrike		= "$spell:66134 특수 경고 보기(차단 관련)",
-	AnnouncePColdIcons			= "$spell:68510 대상자 및 공격대 아이콘 설정을 공격대 채팅창으로 알리기",
+	AnnouncePColdIcons			= "$spell:68510 대상자 및 공격대 아이콘 설정을 공격대 채팅창으로 알리기(공대장 권한)",
 	AnnouncePColdIconsRemoved	= "$spell:68510의 공격대 아이콘이 언제 사라지는지 알리기 \n(위의 옵션을 포함해야 함)"	
 }
