@@ -102,7 +102,6 @@ mod:AddBoolOption("AnnounceValkGrabs", false)
 mod:AddBoolOption("AnnouncePlagueStack", false, "announce")
 --mod:AddBoolOption("DefileArrow")
 mod:AddBoolOption("TrapArrow")
---mod:AddBoolOption("LKBugWorkaround", true)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
 local phase	= 0
 local lastPlagueCast = 0
@@ -125,36 +124,6 @@ function mod:RestoreWipeTime()
 	mod:SetWipeTime(5)--Restore it after frostmourn room.
 end
 
---[[function mod:DefileTarget()
-	local target = self:GetBossTarget(36597)
-	if not target then return end
-	if mod:LatencyCheck() then--Only send sync if you have low latency.
-		self:SendSync("DefileOn", target)
-	end
-end
-
-function mod:TankTrap()
-	if mod:LatencyCheck() then
-		self:SendSync("TrapOn", LKTank)
-	end
-end
-
-function mod:TrapTarget()
-	local targetname = self:GetBossTarget(36597)
-	if not targetname then return end
-	if targetname ~= LKTank then--If scan doesn't return tank abort other scans and do other warnings.
-		self:UnscheduleMethod("TrapTarget")
-		self:UnscheduleMethod("TankTrap")--Also unschedule tanktrap since we got a scan that returned a non tank.
-		if mod:LatencyCheck() then
-			self:SendSync("TrapOn", targetname)
-		end
-	else
-		self:UnscheduleMethod("TankTrap")
-		self:ScheduleMethod(1, "TankTrap") --If scan returns tank schedule warnings for tank after all other scans have completed. If none of those scans return another player this will be allowed to fire.
-	end
-end--]]
-
---for those that want to avoid latency check. Only option enabled right now since sync method bugs out pretty bad.
 function mod:OldDefileTarget()
 	local targetname = self:GetBossTarget(36597)
 	if not targetname then return end
@@ -286,17 +255,12 @@ function mod:SPELL_CAST_START(args)
 		specWarnInfest:Show()
 		timerInfestCD:Start()
 	elseif args:IsSpellID(72762) then -- Defile
---		if self.Options.LKBugWorkaround then
 			self:ScheduleMethod(0.1, "OldDefileTarget")
---		else
---			self:ScheduleMethod(0.1, "DefileTarget")
---		end
 		warnDefileSoon:Cancel()
 		warnDefileSoon:Schedule(27)
 		timerDefileCD:Start()
 	elseif args:IsSpellID(73539) then -- Shadow Trap (Heroic)
 		timerTrapCD:Start()
---		if self.Options.LKBugWorkaround then
 			self:ScheduleMethod(0.01, "OldTrapTarget")
 			self:ScheduleMethod(0.02, "OldTrapTarget")
 			self:ScheduleMethod(0.03, "OldTrapTarget")
@@ -307,18 +271,6 @@ function mod:SPELL_CAST_START(args)
 			self:ScheduleMethod(0.08, "OldTrapTarget")
 			self:ScheduleMethod(0.09, "OldTrapTarget")
 			self:ScheduleMethod(0.1, "OldTrapTarget")
---[[		else
-			self:ScheduleMethod(0.01, "TrapTarget")
-			self:ScheduleMethod(0.02, "TrapTarget")
-			self:ScheduleMethod(0.03, "TrapTarget")
-			self:ScheduleMethod(0.04, "TrapTarget")
-			self:ScheduleMethod(0.05, "TrapTarget")
-			self:ScheduleMethod(0.06, "TrapTarget")
-			self:ScheduleMethod(0.07, "TrapTarget")
-			self:ScheduleMethod(0.08, "TrapTarget")
-			self:ScheduleMethod(0.09, "TrapTarget")
-			self:ScheduleMethod(0.1, "TrapTarget")
-		end--]]
 	elseif args:IsSpellID(73650) then -- Restore Soul (Heroic)
 		warnRestoreSoul:Show()
 		timerRestoreSoul:Start()
@@ -594,64 +546,6 @@ function mod:OnSync(msg, target)
 		if self.Options.specWarnHealerGrabbed then
 			specWarnPRIGrabbed:Show(target)
 		end
---[[	elseif msg == "TrapOn" then
-		if not self.Options.LKBugWorkaround then
-			warnTrapCast:Show(target)
-			if self.Options.TrapIcon then
-				self:SetIcon(player, 8, 10)
-			end
-			if target == UnitName("player") then
-				specWarnTrap:Show()
-				if self.Options.YellOnTrap then
-					SendChatMessage(L.YellTrap, "SAY")
-				end
-			end
-			local uId = DBM:GetRaidUnitId(target)
-			if uId ~= "none" then
-				local inRange = CheckInteractDistance(uId, 2)
-				local x, y = GetPlayerMapPosition(uId)
-				if x == 0 and y == 0 then
-					SetMapToCurrentZone()
-					x, y = GetPlayerMapPosition(uId)
-				end
-				if inRange then
-					specWarnTrapNear:Show()
-					if self.Options.TrapArrow then
-						DBM.Arrow:ShowRunAway(x, y, 10, 5)
-					end
-				end
-			end
-		end
-	elseif msg == "DefileOn" then
-		if not self.Options.LKBugWorkaround then
-			warnDefileCast:Show(target)
-			if self.Options.DefileIcon then
-				self:SetIcon(target, 8, 10)
-			end
-			if target == UnitName("player") then
-				specWarnDefileCast:Show()
-				soundDefile:Play()
-				if self.Options.YellOnDefile then
-					SendChatMessage(L.YellDefile, "SAY")
-				end
-			elseif target then
-				local uId = DBM:GetRaidUnitId(target)
-				if uId then
-					local inRange = CheckInteractDistance(uId, 2)
-					local x, y = GetPlayerMapPosition(uId)
-					if x == 0 and y == 0 then
-						SetMapToCurrentZone()
-						x, y = GetPlayerMapPosition(uId)
-					end
-					if inRange then
-						specWarnDefileNear:Show()
---						if self.Options.DefileArrow then
---							DBM.Arrow:ShowRunAway(x, y, 15, 5)
---						end
-					end
-				end
-			end
-		end--]]
 	elseif msg == "PlagueOn" and self:IsInCombat() then
 		if GetTime() - lastPlagueCast > 1 then --We also do same 1 second check here
 			warnNecroticPlagueJump:Show(target)
