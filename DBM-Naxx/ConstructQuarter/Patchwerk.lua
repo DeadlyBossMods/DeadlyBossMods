@@ -35,7 +35,7 @@ end
 
 function mod:SPELL_MISSED(args)
 	if args:IsSpellID(28308, 59192) and self.Options.WarningHateful and DBM:GetRaidRank() >= 1 then
-		announceStrike(args.destName, getglobal("ACTION_SPELL_MISSED_"..(args.missType)) or "")
+		announceStrike(args.destName, _G["ACTION_SPELL_MISSED_"..(args.missType)] or "")
 	end	
 end
 
