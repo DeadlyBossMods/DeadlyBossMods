@@ -40,11 +40,13 @@ mod:AddBoolOption("SetIconOnLifeLeach", true)
 mod:AddBoolOption("CrashArrow")
 mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without syncing or latency check (less reliable but not dependant on other DBM users in raid)
 
+local lastCrash
 
 function mod:OnCombatStart(delay)
 	timerEnrage:Start(-delay)
 	timerHardmode:Start(-delay)
 	timerNextSurgeofDarkness:Start(-delay)
+	lastCrash = GetTime()
 end
 
 function mod:SPELL_CAST_START(args)
@@ -152,7 +154,8 @@ end
 
 function mod:OnSync(msg, target)
 	if msg == "CrashOn" then
-		if not self.Options.BypassLatencyCheck then
+		if not self.Options.BypassLatencyCheck and GetTime() - lastCrash > 2 then
+			lastCrash = GetTime()
 			warnShadowCrash:Show(target)
 			if self.Options.SetIconOnShadowCrash then
 				self:SetIcon(target, 8, 10)
