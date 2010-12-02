@@ -54,8 +54,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnGrounded	= "Get Grounded buff",
-	SpecWarnSearingWinds	= "Get Searing Winds buff"
+	SpecWarnGrounded	= "拿取禁錮增益",
+	SpecWarnSearingWinds	= "拿取旋風增益"
 })
 
 L:SetTimerLocalization({
@@ -74,8 +74,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
-	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)"
+	SpecWarnGrounded	= "當你缺少$spell:83581時顯示特別警告\n(大約施放前10秒內)",
+	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)"
 })
 
 ----------------
@@ -88,7 +88,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 soon"
+	WarnPhase2Soon	= "第2階段 即將到來"
 })
 
 L:SetTimerLocalization({
@@ -98,5 +98,5 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Show pre-warning for Phase 2"
+	WarnPhase2Soon	= "為第2階段顯示預先警告"
 })
