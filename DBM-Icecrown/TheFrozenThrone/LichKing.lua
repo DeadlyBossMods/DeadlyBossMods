@@ -104,7 +104,7 @@ mod:AddBoolOption("AnnouncePlagueStack", false, "announce")
 mod:AddBoolOption("TrapArrow")
 
 local phase	= 0
-local lastPlagueCast = 0
+local lastPlagueCast
 local warned_preP2 = false
 local warned_preP3 = false
 local warnedValkyrGUIDs = {}
@@ -112,7 +112,7 @@ local LKTank
 
 function mod:OnCombatStart(delay)
 	phase = 0
-	lastPlagueCast = 0
+	lastPlagueCast = GetTime()
 	warned_preP2 = false
 	warned_preP3 = false
 	LKTank = nil
@@ -288,10 +288,10 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(70337, 73912, 73913, 73914) then -- Necrotic Plague (SPELL_AURA_APPLIED is not fired for this spell)
+		lastPlagueCast = GetTime()
 		warnNecroticPlague:Show(args.destName)
 		timerNecroticPlagueCD:Start()
 		timerNecroticPlagueCleanse:Start()
-		lastPlagueCast = GetTime()
 		if args:IsPlayer() then
 			specWarnNecroticPlague:Show()
 		end
