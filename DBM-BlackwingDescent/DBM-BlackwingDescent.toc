@@ -4,6 +4,7 @@
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Descenso de Alanegra|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0검은날개 강림지|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Blackwing Descent|r
+## Title-ruTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0黑翼陷窟|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -15,12 +16,14 @@
 ## X-DBM-Mod-Name-esES: Descenso de Alanegra
 ## X-DBM-Mod-Name-koKR: 검은날개 강림지
 ## X-DBM-Mod-Name-ruRU: Blackwing Descent
+## X-DBM-Mod-Name-ruTW: 黑翼陷窟
 ## X-DBM-Mod-Sort: 103
 ## X-DBM-Mod-LoadZoneID: 754
 localization.en.lua
 localization.es.lua
 localization.kr.lua
 localization.ru.lua
+localization.tw.lua
 MapSizes.lua
 Magmaw.lua
 DarkIronGolemCouncil.lua
