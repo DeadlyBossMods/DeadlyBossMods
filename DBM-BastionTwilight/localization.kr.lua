@@ -53,7 +53,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnGrounded	= "Get Grounded buff",
+	SpecWarnGrounded		= "Get Grounded buff",
 	SpecWarnSearingWinds	= "Get Searing Winds buff"
 })
 
@@ -61,9 +61,9 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Quake			= "The ground beneath you rumbles ominously....",
-	Thundershock		= "The surrounding air crackles with energy....",
-	Switch			= "We will handle them!",
+	Quake			= "발밑의 땅이 불길하게 우르릉거립니다...",
+	Thundershock	= "주변의 공기가 에너지로 진동합니다...",
+	Switch			= "우리가 상대하겠다!",
 	Phase3			= "BEHOLD YOUR DOOM!",
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
@@ -73,7 +73,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
+	SpecWarnGrounded		= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
 	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)"
 })
 
@@ -87,7 +87,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 soon"
+	WarnPhase2Soon	= "곧 2 단계"
 })
 
 L:SetTimerLocalization({
@@ -97,5 +97,5 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Show pre-warning for Phase 2"
+	WarnPhase2Soon	= "2 단계 사전 경고 보기"
 })
