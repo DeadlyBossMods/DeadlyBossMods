@@ -250,7 +250,7 @@ L:SetOptionLocalization{
 	RangeFrame			= "顯示距離框 (8碼)",
 	WarnGastricBloat		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(72551, GetSpellInfo(72551) or "unknown"),
 	SetIconOnGasSpore		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69279),
-	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需開啟團隊廣播及助理權限)",
+	AnnounceSporeIcons		= "公佈$spell:69279目標設置的標記到團隊頻道\n(需要團隊隊長)",
 	AchievementCheck		= "公佈 '流感疫苗短缺' 成就失敗到團隊頻道\n(需助理權限)"
 }
 
@@ -476,9 +476,10 @@ L:SetOptionLocalization{
 	WarnInstability			= "為你的$spell:69766堆疊顯示警告",
 	WarnChilledtotheBone		= "為你的$spell:70106堆疊顯示警告",
 	WarnMysticBuffet		= "為你的$spell:70128堆疊顯示警告",
-	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需開啟團隊廣播及助理權限)",
+	AnnounceFrostBeaconIcons	= "公佈$spell:70126目標設置的標記到團隊頻道\n(需要團隊隊長)",
 	SetIconOnFrostBeacon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(70126),
 	SetIconOnUnchainedMagic		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(69762),
+	PlaySoundOnFrostTomb		= "為$spell:70126播放音效",
 	ClearIconsOnAirphase		= "空中階段前清除所有標記",
 	AchievementCheck		= "公佈 '吃到飽' 成就警告到團隊頻道\n(需助理權限)",
 	RangeFrame			= "顯示距離框 (普通10碼, 困難20碼)"
