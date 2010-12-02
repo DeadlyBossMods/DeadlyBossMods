@@ -59,6 +59,7 @@ mod:AddBoolOption("BypassLatencyCheck", false)--Use old scan method without sync
 
 local activePrince
 local glitteringSparksTargets	= {}
+local lastVortex
 
 local function warnGlitteringSparksTargets()
 	warnGliteringSparks:Show(table.concat(glitteringSparksTargets, "<, >"))
@@ -72,6 +73,7 @@ function mod:OnCombatStart(delay)
 	timerTargetSwitch:Start(-delay)
 	activePrince = nil
 	table.wipe(glitteringSparksTargets)
+	lastVortex = GetTime()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(12)
 	end
@@ -239,7 +241,8 @@ function mod:OnSync(msg, target)
 			timerKineticBombCD:Start()
 		end
 	elseif msg == "ShockVortex" then
-		if not self.Options.BypassLatencyCheck then
+		if not self.Options.BypassLatencyCheck and GetTime() - lastVortex > 2 then
+			lastVortex = GetTime()
 			warnShockVortex:Show(target)
 			if target == UnitName("player") then
 				specWarnVortex:Show()
