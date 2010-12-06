@@ -150,13 +150,13 @@ do
 				end
 				if name == carrier then
 					if faction == 0 then
-						self.FlagCarrierFrame2Text:SetTextColor(RAID_CLASS_COLORS[class].r, 
-											RAID_CLASS_COLORS[class].g, 
-											RAID_CLASS_COLORS[class].b)
+						self.FlagCarrierFrame2Text:SetTextColor(RAID_CLASS_COLORS[classToken].r, 
+											RAID_CLASS_COLORS[classToken].g, 
+											RAID_CLASS_COLORS[classToken].b)
 					elseif faction == 1 then
-						self.FlagCarrierFrame1Text:SetTextColor(RAID_CLASS_COLORS[class].r, 
-											RAID_CLASS_COLORS[class].g, 
-											RAID_CLASS_COLORS[class].b)
+						self.FlagCarrierFrame1Text:SetTextColor(RAID_CLASS_COLORS[classToken].r, 
+											RAID_CLASS_COLORS[classToken].g, 
+											RAID_CLASS_COLORS[classToken].b)
 					end
 					found = true
 				end
