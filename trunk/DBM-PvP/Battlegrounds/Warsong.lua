@@ -143,8 +143,8 @@ do
 	function Warsong:ColorFlagCarrier(carrier)
 		local found = false
 		for i = 1, GetNumBattlefieldScores() do
-			local name, _, _, _, _, faction, _, _, _, class = GetBattlefieldScore(i)
-	 		if (name and class and RAID_CLASS_COLORS[class]) then
+			local name, _, _, _, _, faction, _, _, classToken = GetBattlefieldScore(i)
+	 		if (name and class and RAID_CLASS_COLORS[classToken]) then
 				if string.match( name, "-" )  then
 					name = string.match(name, "([^%-]+)%-.+")
 				end
