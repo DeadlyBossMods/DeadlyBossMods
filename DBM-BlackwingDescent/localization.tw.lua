@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Magmaw")
 
 L:SetGeneralLocalization({
-	name = "Magmaw"
+	name = "熔喉"
 })
 
 L:SetWarningLocalization({
@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "Dark Iron Golem Council"
+	name = "黑鐵魔像會"
 })
 
 L:SetWarningLocalization({
@@ -56,7 +56,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Maloriak")
 
 L:SetGeneralLocalization({
-	name = "Maloriak"
+	name = "瑪洛里亞克"
 })
 
 L:SetWarningLocalization({
@@ -91,7 +91,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Chimaeron")
 
 L:SetGeneralLocalization({
-	name = "Chimaeron"
+	name = "奇瑪隆"
 })
 
 L:SetWarningLocalization({
@@ -116,7 +116,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Atramedes")
 
 L:SetGeneralLocalization({
-	name = "Atramedes"
+	name = "亞特拉米德"
 })
 
 L:SetWarningLocalization({
@@ -136,8 +136,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAirphase		= "當Atramedes升空時顯示警告",
-	WarnGroundphase		= "當Atramedes降落時顯示警告",
+	WarnAirphase		= "當亞特拉米德升空時顯示警告",
+	WarnGroundphase		= "當亞特拉米德降落時顯示警告",
 	WarnShieldsLeft		= "當Ancient Dwarven Shield使用後顯示警告",
 	TimerAirphase		= "為下一次 空中階段顯示計時器",
 	TimerGroundphase	= "為下一次 地上階段顯示計時器"

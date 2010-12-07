@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Conclave")
 
 L:SetGeneralLocalization({
-	name = "Conclave of Wind"
+	name = "風之議會"
 })
 
 L:SetWarningLocalization({
@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("AlAkir")
 
 L:SetGeneralLocalization({
-	name = "Al'Akir"
+	name = "奧拉基爾"
 })
 
 L:SetWarningLocalization({

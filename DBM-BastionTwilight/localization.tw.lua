@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"
+	name =	"瓦莉歐娜和瑟拉里恩"
 })
 
 L:SetWarningLocalization({
@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("HalfusWyrmbreaker")
 
 L:SetGeneralLocalization({
-	name =	"Halfus Wyrmbreaker"
+	name =	"哈福斯•破龍者"
 })
 
 L:SetWarningLocalization({
@@ -50,7 +50,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("AscendantCouncil")
 
 L:SetGeneralLocalization({
-	name =	"Twilight Ascendant Council"
+	name =	"暮光卓越者議會"
 })
 
 L:SetWarningLocalization({
@@ -66,11 +66,11 @@ L:SetMiscLocalization({
 	Thundershock		= "The surrounding air crackles with energy....",
 	Switch			= "We will handle them!",
 	Phase3			= "BEHOLD YOUR DOOM!",
-	Ignacious		= "Ignacious",
-	Feludius		= "Feludius",
-	Arion			= "Arion",
-	Terrastra		= "Terrastra",
-	Monstrosity		= "Elementium Monstrosity"
+	Ignacious		= "伊格納修斯",
+	Feludius		= "費魯迪厄斯",
+	Arion			= "艾理奧",
+	Terrastra		= "特拉斯特拉",
+	Monstrosity		= "卓越者議會"
 })
 
 L:SetOptionLocalization({
@@ -84,7 +84,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Chogall")
 
 L:SetGeneralLocalization({
-	name =	"Cho'gall"
+	name =	"丘加利"
 })
 
 L:SetWarningLocalization({

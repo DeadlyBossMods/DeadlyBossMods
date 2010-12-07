@@ -4,7 +4,7 @@
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión Baradin|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0바라딘 요새|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Baradin Hold|r
-## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0托巴拉德|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0巴拉丁堡|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
 ## RequiredDeps: DBM-Core
@@ -16,7 +16,7 @@
 ## X-DBM-Mod-Name-esES: Bastión Baradin
 ## X-DBM-Mod-Name-koKR: 바라딘 요새
 ## X-DBM-Mod-Name-ruRU: Baradin Hold
-## X-DBM-Mod-Name-zhTW: 托巴拉德
+## X-DBM-Mod-Name-zhTW: 巴拉丁堡
 ## X-DBM-Mod-Sort: 101
 ## X-DBM-Mod-LoadZoneID: 752
 localization.en.lua
