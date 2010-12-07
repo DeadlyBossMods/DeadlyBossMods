@@ -32,7 +32,7 @@ local timerMindFog		= mod:NewBuffActiveTimer(20, 76234)
 local timerAgony		= mod:NewTargetTimer(10, 76339)
 
 local specWarnLavaBolt		= mod:NewSpecialWarningInterupt(76171)
-local specWarnAbsorbMagic	= mod:NewSpecialWarningCast(76307)	-- should be Stop all damage now!  instead of Stop casting
+local specWarnAbsorbMagic	= mod:NewSpecialWarningCast(76307)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(76170) then
