@@ -44,7 +44,7 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(75690) then
 		timerWaterspout:Cancel()
-		timerShockBlastCD:Start(10)
+		timerShockBlastCD:Start(13)
 	end
 end
 
