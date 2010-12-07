@@ -22,9 +22,6 @@ local timerQuake		= mod:NewCastTimer(3, 75272)
 local timerQuakeCD		= mod:NewCDTimer(19, 75272)
 local timerSkullcracker		= mod:NewCastTimer(12, 75543)
 
--- Quake CD 21-43 secs (no reliable CD timer)
--- Chains of Woe / Skullcracker @ 65% & 35%  ... soon announce needed ?
-
 local warnedChains
 function mod:OnCombatStart(delay)
 	timerQuakeCD:Start(-delay)
@@ -35,7 +32,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(75571, 93452) then--heroic drycoded
 		warnWoundingStrike:Show(args.destName)
 		if mod:IsDifficulty("heroic5") then
-			timerWoundingStrike:Start(10, args.destName)--proper way to code this? never had to put 2 args in a target timer before.
+			timerWoundingStrike:Start(10, args.destName)
 		else
 			timerWoundingStrike:Start(args.destName)
 		end
@@ -52,7 +49,7 @@ function mod:SPELL_CAST_START(args)
 		warnChainsWoe:Show()
 	elseif args:IsSpellID(75543, 93453) then
 		if mod:IsDifficulty("heroic5") then
-			timerSkullcracker:Start(8)
+			timerSkullcracker:Start(10)
 		else
 			timerSkullcracker:Start()
 		end

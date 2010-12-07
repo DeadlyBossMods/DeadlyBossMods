@@ -22,9 +22,6 @@ local timerVeil			= mod:NewTargetTimer(4, 76189)
 
 mod:AddBoolOption("SetIconOnBoss")
 
--- Transformation 50secs after start ?
--- Transformation 70secs after last ?
-
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(76200) then
 		warnTransformation:Show()
