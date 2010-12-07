@@ -29,11 +29,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnObsidianArmor:Show()
 	elseif args:IsSpellID(75846, 93567) then--Drycoded heroic spellid
 		timerSuperheated:Start(10, args.amount or 1)
-		if args.amount and args.amount >= 5 then
-			specWarnSuperheated:Show()
-		end
 		if GetTime() - lastSuperheated > 5 then
 			warnSuperheated:Show()
+			if args.amount and args.amount >= 5 then
+				specWarnSuperheated:Show(args.amount)
+			end
 		end
 		lastSuperheated = GetTime()	-- do this every stack otherwise if you would stack to 5+ you would have 2x warning
 	end
