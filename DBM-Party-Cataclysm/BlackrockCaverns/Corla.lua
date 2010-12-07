@@ -11,12 +11,13 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"SPELL_INTERRUPT"
 )
 
 local warnDarkCommand		= mod:NewTargetAnnounce(75823, 3)
-local warnShadowStrike		= mod:NewCastAnnounce(82362, 3)
-local warnAdd			= mod:NewAnnounce("WarnAdd", 4)
+local warnShadowStrike		= mod:NewSpellAnnounce(82362, 3)
+local warnAdd				= mod:NewAnnounce("WarnAdd", 4)
 
 local timerDarkCommand		= mod:NewTargetTimer(4, 75823)
 local timerShadowStrike		= mod:NewCastTimer(2, 82362)
@@ -52,7 +53,17 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(82362, 87374) then--Heroic spellid drycoded (untested)
 		warnShadowStrike:Show()
-		timerShadowStrike:Start()
 		specWarnShadowStrike:Show()
+		if mod:IsDifficulty("heroic5") then
+			timerShadowStrike:Start()
+		else
+			timerShadowStrike:Start(3)
+		end
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 82362 or args.extraSpellId == 87374) then
+		timerShadowStrike:Cancel()
 	end
 end
