@@ -47,7 +47,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157"
+	SayBombTarget	= "$spell:80157 외치기"
 })
 
 ----------------
@@ -60,29 +60,29 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase		= "%s phase",
-	WarnRemainingAdds	= "%d aberrations remaining"
+	WarnPhase			= "%s 단계",
+	WarnRemainingAdds	= "%d 돌연변이 남음"
 })
 
 L:SetTimerLocalization({
-	TimerPhase		= "Next phase"
+	TimerPhase		= "다음 단계"
 })
 
 L:SetMiscLocalization({
-	YellRed			= "Mix and stir, apply heat...",
-	YellBlue		= "How well does the mortal shell handle extreme temperature change? Must find out! For science!",
-	YellGreen		= "This one's a little unstable, but what's progress without failure?",
-	YellDark		= "Your mixtures are weak, Maloriak! They need a bit more... kick!",
-	Red				= "Red",
-	Blue			= "Blue",
-	Green			= "Green",
-	Dark			= "Dark"
+	YellRed			= "섞고 흔들어서, 열을 가한다...",
+	YellBlue		= "급격한 온도 변화에 필멸의 육신",
+	YellGreen		= "T이건 좀 불안정하지만",
+	YellDark		= "혼합물이 너무 약하구나, 말로리악!",
+	Red				= "붉은",
+	Blue			= "푸른",
+	Green			= "초록",
+	Dark			= "암흑"
 })
 
 L:SetOptionLocalization({
-	WarnPhase		= "Show warning which phase is incoming",
-	WarnRemainingAdds	= "Show warning how many aberrations remain",
-	TimerPhase		= "Show timer for next phase"
+	WarnPhase			= "다음 단계 전환 경고 보기",
+	WarnRemainingAdds	= "돌연변이가 얼마나 남았는지 경고 보기",
+	TimerPhase			= "다음 단계 타이머 보기"
 })
 
 -----------------
@@ -95,8 +95,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 soon",
-	WarnBreak	= "%s on >%s< (%d)"
+	WarnPhase2Soon	= "곧 2 단계",
+	WarnBreak	= "%s : >%s< (%d)"
 })
 
 L:SetTimerLocalization({
@@ -106,8 +106,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Show a prewarning for Phase 2",
-	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown")
+	WarnPhase2Soon	= "2 단계 사전 경고 보기",
+	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "알 수 없음")
 })
 
 -----------------
@@ -120,27 +120,27 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAirphase		= "Airphase",
-	WarnGroundphase		= "Groundphase",
-	WarnShieldsLeft		= "Ancient Dwarven Shield used - %d left"
+	WarnAirphase		= "공중 단계",
+	WarnGroundphase		= "지상 단계",
+	WarnShieldsLeft		= "고대 드워프 보호막 - %d -남음"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "Airphase",
-	TimerGroundphase	= "Groundphase"
+	TimerAirphase		= "공중 단계",
+	TimerGroundphase	= "지상 단계"
 })
 
 L:SetMiscLocalization({
-	AncientDwarvenShield	= "Ancient Dwarven Shield",
+	AncientDwarvenShield	= "고대 드워프 보호막",
 	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
 })
 
 L:SetOptionLocalization({
-	WarnAirphase		= "Show warning when Atramedes lifts off",
-	WarnGroundphase		= "Show warning when Atramedes lands",
-	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",
-	TimerAirphase		= "Show timer for next airphase",
-	TimerGroundphase	= "Show timer for next groundphase"
+	WarnAirphase		= "공중단계 경고 보기",
+	WarnGroundphase		= "지상단계 경고 보기",
+	WarnShieldsLeft		= "고대 드워프 보호막 남은 개수 경고 보기",
+	TimerAirphase		= "다음 공중 단계 경고 보기",
+	TimerGroundphase	= "다음 지상 단계 경고 보기"
 })
 
 ----------------
@@ -159,8 +159,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
-	ChromaticPrototype	= "Chromatic Prototype"
+	YellPhase2			= "저주받을 필멸자들!",
+	ChromaticPrototype	= "오색 실험체"
 })
 
 L:SetOptionLocalization({

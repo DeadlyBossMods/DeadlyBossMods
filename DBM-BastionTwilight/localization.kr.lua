@@ -53,8 +53,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnGrounded		= "Get Grounded buff",
-	SpecWarnSearingWinds	= "Get Searing Winds buff"
+	SpecWarnGrounded		= "접지!!",
+	SpecWarnSearingWinds	= "소용돌이 치는 바람!!"
 })
 
 L:SetTimerLocalization({
@@ -64,7 +64,7 @@ L:SetMiscLocalization({
 	Quake			= "발밑의 땅이 불길하게 우르릉거립니다...",
 	Thundershock	= "주변의 공기가 에너지로 진동합니다...",
 	Switch			= "우리가 상대하겠다!",
-	Phase3			= "BEHOLD YOUR DOOM!",
+	Phase3			= "네놈들의 종말을 맞이해라!",
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
@@ -73,8 +73,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded		= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
-	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)"
+	SpecWarnGrounded		= "$spell:83581 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)",
+	SpecWarnSearingWinds	= "$spell:83500 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)"
 })
 
 ----------------
