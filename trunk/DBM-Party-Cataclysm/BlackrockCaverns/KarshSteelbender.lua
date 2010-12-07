@@ -21,7 +21,7 @@ local specWarnSuperheated	= mod:NewSpecialWarningStack(75846,nil, 5) -- add mod:
 
 local lastSuperheated
 function mod:OnCombatStart(delay)
-	spamSuperheated = 0
+	lastSuperheated = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
