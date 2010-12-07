@@ -10,7 +10,7 @@ local L
 L = DBM:GetModLocalization("Romogg")
 
 L:SetGeneralLocalization({
-	name = "Rom'ogg Bonecrusher"
+	name = "羅姆歐格·裂骨者"
 })
 
 -------------------------------
@@ -19,7 +19,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Corla")
 
 L:SetGeneralLocalization({
-	name = "Corla, Herald of Twilight"
+	name = "柯爾菈，暮光信使"
 })
 
 L:SetWarningLocalization({
@@ -36,7 +36,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("KarshSteelbender")
 
 L:SetGeneralLocalization({
-	name = "Karsh Steelbender"
+	name = "卡爾許·控鋼者"
 })
 
 L:SetTimerLocalization({
@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Beauty")
 
 L:SetGeneralLocalization({
-	name = "Beauty"
+	name = "美麗"
 })
 
 -----------------------------
@@ -62,7 +62,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "Ascendant Lord Obsidius"
+	name = "卓越者領主奧希迪厄斯"
 })
 
 L:SetOptionLocalization({
@@ -77,7 +77,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Glubtok")
 
 L:SetGeneralLocalization({
-	name = "Glubtok"
+	name = "格魯巴托克"
 })
 
 -----------------------
@@ -86,7 +86,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Helix")
 
 L:SetGeneralLocalization({
-	name = "Helix Gearbreaker"
+	name = "赫利克斯•碎輪者"
 })
 
 ---------------------
@@ -95,7 +95,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("FoeReaper")
 
 L:SetGeneralLocalization({
-	name = "Foe Reaper 5000"
+	name = "敵人收割者5000"
 })
 
 ----------------------
@@ -104,7 +104,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ripsnarl")
 
 L:SetGeneralLocalization({
-	name = "Admiral Ripsnarl"
+	name = "利普斯納爾上將"
 })
 
 ----------------------
@@ -113,7 +113,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
-	name = "\"Captain\" Cookie"
+	name = "『隊長』餅乾"
 })
 
 ----------------------
@@ -122,7 +122,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Vanessa")
 
 L:SetGeneralLocalization({
-	name = "Vanessa VanCleef"
+	name = "凡妮莎·范克里夫"
 })
 
 ------------------
@@ -133,7 +133,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "General Umbriss"
+	name = "昂布里斯將軍"
 })
 
 --------------------------
@@ -142,7 +142,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ForgemasterThrongus")
 
 L:SetGeneralLocalization({
-	name = "Forgemaster Throngus"
+	name = "鍛造大師瑟隆葛斯"
 })
 
 -------------------------
@@ -151,7 +151,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("DrahgaShadowburner")
 
 L:SetGeneralLocalization({
-	name = "Drahga Shadowburner"
+	name = "德拉卡·燃影者"
 })
 
 ------------
@@ -160,7 +160,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Erudax")
 
 L:SetGeneralLocalization({
-	name = "Erudax"
+	name = "伊魯達克斯"
 })
 
 ----------------------------
@@ -171,7 +171,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TempleGuardianAnhuur")
 
 L:SetGeneralLocalization({
-	name = "Temple Guardian Anhuur"
+	name = "神殿守護者安胡爾"
 })
 
 ---------------------
@@ -180,7 +180,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("EarthragerPtah")
 
 L:SetGeneralLocalization({
-	name = "Earthrager Ptah"
+	name = "地怒者普塔"
 })
 
 --------------
@@ -189,7 +189,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Anraphet")
 
 L:SetGeneralLocalization({
-	name = "Anraphet"
+	name = "安拉斐特"
 })
 
 ------------
@@ -198,15 +198,15 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Isiset")
 
 L:SetGeneralLocalization({
-	name = "Isiset"
+	name = "伊希賽特"
 })
 
 L:SetWarningLocalization({
-	WarnSplitSoon	= "Split 即將到來"
+	WarnSplitSoon	= "分裂 即將到來"
 })
 
 L:SetOptionLocalization({
-	WarnSplitSoon	= "為Split顯示預先警告"
+	WarnSplitSoon	= "為分裂顯示預先警告"
 })
 
 -------------
@@ -215,7 +215,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ammunae")
 
 L:SetGeneralLocalization({
-	name = "Ammunae"
+	name = "安姆內"
 })
 
 -------------
@@ -224,7 +224,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Setesh")
 
 L:SetGeneralLocalization({
-	name = "Setesh"
+	name = "賽特胥"
 })
 
 ----------
@@ -233,7 +233,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Rajh")
 
 L:SetGeneralLocalization({
-	name = "Rajh"
+	name = "拉頡"
 })
 
 --------------------------------
@@ -244,7 +244,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralHusam")
 
 L:SetGeneralLocalization({
-	name = "General Husam"
+	name = "胡薩姆將軍"
 })
 
 ------------------------------------
@@ -253,7 +253,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
-	name = "Siamat"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
+	name = "希亞梅特"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
 })
 
 ------------------------
@@ -262,7 +262,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighProphetBarim")
 
 L:SetGeneralLocalization({
-	name = "High Prophet Barim"
+	name = "高階預言者巴瑞姆"
 })
 
 --------------
@@ -271,7 +271,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
-	name = "Lockmaw"
+	name = "鎖喉"
 })
 
 -----------------------
@@ -291,7 +291,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Silverlaine")
 
 L:SetGeneralLocalization({
-	name = "Baron Silverlaine"
+	name = "席瓦萊恩男爵"
 })
 
 --------------------------
@@ -300,7 +300,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Springvale")
 
 L:SetGeneralLocalization({
-	name = "Commander Springvale"
+	name = "指揮官斯普林瓦爾"
 })
 
 -----------------
@@ -309,7 +309,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Walden")
 
 L:SetGeneralLocalization({
-	name = "Lord Walden"
+	name = "瓦爾登領主"
 })
 
 ------------------
@@ -318,7 +318,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Godfrey")
 
 L:SetGeneralLocalization({
-	name = "Lord Godfrey"
+	name = "高佛雷領主"
 })
 
 ---------------------
@@ -346,7 +346,7 @@ L:SetOptionLocalization({
 })
 
 L:SetGeneralLocalization({
-	name = "Corborus"
+	name = "寇伯拉斯"
 })
 
 -----------
@@ -355,7 +355,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozruk")
 
 L:SetGeneralLocalization({
-	name = "Ozruk"
+	name = "歐茲魯克"
 })
 
 --------------
@@ -364,7 +364,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Slabhide")
 
 L:SetGeneralLocalization({
-	name = "Slabhide"
+	name = "岩革"
 })
 
 -------------------------
@@ -373,7 +373,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighPriestessAzil")
 
 L:SetGeneralLocalization({
-	name = "High Priestess Azil"
+	name = "高階祭司艾吉兒"
 })
 
 ---------------------------
@@ -384,7 +384,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GrandVizierErtan")
 
 L:SetGeneralLocalization({
-	name = "Grand Vizier Ertan"
+	name = "首相伊爾丹"
 })
 
 --------------
@@ -393,7 +393,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Altarius")
 
 L:SetGeneralLocalization({
-	name = "Altarius"
+	name = "艾塔伊洛斯"
 })
 
 -----------
@@ -402,7 +402,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Asaad")
 
 L:SetGeneralLocalization({
-	name = "Asaad"
+	name = "亞沙德"
 })
 
 ---------------------------
@@ -413,7 +413,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("LadyNazjar")
 
 L:SetGeneralLocalization({
-	name = "Lady Naz'jar"
+	name = "納茲賈爾女士"
 })
 
 -----======-----------
@@ -422,7 +422,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("CommanderUlthok")
 
 L:SetGeneralLocalization({
-	name = "Commander Ulthok"
+	name = "指揮官烏索克"
 })
 
 -------------------------
@@ -431,7 +431,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ErunakStonespeaker")
 
 L:SetGeneralLocalization({
-	name = "Erunak Stonespeaker"
+	name = "伊魯納克·石語者"
 })
 
 ------------
@@ -440,5 +440,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozumat")
 
 L:SetGeneralLocalization({
-	name = "Ozumat"
+	name = "歐蘇瑪特"
 })
