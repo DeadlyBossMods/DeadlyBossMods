@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "Dark Iron Golem Council"
+	name = "검은무쇠단 사절"
 })
 
 L:SetWarningLocalization({

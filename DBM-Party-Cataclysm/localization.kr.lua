@@ -150,7 +150,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("DrahgaShadowburner")
 
 L:SetGeneralLocalization({
-	name = "Drahga Shadowburner"
+	name = "드라가 섀도버너"
 })
 
 ------------
