@@ -18,9 +18,6 @@ local warnMagmaSpit		= mod:NewTargetAnnounce(76031, 3)
 local timerTerrifyingRoarCD	= mod:NewCDTimer(30, 76028)
 local timerMagmaSpit		= mod:NewTargetTimer(9, 76031)
 
--- Berserker Charge, 76030, seems to have a 17sec CD
--- Flamebreak, 76032, seems to have a 17sec CD and to happen 6-7 secs after Berserker Charge
-
 function mod:OnCombatStart(delay)
 	timerTerrifyingRoarCD:Start(-delay)
 end

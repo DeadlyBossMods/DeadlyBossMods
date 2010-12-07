@@ -17,7 +17,7 @@ local warnSuperheated		= mod:NewSpellAnnounce(75846, 3)
 
 local timerSuperheated		= mod:NewTimer(10, "TimerSuperheated", 75846)
 
-local specWarnSuperheated	= mod:NewSpecialWarningStack(75846,nil, 5) -- add mod:IsTank()
+local specWarnSuperheated	= mod:NewSpecialWarningStack(75846, mod:IsTank(), 5)
 
 local lastSuperheated
 function mod:OnCombatStart(delay)
@@ -35,7 +35,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				specWarnSuperheated:Show(args.amount)
 			end
 		end
-		lastSuperheated = GetTime()	-- do this every stack otherwise if you would stack to 5+ you would have 2x warning
+		lastSuperheated = GetTime()
 	end
 end
 
