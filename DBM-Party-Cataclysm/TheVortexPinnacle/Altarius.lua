@@ -18,7 +18,7 @@ local timerBreathCD	= mod:NewCDTimer(12, 88308)
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(88308, 93989) then
-		warnBreath:Start()
+		warnBreath:Show()
 		timerBreath:Start()
 		timerBreathCD:Start()
 	end
