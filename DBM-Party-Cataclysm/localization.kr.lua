@@ -22,7 +22,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd		= "Add released"
+	WarnAdd		= "탄원하며 무릎 꿇기"
 })
 
 L:SetOptionLocalization({
@@ -201,11 +201,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSplitSoon	= "Split soon"
+	WarnSplitSoon	= "곧 분리"
 })
 
 L:SetOptionLocalization({
-	WarnSplitSoon	= "Show pre-warning for Split"
+	WarnSplitSoon	= "분리 사전 경고 보기"
 })
 
 -------------
@@ -332,20 +332,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEmerge		= "Emerge",
-	WarnSubmerge	= "Submerge"
+	WarnEmerge		= "등장",
+	WarnSubmerge	= "잠수"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge		= "Emerge",
-	TimerSubmerge	= "Submerge"
+	TimerEmerge		= "등장",
+	TimerSubmerge	= "잠수"
 })
 
 L:SetOptionLocalization({
-	WarnEmerge		= "Show warning for emerge",
-	WarnSubmerge	= "Show warning for submerge",
-	TimerEmerge		= "Show timer for emerge",
-	TimerSubmerge	= "Show timer for submerge"
+	WarnEmerge		= "등장 경고 보기",
+	WarnSubmerge	= "잠수 경고 보기",
+	TimerEmerge		= "등장 타이머 보기",
+	TimerSubmerge	= "잠수 타이머 보기"
 })
 
 

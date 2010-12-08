@@ -43,11 +43,11 @@ L:SetMiscLocalization({
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
 	Arcanotron	= "Arcanotron",
-	SayBomb		= "Poison Bomb on me!"
+	SayBomb		= "나에게 화학 폭탄!! 튀어!!"
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "$spell:80157 외치기"
+	SayBombTarget	= "$spell:80157 말하기"
 })
 
 ----------------
