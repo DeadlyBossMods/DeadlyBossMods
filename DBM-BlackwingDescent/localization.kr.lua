@@ -71,7 +71,7 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	YellRed			= "섞고 흔들어서, 열을 가한다...",
 	YellBlue		= "급격한 온도 변화에 필멸의 육신",
-	YellGreen		= "T이건 좀 불안정하지만",
+	YellGreen		= "이건 좀 불안정하지만",
 	YellDark		= "혼합물이 너무 약하구나, 말로리악!",
 	Red				= "붉은",
 	Blue			= "푸른",
