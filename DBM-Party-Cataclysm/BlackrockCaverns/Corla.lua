@@ -27,6 +27,10 @@ local specWarnShadowStrike	= mod:NewSpecialWarningInterupt(82362)
 local specWarnEvolution		= mod:NewSpecialWarningStack(75697, true, 70)
 
 local spamEvolution
+function mod:OnCombatStart(delay)
+	spamEvolution = 0
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(75823, 93462) then--Heroic spellid drycoded (untested)
 		warnDarkCommand:Show(args.destName)
