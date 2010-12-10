@@ -14,9 +14,20 @@ mod:RegisterEvents(
 
 local warnCrystalStorm		= mod:NewSpellAnnounce(92265, 4)
 
+local specWarnEruption = mod:NewSpecialWarningYou(80800)
+
 local timerCrystalStorm		= mod:NewDurationTimer(8.5, 92265)
 
+local spamEruption
 function mod:OnCombatStart(delay)
+   spamEruption = 0
+end
+ 
+function mod:SPELL_DAMAGE(args)
+   if args:IsSpellID(80800) and args:IsPlayer() and GetTime() - spamEruption > 5 then
+      specWarnEruption:Show()
+      spamEruption = GetTime()
+   end
 end
 
 function mod:SPELL_CAST_START(args)
