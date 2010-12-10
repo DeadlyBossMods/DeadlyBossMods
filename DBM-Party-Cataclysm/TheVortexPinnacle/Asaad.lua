@@ -8,12 +8,24 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START"
 )
 
-local warnStaticCling	= mod:NewSpellAnnounce(87618, 3)
+local warnStaticCling		= mod:NewSpellAnnounce(87618, 3)
+local warnGroundingField	= mod:NewSpellAnnounce(86911, 4)
 
-local timerStaticCling	= mod:NewBuffActiveTimer(19, 87618)
+local timerStaticCling		= mod:NewBuffActiveTimer(19, 87618)
+local timerGroundingField	= mod:NewCastTimer(10, 86911)
+local timerGroundingFieldCD	= mod:NewCDTimer(45, 86911)
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(86911) then
+		warnGroundingField:Show()
+		timerGroundingField:Start()
+		timerGroundingFieldCD:Start()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(87618) then
@@ -21,5 +33,3 @@ function mod:SPELL_CAST_START(args)
 		timerStaticCling:Start()	-- 1sec cast + 18sec duration
 	end
 end
-
--- Supremacy of the Storm ,, iirc this is cast AFTER the Grounding Field is created (86930)
