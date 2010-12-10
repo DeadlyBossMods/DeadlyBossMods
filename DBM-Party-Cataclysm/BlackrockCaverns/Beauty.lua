@@ -30,7 +30,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(76028, 93586) then--Heroic spellid drycoded off wowhead. not verified yet
+	if args:IsSpellID(76028, 93586) then
 		warnTerrifyingRoar:Show()
 		timerTerrifyingRoarCD:Start()
 	end

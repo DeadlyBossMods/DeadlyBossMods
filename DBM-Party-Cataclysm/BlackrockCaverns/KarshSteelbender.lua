@@ -27,7 +27,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(75842) then
 		warnObsidianArmor:Show()
-	elseif args:IsSpellID(75846, 93567) then--Drycoded heroic spellid
+	elseif args:IsSpellID(75846, 93567) then
 		timerSuperheated:Start(10, args.amount or 1)
 		if GetTime() - lastSuperheated > 5 then
 			warnSuperheated:Show()
