@@ -8,6 +8,25 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS"
 )
 
--- comment:  every 50secs he flies up and throws 'rocks' --	
+local warnCrystalStorm		= mod:NewSpellAnnounce(92265, 4)
+
+local timerCrystalStorm		= mod:NewDurationTimer(8.5, 92265)
+
+function mod:OnCombatStart(delay)
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(92265) then
+		warnCrystalStorm:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(92265) then
+		timerCrystalStorm:Start()
+	end
+end
