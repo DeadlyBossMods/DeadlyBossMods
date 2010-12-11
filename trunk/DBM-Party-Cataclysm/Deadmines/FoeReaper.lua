@@ -22,7 +22,7 @@ local timerOverdrive		= mod:NewBuffActiveTimer(10, 88481)
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(88481) then
 		warnOverdrive:Show()
-		timerOVerdrive:Start()
+		timerOverdrive:Start()
 	elseif args:IsSpellID(88495) then
 		warnHarvest:Show()
 	elseif args:IsSpellID(91720) then
