@@ -9,7 +9,7 @@ local L
 L = DBM:GetModLocalization("Romogg")
 
 L:SetGeneralLocalization({
-	name = "롬오그 해골분쇄자"
+	name = "해골분쇄자 롬오그"
 })
 
 -------------------------------
@@ -61,7 +61,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "상승의 군주 옵시디우스"
+	name = "승천 군주 옵시디우스"
 })
 
 L:SetOptionLocalization({
