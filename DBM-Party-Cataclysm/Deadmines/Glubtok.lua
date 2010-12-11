@@ -20,7 +20,7 @@ local warnSpiritStrike		= mod:NewSpellAnnounce(59304, 3)
 local timerFistsFlame		= mod:NewBuffActiveTimer(10, 87859)
 local timerFistsFrost		= mod:NewBuffActiveTimer(10, 87861)
 
-function mod:SPELL_AURA_APPLIED
+function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87859) and args.destName == args.srcName then
 		warnFistsFlame:Show()
 		timerFistsFlame:Start()
