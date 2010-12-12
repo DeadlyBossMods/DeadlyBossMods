@@ -403,7 +403,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Asaad")
 
 L:SetGeneralLocalization({
-	name = "Asaad"
+	name = "아사드"
 })
 
 ---------------------------
