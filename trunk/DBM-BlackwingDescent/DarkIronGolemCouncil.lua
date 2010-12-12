@@ -111,7 +111,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnConductor:Show()
 		end
 	elseif args:IsSpellID(80094) then
-		if args:IsPlayer() and mod.options.SayBombTarget then
+		if args:IsPlayer() and self.options.SayBombTarget then
 			SendChatMessage(L.SayBomb, "SAY")
 		end
 		self:SetIcon(args.destName, 6, 6)
