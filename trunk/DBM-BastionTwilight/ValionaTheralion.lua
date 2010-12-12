@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(45992, 45993)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
@@ -30,6 +31,8 @@ local specWarnEngulfingMagic	= mod:NewSpecialWarningYou(86622)
 
 local berserkTimer		= mod:NewBerserkTimer(600)
 
+mod:AddBoolOption("BlackoutIcon")
+
 -- 88518 -> SpellID for Meteorite Target, SPELL_AURA_APPLIED?  or do we need to do scanning ? :(
 
 function mod:OnCombatStart(delay)
@@ -42,7 +45,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBlackout:Show(args.destName)
 		timerBlackout:Start(args.destName)
 		timerBlackoutNext:Start()
-		self:SetIcon(args.destName, 8)
+		if self.Options.BlackoutIcon then
+			self:SetIcon(args.destName, 8)
+		end
 		if args:IsPlayer() then
 			specWarnBlackout:Show()
 		end

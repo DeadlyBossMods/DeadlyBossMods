@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(41378)
 mod:SetZone()
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -36,6 +37,11 @@ local specWarnBitingChill	= mod:NewSpecialWarningYou(77760)
 local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
+
+mod:AddBoolOption("FlashFreezeIcon")
+mod:AddBoolOption("BitingChillIcon")
+mod:AddBoolOption("ConsumingFlamesIcon")
+
 local adds = 18
 
 function mod:OnCombatStart(delay)
@@ -46,11 +52,15 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(77699, 92979) then
 		warnFlashFreeze:Show(args.destName)
-		self:SetIcon(args.destName, 8)
+		if self.Options.FlashFreezeIcon then
+			self:SetIcon(args.destName, 8)
+		end
 	elseif args:IsSpellID(77760) then
 		warnBitingChill:Show(args.destName)
 		timerBitingChill:Start(args.destName)
-		self:SetIcon(args.destName, 7)
+		if self.Options.BitingChillIcon then
+			self:SetIcon(args.destName, 7)
+		end
 		if args:IsPlayer() then
 			specWarnBitingChill:Show()
 		end
@@ -62,7 +72,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(77786) then
 		warnConsumingFlames:Show(args.destName)
 		timerConsumingFlames:Start(args.destName)
-		self:SetIcon(args.destName, 6)
+		if self.Options.ConsumingFlamesIcon then
+			self:SetIcon(args.destName, 6)
+		end
 		if args:IsPlayer() then
 			specWarnConsumingFlames:Show()
 		end
