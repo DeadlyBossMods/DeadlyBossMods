@@ -30,7 +30,7 @@ local timerBulwarkCD		= mod:NewCDTimer(22, 78939)
 local timerGroundSlam		= mod:NewCastTimer(3, 78903)
 local timerGroundSlamCD		= mod:NewCDTimer(12, 78903)
 
-local soundShatter			= mod:NewSound(92662)
+local soundShatter			= mod:NewSound(92662, nil, mod:IsMelee())
 
 local prewarnEnrage
 
