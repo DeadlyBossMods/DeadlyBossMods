@@ -14,9 +14,10 @@ mod:RegisterEvents(
 
 local warnCrystalStorm		= mod:NewSpellAnnounce(92265, 4)
 
-local timerCrystalStorm		= mod:NewBuffActiveTimer(8.5, 92265)
+local specWarnEruption 		= mod:NewSpecialWarningMove(92657)
+local specWarnCrystalStorm 	= mod:NewSpecialWarning("specWarnCrystalStorm")
 
-local specWarnEruption = mod:NewSpecialWarningYou(80800)
+local timerCrystalStorm		= mod:NewBuffActiveTimer(8.5, 92265)
 
 local spamEruption
 function mod:OnCombatStart(delay)
@@ -24,7 +25,7 @@ function mod:OnCombatStart(delay)
 end
  
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(80800) and args:IsPlayer() and GetTime() - spamEruption > 5 then
+	if args:IsSpellID(80800, 92657) and args:IsPlayer() and GetTime() - spamEruption > 5 then
 		specWarnEruption:Show()
 		spamEruption = GetTime()
 	end
@@ -33,6 +34,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(92265) then
 		warnCrystalStorm:Show()
+		specWarnCrystalStorm:Show()
 	end
 end
 

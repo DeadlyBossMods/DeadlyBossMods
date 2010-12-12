@@ -18,7 +18,7 @@ local warnEmerge		= mod:NewAnnounce("WarnEmerge", 2)
 
 local timerDampening		= mod:NewCDTimer(10, 82415)
 local timerSubmerge		= mod:NewTimer(35, "TimerSubmerge")
-local timerEmerge		= mod:NewTimer(25, "TimerEmerge")
+--local timerEmerge		= mod:NewTimer(25, "TimerEmerge")
 
 local specWarnCrystalBarrage	= mod:NewSpecialWarningSpell(81634) --, mod:IsMelee())
 
