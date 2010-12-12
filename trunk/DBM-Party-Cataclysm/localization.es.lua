@@ -368,6 +368,15 @@ L:SetGeneralLocalization({
 	name = "Pielpétrea"
 })
 
+L:SetWarningLocalization({
+	specWarnCrystalStorm		= "Tormenta de Cristales - Protégete"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalStorm		= "Mostrar aviso especial para $spell:92265"
+})
+
+
 -------------------------
 -- High Priestess Azil --
 ------------------------
