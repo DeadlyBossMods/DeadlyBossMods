@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(43686, 43687, 43688, 43689, 43735)
 mod:SetZone()
+mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -57,6 +58,9 @@ local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
 
+mod:AddBoolOption("HeartIceIcon")
+mod:AddBoolOption("BurningBloodIcon")
+
 local frozenTargets = {}
 
 local showFrozenWarning = function()
@@ -104,12 +108,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnHeartIce:Show(args.destName)
 		timerHeartIce:Start(args.destName)
 		timerHeartIceCD:Start()
-		self:SetIcon(args.destName, 8)
+		if self.Options.HeartIceIcon then
+			self:SetIcon(args.destName, 8)
+		end
 	elseif args:IsSpellID(82660) then
 		warnBurningBlood:Show(args.destName)
 		timerBurningBlood:Start(args.destName)
 		timerBurningBloodCD:Start()
-		self:SetIcon(args.destName, 7)
+		if self.Options.BurningBloodIcon then
+			self:SetIcon(args.destName, 7)
+		end
 	elseif args:IsSpellID(83099) then
 		warnLightningRod:Show(args.destName)
 		timerLightningRod:Start(args.destName)
