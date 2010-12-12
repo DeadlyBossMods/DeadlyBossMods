@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetZone()
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -48,6 +49,9 @@ local specWarnShell		= mod:NewSpecialWarningCast(79835)
 local specWarnConversion	= mod:NewSpecialWarningCast(79729)
 
 mod:AddBoolOption("SayBombTarget", true)
+mod:AddBoolOption("AcquiringTargetIcon")
+mod:AddBoolOption("ConductorIcon")
+mod:AddBoolOption("BombTargetIcon")
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron then
@@ -101,12 +105,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(79501) then
 		warnAcquiringTarget:Show(args.destName)
 		timerAcquiringTarget:Start()
-		self:SetIcon(args.destName, 8, 6)
+		if self.Options.AcquiringTargetIcon then
+			self:SetIcon(args.destName, 8, 6)
+		end
 	elseif args:IsSpellID(79888) then
 		warnConductor:Show(args.destName)
 		timerConductor:Start(args.destName)
 		timerConductorCD:Start()
-		self:SetIcon(args.destName, 7, 10)
+		if self.Options.ConductorIcon then
+			self:SetIcon(args.destName, 7, 10)
+		end
 		if args:IsPlayer() then
 			specWarnConductor:Show()
 		end
@@ -114,7 +122,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and self.options.SayBombTarget then
 			SendChatMessage(L.SayBomb, "SAY")
 		end
-		self:SetIcon(args.destName, 6, 6)
+		if self.Options.BombTargetIcon then
+			self:SetIcon(args.destName, 6, 6)
+		end
 	elseif args:IsSpellID(80011) then
 		timerSoaked:Start(args.destName)
 	end

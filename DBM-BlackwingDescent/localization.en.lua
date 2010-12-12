@@ -45,7 +45,10 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157"
+	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157",
+	AcquiringTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094)
 })
 
 ----------------
@@ -80,7 +83,10 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase		= "Show warning which phase is incoming",
 	WarnRemainingAdds	= "Show warning how many aberrations remain",
-	TimerPhase		= "Show timer for next phase"
+	TimerPhase		= "Show timer for next phase",
+	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
 -----------------

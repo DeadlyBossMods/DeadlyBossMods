@@ -16,6 +16,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878)
 })
 
 L:SetOptionLocalization({
@@ -61,7 +62,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	Quake			= "The ground beneath you rumbles ominously....",
-	Thundershock		= "The surrounding air crackles with energy....",
+	Thundershock	= "The surrounding air crackles with energy....",
 	Switch			= "We will handle them!",
 	Phase3			= "BEHOLD YOUR DOOM!",
 	Ignacious		= "Ignacious",
@@ -73,7 +74,9 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
-	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)"
+	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
+	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660)
 })
 
 ----------------
