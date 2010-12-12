@@ -13,12 +13,14 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnPain		= mod:NewTargetAnnounce(93712, 3)
-local warnRottenFlesh	= mod:NewSpellAnnounce(93713, 4)
-local warnWracking	= mod:NewSpellAnnounce(93720, 2)
-local warnArchangel	= mod:NewSpellAnnounce(93757, 4)
+local warnPain				= mod:NewTargetAnnounce(93712, 3)
+local warnRottenFlesh		= mod:NewSpellAnnounce(93713, 4)
+local warnWracking			= mod:NewSpellAnnounce(93720, 2)
+local warnArchangel			= mod:NewSpellAnnounce(93757, 4)
 
-local timerAsphyxiate	= mod:NewCDTimer(40, 93710)
+local specWarnRottenFlesh	= mod:NewSpecialWarningInterupt(93713)
+
+local timerAsphyxiate		= mod:NewCDTimer(40, 93710)
 
 function mod:OnCombatStart(delay)
 	timerAsphyxiate:Start(15-delay)
@@ -33,6 +35,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93713) then
 		warnRottenFlesh:Show()
+		specWarnRottenFlesh:Show()
 	elseif args:IsSpellID(93757) then
 		warnArchangel:Show()
 	end
