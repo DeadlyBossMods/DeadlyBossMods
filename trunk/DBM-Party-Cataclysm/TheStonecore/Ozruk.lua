@@ -17,7 +17,6 @@ mod:RegisterEvents(
 local warnShatter			= mod:NewSoonAnnounce(78807, 2)
 local warnBulwark			= mod:NewSpellAnnounce(78939, 3)
 local warnGroundSlam		= mod:NewCastAnnounce(78903, 4)
-local warnShatter			= mod:NewCastAnnounce(92662, 4)
 local warnEnrage			= mod:NewSpellAnnounce(80467, 3)
 local warnEnrageSoon		= mod:NewSoonAnnounce(80467, 2)
 
