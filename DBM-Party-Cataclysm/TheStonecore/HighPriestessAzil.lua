@@ -27,20 +27,20 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(79351) and args:IsDestTypePlayer() then
 		warnGrip:Show(args.destName)
 		timerGrip:Start(args.destName)
-	elseif args:IsSpellID(79345) then
+	elseif args:IsSpellID(79345, 92663) then
 		warnCurse:Show(args.destName)
 		timerCurse:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(79345) then
+	if args:IsSpellID(79345, 92663) then
 		timerCurse:Cancel(args.destName)
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(82858) then
+	if args:IsSpellID(82858, 92667) then
 		warnShield:Show()
 	end
 end
