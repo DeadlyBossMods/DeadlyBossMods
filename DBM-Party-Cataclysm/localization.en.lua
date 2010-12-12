@@ -365,6 +365,14 @@ L:SetGeneralLocalization({
 	name = "Slabhide"
 })
 
+L:SetWarningLocalization({
+	specWarnCrystalStorm		= "Crystal Storm - Take cover"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalStorm		= "Show special warning for $spell:92265"
+})
+
 -------------------------
 -- High Priestess Azil --
 ------------------------
