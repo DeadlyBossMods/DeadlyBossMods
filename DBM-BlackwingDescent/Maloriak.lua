@@ -50,12 +50,12 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(77699, 92979) then
+	if args:IsSpellID(77699, 92978, 92979, 92980) then--Some spellids drycoded and not verified yet.
 		warnFlashFreeze:Show(args.destName)
 		if self.Options.FlashFreezeIcon then
 			self:SetIcon(args.destName, 8)
 		end
-	elseif args:IsSpellID(77760) then
+	elseif args:IsSpellID(77760, 92975, 92976, 92977) then--Drycodes
 		warnBitingChill:Show(args.destName)
 		timerBitingChill:Start(args.destName)
 		if self.Options.BitingChillIcon then
@@ -64,12 +64,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBitingChill:Show()
 		end
-	elseif args:IsSpellID(77912, 92966) and args.destName == L.name then
+	elseif args:IsSpellID(77912, 92965, 92966, 92967) and args.destName == L.name then--Drycodes
 		warnRemedy:Show()
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
 		timerArcaneStorm:Start()
-	elseif args:IsSpellID(77786) then
+	elseif args:IsSpellID(77786, 92971, 92972, 92973) then--Drycodes
 		warnConsumingFlames:Show(args.destName)
 		timerConsumingFlames:Start(args.destName)
 		if self.Options.ConsumingFlamesIcon then
@@ -82,7 +82,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(77679) then
+	if args:IsSpellID(77679, 92968, 92969, 92970) then
 		warnScorchingBlast:Show()
 		timerScorchingBlast:Start()
 	end

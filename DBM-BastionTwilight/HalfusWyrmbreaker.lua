@@ -45,7 +45,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(83710) and GetTime() - spamFuriousRoar > 6 then
+	if args:IsSpellID(83710, 86169, 86170, 86170) and GetTime() - spamFuriousRoar > 6 then
 		warnFuriousRoar:Show()
 		timerFuriousRoar:Start()
 		spamFuriousRoar = GetTime()
@@ -53,7 +53,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(83612) then
+	if args:IsSpellID(83612) then--84092?
 		warnCycloneWinds:Show()
 	elseif args:IsSpellID(83601) then
 		warnTimeDilation:Show()

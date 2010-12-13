@@ -41,7 +41,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(86788, 92876, 92878) then
+	if args:IsSpellID(86788, 92876, 92877, 92878) then
 		warnBlackout:Show(args.destName)
 		timerBlackout:Start(args.destName)
 		timerBlackoutNext:Start()
@@ -51,25 +51,29 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBlackout:Show()
 		end
-	elseif args:IsSpellID(86622, 86631) then
+	elseif args:IsSpellID(86622, 95639, 95640, 95641) then--86631 dummy script to use instead of other 4?
 		warnEngulfingMagic:Show(args.destName)
 		timerEngulfingMagic:Start(args.destName)
 		timerEngulfingMaficNext:Start()
 		if args:IsPlayer() then
-			soecWarnEngulfingMagic:Show()
+			specWarnEngulfingMagic:Show()
 		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	timerBlackout:Cancel(args.destName)
-	self:SetIcon(args.destName, 0)
+	if args:IsSpellID(86788, 92876, 92877, 92878) then
+		timerBlackout:Cancel(args.destName)
+		if self.Options.BlackoutIcon then
+			self:SetIcon(args.destName, 0)
+		end
+	end
 end	
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(86840, 90950) then
+	if args:IsSpellID(86840, 90950) then--Strange to have 2 cast ids instead of either 1 or 4
 		warnDevouringFlames:Show()
-	elseif args:IsSpellID(86013, 92859, 92860) then
+	elseif args:IsSpellID(86013, 92859, 92860, 92861) then
 		warnTwilightMeteorite:Show()
 		timerTwilightMeteorite:Start()
 	end

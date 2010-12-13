@@ -99,7 +99,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(82772) then
+	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
 		timerFrozen:Start(args.destName)
 		frozenTargets[#frozenTargets] = args.destName
 		self:Unschedule(showFrozenWarning)
@@ -123,7 +123,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLightningRod:Start(args.destName)
 	elseif args:IsSpellID(82777) then
 		warnFlameTorrent:Show()
-	elseif args:IsSpellID(82660) then
+	elseif args:IsSpellID(82631, 92512, 92513, 92514) then--drycode
 		warnAegisFlame:Show()
 	elseif args:IsSpellID(82762) then
 		specWarnWaterlogged:Show()
@@ -131,19 +131,23 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(82772) then
+	if args:IsSpellID(82772, 92503, 92504, 92505) then
 		timerFrozen:Cancel(args.destName)
 	elseif args:IsSpellID(82665) then
 		timerHeartIce:Cancel(args.destName)
-		self:SetIcon(args.destName, 0)
+		if self.Options.HeartIceIcon then
+			self:SetIcon(args.destName, 0)
+		end
 	elseif args:IsSpellID(82660) then
 		timerBurningBlood:Cancel(args.destName)
-		self:SetIcon(args.destName, 0)
+		if self.Options.BurningBloodIcon then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(82746) then
+	if args:IsSpellID(82746, 92506, 92507, 92508) then
 		warnGlaciate:Show()
 		timerGlaciate:Start()
 	elseif args:IsSpellID(82699) then
@@ -151,9 +155,9 @@ function mod:SPELL_CAST_START(args)
 		timerWaterBomb:Start()
 	elseif args:IsSpellID(83675) then
 		warnEruption:Show()
-	elseif args:IsSpellID(83718) then
+	elseif args:IsSpellID(83718, 92541, 92542, 92543) then
 		warnHardenSkin:Show()
-	elseif args:IsSpellID(83565) then
+	elseif args:IsSpellID(83565, 92544, 92545, 92546) then
 		warnQuake:Show()
 		timerQuakeCast:Show()
 	elseif args:IsSpellID(83491) then
@@ -162,10 +166,10 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(83087) then
 		warnDisperse:Show()
 		timerDisperse:Start()
-	elseif args:IsSpellID(83070) then
+	elseif args:IsSpellID(83070, 92454, 92455, 92456) then
 		warnLightningBlast:Show()
 		timerLightningBlast:Start()
-	elseif args:IsSpellID(83067) then
+	elseif args:IsSpellID(83067, 92469, 92470, 92470) then
 		warnThundershock:Show()
 		timerThundershockCast:Show()
 	end

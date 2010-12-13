@@ -42,7 +42,7 @@ function mod:OnCombatStart(delay)
 end	
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(91317, 93366) then
+	if args:IsSpellID(91317, 93365, 93366, 93367) then
 		worshipTargets[#worshipTargets] = args.destName
 		self:Unschedule(showWorshipWarning)
 		self:Schedule(0.3, showWorshipWarning())
@@ -60,13 +60,13 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(82414) then
+	if args:IsSpellID(82414, 93160, 93161, 93162) then
 		warnCreations:Show()
 	elseif args:IsSpellID(82630) then
 		warnPhase2:Show()
-	elseif args:IsSpellID(81556) then
+	elseif args:IsSpellID(81556) then--87575?
 		warnShadowOrders:Show()
-	elseif args:IsSpellID(81171) then
+	elseif args:IsSpellID(81171) then--87579?
 		warnFlameOrders:Show()
 	end
 end

@@ -20,9 +20,13 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(87770) then
+	if args:IsSpellID(87770, 93261, 93262, 93263) then
 		warnWindBurst:Show()
-		timerWindBurst:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerWindBurst:Start(4)--4 second cd on heroic according to wowhead.
+		else
+			timerWindBurst:Start()
+		end
 		timerWindBurstCD:Start()
 	end
 end
