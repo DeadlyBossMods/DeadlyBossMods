@@ -35,7 +35,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(94124) then
+	if args:IsSpellID(77826, 94124, 94125, 94126) then--Some drycoded spellids from wowhead
 		warnShadowflameBreath:Show()
 	elseif args:IsSpellID(80734) then
 		warnBlastNova:Show()
@@ -44,14 +44,14 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsPlayer() and args:IsSpellID(94085) and GetTime() - spamShadoflame > 5 then
+	if args:IsPlayer() and args:IsSpellID(81007, 94085, 94086, 94087) and GetTime() - spamShadoflame > 5 then--Drycodes
 		specWarnShadowblaze:Show()
 		spamShadowflame = GetTime()
 	end
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(94104) and GetTime() - spamHailBones > 5 then		-- reduces spam a little, still spamming a lot
+	if args:IsSpellID(78684, 94104, 94105, 94106) and GetTime() - spamHailBones > 5 then		-- reduces spam a little, still spamming a lot
 		warnHailBones:Show()
 		spamHailBones = GetTime()
 	end

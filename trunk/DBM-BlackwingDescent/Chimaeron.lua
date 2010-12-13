@@ -46,7 +46,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() and (args.amount or 1) >= 3 then
 			specWarnBreak:Show(args.amount)
 		end
-	elseif args:IsSpellID(82881) then
+	elseif args:IsSpellID(88826) then
 		warnDoubleAttack:Show()
 		-- timerDoubleAttack:Start()
 	elseif args:IsSpellID(82890) then

@@ -41,7 +41,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(75117) and GetTime() - spamLight > 5 and args:IsPlayer() then
+	if args:IsSpellID(75117, 94951) and GetTime() - spamLight > 5 and args:IsPlayer() then
 		specWarnLight:Show()
 	end
 end
