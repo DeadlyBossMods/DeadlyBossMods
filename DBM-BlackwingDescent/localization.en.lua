@@ -46,7 +46,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157",
-	AcquiringTarget	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094)
 })
