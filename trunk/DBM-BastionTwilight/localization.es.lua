@@ -18,6 +18,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878)
 })
 
 L:SetOptionLocalization({
@@ -66,16 +67,18 @@ L:SetMiscLocalization({
 	Thundershock		= "The surrounding air crackles with energy....",--translate
 	Switch			= "We will handle them!",--translate
 	Phase3			= "BEHOLD YOUR DOOM!",--translate
-	Ignacious		= "Ignacious",--translate
-	Feludius		= "Feludius",--translate
-	Arion			= "Arion",--translate
-	Terrastra		= "Terrastra",--translate
+	Ignacious		= "Ignacious",
+	Feludius		= "Feludius",
+	Arion			= "Arion",
+	Terrastra		= "Terrastra",
 	Monstrosity		= "Elementium Monstrosity"--translate
 })
 
 L:SetOptionLocalization({
 	SpecWarnGrounded	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83581\n(~10seg antes de castear)",
 	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)"
+	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660)
 })
 
 ----------------
