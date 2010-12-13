@@ -367,6 +367,14 @@ L:SetGeneralLocalization({
 	name = "岩革"
 })
 
+L:SetWarningLocalization({
+	specWarnCrystalStorm		= "水晶風暴 - 找掩護"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalStorm		= "為$spell:92265顯示特別警告"
+})
+
 -------------------------
 -- High Priestess Azil --
 ------------------------
