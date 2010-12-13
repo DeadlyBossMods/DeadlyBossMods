@@ -368,6 +368,14 @@ L:SetGeneralLocalization({
 	name = "돌거죽"
 })
 
+L:SetWarningLocalization({
+	specWarnCrystalStorm		= "Crystal Storm - Take cover"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalStorm		= "$spell:92265 특수 경고 보기"
+})
+
 -------------------------
 -- High Priestess Azil --
 ------------------------

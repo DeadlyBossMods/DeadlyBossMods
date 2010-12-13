@@ -17,6 +17,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878)
 })
 
 L:SetOptionLocalization({
@@ -74,7 +75,9 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnGrounded		= "$spell:83581 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)",
-	SpecWarnSearingWinds	= "$spell:83500 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)"
+	SpecWarnSearingWinds	= "$spell:83500 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)",
+	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660)	
 })
 
 ----------------

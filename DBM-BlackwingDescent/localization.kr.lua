@@ -47,7 +47,10 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "$spell:80157 말하기"
+	SayBombTarget		= "$spell:80157 말하기",
+	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094)
 })
 
 ----------------
@@ -82,7 +85,10 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase			= "다음 단계 전환 경고 보기",
 	WarnRemainingAdds	= "돌연변이가 얼마나 남았는지 경고 보기",
-	TimerPhase			= "다음 단계 타이머 보기"
+	TimerPhase			= "다음 단계 타이머 보기",
+	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
 -----------------
@@ -96,7 +102,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnPhase2Soon	= "곧 2 단계",
-	WarnBreak	= "%s : >%s< (%d)"
+	WarnBreak		= "%s : >%s< (%d)"
 })
 
 L:SetTimerLocalization({
@@ -107,7 +113,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "2 단계 사전 경고 보기",
-	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "알 수 없음")
+	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "알 수 없음")
 })
 
 -----------------
