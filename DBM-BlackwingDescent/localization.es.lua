@@ -47,7 +47,10 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "Gritar en el chat cuando seas el objetivo de $spell:80157"
+	SayBombTarget	= "Gritar en el chat cuando seas el objetivo de $spell:80157",
+	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094)
 })
 
 ----------------
@@ -82,7 +85,10 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase		= "Mostrar aviso de la fase que viene",
 	WarnRemainingAdds	= "Mostrar un aviso con las aberraciones restantes",
-	TimerPhase		= "Mostrar tiempo para la siguiente fase"
+	TimerPhase		= "Mostrar tiempo para la siguiente fase",
+	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
 
