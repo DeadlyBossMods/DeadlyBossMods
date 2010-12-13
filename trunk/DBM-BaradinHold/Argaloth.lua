@@ -19,6 +19,9 @@ local warnMeteorSlash		= mod:NewSpellAnnounce(88942, 4)
 local warnFirestorm			= mod:NewSpellAnnounce(88972, 4)
 local warnFirestormSoon		= mod:NewAnnounce("WarnFirestormSoon", 3, 88972)
 
+local specWarnMeteorSlash	= mod:NewSpecialWarningSpell(88942, mod:IsTank())
+local specWarnFirestorm		= mod:NewSpecialWarningSpell(88972)
+
 local timerConsuming		= mod:NewTargetTimer(15, 88954)
 local timerConsumingCD		= mod:NewCDTimer(22, 88954)
 local timerMeteorSlash		= mod:NewNextTimer(16.5, 88942)
@@ -32,6 +35,7 @@ mod:AddBoolOption("SetIconOnConsuming", true)
 local consumingTargets = {}
 local consumingIcon = 8
 local prewarnedFirestorm
+local spamMeteor = 0
 
 local function showConsumingWarning()
 	warnConsuming:Show(table.concat(consumingTargets, "<, >"))
@@ -44,6 +48,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(consumingTargets)
 	consumingIcon = 8
 	berserkTimer:Start(-delay)
+	spamMeteor = 0
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -63,6 +68,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(88972) then
 		timerFirestorm:Start()
+	elseif args:IsSpellID(88942, 95172) then
+		if GetTime() - spamMeteor >= 4 then
+			spamMeteor = GetTime()
+			specWarnMeteorSlash:Show()
+		end
 	end
 end
 
@@ -82,6 +92,7 @@ function mod:SPELL_CAST_START(args)
 		timerMeteorSlash:Start()
 	elseif args:IsSpellID(88972) then
 		warnFirestorm:Show()
+		specWarnFirestorm:Show()
 		timerMeteorSlash:Cancel()
 		timerConsumingCD:Cancel()
 	end

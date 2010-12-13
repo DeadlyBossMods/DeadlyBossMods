@@ -24,11 +24,11 @@ local warnGroundSlam		= mod:NewCastAnnounce(78903, 4)
 local specWarnGroundSlam	= mod:NewSpecialWarningCast(78903, mod:IsTank())
 local specWarnShatter		= mod:NewSpecialWarningCast(92662, mod:IsMelee())
 
-local timerShatter			= mod:NewCDTimer(19, 78807)
+--local timerShatter			= mod:NewCDTimer(19, 78807)
 local timerBulwark			= mod:NewBuffActiveTimer(10, 78939)
 local timerBulwarkCD		= mod:NewCDTimer(22, 78939)
 local timerGroundSlam		= mod:NewCastTimer(3, 78903)
-local timerGroundSlamCD		= mod:NewCDTimer(12, 78903)
+--local timerGroundSlamCD		= mod:NewCDTimer(12, 78903)
 
 local soundShatter			= mod:NewSound(92662, nil, mod:IsMelee())
 
@@ -59,14 +59,14 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(78807, 92662) then
 		warnShatter:Schedule(15)
-		timerShatter:Start()
+--		timerShatter:Start()
 		specWarnShatter:Show()
 		soundShatter:Play()
 	elseif args:IsSpellID(78903, 92410) then
 		warnGroundSlam:Show()
 		specWarnGroundSlam:Show()
 		timerGroundSlam:Start()
-		timerGroundSlamCD:Start()
+--		timerGroundSlamCD:Start()
 	end
 end
 
