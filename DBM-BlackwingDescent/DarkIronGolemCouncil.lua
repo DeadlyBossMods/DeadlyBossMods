@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetZone()
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -15,44 +15,45 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnActivated		= mod:NewTargetAnnounce(78740, 3)
+local warnActivated			= mod:NewTargetAnnounce(78740, 3)
 local warnIncineration		= mod:NewSpellAnnounce(79023, 2)
-local warnAcquiringTarget	= mod:NewTargetAnnounce(79501, 3)
-local warnBarrier		= mod:NewSpellAnnounce(79582, 4)
-local warnConductor		= mod:NewTargetAnnounce(79888, 3)
+local warnBarrier			= mod:NewSpellAnnounce(79582, 4)
 local warnUnstableShield	= mod:NewSpellAnnounce(79900, 4)
 local warnPoisonProtocol	= mod:NewSpellAnnounce(80053, 2)
 local warnFixate			= mod:NewTargetAnnounce(80094, 3)
 local warnChemicalBomb		= mod:NewSpellAnnounce(80157, 3)
-local warnShell			= mod:NewSpellAnnounce(79835, 4)
-local warnGenerator		= mod:NewSpellAnnounce(79624, 3)
+local warnShell				= mod:NewSpellAnnounce(79835, 4)
+local warnGenerator			= mod:NewSpellAnnounce(79624, 3)
 local warnConversion		= mod:NewSpellAnnounce(79729, 4)
 
 local timerAcquiringTarget	= mod:NewNextTimer(40, 79501)
-local timerBarrier		= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
+local timerBarrier			= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
 local timerBarrierCD		= mod:NewNextTimer(50, 79582)
 local timerConductor		= mod:NewTargetTimer(10, 79888)
+local timerActivated		= mod:NewTargetTimer(90, 78740)
 local timerConductorCD		= mod:NewNextTimer(25, 79888)
 local timerUnstableShield	= mod:NewBuffActiveTimer(11.5, 79900)	-- 10 + 1.5 cast time
 local timerUnstableShieldCD	= mod:NewNextTimer(50, 79900)
 local timerChemicalBomb		= mod:NewNextTimer(30, 80157)
-local timerShell		= mod:NewBuffActiveTimer(11.5, 79835)	-- 10 + 1.5 cast time
-local timerShellCD		= mod:NewNextTimer(50, 79835)
-local timerSoaked		= mod:NewTargetTimer(30, 80011, nil, false)
+local timerShell			= mod:NewBuffActiveTimer(11.5, 79835)	-- 10 + 1.5 cast time
+local timerShellCD			= mod:NewNextTimer(50, 79835)
+local timerSoaked			= mod:NewTargetTimer(30, 80011, nil, false)
 local timerGenerator		= mod:NewNextTimer(30, 79624)
 local timerConversion		= mod:NewBuffActiveTimer(11.5, 79729)	-- 10 + 1.5 cast time
 local timerConversionCD		= mod:NewNextTimer(50, 79729)
 
 local specWarnBarrier		= mod:NewSpecialWarningCast(79582)
 local specWarnConductor		= mod:NewSpecialWarningYou(79888)
-local specWarnUnstableShield	= mod:NewSpecialWarningCast(79900)
-local specWarnShell		= mod:NewSpecialWarningCast(79835)
+local specWarnUnstableShield= mod:NewSpecialWarningCast(79900)
+local specWarnShell			= mod:NewSpecialWarningCast(79835)
 local specWarnConversion	= mod:NewSpecialWarningCast(79729)
 
-mod:AddBoolOption("SayBombTarget", true)
+mod:AddBoolOption("SayBombTarget", false)
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("BombTargetIcon")
+
+local fixateIcon = 6
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron then
@@ -95,29 +96,29 @@ local bossInactive = function(boss)
 end
 
 function mod:OnCombatStart(delay)
+	fixateIcon = 6
 end
 
 --Most of spelids for 25 man, and heroics are drycoded in this mod.
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(78740, 95016, 95017, 95018) then
 		warnActivated:Show(args.destName)
+		timerActivated:Start(args.destName)
 		bossActivate(args.destName)
 	elseif args:IsSpellID(78726) then
 		bossInactive(args.destName)
 	elseif args:IsSpellID(79501, 92035, 92036, 92037) then
-		warnAcquiringTarget:Show(args.destName)
 		timerAcquiringTarget:Start()
 		if self.Options.AcquiringTargetIcon then
 			self:SetIcon(args.destName, 8, 6)
 		end
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
-		warnConductor:Show(args.destName)
 		timerConductorCD:Start()
 		if self.Options.ConductorIcon then
 			self:SetIcon(args.destName, 7)
 		end
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerConductor:Start(15, args.destName)--15 seconds on heroic
+			timerConductor:Start(15, args.destName)--15 seconds on heroic?
 		else
 			timerConductor:Start(args.destName)
 		end
@@ -126,11 +127,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(80094) then
 		warnFixate:Show(args.destName)
-		if args:IsPlayer() and self.options.SayBombTarget then
+		if args:IsPlayer() and self.Options.SayBombTarget then
 			SendChatMessage(L.SayBomb, "SAY")
 		end
 		if self.Options.BombTargetIcon then
-			self:SetIcon(args.destName, 6, 6)
+			if fixateIcon < 4 then--3 oozes spawn within 2-3 seconds of eachother
+				fixateIcon = 6--lets make sure all 3 get unique icons, then reset for next time.
+			end
+			self:SetIcon(args.destName, fixateIcon, 6)
+			fixateIcon = fixateIcon - 1
 		end
 	elseif args:IsSpellID(80011, 91504, 91505, 91506) then
 		timerSoaked:Start(args.destName)
