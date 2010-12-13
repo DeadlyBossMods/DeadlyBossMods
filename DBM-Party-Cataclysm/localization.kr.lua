@@ -369,7 +369,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnCrystalStorm		= "Crystal Storm - Take cover"
+	specWarnCrystalStorm		= "수정 폭풍"
 })
 
 L:SetOptionLocalization({
