@@ -30,7 +30,7 @@ local timerAcquiringTarget	= mod:NewNextTimer(40, 79501)
 local timerBarrier			= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
 local timerBarrierCD		= mod:NewNextTimer(50, 79582)
 local timerConductor		= mod:NewTargetTimer(10, 79888)
-local timerActivated		= mod:NewTargetTimer(90, 78740)
+local timerNextActivate		= mod:NewNextTimer(45, 78740)--Activations are every 90 seconds but encounter staggers them in an alternating fassion so 45 seconds between add switches
 local timerConductorCD		= mod:NewNextTimer(25, 79888)
 local timerUnstableShield	= mod:NewBuffActiveTimer(11.5, 79900)	-- 10 + 1.5 cast time
 local timerUnstableShieldCD	= mod:NewNextTimer(50, 79900)
@@ -97,13 +97,14 @@ end
 
 function mod:OnCombatStart(delay)
 	fixateIcon = 6
+	timerNextActivate:Start(-delay)
 end
 
 --Most of spelids for 25 man, and heroics are drycoded in this mod.
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(78740, 95016, 95017, 95018) then
 		warnActivated:Show(args.destName)
-		timerActivated:Start(args.destName)
+		timerNextActivate:Start()
 		bossActivate(args.destName)
 	elseif args:IsSpellID(78726) then
 		bossInactive(args.destName)
