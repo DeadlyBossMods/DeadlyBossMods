@@ -10,7 +10,7 @@ local L
 L = DBM:GetModLocalization("Romogg")
 
 L:SetGeneralLocalization({
-	name = "Rom'ogg Bonecrusher"
+	name = "Ром'рогг Костекрушитель"
 })
 
 -------------------------------
@@ -19,15 +19,15 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Corla")
 
 L:SetGeneralLocalization({
-	name = "Corla, Herald of Twilight"
+	name = "Корла, глашатай сумрака"
 })
 
 L:SetWarningLocalization({
-	WarnAdd		= "Add released"
+	WarnAdd		= "Помощник освобожден"
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "Warn when an add looses $spell:75608 buff"
+	WarnAdd		= "Предупреждать, когда на Ревнителе истекает эффект $spell:75608"
 })
 
 -----------------------
@@ -36,7 +36,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("KarshSteelbender")
 
 L:SetGeneralLocalization({
-	name = "Karsh Steelbender"
+	name = "Кузнец Карш"
 })
 
 L:SetTimerLocalization({
@@ -44,7 +44,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TimerSuperheated	= "Show timer for $spell:75846 duration"
+	TimerSuperheated	= "Показывать таймер длительности $spell:75846"
 })
 
 ------------
@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Beauty")
 
 L:SetGeneralLocalization({
-	name = "Beauty"
+	name = "Красотка"
 })
 
 -----------------------------
@@ -62,11 +62,11 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "Ascendant Lord Obsidius"
+	name = "Лорд Обсидиус"
 })
 
 L:SetOptionLocalization({
-	SetIconOnBoss	= "Put an icon on the boss after $spell:76200 "
+	SetIconOnBoss	= "Пометить босса иконкой после $spell:76200 "
 })
 
 ---------------------
@@ -77,7 +77,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Glubtok")
 
 L:SetGeneralLocalization({
-	name = "Glubtok"
+	name = "Глубток"
 })
 
 -----------------------
@@ -86,7 +86,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Helix")
 
 L:SetGeneralLocalization({
-	name = "Helix Gearbreaker"
+	name = "Хеликс Отломчикс"
 })
 
 ---------------------
@@ -95,7 +95,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("FoeReaper")
 
 L:SetGeneralLocalization({
-	name = "Foe Reaper 5000"
+	name = "Врагорез-5000"
 })
 
 ----------------------
@@ -104,7 +104,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ripsnarl")
 
 L:SetGeneralLocalization({
-	name = "Admiral Ripsnarl"
+	name = "Адмирал Терзающий Рев"
 })
 
 ----------------------
@@ -113,7 +113,16 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
-	name = "\"Captain\" Cookie"
+	name = "\"Капитан\" Пирожок"
+})
+
+----------------------
+-- Vanessa VanCleef --
+----------------------
+L = DBM:GetModLocalization("Vanessa")
+
+L:SetGeneralLocalization({
+	name = "Ванесса ван Клиф"
 })
 
 ------------------
@@ -124,7 +133,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "General Umbriss"
+	name = "Генерал Умбрисс"
 })
 
 --------------------------
@@ -133,7 +142,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ForgemasterThrongus")
 
 L:SetGeneralLocalization({
-	name = "Forgemaster Throngus"
+	name = "Начальник кузни Тронгус"
 })
 
 -------------------------
@@ -142,7 +151,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("DrahgaShadowburner")
 
 L:SetGeneralLocalization({
-	name = "Drahga Shadowburner"
+	name = "Драгх Горячий Мрак"
 })
 
 ------------
@@ -151,7 +160,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Erudax")
 
 L:SetGeneralLocalization({
-	name = "Erudax"
+	name = "Эрудакс"
 })
 
 ----------------------------
@@ -162,7 +171,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TempleGuardianAnhuur")
 
 L:SetGeneralLocalization({
-	name = "Temple Guardian Anhuur"
+	name = "Храмовый страж Ануур"
 })
 
 ---------------------
@@ -171,7 +180,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("EarthragerPtah")
 
 L:SetGeneralLocalization({
-	name = "Earthrager Ptah"
+	name = "Пта Ярость Земли"
 })
 
 --------------
@@ -180,7 +189,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Anraphet")
 
 L:SetGeneralLocalization({
-	name = "Anraphet"
+	name = "Анрафет"
 })
 
 ------------
@@ -189,15 +198,15 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Isiset")
 
 L:SetGeneralLocalization({
-	name = "Isiset"
+	name = "Изисет"
 })
 
 L:SetWarningLocalization({
-	WarnSplitSoon	= "Split soon"
+	WarnSplitSoon	= "Скоро разделение"
 })
 
 L:SetOptionLocalization({
-	WarnSplitSoon	= "Show pre-warning for Split"
+	WarnSplitSoon	= "Показывать предупреждение о надвигающемся разделении"
 })
 
 -------------
@@ -206,7 +215,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ammunae")
 
 L:SetGeneralLocalization({
-	name = "Ammunae"
+	name = "Аммунаэ"
 })
 
 -------------
@@ -215,7 +224,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Setesh")
 
 L:SetGeneralLocalization({
-	name = "Setesh"
+	name = "Сетеш"
 })
 
 ----------
@@ -224,7 +233,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Rajh")
 
 L:SetGeneralLocalization({
-	name = "Rajh"
+	name = "Радж"
 })
 
 --------------------------------
@@ -235,7 +244,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralHusam")
 
 L:SetGeneralLocalization({
-	name = "General Husam"
+	name = "Генерал Хусам"
 })
 
 ------------------------------------
@@ -244,7 +253,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
-	name = "Siamat"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
+	name = "Сиамат"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
 })
 
 ------------------------
@@ -253,7 +262,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighProphetBarim")
 
 L:SetGeneralLocalization({
-	name = "High Prophet Barim"
+	name = "Верховным пророком Барим"
 })
 
 --------------
@@ -262,7 +271,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
-	name = "Lockmaw"
+	name = "Зубохлоп"
 })
 
 -----------------------
@@ -273,7 +282,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ashbury")
 
 L:SetGeneralLocalization({
-	name = "Baron Ashbury"
+	name = "Барон Эшбери"
 })
 
 -----------------------
@@ -282,7 +291,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Silverlaine")
 
 L:SetGeneralLocalization({
-	name = "Baron Silverlaine"
+	name = "Барон Сребролен"
 })
 
 --------------------------
@@ -291,7 +300,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Springvale")
 
 L:SetGeneralLocalization({
-	name = "Commander Springvale"
+	name = "Командир Ручьедол"
 })
 
 -----------------
@@ -300,7 +309,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Walden")
 
 L:SetGeneralLocalization({
-	name = "Lord Walden"
+	name = "Лорд Вальден"
 })
 
 ------------------
@@ -309,7 +318,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Godfrey")
 
 L:SetGeneralLocalization({
-	name = "Lord Godfrey"
+	name = "Лорд Годфри"
 })
 
 ---------------------
@@ -319,25 +328,24 @@ L:SetGeneralLocalization({
 -------------- 
 L = DBM:GetModLocalization("Corborus")
 
+L:SetGeneralLocalization({
+	name = "Корбор"
+})
 L:SetWarningLocalization({
-	WarnEmerge	= "Emerge",
-	WarnSubmerge	= "Submerge"
+	WarnEmerge	= "Появление",
+	WarnSubmerge	= "Погружение"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Emerge",
-	TimerSubmerge	= "Submerge"
+	TimerEmerge	= "Появление",
+	TimerSubmerge	= "Погружение"
 })
 
 L:SetOptionLocalization({
-	WarnEmerge	= "Show warning for emerge",
-	WarnSubmerge	= "Show warning for submerge",
-	TimerEmerge	= "Show timer for emerge",
-	TimerSubmerge	= "Show timer for submerge"
-})
-
-L:SetGeneralLocalization({
-	name = "Corborus"
+	WarnEmerge	= "Показывать предупреждения о появлении",
+	WarnSubmerge	= "Показывать предупреждения о погружении",
+	TimerEmerge	= "Показывать таймер до появления",
+	TimerSubmerge	= "Показывать таймер до погружения"
 })
 
 -----------
@@ -346,7 +354,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozruk")
 
 L:SetGeneralLocalization({
-	name = "Ozruk"
+	name = "Озрук"
 })
 
 --------------
@@ -355,7 +363,15 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Slabhide")
 
 L:SetGeneralLocalization({
-	name = "Slabhide"
+	name = "Камнешкур"
+})
+
+L:SetWarningLocalization({
+	specWarnCrystalStorm		= "Кристальная буря - в укрытие!"
+})
+
+L:SetOptionLocalization({
+	specWarnCrystalStorm		= "Показывать особое предупреждение для $spell:92265"
 })
 
 -------------------------
@@ -364,7 +380,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighPriestessAzil")
 
 L:SetGeneralLocalization({
-	name = "High Priestess Azil"
+	name = "Верховная жрица Азил"
 })
 
 ---------------------------
@@ -375,7 +391,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GrandVizierErtan")
 
 L:SetGeneralLocalization({
-	name = "Grand Vizier Ertan"
+	name = "Великий визирь Эртан"
 })
 
 --------------
@@ -384,7 +400,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Altarius")
 
 L:SetGeneralLocalization({
-	name = "Altarius"
+	name = "Альтаирий"
 })
 
 -----------
@@ -393,7 +409,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Asaad")
 
 L:SetGeneralLocalization({
-	name = "Asaad"
+	name = "Асаад"
 })
 
 ---------------------------
@@ -404,7 +420,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("LadyNazjar")
 
 L:SetGeneralLocalization({
-	name = "Lady Naz'jar"
+	name = "Леди Наз'жар"
 })
 
 -----======-----------
@@ -413,7 +429,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("CommanderUlthok")
 
 L:SetGeneralLocalization({
-	name = "Commander Ulthok"
+	name = "Командир Улток"
 })
 
 -------------------------
@@ -422,7 +438,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ErunakStonespeaker")
 
 L:SetGeneralLocalization({
-	name = "Erunak Stonespeaker"
+	name = "Эрунак Говорящий с Камнем"
 })
 
 ------------
@@ -431,5 +447,5 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ozumat")
 
 L:SetGeneralLocalization({
-	name = "Ozumat"
+	name = "Озумат"
 })
