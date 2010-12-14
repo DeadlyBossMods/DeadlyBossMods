@@ -9,13 +9,16 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCES"
+	"SPELL_CAST_SUCCES",
+	"SPELL_DAMAGE"
 )
 
 local warnDesecration		= mod:NewSpellAnnounce(93687, 3)
 local warnMaleficStrike		= mod:NewSpellAnnounce(93685, 2)
-local warnShield		= mod:NewSpellAnnounce(93736, 4)
-local warnWordShame		= mod:NewTargetAnnounce(93852, 3)
+local warnShield			= mod:NewSpellAnnounce(93736, 4)
+local warnWordShame			= mod:NewTargetAnnounce(93852, 3)
+
+local specWarnDesecration	= mod:NewSpecialWarningMove(93687)
 
 local timerMaleficStrike	= mod:NewNextTimer(6, 93685)
 
@@ -33,5 +36,15 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerMaleficStrike:Start()
 	elseif args:IsSpellID(93687) then
 		warnDesecration:Show()
+	end
+end
+
+do 
+	local lastdesecration = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(93687) and args:IsPlayer() and GetTime() - lastdesecration > 3 then		-- Desecration
+			specWarnDesecration:Show()
+			lastdesecration = GetTime()
+		end
 	end
 end
