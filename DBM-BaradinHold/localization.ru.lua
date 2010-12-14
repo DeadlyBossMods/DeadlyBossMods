@@ -8,11 +8,11 @@ local L
 L = DBM:GetModLocalization("Argaloth")
 
 L:SetGeneralLocalization({
-	name = "Argaloth"
+	name = "Аргалот"
 })
 
 L:SetWarningLocalization({
-	WarnFirestormSoon		= "Fel Firestorm soon"
+	WarnFirestormSoon		= "Скоро Огненная буря Скверны"
 })
 
 L:SetTimerLocalization({
@@ -22,6 +22,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnFirestormSoon		= "Show pre-warning for $spell:88972 ",
+	WarnFirestormSoon		= "Показывать предупреждение о способности $spell:88972 ",
 	SetIconOnConsuming		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88954)
 })
