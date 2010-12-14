@@ -38,7 +38,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "$spell:75846 (%d)"	-- should work, no need for translation :)
+	TimerSuperheated 	= "Superheated Armor (%d)"
 })
 
 L:SetOptionLocalization({
