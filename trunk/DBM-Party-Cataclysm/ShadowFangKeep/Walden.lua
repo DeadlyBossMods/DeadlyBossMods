@@ -9,21 +9,35 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_CAST_START",
-	"SPELL_AURA_APPLIED"
+	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE"
 )
 
 local warnFrostMix	= mod:NewSpellAnnounce(93702, 3)
 local warnPoisonMix	= mod:NewSpellAnnounce(93704, 3)
 local warnIceShards	= mod:NewSpellAnnounce(93527, 3)
 
+local specWarnCoagulant	= mod:NewSpecialWarningMove(93617)
+
 local timerIceShards	= mod:NewBuffActiveTimer(5, 93527)
+
+local lastCoagulant = 0
+
+function mod:OnCombatStart(delay)
+	lastCoagulant = 0
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93527) then
 		warnIceShards:Show()
 		timerIceShards:Start()
+	if args:IsSpellID(93617) and args:IsPlayer() and GetTime() - lastCoagulant > 3 then
+		specWarnCoagulant:Show()
+		lastCoagulant = GetTime()
 	end
 end
+
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93702) then
