@@ -3,7 +3,7 @@
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastion of Twilight|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión del Crepúsculo|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0황혼의 성채|r
-## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastion of Twilight|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Сумеречный бастион|r
 ## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0暮光堡壘|r
 ## Author: Nitram/Tandanu
 ## LoadOnDemand: 1
@@ -15,7 +15,7 @@
 ## X-DBM-Mod-Name: Bastion of Twilight
 ## X-DBM-Mod-Name-esES: Bastión del Crepúsculo
 ## X-DBM-Mod-Name-koKR: 황혼의 성채
-## X-DBM-Mod-Name-ruRU: Bastion of Twilight
+## X-DBM-Mod-Name-ruRU: Сумеречный бастион
 ## X-DBM-Mod-Name-zhTW: 暮光堡壘
 ## X-DBM-Mod-Sort: 102
 ## X-DBM-Mod-LoadZoneID: 758
