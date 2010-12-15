@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "黑鐵魔像會"
+	name = "全能魔像防禦系統"
 })
 
 L:SetWarningLocalization({
