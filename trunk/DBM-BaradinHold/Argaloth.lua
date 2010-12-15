@@ -20,10 +20,11 @@ local warnFirestorm			= mod:NewSpellAnnounce(88972, 4)
 local warnFirestormSoon		= mod:NewAnnounce("WarnFirestormSoon", 3, 88972)
 
 local specWarnMeteorSlash	= mod:NewSpecialWarningSpell(88942, mod:IsTank())
-local specWarnFirestorm		= mod:NewSpecialWarningSpell(88972)
+local specWarnFirestormCast	= mod:NewSpecialWarningSpell(88972)
+local specWarnFirestorm		= mod:NewSpecialWarningMove(89000)
 
 local timerConsuming		= mod:NewTargetTimer(15, 88954)
-local timerConsumingCD		= mod:NewCDTimer(22, 88954)
+local timerConsumingCD		= mod:NewCDTimer(24, 88954)
 local timerMeteorSlash		= mod:NewNextTimer(16.5, 88942)
 local timerMeteorSlashCast	= mod:NewCastTimer(1.25, 88942)
 local timerFirestorm		= mod:NewBuffActiveTimer(15, 88972)
@@ -55,7 +56,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(88954, 95173) then
 		timerConsuming:Start(args.destName)
 		timerConsumingCD:Start()
-		consumingTargets[#consumingTargets] = args.destName
+		consumingTargets[#consumingTargets + 1] = args.destName
 		if self.Options.SetIconOnConsuming then
 			self:SetIcon(args.destName, consumingIcon)
 			consumingIcon = consumingIcon - 1
@@ -68,7 +69,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(88972) then
 		timerFirestorm:Start()
-	elseif args:IsSpellID(88942, 95172) then
+	elseif args:IsSpellID(88942, 95172) then--Debuff application not cast, special warning for tank taunts.
 		if GetTime() - spamMeteor >= 4 then
 			spamMeteor = GetTime()
 			specWarnMeteorSlash:Show()
@@ -78,6 +79,9 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(88954, 95173) then
+		if self.Options.SetIconOnConsuming then
+			self:SetIcon(args.destName, 0)
+		end
 		timerConsuming:Cancel(args.destName)
 	elseif args:IsSpellID(88972) then
 		timerMeteorSlash:Start(13)
@@ -92,9 +96,19 @@ function mod:SPELL_CAST_START(args)
 		timerMeteorSlash:Start()
 	elseif args:IsSpellID(88972) then
 		warnFirestorm:Show()
-		specWarnFirestorm:Show()
+		specWarnFirestormCast:Show()
 		timerMeteorSlash:Cancel()
 		timerConsumingCD:Cancel()
+	end
+end
+
+do
+	local lastFlames = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(89000, 95177) and GetTime() - lastFlames > 3 then -- Flames on ground from Firestorm
+			specWarnFirestorm:Show()
+			lastFlames = GetTime()
+		end
 	end
 end
 
