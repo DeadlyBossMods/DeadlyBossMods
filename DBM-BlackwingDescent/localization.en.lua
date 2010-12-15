@@ -27,7 +27,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "Dark Iron Golem Council"
+	name = "Omnotron Defense System"
 })
 
 L:SetWarningLocalization({
