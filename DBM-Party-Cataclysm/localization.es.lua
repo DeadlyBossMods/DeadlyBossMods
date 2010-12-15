@@ -40,7 +40,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "$spell:75846 (%d)"
+	TimerSuperheated 	= "Armadura sobrecalentada (%d)"
 })
 
 L:SetOptionLocalization({
@@ -320,6 +320,14 @@ L = DBM:GetModLocalization("Godfrey")
 L:SetGeneralLocalization({
 	name = "Lord Godfrey"
 })
+
+L:SetWarningLocalization{
+	WarnMortalWound	= "%s en >%s< (%d)"
+}
+
+L:SetOptionLocalization{
+	WarnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(93675, GetSpellInfo(93675) or "unknown")
+}
 
 
 ---------------------
