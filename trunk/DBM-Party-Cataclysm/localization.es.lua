@@ -414,6 +414,10 @@ L:SetGeneralLocalization({
 	name = "Altarius"
 })
 
+L:SetOptionLocalization({
+	BreathIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88308)
+})
+
 -----------
 -- Asaad --
 -----------
