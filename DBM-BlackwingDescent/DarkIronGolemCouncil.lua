@@ -38,13 +38,14 @@ local timerChemicalBomb		= mod:NewNextTimer(30, 80157)
 local timerShell			= mod:NewBuffActiveTimer(11.5, 79835)	-- 10 + 1.5 cast time
 local timerShellCD			= mod:NewNextTimer(50, 79835)
 local timerSoaked			= mod:NewTargetTimer(30, 80011, nil, false)
-local timerGenerator		= mod:NewNextTimer(30, 79624)
+local timerGeneratorCD		= mod:NewNextTimer(30, 79624)
 local timerConversion		= mod:NewBuffActiveTimer(11.5, 79729)	-- 10 + 1.5 cast time
 local timerConversionCD		= mod:NewNextTimer(50, 79729)
 
 local specWarnBarrier		= mod:NewSpecialWarningCast(79582)
 local specWarnConductor		= mod:NewSpecialWarningYou(79888)
 local specWarnUnstableShield= mod:NewSpecialWarningCast(79900)
+local specWarnGenerator		= mod:NewSpecialWarningMove(79624, mod:IsTank())
 local specWarnShell			= mod:NewSpecialWarningCast(79835)
 local specWarnConversion	= mod:NewSpecialWarningCast(79729)
 
@@ -69,7 +70,7 @@ local bossActivate = function(boss)
 		timerShellCD:Start()
 		DBM.BossHealth:AddBoss(42180, L.Toxitron)
 	elseif boss == L.Arcanotron then
-		timerGenerator:Start(11)
+		timerGeneratorCD:Start(11)
 		timerConversionCD:Start(50)
 		DBM.BossHealth:AddBoss(42166, L.Arcanotron)
 	end
@@ -89,7 +90,7 @@ local bossInactive = function(boss)
 		timerShellCD:Cancel()
 		DBM.BossHealth:RemoveBoss(42180)
 	elseif boss == L.Arcanotron then
-		timerGenerator:Cancel()
+		timerGeneratorCD:Cancel()
 		timerConversionCD:Cancel()
 		DBM.BossHealth:RemoveBoss(42166)
 	end
@@ -140,6 +141,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(80011, 91504, 91505, 91506) then
 		timerSoaked:Start(args.destName)
+	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:GetDestCreatureID() == 42166 then--Check if Generator buff is gained by Arcanotron
+		if self:GetUnitCreatureId("target") == 42166 then--Make sure to only warn person tanking it. (other tank would be targeting a different golem)
+			specWarnGenerator:Show()--Show special warning to move him out of it.
+		end
 	end
 end
 
@@ -193,8 +198,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChemicalBomb:Start()
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
-	elseif args:IsSpellID(79624) then--79629, 91555, 91556, 91557 seem likely, but will see if 79624 works first.
+	elseif args:IsSpellID(79624) then--Need more logs to determin if this is only actual cast id
 		warnGenerator:Show()
-		timerGenerator:Start()
+		timerGeneratorCD:Start()
 	end
 end
