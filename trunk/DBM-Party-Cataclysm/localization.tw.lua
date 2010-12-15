@@ -40,7 +40,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "$spell:75846 (%d)"	-- should work, no need for translation :)
+	TimerSuperheated 	= "極灸水銀護甲 (%d)"	-- should work, no need for translation :)
 })
 
 L:SetOptionLocalization({
@@ -282,7 +282,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ashbury")
 
 L:SetGeneralLocalization({
-	name = "Baron Ashbury"
+	name = "艾胥柏利男爵"
 })
 
 -----------------------
