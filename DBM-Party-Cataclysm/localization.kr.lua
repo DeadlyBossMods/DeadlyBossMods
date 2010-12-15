@@ -39,7 +39,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "$spell:75846 (%d)"	-- should work, no need for translation :)
+	TimerSuperheated 	= "과열된 수은갑옷 (%d)"
 })
 
 L:SetOptionLocalization({
@@ -320,6 +320,14 @@ L:SetGeneralLocalization({
 	name = "고드프리 경"
 })
 
+L:SetWarningLocalization{
+	WarnMortalWound	= "%s : >%s< (%d)"		-- Mortal Wound on >args.destName< (args.amount)
+}
+
+L:SetOptionLocalization{
+	WarnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(93675, GetSpellInfo(93675) or "알 수 없음")
+}
+
 ---------------------
 --  The Stonecore  --
 ---------------------
@@ -403,6 +411,10 @@ L = DBM:GetModLocalization("Altarius")
 
 L:SetGeneralLocalization({
 	name = "알타리우스"
+})
+
+L:SetOptionLocalization({
+	BreathIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88308)
 })
 
 -----------
