@@ -37,6 +37,8 @@ local timerScorchingBlast	= mod:NewCDTimer(17, 77679)
 local specWarnBitingChill	= mod:NewSpecialWarningYou(77760)
 local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 local specWarnArcaneStorm	= mod:NewSpecialWarningInterupt(77896, false)
+local specWarnRemedy		= mod:NewSpecialWarningDispel(77912, false)
+local specWarnAdds			= mod:NewSpecialWarningSpell(77569, false)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
 
@@ -68,6 +70,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(77912, 92965, 92966, 92967) then--Drycodes
 		warnRemedy:Show()
+		specWarnRemedy:Show()
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
 		specWarnArcaneStorm:Show()
@@ -111,6 +114,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77569) then
 --		adds = adds - 3
 		warnReleaseAdds:Show()
+		specWarnAdds:Show()
 --		warnRemainingAdds:Show(adds)--Maybe a way to monitor cast finished/succeeded unit event?
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
