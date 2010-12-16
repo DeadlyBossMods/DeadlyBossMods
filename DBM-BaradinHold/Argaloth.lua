@@ -65,7 +65,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if mod:IsDifficulty("normal10") and #consumingTargets >= 3 then
 			showConsumingWarning()
 		else
-			self:Schedule(0.3, showConsumingWarning())
+			self:Schedule(0.3, showConsumingWarning)
 		end
 	elseif args:IsSpellID(88972) then
 		timerFirestorm:Start()
