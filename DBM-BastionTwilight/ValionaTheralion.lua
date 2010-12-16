@@ -15,6 +15,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
+local warnTwilightMeteorite		= mod:NewSpellAnnounce(86013, 3)
 local warnBlackout				= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames		= mod:NewSpellAnnounce(86840, 3)
 local warnDeepBreath			= mod:NewSpellAnnounce(86059, 4)
