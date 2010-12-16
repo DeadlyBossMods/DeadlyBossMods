@@ -20,7 +20,7 @@ local warnMangle		= mod:NewTargetAnnounce(89773, 3)
 local timerLavaSpew		= mod:NewCDTimer(30, 77689)
 local timerPillarFlame	= mod:NewCDTimer(30, 78006)
 local timerMangle		= mod:NewTargetTimer(30, 89773)
-local timerMangleCD		= mod:NewCDAnnounce(95, 89773)--complete guesswork on timer since two weeks in a row i had useless logger.
+local timerMangleCD		= mod:NewCDTimer(95, 89773)--complete guesswork on timer since two weeks in a row i had useless logger.
 
 local lastLavaSpew = 0
 
