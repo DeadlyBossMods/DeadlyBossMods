@@ -31,7 +31,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93527) then
 		warnIceShards:Show()
 		timerIceShards:Start()
-	if args:IsSpellID(93617) and args:IsPlayer() and GetTime() - lastCoagulant > 3 then
+	elseif args:IsSpellID(93617) and args:IsPlayer() and GetTime() - lastCoagulant > 3 then
 		specWarnCoagulant:Show()
 		lastCoagulant = GetTime()
 	end
