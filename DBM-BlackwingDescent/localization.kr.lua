@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "검은무쇠단 사절"
+	name = "만능골렘 방어 시스템"
 })
 
 L:SetWarningLocalization({
@@ -39,10 +39,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Magmatron	= "Magmatron",
-	Electron	= "Electron",
+	Magmatron	= "용암골렘",
+	Electron	= "전기골렘",
 	Toxitron	= "Toxitron",
-	Arcanotron	= "Arcanotron",
+	Arcanotron	= "비전골렘",
 	SayBomb		= "나에게 화학 폭탄!! 튀어!!"
 })
 
