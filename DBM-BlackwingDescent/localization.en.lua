@@ -144,7 +144,8 @@ L:SetOptionLocalization({
 	WarnGroundphase		= "Show warning when Atramedes lands",
 	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",
 	TimerAirphase		= "Show timer for next airphase",
-	TimerGroundphase	= "Show timer for next groundphase"
+	TimerGroundphase	= "Show timer for next groundphase",
+	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 ----------------
