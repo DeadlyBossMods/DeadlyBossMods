@@ -22,12 +22,14 @@ local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 3)
 local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 3, 77611)
 
 local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840)
-local specWarnTracking	= mod:NewSpecialWarningYou(78092)
+local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(50, 77840)
 local timerAirphase			= mod:NewTimer(90, "TimerAirphase")
 local timerGroundphase		= mod:NewTimer(35, "TimerGroundphase")
+
+local soundTracking			= mod:NewSound(78092)
 
 mod:AddBoolOption("TrackingIcon")
 
@@ -50,6 +52,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnTracking:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnTracking:Show()
+			soundTracking:Play()
 		end
 		if self.Options.TrackingIcon then
 			self:SetIcon(args.destName, 8)
@@ -72,7 +75,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(77840) then
 		specWarnSearingFlame:Show()
 		timerSearingFlame:Start()
-	elseif args:IsSpellID(77611) then
+	elseif args:IsSpellID(77611) and not args:IsSrcTypePlayer() then
 		shieldsLeft = shieldsLeft - 1
 		warnShieldsLeft:Show(shieldsLeft)
 	end
