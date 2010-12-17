@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "Sistema de defensa de Omnitron"
+	name = "Sistema de defensa de Omnotron"
 })
 
 L:SetWarningLocalization({
@@ -147,7 +147,8 @@ L:SetOptionLocalization({
 	WarnGroundphase		= "Mostrar aviso cuando Atramedes aterriza",
 	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",--translate
 	TimerAirphase		= "Mostrar tiempo para siguiente Fase aerea",
-	TimerGroundphase	= "Mostrar tiempo para siguiente Fase en tierra"
+	TimerGroundphase	= "Mostrar tiempo para siguiente Fase en tierra",
+	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 ----------------
