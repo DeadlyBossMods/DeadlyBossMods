@@ -18,6 +18,8 @@ local warnAirphase			= mod:NewAnnounce("WarnAirphase", 3)
 local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 3)
 local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 3, 77611)
 
+local specWarnSearingFlame			= mod:NewSpecialWarningSpell(77840)
+
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(50, 77840)
 local timerAirphase			= mod:NewTimer(90, "TimerAirphase")
@@ -42,7 +44,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSonicBreath:Start()
 		warnSonicBreath:Show()
 	elseif args:IsSpellID(77840) then
-
+		specWarnSearingFlame:Show()
+		timerSearingFlame:Start()
 	elseif args:IsSpellID(77611) then
 		shieldsLeft = shieldsLeft - 1
 		warnShieldsLeft:Show(shields)
