@@ -42,9 +42,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSonicBreath:Start()
 		warnSonicBreath:Show()
 	elseif args:IsSpellID(77840) then
-		warnSearingFlame:Show()
+
 	elseif args:IsSpellID(77611) then
-		shields = shields - 1
+		shieldsLeft = shieldsLeft - 1
 		warnShieldsLeft:Show(shields)
 	end
 end
