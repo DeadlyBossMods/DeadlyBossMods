@@ -4,6 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(41442)
 mod:SetZone()
+mod:SetUsedIcons(8)
 
 mod:RegisterCombat("combat")
 
@@ -45,7 +46,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(78092) then
-		warnTracking:Start(args.destName)
+		warnTracking:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnTracking:Show()
 		end
