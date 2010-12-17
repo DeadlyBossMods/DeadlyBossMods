@@ -12,20 +12,21 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SPELL_INTERRUPT",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnPhase			= mod:NewAnnounce("WarnPhase", 4)
+local warnPhase				= mod:NewAnnounce("WarnPhase", 4)
 local warnReleaseAdds		= mod:NewSpellAnnounce(77569, 3)
---local warnRemainingAdds		= mod:NewAnnounce("WarnRemainingAdds", 2, nil, false)--this function would need interupt detection before it's useful
+local warnRemainingAdds		= mod:NewAnnounce("WarnRemainingAdds", 2, 77569)
 local warnFlashFreeze		= mod:NewTargetAnnounce(77699, 3)
 local warnBitingChill		= mod:NewTargetAnnounce(77760, 3)
-local warnRemedy		= mod:NewSpellAnnounce(77912, 4)
+local warnRemedy			= mod:NewSpellAnnounce(77912, 4)
 local warnArcaneStorm		= mod:NewSpellAnnounce(77896, 3)
 local warnConsumingFlames	= mod:NewTargetAnnounce(77786, 3)
 local warnScorchingBlast	= mod:NewSpellAnnounce(77679, 3)
-local warnPhase2		= mod:NewPhaseAnnounce(2)
+local warnPhase2			= mod:NewPhaseAnnounce(2)
  
 local timerPhase			= mod:NewTimer(45, "TimerPhase")
 local timerBitingChill		= mod:NewTargetTimer(10, 77760)
@@ -46,11 +47,21 @@ mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon")
 mod:AddBoolOption("ConsumingFlamesIcon")
 
---local adds = 18
+local adds = 18
+local AddsInterrupted = false
+
+local function InterruptCheck()
+	if not AddsInterrupted then
+		adds = adds - 3
+		warnRemainingAdds:Show(adds)
+	end
+	AddsInterrupted = false
+end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
---	adds = 18
+	adds = 18
+	AddsInterrupted = false
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -112,12 +123,19 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77569) then
---		adds = adds - 3
 		warnReleaseAdds:Show()
 		specWarnAdds:Show()
---		warnRemainingAdds:Show(adds)--Maybe a way to monitor cast finished/succeeded unit event?
+		self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interupt and curse of tongues having been up.
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 77896) then
+		timerArcaneStorm:Cancel()
+	elseif type(args.extraSpellId) == "number" and (args.extraSpellId == 77569) then
+		AddsInterrupted = true
 	end
 end
 
