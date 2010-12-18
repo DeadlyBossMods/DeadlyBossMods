@@ -9,18 +9,21 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_AURA_REMOVED"
+	"SPELL_AURA_REMOVED",
+	"SPELL_SUMMON"
 )
 
 local warnLavaSpew		= mod:NewSpellAnnounce(77689, 3, nil, false)--This warning is almost completely pointless so turning off by default.
 local warnPillarFlame	= mod:NewSpellAnnounce(78006, 3)
 local warnMoltenTantrum	= mod:NewSpellAnnounce(78403, 4)
+local warnInferno		= mod:NewSpellAnnounce(92190, 4)
 local warnMangle		= mod:NewTargetAnnounce(89773, 3)
 
 local timerLavaSpew		= mod:NewCDTimer(30, 77689)
 local timerPillarFlame	= mod:NewCDTimer(30, 78006)
 local timerMangle		= mod:NewTargetTimer(30, 89773)
 local timerMangleCD		= mod:NewCDTimer(95, 89773)--complete guesswork on timer since two weeks in a row i had useless logger.
+local timerInferno		= mod:NewCDTimer(35, 92190)
 
 local lastLavaSpew = 0
 
@@ -28,6 +31,9 @@ function mod:OnCombatStart(delay)
 	lastLavaSpew = 0
 	timerPillarFlame:Start(-delay)
 	timerMangleCD:Start(-delay)
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerInferno:Start(20-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -50,5 +56,12 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(89773, 91912, 91916, 91917) then
 		timerMangle:Cancel(args.destName)
+	end
+end
+
+function mod:SPELL_SUMMON(args)
+	if args:IsSpellID(92154, 92190, 92191, 92192) then
+		warnInferno:Show()
+		timerInferno:Start()
 	end
 end

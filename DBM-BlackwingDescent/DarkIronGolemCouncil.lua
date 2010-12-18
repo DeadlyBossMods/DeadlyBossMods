@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetZone()
-mod:SetUsedIcons(4, 5, 6, 7, 8)
+mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -25,6 +25,7 @@ local warnChemicalBomb		= mod:NewSpellAnnounce(80157, 3)
 local warnShell				= mod:NewSpellAnnounce(79835, 4)
 local warnGenerator			= mod:NewSpellAnnounce(79624, 3)
 local warnConversion		= mod:NewSpellAnnounce(79729, 4)
+local warnShadowInfusion	= mod:NewTargetAnnounce(92048, 4)--Heroic Ability
 
 local timerAcquiringTarget	= mod:NewNextTimer(40, 79501)
 local timerBarrier			= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
@@ -41,6 +42,8 @@ local timerSoaked			= mod:NewTargetTimer(30, 80011, nil, false)
 local timerGeneratorCD		= mod:NewNextTimer(30, 79624)
 local timerConversion		= mod:NewBuffActiveTimer(11.5, 79729)	-- 10 + 1.5 cast time
 local timerConversionCD		= mod:NewNextTimer(50, 79729)
+local timerPoisonProtocolCD	= mod:NewNextTimer(45, 80053)
+local timerShadowInfusionCD	= mod:NewNextTimer(35, 92048)
 
 local specWarnBarrier		= mod:NewSpecialWarningCast(79582)
 local specWarnConductor		= mod:NewSpecialWarningYou(79888)
@@ -48,11 +51,13 @@ local specWarnUnstableShield= mod:NewSpecialWarningCast(79900)
 local specWarnGenerator		= mod:NewSpecialWarningMove(79624, mod:IsTank())
 local specWarnShell			= mod:NewSpecialWarningCast(79835)
 local specWarnConversion	= mod:NewSpecialWarningCast(79729)
+local specWarnShadowInfusion= mod:NewSpecialWarningYou(92048)
 
 mod:AddBoolOption("SayBombTarget", false)
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("BombTargetIcon")
+mod:AddBoolOption("ShadowInfusionIcon")
 
 local fixateIcon = 6
 
@@ -88,6 +93,7 @@ local bossInactive = function(boss)
 	elseif boss == L.Toxitron then
 		timerChemicalBomb:Cancel()
 		timerShellCD:Cancel()
+		timerPoisonProtocolCD:Cancel()
 		DBM.BossHealth:RemoveBoss(42180)
 	elseif boss == L.Arcanotron then
 		timerGeneratorCD:Cancel()
@@ -145,6 +151,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:GetUnitCreatureId("target") == 42166 then--Make sure to only warn person tanking it. (other tank would be targeting a different golem)
 			specWarnGenerator:Show()--Show special warning to move him out of it.
 		end
+	elseif args:IsSpellID(92048) then
+		warnShadowInfusion:Show(args.destName)
+		timerShadowInfusionCD:Start()
+		if args:IsPlayer() then
+			specWarnShadowInfusion:Show()
+		end
+		if self.Options.ShadowInfusionIcon then
+			self:SetIcon(args.destName, 3)
+		end
 	end
 end
 
@@ -153,6 +168,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSoaked:Cancel(args.destName)
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
 		if self.Options.ConductorIcon then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(92048) then
+		if self.Options.ShadowInfusionIcon then
 			self:SetIcon(args.destName, 0)
 		end
 	end
@@ -198,6 +217,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChemicalBomb:Start()
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
+		timerPoisonProtocolCD:Start()
 	elseif args:IsSpellID(79624) then--Need more logs to determin if this is only actual cast id
 		warnGenerator:Show()
 		timerGeneratorCD:Start()
