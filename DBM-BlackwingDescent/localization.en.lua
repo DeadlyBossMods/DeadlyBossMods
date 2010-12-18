@@ -48,7 +48,8 @@ L:SetOptionLocalization({
 	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094)
+	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ShadowInfusionIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92048)
 })
 
 ----------------
@@ -164,7 +165,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
+	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
 	ChromaticPrototype	= "Chromatic Prototype"
 })
 
