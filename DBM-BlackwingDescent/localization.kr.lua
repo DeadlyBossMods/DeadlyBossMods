@@ -146,7 +146,8 @@ L:SetOptionLocalization({
 	WarnGroundphase		= "지상단계 경고 보기",
 	WarnShieldsLeft		= "고대 드워프 보호막 남은 개수 경고 보기",
 	TimerAirphase		= "다음 공중 단계 경고 보기",
-	TimerGroundphase	= "다음 지상 단계 경고 보기"
+	TimerGroundphase	= "다음 지상 단계 경고 보기",
+	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 ----------------
