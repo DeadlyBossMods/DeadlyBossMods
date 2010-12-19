@@ -44,5 +44,6 @@ Battlegrounds\Alterac.lua
 Battlegrounds\Arathi.lua
 Battlegrounds\EyeOfTheStorm.lua
 Battlegrounds\IsleOfConquest.lua
+Battlegrounds\TwinPeaks.lua
 Battlegrounds\Warsong.lua
 Arenas\Arenas.lua
