@@ -15,7 +15,7 @@ mod:RegisterEvents(
 local warnObsidianArmor		= mod:NewSpellAnnounce(75842, 2)
 local warnSuperheated		= mod:NewSpellAnnounce(75846, 3)
 
-local timerSuperheated		= mod:NewTimer(10, "TimerSuperheated", 75846)
+local timerSuperheated		= mod:NewTimer(12, "TimerSuperheated", 75846)
 
 local specWarnSuperheated	= mod:NewSpecialWarningStack(75846, mod:IsTank(), 5)
 
