@@ -224,3 +224,37 @@ L:SetMiscLocalization({
 	GoblinBrokenHorde	= "Schon wieder kaputt?! Ich werde es richten... Ihr solltet allerdings nicht davon ausgehen, dass das noch unter die Garantie fällt."
 })
 
+------------------
+--  Twin Peaks  --
+------------------
+L = DBM:GetModLocalization("TwinPeaks")
+
+L:SetGeneralLocalization({
+	name = Zwillingsgipfel"
+})
+
+L:SetMiscLocalization({
+	BgStart60 = "Der Kampf um die Kriegshymnenschlucht beginnt in 1 Minute.",
+	BgStart30 = "Der Kampf um die Kriegshymnenschlucht beginnt in 30 Sekunden. Haltet Euch bereit!",
+	Alliance = "Allianz",
+	Horde = "Horde",	
+	InfoErrorText = "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
+	ExprFlagPickUp = "(.*) hat die Flagge der (%w+) aufgenommen!",
+	ExprFlagCaptured = "(.+) hat die Flagge der (%w+) errungen!",
+	ExprFlagReturn = "Die Flagge der (%w+) wurde von (.+) zu ihrem Stützpunkt zurückgebracht!",
+	FlagAlliance = "Allianz-Flagge: ",
+	FlagHorde = "Horde-Flagge: ",
+	FlagBase = "Basis"
+})
+
+L:SetTimerLocalization({
+	TimerStart = "Spiel startet in", 
+	TimerFlag = "Flaggen-Respawn"
+})
+
+L:SetOptionLocalization({
+	TimerStart  = "Zeige Starttimer",
+	TimerFlag = "Zeige Timer für Flaggen-Respawn",
+	ShowFlagCarrier = "Zeige Flaggenträger",
+	ShowFlagCarrierErrorNote = "Zeige Fehlermeldung wenn Flaggenträger-Zielauswahl nicht gesetzt werden kann"
+})
