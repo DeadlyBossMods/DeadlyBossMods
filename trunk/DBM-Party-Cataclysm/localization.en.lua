@@ -152,6 +152,11 @@ L:SetGeneralLocalization({
 	name = "Drahga Shadowburner"
 })
 
+L:SetMiscLocalization{
+	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- Yell when Valiona is incoming
+	Valiona		= "Valiona"
+}
+
 ------------
 -- Erudax --
 ------------

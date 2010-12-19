@@ -154,6 +154,11 @@ L:SetGeneralLocalization({
 	name = "德拉卡·燃影者"
 })
 
+L:SetMiscLocalization{
+	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate -- Yell when Valiona is incoming
+	Valiona		= "Valiona"	-- translate
+}
+
 ------------
 -- Erudax --
 ------------
