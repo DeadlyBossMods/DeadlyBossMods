@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 local L
 
 -------------------------
@@ -264,6 +264,15 @@ L:SetGeneralLocalization({
 	name = "고위 사제 바림"
 })
 
+L:SetOptionLocalization{
+	BossHealthAdds	= "Show health of adds in the Boss Health Frame"	-- translate
+}
+
+L:SetMiscLocalization{
+	BlazeHeavens		= "Blaze of the Heavens",	-- translate
+	HarbringerDarkness	= "Harbringer of Darkness"	-- translate
+}
+
 --------------
 -- Lockmaw --
 --------------
@@ -271,6 +280,19 @@ L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
 	name = "톱니아귀"
+})
+
+L:SetOptionLocalization{
+	RangeFrame	= "Show Range Frame (5 yards)"		-- translate
+}
+
+----------
+-- Augh --
+----------
+L = DBM:GetModLocalization("Augh")
+
+L:SetGeneralLocalization({
+	name = "Augh"		-- translate
 })
 
 -----------------------

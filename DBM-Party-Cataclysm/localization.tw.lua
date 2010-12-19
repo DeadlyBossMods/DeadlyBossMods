@@ -265,6 +265,15 @@ L:SetGeneralLocalization({
 	name = "高階預言者巴瑞姆"
 })
 
+L:SetOptionLocalization{
+	BossHealthAdds	= "Show health of adds in the Boss Health Frame"	-- translate
+}
+
+L:SetMiscLocalization{
+	BlazeHeavens		= "Blaze of the Heavens",	-- translate
+	HarbringerDarkness	= "Harbringer of Darkness"	-- translate
+}
+
 --------------
 -- Lockmaw --
 --------------
@@ -272,6 +281,19 @@ L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
 	name = "鎖喉"
+})
+
+L:SetOptionLocalization{
+	RangeFrame	= "Show Range Frame (5 yards)"		-- translate
+}
+
+----------
+-- Augh --
+----------
+L = DBM:GetModLocalization("Augh")
+
+L:SetGeneralLocalization({
+	name = "Augh"		-- translate
 })
 
 -----------------------
