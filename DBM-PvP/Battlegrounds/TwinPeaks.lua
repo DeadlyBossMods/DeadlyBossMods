@@ -7,6 +7,7 @@ local TwinPeaks		= DBM:NewMod("TwinPeaks", "DBM-PvP", 2)
 local L			= TwinPeaks:GetLocalizedStrings()
 
 TwinPeaks:RemoveOption("HealthFrame")
+TWinPeaks:RemoveOption("SpeedKillTimer")
 TwinPeaks:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 TwinPeaks:RegisterEvents(

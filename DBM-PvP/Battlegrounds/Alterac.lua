@@ -8,6 +8,7 @@ Alterac:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Alterac:AddBoolOption("AutoTurnIn")
 Alterac:RemoveOption("HealthFrame")
+Alterac:RemoveOption("SpeedKillTimer")
 
 Alterac:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA", 	-- Required for BG start

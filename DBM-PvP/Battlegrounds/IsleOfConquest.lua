@@ -2,7 +2,7 @@ local IsleOfConquest	= DBM:NewMod("IsleofConquest", "DBM-PvP", 2)
 local L					= IsleOfConquest:GetLocalizedStrings()
 
 IsleOfConquest:RemoveOption("HealthFrame")
-
+IsleOfConquest:RemoveOption("SpeedKillTimer")
 IsleOfConquest:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 IsleOfConquest:RegisterEvents(
