@@ -265,7 +265,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "Show health of adds in the Boss Health Frame"	-- translate
+	BossHealthAdds	= "보스 체력 프레임 확장 보기"	-- translate
 }
 
 L:SetMiscLocalization{
@@ -283,8 +283,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Show Range Frame (5 yards)"		-- translate
+	RangeFrame	= "거리 프레임 보기 (5 m)"		-- translate
 }
+
+----------
+-- Augh --
+----------
+L = DBM:GetModLocalization("Augh")
+
+L:SetGeneralLocalization({
+	name = "Augh"		-- he is fightable after Lockmaw :o
+})
+
 
 ----------
 -- Augh --
