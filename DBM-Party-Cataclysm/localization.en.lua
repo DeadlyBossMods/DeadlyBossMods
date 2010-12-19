@@ -337,6 +337,15 @@ L:SetGeneralLocalization({
 	name = "Lord Walden"
 })
 
+L:SetWarningLocalization{
+	specWarnCoagulant	= "Green Mix - Keep Moving!",	-- Green light
+	specWarnRedMix		= "Red Mix - Do Not Move!"		-- Red light
+}
+
+L:SetOptionLocalization{
+	RedLightGreenLight	= "Show special warnings for Red/Green movement queues"
+}
+
 ------------------
 -- Lord Godfrey --
 ------------------
