@@ -9,6 +9,7 @@ local L			= Arathi:GetLocalizedStrings()
 Arathi:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Arathi:RemoveOption("HealthFrame")
+Arathi:RemoveOption("SpeedKillTimer")
 
 Arathi:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",

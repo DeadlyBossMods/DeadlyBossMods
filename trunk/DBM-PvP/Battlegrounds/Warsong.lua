@@ -8,7 +8,7 @@ local Warsong	= DBM:NewMod("WarsongGulch", "DBM-PvP", 2)
 local L			= Warsong:GetLocalizedStrings()
 
 Warsong:RemoveOption("HealthFrame")
-
+Warsong:RemoveOption("SpeedKillTimer")
 Warsong:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 local bgzone = false

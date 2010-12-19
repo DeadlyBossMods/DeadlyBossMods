@@ -6,7 +6,7 @@ local Arenas	= DBM:NewMod("Arenas", "DBM-PvP", 1)
 local L			= Arenas:GetLocalizedStrings()
 
 Arenas:RemoveOption("HealthFrame")
-
+Arenas:RemoveOption("SpeedKillTimer")
 Arenas:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Arenas:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
