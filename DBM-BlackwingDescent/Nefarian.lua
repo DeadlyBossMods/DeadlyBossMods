@@ -44,9 +44,9 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsPlayer() and args:IsSpellID(81007, 94085, 94086, 94087) and GetTime() - spamShadoflame > 5 then--Drycodes
+	if args:IsPlayer() and args:IsSpellID(81007, 94085, 94086, 94087) and GetTime() - spamShadowblaze > 5 then--Drycodes
 		specWarnShadowblaze:Show()
-		spamShadowflame = GetTime()
+		spamShadowblaze = GetTime()
 	end
 end
 
