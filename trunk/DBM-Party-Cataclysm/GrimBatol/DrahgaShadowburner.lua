@@ -8,6 +8,7 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
 	"SPELL_SUMMON"
 )
@@ -18,7 +19,15 @@ local warnShredding	= mod:NewSpellAnnounce(75271, 3)
 local timerFlame	= mod:NewCDTimer(27, 75321)
 local timerShredding	= mod:NewBuffActiveTimer(20, 75271)
 
+local specWarnFlamingFixate	= mod:NewSpecialWarningYou(82850)
+
 -- Dragon inc warning?   (Yell = "Dragon, you will do as I command! Catch me!" )
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(82850) and args:IsPlayer() then
+		specWarnFlamingFixate:Show()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(75321, 90973) then
