@@ -17,7 +17,7 @@ mod:RegisterEvents(
 local warnLavaBolt		= mod:NewCastAnnounce(76171, 2)
 local warnMagmaSplash		= mod:NewTargetAnnounce(76170, 3)
 local warnEmberstrike		= mod:NewTargetAnnounce(76165, 3)
-local warnEarthShards		= mod:NewSpellAnnounce(84931, 2)
+local warnEarthShards		= mod:NewTargetAnnounce(84931, 2)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
 local warnEnslave		= mod:NewTargetAnnounce(76207, 2)
 local warnAbsorbMagic		= mod:NewSpellAnnounce(76307, 4)
@@ -33,6 +33,15 @@ local timerAgony		= mod:NewTargetTimer(10, 76339)
 
 local specWarnLavaBolt		= mod:NewSpecialWarningInterupt(76171)
 local specWarnAbsorbMagic	= mod:NewSpecialWarningCast(76307)
+local specWarnEarthShards	= mod:NewSpecialWarningYou(84931)
+
+function mod:EarthShardsTarget()
+	local targetname = self:GetBossTarget(40852) or "unknown"
+	warnEarthShards:Show(targetname)
+	if targetname == UnitName("player") then
+		specWarnEarthShards:Show()
+	end
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(76170) then
@@ -71,7 +80,7 @@ function mod:SPELL_CAST_START(args)
 		timerLavaBolt:Start()
 		specWarnLavaBolt:Show()
 	elseif args:IsSpellID(84931) then
-		warnEarthShards:Show()
+		self:Schedule(0.1, "EarthShardsTarget")
 	elseif args:IsSpellID(76307, 91492) then
 		warnAbsorbMagic:Show(76307)
 		specWarnAbsorbMagic:Show()
