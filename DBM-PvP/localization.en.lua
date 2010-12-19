@@ -65,8 +65,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60	= "1 minute until the battle for Alterac Valley begins.",
-	BgStart30	= "30 seconds until the battle for Alterac Valley begins.",
-	ZoneName	= "Alterac Valley"
+	BgStart30	= "30 seconds until the battle for Alterac Valley begins."
 })
 
 L:SetOptionLocalization({
@@ -88,7 +87,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60	= "The battle will begin in 1 minute.",
 	BgStart30	= "The battle will begin in 30 seconds.",
-	ZoneName	= "Arathi Basin",
 	ScoreExpr	= "(%d+)/1600",
 	Alliance	= "Alliance",
 	Horde		= "Horde",
@@ -158,7 +156,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "The battle begins in 1 minute.",
 	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
-	ZoneName 			= "Warsong Gulch",
 	Alliance 			= "Alliance",
 	Horde 				= "Horde",	
 	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
@@ -211,7 +208,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName				= "Isle of Conquest",
 	BgStart60				= "The battle will begin in 60 seconds.",
 	BgStart30				= "The battle will begin in 30 seconds.",
 	BgStart15				= "The battle will begin in 15 seconds.",

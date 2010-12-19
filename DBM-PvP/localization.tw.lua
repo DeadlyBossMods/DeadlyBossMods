@@ -67,8 +67,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60			= "奧特蘭克山谷一分鐘後開始戰鬥。",
-	BgStart30			= "奧特蘭克山谷30秒後開始戰鬥。",
-	ZoneName			= "奧特蘭克山谷"
+	BgStart30			= "奧特蘭克山谷30秒後開始戰鬥。"
 })
 
 L:SetOptionLocalization({
@@ -90,7 +89,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60			= "戰鬥將在1分鐘後開始。",
 	BgStart30			= "戰鬥將在30秒後開始。",
-	ZoneName 			= "阿拉希盆地",
 	ScoreExpr 			= "(%d+)/1600",
 	Alliance 			= "聯盟",
 	Horde 				= "部落",
@@ -159,7 +157,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "戰鬥將在1分鐘內開始。",
 	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
-	ZoneName 			= "戰歌峽谷",
 	Alliance 			= "聯盟",
 	Horde 				= "部落",	
 	InfoErrorText			= "當你離開戰鬥後，旗幟框架將會回復。",
@@ -213,7 +210,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName			= "征服之島",
 	BgStart60			= "戰鬥在1分鐘內開始!",
 	BgStart30			= "戰鬥在30秒內開始!",
 	BgStart15			= "戰鬥在15秒內開始!",

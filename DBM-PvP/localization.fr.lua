@@ -68,8 +68,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60		= "La bataille pour la vallée d'Alterac commence dans 1 minute.",
-	BgStart30		= "La bataille pour la vallée d'Alterac commence dans 30 secondes.",
-	ZoneName		= "Vallée d'Alterac",
+	BgStart30		= "La bataille pour la vallée d'Alterac commence dans 30 secondes."
 })
 
 L:SetOptionLocalization({
@@ -91,7 +90,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60				= "La bataille pour le bassin d'Arathi commence dans 1 minute.",
 	BgStart30				= "La bataille pour le bassin d'Arathi commence dans 30 secondes.",
-	ZoneName 				= "Bassin d'Arathi",
 	ScoreExpr 				= "(%d+)/1600",
 	Alliance 				= "Alliance",
 	Horde 					= "Horde",
@@ -161,7 +159,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 					= "La bataille pour le goulet des Chanteguerres commence dans 1 minute.",
 	BgStart30 					= "La bataille pour le goulet des Chanteguerres commence dans 30 secondes. Préparez-vous !",
-	ZoneName 					= "Goulet des Chanteguerres",
 	Alliance 					= "Alliance",
 	Horde 						= "Horde",	
 	InfoErrorText 				= "The flag carrier targeting function will be restored when you are out of combat.",
@@ -216,7 +213,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName				= "Île des Conquérants",
 	BgStart60				= "La bataille commance dans 60 secondes.",
 	BgStart30				= "La bataille commance dans 30 secondes.",
 	BgStart15				= "La bataille commance dans 15 secondes.",

@@ -70,8 +70,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60 = "奥特兰克山谷的战斗将在1分钟之后开始。",
-	BgStart30 = "奥特兰克山谷的战斗将在30秒之后开始。",
-	ZoneName = "奥特兰克山谷",
+	BgStart30 = "奥特兰克山谷的战斗将在30秒之后开始。"
 })
 
 L:SetOptionLocalization({
@@ -93,7 +92,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 = "阿拉希盆地的战斗将在1分钟后开始。",
 	BgStart30 = "阿拉希盆地的战斗将在30秒后开始。",
-	ZoneName = "阿拉希盆地",
 	ScoreExpr = "(%d+)/1600",
 	Alliance = "联盟",
 	Horde = "部落",
@@ -163,7 +161,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 = "战歌峡谷战斗将在1分钟内开始。",
 	BgStart30 = "战歌峡谷战斗将在30秒钟内开始。做好准备！",
-	ZoneName = "战歌峡谷",
 	Alliance = "联盟",
 	Horde = "部落",	
 	InfoErrorText = "携带旗帜者目标功能会在你脱离战斗后恢复.",
@@ -217,7 +214,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName			= "征服之岛",
 	BgStart60			= "战斗将在1分钟后开始！",
 	BgStart30			= "战斗将在30秒后开始！",
 	BgStart15			= "战斗将在15秒后开始！",
