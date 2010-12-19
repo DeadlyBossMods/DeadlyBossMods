@@ -271,12 +271,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "Show health of adds in the Boss Health Frame"	-- translate
+	BossHealthAdds	= "Mostrar barra de vida de los adds"
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "Blaze of the Heavens",	-- translate
-	HarbringerDarkness	= "Harbringer of Darkness"	-- translate
+	BlazeHeavens		= "Llamarada de los cielos",
+	HarbringerDarkness	= "Presagista de oscuridad"
 }
 
 --------------
@@ -289,7 +289,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Show Range Frame (5 yards)"		-- translate
+	RangeFrame	= "Mostrar distáncia (5 yardas)"
 }
 
 ----------
@@ -298,7 +298,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Augh")
 
 L:SetGeneralLocalization({
-	name = "Augh"		-- translate
+	name = "Augh"
 })
 
 -----------------------
