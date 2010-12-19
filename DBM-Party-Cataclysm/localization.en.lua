@@ -272,6 +272,10 @@ L:SetGeneralLocalization({
 	name = "Lockmaw"
 })
 
+L:SetOptionLocalization{
+	RangeFrame	= "Show Range Frame (5 yards)"
+}
+
 ----------
 -- Augh --
 ----------

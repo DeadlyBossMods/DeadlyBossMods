@@ -22,6 +22,14 @@ local timerScentBlood	= mod:NewTargetTimer(30, 81690)
 local timerPoison	= mod:NewTargetTimer(12, 81642)
 local timerDustFlail	= mod:NewBuffActiveTimer(5, 81642)
 
+mod:AddBoolOption("RangeFrame")
+
+function mod:OnCombatStart(delay)
+	if mod.Options.RangeFrame then
+		DBM.RangeCheck:Show(5)
+	end
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(81690, 89998) then
 		warnScentBlood:Show(args.destName)
