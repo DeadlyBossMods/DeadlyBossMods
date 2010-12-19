@@ -18,7 +18,7 @@ local warnMaleficStrike		= mod:NewSpellAnnounce(93685, 2)
 local warnShield			= mod:NewSpellAnnounce(93736, 4)
 local warnWordShame			= mod:NewTargetAnnounce(93852, 3)
 
-local specWarnDesecration	= mod:NewSpecialWarningMove(93687)
+local specWarnDesecration	= mod:NewSpecialWarningMove(94370)
 
 local timerMaleficStrike	= mod:NewNextTimer(6, 93685)
 
@@ -42,7 +42,7 @@ end
 do 
 	local lastdesecration = 0
 	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(93687) and args:IsPlayer() and GetTime() - lastdesecration > 3 then		-- Desecration
+		if args:IsSpellID(94370) and args:IsPlayer() and GetTime() - lastdesecration > 4 then		-- Desecration
 			specWarnDesecration:Show()
 			lastdesecration = GetTime()
 		end
