@@ -247,7 +247,7 @@ L:SetGeneralLocalization({
 
 ------------------------------------
 -- Siamat, Lord of the South Wind --
--------------------
+------------------------------------
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
@@ -270,6 +270,15 @@ L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
 	name = "Lockmaw"
+})
+
+----------
+-- Augh --
+----------
+L = DBM:GetModLocalization("Augh")
+
+L:SetGeneralLocalization({
+	name = "Augh"		-- he is fightable after Lockmaw :o
 })
 
 -----------------------

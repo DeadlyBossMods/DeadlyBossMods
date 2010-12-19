@@ -61,6 +61,7 @@ HallsOfOrigination\Rajh.lua
 LostCityOfTheTolvir\MapSizes.lua
 LostCityOfTheTolvir\GeneralHusam.lua
 LostCityOfTheTolvir\Lockmaw.lua
+LostCityOfTheTolvir\Augh.lua
 LostCityOfTheTolvir\HighProphetBarim.lua
 LostCityOfTheTolvir\Siamat.lua
 ShadowFangKeep\MapSizes.lua
