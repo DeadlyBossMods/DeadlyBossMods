@@ -14,7 +14,8 @@ mod:RegisterEvents(
 
 local warnBinding	= mod:NewTargetAnnounce(75861, 3)
 local warnFeeble	= mod:NewTargetAnnounce(75792, 3)
-local warnGale		= mod:NewSpellAnnounce(75664)
+local warnGale		= mod:NewSpellAnnounce(75664, 4)
+local warnUmbralMending	= mod:NewSpellAnnounce(91026, 4)
 
 local timerBinding	= mod:NewTargetTimer(6, 75861)
 local timerFeeble	= mod:NewTargetTimer(3, 75792)
@@ -28,7 +29,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(75792, 91092) then
 		warnFeeble:Show(args.destName)
 		if mod:IsDifficulty("heroic5") then
-			timerFeeble:Start(4, args.destName)--Correct code syntax?
+			timerFeeble:Start(5, args.destName)--Correct code syntax?
 		else
 			timerFeeble:Start(args.destName)
 		end
@@ -41,5 +42,7 @@ function mod:SPELL_CAST_START(args)
 		warnGale:Show()
 		timerGale:Start()
 		timerGaleCD:Start()
+	elseif args:IsSpellID(91026) then
+		warnUmbralMending:Show()
 	end
 end
