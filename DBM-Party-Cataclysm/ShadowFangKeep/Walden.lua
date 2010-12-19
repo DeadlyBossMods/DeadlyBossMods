@@ -14,10 +14,12 @@ mod:RegisterEvents(
 )
 
 local warnFrostMix	= mod:NewSpellAnnounce(93702, 3)
-local warnPoisonMix	= mod:NewSpellAnnounce(93704, 3)
 local warnIceShards	= mod:NewSpellAnnounce(93527, 3)
+local warnPoisonMix	= mod:NewSpellAnnounce(93704, 4)
+--local warnRedMix	= mod:NewSpellAnnounce(93704, 4)--don't know spellid yet
 
 local specWarnCoagulant	= mod:NewSpecialWarningMove(93617)
+--local specWarnRedMix	= mod:NewSpecialWarning("DoNOTMove")--Need a combat log i keep forgetting and wowhead doesn't have it catagorized.
 
 local timerIceShards	= mod:NewBuffActiveTimer(5, 93527)
 
@@ -31,7 +33,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93527) then
 		warnIceShards:Show()
 		timerIceShards:Start()
-	elseif args:IsSpellID(93617) and args:IsPlayer() and GetTime() - lastCoagulant > 3 then
+	elseif args:IsSpellID(93617) and args:IsPlayer() and GetTime() - lastCoagulant > 4 then
 		specWarnCoagulant:Show()
 		lastCoagulant = GetTime()
 	end
