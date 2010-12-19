@@ -225,3 +225,38 @@ L:SetMiscLocalization({
 	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"	
 })
 
+------------------
+--  Twin Peaks  --
+------------------
+L = DBM:GetModLocalization("TwinPeaks")
+
+L:SetGeneralLocalization({
+	name = "Twin Peaks"
+})
+
+L:SetMiscLocalization({
+	BgStart60 			= "The battle begins in 1 minute.",
+	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",
+	ZoneName 			= "Twin",
+	Alliance 			= "Alliance",
+	Horde 				= "Horde",	
+	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",
+	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",
+	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",
+	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
+	FlagAlliance		= "Alliance Flag: ",
+	FlagHorde			= "Horde Flag: ",
+	FlagBase			= "Base"
+})
+
+L:SetTimerLocalization({
+	TimerStart	= "Game starts", 
+	TimerFlag	= "Flag respawn"
+})
+
+L:SetOptionLocalization({
+	TimerStart					= "Show start timer",
+	TimerFlag					= "Show flag respawn timer",
+	ShowFlagCarrier				= "Show flag carrier",
+	ShowFlagCarrierErrorNote	= "Show flag carrier error message while in combat"
+})
