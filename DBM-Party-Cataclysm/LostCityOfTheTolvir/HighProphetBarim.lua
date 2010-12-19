@@ -72,7 +72,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.destGUID) == and mod.Options.BossHealthAdds then
+	if self:GetCIDFromGUID(args.destGUID) == 43612 and mod.Options.BossHealthAdds then
 		DBM.BossHealth:RemoveBoss(43927)
 		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
 	end
