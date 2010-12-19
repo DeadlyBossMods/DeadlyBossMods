@@ -105,7 +105,7 @@ end
 local bgzone = false
 do
 	local function initialize(self)
-		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
+		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 540 then
 			bgzone = true
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)

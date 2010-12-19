@@ -39,7 +39,7 @@ TwinPeaks:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
 do
 	local function TwinPeaks_Initialize()
-		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
+		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 626 then
 			bgzone = true
 			if TwinPeaks.Options.ShowFlagCarrier then
 				TwinPeaks:ShowFlagCarrier()

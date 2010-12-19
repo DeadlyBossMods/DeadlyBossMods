@@ -39,7 +39,7 @@ Warsong:AddBoolOption("ShowFlagCarrierErrorNote", false)
 
 do
 	local function WSG_Initialize()
-		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
+		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 443 then
 			bgzone = true
 			if Warsong.Options.ShowFlagCarrier then
 				Warsong:ShowFlagCarrier()
