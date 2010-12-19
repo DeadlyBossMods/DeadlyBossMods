@@ -94,7 +94,7 @@ end
 
 do
 	local function AB_Initialize()
-		if select(2, IsInInstance()) == "pvp" and GetRealZoneText() == L.ZoneName then
+		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 461 then
 			bgzone = true
 			update_gametime()
 			for i=1, GetNumMapLandmarks(), 1 do
