@@ -1,4 +1,4 @@
-if GetLocale() ~= "ruRU" then return end
+﻿if GetLocale() ~= "ruRU" then return end
 
 local L
 
@@ -265,6 +265,15 @@ L:SetGeneralLocalization({
 	name = "Верховным пророком Барим"
 })
 
+L:SetOptionLocalization{
+	BossHealthAdds	= "Show health of adds in the Boss Health Frame"	-- translate
+}
+
+L:SetMiscLocalization{
+	BlazeHeavens		= "Blaze of the Heavens",	-- translate
+	HarbringerDarkness	= "Harbringer of Darkness"	-- translate
+}
+
 --------------
 -- Lockmaw --
 --------------
@@ -272,6 +281,19 @@ L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
 	name = "Зубохлоп"
+})
+
+L:SetOptionLocalization{
+	RangeFrame	= "Show Range Frame (5 yards)"		-- translate
+}
+
+----------
+-- Augh --
+----------
+L = DBM:GetModLocalization("Augh")
+
+L:SetGeneralLocalization({
+	name = "Augh"		-- translate
 })
 
 -----------------------
