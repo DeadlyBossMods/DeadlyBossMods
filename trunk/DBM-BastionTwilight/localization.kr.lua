@@ -50,7 +50,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("AscendantCouncil")
 
 L:SetGeneralLocalization({
-	name =	"황혼의 승천 의회"
+	name =	"승천 의회"
 })
 
 L:SetWarningLocalization({
@@ -66,10 +66,10 @@ L:SetMiscLocalization({
 	Thundershock	= "주변의 공기가 에너지로 진동합니다...",
 	Switch			= "우리가 상대하겠다!",
 	Phase3			= "네놈들의 종말을 맞이해라!",
-	Ignacious		= "Ignacious",
-	Feludius		= "Feludius",
-	Arion			= "Arion",
-	Terrastra		= "Terrastra",
+	Ignacious		= "이그니시우스",
+	Feludius		= "펠루디우스",
+	Arion			= "아리온",
+	Terrastra		= "테라스트라",
 	Monstrosity		= "Elementium Monstrosity"
 })
 
