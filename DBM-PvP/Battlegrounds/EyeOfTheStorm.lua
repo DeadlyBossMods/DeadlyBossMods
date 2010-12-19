@@ -7,7 +7,7 @@ local EyeOfTheStorm	= DBM:NewMod("EyeoftheStorm", "DBM-PvP", 2)
 local L				= EyeOfTheStorm:GetLocalizedStrings()
 
 EyeOfTheStorm:RemoveOption("HealthFrame")
-
+EyeOfTheStorm:RemoveOption("SpeedKillTimer")
 EyeOfTheStorm:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 EyeOfTheStorm:RegisterEvents(
