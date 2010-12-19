@@ -58,8 +58,8 @@ do
 			end
 		end
 	end
-	TwinPeaks.OnInitialize = WSG_Initialize
-	TwinPeaks.ZONE_CHANGED_NEW_AREA = WSG_Initialize
+	TwinPeaks.OnInitialize = TwinPeaks_Initialize
+	TwinPeaks.ZONE_CHANGED_NEW_AREA = TwinPeaks_Initialize
 end
 
 function TwinPeaks:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
@@ -200,8 +200,7 @@ do
 				if( GetLocale() == "koKR") then
 					mSide = sArg2
 					mNick = sArg1
-				end
-				
+				end			
 				if mSide == L.Alliance then
 					FlagCarrier[2] = mNick
 					self.FlagCarrierFrame2Text:SetText(mNick)
