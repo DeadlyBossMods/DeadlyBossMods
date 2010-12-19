@@ -423,9 +423,9 @@ L:SetGeneralLocalization({
 })
 
 --------------
--- Altarius --
+-- Altairus --
 -------------- 
-L = DBM:GetModLocalization("Altarius")
+L = DBM:GetModLocalization("Altairus")
 
 L:SetGeneralLocalization({
 	name = "艾塔伊洛斯"
