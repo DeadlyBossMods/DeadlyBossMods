@@ -230,7 +230,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("TwinPeaks")
 
 L:SetGeneralLocalization({
-	name = Zwillingsgipfel"
+	name = "Zwillingsgipfel"
 })
 
 L:SetMiscLocalization({
