@@ -15,24 +15,30 @@ mod:RegisterEvents(
 	"SPELL_INTERRUPT"
 )
 
-local warnDarkCommand		= mod:NewTargetAnnounce(75823, 3)
+local warnDarkCommandCast	= mod:NewCastAnnounce(75823, 3)
+local warnDarkCommand		= mod:NewTargetAnnounce(75823, 4)
 local warnShadowStrike		= mod:NewSpellAnnounce(82362, 3)
-local warnAdd			= mod:NewAnnounce("WarnAdd", 4)
+local warnAdd				= mod:NewAnnounce("WarnAdd", 4)
 
+local timerDarkCommandCast	= mod:NewCastTimer(4, 75823)
 local timerDarkCommand		= mod:NewTargetTimer(4, 75823)
+local timerDarkCommandCD	= mod:NewCDTimer(25, 75823)
 local timerShadowStrike		= mod:NewCastTimer(2, 82362)
 local timerEvolution		= mod:NewBuffActiveTimer(20, 75697)
 
 local specWarnShadowStrike	= mod:NewSpecialWarningInterupt(82362)
+local specWarnDarkCommand	= mod:NewSpecialWarningInterupt(93462)
 local specWarnEvolution		= mod:NewSpecialWarningStack(75697, true, 70)
 
-local spamEvolution
+local spamEvolution = 0
+
 function mod:OnCombatStart(delay)
 	spamEvolution = 0
+	timerDarkCommandCD:Start(22-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75823, 93462) then--Heroic spellid drycoded (untested)
+	if args:IsSpellID(75823, 93462) then
 		warnDarkCommand:Show(args.destName)
 		timerDarkCommand:Start(args.destName)
 	elseif args:IsSpellID(75697, 87378) and args:IsPlayer() then
@@ -53,7 +59,12 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(82362, 87374) then--Heroic spellid drycoded (untested)
+	if args:IsSpellID(75823, 93462) then
+		warnDarkCommandCast:Show()
+		specWarnDarkCommand:Show()
+		timerDarkCommandCast:Start()
+		timerDarkCommandCD:Start()
+	elseif args:IsSpellID(82362, 87374) then
 		warnShadowStrike:Show()
 		specWarnShadowStrike:Show()
 		if mod:IsDifficulty("heroic5") then
@@ -67,5 +78,7 @@ end
 function mod:SPELL_INTERRUPT(args)
 	if type(args.extraSpellId) == "number" and (args.extraSpellId == 82362 or args.extraSpellId == 87374) then
 		timerShadowStrike:Cancel()
+	elseif type(args.extraSpellId) == "number" and (args.extraSpellId == 75823 or args.extraSpellId == 93462) then
+		timerDarkCommandCast:Cancel()
 	end
 end
