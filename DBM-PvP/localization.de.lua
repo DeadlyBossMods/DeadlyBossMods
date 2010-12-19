@@ -67,8 +67,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60 = "Der Kampf um das Alteractal beginnt in 1 Minute.",
-	BgStart30 = "Der Kampf um das Alteractal beginnt in 30 Sekunden.",
-	ZoneName = "Alteractal",
+	BgStart30 = "Der Kampf um das Alteractal beginnt in 30 Sekunden."
 })
 
 L:SetOptionLocalization({
@@ -90,7 +89,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 = "Die Schlacht um das Arathibecken beginnt in 1 Minute.",
 	BgStart30 = "Die Schlacht um das Arathibecken beginnt in 30 Sekunden.",
-	ZoneName = "Arathibecken",
 	ScoreExpr = "(%d+)/1600",
 	Alliance = "Allianz",
 	Horde = "Horde",
@@ -160,7 +158,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 = "Der Kampf um die Kriegshymnenschlucht beginnt in 1 Minute.",
 	BgStart30 = "Der Kampf um die Kriegshymnenschlucht beginnt in 30 Sekunden. Haltet Euch bereit!",
-	ZoneName = "Kriegshymnenschlucht",
 	Alliance = "Allianz",
 	Horde = "Horde",	
 	InfoErrorText = "Die Zielauswahlfunktion für den Flaggenträger wird bei Kampfende wiederhergestellt.",
@@ -213,7 +210,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName		= "Insel der Eroberung",
 	BgStart60		= "Die Schlacht beginnt in 60 Sekunden.",
 	BgStart30		= "Die Schlacht beginnt in 30 Sekunden.",
 	BgStart15		= "Die Schlacht beginnt in 15 Sekunden.",

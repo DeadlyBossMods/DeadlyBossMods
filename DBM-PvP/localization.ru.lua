@@ -67,8 +67,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60	= "До начала сражения за Альтеракскую долину остается 1 минута.",
-	BgStart30	= "30 секунд до начала битвы в Альтеракской долине.",
-	ZoneName	= "Альтеракская долина"
+	BgStart30	= "30 секунд до начала битвы в Альтеракской долине."
 })
 
 L:SetOptionLocalization({
@@ -90,7 +89,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60	= "Битва за Низину Арати начнется через минуту.",
 	BgStart30	= "Битва за Низину Арати начнется через 30 секунд.",
-	ZoneName	= "Низина Арати",
 	ScoreExpr	= "(%d+)/1600",
 	Alliance	= "Альянса",
 	Horde		= "Орды",
@@ -160,7 +158,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "Битва за Ущелье Песни Войны начнется через 1 минуту.",
 	BgStart30 			= "Битва за Ущелье Песни Войны начнется через 30 секунд. Приготовиться!",
-	ZoneName 			= "Ущелье Песни Войны",
 	Alliance 			= "Альянса",
 	Horde 				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца, будет восстановлена после выхода из режима боя.",
@@ -213,7 +210,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName				= "Остров Завоеваний",
 	BgStart60				= "Битва начнется через 60 секунд.",
 	BgStart30				= "Битва начнется через 30 секунд.",
 	BgStart15				= "Битва начнется через 15 секунд.",

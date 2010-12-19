@@ -67,8 +67,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60 	= "알터랙 계곡 전투 개시 1분 전...",
-	BgStart30 	= "알터랙 계곡 전투 개시 30초 전...",
-	ZoneName 	= "알터랙 계곡"
+	BgStart30 	= "알터랙 계곡 전투 개시 30초 전..."
 })
 
 L:SetOptionLocalization({
@@ -90,7 +89,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 		= "1분 후 아라시 분지 전투가 시작됩니다.",
 	BgStart30 		= "30초 후 아라시 분지 전투가 시작됩니다.",
-	ZoneName		= "아라시 분지",
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
@@ -160,7 +158,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 = "1분 후 전쟁노래 협곡 전투가 시작됩니다!",
 	BgStart30 = "30초 후 전쟁노래 협곡 전투가 시작됩니다. 준비하십시오!",
-	ZoneName = "전쟁노래 협곡",
 	Alliance = "얼라이언스",
 	Horde = "호드",	
 	InfoErrorText 		= "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
@@ -214,7 +211,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName				= "정복의 섬",
 	BgStart60				= "60초 후 전투가 시작됩니다.",
 	BgStart30				= "30초 후 전투가 시작됩니다.",
 	BgStart15				= "15초 후 전투가 시작됩니다.",

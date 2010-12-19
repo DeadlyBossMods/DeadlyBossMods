@@ -68,8 +68,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	BgStart60		= "1 minuto para que dé comienzo la batalla por el Valle de Alterac.",
-	BgStart30		= "30 segundos para que dé comienzo la batalla por el Valle de Alterac.",
-	ZoneName		= "Valle de Alterac"
+	BgStart30		= "30 segundos para que dé comienzo la batalla por el Valle de Alterac."
 })
 
 L:SetOptionLocalization({
@@ -91,7 +90,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60		= "La batalla comenzará en 1 minuto.",
 	BgStart30		= "La batalla comenzará en 30 segundos.",
-	ZoneName 		= "Cuenca de Arathi",
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "Alianza",
 	Horde 			= "Horda",
@@ -161,7 +159,6 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "La batalla comienza en 1 minuto.",
 	BgStart30 			= "La batalla comienza en 30 segundos. ¡Preparaos!",
-	ZoneName 			= "Garganta Grito de Guerra",
 	Alliance 			= "Alianza",
 	Horde 				= "Horda",	
 	InfoErrorText 			= "The flag carrier targeting function will be restored when you are out of combat.",
@@ -215,7 +212,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	ZoneName		= "Isla de la Conquista",
 	BgStart60		= "La batalla comenzará en 60 segundos.",
 	BgStart30		= "La batalla comenzará en 30 segundos.",
 	BgStart15		= "La batalla comenzará en 15 segundos.",
