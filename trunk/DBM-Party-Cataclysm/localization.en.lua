@@ -263,6 +263,15 @@ L:SetGeneralLocalization({
 	name = "High Prophet Barim"
 })
 
+L:SetOptionLocalization{
+	BossHealthAdds	= "Show health of adds in the Boss Health Frame"
+}
+
+L:SetMiscLocalization{
+	BlazeHeavens		= "Blaze of the Heavens",
+	HarbringerDarkness	= "Harbringer of Darkness"
+}
+
 --------------
 -- Lockmaw --
 --------------
