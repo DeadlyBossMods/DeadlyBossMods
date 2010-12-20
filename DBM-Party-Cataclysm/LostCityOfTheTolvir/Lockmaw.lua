@@ -25,7 +25,7 @@ local timerDustFlail	= mod:NewBuffActiveTimer(5, 81642)
 mod:AddBoolOption("RangeFrame")
 
 function mod:OnCombatStart(delay)
-	if mod.Options.RangeFrame then
+	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
 end
