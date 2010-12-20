@@ -67,11 +67,11 @@ L:SetMiscLocalization({
 	Thundershock	= "The surrounding air crackles with energy....",
 	Switch			= "We will handle them!",
 	Phase3			= "BEHOLD YOUR DOOM!",
-	Ignacious		= "Ignacious",
-	Feludius		= "Feludius",
-	Arion			= "Arion",
-	Terrastra		= "Terrastra",
-	Monstrosity		= "Elementium Monstrosity"
+	Ignacious		= "Огнис",
+	Feludius		= "Акварион",
+	Arion			= "Аэрон",
+	Terrastra		= "Террастра",
+	Monstrosity		= "Элементиевое чудовище"
 })
 
 L:SetOptionLocalization({
