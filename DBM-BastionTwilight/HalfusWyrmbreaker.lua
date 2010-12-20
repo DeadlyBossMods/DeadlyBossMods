@@ -14,31 +14,38 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
+local warnBreath		= mod:NewSpellAnnounce(83710, 3)
 local warnFuriousRoar	= mod:NewSpellAnnounce(83710, 3)
 local warnCycloneWinds	= mod:NewSpellAnnounce(83612, 3)
 local warnTimeDilation	= mod:NewSpellAnnounce(83601, 3)
-local warnVengeance	= mod:NewSpellAnnounce(87683, 3)
-local warnBarrage	= mod:NewSpellAnnounce(83706, 3)
+local warnVengeance		= mod:NewSpellAnnounce(87683, 3)
+local warnShadowNova	= mod:NewSpellAnnounce(87683, 3)
+--local warnBarrage		= mod:NewSpellAnnounce(83706, 3)--This is not showing in combat log, no cast, or aura, only damage, but i don't think it's that important anyways.
+
+local specWarnShadowNova= mod:NewSpecialWarningInterupt(83703, false)
 
 local timerFuriousRoar	= mod:NewCDTimer(30, 83710)
-local timerBarrageCD	= mod:NewCDTimer(32, 83706)
-local timerBarrage	= mod:NewBuffActiveTimer(10, 83706)
+--local timerBarrageCD	= mod:NewCDTimer(32, 83706)
+local timerBreathCD		= mod:NewCDTimer(20, 83707)--every 20-25 seconds.
+local timerBarrage		= mod:NewBuffActiveTimer(10, 83706)
 
-local berserkTimer	= mod:NewBerserkTimer(360)
+local berserkTimer		= mod:NewBerserkTimer(360)
 
 local spamFuriousRoar
+
 function mod:OnCombatStart(delay)
 	spamFuriousRoar = GetTime()
 	berserkTimer:Start(-delay)
+	timerBreathCD:Start(10-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87683) then
 		warnVengeance:Show()
-	elseif args:IsSpellID(83706) then
+--[[	elseif args:IsSpellID(83706) then
 		warnBarrage:Show()
 		timerBarrage:Start()
-		timerBarrageCD:Start()
+		timerBarrageCD:Start()--]]
 	end
 end
 
@@ -49,6 +56,12 @@ function mod:SPELL_CAST_START(args)
 		warnFuriousRoar:Show()
 		timerFuriousRoar:Start()
 		spamFuriousRoar = GetTime()
+	elseif args:IsSpellID(83707) then
+		warnBreath:Show()
+		timerBreathCD:Start()
+	elseif args:IsSpellID(83703, 86166, 86167, 86168) then
+		warnShadowNova:Show()
+		specWarnShadowNova:Show()
 	end
 end
 
