@@ -17,10 +17,10 @@ local warnSpiritStrike		= mod:NewSpellAnnounce(59304, 3)
 
 local timerChestBomb		= mod:NewTargetTimer(10, 88532)
 
-local specWarnChestBomb		= mod:NewSpecialWarningYou(88532)
+local specWarnChestBomb		= mod:NewSpecialWarningYou(88352)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(88532) then
+	if args:IsSpellID(88352) then
 		warnChestBomb:Show(args.destName)
 		timerChestBomb:Start(args.destName)
 		if args:IsPlayer() then
