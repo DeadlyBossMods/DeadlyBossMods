@@ -13,11 +13,11 @@ mod:RegisterEvents(
 
 local warnCrystalBarrage	= mod:NewSpellAnnounce(81634, 2)
 local warnDampening		= mod:NewSpellAnnounce(82415, 2)
-local warnSubmerge		= mod:NewAnnounce("WarnSubmerge", 2)
-local warnEmerge		= mod:NewAnnounce("WarnEmerge", 2)
+--local warnSubmerge		= mod:NewAnnounce("WarnSubmerge", 2)
+--local warnEmerge		= mod:NewAnnounce("WarnEmerge", 2)
 
 local timerDampening		= mod:NewCDTimer(10, 82415)
-local timerSubmerge		= mod:NewTimer(35, "TimerSubmerge")
+--local timerSubmerge		= mod:NewTimer(35, "TimerSubmerge")
 --local timerEmerge		= mod:NewTimer(25, "TimerEmerge")
 
 local specWarnCrystalBarrage	= mod:NewSpecialWarningSpell(81634) --, mod:IsMelee())
@@ -25,7 +25,7 @@ local specWarnCrystalBarrage	= mod:NewSpecialWarningSpell(81634) --, mod:IsMelee
 -- Dampening CD timer cancels when he goes under ground
 
 function mod:OnCombatStart(delay)
-	timerSubmerge:Start(-delay)
+--	timerSubmerge:Start(-delay)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)

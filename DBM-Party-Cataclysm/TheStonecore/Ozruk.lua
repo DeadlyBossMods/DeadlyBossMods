@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnShatter			= mod:NewSoonAnnounce(78807, 2)
+local warnShatter			= mod:NewSpellAnnounce(78807, 3)
 local warnBulwark			= mod:NewSpellAnnounce(78939, 3)
 local warnGroundSlam		= mod:NewCastAnnounce(78903, 4)
 local warnEnrage			= mod:NewSpellAnnounce(80467, 3)
@@ -58,7 +58,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(78807, 92662) then
-		warnShatter:Schedule(15)
+		warnShatter:Show()
 --		timerShatter:Start()
 		specWarnShatter:Show()
 		soundShatter:Play()
