@@ -1401,7 +1401,9 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
-	SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on disconnect or reloadui
+	if select(2, IsInInstance()) ~= "none" then
+		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on disconnect or reloadui
+	end
 	local zoneName = GetRealZoneText()
 	local zoneId = GetCurrentMapID()
 	LastZoneMapID = zoneId--Cache map on zone change.

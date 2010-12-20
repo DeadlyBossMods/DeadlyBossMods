@@ -36,7 +36,8 @@ local specWarnAbsorbMagic	= mod:NewSpecialWarningCast(76307)
 local specWarnEarthShards	= mod:NewSpecialWarningYou(84931)
 
 function mod:EarthShardsTarget()
-	local targetname = self:GetBossTarget(40852) or "unknown"
+	local targetname = self:GetBossTarget(40852)
+	if not targetname then return end
 	warnEarthShards:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnEarthShards:Show()
