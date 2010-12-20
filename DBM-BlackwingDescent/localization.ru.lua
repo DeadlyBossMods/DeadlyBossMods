@@ -8,7 +8,7 @@ local L
 L = DBM:GetModLocalization("Magmaw")
 
 L:SetGeneralLocalization({
-	name = "Магмар"
+	name = "Магмарь"
 })
 
 L:SetWarningLocalization({
@@ -29,7 +29,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("DarkIronGolemCouncil")
 
 L:SetGeneralLocalization({
-	name = "Dark Iron Golem Council"
+	name = "Защитная система Омнотрона"
 })
 
 L:SetWarningLocalization({
@@ -166,7 +166,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
-	ChromaticPrototype	= "Chromatic Prototype"
+	ChromaticPrototype	= "Хроматический прообраз"
 })
 
 L:SetOptionLocalization({
