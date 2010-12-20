@@ -10,7 +10,7 @@ local L
 L = DBM:GetModLocalization("Romogg")
 
 L:SetGeneralLocalization({
-	name = "Ром'рогг Костекрушитель"
+	name = "Ром'огг Костекрушитель"
 })
 
 -------------------------------
@@ -36,7 +36,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("KarshSteelbender")
 
 L:SetGeneralLocalization({
-	name = "Кузнец Карш"
+	name = "Карш Гнущий Сталь"
 })
 
 L:SetTimerLocalization({
@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Beauty")
 
 L:SetGeneralLocalization({
-	name = "Красотка"
+	name = "Красавица"
 })
 
 -----------------------------
@@ -62,7 +62,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "Лорд Обсидиус"
+	name = "Повелитель Перерожденных Обсидий"
 })
 
 L:SetOptionLocalization({
@@ -142,7 +142,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ForgemasterThrongus")
 
 L:SetGeneralLocalization({
-	name = "Начальник кузни Тронгус"
+	name = "Начальник кузни Тронг"
 })
 
 -------------------------
@@ -155,8 +155,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate -- Yell when Valiona is incoming
-	Valiona		= "Valiona"	-- translate
+	ValionaYell	= "Дракон, ты будеш делать то, что я прикажу! Подхвати меня!",	-- translate -- Yell when Valiona is incoming
+	Valiona		= "Валиона"
 }
 
 ------------
@@ -271,12 +271,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "Show health of adds in the Boss Health Frame"	-- translate
+	BossHealthAdds	= "Показать здоровье прислужников в рамке здоровья босса"
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "Blaze of the Heavens",	-- translate
-	HarbringerDarkness	= "Harbringer of Darkness"	-- translate
+	BlazeHeavens		= "Небесный Огонь",
+	HarbringerDarkness	= "Вестник Тьмы"
 }
 
 --------------
@@ -289,7 +289,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Show Range Frame (5 yards)"		-- translate
+	RangeFrame	= "Окно проверки дистанции (5 м)"
 }
 
 ----------
@@ -298,7 +298,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Augh")
 
 L:SetGeneralLocalization({
-	name = "Augh"		-- translate
+	name = "Ауг"
 })
 
 -----------------------
@@ -339,6 +339,15 @@ L:SetGeneralLocalization({
 	name = "Лорд Вальден"
 })
 
+L:SetWarningLocalization{
+	specWarnCoagulant	= "Зеленая смесь - двигайтесь!",	-- Green light
+	specWarnRedMix		= "Красная смесь - не двигайтесь!"		-- Red light
+}
+
+L:SetOptionLocalization{
+	RedLightGreenLight	= "Сообщать о красной/зеленой очередности движений"
+}
+
 ------------------
 -- Lord Godfrey --
 ------------------
@@ -347,6 +356,14 @@ L = DBM:GetModLocalization("Godfrey")
 L:SetGeneralLocalization({
 	name = "Лорд Годфри"
 })
+
+L:SetWarningLocalization{
+	WarnMortalWound	= "%s на >%s< (%d)"		-- Mortal Wound on >args.destName< (args.amount)
+}
+
+L:SetOptionLocalization{
+	WarnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(93675, GetSpellInfo(93675) or "unknown")
+}
 
 ---------------------
 --  The Stonecore  --
@@ -428,6 +445,10 @@ L = DBM:GetModLocalization("Altairus")
 
 L:SetGeneralLocalization({
 	name = "Альтаирий"
+})
+
+L:SetOptionLocalization({
+	BreathIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88308)
 })
 
 -----------
