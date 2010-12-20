@@ -18,11 +18,18 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878)
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetOptionLocalization({
+	YellOnEngulfing			= "Gritar cuando tengas $spell:86622"
 })
+
+L:SetMiscLocalization{
+	YellEngulfing				= "¡Trago de magia en mi!"
+}
+
 
 --------------------------
 --  Halfus Wyrmbreaker  --
@@ -55,8 +62,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnGrounded	= "Get Grounded buff",
-	SpecWarnSearingWinds	= "Get Searing Winds buff"
+	SpecWarnGrounded	= "Coge el bufo de Domeñado",
+	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales"
 })
 
 L:SetTimerLocalization({

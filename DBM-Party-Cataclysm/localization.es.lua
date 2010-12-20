@@ -339,6 +339,16 @@ L:SetGeneralLocalization({
 	name = "Lord Walden"
 })
 
+L:SetWarningLocalization{
+	specWarnCoagulant	= "Mezcla verde. ¡Muévete!",	-- Green light
+	specWarnRedMix		= "Mezcla roja. ¡No te muevas!"		-- Red light
+}
+
+L:SetOptionLocalization{
+	RedLightGreenLight	= "Mostrar aviso especial para mezclas rojas/verdes"
+}
+
+
 ------------------
 -- Lord Godfrey --
 ------------------
