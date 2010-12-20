@@ -16,6 +16,7 @@ Arathi:RegisterEvents(
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UPDATE_WORLD_STATES"
 )
 	
@@ -198,6 +199,7 @@ do
 
 	Arathi.CHAT_MSG_BG_SYSTEM_ALLIANCE = schedule_check
 	Arathi.CHAT_MSG_BG_SYSTEM_HORDE = schedule_check
+	Arathi.CHAT_MSG_RAID_BOSS_EMOTE = schedule_check
 
 	function Arathi:CHAT_MSG_BG_SYSTEM_NEUTRAL(arg1)
 		if not bgzone then return end
