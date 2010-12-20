@@ -12,15 +12,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnSpecial			= "Huracan/Céfiro/Tormenta de granizo activados",
+	specWarnSpecial		= "¡Habilidades especiales activas!"
 })
 
 L:SetTimerLocalization({
+	timerSpecial			= "Habilidades especiales CD",
+	timerSpecialActive		= "Habilidades especiales activas"
 })
 
 L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	warnSpecial			= "Mostrar aviso cuando Huracan/Céfiro/Tormenta de granizo sean lanzados",
+	specWarnSpecial		= "Mostrar aviso especial cuando se lanzan habilidades especiales",
+	timerSpecial		= "Mostrar cooldown de habilidades especiales",
+	timerSpecialActive	= "Mostrar tiempo de duración de habilidades especiales"
 })
 
 ---------------

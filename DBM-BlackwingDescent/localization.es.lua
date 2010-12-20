@@ -39,11 +39,11 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Magmatron	= "Magmatron",--translate
-	Electron	= "Electron",--translate
-	Toxitron	= "Toxitron",--translate
-	Arcanotron	= "Arcanotron",--translate
-	SayBomb		= "¡Poison Bomb en mi!"--translate
+	Magmatron	= "Magmatron",
+	Electron	= "Electron",
+	Toxitron	= "Toxitron",
+	Arcanotron	= "Arcanotron",
+	SayBomb		= "¡Bomba de veneno en mi!"
 })
 
 L:SetOptionLocalization({
