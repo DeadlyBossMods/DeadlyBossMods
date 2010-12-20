@@ -10,15 +10,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	warnSpecial			= "Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
+	specWarnSpecial		= "Special Abilities Active!"
 })
 
 L:SetTimerLocalization({
+	timerSpecial			= "Special Abilities CD",
+	timerSpecialActive		= "Special Abilities Active"
 })
 
 L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	warnSpecial			= "Show warning when Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
+	specWarnSpecial		= "Show special warning when special abilities are used",
+	timerSpecial		= "Show timer for special abilities cooldown",
+	timerSpecialActive	= "Show timer for special abilities duration"
 })
 
 ---------------

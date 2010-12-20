@@ -16,11 +16,17 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878)
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetOptionLocalization({
+	YellOnEngulfing			= "Yell on $spell:86622"
 })
+
+L:SetMiscLocalization{
+	YellEngulfing				= "Engulfing Magic on me!"
+}
 
 --------------------------
 --  Halfus Wyrmbreaker  --
