@@ -186,10 +186,10 @@ do
 	local function updateflagcarrier(self, event, arg1)
 		if not self.Options.ShowFlagCarrier then return end
 		if self.FlagCarrierFrame1 and self.FlagCarrierFrame2 then
-			if string.match(arg1, L.ExprFlagPickUp) or (GetLocale() ~= "ruRU" and string.match(arg1, L.ExprFlagPickUp2) then
+			if string.match(arg1, L.ExprFlagPickUp) or (GetLocale() ~= "ruRU" and string.match(arg1, L.ExprFlagPickUp2)) then
 				local sArg1, sArg2
 				local mSide, mNick
-				if ( GetLocale() == "ruRU" and string.match(arg1, L.ExprFlagPickUp2) then
+				if ( GetLocale() == "ruRU" and string.match(arg1, L.ExprFlagPickUp2) ) then
 					sArg2, sArg1 =  string.match(arg1, L.ExprFlagPickUp2)
 				else
 					sArg1, sArg2 =  string.match(arg1, L.ExprFlagPickUp)
