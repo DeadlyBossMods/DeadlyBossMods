@@ -201,8 +201,6 @@ do
 					mSide = sArg1
 					mNick = sArg2
 				end
-
-				if ( GetLocale() == "ruRU" and (m
 				
 				if mSide == L.Alliance then
 					FlagCarrier[2] = mNick
