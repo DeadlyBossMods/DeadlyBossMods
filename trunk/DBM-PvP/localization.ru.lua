@@ -162,6 +162,7 @@ L:SetMiscLocalization({
 	Horde 				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца, будет восстановлена после выхода из режима боя.",
 	ExprFlagPickUp		= "(.+) подымает флаг (%w+)",
+	ExprFlagPickUp2		= "Флаг (%w+) у (.+)!",				-- only used for Russian language
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
 	ExprFlagReturn		= "(.+) возвращает флаг (%w+) на базу!",
 	FlagAlliance		= "Флаг Альянса: ",
