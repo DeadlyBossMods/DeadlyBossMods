@@ -26,7 +26,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	YellEngulfing			= "Engulfing Magic on me!"
+	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T"
 }
 
 --------------------------
