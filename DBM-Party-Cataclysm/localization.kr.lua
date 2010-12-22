@@ -297,16 +297,6 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Augh")
 
 L:SetGeneralLocalization({
-	name = "Augh"		-- he is fightable after Lockmaw :o
-})
-
-
-----------
--- Augh --
-----------
-L = DBM:GetModLocalization("Augh")
-
-L:SetGeneralLocalization({
 	name = "Augh"		-- translate
 })
 
@@ -347,6 +337,15 @@ L = DBM:GetModLocalization("Walden")
 L:SetGeneralLocalization({
 	name = "Lord Walden"
 })
+
+L:SetWarningLocalization{
+	specWarnCoagulant	= "Green Mix - Keep Moving!",	-- Green light
+	specWarnRedMix		= "Red Mix - Do Not Move!"		-- Red light
+}
+
+L:SetOptionLocalization{
+	RedLightGreenLight	= "Show special warnings for Red/Green movement queues"
+}
 
 ------------------
 -- Lord Godfrey --
