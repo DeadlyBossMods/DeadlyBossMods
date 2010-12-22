@@ -18,7 +18,8 @@ local warnWhirlWind		= mod:NewSpellAnnounce(84784, 3)
 
 local timerParalyticDart	= mod:NewTargetTimer(9, 84799)
 
-local spamSmokeBomb	-- sometimes more ppl are affected
+local spamSmokeBomb = 0
+
 function mod:OnCombatStart(delay)
 	spamSmokeBomb = 0
 end
