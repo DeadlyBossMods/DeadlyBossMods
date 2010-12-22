@@ -19,7 +19,7 @@ local specWarnCrystalStorm 	= mod:NewSpecialWarning("specWarnCrystalStorm")
 
 local timerCrystalStorm		= mod:NewBuffActiveTimer(8.5, 92265)
 
-local spamEruption
+local spamEruption = 0
 function mod:OnCombatStart(delay)
 	spamEruption = 0
 end

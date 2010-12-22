@@ -31,10 +31,10 @@ local timerBarrage		= mod:NewBuffActiveTimer(10, 83706)
 
 local berserkTimer		= mod:NewBerserkTimer(360)
 
-local spamFuriousRoar
+local spamFuriousRoar = 0
 
 function mod:OnCombatStart(delay)
-	spamFuriousRoar = GetTime()
+	spamFuriousRoar = 0
 	berserkTimer:Start(-delay)
 	timerBreathCD:Start(10-delay)
 end
