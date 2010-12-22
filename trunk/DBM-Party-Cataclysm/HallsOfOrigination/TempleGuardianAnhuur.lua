@@ -24,7 +24,7 @@ local specWarnLight	= mod:NewSpecialWarningMove(75117)
 -- Divine Reckoning .. icon ? .. arrow ?
 
 
-local prewarnShield
+local prewarnShield = false
 local spamLight = 0
 function mod:OnCombatStart(delay)
 	prewarnShield = false

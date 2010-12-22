@@ -35,7 +35,7 @@ mod:AddBoolOption("SetIconOnConsuming", true)
 
 local consumingTargets = {}
 local consumingIcon = 8
-local prewarnedFirestorm
+local prewarnedFirestorm = false
 local spamMeteor = 0
 
 local function showConsumingWarning()

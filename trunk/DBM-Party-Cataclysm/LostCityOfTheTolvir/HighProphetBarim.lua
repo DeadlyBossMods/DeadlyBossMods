@@ -28,7 +28,7 @@ local specWarnHeavenFury	= mod:NewSpecialWarningMove(81942)
 
 mod:AddBoolOption("BossHealthAdds")
 
-local spamHeavenFury
+local spamHeavenFury = 0
 function mod:OnCombatStart(delay)
 	spamHeavenFury = 0
 	if mod.Options.BossHealthAdds then
