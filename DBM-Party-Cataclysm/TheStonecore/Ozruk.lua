@@ -32,7 +32,7 @@ local timerGroundSlam		= mod:NewCastTimer(3, 78903)
 
 local soundShatter			= mod:NewSound(92662, nil, mod:IsMelee())
 
-local prewarnEnrage
+local prewarnEnrage = false
 
 -- Spike Barrage CD shortened when enraged ??
 

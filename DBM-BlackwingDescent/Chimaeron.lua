@@ -32,7 +32,7 @@ local timerFeudNext		= mod:NewNextTimer(90, 88872)
 
 local specWarnBreak		= mod:NewSpecialWarningStack(82881, nil, 3)
 
-local prewarnedPhase2
+local prewarnedPhase2 = false
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
 	timerFeudNext:Start(-delay)

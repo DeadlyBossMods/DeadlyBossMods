@@ -30,8 +30,8 @@ local timerWindBlastCD		= mod:NewCDTimer(60, 86193)
 local timerSpecial			= mod:NewTimer(114, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD
 local timerSpecialActive	= mod:NewTimer(16, "timerSpecialActive", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
 
-local windBlastCounter
-local specialSpam
+local windBlastCounter = 0
+local specialSpam = 0
 
 function mod:OnCombatStart(delay)
 	windBlastCounter = 0
