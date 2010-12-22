@@ -155,7 +155,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate -- Yell when Valiona is incoming
-	Valiona		= "Valiona"	-- translate
+	Valiona		= "발리오나"	-- translate
 }
 
 ------------
@@ -184,7 +184,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("EarthragerPtah")
 
 L:SetGeneralLocalization({
-	name = "대지분노자 프타"
+	name = "대지전복자 프타"
 })
 
 --------------

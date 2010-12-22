@@ -11,23 +11,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnSpecial				= "Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial			= "Special Abilities Active!"
+	warnSpecial				= "특수 능력 활성화!!", --Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
+	specWarnSpecial			= "특수 능력 활성화!!"
 })
 
 L:SetTimerLocalization({
-	timerSpecial			= "Special Abilities CD",
-	timerSpecialActive		= "Special Abilities Active"
+	timerSpecial			= "특수 능력 쿨타임",
+	timerSpecialActive		= "특수 능력 활성화"
 })
 
 L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSpecial				= "Show warning when Hurricane/Zephyr/Sleet Storm are cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial			= "Show special warning when special abilities are cast",
-	timerSpecial			= "Show timer for special abilities cooldown",
-	timerSpecialActive		= "Show timer for special abilities duration"
+	warnSpecial				= "특수 능력 시전 경고 보기", -- Show warning when Hurricane/Zephyr/Sleet Storm are cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
+	specWarnSpecial			= "특수 능력 시전을 할 경우 특수 경고 보기",
+	timerSpecial			= "특수 능력 쿨다운 타이머 보기",
+	timerSpecialActive		= "특수 능력 유지 타이머 보기"
 })
 
 ---------------
