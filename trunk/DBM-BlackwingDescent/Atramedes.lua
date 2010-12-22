@@ -25,7 +25,7 @@ local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840)
 local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
-local timerSearingFlame		= mod:NewNextTimer(50, 77840)
+local timerSearingFlame		= mod:NewNextTimer(46.5, 77840)
 local timerAirphase			= mod:NewTimer(90, "TimerAirphase")
 local timerGroundphase		= mod:NewTimer(35, "TimerGroundphase")
 
@@ -37,7 +37,7 @@ local shieldsLeft = 10
 
 local groundphase = function()
 	timerAirphase:Start()
-	timerSonicBreath:Start(28)
+	timerSonicBreath:Start(25)
 	timerSearingFlame:Start()
 end
 
@@ -87,6 +87,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerSonicBreath:Cancel()
 		timerSearingFlame:Cancel()
 		timerGroundphase:Start()
-		self:Schedule(35, groundphase)
+		self:Schedule(32.5, groundphase)
 	end
 end
