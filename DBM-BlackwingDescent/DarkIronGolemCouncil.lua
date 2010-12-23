@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetZone()
-mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -139,7 +139,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			SendChatMessage(L.SayBomb, "SAY")
 		end
 		if self.Options.BombTargetIcon then
-			if fixateIcon < 4 then--3 oozes spawn within 2-3 seconds of eachother
+			if fixateIcon < 1 then
 				fixateIcon = 6--lets make sure all 3 get unique icons, then reset for next time.
 			end
 			self:SetIcon(args.destName, fixateIcon, 6)
@@ -158,7 +158,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnShadowInfusion:Show()
 		end
 		if self.Options.ShadowInfusionIcon then
-			self:SetIcon(args.destName, 3)
+			self:SetIcon(args.destName, 8)
 		end
 	end
 end

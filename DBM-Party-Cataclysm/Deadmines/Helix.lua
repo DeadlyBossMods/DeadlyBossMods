@@ -15,7 +15,7 @@ mod:RegisterEvents(
 local warnChestBomb		= mod:NewTargetAnnounce(88352, 4)
 local warnSpiritStrike		= mod:NewSpellAnnounce(59304, 3)
 
-local timerChestBomb		= mod:NewTargetTimer(10, 88532)
+local timerChestBomb		= mod:NewTargetTimer(10, 88352)
 
 local specWarnChestBomb		= mod:NewSpecialWarningYou(88352)
 

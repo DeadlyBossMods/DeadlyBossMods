@@ -71,10 +71,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellRed			= "Mix and stir, apply heat...",
-	YellBlue		= "How well does the mortal shell handle extreme temperature change? Must find out! For science!",
-	YellGreen		= "This one's a little unstable, but what's progress without failure?",
-	YellDark		= "Your mixtures are weak, Maloriak! They need a bit more... kick!",
+	YellRed			= "red|r vial into the cauldron!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
+	YellBlue		= "blue|r vial into the cauldron!",
+	YellGreen		= "green|r vial into the cauldron!",
+	YellDark		= "dark|r vial into the cauldron!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
 	Red			= "Red",
 	Blue			= "Blue",
 	Green			= "Green",
@@ -85,6 +85,7 @@ L:SetOptionLocalization({
 	WarnPhase		= "Show warning which phase is incoming",
 	WarnRemainingAdds	= "Show warning how many aberrations remain",
 	TimerPhase		= "Show timer for next phase",
+	RangeFrame		= "Show range frame (6) during blue phase",
 	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
