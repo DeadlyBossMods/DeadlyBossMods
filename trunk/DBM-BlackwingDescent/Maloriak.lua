@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(41378)
 mod:SetZone()
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -30,7 +30,7 @@ local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
  
 local timerPhase				= mod:NewTimer(50, "TimerPhase")
-local timerBitingChill			= mod:NewTargetTimer(10, 77760)
+local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
 local timerFlashFreeze			= mod:NewCDTimer(25, 77699)
 local timerArcaneStorm			= mod:NewBuffActiveTimer(6, 77896)
 local timerConsumingFlames		= mod:NewTargetTimer(10, 77786)
@@ -53,6 +53,15 @@ mod:AddBoolOption("RangeFrame")
 local adds = 18
 local AddsInterrupted = false
 local spamSlime = 0
+local bitingChillTargets = {}
+local bitingChillIcon = 6
+
+local function showBitingChillWarning()
+	warnBitingChill:Show(table.concat(bitingChillTargets, "<, >"))
+	table.wipe(bitingChillTargets)
+	bitingChillIcon = 6
+	timerBitingChill:Start()
+end
 
 local function InterruptCheck()
 	if not AddsInterrupted then
@@ -68,6 +77,7 @@ function mod:OnCombatStart(delay)
 	AddsInterrupted = false
 	spamSlime = 0
 	timerPhase:Start(15-delay)
+	table.wipe(bitingChillTargets)
 end
 
 function mod:OnCombatEnd()
@@ -83,14 +93,16 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(77760, 92975, 92976, 92977) then--Drycodes
-		warnBitingChill:Show(args.destName)
-		timerBitingChill:Start(args.destName)
+		bitingChillTargets[#bitingChillTargets + 1] = args.destName
 		if self.Options.BitingChillIcon then
-			self:SetIcon(args.destName, 6)
+			self:SetIcon(args.destName, bitingChillIcon)
+			bitingChillIcon = bitingChillIcon - 1
 		end
 		if args:IsPlayer() then
 			specWarnBitingChill:Show()
 		end
+		self:Unschedule(showBitingChillWarning)
+		self:Schedule(0.3, showBitingChillWarning)
 	elseif args:IsSpellID(77912, 92965, 92966, 92967) then--Drycodes
 		warnRemedy:Show()
 		specWarnRemedy:Show()
