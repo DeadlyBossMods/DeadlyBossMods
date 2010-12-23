@@ -21,7 +21,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Yell on $spell:86622"
+	YellOnEngulfing			= "Yell on $spell:86622",
+	RangeFrame		= "Show range frame (10)"
 })
 
 L:SetMiscLocalization{

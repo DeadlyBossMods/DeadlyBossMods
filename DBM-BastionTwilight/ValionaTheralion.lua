@@ -37,6 +37,7 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 mod:AddBoolOption("YellOnEngulfing", true, "announce")
 mod:AddBoolOption("BlackoutIcon")
 mod:AddBoolOption("EngulfingIcon")
+mod:AddBoolOption("RangeFrame")
 
 -- 88518 -> SpellID for Meteorite Target, SPELL_AURA_APPLIED?  or do we need to do scanning ? :(
 
@@ -44,6 +45,15 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerBlackoutNext:Start(10-delay)
 	timerDevouringFlamesCD:Start(25-delay)
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(10)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
