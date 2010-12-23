@@ -30,7 +30,7 @@ local lastLavaSpew = 0
 function mod:OnCombatStart(delay)
 	lastLavaSpew = 0
 	timerPillarFlame:Start(-delay)
-	timerMangleCD:Start(100-delay)
+	timerMangleCD:Start(90-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerInferno:Start(20-delay)
 	end
