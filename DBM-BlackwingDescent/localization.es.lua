@@ -73,10 +73,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellRed			= "Mix and stir, apply heat...",--translate
-	YellBlue		= "How well does the mortal shell handle extreme temperature change? Must find out! For science!",--translate
-	YellGreen		= "This one's a little unstable, but what's progress without failure?",--translate
-	YellDark		= "Your mixtures are weak, Maloriak! They need a bit more... kick!",--translate
+	YellRed			= "red|r vial into the cauldron!",--translate
+	YellBlue		= "blue|r vial into the cauldron!",--translate
+	YellGreen		= "green|r vial into the cauldron!",--translate
+	YellDark		= "dark|r vial into the cauldron!",--translate
 	Red				= "Roja",
 	Blue			= "Azul",
 	Green			= "Verde",
@@ -86,7 +86,8 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase		= "Mostrar aviso de la fase que viene",
 	WarnRemainingAdds	= "Mostrar un aviso con las aberraciones restantes",
-	TimerPhase		= "Mostrar tiempo para la siguiente fase",
+	TimerPhase		= "Mostrar tiempo para la siguiente fase",	
+	RangeFrame		= "Mostrar distancia (6 yardas) durante la fase azul",
 	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)

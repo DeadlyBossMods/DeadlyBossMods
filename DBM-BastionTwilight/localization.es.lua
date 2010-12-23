@@ -23,7 +23,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Gritar cuando tengas $spell:86622"
+	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
+	RangeFrame				= "Mostrar distancia (10 yardas)"
 })
 
 L:SetMiscLocalization{
