@@ -27,7 +27,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "Предупреждать, когда на Ревнителе истекает эффект $spell:75608"
+	WarnAdd		= "Сообщать когда на помощнике истекает эффект $spell:75608"
 })
 
 -----------------------
@@ -254,7 +254,7 @@ L:SetGeneralLocalization({
 
 ------------------------------------
 -- Siamat, Lord of the South Wind --
--------------------
+------------------------------------
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
@@ -375,6 +375,7 @@ L = DBM:GetModLocalization("Corborus")
 L:SetGeneralLocalization({
 	name = "Корбор"
 })
+
 L:SetWarningLocalization({
 	WarnEmerge	= "Появление",
 	WarnSubmerge	= "Погружение"
