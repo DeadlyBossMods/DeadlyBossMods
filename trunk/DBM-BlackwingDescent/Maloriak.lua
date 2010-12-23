@@ -155,10 +155,13 @@ function mod:SPELL_INTERRUPT(args)
 	end
 end
 
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--Method is terrible, breaks from curse of tongues. Need to use raidboss emote instead. but need a new log that contains them
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.YellRed or msg:find(L.YellRed) then
 		warnPhase:Show(L.Red)
 		timerPhase:Start()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif msg == L.YellBlue or msg:find(L.YellBlue) then
 		warnPhase:Show(L.Blue)
 		timerPhase:Start()
@@ -169,8 +172,14 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)--Method is terrible, breaks from curs
 	elseif msg == L.YellGreen or msg:find(L.YellGreen) then
 		warnPhase:Show(L.Green)
 		timerPhase:Start()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	elseif msg == L.YellDark or msg:find(L.YellDark) then--Need dark value for raidboss emote
 		warnPhase:Show(L.Dark)
 		timerPhase:Start(100)		-- copied from BigWigs as I didnt have a timer yet
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
+		end
 	end
 end
