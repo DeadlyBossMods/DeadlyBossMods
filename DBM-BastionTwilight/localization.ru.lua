@@ -18,11 +18,18 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878)
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetOptionLocalization({
+	YellOnEngulfing			= "Крикнуть если на вас $spell:86622"
+	RangeFrame		= "Окно проверки дистанции (10)"
 })
+
+L:SetMiscLocalization{
+	YellEngulfing				= "На МНЕ избыточная магия!"
+}
 
 --------------------------
 --  Halfus Wyrmbreaker  --
