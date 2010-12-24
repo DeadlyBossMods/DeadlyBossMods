@@ -23,7 +23,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Крикнуть если на вас $spell:86622"
+	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
 	RangeFrame		= "Окно проверки дистанции (10)"
 })
 
