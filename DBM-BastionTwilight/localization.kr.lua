@@ -75,8 +75,6 @@ L:SetMiscLocalization({
 	Thundershock	= "주변의 공기가 에너지로 진동합니다...",
 	Switch			= "우리가 상대하겠다!",--"We will handle them!" comes 3 seconds after this one
 	Phase3			= "꽤나 인상적이었다만...",--"BEHOLD YOUR DOOM!" is about 13 seconds after	
-	Switch			= "우리가 상대하겠다!",
-	Phase3			= "네놈들의 종말을 맞이해라!",
 	Ignacious		= "이그니시우스",
 	Feludius		= "펠루디우스",
 	Arion			= "아리온",
