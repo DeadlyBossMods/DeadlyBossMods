@@ -13,7 +13,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnTwilightMeteorite		= mod:NewSpellAnnounce(86013, 3)
@@ -40,7 +41,7 @@ mod:AddBoolOption("BlackoutIcon")
 mod:AddBoolOption("EngulfingIcon")
 mod:AddBoolOption("RangeFrame")
 
--- 88518 -> SpellID for Meteorite Target, SPELL_AURA_APPLIED?  or do we need to do scanning ? :(
+-- 88518 doesn't show in combat log -> SpellID for Meteorite Target, do we need to do scanning ? :(
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -115,3 +116,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnDeepBreath:Show()
 	end
 end
+
+--Not in use at moment, too tired/lazy to do this right now. this encounter is a complete disaster with phase detections.
+--[[
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.Trigger1 or msg:find(L.Trigger1) then
+
+	end
+end--]]

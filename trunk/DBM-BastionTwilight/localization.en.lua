@@ -26,6 +26,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
+	Trigger1				= "Theralion, I will engulf the hallway. Cover their escape!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing				= "Engulfing Magic on me!"
 }
 
