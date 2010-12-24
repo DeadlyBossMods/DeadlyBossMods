@@ -77,18 +77,19 @@ L:SetMiscLocalization({
 	YellBlue		= "급격한 온도 변화에 필멸의 육신",
 	YellGreen		= "이건 좀 불안정하지만",
 	YellDark		= "혼합물이 너무 약하구나, 말로리악!",
-	Red				= "붉은",
-	Blue			= "푸른",
-	Green			= "초록",
-	Dark			= "암흑"
+	Red				= "|cFFFF0000붉은|r 단계",
+	Blue			= "|cFF809FFE푸른|r 단계",
+	Green			= "|cFF33FF00초록|r 단계",
+	Dark			= "|cFF660099암흑|r 단계"
 })
 
 L:SetOptionLocalization({
 	WarnPhase			= "다음 단계 전환 경고 보기",
 	WarnRemainingAdds	= "돌연변이가 얼마나 남았는지 경고 보기",
 	TimerPhase			= "다음 단계 타이머 보기",
-	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
-	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	RangeFrame			= "푸른 단계에서 거리 프레임 보기",	
+	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
