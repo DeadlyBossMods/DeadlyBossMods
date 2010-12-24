@@ -27,7 +27,7 @@ local timerShockBlastCD		= mod:NewCDTimer(13, 76008)
 local timerGeyser		= mod:NewCastTimer(5, 75722)
 local timerFungalSpores		= mod:NewTargetTimer(15, 80564)
 
-local specWarnShockBlast	= mod:NewSpecialWarningInterupt(76008)
+local specWarnShockBlast	= mod:NewSpecialWarningInterrupt(76008)
 
 local preWarnedWaterspout = false
 function mod:OnCombatStart()

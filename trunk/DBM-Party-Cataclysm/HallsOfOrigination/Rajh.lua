@@ -21,7 +21,7 @@ local warnSunStrike	= mod:NewSpellAnnounce(73872, 3)
 local timerBlessing	= mod:NewBuffActiveTimer(23, 76355)
 local timerSunStrike	= mod:NewCDTimer(27, 73872)
 
-local specWarnSunOrb	= mod:NewSpecialWarningInterupt(80352)
+local specWarnSunOrb	= mod:NewSpecialWarningInterrupt(80352)
 
 local spamBlessing = 0
 function mod:OnCombatStart(delay)

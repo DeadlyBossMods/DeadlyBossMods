@@ -65,13 +65,14 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerTransition		= "Phase Transition"
 })
 
 L:SetMiscLocalization({
 	Quake			= "The ground beneath you rumbles ominously....",
 	Thundershock	= "The surrounding air crackles with energy....",
-	Switch			= "We will handle them!",
-	Phase3			= "BEHOLD YOUR DOOM!",
+	Switch			= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
+	Phase3			= "An impressive display...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
@@ -82,8 +83,11 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
 	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
+	timerTransition		= "Show Phase transition timer",
 	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660)
+	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948)
 })
 
 ----------------
