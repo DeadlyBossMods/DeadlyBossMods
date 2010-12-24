@@ -26,7 +26,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(84768) and GetTime() - spamSmokeBomb > 5 then
-		WarnSmokeBomb:Show()
+		warnSmokeBomb:Show()
 		spamSmokeBomb = GetTime()
 	elseif args:IsSpellID(84799) then
 		warnParalyticDart:Show(args.destName)
