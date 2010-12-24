@@ -335,16 +335,16 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Walden")
 
 L:SetGeneralLocalization({
-	name = "Lord Walden"
+	name = "월든 경"
 })
 
 L:SetWarningLocalization{
-	specWarnCoagulant	= "Green Mix - Keep Moving!",	-- Green light
-	specWarnRedMix		= "Red Mix - Do Not Move!"		-- Red light
+	specWarnCoagulant	= "녹색 - 움직이세요!",	-- Green light
+	specWarnRedMix		= "빨강 - 움직이지 마세요!"		-- Red light
 }
 
 L:SetOptionLocalization{
-	RedLightGreenLight	= "Show special warnings for Red/Green movement queues"
+	RedLightGreenLight	= "녹색/빨강 이동 관련 특수 경고 보기"
 }
 
 ------------------
