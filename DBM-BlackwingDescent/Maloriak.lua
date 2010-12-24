@@ -39,7 +39,7 @@ local timerDebilitatingSlime	= mod:NewBuffActiveTimer(15, 77615)
 
 local specWarnBitingChill		= mod:NewSpecialWarningYou(77760)
 local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
-local specWarnArcaneStorm		= mod:NewSpecialWarningInterupt(77896, false)
+local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896, false)
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
 
@@ -153,7 +153,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77569) then
 		warnReleaseAdds:Show()
 		specWarnAdds:Show()
-		self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interupt and curse of tongues having been up.
+		self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interrupt and curse of tongues having been up.
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
 	end

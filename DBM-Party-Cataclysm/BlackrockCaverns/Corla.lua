@@ -26,8 +26,8 @@ local timerDarkCommandCD	= mod:NewCDTimer(25, 75823)
 local timerShadowStrike		= mod:NewCastTimer(2, 82362)
 local timerEvolution		= mod:NewBuffActiveTimer(20, 75697)
 
-local specWarnShadowStrike	= mod:NewSpecialWarningInterupt(82362)
-local specWarnDarkCommand	= mod:NewSpecialWarningInterupt(93462)
+local specWarnShadowStrike	= mod:NewSpecialWarningInterrupt(82362)
+local specWarnDarkCommand	= mod:NewSpecialWarningInterrupt(93462)
 local specWarnEvolution		= mod:NewSpecialWarningStack(75697, true, 70)
 
 local spamEvolution = 0
