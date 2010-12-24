@@ -18,7 +18,7 @@ local warnRottenFlesh		= mod:NewSpellAnnounce(93713, 4)
 local warnWracking			= mod:NewSpellAnnounce(93720, 2)
 local warnArchangel			= mod:NewSpellAnnounce(93757, 4)
 
-local specWarnRottenFlesh	= mod:NewSpecialWarningInterupt(93713)
+local specWarnRottenFlesh	= mod:NewSpecialWarningInterrupt(93713)
 
 local timerAsphyxiate		= mod:NewCDTimer(40, 93710)
 

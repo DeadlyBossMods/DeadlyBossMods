@@ -22,7 +22,7 @@ local warnVengeance		= mod:NewSpellAnnounce(87683, 3)
 local warnShadowNova	= mod:NewSpellAnnounce(87683, 3)
 --local warnBarrage		= mod:NewSpellAnnounce(83706, 3)--This is not showing in combat log, no cast, or aura, only damage, but i don't think it's that important anyways.
 
-local specWarnShadowNova= mod:NewSpecialWarningInterupt(83703, false)
+local specWarnShadowNova= mod:NewSpecialWarningInterrupt(83703, false)
 
 local timerFuriousRoar	= mod:NewCDTimer(30, 83710)
 --local timerBarrageCD	= mod:NewCDTimer(32, 83706)
