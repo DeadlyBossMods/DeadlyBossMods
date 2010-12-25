@@ -67,7 +67,7 @@ end
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(81942) and args:IsPlayer() and GetTime() - spamHeavenFury > 5 then
 		spamHeavenFury = GetTime()
-		SpecWarnHeavenFury:Show()
+		specWarnHeavenFury:Show()
 	end
 end
 
