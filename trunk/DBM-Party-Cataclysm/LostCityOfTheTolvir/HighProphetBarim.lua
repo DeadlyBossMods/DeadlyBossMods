@@ -65,7 +65,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(81942) and args:IsPlayer() and GetTime() - spamHeavenFury > 5 then
+	if args:IsSpellID(81942, 90040) and args:IsPlayer() and GetTime() - spamHeavenFury > 5 then
 		spamHeavenFury = GetTime()
 		specWarnHeavenFury:Show()
 	end
