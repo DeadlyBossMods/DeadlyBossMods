@@ -274,8 +274,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "Blaze of the Heavens",	-- translate
-	HarbringerDarkness	= "Harbringer of Darkness"	-- translate
+	BlazeHeavens		= "천상의 불꽃",	-- translate
+	HarbringerDarkness	= "암흑의 전령"	-- translate, 영혼의파편
 }
 
 --------------
@@ -297,7 +297,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Augh")
 
 L:SetGeneralLocalization({
-	name = "Augh"		-- translate
+	name = "오우"		-- translate
 })
 
 -----------------------
