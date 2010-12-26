@@ -72,6 +72,7 @@ DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d yd"
 DBM_CORE_RANGECHECK_LOCK			= "Lock frame"
 
 DBM_LFG_INVITE						= "LFG Invite"
+DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
