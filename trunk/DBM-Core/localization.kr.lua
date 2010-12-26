@@ -73,6 +73,7 @@ DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_LOCK			= "프레임 잠금"
 
 DBM_LFG_INVITE						= "던전 입장"
+DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능한 명령어:",

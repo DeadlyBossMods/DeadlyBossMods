@@ -54,6 +54,7 @@ L.AutoRespond 			= "자동 부활 사용 - 무덤 이동"
 L.EnableMiniMapIcon		= "Minimap 버튼 사용"
 L.FixCLEUOnCombatStart	= "전투 시작 할 때 전투 로그 수정"
 L.SetCurrentMapOnPull	= "현재 맵과 지역에서 풀링 켜기(/range & /arrow의 정확성 보장)"
+L.ArchaeologyHumor		= "Make Archaeology more interesting"
 L.SKT_Enabled			= "항상 빠르게 죽인 타이머 보기(각 보스에 포함된 특수 옵션 참고)"
 L.Latency_Text			= "최대 지연시간 설정 : %d"
 
