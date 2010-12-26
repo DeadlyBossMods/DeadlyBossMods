@@ -1534,7 +1534,6 @@ do
 		delay = tonumber(delay or 0) or 0
 		revision = tonumber(revision or 0) or 0
 		mod = DBM:GetModByName(mod or "")
---		SetMapToCurrentZone()
 		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText()) or checkEntry(mod.zones, LastZoneMapID)) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
@@ -1753,7 +1752,6 @@ do
 
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
---		SetMapToCurrentZone()
 		if combatInfo[GetRealZoneText()] or combatInfo[LastZoneMapID] then
 			buildTargetList()
 			if combatInfo[GetRealZoneText()] then
