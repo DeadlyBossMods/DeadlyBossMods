@@ -156,7 +156,6 @@ else
 	GetCurrentMapID = GetCurrentMapAreaID
 end
 
-
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
@@ -1367,7 +1366,8 @@ do
 				"PLAYER_ENTERING_WORLD",
 				"LFG_PROPOSAL_SHOW",
 				"LFG_PROPOSAL_FAILED",
-				"LFG_UPDATE"
+				"LFG_UPDATE",
+				"CHAT_MSG_LOOT"
 			)
 			self:ZONE_CHANGED_NEW_AREA()
 			self:RAID_ROSTER_UPDATE()
@@ -1395,6 +1395,34 @@ function DBM:LFG_UPDATE()
             DBM.Bars:CancelBar(DBM_LFG_INVITE)
         end
     end
+end
+
+function DBM:CHAT_MSG_LOOT(msg)
+	local player, itemID = msg:match(DBM_LOOT_MSG)
+	if player and itemID and (tonumber(itemID) == 52843 or tonumber(itemID) == 63127 or tonumber(itemID) == 63128 or tonumber(itemID) == 64392 or tonumber(itemID) == 64394 or tonumber(itemID) == 64396 or tonumber(itemID) == 64395 or tonumber(itemID) == 64397) then
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper01.wav")
+--[[		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper01.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper02.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper03.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper04.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper05.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper06.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper07.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper08.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper01.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper02.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper03.wav")
+		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper04.wav")
+
+		PlaySoundFile("Sound\\Creature\\CThun\\CThunDeathIsClose.wav")
+		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouAreAlready.wav")
+		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillBetray.wav")
+		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.wav")
+		PlaySoundFile("Sound\\Creature\\CThun\\CThunYourCourage.wav")
+		PlaySoundFile("Sound\\Creature\\CThun\\CThunYourFriends.wav")
+		PlaySoundFile("Sound\\Creature\\CThun\\YourHeartWill.wav")
+		PlaySoundFile("Sound\\Creature\\CThun\\YouAreWeak.wav")--]]
+	end
 end
 
 --------------------------------
