@@ -1195,17 +1195,18 @@ local function CreateOptionsMenu()
 		----------------------------------------------
 		--             General Options              --
 		----------------------------------------------
-		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 260, true)
+		local generaloptions = DBM_GUI_Frame:CreateArea(L.General, nil, 280, true)
 	
 		local enabledbm = generaloptions:CreateCheckButton(L.EnableDBM, true)
 		enabledbm:SetScript("OnShow",  function() enabledbm:SetChecked(DBM:IsEnabled()) end)
 		enabledbm:SetScript("OnClick", function() if DBM:IsEnabled() then DBM:Disable() else DBM:Enable() end end)
 	
-		local StatusEnabled = generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
-		local AutoRespond   = generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
-		local MiniMapIcon   = generaloptions:CreateCheckButton(L.EnableMiniMapIcon,  true)
-		local FixCLEUOnCombatStart   = generaloptions:CreateCheckButton(L.FixCLEUOnCombatStart,  true, nil, "FixCLEUOnCombatStart")
-		local SetCurrentMapOnPull   = generaloptions:CreateCheckButton(L.SetCurrentMapOnPull,  true, nil, "SetCurrentMapOnPull")
+		local StatusEnabled			= generaloptions:CreateCheckButton(L.EnableStatus, true, nil, "StatusEnabled")
+		local AutoRespond			= generaloptions:CreateCheckButton(L.AutoRespond,  true, nil, "AutoRespond")
+		local MiniMapIcon			= generaloptions:CreateCheckButton(L.EnableMiniMapIcon,  true)
+		local FixCLEUOnCombatStart	= generaloptions:CreateCheckButton(L.FixCLEUOnCombatStart,  true, nil, "FixCLEUOnCombatStart")
+		local SetCurrentMapOnPull	= generaloptions:CreateCheckButton(L.SetCurrentMapOnPull,  true, nil, "SetCurrentMapOnPull")
+		local ArchaeologyHumor		= generaloptions:CreateCheckButton(L.ArchaeologyHumor,  true, nil, "ArchaeologyHumor")
 		MiniMapIcon:SetScript("OnClick", function(self)
 			DBM:ToggleMinimapButton()
 			self:SetChecked( DBM.Options.ShowMinimapButton )
@@ -1216,7 +1217,7 @@ local function CreateOptionsMenu()
 		generaloptions:CreateCheckButton(L.SKT_Enabled, true, nil, "AlwaysShowSpeedKillTimer")
 	
 		local bmrange  = generaloptions:CreateButton(L.Button_RangeFrame)
-		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -75)
+		bmrange:SetPoint('TOPLEFT', MiniMapIcon, "BOTTOMLEFT", 0, -95)
 		bmrange:SetScript("OnClick", function(self) 
 			if DBM.RangeCheck:IsShown() then
 				DBM.RangeCheck:Hide()
