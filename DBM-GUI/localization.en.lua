@@ -53,6 +53,7 @@ L.AutoRespond 				= "Enable auto-respond while fighting"
 L.EnableMiniMapIcon			= "Show minimap button"
 L.FixCLEUOnCombatStart		= "Clear combat log cache on pull"
 L.SetCurrentMapOnPull		= "Set Map to current zone on pull (ensures /range & /arrow accuracy)"
+L.ArchaeologyHumor			= "Make Archaeology more interesting"
 L.SKT_Enabled				= "Always show speed kill timer (Overrides boss-specific option)"
 L.Latency_Text				= "Set max latency sync threshold: %d"
 

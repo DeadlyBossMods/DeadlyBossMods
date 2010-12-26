@@ -76,6 +76,7 @@ DBM.DefaultOptions = {
 	SpamBlockBossWhispers = false,
 	ShowMinimapButton = true,
 	FixCLEUOnCombatStart = false,
+	ArchaeologyHumor = true,
 	SetCurrentMapOnPull = true,
 	BlockVersionUpdatePopup = true,
 	ShowSpecialWarnings = true,
@@ -1400,28 +1401,30 @@ end
 function DBM:CHAT_MSG_LOOT(msg)
 	local player, itemID = msg:match(DBM_LOOT_MSG)
 	if player and itemID and (tonumber(itemID) == 52843 or tonumber(itemID) == 63127 or tonumber(itemID) == 63128 or tonumber(itemID) == 64392 or tonumber(itemID) == 64394 or tonumber(itemID) == 64396 or tonumber(itemID) == 64395 or tonumber(itemID) == 64397) then
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper01.wav")
---[[		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper01.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper02.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper03.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper04.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper05.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper06.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper07.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper08.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper01.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper02.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper03.wav")
-		PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper04.wav")
+		if DBM.Options.ArchaeologyHumor then
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper01.wav")
+--[[			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper01.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper02.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper03.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper04.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper05.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper06.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper07.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_HowlingFjordWhisper08.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper01.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper02.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper03.wav")
+			PlaySoundFile("Sound\\Creature\\YoggSaron\\AK_YoggSaron_Whisper04.wav")
 
-		PlaySoundFile("Sound\\Creature\\CThun\\CThunDeathIsClose.wav")
-		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouAreAlready.wav")
-		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillBetray.wav")
-		PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.wav")
-		PlaySoundFile("Sound\\Creature\\CThun\\CThunYourCourage.wav")
-		PlaySoundFile("Sound\\Creature\\CThun\\CThunYourFriends.wav")
-		PlaySoundFile("Sound\\Creature\\CThun\\YourHeartWill.wav")
-		PlaySoundFile("Sound\\Creature\\CThun\\YouAreWeak.wav")--]]
+			PlaySoundFile("Sound\\Creature\\CThun\\CThunDeathIsClose.wav")
+			PlaySoundFile("Sound\\Creature\\CThun\\CThunYouAreAlready.wav")
+			PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillBetray.wav")
+			PlaySoundFile("Sound\\Creature\\CThun\\CThunYouWillDIe.wav")
+			PlaySoundFile("Sound\\Creature\\CThun\\CThunYourCourage.wav")
+			PlaySoundFile("Sound\\Creature\\CThun\\CThunYourFriends.wav")
+			PlaySoundFile("Sound\\Creature\\CThun\\YourHeartWill.wav")
+			PlaySoundFile("Sound\\Creature\\CThun\\YouAreWeak.wav")--]]
+		end
 	end
 end
 
