@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(43686, 43687, 43688, 43689, 43735)
 mod:SetZone()
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Kill)
@@ -24,6 +24,7 @@ local warnGlaciate			= mod:NewSpellAnnounce(82746, 3)
 local warnHeartIce			= mod:NewTargetAnnounce(82665, 3)
 local warnWaterBomb			= mod:NewSpellAnnounce(82699, 3)
 local warnFrozen			= mod:NewTargetAnnounce(82772, 3)
+local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic
 --Ignacious
 local warnFlameTorrent		= mod:NewSpellAnnounce(82777, 2, nil, mod:IsTank() or mod:IsHealer())--Not too useful to announce but will leave for now. CD timer useless.
 local warnBurningBlood		= mod:NewTargetAnnounce(82660, 3)
@@ -34,6 +35,7 @@ local warnEruption			= mod:NewSpellAnnounce(83675, 2, nil, mod:IsMelee())
 local warnHardenSkin		= mod:NewSpellAnnounce(83718, 3)
 local warnQuakeSoon			= mod:NewPreWarnAnnounce(83565, 10, 3)
 local warnQuake				= mod:NewSpellAnnounce(83565, 4)
+local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
 --Arion
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
 local warnDisperse			= mod:NewSpellAnnounce(83087, 3)
@@ -41,6 +43,7 @@ local warnChainLightning	= mod:NewSpellAnnounce(83300, 2)
 local warnLightningBlast	= mod:NewCastAnnounce(83070, 3)
 local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
+local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
 --Elementium Monstrosity
 local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
 local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
@@ -77,14 +80,17 @@ local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665)
 local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
 local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509)
+local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660)
 local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631)
 --Terrastra
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
+local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
 --Arion
-local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
+local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
+local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
 
@@ -92,6 +98,9 @@ mod:AddBoolOption("HeartIceIcon")
 mod:AddBoolOption("BurningBloodIcon")
 mod:AddBoolOption("LightningRodIcon")
 mod:AddBoolOption("GravityCrushIcon")
+mod:AddBoolOption("FrostBeaconIcon")
+mod:AddBoolOption("StaticOverloadIcon")
+mod:AddBoolOption("GravityCoreIcon")
 
 local frozenTargets = {}
 
@@ -184,6 +193,30 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.GravityCrushIcon then
 			self:SetIcon(args.destName, 8)
 		end
+	elseif args:IsSpellID(92307) then
+		warnFrostBeacon:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnFrostBeacon:Show()
+		end
+		if self.Options.FrostBeacondIcon then
+			self:SetIcon(args.destName, 6)
+		end
+	elseif args:IsSpellID(92067) then
+		warnStaticOverload:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnStaticOverload:Show()
+		end
+		if self.Options.StaticOverloadIcon then
+			self:SetIcon(args.destName, 7)
+		end
+	elseif args:IsSpellID(92075) then
+		warnGravityCore:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnGravityCore:Show()
+		end
+		if self.Options.GravityCoreIcon then
+			self:SetIcon(args.destName, 6)
+		end
 	end
 end
 
@@ -210,6 +243,18 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(84948, 92486, 92487, 92488) then
 		timerGravityCrush:Cancel(args.destName)
 		if self.Options.GravityCrushIcon then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(92307) then
+		if self.Options.FrostBeacondIcon then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(92067) then
+		if self.Options.StaticOverloadIcon then
+			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(92075) then
+		if self.Options.GravityCoreIcon then
 			self:SetIcon(args.destName, 0)
 		end
 	end

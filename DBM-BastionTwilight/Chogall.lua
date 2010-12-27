@@ -29,7 +29,7 @@ local timerFesterBlood		= mod:NewCDTimer(90, 82299)
 local worshipTargets = {}
 local prewarned_Phase2 = false
 
-local showWorshipWarning = function()
+local function showWorshipWarning()
 	warnWorship:Show(table.concat(worshipTargets, "<, >"))
 	table.wipe(worshipTargets)
 end
@@ -45,7 +45,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(91317, 93365, 93366, 93367) then
 		worshipTargets[#worshipTargets] = args.destName
 		self:Unschedule(showWorshipWarning)
-		self:Schedule(0.3, showWorshipWarning())
+		self:Schedule(0.3, showWorshipWarning)
 	end
 end
 

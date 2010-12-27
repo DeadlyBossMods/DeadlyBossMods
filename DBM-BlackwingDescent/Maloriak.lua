@@ -43,7 +43,7 @@ local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896, false)
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
 
---local berserkTimer			= mod:NewBerserkTimer(360)
+local berserkTimer				= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon")
@@ -72,7 +72,7 @@ local function InterruptCheck()
 end
 
 function mod:OnCombatStart(delay)
---	berserkTimer:Start(-delay)
+	berserkTimer:Start(-delay)
 	adds = 18
 	AddsInterrupted = false
 	spamSlime = 0
