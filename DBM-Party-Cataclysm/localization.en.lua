@@ -186,6 +186,10 @@ L:SetGeneralLocalization({
 	name = "Earthrager Ptah"
 })
 
+L:SetMiscLocalization{
+	Kill		= "Ptah... is... no more..."
+}
+
 --------------
 -- Anraphet --
 --------------

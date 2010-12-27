@@ -16,7 +16,7 @@ mod:RegisterEvents(
 local warnFrostMix	= mod:NewSpellAnnounce(93702, 3)
 local warnIceShards	= mod:NewSpellAnnounce(93527, 3)
 local warnPoisonMix	= mod:NewSpellAnnounce(93704, 3)
-local warnGreenMix	= mod:NewSpellAnnounce(93572, 4)
+local warnGreenMix	= mod:NewSpellAnnounce(93617, 4)
 local warnRedMix	= mod:NewSpellAnnounce(93689, 4)
 
 local specWarnGreenMix	= mod:NewSpecialWarning("specWarnCoagulant", nil, false)
@@ -25,7 +25,6 @@ mod:AddBoolOption("RedLightGreenLight", true, "announce")
 
 local timerIceShards	= mod:NewBuffActiveTimer(5, 93527)
 local timerRedMix		= mod:NewBuffActiveTimer(10, 93689)
---local timerGreenMix		= mod:NewBuffActiveTimer(10, 93572)--not sure what actual timer is
 
 local lastCoagulant = 0
 local lastCatalyst = 0
@@ -46,9 +45,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRedMix:Show()
 		end
 		lastCatalyst = GetTime()
-	elseif args:IsSpellID(93572) and GetTime() - lastCoagulant > 4 then--Green Light
+	elseif args:IsSpellID(93617) and GetTime() - lastCoagulant > 4 then--Green Light
 		warnGreenMix:Show()
---		timerGreenMix:Start()
 		if self.Options.RedLightGreenLight then
 			specWarnGreenMix:Show()
 		end
