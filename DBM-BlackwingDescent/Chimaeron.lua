@@ -37,6 +37,8 @@ local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
 local prewarnedPhase2 = false
 local slimeTargets = {}
 
+mod:AddBoolOption("RangeFrame")
+
 local function showSlimeWarning()
 	warnCausticSlime:Show(table.concat(slimeTargets, "<, >"))
 	table.wipe(slimeTargets)
@@ -48,6 +50,15 @@ function mod:OnCombatStart(delay)
 	prewarnedPhase2 = false
 	lastSlime = 0
 	table.wipe(slimeTargets)
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(6)
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -60,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(88826) then
 		warnDoubleAttack:Show()
 		specWarnDoubleAttack:Show()
-	elseif args:IsSpellID(82935, 88915, 88916, 88917) and GetTime() - lastSlime > 4 then--There is no cast for this, so we have to warn on damage :\
+	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then--There is no cast for this, so we have to warn on damage :\
 		slimeTargets[#slimeTargets] = args.destName
 		self:Unschedule(showSlimeWarning)
 		self:Schedule(0.3, showSlimeWarning)
