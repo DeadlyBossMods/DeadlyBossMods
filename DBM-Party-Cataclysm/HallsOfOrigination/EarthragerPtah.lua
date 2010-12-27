@@ -2,10 +2,11 @@ local mod	= DBM:NewMod("EarthragerPtah", "DBM-Party-Cataclysm", 4)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(39428)
+mod:SetCreatureID(39428, 99999)--Combat log shows him as dying when he borrows, wtf?
 mod:SetZone()
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.Kill)
 
 mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
