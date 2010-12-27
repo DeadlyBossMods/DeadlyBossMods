@@ -92,7 +92,10 @@ L:SetOptionLocalization({
 	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948)
+	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 ----------------
@@ -116,4 +119,25 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Mostrar preaviso para Fase 2"
+})
+
+----------------
+--  Sinestra  --
+----------------
+L = DBM:GetModLocalization("Sinestra")
+
+L:SetGeneralLocalization({
+	name =	"Sinestra"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
 })
