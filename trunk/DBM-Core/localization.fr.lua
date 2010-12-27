@@ -1,19 +1,19 @@
 if GetLocale() ~= "frFR" then return end
--- Last update: 12/27/2010 (by Sasmira)
+-- Last update: 12/28/2010 (by Sasmira)
 
 
-DBM_CORE_NEED_SUPPORT				= "Etes vous bon en programmation ou langue ? Si c'est le cas, l'équipe de DBM a besoin de votre aide pour que DBM reste le meilleur Boss mod de WoW. Rejoigner notre équipe en visitant notre site (www.deadlybossmods.com) ou en nous envoyant un message à tandanu@deadlybossmods.com ou nitram@deadlybossmods.com."
-DBM_HOW_TO_USE_MOD					= "Bienvenu sur DBM. Pour accéder aux options taper /dbm dans votre chat afin de commencer la configuration. Charger les zones spécifiques manuellement afin de configurer les Boss comme vous le souhaitez. DBM essai de le faire pour vous en scannant vos spec au premier lancement, mais certains pouvoirs ont besoin d'options supplémentaires pour être activés."
+DBM_CORE_NEED_SUPPORT				= "Vous êtes bon en programmation ou langue ? Si c'est le cas, l'équipe de DBM a besoin de votre aide pour que DBM reste le meilleur Boss mod de WoW. Rejoigner notre équipe en visitant notre site (www.deadlybossmods.com) ou en nous envoyant un message à tandanu@deadlybossmods.com ou nitram@deadlybossmods.com."
+DBM_HOW_TO_USE_MOD				= "Bienvenu sur DBM. Pour accéder aux options taper /dbm dans votre chat afin de commencer la configuration. Charger les zones spécifiques manuellement afin de configurer les Boss comme vous le souhaitez. DBM essai de le faire pour vous en scannant vos spec au premier lancement, mais certains pouvoirs ont besoin d'options supplémentaires pour être activés."
 
-DBM_CORE_LOAD_MOD_ERROR				= "Erreur durant le chargement du boss mod pour %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Boss mod pour '%s' chargé!"
+DBM_CORE_LOAD_MOD_ERROR			= "Erreur durant le chargement du boss mod pour %s: %s"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Boss mod pour '%s' est chargé!"
 DBM_CORE_LOAD_GUI_ERROR				= "Ne peut charger le GUI: %s"
 
-DBM_CORE_COMBAT_STARTED				= "%s engagé. Bonne chance et amusez-vous bien ! :)";
-DBM_CORE_BOSS_DOWN					= "%s est mort après %s!"
-DBM_CORE_BOSS_DOWN_LONG				= "%s est mort après %s! Votre dernier down a durée %s et le plus rapide a duré %s."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s est mort après %s! C'est un nouveau record! (l'ancien record était de %s)"
-DBM_CORE_COMBAT_ENDED				= "Combat contre %s terminé après %s."
+DBM_CORE_COMBAT_STARTED			= "%s est engagé. Bonne chance, bon jeu et amusez-vous bien ! :)" -- ; ( point virgule se trouvant ici a tester sans)
+DBM_CORE_BOSS_DOWN				= "%s est mort après %s!"
+DBM_CORE_BOSS_DOWN_LONG			= "%s est mort après %s! Votre dernier down a durée %s - Le plus rapide étant de %s."
+DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s est mort après %s! C'est un nouveau record! (l'ancien record étant de %s)"
+DBM_CORE_COMBAT_ENDED				= "Combat contre %s est terminé après %s."
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d |4seconde:secondes;"
 DBM_CORE_TIMER_FORMAT_MINS			= "%d |4minute:minutes;"
@@ -24,9 +24,9 @@ DBM_CORE_MIN_FMT					= "%d min"
 DBM_CORE_SEC						= "sec"
 DBM_CORE_SEC_FMT					= "%d sec"
 DBM_CORE_DEAD						= "mort"
-DBM_CORE_OK							= "Okay"
+DBM_CORE_OK						= "Okay"
 
-DBM_CORE_GENERIC_WARNING_BERSERK	= "Frénésie dans %s %s"
+DBM_CORE_GENERIC_WARNING_BERSERK		= "Frénésie dans %s %s"
 DBM_CORE_GENERIC_TIMER_BERSERK		= "Frénésie"
 DBM_CORE_OPTION_TIMER_BERSERK		= "Afficher le timer pour la Frénésie"
 DBM_CORE_OPTION_HEALTH_FRAME		= "Afficher la fenêtre de vie du Boss"
@@ -53,7 +53,7 @@ DBM_CORE_UPDATEREMINDER_NOTAGAIN	= "Montre une annonce quand une nouvelle versio
 
 DBM_CORE_MOVABLE_BAR				= "Déplace-moi!"
 
-DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h vous envoie un timer pizza: '%2$s'\n|HDBM:annuler:%2$s:nil|h|cff3588ff[Annuler ce timer]|r|h  |HDBM:ignorer:%2$s:%1$s|h|cff3588ff[Ignorer les timers de %1$s]|r|h"
+DBM_PIZZA_SYNC_INFO				= "|Hplayer:%1$s|h[%1$s]|h vous envoie un timer pizza: '%2$s'\n|HDBM:annuler:%2$s:nil|h|cff3588ff[Annuler ce timer]|r|h  |HDBM:ignorer:%2$s:%1$s|h|cff3588ff[Ignorer les timers de %1$s]|r|h"
 DBM_PIZZA_CONFIRM_IGNORE			= "Voulez vous vraiment ignorer les timers pizza de %s pour cette session?"
 DBM_PIZZA_ERROR_USAGE				= "Usage: /dbm [broadcast] timer <time> <text>"
 
@@ -108,7 +108,7 @@ DBM_CORE_TIMER_PULL					= "Pull dans"
 DBM_CORE_ANNOUNCE_PULL				= "Pull dans %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull maintenant!"
 
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Vitesse de kill"
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Vitesse de down"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
@@ -165,14 +165,14 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s!",
-	dispel = "%s on %%s - dispel maintenant",
-	interrupt = "%s - interrompre maintenant",
-	you = "%s sur toi",
+	dispel = "%s on %%s - Dispell Maintenant !",
+	interrupt = "%s - Interrompre Maintenant !",
+	you = "%s sur toi !",
 	target = "%s sur %%s",
-	close = "%s sur %%s près de vous",
-	move = "%s - bouge vite",
-	run = "%s - éloigne toi",
-	cast = "%s - stop cast",
+	close = "%s sur %%s près de vous !",
+	move = "%s - Bouge Vite !",
+	run = "%s - Eloigne Toi!",
+	cast = "%s - Stop Cast!",
 	stack = "%s (%%d)"
 }
 
@@ -186,17 +186,17 @@ DBM_CORE_MOVE_SPECIAL_WARNING_BAR	= "Alerte spéciale déplaçable"
 DBM_CORE_MOVE_SPECIAL_WARNING_TEXT	= "Alerte spéciale"
 
 
-DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Une %d vérification de distance n'est pas supporté dans cette zone.\nLes distances autorisés est 10, 11, 15 et 28 yard."
+DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= "Une %d vérification de distance n'est pas supportée dans cette zone.\nLes distances autorisées est 10, 11, 15 et 28 yard."
 
 DBM_ARROW_MOVABLE					= "Bouger la Flèche"
 
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-flèche usage:",
-	"/dbm flèche <x> <y> crée une flèche qui pointe vers une locataion spécifiques (0 < x/y < 100)",
+	"/dbm flèche <x> <y> crée une flèche qui pointe vers une locataion spécifique (0 < x/y < 100)",
 	"/dbm flèche <player> crée une flèche qui pointe vers un joueur précis dans votre groupe ou raid",
 	"/dbm flèche cache la flèche",
 	"/dbm flèche fait déplacer",
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "Record à battre"
-DBM_SPEED_KILL_TIMER_OPTION	= "Affiche le temps Record de la mort du Boss à battre"
+DBM_SPEED_KILL_TIMER_OPTION	= "Affiche le temps Record de Down du Boss à battre"

@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/26/2010 (by Sasmira) 
+-- Last update: 12/27/2010 (by Sasmira) 
 
 
 ---------------------------
@@ -26,8 +26,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Pousser un cri sur $spell:86622",
-	RangeFrame		= "Afficher la fenêtre de range (10)"
+	YellOnEngulfing			= "Pousse un cri sur $spell:86622",
+	RangeFrame		= "Afficher la fenêtre de portée (10)"
 })
 
 L:SetMiscLocalization{
@@ -67,7 +67,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnGrounded	= "Obtenir le buff Liaison à la masse",
-	SpecWarnSearingWinds	= "Obtenie le buff Vents de la fournaise" -- Searing Winds en anglais, je n'ai pas trouv� la correspondance actuellement
+	SpecWarnSearingWinds	= "Obtenir le buff Vents tournoyants" -- Searing Winds en anglais, je n'ai pas trouv� la correspondance actuellement
 })
 
 L:SetTimerLocalization({
@@ -75,20 +75,21 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Quake			= "The ground beneath you rumbles ominously....",
+	Quake		= "The ground beneath you rumbles ominously....",
 	Thundershock	= "The surrounding air crackles with energy....",
-	Switch			= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
-	Phase3			= "An impressive display...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
+	Switch		= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
+	Phase3		= "An impressive display...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
-	Monstrosity		= "Monstruosité en élémentium"
+	Monstrosity		= "Monstruosité en élémentium",
+	Kill			= "Impossible...."
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded	= "Afficher une alerte spéciale lorsque vous manquez l'amélioration $spell:83581 \n(~10sec avant le lancement du sort)",
-	SpecWarnSearingWinds	= "Afficher une alerte spéciale lorsque vous manquez l'amélioration  $spell:83500 \n(~10sec avant le lancement du sort)",
+	SpecWarnGrounded	= "Alerte spéciale lorsque vous manquez l'amélioration $spell:83581 \n(~10sec avant le lancement du sort)",
+	SpecWarnSearingWinds	= "Alerte spéciale lorsque vous manquez l'amélioration  $spell:83500 \n(~10sec avant le lancement du sort)",
 	timerTransition		= "Afficher le temps pour: Phase de transition",
 	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
@@ -117,4 +118,25 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2"
+})
+
+----------------
+--  Sinestra  --
+----------------
+L = DBM:GetModLocalization("Sinestra")
+
+L:SetGeneralLocalization({
+	name =	"Sinestra"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
 })
