@@ -187,6 +187,10 @@ L:SetGeneralLocalization({
 	name = "대지전복자 프타"
 })
 
+L:SetMiscLocalization{
+	Kill		= "Ptah... is... no more..."
+}
+
 --------------
 -- Anraphet --
 --------------
