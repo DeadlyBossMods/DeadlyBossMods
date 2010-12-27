@@ -2,13 +2,15 @@
 
 local L
 
+-- Last update: 12/27/2010 (by Sasmira)
+
 ----------------------------
 --  General BG functions  --
 ----------------------------
 L = DBM:GetModLocalization("Battlegrounds")
 
 L:SetGeneralLocalization({
-	name = "Fonction générale des champs de bataille"
+	name = "Options: Champs de bataille"
 })
 
 L:SetTimerLocalization({
@@ -17,7 +19,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	ColorByClass	= "Met le nom en couleur en fonction de la classe dans le tableau des scores",
-	ShowInviteTimer	= "Montre le temps d'acceptation des champs de bataille",
+	ShowInviteTimer	= "Affiche le temps restant pour rejoindre le Champ de bataille",
 	AutoSpirit		= "Auto-rez à un Ange"
 })
 
@@ -36,19 +38,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart	= "La bataille commence dans",
-	TimerShadow	= "Cristal d'ombre"
+	TimerStart	= "Début de la bataille dans",
+	TimerShadow	= "Vue de l'ombre"
 })
 
 L:SetOptionLocalization({
-	TimerStart	= "Voir le timer du début",
-	TimerShadow = "Montre le timer pour le cristal d'ombre"
+	TimerStart	= "Voir: Temps de départ du BG",
+	TimerShadow = "Montre le timer de la Vue de l'ombre"
 })
 
 L:SetMiscLocalization({
-	Start60		= "Une minute avant de début de l'arène !",
-	Start30		= "Trente secondes avant de début de l'arène !",
-	Start15		= "Quinze secondes avant de début de l'arène !"
+	Start60		= "Une minute avant le départ de l'arène !",
+	Start30		= "Trente secondes avant le départ de l'arène !",
+	Start15		= "Quinze secondes avant le départ de l'arène !"
 })
 
 ---------------
@@ -61,20 +63,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart		= "La bataille commence dans", 
+	TimerStart		= "Début de la bataille dans", 
 	TimerTower		= "%s",
 	TimerGY			= "%s",
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La bataille pour la vallée d'Alterac commence dans 1 minute.",
-	BgStart30		= "La bataille pour la vallée d'Alterac commence dans 30 secondes."
+	BgStart60		= "Début de la bataille pour la vallée d'Alterac dans 1 minute.",
+	BgStart30		= "Début de la bataille pour la vallée d'Alterac dans 30 secondes."
 })
 
 L:SetOptionLocalization({
-	TimerStart		= "Voir le timer du commencement",
+	TimerStart		= "Voir: Temps de départ du BG",
 	TimerTower		= "Voir le timer des captures des tours",
-	TimerGY			= "Voir le timer des captures des cimetères",
+	TimerGY			= "Voir le timer des captures des cimetières",
 	AutoTurnIn		= "Fini automatiquement les quêtes dans la Vallée d'Alterac"
 })
 
@@ -88,8 +90,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "La bataille pour le bassin d'Arathi commence dans 1 minute.",
-	BgStart30				= "La bataille pour le bassin d'Arathi commence dans 30 secondes.",
+	BgStart60				= "Début de la bataille pour le bassin d'Arathi dans 1 minute.",
+	BgStart30				= "Début de la bataille pour le bassin d'Arathi dans 30 secondes.",
 	ScoreExpr 				= "(%d+)/1600",
 	Alliance 				= "Alliance",
 	Horde 					= "Horde",
@@ -99,12 +101,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 				= "La bataille commence dans", 
+	TimerStart 				= "Début de la bataille dans", 
 	TimerCap 				= "%s",
 })
 
 L:SetOptionLocalization({
-	TimerStart  			= "Montre le timer avant le début de la partie",
+	TimerStart  			= "Voir: Temps de départ du BG",
 	TimerWin 				= "Montre le timer de la victoire",
 	TimerCap 				= "Montre le timer de capture",
 	ShowAbEstimatedPoints	= "Montre l'estimation de point pour gagner / perdre",
@@ -121,8 +123,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60			= "La bataille commence dans 1 minute !",
-	BgStart30			= "La bataille commence dans 30 secondes !",
+	BgStart60			= "Début de la bataille dans 1 minute !",
+	BgStart30			= "Début de la bataille dans 30 secondes !",
 	ZoneName			= "L'Œil du cyclone",
 	ScoreExpr			= "(%d+)/1600",
 	Alliance 			= "Alliance",
@@ -136,12 +138,12 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 			= "La bataille commence dans", 
+	TimerStart 			= "Début de la bataille dans", 
 	TimerFlag 			= "Respawn du drapeau",
 })
 
 L:SetOptionLocalization({
-	TimerStart  		= "Montre le timer avant le début de la partie",
+	TimerStart  		= "Voir: Temps de départ du BG",
 	TimerWin 			= "Montre le timer de la victoire",
 	TimerFlag 			= "Montre le timer du respawn du drapeau",
 	ShowPointFrame 		= "Montre les porteurs des drapeaux et les points estimés",
@@ -157,13 +159,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 					= "La bataille pour le goulet des Chanteguerres commence dans 1 minute.",
-	BgStart30 					= "La bataille pour le goulet des Chanteguerres commence dans 30 secondes. Préparez-vous !",
+	BgStart60 					= "Début de la bataille pour le goulet des Chanteguerres dans 1 minute.",
+	BgStart30 					= "Début de la bataille pour le goulet des Chanteguerres dans 30 secondes. Préparez-vous !",
 	Alliance 					= "Alliance",
 	Horde 						= "Horde",	
-	InfoErrorText 				= "The flag carrier targeting function will be restored when you are out of combat.",
+	InfoErrorText 				= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",
 	ExprFlagPickUp 				= "Le (%w+) .lag a été pris par (.+) !",
-	ExprFlagCaptured 			= "(.+) a capturé le (%w+) drapeau!",
+	ExprFlagCaptured 			= "(.+) a capturé le drapeau (%w+) !",
 	ExprFlagReturn 				= "Le (%w+) .lag a été renvoyé à la base par (.+) !",
 	FlagAlliance 				= "Drapeau de l'alliance: ",
 	FlagHorde					= "Drapeau de la horde: ",
@@ -171,16 +173,16 @@ L:SetMiscLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerStart 					= "La bataille commence dans", 
+	TimerStart 					= "Début de la bataille dans", 
 	TimerFlag 					= "Respawn du drapeau",
 })
 
 L:SetOptionLocalization({
-	TimerStart  				= "Montre le timer avant le début de la partie",
+	TimerStart  				= "Voir: Temps de départ du BG",
 	TimerWin 					= "Montre le timer de la victoire",
 	TimerFlag 					= "Montre le timer du respawn du drapeau",
 	ShowFlagCarrier				= "Montre le porteur du drapeau",
-	ShowFlagCarrierErrorNote 	= "Shows flag carrier error message when in combat",
+	ShowFlagCarrierErrorNote 	= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat",
 })
 
 ------------------------
@@ -194,36 +196,73 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSiegeEngine		= "Siege Engine ready!",
-	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
+	WarnSiegeEngine		= "Engins de Siège prêt!",
+	WarnSiegeEngineSoon	= "Apparition des Engins de Siège dans ~10 sec"
 })
 
 L:SetTimerLocalization({
-	TimerStart			= "La bataille commence dans", 
+	TimerStart			= "Début de la bataille dans", 
 	TimerPOI			= "%s",
-	TimerSiegeEngine	= "Siege Engine ready"
+	TimerSiegeEngine	= "Engins de Siège prêt"
 })
 
 L:SetOptionLocalization({
-	TimerStart			= "Montre le timer avant le début de la partie", 
+	TimerStart			= "Voir: Temps de départ du BG", 
 	TimerPOI			= "Montre le timer pour les captures",
-	TimerSiegeEngine	= "Show a timer for Siege Engine building",
-	WarnSiegeEngine		= "Warn when the Siege Engine is ready",
-	WarnSiegeEngineSoon	= "Warn when the Siege Engine is almost ready"
+	TimerSiegeEngine	= "Montre le timer de la construction des Engins de Siège",
+	WarnSiegeEngine		= "Alerter lorsque l'Engin de Siège est prêt",
+	WarnSiegeEngineSoon	= "Alerter lorsque l'Engin de Siège est presque prêt"
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "La bataille commance dans 60 secondes.",
-	BgStart30				= "La bataille commance dans 30 secondes.",
-	BgStart15				= "La bataille commance dans 15 secondes.",
-	SiegeEngine				= "Siege Engine",
-	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
-	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
-	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
-	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
-	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
-	GoblinFinishedHorde		= "The siege engine is ready to roll!",
-	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
-	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
+	BgStart60				= "Début de la bataille dans 60 secondes.",
+	BgStart30				= "Début de la bataille dans 30 secondes.",
+	BgStart15				= "Début de la bataille dans 15 secondes.",
+	SiegeEngine				= "Engin de Siège",
+	GoblinStartAlliance	= "Regarder ces Bombes d'hydroglycérine ? Utilisez-les sur les portes alors que je répare l'engin de siège !",
+	GoblinStartHorde		= "Je travaillerai sur l'engin de siège, regarde juste mon dos. Utilse ces  Bombes d'hydroglycérine sur les portes si tu en as besoin !",
+	GoblinHalfwayAlliance	= "Je suis à mi-chemin! Gardez la Horde loin d'ici. Ils n'apprennent pas la lutte à l'ecole d'ingénieur !",
+	GoblinHalfwayHorde	= "J'ai déjà fait mi-chemin ! Gardez l'Alliance loin - Combattre n'est pas dans mon contrat!",
+	GoblinFinishedAlliance	= "Mon plus beau travail accompli jusqu'à présent! Cet engin de siège est prêt pour l'action !",
+	GoblinFinishedHorde	= "L'engin de siège est prêt à rouler !",
+	GoblinBrokenAlliance	= "C'est déjà cassé ?! Pas de soucis. Ce n'est rien que je ne puisse arranger.",
+	GoblinBrokenHorde	= "C'est encore cassé ?! j'arrangerais ça... ne vous attendez pas a ce que la garantie couvre cela"
 })
 
+
+------------------
+--  Twin Peaks  --
+------------------
+L = DBM:GetModLocalization("TwinPeaks")
+
+L:SetGeneralLocalization({
+	name = "Pics-Jumeaux"
+})
+
+L:SetMiscLocalization({
+	BgStart60 			= "Début de la bataille dans 60 secondes.",
+	BgStart30 			= "Début de la bataille dans 30 secondes. Préparez vous!",
+	ZoneName 			= "Pics-Jumeaux",
+	Alliance 			= "Alliance",
+	Horde 				= "Horde",	
+	InfoErrorText		= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",
+	ExprFlagPickUp		= "Le (%w+) .lag a été pris par (.+) !",
+	ExprFlagCaptured		= "(.+) a capturé le drapeau (%w+) !",
+	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
+	FlagAlliance			= "Drapeau Alliance: ",
+	FlagHorde			= "Drapeau Horde: ",
+	FlagBase			= "Base"
+})
+
+L:SetTimerLocalization({
+	TimerStart	= "Début de la bataille dans", 
+	TimerFlag	= "Respawn du drapeau"
+})
+
+L:SetOptionLocalization({
+	TimerStart  				= "Voir: Temps de départ du BG",
+	TimerFlag 					= "Montre le timer du respawn du drapeau",
+	ShowFlagCarrier				= "Montre le porteur du drapeau",
+	ShowFlagCarrierErrorNote 		= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat",
+
+})
