@@ -7,6 +7,7 @@ mod:SetZone()
 mod:SetUsedIcons(7, 8)
 
 mod:RegisterCombat("combat")
+mod:RegisterKill("yell", L.Kill)
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
@@ -274,8 +275,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerThunderShockCD:Cancel()
 		timerHardenSkinCD:Cancel()
 		timerEruptionCD:Cancel()
+		timerDisperse:Cancel()
 		timerTransition:Start()
-		timerLavaSeed:Start(30)
+		timerLavaSeedCD:Start(30)
 		timerGravityCrushCD:Start(43)
 	end
 end

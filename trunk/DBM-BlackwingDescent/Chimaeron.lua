@@ -15,28 +15,39 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnCausticSlime	= mod:NewSpellAnnounce(82935, 3)
-local warnBreak			= mod:NewAnnounce("WarnBreak", 3, 82881)
-local warnDoubleAttack	= mod:NewSpellAnnounce(88826, 4)
-local warnMassacre		= mod:NewSpellAnnounce(82848, 3)
-local warnFeud			= mod:NewSpellAnnounce(88872, 4)
-local warnPhase2Soon	= mod:NewAnnounce("WarnPhase2Soon", 3)
-local warnPhase2		= mod:NewPhaseAnnounce(2)
+local warnCausticSlime		= mod:NewTargetAnnounce(82935, 3, nil, false)--This will be very spammy but useful for debugging positioning issues (IE too many people clumped)
+local warnBreak				= mod:NewAnnounce("WarnBreak", 3, 82881, mod:IsTank() or mod:IsHealer())
+local warnDoubleAttack		= mod:NewSpellAnnounce(88826, 4, nil, mod:IsTank() or mod:IsHealer())
+local warnMassacre			= mod:NewSpellAnnounce(82848, 4)
+local warnFeud				= mod:NewSpellAnnounce(88872, 3)
+local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 3)
+local warnPhase2			= mod:NewPhaseAnnounce(2)
 
---local timerCausticSlime	= mod:NewNextTimer( ?? , 82935)
-local timerBreak		= mod:NewTargetTimer(60, 82881)
-local timerMassacre		= mod:NewCastTimer(4, 82848)
-local timerMassacreNext	= mod:NewNextTimer(30, 82848)
-local timerFeud			= mod:NewBuffActiveTimer(30, 88872)
-local timerFeudNext		= mod:NewNextTimer(90, 88872)
+local timerBreak			= mod:NewTargetTimer(60, 82881)
+local timerMassacre			= mod:NewCastTimer(4, 82848)
+local timerMassacreNext		= mod:NewNextTimer(30, 82848)
+local timerCausticSlime		= mod:NewNextTimer(15, 88915)--This is seemingly cast 15 seconds into feud, any other time it's simply cast repeatedly the whole fight.
+local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
+local timerFeudNext			= mod:NewNextTimer(90, 88872)
 
-local specWarnBreak		= mod:NewSpecialWarningStack(82881, nil, 3)
+local specWarnBreak			= mod:NewSpecialWarningStack(82881, nil, 3)
+local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer())
+local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
 
 local prewarnedPhase2 = false
+local slimeTargets = {}
+
+local function showSlimeWarning()
+	warnCausticSlime:Show(table.concat(slimeTargets, "<, >"))
+	table.wipe(slimeTargets)
+end
+
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
 	timerFeudNext:Start(-delay)
 	prewarnedPhase2 = false
+	lastSlime = 0
+	table.wipe(slimeTargets)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -48,9 +59,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(88826) then
 		warnDoubleAttack:Show()
-		-- timerDoubleAttack:Start()
-	elseif args:IsSpellID(82890) then
-		warnPhase2:Show()
+		specWarnDoubleAttack:Show()
+	elseif args:IsSpellID(82935, 88915, 88916, 88917) and GetTime() - lastSlime > 4 then--There is no cast for this, so we have to warn on damage :\
+		slimeTargets[#slimeTargets] = args.destName
+		self:Unschedule(showSlimeWarning)
+		self:Schedule(0.3, showSlimeWarning)
 	end
 end
 
@@ -59,19 +72,23 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(82848) then
 		warnMassacre:Show()
+		specWarnMassacre:Show()
 		timerMassacre:Start()
 		timerMassacreNext:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(82935, 88915, 88916, 88917) then
-		warnCausticSlime:Show()
-		--timerCausticSlime:Start()
-	elseif args:IsSpellID(88872) then
+	if args:IsSpellID(88872) then
 		warnFeud:Show()
 		timerFeud:Start()
 		timerFeudNext:Start()
+		timerCausticSlime:Start()
+	elseif args:IsSpellID(82934) then
+		warnPhase2:Show()
+		timerFeudNext:Cancel()
+		timerCausticSlime:Cancel()
+		timerMassacreNext:Cancel()
 	end
 end
 
