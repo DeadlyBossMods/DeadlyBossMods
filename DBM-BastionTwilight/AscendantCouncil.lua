@@ -83,6 +83,7 @@ local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631)
 --Terrastra
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
 --Arion
+local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
@@ -163,6 +164,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(83099) then
 		warnLightningRod:Show(args.destName)
 		timerLightningRod:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnLightningRod:Show()
+		end
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 8)
 		end
