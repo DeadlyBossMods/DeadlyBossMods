@@ -16,22 +16,29 @@ mod:RegisterEvents(
 )
 
 local warnShadowflameBreath		= mod:NewSpellAnnounce(94124, 3)	-- random timers ? :S
-local warnBlastNova			= mod:NewSpellAnnounce(80734, 3)
-local warnHailBones			= mod:NewSpellAnnounce(94104, 3, nil, false)	-- spams a lot (every ~2sec a new one spawns)
-local warnPhase2			= mod:NewPhaseAnnounce(2)
-local warnPhase3			= mod:NewPhaseAnnounce(3)
+local warnShadowflameBarrage	= mod:NewSpellAnnounce(78621, 3)
+local warnBlastNova				= mod:NewSpellAnnounce(80734, 3)
+local warnHailBones				= mod:NewSpellAnnounce(94104, 3, nil, false)	-- spams a lot (every ~2sec a new one spawns)
+local warnPhase2				= mod:NewPhaseAnnounce(2)
+local warnPhase3				= mod:NewPhaseAnnounce(3)
 
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
+local timerShadowflameBarrage	= mod:NewCDTimer(180, 78621)
+local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
 
 local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
+local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
 
 local deaths = 0
 local spamHailBones = 0
 local spamShadowblaze = 0
+local shadowblazeTimer = 30
+
 function mod:OnCombatStart(delay)
 	deaths = 0
 	spamHailBones = 0
 	spamShadowblaze = 0
+	shadowblazeTimer = 30
 end
 
 function mod:SPELL_CAST_START(args)
@@ -39,7 +46,11 @@ function mod:SPELL_CAST_START(args)
 		warnShadowflameBreath:Show()
 	elseif args:IsSpellID(80734) then
 		warnBlastNova:Show()
+		specWarnBlastsNova:Show()
 		timerBlastNova:Start()
+	elseif args:IsSpellID(78621, 94121, 94122, 94123) then
+		warnShadowflameBarrage:Show()
+--		timerShadowflameBarrage:Start()
 	end
 end
 
@@ -62,6 +73,8 @@ function mod:UNIT_DIED(args)
 		deaths = deaths + 1
 		if deaths == 3 then
 			warnPhase3:Show()
+			timerShadowflameBarrage:Cancel()
+			timerShadowBlazeCD:Start()
 		end
 	end
 end
@@ -69,5 +82,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 then
 		warnPhase2:Show()
+		timerShadowflameBarrage:Start()
+	elseif msg == L.ShadowblazeCast then
+	
 	end
 end

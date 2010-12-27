@@ -35,7 +35,7 @@ mod:AddBoolOption("TrackingIcon")
 
 local shieldsLeft = 10
 
-local groundphase = function()
+local function groundphase()
 	timerAirphase:Start()
 	timerSonicBreath:Start(25)
 	timerSearingFlame:Start()
