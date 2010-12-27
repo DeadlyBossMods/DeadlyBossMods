@@ -69,6 +69,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerTransition		= "Transición de fase"
 })
 
 L:SetMiscLocalization({
@@ -80,7 +81,8 @@ L:SetMiscLocalization({
 	Feludius		= "Feludius",
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
-	Monstrosity		= "Elementium Monstrosity"--translate
+	Monstrosity		= "Monstruosidad de Elementium",--translate ?
+	Kill			= "Impossible...."--translate
 })
 
 L:SetOptionLocalization({

@@ -188,6 +188,10 @@ L:SetGeneralLocalization({
 	name = "Terracundo Ptah"
 })
 
+L:SetMiscLocalization{
+	Kill		= "Ptah... is... no more..."--translate
+}
+
 --------------
 -- Anraphet --
 --------------
