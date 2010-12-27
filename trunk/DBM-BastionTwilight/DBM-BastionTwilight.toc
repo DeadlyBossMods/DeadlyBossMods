@@ -30,3 +30,4 @@ ValionaTheralion.lua
 HalfusWyrmbreaker.lua
 AscendantCouncil.lua
 Chogall.lua
+Sinestra.lua

@@ -23,6 +23,10 @@ local warnFeud				= mod:NewSpellAnnounce(88872, 3)
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 
+local specWarnBreak			= mod:NewSpecialWarningStack(82881, nil, 3)
+local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer())
+local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
+
 local timerBreak			= mod:NewTargetTimer(60, 82881)
 local timerMassacre			= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
@@ -30,9 +34,7 @@ local timerCausticSlime		= mod:NewNextTimer(15, 88915)--This is seemingly cast 1
 local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
 local timerFeudNext			= mod:NewNextTimer(90, 88872)
 
-local specWarnBreak			= mod:NewSpecialWarningStack(82881, nil, 3)
-local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer())
-local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
+local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
 
 local prewarnedPhase2 = false
 local slimeTargets = {}
@@ -52,6 +54,9 @@ function mod:OnCombatStart(delay)
 	table.wipe(slimeTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
+	end
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		berserkTimer:Start(-delay)
 	end
 end
 

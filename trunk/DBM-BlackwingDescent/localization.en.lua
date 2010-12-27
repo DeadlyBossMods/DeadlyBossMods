@@ -168,6 +168,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
+	ShadowblazeCast		= "Flesh turns to ash!",
 	ChromaticPrototype	= "Chromatic Prototype"
 })
 
