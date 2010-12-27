@@ -155,8 +155,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate -- Yell when Valiona is incoming
-	Valiona		= "Valiona"	-- translate
+	ValionaYell	= "龍啊，聽我命令! 抓住我!",	-- translate -- Yell when Valiona is incoming
+	Valiona		= "瓦莉歐娜"	-- translate
 }
 
 ------------
@@ -187,6 +187,10 @@ L = DBM:GetModLocalization("EarthragerPtah")
 L:SetGeneralLocalization({
 	name = "地怒者普塔"
 })
+
+L:SetMiscLocalization{
+	Kill		= "普塔...不再...存在..."
+}
 
 --------------
 -- Anraphet --
@@ -254,7 +258,7 @@ L:SetGeneralLocalization({
 
 ------------------------------------
 -- Siamat, Lord of the South Wind --
--------------------
+------------------------------------
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
@@ -271,7 +275,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "Show health of adds in the Boss Health Frame"	-- translate
+	BossHealthAdds	= "在首領血量框架顯示小怪血量"	-- translate
 }
 
 L:SetMiscLocalization{
@@ -289,7 +293,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Show Range Frame (5 yards)"		-- translate
+	RangeFrame	= "顯示距離框 (5碼)"		-- translate
 }
 
 ----------
@@ -298,7 +302,7 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Augh")
 
 L:SetGeneralLocalization({
-	name = "Augh"		-- translate
+	name = "奧各"		-- translate
 })
 
 -----------------------
@@ -338,6 +342,16 @@ L = DBM:GetModLocalization("Walden")
 L:SetGeneralLocalization({
 	name = "瓦爾登領主"
 })
+
+L:SetWarningLocalization{
+	specWarnCoagulant	= "綠色混合 - 不斷移動!",	-- Green light
+	specWarnRedMix		= "紅色混合 - 不要移動!"		-- Red light
+}
+
+L:SetOptionLocalization{
+	RedLightGreenLight	= "為紅/綠色移動方式顯示特別警告"
+}
+
 
 ------------------
 -- Lord Godfrey --
