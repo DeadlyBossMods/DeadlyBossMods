@@ -1,4 +1,9 @@
 if GetLocale() ~= "frFR" then return end
+-- Last update: 12/27/2010 (by Sasmira)
+
+
+DBM_CORE_NEED_SUPPORT				= "Etes vous bon en programmation ou langue ? Si c'est le cas, l'équipe de DBM a besoin de votre aide pour que DBM reste le meilleur Boss mod de WoW. Rejoigner notre équipe en visitant notre site (www.deadlybossmods.com) ou en nous envoyant un message à tandanu@deadlybossmods.com ou nitram@deadlybossmods.com."
+DBM_HOW_TO_USE_MOD					= "Bienvenu sur DBM. Pour accéder aux options taper /dbm dans votre chat afin de commencer la configuration. Charger les zones spécifiques manuellement afin de configurer les Boss comme vous le souhaitez. DBM essai de le faire pour vous en scannant vos spec au premier lancement, mais certains pouvoirs ont besoin d'options supplémentaires pour être activés."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Erreur durant le chargement du boss mod pour %s: %s"
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss mod pour '%s' chargé!"
@@ -41,7 +46,6 @@ DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: DBM non installé"
 DBM_CORE_VERSIONCHECK_FOOTER		= "a trouvé %d joueurs avec Deadly Boss Mods"
 DBM_CORE_YOUR_VERSION_OUTDATED      = "Votre version de Deadly Boss Mods est périmé! Merci de visiter www.deadlybossmods.com pour avoir la dernière version."
-DBM_CORE_DISABLED_ICON_FUNCTION		= "Votre version ne peut pas mettre les icones, car votre version est périmé. Merci de la mettre a jour dès que possible et réactiver la fonction icone."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "Votre version de Deadly Boss Mods est périmée.\n Version %s (r%d) disponible ici:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Faites Ctrl-C pour copier le lien votre presse-papier."
@@ -71,14 +75,17 @@ DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_LOCK			= "Verrouiller la fenêtre"
 
 DBM_LFG_INVITE						= "LFG Invite"
+DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
 DBM_CORE_SLASHCMD_HELP				= {
-	"Commandes slash disponible:",
+	"Commandes slash disponibles:",
 	"/dbm version: Vérifie la version du raid (alias: ver)",
+	"/dbm version2: Verifie la version du raid et chuchotte aux membres qui ne sont pas à jour(alias: ver2).",
 	"/dbm unlock: Affiche un Timer Status déplacable (alias: move)",
 	"/dbm timer <x> <text>: Commence un <x> second Timer Pizza avec le nom <text>",
 	"/dbm broadcast timer <x> <text>: Diffuse un Timer Pizza de <x> secondes avec le nom <text> au raid (Nécessite d'être promu ou leader)",
 	"/dbm break <min>: Démarre un timer de pause pour <min> minutes. Envoie à tous les membres du raid avec DBM ce timer de pause (Nécessite d'être promu ou leader).",
+	"/dbm pull <sec>: Lance décompte pour Pull de <sec> secondes. Donne a tous les membres du raid possédant DBM ce décompte (nécessite d'être promu ou leader).",
 	"/dbm help: Affiche l'aide",
 }
 
@@ -94,14 +101,14 @@ DBM_CORE_UNKNOWN					= "Inconnu"
 DBM_CORE_BREAK_START				= "La pause démarre maintenant -- vous avez %s minute(s)!"
 DBM_CORE_BREAK_MIN					= "La pause finit dans %s minutes!"
 DBM_CORE_BREAK_SEC					= "La pause finit dans %s secondes!"
-DBM_CORE_TIMER_BREAK				= "Break time!"-----
-DBM_CORE_ANNOUNCE_BREAK_OVER		= "Break time is over"-----
+DBM_CORE_TIMER_BREAK				= "Pause!"-----
+DBM_CORE_ANNOUNCE_BREAK_OVER		= "La pause est terminée"-----
 
 DBM_CORE_TIMER_PULL					= "Pull dans"
 DBM_CORE_ANNOUNCE_PULL				= "Pull dans %d sec"
 DBM_CORE_ANNOUNCE_PULL_NOW			= "Pull maintenant!"
 
-DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill"
+DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Vitesse de kill"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
@@ -111,17 +118,15 @@ DBM_CORE_AUTO_TIMER_TEXTS = {
 	cd = "CD de: %s",
 	next = "Prochain(e) %s",
 	achievement = "%s",
-	combatstart = "Le combat commence",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target 		= "Afficher le temps du debuff pour: |cff71d5ff|Hspell:%d|h%s|h|r",
+	target 	= "Afficher le temps du debuff pour: |cff71d5ff|Hspell:%d|h%s|h|r",
 	cast 		= "Afficher la barre d'incantation pour: |cff71d5ff|Hspell:%d|h%s|h|r",
-	active 		= "Afficher le timer pour la fin de: |cff71d5ff|Hspell:%d|h%s|h|r",
-	cd 			= "Afficher le cooldown pour: |cff71d5ff|Hspell:%d|h%s|h|r",
+	active 	= "Afficher le timer pour la fin de: |cff71d5ff|Hspell:%d|h%s|h|r",
+	cd 		= "Afficher le cooldown pour: |cff71d5ff|Hspell:%d|h%s|h|r",
 	next 		= "Afficher le timer pour le prochain: |cff71d5ff|Hspell:%d|h%s|h|r",
 	achievement = "Montre le timer pour %s",
-	combatstart = "Montre le timer pour le début du combat",
 }
 
 -- Auto-generated Warning Localizations
@@ -192,3 +197,6 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm flèche cache la flèche",
 	"/dbm flèche fait déplacer",
 }
+
+DBM_SPEED_KILL_TIMER_TEXT	= "Record à battre"
+DBM_SPEED_KILL_TIMER_OPTION	= "Affiche le temps Record de la mort du Boss à battre"
