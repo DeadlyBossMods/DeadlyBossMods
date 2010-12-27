@@ -79,7 +79,8 @@ L:SetMiscLocalization({
 	Feludius		= "펠루디우스",
 	Arion			= "아리온",
 	Terrastra		= "테라스트라",
-	Monstrosity		= "Elementium Monstrosity"
+	Monstrosity		= "Elementium Monstrosity",
+	Kill			= "Impossible...."
 })
 
 L:SetOptionLocalization({
