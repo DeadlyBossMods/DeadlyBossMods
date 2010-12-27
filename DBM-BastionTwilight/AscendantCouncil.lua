@@ -67,7 +67,7 @@ local timerThundershockCD	= mod:NewNextTimer(70, 83067)
 local timerThundershockCast	= mod:NewCastTimer(3, 83067)
 --Elementium Monstrosity
 local timerTransition		= mod:NewTimer(15, "timerTransition", 84918)
-local timerLavaSeed			= mod:NewCDTimer(23, 84913)
+local timerLavaSeedCD		= mod:NewCDTimer(23, 84913)
 local timerGravityCrush		= mod:NewTargetTimer(10, 84948)
 local timerGravityCrushCD	= mod:NewCDTimer(24, 84948)--24-28sec cd, decent varation
 
@@ -75,7 +75,7 @@ local timerGravityCrushCD	= mod:NewCDTimer(24, 84948)--24-28sec cd, decent varat
 local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665)
 local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
-local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(82746)
+local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509)
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660)
 local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631)
@@ -117,7 +117,7 @@ local updateBossFrame = function(phase)
 		DBM.BossHealth:AddBoss(43686, L.Ignacious)
 	elseif phase == 2 then
 		DBM.BossHealth:AddBoss(43688, L.Arion)
-		DBM.BossHealth:AddBosS(43689, L.Terrastra)
+		DBM.BossHealth:AddBoss(43689, L.Terrastra)
 	elseif phase == 3 then
 		DBM.BossHealth:AddBoss(43735, L.Monstrosity)
 	end
@@ -138,7 +138,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFrozen:Start(args.destName)
 		frozenTargets[#frozenTargets] = args.destName
 		self:Unschedule(showFrozenWarning)
-		self:Schedule(0.3, showFrozenWarning())
+		self:Schedule(0.3, showFrozenWarning)
 	elseif args:IsSpellID(82665) then
 		warnHeartIce:Show(args.destName)
 		timerHeartIce:Start(args.destName)
@@ -218,7 +218,7 @@ function mod:SPELL_CAST_START(args)
 			specWarnGlaciate:Show()
 			soundGlaciate:Play()
 		end
-	elseif args:IsSpellID(92509, 92509, 92510, 92511) then
+	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
 		if self:GetUnitCreatureId("target") == 43687 then--Only warn people on that boss to interrupt it, whole raid doesn't need to know.
 			specWarnHydroLance:Show()
 		end
