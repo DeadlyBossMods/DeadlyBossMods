@@ -223,3 +223,39 @@ L:SetMiscLocalization({
 	GoblinBrokenAlliance		= "這麼快就壞啦?!別擔心，再壞的情況我都可以修得好。",
 	GoblinBrokenHorde		= "又壞掉了嗎?!讓我來修理吧…但別指望產品的保固會幫你支付這一切。"
 })
+
+------------------
+--  Twin Peaks  --
+------------------
+L = DBM:GetModLocalization("TwinPeaks")
+
+L:SetGeneralLocalization({
+	name 				= "雙子峰"
+})
+
+L:SetMiscLocalization({
+	BgStart60 			= "戰鬥將在1分鐘內開始。",
+	BgStart30 			= "戰鬥將在30秒鐘內開始。做好準備!",
+	ZoneName 			= "雙子",
+	Alliance 			= "聯盟",
+	Horde 				= "部落",
+	InfoErrorText			= "當你離開戰鬥後，旗幟框架將會回復。",
+	ExprFlagPickUp			= "(.+)的旗幟被(.+)拔掉了!",
+	ExprFlagCaptured		= "(.+)佔據了(.+)的旗幟!",
+	ExprFlagReturn			= "(.+)的旗幟被(.+)還到了它的基地",
+	FlagAlliance			= "聯盟旗幟: ",
+	FlagHorde			= "部落旗幟: ",
+	FlagBase			= "基地"
+})
+
+L:SetTimerLocalization({
+	TimerStart 			= "戰鬥開始", 
+	TimerFlag 			= "旗幟重生"
+})
+
+L:SetOptionLocalization({
+	TimerStart			= "顯示開始計時器",
+	TimerFlag			= "顯示旗幟重生計時器",
+	ShowFlagCarrier			= "顯示旗幟攜帶者",
+	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。"
+})
