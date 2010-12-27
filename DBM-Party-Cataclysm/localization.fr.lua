@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/26/2010 (by Sasmira) 
+-- Last update: 12/27/2010 (by Sasmira) 
 
 
 -------------------------
@@ -13,7 +13,7 @@ local L
 L = DBM:GetModLocalization("Romogg")
 
 L:SetGeneralLocalization({
-	name = "Rom'ogg Bonecrusher"
+	name = "Rom'ogg Broie-les-Os"
 })
 
 -------------------------------
@@ -22,15 +22,15 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Corla")
 
 L:SetGeneralLocalization({
-	name = "Corla, Herald of Twilight"
+	name = "Corla, héraut du Crépuscule"
 })
 
 L:SetWarningLocalization({
-	WarnAdd		= "Add released"
+	WarnAdd		= "Add libérés"
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "Warn when an add looses $spell:75608 buff"
+	WarnAdd		= "Afficher lorsqu'un add perd l'amélioration $spell:75608"
 })
 
 -----------------------
@@ -39,15 +39,15 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("KarshSteelbender")
 
 L:SetGeneralLocalization({
-	name = "Karsh Steelbender"
+	name = "Karsh Plielacier"
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "Superheated Armor (%d)"
+	TimerSuperheated 	= "(%d) Armure en vif-argent surchauffé"
 })
 
 L:SetOptionLocalization({
-	TimerSuperheated	= "Show timer for $spell:75846 duration"
+	TimerSuperheated	= "Afficher le timer de la durée du sort $spell:75846"
 })
 
 ------------
@@ -56,7 +56,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Beauty")
 
 L:SetGeneralLocalization({
-	name = "Beauty"
+	name = "La Belle"
 })
 
 -----------------------------
@@ -65,11 +65,11 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "Ascendant Lord Obsidius"
+	name = "Seigneur ascendant Obsidius"
 })
 
 L:SetOptionLocalization({
-	SetIconOnBoss	= "Put an icon on the boss after $spell:76200 "
+	SetIconOnBoss	= "Poser un icône sur le Boss après le sort $spell:76200 "
 })
 
 ---------------------
@@ -89,7 +89,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Helix")
 
 L:SetGeneralLocalization({
-	name = "Helix Gearbreaker"
+	name = "Hélix Engrecasse"
 })
 
 ---------------------
@@ -98,7 +98,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("FoeReaper")
 
 L:SetGeneralLocalization({
-	name = "Foe Reaper 5000"
+	name = "Faucheur 5000"
 })
 
 ----------------------
@@ -107,7 +107,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ripsnarl")
 
 L:SetGeneralLocalization({
-	name = "Admiral Ripsnarl"
+	name = "Amiral Grondéventre"
 })
 
 ----------------------
@@ -116,7 +116,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
-	name = "\"Captain\" Cookie"
+	name = "\"Captaine\" Macaron"
 })
 
 ----------------------
@@ -136,7 +136,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "General Umbriss"
+	name = "Général Umbriss"
 })
 
 --------------------------
@@ -145,7 +145,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ForgemasterThrongus")
 
 L:SetGeneralLocalization({
-	name = "Forgemaster Throngus"
+	name = "Maître-forge Throngus"
 })
 
 -------------------------
@@ -154,11 +154,11 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("DrahgaShadowburner")
 
 L:SetGeneralLocalization({
-	name = "Drahga Shadowburner"
+	name = "Drahga Brûle-Ombre"
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- Yell when Valiona is incoming
+	ValionaYell	= "Dragon, vous faites ce que je commande! Attrape-moi!",	-- Yell when Valiona is incoming
 	Valiona		= "Valiona"
 }
 
@@ -179,7 +179,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TempleGuardianAnhuur")
 
 L:SetGeneralLocalization({
-	name = "Temple Guardian Anhuur"
+	name = "Gardien du temple Anhuur"
 })
 
 ---------------------
@@ -210,11 +210,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSplitSoon	= "Split soon"
+	WarnSplitSoon	= "Séparation imminente !"
 })
 
 L:SetOptionLocalization({
-	WarnSplitSoon	= "Show pre-warning for Split"
+	WarnSplitSoon	= "Afficher la pré-alerte pour la Séparation"
 })
 
 -------------
@@ -252,7 +252,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralHusam")
 
 L:SetGeneralLocalization({
-	name = "General Husam"
+	name = "Général Husam"
 })
 
 ------------------------------------
@@ -270,16 +270,16 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("HighProphetBarim")
 
 L:SetGeneralLocalization({
-	name = "High Prophet Barim"
+	name = "Grand prophète Barim"
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "Show health of adds in the Boss Health Frame"
+	BossHealthAdds	= "Afficher la vie des affs dans la fenêtre de vie du Boss"
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "Blaze of the Heavens",
-	HarbringerDarkness	= "Harbringer of Darkness"
+	BlazeHeavens		= "Brasier des cieux",
+	HarbringerDarkness	= "Hurlement des ténèbres"
 }
 
 --------------
@@ -288,11 +288,11 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Lockmaw")
 
 L:SetGeneralLocalization({
-	name = "Lockmaw"
+	name = "Claque-mâchoire"
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Show Range Frame (5 yards)"
+	RangeFrame	= "Afficher la fenêtre de portée (5 mêtres)"
 }
 
 ----------
@@ -321,7 +321,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Silverlaine")
 
 L:SetGeneralLocalization({
-	name = "Baron Silverlaine"
+	name = "Baron d'Argelaine"
 })
 
 --------------------------
@@ -330,7 +330,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Springvale")
 
 L:SetGeneralLocalization({
-	name = "Commander Springvale"
+	name = "Commandant Printeval"
 })
 
 -----------------
@@ -339,16 +339,16 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Walden")
 
 L:SetGeneralLocalization({
-	name = "Lord Walden"
+	name = "Seigneur Walden"
 })
 
 L:SetWarningLocalization{
-	specWarnCoagulant	= "Green Mix - Keep Moving!",	-- Green light
-	specWarnRedMix		= "Red Mix - Do Not Move!"		-- Red light
+	specWarnCoagulant	= "Lumière Verte - Bougez !",	-- Green light
+	specWarnRedMix		= "Lumière Rouge - ne bougez plus !"-- Red light
 }
 
 L:SetOptionLocalization{
-	RedLightGreenLight	= "Show special warnings for Red/Green movement queues"
+	RedLightGreenLight	= "Afficher les alertes spéciales pour les mouvements de queues Rouge/Vert"
 }
 
 ------------------
@@ -357,15 +357,15 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Godfrey")
 
 L:SetGeneralLocalization({
-	name = "Lord Godfrey"
+	name = "Seigneur Godfrey"
 })
 
 L:SetWarningLocalization{
-	WarnMortalWound	= "%s on >%s< (%d)"		-- Mortal Wound on >args.destName< (args.amount)
+	WarnMortalWound	= "%s sur >%s< (%d)"		-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
-	WarnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(93675, GetSpellInfo(93675) or "unknown")
+	WarnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(93675, GetSpellInfo(93675) or "inconnu")
 }
 
 ---------------------
@@ -376,20 +376,20 @@ L:SetOptionLocalization{
 L = DBM:GetModLocalization("Corborus")
 
 L:SetWarningLocalization({
-	WarnEmerge	= "Emerge",
-	WarnSubmerge	= "Submerge"
+	WarnEmerge	= "Surgit",
+	WarnSubmerge	= "S'enterre"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Emerge",
-	TimerSubmerge	= "Submerge"
+	TimerEmerge	= "Surgit",
+	TimerSubmerge	= "S'enterre"
 })
 
 L:SetOptionLocalization({
-	WarnEmerge	= "Show warning for emerge",
-	WarnSubmerge	= "Show warning for submerge",
-	TimerEmerge	= "Show timer for emerge",
-	TimerSubmerge	= "Show timer for submerge"
+	WarnEmerge	= "Afficher l'alerte lorsqu'il surgit",
+	WarnSubmerge	= "Afficher l'alerte lorsqu'il s'enterre",
+	TimerEmerge	= "Afficher le temps lorsqu'il surgit",
+	TimerSubmerge	= "Afficher le temps lorsqu'il s'enterre"
 })
 
 L:SetGeneralLocalization({
@@ -411,15 +411,15 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Slabhide")
 
 L:SetGeneralLocalization({
-	name = "Slabhide"
+	name = "Peau-de-pierre"
 })
 
 L:SetWarningLocalization({
-	specWarnCrystalStorm		= "Crystal Storm - Take cover"
+	specWarnCrystalStorm		= "Tempête de cristal - Cachez vous derrière les pierres !"
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalStorm		= "Show special warning for $spell:92265"
+	specWarnCrystalStorm		= "Afficher une alerte spéciale pour le sort $spell:92265"
 })
 
 -------------------------
@@ -428,7 +428,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("HighPriestessAzil")
 
 L:SetGeneralLocalization({
-	name = "High Priestess Azil"
+	name = "Grande prêtresse Azil"
 })
 
 ---------------------------
@@ -439,7 +439,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GrandVizierErtan")
 
 L:SetGeneralLocalization({
-	name = "Grand Vizier Ertan"
+	name = "Grand vizir Ertan"
 })
 
 --------------
@@ -472,7 +472,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("LadyNazjar")
 
 L:SetGeneralLocalization({
-	name = "Lady Naz'jar"
+	name = "Dame Naz'jar"
 })
 
 -----======-----------
@@ -481,7 +481,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("CommanderUlthok")
 
 L:SetGeneralLocalization({
-	name = "Commander Ulthok"
+	name = "Commandant Ulthok"
 })
 
 -------------------------
@@ -490,7 +490,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("ErunakStonespeaker")
 
 L:SetGeneralLocalization({
-	name = "Erunak Stonespeaker"
+	name = "Erunak Parlepierre"
 })
 
 ------------
