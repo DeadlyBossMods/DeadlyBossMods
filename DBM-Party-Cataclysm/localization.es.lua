@@ -293,7 +293,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	RangeFrame	= "Mostrar distáncia (5 yardas)"
+	RangeFrame	= "Mostrar distáncia (6 yardas)"
 }
 
 ----------

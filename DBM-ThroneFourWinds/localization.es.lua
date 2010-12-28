@@ -41,13 +41,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnFeedback	= "%s en >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFeedback 	= "Rebote (%d)"
 })
 
 L:SetOptionLocalization({
+	WarnFeedback	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "unknown"),
+	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
+	TimerFeedback	= "Mostrar tiempo para la duración de $spell:87904"
+})
+
+L:SetMiscLocalization({
+	summonSquall	"Storms! I summon you to my side!",--translate
+--	phase2			"Your futile persistance angers me!",--translate
+	phase3			"Enough! I will no longer be contained!"--translate
 })
