@@ -28,7 +28,7 @@ local timerEvolution		= mod:NewBuffActiveTimer(20, 75697)
 
 local specWarnShadowStrike	= mod:NewSpecialWarningInterrupt(82362)
 local specWarnDarkCommand	= mod:NewSpecialWarningInterrupt(93462)
-local specWarnEvolution		= mod:NewSpecialWarningStack(75697, true, 70)
+local specWarnEvolution		= mod:NewSpecialWarningStack(75697, true, 80)
 
 local spamEvolution = 0
 
@@ -43,8 +43,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerDarkCommand:Start(args.destName)
 	elseif args:IsSpellID(75697, 87378) and args:IsPlayer() then
 		timerEvolution:Start()
-		if (args.amount or 1) >= 70 and GetTime() - spamEvolution > 5 then
-			specWarnEvolution:Show()
+		if (args.amount or 1) >= 80 and GetTime() - spamEvolution > 5 then
+			specWarnEvolution:Show(args.amount)
 			spamEvolution = GetTime()
 		end
 	end
