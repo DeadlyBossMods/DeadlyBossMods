@@ -4,48 +4,73 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(43324)
 mod:SetZone()
+mod:SetUsedIcons(4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_HEALTH"
 )
 
-local warnWorship		= mod:NewTargetAnnounce(91317, 3)
-local warnAdherent		= mod:NewSpellAnnounce(81628, 4)
-local warnFesterBlood		= mod:NewSpellAnnounce(82299, 3)
-local warnCreations		= mod:NewSpellAnnounce(82414, 3)
-local warnPhase2		= mod:NewPhaseAnnounce(2)
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnWorship			= mod:NewTargetAnnounce(91317, 3)--Phase 1
+local warnFury				= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
+local warnAdherent			= mod:NewSpellAnnounce(81628, 4)--Phase 1
+local warnFesterBlood		= mod:NewSpellAnnounce(82299, 3)--Phase 1
 local warnShadowOrders		= mod:NewSpellAnnounce(81556, 3)
 local warnFlameOrders		= mod:NewSpellAnnounce(81171, 3)
+local warnPhase2			= mod:NewPhaseAnnounce(2)
+local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnCreations			= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
-local timerAdherent		= mod:NewCDTimer(90, 81628)
-local timerFesterBlood		= mod:NewCDTimer(90, 82299)
+local timerWorshipCD		= mod:NewCDTimer(21, 91317)--21-25 second variations
+local timerAdherent			= mod:NewCDTimer(92, 81628)
+local timerFesterBlood		= mod:NewCDTimer(40, 82299)--40 seconds after an adherent is summoned
+local timerFuryCD			= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
+local timerCreationsCD		= mod:NewNextTimer(30, 82414)
 
 local worshipTargets = {}
 local prewarned_Phase2 = false
+local worshipIcon = 8
+
+mod:AddBoolOption("SetIconOnWorship", true)
 
 local function showWorshipWarning()
 	warnWorship:Show(table.concat(worshipTargets, "<, >"))
 	table.wipe(worshipTargets)
+	worshipIcon = 8
 end
 
 function mod:OnCombatStart(delay)
-	timerAdherent:Start(70-delay)
-	timerFesterBlood:Start(110-delay)
+	timerWorshipCD:Start(10-delay)
+	timerFuryCD:Start(55-delay)
+	timerAdherent:Start(60-delay)
 	table.wipe(worshipTargets)
 	prewarned_Phase2 = false
+	worshipIcon = 8
 end	
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(91317, 93365, 93366, 93367) then
-		worshipTargets[#worshipTargets] = args.destName
+		worshipTargets[#worshipTargets + 1] = args.destName
+		timerWorshipCD:Start()
+		if self.Options.SetIconOnWorship then
+			self:SetIcon(args.destName, worshipIcon)
+			worshipIcon = worshipIcon - 1
+		end
 		self:Unschedule(showWorshipWarning)
 		self:Schedule(0.3, showWorshipWarning)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(91317, 93365, 93366, 93367) then
+		if self.Options.SetIconOnWorship then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -53,17 +78,24 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(81628) then
 		warnAdherent:Show()
 		timerAdherent:Start()
+		timerFesterBlood:Start()
 	elseif args:IsSpellID(82299) then
 		warnFesterBlood:Show()
-		timerFesterBlood:Start()
+	elseif args:IsSpellID(82524) then
+		warnFury:Show()
+		timerFuryCD:Start()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82414, 93160, 93161, 93162) then
 		warnCreations:Show()
+		timerCreationsCD:Start()
 	elseif args:IsSpellID(82630) then
 		warnPhase2:Show()
+		timerAdherent:Cancel()
+		timerWorshipCD:Cancel()
+		timerFuryCD:Cancel()
 	elseif args:IsSpellID(81556) then--87575?
 		warnShadowOrders:Show()
 	elseif args:IsSpellID(81171) then--87579?
