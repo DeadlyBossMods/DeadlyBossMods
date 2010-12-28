@@ -9,7 +9,7 @@ DBM_CORE_LOAD_MOD_ERROR			= "Erreur durant le chargement du boss mod pour %s: %s
 DBM_CORE_LOAD_MOD_SUCCESS			= "Boss mod pour '%s' est chargé!"
 DBM_CORE_LOAD_GUI_ERROR				= "Ne peut charger le GUI: %s"
 
-DBM_CORE_COMBAT_STARTED			= "%s est engagé. Bonne chance, bon jeu et amusez-vous bien ! :)" -- ; ( point virgule se trouvant ici a tester sans)
+DBM_CORE_COMBAT_STARTED			= "%s est engagé. Bonne chance, bon jeu et amusez-vous bien ! :)";
 DBM_CORE_BOSS_DOWN				= "%s est mort après %s!"
 DBM_CORE_BOSS_DOWN_LONG			= "%s est mort après %s! Votre dernier down a durée %s - Le plus rapide étant de %s."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s est mort après %s! C'est un nouveau record! (l'ancien record étant de %s)"
@@ -39,7 +39,7 @@ DBM_CORE_AUTO_RESPONDED				= "Réponse automatique."
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d personnes en vie"
 DBM_CORE_AUTO_RESPOND_WHISPER		= "%s est occupé(e) à combattre contre %s (%s, %d/%d personnes en vie)"
 DBM_CORE_WHISPER_COMBAT_END_KILL	= "%s a vaincu %s !"
-DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s a wip sur %s"
+DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s a wipe sur %s"
 
 DBM_CORE_VERSIONCHECK_HEADER		= "Deadly Boss Mods - Versions"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"

@@ -4,18 +4,18 @@ if type(DBM_BMS_Translations) ~= "table" then DBM_BMS_Translations = {} end
 
 local L = DBM_BMS_Translations
 
--- BossMod studio, Last update: 12/27/2010 (by Sasmira)
+-- BossMod studio, Last update: 12/28/2010 (by Sasmira)
 
 L.TabCategory_BossModStudio = "Boss Mod Studio"
 L.TabCategory_Triggers = "Déclencheurs et Evénements"
-L.AreaHead_CreateBossMod = "Informations principales de se nouveau BossMod"
+L.AreaHead_CreateBossMod = "Informations principales de ce nouveau BossMod"
 L.BossName = "Nom du BossMod - Exemple 'Hogger'"
-L.BossID = "ID de la créature"
+L.BossID = "ID créature"
 L.BossLookup = "Prendre ID de la Cible"
 
-L.AreaHead_Pull = "Pull / Combat Detection"
+L.AreaHead_Pull = "Pull / Combat Détection"
 L.CombatFromYell = "Combat commençant avec un Cri"
-L.CombatAutoDetect = "Detection Automatique du Combat"
+L.CombatAutoDetect = "Détection Automatique du Combat"
 L.BossPullYell = "Cri du Boss au pull"
 L.BossEnrages = "Boss en frénésie"
 L.BossEnrageBar = "Afficher Barre Frénésie"
@@ -43,11 +43,11 @@ L.EventHpBased = "Déclencher sur X pourcentages de Vie"
 L.EventSpellID = "ID du sort"
 L.EventAnnounce = "Annonce"
 L.EventAnnounceText = "Message à annoncer"
-L.EventSpecialWarn = "Afficher une Alerte Spéciale"
+L.EventSpecialWarn = "Voir: Alerte Spéciale"
 L.EventSpecialWarn_OnlyMe = "Seulement si je suis affecté"
 L.EventStartBar = "Commencer un timer"
 L.EventWarnEnd = "Afficher alerte avant la fin du timer"
 L.EventWarnMsg = "Message d'Alerte"
-L.EventSetIcon = "Définir un Icone sur la Cible (sur le cri %t du texte)"
+L.EventSetIcon = "Définir un icône sur la Cible (sur le cri %t du texte)"
 
 
