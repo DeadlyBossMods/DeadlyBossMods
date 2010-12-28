@@ -117,7 +117,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2"
+	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
