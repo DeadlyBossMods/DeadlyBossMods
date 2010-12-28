@@ -89,7 +89,7 @@ end
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
-	elseif args:IsSpellID(89668) then
+	if args:IsSpellID(89668) then
 		timerLightningRod:Cancel(args.destName)
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 0)
@@ -101,7 +101,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.summonSquall or msg:find(L.summonSquall) then--not sure this is the yell used for it so disabled for now.
 		--warnWindBurst:Show()
 		--timerSquallLineCD:Start()
-	else msg == L.phase3 or msg:find(L.phase3) then
+	elseif msg == L.phase3 or msg:find(L.phase3) then
 		warnPhase3:Show()
 		timerWindBurstCD:Start(25)
 		timerLightningRodCD:Start(20)
