@@ -188,7 +188,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("EarthragerPtah")
 
 L:SetGeneralLocalization({
-	name = "Earthrager Ptah"
+	name = "Enrageterre Ptah"
 })
 
 --------------

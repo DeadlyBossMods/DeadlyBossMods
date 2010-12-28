@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/28/2010 (by Sasmira) 
+-- Last update: 12/29/2010 (by Sasmira) 
 
 ------------------------
 --  Conclave of Wind  --
@@ -57,7 +57,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	summonSquall	"Tempêtes! Je vous appelle à mes côtés!",
---	phase2			"Your futile persistance angers me!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
-	phase3		"Assez! Je ne veux plus être contenu!"
+	summonSquall	=	"Tempêtes! Je vous appelle à mes côtés!",
+--	phase2		=		"Your futile persistance angers me!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
+	phase3		=	"Assez! Je ne veux plus être contenu!"
 })
