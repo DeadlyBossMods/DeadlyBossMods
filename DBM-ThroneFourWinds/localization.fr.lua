@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/26/2010 (by Sasmira) 
+-- Last update: 12/28/2010 (by Sasmira) 
 
 ------------------------
 --  Conclave of Wind  --
@@ -10,27 +10,27 @@ local L
 L = DBM:GetModLocalization("Conclave")
 
 L:SetGeneralLocalization({
-	name = "Conclave of Wind"
+	name = "Conclave du Vent"
 })
 
 L:SetWarningLocalization({
-	warnSpecial			= "Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial		= "Special Abilities Active!"
+	warnSpecial			= "Ouragan/Zéphyr/Tempête de grésil Actifs",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
+	specWarnSpecial		= "Abiletés Speciales Activées!"
 })
 
 L:SetTimerLocalization({
-	timerSpecial			= "Special Abilities CD",
-	timerSpecialActive		= "Special Abilities Active"
+	timerSpecial			= "CD Abiletés Speciales",
+	timerSpecialActive		= "Abiletés Speciales Actives"
 })
 
 L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	warnSpecial			= "Show warning when Hurricane/Zephyr/Sleet Storm are cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial		= "Show special warning when special abilities are cast",
-	timerSpecial		= "Show timer for special abilities cooldown",
-	timerSpecialActive	= "Show timer for special abilities duration"
+	warnSpecial		= "Alerter lorsque Ouragan/Zéphyr/Tempête de grésil  sont cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
+	specWarnSpecial		= "Alerter lorsque les abiletés spéciales sont cast",
+	timerSpecial		= "Afficher le timer des cooldown des abiletés spéciales",
+	timerSpecialActive	= "Afficher le timer de la durée des abiletés spéciales"
 })
 
 ---------------
@@ -43,13 +43,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnFeedback	= "%s sur >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFeedback 	= "Réaction (%d)"
 })
 
 L:SetOptionLocalization({
+	WarnFeedback	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "inconnu"),
+	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
+	TimerFeedback	= "Afficher le timer pour la durée du sort $spell:87904"
+})
+
+L:SetMiscLocalization({
+	summonSquall	"Tempêtes! Je vous appelle à mes côtés!",
+--	phase2			"Your futile persistance angers me!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
+	phase3		"Assez! Je ne veux plus être contenu!"
 })
