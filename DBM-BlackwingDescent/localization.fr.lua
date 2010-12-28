@@ -68,7 +68,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnPhase		= " Phase %s",
-	WarnRemainingAdds	= "%d aberrations restants"
+	WarnRemainingAdds	= "%d aberrations restantes"
 })
 
 L:SetTimerLocalization({
@@ -107,7 +107,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnPhase2Soon	= "Phase 2 imminente",
-	WarnBreak	= "%s on >%s< (%d)"
+	WarnBreak	= "%s sur >%s< (%d)"
 })
 
 L:SetTimerLocalization({
