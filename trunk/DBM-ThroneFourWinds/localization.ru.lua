@@ -41,13 +41,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnFeedback	= "%s на >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFeedback 	= "Ответная реакция (%d)"
 })
 
 L:SetOptionLocalization({
+	WarnFeedback	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "unknown"),
+	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
+	TimerFeedback	= "Показать таймер для длительности $spell:87904"
+})
+
+L:SetMiscLocalization({
+	summonSquall    ="Буря! Приди мне на помощь!", -- or this: Ветра! Повинуйтесь моей воле!
+--	phase2          ="Ваши жалкие попытки сопротивления приводят меня в ярость!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
+	phase3          ="Довольно! Меня ничто не в силах сдерживать!"
 })

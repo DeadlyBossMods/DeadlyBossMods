@@ -87,8 +87,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60	= "Битва за Низину Арати начнется через минуту.",
-	BgStart30	= "Битва за Низину Арати начнется через 30 секунд.",
+	BgStart60	= "Битва начнется через 1 минуту.",
+	BgStart30	= "Битва начнется через 30 секунд.",
 	ScoreExpr	= "(%d+)/1600",
 	Alliance	= "Альянса",
 	Horde		= "Орды",
@@ -120,16 +120,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "Битва начнется через минуту!",
+	BgStart60		= "Битва начнется через 1 минуту!",
 	BgStart30		= "Битва начнется через 30 секунд!",
 	ZoneName		= "Око Бури",
 	ScoreExpr		= "(%d+)/1600",
-	Alliance 		= "Альянса",
-	Horde 			= "Орды",
+	Alliance 		= "Альянс",
+	Horde 			= "Орда",
 	WinBarText 		= "Победа %s",
 	FlagReset 		= "Флаг возвращен на базу.",
 	FlagTaken 		= "(.+) захватывает флаг!",
-	FlagCaptured	= "(.+) захватывает флаг (%w+)!",
+	FlagCaptured	= "(.+) захватил флаг!", --"Орда захватила флаг!"
 	FlagDropped		= "Флаг уронили!"
 
 })
@@ -156,15 +156,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "Битва за Ущелье Песни Войны начнется через 1 минуту.",
-	BgStart30 			= "Битва за Ущелье Песни Войны начнется через 30 секунд. Приготовиться!",
+	BgStart60 			= "Битва начнется через 1 минуту.",
+	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
 	Alliance 			= "Альянса",
 	Horde 				= "Орды",
 	InfoErrorText		= "Функция выбора флагоносца, будет восстановлена после выхода из режима боя.",
-	ExprFlagPickUp		= "(.+) подымает флаг (%w+)",
+	ExprFlagPickUp		= "(.+) несет флаг (%w+)!",
 	ExprFlagPickUp2		= "Флаг (%w+) у (.+)!",				-- only used for Russian language
 	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
-	ExprFlagReturn		= "(.+) возвращает флаг (%w+) на базу!",
+	ExprFlagReturn		= "(.+) возвращает на базу .лаг (%w+)!", --
 	FlagAlliance		= "Флаг Альянса: ",
 	FlagHorde			= "Флаг Орды: ",
 	FlagBase			= "База"
@@ -192,31 +192,31 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnSiegeEngine		= "Siege Engine ready!",
-	WarnSiegeEngineSoon	= "Siege Engine in ~10 sec"
+	WarnSiegeEngine		= "Осадная машина готова!",
+	WarnSiegeEngineSoon	= "Осадная машина через ~10 сек"
 })
 
 L:SetTimerLocalization({
 	TimerStart			= "Битва начнется через", 
 	TimerPOI			= "%s",
-	TimerSiegeEngine	= "Siege Engine ready"
+	TimerSiegeEngine	= "Осадная машина"
 })
 
 L:SetOptionLocalization({
 	TimerStart			= "Отсчет времени до начала битвы", 
 	TimerPOI			= "Отсчет времени до захвата",
-	TimerSiegeEngine	= "Show timer for Siege Engine construction",
-	WarnSiegeEngine		= "Show warning when Siege Engine is ready",
-	WarnSiegeEngineSoon	= "Show warning when Siege Engine is almost ready"
+	TimerSiegeEngine	= "Отсчет времени до создания Осадной машины",
+	WarnSiegeEngine		= "Показать сообщение когда создание Осадной машины завершено",
+	WarnSiegeEngineSoon	= "Показать сообщение когда создание Осадной машины почти завершено"
 })
 
 L:SetMiscLocalization({
 	BgStart60				= "Битва начнется через 60 секунд.",
 	BgStart30				= "Битва начнется через 30 секунд.",
 	BgStart15				= "Битва начнется через 15 секунд.",
-	SiegeEngine				= "Siege Engine",
+	SiegeEngine				= "Осадная машина",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
-	GoblinStartHorde		= "I'll work on the siege engine, just watch my back.  Use those seaforium bombs on the gates if you need them!",
+	GoblinStartHorde		= "Я буду работать над осадной машиной, я ты меня прикрывай. Вот, можешь пользоваться этими сефориевыми бомбами, если тебе надо взорвать ворота.",
 	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
 	GoblinHalfwayHorde		= "I'm about halfway done! Keep the Alliance away - fighting's not in my contract!",
 	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
@@ -225,3 +225,38 @@ L:SetMiscLocalization({
 	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"
 })
 
+------------------
+--  Twin Peaks  --
+------------------
+L = DBM:GetModLocalization("TwinPeaks")
+
+L:SetGeneralLocalization({
+	name = "Два Пика"
+})
+
+L:SetMiscLocalization({
+	BgStart60 			= "Битва начнется через 1 минуту.",
+	BgStart30 			= "Битва начнется через 30 секунд. Приготовиться!",
+	ZoneName 			= "Два Пика",
+	Alliance			= "Альянса",
+	Horde				= "Орды",
+	InfoErrorText		= "Функция выбора флагоносца, будет восстановлена после выхода из режима боя.",
+	ExprFlagPickUp		= "(.+) несет флаг (%w+)!", --"Флаг (%w+) у (.+)!"
+	ExprFlagCaptured	= "(.+) захватывает флаг (%w+)!",
+	ExprFlagReturn		= "(.+) возвращает на базу флаг (%w+)!",
+	FlagAlliance		= "Флаг Альянса: ",
+	FlagHorde			= "Флаг Орды: ",
+	FlagBase			= "База"
+})
+
+L:SetTimerLocalization({
+	TimerStart	= "Битва начнется через", 
+	TimerFlag	= "Восстановление флага"
+})
+
+L:SetOptionLocalization({
+	TimerStart					= "Отсчет времени до начала битвы",
+	TimerFlag					= "Отсчет времени до восстановления флага",
+	ShowFlagCarrier				= "Показать флагоносца",
+	ShowFlagCarrierErrorNote	= "Сообщения об ошибках в режиме боя"
+})
