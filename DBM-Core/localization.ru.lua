@@ -73,6 +73,7 @@ DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d м"
 DBM_CORE_RANGECHECK_LOCK			= "Закрепить полосу"
 
 DBM_LFG_INVITE						= "Приглашение в подземелье"
+DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Доступные (/) команды:",
@@ -164,7 +165,7 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	spell = "%s!",
 	dispel = "%s на |3-5(%%s) - рассейте заклинание",
-	interrupt = "%s - прерывание",
+	interrupt = "%s - прервите",
 	you = "%s на вас",
 	target = "%s на |3-5(%%s)",
 	close = "%s на |3-5(%%s) около вас",

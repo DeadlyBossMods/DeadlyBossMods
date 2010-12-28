@@ -28,6 +28,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
+	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing				= "На МНЕ избыточная магия!"
 }
 
@@ -67,25 +68,33 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerTransition		= "Смена фаз"
 })
 
 L:SetMiscLocalization({
-	Quake			= "The ground beneath you rumbles ominously....",
-	Thundershock	= "The surrounding air crackles with energy....",
-	Switch			= "We will handle them!",
-	Phase3			= "BEHOLD YOUR DOOM!",
+	Quake			= "Земля уходит у вас из-под ног....", -- Yell string: Земля поглатит вас!
+	Thundershock	= "Воздух потрескивает от скопившейся энергии....", -- Yell string: Ветер, явись на мой зов!
+	Switch			= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
+	Phase3			= "А теперь узрите истинное...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
 	Ignacious		= "Огнис",
 	Feludius		= "Акварион",
 	Arion			= "Аэрон",
 	Terrastra		= "Террастра",
-	Monstrosity		= "Элементиевое чудовище"
+	Monstrosity		= "Элементиевое чудовище",
+	Kill			= "Невозможно...."
 })
 
 L:SetOptionLocalization({
 	SpecWarnGrounded	= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
 	SpecWarnSearingWinds	= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
-	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660)
+	timerTransition		= "Показать таймер перехода в другую фазу",
+	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 ----------------
@@ -108,5 +117,27 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Показывать предупреждение о переходе на 2-ую фазу"
+	WarnPhase2Soon		= "Показывать предупреждение о переходе на 2-ую фазу",
+	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+})
+
+----------------
+--  Sinestra  --
+----------------
+L = DBM:GetModLocalization("Sinestra")
+
+L:SetGeneralLocalization({
+	name =	"Синестра"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
 })

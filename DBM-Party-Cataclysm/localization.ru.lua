@@ -40,7 +40,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "$spell:75846 (%d)"	-- should work, no need for translation :)
+	TimerSuperheated 	= "Перегретая броня (%d)"	-- not work with $spell:75846 :)
 })
 
 L:SetOptionLocalization({
@@ -187,6 +187,10 @@ L = DBM:GetModLocalization("EarthragerPtah")
 L:SetGeneralLocalization({
 	name = "Пта Ярость Земли"
 })
+
+L:SetMiscLocalization{
+	Kill		= "Пта... Больше... Нет..."
+}
 
 --------------
 -- Anraphet --
