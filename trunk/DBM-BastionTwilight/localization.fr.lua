@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/27/2010 (by Sasmira) 
+-- Last update: 12/29/2010 (by Sasmira) 
 
 
 ---------------------------
@@ -26,12 +26,12 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Pousse un cri sur $spell:86622",
+	YellOnEngulfing			= "Pousser un cri sur $spell:86622",
 	RangeFrame		= "Afficher la fenêtre de portée (10)"
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "Theralion, je vais engloutir le couloir. Couvre leur fuite!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",-- A verifier ...
 	YellEngulfing				= "Magie enveloppante sur moi!"
 }
 
@@ -67,18 +67,18 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnGrounded	= "Obtenir le buff Liaison à la masse",
-	SpecWarnSearingWinds	= "Obtenir le buff Vents tournoyants" -- Searing Winds en anglais, je n'ai pas trouv� la correspondance actuellement
+	SpecWarnSearingWinds	= "Obtenir le buff Vents tournoyants"
 })
 
 L:SetTimerLocalization({
-	timerTransition		= "Phase de Transition"
+	timerTransition		= "Changement de phase"
 })
 
 L:SetMiscLocalization({
-	Quake		= "The ground beneath you rumbles ominously....",
-	Thundershock	= "The surrounding air crackles with energy....",
-	Switch		= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
-	Phase3		= "An impressive display...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
+	Quake		= "Le sol sous vos pieds gronde avec menace...", -- A verifier ...
+	Thundershock	= "L'air qui vous entoure crépite d'énergie...", -- A verifier ...
+	Switch		= "Nous allons nous occuper d'eux !", -- A verifier ...
+	Phase3		= "CONTEMPLEZ VOTRE DESTIN !" -- A verifier ...
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
@@ -90,7 +90,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	SpecWarnGrounded	= "Alerte spéciale lorsque vous manquez l'amélioration $spell:83581 \n(~10sec avant le lancement du sort)",
 	SpecWarnSearingWinds	= "Alerte spéciale lorsque vous manquez l'amélioration  $spell:83500 \n(~10sec avant le lancement du sort)",
-	timerTransition		= "Afficher le temps pour: Phase de transition",
+	timerTransition		= "Afficher le temps pour: Changement de phase",
 	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),

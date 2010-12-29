@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/28/2010 (by Sasmira) 
+-- Last update: 12/29/2010 (by Sasmira) 
 
 
 --------------
@@ -68,28 +68,28 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnPhase		= " Phase %s",
-	WarnRemainingAdds	= "%d aberrations restantes"
+	WarnRemainingAdds	= "%d Aberrations restantes"
 })
 
 L:SetTimerLocalization({
-	TimerPhase		= "Phase Suivante"
+	TimerPhase		= "Prochaine Phase"
 })
 
 L:SetMiscLocalization({
-	YellRed		= "red|r vial into the cauldron!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
-	YellBlue		= "blue|r vial into the cauldron!",
-	YellGreen		= "green|r vial into the cauldron!",
-	YellDark		= "dark|r vial into the cauldron!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
+	YellRed		= "Flacon rouge|r dans le chaudron !",-- à vérifier
+	YellBlue		= "Flacon bleu|r dans le chaudron !",-- à vérifier
+	YellGreen		= "Flacon vert|r dans le chaudron !",-- à vérifier
+	YellDark		= "Flacon sombre|r dans le chaudron !",-- à vérifier
 	Red			= "Rouge",
-	Blue			= "Bleu",
-	Green		= "Vert",
+	Blue			= "Bleue",
+	Green		= "Verte",
 	Dark			= "Sombre"
 })
 
 L:SetOptionLocalization({
-	WarnPhase		= "Alerte de la phase arrivant",
+	WarnPhase		= "Afficher l'alerte d'une nouvelle phase",
 	WarnRemainingAdds	= "Alerte sur le nombre d'aberrations restantes",
-	TimerPhase		= "Affiche le timer de la Phase Suivante",
+	TimerPhase		= "Affiche le timer de la prochaine phase",
 	RangeFrame		= "Affiche la fenêtre de portée (6) durant la Phase Bleue",
 	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
@@ -131,27 +131,27 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAirphase		= "Phase d'Air",
-	WarnGroundphase	= "Phase de Terre",
+	WarnAirphase		= "Phase en l'air",
+	WarnGroundphase	= "Phase au sol",
 	WarnShieldsLeft		= "Ancien bouclier nain - %d restant"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "Phase d'Air",
-	TimerGroundphase	= "Phase de Terre"
+	TimerAirphase		= "Phase en l'air",
+	TimerGroundphase	= "Phase au sol"
 })
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Ancien bouclier nain",
-	Airphase			= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
+	Airphase			= "Oui, fuyez ! Chaque foulée accélère votre cœur. Les battements résonnent comme le tonnerre... Assourdissant. Vous ne vous échapperez pas !" -- à vérifier
 })
 
 L:SetOptionLocalization({
 	WarnAirphase		= "Affiche l'alerte lorsque Atramédès décolle",
 	WarnGroundphase	= "Affiche l'alerte lorsque Atramédès est à terre",
 	WarnShieldsLeft		= "Affiche l'alerte lorsqu'un Ancien bouclier nain est utilisé",
-	TimerAirphase		= "Affiche le timer pour la prochaine Phase d'Air",
-	TimerGroundphase	= "Affiche le timer pour la prochaine Phase de Terre",
+	TimerAirphase		= "Affiche le timer pour la prochaine Phase en l'air",
+	TimerGroundphase	= "Affiche le timer pour la prochaine Phase au sol",
 	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
@@ -171,7 +171,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
+	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
+	ShadowblazeCast		= "Que la chair se transforme en cendres !", -- à vérifier
 	ChromaticPrototype	= "Prototype chromatique"
 })
 
