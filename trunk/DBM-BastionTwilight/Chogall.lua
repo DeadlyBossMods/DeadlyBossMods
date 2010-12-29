@@ -26,7 +26,7 @@ local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnCreations			= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
-local timerWorshipCD		= mod:NewCDTimer(21, 91317)--21-25 second variations
+local timerWorshipCD		= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent			= mod:NewCDTimer(92, 81628)
 local timerFesterBlood		= mod:NewCDTimer(40, 82299)--40 seconds after an adherent is summoned
 local timerFuryCD			= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
@@ -35,6 +35,7 @@ local timerCreationsCD		= mod:NewNextTimer(30, 82414)
 local worshipTargets = {}
 local prewarned_Phase2 = false
 local worshipIcon = 8
+local worshipCooldown = 21
 
 mod:AddBoolOption("SetIconOnWorship", true)
 
@@ -42,6 +43,7 @@ local function showWorshipWarning()
 	warnWorship:Show(table.concat(worshipTargets, "<, >"))
 	table.wipe(worshipTargets)
 	worshipIcon = 8
+	timerWorshipCD:Start(worshipCooldown)
 end
 
 function mod:OnCombatStart(delay)
@@ -51,12 +53,12 @@ function mod:OnCombatStart(delay)
 	table.wipe(worshipTargets)
 	prewarned_Phase2 = false
 	worshipIcon = 8
+	worshipCooldown = 21
 end	
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(91317, 93365, 93366, 93367) then
 		worshipTargets[#worshipTargets + 1] = args.destName
-		timerWorshipCD:Start()
 		if self.Options.SetIconOnWorship then
 			self:SetIcon(args.destName, worshipIcon)
 			worshipIcon = worshipIcon - 1
@@ -79,6 +81,7 @@ function mod:SPELL_CAST_START(args)
 		warnAdherent:Show()
 		timerAdherent:Start()
 		timerFesterBlood:Start()
+		worshipCooldown = 36
 	elseif args:IsSpellID(82299) then
 		warnFesterBlood:Show()
 	elseif args:IsSpellID(82524) then
