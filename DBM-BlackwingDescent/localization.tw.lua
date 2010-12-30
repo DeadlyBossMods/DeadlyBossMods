@@ -87,7 +87,11 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase		= "為那個階段即將到來顯示警告",
 	WarnRemainingAdds	= "顯示剩餘多少畸變的警告",
-	TimerPhase		= "為下一階段顯示計時器"
+	TimerPhase		= "為下一階段顯示計時器",
+	RangeFrame		= "藍色階段時顯示距離框 (6碼)",
+	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
 -----------------
@@ -144,7 +148,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnAirphase		= "當亞特拉米德升空時顯示警告",
 	WarnGroundphase		= "當亞特拉米德降落時顯示警告",
-	WarnShieldsLeft		= "當Ancient Dwarven Shield使用後顯示警告",
+	WarnShieldsLeft		= "當古代矮人盾牌使用後顯示警告",
 	TimerAirphase		= "為下一次 空中階段顯示計時器",
 	TimerGroundphase	= "為下一次 地上階段顯示計時器",
 	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
