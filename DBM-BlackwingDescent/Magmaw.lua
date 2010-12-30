@@ -20,7 +20,7 @@ local warnInferno		= mod:NewSpellAnnounce(92190, 4)
 local warnMangle		= mod:NewTargetAnnounce(89773, 3)
 
 local timerLavaSpew		= mod:NewCDTimer(30, 77689)
-local timerPillarFlame	= mod:NewCDTimer(30, 78006)
+local timerPillarFlame	= mod:NewCDTimer(40, 78006)
 local timerMangle		= mod:NewTargetTimer(30, 89773)
 local timerMangleCD		= mod:NewCDTimer(95, 89773)--complete guesswork on timer since two weeks in a row i had useless logger.
 local timerInferno		= mod:NewCDTimer(35, 92190)
@@ -31,7 +31,7 @@ local lastLavaSpew = 0
 
 function mod:OnCombatStart(delay)
 	lastLavaSpew = 0
-	timerPillarFlame:Start(-delay)
+	timerPillarFlame:Start(30-delay)
 	timerMangleCD:Start(90-delay)
 	berserkTimer:Start(-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
