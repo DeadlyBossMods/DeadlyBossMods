@@ -39,14 +39,23 @@ L:SetGeneralLocalization({
 	name = "알아키르"
 })
 
+
 L:SetWarningLocalization({
+	WarnFeedback		= "%s : >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFeedback 		= "Feedback (%d)"
 })
 
 L:SetOptionLocalization({
+	WarnFeedback		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "알 수 없음"),
+	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
+	TimerFeedback		= "$spell:87904 유지 타이머 보기"
+})
+
+L:SetMiscLocalization({
+	summonSquall		= "Storms! I summon you to my side!",
+--	phase2				= "Your futile persistance angers me!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
+	phase3				= "Enough! I will no longer be contained!"
 })
