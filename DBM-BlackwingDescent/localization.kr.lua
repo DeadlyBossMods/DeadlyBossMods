@@ -41,7 +41,7 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	Magmatron	= "용암골렘",
 	Electron	= "전기골렘",
-	Toxitron	= "Toxitron",
+	Toxitron	= "맹독골렘",
 	Arcanotron	= "비전골렘",
 	SayBomb		= "나에게 화학 폭탄!! 튀어!!"
 })
