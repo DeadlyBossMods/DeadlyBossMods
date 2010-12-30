@@ -37,17 +37,19 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("AlAkir")
 
 L:SetGeneralLocalization({
-	name = "奧拉基爾"
+	name 				= "奧拉基爾"
 })
 
 L:SetWarningLocalization({
+	WarnFeedback			= "%s: >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerFeedback 			= "回饋 (%d)"
 })
 
 L:SetOptionLocalization({
+	WarnFeedback			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "unknown"),
+	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
+	TimerFeedback			= "為$spell:87904的持續時間顯示計時器"
 })
