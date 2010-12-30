@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(43686, 43687, 43688, 43689, 43735)
 mod:SetZone()
-mod:SetUsedIcons(6, 7, 8)
+mod:SetUsedIcons(4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Kill)
@@ -64,7 +64,7 @@ local timerEruptionCD		= mod:NewNextTimer(15, 83675, nil, mod:IsMelee())
 local timerQuakeCD			= mod:NewNextTimer(70, 83565)
 local timerQuakeCast		= mod:NewCastTimer(3, 83565)
 --Arion
-local timerLightningRod		= mod:NewTargetTimer(15, 83099)
+local timerLightningRod		= mod:NewBuffActiveTimer(15, 83099)
 local timerDisperse			= mod:NewCDTimer(30, 83087)
 local timerLightningBlast	= mod:NewCastTimer(4, 83070)
 local timerThundershockCD	= mod:NewNextTimer(70, 83067)
@@ -72,7 +72,7 @@ local timerThundershockCast	= mod:NewCastTimer(3, 83067)
 --Elementium Monstrosity
 local timerTransition		= mod:NewTimer(15, "timerTransition", 84918)
 local timerLavaSeedCD		= mod:NewCDTimer(23, 84913)
-local timerGravityCrush		= mod:NewTargetTimer(10, 84948)
+local timerGravityCrush		= mod:NewBuffActiveTimer(10, 84948)
 local timerGravityCrushCD	= mod:NewCDTimer(24, 84948)--24-28sec cd, decent varation
 
 --Feludius
@@ -103,10 +103,28 @@ mod:AddBoolOption("StaticOverloadIcon")
 mod:AddBoolOption("GravityCoreIcon")
 
 local frozenTargets = {}
+local lightningRodTargets = {}
+local gravityCrushTargets = {}
+local lightningRodIcon = 8
+local gravityCrushIcon = 8
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
 	table.wipe(frozenTargets)
+end
+
+local function showLightningRodWarning()
+	warnLightningRod:Show(table.concat(lightningRodTargets, "<, >"))
+	timerLightningRod:Start()
+	table.wipe(lightningRodTargets)
+	lightningRodIcon = 8
+end
+
+local function showGravityCrushWarning()
+	warnGravityCrush:Show(table.concat(gravityCrushTargets, "<, >"))
+	timerGravityCrush:Start()
+	table.wipe(gravityCrushTargets)
+	gravityCrushIcon = 8
 end
 
 local function checkGrounded()
@@ -137,6 +155,8 @@ end
 function mod:OnCombatStart(delay)
 	updateBossFrame(1)
 	table.wipe(frozenTargets)
+	table.wipe(lightningRodTargets)
+	table.wipe(gravityCrushTargets)
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
@@ -146,8 +166,8 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
-		timerFrozen:Start(args.destName)
-		frozenTargets[#frozenTargets] = args.destName
+		timerFrozen:Start()
+		frozenTargets[#frozenTargets + 1] = args.destName
 		self:Unschedule(showFrozenWarning)
 		self:Schedule(0.3, showFrozenWarning)
 	elseif args:IsSpellID(82665) then
@@ -158,7 +178,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnHeartIce:Show()
 		end
 		if self.Options.HeartIceIcon then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, 6)
 		end
 	elseif args:IsSpellID(82660) then
 		warnBurningBlood:Show(args.destName)
@@ -171,13 +191,19 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 7)
 		end
 	elseif args:IsSpellID(83099) then
-		warnLightningRod:Show(args.destName)
-		timerLightningRod:Start(args.destName)
+		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
 		end
 		if self.Options.LightningRodIcon then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, lightningRodIcon)
+			lightningRodIcon = lightningRodIcon - 1
+		end
+		self:Unschedule(showLightningRodWarning)
+		if (mod:IsDifficulty("normal25") and #lightningRodTargets >= 3) or (mod:IsDifficulty("normal10") and #lightningRodTargets >= 1) then
+			showLightningRodWarning()
+		else
+			self:Schedule(0.3, showLightningRodWarning)
 		end
 	elseif args:IsSpellID(82777) then
 		warnFlameTorrent:Show()
@@ -187,19 +213,25 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(82762) and args:IsPlayer() then
 		specWarnWaterLogged:Show()
 	elseif args:IsSpellID(84948, 92486, 92487, 92488) then
-		warnGravityCrush:Show()
-		timerGravityCrush:Start()
+		gravityCrushTargets[#gravityCrushTargets + 1] = args.destName
 		timerGravityCrushCD:Start()
 		if self.Options.GravityCrushIcon then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, gravityCrushIcon)
+			gravityCrushIcon = gravityCrushIcon - 1
+		end
+		self:Unschedule(showGravityCrushWarning)
+		if (mod:IsDifficulty("normal25") and #gravityCrushTargets >= 3) or (mod:IsDifficulty("normal10") and #gravityCrushTargets >= 1) then
+			showGravityCrushWarning()
+		else
+			self:Schedule(0.3, showGravityCrushWarning)
 		end
 	elseif args:IsSpellID(92307) then
 		warnFrostBeacon:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
 		end
-		if self.Options.FrostBeacondIcon then
-			self:SetIcon(args.destName, 6)
+		if self.Options.FrostBeaconIcon then
+			self:SetIcon(args.destName, 8)
 		end
 	elseif args:IsSpellID(92067) then
 		warnStaticOverload:Show(args.destName)
@@ -207,7 +239,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnStaticOverload:Show()
 		end
 		if self.Options.StaticOverloadIcon then
-			self:SetIcon(args.destName, 7)
+			self:SetIcon(args.destName, 4)
 		end
 	elseif args:IsSpellID(92075) then
 		warnGravityCore:Show(args.destName)
@@ -215,7 +247,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGravityCore:Show()
 		end
 		if self.Options.GravityCoreIcon then
-			self:SetIcon(args.destName, 6)
+			self:SetIcon(args.destName, 5)
 		end
 	end
 end
