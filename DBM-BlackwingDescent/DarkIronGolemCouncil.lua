@@ -45,6 +45,7 @@ local timerConversionCD		= mod:NewNextTimer(50, 79729)
 local timerPoisonProtocolCD	= mod:NewNextTimer(45, 80053)
 local timerShadowInfusionCD	= mod:NewNextTimer(35, 92048)
 
+local specWarnBombTarget	= mod:NewSpecialWarningRun(80094)
 local specWarnBarrier		= mod:NewSpecialWarningCast(79582)
 local specWarnConductor		= mod:NewSpecialWarningYou(79888)
 local specWarnUnstableShield= mod:NewSpecialWarningCast(79900)
@@ -52,6 +53,8 @@ local specWarnGenerator		= mod:NewSpecialWarningMove(79624, mod:IsTank())
 local specWarnShell			= mod:NewSpecialWarningCast(79835)
 local specWarnConversion	= mod:NewSpecialWarningCast(79729)
 local specWarnShadowInfusion= mod:NewSpecialWarningYou(92048)
+
+local soundBomb				= mod:NewSound(80094)
 
 mod:AddBoolOption("SayBombTarget", false)
 mod:AddBoolOption("AcquiringTargetIcon")
@@ -135,8 +138,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(80094) then
 		warnFixate:Show(args.destName)
-		if args:IsPlayer() and self.Options.SayBombTarget then
-			SendChatMessage(L.SayBomb, "SAY")
+		if args:IsPlayer() then
+			specWarnBombTarget:Show()
+			soundBomb:Play()
+			if self.Options.SayBombTarget then
+				SendChatMessage(L.SayBomb, "SAY")
+			end
 		end
 		if self.Options.BombTargetIcon then
 			if fixateIcon < 1 then
