@@ -39,10 +39,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Magmatron		= "Magmatron",
-	Electron		= "Electron",
-	Toxitron		= "Toxitron",
-	Arcanotron		= "Arcanotron",
+	Magmatron		= "熔岩號",
+	Electron		= "雷電號",
+	Toxitron		= "烈毒號",
+	Arcanotron		= "秘法號",
 	SayBomb			= "我中了化學炸彈!"
 })
 
@@ -74,10 +74,10 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 
-	YellRed			= "red|r vial into the cauldron!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
-	YellBlue		= "blue|r vial into the cauldron!",
-	YellGreen		= "green|r vial into the cauldron!",
-	YellDark		= "dark|r vial into the cauldron!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
+	YellRed			= "紅色|r瓶子到鍋子裡!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
+	YellBlue		= "藍色|r瓶子到鍋子裡!",
+	YellGreen		= "綠色|r瓶子到鍋子裡!",
+	YellDark		= "黑色|r瓶子到鍋子裡!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
 	Red			= "紅色",
 	Blue			= "藍色",
 	Green			= "綠色",
@@ -128,7 +128,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase		= "空中階段",
 	WarnGroundphase		= "地上階段",
-	WarnShieldsLeft		= "使用了Ancient Dwarven Shield - 剩餘%d"
+	WarnShieldsLeft		= "使用了古代矮人盾牌 - 剩餘%d次"
 })
 
 L:SetTimerLocalization({
@@ -137,8 +137,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	AncientDwarvenShield	= "Ancient Dwarven Shield",
-	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
+	AncientDwarvenShield	= "古代矮人盾牌",
+	Airphase		= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
 })
 
 L:SetOptionLocalization({
@@ -167,6 +167,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
+	ShadowblazeCast		= "Flesh turns to ash!",
 	ChromaticPrototype	= "Chromatic Prototype"
 })
 
