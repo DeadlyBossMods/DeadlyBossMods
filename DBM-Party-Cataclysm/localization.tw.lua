@@ -279,8 +279,8 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	BlazeHeavens		= "Blaze of the Heavens",	-- translate
-	HarbringerDarkness	= "Harbringer of Darkness"	-- translate
+	BlazeHeavens		= "天之燃炎",	-- translate
+	HarbringerDarkness	= "黑暗先驅者"	-- translate
 }
 
 --------------
