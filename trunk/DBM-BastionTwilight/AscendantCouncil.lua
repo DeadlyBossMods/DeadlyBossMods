@@ -157,6 +157,8 @@ function mod:OnCombatStart(delay)
 	table.wipe(frozenTargets)
 	table.wipe(lightningRodTargets)
 	table.wipe(gravityCrushTargets)
+	lightningRodIcon = 8
+	gravityCrushIcon = 8
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
