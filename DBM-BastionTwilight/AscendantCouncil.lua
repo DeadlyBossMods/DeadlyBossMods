@@ -168,7 +168,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
-		timerFrozen:Start()
+		timerFrozen:Start(args.destName)
 		frozenTargets[#frozenTargets + 1] = args.destName
 		self:Unschedule(showFrozenWarning)
 		self:Schedule(0.3, showFrozenWarning)
