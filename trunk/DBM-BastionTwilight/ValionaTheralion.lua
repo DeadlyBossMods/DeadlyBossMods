@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(45992, 45993)
 mod:SetZone()
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -27,7 +27,7 @@ local timerBlackout				= mod:NewTargetTimer(15, 86788)
 local timerBlackoutNext			= mod:NewNextTimer(45, 86788)		-- Cancel when in air (needs detection)
 local timerDevouringFlamesCD	= mod:NewCDTimer(40, 86840)
 local timerTwilightMeteorite	= mod:NewCastTimer(6, 86013)		
-local timerEngulfingMagic		= mod:NewTargetTimer(20, 86622)
+local timerEngulfingMagic		= mod:NewBuffActiveTimer(20, 86622)
 local timerEngulfingMagicNext	= mod:NewNextTimer(37, 86622)		-- Cancel when in air (needs detection)
 
 local specWarnBlackout			= mod:NewSpecialWarningYou(86788)
@@ -42,6 +42,15 @@ mod:AddBoolOption("EngulfingIcon")
 mod:AddBoolOption("RangeFrame")
 
 -- 88518 doesn't show in combat log -> SpellID for Meteorite Target, do we need to do scanning ? :(
+local engulfingMagicTargets = {}
+local engulfingMagicIcon = 7
+
+local function showEngulfingMagicWarning()
+	warnEngulfingMagic:Show(table.concat(engulfingMagicTargets, "<, >"))
+	timerEngulfingMagic:Start()
+	table.wipe(engulfingMagicTargets)
+	engulfingMagicIcon = 7
+end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
@@ -70,17 +79,23 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnBlackout:Show()
 		end
 	elseif args:IsSpellID(86622, 95639, 95640, 95641) then--86631 dummy script to use instead of other 4?
-		warnEngulfingMagic:Show(args.destName)
-		timerEngulfingMagic:Start(args.destName)
+		engulfingMagicTargets[#engulfingMagicTargets + 1] = args.destName
 		timerEngulfingMagicNext:Start()
-		if self.Options.EngulfingIcon then
-			self:SetIcon(args.destName, 7)
-		end
 		if args:IsPlayer() then
 			specWarnEngulfingMagic:Show()
 			if self.Options.YellOnEngulfing then
 				SendChatMessage(L.YellEngulfing, "SAY")
 			end
+		end
+		if self.Options.EngulfingIcon then
+			self:SetIcon(args.destName, engulfingMagicIcon)
+			engulfingMagicIcon = engulfingMagicIcon - 1
+		end
+		self:Unschedule(showEngulfingMagicWarning)
+		if (mod:IsDifficulty("normal25") and #engulfingMagicTargets >= 2) or (mod:IsDifficulty("normal10") and #engulfingMagicTargets >= 1) then
+			showEngulfingMagicWarning()
+		else
+			self:Schedule(0.3, showEngulfingMagicWarning)
 		end
 	end
 end
