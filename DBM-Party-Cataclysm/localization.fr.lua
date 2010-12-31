@@ -274,7 +274,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "Afficher la vie des affs dans la fenêtre de vie du Boss"
+	BossHealthAdds	= "Afficher la vie des adds dans la fenêtre de vie du Boss"
 }
 
 L:SetMiscLocalization{
