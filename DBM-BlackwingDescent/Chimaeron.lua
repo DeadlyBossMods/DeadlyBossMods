@@ -77,7 +77,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnDoubleAttack:Show()
 		specWarnDoubleAttack:Show()
 	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then--There is no cast for this, so we have to warn on damage :\
-		slimeTargets[#slimeTargets] = args.destName
+		slimeTargets[#slimeTargets + 1] = args.destName
 		self:Unschedule(showSlimeWarning)
 		self:Schedule(0.3, showSlimeWarning)
 	end
