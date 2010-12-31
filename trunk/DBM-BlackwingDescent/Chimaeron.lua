@@ -48,7 +48,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
---	timerFeudNext:Start(-delay)--Not consistent?
+	timerFeudNext:Start(-delay)--Not consistent?
 	prewarnedPhase2 = false
 	lastSlime = 0
 	table.wipe(slimeTargets)
