@@ -29,8 +29,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnObsidianArmor:Show()
 	elseif args:IsSpellID(75846, 93567) then
 		timerSuperheated:Cancel()--try to fix a problem with multiple timers spawning with diff args.
-		timerSuperheated:Start(args.amount or 1)
-		if GetTime() - lastSuperheated > 5 then
+		timerSuperheated:Start(17, args.amount or 1)
+		if GetTime() - lastSuperheated > 3 then
 			warnSuperheated:Show()
 			if args.amount and args.amount >= 5 then
 				specWarnSuperheated:Show(args.amount)
