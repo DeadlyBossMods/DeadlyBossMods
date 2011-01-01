@@ -20,7 +20,7 @@ local warnInferno		= mod:NewSpellAnnounce(92190, 4)
 local warnMangle		= mod:NewTargetAnnounce(89773, 3)
 
 local timerLavaSpew		= mod:NewCDTimer(30, 77689)
-local timerPillarFlame	= mod:NewCDTimer(40, 78006)
+local timerPillarFlame	= mod:NewCDTimer(32.5, 78006)--This timer is no longer reliable as of last week december. It varies 32-50 seconds, instead of static 30 it used to be.
 local timerMangle		= mod:NewTargetTimer(30, 89773)
 local timerMangleCD		= mod:NewCDTimer(95, 89773)--complete guesswork on timer since two weeks in a row i had useless logger.
 local timerInferno		= mod:NewCDTimer(35, 92190)
