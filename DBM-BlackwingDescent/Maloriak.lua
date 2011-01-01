@@ -43,7 +43,7 @@ local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896, false)
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
 
-local berserkTimer				= mod:NewBerserkTimer(600)
+local berserkTimer				= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon")
@@ -72,7 +72,9 @@ local function InterruptCheck()
 end
 
 function mod:OnCombatStart(delay)
-	berserkTimer:Start(-delay)
+	if mod:IsDifficulty("normal10")
+		berserkTimer:Start(-delay)--he only berserks on 10 man normal, and only part of the time. apparently doesn't berserk on heroic or 25s. wtf?
+	end
 	adds = 18
 	AddsInterrupted = false
 	spamSlime = 0
