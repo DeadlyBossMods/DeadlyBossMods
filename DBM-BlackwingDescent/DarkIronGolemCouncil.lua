@@ -51,7 +51,7 @@ local timerGeneratorCD		= mod:NewNextTimer(30, 79624)
 local timerConversion		= mod:NewBuffActiveTimer(11.5, 79729)	-- 10 + 1.5 cast time
 --All
 local timerNextActivate		= mod:NewNextTimer(45, 78740)--Activations are every 90 seconds but encounter staggers them in an alternating fassion so 45 seconds between add switches
-local timerNefAbilityCD		= mod:NewNextTimer(25, 92048)
+local timerNefAbilityCD		= mod:NewNextTimer(35, 92048)
 
 --Magmatron
 local specWarnBarrier		= mod:NewSpecialWarningCast(79582)
@@ -62,7 +62,7 @@ local specWarnConductor		= mod:NewSpecialWarningYou(79888)
 local specWarnShell			= mod:NewSpecialWarningCast(79835)
 local specWarnBombTarget	= mod:NewSpecialWarningRun(80094)
 --Arcanotron
-local specWarnConversion	= mod:NewSpecialWarningCast(79729)--Arcanotron's Shield
+local specWarnConversion	= mod:NewSpecialWarningCast(79729)
 local specWarnGenerator		= mod:NewSpecialWarningMove(79624, mod:IsTank())
 --All
 local specWarnShadowInfusion= mod:NewSpecialWarningYou(92048)
