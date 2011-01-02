@@ -2,7 +2,7 @@
 
 local L
 
--- Last update: 12/27/2010 (by Sasmira)
+-- Last update: 01/02/2011 (by Sasmira)
 
 ----------------------------
 --  General BG functions  --
@@ -164,9 +164,9 @@ L:SetMiscLocalization({
 	Alliance 					= "Alliance",
 	Horde 						= "Horde",	
 	InfoErrorText 				= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",
-	ExprFlagPickUp 				= "Le (%w+) .lag a été pris par (.+) !",
+	ExprFlagPickUp 				= "Le Drapeau (%w+) a été pris par (.+) !",
 	ExprFlagCaptured 			= "(.+) a capturé le drapeau (%w+) !",
-	ExprFlagReturn 				= "Le (%w+) .lag a été renvoyé à la base par (.+) !",
+	ExprFlagReturn 				= "Le Drapeau (%w+) a été renvoyé à la base par (.+) !",
 	FlagAlliance 				= "Drapeau de l'alliance: ",
 	FlagHorde					= "Drapeau de la horde: ",
 	FlagBase					= "Base",
@@ -246,9 +246,9 @@ L:SetMiscLocalization({
 	Alliance 			= "Alliance",
 	Horde 				= "Horde",	
 	InfoErrorText		= "Le ciblage du drapeau est restoré lorsque vous êtes hors de combat.",
-	ExprFlagPickUp		= "Le (%w+) .lag a été pris par (.+) !",
+	ExprFlagPickUp		= "Le  Drapeau (%w+) a été pris par (.+) !",
 	ExprFlagCaptured		= "(.+) a capturé le drapeau (%w+) !",
-	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",
+	ExprFlagReturn		= "Le Drapeau (%w+) a été renvoyé à la base par (.+) !",
 	FlagAlliance			= "Drapeau Alliance: ",
 	FlagHorde			= "Drapeau Horde: ",
 	FlagBase			= "Base"
@@ -274,12 +274,12 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
-	name = "Battle for Gilneas"	-- translate
+	name = "Bataille de Gilnéas"	-- Done :D
 })
 
 L:SetMiscLocalization({
-	BgStart60				= "Début de la bataille pour le bassin d'Arathi dans 1 minute.",
-	BgStart30				= "Début de la bataille pour le bassin d'Arathi dans 30 secondes.",
+	BgStart60				= "Début de la bataille de Gilnéas dans 1 minute.",
+	BgStart30				= "Début de la bataille de Gilnéas dans 30 secondes.",
 	ScoreExpr 				= "(%d+)/2000",
 	Alliance 				= "Alliance",
 	Horde 					= "Horde",
@@ -297,6 +297,6 @@ L:SetOptionLocalization({
 	TimerStart  			= "Voir: Temps de départ du BG",
 	TimerWin 				= "Montre le timer de la victoire",
 	TimerCap 				= "Montre le timer de capture",
-	ShowGilneasEstimatedPoints	= "Montre l'estimation de point pour gagner / perdre",
-	ShowGilneasBasesToWin		= "Montre les bases à avoir pour gagner"
+	ShowGilneasEstimatedPoints	= "Montre l'estimation de points pour gagner / perdre",
+	ShowGilneasBasesToWin	= "Montre les bases à avoir pour gagner"
 })
