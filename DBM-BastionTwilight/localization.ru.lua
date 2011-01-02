@@ -1,4 +1,4 @@
-if GetLocale() ~= "ruRU" then return end
+﻿if GetLocale() ~= "ruRU" then return end
 
 local L
 
@@ -17,11 +17,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
 	RangeFrame		= "Окно проверки дистанции (10)"
@@ -29,7 +24,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization{
 	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
-	YellEngulfing				= "На МНЕ избыточная магия!"
+	YellEngulfing				= "На МНЕ избыточная магия!",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
 
 --------------------------
