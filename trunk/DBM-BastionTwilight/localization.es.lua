@@ -17,11 +17,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
 	RangeFrame				= "Mostrar distancia (10 yardas)"
@@ -29,7 +24,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, I will engulf the hallway. Cover their escape!",--translate
-	YellEngulfing				= "¡Trago de magia en mi!"
+	YellEngulfing				= "¡Trago de magia en mi!",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
 
 
