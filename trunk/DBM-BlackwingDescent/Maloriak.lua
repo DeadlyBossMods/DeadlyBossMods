@@ -72,7 +72,7 @@ local function InterruptCheck()
 end
 
 function mod:OnCombatStart(delay)
-	if mod:IsDifficulty("normal10")
+	if mod:IsDifficulty("normal10") then
 		berserkTimer:Start(-delay)--he only berserks on 10 man normal, and only part of the time. apparently doesn't berserk on heroic or 25s. wtf?
 	end
 	adds = 18
