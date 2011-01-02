@@ -266,7 +266,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
-	name = "Battle for Gilneas"	-- translate
+	name 				= "吉爾尼斯之戰"	-- translate
 })
 
 L:SetMiscLocalization({
