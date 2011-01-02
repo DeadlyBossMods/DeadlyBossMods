@@ -265,12 +265,12 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
-	name = "Battle for Gilneas"	-- translate
+	name = "Schlacht um Gilneas"
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "Die Schlacht um das Arathibecken beginnt in 1 Minute.",
-	BgStart30 = "Die Schlacht um das Arathibecken beginnt in 30 Sekunden.",
+	BgStart60 = "Die Schlacht wird in 1 Minute beginnen.",
+	BgStart30 = "Die Schlacht in 30 Sekunden beginnen.",
 	ScoreExpr = "(%d+)/2000",
 	Alliance = "Allianz",
 	Horde = "Horde",
