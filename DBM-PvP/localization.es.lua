@@ -225,3 +225,37 @@ L:SetMiscLocalization({
 	GoblinBrokenAlliance	= "¿Ya está rota? No pasa nada. No es nada que no pueda arreglar.",
 	GoblinBrokenHorde		= "¿Está estropeada otra vez? La arreglaré... pero no esperes que la garantía cubra esto."
 })
+
+
+--------------------------
+--  Battle for Gilneas  --
+--------------------------
+L = DBM:GetModLocalization("Gilneas")
+
+L:SetGeneralLocalization({
+	name = "Battle for Gilneas"	-- translate
+})
+
+L:SetMiscLocalization({
+	BgStart60		= "La batalla comenzará en 1 minuto.",
+	BgStart30		= "La batalla comenzará en 30 segundos.",
+	ScoreExpr 		= "(%d+)/2000",
+	Alliance 		= "Alianza",
+	Horde 			= "Horda",
+	WinBarText 		= "%s ganara en",
+	BasesToWin 		= "Bases necesarias para ganar: %d",
+	Flag 			= "Bandera"
+})
+
+L:SetTimerLocalization({
+	TimerStart 		= "¡La batalla va Comenzar!", 
+	TimerCap 		= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerStart  			= "Mostrar tiempo para que comienze la Batalla.",
+	TimerWin 			= "Mostrar tiempo para que una faccion Gane la Batalla.",
+	TimerCap 			= "Mostrar tiempo que tarda en conquistar Banderas.",
+	ShowGilneasEstimatedPoints	= "Mostrar recursos estimados a ganar.",
+	ShowGilneasBasesToWin		= "Mostrar bases para ganar."
+})
