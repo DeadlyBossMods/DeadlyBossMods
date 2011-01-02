@@ -15,11 +15,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Yell on $spell:86622",
 	RangeFrame		= "Show range frame (10)"
@@ -27,7 +22,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, I will engulf the hallway. Cover their escape!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
-	YellEngulfing				= "Engulfing Magic on me!"
+	YellEngulfing				= "Engulfing Magic on me!",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
 
 --------------------------
