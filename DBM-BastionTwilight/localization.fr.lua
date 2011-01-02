@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
@@ -20,11 +20,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Pousser un cri sur $spell:86622",
 	RangeFrame		= "Afficher la fenêtre de portée (10)"
@@ -32,7 +27,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",-- A verifier ...
-	YellEngulfing				= "Magie enveloppante sur moi!"
+	YellEngulfing				= "Magie enveloppante sur moi!",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
 
 --------------------------
