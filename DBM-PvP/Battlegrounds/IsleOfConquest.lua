@@ -11,6 +11,7 @@ IsleOfConquest:RegisterEvents(
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_DIED"
 )
 
@@ -55,51 +56,6 @@ function getPoiState(id)
 	else return 0
 	end
 end
-
--- 
--- 16 Quarry - Uncontrolled
--- 17 Quarry - In Conflict (to Alliance)
--- 18 Quarry - Alliance Controlled
--- 19 Quarry - In Conflict (to Horde)
--- 20 Quarry - Horde Controlled
---
--- 135 Workshop - Uncontrolled
--- 136 Workshop - Alliance
--- 137 Workshop - In Conflict (to Alliance)
--- 138 Workshop - Horde Controlled
--- 139 Workshop - In Conflict (to Horde)
---
--- 140 Hangar - Uncontrolled
--- 141 Hangar - Alliance
--- 142 Hangar - In Conflict (to Alliance)
--- 143 Hangar - Horde Controlled
--- 144 Hangar - In Conflict (to Horde)
---
--- 145 Docks - Uncontrolled
--- 146 Docks - Alliance
--- 147 Docks - In Conflict (to Alliance)
--- 148 Docks - Horde
--- 149 Docks - In Conflict (to Horde)
---
--- 150 Refinerie - Uncontrolled
--- 151 Refinerie - Alliance
--- 152 Refiniere - In Conflict (to Alliance)
--- 153 Refinerie - Horde Controlled
--- 154 Refinerie - In Conflict (to Horde)
---
--- 77 Horde Gate - OK
--- 78 - i think its at half hp
--- 79 Horde Gate - Destroyed
---
--- 80 Alliance Gate - OK
--- 81 - i think its at half hp
--- 82 Allianz Gate - Destroyed
---
--- 9 Keep - In Conflict (to Allianz)
--- 10 Keep - Horde Controlled 
--- 11 Keep - Alliance
--- 12 Keep - In Conflict (to Horde)
---
 
 
 local bgzone = false
@@ -201,6 +157,7 @@ end
 
 IsleOfConquest.CHAT_MSG_BG_SYSTEM_ALLIANCE = scheduleCheck
 IsleOfConquest.CHAT_MSG_BG_SYSTEM_HORDE = scheduleCheck
+IsleOfConquest.CHAT_MSG_RAID_BOSS_EMOTE = scheduleCheck
 
 function IsleOfConquest:OnSync(msg, arg)
 	if msg == "SEStart" then

@@ -258,3 +258,36 @@ L:SetOptionLocalization({
 	ShowFlagCarrier = "Zeige Flaggenträger",
 	ShowFlagCarrierErrorNote = "Zeige Fehlermeldung wenn Flaggenträger-Zielauswahl nicht gesetzt werden kann"
 })
+
+--------------------------
+--  Battle for Gilneas  --
+--------------------------
+L = DBM:GetModLocalization("Gilneas")
+
+L:SetGeneralLocalization({
+	name = "Battle for Gilneas"	-- translate
+})
+
+L:SetMiscLocalization({
+	BgStart60 = "Die Schlacht um das Arathibecken beginnt in 1 Minute.",
+	BgStart30 = "Die Schlacht um das Arathibecken beginnt in 30 Sekunden.",
+	ScoreExpr = "(%d+)/2000",
+	Alliance = "Allianz",
+	Horde = "Horde",
+	WinBarText = "%s gewinnt",
+	BasesToWin = "Punkte nötig um zu gewinnen: %d",
+	Flag = "Flagge"
+})
+
+L:SetTimerLocalization({
+	TimerStart = "Spiel startet in", 
+	TimerCap = "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart  = "Zeige Starttimer",
+	TimerWin = "Zeige Siegtimer",
+	TimerCap = "Zeige Eroberungstimer",
+	ShowGilneasEstimatedPoints = "Zeige geschätzte Kampf-Endpunkte",
+	ShowGilneasBasesToWin = "Zeige benötigte Anzahl an Punkten zum Sieg"
+})

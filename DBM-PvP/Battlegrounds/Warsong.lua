@@ -22,6 +22,7 @@ Warsong:RegisterEvents(
 	"CHAT_MSG_BG_SYSTEM_ALLIANCE",
 	"CHAT_MSG_BG_SYSTEM_HORDE",
 	"CHAT_MSG_BG_SYSTEM_NEUTRAL",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UPDATE_BATTLEFIELD_SCORE"
 )
 
@@ -262,6 +263,9 @@ do
 	end
 	function Warsong:CHAT_MSG_BG_SYSTEM_HORDE(...)
 		updateflagcarrier(self, "CHAT_MSG_BG_SYSTEM_HORDE", ...)
+	end
+	function Warsong:CHAT_MSG_RAID_BOSS_EMOTE(...)
+		updateflagcarrier(self, "CHAT_MSG_RAID_BOSS_EMOTE", ...)
 	end
 end
 

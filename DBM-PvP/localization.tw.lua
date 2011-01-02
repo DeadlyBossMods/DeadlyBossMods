@@ -259,3 +259,36 @@ L:SetOptionLocalization({
 	ShowFlagCarrier			= "顯示旗幟攜帶者",
 	ShowFlagCarrierErrorNote	= "當正在戰鬥時顯示旗幟攜帶者的錯誤訊息。"
 })
+
+--------------------------
+--  Battle for Gilneas  --
+--------------------------
+L = DBM:GetModLocalization("Gilneas")
+
+L:SetGeneralLocalization({
+	name = "Battle for Gilneas"	-- translate
+})
+
+L:SetMiscLocalization({
+	BgStart60			= "戰鬥將在1分鐘後開始。",
+	BgStart30			= "戰鬥將在30秒後開始。",
+	ScoreExpr 			= "(%d+)/2000",
+	Alliance 			= "聯盟",
+	Horde 				= "部落",
+	WinBarText 			= "%s 勝利",
+	BasesToWin 			= "勝利需要基地: %d",
+	Flag 				= "旗幟"
+})
+
+L:SetTimerLocalization({
+	TimerStart 			= "戰鬥開始", 
+	TimerCap 			= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerStart			= "顯示開始計時器",
+	TimerWin			= "顯示勝利計時器",
+	TimerCap			= "顯示奪取計時器",
+	ShowGilneasEstimatedPoints	= "顯示戰鬥結束時雙方資源預計值",
+	ShowGilneasBasesToWin		= "顯示勝利需要的基地數量"
+})
