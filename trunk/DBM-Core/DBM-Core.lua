@@ -328,7 +328,7 @@ do
 	local function handleEvent(self, event, ...)
 		if not registeredEvents[event] or DBM.Options and not DBM.Options.Enabled then return end
 		for i, v in ipairs(registeredEvents[event]) do
-			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, GetRealZoneText()) or checkEntry(v.zones, LastZoneMapID)) and (not v.Options or v.Options.Enabled) then
+			if type(v[event]) == "function" and (not v.zones or checkEntry(v.zones, LastZoneText) or checkEntry(v.zones, LastZoneMapID)) and (not v.Options or v.Options.Enabled) then
 				v[event](v, ...)
 			end
 		end
@@ -643,7 +643,7 @@ do
 		
 		-- execute OnUpdate handlers of all modules
 		for i, v in pairs(updateFunctions) do
-			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, GetRealZoneText()) or checkEntry(i.zones, LastZoneMapID)) then
+			if i.Options.Enabled and (not i.zones or checkEntry(i.zones, LastZoneText) or checkEntry(i.zones, LastZoneMapID)) then
 				i.elapsed = (i.elapsed or 0) + elapsed
 				if i.elapsed >= (i.updateInterval or 0) then
 					v(i, i.elapsed)
@@ -1356,6 +1356,7 @@ do
 				"PARTY_MEMBERS_CHANGED",
 				"CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
+				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
 				"CHAT_MSG_WHISPER",
@@ -1432,11 +1433,12 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
-	if select(2, IsInInstance()) ~= "none" then
+	if IsInInstance() then--Don't change map if not in instance, it makes archaeologists mad.
 		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on disconnect or reloadui
 	end
 	local zoneName = GetRealZoneText()
 	local zoneId = GetCurrentMapID()
+	LastZoneText = zoneName--Cache zone name on change.
 	LastZoneMapID = zoneId--Cache map on zone change.
 	for i, v in ipairs(self.AddOns) do
 		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or checkEntry(v.zoneId, zoneId)) then
@@ -1534,7 +1536,7 @@ do
 		delay = tonumber(delay or 0) or 0
 		revision = tonumber(revision or 0) or 0
 		mod = DBM:GetModByName(mod or "")
-		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, GetRealZoneText()) or checkEntry(mod.zones, LastZoneMapID)) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
+		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, LastZoneText) or checkEntry(mod.zones, LastZoneMapID)) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
@@ -1752,10 +1754,10 @@ do
 
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
-		if combatInfo[GetRealZoneText()] or combatInfo[LastZoneMapID] then
+		if combatInfo[LastZoneText] or combatInfo[LastZoneMapID] then
 			buildTargetList()
-			if combatInfo[GetRealZoneText()] then
-				for i, v in ipairs(combatInfo[GetRealZoneText()]) do
+			if combatInfo[LastZoneText] then
+				for i, v in ipairs(combatInfo[LastZoneText]) do
 					if v.type == "combat" then
 						if v.multiMobPullDetection then
 							for _, mob in ipairs(v.multiMobPullDetection) do
@@ -1788,14 +1790,53 @@ do
 			clearTargetList()
 		end
 	end
+
+--[[	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+		if not combatInitialized then return end
+		if combatInfo[LastZoneText] or combatInfo[LastZoneMapID] then
+			buildTargetList()
+			if combatInfo[LastZoneText] then
+				for i, v in ipairs(combatInfo[LastZoneText]) do
+					if v.type == "combat" then
+						if v.multiMobPullDetection then
+							for _, mob in ipairs(v.multiMobPullDetection) do
+								if checkForPull(mob, v) then
+									break
+								end
+							end
+						else
+							checkForPull(v.mob, v)
+						end
+					end
+				end
+			end
+			-- copy & paste, lol
+			if combatInfo[LastZoneMapID] then
+				for i, v in ipairs(combatInfo[LastZoneMapID]) do
+					if v.type == "combat" then
+						if v.multiMobPullDetection then
+							for _, mob in ipairs(v.multiMobPullDetection) do
+								if checkForPull(mob, v) then
+									break
+								end
+							end
+						else
+							checkForPull(v.mob, v)
+						end
+					end
+				end
+			end
+			clearTargetList()
+		end
+	end--]]
 end
 
 do
 	-- called for all mob chat events
 	local function onMonsterMessage(type, msg)
 		-- pull detection
-		if combatInfo[GetRealZoneText()] then
-			for i, v in ipairs(combatInfo[GetRealZoneText()]) do
+		if combatInfo[LastZoneText] then
+			for i, v in ipairs(combatInfo[LastZoneText]) do
 				if v.type == type and checkEntry(v.msgs, msg) then
 					DBM:StartCombat(v.mod, 0)
 				end
@@ -2125,7 +2166,7 @@ function DBM:SendBGTimers(target)
 		mod = self:GetModByName("Arenas")		
 	else
 		-- FIXME: this doesn't work for non-english clients
-		local zone = GetRealZoneText():gsub(" ", "")
+		local zone = GetRealZoneText():gsub(" ", "")--Does this need updating to mapid arta?
 		mod = self:GetModByName(zone)
 	end
 	if mod and mod.timers then
