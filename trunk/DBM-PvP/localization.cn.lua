@@ -227,3 +227,37 @@ L:SetMiscLocalization({
 	GoblinBrokenAlliance		= "这么快就坏啦?!别担心，再坏的情况我都可以修得好。",
 	GoblinBrokenHorde		= "又坏掉了吗?!让我来修理吧…但别指望产品的保固会帮你支付这一切。"
 })
+
+
+--------------------------
+--  Battle for Gilneas  --
+--------------------------
+L = DBM:GetModLocalization("Gilneas")
+
+L:SetGeneralLocalization({
+	name = "Battle for Gilneas"	-- translate
+})
+
+L:SetMiscLocalization({
+	BgStart60 = "阿拉希盆地的战斗将在1分钟后开始。",
+	BgStart30 = "阿拉希盆地的战斗将在30秒后开始。",
+	ScoreExpr = "(%d+)/2000",
+	Alliance = "联盟",
+	Horde = "部落",
+	WinBarText = "%s 获胜",
+	BasesToWin = "胜利需要占领资源: %d",
+	Flag = "旗帜"
+})
+
+L:SetTimerLocalization({
+	TimerStart = "战斗即将开始", 
+	TimerCap = "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart  = "显示开始计时",
+	TimerWin = "显示获胜计时",
+	TimerCap = "显示占领计时",
+	ShowGilneasEstimatedPoints = "显示战斗结束时双方资源统计",
+	ShowGilneasBasesToWin = "显示获胜需要占领的资源点"
+})

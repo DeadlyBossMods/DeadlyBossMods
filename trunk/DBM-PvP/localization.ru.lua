@@ -260,3 +260,36 @@ L:SetOptionLocalization({
 	ShowFlagCarrier				= "Показать флагоносца",
 	ShowFlagCarrierErrorNote	= "Сообщения об ошибках в режиме боя"
 })
+
+--------------------------
+--  Battle for Gilneas  --
+--------------------------
+L = DBM:GetModLocalization("Gilneas")
+
+L:SetGeneralLocalization({
+	name = "Battle for Gilneas"	-- translate
+})
+
+L:SetMiscLocalization({
+	BgStart60	= "Битва начнется через 1 минуту.",
+	BgStart30	= "Битва начнется через 30 секунд.",
+	ScoreExpr	= "(%d+)/2000",
+	Alliance	= "Альянса",
+	Horde		= "Орды",
+	WinBarText	= "Победа %s",
+	BasesToWin	= "Захвачено баз: %d",
+	Flag		= "Флаг"
+})
+
+L:SetTimerLocalization({
+	TimerStart	= "Битва начнется через", 
+	TimerCap	= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerStart				= "Отсчет времени до начала битвы",
+	TimerWin				= "Отсчет времени до победы",
+	TimerCap				= "Отсчет времени до захвата",
+	ShowGilneasEstimatedPoints	= "Отображать предполагаемые очки оставшиеся до победы/поражения",
+	ShowGilneasBasesToWin		= "Отображать базы, которые необходимо захватить"
+})

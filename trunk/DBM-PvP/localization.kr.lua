@@ -260,3 +260,37 @@ L:SetOptionLocalization({
 	ShowFlagCarrier				= "깃발 운반자 보기",
 	ShowFlagCarrierErrorNote	= "전투중 깃발 운반자 에러 메세지 보기"
 })
+
+
+--------------------------
+--  Battle for Gilneas  --
+--------------------------
+L = DBM:GetModLocalization("Gilneas")
+
+L:SetGeneralLocalization({
+	name = "Battle for Gilneas"	-- translate
+})
+
+L:SetMiscLocalization({
+	BgStart60 		= "1분 후 아라시 분지 전투가 시작됩니다.",
+	BgStart30 		= "30초 후 아라시 분지 전투가 시작됩니다.",
+	ScoreExpr 		= "(%d+)/2000",
+	Alliance 		= "얼라이언스",
+	Horde 			= "호드",
+	WinBarText 		= "%s 획득",
+	BasesToWin		= "필요 점령 갯수 : %d",
+	Flag 			= "깃발"
+})
+
+L:SetTimerLocalization({
+	TimerStart 				= "게임 시작", 
+	TimerCap 				= "%s"
+})
+
+L:SetOptionLocalization({
+	TimerStart  			= "시작 타이머 보기",
+	TimerWin 			= "승리 예상 타이머 보기",
+	TimerCap 			= "깃발 점령 타이머 보기",
+	ShowGilneasEstimatedPoints 	= "승/패 예상 포인트 보기",
+	ShowGilneasBasesToWin 		= "필요 점령 갯수 보기"
+})

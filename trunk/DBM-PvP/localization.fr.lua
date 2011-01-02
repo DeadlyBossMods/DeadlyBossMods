@@ -266,3 +266,37 @@ L:SetOptionLocalization({
 	ShowFlagCarrierErrorNote 		= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat",
 
 })
+
+
+--------------------------
+--  Battle for Gilneas  --
+--------------------------
+L = DBM:GetModLocalization("Gilneas")
+
+L:SetGeneralLocalization({
+	name = "Battle for Gilneas"	-- translate
+})
+
+L:SetMiscLocalization({
+	BgStart60				= "Début de la bataille pour le bassin d'Arathi dans 1 minute.",
+	BgStart30				= "Début de la bataille pour le bassin d'Arathi dans 30 secondes.",
+	ScoreExpr 				= "(%d+)/2000",
+	Alliance 				= "Alliance",
+	Horde 					= "Horde",
+	WinBarText 				= "%s Gagne",
+	BasesToWin 				= "Bases pour gagner: %d",
+	Flag 					= "Drapeau"
+})
+
+L:SetTimerLocalization({
+	TimerStart 				= "Début de la bataille dans", 
+	TimerCap 				= "%s",
+})
+
+L:SetOptionLocalization({
+	TimerStart  			= "Voir: Temps de départ du BG",
+	TimerWin 				= "Montre le timer de la victoire",
+	TimerCap 				= "Montre le timer de capture",
+	ShowGilneasEstimatedPoints	= "Montre l'estimation de point pour gagner / perdre",
+	ShowGilneasBasesToWin		= "Montre les bases à avoir pour gagner"
+})
