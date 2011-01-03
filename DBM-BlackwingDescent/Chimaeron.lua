@@ -32,7 +32,7 @@ local timerMassacre			= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
 local timerCausticSlime		= mod:NewNextTimer(15, 88915)--This is seemingly cast 15 seconds into feud, any other time it's simply cast repeatedly the whole fight.
 local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
-local timerFeudNext			= mod:NewNextTimer(90, 88872)
+--local timerFeudNext			= mod:NewNextTimer(90, 88872)
 
 local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
 
@@ -48,7 +48,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
-	timerFeudNext:Start(-delay)--Not consistent?
+--	timerFeudNext:Start(-delay)--Not consistent?
 	prewarnedPhase2 = false
 	lastSlime = 0
 	table.wipe(slimeTargets)
@@ -98,7 +98,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(88872) then
 		warnFeud:Show()
 		timerFeud:Start()
-		timerFeudNext:Start()
+--		timerFeudNext:Start()
 		timerCausticSlime:Start()
 	elseif args:IsSpellID(82934) then
 		warnPhase2:Show()
