@@ -173,10 +173,10 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	OnySwipeTimer		= "CD Fouette-queue (Ony)",
-	NefSwipeTimer		= "CD Fouette-queue (Nef)",
-	OnyBreathTimer		= "CD Souffle (Ony)",
-	NefBreathTimer		= "CD Souffle (Nef)"
+	OnySwipeTimer		= "(Ony) CD Fouette-queue",
+	NefSwipeTimer		= "(Nef) CD Fouette-queue",
+	OnyBreathTimer		= "(Ony) CD Souffle",
+	NefBreathTimer		= "(Nef) CD Souffle"
 })
 
 L:SetOptionLocalization({
