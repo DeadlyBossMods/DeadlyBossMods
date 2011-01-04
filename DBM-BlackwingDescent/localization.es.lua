@@ -164,16 +164,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	OnyTailSwipe		= "Latigazo de cola (Onyxia)",
+	NefTailSwipe		= "Latigazo de cola (Nefarian)",
+	OnyBreath			= "Aliento (Onyxia)",
+	NefBreath			= "Aliento (Nefarian)"
 })
 
 L:SetTimerLocalization({
+	OnySwipeTimer		= "Latigazo de cola CD (Ony)",
+	NefSwipeTimer		= "Latigazo de cola CD (Nef)",
+	OnyBreathTimer		= "Aliento CD (Ony)",
+	NefBreathTimer		= "Aliento CD (Nef)"
+})
+
+L:SetOptionLocalization({
+	OnyTailSwipe		= "Mostrar aviso para el $spell:77827 de Onyxia",
+	NefTailSwipe		= "Mostrar aviso para el $spell:77827 de Nefarian",
+	OnyBreath			= "Mostrar aviso para el $spell:94124 de Onyxia",
+	NefBreath			= "Mostrar aviso para el $spell:94124 de Nefarian",
+	OnySwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Onyxia",
+	NefSwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Nefarian",
+	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
+	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian"
 })
 
 L:SetMiscLocalization({
 	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",--translate
 	ShadowblazeCast		= "Flesh turns to ash!",--translate
 	ChromaticPrototype	= "Chromatic Prototype"--translate
-})
-
-L:SetOptionLocalization({
 })
