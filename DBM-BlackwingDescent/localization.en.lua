@@ -16,6 +16,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Slump			= "%s slumps forward, exposing his pincers!",
+	HeadExposed		= "%s becomes impaled on the spike, exposing his head!"
 })
 
 L:SetOptionLocalization({

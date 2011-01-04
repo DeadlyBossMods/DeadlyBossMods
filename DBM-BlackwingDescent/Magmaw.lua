@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_SUMMON"
+	"SPELL_SUMMON",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnLavaSpew		= mod:NewSpellAnnounce(77689, 3, nil, false)--This warning is almost completely pointless so turning off by default.
@@ -20,8 +21,9 @@ local warnInferno		= mod:NewSpellAnnounce(92190, 4)
 local warnMangle		= mod:NewTargetAnnounce(89773, 3)
 
 local timerLavaSpew		= mod:NewCDTimer(30, 77689)
-local timerPillarFlame	= mod:NewCDTimer(32.5, 78006)--This timer is no longer reliable as of last week december. It varies 32-50 seconds, instead of static 30 it used to be.
+local timerPillarFlame	= mod:NewCDTimer(32.5, 78006)--This timer is a CD timer. 30-40 seconds. Use your judgement.
 local timerMangle		= mod:NewTargetTimer(30, 89773)
+local timerExposed		= mod:NewBuffActiveTimer(30, 79011)
 local timerMangleCD		= mod:NewCDTimer(95, 89773)--complete guesswork on timer since two weeks in a row i had useless logger.
 local timerInferno		= mod:NewCDTimer(35, 92190)
 
@@ -66,5 +68,20 @@ function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(92154, 92190, 92191, 92192) then
 		warnInferno:Show()
 		timerInferno:Start()
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Slump or msg:find(L.Slump) then
+		timerPillarFlame:Start(15)--Resets to 15. If you don't get his head down by then he gives you new adds to mess with. (theory, don't have a lot of logs with chain screwups yet)
+--[[
+12/22 21:20:48.647  Magmaw slumps forward, exposing his pincers!
+12/22 21:21:01.524  Magmaw breaks free from the single chain binding him!
+12/22 21:21:03.961  SPELL_AURA_APPLIED,0xF150A26200000741,"Magmaw",0x10a48,0xF150A26200000741,"Magmaw",0x10a48,78006,"Pillar of Flame",0x1,BUFF
+12/22 21:21:18.727  Magmaw becomes impaled on the spike, exposing his head!
+--]]
+	elseif msg == L.HeadExposed or msg:find(L.HeadExposed) then
+		timerExposed:Start()
+		timerPillarFlame:Start(40)
 	end
 end
