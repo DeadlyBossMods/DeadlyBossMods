@@ -99,7 +99,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Chimaeron")
 
 L:SetGeneralLocalization({
-	name = "카미이론"
+	name = "키마이론"
 })
 
 L:SetWarningLocalization({
