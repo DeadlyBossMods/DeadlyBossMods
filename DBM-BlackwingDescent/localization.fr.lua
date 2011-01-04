@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/29/2010 (by Sasmira) 
+-- Last update: 01/04/2011 (by Sasmira) 
 
 
 --------------
@@ -119,6 +119,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2",
 	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "inconnu")
+	RangeFrame	= "Afficher la fenêtre de portée (6)"
 })
 
 -----------------
@@ -165,16 +166,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	OnyTailSwipe		= "(Onyxia) Fouette-queue",
+	NefTailSwipe		= "(Nefarian) Fouette-queue",
+	OnyBreath			= "(Onyxia) Souffle",
+	NefBreath			= "(Nefarian) Souffle"
 })
 
 L:SetTimerLocalization({
+	OnySwipeTimer		= "CD Fouette-queue (Ony)",
+	NefSwipeTimer		= "CD Fouette-queue (Nef)",
+	OnyBreathTimer		= "CD Souffle (Ony)",
+	NefBreathTimer		= "CD Souffle (Nef)"
+})
+
+L:SetOptionLocalization({
+	OnyTailSwipe		= "Alerte pour le sort $spell:77827 d'Onyxia",
+	NefTailSwipe		= "Alerte pour le sort $spell:77827 de Nefarian",
+	OnyBreath			= "Alerte pour le sort $spell:94124 d'Onyxia",
+	NefBreath			= "Alerte pour le sort $spell:94124 de Nefarian",
+	OnySwipeTimer		= "Affiche le CoolDown du sort $spell:77827 d'Onyxia",
+	NefSwipeTimer		= "Affiche le CoolDown du sort $spell:77827 de Nefarian",
+	OnyBreathTimer		= "Affiche le CoolDown du sort $spell:94124 d'Onyxia",
+	NefBreathTimer		= "Affiche le CoolDown du sort $spell:94124 de Nefarian"
 })
 
 L:SetMiscLocalization({
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
 	ShadowblazeCast		= "Que la chair se transforme en cendres !", -- à vérifier
 	ChromaticPrototype	= "Prototype chromatique"
-})
-
-L:SetOptionLocalization({
 })
