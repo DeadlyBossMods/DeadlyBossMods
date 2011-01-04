@@ -189,7 +189,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
-	ShadowblazeCast		= "Flesh turns to ash!",
-	ChromaticPrototype	= "Chromatic Prototype"
+	YellPhase2 = "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
+	ShadowblazeCast = "化為灰燼吧!",
+	ChromaticPrototype = "炫彩原型體"
 })
