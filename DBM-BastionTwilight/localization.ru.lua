@@ -69,10 +69,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Quake			= "Земля уходит у вас из-под ног....", -- Yell string: Земля поглатит вас!
-	Thundershock	= "Воздух потрескивает от скопившейся энергии....", -- Yell string: Ветер, явись на мой зов!
-	Switch			= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
-	Phase3			= "А теперь узрите истинное...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
+	Quake			= "Земля уходит у вас из-под ног...", -- Yell string: Земля поглатит вас!
+	Thundershock	= "Воздух потрескивает от скопившейся энергии...", -- Yell string: Ветер, явись на мой зов!
+	Switch			= "Закончим этот фарс!",--"We will handle them!" comes 3 seconds after this one
+	Phase3			= "Ваше упортство...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
 	Ignacious		= "Огнис",
 	Feludius		= "Акварион",
 	Arion			= "Аэрон",

@@ -18,6 +18,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Slump			= "%s внезапно падает, выставляя клешки!",
+	HeadExposed		= "%s насаживается на пику, обнажая голову!"
 })
 
 L:SetOptionLocalization({
