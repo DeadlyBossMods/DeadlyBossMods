@@ -80,6 +80,7 @@ local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665)
 local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
 local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509)
+local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
 local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660)
@@ -290,6 +291,10 @@ function mod:SPELL_AURA_REMOVED(args)
 	elseif args:IsSpellID(92075) then
 		if self.Options.GravityCoreIcon then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(82631, 92512, 92513, 92514) then	-- Shield Removed
+		if UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 43686 then
+			specWarnRisingFlames:Show()
 		end
 	end
 end
