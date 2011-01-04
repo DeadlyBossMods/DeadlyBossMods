@@ -161,16 +161,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	OnyTailSwipe		= "Tail Lash (Onyxia)",
+	NefTailSwipe		= "Tail Lash (Nefarian)",
+	OnyBreath			= "Breath (Onyxia)",
+	NefBreath			= "Breath (Nefarian)"
 })
 
 L:SetTimerLocalization({
+	OnySwipeTimer		= "Tail Lash CD (Ony)",
+	NefSwipeTimer		= "Tail Lash CD (Nef)",
+	OnyBreathTimer		= "Breath CD (Ony)",
+	NefBreathTimer		= "Breath CD (Nef)"
+})
+
+L:SetOptionLocalization({
+	OnyTailSwipe		= "Show warning for Onyxia's $spell:77827",
+	NefTailSwipe		= "Show warning for Nefarian's $spell:77827",
+	OnyBreath			= "Show warning for Onyxia's $spell:94124",
+	NefBreath			= "Show warning for Nefarian's $spell:94124",
+	OnySwipeTimer		= "Show timer for Onyxia's $spell:77827 cooldown",
+	NefSwipeTimer		= "Show timer for Nefarian's $spell:77827 cooldown",
+	OnyBreathTimer		= "Show timer for Onyxia's $spell:94124 cooldown",
+	NefBreathTimer		= "Show timer for Nefarian's $spell:94124 cooldown"
 })
 
 L:SetMiscLocalization({
 	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
 	ShadowblazeCast		= "Flesh turns to ash!",
 	ChromaticPrototype	= "Chromatic Prototype"
-})
-
-L:SetOptionLocalization({
 })
