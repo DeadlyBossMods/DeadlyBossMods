@@ -164,16 +164,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	OnyTailSwipe		= "尾部鞭擊 (奧妮克希亞)",
+	NefTailSwipe		= "尾部鞭擊 (奈法利安)",
+	OnyBreath		= "暗影焰息 (奧妮克希亞)",
+	NefBreath		= "暗影焰息 (奈法利安)"
 })
 
 L:SetTimerLocalization({
+	OnySwipeTimer		= "尾部鞭擊冷卻 (奧妮)",
+	NefSwipeTimer		= "尾部鞭擊冷卻 (奈法)",
+	OnyBreathTimer		= "暗影焰息冷卻 (奧妮)",
+	NefBreathTimer		= "暗影焰息冷卻 (奈法)"
+})
+
+L:SetOptionLocalization({
+	OnyTailSwipe		= "為奧妮克希亞的$spell:77827顯示警告",
+	NefTailSwipe		= "為奈法利安的$spell:77827顯示警告",
+	OnyBreath		= "為奧妮克希亞的$spell:94124顯示警告",
+	NefBreath		= "為奈法利安的$spell:94124顯示警告",
+	OnySwipeTimer		= "為奧妮克希亞的$spell:77827的冷卻時間顯示計時器",
+	NefSwipeTimer		= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
+	OnyBreathTimer		= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
+	NefBreathTimer		= "為奈法利安的$spell:94124的冷卻時間顯示計時器"
 })
 
 L:SetMiscLocalization({
 	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
 	ShadowblazeCast		= "Flesh turns to ash!",
 	ChromaticPrototype	= "Chromatic Prototype"
-})
-
-L:SetOptionLocalization({
 })
