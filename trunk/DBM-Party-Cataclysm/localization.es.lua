@@ -156,7 +156,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate -- Yell when Valiona is incoming
-	Valiona		= "Valiona"	-- translate
+	Valiona		= "Valiona"	
 }
 
 ------------
@@ -189,7 +189,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	Kill		= "Ptah... is... no more..."--translate
+	Kill		= "Se... acabó... Ptah..."
 }
 
 --------------
