@@ -17,11 +17,17 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
+L:SetOptionLocalization({
+	YellOnEngulfing		= "中了$spell:86622時大喊",
+	RangeFrame		= "顯示距離框 (10碼)"
 })
 
-L:SetOptionLocalization({
-})
+L:SetMiscLocalization{
+	Trigger1		= "Theralion, I will engulf the hallway. Cover their escape!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	YellEngulfing		= "我中了侵噬魔法!",
+	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+}
 
 --------------------------
 --  Halfus Wyrmbreaker  --
@@ -110,4 +116,25 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "為第2階段顯示預先警告",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+})
+
+----------------
+--  Sinestra  --
+----------------
+L = DBM:GetModLocalization("Sinestra")
+
+L:SetGeneralLocalization({
+	name 			= "賽絲特拉"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetMiscLocalization({
+})
+
+L:SetOptionLocalization({
 })
