@@ -120,7 +120,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2",
-	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "inconnu")
+	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "inconnu"),
 	RangeFrame	= "Afficher la fenêtre de portée (6)"
 })
 
