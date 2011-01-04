@@ -21,6 +21,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Slump			= "%s s'effondre vers l'avant et expose ses pinces !",
+	HeadExposed		= "%s vient de s'empaler sur la pointe et expose sa tête !"
 })
 
 L:SetOptionLocalization({
