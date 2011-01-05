@@ -45,7 +45,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnRedMix:Show()
 		end
 		lastCatalyst = GetTime()
-	elseif args:IsSpellID(93617) and GetTime() - lastCoagulant > 4 then--Green Light
+	elseif args:IsSpellID(93617) and GetTime() - lastCoagulant > 10 then--Green Light
 		warnGreenMix:Show()
 		if self.Options.RedLightGreenLight then
 			specWarnGreenMix:Show()
