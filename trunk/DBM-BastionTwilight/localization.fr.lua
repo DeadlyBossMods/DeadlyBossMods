@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/29/2010 (by Sasmira) 
+-- Last update: 01/05/2011 (by Sasmira) 
 
 
 ---------------------------
@@ -63,6 +63,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specWarnBossLow	= "%s en dessous de 55%",
 	SpecWarnGrounded	= "Obtenir le buff Liaison à la masse",
 	SpecWarnSearingWinds	= "Obtenir le buff Vents tournoyants"
 })
@@ -85,13 +86,17 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	specWarnBossLow	= "Alerte spéciale lorsque les Boss sont en dessous de 30% de PV",
 	SpecWarnGrounded	= "Alerte spéciale lorsque vous manquez l'amélioration $spell:83581 \n(~10sec avant le lancement du sort)",
 	SpecWarnSearingWinds	= "Alerte spéciale lorsque vous manquez l'amélioration  $spell:83500 \n(~10sec avant le lancement du sort)",
 	timerTransition		= "Afficher le temps pour: Changement de phase",
-	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
-	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948)
+	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 ----------------
