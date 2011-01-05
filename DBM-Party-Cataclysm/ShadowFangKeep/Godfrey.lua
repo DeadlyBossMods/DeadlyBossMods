@@ -52,7 +52,6 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93520) then
-		warnPistolBarrage:Show()
 		timerPistolBarrage:Start()
 		timerPistolBarrageNext:Start()
 	end
