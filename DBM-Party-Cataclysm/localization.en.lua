@@ -463,6 +463,14 @@ L:SetGeneralLocalization({
 	name = "Asaad"
 })
 
+L:SetOptionLocalization({
+	SpecWarnStaticCling	= "Show special warning for $spell:87618"
+})
+
+L:SetWarningLocalization({
+	SpecWarnStaticCling	= "$spell:87618 - JUMP!"	-- does $spell: work here ?
+})
+
 ---------------------------
 --  The Throne of Tides  --
 ---------------------------
