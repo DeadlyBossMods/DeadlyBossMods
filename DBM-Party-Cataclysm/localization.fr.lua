@@ -2,7 +2,7 @@ if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/27/2010 (by Sasmira) 
+-- Last update: 01/05/2011 (by Sasmira) 
 
 
 -------------------------
@@ -190,6 +190,10 @@ L = DBM:GetModLocalization("EarthragerPtah")
 L:SetGeneralLocalization({
 	name = "Enrageterre Ptah"
 })
+
+L:SetMiscLocalization{
+	Kill		= "Ptah... n'est ... plus la..." -- à vérifier
+}
 
 --------------
 -- Anraphet --
@@ -462,6 +466,14 @@ L = DBM:GetModLocalization("Asaad")
 
 L:SetGeneralLocalization({
 	name = "Asaad"
+})
+
+L:SetOptionLocalization({
+	SpecWarnStaticCling	= "Alerte spéciale pour le sort $spell:87618"
+})
+
+L:SetWarningLocalization({
+	SpecWarnStaticCling	= "$spell:87618 - SAUTER !"	-- does $spell: work here ?
 })
 
 ---------------------------
