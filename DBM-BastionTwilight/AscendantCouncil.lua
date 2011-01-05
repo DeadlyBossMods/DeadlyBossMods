@@ -16,7 +16,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_HEALTH"
 )
 
 --Feludius
@@ -92,9 +93,13 @@ local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
 local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
+--All
+local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
+
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
 
+mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("HeartIceIcon")
 mod:AddBoolOption("BurningBloodIcon")
 mod:AddBoolOption("LightningRodIcon")
@@ -108,6 +113,10 @@ local lightningRodTargets = {}
 local gravityCrushTargets = {}
 local lightningRodIcon = 8
 local gravityCrushIcon = 8
+local warned_IgLow = false
+local warned_FelLow = false
+local warned_AriLow = false
+local warned_TerLow = false
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -160,6 +169,10 @@ function mod:OnCombatStart(delay)
 	table.wipe(gravityCrushTargets)
 	lightningRodIcon = 8
 	gravityCrushIcon = 8
+	warned_IgLow = false
+	warned_FelLow = false
+	warned_AriLow = false
+	warned_TerLow = false
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
@@ -380,3 +393,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	end
 end
 
+function mod:UNIT_HEALTH(uId)
+	if not warned_IgLow and self:GetUnitCreatureId(uId) == 43686 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Ignacious
+		warned_IgLow = true
+		specWarnBossLow:Show(L.Ignacious)
+	elseif not warned_FelLow and self:GetUnitCreatureId(uId) == 43687 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Feludius
+		warned_FelLow = true
+		specWarnBossLow:Show(L.Feludius)
+	elseif not warned_AriLow and self:GetUnitCreatureId(uId) == 43688 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Arion
+		warned_AriLow = true
+		specWarnBossLow:Show(L.Arion)
+	elseif not warned_TerLow and self:GetUnitCreatureId(uId) == 43689 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Terrastra
+		warned_TerLow = true
+		specWarnBossLow:Show(L.Terrastra)
+	end
+end
