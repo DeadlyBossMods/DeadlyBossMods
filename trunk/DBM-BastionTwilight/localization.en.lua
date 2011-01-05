@@ -58,7 +58,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnGrounded	= "Get Grounded buff",
+	specWarnBossLow			= "%s below 55%",
+	SpecWarnGrounded		= "Get Grounded buff",
 	SpecWarnSearingWinds	= "Get Searing Winds buff"
 })
 
@@ -80,8 +81,9 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	specWarnBossLow		= "Show special warning when Bosses are below 30% HP",
 	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
-	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
+	SpecWarnSearingWinds= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
 	timerTransition		= "Show Phase transition timer",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
