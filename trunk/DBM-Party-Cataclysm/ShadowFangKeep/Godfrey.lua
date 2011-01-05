@@ -16,7 +16,6 @@ mod:RegisterEvents(
 
 local warnMortalWound		= mod:NewAnnounce("WarnMortalWound", 2, 93675, mod:IsTank() or mod:IsHealer())
 local warnGhouls			= mod:NewSpellAnnounce(93707, 4)
-local warnPistolBarrage		= mod:NewSpellAnnounce(93520, 3)
 local warnCursedBullets		= mod:NewTargetAnnounce(93629, 3)
 
 local specWarnMortalWound	= mod:NewSpecialWarningStack(93675, nil, 5)
