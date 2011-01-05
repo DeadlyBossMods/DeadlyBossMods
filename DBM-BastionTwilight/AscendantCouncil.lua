@@ -113,10 +113,7 @@ local lightningRodTargets = {}
 local gravityCrushTargets = {}
 local lightningRodIcon = 8
 local gravityCrushIcon = 8
-local warned_IgLow = false
-local warned_FelLow = false
-local warned_AriLow = false
-local warned_TerLow = false
+local warnedLowHP = {}
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -167,6 +164,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(frozenTargets)
 	table.wipe(lightningRodTargets)
 	table.wipe(gravityCrushTargets)
+	table.wipe(warnedLowHP)
 	lightningRodIcon = 8
 	gravityCrushIcon = 8
 	warned_IgLow = false
@@ -394,17 +392,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if not warned_IgLow and self:GetUnitCreatureId(uId) == 43686 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Ignacious
-		warned_IgLow = true
-		specWarnBossLow:Show(L.Ignacious)
-	elseif not warned_FelLow and self:GetUnitCreatureId(uId) == 43687 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Feludius
-		warned_FelLow = true
-		specWarnBossLow:Show(L.Feludius)
-	elseif not warned_AriLow and self:GetUnitCreatureId(uId) == 43688 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Arion
-		warned_AriLow = true
-		specWarnBossLow:Show(L.Arion)
-	elseif not warned_TerLow and self:GetUnitCreatureId(uId) == 43689 and UnitHealth(uId) / UnitHealthMax(uId) <= 0.30 then--Terrastra
-		warned_TerLow = true
-		specWarnBossLow:Show(L.Terrastra)
+	local cid = self:GetUnitCreatureId(uId)
+	if (cid == 43686 or cid == 43687 or cid == 43688 or cid == 43689) and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
+		warnedLowHP[cid] = true
+		specWarnBossLow:Show(UnitName(uId))
 	end
 end
