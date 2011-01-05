@@ -63,7 +63,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow	= "%s en dessous de 55%",
+	specWarnBossLow	= "%s en dessous de 30%",
 	SpecWarnGrounded	= "Obtenir le buff Liaison à la masse",
 	SpecWarnSearingWinds	= "Obtenir le buff Vents tournoyants"
 })
