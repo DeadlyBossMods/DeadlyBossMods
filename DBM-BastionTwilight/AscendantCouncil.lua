@@ -167,10 +167,6 @@ function mod:OnCombatStart(delay)
 	table.wipe(warnedLowHP)
 	lightningRodIcon = 8
 	gravityCrushIcon = 8
-	warned_IgLow = false
-	warned_FelLow = false
-	warned_AriLow = false
-	warned_TerLow = false
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
