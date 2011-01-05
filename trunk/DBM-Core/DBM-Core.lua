@@ -1791,7 +1791,7 @@ do
 			buildTargetList()
 			if combatInfo[LastZoneText] then
 				for i, v in ipairs(combatInfo[LastZoneText]) do
-					if v.type == "combat" then
+					if v.type == "engage" then
 						if v.multiMobPullDetection then
 							for _, mob in ipairs(v.multiMobPullDetection) do
 								if checkForPull(mob, v) then
