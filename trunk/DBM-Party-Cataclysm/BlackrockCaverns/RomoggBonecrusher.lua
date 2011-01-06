@@ -49,7 +49,7 @@ function mod:SPELL_CAST_START(args)
 		warnChainsWoe:Show()
 	elseif args:IsSpellID(75543, 93453) then
 		if mod:IsDifficulty("heroic5") then
-			timerSkullcracker:Start(10)
+			timerSkullcracker:Start(8)
 		else
 			timerSkullcracker:Start()
 		end
