@@ -18,6 +18,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Slump			= "%s|1이;가; 집게를 드러내며 앞으로 몸을 기울입니다!",
+	HeadExposed		= "%s|1이;가; 창에 꽂혀 머리가 노출되었습니다!"
 })
 
 L:SetOptionLocalization({
@@ -163,15 +165,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	OnyTailSwipe		= "Tail Lash (Onyxia)",
+	NefTailSwipe		= "Tail Lash (Nefarian)",
+	OnyBreath			= "Breath (Onyxia)",
+	NefBreath			= "Breath (Nefarian)"
 })
 
 L:SetTimerLocalization({
+	OnySwipeTimer		= "Tail Lash CD (Ony)",
+	NefSwipeTimer		= "Tail Lash CD (Nef)",
+	OnyBreathTimer		= "Breath CD (Ony)",
+	NefBreathTimer		= "Breath CD (Nef)"
+})
+
+L:SetOptionLocalization({
+	OnyTailSwipe		= "오닉시아의 $spell:77827 경고 보기",
+	NefTailSwipe		= "네파리안의 $spell:77827 경고 보기",
+	OnyBreath			= "오닉시아의 $spell:94124 경고 보기",
+	NefBreath			= "네파리안의 $spell:94124 경고 보기",
+	OnySwipeTimer		= "오닉시아의 $spell:77827 쿨다운 타이머 보기",
+	NefSwipeTimer		= "네파리안의 $spell:77827 쿨다운 타이머 보기",
+	OnyBreathTimer		= "오닉시아의 $spell:94124 쿨다운 타이머 보기",
+	NefBreathTimer		= "네파리안의 $spell:94124 쿨다운 타이머 보기"
 })
 
 L:SetMiscLocalization({
 	YellPhase2			= "저주받을 필멸자들!",
+	ShadowblazeCast		= "살을 재로",	
 	ChromaticPrototype	= "오색 실험체"
-})
-
-L:SetOptionLocalization({
 })
