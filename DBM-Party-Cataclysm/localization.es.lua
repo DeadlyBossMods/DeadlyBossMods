@@ -468,6 +468,14 @@ L:SetGeneralLocalization({
 	name = "Asaad"
 })
 
+L:SetOptionLocalization({
+	SpecWarnStaticCling	= "Mostrar aviso especial para $spell:87618"
+})
+
+L:SetWarningLocalization({
+	SpecWarnStaticCling	= "$spell:87618 - ¡SALTA!"	-- does $spell: work here ?
+})
+
 ---------------------------
 --  The Throne of Tides  --
 ---------------------------
