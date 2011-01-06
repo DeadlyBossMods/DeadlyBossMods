@@ -226,6 +226,41 @@ L:SetMiscLocalization({
 	GoblinBrokenHorde		= "¿Está estropeada otra vez? La arreglaré... pero no esperes que la garantía cubra esto."
 })
 
+------------------
+--  Twin Peaks  --
+------------------
+L = DBM:GetModLocalization("TwinPeaks")
+
+L:SetGeneralLocalization({
+	name = "Cumbres Gemelas"
+})
+
+L:SetMiscLocalization({
+	BgStart60 			= "The battle begins in 1 minute.",	-- translate
+	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",	-- translate
+	ZoneName 			= "Twin",	-- translate
+	Alliance 			= "Alianza",
+	Horde 				= "Horda",	
+	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",-- translate
+	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",-- translate
+	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",-- translate
+	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",-- translate
+	FlagAlliance		= "Bandera de la Alianza: ",
+	FlagHorde			= "Bandera de la Horda: ",
+	FlagBase			= "Base"
+})
+
+L:SetTimerLocalization({
+	TimerStart	= "Empieza la batalla", 
+	TimerFlag	= "Reaparición de la bandera"
+})
+
+L:SetOptionLocalization({
+	TimerStart					= "Mostrar tiempo de inicio",
+	TimerFlag					= "Mostrar tiempo de reaparición de bandera",
+	ShowFlagCarrier				= "Mostrar portador de la bandera",
+	ShowFlagCarrierErrorNote	= "Mostrar mensaje de error del portador de la bandera en combate"
+})
 
 --------------------------
 --  Battle for Gilneas  --
@@ -233,12 +268,12 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
-	name = "Battle for Gilneas"	-- translate
+	name = "La Batalla por Gilneas"	-- translate
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La batalla comenzará en 1 minuto.",
-	BgStart30		= "La batalla comenzará en 30 segundos.",
+	BgStart60		= "La batalla comenzará en 1 minuto.",	-- translate
+	BgStart30		= "La batalla comenzará en 30 segundos.",	-- translate
 	ScoreExpr 		= "(%d+)/2000",
 	Alliance 		= "Alianza",
 	Horde 			= "Horda",
