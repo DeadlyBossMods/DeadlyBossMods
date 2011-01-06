@@ -165,17 +165,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	OnyTailSwipe		= "Tail Lash (Onyxia)",
-	NefTailSwipe		= "Tail Lash (Nefarian)",
-	OnyBreath			= "Breath (Onyxia)",
-	NefBreath			= "Breath (Nefarian)"
+	OnyTailSwipe		= "꼬리 채찍 (오닉시아)",
+	NefTailSwipe		= "꼬리 채찍 (네파리안)",
+	OnyBreath			= "암흑불길 숨결 (오닉시아)",
+	NefBreath			= "암흑불길 숨결 (네파리안)"
 })
 
 L:SetTimerLocalization({
-	OnySwipeTimer		= "Tail Lash CD (Ony)",
-	NefSwipeTimer		= "Tail Lash CD (Nef)",
-	OnyBreathTimer		= "Breath CD (Ony)",
-	NefBreathTimer		= "Breath CD (Nef)"
+	OnySwipeTimer		= "꼬리 채찍 (오닉시아)",
+	NefSwipeTimer		= "꼬리 채찍 (네파리안)",
+	OnyBreathTimer		= "암흑불길 숨결 (오닉시아)",
+	NefBreathTimer		= "암흑불길 숨결 (네파리안)"
 })
 
 L:SetOptionLocalization({
