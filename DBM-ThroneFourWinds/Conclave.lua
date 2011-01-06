@@ -100,7 +100,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if poisonCounter < 1 then
 			poisonCounter = 1
 		end
-	elseif args:IsSpellID(84645) then
+	elseif args:IsSpellID(84645, 93124) then
 		timerWindChill:Start()
 	elseif args:IsSpellID(86193) then
 		windBlastCounter = windBlastCounter + 1
