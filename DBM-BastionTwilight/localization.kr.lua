@@ -24,8 +24,8 @@ L:SetOptionLocalization({
 L:SetMiscLocalization{
 	Trigger1				= "테랄리온, 내가 전당에 불을 뿜겠다. 놈들의 퇴로를 막아라!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
 
 --------------------------
@@ -59,6 +59,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specWarnBossLow			= "%s 체력 30%",
 	SpecWarnGrounded		= "접지!!",
 	SpecWarnSearingWinds	= "소용돌이 치는 바람!!"
 })
@@ -81,6 +82,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	specWarnBossLow			= "보스의 체력이 30% 이하로 내려갈 경우 특수 경고 보기",
 	SpecWarnGrounded		= "$spell:83581 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)",
 	SpecWarnSearingWinds	= "$spell:83500 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)",
 	timerTransition			= "전환 단계 타이머 보기",	

@@ -466,6 +466,14 @@ L:SetGeneralLocalization({
 	name = "아사드"
 })
 
+L:SetOptionLocalization({
+	SpecWarnStaticCling	= "$spell:87618의 특수 경고 보기"
+})
+
+L:SetWarningLocalization({
+	SpecWarnStaticCling	= "$spell:87618 - 점프!"	-- does $spell: work here ?
+})
+
 ---------------------------
 --  The Throne of Tides  --
 ---------------------------
