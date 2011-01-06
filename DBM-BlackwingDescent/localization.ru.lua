@@ -49,11 +49,11 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "Сказать в чат о том что вы являетесь целью способности $spell:80157",
-	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowInfusionIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92048)
+	SayBombTarget			= "Сказать в чат о том что вы являетесь целью способности $spell:80157",
+	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ShadowInfusionIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92048)
 })
 
 ----------------
@@ -66,7 +66,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase		= "%s фаза",
+	WarnPhase			= "%s фаза",
 	WarnRemainingAdds	= "Осталось %d аберрации"
 })
 
@@ -86,12 +86,12 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase		= "Показывать предупреждения о том какая фаза наступает",
+	WarnPhase			= "Показывать предупреждения о том какая фаза наступает",
 	WarnRemainingAdds	= "Показывать предупреждения о том сколько осталось аберрации",
-	TimerPhase		= "Показать таймер до следующей фазы",
-	RangeFrame		= "В ходе синей фазы, показать окно проверки дистанции (6)",
-	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
-	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	TimerPhase			= "Показать таймер до следующей фазы",
+	RangeFrame			= "В ходе синей фазы, показать окно проверки дистанции (6)",
+	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
