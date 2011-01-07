@@ -1,8 +1,8 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/04/2011 (by Sasmira) 
+-- Last update: 01/07/2011 (by Sasmira) 
 
 
 --------------
@@ -193,6 +193,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	NefAoe			= "The air crackles with electricity!", -- need translation ... :(
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
 	ShadowblazeCast		= "Que la chair se transforme en cendres !", -- à vérifier
 	ChromaticPrototype	= "Prototype chromatique"
