@@ -1785,7 +1785,7 @@ do
 		end
 	end
 
---[[	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
+	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
 		if not combatInitialized then return end
 		if combatInfo[LastZoneText] or combatInfo[LastZoneMapID] then
 			buildTargetList()
@@ -1807,7 +1807,7 @@ do
 			-- copy & paste, lol
 			if combatInfo[LastZoneMapID] then
 				for i, v in ipairs(combatInfo[LastZoneMapID]) do
-					if v.type == "combat" then
+					if v.type == "engage" then
 						if v.multiMobPullDetection then
 							for _, mob in ipairs(v.multiMobPullDetection) do
 								if checkForPull(mob, v) then
@@ -1822,7 +1822,7 @@ do
 			end
 			clearTargetList()
 		end
-	end--]]
+	end
 end
 
 do
