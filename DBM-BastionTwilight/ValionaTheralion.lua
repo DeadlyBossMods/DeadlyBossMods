@@ -137,8 +137,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Trigger1 or msg:find(L.Trigger1) then
 		specWarnDeepBreath:Show()
-		timerNextDeepBreath:Start()--for 2nd breath
-		timerNextDeepBreath:Schedule(13)--for 3rd breath (it's cast 3 times 13 seconds apart)
+--		timerNextDeepBreath:Start()--for 2nd breath
+--		timerNextDeepBreath:Schedule(13)--for 3rd breath (it's cast 3 times 13 seconds apart)
 		timerNextDazzlingDestruction:Start()
 		timerEngulfingMagicNext:Cancel()
 	end
