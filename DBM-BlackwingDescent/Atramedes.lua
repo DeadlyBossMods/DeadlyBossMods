@@ -74,7 +74,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnSonicBreath:Show()
 	elseif args:IsSpellID(77840) then
 		specWarnSearingFlame:Show()
-		timerSearingFlame:Start()
+--		timerSearingFlame:Start()
 	elseif args:IsSpellID(77611) and not args:IsSrcTypePlayer() then
 		shieldsLeft = shieldsLeft - 1
 		warnShieldsLeft:Show(shieldsLeft)
