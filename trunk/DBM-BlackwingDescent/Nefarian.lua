@@ -13,7 +13,8 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"SPELL_SUMMON",
 	"UNIT_DIED",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnOnyTailSwipe			= mod:NewAnnounce("OnyTailSwipe", 3, 77827)--we only care about onyxia's tailswipe. Nefarian's shouldn't get in the way or you're doing it wrong.
@@ -27,7 +28,8 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
-local timerLightningDischarge	= mod:NewCDTimer(20, 77942)--every 20-25 seconds. Need to emphesise this is a CD timer not a next timer. It will also only trigger if it hits something (including pets).
+local timerElectrocute			= mod:NewCastTimer(5, 81198)
+local timerLightningDischarge	= mod:NewCDTimer(20, 77942, 92456)--every 20-25 seconds. Need to emphesise this is a CD timer not a next timer. It will also only trigger if it hits something (including pets).
 local timerShadowflameBarrage	= mod:NewCDTimer(180, 78621)
 local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
 local timerOnySwipeCD			= mod:NewTimer(10, "OnySwipeTimer", 77827)--10-20 second cd (18 being the most consistent)
@@ -92,8 +94,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(77827, 94128, 94129, 94130) and args:GetSrcCreatureID() == 41376 then
 		warnNefTailSwipe:Show()
 		timerNefSwipeCD:Start()
-	elseif args:IsSpellID(81198) then--might only need 81198 and nothing else. Other IDs (81272, 94088, 94089, 94090)
-		specWarnElectrocute:Show()
 	end
 end
 
@@ -137,8 +137,19 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		warnPhase2:Show()
 		timerShadowflameBarrage:Start()
 		timerLightningDischarge:Cancel()
+		timerOnySwipeCD:Cancel()
+		timerNefSwipeCD:Cancel()
+		timerOnyBreathCD:Cancel()
+		timerNefBreathCD:Cancel()
 	elseif msg == L.ShadowblazeCast then
 		timerShadowBlazeCD:Start(shadowblazeTimer)
 		self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeTimer")
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.NefAoe or msg:find(L.NefAoe) then
+		specWarnElectrocute:Show()
+		timerElectrocute:Start()
 	end
 end

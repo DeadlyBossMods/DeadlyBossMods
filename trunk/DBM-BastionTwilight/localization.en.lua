@@ -85,6 +85,7 @@ L:SetOptionLocalization({
 	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
 	SpecWarnSearingWinds= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
 	timerTransition		= "Show Phase transition timer",
+	RangeFrame			= "Show range frame automatically when needed",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
