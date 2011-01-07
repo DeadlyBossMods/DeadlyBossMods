@@ -58,7 +58,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow			= "%s below 30%",
+	specWarnBossLow			= ">%s< below 30%",
 	SpecWarnGrounded		= "Get Grounded buff",
 	SpecWarnSearingWinds	= "Get Searing Winds buff"
 })
