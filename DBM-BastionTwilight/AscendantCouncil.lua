@@ -107,6 +107,7 @@ mod:AddBoolOption("GravityCrushIcon")
 mod:AddBoolOption("FrostBeaconIcon")
 mod:AddBoolOption("StaticOverloadIcon")
 mod:AddBoolOption("GravityCoreIcon")
+mod:AddBoolOption("RangeFrame")
 
 local frozenTargets = {}
 local lightningRodTargets = {}
@@ -172,6 +173,17 @@ function mod:OnCombatStart(delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
 	timerBurningBloodCD:Start(28-delay)--could be just as flakey as it is in combat though.
 	timerRisingFlames:Start(33-delay)--33-35 seconds after pull
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)
+		end
+	end
+end
+
+function mod:OnCombatEnd()
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -204,6 +216,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
 		end
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, lightningRodIcon)
@@ -279,6 +294,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(83099) then
 		timerLightningRod:Cancel(args.destName)
+		if args:IsPlayer() then
+			if self.Options.RangeFrame and not (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
+				DBM.RangeCheck:Hide()
+			end
+		end
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 0)
 		end
@@ -374,6 +394,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerTransition:Start()
 		timerLavaSeedCD:Start(30)
 		timerGravityCrushCD:Start(43)
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(10)
+		end
 	end
 end
 
