@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/05/2011 (by Sasmira) 
+-- Last update: 01/07/2011 (by Sasmira) 
 
 
 ---------------------------
@@ -63,7 +63,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow	= "%s en dessous de 30%",
+	specWarnBossLow	= ">%s< en dessous de 30%",
 	SpecWarnGrounded	= "Obtenir le buff Liaison à la masse",
 	SpecWarnSearingWinds	= "Obtenir le buff Vents tournoyants"
 })
