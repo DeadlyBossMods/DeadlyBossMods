@@ -39,7 +39,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "Supererhitzte Rüstimg (%d)"
+	TimerSuperheated 	= "Supererhitzte Rüstung (%d)"
 })
 
 L:SetOptionLocalization({
