@@ -1,6 +1,7 @@
 ﻿## Interface: 40000
 ## X-Min-Interface: 40000
 ## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Baradin Hold|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Baradinfestung|r
 ## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Bastión Baradin|r
 ## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0바라딘 요새|r
 ## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Крепость Барадин|r
@@ -13,6 +14,7 @@
 ## X-DBM-Mod-Category: CATA
 ## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Baradin Hold
+## X-DBM-Mod-Name-deDE: Baradinfestung
 ## X-DBM-Mod-Name-esES: Bastión Baradin
 ## X-DBM-Mod-Name-koKR: 바라딘 요새
 ## X-DBM-Mod-Name-ruRU: Крепость Барадин
@@ -20,6 +22,7 @@
 ## X-DBM-Mod-Sort: 101
 ## X-DBM-Mod-LoadZoneID: 752
 localization.en.lua
+localization.de.lua
 localization.es.lua
 localization.fr.lua
 localization.kr.lua
