@@ -1434,17 +1434,18 @@ end
 function DBM:ZONE_CHANGED_NEW_AREA()
 	if IsInInstance() then--Don't change map if not in instance, it makes archaeologists mad.
 		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on disconnect or reloadui
-	end
-	local zoneName = GetRealZoneText()
-	local zoneId = GetCurrentMapID()
-	LastZoneText = zoneName--Cache zone name on change.
-	LastZoneMapID = zoneId--Cache map on zone change.
-	for i, v in ipairs(self.AddOns) do
-		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or checkEntry(v.zoneId, zoneId)) then
-			-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
-			-- TODO: is this still necessary? this was a WotLK beta bug
-			DBM:Unschedule(DBM.LoadMod, DBM, v)
-			DBM:Schedule(3, DBM.LoadMod, DBM, v)
+		local zoneName = GetRealZoneText()
+		local zoneId = GetCurrentMapID()
+		LastZoneText = zoneName--Cache zone name on change.
+		LastZoneMapID = zoneId--Cache map on zone change.
+--		DBM:AddMsg(("Zone Change called: current zoneName %s, current mapID %s"):format(tostring(GetRealZoneText()), tostring(GetCurrentMapID()))) -- DEBUG
+		for i, v in ipairs(self.AddOns) do
+			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or checkEntry(v.zoneId, zoneId)) then
+				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
+				-- TODO: is this still necessary? this was a WotLK beta bug
+				DBM:Unschedule(DBM.LoadMod, DBM, v)
+				DBM:Schedule(3, DBM.LoadMod, DBM, v)
+			end
 		end
 	end
 	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
