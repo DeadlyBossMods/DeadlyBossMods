@@ -1,4 +1,4 @@
-if GetLocale() ~= "deDE" then return end
+﻿if GetLocale() ~= "deDE" then return end
 local L
 
 ----------------
@@ -21,6 +21,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnFirestormSoon		= "Zeige Vorwarnung f�r $spell:88972 ",
+	WarnFirestormSoon		= "Zeige Vorwarnung für $spell:88972 ",
 	SetIconOnConsuming		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88954)
 })
