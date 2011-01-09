@@ -1,4 +1,4 @@
-if GetLocale() ~= "deDE" then return end
+ï»¿if GetLocale() ~= "deDE" then return end
 local L
 
 -------------------------
@@ -39,11 +39,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerSuperheated 	= "Supererhitzte Rüstung (%d)"
+	TimerSuperheated 	= "Supererhitzte RÃ¼stung (%d)"
 })
 
 L:SetOptionLocalization({
-	TimerSuperheated	= "Zeige Timer für die Dauer von $spell:75846"
+	TimerSuperheated	= "Zeige Timer fÃ¼r die Dauer von $spell:75846"
 })
 
 ------------
@@ -61,7 +61,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("AscendantLordObsidius")
 
 L:SetGeneralLocalization({
-	name = "Aszendentenfürst Obsidius"
+	name = "AszendentenfÃ¼rst Obsidius"
 })
 
 L:SetOptionLocalization({
@@ -103,7 +103,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Ripsnarl")
 
 L:SetGeneralLocalization({
-	name = "Admiral Knurreißer"
+	name = "Admiral KnurreiÃŸer"
 })
 
 ----------------------
@@ -112,7 +112,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Cookie")
 
 L:SetGeneralLocalization({
-	name = "\"Kapitän\" Krümel"
+	name = "\"KapitÃ¤n\" KrÃ¼mel"
 })
 
 ----------------------
@@ -175,7 +175,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("TempleGuardianAnhuur")
 
 L:SetGeneralLocalization({
-	name = "Tempelwächter Anhuur"
+	name = "TempelwÃ¤chter Anhuur"
 })
 
 ---------------------
@@ -184,7 +184,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("EarthragerPtah")
 
 L:SetGeneralLocalization({
-	name = "Erdwüter Ptah"
+	name = "ErdwÃ¼ter Ptah"
 })
 
 L:SetMiscLocalization{
@@ -214,7 +214,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnSplitSoon	= "Zeige Vorwarnung für Teilung"
+	WarnSplitSoon	= "Zeige Vorwarnung fÃ¼r Teilung"
 })
 
 -------------
@@ -330,7 +330,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Springvale")
 
 L:SetGeneralLocalization({
-	name = "Kommandant Grüntal"
+	name = "Kommandant GrÃ¼ntal"
 })
 
 -----------------
@@ -343,7 +343,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization{
-	specWarnCoagulant	= "Grüne Mischung - Lauf!",	-- Green light
+	specWarnCoagulant	= "GrÃ¼ne Mischung - Lauf!",	-- Green light
 	specWarnRedMix		= "Rote Mischung - Bleib stehen!"		-- Red light
 }
 
@@ -386,10 +386,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnEmerge	= "Zeige Warnung für Auftauchen",
-	WarnSubmerge	= "eige Warnung für Untertauchen",
-	TimerEmerge	= "Zeige Timer für Auftauchen",
-	TimerSubmerge	= "Zeige Timer für Untertauchen"
+	WarnEmerge	= "Zeige Warnung fÃ¼r Auftauchen",
+	WarnSubmerge	= "eige Warnung fÃ¼r Untertauchen",
+	TimerEmerge	= "Zeige Timer fÃ¼r Auftauchen",
+	TimerSubmerge	= "Zeige Timer fÃ¼r Untertauchen"
 })
 
 L:SetGeneralLocalization({
@@ -419,7 +419,7 @@ L:SetWarningLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalStorm		= "Zeige Spezialwarnung für $spell:92265"
+	specWarnCrystalStorm		= "Zeige Spezialwarnung fÃ¼r $spell:92265"
 })
 
 -------------------------
@@ -439,7 +439,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GrandVizierErtan")
 
 L:SetGeneralLocalization({
-	name = "Großwesir Ertan"
+	name = "GroÃŸwesir Ertan"
 })
 
 --------------
