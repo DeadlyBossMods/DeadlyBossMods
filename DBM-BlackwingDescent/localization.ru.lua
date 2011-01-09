@@ -165,16 +165,33 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	OnyTailSwipe		= "Удар хвостом (Ониксия)",
+	NefTailSwipe		= "Удар хвостом (Нефариан)",
+	OnyBreath			= "Дыхание темного огня (Ониксия)",
+	NefBreath			= "Дыхание темного огня (Нефариан)"
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
-	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
-	ShadowblazeCast		= "Flesh turns to ash!",
-	ChromaticPrototype	= "Хроматический прообраз"
+	OnySwipeTimer		= "Удар хвостом - перезарядка (Ониксия)",
+	NefSwipeTimer		= "Удар хвостом - перезарядка (Нефариан)",
+	OnyBreathTimer		= "Дыхание темного огня (Ониксия)",
+	NefBreathTimer		= "Дыхание темного огня (Нефариан)"
 })
 
 L:SetOptionLocalization({
+	OnyTailSwipe		= "Показывать предупреждение для $spell:77827 Ониксии",
+	NefTailSwipe		= "Показывать предупреждение для $spell:77827 Нефариана",
+	OnyBreath			= "Показывать предупреждение для $spell:94124 Ониксии",
+	NefBreath			= "Показывать предупреждение для $spell:94124 Нефариана",
+	OnySwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Ониксии",
+	NefSwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Нефариана",
+	OnyBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Ониксии",
+	NefBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Нефариана"
+})
+
+L:SetMiscLocalization({
+	NefAoe				= "В воздухе трещат электрические разряды!",
+	YellPhase2			= "Дерзкие смертные! Неуважение к чужой собственности нужно пресекать самым жестоким образом!",
+	ShadowblazeCast		= "И плоть превратится в прах!",
+	ChromaticPrototype	= "Хроматический прообраз"
 })
