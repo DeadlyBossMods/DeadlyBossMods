@@ -18,11 +18,13 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing			= "$spell:86622 외치기",
-	RangeFrame				= "거리 프레임 보기"
+	YellOnMeteor			= "$spell:88518 외치기",	
+	RangeFrame				= "거리 프레임 보기(10m)"
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "테랄리온, 내가 전당에 불을 뿜겠다. 놈들의 퇴로를 막아라!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	YellMeteor				= "나에게 황혼 유성!!",	
 	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
@@ -127,7 +129,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Sinestra")
 
 L:SetGeneralLocalization({
-	name =	"Sinestra"
+	name =	"시네스트라"
 })
 
 L:SetWarningLocalization({
