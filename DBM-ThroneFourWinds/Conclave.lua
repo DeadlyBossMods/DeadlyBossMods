@@ -12,7 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_POWER"
+	"UNIT_POWER",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnNurture			= mod:NewSpellAnnounce(85422, 3)
@@ -21,6 +22,7 @@ local warnSummonTornados	= mod:NewSpellAnnounce(86192, 3)
 local warnWindBlast			= mod:NewSpellAnnounce(86193, 3)
 local warnStormShield		= mod:NewSpellAnnounce(95865, 3)
 local warnPoisonToxic	 	= mod:NewSpellAnnounce(86281, 3)
+local warnGatherStrength	= mod:NewTargetAnnounce(86307, 4)
 local warnSpecial			= mod:NewAnnounce("warnSpecial", 3, "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--Hurricane/Sleet Storm/Zephyr in single announce
 
 local specWarnSpecial		= mod:NewSpecialWarning("specWarnSpecial")
@@ -32,6 +34,7 @@ local timerSlicingGale		= mod:NewTargetTimer(45, 93058)
 local timerWindBlast		= mod:NewBuffActiveTimer(10, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
 local timerStormShieldCD	= mod:NewCDTimer(113, 95865)--Heroic ability that Lines up with Nuture it seems.
+local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
 local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)
 local timerSpecial			= mod:NewTimer(114, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD
@@ -120,5 +123,18 @@ function mod:UNIT_POWER(uId)
 		timerPoisonToxicCD:Start(10)
 	elseif self:GetUnitCreatureId(uId) == 45870 and UnitPower(uId) == 79 and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
 		timerPoisonToxicCD:Cancel()
+	end
+end
+
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, boss)
+	if (msg == L.gatherstrength or msg:find(L.gatherstrength)) and mod:LatencyCheck() then
+		self:SendSync("GatherStrength", boss)
+	end
+end
+
+function mod:OnSync(msg, boss)
+	if msg == "GatherStrength" and self:IsInCombat() then
+		warnGatherStrength:Show(boss)
+		timerGatherStrength:Start(boss)
 	end
 end
