@@ -18,8 +18,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Slump			= "%s slumps forward, exposing his pincers!",--translate
-	HeadExposed		= "%s becomes impaled on the spike, exposing his head!"--translate
+	Slump			= "%s cae hacia delante y deja expuestas sus tenazas!",
+	HeadExposed		= "%s acaba empalado en el pincho y deja expuesta la cabeza!"
 })
 
 L:SetOptionLocalization({
@@ -75,14 +75,14 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellRed			= "red|r vial into the cauldron!",--translate
-	YellBlue		= "blue|r vial into the cauldron!",--translate
-	YellGreen		= "green|r vial into the cauldron!",--translate
-	YellDark		= "dark|r vial into the cauldron!",--translate
-	Red				= "Roja",
+	YellRed			= "vial rojo|r a la caldera!",
+	YellBlue		= "vial azul|r a la caldera!",
+	YellGreen		= "vial verde|r a la caldera!",
+	YellDark		= "vial oscuro|r a la caldera!",--translate
+	Red				= "Rojo",
 	Blue			= "Azul",
 	Green			= "Verde",
-	Dark			= "Oscura"
+	Dark			= "Oscuro"
 })
 
 L:SetOptionLocalization({
@@ -134,7 +134,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase		= "Fase aerea",
 	WarnGroundphase		= "Fase en tierra",
-	WarnShieldsLeft		= "Ancient Dwarven Shield used - %d left"--translate
+	WarnShieldsLeft		= "Antiguo escudo enano usado - %d restantes"
 })
 
 L:SetTimerLocalization({
@@ -143,14 +143,14 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	AncientDwarvenShield	= "Ancient Dwarven Shield",--translate
+	AncientDwarvenShield	= "Antiguo escudo enano",
 	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"--translate
 })
 
 L:SetOptionLocalization({
 	WarnAirphase		= "Mostrar aviso cuando Atramedes levanta el vuelo",
 	WarnGroundphase		= "Mostrar aviso cuando Atramedes aterriza",
-	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",--translate
+	WarnShieldsLeft		= "Mostrar aviso cuando Antiguo escudo enano sea usado",
 	TimerAirphase		= "Mostrar tiempo para siguiente Fase aerea",
 	TimerGroundphase	= "Mostrar tiempo para siguiente Fase en tierra",
 	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)

@@ -19,12 +19,14 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
+	YellOnMeteor			= "Gritar cuando tengas $spell:88518",
 	RangeFrame				= "Mostrar distancia (10 yardas)"
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, I will engulf the hallway. Cover their escape!",--translate
 	YellEngulfing				= "¡Trago de magia en mi!",
+	YellMeteor				= "¡Meteorito Crepuscular en me!",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
@@ -61,7 +63,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow			= ">%s< está por debajo dels 30%",
+	specWarnBossLow			= ">%s< está por debajo del 30%",
 	SpecWarnGrounded	= "Coge el bufo de Domeñado",
 	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales"
 })
