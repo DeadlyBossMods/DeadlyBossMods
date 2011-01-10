@@ -21,13 +21,15 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Pousser un cri sur $spell:86622",
+	YellOnEngulfing			= "Crier sur $spell:86622",
+	YellOnMeteor			= "Crier sur $spell:88518",
 	RangeFrame		= "Afficher la fenêtre de portée (10)"
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",-- A verifier ...
-	YellEngulfing				= "Magie enveloppante sur moi!",
+	YellEngulfing			= "Magie enveloppante sur moi!",
+	YellMeteor				= "Météorite du Crépuscule sur moi!",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
