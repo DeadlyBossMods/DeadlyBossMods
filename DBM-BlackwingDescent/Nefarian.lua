@@ -30,7 +30,7 @@ local warnPhase3				= mod:NewPhaseAnnounce(3)
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
 local timerElectrocute			= mod:NewCastTimer(5, 81198)
 local timerLightningDischarge	= mod:NewCDTimer(20, 77942)--92456, every 20-25 seconds. Need to emphesise this is a CD timer not a next timer. It will also only trigger if it hits something (including pets).
-local timerShadowflameBarrage	= mod:NewCDTimer(180, 78621)
+local timerShadowflameBarrage	= mod:NewBuffActiveTimer(180, 78621)
 local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
 local timerOnySwipeCD			= mod:NewTimer(10, "OnySwipeTimer", 77827)--10-20 second cd (18 being the most consistent)
 local timerNefSwipeCD			= mod:NewTimer(10, "NefSwipeTimer", 77827, false)--Same as hers, but not synced.
@@ -77,13 +77,12 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(80734) then
 		warnBlastNova:Show()
-		if args.sourceGUID == UnitGUID("target") then--This may completely error out or be broken, i have no idea how to do this stuff properly.
+		if args.sourceGUID == UnitGUID("target") then--Only show warning/timer for your own target.
 			specWarnBlastsNova:Show()
 			timerBlastNova:Start()
 		end
 	elseif args:IsSpellID(78621, 94121, 94122, 94123) then
 		warnShadowflameBarrage:Show()
---		timerShadowflameBarrage:Start()
 	end
 end
 
