@@ -147,7 +147,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if msg == L.NefAoe or msg:find(L.NefAoe) then
+	if (msg == L.NefAoe or msg:find(L.NefAoe)) and self:IsInCombat() then
 		specWarnElectrocute:Show()
 		timerElectrocute:Start()
 	end
