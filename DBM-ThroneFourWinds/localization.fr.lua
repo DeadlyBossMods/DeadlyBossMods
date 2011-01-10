@@ -1,8 +1,8 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 12/29/2010 (by Sasmira) 
+-- Last update: 01/11/2011 (by Sasmira) 
 
 ------------------------
 --  Conclave of Wind  --
@@ -24,6 +24,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	gatherstrength			= "%s commence à rassembler ses forces à partir des autres Seigneurs du Vent !"
 })
 
 L:SetOptionLocalization({
