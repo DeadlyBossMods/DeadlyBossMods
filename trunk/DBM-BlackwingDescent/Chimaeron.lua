@@ -36,21 +36,26 @@ local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
 
 local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
 
-local prewarnedPhase2 = false
-local slimeTargets = {}
-
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("SetIconOnSlime", true)
+
+local prewarnedPhase2 = false
+local feud = false
+local slimeTargets = {}
+local slimeIcon = 8
 
 local function showSlimeWarning()
 	warnCausticSlime:Show(table.concat(slimeTargets, "<, >"))
 	table.wipe(slimeTargets)
+	slimeIcon = 8
 end
 
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
 --	timerFeudNext:Start(-delay)--Not consistent?
 	prewarnedPhase2 = false
-	lastSlime = 0
+	feud = false
+	slimeIcon = 8
 	table.wipe(slimeTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
@@ -78,6 +83,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDoubleAttack:Show()
 	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then--There is no cast for this, so we have to warn on damage :\
 		slimeTargets[#slimeTargets + 1] = args.destName
+		if self.Options.SetIconOnSlime and not feud then--Don't set icons during feud, set them any other time.
+			self:SetIcon(args.destName, slimeIcon)
+			slimeIcon = slimeIcon - 1
+		end
 		self:Unschedule(showSlimeWarning)
 		self:Schedule(0.3, showSlimeWarning)
 	end
@@ -91,6 +100,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMassacre:Show()
 		timerMassacre:Start()
 		timerMassacreNext:Start()
+		feud = false
 	end
 end
 
@@ -100,6 +110,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerFeud:Start()
 --		timerFeudNext:Start()
 		timerCausticSlime:Start()
+		feud = true
 	elseif args:IsSpellID(82934) then
 		warnPhase2:Show()
 		timerFeudNext:Cancel()
