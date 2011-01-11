@@ -22,6 +22,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	gatherstrength			= "%s empieza a extraer fuerza de los señores del viento que quedan!"
 })
 
 L:SetOptionLocalization({
