@@ -78,7 +78,7 @@ L:SetMiscLocalization({
 	YellRed			= "красный|r пузырек в котел!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
 	YellBlue		= "синий|r пузырек в котел!",
 	YellGreen		= "зеленый|r пузырек в котел!",
-	YellDark		= "темный|r пузырек в котел!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
+	YellDark		= "магию на котле!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
 	Red		     	= "Огненная",
 	Blue			= "Ледяная",
 	Green			= "Кислотная",

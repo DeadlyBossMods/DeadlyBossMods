@@ -19,12 +19,14 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
+	YellOnMeteor			= "Крикнуть если на вас $spell:88518",
 	RangeFrame				= "Окно проверки дистанции (10)"
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
-	YellEngulfing			= "На МНЕ избыточная магия!",
+	YellEngulfing			= "На МНЕ - Избыточная магия!",
+	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
@@ -60,7 +62,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow			= "%s ниже 30%",
+	specWarnBossLow			= ">%s< ниже 30%",
 	SpecWarnGrounded		= "Получите Ауру Заземление",
 	SpecWarnSearingWinds	= "Получите Аура Кружащихся ветров"
 })
@@ -87,6 +89,7 @@ L:SetOptionLocalization({
 	SpecWarnGrounded	= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
 	SpecWarnSearingWinds= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
 	timerTransition		= "Показать таймер перехода в другую фазу",
+	RangeFrame			= "Автоматически показать окно проверки дистанции при надобности",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
