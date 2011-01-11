@@ -468,7 +468,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnStaticCling	= "$spell:87618 - JUMP!"	-- does $spell: work here ?
+	SpecWarnStaticCling	= "JUMP!"
 })
 
 ---------------------------
