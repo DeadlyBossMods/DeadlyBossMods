@@ -23,6 +23,7 @@ local warnOnyShadowflameBreath	= mod:NewAnnounce("OnyBreath", 3, 94124, mod:IsTa
 local warnNefShadowflameBreath	= mod:NewAnnounce("NefBreath", 3, 94124, mod:IsTank())
 local warnShadowflameBarrage	= mod:NewSpellAnnounce(78621, 3, nil, false)--Phase 2 spam.
 local warnBlastNova				= mod:NewSpellAnnounce(80734, 3)
+local warnShadowBlaze			= mod:NewSpellAnnounce(94085, 4)--May be quirky
 local warnHailBones				= mod:NewSpellAnnounce(94104, 3, nil, false)	-- spams a lot (every ~2sec a new one spawns)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
@@ -51,6 +52,7 @@ function mod:ShadowBlazeTimer()
 	if shadowblazeTimer >= 10 then--Keep it from dropping below 5
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
+	warnShadowBlaze:Show()
 	timerShadowBlazeCD:Start(shadowblazeTimer)
 	self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeTimer")
 end
