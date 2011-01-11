@@ -69,6 +69,8 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Brann or msg:find(L.Brann) then
-		timerGauntlet:Start()
+		if mod:IsDifficulty("heroic5") then
+			timerGauntlet:Start()
+		end
 	end
 end
