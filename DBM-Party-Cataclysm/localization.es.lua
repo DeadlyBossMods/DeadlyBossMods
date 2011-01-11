@@ -473,7 +473,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnStaticCling	= "¡SALTA!"	-- does $spell: work here ?
+	SpecWarnStaticCling	= "¡SALTA!"
 })
 
 ---------------------------
