@@ -75,10 +75,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellRed			= "vial rojo|r a la caldera!",
-	YellBlue		= "vial azul|r a la caldera!",
-	YellGreen		= "vial verde|r a la caldera!",
-	YellDark		= "vial oscuro|r a la caldera!",--translate
+	YellRed			= "rojo|r a la caldera!",
+	YellBlue		= "azul|r a la caldera!",
+	YellGreen		= "verde|r a la caldera!",
+	YellDark		= "oscuro|r a la caldera!",--translate
 	Red				= "Rojo",
 	Blue			= "Azul",
 	Green			= "Verde",
