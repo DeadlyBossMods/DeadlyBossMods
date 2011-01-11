@@ -76,7 +76,7 @@ L:SetMiscLocalization({
 	YellRed			= "red|r vial into the cauldron!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
 	YellBlue		= "blue|r vial into the cauldron!",
 	YellGreen		= "green|r vial into the cauldron!",
-	YellDark		= "dark|r vial into the cauldron!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
+	YellDark		= "dark|r magic into the cauldron!",
 	Red			= "Red",
 	Blue			= "Blue",
 	Green			= "Green",
