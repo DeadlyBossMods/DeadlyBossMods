@@ -199,6 +199,14 @@ L:SetGeneralLocalization({
 	name = "Anraphet"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Speed of Light"
+})
+
+L:SetMiscLocalization({
+	Brann		= "Right, let's go! Just need to input the final entry sequence into the door mechanism... and..."
+})
+
 ------------
 -- Isiset --
 ------------
