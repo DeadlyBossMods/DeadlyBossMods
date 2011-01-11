@@ -24,9 +24,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "Theralion, I will engulf the hallway. Cover their escape!",--translate
+	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",
 	YellEngulfing				= "¡Trago de magia en mi!",
-	YellMeteor				= "¡Meteorito Crepuscular en me!",
+	YellMeteor				= "¡Meteorito Crepuscular en mi!",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
@@ -82,7 +82,7 @@ L:SetMiscLocalization({
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Monstruosidad de Elementium",--translate ?
-	Kill			= "Impossible...."--translate
+	Kill			= "Imposible...."--translate
 })
 
 L:SetOptionLocalization({
