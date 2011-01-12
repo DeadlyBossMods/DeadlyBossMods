@@ -44,16 +44,14 @@ L:SetMiscLocalization({
 	Magmatron	= "용암골렘",
 	Electron	= "전기골렘",
 	Toxitron	= "맹독골렘",
-	Arcanotron	= "비전골렘",
-	SayBomb		= "나에게 화학 폭탄!! 튀어!!"
+	Arcanotron	= "비전골렘"
 })
 
 L:SetOptionLocalization({
-	SayBombTarget		= "$spell:80157 말하기",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowInfusionIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92048)
+	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
 ----------------

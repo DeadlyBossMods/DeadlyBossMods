@@ -42,16 +42,14 @@ L:SetMiscLocalization({
 	Magmatron		= "熔岩號",
 	Electron		= "雷電號",
 	Toxitron		= "烈毒號",
-	Arcanotron		= "秘法號",
-	SayBomb			= "我中了化學炸彈!"
+	Arcanotron		= "秘法號"
 })
 
 L:SetOptionLocalization({
-	SayBombTarget		= "當你是$spell:80157的目標時大喊",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowInfusionIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92048)
+	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
 ----------------
