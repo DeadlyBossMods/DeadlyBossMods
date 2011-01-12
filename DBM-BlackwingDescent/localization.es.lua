@@ -38,20 +38,25 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerShadowConductorCast	= "Retorno Arcano",
+	timerShadowConductorCast	= "Conductor de las Sombras"
+})
+
+L:SetOptionLocalization({
+	timerShadowConductorCast	= "Mostrar tiempo para lanzamiento de $spell:92053",
+	timerArcaneBlowbackCast	= "Mostrar tiempo para lanzamiento de $spell:91879",
+	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
 L:SetMiscLocalization({
 	Magmatron	= "Magmatron",
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
-	Arcanotron	= "Arcanotron"
-})
-
-L:SetOptionLocalization({
-	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	Arcanotron	= "Arcanotron",
+	NefOvercharged	= "Stupid Dwarves and your fascination with runes! Why would you create something that would help your enemy?"--translate
 })
 
 ----------------
@@ -116,8 +121,9 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Mostrar un preaviso para la fase 2",
+	RangeFrame		= "Mostrar distancia (6 yardas)",
 	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
-	RangeFrame		= "Mostrar distancia (6 yardas)"
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)	
 })
 
 -----------------
