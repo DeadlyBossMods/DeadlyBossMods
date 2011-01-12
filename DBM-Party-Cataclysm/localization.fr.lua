@@ -1,8 +1,8 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/05/2011 (by Sasmira) 
+-- Last update: 01/12/2011 (by Sasmira) 
 
 
 -------------------------
@@ -202,6 +202,14 @@ L = DBM:GetModLocalization("Anraphet")
 
 L:SetGeneralLocalization({
 	name = "Anraphet"
+})
+
+L:SetTimerLocalization({
+	achievementGauntlet	= "Vitesse de la Lumière"
+})
+
+L:SetMiscLocalization({
+	Brann		= "Bien, allons y maintenant ! J'ai juste besoin de saisir la séquence d'entrée définitive dans le mécanisme de la porte ... et ..." -- Traduction litérale, a vérifier ...
 })
 
 ------------
@@ -473,7 +481,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnStaticCling	= "$spell:87618 - SAUTER !"	-- does $spell: work here ?
+	SpecWarnStaticCling	= "SAUTE !"
 })
 
 ---------------------------

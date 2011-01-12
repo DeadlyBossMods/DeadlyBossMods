@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/07/2011 (by Sasmira) 
+-- Last update: 01/12/2011 (by Sasmira) 
 
 
 --------------
@@ -120,8 +120,9 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2",
-	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "inconnu"),
-	RangeFrame	= "Afficher la fenêtre de portée (6)"
+	RangeFrame	= "Afficher la fenêtre de portée (6)",
+	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "inconnu"),
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
 })
 
 -----------------
