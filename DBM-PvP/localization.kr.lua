@@ -156,8 +156,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 = "1분 후 전쟁노래 협곡 전투가 시작됩니다!",
-	BgStart30 = "30초 후 전쟁노래 협곡 전투가 시작됩니다. 준비하십시오!",
+	BgStart60 = "1분 후 전투가 시작됩니다!",
+	BgStart30 = "30초 후 전투가 시작됩니다. 준비하십시오!",
 	Alliance = "얼라이언스",
 	Horde = "호드",	
 	InfoErrorText 		= "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
@@ -214,7 +214,7 @@ L:SetMiscLocalization({
 	BgStart60				= "60초 후 전투가 시작됩니다.",
 	BgStart30				= "30초 후 전투가 시작됩니다.",
 	BgStart15				= "15초 후 전투가 시작됩니다.",
-	SiegeEngine				= "Siege Engine",
+	SiegeEngine				= "공성 전차",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
 	GoblinStartHorde		= "공성 전차를 수리하는 동안 날 좀 지켜 달라고. 필요하면 저기 있는 시포리움 폭약을 관문에 사용해!",
 	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
