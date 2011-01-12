@@ -200,6 +200,14 @@ L:SetGeneralLocalization({
 	name = "안라펫"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Speed of Light"
+})
+
+L:SetMiscLocalization({
+	Brann		= "Right, let's go! Just need to input the final entry sequence into the door mechanism... and..."
+})
+
 ------------
 -- Isiset --
 ------------
@@ -471,7 +479,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnStaticCling	= "$spell:87618 - 점프!"	-- does $spell: work here ?
+	SpecWarnStaticCling	= "점프!"
 })
 
 ---------------------------
