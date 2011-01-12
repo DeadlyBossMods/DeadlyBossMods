@@ -11,10 +11,11 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"SPELL_SUMMON",
-	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_DIED"
 )
 
 local warnOnyTailSwipe			= mod:NewAnnounce("OnyTailSwipe", 3, 77827)--we only care about onyxia's tailswipe. Nefarian's shouldn't get in the way or you're doing it wrong.
@@ -122,17 +123,6 @@ function mod:SPELL_SUMMON(args)
 	end
 end
 
-function mod:UNIT_DIED(args)
-	if args.destName == L.ChromaticPrototype then
-		deaths = deaths + 1
-		if deaths == 3 then
-			warnPhase3:Show()
-			timerShadowflameBarrage:Cancel()
-			timerShadowBlazeCD:Start()
-		end
-	end
-end
-
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellPhase2 then
 		warnPhase2:Show()
@@ -152,5 +142,16 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if (msg == L.NefAoe or msg:find(L.NefAoe)) and self:IsInCombat() then
 		specWarnElectrocute:Show()
 		timerElectrocute:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if args.destName == L.ChromaticPrototype then
+		deaths = deaths + 1
+		if deaths == 3 then
+			warnPhase3:Show()
+			timerShadowflameBarrage:Cancel()
+			timerShadowBlazeCD:Start()
+		end
 	end
 end

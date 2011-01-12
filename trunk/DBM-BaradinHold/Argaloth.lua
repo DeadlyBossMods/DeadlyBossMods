@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
 	"UNIT_HEALTH"
 )
 
@@ -31,7 +32,7 @@ local timerMeteorSlashCast	= mod:NewCastTimer(1.25, 88942)
 local timerFirestorm		= mod:NewBuffActiveTimer(15, 88972)
 local timerFirestormCast	= mod:NewCastTimer(3, 88972)
 
-local berserkTimer		= mod:NewBerserkTimer(300)
+local berserkTimer			= mod:NewBerserkTimer(300)
 mod:AddBoolOption("SetIconOnConsuming", true)
 
 local consumingTargets = {}
@@ -39,11 +40,13 @@ local consumingIcon = 8
 local prewarnedFirestorm = false
 local spamMeteor = 0
 local consuming = 0
+local lastFlames = 0
 
 local function showConsumingWarning()
 	warnConsuming:Show(table.concat(consumingTargets, "<, >"))
 	table.wipe(consumingTargets)
 	consumingIcon = 8
+	lastFlames = 0
 	prewarnedFirestorm = false
 end
 
@@ -109,13 +112,10 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-do
-	local lastFlames = 0
-	function mod:SPELL_DAMAGE(args)
-		if args:IsSpellID(89000, 95177) and GetTime() - lastFlames > 3 then -- Flames on ground from Firestorm
-			specWarnFirestorm:Show()
-			lastFlames = GetTime()
-		end
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(89000, 95177) and GetTime() - lastFlames > 3 then -- Flames on ground from Firestorm
+		specWarnFirestorm:Show()
+		lastFlames = GetTime()
 	end
 end
 
