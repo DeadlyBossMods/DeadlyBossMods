@@ -14,22 +14,22 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnBreath		= mod:NewSpellAnnounce(83710, 3)
-local warnFuriousRoar	= mod:NewSpellAnnounce(83710, 3)
-local warnCycloneWinds	= mod:NewSpellAnnounce(83612, 3)
-local warnTimeDilation	= mod:NewSpellAnnounce(83601, 3)
-local warnVengeance		= mod:NewSpellAnnounce(87683, 3)
-local warnShadowNova	= mod:NewSpellAnnounce(87683, 3)
---local warnBarrage		= mod:NewSpellAnnounce(83706, 3)--This is not showing in combat log, no cast, or aura, only damage, but i don't think it's that important anyways.
+local warnBreath			= mod:NewSpellAnnounce(83710, 3)
+local warnFuriousRoar		= mod:NewSpellAnnounce(83710, 3)
+local warnCycloneWinds		= mod:NewSpellAnnounce(83612, 3)
+local warnTimeDilation		= mod:NewSpellAnnounce(83601, 3)
+local warnVengeance			= mod:NewSpellAnnounce(87683, 3)
+local warnShadowNova		= mod:NewSpellAnnounce(87683, 3)
+--local warnBarrage			= mod:NewSpellAnnounce(83706, 3)--This is not showing in combat log, no cast, or aura, only damage, but i don't think it's that important anyways.
 
-local specWarnShadowNova= mod:NewSpecialWarningInterrupt(83703, false)
+local specWarnShadowNova	= mod:NewSpecialWarningInterrupt(83703, false)
 
-local timerFuriousRoar	= mod:NewCDTimer(30, 83710)
---local timerBarrageCD	= mod:NewCDTimer(32, 83706)
-local timerBreathCD		= mod:NewCDTimer(20, 83707)--every 20-25 seconds.
-local timerBarrage		= mod:NewBuffActiveTimer(10, 83706)
+local timerFuriousRoar		= mod:NewCDTimer(30, 83710)
+--local timerBarrageCD		= mod:NewCDTimer(32, 83706)
+local timerBreathCD			= mod:NewCDTimer(20, 83707)--every 20-25 seconds.
+local timerBarrage			= mod:NewBuffActiveTimer(10, 83706)
 
-local berserkTimer		= mod:NewBerserkTimer(360)
+local berserkTimer			= mod:NewBerserkTimer(360)
 
 local spamFuriousRoar = 0
 

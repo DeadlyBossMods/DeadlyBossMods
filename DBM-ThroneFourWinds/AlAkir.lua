@@ -9,11 +9,11 @@ mod:SetUsedIcons(8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_CAST_START",
-	"SPELL_DAMAGE",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -42,26 +42,6 @@ function mod:OnCombatStart(delay)
 	timerWindBurstCD:Start(20-delay)
 	lastWindburst = 0
 	phase2Started = false
-end
-
-function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(87770, 93261, 93262, 93263) then--Phase 1 wind burst
-		warnWindBurst:Show()
-		timerWindBurstCD:Start()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerWindBurst:Start(4)--4 second cast on heroic according to wowhead.
-		else
-			timerWindBurst:Start()
-		end
-	end
-end
-
-function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(88858, 93286, 93287, 93288) and GetTime() - lastWindburst > 5 then--Phase 3 wind burst, does not use cast success :(
-		warnWindBurst:Show()
-		timerWindBurstCD:Start(20)
-		lastWindburst = GetTime()
-	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -94,6 +74,26 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 0)
 		end
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(87770, 93261, 93262, 93263) then--Phase 1 wind burst
+		warnWindBurst:Show()
+		timerWindBurstCD:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerWindBurst:Start(4)--4 second cast on heroic according to wowhead.
+		else
+			timerWindBurst:Start()
+		end
+	end
+end
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(88858, 93286, 93287, 93288) and GetTime() - lastWindburst > 5 then--Phase 3 wind burst, does not use cast success :(
+		warnWindBurst:Show()
+		timerWindBurstCD:Start(20)
+		lastWindburst = GetTime()
 	end
 end
 

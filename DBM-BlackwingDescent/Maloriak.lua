@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_INTERRUPT",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_INTERRUPT",
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
@@ -144,13 +144,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
-function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(77679, 92968, 92969, 92970) then
-		warnScorchingBlast:Show()
-		timerScorchingBlast:Start()
-	end
-end
-
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77569) then
 		warnReleaseAdds:Show()
@@ -158,6 +151,13 @@ function mod:SPELL_CAST_START(args)
 		self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interrupt and curse of tongues having been up.
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
+	end
+end
+
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(77679, 92968, 92969, 92970) then
+		warnScorchingBlast:Show()
+		timerScorchingBlast:Start()
 	end
 end
 
