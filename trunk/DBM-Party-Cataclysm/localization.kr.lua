@@ -188,7 +188,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	Kill		= "Ptah... is... no more..."
+	Kill		= "프타는... 이젠..."
 }
 
 --------------
@@ -201,11 +201,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	achievementGauntlet	= "Speed of Light"
+	achievementGauntlet	= "빛 보다 빠르게"
 })
 
 L:SetMiscLocalization({
-	Brann		= "Right, let's go! Just need to input the final entry sequence into the door mechanism... and..."
+	Brann		= "좋아요. 갑시다! 최종 출입 암호를 넣기만 하면 이 출입문이 작동할 거예요..."
 })
 
 ------------
