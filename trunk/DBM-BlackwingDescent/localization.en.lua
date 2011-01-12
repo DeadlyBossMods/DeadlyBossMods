@@ -36,22 +36,25 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
-	Magmatron	= "Magmatron",
-	Electron	= "Electron",
-	Toxitron	= "Toxitron",
-	Arcanotron	= "Arcanotron",
-	SayBomb		= "Poison Bomb on me!"
+	timerShadowConductorCast	= "Arcane Blowback",
+	timerShadowConductorCast	= "Shadow Conductor"
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "Shout in SAY that you are targeted for $spell:80157",
+	timerShadowConductorCast	= "Show timer for $spell:92053 cast",
+	timerArcaneBlowbackCast	= "Show timer for $spell:91879 cast",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowInfusionIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92048)
+	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+})
+
+L:SetMiscLocalization({
+	Magmatron		= "Magmatron",
+	Electron		= "Electron",
+	Toxitron		= "Toxitron",
+	Arcanotron		= "Arcanotron",
+	NefOvercharged	= "Stupid Dwarves and your fascination with runes! Why would you create something that would help your enemy?"
 })
 
 ----------------

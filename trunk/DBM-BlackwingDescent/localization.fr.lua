@@ -47,16 +47,14 @@ L:SetMiscLocalization({
 	Magmatron	= "Magmatron",
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
-	Arcanotron	= "Arcanotron",
-	SayBomb	= "Bombe de poison sur moi !"
+	Arcanotron	= "Arcanotron"
 })
 
 L:SetOptionLocalization({
-	SayBombTarget	= "Dire en SAY que vous êtes la cible du sort $spell:80157",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowInfusionIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92048)
+	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
 ----------------
