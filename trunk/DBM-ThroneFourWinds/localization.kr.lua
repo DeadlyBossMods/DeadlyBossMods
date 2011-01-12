@@ -21,6 +21,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	gatherstrength			= "%s의 힘이 극에 달합니다!"
 })
 
 L:SetOptionLocalization({
