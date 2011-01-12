@@ -117,8 +117,9 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "2 단계 사전 경고 보기",
+	RangeFrame		= "거리 프레임 보기(6 m)",
 	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "알 수 없음"),
-	RangeFrame		= "거리 프레임 보기(6)"
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)	
 })
 
 -----------------
