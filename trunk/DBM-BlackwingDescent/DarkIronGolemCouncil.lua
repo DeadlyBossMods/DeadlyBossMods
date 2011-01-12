@@ -297,5 +297,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnOverchargedGenerator:Show()
 		specWarnOvercharged:Show()
 		timerArcaneBlowback:Start()
+		timerNefAbilityCD:Start()
 	end
 end
