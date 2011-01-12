@@ -12,75 +12,82 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_MONSTER_YELL"
+	"SPELL_CAST_SUCCESS"
 )
 
 --Magmatron
-local warnIncineration		= mod:NewSpellAnnounce(79023, 2)
-local warnBarrier			= mod:NewSpellAnnounce(79582, 4)
+local warnIncineration			= mod:NewSpellAnnounce(79023, 2)
+local warnBarrier				= mod:NewSpellAnnounce(79582, 4)
+local warnEncasingShadows		= mod:NewTargetAnnounce(92023, 4)--Heroic Ability
 --Electron
-local warnUnstableShield	= mod:NewSpellAnnounce(79900, 4)
+local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4)
+local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92053, 5, 4)--Heroic Ability
 --Toxitron
-local warnPoisonProtocol	= mod:NewSpellAnnounce(80053, 2)
-local warnFixate			= mod:NewTargetAnnounce(80094, 3)
-local warnChemicalBomb		= mod:NewSpellAnnounce(80157, 3)
-local warnShell				= mod:NewSpellAnnounce(79835, 4)
+local warnPoisonProtocol		= mod:NewSpellAnnounce(80053, 2)
+local warnFixate				= mod:NewTargetAnnounce(80094, 3, nil, false)--Spammy, off by default. Raid leader can turn it on if they wanna yell at these people.
+local warnChemicalBomb			= mod:NewSpellAnnounce(80157, 3)
+local warnShell					= mod:NewSpellAnnounce(79835, 4)
+local warnGrip					= mod:NewCastAnnounce(91849, 4)--Heroic Ability
 --Arcanotron
-local warnGenerator			= mod:NewSpellAnnounce(79624, 3)
-local warnConversion		= mod:NewSpellAnnounce(79729, 4)
+local warnGenerator				= mod:NewSpellAnnounce(79624, 3)
+local warnConversion			= mod:NewSpellAnnounce(79729, 4)
+local warnOverchargedGenerator	= mod:NewSpellAnnounce(91857, 4)--Heroic Ability
 --All
-local warnActivated			= mod:NewTargetAnnounce(78740, 3)
-local warnShadowInfusion	= mod:NewTargetAnnounce(92048, 4)--Heroic Ability
+local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 
 --Magmatron
-local timerAcquiringTarget	= mod:NewNextTimer(40, 79501)
-local timerBarrier			= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
-local timerIncinerationCD   = mod:NewNextTimer(26.5, 79023)--Timer Series, 10, 27, 32 (on normal) from activate til shutdown.
+local timerAcquiringTarget		= mod:NewNextTimer(40, 79501)
+local timerBarrier				= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
+local timerIncinerationCD   	= mod:NewNextTimer(26.5, 79023)--Timer Series, 10, 27, 32 (on normal) from activate til shutdown.
 --Electron
-local timerConductor		= mod:NewTargetTimer(10, 79888)
-local timerConductorCD		= mod:NewNextTimer(25, 79888)
-local timerUnstableShield	= mod:NewBuffActiveTimer(11.5, 79900)	-- 10 + 1.5 cast time
+local timerLightningConductor	= mod:NewTargetTimer(10, 79888)
+local timerLightningConductorCD	= mod:NewNextTimer(25, 79888)
+local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900)	-- 10 + 1.5 cast time
+local timerShadowConductor		= mod:NewTargetTimer(10, 92053)--Heroic Ability
+local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92053)--Heroic Ability
 --Toxitron
-local timerChemicalBomb		= mod:NewNextTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
-local timerShell			= mod:NewBuffActiveTimer(11.5, 79835)	-- 10 + 1.5 cast time
-local timerPoisonProtocolCD	= mod:NewNextTimer(45, 80053)
-local timerSoaked			= mod:NewTargetTimer(30, 80011, nil, false)
+local timerChemicalBomb			= mod:NewNextTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
+local timerShell				= mod:NewBuffActiveTimer(11.5, 79835)	-- 10 + 1.5 cast time
+local timerPoisonProtocolCD		= mod:NewNextTimer(45, 80053)
+local timerSoaked				= mod:NewTargetTimer(30, 80011, nil, false)
 --Arcanotron
-local timerGeneratorCD		= mod:NewNextTimer(30, 79624)
-local timerConversion		= mod:NewBuffActiveTimer(11.5, 79729)	-- 10 + 1.5 cast time
+local timerGeneratorCD			= mod:NewNextTimer(30, 79624)
+local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729)	-- 10 + 1.5 cast time
+local timerArcaneBlowback		= mod:NewTimer(8, "timerArcaneBlowbackCast", 91879)-- what happens after the overcharged power generator explodes. 8 seconds after overcharge cast.
 --All
-local timerNextActivate		= mod:NewNextTimer(45, 78740)--Activations are every 90 seconds but encounter staggers them in an alternating fassion so 45 seconds between add switches
-local timerNefAbilityCD		= mod:NewNextTimer(35, 92048)
+local timerNextActivate			= mod:NewNextTimer(45, 78740)--Activations are every 90 (60sec heroic) seconds but encounter staggers them in an alternating fassion so 45 (30 heroic) seconds between add switches
+local timerNefAbilityCD			= mod:NewNextTimer(30, 92048)--Huge variation on this, but shortest CD i've observed is 30.
 
 --Magmatron
-local specWarnBarrier		= mod:NewSpecialWarningCast(79582)
+local specWarnBarrier			= mod:NewSpecialWarningCast(79582)
+local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
 --Electron
-local specWarnUnstableShield= mod:NewSpecialWarningCast(79900)
-local specWarnConductor		= mod:NewSpecialWarningYou(79888)
+local specWarnUnstableShield	= mod:NewSpecialWarningCast(79900)
+local specWarnConductor			= mod:NewSpecialWarningYou(79888)
+local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Ability
 --Toxitron
-local specWarnShell			= mod:NewSpecialWarningCast(79835)
-local specWarnBombTarget	= mod:NewSpecialWarningRun(80094)
+local specWarnShell				= mod:NewSpecialWarningCast(79835)
+local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
+local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
 --Arcanotron
-local specWarnConversion	= mod:NewSpecialWarningCast(79729)
-local specWarnGenerator		= mod:NewSpecialWarningMove(79624, mod:IsTank())
---All
-local specWarnShadowInfusion= mod:NewSpecialWarningYou(92048)
+local specWarnConversion		= mod:NewSpecialWarningCast(79729)
+local specWarnGenerator			= mod:NewSpecialWarningMove(79624, mod:IsTank())
+local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
 
-local soundBomb				= mod:NewSound(80094)
-mod:AddBoolOption("SayBombTarget", false)
+local soundBomb					= mod:NewSound(80094)
+
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("BombTargetIcon")
-mod:AddBoolOption("ShadowInfusionIcon")
+mod:AddBoolOption("ShadowConductorIcon")
 
 local fixateIcon = 6
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerAcquiringTarget:Start(17.5)--Submitted, needs confirmation.
-			timerIncinerationCD:Start(10)--Submitted, needs confirmation.
+			timerAcquiringTarget:Start(20)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
+			timerIncinerationCD:Start(10)
 		else
 			timerAcquiringTarget:Start(20)
 			timerIncinerationCD:Start(10)
@@ -88,15 +95,15 @@ local bossActivate = function(boss)
 		DBM.BossHealth:AddBoss(42178, L.Magmatron)
 	elseif boss == L.Electron then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerConductorCD:Start(15)--Submitted, needs confirmation. Probably also has a variation if it's like normal.
+			timerLightningConductorCD:Start(15)--Probably also has a variation if it's like normal. Needs more logs to verify.
 		else
-			timerConductorCD:Start(11)--11-15 variation confirmed for normal, only boss ability with an actual variation on timer. Strange.
+			timerLightningConductorCD:Start(11)--11-15 variation confirmed for normal, only boss ability with an actual variation on timer. Strange.
 		end
 		DBM.BossHealth:AddBoss(42179, L.Electron)
 	elseif boss == L.Toxitron then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerChemicalBomb:Start(25)--Submitted, needs confirmation.
-			timerPoisonProtocolCD:Start(12.5)--Submitted, needs confirmation.
+			timerChemicalBomb:Start(25)
+			timerPoisonProtocolCD:Start(15)
 		else
 			timerChemicalBomb:Start(11)
 			timerPoisonProtocolCD:Start(21)
@@ -104,7 +111,7 @@ local bossActivate = function(boss)
 		DBM.BossHealth:AddBoss(42180, L.Toxitron)
 	elseif boss == L.Arcanotron then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerGeneratorCD:Start(12.5)--Submitted, needs confirmation.
+			timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
 		else
 			timerGeneratorCD:Start(15)
 		end
@@ -118,7 +125,7 @@ local bossInactive = function(boss)
 		timerIncinerationCD:Cancel()
 		DBM.BossHealth:RemoveBoss(42178)
 	elseif boss == L.Electron then
-		timerConductorCD:Cancel()
+		timerLightningConductorCD:Cancel()
 		DBM.BossHealth:RemoveBoss(42179)
 	elseif boss == L.Toxitron then
 		timerChemicalBomb:Cancel()
@@ -133,7 +140,7 @@ end
 function mod:OnCombatStart(delay)
 	fixateIcon = 6
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-		timerNextActivate:Start(25-delay)--Submitted, needs confirmation.
+		timerNextActivate:Start(30-delay)
 	else
 		timerNextActivate:Start(-delay)
 	end
@@ -145,7 +152,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnActivated:Show(args.destName)
 		bossActivate(args.destName)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerNextActivate:Start(25)--Submitted, needs confirmation.
+			timerNextActivate:Start(30)
 		else
 			timerNextActivate:Start()
 		end
@@ -153,7 +160,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		bossInactive(args.destName)
 	elseif args:IsSpellID(79501, 92035, 92036, 92037) then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerAcquiringTarget:Start(22.5)--Submitted, needs confirmation.
+			timerAcquiringTarget:Start(27)
 		else
 			timerAcquiringTarget:Start()
 		end
@@ -168,24 +175,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, 7)
 		end
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerConductor:Start(15, args.destName)--Drycoded, 15 seconds on heroic?
-			timerConductorCD:Start(20)--Submitted, needs confirmation.
+			timerLightningConductor:Start(15, args.destName)
+			timerLightningConductorCD:Start(20)
 		else
-			timerConductor:Start(args.destName)
-			timerConductorCD:Start()
+			timerLightningConductor:Start(args.destName)
+			timerLightningConductorCD:Start()
 		end
 	elseif args:IsSpellID(80094) then
 		warnFixate:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBombTarget:Show()
 			soundBomb:Play()
-			if self.Options.SayBombTarget then
-				SendChatMessage(L.SayBomb, "SAY")
-			end
 		end
 		if self.Options.BombTargetIcon then
 			if fixateIcon < 1 then
-				fixateIcon = 6--lets make sure all 3 get unique icons, then reset for next time.
+				fixateIcon = 6--lets make sure all get unique icons, then reset for next time.
 			end
 			self:SetIcon(args.destName, fixateIcon, 6)
 			fixateIcon = fixateIcon - 1
@@ -196,13 +200,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:GetUnitCreatureId("target") == 42166 then--Make sure to only warn person tanking it. (other tank would be targeting a different golem)
 			specWarnGenerator:Show()--Show special warning to move him out of it.
 		end
-	elseif args:IsSpellID(92048) then
-		warnShadowInfusion:Show(args.destName)
+	elseif args:IsSpellID(92048) then--Shadow Infusion, debuff 5 seconds before shadow conductor.
+		warnShadowConductorCast:Show()
+		timerShadowConductorCast:Start()
 		timerNefAbilityCD:Start()
-		if args:IsPlayer() then
-			specWarnShadowInfusion:Show()
-		end
-		if self.Options.ShadowInfusionIcon then
+	elseif args:IsSpellID(92023) then
+		warnEncasingShadows:Show(args.destName)
+		specWarnEncasingShadows:Show(args.destName)
+		timerNefAbilityCD:Start()
+	elseif args:IsSpellID(92053) then
+		specWarnShadowConductor:Show(args.destName)
+		timerShadowConductor:Show(args.destName)
+		if self.Options.ShadowConductorIcon then
 			self:SetIcon(args.destName, 8)
 		end
 	end
@@ -215,8 +224,9 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.ConductorIcon then
 			self:SetIcon(args.destName, 0)
 		end
-	elseif args:IsSpellID(92048) then
-		if self.Options.ShadowInfusionIcon then
+	elseif args:IsSpellID(92053) then
+		timerShadowConductor:Cancel(args.destName)
+		if self.Options.ShadowConductorIcon then
 			self:SetIcon(args.destName, 0)
 		end
 	end
@@ -226,7 +236,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(79023, 91519, 91520, 91521) then
 		warnIncineration:Show()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerIncinerationCD:Start(22.5)--Submitted, needs confirmation.
+			timerIncinerationCD:Start()--appears same on heroic
 		else
 			timerIncinerationCD:Start()
 		end
@@ -254,6 +264,10 @@ function mod:SPELL_CAST_START(args)
 		if self:GetUnitCreatureId("target") == 42166 then
 			specWarnConversion:Show()
 		end
+	elseif args:IsSpellID(91849) then--Grip
+		warnGrip:Show()
+		specWarnGrip:Show()
+		timerNefAbilityCD:Start()
 	end
 end
 
@@ -261,30 +275,27 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(80157) then
 		warnChemicalBomb:Show()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerChemicalBomb:Start(30)--Submitted, needs confirmation.
+			timerChemicalBomb:Start()--Appears same on heroic
 		else
 			timerChemicalBomb:Start()
 		end
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerPoisonProtocolCD:Start(25)--Submitted, needs confirmation.
+			timerPoisonProtocolCD:Start(25)
 		else
 			timerPoisonProtocolCD:Start()
 		end
 	elseif args:IsSpellID(79624) then
 		warnGenerator:Show()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerGeneratorCD:Start(17.5)--Submitted, needs confirmation.
+			timerGeneratorCD:Start(20)
 		else
 			timerGeneratorCD:Start()
 		end
+	elseif args:IsSpellID(91857) then
+		warnOverchargedGenerator:Show()
+		specWarnOvercharged:Show()
+		timerArcaneBlowback:Start()
 	end
 end
-
---[[
-function mod:CHAT_MSG_MONSTER_YELL(msg)
-   if msg == L.NefCloud or msg == L.NefOvercharged then
-        timerNefAbilityCD:Start()
-   end
-end--]]
