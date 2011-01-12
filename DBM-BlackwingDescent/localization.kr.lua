@@ -189,7 +189,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NefAoe				= "The air crackles with electricity!",
+	NefAoe				= "전기가", -- "The air crackles with electricity!" check
 	YellPhase2			= "저주받을 필멸자들!",
 	ShadowblazeCast		= "살을 재로",	
 	ChromaticPrototype	= "오색 실험체"
