@@ -10,7 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_SAY"
 )
 
 local warnAlphaBeams		= mod:NewSpellAnnounce(76184, 4)
@@ -67,7 +67,7 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
+function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.Brann or msg:find(L.Brann) then
 		if mod:IsDifficulty("heroic5") then
 			timerGauntlet:Start()
