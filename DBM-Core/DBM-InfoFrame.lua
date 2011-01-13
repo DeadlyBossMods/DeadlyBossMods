@@ -12,6 +12,7 @@
 --    * deDE: Tandanu/Nitram
 --    * ruRU: BootWin
 --    * zhTW: Azael/kc10577
+--    * esES: Snamor
 --    * (add your names here!)
 --
 -- Special thanks to:
