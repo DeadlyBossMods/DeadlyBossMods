@@ -19,12 +19,14 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing		= "中了$spell:86622時大喊",
+	YellOnMeteor		= "中了$spell:88518時大喊",
 	RangeFrame		= "顯示距離框 (10碼)"
 })
 
 L:SetMiscLocalization{
 	Trigger1		= "Theralion, I will engulf the hallway. Cover their escape!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing		= "我中了侵噬魔法!",
+	YellMeteor		= "我中了暮光隕星!",
 	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
@@ -60,6 +62,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specWarnBossLow		= ">%s<血量低於30%",
 	SpecWarnGrounded	= "拿取禁錮增益",
 	SpecWarnSearingWinds	= "拿取旋風增益"
 })
@@ -82,9 +85,11 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	specWarnBossLow		= "當首領血量低於30%時顯示特別警告",
 	SpecWarnGrounded	= "當你缺少$spell:83581時顯示特別警告\n(大約施放前10秒內)",
 	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)",
 	timerTransition		= "顯示階段轉換計時器",
+	RangeFrame		= "當需要時自動顯示距離框",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
