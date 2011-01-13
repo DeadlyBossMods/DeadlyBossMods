@@ -207,7 +207,7 @@ function onUpdate(self, elapsed)
 		updateHealth()
 	end
 	for i = 1, #sortedLines do
-		--if self:NumLines() > maxlines then break end
+		if self:NumLines() > maxlines then break end
 		local uId = sortedLines[i]
 		local power = lines[uId]
 		local nameColor = RAID_CLASS_COLORS[select(2, uId)] or NORMAL_FONT_COLOR
@@ -249,13 +249,13 @@ function infoFrame:Hide()
 	if frame then 
 		table.wipe(lines)
 		table.wipe(sortedLines)
-		currentEvent = nil
 		headerText = nil
 		sortingAsc = false
 		infoFrameThreshold = nil
 		frame:Hide()
 		if currentEvent ~= "health" then
 			frame:UnregisterEvent(currentEvent)
+			currentEvent = nil
 		end
 	end
 end
