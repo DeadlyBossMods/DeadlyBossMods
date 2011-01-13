@@ -57,8 +57,11 @@ local onUpdate
 local dropdownFrame
 local initializeDropdown
 local maxlines
-local threshold
+local infoFrameThreshold 
 local extraOptions
+local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
+local currentEvent
+local sortingAsc
 local lines = {}
 local sortedLines = {}
 
@@ -74,7 +77,7 @@ local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
 do
 	
 	local function toggleLocked()
-		DBM.Options.RangeFrameLocked = not DBM.Options.RangeFrameLocked
+		DBM.Options.InfoFrameLocked = not DBM.Options.InfoFrameLocked
 	end
 	
 	function initializeDropdown(dropdownFrame, level, menu)
@@ -86,8 +89,8 @@ do
 				info.checked = true
 			end
 			info.func = toggleLocked
-			UIDropDownMenu_AddButton(info, 1)
-			
+			UIDropDownMenu_AddButton(info, 1)			
+
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_INFOFRAME_HIDE
 			info.notCheckable = true
@@ -117,7 +120,7 @@ function createFrame()
 	frame:SetPadding(16)
 	frame:RegisterForDrag("LeftButton")
 	frame:SetScript("OnDragStart", function(self)
-		if not DBM.Options.infoFrameLocked then
+		if not DBM.Options.InfoFrameLocked then
 			self:StartMoving()
 		end
 	end)
@@ -151,19 +154,65 @@ function createFrame()
 end
 
 
+------------------------
+--  Update functions  --
+------------------------
+local function sortFuncDesc(a, b) return lines[a] > lines[b] end
+local function sortFuncAsc(a, b) return lines[a] < lines[b] end
+local function updateLines()
+	table.wipe(sortedLines)
+	for i in pairs(lines) do
+		sortedLines[#sortedLines + 1] = i
+	end
+	if sortingAsc then
+		table.sort(sortedLines, sortFuncAsc)
+	else
+		table.sort(sortedLines, sortFuncDesc)
+	end
+end
+
+local function updateHealth()
+	table.wipe(lines)
+	for i = 1, GetNumRaidMembers() do
+		if UnitHealth("raid"..i) < infoFrameThreshold then
+			lines["raid"..i] = UnitHealth("raid"..i) - infoFrameThreshold 
+		end
+	end
+	updateLines()
+end
+
+function infoFrame:UNIT_POWER(uId, powerType)
+	if powerType == select(1, extraOptions) and UnitInRaid(uId) then
+		local power = UnitPower(uId, select(2, extraOptions))
+		local powerMax = UnitPowerMax(uId, select(2, extraOptions))
+		if power < 0 or infoFrameThreshold and power/powerMax*100 < infoFrameThreshold then
+			lines[uId] = nil
+		else
+			lines[uId] = power
+		end
+		updateLines()
+	end
+end
+
+
 ----------------
 --  OnUpdate  --
 ----------------
 function onUpdate(self, elapsed)
 	self:ClearLines()
-	self:AddLine("something", 55, 51, 105)
-	local numLines = 0
+	if headerText then
+		self:AddLine(headerText, 255, 255, 255, 0)
+	end
+	if currentEvent == "health" then
+		updateHealth()
+	end
 	for i = 1, #sortedLines do
-		if numLines >= maxlines then break end
-		local name = sortedLines[i]
-		local power = lines[name]
-		local text = name..": "..power
-		self:AddLine(text, 255, 255, 255)
+		--if self:NumLines() > maxlines then break end
+		local uId = sortedLines[i]
+		local power = lines[uId]
+		local nameColor = RAID_CLASS_COLORS[select(2, uId)] or NORMAL_FONT_COLOR
+		self:AddDoubleLine(UnitName(uId), power, nameColor.R, nameColor.G, nameColor.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+													-- Add a method to color the power value?
 	end
 		
 	self:Show()
@@ -181,10 +230,12 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 	infoFrameThreshold = threshold
 	maxlines = maxLines or 5	-- default 5 lines
 	extraOptions = ...
+	currentEvent = event
 	frame = frame or createFrame()
 
 	if event == "health" then
-		-- health check (check if everyone is above -threshold- HP) -> not implemented
+		sortingAsc = true	-- Person who misses the most HP to be at threshold is listed on top
+		updateHealth()
 	else
 		frame:RegisterEvent(event)
 	end
@@ -196,9 +247,16 @@ end
 
 function infoFrame:Hide()
 	if frame then 
-		frame:Hide() 
 		table.wipe(lines)
 		table.wipe(sortedLines)
+		currentEvent = nil
+		headerText = nil
+		sortingAsc = false
+		infoFrameThreshold = nil
+		frame:Hide()
+		if currentEvent ~= "health" then
+			frame:UnregisterEvent(currentEvent)
+		end
 	end
 end
 
@@ -206,31 +264,11 @@ function infoFrame:IsShown()
 	return frame and frame:IsShown()
 end
 
-
-
-
-------------------------
---  Update functions  --
-------------------------
-local function sortFunc(a, b) return lines[a] > lines[b] end
-local function updateLines()
-	table.wipe(sortedLines)
-	for i in pairs(lines) do
-		sortedLines[#sortedLines + 1] = i
-	end
-	table.sort(sortedLines, sortFunc)
+function infoFrame:SetHeader(text)
+	if not text then return end
+	headerText = text
 end
 
-function infoFrame:UNIT_POWER(uId, powerType)
-	if powerType == select(1, extraOptions) and UnitInRaid(uId) then
-		local name = UnitName(uId)
-		local power = UnitPower(uId, select(2, extraOptions))
-		if power < 0 then
-			lines[name] = nil
-		else
-			lines[name] = power
-		end
-		updateLines()
-	end
+function infoFrame:SetSorting(ascending)
+	sortingAsc = ascending
 end
-	
