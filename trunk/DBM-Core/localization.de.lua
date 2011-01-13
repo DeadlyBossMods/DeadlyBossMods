@@ -72,6 +72,9 @@ DBM_CORE_RANGECHECK_HIDE			= "Verstecken"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_LOCK			= "Frame sperren"
 
+DBM_CORE_INFOFRAME_HIDE				= "Verstecken"
+DBM_CORE_INFOFRAME_LOCK				= "Frame sperren"
+
 DBM_CORE_SLASHCMD_HELP				= {
 	"Verfügbare Slash-Commands:",
 	"/dbm version: führt einen raidweiten Versionscheck durch (alias: ver)",
