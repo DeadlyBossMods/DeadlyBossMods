@@ -144,7 +144,8 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Ancient Dwarven Shield",
-	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
+	Soundlevel				= "Sound Level",
+	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
 })
 
 L:SetOptionLocalization({
@@ -153,7 +154,8 @@ L:SetOptionLocalization({
 	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",
 	TimerAirphase		= "Show timer for next airphase",
 	TimerGroundphase	= "Show timer for next groundphase",
-	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
+	InfoFrame			= "Show info frame for sound levels",
+	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 ----------------
