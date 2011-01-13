@@ -74,6 +74,9 @@ DBM_CORE_RANGECHECK_HIDE			= "Cacher"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_LOCK			= "Verrouiller la fenêtre"
 
+DBM_CORE_INFOFRAME_HIDE				= "Cacher"
+DBM_CORE_INFOFRAME_LOCK				= "Verrouiller la fenêtre"
+
 DBM_LFG_INVITE						= "LFG Invite"
 DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
