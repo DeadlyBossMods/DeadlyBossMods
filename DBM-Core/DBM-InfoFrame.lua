@@ -8,12 +8,15 @@
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 --
 -- The localizations are written by:
---    * enGB/enUS: Tandanu
---    * deDE: Tandanu/Nitram
---    * ruRU: BootWin
---    * zhTW: Azael/kc10577
---    * esES: Snamor
---    * (add your names here!)
+--    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
+--    * deDE: Tandanu					http://www.deadlybossmods.com
+--    * zhCN: Diablohu					http://wow.gamespot.com.cn
+--    * ruRU: BootWin					bootwin@gmail.com
+--    * ruRU: Vampik					admin@vampik.ru
+--    * zhTW: Hman						herman_c1@hotmail.com
+--    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
+--    * koKR: BlueNyx					bluenyx@gmail.com
+--    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --
 -- Special thanks to:
 --    * Arta

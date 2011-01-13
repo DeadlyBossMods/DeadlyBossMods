@@ -16,11 +16,11 @@
 --    * zhTW: Hman						herman_c1@hotmail.com
 --    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
 --    * koKR: BlueNyx					bluenyx@gmail.com
---    * esES: Snamor/1nn7erpLaY     romanscat@hotmail.com
+--    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --
 -- Special thanks to:
---    * Arta (DBM-Party)
---    * Omegal @ US-Whisperwind (some patches, and DBM-Party updates)
+--    * Arta
+--    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --
 --

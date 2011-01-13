@@ -8,16 +8,20 @@
 --    * Martin Verges (Nitram @ EU-Azshara) (DBM-GUI)
 -- 
 -- The localizations are written by:
---    * enGB/enUS: Tandanu			http://www.deadlybossmods.com
---    * deDE: Tandanu				http://www.deadlybossmods.com
---    * zhCN: Diablohu				http://wow.gamespot.com.cn
---    * ruRU: BootWin				bootwin@gmail.com
---    * zhTW: Azael/kc10577			kc10577@hotmail.com
---    * esES: Snamor/1nn7erpLaY     romanscat@hotmail.com
---    * (add your names here!)
+--    * enGB/enUS: Tandanu				http://www.deadlybossmods.com
+--    * deDE: Tandanu					http://www.deadlybossmods.com
+--    * zhCN: Diablohu					http://wow.gamespot.com.cn
+--    * ruRU: BootWin					bootwin@gmail.com
+--    * ruRU: Vampik					admin@vampik.ru
+--    * zhTW: Hman						herman_c1@hotmail.com
+--    * zhTW: Azael/kc10577				paul.poon.kw@gmail.com
+--    * koKR: BlueNyx					bluenyx@gmail.com
+--    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --
 -- Special thanks to:
---    * Arta (DBM-Party)
+--    * Arta
+--    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
+--    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --
 -- 
 -- The code of this addon is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 3.0 License. (see license.txt)
