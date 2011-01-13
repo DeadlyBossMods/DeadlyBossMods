@@ -19,7 +19,7 @@
 --    * esES: Snamor/1nn7erpLaY      	romanscat@hotmail.com
 --
 -- Special thanks to:
---    * Arta (DBM-Party-WotLK, DBM-Party-Cataclysm)
+--    * Arta
 --    * Omegal @ US-Whisperwind (continuing mod support for 3.2+)
 --    * Tennberg (a lot of fixes in the enGB/enUS localization)
 --
