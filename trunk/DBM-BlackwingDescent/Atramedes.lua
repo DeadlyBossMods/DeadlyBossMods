@@ -35,6 +35,8 @@ mod:AddBoolOption("TrackingIcon")
 
 local shieldsLeft = 10
 
+local HardCodedAtramedesSoundFrame = false  	-- set to true for testing purposes ;)
+
 local function groundphase()
 	timerAirphase:Start()
 	timerSonicBreath:Start(25)
@@ -45,7 +47,18 @@ function mod:OnCombatStart(delay)
 	timerSonicBreath:Start(25-delay)
 	timerSearingFlame:Start(45-delay)
 	shieldsLeft = 10
+
+	if HardCodedAtramedesSoundFrame then
+		DBM.InfoFrame:SetHeader("Sound level")
+		DBM.InfoFrame:Show(10, "UNIT_POWER", 20, "ALTERNATE", ALTERNATE_POWER_INDEX)
+	end
 end
+
+function mod:OnCombatEnd()
+	if HardCodedAtramedesSoundFrame then
+		DBM.InfoFrame:Hide()
+	end
+end 
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(78092) then
