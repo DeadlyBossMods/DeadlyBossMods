@@ -218,7 +218,7 @@ local function updateLines()
 end
 
 function infoFrame:UNIT_POWER(uId, powerType)
-	if powerType == select(1, extraOptions) then --and UnitInRaid(uId) then
+	if powerType == select(1, extraOptions) and UnitInRaid(uId) then
 		local name = UnitName(uId)
 		local power = UnitPower(uId, select(2, extraOptions))
 		if power < 0 then
