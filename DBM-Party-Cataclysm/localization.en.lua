@@ -131,8 +131,15 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "General Umbriss"
+	name 		= "General Umbriss"
 })
+
+L:SetOptionLocalization{
+	PingCharge	= "Ping the minimap when General Umbriss is about to blitz you"
+
+L:SetMiscLocalization{
+	Blitz		= "sets his eyes on |cFFFF0000(%S+)"
+}
 
 --------------------------
 -- Forgemaster Throngus --

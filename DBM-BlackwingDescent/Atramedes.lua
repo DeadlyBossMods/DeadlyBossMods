@@ -29,9 +29,12 @@ local timerSearingFlame		= mod:NewNextTimer(46.5, 77840)
 local timerAirphase			= mod:NewTimer(90, "TimerAirphase")
 local timerGroundphase		= mod:NewTimer(35, "TimerGroundphase")
 
+local berserkTimer			= mod:NewBerserkTimer(600)
+
 local soundTracking			= mod:NewSound(78092)
 
 mod:AddBoolOption("TrackingIcon")
+--mod:AddBoolOption("InfoFrame")
 
 local shieldsLeft = 10
 
@@ -46,11 +49,14 @@ end
 function mod:OnCombatStart(delay)
 	timerSonicBreath:Start(25-delay)
 	timerSearingFlame:Start(45-delay)
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		berserkTimer:Start(-delay)
+	end
 	shieldsLeft = 10
-
+	--if self.Options.InfoFrame then
 	if HardCodedAtramedesSoundFrame then
-		DBM.InfoFrame:SetHeader("Sound level")
-		DBM.InfoFrame:Show(10, "UNIT_POWER", 20, "ALTERNATE", ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:SetHeader(L.Soundlevel)
+		DBM.InfoFrame:Show(5, "UNIT_POWER", 40, "ALTERNATE", ALTERNATE_POWER_INDEX)
 	end
 end
 

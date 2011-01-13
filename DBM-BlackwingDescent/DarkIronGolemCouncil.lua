@@ -36,6 +36,22 @@ local warnOverchargedGenerator	= mod:NewSpellAnnounce(91857, 4)--Heroic Ability
 local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 
 --Magmatron
+local specWarnBarrier			= mod:NewSpecialWarningCast(79582)
+local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
+--Electron
+local specWarnUnstableShield	= mod:NewSpecialWarningCast(79900)
+local specWarnConductor			= mod:NewSpecialWarningYou(79888)
+local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Ability
+--Toxitron
+local specWarnShell				= mod:NewSpecialWarningCast(79835)
+local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
+local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
+--Arcanotron
+local specWarnConversion		= mod:NewSpecialWarningCast(79729)
+local specWarnGenerator			= mod:NewSpecialWarningMove(79624, mod:IsTank())
+local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
+
+--Magmatron
 local timerAcquiringTarget		= mod:NewNextTimer(40, 79501)
 local timerBarrier				= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
 local timerIncinerationCD   	= mod:NewNextTimer(26.5, 79023)--Timer Series, 10, 27, 32 (on normal) from activate til shutdown.
@@ -58,21 +74,7 @@ local timerArcaneBlowback		= mod:NewTimer(8, "timerArcaneBlowbackCast", 91879)--
 local timerNextActivate			= mod:NewNextTimer(45, 78740)--Activations are every 90 (60sec heroic) seconds but encounter staggers them in an alternating fassion so 45 (30 heroic) seconds between add switches
 local timerNefAbilityCD			= mod:NewNextTimer(30, 92048)--Huge variation on this, but shortest CD i've observed is 30.
 
---Magmatron
-local specWarnBarrier			= mod:NewSpecialWarningCast(79582)
-local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
---Electron
-local specWarnUnstableShield	= mod:NewSpecialWarningCast(79900)
-local specWarnConductor			= mod:NewSpecialWarningYou(79888)
-local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Ability
---Toxitron
-local specWarnShell				= mod:NewSpecialWarningCast(79835)
-local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
-local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
---Arcanotron
-local specWarnConversion		= mod:NewSpecialWarningCast(79729)
-local specWarnGenerator			= mod:NewSpecialWarningMove(79624, mod:IsTank())
-local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
+local berserkTimer				= mod:NewBerserkTimer(600)
 
 local soundBomb					= mod:NewSound(80094)
 
@@ -141,6 +143,7 @@ function mod:OnCombatStart(delay)
 	fixateIcon = 6
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerNextActivate:Start(30-delay)
+		berserkTimer:Start(-delay)
 	else
 		timerNextActivate:Start(-delay)
 	end
