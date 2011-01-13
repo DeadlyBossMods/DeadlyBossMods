@@ -127,14 +127,14 @@ function createFrame()
 	end)
 	frame:SetScript("OnUpdate", function(self, e)
 		elapsed = elapsed + e
-		if elapsed >= 0.5 and self.checkFunc then
+		if elapsed >= 0.5 then
 			onUpdate(self, elapsed)
 			elapsed = 0
 		end
 	end)
 	frame:SetScript("OnEvent", function(self, event, ...)
 		if infoFrame[event] then
-			infoFrame[event](...)
+			infoFrame[event](self, ...)
 		end
 	end)
 	frame:SetScript("OnMouseDown", function(self, button)
@@ -191,7 +191,11 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 end
 
 function infoFrame:Hide()
-	if frame then frame:Hide() end
+	if frame then 
+		frame:Hide() 
+		table.wipe(lines)
+		table.wipe(sortedLines)
+	end
 end
 
 function infoFrame:IsShown()
@@ -214,9 +218,9 @@ local function updateLines()
 end
 
 function infoFrame:UNIT_POWER(uId, powerType)
-	if powerType == select(1, extraOptions) and UnitInRaid(uId) then
+	if powerType == select(1, extraOptions) then --and UnitInRaid(uId) then
 		local name = UnitName(uId)
-		local power = UnitPower(select(2, extraOptions))
+		local power = UnitPower(uId, select(2, extraOptions))
 		if power < 0 then
 			lines[name] = nil
 		else
