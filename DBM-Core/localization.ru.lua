@@ -72,6 +72,9 @@ DBM_CORE_RANGECHECK_HIDE			= "Скрыть"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d м"
 DBM_CORE_RANGECHECK_LOCK			= "Закрепить полосу"
 
+DBM_CORE_INFOFRAME_HIDE				= "Скрыть"
+DBM_CORE_INFOFRAME_LOCK				= "Закрепить полосу"
+
 DBM_LFG_INVITE						= "Приглашение в подземелье"
 DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 

@@ -72,6 +72,9 @@ DBM_CORE_RANGECHECK_HIDE			= "숨기기"
 DBM_CORE_RANGECHECK_SETRANGE_TO		= "%d m"
 DBM_CORE_RANGECHECK_LOCK			= "프레임 잠금"
 
+DBM_CORE_INFOFRAME_HIDE				= "숨기기"
+DBM_CORE_INFOFRAME_LOCK				= "프레임 잠금"
+
 DBM_LFG_INVITE						= "던전 입장"
 DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
