@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/12/2011 (by Sasmira) 
+-- Last update: 01/13/2011 (by Sasmira) 
 
 
 --------------
@@ -41,20 +41,24 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
-	Magmatron	= "Magmatron",
-	Electron	= "Electron",
-	Toxitron	= "Toxitron",
-	Arcanotron	= "Arcanotron"
+	timerShadowConductorCast	= "Retour arcanique",
+	timerShadowConductorCast	= "Conducteur d'ombre"
 })
 
 L:SetOptionLocalization({
+	timerShadowConductorCast	= "Afficher le timer du sort $spell:92053",
+	timerArcaneBlowbackCast	= "Afficher le timer du sort $spell:91879",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
 	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+})
+
+L:SetMiscLocalization({
+	Magmatron		= "Magmatron",
+	Electron		= "Electron",
+	Toxitron		= "Toxitron",
+	Arcanotron		= "Arcanotron"
 })
 
 ----------------
