@@ -255,8 +255,8 @@ function infoFrame:Hide()
 		frame:Hide()
 		if currentEvent ~= "health" then
 			frame:UnregisterEvent(currentEvent)
-			currentEvent = nil
 		end
+		currentEvent = nil
 	end
 end
 
