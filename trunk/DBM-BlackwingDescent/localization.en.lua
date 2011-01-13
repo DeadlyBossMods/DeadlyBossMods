@@ -53,8 +53,7 @@ L:SetMiscLocalization({
 	Magmatron		= "Magmatron",
 	Electron		= "Electron",
 	Toxitron		= "Toxitron",
-	Arcanotron		= "Arcanotron",
-	NefOvercharged	= "Stupid Dwarves and your fascination with runes! Why would you create something that would help your enemy?"
+	Arcanotron		= "Arcanotron"
 })
 
 ----------------
