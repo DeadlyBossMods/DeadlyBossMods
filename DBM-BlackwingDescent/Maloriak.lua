@@ -113,7 +113,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, showBitingChillWarning)
 	elseif args:IsSpellID(77912, 92965, 92966, 92967) then
 		warnRemedy:Show()
-		specWarnRemedy:Show()
+		specWarnRemedy:Show(args.destName)
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
 		timerArcaneStorm:Start()
