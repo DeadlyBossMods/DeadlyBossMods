@@ -48,7 +48,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87904) then
 		warnFeedback:Show(args.spellName, args.destName, args.amount or 1)
 		timerFeedback:Cancel()--prevent multiple timers spawning with diff args.
-		timerFeedback:Start(args.amount or 1)
+		timerFeedback:Start(20, args.amount or 1)
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) and not phase2Started then--Acid Rain (phase 2 debuff)
 		phase2Started = true
 		warnPhase2:Show()
