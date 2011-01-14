@@ -135,6 +135,14 @@ L:SetGeneralLocalization({
 	name = "장군 움브리스"
 })
 
+L:SetOptionLocalization{
+	PingCharge	= "Ping the minimap when General Umbriss is about to blitz you"
+}
+
+L:SetMiscLocalization{
+	Blitz		= "sets his eyes on |cFFFF0000(%S+)"
+}
+
 --------------------------
 -- Forgemaster Throngus --
 --------------------------

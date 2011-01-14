@@ -38,6 +38,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerShadowConductorCast	= "Arcane Blowback",
+	timerShadowConductorCast	= "Shadow Conductor"
 })
 
 L:SetMiscLocalization({
@@ -48,6 +50,8 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	timerShadowConductorCast	= "$spell:92053 시전 타이머 보기",
+	timerArcaneBlowbackCast		= "$spell:91879 시전 타이머 보기",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -142,6 +146,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "고대 드워프 보호막",
+	Soundlevel				= "Sound Level",	
 	Airphase				= "그래, 도망가라! 발을 디딜 때마다 맥박은 빨라지지. 점점 더 크게 울리는구나... 귀청이 터질 것만 같군! 넌 달아날 수 없다!"
 })
 
@@ -151,6 +156,7 @@ L:SetOptionLocalization({
 	WarnShieldsLeft		= "고대 드워프 보호막 남은 개수 경고 보기",
 	TimerAirphase		= "다음 공중 단계 경고 보기",
 	TimerGroundphase	= "다음 지상 단계 경고 보기",
+	InfoFrame			= "사운드 레벨의 정보 프레임 보기",
 	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
