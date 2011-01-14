@@ -135,6 +135,14 @@ L:SetGeneralLocalization({
 	name = "General Umbriss"
 })
 
+L:SetOptionLocalization{
+	PingCharge	= "Pingt die Minimap, wenn General Umbriss dich anstürmt"
+}
+
+L:SetMiscLocalization{
+	Blitz		= "richtet seine Augen auf |cFFFF0000(%S+)"
+}
+
 --------------------------
 -- Forgemaster Throngus --
 --------------------------
@@ -154,7 +162,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- Yell when Valiona is incoming
+	ValionaYell	= "Drache, du wirst tun, was ich sage! Fang mich!",	-- Yell when Valiona is incoming
 	Valiona		= "Valiona"
 }
 
