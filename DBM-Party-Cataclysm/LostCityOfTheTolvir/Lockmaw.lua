@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS"
 )
@@ -47,6 +48,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnEnrage:Show()
 	end
 end
+
+mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(81690, 89998) then
