@@ -196,7 +196,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	Kill		= "Ptah... is... no more..."
+	Kill		= "Ptah... ist... nicht mehr..."
 }
 
 --------------
@@ -206,6 +206,14 @@ L = DBM:GetModLocalization("Anraphet")
 
 L:SetGeneralLocalization({
 	name = "Anraphet"
+})
+
+L:SetTimerLocalization({
+	achievementGauntlet	= "Schneller als das Licht"
+})
+
+L:SetMiscLocalization({
+	Brann		= "Alles klar, auf geht's! Ich gebe nur noch die letzte Eingangssequenz in den Türmechanismus ein... und..."
 })
 
 ------------
@@ -470,6 +478,14 @@ L = DBM:GetModLocalization("Asaad")
 
 L:SetGeneralLocalization({
 	name = "Asaad"
+})
+
+L:SetOptionLocalization({
+	SpecWarnStaticCling	= "Zeige Spezialwarnung für $spell:87618"
+})
+
+L:SetWarningLocalization({
+	SpecWarnStaticCling	= "SPRING!"
 })
 
 ---------------------------
