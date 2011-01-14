@@ -136,6 +136,15 @@ L:SetGeneralLocalization({
 	name = "昂布里斯將軍"
 })
 
+L:SetOptionLocalization{
+	PingCharge	= "當昂布里斯將軍即將閃擊你時點擊小地圖"
+}
+
+L:SetMiscLocalization{
+	Blitz		= "將目光注射|cFFFF0000(%S+)"
+}
+
+
 --------------------------
 -- Forgemaster Throngus --
 --------------------------
