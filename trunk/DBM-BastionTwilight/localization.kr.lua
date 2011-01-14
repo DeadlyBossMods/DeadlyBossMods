@@ -115,10 +115,12 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Bloodlevel		= "Corruption"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "2 단계 사전 경고 보기",
+	InfoFrame			= "Show info frame for $spell:82235",	
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
