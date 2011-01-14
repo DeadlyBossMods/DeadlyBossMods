@@ -56,7 +56,6 @@ L:SetMiscLocalization({
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
 	Arcanotron	= "Arcanotron",
-	NefOvercharged	= "Stupid Dwarves and your fascination with runes! Why would you create something that would help your enemy?"--translate
 })
 
 ----------------
@@ -148,6 +147,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Antiguo escudo enano",
+	Soundlevel				= "Nivel de sonido",
 	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"--translate
 })
 
@@ -157,6 +157,7 @@ L:SetOptionLocalization({
 	WarnShieldsLeft		= "Mostrar aviso cuando Antiguo escudo enano sea usado",
 	TimerAirphase		= "Mostrar tiempo para siguiente Fase aerea",
 	TimerGroundphase	= "Mostrar tiempo para siguiente Fase en tierra",
+	InfoFrame			= "Mostrar información de los niveles de sonido",
 	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 

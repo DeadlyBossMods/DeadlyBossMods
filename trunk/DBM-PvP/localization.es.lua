@@ -32,7 +32,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Arenas")
 
 L:SetGeneralLocalization({
-	name = "Arena"
+	name = "Arenas"
 })
 
 L:SetTimerLocalization({
@@ -236,15 +236,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 			= "The battle begins in 1 minute.",	-- translate
-	BgStart30 			= "The battle begins in 30 seconds.  Prepare yourselves!",	-- translate
+	BgStart60 			= "La batalla comienza en 1 minuto.",
+	BgStart30 			= "La batalla comienza en 30 segundos. ¡Preparaos!",
 	ZoneName 			= "Twin",	-- translate
 	Alliance 			= "Alianza",
 	Horde 				= "Horda",	
-	InfoErrorText		= "The flag carrier targeting function will be restored when you are out of combat.",-- translate
-	ExprFlagPickUp		= "The (%w+) .lag was picked up by (.+)!",-- translate
-	ExprFlagCaptured	= "(.+) captured the (%w+) flag!",-- translate
-	ExprFlagReturn		= "The (%w+) .lag was returned to its base by (.+)!",-- translate
+	InfoErrorText		= "La función de targetear al portador de la bandera se restaurará cuando estés fuera de combate.",
+	ExprFlagPickUp		= "¡(.+) ha cogido la bandera de la (%w+)!",
+	ExprFlagCaptured	= "¡(.+) ha capturado la bandera de la (%w+)!",
+	ExprFlagReturn		= "¡(.+) ha devuelto la bandera de la (%w+) a su base!",
 	FlagAlliance		= "Bandera de la Alianza: ",
 	FlagHorde			= "Bandera de la Horda: ",
 	FlagBase			= "Base"
@@ -268,12 +268,12 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
-	name = "La Batalla por Gilneas"	-- translate
+	name = "La Batalla por Gilneas"
 })
 
 L:SetMiscLocalization({
-	BgStart60		= "La batalla comenzará en 1 minuto.",	-- translate
-	BgStart30		= "La batalla comenzará en 30 segundos.",	-- translate
+	BgStart60		= "La batalla comenzará en 1 minuto.",
+	BgStart30		= "La batalla comenzará en 30 segundos.",
 	ScoreExpr 		= "(%d+)/2000",
 	Alliance 		= "Alianza",
 	Horde 			= "Horda",

@@ -136,6 +136,14 @@ L:SetGeneralLocalization({
 	name = "General Umbriss"
 })
 
+L:SetOptionLocalization{
+	PingCharge	= "Marcar en el minimapa cuando el General Umbriss vaya a atacarte con Ataque relámpago"
+}
+
+L:SetMiscLocalization{
+	Blitz		= "sets his eyes on |cFFFF0000(%S+)"--translate
+}
+
 --------------------------
 -- Forgemaster Throngus --
 --------------------------
@@ -155,7 +163,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate -- Yell when Valiona is incoming
+	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate
 	Valiona		= "Valiona"	
 }
 
@@ -206,7 +214,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Brann		= "Right, let's go! Just need to input the final entry sequence into the door mechanism... and..."--translate
+	Brann		= "¡Bien, vamos! Tan solo me falta introducir la secuencia final en el mecanismo de la puerta... y..."
 })
 
 ------------
