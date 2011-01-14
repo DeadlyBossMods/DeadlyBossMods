@@ -159,7 +159,9 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77569) then
 		warnReleaseAdds:Show()
 		specWarnAdds:Show()
-		self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interrupt and curse of tongues having been up.
+		if adds >= 3 then--only schedule it if there actually are adds left.
+			self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interrupt and curse of tongues having been up.
+		end
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
 	elseif args:IsSpellID(92754) then

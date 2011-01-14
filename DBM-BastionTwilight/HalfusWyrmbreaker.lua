@@ -27,7 +27,7 @@ local specWarnShadowNova	= mod:NewSpecialWarningInterrupt(83703, false)
 local timerFuriousRoar		= mod:NewCDTimer(30, 83710)
 --local timerBarrageCD		= mod:NewCDTimer(32, 83706)
 local timerBreathCD			= mod:NewCDTimer(20, 83707)--every 20-25 seconds.
-local timerBarrage			= mod:NewBuffActiveTimer(10, 83706)
+--local timerBarrage			= mod:NewBuffActiveTimer(10, 83706)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
@@ -61,7 +61,9 @@ function mod:SPELL_CAST_START(args)
 		timerBreathCD:Start()
 	elseif args:IsSpellID(83703, 86166, 86167, 86168) then
 		warnShadowNova:Show()
-		specWarnShadowNova:Show()
+		if self:GetUnitCreatureId("target") == 44600 or self:GetUnitCreatureId("focus") == 44600 then--Don't annoy tanks or dps or healers with this nonsense when they aren't targeting halfus.
+			specWarnShadowNova:Show()
+		end
 	end
 end
 
