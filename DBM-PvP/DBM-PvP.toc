@@ -27,8 +27,8 @@
 ## X-DBM-Mod-Name-ruRU: Игрок против игрока
 ## X-DBM-Mod-Name-zhTW: PvP
 ## X-DBM-Mod-Name-koKR: 전장 및 아카본
-## X-DBM-Mod-Name-esES: Campos de Batallas
-## X-DBM-Mod-Name-esMX: Campos de Batallas
+## X-DBM-Mod-Name-esES: JcJ
+## X-DBM-Mod-Name-esMX: JcJ
 ## X-DBM-Mod-Sort: 175
 ## X-DBM-Mod-LoadZoneID: 461,443,401,540,482
 localization.en.lua
