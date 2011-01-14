@@ -56,8 +56,7 @@ L:SetMiscLocalization({
 	Electron			= "雷電號",
 	Toxitron			= "烈毒號",
 	Arcanotron			= "秘法號"
-,
-	NefOvercharged			= "Stupid Dwarves and your fascination with runes! Why would you create something that would help your enemy?"
+
 })
 
 ----------------
@@ -83,7 +82,7 @@ L:SetMiscLocalization({
 	YellRed				= "紅色|r瓶子到鍋子裡!",
 	YellBlue			= "藍色|r瓶子到鍋子裡!",
 	YellGreen			= "綠色|r瓶子到鍋子裡!",
-	YellDark			= "黑色|r瓶子到鍋子裡!",
+	YellDark			= "黑色|r魔法到鍋子裡!",
 	Red				= "紅色",
 	Blue				= "藍色",
 	Green				= "綠色",
@@ -150,6 +149,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield		= "古代矮人盾牌",
+	Soundlevel			= "音波值",
 	Airphase			= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
 })
 
@@ -159,6 +159,7 @@ L:SetOptionLocalization({
 	WarnShieldsLeft			= "當古代矮人盾牌使用後顯示警告",
 	TimerAirphase			= "為下一次 空中階段顯示計時器",
 	TimerGroundphase		= "為下一次 地上階段顯示計時器",
+	InfoFrame			= "為音波值顯示資訊框架",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
