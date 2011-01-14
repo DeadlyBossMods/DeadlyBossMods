@@ -27,10 +27,11 @@ local warnSpecial			= mod:NewAnnounce("warnSpecial", 3, "Interface\\Icons\\INV_E
 
 local specWarnSpecial		= mod:NewSpecialWarning("specWarnSpecial")
 local specWarnShield		= mod:NewSpecialWarningSpell(95865)
+local specWarnIcePatch      = mod:NewSpecialWarningMove(93131)
 
 local timerNurture			= mod:NewCDTimer(114, 85422)--This does NOT cast at same time as hurricane/sleet storm/Zephyr
 local timerWindChill		= mod:NewNextTimer(10.5, 84645)
-local timerSlicingGale		= mod:NewTargetTimer(45, 93058)
+local timerSlicingGale		= mod:NewBuffActiveTimer(45, 93058)
 local timerWindBlast		= mod:NewBuffActiveTimer(10, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
 local timerStormShieldCD	= mod:NewCDTimer(113, 95865)--Heroic ability that Lines up with Nuture it seems.
@@ -46,10 +47,12 @@ local windBlastCounter = 0
 local specialSpam = 0
 local poisonCounter = 0
 local poisonSpam = 0
+local iceSpam = 0
 
 function mod:OnCombatStart(delay)
 	windBlastCounter = 0
 	specialSpam = 0
+	iceSpam = 0
 	timerWindBlastCD:Start(30-delay)
 	timerNurture:Start(30-delay)
 	timerSpecial:Start(90-delay)--hurricane/Sleet storm share CD
@@ -62,7 +65,12 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93057, 93058) then
-		timerSlicingGale:Start(args.destName)
+		if args:IsPlayer() then
+			timerSlicingGale:Start()
+		end
+	elseif args:IsSpellID(86111, 93129, 93130, 93131) and args:IsPlayer() and GetTime() - iceSpam >= 3 then
+		iceSpam = GetTime()
+		specWarnIcePatch:Show()
 	end
 end
 
