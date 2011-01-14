@@ -7,7 +7,7 @@ local L
 L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
-	name =	"발라리온과 테랄리온"
+	name =	"발라오나와 테랄리온"
 })
 
 L:SetWarningLocalization({
@@ -62,8 +62,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBossLow			= ">%s< 체력 30%",
-	SpecWarnGrounded		= "접지!!",
-	SpecWarnSearingWinds	= "소용돌이 치는 바람!!"
+	SpecWarnGrounded		= "접지 버프 받기!!",
+	SpecWarnSearingWinds	= "소용돌이 치는 바람 버프 받기!!"
 })
 
 L:SetTimerLocalization({
@@ -79,14 +79,14 @@ L:SetMiscLocalization({
 	Feludius		= "펠루디우스",
 	Arion			= "아리온",
 	Terrastra		= "테라스트라",
-	Monstrosity		= "Elementium Monstrosity",
-	Kill			= "Impossible...."
+	Monstrosity		= "엘레멘티움 괴물",
+	Kill			= "이럴 수가..."
 })
 
 L:SetOptionLocalization({
 	specWarnBossLow			= "보스의 체력이 30% 이하로 내려갈 경우 특수 경고 보기",
-	SpecWarnGrounded		= "$spell:83581 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)",
-	SpecWarnSearingWinds	= "$spell:83500 버프가 사라지기 전, 특수 경고 보기\n(~10초 전 캐스팅)",
+	SpecWarnGrounded		= "$spell:83581 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
+	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",	
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
