@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Trigger1		= "Theralion, I will engulf the hallway. Cover their escape!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	Trigger1		= "瑟拉里恩，我的火會淹沒整個通道。擋住他們的退路!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing		= "我中了侵噬魔法!",
 	YellMeteor		= "我中了暮光隕星!",
 	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
@@ -120,6 +120,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "為第2階段顯示預先警告",
+	InfoFrame		= "為$spell:82235顯示資訊框架",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
