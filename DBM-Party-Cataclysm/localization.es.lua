@@ -137,7 +137,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	PingCharge	= "Marcar en el minimapa cuando el General Umbriss vaya a atacarte con Ataque relámpago"
+	PingBlitz	= "Marcar en el minimapa cuando el General Umbriss vaya a atacarte con Ataque relámpago"
 }
 
 L:SetMiscLocalization{

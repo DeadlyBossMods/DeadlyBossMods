@@ -133,8 +133,16 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("GeneralUmbriss")
 
 L:SetGeneralLocalization({
-	name = "Генерал Умбрисс"
+	name		= "Генерал Умбрисс"
 })
+
+L:SetOptionLocalization{
+	PingBlitz	= "С эмитировать импульс на мини-карте, если Умбрисс собирается применить на вас $spell:74670"
+}
+
+L:SetMiscLocalization{
+	Blitz		= "останавливает взгяд на |cFFFF0000(%S+)" -- mb need use |3-3(%S+)
+}
 
 --------------------------
 -- Forgemaster Throngus --
@@ -199,6 +207,14 @@ L = DBM:GetModLocalization("Anraphet")
 
 L:SetGeneralLocalization({
 	name = "Анрафет"
+})
+
+L:SetTimerLocalization({
+	achievementGauntlet	= "Скорость Света"
+})
+
+L:SetMiscLocalization({
+	Brann		= "Ага, ну поехали! Осталось ввести последний код для открывания двери...и..."
 })
 
 ------------
@@ -470,7 +486,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnStaticCling	= "$spell:87618 - ПРЫГАЙ!"	-- does $spell: work here ?
+	SpecWarnStaticCling	= "Хватка природы - ПРЫГАЙ!"	-- does $spell: work here ?
 })
 
 ---------------------------
