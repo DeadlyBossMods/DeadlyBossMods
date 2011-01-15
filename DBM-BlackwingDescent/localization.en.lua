@@ -36,7 +36,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShadowConductorCast	= "Arcane Blowback",
+	timerArcaneBlowbackCast		= "Arcane Blowback",
 	timerShadowConductorCast	= "Shadow Conductor"
 })
 

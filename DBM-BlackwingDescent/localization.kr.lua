@@ -38,7 +38,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShadowConductorCast	= "비전 역류",
+	timerArcaneBlowbackCast		= "비전 역류",
 	timerShadowConductorCast	= "암흑 전도체"
 })
 
