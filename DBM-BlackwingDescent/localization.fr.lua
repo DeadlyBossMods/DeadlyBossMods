@@ -41,7 +41,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShadowConductorCast	= "Retour arcanique",
+	timerArcaneBlowbackCast		= "Retour arcanique",
 	timerShadowConductorCast	= "Conducteur d'ombre"
 })
 
