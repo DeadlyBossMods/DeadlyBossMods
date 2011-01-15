@@ -137,7 +137,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	PingCharge	= "當昂布里斯將軍即將閃擊你時點擊小地圖"
+	PingBlitz	= "當昂布里斯將軍即將閃擊你時點擊小地圖"
 }
 
 L:SetMiscLocalization{

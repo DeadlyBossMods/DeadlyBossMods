@@ -136,7 +136,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	PingCharge	= "Ping the minimap when General Umbriss is about to blitz you"
+	PingBlitz	= "Ping the minimap when General Umbriss is about to blitz you"
 }
 
 L:SetMiscLocalization{

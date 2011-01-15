@@ -38,20 +38,24 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
-	Magmatron	= "Магматрон",
-	Electron	= "Электрон",
-	Toxitron	= "Токситрон",
-	Arcanotron	= "Чаротрон"
+	timerShadowConductorCast	= "Чародейская обратная вспышка",
+	timerShadowConductorCast	= "Проводник тьмы"
 })
 
 L:SetOptionLocalization({
-	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	timerShadowConductorCast	= "Показывать таймер применения $spell:92053",
+	timerArcaneBlowbackCast		= "Показывать таймер применения $spell:91879",
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+})
+
+L:SetMiscLocalization({
+	Magmatron		= "Магматрон",
+	Electron		= "Электрон",
+	Toxitron		= "Токситрон",
+	Arcanotron		= "Чаротрон"
 })
 
 ----------------
@@ -76,7 +80,7 @@ L:SetMiscLocalization({
 	YellRed			= "красный|r пузырек в котел!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
 	YellBlue		= "синий|r пузырек в котел!",
 	YellGreen		= "зеленый|r пузырек в котел!",
-	YellDark		= "магию на котле!",--guesswork, this isn't confirmed but if it's consistent with other strings is probably right.
+	YellDark		= "магию на котле!",
 	Red		     	= "Огненная",
 	Blue			= "Ледяная",
 	Green			= "Кислотная",
@@ -115,8 +119,9 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Показывать предупреждение о начале 2-ой фазы",
-	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
-	RangeFrame		= "Окно проверки дистанции (6)"
+	RangeFrame		= "Окно проверки дистанции (6)",
+	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
 })
 
 -----------------
@@ -141,7 +146,8 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Древний дворфийский щит",
-	Airphase		= "Да, беги! С каждым шагом твое сердце бьется все быстрее. Эти громкие, оглушительные удары... Тебе некуда бежать!"
+	Soundlevel				= "Уровень звука",
+	Airphase				= "Да, беги! С каждым шагом твое сердце бьется все быстрее. Эти громкие, оглушительные удары... Тебе некуда бежать!"
 })
 
 L:SetOptionLocalization({
@@ -150,6 +156,7 @@ L:SetOptionLocalization({
 	WarnShieldsLeft		= "Показывать предупреждение когда используется Древний дворфийский щит",
 	TimerAirphase		= "Показывать таймер до следующей воздушной фазы",
 	TimerGroundphase	= "Показывать таймер до следующей наземной фазы",
+	InfoFrame			= "Показывать инфо фрейм для уровня звуков",
 	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
