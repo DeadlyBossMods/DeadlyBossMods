@@ -38,7 +38,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerShadowConductorCast	= "Чародейская обратная вспышка",
+	timerArcaneBlowbackCast		= "Чародейская обратная вспышка",
 	timerShadowConductorCast	= "Проводник тьмы"
 })
 
