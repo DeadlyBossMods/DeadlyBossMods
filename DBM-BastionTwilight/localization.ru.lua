@@ -116,10 +116,12 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Bloodlevel		= "Corruption"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "Показывать предупреждение о переходе на 2-ую фазу",
+	InfoFrame			= "Show info frame for $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
