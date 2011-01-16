@@ -156,7 +156,7 @@ L:SetOptionLocalization({
 	WarnShieldsLeft		= "Показывать предупреждение когда используется Древний дворфийский щит",
 	TimerAirphase		= "Показывать таймер до следующей воздушной фазы",
 	TimerGroundphase	= "Показывать таймер до следующей наземной фазы",
-	InfoFrame			= "Показывать инфо фрейм для уровня звуков",
+	InfoFrame			= "Показывать информационное окно для уровня звуков",
 	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
