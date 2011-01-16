@@ -136,11 +136,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	PingBlitz	= "Ping the minimap when General Umbriss is about to blitz you"
+	PingBlitz	= "장군 움브리스가 당신을 향해 대공세를 시전할 경우 미니맵에 알리기"
 }
 
 L:SetMiscLocalization{
-	Blitz		= "sets his eyes on |cFFFF0000(%S+)"
+	Blitz		= "보면서 |cFFFF0000(%S+)를 시전합니다!"
 }
 
 --------------------------
