@@ -175,20 +175,21 @@ local function updateHealth()
 	table.wipe(lines)
 	for i = 1, GetNumRaidMembers() do
 		if UnitHealth("raid"..i) < infoFrameThreshold then
-			lines["raid"..i] = UnitHealth("raid"..i) - infoFrameThreshold 
+			lines[UnitName("raid"..i)] = UnitHealth("raid"..i) - infoFrameThreshold 
 		end
 	end
 	updateLines()
 end
 
 function infoFrame:UNIT_POWER(uId, powerType)
-	if powerType == select(1, extraOptions) and UnitInRaid(uId) then
-		local power = UnitPower(uId, select(2, extraOptions))
-		local powerMax = UnitPowerMax(uId, select(2, extraOptions))
+	local pString, pIndex = select(1, extraOptions)
+	if powerType == pString and UnitInRaid(uId) then
+		local power = UnitPower(uId, pIndex)
+		local powerMax = UnitPowerMax(uId, pIndex)
 		if power < 0 or infoFrameThreshold and power/powerMax*100 < infoFrameThreshold then
-			lines[uId] = nil
+			lines[UnitName(uId)] = nil
 		else
-			lines[uId] = power
+			lines[UnitName(uId)] = power
 		end
 		updateLines()
 	end
@@ -208,11 +209,11 @@ function onUpdate(self, elapsed)
 	end
 	for i = 1, #sortedLines do
 		if self:NumLines() > maxlines then break end
-		local uId = sortedLines[i]
-		local power = lines[uId]
-		local nameColor = RAID_CLASS_COLORS[select(2, uId)] or NORMAL_FONT_COLOR
-		self:AddDoubleLine(UnitName(uId), power, nameColor.R, nameColor.G, nameColor.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-													-- Add a method to color the power value?
+		local name = sortedLines[i]
+		local power = lines[name]
+		local color = NORMAL_FONT_COLOR
+		self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
+												-- Add a method to color the power value?
 	end
 		
 	self:Show()
