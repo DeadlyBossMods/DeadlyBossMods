@@ -174,7 +174,7 @@ end
 local function updateHealth()
 	table.wipe(lines)
 	for i = 1, GetNumRaidMembers() do
-		if UnitHealth("raid"..i) < infoFrameThreshold then
+		if UnitHealth("raid"..i) < infoFrameThreshold and UnitHealth("raid"..i) > 0 then
 			lines[UnitName("raid"..i)] = UnitHealth("raid"..i) - infoFrameThreshold 
 		end
 	end
