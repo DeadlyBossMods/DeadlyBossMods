@@ -55,7 +55,7 @@ L:SetMiscLocalization({
 	Magmatron	= "Magmatron",
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
-	Arcanotron	= "Arcanotron",
+	Arcanotron	= "Arcanotron"
 })
 
 ----------------
@@ -116,13 +116,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	HealthInfo	= "Información de vida"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Mostrar un preaviso para la fase 2",
 	RangeFrame		= "Mostrar distancia (6 yardas)",
 	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
-	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)	
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
+	InfoFrame	= "Mostrar información sobre la vida (<10k vida)"
 })
 
 -----------------
