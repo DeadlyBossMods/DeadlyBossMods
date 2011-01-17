@@ -32,14 +32,12 @@ local timerFuryCD			= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHeale
 local timerCreationsCD		= mod:NewNextTimer(30, 82414)
 
 mod:AddBoolOption("SetIconOnWorship", true)
---mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame")
 
 local worshipTargets = {}
 local prewarned_Phase2 = false
 local worshipIcon = 8
 local worshipCooldown = 21
-
-local HardCodedBloodFrame = false  	-- set to true for testing purposes ;)
 
 local function showWorshipWarning()
 	warnWorship:Show(table.concat(worshipTargets, "<, >"))
@@ -56,16 +54,14 @@ function mod:OnCombatStart(delay)
 	prewarned_Phase2 = false
 	worshipIcon = 8
 	worshipCooldown = 21
-	--if self.Options.InfoFrame then
-	if HardCodedBloodFrame then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Bloodlevel)
-		DBM.InfoFrame:Show(10, "UNIT_POWER", 25, "ALTERNATE", ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(5, "UNIT_POWER", 25, "ALTERNATE", ALTERNATE_POWER_INDEX)
 	end
 end	
 
 function mod:OnCombatEnd()
-	--if self.Options.InfoFrame then
-	if HardCodedBloodFrame then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
 end 

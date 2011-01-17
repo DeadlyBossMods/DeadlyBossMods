@@ -39,7 +39,7 @@ local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnSlime", true)
-mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame", mod:IsHealer())
 
 local prewarnedPhase2 = false
 local feud = false
