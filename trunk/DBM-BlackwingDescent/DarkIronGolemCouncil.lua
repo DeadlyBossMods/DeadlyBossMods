@@ -85,7 +85,7 @@ mod:AddBoolOption("ShadowConductorIcon")
 
 local fixateIcon = 6
 
-local bossActivate = function(boss, delay)  --delay from OnCombatStart for abilities?
+local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerAcquiringTarget:Start(20)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
@@ -148,18 +148,17 @@ function mod:OnCombatStart(delay)
 		timerNextActivate:Start(-delay)
 	end
 	DBM.BossHealth:Clear()
-	for i=1, GetNumRaidMembers() do
+--[[	for i=1, GetNumRaidMembers() do
 		local cid = self:GetUnitCreatureId("raid"..i)
 		if cid == 42166 or cid == 42178 or cid == 42179 or cid == 42180 then
 			bossActivate(cid, delay)
 			break;
 		end
-	end
+	end--]]
 end
 
---Most of spelids for 25 man, and heroics are drycoded in this mod.
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(78740, 95016, 95017, 95018) then
+	if args:IsSpellID(78740, 95016, 95017, 95018) then--This also fires on combat start and provides most accurate combat start timers for the first activated golem
 		warnActivated:Show(args.destName)
 		bossActivate(args.destName)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
