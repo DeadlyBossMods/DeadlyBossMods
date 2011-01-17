@@ -34,11 +34,9 @@ local berserkTimer			= mod:NewBerserkTimer(600)
 local soundTracking			= mod:NewSound(78092)
 
 mod:AddBoolOption("TrackingIcon")
---mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("InfoFrame")
 
 local shieldsLeft = 10
-
-local HardCodedAtramedesSoundFrame = false  	-- set to true for testing purposes ;)
 
 local function groundphase()
 	timerAirphase:Start()
@@ -53,16 +51,14 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 	end
 	shieldsLeft = 10
-	--if self.Options.InfoFrame then
-	if HardCodedAtramedesSoundFrame then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Soundlevel)
-		DBM.InfoFrame:Show(5, "UNIT_POWER", 40, "ALTERNATE", ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(5, "UNIT_POWER", 30, "ALTERNATE", ALTERNATE_POWER_INDEX)
 	end
 end
 
 function mod:OnCombatEnd()
-	--if self.Options.InfoFrame then
-	if HardCodedAtramedesSoundFrame then
+	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
 end 
