@@ -19,7 +19,6 @@ mod:RegisterEvents(
 local warnWorship			= mod:NewTargetAnnounce(91317, 3)--Phase 1
 local warnFury				= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
 local warnAdherent			= mod:NewSpellAnnounce(81628, 4)--Phase 1
-local warnFesterBlood		= mod:NewSpellAnnounce(82299, 3)--Phase 1
 local warnShadowOrders		= mod:NewSpellAnnounce(81556, 3)
 local warnFlameOrders		= mod:NewSpellAnnounce(81171, 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
@@ -64,6 +63,13 @@ function mod:OnCombatStart(delay)
 	end
 end	
 
+function mod:OnCombatEnd()
+	--if self.Options.InfoFrame then
+	if HardCodedBloodFrame then
+		DBM.InfoFrame:Hide()
+	end
+end 
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(91317, 93365, 93366, 93367) then
 		worshipTargets[#worshipTargets + 1] = args.destName
@@ -90,8 +96,6 @@ function mod:SPELL_CAST_START(args)
 		timerAdherent:Start()
 		timerFesterBlood:Start()
 		worshipCooldown = 36
-	elseif args:IsSpellID(82299) then
-		warnFesterBlood:Show()
 	elseif args:IsSpellID(82524) then
 		warnFury:Show()
 		timerFuryCD:Start()
