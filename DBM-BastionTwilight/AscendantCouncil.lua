@@ -94,7 +94,7 @@ local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
 local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
 --All
-local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
+--local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
 
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
@@ -414,6 +414,6 @@ function mod:UNIT_HEALTH(uId)
 	local cid = self:GetUnitCreatureId(uId)
 	if (cid == 43686 or cid == 43687 or cid == 43688 or cid == 43689) and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
 		warnedLowHP[cid] = true
-		specWarnBossLow:Show(UnitName(uId))
+--		specWarnBossLow:Show(UnitName(uId))
 	end
 end

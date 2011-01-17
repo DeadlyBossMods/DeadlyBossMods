@@ -85,7 +85,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then--There is no cast for this, so we have to warn on damage :\
 		slimeTargets[#slimeTargets + 1] = args.destName
 		if self.Options.SetIconOnSlime and not feud then--Don't set icons during feud, set them any other time.
-			self:SetIcon(args.destName, slimeIcon)
+			self:SetIcon(args.destName, slimeIcon, 3)
 			slimeIcon = slimeIcon - 1
 		end
 		self:Unschedule(showSlimeWarning)

@@ -61,6 +61,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
+	--if self.Options.InfoFrame then
 	if HardCodedAtramedesSoundFrame then
 		DBM.InfoFrame:Hide()
 	end

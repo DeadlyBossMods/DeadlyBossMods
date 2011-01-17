@@ -113,7 +113,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(89000, 95177) and GetTime() - lastFlames > 3 then -- Flames on ground from Firestorm
+	if args:IsSpellID(89000, 95177) and GetTime() - lastFlames > 3 and args:IsPlayer() then -- Flames on ground from Firestorm
 		specWarnFirestorm:Show()
 		lastFlames = GetTime()
 	end

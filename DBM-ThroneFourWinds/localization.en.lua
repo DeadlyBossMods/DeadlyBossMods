@@ -20,7 +20,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "%s begins to gather strength from the remaining Wind Lords!"
+	gatherstrength			= "%s begins to gather strength"
 })
 
 L:SetOptionLocalization({
