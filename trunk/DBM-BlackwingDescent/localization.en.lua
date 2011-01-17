@@ -113,13 +113,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	HealthInfo	= "Health Info"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Show a prewarning for Phase 2",
 	RangeFrame		= "Show range frame (6)",
 	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
-	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
+	InfoFrame	= "Show info frame for health (<10k hp)"
 })
 
 -----------------

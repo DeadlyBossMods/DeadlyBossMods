@@ -39,6 +39,7 @@ local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnSlime", true)
+mod:AddBoolOption("InfoFrame")
 
 local prewarnedPhase2 = false
 local feud = false
@@ -64,11 +65,18 @@ function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.HealthInfo)
+		DBM.InfoFrame:Show(5, "health", 10000)
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
 	end
 end
 
