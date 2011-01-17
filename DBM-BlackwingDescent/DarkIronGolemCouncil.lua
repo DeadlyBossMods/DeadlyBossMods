@@ -85,8 +85,8 @@ mod:AddBoolOption("ShadowConductorIcon")
 
 local fixateIcon = 6
 
-local bossActivate = function(boss)
-	if boss == L.Magmatron then
+local bossActivate = function(boss, delay)  --delay from OnCombatStart for abilities?
+	if boss == L.Magmatron or boss == 42178 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerAcquiringTarget:Start(20)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
 			timerIncinerationCD:Start(10)
@@ -95,14 +95,14 @@ local bossActivate = function(boss)
 			timerIncinerationCD:Start(10)
 		end
 		DBM.BossHealth:AddBoss(42178, L.Magmatron)
-	elseif boss == L.Electron then
+	elseif boss == L.Electron or boss == 42179 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerLightningConductorCD:Start(15)--Probably also has a variation if it's like normal. Needs more logs to verify.
 		else
 			timerLightningConductorCD:Start(11)--11-15 variation confirmed for normal, only boss ability with an actual variation on timer. Strange.
 		end
 		DBM.BossHealth:AddBoss(42179, L.Electron)
-	elseif boss == L.Toxitron then
+	elseif boss == L.Toxitron or boss == 42180 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerChemicalBomb:Start(25)
 			timerPoisonProtocolCD:Start(15)
@@ -111,7 +111,7 @@ local bossActivate = function(boss)
 			timerPoisonProtocolCD:Start(21)
 		end
 		DBM.BossHealth:AddBoss(42180, L.Toxitron)
-	elseif boss == L.Arcanotron then
+	elseif boss == L.Arcanotron or boss == 42166 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
 		else
@@ -146,6 +146,14 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 	else
 		timerNextActivate:Start(-delay)
+	end
+	DBM.BossHealth:Clear()
+	for i=1, GetNumRaidMembers() do
+		local cid = self:GetUnitCreatureId("raid"..i)
+		if cid == 42166 or cid == 42178 or cid == 42179 or cid == 42180 then
+			bossActivate(cid, delay)
+			break;
+		end
 	end
 end
 
