@@ -44,6 +44,7 @@ local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 local specWarnSludge			= mod:NewSpecialWarningMove(92987)
 local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896)
 local specWarnEngulfingDarkness	= mod:NewSpecialWarningSpell(92754, mod:IsTank())--Heroic Ability
+local specWarnFlashFreeze		= mod:NewSpecialWarningTarget(77699)--On Heroic it has a lot more health.
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
 
@@ -97,6 +98,9 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(77699, 92978, 92979, 92980) then
 		warnFlashFreeze:Show(args.destName)
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			specWarnFlashFreeze:Show(args.destName)
+		end
 		if self.Options.FlashFreezeIcon then
 			self:SetIcon(args.destName, 8)
 		end
