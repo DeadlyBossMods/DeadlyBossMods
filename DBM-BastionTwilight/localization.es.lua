@@ -123,6 +123,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Mostrar preaviso para Fase 2",
 	InfoFrame			= "Mostrar información para $spell:82235",
+	RangeFrame			= "Mostrar distancia (6 yardas) para $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
