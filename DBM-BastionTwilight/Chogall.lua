@@ -134,8 +134,8 @@ function mod:UNIT_HEALTH(uId)
 	end
 end
 
-function mod:UNIT_POWER(event, unit, powerType)
-	if sicknessWarned or unit ~= "player" or powerType ~= "ALTERNATE" then return end
+function mod:UNIT_POWER(uId, powerType)
+	if sicknessWarned or uId ~= "player" or powerType ~= "ALTERNATE" then return end
 	local power = UnitPower("player", ALTERNATE_POWER_INDEX)
 	if power >= 50 then
 		specWarnSickness:Show()
