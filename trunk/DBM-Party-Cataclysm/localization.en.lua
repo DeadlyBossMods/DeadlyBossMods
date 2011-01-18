@@ -123,6 +123,10 @@ L:SetGeneralLocalization({
 	name = "Vanessa VanCleef"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Gauntlet"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
@@ -208,7 +212,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	achievementGauntlet	= "Speed of Light"
+	achievementGauntlet	= "Gauntlet"
 })
 
 L:SetMiscLocalization({

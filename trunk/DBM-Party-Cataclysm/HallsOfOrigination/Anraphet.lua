@@ -30,7 +30,7 @@ local timerImpale		= mod:NewTargetTimer(3, 77235)
 local timerImpaleCD		= mod:NewCDTimer(20, 77235)
 local timerInferno		= mod:NewCDTimer(17, 77241)
 
-local timerGauntlet		= mod:NewAchievementTimer(300, 5296, "achievementGauntlet")--will this be canceled by other bosses pulled/killed?
+local timerGauntlet		= mod:NewAchievementTimer(300, 5296, "achievementGauntlet")
 
 function mod:OnCombatStart(delay)
 	timerAlphaBeamsCD:Start(10-delay)
