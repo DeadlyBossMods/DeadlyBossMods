@@ -13,7 +13,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"UNIT_POWER"
 )
 
 local warnWorship			= mod:NewTargetAnnounce(91317, 3)--Phase 1
@@ -25,6 +26,8 @@ local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnCreations			= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
+local specWarnSickness		= mod:NewSpecialWarningYou(82235)
+
 local timerWorshipCD		= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent			= mod:NewCDTimer(92, 81628)
 local timerFesterBlood		= mod:NewCDTimer(40, 82299)--40 seconds after an adherent is summoned
@@ -32,10 +35,12 @@ local timerFuryCD			= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHeale
 local timerCreationsCD		= mod:NewNextTimer(30, 82414)
 
 mod:AddBoolOption("SetIconOnWorship", true)
+mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
 
 local worshipTargets = {}
 local prewarned_Phase2 = false
+local sicknessWarned = false
 local worshipIcon = 8
 local worshipCooldown = 21
 
@@ -52,6 +57,7 @@ function mod:OnCombatStart(delay)
 	timerAdherent:Start(60-delay)
 	table.wipe(worshipTargets)
 	prewarned_Phase2 = false
+	sicknessWarned = false
 	worshipIcon = 8
 	worshipCooldown = 21
 	if self.Options.InfoFrame then
@@ -63,6 +69,9 @@ end
 function mod:OnCombatEnd()
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
+	end
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Hide()
 	end
 end 
 
@@ -106,7 +115,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPhase2:Show()
 		timerAdherent:Cancel()
 		timerWorshipCD:Cancel()
-		timerFuryCD:Cancel()
 	elseif args:IsSpellID(81556) then--87575?
 		warnShadowOrders:Show()
 	elseif args:IsSpellID(81171) then--87579?
@@ -123,5 +131,17 @@ function mod:UNIT_HEALTH(uId)
 			warnPhase2Soon:Show()
 			prewarned_Phase2 = true
 		end
+	end
+end
+
+function mod:UNIT_POWER(event, unit, powerType)
+	if sicknessWarned or unit ~= "player" or powerType ~= "ALTERNATE" then return end
+	local power = UnitPower("player", ALTERNATE_POWER_INDEX)
+	if power >= 50 then
+		specWarnSickness:Show()
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Show(6)
+		end
+		sicknessWarned = true
 	end
 end
