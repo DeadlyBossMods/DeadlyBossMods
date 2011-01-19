@@ -58,7 +58,8 @@ local dropdownFrame
 local initializeDropdown
 local maxlines
 local infoFrameThreshold 
-local extraOptions
+local pIndex
+local pString
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local currentEvent
 local sortingAsc
@@ -182,7 +183,6 @@ local function updateHealth()
 end
 
 function infoFrame:UNIT_POWER(uId, powerType)
-	local pString, pIndex = select(1, extraOptions)
 	if powerType == pString and UnitInRaid(uId) then
 		local power = UnitPower(uId, pIndex)
 		local powerMax = UnitPowerMax(uId, pIndex)
@@ -230,7 +230,7 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 
 	infoFrameThreshold = threshold
 	maxlines = maxLines or 5	-- default 5 lines
-	extraOptions = ...
+	pString, pIndex = select(1, ...)
 	currentEvent = event
 	frame = frame or createFrame()
 
@@ -253,6 +253,8 @@ function infoFrame:Hide()
 		headerText = nil
 		sortingAsc = false
 		infoFrameThreshold = nil
+		pString = nil
+		pIndex = nil
 		frame:Hide()
 		if currentEvent ~= "health" then
 			frame:UnregisterEvent(currentEvent)
