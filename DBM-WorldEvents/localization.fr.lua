@@ -2,6 +2,8 @@
 
 local L
 
+-- Last update : 01/19/2011 (by Sasmira)
+
 -------------------
 -- Coren Direbrew --
 -------------------
@@ -12,18 +14,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	warnBarrel			= "Tonneau sur >%s<", 
-	specwarnDisarm		= "Désarmement. Bougez !",
 	specWarnBrew		= "Débarrassez-vous de la bière avant qu'elle ne vous en lance une autre !",
 	specWarnBrewStun	= "Vous avez reçu un coup sur la tête. La prochaine fois, videz votre verre !"
 })
 
 L:SetOptionLocalization({
-	warnBarrel			= "Annonce la cible du Tonneau.",
-	specwarnDisarm		= "Montre une alerte spéciale pour le désarmement",
 	specWarnBrew		= "Montre une alerte spéciale pour la Sombrebière de la vierge",
 	specWarnBrewStun	= "Montre une alerte spéciale pour l'Etourdir de la vierge bierrière",
-	PlaySoundOnDisarm	= "Joue un son pour le désarmement",
 	YellOnBarrel		= "Crie quand vous avez un Tonneau sur vous"
 })
 

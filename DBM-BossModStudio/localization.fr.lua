@@ -1,4 +1,4 @@
-
+﻿
 if GetLocale() ~= "frFR" then return end
 if type(DBM_BMS_Translations) ~= "table" then DBM_BMS_Translations = {} end
 

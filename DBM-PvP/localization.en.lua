@@ -1,4 +1,4 @@
-local L
+﻿local L
 
 --------------------------
 --  General BG Options  --
@@ -262,9 +262,6 @@ L:SetOptionLocalization({
 -------------------------
 --  Battle of Gilneas  --
 -------------------------
---------------------
---  Arathi Basin  --
---------------------
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({

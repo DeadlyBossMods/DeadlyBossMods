@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/13/2011 (by Sasmira) 
+-- Last update: 01/19/2011 (by Sasmira) 
 
 
 --------------
@@ -118,13 +118,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	HealthInfo	= "Info Santé"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2",
 	RangeFrame	= "Afficher la fenêtre de portée (6)",
 	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "inconnu"),
-	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
+	InfoFrame		= "Afficher une fenêtre d'info sur la santé (<10k pv)"
 })
 
 -----------------
@@ -149,6 +151,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Ancien bouclier nain",
+	Soundlevel			= "Niveau Sonore",
 	Airphase			= "Oui, fuyez ! Chaque foulée accélère votre cœur. Les battements résonnent comme le tonnerre... Assourdissant. Vous ne vous échapperez pas !" -- à vérifier
 })
 
@@ -158,6 +161,7 @@ L:SetOptionLocalization({
 	WarnShieldsLeft		= "Affiche l'alerte lorsqu'un Ancien bouclier nain est utilisé",
 	TimerAirphase		= "Affiche le timer pour la prochaine Phase en l'air",
 	TimerGroundphase	= "Affiche le timer pour la prochaine Phase au sol",
+	InfoFrame			= "Affiche une fenêtre d'info pour le niveau sonore",
 	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
@@ -192,11 +196,14 @@ L:SetOptionLocalization({
 	OnySwipeTimer		= "Affiche le CoolDown du sort $spell:77827 d'Onyxia",
 	NefSwipeTimer		= "Affiche le CoolDown du sort $spell:77827 de Nefarian",
 	OnyBreathTimer		= "Affiche le CoolDown du sort $spell:94124 d'Onyxia",
-	NefBreathTimer		= "Affiche le CoolDown du sort $spell:94124 de Nefarian"
+	NefBreathTimer		= "Affiche le CoolDown du sort $spell:94124 de Nefarian",
+	YellOnCinder		= "Crier sur $spell:79339",
+	RangeFrame		= "Affiche la fenêtre de portée (10) lorsque vous avez $spell:79339",
+	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
-	NefAoe			= "The air crackles with electricity!", -- need translation ... :(
+	NefAoe			= "L'air craque avec l'électricité !", -- à vérifier 
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
 	ShadowblazeCast		= "Que la chair se transforme en cendres !", -- à vérifier
 	ChromaticPrototype	= "Prototype chromatique"

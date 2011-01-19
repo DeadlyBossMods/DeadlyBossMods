@@ -2,7 +2,7 @@
 
 local L
 
--- Last update: 01/02/2011 (by Sasmira)
+-- Last update: 01/19/2011 (by Sasmira)
 
 ----------------------------
 --  General BG functions  --
@@ -179,7 +179,6 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart  				= "Voir: Temps de départ du BG",
-	TimerWin 					= "Montre le timer de la victoire",
 	TimerFlag 					= "Montre le timer du respawn du drapeau",
 	ShowFlagCarrier				= "Montre le porteur du drapeau",
 	ShowFlagCarrierErrorNote 	= "Montre un message d'erreur au porteur du drapeau lorsqu'il est en combat",
@@ -188,7 +187,6 @@ L:SetOptionLocalization({
 ------------------------
 --  Isle of Conquest  --
 ------------------------
-
 L = DBM:GetModLocalization("IsleofConquest")
 
 L:SetGeneralLocalization({
@@ -274,7 +272,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Gilneas")
 
 L:SetGeneralLocalization({
-	name = "Bataille de Gilnéas"	-- Done :D
+	name = "Bataille de Gilnéas"
 })
 
 L:SetMiscLocalization({
