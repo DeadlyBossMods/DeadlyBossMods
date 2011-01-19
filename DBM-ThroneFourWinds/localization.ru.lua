@@ -22,6 +22,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	gatherstrength			= "%s близок к обретению абсолютной силы"
 })
 
 L:SetOptionLocalization({

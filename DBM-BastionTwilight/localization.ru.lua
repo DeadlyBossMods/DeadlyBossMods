@@ -122,6 +122,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "Показывать предупреждение о переходе на 2-ую фазу",
 	InfoFrame			= "Показывать информационное окно для $spell:82235",
+	RangeFrame			= "Показать окно проверки дистанции (6) для $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
