@@ -1,4 +1,4 @@
-if GetLocale() ~= "frFR" then return end
+﻿if GetLocale() ~= "frFR" then return end
 -- Last update: 12/28/2010 (by Sasmira)
 
 

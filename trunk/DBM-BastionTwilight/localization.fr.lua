@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/07/2011 (by Sasmira) 
+-- Last update: 01/19/2011 (by Sasmira) 
 
 
 ---------------------------
@@ -119,10 +119,13 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Bloodlevel		= "Corruption"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2",
+	InfoFrame		= "Afficher la fenêtre d'info pour le sort $spell:82235",
+	RangeFrame	= "Afficher la fenêtre de portée (6) pour $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 

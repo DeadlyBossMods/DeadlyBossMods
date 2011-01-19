@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/12/2011 (by Sasmira) 
+-- Last update: 01/19/2011 (by Sasmira) 
 
 
 -------------------------
@@ -128,6 +128,10 @@ L:SetGeneralLocalization({
 	name = "Vanessa VanCleef"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Gantelet"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
@@ -138,6 +142,14 @@ L = DBM:GetModLocalization("GeneralUmbriss")
 L:SetGeneralLocalization({
 	name = "Général Umbriss"
 })
+
+L:SetOptionLocalization{
+	PingBlitz	= "Ping sur la minimap lorsque le Général Umbriss est sur le point de vous faire une Attaque éclair"
+}
+
+L:SetMiscLocalization{
+	Blitz		= "Son regard se fixe sur |cFFFF0000(%S+)"
+}
 
 --------------------------
 -- Forgemaster Throngus --
