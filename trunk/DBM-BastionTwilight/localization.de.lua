@@ -24,9 +24,8 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!",
-	YellEngulfing				= "Einhüllende Magie auf mir!"
+	YellEngulfing				= "Einhüllende Magie auf mir!",
 	YellMeteor				= "Zwielichtmeteorit auf mir!",
-
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
@@ -73,7 +72,7 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	Quake			= "Der Boden unter Euch grollt unheilvoll...",
-	Thundershock	= "Die Luft beginnt, vor Energie zu knistern..."
+	Thundershock	= "Die Luft beginnt, vor Energie zu knistern...",
 	Switch			= "Wir kümmern uns um sie!",-- drycoded
 	Phase3			= "SCHMECKT DIE VERDAMMNIS!",-- drycoded
 	Ignacious		= "Ignazius",
