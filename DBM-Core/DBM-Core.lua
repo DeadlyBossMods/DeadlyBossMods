@@ -3124,6 +3124,7 @@ do
 		elseif self.timer <= 2 then
 			frame:SetAlpha(self.timer/2)
 		elseif self.timer <= 0 then
+			LowHealthFrame:Hide()
 			frame:Hide()
 		end
 	end)
