@@ -115,13 +115,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	HealthInfo	= "Инфо о здоровье"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Показывать предупреждение о начале 2-ой фазы",
 	RangeFrame		= "Окно проверки дистанции (6)",
 	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
-	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
+	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
+	InfoFrame		= "Показывать информационное окно с здоровьем (<10k зд)"
 })
 
 -----------------
@@ -191,12 +193,15 @@ L:SetOptionLocalization({
 	OnySwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Ониксии",
 	NefSwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Нефариана",
 	OnyBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Ониксии",
-	NefBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Нефариана"
+	NefBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Нефариана",
+	YellOnCinder		= "Крикнуть во время $spell:79339",
+	RangeFrame			= "Показывать окно проверки дистанции (10) когда на вас $spell:79339",
+	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
 	NefAoe				= "В воздухе трещат электрические разряды!",
 	YellPhase2			= "Дерзкие смертные! Неуважение к чужой собственности нужно пресекать самым жестоким образом!",
-	ShadowblazeCast		= "И плоть превратится в прах!",
-	ChromaticPrototype	= "Хроматический прообраз"
+	YellPhase3			= "Я пытался следовать законам гостеприимства, но вы все никак не умрете! Придется отбросить условности и просто... УБИТЬ ВАС ВСЕХ!",
+	YellCinder			= "На МНЕ - Взрывчатая субстанция!"
 })

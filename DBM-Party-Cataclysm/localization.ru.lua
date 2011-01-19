@@ -125,6 +125,10 @@ L:SetGeneralLocalization({
 	name = "Ванесса ван Клиф"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Великое воздаяние"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
