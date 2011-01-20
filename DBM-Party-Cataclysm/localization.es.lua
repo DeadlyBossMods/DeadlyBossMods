@@ -125,6 +125,10 @@ L:SetGeneralLocalization({
 	name = "Vanessa VanCleef"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Vigorosa venganza VanCleef"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
@@ -141,7 +145,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Blitz		= "sets his eyes on |cFFFF0000(%S+)"--translate
+	Blitz		= "fija la mirada |cFFFF0000(%S+)"
 }
 
 --------------------------
@@ -163,7 +167,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- translate
+	ValionaYell	= "¡Dragón, harás lo que te ordeno! ¡Cógeme!",
 	Valiona		= "Valiona"	
 }
 
