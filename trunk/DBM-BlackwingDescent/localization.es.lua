@@ -18,8 +18,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Slump			= "%s cae hacia delante y deja expuestas sus tenazas!",
-	HeadExposed		= "%s acaba empalado en el pincho y deja expuesta la cabeza!"
+	Slump			= "¡%s cae hacia delante y deja expuestas sus tenazas!",
+	HeadExposed		= "¡%s acaba empalado en el pincho y deja expuesta la cabeza!"
 })
 
 L:SetOptionLocalization({
@@ -194,12 +194,15 @@ L:SetOptionLocalization({
 	OnySwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Onyxia",
 	NefSwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Nefarian",
 	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
-	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian"
+	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
+	YellOnCinder		= "Gritar cuando tengas $spell:79339",
+	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339",
+	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
 	NefAoe				= "The air crackles with electricity!",--translate
 	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",--translate
-	ShadowblazeCast		= "Flesh turns to ash!",--translate
-	ChromaticPrototype	= "Chromatic Prototype"--translate
+	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--translate
+	YellCinder			= "Explosive Cinders on me!"--translate
 })
