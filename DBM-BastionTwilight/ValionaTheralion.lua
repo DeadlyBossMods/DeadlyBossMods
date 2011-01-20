@@ -17,7 +17,7 @@ mod:RegisterEvents(
 	"UNIT_AURA"
 )
 
-local warnTwilightMeteorite			= mod:NewSpellAnnounce(86013, 2, nil, false)--Just a basic cast warning, not entirely helpful.
+local warnTwilightMeteorite			= mod:NewCastAnnounce(86013, 2, nil, false)--Just a basic cast warning, not entirely helpful.
 local warnBlackout					= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
@@ -153,8 +153,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	end
 end
 
-function mod:UNIT_AURA(event, unit)
-	if unit == "player" then
+function mod:UNIT_AURA(uId)
+	if uId == "player" then
 		if UnitDebuff("player", meteorTarget) and not markWarned then
 			specWarnTwilightMeteorite:Show()
 			if self.Options.YellOnMeteor then
