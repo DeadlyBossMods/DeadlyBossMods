@@ -125,6 +125,10 @@ L:SetGeneralLocalization({
 	name = "凡妮莎·范克里夫"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "充滿活力"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
