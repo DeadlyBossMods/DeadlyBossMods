@@ -121,6 +121,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "為第2階段顯示預先警告",
 	InfoFrame		= "為$spell:82235顯示資訊框架",
+	RangeFrame		= "為$spell:82235顯示距離框 (6碼)",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 

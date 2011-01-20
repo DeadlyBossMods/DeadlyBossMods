@@ -194,11 +194,14 @@ L:SetOptionLocalization({
 	OnySwipeTimer			= "為奧妮克希亞的$spell:77827的冷卻時間顯示計時器",
 	NefSwipeTimer			= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
 	OnyBreathTimer			= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
-	NefBreathTimer			= "為奈法利安的$spell:94124的冷卻時間顯示計時器"
+	NefBreathTimer			= "為奈法利安的$spell:94124的冷卻時間顯示計時器",
+	YellOnCinder			= "中了$spell:79339時大喊",
+	RangeFrame			= "當你中了$spell:79339時顯示距離框 (10碼)",
+	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
 	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
-	ShadowblazeCast 		= "化為灰燼吧!",
-	ChromaticPrototype 		= "炫彩原型體"
+	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
+	YellCinder			= "我中了爆裂灰燼!"
 })
