@@ -20,6 +20,8 @@ local warnMoltenTantrum	= mod:NewSpellAnnounce(78403, 4)
 local warnInferno		= mod:NewSpellAnnounce(92190, 4)
 local warnMangle		= mod:NewTargetAnnounce(89773, 3)
 
+local specWarnPillar	= mod:NewSpecialWarningSpell(78006, mod:IsRanged())
+
 local timerLavaSpew		= mod:NewCDTimer(30, 77689)
 local timerPillarFlame	= mod:NewCDTimer(32.5, 78006)--This timer is a CD timer. 30-40 seconds. Use your judgement.
 local timerMangle		= mod:NewTargetTimer(30, 89773)
@@ -48,6 +50,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		lastLavaSpew = GetTime()
 	elseif args:IsSpellID(78006) then--More than one spellid?
 		warnPillarFlame:Show()
+		specWarnPillar:Show()
 		timerPillarFlame:Start()
 	elseif args:IsSpellID(78403) then
 		warnMoltenTantrum:Show()
