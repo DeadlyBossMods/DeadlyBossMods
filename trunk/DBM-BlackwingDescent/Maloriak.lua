@@ -115,7 +115,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(showBitingChillWarning)
 		self:Schedule(0.3, showBitingChillWarning)
-	elseif args:IsSpellID(77912, 92965, 92966, 92967) then
+	elseif args:IsSpellID(77912, 92965, 92966, 92967) and not args:IsDestTypePlayer() then
 		warnRemedy:Show()
 		specWarnRemedy:Show(args.destName)
 	elseif args:IsSpellID(77896) then
