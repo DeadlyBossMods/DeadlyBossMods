@@ -27,6 +27,7 @@ local warnSpecial			= mod:NewAnnounce("warnSpecial", 3, "Interface\\Icons\\INV_E
 
 local specWarnSpecial		= mod:NewSpecialWarning("specWarnSpecial")
 local specWarnShield		= mod:NewSpecialWarningSpell(95865)
+local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
 local specWarnIcePatch      = mod:NewSpecialWarningMove(93131)
 
 local timerNurture			= mod:NewCDTimer(114, 85422)--This does NOT cast at same time as hurricane/sleet storm/Zephyr
@@ -116,6 +117,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(86193) then
 		windBlastCounter = windBlastCounter + 1
 		warnWindBlast:Show()
+		specWarnWindBlast:Show()
 		timerWindBlast:Start()
 		if windBlastCounter == 1 then
 			timerWindBlastCD:Start(82)
