@@ -36,11 +36,15 @@ local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
 local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
 local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
 local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408)
+local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898)
+local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("YellOnEngulfing", true, "announce")
 mod:AddBoolOption("YellOnMeteor", true, "announce")
+mod:AddBoolOption("YellOnTwilightBlast", true, "announce")
+mod:AddBoolOption("TwilightBlastArrow")
 mod:AddBoolOption("BlackoutIcon")
 mod:AddBoolOption("EngulfingIcon")
 mod:AddBoolOption("RangeFrame")
@@ -60,6 +64,33 @@ end
 
 local function markRemoved()
 	markWarned = false
+end
+
+function mod:TwilightBlastTarget()
+	local targetname = self:GetBossTarget(45993)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnTwilightBlast:Show()
+		if self.Options.YellOnTwilightBlast then
+			SendChatMessage(L.YellTwilightBlast, "SAY")
+		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			if inRange then
+				specWarnTwilightBlastNear:Show(targetname)
+				if self.Options.TwilightBlastArrow then
+					DBM.Arrow:ShowRunAway(x, y, 8, 5)
+				end
+			end
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -140,6 +171,8 @@ function mod:SPELL_CAST_START(args)
 		timerBlackoutNext:Cancel()
 		timerNextDeepBreath:Start(111)
 		lastDazzling = GetTime()
+	elseif args:IsSpellID(86369, 92898, 92899, 92900) then
+		self:ScheduleMethod(0.1, "TwilightBlastTarget")
 	end
 end
 

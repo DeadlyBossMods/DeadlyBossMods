@@ -17,24 +17,28 @@ mod:RegisterEvents(
 	"UNIT_POWER"
 )
 
-local warnWorship			= mod:NewTargetAnnounce(91317, 3)--Phase 1
-local warnFury				= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
-local warnAdherent			= mod:NewSpellAnnounce(81628, 4)--Phase 1
-local warnShadowOrders		= mod:NewSpellAnnounce(81556, 3)
-local warnFlameOrders		= mod:NewSpellAnnounce(81171, 3)
-local warnPhase2			= mod:NewPhaseAnnounce(2)
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 2)
-local warnCreations			= mod:NewSpellAnnounce(82414, 3)--Phase 2
+local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
+local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
+local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
+local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3)
+local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3)
+local warnPhase2					= mod:NewPhaseAnnounce(2)
+local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
-local specWarnSickness		= mod:NewSpecialWarningYou(82235)
+local specWarnSickness				= mod:NewSpecialWarningYou(82235)
+local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178, false)--Subject to accuracy flaws so off by default.
+local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178, false)--Subject to accuracy flaws so off by default.
 
-local timerWorshipCD		= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
-local timerAdherent			= mod:NewCDTimer(92, 81628)
-local timerFesterBlood		= mod:NewCDTimer(40, 82299)--40 seconds after an adherent is summoned
-local timerFuryCD			= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
-local timerCreationsCD		= mod:NewNextTimer(30, 82414)
+local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
+local timerAdherent					= mod:NewCDTimer(92, 81628)
+local timerFesterBlood				= mod:NewCDTimer(40, 82299)--40 seconds after an adherent is summoned
+local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
+local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 
 mod:AddBoolOption("SetIconOnWorship", true)
+mod:AddBoolOption("YellOnCorruptingCrash", false, "announce")--Subject to accuracy flaws so off by default.
+mod:AddBoolOption("CorruptingCrashArrow", false)--Subject to accuracy flaws so off by default.
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
 
@@ -49,6 +53,33 @@ local function showWorshipWarning()
 	table.wipe(worshipTargets)
 	worshipIcon = 8
 	timerWorshipCD:Start(worshipCooldown)
+end
+
+function mod:CorruptingCrashTarget()
+	local targetname = self:GetBossTarget(43622)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		specWarnCorruptingCrash:Show()
+		if self.Options.YellOnCorruptingCrash then
+			SendChatMessage(L.YellCorruptingCrash, "SAY")
+		end
+	elseif targetname then
+		local uId = DBM:GetRaidUnitId(targetname)
+		if uId then
+			local inRange = CheckInteractDistance(uId, 2)
+			local x, y = GetPlayerMapPosition(uId)
+			if x == 0 and y == 0 then
+				SetMapToCurrentZone()
+				x, y = GetPlayerMapPosition(uId)
+			end
+			if inRange then
+				specWarnCorruptingCrashNear:Show(targetname)
+				if self.Options.CorruptingCrashArrow then
+					DBM.Arrow:ShowRunAway(x, y, 10, 5)
+				end
+			end
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
@@ -119,6 +150,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnShadowOrders:Show()
 	elseif args:IsSpellID(81171) then--87579?
 		warnFlameOrders:Show()
+	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
+		self:ScheduleMethod(0.01, "CorruptingCrashTarget")--Since this is an instance cast scanning accurately is very hard.
 	end
 end
 
