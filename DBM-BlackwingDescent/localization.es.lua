@@ -150,7 +150,7 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Antiguo escudo enano",
 	Soundlevel				= "Nivel de sonido",
-	Airphase		= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"--translate
+	Airphase		= "¡Sí, corred! Con cada paso, vuestros corazones se aceleran. El latido, fuerte y clamoroso... Casi ensordecedor. ¡No podéis escapar!"
 })
 
 L:SetOptionLocalization({
