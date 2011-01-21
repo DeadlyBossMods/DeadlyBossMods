@@ -38,7 +38,7 @@ local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
 local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
 
 mod:AddBoolOption("RangeFrame")
-mod:AddBoolOption("SetIconOnSlime", true)
+mod:AddBoolOption("SetIconOnSlime", false)
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 
 local prewarnedPhase2 = false
