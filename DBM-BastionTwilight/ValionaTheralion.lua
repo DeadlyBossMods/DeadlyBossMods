@@ -43,7 +43,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("YellOnEngulfing", true, "announce")
 mod:AddBoolOption("YellOnMeteor", true, "announce")
-mod:AddBoolOption("YellOnTwilightBlast", true, "announce")
+mod:AddBoolOption("YellOnTwilightBlast", false, "announce")
 mod:AddBoolOption("TwilightBlastArrow")
 mod:AddBoolOption("BlackoutIcon")
 mod:AddBoolOption("EngulfingIcon")
