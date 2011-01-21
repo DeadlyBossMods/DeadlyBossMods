@@ -72,9 +72,9 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Quake			= "The ground beneath you rumbles ominously....",
-	Thundershock		= "The surrounding air crackles with energy....",
-	Switch			= "We will handle them!",
+	Quake			= "你腳下的地面開始不祥地震動起來....",
+	Thundershock		= "四周的空氣爆出能量霹啪作響聲音....",
+	Switch			= "我們會解決他們!",
 	Phase3			= "BEHOLD YOUR DOOM!",
 	Ignacious		= "伊格納修斯",
 	Feludius		= "費魯迪厄斯",
