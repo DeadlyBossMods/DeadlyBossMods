@@ -13,7 +13,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"UNIT_DIED"
 )
 
 local warnCausticSlime		= mod:NewTargetAnnounce(82935, 3, nil, false)--This will be very spammy but useful for debugging positioning issues (IE too many people clumped)
@@ -24,41 +25,56 @@ local warnFeud				= mod:NewSpellAnnounce(88872, 3)
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 
-local specWarnBreak			= mod:NewSpecialWarningStack(82881, nil, 3)
 local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer())
 local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
 
 local timerBreak			= mod:NewTargetTimer(60, 82881)
+local timerBreakCD			= mod:NewNextTimer(15, 82881)--Also double attack CD
 local timerMassacre			= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
 local timerCausticSlime		= mod:NewNextTimer(15, 88915)--This is seemingly cast 15 seconds into feud, any other time it's simply cast repeatedly the whole fight.
 local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
---local timerFeudNext			= mod:NewNextTimer(90, 88872)
 
 local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
 
 mod:AddBoolOption("RangeFrame")
-mod:AddBoolOption("SetIconOnSlime", false)
+mod:AddBoolOption("SetIconOnSlime")
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 
 local prewarnedPhase2 = false
 local feud = false
 local slimeTargets = {}
-local slimeIcon = 8
+local slimeTargetIcons = {}
 
 local function showSlimeWarning()
 	warnCausticSlime:Show(table.concat(slimeTargets, "<, >"))
 	table.wipe(slimeTargets)
-	slimeIcon = 8
+end
+
+do
+	local function sort_by_group(v1, v2)
+		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
+	end
+	function mod:SetSlimeIcons()
+		if DBM:GetRaidRank() > 0 then
+			table.sort(slimeTargetIcons, sort_by_group)
+			local slimeIcon = 8
+			for i, v in ipairs(slimeTargetIcons) do
+				self:SetIcon(UnitName(v), slimeIcon)
+				slimeIcon = slimeIcon - 1
+			end
+			table.wipe(slimeTargetIcons)
+		end
+	end
 end
 
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
---	timerFeudNext:Start(-delay)--Not consistent?
 	prewarnedPhase2 = false
 	feud = false
 	slimeIcon = 8
 	table.wipe(slimeTargets)
+	table.wipe(slimeTargetIcons)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
@@ -72,9 +88,6 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:OnCombatEnd()
-	if self.Options.RangeFrame then
-		DBM.RangeCheck:Hide()
-	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:Hide()
 	end
@@ -84,20 +97,29 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82881) then
 		warnBreak:Show(args.spellName, args.destName, args.amount or 1)
 		timerBreak:Start(args.destName)
-		if args:IsPlayer() and (args.amount or 1) >= 3 then
-			specWarnBreak:Show(args.amount)
-		end
+		timerBreakCD:Start()
 	elseif args:IsSpellID(88826) then
 		warnDoubleAttack:Show()
 		specWarnDoubleAttack:Show()
-	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then--There is no cast for this, so we have to warn on damage :\
+	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
 		slimeTargets[#slimeTargets + 1] = args.destName
 		if self.Options.SetIconOnSlime and not feud then--Don't set icons during feud, set them any other time.
-			self:SetIcon(args.destName, slimeIcon, 3)
-			slimeIcon = slimeIcon - 1
+			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetSlimeIcons")
+			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				self:ScheduleMethod(0.2, "SetSlimeIcons")--May need to adjust timing if this doesn't work right.
+			end
 		end
 		self:Unschedule(showSlimeWarning)
 		self:Schedule(0.3, showSlimeWarning)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
+		if self.Options.SetIconOnSlime then
+			self:SetIcon(args.destName, 0)
+		end
 	end
 end
 
@@ -109,6 +131,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMassacre:Show()
 		timerMassacre:Start()
 		timerMassacreNext:Start()
+		timerBreakCD:Start()--Cd is reset when massacre is cast.
 		feud = false
 	end
 end
@@ -117,7 +140,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(88872) then
 		warnFeud:Show()
 		timerFeud:Start()
---		timerFeudNext:Start()
 		timerCausticSlime:Start()
 		feud = true
 	elseif args:IsSpellID(82934) then
@@ -136,6 +158,15 @@ function mod:UNIT_HEALTH(uId)
 		elseif h > 22 and h < 25 and not prewarnedPhase2 then
 			prewarnedPhase2 = true
 			warnPhase2Soon:Show()
+		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 43296 then
+		if self.Options.RangeFrame then
+			DBM.RangeCheck:Hide()
 		end
 	end
 end
