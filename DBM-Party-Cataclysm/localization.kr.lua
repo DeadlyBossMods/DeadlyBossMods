@@ -124,6 +124,10 @@ L:SetGeneralLocalization({
 	name = "바네사 밴클리프"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Gauntlet"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
