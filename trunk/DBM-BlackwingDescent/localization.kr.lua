@@ -193,12 +193,15 @@ L:SetOptionLocalization({
 	OnySwipeTimer		= "오닉시아의 $spell:77827 쿨다운 타이머 보기",
 	NefSwipeTimer		= "네파리안의 $spell:77827 쿨다운 타이머 보기",
 	OnyBreathTimer		= "오닉시아의 $spell:94124 쿨다운 타이머 보기",
-	NefBreathTimer		= "네파리안의 $spell:94124 쿨다운 타이머 보기"
+	NefBreathTimer		= "네파리안의 $spell:94124 쿨다운 타이머 보기",
+	YellOnCinder		= "$spell:79339 외치기",
+	RangeFrame			= "$spell:79339를 받을 경우 거리 프레임(10m) 보기",
+	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
 	NefAoe				= "전기가", -- "The air crackles with electricity!" check
 	YellPhase2			= "저주받을 필멸자들!",
-	ShadowblazeCast		= "살을 재로",	
-	ChromaticPrototype	= "오색 실험체"
+	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
+	YellCinder			= "Explosive Cinders on me!"
 })
