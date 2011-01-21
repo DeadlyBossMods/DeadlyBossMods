@@ -116,6 +116,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	Bloodlevel		= "腐化"
 })
 
 L:SetOptionLocalization({
