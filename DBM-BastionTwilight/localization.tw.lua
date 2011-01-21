@@ -75,13 +75,13 @@ L:SetMiscLocalization({
 	Quake			= "你腳下的地面開始不祥地震動起來....",
 	Thundershock		= "四周的空氣爆出能量霹啪作響聲音....",
 	Switch			= "我們會解決他們!",
-	Phase3			= "BEHOLD YOUR DOOM!",
+	Phase3			= "見證你的滅亡!",
 	Ignacious		= "伊格納修斯",
 	Feludius		= "費魯迪厄斯",
 	Arion			= "艾理奧",
 	Terrastra		= "特拉斯特拉",
 	Monstrosity		= "卓越者議會",
-	Kill			= "Impossible...."
+	Kill			= "不可能..."
 })
 
 L:SetOptionLocalization({
