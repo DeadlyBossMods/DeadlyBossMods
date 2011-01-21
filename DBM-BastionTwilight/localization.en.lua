@@ -16,17 +16,20 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Yell on $spell:86622",
-	YellOnMeteor			= "Yell on $spell:88518",
-	RangeFrame		= "Show range frame (10)"
+	YellOnEngulfing				= "Yell on $spell:86622",
+	YellOnMeteor				= "Yell on $spell:88518",
+	YellOnTwilightBlast			= "Yell on $spell:92898",
+	TwilightBlastArrow			= "Show DBM arrow when $spell:92898 is near you",
+	RangeFrame					= "Show range frame (10)"
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, I will engulf the hallway. Cover their escape!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing			= "Engulfing Magic on me!",
 	YellMeteor				= "Twilight Meteorite on me!",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+	YellTwilightBlast		= "Twilight Blast on me!",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
 
 --------------------------
@@ -114,14 +117,17 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCrash		= "Corrupting Crash on me!",
 	Bloodlevel		= "Corruption"
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon		= "Show pre-warning for Phase 2",
-	InfoFrame			= "Show info frame for $spell:82235",
-	RangeFrame			= "Show range frame (6) for $spell:82235",
-	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+	WarnPhase2Soon			= "Show pre-warning for Phase 2",
+	YellOnCorruptingCrash	= "Yell on $spell:93178",
+	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
+	InfoFrame				= "Show info frame for $spell:82235",
+	RangeFrame				= "Show range frame (6) for $spell:82235",
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
 ----------------
