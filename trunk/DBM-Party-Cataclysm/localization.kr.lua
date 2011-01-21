@@ -125,7 +125,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetTimerLocalization({
-	achievementGauntlet	= "Gauntlet"
+	achievementGauntlet	= "불같은 밴클리프 복수자"
 })
 
 ------------------

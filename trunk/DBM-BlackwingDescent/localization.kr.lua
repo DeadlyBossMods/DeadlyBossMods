@@ -202,6 +202,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	NefAoe				= "전기가", -- "The air crackles with electricity!" check
 	YellPhase2			= "저주받을 필멸자들!",
-	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
-	YellCinder			= "Explosive Cinders on me!"
+	YellPhase3			= "품위있는", -- "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
+	YellCinder			= "나에게 폭발하는 잿더미!"
 })
