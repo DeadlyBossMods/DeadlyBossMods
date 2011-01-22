@@ -20,15 +20,18 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
 	YellOnMeteor			= "Крикнуть если на вас $spell:88518",
-	RangeFrame				= "Окно проверки дистанции (10)"
+	YellOnTwilightBlast		= "Крикнуть если на вас $spell:92898",
+	TwilightBlastArrow		= "Показать стрелку DBM когда $spell:92898 около вас",
+	RangeFrame				= "Окно проверки дистанции (10)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing			= "На МНЕ - Избыточная магия!",
 	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+	YellTwilightBlast		= "На МНЕ - Сумеречный взрыв!"
 }
 
 --------------------------
@@ -109,21 +112,24 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Скоро 2-ая фаза"
+	WarnPhase2Soon			= "Скоро 2-ая фаза"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Bloodlevel		= "Порча"
+	YellCrash				= "На МНЕ - Оскверняющее сокрушение!",
+	Bloodlevel				= "Порча"
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon		= "Показывать предупреждение о переходе на 2-ую фазу",
-	InfoFrame			= "Показывать информационное окно для $spell:82235",
-	RangeFrame			= "Показать окно проверки дистанции (6) для $spell:82235",
-	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+	WarnPhase2Soon			= "Показывать предупреждение о переходе на 2-ую фазу",
+	YellOnCorruptingCrash	= "Крикнуть если на вас $spell:93178",
+	CorruptingCrashArrow	= "Показать стрелку DBM когда $spell:93178 около вас",
+	InfoFrame				= "Показывать информационное окно для $spell:82235",
+	RangeFrame				= "Показать окно проверки дистанции (6) для $spell:82235",
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
 ----------------
