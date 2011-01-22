@@ -22,17 +22,17 @@ L:SetOptionLocalization({
 	YellOnMeteor			= "Gritar cuando tengas $spell:88518",
 	YellOnTwilightBlast			= "Gritar cuando tengas $spell:92898",
 	TwilightBlastArrow			= "Mostrar flecha cuando $spell:92898 está cerca de ti",
-	RangeFrame				= "Mostrar distancia (10 yardas)"
+	RangeFrame				= "Mostrar distancia (10 yardas)",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",
 	YellEngulfing				= "¡Trago de magia en mi!",
 	YellMeteor				= "¡Meteorito Crepuscular en mi!",
-	YellTwilightBlast		= "¡Explosión Crepuscular en mi!",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-}
+	YellTwilightBlast		= "¡Explosión Crepuscular en mi!"
+})
 
 
 --------------------------
