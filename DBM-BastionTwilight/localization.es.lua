@@ -20,6 +20,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
 	YellOnMeteor			= "Gritar cuando tengas $spell:88518",
+	YellOnTwilightBlast			= "Gritar cuando tengas $spell:92898",
+	TwilightBlastArrow			= "Mostrar flecha cuando $spell:92898 está cerca de ti",
 	RangeFrame				= "Mostrar distancia (10 yardas)"
 })
 
@@ -27,6 +29,7 @@ L:SetMiscLocalization{
 	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",
 	YellEngulfing				= "¡Trago de magia en mi!",
 	YellMeteor				= "¡Meteorito Crepuscular en mi!",
+	YellTwilightBlast		= "¡Explosión Crepuscular en mi!",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
@@ -75,8 +78,8 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	Quake			= "The ground beneath you rumbles ominously....",--translate
 	Thundershock		= "The surrounding air crackles with energy....",--translate
-	Switch			= "We will handle them!",--translate
-	Phase3			= "BEHOLD YOUR DOOM!",--translate
+	Switch			= "Enough of this foolishness!",--translate
+	Phase3			= "An impressive display...",--translate
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
@@ -117,11 +120,14 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCrash		= "¡Colisión en corrupción en mi!",
 	Bloodlevel		= "Corrupción"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Mostrar preaviso para Fase 2",
+	YellOnCorruptingCrash	= "Gritar cuando tengas $spell:93178",
+	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:93178 está cerca de ti",
 	InfoFrame			= "Mostrar información para $spell:82235",
 	RangeFrame			= "Mostrar distancia (6 yardas) para $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
