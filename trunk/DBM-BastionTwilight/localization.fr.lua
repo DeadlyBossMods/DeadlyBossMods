@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/19/2011 (by Sasmira) 
+-- Last update: 01/22/2011 (by Sasmira) 
 
 
 ---------------------------
@@ -23,13 +23,16 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Crier sur $spell:86622",
 	YellOnMeteor			= "Crier sur $spell:88518",
-	RangeFrame		= "Afficher la fenêtre de portée (10)"
+YellOnTwilightBlast			= "Crier sur $spell:92898",
+	TwilightBlastArrow		= "Afficher la flèche DBM lorsque $spell:92898 est près de vous",
+	RangeFrame			= "Afficher la fenêtre de portée (10)"
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",-- A verifier ...
-	YellEngulfing			= "Magie enveloppante sur moi!",
-	YellMeteor				= "Météorite du Crépuscule sur moi!",
+	YellEngulfing			= "Magie enveloppante sur moi !",
+	YellMeteor				= "Météorite du Crépuscule sur moi !",
+	YellTwilightBlast			= "Déflagration du Crépuscule sur moi !",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 }
@@ -119,13 +122,16 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCrash		= "Déferlante corruptrice sur moi !",
 	Bloodlevel		= "Corruption"
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Afficher la pré-alerte pour la Phase 2",
-	InfoFrame		= "Afficher la fenêtre d'info pour le sort $spell:82235",
-	RangeFrame	= "Afficher la fenêtre de portée (6) pour $spell:82235",
+	WarnPhase2Soon		= "Afficher la pré-alerte pour la Phase 2",
+	YellOnCorruptingCrash	= "Crier sur $spell:93178",
+	CorruptingCrashArrow	= "Afficher la flèche DBM lorsque $spell:93178 est près de vous",
+	InfoFrame			= "Afficher la fenêtre d'info pour le sort $spell:82235",
+	RangeFrame		= "Afficher la fenêtre de portée (6) pour $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
