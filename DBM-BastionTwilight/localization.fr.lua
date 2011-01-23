@@ -23,19 +23,19 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Crier sur $spell:86622",
 	YellOnMeteor			= "Crier sur $spell:88518",
-YellOnTwilightBlast			= "Crier sur $spell:92898",
+	YellOnTwilightBlast		= "Crier sur $spell:92898",
 	TwilightBlastArrow		= "Afficher la flèche DBM lorsque $spell:92898 est près de vous",
-	RangeFrame			= "Afficher la fenêtre de portée (10)"
+	RangeFrame			= "Afficher la fenêtre de portée (10)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",-- A verifier ...
 	YellEngulfing			= "Magie enveloppante sur moi !",
 	YellMeteor				= "Météorite du Crépuscule sur moi !",
-	YellTwilightBlast			= "Déflagration du Crépuscule sur moi !",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-}
+	YellTwilightBlast			= "Déflagration du Crépuscule sur moi !"
+})
 
 --------------------------
 --  Halfus Wyrmbreaker  --
