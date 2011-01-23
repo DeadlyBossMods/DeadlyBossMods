@@ -20,16 +20,19 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	YellOnEngulfing		= "中了$spell:86622時大喊",
 	YellOnMeteor		= "中了$spell:88518時大喊",
-	RangeFrame		= "顯示距離框 (10碼)"
+	YellOnTwilightBlast	= "中了$spell:92898時大喊",
+	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
+	RangeFrame		= "顯示距離框 (10碼)",
+	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Trigger1		= "瑟拉里恩，我的火會淹沒整個通道。擋住他們的退路!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing		= "我中了侵噬魔法!",
 	YellMeteor		= "我中了暮光隕星!",
-	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-}
+	YellTwilightBlast	= "我中了暮光衝擊!"
+})
 
 --------------------------
 --  Halfus Wyrmbreaker  --
@@ -116,11 +119,14 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
+	YellCrash		= "腐化轟擊在我身上!",
 	Bloodlevel		= "腐化"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "為第2階段顯示預先警告",
+	YellOnCorruptingCrash	= "中了$spell:93178時大喊",
+	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame		= "為$spell:82235顯示資訊框架",
 	RangeFrame		= "為$spell:82235顯示距離框 (6碼)",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
