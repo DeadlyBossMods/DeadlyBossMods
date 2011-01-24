@@ -132,9 +132,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(88872) then
 		warnFeud:Show()
-		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
-			timerFeud:Start()
-		end
+		timerFeud:Start()
 		feud = true
 	elseif args:IsSpellID(82934) then
 		warnPhase2:Show()
