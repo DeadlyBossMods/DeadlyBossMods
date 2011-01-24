@@ -53,7 +53,7 @@ function mod:OnCombatStart(delay)
 	shieldsLeft = 10
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Soundlevel)
-		DBM.InfoFrame:Show(5, "UNIT_POWER", 30, "ALTERNATE", ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(5, "power", 30, ALTERNATE_POWER_INDEX)
 	end
 end
 

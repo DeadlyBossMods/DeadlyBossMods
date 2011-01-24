@@ -93,7 +93,7 @@ function mod:OnCombatStart(delay)
 	worshipCooldown = 21
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Bloodlevel)
-		DBM.InfoFrame:Show(5, "UNIT_POWER", 25, "ALTERNATE", ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(5, "power", 25, ALTERNATE_POWER_INDEX)
 	end
 end	
 
