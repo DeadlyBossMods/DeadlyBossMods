@@ -192,26 +192,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		frozenTargets[#frozenTargets + 1] = args.destName
 		self:Unschedule(showFrozenWarning)
 		self:Schedule(0.3, showFrozenWarning)
-	elseif args:IsSpellID(82665) then
-		warnHeartIce:Show(args.destName)
-		timerHeartIce:Start(args.destName)
-		timerHeartIceCD:Start()
-		if args:IsPlayer() then
-			specWarnHeartIce:Show()
-		end
-		if self.Options.HeartIceIcon then
-			self:SetIcon(args.destName, 6)
-		end
-	elseif args:IsSpellID(82660) then
-		warnBurningBlood:Show(args.destName)
-		timerBurningBlood:Start(args.destName)
-		timerBurningBloodCD:Start()
-		if args:IsPlayer() then
-			specWarnBurningBlood:Show()
-		end
-		if self.Options.BurningBloodIcon then
-			self:SetIcon(args.destName, 7)
-		end
 	elseif args:IsSpellID(83099) then
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -371,6 +351,26 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82636) then
 		warnRisingFlames:Show()
 		timerRisingFlames:Start()
+	elseif args:IsSpellID(82665) then
+		warnHeartIce:Show(args.destName)
+		timerHeartIce:Start(args.destName)
+		timerHeartIceCD:Start()
+		if args:IsPlayer() then
+			specWarnHeartIce:Show()
+		end
+		if self.Options.HeartIceIcon then
+			self:SetIcon(args.destName, 6)
+		end
+	elseif args:IsSpellID(82660) then
+		warnBurningBlood:Show(args.destName)
+		timerBurningBlood:Start(args.destName)
+		timerBurningBloodCD:Start()
+		if args:IsPlayer() then
+			specWarnBurningBlood:Show()
+		end
+		if self.Options.BurningBloodIcon then
+			self:SetIcon(args.destName, 7)
+		end
 	end
 end
 
