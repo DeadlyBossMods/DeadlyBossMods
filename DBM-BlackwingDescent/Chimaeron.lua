@@ -71,6 +71,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(-delay)
+	timerBreakCD:Start(5-delay)
 	prewarnedPhase2 = false
 	feud = false
 	slimeIcon = 8
@@ -132,7 +133,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMassacre:Show()
 		timerMassacre:Start()
 		timerMassacreNext:Start()
-		timerBreakCD:Start()--Cd is reset when massacre is cast.
+		timerCausticSlime:Start(19)--Always 19 seconds after massacre.
 		feud = false
 	end
 end
@@ -141,7 +142,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(88872) then
 		warnFeud:Show()
 		timerFeud:Start()
-		timerCausticSlime:Start()
 		feud = true
 	elseif args:IsSpellID(82934) then
 		warnPhase2:Show()
