@@ -10,7 +10,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnInferno	= "Blazing Inferno soon (~4s)",
+	SpecWarnInferno	= "Blazing Bone Construct Soon (~4s)",
 	WarnPhase2Soon	= "Phase 2 soon"
 })
 
