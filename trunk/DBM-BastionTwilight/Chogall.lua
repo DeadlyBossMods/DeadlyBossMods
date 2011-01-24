@@ -37,7 +37,7 @@ local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHea
 local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 
 mod:AddBoolOption("SetIconOnWorship", true)
-mod:AddBoolOption("YellOnCorruptingCrash", false, "announce")--Subject to accuracy flaws so off by default.
+mod:AddBoolOption("YellOnCorruptingCrash", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
 mod:AddBoolOption("CorruptingCrashArrow", false)--Subject to accuracy flaws so off by default.
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
