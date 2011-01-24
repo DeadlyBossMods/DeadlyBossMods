@@ -11,7 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
-	"SPELL_AURA_REMOVED",
+--	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_HEALTH",
@@ -61,7 +61,7 @@ do
 			table.sort(slimeTargetIcons, sort_by_group)
 			local slimeIcon = 8
 			for i, v in ipairs(slimeTargetIcons) do
-				self:SetIcon(UnitName(v), slimeIcon)
+				self:SetIcon(UnitName(v), slimeIcon, 3)
 				slimeIcon = slimeIcon - 1
 			end
 			table.wipe(slimeTargetIcons)
@@ -115,7 +115,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, showSlimeWarning)
 	end
 end
-
+--[[
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
 		if self.Options.SetIconOnSlime then
@@ -123,7 +123,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
-
+--]]
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
