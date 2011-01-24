@@ -46,13 +46,16 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "Rebote (%d)"
+	TimerFeedback 	= "Rebote (%d)",
+	TimerAddCD		= "Siguiente add"
 })
 
 L:SetOptionLocalization({
 	WarnFeedback	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "unknown"),
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
-	TimerFeedback	= "Mostrar tiempo para la duración de $spell:87904"
+	TimerFeedback	= "Mostrar tiempo para la duración de $spell:87904",
+	WarnAdd			= "Mostrar un aviso cuando salga una Tormentilla",
+	TimerAddCD		= "Mostrar tiempo para nuevo add"
 })
 
 L:SetMiscLocalization({
