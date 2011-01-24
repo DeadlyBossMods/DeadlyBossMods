@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Conclave", "DBM-ThroneFourWinds", 1)
+local mod	= DBM:NewMod("Conclave", "DBM-ThroneFourWinds")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_DAMAGE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_POWER",
@@ -49,11 +50,13 @@ local specialSpam = 0
 local poisonCounter = 0
 local poisonSpam = 0
 local iceSpam = 0
+local GatherStrengthwarned = false
 
 function mod:OnCombatStart(delay)
 	windBlastCounter = 0
 	specialSpam = 0
 	iceSpam = 0
+	GatherStrengthwarned = false
 	timerWindBlastCD:Start(30-delay)
 	timerNurture:Start(30-delay)
 	timerSpecial:Start(90-delay)--hurricane/Sleet storm share CD
@@ -69,13 +72,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			timerSlicingGale:Start()
 		end
-	elseif args:IsSpellID(86111, 93129, 93130, 93131) and args:IsPlayer() and GetTime() - iceSpam >= 3 then
-		iceSpam = GetTime()
-		specWarnIcePatch:Show()
 	end
 end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(86111, 93129, 93130, 93131) and args:IsPlayer() and GetTime() - iceSpam >= 3 then
+		iceSpam = GetTime()
+		specWarnIcePatch:Show()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(86205) then
@@ -143,8 +150,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, boss)
 end
 
 function mod:OnSync(msg, boss)
-	if msg == "GatherStrength" and self:IsInCombat() then
+	if msg == "GatherStrength" and self:IsInCombat() and not GatherStrengthwarned then
 		warnGatherStrength:Show(boss)
 		timerGatherStrength:Start(boss)
+		GatherStrengthwarned = true
 	end
 end
