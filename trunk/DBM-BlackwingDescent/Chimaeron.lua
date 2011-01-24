@@ -11,7 +11,6 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
---	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_HEALTH",
@@ -109,22 +108,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetSlimeIcons")
 			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.4, "SetSlimeIcons")--May need to adjust timing if this doesn't work right.
+				self:ScheduleMethod(0.4, "SetSlimeIcons")--0.3 might work, but i know 0.4 works for sure so i don't feel like rush changing it.
 			end
 		end
 		self:Unschedule(showSlimeWarning)
 		self:Schedule(0.3, showSlimeWarning)
 	end
 end
---[[
-function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
-		if self.Options.SetIconOnSlime then
-			self:SetIcon(args.destName, 0)
-		end
-	end
-end
---]]
+
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_CAST_START(args)
@@ -141,11 +132,12 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(88872) then
 		warnFeud:Show()
-		timerFeud:Start()
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
+			timerFeud:Start()
+		end
 		feud = true
 	elseif args:IsSpellID(82934) then
 		warnPhase2:Show()
-		timerFeudNext:Cancel()
 		timerCausticSlime:Cancel()
 		timerMassacreNext:Cancel()
 	end
