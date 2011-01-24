@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_HEALTH",
@@ -35,7 +36,7 @@ local timerMassacreNext		= mod:NewNextTimer(30, 82848)
 local timerCausticSlime		= mod:NewNextTimer(15, 88915)--This is seemingly cast 15 seconds into feud, any other time it's simply cast repeatedly the whole fight.
 local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
 
-local berserkTimer			= mod:NewBerserkTimer(420)--Heroic
+local berserkTimer			= mod:NewBerserkTimer(450)--Heroic
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnSlime")
@@ -107,7 +108,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetSlimeIcons")
 			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.2, "SetSlimeIcons")--May need to adjust timing if this doesn't work right.
+				self:ScheduleMethod(0.1, "SetSlimeIcons")--May need to adjust timing if this doesn't work right.
 			end
 		end
 		self:Unschedule(showSlimeWarning)
