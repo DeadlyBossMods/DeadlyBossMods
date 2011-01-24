@@ -27,8 +27,8 @@ local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
 local specWarnSickness				= mod:NewSpecialWarningYou(82235)
-local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178, false)--Subject to accuracy flaws so off by default.
-local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178, false)--Subject to accuracy flaws so off by default.
+local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178, not mod:IsTank())--Subject to accuracy flaws so off by default for tanks.
+local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178, false)--Subject to accuracy flaws for everyone so off by default.
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
