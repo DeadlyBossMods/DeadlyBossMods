@@ -30,7 +30,7 @@ local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
 local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 3)--Heroic Ability
 local warnPhase2				= mod:NewPhaseAnnounce(2)
  
-local timerPhase				= mod:NewTimer(50, "TimerPhase")
+local timerPhase				= mod:NewTimer(50, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
 local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
 local timerFlashFreeze			= mod:NewNextTimer(15, 77699)--Seems consisting so using "next" for now.
 local timerArcaneStorm			= mod:NewBuffActiveTimer(6, 77896)
@@ -79,7 +79,9 @@ end
 
 function mod:OnCombatStart(delay)
 	if mod:IsDifficulty("normal10") then
-		berserkTimer:Start(-delay)--he only berserks on 10 man normal, and only part of the time. apparently doesn't berserk on heroic or 25s. wtf?
+		berserkTimer:Start(-delay)--6 min berserk on 10 man normal
+	elseif mod:IsDifficulty("heroic25") then
+		berserkTimer:Start(840-delay)--14 minute berserk on 25 heroic, wtf? did blizz get them backwards?
 	end
 	adds = 18
 	AddsInterrupted = false

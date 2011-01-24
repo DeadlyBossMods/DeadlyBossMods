@@ -125,7 +125,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "為第2階段顯示預先警告",
-	YellOnCorruptingCrash	= "中了$spell:93178時大喊",
+	YellOnCorrupting	= "中了$spell:93178時大喊",
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame		= "為$spell:82235顯示資訊框架",
 	RangeFrame		= "為$spell:82235顯示距離框 (6碼)",
