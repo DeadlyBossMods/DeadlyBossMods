@@ -12,6 +12,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnInferno	= "Ensamblaje osario llameante pronto (~4s)",
+	WarnPhase2Soon	= "Fase 2 pronto"
 })
 
 L:SetTimerLocalization({
@@ -19,10 +21,15 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	Slump			= "¡%s cae hacia delante y deja expuestas sus tenazas!",
-	HeadExposed		= "¡%s acaba empalado en el pincho y deja expuesta la cabeza!"
+	HeadExposed		= "¡%s acaba empalado en el pincho y deja expuesta la cabeza!",
+	YellPhase2		= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."--translate
 })
 
 L:SetOptionLocalization({
+	SpecWarnInferno	= "Mostrar pre-aviso especial para $spell:92190 (~4s)",
+	WarnPhase2Soon	= "Mostrar pre-aviso para Fase 2",
+	RangeFrame		= "Mostrar distancia en Fase 2 (8 yardas)"
+
 })
 
 -------------------------------
