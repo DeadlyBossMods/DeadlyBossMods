@@ -59,24 +59,17 @@ local initializeDropdown
 local maxlines
 local infoFrameThreshold 
 local pIndex
-local pString
 local headerText = "DBM Info Frame"	-- this is only used if DBM.InfoFrame:SetHeader(text) is not called before :Show()
 local currentEvent
 local sortingAsc
 local lines = {}
 local sortedLines = {}
 
-
--- for Phanx' Class Colors
-local RAID_CLASS_COLORS = CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS
-
 ---------------------
 --  Dropdown Menu  --
 ---------------------
-
 -- todo: this dropdown menu is somewhat ugly and unflexible....
 do
-	
 	local function toggleLocked()
 		DBM.Options.InfoFrameLocked = not DBM.Options.InfoFrameLocked
 	end
@@ -182,19 +175,15 @@ local function updateHealth()
 	updateLines()
 end
 
-function infoFrame:UNIT_POWER(uId, powerType)
-	if powerType == pString and UnitInRaid(uId) then
-		local power = UnitPower(uId, pIndex)
-		local powerMax = UnitPowerMax(uId, pIndex)
-		if power < 0 or infoFrameThreshold and power/powerMax*100 < infoFrameThreshold then
-			lines[UnitName(uId)] = nil
-		else
-			lines[UnitName(uId)] = power
+local function updatePower()
+	table.wipe(lines)
+	for i = 1, GetNumRaidMembers() do
+		if not UnitIsDeadOrGhost("raid"..i) and UnitPower("raid"..i, pIndex)/UnitPowerMax("raid"..i, pIndex)*100 >= infoFrameThreshold then
+			lines[UnitName("raid"..i)] = UnitPower("raid"..i, pIndex)
 		end
-		updateLines()
 	end
+	updateLines()
 end
-
 
 ----------------
 --  OnUpdate  --
@@ -206,6 +195,8 @@ function onUpdate(self, elapsed)
 	end
 	if currentEvent == "health" then
 		updateHealth()
+	elseif currentEvent == "power" then
+		updatePower()
 	end
 	for i = 1, #sortedLines do
 		if self:NumLines() > maxlines then break end
@@ -230,15 +221,17 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 
 	infoFrameThreshold = threshold
 	maxlines = maxLines or 5	-- default 5 lines
-	pString, pIndex = select(1, ...)
+	pIndex = select(1, ...)
 	currentEvent = event
 	frame = frame or createFrame()
 
 	if event == "health" then
 		sortingAsc = true	-- Person who misses the most HP to be at threshold is listed on top
 		updateHealth()
+	elseif event == "power" then
+		updatePower()
 	else
-		frame:RegisterEvent(event)
+		print("DBM-InfoFrame: Unsupported event given")
 	end
 	
 	frame:Show()
@@ -247,19 +240,15 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 end
 
 function infoFrame:Hide()
+	table.wipe(lines)
+	table.wipe(sortedLines)
+	headerText = "DBM Info Frame"
+	sortingAsc = false
+	infoFrameThreshold = nil
+	pIndex = nil
+	currentEvent = nil
 	if frame then 
-		table.wipe(lines)
-		table.wipe(sortedLines)
-		headerText = nil
-		sortingAsc = false
-		infoFrameThreshold = nil
-		pString = nil
-		pIndex = nil
 		frame:Hide()
-		if currentEvent ~= "health" then
-			frame:UnregisterEvent(currentEvent)
-		end
-		currentEvent = nil
 	end
 end
 
