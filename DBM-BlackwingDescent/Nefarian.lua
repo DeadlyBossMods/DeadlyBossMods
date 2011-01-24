@@ -188,7 +188,7 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.YellPhase2 then
+	if msg == L.YellPhase2 or msg:find(L.YellPhase2) then
 		warnPhase2:Show()
 		timerLightningDischarge:Cancel()
 		timerOnySwipeCD:Cancel()
@@ -198,7 +198,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
 			timerShadowflameBarrage:Start()--rumor has it, you have unlimited time on 10 man according to blizz forum posts. Bug perhaps?
 		end
-	elseif msg == L.YellPhase3 then
+	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
 		timerShadowBlazeCD:Start(10)
 		self:ScheduleMethod(10, "ShadowBlazeTimer")

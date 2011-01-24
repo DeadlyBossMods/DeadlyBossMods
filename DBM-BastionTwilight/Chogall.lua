@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("Chogall", "DBM-BastionTwilight", 4)
+local mod	= DBM:NewMod("Chogall", "DBM-BastionTwilight")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -13,6 +13,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
+	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
 	"UNIT_POWER"
 )
@@ -22,11 +23,13 @@ local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:Is
 local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
 local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3)
 local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3)
+local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, false)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
 local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
 local specWarnSickness				= mod:NewSpecialWarningYou(82235)
+local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178, not mod:IsTank())--Subject to accuracy flaws so off by default for tanks.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178, false)--Subject to accuracy flaws for everyone so off by default.
 
@@ -37,7 +40,7 @@ local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHea
 local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 
 mod:AddBoolOption("SetIconOnWorship", true)
-mod:AddBoolOption("YellOnCorruptingCrash", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
+mod:AddBoolOption("YellOnCorrupting", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
 mod:AddBoolOption("CorruptingCrashArrow", false)--Subject to accuracy flaws so off by default.
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
@@ -47,6 +50,7 @@ local prewarned_Phase2 = false
 local sicknessWarned = false
 local worshipIcon = 8
 local worshipCooldown = 21
+local blazeSpam = 0
 
 local function showWorshipWarning()
 	warnWorship:Show(table.concat(worshipTargets, "<, >"))
@@ -58,9 +62,10 @@ end
 function mod:CorruptingCrashTarget()
 	local targetname = self:GetBossTarget(43622)
 	if not targetname then return end
+	warnCorruptingCrash:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnCorruptingCrash:Show()
-		if self.Options.YellOnCorruptingCrash then
+		if self.Options.YellOnCorrupting then
 			SendChatMessage(L.YellCorruptingCrash, "SAY")
 		end
 	elseif targetname then
@@ -91,6 +96,7 @@ function mod:OnCombatStart(delay)
 	sicknessWarned = false
 	worshipIcon = 8
 	worshipCooldown = 21
+	blazeSpam = 0
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Bloodlevel)
 		DBM.InfoFrame:Show(5, "power", 25, ALTERNATE_POWER_INDEX)
@@ -152,6 +158,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFlameOrders:Show()
 	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
 		self:ScheduleMethod(0.01, "CorruptingCrashTarget")--Since this is an instance cast scanning accurately is very hard.
+	end
+end
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(81538, 93212, 93123, 93214) and args:IsPlayer() and GetTime() - blazeSpam >= 4 then
+		specWarnBlaze:Show()
+		blazeSpam = GetTime()
 	end
 end
 

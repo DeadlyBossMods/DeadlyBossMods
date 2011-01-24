@@ -41,16 +41,20 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback	= "%s on >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
+	WarnAdd			= "Stormling add spawned"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "Feedback (%d)"
+	TimerFeedback 	= "Feedback (%d)",
+	TimerAddCD		= "Next add"
 })
 
 L:SetOptionLocalization({
 	WarnFeedback	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "unknown"),
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
-	TimerFeedback	= "Show timer for $spell:87904 duration"
+	TimerFeedback	= "Show timer for $spell:87904 duration",
+	WarnAdd			= "Show warning when Stormling add spawns",
+	TimerAddCD		= "Show timer for new add"
 })
 
 L:SetMiscLocalization({

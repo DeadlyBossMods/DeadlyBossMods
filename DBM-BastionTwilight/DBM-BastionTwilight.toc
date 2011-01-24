@@ -28,8 +28,8 @@ localization.kr.lua
 localization.ru.lua
 localization.tw.lua
 MapSizes.lua
-ValionaTheralion.lua
 HalfusWyrmbreaker.lua
+ValionaTheralion.lua
 AscendantCouncil.lua
 Chogall.lua
 Sinestra.lua

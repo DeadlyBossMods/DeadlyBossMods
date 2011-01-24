@@ -128,7 +128,7 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "Afficher la pré-alerte pour la Phase 2",
-	YellOnCorruptingCrash	= "Crier sur $spell:93178",
+	YellOnCorrupting	= "Crier sur $spell:93178",
 	CorruptingCrashArrow	= "Afficher la flèche DBM lorsque $spell:93178 est près de vous",
 	InfoFrame			= "Afficher la fenêtre d'info pour le sort $spell:82235",
 	RangeFrame		= "Afficher la fenêtre de portée (6) pour $spell:82235",

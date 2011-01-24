@@ -1,4 +1,4 @@
-local mod	= DBM:NewMod("AlAkir", "DBM-ThroneFourWinds", 2)
+local mod	= DBM:NewMod("AlAkir", "DBM-ThroneFourWinds")
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
@@ -18,7 +18,7 @@ mod:RegisterEvents(
 )
 
 local warnWindBurst		= mod:NewSpellAnnounce(87770, 3)
---local warnSquallLine	= mod:NewSpellAnnounce(87856, 2)
+local warnSquallLine	= mod:NewAnnounce("WarnAdd", 2, 87856)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
 local warnFeedback		= mod:NewAnnounce("WarnFeedback", 2, 87904)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
@@ -28,7 +28,7 @@ local specWarnLightningRod	= mod:NewSpecialWarningYou(89668)
 
 local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
---local timerSquallLineCD		= mod:NewCDTimer(20, 87856)
+local timerSquallLineCD		= mod:NewCDTimer(20, "TimerAddCD", 87856)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
@@ -98,13 +98,13 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.summonSquall or msg:find(L.summonSquall) then--not sure this is the yell used for it so disabled for now.
-		--warnWindBurst:Show()
-		--timerSquallLineCD:Start()
+	if msg == L.summonSquall or msg:find(L.summonSquall) then--Adds being summoned
+		warnWindBurst:Show()
+		timerSquallLineCD:Start()
 	elseif msg == L.phase3 or msg:find(L.phase3) then
 		warnPhase3:Show()
 		timerWindBurstCD:Start(25)
 		timerLightningRodCD:Start(20)
-		--timerSquallLineCD:Cancel()
+		timerSquallLineCD:Cancel()
 	end
 end
