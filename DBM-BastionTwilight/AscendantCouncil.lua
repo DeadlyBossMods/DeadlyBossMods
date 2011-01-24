@@ -192,6 +192,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		frozenTargets[#frozenTargets + 1] = args.destName
 		self:Unschedule(showFrozenWarning)
 		self:Schedule(0.3, showFrozenWarning)
+	elseif args:IsSpellID(82665) then
+		warnHeartIce:Show(args.destName)
+		timerHeartIce:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnHeartIce:Show()
+		end
+		if self.Options.HeartIceIcon then
+			self:SetIcon(args.destName, 6)
+		end
+	elseif args:IsSpellID(82660) then
+		warnBurningBlood:Show(args.destName)
+		timerBurningBlood:Start(args.destName)
+		if args:IsPlayer() then
+			specWarnBurningBlood:Show()
+		end
+		if self.Options.BurningBloodIcon then
+			self:SetIcon(args.destName, 7)
+		end
 	elseif args:IsSpellID(83099) then
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
@@ -257,7 +275,71 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
+function mod:SPELL_AURA_REFRESH(args)
+	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
+		timerFrozen:Start(args.destName)
+		frozenTargets[#frozenTargets + 1] = args.destName
+		self:Unschedule(showFrozenWarning)
+		self:Schedule(0.3, showFrozenWarning)
+	elseif args:IsSpellID(83099) then
+		lightningRodTargets[#lightningRodTargets + 1] = args.destName
+		if args:IsPlayer() then
+			specWarnLightningRod:Show()
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
+		end
+		if self.Options.LightningRodIcon then
+			self:SetIcon(args.destName, lightningRodIcon)
+			lightningRodIcon = lightningRodIcon - 1
+		end
+		self:Unschedule(showLightningRodWarning)
+		if (mod:IsDifficulty("normal25") and #lightningRodTargets >= 3) or (mod:IsDifficulty("normal10") and #lightningRodTargets >= 1) then
+			showLightningRodWarning()
+		else
+			self:Schedule(0.3, showLightningRodWarning)
+		end
+	elseif args:IsSpellID(82762) and args:IsPlayer() then
+		specWarnWaterLogged:Show()
+	elseif args:IsSpellID(84948, 92486, 92487, 92488) then
+		gravityCrushTargets[#gravityCrushTargets + 1] = args.destName
+		timerGravityCrushCD:Start()
+		if self.Options.GravityCrushIcon then
+			self:SetIcon(args.destName, gravityCrushIcon)
+			gravityCrushIcon = gravityCrushIcon - 1
+		end
+		self:Unschedule(showGravityCrushWarning)
+		if (mod:IsDifficulty("normal25") and #gravityCrushTargets >= 3) or (mod:IsDifficulty("normal10") and #gravityCrushTargets >= 1) then
+			showGravityCrushWarning()
+		else
+			self:Schedule(0.3, showGravityCrushWarning)
+		end
+	elseif args:IsSpellID(92307) then
+		warnFrostBeacon:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnFrostBeacon:Show()
+		end
+		if self.Options.FrostBeaconIcon then
+			self:SetIcon(args.destName, 8)
+		end
+	elseif args:IsSpellID(92067) then
+		warnStaticOverload:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnStaticOverload:Show()
+		end
+		if self.Options.StaticOverloadIcon then
+			self:SetIcon(args.destName, 4)
+		end
+	elseif args:IsSpellID(92075) then
+		warnGravityCore:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnGravityCore:Show()
+		end
+		if self.Options.GravityCoreIcon then
+			self:SetIcon(args.destName, 5)
+		end
+	end
+end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(82772, 92503, 92504, 92505) then
@@ -352,25 +434,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnRisingFlames:Show()
 		timerRisingFlames:Start()
 	elseif args:IsSpellID(82665) then
-		warnHeartIce:Show(args.destName)
-		timerHeartIce:Start(args.destName)
 		timerHeartIceCD:Start()
-		if args:IsPlayer() then
-			specWarnHeartIce:Show()
-		end
-		if self.Options.HeartIceIcon then
-			self:SetIcon(args.destName, 6)
-		end
 	elseif args:IsSpellID(82660) then
-		warnBurningBlood:Show(args.destName)
-		timerBurningBlood:Start(args.destName)
 		timerBurningBloodCD:Start()
-		if args:IsPlayer() then
-			specWarnBurningBlood:Show()
-		end
-		if self.Options.BurningBloodIcon then
-			self:SetIcon(args.destName, 7)
-		end
 	end
 end
 
