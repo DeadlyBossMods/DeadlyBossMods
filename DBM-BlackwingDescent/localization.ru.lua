@@ -12,6 +12,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnInferno	= "Появляется Пыляющее костяное создание! (~4сек)",
+	WarnPhase2Soon	= "Скоро 2-ая фаза"
 })
 
 L:SetTimerLocalization({
@@ -19,10 +21,14 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	Slump			= "%s внезапно падает, выставляя клешки!",
-	HeadExposed		= "%s насаживается на пику, обнажая голову!"
+	HeadExposed		= "%s насаживается на пику, обнажая голову!",
+	YellPhase2		= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
 })
 
 L:SetOptionLocalization({
+	SpecWarnInferno	= "Предупреждать заранее о $spell:92190 (~4сек)",
+	WarnPhase2Soon	= "Предупреждать заранее о переходе во вторую фазу",
+	RangeFrame		= "Показывать окно проверки дистанции на второй фазе (8м)"
 })
 
 -------------------------------
@@ -69,7 +75,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnPhase			= "%s фаза",
-	WarnRemainingAdds	= "Осталось %d аберрации"
+	WarnRemainingAdds	= "Осталось аберраций: %d"
 })
 
 L:SetTimerLocalization({
@@ -88,10 +94,10 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase			= "Показывать предупреждения о том какая фаза наступает",
-	WarnRemainingAdds	= "Показывать предупреждения о том сколько осталось аберрации",
-	TimerPhase			= "Показать таймер до следующей фазы",
-	RangeFrame			= "В ходе синей фазы, показать окно проверки дистанции (6)",
+	WarnPhase			= "Предупреждать о переходе фаз",
+	WarnRemainingAdds	= "Предупреждать об оставшемся количестве аберраций",
+	TimerPhase			= "Показывать таймер до следующей фазы",
+	RangeFrame			= "В ходе синей фазы, показывать окно проверки дистанции (6м)",
 	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
@@ -120,10 +126,10 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Показывать предупреждение о начале 2-ой фазы",
-	RangeFrame		= "Окно проверки дистанции (6)",
+	RangeFrame		= "Показывать окно проверки дистанции (6м)",
 	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
 	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
-	InfoFrame		= "Показывать информационное окно с здоровьем (<10k зд)"
+	InfoFrame		= "Показывать информационное окно со здоровьем (<10к хп)"
 })
 
 -----------------
@@ -194,8 +200,8 @@ L:SetOptionLocalization({
 	NefSwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Нефариана",
 	OnyBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Ониксии",
 	NefBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Нефариана",
-	YellOnCinder		= "Крикнуть во время $spell:79339",
-	RangeFrame			= "Показывать окно проверки дистанции (10) когда на вас $spell:79339",
+	YellOnCinder		= "Кричать, когда на вас $spell:79339",
+	RangeFrame			= "Показывать окно проверки дистанции (10м) когда на вас $spell:79339",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
