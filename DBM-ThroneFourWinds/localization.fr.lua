@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/11/2011 (by Sasmira) 
+-- Last update: 01/25/2011 (by Sasmira) 
 
 ------------------------
 --  Conclave of Wind  --
@@ -45,16 +45,20 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback	= "%s sur >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
+	WarnAdd		= " Apparition : Tourmentin"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "Réaction (%d)"
+	TimerFeedback 	= "Réaction (%d)",
+	TimerAddCD	= "Prochaine apparition"
 })
 
 L:SetOptionLocalization({
 	WarnFeedback	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "inconnu"),
-	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
-	TimerFeedback	= "Afficher le timer pour la durée du sort $spell:87904"
+	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
+	TimerFeedback	= "Afficher le timer pour la durée de: $spell:87904",
+	WarnAdd		= "Affiche une alerte lorsque les Tourmentins apparaissent",
+	TimerAddCD	= "Affiche le timer de la prochaine apparition"
 })
 
 L:SetMiscLocalization({
