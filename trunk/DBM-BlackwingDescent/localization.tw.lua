@@ -12,17 +12,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnInferno			= "熾熱的煉獄 即將到來 (~4秒)",
+	WarnPhase2Soon			= "第2階段 即將到來"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Slump				= "%s slumps forward, exposing his pincers!",
-	HeadExposed			= "%s becomes impaled on the spike, exposing his head!"
+	Slump				= "%s往前撲倒，露出他的鉗子!",
+	HeadExposed			= "%s被釘在尖刺上，露出了他的頭!",
+	YellPhase2			= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
 })
 
 L:SetOptionLocalization({
+	SpecWarnInferno			= "為$spell:92190顯示預先特別警告 (~4秒)",
+	WarnPhase2Soon			= "為第2階段顯示預先警告",
+	RangeFrame			= "第2階段時顯示距離框 (8碼)"
 })
 
 -------------------------------
