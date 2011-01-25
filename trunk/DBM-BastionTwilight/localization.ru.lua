@@ -66,8 +66,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBossLow			= ">%s< ниже 30%",
-	SpecWarnGrounded		= "Получите Ауру Заземление",
-	SpecWarnSearingWinds	= "Получите Аура Кружащихся ветров"
+	SpecWarnGrounded		= "Получите ауру заземления!",
+	SpecWarnSearingWinds	= "Получите ауру кружащихся ветров!"
 })
 
 L:SetTimerLocalization({
@@ -78,7 +78,7 @@ L:SetMiscLocalization({
 	Quake			= "Земля уходит у вас из-под ног...", -- Yell string: Земля поглатит вас!
 	Thundershock	= "Воздух потрескивает от скопившейся энергии...", -- Yell string: Ветер, явись на мой зов!
 	Switch			= "Закончим этот фарс!",--"We will handle them!" comes 3 seconds after this one
-	Phase3			= "Ваше упортство...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
+	Phase3			= "Ваше упорство...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
 	Ignacious		= "Огнис",
 	Feludius		= "Акварион",
 	Arion			= "Аэрон",
@@ -88,7 +88,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBossLow		= "Показать особое предупреждение, когда здоровье у Боссов ниже 30%",
+	specWarnBossLow		= "Показать особое предупреждение, когда здоровье у боссов ниже 30%",
 	SpecWarnGrounded	= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
 	SpecWarnSearingWinds= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
 	timerTransition		= "Показать таймер перехода в другую фазу",
@@ -128,7 +128,7 @@ L:SetOptionLocalization({
 	YellOnCorrupting	= "Крикнуть если на вас $spell:93178",
 	CorruptingCrashArrow	= "Показать стрелку DBM когда $spell:93178 около вас",
 	InfoFrame				= "Показывать информационное окно для $spell:82235",
-	RangeFrame				= "Показать окно проверки дистанции (6) для $spell:82235",
+	RangeFrame				= "Показать окно проверки дистанции (6м) для $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
