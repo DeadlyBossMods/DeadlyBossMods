@@ -382,7 +382,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then	-- Shield Removed
-		if UnitCastingInfo("target") and self:GetUnitCreatureId("target") == 43686 then
+		if self:GetUnitCreatureId("target") == 43686 then
 			specWarnRisingFlames:Show()
 		end
 	end
