@@ -27,9 +27,9 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	warnSpecial			= "Сообщить о применении Урагана/Зефира/Вихря стали",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial		= "Сообщить о применении особых способностя",
-	timerSpecial		= "Показать таймер восстановления особых способностей",
-	timerSpecialActive	= "Показать таймер длительности особых способностей"
+	specWarnSpecial		= "Спец-предупреждение о применении особых способностя",
+	timerSpecial		= "Отсчет времени до восстановления особых способностей",
+	timerSpecialActive	= "Отсчет времени действия особых способностей"
 })
 
 ---------------
@@ -43,16 +43,20 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback	= "%s на >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
+	WarnAdd			= "Появляется Буревик!"
 })
 
 L:SetTimerLocalization({
-	TimerFeedback 	= "Ответная реакция (%d)"
+	TimerFeedback 	= "Ответная реакция (%d)",
+	TimerAddCD		= "Следующий помощник"
 })
 
 L:SetOptionLocalization({
 	WarnFeedback	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "unknown"),
 	LightningRodIcon= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
-	TimerFeedback	= "Показать таймер для длительности $spell:87904"
+	TimerFeedback	= "Отсчет времени действия $spell:87904",
+	WarnAdd			= "Предупреждать о призыве помощников",
+	TimerAddCD		= "Отсчет времени до новых помощников"	
 })
 
 L:SetMiscLocalization({
