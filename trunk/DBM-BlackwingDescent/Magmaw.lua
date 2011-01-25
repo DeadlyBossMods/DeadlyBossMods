@@ -71,7 +71,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerPillarFlame:Start()
 	elseif args:IsSpellID(78403) then
 		warnMoltenTantrum:Show()
-	elseif args:IsSpellID(89773, 91912, 91916, 91917) then
+	elseif args:IsSpellID(89773, 91912, 94616, 94617) then
 		warnMangle:Show(args.destName)
 		timerMangle:Start(args.destName)
 		timerMangleCD:Start()
@@ -79,7 +79,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(89773, 91912, 91916, 91917) then
+	if args:IsSpellID(89773, 91912, 94616, 94617) then
 		timerMangle:Cancel(args.destName)
 	end
 end
