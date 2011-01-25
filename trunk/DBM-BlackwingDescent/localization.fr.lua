@@ -2,7 +2,7 @@
 local L
 
 -- Initial release by Sasmira: 12/26/2010
--- Last update: 01/19/2011 (by Sasmira) 
+-- Last update: 01/25/2011 (by Sasmira) 
 
 
 --------------
@@ -15,6 +15,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnInferno	= "Blazing Bone Construct Imminent (~4s)", -- don't find in french Blazing bone contruct on wowhead :/
+	WarnPhase2Soon	= "Phase 2 imminente"
 })
 
 L:SetTimerLocalization({
@@ -22,10 +24,14 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	Slump			= "%s s'effondre vers l'avant et expose ses pinces !",
-	HeadExposed		= "%s vient de s'empaler sur la pointe et expose sa tête !"
+	HeadExposed		= "%s vient de s'empaler sur la pointe et expose sa tête !",
+	YellPhase2			= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales." -- need translation :(
 })
 
 L:SetOptionLocalization({
+	SpecWarnInferno		= "Affiche une pre-alerte spéciale sur $spell:92190 (~4s)",
+	WarnPhase2Soon		= "Affiche une pre-alerter pour la Phase 2",
+	RangeFrame		= "Affiche la fenêtre de portée en Phase 2 (8)"
 })
 
 -------------------------------
@@ -41,7 +47,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerArcaneBlowbackCast		= "Retour arcanique",
+	timerArcaneBlowbackCast	= "Retour arcanique",
 	timerShadowConductorCast	= "Conducteur d'ombre"
 })
 
@@ -49,8 +55,8 @@ L:SetOptionLocalization({
 	timerShadowConductorCast	= "Afficher le timer du sort $spell:92053",
 	timerArcaneBlowbackCast	= "Afficher le timer du sort $spell:91879",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
 	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
@@ -203,7 +209,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NefAoe			= "L'air craque avec l'électricité !", -- à vérifier 
+	NefAoe			= "L'air craque sous l'électricité !", -- à vérifier 
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
 	ShadowblazeCast		= "Que la chair se transforme en cendres !", -- à vérifier
 	ChromaticPrototype	= "Prototype chromatique"
