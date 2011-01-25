@@ -18,13 +18,16 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing			= "$spell:86622 외치기",
-	YellOnMeteor			= "$spell:88518 외치기",	
+	YellOnMeteor			= "$spell:88518 외치기",
+	YellOnTwilightBlast		= "Yell on $spell:92898",
+	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",	
 	RangeFrame				= "거리 프레임 보기(10m)"
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "테랄리온, 내가 전당에 불을 뿜겠다. 놈들의 퇴로를 막아라!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
-	YellMeteor				= "나에게 황혼 유성!!",	
+	YellMeteor				= "나에게 황혼 유성!!",
+	YellTwilightBlast		= "Twilight Blast on me!",	
 	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
@@ -115,11 +118,13 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Bloodlevel		= "고통"
+	YellCrash				= "Corrupting Crash on me!",
+	Bloodlevel				= "고통"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "2 단계 사전 경고 보기",
+	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
 	InfoFrame				= "$spell:82235의 정보 프레임 보기",
 	RangeFrame				= "$spell:82235의 거리 프레임(6m) 보기",
 	YellOnCorrupting		= "$spell:93178 외치기",

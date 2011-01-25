@@ -12,6 +12,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnInferno	= "곧 이글거리는 지옥불(4초 뒤)",
+	WarnPhase2Soon	= "곧 2 단계"
 })
 
 L:SetTimerLocalization({
@@ -19,10 +21,14 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 	Slump			= "%s|1이;가; 집게를 드러내며 앞으로 몸을 기울입니다!",
-	HeadExposed		= "%s|1이;가; 창에 꽂혀 머리가 노출되었습니다!"
+	HeadExposed		= "%s|1이;가; 창에 꽂혀 머리가 노출되었습니다!",
+	YellPhase2		= "이런 곤란한 데가! 이러다간 내 용암" --"Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
 })
 
 L:SetOptionLocalization({
+	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초)",
+	WarnPhase2Soon	= "2 단계 사전 경고 보기",
+	RangeFrame		= "2 단계 거리 프레임 보기 (8m)"
 })
 
 -------------------------------
