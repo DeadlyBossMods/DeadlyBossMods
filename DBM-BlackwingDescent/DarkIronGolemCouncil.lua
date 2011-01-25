@@ -37,6 +37,7 @@ local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 
 --Magmatron
 local specWarnBarrier			= mod:NewSpecialWarningCast(79582)
+local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
 local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
 --Electron
 local specWarnUnstableShield	= mod:NewSpecialWarningCast(79900)
@@ -174,6 +175,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerAcquiringTarget:Start()
 		end
+		if args:IsPlayer() then
+			specWarnAcquiringTarget:Show()
+		end
 		if self.Options.AcquiringTargetIcon then
 			self:SetIcon(args.destName, 8, 6)
 		end
@@ -221,6 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92053) then
 		specWarnShadowConductor:Show(args.destName)
 		timerShadowConductor:Show(args.destName)
+		timerLightningConductor:Cancel()
 		if self.Options.ShadowConductorIcon then
 			self:SetIcon(args.destName, 8)
 		end
