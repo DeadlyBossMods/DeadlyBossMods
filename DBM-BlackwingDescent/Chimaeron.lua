@@ -69,8 +69,8 @@ do
 end
 
 function mod:OnCombatStart(delay)
-	timerMassacreNext:Start(-delay)
-	timerBreakCD:Start(5-delay)
+	timerMassacreNext:Start(26-delay)
+	timerBreakCD:Start(6-delay)
 	prewarnedPhase2 = false
 	feud = false
 	slimeIcon = 8
