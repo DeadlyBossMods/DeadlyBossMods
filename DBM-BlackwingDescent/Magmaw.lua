@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_SUMMON",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_HEALTH"
 )
 
 local warnLavaSpew			= mod:NewSpellAnnounce(77689, 3, nil, false)--This warning is almost completely pointless so turning off by default.
@@ -94,7 +95,7 @@ end
 function mod:SPELL_SUMMON(args)
 	if args:IsSpellID(92154, 92190, 92191, 92192) then
 		warnInferno:Show()
-		specWarnInfernoSoon:Schedule(31-delay)
+		specWarnInfernoSoon:Schedule(31)
 		timerInferno:Start()
 	end
 end
