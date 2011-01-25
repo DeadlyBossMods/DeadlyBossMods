@@ -28,7 +28,7 @@ local specWarnLightningRod	= mod:NewSpecialWarningYou(89668)
 
 local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
-local timerSquallLineCD		= mod:NewCDTimer(20, "TimerAddCD", 87856)
+local timerSquallLineCD		= mod:NewTimer(20, "TimerAddCD", 87856)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
@@ -99,7 +99,7 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.summonSquall or msg:find(L.summonSquall) then--Adds being summoned
-		warnWindBurst:Show()
+		warnSquallLine:Show()
 		timerSquallLineCD:Start()
 	elseif msg == L.phase3 or msg:find(L.phase3) then
 		warnPhase3:Show()
