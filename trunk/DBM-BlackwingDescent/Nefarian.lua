@@ -34,7 +34,7 @@ local warnPhase3				= mod:NewPhaseAnnounce(3)
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
 local timerElectrocute			= mod:NewCastTimer(5, 81198)
 local timerLightningDischarge	= mod:NewCDTimer(20, 77942)--92456, every 20-25 seconds. Need to emphesise this is a CD timer not a next timer. It will also only trigger if it hits something (including pets).
-local timerShadowflameBarrage	= mod:NewBuffActiveTimer(120, 78621)
+local timerShadowflameBarrage	= mod:NewBuffActiveTimer(180, 78621)
 local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
 local timerOnySwipeCD			= mod:NewTimer(10, "OnySwipeTimer", 77827)--10-20 second cd (18 being the most consistent)
 local timerNefSwipeCD			= mod:NewTimer(10, "NefSwipeTimer", 77827, false)--Same as hers, but not synced.
@@ -195,9 +195,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNefSwipeCD:Cancel()
 		timerOnyBreathCD:Cancel()
 		timerNefBreathCD:Cancel()
-		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
-			timerShadowflameBarrage:Start()--rumor has it, you have unlimited time on 10 man according to blizz forum posts. Bug perhaps?
-		end
+		timerShadowflameBarrage:Start()
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
 		timerShadowBlazeCD:Start(10)
