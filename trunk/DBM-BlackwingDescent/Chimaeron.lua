@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_HEALTH",
@@ -42,7 +43,7 @@ mod:AddBoolOption("SetIconOnSlime")
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 
 local prewarnedPhase2 = false
-local feud = false
+local botOffline = false
 local slimeTargets = {}
 local slimeTargetIcons = {}
 
@@ -72,7 +73,7 @@ function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(26-delay)
 	timerBreakCD:Start(6-delay)
 	prewarnedPhase2 = false
-	feud = false
+	botOffline = false
 	slimeIcon = 8
 	table.wipe(slimeTargets)
 	table.wipe(slimeTargetIcons)
@@ -102,9 +103,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(88826) then
 		warnDoubleAttack:Show()
 		specWarnDoubleAttack:Show()
+	elseif args:IsSpellID(88853) then
+		botOffline = true
 	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
 		slimeTargets[#slimeTargets + 1] = args.destName
-		if self.Options.SetIconOnSlime and not feud then--Don't set icons during feud, set them any other time.
+		if self.Options.SetIconOnSlime and not botOffline then--Don't set icons during feud, set them any other time.
 			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetSlimeIcons")
 			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
@@ -118,6 +121,12 @@ end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(88853) then
+		botOffline = false
+	end
+end
+
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(82848) then
 		warnMassacre:Show()
@@ -125,7 +134,6 @@ function mod:SPELL_CAST_START(args)
 		timerMassacre:Start()
 		timerMassacreNext:Start()
 		timerCausticSlime:Start(19)--Always 19 seconds after massacre.
-		feud = false
 	end
 end
 
