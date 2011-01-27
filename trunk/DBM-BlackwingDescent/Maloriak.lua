@@ -48,7 +48,7 @@ local specWarnFlashFreeze		= mod:NewSpecialWarningTarget(77699)--On Heroic it ha
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
 
-local berserkTimer				= mod:NewBerserkTimer(360)
+local berserkTimer				= mod:NewBerserkTimer(420)
 
 mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon")
@@ -78,10 +78,10 @@ local function InterruptCheck()
 end
 
 function mod:OnCombatStart(delay)
-	if mod:IsDifficulty("normal10") then
-		berserkTimer:Start(-delay)--6 min berserk on 10 man normal
-	elseif mod:IsDifficulty("heroic25") then
-		berserkTimer:Start(840-delay)--14 minute berserk on 25 heroic, wtf? did blizz get them backwards?
+	if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
+		berserkTimer:Start(-delay)--7 min berserk on normal
+	else
+		berserkTimer:Start(720-delay)--12 min on heroic
 	end
 	adds = 18
 	AddsInterrupted = false
