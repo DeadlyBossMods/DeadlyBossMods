@@ -76,7 +76,6 @@ DBM_CORE_INFOFRAME_HIDE				= "Скрыть"
 DBM_CORE_INFOFRAME_LOCK				= "Закрепить полосу"
 
 DBM_LFG_INVITE						= "Приглашение в подземелье"
-DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Доступные (/) команды:",

@@ -76,7 +76,6 @@ DBM_CORE_INFOFRAME_LOCK				= "프레임 잠금"
 DBM_CORE_INFOFRAME_HIDE				= "숨기기"
 
 DBM_LFG_INVITE						= "던전 입장"
-DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"사용 가능한 명령어:",
