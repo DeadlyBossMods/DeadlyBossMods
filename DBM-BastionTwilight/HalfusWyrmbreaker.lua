@@ -20,14 +20,14 @@ local warnCycloneWinds		= mod:NewSpellAnnounce(83612, 3)
 local warnTimeDilation		= mod:NewSpellAnnounce(83601, 3)
 local warnVengeance			= mod:NewSpellAnnounce(87683, 3)
 local warnShadowNova		= mod:NewSpellAnnounce(83703, 3)
---local warnBarrage			= mod:NewSpellAnnounce(83706, 3)--This is not showing in combat log, no cast, or aura, only damage, but i don't think it's that important anyways.
+local warnParalysis			= mod:NewSpellAnnounce(84030, 2)
 
 local specWarnShadowNova	= mod:NewSpecialWarningInterrupt(83703, false)
 
 local timerFuriousRoar		= mod:NewCDTimer(30, 83710)
---local timerBarrageCD		= mod:NewCDTimer(32, 83706)
 local timerBreathCD			= mod:NewCDTimer(20, 83707)--every 20-25 seconds.
---local timerBarrage			= mod:NewBuffActiveTimer(10, 83706)
+local timerParalysis		= mod:NewBuffActiveTimer(12, 84030)
+local timerParalysisCD		= mod:NewCDTimer(35, 84030)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
@@ -42,10 +42,10 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87683) then
 		warnVengeance:Show()
---[[	elseif args:IsSpellID(83706) then
-		warnBarrage:Show()
-		timerBarrage:Start()
-		timerBarrageCD:Start()--]]
+	elseif args:IsSpellID(84030) then
+		warnParalysis:Show()
+		timerParalysis:Start()
+		timerParalysisCD:Start()
 	end
 end
 
@@ -54,7 +54,9 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(83710, 86169, 86170, 86171) and GetTime() - spamFuriousRoar > 6 then
 		warnFuriousRoar:Show()
-		timerFuriousRoar:Start()
+		timerFuriousRoar:Cancel()--We Cancel any scheduled roar timers before doing anything else.
+		timerFuriousRoar:Start()--And start a fresh one.
+		timerFuriousRoar:Schedule(30)--If it comes off CD while he's stunned by paralysis, he no longer waits to casts it after stun, it now consumes his CD as if it was cast on time. This is why we schedule this timer. So we get a timer for next roar after a stun.
 		spamFuriousRoar = GetTime()
 	elseif args:IsSpellID(83707) then
 		warnBreath:Show()
