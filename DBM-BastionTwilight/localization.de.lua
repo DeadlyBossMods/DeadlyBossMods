@@ -18,16 +18,19 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Schreie bei $spell:86622",
-	YellOnMeteor			= "Schreie $spell:88518",
-	RangeFrame		= "Zeige Abstandsfenster (10 m)",
+	YellOnMeteor			= "Schreie bei $spell:88518",
+	YellOnTwilightBlast		= "Schreie bei $spell:92898",
+	TwilightBlastArrow		= "Zeige DBM Pfeil, wenn $spell:92898 in deiner Nähe ist.",
+	RangeFrame				= "Zeige Abstandsfenster (10 m)",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization{
 	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!",
-	YellEngulfing				= "Einhüllende Magie auf mir!",
+	YellEngulfing			= "Einhüllende Magie auf mir!",
 	YellMeteor				= "Zwielichtmeteorit auf mir!",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+	YellTwilightBlast		= "Zwielichtdruckwelle auf mir!",
 }
 
 --------------------------
