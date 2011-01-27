@@ -53,6 +53,7 @@ local engulfingMagicTargets = {}
 local engulfingMagicIcon = 7
 local lastDazzling = 0
 local markWarned = false
+local blackoutActive = false
 local meteorTarget = GetSpellInfo(88518)
 
 local function showEngulfingMagicWarning()
@@ -69,12 +70,12 @@ end
 function mod:TwilightBlastTarget()
 	local targetname = self:GetBossTarget(45993)
 	if not targetname then return end
-	if targetname == UnitName("player") then
+	if targetname == UnitName("player") and not blackoutActive then
 		specWarnTwilightBlast:Show()
 		if self.Options.YellOnTwilightBlast then
 			SendChatMessage(L.YellTwilightBlast, "SAY")
 		end
-	elseif targetname then
+	elseif targetname and not blackoutActive then
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
@@ -100,6 +101,7 @@ function mod:OnCombatStart(delay)
 	timerNextDazzlingDestruction:Start(85-delay)--Probalby needs adjustment. Gonna need transcriptor to get exact pull time
 	lastDazzling = 0
 	markWarned = false
+	blackoutActive = false
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
@@ -122,6 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBlackout:Show()
 		end
+		blackoutActive = true
 	elseif args:IsSpellID(86622, 95639, 95640, 95641) then
 		engulfingMagicTargets[#engulfingMagicTargets + 1] = args.destName
 		timerEngulfingMagicNext:Start()
@@ -152,6 +155,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.BlackoutIcon then
 			self:SetIcon(args.destName, 0)
 		end
+		blackoutActive = false
 	elseif args:IsSpellID(86622, 95639, 95640, 95641) then
 		if self.Options.EngulfingIcon then
 			self:SetIcon(args.destName, 0)
