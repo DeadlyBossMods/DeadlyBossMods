@@ -56,7 +56,6 @@ L.AutoRespond 		= "Activer la réponse automatique pendant les combats"
 L.EnableMiniMapIcon	= "Afficher le bouton sur minicarte "
 L.FixCLEUOnCombatStart		= "Effacer le log de combat au pull"
 L.SetCurrentMapOnPull		= "Régler la map sur la zone actuelle du pull ( Assure /range & /arrow accuracy)"
-L.ArchaeologyHumor			= "Rendre l'Archéologie plus interessant"
 L.SKT_Enabled				= "Toujours afficher le temps de la mort du Boss (Remplace les options spécifiques au boss)"
 L.Latency_Text				= "Régler la sync max du seuil de latence: %d"
 
