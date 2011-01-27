@@ -75,7 +75,6 @@ DBM_CORE_INFOFRAME_LOCK				= "Lock frame"
 DBM_CORE_INFOFRAME_HIDE				= "Hide"
 
 DBM_LFG_INVITE						= "LFG Invite"
-DBM_LOOT_MSG						= "([^%s]+).*Hitem:(%d+)"
 
 DBM_CORE_SLASHCMD_HELP				= {
 	"Available slash commands:",
