@@ -69,13 +69,13 @@ end
 
 function mod:TwilightBlastTarget()
 	local targetname = self:GetBossTarget(45993)
-	if not targetname then return end
-	if targetname == UnitName("player") and not blackoutActive then
+	if not targetname or blackoutActive then return end
+	if targetname == UnitName("player") then
 		specWarnTwilightBlast:Show()
 		if self.Options.YellOnTwilightBlast then
 			SendChatMessage(L.YellTwilightBlast, "SAY")
 		end
-	elseif targetname and not blackoutActive then
+	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
