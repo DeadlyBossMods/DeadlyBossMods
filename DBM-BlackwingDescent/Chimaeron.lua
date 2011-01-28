@@ -33,7 +33,7 @@ local timerBreak			= mod:NewTargetTimer(60, 82881)
 local timerBreakCD			= mod:NewNextTimer(15, 82881)--Also double attack CD
 local timerMassacre			= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
-local timerCausticSlime		= mod:NewNextTimer(15, 88915)--This is seemingly cast 15 seconds into feud, any other time it's simply cast repeatedly the whole fight.
+local timerCausticSlime		= mod:NewNextTimer(19, 88915)--always 19 seconds after massacre.
 local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
 
 local berserkTimer			= mod:NewBerserkTimer(450)--Heroic
@@ -133,7 +133,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnMassacre:Show()
 		timerMassacre:Start()
 		timerMassacreNext:Start()
-		timerCausticSlime:Start(19)--Always 19 seconds after massacre.
+		timerCausticSlime:Start()--Always 19 seconds after massacre.
 	end
 end
 
