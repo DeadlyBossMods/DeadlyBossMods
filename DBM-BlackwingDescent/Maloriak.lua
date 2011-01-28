@@ -30,7 +30,7 @@ local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
 local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 3)--Heroic Ability
 local warnPhase2				= mod:NewPhaseAnnounce(2)
  
-local timerPhase				= mod:NewTimer(50, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
+local timerPhase				= mod:NewTimer(48.5, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
 local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
 local timerFlashFreeze			= mod:NewNextTimer(15, 77699)--Seems consisting so using "next" for now.
 local timerArcaneStorm			= mod:NewBuffActiveTimer(6, 77896)
@@ -89,7 +89,7 @@ function mod:OnCombatStart(delay)
 	spamSlime = 0
 	spamSludge = 0
 	timerArcaneStormCD:Start(13-delay)
-	timerPhase:Start(15-delay)
+	timerPhase:Start(16-delay)
 	table.wipe(bitingChillTargets)
 end
 
