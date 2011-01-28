@@ -1495,7 +1495,7 @@ do
 	end
 
 	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
-		if select(2, IsInInstance()) == "pvp" then return end
+		if select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "none" then return end
 		local delay, mod, revision = strsplit("\t", msg)
 		local lag = select(3, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
