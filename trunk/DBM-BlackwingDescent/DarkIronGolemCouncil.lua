@@ -85,6 +85,7 @@ mod:AddBoolOption("BombTargetIcon")
 mod:AddBoolOption("ShadowConductorIcon")
 
 local fixateIcon = 6
+local combattime = 0
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
@@ -141,6 +142,7 @@ local bossInactive = function(boss)
 end
 
 function mod:OnCombatStart(delay)
+	combattime = GetTime()
 	fixateIcon = 6
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerNextActivate:Start(30-delay)
@@ -152,23 +154,23 @@ function mod:OnCombatStart(delay)
 	for i=1, GetNumRaidMembers() do
 		local cid = self:GetUnitCreatureId("raid"..i)
 		if cid == 42178 then
-			DBM.BossHealth:AddBoss(42178, L.Magmatron)
+			bossActivate(42178)
 			break;
 		elseif cid == 42179 then
-			DBM.BossHealth:AddBoss(42179, L.Electron)
+			bossActivate(42179)
 			break;
 		elseif cid == 42180 then
-			DBM.BossHealth:AddBoss(42180, L.Toxitron)
+			bossActivate(42180)
 			break;
 		elseif cid == 42166 then
-			DBM.BossHealth:AddBoss(42166, L.Arcanotron)
+			bossActivate(42166)
 			break;
 		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(78740, 95016, 95017, 95018) then--This also fires on combat start and provides most accurate combat start timers for the first activated golem
+	if args:IsSpellID(78740, 95016, 95017, 95018) and GetTime() - combattime > 10 then--Ignore it if it happens at combat start, sometimes before sometimes after but safe to ignore it and force it at combat start instead.
 		warnActivated:Show(args.destName)
 		bossActivate(args.destName)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
