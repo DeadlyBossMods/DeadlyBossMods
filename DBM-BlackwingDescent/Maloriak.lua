@@ -34,8 +34,9 @@ local timerPhase				= mod:NewTimer(50, "TimerPhase", 89250)--Just some random ca
 local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
 local timerFlashFreeze			= mod:NewNextTimer(15, 77699)--Seems consisting so using "next" for now.
 local timerArcaneStorm			= mod:NewBuffActiveTimer(6, 77896)
+local timerArcaneStormCD		= mod:NewCDTimer(15, 77896)--Varies on other abilities CDs
 local timerConsumingFlames		= mod:NewTargetTimer(10, 77786)
-local timerScorchingBlast		= mod:NewCDTimer(10, 77679)--Varies heavily
+local timerScorchingBlast		= mod:NewCDTimer(10, 77679)--Varies on other abilities CDs
 local timerDebilitatingSlime	= mod:NewBuffActiveTimer(15, 77615)
 local timerEngulfingDarknessCD	= mod:NewNextTimer(12, 92754)--Heroic Ability
 
@@ -87,6 +88,7 @@ function mod:OnCombatStart(delay)
 	AddsInterrupted = false
 	spamSlime = 0
 	spamSludge = 0
+	timerArcaneStormCD:Start(13-delay)
 	timerPhase:Start(15-delay)
 	table.wipe(bitingChillTargets)
 end
@@ -123,6 +125,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
 		timerArcaneStorm:Start()
+		timerArcaneStormCD:Start()
 		if self:GetUnitCreatureId("target") == 41378 or self:GetUnitCreatureId("focus") == 41378 then
 			specWarnArcaneStorm:Show()
 		end
@@ -197,6 +200,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.YellRed or msg:find(L.YellRed) then
 		warnPhase:Show(L.Red)
+		timerArcaneStormCD:Start(20)
 		timerScorchingBlast:Start(25)
 		timerPhase:Start()
 		timerFlashFreeze:Cancel()
@@ -207,6 +211,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	elseif msg == L.YellBlue or msg:find(L.YellBlue) then
 		warnPhase:Show(L.Blue)
 		timerPhase:Start()
+		timerArcaneStormCD:Start(20)
 		timerFlashFreeze:Start(25)
 		timerScorchingBlast:Cancel()
 		timerEngulfingDarknessCD:Cancel()
@@ -216,6 +221,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	elseif msg == L.YellGreen or msg:find(L.YellGreen) then
 		warnPhase:Show(L.Green)
 		timerPhase:Start()
+		timerArcaneStormCD:Start(20)
 		timerFlashFreeze:Cancel()
 		timerScorchingBlast:Cancel()
 		timerEngulfingDarknessCD:Cancel()
@@ -226,6 +232,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnPhase:Show(L.Dark)
 		timerEngulfingDarknessCD:Start(15)
 		timerPhase:Start(100)		-- copied from BigWigs as I didnt have a timer yet for emotes instead of yells.
+		timerArcaneStormCD:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
