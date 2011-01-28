@@ -155,16 +155,16 @@ function mod:OnCombatStart(delay)
 		local cid = self:GetUnitCreatureId("raid"..i)
 		if cid == 42178 then
 			bossActivate(42178)
-			break;
+			break
 		elseif cid == 42179 then
 			bossActivate(42179)
-			break;
+			break
 		elseif cid == 42180 then
 			bossActivate(42180)
-			break;
+			break
 		elseif cid == 42166 then
 			bossActivate(42166)
-			break;
+			break
 		end
 	end
 end
