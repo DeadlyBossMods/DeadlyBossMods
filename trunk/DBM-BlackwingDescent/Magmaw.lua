@@ -56,6 +56,8 @@ function mod:OnCombatStart(delay)
 		timerInferno:Start(20-delay)
 		specWarnInfernoSoon:Schedule(16-delay)
 	end
+	DBM.BossHealth:Clear()
+	DBM.BossHealth:AddBoss(41570, 42347, L.name)
 end
 
 function mod:OnCombatEnd()
