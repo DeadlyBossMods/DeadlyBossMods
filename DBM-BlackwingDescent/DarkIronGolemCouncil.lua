@@ -85,7 +85,6 @@ mod:AddBoolOption("BombTargetIcon")
 mod:AddBoolOption("ShadowConductorIcon")
 
 local fixateIcon = 6
-local combattime = 0
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
@@ -142,35 +141,31 @@ local bossInactive = function(boss)
 end
 
 function mod:OnCombatStart(delay)
-	combattime = GetTime()
 	fixateIcon = 6
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-		timerNextActivate:Start(30-delay)
 		berserkTimer:Start(-delay)
-	else
-		timerNextActivate:Start(-delay)
 	end
 	DBM.BossHealth:Clear()
 	for i=1, GetNumRaidMembers() do
 		local cid = self:GetUnitCreatureId("raid"..i)
 		if cid == 42178 then
-			bossActivate(42178)
+			DBM.BossHealth:AddBoss(42178, L.Magmatron)
 			break
 		elseif cid == 42179 then
-			bossActivate(42179)
+			DBM.BossHealth:AddBoss(42179, L.Electron)
 			break
 		elseif cid == 42180 then
-			bossActivate(42180)
+			DBM.BossHealth:AddBoss(42180, L.Toxitron)
 			break
 		elseif cid == 42166 then
-			bossActivate(42166)
+			DBM.BossHealth:AddBoss(42166, L.Arcanotron)
 			break
 		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(78740, 95016, 95017, 95018) and GetTime() - combattime > 10 then--Ignore it if it happens at combat start, sometimes before sometimes after but safe to ignore it and force it at combat start instead.
+	if args:IsSpellID(78740, 95016, 95017, 95018) then
 		warnActivated:Show(args.destName)
 		bossActivate(args.destName)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
