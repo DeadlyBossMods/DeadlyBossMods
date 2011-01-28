@@ -95,14 +95,12 @@ local bossActivate = function(boss)
 			timerAcquiringTarget:Start(20)
 			timerIncinerationCD:Start(10)
 		end
-		DBM.BossHealth:AddBoss(42178, L.Magmatron)
 	elseif boss == L.Electron or boss == 42179 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerLightningConductorCD:Start(15)--Probably also has a variation if it's like normal. Needs more logs to verify.
 		else
 			timerLightningConductorCD:Start(11)--11-15 variation confirmed for normal, only boss ability with an actual variation on timer. Strange.
 		end
-		DBM.BossHealth:AddBoss(42179, L.Electron)
 	elseif boss == L.Toxitron or boss == 42180 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerChemicalBomb:Start(25)
@@ -111,14 +109,12 @@ local bossActivate = function(boss)
 			timerChemicalBomb:Start(11)
 			timerPoisonProtocolCD:Start(21)
 		end
-		DBM.BossHealth:AddBoss(42180, L.Toxitron)
 	elseif boss == L.Arcanotron or boss == 42166 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
 		else
 			timerGeneratorCD:Start(15)
 		end
-		DBM.BossHealth:AddBoss(42166, L.Arcanotron)
 	end
 end
 
@@ -126,17 +122,13 @@ local bossInactive = function(boss)
 	if boss == L.Magmatron then
 		timerAcquiringTarget:Cancel()
 		timerIncinerationCD:Cancel()
-		DBM.BossHealth:RemoveBoss(42178)
 	elseif boss == L.Electron then
 		timerLightningConductorCD:Cancel()
-		DBM.BossHealth:RemoveBoss(42179)
 	elseif boss == L.Toxitron then
 		timerChemicalBomb:Cancel()
 		timerPoisonProtocolCD:Cancel()
-		DBM.BossHealth:RemoveBoss(42180)
 	elseif boss == L.Arcanotron then
 		timerGeneratorCD:Cancel()
-		DBM.BossHealth:RemoveBoss(42166)
 	end
 end
 
@@ -146,21 +138,7 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 	end
 	DBM.BossHealth:Clear()
-	for i=1, GetNumRaidMembers() do
-		local cid = self:GetUnitCreatureId("raid"..i)
-		if cid == 42178 then
-			DBM.BossHealth:AddBoss(42178, L.Magmatron)
-			break
-		elseif cid == 42179 then
-			DBM.BossHealth:AddBoss(42179, L.Electron)
-			break
-		elseif cid == 42180 then
-			DBM.BossHealth:AddBoss(42180, L.Toxitron)
-			break
-		elseif cid == 42166 then
-			DBM.BossHealth:AddBoss(42166, L.Arcanotron)
-			break
-		end
+	DBM.BossHealth:AddBoss(42180, 42178, 42179, 42166, L.name)
 	end
 end
 
