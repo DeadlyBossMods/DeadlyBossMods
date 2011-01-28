@@ -153,12 +153,16 @@ function mod:OnCombatStart(delay)
 		local cid = self:GetUnitCreatureId("raid"..i)
 		if cid == 42178 then
 			DBM.BossHealth:AddBoss(42178, L.Magmatron)
+			break;
 		elseif cid == 42179 then
 			DBM.BossHealth:AddBoss(42179, L.Electron)
+			break;
 		elseif cid == 42180 then
 			DBM.BossHealth:AddBoss(42180, L.Toxitron)
+			break;
 		elseif cid == 42166 then
 			DBM.BossHealth:AddBoss(42166, L.Arcanotron)
+			break;
 		end
 	end
 end
