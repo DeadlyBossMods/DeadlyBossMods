@@ -149,13 +149,18 @@ function mod:OnCombatStart(delay)
 		timerNextActivate:Start(-delay)
 	end
 	DBM.BossHealth:Clear()
---[[	for i=1, GetNumRaidMembers() do
+	for i=1, GetNumRaidMembers() do
 		local cid = self:GetUnitCreatureId("raid"..i)
-		if cid == 42166 or cid == 42178 or cid == 42179 or cid == 42180 then
-			bossActivate(cid, delay)
-			break;
+		if cid == 42178 then
+			DBM.BossHealth:AddBoss(42178, L.Magmatron)
+		elseif cid == 42179 then
+			DBM.BossHealth:AddBoss(42179, L.Electron)
+		elseif cid == 42180 then
+			DBM.BossHealth:AddBoss(42180, L.Toxitron)
+		elseif cid == 42166 then
+			DBM.BossHealth:AddBoss(42166, L.Arcanotron)
 		end
-	end--]]
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
