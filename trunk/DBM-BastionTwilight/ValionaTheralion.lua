@@ -24,11 +24,11 @@ local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
 
 local timerBlackout					= mod:NewTargetTimer(15, 86788)
-local timerBlackoutCD				= mod:NewNextTimer(45, 86788)
+local timerBlackoutCD				= mod:NewCDTimer(45, 86788)
 local timerDevouringFlamesCD		= mod:NewCDTimer(40, 86840)
 local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
 local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
-local timerEngulfingMagicNext		= mod:NewNextTimer(37, 86622)
+local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
 local timerNextDeepBreath			= mod:NewNextTimer(105, 86059)
 local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
 
@@ -188,6 +188,7 @@ function mod:SPELL_CAST_START(args)
 		elseif dazzlingCast == 3 then--Cancel bars now as it's safer then doing it at beginning do to a late 3rd blackout gets cast sometimes.
 			timerBlackoutCD:Cancel()
 			timerDevouringFlamesCD:Cancel()
+			timerEngulfingMagicNext:Start(20)--need more logs to confirm this.
 			timerNextDeepBreath:Start()
 			dazzlingCast = 0--reset back to 0 for next time it happens.
 		end
