@@ -14,6 +14,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
+	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
 	"UNIT_AURA"
 )
@@ -37,6 +38,7 @@ local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
 local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
 local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
 local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408)
+local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)--Unfortunately even though 
 local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898)
 local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
 
@@ -53,6 +55,7 @@ mod:AddBoolOption("RangeFrame")
 local engulfingMagicTargets = {}
 local engulfingMagicIcon = 7
 local dazzlingCast = 0
+local lastflame = 0
 local markWarned = false
 local blackoutActive = false
 local meteorTarget = GetSpellInfo(88518)
@@ -107,6 +110,7 @@ function mod:OnCombatStart(delay)
 	timerDevouringFlamesCD:Start(25-delay)
 	timerNextDazzlingDestruction:Start(85-delay)
 	dazzlingCast = 0
+	lastflame = 0
 	markWarned = false
 	blackoutActive = false
 	if self.Options.RangeFrame then
@@ -194,6 +198,13 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(86369, 92898, 92899, 92900) then
 		self:ScheduleMethod(0.1, "TwilightBlastTarget")
+	end
+end
+
+function mod:SPELL_DAMAGE(args)
+	if (args:IsSpellID(86505, 92907, 92908, 92909) and args:IsPlayer() and GetTime() - lastflame > 2 then
+		specWarnFabulousFlames:Show()
+		lastflame = GetTime()
 	end
 end
 
