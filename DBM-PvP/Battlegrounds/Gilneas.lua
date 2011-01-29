@@ -239,8 +239,8 @@ do
 		local AllyTime = (2000 - last_alliance_score) / ResPerSec[last_alliance_bases]
 		local HordeTime = (2000 - last_horde_score) / ResPerSec[last_horde_bases]
 
-		if AllyTime > 2000 then		AllyTime = 5000 end
-		if HordeTime > 2000 then	HordeTime = 5000 end
+		if AllyTime > 2000 then		AllyTime = 2000 end
+		if HordeTime > 2000 then	HordeTime = 2000 end
 
 		if AllyTime == HordeTime then
 			winner_is = 0 
