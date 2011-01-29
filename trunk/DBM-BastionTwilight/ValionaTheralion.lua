@@ -202,7 +202,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if (args:IsSpellID(86505, 92907, 92908, 92909) and args:IsPlayer() and GetTime() - lastflame > 3 then
+	if args:IsSpellID(86505, 92907, 92908, 92909) and args:IsPlayer() and GetTime() - lastflame > 3 then
 		specWarnFabulousFlames:Show()
 		lastflame = GetTime()
 	end
