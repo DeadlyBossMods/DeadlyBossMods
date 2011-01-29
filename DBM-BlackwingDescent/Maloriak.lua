@@ -142,7 +142,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		spamSlime = GetTime()
 		warnDebilitatingSlime:Show()
 		timerDebilitatingSlime:Start()
-	elseif args:IsSpellID(92930, 92986, 92987, 92988) and GetTime() - spamSludge >= 4 and args:IsPlayer() then
+	elseif args:IsSpellID(92930, 92986, 92987, 92988) and GetTime() - spamSludge >= 2 and args:IsPlayer() then
 		spamSludge = GetTime()
 		specWarnSludge:Show()
 	end
