@@ -18,7 +18,7 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnLavaSpew			= mod:NewSpellAnnounce(77689, 3, nil, false)--This warning is almost completely pointless so turning off by default.
+local warnLavaSpew			= mod:NewSpellAnnounce(77689, 3, nil, mod:IsHealer())
 local warnPillarFlame		= mod:NewSpellAnnounce(78006, 3)
 local warnMoltenTantrum		= mod:NewSpellAnnounce(78403, 4)
 local warnInferno			= mod:NewSpellAnnounce(92190, 4)
@@ -30,7 +30,7 @@ local specWarnPillar		= mod:NewSpecialWarningSpell(78006, mod:IsRanged())
 local specWarnIgnition		= mod:NewSpecialWarningMove(92198)
 local specWarnInfernoSoon   = mod:NewSpecialWarning("SpecWarnInferno")
 
-local timerLavaSpew			= mod:NewCDTimer(26, 77689)
+local timerLavaSpew			= mod:NewCDTimer(26, 77689, nil, mod:IsHealer())
 local timerPillarFlame		= mod:NewCDTimer(32.5, 78006)--This timer is a CD timer. 30-40 seconds. Use your judgement.
 local timerMangle			= mod:NewTargetTimer(30, 89773)
 local timerExposed			= mod:NewBuffActiveTimer(30, 79011)

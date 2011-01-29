@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
@@ -23,12 +24,12 @@ local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
 
 local timerBlackout					= mod:NewTargetTimer(15, 86788)
-local timerBlackoutNext				= mod:NewNextTimer(45, 86788)
+local timerBlackoutCD				= mod:NewNextTimer(45, 86788)
 local timerDevouringFlamesCD		= mod:NewCDTimer(40, 86840)
 local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
 local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
 local timerEngulfingMagicNext		= mod:NewNextTimer(37, 86622)
-local timerNextDeepBreath			= mod:NewNextTimer(13, 86059)--13 is time between sequencial breaths, not between CDs.
+local timerNextDeepBreath			= mod:NewNextTimer(105, 86059)
 local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
 
 local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
@@ -51,7 +52,7 @@ mod:AddBoolOption("RangeFrame")
 
 local engulfingMagicTargets = {}
 local engulfingMagicIcon = 7
-local lastDazzling = 0
+local dazzlingCast = 0
 local markWarned = false
 local blackoutActive = false
 local meteorTarget = GetSpellInfo(88518)
@@ -65,6 +66,12 @@ end
 
 local function markRemoved()
 	markWarned = false
+end
+
+local function valionaDelay()
+	timerEngulfingMagicNext:Cancel()
+	timerBlackoutCD:Start(10)
+	timerDevouringFlamesCD:Start(25)
 end
 
 function mod:TwilightBlastTarget()
@@ -96,10 +103,10 @@ end
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
-	timerBlackoutNext:Start(10-delay)
+	timerBlackoutCD:Start(10-delay)
 	timerDevouringFlamesCD:Start(25-delay)
-	timerNextDazzlingDestruction:Start(85-delay)--Probalby needs adjustment. Gonna need transcriptor to get exact pull time
-	lastDazzling = 0
+	timerNextDazzlingDestruction:Start(85-delay)
+	dazzlingCast = 0
 	markWarned = false
 	blackoutActive = false
 	if self.Options.RangeFrame then
@@ -117,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(86788, 92876, 92877, 92878) then
 		warnBlackout:Show(args.destName)
 		timerBlackout:Start(args.destName)
-		timerBlackoutNext:Start()
+		timerBlackoutCD:Start()
 		if self.Options.BlackoutIcon then
 			self:SetIcon(args.destName, 8)
 		end
@@ -144,10 +151,14 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, showEngulfingMagicWarning)
 		end
+	elseif args:IsSpellID(93051) then--heroic placeholder cause honestly i'm not quite sure i understand this mechanic yet until i see it.
+	
 	end
 end
 
 mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
+
+mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(86788, 92876, 92877, 92878) then
@@ -170,11 +181,16 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(86013, 92859, 92860, 92861) then
 		warnTwilightMeteorite:Show()
 		timerTwilightMeteorite:Start()
-	elseif args:IsSpellID(86408) and GetTime() - lastDazzling > 20 then--ignore 2nd and 3rd cast
-		specWarnDazzlingDestruction:Show()
-		timerBlackoutNext:Cancel()
-		timerNextDeepBreath:Start(111)
-		lastDazzling = GetTime()
+	elseif args:IsSpellID(86408) then
+		dazzlingCast = dazzlingCast + 1
+		if dazzlingCast == 1 then--only special warn once for first one
+			specWarnDazzlingDestruction:Show()
+		elseif dazzlingCast == 3 then--Cancel bars now as it's safer then doing it at beginning do to a late 3rd blackout gets cast sometimes.
+			timerBlackoutCD:Cancel()
+			timerDevouringFlamesCD:Cancel()
+			timerNextDeepBreath:Start()
+			dazzlingCast = 0--reset back to 0 for next time it happens.
+		end
 	elseif args:IsSpellID(86369, 92898, 92899, 92900) then
 		self:ScheduleMethod(0.1, "TwilightBlastTarget")
 	end
@@ -183,10 +199,8 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Trigger1 or msg:find(L.Trigger1) then
 		specWarnDeepBreath:Show()
---		timerNextDeepBreath:Start()--for 2nd breath
---		timerNextDeepBreath:Schedule(13)--for 3rd breath (it's cast 3 times 13 seconds apart)
 		timerNextDazzlingDestruction:Start()
-		timerEngulfingMagicNext:Cancel()
+		self:Schedule(40, valionaDelay)--We do this cause you get at least one more engulfing magic after this emote before they completely switch so we need a method to cancel bar more appropriately
 	end
 end
 
