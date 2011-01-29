@@ -117,8 +117,8 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash		= "Corrupting Crash on me!",
-	Bloodlevel		= "Corruption"
+	YellCorruptingCrash		= "Corrupting Crash on me!",
+	Bloodlevel				= "Corruption"
 })
 
 L:SetOptionLocalization({
