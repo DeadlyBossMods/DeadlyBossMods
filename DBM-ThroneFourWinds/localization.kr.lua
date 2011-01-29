@@ -21,7 +21,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "%s의 힘이 극에 달합니다!"
+	gatherstrength			= "%s에게서 힘을 모으기 시작합니다!"
 })
 
 L:SetOptionLocalization({
@@ -43,20 +43,20 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback		= "%s : >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
-	WarnAdd				= "돌풍 전선 추가 생성"	
+	WarnAdd				= "폭풍 정령 추가 생성"	
 })
 
 L:SetTimerLocalization({
 	TimerFeedback 		= "역순환 (%d)",
-	TimerAddCD			= "추가 돌풍 전선"	
+	TimerAddCD			= "추가 폭풍 정령"	
 })
 
 L:SetOptionLocalization({
 	WarnFeedback		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "알 수 없음"),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback		= "$spell:87904 유지 타이머 보기",
-	WarnAdd				= "돌풍 전선이 추가 생성 될 때 경고 보기",
-	TimerAddCD			= "돌풍 전선 추가 쿨타임 보기"
+	WarnAdd				= "폭풍 정령이 추가 생성 될 때 경고 보기",
+	TimerAddCD			= "폭풍 정령 추가 쿨타임 보기"
 })
 
 L:SetMiscLocalization({

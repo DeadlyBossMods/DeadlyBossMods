@@ -88,7 +88,7 @@ L:SetMiscLocalization({
 	YellGreen		= "초록색|r 약병을 가마솥",
 	YellDark		= "암흑|r 마법을 사용합니다!",
 	Red				= "붉은색",
-	Blue			= "푸른색"",
+	Blue			= "푸른색",
 	Green			= "초록색",
 	Dark			= "암흑"
 })
