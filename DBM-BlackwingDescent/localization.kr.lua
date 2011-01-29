@@ -22,7 +22,7 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	Slump			= "%s|1이;가; 집게를 드러내며 앞으로 몸을 기울입니다!",
 	HeadExposed		= "%s|1이;가; 창에 꽂혀 머리가 노출되었습니다!",
-	YellPhase2		= "이런 곤란한 데가! 이러다간 내 용암" --"Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
+	YellPhase2		= "이런 곤란할 데가! 이러다간 내 용암 벌레가 정말 질 수도 있겠군! 그럼... 내가 상황을 좀 바꿔 볼까?" --"Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
 })
 
 L:SetOptionLocalization({
@@ -58,10 +58,10 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "$spell:92053 시전 타이머 보기",
 	timerArcaneBlowbackCast		= "$spell:91879 시전 타이머 보기",
-	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
 ----------------
@@ -83,14 +83,14 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellRed			= "섞고 흔들어서, 열을 가한다...",
-	YellBlue		= "급격한 온도 변화에 필멸의 육신",
-	YellGreen		= "이건 좀 불안정하지만",
-	YellDark		= "혼합물이 너무 약하구나, 말로리악!",
-	Red				= "|cFFFF0000붉은|r 단계",
-	Blue			= "|cFF809FFE푸른|r 단계",
-	Green			= "|cFF33FF00초록|r 단계",
-	Dark			= "|cFF660099암흑|r 단계"
+	YellRed			= "붉은색|r 약병을 가마솥",
+	YellBlue		= "푸른색|r 약병을 가마솥",
+	YellGreen		= "초록색|r 약병을 가마솥",
+	YellDark		= "암흑|r 마법을 사용합니다!",
+	Red				= "붉은색",
+	Blue			= "푸른색"",
+	Green			= "초록색",
+	Dark			= "암흑"
 })
 
 L:SetOptionLocalization({

@@ -7,7 +7,7 @@ local L
 L = DBM:GetModLocalization("ValionaTheralion")
 
 L:SetGeneralLocalization({
-	name =	"발라오나와 테랄리온"
+	name =	"발리오나와 테랄리온"
 })
 
 L:SetWarningLocalization({
@@ -118,7 +118,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash				= "부패의 충돌!!",
+	YellCorruptingCrash		= "부패의 충돌!!",
 	Bloodlevel				= "고통"
 })
 
