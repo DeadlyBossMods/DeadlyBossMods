@@ -139,7 +139,6 @@ function mod:OnCombatStart(delay)
 	end
 	DBM.BossHealth:Clear()
 	DBM.BossHealth:AddBoss(42180, 42178, 42179, 42166, L.name)
-	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
