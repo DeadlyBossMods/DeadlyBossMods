@@ -27,12 +27,12 @@ L:SetOptionLocalization({
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
-L:SetMiscLocalization{
+L:SetMiscLocalization({
 	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
 	YellEngulfing			= "На МНЕ - Избыточная магия!",
 	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
 	YellTwilightBlast		= "На МНЕ - Сумеречный взрыв!"
-}
+})
 
 --------------------------
 --  Halfus Wyrmbreaker  --
@@ -119,13 +119,13 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash				= "На МНЕ - Оскверняющее сокрушение!",
+	YellCorruptingCrash		= "На МНЕ - Оскверняющее сокрушение!",
 	Bloodlevel				= "Порча"
 })
 
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Показывать предупреждение о переходе на 2-ую фазу",
-	YellOnCorrupting	= "Крикнуть если на вас $spell:93178",
+	YellOnCorrupting		= "Крикнуть если на вас $spell:93178",
 	CorruptingCrashArrow	= "Показать стрелку DBM когда $spell:93178 около вас",
 	InfoFrame				= "Показывать информационное окно для $spell:82235",
 	RangeFrame				= "Показать окно проверки дистанции (6м) для $spell:82235",
