@@ -176,6 +176,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
+		timerFlashFreeze:Cancel()
+		timerScorchingBlast:Cancel()
+		timerAddsCD:Cancel()
+		timerEngulfingDarknessCD:Cancel()
 	elseif args:IsSpellID(92754) then
 		warnEngulfingDarkness:Show()
 		timerEngulfingDarknessCD:Start()
