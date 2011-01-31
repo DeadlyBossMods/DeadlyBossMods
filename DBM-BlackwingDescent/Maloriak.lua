@@ -33,6 +33,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local timerPhase				= mod:NewTimer(48.5, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
 local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
 local timerFlashFreeze			= mod:NewNextTimer(15, 77699)--Seems consisting so using "next" for now.
+local timerAddsCD				= mod:NewCDTimer(16.5, 77569)--Varies on other abilities CDs
 local timerArcaneStorm			= mod:NewBuffActiveTimer(6, 77896)
 local timerArcaneStormCD		= mod:NewCDTimer(15, 77896)--Varies on other abilities CDs
 local timerConsumingFlames		= mod:NewTargetTimer(10, 77786)
@@ -89,7 +90,8 @@ function mod:OnCombatStart(delay)
 	spamSlime = 0
 	spamSludge = 0
 	timerArcaneStormCD:Start(13-delay)
-	timerPhase:Start(16-delay)
+--	timerAddsCD:Start()--This may or may not happen depending on arcane storms duration.
+	timerPhase:Start(16.5-delay)
 	table.wipe(bitingChillTargets)
 end
 
@@ -168,6 +170,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77569) then
 		warnReleaseAdds:Show()
 		specWarnAdds:Show()
+		timerAddsCD:Start()
 		if adds >= 3 then--only schedule it if there actually are adds left.
 			self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interrupt and curse of tongues having been up.
 		end
@@ -200,7 +203,8 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.YellRed or msg:find(L.YellRed) then
 		warnPhase:Show(L.Red)
-		timerArcaneStormCD:Start(20)
+		timerAddsCD:Start()
+		timerArcaneStormCD:Start(20)--It's basically after Adds, slower interupt on first results in this timer being off.
 		timerScorchingBlast:Start(22)--It's basically after arcane storm, slower interupt on first results in this timer being off.
 		timerPhase:Start()
 		timerFlashFreeze:Cancel()
@@ -211,8 +215,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	elseif msg == L.YellBlue or msg:find(L.YellBlue) then
 		warnPhase:Show(L.Blue)
 		timerPhase:Start()
-		timerArcaneStormCD:Start(20)
-		timerFlashFreeze:Start(25)
+		timerAddsCD:Start()
+		timerArcaneStormCD:Start(20)--It's basically after Adds, slower interupt on first results in this timer being off.
+		timerFlashFreeze:Start(22)--It's basically after arcane storm, slower interupt on first results in this timer being off.
 		timerScorchingBlast:Cancel()
 		timerEngulfingDarknessCD:Cancel()
 		if self.Options.RangeFrame then
@@ -221,7 +226,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	elseif msg == L.YellGreen or msg:find(L.YellGreen) then
 		warnPhase:Show(L.Green)
 		timerPhase:Start()
-		timerArcaneStormCD:Start(20)
+		timerAddsCD:Start()
+		timerArcaneStormCD:Start(20)--It's basically after Adds, slower interupt on first results in this timer being off.
 		timerFlashFreeze:Cancel()
 		timerScorchingBlast:Cancel()
 		timerEngulfingDarknessCD:Cancel()
@@ -233,6 +239,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		timerEngulfingDarknessCD:Start(15)
 		timerPhase:Start(100)		-- copied from BigWigs as I didnt have a timer yet for emotes instead of yells.
 		timerArcaneStormCD:Cancel()
+		timerAddsCD:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
