@@ -201,7 +201,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.YellRed or msg:find(L.YellRed) then
 		warnPhase:Show(L.Red)
 		timerArcaneStormCD:Start(20)
-		timerScorchingBlast:Start(25)
+		timerScorchingBlast:Start(22)--It's basically after arcane storm, slower interupt on first results in this timer being off.
 		timerPhase:Start()
 		timerFlashFreeze:Cancel()
 		timerEngulfingDarknessCD:Cancel()
