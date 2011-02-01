@@ -118,7 +118,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCorruptingCrash		= "부패의 충돌!!",
+	YellCrash		= "부패의 충돌!!",
 	Bloodlevel				= "오염: 고통"
 })
 

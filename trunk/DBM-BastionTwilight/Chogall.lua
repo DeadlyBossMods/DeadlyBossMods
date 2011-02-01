@@ -66,7 +66,7 @@ function mod:CorruptingCrashTarget()
 	if targetname == UnitName("player") then
 		specWarnCorruptingCrash:Show()
 		if self.Options.YellOnCorrupting then
-			SendChatMessage(L.YellCorruptingCrash, "SAY")
+			SendChatMessage(L.YellCrash, "SAY")
 		end
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)

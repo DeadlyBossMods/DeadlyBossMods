@@ -119,7 +119,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCorruptingCrash		= "На МНЕ - Оскверняющее сокрушение!",
+	YellCrash		= "На МНЕ - Оскверняющее сокрушение!",
 	Bloodlevel				= "Порча"
 })
 
