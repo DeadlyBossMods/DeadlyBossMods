@@ -27,7 +27,7 @@ local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(46.5, 77840)
 local timerAirphase			= mod:NewTimer(90, "TimerAirphase")
-local timerGroundphase		= mod:NewTimer(35, "TimerGroundphase")
+local timerGroundphase		= mod:NewTimer(31.5, "TimerGroundphase")
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -47,6 +47,7 @@ end
 function mod:OnCombatStart(delay)
 	timerSonicBreath:Start(25-delay)
 	timerSearingFlame:Start(45-delay)
+	timerAirphase:Start()
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end
@@ -103,6 +104,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerSonicBreath:Cancel()
 		timerSearingFlame:Cancel()
 		timerGroundphase:Start()
-		self:Schedule(32.5, groundphase)
+		self:Schedule(31.5, groundphase)
 	end
 end
