@@ -76,15 +76,15 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Quake			= "The ground beneath you rumbles ominously....",--translate
-	Thundershock		= "The surrounding air crackles with energy....",--translate
-	Switch			= "Enough of this foolishness!",--translate
-	Phase3			= "An impressive display...",--translate
+	Quake			= "El suelo bajo tus pies empieza a temblar ominosamente...",
+	Thundershock		= "El aire circundante chisporrotea de energía...",
+	Switch			= "¡Basta de tonterías!",
+	Phase3			= "Una exhibición impresionante...",
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
-	Monstrosity		= "Monstruosidad de Elementium",--translate ?
+	Monstrosity		= "Monstruosidad de Elementium",
 	Kill			= "Imposible...."--translate
 })
 
