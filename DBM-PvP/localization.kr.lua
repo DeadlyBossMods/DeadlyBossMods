@@ -87,8 +87,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization({
-	BgStart60 		= "1분 후 아라시 분지 전투가 시작됩니다.",
-	BgStart30 		= "30초 후 아라시 분지 전투가 시작됩니다.",
+	BgStart60 		= "1분 후 전투가 시작됩니다.",
+	BgStart30 		= "30초 후 전투가 시작됩니다.",
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
