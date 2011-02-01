@@ -22,7 +22,7 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	Slump			= "%s внезапно падает, выставляя клешки!",
 	HeadExposed		= "%s насаживается на пику, обнажая голову!",
-	YellPhase2		= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
+	YellPhase2		= "Непостижимо! Вы, кажется, можете уничтожить моего лавового червяка! Пожалуй, я помогу ему."
 })
 
 L:SetOptionLocalization({
