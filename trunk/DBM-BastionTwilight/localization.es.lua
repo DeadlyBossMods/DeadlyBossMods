@@ -120,7 +120,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash		= "¡Colisión en corrupción en mi!",
+	YellCrash	= "¡Colisión en corrupción en mi!",
 	Bloodlevel		= "Corrupción"
 })
 
