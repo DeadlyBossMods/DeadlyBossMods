@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REFRESH",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
@@ -121,6 +122,13 @@ end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
+function mod:SPELL_AURA_REFRESH(args)
+	if args:IsSpellID(82881) then--Once a tank is at 4 stacks, it just spell aura refreshes instead. Track this so we can keep an accurate CD and debuff timer.
+		timerBreak:Start(args.destName)
+		timerBreakCD:Start()
+	end
+end
+
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(88853) then
 		botOffline = false
@@ -134,6 +142,7 @@ function mod:SPELL_CAST_START(args)
 		timerMassacre:Start()
 		timerMassacreNext:Start()
 		timerCausticSlime:Start()--Always 19 seconds after massacre.
+		timerBreakCD:Start(14)--Massacre resets break timer, although  usualy the CDs line up anyways, they won't for 3rd break.
 	end
 end
 
