@@ -1397,20 +1397,20 @@ end
 --  Load Boss Mods on Demand  --
 --------------------------------
 function DBM:ZONE_CHANGED_NEW_AREA()
-	if IsInInstance() then--Don't change map if not in instance, it makes archaeologists mad.
-		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on disconnect or reloadui
-		local zoneName = GetRealZoneText()
-		local zoneId = GetCurrentMapID()
-		LastZoneText = zoneName--Cache zone name on change.
-		LastZoneMapID = zoneId--Cache map on zone change.
---		DBM:AddMsg(("Zone Change called: current zoneName %s, current mapID %s"):format(tostring(GetRealZoneText()), tostring(GetCurrentMapID()))) -- DEBUG
-		for i, v in ipairs(self.AddOns) do
-			if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or checkEntry(v.zoneId, zoneId)) then
-				-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
-				-- TODO: is this still necessary? this was a WotLK beta bug
-				DBM:Unschedule(DBM.LoadMod, DBM, v)
-				DBM:Schedule(3, DBM.LoadMod, DBM, v)
-			end
+	if IsInInstance() then--Don't change or check maps if not in instance, it makes archaeologists mad.
+		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on login or reloadui and returns maelstrom or throne of four winds, the latter loading throne mod by mistake instead of correct boss mod for zone.
+	end
+	local zoneName = GetRealZoneText()
+	local zoneId = GetCurrentMapID()
+	LastZoneMapID = zoneId--Cache map on zone change.
+	LastZoneText = zoneName--Cache zone name on change.
+--	DBM:AddMsg(("Zone Change called: current zoneName %s, current mapID %s"):format(tostring(GetRealZoneText()), tostring(GetCurrentMapID()))) -- DEBUG
+	for i, v in ipairs(self.AddOns) do
+		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or (checkEntry(v.zoneId, zoneId) and IsInInstance())) then--To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances.
+			-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
+			-- TODO: is this still necessary? this was a WotLK beta bug
+			DBM:Unschedule(DBM.LoadMod, DBM, v)
+			DBM:Schedule(3, DBM.LoadMod, DBM, v)
 		end
 	end
 	if select(2, IsInInstance()) == "pvp" and not DBM:GetModByName("AlteracValley") then
@@ -1495,7 +1495,7 @@ do
 	end
 
 	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
-		if select(2, IsInInstance()) == "pvp" or select(2, IsInInstance()) == "none" then return end
+		if select(2, IsInInstance()) == "pvp" then return end
 		local delay, mod, revision = strsplit("\t", msg)
 		local lag = select(3, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
