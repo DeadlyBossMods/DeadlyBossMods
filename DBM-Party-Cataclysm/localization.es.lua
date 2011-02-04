@@ -398,6 +398,10 @@ L:SetOptionLocalization{
 -------------- 
 L = DBM:GetModLocalization("Corborus")
 
+L:SetGeneralLocalization({
+	name = "Corborus"
+})
+
 L:SetWarningLocalization({
 	WarnEmerge	= "Emerge",
 	WarnSubmerge	= "Se sumerge"
@@ -412,12 +416,13 @@ L:SetOptionLocalization({
 	WarnEmerge	= "Mostrar aviso cuando emerge",
 	WarnSubmerge	= "Mostrar aviso cuando se sumerge",
 	TimerEmerge	= "Mostrar tiempo para que emerja",
-	TimerSubmerge	= "Mostrar tiempo para qu se sumerja"
+	TimerSubmerge	= "Mostrar tiempo para que se sumerja",
+	CrystalArrow	= "Mostrar una flecha cuando $spell:81634 esté cerca de ti",
+	RangeFrame		= "Mostrar distancia (5 yardas)"
+
 })
 
-L:SetGeneralLocalization({
-	name = "Corborus"
-})
+
 
 -----------
 -- Ozruk --
