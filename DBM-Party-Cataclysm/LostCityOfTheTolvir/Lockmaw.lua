@@ -27,7 +27,7 @@ mod:AddBoolOption("RangeFrame")
 
 function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(6)
+		DBM.RangeCheck:Show(5)
 	end
 end
 

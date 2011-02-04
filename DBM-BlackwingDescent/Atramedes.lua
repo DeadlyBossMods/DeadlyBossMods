@@ -26,8 +26,8 @@ local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(46.5, 77840)
-local timerAirphase			= mod:NewTimer(90, "TimerAirphase")
-local timerGroundphase		= mod:NewTimer(31.5, "TimerGroundphase")
+local timerAirphase			= mod:NewTimer(85, "TimerAirphase")--These both need more work
+local timerGroundphase		= mod:NewTimer(31.5, "TimerGroundphase")--I just never remember to log and /yell at right times since they lack most accurate triggers.
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -47,7 +47,7 @@ end
 function mod:OnCombatStart(delay)
 	timerSonicBreath:Start(25-delay)
 	timerSearingFlame:Start(45-delay)
-	timerAirphase:Start()
+	timerAirphase:Start(90)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end

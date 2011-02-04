@@ -120,7 +120,16 @@ do
 			UIDropDownMenu_AddButton(info, 1)
 		elseif level == 2 then
 			if menu == "range" then
-				
+
+				if initRangeCheck() then
+					info = UIDropDownMenu_CreateInfo()
+					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(5)
+					info.func = setRange
+					info.arg1 = 5
+					info.checked = (frame.range == 5)
+					UIDropDownMenu_AddButton(info, 2)
+				end
+
 				if initRangeCheck() then
 					info = UIDropDownMenu_CreateInfo()
 					info.text = DBM_CORE_RANGECHECK_SETRANGE_TO:format(6)
@@ -399,7 +408,7 @@ do
 end
 
 do
-	local bandages = {21991, 34721, 38643, 34722, 34721, 34722}  -- you should have one of these bandages in your cache
+	local bandages = {21991, 34721, 38643, 34722, 34721, 34722, 53049, 53050, 53051}  -- you should have one of these bandages in your cache
 
 	checkFuncs[15] = function(uId)
 		for i, v in ipairs(bandages) do
