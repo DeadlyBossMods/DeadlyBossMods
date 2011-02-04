@@ -36,7 +36,9 @@ local spamFuriousRoar = 0
 function mod:OnCombatStart(delay)
 	spamFuriousRoar = 0
 	berserkTimer:Start(-delay)
-	timerBreathCD:Start(10-delay)
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerBreathCD:Start(10-delay)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
