@@ -30,12 +30,11 @@ local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
 local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 3)--Heroic Ability
 local warnPhase2				= mod:NewPhaseAnnounce(2)
  
-local timerPhase				= mod:NewTimer(48.5, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
+local timerPhase				= mod:NewTimer(49, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
 local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
-local timerFlashFreeze			= mod:NewNextTimer(15, 77699)--Seems consisting so using "next" for now.
-local timerAddsCD				= mod:NewCDTimer(16.5, 77569)--Varies on other abilities CDs
-local timerArcaneStorm			= mod:NewBuffActiveTimer(6, 77896)
-local timerArcaneStormCD		= mod:NewCDTimer(15, 77896)--Varies on other abilities CDs
+local timerFlashFreeze			= mod:NewCDTimer(14, 77699)--Varies on other abilities CDs
+local timerAddsCD				= mod:NewCDTimer(15, 77569)--Varies on other abilities CDs
+local timerArcaneStormCD		= mod:NewCDTimer(14, 77896)--Varies on other abilities CDs
 local timerConsumingFlames		= mod:NewTargetTimer(10, 77786)
 local timerScorchingBlast		= mod:NewCDTimer(10, 77679)--Varies on other abilities CDs
 local timerDebilitatingSlime	= mod:NewBuffActiveTimer(15, 77615)
@@ -46,14 +45,14 @@ local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 local specWarnSludge			= mod:NewSpecialWarningMove(92987)
 local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896)
 local specWarnEngulfingDarkness	= mod:NewSpecialWarningSpell(92754, mod:IsTank())--Heroic Ability
-local specWarnFlashFreeze		= mod:NewSpecialWarningTarget(77699)--On Heroic it has a lot more health.
+local specWarnFlashFreeze		= mod:NewSpecialWarningTarget(77699, mod:IsRanged())--On Heroic it has a lot more health.
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
 local specWarnAdds				= mod:NewSpecialWarningSpell(77569, false)
 
 local berserkTimer				= mod:NewBerserkTimer(420)
 
 mod:AddBoolOption("FlashFreezeIcon")
-mod:AddBoolOption("BitingChillIcon")
+mod:AddBoolOption("BitingChillIcon", false)
 mod:AddBoolOption("ConsumingFlamesIcon")
 mod:AddBoolOption("RangeFrame")
 
@@ -62,13 +61,22 @@ local AddsInterrupted = false
 local spamSlime = 0
 local spamSludge = 0
 local bitingChillTargets = {}
+local flashFreezeTargets = {}
 local bitingChillIcon = 6
+local flashFreezeIcon = 8
 
 local function showBitingChillWarning()
 	warnBitingChill:Show(table.concat(bitingChillTargets, "<, >"))
 	table.wipe(bitingChillTargets)
 	bitingChillIcon = 6
 	timerBitingChill:Start()
+end
+
+local function showFlashFreezeWarning()
+	warnFlashFreeze:Show(table.concat(flashFreezeTargets, "<, >"))
+	table.wipe(flashFreezeTargets)
+	flashFreezeIcon = 8
+	timerFlashFreeze:Start()
 end
 
 local function InterruptCheck()
@@ -89,10 +97,13 @@ function mod:OnCombatStart(delay)
 	AddsInterrupted = false
 	spamSlime = 0
 	spamSludge = 0
-	timerArcaneStormCD:Start(13-delay)
---	timerAddsCD:Start()--This may or may not happen depending on arcane storms duration.
-	timerPhase:Start(16.5-delay)
+	bitingChillIcon = 6
+	flashFreezeIcon = 8
+	timerArcaneStormCD:Start(10-delay)--10-15 seconds from pull
+	timerAddsCD:Start()--This may or may not happen depending on arcane storms duration and when it was cast.
+	timerPhase:Start(18.5-delay)
 	table.wipe(bitingChillTargets)
+	table.wipe(flashFreezeTargets)
 end
 
 function mod:OnCombatEnd()
@@ -103,13 +114,16 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(77699, 92978, 92979, 92980) then
-		warnFlashFreeze:Show(args.destName)
+		flashFreezeTargets[#flashFreezeTargets + 1] = args.destName
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			specWarnFlashFreeze:Show(args.destName)
 		end
 		if self.Options.FlashFreezeIcon then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, flashFreezeIcon)
+			flashFreezeIcon = flashFreezeIcon - 1
 		end
+		self:Unschedule(showFlashFreezeWarning)
+		self:Schedule(0.3, showFlashFreezeWarning)
 	elseif args:IsSpellID(77760, 92975, 92976, 92977) then
 		bitingChillTargets[#bitingChillTargets + 1] = args.destName
 		if self.Options.BitingChillIcon then
@@ -126,7 +140,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnRemedy:Show(args.destName)
 	elseif args:IsSpellID(77896) then
 		warnArcaneStorm:Show()
-		timerArcaneStorm:Start()
 		timerArcaneStormCD:Start()
 		if self:GetUnitCreatureId("target") == 41378 or self:GetUnitCreatureId("focus") == 41378 then
 			specWarnArcaneStorm:Show()
@@ -197,9 +210,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:SPELL_INTERRUPT(args)
-	if type(args.extraSpellId) == "number" and (args.extraSpellId == 77896) then
-		timerArcaneStorm:Cancel()
-	elseif type(args.extraSpellId) == "number" and (args.extraSpellId == 77569) then
+	if type(args.extraSpellId) == "number" and (args.extraSpellId == 77569) then
 		AddsInterrupted = true
 	end
 end
@@ -208,8 +219,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.YellRed or msg:find(L.YellRed) then
 		warnPhase:Show(L.Red)
 		timerAddsCD:Start()
-		timerArcaneStormCD:Start(20)--It's basically after Adds, slower interupt on first results in this timer being off.
-		timerScorchingBlast:Start(22)--It's basically after arcane storm, slower interupt on first results in this timer being off.
+		timerArcaneStormCD:Start(19)
+		timerScorchingBlast:Start(22)
 		timerPhase:Start()
 		timerFlashFreeze:Cancel()
 		timerEngulfingDarknessCD:Cancel()
@@ -220,8 +231,8 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnPhase:Show(L.Blue)
 		timerPhase:Start()
 		timerAddsCD:Start()
-		timerArcaneStormCD:Start(20)--It's basically after Adds, slower interupt on first results in this timer being off.
-		timerFlashFreeze:Start(22)--It's basically after arcane storm, slower interupt on first results in this timer being off.
+		timerArcaneStormCD:Start(19)
+		timerFlashFreeze:Start(22)
 		timerScorchingBlast:Cancel()
 		timerEngulfingDarknessCD:Cancel()
 		if self.Options.RangeFrame then
@@ -231,17 +242,17 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		warnPhase:Show(L.Green)
 		timerPhase:Start()
 		timerAddsCD:Start()
-		timerArcaneStormCD:Start(20)--It's basically after Adds, slower interupt on first results in this timer being off.
+		timerArcaneStormCD:Start(12)--First one is always shorter in green phase then other 2.
 		timerFlashFreeze:Cancel()
 		timerScorchingBlast:Cancel()
 		timerEngulfingDarknessCD:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-	elseif msg == L.YellDark or msg:find(L.YellDark) then--Need dark value for raidboss emote
+	elseif msg == L.YellDark or msg:find(L.YellDark) then
 		warnPhase:Show(L.Dark)
-		timerEngulfingDarknessCD:Start(15)
-		timerPhase:Start(100)		-- copied from BigWigs as I didnt have a timer yet for emotes instead of yells.
+		timerEngulfingDarknessCD:Start(16.5)
+		timerPhase:Start(100)
 		timerArcaneStormCD:Cancel()
 		timerAddsCD:Cancel()
 		if self.Options.RangeFrame then
