@@ -408,7 +408,7 @@ do
 end
 
 do
-	local bandages = {21991, 34721, 38643, 34722, 34721, 34722, 53049, 53050, 53051}  -- you should have one of these bandages in your cache
+	local bandages = {21991, 34721, 34722, 53049, 53050, 53051}  -- you should have one of these bandages in your cache
 
 	checkFuncs[15] = function(uId)
 		for i, v in ipairs(bandages) do
