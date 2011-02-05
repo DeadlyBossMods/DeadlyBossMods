@@ -14,27 +14,26 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnShatter			= mod:NewSpellAnnounce(78807, 3)
-local warnBulwark			= mod:NewSpellAnnounce(78939, 3)
-local warnGroundSlam		= mod:NewCastAnnounce(78903, 4)
+local warnShatterSoon		= mod:NewSoonAnnounce(92662, 3)
+local warnShatter			= mod:NewSpellAnnounce(92662, 4)
+local warnBulwark			= mod:NewSpellAnnounce(92659, 3)
+local warnGroundSlam		= mod:NewCastAnnounce(92410, 4)
 local warnEnrage			= mod:NewSpellAnnounce(80467, 3)
 local warnEnrageSoon		= mod:NewSoonAnnounce(80467, 2)
+local warnGroundSlam		= mod:NewCastAnnounce(92410, 4)
 
-local warnGroundSlam		= mod:NewCastAnnounce(78903, 4)
-local specWarnGroundSlam	= mod:NewSpecialWarningMove(78903, mod:IsTank())
+local specWarnGroundSlam	= mod:NewSpecialWarningMove(92410, mod:IsTank())
 local specWarnShatter		= mod:NewSpecialWarningRun(92662, mod:IsMelee())
 
---local timerShatter			= mod:NewCDTimer(19, 78807)
-local timerBulwark			= mod:NewBuffActiveTimer(10, 78939)
-local timerBulwarkCD		= mod:NewCDTimer(22, 78939)
-local timerGroundSlam		= mod:NewCastTimer(3, 78903)
---local timerGroundSlamCD		= mod:NewCDTimer(12, 78903)
+--local timerShatterCD			= mod:NewCDTimer(19, 92662)
+local timerBulwark			= mod:NewBuffActiveTimer(10, 92659)
+local timerBulwarkCD		= mod:NewCDTimer(22, 92659)
+local timerGroundSlam		= mod:NewCastTimer(3, 92410)
+--local timerShatter			= mod:NewCastTimer(3, 92662)--uncomment in 4.0.6 when it's changed to 3 seconds
 
 local soundShatter			= mod:NewSound(92662, nil, mod:IsMelee())
 
 local prewarnEnrage = false
-
--- Spike Barrage CD shortened when enraged ??
 
 function mod:OnCombatStart(delay)
 	prewarnEnrage = false
@@ -60,13 +59,15 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(78807, 92662) then
 		warnShatter:Show()
 --		timerShatter:Start()
+--		timerShatterCD:Start()
 		specWarnShatter:Show()
 		soundShatter:Play()
+	elseif args:IsSpellID(92426) then
+		warnShatterSoon:Show()
 	elseif args:IsSpellID(78903, 92410) then
 		warnGroundSlam:Show()
 		specWarnGroundSlam:Show()
 		timerGroundSlam:Start()
---		timerGroundSlamCD:Start()
 	end
 end
 
