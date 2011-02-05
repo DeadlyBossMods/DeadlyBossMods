@@ -2,10 +2,10 @@ local mod	= DBM:NewMod("Augh", "DBM-Party-Cataclysm", 5)
 local L		= mod:GetLocalizedStrings()
 
 mod:SetRevision(("$Revision$"):sub(12, -3))
-mod:SetCreatureID(44895)
+mod:SetCreatureID(49045)
 mod:SetZone()
 
-mod:RegisterCombat("combat")
+mod:RegisterCombat("engage")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
