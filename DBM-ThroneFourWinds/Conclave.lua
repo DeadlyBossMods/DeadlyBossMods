@@ -100,6 +100,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnSpecial:Show()
 		specWarnSpecial:Show()
 		timerSpecial:Start()
+		timerSpecialActive:Start()
 		specialSpam = GetTime()--Trigger it off any of 3 spells, but only once.
 		poisonCounter = 0
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
