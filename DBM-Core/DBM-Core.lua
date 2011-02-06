@@ -81,6 +81,7 @@ DBM.DefaultOptions = {
 	ShowSpecialWarnings = true,
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
+	HideTrivializedWarnings = false,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,
@@ -2614,6 +2615,12 @@ end
 function bossModPrototype:LatencyCheck()
 	return select(3, GetNetStats()) < DBM.Options.LatencyThreshold
 end
+
+--[[W.I.P. Will be a function that compares level to players level, which can be used in boss mods specificly via TrivialCheck(85)
+function bossModPrototype:TrivialCheck(lvl)
+	if not DBM.Options.HideTrivializedWarnings return end
+	return UnitLevel("player") >= lvl
+end--]]
 
 local function getTalentpointsSpent(spellID)
 	local spellName = GetSpellInfo(spellID)
