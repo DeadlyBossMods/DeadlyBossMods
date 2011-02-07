@@ -417,7 +417,9 @@ L:SetOptionLocalization({
 	WarnEmerge		= "등장 경고 보기",
 	WarnSubmerge	= "잠수 경고 보기",
 	TimerEmerge		= "등장 타이머 보기",
-	TimerSubmerge	= "잠수 타이머 보기"
+	TimerSubmerge	= "잠수 타이머 보기",
+	CrystalArrow	= "당신의 주변에 $spell:81634이 생성될 경우 DBM 화살표 보기",
+	RangeFrame		= "거리 프레임 보기 (5m)"	
 })
 
 
