@@ -96,6 +96,10 @@ L:SetGeneralLocalization({
 	name = "Foe Reaper 5000"
 })
 
+L:SetOptionLocalization{
+	HarvestIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88495)
+}
+
 ----------------------
 -- Admiral Ripsnarl --
 ----------------------
