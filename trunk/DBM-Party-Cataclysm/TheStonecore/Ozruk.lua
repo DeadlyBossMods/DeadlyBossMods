@@ -29,7 +29,7 @@ local specWarnShatter		= mod:NewSpecialWarningRun(92662, mod:IsMelee())
 local timerBulwark			= mod:NewBuffActiveTimer(10, 92659)
 local timerBulwarkCD		= mod:NewCDTimer(22, 92659)
 local timerGroundSlam		= mod:NewCastTimer(3, 92410)
---local timerShatter			= mod:NewCastTimer(3, 92662)--uncomment in 4.0.6 when it's changed to 3 seconds
+local timerShatter			= mod:NewCastTimer(3, 92662)
 
 local soundShatter			= mod:NewSound(92662, nil, mod:IsMelee())
 
@@ -58,7 +58,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(78807, 92662) then
 		warnShatter:Show()
---		timerShatter:Start()
+		timerShatter:Start()
 --		timerShatterCD:Start()
 		specWarnShatter:Show()
 		soundShatter:Play()

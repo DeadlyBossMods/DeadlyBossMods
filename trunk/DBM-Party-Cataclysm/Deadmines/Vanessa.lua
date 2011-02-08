@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 local warnDeflection	= mod:NewSpellAnnounce(92614, 3)
 local warnDeadlyBlades	= mod:NewSpellAnnounce(92622, 3)
-local warnVengeance	= mod:NewSpellAnnounce(95542, 4)
+--local warnVengeance	= mod:NewSpellAnnounce(95542, 4)--mechanic reworked in 4.0.6, commenting out til warning can be redesigned as well, right now good chance it'll spam A LOT
 
 local timerDeflection	= mod:NewBuffActiveTimer(10, 92614)
 local timerDeadlyBlades	= mod:NewBuffActiveTimer(5, 92622)
@@ -32,17 +32,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92622) then
 		warnDeadlyBlades:Show()
 		timerDeadlyBlades:Start()
-	elseif args:IsSpellID(95542) then
-		warnVengeance:Show()
+--[[	elseif args:IsSpellID(95542) then
+		warnVengeance:Show()--]]
 	end
 end
 
---"<34.1> [MONSTER_SAY] CHAT_MSG_MONSTER_SAY:I was never very good at hand-to-hand combat, you know.  Not like my father.:Vanessa VanCleef:::Blacklist::0:0::0:491::0:false:false:", -- [12]
---"<37.7> [MONSTER_SAY] CHAT_MSG_MONSTER_SAY:But I always excelled at poisons.:Vanessa VanCleef:::Blacklist::0:0::0:492::0:false:false:", -- [13]
---"<40.3> [CLEU] SPELL_CAST_SUCCESS:0xF130C1150003F0F9:Vanessa VanCleef:2632:0x0000000000000000:nil:-2147483648:92100:Noxious Concoction:8:", -- [14]
---"<42.6> [MONSTER_SAY] CHAT_MSG_MONSTER_SAY:Especially venoms that affect the mind.:Vanessa VanCleef:::Blacklist::0:0::0:494::0:false:false:", -- [20]
---"<47.4> [RAID_BOSS_EMOTE] CHAT_MSG_RAID_BOSS_EMOTE:Vanessa injects you with the Nightmare Elixir!:Vanessa VanCleef:::Blacklist::0:0::0:495::0:false:false:", -- [25]
---"<50.3> [CLEU] SPELL_AURA_REMOVED:0xF130C1150003F0F9:Vanessa VanCleef:2632:0x04000000035FAB24:Omegal:1297:92100:Noxious Concoction:8:DEBUFF:", -- [27]
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(92100) then
 		timerGauntlet:Start()
