@@ -81,9 +81,7 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(6)
 	end
-	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-		berserkTimer:Start(-delay)
-	end
+	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.HealthInfo)
 		DBM.InfoFrame:Show(5, "health", 10000)
