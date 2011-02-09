@@ -2613,7 +2613,7 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:LatencyCheck()
-	return select(3, GetNetStats()) < DBM.Options.LatencyThreshold
+	return select(3, GetNetStats()) < DBM.Options.LatencyThreshold--Home Ping. Might want to revise this to do arg 3 + new arg 4 / 2 to get average of two pings for increased accuracy.
 end
 
 --[[W.I.P. Will be a function that compares level to players level, which can be used in boss mods specificly via TrivialCheck(85)

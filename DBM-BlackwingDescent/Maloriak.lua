@@ -17,17 +17,18 @@ mod:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
-local warnPhase					= mod:NewAnnounce("WarnPhase", 4)
+local warnPhase					= mod:NewAnnounce("WarnPhase", 2)
 local warnReleaseAdds			= mod:NewSpellAnnounce(77569, 3)
 local warnRemainingAdds			= mod:NewAnnounce("WarnRemainingAdds", 2, 77569)
-local warnFlashFreeze			= mod:NewTargetAnnounce(77699, 3)
+local warnFlashFreeze			= mod:NewTargetAnnounce(77699, 4)
 local warnBitingChill			= mod:NewTargetAnnounce(77760, 3)
-local warnRemedy				= mod:NewSpellAnnounce(77912, 4)
-local warnArcaneStorm			= mod:NewSpellAnnounce(77896, 3)
+local warnRemedy				= mod:NewSpellAnnounce(77912, 3)
+local warnArcaneStorm			= mod:NewSpellAnnounce(77896, 4)
 local warnConsumingFlames		= mod:NewTargetAnnounce(77786, 3)
-local warnScorchingBlast		= mod:NewSpellAnnounce(77679, 3)
+local warnScorchingBlast		= mod:NewSpellAnnounce(77679, 4)
 local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
-local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 3)--Heroic Ability
+local warnMagmaJets				= mod:NewCastAnnounce(78194, 4, nil, mod:IsTank())--4.0.6+ now supporting this warning.
+local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 4, nil, mod:IsTank() or mod:IsHealer())--Heroic Ability
 local warnPhase2				= mod:NewPhaseAnnounce(2)
  
 local timerPhase				= mod:NewTimer(49, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
@@ -38,12 +39,15 @@ local timerArcaneStormCD		= mod:NewCDTimer(14, 77896)--Varies on other abilities
 local timerConsumingFlames		= mod:NewTargetTimer(10, 77786)
 local timerScorchingBlast		= mod:NewCDTimer(10, 77679)--Varies on other abilities CDs
 local timerDebilitatingSlime	= mod:NewBuffActiveTimer(15, 77615)
+local timerMagmaJets			= mod:NewCastTimer(2, 78194)
+local timerMagmaJetsCD			= mod:NewNextTimer(10, 78194)
 local timerEngulfingDarknessCD	= mod:NewNextTimer(12, 92754)--Heroic Ability
 
 local specWarnBitingChill		= mod:NewSpecialWarningYou(77760)
 local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)
 local specWarnSludge			= mod:NewSpecialWarningMove(92987)
 local specWarnArcaneStorm		= mod:NewSpecialWarningInterrupt(77896)
+local specWarnMagmaJets			= mod:NewSpecialWarningMove(78194, mod:IsTank())
 local specWarnEngulfingDarkness	= mod:NewSpecialWarningSpell(92754, mod:IsTank())--Heroic Ability
 local specWarnFlashFreeze		= mod:NewSpecialWarningTarget(77699, mod:IsRanged())--On Heroic it has a lot more health.
 local specWarnRemedy			= mod:NewSpecialWarningDispel(77912, false)
@@ -189,6 +193,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
+		timerMagmaJetsCD:Start()
 		timerFlashFreeze:Cancel()
 		timerScorchingBlast:Cancel()
 		timerAddsCD:Cancel()
@@ -198,6 +203,13 @@ function mod:SPELL_CAST_START(args)
 		timerEngulfingDarknessCD:Start()
 		if self:GetUnitCreatureId("target") == 41378 then--Add tank doesn't need this spam, just tank on mal.
 			specWarnEngulfingDarkness:Show()
+		end
+	elseif args:IsSpellID(78194) then
+		warnMagmaJets:Show()
+		timerMagmaJets:Start()
+		timerMagmaJetsCD:Start()
+		if self:GetUnitCreatureId("target") == 41378 then--Add tank doesn't need this spam, just tank on mal.
+			specWarnMagmaJets:Show()
 		end
 	end
 end
