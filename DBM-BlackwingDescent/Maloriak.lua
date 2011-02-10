@@ -189,7 +189,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnAdds:Show()
 		timerAddsCD:Start()
 		if adds >= 3 then--only schedule it if there actually are adds left.
-			self:Schedule(1.95, InterruptCheck)--Schedule after 1.95 just to consider all posibilities such as a slow interrupt and curse of tongues having been up.
+			self:Schedule(2.6, InterruptCheck)--Schedule after 2.6 just to consider all posibilities such as a slow interrupt and curse of tongues having been up.
 		end
 	elseif args:IsSpellID(77991) then
 		warnPhase2:Show()
