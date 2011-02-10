@@ -165,7 +165,7 @@ L:SetOptionLocalization({
 	WarnShieldsLeft		= "Zeige Warnung, wenn ein Uralter Zwergenschild benutzt wird",
 	TimerAirphase		= "Zeige Timer für die nächste Luftphase",
 	TimerGroundphase	= "Zeige Timer für die nächste Bodenphase",
-	InfoFrame			= "Zeige Infofebster für Soundlevel",
+	InfoFrame			= "Zeige Infofenster für Soundlevel",
 	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
@@ -179,36 +179,36 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	OnyTailSwipe		= "Tail Lash (Onyxia)",
-	NefTailSwipe		= "Tail Lash (Nefarian)",
-	OnyBreath			= "Breath (Onyxia)",
-	NefBreath			= "Breath (Nefarian)"
+	OnyTailSwipe		= "Schwanzpeitscher (Onyxia)",
+	NefTailSwipe		= "Schwanzpeitscher (Nefarian)",
+	OnyBreath			= "Atem (Onyxia)",
+	NefBreath			= "Atem (Nefarian)"
 })
 
 L:SetTimerLocalization({
-	OnySwipeTimer		= "Tail Lash CD (Ony)",
-	NefSwipeTimer		= "Tail Lash CD (Nef)",
-	OnyBreathTimer		= "Breath CD (Ony)",
-	NefBreathTimer		= "Breath CD (Nef)"
+	OnySwipeTimer		= "Schwanzpeitscher CD (Ony)",
+	NefSwipeTimer		= "Schwanzpeitscher CD (Nef)",
+	OnyBreathTimer		= "Atem CD (Ony)",
+	NefBreathTimer		= "Atem CD (Nef)"
 })
 
 L:SetOptionLocalization({
-	OnyTailSwipe		= "Show warning for Onyxia's $spell:77827",
-	NefTailSwipe		= "Show warning for Nefarian's $spell:77827",
-	OnyBreath			= "Show warning for Onyxia's $spell:94124",
-	NefBreath			= "Show warning for Nefarian's $spell:94124",
-	OnySwipeTimer		= "Show timer for Onyxia's $spell:77827 cooldown",
-	NefSwipeTimer		= "Show timer for Nefarian's $spell:77827 cooldown",
-	OnyBreathTimer		= "Show timer for Onyxia's $spell:94124 cooldown",
-	NefBreathTimer		= "Show timer for Nefarian's $spell:94124 cooldown",
-	YellOnCinder		= "Yell on $spell:79339",
-	RangeFrame			= "Show range frame (10) when you have $spell:79339",
+	OnyTailSwipe		= "Zeige Warnung für Onyxia's $spell:77827",
+	NefTailSwipe		= "Zeige Warnung für Nefarian's $spell:77827",
+	OnyBreath			= "Zeige Warnung für Onyxia's $spell:94124",
+	NefBreath			= "Zeige Warnung für Nefarian's $spell:94124",
+	OnySwipeTimer		= "Zeige Abklingzeit für Onyxia's $spell:77827",
+	NefSwipeTimer		= "Zeige Abklingzeit für Nefarian's $spell:77827",
+	OnyBreathTimer		= "Zeige Abklingzeit für Onyxia's $spell:94124",
+	NefBreathTimer		= "Zeige Abklingzeit für Nefarian's $spell:94124",
+	YellOnCinder		= "Schreie bei $spell:79339",
+	RangeFrame			= "Zeige Abstandswarnung (10), wenn du von $spell:79339 betroffen bist",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
-	NefAoe				= "The air crackles with electricity!",--translate
-	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",--translate
-	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--translate
-	YellCinder			= "Explosive Cinders on me!"--translate
+	NefAoe				= "Elektrizität lässt die Luft knistern!",
+	YellPhase2			= "Verfluchte Sterbliche! Ein solcher Umgang mit dem Eigentum anderer verlangt nach Gewalt!",
+	YellPhase3			= "Ich habe versucht, ein guter Gastgeber zu sein, aber ihr wollt einfach nicht sterben! Genug der Spielchen! Ich werde euch einfach... ALLE TÖTEN!",
+	YellCinder			= "Explodierende Asche auf mir!"
 })
