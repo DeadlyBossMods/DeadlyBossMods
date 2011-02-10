@@ -384,6 +384,11 @@ L:SetGeneralLocalization({
 ---------------------
 -- Corborus --
 -------------- 
+
+L:SetGeneralLocalization({
+	name = "寇伯拉斯"
+})
+
 L = DBM:GetModLocalization("Corborus")
 
 L:SetWarningLocalization({
@@ -400,11 +405,9 @@ L:SetOptionLocalization({
 	WarnEmerge	= "為鑽出地面顯示警告",
 	WarnSubmerge	= "為鑽進地裡顯示警告",
 	TimerEmerge	= "為鑽出地面顯示計時器",
-	TimerSubmerge	= "為鑽進地裡顯示計時器"
-})
-
-L:SetGeneralLocalization({
-	name = "寇伯拉斯"
+	TimerSubmerge	= "為鑽進地裡顯示計時器",
+	CrystalArrow	= "當你附近的人中了$spell:81634時顯示DBM箭頭",
+	RangeFrame	= "顯示距離框 (5碼)"
 })
 
 -----------
