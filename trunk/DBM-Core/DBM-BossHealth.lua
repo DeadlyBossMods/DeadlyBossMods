@@ -245,7 +245,7 @@ do
 				elseif type(v.id) == "table" then
 					-- TODO: it would be more efficient to scan all party/raid members for all IDs instead of going over all raid members n times
 					-- this is especially important for the cache
-					for id in ipairs(v.id) do
+					for j, id in ipairs(v.id) do
 						local health = getHealth(id)
 						if health then
 							updateBar(v, health)
