@@ -27,7 +27,8 @@ L:SetOptionLocalization({
 	warnSpecial			= "Show warning when Hurricane/Zephyr/Sleet Storm are cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial		= "Show special warning when special abilities are cast",
 	timerSpecial		= "Show timer for special abilities cooldown",
-	timerSpecialActive	= "Show timer for special abilities duration"
+	timerSpecialActive	= "Show timer for special abilities duration",
+	OnlyWarnforMyTarget	= "Only show warnings/timers for current & focus targets\n(Hides the rest. THIS INCLUDES PULL)"
 })
 
 ---------------
