@@ -27,8 +27,8 @@ local warnArcaneStorm			= mod:NewSpellAnnounce(77896, 4)
 local warnConsumingFlames		= mod:NewTargetAnnounce(77786, 3)
 local warnScorchingBlast		= mod:NewSpellAnnounce(77679, 4)
 local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
-local warnMagmaJets				= mod:NewCastAnnounce(78194, 4, nil, nil, mod:IsTank())--4.0.6+ now supporting this warning.
-local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 4, nil, nil, mod:IsHealer() or mod:IsTank())--Heroic Ability
+local warnMagmaJets				= mod:NewSpellAnnounce(78194, 4, nil, nil, mod:IsTank())--4.0.6+ now supporting this warning.
+local warnEngulfingDarkness		= mod:NewSpellAnnounce(92754, 4, nil, nil, mod:IsHealer() or mod:IsTank())--Heroic Ability
 local warnPhase2				= mod:NewPhaseAnnounce(2)
  
 local timerPhase				= mod:NewTimer(49, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
@@ -39,7 +39,6 @@ local timerArcaneStormCD		= mod:NewCDTimer(14, 77896)--Varies on other abilities
 local timerConsumingFlames		= mod:NewTargetTimer(10, 77786)
 local timerScorchingBlast		= mod:NewCDTimer(10, 77679)--Varies on other abilities CDs
 local timerDebilitatingSlime	= mod:NewBuffActiveTimer(15, 77615)
-local timerMagmaJets			= mod:NewCastTimer(2, 78194)
 local timerMagmaJetsCD			= mod:NewNextTimer(10, 78194)
 local timerEngulfingDarknessCD	= mod:NewNextTimer(12, 92754)--Heroic Ability
 
@@ -206,8 +205,11 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(78194) then
 		warnMagmaJets:Show()
-		timerMagmaJets:Start()
-		timerMagmaJetsCD:Start()
+		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
+			timerMagmaJetsCD:Start()--10 second on normal.
+		else
+			timerMagmaJetsCD:Start(5)--5 second cd on heroic
+		end
 		if self:GetUnitCreatureId("target") == 41378 then--Add tank doesn't need this spam, just tank on mal.
 			specWarnMagmaJets:Show()
 		end
