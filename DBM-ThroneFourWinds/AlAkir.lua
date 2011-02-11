@@ -30,6 +30,7 @@ local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
 local timerSquallLineCD		= mod:NewTimer(20, "TimerAddCD", 87856)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
+local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, false)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 
@@ -49,10 +50,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFeedback:Show(args.spellName, args.destName, args.amount or 1)
 		timerFeedback:Cancel()--prevent multiple timers spawning with diff args.
 		timerFeedback:Start(20, args.amount or 1)
-	elseif args:IsSpellID(88301, 93279, 93280, 93281) and not phase2Started then--Acid Rain (phase 2 debuff)
-		phase2Started = true
-		warnPhase2:Show()
-		timerWindBurstCD:Cancel()
+	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
+		timerAcidRainStack:Start()
+		if not phase2Started then
+			phase2Started = true
+			warnPhase2:Show()
+			timerWindBurstCD:Cancel()
+		end
 	elseif args:IsSpellID(89668) then
 		warnLightingRod:Show(args.destName)
 		timerLightningRod:Show(args.destName)
@@ -106,5 +110,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerWindBurstCD:Start(25)
 		timerLightningRodCD:Start(20)
 		timerSquallLineCD:Cancel()
+		timerAcidRainStack:Cancel()
 	end
 end
