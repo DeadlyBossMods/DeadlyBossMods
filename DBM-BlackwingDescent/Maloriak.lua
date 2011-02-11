@@ -27,8 +27,8 @@ local warnArcaneStorm			= mod:NewSpellAnnounce(77896, 4)
 local warnConsumingFlames		= mod:NewTargetAnnounce(77786, 3)
 local warnScorchingBlast		= mod:NewSpellAnnounce(77679, 4)
 local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
-local warnMagmaJets				= mod:NewCastAnnounce(78194, 4, nil, mod:IsTank())--4.0.6+ now supporting this warning.
-local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 4, nil, mod:IsTank() or mod:IsHealer())--Heroic Ability
+local warnMagmaJets				= mod:NewCastAnnounce(78194, 4, nil, nil, mod:IsTank())--4.0.6+ now supporting this warning.
+local warnEngulfingDarkness		= mod:NewCastAnnounce(92754, 4, nil, nil, mod:IsHealer() or mod:IsTank())--Heroic Ability
 local warnPhase2				= mod:NewPhaseAnnounce(2)
  
 local timerPhase				= mod:NewTimer(49, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
