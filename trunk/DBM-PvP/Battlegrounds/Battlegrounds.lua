@@ -10,7 +10,7 @@ mod:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 mod:AddBoolOption("ColorByClass", true)
 mod:AddBoolOption("ShowInviteTimer", true)
-mod:AddBoolOption("HideBossEmoteFrame", true)
+mod:AddBoolOption("HideBossEmoteFrame", false)
 mod:AddBoolOption("AutoSpirit", false)
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
