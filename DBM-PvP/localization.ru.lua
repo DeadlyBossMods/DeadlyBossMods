@@ -18,7 +18,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ColorByClass	= "Показывать имена цветом класса в таблице очков",
 	ShowInviteTimer	= "Отсчет времени до входа на ПБ",
-	AutoSpirit		= "Автоматически покидать тело"
+	AutoSpirit		= "Автоматически покидать тело",
+	HideBossEmoteFrame	= "Скрыть фрейм эмоций рейдового босса"
 })
 
 L:SetMiscLocalization({
@@ -260,6 +261,7 @@ L:SetOptionLocalization({
 	ShowFlagCarrier				= "Показать флагоносца",
 	ShowFlagCarrierErrorNote	= "Сообщения об ошибках в режиме боя"
 })
+
 
 --------------------------
 --  Battle for Gilneas  --
