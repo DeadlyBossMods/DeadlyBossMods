@@ -10,23 +10,29 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnDazzlingDestruction	= "%s (%d)",
+	WarnDeepBreath			= "%s (%d)",
+	WarnTwilightShift		= "%s : >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing				= "Yell on $spell:86622",
-	YellOnMeteor				= "Yell on $spell:88518",
-	YellOnTwilightBlast			= "Yell on $spell:92898",
-	TwilightBlastArrow			= "Show DBM arrow when $spell:92898 is near you",
-	RangeFrame					= "Show range frame (10)",
+	WarnDazzlingDestruction	= "Show warning for $spell:86408",
+	WarnDeepBreath			= "Show warning for $spell:86059",
+	WarnTwilightShift		= "Show warning for $spell:93051",
+	YellOnEngulfing			= "Yell on $spell:86622",
+	YellOnMeteor			= "Yell on $spell:88518",
+	YellOnTwilightBlast		= "Yell on $spell:92898",
+	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
+	RangeFrame				= "Show range frame (10)",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Theralion, I will engulf the hallway. Cover their escape!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	Trigger1				= "Deep Breath",
 	YellEngulfing			= "Engulfing Magic on me!",
 	YellMeteor				= "Twilight Meteorite on me!",
 	YellTwilightBlast		= "Twilight Blast on me!"
