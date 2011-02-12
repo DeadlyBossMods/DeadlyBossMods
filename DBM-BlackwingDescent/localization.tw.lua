@@ -28,7 +28,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	SpecWarnInferno			= "為$spell:92190顯示預先特別警告 (~4秒)",
 	WarnPhase2Soon			= "為第2階段顯示預先警告",
-	RangeFrame			= "第2階段時顯示距離框 (8碼)"
+	RangeFrame			= "第2階段時顯示距離框 (5碼)"
 })
 
 -------------------------------
