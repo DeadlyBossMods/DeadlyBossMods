@@ -16,7 +16,6 @@ mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
 mod:RegisterEvents(
-	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"ZONE_CHANGED_NEW_AREA",
 	"PLAYER_ENTERING_WORLD",
 	"PLAYER_DEAD"
@@ -26,6 +25,9 @@ local inviteTimer = mod:NewTimer(60, "TimerInvite", nil, nil, false)
 local frameShow = RaidBossEmoteFrame.Show
 
 function mod:ZONE_CHANGED_NEW_AREA()
+	if self.Options.HideBossEmoteFrame then
+		RaidBossEmoteFrame.Show = frameShow
+	end
 	if select(2, IsInInstance()) == "pvp" then
 		SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
 		self:Schedule(3, DBM.RequestTimers, DBM)
@@ -35,9 +37,6 @@ function mod:ZONE_CHANGED_NEW_AREA()
 			RaidBossEmoteFrame:Hide()
 			RaidBossEmoteFrame.Show = RaidBossEmoteFrame.Hide
 		end
-	end
-	if self.Options.HideBossEmoteFrame then
-		RaidBossEmoteFrame.Show = frameShow
 	end
 	for i, v in ipairs(DBM:GetModByName("AlteracValley").timers) do v:Stop() end
 	for i, v in ipairs(DBM:GetModByName("EyeoftheStorm").timers) do v:Stop() end
@@ -56,12 +55,6 @@ mod.OnInitialize = mod.ZONE_CHANGED_NEW_AREA
 function mod:PLAYER_DEAD()
 	if select(2, IsInInstance()) == "pvp" and not HasSoulstone() and self.Options.AutoSpirit then
 		RepopMe()
-	end
-end
-
-function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
-	if self.Options.HideBossEmoteFrame then
-		DEFAULT_CHAT_FRAME:AddMessage(msg)
 	end
 end
 
