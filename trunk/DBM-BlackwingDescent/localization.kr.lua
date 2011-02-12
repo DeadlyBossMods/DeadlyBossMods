@@ -28,7 +28,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초)",
 	WarnPhase2Soon	= "2 단계 사전 경고 보기",
-	RangeFrame		= "2 단계 거리 프레임 보기 (8m)"
+	RangeFrame		= "2 단계 거리 프레임 보기 (5m)"
 })
 
 -------------------------------

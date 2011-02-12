@@ -26,7 +26,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	SpecWarnInferno	= "Show pre-special warning for $spell:92190 (~4s)",
 	WarnPhase2Soon	= "Show a prewarning for Phase 2",
-	RangeFrame		= "Show range frame in Phase 2 (8)"
+	RangeFrame		= "Show range frame in Phase 2 (5)"
 })
 
 -------------------------------
