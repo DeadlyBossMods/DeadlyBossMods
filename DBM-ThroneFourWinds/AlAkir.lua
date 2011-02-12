@@ -17,6 +17,8 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
+local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
+
 local warnWindBurst		= mod:NewSpellAnnounce(87770, 3)
 local warnSquallLine	= mod:NewAnnounce("WarnAdd", 2, 87856)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
@@ -30,7 +32,7 @@ local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
 local timerSquallLineCD		= mod:NewTimer(20, "TimerAddCD", 87856)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
-local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, false)
+local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDeathKnight)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 
