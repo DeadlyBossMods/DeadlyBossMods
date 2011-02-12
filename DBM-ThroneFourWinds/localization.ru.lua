@@ -29,7 +29,8 @@ L:SetOptionLocalization({
 	warnSpecial			= "Сообщить о применении Урагана/Зефира/Вихря стали",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial		= "Спец-предупреждение о применении особых способностя",
 	timerSpecial		= "Отсчет времени до восстановления особых способностей",
-	timerSpecialActive	= "Отсчет времени действия особых способностей"
+	timerSpecialActive	= "Отсчет времени действия особых способностей",
+	OnlyWarnforMyTarget	= "Показывать только таймеры/предупреждения для текуйщей цели и фокуса\n(Скрывает все остальное. ВКЛЮЧАЯ ПУЛЛ)"
 })
 
 ---------------
