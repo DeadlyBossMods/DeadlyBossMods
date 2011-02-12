@@ -11,6 +11,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnDazzlingDestruction	= "%s (%d)",
+	WarnDeepBreath			= "%s (%d)",
+	WarnTwilightShift		= "%s : >%s< (%d)"
 })
 
 L:SetTimerLocalization({
