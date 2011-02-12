@@ -47,7 +47,7 @@ local timerSpecialActive	= mod:NewTimer(16, "timerSpecialActive", "Interface\\Ic
 
 local enrageTimer			= mod:NewBerserkTimer(480) -- Both normal and heroic mode
 
-mod:AddBoolOption("OnlyWarnforMyTarget", false)--Default off do to targeting dependance (not great for healers who don't set focus). Has ability to filter all timers/warnings for bosses you are not targeting or focusing.
+mod:AddBoolOption("OnlyWarnforMyTarget", false, "announce")--Default off do to targeting dependance (not great for healers who don't set focus). Has ability to filter all timers/warnings for bosses you are not targeting or focusing.
 
 local windBlastCounter = 0
 local specialSpam = 0
