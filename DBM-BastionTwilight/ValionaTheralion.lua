@@ -15,14 +15,16 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
-	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_AURA"
 )
 
-local warnTwilightMeteorite			= mod:NewCastAnnounce(86013, 2, nil, false)--Just a basic cast warning, not entirely helpful.
 local warnBlackout					= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
+local warnDazzlingDestruction		= mod:NewAnnounce("WarnDazzlingDestruction", 4, 86408)
+local warnDeepBreath				= mod:NewAnnounce("WarnDeepBreath", 4, 86059)
+local warnTwilightShift				= mod:NewAnnounce("WarnTwilightShift", 2, 93051)
 
 local timerBlackout					= mod:NewTargetTimer(15, 86788)
 local timerBlackoutCD				= mod:NewCDTimer(45, 86788)
@@ -30,17 +32,21 @@ local timerDevouringFlamesCD		= mod:NewCDTimer(40, 86840)
 local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
 local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
 local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
-local timerNextDeepBreath			= mod:NewNextTimer(105, 86059)
+local timerNextDeepBreath			= mod:NewNextTimer(103, 86059)
 local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
+local timerTwilightShift			= mod:NewTargetTimer(100, 93051)
+local timerTwilightShiftCD			= mod:NewCDTimer(20, 93051)
 
 local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
 local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
 local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
+local specWarnDevouringFlames		= mod:NewSpecialWarningSpell(86840)
 local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
 local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408)
 local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)--Unfortunately even though 
 local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898)
 local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
+local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 10)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -55,10 +61,13 @@ mod:AddBoolOption("RangeFrame")
 local engulfingMagicTargets = {}
 local engulfingMagicIcon = 7
 local dazzlingCast = 0
+local breathCast = 0
 local lastflame = 0
+local spamZone = 0
 local markWarned = false
 local blackoutActive = false
 local meteorTarget = GetSpellInfo(88518)
+local deepName = GetSpellInfo(86059)
 
 local function showEngulfingMagicWarning()
 	warnEngulfingMagic:Show(table.concat(engulfingMagicTargets, "<, >"))
@@ -110,7 +119,9 @@ function mod:OnCombatStart(delay)
 	timerDevouringFlamesCD:Start(25-delay)
 	timerNextDazzlingDestruction:Start(85-delay)
 	dazzlingCast = 0
+	breathCast = 0
 	lastflame = 0
+	spamZone = 0
 	markWarned = false
 	blackoutActive = false
 	if self.Options.RangeFrame then
@@ -155,8 +166,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, showEngulfingMagicWarning)
 		end
-	elseif args:IsSpellID(93051) then--heroic placeholder cause honestly i'm not quite sure i understand this mechanic yet until i see it.
-	
+	elseif args:IsSpellID(93051) then
+		warnTwilightShift:Show(args.spellName, args.destName, args.amount or 1)
+		timerTwilightShift:Cancel(args.destName.." (1)")
+		timerTwilightShift:Cancel(args.destName.." (2)")
+		timerTwilightShift:Cancel(args.destName.." (3)")
+		timerTwilightShift:Cancel(args.destName.." (4)")
+		timerTwilightShift:Cancel(args.destName.." (5)")
+		timerTwilightShift:Show(args.destName.." ("..tostring(args.amount or 1)..")")
+		timerTwilightShiftCD:Start()
+	elseif args:IsSpellID(92887) and args:IsPlayer() then
+		if (args.amount or 1) >= 10 and GetTime() - spamZone > 5 then
+			specWarnTwilightZone:Show(args.amount)
+			spamZone = GetTime()
+		end
 	end
 end
 
@@ -175,6 +198,12 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.EngulfingIcon then
 			self:SetIcon(args.destName, 0)
 		end
+	elseif args:IsSpellID(93051) then
+		timerTwilightShift:Cancel(args.destName.." (1)")
+		timerTwilightShift:Cancel(args.destName.." (2)")
+		timerTwilightShift:Cancel(args.destName.." (3)")
+		timerTwilightShift:Cancel(args.destName.." (4)")
+		timerTwilightShift:Cancel(args.destName.." (5)")
 	end
 end	
 
@@ -182,11 +211,10 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(86840, 90950) then--Strange to have 2 cast ids instead of either 1 or 4
 		warnDevouringFlames:Show()
 		timerDevouringFlamesCD:Start()
-	elseif args:IsSpellID(86013, 92859, 92860, 92861) then
-		warnTwilightMeteorite:Show()
-		timerTwilightMeteorite:Start()
+		specWarnDevouringFlames:Show()
 	elseif args:IsSpellID(86408) then
 		dazzlingCast = dazzlingCast + 1
+		warnDazzlingDestruction:Show(args.spellName, dazzlingCast)
 		if dazzlingCast == 1 then--only special warn once for first one
 			specWarnDazzlingDestruction:Show()
 		elseif dazzlingCast == 3 then--Cancel bars now as it's safer then doing it at beginning do to a late 3rd blackout gets cast sometimes.
@@ -208,11 +236,18 @@ function mod:SPELL_DAMAGE(args)
 	end
 end
 
-function mod:CHAT_MSG_MONSTER_YELL(msg)
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Trigger1 or msg:find(L.Trigger1) then
-		specWarnDeepBreath:Show()
-		timerNextDazzlingDestruction:Start()
-		self:Schedule(40, valionaDelay)--We do this cause you get at least one more engulfing magic after this emote before they completely switch so we need a method to cancel bar more appropriately
+		breathCast = breathCast + 1
+		warnDeepBreath:Show(deepName, breathCast)
+		if breathCast == 1 then
+			timerNextDeepBreath:Cancel()
+			specWarnDeepBreath:Show()
+			timerNextDazzlingDestruction:Start()
+			self:Schedule(40, valionaDelay)--We do this cause you get at least one more engulfing magic after this emote before they completely switch so we need a method to cancel bar more appropriately
+		elseif breathCast == 3 then
+			breathCast = 0
+		end
 	end
 end
 
@@ -220,6 +255,7 @@ function mod:UNIT_AURA(uId)
 	if uId == "player" then
 		if UnitDebuff("player", meteorTarget) and not markWarned then
 			specWarnTwilightMeteorite:Show()
+			timerTwilightMeteorite:Start()
 			if self.Options.YellOnMeteor then
 				SendChatMessage(L.YellMeteor, "SAY")
 			end

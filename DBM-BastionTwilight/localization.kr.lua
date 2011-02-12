@@ -11,26 +11,32 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnDazzlingDestruction	= "%s (%d)",
+	WarnDeepBreath			= "%s (%d)",
+	WarnTwilightShift		= "%s : >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnDazzlingDestruction	= "Show warning for $spell:86408",
+	WarnDeepBreath			= "Show warning for $spell:86059",
+	WarnTwilightShift		= "Show warning for $spell:93051",
 	YellOnEngulfing			= "$spell:86622 외치기",
 	YellOnMeteor			= "$spell:88518 외치기",
 	YellOnTwilightBlast		= "$spell:92898 외치기",
 	TwilightBlastArrow		= "당신의 근처에 $spell:92898이 있을 경우 DBM 화살표 보기",	
-	RangeFrame				= "거리 프레임 보기(10m)"
+	RangeFrame				= "거리 프레임 보기(10m)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "테랄리온, 내가 전당에 불을 뿜겠다. 놈들의 퇴로를 막아라!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	Trigger1				= "Deep Breath",
 	YellMeteor				= "나에게 황혼 유성!!",
 	YellTwilightBlast		= "나에게 황혼 폭발!!",	
-	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T"
 }
 
 --------------------------
