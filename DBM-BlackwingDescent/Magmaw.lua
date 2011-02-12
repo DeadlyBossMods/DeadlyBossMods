@@ -103,9 +103,9 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(92128, 92196, 92197, 92198) and args:IsPlayer() and GetTime() - IgnitionSpam >= 4 then
+	if args:IsSpellID(92128, 92196, 92197, 92198) and args:IsPlayer() and GetTime() - ignitionSpam >= 4 then
 		specWarnIgnition:Show()
-		IgnitionSpam = GetTime()
+		ignitionSpam = GetTime()
 	end
 end
 
@@ -114,7 +114,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.YellPhase2 or msg:find(L.YellPhase2)) and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
 		warnPhase2:Show()
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(8)
+			DBM.RangeCheck:Show(5)
 		end
 	end
 end
