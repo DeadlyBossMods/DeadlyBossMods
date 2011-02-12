@@ -33,7 +33,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "Deep Breath",
+	Trigger1				= "들이쉽니다!",
 	YellMeteor				= "나에게 황혼 유성!!",
 	YellTwilightBlast		= "나에게 황혼 폭발!!",	
 	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T"
