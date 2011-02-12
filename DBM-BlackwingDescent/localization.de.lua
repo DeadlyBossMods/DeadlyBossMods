@@ -28,7 +28,7 @@ L:SetMiscLocalization({
 L:SetOptionLocalization({
 	SpecWarnInferno	= "Zeige Spezialvorwarnung für $spell:92190 (~4s)",
 	WarnPhase2Soon	= "Zeige Vorwarnung für Phase 2",
-	RangeFrame		= "Zeige Abstandsfenster in Phase 2 (8)"
+	RangeFrame		= "Zeige Abstandsfenster in Phase 2 (5)"
 
 })
 
