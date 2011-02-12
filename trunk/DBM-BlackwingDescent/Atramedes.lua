@@ -50,8 +50,10 @@ function mod:OnCombatStart(delay)
 	timerAirphase:Start(90)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
+		shieldsLeft = 7
+	else
+		shieldsLeft = 10
 	end
-	shieldsLeft = 10
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Soundlevel)
 		DBM.InfoFrame:Show(5, "power", 30, ALTERNATE_POWER_INDEX)
