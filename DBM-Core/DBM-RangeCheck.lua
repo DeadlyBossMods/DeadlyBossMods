@@ -80,7 +80,7 @@ do
 	local function setSound(self, option, sound)
 		DBM.Options[option] = sound
 		if sound ~= "none" then
-			if is_cata then
+			if DBM.Options.UseMasterVolume and is_cata then
 				PlaySoundFile(sound, "Master")
 			else
 				PlaySoundFile(sound)
@@ -251,7 +251,7 @@ local function updateSound(numPlayers) -- called every 5 seconds
 	end
 	if numPlayers == 1 then
 		if DBM.Options.RangeFrameSound1 ~= "none" then
-			if is_cata then
+			if DBM.Options.UseMasterVolume and is_cata then
 				PlaySoundFile(DBM.Options.RangeFrameSound1, "Master")
 			else
 				PlaySoundFile(DBM.Options.RangeFrameSound1)
@@ -259,7 +259,7 @@ local function updateSound(numPlayers) -- called every 5 seconds
 		end
 	elseif numPlayers > 1 then
 		if DBM.Options.RangeFrameSound2 ~= "none" then
-			if is_cata then
+			if DBM.Options.UseMasterVolume and is_cata then
 				PlaySoundFile(DBM.Options.RangeFrameSound2, "Master")
 			else
 				PlaySoundFile(DBM.Options.RangeFrameSound2)
