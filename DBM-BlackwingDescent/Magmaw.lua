@@ -29,6 +29,7 @@ local warnPhase2			= mod:NewPhaseAnnounce(2, 4)--heroic
 local specWarnPillar		= mod:NewSpecialWarningSpell(78006, mod:IsRanged())
 local specWarnIgnition		= mod:NewSpecialWarningMove(92198)
 local specWarnInfernoSoon   = mod:NewSpecialWarning("SpecWarnInferno")
+local specWarnArmageddon	= mod:NewSpecialWarningSpell(92177)
 
 local timerLavaSpew			= mod:NewCDTimer(26, 77689, nil, mod:IsHealer())
 local timerPillarFlame		= mod:NewCDTimer(32.5, 78006)--This timer is a CD timer. 30-40 seconds. Use your judgement.
@@ -36,6 +37,7 @@ local timerMangle			= mod:NewTargetTimer(30, 89773)
 local timerExposed			= mod:NewBuffActiveTimer(30, 79011)
 local timerMangleCD			= mod:NewCDTimer(95, 89773)
 local timerInferno			= mod:NewCDTimer(35, 92190)
+local timerArmageddon		= mod:NewCastTimer(8, 92177)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -53,8 +55,8 @@ function mod:OnCombatStart(delay)
 	timerMangleCD:Start(90-delay)
 	berserkTimer:Start(-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-		timerInferno:Start(20-delay)
-		specWarnInfernoSoon:Schedule(16-delay)
+		timerInferno:Start(30-delay)
+		specWarnInfernoSoon:Schedule(26-delay)
 	end
 	DBM.BossHealth:Clear()
 	DBM.BossHealth:AddBoss(41570, 42347, L.name)
@@ -91,6 +93,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnLavaSpew:Show()
 		timerLavaSpew:Start()
 		lastLavaSpew = GetTime()
+	elseif args:IsSpellID(92177) then
+		specWarnArmageddon:Show()
+		timerArmageddon:Start()
 	end
 end
 
