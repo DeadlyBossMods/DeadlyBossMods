@@ -82,6 +82,7 @@ DBM.DefaultOptions = {
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
 	HideTrivializedWarnings = false,
+	UseMasterVolume = true,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
 	RangeFrameY = -50,
@@ -2919,7 +2920,7 @@ do
 					self.mod:AddMsg(text, nil)
 				end
 			end
-			if is_cata then
+			if DBM.Options.UseMasterVolume and is_cata then
 				PlaySoundFile(DBM.Options.RaidWarningSound, "Master")--4.0.6 arg to use master sound channel, re-enableing sound playback when effects are turned off.
 			else
 				PlaySoundFile(DBM.Options.RaidWarningSound)--not cata so we don't use the channel arg to maintain CN wow compatability.
@@ -3048,7 +3049,7 @@ do
 	
 	function soundPrototype:Play(file)
 		if not self.option or self.mod.Options[self.option] then
-			if is_cata then
+			if DBM.Options.UseMasterVolume and is_cata then
 				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav", "Master")
 			else
 				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
@@ -3119,7 +3120,7 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
-				if is_cata then
+				if DBM.Options.UseMasterVolume and is_cata then
 					PlaySoundFile(DBM.Options.SpecialWarningSound, "Master")
 				else
 					PlaySoundFile(DBM.Options.SpecialWarningSound)
