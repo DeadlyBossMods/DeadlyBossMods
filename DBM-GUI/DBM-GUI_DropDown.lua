@@ -70,7 +70,11 @@ do
 		self:GetParent().dropdown.text = self.entry.text
 
 		if self.entry.sound then
-			PlaySoundFile(self.entry.value)
+			if select(4, _G.GetBuildInfo()) >= 40000 then
+				PlaySoundFile(self.entry.value, "Master")
+			else
+				PlaySoundFile(self.entry.value)
+			end
 		end
 		
 		if self.entry.func then
@@ -183,7 +187,11 @@ do
 		dropdown:SetWidth((width or 120)+30)	-- required to fix some setpoint problems
 		_G[dropdown:GetName().."Middle"]:SetWidth(width or 120)
 		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
-			PlaySound("igMainMenuOptionCheckBoxOn")
+			if select(4, _G.GetBuildInfo()) >= 40000 then
+				PlaySound("igMainMenuOptionCheckBoxOn", "Master")
+			else
+				PlaySound("igMainMenuOptionCheckBoxOn")
+			end
 			if TabFrame1:IsShown() then
 				TabFrame1:HideMenu()
 				TabFrame1.dropdown = nil
