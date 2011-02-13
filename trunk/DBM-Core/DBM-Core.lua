@@ -150,7 +150,7 @@ local loadModOptions
 local checkWipe
 local fireEvent
 local _, class = UnitClass("player")
-local is_cata = select(4, _G.GetBuildInfo()) >= 40000--4.0 PTR or Beta
+local is_cata = select(4, _G.GetBuildInfo()) >= 40000
 local is_china = select(4, _G.GetBuildInfo()) == 30200--Chinese wow (3.2.2) No one else should be on 3.2.x, screw private servers.
 local GetCurrentMapID
 local LastZoneText
@@ -2915,7 +2915,11 @@ do
 					self.mod:AddMsg(text, nil)
 				end
 			end
-			PlaySoundFile(DBM.Options.RaidWarningSound)
+			if is_cata then
+				PlaySoundFile(DBM.Options.RaidWarningSound, "Master")--4.0.6 arg to use master sound channel, re-enableing sound playback when effects are turned off.
+			else
+				PlaySoundFile(DBM.Options.RaidWarningSound)--not cata so we don't use the channel arg to maintain CN wow compatability.
+			end
 		end
 	end
 
@@ -3040,7 +3044,11 @@ do
 	
 	function soundPrototype:Play(file)
 		if not self.option or self.mod.Options[self.option] then
-			PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			if is_cata then
+				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav", "Master")
+			else
+				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
+			end
 		end
 	end
 
@@ -3107,7 +3115,11 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
-				PlaySoundFile(DBM.Options.SpecialWarningSound)
+				if is_cata then
+					PlaySoundFile(DBM.Options.SpecialWarningSound, "Master")
+				else
+					PlaySoundFile(DBM.Options.SpecialWarningSound)
+				end
 			end
 		end
 	end
