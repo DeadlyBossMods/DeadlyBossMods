@@ -2613,7 +2613,11 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:LatencyCheck()
-	return select(4, GetNetStats()) < DBM.Options.LatencyThreshold--Uses new world ping in 4.0.6
+	if is_cata then
+		return select(4, GetNetStats()) < DBM.Options.LatencyThreshold--Uses new world ping in 4.0.6
+	else
+		return select(3, GetNetStats()) < DBM.Options.LatencyThreshold--Uses realm "home" ping for CN wow.
+	end
 end
 
 --[[W.I.P. Will be a function that compares level to players level, which can be used in boss mods specificly via TrivialCheck(85)
