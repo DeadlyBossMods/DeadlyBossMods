@@ -37,7 +37,7 @@ end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
-		DBM.RangeFrame:Hide()
+		DBM.RangeCheck:Hide()
 	end
 end
 
@@ -47,7 +47,7 @@ function mod:Submerge()
 	timerDampening:Cancel()
 	self:ScheduleMethod(30, "Emerge")
 	if self.Options.RangeFrame then
-		DBM.RangeFrame:Hide()
+		DBM.RangeCheck:Hide()
 	end
 end
 
