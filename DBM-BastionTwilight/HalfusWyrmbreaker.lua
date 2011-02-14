@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_DIED"
 )
 
 local warnBreath			= mod:NewSpellAnnounce(83707, 3)
@@ -83,4 +84,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---add unit died event to remove drakes from boss health later. slate-44652, nether-44645, time-44797, storm-44650
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if self.Options.ShowDrakeHealth and (cid == 44652 or cid == 44645 or cid == 44797 or cid == 44650) then
+		DBM.BossHealth:RemoveBoss(cid)
+	end
+end
