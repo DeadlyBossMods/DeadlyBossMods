@@ -31,6 +31,8 @@ local timerParalysisCD		= mod:NewCDTimer(35, 84030)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
+mod:AddBoolOption("ShowDrakeHealth", true)
+
 local spamFuriousRoar = 0
 
 function mod:OnCombatStart(delay)
@@ -48,6 +50,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnParalysis:Show()
 		timerParalysis:Start()
 		timerParalysisCD:Start()
+	elseif args:IsSpellID(84092, 83601, 83603, 83611) and self.Options.ShowDrakeHealth then	-- drycoded, needs verification (Whelps not shown in Boss Health Frame)
+		DBM.BossHealth:AddBoss(self:GetCIDFromGUID(args.sourceGUID), args.sourceName)
 	end
 end
 
