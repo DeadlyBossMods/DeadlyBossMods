@@ -82,3 +82,5 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnTimeDilation:Show()
 	end
 end
+
+--add unit died event to remove drakes from boss health later. slate-44652, nether-44645, time-44797, storm-44650
