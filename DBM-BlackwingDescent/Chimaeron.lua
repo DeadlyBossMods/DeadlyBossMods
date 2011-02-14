@@ -149,7 +149,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnFeud:Show()
 		timerFeud:Start()
 		feud = true
-	elseif args:IsSpellID(82934) then
+	elseif args:IsSpellID(82934, 95524) then
 		warnPhase2:Show()
 		timerCausticSlime:Cancel()
 		timerMassacreNext:Cancel()
