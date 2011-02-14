@@ -20,9 +20,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnDazzlingDestruction	= "Show warning for $spell:86408",
-	WarnDeepBreath			= "Show warning for $spell:86059",
-	WarnTwilightShift		= "Show warning for $spell:93051",
+	WarnDazzlingDestruction	= "$spell:86408의 경고 보기",
+	WarnDeepBreath			= "$spell:86059의 경고 보기",
+	WarnTwilightShift		= "$spell:93051의 경고 보기",
 	YellOnEngulfing			= "$spell:86622 외치기",
 	YellOnMeteor			= "$spell:88518 외치기",
 	YellOnTwilightBlast		= "$spell:92898 외치기",
@@ -58,6 +58,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	--"ShowDrakeHealth"		= "Show the health of released drakes"
 })
 
 ----------------------------------
