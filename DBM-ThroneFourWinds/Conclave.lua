@@ -36,13 +36,13 @@ local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
 local timerSlicingGale		= mod:NewBuffActiveTimer(45, 93058)
 local timerWindBlast		= mod:NewBuffActiveTimer(10, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
-local timerStormShieldCD	= mod:NewCDTimer(113, 95865)--Heroic ability
+local timerStormShieldCD	= mod:NewNextTimer(113, 95865)--Heroic ability, seems to share CD/line up with Nurture
 local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
 local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)--is this a CD or a next timer?
 local timerPermaFrostCD		= mod:NewCDTimer(10, 93233)
-local timerSoothingBreezeCD	= mod:NewNextTimer(22, 86205)
-local timerSpecial			= mod:NewTimer(114, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD
+local timerSoothingBreezeCD	= mod:NewCDTimer(22, 86205)--needs more work, works fine as a CD timer for now, but it also depends on bosses energy on whether or not he casts this instead of spores.
+local timerSpecial			= mod:NewTimer(109, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD. Shortened cause sometimes slipstreams end early, even though cd is a little longer than 110
 local timerSpecialActive	= mod:NewTimer(16, "timerSpecialActive", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
 
 local enrageTimer			= mod:NewBerserkTimer(480) -- Both normal and heroic mode
