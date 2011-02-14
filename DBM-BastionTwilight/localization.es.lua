@@ -60,6 +60,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	"ShowDrakeHealth"		= "Mostrar la vida de los dragones liberados"
 })
 
 ----------------------------------
