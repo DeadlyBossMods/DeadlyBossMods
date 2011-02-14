@@ -57,6 +57,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+	"ShowDrakeHealth"		= "Show the health of released drakes"
 })
 
 ----------------------------------
