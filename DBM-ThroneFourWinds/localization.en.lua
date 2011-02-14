@@ -42,7 +42,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback	= "%s on >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
-	WarnAdd			= "Stormling add spawned"
+	WarnAdd			= "Stormling add incoming"
 })
 
 L:SetTimerLocalization({
