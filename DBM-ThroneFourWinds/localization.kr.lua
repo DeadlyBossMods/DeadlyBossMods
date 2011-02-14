@@ -21,14 +21,16 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "%s에게서 힘을 모으기 시작합니다!"
+--	gatherstrength			= "%s에게서 힘을 모으기 시작합니다!"
+	gatherstrength			= "힘을 모으기 시작합니다!"
 })
 
 L:SetOptionLocalization({
 	warnSpecial				= "특수 능력 시전 경고 보기", -- Show warning when Hurricane/Zephyr/Sleet Storm are cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial			= "특수 능력 시전을 할 경우 특수 경고 보기",
 	timerSpecial			= "특수 능력 쿨다운 타이머 보기",
-	timerSpecialActive		= "특수 능력 유지 타이머 보기"
+	timerSpecialActive		= "특수 능력 유지 타이머 보기",
+	OnlyWarnforMyTarget		= "오직 대상/주시대상일 경우만 타이머/경고 보기\n(풀링 포함. 그외에 모두 숨김)"
 })
 
 ---------------
@@ -43,20 +45,20 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback		= "%s : >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
-	WarnAdd				= "폭풍 정령 추가 생성"	
+	WarnAdd				= "곧 폭풍 정령"	
 })
 
 L:SetTimerLocalization({
 	TimerFeedback 		= "역순환 (%d)",
-	TimerAddCD			= "추가 폭풍 정령"	
+	TimerAddCD			= "다음 폭풍 정령"	
 })
 
 L:SetOptionLocalization({
 	WarnFeedback		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "알 수 없음"),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback		= "$spell:87904 유지 타이머 보기",
-	WarnAdd				= "폭풍 정령이 추가 생성 될 때 경고 보기",
-	TimerAddCD			= "폭풍 정령 추가 쿨타임 보기"
+	WarnAdd				= "폭풍 정령이 생성 될 때 경고 보기",
+	TimerAddCD			= "폭풍 정령 생성 쿨타임 보기"
 })
 
 L:SetMiscLocalization({
