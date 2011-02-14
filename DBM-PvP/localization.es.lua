@@ -18,7 +18,8 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	ColorByClass	= "Mostrar colores de clases en la Tabla de Estadísticas.",
 	ShowInviteTimer	= "Mostrar tiempo restante para entrar en batalla.",
-	AutoSpirit	= "Liberar espíritu automaticamente"
+	AutoSpirit	= "Liberar espíritu automaticamente",
+	HideBossEmoteFrame	= "Ocultar el marco de chat del Boss"
 })
 
 L:SetMiscLocalization({

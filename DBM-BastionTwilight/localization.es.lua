@@ -21,6 +21,9 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnDazzlingDestruction	= "Mostrar aviso para $spell:86408",
+	WarnDeepBreath			= "Mostrar aviso para $spell:86059",
+	WarnTwilightShift		= "Mostrar aviso para $spell:93051",
 	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
 	YellOnMeteor			= "Gritar cuando tengas $spell:88518",
 	YellOnTwilightBlast			= "Gritar cuando tengas $spell:92898",

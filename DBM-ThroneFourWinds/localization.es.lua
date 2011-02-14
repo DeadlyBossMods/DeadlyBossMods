@@ -29,7 +29,8 @@ L:SetOptionLocalization({
 	warnSpecial			= "Mostrar aviso cuando Huracan/Céfiro/Tormenta de granizo sean lanzados",
 	specWarnSpecial		= "Mostrar aviso especial cuando se lanzan habilidades especiales",
 	timerSpecial		= "Mostrar cooldown de habilidades especiales",
-	timerSpecialActive	= "Mostrar tiempo de duración de habilidades especiales"
+	timerSpecialActive	= "Mostrar tiempo de duración de habilidades especiales",
+	OnlyWarnforMyTarget	= "Solo mostrar avisos/tiempos para el objetivo y foco actual\n(Oculta el resto. ¡ESTO INCLUYE AL PULLEAR!)"
 })
 
 ---------------
@@ -43,6 +44,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback	= "%s en >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
+	WarnAdd			= "Aparece Tormentilla"
+
 })
 
 L:SetTimerLocalization({
