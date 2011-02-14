@@ -44,7 +44,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback	= "%s на >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
-	WarnAdd			= "Появляется Буревик!"
+	WarnAdd			= "Скоро появится Буревик!"
 })
 
 L:SetTimerLocalization({
