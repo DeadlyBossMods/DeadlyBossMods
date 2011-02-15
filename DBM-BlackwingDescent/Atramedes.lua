@@ -12,8 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
-	"CHAT_MSG_MONSTER_YELL",
-	"UNIT_DIED"
+	"SPELL_INSTAKILL",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnSonicBreath		= mod:NewSpellAnnounce(78075, 3)
@@ -98,6 +98,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
+function mod:SPELL_INSTAKILL(args)
+	if args:IsSpellID(77782, 78864, 78945) then
+		shieldsLeft = shieldsLeft - 1
+		warnShieldsLeft:Show(shieldsLeft)
+	end
+end
+
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Airphase or msg:find(L.Airphase)  then
 		warnAirphase:Show()
@@ -105,13 +112,5 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerSearingFlame:Cancel()
 		timerGroundphase:Start()
 		self:Schedule(31.5, groundphase)
-	end
-end
-
-function mod:UNIT_DIED(args)
-	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 41445 or cid == 42947 or cid == 42949 or cid == 42951 or cid == 42954 or cid == 42956 or cid == 42958 or cid == 42960 then--Still missing two ids wowhead doesn't have. Will have to get later in week.
-		shieldsLeft = shieldsLeft - 1
-		warnShieldsLeft:Show(shieldsLeft)
 	end
 end
