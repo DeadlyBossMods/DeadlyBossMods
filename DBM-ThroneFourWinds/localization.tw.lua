@@ -29,7 +29,8 @@ L:SetOptionLocalization({
 	warnSpecial			= "當颶風/微風/冰雨風暴施放時顯示警告",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial			= "當特別技能施放時顯示特別警告",
 	timerSpecial			= "為特別技能冷卻顯示計時器",
-	timerSpecialActive		= "為特別技能持續時間顯示計時器"
+	timerSpecialActive		= "為特別技能持續時間顯示計時器",
+	OnlyWarnforMyTarget		= "只為當前或焦點目標顯示警告\n(隱藏所有其他。這包括進入戰鬥)"
 })
 
 ---------------
@@ -43,6 +44,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnFeedback			= "%s: >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
+	WarnAdd				= "風暴小怪 即將到來"
 })
 
 L:SetTimerLocalization({
