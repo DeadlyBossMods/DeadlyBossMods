@@ -384,12 +384,11 @@ L:SetGeneralLocalization({
 ---------------------
 -- Corborus --
 -------------- 
+L = DBM:GetModLocalization("Corborus")
 
 L:SetGeneralLocalization({
 	name = "寇伯拉斯"
 })
-
-L = DBM:GetModLocalization("Corborus")
 
 L:SetWarningLocalization({
 	WarnEmerge	= "鑽出地面",

@@ -13,14 +13,17 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath			= "%s (%d)",
-	WarnTwilightShift		= "%s : >%s< (%d)"
+	WarnDeepBreath		= "%s (%d)",
+	WarnTwilightShift	= "%s : >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	WarnDazzlingDestruction	= "為$spell:86408顯示警告",
+	WarnDeepBreath		= "為$spell:86059顯示警告",
+	WarnTwilightShift	= "為$spell:93051顯示警告",
 	YellOnEngulfing		= "中了$spell:86622時大喊",
 	YellOnMeteor		= "中了$spell:88518時大喊",
 	YellOnTwilightBlast	= "中了$spell:92898時大喊",
@@ -31,7 +34,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1		= "瑟拉里恩，我的火會淹沒整個通道。擋住他們的退路!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	Trigger1		= "深呼吸",
 	YellEngulfing		= "我中了侵噬魔法!",
 	YellMeteor		= "我中了暮光隕星!",
 	YellTwilightBlast	= "我中了暮光衝擊!"
