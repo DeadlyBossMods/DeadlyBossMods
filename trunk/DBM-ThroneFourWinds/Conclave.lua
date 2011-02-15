@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_APPLIED_DOSE",
+	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
@@ -31,7 +32,7 @@ local specWarnShield		= mod:NewSpecialWarningSpell(95865)
 local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
 local specWarnIcePatch      = mod:NewSpecialWarningMove(93131)
 
-local timerNurture			= mod:NewNextTimer(114, 85422)--This does NOT cast at same time as hurricane/sleet storm/Zephyr
+local timerNurture			= mod:NewNextTimer(114, 85422)--This does NOT cast at same time as hurricane/sleet storm/Zephyr (35 seconds after special ended?)
 local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
 local timerSlicingGale		= mod:NewBuffActiveTimer(45, 93058)
 local timerWindBlast		= mod:NewBuffActiveTimer(10, 86193)
@@ -51,6 +52,7 @@ mod:AddBoolOption("OnlyWarnforMyTarget", false, "announce")--Default off do to t
 
 local windBlastCounter = 0
 local specialSpam = 0
+local specialsEnded = 0
 local poisonCounter = 0
 local poisonSpam = 0
 local iceSpam = 0
@@ -59,6 +61,7 @@ local GatherStrengthwarned = false
 function mod:OnCombatStart(delay)
 	windBlastCounter = 0
 	specialSpam = 0
+	specialsEnded = 0
 	iceSpam = 0
 	GatherStrengthwarned = false
 	timerSpecial:Start(90-delay)
@@ -66,9 +69,6 @@ function mod:OnCombatStart(delay)
 	if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 		timerSoothingBreezeCD:Start(15-delay)
 		timerNurture:Start(30-delay)
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerPoisonToxicCD:Start(51-delay)
-		end
 	end
 	if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
 		timerWindBlastCD:Start(30-delay)
@@ -86,10 +86,34 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			timerSlicingGale:Start()
 		end
+	elseif args:IsSpellID(84651, 93117, 93118, 93119) and args:GetDestCreatureID() == 45870 and GetTime() - specialsEnded >= 3 then--Zephyr stacks on Anshal
+		if (args.amount or 1) >= 15 then--Special has ended when he's at 15 stacks.
+			if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
+				timerSoothingBreezeCD:Start(15)
+				timerNurture:Start(35)
+			end
+		end
+		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
+			timerStormShieldCD:Start(35)
+		end
+		specialsEnded = GetTime()
 	end
 end
 
 mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(84644, 84643) and GetTime() - specialsEnded >= 3 then--Sleet Storm, Hurricane.
+		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
+			timerSoothingBreezeCD:Start(15)
+			timerNurture:Start(35)
+		end
+		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
+			timerStormShieldCD:Start(35)
+		end
+		specialsEnded = GetTime()
+	end
+end
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(86111, 93129, 93130, 93131) and args:IsPlayer() and GetTime() - iceSpam >= 3 then
@@ -115,33 +139,30 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(85422) then
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			warnNurture:Show()
-			timerNurture:Start()
+			--timerNurture:Start()--Trying an anti spam experiment of starting this timer somewhere else to minimize time it spends on screen.
+			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+				timerPoisonToxicCD:Start()
+			end
 		end
 	elseif args:IsSpellID(93233) then
 		if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
 			timerPermaFrostCD:Start()
 		end
-	elseif (args:IsSpellID(84644, 93135, 93136, 93137) or args:IsSpellID(84638, 93117, 93118, 93119) or args:IsSpellID(84643)) and GetTime() - specialSpam > 3 then
+	elseif args:IsSpellID(84644, 84638, 84643) and GetTime() - specialSpam > 3 then
 		warnSpecial:Show()
 		specWarnSpecial:Show()
 		timerSpecial:Start()
 		timerSpecialActive:Start()
 		specialSpam = GetTime()--Trigger it off any of 3 spells, but only once.
 		poisonCounter = 0
-		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
-			timerSoothingBreezeCD:Start(30)
-			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-				timerPoisonToxicCD:Start(72)
-			end
-		end
 		if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
-			timerPermaFrostCD:Start(30)
+			timerPermaFrostCD:Start(15)--This is gonna slap you in face the instance special ends.
 		end
 	elseif args:IsSpellID(93059, 95865) then-- Storm Shield Warning (Heroic mode skill)
 		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
 			warnStormShield:Show()
-			timerStormShieldCD:Start()
 			specWarnShield:Show()
+			--timerStormShieldCD:Start()--Trying an anti spam experiment of starting this timer somewhere else to minimize time it spends on screen.
 		end
 	elseif args:IsSpellID(86281) and GetTime() - poisonSpam > 3 then-- Poison Toxic Warning (at Heroic, Poison Toxic damage is too high, so warning needed)
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then
@@ -149,6 +170,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 			warnPoisonToxic:Show()
 			timerPoisonToxic:Show()
 			timerPoisonToxicCD:Start()
+			if poisonSpam > 30 then--We only want to start soothing breeze cd timer reset on first set of spores, not second, doing this accomplishes that goal.
+				timerSoothingBreezeCD:Start()--Experimental but looks good so far.
+			end
 		end
 		if poisonCounter < 1 then
 			poisonCounter = 1
