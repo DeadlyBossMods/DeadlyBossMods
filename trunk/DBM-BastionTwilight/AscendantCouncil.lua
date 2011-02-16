@@ -94,7 +94,7 @@ local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
 local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
 --All
---local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
+local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
 
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
