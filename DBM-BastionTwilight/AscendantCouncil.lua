@@ -478,15 +478,6 @@ end
 
 function mod:UNIT_HEALTH(uId)
 	local cid = self:GetUnitCreatureId(uId)
-	if (cid == 43686 or cid == 43687 or cid == 43688 or cid == 43689) and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(UnitName(cid))
-	end
-end
-
---[[if the above doesn't work, i can test this on the fly.
-function mod:UNIT_HEALTH(uId)
-	local cid = self:GetUnitCreatureId(uId)
 	if cid == 43686 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
 		warnedLowHP[cid] = true
 		specWarnBossLow:Show(L.Ignacious)
@@ -500,4 +491,4 @@ function mod:UNIT_HEALTH(uId)
 		warnedLowHP[cid] = true
 		specWarnBossLow:Show(L.Terrastra)
 	end
-end--]]
+end
