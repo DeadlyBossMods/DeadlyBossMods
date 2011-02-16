@@ -292,6 +292,7 @@ do
 	
 	function argsMT.__index:IsNPC()
 		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_NPC) ~= 0
+	end
 
 	function argsMT.__index:IsPet()
 		return bit.band(args.destFlags, COMBATLOG_OBJECT_TYPE_PET) ~= 0
