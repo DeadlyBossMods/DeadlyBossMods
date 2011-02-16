@@ -478,9 +478,8 @@ end
 
 function mod:UNIT_HEALTH(uId)
 	local cid = self:GetUnitCreatureId(uId)
-	local name = UnitName(uId)
 	if (cid == 43686 or cid == 43687 or cid == 43688 or cid == 43689) and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
 		warnedLowHP[cid] = true
-		specWarnBossLow:Show(name)
+		specWarnBossLow:Show(UnitName(cid))
 	end
 end
