@@ -43,8 +43,8 @@ local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)--is this a CD or a next timer?
 local timerPermaFrostCD		= mod:NewCDTimer(10, 93233)
 local timerSoothingBreezeCD	= mod:NewCDTimer(22, 86205)--needs more work, works fine as a CD timer for now, but it also depends on bosses energy on whether or not he casts this instead of spores.
-local timerSpecial			= mod:NewTimer(109, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD. Shortened cause sometimes slipstreams end early, even though cd is a little longer than 110
-local timerSpecialActive	= mod:NewTimer(16, "timerSpecialActive", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
+local timerSpecial			= mod:NewTimer(95, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD. Shortened cause sometimes slipstreams end early, even though cd is a little longer
+local timerSpecialActive	= mod:NewTimer(15, "timerSpecialActive", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
 
 local enrageTimer			= mod:NewBerserkTimer(480) -- Both normal and heroic mode
 
@@ -88,15 +88,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(84651, 93117, 93118, 93119) and args:GetDestCreatureID() == 45870 and GetTime() - specialsEnded >= 3 then--Zephyr stacks on Anshal
 		if (args.amount or 1) >= 15 then--Special has ended when he's at 15 stacks.
+			timerSpecial:Start()
+			specialsEnded = GetTime()
 			if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 				timerSoothingBreezeCD:Start(15)
 				timerNurture:Start(35)
 			end
+			if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
+				timerStormShieldCD:Start(35)
+			end
 		end
-		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
-			timerStormShieldCD:Start(35)
-		end
-		specialsEnded = GetTime()
 	end
 end
 
@@ -104,6 +105,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(84644, 84643) and GetTime() - specialsEnded >= 3 then--Sleet Storm, Hurricane.
+		timerSpecial:Start()
+		specialsEnded = GetTime()
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			timerSoothingBreezeCD:Start(15)
 			timerNurture:Start(35)
@@ -111,7 +114,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
 			timerStormShieldCD:Start(35)
 		end
-		specialsEnded = GetTime()
 	end
 end
 
@@ -151,7 +153,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(84644, 84638, 84643) and GetTime() - specialSpam > 3 then
 		warnSpecial:Show()
 		specWarnSpecial:Show()
-		timerSpecial:Start()
 		timerSpecialActive:Start()
 		specialSpam = GetTime()--Trigger it off any of 3 spells, but only once.
 		poisonCounter = 0
