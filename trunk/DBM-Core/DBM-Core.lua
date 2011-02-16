@@ -438,14 +438,18 @@ do
 				args.auraType = select(7, ...)
 			elseif event == "SPELL_AURA_APPLIED" or event == "SPELL_AURA_REMOVED" or event == "SPELL_AURA_REFRESH" then
 				args.auraType, args.remainingPoints = select(4, ...)
-				args.sourceName = args.destName
-				args.sourceGUID = args.destGUID
-				args.sourceFlags = args.destFlags
+				if not args.sourceName then
+					args.sourceName = args.destName
+					args.sourceGUID = args.destGUID
+					args.sourceFlags = args.destFlags
+				end
 			elseif event == "SPELL_AURA_APPLIED_DOSE" or event == "SPELL_AURA_REMOVED_DOSE" then
 				args.auraType, args.amount = select(4, ...)
-				args.sourceName = args.destName
-				args.sourceGUID = args.destGUID
-				args.sourceFlags = args.destFlags
+				if not args.sourceName then
+					args.sourceName = args.destName
+					args.sourceGUID = args.destGUID
+					args.sourceFlags = args.destFlags
+				end
 			elseif event == "SPELL_CAST_FAILED" then
 				args.missType = select(4, ...)
 			end
