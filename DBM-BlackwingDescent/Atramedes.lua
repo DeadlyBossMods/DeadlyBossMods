@@ -97,7 +97,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:UNIT_DIED(args)
-	if args:IsInCombat() and args:IsNPC() and self:GetCIDFromGUID(args.destGUID) ~= 49740then
+	if args:IsInCombat() and args:IsNPC() and self:GetCIDFromGUID(args.destGUID) ~= 49740 then
 		shieldsLeft = shieldsLeft - 1
 		warnShieldsLeft:Show(shieldsLeft)
 	end
