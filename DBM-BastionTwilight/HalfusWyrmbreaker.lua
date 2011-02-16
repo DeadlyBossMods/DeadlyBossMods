@@ -56,7 +56,11 @@ function mod:SPELL_AURA_APPLIED(args)
 	end
 end
 
-mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(87683) then
+		warnVengeance:Show()
+	end
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(83710, 86169, 86170, 86171) and GetTime() - spamFuriousRoar > 6 then
