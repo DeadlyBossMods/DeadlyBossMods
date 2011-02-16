@@ -49,11 +49,9 @@ function mod:OnCombatStart(delay)
 	timerSonicBreath:Start(25-delay)
 	timerSearingFlame:Start(45-delay)
 	timerAirphase:Start(90)
+	shieldsLeft = 10
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
-		shieldsLeft = 7
-	else
-		shieldsLeft = 10
 	end
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Soundlevel)
