@@ -19,7 +19,7 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local warnCausticSlime		= mod:NewTargetAnnounce(82935, 3, nil, false)--This will be very spammy but useful for debugging positioning issues (IE too many people clumped)
+local warnCausticSlime		= mod:NewTargetAnnounce(82935, 3)
 local warnBreak				= mod:NewAnnounce("WarnBreak", 3, 82881, mod:IsTank() or mod:IsHealer())
 local warnDoubleAttack		= mod:NewSpellAnnounce(88826, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnMassacre			= mod:NewSpellAnnounce(82848, 4)
@@ -106,15 +106,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		botOffline = true
 	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
 		slimeTargets[#slimeTargets + 1] = args.destName
-		if self.Options.SetIconOnSlime and not botOffline then--Don't set icons during feud, set them any other time.
-			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
-			self:UnscheduleMethod("SetSlimeIcons")
-			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.4, "SetSlimeIcons")--0.3 might work, but i know 0.4 works for sure so i don't feel like rush changing it.
+		if not botOffline then--Don't set icons during feud, set them any other time.
+			if self.Options.SetIconOnSlime then
+				table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
+				self:UnscheduleMethod("SetSlimeIcons")
+				if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+					self:ScheduleMethod(0.4, "SetSlimeIcons")--0.3 might work, but i know 0.4 works for sure so i don't feel like rush changing it.
+				end
 			end
+			self:Unschedule(showSlimeWarning)
+			self:Schedule(0.3, showSlimeWarning)
 		end
-		self:Unschedule(showSlimeWarning)
-		self:Schedule(0.3, showSlimeWarning)
 	end
 end
 
