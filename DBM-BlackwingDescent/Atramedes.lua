@@ -12,7 +12,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
-	"SPELL_INSTAKILL",
+	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -96,8 +96,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_INSTAKILL(args)
-	if args:IsSpellID(77782, 78864, 78945) then
+function mod:UNIT_DIED(args)
+	if args:IsNPC() and self:GetCIDFromGUID(args.destGUID) ~= 49740 then
 		shieldsLeft = shieldsLeft - 1
 		warnShieldsLeft:Show(shieldsLeft)
 	end
