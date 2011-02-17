@@ -91,7 +91,7 @@ L:SetMiscLocalization({
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Monstruosidad de Elementium",
-	Kill			= "Imposible...."--translate
+	Kill			= "Imposible..."--translate
 })
 
 L:SetOptionLocalization({
