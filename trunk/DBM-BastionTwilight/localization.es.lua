@@ -73,7 +73,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow			= ">%s< está por debajo del 30%",
 	SpecWarnGrounded	= "Coge el bufo de Domeñado",
 	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales"
 })
@@ -96,7 +95,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBossLow		= "Mostrar aviso especial cuando los Bosses están por debajo del 30% de vida",
 	SpecWarnGrounded	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83581\n(~10seg antes de castear)",
 	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)",
 	timerTransition		= "Mostrar tiempo para transición de fase",
