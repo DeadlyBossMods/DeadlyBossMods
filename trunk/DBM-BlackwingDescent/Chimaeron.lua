@@ -72,7 +72,7 @@ end
 
 function mod:OnCombatStart(delay)
 	timerMassacreNext:Start(26-delay)
-	timerBreakCD:Start(6-delay)
+	timerBreakCD:Start(4.5-delay)
 	prewarnedPhase2 = false
 	botOffline = false
 	slimeIcon = 8
