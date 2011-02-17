@@ -56,7 +56,7 @@ local berserkTimer				= mod:NewBerserkTimer(420)
 
 mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon", false)
-mod:AddBoolOption("ConsumingFlamesIcon")
+mod:AddBoolOption("ConsumingFlamesIcon", false)
 mod:AddBoolOption("RangeFrame")
 
 local adds = 18
