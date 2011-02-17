@@ -70,7 +70,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow			= ">%s< below 30%",
 	SpecWarnGrounded		= "Get Grounded buff",
 	SpecWarnSearingWinds	= "Get Searing Winds buff"
 })
@@ -93,7 +92,6 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	specWarnBossLow		= "Show special warning when Bosses are below 30% HP",
 	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
 	SpecWarnSearingWinds= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
 	timerTransition		= "Show Phase transition timer",
