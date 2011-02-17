@@ -486,7 +486,7 @@ function mod:UNIT_HEALTH(uId)
 		specWarnBossLow:Show(L.Feludius)
 	elseif cid == 43688 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
 		warnedLowHP[cid] = true
-		specWarnBossLow:Show(L.Arion))
+		specWarnBossLow:Show(L.Arion)
 	elseif cid == 43689 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
 		warnedLowHP[cid] = true
 		specWarnBossLow:Show(L.Terrastra)
