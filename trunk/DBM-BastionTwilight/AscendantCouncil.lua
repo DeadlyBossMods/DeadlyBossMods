@@ -16,8 +16,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_HEALTH"
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 --Feludius
@@ -93,8 +92,6 @@ local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
 local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
---All
-local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
 
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
@@ -473,22 +470,5 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	elseif msg == L.Thundershock or msg:find(L.Thundershock) then
 		checkGrounded()
 		warnThundershockSoon:Show()
-	end
-end
-
-function mod:UNIT_HEALTH(uId)
-	local cid = self:GetUnitCreatureId(uId)
-	if cid == 43686 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(L.Ignacious)
-	elseif cid == 43687 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(L.Feludius)
-	elseif cid == 43688 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(L.Arion)
-	elseif cid == 43689 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(L.Terrastra)
 	end
 end
