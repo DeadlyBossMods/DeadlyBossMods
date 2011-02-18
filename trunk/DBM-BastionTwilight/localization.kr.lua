@@ -24,7 +24,7 @@ L:SetOptionLocalization({
 	WarnDeepBreath			= "$spell:86059의 경고 보기",
 	WarnTwilightShift		= "$spell:93051의 경고 보기",
 	YellOnEngulfing			= "$spell:86622 외치기",
-	YellOnMeteor			= "$spell:88518 외치기",
+	YellOnTwilightMeteor	= "$spell:88518 외치기",
 	YellOnTwilightBlast		= "$spell:92898 외치기",
 	TwilightBlastArrow		= "당신의 근처에 $spell:92898이 있을 경우 DBM 화살표 보기",	
 	RangeFrame				= "거리 프레임 보기(10m)",

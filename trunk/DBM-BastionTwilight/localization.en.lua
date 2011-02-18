@@ -23,7 +23,7 @@ L:SetOptionLocalization({
 	WarnDeepBreath			= "Show warning for $spell:86059",
 	WarnTwilightShift		= "Show warning for $spell:93051",
 	YellOnEngulfing			= "Yell on $spell:86622",
-	YellOnMeteor			= "Yell on $spell:88518",
+	YellOnTwilightMeteor	= "Yell on $spell:88518",
 	YellOnTwilightBlast		= "Yell on $spell:92898",
 	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
 	RangeFrame				= "Show range frame (10)",

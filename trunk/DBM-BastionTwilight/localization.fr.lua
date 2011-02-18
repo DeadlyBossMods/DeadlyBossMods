@@ -25,10 +25,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Crier sur $spell:86622",
-	YellOnMeteor			= "Crier sur $spell:88518",
+	YellOnTwilightMeteor	= "Crier sur $spell:88518",
 	YellOnTwilightBlast		= "Crier sur $spell:92898",
 	TwilightBlastArrow		= "Afficher la flèche DBM lorsque $spell:92898 est près de vous",
-	RangeFrame			= "Afficher la fenêtre de portée (10)",
+	RangeFrame				= "Afficher la fenêtre de portée (10)",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
