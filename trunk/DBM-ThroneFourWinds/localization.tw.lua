@@ -56,3 +56,8 @@ L:SetOptionLocalization({
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback			= "為$spell:87904的持續時間顯示計時器"
 })
+
+L:SetMiscLocalization({
+	summonSquall	=	"Storms! I summon you to my side!",--Translate
+	phase3		=	"Enough! I will no longer be contained!"--Translate
+})

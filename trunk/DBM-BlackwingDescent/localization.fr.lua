@@ -15,7 +15,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnInferno	= "Blazing Bone Construct Imminent (~4s)", -- don't find in french Blazing bone contruct on wowhead :/
+	SpecWarnInferno	= "Assemblage d'os flamboyant Imminent (~4s)",
 	WarnPhase2Soon	= "Phase 2 imminente"
 })
 
@@ -25,7 +25,7 @@ L:SetTimerLocalization({
 L:SetMiscLocalization({
 	Slump			= "%s s'effondre vers l'avant et expose ses pinces !",
 	HeadExposed		= "%s vient de s'empaler sur la pointe et expose sa tête !",
-	YellPhase2			= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales." -- need translation :(
+	YellPhase2			= "Inconcevable ! Vous pourriez vraiment vaincre mon ver de lave !"
 })
 
 L:SetOptionLocalization({
@@ -54,6 +54,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Affiche le timer : $spell:92053",
 	timerArcaneBlowbackCast	= "Affiche le timer : $spell:91879",
+	YellBombTarget		= "Crier sur $spell:80094",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -64,7 +65,8 @@ L:SetMiscLocalization({
 	Magmatron		= "Magmatron",
 	Electron		= "Electron",
 	Toxitron		= "Toxitron",
-	Arcanotron		= "Arcanotron"
+	Arcanotron		= "Arcanotron",
+	SayBomb			= "Poison Bomb on me!"--Translate
 })
 
 ----------------
@@ -211,6 +213,6 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	NefAoe			= "L'air craque sous l'électricité !", -- à vérifier 
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
-	ShadowblazeCast		= "Que la chair se transforme en cendres !", -- à vérifier
-	ChromaticPrototype	= "Prototype chromatique"
+	YellPhase3			= "J'ai tout fait pour être un hôte accomodant, mais vous ne daignez pas mourir ! Oublions les bonnes manières et passons aux choses sérieuses... VOUS TUER TOUS !",
+	YellCinder			= "Explosive Cinders on me!"--Translate
 })

@@ -34,7 +34,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",-- A verifier ...
+	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",--Change this to what deep breath emote is.
 	YellEngulfing			= "Magie enveloppante sur moi !",
 	YellMeteor				= "Météorite du Crépuscule sur moi !",
 	YellTwilightBlast			= "Déflagration du Crépuscule sur moi !"

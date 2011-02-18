@@ -30,7 +30,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!",
+	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!",--Change this to what deep breath emote is.
 	YellEngulfing			= "Einhüllende Magie auf mir!",
 	YellMeteor				= "Zwielichtmeteorit auf mir!",
 	YellTwilightBlast		= "Zwielichtdruckwelle auf mir!",

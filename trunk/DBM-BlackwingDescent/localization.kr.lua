@@ -48,20 +48,22 @@ L:SetTimerLocalization({
 	timerShadowConductorCast	= "암흑 전도체"
 })
 
-L:SetMiscLocalization({
-	Magmatron	= "용암골렘",
-	Electron	= "전기골렘",
-	Toxitron	= "맹독골렘",
-	Arcanotron	= "비전골렘"
-})
-
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "$spell:92053 시전 타이머 보기",
 	timerArcaneBlowbackCast		= "$spell:91879 시전 타이머 보기",
+	YellBombTarget				= "$spell:80094 외치기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+})
+
+L:SetMiscLocalization({
+	Magmatron	= "용암골렘",
+	Electron	= "전기골렘",
+	Toxitron	= "맹독골렘",
+	Arcanotron	= "비전골렘",
+	SayBomb		= "Explosive Cinders on me!"--Translate
 })
 
 ----------------

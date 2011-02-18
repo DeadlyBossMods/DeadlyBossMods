@@ -39,12 +39,12 @@ local timerTwilightShiftCD			= mod:NewCDTimer(20, 93051)
 
 local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
 local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
-local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
+local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518, false)
 local specWarnDevouringFlames		= mod:NewSpecialWarningSpell(86840)
 local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
 local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408)
-local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)--Unfortunately even though 
-local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898)
+local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)-
+local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898, false)
 local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
 local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 10)
 

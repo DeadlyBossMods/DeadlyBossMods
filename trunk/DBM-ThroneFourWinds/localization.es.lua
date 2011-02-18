@@ -62,7 +62,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	summonSquall=	"Storms! I summon you to my side!",--translate
---	phase2		=	"Your futile persistance angers me!",--translate
-	phase3		=	"Enough! I will no longer be contained!"--translate
+	summonSquall=	"¡Tormentas! ¡Os convoco a mi lado!",--translate
+	phase3		=	"¡Basta! ¡No permitiré que se me contenga más tiempo!"--translate
 })

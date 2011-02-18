@@ -63,6 +63,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	summonSquall	=	"Tempêtes! Je vous appelle à mes côtés!",
---	phase2		=		"Your futile persistance angers me!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
 	phase3		=	"Assez! Je ne veux plus être contenu!"
 })
