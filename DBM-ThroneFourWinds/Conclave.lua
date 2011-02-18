@@ -167,13 +167,13 @@ function mod:SPELL_CAST_SUCCESS(args)
 		end
 	elseif args:IsSpellID(86281) and GetTime() - poisonSpam > 3 then-- Poison Toxic Warning (at Heroic, Poison Toxic damage is too high, so warning needed)
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then
-			poisonSpam = GetTime()
 			warnPoisonToxic:Show()
 			timerPoisonToxic:Show()
 			timerPoisonToxicCD:Start()
 			if poisonSpam > 30 then--We only want to start soothing breeze cd timer reset on first set of spores, not second, doing this accomplishes that goal.
 				timerSoothingBreezeCD:Start()--Experimental but looks good so far.
 			end
+			poisonSpam = GetTime()
 		end
 		if poisonCounter < 1 then
 			poisonCounter = 1
