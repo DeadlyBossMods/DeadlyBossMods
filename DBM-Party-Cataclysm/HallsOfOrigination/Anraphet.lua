@@ -69,6 +69,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_SAY(msg)
 	if msg == L.Brann or msg:find(L.Brann) then
+		self:SendSync("HoOGauntlet")
+	end
+end
+
+function mod:OnSync(msg)
+	if msg == "HoOGauntlet" then
 		if mod:IsDifficulty("heroic5") then
 			timerGauntlet:Start()
 		end

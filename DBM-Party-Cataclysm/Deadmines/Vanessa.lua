@@ -19,10 +19,10 @@ local warnDeadlyBlades	= mod:NewSpellAnnounce(92622, 3)
 local timerDeflection	= mod:NewBuffActiveTimer(10, 92614)
 local timerDeadlyBlades	= mod:NewBuffActiveTimer(5, 92622)
 
-local timerGauntlet		= mod:NewAchievementTimer(300, 5371, "achievementGauntlet")--timer minus 3 since i'm starting it with an event 3 second after emote.
+local timerGauntlet		= mod:NewAchievementTimer(300, 5371, "achievementGauntlet")
 
 function mod:OnCombatStart(delay)
-	timerGauntlet:Cancel()--it actually cancels a few seconds before engage but this doesn't require localisation and extra yell checks.
+	timerGauntlet:Cancel()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
