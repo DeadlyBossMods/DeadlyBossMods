@@ -20,6 +20,8 @@ local warnCurse		= mod:NewTargetAnnounce(79345, 3)
 local warnWell		= mod:NewSpellAnnounce(79340, 2)
 local warnShard		= mod:NewSpellAnnounce(79002, 2)
 
+local specWarnGrip	= mod:NewSpecialWarningInterrupt(79351)
+
 local timerGrip		= mod:NewTargetTimer(5, 79351)
 local timerCurse	= mod:NewTargetTimer(15, 79345)
 
@@ -42,6 +44,8 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(82858, 92667) then
 		warnShield:Show()
+	elseif args:IsSpellID(79351) then
+		specWarnGrip:Show()
 	end
 end
 
