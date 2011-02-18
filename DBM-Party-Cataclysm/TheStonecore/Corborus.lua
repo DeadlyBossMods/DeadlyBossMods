@@ -14,22 +14,22 @@ mod:RegisterEvents(
 
 local warnCrystalBarrage	= mod:NewSpellAnnounce(81634, 2)
 local warnDampening			= mod:NewSpellAnnounce(82415, 2)
-local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 2)
-local warnEmerge			= mod:NewAnnounce("WarnEmerge", 2)
+local warnSubmerge			= mod:NewAnnounce("WarnSubmerge", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local warnEmerge			= mod:NewAnnounce("WarnEmerge", 2, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 local specWarnCrystalBarrage		= mod:NewSpecialWarningYou(81634)
 local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634)
 
 local timerDampening	= mod:NewCDTimer(10, 82415)
-local timerSubmerge		= mod:NewTimer(90, "TimerSubmerge")
-local timerEmerge		= mod:NewTimer(30, "TimerEmerge")
+local timerSubmerge		= mod:NewTimer(90, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
+local timerEmerge		= mod:NewTimer(30, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 mod:AddBoolOption("CrystalArrow")
 mod:AddBoolOption("RangeFrame")
 
 function mod:OnCombatStart(delay)
 	timerSubmerge:Start(30-delay)
-	self:ScheduleMethod(30, "Submerge")
+	self:ScheduleMethod(30-delay, "Submerge")
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -43,7 +43,7 @@ end
 
 function mod:Submerge()
 	warnSubmerge:Show()
-	timerEmerge:Show()
+	timerEmerge:Start()
 	timerDampening:Cancel()
 	self:ScheduleMethod(30, "Emerge")
 	if self.Options.RangeFrame then
@@ -53,7 +53,7 @@ end
 
 function mod:Emerge()
 	warnEmerge:Show()
-	timerEmerge:Show()
+	timerSubmerge:Start()
 	self:ScheduleMethod(90, "Submerge")
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
@@ -75,7 +75,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				x, y = GetPlayerMapPosition(uId)
 			end
 			if inRange then
-				specWarnCrystalBarrageClose:Show()
+				specWarnCrystalBarrageClose:Show(args.destName)
 				if self.Options.CrystalArrow then
 					DBM.Arrow:ShowRunAway(x, y, 8, 5)
 				end

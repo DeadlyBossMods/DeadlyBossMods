@@ -408,8 +408,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerEmerge		= "Emerge",
-	TimerSubmerge	= "Submerge"
+	TimerEmerge		= "Next Emerge",
+	TimerSubmerge	= "Next Submerge"
 })
 
 L:SetOptionLocalization({
@@ -440,11 +440,22 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnCrystalStorm		= "Crystal Storm - Take cover"
+	WarnAirphase			= "Airphase",
+	WarnGroundphase			= "Groundphase",
+	specWarnCrystalStorm	= "Crystal Storm - Take cover"
+})
+
+L:SetTimerLocalization({
+	TimerAirphase			= "Next Airphase",
+	TimerGroundphase		= "Next Groundphase"
 })
 
 L:SetOptionLocalization({
-	specWarnCrystalStorm		= "Show special warning for $spell:92265"
+	WarnAirphase			= "Show warning when Slabhide lifts off",
+	WarnGroundphase			= "Show warning when Slabhide lands",
+	TimerAirphase			= "Show timer for next airphase",
+	TimerGroundphase		= "Show timer for next groundphase",
+	specWarnCrystalStorm	= "Show special warning for $spell:92265"
 })
 
 -------------------------

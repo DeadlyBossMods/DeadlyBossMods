@@ -42,7 +42,7 @@ local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
 local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)--is this a CD or a next timer?
 local timerPermaFrostCD		= mod:NewCDTimer(10, 93233)
-local timerSoothingBreezeCD	= mod:NewCDTimer(22, 86205)--needs more work, works fine as a CD timer for now, but it also depends on bosses energy on whether or not he casts this instead of spores.
+local timerSoothingBreezeCD	= mod:NewNextTimer(32.5, 86205)--needs more work, works fine as a CD timer for now, but it also depends on bosses energy on whether or not he casts this instead of spores.
 local timerSpecial			= mod:NewTimer(95, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD. Shortened cause sometimes slipstreams end early, even though cd is a little longer
 local timerSpecialActive	= mod:NewTimer(15, "timerSpecialActive", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
 
@@ -128,7 +128,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(86205) then
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			warnSoothingBreeze:Show()--possibly change to target scanning and announce whether he's casting it on himself or one of his flowers.
-			timerSoothingBreezeCD:Show()
+			timerSoothingBreezeCD:Start()
 		end
 	elseif args:IsSpellID(86192) then
 		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then
@@ -166,14 +166,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 			--timerStormShieldCD:Start()--Trying an anti spam experiment of starting this timer somewhere else to minimize time it spends on screen.
 		end
 	elseif args:IsSpellID(86281) and GetTime() - poisonSpam > 3 then-- Poison Toxic Warning (at Heroic, Poison Toxic damage is too high, so warning needed)
+		poisonSpam = GetTime()
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then
 			warnPoisonToxic:Show()
 			timerPoisonToxic:Show()
 			timerPoisonToxicCD:Start()
-			if poisonSpam > 30 then--We only want to start soothing breeze cd timer reset on first set of spores, not second, doing this accomplishes that goal.
-				timerSoothingBreezeCD:Start()--Experimental but looks good so far.
-			end
-			poisonSpam = GetTime()
 		end
 		if poisonCounter < 1 then
 			poisonCounter = 1
