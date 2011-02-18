@@ -412,8 +412,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Emerge",
-	TimerSubmerge	= "Se sumerge"
+	TimerEmerge	= "Siguiente Emerger",
+	TimerSubmerge	= "Siguiente Sumergirse"
 })
 
 L:SetOptionLocalization({
@@ -447,10 +447,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAirphase			= "Fase aerea",
+	WarnGroundphase			= "Fase en tierra",
 	specWarnCrystalStorm		= "Tormenta de Cristales - Protégete"
 })
 
+L:SetTimerLocalization({
+	TimerAirphase			= "Siguiente Fase aerea",
+	TimerGroundphase		= "Siguiente Fase en tierra"
+})
+
 L:SetOptionLocalization({
+	WarnAirphase			= "Mostrar aviso cuando Pielpétrea despega",
+	WarnGroundphase			= "Mostrar aviso cuando Pielpétrea aterriza",
+	TimerAirphase			= "Mostrar tiempo para siguiente Fase aerea",
+	TimerGroundphase		= "Mostrar tiempo para siguiente Fase en tierra",
 	specWarnCrystalStorm		= "Mostrar aviso especial para $spell:92265"
 })
 
