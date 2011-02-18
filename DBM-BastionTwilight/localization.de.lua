@@ -21,7 +21,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	YellOnEngulfing			= "Schreie bei $spell:86622",
-	YellOnMeteor			= "Schreie bei $spell:88518",
+	YellOnTwilightMeteor	= "Schreie bei $spell:88518",
 	YellOnTwilightBlast		= "Schreie bei $spell:92898",
 	TwilightBlastArrow		= "Zeige DBM Pfeil, wenn $spell:92898 in deiner Nähe ist.",
 	RangeFrame				= "Zeige Abstandsfenster (10 m)",

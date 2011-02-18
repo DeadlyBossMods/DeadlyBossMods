@@ -22,15 +22,15 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDazzlingDestruction	= "為$spell:86408顯示警告",
-	WarnDeepBreath		= "為$spell:86059顯示警告",
-	WarnTwilightShift	= "為$spell:93051顯示警告",
-	YellOnEngulfing		= "中了$spell:86622時大喊",
-	YellOnMeteor		= "中了$spell:88518時大喊",
-	YellOnTwilightBlast	= "中了$spell:92898時大喊",
-	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
-	RangeFrame		= "顯示距離框 (10碼)",
-	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+	WarnDeepBreath			= "為$spell:86059顯示警告",
+	WarnTwilightShift		= "為$spell:93051顯示警告",
+	YellOnEngulfing			= "中了$spell:86622時大喊",
+	YellOnTwilightMeteor	= "中了$spell:88518時大喊",
+	YellOnTwilightBlast		= "中了$spell:92898時大喊",
+	TwilightBlastArrow		= "當你附近的人中了$spell:92898時顯示DBM箭頭",
+	RangeFrame				= "顯示距離框 (10碼)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization({

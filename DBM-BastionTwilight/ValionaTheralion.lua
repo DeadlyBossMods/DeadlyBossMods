@@ -51,7 +51,7 @@ local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 10)
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("YellOnEngulfing", true, "announce")
-mod:AddBoolOption("YellOnMeteor", false, "announce")
+mod:AddBoolOption("YellOnTwilightMeteor", false, "announce")
 mod:AddBoolOption("YellOnTwilightBlast", false, "announce")
 mod:AddBoolOption("TwilightBlastArrow")
 mod:AddBoolOption("BlackoutIcon")
@@ -256,7 +256,7 @@ function mod:UNIT_AURA(uId)
 		if UnitDebuff("player", meteorTarget) and not markWarned then
 			specWarnTwilightMeteorite:Show()
 			timerTwilightMeteorite:Start()
-			if self.Options.YellOnMeteor then
+			if self.Options.YellOnTwilightMeteor then
 				SendChatMessage(L.YellMeteor, "SAY")
 			end
 			markWarned = true

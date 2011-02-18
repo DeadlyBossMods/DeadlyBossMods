@@ -25,9 +25,9 @@ L:SetOptionLocalization({
 	WarnDeepBreath			= "Mostrar aviso para $spell:86059",
 	WarnTwilightShift		= "Mostrar aviso para $spell:93051",
 	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
-	YellOnMeteor			= "Gritar cuando tengas $spell:88518",
-	YellOnTwilightBlast			= "Gritar cuando tengas $spell:92898",
-	TwilightBlastArrow			= "Mostrar flecha cuando $spell:92898 está cerca de ti",
+	YellOnTwilightMeteor	= "Gritar cuando tengas $spell:88518",
+	YellOnTwilightBlast		= "Gritar cuando tengas $spell:92898",
+	TwilightBlastArrow		= "Mostrar flecha cuando $spell:92898 está cerca de ti",
 	RangeFrame				= "Mostrar distancia (10 yardas)",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
