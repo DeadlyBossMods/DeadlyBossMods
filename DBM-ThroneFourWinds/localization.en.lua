@@ -60,7 +60,6 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	summonSquall	=	"Storms! I summon you to my side!",
---	phase2		=	"Your futile persistance angers me!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
 	phase3		=	"Enough! I will no longer be contained!"
 })
 

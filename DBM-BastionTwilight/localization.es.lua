@@ -34,7 +34,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",
+	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",--Change this to what deep breath emote is.
 	YellEngulfing				= "¡Trago de magia en mi!",
 	YellMeteor				= "¡Meteorito Crepuscular en mi!",
 	YellTwilightBlast		= "¡Explosión Crepuscular en mi!"

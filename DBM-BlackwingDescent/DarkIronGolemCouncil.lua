@@ -79,6 +79,7 @@ local berserkTimer				= mod:NewBerserkTimer(600)
 
 local soundBomb					= mod:NewSound(80094)
 
+mod:AddBoolOption("YellBombTarget", false)
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("BombTargetIcon")
@@ -183,6 +184,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBombTarget:Show()
 			soundBomb:Play()
+			if args:IsPlayer() and self.Options.YellBombTarget then
+				SendChatMessage(L.SayBomb, "SAY")
+			end
 		end
 		if self.Options.BombTargetIcon then
 			if fixateIcon < 1 then

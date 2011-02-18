@@ -51,6 +51,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "為$spell:92053的施放顯示計時器",
 	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
+	YellBombTarget			= "中了$spell:80094時大喊",
 	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -61,8 +62,8 @@ L:SetMiscLocalization({
 	Magmatron			= "熔岩號",
 	Electron			= "雷電號",
 	Toxitron			= "烈毒號",
-	Arcanotron			= "秘法號"
-
+	Arcanotron			= "秘法號",
+	SayBomb				= "Poison Bomb on me!"--Translate
 })
 
 ----------------
@@ -207,7 +208,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+	NefAoe				= "The air crackles with electricity!",--Translate
 	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
-	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
+	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--Translate
 	YellCinder			= "我中了爆裂灰燼!"
 })
