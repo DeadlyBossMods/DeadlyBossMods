@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
+	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"UNIT_DIED",
 	"CHAT_MSG_MONSTER_YELL"
@@ -21,9 +22,11 @@ local warnTracking			= mod:NewTargetAnnounce(78092, 3)
 local warnAirphase			= mod:NewAnnounce("WarnAirphase", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 3, 77611)
+local warnObnoxious			= mod:NewCastAnnounce(92702, 3, nil, false)
 
 local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840)
 local specWarnTracking		= mod:NewSpecialWarningYou(78092)
+local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92702, false)
 
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(46.5, 77840)
@@ -83,6 +86,13 @@ function mod:SPELL_AURA_REMOVED(args)
 		if self.Options.TrackingIcon then
 			self:SetIcon(args.destName, 0)
 		end
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(92677, 92702) then
+		warnObnoxious:Show()
+		specWarnObnoxious:Show()
 	end
 end
 

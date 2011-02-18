@@ -101,15 +101,11 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(77826, 94124, 94125, 94126) and args:GetSrcCreatureID() == 41270 then--Onyxia's Breath
-		if self:GetUnitCreatureId("target") == 41270 then--Only warn you for ony's breath, if you are Targeting Ony
-			warnOnyShadowflameBreath:Show()
-			timerOnyBreathCD:Start()
-		end
+		warnOnyShadowflameBreath:Show()
+		timerOnyBreathCD:Start()
 	elseif args:IsSpellID(77826, 94124, 94125, 94126) and args:GetSrcCreatureID() == 41376 then--Nefarians Breath
-		if self:GetUnitCreatureId("target") == 41376 then--Only warn you for Nef's breath, if you are Targeting Nef
-			warnNefShadowflameBreath:Show()
-			timerNefBreathCD:Start()
-		end
+		warnNefShadowflameBreath:Show()
+		timerNefBreathCD:Start()
 	elseif args:IsSpellID(80734) then
 		warnBlastNova:Show()
 		if args.sourceGUID == UnitGUID("target") then--Only show warning/timer for your own target.
