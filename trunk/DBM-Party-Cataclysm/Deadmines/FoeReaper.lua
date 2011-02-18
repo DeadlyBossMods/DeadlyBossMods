@@ -49,7 +49,7 @@ function mod:HarvestTarget()
 				x, y = GetPlayerMapPosition(uId)
 			end
 			if inRange then
-				specWarnHarvestNear:Show()
+				specWarnHarvestNear:Show(targetname)
 			end
 		end
 	end
