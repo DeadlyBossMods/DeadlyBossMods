@@ -18,8 +18,8 @@ mod:RegisterEvents(
 
 local warnSonicBreath		= mod:NewSpellAnnounce(78075, 3)
 local warnTracking			= mod:NewTargetAnnounce(78092, 3)
-local warnAirphase			= mod:NewAnnounce("WarnAirphase", 3)
-local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 3)
+local warnAirphase			= mod:NewAnnounce("WarnAirphase", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local warnGroundphase		= mod:NewAnnounce("WarnGroundphase", 3, "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
 local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 3, 77611)
 
 local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840)
@@ -27,8 +27,8 @@ local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
 local timerSearingFlame		= mod:NewNextTimer(46.5, 77840)
-local timerAirphase			= mod:NewTimer(85, "TimerAirphase")--These both need more work
-local timerGroundphase		= mod:NewTimer(31.5, "TimerGroundphase")--I just never remember to log and /yell at right times since they lack most accurate triggers.
+local timerAirphase			= mod:NewTimer(85, "TimerAirphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")--These both need more work
+local timerGroundphase		= mod:NewTimer(31.5, "TimerGroundphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")--I just never remember to log and /yell at right times since they lack most accurate triggers.
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -48,7 +48,7 @@ end
 function mod:OnCombatStart(delay)
 	timerSonicBreath:Start(25-delay)
 	timerSearingFlame:Start(45-delay)
-	timerAirphase:Start(90)
+	timerAirphase:Start(90-delay)
 	shieldsLeft = 10
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
