@@ -47,7 +47,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRepentance:Show()
 		if mod.Options.BossHealthAdds then
 			DBM.BossHealth:AddBoss(43927, L.HarbringerDarkness)
-			DBM.BossHealth:AddBoss(48906)
+			DBM.BossHealth:RemoveBoss(48906)
 		end
 	elseif args:IsSpellID(82255) then
 		warnSoulSever:Show(args.destName)
@@ -72,7 +72,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:UNIT_DIED(args)
-	if self:GetCIDFromGUID(args.destGUID) == 43612 and mod.Options.BossHealthAdds then
+	if self:GetCIDFromGUID(args.destGUID) == 43927 and mod.Options.BossHealthAdds then
 		DBM.BossHealth:RemoveBoss(43927)
 		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
 	end

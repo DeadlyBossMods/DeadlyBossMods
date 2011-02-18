@@ -11,7 +11,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"UNIT_DIED"
 )
 
 local warnLavaBolt		= mod:NewCastAnnounce(76171, 2)
@@ -92,5 +93,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(76234) then
 		warnMindFog:Show()
 		timerMindFog:Start()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if self:GetCIDFromGUID(args.destGUID) == 40788 and self:IsInCombat() then
+		DBM:EndCombat(self)
 	end
 end
