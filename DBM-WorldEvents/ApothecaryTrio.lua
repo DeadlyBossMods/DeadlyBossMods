@@ -50,7 +50,7 @@ function mod:CHAT_MSG_MONSTER_SAY(msg)
 	end
 end
 
-function mod:OnSync(msg, arg)
+function mod:OnSync(msg)
 	if msg == "TrioPulled" then
 		if self.Options.TrioActiveTimer then
 			timerHummel:Start()
