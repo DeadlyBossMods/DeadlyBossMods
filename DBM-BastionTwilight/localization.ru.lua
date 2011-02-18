@@ -25,7 +25,7 @@ L:SetOptionLocalization({
 	WarnDeepBreath			= "Показывать предупреждение для $spell:86059",
 	WarnTwilightShift		= "Показывать предупреждение для $spell:93051",
 	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
-	YellOnMeteor			= "Крикнуть если на вас $spell:88518",
+	YellOnTwilightMeteor	= "Крикнуть если на вас $spell:88518",
 	YellOnTwilightBlast		= "Крикнуть если на вас $spell:92898",
 	TwilightBlastArrow		= "Показать стрелку DBM когда $spell:92898 около вас",
 	RangeFrame				= "Окно проверки дистанции (10)",
