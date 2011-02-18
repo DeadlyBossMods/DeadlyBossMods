@@ -150,8 +150,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "Fase aerea",
-	TimerGroundphase	= "Fase en tierra"
+	TimerAirphase		= "Siguente Fase aerea",
+	TimerGroundphase	= "Siguente Fase en tierra"
 })
 
 L:SetMiscLocalization({
