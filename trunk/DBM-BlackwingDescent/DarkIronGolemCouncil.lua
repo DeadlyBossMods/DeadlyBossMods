@@ -184,7 +184,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBombTarget:Show()
 			soundBomb:Play()
-			if args:IsPlayer() and self.Options.YellBombTarget then
+			if self.Options.YellBombTarget then
 				SendChatMessage(L.SayBomb, "SAY")
 			end
 		end
