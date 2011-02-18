@@ -34,7 +34,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Terrible phase trigger, even transcriptor couldn't grab anything more usefull than this :(
+	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Change this to what deep breath emote is.
 	YellEngulfing			= "На МНЕ - Избыточная магия!",
 	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
 	YellTwilightBlast		= "На МНЕ - Сумеречный взрыв!"

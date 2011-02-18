@@ -63,6 +63,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	summonSquall		= "폭풍이여! 너를 소환하노라!",
---	phase2				= "집요한 것들. 이젠 화가 나는구나!" "Your futile persistance angers me!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
 	phase3				= "그만! 더는 자제하지 않겠다!" -- check "Enough! I will no longer be contained!"
 })

@@ -52,6 +52,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Mostrar tiempo para lanzamiento de $spell:92053",
 	timerArcaneBlowbackCast	= "Mostrar tiempo para lanzamiento de $spell:91879",
+	YellBombTarget			= "Gritar cuando tengas $spell:80094",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -62,7 +63,8 @@ L:SetMiscLocalization({
 	Magmatron	= "Magmatron",
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
-	Arcanotron	= "Arcanotron"
+	Arcanotron	= "Arcanotron",
+	SayBomb		= "Poison Bomb on me!"--translate
 })
 
 ----------------
@@ -208,8 +210,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NefAoe				= "¡El aire crepita cargado de electricidad!",
-	YellPhase2		= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",--translate
-	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--translate
-	YellCinder			= "Explosive Cinders on me!"--translate
+	NefAoe			= "¡El aire crepita cargado de electricidad!",
+	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate
+	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate
+	YellCinder		= "Explosive Cinders on me!"--translate
 })

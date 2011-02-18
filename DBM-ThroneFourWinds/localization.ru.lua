@@ -62,6 +62,5 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	summonSquall    ="Буря! Приди мне на помощь!", -- or this: Ветра! Повинуйтесь моей воле!
---	phase2          ="Ваши жалкие попытки сопротивления приводят меня в ярость!",--Not used, Acid rain is, but just in case there is reliability issues with that, localize this anyways.
 	phase3          ="Довольно! Меня ничто не в силах сдерживать!"
 })
