@@ -32,7 +32,7 @@ local timerParalysisCD		= mod:NewCDTimer(35, 84030)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
-mod:AddBoolOption("ShowDrakeHealth", true)
+--mod:AddBoolOption("ShowDrakeHealth", true)
 
 local spamFuriousRoar = 0
 
@@ -51,8 +51,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnParalysis:Show()
 		timerParalysis:Start()
 		timerParalysisCD:Start()
-	elseif args:IsSpellID(84092, 83601, 83603, 83611) and self.Options.ShowDrakeHealth then	-- drycoded, needs verification (Whelps not shown in Boss Health Frame)
-		DBM.BossHealth:AddBoss(self:GetCIDFromGUID(args.sourceGUID), args.sourceName)
+--[[	elseif args:IsSpellID(84092, 83601, 83603, 83611) and self.Options.ShowDrakeHealth then	-- drycoded, needs verification (Whelps not shown in Boss Health Frame)
+		DBM.BossHealth:AddBoss(self:GetCIDFromGUID(args.sourceGUID), args.sourceName)--]]
 	end
 end
 
@@ -88,9 +88,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:UNIT_DIED(args)
+--[[function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if self.Options.ShowDrakeHealth and (cid == 44652 or cid == 44645 or cid == 44797 or cid == 44650) then
 		DBM.BossHealth:RemoveBoss(cid)
 	end
-end
+end--]]
