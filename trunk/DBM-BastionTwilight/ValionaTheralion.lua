@@ -252,7 +252,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_AURA(uId)
-	if uId == "player" then
+	if uId ~= "player" then return end
 		if UnitDebuff("player", meteorTarget) and not markWarned then
 			specWarnTwilightMeteorite:Show()
 			timerTwilightMeteorite:Start()

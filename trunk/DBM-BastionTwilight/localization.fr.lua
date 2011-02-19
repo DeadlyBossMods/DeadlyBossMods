@@ -134,7 +134,7 @@ L:SetOptionLocalization({
 	YellOnCorrupting	= "Crier sur $spell:93178",
 	CorruptingCrashArrow	= "Afficher la flèche DBM lorsque $spell:93178 est près de vous",
 	InfoFrame			= "Afficher la fenêtre d'info pour le sort $spell:82235",
-	RangeFrame		= "Afficher la fenêtre de portée (6) pour $spell:82235",
+	RangeFrame		= "Afficher la fenêtre de portée (5) pour $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 

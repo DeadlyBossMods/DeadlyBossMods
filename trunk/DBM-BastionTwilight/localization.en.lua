@@ -131,7 +131,7 @@ L:SetOptionLocalization({
 	YellOnCorrupting		= "Yell on $spell:93178",
 	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
 	InfoFrame				= "Show info frame for $spell:82235",
-	RangeFrame				= "Show range frame (6) for $spell:82235",
+	RangeFrame				= "Show range frame (5) for $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
