@@ -133,7 +133,7 @@ L:SetOptionLocalization({
 	WarnPhase2Soon			= "2 단계 사전 경고 보기",
 	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 있을 경우 DBM 화살표 보기",
 	InfoFrame				= "$spell:82235의 정보 프레임 보기",
-	RangeFrame				= "$spell:82235의 거리 프레임(6m) 보기",
+	RangeFrame				= "$spell:82235의 거리 프레임(5m) 보기",
 	YellOnCorrupting		= "$spell:93178 외치기",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
