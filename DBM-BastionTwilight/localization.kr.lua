@@ -145,17 +145,27 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Sinestra")
 
 L:SetGeneralLocalization({
-	name =	"시네스트라"
+   name =   "시네스트라"
 })
 
 L:SetWarningLocalization({
+   WarnEggWeaken   = "알 보호막 제거",
+   WarnDragon      = "새끼용 등장"
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+   TimerEggWeakening   = "알 보호막 제거",
+   TimerDragon         = "다음 새끼용 등장"
 })
 
 L:SetOptionLocalization({
+   WarnEggWeaken      = "알 보호막 제거 경고 보기",
+   WarnDragon         = "새끼용 등장 경고 보기",
+   TimerEggWeakening   = "알 보호막 제거 까지 남은 타이머 보기",
+   TimerDragon         = "다음 새끼용 등장 타이머 보기"
+})
+
+L:SetMiscLocalization({
+   YellDragon    = "얘들아, 먹어치워라",
+   YellEgg       = "이게 약해진 걸로 보이느냐"   
 })
