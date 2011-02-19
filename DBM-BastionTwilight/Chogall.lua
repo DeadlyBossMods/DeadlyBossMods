@@ -23,6 +23,8 @@ local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:Is
 local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
 local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3)
 local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3)
+local warnFlamingDestruction		= mod:NewSpellAnnounce(81194, 4)
+local warnEmpoweredShadows			= mod:NewSpellAnnounce(81572, 4)
 local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, false)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
@@ -36,9 +38,13 @@ local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178, false)--Su
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
 local timerFesterBlood				= mod:NewCDTimer(40, 82299)--40 seconds after an adherent is summoned
+local timerFlamingDestruction		= mod:NewBuffActiveTimer(10, 81194)
+local timerEmpoweredShadows			= mod:NewBuffActiveTimer(9, 81572)
 local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
 local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 local timerSickness					= mod:NewBuffActiveTimer(5, 82235)
+
+local berserkTimer					= mod:NewBerserkTimer(600
 
 mod:AddBoolOption("SetIconOnWorship", true)
 mod:AddBoolOption("YellOnCorrupting", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
@@ -99,6 +105,7 @@ function mod:OnCombatStart(delay)
 	worshipCooldown = 21
 	blazeSpam = 0
 	sickSpam = 0
+	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Bloodlevel)
 		DBM.InfoFrame:Show(5, "power", 25, ALTERNATE_POWER_INDEX)
@@ -123,6 +130,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(showWorshipWarning)
 		self:Schedule(0.3, showWorshipWarning)
+	elseif args:IsSpellID(81194, 93264, 93265, 93266) then
+		warnFlamingDestruction:Show()
+		timerFlamingDestruction:Start()
+	elseif args:IsSpellID(81572, 93218, 93219, 93220) then
+		warnEmpoweredShadows:Show()
+		timerEmpoweredShadows:Start()
 	end
 end
 
