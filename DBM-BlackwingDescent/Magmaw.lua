@@ -117,6 +117,8 @@ end
 -- heroic phase 2
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if (msg == L.YellPhase2 or msg:find(L.YellPhase2)) and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
+		timerInferno:Cancel()
+		specWarnInfernoSoon:Cancel()
 		warnPhase2:Show()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(5)

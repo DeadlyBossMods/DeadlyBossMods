@@ -10,6 +10,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
@@ -30,6 +31,13 @@ local warnHailBones				= mod:NewSpellAnnounce(94104, 3, nil, false)	-- spams a l
 local warnCinder				= mod:NewTargetAnnounce(79339, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
+local warnDominion				= mod:NewTargetAnnounce(79318, 3)
+
+local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198)
+local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
+local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
+local specWarnCinder			= mod:NewSpecialWarningYou(79339)
+local specWarnStolenPower		= mod:NewSpecialWarningStack(80626, nil, 150)
 
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
 local timerElectrocute			= mod:NewCastTimer(5, 81198)
@@ -41,11 +49,9 @@ local timerNefSwipeCD			= mod:NewTimer(10, "NefSwipeTimer", 77827, false)--Same 
 local timerOnyBreathCD			= mod:NewTimer(12, "OnyBreathTimer", 94124, mod:IsTank())--12-20 second variations
 local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank())--same as above
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
+local timerDominionCD			= mod:NewNextTimer(15, 79318)
 
-local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198)
-local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
-local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
-local specWarnCinder			= mod:NewSpecialWarningYou(79339)
+local berserkTimer				= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("YellOnCinder", true)
@@ -59,8 +65,9 @@ local shadowblazeTimer = 35
 local phase2ended = false
 local cinderIcons = 8
 local cinderTargets	= {}
+local dominionTargets = {}
 
---Credits to Bigwigs for this. Mine was inaccurate and posts complained theirs was better. I'll still try to verify by hand with good ole /yell macros each time i see a cast ;)
+--Credits to Bigwigs for this. Mine was inaccurate and posts complained theirs was better.
 function mod:ShadowBlazeTimer()
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		if shadowblazeTimer > 5 then--Keep it from dropping below 5
@@ -83,6 +90,12 @@ local function warnCinderTargets()
 	cinderIcons = 8
 end
 
+local function warnDominionTargets()
+	warnDominion:Show(table.concat(dominionTargets, "<, >"))
+	timerDominionCD:Start()
+	table.wipe(dominionTargets)
+end
+
 function mod:OnCombatStart(delay)
 	deaths = 0
 	spamHailBones = 0
@@ -90,7 +103,12 @@ function mod:OnCombatStart(delay)
 	spamLightningDischarge = 0
 	shadowblazeTimer = 35
 	phase2ended = false
-	timerLightningDischarge:Start(30-delay)--First one seems pretty precise
+	table.wipe(cinderTargets)
+	table.wipe(dominionTargets)
+	timerLightningDischarge:Start(30-delay)--First one seems pretty precise (it happens at same time nef lands.)
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		berserkTimer:Start(-delay)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -133,6 +151,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnCinderTargets)
 		self:Schedule(0.3, warnCinderTargets)
+	elseif args:IsSpellID(80573, 80591, 80592, 80621) or args:IsSpellID(80622, 80623, 80624) or args:IsSpellID(80625, 80626, 80627) then
+		dominionTargets[#dominionTargets + 1] = args.destName
+		self:Unschedule(warnDominionTargets)
+		self:Schedule(1, warnDominionTargets)
+	end
+end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(80626) and args:IsPlayer() and (args.amount or 1) >= 150 then
+		specWarnStolenPower:Show(args.amount)
 	end
 end
 
@@ -191,6 +219,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNefSwipeCD:Cancel()
 		timerOnyBreathCD:Cancel()
 		timerNefBreathCD:Cancel()
+		timerDominionCD:Cancel()
 		timerShadowflameBarrage:Start()
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
