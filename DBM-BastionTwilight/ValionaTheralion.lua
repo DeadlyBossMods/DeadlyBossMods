@@ -253,14 +253,13 @@ end
 
 function mod:UNIT_AURA(uId)
 	if uId ~= "player" then return end
-		if UnitDebuff("player", meteorTarget) and not markWarned then
-			specWarnTwilightMeteorite:Show()
-			timerTwilightMeteorite:Start()
-			if self.Options.YellOnTwilightMeteor then
-				SendChatMessage(L.YellMeteor, "SAY")
-			end
-			markWarned = true
-			self:Schedule(7, markRemoved)
+	if UnitDebuff("player", meteorTarget) and not markWarned then
+		specWarnTwilightMeteorite:Show()
+		timerTwilightMeteorite:Start()
+		if self.Options.YellOnTwilightMeteor then
+			SendChatMessage(L.YellMeteor, "SAY")
 		end
+		markWarned = true
+		self:Schedule(7, markRemoved)
 	end
 end
