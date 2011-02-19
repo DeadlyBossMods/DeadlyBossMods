@@ -88,9 +88,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
---[[function mod:UNIT_DIED(args)
+function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if self.Options.ShowDrakeHealth and (cid == 44652 or cid == 44645 or cid == 44797 or cid == 44650) then
 		DBM.BossHealth:RemoveBoss(cid)
 	end
-end--]]
+end
