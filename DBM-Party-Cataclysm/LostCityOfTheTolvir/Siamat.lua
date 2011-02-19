@@ -51,7 +51,7 @@ function mod:SPELL_CAST_START(args)
 		timerThunderCrash:Start()
 	elseif args:IsSpellID(91872) then
 		warnLightningCharge:Show()
-		if args.sourceGUID = thirdServant then--Third add to have spawned is dying and casting Lightning Charge
+		if args.sourceGUID == thirdServant then--Third add to have spawned is dying and casting Lightning Charge
 			specWarnPhase2Soon:Show()
 			timerPhase2Start:Start()--Phase 2 starts 5 seconds after 3rd add casts static charge regardless of whether or not other adds are dead.
 		end
