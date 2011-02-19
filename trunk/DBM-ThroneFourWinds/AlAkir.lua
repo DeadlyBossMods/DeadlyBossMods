@@ -36,6 +36,8 @@ local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDeathKnight)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
 
+local berserkTimer			= mod:NewBerserkTimer(600)
+
 mod:AddBoolOption("LightningRodIcon")
 
 local lastWindburst = 0
@@ -45,6 +47,7 @@ function mod:OnCombatStart(delay)
 	timerWindBurstCD:Start(20-delay)
 	lastWindburst = 0
 	phase2Started = false
+	berserkTimer:Start(-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)

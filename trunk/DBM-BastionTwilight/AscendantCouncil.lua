@@ -43,6 +43,7 @@ local warnChainLightning	= mod:NewSpellAnnounce(83300, 2)
 local warnLightningBlast	= mod:NewCastAnnounce(83070, 3)
 local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
+local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070)
 local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
 --Elementium Monstrosity
 local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
@@ -394,7 +395,7 @@ function mod:SPELL_CAST_START(args)
 			soundGlaciate:Play()
 		end
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
-		if self:GetUnitCreatureId("target") == 43687 then--Only warn people on that boss to interrupt it, whole raid doesn't need to know.
+		if self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687 then--Only warn people on that boss to interrupt it, whole raid doesn't need to know.
 			specWarnHydroLance:Show()
 		end
 	elseif args:IsSpellID(82699) then
@@ -416,6 +417,9 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(83070, 92454, 92455, 92456) then
 		warnLightningBlast:Show()
 		timerLightningBlast:Start()
+		if self:GetUnitCreatureId("target") == 43688 or self:GetUnitCreatureId("focus") == 43688 then
+			specWarnLightningBlast:Show()
+		end
 	elseif args:IsSpellID(83067, 92469, 92470, 92470) then
 		warnThundershock:Show()
 		timerThundershockCast:Show()
