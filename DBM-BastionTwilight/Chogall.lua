@@ -44,7 +44,7 @@ local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHea
 local timerCreationsCD				= mod:NewNextTimer(30, 82414)
 local timerSickness					= mod:NewBuffActiveTimer(5, 82235)
 
-local berserkTimer					= mod:NewBerserkTimer(600
+local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnWorship", true)
 mod:AddBoolOption("YellOnCorrupting", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
