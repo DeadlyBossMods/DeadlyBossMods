@@ -141,17 +141,27 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Sinestra")
 
 L:SetGeneralLocalization({
-	name =	"Sinestra"
+   name =   "Sinestra"
 })
 
 L:SetWarningLocalization({
+   WarnEggWeaken   = "Twilight Carapace Removed on Egg",
+   WarnDragon      = "Twilight Whelp Spawned"
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+   TimerEggWeakening   = "Egg Weakening",
+   TimerDragon         = "Next Twilight Whelp"
 })
 
 L:SetOptionLocalization({
+   WarnEggWeaken      = "Show warning when Egg got weaken",
+   WarnDragon         = "Show warning when Twilight Whelp Spawns",
+   TimerEggWeakening   = "Show timer for Egg Weakening",
+   TimerDragon         = "Show timer for new Twilight Whelp"
+})
+
+L:SetMiscLocalization({
+   YellDragon    = "Feed, children!  Take your fill from their meaty husks!",
+   YellEgg       = "You mistake this for weakness?  Fool!"   
 })
