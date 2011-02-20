@@ -37,6 +37,7 @@ local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198)
 local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
 local specWarnCinder			= mod:NewSpecialWarningYou(79339)
+local specWarnDominion			= mod:NewSpecialWarningYou(79318)
 local specWarnStolenPower		= mod:NewSpecialWarningStack(80626, nil, 150)
 
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
@@ -108,6 +109,7 @@ function mod:OnCombatStart(delay)
 	timerLightningDischarge:Start(30-delay)--First one seems pretty precise (it happens at same time nef lands.)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
+		timerDominionCD:Start(50-delay)
 	end
 end
 
@@ -151,15 +153,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		self:Unschedule(warnCinderTargets)
 		self:Schedule(0.3, warnCinderTargets)
-	elseif args:IsSpellID(80573, 80591, 80592, 80621) or args:IsSpellID(80622, 80623, 80624) or args:IsSpellID(80625, 80626, 80627) then
+	elseif args:IsSpellID(79318) then
 		dominionTargets[#dominionTargets + 1] = args.destName
 		self:Unschedule(warnDominionTargets)
-		self:Schedule(1, warnDominionTargets)
+		self:Schedule(0.3, warnDominionTargets)
+		if args:IsPlayer() then
+			specWarnDominion:Show()
+		end
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(80626) and args:IsPlayer() and (args.amount or 1) >= 150 then
+	if args:IsSpellID(80626, 80627) and args:IsPlayer() and (args.amount or 1) >= 150 then
 		specWarnStolenPower:Show(args.amount)
 	end
 end
