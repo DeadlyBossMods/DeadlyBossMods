@@ -13,7 +13,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSpecial			= "Huracan/Céfiro/Tormenta de granizo activados",
-	specWarnSpecial		= "¡Habilidades especiales activas!"
+	specWarnSpecial		= "¡Habilidades especiales activas!",
+	warnSpecialSoon		= "Habilidades especiales en 10 segundos!"
 })
 
 L:SetTimerLocalization({
@@ -21,16 +22,17 @@ L:SetTimerLocalization({
 	timerSpecialActive		= "Habilidades especiales activas"
 })
 
-L:SetMiscLocalization({
-	gatherstrength			= "%s empieza a extraer fuerza"
-})
-
 L:SetOptionLocalization({
 	warnSpecial			= "Mostrar aviso cuando Huracan/Céfiro/Tormenta de granizo sean lanzados",
 	specWarnSpecial		= "Mostrar aviso especial cuando se lanzan habilidades especiales",
 	timerSpecial		= "Mostrar cooldown de habilidades especiales",
 	timerSpecialActive	= "Mostrar tiempo de duración de habilidades especiales",
+	warnSpecialSoon		= "Mostrar pre-aviso 10 segundos antes de las habilidades especiales",
 	OnlyWarnforMyTarget	= "Solo mostrar avisos/tiempos para el objetivo y foco actual\n(Oculta el resto. ¡ESTO INCLUYE AL PULLEAR!)"
+})
+
+L:SetMiscLocalization({
+	gatherstrength			= "%s empieza a extraer fuerza"
 })
 
 ---------------

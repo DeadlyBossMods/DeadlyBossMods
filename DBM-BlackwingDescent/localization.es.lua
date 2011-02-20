@@ -64,7 +64,7 @@ L:SetMiscLocalization({
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
 	Arcanotron	= "Arcanotron",
-	SayBomb		= "Poison Bomb on me!"--translate
+	SayBomb		= "¡Bomba de veneno en mi!"
 })
 
 ----------------
@@ -89,7 +89,7 @@ L:SetMiscLocalization({
 	YellRed			= "rojo|r a la caldera!",
 	YellBlue		= "azul|r a la caldera!",
 	YellGreen		= "verde|r a la caldera!",
-	YellDark		= "oscuro|r a la caldera!",--translate
+	YellDark		= "oscura|r en el caldero!",
 	Red				= "Rojo",
 	Blue			= "Azul",
 	Green			= "Verde",
@@ -213,5 +213,5 @@ L:SetMiscLocalization({
 	NefAoe			= "¡El aire crepita cargado de electricidad!",
 	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate
 	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate
-	YellCinder		= "Explosive Cinders on me!"--translate
+	YellCinder		= "¡Cenizas explosivas en mi!"
 })

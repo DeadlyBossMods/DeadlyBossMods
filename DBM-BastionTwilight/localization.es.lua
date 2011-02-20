@@ -91,7 +91,7 @@ L:SetMiscLocalization({
 	Arion			= "Arion",
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Monstruosidad de Elementium",
-	Kill			= "Imposible..."--translate
+	Kill			= "Imposible..."
 })
 
 L:SetOptionLocalization({
@@ -148,13 +148,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
+	WarnDragon			= "Sale Cría Crepuscular"
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerEggWeakening	= "Huevo debilitándose",
+	TimerDragon			= "Siguiente Cría Crepuscular"
 })
 
 L:SetOptionLocalization({
+	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
+	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
+	TimerEggWeakening	= "Mostrar tiempo para Huevo Debilitado",
+	TimerDragon			= "Mostrar tiempo para que salga una nueva Cría Crepuscular"
+})
+
+L:SetMiscLocalization({
+	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",--translate
+	YellEgg				= "You mistake this for weakness?  Fool!"--translate
 })
