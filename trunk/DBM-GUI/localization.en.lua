@@ -54,7 +54,6 @@ L.EnableMiniMapIcon			= "Show minimap button"
 L.FixCLEUOnCombatStart		= "Clear combat log cache on pull"
 L.SetCurrentMapOnPull		= "Set Map to current zone on pull (ensures /range & /arrow accuracy)"
 L.UseMasterVolume			= "Use Master audio channel to play sound files. (4.0.6+)"
-L.HideTrivializedWarnings	= "Do not show warnings for abilities trivialized by your level. (WIP)"
 L.SKT_Enabled				= "Always show speed kill timer (Overrides boss-specific option)"
 L.Latency_Text				= "Set max latency sync threshold: %d"
 
