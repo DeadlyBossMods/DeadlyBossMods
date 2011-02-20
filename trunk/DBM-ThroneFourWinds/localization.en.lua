@@ -11,16 +11,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSpecial			= "Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial		= "Special Abilities Active!"
+	specWarnSpecial		= "Special Abilities Active!",
+	warnSpecialSoon		= "Special Abilities in 10 seconds!"
 })
 
 L:SetTimerLocalization({
-	timerSpecial			= "Special Abilities CD",
-	timerSpecialActive		= "Special Abilities Active"
-})
-
-L:SetMiscLocalization({
-	gatherstrength			= "%s begins to gather strength"
+	timerSpecial		= "Special Abilities CD",
+	timerSpecialActive	= "Special Abilities Active"
 })
 
 L:SetOptionLocalization({
@@ -28,7 +25,12 @@ L:SetOptionLocalization({
 	specWarnSpecial		= "Show special warning when special abilities are cast",
 	timerSpecial		= "Show timer for special abilities cooldown",
 	timerSpecialActive	= "Show timer for special abilities duration",
+	warnSpecialSoon		= "Show pre-warning 10 seconds before special abilities",
 	OnlyWarnforMyTarget	= "Only show warnings/timers for current & focus targets\n(Hides the rest. THIS INCLUDES PULL)"
+})
+
+L:SetMiscLocalization({
+	gatherstrength		= "%s begins to gather strength"
 })
 
 ---------------
@@ -62,4 +64,3 @@ L:SetMiscLocalization({
 	summonSquall	=	"Storms! I summon you to my side!",
 	phase3		=	"Enough! I will no longer be contained!"
 })
-
