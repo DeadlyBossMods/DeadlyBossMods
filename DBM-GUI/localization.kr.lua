@@ -55,7 +55,6 @@ L.EnableMiniMapIcon		= "Minimap 버튼 사용"
 L.FixCLEUOnCombatStart	= "전투 시작 할 때 전투 로그 수정"
 L.SetCurrentMapOnPull	= "현재 맵과 지역에서 풀링 켜기(/range & /arrow의 정확성 보장)"
 L.UseMasterVolume			= "기본 오디오 채널로 사운드 파일 실행(4.0.6+)"
-L.HideTrivializedWarnings	= "레벨에 맞지 않은 경고 보지 않기"
 L.SKT_Enabled			= "항상 빠르게 죽인 타이머 보기(각 보스에 포함된 특수 옵션 참고)"
 L.Latency_Text			= "최대 지연시간 설정 : %d"
 
