@@ -25,6 +25,7 @@ local warnWindBlast			= mod:NewSpellAnnounce(86193, 3)
 local warnStormShield		= mod:NewSpellAnnounce(95865, 3)
 local warnPoisonToxic	 	= mod:NewSpellAnnounce(86281, 3)
 local warnGatherStrength	= mod:NewTargetAnnounce(86307, 4)
+local warnSpecialSoon		= mod:NewAnnounce("warnSpecial", 2, "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--Hurricane/Sleet Storm/Zephyr in single announce
 local warnSpecial			= mod:NewAnnounce("warnSpecial", 3, "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--Hurricane/Sleet Storm/Zephyr in single announce
 
 local specWarnSpecial		= mod:NewSpecialWarning("specWarnSpecial")
@@ -64,6 +65,7 @@ function mod:OnCombatStart(delay)
 	specialsEnded = 0
 	iceSpam = 0
 	GatherStrengthwarned = false
+	warnSpecialSoon:Schedule(80-delay)
 	timerSpecial:Start(90-delay)
 	enrageTimer:Start(-delay)
 	if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
@@ -88,6 +90,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(84651, 93117, 93118, 93119) and args:GetDestCreatureID() == 45870 and GetTime() - specialsEnded >= 3 then--Zephyr stacks on Anshal
 		if (args.amount or 1) >= 15 then--Special has ended when he's at 15 stacks.
+			warnSpecialSoon:Cancel()
+			warnSpecialSoon:Schedule(85)
 			timerSpecial:Start()
 			specialsEnded = GetTime()
 			if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
@@ -105,6 +109,8 @@ mod.SPELL_AURA_APPLIED_DOSE = mod.SPELL_AURA_APPLIED
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(84644, 84643) and GetTime() - specialsEnded >= 3 then--Sleet Storm, Hurricane.
+		warnSpecialSoon:Cancel()
+		warnSpecialSoon:Schedule(85)
 		timerSpecial:Start()
 		specialsEnded = GetTime()
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
