@@ -61,7 +61,7 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if arg:IsSpellID(92946) then
+	if args:IsSpellID(92946) then
 		warnIndomitable:Show()
 	elseif args:IsSpellID(92955) then
 		warnWrack:Show(args.destName)
