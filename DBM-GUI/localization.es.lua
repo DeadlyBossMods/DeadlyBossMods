@@ -56,7 +56,6 @@ L.EnableMiniMapIcon	= "Mostrar icono de DBM en el mapa"
 L.FixCLEUOnCombatStart		= "Limpiar el log de combate al pullear"
 L.SetCurrentMapOnPull		= "Establecer mapa a la zona actual al pullear (Asegura la precisión de /distancia y /arrow)"
 L.UseMasterVolume			= "Usar el canal de audio Principal para reproducir archivos de sonido. (4.0.6+)"
-L.HideTrivializedWarnings	= "No mostrar avisos para habilidades triviales para tu nivel."
 L.SKT_Enabled			= "Mostrar siempre el contador para superar récord de tiempo (Sobreescribe la opción de bosses específicos)"
 L.Latency_Text				= "Umbral de latencia máxima para sincronización: %d"
 

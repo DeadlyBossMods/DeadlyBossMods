@@ -81,7 +81,6 @@ DBM.DefaultOptions = {
 	ShowSpecialWarnings = true,
 	AlwaysShowHealthFrame = false,
 	ShowBigBrotherOnCombatStart = false,
-	HideTrivializedWarnings = false,
 	UseMasterVolume = true,
 	RangeFramePoint = "CENTER",
 	RangeFrameX = 50,
@@ -2634,12 +2633,6 @@ function bossModPrototype:LatencyCheck()
 		return select(3, GetNetStats()) < DBM.Options.LatencyThreshold--Uses realm "home" ping for CN wow.
 	end
 end
-
---[[W.I.P. Will be a function that compares level to players level, which can be used in boss mods specificly via TrivialCheck(85)
-function bossModPrototype:TrivialCheck(lvl)
-	if not DBM.Options.HideTrivializedWarnings return end
-	return UnitLevel("player") >= lvl
-end--]]
 
 local function getTalentpointsSpent(spellID)
 	local spellName = GetSpellInfo(spellID)

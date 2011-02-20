@@ -1207,7 +1207,6 @@ local function CreateOptionsMenu()
 		local FixCLEUOnCombatStart		= generaloptions:CreateCheckButton(L.FixCLEUOnCombatStart,  true, nil, "FixCLEUOnCombatStart")
 		local SetCurrentMapOnPull		= generaloptions:CreateCheckButton(L.SetCurrentMapOnPull,  true, nil, "SetCurrentMapOnPull")
 		local UseMasterVolume			= generaloptions:CreateCheckButton(L.UseMasterVolume,  true, nil, "UseMasterVolume")--Needs someone smarter then me to hide/disable this option if not 4.0.6+
---		local HideTrivializedWarnings	= generaloptions:CreateCheckButton(L.HideTrivializedWarnings,  true, nil, "HideTrivializedWarnings")
 		MiniMapIcon:SetScript("OnClick", function(self)
 			DBM:ToggleMinimapButton()
 			self:SetChecked( DBM.Options.ShowMinimapButton )
