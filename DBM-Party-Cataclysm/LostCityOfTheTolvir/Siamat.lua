@@ -75,7 +75,7 @@ function mod:SPELL_SUMMON(args)
 		warnStaticShock:Show()
 		servantSpawn = servantSpawn + 1
 		if servantSpawn == 3 then--Third add spawned
-			thirdServant = args.sourceGUID
+			thirdServant = args.destGUID
 		end
 	end
 end
