@@ -1,4 +1,4 @@
-if GetLocale() ~= "ruRU" then return end
+﻿if GetLocale() ~= "ruRU" then return end
 
 local L
 
@@ -22,7 +22,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "%s близок к обретению абсолютной силы"
+	gatherstrength			= "%s близок к обретению абсолютной силы",
+	Anshal			= "Anshal",
+	Nezir			= "Nezir",
+	Rohash			= "Rohash"
 })
 
 L:SetOptionLocalization({

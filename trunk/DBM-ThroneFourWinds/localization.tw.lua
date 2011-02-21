@@ -22,7 +22,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "%s開始從剩下的風之王那裡取得力量!"
+	gatherstrength			= "%s開始從剩下的風之王那裡取得力量!",
+	Anshal			= "Anshal",
+	Nezir			= "Nezir",
+	Rohash			= "Rohash"
 })
 
 L:SetOptionLocalization({
