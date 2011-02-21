@@ -27,6 +27,7 @@ local warnFeud				= mod:NewSpellAnnounce(88872, 3)
 local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 
+local specWarnFailure		= mod:NewSpecialWarningSpell(88853)
 local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer())
 local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
 
@@ -35,7 +36,7 @@ local timerBreakCD			= mod:NewNextTimer(15, 82881)--Also double attack CD
 local timerMassacre			= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
 local timerCausticSlime		= mod:NewNextTimer(19, 88915)--always 19 seconds after massacre.
-local timerFeud				= mod:NewBuffActiveTimer(26, 88872)
+local timerFailure			= mod:NewBuffActiveTimer(26, 88853)
 
 local berserkTimer			= mod:NewBerserkTimer(450)--Heroic
 
@@ -104,6 +105,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDoubleAttack:Show()
 	elseif args:IsSpellID(88853) then
 		botOffline = true
+		specWarnFailure:Show()
+		timerFailure:Start()
 	elseif not botOffline and args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
 		slimeTargets[#slimeTargets + 1] = args.destName
 		if self.Options.SetIconOnSlime then
@@ -147,8 +150,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(88872) then
 		warnFeud:Show()
-		timerFeud:Start()
-		feud = true
 	elseif args:IsSpellID(82934, 95524) then
 		warnPhase2:Show()
 		timerCausticSlime:Cancel()
