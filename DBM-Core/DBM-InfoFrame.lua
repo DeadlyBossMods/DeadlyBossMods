@@ -203,6 +203,8 @@ end
 --  OnUpdate  --
 ----------------
 function onUpdate(self, elapsed)
+	local addedSelf = false
+	local color = NORMAL_FONT_COLOR
 	self:ClearLines()
 	if headerText then
 		self:AddLine(headerText, 255, 255, 255, 0)
@@ -213,14 +215,17 @@ function onUpdate(self, elapsed)
 		updatePower()
 	end
 	for i = 1, #sortedLines do
-		if self:NumLines() > maxlines then break end
+		if self:NumLines() > maxlines or not addedSelf and DBM.Options.InfoFrameShowSelf and self:NumLines() > maxlines-1 then break end
 		local name = sortedLines[i]
 		local power = lines[name]
-		local color = NORMAL_FONT_COLOR
 		self:AddDoubleLine(name, power, color.R, color.G, color.B, 255, 255, 255)	-- (leftText, rightText, left.R, left.G, left.B, right.R, right.G, right.B)
-												-- Add a method to color the power value?
+		if name == UnitName("player") then 						-- Add a method to color the power value?
+			addedSelf = true
+		end
 	end
-		
+	if not addedSelf and DBM.Options.InfoFrameShowSelf then
+		self:AddDoubleLine(UnitName("player"), lines[UnitName("player")], color.R, color.G, color.B, 255, 255, 255)
+	end
 	self:Show()
 end
 
