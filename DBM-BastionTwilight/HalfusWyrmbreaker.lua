@@ -17,7 +17,6 @@ mod:RegisterEvents(
 
 local warnBreath			= mod:NewSpellAnnounce(83707, 3)
 local warnFuriousRoar		= mod:NewSpellAnnounce(83710, 3)
-local warnCycloneWinds		= mod:NewSpellAnnounce(83612, 3)
 local warnTimeDilation		= mod:NewSpellAnnounce(83601, 3)
 local warnVengeance			= mod:NewSpellAnnounce(87683, 3)
 local warnShadowNova		= mod:NewSpellAnnounce(83703, 3)
@@ -51,7 +50,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnParalysis:Show()
 		timerParalysis:Start()
 		timerParalysisCD:Start()
-	elseif args:IsSpellID(83601, 83603, 83611, 83612) and self.Options.ShowDrakeHealth then	-- 83601 confirmed (Time Warden), rest needs confirmation
+	elseif args:IsSpellID(83601, 83603, 83611) and self.Options.ShowDrakeHealth then
 		DBM.BossHealth:AddBoss(self:GetCIDFromGUID(args.sourceGUID), args.sourceName)
 	end
 end
@@ -81,8 +80,8 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(83612) then--84092?
-		warnCycloneWinds:Show()
+	if args:IsSpellID(83612) then
+		DBM.BossHealth:AddBoss(self:GetCIDFromGUID(args.sourceGUID), args.sourceName)
 	elseif args:IsSpellID(83601) then
 		warnTimeDilation:Show()
 	end
