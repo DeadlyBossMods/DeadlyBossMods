@@ -142,30 +142,37 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAirphase		= "Airphase",
-	WarnGroundphase		= "Groundphase",
-	WarnShieldsLeft		= "Ancient Dwarven Shield used - %d left"
+	WarnAirphase			= "Airphase",
+	WarnGroundphase			= "Groundphase",
+	WarnShieldsLeft			= "Ancient Dwarven Shield used - %d left",
+	warnAddSoon				= "Obnoxious Fiend summoned",
+	specWarnAddTargetable	= "%s is targetable"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "Next Airphase",
-	TimerGroundphase	= "Next Groundphase"
+	TimerAirphase			= "Next Airphase",
+	TimerGroundphase		= "Next Groundphase"
+})
+
+L:SetOptionLocalization({
+	WarnAirphase			= "Show warning when Atramedes lifts off",
+	WarnGroundphase			= "Show warning when Atramedes lands",
+	WarnShieldsLeft			= "Show warning when a Ancient Dwarven Shield gets used",
+	warnAddSoon				= "Show warning when Nefarian summons adds",
+	specWarnAddTargetable	= "Show special warning when adds are targetable",
+	TimerAirphase			= "Show timer for next airphase",
+	TimerGroundphase		= "Show timer for next groundphase",
+	InfoFrame				= "Show info frame for sound levels",
+	YellOnPestered			= "Yell on $spell:92685",
+	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Ancient Dwarven Shield",
 	Soundlevel				= "Sound Level",
+	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
+	NefAdd					= "Atramedes, the heroes are right THERE!",
 	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
-})
-
-L:SetOptionLocalization({
-	WarnAirphase		= "Show warning when Atramedes lifts off",
-	WarnGroundphase		= "Show warning when Atramedes lands",
-	WarnShieldsLeft		= "Show warning when a Ancient Dwarven Shield gets used",
-	TimerAirphase		= "Show timer for next airphase",
-	TimerGroundphase	= "Show timer for next groundphase",
-	InfoFrame			= "Show info frame for sound levels",
-	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 ----------------
