@@ -24,7 +24,10 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "%s commence à rassembler ses forces à partir des autres Seigneurs du Vent !"
+	gatherstrength			= "%s commence à rassembler ses forces à partir des autres Seigneurs du Vent !",
+	Anshal			= "Anshal",
+	Nezir			= "Nezir",
+	Rohash			= "Rohash"
 })
 
 L:SetOptionLocalization({
