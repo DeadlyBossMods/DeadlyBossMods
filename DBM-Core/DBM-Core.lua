@@ -91,6 +91,7 @@ DBM.DefaultOptions = {
 	InfoFramePoint = "CENTER",
 	InfoFrameX = 75,
 	InfoFrameY = -75,
+	InfoFrameShowSelf = false,
 	HPFramePoint = "CENTER",
 	HPFrameX = -50,
 	HPFrameY = 50,
