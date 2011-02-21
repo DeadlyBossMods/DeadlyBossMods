@@ -1802,9 +1802,8 @@ do
 			end
 			clearTargetList()
 		end
-	end
+	end--]]
 end
---]]
 
 do
 	-- called for all mob chat events
