@@ -213,5 +213,6 @@ L:SetMiscLocalization({
 	NefAoe			= "¡El aire crepita cargado de electricidad!",
 	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate
 	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate
-	YellCinder		= "¡Cenizas explosivas en mi!"
+	YellCinder		= "¡Cenizas explosivas en mi!",
+	Onyxia				= "Onyxia"
 })

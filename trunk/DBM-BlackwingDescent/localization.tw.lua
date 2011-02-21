@@ -211,5 +211,6 @@ L:SetMiscLocalization({
 	NefAoe				= "The air crackles with electricity!",--Translate
 	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
 	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--Translate
-	YellCinder			= "我中了爆裂灰燼!"
+	YellCinder			= "我中了爆裂灰燼!",
+	Onyxia				= "Onyxia"
 })
