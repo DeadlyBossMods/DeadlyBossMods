@@ -5,6 +5,11 @@ mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(41376, 41270)
 mod:SetZone()
 
+mod:SetBossHealthInfo(
+	41376, L.name,		-- L.name = "Nefarian"
+	41270, L.Onyxia
+)
+
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
@@ -248,5 +253,7 @@ function mod:UNIT_DIED(args)
 			timerShadowflameBarrage:Cancel()
 			phase2ended = true
 		end
+	elseif cid == 41270 then
+		DBM.BossHealth:RemoveBoss(cid)
 	end
 end

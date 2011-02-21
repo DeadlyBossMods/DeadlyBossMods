@@ -209,5 +209,6 @@ L:SetMiscLocalization({
 	NefAoe				= "The air crackles with electricity!",
 	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
 	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
-	YellCinder			= "Explosive Cinders on me!"
+	YellCinder			= "Explosive Cinders on me!",
+	Onyxia				= "Onyxia"
 })
