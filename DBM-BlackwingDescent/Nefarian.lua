@@ -57,7 +57,7 @@ local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank(
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
 local timerDominionCD			= mod:NewNextTimer(15, 79318)
 
-local berserkTimer				= mod:NewBerserkTimer(600)
+local berserkTimer				= mod:NewBerserkTimer(630)
 
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("YellOnCinder", true)
