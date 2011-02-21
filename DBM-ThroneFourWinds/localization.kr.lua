@@ -1,4 +1,4 @@
-if GetLocale() ~= "koKR" then return end
+﻿if GetLocale() ~= "koKR" then return end
 local L
 
 ------------------------
@@ -22,7 +22,10 @@ L:SetTimerLocalization({
 
 L:SetMiscLocalization({
 --	gatherstrength			= "%s에게서 힘을 모으기 시작합니다!"
-	gatherstrength			= "힘을 모으기 시작합니다!"
+	gatherstrength			= "힘을 모으기 시작합니다!",
+	Anshal			= "Anshal",
+	Nezir			= "Nezir",
+	Rohash			= "Rohash"
 })
 
 L:SetOptionLocalization({
