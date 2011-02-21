@@ -73,6 +73,7 @@ DBM_CORE_RANGECHECK_LOCK			= "Lock frame"
 
 DBM_CORE_INFOFRAME_LOCK				= "Lock frame"
 DBM_CORE_INFOFRAME_HIDE				= "Hide"
+DBM_CORE_INFOFRAME_SHOW_SELF			= "Always show your power"		-- Always show your own power value even if you are below the threshold
 
 DBM_LFG_INVITE						= "LFG Invite"
 

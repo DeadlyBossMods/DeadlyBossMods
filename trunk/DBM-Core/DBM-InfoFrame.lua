@@ -73,6 +73,9 @@ do
 	local function toggleLocked()
 		DBM.Options.InfoFrameLocked = not DBM.Options.InfoFrameLocked
 	end
+	local function toggleShowSelf()
+		DBM.Options.InfoFrameShowSelf = not DBM.Options.InfoFrameShowSelf
+	end
 	
 	function initializeDropdown(dropdownFrame, level, menu)
 		local info
@@ -83,7 +86,15 @@ do
 				info.checked = true
 			end
 			info.func = toggleLocked
-			UIDropDownMenu_AddButton(info, 1)			
+			UIDropDownMenu_AddButton(info, 1)
+
+			info = UIDropDownMenu_CreateInfo()
+			info.text = DBM_CORE_INFOFRAME_SHOW_SELF
+			if DBM.Options.InfoFrameShowSelf then
+				info.checked = true
+			end
+			info.func = toggleShowSelf
+			UIDropDownMenu_AddButton(info, 1)		
 
 			info = UIDropDownMenu_CreateInfo()
 			info.text = DBM_CORE_INFOFRAME_HIDE
@@ -181,6 +192,9 @@ local function updatePower()
 		if not UnitIsDeadOrGhost("raid"..i) and UnitPower("raid"..i, pIndex)/UnitPowerMax("raid"..i, pIndex)*100 >= infoFrameThreshold then
 			lines[UnitName("raid"..i)] = UnitPower("raid"..i, pIndex)
 		end
+	end
+	if DBM.Options.InfoFrameShowSelf and not lines[UnitName("player")] and UnitPower("player", pIndex) > 0 then
+		lines[UnitName("player")] = UnitPower("player", pIndex)
 	end
 	updateLines()
 end
