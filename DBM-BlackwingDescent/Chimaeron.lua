@@ -104,19 +104,17 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDoubleAttack:Show()
 	elseif args:IsSpellID(88853) then
 		botOffline = true
-	elseif args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
+	elseif not botOffline and args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
 		slimeTargets[#slimeTargets + 1] = args.destName
-		if not botOffline then--Don't set icons during feud, set them any other time.
-			if self.Options.SetIconOnSlime then
-				table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
-				self:UnscheduleMethod("SetSlimeIcons")
-				if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-					self:ScheduleMethod(0.4, "SetSlimeIcons")--0.3 might work, but i know 0.4 works for sure so i don't feel like rush changing it.
-				end
+		if self.Options.SetIconOnSlime then
+			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
+			self:UnscheduleMethod("SetSlimeIcons")
+			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
+				self:ScheduleMethod(0.4, "SetSlimeIcons")--0.3 might work, but i know 0.4 works for sure so i don't feel like rush changing it.
 			end
-			self:Unschedule(showSlimeWarning)
-			self:Schedule(0.3, showSlimeWarning)
 		end
+		self:Unschedule(showSlimeWarning)
+		self:Schedule(0.3, showSlimeWarning)
 	end
 end
 
