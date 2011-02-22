@@ -13,19 +13,13 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSpecial			= "Активация - Урагана/Зефира/Вихря",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial		= "Активация особой способности!"
+	specWarnSpecial		= "Активация особой способности!",
+	warnSpecialSoon		= "Особые способности через 10 сек!"
 })
 
 L:SetTimerLocalization({
-	timerSpecial			= "Перезарядка особой способности",
-	timerSpecialActive		= "Активация особой способности"
-})
-
-L:SetMiscLocalization({
-	gatherstrength			= "%s близок к обретению абсолютной силы",
-	Anshal			= "Anshal",
-	Nezir			= "Nezir",
-	Rohash			= "Rohash"
+	timerSpecial		= "Перезарядка особой способности",
+	timerSpecialActive	= "Активация особой способности"
 })
 
 L:SetOptionLocalization({
@@ -33,7 +27,15 @@ L:SetOptionLocalization({
 	specWarnSpecial		= "Спец-предупреждение о применении особых способностя",
 	timerSpecial		= "Отсчет времени до восстановления особых способностей",
 	timerSpecialActive	= "Отсчет времени действия особых способностей",
+	warnSpecialSoon		= "Показать предупреждение за 10 секунд до применения особых способностей",
 	OnlyWarnforMyTarget	= "Показывать только таймеры/предупреждения для текуйщей цели и фокуса\n(Скрывает все остальное. ВКЛЮЧАЯ ПУЛЛ)"
+})
+
+L:SetMiscLocalization({
+	gatherstrength		= "%s близок к обретению абсолютной силы",
+	Anshal				= "Аншал",
+	Nezir				= "Незир",
+	Rohash				= "Рохаш"
 })
 
 ---------------
