@@ -53,11 +53,11 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Show the health of released drakes"
+})
+
+L:SetMiscLocalization({
 })
 
 ----------------------------------
@@ -71,11 +71,29 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnGrounded		= "Get Grounded buff",
-	SpecWarnSearingWinds	= "Get Searing Winds buff"
+	SpecWarnSearingWinds	= "Get Searing Winds buff",
+	warnGravityCoreJump		= "Gravity Core jumped to >%s<",
+	warnStaticOverloadJump	= "Static Overload jumped to >%s<"
 })
 
 L:SetTimerLocalization({
-	timerTransition		= "Phase Transition"
+	timerTransition			= "Phase Transition"
+})
+
+L:SetOptionLocalization({
+	SpecWarnGrounded		= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
+	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
+	timerTransition			= "Show Phase transition timer",
+	RangeFrame				= "Show range frame automatically when needed",
+	warnGravityCoreJump		= "Announce $spell:92075 jump targets",
+	warnStaticOverloadJump	= "Announce $spell:92067 jump targets",
+	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 L:SetMiscLocalization({
@@ -89,20 +107,6 @@ L:SetMiscLocalization({
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Elementium Monstrosity",
 	Kill			= "Impossible...."
-})
-
-L:SetOptionLocalization({
-	SpecWarnGrounded	= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
-	SpecWarnSearingWinds= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
-	timerTransition		= "Show Phase transition timer",
-	RangeFrame			= "Show range frame automatically when needed",
-	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
-	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
-	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
-	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
-	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 ----------------
@@ -121,11 +125,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	YellCrash			= "Corrupting Crash on me!",
-	Bloodlevel				= "Corruption"
-})
-
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Show pre-warning for Phase 2",
 	YellOnCorrupting		= "Yell on $spell:93178",
@@ -133,6 +132,11 @@ L:SetOptionLocalization({
 	InfoFrame				= "Show info frame for $spell:82235",
 	RangeFrame				= "Show range frame (5) for $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+})
+
+L:SetMiscLocalization({
+	YellCrash			= "Corrupting Crash on me!",
+	Bloodlevel				= "Corruption"
 })
 
 ----------------
