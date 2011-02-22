@@ -148,7 +148,9 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase		= "Fase aerea",
 	WarnGroundphase		= "Fase en tierra",
-	WarnShieldsLeft		= "Antiguo escudo enano usado - %d restantes"
+	WarnShieldsLeft		= "Antiguo escudo enano usado - %d restantes",
+	warnAddSoon				= "Maligno Execrable invocado",
+	specWarnAddTargetable	= "%s es targeteable"
 })
 
 L:SetTimerLocalization({
@@ -156,20 +158,25 @@ L:SetTimerLocalization({
 	TimerGroundphase	= "Siguente Fase en tierra"
 })
 
-L:SetMiscLocalization({
-	AncientDwarvenShield	= "Antiguo escudo enano",
-	Soundlevel				= "Nivel de sonido",
-	Airphase		= "¡Sí, corred! Con cada paso, vuestros corazones se aceleran. El latido, fuerte y clamoroso... Casi ensordecedor. ¡No podéis escapar!"
-})
-
 L:SetOptionLocalization({
 	WarnAirphase		= "Mostrar aviso cuando Atramedes levanta el vuelo",
 	WarnGroundphase		= "Mostrar aviso cuando Atramedes aterriza",
 	WarnShieldsLeft		= "Mostrar aviso cuando Antiguo escudo enano sea usado",
+	warnAddSoon				= "Mostrar aviso especial cuando Nefarian invoca adds",
+	specWarnAddTargetable	= "Mostrar aviso especial cuando los adds son targeteables",
 	TimerAirphase		= "Mostrar tiempo para siguiente Fase aerea",
 	TimerGroundphase	= "Mostrar tiempo para siguiente Fase en tierra",
 	InfoFrame			= "Mostrar información de los niveles de sonido",
+	YellOnPestered			= "Gritar cuando tengas $spell:92685",
 	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
+})
+
+L:SetMiscLocalization({
+	AncientDwarvenShield	= "Antiguo escudo enano",
+	Soundlevel				= "Nivel de sonido",
+	YellPestered			= "¡Maligno Execrable en mi!",
+	NefAdd					= "Atramedes, the heroes are right THERE!",--translate
+	Airphase		= "¡Sí, corred! Con cada paso, vuestros corazones se aceleran. El latido, fuerte y clamoroso... Casi ensordecedor. ¡No podéis escapar!"
 })
 
 ----------------

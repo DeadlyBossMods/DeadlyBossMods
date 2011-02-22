@@ -56,11 +56,11 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Mostrar la vida de los dragones liberados"
+})
+
+L:SetMiscLocalization({
 })
 
 ----------------------------------
@@ -74,11 +74,29 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnGrounded	= "Coge el bufo de Domeñado",
-	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales"
+	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales",
+	warnGravityCoreJump		= "¡Núcleo de gravedad se ha propagado a >%s<",
+	warnStaticOverloadJump	= "¡Sobrecarga estática se ha propagado a >%s<"
 })
 
 L:SetTimerLocalization({
 	timerTransition		= "Transición de fase"
+})
+
+L:SetOptionLocalization({
+	SpecWarnGrounded	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83581\n(~10seg antes de castear)",
+	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)",
+	timerTransition		= "Mostrar tiempo para transición de fase",
+	RangeFrame			= "Mostrar distancia cuando sea necesario",
+	warnGravityCoreJump		= "Anunciar los objetivos de la propagación de $spell:92538",
+	warnStaticOverloadJump	= "Announce los objetivos de la propagación de $spell:92467 ",
+	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 L:SetMiscLocalization({
@@ -92,20 +110,6 @@ L:SetMiscLocalization({
 	Terrastra		= "Terrastra",
 	Monstrosity		= "Monstruosidad de Elementium",
 	Kill			= "Imposible..."
-})
-
-L:SetOptionLocalization({
-	SpecWarnGrounded	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83581\n(~10seg antes de castear)",
-	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)",
-	timerTransition		= "Mostrar tiempo para transición de fase",
-	RangeFrame			= "Mostrar distancia cuando sea necesario",
-	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
-	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
-	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
-	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
-	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 ----------------
@@ -124,11 +128,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	YellCrash	= "¡Colisión en corrupción en mi!",
-	Bloodlevel		= "Corrupción"
-})
-
 L:SetOptionLocalization({
 	WarnPhase2Soon	= "Mostrar preaviso para Fase 2",
 	YellOnCorrupting	= "Gritar cuando tengas $spell:93178",
@@ -136,6 +135,11 @@ L:SetOptionLocalization({
 	InfoFrame			= "Mostrar información para $spell:82235",
 	RangeFrame			= "Mostrar distancia (5 yardas) para $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+})
+
+L:SetMiscLocalization({
+	YellCrash	= "¡Colisión en corrupción en mi!",
+	Bloodlevel		= "Corrupción"
 })
 
 ----------------
