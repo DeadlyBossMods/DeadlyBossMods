@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(43686, 43687, 43688, 43689, 43735)
 mod:SetZone()
-mod:SetUsedIcons(4, 5, 6, 7, 8)
+mod:SetUsedIcons(3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 mod:RegisterKill("yell", L.Kill)
@@ -36,6 +36,7 @@ local warnHardenSkin		= mod:NewSpellAnnounce(83718, 3)
 local warnQuakeSoon			= mod:NewPreWarnAnnounce(83565, 10, 3)
 local warnQuake				= mod:NewSpellAnnounce(83565, 4)
 local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
+local warnGravityCoreJump	= mod:NewAnnounce("warnGravityCoreJump", 4, 92075)--Jumped from player to player
 --Arion
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
 local warnDisperse			= mod:NewSpellAnnounce(83087, 3)
@@ -45,6 +46,7 @@ local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
 local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070)
 local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
+local warnStaticOverloadJump= mod:NewAnnounce("warnStaticOverloadJump", 4, 92067)--Jumped from player to player
 --Elementium Monstrosity
 local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
 local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
@@ -64,12 +66,14 @@ local timerHardenSkinCD		= mod:NewCDTimer(42, 83718)--This one is iffy, it isn't
 local timerEruptionCD		= mod:NewNextTimer(15, 83675, nil, mod:IsMelee())
 local timerQuakeCD			= mod:NewNextTimer(70, 83565)
 local timerQuakeCast		= mod:NewCastTimer(3, 83565)
+local timerGravityCoreCD	= mod:NewNextTimer(20, 92075)--Heroic
 --Arion
 local timerLightningRod		= mod:NewBuffActiveTimer(15, 83099)
 local timerDisperse			= mod:NewCDTimer(30, 83087)
 local timerLightningBlast	= mod:NewCastTimer(4, 83070)
 local timerThundershockCD	= mod:NewNextTimer(70, 83067)
 local timerThundershockCast	= mod:NewCastTimer(3, 83067)
+local timerStaticOverloadCD	= mod:NewNextTimer(20, 92067)--Heroic
 --Elementium Monstrosity
 local timerTransition		= mod:NewTimer(15, "timerTransition", 84918)
 local timerLavaSeedCD		= mod:NewCDTimer(23, 84913)
@@ -172,8 +176,10 @@ function mod:OnCombatStart(delay)
 	timerBurningBloodCD:Start(28-delay)--could be just as flakey as it is in combat though.
 	timerRisingFlames:Start(33-delay)--33-35 seconds after pull
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerGravityCoreCD:Start(25-delay)
+		timerStaticOverloadCD:Start(20-delay)
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(10)
+			DBM.RangeCheck:Show(8)
 		end
 	end
 end
@@ -213,7 +219,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)
+				DBM.RangeCheck:Show(8)
 			end
 		end
 		if self.Options.LightningRodIcon then
@@ -252,28 +258,38 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnFrostBeacon:Show()
 		end
 		if self.Options.FrostBeaconIcon then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, 3)
 		end
 	elseif args:IsSpellID(92067) then
-		warnStaticOverload:Show(args.destName)
+		if args:GetSrcCreatureID() == 43688 then--Arion
+			warnStaticOverload:Show(args.destName)
+			timerStaticOverloadCD:Start()--Only start CD when it's actually cast by arion and not another player.
+			if self.Options.StaticOverloadIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
+				self:SetIcon(args.destName, 4)
+			end
+		else
+			warnStaticOverloadJump:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnStaticOverload:Show()
 		end
-		if self.Options.StaticOverloadIcon then
-			self:SetIcon(args.destName, 4)
-		end
 	elseif args:IsSpellID(92075) then
-		warnGravityCore:Show(args.destName)
+		if args:GetSrcCreatureID() == 43689 then--Terrastra
+			warnGravityCore:Show(args.destName)
+			timerGravityCoreCD:Start()--Only start CD when it's actually cast by Terrastra and not another player.
+			if self.Options.GravityCoreIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
+				self:SetIcon(args.destName, 5)
+			end
+		else
+			warnGravityCoreJump:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnGravityCore:Show()
-		end
-		if self.Options.GravityCoreIcon then
-			self:SetIcon(args.destName, 5)
 		end
 	end
 end
 
-function mod:SPELL_AURA_REFRESH(args)
+function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied cause it causes issues with burning blood/heart of ice.
 	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
 		timerFrozen:Start(args.destName)
 		frozenTargets[#frozenTargets + 1] = args.destName
@@ -284,7 +300,7 @@ function mod:SPELL_AURA_REFRESH(args)
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)
+				DBM.RangeCheck:Show(8)
 			end
 		end
 		if self.Options.LightningRodIcon then
@@ -318,23 +334,33 @@ function mod:SPELL_AURA_REFRESH(args)
 			specWarnFrostBeacon:Show()
 		end
 		if self.Options.FrostBeaconIcon then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, 3)
 		end
 	elseif args:IsSpellID(92067) then
-		warnStaticOverload:Show(args.destName)
+		if args:GetSrcCreatureID() == 43688 then--Arion
+			warnStaticOverload:Show(args.destName)
+			timerStaticOverloadCD:Start()--Only start CD when it's actually cast by arion and not another player.
+			if self.Options.StaticOverloadIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
+				self:SetIcon(args.destName, 4)
+			end
+		else
+			warnStaticOverloadJump:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnStaticOverload:Show()
 		end
-		if self.Options.StaticOverloadIcon then
-			self:SetIcon(args.destName, 4)
-		end
 	elseif args:IsSpellID(92075) then
-		warnGravityCore:Show(args.destName)
+		if args:GetSrcCreatureID() == 43689 then--Terrastra
+			warnGravityCore:Show(args.destName)
+			timerGravityCoreCD:Start()--Only start CD when it's actually cast by Terrastra and not another player.
+			if self.Options.GravityCoreIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
+				self:SetIcon(args.destName, 5)
+			end
+		else
+			warnGravityCoreJump:Show(args.destName)
+		end
 		if args:IsPlayer() then
 			specWarnGravityCore:Show()
-		end
-		if self.Options.GravityCoreIcon then
-			self:SetIcon(args.destName, 5)
 		end
 	end
 end
@@ -354,11 +380,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	elseif args:IsSpellID(83099) then
 		timerLightningRod:Cancel(args.destName)
-		if args:IsPlayer() then
-			if self.Options.RangeFrame and not (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
-				DBM.RangeCheck:Hide()
-			end
-		end
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 0)
 		end
@@ -380,7 +401,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then	-- Shield Removed
-		if self:GetUnitCreatureId("target") == 43686 then
+		if self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686 then
 			specWarnRisingFlames:Show()
 		end
 	end
@@ -395,7 +416,7 @@ function mod:SPELL_CAST_START(args)
 			soundGlaciate:Play()
 		end
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
-		if self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687 then--Only warn people on that boss to interrupt it, whole raid doesn't need to know.
+		if self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687 then
 			specWarnHydroLance:Show()
 		end
 	elseif args:IsSpellID(82699) then
@@ -449,6 +470,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerRisingFlames:Cancel()
 		timerBurningBloodCD:Cancel()
 		timerHeartIceCD:Cancel()
+		timerGravityCoreCD:Cancel()
+		timerStaticOverloadCD:Cancel()
 		timerQuakeCD:Start(33)
 		timerThundershockCD:Start()
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
