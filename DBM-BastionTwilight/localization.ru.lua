@@ -27,7 +27,7 @@ L:SetOptionLocalization({
 	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
 	YellOnTwilightMeteor	= "Крикнуть если на вас $spell:88518",
 	YellOnTwilightBlast		= "Крикнуть если на вас $spell:92898",
-	TwilightBlastArrow		= "Показать стрелку DBM когда $spell:92898 около вас",
+	TwilightBlastArrow		= "Показывать стрелку DBM, когда $spell:92898 около вас",
 	RangeFrame				= "Окно проверки дистанции (10)",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
@@ -83,12 +83,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded	= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
-	SpecWarnSearingWinds= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
-	timerTransition		= "Показать таймер перехода в другую фазу",
-	RangeFrame			= "Автоматически показать окно проверки дистанции при надобности",
-	warnGravityCoreJump		= "Сообщать о целях на каторых распространяется $spell:92538",
-	warnStaticOverloadJump	= "Сообщать о целях на каторых распространяется $spell:92467",
+	SpecWarnGrounded	= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
+	SpecWarnSearingWinds= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
+	timerTransition		= "Показывать таймер перехода в другую фазу",
+	RangeFrame			= "Автоматически показывать окно проверки дистанции при надобности",
+	warnGravityCoreJump		= "Сообщать о целях, на которых распространяется $spell:92538",
+	warnStaticOverloadJump	= "Сообщать о целях, на которых распространяется $spell:92467",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -130,9 +130,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Показывать предупреждение о переходе на 2-ую фазу",
 	YellOnCorrupting		= "Крикнуть если на вас $spell:93178",
-	CorruptingCrashArrow	= "Показать стрелку DBM когда $spell:93178 около вас",
+	CorruptingCrashArrow	= "Показывать стрелку DBM, когда $spell:93178 около вас",
 	InfoFrame				= "Показывать информационное окно для $spell:82235",
-	RangeFrame				= "Показать окно проверки дистанции (5м) для $spell:82235",
+	RangeFrame				= "Показывать окно проверки дистанции (5м) для $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
 })
 
@@ -151,20 +151,20 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEggWeaken		= "С яиц убран Сумеречный панцирь",
-	WarnDragon			= "Появились Сумеречные дракончики"
+	WarnEggWeaken		= "С яиц убран сумеречный панцирь",
+	WarnDragon			= "Появились сумеречные дракончики"
 })
 
 L:SetTimerLocalization({
-	TimerEggWeakening	= "Снятие зашиты с Яиц",
+	TimerEggWeakening	= "Снятие зашиты с яиц",
 	TimerDragon			= "След. дракончики"
 })
 
 L:SetOptionLocalization({
-	WarnEggWeaken		= "Показывать предупреждение когда яйца ослабевают",
-	WarnDragon			= "Показывать предупреждение когда появляются Сумеречные дракончики",
-	TimerEggWeakening	= "Показать таймер снятия защиты с яиц",
-	TimerDragon			= "Показать таймер до новых Сумеречных дракончиков"
+	WarnEggWeaken		= "Показывать предупреждение, когда яйца ослабевают",
+	WarnDragon			= "Показывать предупреждение, когда появляются сумеречные дракончики",
+	TimerEggWeakening	= "Показывать таймер снятия защиты с яиц",
+	TimerDragon			= "Показывать таймер до новых сумеречных дракончиков"
 })
 
 L:SetMiscLocalization({
