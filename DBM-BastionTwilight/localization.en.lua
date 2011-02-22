@@ -72,8 +72,8 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	SpecWarnGrounded		= "Get Grounded buff",
 	SpecWarnSearingWinds	= "Get Searing Winds buff",
-	warnGravityCoreJump		= "Gravity Core jumped to >%s<",
-	warnStaticOverloadJump	= "Static Overload jumped to >%s<"
+	warnGravityCoreJump		= "Gravity Core spread to >%s<",
+	warnStaticOverloadJump	= "Static Overload spread to >%s<"
 })
 
 L:SetTimerLocalization({
@@ -85,8 +85,8 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
 	timerTransition			= "Show Phase transition timer",
 	RangeFrame				= "Show range frame automatically when needed",
-	warnGravityCoreJump		= "Announce $spell:92075 jump targets",
-	warnStaticOverloadJump	= "Announce $spell:92067 jump targets",
+	warnGravityCoreJump		= "Announce $spell:92538 spread targets",
+	warnStaticOverloadJump	= "Announce $spell:92467 spread targets",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
