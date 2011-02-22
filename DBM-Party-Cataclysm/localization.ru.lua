@@ -289,6 +289,19 @@ L:SetGeneralLocalization({
 	name = "Сиамат"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
 })
 
+L:SetWarningLocalization{
+	specWarnPhase2Soon	= "2-ая фаза через 5 сек"
+}
+
+L:SetTimerLocalization({
+	timerPhase2 	= "Начало 2-ой фазы"
+})
+
+L:SetOptionLocalization{
+	specWarnPhase2Soon	= "Показывать особое предупреждение перед началом 2-ой фазы (5 сек)",
+	timerPhase2 	= "Показать таймер начала 2-ой фазы"
+}
+
 ------------------------
 -- High Prophet Barim --
 ------------------------
@@ -405,19 +418,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEmerge	= "Появление",
+	WarnEmerge		= "Появление",
 	WarnSubmerge	= "Погружение"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Появление",
+	TimerEmerge		= "Появление",
 	TimerSubmerge	= "Погружение"
 })
 
 L:SetOptionLocalization({
-	WarnEmerge	= "Показывать предупреждения о появлении",
+	WarnEmerge		= "Показывать предупреждения о появлении",
 	WarnSubmerge	= "Показывать предупреждения о погружении",
-	TimerEmerge	= "Показывать таймер до появления",
+	TimerEmerge		= "Показывать таймер до появления",
 	TimerSubmerge	= "Показывать таймер до погружения",
 	CrystalArrow	= "Показать стрелку DBM когда $spell:81634 около вас",
 	RangeFrame		= "Окно проверки дистанции (5 м)"
@@ -442,10 +455,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAirphase				= "Воздушная фаза",
+	WarnGroundphase				= "Наземная фаза",
 	specWarnCrystalStorm		= "Кристальная буря - в укрытие!"
 })
 
+L:SetTimerLocalization({
+	TimerAirphase				= "След. воздушная фаза",
+	TimerGroundphase			= "След. наземная фаза"
+})
+
 L:SetOptionLocalization({
+	WarnAirphase				= "Показывать предупреждения когда Камнешкур взлетает",
+	WarnGroundphase				= "Показывать предупреждения когда Камнешкур приземляется",
+	TimerAirphase				= "Показывать таймер следующей воздушной фаза",
+	TimerGroundphase			= "Показывать таймер следующей наземной фаза",
 	specWarnCrystalStorm		= "Показывать особое предупреждение для $spell:92265"
 })
 

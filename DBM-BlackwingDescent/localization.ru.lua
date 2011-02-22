@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 	Electron		= "Электрон",
 	Toxitron		= "Токситрон",
 	Arcanotron		= "Чаротрон",
-	SayBomb			= "Poison Bomb on me!"--Translate
+	SayBomb			= "На МНЕ - Ядовитая бомба!"
 })
 
 ----------------
@@ -146,7 +146,9 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase		= "Воздушная фаза",
 	WarnGroundphase		= "Наземная фаза",
-	WarnShieldsLeft		= "Древний дворфийский щит - %d осталось"
+	WarnShieldsLeft		= "Древний дворфийский щит - %d осталось",
+	warnAddSoon				= "Призван Гнусный бес",
+	specWarnAddTargetable	= "%s - активен"
 })
 
 L:SetTimerLocalization({
@@ -154,20 +156,25 @@ L:SetTimerLocalization({
 	TimerGroundphase	= "Наземная фаза"
 })
 
+L:SetOptionLocalization({
+	WarnAirphase			= "Показывать предупреждение когда Атрамед взлетает",
+	WarnGroundphase			= "Показывать предупреждение когда Атрамед приземляется",
+	WarnShieldsLeft			= "Показывать предупреждение когда используется Древний дворфийский щит",
+	warnAddSoon				= "Показывать предупреждение когда Нефариан призывает помощников",
+	specWarnAddTargetable	= "Показывать особое предупреждение когда Гнусного беса можно взять в цель",
+	TimerAirphase			= "Показывать таймер до следующей воздушной фазы",
+	TimerGroundphase		= "Показывать таймер до следующей наземной фазы",
+	InfoFrame				= "Показывать информационное окно для уровня звуков",
+	YellOnPestered			= "Кричать, когда на вас $spell:92685",
+	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
+})
+
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "Древний дворфийский щит",
 	Soundlevel				= "Уровень звука",
+	YellPestered			= "На МНЕ - Гнусный бес!",--npc 49740
+	NefAdd					= "Атрамед, они вон там!",
 	Airphase				= "Да, беги! С каждым шагом твое сердце бьется все быстрее. Эти громкие, оглушительные удары... Тебе некуда бежать!"
-})
-
-L:SetOptionLocalization({
-	WarnAirphase		= "Показывать предупреждение когда Атрамед взлетает",
-	WarnGroundphase		= "Показывать предупреждение когда Атрамед приземляется",
-	WarnShieldsLeft		= "Показывать предупреждение когда используется Древний дворфийский щит",
-	TimerAirphase		= "Показывать таймер до следующей воздушной фазы",
-	TimerGroundphase	= "Показывать таймер до следующей наземной фазы",
-	InfoFrame			= "Показывать информационное окно для уровня звуков",
-	TrackingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 ----------------
@@ -212,5 +219,5 @@ L:SetMiscLocalization({
 	YellPhase2			= "Дерзкие смертные! Неуважение к чужой собственности нужно пресекать самым жестоким образом!",
 	YellPhase3			= "Я пытался следовать законам гостеприимства, но вы все никак не умрете! Придется отбросить условности и просто... УБИТЬ ВАС ВСЕХ!",
 	YellCinder			= "На МНЕ - Взрывчатая субстанция!",
-	Onyxia				= "Onyxia"
+	Onyxia				= "Ониксия"
 })

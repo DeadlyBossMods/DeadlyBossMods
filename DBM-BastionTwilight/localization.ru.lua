@@ -34,7 +34,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Тералион, я подожгу коридор. Не дай им уйти!",--Change this to what deep breath emote is.
+	Trigger1				= "Глубокий вдох",--Change this to what deep breath emote is.
 	YellEngulfing			= "На МНЕ - Избыточная магия!",
 	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
 	YellTwilightBlast		= "На МНЕ - Сумеречный взрыв!"
@@ -55,11 +55,11 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-})
-
 L:SetOptionLocalization({
 	ShowDrakeHealth		= "Показать здоровье подчиненного дракона"
+})
+
+L:SetMiscLocalization({
 })
 
 ----------------------------------
@@ -72,13 +72,30 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow			= ">%s< ниже 30%",
 	SpecWarnGrounded		= "Получите ауру заземления!",
-	SpecWarnSearingWinds	= "Получите ауру кружащихся ветров!"
+	SpecWarnSearingWinds	= "Получите ауру кружащихся ветров!",
+	warnGravityCoreJump		= "Гравитационное ядро на >%s<",
+	warnStaticOverloadJump	= "Статическая перегрузка на >%s<"
 })
 
 L:SetTimerLocalization({
 	timerTransition		= "Смена фаз"
+})
+
+L:SetOptionLocalization({
+	SpecWarnGrounded	= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
+	SpecWarnSearingWinds= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
+	timerTransition		= "Показать таймер перехода в другую фазу",
+	RangeFrame			= "Автоматически показать окно проверки дистанции при надобности",
+	warnGravityCoreJump		= "Сообщать о целях на каторых распространяется $spell:92538",
+	warnStaticOverloadJump	= "Сообщать о целях на каторых распространяется $spell:92467",
+	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 L:SetMiscLocalization({
@@ -92,21 +109,6 @@ L:SetMiscLocalization({
 	Terrastra		= "Террастра",
 	Monstrosity		= "Элементиевое чудовище",
 	Kill			= "Невозможно...."
-})
-
-L:SetOptionLocalization({
-	specWarnBossLow		= "Показать особое предупреждение, когда здоровье у боссов ниже 30%",
-	SpecWarnGrounded	= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
-	SpecWarnSearingWinds= "Показать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
-	timerTransition		= "Показать таймер перехода в другую фазу",
-	RangeFrame			= "Автоматически показать окно проверки дистанции при надобности",
-	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
-	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
-	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
-	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
-	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 ----------------
@@ -125,11 +127,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	YellCrash		= "На МНЕ - Оскверняющее сокрушение!",
-	Bloodlevel				= "Порча"
-})
-
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "Показывать предупреждение о переходе на 2-ую фазу",
 	YellOnCorrupting		= "Крикнуть если на вас $spell:93178",
@@ -137,6 +134,11 @@ L:SetOptionLocalization({
 	InfoFrame				= "Показывать информационное окно для $spell:82235",
 	RangeFrame				= "Показать окно проверки дистанции (5м) для $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+})
+
+L:SetMiscLocalization({
+	YellCrash				= "На МНЕ - Оскверняющее сокрушение!",
+	Bloodlevel				= "Порча"
 })
 
 ----------------
@@ -149,13 +151,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnEggWeaken		= "С яиц убран Сумеречный панцирь",
+	WarnDragon			= "Появились Сумеречные дракончики"
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerEggWeakening	= "Снятие зашиты с Яиц",
+	TimerDragon			= "След. дракончики"
 })
 
 L:SetOptionLocalization({
+	WarnEggWeaken		= "Показывать предупреждение когда яйца ослабевают",
+	WarnDragon			= "Показывать предупреждение когда появляются Сумеречные дракончики",
+	TimerEggWeakening	= "Показать таймер снятия защиты с яиц",
+	TimerDragon			= "Показать таймер до новых Сумеречных дракончиков"
+})
+
+L:SetMiscLocalization({
+	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",
+	YellEgg				= "You mistake this for weakness?  Fool!"   
 })
