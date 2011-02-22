@@ -36,7 +36,7 @@ local warnHardenSkin		= mod:NewSpellAnnounce(83718, 3)
 local warnQuakeSoon			= mod:NewPreWarnAnnounce(83565, 10, 3)
 local warnQuake				= mod:NewSpellAnnounce(83565, 4)
 local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
-local warnGravityCoreJump	= mod:NewAnnounce("warnGravityCoreJump", 4, 92075)--Jumped from player to player
+local warnGravityCoreJump	= mod:NewAnnounce("warnGravityCoreJump", 4, 92538, false)--Jumped from player to player. Potentially Spammy and off by default for a reason.
 --Arion
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
 local warnDisperse			= mod:NewSpellAnnounce(83087, 3)
@@ -46,7 +46,7 @@ local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
 local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070)
 local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
-local warnStaticOverloadJump= mod:NewAnnounce("warnStaticOverloadJump", 4, 92067)--Jumped from player to player
+local warnStaticOverloadJump= mod:NewAnnounce("warnStaticOverloadJump", 4, 92467, false)--Jumped from player to player. Potentially Spammy and off by default for a reason.
 --Elementium Monstrosity
 local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
 local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
@@ -260,31 +260,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
 		end
-	elseif args:IsSpellID(92067) then
+	elseif args:IsSpellID(92067, 92467, 92468) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92468 a guess.)
 		if args:GetSrcCreatureID() == 43688 then--Arion
 			warnStaticOverload:Show(args.destName)
 			timerStaticOverloadCD:Start()--Only start CD when it's actually cast by arion and not another player.
 			if self.Options.StaticOverloadIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
 				self:SetIcon(args.destName, 4)
 			end
+			if args:IsPlayer() then
+				specWarnStaticOverload:Show()
+			end
 		else
-			warnStaticOverloadJump:Show(args.destName)
+			warnStaticOverloadJump:Show(args.destName)--This basically is warning for 92467, 92468, which is just a spread debuff, not the dispel with other debuff kind.
 		end
-		if args:IsPlayer() then
-			specWarnStaticOverload:Show()
-		end
-	elseif args:IsSpellID(92075) then
+	elseif args:IsSpellID(92075, 92538, 92539) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92539 a guess.)
 		if args:GetSrcCreatureID() == 43689 then--Terrastra
 			warnGravityCore:Show(args.destName)
 			timerGravityCoreCD:Start()--Only start CD when it's actually cast by Terrastra and not another player.
 			if self.Options.GravityCoreIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
 				self:SetIcon(args.destName, 5)
 			end
+			if args:IsPlayer() then
+				specWarnGravityCore:Show()
+			end
 		else
-			warnGravityCoreJump:Show(args.destName)
-		end
-		if args:IsPlayer() then
-			specWarnGravityCore:Show()
+			warnGravityCoreJump:Show(args.destName)--This basically is warning for 92538, 92539, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	end
 end
@@ -336,31 +336,31 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
 		end
-	elseif args:IsSpellID(92067) then
+	elseif args:IsSpellID(92067, 92467, 92468) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92468 a guess.)
 		if args:GetSrcCreatureID() == 43688 then--Arion
 			warnStaticOverload:Show(args.destName)
 			timerStaticOverloadCD:Start()--Only start CD when it's actually cast by arion and not another player.
 			if self.Options.StaticOverloadIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
 				self:SetIcon(args.destName, 4)
 			end
+			if args:IsPlayer() then
+				specWarnStaticOverload:Show()
+			end
 		else
-			warnStaticOverloadJump:Show(args.destName)
+			warnStaticOverloadJump:Show(args.destName)--This basically is warning for 92467, 92468, which is just a spread debuff, not the dispel with other debuff kind.
 		end
-		if args:IsPlayer() then
-			specWarnStaticOverload:Show()
-		end
-	elseif args:IsSpellID(92075) then
+	elseif args:IsSpellID(92075, 92538, 92539) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92539 a guess.)
 		if args:GetSrcCreatureID() == 43689 then--Terrastra
 			warnGravityCore:Show(args.destName)
 			timerGravityCoreCD:Start()--Only start CD when it's actually cast by Terrastra and not another player.
 			if self.Options.GravityCoreIcon then--Only set icons on original, not really sure how to handle jump icons. Not really enough icons for that.
 				self:SetIcon(args.destName, 5)
 			end
+			if args:IsPlayer() then
+				specWarnGravityCore:Show()
+			end
 		else
-			warnGravityCoreJump:Show(args.destName)
-		end
-		if args:IsPlayer() then
-			specWarnGravityCore:Show()
+			warnGravityCoreJump:Show(args.destName)--This basically is warning for 92538, 92539, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	end
 end
