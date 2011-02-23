@@ -134,7 +134,8 @@ L:SetOptionLocalization({
 	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:93178 está cerca de ti",
 	InfoFrame			= "Mostrar información para $spell:82235",
 	RangeFrame			= "Mostrar distancia (5 yardas) para $spell:82235",
-	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317)
+	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
+	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
 L:SetMiscLocalization({
