@@ -14,8 +14,10 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"UNIT_HEALTH",
-	"UNIT_AURA"
+	"UNIT_AURA",
+	"UNIT_TARGET"
 )
 
 local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
@@ -47,6 +49,7 @@ local timerSickness					= mod:NewBuffActiveTimer(5, 82235)
 local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnWorship", true)
+mod:AddBoolOption("SetIconOnCreature", false)
 mod:AddBoolOption("YellOnCorrupting", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
 mod:AddBoolOption("CorruptingCrashArrow", false)--Subject to accuracy flaws so off by default.
 mod:AddBoolOption("RangeFrame")
@@ -58,6 +61,9 @@ local worshipIcon = 8
 local worshipCooldown = 21
 local blazeSpam = 0
 local sickSpam = 0
+local creatureGUIDs = {}
+local creatureAmount = 4
+local creatureIcon = 8
 local Corruption = GetSpellInfo(82235)
 
 local function showWorshipWarning()
@@ -65,6 +71,16 @@ local function showWorshipWarning()
 	table.wipe(worshipTargets)
 	worshipIcon = 8
 	timerWorshipCD:Start(worshipCooldown)
+end
+
+local function trySetTarget()
+	for i=1, GetNumRaidMembers() do
+		if self:GetCIDFromGUID(UnitGUID("raid"..i.."target")) == 44045 and not creatureGUIDs[UnitGUID("raid"..i.."target")] then
+			creatureGUIDs[UnitGUID("raid"..i.."target")] = true
+			self:SetIcon("raid"..i.."target", creatureIcon)
+			creatureIcon = creatureIcon - 1
+		end
+	end
 end
 
 function mod:CorruptingCrashTarget()
@@ -100,6 +116,7 @@ function mod:OnCombatStart(delay)
 --	timerFuryCD:Start(55-delay)--first fury of chogal is health based, 85%, cannot accurately time it.
 --	timerAdherent:Start(60-delay)--This is also health based?
 	table.wipe(worshipTargets)
+	table.wipe(creatureGUIDs)
 	prewarned_Phase2 = false
 	worshipIcon = 8
 	worshipCooldown = 21
@@ -163,6 +180,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82414, 93160, 93161, 93162) then
 		warnCreations:Show()
 		timerCreationsCD:Start()
+		table.wipe(creatureGUIDs)
+		creatureAmount = 4
+		creatureIcon = 8
 	elseif args:IsSpellID(82630) then
 		warnPhase2:Show()
 		timerAdherent:Cancel()
@@ -180,6 +200,12 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(81538, 93212, 93123, 93214) and args:IsPlayer() and GetTime() - blazeSpam >= 4 then
 		specWarnBlaze:Show()
 		blazeSpam = GetTime()
+	end
+end
+
+function mod:SPELL_MISSED(args)
+	if args:IsSpellID(82414) then
+		creatureAmount = creatureAmount - 1
 	end
 end
 
@@ -204,5 +230,11 @@ function mod:UNIT_AURA(uId)
 			DBM.RangeCheck:Show(5)
 		end
 		sickSpam = GetTime()
+	end
+end
+
+function mod:UNIT_TARGET(uId)
+	if self.Options.SetIconOnCreature and #creatureGUIDs < creatureAmount then
+		trySetTarget()
 	end
 end
