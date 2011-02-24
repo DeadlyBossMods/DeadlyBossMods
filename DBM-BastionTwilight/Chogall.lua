@@ -120,6 +120,11 @@ function mod:OnCombatStart(delay)
 	prewarned_Phase2 = false
 	worshipIcon = 8
 	worshipCooldown = 21
+	if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
+		creatureAmount = 8
+	else
+		creatureAmount = 4
+	end
 	blazeSpam = 0
 	sickSpam = 0
 	berserkTimer:Start(-delay)
@@ -181,7 +186,11 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnCreations:Show()
 		timerCreationsCD:Start()
 		table.wipe(creatureGUIDs)
-		creatureAmount = 4
+		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
+			creatureAmount = 8
+		else
+			creatureAmount = 4
+		end
 		creatureIcon = 8
 	elseif args:IsSpellID(82630) then
 		warnPhase2:Show()
