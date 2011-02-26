@@ -488,7 +488,7 @@ do
 	if tonumber((select(2, GetBuildInfo()))) >= 13682 then
 		local oldHandler = DBM.COMBAT_LOG_EVENT_UNFILTERED;
 		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, ...)
-			return oldHandler(DBM, timestamp, event, ...)
+			return oldHandler(self, timestamp, event, ...)
 		end
 	end
 	
