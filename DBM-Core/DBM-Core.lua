@@ -363,6 +363,7 @@ do
 	function DBM:FilterRaidBossEmote(msg, ...)
 		return handleEvent(nil, "CHAT_MSG_RAID_BOSS_EMOTE_FILTERED", msg:gsub("\124c%x+(.-)\124r", "%1"), ...)
 	end
+	
 
 	function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
 		if not registeredEvents[event] then return end
@@ -480,6 +481,17 @@ do
 		end
 		return handleEvent(nil, event, args)
 	end
+	
+	-- fix for 4.1 which introduces the hideCaster argument
+	-- this is a temporary work-around which just drops the new argument for a quick and easy fix. It doesn't look like that we are going to need this argument ever, so this is okay for now.
+	-- TODO: apply this change to the actual function above when 4.1 goes live, hideCaster can then be added to the args table
+	if tonumber(select(2, GetBuildInfo())) >= 13682 then
+		local oldHandler = DBM.COMBAT_LOG_EVENT_UNFILTERED;
+		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, ...)
+			return oldHandler(DBM, timestamp, event, ...)
+		end
+	end
+	
 	mainFrame:SetScript("OnEvent", handleEvent)
 end
 
