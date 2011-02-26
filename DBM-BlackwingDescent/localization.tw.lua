@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 	Electron			= "雷電號",
 	Toxitron			= "烈毒號",
 	Arcanotron			= "秘法號",
-	SayBomb				= "Poison Bomb on me!"--Translate
+	SayBomb				= "我中了化學炸彈!"--Translate
 })
 
 ----------------
@@ -146,28 +146,35 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase			= "空中階段",
 	WarnGroundphase			= "地上階段",
-	WarnShieldsLeft			= "使用了古代矮人盾牌 - 剩餘%d次"
+	WarnShieldsLeft			= "使用了古代矮人盾牌 - 剩餘%d次",
+	warnAddSoon			= "Obnoxious Fiend已被召喚了",
+	specWarnAddTargetable		= "%s可以點擊了"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase			= "空中階段",
-	TimerGroundphase		= "地上階段"
-})
-
-L:SetMiscLocalization({
-	AncientDwarvenShield		= "古代矮人盾牌",
-	Soundlevel			= "音波值",
-	Airphase			= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
+	TimerAirphase			= "下一次 空中階段",
+	TimerGroundphase		= "下一次 地上階段"
 })
 
 L:SetOptionLocalization({
 	WarnAirphase			= "當亞特拉米德升空時顯示警告",
 	WarnGroundphase			= "當亞特拉米德降落時顯示警告",
 	WarnShieldsLeft			= "當古代矮人盾牌使用後顯示警告",
+	warnAddSoon			= "當奈法利安召喚小怪時顯示警告",
+	specWarnAddTargetable		= "當小怪可以點擊時顯示特別警告",
 	TimerAirphase			= "為下一次 空中階段顯示計時器",
 	TimerGroundphase		= "為下一次 地上階段顯示計時器",
 	InfoFrame			= "為音波值顯示資訊框架",
+	YellOnPestered			= "中了$spell:92685時大喊",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
+})
+
+L:SetMiscLocalization({
+	AncientDwarvenShield		= "古代矮人盾牌",
+	Soundlevel			= "音波值",
+	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
+	NefAdd				= "Atramedes, the heroes are right THERE!",
+	Airphase			= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
 })
 
 ----------------
@@ -212,5 +219,5 @@ L:SetMiscLocalization({
 	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
 	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--Translate
 	YellCinder			= "我中了爆裂灰燼!",
-	Onyxia				= "Onyxia"
+	Onyxia				= "奧妮克希亞"
 })

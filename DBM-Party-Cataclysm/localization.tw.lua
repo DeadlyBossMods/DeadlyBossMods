@@ -282,6 +282,19 @@ L:SetGeneralLocalization({
 	name = "希亞梅特"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
 })
 
+L:SetWarningLocalization{
+	specWarnPhase2Soon	= "5秒後進入第2階段"
+}
+
+L:SetTimerLocalization({
+	timerPhase2 	= "第2階段開始"
+})
+
+L:SetOptionLocalization{
+	specWarnPhase2Soon	= "當第2階段即將到來(5秒)時顯示特別警告",
+	timerPhase2 	= "為第2階段開始顯示計時器"
+}
+
 ------------------------
 -- High Prophet Barim --
 ------------------------
@@ -396,8 +409,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "鑽出地面",
-	TimerSubmerge	= "鑽進地裡"
+	TimerEmerge	= "下一次 鑽出地面",
+	TimerSubmerge	= "下一次 鑽進地裡"
 })
 
 L:SetOptionLocalization({
@@ -428,10 +441,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAirphase			= "空中階段",
+	WarnGroundphase			= "地上階段",
 	specWarnCrystalStorm		= "水晶風暴 - 找掩護"
 })
 
+L:SetTimerLocalization({
+	TimerAirphase			= "下一次 空中階段",
+	TimerGroundphase		= "下一次 地上階段"
+})
+
 L:SetOptionLocalization({
+	WarnAirphase			= "當岩革升空時顯示警告",
+	WarnGroundphase			= "當岩革降落時顯示警告",
+	TimerAirphase			= "為下一次 空中階段顯示計時器",
+	TimerGroundphase		= "為下一次 地上階段顯示計時器",
 	specWarnCrystalStorm		= "為$spell:92265顯示特別警告"
 })
 

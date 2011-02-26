@@ -22,15 +22,15 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDazzlingDestruction	= "為$spell:86408顯示警告",
-	WarnDeepBreath			= "為$spell:86059顯示警告",
-	WarnTwilightShift		= "為$spell:93051顯示警告",
-	YellOnEngulfing			= "中了$spell:86622時大喊",
+	WarnDeepBreath		= "為$spell:86059顯示警告",
+	WarnTwilightShift	= "為$spell:93051顯示警告",
+	YellOnEngulfing		= "中了$spell:86622時大喊",
 	YellOnTwilightMeteor	= "中了$spell:88518時大喊",
-	YellOnTwilightBlast		= "中了$spell:92898時大喊",
-	TwilightBlastArrow		= "當你附近的人中了$spell:92898時顯示DBM箭頭",
-	RangeFrame				= "顯示距離框 (10碼)",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+	YellOnTwilightBlast	= "中了$spell:92898時大喊",
+	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
+	RangeFrame		= "顯示距離框 (10碼)",
+	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization({
@@ -55,10 +55,10 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
+L:SetOptionLocalization({
 })
 
-L:SetOptionLocalization({
+L:SetMiscLocalization({
 })
 
 ----------------------------------
@@ -71,13 +71,30 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow		= ">%s<血量低於30%",
 	SpecWarnGrounded	= "拿取禁錮增益",
-	SpecWarnSearingWinds	= "拿取旋風增益"
+	SpecWarnSearingWinds	= "拿取旋風增益",
+	warnGravityCoreJump	= "重力之核擴散到 >%s<",
+	warnStaticOverloadJump	= "靜電超載擴散到 >%s<"
 })
 
 L:SetTimerLocalization({
 	timerTransition		= "階段轉換"
+})
+
+L:SetOptionLocalization({
+	SpecWarnGrounded	= "當你缺少$spell:83581時顯示特別警告\n(大約施放前10秒內)",
+	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)",
+	timerTransition		= "顯示階段轉換計時器",
+	RangeFrame		= "當需要時自動顯示距離框",
+	warnGravityCoreJump	= "公布$spell:92538的擴散目標",
+	warnStaticOverloadJump	= "公布$spell:92467的擴散目標",
+	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 L:SetMiscLocalization({
@@ -91,21 +108,6 @@ L:SetMiscLocalization({
 	Terrastra		= "特拉斯特拉",
 	Monstrosity		= "卓越者議會",
 	Kill			= "不可能..."
-})
-
-L:SetOptionLocalization({
-	specWarnBossLow		= "當首領血量低於30%時顯示特別警告",
-	SpecWarnGrounded	= "當你缺少$spell:83581時顯示特別警告\n(大約施放前10秒內)",
-	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)",
-	timerTransition		= "顯示階段轉換計時器",
-	RangeFrame		= "當需要時自動顯示距離框",
-	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
-	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
-	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
-	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
-	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 ----------------
@@ -124,11 +126,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	YellCrash		= "腐化轟擊在我身上!",
-	Bloodlevel		= "腐化"
-})
-
 L:SetOptionLocalization({
 	WarnPhase2Soon		= "為第2階段顯示預先警告",
 	YellOnCorrupting	= "中了$spell:93178時大喊",
@@ -137,6 +134,11 @@ L:SetOptionLocalization({
 	RangeFrame		= "為$spell:82235顯示距離框 (5碼)",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+})
+
+L:SetMiscLocalization({
+	YellCrash		= "腐化轟擊在我身上!",
+	Bloodlevel		= "腐化"
 })
 
 ----------------
@@ -149,13 +151,23 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnEggWeaken		= "Twilight Carapace Removed on Egg",
+	WarnDragon		= "Twilight Whelp Spawned"
 })
 
 L:SetTimerLocalization({
-})
-
-L:SetMiscLocalization({
+	TimerEggWeakening	= "Egg Weakening",
+	TimerDragon		= "Next Twilight Whelp"
 })
 
 L:SetOptionLocalization({
+	WarnEggWeaken		= "Show warning when Egg got weaken",
+	WarnDragon		= "Show warning when Twilight Whelp Spawns",
+	TimerEggWeakening	= "Show timer for Egg Weakening",
+	TimerDragon		= "Show timer for new Twilight Whelp"
+})
+
+L:SetMiscLocalization({
+	YellDragon		= "Feed, children!  Take your fill from their meaty husks!",
+	YellEgg			= "You mistake this for weakness?  Fool!"   
 })

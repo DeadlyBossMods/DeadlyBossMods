@@ -13,7 +13,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSpecial			= "颶風/微風/冰雨風暴啟動",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial			= "特別技能啟動!"
+	specWarnSpecial			= "特別技能啟動!",
+	warnSpecialSoon			= "10秒後 特別技能啟動!"
 })
 
 L:SetTimerLocalization({
@@ -21,19 +22,20 @@ L:SetTimerLocalization({
 	timerSpecialActive		= "特別技能啟動"
 })
 
-L:SetMiscLocalization({
-	gatherstrength			= "%s開始從剩下的風之王那裡取得力量!",
-	Anshal			= "Anshal",
-	Nezir			= "Nezir",
-	Rohash			= "Rohash"
-})
-
 L:SetOptionLocalization({
 	warnSpecial			= "當颶風/微風/冰雨風暴施放時顯示警告",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial			= "當特別技能施放時顯示特別警告",
 	timerSpecial			= "為特別技能冷卻顯示計時器",
 	timerSpecialActive		= "為特別技能持續時間顯示計時器",
+	warnSpecialSoon			= "特別技能施放前10秒顯示預先警告",
 	OnlyWarnforMyTarget		= "只為當前或焦點目標顯示警告\n(隱藏所有其他。這包括進入戰鬥)"
+})
+
+L:SetMiscLocalization({
+	gatherstrength			= "%s開始從剩下的風之王那裡取得力量!",
+	Anshal				= "Anshal",
+	Nezir				= "Nezir",
+	Rohash				= "Rohash"
 })
 
 ---------------
@@ -61,6 +63,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	summonSquall	=	"Storms! I summon you to my side!",--Translate
-	phase3		=	"Enough! I will no longer be contained!"--Translate
+	summonSquall			= "Storms! I summon you to my side!",--Translate
+	phase3				= "Enough! I will no longer be contained!"--Translate
 })

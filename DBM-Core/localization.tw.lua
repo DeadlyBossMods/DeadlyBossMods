@@ -72,8 +72,10 @@ DBM_CORE_RANGECHECK_HIDE			= "隱藏"
 DBM_CORE_RANGECHECK_SETRANGE_TO			= "%d碼"
 DBM_CORE_RANGECHECK_LOCK			= "鎖定框架"
 
-DBM_CORE_INFOFRAME_HIDE				= "隱藏"
 DBM_CORE_INFOFRAME_LOCK				= "鎖定框架"
+DBM_CORE_INFOFRAME_HIDE				= "隱藏"
+DBM_CORE_INFOFRAME_SHOW_SELF			= "總是顯示你的能量"		-- Always show your own power value even if you are below the threshold
+
 
 DBM_LFG_INVITE					= "地城準備確認"
 
