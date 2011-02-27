@@ -12,7 +12,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	warnSpecial				= "특수 능력 활성화!!", --Hurricane/Zephyr/Sleet Storm Active",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
-	specWarnSpecial			= "특수 능력 활성화!!"
+	specWarnSpecial			= "특수 능력 활성화!!",
+	warnSpecialSoon			= "10초 후 특수 능력 활성화!"
 })
 
 L:SetTimerLocalization({
@@ -20,22 +21,22 @@ L:SetTimerLocalization({
 	timerSpecialActive		= "특수 능력 활성화"
 })
 
-L:SetMiscLocalization({
---	gatherstrength			= "%s에게서 힘을 모으기 시작합니다!"
-	gatherstrength			= "힘을 모으기 시작합니다!",
-	Anshal			= "Anshal",
-	Nezir			= "Nezir",
-	Rohash			= "Rohash"
-})
-
 L:SetOptionLocalization({
 	warnSpecial				= "특수 능력 시전 경고 보기", -- Show warning when Hurricane/Zephyr/Sleet Storm are cast",--Special abilities hurricane, sleet storm, zephyr(which are on shared cast/CD)
 	specWarnSpecial			= "특수 능력 시전을 할 경우 특수 경고 보기",
 	timerSpecial			= "특수 능력 쿨다운 타이머 보기",
 	timerSpecialActive		= "특수 능력 유지 타이머 보기",
+	warnSpecialSoon			= "특수 능력 활성화 사전 경고 보기(10초)",	
 	OnlyWarnforMyTarget		= "오직 대상/주시대상일 경우만 타이머/경고 보기\n(풀링 포함. 그외에 모두 숨김)"
 })
 
+L:SetMiscLocalization({
+--	gatherstrength			= "%s에게서 힘을 모으기 시작합니다!"
+	gatherstrength			= "힘을 모으기 시작합니다!",
+	Anshal					= "Anshal",
+	Nezir					= "Nezir",
+	Rohash					= "Rohash"	
+})
 ---------------
 --  Al'Akir  --
 ---------------

@@ -288,6 +288,19 @@ L:SetGeneralLocalization({
 	name = "남풍 군주 시아마트"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
 })
 
+L:SetWarningLocalization{
+	specWarnPhase2Soon	= "5초 후 2 단계"
+}
+
+L:SetTimerLocalization({
+	timerPhase2 		= "2 단계 시작"
+})
+
+L:SetOptionLocalization{
+	specWarnPhase2Soon	= "2 단계 특수 경고 보기(5초 전)",
+	timerPhase2 		= "2 단계 시작 타이머 보기"
+}
+
 ------------------------
 -- High Prophet Barim --
 ------------------------
@@ -404,8 +417,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEmerge		= "등장",
-	WarnSubmerge	= "잠수"
+	WarnEmerge		= "다음 등장",
+	WarnSubmerge	= "다음 잠수"
 })
 
 L:SetTimerLocalization({
@@ -443,10 +456,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	WarnAirphase				= "공중 단계",
+	WarnGroundphase				= "지상 단계",
 	specWarnCrystalStorm		= "수정 폭풍"
 })
 
+L:SetTimerLocalization({
+	TimerAirphase				= "다음 공중 단계",
+	TimerGroundphase			= "다음 지상 단계"
+})
+
 L:SetOptionLocalization({
+	WarnAirphase				= "공중 단계일 때 경고 보기",
+	WarnGroundphase				= "지상 단계일 때 경고 보기",
+	TimerAirphase				= "다음 공중 단계 타이머 보기",
+	TimerGroundphase			= "다음 지상 단계 타이머 보기",
 	specWarnCrystalStorm		= "$spell:92265 특수 경고 보기"
 })
 
