@@ -22,14 +22,14 @@ local specWarnCrystalBarrageClose	= mod:NewSpecialWarningClose(81634)
 
 local timerDampening	= mod:NewCDTimer(10, 82415)
 local timerSubmerge		= mod:NewTimer(90, "TimerSubmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")
-local timerEmerge		= mod:NewTimer(30, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
+local timerEmerge		= mod:NewTimer(25, "TimerEmerge", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")
 
 mod:AddBoolOption("CrystalArrow")
 mod:AddBoolOption("RangeFrame")
 
 function mod:OnCombatStart(delay)
-	timerSubmerge:Start(30-delay)
-	self:ScheduleMethod(30-delay, "Submerge")
+	timerSubmerge:Start(28-delay)
+	self:ScheduleMethod(28-delay, "Submerge")
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -45,7 +45,7 @@ function mod:Submerge()
 	warnSubmerge:Show()
 	timerEmerge:Start()
 	timerDampening:Cancel()
-	self:ScheduleMethod(30, "Emerge")
+	self:ScheduleMethod(25, "Emerge")
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
