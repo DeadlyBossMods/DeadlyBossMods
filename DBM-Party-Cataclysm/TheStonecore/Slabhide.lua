@@ -39,8 +39,8 @@ end
 
 function mod:OnCombatStart(delay)
 	spamEruption = 0
-	timerAirphase:Start(15-delay)
-	self:ScheduleMethod(15-delay, "airphase")
+	timerAirphase:Start(12.5-delay)
+	self:ScheduleMethod(12.5-delay, "airphase")
 end
 
 function mod:SPELL_DAMAGE(args)
