@@ -54,11 +54,11 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
+L:SetOptionLocalization({
+	--ShowDrakeHealth		= "Show the health of released drakes"
 })
 
-L:SetOptionLocalization({
-	--"ShowDrakeHealth"		= "Show the health of released drakes"
+L:SetMiscLocalization({
 })
 
 ----------------------------------
@@ -71,13 +71,30 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	specWarnBossLow			= ">%s< 체력 30%",
 	SpecWarnGrounded		= "접지 버프 받기!!",
-	SpecWarnSearingWinds	= "소용돌이 치는 바람 버프 받기!!"
+	SpecWarnSearingWinds	= "소용돌이 치는 바람 버프 받기!!",
+	warnGravityCoreJump		= "Gravity Core spread to >%s<",
+	warnStaticOverloadJump	= "Static Overload spread to >%s<"
 })
 
 L:SetTimerLocalization({
 	timerTransition			= "전환 단계"
+})
+
+L:SetOptionLocalization({
+	SpecWarnGrounded		= "$spell:83581 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
+	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
+	timerTransition			= "전환 단계 타이머 보기",
+	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
+	warnGravityCoreJump		= "Announce $spell:92538 spread targets",
+	warnStaticOverloadJump	= "Announce $spell:92467 spread targets",
+	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 L:SetMiscLocalization({
@@ -92,22 +109,6 @@ L:SetMiscLocalization({
 	Monstrosity		= "엘레멘티움 괴물",
 	Kill			= "이럴 수가..."
 })
-
-L:SetOptionLocalization({
-	specWarnBossLow			= "보스의 체력이 30% 이하로 내려갈 경우 특수 경고 보기",
-	SpecWarnGrounded		= "$spell:83581 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
-	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
-	timerTransition			= "전환 단계 타이머 보기",
-	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",	
-	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
-	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
-	FrostBeaconIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
-	StaticOverloadIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
-	GravityCoreIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
-})
-
 ----------------
 --  Cho'gall  --
 ----------------
@@ -124,11 +125,6 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	YellCrash		= "부패의 충돌!!",
-	Bloodlevel				= "오염: 고통"
-})
-
 L:SetOptionLocalization({
 	WarnPhase2Soon			= "2 단계 사전 경고 보기",
 	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 있을 경우 DBM 화살표 보기",
@@ -139,6 +135,10 @@ L:SetOptionLocalization({
 	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
+L:SetMiscLocalization({
+	YellCrash				= "부패의 충돌!!",
+	Bloodlevel				= "오염: 고통"
+})
 
 ----------------
 --  Sinestra  --
@@ -146,27 +146,27 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Sinestra")
 
 L:SetGeneralLocalization({
-   name =   "시네스트라"
+	name =   "시네스트라"
 })
 
 L:SetWarningLocalization({
-   WarnEggWeaken   = "알 보호막 제거",
-   WarnDragon      = "새끼용 등장"
+	WarnEggWeaken   = "알 보호막 제거",
+	WarnDragon      = "새끼용 등장"
 })
 
 L:SetTimerLocalization({
-   TimerEggWeakening   = "알 보호막 제거",
-   TimerDragon         = "다음 새끼용 등장"
-})
+	TimerEggWeakening 	= "알 보호막 제거",
+	TimerDragon        	= "다음 새끼용 등장"
+})	
 
 L:SetOptionLocalization({
-   WarnEggWeaken      = "알 보호막 제거 경고 보기",
-   WarnDragon         = "새끼용 등장 경고 보기",
-   TimerEggWeakening   = "알 보호막 제거 까지 남은 타이머 보기",
-   TimerDragon         = "다음 새끼용 등장 타이머 보기"
+	WarnEggWeaken    	= "알 보호막 제거 경고 보기",
+	WarnDragon       	= "새끼용 등장 경고 보기",
+	TimerEggWeakening  	= "알 보호막 제거까지 남은 타이머 보기",
+	TimerDragon        	= "다음 새끼용 등장 타이머 보기"
 })
 
 L:SetMiscLocalization({
-   YellDragon    = "얘들아, 먹어치워라",
-   YellEgg       = "이게 약해진 걸로 보이느냐"   
+	YellDragon    = "얘들아, 먹어치워라",
+	YellEgg       = "이게 약해진 걸로 보이느냐"   
 })

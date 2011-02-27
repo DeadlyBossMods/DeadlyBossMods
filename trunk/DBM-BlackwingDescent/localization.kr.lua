@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 	Electron	= "전기골렘",
 	Toxitron	= "맹독골렘",
 	Arcanotron	= "비전골렘",
-	SayBomb		= "Explosive Cinders on me!"--Translate
+--	SayBomb		= "Explosive Cinders on me!"--Translate
 })
 
 ----------------
@@ -146,30 +146,36 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase		= "공중 단계",
 	WarnGroundphase		= "지상 단계",
-	WarnShieldsLeft		= "고대 드워프 보호막 - %d -남음"
+	WarnShieldsLeft		= "고대 드워프 보호막 - %d -남음",
+--	warnAddSoon				= "Obnoxious Fiend summoned",
+--	specWarnAddTargetable	= "%s is targetable"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "공중 단계",
-	TimerGroundphase	= "지상 단계"
+	TimerAirphase		= "다음 공중 단계",
+	TimerGroundphase	= "다음 지상 단계"
+})
+
+L:SetOptionLocalization({
+	WarnAirphase			= "공중 단계 경고 보기",
+	WarnGroundphase			= "지상 단계 경고 보기",
+	WarnShieldsLeft			= "고대 드워프 보호막 사용 개수 경고 보기",
+--	warnAddSoon				= "Show warning when Nefarian summons adds",
+--	specWarnAddTargetable	= "Show special warning when adds are targetable",	
+	TimerAirphase			= "다음 공중 단계 경고 보기",
+	TimerGroundphase		= "다음 지상 단계 경고 보기",
+	InfoFrame				= "소음계 정보 프레임 보기",
+--	YellOnPestered			= "Yell on $spell:92685",	
+	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "고대 드워프 보호막",
-	Soundlevel				= "소음계",	
+	Soundlevel				= "소음계",
+--	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
+--	NefAdd					= "Atramedes, the heroes are right THERE!",	
 	Airphase				= "그래, 도망가라! 발을 디딜 때마다 맥박은 빨라지지. 점점 더 크게 울리는구나... 귀청이 터질 것만 같군! 넌 달아날 수 없다!"
 })
-
-L:SetOptionLocalization({
-	WarnAirphase		= "공중단계 경고 보기",
-	WarnGroundphase		= "지상단계 경고 보기",
-	WarnShieldsLeft		= "고대 드워프 보호막 남은 개수 경고 보기",
-	TimerAirphase		= "다음 공중 단계 경고 보기",
-	TimerGroundphase	= "다음 지상 단계 경고 보기",
-	InfoFrame			= "소음계 정보 프레임 보기",
-	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
-})
-
 ----------------
 --  Nefarian  --
 ----------------
@@ -212,5 +218,5 @@ L:SetMiscLocalization({
 	YellPhase2			= "저주받을 필멸자들!",
 	YellPhase3			= "품위있는", -- "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
 	YellCinder			= "나에게 폭발하는 잿더미!",
-	Onyxia				= "Onyxia"
+	Onyxia				= "오닉시아"
 })
