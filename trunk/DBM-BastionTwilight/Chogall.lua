@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(43324)
 mod:SetZone()
-mod:SetUsedIcons(4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -58,7 +58,7 @@ mod:AddBoolOption("InfoFrame")
 local worshipTargets = {}
 local prewarned_Phase2 = false
 local worshipIcon = 8
-local worshipCooldown = 21
+local worshipCooldown = 23
 local blazeSpam = 0
 local sickSpam = 0
 local creatureGUIDs = {}
@@ -83,8 +83,13 @@ local function trySetTarget()
 	end
 end
 
-function mod:CorruptingCrashTarget()
-	local targetname = self:GetBossTarget(43622)
+function mod:CorruptingCrashTarget(sGUID)
+	local targetname = nil
+	for i=1, GetNumRaidMembers() do
+		if UnitGUID("raid"..i.."target") == sGUID then
+			targetname = UnitName("raid"..i.."targettarget")
+		end
+	end
 	if not targetname then return end
 	warnCorruptingCrash:Show(targetname)
 	if targetname == UnitName("player") then
@@ -201,7 +206,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(81171) then--87579?
 		warnFlameOrders:Show()
 	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
-		self:ScheduleMethod(0.01, "CorruptingCrashTarget")--Since this is an instance cast scanning accurately is very hard.
+		self:ScheduleMethod(0.01, "CorruptingCrashTarget", args.sourceGUID)--Since this is an instance cast scanning accurately is very hard.
 	end
 end
 
