@@ -73,8 +73,8 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	SpecWarnGrounded		= "접지 버프 받기!!",
 	SpecWarnSearingWinds	= "소용돌이 치는 바람 버프 받기!!",
-	warnGravityCoreJump		= "Gravity Core spread to >%s<",
-	warnStaticOverloadJump	= "Static Overload spread to >%s<"
+	warnGravityCoreJump		= "중력 핵 : >%s<",
+	warnStaticOverloadJump	= "전하 과부하 : >%s<"
 })
 
 L:SetTimerLocalization({
@@ -86,8 +86,8 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
-	warnGravityCoreJump		= "Announce $spell:92538 spread targets",
-	warnStaticOverloadJump	= "Announce $spell:92467 spread targets",
+	warnGravityCoreJump		= "$spell:92538 대상 알리기",
+	warnStaticOverloadJump	= "$spell:92467 대상 알리기",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
