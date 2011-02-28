@@ -138,7 +138,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Airphase or msg:find(L.Airphase)  then
 		warnAirphase:Show()
 		timerSonicBreath:Cancel()
-		timerSearingFlame:Cancel()
 		timerSonarPulseCD:Cancel()
 		timerGroundphase:Start()
 		self:Schedule(31.5, groundphase)
