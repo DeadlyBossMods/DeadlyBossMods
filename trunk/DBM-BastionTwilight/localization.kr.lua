@@ -55,7 +55,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	--ShowDrakeHealth		= "Show the health of released drakes"
+	ShowDrakeHealth		= "풀려난 용의 체력 프레임 보기"
 })
 
 L:SetMiscLocalization({
@@ -73,8 +73,8 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	SpecWarnGrounded		= "접지 버프 받기!!",
 	SpecWarnSearingWinds	= "소용돌이 치는 바람 버프 받기!!",
-	warnGravityCoreJump		= "중력 핵 : >%s<",
-	warnStaticOverloadJump	= "전하 과부하 : >%s<"
+	warnGravityCoreJump		= "중력 핵 전이: >%s<",
+	warnStaticOverloadJump	= "전하 과부하 전이: >%s<"
 })
 
 L:SetTimerLocalization({
@@ -86,8 +86,9 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
-	warnGravityCoreJump		= "$spell:92538 대상 알리기",
-	warnStaticOverloadJump	= "$spell:92467 대상 알리기",
+	warnGravityCoreJump		= "$spell:92538 전이 경고 보기",
+	warnStaticOverloadJump	= "$spell:92467 전이 경고 보기",
+
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -109,6 +110,7 @@ L:SetMiscLocalization({
 	Monstrosity		= "엘레멘티움 괴물",
 	Kill			= "이럴 수가..."
 })
+
 ----------------
 --  Cho'gall  --
 ----------------
@@ -136,8 +138,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash				= "부패의 충돌!!",
-	Bloodlevel				= "오염: 고통"
+	YellCrash				= "나에게 부패의 충돌!",
+	Bloodlevel				= "오염된 피"
 })
 
 ----------------

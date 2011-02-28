@@ -148,7 +148,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Blitz		= "보면서 |cFFFF0000(%S+)를 시전합니다!"
+	Blitz		= "장군 움브리스가 |cFFFF0000(%S+)"
 }
 
 --------------------------
@@ -247,7 +247,7 @@ L:SetOptionLocalization({
 L = DBM:GetModLocalization("Ammunae")
 
 L:SetGeneralLocalization({
-	name = "아뮤나이"
+	name = "아뮤내"
 })
 
 -------------
@@ -289,7 +289,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization{
-	specWarnPhase2Soon	= "5초 후 2 단계"
+	specWarnPhase2Soon	= "5초 후 2 단계 시작!"
 }
 
 L:SetTimerLocalization({
@@ -369,6 +369,18 @@ L = DBM:GetModLocalization("Springvale")
 L:SetGeneralLocalization({
 	name = "사령관 스프링베일"
 })
+
+L:SetTimerLocalization({
+	TimerAdds		= "다음 유령 소환"
+})
+
+L:SetOptionLocalization{
+	TimerAdds		= "다음 유령 소환 타이머 보기"
+}
+
+L:SetMiscLocalization{
+	YellAdds		= "Repel the intruders!"
+}
 
 -----------------
 -- Lord Walden --
@@ -458,7 +470,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase				= "공중 단계",
 	WarnGroundphase				= "지상 단계",
-	specWarnCrystalStorm		= "수정 폭풍"
+	specWarnCrystalStorm		= "수정 폭풍 - 숨으세요!"
 })
 
 L:SetTimerLocalization({
@@ -500,7 +512,7 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Altairus")
 
 L:SetGeneralLocalization({
-	name = "알타리우스"
+	name = "알타이루스"
 })
 
 L:SetOptionLocalization({
