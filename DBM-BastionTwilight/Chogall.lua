@@ -36,6 +36,7 @@ local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Rang
 local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178, not mod:IsTank())--Subject to accuracy flaws so off by default for tanks.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178, false)--Subject to accuracy flaws for everyone so off by default.
+local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
@@ -71,6 +72,7 @@ local function showWorshipWarning()
 	table.wipe(worshipTargets)
 	worshipIcon = 8
 	timerWorshipCD:Start(worshipCooldown)
+	specWarnWorship:Show()
 end
 
 local function trySetTarget()
@@ -124,7 +126,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(creatureGUIDs)
 	prewarned_Phase2 = false
 	worshipIcon = 8
-	worshipCooldown = 21
+	worshipCooldown = 23
 	if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
 		creatureAmount = 8
 	else
