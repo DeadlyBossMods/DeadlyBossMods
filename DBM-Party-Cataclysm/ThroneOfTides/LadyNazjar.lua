@@ -25,19 +25,29 @@ local timerWaterspout		= mod:NewBuffActiveTimer(60, 75863)
 local timerShockBlast		= mod:NewCastTimer(3, 76008)
 local timerShockBlastCD		= mod:NewCDTimer(13, 76008)
 local timerGeyser		= mod:NewCastTimer(5, 75722)
-local timerFungalSpores		= mod:NewTargetTimer(15, 80564)
+local timerFungalSpores		= mod:NewBuffActiveTimer(15, 80564)
 
 local specWarnShockBlast	= mod:NewSpecialWarningInterrupt(76008)
 
+local sporeTargets = {}
 local preWarnedWaterspout = false
+
 function mod:OnCombatStart()
+	table.wipe(sporeTargets)
 	preWarnedWaterspout = false
+end
+
+local function showSporeWarning()
+	warnFungalSpores:Show(table.concat(sporeTargets, "<, >"))
+	table.wipe(sporeTargets)
+	timerFungalSpores:Start()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(80564, 91470) then
-		warnFungalSpores:Show(args.destName)
-		timerFungalSpores:Start(args.destName)
+		sporeTargets[#sporeTargets + 1] = args.destName
+		self:Unschedule(showSporeWarning)
+		self:Schedule(0.3, showSporeWarning)
 	end
 end
 
