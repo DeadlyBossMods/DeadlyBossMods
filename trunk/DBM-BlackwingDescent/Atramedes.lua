@@ -47,7 +47,7 @@ local soundTracking			= mod:NewSound(78092)
 
 mod:AddBoolOption("TrackingIcon")
 mod:AddBoolOption("InfoFrame")
-mod:AddBoolOption("YellOnPestered")
+mod:AddBoolOption("YellOnPestered", "announce")
 
 local shieldsLeft = 10
 local pestered = GetSpellInfo(92685)
