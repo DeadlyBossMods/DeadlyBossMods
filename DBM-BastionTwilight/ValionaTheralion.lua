@@ -137,6 +137,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(86788, 92876, 92877, 92878) then
+		blackoutActive = true
 		warnBlackout:Show(args.destName)
 		timerBlackout:Start(args.destName)
 		timerBlackoutCD:Start()
@@ -146,7 +147,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBlackout:Show()
 		end
-		blackoutActive = true
 	elseif args:IsSpellID(86622, 95639, 95640, 95641) then
 		engulfingMagicTargets[#engulfingMagicTargets + 1] = args.destName
 		timerEngulfingMagicNext:Start()
