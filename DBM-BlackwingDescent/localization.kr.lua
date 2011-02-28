@@ -63,7 +63,7 @@ L:SetMiscLocalization({
 	Electron	= "전기골렘",
 	Toxitron	= "맹독골렘",
 	Arcanotron	= "비전골렘",
---	SayBomb		= "Explosive Cinders on me!"--Translate
+	SayBomb		= "나에게 화학 폭탄!"--Translate
 })
 
 ----------------
@@ -131,7 +131,7 @@ L:SetOptionLocalization({
 	RangeFrame		= "거리 프레임 보기(6 m)",
 	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "알 수 없음"),
 	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
-	InfoFrame		= "체력 정보 보기"
+	InfoFrame		= "체력 정보 프레임 보기"
 })
 
 -----------------
@@ -147,8 +147,8 @@ L:SetWarningLocalization({
 	WarnAirphase		= "공중 단계",
 	WarnGroundphase		= "지상 단계",
 	WarnShieldsLeft		= "고대 드워프 보호막 - %d -남음",
---	warnAddSoon				= "Obnoxious Fiend summoned",
---	specWarnAddTargetable	= "%s is targetable"
+	warnAddSoon				= "곧 불쾌한 마귀 소환",
+	specWarnAddTargetable	= "%s 공격 가능!"
 })
 
 L:SetTimerLocalization({
@@ -160,20 +160,20 @@ L:SetOptionLocalization({
 	WarnAirphase			= "공중 단계 경고 보기",
 	WarnGroundphase			= "지상 단계 경고 보기",
 	WarnShieldsLeft			= "고대 드워프 보호막 사용 개수 경고 보기",
---	warnAddSoon				= "Show warning when Nefarian summons adds",
---	specWarnAddTargetable	= "Show special warning when adds are targetable",	
+	warnAddSoon				= "불쾌한 마귀 소환 경고 보기",
+	specWarnAddTargetable	= "불쾌한 마귀가 공격 가능할 때 특수 경고 보기",
 	TimerAirphase			= "다음 공중 단계 경고 보기",
 	TimerGroundphase		= "다음 지상 단계 경고 보기",
 	InfoFrame				= "소음계 정보 프레임 보기",
---	YellOnPestered			= "Yell on $spell:92685",	
+	YellOnPestered			= "$spell:92685 외치기",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
 L:SetMiscLocalization({
 	AncientDwarvenShield	= "고대 드워프 보호막",
 	Soundlevel				= "소음계",
---	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
---	NefAdd					= "Atramedes, the heroes are right THERE!",	
+	YellPestered			= "나에게 불쾌한 마귀!!",--npc 49740
+	NefAdd					= "아트라메데스, 적은 바로 저기에 있다!",
 	Airphase				= "그래, 도망가라! 발을 디딜 때마다 맥박은 빨라지지. 점점 더 크게 울리는구나... 귀청이 터질 것만 같군! 넌 달아날 수 없다!"
 })
 ----------------
@@ -193,10 +193,10 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	OnySwipeTimer		= "꼬리 채찍 (오닉시아)",
-	NefSwipeTimer		= "꼬리 채찍 (네파리안)",
-	OnyBreathTimer		= "암흑불길 숨결 (오닉시아)",
-	NefBreathTimer		= "암흑불길 숨결 (네파리안)"
+	OnySwipeTimer		= "오닉 꼬리 채찍 쿨다운",
+	NefSwipeTimer		= "네파 꼬리 채찍 쿨다운",
+	OnyBreathTimer		= "오닉 브레스 쿨다운",
+	NefBreathTimer		= "네파 브레스 쿨다운"
 })
 
 L:SetOptionLocalization({
@@ -214,9 +214,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	NefAoe				= "전기가", -- "The air crackles with electricity!" check
-	YellPhase2			= "저주받을 필멸자들!",
-	YellPhase3			= "품위있는", -- "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
+	NefAoe				= "전기가 튀며 파지직하는 소리가 납니다!",
+	YellPhase2			= "저주받을 필멸자들! 내 소중한 작품을 이렇게 망치다니! 쓴맛을 봐야 정신을 차리겠군!",
+	YellPhase3			= "품위있는 집주인답게 행동하려 했건만, 네놈들이 도무지 죽질 않는군! 겉치레는 이제 집어치우자고. 그냥 모두 없애 버리겠어!", -- "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
 	YellCinder			= "나에게 폭발하는 잿더미!",
 	Onyxia				= "오닉시아"
 })

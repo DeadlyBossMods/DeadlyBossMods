@@ -27,7 +27,7 @@ L:SetOptionLocalization({
 	timerSpecial			= "특수 능력 쿨다운 타이머 보기",
 	timerSpecialActive		= "특수 능력 유지 타이머 보기",
 	warnSpecialSoon			= "특수 능력 활성화 사전 경고 보기(10초)",	
-	OnlyWarnforMyTarget		= "오직 대상/주시대상일 경우만 타이머/경고 보기\n(풀링 포함. 그외에 모두 숨김)"
+	OnlyWarnforMyTarget		= "대상/주시대상으로 선택한 보스에 관련된 타이머/경고만 보기\n(풀링 포함. 그외에 모두 숨김)"
 })
 
 L:SetMiscLocalization({
