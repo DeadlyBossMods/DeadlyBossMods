@@ -40,6 +40,7 @@ local warnDominion				= mod:NewTargetAnnounce(79318, 3)
 
 local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198)
 local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
+local specWarnShadowblazeSoon	= mod:NewSpecialWarning("specWarnShadowblazeSoon", mod:IsTank())
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
 local specWarnCinder			= mod:NewSpecialWarningYou(79339)
 local specWarnDominion			= mod:NewSpecialWarningYou(79318)
@@ -74,7 +75,7 @@ local cinderTargets	= {}
 local dominionTargets = {}
 
 --Credits to Bigwigs for this. Mine was inaccurate and posts complained theirs was better.
-function mod:ShadowBlazeTimer()
+function mod:ShadowBlazeFunction()
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		if shadowblazeTimer > 5 then--Keep it from dropping below 5
 			shadowblazeTimer = shadowblazeTimer - 5
@@ -84,9 +85,12 @@ function mod:ShadowBlazeTimer()
 			shadowblazeTimer = shadowblazeTimer - 5
 		end
 	end
+	if shadowblazeTimer > 5 then
+		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Want the pre warning to stop warning once they are every 5 seconds.
+	end
 	warnShadowBlaze:Show()
 	timerShadowBlazeCD:Start(shadowblazeTimer)
-	self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeTimer")
+	self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")
 end
 
 local function warnCinderTargets()
@@ -234,7 +238,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
 		timerShadowBlazeCD:Start(10)
-		self:ScheduleMethod(10, "ShadowBlazeTimer")
+		self:ScheduleMethod(10, "ShadowBlazeFunction")
 	end
 end
 
