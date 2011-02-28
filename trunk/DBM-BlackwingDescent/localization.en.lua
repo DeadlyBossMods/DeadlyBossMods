@@ -185,10 +185,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	OnyTailSwipe		= "Tail Lash (Onyxia)",
-	NefTailSwipe		= "Tail Lash (Nefarian)",
-	OnyBreath			= "Breath (Onyxia)",
-	NefBreath			= "Breath (Nefarian)"
+	OnyTailSwipe			= "Tail Lash (Onyxia)",
+	NefTailSwipe			= "Tail Lash (Nefarian)",
+	OnyBreath				= "Breath (Onyxia)",
+	NefBreath				= "Breath (Nefarian)",
+	specWarnShadowblazeSoon	= "Shadowblaze Soon (~5s)"
 })
 
 L:SetTimerLocalization({
@@ -199,17 +200,18 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	OnyTailSwipe		= "Show warning for Onyxia's $spell:77827",
-	NefTailSwipe		= "Show warning for Nefarian's $spell:77827",
-	OnyBreath			= "Show warning for Onyxia's $spell:94124",
-	NefBreath			= "Show warning for Nefarian's $spell:94124",
-	OnySwipeTimer		= "Show timer for Onyxia's $spell:77827 cooldown",
-	NefSwipeTimer		= "Show timer for Nefarian's $spell:77827 cooldown",
-	OnyBreathTimer		= "Show timer for Onyxia's $spell:94124 cooldown",
-	NefBreathTimer		= "Show timer for Nefarian's $spell:94124 cooldown",
-	YellOnCinder		= "Yell on $spell:79339",
-	RangeFrame			= "Show range frame (10) when you have $spell:79339",
-	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
+	OnyTailSwipe			= "Show warning for Onyxia's $spell:77827",
+	NefTailSwipe			= "Show warning for Nefarian's $spell:77827",
+	OnyBreath				= "Show warning for Onyxia's $spell:94124",
+	NefBreath				= "Show warning for Nefarian's $spell:94124",
+	specWarnShadowblazeSoon	= "Show pre-special warning for $spell:94085 (~5s)",
+	OnySwipeTimer			= "Show timer for Onyxia's $spell:77827 cooldown",
+	NefSwipeTimer			= "Show timer for Nefarian's $spell:77827 cooldown",
+	OnyBreathTimer			= "Show timer for Onyxia's $spell:94124 cooldown",
+	NefBreathTimer			= "Show timer for Nefarian's $spell:94124 cooldown",
+	YellOnCinder			= "Yell on $spell:79339",
+	RangeFrame				= "Show range frame (10) when you have $spell:79339",
+	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
