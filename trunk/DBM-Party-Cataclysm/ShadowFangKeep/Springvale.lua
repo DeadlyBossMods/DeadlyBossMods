@@ -10,7 +10,8 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_SUCCES",
-	"SPELL_DAMAGE"
+	"SPELL_DAMAGE",
+	"CHAT_MSG_MONSTER_YELL"
 )
 
 local warnDesecration		= mod:NewSpellAnnounce(93687, 3)
@@ -20,7 +21,12 @@ local warnWordShame			= mod:NewTargetAnnounce(93852, 3)
 
 local specWarnDesecration	= mod:NewSpecialWarningMove(94370)
 
+local timerAdds				= mod:NewTimer(40, "TimerAdds", 48000)
 local timerMaleficStrike	= mod:NewNextTimer(6, 93685)
+
+function mod:OnCombatStart(delay)
+	timerAdds:Start(-delay)
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93736) then
@@ -46,5 +52,11 @@ do
 			specWarnDesecration:Show()
 			lastdesecration = GetTime()
 		end
+	end
+end
+
+function mod:CHAT_MSG_MONSTER_YELL(msg)
+	if msg == L.YellAdds or msg:find(L.YellAdds) then
+		timerAdds:Start()--unknown time for 2nd+ set, pugs don't take this long anymore. Assumed the same but don't know for sure.
 	end
 end

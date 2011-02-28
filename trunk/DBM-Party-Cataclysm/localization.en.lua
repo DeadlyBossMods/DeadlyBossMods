@@ -369,6 +369,18 @@ L:SetGeneralLocalization({
 	name = "Commander Springvale"
 })
 
+L:SetTimerLocalization({
+	TimerAdds		= "Next Adds"
+})
+
+L:SetOptionLocalization{
+	TimerAdds		= "Show timer for Adds"
+}
+
+L:SetMiscLocalization{
+	YellAdds		= "Repel the intruders!"
+}
+
 -----------------
 -- Lord Walden --
 -----------------
