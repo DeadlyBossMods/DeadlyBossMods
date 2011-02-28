@@ -191,7 +191,7 @@ DBM_ARROW_ERROR_USAGE	= {
 	"/dbm arrow focus  주시대상을 가르키는 화살표를 만듭니다.",
 }
 
-DBM_SPEED_KILL_TIMER_TEXT	= "이전에 죽였던 시간"
+DBM_SPEED_KILL_TIMER_TEXT	= "가장 빨랐던 보스킬"
 DBM_SPEED_KILL_TIMER_OPTION	= "당신이 죽였던 가장 빨랐던 시간을 타이머로 보기"
 
 end
