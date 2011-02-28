@@ -39,17 +39,17 @@ local specWarnShield		= mod:NewSpecialWarningSpell(95865)
 local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
 local specWarnIcePatch      = mod:NewSpecialWarningMove(93131)
 
-local timerNurture			= mod:NewNextTimer(114, 85422)--This does NOT cast at same time as hurricane/sleet storm/Zephyr (35 seconds after special ended?)
+local timerNurture			= mod:NewNextTimer(35, 85422)--This this is typically 35 seconds after a special has ended.
 local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
 local timerSlicingGale		= mod:NewBuffActiveTimer(45, 93058, nil, false)
 local timerWindBlast		= mod:NewBuffActiveTimer(10, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
-local timerStormShieldCD	= mod:NewNextTimer(113, 95865)--Heroic ability, seems to share CD/line up with Nurture
+local timerStormShieldCD	= mod:NewNextTimer(35, 95865)--Heroic ability, seems to share CD/line up with Nurture and also 35 seconds after a special ended.
 local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
 local timerPoisonToxic		= mod:NewBuffActiveTimer(5, 86281)
 local timerPoisonToxicCD	= mod:NewCDTimer(21, 86281)--is this a CD or a next timer?
 local timerPermaFrostCD		= mod:NewCDTimer(10, 93233)
-local timerSoothingBreezeCD	= mod:NewNextTimer(32.5, 86205)--needs more work, works fine as a CD timer for now, but it also depends on bosses energy on whether or not he casts this instead of spores.
+local timerSoothingBreezeCD	= mod:NewNextTimer(32.5, 86205)
 local timerSpecial			= mod:NewTimer(95, "timerSpecial", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--hurricane/Sleet storm/Zephyr share CD. Shortened cause sometimes slipstreams end early, even though cd is a little longer
 local timerSpecialActive	= mod:NewTimer(15, "timerSpecialActive", "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")
 
@@ -104,10 +104,10 @@ function mod:SPELL_AURA_APPLIED(args)
 			specialsEnded = GetTime()
 			if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 				timerSoothingBreezeCD:Start(15)
-				timerNurture:Start(35)
+				timerNurture:Start()
 			end
 			if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
-				timerStormShieldCD:Start(35)
+				timerStormShieldCD:Start()
 			end
 		end
 	end
@@ -123,10 +123,10 @@ function mod:SPELL_AURA_REMOVED(args)
 		specialsEnded = GetTime()
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			timerSoothingBreezeCD:Start(15)
-			timerNurture:Start(35)
+			timerNurture:Start()
 		end
 		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
-			timerStormShieldCD:Start(35)
+			timerStormShieldCD:Start()
 		end
 	end
 end
@@ -155,7 +155,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(85422) then
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			warnNurture:Show()
-			--timerNurture:Start()--Trying an anti spam experiment of starting this timer somewhere else to minimize time it spends on screen.
 			if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 				timerPoisonToxicCD:Start()
 			end
@@ -177,7 +176,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
 			warnStormShield:Show()
 			specWarnShield:Show()
-			--timerStormShieldCD:Start()--Trying an anti spam experiment of starting this timer somewhere else to minimize time it spends on screen.
 		end
 	elseif args:IsSpellID(86281) and GetTime() - poisonSpam > 3 then-- Poison Toxic Warning (at Heroic, Poison Toxic damage is too high, so warning needed)
 		poisonSpam = GetTime()
