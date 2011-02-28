@@ -88,7 +88,6 @@ L:SetOptionLocalization({
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
 	warnGravityCoreJump		= "$spell:92538 전이 경고 보기",
 	warnStaticOverloadJump	= "$spell:92467 전이 경고 보기",
-
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
