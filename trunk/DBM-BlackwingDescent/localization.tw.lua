@@ -121,10 +121,12 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	RangeFrame			= "顯示距離框 (6碼)",
-	SetIconOnSlime			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
+	SetIconOnSlime			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
+	InfoFrame			= "為血量(低於1萬血)顯示資訊框架"
 })
 
 L:SetMiscLocalization({
+	HealthInfo			= "血量資訊"
 })
 
 -----------------
@@ -183,7 +185,8 @@ L:SetWarningLocalization({
 	OnyTailSwipe			= "尾部鞭擊 (奧妮克希亞)",
 	NefTailSwipe			= "尾部鞭擊 (奈法利安)",
 	OnyBreath			= "暗影焰息 (奧妮克希亞)",
-	NefBreath			= "暗影焰息 (奈法利安)"
+	NefBreath			= "暗影焰息 (奈法利安)",
+	specWarnShadowblazeSoon		= "暗影炎 即將到來 (~5秒)"
 })
 
 L:SetTimerLocalization({
@@ -198,6 +201,7 @@ L:SetOptionLocalization({
 	NefTailSwipe			= "為奈法利安的$spell:77827顯示警告",
 	OnyBreath			= "為奧妮克希亞的$spell:94124顯示警告",
 	NefBreath			= "為奈法利安的$spell:94124顯示警告",
+	specWarnShadowblazeSoon		= "為$spell:94085顯示預先特別警告 (~5秒)",
 	OnySwipeTimer			= "為奧妮克希亞的$spell:77827的冷卻時間顯示計時器",
 	NefSwipeTimer			= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
 	OnyBreathTimer			= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
