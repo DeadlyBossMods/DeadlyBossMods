@@ -48,7 +48,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnFeedback			= "%s: >%s< (%d)",		-- Feedback on >args.destName< (args.amount)
 	WarnAdd				= "風暴小怪 即將到來"
 })
 
@@ -57,7 +56,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnFeedback			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(87904, GetSpellInfo(87904) or "unknown"),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(89668),
 	TimerFeedback			= "為$spell:87904的持續時間顯示計時器"
 })

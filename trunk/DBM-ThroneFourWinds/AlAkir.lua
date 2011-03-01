@@ -22,7 +22,7 @@ local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
 local warnWindBurst		= mod:NewSpellAnnounce(87770, 3)
 local warnSquallLine	= mod:NewAnnounce("WarnAdd", 2, 87856)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
-local warnFeedback		= mod:NewAnnounce("WarnFeedback", 2, 87904)
+local warnFeedback		= mod:NewStackAnnounce(87904, 2)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnLightingRod	= mod:NewTargetAnnounce(89668, 4)
 
@@ -52,7 +52,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(87904) then
-		warnFeedback:Show(args.spellName, args.destName, args.amount or 1)
+		warnFeedback:Show(args.destName, args.amount or 1)
 		timerFeedback:Cancel()--prevent multiple timers spawning with diff args.
 		timerFeedback:Start(20, args.amount or 1)
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)

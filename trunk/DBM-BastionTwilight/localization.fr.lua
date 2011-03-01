@@ -4,42 +4,6 @@ local L
 -- Initial release by Sasmira: 12/26/2010
 -- Last update: 01/22/2011 (by Sasmira) 
 
-
----------------------------
---  Valiona & Theralion  --
----------------------------
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"
-})
-
-L:SetWarningLocalization({
-	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath			= "%s (%d)",
-	WarnTwilightShift		= "%s : >%s< (%d)"
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	YellOnEngulfing			= "Crier sur $spell:86622",
-	YellOnTwilightMeteor	= "Crier sur $spell:88518",
-	YellOnTwilightBlast		= "Crier sur $spell:92898",
-	TwilightBlastArrow		= "Afficher la flèche DBM lorsque $spell:92898 est près de vous",
-	RangeFrame				= "Afficher la fenêtre de portée (10)",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
-L:SetMiscLocalization({
-	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",--Change this to what deep breath emote is.
-	YellEngulfing			= "Magie enveloppante sur moi !",
-	YellMeteor				= "Météorite du Crépuscule sur moi !",
-	YellTwilightBlast			= "Déflagration du Crépuscule sur moi !"
-})
-
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
@@ -59,6 +23,35 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
+})
+
+---------------------------
+--  Valiona & Theralion  --
+---------------------------
+L = DBM:GetModLocalization("ValionaTheralion")
+
+L:SetGeneralLocalization({
+	name =	"Valiona & Theralion"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	TwilightBlastArrow		= "Afficher la flèche DBM lorsque $spell:92898 est près de vous",
+	RangeFrame				= "Afficher la fenêtre de portée (10)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+})
+
+L:SetMiscLocalization({
+	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",--Change this to what deep breath emote is.
+	YellEngulfing			= "Magie enveloppante sur moi !",
+	YellMeteor				= "Météorite du Crépuscule sur moi !",
+	YellTwilightBlast			= "Déflagration du Crépuscule sur moi !"
 })
 
 ----------------------------------
@@ -118,7 +111,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 imminente"
+--	WarnPhase2Soon	= "Phase 2 imminente"
 })
 
 L:SetTimerLocalization({
@@ -130,7 +123,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon		= "Afficher la pré-alerte pour la Phase 2",
+--	WarnPhase2Soon		= "Afficher la pré-alerte pour la Phase 2",
 	YellOnCorrupting	= "Crier sur $spell:93178",
 	CorruptingCrashArrow	= "Afficher la flèche DBM lorsque $spell:93178 est près de vous",
 	InfoFrame			= "Afficher la fenêtre d'info pour le sort $spell:82235",

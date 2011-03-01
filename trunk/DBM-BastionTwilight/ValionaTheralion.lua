@@ -22,9 +22,9 @@ mod:RegisterEvents(
 local warnBlackout					= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
-local warnDazzlingDestruction		= mod:NewAnnounce("WarnDazzlingDestruction", 4, 86408)
-local warnDeepBreath				= mod:NewAnnounce("WarnDeepBreath", 4, 86059)
-local warnTwilightShift				= mod:NewAnnounce("WarnTwilightShift", 2, 93051)
+local warnDazzlingDestruction		= mod:NewCountAnnounce(86408, 4)
+local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)
+local warnTwilightShift				= mod:NewStackAnnounce(93051, 2)
 
 local timerBlackout					= mod:NewTargetTimer(15, 86788)
 local timerBlackoutCD				= mod:NewCDTimer(45, 86788)
@@ -67,7 +67,6 @@ local spamZone = 0
 local markWarned = false
 local blackoutActive = false
 local meteorTarget = GetSpellInfo(88518)
-local deepName = GetSpellInfo(86059)
 
 local function showEngulfingMagicWarning()
 	warnEngulfingMagic:Show(table.concat(engulfingMagicTargets, "<, >"))
@@ -167,7 +166,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:Schedule(0.3, showEngulfingMagicWarning)
 		end
 	elseif args:IsSpellID(93051) then
-		warnTwilightShift:Show(args.spellName, args.destName, args.amount or 1)
+		warnTwilightShift:Show(args.destName, args.amount or 1)
 		timerTwilightShift:Cancel(args.destName.." (1)")
 		timerTwilightShift:Cancel(args.destName.." (2)")
 		timerTwilightShift:Cancel(args.destName.." (3)")
@@ -214,7 +213,7 @@ function mod:SPELL_CAST_START(args)
 		specWarnDevouringFlames:Show()
 	elseif args:IsSpellID(86408) then
 		dazzlingCast = dazzlingCast + 1
-		warnDazzlingDestruction:Show(args.spellName, dazzlingCast)
+		warnDazzlingDestruction:Show(dazzlingCast)
 		if dazzlingCast == 1 then--only special warn once for first one
 			specWarnDazzlingDestruction:Show()
 		elseif dazzlingCast == 3 then--Cancel bars now as it's safer then doing it at beginning do to a late 3rd blackout gets cast sometimes.
@@ -239,7 +238,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Trigger1 or msg:find(L.Trigger1) then
 		breathCast = breathCast + 1
-		warnDeepBreath:Show(deepName, breathCast)
+		warnDeepBreath:Show(breathCast)
 		if breathCast == 1 then
 			timerNextDeepBreath:Cancel()
 			specWarnDeepBreath:Show()

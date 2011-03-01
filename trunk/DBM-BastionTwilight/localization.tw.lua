@@ -2,44 +2,6 @@
 
 local L
 
----------------------------
---  Valiona & Theralion  --
----------------------------
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name 			= "瓦莉歐娜和瑟拉里恩"
-})
-
-L:SetWarningLocalization({
-	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath		= "%s (%d)",
-	WarnTwilightShift	= "%s : >%s< (%d)"
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	WarnDazzlingDestruction	= "為$spell:86408顯示警告",
-	WarnDeepBreath		= "為$spell:86059顯示警告",
-	WarnTwilightShift	= "為$spell:93051顯示警告",
-	YellOnEngulfing		= "中了$spell:86622時大喊",
-	YellOnTwilightMeteor	= "中了$spell:88518時大喊",
-	YellOnTwilightBlast	= "中了$spell:92898時大喊",
-	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
-	RangeFrame		= "顯示距離框 (10碼)",
-	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
-L:SetMiscLocalization({
-	Trigger1		= "深呼吸",
-	YellEngulfing		= "我中了侵噬魔法!",
-	YellMeteor		= "我中了暮光隕星!",
-	YellTwilightBlast	= "我中了暮光衝擊!"
-})
-
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
@@ -59,6 +21,38 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+})
+
+---------------------------
+--  Valiona & Theralion  --
+---------------------------
+L = DBM:GetModLocalization("ValionaTheralion")
+
+L:SetGeneralLocalization({
+	name 			= "瓦莉歐娜和瑟拉里恩"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnEngulfing		= "中了$spell:86622時大喊",
+	YellOnTwilightMeteor	= "中了$spell:88518時大喊",
+	YellOnTwilightBlast	= "中了$spell:92898時大喊",
+	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
+	RangeFrame		= "顯示距離框 (10碼)",
+	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+})
+
+L:SetMiscLocalization({
+	Trigger1		= "深呼吸",
+	YellEngulfing		= "我中了侵噬魔法!",
+	YellMeteor		= "我中了暮光隕星!",
+	YellTwilightBlast	= "我中了暮光衝擊!"
 })
 
 ----------------------------------
@@ -120,14 +114,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon		= "第2階段 即將到來"
+--	WarnPhase2Soon		= "第2階段 即將到來"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon		= "為第2階段顯示預先警告",
+--	WarnPhase2Soon		= "為第2階段顯示預先警告",
 	YellOnCorrupting	= "中了$spell:93178時大喊",
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame		= "為$spell:82235顯示資訊框架",
