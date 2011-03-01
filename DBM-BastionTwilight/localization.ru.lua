@@ -2,44 +2,6 @@
 
 local L
 
----------------------------
---  Valiona & Theralion  --
----------------------------
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Валиона и Тералион"
-})
-
-L:SetWarningLocalization({
-	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath			= "%s (%d)",
-	WarnTwilightShift		= "%s : >%s< (%d)"
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	WarnDazzlingDestruction	= "Показывать предупреждение для $spell:86408",
-	WarnDeepBreath			= "Показывать предупреждение для $spell:86059",
-	WarnTwilightShift		= "Показывать предупреждение для $spell:93051",
-	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
-	YellOnTwilightMeteor	= "Крикнуть если на вас $spell:88518",
-	YellOnTwilightBlast		= "Крикнуть если на вас $spell:92898",
-	TwilightBlastArrow		= "Показывать стрелку DBM, когда $spell:92898 около вас",
-	RangeFrame				= "Окно проверки дистанции (10)",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
-L:SetMiscLocalization({
-	Trigger1				= "Глубокий вдох",--Change this to what deep breath emote is.
-	YellEngulfing			= "На МНЕ - Избыточная магия!",
-	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
-	YellTwilightBlast		= "На МНЕ - Сумеречный взрыв!"
-})
-
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
@@ -60,6 +22,38 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+})
+
+---------------------------
+--  Valiona & Theralion  --
+---------------------------
+L = DBM:GetModLocalization("ValionaTheralion")
+
+L:SetGeneralLocalization({
+	name =	"Валиона и Тералион"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
+	YellOnTwilightMeteor	= "Крикнуть если на вас $spell:88518",
+	YellOnTwilightBlast		= "Крикнуть если на вас $spell:92898",
+	TwilightBlastArrow		= "Показывать стрелку DBM, когда $spell:92898 около вас",
+	RangeFrame				= "Окно проверки дистанции (10)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+})
+
+L:SetMiscLocalization({
+	Trigger1				= "Глубокий вдох",--Change this to what deep breath emote is.
+	YellEngulfing			= "На МНЕ - Избыточная магия!",
+	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
+	YellTwilightBlast		= "На МНЕ - Сумеречный взрыв!"
 })
 
 ----------------------------------
@@ -121,14 +115,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon			= "Скоро 2-ая фаза"
+--	WarnPhase2Soon			= "Скоро 2-ая фаза"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon			= "Показывать предупреждение о переходе на 2-ую фазу",
+--	WarnPhase2Soon			= "Показывать предупреждение о переходе на 2-ую фазу",
 	YellOnCorrupting		= "Крикнуть если на вас $spell:93178",
 	CorruptingCrashArrow	= "Показывать стрелку DBM, когда $spell:93178 около вас",
 	InfoFrame				= "Показывать информационное окно для $spell:82235",

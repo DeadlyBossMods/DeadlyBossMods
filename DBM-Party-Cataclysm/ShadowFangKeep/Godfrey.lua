@@ -14,7 +14,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warnMortalWound		= mod:NewAnnounce("WarnMortalWound", 2, 93675, mod:IsTank() or mod:IsHealer())
+local warnMortalWound		= mod:NewStackAnnounce(93675, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnGhouls			= mod:NewSpellAnnounce(93707, 4)
 local warnCursedBullets		= mod:NewTargetAnnounce(93629, 3)
 
@@ -28,7 +28,7 @@ local timerCursedBullets	= mod:NewTargetTimer(15, 93629)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93675) then
-		warnMortalWound:Show(args.spellName, args.destName, args.amount or 1)
+		warnMortalWound:Show(args.destName, args.amount or 1)
 		timerMortalWound:Start(args.destName)
 		if args:IsPlayer() and (args.amount or 1) >= 5 then
 			specWarnMortalWound:Show(args.amount)

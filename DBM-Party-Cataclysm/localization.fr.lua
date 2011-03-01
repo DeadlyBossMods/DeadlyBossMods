@@ -389,11 +389,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization{
-	WarnMortalWound	= "%s sur >%s< (%d)"		-- Mortal Wound on >args.destName< (args.amount)
 }
 
 L:SetOptionLocalization{
-	WarnMortalWound	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(93675, GetSpellInfo(93675) or "inconnu")
 }
 
 ---------------------

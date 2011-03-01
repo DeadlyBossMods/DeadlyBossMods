@@ -1,44 +1,6 @@
 ﻿if GetLocale() ~= "koKR" then return end
 local L
 
----------------------------
---  Valiona & Theralion  --
----------------------------
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"발리오나와 테랄리온"
-})
-
-L:SetWarningLocalization({
-	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath			= "%s (%d)",
-	WarnTwilightShift		= "%s : >%s< (%d)"
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	WarnDazzlingDestruction	= "$spell:86408의 경고 보기",
-	WarnDeepBreath			= "$spell:86059의 경고 보기",
-	WarnTwilightShift		= "$spell:93051의 경고 보기",
-	YellOnEngulfing			= "$spell:86622 외치기",
-	YellOnTwilightMeteor	= "$spell:88518 외치기",
-	YellOnTwilightBlast		= "$spell:92898 외치기",
-	TwilightBlastArrow		= "당신의 근처에 $spell:92898이 있을 경우 DBM 화살표 보기",	
-	RangeFrame				= "거리 프레임 보기(10m)",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
-L:SetMiscLocalization{
-	Trigger1				= "들이쉽니다!",
-	YellMeteor				= "나에게 황혼 유성!!",
-	YellTwilightBlast		= "나에게 황혼 폭발!!",	
-	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T"
-}
-
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
@@ -60,6 +22,38 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 })
+
+---------------------------
+--  Valiona & Theralion  --
+---------------------------
+L = DBM:GetModLocalization("ValionaTheralion")
+
+L:SetGeneralLocalization({
+	name =	"발리오나와 테랄리온"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnEngulfing			= "$spell:86622 외치기",
+	YellOnTwilightMeteor	= "$spell:88518 외치기",
+	YellOnTwilightBlast		= "$spell:92898 외치기",
+	TwilightBlastArrow		= "당신의 근처에 $spell:92898이 있을 경우 DBM 화살표 보기",	
+	RangeFrame				= "거리 프레임 보기(10m)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+})
+
+L:SetMiscLocalization{
+	Trigger1				= "들이쉽니다!",
+	YellMeteor				= "나에게 황혼 유성!!",
+	YellTwilightBlast		= "나에게 황혼 폭발!!",	
+	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T"
+}
 
 ----------------------------------
 --  Twilight Ascendant Council  --
@@ -127,7 +121,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon			= "2 단계 사전 경고 보기",
 	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 있을 경우 DBM 화살표 보기",
 	InfoFrame				= "$spell:82235의 정보 프레임 보기",
 	RangeFrame				= "$spell:82235의 거리 프레임(5m) 보기",
