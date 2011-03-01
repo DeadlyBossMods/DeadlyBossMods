@@ -289,6 +289,20 @@ L:SetGeneralLocalization({
 	name = "Siamat"
 })
 
+L:SetWarningLocalization{
+	specWarnPhase2Soon	= "Fase 2 en 5 segundos"
+}
+
+L:SetTimerLocalization({
+	timerPhase2 	= "Empieza la Fase 2"
+})
+
+L:SetOptionLocalization{
+	specWarnPhase2Soon	= "Mostrar aviso epecial para fase 2 en breve (5 segundos)",
+	timerPhase2 	= "Mostrar tiempo para el inicio de la fase 2"
+}
+
+
 ------------------------
 -- High Prophet Barim --
 ------------------------
@@ -357,6 +371,18 @@ L = DBM:GetModLocalization("Springvale")
 L:SetGeneralLocalization({
 	name = "Comandante Vallefont"
 })
+
+L:SetTimerLocalization({
+	TimerAdds		= "Siguientes Adds"
+})
+
+L:SetOptionLocalization{
+	TimerAdds		= "Mostrar tiempo para adds"
+}
+
+L:SetMiscLocalization{
+	YellAdds		= "Repel the intruders!"--translate
+}
 
 -----------------
 -- Lord Walden --

@@ -4,7 +4,7 @@ DBM_CORE_NEED_SUPPORT				= "¿Eres bueno programando o con los idiomas? Si es as
 DBM_HOW_TO_USE_MOD					= "Bienvenido a DBM. Para acceder a las opciones escribe /dbm en tu chat para empezar a configurarlo. Puedes cargar las zonas manualmente para configurar las opciones específicas de cada Boss a tu gusto. DBM intenta hacer esto escaneando tu clase la primera vez que se inicia, pero quizás quieras más alertas de las que necesita tu clase."
 
 DBM_CORE_LOAD_MOD_ERROR				= "Error al cargar modulo %s: %s"
-DBM_CORE_LOAD_MOD_SUCCESS			= "Cargado modulo de '%s' !"
+DBM_CORE_LOAD_MOD_SUCCESS			= "Módulo de '%s' cargado correctamente. Para más opciones escribe /dbm o /dbm help en tu chat."
 DBM_CORE_LOAD_GUI_ERROR				= "No se puede cargar la GUI: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s llamado. Buena suerte y diviertase! :)";
