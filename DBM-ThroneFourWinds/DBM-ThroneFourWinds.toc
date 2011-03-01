@@ -11,7 +11,6 @@
 ## SavedVariablesPerCharacter: DBMThroneFourWinds_SavedVars, DBMThroneFourWinds_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: CATA
-## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Throne of the Four Winds
 ## X-DBM-Mod-Name-esES: Trono de los Cuatro Vientos
 ## X-DBM-Mod-Name-koKR: 네 바람의 왕좌
