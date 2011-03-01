@@ -20,11 +20,11 @@ mod:RegisterEvents(
 )
 
 local warnCausticSlime		= mod:NewTargetAnnounce(82935, 3)
-local warnBreak				= mod:NewAnnounce("WarnBreak", 3, 82881, mod:IsTank() or mod:IsHealer())
+local warnBreak				= mod:NewStackAnnounce(82881, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnDoubleAttack		= mod:NewSpellAnnounce(88826, 4, nil, mod:IsTank() or mod:IsHealer())
 local warnMassacre			= mod:NewSpellAnnounce(82848, 4)
 local warnFeud				= mod:NewSpellAnnounce(88872, 3)
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 3)
+local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 
 local specWarnFailure		= mod:NewSpecialWarningSpell(88853)
@@ -97,7 +97,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82881) then
-		warnBreak:Show(args.spellName, args.destName, args.amount or 1)
+		warnBreak:Show(args.destName, args.amount or 1)
 		timerBreak:Start(args.destName)
 		timerBreakCD:Start()
 	elseif args:IsSpellID(88826) then

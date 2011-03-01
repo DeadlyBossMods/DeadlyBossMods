@@ -13,7 +13,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnInferno	= "Появляется Пыляющее костяное создание! (~4сек)",
-	WarnPhase2Soon	= "Скоро 2-ая фаза"
 })
 
 L:SetTimerLocalization({
@@ -27,7 +26,6 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnInferno	= "Предупреждать заранее о $spell:92190 (~4сек)",
-	WarnPhase2Soon	= "Предупреждать заранее о переходе во вторую фазу",
 	RangeFrame		= "Показывать окно проверки дистанции на второй фазе (5м)"
 })
 
@@ -115,23 +113,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Скоро 2-ая фаза",
-	WarnBreak	= "%s на >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	HealthInfo	= "Инфо о здоровье"
-})
-
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Показывать предупреждение о начале 2-ой фазы",
 	RangeFrame		= "Показывать окно проверки дистанции (6м)",
-	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
 	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
 	InfoFrame		= "Показывать информационное окно со здоровьем (<10к хп)"
+})
+
+L:SetMiscLocalization({
+	HealthInfo	= "Инфо о здоровье"
 })
 
 -----------------
