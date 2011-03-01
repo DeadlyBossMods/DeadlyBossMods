@@ -137,7 +137,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast = "Casteando %s: %.1f seg",
 	soon = "%s pronto",
 	prewarn = "%s en %s",
-	phase = "Fase %d",
+	phase = "Fase %s",
+	prephase = "Fase %s pronto",
+	count = "%s (%%d)",
+	stack = "%s en >%%s< (%%d)",
 }
 
 local prewarnOption = "Mostrar una pre-alerta para |cff71d5ff|Hspell:%d|h%s|h|r"
@@ -147,7 +150,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast	= "Mostrar aviso cuando castee |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
 	prewarn	= "Mostrar pre-aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
-	phase	= "Mostrar aviso para fase %d",
+	phase	= "Mostrar aviso para fase %s",
+	prephase = "Mostrar pre-aviso para Fase %s",
+	count	= "Mostrar aviso para |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack	= "Anunciar objetivo de |cff71d5ff|Hspell:%d|h%s|h|r",
 }
 
 

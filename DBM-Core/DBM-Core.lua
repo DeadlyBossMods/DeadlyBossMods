@@ -2984,8 +2984,8 @@ do
 			else
 				text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName, DBM_CORE_SEC_FMT:format(preWarnTime or 5))
 			end
-		elseif announceType == "phase" then
-			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellId)
+		elseif announceType == "phase" or announceType == "prephase" then
+			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(tostring(spellId))
 		else
 			text = DBM_CORE_AUTO_ANNOUNCE_TEXTS[announceType]:format(spellName)
 		end
@@ -3018,6 +3018,14 @@ do
 		return newAnnounce(self, "spell", spellId, color or 3, ...)
 	end
 
+	function bossModPrototype:NewCountAnnounce(spellId, color, ...)
+		return newAnnounce(self, "count", spellId, color or 3, ...)
+	end
+
+	function bossModPrototype:NewStackAnnounce(spellId, color, ...)
+		return newAnnounce(self, "stack", spellId, color or 2, ...)
+	end
+
 	function bossModPrototype:NewCastAnnounce(spellId, color, castTime, icon, optionDefault, optionName)
 		return newAnnounce(self, "cast", spellId, color or 3, icon, optionDefault, optionName, castTime)
 	end
@@ -3033,6 +3041,11 @@ do
 	function bossModPrototype:NewPhaseAnnounce(phase, color, icon, ...)
 		return newAnnounce(self, "phase", phase, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
 	end
+
+	function bossModPrototype:NewPrePhaseAnnounce(phase, color, icon, ...)
+		return newAnnounce(self, "prephase", phase, color or 1, icon or "Interface\\Icons\\Spell_Nature_WispSplode", ...)
+	end
+
 end
 
 --------------------
