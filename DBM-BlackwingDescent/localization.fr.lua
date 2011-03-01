@@ -16,7 +16,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnInferno	= "Assemblage d'os flamboyant Imminent (~4s)",
-	WarnPhase2Soon	= "Phase 2 imminente"
 })
 
 L:SetTimerLocalization({
@@ -30,7 +29,6 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnInferno		= "Affiche une pré-alerte spéciale sur $spell:92190 (~4s)",
-	WarnPhase2Soon		= "Affiche une pré-alerte pour la Phase 2",
 	RangeFrame		= "Affiche la fenêtre de portée en Phase 2 (5)"
 })
 
@@ -118,23 +116,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 imminente",
-	WarnBreak		= "%s sur >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	HealthInfo		= "Info Santé"
-})
-
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Affiche la pré-alerte de la Phase 2",
 	RangeFrame	= "Affiche la fenêtre de portée (6)",
-	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "inconnu"),
 	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
 	InfoFrame		= "Affiche une fenêtre d'info sur la santé (<10k pv)"
+})
+
+L:SetMiscLocalization({
+	HealthInfo		= "Info Santé"
 })
 
 -----------------
