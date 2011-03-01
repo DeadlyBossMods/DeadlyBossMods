@@ -11,7 +11,6 @@
 ## SavedVariablesPerCharacter: DBMBastionTwilight_SavedVars, DBMBastionTwilight_SavedStats
 ## X-DBM-Mod: 1
 ## X-DBM-Mod-Category: CATA
-## X-DBM-Mod-Has-Heroic-Mode: 0
 ## X-DBM-Mod-Name: Bastion of Twilight
 ## X-DBM-Mod-Name-deDE: Bastion des Zwielichts
 ## X-DBM-Mod-Name-esES: Bastión del Crepúsculo
