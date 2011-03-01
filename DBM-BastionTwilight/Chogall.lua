@@ -29,7 +29,7 @@ local warnFlamingDestruction		= mod:NewSpellAnnounce(81194, 4)
 local warnEmpoweredShadows			= mod:NewSpellAnnounce(81572, 4)
 local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, false)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
-local warnPhase2Soon				= mod:NewAnnounce("WarnPhase2Soon", 2)
+local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2)
 local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
 local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Ranged should already be spread out and not need a special warning every sickness.

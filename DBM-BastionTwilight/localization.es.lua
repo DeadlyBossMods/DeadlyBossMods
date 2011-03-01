@@ -2,45 +2,6 @@
 
 local L
 
----------------------------
---  Valiona & Theralion  --
----------------------------
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Valiona y Theralion"
-})
-
-L:SetWarningLocalization({
-	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath			= "%s (%d)",
-	WarnTwilightShift		= "%s : >%s< (%d)"
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	WarnDazzlingDestruction	= "Mostrar aviso para $spell:86408",
-	WarnDeepBreath			= "Mostrar aviso para $spell:86059",
-	WarnTwilightShift		= "Mostrar aviso para $spell:93051",
-	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
-	YellOnTwilightMeteor	= "Gritar cuando tengas $spell:88518",
-	YellOnTwilightBlast		= "Gritar cuando tengas $spell:92898",
-	TwilightBlastArrow		= "Mostrar flecha cuando $spell:92898 está cerca de ti",
-	RangeFrame				= "Mostrar distancia (10 yardas)",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
-L:SetMiscLocalization({
-	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",--Change this to what deep breath emote is.
-	YellEngulfing				= "¡Trago de magia en mi!",
-	YellMeteor				= "¡Meteorito Crepuscular en mi!",
-	YellTwilightBlast		= "¡Explosión Crepuscular en mi!"
-})
-
-
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
@@ -61,6 +22,38 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+})
+
+---------------------------
+--  Valiona & Theralion  --
+---------------------------
+L = DBM:GetModLocalization("ValionaTheralion")
+
+L:SetGeneralLocalization({
+	name =	"Valiona y Theralion"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
+	YellOnTwilightMeteor	= "Gritar cuando tengas $spell:88518",
+	YellOnTwilightBlast		= "Gritar cuando tengas $spell:92898",
+	TwilightBlastArrow		= "Mostrar flecha cuando $spell:92898 está cerca de ti",
+	RangeFrame				= "Mostrar distancia (10 yardas)",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+})
+
+L:SetMiscLocalization({
+	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",--Change this to what deep breath emote is.
+	YellEngulfing				= "¡Trago de magia en mi!",
+	YellMeteor				= "¡Meteorito Crepuscular en mi!",
+	YellTwilightBlast		= "¡Explosión Crepuscular en mi!"
 })
 
 ----------------------------------
@@ -122,14 +115,14 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Fase 2 pronto"
+--	WarnPhase2Soon	= "Fase 2 pronto"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Mostrar preaviso para Fase 2",
+--	WarnPhase2Soon	= "Mostrar preaviso para Fase 2",
 	YellOnCorrupting	= "Gritar cuando tengas $spell:93178",
 	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:93178 está cerca de ti",
 	InfoFrame			= "Mostrar información para $spell:82235",

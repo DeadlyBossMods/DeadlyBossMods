@@ -1,43 +1,5 @@
 local L
 
----------------------------
---  Valiona & Theralion  --
----------------------------
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"
-})
-
-L:SetWarningLocalization({
-	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath			= "%s (%d)",
-	WarnTwilightShift		= "%s : >%s< (%d)"
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	WarnDazzlingDestruction	= "Show warning for $spell:86408",
-	WarnDeepBreath			= "Show warning for $spell:86059",
-	WarnTwilightShift		= "Show warning for $spell:93051",
-	YellOnEngulfing			= "Yell on $spell:86622",
-	YellOnTwilightMeteor	= "Yell on $spell:88518",
-	YellOnTwilightBlast		= "Yell on $spell:92898",
-	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
-	RangeFrame				= "Show range frame (10)",
-	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
-L:SetMiscLocalization({
-	Trigger1				= "Deep Breath",
-	YellEngulfing			= "Engulfing Magic on me!",
-	YellMeteor				= "Twilight Meteorite on me!",
-	YellTwilightBlast		= "Twilight Blast on me!"
-})
-
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
@@ -58,6 +20,38 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
+})
+
+---------------------------
+--  Valiona & Theralion  --
+---------------------------
+L = DBM:GetModLocalization("ValionaTheralion")
+
+L:SetGeneralLocalization({
+	name =	"Valiona & Theralion"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnEngulfing			= "Yell on $spell:86622",
+	YellOnTwilightMeteor	= "Yell on $spell:88518",
+	YellOnTwilightBlast		= "Yell on $spell:92898",
+	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
+	RangeFrame				= "Show range frame (10)",
+	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+})
+
+L:SetMiscLocalization({
+	Trigger1				= "Deep Breath",
+	YellEngulfing			= "Engulfing Magic on me!",
+	YellMeteor				= "Twilight Meteorite on me!",
+	YellTwilightBlast		= "Twilight Blast on me!"
 })
 
 ----------------------------------
@@ -119,14 +113,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 soon"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon			= "Show pre-warning for Phase 2",
 	YellOnCorrupting		= "Yell on $spell:93178",
 	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
 	InfoFrame				= "Show info frame for $spell:82235",

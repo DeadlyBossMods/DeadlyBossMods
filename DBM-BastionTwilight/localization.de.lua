@@ -1,41 +1,6 @@
 ﻿if GetLocale() ~= "deDE" then return end
 local L
 
----------------------------
---  Valiona & Theralion  --
----------------------------
-L = DBM:GetModLocalization("ValionaTheralion")
-
-L:SetGeneralLocalization({
-	name =	"Valiona & Theralion"
-})
-
-L:SetWarningLocalization({
-	WarnDazzlingDestruction	= "%s (%d)",
-	WarnDeepBreath			= "%s (%d)",
-	WarnTwilightShift		= "%s : >%s< (%d)"
-})
-
-L:SetTimerLocalization({
-})
-
-L:SetOptionLocalization({
-	YellOnEngulfing			= "Schreie bei $spell:86622",
-	YellOnTwilightMeteor	= "Schreie bei $spell:88518",
-	YellOnTwilightBlast		= "Schreie bei $spell:92898",
-	TwilightBlastArrow		= "Zeige DBM Pfeil, wenn $spell:92898 in deiner Nähe ist.",
-	RangeFrame				= "Zeige Abstandsfenster (10 m)",
-	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
-	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
-})
-
-L:SetMiscLocalization{
-	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!",--Change this to what deep breath emote is.
-	YellEngulfing			= "Einhüllende Magie auf mir!",
-	YellMeteor				= "Zwielichtmeteorit auf mir!",
-	YellTwilightBlast		= "Zwielichtdruckwelle auf mir!",
-}
-
 --------------------------
 --  Halfus Wyrmbreaker  --
 --------------------------
@@ -56,6 +21,35 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 })
+
+---------------------------
+--  Valiona & Theralion  --
+---------------------------
+L = DBM:GetModLocalization("ValionaTheralion")
+
+L:SetGeneralLocalization({
+	name =	"Valiona & Theralion"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	TwilightBlastArrow		= "Zeige DBM Pfeil, wenn $spell:92898 in deiner Nähe ist.",
+	RangeFrame				= "Zeige Abstandsfenster (10 m)",
+	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
+	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
+})
+
+L:SetMiscLocalization{
+	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!",--Change this to what deep breath emote is.
+	YellEngulfing			= "Einhüllende Magie auf mir!",
+	YellMeteor				= "Zwielichtmeteorit auf mir!",
+	YellTwilightBlast		= "Zwielichtdruckwelle auf mir!",
+}
 
 ----------------------------------
 --  Twilight Ascendant Council  --
@@ -114,7 +108,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 bald"
+--	WarnPhase2Soon	= "Phase 2 bald"
 })
 
 L:SetTimerLocalization({
@@ -125,7 +119,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Zeige Vorwarnung für Phase 2",
+--	WarnPhase2Soon	= "Zeige Vorwarnung für Phase 2",
 	InfoFrame			= "Zeige Infofenster für $spell:82235",
 	RangeFrame			= "Zeige Abstandsfenster (5) für $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
