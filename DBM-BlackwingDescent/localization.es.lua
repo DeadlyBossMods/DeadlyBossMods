@@ -186,7 +186,8 @@ L:SetWarningLocalization({
 	OnyTailSwipe		= "Latigazo de cola (Onyxia)",
 	NefTailSwipe		= "Latigazo de cola (Nefarian)",
 	OnyBreath			= "Aliento (Onyxia)",
-	NefBreath			= "Aliento (Nefarian)"
+	NefBreath			= "Aliento (Nefarian)",
+	specWarnShadowblazeSoon	= "Llamarada de las Sombras pronto (~5s)"
 })
 
 L:SetTimerLocalization({
@@ -201,6 +202,7 @@ L:SetOptionLocalization({
 	NefTailSwipe		= "Mostrar aviso para el $spell:77827 de Nefarian",
 	OnyBreath			= "Mostrar aviso para el $spell:94124 de Onyxia",
 	NefBreath			= "Mostrar aviso para el $spell:94124 de Nefarian",
+	specWarnShadowblazeSoon	= "Mostrar pre-aviso especial para $spell:94085 (~5s)",
 	OnySwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Onyxia",
 	NefSwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Nefarian",
 	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
