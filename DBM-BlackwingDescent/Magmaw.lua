@@ -23,7 +23,7 @@ local warnPillarFlame		= mod:NewSpellAnnounce(78006, 3)
 local warnMoltenTantrum		= mod:NewSpellAnnounce(78403, 4)
 local warnInferno			= mod:NewSpellAnnounce(92190, 4)
 local warnMangle			= mod:NewTargetAnnounce(89773, 3)
-local warnPhase2Soon		= mod:NewAnnounce("WarnPhase2Soon", 3)--heroic
+local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)--heroic
 local warnPhase2			= mod:NewPhaseAnnounce(2, 4)--heroic
 
 local specWarnPillar		= mod:NewSpecialWarningSpell(78006, mod:IsRanged())

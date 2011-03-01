@@ -13,7 +13,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnInferno			= "熾熱的煉獄 即將到來 (~4秒)",
-	WarnPhase2Soon			= "第2階段 即將到來"
 })
 
 L:SetTimerLocalization({
@@ -27,7 +26,6 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnInferno			= "為$spell:92190顯示預先特別警告 (~4秒)",
-	WarnPhase2Soon			= "為第2階段顯示預先警告",
 	RangeFrame			= "第2階段時顯示距離框 (5碼)"
 })
 
@@ -116,22 +114,17 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon			= "第2階段 即將到來",
-	WarnBreak			= "%s: >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
+L:SetOptionLocalization({
+	RangeFrame			= "顯示距離框 (6碼)",
+	SetIconOnSlime			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
 })
 
-L:SetOptionLocalization({
-	WarnPhase2Soon			= "為第2階段顯示預先警告",
-	WarnBreak			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
-	RangeFrame			= "顯示距離框 (6碼)",
-	WarnBreak			= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
-	SetIconOnSlime			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935)
+L:SetMiscLocalization({
 })
 
 -----------------

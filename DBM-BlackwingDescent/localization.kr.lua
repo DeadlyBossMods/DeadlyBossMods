@@ -12,8 +12,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnInferno	= "곧 이글거리는 지옥불(4초 뒤)",
-	WarnPhase2Soon	= "곧 2 단계"
+	SpecWarnInferno	= "곧 해골 소환 - 바닥 확인!",
 })
 
 L:SetTimerLocalization({
@@ -27,7 +26,6 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초)",
-	WarnPhase2Soon	= "2 단계 사전 경고 보기",
 	RangeFrame		= "2 단계 거리 프레임 보기 (5m)"
 })
 
@@ -115,23 +113,19 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "곧 2 단계",
-	WarnBreak		= "%s : >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	HealthInfo	= "체력 정보"
-})
-
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "2 단계 사전 경고 보기",
 	RangeFrame		= "거리 프레임 보기(6 m)",
-	WarnBreak		= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "알 수 없음"),
 	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
 	InfoFrame		= "체력 정보 프레임 보기"
+})
+
+L:SetMiscLocalization({
+	HealthInfo	= "체력 정보"
 })
 
 -----------------
@@ -186,10 +180,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	OnyTailSwipe		= "꼬리 채찍 (오닉시아)",
-	NefTailSwipe		= "꼬리 채찍 (네파리안)",
-	OnyBreath			= "암흑불길 숨결 (오닉시아)",
-	NefBreath			= "암흑불길 숨결 (네파리안)"
+	OnyTailSwipe			= "꼬리 채찍 (오닉시아)",
+	NefTailSwipe			= "꼬리 채찍 (네파리안)",
+	OnyBreath				= "암흑불길 숨결 (오닉시아)",
+	NefBreath				= "암흑불길 숨결 (네파리안)",
+	specWarnShadowblazeSoon	= "곧 암흑 화로!"
 })
 
 L:SetTimerLocalization({
@@ -200,17 +195,18 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	OnyTailSwipe		= "오닉시아의 $spell:77827 경고 보기",
-	NefTailSwipe		= "네파리안의 $spell:77827 경고 보기",
-	OnyBreath			= "오닉시아의 $spell:94124 경고 보기",
-	NefBreath			= "네파리안의 $spell:94124 경고 보기",
-	OnySwipeTimer		= "오닉시아의 $spell:77827 쿨다운 타이머 보기",
-	NefSwipeTimer		= "네파리안의 $spell:77827 쿨다운 타이머 보기",
-	OnyBreathTimer		= "오닉시아의 $spell:94124 쿨다운 타이머 보기",
-	NefBreathTimer		= "네파리안의 $spell:94124 쿨다운 타이머 보기",
-	YellOnCinder		= "$spell:79339 외치기",
-	RangeFrame			= "$spell:79339를 받을 경우 거리 프레임(10m) 보기",
-	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
+	OnyTailSwipe			= "오닉시아의 $spell:77827 경고 보기",
+	NefTailSwipe			= "네파리안의 $spell:77827 경고 보기",
+	OnyBreath				= "오닉시아의 $spell:94124 경고 보기",
+	NefBreath				= "네파리안의 $spell:94124 경고 보기",
+	specWarnShadowblazeSoon	= "$spell:94085의 사전 특수 경고 보기 (~5초 전)",
+	OnySwipeTimer			= "오닉시아의 $spell:77827 쿨다운 타이머 보기",
+	NefSwipeTimer			= "네파리안의 $spell:77827 쿨다운 타이머 보기",
+	OnyBreathTimer			= "오닉시아의 $spell:94124 쿨다운 타이머 보기",
+	NefBreathTimer			= "네파리안의 $spell:94124 쿨다운 타이머 보기",
+	YellOnCinder			= "$spell:79339 외치기",
+	RangeFrame				= "$spell:79339의 영향을 받을 경우 거리 프레임(10m) 보기",
+	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({

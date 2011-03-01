@@ -12,7 +12,6 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnInferno	= "Blazing Bone Construct Soon (~4s)",--translate
-	WarnPhase2Soon	= "Phase 2 bald"
 
 })
 
@@ -27,7 +26,6 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 	SpecWarnInferno	= "Zeige Spezialvorwarnung für $spell:92190 (~4s)",
-	WarnPhase2Soon	= "Zeige Vorwarnung für Phase 2",
 	RangeFrame		= "Zeige Abstandsfenster in Phase 2 (5)"
 
 })
@@ -116,23 +114,18 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "Phase 2 bald",
-	WarnBreak	= "%s auf >%s< (%d)"
 })
 
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-})
-
 L:SetOptionLocalization({
-	WarnPhase2Soon	= "Zeige Vorwarnung für Phase 2",
 	RangeFrame		= "Zeige Abstandsfenster(6)",
-	WarnBreak	= DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell:format(82881, GetSpellInfo(82881) or "unknown"),
 	SetIconOnSlime	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82935),
 	InfoFrame	= "Zeige Infofenst4er für Gesundheit (<10k hp)"
+})
 
+L:SetMiscLocalization({
 })
 
 -----------------
