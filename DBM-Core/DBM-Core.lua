@@ -1373,7 +1373,7 @@ do
 				"PARTY_MEMBERS_CHANGED",
 				"CHAT_MSG_ADDON",
 				"PLAYER_REGEN_DISABLED",
---				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
+				"INSTANCE_ENCOUNTER_ENGAGE_UNIT",
 				"UNIT_DIED",
 				"UNIT_DESTROYED",
 				"CHAT_MSG_WHISPER",
@@ -1733,7 +1733,10 @@ do
 			DBM:Schedule(3, scanForCombat, combatInfo.mod, mob)
 		end
 	end
-
+	
+	-- TODO: fix the duplicate code that was added for quick & dirty support of zone IDs
+	
+	-- detects a boss pull based on combat state, this is required for pre-ICC bosses that do not fire INSTANCE_ENCOUNTER_ENGAGE_UNIT events on engage
 	function DBM:PLAYER_REGEN_DISABLED()
 		if not combatInitialized then return end
 		if combatInfo[LastZoneText] or combatInfo[LastZoneMapID] then
@@ -1772,50 +1775,40 @@ do
 			clearTargetList()
 		end
 	end
-
---[[		This method does not currently work. Possibly do to "checkForPull" requiring unit affected by combat. Engage fires 1-2 seconds before regen disables.
---			This method only fires in new instances, it cannot be used for older content. So no hopeful fix for VoA multi boss pulls for achieve.
---			"<3.4> [MONSTER_YELL] CHAT_MSG_MONSTER_YELL#YOU tread upon the sacrosanct! Mortals have no place amidst the clouds.#Asaad###Treant##0#0##0#8225##0#false#false", -- [10]
---			"<3.4> [ENGAGE] Fake Args:#1#1#Asaad#0xF130AB630001AAA6#nil#nil#nil#nil#nil#nil#nil#nil#nil#nil#nil#nil#Real Args:", -- [12]
---			"<4.2> [REGEN_DISABLED]  ++ > Regen Disabled : Entering combat! ++ > ", -- [17]
+	
+	local function isBossEngaged(cId)
+		-- note that this is designed to work with any number of bosses, but it might be sufficient to check the first 4 unit ids
+		-- TODO: check if the client supports more than 4 boss unit IDs...just because the default boss health frame is limited to 4 doesn't mean there can't be more
+		local i = 1
+		repeat
+			local bossUnitId = "boss"..i
+			local bossExists = UnitExists(bossUnitId)
+			local bossGUID = bossExists and not UnitIsDead(bossUnitId) and UnitGUID(bossUnitId) -- check for UnitIsVisible maybe?
+			local bossCId = bossGUID and tonumber(bossGUID:sub(7, 10), 16)
+			if bossCId and (type(cId) == "number" and cId == bossCId or type(cId) == "table" and checkEntry(cId, bossCId)) then
+				return true
+			end
+			i = i + 1
+		until not bossExists
+	end
+	
 	function DBM:INSTANCE_ENCOUNTER_ENGAGE_UNIT()
-		if not combatInitialized then return end
-		if combatInfo[LastZoneText] or combatInfo[LastZoneMapID] then
-			buildTargetList()
-			if combatInfo[LastZoneText] then
-				for i, v in ipairs(combatInfo[LastZoneText]) do
-					if v.type == "engage" then
-						if v.multiMobPullDetection then
-							for _, mob in ipairs(v.multiMobPullDetection) do
-								if checkForPull(mob, v) then
-									break
-								end
-							end
-						else
-							checkForPull(v.mob, v)
-						end
-					end
+		if combatInfo[LastZoneText] then
+			for i, v in ipairs(combatInfo[LastZoneText]) do
+				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
+					DBM:StartCombat(v.mod, 0)
 				end
 			end
-			-- copy & paste, lol
-			if combatInfo[LastZoneMapID] then
-				for i, v in ipairs(combatInfo[LastZoneMapID]) do
-					if v.type == "engage" then
-						if v.multiMobPullDetection then
-							for _, mob in ipairs(v.multiMobPullDetection) do
-								if checkForPull(mob, v) then
-									break
-								end
-							end
-						else
-							checkForPull(v.mob, v)
-						end
-					end
-				end
-			end
-			clearTargetList()
 		end
-	end--]]
+		-- copy & paste, lol
+		if combatInfo[LastZoneMapID] then
+			for i, v in ipairs(combatInfo[LastZoneMapID]) do
+				if v.type == "combat" and isBossEngaged(v.multiMobPullDetection or v.mob) then
+					DBM:StartCombat(v.mod, 0)
+				end
+			end
+		end
+	end
 end
 
 do
