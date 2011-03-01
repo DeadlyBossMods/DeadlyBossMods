@@ -1,0 +1,29 @@
+﻿## Interface: 40000
+## X-Min-Interface: 30200
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFBoss Mod Studio|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FFСтудия модулей|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF首領模組生成器|r
+## Title-zhCN:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF首领模块生成器|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff0055FF보스 모드 스튜디오|r
+## Notes: BossModStudio for Deadly Boss Mods
+## Notes-ruRU: Студия BossModStudio для DBM
+## Notes-zhTW: DBM首領模組生成器
+## Notes-zhCN: 首领模块生成器
+## Notes-koKR: DBM 보스모듈 추가 제작
+## RequiredDeps: DBM-Core
+## LoadOnDemand: 0
+## DefaultState: enabled
+## SavedVariables: DBM_BMS, DBMBossModStudio_SavedVars, DBMBossModStudio_SavedStats
+## Author: Nitram and Tandanu
+## URL: http://www.deadlybossmods.com
+localization.en.lua
+localization.de.lua
+localization.cn.lua
+localization.ru.lua
+localization.fr.lua
+localization.tw.lua
+localization.kr.lua
+BMS-Core.lua
+BMS-Gui.lua
+BMS-CombatLog.lua
+

@@ -1,0 +1,89 @@
+﻿## Interface: 40000
+## X-Min-Interface: 40000
+## Title:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Party-Cataclysm|r
+## Title-frFR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Groupe-Cataclysm|r
+## Title-deDE:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Gruppe-Cataclysm|r
+## Title-zhTW:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0隊伍-浩劫與重生|r
+## Title-ruRU:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Групповые подземелья-Катаклизм|r
+## Title-koKR:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf05인던전-대격변|r
+## Title-esES:|cffffe00a<|r|cffff7d0aDBM|r|cffffe00a>|r |cff69ccf0Mazmorras-Cataclysm|r
+## LoadOnDemand: 1
+## RequiredDeps: DBM-Core
+## SavedVariablesPerCharacter: DBMPartyCataclysm_SavedVars, DBMPartyCataclysm_SavedStats
+## X-DBM-Mod: 1
+## X-DBM-Mod-Category: CATA
+## X-DBM-Mod-SubCategories: Blackrock Caverns, Deadmines, Grim Batol, Halls of Origination, Lost City of the Tol'vir, Shadowfang Keep, The Stonecore, The Vortex Pinnacle, Throne of Tides
+## X-DBM-Mod-SubCategories-deDE: Schwarzfelshöhlen, Die Todesminen, Grim Batol, Hallen des Ursprungs, Die verlorene Stadt der Tol'vir, Burg Schattenfang, Der Steinerne Kern, Der Vortexgipfel, Thron der Gezeiten
+## X-DBM-Mod-SubCategories-esES: Cavernas de Roca Negra, Minas de la Muerte, Grim Batol, Cámaras de los Orígenes, Ciudad Perdida de los Tol'vir, Castillo de Colmillo Oscuro, Núcleo Pétreo, Cumbre del Vortice, Trono de las Mareas
+## X-DBM-Mod-SubCategories-koKR: 검은바위 동굴, 죽음의 폐광, 그림 바톨, 시초의 전당, 톨비르의 잃어버린 도시, 그림자송곳니 성채, 바위심장부, 소용돌이 누각, 파도의 왕좌
+## X-DBM-Mod-SubCategories-ruRU: Пещеры Черной горы, Мертвые копи, Грим Батол, Чертоги Созидания, Затерянный город Тол'вир, Крепость Темного Клыка, Каменные Недра, Вершина смерча, Трон Приливов
+## X-DBM-Mod-SubCategories-zhTW: 黑石洞穴, 死亡礦坑, 格瑞姆巴托, 起源大廳, 托維爾的失落之城, 影牙城堡, 石岩之心, 旋渦尖塔, 海湖王座
+## X-DBM-Mod-Name: Party (Cataclysm)
+## X-DBM-Mod-Name-frFR: Groupe (Cataclysm)
+## X-DBM-Mod-Name-deDE: Gruppe (Cataclysm)
+## X-DBM-Mod-Name-ruRU: Групповые подземелья (Катаклизм)
+## X-DBM-Mod-Name-zhTW: 隊伍首領 (浩劫與重生)
+## X-DBM-Mod-Name-esES: Mazmorras (Cataclysm)
+## X-DBM-Mod-Name-koKR: 5인 던전 (대격변)
+## X-DBM-Mod-Name-esMX: Mazmorras (Cataclysm)
+## X-DBM-Mod-Sort: 125
+## X-DBM-Mod-LoadZoneID: 747,753,756,757,759,764,767,768,769
+localization.en.lua
+localization.de.lua
+localization.es.lua
+localization.fr.lua
+localization.kr.lua
+localization.ru.lua
+localization.tw.lua
+BlackrockCaverns\MapSizes.lua
+BlackrockCaverns\RomoggBonecrusher.lua
+BlackrockCaverns\Corla.lua
+BlackrockCaverns\KarshSteelBender.lua
+BlackrockCaverns\Beauty.lua
+BlackrockCaverns\AscendantLordObsidius.lua
+Deadmines\MapSizes.lua
+Deadmines\Glubtok.lua
+Deadmines\Helix.lua
+Deadmines\FoeReaper.lua
+Deadmines\Ripsnarl.lua
+Deadmines\Cookie.lua
+Deadmines\Vanessa.lua
+GrimBatol\MapSizes.lua
+GrimBatol\GeneralUmbriss.lua
+GrimBatol\ForgemasterThrongus.lua
+GrimBatol\DrahgaShadowburner.lua
+GrimBatol\Erudax.lua
+HallsOfOrigination\MapSizes.lua
+HallsOfOrigination\TempleGuardianAnhuur.lua
+HallsOfOrigination\EarthragerPtah.lua
+HallsOfOrigination\Anraphet.lua
+HallsOfOrigination\Isiset.lua
+HallsOfOrigination\Ammunae.lua
+HallsOfOrigination\Setesh.lua
+HallsOfOrigination\Rajh.lua
+LostCityOfTheTolvir\MapSizes.lua
+LostCityOfTheTolvir\GeneralHusam.lua
+LostCityOfTheTolvir\Lockmaw.lua
+LostCityOfTheTolvir\Augh.lua
+LostCityOfTheTolvir\HighProphetBarim.lua
+LostCityOfTheTolvir\Siamat.lua
+ShadowFangKeep\MapSizes.lua
+ShadowFangKeep\Ashbury.lua
+ShadowFangKeep\Silverlaine.lua
+ShadowFangKeep\Springvale.lua
+ShadowFangKeep\Walden.lua
+ShadowFangKeep\Godfrey.lua
+TheVortexPinnacle\MapSizes.lua
+TheVortexPinnacle\GrandVizierErtan.lua
+TheVortexPinnacle\Altarius.lua
+TheVortexPinnacle\Asaad.lua
+TheStonecore\MapSizes.lua
+TheStonecore\Corborus.lua
+TheStonecore\Slabhide.lua
+TheStonecore\Ozruk.lua
+TheStonecore\HighPriestessAzil.lua
+ThroneOfTides\MapSizes.lua
+ThroneOfTides\LadyNazjar.lua
+ThroneOfTides\CommanderUlthok.lua
+ThroneOfTides\ErunakStonespeaker.lua
+ThroneOfTides\Ozumat.lua
