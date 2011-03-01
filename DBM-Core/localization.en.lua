@@ -136,7 +136,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast = "Casting %s: %.1f sec",
 	soon = "%s soon",
 	prewarn = "%s in %s",
-	phase = "Phase %d",
+	phase = "Phase %s",
+	prephase = "Phase %s soon",
+	count = "%s (%%d)",
+	stack = "%s on >%%s< (%%d)",
 }
 
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
@@ -146,7 +149,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Announce Phase %d"
+	phase = "Announce Phase %s",
+	prephase = "Show a prewarning for Phase %s",
+	count = "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack = "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
 }
 
 

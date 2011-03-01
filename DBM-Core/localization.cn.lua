@@ -143,7 +143,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast					= "施放%s：%.1f秒",
 	soon					= "即将 %s",
 	prewarn					= "%2$s后 %1$s",
-	phase					= "第%d阶段"
+	phase					= "第%s阶段",
+	prephase				= "第%s阶段 即将到来",
+	count					= "%s (%%d)",
+	stack					= "%s: >%%s< (%%d)",
 }
 
 local prewarnOption				= "显示提前警报：|cff71d5ff|Hspell:%d|h%s|h|r"
@@ -153,7 +156,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast					= "显示施法警报：|cff71d5ff|Hspell:%d|h%s|h|r",
 	soon					= prewarnOption,
 	prewarn					= prewarnOption,
-	phase					= "显示第%d阶段提示"
+	phase					= "显示第%s阶段提示",
+	prephase				= "为第%s阶段显示提前警报",
+	count					= "显示警报：|cff71d5ff|Hspell:%d|h%s|h|r",
+	stack					= "警报|cff71d5ff|Hspell:%d|h%s|h|r的目标",
 }
 
 
