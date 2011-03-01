@@ -208,7 +208,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(81171) then--87579?
 		warnFlameOrders:Show()
 	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
-		self:ScheduleMethod(0.01, "CorruptingCrashTarget", args.sourceGUID)--Since this is an instance cast scanning accurately is very hard.
+		self:ScheduleMethod(0.2, "CorruptingCrashTarget", args.sourceGUID)--Since this is an instance cast scanning accurately is very hard.
 	end
 end
 
