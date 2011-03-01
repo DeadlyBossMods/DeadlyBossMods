@@ -138,7 +138,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast					= "施放 %s: %.1f 秒",
 	soon					= "%s 即將到來",
 	prewarn					= "%s 在 %s",
-	phase					= "第%d階段"
+	phase					= "第%s階段",
+	prephase				= "第%s階段 即將到來",
+	count					= "%s (%%d)",
+	stack					= "%s: >%%s< (%%d)",
 }
 
 local prewarnOption				= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示預先警告"
@@ -148,7 +151,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast					= "當|cff71d5ff|Hspell:%d|h%s|h|r施放時顯示警告",
 	soon					= prewarnOption,
 	prewarn					= prewarnOption,
-	phase					= "提示第%d階段"
+	phase					= "提示第%s階段",
+	prephase				= "為第%s階段顯示預先警告",
+	count					= "為|cff71d5ff|Hspell:%d|h%s|h|r顯示警告",
+	stack					= "提示|cff71d5ff|Hspell:%d|h%s|h|r的目標",
 }
 
 -- Auto-generated Special Warning Localizations

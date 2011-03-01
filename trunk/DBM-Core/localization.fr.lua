@@ -138,7 +138,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast		= "Cast %s: %.1f sec",
 	soon		= "%s bientôt",
 	prewarn		= "%s dans %s",
-	phase		= "Phase %d",
+	phase		= "Phase %s",
+	prephase	= "Phase %s bientôt",
+	count		= "%s (%%d)",
+	stack		= "%s sur >%%s< (%%d)",
 }
 
 local prewarnOption = "Montre une pré-alerte pour |cff71d5ff|Hspell:%d|h%s|h|r"
@@ -148,7 +151,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast	= "Montre une alerte quand |cff71d5ff|Hspell:%d|h%s|h|r est en cours de cast",
 	soon	= "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r",
 	prewarn	= "Montre une alerte avant |cff71d5ff|Hspell:%d|h%s|h|r",
-	phase	= "Montre une alerte pour la phase %d",
+	phase	= "Montre une alerte pour la phase %s",
+	prephase= "Montre une alerte avant la Phase %s",
+	count	= "Montre une alerte pour |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack	= "Annonce la cible de |cff71d5ff|Hspell:%d|h%s|h|r",
 }
 
 -- Auto-generated Special Warning Localizations

@@ -133,7 +133,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast = "%s in %.1f Sek",
 	soon = "%s bald",
 	prewarn = "%s in %s",
-	phase = "Phase %d",
+	phase = "Phase %s",
+	prephase = "Phase %s bald",
+	count = "%s (%%d)",
+	stack = "%s: >%%s< (%%d)",
 }
 
 local prewarnOption = "Zeige Vorwarnung für |cff71d5ff|Hspell:%d|h%s|h|r"
@@ -143,7 +146,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast = "Zeige Warnung wenn |cff71d5ff|Hspell:%d|h%s|h|r gezaubert wird",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Zeige Warnung für Phase %d"
+	phase = "Zeige Warnung für Phase %s",
+	prephase = "Zeige Vorwarnung für Phase %s",
+	count = "Zeige Warnung für |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack = "Ziel von |cff71d5ff|Hspell:%d|h%s|h|r ansagen",
 }
 
 -- Auto-generated Special Warning Localizations

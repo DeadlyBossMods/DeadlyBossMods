@@ -136,7 +136,10 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
 	cast = "Применение заклинания %s: %.1f сек",
 	soon = "Скоро %s",
 	prewarn = "%s через %s",
-	phase = "Фаза %d",
+	phase = "Фаза %s",
+	prephase = "Скоро фаза %s",
+	count = "%s (%%d)",
+	stack = "%s на |3-5(>%%s<) (%%d)",
 }
 
 local prewarnOption = "Предупреждать заранее о |cff71d5ff|Hspell:%d|h%s|h|r"
@@ -146,7 +149,10 @@ DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
 	cast = "Предупреждать о применении заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 	soon = prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Объявлять фазу %d"
+	phase = "Объявлять фазу %s",
+	prephase = "Предупреждать заранее о фазе %s",
+	count = "Предупреждение для |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack = "Объявлять цели заклинания |cff71d5ff|Hspell:%d|h%s|h|r",
 }
 
 

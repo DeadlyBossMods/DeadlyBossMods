@@ -131,16 +131,20 @@ DBM_CORE_AUTO_ANNOUNCE_TEXTS.target 	= "%s : >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell 		= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast 		= "주문시전 %s : %.1f 초"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon 		= "곧 %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "%s : %s"
-DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 		= "%d 단계"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 		= "%s 단계"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase	= "곧 %s 단계"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.count 		= "%s (%%d)"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.stack 		= "%s : >%%s< (%%d)"
 
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.target	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.spell 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.cast 	= "|cff71d5ff|Hspell:%d|h%s|h|r 시전을 시작할 경우 경고 보기"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.soon 	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(soon)"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prewarn	= "|cff71d5ff|Hspell:%d|h%s|h|r의 사전 경고 보기(prewarn)"
-DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "%d 단계 경고 보기"
-
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.phase 	= "%s 단계 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.prephase	= "%s 단계 사전 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.count 	= "|cff71d5ff|Hspell:%d|h%s|h|r 경고 보기"
+DBM_CORE_AUTO_ANNOUNCE_OPTIONS.stack	= "|cff71d5ff|Hspell:%d|h%s|h|r 대상 알리기"
 
 -- Auto-generated Special Warning Localizations
 DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
