@@ -571,3 +571,112 @@ L = DBM:GetModLocalization("Ozumat")
 L:SetGeneralLocalization({
 	name = "오주마트"
 })
+
+---------------
+--  Nalorakk --
+---------------
+L = DBM:GetModLocalization("Nalorakk5")
+
+L:SetGeneralLocalization{
+	name = "날로라크"
+}
+
+L:SetWarningLocalization{
+	WarnBear		= "곰 형상",
+	WarnBearSoon	= "곧 곰 형상",
+	WarnNormal		= "인간 형상",
+	WarnNormalSoon	= "곧 인간 형상"
+}
+
+L:SetTimerLocalization{
+	TimerBear		= "다음 곰 형상",
+	TimerNormal		= "다음 인간 형상"
+}
+
+L:SetOptionLocalization{
+	WarnBear		= "곰 형상 경고 보기",
+	WarnBearSoon	= "곰 형상 사전 경고 보기(soon)",
+	WarnNormal		= "인간 형상 경고 보기",
+	WarnNormalSoon	= "인간 형상 사전 경고 보기(soon)",
+	TimerBear		= "다음 곰 형상 타이머 보기",
+	TimerNormal		= "다음 인간 형상 타이머 보기"
+}
+
+L:SetMiscLocalization{
+	YellBear 	= "너희들이 짐승을 불러냈다. 놀랄 준비나 해라!",
+	YellNormal	= "날로라크 나가신다!"
+}
+
+---------------
+--  Akil'zon --
+---------------
+L = DBM:GetModLocalization("Akilzon5")
+
+L:SetGeneralLocalization{
+	name = "아킬존"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
+	RangeFrame	= "거리 프레임 보기"
+}
+
+L:SetMiscLocalization{
+}
+
+---------------
+--  Jan'alai --
+---------------
+L = DBM:GetModLocalization("Janalai5")
+
+L:SetGeneralLocalization{
+	name = "잔알라이"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	FlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43140)
+}
+
+L:SetMiscLocalization{
+	YellBomb	= "태워버리겠다!",
+	YellAdds	= "다 어디 갔지? 당장 알을 부화시켜!"
+}
+
+--------------
+--  Halazzi --
+--------------
+L = DBM:GetModLocalization("Halazzi5")
+
+L:SetGeneralLocalization{
+	name = "할라지"
+}
+
+L:SetWarningLocalization{
+	WarnSpirit	= "영혼 단계",
+	WarnNormal	= "보통 단계"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnSpirit	= "영혼 단계 경고 보기",
+	WarnNormal	= "보통 단계 경고 보기"
+}
+
+L:SetMiscLocalization{
+	YellSpirit	= "야생의 혼이 내 편이다...",
+	YellNormal	= "혼이여, 이리 돌아오라!"
+}
