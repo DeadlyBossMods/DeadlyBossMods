@@ -16,10 +16,10 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ColorByClass		= "스코어 화면의 유저 이름을 클래스 이름으로 보이기",
+	ColorByClass		= "스코어 화면 유저 이름에 직업 색상 사용하기",
 	ShowInviteTimer		= "전장 입장 타이머 보이기",
-	AutoSpirit			= "자동 부활",
-	HideBossEmoteFrame	= "레이드 보스 감정표현 프레임 숨기기"
+	AutoSpirit			= "전장에서 사망시 자동으로 무덤 이동하기",
+	HideBossEmoteFrame	= "공격대 경보 형태로 보이는 전장 메세지 숨기기"
 })
 
 L:SetMiscLocalization({

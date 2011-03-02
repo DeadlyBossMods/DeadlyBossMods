@@ -42,7 +42,7 @@ L:SetOptionLocalization({
 	YellOnEngulfing			= "$spell:86622 외치기",
 	YellOnTwilightMeteor	= "$spell:88518 외치기",
 	YellOnTwilightBlast		= "$spell:92898 외치기",
-	TwilightBlastArrow		= "당신의 근처에 $spell:92898이 있을 경우 DBM 화살표 보기",	
+	TwilightBlastArrow		= "당신 근처에 $spell:92898이 시전된 경우 DBM 화살표 보기",
 	RangeFrame				= "거리 프레임 보기(10m)",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
@@ -52,7 +52,7 @@ L:SetMiscLocalization{
 	Trigger1				= "들이쉽니다!",
 	YellMeteor				= "나에게 황혼 유성!!",
 	YellTwilightBlast		= "나에게 황혼 폭발!!",	
-	YellEngulfing			= "사로잡힌 마법에 걸렸어요! T_T"
+	YellEngulfing			= "나에게 사로잡힌 마법!"
 }
 
 ----------------------------------
@@ -76,8 +76,8 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded		= "$spell:83581 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
-	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전 캐스팅)",
+	SpecWarnGrounded		= "$spell:83581 버프가 없을 경우, 특수 경고 보기\n(~10초 전)",
+	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전)",
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
 	warnGravityCoreJump		= "$spell:92538 전이 경고 보기",
@@ -114,16 +114,15 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnPhase2Soon	= "곧 2 단계"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 있을 경우 DBM 화살표 보기",
+	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 시전 된 경우 DBM 화살표 보기",
 	InfoFrame				= "$spell:82235의 정보 프레임 보기",
-	RangeFrame				= "$spell:82235의 거리 프레임(5m) 보기",
+	RangeFrame				= "$spell:82235의 영항을 받을시 거리 프레임(5m) 보기",
 	YellOnCorrupting		= "$spell:93178 외치기",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
