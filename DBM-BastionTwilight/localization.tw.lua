@@ -18,6 +18,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	ShowDrakeHealth		= "顯示已被釋放的小龍血量"
 })
 
 L:SetMiscLocalization({
@@ -114,14 +115,12 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
---	WarnPhase2Soon		= "第2階段 即將到來"
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
---	WarnPhase2Soon		= "為第2階段顯示預先警告",
 	YellOnCorrupting	= "中了$spell:93178時大喊",
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame		= "為$spell:82235顯示資訊框架",
