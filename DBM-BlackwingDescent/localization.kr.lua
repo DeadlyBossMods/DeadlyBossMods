@@ -25,7 +25,7 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초)",
+	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초 전)",
 	RangeFrame		= "2 단계 거리 프레임 보기 (5m)"
 })
 
@@ -42,8 +42,8 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerArcaneBlowbackCast		= "비전 역류",
-	timerShadowConductorCast	= "암흑 전도체"
+	timerArcaneBlowbackCast		= "폭발!",
+	timerShadowConductorCast	= "암흑 전도체 변환"
 })
 
 L:SetOptionLocalization({
@@ -153,7 +153,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnAirphase			= "공중 단계 경고 보기",
 	WarnGroundphase			= "지상 단계 경고 보기",
-	WarnShieldsLeft			= "고대 드워프 보호막 사용 개수 경고 보기",
+	WarnShieldsLeft			= "고대 드워프 보호막 남은 개수 경고 보기",
 	warnAddSoon				= "불쾌한 마귀 소환 경고 보기",
 	specWarnAddTargetable	= "불쾌한 마귀가 공격 가능할 때 특수 경고 보기",
 	TimerAirphase			= "다음 공중 단계 경고 보기",
