@@ -13,14 +13,14 @@ DBM_CORE_BOSS_DOWN_LONG				= "%s (을)를 쓰러트렸습니다. (%s 소요 되�
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s (을)를 쓰러뜨렸습니다. (%s 소요 되었습니다!) 이 기록은 새로운 기록이군요! (과거의 기록: %s)"
 DBM_CORE_COMBAT_ENDED				= "%s 전투가 종료되었습니다. (%s 소요 되었습니다.)"
 
-DBM_CORE_TIMER_FORMAT_SECS			= "%d |4초:초;"
-DBM_CORE_TIMER_FORMAT_MINS			= "%d |4분:분;"
-DBM_CORE_TIMER_FORMAT				= "%d |4분:분; and %d |4초:초;"
+DBM_CORE_TIMER_FORMAT_SECS			= "%d|4초:초;"
+DBM_CORE_TIMER_FORMAT_MINS			= "%d|4분:분;"
+DBM_CORE_TIMER_FORMAT				= "%d|4분:분; %d|4초:초;"
 
 DBM_CORE_MIN						= "분"
-DBM_CORE_MIN_FMT					= "%d 분"
+DBM_CORE_MIN_FMT					= "%d분"
 DBM_CORE_SEC						= "초"
-DBM_CORE_SEC_FMT					= "%d 초"
+DBM_CORE_SEC_FMT					= "%d초"
 DBM_CORE_DEAD						= "죽음"
 DBM_CORE_OK							= "수락"
 
@@ -33,13 +33,13 @@ DBM_CORE_OPTION_CATEGORY_TIMERS		= "바"
 DBM_CORE_OPTION_CATEGORY_WARNINGS	= "알림"
 DBM_CORE_OPTION_CATEGORY_MISC		= "기타 추가 기능"
 
-DBM_CORE_AUTO_RESPONDED				= "자동-부활."
+DBM_CORE_AUTO_RESPONDED				= "귓속말 자동 응답"
 DBM_CORE_STATUS_WHISPER				= "%s: %s, %d/%d 공대원이 생존해 있습니다."
 DBM_CORE_AUTO_RESPOND_WHISPER		= "%s 님은 현재 바쁩니다. %s의 전투가 진행중입니다. (%s, %d/%d 공대원 생존중) 전투가 끝난 후 통보를 받게 될 것입니다."
 DBM_CORE_WHISPER_COMBAT_END_KILL	= "%s 님이 %s의 전투가 끝났습니다!"
 DBM_CORE_WHISPER_COMBAT_END_WIPE	= "%s 님이 %s의 전투에서 전멸하였습니다."
 
-DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버젼"
+DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 죽이는 보스 모드가 설치 되어있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명의 플레이어가 설치되어 있는 것을 찾았습니다."
@@ -74,7 +74,7 @@ DBM_CORE_RANGECHECK_LOCK			= "프레임 잠금"
 
 DBM_CORE_INFOFRAME_LOCK				= "프레임 잠금"
 DBM_CORE_INFOFRAME_HIDE				= "숨기기"
-DBM_CORE_INFOFRAME_SHOW_SELF		= "자신의 마나/기력 항상 보기"		-- Always show your own power value even if you are below the threshold
+DBM_CORE_INFOFRAME_SHOW_SELF		= "자신의 정보 항상 보기"		-- Always show your own power value even if you are below the threshold
 
 DBM_LFG_INVITE						= "던전 입장"
 
@@ -124,13 +124,14 @@ DBM_CORE_AUTO_TIMER_OPTIONS.cast 		= "|cff71d5ff|Hspell:%d|h%s|h|r 시전 타이
 DBM_CORE_AUTO_TIMER_OPTIONS.active		= "|cff71d5ff|Hspell:%d|h%s|h|r 유지 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.cd 			= "|cff71d5ff|Hspell:%d|h%s|h|r 쿨다운 타이머 보기"
 DBM_CORE_AUTO_TIMER_OPTIONS.next 		= "다음 |cff71d5ff|Hspell:%d|h%s|h|r 타이머 보기"
-DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "%s 위한 타이머 보기"
+DBM_CORE_AUTO_TIMER_OPTIONS.achievement = "%s 업적 타이머 보기"
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.target 	= "%s : >%%s<"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.spell 		= "%s"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.cast 		= "주문시전 %s : %.1f 초"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.soon 		= "곧 %s"
+DBM_CORE_AUTO_ANNOUNCE_TEXTS.prewarn	= "곧 %s (%s 후)"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.phase 		= "%s 단계"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.prephase	= "곧 %s 단계"
 DBM_CORE_AUTO_ANNOUNCE_TEXTS.count 		= "%s (%%d)"
@@ -152,8 +153,8 @@ DBM_CORE_AUTO_SPEC_WARN_OPTIONS = {
 	dispel 		= "$spell:%d의 특수 경고 보기(해제/마법훔치기)",
 	interrupt	= "$spell:%d의 특수 경고 보기(차단)",	
 	you 		= "$spell:%d의 영향을 받을 경우 특수 경고 보기",
-	target 		= "$spell:%d의 영향을 누군가 받을 경우 특수 경고 보기",
-	close 		= "$spell:%d의 영향을 가까운 공대원으로부터 받을 경우 특수 경고 보기",
+	target 		= "$spell:%d의 영향을 누군가 받은 경우 특수 경고 보기",
+	close 		= "$spell:%d의 대상이 당신 근처에 있을 경우 특수 경고 보기",
 	move 		= "$spell:%d의 영향을 받을 경우 특수 경고 보기(이동)",
 	run 		= "$spell:%d의 특수 경고 보기(빠른이동)",
 	cast 		= "$spell:%d의 시전 특수 경고 보기",
@@ -166,14 +167,14 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	interrupt 	= "%s - 차단!",	
 	you 		= "당신에게 %s",
 	target 		= "%s : %%s",
-	close 		= "%%s에게 가까운 당신에게 %s 시전",
+	close 		= "당신 근처에 %s (%%s)!",
 	move 		= "%s - 이동하세요!",
 	run 		= "%s - 뛰세요!",
 	cast 		= "%s - 시전 중지",
 	stack 		= "%s (%%d)"
 }
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 아이콘 설정"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 징표 설정"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
 
 -- New special warnings
@@ -183,7 +184,7 @@ DBM_CORE_MOVE_SPECIAL_WARNING_TEXT		= "특수 경고"
 DBM_CORE_RANGE_CHECK_ZONE_UNSUPPORTED	= " %dm 거리 체크를 지원하지 않는 지역입니다. 10, 11, 15 그리고 28m를 지원합니다."
 
 DBM_ARROW_MOVABLE						= "화살표 움직이기"
-DBM_ARROW_NO_RAIDGROUP					= "공격대 던전에서만 사용"
+DBM_ARROW_NO_RAIDGROUP					= "이 기능은 공격대에 속해 있고, 공격대 던전 내부에 있을때만 사용 가능합니다."
 
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 사용법:",
@@ -196,6 +197,6 @@ DBM_ARROW_ERROR_USAGE	= {
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "가장 빨랐던 보스킬"
-DBM_SPEED_KILL_TIMER_OPTION	= "당신이 죽였던 가장 빨랐던 시간을 타이머로 보기"
+DBM_SPEED_KILL_TIMER_OPTION	= "당신이 죽였던 가장 빨랐던 보스킬 시간을 타이머로 보기"
 
 end
