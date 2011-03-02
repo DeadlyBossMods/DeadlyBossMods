@@ -142,7 +142,7 @@ L:SetWarningLocalization({
 	WarnAirphase			= "空中階段",
 	WarnGroundphase			= "地上階段",
 	WarnShieldsLeft			= "使用了古代矮人盾牌 - 剩餘%d次",
-	warnAddSoon			= "Obnoxious Fiend已被召喚了",
+	warnAddSoon			= "討人厭的惡魔已被召喚了",
 	specWarnAddTargetable		= "%s可以點擊了"
 })
 
@@ -166,9 +166,9 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	AncientDwarvenShield		= "古代矮人盾牌",
-	Soundlevel			= "音波值",
-	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
-	NefAdd				= "Atramedes, the heroes are right THERE!",
+	Soundlevel			= "聲音值",
+	YellPestered			= "討人厭的惡魔在我這裡!",--npc 49740
+	NefAdd				= "亞特拉米德，英雄們就在那!",
 	Airphase			= "沒錯，逃吧!每一步都會讓你的心跳加速。跳得轟隆作響...震耳欲聾。你逃不掉的!"
 })
 
