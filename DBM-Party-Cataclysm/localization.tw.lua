@@ -534,3 +534,112 @@ L = DBM:GetModLocalization("Ozumat")
 L:SetGeneralLocalization({
 	name = "歐蘇瑪特"
 })
+
+---------------
+--  Nalorakk --
+---------------
+L = DBM:GetModLocalization("Nalorakk5")
+
+L:SetGeneralLocalization{
+	name = "納羅拉克"
+}
+
+L:SetWarningLocalization{
+	WarnBear		= "熊階段",
+	WarnBearSoon	= "5秒後 熊階段",
+	WarnNormal		= "普通階段",
+	WarnNormalSoon	= "5秒後 普通階段"
+}
+
+L:SetTimerLocalization{
+	TimerBear		= "熊階段",
+	TimerNormal		= "普通階段"
+}
+
+L:SetOptionLocalization{
+	WarnBear		= "Show warning for Bear form",--Translate
+	WarnBearSoon	= "Show pre-warning for Bear form",--Translate
+	WarnNormal		= "Show warning for Normal form",--Translate
+	WarnNormalSoon	= "Show pre-warning for Normal form",--Translate
+	TimerBear		= "Show timer for Bear form",--Translate
+	TimerNormal		= "Show timer for Normal form"--Translate
+}
+
+L:SetMiscLocalization{
+	YellBear 	= "你們既然將野獸召喚出來，就將付出更多的代價!",
+	YellNormal	= "沒有人可以擋在納羅拉克的面前!"
+}
+
+---------------
+--  Akil'zon --
+---------------
+L = DBM:GetModLocalization("Akilzon5")
+
+L:SetGeneralLocalization{
+	name = "阿奇爾森"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
+	RangeFrame	= "顯示距離框"
+}
+
+L:SetMiscLocalization{
+}
+
+---------------
+--  Jan'alai --
+---------------
+L = DBM:GetModLocalization("Janalai5")
+
+L:SetGeneralLocalization{
+	name = "賈納雷"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	FlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43140)
+}
+
+L:SetMiscLocalization{
+	YellBomb	= "燒死你們!",
+	YellAdds	= "雌鷹哪裡去啦?快去孵蛋!"
+}
+
+--------------
+--  Halazzi --
+--------------
+L = DBM:GetModLocalization("Halazzi5")
+
+L:SetGeneralLocalization{
+	name = "Халаззи"
+}
+
+L:SetWarningLocalization{
+	WarnSpirit	= "靈魂出現了",
+	WarnNormal	= "靈魂消失了"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnSpirit	= "Show warning for Spirit phase",--Translate
+	WarnNormal	= "Show warning for Normal phase"--Translate
+}
+
+L:SetMiscLocalization{
+	YellSpirit	= "狂野的靈魂與我同在......",
+	YellNormal	= "靈魂，回到我這裡來!"
+}

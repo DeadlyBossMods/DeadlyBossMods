@@ -167,6 +167,10 @@ local enableIcons = true -- set to false when a raid leader or a promoted player
 local bannedMods = { -- a list of "banned" (meaning they are replaced by another mod like DBM-Battlegrounds (replaced by DBM-PvP)) boss mods, these mods will not be loaded by DBM (and they wont show up in the GUI)
 	"DBM-Battlegrounds", --replaced by DBM-PvP
 }
+if tonumber((select(2, GetBuildInfo()))) >= 13682 then
+	bannedMods[#bannedMods + 1] = "DBM-ZulAman"
+	bannedMods[#bannedMods + 1] = "DBM-ZG"
+end
 
 --------------------------------------------------------
 --  Cache frequently used global variables in locals  --

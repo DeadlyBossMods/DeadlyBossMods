@@ -568,3 +568,112 @@ L = DBM:GetModLocalization("Ozumat")
 L:SetGeneralLocalization({
 	name = "Ozumat"
 })
+
+---------------
+--  Nalorakk --
+---------------
+L = DBM:GetModLocalization("Nalorakk5")
+
+L:SetGeneralLocalization{
+	name = "Nalorakk (Bear)"
+}
+
+L:SetWarningLocalization{
+	WarnBear		= "Bear Form",
+	WarnBearSoon	= "Bear Form in 5 sec",
+	WarnNormal		= "Normal Form",
+	WarnNormalSoon	= "Normal Form in 5 sec"
+}
+
+L:SetTimerLocalization{
+	TimerBear		= "Bear Form",
+	TimerNormal		= "Normal Form"
+}
+
+L:SetOptionLocalization{
+	WarnBear		= "Show warning for Bear form",
+	WarnBearSoon	= "Show pre-warning for Bear form",
+	WarnNormal		= "Show warning for Normal form",
+	WarnNormalSoon	= "Show pre-warning for Normal form",
+	TimerBear		= "Show timer for Bear form",
+	TimerNormal		= "Show timer for Normal form"
+}
+
+L:SetMiscLocalization{
+	YellBear 	= "You call on da beast, you gonna get more dan you bargain for!",
+	YellNormal	= "Make way for Nalorakk!"
+}
+
+---------------
+--  Akil'zon --
+---------------
+L = DBM:GetModLocalization("Akilzon5")
+
+L:SetGeneralLocalization{
+	name = "Akil'zon (Eagle)"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
+	RangeFrame	= "Show range frame (10 yards)"
+}
+
+L:SetMiscLocalization{
+}
+
+---------------
+--  Jan'alai --
+---------------
+L = DBM:GetModLocalization("Janalai5")
+
+L:SetGeneralLocalization{
+	name = "Jan'alai (Dragonhawk)"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	FlameIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43140)
+}
+
+L:SetMiscLocalization{
+	YellBomb	= "I burn ya now!",
+	YellAdds	= "Where ma hatcha? Get to work on dem eggs!"
+}
+
+--------------
+--  Halazzi --
+--------------
+L = DBM:GetModLocalization("Halazzi5")
+
+L:SetGeneralLocalization{
+	name = "Halazzi (Lynx)"
+}
+
+L:SetWarningLocalization{
+	WarnSpirit	= "Spirit Phase",
+	WarnNormal	= "Normal Phase"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnSpirit	= "Show warning for Spirit phase",
+	WarnNormal	= "Show warning for Normal phase"
+}
+
+L:SetMiscLocalization{
+	YellSpirit	= "I fight wit' untamed spirit....",
+	YellNormal	= "Spirit, come back to me!"
+}
