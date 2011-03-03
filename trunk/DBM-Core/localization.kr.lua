@@ -9,7 +9,7 @@ DBM_CORE_LOAD_GUI_ERROR				= "GUI를 로드할 수 없습니다: %s"
 
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_BOSS_DOWN					= "%s (을)를 쓰러트렸습니다. (%s 소요 되었습니다!)"
-DBM_CORE_BOSS_DOWN_LONG				= "%s (을)를 쓰러트렸습니다. (%s 소요 되었습니다!) 당신의 최종 킬 타임은, %s 입니다. 그리고 당신의 제일 빠른 킬 타임은 %s 입니다.."
+DBM_CORE_BOSS_DOWN_LONG				= "%s (을)를 쓰러트렸습니다. (%s 소요 되었습니다!) 당신의 최종 킬 시간은, %s 입니다. 그리고 당신의 가장 빠른 킬 시간은 %s 입니다."
 DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s (을)를 쓰러뜨렸습니다. (%s 소요 되었습니다!) 이 기록은 새로운 기록이군요! (과거의 기록: %s)"
 DBM_CORE_COMBAT_ENDED				= "%s 전투가 종료되었습니다. (%s 소요 되었습니다.)"
 
@@ -174,7 +174,7 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 	stack 		= "%s (%%d)"
 }
 
-DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 공격대 징표 설정"
+DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 전술 목표 아이콘 설정"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
 
 -- New special warnings
@@ -189,11 +189,11 @@ DBM_ARROW_NO_RAIDGROUP					= "이 기능은 공격대에 속해 있고, 공격�
 DBM_ARROW_ERROR_USAGE	= {
 	"DBM-Arrow 사용법:",
 	"/dbm arrow <x> <y>  특정 좌표(X/Y)에 화살표를 만듭니다.(0 < x/y < 100)",
-	"/dbm arrow <player>  당신이 속한 파티 또는 공격대의 특정 플레이어를 가르키는 화살표를 만듭니다.",
+	"/dbm arrow <player>  당신이 속한 파티 또는 공격대의 특정 플레이어를 가리키는 화살표를 만듭니다.",
 	"/dbm arrow hide  화살표를 숨깁니다.",
 	"/dbm arrow move  화살표를 움직이도록 합니다.",
-	"/dbm arrow target 대상을 가르키는 화살표를 만듭니다.",
-	"/dbm arrow focus  주시대상을 가르키는 화살표를 만듭니다.",
+	"/dbm arrow target 대상을 가리키는 화살표를 만듭니다.",
+	"/dbm arrow focus  주시대상을 가리키는 화살표를 만듭니다.",
 }
 
 DBM_SPEED_KILL_TIMER_TEXT	= "가장 빨랐던 보스킬"

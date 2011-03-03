@@ -35,7 +35,7 @@ L.Disable				= "끄기"
 
 L.NoSound				= "소리 끄기"
 
-L.IconsInUse			= "현재 모드에서 사용 되는 공격대 징표:"
+L.IconsInUse			= "현재 모드에서 사용 되는 전술 목표 아이콘:"
 
 -- Tab: Boss Statistics
 L.BossStatistics		= "보스 공략 상황"
@@ -53,7 +53,7 @@ L.EnableStatus 			= "'status' 귓속말을 받은 경우 자동 응답 메세지
 L.AutoRespond 			= "전투 중 귓속말을 받은 경우 자동 응답 메세지 보내기"
 L.EnableMiniMapIcon		= "Minimap 버튼 사용"
 L.FixCLEUOnCombatStart	= "풀링시 전투 로그 정리"
-L.SetCurrentMapOnPull	= "풀링시 지도를 현재 지역으로 설정하기 (/range & /arrow의 정확성 보장)"
+L.SetCurrentMapOnPull	= "풀링시 지도를 현재 지역으로 설정하기 (거리 프레임 및 DBM 화살표의 정확성 보장)"
 L.UseMasterVolume		= "기본 오디오 채널로 소리 재생(4.0.6+)"
 L.SKT_Enabled			= "각 보스 설정에서 끈 상태라도 항상 빠르게 죽인 타이머 보기(강제)"
 L.Latency_Text			= "동기화를 사용 할 최대 지연시간 설정 : %d"
@@ -140,8 +140,8 @@ L.BlockVersionUpdatePopup		= "업데이트 알림 창 끄기"
 L.ShowBigBrotherOnCombatStart	= "전투 시작시 BigBrother 버프 체크 실행하기"
 L.BigBrotherAnnounceToRaid		= "Big Brother 버프 체크 결과를 공격대에 알리기"
 
-L.Area_SpamFilter_Outgoing		= "공통 설정"
+L.Area_SpamFilter_Outgoing		= "공통 설정(각 보스별 설정 무시)"
 L.SpamBlockNoShowAnnounce		= "알림 또는 경고 소리 끄기"
-L.SpamBlockNoSendAnnounce		= "공격대에 경보 알림을 보내지 않기"
+L.SpamBlockNoSendAnnounce		= "공격대 경보 알림 대화를 보내지 않기"
 L.SpamBlockNoSendWhisper		= "다른 플레이어에게 귓속말 알림을 보내지 않기"
-L.SpamBlockNoSetIcon			= "공격대 징표 설정하지 않기"
+L.SpamBlockNoSetIcon			= "전술 목표 아이콘 설정하지 않기"
