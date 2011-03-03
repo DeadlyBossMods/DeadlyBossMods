@@ -44,7 +44,6 @@ local warnChainLightning	= mod:NewSpellAnnounce(83300, 2)
 local warnLightningBlast	= mod:NewCastAnnounce(83070, 3)
 local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
-local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070)
 local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
 local warnStaticOverloadJump= mod:NewAnnounce("warnStaticOverloadJump", 4, 92467, false)--Jumped from player to player. Potentially Spammy and off by default for a reason.
 --Elementium Monstrosity
@@ -96,8 +95,8 @@ local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
 --Arion
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
+local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070)
 local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
-
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
 
