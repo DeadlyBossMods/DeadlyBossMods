@@ -223,7 +223,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(80011, 91504, 91505, 91506) then
 		timerSoaked:Start(args.destName)
-	elseif args:IsSpellID(91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
+	elseif args:IsSpellID(91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:GetDestCreatureID() == 42166 then--Check if Generator buff is gained by Arcanotron
