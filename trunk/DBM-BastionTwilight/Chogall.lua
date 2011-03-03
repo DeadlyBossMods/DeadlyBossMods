@@ -59,7 +59,7 @@ mod:AddBoolOption("InfoFrame")
 local worshipTargets = {}
 local prewarned_Phase2 = false
 local worshipIcon = 8
-local worshipCooldown = 23
+local worshipCooldown = 21
 local blazeSpam = 0
 local sickSpam = 0
 local creatureGUIDs = {}
@@ -126,7 +126,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(creatureGUIDs)
 	prewarned_Phase2 = false
 	worshipIcon = 8
-	worshipCooldown = 23
+	worshipCooldown = 21
 	if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
 		creatureAmount = 8
 	else
@@ -191,7 +191,11 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82414, 93160, 93161, 93162) then
 		warnCreations:Show()
-		timerCreationsCD:Start()
+		if mod:IsDifficulty("heroic25") then -- other difficulty not sure, only comfirmed 25 man heroic
+			timerCreationsCD:Start(40)
+		else
+			timerCreationsCD:Start()
+		end
 		table.wipe(creatureGUIDs)
 		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
 			creatureAmount = 8
