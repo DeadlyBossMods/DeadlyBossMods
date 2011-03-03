@@ -22,11 +22,11 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAdd		= "탄원하며 무릎 꿇기"
+	WarnAdd		= "광신도 진화!"
 })
 
 L:SetOptionLocalization({
-	WarnAdd		= "$spell:75608 버프가 추가될 때 경고하기"
+	WarnAdd		= "광신도가 $spell:75608 효과를 잃었을 때 경고 보기(광신도 진화)"
 })
 
 -----------------------
@@ -65,7 +65,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization({
-	SetIconOnBoss	= "$spell:76200 시전 후 보스에게 아이콘 표시 "
+	SetIconOnBoss	= "$spell:76200 시전 후 보스에게 전술 목표 아이콘 표시 "
 })
 
 ---------------------
@@ -144,7 +144,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	PingBlitz	= "장군 움브리스가 당신을 향해 대공세를 시전할 경우 미니맵에 알리기"
+	PingBlitz	= "당신이 $spell:74670 의 대상이 될 경우 미니맵에 위치 표시하기"
 }
 
 L:SetMiscLocalization{
@@ -311,7 +311,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetOptionLocalization{
-	BossHealthAdds	= "보스 체력 프레임 확장 보기"	-- translate
+	BossHealthAdds	= "추가되는 몹의 체력 프레임 보기"	-- translate
 }
 
 L:SetMiscLocalization{
@@ -427,21 +427,21 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEmerge		= "다음 등장",
-	WarnSubmerge	= "다음 잠수"
+	WarnEmerge		= "등장",
+	WarnSubmerge	= "잠수"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge		= "등장",
-	TimerSubmerge	= "잠수"
+	TimerEmerge		= "다음 등장",
+	TimerSubmerge	= "다음 잠수"
 })
 
 L:SetOptionLocalization({
 	WarnEmerge		= "등장 경고 보기",
 	WarnSubmerge	= "잠수 경고 보기",
-	TimerEmerge		= "등장 타이머 보기",
-	TimerSubmerge	= "잠수 타이머 보기",
-	CrystalArrow	= "당신의 주변에 $spell:81634이 생성될 경우 DBM 화살표 보기",
+	TimerEmerge		= "다음 등장 타이머 보기",
+	TimerSubmerge	= "다음 잠수 타이머 보기",
+	CrystalArrow	= "당신 주변에 $spell:81634이 시전 된 경우 DBM 화살표 보기",
 	RangeFrame		= "거리 프레임 보기 (5m)"	
 })
 
@@ -531,7 +531,7 @@ L:SetOptionLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnStaticCling	= "점프!"
+	SpecWarnStaticCling	= "전하 응집 - 점프!"
 })
 
 ---------------------------
