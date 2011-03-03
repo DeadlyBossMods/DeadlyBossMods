@@ -20,21 +20,23 @@ mod:RegisterEvents(
 local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
 
 local warnWindBurst		= mod:NewSpellAnnounce(87770, 3)
-local warnSquallLine	= mod:NewAnnounce("WarnAdd", 2, 87856)
+local warnAdd			= mod:NewAnnounce("WarnAdd", 2, 87856)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
 local warnFeedback		= mod:NewStackAnnounce(87904, 2)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
+local warnCloud			= mod:NewSpellAnnounce(89588, 3)
 local warnLightingRod	= mod:NewTargetAnnounce(89668, 4)
 
 local specWarnLightningRod	= mod:NewSpecialWarningYou(89668)
 
 local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
-local timerSquallLineCD		= mod:NewTimer(20, "TimerAddCD", 87856)
+local timerAddCD			= mod:NewTimer(20, "TimerAddCD", 87856)
 local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
 local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDeathKnight)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
+local timerLightningCloudCD	= mod:NewNextTimer(10, 89588)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -42,6 +44,12 @@ mod:AddBoolOption("LightningRodIcon")
 
 local lastWindburst = 0
 local phase2Started = false
+
+function mod:CloudRepeat()
+	warnCloud:Show()
+	timerLightningCloudCD:Start()
+	self:ScheduleMethod(10, "CloudRepeat")
+end
 
 function mod:OnCombatStart(delay)
 	timerWindBurstCD:Start(20-delay)
@@ -108,10 +116,12 @@ end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.summonSquall or msg:find(L.summonSquall) then--Adds being summoned
-		warnSquallLine:Show()
-		timerSquallLineCD:Start()
+		warnAdd:Show()
+		timerAddCD:Start()
 	elseif msg == L.phase3 or msg:find(L.phase3) then
 		warnPhase3:Show()
+		timerLightningCloudCD:Start(15)
+		self:ScheduleMethod(15, "CloudRepeat")
 		timerWindBurstCD:Start(25)
 		timerLightningRodCD:Start(20)
 		timerSquallLineCD:Cancel()
