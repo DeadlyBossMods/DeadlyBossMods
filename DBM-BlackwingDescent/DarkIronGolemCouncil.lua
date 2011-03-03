@@ -46,46 +46,55 @@ local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Abili
 --Toxitron
 local specWarnShell				= mod:NewSpecialWarningCast(79835)
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
+local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
 --Arcanotron
 local specWarnConversion		= mod:NewSpecialWarningCast(79729)
 local specWarnGenerator			= mod:NewSpecialWarningMove(79624, mod:IsTank())
 local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
+--All
+local specWarnActivated			= mod:NewSpecialWarning("SpecWarnActivated")
 
 --Magmatron
 local timerAcquiringTarget		= mod:NewNextTimer(40, 79501)
-local timerBarrier				= mod:NewBuffActiveTimer(11.5, 79582)	-- 10 + 1.5 cast time
+local timerBarrier				= mod:NewBuffActiveTimer(11.5, 79582, false)	-- 10 + 1.5 cast time
 local timerIncinerationCD   	= mod:NewNextTimer(26.5, 79023)--Timer Series, 10, 27, 32 (on normal) from activate til shutdown.
 --Electron
 local timerLightningConductor	= mod:NewTargetTimer(10, 79888)
 local timerLightningConductorCD	= mod:NewNextTimer(25, 79888)
-local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900)	-- 10 + 1.5 cast time
+local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900, false)	-- 10 + 1.5 cast time
 local timerShadowConductor		= mod:NewTargetTimer(10, 92053)--Heroic Ability
 local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92053)--Heroic Ability
 --Toxitron
 local timerChemicalBomb			= mod:NewNextTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
-local timerShell				= mod:NewBuffActiveTimer(11.5, 79835)	-- 10 + 1.5 cast time
+local timerShell				= mod:NewBuffActiveTimer(11.5, 79835, false)	-- 10 + 1.5 cast time
 local timerPoisonProtocolCD		= mod:NewNextTimer(45, 80053)
 local timerSoaked				= mod:NewTargetTimer(30, 80011, nil, false)
 --Arcanotron
 local timerGeneratorCD			= mod:NewNextTimer(30, 79624)
-local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729)	-- 10 + 1.5 cast time
+local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729, false)	-- 10 + 1.5 cast time
 local timerArcaneBlowback		= mod:NewTimer(8, "timerArcaneBlowbackCast", 91879)-- what happens after the overcharged power generator explodes. 8 seconds after overcharge cast.
 --All
 local timerNextActivate			= mod:NewNextTimer(45, 78740)--Activations are every 90 (60sec heroic) seconds but encounter staggers them in an alternating fassion so 45 (30 heroic) seconds between add switches
-local timerNefAbilityCD			= mod:NewNextTimer(30, 92048)--Huge variation on this, but shortest CD i've observed is 30.
+local timerNefAbilityCD			= mod:NewTimer(30, "timerNefAblity", 92048)--Huge variation on this, but shortest CD i've observed is 30.
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
 local soundBomb					= mod:NewSound(80094)
 
-mod:AddBoolOption("YellBombTarget", false)
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("BombTargetIcon")
 mod:AddBoolOption("ShadowConductorIcon")
+mod:AddBoolOption("YellBombTarget", false, "announce")
+mod:AddBoolOption("YellOnLightning", true, "announce")
+mod:AddBoolOption("YellOnShadowCast", true, "announce")
+mod:AddBoolOption("YellOnTarget", true, "announce")
+mod:AddBoolOption("YellOnTargetLock", true, "announce")
 
 local fixateIcon = 6
+local pulled = false
+local cloudSpam = 0
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
@@ -135,6 +144,7 @@ end
 
 function mod:OnCombatStart(delay)
 	fixateIcon = 6
+	cloudSpam = 0
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end
@@ -142,10 +152,20 @@ function mod:OnCombatStart(delay)
 	DBM.BossHealth:AddBoss(42180, 42178, 42179, 42166, L.name)
 end
 
+function mod:OnCombatEnd()
+	pulled = false
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(78740, 95016, 95017, 95018) then
 		warnActivated:Show(args.destName)
 		bossActivate(args.destName)
+		if pulled then -- prevent show warning when first pulled.
+			specWarnActivated:Show(args.destName)
+		end
+		if not pulled then
+			pulled = true
+		end
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerNextActivate:Start(30)
 		else
@@ -161,6 +181,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnAcquiringTarget:Show()
+			if self.Options.YellOnTarget then
+				SendChatMessage(L.YellTarget, "SAY")
+			end
 		end
 		if self.Options.AcquiringTargetIcon then
 			self:SetIcon(args.destName, 8, 6)
@@ -168,6 +191,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
 		if args:IsPlayer() then
 			specWarnConductor:Show()
+			if self.Options.YellOnLightning then
+				SendChatMessage(L.YellLightning, "SAY")
+			end
 		end
 		if self.Options.ConductorIcon then
 			self:SetIcon(args.destName, 7)
@@ -197,6 +223,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 	elseif args:IsSpellID(80011, 91504, 91505, 91506) then
 		timerSoaked:Start(args.destName)
+	elseif args:IsSpellID(91473) and args:IsPlayer() and GetTime() - cloudSpam >= 1 then
+		specWarnChemicalCloud:Show()
+		cloudSpam = GetTime()
 	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:GetDestCreatureID() == 42166 then--Check if Generator buff is gained by Arcanotron
 		if self:GetUnitCreatureId("target") == 42166 then--Make sure to only warn person tanking it. (other tank would be targeting a different golem)
 			specWarnGenerator:Show()--Show special warning to move him out of it.
@@ -204,10 +233,16 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92048) then--Shadow Infusion, debuff 5 seconds before shadow conductor.
 		warnShadowConductorCast:Show()
 		timerShadowConductorCast:Start()
+		if args:IsPlayer() and self.Options.YellOnShadowCast then
+			SendChatMessage(L.YellShadowCast, "SAY")
+		end
 		timerNefAbilityCD:Start()
 	elseif args:IsSpellID(92023) then
 		warnEncasingShadows:Show(args.destName)
 		specWarnEncasingShadows:Show(args.destName)
+		if args:IsPlayer() and self.Options.YellOnTargetLock then
+			SendChatMessage(L.YellTargetLock, "SAY")
+		end
 		timerNefAbilityCD:Start()
 	elseif args:IsSpellID(92053) then
 		specWarnShadowConductor:Show(args.destName)

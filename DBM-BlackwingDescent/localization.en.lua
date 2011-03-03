@@ -37,29 +37,41 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnActivated			= "Change Target to %s!",
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "Arcane Blowback",
-	timerShadowConductorCast	= "Shadow Conductor"
+	timerShadowConductorCast	= "Shadow Conductor",
+	timerNefAblity				= "Ability Buff CD"
 })
 
 L:SetOptionLocalization({
-	timerShadowConductorCast= "Show timer for $spell:92053 cast",
-	timerArcaneBlowbackCast	= "Show timer for $spell:91879 cast",
-	YellBombTarget			= "Yell on $spell:80094",
-	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
-	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
-	ShadowConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	timerShadowConductorCast	= "Show timer for $spell:92053 cast",
+	timerArcaneBlowbackCast		= "Show timer for $spell:91879 cast",
+	timerNefAblity				= "Show timer for heroic ability buff cooldown",
+	SpecWarnActivated			= "Show special warning when new boss activated",
+	YellBombTarget				= "Yell on $spell:80094",
+	YellOnLightning				= "Yell on $spell:79888",
+	YellOnShadowCast			= "Yell on $spell:92048",
+	YellOnTarget				= "Yell on $spell:92037",
+	YellOnTargetLock			= "Yell on $spell:92023",
+	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
+	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
+	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
 L:SetMiscLocalization({
-	Magmatron		= "Magmatron",
-	Electron		= "Electron",
-	Toxitron		= "Toxitron",
-	Arcanotron		= "Arcanotron",
-	SayBomb			= "Poison Bomb on me!"
+	Magmatron			= "Magmatron",
+	Electron			= "Electron",
+	Toxitron			= "Toxitron",
+	Arcanotron			= "Arcanotron",
+	SayBomb				= "Poison Bomb on me!",
+	YellLightning		= "Lightning Conductor on me!",
+	YellShadowCast		= "Shadow Conductor on me in 5s!",
+	YellTarget			= "Acquiring Target on me!",
+	YellTargetLock		= "Encasing Shadows! Away from me!"
 })
 
 ----------------
