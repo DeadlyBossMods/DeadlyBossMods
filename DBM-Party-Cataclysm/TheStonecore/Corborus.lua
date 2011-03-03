@@ -88,6 +88,7 @@ function mod:SPELL_AURA_APPLIED(args)
 				end
 			end
 		end
+		crystalTargets[#crystalTargets + 1] = args.destName
 		self:Unschedule(warnCrystalTargets)
 		self:Schedule(0.2, warnCrystalTargets)
 	end
