@@ -39,17 +39,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnActivated			= "대상 전환! - %s",
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "폭발!",
-	timerShadowConductorCast	= "암흑 전도체 변환"
+	timerShadowConductorCast	= "암흑 전도체 변환",
+	timerNefAblity				= "스킬 강화 쿨다운"
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "$spell:92053 시전 타이머 보기",
 	timerArcaneBlowbackCast		= "$spell:91879 시전 타이머 보기",
+	timerNefAblity				= "영웅 모드에서 골렘 스킬 강화 쿨다운 타이머 보기",
+	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
 	YellBombTarget				= "$spell:80094 외치기",
+	YellOnLightning				= "$spell:79888 외치기",
+	YellOnShadowCast			= "$spell:92048 외치기",
+	YellOnTarget				= "$spell:92037 외치기",
+	YellOnTargetLock			= "$spell:92023 외치기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -57,11 +65,16 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Magmatron	= "용암골렘",
-	Electron	= "전기골렘",
-	Toxitron	= "맹독골렘",
-	Arcanotron	= "비전골렘",
-	SayBomb		= "나에게 화학 폭탄!"--Translate
+	Magmatron			= "용암골렘",
+	Electron			= "전기골렘",
+	Toxitron			= "맹독골렘",
+	Arcanotron			= "비전골렘",
+	SayBomb				= "나에게 화학 폭탄!",
+	YellLightning		= "나에게 번개 전도체!",
+	YellShadowCast		= "5초 후 암흑 전도체로 변환!",
+	YellTarget			= "나에게 목표 설정!",
+	YellTargetLock		= "어둠의 휘감기! 제 주변에서 빠지세요!",
+	YellChemicalBomb	= "나에게 화학 폭탄!",
 })
 
 ----------------
