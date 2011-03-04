@@ -186,7 +186,7 @@ local function updateHealth()
 	updateLines()
 end
 
-local function updatePower()
+local function updatePlayerPower()
 	table.wipe(lines)
 	for i = 1, GetNumRaidMembers() do
 		if not UnitIsDeadOrGhost("raid"..i) and UnitPower("raid"..i, pIndex)/UnitPowerMax("raid"..i, pIndex)*100 >= infoFrameThreshold then
@@ -195,6 +195,16 @@ local function updatePower()
 	end
 	if DBM.Options.InfoFrameShowSelf and not lines[UnitName("player")] and UnitPower("player", pIndex) > 0 then
 		lines[UnitName("player")] = UnitPower("player", pIndex)
+	end
+	updateLines()
+end
+
+local function updateEnemyPower()
+	table.wipe(lines)
+	for i = 1, 4 do
+		if UnitPower("boss"..i, pIndex)/UnitPowerMax("boss"..i, pIndex)*100 >= infoFrameThreshold then
+			lines[UnitName("boss"..i)] = UnitPower("boss"..i, pIndex)
+		end
 	end
 	updateLines()
 end
@@ -247,8 +257,10 @@ function infoFrame:Show(maxLines, event, threshold, ...)
 	if event == "health" then
 		sortingAsc = true	-- Person who misses the most HP to be at threshold is listed on top
 		updateHealth()
-	elseif event == "power" then
-		updatePower()
+	elseif event == "playerpower" then
+		updatePlayerPower()
+	elseif event == "enemypower" then
+		updateEnemyPower()
 	else
 		print("DBM-InfoFrame: Unsupported event given")
 	end
