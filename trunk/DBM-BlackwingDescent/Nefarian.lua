@@ -76,7 +76,7 @@ local dominionTargets = {}
 
 --Credits to Bigwigs for this. Mine was inaccurate and posts complained theirs was better.
 function mod:ShadowBlazeFunction()
-	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+	if mod:IsDifficulty("heroic25") then
 		if shadowblazeTimer > 5 then--Keep it from dropping below 5
 			shadowblazeTimer = shadowblazeTimer - 5
 		end
