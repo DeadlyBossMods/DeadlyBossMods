@@ -84,7 +84,7 @@ local soundBomb					= mod:NewSound(80094)
 
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
-mod:AddBoolOption("BombTargetIcon")
+mod:AddBoolOption("BombTargetIcon", false)
 mod:AddBoolOption("ShadowConductorIcon")
 mod:AddBoolOption("YellBombTarget", false, "announce")
 mod:AddBoolOption("YellOnLightning", true, "announce")
