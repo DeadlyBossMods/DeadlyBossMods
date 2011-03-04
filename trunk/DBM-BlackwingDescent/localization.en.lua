@@ -53,7 +53,7 @@ L:SetOptionLocalization({
 	SpecWarnActivated			= "Show special warning when new boss activated",
 	YellBombTarget				= "Yell on $spell:80094",
 	YellOnLightning				= "Yell on $spell:79888",
-	YellOnShadowCast			= "Yell on $spell:92048",
+	YellOnShadowCast			= "Yell on $spell:92053",
 	YellOnTarget				= "Yell on $spell:92037",
 	YellOnTargetLock			= "Yell on $spell:92023",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
