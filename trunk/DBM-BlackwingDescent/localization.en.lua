@@ -47,7 +47,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "Show timer for $spell:92053 cast",
+	timerShadowConductorCast	= "Show timer for $spell:92048 cast",
 	timerArcaneBlowbackCast		= "Show timer for $spell:91879 cast",
 	timerNefAblity				= "Show timer for heroic ability buff cooldown",
 	SpecWarnActivated			= "Show special warning when new boss activated",
