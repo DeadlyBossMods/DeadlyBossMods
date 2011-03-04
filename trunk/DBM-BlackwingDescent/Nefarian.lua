@@ -63,6 +63,7 @@ local berserkTimer				= mod:NewBerserkTimer(630)
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("YellOnCinder", true)
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("InfoFrame")
 
 local deaths = 0
 local spamHailBones = 0
@@ -120,9 +121,16 @@ function mod:OnCombatStart(delay)
 		berserkTimer:Start(-delay)
 		timerDominionCD:Start(50-delay)
 	end
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:SetHeader(L.Charge)
+		DBM.InfoFrame:Show(2, "enemypower", 5, ALTERNATE_POWER_INDEX)
+	end
 end
 
 function mod:OnCombatEnd()
+	if self.Options.InfoFrame then
+		DBM.InfoFrame:Hide()
+	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
