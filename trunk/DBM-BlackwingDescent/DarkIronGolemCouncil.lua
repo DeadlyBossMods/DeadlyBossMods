@@ -147,7 +147,7 @@ end
 function mod:CheckEncasing() -- prevent two yells at a time
 	if encasing and self.Options.YellOnTargetLock then
 		SendChatMessage(L.YellTargetLock, "SAY")
-	elseif self.Options.YellOnTarget then
+	elseif not encasing and self.Options.YellOnTarget then
 		SendChatMessage(L.YellTarget, "SAY")
 	end
 	encasing = false
