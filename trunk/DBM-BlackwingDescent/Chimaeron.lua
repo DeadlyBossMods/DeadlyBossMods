@@ -37,6 +37,7 @@ local timerMassacre			= mod:NewCastTimer(4, 82848)
 local timerMassacreNext		= mod:NewNextTimer(30, 82848)
 local timerCausticSlime		= mod:NewNextTimer(19, 88915)--always 19 seconds after massacre.
 local timerFailure			= mod:NewBuffActiveTimer(26, 88853)
+local timerFailureNext		= mod:NewNextTimer(25, 88853)
 
 local berserkTimer			= mod:NewBerserkTimer(450)--Heroic
 
@@ -48,10 +49,18 @@ local prewarnedPhase2 = false
 local botOffline = false
 local slimeTargets = {}
 local slimeTargetIcons = {}
+local massacreCast = 0
 
 local function showSlimeWarning()
 	warnCausticSlime:Show(table.concat(slimeTargets, "<, >"))
 	table.wipe(slimeTargets)
+end
+
+-- Chimaeron bots goes offline after massacre 2~3 cast. after 2 massacre casts if not bot goes offline, 3rd massacre cast 100% bot goes offline, this timer supports this.
+local function failureCheck()
+	if not botOffline and massacreCast >= 2 then 
+		timerFailureNext:Start()
+	end
 end
 
 do
@@ -77,6 +86,7 @@ function mod:OnCombatStart(delay)
 	prewarnedPhase2 = false
 	botOffline = false
 	slimeIcon = 8
+	massacreCast = 0
 	table.wipe(slimeTargets)
 	table.wipe(slimeTargetIcons)
 	if self.Options.RangeFrame then
@@ -105,6 +115,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnDoubleAttack:Show()
 	elseif args:IsSpellID(88853) then
 		botOffline = true
+		massacreCast = 0
 		specWarnFailure:Show()
 		timerFailure:Start()
 	elseif not botOffline and args:IsSpellID(82935, 88915, 88916, 88917) and args:IsDestTypePlayer() then
@@ -144,6 +155,8 @@ function mod:SPELL_CAST_START(args)
 		timerMassacreNext:Start()
 		timerCausticSlime:Start()--Always 19 seconds after massacre.
 		timerBreakCD:Start(14)--Massacre resets break timer, although  usualy the CDs line up anyways, they won't for 3rd break.
+		massacreCast = massacreCast + 1
+		self:Schedule(5, "failureCheck")
 	end
 end
 
