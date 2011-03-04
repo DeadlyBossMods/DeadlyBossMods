@@ -61,7 +61,7 @@ local timerDominionCD			= mod:NewNextTimer(15, 79318)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 mod:AddBoolOption("SetIconOnCinder", true)
-mod:AddBoolOption("YellOnCinder", true)
+mod:AddBoolOption("YellOnCinder", true, "announce")
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
 
