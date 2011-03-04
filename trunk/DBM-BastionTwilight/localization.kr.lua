@@ -42,6 +42,7 @@ L:SetOptionLocalization({
 	YellOnEngulfing			= "$spell:86622 외치기",
 	YellOnTwilightMeteor	= "$spell:88518 외치기",
 	YellOnTwilightBlast		= "$spell:92898 외치기",
+	TBwarnWhileBlackout		= "$spell:86788 이 활성화 중 일때 $spell:92898 경고 보기",
 	TwilightBlastArrow		= "당신 근처에 $spell:92898이 시전된 경우 DBM 화살표 보기",
 	RangeFrame				= "거리 프레임 보기(10m)",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
