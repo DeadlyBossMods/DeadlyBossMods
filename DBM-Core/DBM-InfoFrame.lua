@@ -221,8 +221,10 @@ function onUpdate(self, elapsed)
 	end
 	if currentEvent == "health" then
 		updateHealth()
-	elseif currentEvent == "power" then
-		updatePower()
+	elseif currentEvent == "playerpower" then
+		updatePlayerPower()
+	elseif currentEvent == "enemypower" then
+		updateEnemyPower()
 	end
 	for i = 1, #sortedLines do
 		if self:NumLines() > maxlines or not addedSelf and DBM.Options.InfoFrameShowSelf and self:NumLines() > maxlines-1 then break end
