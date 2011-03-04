@@ -21,7 +21,7 @@ local warnBarrier				= mod:NewSpellAnnounce(79582, 4)
 local warnEncasingShadows		= mod:NewTargetAnnounce(92023, 4)--Heroic Ability
 --Electron
 local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4)
-local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92053, 5, 4)--Heroic Ability
+local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92048, 5, 4)--Heroic Ability
 --Toxitron
 local warnPoisonProtocol		= mod:NewSpellAnnounce(80053, 2)
 local warnFixate				= mod:NewTargetAnnounce(80094, 3, nil, false)--Spammy, off by default. Raid leader can turn it on if they wanna yell at these people.
@@ -64,7 +64,7 @@ local timerLightningConductor	= mod:NewTargetTimer(10, 79888)
 local timerLightningConductorCD	= mod:NewNextTimer(25, 79888)
 local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900, false)	-- 10 + 1.5 cast time
 local timerShadowConductor		= mod:NewTargetTimer(10, 92053)--Heroic Ability
-local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92053)--Heroic Ability
+local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92048)--Heroic Ability
 --Toxitron
 local timerChemicalBomb			= mod:NewNextTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
 local timerShell				= mod:NewBuffActiveTimer(11.5, 79835, false)	-- 10 + 1.5 cast time
