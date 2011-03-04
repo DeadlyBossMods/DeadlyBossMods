@@ -77,14 +77,8 @@ local dominionTargets = {}
 
 --Credits to Bigwigs for this. Mine was inaccurate and posts complained theirs was better.
 function mod:ShadowBlazeFunction()
-	if mod:IsDifficulty("heroic25") then
-		if shadowblazeTimer > 5 then--Keep it from dropping below 5
-			shadowblazeTimer = shadowblazeTimer - 5
-		end
-	else
-		if shadowblazeTimer > 10 then--Keep it from dropping below 10
-			shadowblazeTimer = shadowblazeTimer - 5
-		end
+	if shadowblazeTimer > 10 then--Keep it from dropping below 10
+		shadowblazeTimer = shadowblazeTimer - 5
 	end
 	if shadowblazeTimer > 5 then
 		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Want the pre warning to stop warning once they are every 5 seconds.
