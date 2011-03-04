@@ -71,7 +71,7 @@ L:SetMiscLocalization({
 	Arcanotron			= "비전골렘",
 	SayBomb				= "나에게 화학 폭탄!",
 	YellLightning		= "나에게 번개 전도체!",
-	YellShadowCast		= "5초 후 암흑 전도체로 변환!",
+	YellShadowCast		= "나에게 암흑 전도체!",
 	YellTarget			= "나에게 목표 설정!",
 	YellTargetLock		= "어둠의 휘감기! 제 주변에서 빠지세요!",
 	YellChemicalBomb	= "나에게 화학 폭탄!",
