@@ -18,7 +18,7 @@ mod:RegisterEvents(
 --Magmatron
 local warnIncineration			= mod:NewSpellAnnounce(79023, 2, nil, mod:IsHealer())
 local warnBarrier				= mod:NewSpellAnnounce(79582, 4, nil, not mod:IsHealer())
-local warnEncasingShadows		= mod:NewTargetAnnounce(92023, 4)--Heroic Ability
+local warnAcquiringTarget		= mod:NewTargetAnnounce(92036, 4)
 --Electron
 local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4, nil, not mod:IsHealer())
 local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92048, 5, 4)--Heroic Ability
@@ -175,6 +175,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(78726) then
 		bossInactive(args.destName)
 	elseif args:IsSpellID(79501, 92035, 92036, 92037) then
+		warnAcquiringTarget:Show(args.destName)
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerAcquiringTarget:Start(27)
 		else
@@ -238,7 +239,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerShadowConductorCast:Start()
 		end
 	elseif args:IsSpellID(92023) then
-		warnEncasingShadows:Show(args.destName)
 		specWarnEncasingShadows:Show(args.destName)
 --[[		if args:IsPlayer() and self.Options.YellOnTargetLock then
 			SendChatMessage(L.YellTargetLock, "SAY")
