@@ -16,7 +16,7 @@ mod:RegisterEvents(
 )
 
 --Magmatron
-local warnIncineration			= mod:NewSpellAnnounce(79023, 2)
+local warnIncineration			= mod:NewSpellAnnounce(79023, 2, nil, mod:IsHealer())
 local warnBarrier				= mod:NewSpellAnnounce(79582, 4, nil, not mod:IsHealer())
 local warnEncasingShadows		= mod:NewTargetAnnounce(92023, 4)--Heroic Ability
 --Electron
@@ -54,7 +54,7 @@ local specWarnGenerator			= mod:NewSpecialWarningMove(79624, mod:IsTank())
 local specWarnAnnihilator		= mod:NewSpecialWarningInterrupt(91542, false)
 local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
 --All
-local specWarnActivated			= mod:NewSpecialWarning("SpecWarnActivated")
+local specWarnActivated			= mod:NewSpecialWarning("SpecWarnActivated", not mod:IsHealer())--Good for target switches, but healers probably don't want an extra special warning for it.
 
 --Magmatron
 local timerAcquiringTarget		= mod:NewNextTimer(40, 79501)
