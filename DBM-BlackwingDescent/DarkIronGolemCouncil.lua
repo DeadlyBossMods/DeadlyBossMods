@@ -17,62 +17,63 @@ mod:RegisterEvents(
 
 --Magmatron
 local warnIncineration			= mod:NewSpellAnnounce(79023, 2)
-local warnBarrier				= mod:NewSpellAnnounce(79582, 4)
+local warnBarrier				= mod:NewSpellAnnounce(79582, 4, nil, not mod:IsHealer())
 local warnEncasingShadows		= mod:NewTargetAnnounce(92023, 4)--Heroic Ability
 --Electron
-local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4)
+local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4, nil, not mod:IsHealer())
 local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92048, 5, 4)--Heroic Ability
 --Toxitron
 local warnPoisonProtocol		= mod:NewSpellAnnounce(80053, 2)
 local warnFixate				= mod:NewTargetAnnounce(80094, 3, nil, false)--Spammy, off by default. Raid leader can turn it on if they wanna yell at these people.
 local warnChemicalBomb			= mod:NewSpellAnnounce(80157, 3)
-local warnShell					= mod:NewSpellAnnounce(79835, 4)
+local warnShell					= mod:NewSpellAnnounce(79835, 4, nil, not mod:IsHealer())
 local warnGrip					= mod:NewCastAnnounce(91849, 4)--Heroic Ability
 --Arcanotron
 local warnGenerator				= mod:NewSpellAnnounce(79624, 3)
-local warnConversion			= mod:NewSpellAnnounce(79729, 4)
+local warnConversion			= mod:NewSpellAnnounce(79729, 4, nil, not mod:IsHealer())
 local warnOverchargedGenerator	= mod:NewSpellAnnounce(91857, 4)--Heroic Ability
 --All
 local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 
 --Magmatron
-local specWarnBarrier			= mod:NewSpecialWarningCast(79582)
+local specWarnBarrier			= mod:NewSpecialWarningSpell(79582, not mod:IsHealer())
 local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
 local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
 --Electron
-local specWarnUnstableShield	= mod:NewSpecialWarningCast(79900)
+local specWarnUnstableShield	= mod:NewSpecialWarningSpell(79900, not mod:IsHealer())
 local specWarnConductor			= mod:NewSpecialWarningYou(79888)
 local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Ability
 --Toxitron
-local specWarnShell				= mod:NewSpecialWarningCast(79835)
+local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
 --Arcanotron
-local specWarnConversion		= mod:NewSpecialWarningCast(79729)
+local specWarnConversion		= mod:NewSpecialWarningSpell(79729, not mod:IsHealer())
 local specWarnGenerator			= mod:NewSpecialWarningMove(79624, mod:IsTank())
+local specWarnAnnihilator		= mod:NewSpecialWarningInterrupt(91542, false)
 local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
 --All
 local specWarnActivated			= mod:NewSpecialWarning("SpecWarnActivated")
 
 --Magmatron
 local timerAcquiringTarget		= mod:NewNextTimer(40, 79501)
-local timerBarrier				= mod:NewBuffActiveTimer(11.5, 79582, false)	-- 10 + 1.5 cast time
-local timerIncinerationCD   	= mod:NewNextTimer(26.5, 79023)--Timer Series, 10, 27, 32 (on normal) from activate til shutdown.
+local timerBarrier				= mod:NewBuffActiveTimer(11.5, 79582, nil, false)	-- 10 + 1.5 cast time
+local timerIncinerationCD   	= mod:NewNextTimer(26.5, 79023, nil, mod:IsHealer())--Timer Series, 10, 27, 32 (on normal) from activate til shutdown.
 --Electron
-local timerLightningConductor	= mod:NewTargetTimer(10, 79888)
+local timerLightningConductor	= mod:NewTargetTimer(10, 79888, nil, false)
 local timerLightningConductorCD	= mod:NewNextTimer(25, 79888)
-local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900, false)	-- 10 + 1.5 cast time
-local timerShadowConductor		= mod:NewTargetTimer(10, 92053)--Heroic Ability
+local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900, nil, false)	-- 10 + 1.5 cast time
+local timerShadowConductor		= mod:NewTargetTimer(10, 92053, nil, false)--Heroic Ability
 local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92048)--Heroic Ability
 --Toxitron
 local timerChemicalBomb			= mod:NewNextTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
-local timerShell				= mod:NewBuffActiveTimer(11.5, 79835, false)	-- 10 + 1.5 cast time
+local timerShell				= mod:NewBuffActiveTimer(11.5, 79835, nil, false)	-- 10 + 1.5 cast time
 local timerPoisonProtocolCD		= mod:NewNextTimer(45, 80053)
 local timerSoaked				= mod:NewTargetTimer(30, 80011, nil, false)
 --Arcanotron
 local timerGeneratorCD			= mod:NewNextTimer(30, 79624)
-local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729, false)	-- 10 + 1.5 cast time
+local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729, nil, false)	-- 10 + 1.5 cast time
 local timerArcaneBlowback		= mod:NewTimer(8, "timerArcaneBlowbackCast", 91879)-- what happens after the overcharged power generator explodes. 8 seconds after overcharge cast.
 --All
 local timerNextActivate			= mod:NewNextTimer(45, 78740)--Activations are every 90 (60sec heroic) seconds but encounter staggers them in an alternating fassion so 45 (30 heroic) seconds between add switches
@@ -231,9 +232,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnGenerator:Show()--Show special warning to move him out of it.
 		end
 	elseif args:IsSpellID(92048) then--Shadow Infusion, debuff 5 seconds before shadow conductor.
-		warnShadowConductorCast:Show()
-		timerShadowConductorCast:Start()
 		timerNefAbilityCD:Start()
+		warnShadowConductorCast:Show()
+		if args:IsPlayer() then
+			timerShadowConductorCast:Start()
+		end
 	elseif args:IsSpellID(92023) then
 		warnEncasingShadows:Show(args.destName)
 		specWarnEncasingShadows:Show(args.destName)
@@ -306,6 +309,8 @@ function mod:SPELL_CAST_START(args)
 		specWarnGrip:Show()
 		timerNefAbilityCD:Start()
 		cloudSpam = GetTime()
+	elseif args:IsSpellID(79710, 91540, 91541, 91542) then
+		specWarnAnnihilator:Show()
 	end
 end
 
