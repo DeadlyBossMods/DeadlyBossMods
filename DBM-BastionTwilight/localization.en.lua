@@ -41,6 +41,7 @@ L:SetOptionLocalization({
 	YellOnEngulfing			= "Yell on $spell:86622",
 	YellOnTwilightMeteor	= "Yell on $spell:88518",
 	YellOnTwilightBlast		= "Yell on $spell:92898",
+	TBwarnWhileBlackout		= "Show $spell:92898 warning when $spell:86788 active",
 	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
 	RangeFrame				= "Show range frame (10)",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
