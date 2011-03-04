@@ -80,10 +80,8 @@ function mod:ShadowBlazeFunction()
 	if shadowblazeTimer > 10 then--Keep it from dropping below 10
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
-	if shadowblazeTimer > 5 then
-		specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Want the pre warning to stop warning once they are every 5 seconds.
-	end
 	warnShadowBlaze:Show()
+	specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Want the pre warning to stop warning once they are every 5 seconds.
 	timerShadowBlazeCD:Start(shadowblazeTimer)
 	self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")
 end
