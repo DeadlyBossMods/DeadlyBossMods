@@ -69,7 +69,7 @@ L:SetMiscLocalization({
 	Arcanotron			= "Arcanotron",
 	SayBomb				= "Poison Bomb on me!",
 	YellLightning		= "Lightning Conductor on me!",
-	YellShadowCast		= "Shadow Conductor on me",
+	YellShadowCast		= "Shadow Conductor on me!",
 	YellTarget			= "Acquiring Target on me!",
 	YellTargetLock		= "Encasing Shadows! Away from me!"
 })

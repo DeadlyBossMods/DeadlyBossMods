@@ -91,11 +91,12 @@ mod:AddBoolOption("YellBombTarget", false, "announce")
 mod:AddBoolOption("YellOnLightning", true, "announce")
 mod:AddBoolOption("YellOnShadowCast", true, "announce")--This was moved from cast to actual conductor, cast and lightning rod are at same exact time, again,not productive to have double yell within same moment.
 mod:AddBoolOption("YellOnTarget", true, "announce")
---mod:AddBoolOption("YellOnTargetLock", false, "announce")--this needs a better way, debuff is applied at same time as other debuff, two yells at same time is not good way of doing it.
+mod:AddBoolOption("YellOnTargetLock", true, "announce")--i think it can be very useful in heroic, try different way.
 
 local fixateIcon = 6
 local pulled = false
 local cloudSpam = 0
+local encasing = false
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
@@ -143,9 +144,19 @@ local bossInactive = function(boss)
 	end
 end
 
+function mod:CheckEncasing() -- prevent two yells at a time
+	if encasing and self.Options.YellOnTargetLock then
+		SendChatMessage(L.YellTargetLock, "SAY")
+	elseif self.Options.YellOnTarget then
+		SendChatMessage(L.YellTarget, "SAY")
+	end
+	encasing = false
+end
+
 function mod:OnCombatStart(delay)
 	fixateIcon = 6
 	cloudSpam = 0
+	encasing = false
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end
@@ -183,9 +194,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnAcquiringTarget:Show()
-			if self.Options.YellOnTarget then
-				SendChatMessage(L.YellTarget, "SAY")
-			end
+			self:ScheduleMethod(0.5, "CheckEncasing")
 		end
 		if self.Options.AcquiringTargetIcon then
 			self:SetIcon(args.destName, 8, 6)
@@ -235,14 +244,12 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92048) then--Shadow Infusion, debuff 5 seconds before shadow conductor.
 		timerNefAbilityCD:Start()
 		warnShadowConductorCast:Show()
-		if args:IsPlayer() then
-			timerShadowConductorCast:Start()
-		end
+		timerShadowConductorCast:Start()
 	elseif args:IsSpellID(92023) then
 		specWarnEncasingShadows:Show(args.destName)
---[[		if args:IsPlayer() and self.Options.YellOnTargetLock then
-			SendChatMessage(L.YellTargetLock, "SAY")
-		end--]]
+		if args:IsPlayer() then
+			encasing = true
+		end
 		timerNefAbilityCD:Start()
 	elseif args:IsSpellID(92053) then
 		specWarnShadowConductor:Show(args.destName)
