@@ -88,9 +88,9 @@ mod:AddBoolOption("BombTargetIcon")
 mod:AddBoolOption("ShadowConductorIcon")
 mod:AddBoolOption("YellBombTarget", false, "announce")
 mod:AddBoolOption("YellOnLightning", true, "announce")
-mod:AddBoolOption("YellOnShadowCast", true, "announce")
+mod:AddBoolOption("YellOnShadowCast", true, "announce")--This was moved from cast to actual conductor, cast and lightning rod are at same exact time, again,not productive to have double yell within same moment.
 mod:AddBoolOption("YellOnTarget", true, "announce")
-mod:AddBoolOption("YellOnTargetLock", true, "announce")
+--mod:AddBoolOption("YellOnTargetLock", false, "announce")--this needs a better way, debuff is applied at same time as other debuff, two yells at same time is not good way of doing it.
 
 local fixateIcon = 6
 local pulled = false
@@ -233,16 +233,13 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92048) then--Shadow Infusion, debuff 5 seconds before shadow conductor.
 		warnShadowConductorCast:Show()
 		timerShadowConductorCast:Start()
-		if args:IsPlayer() and self.Options.YellOnShadowCast then
-			SendChatMessage(L.YellShadowCast, "SAY")
-		end
 		timerNefAbilityCD:Start()
 	elseif args:IsSpellID(92023) then
 		warnEncasingShadows:Show(args.destName)
 		specWarnEncasingShadows:Show(args.destName)
-		if args:IsPlayer() and self.Options.YellOnTargetLock then
+--[[		if args:IsPlayer() and self.Options.YellOnTargetLock then
 			SendChatMessage(L.YellTargetLock, "SAY")
-		end
+		end--]]
 		timerNefAbilityCD:Start()
 	elseif args:IsSpellID(92053) then
 		specWarnShadowConductor:Show(args.destName)
@@ -250,6 +247,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLightningConductor:Cancel()
 		if self.Options.ShadowConductorIcon then
 			self:SetIcon(args.destName, 8)
+		end
+		if args:IsPlayer() and self.Options.YellOnShadowCast then
+			SendChatMessage(L.YellShadowCast, "SAY")
 		end
 	end
 end
