@@ -55,7 +55,7 @@ L:SetOptionLocalization({
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
 	YellBombTarget				= "$spell:80094 외치기",
 	YellOnLightning				= "$spell:79888 외치기",
-	YellOnShadowCast			= "$spell:92048 외치기",
+	YellOnShadowCast			= "$spell:92053 외치기",
 	YellOnTarget				= "$spell:92037 외치기",
 	YellOnTargetLock			= "$spell:92023 외치기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
