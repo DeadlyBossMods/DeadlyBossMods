@@ -217,6 +217,7 @@ L:SetOptionLocalization({
 	NefBreathTimer			= "Show timer for Nefarian's $spell:94124 cooldown",
 	YellOnCinder			= "Yell on $spell:79339",
 	RangeFrame				= "Show range frame (10) when you have $spell:79339",
+	InfoFrame				= "Show info frame for Onyxia's Electric Charge",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
@@ -225,5 +226,6 @@ L:SetMiscLocalization({
 	YellPhase2			= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
 	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
 	YellCinder			= "Explosive Cinders on me!",
-	Onyxia				= "Onyxia"
+	Onyxia				= "Onyxia",
+	Charge				= "Electric Charge"
 })

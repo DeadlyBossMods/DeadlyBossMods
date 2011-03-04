@@ -219,6 +219,7 @@ L:SetOptionLocalization({
 	NefBreathTimer			= "네파리안의 $spell:94124 쿨다운 타이머 보기",
 	YellOnCinder			= "$spell:79339 외치기",
 	RangeFrame				= "$spell:79339의 영향을 받을 경우 거리 프레임(10m) 보기",
+	InfoFrame				= "오닉시아 전하 충전 정보 프레임 보기",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
@@ -227,5 +228,6 @@ L:SetMiscLocalization({
 	YellPhase2			= "저주받을 필멸자들! 내 소중한 작품을 이렇게 망치다니! 쓴맛을 봐야 정신을 차리겠군!",
 	YellPhase3			= "품위있는 집주인답게 행동하려 했건만, 네놈들이 도무지 죽질 않는군! 겉치레는 이제 집어치우자고. 그냥 모두 없애 버리겠어!", -- "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
 	YellCinder			= "나에게 폭발하는 잿더미!",
-	Onyxia				= "오닉시아"
+	Onyxia				= "오닉시아",
+	Charge				= "전하 충전"
 })
