@@ -207,7 +207,7 @@ do
 		maxAbsorb = absorb
 		DBM.BossHealth:RemoveBoss(getShieldHP)
 		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
-		self:Schedule(15, hideShieldHealthBar)
+		self:Schedule(20, hideShieldHealthBar)
 	end
 	
 	function hideShieldHealthBar()
@@ -452,6 +452,7 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then	-- Shield Removed
+		hideShieldHealthBar()
 		if self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686 then
 			specWarnRisingFlames:Show()
 		end
