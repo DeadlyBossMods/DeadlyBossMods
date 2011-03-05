@@ -100,13 +100,8 @@ local encasing = false
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerAcquiringTarget:Start(20)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
-			timerIncinerationCD:Start(10)
-		else
-			timerAcquiringTarget:Start(20)
-			timerIncinerationCD:Start(10)
-		end
+		timerAcquiringTarget:Start(20)--These are same on heroic and normal
+		timerIncinerationCD:Start(10)
 	elseif boss == L.Electron or boss == 42179 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerLightningConductorCD:Start(15)--Probably also has a variation if it's like normal. Needs more logs to verify.
@@ -122,11 +117,7 @@ local bossActivate = function(boss)
 			timerPoisonProtocolCD:Start(21)
 		end
 	elseif boss == L.Arcanotron or boss == 42166 then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
-		else
-			timerGeneratorCD:Start(15)
-		end
+		timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
 	end
 end
 
@@ -282,11 +273,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(79023, 91519, 91520, 91521) then
 		warnIncineration:Show()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerIncinerationCD:Start()--appears same on heroic
-		else
-			timerIncinerationCD:Start()
-		end
+		timerIncinerationCD:Start()--appears same on heroic
 	elseif args:IsSpellID(79582, 91516, 91517, 91518) then
 		warnBarrier:Show()
 		timerBarrier:Start()
@@ -324,11 +311,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(80157) then
 		warnChemicalBomb:Show()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerChemicalBomb:Start()--Appears same on heroic
-		else
-			timerChemicalBomb:Start()
-		end
+		timerChemicalBomb:Start()--Appears same on heroic
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
