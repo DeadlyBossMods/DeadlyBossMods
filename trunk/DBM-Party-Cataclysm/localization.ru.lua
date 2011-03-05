@@ -371,6 +371,18 @@ L:SetGeneralLocalization({
 	name = "Командир Ручьедол"
 })
 
+L:SetTimerLocalization({
+	TimerAdds		= "След. помощники"
+})
+
+L:SetOptionLocalization{
+	TimerAdds		= "Показывать таймер для помощников"
+}
+
+L:SetMiscLocalization{
+	YellAdds		= "Repel the intruders!"
+}
+
 -----------------
 -- Lord Walden --
 -----------------
@@ -569,24 +581,24 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnBear		= "Форма медведя",
-	WarnBearSoon	= "Форма медведя через 5 секунд",
-	WarnNormal		= "Обычная форма",
-	WarnNormalSoon	= "Обычная форма через 5 секунд"
+	WarnBear		= "Облик медведя",
+	WarnBearSoon	= "Облик медведя через 5 секунд",
+	WarnNormal		= "Обычныый облик",
+	WarnNormalSoon	= "Обычный облик через 5 секунд"
 }
 
 L:SetTimerLocalization{
-	TimerBear		= "Форма медведя",
-	TimerNormal		= "Обычная форма"
+	TimerBear		= "Облик медведя",
+	TimerNormal		= "Обычный облик"
 }
 
 L:SetOptionLocalization{
-	WarnBear		= "Show warning for Bear form",--Translate
-	WarnBearSoon	= "Show pre-warning for Bear form",--Translate
-	WarnNormal		= "Show warning for Normal form",--Translate
-	WarnNormalSoon	= "Show pre-warning for Normal form",--Translate
-	TimerBear		= "Show timer for Bear form",--Translate
-	TimerNormal		= "Show timer for Normal form"--Translate
+	WarnBear		= "Показывать предупреждения для облика медведя",
+	WarnBearSoon	= "Показывать предупреждение о надвигающейся смене облика на медвежий",
+	WarnNormal		= "Показывать предупреждения для обычного облика",
+	WarnNormalSoon	= "Показывать предупреждение о надвигающейся смене облика на обычный",
+	TimerBear		= "Показывать таймер облика медведя",
+	TimerNormal		= "Показывать таймер обычного облика"
 }
 
 L:SetMiscLocalization{
@@ -611,7 +623,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Показать окно контроля диапазона"
+	RangeFrame	= "Окно проверки дистанции (10 м)"
 }
 
 L:SetMiscLocalization{
@@ -659,8 +671,8 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnSpirit	= "Show warning for Spirit phase",--Translate
-	WarnNormal	= "Show warning for Normal phase"--Translate
+	WarnSpirit	= "Показывать предупреждения для фазы духа",
+	WarnNormal	= "Показывать предупреждения для обычной фазы "
 }
 
 L:SetMiscLocalization{
