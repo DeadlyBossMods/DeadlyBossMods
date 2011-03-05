@@ -63,6 +63,10 @@ local function failureCheck()
 	end
 end
 
+local function ClearSlimeTargets()
+	table.wipe(slimeTargetIcons)
+end
+
 do
 	local function sort_by_group(v1, v2)
 		return DBM:GetRaidSubgroup(UnitName(v1)) < DBM:GetRaidSubgroup(UnitName(v2))
@@ -75,7 +79,7 @@ do
 				self:SetIcon(UnitName(v), slimeIcon, 3)
 				slimeIcon = slimeIcon - 1
 			end
-			table.wipe(slimeTargetIcons)
+			self:Schedule(1.5, ClearSlimeTargets)--Table wipe delay so if icons go out too early do to low fps or bad latency, when they get new target on table, resort and reapplying should auto correct teh icon within .2-.4 seconds at most.
 		end
 	end
 end
@@ -124,7 +128,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetSlimeIcons")
 			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.5, "SetSlimeIcons")--In rare cases even 0.4 was failing (low fps assists?) so try 0.5 and hope it doesn't break.
+				self:ScheduleMethod(0.3, "SetSlimeIcons")--Actually lets try this the anub way. Do it faster, then if new targets get added to table late, it'll auto correct itself since the table isn't wiped yet.
 			end
 		end
 		self:Unschedule(showSlimeWarning)
