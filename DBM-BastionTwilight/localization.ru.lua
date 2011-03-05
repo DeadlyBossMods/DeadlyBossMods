@@ -43,6 +43,7 @@ L:SetOptionLocalization({
 	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
 	YellOnTwilightMeteor	= "Крикнуть если на вас $spell:88518",
 	YellOnTwilightBlast		= "Крикнуть если на вас $spell:92898",
+	TBwarnWhileBlackout		= "Показывать предупреждение о $spell:92898, когда активно $spell:86788",
 	TwilightBlastArrow		= "Показывать стрелку DBM, когда $spell:92898 около вас",
 	RangeFrame				= "Окно проверки дистанции (10)",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
@@ -73,36 +74,36 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	timerTransition		= "Смена фаз"
+	timerTransition			= "Смена фаз"
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded	= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
-	SpecWarnSearingWinds= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
-	timerTransition		= "Показывать таймер перехода в другую фазу",
-	RangeFrame			= "Автоматически показывать окно проверки дистанции при надобности",
+	SpecWarnGrounded		= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
+	SpecWarnSearingWinds	= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
+	timerTransition			= "Показывать таймер перехода в другую фазу",
+	RangeFrame				= "Автоматически показывать окно проверки дистанции при надобности",
 	warnGravityCoreJump		= "Сообщать о целях, на которых распространяется $spell:92538",
 	warnStaticOverloadJump	= "Сообщать о целях, на которых распространяется $spell:92467",
-	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
-	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
-	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
-	GravityCrushIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
-	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
-	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
-	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
+	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
+	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
+	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
+	GravityCrushIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(84948),
+	FrostBeaconIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
+	StaticOverloadIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
+	GravityCoreIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
 })
 
 L:SetMiscLocalization({
-	Quake			= "Земля уходит у вас из-под ног...", -- Yell string: Земля поглатит вас!
-	Thundershock	= "Воздух потрескивает от скопившейся энергии...", -- Yell string: Ветер, явись на мой зов!
-	Switch			= "Закончим этот фарс!",--"We will handle them!" comes 3 seconds after this one
-	Phase3			= "Ваше упорство...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
-	Ignacious		= "Огнис",
-	Feludius		= "Акварион",
-	Arion			= "Аэрон",
-	Terrastra		= "Террастра",
-	Monstrosity		= "Элементиевое чудовище",
-	Kill			= "Невозможно...."
+	Quake					= "Земля уходит у вас из-под ног...", -- Yell string: Земля поглатит вас!
+	Thundershock			= "Воздух потрескивает от скопившейся энергии...", -- Yell string: Ветер, явись на мой зов!
+	Switch					= "Закончим этот фарс!",--"We will handle them!" comes 3 seconds after this one
+	Phase3					= "Ваше упорство...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
+	Ignacious				= "Огнис",
+	Feludius				= "Акварион",
+	Arion					= "Аэрон",
+	Terrastra				= "Террастра",
+	Monstrosity				= "Элементиевое чудовище",
+	Kill					= "Невозможно...."
 })
 
 ----------------
@@ -163,6 +164,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",
-	YellEgg				= "You mistake this for weakness?  Fool!"   
+	YellDragon			= "Ешьте, дети мои! Пусть их мясо насытит вас!",
+	YellEgg				= "Ты так в этом уверен? Глупец!"   
 })
