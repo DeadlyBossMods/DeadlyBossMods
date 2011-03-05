@@ -34,13 +34,13 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local timerPhase				= mod:NewTimer(49, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
 local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
 local timerFlashFreeze			= mod:NewCDTimer(14, 77699)--Varies on other abilities CDs
-local timerAddsCD				= mod:NewCDTimer(15, 77569)--Varies on other abilities CDs
+local timerAddsCD				= mod:NewCDTimer(15, 77569, nil, not mod:IsHealer())--Varies on other abilities CDs
 local timerArcaneStormCD		= mod:NewCDTimer(14, 77896)--Varies on other abilities CDs
-local timerConsumingFlames		= mod:NewTargetTimer(10, 77786)
+local timerConsumingFlames		= mod:NewTargetTimer(10, 77786, nil, mod:IsHealer())
 local timerScorchingBlast		= mod:NewCDTimer(10, 77679)--Varies on other abilities CDs
 local timerDebilitatingSlime	= mod:NewBuffActiveTimer(15, 77615)
 local timerMagmaJetsCD			= mod:NewNextTimer(10, 78194)
-local timerEngulfingDarknessCD	= mod:NewNextTimer(12, 92754)--Heroic Ability
+local timerEngulfingDarknessCD	= mod:NewNextTimer(12, 92754, nil, mod:IsHealer() or mod:IsTank())--Heroic Ability
 
 local specWarnBitingChill		= mod:NewSpecialWarningYou(77760)
 local specWarnConsumingFlames	= mod:NewSpecialWarningYou(77786)

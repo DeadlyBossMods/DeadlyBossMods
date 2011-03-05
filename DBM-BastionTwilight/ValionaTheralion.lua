@@ -39,7 +39,7 @@ local timerTwilightShiftCD			= mod:NewCDTimer(20, 93051)
 
 local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
 local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
-local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518, false)
+local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
 local specWarnDevouringFlames		= mod:NewSpecialWarningSpell(86840)
 local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
 local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408)
@@ -49,6 +49,8 @@ local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
 local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 10)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
+
+local soundEngulfingMagic			= mod:NewSound(86622)
 
 mod:AddBoolOption("YellOnEngulfing", true, "announce")
 mod:AddBoolOption("YellOnTwilightMeteor", false, "announce")
@@ -156,6 +158,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerEngulfingMagicNext:Start()
 		if args:IsPlayer() then
 			specWarnEngulfingMagic:Show()
+			soundEngulfingMagic:Play()
 			if self.Options.YellOnEngulfing then
 				SendChatMessage(L.YellEngulfing, "SAY")
 			end

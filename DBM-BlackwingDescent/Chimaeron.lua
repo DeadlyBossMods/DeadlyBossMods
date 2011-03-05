@@ -124,7 +124,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetSlimeIcons")
 			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.4, "SetSlimeIcons")--0.3 might work, but i know 0.4 works for sure so i don't feel like rush changing it.
+				self:ScheduleMethod(0.5, "SetSlimeIcons")--In rare cases even 0.4 was failing (low fps assists?) so try 0.5 and hope it doesn't break.
 			end
 		end
 		self:Unschedule(showSlimeWarning)
