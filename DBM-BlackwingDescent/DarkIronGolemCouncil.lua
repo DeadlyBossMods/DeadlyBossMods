@@ -67,10 +67,9 @@ local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900, nil, false)	-- 
 local timerShadowConductor		= mod:NewTargetTimer(10, 92053, nil, false)--Heroic Ability
 local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92048)--Heroic Ability
 --Toxitron
-local timerChemicalBomb			= mod:NewNextTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
+local timerChemicalBomb			= mod:NewCDTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
 local timerShell				= mod:NewBuffActiveTimer(11.5, 79835, nil, false)	-- 10 + 1.5 cast time
 local timerPoisonProtocolCD		= mod:NewNextTimer(45, 80053)
-local timerSoaked				= mod:NewTargetTimer(30, 80011, nil, false)
 --Arcanotron
 local timerGeneratorCD			= mod:NewNextTimer(30, 79624)
 local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729, nil, false)	-- 10 + 1.5 cast time
@@ -89,9 +88,9 @@ mod:AddBoolOption("BombTargetIcon", false)
 mod:AddBoolOption("ShadowConductorIcon")
 mod:AddBoolOption("YellBombTarget", false, "announce")
 mod:AddBoolOption("YellOnLightning", true, "announce")
-mod:AddBoolOption("YellOnShadowCast", true, "announce")--This was moved from cast to actual conductor, cast and lightning rod are at same exact time, again,not productive to have double yell within same moment.
+mod:AddBoolOption("YellOnShadowCast", true, "announce")
 mod:AddBoolOption("YellOnTarget", true, "announce")
-mod:AddBoolOption("YellOnTargetLock", true, "announce")--i think it can be very useful in heroic, try different way.
+mod:AddBoolOption("YellOnTargetLock", true, "announce")
 
 local fixateIcon = 6
 local pulled = false
@@ -223,8 +222,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:SetIcon(args.destName, fixateIcon, 6)
 			fixateIcon = fixateIcon - 1
 		end
-	elseif args:IsSpellID(80011, 91504, 91505, 91506) then
-		timerSoaked:Start(args.destName)
 	elseif args:IsSpellID(91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
@@ -256,9 +253,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(80011, 91504, 91505, 91506) then
-		timerSoaked:Cancel(args.destName)
-	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
+	if args:IsSpellID(79888, 91431, 91432, 91433) then
 		if self.Options.ConductorIcon then
 			self:SetIcon(args.destName, 0)
 		end
