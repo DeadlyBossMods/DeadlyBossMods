@@ -55,7 +55,7 @@ local timerGlaciate			= mod:NewCDTimer(33, 82746)--33-35 seconds
 local timerHeartIce			= mod:NewTargetTimer(60, 82665)
 local timerHeartIceCD		= mod:NewCDTimer(22, 82665)--22-24 seconds
 local timerWaterBomb		= mod:NewCDTimer(33, 82699)--33-35 seconds
-local timerFrozen			= mod:NewTargetTimer(10, 82772)
+local timerFrozen			= mod:NewBuffActiveTimer(10, 82772)
 --Ignacious
 local timerBurningBlood		= mod:NewTargetTimer(60, 82660)
 local timerBurningBloodCD	= mod:NewCDTimer(22, 82660)--22-33 seconds, even worth having a timer?
@@ -119,6 +119,7 @@ local warnedLowHP = {}
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
+	timerFrozen:Start()
 	table.wipe(frozenTargets)
 end
 
@@ -191,7 +192,6 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
-		timerFrozen:Start(args.destName)
 		frozenTargets[#frozenTargets + 1] = args.destName
 		self:Unschedule(showFrozenWarning)
 		self:Schedule(0.3, showFrozenWarning)
@@ -365,9 +365,7 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(82772, 92503, 92504, 92505) then
-		timerFrozen:Cancel(args.destName)
-	elseif args:IsSpellID(82665) then
+	if args:IsSpellID(82665) then
 		timerHeartIce:Cancel(args.destName)
 		if self.Options.HeartIceIcon then
 			self:SetIcon(args.destName, 0)
