@@ -84,11 +84,11 @@ local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665)
 local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
 local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509)
-local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
 local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660)
 local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631)
+local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
 --Terrastra
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
 local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
@@ -159,6 +159,59 @@ local updateBossFrame = function(phase)
 		DBM.BossHealth:AddBoss(43689, L.Terrastra)
 	elseif phase == 3 then
 		DBM.BossHealth:AddBoss(43735, L.Monstrosity)
+	end
+end
+
+-- copyied from twins.lua
+local shieldValues = {
+	[82631] = 500000,
+	[92512] = 1500000,
+	[92513] = 700000,
+	[92514] = 2000000,
+}
+local showShieldHealthBar, hideShieldHealthBar
+do
+	local frame = CreateFrame("Frame") -- using a separate frame avoids the overhead of the DBM event handlers which are not meant to be used with frequently occuring events like all damage events...
+	local shieldedMob
+	local absorbRemaining = 0
+	local maxAbsorb = 0
+	local function getShieldHP()
+		return math.max(1, math.floor(absorbRemaining / maxAbsorb * 100))
+	end
+	frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	local function handler(self, event, timestamp, subEvent, sourceGUID, sourceName, sourceFlags, destGUID, destName, destFlags, ...)
+		if shieldedMob == destGUID then
+			local absorbed
+			if subEvent == "SWING_MISSED" then 
+				absorbed = select( 2, ... ) 
+			elseif subEvent == "RANGE_MISSED" or subEvent == "SPELL_MISSED" or subEvent == "SPELL_PERIODIC_MISSED" then 
+				absorbed = select( 5, ... )
+			end
+			if absorbed then
+				absorbRemaining = absorbRemaining - absorbed
+			end
+		end
+	end
+	-- TODO: this is the same workaround as in the DBM-Core handler for the same event, so this should be changed as soon as 4.1 is live
+	if tonumber((select(2, GetBuildInfo()))) >= 13682 then
+		frame:SetScript("OnEvent", function(timestamp, event, hideCaster, ...)
+			return handler(self, timestamp, event, ...)
+		end)
+	else
+		frame:SetScript("OnEvent", handler)
+	end
+	
+	function showShieldHealthBar(self, mob, shieldName, absorb)
+		shieldedMob = mob
+		absorbRemaining = absorb
+		maxAbsorb = absorb
+		DBM.BossHealth:RemoveBoss(getShieldHP)
+		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
+		self:Schedule(15, hideShieldHealthBar)
+	end
+	
+	function hideShieldHealthBar()
+		DBM.BossHealth:RemoveBoss(getShieldHP)
 	end
 end
 
@@ -234,8 +287,10 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(82777) then
 		warnFlameTorrent:Show()
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then--drycode
+		local shieldname = GetSpellInfo(79582) -- barrier spellname
 		warnAegisFlame:Show()
 		specWarnAegisFlame:Show()
+		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
 	elseif args:IsSpellID(82762) and args:IsPlayer() then
 		specWarnWaterLogged:Show()
 	elseif args:IsSpellID(84948, 92486, 92487, 92488) then
