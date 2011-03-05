@@ -17,7 +17,6 @@ mod:RegisterEvents(
 
 local warnBreath			= mod:NewSpellAnnounce(83707, 3)
 local warnFuriousRoar		= mod:NewSpellAnnounce(83710, 3)
-local warnTimeDilation		= mod:NewSpellAnnounce(83601, 3)
 local warnVengeance			= mod:NewSpellAnnounce(87683, 3)
 local warnShadowNova		= mod:NewSpellAnnounce(83703, 3)
 local warnParalysis			= mod:NewSpellAnnounce(84030, 2)
@@ -73,17 +72,13 @@ function mod:SPELL_CAST_START(args)
 		timerBreathCD:Start()
 	elseif args:IsSpellID(83703, 86166, 86167, 86168) then
 		warnShadowNova:Show()
-		if self:GetUnitCreatureId("target") == 44600 or self:GetUnitCreatureId("focus") == 44600 then--Don't annoy tanks or dps or healers with this nonsense when they aren't targeting halfus.
-			specWarnShadowNova:Show()
-		end
+		specWarnShadowNova:Show()
 	end
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(83612) then
 		DBM.BossHealth:AddBoss(self:GetCIDFromGUID(args.sourceGUID), args.sourceName)
-	elseif args:IsSpellID(83601) then
-		warnTimeDilation:Show()
 	end
 end
 

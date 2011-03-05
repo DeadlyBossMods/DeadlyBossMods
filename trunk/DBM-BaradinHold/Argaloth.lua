@@ -27,8 +27,7 @@ local specWarnFirestorm		= mod:NewSpecialWarningMove(89000)
 
 local timerConsuming		= mod:NewBuffActiveTimer(15, 88954)
 local timerConsumingCD		= mod:NewCDTimer(24, 88954)
-local timerMeteorSlash		= mod:NewNextTimer(16.5, 88942)
-local timerMeteorSlashCast	= mod:NewCastTimer(1.25, 88942)
+local timerMeteorSlash		= mod:NewNextTimer(15, 88942)
 local timerFirestorm		= mod:NewBuffActiveTimer(15, 88972)
 local timerFirestormCast	= mod:NewCastTimer(3, 88972)
 
@@ -60,7 +59,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(88954, 95173) then
-	consuming = consuming + 1--Count raid members who got consuming
+		consuming = consuming + 1--Count raid members who got consuming
 		timerConsuming:Start()
 		timerConsumingCD:Start()
 		consumingTargets[#consumingTargets + 1] = args.destName
@@ -79,6 +78,8 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(88942, 95172) then--Debuff application not cast, special warning for tank taunts.
 		if GetTime() - spamMeteor >= 4 then
 			spamMeteor = GetTime()
+			warnMeteorSlash:Show()
+			timerMeteorSlash:Start()
 			specWarnMeteorSlash:Show()
 		end
 	end
@@ -100,11 +101,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 	
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(88942, 95172) then
-		warnMeteorSlash:Show()
-		timerMeteorSlashCast:Start()
-		timerMeteorSlash:Start()
-	elseif args:IsSpellID(88972) then
+	if args:IsSpellID(88972) then
 		warnFirestorm:Show()
 		specWarnFirestormCast:Show()
 		timerMeteorSlash:Cancel()

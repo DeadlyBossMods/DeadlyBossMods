@@ -53,8 +53,8 @@ local timerShadowflameBarrage	= mod:NewBuffActiveTimer(180, 78621)
 local timerShadowBlazeCD		= mod:NewCDTimer(10, 94085)
 local timerOnySwipeCD			= mod:NewTimer(10, "OnySwipeTimer", 77827)--10-20 second cd (18 being the most consistent)
 local timerNefSwipeCD			= mod:NewTimer(10, "NefSwipeTimer", 77827, false)--Same as hers, but not synced.
-local timerOnyBreathCD			= mod:NewTimer(12, "OnyBreathTimer", 94124, mod:IsTank())--12-20 second variations
-local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank())--same as above
+local timerOnyBreathCD			= mod:NewTimer(12, "OnyBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--12-20 second variations
+local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--same as above
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
 local timerDominionCD			= mod:NewNextTimer(15, 79318)
 
