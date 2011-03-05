@@ -20,7 +20,7 @@ mod:RegisterEvents(
 )
 
 --Feludius
-local warnGlaciate			= mod:NewSpellAnnounce(82746, 3)
+local warnGlaciate			= mod:NewSpellAnnounce(82746, 3, nil, mod:IsMelee())
 local warnHeartIce			= mod:NewTargetAnnounce(82665, 3)
 local warnWaterBomb			= mod:NewSpellAnnounce(82699, 3)
 local warnFrozen			= mod:NewTargetAnnounce(82772, 3)
@@ -39,7 +39,7 @@ local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
 local warnGravityCoreJump	= mod:NewAnnounce("warnGravityCoreJump", 4, 92538, false)--Jumped from player to player. Potentially Spammy and off by default for a reason.
 --Arion
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
-local warnDisperse			= mod:NewSpellAnnounce(83087, 3)
+local warnDisperse			= mod:NewSpellAnnounce(83087, 3, nil, mod:IsTank())
 local warnChainLightning	= mod:NewSpellAnnounce(83300, 2)
 local warnLightningBlast	= mod:NewCastAnnounce(83070, 3)
 local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
@@ -51,7 +51,7 @@ local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
 local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
 
 --Feludius
-local timerGlaciate			= mod:NewCDTimer(33, 82746)--33-35 seconds
+local timerGlaciate			= mod:NewCDTimer(33, 82746, nil, mod:IsMelee())--33-35 seconds
 local timerHeartIce			= mod:NewTargetTimer(60, 82665)
 local timerHeartIceCD		= mod:NewCDTimer(22, 82665)--22-24 seconds
 local timerWaterBomb		= mod:NewCDTimer(33, 82699)--33-35 seconds
@@ -68,7 +68,7 @@ local timerQuakeCast		= mod:NewCastTimer(3, 83565)
 local timerGravityCoreCD	= mod:NewNextTimer(20, 92075)--Heroic
 --Arion
 local timerLightningRod		= mod:NewBuffActiveTimer(15, 83099)
-local timerDisperse			= mod:NewCDTimer(30, 83087)
+local timerDisperse			= mod:NewCDTimer(30, 83087, nil, mod:IsTank())
 local timerLightningBlast	= mod:NewCastTimer(4, 83070)
 local timerThundershockCD	= mod:NewNextTimer(70, 83067)
 local timerThundershockCast	= mod:NewCastTimer(3, 83067)

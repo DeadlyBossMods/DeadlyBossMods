@@ -23,11 +23,11 @@ mod:RegisterEvents(
 local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
 local warnFury						= mod:NewSpellAnnounce(82524, 3, nil, mod:IsTank() or mod:IsHealer())--Phase 1
 local warnAdherent					= mod:NewSpellAnnounce(81628, 4)--Phase 1
-local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3)
-local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3)
+local warnShadowOrders				= mod:NewSpellAnnounce(81556, 3, nil, mod:IsTank() or mod:IsHealer())
+local warnFlameOrders				= mod:NewSpellAnnounce(81171, 3, nil, mod:IsTank() or mod:IsHealer())
 local warnFlamingDestruction		= mod:NewSpellAnnounce(81194, 4)
 local warnEmpoweredShadows			= mod:NewSpellAnnounce(81572, 4)
-local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, false)
+local warnCorruptingCrash			= mod:NewTargetAnnounce(93178, 2, nil, false)
 local warnPhase2					= mod:NewPhaseAnnounce(2)
 local warnPhase2Soon				= mod:NewPrePhaseAnnounce(2)
 local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
@@ -40,7 +40,7 @@ local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
-local timerFesterBlood				= mod:NewCDTimer(40, 82299)--40 seconds after an adherent is summoned
+local timerFesterBlood				= mod:NewNextTimer(40, 82299)--40 seconds after an adherent is summoned
 local timerFlamingDestruction		= mod:NewBuffActiveTimer(10, 81194)
 local timerEmpoweredShadows			= mod:NewBuffActiveTimer(9, 81572)
 local timerFuryCD					= mod:NewCDTimer(47, 82524, nil, mod:IsTank() or mod:IsHealer())--47-48 unless a higher priority ability is channeling (such as summoning adds or MC)
