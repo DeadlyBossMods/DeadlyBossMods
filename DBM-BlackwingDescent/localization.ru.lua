@@ -39,17 +39,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnActivated			= "Смена цели на: %s!",
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "Чародейская обратная вспышка",
-	timerShadowConductorCast	= "Проводник тьмы"
+	timerShadowConductorCast	= "Проводник тьмы",
+	timerNefAblity				= "Восст. баффа" --Ability Buff CD
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Показывать таймер применения $spell:92053",
 	timerArcaneBlowbackCast		= "Показывать таймер применения $spell:91879",
+	timerNefAblity				= "Показывать таймер восстановления баффа (героический режим)",
+	SpecWarnActivated			= "Показывать особое предупреждение при активации нового босса",
 	YellBombTarget				= "Кричать, когда на вас $spell:80094",
+	YellOnLightning				= "Кричать, когда на вас $spell:79888",
+	YellOnShadowCast			= "Кричать, когда на вас $spell:92053",
+	YellOnTarget				= "Кричать, когда на вас $spell:92037",
+	YellOnTargetLock			= "Кричать, когда на вас $spell:92023",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -57,11 +65,15 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Magmatron		= "Магматрон",
-	Electron		= "Электрон",
-	Toxitron		= "Токситрон",
-	Arcanotron		= "Чаротрон",
-	SayBomb			= "На МНЕ - Ядовитая бомба!"
+	Magmatron			= "Магматрон",
+	Electron			= "Электрон",
+	Toxitron			= "Токситрон",
+	Arcanotron			= "Чаротрон",
+	SayBomb				= "На МНЕ - Ядовитая бомба!",
+	YellLightning		= "На МНЕ - Проводник молний!",
+	YellShadowCast		= "На МНЕ - Проводник тьмы!",
+	YellTarget			= "На МНЕ - Выбор цели!",
+	YellTargetLock		= "На МНЕ - Обрамляющие тени! Прочь от меня!"
 })
 
 ----------------
@@ -138,16 +150,16 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnAirphase		= "Воздушная фаза",
-	WarnGroundphase		= "Наземная фаза",
-	WarnShieldsLeft		= "Древний дворфийский щит - %d осталось",
+	WarnAirphase			= "Воздушная фаза",
+	WarnGroundphase			= "Наземная фаза",
+	WarnShieldsLeft			= "Древний дворфийский щит - %d осталось",
 	warnAddSoon				= "Призван Гнусный бес",
 	specWarnAddTargetable	= "%s - активен"
 })
 
 L:SetTimerLocalization({
-	TimerAirphase		= "Воздушная фаза",
-	TimerGroundphase	= "Наземная фаза"
+	TimerAirphase			= "Воздушная фаза",
+	TimerGroundphase		= "Наземная фаза"
 })
 
 L:SetOptionLocalization({
@@ -184,7 +196,8 @@ L:SetWarningLocalization({
 	OnyTailSwipe		= "Удар хвостом (Ониксия)",
 	NefTailSwipe		= "Удар хвостом (Нефариан)",
 	OnyBreath			= "Дыхание темного огня (Ониксия)",
-	NefBreath			= "Дыхание темного огня (Нефариан)"
+	NefBreath			= "Дыхание темного огня (Нефариан)",
+	specWarnShadowblazeSoon	= "Скоро Пламя тени (~5с)"
 })
 
 L:SetTimerLocalization({
@@ -199,12 +212,14 @@ L:SetOptionLocalization({
 	NefTailSwipe		= "Показывать предупреждение для $spell:77827 Нефариана",
 	OnyBreath			= "Показывать предупреждение для $spell:94124 Ониксии",
 	NefBreath			= "Показывать предупреждение для $spell:94124 Нефариана",
+	specWarnShadowblazeSoon	= "Показывать предупреждение для $spell:94085 (~5с)",
 	OnySwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Ониксии",
 	NefSwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Нефариана",
 	OnyBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Ониксии",
 	NefBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Нефариана",
 	YellOnCinder		= "Кричать, когда на вас $spell:79339",
 	RangeFrame			= "Показывать окно проверки дистанции (10м) когда на вас $spell:79339",
+	InfoFrame			= "Показывать информационное окно для Электрического заряда Ониксии",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
@@ -213,5 +228,6 @@ L:SetMiscLocalization({
 	YellPhase2			= "Дерзкие смертные! Неуважение к чужой собственности нужно пресекать самым жестоким образом!",
 	YellPhase3			= "Я пытался следовать законам гостеприимства, но вы все никак не умрете! Придется отбросить условности и просто... УБИТЬ ВАС ВСЕХ!",
 	YellCinder			= "На МНЕ - Взрывчатая субстанция!",
-	Onyxia				= "Ониксия"
+	Onyxia				= "Ониксия",
+	Charge				= "Электрический заряд"
 })
