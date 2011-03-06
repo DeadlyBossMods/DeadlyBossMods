@@ -120,10 +120,10 @@ L:SetMiscLocalization({
 
 L:SetOptionLocalization({
 --	WarnPhase2Soon	= "Zeige Vorwarnung für Phase 2",
-	InfoFrame			= "Zeige Infofenster für $spell:82235",
+	InfoFrame			= "Zeige Infofenster für $spell:81701",
 	RangeFrame			= "Zeige Abstandsfenster (5) für $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
-	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+--	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
 ----------------

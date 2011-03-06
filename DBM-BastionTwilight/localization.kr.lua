@@ -121,12 +121,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 시전 된 경우 DBM 화살표 보기",
-	InfoFrame				= "$spell:82235의 정보 프레임 보기",
-	RangeFrame				= "$spell:82235의 영항을 받을시 거리 프레임(5m) 보기",
 	YellOnCorrupting		= "$spell:93178 외치기",
+	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 시전 된 경우 DBM 화살표 보기",
+	InfoFrame				= "$spell:81701 정보 프레임 보기",
+	RangeFrame				= "$spell:82235의 영항을 받을시 거리 프레임(5m) 보기",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
-	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+	SetIconOnCreature		= "어둠에 물든 창조물에 전술 목표 아이콘 설정"
 })
 
 L:SetMiscLocalization({
