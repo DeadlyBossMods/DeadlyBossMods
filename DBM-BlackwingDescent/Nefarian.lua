@@ -30,9 +30,9 @@ local warnOnyTailSwipe			= mod:NewAnnounce("OnyTailSwipe", 3, 77827)--we only ca
 local warnNefTailSwipe			= mod:NewAnnounce("NefTailSwipe", 3, 77827, false)--but for those that might care for whatever reason, we include his too, off by default.
 local warnOnyShadowflameBreath	= mod:NewAnnounce("OnyBreath", 3, 94124, mod:IsTank())
 local warnNefShadowflameBreath	= mod:NewAnnounce("NefBreath", 3, 94124, mod:IsTank())
-local warnBlastNova				= mod:NewSpellAnnounce(80734, 3, nil, false)--Can be spammy so now off by default.
+local warnBlastNova				= mod:NewSpellAnnounce(80734, 3, nil, false)--Can be spammy so now off by default. 5 adds 10 man 12 adds 25 man.
 local warnShadowBlaze			= mod:NewSpellAnnounce(94085, 4)--May be quirky
-local warnHailBones				= mod:NewSpellAnnounce(94104, 3, nil, false)	-- spams a lot (every ~2sec a new one spawns)
+local warnHailBones				= mod:NewSpellAnnounce(94104, 3, nil, false)-- spams a lot (every ~2sec a new one spawns, 5 adds 10 man 12 adds 25 man)
 local warnCinder				= mod:NewTargetAnnounce(79339, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
@@ -66,7 +66,6 @@ mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
 
 local deaths = 0
-local spamHailBones = 0
 local spamShadowblaze = 0
 local spamLightningDischarge = 0
 local shadowblazeTimer = 35
@@ -101,7 +100,6 @@ end
 
 function mod:OnCombatStart(delay)
 	deaths = 0
-	spamHailBones = 0
 	spamShadowblaze = 0
 	spamLightningDischarge = 0
 	shadowblazeTimer = 35
@@ -219,9 +217,8 @@ function mod:SPELL_MISSED(args)
 end
 
 function mod:SPELL_SUMMON(args)
-	if args:IsSpellID(78684, 94104, 94105, 94106) and GetTime() - spamHailBones > 5 then		-- reduces spam a little, still spamming a lot
+	if args:IsSpellID(78684, 94104, 94105, 94106) then
 		warnHailBones:Show()
-		spamHailBones = GetTime()
 	end
 end
 
