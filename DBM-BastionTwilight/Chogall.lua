@@ -75,11 +75,11 @@ local function showWorshipWarning()
 	specWarnWorship:Show()
 end
 
-local function trySetTarget()
+function mod:TrySetTarget()
 	for i=1, GetNumRaidMembers() do
 		if self:GetCIDFromGUID(UnitGUID("raid"..i.."target")) == 44045 and not creatureGUIDs[UnitGUID("raid"..i.."target")] then
 			creatureGUIDs[UnitGUID("raid"..i.."target")] = true
-			self:SetIcon("raid"..i.."target", creatureIcon)
+			SetRaidTarget("raid"..i.."target", creatureIcon)
 			creatureIcon = creatureIcon - 1
 		end
 	end
@@ -255,6 +255,6 @@ end
 
 function mod:UNIT_TARGET(uId)
 	if self.Options.SetIconOnCreature and #creatureGUIDs < creatureAmount then
-		trySetTarget()
+		self:TrySetTarget()
 	end
 end
