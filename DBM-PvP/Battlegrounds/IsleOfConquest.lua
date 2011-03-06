@@ -23,9 +23,9 @@ local hordeColor = {r = 1, g = 0, b = 0}
 local warnSiegeEngine = IsleOfConquest:NewAnnounce("WarnSiegeEngine", 3)
 local warnSiegeEngineSoon = IsleOfConquest:NewAnnounce("WarnSiegeEngineSoon", 2) 
 
-local startTimer = IsleOfConquest:NewTimer(62, "TimerStart")
-local POITimer = IsleOfConquest:NewTimer(61, "TimerPOI")	-- point of interest
-local timerSiegeEngine = IsleOfConquest:NewTimer(180, "TimerSiegeEngine")
+local startTimer = IsleOfConquest:NewTimer(62, "TimerStart", 2457)
+local POITimer = IsleOfConquest:NewTimer(61, "TimerPOI", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")	-- point of interest
+local timerSiegeEngine = IsleOfConquest:NewTimer(180, "TimerSiegeEngine", 15048)
 
 
 local function isInArgs(val, ...)	-- search for val in all args (...)

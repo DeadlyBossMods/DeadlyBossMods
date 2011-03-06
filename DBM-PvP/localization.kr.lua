@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 	TimerStart  = "시작 타이머 보기",
 	TimerTower 	= "탑 점령 타이머 보기",
 	TimerGY 	= "무덤 점령 타이머 보기",
-	AutoTurnIn 	= "퀘스트 아이템 자동 수락"
+	AutoTurnIn 	= "퀘스트 자동 완료"
 })
 
 ---------------
@@ -93,8 +93,8 @@ L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
-	WinBarText 		= "%s 획득",
-	BasesToWin		= "필요 점령 갯수 : %d",
+	WinBarText 		= "%s 승리",
+	BasesToWin		= "승리 필요 거점 : %d",
 	Flag 			= "깃발"
 })
 
@@ -127,7 +127,7 @@ L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/1600",
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
-	WinBarText		= "%s 점령",
+	WinBarText		= "%s 승리",
 	FlagReset 		= "깃발이 다시 제자리로 돌아갔습니다.",
 	FlagTaken 		= "^(.+)|1이;가; 깃발을 차지했습니다!",
 	FlagCaptured 	= "(.+)|1이;가; 깃발을 차지했습니다!",
@@ -142,9 +142,9 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart 		= "시작 타이머 보기",
-	TimerWin 		= "점령 타이머 보기",
+	TimerWin 		= "승리 타이머 보기",
 	TimerFlag 		= "깃발 재생성 타이머 보기",
-	ShowPointFrame 	= "깃발 운반 및 필요 예상 포인트 보기"
+	ShowPointFrame 	= "깃발 운반자 및 승/패 예상 포인트 보기"
 })
 
 --------------------
@@ -161,7 +161,7 @@ L:SetMiscLocalization({
 	BgStart30 = "30초 후 전투가 시작됩니다. 준비하십시오!",
 	Alliance = "얼라이언스",
 	Horde = "호드",	
-	InfoErrorText 		= "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
+	InfoErrorText 		= "전투가 종료되면 깃발 운반자 추적 기능이 복구됩니다.",
 	ExprFlagPickUp 		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",	
 	ExprFlagCaptured 	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
 	ExprFlagReturn 		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
@@ -179,7 +179,7 @@ L:SetOptionLocalization({
 	TimerStart  			 	= "시작 타이머 보기",
 	TimerFlag 					= "깃발 재생성 타이머 보기",
 	ShowFlagCarrier 	 	 	= "깃발 운반자 보기",
-	ShowFlagCarrierErrorNote	= "전투중 깃발 운반자 에러 메세지 보기"
+	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 추적 기능 관련 에러 메세지 보기"
 })
 
 ------------------------
@@ -205,7 +205,7 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	TimerStart				= "게임 시작 타이머 보기", 
-	TimerPOI				= "획득 타이머 보기",
+	TimerPOI				= "거점 점령 타이머 보기",
 	TimerSiegeEngine		= "공성 전차 제작 타이머 보기",
 	WarnSiegeEngine			= "공성 전차가 준비되었을 때 경고 알리기",
 	WarnSiegeEngineSoon		= "공성 전차가 곧 준비 될 때 경고 알리기"	
@@ -238,10 +238,10 @@ L:SetGeneralLocalization({
 L:SetMiscLocalization({
 	BgStart60 			= "1분 후 전투가 시잡됩니다!",
 	BgStart30 			= "30초 후 전투가 시작됩니다! 준비하십시오!",
-	ZoneName 			= "쌍둥이",
+	ZoneName 			= "쌍둥이 봉우리",
 	Alliance 			= "얼라이언스",
 	Horde 				= "호드",	
-	InfoErrorText		= "전투에서 벗어나면 깃발 운반자 타겟팅 기능이 복구됩니다.",
+	InfoErrorText		= "전투가 종료되면 깃발 운반자 추적 기능이 복구됩니다.",
 	ExprFlagPickUp		= "(.+)|1이;가; (.+) 깃발을 손에 넣었습니다!",
 	ExprFlagCaptured	= "(.+)|1이;가; (.+) 깃발 쟁탈에 성공했습니다!",
 	ExprFlagReturn		= "(.+)|1이;가; (.+) 깃발을 되찾았습니다!",
@@ -259,7 +259,7 @@ L:SetOptionLocalization({
 	TimerStart					= "시작 타이머 보기",
 	TimerFlag					= "깃발 재생성 타이머 보기",
 	ShowFlagCarrier				= "깃발 운반자 보기",
-	ShowFlagCarrierErrorNote	= "전투중 깃발 운반자 에러 메세지 보기"
+	ShowFlagCarrierErrorNote	= "전투 중 깃발 운반자 추적 기능 관련 에러 메세지 보기"
 })
 
 
@@ -278,8 +278,8 @@ L:SetMiscLocalization({
 	ScoreExpr 		= "(%d+)/2000",
 	Alliance 		= "얼라이언스",
 	Horde 			= "호드",
-	WinBarText 		= "%s 획득",
-	BasesToWin		= "필요 점령 갯수 : %d",
+	WinBarText 		= "%s 승리",
+	BasesToWin		= "승리 필요 거점 : %d",
 	Flag 			= "깃발"
 })
 

@@ -148,9 +148,9 @@ Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
 end)
 
 
-local startTimer = Arathi:NewTimer(62, "TimerStart")
-local winTimer = Arathi:NewTimer(30, "TimerWin")
-local capTimer = Arathi:NewTimer(63, "TimerCap")
+local startTimer = Arathi:NewTimer(62, "TimerStart", 2457)
+local winTimer = Arathi:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
+local capTimer = Arathi:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
 local function obj_state(id)
 	if id == 18 or id == 23 or id == 28 or id == 33 or id == 38 then	

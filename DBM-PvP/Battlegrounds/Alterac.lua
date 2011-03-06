@@ -36,8 +36,8 @@ local hordeColor = {
 	b = 0,
 }
 
-local startTimer = Alterac:NewTimer(62, "TimerStart")
-local towerTimer = Alterac:NewTimer(243, "TimerTower")
+local startTimer = Alterac:NewTimer(62, "TimerStart", 2457)
+local towerTimer = Alterac:NewTimer(243, "TimerTower", "Interface\\Icons\\Spell_Shadow_HellifrePVPCombatMorale")
 local gyTimer = Alterac:NewTimer(243, "TimerGY", "Interface\\Icons\\Spell_Shadow_AnimateDead")
 
 -- http://www.wowwiki.com/API_GetMapLandmarkInfo
