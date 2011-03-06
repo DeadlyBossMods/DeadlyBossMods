@@ -160,7 +160,7 @@ function mod:SPELL_CAST_START(args)
 		timerCausticSlime:Start()--Always 19 seconds after massacre.
 		timerBreakCD:Start(14)--Massacre resets break timer, although  usualy the CDs line up anyways, they won't for 3rd break.
 		massacreCast = massacreCast + 1
-		self:Schedule(5, "failureCheck")
+		self:Schedule(5, failureCheck)
 	end
 end
 
