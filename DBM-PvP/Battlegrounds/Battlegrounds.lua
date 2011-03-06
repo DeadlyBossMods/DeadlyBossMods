@@ -21,7 +21,7 @@ mod:RegisterEvents(
 	"PLAYER_DEAD"
 )
 
-local inviteTimer = mod:NewTimer(60, "TimerInvite", nil, nil, false)
+local inviteTimer = mod:NewTimer(60, "TimerInvite", "Interface\\Icons\\Spell_Holy_WeaponMastery", nil, false)
 local frameShow = RaidBossEmoteFrame.Show
 
 function mod:ZONE_CHANGED_NEW_AREA()

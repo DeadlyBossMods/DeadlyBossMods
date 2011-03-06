@@ -1,6 +1,6 @@
 ﻿-- Twin Peaks mod v1.0
 --
--- Thanks to Samirâ (EU-Thrall)
+-- Thanks to Samira (EU-Thrall)
 
 
 local TwinPeaks		= DBM:NewMod("TwinPeaks", "DBM-PvP", 2)
@@ -26,7 +26,7 @@ local FlagCarrier = {
 	[2] = nil
 }
 
-local startTimer 	= TwinPeaks:NewTimer(62, "TimerStart")
+local startTimer 	= TwinPeaks:NewTimer(62, "TimerStart", 2457)
 local flagTimer 	= TwinPeaks:NewTimer(23, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 
 TwinPeaks:AddBoolOption("ShowFlagCarrier", true, nil, function()
