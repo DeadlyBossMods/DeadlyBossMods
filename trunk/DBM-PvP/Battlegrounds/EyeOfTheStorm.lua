@@ -46,8 +46,8 @@ EyeOfTheStorm:AddBoolOption("ShowPointFrame", true, nil, function()
 end)
 
 
-local startTimer = EyeOfTheStorm:NewTimer(62, "TimerStart")
-local winTimer = EyeOfTheStorm:NewTimer(30, "TimerWin")
+local startTimer = EyeOfTheStorm:NewTimer(62, "TimerStart", 2457)
+local winTimer = EyeOfTheStorm:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 local flagTimer = EyeOfTheStorm:NewTimer(9, "TimerFlag", "Interface\\Icons\\INV_Banner_02")
 
 local objectives = {

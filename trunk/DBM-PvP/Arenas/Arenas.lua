@@ -11,8 +11,8 @@ Arenas:SetZone(DBM_DISABLE_ZONE_DETECTION)
 
 Arenas:RegisterEvents("CHAT_MSG_BG_SYSTEM_NEUTRAL")
 
-local timerStart	= Arenas:NewTimer(62, "TimerStart")
-local timerShadow	= Arenas:NewTimer(90, "TimerShadow")
+local timerStart	= Arenas:NewTimer(62, "TimerStart", 2457)
+local timerShadow	= Arenas:NewTimer(90, "TimerShadow", 34709)
 
 function Arenas:CHAT_MSG_BG_SYSTEM_NEUTRAL(args)
 	if not IsActiveBattlefieldArena() then return end
