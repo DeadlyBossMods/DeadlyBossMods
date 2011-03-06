@@ -122,10 +122,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	YellOnCorrupting		= "Yell on $spell:93178",
 	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
-	InfoFrame				= "Show info frame for $spell:82235",
+	InfoFrame				= "Show info frame for $spell:81701",
 	RangeFrame				= "Show range frame (5) for $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
-	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+	SetIconOnCreature		= "Set icons on Darkened Creations"
 })
 
 L:SetMiscLocalization({

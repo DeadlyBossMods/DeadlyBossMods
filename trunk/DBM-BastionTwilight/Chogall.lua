@@ -14,10 +14,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
-	"SPELL_MISSED",
 	"UNIT_HEALTH",
-	"UNIT_AURA",
-	"UNIT_TARGET"
+	"UNIT_AURA"
 )
 
 local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
@@ -62,8 +60,6 @@ local worshipIcon = 8
 local worshipCooldown = 21
 local blazeSpam = 0
 local sickSpam = 0
-local creatureGUIDs = {}
-local creatureAmount = 4
 local creatureIcon = 8
 local Corruption = GetSpellInfo(82235)
 
@@ -75,21 +71,12 @@ local function showWorshipWarning()
 	specWarnWorship:Show()
 end
 
-function mod:TrySetTarget()
-	for i=1, GetNumRaidMembers() do
-		if self:GetCIDFromGUID(UnitGUID("raid"..i.."target")) == 44045 and not creatureGUIDs[UnitGUID("raid"..i.."target")] then
-			creatureGUIDs[UnitGUID("raid"..i.."target")] = true
-			SetRaidTarget("raid"..i.."target", creatureIcon)
-			creatureIcon = creatureIcon - 1
-		end
-	end
-end
-
 function mod:CorruptingCrashTarget(sGUID)
 	local targetname = nil
 	for i=1, GetNumRaidMembers() do
 		if UnitGUID("raid"..i.."target") == sGUID then
 			targetname = UnitName("raid"..i.."targettarget")
+			break
 		end
 	end
 	if not targetname then return end
@@ -127,11 +114,6 @@ function mod:OnCombatStart(delay)
 	prewarned_Phase2 = false
 	worshipIcon = 8
 	worshipCooldown = 21
-	if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
-		creatureAmount = 8
-	else
-		creatureAmount = 4
-	end
 	blazeSpam = 0
 	sickSpam = 0
 	berserkTimer:Start(-delay)
@@ -185,8 +167,36 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(82524) then
 		warnFury:Show()
 		timerFuryCD:Start()
+	elseif args:IsSpellID(82411, 93132, 93133, 93134) then
+		if self.Options.SetIconOnCreature then
+			for i=1, GetNumRaidMembers() do
+				if UnitGUID("raid"..i.."target") == args.sourceGUID then
+					SetRaidTarget("raid"..i.."target", creatureIcon)
+					creatureIcon = creatureIcon - 1
+					break
+				end
+			end
+		end
 	end
 end
+
+--[[ try different way to set icon. base on combatlog show on targetable
+10 man
+3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D0000324F,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
+3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D00003250,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
+3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D00003251,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
+3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D00003252,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
+
+25 man
+3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005166,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005167,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005168,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005169,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516A,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516B,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516C,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516D,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
+]]
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82414, 93160, 93161, 93162) then
@@ -195,12 +205,6 @@ function mod:SPELL_CAST_SUCCESS(args)
 			timerCreationsCD:Start(40)
 		else
 			timerCreationsCD:Start()
-		end
-		table.wipe(creatureGUIDs)
-		if mod:IsDifficulty("normal25") or mod:IsDifficulty("heroic25") then
-			creatureAmount = 8
-		else
-			creatureAmount = 4
 		end
 		creatureIcon = 8
 	elseif args:IsSpellID(82630) then
@@ -220,12 +224,6 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(81538, 93212, 93123, 93214) and args:IsPlayer() and GetTime() - blazeSpam >= 4 then
 		specWarnBlaze:Show()
 		blazeSpam = GetTime()
-	end
-end
-
-function mod:SPELL_MISSED(args)
-	if args:IsSpellID(82414) then
-		creatureAmount = creatureAmount - 1
 	end
 end
 
@@ -250,11 +248,5 @@ function mod:UNIT_AURA(uId)
 			DBM.RangeCheck:Show(5)
 		end
 		sickSpam = GetTime()
-	end
-end
-
-function mod:UNIT_TARGET(uId)
-	if self.Options.SetIconOnCreature and #creatureGUIDs < creatureAmount then
-		self:TrySetTarget()
 	end
 end
