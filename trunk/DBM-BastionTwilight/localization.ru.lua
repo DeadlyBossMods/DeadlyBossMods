@@ -21,7 +21,7 @@ L:SetOptionLocalization({
 	ShowDrakeHealth		= "Показать здоровье подчиненного дракона"
 })
 
-L:SetMiscLocalization({7
+L:SetMiscLocalization({
 })
 
 ---------------------------
