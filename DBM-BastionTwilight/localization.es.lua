@@ -43,6 +43,7 @@ L:SetOptionLocalization({
 	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
 	YellOnTwilightMeteor	= "Gritar cuando tengas $spell:88518",
 	YellOnTwilightBlast		= "Gritar cuando tengas $spell:92898",
+	TBwarnWhileBlackout		= "Mostrar aviso de $spell:92898 cuando $spell:86788 está activo",
 	TwilightBlastArrow		= "Mostrar flecha cuando $spell:92898 está cerca de ti",
 	RangeFrame				= "Mostrar distancia (10 yardas)",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
@@ -115,14 +116,13 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
---	WarnPhase2Soon	= "Fase 2 pronto"
+
 })
 
 L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
---	WarnPhase2Soon	= "Mostrar preaviso para Fase 2",
 	YellOnCorrupting	= "Gritar cuando tengas $spell:93178",
 	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:93178 está cerca de ti",
 	InfoFrame			= "Mostrar información para $spell:81701",
