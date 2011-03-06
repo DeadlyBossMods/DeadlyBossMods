@@ -381,7 +381,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAdds		= "Repel the intruders!"--translate
+	YellAdds		= "¡Repeled a los intrusos!"
 }
 
 -----------------
@@ -578,7 +578,9 @@ L:SetGeneralLocalization({
 	name = "Ozumat"
 })
 
----------------
+----------------
+--  Zul'Aman  --
+----------------
 --  Nalorakk --
 ---------------
 L = DBM:GetModLocalization("Nalorakk5")
@@ -595,22 +597,22 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBear		= "Bär",
-	TimerNormal		= "Normale Form"
+	TimerBear		= "Oso",
+	TimerNormal		= "Forma Normal"
 }
 
 L:SetOptionLocalization{
-	WarnBear		= "Show warning for Bear form",--Translate
-	WarnBearSoon	= "Show pre-warning for Bear form",--Translate
-	WarnNormal		= "Show warning for Normal form",--Translate
-	WarnNormalSoon	= "Show pre-warning for Normal form",--Translate
-	TimerBear		= "Show timer for Bear form",--Translate
-	TimerNormal		= "Show timer for Normal form"--Translate
+	WarnBear		= "Mostrar aviso para forma de Oso",
+	WarnBearSoon	= "Mostrar pre-aviso para forma de Oso",
+	WarnNormal		= "Mostrar aviso para forma de Normal",
+	WarnNormalSoon	= "Mostrar preaviso para forma de Normal",
+	TimerBear		= "Mostrar tiempo para forma de Oso",
+	TimerNormal		= "Mostrar tiempo para forma Normal"
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "¡Si llamáis a la bestia, vais a recibir más de lo que esperáis!",
-	YellNormal	= "¡Dejad paso al Nalorakk!"
+	YellBear 	= "¡Si llamáis a la bestia, vais a recibir más de lo que esperáis!",--translate ?
+	YellNormal	= "¡Dejad paso al Nalorakk!"--translate ?
 }
 
 ---------------
@@ -656,13 +658,13 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBomb	= "¡Ahora os quemaré!",
-	YellAdds	= "¿Dónde está mi criador? ¡A por los huevos!"
+	YellBomb	= "¡Ahora os quemaré!",--translate ?
+	YellAdds	= "¿Dónde está mi criador? ¡A por los huevos!"--translate ?
 }
 
---------------
---  Halazzi --
---------------
+-------------
+-- Halazzi --
+-------------
 L = DBM:GetModLocalization("Halazzi5")
 
 L:SetGeneralLocalization{
@@ -670,19 +672,43 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnSpirit	= "Sale espíritu",
-	WarnNormal	= "Desaparece espíritu"
+	WarnSpirit	= "Fase de Espíritu",
+	WarnNormal	= "Fase Normal"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnSpirit	= "Show warning for Spirit phase",--Translate
-	WarnNormal	= "Show warning for Normal phase"--Translate
+	WarnSpirit	= "Mostrar aviso para fase de Espíritu",
+	WarnNormal	= "Mostrar aviso para fase Normal"
 }
 
 L:SetMiscLocalization{
-	YellSpirit	= "Lucho con libertad de espíritu...",
-	YellNormal	= "¡Espíritu, vuelve a mí!"
+	YellSpirit	= "Lucho con libertad de espíritu...",--translate ?
+	YellNormal	= "¡Espíritu, vuelve a mí!"--translate ?
+}
+
+-----------------
+--  Zul'Gurub  --
+-------------------------
+-- High Priest Venoxis --
+-------------------------
+L = DBM:GetModLocalization("Venoxis")
+
+L:SetGeneralLocalization{
+	name = "Sumo sacerdote Venoxis"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+}
+
+L:SetMiscLocalization{
 }
