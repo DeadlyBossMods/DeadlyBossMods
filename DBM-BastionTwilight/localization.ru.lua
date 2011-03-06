@@ -21,7 +21,7 @@ L:SetOptionLocalization({
 	ShowDrakeHealth		= "Показать здоровье подчиненного дракона"
 })
 
-L:SetMiscLocalization({
+L:SetMiscLocalization({7
 })
 
 ---------------------------
@@ -126,10 +126,10 @@ L:SetOptionLocalization({
 --	WarnPhase2Soon			= "Показывать предупреждение о переходе на 2-ую фазу",
 	YellOnCorrupting		= "Крикнуть если на вас $spell:93178",
 	CorruptingCrashArrow	= "Показывать стрелку DBM, когда $spell:93178 около вас",
-	InfoFrame				= "Показывать информационное окно для $spell:82235",
+	InfoFrame				= "Показывать информационное окно для $spell:81701",
 	RangeFrame				= "Показывать окно проверки дистанции (5м) для $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
-	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+--	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
 L:SetMiscLocalization({
