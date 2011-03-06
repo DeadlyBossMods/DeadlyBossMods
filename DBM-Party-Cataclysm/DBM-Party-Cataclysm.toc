@@ -27,7 +27,7 @@
 ## X-DBM-Mod-Name-koKR: 5인 던전 (대격변)
 ## X-DBM-Mod-Name-esMX: Mazmorras (Cataclysm)
 ## X-DBM-Mod-Sort: 125
-## X-DBM-Mod-LoadZoneID: 747,753,756,757,759,764,767,768,769,697
+## X-DBM-Mod-LoadZoneID: 747,753,756,757,759,764,767,768,769,697,793,781
 localization.en.lua
 localization.de.lua
 localization.es.lua
