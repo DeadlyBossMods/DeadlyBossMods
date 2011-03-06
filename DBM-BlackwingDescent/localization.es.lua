@@ -40,17 +40,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnActivated			= "Cambia el objetivo a %s!",
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "Retorno Arcano",
-	timerShadowConductorCast	= "Conductor de las Sombras"
+	timerShadowConductorCast	= "Conductor de las Sombras",
+	timerNefAblity				= "CD de Bufo de Habilidad"
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Mostrar tiempo para lanzamiento de $spell:92053",
 	timerArcaneBlowbackCast	= "Mostrar tiempo para lanzamiento de $spell:91879",
+	timerNefAblity				= "Mostrar tiempo de CoolDown de las habilidades de bufos en heroico",
+	SpecWarnActivated			= "Mostrar aviso especial cuando se activa un nuevo boss",
 	YellBombTarget			= "Gritar cuando tengas $spell:80094",
+	YellOnLightning				= "Gritar en $spell:79888",
+	YellOnShadowCast			= "Gritar en $spell:92053",
+	YellOnTarget				= "Gritar en $spell:92037",
+	YellOnTargetLock			= "Gritar en $spell:92023",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -62,7 +70,12 @@ L:SetMiscLocalization({
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
 	Arcanotron	= "Arcanotron",
-	SayBomb		= "¡Bomba de veneno en mi!"
+	SayBomb		= "¡Bomba de veneno en mi!",
+	YellLightning		= "¡Conductor de relámpagos en mi!",
+	YellShadowCast		= "¡Conductor de las Sombras en mi!",
+	YellTarget			= "¡Fijando objetivo en mi!",
+	YellTargetLock		= "¡Sombras atrapantes! ¡Apartaos de mi!"
+
 })
 
 ----------------
@@ -209,6 +222,7 @@ L:SetOptionLocalization({
 	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
 	YellOnCinder		= "Gritar cuando tengas $spell:79339",
 	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339",
+	InfoFrame				= "Mostrar información sobre la carga eléctrica de Onyxia",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
@@ -217,5 +231,6 @@ L:SetMiscLocalization({
 	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate
 	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate
 	YellCinder		= "¡Cenizas explosivas en mi!",
-	Onyxia				= "Onyxia"
+	Onyxia				= "Onyxia",
+	Charge				= "Carga Eléctrica"
 })
