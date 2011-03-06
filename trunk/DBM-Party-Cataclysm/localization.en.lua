@@ -569,9 +569,11 @@ L:SetGeneralLocalization({
 	name = "Ozumat"
 })
 
----------------
---  Nalorakk --
----------------
+----------------
+--  Zul'Aman  --
+----------------
+-- Nalorakk --
+--------------
 L = DBM:GetModLocalization("Nalorakk5")
 
 L:SetGeneralLocalization{
@@ -604,9 +606,9 @@ L:SetMiscLocalization{
 	YellNormal	= "Make way for Nalorakk!"
 }
 
----------------
---  Akil'zon --
----------------
+--------------
+-- Akil'zon --
+--------------
 L = DBM:GetModLocalization("Akilzon5")
 
 L:SetGeneralLocalization{
@@ -627,9 +629,9 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 }
 
----------------
---  Jan'alai --
----------------
+--------------
+-- Jan'alai --
+--------------
 L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
@@ -651,9 +653,9 @@ L:SetMiscLocalization{
 	YellAdds	= "Where ma hatcha? Get to work on dem eggs!"
 }
 
---------------
---  Halazzi --
---------------
+-------------
+-- Halazzi --
+-------------
 L = DBM:GetModLocalization("Halazzi5")
 
 L:SetGeneralLocalization{
@@ -676,4 +678,28 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellSpirit	= "I fight wit' untamed spirit....",
 	YellNormal	= "Spirit, come back to me!"
+}
+
+-----------------
+--  Zul'Gurub  --
+-------------------------
+-- High Priest Venoxis --
+-------------------------
+L = DBM:GetModLocalization("Venoxis")
+
+L:SetGeneralLocalization{
+	name = "High Priest Venoxis"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+}
+
+L:SetMiscLocalization{
 }
