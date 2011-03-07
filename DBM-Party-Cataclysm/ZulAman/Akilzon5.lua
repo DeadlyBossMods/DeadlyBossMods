@@ -15,6 +15,7 @@ mod:RegisterEvents(
 
 local warnStorm			= mod:NewTargetAnnounce(43648, 4)
 local warnStormSoon		= mod:NewSoonAnnounce(43648, 5, 3)
+local warnPlucked		= mod:NewTargetAnnounce(97318, 3)
 
 local specWarnStorm		= mod:NewSpecialWarningSpell(43648)
 
@@ -27,7 +28,6 @@ mod:AddBoolOption("RangeFrame", true)
 mod:AddBoolOption("StormIcon", true)
 
 function mod:OnCombatStart(delay)
-	silenceSpam = 0
 	warnStormSoon:Schedule(43)
 	timerStormCD:Start(48)
 	berserkTimer:Start(-delay)
@@ -57,6 +57,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.StormIcon then
 			self:SetIcon(args.destName, 8, 8)
-		end	
+		end
+	elseif args:IsSpellID(97318) then
+		warnPlucked:Show(args.destName)	
 	end
 end
