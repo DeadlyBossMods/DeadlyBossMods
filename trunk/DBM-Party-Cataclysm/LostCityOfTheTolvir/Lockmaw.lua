@@ -20,12 +20,23 @@ local warnDustFlail	= mod:NewSpellAnnounce(81642, 3)
 local warnEnrage	= mod:NewSpellAnnounce(81706, 4)
 
 local timerScentBlood	= mod:NewTargetTimer(30, 81690)
-local timerPoison	= mod:NewTargetTimer(12, 81642)
+local timerPoison	= mod:NewTargetTimer(12, 81630)
 local timerDustFlail	= mod:NewBuffActiveTimer(5, 81642)
 
 mod:AddBoolOption("RangeFrame")
 
+local poisonTargets = {}
+local poisonCount = 0
+
+local function showPoisonWarning()
+	warnPoison:Show(table.concat(poisonTargets, "<, >"))
+	table.wipe(poisonTargets)
+	timerPoison:Start()
+end
+
 function mod:OnCombatStart(delay)
+	table.wipe(poisonTargets)
+	poisonCount = 0
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)
 	end
@@ -42,8 +53,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnScentBlood:Show(args.destName)
 		timerScentBlood:Start(args.destName)
 	elseif args:IsSpellID(81630, 90004) then
-		warnPoison:Show(args.destName)
-		timerPoison:Start(args.destName)
+		poisonCount = poisonCount + 1
+		poisonTargets[#poisonTargets + 1] = args.destName
+		self:Unschedule(showPoisonWarning)
+		self:Schedule(0.3, showPoisonWarning)
 	elseif args:IsSpellID(81706) then
 		warnEnrage:Show()
 	end
@@ -54,8 +67,11 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(81690, 89998) then
 		timerScentBlood:Cancel(args.destName)
-	elseif args:IsSpellID(81630, 90004) then
-		timerPoison:Cancel(args.destName)
+	elseif args:IsSpellID(75861, 91079) then
+		poisonCount = poisonCount - 1
+		if poisonCount == 0 then
+			timerPoison:Cancel()
+		end
 	end
 end
 

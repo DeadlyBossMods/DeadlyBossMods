@@ -9,10 +9,13 @@ mod:SetUsedIcons(8)
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
+	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START"
 )
 
-local warnBreath		= mod:NewTargetAnnounce(88308, 3)
+local warnBreath		= mod:NewTargetAnnounce(88308, 2)
+local warnUpwind		= mod:NewSpellAnnounce(88282, 4)
+local warnDownwind		= mod:NewSpellAnnounce(88286, 3)
 
 local specWarnBreath	= mod:NewSpecialWarningMove(88308) --Phase 2+ Ability
 
@@ -30,6 +33,14 @@ function mod:BreathTarget()
 		end
 	if targetname == UnitName("player") then
 		specWarnBreath:Show()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(88282) then
+		warnUpwind:Show()
+	elseif args:IsSpellID(88286) then
+		warnDownwind:Show()
 	end
 end
 

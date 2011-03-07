@@ -178,6 +178,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPhase2:Show()
 		timerCausticSlime:Cancel()
 		timerMassacreNext:Cancel()
+		timerFailureNext:Cancel()
 	end
 end
 

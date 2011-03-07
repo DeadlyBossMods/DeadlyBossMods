@@ -25,12 +25,16 @@ local timerSoulSever		= mod:NewTargetTimer(4, 82255)
 local timerSoulSeverCD		= mod:NewCDTimer(11, 82255)
 
 local specWarnHeavenFury	= mod:NewSpecialWarningMove(81942)
+local specWarnHallowedGround = mod:NewSpecialWarningMove(88814)
 
 mod:AddBoolOption("BossHealthAdds")
 
 local spamHeavenFury = 0
+local spamGround = 0
+
 function mod:OnCombatStart(delay)
 	spamHeavenFury = 0
+	spamGround = 0
 	if mod.Options.BossHealthAdds then
 		DBM.BossHealth:AddBoss(48906, L.BlazeHeavens)
 	end
@@ -53,6 +57,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnSoulSever:Show(args.destName)
 		timerSoulSever:Start(args.destName)
 		timerSoulSeverCD:Start()
+	elseif args:IsSpellID(88814, 90010) and args:IsPlayer() and GetTime() - spamGround > 5 then
+		spamGround = GetTime()
+		specWarnHallowedGround:Show()
 	end
 end
 

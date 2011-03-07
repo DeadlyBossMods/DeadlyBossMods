@@ -27,6 +27,7 @@ local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnCloud			= mod:NewSpellAnnounce(89588, 3)
 local warnLightingRod	= mod:NewTargetAnnounce(89668, 4)
 
+local specWarnIceStorm		= mod:NewSpecialWarningMove(91020)
 local specWarnLightningRod	= mod:NewSpecialWarningYou(89668)
 
 local timerWindBurst		= mod:NewCastTimer(5, 87770)
@@ -44,6 +45,7 @@ mod:AddBoolOption("LightningRodIcon")
 
 local lastWindburst = 0
 local phase2Started = false
+local spamIce = 0
 
 function mod:CloudRepeat()
 	warnCloud:Show()
@@ -55,6 +57,7 @@ function mod:OnCombatStart(delay)
 	timerWindBurstCD:Start(20-delay)
 	lastWindburst = 0
 	phase2Started = false
+	spamIce = 0
 	berserkTimer:Start(-delay)
 end
 
@@ -111,6 +114,9 @@ function mod:SPELL_DAMAGE(args)
 		warnWindBurst:Show()
 		timerWindBurstCD:Start(20)
 		lastWindburst = GetTime()
+	elseif args:IsSpellID(91020, 93258, 93259, 93260) and GetTime() - spamIce >= 4 and args:IsPlayer() then
+		specWarnIceStorm:Show()
+		spamIce = GetTime()
 	end
 end
 

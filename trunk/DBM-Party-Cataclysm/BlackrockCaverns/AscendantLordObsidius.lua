@@ -26,6 +26,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(76200) then
 		warnTransformation:Show()
 	elseif args:IsSpellID(76188, 93613) then
+		warnCorrupion:Show(args.destName)
 		timerCorruption:Start(args.destName)
 	elseif args:IsSpellID(76189) then
 		timerVeil:Start(args.destName)
@@ -37,6 +38,7 @@ mod.SPELL_AURA_REFRESH = mod.SPELL_AURA_APPLIED
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(76242) and self.Options.SetIconOnBoss then
 		self:SetIcon(L.name, 8)
+	elseif args:IsSpellID(76188, 93613) then
+		timerCorruption:Cancel(args.destName)
 	end
 end
-	
