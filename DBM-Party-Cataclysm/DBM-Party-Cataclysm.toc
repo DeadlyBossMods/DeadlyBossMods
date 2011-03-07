@@ -98,3 +98,4 @@ ZulGurub\MapSizes.lua
 ZulGurub\Venoxis.lua
 ZulGurub\Mandokir.lua
 ZulGurub\Zanzil.lua
+ZulGurub\Kilnara.lua
