@@ -25,7 +25,6 @@ local warnOhgan			= mod:NewSpellAnnounce(96724, 4)
 local warnFrenzy		= mod:NewSpellAnnounce(96800, 3)
 local warnRevive 		= mod:NewAnnounce("WarnRevive", 2, nil, false)
 
-
 local timerDecapitate		= mod:NewNextTimer(30, 96684)
 local timerBloodletting		= mod:NewTargetTimer(10, 96776)
 local timerBloodlettingCD	= mod:NewCDTimer(25, 96776)
@@ -34,10 +33,10 @@ local timerOhgan		= mod:NewCastTimer(3, 96724)
 
 local specWarnSlam		= mod:NewSpecialWarningCast(96740, nil, mod:IsTank())
 
-local reviveCounter = 0
+local reviveCounter = 8
 
 function mod:OnCombatStart(delay)
-	reviveCounter = 0
+	reviveCounter = 8
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -52,7 +51,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(96484) then
-		reviveCounter = reviveCounter + 1
+		reviveCounter = reviveCounter - 1
 		warnRevive:Show(args.spellName, reviveCounter)
 	elseif args:IsSpellID(96740) then
 		warnSlam:Show()
@@ -70,3 +69,17 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerDecapitate:Start()
 	end
 end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.sourceGUID)
+	if cid == 52156 then
+		reviveCounter = reviveCounter - 1
+		warnRevive:Show(args.sourceName.." died", reviveCounter)	-- Temporary, need to make it better localized
+	end
+end
+
+--[[
+There are 8 ghosts that can resurrect people who died from Decapitate
+If a ghost revives a person, it dies(?) and cannot revive a 2nd person (doesn't show in combatlog)
+Ohgan also tries to kill the ghosts, if he succeed a ghost dies (shown in combatlog)
+]]--
