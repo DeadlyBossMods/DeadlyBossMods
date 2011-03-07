@@ -17,6 +17,7 @@ mod:RegisterEvents(
 local warnMortalWound		= mod:NewStackAnnounce(93675, 2, nil, mod:IsTank() or mod:IsHealer())
 local warnGhouls			= mod:NewSpellAnnounce(93707, 4)
 local warnCursedBullets		= mod:NewTargetAnnounce(93629, 3)
+local warnPistolBarrage		= mod:NewSpellAnnounce(93520, 4)
 
 local specWarnMortalWound	= mod:NewSpecialWarningStack(93675, nil, 5)
 
@@ -52,6 +53,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93520) then
+		warnPistolBarrage:Show()
 		timerPistolBarrage:Start()
 		timerPistolBarrageNext:Start()
 	end

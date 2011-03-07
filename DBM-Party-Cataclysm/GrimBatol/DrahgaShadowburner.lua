@@ -17,16 +17,21 @@ mod:RegisterEvents(
 local warnFlame		= mod:NewSpellAnnounce(75321, 3)
 local warnDevouring	= mod:NewSpellAnnounce(90950, 3)
 local warnShredding	= mod:NewSpellAnnounce(75271, 3)
+local warnFlamingFixate = mod:NewTargetAnnounce(82850, 4)
+
+local specWarnFlamingFixate	= mod:NewSpecialWarningYou(82850)
+local specWarnDevouring = mod:NewSpecialWarningSpell(90950)
 
 local timerFlame	= mod:NewCDTimer(27, 75321)
 local timerDevouring	= mod:NewBuffActiveTimer(5, 90950)
 local timerShredding	= mod:NewBuffActiveTimer(20, 75271)
 
-local specWarnFlamingFixate	= mod:NewSpecialWarningYou(82850)
-
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(82850) and args:IsPlayer() then
-		specWarnFlamingFixate:Show()
+	if args:IsSpellID(82850) then
+		warnFlamingFixate:Show(args.destName)
+		if args:IsPlayer() then
+			specWarnFlamingFixate:Show()
+		end
 	elseif args:IsSpellID(75328) then
 		DBM.BossHealth:RemoveBoss(40320)
 	end
@@ -38,6 +43,7 @@ function mod:SPELL_CAST_START(args)
 		timerFlame:Start()
 	elseif args:IsSpellID(90950) then
 		warnDevouring:Show()
+		specWarnDevouring:Show()
 		timerDevouring:Start()
 	end
 end

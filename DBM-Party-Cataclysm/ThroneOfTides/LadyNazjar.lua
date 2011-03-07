@@ -30,10 +30,12 @@ local timerFungalSpores		= mod:NewBuffActiveTimer(15, 80564)
 local specWarnShockBlast	= mod:NewSpecialWarningInterrupt(76008)
 
 local sporeTargets = {}
+local sporeCount = 0
 local preWarnedWaterspout = false
 
 function mod:OnCombatStart()
 	table.wipe(sporeTargets)
+	sporeCount = 0
 	preWarnedWaterspout = false
 end
 
@@ -45,6 +47,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(80564, 91470) then
+		sporeCount = sporeCount + 1
 		sporeTargets[#sporeTargets + 1] = args.destName
 		self:Unschedule(showSporeWarning)
 		self:Schedule(0.3, showSporeWarning)
@@ -55,6 +58,11 @@ function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(75690) then
 		timerWaterspout:Cancel()
 		timerShockBlastCD:Start(13)
+	elseif args:IsSpellID(80564, 91470) then
+		sporeCount = sporeCount - 1
+		if sporeCount == 0 then
+			timerFungalSpores:Cancel()
+		end	
 	end
 end
 

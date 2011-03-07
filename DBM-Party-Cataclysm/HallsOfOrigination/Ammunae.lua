@@ -26,7 +26,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnWither:Show(args.destName)
 		timerWither:Start(args.destName)
 		timerWitherCD:Start()
-	elseif args:IsSpellID(80968) then
+	elseif args:IsSpellID(80968, 94958) then
 		warnConsume:Show(args.destName)
 		timerConsume:Start(args.destName)
 		timerConsumeCD:Start()

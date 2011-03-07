@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH"
 )
@@ -17,7 +18,7 @@ local warnShield	= mod:NewSpellAnnounce(74938, 3)
 local warnShieldSoon	= mod:NewSoonAnnounce(74938, 2)
 local warnReckoning	= mod:NewTargetAnnounce(75592, 4)
 
-local timerReckoning	= mod:NewTargetTimer(8, 75992)
+local timerReckoning	= mod:NewTargetTimer(8, 75592)
 
 local specWarnLight	= mod:NewSpecialWarningMove(75117)
 
@@ -34,9 +35,17 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(74938) then
 		warnShield:Show()
-	elseif args:IsSpellID(75592) then
+	elseif args:IsSpellID(75592, 94949) then
 		warnReckoning:Show(args.destName)
 		timerReckoning:Start(args.destName)
+	end
+end
+
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(74938) then
+		warnShield:Show()
+	elseif args:IsSpellID(75592, 94949) then
+		timerReckoning:Cancel(args.destName)
 	end
 end
 

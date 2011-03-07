@@ -95,7 +95,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(82415) then
+	if args:IsSpellID(82415, 92650) then
 		warnDampening:Show()
 		timerDampening:Start()
 	end

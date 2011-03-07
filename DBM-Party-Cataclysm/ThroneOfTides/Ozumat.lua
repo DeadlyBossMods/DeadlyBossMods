@@ -49,7 +49,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(83985) then
+	if args:IsSpellID(83985, 83986, 91511) then
 		warnBlightSpray:Show()
 		timerBlightSpray:Start()
 	end
