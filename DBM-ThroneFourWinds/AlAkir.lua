@@ -14,6 +14,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
+	"SPELL_PERIODIC_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
 )
 
@@ -22,12 +23,14 @@ local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
 local warnWindBurst		= mod:NewSpellAnnounce(87770, 3)
 local warnAdd			= mod:NewAnnounce("WarnAdd", 2, 87856)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
+local warnAcidRain		= mod:NewCountAnnounce(93281, nil, false)
 local warnFeedback		= mod:NewStackAnnounce(87904, 2)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnCloud			= mod:NewSpellAnnounce(89588, 3)
 local warnLightingRod	= mod:NewTargetAnnounce(89668, 4)
 
 local specWarnIceStorm		= mod:NewSpecialWarningMove(91020)
+local specWarnCloud			= mod:NewSpecialWarningMove(89588)
 local specWarnLightningRod	= mod:NewSpecialWarningYou(89668)
 
 local timerWindBurst		= mod:NewCastTimer(5, 87770)
@@ -37,7 +40,7 @@ local timerFeedback			= mod:NewTimer(20, "TimerFeedback", 87904)
 local timerAcidRainStack	= mod:NewNextTimer(15, 93281, nil, isDeathKnight)
 local timerLightningRod		= mod:NewTargetTimer(5, 89668)
 local timerLightningRodCD	= mod:NewNextTimer(15, 89668)
-local timerLightningCloudCD	= mod:NewNextTimer(10, 89588)
+local timerLightningCloudCD	= mod:NewNextTimer(15, 89588)
 
 local berserkTimer			= mod:NewBerserkTimer(600)
 
@@ -46,11 +49,12 @@ mod:AddBoolOption("LightningRodIcon")
 local lastWindburst = 0
 local phase2Started = false
 local spamIce = 0
+local spamCloud = 0
 
 function mod:CloudRepeat()
 	warnCloud:Show()
 	timerLightningCloudCD:Start()
-	self:ScheduleMethod(10, "CloudRepeat")
+	self:ScheduleMethod(15, "CloudRepeat")
 end
 
 function mod:OnCombatStart(delay)
@@ -58,6 +62,7 @@ function mod:OnCombatStart(delay)
 	lastWindburst = 0
 	phase2Started = false
 	spamIce = 0
+	spamCloud = 0
 	berserkTimer:Start(-delay)
 end
 
@@ -68,6 +73,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFeedback:Start(20, args.amount or 1)
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
 		timerAcidRainStack:Start()
+		if args.amount and args.amount > 1 then
+			warnAcidRain:Show(args.amount)
+		end
 		if not phase2Started then
 			phase2Started = true
 			warnPhase2:Show()
@@ -114,7 +122,14 @@ function mod:SPELL_DAMAGE(args)
 		warnWindBurst:Show()
 		timerWindBurstCD:Start(20)
 		lastWindburst = GetTime()
-	elseif args:IsSpellID(91020, 93258, 93259, 93260) and GetTime() - spamIce >= 4 and args:IsPlayer() then
+	elseif args:IsSpellID(89588, 93299, 93298, 93297) and GetTime() - spamCloud >= 4 and args:IsPlayer() then
+		specWarnCloud:Show()
+		spamCloud = GetTime()
+	end
+end
+
+function mod:SPELL_PERIODIC_DAMAGE(args)
+	if args:IsSpellID(91020, 93258, 93259, 93260) and GetTime() - spamIce >= 4 and args:IsPlayer() then
 		specWarnIceStorm:Show()
 		spamIce = GetTime()
 	end
@@ -130,7 +145,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		self:ScheduleMethod(15, "CloudRepeat")
 		timerWindBurstCD:Start(25)
 		timerLightningRodCD:Start(20)
-		timerSquallLineCD:Cancel()
+		timerAddCD:Cancel()
 		timerAcidRainStack:Cancel()
 	end
 end
