@@ -30,9 +30,9 @@ local warnOnyTailSwipe			= mod:NewAnnounce("OnyTailSwipe", 3, 77827)--we only ca
 local warnNefTailSwipe			= mod:NewAnnounce("NefTailSwipe", 3, 77827, false)--but for those that might care for whatever reason, we include his too, off by default.
 local warnOnyShadowflameBreath	= mod:NewAnnounce("OnyBreath", 3, 94124, mod:IsTank())
 local warnNefShadowflameBreath	= mod:NewAnnounce("NefBreath", 3, 94124, mod:IsTank())
-local warnBlastNova				= mod:NewSpellAnnounce(80734, 3, nil, false)--Can be spammy so now off by default. 5 adds 10 man 12 adds 25 man.
+local warnBlastNova				= mod:NewSpellAnnounce(80734, 3, nil, false)--Can be spammy so now off by default.
 local warnShadowBlaze			= mod:NewSpellAnnounce(94085, 4)--May be quirky
-local warnHailBones				= mod:NewSpellAnnounce(94104, 3, nil, false)-- spams a lot (every ~2sec a new one spawns, 5 adds 10 man 12 adds 25 man)
+local warnHailBones				= mod:NewSpellAnnounce(94104, 3, nil, false)--spams a lot (every ~2sec a new one spawns, 5 adds 10 man 12 adds 25 man)
 local warnCinder				= mod:NewTargetAnnounce(79339, 4)
 local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
@@ -74,7 +74,7 @@ local cinderIcons = 8
 local cinderTargets	= {}
 local dominionTargets = {}
 
---Credits to Bigwigs for this. Mine was inaccurate and posts complained theirs was better.
+--Credits to Bigwigs for original, modified when blizz nerfed it.
 function mod:ShadowBlazeFunction()
 	if shadowblazeTimer > 10 then--Keep it from dropping below 10
 		shadowblazeTimer = shadowblazeTimer - 5
