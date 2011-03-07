@@ -46,7 +46,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(76047) then
+	if args:IsSpellID(76047, 96311) then
 		warnDarkFissure:Show()
 		timerDarkFissure:Start()
 		timerDarkFissureCD:Start()

@@ -18,7 +18,7 @@ local warnWracking			= mod:NewSpellAnnounce(93720, 2)
 local warnArchangel			= mod:NewSpellAnnounce(93757, 4)
 
 
-local timerAsphyxiate		= mod:NewCDTimer(40, 93710)
+local timerAsphyxiate		= mod:NewCDTimer(45, 93710)
 
 function mod:OnCombatStart(delay)
 	timerAsphyxiate:Start(15-delay)

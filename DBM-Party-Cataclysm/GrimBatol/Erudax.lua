@@ -9,6 +9,7 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START"
 )
 
@@ -22,10 +23,26 @@ local timerFeeble	= mod:NewTargetTimer(3, 75792)
 local timerGale		= mod:NewCastTimer(5, 75664)
 local timerGaleCD	= mod:NewCDTimer(55, 75664)
 
+local bindingTargets = {}
+local bindingCount = 0
+
+local function showBindingWarning()
+	warnBinding:Show(table.concat(bindingTargets, "<, >"))
+	table.wipe(bindingTargets)
+	timerBinding:Start()
+end
+
+function mod:OnCombatStart(delay)
+	table.wipe(bindingTargets)
+	bindingCount = 0
+end
+
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(75861, 91079) then
-		warnBinding:Show(args.destName)
-		timerBinding:Start(args.destName)
+		bindingCount = bindingCount + 1
+		bindingTargets[#bindingTargets + 1] = args.destName
+		self:Unschedule(showBindingWarning)
+		self:Schedule(0.3, showBindingWarning)
 	elseif args:IsSpellID(75792, 91092) then
 		warnFeeble:Show(args.destName)
 		if mod:IsDifficulty("heroic5") then
@@ -33,7 +50,15 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			timerFeeble:Start(args.destName)
 		end
+	end
+end
 
+function mod:SPELL_AURA_REMOVED(args)
+	if args:IsSpellID(75861, 91079) then
+		bindingCount = bindingCount - 1
+		if bindingCount == 0 then
+			timerBinding:Cancel()
+		end
 	end
 end
 

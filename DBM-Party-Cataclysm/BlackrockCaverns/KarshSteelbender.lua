@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warnObsidianArmor		= mod:NewSpellAnnounce(75842, 2)
-local warnSuperheated		= mod:NewSpellAnnounce(75846, 3)
+local warnSuperheated		= mod:NewCountAnnounce(75846, 3)
 
 local timerSuperheated		= mod:NewTimer(17, "TimerSuperheated", 75846)
 
@@ -31,7 +31,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerSuperheated:Cancel()--try to fix a problem with multiple timers spawning with diff args.
 		timerSuperheated:Start(17, args.amount or 1)
 		if GetTime() - lastSuperheated > 3 then
-			warnSuperheated:Show()
+			warnSuperheated:Show(args.amount or 1)
 			if args.amount and args.amount >= 5 then
 				specWarnSuperheated:Show(args.amount)
 			end

@@ -9,7 +9,8 @@ mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
-	"SPELL_CAST_SUCCES",
+	"SPELL_CAST_START",
+	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL"
 )
@@ -18,8 +19,10 @@ local warnDesecration		= mod:NewSpellAnnounce(93687, 3)
 local warnMaleficStrike		= mod:NewSpellAnnounce(93685, 2)
 local warnShield			= mod:NewSpellAnnounce(93736, 4)
 local warnWordShame			= mod:NewTargetAnnounce(93852, 3)
+local warnEmpowerment		= mod:NewCastAnnounce(93844, 4)
 
 local specWarnDesecration	= mod:NewSpecialWarningMove(94370)
+local specWarnEmpowerment	= mod:NewSpecialWarningInterrupt(93844, false)
 
 local timerAdds				= mod:NewTimer(40, "TimerAdds", 48000)
 local timerMaleficStrike	= mod:NewNextTimer(6, 93685)
@@ -33,6 +36,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnShield:Show()
 	elseif args:IsSpellID(93852) then
 		warnWordShame:Show(args.destName)
+	end
+end
+
+function mod:SPELL_CAST_START(args)
+	if args:IsSpellID(93844) then
+		warnEmpowerment:Show()
+		specWarnEmpowerment:Show()
 	end
 end
 
