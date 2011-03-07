@@ -680,6 +680,32 @@ L:SetMiscLocalization{
 	YellNormal	= "Spirit, come back to me!"
 }
 
+-----------------------
+-- Hexlord Malacrass --
+-----------------------
+L = DBM:GetModLocalization("Malacrass5")
+
+L:SetGeneralLocalization{
+	name = "Hexlord Malacrass"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+	TimerSiphon	= "%s: %s"
+}
+
+L:SetOptionLocalization{
+	TimerSiphon	= "Show timer for $spell:43501"
+}
+
+L:SetMiscLocalization{
+	YellSpirit	= "I fight wit' untamed spirit....",
+	YellNormal	= "Spirit, come back to me!"
+}
+
+
 -----------------
 --  Zul'Gurub  --
 -------------------------
