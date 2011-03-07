@@ -109,7 +109,6 @@ function mod:OnCombatStart(delay)
 --	timerFuryCD:Start(55-delay)--first fury of chogal is health based, 85%, cannot accurately time it.
 --	timerAdherent:Start(60-delay)--This is also health based?
 	table.wipe(worshipTargets)
-	table.wipe(creatureGUIDs)
 	prewarned_Phase2 = false
 	worshipIcon = 8
 	worshipCooldown = 21
