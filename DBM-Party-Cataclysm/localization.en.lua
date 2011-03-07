@@ -752,6 +752,30 @@ L:SetMiscLocalization{
 ------------
 -- Zanzil --
 ------------
+L = DBM:GetModLocalization("Mandokir")
+
+L:SetGeneralLocalization{
+	name = "Bloodlord Mandokir"
+}
+
+L:SetWarningLocalization{
+	WarnRevive	= "%s (%d left)"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnRevive	= "Announce revives by ghost and the remaining amount available"
+}
+
+L:SetMiscLocalization{
+	Ohgan		= "Ohgan"
+}
+
+------------
+-- Zanzil --
+------------
 L = DBM:GetModLocalization("Zanzil")
 
 L:SetGeneralLocalization{
