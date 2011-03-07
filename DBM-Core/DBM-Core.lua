@@ -2566,11 +2566,29 @@ end
 
 function bossModPrototype:GetBossTarget(cid)
 	cid = cid or self.creatureId
-	for i = 1, GetNumRaidMembers() do
-		if self:GetUnitCreatureId("raid"..i.."target") == cid then
-			return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
-		elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
-			return UnitName("focustarget"), "focustarget"
+	if self:GetUnitCreatureId("target") == cid then
+		return UnitName("targettarget"), "targettarget"
+	elseif self:GetUnitCreatureId("focus") == cid then	-- we check our own focus frame, maybe the boss is there ;)
+		return UnitName("focustarget"), "focustarget"
+	elseif self:GetUnitCreatureId("boss1") == cid then
+		return UnitName("boss1target"), "boss1target"
+	elseif self:GetUnitCreatureId("boss2") == cid then
+		return UnitName("boss2target"), "boss2target"
+	elseif self:GetUnitCreatureId("boss3") == cid then
+		return UnitName("boss3target"), "boss3target"
+	elseif self:GetUnitCreatureId("boss4") == cid then
+		return UnitName("boss4target"), "boss4target"
+	elseif GetNumRaidMembers() > 0 then
+		for i = 1, GetNumRaidMembers() do
+			if self:GetUnitCreatureId("raid"..i.."target") == cid then
+				return UnitName("raid"..i.."targettarget"), "raid"..i.."targettarget"
+			end
+		end
+	elseif GetNumPartyMembers() > 0 then
+		for i = 1, GetNumPartyMembers() do
+			if self:GetUnitCreatureId("party"..i.."target") == cid then
+				return UnitName("party"..i.."targettarget"), "party"..i.."targettarget"
+			end
 		end
 	end
 end
