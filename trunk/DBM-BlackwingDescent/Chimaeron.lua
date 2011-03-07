@@ -46,6 +46,7 @@ mod:AddBoolOption("SetIconOnSlime")
 mod:AddBoolOption("InfoFrame", mod:IsHealer())
 
 local prewarnedPhase2 = false
+local phase2 = false
 local botOffline = false
 local slimeTargets = {}
 local slimeTargetIcons = {}
@@ -91,6 +92,7 @@ function mod:OnCombatStart(delay)
 	botOffline = false
 	slimeIcon = 8
 	massacreCast = 0
+	phase2 = false
 	table.wipe(slimeTargets)
 	table.wipe(slimeTargetIcons)
 	if self.Options.RangeFrame then
@@ -111,9 +113,11 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82881) then
-		warnBreak:Show(args.destName, args.amount or 1)
-		timerBreak:Start(args.destName)
-		timerBreakCD:Start()
+		if not phase2 then
+			warnBreak:Show(args.destName, args.amount or 1)
+			timerBreak:Start(args.destName)
+			timerBreakCD:Start()
+		end
 	elseif args:IsSpellID(88826) then
 		warnDoubleAttack:Show()
 		specWarnDoubleAttack:Show()
@@ -148,6 +152,8 @@ end
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(88853) then
 		botOffline = false
+	elseif args:IsSpellID(82881) then
+		timerBreak:Cancel(args.destName)
 	end
 end
 
@@ -168,6 +174,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(88872) then
 		warnFeud:Show()
 	elseif args:IsSpellID(82934, 95524) then
+		phase2 = true
 		warnPhase2:Show()
 		timerCausticSlime:Cancel()
 		timerMassacreNext:Cancel()
