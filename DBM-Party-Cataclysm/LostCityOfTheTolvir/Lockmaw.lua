@@ -20,7 +20,7 @@ local warnDustFlail	= mod:NewSpellAnnounce(81642, 3)
 local warnEnrage	= mod:NewSpellAnnounce(81706, 4)
 
 local timerScentBlood	= mod:NewTargetTimer(30, 81690)
-local timerPoison	= mod:NewTargetTimer(12, 81630)
+local timerPoison		= mod:NewBuffActiveTimer(12, 81630)
 local timerDustFlail	= mod:NewBuffActiveTimer(5, 81642)
 
 mod:AddBoolOption("RangeFrame")
