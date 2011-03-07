@@ -572,20 +572,22 @@ L:SetGeneralLocalization({
 	name = "오주마트"
 })
 
----------------
+----------------
+--  Zul'Aman  --
+----------------
 --  Nalorakk --
 ---------------
 L = DBM:GetModLocalization("Nalorakk5")
 
 L:SetGeneralLocalization{
-	name = "날로라크"
+	name = "날로라크 (곰)"
 }
 
 L:SetWarningLocalization{
 	WarnBear		= "곰 형상",
-	WarnBearSoon	= "곧 곰 형상",
+	WarnBearSoon	= "5초 후 곰 형상",
 	WarnNormal		= "인간 형상",
-	WarnNormalSoon	= "곧 인간 형상"
+	WarnNormalSoon	= "5초 후 인간 형상"
 }
 
 L:SetTimerLocalization{
@@ -613,7 +615,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Akilzon5")
 
 L:SetGeneralLocalization{
-	name = "아킬존"
+	name = "아킬존 (독수리)"
 }
 
 L:SetWarningLocalization{
@@ -624,7 +626,7 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "거리 프레임 보기"
+	RangeFrame	= "거리 프레임 보기 (10 m)"
 }
 
 L:SetMiscLocalization{
@@ -636,7 +638,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
-	name = "잔알라이"
+	name = "잔알라이 (용매)"
 }
 
 L:SetWarningLocalization{
@@ -660,7 +662,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Halazzi5")
 
 L:SetGeneralLocalization{
-	name = "할라지"
+	name = "할라지 (스라소니)"
 }
 
 L:SetWarningLocalization{
@@ -679,6 +681,51 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellSpirit	= "야생의 혼이 내 편이다...",
 	YellNormal	= "혼이여, 이리 돌아오라!"
+}
+
+-----------------------
+-- Hexlord Malacrass --
+-----------------------
+L = DBM:GetModLocalization("Malacrass5")
+
+L:SetGeneralLocalization{
+	name = "주술 군주 말라크라스 (5인)"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+	TimerSiphon	= "%s: %s"
+}
+
+L:SetOptionLocalization{
+	TimerSiphon	= "$spell:43501 타이머 보기"
+}
+
+L:SetMiscLocalization{
+}
+
+-------------
+-- Daakara --
+-------------
+L = DBM:GetModLocalization("Daakara")
+
+L:SetGeneralLocalization{
+	name = "다카라"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
 }
 
 -----------------
@@ -700,6 +747,72 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+}
+
+L:SetMiscLocalization{
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Mandokir")
+
+L:SetGeneralLocalization{
+	name = "혈군주 만도키르"
+}
+
+L:SetWarningLocalization{
+	WarnRevive	= "%s (%d회 남음)"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnRevive	= "영혼에 의해 부활 받은 경우 경고 및 부활 남은 횟수 보기"
+}
+
+L:SetMiscLocalization{
+	Ohgan		= "오간"
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Zanzil")
+
+L:SetGeneralLocalization{
+	name = "잔질"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------------
+-- High Priestess Kilnara --
+----------------------------
+L = DBM:GetModLocalization("Kilnara")
+
+L:SetGeneralLocalization{
+	name = "대여사제 킬나라"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
