@@ -96,4 +96,5 @@ ZulAman\Malacrass5.lua
 ZulAman\Daakara.lua
 ZulGurub\MapSizes.lua
 ZulGurub\Venoxis.lua
+ZulGurub\Mandokir.lua
 ZulGurub\Zanzil.lua
