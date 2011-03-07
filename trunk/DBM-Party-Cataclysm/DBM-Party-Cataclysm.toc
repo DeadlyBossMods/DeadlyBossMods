@@ -93,5 +93,6 @@ ZulAman\Nalorakk5.lua
 ZulAman\Janalai5.lua
 ZulAman\Halazzi5.lua
 ZulAman\Malacrass5.lua
+ZulAman\Daakara.lua
 ZulGurub\MapSizes.lua
 ZulGurub\Venoxis.lua

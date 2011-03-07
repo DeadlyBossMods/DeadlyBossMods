@@ -701,10 +701,29 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellSpirit	= "I fight wit' untamed spirit....",
-	YellNormal	= "Spirit, come back to me!"
 }
 
+-------------
+-- Daakara --
+-------------
+L = DBM:GetModLocalization("Daakara")
+
+L:SetGeneralLocalization{
+	name = "Daakara"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
+}
 
 -----------------
 --  Zul'Gurub  --
