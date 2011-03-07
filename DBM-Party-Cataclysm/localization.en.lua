@@ -748,3 +748,24 @@ L:SetOptionLocalization{
 
 L:SetMiscLocalization{
 }
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Zanzil")
+
+L:SetGeneralLocalization{
+	name = "Zanzil"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
