@@ -504,6 +504,10 @@ L:SetGeneralLocalization({
 	name = "대장로 에르탄"
 })
 
+L:SetMiscLocalization{
+	Retract		= "회오리 방패를 가까이 끌어당깁니다!"
+}
+
 --------------
 -- Altairus --
 -------------- 
