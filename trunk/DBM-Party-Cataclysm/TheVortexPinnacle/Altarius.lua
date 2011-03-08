@@ -51,9 +51,9 @@ function mod:BreathTarget()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(88282) then
+	if args:IsSpellID(88282) and args:IsPlayer() then
 		warnUpwind:Show()
-	elseif args:IsSpellID(88286) then
+	elseif args:IsSpellID(88286) and args:IsPlayer() then
 		warnDownwind:Show()
 	end
 end
