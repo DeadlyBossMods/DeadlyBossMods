@@ -35,8 +35,8 @@ local function warnCrystalTargets()
 end
 
 function mod:OnCombatStart(delay)
-	timerSubmerge:Start(28-delay)
-	self:ScheduleMethod(28-delay, "Submerge")
+	timerSubmerge:Start(31-delay)
+	self:ScheduleMethod(31-delay, "Submerge")
 	table.wipe(crystalTargets)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(5)

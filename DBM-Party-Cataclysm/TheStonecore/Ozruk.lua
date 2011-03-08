@@ -27,7 +27,7 @@ local specWarnShatter		= mod:NewSpecialWarningRun(92662, mod:IsMelee())
 
 --local timerShatterCD			= mod:NewCDTimer(19, 92662)
 local timerBulwark			= mod:NewBuffActiveTimer(10, 92659)
-local timerBulwarkCD		= mod:NewCDTimer(22, 92659)
+local timerBulwarkCD		= mod:NewCDTimer(20, 92659)
 local timerGroundSlam		= mod:NewCastTimer(3, 92410)
 local timerShatter			= mod:NewCastTimer(3, 92662)
 
