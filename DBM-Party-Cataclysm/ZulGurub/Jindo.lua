@@ -18,7 +18,7 @@ mod:RegisterEvents(
 )
 
 local warnDeadzone			= mod:NewSpellAnnounce(97170, 3)
-local warnShadowsofHakkar	= mod:NewCastAnnounce(97172, 4)
+local warnShadowsOfHakkar	= mod:NewCastAnnounce(97172, 4)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 local warnBarrierDown		= mod:NewAnnounce("WarnBarrierDown", 2)
 local warnBodySlam			= mod:NewTargetAnnounce(97198, 2)
@@ -26,7 +26,9 @@ local warnBodySlam			= mod:NewTargetAnnounce(97198, 2)
 local specWarnShadow		= mod:NewSpecialWarningSpell(97172)
 local specWarnBodySlam		= mod:NewSpecialWarningYou(97198)
 
-local timerShadowsofHakkar	= mod:NewBuffActiveTimer(10, 97172)
+local timerDeadzone		= mod:NewNextTimer(21, 97170)
+local timerShadowsOfHakkar	= mod:NewBuffActiveTimer(10, 97172)
+local timerShadowsOfHakkarNext	= mod:NewNextTimer(21, 97172)
 
 local phase2warned = false
 local barrier = 3
@@ -34,7 +36,6 @@ local barrier = 3
 function mod:SlamTarget()
 	local targetname = self:GetBossTarget(52730)
 	if not targetname then return end
-
 	warnBodySlam:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnBodySlam:Show()
@@ -49,7 +50,8 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(97172) then
 		specWarnShadow:Show()
-		timerShadowsofHakkar:Start()
+		timerShadowsOfHakkar:Start()
+		timerShadowsOfHakkarNext:Start()
 	end
 end
 
@@ -62,7 +64,7 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(97172) then
-		warnShadowsofHakkar:Show()
+		warnShadowsOfHakkar:Show()
 	elseif args:IsSpellID(97158) and not phase2warned then
 		warnPhase2:Show()
 		phase2warned = true
@@ -74,5 +76,6 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(97170) then
 		warnDeadzone:Show()
+		timerDeadzone:Start()
 	end
 end
