@@ -763,14 +763,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnRevive	= "%s (%d left)"
+	WarnRevive		= "Ghost Revive - %d left",
+	SpecWarnOhgan	= "Ohgan revived! Attack now!" -- check this, i'm not good at English
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnRevive	= "Announce revives by ghost and the remaining amount available"
+	WarnRevive	= "Announce how many ghost revive remaining",
+	SpecWarnOhgan	= "Show warning when Ohgan is revived" -- check this, i'm not good at English
 }
 
 L:SetMiscLocalization{
@@ -817,4 +819,28 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+}
+
+----------------------------
+-- Jindo --
+----------------------------
+L = DBM:GetModLocalization("Jindo")
+
+L:SetGeneralLocalization{
+	name = "Jindo" -- I don't know exact enUS names.
+}
+
+L:SetWarningLocalization{
+	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down"
+}
+
+L:SetMiscLocalization{
+	Kill	= "Oh no, Hakkar's spirit is free!" -- temporarily
 }

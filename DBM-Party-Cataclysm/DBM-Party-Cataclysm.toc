@@ -99,3 +99,4 @@ ZulGurub\Venoxis.lua
 ZulGurub\Mandokir.lua
 ZulGurub\Zanzil.lua
 ZulGurub\Kilnara.lua
+ZulGurub\Jindo.lua

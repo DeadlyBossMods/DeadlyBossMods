@@ -16,8 +16,8 @@ mod:RegisterEvents(
 local warnWordHethiss		= mod:NewSpellAnnounce(96560, 2)
 local warnWhisperHethiss	= mod:NewTargetAnnounce(96466, 3)
 local warnBreathHethiss		= mod:NewSpellAnnounce(96509, 3)
-local warnToxicLinkCast		= mod:NewCastAnnounce(96477, 2, nil, false)
-local warnToxicLink		= mod:NewTargetAnnounce(96477, 3)
+local warnToxicLinkCast		= mod:NewCastAnnounce(96477, 2, nil, nil, false)
+local warnToxicLink		= mod:NewTargetAnnounce(96477, 4)
 local warnBlessing		= mod:NewSpellAnnounce(97354, 3)
 local warnBloodvenom		= mod:NewSpellAnnounce(96842, 3)
 
@@ -25,6 +25,7 @@ local timerWhisperHethiss	= mod:NewTargetTimer(8, 96466)
 local timerBreathHethiss	= mod:NewNextTimer(12, 96509)
 
 local specWarnToxicLink		= mod:NewSpecialWarningYou(96477)
+local specWarnBloodvenom	= mod:NewSpecialWarningSpell(96842)
 
 mod:AddBoolOption("SetIconOnToxicLink")
 
@@ -44,16 +45,16 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(96477) then
+		toxicLinkTargets[#toxicLinkTargets + 1] = args.destName
+		toxicLinkIcon = toxicLinkIcon - 1
+		self:Unschedule(warnToxicLinkTargets)
+		self:Schedule(0.2, warnToxicLinkTargets)
 		if args:IsPlayer() then
 			specWarnToxicLink:Show()
 		end
 		if mod.Options.SetIconOnToxicLink then
-			self:SetIcon(toxicLinkIcon, args.destName, 10)
+			self:SetIcon(args.destName, toxicLinkIcon, 10)
 		end
-		toxicLinktTargets[#toxicLinkTargets+1] = args.destName
-		toxicLinkIcon = toxicLinkIcon - 1
-		self:Unschedule(warnToxicLinkTargets)
-		self:Schedule(0.2, warnToxicLinkTargets)
 	elseif args:IsSpellID(96509) then
 		warnBreathHethiss:Show()
 		timerBreathHethiss:Start()
@@ -61,7 +62,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnBlessing:Show()
 	elseif args:IsSpellID(96466) and args:IsDestTypePlayer() then
 		warnWhisperHethiss:Show(args.destName)
-		timerWhisperHethiss:Start()
+		timerWhisperHethiss:Start(args.destName)
 	end
 end
 
@@ -72,11 +73,10 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(96560) then
-		warnWordHethiss:Show()
-	elseif args:IsSpellID(96477) then
+	if args:IsSpellID(96477) then
 		warnToxicLinkCast:Show()
 	elseif args:IsSpellID(96842) then
 		warnBloodvenom:Show()
+		specWarnBloodvenom:Show()
 	end
 end
