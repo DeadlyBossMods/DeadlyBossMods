@@ -49,6 +49,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLashings:Start(args.destName)
 	elseif args:IsSpellID(82320) and args.destName == L.name then
 		warnRepentance:Show()
+		spamGround = GetTime()
 		if mod.Options.BossHealthAdds then
 			DBM.BossHealth:AddBoss(43927, L.HarbringerDarkness)
 			DBM.BossHealth:RemoveBoss(48906)
