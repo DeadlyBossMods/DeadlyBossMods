@@ -8,12 +8,18 @@ mod:SetZone()
 mod:RegisterCombat("combat")
 
 mod:RegisterEvents(
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"CHAT_MSG_RAID_BOSS_EMOTE"
 )
 
 local warnSummonTempest		= mod:NewSpellAnnounce(86340, 2)
 
 local timerSummonTempest	= mod:NewCDTimer(19, 86340)
+local timerShield			= mod:NewNextTimer(31.5, 93991)
+
+function mod:OnCombatStart(delay)
+	timerShield:Start(24-delay)--May need a slight tweak i forgot to log on pull i started logging mid fight then made this timer based off scrolling up and chat log time stamps.
+end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(86340) then
@@ -22,7 +28,8 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
-
--- Lightning Bolt + Cyclone Shield in combatlog (86331 + 86292)
--- emote:  Grand Vizier Ertan retracts his cyclone shield!
--- Summon Tempest: didnt see anything being spawned :S
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Retract or msg:find(L.Retract) then
+		timerShield:Start()
+	end
+end
