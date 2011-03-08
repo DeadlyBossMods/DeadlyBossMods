@@ -12,13 +12,13 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warnWither	= mod:NewTargetAnnounce(76043, 3)
-local warnConsume	= mod:NewTargetAnnounce(80968, 3)
-local warnRampant	= mod:NewSpellAnnounce(75790, 4)
+local warnWither		= mod:NewTargetAnnounce(76043, 3)
+local warnConsume		= mod:NewTargetAnnounce(80968, 3)
+local warnRampant		= mod:NewSpellAnnounce(75790, 4)
 
-local timerWither	= mod:NewTargetTimer(10, 76043)
-local timerWitherCD	= mod:NewCDTimer(18, 76043)
-local timerConsume	= mod:NewTargetTimer(4, 80968)
+local timerWither		= mod:NewTargetTimer(10, 76043)
+local timerWitherCD		= mod:NewCDTimer(18, 76043)
+local timerConsume		= mod:NewTargetTimer(4, 80968)
 local timerConsumeCD	= mod:NewCDTimer(15, 80968)
 
 function mod:SPELL_AURA_APPLIED(args)

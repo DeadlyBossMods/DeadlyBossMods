@@ -25,7 +25,7 @@ local warnGroundSlam		= mod:NewCastAnnounce(92410, 4)
 local specWarnGroundSlam	= mod:NewSpecialWarningMove(92410, mod:IsTank())
 local specWarnShatter		= mod:NewSpecialWarningRun(92662, mod:IsMelee())
 
---local timerShatterCD			= mod:NewCDTimer(19, 92662)
+--local timerShatterCD		= mod:NewCDTimer(19, 92662)
 local timerBulwark			= mod:NewBuffActiveTimer(10, 92659)
 local timerBulwarkCD		= mod:NewCDTimer(20, 92659)
 local timerGroundSlam		= mod:NewCastTimer(3, 92410)

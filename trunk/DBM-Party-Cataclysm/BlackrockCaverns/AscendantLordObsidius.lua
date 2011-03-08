@@ -15,10 +15,10 @@ mod:RegisterEvents(
 )
 
 local warnTransformation	= mod:NewSpellAnnounce(76200, 3)
-local warnCorrupion		= mod:NewTargetAnnounce(76188, 2)
+local warnCorrupion			= mod:NewTargetAnnounce(76188, 2)
 
 local timerCorruption		= mod:NewTargetTimer(12, 76188)
-local timerVeil			= mod:NewTargetTimer(4, 76189)
+local timerVeil				= mod:NewTargetTimer(4, 76189)
 
 mod:AddBoolOption("SetIconOnBoss")
 

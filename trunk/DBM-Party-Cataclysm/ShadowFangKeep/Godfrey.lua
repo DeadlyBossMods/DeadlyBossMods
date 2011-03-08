@@ -14,18 +14,18 @@ mod:RegisterEvents(
 	"SPELL_CAST_START"
 )
 
-local warnMortalWound		= mod:NewStackAnnounce(93675, 2, nil, mod:IsTank() or mod:IsHealer())
-local warnGhouls			= mod:NewSpellAnnounce(93707, 4)
-local warnCursedBullets		= mod:NewTargetAnnounce(93629, 3)
-local warnPistolBarrage		= mod:NewSpellAnnounce(93520, 4)
+local warnMortalWound			= mod:NewStackAnnounce(93675, 2, nil, mod:IsTank() or mod:IsHealer())
+local warnGhouls				= mod:NewSpellAnnounce(93707, 4)
+local warnCursedBullets			= mod:NewTargetAnnounce(93629, 3)
+local warnPistolBarrage			= mod:NewSpellAnnounce(93520, 4)
 
-local specWarnMortalWound	= mod:NewSpecialWarningStack(93675, nil, 5)
+local specWarnMortalWound		= mod:NewSpecialWarningStack(93675, nil, 5)
 
-local timerMortalWound		= mod:NewTargetTimer(6, 93675)
-local timerGhouls		= mod:NewNextTimer(30, 93707)
-local timerPistolBarrage	= mod:NewBuffActiveTimer(6, 93520)
+local timerMortalWound			= mod:NewTargetTimer(6, 93675)
+local timerGhouls				= mod:NewNextTimer(30, 93707)
+local timerPistolBarrage		= mod:NewBuffActiveTimer(6, 93520)
 local timerPistolBarrageNext	= mod:NewNextTimer(30, 93520)
-local timerCursedBullets	= mod:NewTargetTimer(15, 93629)
+local timerCursedBullets		= mod:NewTargetTimer(15, 93629)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(93675) then

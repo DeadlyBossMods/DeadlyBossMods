@@ -17,16 +17,16 @@ mod:RegisterEvents(
 
 local warnTotemWater	= mod:NewSpellAnnounce(97500, 3)
 local warnTotemLighting	= mod:NewSpellAnnounce(97492, 3)
-local warnShock		= mod:NewTargetAnnounce(97490, 3)
-local warnEnrage	= mod:NewSpellAnnounce(43139, 3)
-local warnSpirit	= mod:NewAnnounce("WarnSpirit", 4, 39414)
-local warnNormal	= mod:NewAnnounce("WarnNormal", 4, 39414)
+local warnShock			= mod:NewTargetAnnounce(97490, 3)
+local warnEnrage		= mod:NewSpellAnnounce(43139, 3)
+local warnSpirit		= mod:NewAnnounce("WarnSpirit", 4, 39414)
+local warnNormal		= mod:NewAnnounce("WarnNormal", 4, 39414)
 
-local specWarnTotem	= mod:NewSpecialWarningSpell(97492)
+local specWarnTotem		= mod:NewSpecialWarningSpell(97492)
 
-local timerShock	= mod:NewTargetTimer(12, 97490)
+local timerShock		= mod:NewTargetTimer(12, 97490)
 
-local berserkTimer	= mod:NewBerserkTimer(600)
+local berserkTimer		= mod:NewBerserkTimer(600)
 
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)

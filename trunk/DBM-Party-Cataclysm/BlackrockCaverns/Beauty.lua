@@ -13,7 +13,7 @@ mod:RegisterEvents(
 )
 
 local warnTerrifyingRoar	= mod:NewSpellAnnounce(76028, 2)
-local warnMagmaSpit		= mod:NewTargetAnnounce(76031, 3)
+local warnMagmaSpit			= mod:NewTargetAnnounce(76031, 3)
 
 local timerTerrifyingRoarCD	= mod:NewCDTimer(30, 76028)
 local timerMagmaSpit		= mod:NewTargetTimer(9, 76031)

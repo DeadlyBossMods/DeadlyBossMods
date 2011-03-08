@@ -15,22 +15,22 @@ mod:RegisterEvents(
 	"UNIT_DIED"
 )
 
-local warnLavaBolt		= mod:NewCastAnnounce(76171, 2)
+local warnLavaBolt			= mod:NewCastAnnounce(76171, 2)
 local warnMagmaSplash		= mod:NewTargetAnnounce(76170, 3)
 local warnEmberstrike		= mod:NewTargetAnnounce(76165, 3)
 local warnEarthShards		= mod:NewTargetAnnounce(84931, 2)
-local warnPhase2		= mod:NewPhaseAnnounce(2)
-local warnEnslave		= mod:NewTargetAnnounce(76207, 2)
+local warnPhase2			= mod:NewPhaseAnnounce(2)
+local warnEnslave			= mod:NewTargetAnnounce(76207, 2)
 local warnAbsorbMagic		= mod:NewSpellAnnounce(76307, 4)
-local warnMindFog		= mod:NewSpellAnnounce(76234, 3)
-local warnAgony			= mod:NewSpellAnnounce(76339, 3)
+local warnMindFog			= mod:NewSpellAnnounce(76234, 3)
+local warnAgony				= mod:NewSpellAnnounce(76339, 3)
 
-local timerLavaBolt		= mod:NewCastTimer(2, 76171)
+local timerLavaBolt			= mod:NewCastTimer(2, 76171)
 local timerMagmaSplash		= mod:NewBuffActiveTimer(10, 76170)
 local timerEmberstrike		= mod:NewTargetTimer(10, 76165)
 local timerAbsorbMagic		= mod:NewBuffActiveTimer(3, 76307)
-local timerMindFog		= mod:NewBuffActiveTimer(20, 76234)
-local timerAgony		= mod:NewBuffActiveTimer(10, 76339)
+local timerMindFog			= mod:NewBuffActiveTimer(20, 76234)
+local timerAgony			= mod:NewBuffActiveTimer(10, 76339)
 
 local specWarnLavaBolt		= mod:NewSpecialWarningInterrupt(76171)
 local specWarnAbsorbMagic	= mod:NewSpecialWarningCast(76307)
@@ -101,7 +101,7 @@ function mod:SPELL_CAST_START(args)
 		timerLavaBolt:Start()
 		specWarnLavaBolt:Show()
 	elseif args:IsSpellID(84931) then
-		self:ScheduleMethod(0.1, "EarthShardsTarget")--This should work but doesnt, i need to actually log it and see why, invalid creatureid maybe? or too fast of a scan,invalid castID?
+		self:ScheduleMethod(0.1, "EarthShardsTarget")
 	elseif args:IsSpellID(76307, 91492) then
 		warnAbsorbMagic:Show(76307)
 		specWarnAbsorbMagic:Show()

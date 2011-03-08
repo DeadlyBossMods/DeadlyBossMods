@@ -18,13 +18,13 @@ mod:RegisterEvents(
 local warnWaterspout		= mod:NewSpellAnnounce(75863, 3)
 local warnWaterspoutSoon	= mod:NewSoonAnnounce(75863, 2)
 local warnShockBlast		= mod:NewSpellAnnounce(76008, 1, nil, false)
-local warnGeyser		= mod:NewSpellAnnounce(75722, 3)
+local warnGeyser			= mod:NewSpellAnnounce(75722, 3)
 local warnFungalSpores		= mod:NewTargetAnnounce(80564, 3)
 
 local timerWaterspout		= mod:NewBuffActiveTimer(60, 75863)
 local timerShockBlast		= mod:NewCastTimer(3, 76008)
 local timerShockBlastCD		= mod:NewCDTimer(13, 76008)
-local timerGeyser		= mod:NewCastTimer(5, 75722)
+local timerGeyser			= mod:NewCastTimer(5, 75722)
 local timerFungalSpores		= mod:NewBuffActiveTimer(15, 80564)
 
 local specWarnShockBlast	= mod:NewSpecialWarningInterrupt(76008)
@@ -74,12 +74,11 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(76008, 91477) then
 		warnShockBlast:Show()
 		specWarnShockBlast:Show()
+		timerShockBlastCD:Start()
 		if mod:IsDifficulty("heroic5") then
 			timerShockBlast:Start(2)
-			timerShockBlastCD:Start()	-- Seems like the CD on heroic is same as on normal, need confirmation tho
 		else
 			timerShockBlast:Start()
-			timerShockBlastCD:Start()
 		end
 	end
 end
