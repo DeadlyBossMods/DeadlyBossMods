@@ -21,7 +21,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellBarrel	= "Barrel on me!"
+	YellBarrel			= "Barrel on me!"
 })
 
 -------------------------
@@ -68,9 +68,9 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization{
-	HummelActive	= "Hummel becomes active",
-	BaxterActive	= "Baxter becomes active",
-	FryeActive		= "Frye becomes active"
+	HummelActive		= "Hummel becomes active",
+	BaxterActive		= "Baxter becomes active",
+	FryeActive			= "Frye becomes active"
 }
 
 L:SetOptionLocalization({

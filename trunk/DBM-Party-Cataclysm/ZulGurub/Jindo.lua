@@ -17,17 +17,17 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnDeadzone			= mod:NewSpellAnnounce(97170, 3)
-local warnShadowsOfHakkar	= mod:NewCastAnnounce(97172, 4)
-local warnPhase2			= mod:NewPhaseAnnounce(2)
-local warnBarrierDown		= mod:NewAnnounce("WarnBarrierDown", 2)
-local warnBodySlam			= mod:NewTargetAnnounce(97198, 2)
+local warnDeadzone				= mod:NewSpellAnnounce(97170, 3)
+local warnShadowsOfHakkar		= mod:NewCastAnnounce(97172, 4)
+local warnPhase2				= mod:NewPhaseAnnounce(2)
+local warnBarrierDown			= mod:NewAnnounce("WarnBarrierDown", 2)
+local warnBodySlam				= mod:NewTargetAnnounce(97198, 2)
 
-local specWarnShadow		= mod:NewSpecialWarningSpell(97172)
-local specWarnBodySlam		= mod:NewSpecialWarningYou(97198)
+local specWarnShadow			= mod:NewSpecialWarningSpell(97172)
+local specWarnBodySlam			= mod:NewSpecialWarningYou(97198)
 
-local timerDeadzone		= mod:NewNextTimer(21, 97170)
-local timerShadowsOfHakkar	= mod:NewBuffActiveTimer(10, 97172)
+local timerDeadzone				= mod:NewNextTimer(21, 97170)
+local timerShadowsOfHakkar		= mod:NewBuffActiveTimer(10, 97172)
 local timerShadowsOfHakkarNext	= mod:NewNextTimer(21, 97172)
 
 local phase2warned = false

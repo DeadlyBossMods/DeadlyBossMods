@@ -20,14 +20,14 @@ mod:RegisterEvents(
 
 local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
 
-local warnWindBurst		= mod:NewSpellAnnounce(87770, 3)
-local warnAdd			= mod:NewAnnounce("WarnAdd", 2, 87856)
-local warnPhase2		= mod:NewPhaseAnnounce(2)
-local warnAcidRain		= mod:NewCountAnnounce(93281, nil, false)
-local warnFeedback		= mod:NewStackAnnounce(87904, 2)
-local warnPhase3		= mod:NewPhaseAnnounce(3)
-local warnCloud			= mod:NewSpellAnnounce(89588, 3)
-local warnLightingRod	= mod:NewTargetAnnounce(89668, 4)
+local warnWindBurst			= mod:NewSpellAnnounce(87770, 3)
+local warnAdd				= mod:NewAnnounce("WarnAdd", 2, 87856)
+local warnPhase2			= mod:NewPhaseAnnounce(2)
+local warnAcidRain			= mod:NewCountAnnounce(93281, nil, false)
+local warnFeedback			= mod:NewStackAnnounce(87904, 2)
+local warnPhase3			= mod:NewPhaseAnnounce(3)
+local warnCloud				= mod:NewSpellAnnounce(89588, 3)
+local warnLightingRod		= mod:NewTargetAnnounce(89668, 4)
 
 local specWarnIceStorm		= mod:NewSpecialWarningMove(91020)
 local specWarnCloud			= mod:NewSpecialWarningMove(89588)
