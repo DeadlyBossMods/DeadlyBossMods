@@ -14,7 +14,7 @@ mod:RegisterEvents(
 
 local warnSummonTempest		= mod:NewSpellAnnounce(86340, 2)
 
-local timerSummonTempest	= mod:NewCDTimer(19, 86340)
+local timerSummonTempest	= mod:NewCDTimer(17, 86340)
 local timerShield			= mod:NewNextTimer(31.5, 93991)
 
 function mod:OnCombatStart(delay)
