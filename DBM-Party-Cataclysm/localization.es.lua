@@ -510,6 +510,10 @@ L:SetGeneralLocalization({
 	name = "Gran visir Ertan"
 })
 
+L:SetMiscLocalization{
+	Retract		= "%s retracts its cyclone shield!"--translate
+}
+
 --------------
 -- Altairus --
 -------------- 
@@ -756,4 +760,96 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Mandokir")
+
+L:SetGeneralLocalization{
+	name = "Señor Sangriento Mandokir"
+}
+
+L:SetWarningLocalization{
+	WarnRevive		= "Revive un fantasma - %d restantes",
+	SpecWarnOhgan	= "¡Ohgan ha resucitado! ¡Ataca ahora!"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnRevive	= "Anunciar cuantas resurrecciones de fantasmas quedan",
+	SpecWarnOhgan	= "Mostrar aviso cuando Ohgan es resucitado"
+}
+
+L:SetMiscLocalization{
+	Ohgan		= "Ohgan"
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Zanzil")
+
+L:SetGeneralLocalization{
+	name = "Zanzil"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------------
+-- High Priestess Kilnara --
+----------------------------
+L = DBM:GetModLocalization("Kilnara")
+
+L:SetGeneralLocalization{
+	name = "Suma Sacerdotisa Kilnara"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------------
+-- Jindo --
+----------------------------
+L = DBM:GetModLocalization("Jindo")
+
+L:SetGeneralLocalization{
+	name = "Jin'do the Godbreaker"
+}
+
+L:SetWarningLocalization{
+	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 restantes"--translate
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down"--translate
+}
+
+L:SetMiscLocalization{
+	Kill	= "Oh no, Hakkar's spirit is free!" --translate
 }
