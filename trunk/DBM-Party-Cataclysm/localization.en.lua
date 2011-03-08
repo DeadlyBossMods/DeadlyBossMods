@@ -827,7 +827,7 @@ L:SetMiscLocalization{
 L = DBM:GetModLocalization("Jindo")
 
 L:SetGeneralLocalization{
-	name = "Jindo" -- I don't know exact enUS names.
+	name = "Jin'do the Godbreaker"
 }
 
 L:SetWarningLocalization{
