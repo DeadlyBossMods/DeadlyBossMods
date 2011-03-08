@@ -115,8 +115,6 @@ end
 
 function mod:OnCombatStart(delay)
 	timerWorshipCD:Start(10-delay)
---	timerFuryCD:Start(55-delay)--first fury of chogal is health based, 85%, cannot accurately time it.
---	timerAdherent:Start(60-delay)--This is also health based?
 	table.wipe(worshipTargets)
 	table.wipe(creatureIcons)
 	prewarned_Phase2 = false
@@ -178,7 +176,7 @@ function mod:SPELL_CAST_START(args)
 		warnFury:Show()
 		timerFuryCD:Start()
 	elseif args:IsSpellID(82411, 93132, 93133, 93134) then -- Creatures are channeling after their spawn.
-		if self.Options.SetIconOnCreature then
+		if self.Options.SetIconOnCreature and not creatureIcons[args.sourceGUID] then
 			creatureIcons[args.sourceGUID] = creatureIcon
 			creatureIcon = creatureIcon - 1
 		end
