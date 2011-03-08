@@ -14,8 +14,8 @@ mod:RegisterEvents(
 )
 
 local warnBreath		= mod:NewTargetAnnounce(88308, 2)
-local warnUpwind		= mod:NewSpellAnnounce(88282, 4)
-local warnDownwind		= mod:NewSpellAnnounce(88286, 3)
+local warnUpwind		= mod:NewSpellAnnounce(88282, 3)
+local warnDownwind		= mod:NewSpellAnnounce(88286, 4)
 
 local specWarnBreath	= mod:NewSpecialWarningYou(88308)
 local specWarnBreathNear= mod:NewSpecialWarningClose(88308)

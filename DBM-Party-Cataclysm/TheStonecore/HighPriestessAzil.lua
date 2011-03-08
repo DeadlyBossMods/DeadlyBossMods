@@ -52,7 +52,7 @@ end
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(79340) then
 		warnWell:Show()
-	elseif args:IsSpellID(79002) then
+	elseif args:IsSpellID(79002, 79021, 92665) or args:IsSpellID(86856, 86858, 86860) then -- not comfirmed
 		warnShard:Show()
 	end
 end
