@@ -144,7 +144,10 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnEggWeaken		= "Twilight Carapace Removed on Egg",
-	WarnDragon			= "Twilight Whelp Spawned"
+	WarnDragon			= "Twilight Whelp Spawned",
+	WarnSlicerSoon		= "Twilight Slicer in %d sec!",
+	SpecWarnSlicer		= "Twilight Slicer soon!",
+	SpecWarnDispel		= "%d sec elased after last Wrack - Dispel Now!"
 })
 
 L:SetTimerLocalization({
@@ -155,6 +158,9 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnEggWeaken		= "Show warning when Egg got weaken",
 	WarnDragon			= "Show warning when Twilight Whelp Spawns",
+	WarnSlicerSoon		= "Show pre-warning for $spell:92954 (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
+	SpecWarnSlicer		= "Show special warning for $spell:92954\n(Expected warning. may not be accurate)",
+	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)", -- not good translation. check if more better
 	TimerEggWeakening	= "Show timer for Egg Weakening",
 	TimerDragon			= "Show timer for new Twilight Whelp"
 })
