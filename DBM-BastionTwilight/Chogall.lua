@@ -127,7 +127,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Bloodlevel)
-		DBM.InfoFrame:Show(5, "playerpower", 25, ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(5, "playerpower", 15, ALTERNATE_POWER_INDEX)
 	end
 end	
 
