@@ -31,6 +31,6 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(87618) then
 		warnStaticCling:Show()
-		specWarnStaticCling:Show()
+		specWarnStaticCling:Schedule(1)--delay messaeg since jumping at start of cast is no longer correct in 4.0.6
 	end
 end
