@@ -12,26 +12,14 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnPhase2	= mod:NewPhaseAnnounce(2)
-local warnPhase3	= mod:NewPhaseAnnounce(3)
+local warnPhase2		= mod:NewPhaseAnnounce(2)
+local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnBlightSpray	= mod:NewSpellAnnounce(83985, 2)
 
 local timerBlightSpray	= mod:NewBuffActiveTimer(4, 83985)
 
 local warnedPhase2
 local warnedPhase3
-
--- Shadow Blast, no SPELL_CAST_START?
--- 7/29 13:16:34.727  SPELL_CAST_SUCCESS,0xF150AE6800001152,"Unyielding Behemoth",0xa48,0x0000000000000000,nil,0x80000000,83929,"Shadow Blast",0x1
--- 7/29 13:16:34.727  SPELL_SUMMON,0xF150AE6800001152,"Unyielding Behemoth",0xa48,0xF150AF950000118B,"Unyielding Behemoth (Leap Vehicle)",0xa28,83929,"Shadow Blast",0x1
-
--- Brain Spike, worth warning?
--- ~7k damage + 1k mana drain
--- 7/29 13:23:37.522  SPELL_CAST_START,0xF130AEAB000011BB,"Vicious Mindlasher",0xa48,0x0000000000000000,nil,0x80000000,83915,"Brain Spike",0x20
--- heroic ID:  91497
-
--- Blight of Ozumat, stack warning?  (spell ID 83561 .. 91495 heroic)
--- Aura of Dread, stack warning (spell ID 83971)
 
 function mod:OnCombatStart(delay)
 	warnedPhase2 = false

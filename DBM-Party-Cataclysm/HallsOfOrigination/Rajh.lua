@@ -13,17 +13,18 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnBlessing	= mod:NewSpellAnnounce(76355, 3)
-local warnLeap		= mod:NewSpellAnnounce(87653, 2)
-local warnSunOrb	= mod:NewSpellAnnounce(80352, 3)
-local warnSunStrike	= mod:NewSpellAnnounce(73872, 3)
+local warnBlessing		= mod:NewSpellAnnounce(76355, 3)
+local warnLeap			= mod:NewSpellAnnounce(87653, 2)
+local warnSunOrb		= mod:NewSpellAnnounce(80352, 3)
+local warnSunStrike		= mod:NewSpellAnnounce(73872, 3)
 
-local timerBlessing	= mod:NewBuffActiveTimer(23, 76355)
+local timerBlessing		= mod:NewBuffActiveTimer(23, 76355)
 local timerSunStrike	= mod:NewCDTimer(27, 73872)
 
 local specWarnSunOrb	= mod:NewSpecialWarningInterrupt(80352)
 
 local spamBlessing = 0
+
 function mod:OnCombatStart(delay)
 	spamBlessing = 0
 end

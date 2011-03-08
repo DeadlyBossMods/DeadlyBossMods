@@ -22,19 +22,19 @@ mod:RegisterEvents(
 
 local warnDecapitate		= mod:NewTargetAnnounce(96684, 2)
 local warnBloodletting		= mod:NewTargetAnnounce(96776, 3)
-local warnSlam			= mod:NewSpellAnnounce(96740, 4)
-local warnOhgan			= mod:NewSpellAnnounce(96724, 4)
-local warnFrenzy		= mod:NewSpellAnnounce(96800, 3)
-local warnRevive 		= mod:NewAnnounce("WarnRevive", 2, nil, false)
+local warnSlam				= mod:NewSpellAnnounce(96740, 4)
+local warnOhgan				= mod:NewSpellAnnounce(96724, 4)
+local warnFrenzy			= mod:NewSpellAnnounce(96800, 3)
+local warnRevive 			= mod:NewAnnounce("WarnRevive", 2, nil, false)
 
 local timerDecapitate		= mod:NewNextTimer(30, 96684)
 local timerBloodletting		= mod:NewTargetTimer(10, 96776)
 local timerBloodlettingCD	= mod:NewCDTimer(25, 96776)
-local timerSlam			= mod:NewCastTimer(96740)
-local timerOhgan		= mod:NewCastTimer(96724)
+local timerSlam				= mod:NewCastTimer(96740)
+local timerOhgan			= mod:NewCastTimer(96724)
 
-local specWarnSlam		= mod:NewSpecialWarningSpell(96740)
-local specWarnOhgan		= mod:NewSpecialWarning("SpecWarnOhgan")
+local specWarnSlam			= mod:NewSpecialWarningSpell(96740)
+local specWarnOhgan			= mod:NewSpecialWarning("SpecWarnOhgan")
 
 local reviveCounter = 8
 

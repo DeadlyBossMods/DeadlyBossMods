@@ -14,13 +14,13 @@ mod:RegisterEvents(
 	"UNIT_HEALTH"
 )
 
-local warnShield	= mod:NewSpellAnnounce(74938, 3)
+local warnShield		= mod:NewSpellAnnounce(74938, 3)
 local warnShieldSoon	= mod:NewSoonAnnounce(74938, 2)
-local warnReckoning	= mod:NewTargetAnnounce(75592, 4)
+local warnReckoning		= mod:NewTargetAnnounce(75592, 4)
 
 local timerReckoning	= mod:NewTargetTimer(8, 75592)
 
-local specWarnLight	= mod:NewSpecialWarningMove(75117)
+local specWarnLight		= mod:NewSpecialWarningMove(75117)
 
 -- Divine Reckoning .. icon ? .. arrow ?
 

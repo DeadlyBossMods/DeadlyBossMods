@@ -13,13 +13,13 @@ mod:RegisterEvents(
 )
 
 local warnWoundingStrike	= mod:NewTargetAnnounce(75571, 2)
-local warnQuake			= mod:NewSpellAnnounce(75272, 3)
+local warnQuake				= mod:NewSpellAnnounce(75272, 3)
 local warnChainsWoeSoon		= mod:NewSoonAnnounce(75539, 3)
-local warnChainsWoe		= mod:NewSpellAnnounce(75539, 4)
+local warnChainsWoe			= mod:NewSpellAnnounce(75539, 4)
 
 local timerWoundingStrike	= mod:NewTargetTimer(6, 75571)
-local timerQuake		= mod:NewCastTimer(3, 75272)
-local timerQuakeCD		= mod:NewCDTimer(19, 75272)
+local timerQuake			= mod:NewCastTimer(3, 75272)
+local timerQuakeCD			= mod:NewCDTimer(19, 75272)
 local timerSkullcracker		= mod:NewCastTimer(12, 75543)
 
 local warnedChains
@@ -29,7 +29,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(75571, 93452) then--heroic drycoded
+	if args:IsSpellID(75571, 93452) then
 		warnWoundingStrike:Show(args.destName)
 		if mod:IsDifficulty("heroic5") then
 			timerWoundingStrike:Start(10, args.destName)

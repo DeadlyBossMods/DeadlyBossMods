@@ -14,9 +14,9 @@ mod:RegisterEvents(
 )
 
 local warnAstralRain	= mod:NewSpellAnnounce(74134, 3)
-local warnVeilSky	= mod:NewSpellAnnounce(74133, 3)
-local warnSupernova	= mod:NewCastAnnounce(74136, 4)
-local warnSplitSoon	= mod:NewAnnounce("WarnSplitSoon", 3)
+local warnVeilSky		= mod:NewSpellAnnounce(74133, 3)
+local warnSupernova		= mod:NewCastAnnounce(74136, 4)
+local warnSplitSoon		= mod:NewAnnounce("WarnSplitSoon", 3)
 
 local timerAstralRain	= mod:NewBuffActiveTimer(8, 74134)
 local timerSupernova	= mod:NewCastTimer(3, 74136)

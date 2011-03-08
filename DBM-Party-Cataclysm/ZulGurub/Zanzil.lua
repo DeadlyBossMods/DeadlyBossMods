@@ -13,18 +13,18 @@ mod:RegisterEvents(
 )
 
 --local warnCauldronRed		= mod:NewSpellAnnounce(96486, 3)
---local warnCauldronGreen		= mod:NewSpellAnnounce(96487, 3)
---local warnCauldronBlue		= mod:NewSpellAnnounce(96488, 3)
+--local warnCauldronGreen	= mod:NewSpellAnnounce(96487, 3)
+--local warnCauldronBlue	= mod:NewSpellAnnounce(96488, 3)
 local warnZanzilElixir		= mod:NewSpellAnnounce(96316, 4)
 local warnZanzilFire		= mod:NewSpellAnnounce(96914, 3)
-local warnZanzilGas		= mod:NewSpellAnnounce(96338, 3)
-local warnGaze			= mod:NewTargetAnnounce(96342, 3)
+local warnZanzilGas			= mod:NewSpellAnnounce(96338, 3)
+local warnGaze				= mod:NewTargetAnnounce(96342, 3)
 
-local specWarnGaze		= mod:NewSpecialWarningYou(96342)
+local specWarnGaze			= mod:NewSpecialWarningYou(96342)
 
 local timerZanzilGas		= mod:NewBuffActiveTimer(7, 96338)
 local timerGaze				= mod:NewTargetTimer(17, 96342)
---local timerZanzilElixir		= mod:NewCDTimer(30, 96316) -- this spell not have cooldown, seeming ramdomly.
+--local timerZanzilElixir	= mod:NewCDTimer(30, 96316) -- this spell not have cooldown, seeming ramdomly.
 
 local soundGaze			= mod:NewSound(96342)
 
