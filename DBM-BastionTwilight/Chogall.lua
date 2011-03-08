@@ -118,11 +118,14 @@ function mod:OnCombatStart(delay)
 --	timerFuryCD:Start(55-delay)--first fury of chogal is health based, 85%, cannot accurately time it.
 --	timerAdherent:Start(60-delay)--This is also health based?
 	table.wipe(worshipTargets)
+	table.wipe(creatureIcons)
 	prewarned_Phase2 = false
 	worshipIcon = 8
 	worshipCooldown = 21
 	blazeSpam = 0
 	sickSpam = 0
+	creatureIcon = 8
+	iconsSet = 0
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Bloodlevel)
