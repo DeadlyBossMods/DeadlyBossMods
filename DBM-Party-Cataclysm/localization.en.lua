@@ -501,6 +501,10 @@ L:SetGeneralLocalization({
 	name = "Grand Vizier Ertan"
 })
 
+L:SetMiscLocalization{
+	Retract		= "%s retracts its cyclone shield!"
+}
+
 --------------
 -- Altairus --
 -------------- 
