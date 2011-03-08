@@ -220,7 +220,7 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	Brann		= "Right, let's go! Just need to input the final entry sequence into the door mechanism... and..."
+	Brann				= "Right, let's go! Just need to input the final entry sequence into the door mechanism... and..."
 })
 
 ------------
@@ -292,12 +292,12 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization({
-	timerPhase2 	= "Phase 2 Starts"
+	timerPhase2 		= "Phase 2 Starts"
 })
 
 L:SetOptionLocalization{
 	specWarnPhase2Soon	= "Show special warning for phase 2 soon (5 seconds)",
-	timerPhase2 	= "Show timer for start of phase 2"
+	timerPhase2 		= "Show timer for start of phase 2"
 }
 
 ------------------------
@@ -771,7 +771,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnRevive	= "Announce how many ghost revive remaining",
+	WarnRevive		= "Announce how many ghost revive remaining",
 	SpecWarnOhgan	= "Show warning when Ohgan is revived" -- check this, i'm not good at English
 }
 
@@ -842,5 +842,5 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Kill	= "Oh no, Hakkar's spirit is free!" -- temporarily
+	Kill			= "Oh no, Hakkar's spirit is free!" -- temporarily
 }

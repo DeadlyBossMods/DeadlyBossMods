@@ -129,7 +129,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash			= "Corrupting Crash on me!",
+	YellCrash				= "Corrupting Crash on me!",
 	Bloodlevel				= "Corruption"
 })
 
