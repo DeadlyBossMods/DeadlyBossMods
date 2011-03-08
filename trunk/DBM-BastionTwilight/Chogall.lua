@@ -210,6 +210,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		warnPhase2:Show()
 		timerAdherent:Cancel()
 		timerWorshipCD:Cancel()
+		timerFesterBlood:Cancel()
 	elseif args:IsSpellID(81556) then--87575?
 		warnShadowOrders:Show()
 	elseif args:IsSpellID(81171) then--87579?
