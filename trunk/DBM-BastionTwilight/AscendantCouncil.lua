@@ -232,7 +232,7 @@ function mod:OnCombatStart(delay)
 		timerGravityCoreCD:Start(25-delay)
 		timerStaticOverloadCD:Start(20-delay)
 		if self.Options.RangeFrame then
-			DBM.RangeCheck:Show(8)
+			DBM.RangeCheck:Show(10)
 		end
 	end
 end
@@ -271,7 +271,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)
+				DBM.RangeCheck:Show(10)
 			end
 		end
 		if self.Options.LightningRodIcon then
@@ -353,7 +353,7 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(8)
+				DBM.RangeCheck:Show(10)
 			end
 		end
 		if self.Options.LightningRodIcon then

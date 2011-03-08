@@ -60,6 +60,9 @@ local worshipIcon = 8
 local worshipCooldown = 21
 local blazeSpam = 0
 local sickSpam = 0
+local creatureIcons = {}
+local creatureIcon = 8
+local iconsSet = 0
 local Corruption = GetSpellInfo(82235)
 
 local function showWorshipWarning()
@@ -68,6 +71,12 @@ local function showWorshipWarning()
 	worshipIcon = 8
 	timerWorshipCD:Start(worshipCooldown)
 	specWarnWorship:Show()
+end
+
+local function resetCreatureIconState()
+	table.wipe(creatureIcons)
+	creatureIcon = 8
+	iconsSet = 0
 end
 
 function mod:CorruptingCrashTarget(sGUID)
@@ -156,48 +165,6 @@ function mod:SPELL_AURA_REMOVED(args)
 	end
 end
 
---Taken right from lich king mod valk function since it was good tandanu code ;).
---This should work best since comcept is nearly identicle.
-do
-	local creatureIcons = {}
-	local creatureIcon = 8
-	local iconsSet = 0
-	local lastCreature = 0
-	
-	local function resetCreatureIconState()
-		table.wipe(creatureIcons)
-		creatureIcon = 8
-		iconsSet = 0
-	end
-
-	function mod:SPELL_CAST_START(args)--Unfortunately no way to avoid two SPELL_CAST_START mods. But we don't want that updatehandler loose in the wild ;).
-		if args:IsSpellID(82411, 93132, 93133, 93134) then -- Creatures are channeling after their spawn.
-			if time() - lastCreature > 10 and self.Options.SetIconOnCreature then
-				lastCreature = time()
-				resetCreatureIconState()
-			end
-			if self.Options.SetIconOnCreature then
-				creatureIcons[args.sourceGUID] = creatureIcon
-				creatureIcon = creatureIcon - 1
-			end
-		end
-	end
-
-	mod:RegisterOnUpdateHandler(function(self)
-		if self.Options.SetIconOnCreature and (DBM:GetRaidRank() > 0 and not (iconsSet == 8 and self:IsDifficulty("normal25", "heroic25") or iconsSet == 4 and self:IsDifficulty("normal10", "heroic10"))) then
-			for i = 1, GetNumRaidMembers() do
-				local uId = "raid"..i.."target"
-				local guid = UnitGUID(uId)
-				if creatureIcons[guid] then
-					SetRaidTarget(uId, creatureIcons[guid])
-					iconsSet = iconsSet + 1
-					creatureIcons[guid] = nil
-				end
-			end
-		end
-	end, 1)
-end
-
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(81628) then
 		warnAdherent:Show()
@@ -207,30 +174,32 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(82524) then
 		warnFury:Show()
 		timerFuryCD:Start()
+	elseif args:IsSpellID(82411, 93132, 93133, 93134) then -- Creatures are channeling after their spawn.
+		if self.Options.SetIconOnCreature then
+			creatureIcons[args.sourceGUID] = creatureIcon
+			creatureIcon = creatureIcon - 1
+		end
 	end
 end
 
---[[ try different way to set icon. base on combatlog show on targetable
-10 man
-3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D0000324F,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
-3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D00003250,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
-3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D00003251,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
-3/6 14:57:17.703  SPELL_CAST_START,0xF130AC0D00003252,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,82411,"Debilitating Beam",0x20
-
-25 man
-3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005166,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005167,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005168,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-3/6 21:18:26.937  SPELL_CAST_START,0xF130AC0D00005169,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516A,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516B,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516C,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-3/6 21:18:27.328  SPELL_CAST_START,0xF130AC0D0000516D,"Darkened Creation",0xa48,0x0000000000000000,nil,0x80000000,93134,"Debilitating Beam",0x20
-]]
+mod:RegisterOnUpdateHandler(function(self)
+	if self.Options.SetIconOnCreature and (DBM:GetRaidRank() > 0 and not (iconsSet == 8 and self:IsDifficulty("normal25", "heroic25") or iconsSet == 4 and self:IsDifficulty("normal10", "heroic10"))) then
+		for i = 1, GetNumRaidMembers() do
+			local uId = "raid"..i.."target"
+			local guid = UnitGUID(uId)
+			if creatureIcons[guid] then
+				SetRaidTarget(uId, creatureIcons[guid])
+				iconsSet = iconsSet + 1
+				creatureIcons[guid] = nil
+			end
+		end
+	end
+end, 1)
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82414, 93160, 93161, 93162) then
 		warnCreations:Show()
+		resetCreatureIconState()
 		if mod:IsDifficulty("heroic25") then -- other difficulty not sure, only comfirmed 25 man heroic
 			timerCreationsCD:Start(40)
 		else
