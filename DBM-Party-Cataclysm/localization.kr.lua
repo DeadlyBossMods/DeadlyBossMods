@@ -762,14 +762,16 @@ L:SetGeneralLocalization{
 }
 
 L:SetWarningLocalization{
-	WarnRevive	= "%s (%d회 남음)"
+	WarnRevive		= "영혼 부활 - %d회 남음",
+	SpecWarnOhgan	= "오간 되살아남! 극딜!"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnRevive	= "영혼에 의해 부활 받은 경우 경고 및 부활 남은 횟수 보기"
+	WarnRevive		= "영혼 부활 남은 횟수 경고 보기",
+	SpecWarnOhgan	= "오간이 공격 가능 할때 특수 경고 보기"
 }
 
 L:SetMiscLocalization{
@@ -816,4 +818,28 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
+}
+
+----------------------------
+-- Jindo --
+----------------------------
+L = DBM:GetModLocalization("Jindo")
+
+L:SetGeneralLocalization{
+	name = "신파괴자 진도"
+}
+
+L:SetWarningLocalization{
+	WarnBarrierDown	= "학카르의 사슬 보호막 사라짐 - %d/3"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnBarrierDown	= "학카르의 사슬 보호막이 사라질 때 경고 보기"
+}
+
+L:SetMiscLocalization{
+	Kill	= "Oh no, Hakkar's spirit is free!" -- temporarily
 }
