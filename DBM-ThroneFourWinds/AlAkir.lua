@@ -53,8 +53,13 @@ local spamCloud = 0
 
 function mod:CloudRepeat()
 	warnCloud:Show()
-	timerLightningCloudCD:Start()
-	self:ScheduleMethod(15, "CloudRepeat")
+	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		timerLightningCloudCD:Start(10)
+		self:ScheduleMethod(10, "CloudRepeat")
+	else
+		timerLightningCloudCD:Start()
+		self:ScheduleMethod(15, "CloudRepeat")
+	end
 end
 
 function mod:OnCombatStart(delay)
