@@ -14,17 +14,17 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnFlame		= mod:NewSpellAnnounce(75321, 3)
-local warnDevouring	= mod:NewSpellAnnounce(90950, 3)
-local warnShredding	= mod:NewSpellAnnounce(75271, 3)
-local warnFlamingFixate = mod:NewTargetAnnounce(82850, 4)
+local warnFlame				= mod:NewSpellAnnounce(75321, 3)
+local warnDevouring			= mod:NewSpellAnnounce(90950, 3)
+local warnShredding			= mod:NewSpellAnnounce(75271, 3)
+local warnFlamingFixate	 	= mod:NewTargetAnnounce(82850, 4)
 
 local specWarnFlamingFixate	= mod:NewSpecialWarningYou(82850)
-local specWarnDevouring = mod:NewSpecialWarningSpell(90950)
+local specWarnDevouring 	= mod:NewSpecialWarningSpell(90950)
 
-local timerFlame	= mod:NewCDTimer(27, 75321)
-local timerDevouring	= mod:NewBuffActiveTimer(5, 90950)
-local timerShredding	= mod:NewBuffActiveTimer(20, 75271)
+local timerFlame			= mod:NewCDTimer(27, 75321)
+local timerDevouring		= mod:NewBuffActiveTimer(5, 90950)
+local timerShredding		= mod:NewBuffActiveTimer(20, 75271)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82850) then

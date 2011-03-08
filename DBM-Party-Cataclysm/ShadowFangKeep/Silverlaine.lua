@@ -28,19 +28,21 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(93956) and GetTime() - lastVeilShadow > 4 then
-		warnVeilShadow:Show()
-		timerVeilShadow:Start()
-		lastVeilShadow = GetTime()
+	if args:IsSpellID(93956) then
+		veilShadowCast = veilShadowCast + 1
+		if GetTime() - lastVeilShadow > 4 then
+			warnVeilShadow:Show()
+			timerVeilShadow:Start()
+			lastVeilShadow = GetTime()
+		end
 	end
 end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(93956) then
-		veilShadowCast = veilShadowCast + 1
-		if veilShadowCast >= 5 then
-			veilShadowCast = 0
-			timerVeilShadow:Cancel()--Cancel timer after it's been dispelled off at least 5 players. Not a perfect hack but it'll do vs having 5 bars pop up
+		veilShadowCast = veilShadowCast - 1
+		if veilShadowCast == 0 then
+			timerVeilShadow:Cancel()
 		end
 	end
 end

@@ -13,11 +13,11 @@ mod:RegisterEvents(
 	"CHAT_MSG_MONSTER_YELL"
 )
 
-local warnSiphon		= mod:NewTargetAnnounce(43501, 3)
+local warnSiphon			= mod:NewTargetAnnounce(43501, 3)
 local warnSpiritBolts		= mod:NewSpellAnnounce(43383, 3)
 local warnSpiritBoltsSoon	= mod:NewSoonAnnounce(43383, 5, 2)
 
-local timerSiphon		= mod:NewTimer(30, "TimerSiphon")
+local timerSiphon			= mod:NewTimer(30, "TimerSiphon")
 local timerSpiritBolts		= mod:NewBuffActiveTimer(10, 43383)
 local timerSpiritBoltsNext	= mod:NewNextTimer(36.5, 43383)
 
