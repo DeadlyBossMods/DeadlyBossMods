@@ -18,15 +18,15 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
+L:SetOptionLocalization({
+	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초 전)",
+	RangeFrame		= "2 단계 거리 프레임 보기 (5m)"
+})
+
 L:SetMiscLocalization({
 	Slump			= "%s|1이;가; 집게를 드러내며 앞으로 몸을 기울입니다!",
 	HeadExposed		= "%s|1이;가; 창에 꽂혀 머리가 노출되었습니다!",
 	YellPhase2		= "이런 곤란할 데가! 이러다간 내 용암 벌레가 정말 질 수도 있겠군! 그럼... 내가 상황을 좀 바꿔 볼까?" --"Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
-})
-
-L:SetOptionLocalization({
-	SpecWarnInferno	= "$spell:92190의 사전 특수 경고 보기(~4초 전)",
-	RangeFrame		= "2 단계 거리 프레임 보기 (5m)"
 })
 
 -------------------------------
@@ -65,15 +65,15 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Magmatron			= "용암골렘",
-	Electron			= "전기골렘",
-	Toxitron			= "맹독골렘",
-	Arcanotron			= "비전골렘",
-	SayBomb				= "나에게 화학 폭탄!",
-	YellLightning		= "나에게 번개 전도체!",
-	YellShadowCast		= "나에게 암흑 전도체!",
-	YellTarget			= "나에게 목표 설정!",
-	YellTargetLock		= "어둠의 휘감기! 제 주변에서 빠지세요!"
+	Magmatron					= "용암골렘",
+	Electron					= "전기골렘",
+	Toxitron					= "맹독골렘",
+	Arcanotron					= "비전골렘",
+	SayBomb						= "나에게 화학 폭탄!",
+	YellLightning				= "나에게 번개 전도체!",
+	YellShadowCast				= "나에게 암흑 전도체!",
+	YellTarget					= "나에게 목표 설정!",
+	YellTargetLock				= "어둠의 휘감기! 제 주변에서 빠지세요!"
 })
 
 ----------------
@@ -94,6 +94,16 @@ L:SetTimerLocalization({
 	TimerPhase		= "다음 단계"
 })
 
+L:SetOptionLocalization({
+	WarnPhase			= "다음 단계 전환 경고 보기",
+	WarnRemainingAdds	= "돌연변이가 얼마나 남았는지 경고 보기",
+	TimerPhase			= "다음 단계 타이머 보기",
+	RangeFrame			= "푸른 단계에서 거리 프레임 보기",	
+	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
+	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
+	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
+})
+
 L:SetMiscLocalization({
 	YellRed			= "붉은색|r 약병을 가마솥",
 	YellBlue		= "푸른색|r 약병을 가마솥",
@@ -103,16 +113,6 @@ L:SetMiscLocalization({
 	Blue			= "푸른색",
 	Green			= "초록색",
 	Dark			= "암흑"
-})
-
-L:SetOptionLocalization({
-	WarnPhase			= "다음 단계 전환 경고 보기",
-	WarnRemainingAdds	= "돌연변이가 얼마나 남았는지 경고 보기",
-	TimerPhase			= "다음 단계 타이머 보기",
-	RangeFrame			= "푸른 단계에서 거리 프레임 보기",	
-	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
-	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
-	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
 -----------------
@@ -188,7 +188,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Nefarian-BD")	-- No conflict with BWL version :)
 
 L:SetGeneralLocalization({
-	name = "네파리안"
+	name = "네파리안의 최후"
 })
 
 L:SetWarningLocalization({
