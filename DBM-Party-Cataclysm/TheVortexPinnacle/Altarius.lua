@@ -14,8 +14,8 @@ mod:RegisterEvents(
 )
 
 local warnBreath		= mod:NewTargetAnnounce(88308, 2)
-local warnUpwind		= mod:NewSpellAnnounce(88282, 4, nil, false)--Mega spam (the aura seems to be a periodic trigger, even if it doesn't change, you get like 5 warnings for SAME one in a row.
-local warnDownwind		= mod:NewSpellAnnounce(88286, 3, nil, false)--More mega spam
+local warnUpwind		= mod:NewSpellAnnounce(88282, 4)
+local warnDownwind		= mod:NewSpellAnnounce(88286, 3)
 
 local specWarnBreath	= mod:NewSpecialWarningYou(88308)
 local specWarnBreathNear= mod:NewSpecialWarningClose(88308)
