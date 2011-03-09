@@ -144,29 +144,35 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEggWeaken   = "알 보호막 제거",
-	WarnDragon      = "새끼용 등장",
-	WarnSlicerSoon	= "%d초 후 황혼 절단!",
-	SpecWarnSlicer	= "곧 황혼 절단!",
-	SpecWarnDispel	= "마지막 파멸 후 %d초 지남 - 지금 해제!"
+	WarnSlicerSoon		= "%d초 후 황혼 절단!",
+	WarnDragon			= "새끼용 등장",
+	WarnEggWeaken		= "황혼 껍질 사라짐",
+	SpecWarnSlicer		= "곧 황혼 절단!",
+	SpecWarnDispel		= "마지막 파멸 후 %d초 지남 - 지금 해제!",
+	SpecWarnEggWeaken	= "황혼 껍질 사라짐 - 알 극딜!",
+	SpecWarnEggShield	= "황혼 껍질 재생성!"
 })
 
 L:SetTimerLocalization({
-	TimerEggWeakening 	= "알 보호막 제거",
-	TimerDragon        	= "다음 새끼용 등장"
+	TimerDragon        	= "다음 새끼용 등장",
+	TimerEggWeakening 	= "황혼 껍질 제거",
+	TimerEggWeaken		= "황혼 껍질 재생성"
 })	
 
 L:SetOptionLocalization({
-	WarnEggWeaken    	= "알 보호막 제거 경고 보기",
 	WarnDragon       	= "새끼용 등장 경고 보기",
 	WarnSlicerSoon		= "$spell:92954의 사전 경고 보기 (5초 전부터, 1초 마다)\n(예상 경보이며, 정확하지 않을 수 있습니다.)",
+	WarnEggWeaken    	= "$spell:87654 제거 사전 경고 보기",
 	SpecWarnSlicer		= "$spell:92954의 특수 경고 보기 (예상 경보이며, 정확하지 않을 수 있습니다.)",
 	SpecWarnDispel		= "$spell:92955이 시전/전이 된 후 일정 시간이 지나면 특수 경고 보기(해제)",
-	TimerEggWeakening  	= "알 보호막 제거까지 남은 타이머 보기",
-	TimerDragon        	= "다음 새끼용 등장 타이머 보기"
+	SpecWarnEggWeaken	= "$spell:87654 사라짐 특수 경고 보기",
+	SpecWarnEggShield	= "$spell:87654의 재생성 특수 경고 보기",
+	TimerDragon        	= "다음 새끼용 등장 타이머 보기",
+	TimerEggWeakening  	= "$spell:87654 사라짐 타이머 보기",
+	TimerEggWeaken		= "$spell:87654 재생성 타이머 보기"
 })
 
 L:SetMiscLocalization({
 	YellDragon    = "얘들아, 먹어치워라",
-	YellEgg       = "이게 약해진 걸로 보이느냐"   
+	YellEgg       = "이게 약해지는 걸로 보이느냐? 멍청한 놈!"
 })
