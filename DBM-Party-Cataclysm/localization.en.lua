@@ -795,6 +795,7 @@ L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
+	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
 }
 
 L:SetMiscLocalization{
