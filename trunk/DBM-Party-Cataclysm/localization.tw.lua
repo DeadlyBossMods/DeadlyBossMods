@@ -479,6 +479,10 @@ L:SetGeneralLocalization({
 	name = "首相伊爾丹"
 })
 
+L:SetMiscLocalization{
+	Retract		= "%s收起了他的颶風之盾!"
+}
+
 --------------
 -- Altairus --
 -------------- 
@@ -535,6 +539,8 @@ L:SetGeneralLocalization({
 	name = "歐蘇瑪特"
 })
 
+----------------
+--  Zul'Aman  --
 ---------------
 --  Nalorakk --
 ---------------
@@ -642,4 +648,190 @@ L:SetOptionLocalization{
 L:SetMiscLocalization{
 	YellSpirit	= "狂野的靈魂與我同在......",
 	YellNormal	= "靈魂，回到我這裡來!"
+}
+
+--------------------------
+--  Hex Lord Malacrass --
+--------------------------
+L = DBM:GetModLocalization("Malacrass")
+
+L:SetGeneralLocalization{
+	name = "妖術領主瑪拉克雷斯"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	YellPull	= "Da shadow gonna fall on you...."--Translate
+}
+
+--------------
+--  Zul'jin --
+--------------
+L = DBM:GetModLocalization("ZulJin")
+
+L:SetGeneralLocalization{
+	name = "祖爾金"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	YellPhase2	= "賜給我一些新的力量……讓我像熊一樣……",
+	YellPhase3	= "在雄鷹之下無所遁形!",
+	YellPhase4	= "讓我來介紹我的新兄弟:尖牙和利爪!",
+	YellPhase5	= "你不需要仰望天空才看得到龍鷹!"
+}
+
+-------------
+-- Daakara --
+-------------
+L = DBM:GetModLocalization("Daakara")
+
+L:SetGeneralLocalization{
+	name = "Daakara"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
+}
+
+-----------------
+--  Zul'Gurub  --
+-------------------------
+-- High Priest Venoxis --
+-------------------------
+L = DBM:GetModLocalization("Venoxis")
+
+L:SetGeneralLocalization{
+	name = "高階祭司溫諾希斯"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+}
+
+L:SetMiscLocalization{
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Mandokir")
+
+L:SetGeneralLocalization{
+	name = "血領主曼多基爾"
+}
+
+L:SetWarningLocalization{
+	WarnRevive		= "Ghost Revive - %d left",
+	SpecWarnOhgan	= "Ohgan revived! Attack now!" -- check this, i'm not good at English
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnRevive		= "Announce how many ghost revive remaining",
+	SpecWarnOhgan	= "Show warning when Ohgan is revived" -- check this, i'm not good at English
+}
+
+L:SetMiscLocalization{
+	Ohgan		= "Ohgan"
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Zanzil")
+
+L:SetGeneralLocalization{
+	name = "Zanzil"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------------
+-- High Priestess Kilnara --
+----------------------------
+L = DBM:GetModLocalization("Kilnara")
+
+L:SetGeneralLocalization{
+	name = "High Priestess Kilnara"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------------
+-- Jindo --
+----------------------------
+L = DBM:GetModLocalization("Jindo")
+
+L:SetGeneralLocalization{
+	name = "妖術師金度"
+}
+
+L:SetWarningLocalization{
+	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down"
+}
+
+L:SetMiscLocalization{
+	Kill			= "Oh no, Hakkar's spirit is free!" -- temporarily
 }
