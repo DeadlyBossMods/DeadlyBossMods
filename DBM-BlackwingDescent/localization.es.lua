@@ -18,16 +18,16 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	Slump			= "¡%s cae hacia delante y deja expuestas sus tenazas!",
-	HeadExposed		= "¡%s acaba empalado en el pincho y deja expuesta la cabeza!",
-	YellPhase2		= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."--translate
-})
-
 L:SetOptionLocalization({
 	SpecWarnInferno	= "Mostrar pre-aviso especial para $spell:92190 (~4s)",
 	RangeFrame		= "Mostrar distancia en Fase 2 (5 yardas)"
 
+})
+
+L:SetMiscLocalization({
+	Slump			= "¡%s cae hacia delante y deja expuestas sus tenazas!",
+	HeadExposed		= "¡%s acaba empalado en el pincho y deja expuesta la cabeza!",
+	YellPhase2		= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."--translate
 })
 
 -------------------------------
@@ -96,17 +96,6 @@ L:SetTimerLocalization({
 	TimerPhase		= "Siguiente fase"
 })
 
-L:SetMiscLocalization({
-	YellRed			= "rojo|r a la caldera!",
-	YellBlue		= "azul|r a la caldera!",
-	YellGreen		= "verde|r a la caldera!",
-	YellDark		= "oscura|r en el caldero!",
-	Red				= "Rojo",
-	Blue			= "Azul",
-	Green			= "Verde",
-	Dark			= "Oscuro"
-})
-
 L:SetOptionLocalization({
 	WarnPhase		= "Mostrar aviso de la fase que viene",
 	WarnRemainingAdds	= "Mostrar un aviso con las aberraciones restantes",
@@ -117,6 +106,16 @@ L:SetOptionLocalization({
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
 })
 
+L:SetMiscLocalization({
+	YellRed			= "rojo|r a la caldera!",
+	YellBlue		= "azul|r a la caldera!",
+	YellGreen		= "verde|r a la caldera!",
+	YellDark		= "oscura|r en el caldero!",
+	Red				= "Rojo",
+	Blue			= "Azul",
+	Green			= "Verde",
+	Dark			= "Oscuro"
+})
 
 -----------------
 --  Chimaeron  --
@@ -222,7 +221,7 @@ L:SetOptionLocalization({
 	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
 	YellOnCinder		= "Gritar cuando tengas $spell:79339",
 	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339",
-	InfoFrame				= "Mostrar información sobre la carga eléctrica de Onyxia",
+	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
@@ -231,6 +230,7 @@ L:SetMiscLocalization({
 	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate
 	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate
 	YellCinder		= "¡Cenizas explosivas en mi!",
-	Onyxia				= "Onyxia",
-	Charge				= "Carga Eléctrica"
+	Nefarian		= "Nefarian",
+	Onyxia			= "Onyxia",
+	Charge			= "Carga Eléctrica"
 })
