@@ -6,7 +6,7 @@ mod:SetCreatureID(41376, 41270)
 mod:SetZone()
 
 mod:SetBossHealthInfo(
-	41376, L.name,		-- L.name = "Nefarian"
+	41376, L.Nefarian,		-- L.name = "Nefarian"
 	41270, L.Onyxia
 )
 
