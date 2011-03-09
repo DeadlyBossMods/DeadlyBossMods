@@ -227,7 +227,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	NefAoe				= "響起了電流霹啪作響的聲音!",
 	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
-	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--Translate
+	YellPhase3			= "我本來只想略盡地主之誼，但是你們就是不肯痛快的受死!是時候拋下一切的虛偽...殺光你們就好!",
 	YellCinder			= "我中了爆裂灰燼!",
 	Nefarian			= "奈法利安",
 	Onyxia				= "奧妮克希亞",
