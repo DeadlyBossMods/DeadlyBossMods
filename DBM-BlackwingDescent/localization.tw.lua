@@ -18,15 +18,15 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
+L:SetOptionLocalization({
+	SpecWarnInferno			= "為$spell:92190顯示預先特別警告 (~4秒)",
+	RangeFrame			= "第2階段時顯示距離框 (5碼)"
+})
+
 L:SetMiscLocalization({
 	Slump				= "%s往前撲倒，露出他的鉗子!",
 	HeadExposed			= "%s被釘在尖刺上，露出了他的頭!",
 	YellPhase2			= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
-})
-
-L:SetOptionLocalization({
-	SpecWarnInferno			= "為$spell:92190顯示預先特別警告 (~4秒)",
-	RangeFrame			= "第2階段時顯示距離框 (5碼)"
 })
 
 -------------------------------
@@ -39,17 +39,25 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	SpecWarnActivated		= "轉換目標到 %s!",
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "秘法逆爆",
-	timerShadowConductorCast	= "眾影體"
+	timerShadowConductorCast	= "眾影體",
+	timerNefAblity			= "技能增益冷卻"
 })
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "為$spell:92053的施放顯示計時器",
+	timerShadowConductorCast	= "為$spell:92048的施放顯示計時器",
 	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
+	timerNefAblity			= "為困難技能增益冷卻顯示計時器",
+	SpecWarnActivated		= "當新首領啟動時顯示特別警告",
 	YellBombTarget			= "中了$spell:80094時大喊",
+	YellOnLightning			= "中了$spell:79888時大喊",
+	YellOnShadowCast		= "中了$spell:92053時大喊",
+	YellOnTarget			= "中了$spell:92037時大喊",
+	YellOnTargetLock		= "中了$spell:92023時大喊",
 	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -61,7 +69,11 @@ L:SetMiscLocalization({
 	Electron			= "雷電號",
 	Toxitron			= "烈毒號",
 	Arcanotron			= "秘法號",
-	SayBomb				= "我中了化學炸彈!"--Translate
+	SayBomb				= "我中了化學炸彈!",
+	YellLightning			= "我中了避雷針!",
+	YellShadowCast			= "我中了聚影體!",
+	YellTarget			= "我中了鎖定目標!",
+	YellTargetLock			= "覆體之影! 遠離我!"
 })
 
 ----------------
@@ -82,18 +94,6 @@ L:SetTimerLocalization({
 	TimerPhase			= "下一階段"
 })
 
-L:SetMiscLocalization({
-
-	YellRed				= "紅色|r瓶子到鍋子裡!",
-	YellBlue			= "藍色|r瓶子到鍋子裡!",
-	YellGreen			= "綠色|r瓶子到鍋子裡!",
-	YellDark			= "黑色|r魔法到鍋子裡!",
-	Red				= "紅色",
-	Blue				= "藍色",
-	Green				= "綠色",
-	Dark				= "黑色"
-})
-
 L:SetOptionLocalization({
 	WarnPhase			= "為那個階段即將到來顯示警告",
 	WarnRemainingAdds		= "顯示剩餘多少畸變的警告",
@@ -102,6 +102,18 @@ L:SetOptionLocalization({
 	FlashFreezeIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
+})
+
+L:SetMiscLocalization({
+
+	YellRed				= "紅色|r瓶子到鍋子裡!",
+	YellBlue			= "藍色|r瓶子到鍋子裡!",
+	YellGreen			= "綠色|r瓶子到鍋子裡!",
+	YellDark			= "黑暗|r魔法到鍋子裡!",
+	Red				= "紅色",
+	Blue				= "藍色",
+	Green				= "綠色",
+	Dark				= "黑暗"
 })
 
 -----------------
@@ -178,7 +190,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Nefarian-BD")	-- No conflict with BWL version :)
 
 L:SetGeneralLocalization({
-	name 				= "奈法利安"
+	name 				= "奈法利安的末日"
 })
 
 L:SetWarningLocalization({
@@ -208,13 +220,16 @@ L:SetOptionLocalization({
 	NefBreathTimer			= "為奈法利安的$spell:94124的冷卻時間顯示計時器",
 	YellOnCinder			= "中了$spell:79339時大喊",
 	RangeFrame			= "當你中了$spell:79339時顯示距離框 (10碼)",
+	InfoFrame			= "為奧妮克希亞的電流充能顯示資訊框架",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
 L:SetMiscLocalization({
-	NefAoe				= "The air crackles with electricity!",--Translate
+	NefAoe				= "響起了電流霹啪作響的聲音!",
 	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
 	YellPhase3			= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",--Translate
 	YellCinder			= "我中了爆裂灰燼!",
-	Onyxia				= "奧妮克希亞"
+	Nefarian			= "奈法利安",
+	Onyxia				= "奧妮克希亞",
+	Charge				= "電流充能"
 })

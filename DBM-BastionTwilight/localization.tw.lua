@@ -43,6 +43,7 @@ L:SetOptionLocalization({
 	YellOnEngulfing		= "中了$spell:86622時大喊",
 	YellOnTwilightMeteor	= "中了$spell:88518時大喊",
 	YellOnTwilightBlast	= "中了$spell:92898時大喊",
+	TBwarnWhileBlackout	= "當$spell:86788生效時顯示$spell:92898警告",
 	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
 	RangeFrame		= "顯示距離框 (10碼)",
 	BlackoutIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
@@ -126,7 +127,7 @@ L:SetOptionLocalization({
 	InfoFrame		= "為$spell:81701顯示資訊框架",
 	RangeFrame		= "為$spell:82235顯示距離框 (5碼)",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
---	SetIconOnCreature	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+	SetIconOnCreature	= "設定標記到暗色觸鬚"
 })
 
 L:SetMiscLocalization({
@@ -145,7 +146,10 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnEggWeaken		= "Twilight Carapace Removed on Egg",
-	WarnDragon		= "Twilight Whelp Spawned"
+	WarnDragon		= "Twilight Whelp Spawned",
+	WarnSlicerSoon		= "Twilight Slicer in %d sec!",
+	SpecWarnSlicer		= "Twilight Slicer soon!",
+	SpecWarnDispel		= "%d sec elased after last Wrack - Dispel Now!"
 })
 
 L:SetTimerLocalization({
@@ -156,6 +160,10 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnEggWeaken		= "Show warning when Egg got weaken",
 	WarnDragon		= "Show warning when Twilight Whelp Spawns",
+
+	WarnSlicerSoon		= "Show pre-warning for $spell:92954 (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
+	SpecWarnSlicer		= "Show special warning for $spell:92954\n(Expected warning. may not be accurate)",
+	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)", -- not good translation. check if more better
 	TimerEggWeakening	= "Show timer for Egg Weakening",
 	TimerDragon		= "Show timer for new Twilight Whelp"
 })
