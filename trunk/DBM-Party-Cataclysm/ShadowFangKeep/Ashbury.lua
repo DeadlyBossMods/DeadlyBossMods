@@ -21,7 +21,7 @@ local warnArchangel			= mod:NewSpellAnnounce(93757, 4)
 local timerAsphyxiate		= mod:NewCDTimer(45, 93710)
 
 function mod:OnCombatStart(delay)
-	timerAsphyxiate:Start(15-delay)
+	timerAsphyxiate:Start(18-delay)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
