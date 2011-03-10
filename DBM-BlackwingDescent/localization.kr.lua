@@ -40,6 +40,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnActivated			= "대상 전환! - %s",
+	specWarnGenerator			= "%s이 동력 증폭장 영향을 받음 - 빼세요!"
 })
 
 L:SetTimerLocalization({
@@ -53,6 +54,7 @@ L:SetOptionLocalization({
 	timerArcaneBlowbackCast		= "$spell:91879 시전 타이머 보기",
 	timerNefAblity				= "영웅 모드에서 골렘 스킬 강화 쿨다운 타이머 보기",
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
+	specWarnGenerator			= "보스가 $spell:91557의 영향을 받을 경우 특수 경고 보기",
 	YellBombTarget				= "$spell:80094 외치기",
 	YellOnLightning				= "$spell:79888 외치기",
 	YellOnShadowCast			= "$spell:92053 외치기",
