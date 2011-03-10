@@ -232,7 +232,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
-	elseif args:IsSpellID(79629, 91555, 91556, 91557) then--Check if Generator buff is gained by someone
+	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:IsDestTypeHostile() then--Check if Generator buff is gained by a hostile.
 --[[		local targetCID = GetUnitCreatureID("target")
 		if args:GetDestCreatureID() == targetCID and bosses[targetCID] then --]]
 		if (args:GetDestCreatureID() == 42166 and self:GetUnitCreatureId("target") == 42166) or (args:GetDestCreatureID() == 42178 and self:GetUnitCreatureId("target") == 42178) or (args:GetDestCreatureID() == 42179 and self:GetUnitCreatureId("target") == 42179) or (args:GetDestCreatureID() == 42180 and self:GetUnitCreatureId("target") == 42180) then--Filter it to only warn for 4 golems and only warn person tanking it. (other tank would be targeting a different golem)
