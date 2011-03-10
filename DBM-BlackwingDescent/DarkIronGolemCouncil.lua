@@ -97,6 +97,12 @@ local fixateIcon = 6
 local pulled = false
 local cloudSpam = 0
 local encasing = false
+--[[local bosses = {
+	[42178] = "Magmatron",
+	[42179] = "Electron",
+	[42180] = "Toxitron",
+	[42166] = "Arcanotron"
+}--]]
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
@@ -227,6 +233,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79629, 91555, 91556, 91557) then--Check if Generator buff is gained by someone
+--[[		local targetCID = GetUnitCreatureID("target")
+		if args:GetDestCreatureID() == targetCID and bosses[targetCID] then --]]
 		if (args:GetDestCreatureID() == 42166 and self:GetUnitCreatureId("target") == 42166) or (args:GetDestCreatureID() == 42178 and self:GetUnitCreatureId("target") == 42178) or (args:GetDestCreatureID() == 42179 and self:GetUnitCreatureId("target") == 42179) or (args:GetDestCreatureID() == 42180 and self:GetUnitCreatureId("target") == 42180) then--Filter it to only warn for 4 golems and only warn person tanking it. (other tank would be targeting a different golem)
 			specWarnGenerator:Show(args.destName)--Show special warning to move him out of it.
 		end
