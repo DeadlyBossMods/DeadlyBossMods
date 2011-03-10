@@ -62,21 +62,25 @@ local windBlastCounter = 0
 local specialSpam = 0
 local specialsEnded = 0
 local poisonCounter = 0
+local breezeCounter = 0
 local poisonSpam = 0
 local iceSpam = 0
 local GatherStrengthwarned = false
 
 function mod:OnCombatStart(delay)
 	windBlastCounter = 0
+	breezeCounter = 0
+	poisonCounter = 0
 	specialSpam = 0
 	specialsEnded = 0
 	iceSpam = 0
+	poisonSpam = 0
 	GatherStrengthwarned = false
 	warnSpecialSoon:Schedule(80-delay)
 	timerSpecial:Start(90-delay)
 	enrageTimer:Start(-delay)
 	if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
-		timerSoothingBreezeCD:Start(15-delay)
+		timerSoothingBreezeCD:Start(16-delay)
 		timerNurture:Start(30-delay)
 	end
 	if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
@@ -103,7 +107,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerSpecial:Start()
 			specialsEnded = GetTime()
 			if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
-				timerSoothingBreezeCD:Start(15)
+				timerSoothingBreezeCD:Start(16)
 				timerNurture:Start()
 			end
 			if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
@@ -122,7 +126,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerSpecial:Start()
 		specialsEnded = GetTime()
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
-			timerSoothingBreezeCD:Start(15)
+			timerSoothingBreezeCD:Start(16)
 			timerNurture:Start()
 		end
 		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then--Rohash
@@ -140,9 +144,12 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(86205) then
+		breezeCounter = breezeCounter + 1
 		if self:GetUnitCreatureId("target") == 45870 or self:GetUnitCreatureId("focus") == 45870 or self:GetUnitCreatureId("target") == 45812 or not self.Options.OnlyWarnforMyTarget then--Anshal and his flowers
 			warnSoothingBreeze:Show()--possibly change to target scanning and announce whether he's casting it on himself or one of his flowers.
-			timerSoothingBreezeCD:Start()
+			if breezeCounter < 3 then--Make sure it doesn't start another bar just before special.
+				timerSoothingBreezeCD:Start()
+			end
 		end
 	elseif args:IsSpellID(86192) then
 		if self:GetUnitCreatureId("target") == 45872 or self:GetUnitCreatureId("focus") == 45872 or not self.Options.OnlyWarnforMyTarget then
@@ -169,6 +176,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerSpecialActive:Start()
 		specialSpam = GetTime()--Trigger it off any of 3 spells, but only once.
 		poisonCounter = 0
+		breezeCounter = 0
 		if self:GetUnitCreatureId("target") == 45871 or self:GetUnitCreatureId("focus") == 45871 or not self.Options.OnlyWarnforMyTarget then--Nezir
 			timerPermaFrostCD:Start(15)--This is gonna slap you in face the instance special ends.
 		end
