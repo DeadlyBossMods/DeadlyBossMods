@@ -46,7 +46,7 @@ local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Abili
 --Toxitron
 local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
-local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053)
+local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer())
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
 --Arcanotron
