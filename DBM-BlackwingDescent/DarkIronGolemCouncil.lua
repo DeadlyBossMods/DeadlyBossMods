@@ -46,11 +46,12 @@ local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Abili
 --Toxitron
 local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
+local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053)
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
 --Arcanotron
 local specWarnConversion		= mod:NewSpecialWarningSpell(79729, not mod:IsHealer())
-local specWarnGenerator			= mod:NewSpecialWarningMove(79624, mod:IsTank())
+local specWarnGenerator			= mod:NewSpecialWarning("specWarnGenerator", mod:IsTank())
 local specWarnAnnihilator		= mod:NewSpecialWarningInterrupt(91542, false)
 local specWarnOvercharged		= mod:NewSpecialWarningSpell(91857, false)--Heroic Ability
 --All
@@ -225,9 +226,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
-	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:GetDestCreatureID() == 42166 then--Check if Generator buff is gained by Arcanotron
-		if self:GetUnitCreatureId("target") == 42166 then--Make sure to only warn person tanking it. (other tank would be targeting a different golem)
-			specWarnGenerator:Show()--Show special warning to move him out of it.
+	elseif args:IsSpellID(79629, 91555, 91556, 91557) then--Check if Generator buff is gained by someone
+		if (args:GetDestCreatureID() == 42166 and self:GetUnitCreatureId("target") == 42166) or (args:GetDestCreatureID() == 42178 and self:GetUnitCreatureId("target") == 42178) or (args:GetDestCreatureID() == 42179 and self:GetUnitCreatureId("target") == 42179) or (args:GetDestCreatureID() == 42180 and self:GetUnitCreatureId("target") == 42180) then--Filter it to only warn for 4 golems and only warn person tanking it. (other tank would be targeting a different golem)
+			specWarnGenerator:Show(args.destName)--Show special warning to move him out of it.
 		end
 	elseif args:IsSpellID(92048) then--Shadow Infusion, debuff 5 seconds before shadow conductor.
 		timerNefAbilityCD:Start()
@@ -309,6 +310,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		timerChemicalBomb:Start()--Appears same on heroic
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
+		specWarnPoisonProtocol:Show()--MFers need to learn to switch.
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerPoisonProtocolCD:Start(25)
 		else

@@ -38,6 +38,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnActivated			= "Change Target to %s!",
+	specWarnGenerator			= "Power Generator - Move %s!"
 })
 
 L:SetTimerLocalization({
@@ -51,6 +52,7 @@ L:SetOptionLocalization({
 	timerArcaneBlowbackCast		= "Show timer for $spell:91879 cast",
 	timerNefAblity				= "Show timer for heroic ability buff cooldown",
 	SpecWarnActivated			= "Show special warning when new boss activated",
+	specWarnGenerator			= "Show special warning when a boss gains $spell:91557",
 	YellBombTarget				= "Yell on $spell:80094",
 	YellOnLightning				= "Yell on $spell:79888",
 	YellOnShadowCast			= "Yell on $spell:92053",
