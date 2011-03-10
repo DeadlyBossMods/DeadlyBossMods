@@ -25,6 +25,7 @@ local warnIndomitable	= mod:NewSpellAnnounce(92946, 3)
 local warnExtinction	= mod:NewSpellAnnounce(86227, 4)
 local warnEggShield		= mod:NewSpellAnnounce(87654, 3)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
+local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
 
 local specWarnSlicer	= mod:NewSpecialWarning("SpecWarnSlicer")
 local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", mod:IsHealer()) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately.
@@ -39,6 +40,7 @@ local timerExtinction	= mod:NewCastTimer(16, 86227)
 local timerEggWeakening	= mod:NewTimer(5, "TimerEggWeakening", 61357)
 local timerEggWeaken	= mod:NewTimer(30, "TimerEggWeaken", 61357)
 local timerDragon		= mod:NewTimer(50, "TimerDragon", 69002)
+local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
 
 local eggDown = 0
 local eggSpam = 0
@@ -50,6 +52,7 @@ local oldWrackCount = 0
 local eggRemoved = false
 local warckWarned2 = false
 local warckWarned4 = false
+local redSpam = 0
 
 function mod:SlicerRepeat()
 	specWarnSlicer:Show()
@@ -74,6 +77,7 @@ function mod:OnCombatStart(delay)
 	warckWarned2 = false
 	warckWarned4 = false
 	eggRemoved = false
+	redSpam = 0
 	timerDragon:Start(16-delay)
 	timerBreathCD:Start(23-delay)
 	timerSlicer:Start(29-delay)
@@ -149,6 +153,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		if eggRemoved then
 			specWarnEggShield:Show()
 		end
+	elseif args:IsSpellID(87946) and GetTime() - redSpam >= 4 then
+		warnRedEssence:Show()
+		timerRedEssence:Start()
+		redSpam = GetTime()
 	end
 end
 
@@ -186,7 +194,7 @@ function mod:UNIT_DIED(args)
 		if eggDown >= 2 then
 			warnPhase3:Show()
 			timerBreathCD:Start()
-			timerSlicer:Start(29)
+			timerSlicer:Start(28)
 			timerDragon:Start()
 			if self.Options.WarnSlicerSoon then
 				warnSlicerSoon:Schedule(24, 5)
@@ -195,7 +203,7 @@ function mod:UNIT_DIED(args)
 				warnSlicerSoon:Schedule(27, 2)
 				warnSlicerSoon:Schedule(28, 1)
 			end
-			self:ScheduleMethod(29, "SlicerRepeat")
+			self:ScheduleMethod(28, "SlicerRepeat")
 		end
 	end
 end
