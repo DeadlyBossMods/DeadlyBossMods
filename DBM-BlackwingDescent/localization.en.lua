@@ -53,6 +53,7 @@ L:SetOptionLocalization({
 	timerNefAblity				= "Show timer for heroic ability buff cooldown",
 	SpecWarnActivated			= "Show special warning when new boss activated",
 	specWarnGenerator			= "Show special warning when a boss gains $spell:91557",
+	YellOnChemBomb				= "Yell on $spell:80157",
 	YellBombTarget				= "Yell on $spell:80094",
 	YellOnLightning				= "Yell on $spell:79888",
 	YellOnShadowCast			= "Yell on $spell:92053",
@@ -72,7 +73,8 @@ L:SetMiscLocalization({
 	YellLightning				= "Lightning Conductor on me!",
 	YellShadowCast				= "Shadow Conductor on me!",
 	YellTarget					= "Acquiring Target on me!",
-	YellTargetLock				= "Encasing Shadows! Away from me!"
+	YellTargetLock				= "Encasing Shadows! Away from me!",
+	YellCloud					= "Chemical Bomb on me!"
 })
 
 ----------------

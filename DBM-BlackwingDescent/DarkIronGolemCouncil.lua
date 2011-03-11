@@ -86,6 +86,7 @@ local soundBomb					= mod:NewSound(80094)
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("ShadowConductorIcon")
+mod:AddBoolOption("YellOnChemBomb", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
 mod:AddBoolOption("YellBombTarget", false, "announce")
 mod:AddBoolOption("YellOnLightning", true, "announce")
 mod:AddBoolOption("YellOnShadowCast", true, "announce")
@@ -101,6 +102,16 @@ local encasing = false
 	[42180] = "Toxitron",
 	[42166] = "Arcanotron"
 }--]]
+
+function mod:ChemicalBombTarget()
+	local targetname = self:GetBossTarget(42180)
+	if not targetname then return end
+	if targetname == UnitName("player") then
+		if self.Options.YellOnChemBomb then
+			SendChatMessage(L.YellCloud, "SAY")
+		end
+	end
+end
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
@@ -309,6 +320,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(80157) then
 		warnChemicalBomb:Show()
 		timerChemicalBomb:Start()--Appears same on heroic
+		self:ScheduleMethod(0.1, "ChemicalBombTarget")--Since this is an instance cast scanning accurately is very hard.
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
 		if not self:GetUnitCreatureId("target") == 42180 then--You're not targeting toxitron which means he's probably off in some corner somewhere out of sight out of mind.
