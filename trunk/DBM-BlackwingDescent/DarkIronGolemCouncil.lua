@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetZone()
-mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
+mod:SetUsedIcons(1, 3, 8)
 
 mod:RegisterCombat("combat")
 
@@ -85,7 +85,6 @@ local soundBomb					= mod:NewSound(80094)
 
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
-mod:AddBoolOption("BombTargetIcon", false)
 mod:AddBoolOption("ShadowConductorIcon")
 mod:AddBoolOption("YellBombTarget", false, "announce")
 mod:AddBoolOption("YellOnLightning", true, "announce")
@@ -93,7 +92,6 @@ mod:AddBoolOption("YellOnShadowCast", true, "announce")
 mod:AddBoolOption("YellOnTarget", true, "announce")
 mod:AddBoolOption("YellOnTargetLock", true, "announce")
 
-local fixateIcon = 6
 local pulled = false
 local cloudSpam = 0
 local encasing = false
@@ -151,7 +149,6 @@ function mod:CheckEncasing() -- prevent two yells at a time
 end
 
 function mod:OnCombatStart(delay)
-	fixateIcon = 6
 	cloudSpam = 0
 	encasing = false
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
@@ -194,7 +191,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScheduleMethod(1, "CheckEncasing")
 		end
 		if self.Options.AcquiringTargetIcon then
-			self:SetIcon(args.destName, 8, 6)
+			self:SetIcon(args.destName, 7, 6)
 		end
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
 		if args:IsPlayer() then
@@ -204,7 +201,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			end
 		end
 		if self.Options.ConductorIcon then
-			self:SetIcon(args.destName, 7)
+			self:SetIcon(args.destName, 1)
 		end
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerLightningConductor:Start(15, args.destName)
@@ -221,13 +218,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.YellBombTarget then
 				SendChatMessage(L.SayBomb, "SAY")
 			end
-		end
-		if self.Options.BombTargetIcon then
-			if fixateIcon < 1 then
-				fixateIcon = 6--lets make sure all get unique icons, then reset for next time.
-			end
-			self:SetIcon(args.destName, fixateIcon, 6)
-			fixateIcon = fixateIcon - 1
 		end
 	elseif args:IsSpellID(91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
 		specWarnChemicalCloud:Show()
@@ -253,7 +243,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerShadowConductor:Show(args.destName)
 		timerLightningConductor:Cancel()
 		if self.Options.ShadowConductorIcon then
-			self:SetIcon(args.destName, 8)
+			self:SetIcon(args.destName, 3)
 		end
 		if args:IsPlayer() and self.Options.YellOnShadowCast then
 			SendChatMessage(L.YellShadowCast, "SAY")
