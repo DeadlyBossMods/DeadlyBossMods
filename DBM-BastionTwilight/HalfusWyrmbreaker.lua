@@ -18,8 +18,9 @@ mod:RegisterEvents(
 local warnBreath			= mod:NewSpellAnnounce(83707, 3)
 local warnFuriousRoar		= mod:NewSpellAnnounce(83710, 3)
 local warnVengeance			= mod:NewSpellAnnounce(87683, 3)
-local warnShadowNova		= mod:NewSpellAnnounce(83703, 3)
+local warnShadowNova		= mod:NewSpellAnnounce(83703, 4)
 local warnParalysis			= mod:NewSpellAnnounce(84030, 2)
+local warnMalevolentStrike	= mod:NewStackAnnounce(83908, 2)
 
 local specWarnShadowNova	= mod:NewSpecialWarningInterrupt(83703, false)
 
@@ -27,15 +28,18 @@ local timerFuriousRoar		= mod:NewCDTimer(30, 83710)
 local timerBreathCD			= mod:NewCDTimer(20, 83707)--every 20-25 seconds.
 local timerParalysis		= mod:NewBuffActiveTimer(12, 84030)
 local timerParalysisCD		= mod:NewCDTimer(35, 84030)
+local timerMalevolentStrike	= mod:NewTargetTimer(30, 83908)
 
 local berserkTimer			= mod:NewBerserkTimer(360)
 
 mod:AddBoolOption("ShowDrakeHealth", true)
 
 local spamFuriousRoar = 0
+local spamStrike = 0
 
 function mod:OnCombatStart(delay)
 	spamFuriousRoar = 0
+	spamStrike = 0
 	berserkTimer:Start(-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerBreathCD:Start(10-delay)
@@ -51,12 +55,24 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerParalysisCD:Start()
 	elseif args:IsSpellID(83601, 83603, 83611) and self.Options.ShowDrakeHealth then
 		DBM.BossHealth:AddBoss(self:GetCIDFromGUID(args.sourceGUID), args.sourceName)
+	elseif args:IsSpellID(83908, 86158, 86157, 86159) then
+		if GetTime() - spamStrike >= 6 then
+			warnMalevolentStrike:Show(args.destName, args.amount)
+			spamStrike = GetTime()
+		end
+		timerMalevolentStrike:Start(args.destName)
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(87683) then
 		warnVengeance:Show()
+	elseif args:IsSpellID(83908, 86158, 86157, 86159) then
+		if GetTime() - spamStrike >= 6 then
+			warnMalevolentStrike:Show(args.destName, args.amount)
+			spamStrike = GetTime()
+		end
+		timerMalevolentStrike:Start(args.destName)
 	end
 end
 
