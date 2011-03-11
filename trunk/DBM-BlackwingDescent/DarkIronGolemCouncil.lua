@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetZone()
-mod:SetUsedIcons(1, 3, 8)
+mod:SetUsedIcons(1, 3, 6, 7)
 
 mod:RegisterCombat("combat")
 
@@ -235,6 +235,9 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(92023) then
 		if args:IsPlayer() then
 			encasing = true
+		end
+		if self.Options.AcquiringTargetIcon then
+			self:SetIcon(args.destName, 6, 6)
 		end
 		specWarnEncasingShadows:Show(args.destName)
 		timerNefAbilityCD:Start()
