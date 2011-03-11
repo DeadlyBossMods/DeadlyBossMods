@@ -379,7 +379,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellAdds		= "Repel the intruders!"
+	YellAdds		= "침입자를 물리쳐라!"
 }
 
 -----------------
