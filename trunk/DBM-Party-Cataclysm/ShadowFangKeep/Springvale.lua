@@ -16,7 +16,7 @@ mod:RegisterEvents(
 )
 
 local warnDesecration		= mod:NewSpellAnnounce(93687, 3)
-local warnMaleficStrike		= mod:NewSpellAnnounce(93685, 2)
+local warnMaleficStrike		= mod:NewSpellAnnounce(93685, 2, nil, false)
 local warnShield			= mod:NewSpellAnnounce(93736, 4)
 local warnWordShame			= mod:NewTargetAnnounce(93852, 3)
 local warnEmpowerment		= mod:NewCastAnnounce(93844, 4)
@@ -25,7 +25,7 @@ local specWarnDesecration	= mod:NewSpecialWarningMove(94370)
 local specWarnEmpowerment	= mod:NewSpecialWarningInterrupt(93844, false)
 
 local timerAdds				= mod:NewTimer(40, "TimerAdds", 48000)
-local timerMaleficStrike	= mod:NewNextTimer(6, 93685)
+local timerMaleficStrike	= mod:NewNextTimer(6, 93685, nil, false)
 
 function mod:OnCombatStart(delay)
 	timerAdds:Start(-delay)
