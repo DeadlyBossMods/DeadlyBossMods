@@ -40,6 +40,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnActivated		= "轉換目標到 %s!",
+	specWarnGenerator		= "發電機 - 拉開%s!"
 })
 
 L:SetTimerLocalization({
@@ -53,6 +54,8 @@ L:SetOptionLocalization({
 	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
 	timerNefAblity			= "為困難技能增益冷卻顯示計時器",
 	SpecWarnActivated		= "當新首領啟動時顯示特別警告",
+	specWarnGenerator		= "當首領獲得$spell:91557時顯示特別警告",
+	YellOnChemBomb			= "中了$spell:80157時大喊",
 	YellBombTarget			= "中了$spell:80094時大喊",
 	YellOnLightning			= "中了$spell:79888時大喊",
 	YellOnShadowCast		= "中了$spell:92053時大喊",
@@ -69,11 +72,12 @@ L:SetMiscLocalization({
 	Electron			= "雷電號",
 	Toxitron			= "烈毒號",
 	Arcanotron			= "秘法號",
-	SayBomb				= "我中了化學炸彈!",
+	SayBomb				= "我中了毒炸彈!",
 	YellLightning			= "我中了避雷針!",
 	YellShadowCast			= "我中了聚影體!",
 	YellTarget			= "我中了鎖定目標!",
-	YellTargetLock			= "覆體之影! 遠離我!"
+	YellTargetLock			= "覆體之影! 遠離我!",
+	YellCloud			= "我中了化學炸彈!"
 })
 
 ----------------
