@@ -55,6 +55,7 @@ L:SetOptionLocalization({
 	timerNefAblity				= "영웅 모드에서 골렘 스킬 강화 쿨다운 타이머 보기",
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
 	specWarnGenerator			= "보스가 $spell:91557의 영향을 받을 경우 특수 경고 보기",
+	YellOnChemBomb				= "$spell:80157 외치기",
 	YellBombTarget				= "$spell:80094 외치기",
 	YellOnLightning				= "$spell:79888 외치기",
 	YellOnShadowCast			= "$spell:92053 외치기",
@@ -62,7 +63,6 @@ L:SetOptionLocalization({
 	YellOnTargetLock			= "$spell:92023 외치기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
@@ -75,7 +75,8 @@ L:SetMiscLocalization({
 	YellLightning				= "나에게 번개 전도체!",
 	YellShadowCast				= "나에게 암흑 전도체!",
 	YellTarget					= "나에게 목표 설정!",
-	YellTargetLock				= "어둠의 휘감기! 제 주변에서 빠지세요!"
+	YellTargetLock				= "어둠의 휘감기! 제 주변에서 빠지세요!",
+	YellCloud					= "나에게 화학 폭탄!"
 })
 
 ----------------

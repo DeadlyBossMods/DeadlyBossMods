@@ -118,24 +118,20 @@ function mod:SPELL_AURA_APPLIED(args)
 		lastDispeled = 0
 		warckWarned4 = false
 		warckWarned2 = false
---		print ("new warck detected") -- debug message
 		specWarnDispel:Schedule(18, 18)
 		self:Schedule(60, function()
 			specWarnDispel:Cancel()
 		end)
 	elseif args:IsSpellID(92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped warcks
 		newWrackCount = newWrackCount + 1
---		print ("applied", newWrackCount, newWrackTime, floor(lastDispeled - newWrackTime)) -- debug message
 		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not warckWarned4 then
 			specWarnDispel:Cancel()
 			specWarnDispel:Schedule(12, 12)
 			warckWarned4 = true
---			print ("success. 12 sec warn enabled") -- debug message
 		elseif newWrackCount > 1 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not warckWarned2 then
 			specWarnDispel:Cancel()
 			specWarnDispel:Schedule(17, 17)
 			warckWarned2 = true
---			print ("success. 17 sec warn enabled") -- debug message
 		end
 	elseif args:IsSpellID(87299) then
 		eggDown = 0
@@ -168,7 +164,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		specWarnEggWeaken:Show()
 		eggRemoved = true
 	elseif args:IsSpellID(92955, 92956) then
---		print ("removed", newWrackCount, floor(lastDispeled - newWrackTime)) -- debug message
 		if GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12 then
 			newWrackCount = newWrackCount - 1
 			if GetTime() - lastDispeled > 5 then
