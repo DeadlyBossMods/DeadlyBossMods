@@ -81,6 +81,7 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기\n(~10초 전)",
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
+	YellOnLightningRod		= "$spell:83099 외치기",
 	warnGravityCoreJump		= "$spell:92538 전이 경고 보기",
 	warnStaticOverloadJump	= "$spell:92467 전이 경고 보기",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
@@ -97,6 +98,7 @@ L:SetMiscLocalization({
 	Thundershock	= "주변의 공기가 에너지로 진동합니다...",
 	Switch			= "우리가 상대하겠다!",--"We will handle them!" comes 3 seconds after this one
 	Phase3			= "꽤나 인상적이었다만...",--"BEHOLD YOUR DOOM!" is about 13 seconds after	
+	YellLightning	= "나에게 벼락 막대!",
 	Ignacious		= "이그니시우스",
 	Feludius		= "펠루디우스",
 	Arion			= "아리온",
