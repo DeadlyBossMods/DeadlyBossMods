@@ -46,13 +46,15 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "폭발!",
 	timerShadowConductorCast	= "암흑 전도체 변환",
-	timerNefAblity				= "스킬 강화 쿨다운"
+	timerNefAblity				= "스킬 강화 쿨다운",
+	timerArcaneLockout			= "비전 파괴자 침묵"
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "$spell:92053 시전 타이머 보기",
 	timerArcaneBlowbackCast		= "$spell:91879 시전 타이머 보기",
 	timerNefAblity				= "영웅 모드에서 골렘 스킬 강화 쿨다운 타이머 보기",
+	timerArcaneLockout			= "$spell:91542 침묵 타이머 보기",
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
 	specWarnGenerator			= "보스가 $spell:91557의 영향을 받을 경우 특수 경고 보기",
 	YellOnChemBomb				= "$spell:80157 외치기",
