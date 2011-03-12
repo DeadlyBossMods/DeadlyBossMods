@@ -26,7 +26,7 @@ local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92048, 5, 4)--Heroic Abil
 --Toxitron
 local warnPoisonProtocol		= mod:NewSpellAnnounce(80053, 2)
 local warnFixate				= mod:NewTargetAnnounce(80094, 3, nil, false)--Spammy, off by default. Raid leader can turn it on if they wanna yell at these people.
-local warnChemicalBomb			= mod:NewSpellAnnounce(80157, 3)
+local warnChemicalBomb			= mod:NewTargetAnnounce(80157, 3)
 local warnShell					= mod:NewSpellAnnounce(79835, 4, nil, not mod:IsHealer())
 local warnGrip					= mod:NewCastAnnounce(91849, 4)--Heroic Ability
 --Arcanotron
@@ -109,6 +109,7 @@ local encasing = false
 function mod:ChemicalBombTarget()
 	local targetname = self:GetBossTarget(42180)
 	if not targetname then return end
+	warnChemicalBomb:Show(targetname)
 	if targetname == UnitName("player") then
 		if self.Options.YellOnChemBomb then
 			SendChatMessage(L.YellCloud, "SAY")
@@ -322,7 +323,6 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(80157) then
-		warnChemicalBomb:Show()
 		timerChemicalBomb:Start()--Appears same on heroic
 		self:ScheduleMethod(0.1, "ChemicalBombTarget")--Since this is an instance cast scanning accurately is very hard.
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then

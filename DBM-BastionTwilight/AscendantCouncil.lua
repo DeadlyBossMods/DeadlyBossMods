@@ -108,6 +108,7 @@ mod:AddBoolOption("GravityCrushIcon")
 mod:AddBoolOption("FrostBeaconIcon")
 mod:AddBoolOption("StaticOverloadIcon")
 mod:AddBoolOption("GravityCoreIcon")
+mod:AddBoolOption("YellOnLightningRod", true, "announce")
 mod:AddBoolOption("RangeFrame")
 
 local frozenTargets = {}
@@ -272,6 +273,9 @@ function mod:SPELL_AURA_APPLIED(args)
 			specWarnLightningRod:Show()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
+			end
+			if self.Options.YellOnLightningRod then
+				SendChatMessage(L.YellLightning, "SAY")
 			end
 		end
 		if self.Options.LightningRodIcon then
@@ -537,6 +541,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerTransition:Start()
 		timerLavaSeedCD:Start(30)
 		timerGravityCrushCD:Start(43)
+		self:Unschedule(checkSearingWinds)
+		self:Unschedule(checkGrounded)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(10)
 		end
@@ -547,8 +553,20 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Quake or msg:find(L.Quake) then
 		checkSearingWinds()
 		warnQuakeSoon:Show()
+		self:Schedule(2, checkSearingWinds)
+		self:Schedule(4, checkSearingWinds)
+		self:Schedule(6, checkSearingWinds)
+		self:Schedule(8, checkSearingWinds)
+		self:Schedule(10, checkSearingWinds)
+		self:Schedule(12, checkSearingWinds)
 	elseif msg == L.Thundershock or msg:find(L.Thundershock) then
 		checkGrounded()
 		warnThundershockSoon:Show()
+		self:Schedule(2, checkGrounded)
+		self:Schedule(4, checkGrounded)
+		self:Schedule(6, checkGrounded)
+		self:Schedule(8, checkGrounded)
+		self:Schedule(10, checkGrounded)
+		self:Schedule(12, checkGrounded)
 	end
 end
