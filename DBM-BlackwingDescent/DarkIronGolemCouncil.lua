@@ -12,7 +12,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
-	"SPELL_CAST_SUCCESS"
+	"SPELL_CAST_SUCCESS",
+	"SPELL_INTERRUPT"
 )
 
 --Magmatron
@@ -65,18 +66,19 @@ local timerIncinerationCD   	= mod:NewNextTimer(26.5, 79023, nil, mod:IsHealer()
 local timerLightningConductor	= mod:NewTargetTimer(10, 79888, nil, false)
 local timerLightningConductorCD	= mod:NewNextTimer(25, 79888)
 local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900, nil, false)	-- 10 + 1.5 cast time
-local timerShadowConductor		= mod:NewTargetTimer(10, 92053, nil, false)--Heroic Ability
+local timerShadowConductor		= mod:NewTargetTimer(10, 92053, nil, false)			--Heroic Ability
 local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92048)--Heroic Ability
 --Toxitron
-local timerChemicalBomb			= mod:NewCDTimer(30, 80157)--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
+local timerChemicalBomb			= mod:NewCDTimer(30, 80157)							--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
 local timerShell				= mod:NewBuffActiveTimer(11.5, 79835, nil, false)	-- 10 + 1.5 cast time
 local timerPoisonProtocolCD		= mod:NewNextTimer(45, 80053)
 --Arcanotron
 local timerGeneratorCD			= mod:NewNextTimer(30, 79624)
-local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729, nil, false)	-- 10 + 1.5 cast time
-local timerArcaneBlowback		= mod:NewTimer(8, "timerArcaneBlowbackCast", 91879)-- what happens after the overcharged power generator explodes. 8 seconds after overcharge cast.
+local timerConversion			= mod:NewBuffActiveTimer(11.5, 79729, nil, false)		--10 + 1.5 cast time
+local timerArcaneLockout		= mod:NewTimer(3, "timerArcaneLockout", 91542, false)	--How long arcanotron is locked out from casting another Arcane Annihilator
+local timerArcaneBlowback		= mod:NewTimer(8, "timerArcaneBlowbackCast", 91879)		--what happens after the overcharged power generator explodes. 8 seconds after overcharge cast.
 --All
-local timerNextActivate			= mod:NewNextTimer(45, 78740)--Activations are every 90 (60sec heroic) seconds but encounter staggers them in an alternating fassion so 45 (30 heroic) seconds between add switches
+local timerNextActivate			= mod:NewNextTimer(45, 78740)				--Activations are every 90 (60sec heroic) seconds but encounter staggers them in an alternating fassion so 45 (30 heroic) seconds between add switches
 local timerNefAbilityCD			= mod:NewTimer(30, "timerNefAblity", 92048)--Huge variation on this, but shortest CD i've observed is 30.
 
 local berserkTimer				= mod:NewBerserkTimer(600)
@@ -95,6 +97,7 @@ mod:AddBoolOption("YellOnTargetLock", true, "announce")
 
 local pulled = false
 local cloudSpam = 0
+local lastInterrupt = 0
 local encasing = false
 --[[local bosses = {
 	[42178] = "Magmatron",
@@ -161,6 +164,7 @@ end
 
 function mod:OnCombatStart(delay)
 	cloudSpam = 0
+	lastInterrupt = 0
 	encasing = false
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
@@ -343,5 +347,20 @@ function mod:SPELL_CAST_SUCCESS(args)
 		specWarnOvercharged:Show()
 		timerArcaneBlowback:Start()
 		timerNefAbilityCD:Start()
+	end
+end
+
+function mod:SPELL_INTERRUPT(args)--Pretty sure druids still don't show in log so if a druid kicks it won't be accurate.
+	if (type(args.extraSpellId) == "number" and (args.extraSpellId == 79710 or args.extraSpellId == 91540 or args.extraSpellId == 91541 or args.extraSpellId == 91542)) and GetTime() - lastInterrupt > 2 then
+		lastInterrupt = GetTime()--We only want the first interrupt, any extra won't count til next cast
+		if args:IsSpellID(2139) then							--Counterspell
+			timerArcaneLockout:Start(7.5)
+		elseif args:IsSpellID(96231, 6552, 47528, 1766) then	--Rebuke, Pummel, Mind Freeze, Kick
+			timerArcaneLockout:Start(5)
+--[[		elseif args:IsSpellID(34490, 15487) then			--Silencing Shot, Silence
+			timerArcaneLockout:Start(3.5)--]]
+		elseif args:IsSpellID(57994) then						--Wind Shear
+			timerArcaneLockout:Start(2.5)
+		end
 	end
 end

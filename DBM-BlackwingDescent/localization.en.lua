@@ -44,12 +44,14 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "Arcane Blowback",
 	timerShadowConductorCast	= "Shadow Conductor",
-	timerNefAblity				= "Ability Buff CD"
+	timerNefAblity				= "Ability Buff CD",
+	timerArcaneLockout			= "Annihilator Lockout"
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Show timer for $spell:92048 cast",
 	timerArcaneBlowbackCast		= "Show timer for $spell:91879 cast",
+	timerArcaneLockout			= "Show timer for $spell:91542 spell lockout",
 	timerNefAblity				= "Show timer for heroic ability buff cooldown",
 	SpecWarnActivated			= "Show special warning when new boss activated",
 	specWarnGenerator			= "Show special warning when a boss gains $spell:91557",
