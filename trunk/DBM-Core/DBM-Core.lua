@@ -168,6 +168,7 @@ local bannedMods = { -- a list of "banned" (meaning they are replaced by another
 	"DBM-Battlegrounds", --replaced by DBM-PvP
 }
 if tonumber((select(2, GetBuildInfo()))) >= 13682 then
+	-- ZG and ZA are now part of the party mods for Cataclysm
 	bannedMods[#bannedMods + 1] = "DBM-ZulAman"
 	bannedMods[#bannedMods + 1] = "DBM-ZG"
 end
@@ -217,12 +218,13 @@ end
 -- automatically sends an addon message to the appropriate channel (BATTLEGROUND, RAID or PARTY)
 local function sendSync(prefix, msg)
 	local zoneType = select(2, IsInInstance())
+	msg = msg or ""
 	if zoneType == "pvp" or zoneType == "arena" then
-		SendAddonMessage(prefix, msg, "BATTLEGROUND")
+		SendAddonMessage("D4", prefix .. "\t" .. msg, "BATTLEGROUND")
 	elseif GetRealNumRaidMembers() > 0 then
-		SendAddonMessage(prefix, msg, "RAID")
+		SendAddonMessage("D4", prefix .. "\t" .. msg, "RAID")
 	elseif GetRealNumPartyMembers() > 0 then
-		SendAddonMessage(prefix, msg, "PARTY")
+		SendAddonMessage("D4", prefix .. "\t" .. msg, "PARTY")
 	end
 end
 
@@ -938,7 +940,7 @@ do
 		text = text:gsub("%%t", UnitName("target") or "<no target>")
 		self.Bars:CreateBar(time, text)
 		if broadcast and self:GetRaidRank() >= 1 then
-			sendSync("DBMv4-Pizza", ("%s\t%s"):format(time, text))
+			sendSync("P", ("%s\t%s"):format(time, text))
 		end
 		if sender then DBM:ShowPizzaInfo(text, sender) end
 	end
@@ -1136,7 +1138,13 @@ do
 			enableIcons = not playerWithHigherVersionPromoted
 			if not inRaid then
 				inRaid = true
-				sendSync("DBMv4-Ver", "Hi!")
+				sendSync("H")
+				-- TODO: can be removed as soon as filters are live, this is just for some basic backwards compatibility while 4.1 isn't live
+				if zoneType == "pvp" or zoneType == "arena" then
+					SendAddonMessage("DBMv4-Ver", "Hi!", "BATTLEGROUND")
+				else
+					SendAddonMessage("DBMv4-Ver", "Hi!", "RAID")
+				end
 				self:Schedule(2, DBM.RequestTimers, DBM)
 				fireEvent("raidJoin", UnitName("player"))
 			end
@@ -1160,7 +1168,9 @@ do
 		if GetNumPartyMembers() >= 1 then
 			if not inRaid then
 				inRaid = true
-				sendSync("DBMv4-Ver", "Hi!")
+				sendSync("H")
+				-- TODO: can be removed as soon as filters are live, this is just for some basic backwards compatibility while 4.1 isn't live
+				SendAddonMessage("DBMv4-Ver", "Hi!", "PARTY")
 				self:Schedule(2, DBM.RequestTimers, DBM)
 				fireEvent("partyJoin", UnitName("player"))
 			end
@@ -1510,9 +1520,19 @@ end
 do
 	local syncHandlers = {}
 	local whisperSyncHandlers = {}
-
-	syncHandlers["DBMv4-Mod"] = function(msg, channel, sender)
-		local mod, revision, event, arg = strsplit("\t", msg)
+	
+	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
+	-- M = Mod
+	-- P = Pull
+	-- K = Kill
+	-- H = Hi!
+	-- V = Incoming version information
+	-- P = Pizza Timer
+	-- RT = Request Timers
+	-- CI = Combat Info
+	-- TI = Timer Info
+	
+	syncHandlers["M"] = function(sender, mod, revision, event, arg)
 		mod = DBM:GetModByName(mod or "")
 		if mod and event and arg and revision then
 			revision = tonumber(revision) or 0
@@ -1520,56 +1540,55 @@ do
 		end
 	end
 
-	syncHandlers["DBMv4-Pull"] = function(msg, channel, sender)
+	syncHandlers["P"] = function(sender, delay, mod, revision)
 		if select(2, IsInInstance()) == "pvp" then return end
-		local delay, mod, revision = strsplit("\t", msg)
 		local lag = select(3, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
-		revision = tonumber(revision or 0) or 0
 		mod = DBM:GetModByName(mod or "")
+		revision = tonumber(revision or 0) or 0
 		if mod and delay and (not mod.zones or #mod.zones == 0 or checkEntry(mod.zones, LastZoneText) or checkEntry(mod.zones, LastZoneMapID)) and (not mod.minSyncRevision or revision >= mod.minSyncRevision) then
 			DBM:StartCombat(mod, delay + lag, true)
 		end
 	end
 
-	syncHandlers["DBMv4-Kill"] = function(msg, channel, sender)
+	syncHandlers["K"] = function(sender, cId)
 		if select(2, IsInInstance()) == "pvp" then return end
-		local cId = tonumber(msg)
+		cId = tonumber(cId or "")
 		if cId then DBM:OnMobKill(cId, true) end
 	end
-
-	syncHandlers["DBMv4-Ver"] = function(msg, channel, sender)
-		if msg == "Hi!" then
-			sendSync("DBMv4-Ver", ("%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
-		else
-			local revision, version, displayVersion, locale = strsplit("\t", msg)
-			revision, version = tonumber(revision or ""), tonumber(version or "")
-			if revision and version and displayVersion and raid[sender] then
-				raid[sender].revision = revision
-				raid[sender].version = version
-				raid[sender].displayVersion = displayVersion
-				raid[sender].locale = locale
-				if version > tonumber(DBM.Version) then
-					if raid[sender].rank >= 1 then
-						enableIcons = false
-					end
-					if not showedUpdateReminder then
-						local found = false
-						for i, v in pairs(raid) do
-							if v.version == version and v ~= raid[sender] then
-								found = true
-								break
-							end
+	
+	-- TODO: is there a good reason that version information is broadcasted and not unicasted?
+	syncHandlers["H"] = function(sender)
+		sendSync("V", ("%s\t%s\t%s\t%s"):format(DBM.Revision, DBM.Version, DBM.DisplayVersion, GetLocale()))
+	end
+	
+	syncHandlers["V"] = function(sender, revision, version, displayVersion, locale)
+		revision, version = tonumber(revision or ""), tonumber(version or "")
+		if revision and version and displayVersion and raid[sender] then
+			raid[sender].revision = revision
+			raid[sender].version = version
+			raid[sender].displayVersion = displayVersion
+			raid[sender].locale = locale
+			if version > tonumber(DBM.Version) then
+				if raid[sender].rank >= 1 then
+					enableIcons = false
+				end
+				if not showedUpdateReminder then
+					local found = false
+					for i, v in pairs(raid) do
+						if v.version == version and v ~= raid[sender] then
+							found = true
+							break
 						end
-						if found then
-							showedUpdateReminder = true
-							if not DBM.Options.BlockVersionUpdatePopup then
-								DBM:ShowUpdateReminder(displayVersion, revision)
-							else 
-								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
-								DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
-								DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision))
-							end
+					end
+					if found then
+						showedUpdateReminder = true
+						if not DBM.Options.BlockVersionUpdatePopup then
+							DBM:ShowUpdateReminder(displayVersion, revision)
+						else 
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("([^\n]*)"))
+							DBM:AddMsg(DBM_CORE_UPDATEREMINDER_HEADER:match("\n(.*)"):format(displayVersion, revision))
+							DBM:AddMsg(("|HDBM:update:%s:%s|h|cff3588ff[http://deadlybossmods.com]"):format(displayVersion, revision))
 						end
 					end
 				end
@@ -1577,11 +1596,10 @@ do
 		end
 	end
 
-	syncHandlers["DBMv4-Pizza"] = function(msg, channel, sender)
-		if select(2, IsInInstance()) == "pvp" then return end
+	syncHandlers["P"] = function(sender, time, text)
+		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
 		if DBM:GetRaidRank(sender) == 0 then return end
 		if sender == UnitName("player") then return end
-		local time, text = strsplit("\t", msg)
 		time = tonumber(time or 0)
 		text = tostring(text)
 		if time and text then
@@ -1589,12 +1607,11 @@ do
 		end
 	end
 
-	whisperSyncHandlers["DBMv4-RequestTimers"] = function(msg, channel, sender)
+	whisperSyncHandlers["RT"] = function(sender)
 		DBM:SendTimers(sender)
 	end
 
-	whisperSyncHandlers["DBMv4-CombatInfo"] = function(msg, channel, sender)
-		local mod, time = strsplit("\t", msg)
+	whisperSyncHandlers["CI"] = function(sender, mod, time)
 		mod = DBM:GetModByName(mod or "")
 		time = tonumber(time or 0)
 		if mod and time then
@@ -1602,23 +1619,42 @@ do
 		end
 	end
 
-	whisperSyncHandlers["DBMv4-TimerInfo"] = function(msg, channel, sender)
-		local mod, timeLeft, totalTime, id = strsplit("\t", msg)
+	whisperSyncHandlers["TI"] = function(sender, mod, timeLeft, totalTime, id, ...)
 		mod = DBM:GetModByName(mod or "")
 		timeLeft = tonumber(timeLeft or 0)
 		totalTime = tonumber(totalTime or 0)
 		if mod and timeLeft and timeLeft > 0 and totalTime and totalTime > 0 and id then
-			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, select(5, strsplit("\t", msg)))
+			DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
+		end
+	end
+	
+	local function handleSync(channel, sender, prefix, ...)
+		if not prefix then
+			return
+		end
+		local handler
+		if channel == "WHISPER" then -- separate between broadcast and unicast, broadcast must not be sent as unicast or vice-versa
+			handler = whisperSyncHandlers[prefix]
+		else
+			handler = syncHandlers[prefix]
+		end
+		if handler then
+			return handler(sender, ...)
 		end
 	end
 
 	function DBM:CHAT_MSG_ADDON(prefix, msg, channel, sender)
-		if msg and channel ~= "WHISPER" and channel ~= "GUILD" then
-			local handler = syncHandlers[prefix]
-			if handler then handler(msg, channel, sender) end
-		elseif msg and channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none" then
-			local handler = whisperSyncHandlers[prefix]
-			if handler then handler(msg, channel, sender) end
+		if prefix == "D4" and msg and (channel == "PARTY" or channel == "RAID" or channel == "BATTLEGROUND" or channel == "WHISPER" and self:GetRaidUnitId(sender) ~= "none") then
+			handleSync(channel, sender, strsplit("\t", msg))
+		elseif prefix == "DBMv4-Ver" and msg == "Hi!" then -- an old client is trying to communicate with us, but we can't respond as he won't be able to receive our messages
+			if raid[sender] and not raid[sender].revision then -- it is actually an old client and not a recent one sending an old sync for compatibility reasons during 4.0
+				raid[sender].revision = 0
+				raid[sender].version = "4.00"
+				raid[sender].displayVersion = "Unknown (uses incompatible pre-4.1 sync system without support for filters)"
+				raid[sender].locale = "unknown"
+			end
+		elseif prefix == "DBMv4-Ver" then -- 4.1 isn't live yet and the old clients can still communicate with us
+			syncHandlers["V"](sender, strsplit("\t", msg))
 		end
 	end
 end
@@ -1943,7 +1979,7 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if not synced then
-			sendSync("DBMv4-Pull", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
+			sendSync("P", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
 		end
 		fireEvent("pull", mod, delay, synced)
 		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
@@ -2044,7 +2080,7 @@ function DBM:OnMobKill(cId, synced)
 		end
 		if v.combatInfo.killMobs and v.combatInfo.killMobs[cId] then
 			if not synced then
-				sendSync("DBMv4-Kill", cId)
+				sendSync("K", cId)
 			end
 			v.combatInfo.killMobs[cId] = false
 			local allMobsDown = true
@@ -2059,7 +2095,7 @@ function DBM:OnMobKill(cId, synced)
 			end
 		elseif cId == v.combatInfo.mob and not v.combatInfo.killMobs and not v.combatInfo.multiMobPullDetection then
 			if not synced then
-				sendSync("DBMv4-Kill", cId)
+				sendSync("K", cId)
 			end
 			self:EndCombat(v)
 		end
@@ -2091,7 +2127,7 @@ do
 		if not bestClient then return end
 		requestedFrom = bestClient.name
 		requestTime = GetTime()
-		SendAddonMessage("DBMv4-RequestTimers", "", "WHISPER", bestClient.name)
+		SendAddonMessage("D4", "R", "WHISPER", bestClient.name)
 	end
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
@@ -2155,7 +2191,7 @@ function DBM:SendBGTimers(target)
 end
 
 function DBM:SendCombatInfo(mod, target)
-	return SendAddonMessage("DBMv4-CombatInfo", ("%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
+	return SendAddonMessage("D4", ("CI\t%s\t%s"):format(mod.id, GetTime() - mod.combatInfo.pull), "WHISPER", target)
 end
 
 function DBM:SendTimerInfo(mod, target)
@@ -2169,7 +2205,7 @@ function DBM:SendTimerInfo(mod, target)
 			end
 			timeLeft = totalTime - elapsed
 			if timeLeft > 0 and totalTime > 0 then
-				SendAddonMessage("DBMv4-TimerInfo", ("%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
+				SendAddonMessage("D4", ("TI\t%s\t%s\t%s\t%s"):format(mod.id, timeLeft, totalTime, uId), "WHISPER", target)
 			end
 		end
 	end
@@ -2194,6 +2230,14 @@ do
 		self:LFG_UPDATE()
 --		self:Schedule(10, function() if not DBM.Options.HelpMessageShown then DBM.Options.HelpMessageShown = true DBM:AddMsg(DBM_CORE_NEED_SUPPORT) end end)
 		self:Schedule(10, function() if not DBM.Options.SettingsMessageShown then DBM.Options.SettingsMessageShown = true DBM:AddMsg(DBM_HOW_TO_USE_MOD) end end)
+		
+		-- TODO: check if this is the correct place to register the prefixes. http://us.battle.net/wow/en/forum/topic/2228413591 suggests PLAYER_ENTERING_WORLD to do this, however ADDON_LOADED might be sufficient (unless the server forgets the filter list when entering an instance)
+		if type(RegisterAddonMessagePrefix) == "function" then
+			if not RegisterAddonMessagePrefix("D4") then -- main prefix for DBM4
+				DBM:AddMsg("Error: unable to register DBM addon message prefix (reached client side addon message filter limit), synchronization will be unavailable") -- TODO: confirm that this actually means that the syncs won't show up
+			end
+			RegisterAddonMessagePrefix("DBM4-Ver") -- to see old clients which will still try to communicate with us, but we won't be able to respond as they will filter our messages (allow silent failure as this isn't really important)
+		end
 	end
 end
 
@@ -2911,8 +2955,10 @@ do
 	local announcePrototype = {}
 	local mt = {__index = announcePrototype}
 	
+	-- TODO: is there a good reason that this is a weak table?
 	local cachedColorFunctions = setmetatable({}, {__mode = "kv"})
-
+	
+	-- TODO: this function is an abomination, it needs to be rewritten. Also: check if these work-arounds are still necessary
 	function announcePrototype:Show(...) -- todo: reduce amount of unneeded strings
 		if not self.option or self.mod.Options[self.option] then
 			if self.mod.Options.Announce and not DBM.Options.DontSendBossAnnounces and (IsRaidLeader() or (IsPartyLeader() and GetNumPartyMembers() >= 1)) then
@@ -2940,9 +2986,9 @@ do
 				end
 			end
 			text = text:gsub(">.-<", cachedColorFunctions[self.color])
-			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this)
+			RaidNotice_AddMessage(RaidWarningFrame, text, ChatTypeInfo["RAID_WARNING"]) -- the color option doesn't work (at least it didn't work during the WotLK beta...todo: check this (this would save some of the WTFs))
 			if DBM.Options.ShowWarningsInChat then
-				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size
+				text = text:gsub(textureExp, "") -- textures @ chat frame can (and will) distort the font if using certain combinations of UI scale, resolution and font size TODO: is this still true as of cataclysm?
 				if DBM.Options.ShowFakedRaidWarnings then
 					for i = 1, select("#", GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING")) do
 						local frame = select(i, GetFramesRegisteredForEvent("CHAT_MSG_RAID_WARNING"))
@@ -3856,7 +3902,7 @@ function bossModPrototype:SendSync(event, arg)
 	local time = GetTime()
 	if not modSyncSpam[spamId] or (time - modSyncSpam[spamId]) > 2.5 then
 		self:ReceiveSync(event, arg, nil, self.revision or 0)
-		sendSync("DBMv4-Mod", str)
+		sendSync("M", str)
 	end
 end
 
