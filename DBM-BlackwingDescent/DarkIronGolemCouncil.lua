@@ -355,6 +355,8 @@ function mod:SPELL_INTERRUPT(args)--Pretty sure druids still don't show in log s
 		lastInterrupt = GetTime()--We only want the first interrupt, any extra won't count til next cast
 		if args:IsSpellID(2139) then							--Counterspell
 			timerArcaneLockout:Start(7.5)
+		elseif args:IsSpellID(72) then							--Shield Bash (will be removed in 4.1)
+			timerArcaneLockout:Start(6.5)
 		elseif args:IsSpellID(96231, 6552, 47528, 1766) then	--Rebuke, Pummel, Mind Freeze, Kick
 			timerArcaneLockout:Start(5)
 --[[		elseif args:IsSpellID(34490, 15487) then			--Silencing Shot, Silence
