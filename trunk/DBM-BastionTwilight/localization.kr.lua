@@ -17,7 +17,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShowDrakeHealth		= "풀려난 용의 체력 프레임 보기"
+	ShowDrakeHealth		= "풀려난 용의 체력 프레임 보기\n(보스 HP 프레임 보기가 활성화 되어 있어야 함)"
 })
 
 L:SetMiscLocalization({
