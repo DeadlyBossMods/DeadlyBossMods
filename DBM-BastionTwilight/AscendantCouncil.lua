@@ -551,15 +551,17 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Quake or msg:find(L.Quake) then
-		checkSearingWinds()
 		warnQuakeSoon:Show()
-		self:Schedule(3, checkSearingWinds)
-		self:Schedule(6, checkSearingWinds)
-		self:Schedule(8, checkSearingWinds)
+		checkSearingWinds()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			self:Schedule(3, checkSearingWinds)
+			self:Schedule(6, checkSearingWinds)
+			self:Schedule(8, checkSearingWinds)
+		end
 	elseif msg == L.Thundershock or msg:find(L.Thundershock) then
 		warnThundershockSoon:Show()
+		checkGrounded()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			checkGrounded()
 			self:Schedule(3, checkGrounded)
 			self:Schedule(6, checkGrounded)
 			self:Schedule(8, checkGrounded)
