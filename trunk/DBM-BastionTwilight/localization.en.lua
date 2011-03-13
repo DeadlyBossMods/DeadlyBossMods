@@ -16,7 +16,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShowDrakeHealth		= "Show the health of released drakes"
+	ShowDrakeHealth		= "Show the health of released drakes\n(Requires Boss Health enabled)"
 })
 
 L:SetMiscLocalization({
