@@ -366,3 +366,9 @@ function mod:SPELL_INTERRUPT(args)--Pretty sure druids still don't show in log s
 		end
 	end
 end
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(79710, 91540, 91541, 91542) then--An interrupt failed (or wasn't cast)
+		timerArcaneLockout:Cancel()--Cancel bar just in case one was started by a late SPELL_INTERRUPT event that showed in combat log while cast went off anyways.
+	end
+end
