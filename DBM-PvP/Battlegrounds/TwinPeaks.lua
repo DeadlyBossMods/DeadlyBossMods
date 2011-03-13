@@ -45,10 +45,10 @@ do
 			if TwinPeaks.Options.ShowFlagCarrier then
 				TwinPeaks:ShowFlagCarrier()
 				TwinPeaks:CreateFlagCarrierButton()
+				TwinPeaks.FlagCarrierFrame1Text:SetText("")
+				TwinPeaks.FlagCarrierFrame2Text:SetText("")
 			end
 
-			TwinPeaks.FlagCarrierFrame1Text:SetText("")
-			TwinPeaks.FlagCarrierFrame2Text:SetText("")
 			FlagCarrier[1] = nil
 			FlagCarrier[2] = nil
 

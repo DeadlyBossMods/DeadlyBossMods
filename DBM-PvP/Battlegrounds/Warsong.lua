@@ -45,10 +45,10 @@ do
 			if Warsong.Options.ShowFlagCarrier then
 				Warsong:ShowFlagCarrier()
 				Warsong:CreateFlagCarrierButton()
+				Warsong.FlagCarrierFrame1Text:SetText("")
+				Warsong.FlagCarrierFrame2Text:SetText("")
 			end
 
-			Warsong.FlagCarrierFrame1Text:SetText("")
-			Warsong.FlagCarrierFrame2Text:SetText("")
 			FlagCarrier[1] = nil
 			FlagCarrier[2] = nil
 
