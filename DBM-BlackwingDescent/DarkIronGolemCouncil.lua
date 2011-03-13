@@ -19,19 +19,23 @@ mod:RegisterEvents(
 
 --Magmatron
 local warnIncineration			= mod:NewSpellAnnounce(79023, 2, nil, mod:IsHealer())
+local warnBarrierSoon			= mod:NewPreWarnAnnounce(79582, 10, 3, nil, not mod:IsHealer())
 local warnBarrier				= mod:NewSpellAnnounce(79582, 4, nil, not mod:IsHealer())
 local warnAcquiringTarget		= mod:NewTargetAnnounce(92036, 4)
 --Electron
+local warnUnstableShieldSoon	= mod:NewPreWarnAnnounce(79900, 10, 3, nil, not mod:IsHealer())
 local warnUnstableShield		= mod:NewSpellAnnounce(79900, 4, nil, not mod:IsHealer())
-local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92048, 5, 4)--Heroic Ability
+local warnShadowConductorCast	= mod:NewPreWarnAnnounce(92053, 5, 4)--Heroic Ability
 --Toxitron
 local warnPoisonProtocol		= mod:NewSpellAnnounce(80053, 2)
 local warnFixate				= mod:NewTargetAnnounce(80094, 3, nil, false)--Spammy, off by default. Raid leader can turn it on if they wanna yell at these people.
 local warnChemicalBomb			= mod:NewTargetAnnounce(80157, 3)
+local warnShellSoon				= mod:NewPreWarnAnnounce(79835, 10, 3, nil, false)
 local warnShell					= mod:NewSpellAnnounce(79835, 4, nil, not mod:IsHealer())
 local warnGrip					= mod:NewCastAnnounce(91849, 4)--Heroic Ability
 --Arcanotron
 local warnGenerator				= mod:NewSpellAnnounce(79624, 3)
+local warnConversionSoon		= mod:NewPreWarnAnnounce(79729, 10, 3, nil, not mod:IsHealer())
 local warnConversion			= mod:NewSpellAnnounce(79729, 4, nil, not mod:IsHealer())
 local warnOverchargedGenerator	= mod:NewSpellAnnounce(91857, 4)--Heroic Ability
 --All
@@ -99,6 +103,7 @@ mod:AddBoolOption("YellOnTargetLock", true, "announce")
 local pulled = false
 local cloudSpam = 0
 local lastInterrupt = 0
+local incinerateCast = 0
 local encasing = false
 --[[local bosses = {
 	[42178] = "Magmatron",
@@ -120,24 +125,39 @@ end
 
 local bossActivate = function(boss)
 	if boss == L.Magmatron or boss == 42178 then
+		incinerateCast = 0
 		timerAcquiringTarget:Start(20)--These are same on heroic and normal
 		timerIncinerationCD:Start(10)
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			warnBarrierSoon:Schedule(34)
+		else
+--			warnBarrierSoon:Schedule(34)
+		end
 	elseif boss == L.Electron or boss == 42179 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerLightningConductorCD:Start(15)--Probably also has a variation if it's like normal. Needs more logs to verify.
+			warnUnstableShieldSoon:Schedule(30)
 		else
 			timerLightningConductorCD:Start(11)--11-15 variation confirmed for normal, only boss ability with an actual variation on timer. Strange.
+--			warnUnstableShieldSoon:Schedule(30)
 		end
 	elseif boss == L.Toxitron or boss == 42180 then
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 			timerChemicalBomb:Start(25)
 			timerPoisonProtocolCD:Start(15)
+			warnShellSoon:Schedule(20)
 		else
 			timerChemicalBomb:Start(11)
 			timerPoisonProtocolCD:Start(21)
+--			warnShellSoon:Schedule(20)
 		end
 	elseif boss == L.Arcanotron or boss == 42166 then
 		timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			warnConversionSoon:Schedule(30)
+		else
+--			warnConversionSoon:Schedule(30)
+		end
 	end
 end
 
@@ -168,6 +188,7 @@ function mod:OnCombatStart(delay)
 	cloudSpam = 0
 	lastInterrupt = 0
 	encasing = false
+	incinerateCast = 0
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		berserkTimer:Start(-delay)
 	end
@@ -286,8 +307,13 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(79023, 91519, 91520, 91521) then
+		incinerateCast = incinerateCast + 1
 		warnIncineration:Show()
-		timerIncinerationCD:Start()--appears same on heroic
+		if incinerateCast == 1 then--Only cast twice on heroic, 3 times on normal.
+			timerIncinerationCD:Start()--second cast is after 27 seconds on heroic and normal.
+		elseif incinerateCast == 2 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25")) then
+			timerIncinerationCD:Start(32)--3rd cast on normal is 32 seconds. 10 27 32 series.
+		end
 	elseif args:IsSpellID(79582, 91516, 91517, 91518) then
 		warnBarrier:Show()
 		timerBarrier:Start()
