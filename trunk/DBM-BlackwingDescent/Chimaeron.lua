@@ -132,11 +132,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			table.insert(slimeTargetIcons, DBM:GetRaidUnitId(args.destName))
 			self:UnscheduleMethod("SetSlimeIcons")
 			if mod:LatencyCheck() then--lag can fail the icons so we check it before allowing.
-				self:ScheduleMethod(0.3, "SetSlimeIcons")--Actually lets try this the anub way. Do it faster, then if new targets get added to table late, it'll auto correct itself since the table isn't wiped yet.
+				self:ScheduleMethod(0.4, "SetSlimeIcons")--Still seems touchy and .3 is too fast even on a 70ms connection in rare cases so back to .4
 			end
 		end
 		self:Unschedule(showSlimeWarning)
-		self:Schedule(0.3, showSlimeWarning)
+		self:Schedule(0.4, showSlimeWarning)
 	end
 end
 
