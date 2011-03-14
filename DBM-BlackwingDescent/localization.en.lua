@@ -10,7 +10,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnInferno	= "Blazing Bone Construct Soon (~4s)",
+	SpecWarnInferno	= "Blazing Bone Construct Soon (~4s)"
 })
 
 L:SetTimerLocalization({
@@ -234,4 +234,25 @@ L:SetMiscLocalization({
 	Nefarian				= "Nefarian",
 	Onyxia					= "Onyxia",
 	Charge					= "Electric Charge"
+})
+
+--------------
+--  Blackwing Descent Trash  --
+--------------
+L = DBM:GetModLocalization("BWDTrash")
+
+L:SetGeneralLocalization({
+	name = "Blackwing Descent Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })

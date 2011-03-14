@@ -177,3 +177,26 @@ L:SetMiscLocalization({
 	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",
 	YellEgg				= "You mistake this for weakness?  Fool!"
 })
+
+--------------------------
+--  The Bastion of Twilight Trash  --
+--------------------------
+L = DBM:GetModLocalization("BoTrash")
+
+L:SetGeneralLocalization({
+	name =	"The Bastion of Twilight Trash"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnFlameStrike		= "Yell on $spell:93383"
+})
+
+L:SetMiscLocalization({
+	YellFlameStrike			= "Flamestrike on me!"
+})

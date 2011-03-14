@@ -32,3 +32,4 @@ ValionaTheralion.lua
 AscendantCouncil.lua
 Chogall.lua
 Sinestra.lua
+BoTTrash.lua
