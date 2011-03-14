@@ -62,7 +62,7 @@ function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(87683) then
 		warnVengeance:Show()
 	elseif args:IsSpellID(83908, 86158, 86157, 86159) then
-		if args.amount % 4 == 0 or (args.amount >= 10 and args.amount % 1 == 0) then		-- warn every 4th stack and every stack if 10 or more (goes up to 12)
+		if args.amount % 4 == 0 or args.amount >= 10 then		-- warn every 4th stack and every stack if 10 or more (goes up to 12 @heroic and 15 @normal)
 			warnMalevolentStrike:Show(args.destName, args.amount)
 		end
 		timerMalevolentStrike:Start(args.destName)
