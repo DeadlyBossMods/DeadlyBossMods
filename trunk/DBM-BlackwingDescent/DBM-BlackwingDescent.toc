@@ -34,3 +34,4 @@ Maloriak.lua
 Chimaeron.lua
 Atramedes.lua
 Nefarian.lua
+BWDTrash.lua
