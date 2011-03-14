@@ -940,7 +940,7 @@ do
 		text = text:gsub("%%t", UnitName("target") or "<no target>")
 		self.Bars:CreateBar(time, text)
 		if broadcast and self:GetRaidRank() >= 1 then
-			sendSync("P", ("%s\t%s"):format(time, text))
+			sendSync("U", ("%s\t%s"):format(time, text))
 		end
 		if sender then DBM:ShowPizzaInfo(text, sender) end
 	end
@@ -1527,7 +1527,7 @@ do
 	-- K = Kill
 	-- H = Hi!
 	-- V = Incoming version information
-	-- P = Pizza Timer
+	-- U = User Timer
 	-- RT = Request Timers
 	-- CI = Combat Info
 	-- TI = Timer Info
@@ -1596,7 +1596,7 @@ do
 		end
 	end
 
-	syncHandlers["P"] = function(sender, time, text)
+	syncHandlers["U"] = function(sender, time, text)
 		if select(2, IsInInstance()) == "pvp" then return end -- no pizza timers in battlegrounds
 		if DBM:GetRaidRank(sender) == 0 then return end
 		if sender == UnitName("player") then return end
