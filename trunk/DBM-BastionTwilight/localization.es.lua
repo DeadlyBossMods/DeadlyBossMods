@@ -82,6 +82,7 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)",
 	timerTransition		= "Mostrar tiempo para transición de fase",
 	RangeFrame			= "Mostrar distancia cuando sea necesario",
+	YellOnLightningRod		= "Gritar cuando tengas $spell:83099",
 	warnGravityCoreJump		= "Anunciar los objetivos de la propagación de $spell:92538",
 	warnStaticOverloadJump	= "Announce los objetivos de la propagación de $spell:92467 ",
 	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
@@ -98,6 +99,7 @@ L:SetMiscLocalization({
 	Thundershock		= "El aire circundante chisporrotea de energía...",
 	Switch			= "¡Basta de tonterías!",
 	Phase3			= "Una exhibición impresionante...",
+	YellLightning	= "¡Vara relámpago en mi!",
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
@@ -146,29 +148,60 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
 	WarnDragon			= "Sale Cría Crepuscular",
 	WarnSlicerSoon		= "¡Cercenadora Crepuscular en %d seg!",
+	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
 	SpecWarnSlicer		= "¡Cercenadora Crepuscular pronto!",
-	SpecWarnDispel		= "¡Han pasado %d seg des del último Arruinar - Dispelea ahora!"
+	SpecWarnDispel		= "¡Han pasado %d seg des del último Arruinar ¡Dispelea ahora!",
+	SpecWarnEggWeaken	= "¡Caparazón Crepuscular Eliminado! ¡Pega el Huevo!",
+	SpecWarnEggShield	= "¡Caparazón Crepuscular se ha regenerado!"
+
 })
 
 L:SetTimerLocalization({
-	TimerEggWeakening	= "Huevo debilitándose",
-	TimerDragon			= "Siguiente Cría Crepuscular"
+	TimerDragon			= "Siguientes Crias Crepusculares",
+	TimerEggWeakening	= "Caparazón Crepuscular Eliminado",
+	TimerEggWeaken		= "Caparazón Crepuscular Regenerándose"
 })
 
 L:SetOptionLocalization({
-	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
 	WarnSlicerSoon		= "Show pre-warning for $spell:92954 (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",--translate
+	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	SpecWarnSlicer		= "Show special warning for $spell:92954\n(Expected warning. may not be accurate)",--translate
 	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)",--translate
-	TimerEggWeakening	= "Mostrar tiempo para Huevo Debilitado",
-	TimerDragon			= "Mostrar tiempo para que salga una nueva Cría Crepuscular"
+	SpecWarnEggWeaken	= "Show special warning when $spell:87654 removed", -- translate
+	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated", -- translate
+	TimerDragon			= "Mostrar tiempo para que salga una nueva Cría Crepuscular",
+	TimerEggWeakening	= "Mostrar tiempo para eliminación de $spell:87654",
+	TimerEggWeaken		= "Mostrar tiempo para regeneración de $spell:87654"
+
 })
 
 L:SetMiscLocalization({
 	YellDragon			= "Feed, children!  Take your fill from their meaty husks!",--translate
 	YellEgg				= "You mistake this for weakness?  Fool!"--translate
+})
+
+--------------------------
+--  The Bastion of Twilight Trash  --
+--------------------------
+L = DBM:GetModLocalization("BoTrash")
+
+L:SetGeneralLocalization({
+	name =	"Pulls de Bastión del Crepúsculo"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnFlameStrike		= "Gritar cuando tengas $spell:93383"
+})
+
+L:SetMiscLocalization({
+	YellFlameStrike			= "¡Fogonazo en mi!"
 })
