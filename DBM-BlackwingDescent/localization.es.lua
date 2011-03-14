@@ -41,24 +41,29 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnActivated			= "Cambia el objetivo a %s!",
+	specWarnGenerator			= "¡Generador de poder! ¡Mueve a %s!"
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "Retorno Arcano",
 	timerShadowConductorCast	= "Conductor de las Sombras",
-	timerNefAblity				= "CD de Bufo de Habilidad"
+	timerNefAblity				= "CD de Bufo de Habilidad",
+	timerArcaneLockout			= "Aniquilador Silenciado"
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Mostrar tiempo para lanzamiento de $spell:92053",
 	timerArcaneBlowbackCast	= "Mostrar tiempo para lanzamiento de $spell:91879",
+	timerArcaneLockout			= "Mostrar tiempo de silenciamiento de hechizo de $spell:91542",
 	timerNefAblity				= "Mostrar tiempo de CoolDown de las habilidades de bufos en heroico",
 	SpecWarnActivated			= "Mostrar aviso especial cuando se activa un nuevo boss",
-	YellBombTarget			= "Gritar cuando tengas $spell:80094",
-	YellOnLightning				= "Gritar en $spell:79888",
-	YellOnShadowCast			= "Gritar en $spell:92053",
-	YellOnTarget				= "Gritar en $spell:92037",
-	YellOnTargetLock			= "Gritar en $spell:92023",
+	specWarnGenerator			= "Mostrar aviso especial cuando un boss gana $spell:91557",
+	YellOnChemBomb				= "Gritar cuando tengas $spell:80157",
+	YellBombTarget				= "Gritar cuando tengas $spell:80094",
+	YellOnLightning				= "Gritar cuando tengas $spell:79888",
+	YellOnShadowCast			= "Gritar cuando tengas $spell:92053",
+	YellOnTarget				= "Gritar cuando tengas $spell:92037",
+	YellOnTargetLock			= "Gritar cuando tengas $spell:92023",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -74,8 +79,8 @@ L:SetMiscLocalization({
 	YellLightning		= "¡Conductor de relámpagos en mi!",
 	YellShadowCast		= "¡Conductor de las Sombras en mi!",
 	YellTarget			= "¡Fijando objetivo en mi!",
-	YellTargetLock		= "¡Sombras atrapantes! ¡Apartaos de mi!"
-
+	YellTargetLock		= "¡Sombras atrapantes! ¡Apartaos de mi!",
+	YellCloud			= "¡Bomba química en mi!"
 })
 
 ----------------
@@ -227,10 +232,31 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	NefAoe			= "¡El aire crepita cargado de electricidad!",
-	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate
-	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate
+	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate?
+	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate?
 	YellCinder		= "¡Cenizas explosivas en mi!",
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
 	Charge			= "Carga Eléctrica"
+})
+
+--------------
+--  Blackwing Descent Trash  --
+--------------
+L = DBM:GetModLocalization("BWDTrash")
+
+L:SetGeneralLocalization({
+	name = "Pulls de Descenso de Alanegra"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
