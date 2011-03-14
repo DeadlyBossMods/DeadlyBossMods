@@ -492,7 +492,7 @@ do
 	-- this is a temporary work-around which just drops the new argument for a quick and easy fix. It doesn't look like that we are going to need this argument ever, so this is okay for now.
 	-- TODO: apply this change to the actual function above when 4.1 goes live, hideCaster can then be added to the args table
 	if tonumber((select(2, GetBuildInfo()))) >= 13682 then
-		local oldHandler = DBM.COMBAT_LOG_EVENT_UNFILTERED;
+		local oldHandler = DBM.COMBAT_LOG_EVENT_UNFILTERED
 		function DBM:COMBAT_LOG_EVENT_UNFILTERED(timestamp, event, hideCaster, ...)
 			return oldHandler(self, timestamp, event, ...)
 		end
@@ -1407,6 +1407,16 @@ do
 			DBM:Schedule(1.5, setCombatInitialized)
 			local enabled, loadable = select(4, GetAddOnInfo("DBM_API"))
 			if enabled and loadable then showOldVerWarning() end
+		elseif modname == "DBM-BurningCrusade" then
+			-- workaround to ban really old ZA/ZG mods that are still loaded through the compatibility layer. These mods should be excluded by the compatibility layer by design, however they are no longer loaded through the compatibility layer.
+			-- that means this is unnecessary if you are using a recent version of DBM-BC. However, if you are still on an old version of DBM-BC then filtering ZA/ZG through DBM-Core wouldn't be possible and no one really ever updates DBM-BC
+			DBM:Schedule(0, function()
+				for i = #self.AddOns, 1, -1 do
+					if checkEntry(bannedMods, self.AddOns[i].modId) then -- DBM-BC loads mods directly into this table and doesn't respect the bannedMods list of DBM-Core (just its own list of banned mods) (design fail)
+						table.remove(self.AddOns, i)
+					end
+				end
+			end)
 		end
 	end
 end
