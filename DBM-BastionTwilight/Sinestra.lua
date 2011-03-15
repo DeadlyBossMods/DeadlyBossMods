@@ -37,7 +37,7 @@ local timerBreathCD		= mod:NewCDTimer(24, 92944)
 local timerSlicer		= mod:NewNextTimer(28, 92954)
 local timerWrack		= mod:NewBuffActiveTimer(60, 92955)
 local timerExtinction	= mod:NewCastTimer(16, 86227)
-local timerEggWeakening	= mod:NewTimer(5, "TimerEggWeakening", 61357)
+local timerEggWeakening	= mod:NewTimer(4, "TimerEggWeakening", 61357)
 local timerEggWeaken	= mod:NewTimer(30, "TimerEggWeaken", 61357)
 local timerDragon		= mod:NewTimer(50, "TimerDragon", 69002)
 local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
@@ -187,9 +187,10 @@ function mod:UNIT_DIED(args)
 	if cid == 46842 then
 		eggDown = eggDown + 1
 		if eggDown >= 2 then
+			timerEggWeaken:Cancel()
 			warnPhase3:Show()
 			timerBreathCD:Start()
-			timerSlicer:Start(28)
+			timerSlicer:Start(30)
 			timerDragon:Start()
 			if self.Options.WarnSlicerSoon then
 				warnSlicerSoon:Schedule(24, 5)
@@ -198,7 +199,7 @@ function mod:UNIT_DIED(args)
 				warnSlicerSoon:Schedule(27, 2)
 				warnSlicerSoon:Schedule(28, 1)
 			end
-			self:ScheduleMethod(28, "SlicerRepeat")
+			self:ScheduleMethod(30, "SlicerRepeat")
 		end
 	end
 end

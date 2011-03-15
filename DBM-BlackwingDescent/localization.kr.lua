@@ -236,3 +236,24 @@ L:SetMiscLocalization({
 	Onyxia				= "오닉시아",
 	Charge				= "전하 충전"
 })
+
+--------------
+--  Blackwing Descent Trash  --
+--------------
+L = DBM:GetModLocalization("BWDTrash")
+
+L:SetGeneralLocalization({
+	name = "검은날개 강림지 일반몹"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
+})

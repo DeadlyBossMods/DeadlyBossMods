@@ -178,3 +178,26 @@ L:SetMiscLocalization({
 	YellDragon    = "얘들아, 먹어치워라",
 	YellEgg       = "이게 약해지는 걸로 보이느냐? 멍청한 놈!"
 })
+
+--------------------------
+--  The Bastion of Twilight Trash  --
+--------------------------
+L = DBM:GetModLocalization("BoTrash")
+
+L:SetGeneralLocalization({
+	name =	"황혼의 요새 일반몹"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnFlameStrike		= "$spell:93383 외치기"
+})
+
+L:SetMiscLocalization({
+	YellFlameStrike			= "나에게 불기둥!"
+})
