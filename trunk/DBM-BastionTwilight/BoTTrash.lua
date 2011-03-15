@@ -20,7 +20,7 @@ local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903)
 local specWarnRupture		= mod:NewSpecialWarningSpell(93377)
 
 local timerVolcanicWrath	= mod:NewBuffActiveTimer(9, 87903)--Maybe need a Guid based targettimer since most pulls have 2 of these?
-local timerFrostWhirl		= mod:NewBuffActiveTimer(4, 80652)--Maybe need a Guid based targettimer in case you pull more than one?
+local timerFrostWhirl		= mod:NewBuffActiveTimer(4, 93340)--Maybe need a Guid based targettimer in case you pull more than one?
 
 mod:AddBoolOption("YellOnFlameStrike", true, "announce")
 mod:RemoveOption("HealthFrame")
