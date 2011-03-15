@@ -18,15 +18,15 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
+L:SetOptionLocalization({
+	SpecWarnInferno	= "Предупреждать заранее о $spell:92190 (~4сек)",
+	RangeFrame		= "Показывать окно проверки дистанции на второй фазе (5м)"
+})
+
 L:SetMiscLocalization({
 	Slump			= "%s внезапно падает, выставляя клешки!",
 	HeadExposed		= "%s насаживается на пику, обнажая голову!",
 	YellPhase2		= "Непостижимо! Вы, кажется, можете уничтожить моего лавового червяка! Пожалуй, я помогу ему."
-})
-
-L:SetOptionLocalization({
-	SpecWarnInferno	= "Предупреждать заранее о $spell:92190 (~4сек)",
-	RangeFrame		= "Показывать окно проверки дистанции на второй фазе (5м)"
 })
 
 -------------------------------
@@ -40,19 +40,24 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnActivated			= "Смена цели на: %s!",
+	specWarnGenerator			= "Генератор энергии - Двигайтесь %s!"
 })
 
 L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "Чародейская обратная вспышка",
 	timerShadowConductorCast	= "Проводник тьмы",
-	timerNefAblity				= "Восст. баффа" --Ability Buff CD
+	timerNefAblity				= "Восст. баффа", --Ability Buff CD
+	timerArcaneLockout			= "Волшебный уничтожитель"
 })
 
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Показывать таймер применения $spell:92053",
 	timerArcaneBlowbackCast		= "Показывать таймер применения $spell:91879",
+	timerArcaneLockout			= "Показывать таймер блокировки $spell:91542",
 	timerNefAblity				= "Показывать таймер восстановления баффа (героический режим)",
 	SpecWarnActivated			= "Показывать особое предупреждение при активации нового босса",
+	specWarnGenerator			= "Показывать особое предупреждение когда босс получает $spell:91557",
+	YellOnChemBomb				= "Кричать, когда на вас $spell:80157",
 	YellBombTarget				= "Кричать, когда на вас $spell:80094",
 	YellOnLightning				= "Кричать, когда на вас $spell:79888",
 	YellOnShadowCast			= "Кричать, когда на вас $spell:92053",
@@ -60,20 +65,20 @@ L:SetOptionLocalization({
 	YellOnTargetLock			= "Кричать, когда на вас $spell:92023",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
 L:SetMiscLocalization({
-	Magmatron			= "Магматрон",
-	Electron			= "Электрон",
-	Toxitron			= "Токситрон",
-	Arcanotron			= "Чаротрон",
-	SayBomb				= "На МНЕ - Ядовитая бомба!",
-	YellLightning		= "На МНЕ - Проводник молний!",
-	YellShadowCast		= "На МНЕ - Проводник тьмы!",
-	YellTarget			= "На МНЕ - Выбор цели!",
-	YellTargetLock		= "На МНЕ - Обрамляющие тени! Прочь от меня!"
+	Magmatron					= "Магматрон",
+	Electron					= "Электрон",
+	Toxitron					= "Токситрон",
+	Arcanotron					= "Чаротрон",
+	SayBomb						= "На МНЕ - Ядовитая бомба!",
+	YellLightning				= "На МНЕ - Проводник молний!",
+	YellShadowCast				= "На МНЕ - Проводник тьмы!",
+	YellTarget					= "На МНЕ - Выбор цели!",
+	YellTargetLock				= "На МНЕ - Обрамляющие тени! Прочь от меня!",
+	YellCloud					= "На МНЕ - Химическая бомба!"
 })
 
 ----------------
@@ -91,18 +96,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
-	TimerPhase		= "Следующая фаза"
-})
-
-L:SetMiscLocalization({
-	YellRed			= "красный|r пузырек в котел!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
-	YellBlue		= "синий|r пузырек в котел!",
-	YellGreen		= "зеленый|r пузырек в котел!",
-	YellDark		= "магию на котле!",
-	Red		     	= "Огненная",
-	Blue			= "Ледяная",
-	Green			= "Кислотная",
-	Dark			= "Тёмная"
+	TimerPhase			= "Следующая фаза"
 })
 
 L:SetOptionLocalization({
@@ -113,6 +107,17 @@ L:SetOptionLocalization({
 	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
+})
+
+L:SetMiscLocalization({
+	YellRed				= "красный|r пузырек в котел!",--Partial matchs, no need for full strings unless you really want em, mod checks for both.
+	YellBlue			= "синий|r пузырек в котел!",
+	YellGreen			= "зеленый|r пузырек в котел!",
+	YellDark			= "магию на котле!",
+	Red		     		= "Огненная",
+	Blue				= "Ледяная",
+	Green				= "Кислотная",
+	Dark				= "Тёмная"
 })
 
 -----------------
@@ -228,6 +233,28 @@ L:SetMiscLocalization({
 	YellPhase2			= "Дерзкие смертные! Неуважение к чужой собственности нужно пресекать самым жестоким образом!",
 	YellPhase3			= "Я пытался следовать законам гостеприимства, но вы все никак не умрете! Придется отбросить условности и просто... УБИТЬ ВАС ВСЕХ!",
 	YellCinder			= "На МНЕ - Взрывчатая субстанция!",
+	Nefarian			= "Нефариан",
 	Onyxia				= "Ониксия",
 	Charge				= "Электрический заряд"
+})
+
+--------------
+--  Blackwing Descent Trash  --
+--------------
+L = DBM:GetModLocalization("BWDTrash")
+
+L:SetGeneralLocalization({
+	name = "Существа Твердыни Крыла Тьмы"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
