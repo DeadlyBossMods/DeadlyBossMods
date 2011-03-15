@@ -170,7 +170,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnAirphase			= "공중 단계 경고 보기",
 	WarnGroundphase			= "지상 단계 경고 보기",
-	WarnShieldsLeft			= "고대 드워프 보호막 남은 개수 경고 보기",
+	WarnShieldsLeft			= "고대 드워프 보호막 사용시 경고 보기",
 	warnAddSoon				= "불쾌한 마귀 소환 경고 보기",
 	specWarnAddTargetable	= "불쾌한 마귀가 공격 가능할 때 특수 경고 보기",
 	TimerAirphase			= "다음 공중 단계 경고 보기",
@@ -224,6 +224,7 @@ L:SetOptionLocalization({
 	YellOnCinder			= "$spell:79339 외치기",
 	RangeFrame				= "$spell:79339의 영향을 받을 경우 거리 프레임(10m) 보기",
 	InfoFrame				= "오닉시아 전하 충전 정보 프레임 보기",
+	SetWater				= "풀링시 수면 자동 시점 옵션을 자동으로 끄기\n(전투 종료시 다시 자동으로 켜집니다.)",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
