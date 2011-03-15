@@ -164,10 +164,10 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDragon			= "Показывать предупреждение, когда появляются сумеречные дракончики",
-	WarnSlicerSoon		= "Показывать предупреждение для $spell:92954 (До начало 5с, каждую 1с)\n(Expected warning. may not be accurate. Can be spammy.)",
+	WarnSlicerSoon		= "Показывать предупреждение для $spell:92954 (До начало 5с, каждую 1с)\n(Предполагаемое предупреждение, может быть не точным. Может быть спамом.)",
 	WarnEggWeaken		= "Показывать предупреждение кога спадает $spell:87654", -- not good translation. check if more better
-	SpecWarnSlicer		= "Показывать особое предупреждение для $spell:92954\n(Expected warning. may not be accurate)",
-	SpecWarnDispel		= "Показывать особое предупреждение для рассеивания $spell:92955\n(after certain time elapsed from casted/jumped)", -- not good translation. check if more better
+	SpecWarnSlicer		= "Показывать особое предупреждение для $spell:92954\n(Предполагаемое предупреждение, может быть не точным)",
+	SpecWarnDispel		= "Показывать особое предупреждение для рассеивания $spell:92955\n(после определенного времени, прошедшего с момента произнесения/прыжка)", -- not good translation. check if more better
 	SpecWarnEggWeaken	= "Показывать особое предупреждение когда $spell:87654 снято", -- not good translation. check if more better
 	SpecWarnEggShield	= "Показывать особое предупреждение когда $spell:87654 восстановлено", -- not good translation. check if more better
 	TimerDragon			= "Показывать таймер до новых сумеречных дракончиков",
