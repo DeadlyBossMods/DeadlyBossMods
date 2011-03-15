@@ -64,6 +64,7 @@ mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("YellOnCinder", true, "announce")
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
+mod:AddBoolOption("SetWater", false)
 
 local deaths = 0
 local spamShadowblaze = 0
@@ -115,6 +116,9 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(L.Charge)
 		DBM.InfoFrame:Show(2, "enemypower", 5, ALTERNATE_POWER_INDEX)
 	end
+	if self.Options.SetWater then
+		SetCVar("cameraWaterCollision", 0)
+	end
 end
 
 function mod:OnCombatEnd()
@@ -123,6 +127,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
+	end
+	if self.Options.SetWater then
+		SetCVar("cameraWaterCollision", 1)
 	end
 end
 

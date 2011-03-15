@@ -223,6 +223,7 @@ L:SetOptionLocalization({
 	YellOnCinder			= "Yell on $spell:79339",
 	RangeFrame				= "Show range frame (10) when you have $spell:79339",
 	InfoFrame				= "Show info frame for Onyxia's Electric Charge",
+	SetWater				= "Automatically disable water collision on pull\n(returns it to enabled upon leaving combat",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
