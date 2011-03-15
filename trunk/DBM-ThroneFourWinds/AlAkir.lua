@@ -23,7 +23,7 @@ local isDeathKnight = select(2, UnitClass("player")) == "DEATHKNIGHT"
 local warnWindBurst			= mod:NewSpellAnnounce(87770, 3)
 local warnAdd				= mod:NewAnnounce("WarnAdd", 2, 87856)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
-local warnAcidRain			= mod:NewCountAnnounce(93281, nil, false)
+local warnAcidRain			= mod:NewCountAnnounce(93281, 2, nil, false)
 local warnFeedback			= mod:NewStackAnnounce(87904, 2)
 local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnCloud				= mod:NewSpellAnnounce(89588, 3)
@@ -78,7 +78,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerFeedback:Start(20, args.amount or 1)
 	elseif args:IsSpellID(88301, 93279, 93280, 93281) then--Acid Rain (phase 2 debuff)
 		timerAcidRainStack:Start()
-		if args.amount and args.amount > 1 then
+		if args.amount and args.amount > 1 and args:IsPlayer() then
 			warnAcidRain:Show(args.amount)
 		end
 		if not phase2Started then
