@@ -33,7 +33,7 @@ local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
 
-local timerBreathCD		= mod:NewCDTimer(24, 92944)
+local timerBreathCD		= mod:NewCDTimer(21, 92944)
 local timerSlicer		= mod:NewNextTimer(28, 92954)
 local timerWrack		= mod:NewBuffActiveTimer(60, 92955)
 local timerExtinction	= mod:NewCastTimer(16, 86227)
@@ -79,7 +79,7 @@ function mod:OnCombatStart(delay)
 	eggRemoved = false
 	redSpam = 0
 	timerDragon:Start(16-delay)
-	timerBreathCD:Start(23-delay)
+	timerBreathCD:Start(21-delay)
 	timerSlicer:Start(29-delay)
 	if self.Options.WarnSlicerSoon then
 		warnSlicerSoon:Schedule(24, 5)
