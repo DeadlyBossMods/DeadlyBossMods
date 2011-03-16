@@ -21,6 +21,8 @@ local warnBubble			= mod:NewTargetAnnounce(77336, 3)
 local warnImpale			= mod:NewTargetAnnounce(77235, 3)
 local warnInferno			= mod:NewSpellAnnounce(77241, 3)
 
+local specWarnAlphaBeams	= mod:NewSpecialWarningMove(76956)
+
 local timerAlphaBeams		= mod:NewBuffActiveTimer(16, 76184)
 local timerAlphaBeamsCD		= mod:NewCDTimer(47, 76184)
 local timerOmegaStance		= mod:NewBuffActiveTimer(8, 75622)
@@ -50,6 +52,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnImpale:Show(args.destName)
 		timerImpale:Start(args.destName)
 		timerImpaleCD:Start()
+	elseif args:IsSpellID(76956, 91177) and args:IsPlayer() then
+		specWarnAlphaBeams:Show()
 	end
 end
 
