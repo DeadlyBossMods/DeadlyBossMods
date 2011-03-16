@@ -104,6 +104,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "돌연변이가 얼마나 남았는지 경고 보기",
 	TimerPhase			= "다음 단계 타이머 보기",
 	RangeFrame			= "푸른 단계에서 거리 프레임 보기",	
+	SetTextures			= "암흑 단계에서 텍스쳐 투영 효과 자동으로 끄기\n(암흑 단계가 종료 되면 원상태로)",
 	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
@@ -224,7 +225,7 @@ L:SetOptionLocalization({
 	YellOnCinder			= "$spell:79339 외치기",
 	RangeFrame				= "$spell:79339의 영향을 받을 경우 거리 프레임(10m) 보기",
 	InfoFrame				= "오닉시아 전하 충전 정보 프레임 보기",
-	SetWater				= "풀링시 수면 자동 시점 옵션을 자동으로 끄기\n(전투 종료시 다시 자동으로 켜집니다.)",
+	SetWater				= "풀링시 수면 자동 시점 옵션을 자동으로 끄기\n(전투가 종료 되면 원상태로)",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
