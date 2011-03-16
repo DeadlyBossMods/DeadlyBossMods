@@ -116,7 +116,7 @@ function mod:OnCombatStart(delay)
 		DBM.InfoFrame:SetHeader(L.Charge)
 		DBM.InfoFrame:Show(2, "enemypower", 5, ALTERNATE_POWER_INDEX)
 	end
-	if self.Options.SetWater then
+	if self.Options.SetWater and GetCVarBool("cameraWaterCollision") then
 		SetCVar("cameraWaterCollision", 0)
 	end
 end
@@ -128,7 +128,7 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
-	if self.Options.SetWater then
+	if self.Options.SetWater and not GetCVarBool("cameraWaterCollision") then
 		SetCVar("cameraWaterCollision", 1)
 	end
 end
