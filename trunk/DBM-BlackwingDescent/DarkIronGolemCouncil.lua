@@ -68,10 +68,10 @@ local timerAcquiringTarget		= mod:NewNextTimer(40, 79501)
 local timerBarrier				= mod:NewBuffActiveTimer(11.5, 79582, nil, false)	-- 10 + 1.5 cast time
 local timerIncinerationCD   	= mod:NewNextTimer(26.5, 79023, nil, mod:IsHealer())--Timer Series, 10, 27, 32 (on normal) from activate til shutdown.
 --Electron
-local timerLightningConductor	= mod:NewTargetTimer(10, 79888, nil, false)
+local timerLightningConductor	= mod:NewTargetTimer(10, 79888)
 local timerLightningConductorCD	= mod:NewNextTimer(25, 79888)
 local timerUnstableShield		= mod:NewBuffActiveTimer(11.5, 79900, nil, false)	-- 10 + 1.5 cast time
-local timerShadowConductor		= mod:NewTargetTimer(10, 92053, nil, false)			--Heroic Ability
+local timerShadowConductor		= mod:NewTargetTimer(10, 92053)						--Heroic Ability
 local timerShadowConductorCast	= mod:NewTimer(5, "timerShadowConductorCast", 92048)--Heroic Ability
 --Toxitron
 local timerChemicalBomb			= mod:NewCDTimer(30, 80157)							--Timer Series, 11, 30, 36 (on normal) from activate til shutdown.
