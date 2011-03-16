@@ -102,6 +102,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Show warning how many aberrations remain",
 	TimerPhase			= "Show timer for next phase",
 	RangeFrame			= "Show range frame (6) during blue phase",
+	SetTextures			= "Automatically disable projected textures in dark phase\n(returns it to enabled upon leaving phase)",
 	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
