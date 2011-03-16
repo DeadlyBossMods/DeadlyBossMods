@@ -35,9 +35,9 @@ local warnSpecialSoon		= mod:NewAnnounce("warnSpecialSoon", 2, "Interface\\Icons
 local warnSpecial			= mod:NewAnnounce("warnSpecial", 3, "Interface\\Icons\\INV_Enchant_EssenceMagicLarge")--Hurricane/Sleet Storm/Zephyr in single announce
 
 local specWarnSpecial		= mod:NewSpecialWarning("specWarnSpecial")
+local specWarnIcePatch      = mod:NewSpecialWarningMove(93131)
 local specWarnShield		= mod:NewSpecialWarningSpell(95865)
 local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
-local specWarnIcePatch      = mod:NewSpecialWarningMove(93131)
 
 local timerNurture			= mod:NewNextTimer(35, 85422)--This this is typically 35 seconds after a special has ended.
 local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
