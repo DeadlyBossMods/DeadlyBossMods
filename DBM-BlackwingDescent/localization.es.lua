@@ -66,7 +66,6 @@ L:SetOptionLocalization({
 	YellOnTargetLock			= "Gritar cuando tengas $spell:92023",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
 	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
 })
 
@@ -106,6 +105,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Mostrar un aviso con las aberraciones restantes",
 	TimerPhase		= "Mostrar tiempo para la siguiente fase",	
 	RangeFrame		= "Mostrar distancia (6 yardas) durante la fase azul",
+	SetTextures			= "Desactivar las texturas proyectadas automáticamente en fase oscura\n(se reactivan al cambiar de fase)",
 	FlashFreezeIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
@@ -227,6 +227,7 @@ L:SetOptionLocalization({
 	YellOnCinder		= "Gritar cuando tengas $spell:79339",
 	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339",
 	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
+	SetWater			= "Desactivar la colisión con el agua automáticamente al pullear\n(se reactiva al abandonar el combate)",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 
