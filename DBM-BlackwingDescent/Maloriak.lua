@@ -58,6 +58,7 @@ mod:AddBoolOption("FlashFreezeIcon")
 mod:AddBoolOption("BitingChillIcon", false)
 mod:AddBoolOption("ConsumingFlamesIcon", false)
 mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("SetTextures", false)--Blizz sucks and just about ALL friendly spells cover dark sludge and make you unable to see it.
 
 local adds = 18
 local AddsInterrupted = false
@@ -197,6 +198,9 @@ function mod:SPELL_CAST_START(args)
 		timerScorchingBlast:Cancel()
 		timerAddsCD:Cancel()
 		timerEngulfingDarknessCD:Cancel()
+		if self.Options.SetTextures then--and not GetCVarBool("projectedTextures")  Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
+			SetCVar("projectedTextures", 1)
+		end
 	elseif args:IsSpellID(92754) then
 		warnEngulfingDarkness:Show()
 		timerEngulfingDarknessCD:Start()
@@ -241,6 +245,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then--Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
+			SetCVar("projectedTextures", 1)
+		end
 	elseif msg == L.YellBlue or msg:find(L.YellBlue) then
 		warnPhase:Show(L.Blue)
 		timerPhase:Start()
@@ -251,6 +258,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		timerEngulfingDarknessCD:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
+		end
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then--Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
+			SetCVar("projectedTextures", 1)
 		end
 	elseif msg == L.YellGreen or msg:find(L.YellGreen) then
 		warnPhase:Show(L.Green)
@@ -271,6 +281,9 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		timerAddsCD:Cancel()
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
+		end
+		if self.Options.SetTextures and GetCVarBool("projectedTextures") then-- Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it's already off.
+			SetCVar("projectedTextures", 0)
 		end
 	end
 end
