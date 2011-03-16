@@ -380,15 +380,15 @@ end
 function mod:SPELL_INTERRUPT(args)--Pretty sure druids still don't show in log so if a druid kicks it won't be accurate.
 	if (type(args.extraSpellId) == "number" and (args.extraSpellId == 79710 or args.extraSpellId == 91540 or args.extraSpellId == 91541 or args.extraSpellId == 91542)) and GetTime() - lastInterrupt > 2 then
 		lastInterrupt = GetTime()--We only want the first interrupt, any extra won't count til next cast
-		if args:IsSpellID(2139) then							--Counterspell
+		if args:IsSpellID(2139) then															--Counterspell
 			timerArcaneLockout:Start(7.5)
-		elseif args:IsSpellID(72) then							--Shield Bash (will be removed in 4.1)
-			timerArcaneLockout:Start(6.5)
-		elseif args:IsSpellID(96231, 6552, 47528, 1766) then	--Rebuke, Pummel, Mind Freeze, Kick
-			timerArcaneLockout:Start(5)
---[[		elseif args:IsSpellID(34490, 15487) then			--Silencing Shot, Silence
-			timerArcaneLockout:Start(3.5)--]]
-		elseif args:IsSpellID(57994) then						--Wind Shear
+		elseif args:IsSpellID(72, 19647) then													--Shield Bash (will be removed in 4.1), Spell Lock (Fel Hunter)
+			timerArcaneLockout:Start(6.5)--Shield bash verified, spell lock assumed since it's same lockout duration.
+		elseif args:IsSpellID(96231, 6552, 47528, 1766) or args:IsSpellID(80964, 80965)  then	--Rebuke, Pummel, Mind Freeze, Kick, Skull Bash (feral and bear)
+			timerArcaneLockout:Start(5)--4 out of 6 verified, skull bash needs logs to review for certainty.
+		elseif args:IsSpellID(34490, 15487) then												--Silencing Shot, Silence
+			timerArcaneLockout:Start(3.5)--Drycoded, needs verification for both spells.
+		elseif args:IsSpellID(57994) then														--Wind Shear
 			timerArcaneLockout:Start(2.5)
 		end
 	end
