@@ -198,7 +198,7 @@ function mod:SPELL_CAST_START(args)
 		timerScorchingBlast:Cancel()
 		timerAddsCD:Cancel()
 		timerEngulfingDarknessCD:Cancel()
-		if self.Options.SetTextures then--and not GetCVarBool("projectedTextures")  Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then--Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
 			SetCVar("projectedTextures", 1)
 		end
 	elseif args:IsSpellID(92754) then
