@@ -104,6 +104,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds	= "Предупреждать об оставшемся количестве аберраций",
 	TimerPhase			= "Показывать таймер до следующей фазы",
 	RangeFrame			= "В ходе синей фазы, показывать окно проверки дистанции (6м)",
+	SetTextures			= "Автоматически отключить \"Проецирование текстур\" в темной фазе\n(включается обратно при выходе из фазы)",
 	FlashFreezeIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
