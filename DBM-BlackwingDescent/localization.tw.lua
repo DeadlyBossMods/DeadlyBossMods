@@ -12,7 +12,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	SpecWarnInferno			= "熾熱的煉獄 即將到來 (~4秒)",
+	SpecWarnInferno			= "熾熱的煉獄 即將到來 (~4秒)"
 })
 
 L:SetTimerLocalization({
@@ -26,7 +26,7 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	Slump				= "%s往前撲倒，露出他的鉗子!",
 	HeadExposed			= "%s被釘在尖刺上，露出了他的頭!",
-	YellPhase2			= "Inconceivable! You may actually defeat my lava worm! Perhaps I can help... tip the scales."
+	YellPhase2			= "真難想像!看來你真有機會打敗我的蟲子!也許我可幫忙...扭轉戰局。"
 })
 
 -------------------------------
@@ -40,7 +40,8 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	SpecWarnActivated		= "轉換目標到 %s!",
-	specWarnGenerator		= "發電機 - 拉開%s!"
+	specWarnGenerator		= "發電機 - 拉開%s!",
+	timerArcaneLockout		= "秘法殲滅者鎖定"
 })
 
 L:SetTimerLocalization({
@@ -52,6 +53,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "為$spell:92048的施放顯示計時器",
 	timerArcaneBlowbackCast		= "為$spell:91879的施放顯示計時器",
+	timerArcaneLockout		= "為$spell:91542法術鎖定顯示計時器",
 	timerNefAblity			= "為困難技能增益冷卻顯示計時器",
 	SpecWarnActivated		= "當新首領啟動時顯示特別警告",
 	specWarnGenerator		= "當首領獲得$spell:91557時顯示特別警告",
@@ -103,6 +105,7 @@ L:SetOptionLocalization({
 	WarnRemainingAdds		= "顯示剩餘多少畸變的警告",
 	TimerPhase			= "為下一階段顯示計時器",
 	RangeFrame			= "藍色階段時顯示距離框 (6碼)",
+	SetTextures			= "自動在黑暗階段停用投影材質\n(離開黑暗階段後回到啟用)",
 	FlashFreezeIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92979),
 	BitingChillIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77760),
 	ConsumingFlamesIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(77786)
@@ -225,6 +228,8 @@ L:SetOptionLocalization({
 	YellOnCinder			= "中了$spell:79339時大喊",
 	RangeFrame			= "當你中了$spell:79339時顯示距離框 (10碼)",
 	InfoFrame			= "為奧妮克希亞的電流充能顯示資訊框架",
+
+	SetWater			= "進入戰鬥後自動停用水體細節\n(離開戰鬥後回到啟用)",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
 

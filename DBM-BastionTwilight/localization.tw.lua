@@ -18,7 +18,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	ShowDrakeHealth		= "顯示已被釋放的小龍血量"
+	ShowDrakeHealth		= "顯示已被釋放的小龍血量\n(需要先開啟首領血量)"
 })
 
 L:SetMiscLocalization({
@@ -82,6 +82,7 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)",
 	timerTransition		= "顯示階段轉換計時器",
 	RangeFrame		= "當需要時自動顯示距離框",
+	YellOnLightningRod	= "中了$spell:83099時大喊",
 	warnGravityCoreJump	= "公布$spell:92538的擴散目標",
 	warnStaticOverloadJump	= "公布$spell:92467的擴散目標",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
@@ -98,6 +99,7 @@ L:SetMiscLocalization({
 	Thundershock		= "四周的空氣爆出能量霹啪作響聲音....",
 	Switch			= "我們會解決他們!",
 	Phase3			= "見證你的滅亡!",
+	YellLightning		= "我中了聚雷針!",
 	Ignacious		= "伊格納修斯",
 	Feludius		= "費魯迪厄斯",
 	Arion			= "艾理奧",
@@ -176,4 +178,28 @@ L:SetOptionLocalization({
 L:SetMiscLocalization({
 	YellDragon		= "Feed, children!  Take your fill from their meaty husks!",
 	YellEgg			= "You mistake this for weakness?  Fool!"
+
+})
+
+--------------------------
+--  The Bastion of Twilight Trash  --
+--------------------------
+L = DBM:GetModLocalization("BoTrash")
+
+L:SetGeneralLocalization({
+	name =	"暮光堡壘小怪"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+	YellOnFlameStrike		= "中了$spell:93383時大喊"
+})
+
+L:SetMiscLocalization({
+	YellFlameStrike			= "我中了烈焰風暴!"
 })
