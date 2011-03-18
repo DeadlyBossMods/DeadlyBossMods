@@ -22,7 +22,7 @@ mod:RemoveOption("SpeedKillTimer")
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71127) then
 		warnBPGreen:Show(args.destName)
-	elseif args:IsSpellID(71127) then--I will have to log this trash to verify this spell event.
+	elseif args:IsSpellID(80727) and args:IsDestTypePlayer() then--I will have to log this trash to verify this spell event.
 		warnSacrifice:Show(args.destName)
 		timerSacrifice:Start(args.destName)
 	elseif args:IsSpellID(80084) then
