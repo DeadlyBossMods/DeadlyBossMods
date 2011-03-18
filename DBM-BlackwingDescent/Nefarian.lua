@@ -241,8 +241,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerShadowflameBarrage:Start()
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
-		timerShadowBlazeCD:Start(13)
-		self:ScheduleMethod(13, "ShadowBlazeFunction")
+		timerShadowBlazeCD:Start(12)--Seems to vary some, from 11-13 so 12 should be a happy medium, it'll always be about 1 second off in either direction though.
+		self:ScheduleMethod(12, "ShadowBlazeFunction")
 	end
 end
 
