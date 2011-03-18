@@ -1659,7 +1659,7 @@ do
 		elseif prefix == "DBMv4-Ver" and msg == "Hi!" then -- an old client is trying to communicate with us, but we can't respond as he won't be able to receive our messages
 			if raid[sender] and not raid[sender].revision then -- it is actually an old client and not a recent one sending an old sync for compatibility reasons during 4.0
 				raid[sender].revision = 0
-				raid[sender].version = "4.00"
+				raid[sender].version = 4
 				raid[sender].displayVersion = "Unknown (uses incompatible pre-4.1 sync system without support for filters)"
 				raid[sender].locale = "unknown"
 			end
