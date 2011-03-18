@@ -114,6 +114,9 @@ function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
+		SetCVar("projectedTextures", 1)
+	end
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -198,7 +201,7 @@ function mod:SPELL_CAST_START(args)
 		timerScorchingBlast:Cancel()
 		timerAddsCD:Cancel()
 		timerEngulfingDarknessCD:Cancel()
-		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then--Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
 			SetCVar("projectedTextures", 1)
 		end
 	elseif args:IsSpellID(92754) then
@@ -245,7 +248,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then--Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
 			SetCVar("projectedTextures", 1)
 		end
 	elseif msg == L.YellBlue or msg:find(L.YellBlue) then
@@ -259,7 +262,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Show(6)
 		end
-		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then--Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it exists and do nothing.
+		if self.Options.SetTextures and not GetCVarBool("projectedTextures") then
 			SetCVar("projectedTextures", 1)
 		end
 	elseif msg == L.YellGreen or msg:find(L.YellGreen) then
@@ -282,7 +285,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		if self.Options.RangeFrame then
 			DBM.RangeCheck:Hide()
 		end
-		if self.Options.SetTextures and GetCVarBool("projectedTextures") then-- Might need this don't know yet, don't really know if it's faster to write a value that already exists, or check if it's already off.
+		if self.Options.SetTextures and GetCVarBool("projectedTextures") then
 			SetCVar("projectedTextures", 0)
 		end
 	end
