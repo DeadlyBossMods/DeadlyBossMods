@@ -11,29 +11,30 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_CAST_START",
 	"SPELL_SUMMON",
-	"CHAT_MSG_MONSTER_YELL"
+	"CHAT_MSG_MONSTER_YELL",
+	"UNIT_AURA"
 )
 
-local warnFlame				= mod:NewSpellAnnounce(75321, 3)
-local warnDevouring			= mod:NewSpellAnnounce(90950, 3)
-local warnShredding			= mod:NewSpellAnnounce(75271, 3)
-local warnFlamingFixate	 	= mod:NewTargetAnnounce(82850, 4)
+local warnFlame					= mod:NewSpellAnnounce(75321, 3)
+local warnDevouring				= mod:NewSpellAnnounce(90950, 3)
+local warnShredding				= mod:NewSpellAnnounce(75271, 3)
+local warnFlamingFixate	 		= mod:NewTargetAnnounce(82850, 4)
 
-local specWarnFlamingFixate	= mod:NewSpecialWarningYou(82850)
-local specWarnDevouring 	= mod:NewSpecialWarningSpell(90950)
+local specWarnFlamingFixate		= mod:NewSpecialWarningYou(82850)
+local specWarnDevouring 		= mod:NewSpecialWarningSpell(90950)
+local specWarnSeepingTwilight	= mod:NewSpecialWarningMove(75317)
 
-local timerFlame			= mod:NewCDTimer(27, 75321)
-local timerDevouring		= mod:NewBuffActiveTimer(5, 90950)
-local timerShredding		= mod:NewBuffActiveTimer(20, 75271)
+local timerFlame				= mod:NewCDTimer(27, 75321)
+local timerDevouring			= mod:NewBuffActiveTimer(5, 90950)
+local timerShredding			= mod:NewBuffActiveTimer(20, 75271)
+
+local flamingFixate = GetSpellInfo(82850)
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(82850) then
-		warnFlamingFixate:Show(args.destName)
-		if args:IsPlayer() then
-			specWarnFlamingFixate:Show()
-		end
-	elseif args:IsSpellID(75328) then
+	if args:IsSpellID(75328) then
 		DBM.BossHealth:RemoveBoss(40320)
+	elseif args:IsSpellID(75317, 90964) and args:IsPlayer() then
+		specWarnSeepingTwilight:Show()
 	end
 end
 
@@ -58,5 +59,14 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.ValionaYell then
 		DBM.BossHealth:AddBoss(40320, L.Valiona)
+	end
+end
+
+function mod:UNIT_AURA(uId)
+	if UnitDebuff(uId, flamingFixate) then
+		warnFlamingFixate:Show(UnitName(uId))
+		if uId == "player" then
+			specWarnFlamingFixate:Show()
+		end	
 	end
 end
