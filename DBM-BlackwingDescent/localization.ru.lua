@@ -56,7 +56,7 @@ L:SetOptionLocalization({
 	timerArcaneLockout			= "Показывать таймер блокировки $spell:91542",
 	timerNefAblity				= "Показывать таймер восстановления баффа (героический режим)",
 	SpecWarnActivated			= "Показывать особое предупреждение при активации нового босса",
-	specWarnGenerator			= "Показывать особое предупреждение когда босс получает $spell:91557",
+	specWarnGenerator			= "Показывать особое предупреждение, когда босс стоит в $spell:91557",
 	YellOnChemBomb				= "Кричать, когда на вас $spell:80157",
 	YellBombTarget				= "Кричать, когда на вас $spell:80094",
 	YellOnLightning				= "Кричать, когда на вас $spell:79888",
