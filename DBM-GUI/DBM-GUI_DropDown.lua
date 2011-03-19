@@ -70,7 +70,7 @@ do
 		self:GetParent().dropdown.text = self.entry.text
 
 		if self.entry.sound then
-			if DBM.Options.UseMasterVolume and select(4, _G.GetBuildInfo()) >= 40000 then
+			if DBM.Options.UseMasterVolume then
 				PlaySoundFile(self.entry.value, "Master")
 			else
 				PlaySoundFile(self.entry.value)
@@ -187,7 +187,7 @@ do
 		dropdown:SetWidth((width or 120)+30)	-- required to fix some setpoint problems
 		_G[dropdown:GetName().."Middle"]:SetWidth(width or 120)
 		_G[dropdown:GetName().."Button"]:SetScript("OnClick", function(self)
-			if DBM.Options.UseMasterVolume and select(4, _G.GetBuildInfo()) >= 40000 then
+			if DBM.Options.UseMasterVolume then
 				PlaySound("igMainMenuOptionCheckBoxOn", "Master")
 			else
 				PlaySound("igMainMenuOptionCheckBoxOn")

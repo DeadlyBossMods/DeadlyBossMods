@@ -58,7 +58,6 @@ local createFrame
 local onUpdate
 local dropdownFrame
 local initializeDropdown
-local is_cata = select(4, _G.GetBuildInfo()) >= 40000
 local initRangeCheck -- initializes the range check for a specific range (if necessary), returns false if the initialization failed (because of a map range check in an unknown zone)
 
 -- for Phanx' Class Colors
@@ -80,7 +79,7 @@ do
 	local function setSound(self, option, sound)
 		DBM.Options[option] = sound
 		if sound ~= "none" then
-			if DBM.Options.UseMasterVolume and is_cata then
+			if DBM.Options.UseMasterVolume then
 				PlaySoundFile(sound, "Master")
 			else
 				PlaySoundFile(sound)
@@ -251,7 +250,7 @@ local function updateSound(numPlayers) -- called every 5 seconds
 	end
 	if numPlayers == 1 then
 		if DBM.Options.RangeFrameSound1 ~= "none" then
-			if DBM.Options.UseMasterVolume and is_cata then
+			if DBM.Options.UseMasterVolume then
 				PlaySoundFile(DBM.Options.RangeFrameSound1, "Master")
 			else
 				PlaySoundFile(DBM.Options.RangeFrameSound1)
@@ -259,7 +258,7 @@ local function updateSound(numPlayers) -- called every 5 seconds
 		end
 	elseif numPlayers > 1 then
 		if DBM.Options.RangeFrameSound2 ~= "none" then
-			if DBM.Options.UseMasterVolume and is_cata then
+			if DBM.Options.UseMasterVolume then
 				PlaySoundFile(DBM.Options.RangeFrameSound2, "Master")
 			else
 				PlaySoundFile(DBM.Options.RangeFrameSound2)
