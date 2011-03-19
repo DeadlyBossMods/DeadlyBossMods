@@ -151,16 +151,8 @@ local loadModOptions
 local checkWipe
 local fireEvent
 local _, class = UnitClass("player")
-local is_cata = select(4, _G.GetBuildInfo()) >= 40000
-local is_china = select(4, _G.GetBuildInfo()) == 30200--Chinese wow (3.2.2) No one else should be on 3.2.x, screw private servers.
-local GetCurrentMapID
 local LastZoneText
 local LastZoneMapID
-if is_china then
-	GetCurrentMapID = function() return GetCurrentMapAreaID() + 1 end -- US 4.0.1 changed all area ids by -1. So we add it back to continue supporting CN wow until they get same change.
-else
-	GetCurrentMapID = GetCurrentMapAreaID
-end
 
 local enableIcons = true -- set to false when a raid leader or a promoted player has a newer version of DBM
 
@@ -1447,10 +1439,10 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on login or reloadui and returns maelstrom or throne of four winds, the latter loading throne mod by mistake instead of correct boss mod for zone.
 	end
 	local zoneName = GetRealZoneText()
-	local zoneId = GetCurrentMapID()
+	local zoneId = GetCurrentMapAreaID()()
 	LastZoneMapID = zoneId--Cache map on zone change.
 	LastZoneText = zoneName--Cache zone name on change.
---	DBM:AddMsg(("Zone Change called: current zoneName %s, current mapID %s"):format(tostring(GetRealZoneText()), tostring(GetCurrentMapID()))) -- DEBUG
+--	DBM:AddMsg(("Zone Change called: current zoneName %s, current mapID %s"):format(tostring(GetRealZoneText()), tostring(GetCurrentMapAreaID()()))) -- DEBUG
 	for i, v in ipairs(self.AddOns) do
 		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or (checkEntry(v.zoneId, zoneId) and IsInInstance())) then--To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances.
 			-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
@@ -2667,26 +2659,16 @@ function bossModPrototype:Stop(cid)
 	self:Unschedule()
 end
 
--- hard coded party-mod support, yay :)
--- returns heroic for old instances that do not have a heroic mode (Naxx, Ulduar...)
 function bossModPrototype:GetDifficulty() 
 	local _, instanceType, difficulty, _, _, playerDifficulty, isDynamicInstance = GetInstanceInfo()
-	if instanceType == "raid" and isDynamicInstance and not is_cata then -- "dynamic" instance (ICC) (3.3.5 only)
-		if difficulty == 1 then -- 10 men
-			return playerDifficulty == 0 and "normal10" or playerDifficulty == 1 and "heroic10" or "unknown"
-		elseif difficulty == 2 then -- 25 men
-			return playerDifficulty == 0 and "normal25" or playerDifficulty == 1 and "heroic25" or "unknown"
-		end
-	else -- support for "old" instances (in 4.0 blizz switched all instances to 1-4 method)
-		if difficulty == 1 then 
-			return instanceType == "raid" and "normal10" or "normal5"
-		elseif difficulty == 2 then 
-			return instanceType == "raid" and "normal25" or "heroic5"
-		elseif difficulty == 3 then 
-			return "heroic10" 
-		elseif difficulty == 4 then 
-			return "heroic25" 
-		end
+	if difficulty == 1 then 
+		return instanceType == "raid" and "normal10" or "normal5"
+	elseif difficulty == 2 then 
+		return instanceType == "raid" and "normal25" or "heroic5"
+	elseif difficulty == 3 then 
+		return "heroic10" 
+	elseif difficulty == 4 then 
+		return "heroic25" 
 	end
 end 
 
@@ -2708,11 +2690,7 @@ function bossModPrototype:SetUsedIcons(...)
 end
 
 function bossModPrototype:LatencyCheck()
-	if is_cata then
-		return select(4, GetNetStats()) < DBM.Options.LatencyThreshold--Uses new world ping in 4.0.6
-	else
-		return select(3, GetNetStats()) < DBM.Options.LatencyThreshold--Uses realm "home" ping for CN wow.
-	end
+	return select(4, GetNetStats()) < DBM.Options.LatencyThreshold--Uses new world ping in 4.0.6
 end
 
 local function getTalentpointsSpent(spellID)
@@ -2729,224 +2707,70 @@ local function getTalentpointsSpent(spellID)
 end
 
 --Complex talent checker.
---First verifies if it's cata beta or live to determin if it should use 51 pt checks or 31 pt.
---It determins if person is even high enough level for that to even work.
+--It determins if person is even high enough level for point check
 --if not, it only checks class and returns yes to roll to avoid misjudging someones spec and turning options off for them that shouldn't be off.
 --(plus fixes nil error if they are below level 11 and have no talents yet)
 --Try to avoid using "not" in boss mods for checks if it can be helped, Only 2 mods i know if apsolutely couldn't avoid using not.
 
-if is_cata then--It's Cataclysm
-	function bossModPrototype:IsMelee()
-		if UnitLevel("player") >= 69 then
-			return class == "ROGUE"
-			or class == "WARRIOR"
-			or class == "DEATHKNIGHT"
-			or (class == "PALADIN" and select(5, GetTalentTabInfo(1)) < 31)
-     		or (class == "SHAMAN" and select(5, GetTalentTabInfo(2)) >= 31)
-			or (class == "DRUID" and select(5, GetTalentTabInfo(2)) >= 31)
-		else
-			return class == "ROGUE"
-			or class == "WARRIOR"
-			or class == "DEATHKNIGHT"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-		end
-	end
-
-	function bossModPrototype:IsRanged()
-		if UnitLevel("player") >= 69 then
-			return class == "MAGE"
-			or class == "HUNTER"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or (class == "PALADIN" and select(5, GetTalentTabInfo(1)) >= 31)
-     		or (class == "SHAMAN" and select(5, GetTalentTabInfo(2)) < 31)
-			or (class == "DRUID" and select(5, GetTalentTabInfo(2)) < 31)
-		else
-			return class == "MAGE"
-			or class == "HUNTER"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-		end
-	end
-
-	function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shamens and excludes hunters in cata
-		if UnitLevel("player") >= 69 then
-			return class == "MAGE"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or (class == "DRUID" and select(5, GetTalentTabInfo(2)) < 31)
-		else
-			return class == "MAGE"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-		end
-	end
-
-	local function IsDeathKnightTank()
-		-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(50371) >= 2 and 1 or 0) +	-- Improved Blood Presence
-	                    (getTalentpointsSpent(49787) >= 3 and 1 or 0) +		-- Toughness
-						(getTalentpointsSpent(49501) >= 3 and 1 or 0)		-- Blade Barrier
-		return tankTalents >= 2
-	end
-
-	local function IsDruidTank()
-	-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +	-- Natural Reaction
-	                    (getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
-						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
-		return tankTalents >= 3
-	end
-
-	function bossModPrototype:IsTank()
-		if UnitLevel("player") >= 69 then
-			return (class == "WARRIOR" and select(5, GetTalentTabInfo(3)) >= 31)
-     		or (class == "DEATHKNIGHT" and IsDeathKnightTank())
-			or (class == "PALADIN" and select(5, GetTalentTabInfo(2)) >= 31)
-			or (class == "DRUID" and select(5, GetTalentTabInfo(2)) >= 31 and IsDruidTank())
-		else
-			return class == "WARRIOR"
-     		or class == "DEATHKNIGHT"
-			or class == "PALADIN"
-			or class == "DRUID"
-		end
-	end
-
-	function bossModPrototype:IsHealer()
-		if UnitLevel("player") >= 69 then
-			return (class == "PALADIN" and select(5, GetTalentTabInfo(1)) >= 31)
-     		or (class == "SHAMAN" and select(5, GetTalentTabInfo(3)) >= 31)
-			or (class == "DRUID" and select(5, GetTalentTabInfo(3)) >= 31)
-			or (class == "PRIEST" and select(5, GetTalentTabInfo(3)) < 31)
-		else
-			return class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-			or class == "PRIEST"
-		end
-	end
-else--It's not cataclysm
-	function bossModPrototype:IsMelee()
-		if UnitLevel("player") >= 62 then
-			return class == "ROGUE"
-			or class == "WARRIOR"
-			or class == "DEATHKNIGHT"
-			or (class == "PALADIN" and select(3, GetTalentTabInfo(1)) < 51)
-     		or (class == "SHAMAN" and select(3, GetTalentTabInfo(2)) >= 51)
-			or (class == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51)
-		else
-			return class == "ROGUE"
-			or class == "WARRIOR"
-			or class == "DEATHKNIGHT"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-		end
-	end
-
-	function bossModPrototype:IsRanged()
-		if UnitLevel("player") >= 62 then
-			return class == "MAGE"
-			or class == "HUNTER"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or (class == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
-     		or (class == "SHAMAN" and select(3, GetTalentTabInfo(2)) < 51)
-			or (class == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
-		else
-			return class == "MAGE"
-			or class == "HUNTER"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-		end
-	end
-
-	function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shamens and excludes hunters in cata
-		if UnitLevel("player") >= 62 then
-			return class == "MAGE"
-			or class == "HUNTER"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or (class == "DRUID" and select(3, GetTalentTabInfo(2)) < 51)
-		else
-			return class == "MAGE"
-			or class == "HUNTER"
-			or class == "WARLOCK"
-			or class == "PRIEST"
-			or class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-		end
-	end
-
-	local function IsDeathKnightTank()
-		-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(16271) >= 5 and 1 or 0) +		-- Anticipation
-	                    (getTalentpointsSpent(49042) >= 5 and 1 or 0) +		-- Toughness
-						(getTalentpointsSpent(55225) >= 5 and 1 or 0)		-- Blade Barrier
-		return tankTalents >= 2
-	end
-
-	local function IsDruidTank()
-	-- idea taken from addon 'ElitistJerks'
-		local tankTalents = (getTalentpointsSpent(57881) >= 2 and 1 or 0) +		-- Natural Reaction
-	                    (getTalentpointsSpent(16929) >= 3 and 1 or 0) +		-- Thick Hide
-						(getTalentpointsSpent(61336) >= 1 and 1 or 0) +		-- Survival Instincts
-						(getTalentpointsSpent(33856) >= 3 and 1 or 0) +		-- Survival of the Fittest
-						(getTalentpointsSpent(57877) >= 3 and 1 or 0)		-- Protector of the Pack
-		return tankTalents >= 4
-	end
-
-	function bossModPrototype:IsTank()
-		if UnitLevel("player") >= 62 then
-			return (class == "WARRIOR" and select(3, GetTalentTabInfo(3)) >= 51)
-     		or (class == "DEATHKNIGHT" and IsDeathKnightTank())
-			or (class == "PALADIN" and select(3, GetTalentTabInfo(2)) >= 51)
-			or (class == "DRUID" and select(3, GetTalentTabInfo(2)) >= 51 and IsDruidTank())
-		else
-			return class == "WARRIOR"
-     		or class == "DEATHKNIGHT"
-			or class == "PALADIN"
-			or class == "DRUID"
-		end
-	end
-
-	function bossModPrototype:IsHealer()
-		if UnitLevel("player") >= 62 then
-			return (class == "PALADIN" and select(3, GetTalentTabInfo(1)) >= 51)
-     		or (class == "SHAMAN" and select(3, GetTalentTabInfo(3)) >= 51)
-			or (class == "DRUID" and select(3, GetTalentTabInfo(3)) >= 51)
-			or (class == "PRIEST" and select(3, GetTalentTabInfo(3)) < 51)
-		else
-			return class == "PALADIN"
-     		or class == "SHAMAN"
-			or class == "DRUID"
-			or class == "PRIEST"
-		end
-	end
+function bossModPrototype:IsMelee()
+	return class == "ROGUE"
+	or class == "WARRIOR"
+	or class == "DEATHKNIGHT"
+	or (class == "PALADIN" and not IsSpellKnown(95859))--Meditation Check (False)
+    or (class == "SHAMAN" and IsSpellKnown(86629))--Dual Wield Check (True)
+	or (class == "DRUID" and IsSpellKnown(84840))--Vengeance Check (True)
 end
+
+function bossModPrototype:IsRanged()
+	return class == "MAGE"
+	or class == "HUNTER"
+	or class == "WARLOCK"
+	or class == "PRIEST"
+	or (class == "PALADIN" and IsSpellKnown(95859))--Meditation Check (True)
+    or (class == "SHAMAN" and not IsSpellKnown(86629))--Dual Wield Check (False)
+	or (class == "DRUID" and not IsSpellKnown(84840))--Vengeance Check (False)
+end
+
+function bossModPrototype:IsManaUser()--Similar to ranged, but includes all paladins and all shaman
+	return class == "MAGE"
+	or class == "WARLOCK"
+	or class == "PRIEST"
+	or class == "PALADIN"
+    or class == "SHAMAN"
+	or (class == "DRUID" and not IsSpellKnown(84840))--Vengeance Check (False)
+end
+
+--Unfortunately since feral dps also have vengeance we still have to go more in dept for them.
+local function IsDruidTank()
+	local tankTalents = (getTalentpointsSpent(57880) >= 2 and 1 or 0) +		-- Natural Reaction
+						(getTalentpointsSpent(16931) >= 3 and 1 or 0) +		-- Thick Hide
+						(getTalentpointsSpent(61336) >= 1 and 1 or 0)		-- Survival Instincts
+	return tankTalents >= 3
+end
+
+--A simple check to see if these classes know "Vengeance".
+function bossModPrototype:IsTank()
+	return (class == "WARRIOR" and IsSpellKnown(93098))
+	or (class == "DEATHKNIGHT" and IsSpellKnown(93099))
+	or (class == "PALADIN" and IsSpellKnown(84839))
+	or (class == "DRUID" and IsSpellKnown(84840) and IsDruidTank())
+end
+
+--A simple check to see if these classes know "Meditation".
+function bossModPrototype:IsHealer()
+	return (class == "PALADIN" and IsSpellKnown(95859))
+    or (class == "SHAMAN" and IsSpellKnown(95862))
+	or (class == "DRUID" and IsSpellKnown(85101))
+	or (class == "PRIEST" and (IsSpellKnown(95860) or IsSpellKnown(95861)))
+end
+
 --These don't matter since they don't check talents
 function bossModPrototype:IsPhysical()
 	return self:IsMelee() or class == "HUNTER"
 end
 
 function bossModPrototype:CanRemoveEnrage()
-	return class == "HUNTER" or class == "ROGUE"
+	return class == "HUNTER" or class == "ROGUE" or class == "DRUID"
 end
 -------------------------
 --  Boss Health Frame  --
@@ -3010,7 +2834,7 @@ do
 					self.mod:AddMsg(text, nil)
 				end
 			end
-			if DBM.Options.UseMasterVolume and is_cata then
+			if DBM.Options.UseMasterVolume then
 				PlaySoundFile(DBM.Options.RaidWarningSound, "Master")--4.0.6 arg to use master sound channel, re-enableing sound playback when effects are turned off.
 			else
 				PlaySoundFile(DBM.Options.RaidWarningSound)--not cata so we don't use the channel arg to maintain CN wow compatability.
@@ -3152,7 +2976,7 @@ do
 	
 	function soundPrototype:Play(file)
 		if not self.option or self.mod.Options[self.option] then
-			if DBM.Options.UseMasterVolume and is_cata then
+			if DBM.Options.UseMasterVolume then
 				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav", "Master")
 			else
 				PlaySoundFile(file or "Sound\\Creature\\HoodWolf\\HoodWolfTransformPlayer01.wav")
@@ -3223,7 +3047,7 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
-				if DBM.Options.UseMasterVolume and is_cata then
+				if DBM.Options.UseMasterVolume then
 					PlaySoundFile(DBM.Options.SpecialWarningSound, "Master")
 				else
 					PlaySoundFile(DBM.Options.SpecialWarningSound)
