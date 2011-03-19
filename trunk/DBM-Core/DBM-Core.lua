@@ -1439,10 +1439,9 @@ function DBM:ZONE_CHANGED_NEW_AREA()
 		SetMapToCurrentZone()--To Fix blizzard bug, sometimes map isn't loaded on login or reloadui and returns maelstrom or throne of four winds, the latter loading throne mod by mistake instead of correct boss mod for zone.
 	end
 	local zoneName = GetRealZoneText()
-	local zoneId = GetCurrentMapAreaID()()
+	local zoneId = GetCurrentMapAreaID()
 	LastZoneMapID = zoneId--Cache map on zone change.
 	LastZoneText = zoneName--Cache zone name on change.
---	DBM:AddMsg(("Zone Change called: current zoneName %s, current mapID %s"):format(tostring(GetRealZoneText()), tostring(GetCurrentMapAreaID()()))) -- DEBUG
 	for i, v in ipairs(self.AddOns) do
 		if not IsAddOnLoaded(v.modId) and (checkEntry(v.zone, zoneName) or (checkEntry(v.zoneId, zoneId) and IsInInstance())) then--To Fix blizzard bug here as well. MapID loading requiring instance since we don't force map outside instances, prevent throne loading at login outside instances.
 			-- srsly, wtf? LoadAddOn doesn't work properly on ZONE_CHANGED_NEW_AREA when reloading the UI
