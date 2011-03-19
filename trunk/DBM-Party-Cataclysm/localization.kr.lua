@@ -148,7 +148,7 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	Blitz		= "장군 움브리스가 |cFFFF0000(%S+)"
+	Blitz		= "보면서"
 }
 
 --------------------------
