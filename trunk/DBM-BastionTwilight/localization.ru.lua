@@ -67,10 +67,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specWarnBossLow			= "%s ниже 30%% - скоро следующая фаза!",
 	SpecWarnGrounded		= "Получите ауру заземления!",
-	SpecWarnSearingWinds	= "Получите ауру кружащихся ветров!",
-	warnGravityCoreJump		= "Гравитационное ядро на >%s<",
-	warnStaticOverloadJump	= "Статическая перегрузка на >%s<"
+	SpecWarnSearingWinds	= "Получите ауру кружащихся ветров!"
 })
 
 L:SetTimerLocalization({
@@ -78,13 +77,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	SpecWarnGrounded		= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
-	SpecWarnSearingWinds	= "Показывать особое предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
+	specWarnBossLow			= "Спец-предупреждение, когда здоровье боссов опускается до 30%",
+	SpecWarnGrounded		= "Спец-предупреждение, когда у вас не хватает ауры $spell:83581\n(~10сек перед началом применения)",
+	SpecWarnSearingWinds	= "Спец-предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
 	timerTransition			= "Показывать таймер перехода в другую фазу",
 	RangeFrame				= "Автоматически показывать окно проверки дистанции при надобности",
 	YellOnLightningRod		= "Кричать, когда на вас $spell:83099",
-	warnGravityCoreJump		= "Сообщать о целях, на которых распространяется $spell:92538",
-	warnStaticOverloadJump	= "Сообщать о целях, на которых распространяется $spell:92467",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
