@@ -4,9 +4,11 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 
 mod:RegisterEvents(
+	"SPELL_CAST_SUCCESS",
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
-	"SPELL_CAST_START"
+	"SPELL_CAST_START",
+	"SPELL_DAMAGE"
 )
 
 --do we need warnings for http://www.wowhead.com/npc=49826#abilities or http://www.wowhead.com/npc=49821#abilities debuff stacks?
@@ -16,6 +18,7 @@ local warnFlameStrike		= mod:NewTargetAnnounce(93383, 4)--This is Flame strike w
 local warnRupture			= mod:NewTargetAnnounce(93377, 4)--This is twilight rupture the big guys do in hallway before halfus.
 
 local specWarnFrostWhirl	= mod:NewSpecialWarningSpell(93340)
+local specWarnFlameStrike	= mod:NewSpecialWarningMove(93362)
 local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903)
 local specWarnRupture		= mod:NewSpecialWarningSpell(93377)
 
@@ -55,12 +58,16 @@ function mod:FlameStrikeTarget(sGUID)
 	end
 end
 
-function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(93340) then--I will have to log this trash to verify this spell event.
+function mod:SPELL_CAST_SUCCESS(args)
+	if args:IsSpellID(93340) then
 		warnFrostWhirl:Show()
 		specWarnFrostWhirl:Show()
 		timerFrostWhirl:Show()
-	elseif args:IsSpellID(87903) then--I will have to log this trash to verify this spell event.
+	end
+end
+
+function mod:SPELL_AURA_APPLIED(args)
+	if args:IsSpellID(87903) then
 		warnVolcanicWrath:Show()
 		specWarnVolcanicWrath:Show()
 		timerVolcanicWrath:Show()
@@ -81,5 +88,15 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(93377) then
 		specWarnRupture:Show()
 		self:ScheduleMethod(0.2, "RuptureTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+	end
+end
+
+do 
+	local lastFlamestrike = 0
+	function mod:SPELL_DAMAGE(args)
+		if args:IsSpellID(93383, 93362) and args:IsPlayer() and GetTime() - lastFlamestrike > 3 then
+			specWarnFlameStrike:Show()
+			lastFlamestrike = GetTime()
+		end
 	end
 end
