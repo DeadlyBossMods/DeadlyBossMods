@@ -8,7 +8,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
-local warnBPGreen			= mod:NewTargetAnnounce(80369, 3)--This is the one that allows them to stun entire raid for 6 seconds cast by dogs.
+--local warnBPGreen			= mod:NewTargetAnnounce(80369, 3)--No idea what spell it is so disabled or now. Too much crap in combat log no idea what to look for. it wasn't green.
 local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for Maimgor drake in front of maloriaks area.
 local warnSacrifice			= mod:NewTargetAnnounce(80727, 2)--Sacrifice used by spirits before atramedes
 local warnWhirlwind			= mod:NewTargetAnnounce(80652, 2)--Whirlwind used by spirits before atramedes
@@ -21,13 +21,13 @@ mod:RemoveOption("SpeedKillTimer")
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(71127) then
-		warnBPGreen:Show(args.destName)
-	elseif args:IsSpellID(80727) and args:IsDestTypePlayer() then--I will have to log this trash to verify this spell event.
+--		warnBPGreen:Show(args.destName)
+	elseif args:IsSpellID(80727) and args:IsDestTypePlayer() then
 		warnSacrifice:Show(args.destName)
 		timerSacrifice:Start(args.destName)
 	elseif args:IsSpellID(80084) then
 		warnEnrage:Show(args.destName)
-	elseif args:IsSpellID(80652) then--I will have to log this trash to verify this spell event.
+	elseif args:IsSpellID(80652) then
 		warnWhirlwind:Show(args.destName)
 		timerWhirlwind:Show(args.destName)
 	end
