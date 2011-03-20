@@ -67,9 +67,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	specWarnBossLow			= "%s below 30%% - next phase soon!",
 	SpecWarnGrounded		= "Get Grounded buff",
-	SpecWarnSearingWinds	= "Get Searing Winds buff",
-	warnGravityCoreJump		= "Gravity Core spread to >%s<",
-	warnStaticOverloadJump	= "Static Overload spread to >%s<"
+	SpecWarnSearingWinds	= "Get Searing Winds buff"
 })
 
 L:SetTimerLocalization({
@@ -80,8 +78,6 @@ L:SetOptionLocalization({
 	specWarnBossLow			= "Show special warning when Bosses are below 30% HP",
 	SpecWarnGrounded		= "Show special warning when you are missing $spell:83581 buff\n(~10sec before cast)",
 	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
-	warnGravityCoreJump		= "Announce $spell:92538 spread targets",
-	warnStaticOverloadJump	= "Announce $spell:92467 spread targets",
 	timerTransition			= "Show Phase transition timer",
 	RangeFrame				= "Show range frame automatically when needed",
 	YellOnLightningRod		= "Yell on $spell:83099",
