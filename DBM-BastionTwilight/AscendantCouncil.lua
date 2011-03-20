@@ -45,7 +45,9 @@ local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
 local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
 --Heroic
 local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
+local warnGravityCoreJump	= mod:NewAnnounce("warnGravityCoreJump", 4, 92538, false)--These are spammy, but they are not useless to a raid leader assessing who is screwing up spreading
 local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
+local warnStaticOverloadJump= mod:NewAnnounce("warnStaticOverloadJump", 4, 92467, false)--They are off by default (and always have been) so they shoudln't bother anyone unless manually enabled.
 local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic
 
 --Feludius
@@ -330,6 +332,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnStaticOverload:Show()
 			end
+		else
+			warnStaticOverloadJump:Show(args.destName)--This basically is warning for 92467, 92468, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	elseif args:IsSpellID(92075, 92538, 92539) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92539 a guess.)
 		if args:GetSrcCreatureID() == 43689 then--Terrastra
@@ -341,6 +345,8 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnGravityCore:Show()
 			end
+		else
+			warnGravityCoreJump:Show(args.destName)--This basically is warning for 92538, 92539, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	end
 end
@@ -401,6 +407,8 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 			if args:IsPlayer() then
 				specWarnStaticOverload:Show()
 			end
+		else
+			warnStaticOverloadJump:Show(args.destName)--This basically is warning for 92467, 92468, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	elseif args:IsSpellID(92075, 92538, 92539) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92539 a guess.)
 		if args:GetSrcCreatureID() == 43689 then--Terrastra
@@ -412,6 +420,8 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 			if args:IsPlayer() then
 				specWarnGravityCore:Show()
 			end
+		else
+			warnGravityCoreJump:Show(args.destName)--This basically is warning for 92538, 92539, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	end
 end
@@ -545,7 +555,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Quake or msg:find(L.Quake) then
-		timerQuakeCD:Start(10)
+		timerQuakeCD:Update(23, 33)
 		warnQuakeSoon:Show()
 		checkSearingWinds()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
@@ -554,7 +564,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			self:Schedule(8, checkSearingWinds)
 		end
 	elseif msg == L.Thundershock or msg:find(L.Thundershock) then
-		timerThundershockCD:Start(10)
+		timerThundershockCD:Update(23, 33)
 		warnThundershockSoon:Show()
 		checkGrounded()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
