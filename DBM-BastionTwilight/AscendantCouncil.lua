@@ -16,87 +16,89 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"CHAT_MSG_MONSTER_YELL",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_HEALTH"
 )
 
 --Feludius
-local warnGlaciate			= mod:NewSpellAnnounce(82746, 3, nil, mod:IsMelee())
 local warnHeartIce			= mod:NewTargetAnnounce(82665, 3)
-local warnWaterBomb			= mod:NewSpellAnnounce(82699, 3)
-local warnFrozen			= mod:NewTargetAnnounce(82772, 3)
-local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic
+local warnGlaciate			= mod:NewSpellAnnounce(82746, 3, nil, mod:IsMelee())
+local warnWaterBomb			= mod:NewSpellAnnounce(82699, 3, nil, mod:IsMelee())
+local warnFrozen			= mod:NewTargetAnnounce(82772, 3, nil, mod:IsHealer())
 --Ignacious
-local warnFlameTorrent		= mod:NewSpellAnnounce(82777, 2, nil, mod:IsTank() or mod:IsHealer())--Not too useful to announce but will leave for now. CD timer useless.
 local warnBurningBlood		= mod:NewTargetAnnounce(82660, 3)
+local warnFlameTorrent		= mod:NewSpellAnnounce(82777, 2, nil, mod:IsTank() or mod:IsHealer())--Not too useful to announce but will leave for now. CD timer useless.
 local warnAegisFlame		= mod:NewSpellAnnounce(82631, 4)
-local warnRisingFlames		= mod:NewSpellAnnounce(82636, 4)
 --Terrastra
 local warnEruption			= mod:NewSpellAnnounce(83675, 2, nil, mod:IsMelee())
-local warnHardenSkin		= mod:NewSpellAnnounce(83718, 3)
+local warnHardenSkin		= mod:NewSpellAnnounce(83718, 3, nil, mod:IsTank())
 local warnQuakeSoon			= mod:NewPreWarnAnnounce(83565, 10, 3)
 local warnQuake				= mod:NewSpellAnnounce(83565, 4)
-local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
-local warnGravityCoreJump	= mod:NewAnnounce("warnGravityCoreJump", 4, 92538, false)--Jumped from player to player. Potentially Spammy and off by default for a reason.
 --Arion
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
 local warnDisperse			= mod:NewSpellAnnounce(83087, 3, nil, mod:IsTank())
-local warnChainLightning	= mod:NewSpellAnnounce(83300, 2)
 local warnLightningBlast	= mod:NewCastAnnounce(83070, 3)
 local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
-local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
-local warnStaticOverloadJump= mod:NewAnnounce("warnStaticOverloadJump", 4, 92467, false)--Jumped from player to player. Potentially Spammy and off by default for a reason.
 --Elementium Monstrosity
 local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
 local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
+--Heroic
+local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
+local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
+local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic
 
 --Feludius
-local timerGlaciate			= mod:NewCDTimer(33, 82746, nil, mod:IsMelee())--33-35 seconds
+local specWarnHeartIce		= mod:NewSpecialWarningYou(82665, false)
+local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
+local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
+local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509, false) -- spammy execpt interrupt class.
+--Ignacious
+local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660, false)
+local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631)
+local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
+--Terrastra
+local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
+--Arion
+local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
+local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070, false)
+local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
+--Heroic
+local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
+local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
+local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
+
+local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
+
+--Feludius
 local timerHeartIce			= mod:NewTargetTimer(60, 82665)
 local timerHeartIceCD		= mod:NewCDTimer(22, 82665)--22-24 seconds
-local timerWaterBomb		= mod:NewCDTimer(33, 82699)--33-35 seconds
-local timerFrozen			= mod:NewBuffActiveTimer(10, 82772)
+local timerGlaciate			= mod:NewCDTimer(33, 82746, nil, mod:IsMelee())--33-35 seconds
+local timerWaterBomb		= mod:NewCDTimer(33, 82699, nil, mod:IsMelee())--33-35 seconds
+local timerFrozen			= mod:NewBuffActiveTimer(10, 82772, nil, mod:IsHealer())
 --Ignacious
 local timerBurningBlood		= mod:NewTargetTimer(60, 82660)
 local timerBurningBloodCD	= mod:NewCDTimer(22, 82660)--22-33 seconds, even worth having a timer?
-local timerRisingFlames		= mod:NewCDTimer(62, 82636)
+local timerAegisFlame		= mod:NewNextTimer(60, 82631)
 --Terrastra
-local timerHardenSkinCD		= mod:NewCDTimer(42, 83718)--This one is iffy, it isn't as consistent as other ability timers
 local timerEruptionCD		= mod:NewNextTimer(15, 83675, nil, mod:IsMelee())
-local timerQuakeCD			= mod:NewNextTimer(70, 83565)
+local timerHardenSkinCD		= mod:NewCDTimer(42, 83718, nil, mod:IsTank())--This one is iffy, it isn't as consistent as other ability timers
+local timerQuakeCD			= mod:NewNextTimer(33, 83565)
 local timerQuakeCast		= mod:NewCastTimer(3, 83565)
-local timerGravityCoreCD	= mod:NewNextTimer(20, 92075)--Heroic
 --Arion
 local timerLightningRod		= mod:NewBuffActiveTimer(15, 83099)
 local timerDisperse			= mod:NewCDTimer(30, 83087, nil, mod:IsTank())
 local timerLightningBlast	= mod:NewCastTimer(4, 83070)
-local timerThundershockCD	= mod:NewNextTimer(70, 83067)
+local timerThundershockCD	= mod:NewNextTimer(33, 83067)
 local timerThundershockCast	= mod:NewCastTimer(3, 83067)
-local timerStaticOverloadCD	= mod:NewNextTimer(20, 92067)--Heroic
 --Elementium Monstrosity
 local timerTransition		= mod:NewTimer(15, "timerTransition", 84918)
 local timerLavaSeedCD		= mod:NewCDTimer(23, 84913)
 local timerGravityCrush		= mod:NewBuffActiveTimer(10, 84948)
 local timerGravityCrushCD	= mod:NewCDTimer(24, 84948)--24-28sec cd, decent varation
-
---Feludius
-local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
-local specWarnHeartIce		= mod:NewSpecialWarningYou(82665)
-local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
-local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509)
-local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
---Ignacious
-local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660)
-local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631)
-local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
---Terrastra
-local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
-local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
---Arion
-local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
-local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
-local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070)
-local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
+--Heroic
+local timerGravityCoreCD	= mod:NewNextTimer(20, 92075)--Heroic
+local timerStaticOverloadCD	= mod:NewNextTimer(20, 92067)--Heroic
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
 
@@ -228,7 +230,7 @@ function mod:OnCombatStart(delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
 	timerBurningBloodCD:Start(28-delay)--could be just as flakey as it is in combat though.
-	timerRisingFlames:Start(33-delay)--33-35 seconds after pull
+	timerAegisFlame:Start(31-delay)
 	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
 		timerGravityCoreCD:Start(25-delay)
 		timerStaticOverloadCD:Start(20-delay)
@@ -328,8 +330,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnStaticOverload:Show()
 			end
-		else
-			warnStaticOverloadJump:Show(args.destName)--This basically is warning for 92467, 92468, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	elseif args:IsSpellID(92075, 92538, 92539) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92539 a guess.)
 		if args:GetSrcCreatureID() == 43689 then--Terrastra
@@ -341,8 +341,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if args:IsPlayer() then
 				specWarnGravityCore:Show()
 			end
-		else
-			warnGravityCoreJump:Show(args.destName)--This basically is warning for 92538, 92539, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	end
 end
@@ -403,8 +401,6 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 			if args:IsPlayer() then
 				specWarnStaticOverload:Show()
 			end
-		else
-			warnStaticOverloadJump:Show(args.destName)--This basically is warning for 92467, 92468, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	elseif args:IsSpellID(92075, 92538, 92539) then--Casts and jumps merged into single function then filtered below. (25 man jump ID not known, 92539 a guess.)
 		if args:GetSrcCreatureID() == 43689 then--Terrastra
@@ -416,8 +412,6 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 			if args:IsPlayer() then
 				specWarnGravityCore:Show()
 			end
-		else
-			warnGravityCoreJump:Show(args.destName)--This basically is warning for 92538, 92539, which is just a spread debuff, not the dispel with other debuff kind.
 		end
 	end
 end
@@ -487,8 +481,9 @@ function mod:SPELL_CAST_START(args)
 		timerHardenSkinCD:Start()
 	elseif args:IsSpellID(83565, 92544, 92545, 92546) then
 		warnQuake:Show()
-		timerQuakeCD:Start()
-		timerQuakeCast:Show()
+		timerQuakeCD:Cancel()
+		timerQuakeCast:Start()
+		timerThundershockCD:Start()
 	elseif args:IsSpellID(83087) then
 		warnDisperse:Show()
 		timerDisperse:Start()
@@ -498,10 +493,11 @@ function mod:SPELL_CAST_START(args)
 		if self:GetUnitCreatureId("target") == 43688 or self:GetUnitCreatureId("focus") == 43688 then
 			specWarnLightningBlast:Show()
 		end
-	elseif args:IsSpellID(83067, 92469, 92470, 92470) then
+	elseif args:IsSpellID(83067, 92469, 92470, 92471) then
 		warnThundershock:Show()
-		timerThundershockCast:Show()
-		timerThundershockCD:Start()
+		timerThundershockCD:Cancel()
+		timerThundershockCast:Start()
+		timerQuakeCD:Start()
 	elseif args:IsSpellID(84913) then
 		warnLavaSeed:Show()
 		timerLavaSeedCD:Start()
@@ -510,8 +506,7 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82636) then
-		warnRisingFlames:Show()
-		timerRisingFlames:Start()
+		timerAegisFlame:Start()
 	elseif args:IsSpellID(82665) then
 		timerHeartIceCD:Start()
 	elseif args:IsSpellID(82660) then
@@ -524,13 +519,12 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		updateBossFrame(2)
 		timerWaterBomb:Cancel()
 		timerGlaciate:Cancel()
-		timerRisingFlames:Cancel()
+		timerAegisFlame:Cancel()
 		timerBurningBloodCD:Cancel()
 		timerHeartIceCD:Cancel()
 		timerGravityCoreCD:Cancel()
 		timerStaticOverloadCD:Cancel()
-		timerQuakeCD:Start(33)
-		timerThundershockCD:Start()
+		timerQuakeCD:Start()
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		updateBossFrame(3)
 		timerQuakeCD:Cancel()
@@ -551,6 +545,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Quake or msg:find(L.Quake) then
+		timerQuakeCD:Start(10)
 		warnQuakeSoon:Show()
 		checkSearingWinds()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
@@ -559,6 +554,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			self:Schedule(8, checkSearingWinds)
 		end
 	elseif msg == L.Thundershock or msg:find(L.Thundershock) then
+		timerThundershockCD:Start(10)
 		warnThundershockSoon:Show()
 		checkGrounded()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
@@ -566,5 +562,22 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 			self:Schedule(6, checkGrounded)
 			self:Schedule(8, checkGrounded)
 		end
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	local cid = self:GetUnitCreatureId(uId)
+	if cid == 43686 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
+		warnedLowHP[cid] = true
+		specWarnBossLow:Show(UnitName(uId))
+	elseif cid == 43687 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
+		warnedLowHP[cid] = true
+		specWarnBossLow:Show(UnitName(uId))
+	elseif cid == 43688 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
+		warnedLowHP[cid] = true
+		specWarnBossLow:Show(UnitName(uId))
+	elseif cid == 43689 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
+		warnedLowHP[cid] = true
+		specWarnBossLow:Show(UnitName(uId))
 	end
 end
