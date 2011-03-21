@@ -1,6 +1,6 @@
 if (GetLocale() == "koKR") then
 
-DBM_CORE_NEED_SUPPORT				= "안녕하세요. DBM Team입니다. 만약 프로그래밍 또는 언어에 대해 잘 아신다면, DBM Team에 어떤 도움이든 주실 수 있습니다. 만약, 한글화 혹은 코드 수정에 관해 건의/수정 사항이 있다면 wow.somegate.com 또는 에이그윈(호드) 흑묘서희(Twitter : @Nyx_Khang)에게 연락바랍니다. DBM BossMods Team에 참가하고 싶다면 www.deadlybossmods.com 또는 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com에 연락 바랍니다. 물론, 영어를 매우 잘하셔야겠죠?"
+DBM_CORE_NEED_SUPPORT				= "안녕하세요. DBM Team입니다. 만약 프로그래밍 또는 언어에 대해 잘 아신다면, DBM Team에 어떤 도움이든 주실 수 있습니다. 건의/수정 요청 사항이 있다면 wow.somegate.com 또는 흑묘서희@에이그윈(Twitter: @Nyx_Khang) 또는 엘룬@영원이란(everfinale@gmail.com | 인벤:영원하늘)에게 연락바랍니다. DBM Team에 참가하고 싶다면 www.deadlybossmods.com 또는 tandanu@deadlybossmods.com 또는 nitram@deadlybossmods.com에 연락바랍니다. 물론, 영어를 매우 잘하셔야겠죠?"
 DBM_HOW_TO_USE_MOD					= "DBM 사용을 환영합니다. 대화창에서 /dbm help를 입력하면 사용 가능한 명령어 리스트를 볼 수 있습니다. 설정을 위해서는 /dbm을 입력하고 나타나는 창에서 보스 모드를 수동으로 불러온 후에 세부 보스에 대한 설정을 할 수 있습니다. DBM은 처음 실행시 당신의 특성을 검색한후 특성에 맞는 적절한 경고를 선택하지만, 추가 경고를 원하신다면 옵션에서 설정하시면 됩니다."
 
 DBM_CORE_LOAD_MOD_ERROR				= "%s 모드 로딩중 에러 발생: %s"
@@ -10,7 +10,7 @@ DBM_CORE_LOAD_GUI_ERROR				= "GUI를 로드할 수 없습니다: %s"
 DBM_CORE_COMBAT_STARTED				= "%s 작동됨. 행운을 빕니다! :)";
 DBM_CORE_BOSS_DOWN					= "%s (을)를 쓰러트렸습니다. (%s 소요 되었습니다!)"
 DBM_CORE_BOSS_DOWN_LONG				= "%s (을)를 쓰러트렸습니다. (%s 소요 되었습니다!) 당신의 최종 킬 시간은, %s 입니다. 그리고 당신의 가장 빠른 킬 시간은 %s 입니다."
-DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s (을)를 쓰러뜨렸습니다. (%s 소요 되었습니다!) 이 기록은 새로운 기록이군요! (과거의 기록: %s)"
+DBM_CORE_BOSS_DOWN_NEW_RECORD		= "%s (을)를 쓰러뜨렸습니다. (%s 소요 되었습니다!) 이 기록은 새로운 기록이군요! (과거 기록: %s)"
 DBM_CORE_COMBAT_ENDED				= "%s 전투가 종료되었습니다. (%s 소요 되었습니다.)"
 
 DBM_CORE_TIMER_FORMAT_SECS			= "%d|4초:초;"
@@ -43,7 +43,7 @@ DBM_CORE_VERSIONCHECK_HEADER		= "죽이는 보스 모드 - 버전"
 DBM_CORE_VERSIONCHECK_ENTRY			= "%s: %s (r%d)"
 DBM_CORE_VERSIONCHECK_ENTRY_NO_DBM	= "%s: 죽이는 보스 모드가 설치 되어있지 않습니다."
 DBM_CORE_VERSIONCHECK_FOOTER		= "%d 명의 플레이어가 설치되어 있는 것을 찾았습니다."
-DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! www.deadlybossmods.com 또는 wow.somegate.com(korean)에 접속하셔셔 마지막 버전을 다운로드 받으셔요."
+DBM_CORE_YOUR_VERSION_OUTDATED      = "당신의 DBM 버전이 오래되었습니다! www.deadlybossmods.com 또는 wow.somegate.com/wow.inven.co.kr(korean)에 접속하셔셔 최신 버전을 다운로드 받으세요."
 
 DBM_CORE_UPDATEREMINDER_HEADER		= "당신의 죽이는 보스 모드 버전이 옛날 버전입니다.\n Version %s (r%d) 가 새로운 버전이며, 최신 버전 위치:"
 DBM_CORE_UPDATEREMINDER_FOOTER		= "Ctrl-C 를 누르면 클립보드에 복사가 됩니다."
@@ -55,7 +55,7 @@ DBM_PIZZA_SYNC_INFO					= "|Hplayer:%1$s|h[%1$s]|h님이 당신에게 DBM 타이
 DBM_PIZZA_CONFIRM_IGNORE			= "현재 세션에서 %s님이 보낸 DBM 타이머를 무시하도록 하겠습니까?"
 DBM_PIZZA_ERROR_USAGE				= "사용법: /dbm [broadcast] timer <시간> <글자>"
 
-DBM_CORE_ERROR_DBMV3_LOADED			= "Deadly Boss Mods 가 실행중에 있습니다.\n당신께서 DBMv3 와 DBMv4를 동시에 설치하여 이런 상황이 발생한 것 같습니다.\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n또한, 애드온 폴더내에 존재하고 있는 DBMv3 폴더를 삭제하시길 권장합니다."
+DBM_CORE_ERROR_DBMV3_LOADED			= "DBMv3와 DBMv4가 동시에 실행중 입니다.\n\n\"수락\"을 클릭하시면 DBMv3를 차단하고, UI가 다시시작 될 것입니다.\n또한, 애드온 폴더내에 존재하고 있는 DBMv3 폴더를 삭제하시길 권장합니다."
 
 DBM_CORE_MINIMAP_TOOLTIP_HEADER		= "죽이는 보스 모드"
 DBM_CORE_MINIMAP_TOOLTIP_FOOTER		= "Shift+click 또는 right-click 으로 움직이세요.\nAlt+shift+click 으로 움직이면 자유롭게 배치할 수 있습니다."

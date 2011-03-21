@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
-L.TranslationBy 		= "흑묘서희@에이그윈서버 호드진영/Twitter : @Nyx_Khang"
+L.TranslationBy 		= "흑묘서희@에이그윈(Twitter: @Nyx_Khang) & 영원이란@엘룬"
 
 L.TabCategory_Options 	= "일반 설정"
 L.TabCategory_CATA	 	= "대격변"
@@ -58,7 +58,7 @@ L.UseMasterVolume		= "기본 오디오 채널로 소리 재생(4.0.6+)"
 L.SKT_Enabled			= "각 보스 설정에서 끈 상태라도 항상 빠르게 죽인 타이머 보기(강제)"
 L.Latency_Text			= "동기화를 사용 할 최대 지연시간 설정 : %d"
 
-L.Button_RangeFrame		= "거리-프레임 켜기/끄기"
+L.Button_RangeFrame		= "거리 프레임 켜기/끄기"
 L.Button_TestBars		= "테스트 바 시작"
 
 L.PizzaTimer_Headline 	= '사용자 지정 타이머 만들기'
