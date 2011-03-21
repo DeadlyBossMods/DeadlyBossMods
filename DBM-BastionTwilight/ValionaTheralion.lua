@@ -88,6 +88,10 @@ local function valionaDelay()
 	timerDevouringFlamesCD:Start(25)
 end
 
+local function AMSTimerDelay()
+	timerTwilightShiftCD:Start()
+end
+
 function mod:TwilightBlastTarget()
 	local targetname = self:GetBossTarget(45993)
 	if not targetname then return end
@@ -182,6 +186,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerTwilightShift:Cancel(args.destName.." (5)")
 		timerTwilightShift:Show(args.destName.." ("..tostring(args.amount or 1)..")")
 		timerTwilightShiftCD:Start()
+		self:Unschedule(AMSTimerDelay)
+		self:Schedule(20, AMSTimerDelay)--Cause when a DK AMSes it we don't get another timer.
 	elseif args:IsSpellID(92887) and args:IsPlayer() then
 		if (args.amount or 1) >= 10 and GetTime() - spamZone > 5 then
 			specWarnTwilightZone:Show(args.amount)
