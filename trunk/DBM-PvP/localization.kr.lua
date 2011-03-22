@@ -19,7 +19,7 @@ L:SetOptionLocalization({
 	ColorByClass		= "스코어 화면 유저 이름에 직업 색상 사용하기",
 	ShowInviteTimer		= "전장 입장 타이머 보이기",
 	AutoSpirit			= "전장에서 사망시 자동으로 무덤 이동하기",
-	HideBossEmoteFrame	= "공격대 경보 형태로 보이는 전장 메세지 숨기기"
+	HideBossEmoteFrame	= "화면 가운데 나타나는 전장 메세지 숨기기"
 })
 
 L:SetMiscLocalization({
@@ -75,7 +75,7 @@ L:SetOptionLocalization({
 	TimerStart  = "시작 타이머 보기",
 	TimerTower 	= "탑 점령 타이머 보기",
 	TimerGY 	= "무덤 점령 타이머 보기",
-	AutoTurnIn 	= "퀘스트 자동 완료"
+	AutoTurnIn 	= "알터랙 계곡내 퀘스트 자동 완료"
 })
 
 ---------------
@@ -217,13 +217,13 @@ L:SetMiscLocalization({
 	BgStart15				= "15초 후 전투가 시작됩니다.",
 	SiegeEngine				= "공성 전차",
 	GoblinStartAlliance		= "See those seaforium bombs? Use them on the gates while I repair the siege engine!",
-	GoblinStartHorde		= "공성 전차를 수리하는 동안 날 좀 지켜 달라고. 필요하면 저기 있는 시포리움 폭약을 관문에 사용해!",
-	GoblinHalfwayAlliance	= "I'm halfway there! Keep the Horde away from here.  They don't teach fighting in engineering school!",
-	GoblinHalfwayHorde		= "반쯤 됏다고! 얼라이언스 놈들이 가까이 못오게 해줘. 계약서에 전투 얘긴 없었다고!",
-	GoblinFinishedAlliance	= "My finest work so far! This siege engine is ready for action!",
+	GoblinStartHorde		= "공성 전차를 수리하는 동안 날 좀 지켜 달라고. 필요하면 저기 있는 시포리움 폭탄을 관문에 사용해!",
+	GoblinHalfwayAlliance	= "반쯤 됐어요! 호드가 절 못 때리게 해주세요. 기계공학 학교에서는 싸움은 안 가르친다고요!",
+	GoblinHalfwayHorde		= "반쯤 됐다고! 얼라이언스 놈들이 가까이 못 오게 해줘. 계약서에 전투 얘긴 없었다고!",
+	GoblinFinishedAlliance	= "제 최고의 작품인 듯한데요! 이제 이 공성 전차를 몰고 나가셔도 돼요!",
 	GoblinFinishedHorde		= "이제 이 공성 전차를 끌고 나가도 좋아!",
-	GoblinBrokenAlliance	= "It's broken already?! No worries. It's nothing I can't fix.",
-	GoblinBrokenHorde		= "It's broken again?! I'll fix it... just don't expect the warranty to cover this"	
+	GoblinBrokenAlliance	= "벌써 부서졌어요?! 괜찮아요. 제가 못 고칠 정도는 아니에요.",
+	GoblinBrokenHorde		= "또 부서졌다고?! 내가 고쳐 주지... 하지만 사용자 과실이니까 공짜로 해 줄 순 없다고."
 })
 
 ------------------
