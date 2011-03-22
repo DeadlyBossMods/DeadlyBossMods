@@ -98,7 +98,7 @@ do
 			if name and textureIndex then
 				local curState = gy_state(textureIndex)
 				if curState and gy_state(v) ~= curState then
-					gyTimer:Stop()
+					gyTimer:Stop(name)
 					if curState > 2 then
 						gyTimer:Start(nil, name)
 						if curState == 3 then
@@ -116,7 +116,7 @@ do
 			if name and textureIndex then
 				local curState = tower_state(textureIndex)
 				if curState and tower_state(v) ~= curState then
-					towerTimer:Stop()
+					towerTimer:Stop(name)
 					if curState > 2 then
 						towerTimer:Start(nil, name)
 						if curState == 3 then

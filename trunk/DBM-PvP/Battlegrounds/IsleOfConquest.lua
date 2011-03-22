@@ -88,7 +88,7 @@ do
 			if name and textureIndex then
 				local curState = getPoiState(textureIndex)
 				if curState and getPoiState(v) ~= curState then
-					POITimer:Stop()
+					POITimer:Stop(name)
 					if curState > 2 then
 						POITimer:Start(nil, name)
 						if curState == 3 then
