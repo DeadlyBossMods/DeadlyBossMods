@@ -44,10 +44,10 @@ local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
 local warnLavaSeed			= mod:NewSpellAnnounce(84913, 4)
 local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
 --Heroic
-local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
-local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
-local warnFlameStrike		= mod:NewCastAnnounce(92212, 3) --Heroic
-local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic
+local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic Phase 1 ablity
+local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic Phase 1 ablity
+local warnFlameStrike		= mod:NewCastAnnounce(92212, 3) --Heroic Phase 2 ablity
+local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic Phase 2 ablity
 
 --Feludius
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665, false)
@@ -98,8 +98,10 @@ local timerLavaSeedCD		= mod:NewCDTimer(23, 84913)
 local timerGravityCrush		= mod:NewBuffActiveTimer(10, 84948)
 local timerGravityCrushCD	= mod:NewCDTimer(24, 84948)--24-28sec cd, decent varation
 --Heroic
-local timerGravityCoreCD	= mod:NewNextTimer(20, 92075)--Heroic
-local timerStaticOverloadCD	= mod:NewNextTimer(20, 92067)--Heroic
+local timerGravityCoreCD	= mod:NewNextTimer(20, 92075)--Heroic Phase 1 ablity
+local timerStaticOverloadCD	= mod:NewNextTimer(20, 92067)--Heroic Phase 1 ablity
+local timerFlameStrikeCD	= mod:NewNextTimer(20, 92212)--Heroic Phase 2 ablity
+local timerFrostBeaconCD	= mod:NewNextTimer(20, 92307)--Heroic Phase 2 ablity
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
 
@@ -121,6 +123,7 @@ local lightningRodIcon = 8
 local gravityCrushIcon = 8
 local warnedLowHP = {}
 local frozenCount = 0
+local lastBeacon = 0
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -229,6 +232,7 @@ function mod:OnCombatStart(delay)
 	lightningRodIcon = 8
 	gravityCrushIcon = 8
 	frozenCount = 0
+	lastBeacon = 0
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
@@ -323,6 +327,10 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
+		end
+		lastBeacon = GetTime()
+		if GetTime() - lastBeacon >= 18 then -- sometimes Frost Beacon change targets unreasonally, show only new Frost orbs.
+			timerFrostBeaconCD:Start()
 		end
 	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them. Since jump warnings are gone that's no longer nessesary
 		warnStaticOverload:Show(args.destName)
@@ -505,6 +513,7 @@ function mod:SPELL_CAST_START(args)
 		timerLavaSeedCD:Start()
 	elseif args:IsSpellID(92212) then
 		warnFlameStrike:Show()
+		timerFlameStrikeCD:Start()
 	end
 end
 
@@ -529,6 +538,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerGravityCoreCD:Cancel()
 		timerStaticOverloadCD:Cancel()
 		timerQuakeCD:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerFrostBeaconCD:Start(29)
+			timerFlameStrikeCD:Start(32)
+		end
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		updateBossFrame(3)
 		timerQuakeCD:Cancel()
@@ -537,6 +550,10 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerEruptionCD:Cancel()
 		timerDisperse:Cancel()
 		timerTransition:Start()
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerFlameStrikeCD:Cancel()
+			self:Schedule(14, function() timerFrostBeaconCD:Cancel() end) -- Frost Beacon appears during phase transition, but not works. Anyway, to prevent spam, actually cancel timers when phase 3 starts.
+		end
 		timerLavaSeedCD:Start(30)
 		timerGravityCrushCD:Start(43)
 		self:Unschedule(checkSearingWinds)
