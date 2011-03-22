@@ -120,6 +120,7 @@ local gravityCrushTargets = {}
 local lightningRodIcon = 8
 local gravityCrushIcon = 8
 local warnedLowHP = {}
+local frozenCount = 0
 
 local function showFrozenWarning()
 	warnFrozen:Show(table.concat(frozenTargets, "<, >"))
@@ -227,6 +228,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(warnedLowHP)
 	lightningRodIcon = 8
 	gravityCrushIcon = 8
+	frozenCount = 0
 	timerGlaciate:Start(30-delay)
 	timerWaterBomb:Start(15-delay)
 	timerHeartIceCD:Start(18-delay)--could be just as flakey as it is in combat though.
@@ -249,6 +251,7 @@ end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
+		frozenCount = frozenCount + 1
 		frozenTargets[#frozenTargets + 1] = args.destName
 		self:Unschedule(showFrozenWarning)
 		self:Schedule(0.3, showFrozenWarning)
@@ -344,6 +347,7 @@ end
 
 function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied cause it causes issues with burning blood/heart of ice.
 	if args:IsSpellID(82772, 92503, 92504, 92505) then--Some spellids drycoded
+		frozenCount = frozenCount + 1
 		frozenTargets[#frozenTargets + 1] = args.destName
 		self:Unschedule(showFrozenWarning)
 		self:Schedule(0.3, showFrozenWarning)
@@ -419,6 +423,11 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerBurningBlood:Cancel(args.destName)
 		if self.Options.BurningBloodIcon then
 			self:SetIcon(args.destName, 0)
+		end
+	elseif args:IsSpellID(82772, 92503, 92504, 92505) then
+		frozenCount = frozenCount - 1
+		if frozenCount == 0 then
+			timerFrozen:Cancel()
 		end
 	elseif args:IsSpellID(83099) then
 		timerLightningRod:Cancel(args.destName)
