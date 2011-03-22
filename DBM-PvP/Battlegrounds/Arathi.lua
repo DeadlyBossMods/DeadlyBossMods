@@ -16,6 +16,21 @@ local startTimer 	= Arathi:NewTimer(62, "TimerStart", 2457)
 local winTimer 		= Arathi:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
 local capTimer 		= Arathi:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
+Arathi:AddBoolOption("ShowAbEstimatedPoints", true, nil, function()
+	if Arathi.Options.ShowAbEstimatedPoints and bgzone then
+		Arathi:ShowEstimatedPoints()
+	else
+		Arathi:HideEstimatedPoints()
+	end
+end)
+Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
+	if Arathi.Options.ShowAbBasesToWin and bgzone then
+		Arathi:ShowBasesToWin()
+	else
+		Arathi:HideBasesToWin()
+	end
+end)
+
 Arathi:RemoveOption("HealthFrame")
 Arathi:RemoveOption("SpeedKillTimer")
 
@@ -64,7 +79,7 @@ local function getObjectiveType(id)
 end
 local function getObjectiveState(id)
 	if id == 16 or id == 21 or id == 26 or id == 31 or id == 36 then
-		return 0 	-- Neutral
+		return -1 	-- Neutral
 	elseif id == 18 or id == 23 or id == 28 or id == 33 or id == 38 then	
 		return 1 	-- Alliance controlled
 	elseif id == 20 or id == 25 or id == 30 or id == 35 or id == 40 then
@@ -151,27 +166,6 @@ do
 	Arathi.ZONE_CHANGED_NEW_AREA = AB_Initialize
 end
 
-
-Arathi:AddBoolOption("ShowAbEstimatedPoints", true, nil, function()
-	if Arathi.Options.ShowAbEstimatedPoints and bgzone then
-		Arathi:ShowEstimatedPoints()
-	else
-		Arathi:HideEstimatedPoints()
-	end
-end)
-
-Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
-	if Arathi.Options.ShowAbBasesToWin and bgzone then
-		Arathi:ShowBasesToWin()
-	else
-		Arathi:HideBasesToWin()
-	end
-end)
-
-
-
-
-
 do
 	local function check_for_updates()
 		if not bgzone then return end
@@ -250,15 +244,12 @@ do
 			last_horde_bases = HordeBases
 			callupdate = true
 		end
-		
 
 		if callupdate or winner_is == 0 then
 			self:UpdateWinTimer()
 		end
 	end
 	function Arathi:UpdateWinTimer()
-
-		-- calculate new times
 		local AllyTime = (1600 - last_alliance_score) / ResPerSec[last_alliance_bases]
 		local HordeTime = (1600 - last_horde_score) / ResPerSec[last_horde_bases]
 
@@ -340,9 +331,6 @@ do
 	end
 end
 
-
-
-
 function Arathi:ShowEstimatedPoints()
 	if AlwaysUpFrame1Text and AlwaysUpFrame2Text then
 		if not self.ScoreFrame1 then
@@ -401,5 +389,3 @@ function Arathi:HideBasesToWin()
 		self.ScoreFrameToWinText:SetText("")
 	end
 end
-
-
