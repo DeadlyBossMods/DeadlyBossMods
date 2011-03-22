@@ -1,15 +1,7 @@
--- Arathi mod v3.0
--- rewrite by Tandanu
---
--- thanks to DiabloH
-
 local Arathi	= DBM:NewMod("ArathiBasin", "DBM-PvP", 2)
 local L			= Arathi:GetLocalizedStrings()
 
 Arathi:SetZone(DBM_DISABLE_ZONE_DETECTION)
-
-Arathi:RemoveOption("HealthFrame")
-Arathi:RemoveOption("SpeedKillTimer")
 
 Arathi:RegisterEvents(
 	"ZONE_CHANGED_NEW_AREA",
@@ -19,7 +11,14 @@ Arathi:RegisterEvents(
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UPDATE_WORLD_STATES"
 )
-	
+
+local startTimer 	= Arathi:NewTimer(62, "TimerStart", 2457)
+local winTimer 		= Arathi:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
+local capTimer 		= Arathi:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
+
+Arathi:RemoveOption("HealthFrame")
+Arathi:RemoveOption("SpeedKillTimer")
+
 local bgzone = false
 local ResPerSec = {
 	[0] = 0,
@@ -48,15 +47,37 @@ local objectives = {
 	Stables = 0,
 	Blacksmith = 0,
 }
-local function get_objective(id)
-	if id >=16 and id <=20 then return "GoldMine"
-	elseif id >= 21 and id <= 25 then return "LumberMill"
-	elseif id >= 26 and id <= 30 then return "Blacksmith"
-	elseif id >= 31 and id <= 35 then return "Farm"
-	elseif id >= 36 and id <= 40 then return "Stables"
-	else return false
+local function getObjectiveType(id)
+	if id >=16 and id <=20 then 
+		return "GoldMine"
+	elseif id >= 21 and id <= 25 then 
+		return "LumberMill"
+	elseif id >= 26 and id <= 30 then 
+		return "Blacksmith"
+	elseif id >= 31 and id <= 35 then 
+		return "Farm"
+	elseif id >= 36 and id <= 40 then 
+		return "Stables"
+	else 
+		return false
 	end
 end
+local function getObjectiveState(id)
+	if id == 16 or id == 21 or id == 26 or id == 31 or id == 36 then
+		return 0 	-- Neutral
+	elseif id == 18 or id == 23 or id == 28 or id == 33 or id == 38 then	
+		return 1 	-- Alliance controlled
+	elseif id == 20 or id == 25 or id == 30 or id == 35 or id == 40 then
+		return 2 	-- Horde controlled
+	elseif id == 17 or id == 22 or id == 27 or id == 32 or id == 37 then
+		return 3 	-- Alliance assaulted
+	elseif id == 19 or id == 24 or id == 29 or id == 34 or id == 39 then
+		return 4 	-- Horde assaulted
+	else 
+		return false
+	end
+end
+
 local function get_basecount()
 	local alliance = 0 
 	local horde = 0
@@ -101,9 +122,9 @@ do
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
-					local typ = get_objective(textureIndex)
-					if typ then
-						objectives[typ] = textureIndex
+					local type = getObjectiveType(textureIndex)
+					if type then
+						objectives[type] = textureIndex
 					end
 				end
 			end
@@ -148,22 +169,8 @@ Arathi:AddBoolOption("ShowAbBasesToWin", false, nil, function()
 end)
 
 
-local startTimer = Arathi:NewTimer(62, "TimerStart", 2457)
-local winTimer = Arathi:NewTimer(30, "TimerWin", "Interface\\Icons\\INV_Misc_PocketWatch_01")
-local capTimer = Arathi:NewTimer(63, "TimerCap", "Interface\\Icons\\Spell_Misc_HellifrePVPHonorHoldFavor")
 
-local function obj_state(id)
-	if id == 18 or id == 23 or id == 28 or id == 33 or id == 38 then	
-		return 1 -- if obj_state(id) > 2 then .. conflict state ...	( 1 == alliance,  2 == horde )
-	elseif id == 20 or id == 25 or id == 30 or id == 35 or id == 40 then
-		return 2 
-	elseif id == 17 or id == 22 or id == 27 or id == 32 or id == 37 then
-		return 3 -- if obj_state(id) == 3 then --- alliance trys to capture from horde
-	elseif id == 19 or id == 24 or id == 29 or id == 34 or id == 39 then
-		return 4 -- if obj_state(id) == 3 then --- horde trys to capture from alliance
-	else return 0
-	end
-end
+
 
 do
 	local function check_for_updates()
@@ -171,25 +178,23 @@ do
 		for i=1, GetNumMapLandmarks(), 1 do
 			local name, _, textureIndex = GetMapLandmarkInfo(i)
 			if name and textureIndex then
-				local typ = get_objective(textureIndex)
-				if typ then
-					if obj_state(objectives[typ]) <= 2 and obj_state(textureIndex) > 2 then
+				local type = getObjectiveType(textureIndex)		-- name of the objective without spaces
+				local state = getObjectiveState(textureIndex)	-- state of the objective
+				if type and state and state ~= objectives[type] then
+					capTimer:Stop(name)
+					if state > 2 then
 						capTimer:Start(nil, name)
-		
-						if obj_state(textureIndex) == 3 then
+						if state == 3 then
 							capTimer:SetColor(allyColor, name)
 							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_02.blp", name)
 						else
 							capTimer:SetColor(hordeColor, name)
 							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", name)
 						end	
-						
-					elseif obj_state(textureIndex) <= 2 then
-						capTimer:Stop(name)
 					end
-					objectives[typ] = textureIndex
+					objectives[type] = state
 				end
-			end		 
+			end
 		end
 	end
 
@@ -216,6 +221,8 @@ do
 	local winner_is = 0		-- 0 = nobody  1 = alliance  2 = horde
 	local last_horde_score = 0 
 	local last_alliance_score = 0
+	local last_horde_bases = 0
+	local last_alliance_bases = 0
 
 	function Arathi:UPDATE_WORLD_STATES()
 		if not bgzone then return end
@@ -235,13 +242,21 @@ do
 				callupdate = true
 			end
 		end
+		if last_alliance_bases ~= AllyBases then
+			last_alliance_bases = AllyBases
+			callupdate = true
+		end
+		if last_horde_bases ~= HordeBases then 
+			last_horde_bases = HordeBases
+			callupdate = true
+		end
+		
 
 		if callupdate or winner_is == 0 then
 			self:UpdateWinTimer()
 		end
 	end
 	function Arathi:UpdateWinTimer()
-		local last_alliance_bases, last_horde_bases = get_basecount()
 
 		-- calculate new times
 		local AllyTime = (1600 - last_alliance_score) / ResPerSec[last_alliance_bases]
