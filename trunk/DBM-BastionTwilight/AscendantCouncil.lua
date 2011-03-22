@@ -46,6 +46,7 @@ local warnGravityCrush		= mod:NewTargetAnnounce(84948, 3)
 --Heroic
 local warnGravityCore		= mod:NewTargetAnnounce(92075, 4)--Heroic
 local warnStaticOverload	= mod:NewTargetAnnounce(92067, 4)--Heroic
+local warnFlameStrike		= mod:NewCastAnnounce(92212, 3) --Heroic
 local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic
 
 --Feludius
@@ -493,6 +494,8 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(84913) then
 		warnLavaSeed:Show()
 		timerLavaSeedCD:Start()
+	elseif args:IsSpellID(92212) then
+		warnFlameStrike:Show()
 	end
 end
 
@@ -558,18 +561,13 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_HEALTH(uId)
-	local cid = self:GetUnitCreatureId(uId)
-	if cid == 43686 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(UnitName(uId))
-	elseif cid == 43687 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(UnitName(uId))
-	elseif cid == 43688 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(UnitName(uId))
-	elseif cid == 43689 and not warnedLowHP[cid] and UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
-		warnedLowHP[cid] = true
-		specWarnBossLow:Show(UnitName(uId))
+	if (uId == "boss1" or uId == "boss2" or uId == "boss3" or uId == "boss4") and self:IsInCombat() then
+		if UnitHealth(uId)/UnitHealthMax(uId) <= 0.30 then
+			local cid = self:GetUnitCreatureId(uId)
+			if (cid == 43686 or cid == 43687 or cid == 43688 or cid == 43689) and not warnedLowHP[cid] then
+				warnedLowHP[cid] = true
+				specWarnBossLow:Show(UnitName(uId))
+			end
+		end
 	end
 end
