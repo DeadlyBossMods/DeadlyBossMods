@@ -537,11 +537,11 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerHeartIceCD:Cancel()
 		timerGravityCoreCD:Cancel()
 		timerStaticOverloadCD:Cancel()
-		timerQuakeCD:Start()
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			timerFrostBeaconCD:Start(29)
-			timerFlameStrikeCD:Start(32)
+			timerFrostBeaconCD:Start(27)
+			timerFlameStrikeCD:Start(30)
 		end
+		timerQuakeCD:Start()
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		updateBossFrame(3)
 		timerQuakeCD:Cancel()

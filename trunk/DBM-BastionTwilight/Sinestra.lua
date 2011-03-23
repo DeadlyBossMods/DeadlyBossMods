@@ -28,7 +28,7 @@ local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
 
 local specWarnSlicer	= mod:NewSpecialWarning("SpecWarnSlicer")
-local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", mod:IsHealer()) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately.
+local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately.
 local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
