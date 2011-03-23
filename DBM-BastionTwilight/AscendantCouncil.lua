@@ -328,9 +328,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
 		end
-		lastBeacon = GetTime()
 		if GetTime() - lastBeacon >= 18 then -- sometimes Frost Beacon change targets unreasonally, show only new Frost orbs.
 			timerFrostBeaconCD:Start()
+			lastBeacon = GetTime()
 		end
 	elseif args:IsSpellID(92067) then--All other spell IDs are jump spellids, do not add them in or we'll have to scan source target and filter them. Since jump warnings are gone that's no longer nessesary
 		warnStaticOverload:Show(args.destName)
