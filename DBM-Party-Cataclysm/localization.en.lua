@@ -170,6 +170,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "Dragon, you will do as I command! Catch me!",	-- Yell when Valiona is incoming
+	Add			= "%s Summons an",
 	Valiona		= "Valiona"
 }
 

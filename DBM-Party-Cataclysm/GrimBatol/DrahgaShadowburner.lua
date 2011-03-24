@@ -12,6 +12,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
+	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_AURA"
 )
 
@@ -29,6 +30,11 @@ local timerDevouring			= mod:NewBuffActiveTimer(5, 90950)
 local timerShredding			= mod:NewBuffActiveTimer(20, 75271)
 
 local flamingFixate = GetSpellInfo(82850)
+local fixateWarned = false
+
+function mod:OnCombatStart(delay)
+	fixateWarned = false
+end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(75328) then
@@ -57,16 +63,23 @@ function mod:SPELL_SUMMON(args)
 end
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
-	if msg == L.ValionaYell then
+	if msg == L.ValionaYell or msg:find(L.ValionaYell) then
 		DBM.BossHealth:AddBoss(40320, L.Valiona)
 	end
 end
 
+function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
+	if msg == L.Add or msg:find(L.Add) then
+		fixateWarned = false--This will of course mess up if you haven't killed your last add yet, it'll rewarn fixate on that one then not warn for new one.
+	end
+end
+
 function mod:UNIT_AURA(uId)
-	if UnitDebuff(uId, flamingFixate) then
+	if UnitDebuff(uId, flamingFixate) and not fixateWarned then--This spams every 0.5 seconds if not throttled, debuff has unlimited duration so you can't really use a timed function.
 		warnFlamingFixate:Show(UnitName(uId))
 		if uId == "player" then
 			specWarnFlamingFixate:Show()
-		end	
+		end
+		fixateWarned = true
 	end
 end
