@@ -1,3 +1,7 @@
+-- TODO: some parts of this file need to be rewritten:
+-- * the style sucks and it can't be changed easily, even resizing bars is a pita because of the current design (blizz status bar)
+-- * the frame was never meant to support more than a simple health bar based on the creature ID; the addition of stuff like generic bars (e.g. for shields) and multi-cId bosses or GUID support added some fugly code that could be cleaned up
+
 ---------------
 --  Globals  --
 ---------------
@@ -135,7 +139,7 @@ local function createFrame(self)
 	menu[1].checked = DBM.Options.HealthFrameLocked
 end
 
-local function createBar(self, name, ...) -- the vararg will also contain the name, see method AddBoss for details
+local function createBar(self, name, ...) -- the vararg will also contain the name, see method AddBoss for details (TODO: this should be handled earlier, seriously...)
 	local bar = table.remove(barCache, #barCache) or CreateFrame("Frame", "DBM_BossHealth_Bar_"..getBarId(), anchor, "DBMBossHealthBarTemplate")
 	bar:Show()
 	local bartext = _G[bar:GetName().."BarName"]
@@ -183,7 +187,9 @@ end
 
 do
 	local t = 0
+	-- TODO: entries in these caches might never get deleted, worst case: one entry per added boss to the health frame; consider wiping these tables on remove of the corresponding bar or on hiding
 	local targetCache = {}
+	local targetGuidCache = {}
 	local function getCIDfromGUID(guid)
 		if not guid then
 			return -1
@@ -220,6 +226,32 @@ do
 			return UnitHealth(id) / UnitHealthMax(id) * 100
 		end
 	end
+	
+	-- gets the health of the given GUID, returns nil if the target could not be found
+	-- TODO: mostly copy & paste from getHealth, these functions should probably be merged somehow...
+	local function getHealthByGuid(guid)
+		local id = targetGuidCache[guid] -- ask the cache if we already know where the mob is
+		if UnitGUID(id or "") ~= guid then -- cache miss :(
+			targetGuidCache[guid] = nil
+			-- check focus target
+			if UnitGUID("focus") == guid then
+				targetGuidCache[guid] = "focus"
+			else
+				-- check target and raid/party targets
+				local uId = ((GetNumRaidMembers() == 0) and "party") or "raid"
+				for i = 0, math.max(GetNumRaidMembers(), GetNumPartyMembers()) do
+					id = (i == 0 and "target") or uId..i.."target"
+					if UnitGUID(id or "") == guid then
+						targetGuidCache[guid] = id
+						break
+					end
+				end
+			end
+		end
+		if UnitGUID(id or "") == guid then -- did we find the mob? if yes: update the health bar
+			return UnitHealth(id) / UnitHealthMax(id) * 100
+		end
+	end
 
 	function updateFrame(self, e)
 		t = t + e
@@ -237,12 +269,17 @@ do
 --				else
 --					v:Show()
 --				end
-				if type(v.id) == "number" then
+				if type(v.id) == "number" then -- creature ID
 					local health = getHealth(v.id)
 					if health then
 						updateBar(v, health)
 					end
-				elseif type(v.id) == "table" then
+				elseif type(v.id) == "string" then -- GUID
+					local health = getHealthByGuid(v.id)
+					if health then
+						updateBar(v, health)
+					end
+				elseif type(v.id) == "table" then -- multi boss
 					-- TODO: it would be more efficient to scan all party/raid members for all IDs instead of going over all raid members n times
 					-- this is especially important for the cache
 					for j, id in ipairs(v.id) do
@@ -288,8 +325,8 @@ end
 
 
 
--- HACK to support the old API cId, name. TODO: change API to name, cId and update _all_ boss mods (or: add new method AddSharedHealthBoss or something but this would also be ugly...)
--- for now: using this ugly code
+-- HACK to support the old API cId, name. TODO: change API to name, cId and update _all_ boss mods (or: add new method AddSharedHealthBoss or something but this would also be ugly...) (or: use addBoss({cId1, cId2, ...}, name) for multi-cId bosses but that's just ugly)
+-- for now: using this ugly code here instead of ugly code in all boss mods that make use of multi-cId health bars
 
 -- hack to support shared health bosses
 local function addBoss(name, ...) -- name, cId1, cId2, ..., cIdN, name
@@ -302,7 +339,7 @@ end
 
 -- the signature of this method is (cId1, cId2, ..., cIdN, name) for compatibility reasons (used to be cId, name)
 function bossHealth:AddBoss(...)
-	-- copy the name to the frong of the arg list
+	-- copy the name to the front of the arg list
 	-- note: name is now twice in the arg list but we can't really fix that in an efficient way (this is handled in createBar()
 	return addBoss(select(select("#", ...), ...), ...)
 end
