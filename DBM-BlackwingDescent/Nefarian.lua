@@ -140,7 +140,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(77826, 94124, 94125, 94126) and args:GetSrcCreatureID() == 41376 then--Nefarians Breath
 		warnNefShadowflameBreath:Show()
 		timerNefBreathCD:Start()
-	elseif args:IsSpellID(80734) then
+	elseif args:IsSpellID(80734) then--Since this is cast within 5 seconds of adds spawning, can use a GUID check here to add all 3 of http://www.wowhead.com/npc=41948 to boss health if not already on boss health.
 		warnBlastNova:Show()
 		if args.sourceGUID == UnitGUID("target") then--Only show warning/timer for your own target.
 			specWarnBlastsNova:Show()
@@ -255,7 +255,7 @@ end
 
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
-	if cid == 41948 then
+	if cid == 41948 then--Also remove from boss health when they die based on GUID
 		deaths = deaths + 1
 		if (deaths == 3 or mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) and not phase2ended then
 			timerShadowflameBarrage:Cancel()
