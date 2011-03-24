@@ -240,7 +240,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:UNIT_AURA(uId)
-	if uId ~= "player" then return end
+	if uId ~= "player" or not self:IsInCombat() then return end
 	if UnitDebuff("player", Corruption) and GetTime() - sickSpam >= 7 then
 		specWarnSickness:Show()
 		timerSickness:Start()
