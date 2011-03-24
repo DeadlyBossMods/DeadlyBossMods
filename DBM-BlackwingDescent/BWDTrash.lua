@@ -34,7 +34,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(71159) then
+	if args:IsSpellID(80727) and args:IsDestTypePlayer() then
 		timerSacrifice:Cancel(args.destName)
 	elseif args:IsSpellID(80652) then
 		timerWhirlwind:Cancel(args.destName)
