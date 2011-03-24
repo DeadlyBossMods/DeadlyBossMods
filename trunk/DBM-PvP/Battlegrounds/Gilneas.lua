@@ -128,9 +128,9 @@ do
 			for i=1, GetNumMapLandmarks(), 1 do
 				local name, _, textureIndex = GetMapLandmarkInfo(i)
 				if name and textureIndex then
-					local typ = get_objective(textureIndex)
+					local type = getObjectiveType(textureIndex)
 					if typ then
-						objectives[typ] = textureIndex
+						objectives[type] = textureIndex
 					end
 				end
 			end
