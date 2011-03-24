@@ -36,7 +36,7 @@ Gilneas:RemoveOption("SpeedKillTimer")
 	
 local bgzone = false
 local ResPerSec = {
-	[0] = 0,
+	[0] = 0.01,
 	[1] = 10/9,
 	[2] = 10/3,
 	[3] = 30
@@ -120,42 +120,37 @@ do
 	end
 end
 
-do
-	local function Gilneas_Initialize()
-		if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 736 then
-			bgzone = true
-			update_gametime()
-			for i=1, GetNumMapLandmarks(), 1 do
-				local name, _, textureIndex = GetMapLandmarkInfo(i)
-				if name and textureIndex then
-					local type = getObjectiveType(textureIndex)
-					if typ then
-						objectives[type] = textureIndex
-					end
+function Gilneas_Initialize()
+	if select(2, IsInInstance()) == "pvp" and GetCurrentMapAreaID() == 736 then
+		bgzone = true
+		update_gametime()
+		for i=1, GetNumMapLandmarks(), 1 do
+			local name, _, textureIndex = GetMapLandmarkInfo(i)
+			if name and textureIndex then
+				local type = getObjectiveType(textureIndex)
+				if type then
+					objectives[type] = textureIndex
 				end
 			end
-
-			if Gilneas.Options.ShowGilneasEstimatedPoints then
-				Gilneas:ShowEstimatedPoints()
-			end
-			if Gilneas.Options.ShowGilneasBasesToWin then
-				Gilneas:ShowBasesToWin()
-			end
-
-		elseif bgzone then
-			bgzone = false
-
-			if Gilneas.Options.ShowGilneasEstimatedPoints then
-				Gilneas:HideEstimatedPoints()
-			end
-			if Gilneas.Options.ShowGilneasBasesToWin then
-				Gilneas:HideBasesToWin()
-			end
+		end
+		if Gilneas.Options.ShowGilneasEstimatedPoints then
+			Gilneas:ShowEstimatedPoints()
+		end
+		if Gilneas.Options.ShowGilneasBasesToWin then
+			Gilneas:ShowBasesToWin()
+		end
+	elseif bgzone then
+		bgzone = false
+		if Gilneas.Options.ShowGilneasEstimatedPoints then
+			Gilneas:HideEstimatedPoints()
+		end
+		if Gilneas.Options.ShowGilneasBasesToWin then
+			Gilneas:HideBasesToWin()
 		end
 	end
-	Gilneas.OnInitialize = Gilneas_Initialize
-	Gilneas.ZONE_CHANGED_NEW_AREA = Gilneas_Initialize
 end
+Gilneas.OnInitialize = Gilneas_Initialize
+Gilneas.ZONE_CHANGED_NEW_AREA = Gilneas_Initialize
 
 do
 	local function check_for_updates()
@@ -243,9 +238,8 @@ do
 	function Gilneas:UpdateWinTimer()
 		local AllyTime = (2000 - last_alliance_score) / ResPerSec[last_alliance_bases]
 		local HordeTime = (2000 - last_horde_score) / ResPerSec[last_horde_bases]
-
-		if AllyTime > 5000 then		AllyTime = 5000 end
-		if HordeTime > 5000 then	HordeTime = 5000 end
+		if AllyTime > 2000 then		AllyTime = 2000 end
+		if HordeTime > 2000 then	HordeTime = 2000 end
 
 		if AllyTime == HordeTime then
 			winner_is = 0 
