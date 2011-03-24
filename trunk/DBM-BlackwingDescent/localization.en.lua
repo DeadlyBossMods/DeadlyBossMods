@@ -184,7 +184,8 @@ L:SetMiscLocalization({
 	Soundlevel				= "Sound Level",
 	YellPestered			= "Obnoxious Fiend on me!",--npc 49740
 	NefAdd					= "Atramedes, the heroes are right THERE!",
-	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!"
+	Airphase				= "Yes, run! With every step your heart quickens. The beating, loud and thunderous... Almost deafening. You cannot escape!",
+--	ChromaticPrototype		= "Chromatic Prototype" -- actually unneccessary as we can get the name from the combat log event, don't bother translating
 })
 
 ----------------

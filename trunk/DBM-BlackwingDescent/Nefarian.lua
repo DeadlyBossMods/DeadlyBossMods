@@ -60,6 +60,8 @@ local timerDominionCD			= mod:NewNextTimer(15, 79318)
 
 local berserkTimer				= mod:NewBerserkTimer(630)
 
+mod:AddBoolOption("HealthFrame", true)
+
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("YellOnCinder", true, "announce")
 mod:AddBoolOption("RangeFrame")
@@ -141,6 +143,9 @@ function mod:SPELL_CAST_START(args)
 		warnNefShadowflameBreath:Show()
 		timerNefBreathCD:Start()
 	elseif args:IsSpellID(80734) then--Since this is cast within 5 seconds of adds spawning, can use a GUID check here to add all 3 of http://www.wowhead.com/npc=41948 to boss health if not already on boss health.
+		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
+			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
+		end
 		warnBlastNova:Show()
 		if args.sourceGUID == UnitGUID("target") then--Only show warning/timer for your own target.
 			specWarnBlastsNova:Show()
@@ -256,6 +261,7 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 41948 then--Also remove from boss health when they die based on GUID
+		DBM.BossHealth:RemoveBoss(args.destGUID)
 		deaths = deaths + 1
 		if (deaths == 3 or mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) and not phase2ended then
 			timerShadowflameBarrage:Cancel()
