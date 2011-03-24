@@ -362,10 +362,21 @@ function bossHealth:RemoveBoss(cId)
 	end
 end
 
+-- any ID for shared health bosses
+function bossHealth:HasBoss(id)
+	if not anchor or not anchor:IsShown() then return end
+	for i, bar in ipairs(bars) do
+		if bar.id == id or type(bar.id) == "table" and checkEntry(bar.id, id) then
+			return true
+		end
+	end
+	return false
+end
+
 -- renames an entry in the health frame
 -- just pass any of the creature IDs for shared health bosses
 function bossHealth:RenameBoss(cId, newName)
-	if not anchor or not anchor:IsShown() then return end
+	if not anchor or not anchor:IsShown() then return end -- TODO: the entries should still be added even if the frame was never created if someone enables the frame mid-combat...
 	for i = #bars, 1, -1 do
 		local bar = bars[i]
 		if bar.id == cId or type(bar.id) == "table" and checkEntry(bar.id, cId) then
