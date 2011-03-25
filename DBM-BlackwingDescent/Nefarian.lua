@@ -56,7 +56,7 @@ local timerNefSwipeCD			= mod:NewTimer(10, "NefSwipeTimer", 77827, false)--Same 
 local timerOnyBreathCD			= mod:NewTimer(12, "OnyBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--12-20 second variations
 local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--same as above
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
-local timerCinderCD				= mod:NewCDTimer(22, 79339)--Heroic Ability
+local timerCinderCD				= mod:NewCDTimer(22, 79339)--Heroic Ability (Every 22-25 seconds, 25 being most common but we gotta use 22 for timer cause of that small chance it's that).
 local timerDominionCD			= mod:NewNextTimer(15, 79318)
 
 local berserkTimer				= mod:NewBerserkTimer(630)
@@ -70,11 +70,9 @@ mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetWater", false)
 
-local deaths = 0
 local spamShadowblaze = 0
 local spamLightningDischarge = 0
 local shadowblazeTimer = 35
-local phase2ended = false
 local cinderIcons = 8
 local cinderTargets	= {}
 local dominionTargets = {}
@@ -105,11 +103,9 @@ local function warnDominionTargets()
 end
 
 function mod:OnCombatStart(delay)
-	deaths = 0
 	spamShadowblaze = 0
 	spamLightningDischarge = 0
 	shadowblazeTimer = 35
-	phase2ended = false
 	table.wipe(cinderTargets)
 	table.wipe(dominionTargets)
 	timerLightningDischarge:Start(30-delay)--First one seems pretty precise (it happens at same time nef lands.)
@@ -251,6 +247,8 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerCinderCD:Start(11.5)--10+ cast, since we track application not cast.
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
+		timerCinderCD:Cancel()
+		timerShadowflameBarrage:Cancel()
 		timerShadowBlazeCD:Start(12)--Seems to vary some, from 11-13 so 12 should be a happy medium, it'll always be about 1 second off in either direction though.
 		self:ScheduleMethod(12, "ShadowBlazeFunction")
 	end
@@ -267,11 +265,6 @@ function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 41948 then--Also remove from boss health when they die based on GUID
 		DBM.BossHealth:RemoveBoss(args.destGUID)
-		deaths = deaths + 1
-		if (deaths == 3 or mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) and not phase2ended then
-			timerShadowflameBarrage:Cancel()
-			phase2ended = true
-		end
 	elseif cid == 41270 then
 		DBM.BossHealth:RemoveBoss(cid)
 	end
