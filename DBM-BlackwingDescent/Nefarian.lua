@@ -56,12 +56,14 @@ local timerNefSwipeCD			= mod:NewTimer(10, "NefSwipeTimer", 77827, false)--Same 
 local timerOnyBreathCD			= mod:NewTimer(12, "OnyBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--12-20 second variations
 local timerNefBreathCD			= mod:NewTimer(12, "NefBreathTimer", 94124, mod:IsTank() or mod:IsHealer())--same as above
 local timerCinder				= mod:NewBuffActiveTimer(8, 79339)--Heroic Ability
+local timerCinderCD				= mod:NewCDTimer(22, 79339)--Heroic Ability
 local timerDominionCD			= mod:NewNextTimer(15, 79318)
 
 local berserkTimer				= mod:NewBerserkTimer(630)
 
-mod:AddBoolOption("HealthFrame", true)
+local soundCinder				= mod:NewSound(79339)
 
+mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("YellOnCinder", true, "announce")
 mod:AddBoolOption("RangeFrame")
@@ -91,6 +93,7 @@ end
 local function warnCinderTargets()
 	warnCinder:Show(table.concat(cinderTargets, "<, >"))
 	timerCinder:Start()
+	timerCinderCD:Start()
 	table.wipe(cinderTargets)
 	cinderIcons = 8
 end
@@ -159,6 +162,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		cinderTargets[#cinderTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnCinder:Show()
+			soundCinder:Play()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)--according to in game tooltip for 79347, this has a 10 yard splash damage
 			end
@@ -244,6 +248,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNefBreathCD:Cancel()
 		timerDominionCD:Cancel()
 		timerShadowflameBarrage:Start()
+		timerCinderCD:Start(11.5)--10+ cast, since we track application not cast.
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
 		timerShadowBlazeCD:Start(12)--Seems to vary some, from 11-13 so 12 should be a happy medium, it'll always be about 1 second off in either direction though.
