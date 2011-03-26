@@ -8,7 +8,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED"
 )
 
---local warnBPGreen			= mod:NewTargetAnnounce(80369, 3)--No idea what spell it is so disabled or now. Too much crap in combat log no idea what to look for. it wasn't green.
+--local warnBPGreen			= mod:NewTargetAnnounce(80369, 3)--Debuff is 80329, but not sure what aspect uses it. Want to pre warn when the aspect that has potential to use it is up.
 local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for Maimgor drake in front of maloriaks area.
 local warnSacrifice			= mod:NewTargetAnnounce(80727, 2)--Sacrifice used by spirits before atramedes
 local warnWhirlwind			= mod:NewTargetAnnounce(80652, 2)--Whirlwind used by spirits before atramedes

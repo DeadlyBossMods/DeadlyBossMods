@@ -15,6 +15,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
+	"SPELL_HEAL",
+	"SPELL_PERIODIC_HEAL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
 	"UNIT_AURA"
 )
@@ -56,10 +58,12 @@ mod:AddBoolOption("YellOnEngulfing", true, "announce")
 mod:AddBoolOption("YellOnTwilightMeteor", false, "announce")
 mod:AddBoolOption("YellOnTwilightBlast", false, "announce")
 mod:AddBoolOption("TBwarnWhileBlackout", false, "announce")
-mod:AddBoolOption("TwilightBlastArrow")
+mod:AddBoolOption("TwilightBlastArrow", false)
 mod:AddBoolOption("BlackoutIcon")
 mod:AddBoolOption("EngulfingIcon")
 mod:AddBoolOption("RangeFrame")
+mod:RemoveOption("HealthFrame")
+mod:AddBoolOption("BlackoutShieldFrame", true, "misc")
 
 local engulfingMagicTargets = {}
 local engulfingMagicIcon = 7
@@ -70,6 +74,38 @@ local spamZone = 0
 local markWarned = false
 local blackoutActive = false
 local meteorTarget = GetSpellInfo(88518)
+
+local setBlackoutTarget, clearBlackoutTarget
+do
+	local BlackoutTarget
+	local healed = 0
+	local maxAbsorb = 0
+	local function getShieldHP()
+		return math.max(1, math.floor(healed / maxAbsorb * 100))
+	end
+	
+	function mod:SPELL_HEAL(args)
+		if args.destGUID == BlackoutTarget then
+			healed = healed + (args.absorbed or 0)
+		end
+	end	
+	mod.SPELL_PERIODIC_HEAL = mod.SPELL_HEAL
+	
+	function setBlackoutTarget(mod, target, name)--86788, 92876, 92877, 92878
+		BlackoutTarget = target
+		healed = 0
+		maxAbsorb = mod:IsDifficulty("heroic25") and 75000 or
+					mod:IsDifficulty("heroic10") and 40000 or
+					mod:IsDifficulty("normal25") and 50000 or
+					mod:IsDifficulty("normal10") and 50000 or 0
+		DBM.BossHealth:RemoveBoss(getShieldHP)
+		DBM.BossHealth:AddBoss(getShieldHP, L.BlackoutTarget:format(name))
+	end
+	
+	function clearBlackoutTarget(self, name)
+		DBM.BossHealth:RemoveBoss(getShieldHP)
+	end
+end
 
 local function showEngulfingMagicWarning()
 	warnEngulfingMagic:Show(table.concat(engulfingMagicTargets, "<, >"))
@@ -135,14 +171,17 @@ function mod:OnCombatStart(delay)
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
-	DBM.BossHealth:Clear()
-	DBM.BossHealth:AddBoss(45992, 45993, L.name)
+	if self.Options.BlackoutShieldFrame then
+		DBM.BossHealth:Show(L.name)
+		DBM.BossHealth:AddBoss(45992, 45993, L.name)
+	end
 end
 
 function mod:OnCombatEnd()
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Hide()
 	end
+	DBM.BossHealth:Clear()
 end
 
 function mod:SPELL_AURA_APPLIED(args)
@@ -157,6 +196,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnBlackout:Show()
 		end
+		setBlackoutTarget(self, args.destGUID, args.destName)
+		self:Schedule(15, clearBlackoutTarget, self, args.destName)
 	elseif args:IsSpellID(86622, 95639, 95640, 95641) then
 		engulfingMagicTargets[#engulfingMagicTargets + 1] = args.destName
 		timerEngulfingMagicNext:Start()
@@ -207,6 +248,8 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 		blackoutActive = false
+		self:Unschedule(clearBlackoutTarget)
+		clearBlackoutTarget(self, args.destName)
 	elseif args:IsSpellID(86622, 95639, 95640, 95641) then
 		if self.Options.EngulfingIcon then
 			self:SetIcon(args.destName, 0)
