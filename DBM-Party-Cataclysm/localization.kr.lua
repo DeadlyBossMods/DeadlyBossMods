@@ -171,6 +171,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "용이여, 내 명령을 따라라! 날 태워라!",	-- translate -- Yell when Valiona is incoming
+	Add			= "화염의 기원",
 	Valiona		= "발리오나"	-- translate
 }
 
