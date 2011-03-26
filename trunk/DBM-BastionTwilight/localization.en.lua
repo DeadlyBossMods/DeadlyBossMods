@@ -44,6 +44,7 @@ L:SetOptionLocalization({
 	TBwarnWhileBlackout		= "Show $spell:92898 warning when $spell:86788 active",
 	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
 	RangeFrame				= "Show range frame (10)",
+	BlackoutShieldFrame		= "Show boss health with a health bar for $spell:92878",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
