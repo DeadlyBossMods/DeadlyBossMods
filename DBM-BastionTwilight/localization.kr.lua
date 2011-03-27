@@ -45,6 +45,7 @@ L:SetOptionLocalization({
 	TBwarnWhileBlackout		= "$spell:86788 이 활성화 중 일때 $spell:92898 경고 보기",
 	TwilightBlastArrow		= "당신 근처에 $spell:92898이 시전된 경우 DBM 화살표 보기",
 	RangeFrame				= "거리 프레임 보기(10m)",
+	BlackoutShieldFrame		= "보스 체력 프레임과 함께 $spell:92878의 치유 바 보기",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
