@@ -42,6 +42,8 @@ local timerEggWeaken	= mod:NewTimer(30, "TimerEggWeaken", 61357)
 local timerDragon		= mod:NewTimer(50, "TimerDragon", 69002)
 local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
 
+mod:AddBoolOption("HealthFrame", true)
+
 local eggDown = 0
 local eggSpam = 0
 local lastDispeled = 0
@@ -53,6 +55,7 @@ local eggRemoved = false
 local warckWarned2 = false
 local warckWarned4 = false
 local redSpam = 0
+local calenGUID = 0
 
 function mod:SlicerRepeat()
 	specWarnSlicer:Show()
@@ -78,6 +81,7 @@ function mod:OnCombatStart(delay)
 	warckWarned4 = false
 	eggRemoved = false
 	redSpam = 0
+	calenGUID = 0
 	timerDragon:Start(16-delay)
 	timerBreathCD:Start(21-delay)
 	timerSlicer:Start(29-delay)
@@ -142,12 +146,22 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnSlicerSoon:Cancel()
 		end
 		self:UnscheduleMethod("SlicerRepeat")
-	elseif args:IsSpellID(87654) and GetTime() - eggSpam >= 3 then
-		eggSpam = GetTime()
-		warnEggShield:Show()
-		timerDragon:Cancel()
-		if eggRemoved then
-			specWarnEggShield:Show()
+	elseif args:IsSpellID(87231) and not args:IsDestTypePlayer() then
+		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
+			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
+			calenGUID = args.sourceGUID
+		end
+	elseif args:IsSpellID(87654) then
+		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
+			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
+		end
+		if GetTime() - eggSpam >= 3 then
+			eggSpam = GetTime()
+			warnEggShield:Show()
+			timerDragon:Cancel()
+			if eggRemoved then
+				specWarnEggShield:Show()
+			end
 		end
 	elseif args:IsSpellID(87946) and GetTime() - redSpam >= 4 then
 		warnRedEssence:Show()
@@ -185,8 +199,10 @@ end
 function mod:UNIT_DIED(args)
 	local cid = self:GetCIDFromGUID(args.destGUID)
 	if cid == 46842 then
+		DBM.BossHealth:RemoveBoss(args.destGUID)
 		eggDown = eggDown + 1
 		if eggDown >= 2 then
+			DBM.BossHealth:RemoveBoss(calenGUID)
 			timerEggWeaken:Cancel()
 			warnPhase3:Show()
 			timerBreathCD:Start()
