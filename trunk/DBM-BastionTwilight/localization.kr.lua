@@ -174,8 +174,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellDragon    = "얘들아, 먹어치워라",
-	YellEgg       = "이게 약해지는 걸로 보이느냐? 멍청한 놈!"
+	YellDragon		= "얘들아, 먹어치워라",
+	YellEgg			= "이게 약해지는 걸로 보이느냐? 멍청한 놈!"
 })
 
 --------------------------
