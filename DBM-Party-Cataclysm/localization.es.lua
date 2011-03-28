@@ -172,6 +172,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "¡Dragón, harás lo que te ordeno! ¡Cógeme!",
+	Add			= "%s Invoca un",
 	Valiona		= "Valiona"	
 }
 
