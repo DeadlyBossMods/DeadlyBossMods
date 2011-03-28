@@ -46,6 +46,7 @@ L:SetOptionLocalization({
 	TBwarnWhileBlackout		= "Mostrar aviso de $spell:92898 cuando $spell:86788 está activo",
 	TwilightBlastArrow		= "Mostrar flecha cuando $spell:92898 está cerca de ti",
 	RangeFrame				= "Mostrar distancia (10 yardas)",
+	BlackoutShieldFrame		= "Mostrar barra de vida del boss con una barra para $spell:92878",
 	BlackoutIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
@@ -67,10 +68,9 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
+	specWarnBossLow			= "%s below 30%% - next phase soon!",
 	SpecWarnGrounded	= "Coge el bufo de Domeñado",
-	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales",
-	warnGravityCoreJump		= "¡Núcleo de gravedad se ha propagado a >%s<",
-	warnStaticOverloadJump	= "¡Sobrecarga estática se ha propagado a >%s<"
+	SpecWarnSearingWinds	= "Coge el bufo de Vientos espirales"
 })
 
 L:SetTimerLocalization({
@@ -78,6 +78,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
+	specWarnBossLow			= "Mostrar un aviso especial cuando los Bosses estén por debajo del 30% de vida",
 	SpecWarnGrounded	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83581\n(~10seg antes de castear)",
 	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)",
 	timerTransition		= "Mostrar tiempo para transición de fase",
