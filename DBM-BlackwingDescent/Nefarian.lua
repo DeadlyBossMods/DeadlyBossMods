@@ -74,6 +74,8 @@ local spamShadowblaze = 0
 local spamLightningDischarge = 0
 local shadowblazeTimer = 35
 local cinderIcons = 8
+local playerDebuffed = false
+local playerDebuffs = 0
 local cinderTargets	= {}
 local dominionTargets = {}
 
@@ -89,12 +91,24 @@ function mod:ShadowBlazeFunction()
 end
 
 local function warnCinderTargets()
+	if self.Options.RangeFrame and not playerDebuffed then
+		DBM.RangeCheck:Show(10, GetRaidTargetIndex)--Special range frame that will only show players with raid icons near you (IE, warn you if someone with cinders isn't far enough).
+	end
 	warnCinder:Show(table.concat(cinderTargets, "<, >"))
 	timerCinder:Start()
 	timerCinderCD:Start()
 	table.wipe(cinderTargets)
 	cinderIcons = 8
+	playerDebuffed = false
 end
+
+	if self.Options.RangeFrame then
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
+		else
+			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
+		end
+	end
 
 local function warnDominionTargets()
 	warnDominion:Show(table.concat(dominionTargets, "<, >"))
@@ -106,6 +120,8 @@ function mod:OnCombatStart(delay)
 	spamShadowblaze = 0
 	spamLightningDischarge = 0
 	shadowblazeTimer = 35
+	playerDebuffed = false
+	playerDebuffs = 0
 	table.wipe(cinderTargets)
 	table.wipe(dominionTargets)
 	timerLightningDischarge:Start(30-delay)--First one seems pretty precise (it happens at same time nef lands.)
@@ -156,11 +172,13 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(79339) then--Completedly drycoded off wowhead, don't know CD, or even how many targets, when I have logs this will be revised.
 		cinderTargets[#cinderTargets + 1] = args.destName
+		playerDebuffs = playerDebuffs + 1
 		if args:IsPlayer() then
+			playerDebuffed = true
 			specWarnCinder:Show()
 			soundCinder:Play()
 			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)--according to in game tooltip for 79347, this has a 10 yard splash damage
+				DBM.RangeCheck:Show(10)
 			end
 			if self.Options.YellOnCinder then
 				SendChatMessage(L.YellCinder, "SAY")
@@ -190,10 +208,12 @@ end
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(79339) then
-		if args:IsPlayer() then
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Hide()
-			end
+		playerDebuffs = playerDebuffs - 1
+		if args:IsPlayer() and self.Options.RangeFrame and playerDebuffs >= 1 then
+			DBM.RangeCheck:Show(10, GetRaidTargetIndex)--Change to raid icon based check since theirs is gone but there are still cinders in raid.
+		end
+		if self.Options.RangeFrame and playerDebuffs == 0 then--All of them are gone. We do it this way since some may cloak/bubble/iceblock early and we don't want to just cancel range finder if 1 of 3 end early.
+			DBM.RangeCheck:Hide()
 		end
 		if self.Options.SetIconOnCinder then
 			self:SetIcon(args.destName, 0)
