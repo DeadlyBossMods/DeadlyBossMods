@@ -225,7 +225,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "Show info frame for Onyxia's Electric Charge",
 	SetWater				= "Automatically disable water collision on pull\n(returns it to enabled upon leaving combat)",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
-	RangeFrame				= "Show range frame (10) for $spell:79339\n(Shows everyone if you have debuff, only players with icons if you don't)"
+	RangeFrame				= "Show range frame (10) for $spell:79339\n(Shows everyone if you have debuff, only players with icons if not)"
 })
 
 L:SetMiscLocalization({

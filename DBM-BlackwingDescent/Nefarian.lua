@@ -63,10 +63,10 @@ local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
 
-mod:AddBoolOption("HealthFrame", true)
+mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("YellOnCinder", true, "announce")
-mod:AddBoolOption("RangeFrame")
+mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetWater", false)
 
