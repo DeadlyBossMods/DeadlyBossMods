@@ -96,7 +96,7 @@ function mod:OnCombatStart(delay)
 end
 
 function mod:SPELL_CAST_START(args)
-	if args:IsSpellID(92944) then
+	if args:IsSpellID(90125, 92944) then
 		warnBreath:Show()
 		specWarnBreath:Show()
 		timerBreathCD:Start()
@@ -107,9 +107,9 @@ function mod:SPELL_CAST_START(args)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(92946) then
+	if args:IsSpellID(90045, 92946) then
 		warnIndomitable:Show()
-	elseif args:IsSpellID(92955) then
+	elseif args:IsSpellID(89421, 92955) then--Cast wracks (10,25)
 		warnWrack:Show(args.destName)
 		timerWrack:Start()
 		if oldWrackTime == 0 then
@@ -126,7 +126,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(60, function()
 			specWarnDispel:Cancel()
 		end)
-	elseif args:IsSpellID(92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped warcks
+	elseif args:IsSpellID(89435, 92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped wracks (10,25)
 		newWrackCount = newWrackCount + 1
 		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not warckWarned4 then
 			specWarnDispel:Cancel()
@@ -177,7 +177,7 @@ function mod:SPELL_AURA_REMOVED(args)
 		timerEggWeaken:Show()
 		specWarnEggWeaken:Show()
 		eggRemoved = true
-	elseif args:IsSpellID(92955, 92956) then
+	elseif args:IsSpellID(89421, 89435, 92955, 92956) then
 		if GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12 then
 			newWrackCount = newWrackCount - 1
 			if GetTime() - lastDispeled > 5 then
