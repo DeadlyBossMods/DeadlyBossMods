@@ -122,6 +122,9 @@ local function valionaDelay()
 	timerEngulfingMagicNext:Cancel()
 	timerBlackoutCD:Start(10)
 	timerDevouringFlamesCD:Start(25)
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(8)
+	end
 end
 
 local function AMSTimerDelay()
@@ -169,7 +172,7 @@ function mod:OnCombatStart(delay)
 	markWarned = false
 	blackoutActive = false
 	if self.Options.RangeFrame then
-		DBM.RangeCheck:Show(10)
+		DBM.RangeCheck:Show(8)
 	end
 	if self.Options.BlackoutShieldFrame then
 		DBM.BossHealth:Show(L.name)
@@ -279,6 +282,9 @@ function mod:SPELL_CAST_START(args)
 			timerEngulfingMagicNext:Start(20)--need more logs to confirm this.
 			timerNextDeepBreath:Start()
 			dazzlingCast = 0--reset back to 0 for next time it happens.
+			if self.Options.RangeFrame then
+				DBM.RangeCheck:Show(10)
+			end
 		end
 	elseif args:IsSpellID(86369, 92898, 92899, 92900) then
 		self:ScheduleMethod(0.1, "TwilightBlastTarget")
