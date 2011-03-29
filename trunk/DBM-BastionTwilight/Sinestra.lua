@@ -17,7 +17,9 @@ mod:RegisterEvents(
 
 local warnBreath		= mod:NewSpellAnnounce(92944, 3)
 local warnSlicerSoon	= mod:NewAnnounce("WarnSlicerSoon", 2, 92954) -- yeah, this stuff can be very spammy, but in Sinestra, Twilight Slicer is very very very important, so on it by default.
-local warnWrack			= mod:NewTargetAnnounce(92955, 3)
+local warnWrack			= mod:NewTargetAnnounce(92955, 4)
+local warnWrackJump		= mod:NewAnnounce("warnWrackJump", 3, 92955, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
+local WarnWrackCount5s	= mod:NewAnnounce("WarnWrackCount5s", 2, 92955, false)--Support the common 10 man strat of 20 15 15 10 (or 25 if they do it same way)
 local warnDragon		= mod:NewAnnounce("WarnDragon", 3, 69002)
 local warnEggWeaken		= mod:NewAnnounce("WarnEggWeaken", 4, 61357)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
@@ -28,7 +30,7 @@ local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
 
 local specWarnSlicer	= mod:NewSpecialWarning("SpecWarnSlicer")
-local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately.
+local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately. (Maybe add support for common 10 man variation with if/else rules?)
 local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
@@ -122,18 +124,31 @@ function mod:SPELL_AURA_APPLIED(args)
 		lastDispeled = 0
 		wrackWarned4 = false
 		wrackWarned2 = false
+		WarnWrackCount5s:Schedule(10, 10)
+		WarnWrackCount5s:Schedule(15, 15)
+		WarnWrackCount5s:Schedule(20, 20)
 		specWarnDispel:Schedule(18, 18)
 		self:Schedule(60, function()
 			specWarnDispel:Cancel()
+			WarnWrackCount5s:Cancel()
 		end)
 	elseif args:IsSpellID(89435, 92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped wracks (10,25)
 		newWrackCount = newWrackCount + 1
+		warnWrackJump:Show(args.spellName, args.destName)
 		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned4 then
 			specWarnDispel:Cancel()
+			WarnWrackCount5s:Cancel()
+			WarnWrackCount5s:Schedule(10, 10)
+			WarnWrackCount5s:Schedule(15, 15)
+			WarnWrackCount5s:Schedule(20, 20)
 			specWarnDispel:Schedule(12, 12)
 			wrackWarned4 = true
 		elseif newWrackCount > 1 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned2 then
 			specWarnDispel:Cancel()
+			WarnWrackCount5s:Cancel()
+			WarnWrackCount5s:Schedule(10, 10)
+			WarnWrackCount5s:Schedule(15, 15)
+			WarnWrackCount5s:Schedule(20, 20)
 			specWarnDispel:Schedule(17, 17)
 			wrackWarned2 = true
 		end
