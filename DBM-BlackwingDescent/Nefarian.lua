@@ -102,14 +102,6 @@ local function warnCinderTargets()
 	playerDebuffed = false
 end
 
-	if self.Options.RangeFrame then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
-			DBM.RangeCheck:Show(20, GetRaidTargetIndex)
-		else
-			DBM.RangeCheck:Show(10, GetRaidTargetIndex)
-		end
-	end
-
 local function warnDominionTargets()
 	warnDominion:Show(table.concat(dominionTargets, "<, >"))
 	timerDominionCD:Start()
