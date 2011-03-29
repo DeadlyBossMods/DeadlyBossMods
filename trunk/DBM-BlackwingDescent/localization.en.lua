@@ -222,10 +222,10 @@ L:SetOptionLocalization({
 	OnyBreathTimer			= "Show timer for Onyxia's $spell:94124 cooldown",
 	NefBreathTimer			= "Show timer for Nefarian's $spell:94124 cooldown",
 	YellOnCinder			= "Yell on $spell:79339",
-	RangeFrame				= "Show range frame (10) when you have $spell:79339",
 	InfoFrame				= "Show info frame for Onyxia's Electric Charge",
 	SetWater				= "Automatically disable water collision on pull\n(returns it to enabled upon leaving combat)",
-	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
+	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
+	RangeFrame				= "Show range frame (10) for $spell:79339\n(Shows everyone if you have debuff, only players with icons if you don't)"
 })
 
 L:SetMiscLocalization({
