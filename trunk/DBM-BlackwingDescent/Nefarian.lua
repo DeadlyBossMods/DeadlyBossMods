@@ -256,7 +256,9 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNefBreathCD:Cancel()
 		timerDominionCD:Cancel()
 		timerShadowflameBarrage:Start()
-		timerCinderCD:Start(11.5)--10+ cast, since we track application not cast.
+		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+			timerCinderCD:Start(11.5)--10+ cast, since we track application not cast.
+		end
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
 		warnPhase3:Show()
 		timerCinderCD:Cancel()
