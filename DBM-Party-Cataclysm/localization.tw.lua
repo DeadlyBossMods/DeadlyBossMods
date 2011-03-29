@@ -173,7 +173,8 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "龍啊，聽我命令! 抓住我!",	-- translate -- Yell when Valiona is incoming
-	Valiona		= "瓦莉歐娜"	-- translate
+	Add		= "%s進行",
+	Valiona		= "瓦莉歐娜"
 }
 
 ------------

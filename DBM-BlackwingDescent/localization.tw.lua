@@ -226,11 +226,11 @@ L:SetOptionLocalization({
 	OnyBreathTimer			= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
 	NefBreathTimer			= "為奈法利安的$spell:94124的冷卻時間顯示計時器",
 	YellOnCinder			= "中了$spell:79339時大喊",
-	RangeFrame			= "當你中了$spell:79339時顯示距離框 (10碼)",
 	InfoFrame			= "為奧妮克希亞的電流充能顯示資訊框架",
 
 	SetWater			= "進入戰鬥後自動停用水體細節\n(離開戰鬥後回到啟用)",
-	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
+	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
+	RangeFrame			= "為$spell:79339顯示距離框 (10碼)\n(當你中減益時顯示所有人, 否則只顯示中的人)"
 })
 
 L:SetMiscLocalization({
@@ -241,4 +241,25 @@ L:SetMiscLocalization({
 	Nefarian			= "奈法利安",
 	Onyxia				= "奧妮克希亞",
 	Charge				= "電流充能"
+})
+
+--------------
+--  Blackwing Descent Trash  --
+--------------
+L = DBM:GetModLocalization("BWDTrash")
+
+L:SetGeneralLocalization({
+	name = "黑翼陷窟小怪"
+})
+
+L:SetWarningLocalization({
+})
+
+L:SetTimerLocalization({
+})
+
+L:SetOptionLocalization({
+})
+
+L:SetMiscLocalization({
 })
