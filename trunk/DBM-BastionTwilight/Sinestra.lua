@@ -52,8 +52,8 @@ local oldWrackTime = 0
 local newWrackCount = 0
 local oldWrackCount = 0
 local eggRemoved = false
-local warckWarned2 = false
-local warckWarned4 = false
+local wrackWarned2 = false
+local wrackWarned4 = false
 local redSpam = 0
 local calenGUID = 0
 
@@ -77,8 +77,8 @@ function mod:OnCombatStart(delay)
 	newWrackTime = 0
 	oldWrackTime = 0
 	newWrackCount = 0
-	warckWarned2 = false
-	warckWarned4 = false
+	wrackWarned2 = false
+	wrackWarned4 = false
 	eggRemoved = false
 	redSpam = 0
 	calenGUID = 0
@@ -120,22 +120,22 @@ function mod:SPELL_AURA_APPLIED(args)
 		newWrackTime = GetTime()
 		newWrackCount = 1
 		lastDispeled = 0
-		warckWarned4 = false
-		warckWarned2 = false
+		wrackWarned4 = false
+		wrackWarned2 = false
 		specWarnDispel:Schedule(18, 18)
 		self:Schedule(60, function()
 			specWarnDispel:Cancel()
 		end)
 	elseif args:IsSpellID(89435, 92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped wracks (10,25)
 		newWrackCount = newWrackCount + 1
-		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not warckWarned4 then
+		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned4 then
 			specWarnDispel:Cancel()
 			specWarnDispel:Schedule(12, 12)
-			warckWarned4 = true
-		elseif newWrackCount > 1 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not warckWarned2 then
+			wrackWarned4 = true
+		elseif newWrackCount > 1 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned2 then
 			specWarnDispel:Cancel()
 			specWarnDispel:Schedule(17, 17)
-			warckWarned2 = true
+			wrackWarned2 = true
 		end
 	elseif args:IsSpellID(87299) then
 		eggDown = 0
