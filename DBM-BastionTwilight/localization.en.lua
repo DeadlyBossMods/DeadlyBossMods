@@ -146,29 +146,33 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnDragon			= "Twilight Whelp Spawned",
 	WarnSlicerSoon		= "Twilight Slicer in %d sec!",
-	WarnEggWeaken		= "Twilight Carapace Removed on Egg",
+	WarnEggWeaken		= "Twilight Carapace dissipated on Egg",
 	SpecWarnSlicer		= "Twilight Slicer soon!",
-	SpecWarnDispel		= "%d sec elased after last Wrack - Dispel Now!", -- not good translation. check if more better
-	SpecWarnEggWeaken	= "Twilight Carapace Removed - Dps EGG Now!", -- not good translation. check if more better
-	SpecWarnEggShield	= "Twilight Capapace Regenerated!" -- not good translation. check if more better
+	warnWrackJump		= "%s jumped to >%%s<",
+	WarnWrackCount5s	= "%d sec elapsed since last Wrack",
+	SpecWarnDispel		= "%d sec elapsed since last Wrack - Dispel Now!",
+	SpecWarnEggWeaken	= "Twilight Carapace dissipated - Dps EGG Now!",
+	SpecWarnEggShield	= "Twilight Capapace Regenerated!"
 })
 
 L:SetTimerLocalization({
 	TimerDragon			= "Next Twilight Whelps",
-	TimerEggWeakening	= "Twilight Carapace Removing", -- not good translation. check if more better
-	TimerEggWeaken		= "Twilight Capapace Regeneration" -- not good translation. check if more better
+	TimerEggWeakening	= "Twilight Carapace dissipates",
+	TimerEggWeaken		= "Twilight Capapace Regeneration"
 })	
 
 L:SetOptionLocalization({
 	WarnDragon			= "Show warning when Twilight Whelp Spawns",
 	WarnSlicerSoon		= "Show pre-warning for $spell:92954 (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
-	WarnEggWeaken		= "Show pre-warning for $spell:87654 removes", -- not good translation. check if more better
+	WarnEggWeaken		= "Show pre-warning for when $spell:87654 dissipates",
+	warnWrackJump		= "Announce $spell:92955 jump targets",
+	WarnWrackCount5s	= "Announce $spell:92955 elapsed player duration at 10, 15, 20 seconds",
 	SpecWarnSlicer		= "Show special warning for $spell:92954\n(Expected warning. may not be accurate)",
-	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)", -- not good translation. check if more better
-	SpecWarnEggWeaken	= "Show special warning when $spell:87654 removed", -- not good translation. check if more better
-	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated", -- not good translation. check if more better
+	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)",
+	SpecWarnEggWeaken	= "Show special warning when $spell:87654 dissipates",
+	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated",
 	TimerDragon			= "Show timer for new Twilight Whelp",
-	TimerEggWeakening	= "Show timer for $spell:87654 remove",
+	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
 	TimerEggWeaken		= "Show timer for $spell:87654 regeneration"
 })
 
