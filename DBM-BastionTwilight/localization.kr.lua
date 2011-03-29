@@ -149,6 +149,8 @@ L:SetWarningLocalization({
 	WarnDragon			= "새끼용 등장",
 	WarnEggWeaken		= "황혼 껍질 사라짐",
 	SpecWarnSlicer		= "곧 황혼 절단!",
+	warnWrackJump		= "%s 전이 : >%%s<",
+	WarnWrackCount5s	= "마지막 파멸 후 %d초 지남",
 	SpecWarnDispel		= "마지막 파멸 후 %d초 지남 - 지금 해제!",
 	SpecWarnEggWeaken	= "황혼 껍질 사라짐 - 알 극딜!",
 	SpecWarnEggShield	= "황혼 껍질 재생성!"
@@ -164,6 +166,8 @@ L:SetOptionLocalization({
 	WarnDragon       	= "새끼용 등장 경고 보기",
 	WarnSlicerSoon		= "$spell:92954의 사전 경고 보기 (5초 전부터, 1초 마다)\n(예상 경보이며, 정확하지 않을 수 있습니다.)",
 	WarnEggWeaken    	= "$spell:87654 제거 사전 경고 보기",
+	warnWrackJump		= "$spell:92955 전이 경고 보기",
+	WarnWrackCount5s	= "$spell:92955이 시전/전이 된 후 10, 15, 20 초가 지나면 경고 보기",
 	SpecWarnSlicer		= "$spell:92954의 특수 경고 보기 (예상 경보이며, 정확하지 않을 수 있습니다.)",
 	SpecWarnDispel		= "$spell:92955이 시전/전이 된 후 일정 시간이 지나면 특수 경고 보기(해제)",
 	SpecWarnEggWeaken	= "$spell:87654 사라짐 특수 경고 보기",
