@@ -149,7 +149,7 @@ L:SetWarningLocalization({
 	WarnDragon			= "새끼용 등장",
 	WarnEggWeaken		= "황혼 껍질 사라짐",
 	SpecWarnSlicer		= "곧 황혼 절단!",
-	warnWrackJump		= "%s 전이 : >%%s<",
+	warnWrackJump		= "%s 전이 : >%s<",
 	WarnWrackCount5s	= "마지막 파멸 후 %d초 지남",
 	SpecWarnDispel		= "마지막 파멸 후 %d초 지남 - 지금 해제!",
 	SpecWarnEggWeaken	= "황혼 껍질 사라짐 - 알 극딜!",

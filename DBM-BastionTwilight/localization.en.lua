@@ -148,7 +148,7 @@ L:SetWarningLocalization({
 	WarnSlicerSoon		= "Twilight Slicer in %d sec!",
 	WarnEggWeaken		= "Twilight Carapace dissipated on Egg",
 	SpecWarnSlicer		= "Twilight Slicer soon!",
-	warnWrackJump		= "%s jumped to >%%s<",
+	warnWrackJump		= "%s jumped to >%s<",
 	WarnWrackCount5s	= "%d sec elapsed since last Wrack",
 	SpecWarnDispel		= "%d sec elapsed since last Wrack - Dispel Now!",
 	SpecWarnEggWeaken	= "Twilight Carapace dissipated - Dps EGG Now!",
