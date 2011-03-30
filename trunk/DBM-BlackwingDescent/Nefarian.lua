@@ -91,7 +91,7 @@ function mod:ShadowBlazeFunction()
 end
 
 local function warnCinderTargets()
-	if self.Options.RangeFrame and not playerDebuffed then
+	if mod.Options.RangeFrame and not playerDebuffed then
 		DBM.RangeCheck:Show(10, GetRaidTargetIndex)--Special range frame that will only show players with raid icons near you (IE, warn you if someone with cinders isn't far enough).
 	end
 	warnCinder:Show(table.concat(cinderTargets, "<, >"))
