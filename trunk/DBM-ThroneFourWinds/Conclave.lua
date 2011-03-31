@@ -226,7 +226,7 @@ function mod:UNIT_POWER(uId)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, boss)
-	if (msg == L.gatherstrength or msg:find(L.gatherstrength)) and mod:LatencyCheck() then
+	if (msg == L.gatherstrength or msg:find(L.gatherstrength)) then
 		self:SendSync("GatherStrength", boss)
 	end
 end
