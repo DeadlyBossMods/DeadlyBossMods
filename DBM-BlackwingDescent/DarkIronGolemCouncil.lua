@@ -377,7 +377,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	end
 end
 
-function mod:SPELL_INTERRUPT(args)--Pretty sure druids still don't show in log so if a druid kicks it won't be accurate.
+function mod:SPELL_INTERRUPT(args)
 	if (type(args.extraSpellId) == "number" and (args.extraSpellId == 79710 or args.extraSpellId == 91540 or args.extraSpellId == 91541 or args.extraSpellId == 91542)) and GetTime() - lastInterrupt > 2 then
 		lastInterrupt = GetTime()--We only want the first interrupt, any extra won't count til next cast
 		if args:IsSpellID(2139) then															--Counterspell
