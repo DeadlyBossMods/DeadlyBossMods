@@ -15,7 +15,8 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
-	"UNIT_HEALTH"
+	"UNIT_HEALTH",
+	"UNIT_DIED"
 )
 
 local warnLavaSpew			= mod:NewSpellAnnounce(77689, 3, nil, mod:IsHealer())
@@ -45,11 +46,13 @@ mod:AddBoolOption("RangeFrame")
 
 local lastLavaSpew = 0
 local ignitionSpam = 0
+local geddonConstruct = 0
 local prewarnedPhase2 = false
 
 function mod:OnCombatStart(delay)
 	lastLavaSpew = 0
 	ignitionSpam = 0
+	geddonConstruct = 0
 	prewarnedPhase2 = false
 	timerPillarFlame:Start(30-delay)
 	timerMangleCD:Start(90-delay)
@@ -96,6 +99,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(92177) then
 		specWarnArmageddon:Show()
 		timerArmageddon:Start()
+		geddonConstruct = args.sourceGUID--Cache last mob to cast armageddon
 	end
 end
 
@@ -144,5 +148,11 @@ function mod:UNIT_HEALTH(uId)
 			prewarnedPhase2 = true
 			warnPhase2Soon:Show()
 		end
+	end
+end
+
+function mod:UNIT_DIED(args)
+	if geddonConstruct == args.destGUID then--Check GUID of units dying if they match last armageddon casting construct. Better than CID alone so we don't cancel it if a diff one dies, but probably not perfect if two cast it at once heh.
+		timerArmageddon:Cancel()
 	end
 end

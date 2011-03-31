@@ -32,8 +32,8 @@ local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
 local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Ranged should already be spread out and not need a special warning every sickness.
 local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
-local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178, not mod:IsTank())--Subject to accuracy flaws so off by default for tanks.
-local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178, false)--Subject to accuracy flaws for everyone so off by default.
+local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
+local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
@@ -50,7 +50,7 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 mod:AddBoolOption("SetIconOnWorship", true)
 mod:AddBoolOption("SetIconOnCreature", true)
 mod:AddBoolOption("YellOnCorrupting", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
-mod:AddBoolOption("CorruptingCrashArrow", false)--Subject to accuracy flaws so off by default.
+mod:AddBoolOption("CorruptingCrashArrow", true)--Subject to accuracy flaws so off by default.
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
 
@@ -216,7 +216,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(81171) then--87579?
 		warnFlameOrders:Show()
 	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
-		self:ScheduleMethod(0.2, "CorruptingCrashTarget", args.sourceGUID)--Since this is an instance cast scanning accurately is very hard.
+		self:ScheduleMethod(0.2, "CorruptingCrashTarget", args.sourceGUID)
 	end
 end
 
