@@ -152,7 +152,7 @@ function mod:UNIT_HEALTH(uId)
 end
 
 function mod:UNIT_DIED(args)
-	if geddonConstruct == args.destGUID then--Check GUID of units dying if they match last armageddon casting construct. Better than CID alone so we don't cancel it if a diff one dies, but probably not perfect if two cast it at once heh.
+	if args.destGUID == geddonConstruct then--Check GUID of units dying if they match last armageddon casting construct. Better than CID alone so we don't cancel it if a diff one dies, but probably not perfect if two cast it at once heh.
 		timerArmageddon:Cancel()
 	end
 end
