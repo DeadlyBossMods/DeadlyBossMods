@@ -122,7 +122,7 @@ local function valionaDelay()
 	timerEngulfingMagicNext:Cancel()
 	timerBlackoutCD:Start(10)
 	timerDevouringFlamesCD:Start(25)
-	if self.Options.RangeFrame then
+	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
 end
