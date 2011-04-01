@@ -148,7 +148,7 @@ local function createBar(self, name, ...) -- the vararg will also contain the na
 	barborder:SetScript("OnMouseDown", onMouseDown)
 	barborder:SetScript("OnMouseUp", onMouseUp)
 	barborder:SetScript("OnHide", onHide)
-	if select("#", ...) == 2 then -- 2 as the name is in the vararg
+	if select("#", ...) <= 2 then -- 2 as the name is in the vararg
 		bar.id = ...
 	else
 		bar.id = {...}
@@ -352,7 +352,11 @@ function bossHealth:RemoveBoss(cId)
 		if bar.id == cId or type(bar.id) == "table" and checkEntry(bar.id, cId) then
 			if bars[i + 1] then
 				local next = bars[i + 1]
-				next:SetPoint("TOP", bars[i - 1] or anchor, "BOTTOM", 0, 0)
+				if DBM.Options.HealthFrameGrowUp then
+					next:SetPoint("BOTTOM", bars[i - 1] or anchor, "TOP", 0, 0)
+				else
+					next:SetPoint("TOP", bars[i - 1] or anchor, "BOTTOM", 0, 0)
+				end
 			end
 			bar:Hide()
 			bar:ClearAllPoints()
