@@ -28,17 +28,6 @@ local warnDazzlingDestruction		= mod:NewCountAnnounce(86408, 4)
 local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)
 local warnTwilightShift				= mod:NewStackAnnounce(93051, 2)
 
-local timerBlackout					= mod:NewTargetTimer(15, 86788)
-local timerBlackoutCD				= mod:NewCDTimer(45, 86788)
-local timerDevouringFlamesCD		= mod:NewCDTimer(40, 86840)
-local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
-local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
-local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
-local timerNextDeepBreath			= mod:NewNextTimer(103, 86059)
-local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
-local timerTwilightShift			= mod:NewTargetTimer(100, 93051)
-local timerTwilightShiftCD			= mod:NewCDTimer(20, 93051)
-
 local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
 local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
 local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
@@ -49,6 +38,18 @@ local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)
 local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898, false)
 local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
 local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 10)
+
+local timerBlackout					= mod:NewTargetTimer(15, 86788)
+local timerBlackoutCD				= mod:NewCDTimer(45.5, 86788)
+local timerDevouringFlamesCD		= mod:NewCDTimer(40, 86840)
+local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
+local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
+local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
+local timerNextFabFlames			= mod:NewNextTimer(15, 92909)--Cast is every 15 seconds but no cast event for it so we have to use spell damage and a little assumption someone is always gonna take 1 tick.
+local timerNextDeepBreath			= mod:NewNextTimer(103, 86059)
+local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
+local timerTwilightShift			= mod:NewTargetTimer(100, 93051)
+local timerTwilightShiftCD			= mod:NewCDTimer(20, 93051)
 
 local berserkTimer					= mod:NewBerserkTimer(600)
 
@@ -70,6 +71,7 @@ local engulfingMagicIcon = 7
 local dazzlingCast = 0
 local breathCast = 0
 local lastflame = 0
+local lastflamecast = 0
 local spamZone = 0
 local markWarned = false
 local blackoutActive = false
@@ -120,6 +122,7 @@ end
 
 local function valionaDelay()
 	timerEngulfingMagicNext:Cancel()
+	timerNextFabFlames:Cancel()
 	timerBlackoutCD:Start(10)
 	timerDevouringFlamesCD:Start(25)
 	if mod.Options.RangeFrame then
@@ -168,6 +171,7 @@ function mod:OnCombatStart(delay)
 	dazzlingCast = 0
 	breathCast = 0
 	lastflame = 0
+	lastflamecast = 0
 	spamZone = 0
 	markWarned = false
 	blackoutActive = false
@@ -276,8 +280,8 @@ function mod:SPELL_CAST_START(args)
 		warnDazzlingDestruction:Show(dazzlingCast)
 		if dazzlingCast == 1 then--only special warn once for first one
 			specWarnDazzlingDestruction:Show()
-		elseif dazzlingCast == 3 then--Cancel bars now as it's safer then doing it at beginning do to a late 3rd blackout gets cast sometimes.
-			timerBlackoutCD:Cancel()
+		elseif dazzlingCast == 3 then
+--			timerBlackoutCD:Cancel()--Sometimes valiona is a bitch and casts 3rd one anyways on way up 3-5 seconds after 3rd dazzling, not sure how to account for this yet. For now i'll comment the cancel out.
 			timerDevouringFlamesCD:Cancel()
 			timerEngulfingMagicNext:Start(20)--need more logs to confirm this.
 			timerNextDeepBreath:Start()
@@ -291,10 +295,24 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
+--[[WIP, fab flames next timer based on spell damage detection. It has a 15 second timer but blizz didn't give it a cast event, qq.
+Also, when cast, the dragon will turn and target person it's cast on. Schedule a 14, 15 and 16 second delay to check target and if it's not a tank announce target early (or attempt to rathor) might be possible.
+3/31 20:28:21.364  SPELL_DAMAGE,0xF130B57000000D23,"Fabulous Flames",0xa48,0x0400000004EF8CAA,"Dautz",0x514,92909,"Fabulous Flames",0x20,10917,-1,32,5617,0,0,nil,nil,nil
+3/31 20:28:37.410  SPELL_DAMAGE,0xF130B57000000D47,"Fabulous Flames",0xa48,0x0400000004A6518D,"Esoth",0x1000514,92909,"Fabulous Flames",0x20,9018,-1,32,3736,0,5928,nil,nil,nil
+3/31 20:28:52.227  SPELL_DAMAGE,0xF130B57000000D6C,"Fabulous Flames",0xa48,0x040000000479BCAE,"Ambrossia",0x514,92909,"Fabulous Flames",0x20,13426,-1,32,3831,0,1897,nil,nil,nil
+3/31 20:29:07.847  SPELL_DAMAGE,0xF130B57000000D88,"Fabulous Flames",0xa48,0x0400000004EA5DF5,"Skramz",0x514,92909,"Fabulous Flames",0x20,13042,-1,32,5589,0,0,nil,nil,nil
+3/31 20:29:23.915  SPELL_DAMAGE,0xF130B57000000DB2,"Fabulous Flames",0xa48,0x04000000047A12DB,"Dirann",0x2000514,92909,"Fabulous Flames",0x20,11204,-1,32,5649,0,0,nil,nil,nil
+--]]
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(86505, 92907, 92908, 92909) and args:IsPlayer() and GetTime() - lastflame > 3 then
-		specWarnFabulousFlames:Show()
-		lastflame = GetTime()
+	if args:IsSpellID(86505, 92907, 92908, 92909) then
+		if GetTime() - lastflamecast > 13.5 then--Might need a tweak, it's hard to filter damage events triggering the timer from morons who walk into it after it was placed on ground.
+			timerNextFabFlames:Start()
+			lastflamecast = GetTime()
+		end
+		if args:IsPlayer() and GetTime() - lastflame > 3  then
+			specWarnFabulousFlames:Show()
+			lastflame = GetTime()
+		end
 	end
 end
 
