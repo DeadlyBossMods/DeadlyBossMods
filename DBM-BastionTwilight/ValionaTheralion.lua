@@ -122,7 +122,7 @@ end
 
 local function valionaDelay()
 	timerEngulfingMagicNext:Cancel()
-	timerNextFabFlames:Cancel()
+--	timerNextFabFlames:Cancel()--This sometimes gets cast late as well, right on top of raid that's grouped up for blackout.
 	timerBlackoutCD:Start(10)
 	timerDevouringFlamesCD:Start(25)
 	if mod.Options.RangeFrame then
