@@ -3018,7 +3018,7 @@ do
 
 	function yellPrototype:Yell(msg)
 		if not self.option or self.mod.Options[self.option] then
-			SendChatMessage(DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(spellId), "SAY")
+			SendChatMessage(DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT, "SAY")--I have no doubt this is wrong, i'm not sure how the function is gonna grab %s yet.
 		end
 	end
 
