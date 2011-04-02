@@ -2992,6 +2992,45 @@ do
 	end	
 end
 
+--------------------
+--  Yell Object  --
+--------------------
+--[[WIP, probably have arta just fix it up since i suck :)
+do
+	local yellPrototype = {}
+	local mt = { __index = yellPrototype }
+	function bossModPrototype:NewYell(spellId, optionName, optionDefault)
+		self.numYells = self.numYells and self.numYells + 1 or 1
+		local obj = setmetatable(
+			{
+				option = optionName or DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId),
+				mod = self,
+			},
+			mt
+		)
+		if optionName == false then
+			obj.option = nil
+		else
+			self:AddBoolOption(obj.option, optionDefault, "announce")
+		end
+		return obj
+	end
+
+	function yellPrototype:Yell(msg)
+		if not self.option or self.mod.Options[self.option] then
+			SendChatMessage(DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(spellId), "SAY")
+		end
+	end
+
+	function yellPrototype:Schedule(t, ...)
+		return schedule(t, self.Yell, self.mod, self, ...)
+	end
+
+	function yellPrototype:Cancel(...)
+		return unschedule(self.Yell, self.mod, self, ...)
+	end	
+end--]]
+
 ------------------------------
 --  Special Warning Object  --
 ------------------------------
