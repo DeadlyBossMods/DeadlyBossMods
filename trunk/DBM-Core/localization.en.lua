@@ -112,47 +112,47 @@ DBM_CORE_ACHIEVEMENT_TIMER_SPEED_KILL = "Speed Kill"
 
 -- Auto-generated Timer Localizations
 DBM_CORE_AUTO_TIMER_TEXTS = {
-	target = "%s: %%s",
-	cast = "%s",
-	active = "%s",
-	cd = "%s CD",
-	next = "Next %s",
-	achievement = "%s",
+	target		= "%s: %%s",
+	cast		= "%s",
+	active		= "%s",
+	cd			= "%s CD",
+	next		= "Next %s",
+	achievement	= "%s",
 }
 
 DBM_CORE_AUTO_TIMER_OPTIONS = {
-	target = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r debuff",
-	cast = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cast",
-	active = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r duration",
-	cd = "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
-	next = "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
-	achievement = "Show timer for %s",
+	target		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r debuff",
+	cast		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cast",
+	active		= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r duration",
+	cd			= "Show timer for |cff71d5ff|Hspell:%d|h%s|h|r cooldown",
+	next		= "Show timer for next |cff71d5ff|Hspell:%d|h%s|h|r",
+	achievement	= "Show timer for %s",
 }
 
 -- Auto-generated Warning Localizations
 DBM_CORE_AUTO_ANNOUNCE_TEXTS = {
-	target = "%s on >%%s<",
-	spell = "%s",
-	cast = "Casting %s: %.1f sec",
-	soon = "%s soon",
+	target	= "%s on >%%s<",
+	spell	= "%s",
+	cast	= "Casting %s: %.1f sec",
+	soon	= "%s soon",
 	prewarn = "%s in %s",
-	phase = "Phase %s",
-	prephase = "Phase %s soon",
-	count = "%s (%%d)",
-	stack = "%s on >%%s< (%%d)",
+	phase	= "Phase %s",
+	prephase= "Phase %s soon",
+	count	= "%s (%%d)",
+	stack	= "%s on >%%s< (%%d)",
 }
 
 local prewarnOption = "Show pre-warning for |cff71d5ff|Hspell:%d|h%s|h|r"
 DBM_CORE_AUTO_ANNOUNCE_OPTIONS = {
-	target = "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
-	spell = "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
-	cast = "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
-	soon = prewarnOption,
+	target	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
+	spell	= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
+	cast	= "Show warning when |cff71d5ff|Hspell:%d|h%s|h|r is being cast",
+	soon	= prewarnOption,
 	prewarn = prewarnOption,
-	phase = "Announce Phase %s",
-	prephase = "Show a prewarning for Phase %s",
-	count = "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
-	stack = "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
+	phase	= "Announce Phase %s",
+	prephase= "Show a prewarning for Phase %s",
+	count	= "Show warning for |cff71d5ff|Hspell:%d|h%s|h|r",
+	stack	= "Announce |cff71d5ff|Hspell:%d|h%s|h|r targets",
 }
 
 
@@ -186,6 +186,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Set icons on $spell:%d targets"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "Play sound on $spell:%d"
+DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Yell on $spell:%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s on me!"
 
 
 -- New special warnings
