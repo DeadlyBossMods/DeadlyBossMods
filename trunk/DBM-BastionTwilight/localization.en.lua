@@ -38,9 +38,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Yell on $spell:86622",
-	YellOnTwilightMeteor	= "Yell on $spell:88518",
-	YellOnTwilightBlast		= "Yell on $spell:92898",
 	TBwarnWhileBlackout		= "Show $spell:92898 warning when $spell:86788 active",
 	TwilightBlastArrow		= "Show DBM arrow when $spell:92898 is near you",
 	RangeFrame				= "Show range frame (10)",
@@ -50,10 +47,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Deep Breath",
-	YellEngulfing			= "Engulfing Magic on me!",
-	YellMeteor				= "Twilight Meteorite on me!",
-	YellTwilightBlast		= "Twilight Blast on me!"
+	Trigger1				= "Deep Breath"
 })
 
 ----------------------------------
@@ -81,7 +75,6 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "Show special warning when you are missing $spell:83500 buff\n(~10sec before cast)",
 	timerTransition			= "Show Phase transition timer",
 	RangeFrame				= "Show range frame automatically when needed",
-	YellOnLightningRod		= "Yell on $spell:83099",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -96,7 +89,6 @@ L:SetMiscLocalization({
 	Thundershock	= "The surrounding air crackles with energy....",
 	Switch			= "Enough of this foolishness!",--"We will handle them!" comes 3 seconds after this one
 	Phase3			= "An impressive display...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
-	YellLightning	= "Lightning Rod on Me!",
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
@@ -121,7 +113,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnCorrupting		= "Yell on $spell:93178",
 	CorruptingCrashArrow	= "Show DBM arrow when $spell:93178 is near you",
 	InfoFrame				= "Show info frame for $spell:81701",
 	RangeFrame				= "Show range frame (5) for $spell:82235",
@@ -130,7 +121,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash				= "Corrupting Crash on me!",
 	Bloodlevel				= "Corruption"
 })
 
@@ -197,9 +187,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnFlameStrike		= "Yell on $spell:93383"
 })
 
 L:SetMiscLocalization({
-	YellFlameStrike			= "Flamestrike on me!"
 })

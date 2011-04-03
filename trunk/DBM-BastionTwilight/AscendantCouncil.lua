@@ -61,12 +61,15 @@ local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
 --Terrastra
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
 --Arion
-local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
-local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070, false)
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
+local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070, false)
+local specWarnLightningRod	= mod:NewSpecialWarningYou(83099)
+local yellLightningRod		= mod:NewYell(83099)
 --Heroic
 local specWarnGravityCore	= mod:NewSpecialWarningYou(92075)--Heroic
+local yellGravityCore		= mod:NewYell(92075)
 local specWarnStaticOverload= mod:NewSpecialWarningYou(92067)--Heroic
+local yellStaticOverload	= mod:NewYell(92067)
 local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
 
 local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
@@ -113,7 +116,6 @@ mod:AddBoolOption("GravityCrushIcon")
 mod:AddBoolOption("FrostBeaconIcon")
 mod:AddBoolOption("StaticOverloadIcon")
 mod:AddBoolOption("GravityCoreIcon")
-mod:AddBoolOption("YellOnLightningRod", true, "announce")
 mod:AddBoolOption("RangeFrame")
 
 local frozenTargets = {}
@@ -281,11 +283,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		lightningRodTargets[#lightningRodTargets + 1] = args.destName
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
+			yellLightningRod:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
-			end
-			if self.Options.YellOnLightningRod then
-				SendChatMessage(L.YellLightning, "SAY")
 			end
 		end
 		if self.Options.LightningRodIcon then
@@ -340,6 +340,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnStaticOverload:Show()
+			yellStaticOverload:Yell()
 		end
 	elseif args:IsSpellID(92075) then
 		warnGravityCore:Show(args.destName)
@@ -349,6 +350,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		end
 		if args:IsPlayer() then
 			specWarnGravityCore:Show()
+			yellGravityCore:Yell()
 		end
 	end
 end
@@ -408,6 +410,7 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 		end
 		if args:IsPlayer() then
 			specWarnStaticOverload:Show()
+			yellStaticOverload:Yell()
 		end
 	elseif args:IsSpellID(92075) then
 		warnGravityCore:Show(args.destName)
@@ -417,6 +420,7 @@ function mod:SPELL_AURA_REFRESH(args)--We do not combine refresh with applied ca
 		end
 		if args:IsPlayer() then
 			specWarnGravityCore:Show()
+			yellGravityCore:Yell()
 		end
 	end
 end

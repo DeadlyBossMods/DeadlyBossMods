@@ -22,10 +22,11 @@ local specWarnFlameStrike	= mod:NewSpecialWarningMove(93362)
 local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903)
 local specWarnRupture		= mod:NewSpecialWarningSpell(93377)
 
+local yellFlamestrike		= mod:NewYell(93362)
+
 local timerVolcanicWrath	= mod:NewBuffActiveTimer(9, 87903)--Maybe need a Guid based targettimer since most pulls have 2 of these?
 local timerFrostWhirl		= mod:NewBuffActiveTimer(4, 93340)--Maybe need a Guid based targettimer in case you pull more than one?
 
-mod:AddBoolOption("YellOnFlameStrike", true, "announce")
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
 
@@ -52,9 +53,7 @@ function mod:FlameStrikeTarget(sGUID)
 	if not targetname then return end
 	warnFlameStrike:Show(targetname)
 	if targetname == UnitName("player") then
-		if self.Options.YellOnFlameStrike then
-			SendChatMessage(L.YellFlameStrike, "SAY")
-		end
+		yellFlamestrike:Yell()
 	end
 end
 

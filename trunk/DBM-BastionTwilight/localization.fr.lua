@@ -48,10 +48,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !",--Change this to what deep breath emote is.
-	YellEngulfing			= "Magie enveloppante sur moi !",
-	YellMeteor				= "Météorite du Crépuscule sur moi !",
-	YellTwilightBlast			= "Déflagration du Crépuscule sur moi !"
+	Trigger1				= "Theralion, je m'occupe du vestibule. Couvre leur fuite !"--Change this to what deep breath emote is.
 })
 
 ----------------------------------
@@ -118,18 +115,16 @@ L:SetTimerLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash		= "Déferlante corruptrice sur moi !",
 	Bloodlevel		= "Corruption"
 })
 
 L:SetOptionLocalization({
 --	WarnPhase2Soon		= "Afficher la pré-alerte pour la Phase 2",
-	YellOnCorrupting	= "Crier sur $spell:93178",
 	CorruptingCrashArrow	= "Afficher la flèche DBM lorsque $spell:93178 est près de vous",
 	InfoFrame			= "Afficher la fenêtre d'info pour le sort $spell:81701",
 	RangeFrame		= "Afficher la fenêtre de portée (5) pour $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
---	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+	SetIconOnCreature	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
 ----------------
