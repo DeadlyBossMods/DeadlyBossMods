@@ -32,6 +32,7 @@ local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840)
 local specWarnSonarPulse	= mod:NewSpecialWarningSpell(92411, false)
 local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 local specWarnPestered		= mod:NewSpecialWarningYou(92685)
+mod:AddBoolOption("YellOnPestered", true, "announce")--Custom string so we don't use generic here.
 local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92702, false)
 local specWarnAddTargetable	= mod:NewSpecialWarning("specWarnAddTargetable", false)
 
@@ -47,7 +48,6 @@ local soundTracking			= mod:NewSound(78092)
 
 mod:AddBoolOption("TrackingIcon")
 mod:AddBoolOption("InfoFrame")
-mod:AddBoolOption("YellOnPestered", "announce")
 
 local shieldsLeft = 10
 local pestered = GetSpellInfo(92685)

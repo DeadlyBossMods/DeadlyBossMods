@@ -50,7 +50,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Zeige Timer für das Wirken von $spell:92053",
 	timerArcaneBlowbackCast	= "Zeige Timer für das Wirken von $spell:91879",
-	YellBombTarget		= "Schreie bei $spell:80094",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -61,8 +60,7 @@ L:SetMiscLocalization({
 	Magmatron		= "Magmatron",
 	Electron		= "Elektron",
 	Toxitron		= "Toxitron",
-	Arcanotron		= "Arkanotron",
-	SayBomb			= "Poisen Bomb on me!"
+	Arcanotron		= "Arkanotron"
 })
 
 ----------------

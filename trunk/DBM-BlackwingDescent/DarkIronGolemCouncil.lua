@@ -44,16 +44,22 @@ local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 --Magmatron
 local specWarnBarrier			= mod:NewSpecialWarningSpell(79582, not mod:IsHealer())
 local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
+local yellAcquiringTarget		= mod:NewYell(92037)
 local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
+mod:AddBoolOption("YellOnTargetLock", true, "announce")--This one isn't generic because it uses custom text.
 --Electron
 local specWarnUnstableShield	= mod:NewSpecialWarningSpell(79900, not mod:IsHealer())
 local specWarnConductor			= mod:NewSpecialWarningYou(79888)
+local yellLightConductor		= mod:NewYell(79888)
 local specWarnShadowConductor	= mod:NewSpecialWarningTarget(92053)--Heroic Ability
+local yellShadowConductor		= mod:NewYell(92053)
 --Toxitron
 local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
+local yellFixate				= mod:NewYell(80094, nil, false)
 local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer())
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
+local yellChemicalCloud			= mod:NewYell(91473)--May Return false tank yells
 local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
 --Arcanotron
 local specWarnConversion		= mod:NewSpecialWarningSpell(79729, not mod:IsHealer())
@@ -88,17 +94,11 @@ local timerNefAbilityCD			= mod:NewTimer(30, "timerNefAblity", 92048)--Huge vari
 
 local berserkTimer				= mod:NewBerserkTimer(600)
 
-local soundBomb					= mod:NewSound(80094)
+local soundFixate				= mod:NewSound(80094)
 
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("ShadowConductorIcon")
-mod:AddBoolOption("YellOnChemBomb", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
-mod:AddBoolOption("YellBombTarget", false, "announce")
-mod:AddBoolOption("YellOnLightning", true, "announce")
-mod:AddBoolOption("YellOnShadowCast", true, "announce")
-mod:AddBoolOption("YellOnTarget", true, "announce")
-mod:AddBoolOption("YellOnTargetLock", true, "announce")
 
 local pulled = false
 local cloudSpam = 0
@@ -117,9 +117,7 @@ function mod:ChemicalBombTarget()
 	if not targetname then return end
 	warnChemicalBomb:Show(targetname)
 	if targetname == UnitName("player") then
-		if self.Options.YellOnChemBomb then
-			SendChatMessage(L.YellCloud, "SAY")
-		end
+		yellChemicalCloud:Yell()
 	end
 end
 
@@ -178,8 +176,8 @@ end
 function mod:CheckEncasing() -- prevent two yells at a time
 	if encasing and self.Options.YellOnTargetLock then
 		SendChatMessage(L.YellTargetLock, "SAY")
-	elseif not encasing and self.Options.YellOnTarget then
-		SendChatMessage(L.YellTarget, "SAY")
+	elseif not encasing then
+		yellAcquiringTarget:Yell()
 	end
 	encasing = false
 end
@@ -234,9 +232,7 @@ function mod:SPELL_AURA_APPLIED(args)
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
 		if args:IsPlayer() then
 			specWarnConductor:Show()
-			if self.Options.YellOnLightning then
-				SendChatMessage(L.YellLightning, "SAY")
-			end
+			yellLightConductor:Yell()
 		end
 		if self.Options.ConductorIcon then
 			self:SetIcon(args.destName, 1)
@@ -252,10 +248,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFixate:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnBombTarget:Show()
-			soundBomb:Play()
-			if self.Options.YellBombTarget then
-				SendChatMessage(L.SayBomb, "SAY")
-			end
+			soundFixate:Play()
+			yellFixate:Yell()
 		end
 	elseif args:IsSpellID(91472, 91473) and args:IsPlayer() and GetTime() - cloudSpam > 4 then
 		specWarnChemicalCloud:Show()
@@ -286,8 +280,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.ShadowConductorIcon then
 			self:SetIcon(args.destName, 3)
 		end
-		if args:IsPlayer() and self.Options.YellOnShadowCast then
-			SendChatMessage(L.YellShadowCast, "SAY")
+		if args:IsPlayer() then
+			yellShadowConductor:Yell()
 		end
 	end
 end
