@@ -52,7 +52,6 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	timerShadowConductorCast	= "Affiche le timer : $spell:92053",
 	timerArcaneBlowbackCast	= "Affiche le timer : $spell:91879",
-	YellBombTarget		= "Crier sur $spell:80094",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -63,8 +62,7 @@ L:SetMiscLocalization({
 	Magmatron		= "Magmatron",
 	Electron		= "Electron",
 	Toxitron		= "Toxitron",
-	Arcanotron		= "Arcanotron",
-	SayBomb			= "Poison Bomb on me!"--Translate
+	Arcanotron		= "Arcanotron"
 })
 
 ----------------
@@ -199,7 +197,6 @@ L:SetOptionLocalization({
 	NefSwipeTimer		= "Affiche le CoolDown $spell:77827 de Nefarian",
 	OnyBreathTimer		= "Affiche le CoolDown $spell:94124 d'Onyxia",
 	NefBreathTimer		= "Affiche le CoolDown $spell:94124 de Nefarian",
-	YellOnCinder		= "Crier sur $spell:79339",
 	RangeFrame		= "Affiche la fenêtre de portée (10) lorsque vous avez $spell:79339",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
 })
@@ -208,6 +205,5 @@ L:SetMiscLocalization({
 	NefAoe			= "L'air craque sous l'électricité !", -- à vérifier 
 	YellPhase2			= "Soyez maudits, mortels ! Un tel mépris pour les possessions d'autrui doit être traité avec une extrême fermeté !", -- à vérifier
 	YellPhase3			= "J'ai tout fait pour être un hôte accomodant, mais vous ne daignez pas mourir ! Oublions les bonnes manières et passons aux choses sérieuses... VOUS TUER TOUS !",
-	YellCinder			= "Explosive Cinders on me!",--Translate
 	Onyxia				= "Onyxia"
 })

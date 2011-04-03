@@ -32,6 +32,7 @@ local warnLightingRod		= mod:NewTargetAnnounce(89668, 4)
 local specWarnIceStorm		= mod:NewSpecialWarningMove(91020)
 local specWarnCloud			= mod:NewSpecialWarningMove(89588)
 local specWarnLightningRod	= mod:NewSpecialWarningYou(89668)
+local yellLightningRod		= mod:NewYell(89668)
 
 local timerWindBurst		= mod:NewCastTimer(5, 87770)
 local timerWindBurstCD		= mod:NewCDTimer(25, 87770)		-- 25-30 Variation
@@ -92,6 +93,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		timerLightningRodCD:Start()
 		if args:IsPlayer() then
 			specWarnLightningRod:Show()
+			yellLightningRod:Yell()
 		end
 		if self.Options.LightningRodIcon then
 			self:SetIcon(args.destName, 8)

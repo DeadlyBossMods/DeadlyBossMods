@@ -57,11 +57,6 @@ L:SetOptionLocalization({
 	timerNefAblity			= "為困難技能增益冷卻顯示計時器",
 	SpecWarnActivated		= "當新首領啟動時顯示特別警告",
 	specWarnGenerator		= "當首領獲得$spell:91557時顯示特別警告",
-	YellOnChemBomb			= "中了$spell:80157時大喊",
-	YellBombTarget			= "中了$spell:80094時大喊",
-	YellOnLightning			= "中了$spell:79888時大喊",
-	YellOnShadowCast		= "中了$spell:92053時大喊",
-	YellOnTarget			= "中了$spell:92037時大喊",
 	YellOnTargetLock		= "中了$spell:92023時大喊",
 	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
@@ -74,12 +69,7 @@ L:SetMiscLocalization({
 	Electron			= "雷電號",
 	Toxitron			= "烈毒號",
 	Arcanotron			= "秘法號",
-	SayBomb				= "我中了毒炸彈!",
-	YellLightning			= "我中了避雷針!",
-	YellShadowCast			= "我中了聚影體!",
-	YellTarget			= "我中了鎖定目標!",
-	YellTargetLock			= "覆體之影! 遠離我!",
-	YellCloud			= "我中了化學炸彈!"
+	YellTargetLock			= "覆體之影! 遠離我!"
 })
 
 ----------------
@@ -225,9 +215,7 @@ L:SetOptionLocalization({
 	NefSwipeTimer			= "為奈法利安的$spell:77827的冷卻時間顯示計時器",
 	OnyBreathTimer			= "為奧妮克希亞的$spell:94124的冷卻時間顯示計時器",
 	NefBreathTimer			= "為奈法利安的$spell:94124的冷卻時間顯示計時器",
-	YellOnCinder			= "中了$spell:79339時大喊",
 	InfoFrame			= "為奧妮克希亞的電流充能顯示資訊框架",
-
 	SetWater			= "進入戰鬥後自動停用水體細節\n(離開戰鬥後回到啟用)",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
 	RangeFrame			= "為$spell:79339顯示距離框 (10碼)\n(當你中減益時顯示所有人, 否則只顯示中的人)"
@@ -237,7 +225,6 @@ L:SetMiscLocalization({
 	NefAoe				= "響起了電流霹啪作響的聲音!",
 	YellPhase2 			= "詛咒你們，凡人!如此冷酷地漠視他人的所有物必須受到嚴厲的懲罰!",
 	YellPhase3			= "我本來只想略盡地主之誼，但是你們就是不肯痛快的受死!是時候拋下一切的虛偽...殺光你們就好!",
-	YellCinder			= "我中了爆裂灰燼!",
 	Nefarian			= "奈法利安",
 	Onyxia				= "奧妮克希亞",
 	Charge				= "電流充能"

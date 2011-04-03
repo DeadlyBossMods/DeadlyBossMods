@@ -57,11 +57,6 @@ L:SetOptionLocalization({
 	timerNefAblity				= "Показывать таймер восстановления баффа (героический режим)",
 	SpecWarnActivated			= "Показывать особое предупреждение при активации нового босса",
 	specWarnGenerator			= "Показывать особое предупреждение, когда босс стоит в $spell:91557",
-	YellOnChemBomb				= "Кричать, когда на вас $spell:80157",
-	YellBombTarget				= "Кричать, когда на вас $spell:80094",
-	YellOnLightning				= "Кричать, когда на вас $spell:79888",
-	YellOnShadowCast			= "Кричать, когда на вас $spell:92053",
-	YellOnTarget				= "Кричать, когда на вас $spell:92037",
 	YellOnTargetLock			= "Кричать, когда на вас $spell:92023",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
@@ -73,12 +68,7 @@ L:SetMiscLocalization({
 	Electron					= "Электрон",
 	Toxitron					= "Токситрон",
 	Arcanotron					= "Чаротрон",
-	SayBomb						= "На МНЕ - Ядовитая бомба!",
-	YellLightning				= "На МНЕ - Проводник молний!",
-	YellShadowCast				= "На МНЕ - Проводник тьмы!",
-	YellTarget					= "На МНЕ - Выбор цели!",
-	YellTargetLock				= "На МНЕ - Обрамляющие тени! Прочь от меня!",
-	YellCloud					= "На МНЕ - Химическая бомба!"
+	YellTargetLock				= "На МНЕ - Обрамляющие тени! Прочь от меня!"
 })
 
 ----------------
@@ -223,7 +213,6 @@ L:SetOptionLocalization({
 	NefSwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Нефариана",
 	OnyBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Ониксии",
 	NefBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Нефариана",
-	YellOnCinder		= "Кричать, когда на вас $spell:79339",
 	RangeFrame			= "Показывать окно проверки дистанции (10м) когда на вас $spell:79339",
 	InfoFrame			= "Показывать информационное окно для Электрического заряда Ониксии",
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
@@ -233,7 +222,6 @@ L:SetMiscLocalization({
 	NefAoe				= "В воздухе трещат электрические разряды!",
 	YellPhase2			= "Дерзкие смертные! Неуважение к чужой собственности нужно пресекать самым жестоким образом!",
 	YellPhase3			= "Я пытался следовать законам гостеприимства, но вы все никак не умрете!",
-	YellCinder			= "На МНЕ - Взрывчатая субстанция!",
 	Nefarian			= "Нефариан",
 	Onyxia				= "Ониксия",
 	Charge				= "Электрический заряд"
