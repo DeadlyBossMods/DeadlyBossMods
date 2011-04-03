@@ -3017,7 +3017,7 @@ do
 		return obj
 	end
 
-	function yellPrototype:Yell(msg)
+	function yellPrototype:Yell(...)
 		if not self.option or self.mod.Options[self.option] then
 			SendChatMessage(self.text, "SAY")--I have no doubt this is wrong, i'm not sure how the function is gonna grab %s yet.
 		end
