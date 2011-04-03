@@ -32,9 +32,10 @@ local warnCreations					= mod:NewSpellAnnounce(82414, 3)--Phase 2
 
 local specWarnSickness				= mod:NewSpecialWarningYou(82235, mod:IsMelee())--Ranged should already be spread out and not need a special warning every sickness.
 local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
+local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
-local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
+local yellCrash						= mod:NewYell(93178, nil, not mod:IsTank())--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
@@ -49,7 +50,6 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 mod:AddBoolOption("SetIconOnWorship", true)
 mod:AddBoolOption("SetIconOnCreature", true)
-mod:AddBoolOption("YellOnCorrupting", not mod:IsTank(), "announce")--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
 mod:AddBoolOption("CorruptingCrashArrow", true)--Subject to accuracy flaws so off by default.
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("InfoFrame")
@@ -91,9 +91,7 @@ function mod:CorruptingCrashTarget(sGUID)
 	warnCorruptingCrash:Show(targetname)
 	if targetname == UnitName("player") then
 		specWarnCorruptingCrash:Show()
-		if self.Options.YellOnCorrupting then
-			SendChatMessage(L.YellCrash, "SAY")
-		end
+		yellCrash:Yell()
 	elseif targetname then
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then

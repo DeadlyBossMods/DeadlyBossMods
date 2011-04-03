@@ -14,7 +14,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
-	WarnFirestormSoon		= "Tempête de feu gangrenée imminente"
 })
 
 L:SetTimerLocalization({
@@ -24,6 +23,5 @@ L:SetMiscLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnFirestormSoon		= "Afficher la pré-alerte pour le sort $spell:88972 ",
 	SetIconOnConsuming		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(88954)
 })

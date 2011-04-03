@@ -19,7 +19,7 @@ mod:RegisterEvents(
 local warnConsuming			= mod:NewTargetAnnounce(88954, 3)
 local warnMeteorSlash		= mod:NewSpellAnnounce(88942, 4)
 local warnFirestorm			= mod:NewSpellAnnounce(88972, 4)
-local warnFirestormSoon		= mod:NewAnnounce("WarnFirestormSoon", 3, 88972)
+local warnFirestormSoon		= mod:NewSoonAnnounce(88972, 3)
 
 local specWarnMeteorSlash	= mod:NewSpecialWarningSpell(88942, mod:IsTank())
 local specWarnFirestormCast	= mod:NewSpecialWarningSpell(88972)

@@ -40,9 +40,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Gritar cuando tengas $spell:86622",
-	YellOnTwilightMeteor	= "Gritar cuando tengas $spell:88518",
-	YellOnTwilightBlast		= "Gritar cuando tengas $spell:92898",
 	TBwarnWhileBlackout		= "Mostrar aviso de $spell:92898 cuando $spell:86788 está activo",
 	TwilightBlastArrow		= "Mostrar flecha cuando $spell:92898 está cerca de ti",
 	RangeFrame				= "Mostrar distancia (10 yardas)",
@@ -52,10 +49,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!",--Change this to what deep breath emote is.
-	YellEngulfing				= "¡Trago de magia en mi!",
-	YellMeteor				= "¡Meteorito Crepuscular en mi!",
-	YellTwilightBlast		= "¡Explosión Crepuscular en mi!"
+	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!"--Change this to what deep breath emote is.
 })
 
 ----------------------------------
@@ -83,9 +77,6 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "Mostrar aviso especial cuando estes a punto de perder el bufo de $spell:83500\n(~10seg antes de castear)",
 	timerTransition		= "Mostrar tiempo para transición de fase",
 	RangeFrame			= "Mostrar distancia cuando sea necesario",
-	YellOnLightningRod		= "Gritar cuando tengas $spell:83099",
-	warnGravityCoreJump		= "Anunciar los objetivos de la propagación de $spell:92538",
-	warnStaticOverloadJump	= "Announce los objetivos de la propagación de $spell:92467 ",
 	HeartIceIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -100,7 +91,6 @@ L:SetMiscLocalization({
 	Thundershock		= "El aire circundante chisporrotea de energía...",
 	Switch			= "¡Basta de tonterías!",
 	Phase3			= "Una exhibición impresionante...",
-	YellLightning	= "¡Vara relámpago en mi!",
 	Ignacious		= "Ignacious",
 	Feludius		= "Feludius",
 	Arion			= "Arion",
@@ -126,16 +116,14 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnCorrupting	= "Gritar cuando tengas $spell:93178",
 	CorruptingCrashArrow	= "Mostrar una flecha cuando $spell:93178 está cerca de ti",
-	InfoFrame			= "Mostrar información para $spell:81701",
-	RangeFrame			= "Mostrar distancia (5 yardas) para $spell:82235",
-	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
---	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+	InfoFrame				= "Mostrar información para $spell:81701",
+	RangeFrame				= "Mostrar distancia (5 yardas) para $spell:82235",
+	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
+	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
 L:SetMiscLocalization({
-	YellCrash	= "¡Colisión en corrupción en mi!",
 	Bloodlevel		= "Corrupción"
 })
 
@@ -200,9 +188,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnFlameStrike		= "Gritar cuando tengas $spell:93383"
 })
 
 L:SetMiscLocalization({
-	YellFlameStrike			= "¡Fogonazo en mi!"
 })

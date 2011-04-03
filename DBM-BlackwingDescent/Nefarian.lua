@@ -42,9 +42,10 @@ local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198)
 local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
 local specWarnShadowblazeSoon	= mod:NewSpecialWarning("specWarnShadowblazeSoon", mod:IsTank())
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
-local specWarnCinder			= mod:NewSpecialWarningYou(79339)
 local specWarnDominion			= mod:NewSpecialWarningYou(79318)
 local specWarnStolenPower		= mod:NewSpecialWarningStack(80626, nil, 150)
+local specWarnCinder			= mod:NewSpecialWarningYou(79339)
+local yellCinder				= mod:NewYell(79339)
 
 local timerBlastNova			= mod:NewCastTimer(1.5, 80734)
 local timerElectrocute			= mod:NewCastTimer(5, 81198)
@@ -62,11 +63,9 @@ local timerDominionCD			= mod:NewNextTimer(15, 79318)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
-local yellCinder				= mod:NewYell(79339)
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnCinder", true)
---mod:AddBoolOption("YellOnCinder", true, "announce")
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetWater", false)
@@ -174,9 +173,6 @@ function mod:SPELL_AURA_APPLIED(args)
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-			--[[if self.Options.YellOnCinder then
-				SendChatMessage(L.YellCinder, "SAY")
-			end--]]
 		end
 		if self.Options.SetIconOnCinder then
 			self:SetIcon(args.destName, cinderIcons)
