@@ -187,6 +187,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT		= "Set d'icônes sur $spell:%d en targets"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT		= "jouer un son sur $spell:%d"
+DBM_CORE_AUTO_YELL_OPTION_TEXT		= "Crier sur $spell:%d"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT	= "%s sur moi !"--Verify (%s is spellname)
 
 
 -- New special warnings
