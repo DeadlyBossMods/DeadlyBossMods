@@ -1729,6 +1729,7 @@ local function CreateOptionsMenu()
 		local Sounds = {
 			{	text	= L.NoSound,		value	= "" },
 			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
+			{	text	= "Illidan",		value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav", 		sound=true },
 			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
 		}
 		if GetSharedMedia3() then
