@@ -40,9 +40,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "Крикнуть если на вас $spell:86622",
-	YellOnTwilightMeteor	= "Крикнуть если на вас $spell:88518",
-	YellOnTwilightBlast		= "Крикнуть если на вас $spell:92898",
 	TBwarnWhileBlackout		= "Показывать предупреждение о $spell:92898, когда активно $spell:86788",
 	TwilightBlastArrow		= "Показывать стрелку DBM, когда $spell:92898 около вас",
 	RangeFrame				= "Окно проверки дистанции (10)",
@@ -51,10 +48,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Глубокий вдох",--Change this to what deep breath emote is.
-	YellEngulfing			= "На МНЕ - Избыточная магия!",
-	YellMeteor				= "На МНЕ - Сумеречный метеорит!",
-	YellTwilightBlast		= "На МНЕ - Сумеречный взрыв!"
+	Trigger1				= "Глубокий вдох"--Change this to what deep breath emote is.
 })
 
 ----------------------------------
@@ -82,7 +76,6 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "Спец-предупреждение, когда у вас не хватает ауры $spell:83500\n(~10сек перед началом применения)",
 	timerTransition			= "Показывать таймер перехода в другую фазу",
 	RangeFrame				= "Автоматически показывать окно проверки дистанции при надобности",
-	YellOnLightningRod		= "Кричать, когда на вас $spell:83099",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -97,7 +90,6 @@ L:SetMiscLocalization({
 	Thundershock			= "Воздух потрескивает от скопившейся энергии...", -- Yell string: Ветер, явись на мой зов!
 	Switch					= "Закончим этот фарс!",--"We will handle them!" comes 3 seconds after this one
 	Phase3					= "Ваше упорство...",--"BEHOLD YOUR DOOM!" is about 13 seconds after
-	YellLightning			= "На МНЕ - Громоотвод!",
 	Ignacious				= "Огнис",
 	Feludius				= "Акварион",
 	Arion					= "Аэрон",
@@ -122,7 +114,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnCorrupting		= "Крикнуть если на вас $spell:93178",
 	CorruptingCrashArrow	= "Показывать стрелку DBM, когда $spell:93178 около вас",
 	InfoFrame				= "Показывать информационное окно для $spell:81701",
 	RangeFrame				= "Показывать окно проверки дистанции (5м) для $spell:82235",
@@ -131,7 +122,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash				= "На МНЕ - Оскверняющее сокрушение!",
 	Bloodlevel				= "Порча"
 })
 
@@ -194,9 +184,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnFlameStrike		= "Кричать, когда на вас $spell:93383"
 })
 
 L:SetMiscLocalization({
-	YellFlameStrike			= "На МНЕ - Огненный столб!"
 })

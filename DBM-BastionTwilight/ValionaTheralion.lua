@@ -21,33 +21,45 @@ mod:RegisterEvents(
 	"UNIT_AURA"
 )
 
+--Valiona Ground Phase
 local warnBlackout					= mod:NewTargetAnnounce(86788, 3)
 local warnDevouringFlames			= mod:NewSpellAnnounce(86840, 3)
+local warnDazzlingDestruction		= mod:NewCountAnnounce(86408, 4)--Used by Theralion just before landing
+--Theralion Ground Phase
 local warnEngulfingMagic			= mod:NewTargetAnnounce(86622, 3)
-local warnDazzlingDestruction		= mod:NewCountAnnounce(86408, 4)
-local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)
+local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)--Used by Valiona just before landing
+
 local warnTwilightShift				= mod:NewStackAnnounce(93051, 2)
 
-local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
-local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
-local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
+--Valiona Ground Phase
 local specWarnDevouringFlames		= mod:NewSpecialWarningSpell(86840)
-local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
 local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408)
-local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)
+local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
 local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898, false)
 local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
+local yellTwilightBlast				= mod:NewYell(92898, nil, false)
+--Theralion Ground Phase
+local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
+local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)
+local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
+local yellTwilightMeteorite			= mod:NewYell(88518, nil, false)
+local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
+local yellEngulfingMagic			= mod:NewYell(86622)
+
 local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 10)
 
+--Valiona Ground Phase
 local timerBlackout					= mod:NewTargetTimer(15, 86788)
 local timerBlackoutCD				= mod:NewCDTimer(45.5, 86788)
 local timerDevouringFlamesCD		= mod:NewCDTimer(40, 86840)
+local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
+--Theralion Ground Phase
 local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)		
 local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
 local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
 local timerNextFabFlames			= mod:NewNextTimer(15, 92909)--Cast is every 15 seconds but no cast event for it so we have to use spell damage and a little assumption someone is always gonna take 1 tick.
 local timerNextDeepBreath			= mod:NewNextTimer(103, 86059)
-local timerNextDazzlingDestruction	= mod:NewNextTimer(132, 86408)
+
 local timerTwilightShift			= mod:NewTargetTimer(100, 93051)
 local timerTwilightShiftCD			= mod:NewCDTimer(20, 93051)
 
@@ -55,9 +67,6 @@ local berserkTimer					= mod:NewBerserkTimer(600)
 
 local soundEngulfingMagic			= mod:NewSound(86622)
 
-mod:AddBoolOption("YellOnEngulfing", true, "announce")
-mod:AddBoolOption("YellOnTwilightMeteor", false, "announce")
-mod:AddBoolOption("YellOnTwilightBlast", false, "announce")
 mod:AddBoolOption("TBwarnWhileBlackout", false, "announce")
 mod:AddBoolOption("TwilightBlastArrow", false)
 mod:AddBoolOption("BlackoutIcon")
@@ -140,9 +149,7 @@ function mod:TwilightBlastTarget()
 	if self.Options.TBwarnWhileBlackout or not blackoutActive then
 		if targetname == UnitName("player") then
 			specWarnTwilightBlast:Show()
-			if self.Options.YellOnTwilightBlast then
-				SendChatMessage(L.YellTwilightBlast, "SAY")
-			end
+			yellTwilightBlast:Yell()
 		elseif targetname then
 			local uId = DBM:GetRaidUnitId(targetname)
 			if uId then
@@ -211,9 +218,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if args:IsPlayer() then
 			specWarnEngulfingMagic:Show()
 			soundEngulfingMagic:Play()
-			if self.Options.YellOnEngulfing then
-				SendChatMessage(L.YellEngulfing, "SAY")
-			end
+			yellEngulfingMagic:Yell()
 		end
 		if self.Options.EngulfingIcon then
 			self:SetIcon(args.destName, engulfingMagicIcon)
@@ -336,9 +341,7 @@ function mod:UNIT_AURA(uId)
 	if UnitDebuff("player", meteorTarget) and not markWarned then
 		specWarnTwilightMeteorite:Show()
 		timerTwilightMeteorite:Start()
-		if self.Options.YellOnTwilightMeteor then
-			SendChatMessage(L.YellMeteor, "SAY")
-		end
+		yellTwilightMeteorite:Yell()
 		markWarned = true
 		self:Schedule(7, markRemoved)
 	end

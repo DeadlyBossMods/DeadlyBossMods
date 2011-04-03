@@ -39,9 +39,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing			= "$spell:86622 외치기",
-	YellOnTwilightMeteor	= "$spell:88518 외치기",
-	YellOnTwilightBlast		= "$spell:92898 외치기",
 	TBwarnWhileBlackout		= "$spell:86788 이 활성화 중 일때 $spell:92898 경고 보기",
 	TwilightBlastArrow		= "당신 근처에 $spell:92898이 시전된 경우 DBM 화살표 보기",
 	RangeFrame				= "거리 프레임 보기(10m)",
@@ -51,10 +48,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "들이쉽니다!",
-	YellMeteor				= "나에게 황혼 유성!!",
-	YellTwilightBlast		= "나에게 황혼 폭발!!",	
-	YellEngulfing			= "나에게 사로잡힌 마법!"
+	Trigger1				= "들이쉽니다!"
 }
 
 ----------------------------------
@@ -82,7 +76,6 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "$spell:83500 버프가 없을 경우, 특수 경고 보기(~10초 전)",
 	timerTransition			= "전환 단계 타이머 보기",
 	RangeFrame				= "거리 프레임이 필요하게 될 경우 자동으로 보기",
-	YellOnLightningRod		= "$spell:83099 외치기",
 	HeartIceIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -97,7 +90,6 @@ L:SetMiscLocalization({
 	Thundershock	= "주변의 공기가 에너지로 진동합니다...",
 	Switch			= "우리가 상대하겠다!",--"We will handle them!" comes 3 seconds after this one
 	Phase3			= "꽤나 인상적이었다만...",--"BEHOLD YOUR DOOM!" is about 13 seconds after	
-	YellLightning	= "나에게 벼락 막대!",
 	Ignacious		= "이그니시우스",
 	Feludius		= "펠루디우스",
 	Arion			= "아리온",
@@ -122,7 +114,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnCorrupting		= "$spell:93178 외치기",
 	CorruptingCrashArrow	= "당신 근처에 $spell:93178이 시전 된 경우 DBM 화살표 보기",
 	InfoFrame				= "$spell:81701 정보 프레임 보기",
 	RangeFrame				= "$spell:82235의 영항을 받을시 거리 프레임(5m) 보기",
@@ -131,7 +122,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash				= "나에게 부패의 충돌!",
 	Bloodlevel				= "오염된 피"
 })
 
@@ -198,9 +188,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnFlameStrike		= "$spell:93383 외치기"
 })
 
 L:SetMiscLocalization({
-	YellFlameStrike			= "나에게 불기둥!"
 })

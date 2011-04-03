@@ -45,10 +45,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!",--Change this to what deep breath emote is.
-	YellEngulfing			= "Einhüllende Magie auf mir!",
-	YellMeteor				= "Zwielichtmeteorit auf mir!",
-	YellTwilightBlast		= "Zwielichtdruckwelle auf mir!",
+	Trigger1				= "Theralion, ich werde den Gang einhüllen. Deck ihre Flucht!"--Change this to what deep breath emote is.
 }
 
 ----------------------------------
@@ -108,7 +105,6 @@ L:SetGeneralLocalization({
 })
 
 L:SetWarningLocalization({
---	WarnPhase2Soon	= "Phase 2 bald"
 })
 
 L:SetTimerLocalization({
@@ -123,7 +119,7 @@ L:SetOptionLocalization({
 	InfoFrame			= "Zeige Infofenster für $spell:81701",
 	RangeFrame			= "Zeige Abstandsfenster (5) für $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
---	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+	SetIconOnCreature	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
 })
 
 ----------------

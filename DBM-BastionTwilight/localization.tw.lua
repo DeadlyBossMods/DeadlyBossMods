@@ -40,9 +40,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnEngulfing		= "中了$spell:86622時大喊",
-	YellOnTwilightMeteor	= "中了$spell:88518時大喊",
-	YellOnTwilightBlast	= "中了$spell:92898時大喊",
 	TBwarnWhileBlackout	= "當$spell:86788生效時顯示$spell:92898警告",
 	TwilightBlastArrow	= "當你附近的人中了$spell:92898時顯示DBM箭頭",
 	RangeFrame		= "顯示距離框 (10碼)",
@@ -52,10 +49,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1		= "深呼吸",
-	YellEngulfing		= "我中了侵噬魔法!",
-	YellMeteor		= "我中了暮光隕星!",
-	YellTwilightBlast	= "我中了暮光衝擊!"
+	Trigger1		= "深呼吸"
 })
 
 ----------------------------------
@@ -83,7 +77,6 @@ L:SetOptionLocalization({
 	SpecWarnSearingWinds	= "當你缺少$spell:83500時顯示特別警告\n(大約施放前10秒內)",
 	timerTransition		= "顯示階段轉換計時器",
 	RangeFrame		= "當需要時自動顯示距離框",
-	YellOnLightningRod	= "中了$spell:83099時大喊",
 	HeartIceIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82665),
 	BurningBloodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82660),
 	LightningRodIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(83099),
@@ -98,7 +91,6 @@ L:SetMiscLocalization({
 	Thundershock		= "四周的空氣爆出能量霹啪作響聲音....",
 	Switch			= "我們會解決他們!",
 	Phase3			= "見證你的滅亡!",
-	YellLightning		= "我中了聚雷針!",
 	Ignacious		= "伊格納修斯",
 	Feludius		= "費魯迪厄斯",
 	Arion			= "艾理奧",
@@ -123,7 +115,6 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnCorrupting	= "中了$spell:93178時大喊",
 	CorruptingCrashArrow	= "當你附近的人中了$spell:93178時顯示DBM箭頭",
 	InfoFrame		= "為$spell:81701顯示資訊框架",
 	RangeFrame		= "為$spell:82235顯示距離框 (5碼)",
@@ -132,7 +123,6 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	YellCrash		= "腐化轟擊在我身上!",
 	Bloodlevel		= "腐化"
 })
 
@@ -199,9 +189,7 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	YellOnFlameStrike		= "中了$spell:93383時大喊"
 })
 
 L:SetMiscLocalization({
-	YellFlameStrike			= "我中了烈焰風暴!"
 })
