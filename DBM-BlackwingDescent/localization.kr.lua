@@ -57,11 +57,6 @@ L:SetOptionLocalization({
 	timerArcaneLockout			= "$spell:91542 침묵 타이머 보기",
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
 	specWarnGenerator			= "보스가 $spell:91557의 영향을 받을 경우 특수 경고 보기",
-	YellOnChemBomb				= "$spell:80157 외치기",
-	YellBombTarget				= "$spell:80094 외치기",
-	YellOnLightning				= "$spell:79888 외치기",
-	YellOnShadowCast			= "$spell:92053 외치기",
-	YellOnTarget				= "$spell:92037 외치기",
 	YellOnTargetLock			= "$spell:92023 외치기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
@@ -73,12 +68,7 @@ L:SetMiscLocalization({
 	Electron					= "전기골렘",
 	Toxitron					= "맹독골렘",
 	Arcanotron					= "비전골렘",
-	SayBomb						= "나에게 화학 폭탄!",
-	YellLightning				= "나에게 번개 전도체!",
-	YellShadowCast				= "나에게 암흑 전도체!",
-	YellTarget					= "나에게 목표 설정!",
-	YellTargetLock				= "어둠의 휘감기! 제 주변에서 빠지세요!",
-	YellCloud					= "나에게 화학 폭탄!"
+	YellTargetLock				= "어둠의 휘감기! 제 주변에서 빠지세요!"
 })
 
 ----------------
@@ -222,7 +212,6 @@ L:SetOptionLocalization({
 	NefSwipeTimer			= "네파리안의 $spell:77827 쿨다운 타이머 보기",
 	OnyBreathTimer			= "오닉시아의 $spell:94124 쿨다운 타이머 보기",
 	NefBreathTimer			= "네파리안의 $spell:94124 쿨다운 타이머 보기",
-	YellOnCinder			= "$spell:79339 외치기",
 	InfoFrame				= "오닉시아 전하 충전 정보 프레임 보기",
 	SetWater				= "풀링시 수면 자동 시점 옵션을 자동으로 끄기\n(전투가 종료 되면 원상태로)",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
@@ -233,7 +222,6 @@ L:SetMiscLocalization({
 	NefAoe				= "전기가 튀며 파지직하는 소리가 납니다!",
 	YellPhase2			= "저주받을 필멸자들! 내 소중한 작품을 이렇게 망치다니! 쓴맛을 봐야 정신을 차리겠군!",
 	YellPhase3			= "품위있는 집주인답게 행동하려 했건만, 네놈들이 도무지 죽질 않는군! 겉치레는 이제 집어치우자고. 그냥 모두 없애 버리겠어!", -- "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
-	YellCinder			= "나에게 폭발하는 잿더미!",
 	Nefarian			= "네파리안",
 	Onyxia				= "오닉시아",
 	Charge				= "전하 충전"

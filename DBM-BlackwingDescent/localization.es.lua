@@ -58,11 +58,6 @@ L:SetOptionLocalization({
 	timerNefAblity				= "Mostrar tiempo de CoolDown de las habilidades de bufos en heroico",
 	SpecWarnActivated			= "Mostrar aviso especial cuando se activa un nuevo boss",
 	specWarnGenerator			= "Mostrar aviso especial cuando un boss gana $spell:91557",
-	YellOnChemBomb				= "Gritar cuando tengas $spell:80157",
-	YellBombTarget				= "Gritar cuando tengas $spell:80094",
-	YellOnLightning				= "Gritar cuando tengas $spell:79888",
-	YellOnShadowCast			= "Gritar cuando tengas $spell:92053",
-	YellOnTarget				= "Gritar cuando tengas $spell:92037",
 	YellOnTargetLock			= "Gritar cuando tengas $spell:92023",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
@@ -74,12 +69,7 @@ L:SetMiscLocalization({
 	Electron	= "Electron",
 	Toxitron	= "Toxitron",
 	Arcanotron	= "Arcanotron",
-	SayBomb		= "¡Bomba de veneno en mi!",
-	YellLightning		= "¡Conductor de relámpagos en mi!",
-	YellShadowCast		= "¡Conductor de las Sombras en mi!",
-	YellTarget			= "¡Fijando objetivo en mi!",
-	YellTargetLock		= "¡Sombras atrapantes! ¡Apartaos de mi!",
-	YellCloud			= "¡Bomba química en mi!"
+	YellTargetLock		= "¡Sombras atrapantes! ¡Apartaos de mi!"
 })
 
 ----------------
@@ -224,7 +214,6 @@ L:SetOptionLocalization({
 	NefSwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Nefarian",
 	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
 	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
-	YellOnCinder		= "Gritar cuando tengas $spell:79339",
 	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339",
 	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
 	SetWater			= "Desactivar la colisión con el agua automáticamente al pullear\n(se reactiva al abandonar el combate)",
@@ -235,7 +224,6 @@ L:SetMiscLocalization({
 	NefAoe			= "¡El aire crepita cargado de electricidad!",
 	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate?
 	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate?
-	YellCinder		= "¡Cenizas explosivas en mi!",
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
 	Charge			= "Carga Eléctrica"

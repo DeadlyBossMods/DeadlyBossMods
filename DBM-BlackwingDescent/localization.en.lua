@@ -55,12 +55,7 @@ L:SetOptionLocalization({
 	timerNefAblity				= "Show timer for heroic ability buff cooldown",
 	SpecWarnActivated			= "Show special warning when new boss activated",
 	specWarnGenerator			= "Show special warning when a boss gains $spell:91557",
-	YellOnChemBomb				= "Yell on $spell:80157",
-	YellBombTarget				= "Yell on $spell:80094",
-	YellOnLightning				= "Yell on $spell:79888",
-	YellOnShadowCast			= "Yell on $spell:92053",
-	YellOnTarget				= "Yell on $spell:92037",
-	YellOnTargetLock			= "Yell on $spell:92023",
+	YellOnTargetLock			= "Yell when you are affected by $spell:92023",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
@@ -71,12 +66,7 @@ L:SetMiscLocalization({
 	Electron					= "Electron",
 	Toxitron					= "Toxitron",
 	Arcanotron					= "Arcanotron",
-	SayBomb						= "Poison Bomb on me!",
-	YellLightning				= "Lightning Conductor on me!",
-	YellShadowCast				= "Shadow Conductor on me!",
-	YellTarget					= "Acquiring Target on me!",
-	YellTargetLock				= "Encasing Shadows! Away from me!",
-	YellCloud					= "Chemical Bomb on me!"
+	YellTargetLock				= "Encasing Shadows! Away from me!"
 })
 
 ----------------
@@ -175,7 +165,7 @@ L:SetOptionLocalization({
 	TimerAirphase			= "Show timer for next airphase",
 	TimerGroundphase		= "Show timer for next groundphase",
 	InfoFrame				= "Show info frame for sound levels",
-	YellOnPestered			= "Yell on $spell:92685",
+	YellOnPestered			= "Yell when you are affected by $spell:92685",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
@@ -221,7 +211,6 @@ L:SetOptionLocalization({
 	NefSwipeTimer			= "Show timer for Nefarian's $spell:77827 cooldown",
 	OnyBreathTimer			= "Show timer for Onyxia's $spell:94124 cooldown",
 	NefBreathTimer			= "Show timer for Nefarian's $spell:94124 cooldown",
-	YellOnCinder			= "Yell on $spell:79339",
 	InfoFrame				= "Show info frame for Onyxia's Electric Charge",
 	SetWater				= "Automatically disable water collision on pull\n(returns it to enabled upon leaving combat)",
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
@@ -232,7 +221,6 @@ L:SetMiscLocalization({
 	NefAoe					= "The air crackles with electricity!",
 	YellPhase2				= "Curse you, mortals! Such a callous disregard for one's possessions must be met with extreme force!",
 	YellPhase3				= "I have tried to be an accommodating host, but you simply will not die! Time to throw all pretense aside and just... KILL YOU ALL!",
-	YellCinder				= "Explosive Cinders on me!",
 	Nefarian				= "Nefarian",
 	Onyxia					= "Onyxia",
 	Charge					= "Electric Charge"
