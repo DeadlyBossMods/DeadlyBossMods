@@ -2995,7 +2995,7 @@ end
 --------------------
 --  Yell Object  --
 --------------------
---[[WIP, probably have arta just fix it up since i suck :)
+--WIP, probably have arta just fix it up since i suck :)
 do
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
@@ -3019,7 +3019,7 @@ do
 
 	function yellPrototype:Yell(...)
 		if not self.option or self.mod.Options[self.option] then
-			SendChatMessage(self.text, "SAY")--I have no doubt this is wrong, i'm not sure how the function is gonna grab %s yet.
+			SendChatMessage(self.text, "SAY")
 		end
 	end
 
@@ -3030,7 +3030,7 @@ do
 	function yellPrototype:Cancel(...)
 		return unschedule(self.Yell, self.mod, self, ...)
 	end	
-end--]]
+end
 
 ------------------------------
 --  Special Warning Object  --

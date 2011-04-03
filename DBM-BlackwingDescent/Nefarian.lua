@@ -62,10 +62,11 @@ local timerDominionCD			= mod:NewNextTimer(15, 79318)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
+local yellCinder				= mod:NewYell(79339)
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnCinder", true)
-mod:AddBoolOption("YellOnCinder", true, "announce")
+--mod:AddBoolOption("YellOnCinder", true, "announce")
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetWater", false)
@@ -169,12 +170,13 @@ function mod:SPELL_AURA_APPLIED(args)
 			playerDebuffed = true
 			specWarnCinder:Show()
 			soundCinder:Play()
+			yellCinder:Yell()
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
-			if self.Options.YellOnCinder then
+			--[[if self.Options.YellOnCinder then
 				SendChatMessage(L.YellCinder, "SAY")
-			end
+			end--]]
 		end
 		if self.Options.SetIconOnCinder then
 			self:SetIcon(args.destName, cinderIcons)
