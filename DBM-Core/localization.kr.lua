@@ -176,6 +176,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "$spell:%d 대상 전술 목표 아이콘 설정"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "$spell:%d 특수 소리 재생"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "$spell:%d 외치기"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "나에게 %s"--Verify (%s is spellname)
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "특수 경고 움직이기"

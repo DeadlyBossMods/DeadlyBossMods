@@ -193,6 +193,8 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "设定标记给$spell:%d的目标"
 DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "为$spell:%d播放警报音效"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "当你中了$spell:%d时大喊"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "%s - 远离我"--Verify (%s is spellname)
 
 
 -- New special warnings
