@@ -47,7 +47,7 @@ L:SetTimerLocalization({
 	timerArcaneBlowbackCast		= "폭발!",
 	timerShadowConductorCast	= "암흑 전도체 변환",
 	timerNefAblity				= "스킬 강화 쿨다운",
-	timerArcaneLockout			= "비전 파괴자 침묵"
+	timerArcaneLockout			= "비전 파괴자 쿨다운"
 })
 
 L:SetOptionLocalization({
@@ -57,7 +57,6 @@ L:SetOptionLocalization({
 	timerArcaneLockout			= "$spell:91542 침묵 타이머 보기",
 	SpecWarnActivated			= "새로운 보스가 활성화 될 때 특수 경고 보기",
 	specWarnGenerator			= "보스가 $spell:91557의 영향을 받을 경우 특수 경고 보기",
-	YellOnTargetLock			= "$spell:92023 외치기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
@@ -167,7 +166,6 @@ L:SetOptionLocalization({
 	TimerAirphase			= "다음 공중 단계 경고 보기",
 	TimerGroundphase		= "다음 지상 단계 경고 보기",
 	InfoFrame				= "소음계 정보 프레임 보기",
-	YellOnPestered			= "$spell:92685 외치기",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 

@@ -55,7 +55,6 @@ L:SetOptionLocalization({
 	timerNefAblity				= "Show timer for heroic ability buff cooldown",
 	SpecWarnActivated			= "Show special warning when new boss activated",
 	specWarnGenerator			= "Show special warning when a boss gains $spell:91557",
-	YellOnTargetLock			= "Yell when you are affected by $spell:92023",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
@@ -165,7 +164,6 @@ L:SetOptionLocalization({
 	TimerAirphase			= "Show timer for next airphase",
 	TimerGroundphase		= "Show timer for next groundphase",
 	InfoFrame				= "Show info frame for sound levels",
-	YellOnPestered			= "Yell when you are affected by $spell:92685",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
