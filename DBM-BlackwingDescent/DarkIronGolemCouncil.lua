@@ -46,7 +46,7 @@ local specWarnBarrier			= mod:NewSpecialWarningSpell(79582, not mod:IsHealer())
 local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
 local yellAcquiringTarget		= mod:NewYell(92037)
 local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
-local yellEncasingShadows		= mod:NewYell(92023)--Custom string L.YellTargetLock
+local yellEncasingShadows		= mod:NewYell(92023, L.YellTargetLock)
 --Electron
 local specWarnUnstableShield	= mod:NewSpecialWarningSpell(79900, not mod:IsHealer())
 local specWarnConductor			= mod:NewSpecialWarningYou(79888)
@@ -56,7 +56,7 @@ local yellShadowConductor		= mod:NewYell(92053)
 --Toxitron
 local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
-local yellFixate				= mod:NewYell(80094, nil, false)
+local yellFixate				= mod:NewYell(80094, nil, nil, false)
 local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer())
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local yellChemicalCloud			= mod:NewYell(91473)--May Return false tank yells
@@ -175,7 +175,7 @@ end
 
 function mod:CheckEncasing() -- prevent two yells at a time
 	if encasing and self.Options.YellOnTargetLock then
-		yellEncasingShadows:Yell(L.YellTargetLock)
+		yellEncasingShadows:Yell()
 	elseif not encasing then
 		yellAcquiringTarget:Yell()
 	end
