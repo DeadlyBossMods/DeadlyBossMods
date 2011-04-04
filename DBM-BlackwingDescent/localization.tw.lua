@@ -57,7 +57,6 @@ L:SetOptionLocalization({
 	timerNefAblity			= "為困難技能增益冷卻顯示計時器",
 	SpecWarnActivated		= "當新首領啟動時顯示特別警告",
 	specWarnGenerator		= "當首領獲得$spell:91557時顯示特別警告",
-	YellOnTargetLock		= "中了$spell:92023時大喊",
 	AcquiringTargetIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	BombTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(80094),
@@ -169,7 +168,6 @@ L:SetOptionLocalization({
 	TimerAirphase			= "為下一次 空中階段顯示計時器",
 	TimerGroundphase		= "為下一次 地上階段顯示計時器",
 	InfoFrame			= "為音波值顯示資訊框架",
-	YellOnPestered			= "中了$spell:92685時大喊",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 

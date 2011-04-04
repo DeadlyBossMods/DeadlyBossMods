@@ -58,7 +58,6 @@ L:SetOptionLocalization({
 	timerNefAblity				= "Mostrar tiempo de CoolDown de las habilidades de bufos en heroico",
 	SpecWarnActivated			= "Mostrar aviso especial cuando se activa un nuevo boss",
 	specWarnGenerator			= "Mostrar aviso especial cuando un boss gana $spell:91557",
-	YellOnTargetLock			= "Gritar cuando tengas $spell:92023",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
@@ -168,7 +167,6 @@ L:SetOptionLocalization({
 	TimerAirphase		= "Mostrar tiempo para siguiente Fase aerea",
 	TimerGroundphase	= "Mostrar tiempo para siguiente Fase en tierra",
 	InfoFrame			= "Mostrar información de los niveles de sonido",
-	YellOnPestered			= "Gritar cuando tengas $spell:92685",
 	TrackingIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 
