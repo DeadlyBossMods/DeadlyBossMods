@@ -56,7 +56,7 @@ local yellShadowConductor		= mod:NewYell(92053)
 --Toxitron
 local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
-local yellFixate				= mod:NewYell(80094, nil, nil, false)
+local yellFixate				= mod:NewYell(80094, nil, false)
 local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer())
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local yellChemicalCloud			= mod:NewYell(91473)--May Return false tank yells
