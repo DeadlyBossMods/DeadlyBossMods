@@ -47,7 +47,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Deep Breath"
+	Trigger1				= "Deep Breath",
+	BlackoutTarget			= "Blackout: %s"
 })
 
 ----------------------------------

@@ -48,7 +48,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization{
-	Trigger1				= "들이쉽니다!"
+	Trigger1				= "들이쉽니다!",
+	BlackoutTarget			= "의식 상실: %s"
 }
 
 ----------------------------------
