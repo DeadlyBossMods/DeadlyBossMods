@@ -2995,17 +2995,16 @@ end
 --------------------
 --  Yell Object  --
 --------------------
---WIP, probably have arta just fix it up since i suck :)
 do
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
-	function bossModPrototype:NewYell(spellId, optionName, optionDefault)
-		self.numYells = self.numYells and self.numYells + 1 or 1
+	function bossModPrototype:NewYell(spellId, yellText, optionName, optionDefault, chatType)
 		local obj = setmetatable(
 			{
 				option = optionName or DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId),
-				text = DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(GetSpellInfo(spellId) or DBM_CORE_UNKNOWN),
+				text = yellText or DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT:format(GetSpellInfo(spellId) or DBM_CORE_UNKNOWN),
 				mod = self,
+				chatType = chatType
 			},
 			mt
 		)
@@ -3017,9 +3016,9 @@ do
 		return obj
 	end
 
-	function yellPrototype:Yell(yellText, chatType, ...)
+	function yellPrototype:Yell(...)
 		if not self.option or self.mod.Options[self.option] then
-			SendChatMessage(yellText or self.text, chatType or "SAY")
+			SendChatMessage((yellText or self.text):format(...), self.chatType or "SAY")
 		end
 	end
 
