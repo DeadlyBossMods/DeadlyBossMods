@@ -57,7 +57,6 @@ L:SetOptionLocalization({
 	timerNefAblity				= "Показывать таймер восстановления баффа (героический режим)",
 	SpecWarnActivated			= "Показывать особое предупреждение при активации нового босса",
 	specWarnGenerator			= "Показывать особое предупреждение, когда босс стоит в $spell:91557",
-	YellOnTargetLock			= "Кричать, когда на вас $spell:92023",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
@@ -167,7 +166,6 @@ L:SetOptionLocalization({
 	TimerAirphase			= "Показывать таймер до следующей воздушной фазы",
 	TimerGroundphase		= "Показывать таймер до следующей наземной фазы",
 	InfoFrame				= "Показывать информационное окно для уровня звуков",
-	YellOnPestered			= "Кричать, когда на вас $spell:92685",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
 

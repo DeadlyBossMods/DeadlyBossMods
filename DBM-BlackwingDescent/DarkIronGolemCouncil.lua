@@ -46,7 +46,7 @@ local specWarnBarrier			= mod:NewSpecialWarningSpell(79582, not mod:IsHealer())
 local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
 local yellAcquiringTarget		= mod:NewYell(92037)
 local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
-mod:AddBoolOption("YellOnTargetLock", true, "announce")--This one isn't generic because it uses custom text.
+local yellEncasingShadows		= mod:NewYell(92023)--Custom string L.YellTargetLock
 --Electron
 local specWarnUnstableShield	= mod:NewSpecialWarningSpell(79900, not mod:IsHealer())
 local specWarnConductor			= mod:NewSpecialWarningYou(79888)
@@ -175,7 +175,7 @@ end
 
 function mod:CheckEncasing() -- prevent two yells at a time
 	if encasing and self.Options.YellOnTargetLock then
-		SendChatMessage(L.YellTargetLock, "SAY")
+		yellEncasingShadows:Yell(L.YellTargetLock)
 	elseif not encasing then
 		yellAcquiringTarget:Yell()
 	end
