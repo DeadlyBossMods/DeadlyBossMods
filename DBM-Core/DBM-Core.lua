@@ -3017,9 +3017,9 @@ do
 		return obj
 	end
 
-	function yellPrototype:Yell(yellText)
+	function yellPrototype:Yell(yellText, chatType, ...)
 		if not self.option or self.mod.Options[self.option] then
-			SendChatMessage(yellText or self.text, "SAY")
+			SendChatMessage(yellText or self.text, chatType or "SAY")
 		end
 	end
 
