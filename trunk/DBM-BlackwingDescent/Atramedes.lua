@@ -32,7 +32,7 @@ local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840)
 local specWarnSonarPulse	= mod:NewSpecialWarningSpell(92411, false)
 local specWarnTracking		= mod:NewSpecialWarningYou(78092)
 local specWarnPestered		= mod:NewSpecialWarningYou(92685)
-local yellPestered			= mod:NewYell(92685)--Custom string L.YellPestered
+local yellPestered			= mod:NewYell(92685, L.YellPestered)
 local specWarnObnoxious		= mod:NewSpecialWarningInterrupt(92702, false)
 local specWarnAddTargetable	= mod:NewSpecialWarning("specWarnAddTargetable", false)
 
@@ -151,6 +151,6 @@ function mod:UNIT_AURA(uId)
 	if UnitDebuff("player", pestered) then
 		pesteredWarned = true--This aura is a periodic trigger, so we don't want to spam warn for it.
 		specWarnPestered:Show()
-		yellPestered:Yell(L.YellPestered)
+		yellPestered:Yell()
 	end
 end
