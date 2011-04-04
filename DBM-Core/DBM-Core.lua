@@ -2998,7 +2998,7 @@ end
 do
 	local yellPrototype = {}
 	local mt = { __index = yellPrototype }
-	function bossModPrototype:NewYell(spellId, yellText, optionName, optionDefault, chatType)
+	function bossModPrototype:NewYell(spellId, yellText, optionDefault, optionName, chatType)
 		local obj = setmetatable(
 			{
 				option = optionName or DBM_CORE_AUTO_YELL_OPTION_TEXT:format(spellId),

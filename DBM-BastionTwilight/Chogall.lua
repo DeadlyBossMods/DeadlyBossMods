@@ -35,7 +35,7 @@ local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
 local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
-local yellCrash						= mod:NewYell(93178, nil, nil, not mod:IsTank())--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
+local yellCrash						= mod:NewYell(93178, nil, not mod:IsTank())--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
