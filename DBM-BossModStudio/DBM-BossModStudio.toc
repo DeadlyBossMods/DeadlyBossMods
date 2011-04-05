@@ -9,7 +9,7 @@
 ## Notes-ruRU: Студия BossModStudio для DBM
 ## Notes-zhTW: DBM首領模組生成器
 ## Notes-zhCN: 首领模块生成器
-## Notes-koKR: DBM 보스모듈 추가 제작
+## Notes-koKR: DBM 보스 모드 제작 도구
 ## RequiredDeps: DBM-Core
 ## LoadOnDemand: 0
 ## DefaultState: enabled

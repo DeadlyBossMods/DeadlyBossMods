@@ -13,7 +13,7 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	specWarnBrew			= "흑맥주요정이 맥주를 다시 던지기전에 마셔버리세요!",
-	specWarnBrewStun		= "힌트: 맥주를 들고있네요.흑맥주요정의 맥주가 오기전에 마셔버리면 됩니다!"
+	specWarnBrewStun		= "힌트: 맥주를 들고있네요. 흑맥주요정의 맥주가 오기전에 마셔버리면 됩니다!"
 })
 
 L:SetOptionLocalization({
@@ -51,9 +51,9 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	HorsemanSummon				= "Horseman rise...",
+	HorsemanSummon				= "기사여 일어나라...",
 	HorsemanHead				= "냉큼 이리 와라, 이 얼간아!",
-	HorsemanSoldiers			= "일어나라, 별사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!",
+	HorsemanSoldiers			= "일어나라, 병사들이여. 나가서 싸워라! 이 쇠락한 기사에게 승리를 안겨다오!",
 	SayCombatEnd				= "죽음은 이미 겪어 보았노라. 이제 어떤 모험이 날 기다리는가?"
 })
 
