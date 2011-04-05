@@ -2705,11 +2705,8 @@ local function getTalentpointsSpent(spellID)
 	return 0
 end
 
---Complex talent checker.
---It determins if person is even high enough level for point check
---if not, it only checks class and returns yes to roll to avoid misjudging someones spec and turning options off for them that shouldn't be off.
---(plus fixes nil error if they are below level 11 and have no talents yet)
---Try to avoid using "not" in boss mods for checks if it can be helped, Only 2 mods i know if apsolutely couldn't avoid using not.
+--Simple talent checker.
+--It checks for key skills in spellbook, without having to do in dept talent point checks.
 
 function bossModPrototype:IsMelee()
 	return class == "ROGUE"
