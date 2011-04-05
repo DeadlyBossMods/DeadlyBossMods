@@ -49,7 +49,8 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Theralion, voy a incendiar el corredor. ¡Que no escapen!"--Change this to what deep breath emote is.
+	Trigger1				= "Aliento profundo",
+	BlackoutTarget			= "Desmayo: %s"
 })
 
 ----------------------------------
@@ -120,7 +121,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "Mostrar información para $spell:81701",
 	RangeFrame				= "Mostrar distancia (5 yardas) para $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
-	SetIconOnCreature		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+	SetIconOnCreature		= "Poner iconos en las Creaciones oscurecidas"
 })
 
 L:SetMiscLocalization({
@@ -141,6 +142,8 @@ L:SetWarningLocalization({
 	WarnSlicerSoon		= "¡Cercenadora Crepuscular en %d seg!",
 	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
 	SpecWarnSlicer		= "¡Cercenadora Crepuscular pronto!",
+	warnWrackJump		= "%s ha saltado a >%s<",
+	WarnWrackCount5s	= "%d segundos des del último Arruinar",
 	SpecWarnDispel		= "¡Han pasado %d seg des del último Arruinar ¡Dispelea ahora!",
 	SpecWarnEggWeaken	= "¡Caparazón Crepuscular Eliminado! ¡Pega el Huevo!",
 	SpecWarnEggShield	= "¡Caparazón Crepuscular se ha regenerado!"
@@ -157,6 +160,8 @@ L:SetOptionLocalization({
 	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
 	WarnSlicerSoon		= "Show pre-warning for $spell:92954 (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",--translate
 	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
+	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
+	WarnWrackCount5s	= "Announce los segundos de $spell:92955 transcurridos a los 10, 15, 20 segundos",
 	SpecWarnSlicer		= "Show special warning for $spell:92954\n(Expected warning. may not be accurate)",--translate
 	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)",--translate
 	SpecWarnEggWeaken	= "Show special warning when $spell:87654 removed", -- translate

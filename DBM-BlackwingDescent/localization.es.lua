@@ -184,7 +184,7 @@ L:SetMiscLocalization({
 L = DBM:GetModLocalization("Nefarian-BD")
 
 L:SetGeneralLocalization({
-	name = "Nefarian"
+	name = "El Final de Nefarian"
 })
 
 L:SetWarningLocalization({
@@ -212,10 +212,10 @@ L:SetOptionLocalization({
 	NefSwipeTimer		= "Mostrar tiempo de cooldown de $spell:77827 de Nefarian",
 	OnyBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Onyxia",
 	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
-	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339",
 	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
 	SetWater			= "Desactivar la colisión con el agua automáticamente al pullear\n(se reactiva al abandonar el combate)",
-	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
+	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
+	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339"
 })
 
 L:SetMiscLocalization({
