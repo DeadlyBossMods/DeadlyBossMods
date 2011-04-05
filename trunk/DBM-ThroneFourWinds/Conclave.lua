@@ -42,7 +42,7 @@ local specWarnWindBlast		= mod:NewSpecialWarningSpell(86193, false)
 local timerNurture			= mod:NewNextTimer(35, 85422)--This this is typically 35 seconds after a special has ended.
 local timerWindChill		= mod:NewNextTimer(10.5, 84645, nil, false)
 local timerSlicingGale		= mod:NewBuffActiveTimer(45, 93058, nil, false)
-local timerWindBlast		= mod:NewBuffActiveTimer(10, 86193)
+local timerWindBlast		= mod:NewBuffActiveTimer(11.5, 86193)
 local timerWindBlastCD		= mod:NewCDTimer(60, 86193)-- Cooldown: 1st->2nd = 22sec || 2nd->3rd = 60sec || 3rd->4th = 60sec ?
 local timerStormShieldCD	= mod:NewNextTimer(35, 95865)--Heroic ability, seems to share CD/line up with Nurture and also 35 seconds after a special ended.
 local timerGatherStrength	= mod:NewTargetTimer(60, 86307)
@@ -232,9 +232,11 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, boss)
 end
 
 function mod:OnSync(msg, boss)
-	if msg == "GatherStrength" and self:IsInCombat() and not GatherStrengthwarned then
+	if msg == "GatherStrength" and self:IsInCombat() then
 		warnGatherStrength:Show(boss)
-		timerGatherStrength:Start(boss)
-		GatherStrengthwarned = true
+		if not GatherStrengthwarned then
+			timerGatherStrength:Start(boss)
+			GatherStrengthwarned = true
+		end
 	end
 end
