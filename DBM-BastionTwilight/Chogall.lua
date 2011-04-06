@@ -226,7 +226,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if UnitName(uId) == L.name then
+	if self:GetUnitCreatureId(uId) == 43324 then
 		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		if h > 40 and prewarned_Phase2 then
 			prewarned_Phase2 = false

@@ -117,7 +117,7 @@ function mod:SPELL_DAMAGE(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if UnitName(uId) == L.name then
+	if self:GetUnitCreatureId(uId) == 47120 then
 		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		if h > 75 or h > 45 and h < 55 then
 			prewarnedFirestorm = false
