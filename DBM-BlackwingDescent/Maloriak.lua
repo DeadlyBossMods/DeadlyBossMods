@@ -14,7 +14,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_CAST_SUCCESS",
 	"SPELL_INTERRUPT",
-	"CHAT_MSG_RAID_BOSS_EMOTE"
+	"CHAT_MSG_RAID_BOSS_EMOTE",
+	"UNIT_HEALTH"
 )
 
 local warnPhase					= mod:NewAnnounce("WarnPhase", 2)
@@ -29,7 +30,8 @@ local warnScorchingBlast		= mod:NewSpellAnnounce(77679, 4)
 local warnDebilitatingSlime		= mod:NewSpellAnnounce(77615, 2)
 local warnMagmaJets				= mod:NewSpellAnnounce(78194, 4, nil, mod:IsTank())--4.0.6+ now supporting this warning.
 local warnEngulfingDarkness		= mod:NewSpellAnnounce(92754, 4, nil, mod:IsHealer() or mod:IsTank())--Heroic Ability
-local warnPhase2				= mod:NewPhaseAnnounce(2)
+local warnPhase2Soon			= mod:NewPrePhaseAnnounce(2, 3)
+local warnPhase2				= mod:NewPhaseAnnounce(2, 4)
  
 local timerPhase				= mod:NewTimer(49, "TimerPhase", 89250)--Just some random cauldron icon not actual spellid
 local timerBitingChill			= mod:NewBuffActiveTimer(10, 77760)
@@ -68,6 +70,7 @@ local bitingChillTargets = {}
 local flashFreezeTargets = {}
 local bitingChillIcon = 6
 local flashFreezeIcon = 8
+local prewarnedPhase2 = false
 
 local function showBitingChillWarning()
 	warnBitingChill:Show(table.concat(bitingChillTargets, "<, >"))
@@ -103,6 +106,7 @@ function mod:OnCombatStart(delay)
 	spamSludge = 0
 	bitingChillIcon = 6
 	flashFreezeIcon = 8
+	prewarnedPhase2 = false
 	timerArcaneStormCD:Start(10-delay)--10-15 seconds from pull
 	timerAddsCD:Start()--This may or may not happen depending on arcane storms duration and when it was cast.
 	timerPhase:Start(18.5-delay)
@@ -287,6 +291,18 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 		end
 		if self.Options.SetTextures and GetCVarBool("projectedTextures") then
 			SetCVar("projectedTextures", 0)
+		end
+	end
+end
+
+function mod:UNIT_HEALTH(uId)
+	if self:GetUnitCreatureId(uId) == 41378 then
+		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
+		if h > 35 and prewarnedPhase2 then
+			prewarnedPhase2 = false
+		elseif h > 24 and h < 29 and not prewarnedPhase2 then
+			prewarnedPhase2 = true
+			warnPhase2Soon:Show()
 		end
 	end
 end

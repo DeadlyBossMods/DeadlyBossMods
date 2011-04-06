@@ -183,7 +183,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if UnitName(uId) == L.name then
+	if self:GetUnitCreatureId(uId) == 43296 then
 		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		if h > 40 and prewarnedPhase2 then
 			prewarnedPhase2 = false
