@@ -17,11 +17,10 @@ local warnFrostWhirl		= mod:NewSpellAnnounce(93340, 4)--This is nasty frost whir
 local warnFlameStrike		= mod:NewTargetAnnounce(93383, 4)--This is Flame strike we need to not stand in unless we're dispeling frost dudes shield.
 local warnRupture			= mod:NewTargetAnnounce(93377, 4)--This is twilight rupture the big guys do in hallway before halfus.
 
-local specWarnFrostWhirl	= mod:NewSpecialWarningSpell(93340)
-local specWarnFlameStrike	= mod:NewSpecialWarningMove(93362)
 local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903)
 local specWarnRupture		= mod:NewSpecialWarningSpell(93377)
-
+local specWarnFrostWhirl	= mod:NewSpecialWarningSpell(93340)
+local specWarnFlameStrike	= mod:NewSpecialWarningMove(93362)
 local yellFlamestrike		= mod:NewYell(93362)
 
 local timerVolcanicWrath	= mod:NewBuffActiveTimer(9, 87903)--Maybe need a Guid based targettimer since most pulls have 2 of these?
