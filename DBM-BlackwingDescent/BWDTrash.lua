@@ -9,7 +9,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnLaserStrike		= mod:NewTargetAnnounce(80727, 2)--Big red don't stand in beam golems use.
+local warnLaserStrike		= mod:NewTargetAnnounce(81063, 2)--Big red don't stand in beam golems use.
 local warnFlashBomb			= mod:NewTargetAnnounce(81056, 2)--Flash bomb used by golems that disorients anyone within 12 yards of target.
 --local warnBPGreen			= mod:NewTargetAnnounce(80369, 3)--Debuff is 80329, but not sure what aspect uses it. Want to pre warn when the aspect that has potential to use it is up.
 local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for Maimgor drake in front of maloriaks area.
