@@ -226,13 +226,13 @@ function mod:UNIT_POWER(uId)
 end
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, boss)
-	if (msg == L.gatherstrength or msg:find(L.gatherstrength)) then
+	if msg == L.gatherstrength or msg:find(L.gatherstrength) then
 		self:SendSync("GatherStrength", boss)
 	end
 end
 
 function mod:OnSync(msg, boss)
-	if msg == "GatherStrength" and self:IsInCombat() then
+	if msg == "GatherStrength" and self:IsInCombat() then--This has been non functional since 4.0.6 and i just cannot figure out why, it worked perfectly up til that point. any ideas?
 		warnGatherStrength:Show(boss)
 		if not GatherStrengthwarned then
 			timerGatherStrength:Start(boss)
