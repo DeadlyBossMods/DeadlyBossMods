@@ -46,7 +46,7 @@ local yellTwilightMeteorite			= mod:NewYell(88518, nil, false)
 local specWarnEngulfingMagic		= mod:NewSpecialWarningYou(86622)
 local yellEngulfingMagic			= mod:NewYell(86622)
 
-local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 10)
+local specWarnTwilightZone			= mod:NewSpecialWarningStack(92887, nil, 20)
 
 --Valiona Ground Phase
 local timerBlackout					= mod:NewTargetTimer(15, 86788)
