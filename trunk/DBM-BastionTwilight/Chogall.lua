@@ -15,7 +15,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"UNIT_HEALTH",
-	"UNIT_AURA"
+	"UNIT_AURA",
+	"UNIT_DIED"
 )
 
 local warnWorship					= mod:NewTargetAnnounce(91317, 3)--Phase 1
@@ -257,5 +258,12 @@ function mod:UNIT_AURA(uId)
 			DBM.RangeCheck:Show(5)
 		end
 		sickSpam = GetTime()
+	end
+end
+
+function mod:UNIT_DIED(args)
+	local cid = self:GetCIDFromGUID(args.destGUID)
+	if cid == 43622 then--Also remove from boss health when they die based on GUID
+		DBM.BossHealth:RemoveBoss(args.destGUID)
 	end
 end
