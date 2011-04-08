@@ -225,7 +225,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			engulfingMagicIcon = engulfingMagicIcon - 1
 		end
 		self:Unschedule(showEngulfingMagicWarning)
-		if (mod:IsDifficulty("normal25") and #engulfingMagicTargets >= 2) or (mod:IsDifficulty("normal10") and #engulfingMagicTargets >= 1) then
+		if (mod:IsDifficulty("heroic25") and #engulfingMagicTargets >= 3) or (mod:IsDifficulty("normal25") and #engulfingMagicTargets >= 2) or (mod:IsDifficulty("normal10") and #engulfingMagicTargets >= 1) then
 			showEngulfingMagicWarning()
 		else
 			self:Schedule(0.3, showEngulfingMagicWarning)
@@ -242,7 +242,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Unschedule(AMSTimerDelay)
 		self:Schedule(20, AMSTimerDelay)--Cause when a DK AMSes it we don't get another timer.
 	elseif args:IsSpellID(92887) and args:IsPlayer() then
-		if (args.amount or 1) >= 10 and GetTime() - spamZone > 5 then
+		if (args.amount or 1) >= 20 and GetTime() - spamZone > 5 then
 			specWarnTwilightZone:Show(args.amount)
 			spamZone = GetTime()
 		end
