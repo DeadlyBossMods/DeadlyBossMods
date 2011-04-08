@@ -15,6 +15,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"SPELL_CAST_START",
 	"SPELL_DAMAGE",
+	"SPELL_MISSED",
 	"SPELL_HEAL",
 	"SPELL_PERIODIC_HEAL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -84,6 +85,7 @@ local lastflamecast = 0
 local spamZone = 0
 local markWarned = false
 local blackoutActive = false
+local TheralionLanded = false
 local meteorTarget = GetSpellInfo(88518)
 
 local setBlackoutTarget, clearBlackoutTarget
@@ -130,10 +132,11 @@ local function markRemoved()
 end
 
 local function valionaDelay()
+	TheralionLanded = false
 	timerEngulfingMagicNext:Cancel()
---	timerNextFabFlames:Cancel()--This sometimes gets cast late as well, right on top of raid that's grouped up for blackout.
 	timerBlackoutCD:Start(10)
 	timerDevouringFlamesCD:Start(25)
+	--timerNextFabFlames:Cancel()--Unfortunately Theralion can cast this very late, up to 1 second after first blackout so it cannot be canceled here, but no real other place to do it :(
 	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -173,7 +176,7 @@ end
 function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	timerBlackoutCD:Start(10-delay)
-	timerDevouringFlamesCD:Start(25-delay)
+	timerDevouringFlamesCD:Start(25.5-delay)
 	timerNextDazzlingDestruction:Start(85-delay)
 	dazzlingCast = 0
 	breathCast = 0
@@ -182,6 +185,7 @@ function mod:OnCombatStart(delay)
 	spamZone = 0
 	markWarned = false
 	blackoutActive = false
+	TheralionLanded = false
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -203,7 +207,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		blackoutActive = true
 		warnBlackout:Show(args.destName)
 		timerBlackout:Start(args.destName)
-		timerBlackoutCD:Start()
+		if not TheralionLanded then--Basically a hack to prevent blackout timer from starting again when cast after 3rd dazzling just before valiona has gone up.
+			timerBlackoutCD:Start()
+		end
 		if self.Options.BlackoutIcon then
 			self:SetIcon(args.destName, 8)
 		end
@@ -286,11 +292,12 @@ function mod:SPELL_CAST_START(args)
 		if dazzlingCast == 1 then--only special warn once for first one
 			specWarnDazzlingDestruction:Show()
 		elseif dazzlingCast == 3 then
---			timerBlackoutCD:Cancel()--Sometimes valiona is a bitch and casts 3rd one anyways on way up 3-5 seconds after 3rd dazzling, not sure how to account for this yet. For now i'll comment the cancel out.
 			timerDevouringFlamesCD:Cancel()
+			timerNextFabFlames:Start()
 			timerEngulfingMagicNext:Start(20)--need more logs to confirm this.
 			timerNextDeepBreath:Start()
 			dazzlingCast = 0--reset back to 0 for next time it happens.
+			TheralionLanded = true
 			if self.Options.RangeFrame then
 				DBM.RangeCheck:Show(10)
 			end
@@ -300,14 +307,6 @@ function mod:SPELL_CAST_START(args)
 	end
 end
 
---[[WIP, fab flames next timer based on spell damage detection. It has a 15 second timer but blizz didn't give it a cast event, qq.
-Also, when cast, the dragon will turn and target person it's cast on. Schedule a 14, 15 and 16 second delay to check target and if it's not a tank announce target early (or attempt to rathor) might be possible.
-3/31 20:28:21.364  SPELL_DAMAGE,0xF130B57000000D23,"Fabulous Flames",0xa48,0x0400000004EF8CAA,"Dautz",0x514,92909,"Fabulous Flames",0x20,10917,-1,32,5617,0,0,nil,nil,nil
-3/31 20:28:37.410  SPELL_DAMAGE,0xF130B57000000D47,"Fabulous Flames",0xa48,0x0400000004A6518D,"Esoth",0x1000514,92909,"Fabulous Flames",0x20,9018,-1,32,3736,0,5928,nil,nil,nil
-3/31 20:28:52.227  SPELL_DAMAGE,0xF130B57000000D6C,"Fabulous Flames",0xa48,0x040000000479BCAE,"Ambrossia",0x514,92909,"Fabulous Flames",0x20,13426,-1,32,3831,0,1897,nil,nil,nil
-3/31 20:29:07.847  SPELL_DAMAGE,0xF130B57000000D88,"Fabulous Flames",0xa48,0x0400000004EA5DF5,"Skramz",0x514,92909,"Fabulous Flames",0x20,13042,-1,32,5589,0,0,nil,nil,nil
-3/31 20:29:23.915  SPELL_DAMAGE,0xF130B57000000DB2,"Fabulous Flames",0xa48,0x04000000047A12DB,"Dirann",0x2000514,92909,"Fabulous Flames",0x20,11204,-1,32,5649,0,0,nil,nil,nil
---]]
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(86505, 92907, 92908, 92909) then
 		if GetTime() - lastflamecast > 13.5 then--Might need a tweak, it's hard to filter damage events triggering the timer from morons who walk into it after it was placed on ground.
@@ -320,6 +319,8 @@ function mod:SPELL_DAMAGE(args)
 		end
 	end
 end
+
+mod.SPELL_MISSED = mod.SPELL_DAMAGE--Absorbs still show as spell missed, such as PWS, but with this you'll still get a special warning to GTFO, instead of dbm waiting til your shield breaks and you take a second tick :)
 
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if msg == L.Trigger1 or msg:find(L.Trigger1) then
