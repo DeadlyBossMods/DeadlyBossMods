@@ -36,6 +36,7 @@ local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local yellCrash						= mod:NewYell(93178, nil, not mod:IsTank())--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
+local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177, mod:IsMelee())--On by default for melee, but can be tweaked to off if that's still too much.
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds
 local timerAdherent					= mod:NewCDTimer(92, 81628)
@@ -178,6 +179,13 @@ function mod:SPELL_CAST_START(args)
 			creatureIcons[args.sourceGUID] = creatureIcon
 			creatureIcon = creatureIcon - 1
 		end
+	elseif args:IsSpellID(81713, 93175, 93176, 93177) then
+		if not DBM.BossHealth:HasBoss(args.sourceGUID) then--Check if added to boss health
+			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)--And add if not.
+		end
+		if args.sourceGUID == UnitGUID("target") then--Only show warning for your own target.
+			specWarnDepravity:Show()
+		end
 	end
 end
 
@@ -214,6 +222,9 @@ function mod:SPELL_CAST_SUCCESS(args)
 	elseif args:IsSpellID(81171) then--87579?
 		warnFlameOrders:Show()
 	elseif args:IsSpellID(81685, 93178, 93179, 93180) then
+		if not DBM.BossHealth:HasBoss(args.sourceGUID) then--Check if added to boss health
+			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)--And add if not.
+		end
 		self:ScheduleMethod(0.2, "CorruptingCrashTarget", args.sourceGUID)
 	end
 end
