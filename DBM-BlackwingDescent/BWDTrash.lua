@@ -77,8 +77,8 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(81063) then--Are both IDs used?
-		self:ScheduleMethod(0.2, "LaserStrikeTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		self:ScheduleMethod(0.01, "LaserStrikeTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
 	elseif args:IsSpellID(81056) then
-		self:ScheduleMethod(0.2, "FlashBombTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		self:ScheduleMethod(0.01, "FlashBombTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
 	end
 end

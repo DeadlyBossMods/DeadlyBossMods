@@ -82,6 +82,7 @@ local dazzlingCast = 0
 local breathCast = 0
 local lastflame = 0
 local lastflamecast = 0
+local flameguid = {}
 local spamZone = 0
 local markWarned = false
 local blackoutActive = false
@@ -133,6 +134,7 @@ end
 
 local function valionaDelay()
 	TheralionLanded = false
+	table.wipe(flameguid)
 	timerEngulfingMagicNext:Cancel()
 	timerBlackoutCD:Start(10)
 	timerDevouringFlamesCD:Start(25)
@@ -182,6 +184,7 @@ function mod:OnCombatStart(delay)
 	breathCast = 0
 	lastflame = 0
 	lastflamecast = 0
+	table.wipe(flameguid)
 	spamZone = 0
 	markWarned = false
 	blackoutActive = false
@@ -309,7 +312,8 @@ end
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(86505, 92907, 92908, 92909) then
-		if GetTime() - lastflamecast > 13.5 then--Might need a tweak, it's hard to filter damage events triggering the timer from morons who walk into it after it was placed on ground.
+		if GetTime() - lastflamecast > 13.5 and not flameguid[args.sourceGUID] then--Might need a tweak, it's hard to filter damage events triggering the timer from morons who walk into it after it was placed on ground.
+			flameguid[args.sourceGUID] = true
 			timerNextFabFlames:Start()
 			lastflamecast = GetTime()
 		end
