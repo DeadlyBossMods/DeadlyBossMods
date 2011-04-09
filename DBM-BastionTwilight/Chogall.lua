@@ -36,7 +36,7 @@ local specWarnBlaze					= mod:NewSpecialWarningMove(81538)
 local specWarnWorship				= mod:NewSpecialWarningSpell(93205, false)
 local specWarnCorruptingCrash		= mod:NewSpecialWarningMove(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
 local specWarnCorruptingCrashNear	= mod:NewSpecialWarningClose(93178)--Subject to accuracy flaws in rare cases but most of the time it's right.
-local yellCrash						= mod:NewYell(93178, nil, not mod:IsTank())--Subject to accuracy flaws so off by for tanks(if you aren't a tank then it probably sin't wrong so it's on for everyone else.)
+local yellCrash						= mod:NewYell(93178)--Second thought, it occured to me that the crash should never target the adherent tank, so if he yells so what heh. But it is accurate if it targest chogal tank. On for everyone now.
 local specWarnDepravity				= mod:NewSpecialWarningInterrupt(93177, mod:IsMelee())--On by default for melee, but can be tweaked to off if that's still too much.
 
 local timerWorshipCD				= mod:NewCDTimer(36, 91317)--21-40 second variations depending on adds

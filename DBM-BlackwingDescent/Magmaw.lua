@@ -30,7 +30,7 @@ local warnPhase2			= mod:NewPhaseAnnounce(2, 4)--heroic
 local specWarnPillar		= mod:NewSpecialWarningSpell(78006, mod:IsRanged())
 local specWarnIgnition		= mod:NewSpecialWarningMove(92198)
 local specWarnInfernoSoon   = mod:NewSpecialWarning("SpecWarnInferno")
-local specWarnArmageddon	= mod:NewSpecialWarningSpell(92177)
+local specWarnArmageddon	= mod:NewSpecialWarningSpell(92177, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
 
 local timerLavaSpew			= mod:NewCDTimer(26, 77689, nil, mod:IsHealer())
 local timerPillarFlame		= mod:NewCDTimer(32.5, 78006)--This timer is a CD timer. 30-40 seconds. Use your judgement.
