@@ -3090,15 +3090,10 @@ do
 			frame:SetAlpha(1)
 			frame.timer = 5
 			if self.sound then
-				-- Hack to be able to play different (fixed) sounds for special warnings.
-				local playSound = self.runSound == 1 and "Sound\\Spells\\PVPFlagTaken.wav" or
-						  self.runSound == 2 and "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav" or
-						  self.runSound == 3 and "Sound\\Doodad\\BellTollNightElf.wav" or
-						  self.runSound
 				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(playSound, "Master")
+					PlaySoundFile(self.runSound or DBM.Options.SpecialWarningSound, "Master")
 				else
-					PlaySoundFile(playSound)
+					PlaySoundFile(self.runSound or DBM.Options.SpecialWarningSound)
 				end
 			end
 		end
@@ -3119,7 +3114,7 @@ do
 				option = optionName or text,
 				mod = self,
 				sound = not noSound,
-				runSound = runSound or DBM.Options.SpecialWarningSound,
+				runSound = runSound,
 			},
 			mt
 		)
@@ -3142,7 +3137,7 @@ do
 				option = optionName or text,
 				mod = self,
 				sound = not noSound,
-				runSound = runSound or DBM.Options.SpecialWarningSound,
+				runSound = runSound,
 			},
 			mt
 		)
