@@ -3095,7 +3095,6 @@ do
 						  self.runSound == 2 and "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav" or
 						  self.runSound == 3 and "Sound\\Doodad\\BellTollNightElf.wav" or
 						  self.runSound
-print(playSound)
 				if DBM.Options.UseMasterVolume then
 					PlaySoundFile(playSound, "Master")
 				else
