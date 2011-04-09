@@ -38,7 +38,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnDominion				= mod:NewTargetAnnounce(79318, 3)
 
-local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198)
+local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198, nil, nil, true)--Sound disabled for now on special warning in favor of custom sound hack (at least til custom sound arg is actually working)
 local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
 local specWarnShadowblazeSoon	= mod:NewSpecialWarning("specWarnShadowblazeSoon", mod:IsTank())
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)
@@ -63,6 +63,7 @@ local timerDominionCD			= mod:NewNextTimer(15, 79318)
 local berserkTimer				= mod:NewBerserkTimer(630)
 
 local soundCinder				= mod:NewSound(79339)
+local soundHack					= mod:NewSound(81198)--This is temporary, i'd like not to have a silly sound option in GUI that makes no sense since it's meant to be attached to special warning.
 
 mod:AddBoolOption("RangeFrame")
 mod:AddBoolOption("SetIconOnCinder", true)
@@ -269,6 +270,7 @@ end
 function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 	if (msg == L.NefAoe or msg:find(L.NefAoe)) and self:IsInCombat() then
 		specWarnElectrocute:Show()
+		soundHack:Play("Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
 		timerElectrocute:Start()
 	end
 end
