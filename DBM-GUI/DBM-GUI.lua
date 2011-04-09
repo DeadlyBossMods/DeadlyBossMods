@@ -1729,7 +1729,7 @@ local function CreateOptionsMenu()
 		local Sounds = {
 			{	text	= L.NoSound,		value	= "" },
 			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
-			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
+--			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
 			{	text	= "NotPrepared",	value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav", 		sound=true },--Maybe a bit long? wouldn't recommend it as a default, but good for customizing.
 			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
 		}
