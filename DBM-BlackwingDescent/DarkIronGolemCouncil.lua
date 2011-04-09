@@ -348,7 +348,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:ScheduleMethod(0.1, "ChemicalBombTarget")--Since this is an instance cast scanning accurately is very hard.
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
-		if not self:GetUnitCreatureId("target") == 42180 then--You're not targeting toxitron which means he's probably off in some corner somewhere out of sight out of mind.
+		if not self:GetUnitCreatureId("target") == 42180 then--You're not targeting toxitron which means he's probably off in some corner somewhere out of sight out of mind. (This does not seem to work still, cannot fathom why, unless the function simply isn't supported checking for "not")
 			specWarnPoisonProtocol:Show()--MFers need to learn to switch so we give them a special warning to remember toxitron is still up.
 		end
 		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then

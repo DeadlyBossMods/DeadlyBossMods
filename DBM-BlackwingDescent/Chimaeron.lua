@@ -27,7 +27,7 @@ local warnFeud				= mod:NewSpellAnnounce(88872, 3)
 local warnPhase2Soon		= mod:NewPrePhaseAnnounce(2, 3)
 local warnPhase2			= mod:NewPhaseAnnounce(2)
 
-local specWarnFailure		= mod:NewSpecialWarningSpell(88853)
+local specWarnFailure		= mod:NewSpecialWarningSpell(88853, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
 local specWarnMassacre		= mod:NewSpecialWarningSpell(82848, mod:IsHealer())
 local specWarnDoubleAttack	= mod:NewSpecialWarningSpell(88826, mod:IsTank())
 
