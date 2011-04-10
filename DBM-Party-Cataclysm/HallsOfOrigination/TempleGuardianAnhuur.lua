@@ -42,9 +42,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_REMOVED(args)
-	if args:IsSpellID(74938) then
-		warnShield:Show()
-	elseif args:IsSpellID(75592, 94949) then
+	if args:IsSpellID(75592, 94949) then
 		timerReckoning:Cancel(args.destName)
 	end
 end
