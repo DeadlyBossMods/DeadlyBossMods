@@ -11,7 +11,7 @@ mod:RegisterEvents(
 
 local warnLaserStrike		= mod:NewTargetAnnounce(81063, 2)--Big red don't stand in beam golems use.
 local warnFlashBomb			= mod:NewTargetAnnounce(81056, 2)--Flash bomb used by golems that disorients anyone within 12 yards of target.
---local warnBPGreen			= mod:NewTargetAnnounce(80369, 3)--Debuff is 80329, but not sure what aspect uses it. Want to pre warn when the aspect that has potential to use it is up.
+local warnBPBronze			= mod:NewTargetAnnounce(80372, 3)--Debuff is 80329, but not sure what aspect uses it. Fairly certain it's bronze though so that's what we warn for, for now.
 local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for Maimgor drake in front of maloriaks area.
 local warnSacrifice			= mod:NewTargetAnnounce(80727, 2)--Sacrifice used by spirits before atramedes
 local warnWhirlwind			= mod:NewTargetAnnounce(80652, 2)--Whirlwind used by spirits before atramedes
@@ -54,8 +54,8 @@ function mod:FlashBombTarget(sGUID)
 end
 
 function mod:SPELL_AURA_APPLIED(args)
-	if args:IsSpellID(71127) then
---		warnBPGreen:Show(args.destName)
+	if args:IsSpellID(80372) then
+		warnBPBronze:Show(args.destName)
 	elseif args:IsSpellID(80727) and args:IsDestTypePlayer() then
 		warnSacrifice:Show(args.destName)
 		timerSacrifice:Start(args.destName)
@@ -77,8 +77,8 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(81063) then--Are both IDs used?
-		self:ScheduleMethod(0.01, "LaserStrikeTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		self:ScheduleMethod(0.1, "LaserStrikeTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
 	elseif args:IsSpellID(81056) then
-		self:ScheduleMethod(0.01, "FlashBombTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		self:ScheduleMethod(0.1, "FlashBombTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
 	end
 end
