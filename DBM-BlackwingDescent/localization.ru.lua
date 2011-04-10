@@ -51,12 +51,12 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	timerShadowConductorCast	= "Показывать таймер применения $spell:92053",
-	timerArcaneBlowbackCast		= "Показывать таймер применения $spell:91879",
-	timerArcaneLockout			= "Показывать таймер блокировки $spell:91542",
-	timerNefAblity				= "Показывать таймер восстановления баффа (героический режим)",
-	SpecWarnActivated			= "Показывать особое предупреждение при активации нового босса",
-	specWarnGenerator			= "Показывать особое предупреждение, когда босс стоит в $spell:91557",
+	timerShadowConductorCast	= "Отсчет времени применения заклинания $spell:92053",
+	timerArcaneBlowbackCast		= "Отсчет времени применения заклинания $spell:91879",
+	timerArcaneLockout			= "Отсчет времени блокировки $spell:91542",
+	timerNefAblity				= "Отсчет времени восстановления баффа (героический режим)",
+	SpecWarnActivated			= "Спец-предупреждение при активации нового босса",
+	specWarnGenerator			= "Спец-предупреждение, когда босс стоит в $spell:91557",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
 	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
@@ -158,13 +158,13 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	WarnAirphase			= "Показывать предупреждение, когда Атрамед взлетает",
-	WarnGroundphase			= "Показывать предупреждение, когда Атрамед приземляется",
-	WarnShieldsLeft			= "Показывать предупреждение, когда используется Древний дворфийский щит",
-	warnAddSoon				= "Показывать предупреждение, когда Нефариан призывает помощников",
-	specWarnAddTargetable	= "Показывать особое предупреждение, когда Гнусного беса можно взять в цель",
-	TimerAirphase			= "Показывать таймер до следующей воздушной фазы",
-	TimerGroundphase		= "Показывать таймер до следующей наземной фазы",
+	WarnAirphase			= "Предупреждение, когда Атрамед взлетает",
+	WarnGroundphase			= "Предупреждение, когда Атрамед приземляется",
+	WarnShieldsLeft			= "Предупреждение, когда используется Древний дворфийский щит",
+	warnAddSoon				= "Предупреждение, когда Нефариан призывает помощников",
+	specWarnAddTargetable	= "Спец-предупреждение, когда Гнусного беса можно взять в цель",
+	TimerAirphase			= "Отсчет времени до следующей воздушной фазы",
+	TimerGroundphase		= "Отсчет времени до следующей наземной фазы",
 	InfoFrame				= "Показывать информационное окно для уровня звуков",
 	TrackingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(78092)
 })
@@ -202,18 +202,19 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	OnyTailSwipe		= "Показывать предупреждение для $spell:77827 Ониксии",
-	NefTailSwipe		= "Показывать предупреждение для $spell:77827 Нефариана",
-	OnyBreath			= "Показывать предупреждение для $spell:94124 Ониксии",
-	NefBreath			= "Показывать предупреждение для $spell:94124 Нефариана",
-	specWarnShadowblazeSoon	= "Показывать предупреждение для $spell:94085 (~5с)",
-	OnySwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Ониксии",
-	NefSwipeTimer		= "Показывать таймер перезарядки для $spell:77827 Нефариана",
-	OnyBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Ониксии",
-	NefBreathTimer		= "Показывать таймер перезарядки для $spell:94124 Нефариана",
-	RangeFrame			= "Показывать окно проверки дистанции (10м) когда на вас $spell:79339",
+	OnyTailSwipe		= "Предупреждение для $spell:77827 Ониксии",
+	NefTailSwipe		= "Предупреждение для $spell:77827 Нефариана",
+	OnyBreath			= "Предупреждение для $spell:94124 Ониксии",
+	NefBreath			= "Предупреждение для $spell:94124 Нефариана",
+	specWarnShadowblazeSoon	= "Предупреждение для $spell:94085 (~5с)",
+	OnySwipeTimer		= "Отсчет времени до восстановления $spell:77827 Ониксии",
+	NefSwipeTimer		= "Отсчет времени до восстановления $spell:77827 Нефариана",
+	OnyBreathTimer		= "Отсчет времени до восстановления $spell:94124 Ониксии",
+	NefBreathTimer		= "Отсчет времени до восстановления $spell:94124 Нефариана",
 	InfoFrame			= "Показывать информационное окно для Электрического заряда Ониксии",
-	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339)
+	SetWater			= "Автоматически отключать настройку Брызги воды\n(включается обратно при выходе из боя)",	
+	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
+	RangeFrame			= "Окно проверки дистанции (10м) для $spell:79339\n(Если на вас дебафф - показывает всех, иначе только игроков с метками)"
 })
 
 L:SetMiscLocalization({

@@ -40,15 +40,17 @@ L:SetTimerLocalization({
 })
 
 L:SetOptionLocalization({
-	TBwarnWhileBlackout		= "Показывать предупреждение о $spell:92898, когда активно $spell:86788",
+	TBwarnWhileBlackout		= "Предупреждение о $spell:92898, когда активно $spell:86788",
 	TwilightBlastArrow		= "Показывать стрелку DBM, когда $spell:92898 около вас",
-	RangeFrame				= "Окно проверки дистанции (10)",
+	RangeFrame				= "Показывать проверки дистанции (10м)",
+	BlackoutShieldFrame		= "Показывать полоску здоровья для $spell:92878",
 	BlackoutIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92878),
 	EngulfingIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(86622)
 })
 
 L:SetMiscLocalization({
-	Trigger1				= "Глубокий вдох"--Change this to what deep breath emote is.
+	Trigger1				= "Глубокий вдох",
+	BlackoutTarget			= "Затмение: %s"
 })
 
 ----------------------------------
@@ -118,7 +120,7 @@ L:SetOptionLocalization({
 	InfoFrame				= "Показывать информационное окно для $spell:81701",
 	RangeFrame				= "Показывать окно проверки дистанции (5м) для $spell:82235",
 	SetIconOnWorship		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
-	SetIconOnCreature		= "Установить иконки на Смутные творения"
+	SetIconOnCreature		= "Устанавливать метки на Смутные творения"
 })
 
 L:SetMiscLocalization({
@@ -139,28 +141,32 @@ L:SetWarningLocalization({
 	WarnSlicerSoon		= "Сумеречное иссечение через %d сек!",
 	WarnEggWeaken		= "С яиц убран сумеречный панцирь",
 	SpecWarnSlicer		= "Скоро Сумеречное иссечение!",
-	SpecWarnDispel		= "%d сек прошло после последнего Смятия - Рассейте!", -- not good translation. check if more better
-	SpecWarnEggWeaken	= "Панцирь снят - Весь урон в яйца!", -- not good translation. check if more better
-	SpecWarnEggShield	= "Панцирь восстановился!" -- not good translation. check if more better
+	warnWrackJump		= "%s прыгнуло на >%s<",
+	WarnWrackCount5s	= "%d сек прошло после последнего Смятия",
+	SpecWarnDispel		= "%d сек прошло после последнего Смятия - рассейте!",
+	SpecWarnEggWeaken	= "Панцирь снят - весь урон в яйца!",
+	SpecWarnEggShield	= "Панцирь восстановился!"
 })
 
 L:SetTimerLocalization({
 	TimerDragon			= "След. дракончики",
 	TimerEggWeakening	= "Снятие зашиты с яиц",
-	TimerEggWeaken		= "Восст. Сумеречного панциря" -- not good translation. check if more better
+	TimerEggWeaken		= "Восст. Сумеречного панциря"
 })
 
 L:SetOptionLocalization({
-	WarnDragon			= "Показывать предупреждение, когда появляются сумеречные дракончики",
-	WarnSlicerSoon		= "Показывать предупреждение для $spell:92954 (До начало 5с, каждую 1с)\n(Предполагаемое предупреждение, может быть не точным. Может быть спамом.)",
-	WarnEggWeaken		= "Показывать предупреждение кога спадает $spell:87654", -- not good translation. check if more better
-	SpecWarnSlicer		= "Показывать особое предупреждение для $spell:92954\n(Предполагаемое предупреждение, может быть не точным)",
-	SpecWarnDispel		= "Показывать особое предупреждение для рассеивания $spell:92955\n(после определенного времени, прошедшего с момента произнесения/прыжка)", -- not good translation. check if more better
-	SpecWarnEggWeaken	= "Показывать особое предупреждение когда $spell:87654 снято", -- not good translation. check if more better
-	SpecWarnEggShield	= "Показывать особое предупреждение когда $spell:87654 восстановлено", -- not good translation. check if more better
-	TimerDragon			= "Показывать таймер до новых сумеречных дракончиков",
-	TimerEggWeakening	= "Показывать таймер до снятия $spell:87654",
-	TimerEggWeaken		= "Показывать таймер восстановления $spell:87654"
+	WarnDragon			= "Предупреждение, когда появляются сумеречные дракончики",
+	WarnSlicerSoon		= "Предупреждение для $spell:92954 (За 5с до начала, каждую 1с)\n(Предупреждение может быть неточным!)",
+	WarnEggWeaken		= "Предупреждение, когда спадает $spell:87654",
+	warnWrackJump		= "Показывать цели, на которые прыгает $spell:92955",
+	WarnWrackCount5s	= "Предупреждение, когда $spell:92955 висит на игроке 10, 15, 20 секунд",	
+	SpecWarnSlicer		= "Спец-предупреждение для $spell:92954\n(Предупреждение может быть неточным)",
+	SpecWarnDispel		= "Спец-предупреждение для рассеивания $spell:92955\n(после нескольких секунд, прошедших с момента произнесения/прыжка)",
+	SpecWarnEggWeaken	= "Спец-предупреждение, когда спадает $spell:87654",
+	SpecWarnEggShield	= "Спец-предупреждение, когда восстанавливается $spell:87654",
+	TimerDragon			= "Отсчет времени до новых сумеречных дракончиков",
+	TimerEggWeakening	= "Отсчет времени до снятия $spell:87654",
+	TimerEggWeaken		= "Отсчет времени восстановления $spell:87654"
 })
 
 L:SetMiscLocalization({
