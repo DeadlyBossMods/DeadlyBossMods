@@ -220,7 +220,7 @@ L:SetOptionLocalization({
 
 L:SetMiscLocalization({
 	NefAoe			= "¡El aire crepita cargado de electricidad!",
-	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",--translate?
+	YellPhase2		= "¡Os maldigo, mortales! ¡Ese cruel menosprecio por las posesiones de uno debe ser castigado con fuerza extrema!",
 	YellPhase3		= "He intentado ser un buen anfitrión, pero ¡no morís! Es hora de dejarnos de tonterías y simplemente... ¡MATAROS A TODOS!",--translate?
 	Nefarian		= "Nefarian",
 	Onyxia			= "Onyxia",
