@@ -20,6 +20,7 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS",
 	"SPELL_DAMAGE",
 	"SPELL_MISSED",
+	"SWING_DAMAGE",
 	"SPELL_SUMMON",
 	"CHAT_MSG_MONSTER_YELL",
 	"CHAT_MSG_RAID_BOSS_EMOTE",
@@ -69,6 +70,7 @@ mod:AddBoolOption("SetIconOnCinder", true)
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("InfoFrame")
 mod:AddBoolOption("SetWater", false)
+mod:AddBoolOption("TankArrow", false)--May be prone to some issues if you have 2 kiters, or unpicked up adds, but it's off by default so hopefully feature is used by smart people.
 
 local spamShadowblaze = 0
 local spamLightningDischarge = 0
@@ -139,6 +141,9 @@ function mod:OnCombatEnd()
 	end
 	if self.Options.SetWater and not GetCVarBool("cameraWaterCollision") then
 		SetCVar("cameraWaterCollision", 1)
+	end
+	if self.Options.TankArrow then
+		DBM.Arrow:Hide()
 	end
 end
 
@@ -228,6 +233,12 @@ function mod:SPELL_DAMAGE(args)
 	elseif (args:IsSpellID(77939, 77942, 77943, 77944) or args:IsSpellID(94107, 94108, 94109, 94110) or args:IsSpellID(94111, 94112, 94113, 94114) or args:IsSpellID(94115, 94116, 94117, 94118)) and GetTime() - spamLightningDischarge > 15 then--Nost most ideal solution but difficult with an ability that has no cast trigger to speak of.
 		timerLightningDischarge:Start()
 		spamLightningDischarge = GetTime()
+	elseif args:GetDestCreatureID() == 41918 and args:IsSrcTypePlayer() and not args:IsSpellID(50288) and self:IsInCombat() then--Any spell damage except for starfall
+		if args.sourceName ~= UnitName("player") then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
+			end
+		end
 	end
 end
 
@@ -235,6 +246,16 @@ function mod:SPELL_MISSED(args)
 	if args:IsSpellID(77833, 77838, 77919) and GetTime() - spamLightningDischarge > 15 then--Same as above only these are unique spellids for misses/immunities.
 		timerLightningDischarge:Start()
 		spamLightningDischarge = GetTime()
+	end
+end
+
+function mod:SWING_DAMAGE(args)
+	if args:GetDestCreatureID() == 41918 and args:IsSrcTypePlayer() and self:IsInCombat() then
+		if args.sourceName ~= UnitName("player") then
+			if self.Options.TankArrow then
+				DBM.Arrow:ShowRunTo(args.sourceName, 0, 0)
+			end
+		end
 	end
 end
 
