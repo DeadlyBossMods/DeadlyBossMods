@@ -172,6 +172,7 @@ L:SetGeneralLocalization({
 
 L:SetMiscLocalization{
 	ValionaYell	= "Дракон, ты будеш делать то, что я прикажу! Подхвати меня!",	-- translate -- Yell when Valiona is incoming
+	Add			= "%s призывает",
 	Valiona		= "Валиона"
 }
 
