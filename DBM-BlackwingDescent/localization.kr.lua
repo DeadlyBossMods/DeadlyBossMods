@@ -147,7 +147,7 @@ L:SetGeneralLocalization({
 L:SetWarningLocalization({
 	WarnAirphase		= "공중 단계",
 	WarnGroundphase		= "지상 단계",
-	WarnShieldsLeft		= "고대 드워프 보호막 - %d -남음",
+	WarnShieldsLeft		= "고대 드워프 방패 - %d - 남음",
 	warnAddSoon				= "곧 불쾌한 마귀 소환",
 	specWarnAddTargetable	= "%s 공격 가능!"
 })
@@ -160,7 +160,7 @@ L:SetTimerLocalization({
 L:SetOptionLocalization({
 	WarnAirphase			= "공중 단계 경고 보기",
 	WarnGroundphase			= "지상 단계 경고 보기",
-	WarnShieldsLeft			= "고대 드워프 보호막 사용시 경고 보기",
+	WarnShieldsLeft			= "고대 드워프 방패 사용시 경고 보기",
 	warnAddSoon				= "불쾌한 마귀 소환 경고 보기",
 	specWarnAddTargetable	= "불쾌한 마귀가 공격 가능할 때 특수 경고 보기",
 	TimerAirphase			= "다음 공중 단계 경고 보기",
