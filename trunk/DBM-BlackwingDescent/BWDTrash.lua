@@ -9,8 +9,8 @@ mod:RegisterEvents(
 	"SPELL_CAST_SUCCESS"
 )
 
-local warnLaserStrike		= mod:NewTargetAnnounce(81063, 2)--Big red don't stand in beam golems use.
-local warnFlashBomb			= mod:NewTargetAnnounce(81056, 2)--Flash bomb used by golems that disorients anyone within 12 yards of target.
+local warnLaserStrike		= mod:NewSpellAnnounce(81063, 2)--Big red don't stand in beam golems use.
+local warnFlashBomb			= mod:NewSpellAnnounce(81056, 2)--Flash bomb used by golems that disorients anyone within 12 yards of target.
 local warnBPBronze			= mod:NewTargetAnnounce(80372, 3)--Debuff is 80329, but not sure what aspect uses it. Fairly certain it's bronze though so that's what we warn for, for now.
 local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for Maimgor drake in front of maloriaks area.
 local warnSacrifice			= mod:NewTargetAnnounce(80727, 2)--Sacrifice used by spirits before atramedes
@@ -24,34 +24,6 @@ local timerWhirlwind		= mod:NewTargetTimer(5, 80652)
 
 mod:RemoveOption("HealthFrame")
 mod:RemoveOption("SpeedKillTimer")
-
-function mod:LaserStrikeTarget(sGUID)
-	local targetname = nil
-	for i=1, GetNumRaidMembers() do
-		if UnitGUID("raid"..i.."target") == sGUID then
-			targetname = UnitName("raid"..i.."targettarget")
-			break
-		end
-	end
-	if not targetname then return end
-	warnLaserStrike:Show(targetname)
-end
-
-function mod:FlashBombTarget(sGUID)
-	local targetname = nil
-	for i=1, GetNumRaidMembers() do
-		if UnitGUID("raid"..i.."target") == sGUID then
-			targetname = UnitName("raid"..i.."targettarget")
-			break
-		end
-	end
-	if not targetname then return end
-	warnFlashBomb:Show(targetname)
-	if targetname == UnitName("player") then
---		specWarnFlashBomb:Show()
-		yellFlashBomb:Yell()
-	end
-end
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(80372) then
@@ -77,8 +49,8 @@ end
 
 function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(81063) then--Are both IDs used?
-		self:ScheduleMethod(0.1, "LaserStrikeTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		warnLaserStrike:Show()
 	elseif args:IsSpellID(81056) then
-		self:ScheduleMethod(0.1, "FlashBombTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		warnFlashBomb:Show()
 	end
 end
