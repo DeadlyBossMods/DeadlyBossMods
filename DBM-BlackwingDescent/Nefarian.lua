@@ -87,7 +87,7 @@ function mod:ShadowBlazeFunction()
 		shadowblazeTimer = shadowblazeTimer - 5
 	end
 	warnShadowBlaze:Show()
-	specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Want the pre warning to stop warning once they are every 5 seconds.
+	specWarnShadowblazeSoon:Schedule(shadowblazeTimer - 5)--Pre warning 5 seconds prior
 	timerShadowBlazeCD:Start(shadowblazeTimer)
 	self:ScheduleMethod(shadowblazeTimer, "ShadowBlazeFunction")
 end
@@ -282,7 +282,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		warnPhase3:Show()
 		timerCinderCD:Cancel()
 		timerShadowflameBarrage:Cancel()
-		timerShadowBlazeCD:Start(12)--Seems to vary some, from 11-13 so 12 should be a happy medium, it'll always be about 1 second off in either direction though.
+		timerShadowBlazeCD:Start(12)--Seems to vary some, 12 should be a happy medium, it can be off 1-2 seconds though.
 		self:ScheduleMethod(12, "ShadowBlazeFunction")
 	end
 end
