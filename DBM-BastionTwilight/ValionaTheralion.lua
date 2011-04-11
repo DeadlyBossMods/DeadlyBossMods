@@ -81,7 +81,6 @@ local engulfingMagicIcon = 7
 local dazzlingCast = 0
 local breathCast = 0
 local lastflame = 0
-local lastflamecast = 0
 local flameguid = {}
 local spamZone = 0
 local markWarned = false
@@ -183,7 +182,6 @@ function mod:OnCombatStart(delay)
 	dazzlingCast = 0
 	breathCast = 0
 	lastflame = 0
-	lastflamecast = 0
 	table.wipe(flameguid)
 	spamZone = 0
 	markWarned = false
@@ -312,10 +310,9 @@ end
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(86505, 92907, 92908, 92909) then
-		if GetTime() - lastflamecast > 13.5 and not flameguid[args.sourceGUID] then--Might need a tweak, it's hard to filter damage events triggering the timer from morons who walk into it after it was placed on ground.
-			flameguid[args.sourceGUID] = true
+		if not flameguid[args.sourceGUID] then--Check if this specific flame has damaged anyone yet.
+			flameguid[args.sourceGUID] = true--If not, Mark it as true so all other damage from this flame is ignored, for timers sake anyways.
 			timerNextFabFlames:Start()
-			lastflamecast = GetTime()
 		end
 		if args:IsPlayer() and GetTime() - lastflame > 3  then
 			specWarnFabulousFlames:Show()
