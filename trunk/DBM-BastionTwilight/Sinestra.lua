@@ -12,6 +12,9 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
+	"SWING_DAMAGE",
+	"SWING_MISSED",
+	"SPELL_DAMAGE",
 	"UNIT_DIED"
 )
 
@@ -28,12 +31,14 @@ local warnExtinction	= mod:NewSpellAnnounce(86227, 4)
 local warnEggShield		= mod:NewSpellAnnounce(87654, 3)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
+local warnOrbs			= mod:NewTargetAnnounce(92954)
 
 local specWarnSlicer	= mod:NewSpecialWarning("SpecWarnSlicer")
 local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately. (Maybe add support for common 10 man variation with if/else rules?)
 local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
+local specWarnOrb		= mod:NewSpecialWarningYou(92954)
 
 local timerBreathCD		= mod:NewCDTimer(21, 92944)
 local timerSlicer		= mod:NewNextTimer(28, 92954)
@@ -45,6 +50,7 @@ local timerDragon		= mod:NewTimer(50, "TimerDragon", 69002)
 local timerRedEssence	= mod:NewBuffActiveTimer(180, 87946)
 
 mod:AddBoolOption("HealthFrame", true)
+mod:AddBoolOption("SetIconOnOrbs", true)
 
 local eggDown = 0
 local eggSpam = 0
@@ -58,9 +64,83 @@ local wrackWarned2 = false
 local wrackWarned4 = false
 local redSpam = 0
 local calenGUID = 0
+local orbList = {}
+local orbWarned = nil
+local playerInList = nil
+local whelpGUIDs = {}
+
+local function isTank(unit)
+	-- 1. check blizzard tanks first
+	-- 2. check blizzard roles second
+	if GetPartyAssignment("MAINTANK", unit, 1) then
+		return true
+	end
+	if UnitGroupRolesAssigned(unit) == "TANK" then
+		return true
+	end
+	return false
+end
+
+local function isTargetableByOrb(unit)
+	-- check tanks
+	if isTank(unit) then return false end
+	-- check sinestra's target too
+	if UnitIsUnit("boss1target", unit) then return false end
+	-- and maybe do a check for whelp targets
+	-- not 100% sure if whelp "tanks" can be targeted by the orb or not
+	for k, v in pairs(whelpGUIDs) do
+		local whelp = mod:GetUnitIdByGUID(k)
+		if whelp then
+			if UnitIsUnit(whelp.."target", unit) then return false end
+		end
+	end
+	return true
+end
+
+local function populateOrbList()
+	wipe(orbList)
+	for i = 1, GetNumRaidMembers() do
+		-- do some checks for 25/10 man raid size so we don't warn for ppl who are not in the instance
+		if GetInstanceDifficulty() == 3 and i > 10 then return end
+		if GetInstanceDifficulty() == 4 and i > 25 then return end
+		local n = GetRaidRosterInfo(i)
+		-- Tanking something, but not a tank (aka not tanking Sinestra or Whelps)
+		if UnitThreatSituation(n) == 3 and isTargetableByOrb(n) then
+			if UnitIsUnit(n, "player") then playerInList = true end
+			orbList[#orbList + 1] = n
+		end
+	end
+end
+
+local function wipeWhelpList(resetWarning)
+	if resetWarning then orbWarned = nil end
+	playerInList = nil
+	wipe(whelpGUIDs)
+end
+
+local function orbWarning(source)
+	if playerInList then specWarnOrb:Show() end
+	if self.Options.SetIconOnWorship then
+		if orbList[1] then mod:SetIcon(orbList[1], 8) end
+		if orbList[2] then mod:SetIcon(orbList[2], 7) end
+	end
+
+	if source == "spawn" then
+		if #orbList > 0 then
+			warnOrbs:Show(table.concat(orbList, "<, >"))
+			-- if we could guess orb targets lets wipe the whelpGUIDs in 5 sec
+			-- if not then we might as well just save them for next time
+			mod:ScheduleTimer(wipeWhelpList, 5) -- might need to adjust this
+		else
+			specWarnSlicer:Show()--If orb list works, then the whole raid doesn't need a special warning (just ones with orbs do), but if it failed then special warn everyone!
+		end
+	elseif source == "damage" then
+		warnOrbs:Show(table.concat(orbList, "<, >"))
+		mod:ScheduleTimer(wipeWhelpList, 10, true) -- might need to adjust this
+	end
+end
 
 function mod:SlicerRepeat()
-	specWarnSlicer:Show()
 	timerSlicer:Start()
 	if self.Options.WarnSlicerSoon then
 		warnSlicerSoon:Schedule(23, 5)
@@ -70,6 +150,8 @@ function mod:SlicerRepeat()
 		warnSlicerSoon:Schedule(27, 1)
 	end
 	self:ScheduleMethod(28, "SlicerRepeat")
+	populateOrbList()
+	orbWarning("spawn")
 end
 
 function mod:OnCombatStart(delay)
@@ -87,6 +169,10 @@ function mod:OnCombatStart(delay)
 	timerDragon:Start(16-delay)
 	timerBreathCD:Start(21-delay)
 	timerSlicer:Start(29-delay)
+	wipe(whelpGUIDs)
+	wipe(orbList)
+	orbWarned = nil
+	playerInList = nil
 	if self.Options.WarnSlicerSoon then
 		warnSlicerSoon:Schedule(24, 5)
 		warnSlicerSoon:Schedule(25, 4)
@@ -199,6 +285,40 @@ function mod:SPELL_AURA_REMOVED(args)
 				lastDispeled = GetTime()
 			end
 		end
+	end
+end
+--[[
+do
+	local whelpIds = {
+		47265,
+		48047,
+		48048,
+		48049,
+		48050,
+	}
+	function mod:WhelpWatcher(...)
+		local sGUID = select(11, ...)
+		local mobId = tonumber(sGUID:sub(7, 10), 16)
+		for i, v in next, whelpIds do
+			if mobId == v then whelpGUIDs[sGUID] = true end
+		end
+	end
+end--]]
+--An attempt to do same as above only in a way i know how
+function mod:SWING_DAMAGE(args)
+	if args:GetSrcCreatureID() == 47265 or args:GetSrcCreatureID() == 48047 or args:GetSrcCreatureID() == 48048 or args:GetSrcCreatureID() == 48049 or args:GetSrcCreatureID() == 48050 then
+		whelpGUIDs[args.sourceGUID] = true
+	end
+end
+
+mod.SWING_DAMAGE = mod.SWING_MISSED
+
+function mod:SPELL_DAMAGE(args)
+	if args:IsSpellID(92954, 92959) then
+		populateOrbList()
+		if orbWarned then return end
+		orbWarned = true
+		orbWarning("damage")
 	end
 end
 
