@@ -212,6 +212,7 @@ L:SetOptionLocalization({
 	NefBreathTimer			= "네파리안의 $spell:94124 쿨다운 타이머 보기",
 	InfoFrame				= "오닉시아 전하 충전 정보 프레임 보기",
 	SetWater				= "풀링시 수면 자동 시점 옵션을 자동으로 끄기\n(전투가 종료 되면 원상태로)",
+	TankArrow				= "살아난 뼈다귀 전사 탱커 방향으로 DBM 화살표 보기\n(한 명의 탱커를 사용하는 경우에만 정상 작동)",--npc 41918
 	SetIconOnCinder			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
 	RangeFrame				= "$spell:79339의 거리 프레임(10m) 보기\n(대상자는 범위내 모든 플레이어 보임. 대상자가 아닌 경우 대상자와 아이콘만 보임)"
 })
