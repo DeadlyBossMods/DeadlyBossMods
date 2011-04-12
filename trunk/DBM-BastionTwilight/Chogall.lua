@@ -127,7 +127,7 @@ function mod:OnCombatStart(delay)
 	berserkTimer:Start(-delay)
 	if self.Options.InfoFrame then
 		DBM.InfoFrame:SetHeader(L.Bloodlevel)
-		DBM.InfoFrame:Show(5, "playerpower", 15, ALTERNATE_POWER_INDEX)
+		DBM.InfoFrame:Show(5, "playerpower", 10, ALTERNATE_POWER_INDEX)
 	end
 end	
 
@@ -148,6 +148,11 @@ function mod:SPELL_AURA_APPLIED(args)
 			worshipIcon = worshipIcon - 1
 		end
 		self:Unschedule(showWorshipWarning)
+		if (mod:IsDifficulty("normal25", "heroic25") and #worshipTargets >= 4) or (mod:IsDifficulty("normal10", "heroic10") and #worshipTargets >= 2) then
+			showWorshipWarning()
+		else
+			self:Schedule(0.3, showWorshipWarning)
+		end
 		self:Schedule(0.3, showWorshipWarning)
 	elseif args:IsSpellID(81194, 93264, 93265, 93266) then
 		warnFlamingDestruction:Show()
@@ -208,7 +213,7 @@ function mod:SPELL_CAST_SUCCESS(args)
 	if args:IsSpellID(82414, 93160, 93161, 93162) then
 		warnCreations:Show()
 		resetCreatureIconState()
-		if mod:IsDifficulty("heroic25") then -- other difficulty not sure, only comfirmed 25 man heroic
+		if mod:IsDifficulty("heroic10", "heroic25") then -- other difficulty not sure, only comfirmed 25 man heroic
 			timerCreationsCD:Start(40)
 		else
 			timerCreationsCD:Start()

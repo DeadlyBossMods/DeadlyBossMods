@@ -57,7 +57,7 @@ function mod:OnCombatStart(delay)
 	timerPillarFlame:Start(30-delay)
 	timerMangleCD:Start(90-delay)
 	berserkTimer:Start(-delay)
-	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerInferno:Start(30-delay)
 		specWarnInfernoSoon:Schedule(26-delay)
 	end
@@ -140,7 +140,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg)
 end
 
 function mod:UNIT_HEALTH(uId)
-	if self:GetUnitCreatureId(uId) == 41570 and (mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25")) then
+	if self:GetUnitCreatureId(uId) == 41570 and mod:IsDifficulty("heroic10", "heroic25") then
 		local h = UnitHealth(uId) / UnitHealthMax(uId) * 100
 		if h > 40 and prewarnedPhase2 then
 			prewarnedPhase2 = false

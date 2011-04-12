@@ -95,10 +95,10 @@ local function InterruptCheck()
 end
 
 function mod:OnCombatStart(delay)
-	if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
-		berserkTimer:Start(-delay)--7 min berserk on normal
+	if mod:IsDifficulty("heroic10", "heroic25") then
+		berserkTimer:Start(720-delay)--12 min berserk on heroic
 	else
-		berserkTimer:Start(720-delay)--12 min on heroic
+		berserkTimer:Start(-delay)--7 min on normal
 	end
 	adds = 18
 	AddsInterrupted = false
@@ -126,7 +126,7 @@ end
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(77699, 92978, 92979, 92980) then
 		flashFreezeTargets[#flashFreezeTargets + 1] = args.destName
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			specWarnFlashFreeze:Show(args.destName)
 		end
 		if self.Options.FlashFreezeIcon then
@@ -216,10 +216,10 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(78194) then
 		warnMagmaJets:Show()
-		if mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25") then
-			timerMagmaJetsCD:Start()--10 second on normal.
+		if mod:IsDifficulty("heroic10", "heroic25") then
+			timerMagmaJetsCD:Start(5)
 		else
-			timerMagmaJetsCD:Start(5)--5 second cd on heroic
+			timerMagmaJetsCD:Start()
 		end
 		if self:GetUnitCreatureId("target") == 41378 then--Add tank doesn't need this spam, just tank on mal.
 			specWarnMagmaJets:Show()

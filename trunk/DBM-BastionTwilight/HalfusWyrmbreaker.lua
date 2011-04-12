@@ -40,7 +40,7 @@ local spamFuriousRoar = 0
 function mod:OnCombatStart(delay)
 	spamFuriousRoar = 0
 	berserkTimer:Start(-delay)
-	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then--On heroic we know for sure the drake has breath ability.
 		timerBreathCD:Start(10-delay)
 	end
 end
