@@ -606,7 +606,7 @@ end
 
 function mod:OnSync(msg, boss)
 	if msg == "lowhealth" and boss and not warnedLowHP[boss] then
-		sendedLowHP[boss] = true
+		warnedLowHP[boss] = true
 		specWarnBossLow:Show(boss)
 	end
 end
