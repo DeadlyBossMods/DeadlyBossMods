@@ -153,7 +153,6 @@ function mod:SPELL_AURA_APPLIED(args)
 		else
 			self:Schedule(0.3, showWorshipWarning)
 		end
-		self:Schedule(0.3, showWorshipWarning)
 	elseif args:IsSpellID(81194, 93264, 93265, 93266) then
 		warnFlamingDestruction:Show()
 		timerFlamingDestruction:Start()
