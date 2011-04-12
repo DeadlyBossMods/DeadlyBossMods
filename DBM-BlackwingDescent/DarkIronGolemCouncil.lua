@@ -126,35 +126,35 @@ local bossActivate = function(boss)
 		incinerateCast = 0
 		timerAcquiringTarget:Start(20)--These are same on heroic and normal
 		timerIncinerationCD:Start(10)
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			warnBarrierSoon:Schedule(34)
 		else
---			warnBarrierSoon:Schedule(34)
+			warnBarrierSoon:Schedule(40)
 		end
 	elseif boss == L.Electron or boss == 42179 then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerLightningConductorCD:Start(15)--Probably also has a variation if it's like normal. Needs more logs to verify.
 			warnUnstableShieldSoon:Schedule(30)
 		else
 			timerLightningConductorCD:Start(11)--11-15 variation confirmed for normal, only boss ability with an actual variation on timer. Strange.
---			warnUnstableShieldSoon:Schedule(30)
+			warnUnstableShieldSoon:Schedule(40)
 		end
 	elseif boss == L.Toxitron or boss == 42180 then
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerChemicalBomb:Start(25)
 			timerPoisonProtocolCD:Start(15)
-			warnShellSoon:Schedule(20)
+			warnShellSoon:Schedule(30)
 		else
 			timerChemicalBomb:Start(11)
 			timerPoisonProtocolCD:Start(21)
---			warnShellSoon:Schedule(20)
+			warnShellSoon:Schedule(40)
 		end
 	elseif boss == L.Arcanotron or boss == 42166 then
 		timerGeneratorCD:Start(15)--These appear same on heroic and non heroic but will leave like this for now to await 25 man heroic confirmation.
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			warnConversionSoon:Schedule(30)
 		else
---			warnConversionSoon:Schedule(30)
+			warnConversionSoon:Schedule(40)
 		end
 	end
 end
@@ -187,7 +187,7 @@ function mod:OnCombatStart(delay)
 	lastInterrupt = 0
 	encasing = false
 	incinerateCast = 0
-	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
 	end
 	DBM.BossHealth:Clear()
@@ -208,7 +208,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if not pulled then
 			pulled = true
 		end
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerNextActivate:Start(30)
 		else
 			timerNextActivate:Start()
@@ -217,7 +217,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		bossInactive(args.destName)
 	elseif args:IsSpellID(79501, 92035, 92036, 92037) then
 		warnAcquiringTarget:Show(args.destName)
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerAcquiringTarget:Start(27)
 		else
 			timerAcquiringTarget:Start()
@@ -237,7 +237,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.ConductorIcon then
 			self:SetIcon(args.destName, 1)
 		end
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerLightningConductor:Start(15, args.destName)
 			timerLightningConductorCD:Start(20)
 		else
@@ -305,7 +305,7 @@ function mod:SPELL_CAST_START(args)
 		warnIncineration:Show()
 		if incinerateCast == 1 then--Only cast twice on heroic, 3 times on normal.
 			timerIncinerationCD:Start()--second cast is after 27 seconds on heroic and normal.
-		elseif incinerateCast == 2 and (mod:IsDifficulty("normal10") or mod:IsDifficulty("normal25")) then
+		elseif incinerateCast == 2 and mod:IsDifficulty("normal10", "normal25") then
 			timerIncinerationCD:Start(32)--3rd cast on normal is 32 seconds. 10 27 32 series.
 		end
 	elseif args:IsSpellID(79582, 91516, 91517, 91518) then
@@ -351,14 +351,14 @@ function mod:SPELL_CAST_SUCCESS(args)
 		if not self:GetUnitCreatureId("target") == 42180 then--You're not targeting toxitron which means he's probably off in some corner somewhere out of sight out of mind. (This does not seem to work still, cannot fathom why, unless the function simply isn't supported checking for "not")
 			specWarnPoisonProtocol:Show()--MFers need to learn to switch so we give them a special warning to remember toxitron is still up.
 		end
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerPoisonProtocolCD:Start(25)
 		else
 			timerPoisonProtocolCD:Start()
 		end
 	elseif args:IsSpellID(79624) then
 		warnGenerator:Show()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerGeneratorCD:Start(20)
 		else
 			timerGeneratorCD:Start()

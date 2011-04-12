@@ -54,7 +54,7 @@ local spamCloud = 0
 
 function mod:CloudRepeat()
 	warnCloud:Show()
-	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		timerLightningCloudCD:Start(10)
 		self:ScheduleMethod(10, "CloudRepeat")
 	else
@@ -116,7 +116,7 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(87770, 93261, 93262, 93263) then--Phase 1 wind burst
 		warnWindBurst:Show()
 		timerWindBurstCD:Start()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerWindBurst:Start(4)--4 second cast on heroic according to wowhead.
 		else
 			timerWindBurst:Start()

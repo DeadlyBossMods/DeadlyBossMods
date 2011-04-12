@@ -232,7 +232,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			engulfingMagicIcon = engulfingMagicIcon - 1
 		end
 		self:Unschedule(showEngulfingMagicWarning)
-		if (mod:IsDifficulty("heroic25") and #engulfingMagicTargets >= 3) or (mod:IsDifficulty("normal25") and #engulfingMagicTargets >= 2) or (mod:IsDifficulty("normal10") and #engulfingMagicTargets >= 1) then
+		if (mod:IsDifficulty("heroic25") and #engulfingMagicTargets >= 3) or (mod:IsDifficulty("normal25", "heroic10") and #engulfingMagicTargets >= 2) or (mod:IsDifficulty("normal10") and #engulfingMagicTargets >= 1) then
 			showEngulfingMagicWarning()
 		else
 			self:Schedule(0.3, showEngulfingMagicWarning)

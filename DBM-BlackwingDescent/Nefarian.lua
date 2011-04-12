@@ -119,7 +119,7 @@ function mod:OnCombatStart(delay)
 	table.wipe(cinderTargets)
 	table.wipe(dominionTargets)
 	timerLightningDischarge:Start(30-delay)--First one seems pretty precise (it happens at same time nef lands.)
-	if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+	if mod:IsDifficulty("heroic10", "heroic25") then
 		berserkTimer:Start(-delay)
 		timerDominionCD:Start(50-delay)
 	end
@@ -184,13 +184,21 @@ function mod:SPELL_AURA_APPLIED(args)
 			cinderIcons = cinderIcons - 1
 		end
 		self:Unschedule(warnCinderTargets)
-		self:Schedule(0.3, warnCinderTargets)
+		if (mod:IsDifficulty("heroic25") and #cinderTargets >= 3) or (mod:IsDifficulty("heroic10") and #cinderTargets >= 1) then
+			warnCinderTargets()
+		else
+			self:Schedule(0.3, warnCinderTargets)
+		end
 	elseif args:IsSpellID(79318) then
 		dominionTargets[#dominionTargets + 1] = args.destName
-		self:Unschedule(warnDominionTargets)
-		self:Schedule(0.3, warnDominionTargets)
 		if args:IsPlayer() then
 			specWarnDominion:Show()
+		end
+		self:Unschedule(warnDominionTargets)
+		if (mod:IsDifficulty("heroic25") and #dominionTargets >= 5) or (mod:IsDifficulty("heroic10") and #dominionTargets >= 2) then
+			warnDominionTargets()
+		else
+			self:Schedule(0.3, warnDominionTargets)
 		end
 	end
 end
@@ -275,7 +283,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerNefBreathCD:Cancel()
 		timerDominionCD:Cancel()
 		timerShadowflameBarrage:Start()
-		if mod:IsDifficulty("heroic10") or mod:IsDifficulty("heroic25") then
+		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerCinderCD:Start(11.5)--10+ cast, since we track application not cast.
 		end
 	elseif msg == L.YellPhase3 or msg:find(L.YellPhase3) then
