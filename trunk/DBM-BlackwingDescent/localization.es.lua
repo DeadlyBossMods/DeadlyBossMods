@@ -214,6 +214,7 @@ L:SetOptionLocalization({
 	NefBreathTimer		= "Mostrar tiempo de cooldown de $spell:94124 de Nefarian",
 	InfoFrame			= "Mostrar información sobre la carga eléctrica de Onyxia",
 	SetWater			= "Desactivar la colisión con el agua automáticamente al pullear\n(se reactiva al abandonar el combate)",
+	TankArrow			= "Mostrar flecha para el kiteador de Guerrero Hueso animado\n(diseñado para estrategia de kiteo)",--npc 41918
 	SetIconOnCinder		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79339),
 	RangeFrame			= "Mostrar distancia (10 yardas) cuando tengas $spell:79339"
 })

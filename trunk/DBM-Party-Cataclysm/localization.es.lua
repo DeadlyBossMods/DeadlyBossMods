@@ -512,7 +512,7 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	Retract		= "¡%s retira su Escudo de Ciclón!"
+	Retract		= "¡%s retira su Escudo de ciclón!"
 }
 
 --------------
