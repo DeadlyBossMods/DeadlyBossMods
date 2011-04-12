@@ -164,7 +164,8 @@ L:SetOptionLocalization({
 	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated",
 	TimerDragon			= "Show timer for new Twilight Whelp",
 	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
-	TimerEggWeaken		= "Show timer for $spell:87654 regeneration"
+	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
+	SetIconOnOrbs		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92954)
 })
 
 L:SetMiscLocalization({
