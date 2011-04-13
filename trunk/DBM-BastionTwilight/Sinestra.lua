@@ -69,6 +69,7 @@ local orbList = {}
 local orbWarned = nil
 local playerInList = nil
 local whelpGUIDs = {}
+local wrackTargets = {}
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
@@ -155,6 +156,11 @@ function mod:SlicerRepeat()
 	orbWarning("spawn")
 end
 
+local function showWrackWarning()
+	warnWrackJump:Show(args.spellName, table.concat(wrackTargets, "<, >"))
+	table.wipe(wrackTargets)
+end
+
 function mod:OnCombatStart(delay)
 	eggDown = 0
 	eggSpam = 0
@@ -174,6 +180,7 @@ function mod:OnCombatStart(delay)
 	wipe(orbList)
 	orbWarned = nil
 	playerInList = nil
+	table.wipe(wrackTargets)
 	if self.Options.WarnSlicerSoon then
 		warnSlicerSoon:Schedule(24, 5)
 		warnSlicerSoon:Schedule(25, 4)
@@ -221,7 +228,9 @@ function mod:SPELL_AURA_APPLIED(args)
 		end)
 	elseif args:IsSpellID(89435, 92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped wracks (10,25)
 		newWrackCount = newWrackCount + 1
-		warnWrackJump:Show(args.spellName, args.destName)
+		wrackTargets[#wrackTargets + 1] = args.destName
+		self:Unschedule(showWrackWarning)
+		self:Schedule(0.3, showWrackWarning)
 		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned4 then
 			specWarnDispel:Cancel()
 			WarnWrackCount5s:Cancel()
