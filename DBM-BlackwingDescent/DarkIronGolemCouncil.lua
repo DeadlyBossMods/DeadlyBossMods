@@ -227,7 +227,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			self:ScheduleMethod(1, "CheckEncasing")
 		end
 		if self.Options.AcquiringTargetIcon then
-			self:SetIcon(args.destName, 7, 6)
+			self:SetIcon(args.destName, 7, 8)
 		end
 	elseif args:IsSpellID(79888, 91431, 91432, 91433) then
 		if args:IsPlayer() then
@@ -269,7 +269,7 @@ function mod:SPELL_AURA_APPLIED(args)
 			encasing = true
 		end
 		if self.Options.AcquiringTargetIcon then
-			self:SetIcon(args.destName, 6, 6)
+			self:SetIcon(args.destName, 6, 8)
 		end
 		specWarnEncasingShadows:Show(args.destName)
 		timerNefAbilityCD:Start()
