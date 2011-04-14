@@ -32,7 +32,7 @@ L:SetOptionLocalization({
 })
 
 L:SetMiscLocalization({
-	gatherstrength			= "%s開始從剩下的風之王那裡取得力量!",
+	gatherstrength			= "開始從剩下的風之王那裡取得力量!",
 	Anshal				= "安蕭爾",
 	Nezir				= "涅茲爾",
 	Rohash				= "洛哈許"
