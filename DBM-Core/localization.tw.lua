@@ -185,9 +185,9 @@ DBM_CORE_AUTO_SPEC_WARN_TEXTS = {
 }
 
 DBM_CORE_AUTO_ICONS_OPTION_TEXT			= "為$spell:%d的目標設置標記"
-DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "為$spell:%d播放音效"
-DBM_CORE_AUTO_YELL_OPTION_TEXT			= "中了$spell:%d時大喊"
-DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s"--Verify (%s is spellname)
+DBM_CORE_AUTO_SOUND_OPTION_TEXT			= "當你中了$spell:%d時播放音效"
+DBM_CORE_AUTO_YELL_OPTION_TEXT			= "當你中了$spell:%d時大喊"
+DBM_CORE_AUTO_YELL_ANNOUNCE_TEXT		= "我中了%s!"
 
 -- New special warnings
 DBM_CORE_MOVE_SPECIAL_WARNING_BAR		= "可拖動的特別警告"
