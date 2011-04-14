@@ -59,7 +59,7 @@ local timerTwilightMeteorite		= mod:NewCastTimer(6, 86013)
 local timerEngulfingMagic			= mod:NewBuffActiveTimer(20, 86622)
 local timerEngulfingMagicNext		= mod:NewCDTimer(35, 86622)--30-40 second variations.
 local timerNextFabFlames			= mod:NewNextTimer(15, 92909)--Cast is every 15 seconds but no cast event for it so we have to use spell damage and a little assumption someone is always gonna take 1 tick.
-local timerNextDeepBreath			= mod:NewNextTimer(103, 86059)
+local timerNextDeepBreath			= mod:NewNextTimer(98, 86059)
 
 local timerTwilightShift			= mod:NewTargetTimer(100, 93051)
 local timerTwilightShiftCD			= mod:NewCDTimer(20, 93051)
@@ -85,7 +85,7 @@ local flameguid = {}
 local spamZone = 0
 local markWarned = false
 local blackoutActive = false
-local TheralionLanded = false
+local ValionaLanded = false
 local meteorTarget = GetSpellInfo(88518)
 
 local setBlackoutTarget, clearBlackoutTarget
@@ -132,14 +132,23 @@ local function markRemoved()
 end
 
 local function valionaDelay()
-	TheralionLanded = false
-	table.wipe(flameguid)
 	timerEngulfingMagicNext:Cancel()
 	timerBlackoutCD:Start(10)
 	timerDevouringFlamesCD:Start(25)
-	--timerNextFabFlames:Cancel()--Unfortunately Theralion can cast this very late, up to 1 second after first blackout so it cannot be canceled here, but no real other place to do it :(
 	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
+	end
+end
+
+local function theralionDelay()
+	timerDevouringFlamesCD:Cancel()
+	timerBlackoutCD:Cancel()
+	timerNextFabFlames:Start(10)
+	timerEngulfingMagicNext:Start(15)
+	timerNextDeepBreath:Start()
+	ValionaLanded = false
+	if self.Options.RangeFrame then
+		DBM.RangeCheck:Show(10)
 	end
 end
 
@@ -186,7 +195,7 @@ function mod:OnCombatStart(delay)
 	spamZone = 0
 	markWarned = false
 	blackoutActive = false
-	TheralionLanded = false
+	ValionaLanded = true
 	if self.Options.RangeFrame then
 		DBM.RangeCheck:Show(8)
 	end
@@ -208,9 +217,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		blackoutActive = true
 		warnBlackout:Show(args.destName)
 		timerBlackout:Start(args.destName)
-		if not TheralionLanded then--Basically a hack to prevent blackout timer from starting again when cast after 3rd dazzling just before valiona has gone up.
-			timerBlackoutCD:Start()
-		end
+		timerBlackoutCD:Start()
 		if self.Options.BlackoutIcon then
 			self:SetIcon(args.destName, 8)
 		end
@@ -290,27 +297,25 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(86408) then
 		dazzlingCast = dazzlingCast + 1
 		warnDazzlingDestruction:Show(dazzlingCast)
-		if dazzlingCast == 1 then--only special warn once for first one
+		if dazzlingCast == 1 then
 			specWarnDazzlingDestruction:Show()
 		elseif dazzlingCast == 3 then
-			timerDevouringFlamesCD:Cancel()
-			timerNextFabFlames:Start()
-			timerEngulfingMagicNext:Start(20)--need more logs to confirm this.
-			timerNextDeepBreath:Start()
-			dazzlingCast = 0--reset back to 0 for next time it happens.
-			TheralionLanded = true
-			if self.Options.RangeFrame then
-				DBM.RangeCheck:Show(10)
-			end
+			self:Schedule(5, theralionDelay)--delayed so we don't cancel blackout timer until after 3rd cast.
+			dazzlingCast = 0
 		end
-	elseif args:IsSpellID(86369, 92898, 92899, 92900) then
+	elseif args:IsSpellID(86369, 92898, 92899, 92900) then--First cast of this is true phase change, as theralion can still cast his grounded phase abilities until he's fully in air casting this instead.
 		self:ScheduleMethod(0.1, "TwilightBlastTarget")
+		if not ValionaLanded then
+			timerNextFabFlames:Cancel()
+			ValionaLanded = true
+			table.wipe(flameguid)
+		end
 	end
 end
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(86505, 92907, 92908, 92909) then
-		if not flameguid[args.sourceGUID] then--Check if this specific flame has damaged anyone yet.
+		if not flameguid[args.sourceGUID] and not ValionaLanded then--Make sure it's a new flame and not someone taking damage from old one, and make sure valiona is not on ground.
 			flameguid[args.sourceGUID] = true--If not, Mark it as true so all other damage from this flame is ignored, for timers sake anyways.
 			timerNextFabFlames:Start()
 		end
