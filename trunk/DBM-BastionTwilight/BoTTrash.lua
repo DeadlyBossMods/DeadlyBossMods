@@ -17,9 +17,9 @@ local warnFrostWhirl		= mod:NewSpellAnnounce(93340, 4)--This is nasty frost whir
 local warnFlameStrike		= mod:NewTargetAnnounce(93383, 4)--This is Flame strike we need to not stand in unless we're dispeling frost dudes shield.
 local warnRupture			= mod:NewTargetAnnounce(93377, 4)--This is twilight rupture the big guys do in hallway before halfus.
 
-local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
-local specWarnRupture		= mod:NewSpecialWarningSpell(93377, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
-local specWarnFrostWhirl	= mod:NewSpecialWarningSpell(93340, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
+local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903)
+local specWarnRupture		= mod:NewSpecialWarningSpell(93377)
+local specWarnFrostWhirl	= mod:NewSpecialWarningSpell(93340)
 local specWarnFlameStrike	= mod:NewSpecialWarningMove(93362)
 local yellFlamestrike		= mod:NewYell(93362)
 
