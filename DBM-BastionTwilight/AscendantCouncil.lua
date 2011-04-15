@@ -53,13 +53,14 @@ local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic Phase 2 ablity
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665, false)
 local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
 local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
-local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509, false) -- spammy execpt interrupt class.
+local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509, false)
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660, false)
 local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
 local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
 --Terrastra
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")
+local specWarnHardenedSkin	= mod:NewSpecialWarningInterrupt(83718, false)
 --Arion
 local specWarnGrounded		= mod:NewSpecialWarning("SpecWarnGrounded")
 local specWarnLightningBlast= mod:NewSpecialWarningInterrupt(83070, false)
@@ -483,9 +484,7 @@ function mod:SPELL_CAST_START(args)
 			soundGlaciate:Play()
 		end
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
-		if self:GetUnitCreatureId("target") == 43687 or self:GetUnitCreatureId("focus") == 43687 then
-			specWarnHydroLance:Show()
-		end
+		specWarnHydroLance:Show()
 	elseif args:IsSpellID(82699) then
 		warnWaterBomb:Show()
 		timerWaterBomb:Start()
@@ -495,6 +494,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(83718, 92541, 92542, 92543) then
 		warnHardenSkin:Show()
 		timerHardenSkinCD:Start()
+		specWarnHardenedSkin:Show()
 	elseif args:IsSpellID(83565, 92544, 92545, 92546) then
 		warnQuake:Show()
 		timerQuakeCD:Cancel()
@@ -506,9 +506,7 @@ function mod:SPELL_CAST_START(args)
 	elseif args:IsSpellID(83070, 92454, 92455, 92456) then
 		warnLightningBlast:Show()
 		timerLightningBlast:Start()
-		if self:GetUnitCreatureId("target") == 43688 or self:GetUnitCreatureId("focus") == 43688 then
-			specWarnLightningBlast:Show()
-		end
+		specWarnLightningBlast:Show()
 	elseif args:IsSpellID(83067, 92469, 92470, 92471) then
 		warnThundershock:Show()
 		timerThundershockCD:Cancel()
