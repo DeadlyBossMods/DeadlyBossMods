@@ -122,7 +122,7 @@ end
 
 local function orbWarning(source)
 	if playerInList then specWarnOrb:Show() end
-	if mod.Options.SetIconOnWorship then
+	if mod.Options.SetIconOnOrbs then
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
 		if orbList[2] then mod:SetIcon(orbList[2], 7) end
 	end

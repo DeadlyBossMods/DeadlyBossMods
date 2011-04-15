@@ -165,7 +165,8 @@ L:SetOptionLocalization({
 	SpecWarnEggShield	= "$spell:87654의 재생성 특수 경고 보기",
 	TimerDragon        	= "다음 새끼용 등장 타이머 보기",
 	TimerEggWeakening  	= "$spell:87654 사라짐 타이머 보기",
-	TimerEggWeaken		= "$spell:87654 재생성 타이머 보기"
+	TimerEggWeaken		= "$spell:87654 재생성 타이머 보기",
+	SetIconOnOrbs		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92954)
 })
 
 L:SetMiscLocalization({
