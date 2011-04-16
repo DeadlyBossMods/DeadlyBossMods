@@ -56,7 +56,7 @@ local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
 local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509, false)
 --Ignacious
 local specWarnBurningBlood	= mod:NewSpecialWarningYou(82660, false)
-local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
+local specWarnAegisFlame	= mod:NewSpecialWarningSpell(82631, nil, nil, nil, true)
 local specWarnRisingFlames	= mod:NewSpecialWarningInterrupt(82636)
 --Terrastra
 local specWarnSearingWinds	= mod:NewSpecialWarning("SpecWarnSearingWinds")

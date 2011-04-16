@@ -33,14 +33,14 @@ local warnDeepBreath				= mod:NewCountAnnounce(86059, 4)--Used by Valiona just b
 local warnTwilightShift				= mod:NewStackAnnounce(93051, 2)
 
 --Valiona Ground Phase
-local specWarnDevouringFlames		= mod:NewSpecialWarningSpell(86840)
-local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408)
+local specWarnDevouringFlames		= mod:NewSpecialWarningSpell(86840, nil, nil, nil, true)
+local specWarnDazzlingDestruction	= mod:NewSpecialWarningSpell(86408, nil, nil, nil, true)
 local specWarnBlackout				= mod:NewSpecialWarningYou(86788)
 local specWarnTwilightBlast			= mod:NewSpecialWarningMove(92898, false)
 local specWarnTwilightBlastNear		= mod:NewSpecialWarningClose(92898, false)
 local yellTwilightBlast				= mod:NewYell(92898, nil, false)
 --Theralion Ground Phase
-local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059)
+local specWarnDeepBreath			= mod:NewSpecialWarningSpell(86059, nil, nil, nil, true)
 local specWarnFabulousFlames		= mod:NewSpecialWarningMove(92907)
 local specWarnTwilightMeteorite		= mod:NewSpecialWarningYou(88518)
 local yellTwilightMeteorite			= mod:NewYell(88518, nil, false)

@@ -57,10 +57,10 @@ local yellShadowConductor		= mod:NewYell(92053)
 local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
 local yellFixate				= mod:NewYell(80094, nil, false)
-local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer())
+local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer(), nil, nil, true)
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local yellChemicalCloud			= mod:NewYell(91473)--May Return false tank yells
-local specWarnGrip				= mod:NewSpecialWarningSpell(91849)--Heroic Ability
+local specWarnGrip				= mod:NewSpecialWarningSpell(91849, nil, nil, nil, true)--Heroic Ability
 --Arcanotron
 local specWarnConversion		= mod:NewSpecialWarningSpell(79729, not mod:IsHealer())
 local specWarnGenerator			= mod:NewSpecialWarning("specWarnGenerator", mod:IsTank())
@@ -348,8 +348,8 @@ function mod:SPELL_CAST_SUCCESS(args)
 		self:ScheduleMethod(0.1, "ChemicalBombTarget")--Since this is an instance cast scanning accurately is very hard.
 	elseif args:IsSpellID(80053, 91513, 91514, 91515) then
 		warnPoisonProtocol:Show()
-		if not self:GetUnitCreatureId("target") == 42180 then--You're not targeting toxitron which means he's probably off in some corner somewhere out of sight out of mind. (This does not seem to work still, cannot fathom why, unless the function simply isn't supported checking for "not")
-			specWarnPoisonProtocol:Show()--MFers need to learn to switch so we give them a special warning to remember toxitron is still up.
+		if self:GetUnitCreatureId("target") ~= 42180 then--You're not targeting toxitron
+			specWarnPoisonProtocol:Show()
 		end
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerPoisonProtocolCD:Start(25)
