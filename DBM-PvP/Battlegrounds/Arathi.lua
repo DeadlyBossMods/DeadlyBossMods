@@ -174,7 +174,7 @@ do
 			if name and textureIndex then
 				local type = getObjectiveType(textureIndex)		-- name of the objective without spaces
 				local state = getObjectiveState(textureIndex)	-- state of the objective
-				if type and state and state ~= objectives[type] then
+				if type and state and textureIndex ~= objectives[type] then
 					capTimer:Stop(name)
 					if state > 2 then
 						capTimer:Start(nil, name)
@@ -186,7 +186,7 @@ do
 							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", name)
 						end	
 					end
-					objectives[type] = state
+					objectives[type] = textureIndex
 				end
 			end
 		end
