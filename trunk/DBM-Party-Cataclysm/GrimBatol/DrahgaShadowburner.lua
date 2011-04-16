@@ -22,7 +22,7 @@ local warnShredding				= mod:NewSpellAnnounce(75271, 3)
 local warnFlamingFixate	 		= mod:NewTargetAnnounce(82850, 4)
 
 local specWarnFlamingFixate		= mod:NewSpecialWarningYou(82850)
-local specWarnDevouring 		= mod:NewSpecialWarningSpell(90950)
+local specWarnDevouring 		= mod:NewSpecialWarningSpell(90950, nil, nil, nil, true)
 local specWarnSeepingTwilight	= mod:NewSpecialWarningMove(75317)
 
 local timerFlame				= mod:NewCDTimer(27, 75321)

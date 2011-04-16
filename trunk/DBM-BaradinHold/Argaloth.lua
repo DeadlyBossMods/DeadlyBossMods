@@ -22,7 +22,7 @@ local warnFirestorm			= mod:NewSpellAnnounce(88972, 4)
 local warnFirestormSoon		= mod:NewSoonAnnounce(88972, 3)
 
 local specWarnMeteorSlash	= mod:NewSpecialWarningSpell(88942, mod:IsTank())
-local specWarnFirestormCast	= mod:NewSpecialWarningSpell(88972)
+local specWarnFirestormCast	= mod:NewSpecialWarningSpell(88972, nil, nil, nil, true)
 local specWarnFirestorm		= mod:NewSpecialWarningMove(89000)
 
 local timerConsuming		= mod:NewBuffActiveTimer(15, 88954)

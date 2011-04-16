@@ -36,7 +36,7 @@ local warnOrbs			= mod:NewTargetAnnounce(92954)
 
 local specWarnSlicer	= mod:NewSpecialWarning("SpecWarnSlicer")
 local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately. (Maybe add support for common 10 man variation with if/else rules?)
-local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false)
+local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false, nil, nil, true)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
 local specWarnOrb		= mod:NewSpecialWarningYou(92954)

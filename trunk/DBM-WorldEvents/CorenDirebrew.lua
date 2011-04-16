@@ -16,7 +16,6 @@ local warnDisarm			= mod:NewCastAnnounce(47310, 2, nil, nil, mod:IsMelee())
 local warnBarrel			= mod:NewTargetAnnounce(51413, 4)
 local timerBarrel			= mod:NewTargetTimer(8, 51413)
 
-local specWarnDisarm		= mod:NewSpecialWarningRun(47310, false)
 local specWarnBrew			= mod:NewSpecialWarning("specWarnBrew")
 local specWarnBrewStun		= mod:NewSpecialWarning("specWarnBrewStun")
 
@@ -30,7 +29,6 @@ function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(47310) then
 		warnDisarm:Show()
 		timerDisarm:Start()
-		specWarnDisarm:Show()
 	end
 end
 

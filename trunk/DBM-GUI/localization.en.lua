@@ -86,8 +86,8 @@ L.WarningIconRight 			= "Show icon on right side"
 L.RaidWarnMessage 			= "Thanks for using Deadly Boss Mods"
 L.BarWhileMove 				= "Raid warning movable"
 L.RaidWarnSound				= "Play sound on raid warning"
-L.SpecialWarnSound			= "Set sound for special warning"
-L.SpecialWarnSound2			= "Set alternate sound for special warning"
+L.SpecialWarnSound			= "Set sound for special warnings directly affecting you"
+L.SpecialWarnSound2			= "Set sound for special warnings affecting everyone"
 
 -- Tab: Barsetup
 L.BarSetup   				= "Bar Style"

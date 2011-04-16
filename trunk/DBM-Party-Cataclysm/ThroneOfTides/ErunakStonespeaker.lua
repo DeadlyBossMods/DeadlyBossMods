@@ -33,7 +33,7 @@ local timerMindFog			= mod:NewBuffActiveTimer(20, 76234)
 local timerAgony			= mod:NewBuffActiveTimer(10, 76339)
 
 local specWarnLavaBolt		= mod:NewSpecialWarningInterrupt(76171)
-local specWarnAbsorbMagic	= mod:NewSpecialWarningCast(76307)
+local specWarnAbsorbMagic	= mod:NewSpecialWarningCast(76307, nil, nil, nil, true)
 local specWarnEarthShards	= mod:NewSpecialWarningYou(84931)
 
 local magmaTargets = {}
