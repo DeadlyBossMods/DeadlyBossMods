@@ -232,7 +232,7 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(msg, boss)
 end
 
 function mod:OnSync(msg, boss)
-	if msg == "GatherStrength" and self:IsInCombat() then--This has been non functional since 4.0.6 and i just cannot figure out why, it worked perfectly up til that point. any ideas?
+	if msg == "GatherStrength" and self:IsInCombat() then
 		warnGatherStrength:Show(boss)
 		if not GatherStrengthwarned then
 			timerGatherStrength:Start(boss)
