@@ -59,6 +59,7 @@ DBM.DefaultOptions = {
 	},
 	RaidWarningSound = "Sound\\Doodad\\BellTollNightElf.wav",
 	SpecialWarningSound = "Sound\\Spells\\PVPFlagTaken.wav",
+	SpecialWarningSound2 = "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav",
 	RaidWarningPosition = {
 		Point = "TOP",
 		X = 0,
@@ -1543,7 +1544,7 @@ do
 
 	syncHandlers["P"] = function(sender, delay, mod, revision)
 		if select(2, IsInInstance()) == "pvp" then return end
-		local lag = select(3, GetNetStats()) / 1000
+		local lag = select(4, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
 		mod = DBM:GetModByName(mod or "")
 		revision = tonumber(revision or 0) or 0
@@ -2141,7 +2142,7 @@ do
 
 	function DBM:ReceiveCombatInfo(sender, mod, time)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 and #inCombat == 0 then
-			local lag = select(3, GetNetStats()) / 1000
+			local lag = select(4, GetNetStats()) / 1000
 			if not mod.combatInfo then return end
 			table.insert(inCombat, mod)
 			mod.inCombat = true
@@ -2153,7 +2154,7 @@ do
 
 	function DBM:ReceiveTimerInfo(sender, mod, timeLeft, totalTime, id, ...)
 		if sender == requestedFrom and (GetTime() - requestTime) < 5 then
-			local lag = select(3, GetNetStats()) / 1000
+			local lag = select(4, GetNetStats()) / 1000
 			for i, v in ipairs(mod.timers) do
 				if v.id == id then
 					v:Start(totalTime, ...)
