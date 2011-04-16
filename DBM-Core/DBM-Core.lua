@@ -3092,9 +3092,9 @@ do
 			frame.timer = 5
 			if self.sound then
 				if DBM.Options.UseMasterVolume then
-					PlaySoundFile(DBM.Options.SpecialWarningSound2 and self.runSound or DBM.Options.SpecialWarningSound, "Master")
+					PlaySoundFile(self.runSound and DBM.Options.SpecialWarningSound2 or DBM.Options.SpecialWarningSound, "Master")
 				else
-					PlaySoundFile(DBM.Options.SpecialWarningSound2 and self.runSound or DBM.Options.SpecialWarningSound)
+					PlaySoundFile(self.runSound and DBM.Options.SpecialWarningSound2 or DBM.Options.SpecialWarningSound)
 				end
 			end
 		end
