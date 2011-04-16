@@ -18,7 +18,7 @@ local warnGroundingField	= mod:NewSpellAnnounce(86911, 4)
 local timerGroundingField	= mod:NewCastTimer(10, 86911)
 local timerGroundingFieldCD	= mod:NewCDTimer(45, 86911)
 
-local specWarnStaticCling	= mod:NewSpecialWarning("SpecWarnStaticCling", false)
+local specWarnStaticCling	= mod:NewSpecialWarning("SpecWarnStaticCling", false, nil, nil, true)
 
 function mod:SPELL_AURA_APPLIED(args)
 	if args:IsSpellID(86911) then

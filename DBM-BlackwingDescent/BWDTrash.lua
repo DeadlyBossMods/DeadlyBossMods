@@ -16,7 +16,6 @@ local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for 
 local warnSacrifice			= mod:NewTargetAnnounce(80727, 2)--Sacrifice used by spirits before atramedes
 local warnWhirlwind			= mod:NewTargetAnnounce(80652, 2)--Whirlwind used by spirits before atramedes
 
---local specWarnFlashBomb		= mod:NewSpecialWarningMove(81056)
 local yellFlashBomb			= mod:NewYell(81056)
 
 local timerSacrifice		= mod:NewTargetTimer(20, 80727)
@@ -48,7 +47,7 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_CAST_SUCCESS(args)
-	if args:IsSpellID(81063) then--Are both IDs used?
+	if args:IsSpellID(81063) then
 		warnLaserStrike:Show()
 	elseif args:IsSpellID(81056) then
 		warnFlashBomb:Show()

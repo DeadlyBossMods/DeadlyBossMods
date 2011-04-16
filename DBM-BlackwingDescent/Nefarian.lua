@@ -39,7 +39,7 @@ local warnPhase2				= mod:NewPhaseAnnounce(2)
 local warnPhase3				= mod:NewPhaseAnnounce(3)
 local warnDominion				= mod:NewTargetAnnounce(79318, 3)
 
-local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198, nil, nil, nil, "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav")
+local specWarnElectrocute		= mod:NewSpecialWarningSpell(81198, nil, nil, nil, true)
 local specWarnShadowblaze		= mod:NewSpecialWarningMove(94085)
 local specWarnShadowblazeSoon	= mod:NewSpecialWarning("specWarnShadowblazeSoon", mod:IsTank())
 local specWarnBlastsNova		= mod:NewSpecialWarningInterrupt(80734)

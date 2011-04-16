@@ -22,7 +22,7 @@ local warnAbsorbStorms		= mod:NewSpellAnnounce(83151, 2, false)
 local warnGatheredStorms	= mod:NewSpellAnnounce(84982, 3)
 local warnLightningCharge	= mod:NewCastAnnounce(91872, 3)
 
-local specWarnPhase2Soon	= mod:NewSpecialWarning("specWarnPhase2Soon", true)
+local specWarnPhase2Soon	= mod:NewSpecialWarning("specWarnPhase2Soon", true, nil, nil, true)
 
 local timerThunderCrash		= mod:NewCastTimer(3, 84522)
 local timerWailingWinds		= mod:NewBuffActiveTimer(6, 83066)
