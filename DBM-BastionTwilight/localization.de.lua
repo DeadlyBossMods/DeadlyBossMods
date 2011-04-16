@@ -67,19 +67,6 @@ L:SetTimerLocalization({
 	timerTransition		= "Phasenübergang"
 })
 
-L:SetMiscLocalization({
-	Quake			= "Der Boden unter Euch grollt unheilvoll...",
-	Thundershock	= "Die Luft beginnt, vor Energie zu knistern...",
-	Switch			= "Wir kümmern uns um sie!",-- drycoded
-	Phase3			= "SCHMECKT DIE VERDAMMNIS!",-- drycoded
-	Ignacious		= "Ignazius",
-	Feludius		= "Feludius ",
-	Arion			= "Arion",
-	Terrastra		= "Terrastra",
-	Monstrosity		= "Elementiumungeheuer",
-	Kill			= "Unmöglich..."-- drycoded
-})
-
 L:SetOptionLocalization({
 	specWarnBossLow		= "Zeige Spezialwarnung wenn Boss unter 30% HP",
 	SpecWarnGrounded	= "Zeige Spezialwarnung, wenn dir $spell:83581 Buff fehlt\n(~10Sek vor dem Zaubern)",
@@ -93,6 +80,19 @@ L:SetOptionLocalization({
 	FrostBeaconIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92307),
 	StaticOverloadIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92067),
 	GravityCoreIcon		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92075)
+})
+
+L:SetMiscLocalization({
+	Quake			= "Der Boden unter Euch grollt unheilvoll...",
+	Thundershock	= "Die Luft beginnt, vor Energie zu knistern...",
+	Switch			= "Genug der Spielereien",
+	Phase3			= "Beeindruckende Leistung…",
+	Ignacious		= "Ignazius",
+	Feludius		= "Feludius ",
+	Arion			= "Arion",
+	Terrastra		= "Terrastra",
+	Monstrosity		= "Elementiumungeheuer",
+	Kill			= "Unmöglich…"
 })
 
 ----------------
@@ -110,16 +110,16 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 })
 
-L:SetMiscLocalization({
-	Bloodlevel		= "Korruption" --maybe
-})
-
 L:SetOptionLocalization({
 --	WarnPhase2Soon	= "Zeige Vorwarnung für Phase 2",
 	InfoFrame			= "Zeige Infofenster für $spell:81701",
 	RangeFrame			= "Zeige Abstandsfenster (5) für $spell:82235",
 	SetIconOnWorship	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(91317),
 	SetIconOnCreature	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(82414)
+})
+
+L:SetMiscLocalization({
+	Bloodlevel		= "Korruption" --maybe
 })
 
 ----------------
