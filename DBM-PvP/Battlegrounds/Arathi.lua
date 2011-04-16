@@ -186,7 +186,7 @@ do
 							capTimer:UpdateIcon("Interface\\Icons\\INV_BannerPVP_01.blp", name)
 						end	
 					end
-					objectives[type] = textureIndex
+					objectives[type] = state
 				end
 			end
 		end
