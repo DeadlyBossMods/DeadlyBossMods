@@ -1643,7 +1643,7 @@ local function CreateOptionsMenu()
 
 	do
 		local specPanel = DBM_GUI_Frame:CreateNewPanel(L.Panel_SpecWarnFrame, "option")
-		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 205, true)
+		local specArea = specPanel:CreateArea(L.Area_SpecWarn, nil, 230, true)
 		specArea:CreateCheckButton(L.SpecWarn_Enabled, true, nil, "ShowSpecialWarnings")
 
 		local showbutton = specArea:CreateButton(L.SpecWarn_DemoButton, 120, 16)
@@ -1729,7 +1729,7 @@ local function CreateOptionsMenu()
 		local Sounds = {
 			{	text	= L.NoSound,		value	= "" },
 			{	text	= "Default",		value 	= "Sound\\Spells\\PVPFlagTaken.wav", 		sound=true },
---			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
+			{	text	= "Beware!",		value 	= "Sound\\Creature\\AlgalonTheObserver\\UR_Algalon_BHole01.wav", 		sound=true },--Great sound, short and to the point. Best pick for a secondary default!
 			{	text	= "NotPrepared",	value 	= "Sound\\Creature\\Illidan\\BLACK_Illidan_04.wav", 		sound=true },--Maybe a bit long? wouldn't recommend it as a default, but good for customizing.
 			{	text	= "NightElfBell",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
 		}
@@ -1746,6 +1746,13 @@ local function CreateOptionsMenu()
 			end
 		)
 		SpecialWarnSoundDropDown:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -150)
+		
+		local SpecialWarnSoundDropDown2 = specArea:CreateDropdown(L.SpecialWarnSound2, Sounds, 
+			DBM.Options.SpecialWarningSound2, function(value) 
+				DBM.Options.SpecialWarningSound2 = value
+			end
+		)
+		SpecialWarnSoundDropDown2:SetPoint("TOPLEFT", specArea.frame, "TOPLEFT", 130, -190)
 
 
 		local resetbutton = specArea:CreateButton(L.SpecWarn_ResetMe, 120, 16)
@@ -1993,11 +2000,7 @@ do
 		for k,addon in ipairs(DBM.AddOns) do
 			if not Categories[addon.category] then
 				-- Create a Panel for "Wrath of the Lich King" "Burning Crusade" ...
-				if tonumber(WowBuild) >= 13329 then--Choose default expanded catagory based on build. expands cata in cata and wotlk if not cata. Use build number instead of toc so 4.0.1 is treated as wrath too.
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))
-				else
-					Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="WOTLK"))
-				end
+				Categories[addon.category] = DBM_GUI:CreateNewPanel(L["TabCategory_"..addon.category:upper()] or L.TabCategory_Other, nil, (addon.category:upper()=="CATA"))
 				if L["TabCategory_"..addon.category:upper()] then
 					local ptext = Categories[addon.category]:CreateText(L["TabCategory_"..addon.category:upper()])
 					ptext:SetPoint('TOPLEFT', Categories[addon.category].frame, "TOPLEFT", 10, -10)
@@ -2121,4 +2124,3 @@ do
 		end
 	end
 end
-
