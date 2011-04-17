@@ -16,8 +16,6 @@ local warnEnrage			= mod:NewTargetAnnounce(80084, 3)--This is enrage effect for 
 local warnSacrifice			= mod:NewTargetAnnounce(80727, 2)--Sacrifice used by spirits before atramedes
 local warnWhirlwind			= mod:NewTargetAnnounce(80652, 2)--Whirlwind used by spirits before atramedes
 
-local yellFlashBomb			= mod:NewYell(81056)
-
 local timerSacrifice		= mod:NewTargetTimer(20, 80727)
 local timerWhirlwind		= mod:NewTargetTimer(5, 80652)
 
