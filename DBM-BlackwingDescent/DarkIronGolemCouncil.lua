@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(42180, 42178, 42179, 42166)
 mod:SetZone()
-mod:SetUsedIcons(1, 3, 6, 7)
+mod:SetUsedIcons(1, 3, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -99,6 +99,7 @@ local soundFixate				= mod:NewSound(80094)
 mod:AddBoolOption("AcquiringTargetIcon")
 mod:AddBoolOption("ConductorIcon")
 mod:AddBoolOption("ShadowConductorIcon")
+mod:AddBoolOption("SetIconOnActivated")
 
 local pulled = false
 local cloudSpam = 0
@@ -212,6 +213,14 @@ function mod:SPELL_AURA_APPLIED(args)
 			timerNextActivate:Start(30)
 		else
 			timerNextActivate:Start()
+		end
+		if self.Options.SetIconOnActivated and DBM:GetRaidRank() >= 1 then
+			for i = 1, 4 do
+				if UnitName("boss"..i) == args.destName then
+					SetRaidTarget("boss"..i, 8)
+					break
+				end
+			end
 		end
 	elseif args:IsSpellID(78726) then
 		bossInactive(args.destName)
