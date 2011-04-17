@@ -87,7 +87,8 @@ L.WarningIconRight 		= "아이콘을 오른쪽에 보여주기"
 L.RaidWarnMessage 		= "<Deadly Boss Mods>를 사용해 주셔셔 감사합니다."
 L.BarWhileMove 			= "공격대 경보 위치 수정"
 L.RaidWarnSound			= "공격대 경보 소리"
-L.SpecialWarnSound		= "특수 경고 소리"
+L.SpecialWarnSound		= "특수 경고 소리 (자신이 영향을 받을 경우)"
+L.SpecialWarnSound2		= "특수 경고 소리 (공격대원 전체가 영향을 받을 경우)"
 
 -- Tab: Barsetup
 L.BarSetup  				= "바 스타일"
