@@ -59,7 +59,8 @@ L:SetOptionLocalization({
 	specWarnGenerator			= "보스가 $spell:91557의 영향을 받을 경우 특수 경고 보기",
 	AcquiringTargetIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon				= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	ShadowConductorIcon			= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	SetIconOnActivated			= "새로 활성화된 보스에게 전술 목표 아이콘 설정하기"
 })
 
 L:SetMiscLocalization({
