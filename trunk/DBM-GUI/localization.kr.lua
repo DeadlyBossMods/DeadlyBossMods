@@ -5,7 +5,7 @@ local L = DBM_GUI_Translations
 
 L.MainFrame = "죽이는 보스 모드"
 
-L.TranslationBy 		= "흑묘서희@에이그윈(Twitter: @Nyx_Khang) & 영원이란@엘룬"
+L.TranslationBy 		= "흑묘서희@에이그윈(Twitter: @Nyx_Khang) & 다시날아@아즈샤라"
 
 L.TabCategory_Options 	= "일반 설정"
 L.TabCategory_CATA	 	= "대격변"
