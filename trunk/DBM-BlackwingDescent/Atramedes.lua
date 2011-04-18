@@ -27,6 +27,7 @@ local warnShieldsLeft		= mod:NewAnnounce("WarnShieldsLeft", 2, 77611)
 local warnAddSoon			= mod:NewAnnounce("warnAddSoon", 3, 92685)
 local warnPhaseShift		= mod:NewSpellAnnounce(92681, 3)
 local warnObnoxious			= mod:NewCastAnnounce(92702, 4, nil, false)
+local warnSearingFlameSoon	= mod:NewSoonAnnounce(77840, 3, nil, false)
 
 local specWarnSearingFlame	= mod:NewSpecialWarningSpell(77840, nil, nil, nil, true)
 local specWarnSonarPulse	= mod:NewSpecialWarningSpell(92411, false, nil, nil, true)
@@ -57,11 +58,13 @@ local function groundphase()
 	timerAirphase:Start()
 	timerSonicBreath:Start(25)
 	timerSearingFlame:Start()
+	warnSearingFlameSoon:Schedule(41.5)
 end
 
 function mod:OnCombatStart(delay)
 	timerSonarPulseCD:Start(-delay)
 	timerSonicBreath:Start(25-delay)
+	warnSearingFlameSoon:Schedule(40-delay)
 	timerSearingFlame:Start(45-delay)
 	timerAirphase:Start(90-delay)
 	shieldsLeft = 10
