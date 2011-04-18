@@ -108,6 +108,7 @@ local timerFlameStrikeCD	= mod:NewNextTimer(20, 92212)--Heroic Phase 2 ablity
 local timerFrostBeaconCD	= mod:NewNextTimer(20, 92307)--Heroic Phase 2 ablity
 
 local soundGlaciate			= mod:NewSound(82746, nil, mod:IsTank())
+local soundBeacon			= mod:NewSound(92307)
 
 mod:AddBoolOption("HealthFrame", true)
 mod:AddBoolOption("HeartIceIcon")
@@ -327,6 +328,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnFrostBeacon:Show(args.destName)
 		if args:IsPlayer() then
 			specWarnFrostBeacon:Show()
+			soundBeacon:Play()
 		end
 		if self.Options.FrostBeaconIcon then
 			self:SetIcon(args.destName, 3)
