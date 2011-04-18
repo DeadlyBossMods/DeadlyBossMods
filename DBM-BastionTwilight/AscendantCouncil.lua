@@ -224,7 +224,6 @@ do
 		maxAbsorb = absorb
 		DBM.BossHealth:RemoveBoss(getShieldHP)
 		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
-		self:Schedule(30, hideShieldHealthBar)
 	end
 	
 	function hideShieldHealthBar()
@@ -311,13 +310,15 @@ function mod:SPELL_AURA_APPLIED(args)
 			warnFlameTorrent:Show()
 		end
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then--Aegis of Flame
-		local shieldname = GetSpellInfo(82631) -- barrier spellname
+		local shieldname = GetSpellInfo(82631)
 		warnAegisFlame:Show()
 		specWarnAegisFlame:Show()
 		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
+		self:Schedule(20, hideShieldHealthBar)
 	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin
-		local shieldname = GetSpellInfo(92543) -- barrier spellname
+		local shieldname = GetSpellInfo(92543)
 		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
+		self:Schedule(30, hideShieldHealthBar)
 	elseif args:IsSpellID(82762) and args:IsPlayer() then
 		specWarnWaterLogged:Show()
 	elseif args:IsSpellID(84948, 92486, 92487, 92488) then
@@ -548,7 +549,6 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Switch or msg:find(L.Switch) then
 		updateBossFrame(2)
-		hideShieldHealthBar()
 		timerWaterBomb:Cancel()
 		timerGlaciate:Cancel()
 		timerAegisFlame:Cancel()
@@ -563,7 +563,6 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerQuakeCD:Start()
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		updateBossFrame(3)
-		hideShieldHealthBar()
 		timerQuakeCD:Cancel()
 		timerThundershockCD:Cancel()
 		timerHardenSkinCD:Cancel()

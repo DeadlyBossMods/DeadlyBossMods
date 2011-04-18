@@ -69,6 +69,7 @@ local orbList = {}
 local orbWarned = nil
 local playerInList = nil
 local whelpGUIDs = {}
+local wrackName = GetSpellInfo(92955)
 local wrackTargets = {}
 
 local function isTank(unit)
@@ -157,7 +158,7 @@ function mod:SlicerRepeat()
 end
 
 local function showWrackWarning()
-	warnWrackJump:Show(args.spellName, table.concat(wrackTargets, "<, >"))
+	warnWrackJump:Show(wrackName, table.concat(wrackTargets, "<, >"))
 	table.wipe(wrackTargets)
 end
 
