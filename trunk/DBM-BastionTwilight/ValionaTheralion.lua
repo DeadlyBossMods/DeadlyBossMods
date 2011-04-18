@@ -163,7 +163,7 @@ function mod:TwilightBlastTarget()
 		if targetname == UnitName("player") then
 			specWarnTwilightBlast:Show()
 			yellTwilightBlast:Yell()
-		elseif targetname then
+		else
 			local uId = DBM:GetRaidUnitId(targetname)
 			if uId then
 				local inRange = CheckInteractDistance(uId, 2)
