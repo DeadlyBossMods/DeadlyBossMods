@@ -39,7 +39,7 @@ function mod:HarvestTarget()
 	if targetname == UnitName("player") then
 		specWarnHarvest:Show()
 		soundHarvest:Play()
-	elseif targetname then
+	else
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)
