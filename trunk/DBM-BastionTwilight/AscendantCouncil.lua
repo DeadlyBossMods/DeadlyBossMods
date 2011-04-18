@@ -224,6 +224,7 @@ do
 		maxAbsorb = absorb
 		DBM.BossHealth:RemoveBoss(getShieldHP)
 		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
+		self:Schedule(30, hideShieldHealthBar)
 	end
 	
 	function hideShieldHealthBar()
@@ -477,11 +478,13 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then	-- Shield Removed
+		self:Unschedule(hideShieldHealthBar)
 		hideShieldHealthBar()
 		if self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686 then
 			specWarnRisingFlames:Show()
 		end
 	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin Removed
+		self:Unschedule(hideShieldHealthBar)
 		hideShieldHealthBar()
 	end
 end
@@ -545,6 +548,7 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.Switch or msg:find(L.Switch) then
 		updateBossFrame(2)
+		hideShieldHealthBar()
 		timerWaterBomb:Cancel()
 		timerGlaciate:Cancel()
 		timerAegisFlame:Cancel()
@@ -559,6 +563,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerQuakeCD:Start()
 	elseif msg == L.Phase3 or msg:find(L.Phase3) then
 		updateBossFrame(3)
+		hideShieldHealthBar()
 		timerQuakeCD:Cancel()
 		timerThundershockCD:Cancel()
 		timerHardenSkinCD:Cancel()
