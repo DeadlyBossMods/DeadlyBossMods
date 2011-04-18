@@ -17,7 +17,7 @@ local warnBreath		= mod:NewTargetAnnounce(88308, 2)
 local warnUpwind		= mod:NewSpellAnnounce(88282, 3)
 local warnDownwind		= mod:NewSpellAnnounce(88286, 4)
 
-local specWarnBreath	= mod:NewSpecialWarningYou(88308)
+local specWarnBreath	= mod:NewSpecialWarningYou(88308, false)
 local specWarnBreathNear= mod:NewSpecialWarningClose(88308)
 
 local timerBreath		= mod:NewCastTimer(2, 88308)
@@ -32,9 +32,9 @@ function mod:BreathTarget()
 		if self.Options.BreathIcon then
 			self:SetIcon(targetname, 8, 4)
 		end
-	if targetname == UnitName("player") and not mod:IsTank() then--Tank doesn't care about this so if your current spec is tank ignore this warning.
+	if targetname == UnitName("player") then--Tank doesn't care about this so if your current spec is tank ignore this warning.
 		specWarnBreath:Show()
-	elseif targetname then
+	else
 		local uId = DBM:GetRaidUnitId(targetname)
 		if uId then
 			local inRange = CheckInteractDistance(uId, 2)

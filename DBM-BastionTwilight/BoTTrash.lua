@@ -19,7 +19,7 @@ local warnRupture			= mod:NewTargetAnnounce(93377, 4)--This is twilight rupture 
 
 local specWarnVolcanicWrath	= mod:NewSpecialWarningSpell(87903, nil, nil, nil, true)
 local specWarnRupture		= mod:NewSpecialWarningSpell(93377, nil, nil, nil, true)
-local specWarnFrostWhirl	= mod:NewSpecialWarningSpell(93340, nil, nil, nil, true)
+local specWarnFrostWhirl	= mod:NewSpecialWarningSpell(93340, false, nil, nil, true)
 local specWarnFlameStrike	= mod:NewSpecialWarningMove(93362)
 local yellFlamestrike		= mod:NewYell(93362)
 
