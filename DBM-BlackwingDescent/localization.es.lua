@@ -60,7 +60,8 @@ L:SetOptionLocalization({
 	specWarnGenerator			= "Mostrar aviso especial cuando un boss gana $spell:91557",
 	AcquiringTargetIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79501),
 	ConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(79888),
-	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053)
+	ShadowConductorIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92053),
+	SetIconOnActivated			= "Poner un icono en el último boss activado"
 })
 
 L:SetMiscLocalization({
