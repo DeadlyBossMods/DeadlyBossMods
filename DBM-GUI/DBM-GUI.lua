@@ -1296,7 +1296,8 @@ local function CreateOptionsMenu()
 		local Sounds = {
 			{	text	= L.NoSound,	value	= "" },
 			{	text	= "Default",	value 	= "Sound\\interface\\RaidWarning.wav", 		sound=true },
-			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true }
+			{	text	= "Classic",	value 	= "Sound\\Doodad\\BellTollNightElf.wav", 	sound=true },
+			{	text	= "Ding",	value 	= "Sound\\interface\\AlarmClockWarning3.wav", 	sound=true }
 		}
 		if GetSharedMedia3() then
 			for k,v in next, GetSharedMedia3():HashTable("sound") do

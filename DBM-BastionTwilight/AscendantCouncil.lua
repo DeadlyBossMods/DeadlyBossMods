@@ -21,12 +21,12 @@ mod:RegisterEvents(
 )
 
 --Feludius
-local warnHeartIce			= mod:NewTargetAnnounce(82665, 3)
+local warnHeartIce			= mod:NewTargetAnnounce(82665, 3, nil, false)
 local warnGlaciate			= mod:NewSpellAnnounce(82746, 3, nil, mod:IsMelee())
-local warnWaterBomb			= mod:NewSpellAnnounce(82699, 3, nil, mod:IsMelee())
+local warnWaterBomb			= mod:NewSpellAnnounce(82699, 3)
 local warnFrozen			= mod:NewTargetAnnounce(82772, 3, nil, mod:IsHealer())
 --Ignacious
-local warnBurningBlood		= mod:NewTargetAnnounce(82660, 3)
+local warnBurningBlood		= mod:NewTargetAnnounce(82660, 3, nil, false)
 local warnFlameTorrent		= mod:NewSpellAnnounce(82777, 2, nil, mod:IsTank() or mod:IsHealer())--Not too useful to announce but will leave for now. CD timer useless.
 local warnAegisFlame		= mod:NewSpellAnnounce(82631, 4)
 --Terrastra
@@ -37,7 +37,7 @@ local warnQuake				= mod:NewSpellAnnounce(83565, 4)
 --Arion
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
 local warnDisperse			= mod:NewSpellAnnounce(83087, 3, nil, mod:IsTank())
-local warnLightningBlast	= mod:NewCastAnnounce(83070, 3)
+local warnLightningBlast	= mod:NewCastAnnounce(83070, 3, nil, mod:IsTank())
 local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
 --Elementium Monstrosity
@@ -51,7 +51,7 @@ local warnFrostBeacon		= mod:NewTargetAnnounce(92307, 4)--Heroic Phase 2 ablity
 
 --Feludius
 local specWarnHeartIce		= mod:NewSpecialWarningYou(82665, false)
-local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsTank())
+local specWarnGlaciate		= mod:NewSpecialWarningRun(82746, mod:IsMelee())
 local specWarnWaterLogged	= mod:NewSpecialWarningYou(82762)
 local specWarnHydroLance	= mod:NewSpecialWarningInterrupt(92509, false)
 --Ignacious
@@ -76,23 +76,23 @@ local specWarnFrostBeacon	= mod:NewSpecialWarningYou(92307)--Heroic
 local specWarnBossLow		= mod:NewSpecialWarning("specWarnBossLow")
 
 --Feludius
-local timerHeartIce			= mod:NewTargetTimer(60, 82665)
-local timerHeartIceCD		= mod:NewCDTimer(22, 82665)--22-24 seconds
+local timerHeartIce			= mod:NewTargetTimer(60, 82665, nil, false)
+local timerHeartIceCD		= mod:NewCDTimer(22, 82665, nil, false)--22-24 seconds
 local timerGlaciate			= mod:NewCDTimer(33, 82746, nil, mod:IsMelee())--33-35 seconds
-local timerWaterBomb		= mod:NewCDTimer(33, 82699, nil, mod:IsMelee())--33-35 seconds
+local timerWaterBomb		= mod:NewCDTimer(33, 82699)--33-35 seconds
 local timerFrozen			= mod:NewBuffActiveTimer(10, 82772, nil, mod:IsHealer())
 --Ignacious
-local timerBurningBlood		= mod:NewTargetTimer(60, 82660)
-local timerBurningBloodCD	= mod:NewCDTimer(22, 82660)--22-33 seconds, even worth having a timer?
+local timerBurningBlood		= mod:NewTargetTimer(60, 82660, nil, false)
+local timerBurningBloodCD	= mod:NewCDTimer(22, 82660, nil, false)--22-33 seconds, even worth having a timer?
 local timerAegisFlame		= mod:NewNextTimer(60, 82631)
 --Terrastra
 local timerEruptionCD		= mod:NewNextTimer(15, 83675, nil, mod:IsMelee())
-local timerHardenSkinCD		= mod:NewCDTimer(42, 83718, nil, mod:IsTank())--This one is iffy, it isn't as consistent as other ability timers
+local timerHardenSkinCD		= mod:NewCDTimer(42, 83718, nil, mod:IsMelee())--This one is iffy, it isn't as consistent as other ability timers
 local timerQuakeCD			= mod:NewNextTimer(33, 83565)
 local timerQuakeCast		= mod:NewCastTimer(3, 83565)
 --Arion
 local timerLightningRod		= mod:NewBuffActiveTimer(15, 83099)
-local timerDisperse			= mod:NewCDTimer(30, 83087, nil, mod:IsTank())
+local timerDisperse			= mod:NewCDTimer(30, 83087)
 local timerLightningBlast	= mod:NewCastTimer(4, 83070)
 local timerThundershockCD	= mod:NewNextTimer(33, 83067)
 local timerThundershockCast	= mod:NewCastTimer(3, 83067)
@@ -477,9 +477,9 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(82746, 92506, 92507, 92508) then
-		warnGlaciate:Show()
 		timerGlaciate:Start()
-		if self:GetUnitCreatureId("target") == 43687 then--Only warn tank targeting/tanking this boss.
+		if self:GetUnitCreatureId("target") == 43687 then--Only warn if targeting/tanking this boss.
+			warnGlaciate:Show()
 			specWarnGlaciate:Show()
 			soundGlaciate:Play()
 		end
