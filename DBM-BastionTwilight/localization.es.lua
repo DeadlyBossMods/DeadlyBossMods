@@ -158,17 +158,18 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
-	WarnSlicerSoon		= "Show pre-warning for $spell:92954 (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",--translate
+	WarnSlicerSoon		= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
 	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
 	WarnWrackCount5s	= "Announce los segundos de $spell:92955 transcurridos a los 10, 15, 20 segundos",
-	SpecWarnSlicer		= "Show special warning for $spell:92954\n(Expected warning. may not be accurate)",--translate
-	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)",--translate
-	SpecWarnEggWeaken	= "Show special warning when $spell:87654 removed", -- translate
-	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated", -- translate
+	SpecWarnSlicer		= "Mostrar aviso especial para $spell:92954\n(Puede ser impreciso.)",
+	SpecWarnDispel		= "Mostrar aviso especial para dispellear $spell:92955\n(después de cierto tiempo de que haya saltado)",
+	SpecWarnEggWeaken	= "Mostrar aviso especial cuando $spell:87654 es eliminado",
+	SpecWarnEggShield	= "Mostrar aviso especial cuando $spell:87654 se hay regenerado",
 	TimerDragon			= "Mostrar tiempo para que salga una nueva Cría Crepuscular",
 	TimerEggWeakening	= "Mostrar tiempo para eliminación de $spell:87654",
-	TimerEggWeaken		= "Mostrar tiempo para regeneración de $spell:87654"
+	TimerEggWeaken		= "Mostrar tiempo para regeneración de $spell:87654",
+	SetIconOnOrbs		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92954)
 
 })
 
