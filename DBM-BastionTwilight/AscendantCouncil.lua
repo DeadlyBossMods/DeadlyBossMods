@@ -181,6 +181,10 @@ local shieldValues = {
 	[92512] = 1500000,
 	[92513] = 700000,
 	[92514] = 2000000,
+	[83718] = 500000,
+	[92541] = 1650000,
+	[92542] = 650000,
+	[92543] = 2100000,
 }
 local showShieldHealthBar, hideShieldHealthBar
 do
@@ -220,7 +224,6 @@ do
 		maxAbsorb = absorb
 		DBM.BossHealth:RemoveBoss(getShieldHP)
 		DBM.BossHealth:AddBoss(getShieldHP, shieldName)
-		self:Schedule(20, hideShieldHealthBar)
 	end
 	
 	function hideShieldHealthBar()
@@ -306,10 +309,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self:GetUnitCreatureId("target") == 43686 or self:GetBossTarget(43686) == UnitName("target") then--Warn if the boss casting it is your target, OR your target is the person its being cast on.
 			warnFlameTorrent:Show()
 		end
-	elseif args:IsSpellID(82631, 92512, 92513, 92514) then--drycode
-		local shieldname = GetSpellInfo(79582) -- barrier spellname
+	elseif args:IsSpellID(82631, 92512, 92513, 92514) then--Aegis of Flame
+		local shieldname = GetSpellInfo(82631) -- barrier spellname
 		warnAegisFlame:Show()
 		specWarnAegisFlame:Show()
+		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
+	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin
+		local shieldname = GetSpellInfo(92543) -- barrier spellname
 		showShieldHealthBar(self, args.destGUID, shieldname, shieldValues[args.spellId] or 0)
 	elseif args:IsSpellID(82762) and args:IsPlayer() then
 		specWarnWaterLogged:Show()
@@ -471,11 +477,12 @@ function mod:SPELL_AURA_REMOVED(args)
 			self:SetIcon(args.destName, 0)
 		end
 	elseif args:IsSpellID(82631, 92512, 92513, 92514) then	-- Shield Removed
-		self:Unschedule(hideShieldHealthBar)
 		hideShieldHealthBar()
 		if self:GetUnitCreatureId("target") == 43686 or self:GetUnitCreatureId("focus") == 43686 then
 			specWarnRisingFlames:Show()
 		end
+	elseif args:IsSpellID(83718, 92541, 92542, 92543) then--Harden Skin Removed
+		hideShieldHealthBar()
 	end
 end
 
