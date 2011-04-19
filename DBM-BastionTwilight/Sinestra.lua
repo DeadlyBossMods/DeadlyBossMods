@@ -13,8 +13,6 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
---	"SWING_DAMAGE",
---	"SWING_MISSED",
 	"SPELL_DAMAGE",
 	"UNIT_DIED"
 )
@@ -68,7 +66,6 @@ local calenGUID = 0
 local orbList = {}
 local orbWarned = nil
 local playerInList = nil
---local whelpGUIDs = {}
 local wrackName = GetSpellInfo(92955)
 local wrackTargets = {}
 
@@ -85,19 +82,9 @@ local function isTank(unit)
 end
 
 local function isTargetableByOrb(unit)
-	-- check tanks
-	if isTank(unit) then return false end--Ignore anyone defined in blizz main tanks.
-	-- check sinestra's target too
+	if isTank(unit) then return false end--Ignore anyone defined in a tank role or in blizz MTs.
 	if UnitIsUnit("boss1target", unit) then return false end--Ignore anyone with Sinestra Aggro
-	-- and maybe do a check for whelp targets
-	-- not 100% sure if whelp "tanks" can be targeted by the orb or not
 	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return false end--Ignore anyone with whelp aggro
---[[	for k, v in pairs(whelpGUIDs) do
-		local whelp = mod:GetUnitIdByGUID(k)
-		if whelp then
-			if UnitIsUnit(whelp.."target", unit) then return false end
-		end
-	end--]]
 	return true
 end
 
@@ -108,7 +95,7 @@ local function populateOrbList()
 		if GetInstanceDifficulty() == 3 and i > 10 then return end
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
 		local n = GetRaidRosterInfo(i)
-		-- Tanking something, but not a tank (aka not tanking Sinestra or Whelps)
+		-- Has aggro on something, but not a tank (aka not tanking Sinestra or Whelps)
 		if UnitThreatSituation(n) == 3 and isTargetableByOrb(n) then
 			if UnitIsUnit(n, "player") then playerInList = true end
 			orbList[#orbList + 1] = n
@@ -178,7 +165,6 @@ function mod:OnCombatStart(delay)
 	timerDragon:Start(16-delay)
 	timerBreathCD:Start(21-delay)
 	timerSlicer:Start(29-delay)
---	wipe(whelpGUIDs)
 	wipe(orbList)
 	orbWarned = nil
 	playerInList = nil
@@ -299,31 +285,6 @@ function mod:SPELL_AURA_REMOVED(args)
 		end
 	end
 end
---[[
-do
-	local whelpIds = {
-		47265,
-		48047,
-		48048,
-		48049,
-		48050,
-	}
-	function mod:WhelpWatcher(...)
-		local sGUID = select(11, ...)
-		local mobId = tonumber(sGUID:sub(7, 10), 16)
-		for i, v in next, whelpIds do
-			if mobId == v then whelpGUIDs[sGUID] = true end
-		end
-	end
-end--]]
---An attempt to do same as above only in a way i know how
---[[function mod:SWING_DAMAGE(args)
-	if args:GetSrcCreatureID() == 47265 or args:GetSrcCreatureID() == 48047 or args:GetSrcCreatureID() == 48048 or args:GetSrcCreatureID() == 48049 or args:GetSrcCreatureID() == 48050 then
-		whelpGUIDs[args.sourceGUID] = true
-	end
-end
-
-mod.SWING_DAMAGE = mod.SWING_MISSED--]]
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(92954, 92959) then
