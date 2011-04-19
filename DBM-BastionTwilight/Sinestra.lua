@@ -130,7 +130,10 @@ local function orbWarning(source)
 		else
 			specWarnSlicer:Show()--If orb list works, then the whole raid doesn't need a special warning (just ones with orbs do), but if it failed then special warn everyone!
 		end
-	elseif source == "damage" then
+	elseif source == "damage" then--We got the 2 real targets now
+		self:ClearIcons()--Clear all icons then set only the right 2.
+		if orbList[1] then mod:SetIcon(orbList[1], 8) end
+		if orbList[2] then mod:SetIcon(orbList[2], 7) end
 		warnOrbs:Show(table.concat(orbList, "<, >"))
 		mod:Schedule(10, wipeOrbList, true)
 	end
