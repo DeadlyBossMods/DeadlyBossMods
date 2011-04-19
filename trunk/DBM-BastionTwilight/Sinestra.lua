@@ -13,8 +13,8 @@ mod:RegisterEvents(
 	"SPELL_AURA_APPLIED",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
-	"SWING_DAMAGE",
-	"SWING_MISSED",
+--	"SWING_DAMAGE",
+--	"SWING_MISSED",
 	"SPELL_DAMAGE",
 	"UNIT_DIED"
 )
@@ -68,7 +68,7 @@ local calenGUID = 0
 local orbList = {}
 local orbWarned = nil
 local playerInList = nil
-local whelpGUIDs = {}
+--local whelpGUIDs = {}
 local wrackName = GetSpellInfo(92955)
 local wrackTargets = {}
 
@@ -86,17 +86,18 @@ end
 
 local function isTargetableByOrb(unit)
 	-- check tanks
-	if isTank(unit) then return false end
+	if isTank(unit) then return false end--Ignore anyone defined in blizz main tanks.
 	-- check sinestra's target too
-	if UnitIsUnit("boss1target", unit) then return false end
+	if UnitIsUnit("boss1target", unit) then return false end--Ignore anyone with Sinestra Aggro
 	-- and maybe do a check for whelp targets
 	-- not 100% sure if whelp "tanks" can be targeted by the orb or not
-	for k, v in pairs(whelpGUIDs) do
+	if self:GetBossTarget(47265) or self:GetBossTarget(48047) or self:GetBossTarget(48048) or self:GetBossTarget(48049) or self:GetBossTarget(48050) then return false end--Ignore anyone with whelp aggro
+--[[	for k, v in pairs(whelpGUIDs) do
 		local whelp = mod:GetUnitIdByGUID(k)
 		if whelp then
 			if UnitIsUnit(whelp.."target", unit) then return false end
 		end
-	end
+	end--]]
 	return true
 end
 
@@ -118,7 +119,7 @@ end
 local function wipeWhelpList(resetWarning)
 	if resetWarning then orbWarned = nil end
 	playerInList = nil
-	wipe(whelpGUIDs)
+--	wipe(whelpGUIDs)
 end
 
 local function orbWarning(source)
@@ -177,7 +178,7 @@ function mod:OnCombatStart(delay)
 	timerDragon:Start(16-delay)
 	timerBreathCD:Start(21-delay)
 	timerSlicer:Start(29-delay)
-	wipe(whelpGUIDs)
+--	wipe(whelpGUIDs)
 	wipe(orbList)
 	orbWarned = nil
 	playerInList = nil
@@ -316,13 +317,13 @@ do
 	end
 end--]]
 --An attempt to do same as above only in a way i know how
-function mod:SWING_DAMAGE(args)
+--[[function mod:SWING_DAMAGE(args)
 	if args:GetSrcCreatureID() == 47265 or args:GetSrcCreatureID() == 48047 or args:GetSrcCreatureID() == 48048 or args:GetSrcCreatureID() == 48049 or args:GetSrcCreatureID() == 48050 then
 		whelpGUIDs[args.sourceGUID] = true
 	end
 end
 
-mod.SWING_DAMAGE = mod.SWING_MISSED
+mod.SWING_DAMAGE = mod.SWING_MISSED--]]
 
 function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(92954, 92959) then
