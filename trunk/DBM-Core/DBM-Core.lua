@@ -1525,7 +1525,7 @@ do
 	
 	-- DBM uses the following prefixes since 4.1 as pre-4.1 sync code is going to be incompatible anways, so this is the perfect opportunity to throw away the old and long names
 	-- M = Mod
-	-- P = Pull
+	-- C = Combat start
 	-- K = Kill
 	-- H = Hi!
 	-- V = Incoming version information
@@ -1542,7 +1542,7 @@ do
 		end
 	end
 
-	syncHandlers["P"] = function(sender, delay, mod, revision)
+	syncHandlers["C"] = function(sender, delay, mod, revision)
 		if select(2, IsInInstance()) == "pvp" then return end
 		local lag = select(4, GetNetStats()) / 1000
 		delay = tonumber(delay or 0) or 0
@@ -1986,7 +1986,7 @@ function DBM:StartCombat(mod, delay, synced)
 		end
 		if mod.OnCombatStart and mod.Options.Enabled then mod:OnCombatStart(delay or 0) end
 		if not synced then
-			sendSync("P", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
+			sendSync("C", (delay or 0).."\t"..mod.id.."\t"..(mod.revision or 0))
 		end
 		fireEvent("pull", mod, delay, synced)
 		-- http://www.deadlybossmods.com/forum/viewtopic.php?t=1464
