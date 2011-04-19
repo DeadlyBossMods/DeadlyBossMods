@@ -95,7 +95,7 @@ local function populateOrbList()
 		if GetInstanceDifficulty() == 3 and i > 10 then return end
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
 		local n = GetRaidRosterInfo(i)
-		-- Has aggro on something, but not a tank (aka not tanking Sinestra or Whelps)
+		-- Has aggro on something, but not a tank
 		if UnitThreatSituation(n) == 3 and isTargetableByOrb(n) then
 			if UnitIsUnit(n, "player") then playerInList = true end
 			orbList[#orbList + 1] = n
@@ -111,6 +111,7 @@ end
 local function orbWarning(source)
 	if playerInList and not mod:IsTank() then specWarnOrb:Show() end
 	if mod.Options.SetIconOnOrbs then
+		self:ClearIcons()
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
 		if orbList[2] then mod:SetIcon(orbList[2], 7) end
 		if orbList[3] then mod:SetIcon(orbList[3], 6) end
@@ -124,16 +125,18 @@ local function orbWarning(source)
 	if source == "spawn" then
 		if #orbList > 0 then
 			warnOrbs:Show(table.concat(orbList, "<, >"))
-			-- if we could guess orb targets lets wipe the whelpGUIDs in 5 sec
+			-- if we could guess orb targets lets wipe the orb list in 5 sec
 			-- if not then we might as well just save them for next time
 			mod:Schedule(5, wipeOrbList) -- might need to adjust this
 		else
 			specWarnSlicer:Show()--If orb list works, then the whole raid doesn't need a special warning (just ones with orbs do), but if it failed then special warn everyone!
 		end
 	elseif source == "damage" then--We got the 2 real targets now
-		self:ClearIcons()--Clear all icons then set only the right 2.
-		if orbList[1] then mod:SetIcon(orbList[1], 8) end
-		if orbList[2] then mod:SetIcon(orbList[2], 7) end
+		if mod.Options.SetIconOnOrbs then
+			self:ClearIcons()--Clear all icons then set only the right 2.
+			if orbList[1] then mod:SetIcon(orbList[1], 8) end
+			if orbList[2] then mod:SetIcon(orbList[2], 7) end
+		end
 		warnOrbs:Show(table.concat(orbList, "<, >"))
 		mod:Schedule(10, wipeOrbList, true)
 	end
