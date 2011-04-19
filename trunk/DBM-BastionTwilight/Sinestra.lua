@@ -91,7 +91,7 @@ local function isTargetableByOrb(unit)
 	if UnitIsUnit("boss1target", unit) then return false end--Ignore anyone with Sinestra Aggro
 	-- and maybe do a check for whelp targets
 	-- not 100% sure if whelp "tanks" can be targeted by the orb or not
-	if self:GetBossTarget(47265) or self:GetBossTarget(48047) or self:GetBossTarget(48048) or self:GetBossTarget(48049) or self:GetBossTarget(48050) then return false end--Ignore anyone with whelp aggro
+	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return false end--Ignore anyone with whelp aggro
 --[[	for k, v in pairs(whelpGUIDs) do
 		local whelp = mod:GetUnitIdByGUID(k)
 		if whelp then
