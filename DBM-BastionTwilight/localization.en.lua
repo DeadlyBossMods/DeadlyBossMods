@@ -141,9 +141,11 @@ L:SetWarningLocalization({
 	SpecWarnSlicer		= "Twilight Slicer soon!",
 	warnWrackJump		= "%s jumped to >%s<",
 	WarnWrackCount5s	= "%d sec elapsed since last Wrack",
+	warnAggro			= "%s have Aggro",
+	SpecWarnAggroOnYou	= "You have Aggro!",
 	SpecWarnDispel		= "%d sec elapsed since last Wrack - Dispel Now!",
 	SpecWarnEggWeaken	= "Twilight Carapace dissipated - Dps EGG Now!",
-	SpecWarnEggShield	= "Twilight Capapace Regenerated!"
+	SpecWarnEggShield	= "Twilight Capapace Regenerated!",
 })
 
 L:SetTimerLocalization({
@@ -158,6 +160,8 @@ L:SetOptionLocalization({
 	WarnEggWeaken		= "Show pre-warning for when $spell:87654 dissipates",
 	warnWrackJump		= "Announce $spell:92955 jump targets",
 	WarnWrackCount5s	= "Announce $spell:92955 elapsed player duration at 10, 15, 20 seconds",
+	warnAggro			= "Announce players who have Aggro when Orbs spawn",
+	SpecWarnAggroOnYou	= "Show special warning if you have Aggro when Orbs spawn",
 	SpecWarnSlicer		= "Show special warning for $spell:92954\n(Expected warning. may not be accurate)",
 	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)",
 	SpecWarnEggWeaken	= "Show special warning when $spell:87654 dissipates",
@@ -165,7 +169,7 @@ L:SetOptionLocalization({
 	TimerDragon			= "Show timer for new Twilight Whelp",
 	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
 	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
-	SetIconOnOrbs		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(92954)
+	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn"
 })
 
 L:SetMiscLocalization({

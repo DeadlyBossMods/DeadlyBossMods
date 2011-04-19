@@ -4,7 +4,7 @@ local L		= mod:GetLocalizedStrings()
 mod:SetRevision(("$Revision$"):sub(12, -3))
 mod:SetCreatureID(45213)
 mod:SetZone()
-mod:SetUsedIcons(7, 8)
+mod:SetUsedIcons(1, 2, 3, 4, 5, 6, 7, 8)
 
 mod:RegisterCombat("combat")
 
@@ -30,14 +30,14 @@ local warnExtinction	= mod:NewSpellAnnounce(86227, 4)
 local warnEggShield		= mod:NewSpellAnnounce(87654, 3)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
-local warnOrbs			= mod:NewTargetAnnounce(92954)
+local warnOrbs			= mod:NewAnnounce("warnAggro", 4, 92954)
 
 local specWarnSlicer	= mod:NewSpecialWarning("SpecWarnSlicer")
 local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately. (Maybe add support for common 10 man variation with if/else rules?)
 local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false, nil, nil, true)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
-local specWarnOrb		= mod:NewSpecialWarningYou(92954)
+local specWarnOrb		= mod:NewSpecialWarning("SpecWarnAggroOnYou")
 
 local timerBreathCD		= mod:NewCDTimer(21, 92944)
 local timerSlicer		= mod:NewNextTimer(28, 92954)
@@ -84,7 +84,7 @@ end
 local function isTargetableByOrb(unit)
 	if isTank(unit) then return false end--Ignore anyone defined in a tank role or in blizz MTs.
 	if UnitIsUnit("boss1target", unit) then return false end--Ignore anyone with Sinestra Aggro
-	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return false end--Ignore anyone with whelp aggro
+--	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return false end--Ignore anyone with whelp aggro
 	return true
 end
 
@@ -103,17 +103,22 @@ local function populateOrbList()
 	end
 end
 
-local function wipeWhelpList(resetWarning)
+local function wipeOrbList(resetWarning)
 	if resetWarning then orbWarned = nil end
 	playerInList = nil
---	wipe(whelpGUIDs)
 end
 
 local function orbWarning(source)
-	if playerInList then specWarnOrb:Show() end
+	if playerInList and not mod:IsTank() then specWarnOrb:Show() end
 	if mod.Options.SetIconOnOrbs then
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
 		if orbList[2] then mod:SetIcon(orbList[2], 7) end
+		if orbList[3] then mod:SetIcon(orbList[3], 6) end
+		if orbList[4] then mod:SetIcon(orbList[4], 5) end
+		if orbList[5] then mod:SetIcon(orbList[5], 4) end
+		if orbList[6] then mod:SetIcon(orbList[6], 3) end
+		if orbList[7] then mod:SetIcon(orbList[7], 2) end
+		if orbList[8] then mod:SetIcon(orbList[8], 1) end
 	end
 
 	if source == "spawn" then
@@ -121,13 +126,13 @@ local function orbWarning(source)
 			warnOrbs:Show(table.concat(orbList, "<, >"))
 			-- if we could guess orb targets lets wipe the whelpGUIDs in 5 sec
 			-- if not then we might as well just save them for next time
-			mod:ScheduleTimer(wipeWhelpList, 5) -- might need to adjust this
+			mod:Schedule(5, wipeOrbList) -- might need to adjust this
 		else
 			specWarnSlicer:Show()--If orb list works, then the whole raid doesn't need a special warning (just ones with orbs do), but if it failed then special warn everyone!
 		end
 	elseif source == "damage" then
 		warnOrbs:Show(table.concat(orbList, "<, >"))
-		mod:ScheduleTimer(wipeWhelpList, 10, true) -- might need to adjust this
+		mod:Schedule(10, wipeOrbList, true)
 	end
 end
 
