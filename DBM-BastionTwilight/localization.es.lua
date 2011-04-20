@@ -139,9 +139,9 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnDragon			= "Sale Cría Crepuscular",
-	WarnSlicerSoon		= "¡Cercenadora Crepuscular en %d seg!",
+	WarnOrbsSoon		= "¡Cercenadora Crepuscular en %d seg!",
 	WarnEggWeaken		= "Huevo sin Caparazón Crepuscular",
-	SpecWarnSlicer		= "¡Cercenadora Crepuscular pronto!",
+	SpecWarnOrbs		= "¡Cercenadora Crepuscular pronto!",
 	warnWrackJump		= "%s ha saltado a >%s<",
 	WarnWrackCount5s	= "%d segundos des del último Arruinar",
 	SpecWarnDispel		= "¡Han pasado %d seg des del último Arruinar ¡Dispelea ahora!",
@@ -158,11 +158,11 @@ L:SetTimerLocalization({
 
 L:SetOptionLocalization({
 	WarnDragon			= "Mostrar aviso cuando salga una Cría Crepuscular",
-	WarnSlicerSoon		= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
+	WarnOrbsSoon		= "Mostrar pre-aviso para $spell:92954 (5s antes, cada segundo)\n(Puede ser impreciso. Puede spamear.)",
 	WarnEggWeaken		= "Mostrar aviso cuando un huevo se haya debilitado",
 	warnWrackJump		= "Anunciar los objetivos del salto de $spell:92955",
 	WarnWrackCount5s	= "Announce los segundos de $spell:92955 transcurridos a los 10, 15, 20 segundos",
-	SpecWarnSlicer		= "Mostrar aviso especial para $spell:92954\n(Puede ser impreciso.)",
+	SpecWarnOrbs		= "Mostrar aviso especial para $spell:92954\n(Puede ser impreciso.)",
 	SpecWarnDispel		= "Mostrar aviso especial para dispellear $spell:92955\n(después de cierto tiempo de que haya saltado)",
 	SpecWarnEggWeaken	= "Mostrar aviso especial cuando $spell:87654 es eliminado",
 	SpecWarnEggShield	= "Mostrar aviso especial cuando $spell:87654 se hay regenerado",
