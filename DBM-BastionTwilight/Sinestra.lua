@@ -21,7 +21,7 @@ local warnBreath		= mod:NewSpellAnnounce(92944, 3)
 local warnSlicerSoon	= mod:NewAnnounce("WarnSlicerSoon", 2, 92954) -- yeah, this stuff can be very spammy, but in Sinestra, Twilight Slicer is very very very important, so on it by default.
 local warnWrack			= mod:NewTargetAnnounce(92955, 4)
 local warnWrackJump		= mod:NewAnnounce("warnWrackJump", 3, 92955, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
-local WarnWrackCount5s	= mod:NewAnnounce("WarnWrackCount5s", 2, 92955, false)--Support the common 10 man strat of 20 15 15 10 (or 25 if they do it same way)
+local warnWrackCount5s	= mod:NewAnnounce("WarnWrackCount5s", 2, 92955, false)--Support the common 10 man strat of 20 15 15 10 (or 25 if they do it same way)
 local warnDragon		= mod:NewAnnounce("WarnDragon", 3, 69002)
 local warnEggWeaken		= mod:NewAnnounce("WarnEggWeaken", 4, 61357)
 local warnPhase2		= mod:NewPhaseAnnounce(2)
@@ -65,30 +65,32 @@ local redSpam = 0
 local calenGUID = 0
 local orbList = {}
 local orbWarned = nil
-local playerInList = nil
+local playerIsOrb = nil
 local wrackName = GetSpellInfo(92955)
 local wrackTargets = {}
+
+local function resetPlayerOrbStatus(resetWarning)
+	if resetWarning then orbWarned = nil end
+	playerIsOrb = nil
+end
 
 local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
+	-- 3. anyone with Sinestra Aggro
+	-- 4. anyone with whelp aggro (commented). needs review.
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
 	if UnitGroupRolesAssigned(unit) == "TANK" then
 		return true
 	end
+	if UnitIsUnit("boss1target", unit) then return true end
+--	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return true end
 	return false
 end
 
-local function isTargetableByOrb(unit)
-	if isTank(unit) then return false end--Ignore anyone defined in a tank role or in blizz MTs.
-	if UnitIsUnit("boss1target", unit) then return false end--Ignore anyone with Sinestra Aggro
---	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return false end--Ignore anyone with whelp aggro
-	return true
-end
-
-local function populateOrbList()
+local function showOrbWarning(source)
 	wipe(orbList)
 	for i = 1, GetNumRaidMembers() do
 		-- do some checks for 25/10 man raid size so we don't warn for ppl who are not in the instance
@@ -96,20 +98,13 @@ local function populateOrbList()
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
-		if UnitThreatSituation(n) == 3 and isTargetableByOrb(n) then
-			if UnitIsUnit(n, "player") then playerInList = true end
+		if UnitThreatSituation(n) == 3 and not isTank(n) then
+			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
 		end
 	end
-end
 
-local function wipeOrbList(resetWarning)
-	if resetWarning then orbWarned = nil end
-	playerInList = nil
-end
-
-local function orbWarning(source)
-	if playerInList and not mod:IsTank() then specWarnOrb:Show() end
+	if playerIsOrb and not mod:IsTank() then specWarnOrb:Show() end
 	if mod.Options.SetIconOnOrbs then
 		self:ClearIcons()
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
@@ -127,7 +122,7 @@ local function orbWarning(source)
 			warnOrbs:Show(table.concat(orbList, "<, >"))
 			-- if we could guess orb targets lets wipe the orb list in 5 sec
 			-- if not then we might as well just save them for next time
-			mod:Schedule(5, wipeOrbList) -- might need to adjust this
+			mod:Schedule(5, resetPlayerOrbStatus) -- might need to adjust this
 		else
 			specWarnSlicer:Show()--If orb list works, then the whole raid doesn't need a special warning (just ones with orbs do), but if it failed then special warn everyone!
 		end
@@ -138,7 +133,7 @@ local function orbWarning(source)
 			if orbList[2] then mod:SetIcon(orbList[2], 7) end
 		end
 		warnOrbs:Show(table.concat(orbList, "<, >"))
-		mod:Schedule(10, wipeOrbList, true)
+		mod:Schedule(10, resetPlayerOrbStatus, true)
 	end
 end
 
@@ -152,8 +147,7 @@ function mod:SlicerRepeat()
 		warnSlicerSoon:Schedule(27, 1)
 	end
 	self:ScheduleMethod(28, "SlicerRepeat")
-	populateOrbList()
-	orbWarning("spawn")
+	showOrbWarning("spawn")
 end
 
 local function showWrackWarning()
@@ -178,7 +172,7 @@ function mod:OnCombatStart(delay)
 	timerSlicer:Start(29-delay)
 	wipe(orbList)
 	orbWarned = nil
-	playerInList = nil
+	playerIsOrb = nil
 	table.wipe(wrackTargets)
 	if self.Options.WarnSlicerSoon then
 		warnSlicerSoon:Schedule(24, 5)
@@ -217,13 +211,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		lastDispeled = 0
 		wrackWarned4 = false
 		wrackWarned2 = false
-		WarnWrackCount5s:Schedule(10, 10)
-		WarnWrackCount5s:Schedule(15, 15)
-		WarnWrackCount5s:Schedule(20, 20)
+		warnWrackCount5s:Schedule(10, 10)
+		warnWrackCount5s:Schedule(15, 15)
+		warnWrackCount5s:Schedule(20, 20)
 		specWarnDispel:Schedule(18, 18)
 		self:Schedule(60, function()
 			specWarnDispel:Cancel()
-			WarnWrackCount5s:Cancel()
+			warnWrackCount5s:Cancel()
 		end)
 	elseif args:IsSpellID(89435, 92956) and (GetTime() - oldWrackTime < 60 or GetTime() - newWrackTime > 12) then -- jumped wracks (10,25)
 		newWrackCount = newWrackCount + 1
@@ -232,18 +226,18 @@ function mod:SPELL_AURA_APPLIED(args)
 		self:Schedule(0.3, showWrackWarning)
 		if newWrackCount > 3 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned4 then
 			specWarnDispel:Cancel()
-			WarnWrackCount5s:Cancel()
-			WarnWrackCount5s:Schedule(10, 10)
-			WarnWrackCount5s:Schedule(15, 15)
-			WarnWrackCount5s:Schedule(20, 20)
+			warnWrackCount5s:Cancel()
+			warnWrackCount5s:Schedule(10, 10)
+			warnWrackCount5s:Schedule(15, 15)
+			warnWrackCount5s:Schedule(20, 20)
 			specWarnDispel:Schedule(12, 12)
 			wrackWarned4 = true
 		elseif newWrackCount > 1 and GetTime() - lastDispeled < 5 and GetTime() - newWrackTime < 60 and not wrackWarned2 then
 			specWarnDispel:Cancel()
-			WarnWrackCount5s:Cancel()
-			WarnWrackCount5s:Schedule(10, 10)
-			WarnWrackCount5s:Schedule(15, 15)
-			WarnWrackCount5s:Schedule(20, 20)
+			warnWrackCount5s:Cancel()
+			warnWrackCount5s:Schedule(10, 10)
+			warnWrackCount5s:Schedule(15, 15)
+			warnWrackCount5s:Schedule(20, 20)
 			specWarnDispel:Schedule(17, 17)
 			wrackWarned2 = true
 		end
@@ -298,11 +292,9 @@ function mod:SPELL_AURA_REMOVED(args)
 end
 
 function mod:SPELL_DAMAGE(args)
-	if args:IsSpellID(92954, 92959) then
-		populateOrbList()
-		if orbWarned then return end
+	if args:IsSpellID(92954, 92959) and not orbWarned then
 		orbWarned = true
-		orbWarning("damage")
+		showOrbWarning("damage")
 	end
 end
 
