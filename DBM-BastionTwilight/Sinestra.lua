@@ -32,7 +32,7 @@ local warnEggShield		= mod:NewSpellAnnounce(87654, 3)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
 
-local specWarnOrbs		= mod:NewSpecialWarning("SpecWarnOrbs")
+local specWarnOrbs		= mod:NewSpecialWarning("SpecWarnOrbs", nil, nil, nil, true)
 local specWarnOrbOnYou	= mod:NewSpecialWarning("SpecWarnAggroOnYou")
 local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately. (Maybe add support for common 10 man variation with if/else rules?)
 local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false, nil, nil, true)
