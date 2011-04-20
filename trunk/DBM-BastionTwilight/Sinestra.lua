@@ -18,7 +18,8 @@ mod:RegisterEvents(
 )
 
 local warnBreath		= mod:NewSpellAnnounce(92944, 3)
-local warnSlicerSoon	= mod:NewAnnounce("WarnSlicerSoon", 2, 92954) -- yeah, this stuff can be very spammy, but in Sinestra, Twilight Slicer is very very very important, so on it by default.
+local warnOrbsSoon		= mod:NewAnnounce("WarnOrbsSoon", 2, 92954) -- yeah, this stuff can be very spammy, but in Sinestra, Orbs is very very very important, so on it by default.
+local warnOrbs			= mod:NewAnnounce("warnAggro", 4, 92954)
 local warnWrack			= mod:NewTargetAnnounce(92955, 4)
 local warnWrackJump		= mod:NewAnnounce("warnWrackJump", 3, 92955, false)--Not spammy at all (unless you're dispellers are retarded and make it spammy). Useful for a raid leader to coordinate quicker, especially on 10 man with low wiggle room.
 local warnWrackCount5s	= mod:NewAnnounce("WarnWrackCount5s", 2, 92955, false)--Support the common 10 man strat of 20 15 15 10 (or 25 if they do it same way)
@@ -30,17 +31,16 @@ local warnExtinction	= mod:NewSpellAnnounce(86227, 4)
 local warnEggShield		= mod:NewSpellAnnounce(87654, 3)
 local warnPhase3		= mod:NewPhaseAnnounce(3)
 local warnRedEssence	= mod:NewSpellAnnounce(87946, 3)
-local warnOrbs			= mod:NewAnnounce("warnAggro", 4, 92954)
 
-local specWarnSlicer	= mod:NewSpecialWarning("SpecWarnSlicer")
+local specWarnOrbs		= mod:NewSpecialWarning("SpecWarnOrbs")
+local specWarnOrbOnYou	= mod:NewSpecialWarning("SpecWarnAggroOnYou")
 local specWarnDispel	= mod:NewSpecialWarning("SpecWarnDispel", false) -- this can be personal stuff, but Warck dispel also important In sinestra. adjust appropriately. (Maybe add support for common 10 man variation with if/else rules?)
 local specWarnBreath	= mod:NewSpecialWarningSpell(92944, false, nil, nil, true)
 local specWarnEggShield	= mod:NewSpecialWarning("SpecWarnEggShield", mod:IsRanged())
 local specWarnEggWeaken	= mod:NewSpecialWarning("SpecWarnEggWeaken", mod:IsRanged())
-local specWarnOrb		= mod:NewSpecialWarning("SpecWarnAggroOnYou")
 
 local timerBreathCD		= mod:NewCDTimer(21, 92944)
-local timerSlicer		= mod:NewNextTimer(28, 92954)
+local timerOrbs			= mod:NewTimer(28, "TimerOrbs", 92954)
 local timerWrack		= mod:NewBuffActiveTimer(60, 92955)
 local timerExtinction	= mod:NewCastTimer(16, 86227)
 local timerEggWeakening	= mod:NewTimer(4, "TimerEggWeakening", 61357)
@@ -91,7 +91,7 @@ local function isTank(unit)
 end
 
 local function showOrbWarning(source)
-	wipe(orbList)
+	table.wipe(orbList)
 	for i = 1, GetNumRaidMembers() do
 		-- do some checks for 25/10 man raid size so we don't warn for ppl who are not in the instance
 		if GetInstanceDifficulty() == 3 and i > 10 then return end
@@ -104,49 +104,49 @@ local function showOrbWarning(source)
 		end
 	end
 
-	if playerIsOrb and not mod:IsTank() then specWarnOrb:Show() end
+	if playerIsOrb and not mod:IsTank() then specWarnOrbOnYou:Show() end
+	if not playerIsOrb and source == "spawn" then
+		-- Orbs also important for non-targeted players. (aoe damage 10 yards).
+		-- Currently, orb targets not accurate. So special warn to everyone.
+		specWarnOrbs:Show()
+	end
 	if mod.Options.SetIconOnOrbs then
 		self:ClearIcons()
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
 		if orbList[2] then mod:SetIcon(orbList[2], 7) end
-		if orbList[3] then mod:SetIcon(orbList[3], 6) end
-		if orbList[4] then mod:SetIcon(orbList[4], 5) end
-		if orbList[5] then mod:SetIcon(orbList[5], 4) end
-		if orbList[6] then mod:SetIcon(orbList[6], 3) end
-		if orbList[7] then mod:SetIcon(orbList[7], 2) end
-		if orbList[8] then mod:SetIcon(orbList[8], 1) end
+		if source == "spawn" then
+			if orbList[3] then mod:SetIcon(orbList[3], 6) end
+			if orbList[4] then mod:SetIcon(orbList[4], 5) end
+			if orbList[5] then mod:SetIcon(orbList[5], 4) end
+			if orbList[6] then mod:SetIcon(orbList[6], 3) end
+			if orbList[7] then mod:SetIcon(orbList[7], 2) end
+			if orbList[8] then mod:SetIcon(orbList[8], 1) end
+		end
 	end
 
 	if source == "spawn" then
-		if #orbList > 0 then
+		if #orbList >= 2 then
 			warnOrbs:Show(table.concat(orbList, "<, >"))
 			-- if we could guess orb targets lets wipe the orb list in 5 sec
 			-- if not then we might as well just save them for next time
 			mod:Schedule(5, resetPlayerOrbStatus) -- might need to adjust this
-		else
-			specWarnSlicer:Show()--If orb list works, then the whole raid doesn't need a special warning (just ones with orbs do), but if it failed then special warn everyone!
 		end
 	elseif source == "damage" then--We got the 2 real targets now
-		if mod.Options.SetIconOnOrbs then
-			self:ClearIcons()--Clear all icons then set only the right 2.
-			if orbList[1] then mod:SetIcon(orbList[1], 8) end
-			if orbList[2] then mod:SetIcon(orbList[2], 7) end
-		end
 		warnOrbs:Show(table.concat(orbList, "<, >"))
 		mod:Schedule(10, resetPlayerOrbStatus, true)
 	end
 end
 
-function mod:SlicerRepeat()
-	timerSlicer:Start()
-	if self.Options.WarnSlicerSoon then
-		warnSlicerSoon:Schedule(23, 5)
-		warnSlicerSoon:Schedule(24, 4)
-		warnSlicerSoon:Schedule(25, 3)
-		warnSlicerSoon:Schedule(26, 2)
-		warnSlicerSoon:Schedule(27, 1)
+function mod:OrbsRepeat()
+	timerOrbs:Start()
+	if self.Options.WarnOrbsSoon then
+		warnOrbsSoon:Schedule(23, 5)
+		warnOrbsSoon:Schedule(24, 4)
+		warnOrbsSoon:Schedule(25, 3)
+		warnOrbsSoon:Schedule(26, 2)
+		warnOrbsSoon:Schedule(27, 1)
 	end
-	self:ScheduleMethod(28, "SlicerRepeat")
+	self:ScheduleMethod(28, "OrbsRepeat")
 	showOrbWarning("spawn")
 end
 
@@ -169,19 +169,19 @@ function mod:OnCombatStart(delay)
 	calenGUID = 0
 	timerDragon:Start(16-delay)
 	timerBreathCD:Start(21-delay)
-	timerSlicer:Start(29-delay)
-	wipe(orbList)
+	timerOrbs:Start(29-delay)
+	table.wipe(orbList)
 	orbWarned = nil
 	playerIsOrb = nil
 	table.wipe(wrackTargets)
-	if self.Options.WarnSlicerSoon then
-		warnSlicerSoon:Schedule(24, 5)
-		warnSlicerSoon:Schedule(25, 4)
-		warnSlicerSoon:Schedule(26, 3)
-		warnSlicerSoon:Schedule(27, 2)
-		warnSlicerSoon:Schedule(28, 1)
+	if self.Options.WarnOrbsSoon then
+		warnOrbsSoon:Schedule(24, 5)
+		warnOrbsSoon:Schedule(25, 4)
+		warnOrbsSoon:Schedule(26, 3)
+		warnOrbsSoon:Schedule(27, 2)
+		warnOrbsSoon:Schedule(28, 1)
 	end
-	self:ScheduleMethod(29-delay, "SlicerRepeat")
+	self:ScheduleMethod(29-delay, "OrbsRepeat")
 end
 
 function mod:SPELL_CAST_START(args)
@@ -245,11 +245,11 @@ function mod:SPELL_AURA_APPLIED(args)
 		eggDown = 0
 		warnPhase2:Show()
 		timerBreathCD:Cancel()
-		timerSlicer:Cancel()
-		if self.Options.WarnSlicerSoon then
-			warnSlicerSoon:Cancel()
+		timerOrbs:Cancel()
+		if self.Options.WarnOrbsSoon then
+			warnOrbsSoon:Cancel()
 		end
-		self:UnscheduleMethod("SlicerRepeat")
+		self:UnscheduleMethod("OrbsRepeat")
 	elseif args:IsSpellID(87231) and not args:IsDestTypePlayer() then
 		if not DBM.BossHealth:HasBoss(args.sourceGUID) then
 			DBM.BossHealth:AddBoss(args.sourceGUID, args.sourceName)
@@ -317,16 +317,16 @@ function mod:UNIT_DIED(args)
 			timerEggWeaken:Cancel()
 			warnPhase3:Show()
 			timerBreathCD:Start()
-			timerSlicer:Start(30)
+			timerOrbs:Start(30)
 			timerDragon:Start()
-			if self.Options.WarnSlicerSoon then
-				warnSlicerSoon:Schedule(24, 5)
-				warnSlicerSoon:Schedule(25, 4)
-				warnSlicerSoon:Schedule(26, 3)
-				warnSlicerSoon:Schedule(27, 2)
-				warnSlicerSoon:Schedule(28, 1)
+			if self.Options.WarnOrbsSoon then
+				warnOrbsSoon:Schedule(24, 5)
+				warnOrbsSoon:Schedule(25, 4)
+				warnOrbsSoon:Schedule(26, 3)
+				warnOrbsSoon:Schedule(27, 2)
+				warnOrbsSoon:Schedule(28, 1)
 			end
-			self:ScheduleMethod(30, "SlicerRepeat")
+			self:ScheduleMethod(30, "OrbsRepeat")
 		end
 	end
 end
