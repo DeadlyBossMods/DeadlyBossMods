@@ -136,9 +136,9 @@ L:SetGeneralLocalization({
 
 L:SetWarningLocalization({
 	WarnDragon			= "Twilight Whelp Spawned",
-	WarnSlicerSoon		= "Orbs in %d sec!",
+	WarnOrbsSoon		= "Orbs in %d sec!",
 	WarnEggWeaken		= "Twilight Carapace dissipated on Egg",
-	SpecWarnSlicer		= "Orbs soon!",
+	SpecWarnOrbs		= "Orbs coming! Watch Out!",
 	warnWrackJump		= "%s jumped to >%s<",
 	WarnWrackCount5s	= "%d sec elapsed since last Wrack",
 	warnAggro			= "%s have Aggro (Orbs candidate)",
@@ -151,24 +151,26 @@ L:SetWarningLocalization({
 L:SetTimerLocalization({
 	TimerDragon			= "Next Twilight Whelps",
 	TimerEggWeakening	= "Twilight Carapace dissipates",
-	TimerEggWeaken		= "Twilight Capapace Regeneration"
-})	
+	TimerEggWeaken		= "Twilight Capapace Regeneration",
+	TimerOrbs			= "Next Orbs"
+})
 
 L:SetOptionLocalization({
 	WarnDragon			= "Show warning when Twilight Whelp Spawns",
-	WarnSlicerSoon		= "Show pre-warning for Orbs (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
+	WarnOrbsSoon		= "Show pre-warning for Orbs (Before 5s, Every 1s)\n(Expected warning. may not be accurate. Can be spammy.)",
 	WarnEggWeaken		= "Show pre-warning for when $spell:87654 dissipates",
 	warnWrackJump		= "Announce $spell:92955 jump targets",
 	WarnWrackCount5s	= "Announce $spell:92955 elapsed player duration at 10, 15, 20 seconds",
 	warnAggro			= "Announce players who have Aggro when Orbs spawn (Can be target of Orbs)",
 	SpecWarnAggroOnYou	= "Show special warning if you have Aggro when Orbs spawn\n(Can be target of Orbs)",
-	SpecWarnSlicer		= "Show special warning when Orbs spawn\n(Expected warning. may not be accurate)",
+	SpecWarnOrbs		= "Show special warning when Orbs spawn (Expected warning)",
 	SpecWarnDispel		= "Show special warning to dispel $spell:92955\n(after certain time elapsed from casted/jumped)",
 	SpecWarnEggWeaken	= "Show special warning when $spell:87654 dissipates",
 	SpecWarnEggShield	= "Show special warning when $spell:87654 regenerated",
 	TimerDragon			= "Show timer for new Twilight Whelp",
 	TimerEggWeakening	= "Show timer for when $spell:87654 dissipates",
 	TimerEggWeaken		= "Show timer for $spell:87654 regeneration",
+	TimerOrbs			= "Show timer for next Orbs (Expected timer. may not be accurate)",
 	SetIconOnOrbs		= "Set icons on players who have Aggro when Orbs spawn\n(Can be target of Orbs)"
 })
 
