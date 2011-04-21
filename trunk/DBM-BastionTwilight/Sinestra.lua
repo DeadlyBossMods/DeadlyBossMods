@@ -11,6 +11,7 @@ mod:RegisterCombat("combat")
 mod:RegisterEvents(
 	"SPELL_CAST_START",
 	"SPELL_AURA_APPLIED",
+	"SPELL_AURA_APPLIED_DOSE",
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_DAMAGE",
@@ -68,6 +69,7 @@ local orbWarned = nil
 local playerIsOrb = nil
 local wrackName = GetSpellInfo(92955)
 local wrackTargets = {}
+local tanks = {}
 
 local function resetPlayerOrbStatus(resetWarning)
 	if resetWarning then orbWarned = nil end
@@ -78,7 +80,7 @@ local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
 	-- 3. anyone with Sinestra Aggro
-	-- 4. anyone with whelp aggro (commented). needs review.
+	-- 4. anyone with whelp aggro. scan Twilight Spilt debuff.
 	if GetPartyAssignment("MAINTANK", unit, 1) then
 		return true
 	end
@@ -86,6 +88,7 @@ local function isTank(unit)
 		return true
 	end
 	if UnitIsUnit("boss1target", unit) then return true end
+	if tanks[UnitName(unit)] then return true end
 --	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return true end
 	return false
 end
@@ -174,6 +177,7 @@ function mod:OnCombatStart(delay)
 	orbWarned = nil
 	playerIsOrb = nil
 	table.wipe(wrackTargets)
+	table.wipe(tanks)
 	if self.Options.WarnOrbsSoon then
 		warnOrbsSoon:Schedule(24, 5)
 		warnOrbsSoon:Schedule(25, 4)
@@ -271,6 +275,12 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRedEssence:Show()
 		timerRedEssence:Start()
 		redSpam = GetTime()
+	end
+end
+
+function mod:SPELL_AURA_APPLIED_DOSE(args)
+	if args:IsSpellID(89299, 92953) and not tanks[args.destName] then
+		tanks[args.destName] = true
 	end
 end
 
