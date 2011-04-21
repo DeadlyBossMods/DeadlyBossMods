@@ -15,7 +15,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_DAMAGE",
-	"SPELL_HEAL",
+--	"SPELL_HEAL",
 	"UNIT_DIED"
 )
 
@@ -280,7 +280,7 @@ function mod:SPELL_AURA_APPLIED(args)
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(89299, 92953) and not tanks[args.destName] then
+	if args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax("args.destName") >= 150000 then--No healer should have 150k health ;)
 		tanks[args.destName] = true
 	end
 end
@@ -311,11 +311,11 @@ end
 
 -- if healer mis registerd tanker, remove it. (too high cpu usage?)
 -- paladin : Beacon of Light, priest : Prayer of Healing, durid : Swiftmend, shaman : Riptide
-function mod:SPELL_HEAL(args)
+--[[function mod:SPELL_HEAL(args)
 	if args:IsSpellID(53652, 596, 18562, 61295) and tanks[args.sourceName] and self:IsInCombat() then
 		tanks[args.sourceName] = nil
 	end
-end
+end--]]
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellDragon or msg:find(L.YellDragon) then
