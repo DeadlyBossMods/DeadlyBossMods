@@ -276,11 +276,13 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRedEssence:Show()
 		timerRedEssence:Start()
 		redSpam = GetTime()
+	elseif args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax(args.destName) >= 165000 then--No healer should have 165 health ;)
+		tanks[args.destName] = true
 	end
 end
 
 function mod:SPELL_AURA_APPLIED_DOSE(args)
-	if args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax("args.destName") >= 165000 then--No healer should have 165 health ;)
+	if args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax(args.destName) >= 165000 then--No healer should have 165 health ;)
 		tanks[args.destName] = true
 	end
 end
