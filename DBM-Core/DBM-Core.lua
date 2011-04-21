@@ -2055,7 +2055,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("normal10") then
 				mod.stats.normalKills = mod.stats.normalKills + 1
 				mod.stats.normalLastTime = thisTime
-				if bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in two global CD. (lowest 10 man normal is kara, not sure about classic raids reporting, so this time is set very small)
+				if bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in one global CD. (all level 60 raids report as instance difficulty 1 which means this time has to be ridiculously low. It's more or less only gonna fix kill times of 0.)
 					mod.stats.normalBestTime = thisTime
 				else
 					mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
@@ -2071,7 +2071,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("normal25") then
 				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
 				mod.stats.normal25LastTime = thisTime
-				if bestTime > 0 and bestTime < 1.5 then--(TODO, see what classic raids report as, such as MC, if not this, raise this number)
+				if bestTime > 0 and bestTime < 10 then--(All classic raids report as difficulty 1 so this difficulty would mean naxx and later only. I could not find any record less than 20 seconds even for sarth or archavon or any naxx boss yet. So i'm leaving this 10 for now.)
 					mod.stats.normal25BestTime = thisTime
 				else
 					mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
