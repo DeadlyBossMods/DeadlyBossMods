@@ -70,13 +70,14 @@ local orbWarned = nil
 local playerIsOrb = nil
 local wrackName = GetSpellInfo(92955)
 local wrackTargets = {}
-local tanks = {}
+--local tanks = {}
 
 local function resetPlayerOrbStatus(resetWarning)
 	if resetWarning then orbWarned = nil end
 	playerIsOrb = nil
 end
 
+--[[
 local function isTank(unit)
 	-- 1. check blizzard tanks first
 	-- 2. check blizzard roles second
@@ -90,9 +91,8 @@ local function isTank(unit)
 	end
 	if UnitIsUnit("boss1target", unit) then return true end
 	if tanks[UnitName(unit)] then return true end
---	if (mod:GetBossTarget(47265) or mod:GetBossTarget(48047) or mod:GetBossTarget(48048) or mod:GetBossTarget(48049) or mod:GetBossTarget(48050)) == unit then return true end
 	return false
-end
+end--]]
 
 local function showOrbWarning(source)
 	table.wipe(orbList)
@@ -102,13 +102,14 @@ local function showOrbWarning(source)
 		if GetInstanceDifficulty() == 4 and i > 25 then return end
 		local n = GetRaidRosterInfo(i)
 		-- Has aggro on something, but not a tank
-		if UnitThreatSituation(n) == 3 and not isTank(n) then
+		if UnitThreatSituation(n) == 3 and UnitHealthMax(n) <= 165000 then--Much simpler, no istank function, no target scanning no nothing. Just clean health check
+--		if UnitThreatSituation(n) == 3 and not isTank(n) then
 			if UnitIsUnit(n, "player") then playerIsOrb = true end
 			orbList[#orbList + 1] = n
 		end
 	end
 
-	if playerIsOrb and not mod:IsTank() then specWarnOrbOnYou:Show() end
+	if playerIsOrb then specWarnOrbOnYou:Show() end
 	if not playerIsOrb and source == "spawn" then
 		-- Orbs also important for non-targeted players. (aoe damage 10 yards).
 		-- Currently, orb targets not accurate. So special warn to everyone.
@@ -178,7 +179,7 @@ function mod:OnCombatStart(delay)
 	orbWarned = nil
 	playerIsOrb = nil
 	table.wipe(wrackTargets)
-	table.wipe(tanks)
+--	table.wipe(tanks)
 	if self.Options.WarnOrbsSoon then
 		warnOrbsSoon:Schedule(24, 5)
 		warnOrbsSoon:Schedule(25, 4)
@@ -276,16 +277,16 @@ function mod:SPELL_AURA_APPLIED(args)
 		warnRedEssence:Show()
 		timerRedEssence:Start()
 		redSpam = GetTime()
-	elseif args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax(args.destName) >= 165000 then--No healer should have 165 health ;)
-		tanks[args.destName] = true
+--[[	elseif args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax(args.destName) >= 165000 then--No healer should have 165 health ;)
+		tanks[args.destName] = true--]]
 	end
 end
 
-function mod:SPELL_AURA_APPLIED_DOSE(args)
+--[[function mod:SPELL_AURA_APPLIED_DOSE(args)
 	if args:IsSpellID(89299, 92953) and not tanks[args.destName] and UnitHealthMax(args.destName) >= 165000 then--No healer should have 165 health ;)
 		tanks[args.destName] = true
 	end
-end
+end--]]
 
 function mod:SPELL_AURA_REMOVED(args)
 	if args:IsSpellID(87654) and GetTime() - eggSpam >= 3 then
@@ -310,14 +311,6 @@ function mod:SPELL_DAMAGE(args)
 		showOrbWarning("damage")
 	end
 end
-
--- if healer mis registerd tanker, remove it. (too high cpu usage?)
--- paladin : Beacon of Light, priest : Prayer of Healing, durid : Swiftmend, shaman : Riptide
---[[function mod:SPELL_HEAL(args)
-	if args:IsSpellID(53652, 596, 18562, 61295) and tanks[args.sourceName] and self:IsInCombat() then
-		tanks[args.sourceName] = nil
-	end
-end--]]
 
 function mod:CHAT_MSG_MONSTER_YELL(msg)
 	if msg == L.YellDragon or msg:find(L.YellDragon) then
