@@ -15,6 +15,7 @@ mod:RegisterEvents(
 	"SPELL_AURA_REMOVED",
 	"CHAT_MSG_MONSTER_YELL",
 	"SPELL_DAMAGE",
+	"SPELL_HEAL",
 	"UNIT_DIED"
 )
 
@@ -305,6 +306,14 @@ function mod:SPELL_DAMAGE(args)
 	if args:IsSpellID(92954, 92959) and not orbWarned then
 		orbWarned = true
 		showOrbWarning("damage")
+	end
+end
+
+-- if healer mis registerd tanker, remove it. (too high cpu usage?)
+-- paladin : Beacon of Light, priest : Prayer of Healing, durid : Swiftmend, shaman : Riptide
+function mod:SPELL_HEAL(args)
+	if args:IsSpellID(53652, 596, 18562, 61295) and tanks[args.sourceName] and self:IsInCombat() then
+		tanks[args.sourceName] = nil
 	end
 end
 
