@@ -2063,7 +2063,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("heroic10") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
-				if bestTime > 0 and bestTime < 10 then--you did not kill a heroic raid boss in 10 seconds (first heroic raid boss in game is ToC10 and most zergable boss would be 8,376,000 valk twins, would require 83760dps per person. 15 seconds feasable with no tanks/healers but even that's a stretch)
+				if bestTime > 0 and bestTime < 15 then--you did not kill a heroic raid boss in 15 seconds (first heroic raid boss in game is ToC10 and most zergable boss would be 8,376,000 valk twins. This could however change in a couple tiers. Current record is 31seconds)
 					mod.stats.heroicBestTime = thisTime
 				else
 					mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
@@ -2079,7 +2079,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("heroic25") then
 				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
 				mod.stats.heroic25LastTime = thisTime
-				if bestTime > 0 and bestTime < 20 then--(Math dictates that even level 85s couldn't kill a heroic Toc25 boss in less than 25 seconds even if they used 25 dps and no healers/tanks, so certainly no boss after there either.)
+				if bestTime > 0 and bestTime < 35 then--(Current fastest record heroic 25 boss kill is 00:52 on Lord Marrowgar)
 					mod.stats.heroic25BestTime = thisTime
 				else
 					mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
