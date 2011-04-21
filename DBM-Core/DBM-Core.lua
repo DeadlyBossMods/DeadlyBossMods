@@ -2044,22 +2044,46 @@ function DBM:EndCombat(mod, wipe)
 			local thisTime = GetTime() - mod.combatInfo.pull
 			local lastTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalLastTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicLastTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25LastTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25LastTime)
 			local bestTime = (mod:IsDifficulty("normal5", "normal10") and mod.stats.normalBestTime) or (mod:IsDifficulty("heroic5", "heroic10") and mod.stats.heroicBestTime) or (mod:IsDifficulty("normal25") and mod.stats.normal25BestTime) or (mod:IsDifficulty("heroic25") and mod.stats.heroic25BestTime)
-			if mod:IsDifficulty("normal5", "normal10") then
+			if mod:IsDifficulty("normal5") then
 				mod.stats.normalKills = mod.stats.normalKills + 1
 				mod.stats.normalLastTime = thisTime
 				mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
-			elseif mod:IsDifficulty("heroic5", "heroic10") then
+			elseif mod:IsDifficulty("heroic5") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
 				mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
+			elseif mod:IsDifficulty("normal10") then
+				mod.stats.normalKills = mod.stats.normalKills + 1
+				mod.stats.normalLastTime = thisTime
+				if bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in two global CD. (lowest 10 man normal is kara, not sure about classic raids reporting, so this time is set very small)
+					mod.stats.normalBestTime = thisTime
+				else
+					mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
+				end
+			elseif mod:IsDifficulty("heroic10") then
+				mod.stats.heroicKills = mod.stats.heroicKills + 1
+				mod.stats.heroicLastTime = thisTime
+				if bestTime > 0 and bestTime < 10 then--you did not kill a heroic raid boss in 10 seconds (first heroic raid boss in game is ToC10 and most zergable boss would be 8,376,000 valk twins, would require 83760dps per person. 15 seconds feasable with no tanks/healers but even that's a stretch)
+					mod.stats.heroicBestTime = thisTime
+				else
+					mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
+				end
 			elseif mod:IsDifficulty("normal25") then
 				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
 				mod.stats.normal25LastTime = thisTime
-				mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
+				if bestTime > 0 and bestTime < 1.5 then--(TODO, see what classic raids report as, such as MC, if not this, raise this number)
+					mod.stats.normal25BestTime = thisTime
+				else
+					mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
+				end
 			elseif mod:IsDifficulty("heroic25") then
 				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
 				mod.stats.heroic25LastTime = thisTime
-				mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
+				if bestTime > 0 and bestTime < 20 then--(Math dictates that even level 85s couldn't kill a heroic Toc25 boss in less than 25 seconds even if they used 25 dps and no healers/tanks, so certainly no boss after there either.)
+					mod.stats.heroic25BestTime = thisTime
+				else
+					mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
+				end
 			end
 			if not lastTime then
 				self:AddMsg(DBM_CORE_BOSS_DOWN:format(mod.combatInfo.name, strFromTime(thisTime)))
