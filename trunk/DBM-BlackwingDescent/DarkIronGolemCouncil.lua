@@ -106,12 +106,6 @@ local cloudSpam = 0
 local lastInterrupt = 0
 local incinerateCast = 0
 local encasing = false
---[[local bosses = {
-	[42178] = "Magmatron",
-	[42179] = "Electron",
-	[42180] = "Toxitron",
-	[42166] = "Arcanotron"
-}--]]
 
 function mod:ChemicalBombTarget()
 	local targetname = self:GetBossTarget(42180)
@@ -264,9 +258,8 @@ function mod:SPELL_AURA_APPLIED(args)
 		specWarnChemicalCloud:Show()
 		cloudSpam = GetTime()
 	elseif args:IsSpellID(79629, 91555, 91556, 91557) and args:IsDestTypeHostile() then--Check if Generator buff is gained by a hostile.
---[[		local targetCID = GetUnitCreatureID("target")
-		if args:GetDestCreatureID() == targetCID and bosses[targetCID] then --]]
-		if (args:GetDestCreatureID() == 42166 and self:GetUnitCreatureId("target") == 42166) or (args:GetDestCreatureID() == 42178 and self:GetUnitCreatureId("target") == 42178) or (args:GetDestCreatureID() == 42179 and self:GetUnitCreatureId("target") == 42179) or (args:GetDestCreatureID() == 42180 and self:GetUnitCreatureId("target") == 42180) then--Filter it to only warn for 4 golems and only warn person tanking it. (other tank would be targeting a different golem)
+		local targetCID = GetUnitCreatureID("target")--Get CID of current target
+		if args:GetDestCreatureID() == targetCID and args:GetDestCreatureID() ~= 42897 then--If target gaining buff is target then not an ooze (only hostiles left filtering oozes is golems)
 			specWarnGenerator:Show(args.destName)--Show special warning to move him out of it.
 		end
 	elseif args:IsSpellID(92048) then--Shadow Infusion, debuff 5 seconds before shadow conductor.
