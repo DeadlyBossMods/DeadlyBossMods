@@ -45,7 +45,7 @@ local warnActivated				= mod:NewTargetAnnounce(78740, 3)
 local specWarnBarrier			= mod:NewSpecialWarningSpell(79582, not mod:IsHealer())
 local specWarnAcquiringTarget	= mod:NewSpecialWarningYou(92037)
 local yellAcquiringTarget		= mod:NewYell(92037)
-local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false)--Heroic Ability
+local specWarnEncasingShadows	= mod:NewSpecialWarningTarget(92023, false, nil, nil, true)--Heroic Ability
 local yellEncasingShadows		= mod:NewYell(92023, L.YellTargetLock)
 --Electron
 local specWarnUnstableShield	= mod:NewSpecialWarningSpell(79900, not mod:IsHealer())
@@ -57,7 +57,7 @@ local yellShadowConductor		= mod:NewYell(92053)
 local specWarnShell				= mod:NewSpecialWarningSpell(79835, not mod:IsHealer())
 local specWarnBombTarget		= mod:NewSpecialWarningRun(80094)
 local yellFixate				= mod:NewYell(80094, nil, false)
-local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer(), nil, nil, true)
+local specWarnPoisonProtocol	= mod:NewSpecialWarningSpell(80053, not mod:IsHealer())
 local specWarnChemicalCloud		= mod:NewSpecialWarningMove(91473)
 local yellChemicalCloud			= mod:NewYell(91473)--May Return false tank yells
 local specWarnGrip				= mod:NewSpecialWarningSpell(91849, nil, nil, nil, true)--Heroic Ability

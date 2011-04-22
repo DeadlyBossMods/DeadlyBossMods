@@ -29,6 +29,7 @@ local warnPhase3			= mod:NewPhaseAnnounce(3)
 local warnCloud				= mod:NewSpellAnnounce(89588, 3)
 local warnLightingRod		= mod:NewTargetAnnounce(89668, 4)
 
+local specWarnWindBurst		= mod:NewSpecialWarningSpell(87770, nil, nil, nil, true)
 local specWarnIceStorm		= mod:NewSpecialWarningMove(91020)
 local specWarnCloud			= mod:NewSpecialWarningMove(89588)
 local specWarnLightningRod	= mod:NewSpecialWarningYou(89668)
@@ -115,6 +116,7 @@ end
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(87770, 93261, 93262, 93263) then--Phase 1 wind burst
 		warnWindBurst:Show()
+		specWarnWindBurst:Show()
 		timerWindBurstCD:Start()
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerWindBurst:Start(4)--4 second cast on heroic according to wowhead.
