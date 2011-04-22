@@ -147,7 +147,7 @@ local function theralionDelay()
 	timerEngulfingMagicNext:Start(15)
 	timerNextDeepBreath:Start()
 	ValionaLanded = false
-	if self.Options.RangeFrame then
+	if mod.Options.RangeFrame then
 		DBM.RangeCheck:Show(10)
 	end
 end
