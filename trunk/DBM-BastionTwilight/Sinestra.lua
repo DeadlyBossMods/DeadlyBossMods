@@ -115,7 +115,7 @@ local function showOrbWarning(source)
 		specWarnOrbs:Show()
 	end
 	if mod.Options.SetIconOnOrbs then
-		self:ClearIcons()
+		mod:ClearIcons()
 		if orbList[1] then mod:SetIcon(orbList[1], 8) end
 		if orbList[2] then mod:SetIcon(orbList[2], 7) end
 		if source == "spawn" then
