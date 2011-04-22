@@ -194,6 +194,7 @@ L:SetWarningLocalization({
 })
 
 L:SetTimerLocalization({
+	timerNefLanding			= "Nefarian lands",
 	OnySwipeTimer			= "Tail Lash CD (Ony)",
 	NefSwipeTimer			= "Tail Lash CD (Nef)",
 	OnyBreathTimer			= "Breath CD (Ony)",
@@ -206,6 +207,7 @@ L:SetOptionLocalization({
 	OnyBreath				= "Show warning for Onyxia's $spell:94124",
 	NefBreath				= "Show warning for Nefarian's $spell:94124",
 	specWarnShadowblazeSoon	= "Show pre-special warning for $spell:94085 (~5s)",
+	timerNefLanding			= "Show timer for when Nefarian lands",
 	OnySwipeTimer			= "Show timer for Onyxia's $spell:77827 cooldown",
 	NefSwipeTimer			= "Show timer for Nefarian's $spell:77827 cooldown",
 	OnyBreathTimer			= "Show timer for Onyxia's $spell:94124 cooldown",
