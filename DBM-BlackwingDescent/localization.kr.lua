@@ -191,10 +191,11 @@ L:SetWarningLocalization({
 	NefTailSwipe			= "꼬리 채찍 (네파리안)",
 	OnyBreath				= "암흑불길 숨결 (오닉시아)",
 	NefBreath				= "암흑불길 숨결 (네파리안)",
-	specWarnShadowblazeSoon	= "곧 암흑 화로!"
+	specWarnShadowblazeSoon	= "곧 암흑 화로 (~5초 전)!"
 })
 
 L:SetTimerLocalization({
+	timerNefLanding		= "네파리안 착지",
 	OnySwipeTimer		= "오닉 꼬리 채찍 쿨다운",
 	NefSwipeTimer		= "네파 꼬리 채찍 쿨다운",
 	OnyBreathTimer		= "오닉 브레스 쿨다운",
@@ -207,6 +208,7 @@ L:SetOptionLocalization({
 	OnyBreath				= "오닉시아의 $spell:94124 경고 보기",
 	NefBreath				= "네파리안의 $spell:94124 경고 보기",
 	specWarnShadowblazeSoon	= "$spell:94085의 사전 특수 경고 보기 (~5초 전)",
+	timerNefLanding			= "네파리안 착지 타이머 보기",
 	OnySwipeTimer			= "오닉시아의 $spell:77827 쿨다운 타이머 보기",
 	NefSwipeTimer			= "네파리안의 $spell:77827 쿨다운 타이머 보기",
 	OnyBreathTimer			= "오닉시아의 $spell:94124 쿨다운 타이머 보기",
