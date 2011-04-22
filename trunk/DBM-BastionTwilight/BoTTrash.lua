@@ -11,7 +11,6 @@ mod:RegisterEvents(
 	"SPELL_DAMAGE"
 )
 
---do we need warnings for http://www.wowhead.com/npc=49826#abilities or http://www.wowhead.com/npc=49821#abilities debuff stacks?
 local warnVolcanicWrath		= mod:NewSpellAnnounce(87903, 4)--This is nasty volcano aoe that's channeled that will wipe raid on trash if not interrupted.
 local warnFrostWhirl		= mod:NewSpellAnnounce(93340, 4)--This is nasty frost whirl elementals do before ascendant Council.
 local warnFlameStrike		= mod:NewTargetAnnounce(93383, 4)--This is Flame strike we need to not stand in unless we're dispeling frost dudes shield.
@@ -82,10 +81,10 @@ end
 
 function mod:SPELL_CAST_START(args)
 	if args:IsSpellID(93383, 93362) then--Are both IDs used?
-		self:ScheduleMethod(0.2, "FlameStrikeTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		self:ScheduleMethod(0.2, "FlameStrikeTarget", args.sourceGUID)
 	elseif args:IsSpellID(93377) then
 		specWarnRupture:Show()
-		self:ScheduleMethod(0.2, "RuptureTarget", args.sourceGUID)--Timing might need tuning but target scanning definitely works for this.
+		self:ScheduleMethod(0.2, "RuptureTarget", args.sourceGUID)
 	end
 end
 

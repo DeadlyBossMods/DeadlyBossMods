@@ -32,6 +32,7 @@ local timerFirestorm		= mod:NewBuffActiveTimer(15, 88972)
 local timerFirestormCast	= mod:NewCastTimer(3, 88972)
 
 local berserkTimer			= mod:NewBerserkTimer(300)
+
 mod:AddBoolOption("SetIconOnConsuming", false)
 
 local consumingTargets = {}
