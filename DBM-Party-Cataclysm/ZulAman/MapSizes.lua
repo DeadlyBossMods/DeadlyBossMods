@@ -1,3 +1,3 @@
---[[DBM:RegisterMapSize("ZulAman",
-	1, 1877.08325195312, 1252.0830078125
-)--]]
+DBM:RegisterMapSize("ZulAman",
+	1, 1268.74993896484, 845.833312988281
+)
