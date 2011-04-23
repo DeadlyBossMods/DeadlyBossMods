@@ -128,6 +128,10 @@ L:SetGeneralLocalization({
 	name = "Vanessa VanCleef"
 })
 
+L:SetTimerLocalization({
+	achievementGauntlet	= "Spießrutenlauf"
+})
+
 ------------------
 --  Grim Batol  --
 ---------------------
@@ -166,7 +170,8 @@ L:SetGeneralLocalization({
 })
 
 L:SetMiscLocalization{
-	ValionaYell	= "Drache, du wirst tun, was ich sage! Fang mich!",	-- Yell when Valiona is incoming
+	ValionaYell	= "Drache, du wirst tun, was ich sage! Fang mich!",
+	Add			= "%s Summons an", --translate
 	Valiona		= "Valiona"
 }
 
@@ -281,8 +286,21 @@ L:SetGeneralLocalization({
 L = DBM:GetModLocalization("Siamat")
 
 L:SetGeneralLocalization({
-	name = "Siamat"		-- "Siamat, Lord of the South Wind" --> Real name is too long :((
+	name = "Siamat"
 })
+
+L:SetWarningLocalization{
+	specWarnPhase2Soon	= "Phase 2 in 5 Sekunden"
+}
+
+L:SetTimerLocalization({
+	timerPhase2 		= "Phase 2 beginnt"
+})
+
+L:SetOptionLocalization{
+	specWarnPhase2Soon	= "Zeige Spezialwarnung für Phase 2 bald (5 Sekunden)",
+	timerPhase2 		= "Zeige Timer für den Beginn von Phase 2"
+}
 
 ------------------------
 -- High Prophet Barim --
@@ -353,6 +371,18 @@ L:SetGeneralLocalization({
 	name = "Kommandant Grüntal"
 })
 
+L:SetTimerLocalization({
+	TimerAdds		= "Nächste Adds"
+})
+
+L:SetOptionLocalization{
+	TimerAdds		= "Zeige Timer für Adds"
+}
+
+L:SetMiscLocalization{
+	YellAdds		= "Schlagt die Eindringlinge zurück!"
+}
+
 -----------------
 -- Lord Walden --
 -----------------
@@ -393,25 +423,28 @@ L:SetOptionLocalization{
 -------------- 
 L = DBM:GetModLocalization("Corborus")
 
+L:SetGeneralLocalization({
+	name = "Corborus"
+})
+
 L:SetWarningLocalization({
 	WarnEmerge	= "Auftauchen",
 	WarnSubmerge	= "Untertauchen"
 })
 
 L:SetTimerLocalization({
-	TimerEmerge	= "Auftauchen",
-	TimerSubmerge	= "Untertauchen"
+	TimerEmerge	= "Nächstes Auftauchen",
+	TimerSubmerge	= "Nächstes Untertauchen"
 })
 
 L:SetOptionLocalization({
 	WarnEmerge	= "Zeige Warnung für Auftauchen",
 	WarnSubmerge	= "eige Warnung für Untertauchen",
 	TimerEmerge	= "Zeige Timer für Auftauchen",
-	TimerSubmerge	= "Zeige Timer für Untertauchen"
-})
+	TimerSubmerge	= "Zeige Timer für Untertauchen",
+	CrystalArrow	= "Zeige DBM-Pfeil, wenn $spell:81634 in deiner Nähe ist",
+	RangeFrame		= "Zeige Abstandsfenster (5m)"
 
-L:SetGeneralLocalization({
-	name = "Corborus"
 })
 
 -----------
@@ -432,11 +465,18 @@ L:SetGeneralLocalization({
 	name = "Plattenhaut"
 })
 
-L:SetWarningLocalization({
+L:SetWarningLocalization({	
+	WarnAirphase			= "Luftphase",
+	WarnGroundphase			= "Bodenphase",
 	specWarnCrystalStorm		= "Kristallsturm - Geh in Deckung"
 })
 
 L:SetOptionLocalization({
+	WarnAirphase			= "Zeige Warnung, wenn Plattenhaut abhebt",
+	WarnGroundphase			= "Zeige Warnung, wenn Plattenhaut landet",
+	TimerAirphase			= "Zeige Timer für die nächste Luftphase",
+	TimerGroundphase		= "Zeige Timer für die nächste Bodenphase",
+
 	specWarnCrystalStorm		= "Zeige Spezialwarnung für $spell:92265"
 })
 
@@ -528,13 +568,15 @@ L:SetGeneralLocalization({
 	name = "Ozumat"
 })
 
----------------
---  Nalorakk --
----------------
+----------------
+--  Zul'Aman  --
+----------------
+-- Nalorakk --
+--------------
 L = DBM:GetModLocalization("Nalorakk5")
 
 L:SetGeneralLocalization{
-	name = "Nalorakk"
+	name = "Nalorakk (Bär)"
 }
 
 L:SetWarningLocalization{
@@ -545,31 +587,31 @@ L:SetWarningLocalization{
 }
 
 L:SetTimerLocalization{
-	TimerBear		= "Bär",
+	TimerBear		= "Bärform",
 	TimerNormal		= "Normale Form"
 }
 
 L:SetOptionLocalization{
-	WarnBear		= "Show warning for Bear form",--Translate
-	WarnBearSoon	= "Show pre-warning for Bear form",--Translate
-	WarnNormal		= "Show warning for Normal form",--Translate
-	WarnNormalSoon	= "Show pre-warning for Normal form",--Translate
-	TimerBear		= "Show timer for Bear form",--Translate
-	TimerNormal		= "Show timer for Normal form"--Translate
+	WarnBear		= "Zeige Warnung für Bärform",
+	WarnBearSoon	= "Zeige Vorwarnung für Bärform",
+	WarnNormal		= "Zeige Warnung für Normalform",
+	WarnNormalSoon	= "Zeige Vorwarnung für Normalform",
+	TimerBear		= "Zeige Timer für Bärform",
+	TimerNormal		= "Zeige Timer für Normalform"
 }
 
 L:SetMiscLocalization{
-	YellBear 	= "Ihr provoziert die Bestie, jetzt werdet Ihr sie kennenlernen!",
+	YellBear 	= "Ihr provoziert die Bestie, jetzt werdet ihr sie kennenlernen!",
 	YellNormal	= "Macht Platz für Nalorakk!"
 }
 
----------------
---  Akil'zon --
----------------
+--------------
+-- Akil'zon --
+--------------
 L = DBM:GetModLocalization("Akilzon5")
 
 L:SetGeneralLocalization{
-	name = "Akil'zon"
+	name = "Akil'zon (Adler)"
 }
 
 L:SetWarningLocalization{
@@ -580,15 +622,15 @@ L:SetTimerLocalization{
 
 L:SetOptionLocalization{
 	StormIcon	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(43648),
-	RangeFrame	= "Range Frame anzeigen"
+	RangeFrame	= "Zeige Abstandsfenster (10m)"
 }
 
 L:SetMiscLocalization{
 }
 
----------------
---  Jan'alai --
----------------
+--------------
+-- Jan'alai --
+--------------
 L = DBM:GetModLocalization("Janalai5")
 
 L:SetGeneralLocalization{
@@ -606,33 +648,195 @@ L:SetOptionLocalization{
 }
 
 L:SetMiscLocalization{
-	YellBomb	= "Jetzt sollt Ihr brennen!",
+	YellBomb	= "Jetzt sollt ihr brennen!",
 	YellAdds	= "Wo is' meine Brut? Was ist mit den Eiern?"
 }
 
---------------
---  Halazzi --
---------------
+-------------
+-- Halazzi --
+-------------
 L = DBM:GetModLocalization("Halazzi5")
 
 L:SetGeneralLocalization{
-	name = "Halazzi"
+	name = "Halazzi (Lynx)"
 }
 
 L:SetWarningLocalization{
-	WarnSpirit	= "Geist spawned",
-	WarnNormal	= "Geist despawned"
+	WarnSpirit	= "Geist Phase",
+	WarnNormal	= "Normale Phase"
 }
 
 L:SetTimerLocalization{
 }
 
 L:SetOptionLocalization{
-	WarnSpirit	= "Show warning for Spirit phase",--Translate
-	WarnNormal	= "Show warning for Normal phase"--Translate
+	WarnSpirit	= "Zeige Warnung für Geistphase",
+	WarnNormal	= "Zeige Warnung für normale Phase"
 }
 
 L:SetMiscLocalization{
 	YellSpirit	= "Ich kämpfe mit wildem Geist...",
 	YellNormal	= "Geist, zurück zu mir!"
+}
+
+-----------------------
+-- Hexlord Malacrass --
+-----------------------
+L = DBM:GetModLocalization("Malacrass5")
+
+L:SetGeneralLocalization{
+	name = "Hexlord Malacrass"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+	TimerSiphon	= "%s: %s"
+}
+
+L:SetOptionLocalization{
+	TimerSiphon	= "Zeige Timer für $spell:43501"
+}
+
+L:SetMiscLocalization{
+}
+
+-------------
+-- Daakara --
+-------------
+L = DBM:GetModLocalization("Daakara")
+
+L:SetGeneralLocalization{
+	name = "Daakara"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+	SetIconOnThrow		= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(97639)
+}
+
+-----------------
+--  Zul'Gurub  --
+-------------------------
+-- High Priest Venoxis --
+-------------------------
+L = DBM:GetModLocalization("Venoxis")
+
+L:SetGeneralLocalization{
+	name = "Hohepriesterin Venoxis" --check
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnToxicLink	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96477)
+}
+
+L:SetMiscLocalization{
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Mandokir")
+
+L:SetGeneralLocalization{
+	name = "Blutfürst Mandokir" --check
+}
+
+L:SetWarningLocalization{
+	WarnRevive		= "Geisterwiederbelebung - %d verbleiben",
+	SpecWarnOhgan	= "Ohgan wiederbelebt! Angreifen!"
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnRevive		= "Verkünde wieviele Geisterwiederbelebungen verbleiben",
+	SpecWarnOhgan	= "Zeige Warnung, wenn Ohgan wiederbelebt wird"
+}
+
+L:SetMiscLocalization{
+	Ohgan		= "Ohgan"
+}
+
+------------
+-- Zanzil --
+------------
+L = DBM:GetModLocalization("Zanzil")
+
+L:SetGeneralLocalization{
+	name = "Zanzil"
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	SetIconOnGaze	= DBM_CORE_AUTO_ICONS_OPTION_TEXT:format(96342)
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------------
+-- High Priestess Kilnara --
+----------------------------
+L = DBM:GetModLocalization("Kilnara")
+
+L:SetGeneralLocalization{
+	name = "Hohepriesterin Kilnara" --check
+}
+
+L:SetWarningLocalization{
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+}
+
+L:SetMiscLocalization{
+}
+
+----------------------------
+-- Jindo --
+----------------------------
+L = DBM:GetModLocalization("Jindo")
+
+L:SetGeneralLocalization{
+	name = "Jin'do the Godbreaker" --translate
+}
+
+L:SetWarningLocalization{
+	WarnBarrierDown	= "Hakkar's Chains Barrier Down - %d/3 left" --translate
+}
+
+L:SetTimerLocalization{
+}
+
+L:SetOptionLocalization{
+	WarnBarrierDown	= "Announce when Hakkar's Chains barrier down" --translate
+}
+
+L:SetMiscLocalization{
+	Kill			= "Oh no, Hakkar's spirit is free!" -- translate (temporarily)
 }
