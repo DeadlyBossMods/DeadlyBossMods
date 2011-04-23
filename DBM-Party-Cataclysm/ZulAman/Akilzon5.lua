@@ -58,7 +58,7 @@ function mod:SPELL_AURA_APPLIED(args)
 		if self.Options.StormIcon then
 			self:SetIcon(args.destName, 8, 8)
 		end
-	elseif args:IsSpellID(97318) then
+	elseif args:IsSpellID(97318) and args:IsDestTypePlayer() then
 		warnPlucked:Show(args.destName)	
 	end
 end
