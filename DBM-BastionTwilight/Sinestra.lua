@@ -89,7 +89,8 @@ local function isTank(unit)
 		return true
 	end
 	if UnitIsUnit("boss1target", unit) then return true end
-	if tanks[UnitName(unit)] then return true end
+	if UnitHealthMax(unit) >= 165000 then return true end
+--	if tanks[UnitName(unit)] then return true end
 	return false
 end--]]
 
