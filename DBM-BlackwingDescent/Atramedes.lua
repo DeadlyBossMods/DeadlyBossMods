@@ -58,14 +58,14 @@ local function groundphase()
 	timerAirphase:Start()
 	timerSonicBreath:Start(25)
 	timerSearingFlame:Start()
-	warnSearingFlameSoon:Schedule(41.5)
+	warnSearingFlameSoon:Schedule(40)
 end
 
 function mod:OnCombatStart(delay)
 	timerSonarPulseCD:Start(-delay)
 	timerSonicBreath:Start(25-delay)
 	warnSearingFlameSoon:Schedule(40-delay)
-	timerSearingFlame:Start(45-delay)
+	timerSearingFlame:Start(-delay)
 	timerAirphase:Start(90-delay)
 	shieldsLeft = 10
 	pesteredWarned = false
