@@ -39,7 +39,7 @@ local specWarnAddTargetable	= mod:NewSpecialWarning("specWarnAddTargetable", fal
 
 local timerSonarPulseCD		= mod:NewCDTimer(10, 92411)
 local timerSonicBreath		= mod:NewCDTimer(41, 78075)
-local timerSearingFlame		= mod:NewNextTimer(46.5, 77840)
+local timerSearingFlame		= mod:NewCDTimer(45, 77840)
 local timerAirphase			= mod:NewTimer(85, "TimerAirphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendUnBurrow.blp")--These both need more work
 local timerGroundphase		= mod:NewTimer(31.5, "TimerGroundphase", "Interface\\AddOns\\DBM-Core\\textures\\CryptFiendBurrow.blp")--I just never remember to log and /yell at right times since they lack most accurate triggers.
 
