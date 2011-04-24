@@ -2055,7 +2055,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("normal10") then
 				mod.stats.normalKills = mod.stats.normalKills + 1
 				mod.stats.normalLastTime = thisTime
-				if bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in one global CD. (all level 60 raids report as instance difficulty 1 which means this time has to be ridiculously low. It's more or less only gonna fix kill times of 0.)
+				if bestTime and bestTime > 0 and bestTime < 1.5 then--you did not kill a raid boss in one global CD. (all level 60 raids report as instance difficulty 1 which means this time has to be ridiculously low. It's more or less only gonna fix kill times of 0.)
 					mod.stats.normalBestTime = thisTime
 				else
 					mod.stats.normalBestTime = math.min(bestTime or math.huge, thisTime)
@@ -2063,7 +2063,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("heroic10") then
 				mod.stats.heroicKills = mod.stats.heroicKills + 1
 				mod.stats.heroicLastTime = thisTime
-				if bestTime > 0 and bestTime < 15 then--you did not kill a heroic raid boss in 15 seconds (first heroic raid boss in game is ToC10 and most zergable boss would be 8,376,000 valk twins. This could however change in a couple tiers. Current record is 31seconds)
+				if bestTime and bestTime > 0 and bestTime < 15 then--you did not kill a heroic raid boss in 15 seconds (first heroic raid boss in game is ToC10 and most zergable boss would be 8,376,000 valk twins. This could however change in a couple tiers. Current record is 31seconds)
 					mod.stats.heroicBestTime = thisTime
 				else
 					mod.stats.heroicBestTime = math.min(bestTime or math.huge, thisTime)
@@ -2071,7 +2071,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("normal25") then
 				mod.stats.normal25Kills = mod.stats.normal25Kills + 1
 				mod.stats.normal25LastTime = thisTime
-				if bestTime > 0 and bestTime < 10 then--(All classic raids report as difficulty 1 so this difficulty would mean naxx and later only. I could not find any record less than 20 seconds even for sarth or archavon or any naxx boss yet. So i'm leaving this 10 for now.)
+				if bestTime and bestTime > 0 and bestTime < 10 then--(All classic raids report as difficulty 1 so this difficulty would mean naxx and later only. I could not find any record less than 20 seconds even for sarth or archavon or any naxx boss yet. So i'm leaving this 10 for now.)
 					mod.stats.normal25BestTime = thisTime
 				else
 					mod.stats.normal25BestTime = math.min(bestTime or math.huge, thisTime)
@@ -2079,7 +2079,7 @@ function DBM:EndCombat(mod, wipe)
 			elseif mod:IsDifficulty("heroic25") then
 				mod.stats.heroic25Kills = mod.stats.heroic25Kills + 1
 				mod.stats.heroic25LastTime = thisTime
-				if bestTime > 0 and bestTime < 35 then--(Current fastest record heroic 25 boss kill is 00:52 on Lord Marrowgar)
+				if bestTime and bestTime > 0 and bestTime < 35 then--(Current fastest record heroic 25 boss kill is 00:52 on Lord Marrowgar)
 					mod.stats.heroic25BestTime = thisTime
 				else
 					mod.stats.heroic25BestTime = math.min(bestTime or math.huge, thisTime)
