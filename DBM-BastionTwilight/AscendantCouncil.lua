@@ -81,6 +81,7 @@ local timerHeartIceCD		= mod:NewCDTimer(22, 82665, nil, false)--22-24 seconds
 local timerGlaciate			= mod:NewCDTimer(33, 82746, nil, mod:IsMelee())--33-35 seconds
 local timerWaterBomb		= mod:NewCDTimer(33, 82699)--33-35 seconds
 local timerFrozen			= mod:NewBuffActiveTimer(10, 82772, nil, mod:IsHealer())
+local timerHydroLanceCD		= mod:NewCDTimer(12, 92509, nil, false)--12 second cd but lowest cast priority
 --Ignacious
 local timerBurningBlood		= mod:NewTargetTimer(60, 82660, nil, false)
 local timerBurningBloodCD	= mod:NewCDTimer(22, 82660, nil, false)--22-33 seconds, even worth having a timer?
@@ -500,6 +501,7 @@ function mod:SPELL_CAST_START(args)
 		end
 	elseif args:IsSpellID(82752, 92509, 92510, 92511) then
 		specWarnHydroLance:Show()
+		timerHydroLanceCD:Show()
 	elseif args:IsSpellID(82699) then
 		warnWaterBomb:Show()
 		timerWaterBomb:Start()
@@ -556,6 +558,7 @@ function mod:CHAT_MSG_MONSTER_YELL(msg)
 		timerHeartIceCD:Cancel()
 		timerGravityCoreCD:Cancel()
 		timerStaticOverloadCD:Cancel()
+		timerHydroLanceCD:Cancel()
 		if mod:IsDifficulty("heroic10", "heroic25") then
 			timerFrostBeaconCD:Start(27)
 			timerFlameStrikeCD:Start(30)
