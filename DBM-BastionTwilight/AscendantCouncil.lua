@@ -37,7 +37,7 @@ local warnQuake				= mod:NewSpellAnnounce(83565, 4)
 --Arion
 local warnLightningRod		= mod:NewTargetAnnounce(83099, 3)
 local warnDisperse			= mod:NewSpellAnnounce(83087, 3, nil, mod:IsTank())
-local warnLightningBlast	= mod:NewCastAnnounce(83070, 3, nil, mod:IsTank())
+local warnLightningBlast	= mod:NewCastAnnounce(83070, 3, nil, nil, mod:IsTank())
 local warnThundershockSoon	= mod:NewPreWarnAnnounce(83067, 10, 3)
 local warnThundershock		= mod:NewSpellAnnounce(83067, 4)
 --Elementium Monstrosity
